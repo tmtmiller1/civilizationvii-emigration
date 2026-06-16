@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Modern-age border-policy cards (Feature 2). Loaded ONLY in the Modern gameplay database
+  (modinfo criteria AgeInUse=AGE_MODERN). NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION only exists while
+  Modern is the active age. See emigration-policies-antiquity.xml for the full rationale.
+-->
+<Database>
+    <Kinds>
+        <InsertOrIgnore Kind="KIND_TRADITION"/>
+    </Kinds>
+
+    <Types>
+        <Row Type="TRADITION_EMIG_OPEN_BORDERS_MODERN" Kind="KIND_TRADITION"/>
+        <Row Type="TRADITION_EMIG_CLOSED_BORDERS_MODERN" Kind="KIND_TRADITION"/>
+        <Row Type="TRADITION_EMIG_TALENT_MODERN" Kind="KIND_TRADITION"/>
+        <Row Type="TRADITION_EMIG_CULTPULL_MODERN" Kind="KIND_TRADITION"/>
+        <Row Type="TRADITION_EMIG_TRADEPULL_MODERN" Kind="KIND_TRADITION"/>
+        <Row Type="TRADITION_EMIG_ASYLUM_MODERN" Kind="KIND_TRADITION"/>
+    </Types>
+
+    <Traditions>
+        <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_MODERN"
+             Name="LOC_EMIG_POLICY_OPEN_BORDERS_NAME"
+             Description="LOC_EMIG_POLICY_OPEN_BORDERS_DESC"
+             AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
+        <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_MODERN"
+             Name="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME"
+             Description="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC"
+             AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
+        <Row TraditionType="TRADITION_EMIG_TALENT_MODERN"
+             Name="LOC_EMIG_POLICY_TALENT_NAME" Description="LOC_EMIG_POLICY_TALENT_DESC"
+             AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
+        <Row TraditionType="TRADITION_EMIG_CULTPULL_MODERN"
+             Name="LOC_EMIG_POLICY_CULTPULL_NAME" Description="LOC_EMIG_POLICY_CULTPULL_DESC"
+             AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
+        <Row TraditionType="TRADITION_EMIG_TRADEPULL_MODERN"
+             Name="LOC_EMIG_POLICY_TRADEPULL_NAME" Description="LOC_EMIG_POLICY_TRADEPULL_DESC"
+             AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
+        <Row TraditionType="TRADITION_EMIG_ASYLUM_MODERN"
+             Name="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Description="LOC_EMIG_POLICY_ASYLUM_MO_DESC"
+             AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
+    </Traditions>
+
+    <!-- Native per-turn Influence modifiers (defined in emigration-policies-gameeffects.xml). -->
+    <TraditionModifiers>
+        <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_MODERN" ModifierId="MOD_EMIG_OPEN_BORDERS_INFLUENCE_MO"/>
+        <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_MODERN" ModifierId="MOD_EMIG_CLOSED_BORDERS_INFLUENCE_MO"/>
+        <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_MODERN" ModifierId="MOD_EMIG_CLOSED_BORDERS_PRODUCTION_MO"/>
+        <Row TraditionType="TRADITION_EMIG_TALENT_MODERN" ModifierId="MOD_EMIG_TALENT_YIELD_MO"/>
+        <Row TraditionType="TRADITION_EMIG_CULTPULL_MODERN" ModifierId="MOD_EMIG_CULTPULL_YIELD_MO"/>
+        <Row TraditionType="TRADITION_EMIG_TRADEPULL_MODERN" ModifierId="MOD_EMIG_TRADEPULL_YIELD_MO"/>
+        <Row TraditionType="TRADITION_EMIG_ASYLUM_MODERN" ModifierId="MOD_EMIG_ASYLUM_INFLUENCE_MO"/>
+        <Row TraditionType="TRADITION_EMIG_ASYLUM_MODERN" ModifierId="MOD_EMIG_ASYLUM_CULTURE_MO"/>
+    </TraditionModifiers>
+
+    <ProgressionTreeNodeUnlocks>
+        <Row ProgressionTreeNodeType="NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_OPEN_BORDERS_MODERN" UnlockDepth="1"/>
+        <Row ProgressionTreeNodeType="NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_CLOSED_BORDERS_MODERN" UnlockDepth="1"/>
+        <Row ProgressionTreeNodeType="NODE_CIVIC_MO_MAIN_MODERNIZATION" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_TALENT_MODERN" UnlockDepth="1"/>
+        <Row ProgressionTreeNodeType="NODE_CIVIC_MO_MAIN_NATURAL_HISTORY" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_CULTPULL_MODERN" UnlockDepth="1"/>
+        <Row ProgressionTreeNodeType="NODE_CIVIC_MO_MAIN_CAPITALISM" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_TRADEPULL_MODERN" UnlockDepth="1"/>
+        <Row ProgressionTreeNodeType="NODE_CIVIC_MO_MAIN_POLITICAL_THEORY" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_ASYLUM_MODERN" UnlockDepth="1"/>
+    </ProgressionTreeNodeUnlocks>
+</Database>

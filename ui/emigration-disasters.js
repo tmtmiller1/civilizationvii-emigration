@@ -1,0 +1,208 @@
+// emigration-disasters.js
+//
+// Per-city "disaster distress" - environmental events (flood, volcano, plague, …) as a
+// migration driver (climate / disaster refugees), parallel to the violence model. The
+// distress accumulates and decays each turn, and feeds a situational prosperity penalty
+// so a struck city sheds population.
+//
+// Fog-independence (matching the rest of the mod): the canonical, always-readable signal
+// is `city.isInfected` (the base game's outbreak flag - an infected city already stops
+// growing and emits migrants), polled for every met city. Event-driven disasters
+// (RandomEventOccurred) front-run this with a severity-scaled spike via `recordDisaster`,
+// used mainly for the local player's feedback/notification; the poll is the source of
+// truth. State persists in GameConfiguration.
+
+import { CONFIG } from "/emigration/ui/emigration-config.js";
+
+const STATE_KEY = "EmigrationDisaster_v1";
+
+/**
+ * @typedef {Object} DisasterState
+ * @property {Record<string, number>} byCity Accumulated distress per city key.
+ * @property {Record<string, number>} observedTurn Turn each city was last polled.
+ * @property {number} decayTurn Turn distress was last decayed.
+ */
+
+/** @type {DisasterState | null} */
+let _state = null;
+
+/**
+ * Per-event-class distress weights for a severity-1 event (severity multiplies).
+ * @type {Record<string, number>}
+ */
+const CLASS_WEIGHT = {
+  CLASS_VOLCANO: 12,
+  CLASS_FLOOD: 8,
+  CLASS_PLAGUE: 8,
+  CLASS_HURRICANE: 7,
+  CLASS_TORNADO: 5,
+  CLASS_BLIZZARD: 4,
+  CLASS_DUSTSTORM: 3,
+  CLASS_THUNDERSTORM: 3
+};
+
+/**
+ * The current age-local game turn, or 0.
+ * @returns {number} Game.turn or 0.
+ */
+function gameTurn() {
+  try {
+    return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
+  } catch (_) {
+    return 0;
+  }
+}
+
+/**
+ * The raw persisted state string, or null.
+ * @returns {string|null} The stored JSON, or null.
+ */
+function readStored() {
+  const g = Configuration?.getGame?.();
+  const v = g && typeof g.getValue === "function" ? g.getValue(STATE_KEY) : null;
+  return typeof v === "string" && v.length ? v : null;
+}
+
+/**
+ * Load (once) the persisted distress state.
+ * @returns {DisasterState} State.
+ */
+function state() {
+  if (_state) return _state;
+  try {
+    const raw = readStored();
+    const o = raw ? JSON.parse(raw) : null;
+    if (o && typeof o === "object") {
+      _state = {
+        byCity: o.byCity || {},
+        observedTurn: o.observedTurn || {},
+        decayTurn: o.decayTurn || gameTurn()
+      };
+      return _state;
+    }
+  } catch (_) {
+    /* ignore */
+  }
+  _state = { byCity: {}, observedTurn: {}, decayTurn: gameTurn() };
+  return _state;
+}
+
+/** Persist the distress state to GameConfiguration. */
+function persist() {
+  try {
+    Configuration?.editGame?.()?.setValue?.(STATE_KEY, JSON.stringify(_state));
+  } catch (_) {
+    /* ignore */
+  }
+}
+
+/**
+ * A stable string key for a city ComponentID, or null if unusable.
+ * @param {*} cid A city ComponentID.
+ * @returns {string|null} The key, or null.
+ */
+function keyFromCID(cid) {
+  try {
+    if (!cid || typeof ComponentID === "undefined") return null;
+    const bf = ComponentID.toBitfield(cid);
+    return typeof bf === "number" || typeof bf === "string" ? String(bf) : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * This turn's polled, fog-independent distress for a city: a standing term while it's
+ * infected (the base game's outbreak flag). 0 when disasters are disabled or unreadable.
+ * @param {*} city A live city object.
+ * @returns {number} Polled distress to add this turn (>= 0).
+ */
+function polledDistress(city) {
+  try {
+    if (city?.isInfected) return CONFIG.disasterPlagueWeight;
+  } catch (_) {
+    /* ignore */
+  }
+  return 0;
+}
+
+/**
+ * Poll a city's disaster distress and return its current intensity. Idempotent within a
+ * turn (so repeated signal collection doesn't re-add). Returns 0 when disabled.
+ * @param {*} city A live city object.
+ * @returns {number} Current distress (>= 0).
+ */
+export function observeDisaster(city) {
+  if (!CONFIG.disastersEnabled) return 0;
+  const key = keyFromCID(city?.id);
+  if (!key) return 0;
+  const s = state();
+  const turn = gameTurn();
+  if (s.observedTurn[key] !== turn) {
+    s.observedTurn[key] = turn;
+    const add = polledDistress(city);
+    if (add > 0) s.byCity[key] = (s.byCity[key] || 0) + add;
+  }
+  const v = s.byCity[key];
+  return typeof v === "number" && isFinite(v) ? v : 0;
+}
+
+/**
+ * Add a severity-scaled distress spike to a set of cities hit by a RandomEvent (the
+ * event-driven front-run). `cityKeys` are the keyFromCID keys of the affected cities.
+ * @param {string} eventClass The event's CLASS_* string.
+ * @param {number} severity The event severity (>= 1).
+ * @param {string[]} cityKeys Affected city keys.
+ */
+export function recordDisaster(eventClass, severity, cityKeys) {
+  if (!CONFIG.disastersEnabled || !Array.isArray(cityKeys) || !cityKeys.length) return;
+  const w = (CLASS_WEIGHT[eventClass] || 4) * (severity > 0 ? severity : 1);
+  const s = state();
+  for (const key of cityKeys) {
+    if (key) s.byCity[key] = (s.byCity[key] || 0) + w;
+  }
+  persist();
+}
+
+/**
+ * Seed a small amount of distress at a destination city (plague carried by migrants).
+ * @param {string} cityKey Destination city key.
+ * @param {number} amount Distress to add.
+ */
+export function addDistress(cityKey, amount) {
+  if (!CONFIG.disastersEnabled || !cityKey || !(amount > 0)) return;
+  const s = state();
+  s.byCity[cityKey] = (s.byCity[cityKey] || 0) + amount;
+  persist();
+}
+
+/**
+ * Decay every city's distress toward zero for the turns elapsed since the last tick
+ * (idempotent within a turn), drop negligible values, and persist. Call once per pass
+ * before observing.
+ */
+export function tickDisasters() {
+  if (!CONFIG.disastersEnabled) return;
+  const s = state();
+  const turn = gameTurn();
+  const elapsed = Math.max(0, turn - s.decayTurn);
+  if (elapsed > 0) {
+    const factor = Math.pow(CONFIG.disasterDecay, elapsed);
+    for (const k of Object.keys(s.byCity)) {
+      const v = s.byCity[k] * factor;
+      if (v < 0.05) delete s.byCity[k];
+      else s.byCity[k] = v;
+    }
+    s.decayTurn = turn;
+  }
+  persist();
+}
+
+/**
+ * The key for a city (exposed so the event layer can map affected cities → distress).
+ * @param {*} city A live city object.
+ * @returns {string|null} The key, or null.
+ */
+export function disasterKey(city) {
+  return keyFromCID(city?.id);
+}

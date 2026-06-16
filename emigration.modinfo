@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mod id="emigration" version="1" xmlns="ModInfo">
+    <Properties>
+        <Name>LOC_MOD_EMIGRATION_NAME</Name>
+        <Description>LOC_MOD_EMIGRATION_DESCRIPTION</Description>
+        <Authors>Tower</Authors>
+        <SpecialThanks>Machiavelli's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
+        <Package>EmigrationMod</Package>
+        <PackageSortIndex>1000</PackageSortIndex>
+        <Version>0.1.0</Version>
+    </Properties>
+    <Dependencies>
+        <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
+    </Dependencies>
+    <ActionCriteria>
+        <Criteria id="always">
+            <AlwaysMet></AlwaysMet>
+        </Criteria>
+        <Criteria id="antiquity-age-current">
+            <AgeInUse>AGE_ANTIQUITY</AgeInUse>
+        </Criteria>
+        <Criteria id="exploration-age-current">
+            <AgeInUse>AGE_EXPLORATION</AgeInUse>
+        </Criteria>
+        <Criteria id="modern-age-current">
+            <AgeInUse>AGE_MODERN</AgeInUse>
+        </Criteria>
+    </ActionCriteria>
+    <ActionGroups>
+        <ActionGroup id="emigration-shell" scope="shell" criteria="always">
+            <Properties>
+                <LoadOrder>60</LoadOrder>
+            </Properties>
+            <Actions>
+                <UpdateText>
+                    <Item>text/en_us/ModText.xml</Item>
+                    <Item locale="de_DE">text/de_de/ModText.xml</Item>
+                    <Item locale="es_ES">text/es_es/ModText.xml</Item>
+                    <Item locale="fr_FR">text/fr_fr/ModText.xml</Item>
+                    <Item locale="it_IT">text/it_it/ModText.xml</Item>
+                    <Item locale="ja_JP">text/ja_jp/ModText.xml</Item>
+                    <Item locale="ko_KR">text/ko_kr/ModText.xml</Item>
+                    <Item locale="pt_BR">text/pt_br/ModText.xml</Item>
+                    <Item locale="ru_RU">text/ru_ru/ModText.xml</Item>
+                    <Item locale="zh_Hans_CN">text/zh_cn/ModText.xml</Item>
+                </UpdateText>
+                <UIScripts>
+                    <Item>ui/emigration-config.js</Item>
+                    <Item>ui/emigration-tunables.js</Item>
+                    <Item>ui/options/mod-options.js</Item>
+                    <Item>ui/emigration-settings.js</Item>
+                    <Item>ui/emigration-options.js</Item>
+                </UIScripts>
+                <ImportFiles>
+                    <!-- Imported (side-effect) by emigration-options.js to register the
+                         Advanced tunables sub-window; must be importable in the shell too. -->
+                    <Item>ui/options/emigration-advanced-editor.js</Item>
+                </ImportFiles>
+            </Actions>
+        </ActionGroup>
+        <ActionGroup id="emigration-game" scope="game" criteria="always">
+            <Properties>
+                <LoadOrder>60</LoadOrder>
+            </Properties>
+            <Actions>
+                <UpdateText>
+                    <Item>text/en_us/ModText.xml</Item>
+                    <Item locale="de_DE">text/de_de/ModText.xml</Item>
+                    <Item locale="es_ES">text/es_es/ModText.xml</Item>
+                    <Item locale="fr_FR">text/fr_fr/ModText.xml</Item>
+                    <Item locale="it_IT">text/it_it/ModText.xml</Item>
+                    <Item locale="ja_JP">text/ja_jp/ModText.xml</Item>
+                    <Item locale="ko_KR">text/ko_kr/ModText.xml</Item>
+                    <Item locale="pt_BR">text/pt_br/ModText.xml</Item>
+                    <Item locale="ru_RU">text/ru_ru/ModText.xml</Item>
+                    <Item locale="zh_Hans_CN">text/zh_cn/ModText.xml</Item>
+                </UpdateText>
+                <UIScripts>
+                    <Item>ui/emigration-main.js</Item>
+                    <Item>ui/options/mod-options.js</Item>
+                    <Item>ui/emigration-settings.js</Item>
+                    <Item>ui/emigration-options.js</Item>
+                </UIScripts>
+                <ImportFiles>
+                    <Item>ui/emigration-config.js</Item>
+                    <Item>ui/emigration-causes.js</Item>
+                    <Item>ui/emigration-tunables.js</Item>
+                    <Item>ui/emigration-population.js</Item>
+                    <Item>ui/emigration-cities.js</Item>
+                    <Item>ui/emigration-prosperity.js</Item>
+                    <Item>ui/emigration-geography.js</Item>
+                    <Item>ui/emigration-violence.js</Item>
+                    <Item>ui/emigration-disasters.js</Item>
+                    <Item>ui/emigration-civ-tuning.js</Item>
+                    <Item>ui/emigration-effects.js</Item>
+                    <Item>ui/emigration-war.js</Item>
+                    <Item>ui/emigration-borders.js</Item>
+                    <Item>ui/emigration-naming.js</Item>
+                    <Item>ui/emigration-feedback.js</Item>
+                    <Item>ui/emigration-events.js</Item>
+                    <Item>ui/emigration-migration-stats.js</Item>
+                    <Item>ui/emigration-city-readout-data.js</Item>
+                    <Item>ui/emigration-city-readout.js</Item>
+                    <Item>ui/emigration-views.js</Item>
+                    <Item>ui/emigration-window.js</Item>
+                    <Item>ui/emigration-migration-page.js</Item>
+                    <Item>ui/emigration-engine.js</Item>
+                    <Item>ui/emigration-raid.js</Item>
+                    <!-- Submodules split out of the files above (engine→pull/state/
+                         migration-records/consequences/arrivals,
+                         effects→dividend/migrant-units, migration-stats→demographics,
+                         main→log/report, violence→violence-signals). Imported by their
+                         parents, so they must be registered to resolve at load. -->
+                    <Item>ui/emigration-pull.js</Item>
+                    <Item>ui/emigration-state.js</Item>
+                    <Item>ui/emigration-migration-records.js</Item>
+                    <Item>ui/emigration-consequences.js</Item>
+                    <Item>ui/emigration-arrivals.js</Item>
+                    <Item>ui/emigration-dividend.js</Item>
+                    <Item>ui/emigration-migrant-units.js</Item>
+                    <Item>ui/emigration-demographics.js</Item>
+                    <Item>ui/emigration-log.js</Item>
+                    <Item>ui/emigration-report.js</Item>
+                    <Item>ui/emigration-violence-signals.js</Item>
+                    <!-- Advanced tunables sub-window, imported by emigration-options.js. -->
+                    <Item>ui/options/emigration-advanced-editor.js</Item>
+                </ImportFiles>
+            </Actions>
+        </ActionGroup>
+        <ActionGroup id="emigration-shared-data" scope="game" criteria="always">
+            <Properties>
+                <LoadOrder>50</LoadOrder>
+            </Properties>
+            <Actions>
+                <UpdateDatabase>
+                    <Item>data/emigration-civilopedia.xml</Item>
+                    <Item>data/emigration-policies-gameeffects.xml</Item>
+                </UpdateDatabase>
+                <UpdateIcons>
+                    <Item>data/emigration-policy-icons.xml</Item>
+                </UpdateIcons>
+            </Actions>
+        </ActionGroup>
+        <ActionGroup id="emigration-policies-aq" scope="game" criteria="antiquity-age-current">
+            <Properties>
+                <LoadOrder>50</LoadOrder>
+            </Properties>
+            <Actions>
+                <UpdateDatabase>
+                    <Item>data/emigration-policies-antiquity.xml</Item>
+                </UpdateDatabase>
+            </Actions>
+        </ActionGroup>
+        <ActionGroup id="emigration-policies-ex" scope="game" criteria="exploration-age-current">
+            <Properties>
+                <LoadOrder>50</LoadOrder>
+            </Properties>
+            <Actions>
+                <UpdateDatabase>
+                    <Item>data/emigration-policies-exploration.xml</Item>
+                </UpdateDatabase>
+            </Actions>
+        </ActionGroup>
+        <ActionGroup id="emigration-policies-mo" scope="game" criteria="modern-age-current">
+            <Properties>
+                <LoadOrder>50</LoadOrder>
+            </Properties>
+            <Actions>
+                <UpdateDatabase>
+                    <Item>data/emigration-policies-modern.xml</Item>
+                </UpdateDatabase>
+            </Actions>
+        </ActionGroup>
+    </ActionGroups>
+    <LocalizedText>
+        <File>text/en_us/ModText.xml</File>
+    </LocalizedText>
+</Mod>

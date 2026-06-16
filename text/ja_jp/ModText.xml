@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <LocalizedText>
+        <Replace Tag="LOC_MOD_EMIGRATION_NAME" Language="ja_JP"><Text>移住</Text></Replace>
+        <Replace Tag="LOC_MOD_EMIGRATION_DESCRIPTION" Language="ja_JP"><Text>市民は不満で困窮した都市から、より幸福で繁栄した都市へと移住します（文明内および文明間）。繁栄モデル（食料・生産・幸福度・戦争・包囲・飢饉）によって駆動されます。移住数は歴史的に代表的な人口として表示され、Demographics モッドのスケールに合わせています。</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS" Language="ja_JP"><Text>移住 • 移住数の表示</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_DESCRIPTION" Language="ja_JP"><Text>移住する人数の表示方法。「両方」は Civ の人口値と歴史スケールの人数（Demographics モッドに準拠）を表示し、その他は一方のみを表示します。</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_BOTH" Language="ja_JP"><Text>両方（Civ の値 + 歴史値）</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_CIV" Language="ja_JP"><Text>Civ の人口値のみ</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_HISTORICAL" Language="ja_JP"><Text>歴史的な人数のみ</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_GROUP_EMIGRATION" Language="ja_JP"><Text>移住</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_GROUP_EMIGRATION_ADVANCED" Language="ja_JP"><Text>移住: 詳細設定</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED" Language="ja_JP"><Text>詳細設定</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED_OPEN" Language="ja_JP"><Text>設定する…</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED_DESCRIPTION" Language="ja_JP"><Text>移民の調整項目をすべて別ウィンドウで開きます。これらは出発点であり、プレイテストで調整済みの値ではありません。上の強度プリセットが、ほとんどの項目に妥当な初期値を設定します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_PACING" Language="ja_JP"><Text>ペース</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_SCOPE" Language="ja_JP"><Text>範囲とポリシー</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_PROSPERITY" Language="ja_JP"><Text>繁栄モデル</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_VIOLENCE" Language="ja_JP"><Text>戦争と暴力</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_GEOGRAPHY" Language="ja_JP"><Text>地理と移動</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_COST" Language="ja_JP"><Text>同化と移民のコスト</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_OUTLET" Language="ja_JP"><Text>はけ口（消耗）</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="ja_JP"><Text>災害</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="ja_JP"><Text>通知</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET" Language="ja_JP"><Text>移住の強さ</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_D" Language="ja_JP"><Text>移住全体の強さ。低 = まれな移動、高 = 頻繁。「カスタム」は下の詳細値を保持します。プリセットを適用すると詳細値が更新されます、オプションを開き直すと反映されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_CUSTOM" Language="ja_JP"><Text>カスタム（詳細設定を使用）</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_LOW" Language="ja_JP"><Text>低</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_MEDIUM" Language="ja_JP"><Text>中</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_HIGH" Language="ja_JP"><Text>高</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_BAR" Language="ja_JP"><Text>ペース: 移住率のしきい値</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_BAR_D" Language="ja_JP"><Text>人口1ポイントが移住する前に集落が蓄積すべき圧力。低いほど移住が頻繁になります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_COOLDOWN" Language="ja_JP"><Text>ペース: 移住後のクールダウン（ターン）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_COOLDOWN_D" Language="ja_JP"><Text>集落が次の人口ポイントを失えるようになるまで休止するターン数。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXMOVES" Language="ja_JP"><Text>ペース: 1ターンの最大移住数</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXMOVES_D" Language="ja_JP"><Text>1回の処理で世界全体に移動できる人口ポイント数の上限。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTERVAL" Language="ja_JP"><Text>ペース: 処理間のターン数</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTERVAL_D" Language="ja_JP"><Text>自分の N ターンごとに移住処理を1回実行します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CROSSCIV" Language="ja_JP"><Text>範囲: 文明間の移住を許可</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CROSSCIV_D" Language="ja_JP"><Text>オフの場合、人々は同じ文明の都市間でのみ移動します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CITYSTATES" Language="ja_JP"><Text>範囲: 都市国家/小勢力を含める</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CITYSTATES_D" Language="ja_JP"><Text>小規模な集落 / 都市国家が移住に参加するかどうか。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_REQUIREMET" Language="ja_JP"><Text>範囲: 既知の文明のみ</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_REQUIREMET_D" Language="ja_JP"><Text>自分の文明が出会った外国都市のみを対象とします。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CIVTUNE" Language="ja_JP"><Text>範囲: 指導者/文明ごとの調整</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CIVTUNE_D" Language="ja_JP"><Text>指導者および文明ごとに手作業の小さな調整（磁石の抑制、統合速度、戦時の保持、流出傾向）を適用し、外れ値が異なる挙動を示すようにします。オフ = すべての文明が同じ全体モデルを使用します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_BORDERS" Language="ja_JP"><Text>範囲: 国境政策</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_BORDERS_D" Language="ja_JP"><Text>「開放国境/閉鎖国境」政策の移民への効果を有効にします（政策カードは政策メニューに追加され、影響力を消費または付与します）。オフ = 政策は移住に影響しません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDOPEN" Language="ja_JP"><Text>国境: 閉鎖国境の開放度</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDOPEN_D" Language="ja_JP"><Text>閉鎖国境政策が通す移民の量（0.4 = 約60%を拒否）。低いほど閉鎖的。国境政策が有効なときのみ使用されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN" Language="ja_JP"><Text>国境: 封鎖時の定住</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN_D" Language="ja_JP"><Text>封鎖国境の政策が、自国民を競合国へ去らせない度合い（0.6 = 他文明への誘引が60%に低下、1 = 無効）。低いほど定住が強くなります。国境政策が有効なときのみ使用されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENOPEN" Language="ja_JP"><Text>国境: 開放国境の増加</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENOPEN_D" Language="ja_JP"><Text>開放国境政策が移民をどれだけ増やすか（1.5 = +50%）。高いほど開放的。国境政策が有効なときのみ使用されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FOOD" Language="ja_JP"><Text>繁栄の重み: 食料（1人あたり）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FOOD_D" Language="ja_JP"><Text>1人あたりの食料が移民を都市にどれだけ引き寄せるか。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_PROD" Language="ja_JP"><Text>繁栄の重み: 生産（1人あたり）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_PROD_D" Language="ja_JP"><Text>1人あたりの生産（「利用可能な仕事」の代理指標）が移民をどれだけ引き寄せるか。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAPPY" Language="ja_JP"><Text>繁栄の重み: 幸福度</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAPPY_D" Language="ja_JP"><Text>都市の純幸福度が移民をどれだけ強く引き寄せるか。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_POP" Language="ja_JP"><Text>繁栄の重み: 人口ペナルティ</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_POP_D" Language="ja_JP"><Text>都市の規模がどれだけ不利に働くか（小さくとも繁栄する都市が魅力を保つように）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSHAPED" Language="ja_JP"><Text>幸福度: 整形モデルを使用</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSHAPED_D" Language="ja_JP"><Text>平坦な幸福度の重みを、よりきめ細かいモデルに置き換えます。幸福度は世界平均との相対で測られ、その引力は飽和し（非常に幸福な都市も止められない磁石にはならない）、一方で悲惨さは依然として強く反発し、幸福度は経済を覆い隠すのではなく増幅します。オフ = 従来の線形の重み。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSCALE" Language="ja_JP"><Text>幸福度（整形）: 飽和スケール</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSCALE_D" Language="ja_JP"><Text>引力が飽和する前に「非常に幸福」とみなされる、世界平均より上の点数。高いほど幸福度が長く意味を持ちます。整形モデルのみで使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAMP" Language="ja_JP"><Text>幸福度（整形）: 経済の増幅</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAMP_D" Language="ja_JP"><Text>移住の誘因として、幸福な都市の経済をどれだけ増幅するか（悲惨な都市は抑制）。整形モデルのみで使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OCDISC" Language="ja_JP"><Text>過密: 割引（0 = オフ）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OCDISC_D" Language="ja_JP"><Text>都市が純粋に都市の過密だけで被る不満の一部を還元し、意図的に密集した都市が二重に罰せられないようにします（密度はすでに産出を抑えています）。0 = オフ。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OCTHRESH" Language="ja_JP"><Text>過密: 都市密度のしきい値</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OCTHRESH_D" Language="ja_JP"><Text>過密が不利に働く前に都市が保持できる都市人口（ゲームの過密しきい値を反映）。割引が有効なときのみ使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VPP" Language="ja_JP"><Text>戦争: 暴力ポイントあたりの移住（%）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VPP_D" Language="ja_JP"><Text>都市の領域内で蓄積した戦闘強度1ポイントあたりのスコアペナルティ。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VCAP" Language="ja_JP"><Text>戦争: 最大暴力ペナルティ（%）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VCAP_D" Language="ja_JP"><Text>暴力ペナルティの上限。敗走が暴走せず飽和するように。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VDECAY" Language="ja_JP"><Text>戦争: 暴力の減衰（ターンあたり）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VDECAY_D" Language="ja_JP"><Text>新たな戦闘がない場合に蓄積した暴力がどれだけ速く薄れるか（低いほど速い）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VFLEE" Language="ja_JP"><Text>戦争: 侵略者から逃げるのに必要な暴力</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VFLEE_D" Language="ja_JP"><Text>難民が最寄りの敵から方向的に逃げ出す前に必要な最低暴力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VASSAULT" Language="ja_JP"><Text>戦争: 新たな都市被害の重み</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VASSAULT_D" Language="ja_JP"><Text>都市が1ターンで新たな地区被害を受けたときに加わる強度（強襲スパイク）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VSIEGE" Language="ja_JP"><Text>戦争: 継続中の包囲の重み</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VSIEGE_D" Language="ja_JP"><Text>都市の中心が被害を受けたままの間、毎ターン加わる強度。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VPILLAGE" Language="ja_JP"><Text>戦争: 略奪タイルあたりの重み（0 = オフ）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VPILLAGE_D" Language="ja_JP"><Text>都市の領域内で略奪された改善1つあたり、ターンごとの強度。0 はスキャンを省略します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_WARSIEGE" Language="ja_JP"><Text>戦争: 包囲モデルを使用（上限付き + 漸増）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_WARSIEGE_D" Language="ja_JP"><Text>都市が包囲される期間が長いほど戦争による移住を増大させますが、戦争で失える総量に上限を設け、占領なしには完全に無人化されないようにします（残りは塹壕を掘ります）。オフ = 従来の平坦な暴力ペナルティ。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SRAMP" Language="ja_JP"><Text>戦争（包囲）: 最大強度までのターン</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SRAMP_D" Language="ja_JP"><Text>包囲が最大の移住圧力に達するまでに続くべきターン数（襲撃は緩やかに始まり高まります）。包囲モデルのみで使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SCAP" Language="ja_JP"><Text>戦争（包囲）: 戦争で失う最大割合</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SCAP_D" Language="ja_JP"><Text>戦争による移住が止まる前に奪える、都市人口の最大割合（包囲開始時の規模に対する割合）。包囲モデルのみで使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_WARSURGE" Language="ja_JP"><Text>戦争: ターンごとの難民流出（1 = オフ）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_WARSURGE_D" Language="ja_JP"><Text>激しい包囲を受けた都市が1ターンで失う農村人口の最大値。戦争難民は、1ターンに1人ずつの一定の流出ではなく、戦闘の激しさに応じて波状に流出するようになります（包囲による損失上限は引き続き適用）。1 = オフ（以前の少しずつの流出）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AGGRESSOR" Language="ja_JP"><Text>戦争: 侵略者を避ける（0 = オフ）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AGGRESSOR_D" Language="ja_JP"><Text>戦争難民が攻撃してきた文明をどれだけ強く避けるか、まず自国の都市、次に任意の第三者、侵略者は最後。0 = オフ（難民は誰が戦争を始めたかを無視）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OWNCIV" Language="ja_JP"><Text>戦争: 自国を優先</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OWNCIV_D" Language="ja_JP"><Text>戦争難民が他へ移る前に、どれだけ強く自国内での再定住を好むか。「侵略者を避ける」が有効なときのみ使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIST" Language="ja_JP"><Text>地理: 距離ペナルティ</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIST_D" Language="ja_JP"><Text>起点と目的地の間のヘクスあたりの引力ペナルティ。高いほど局所的な移住に。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FLEE" Language="ja_JP"><Text>地理: 侵略者からの逃避の強さ</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FLEE_D" Language="ja_JP"><Text>難民が最寄りの侵略者から離れた目的地をどれだけ強く好むか。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_POACH" Language="ja_JP"><Text>地理: 文明間の摩擦</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_POACH_D" Language="ja_JP"><Text>文明の国境を越えて移住することへの追加的な抵抗。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENDEAL" Language="ja_JP"><Text>地理: 開かれた国境による移住促進</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="ja_JP"><Text>2つの文明間の開かれた国境協定が、双方向の移住をどれだけ容易にするか。0 = オフ。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="ja_JP"><Text>地理: 移動の遅延（0 = 即時）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_TRANSITLAG_D" Language="ja_JP"><Text>移民が到着するまでに移動に費やせる最大の時間。出発したターンに出発地を離れ、実際の遅延は目的地までの距離に応じて変化します（遠いほど長い）。この上限まで適用されます。戦争難民は常に少なくとも1ターンかかります。移動中に目的地が破壊された場合、彼らは道中で命を落とします。0 = 即時到着。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASLOAD" Language="ja_JP"><Text>同化: 移民あたりの負荷</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASLOAD_D" Language="ja_JP"><Text>受け入れ文明が移民を吸収するたびに加わる同化「負荷」。文明は現在の負荷に比例して毎ターンのコストを支払い、その負荷は同化期間にわたって減衰します。0 = オフ。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASPOP" Language="ja_JP"><Text>同化: 過密スケーリング</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASPOP_D" Language="ja_JP"><Text>加わる負荷を（1 + これ × 目的地の人口）で乗じ、大きな集落への吸収ほど多くを加えます、暴走する人口磁石へのブレーキ。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASDECAY" Language="ja_JP"><Text>同化: ターンあたりの減衰（期間）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASDECAY_D" Language="ja_JP"><Text>同化負荷が毎ターンどれだけ速く薄れるか、これがコストの期間を決めます。低い = 短い（移民が早く統合）、高い = コストが長く残ります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASHAP" Language="ja_JP"><Text>同化: 負荷あたり毎ターンの幸福度</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASHAP_D" Language="ja_JP"><Text>同化負荷1単位あたり、毎ターン差し引かれる幸福度。0 = オフ。（推定上のレバー、ご使用のビルドで効果がない場合は金コストを使用してください。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASGOLD" Language="ja_JP"><Text>同化: 負荷あたり毎ターンの金</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASGOLD_D" Language="ja_JP"><Text>同化負荷1単位あたり、毎ターン差し引かれる金。0 = オフ。（文明間を含め、プローブで確認済みの控除レバー。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MHHAP" Language="ja_JP"><Text>コスト: 保持する移民ユニットあたりの幸福度</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MHHAP_D" Language="ja_JP"><Text>文明が（定住させずに）保持している UNIT_MIGRANT ごとに毎ターン差し引かれる幸福度。数に応じて増加、余剰移民は備蓄せず定住させるべきだからです。0 = オフ。（推定上のレバー、金コストの注記を参照。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MHGOLD" Language="ja_JP"><Text>コスト: 保持する移民ユニットあたりの金</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MHGOLD_D" Language="ja_JP"><Text>文明が保持している UNIT_MIGRANT ごとに毎ターン差し引かれる金。数に応じて増加。0 = オフ。（プローブで確認済みの控除レバー。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CONGEST" Language="ja_JP"><Text>コスト: 混雑による逆風（0 = オフ）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="ja_JP"><Text>多くの移民を吸収している文明を、さらなる移住先として魅力の低いものにします（新参者の統合で手一杯のため）。消化している量に応じて増加。暴走する磁石への構造的ブレーキ。0 = オフ。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DISASTERS" Language="ja_JP"><Text>災害: 移住を駆動</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="ja_JP"><Text>環境災害（洪水、火山、疫病…）が、戦争や不満と並んで、被災都市から住民を気候/災害難民として押し出すようにします。オフ = 災害は移住に影響しません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DPP" Language="ja_JP"><Text>災害: 苦境ポイントあたりの移住（%）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DPP_D" Language="ja_JP"><Text>都市に蓄積した災害の苦境が、住民の退去をどれだけ強く促すか。災害が移住を駆動するときのみ使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DDECAY" Language="ja_JP"><Text>災害: ターンあたりの苦境減衰</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DDECAY_D" Language="ja_JP"><Text>災害が過ぎ去った後、その苦境がどれだけ速く薄れるか（低いほど速い）。災害が移住を駆動するときのみ使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_PLAGUECARRY" Language="ja_JP"><Text>災害: 移民が疫病を運ぶ</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_PLAGUECARRY_D" Language="ja_JP"><Text>感染都市から逃げる難民が、目的地で小さな発生の苦境を蒔くようにします、ゲームの交易ネットワーク拡散を超えた、伝染ベクトルとしての移住。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYMODE" Language="ja_JP"><Text>通知: 詳細度</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYMODE_D" Language="ja_JP"><Text>移住通知の多さ：0 = オフ、1 = 重要のみ（難民危機と深刻な災害、既定）、2 = 詳細（顕著な移住があるたびに毎ターン要約）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER" Language="ja_JP"><Text>通知: 災害の最小深刻度</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER_D" Language="ja_JP"><Text>この深刻度以上の災害のみ通知します（0 = 小規模な事象も、3 = 大噴火のような伝説級のみ）。小規模な災害も移住には静かに影響します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYCD" Language="ja_JP"><Text>通知: 最小間隔（ターン）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYCD_D" Language="ja_JP"><Text>重要な通知の間の最小ターン数。集中しないようにします。0 = 制限なし。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLD" Language="ja_JP"><Text>通知: 難民危機のしきい値</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLD_D" Language="ja_JP"><Text>難民危機の見出しが出るまでに文明が（累計で）どれだけの人を避難させる必要があるか、超えた倍数ごとに1回。長い戦争では毎ターンではなく数件の見出しになります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="ja_JP"><Text>都市ごとの移住レポート</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="ja_JP"><Text>選択した集落が人口を増減させている理由を、必要に応じて表示するパネルです。主な原因、人々が引き寄せられる先、同化コスト、そして対処法を示します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRITION" Language="ja_JP"><Text>排出口: 逃げ場がない場合の消耗</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRITION_D" Language="ja_JP"><Text>移住が閉じた系になるのを防ぎます。逃れる先のない、追い詰められて深刻に苦しむ都市（包囲・飢饉・激しい暴力・災害）は人口を失います、人々は永遠に留まるのではなく、死ぬか散り散りになります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRDISTRESS" Language="ja_JP"><Text>排出口: 消耗に必要な苦境（%）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRDISTRESS_D" Language="ja_JP"><Text>追い詰められた人口が死に始める前に、都市の状況（包囲/飢饉/暴力/災害、ペナルティの割合）がどれほど悲惨である必要があるか。高いほど最も絶望的な都市のみ。排出口が有効なときのみ使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRTHRESH" Language="ja_JP"><Text>排出口: 消耗率のしきい値</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRTHRESH_D" Language="ja_JP"><Text>追い詰められ苦しむ都市が人口1ポイントを失う前に蓄積すべき圧力。低いほど早く減少。排出口が有効なときのみ使用。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION" Language="ja_JP"><Text>純移住</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION_SUBTITLE" Language="ja_JP"><Text>（毎ターンの移入から移出を引いた数）</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT" Language="ja_JP"><Text>移出</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_SUBTITLE" Language="ja_JP"><Text>（この文明を去る人々）</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN" Language="ja_JP"><Text>移入</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_SUBTITLE" Language="ja_JP"><Text>（この文明へ来る人々）</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES" Language="ja_JP"><Text>難民</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_SUBTITLE" Language="ja_JP"><Text>（戦争・災害・征服で家を追われた人々）</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_TOOLTIP" Language="ja_JP"><Text>戦争・災害・征服によって避難させられた住民。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_WAR_GRAPHS_T_REFUGEES" Language="ja_JP"><Text>発生した難民</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_DISASTER" Language="ja_JP"><Text>{1_EventName}により{2_People}が避難。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_WAR" Language="ja_JP"><Text>{2_People}が{1_WarName}から逃れる。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_CONQUEST" Language="ja_JP"><Text>{1_City}の略奪により{2_People}が四散。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="ja_JP"><Text>{2_People}が{1_City}を去る。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="ja_JP"><Text>難民危機：{1_Civ}、{2_People}が避難。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="ja_JP"><Text>{1_People}が不満を抱き{2_City}を去りました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="ja_JP"><Text>{1_People}がより豊かな隣国を求めて{2_City}を去りました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="ja_JP"><Text>{1_People}が{2_City}周辺の戦闘から逃れました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ja_JP"><Text>{1_People}が災害の後、{2_City}から逃れました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ja_JP"><Text>{1_People}が逃げ場を失い、{2_City}で失われました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="ja_JP"><Text>都市の幸福度を高めるか、移民排斥の方針を取って引き留めましょう。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="ja_JP"><Text>隣国がこの都市を上回っています。産出を高めて住民を引き留めましょう。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_WAR" Language="ja_JP"><Text>難民は戦闘から逃れています。包囲を解くか和平を結び、流出を食い止めましょう。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_DISASTER" Language="ja_JP"><Text>災害による移動です。被害が収まれば自然に和らぎます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_ATTRITION" Language="ja_JP"><Text>逃げ場のない状態です。脱出路を開くか、被害を和らげましょう。</Text></Replace>
+        <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="ja_JP"><Text>この圧力は一時的なものです。</Text></Replace>
+        <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="ja_JP"><Text>原因に対処するまで続きます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ja_JP"><Text>その人々は永遠に失われました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_COST_NOTE" Language="ja_JP"><Text>{1_Dest}は彼らを同化させるために毎ターン約{2_Gold}のゴールドを支払います。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="ja_JP"><Text>移民歓迎の方針</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ja_JP"><Text>世界中から移民を歓迎します。あなたの都市への移民が50%増加し、国際的な評判により毎ターン影響力を得ます。時代に応じて+1、+2、そして+3です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="ja_JP"><Text>移民排斥の方針</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ja_JP"><Text>世界に対して国境を閉ざします。外国からの新参者は40%に減少し（約60%減）、自国民が競合文明へ去ることも大幅に減ります。動員された国内経済が各都市に生産力を加えます。時代に応じて+2、+3、そして+4です。孤立には代償が伴い、毎ターン影響力を失います。時代に応じて-2、-3、そして-4です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="ja_JP"><Text>才能の誘致</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ja_JP"><Text>新参者があなたの研究を強化します。科学+1（現代では+2）を得て、さらに引き寄せた移民1人につき約+1.5ずつ増える科学ボーナスを、毎ターン最大+12まで得ます。このボーナスは移民の流入が止まると薄れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="ja_JP"><Text>文化的魅力</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ja_JP"><Text>新参者があなたの文化を豊かにします。文化+1（現代では+2）を得て、さらに引き寄せた移民1人につき約+1.5ずつ増える文化ボーナスを、毎ターン最大+12まで得ます。このボーナスは移民の流入が止まると薄れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="ja_JP"><Text>商業的な魅力</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ja_JP"><Text>新参者があなたの市場を潤します。ゴールド+1（現代では+2）を得て、さらに引き寄せた移民1人につき約+1.5ずつ増えるゴールドボーナスを、毎ターン最大+12まで得ます。このボーナスは移民の流入が止まると薄れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="ja_JP"><Text>選択的庇護</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ja_JP"><Text>戦争や災害から逃れる者へ門戸を開きます。難民が強くあなたのもとへ引き寄せられ（最も切迫した者から順に）、人道的な評判により毎ターン影響力+1を得ます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="ja_JP"><Text>難民協定</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="ja_JP"><Text>避難民への恒久的な献身です。難民が強くあなたのもとへ流れ込み（最も切迫した者から順に）、あなたの文化を豊かにし、毎ターン影響力+2と文化+1を得ます。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="ja_JP"><Text>移民は、生きた人口の移動を世界にもたらします。毎ターン、市民は不幸な、困窮した、あるいは戦火に見舞われた集落を離れ、より幸福で繁栄した集落へ移り住みます。自分の文明の内部だけでなく、国境を越えて他文明へも移動します。[n][n]人々がどこへ向かうかは、各都市の幸福度・産出・状況を比較する「繁栄度」モデルが決定し、移動が地域内にとどまるよう距離によって調整されます。移民を受け入れるのは無償ではありません。文明は、新来者が定着するまで同化コストを支払います。[n][n]システムのより踏み込んだ挙動の多く――侵略者を避ける難民、国境政策、災害、人口の排出口――は任意であり、オプション、Mod、移民から有効化できます。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_TITLE" Language="ja_JP"><Text>繁栄と移動</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_BODY" Language="ja_JP"><Text>各集落は、一人あたりの産出と、とりわけ純幸福度から「繁栄度」が評価されます。不幸な都市は平時でさえ、より幸福で豊かな都市へ絶えず人を失い、一方で規模そのものへのわずかなペナルティが、栄える都市が底なしの磁石になるのを防ぎます。[n][n]人々は近い行き先を好むため、移動はマップを飛び越えるのではなく地域内で外へ広がっていきます。戦争・包囲・飢餓・騒乱・災害はいずれも都市の繁栄度を大きく下げ、その都市を難民の発生源に変えます。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_TITLE" Language="ja_JP"><Text>戦争と難民</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_BODY" Language="ja_JP"><Text>都市が戦争難民を生み出すのは、国境の内側で実際に暴力が起きているとき――地区が損傷を受ける、あるいは領内が略奪される――に限られ、単に帝国が戦争状態にあるからではありません。包囲が長引くほど多くの人々が追い出されますが、戦争だけで都市が完全に空になることはありません。実際の占領がない限り、必ず一部が踏みとどまります。[n][n]難民は最も近い侵略者から離れる方向へ逃れます。侵略者回避が有効な場合、まず自国の文明、次に中立勢力を優先し、自分を攻撃した文明を最後の手段として扱います。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_TITLE" Language="ja_JP"><Text>同化と成長の代償</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_BODY" Language="ja_JP"><Text>移民を受け入れるのは無償ではありません。新来者一人ごとに受け入れ文明へ同化負荷が加わり、その負荷が統合期間にわたって薄れるまで、文明はターンごとのコストを――ゴールドと幸福度で――支払います。人を引き寄せ続ける文明は、払い続けることになります。[n][n]さらに混雑効果により、移民の消化で手一杯の文明は、さらなる移民にとって魅力の薄い行き先となり得ます。これは、いかなる富をもってしても単純には買い抜けられないブレーキです。これらが合わさり、単一の文明が世界の人々を引き寄せる止められない磁石になるのを防ぎます。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_BORDERS_TITLE" Language="ja_JP"><Text>国境と影響力</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_BORDERS_BODY" Language="ja_JP"><Text>二つのてこが、あなたの国境を越える移動を形づくります。あなた自身の立場は、どの時代でも使える政策カードです。親移民立場を選べば世界を歓迎し、より多くの移民が訪れ、国際的な評判が毎ターンわずかな影響力をもたらします。あるいは反移民立場を選べば自らを閉ざし、訪れる外国人は減り、自国民が競合国へ去ることも減り、動員された国内経済が各都市に生産力を加えます。ただし世界はあなたの孤立を、絶え間ない影響力の減少で評価します。あなたの戦略に合うものを選びましょう。[n][n]外交も重要です。あなたと別の文明が開放国境協定を結ぶと、移民は両国の間をより自由に、双方向に行き来します。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_TITLE" Language="ja_JP"><Text>誘致と亡命</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="ja_JP"><Text>立場の政策が国境を開くかどうかを決めるのに対し、第二の政策群は、そこを通り抜ける人々をどう活かすかを決めます。人材誘致・文化誘致・通商誘致の政策は、移民を原動力へと変えます。あなたが引き寄せる新参者一人ひとりが、科学・文化・ゴールドの増えゆく配当をもたらし、人が来続ける限り積み重なり、流入が止まれば薄れていきます、これは同化の代償の明るい裏返しであり、磁石であり続ける文明を罰するのではなく報いるものです。[n][n]亡命の政策は別の呼びかけに応えます。戦争や災厄から逃れる者へ門戸を開けば、難民が、最も切迫した者から順に、あなたのもとへ引き寄せられ、世界はその振る舞いを影響力で記憶し、後の協定はさらにあなたの文化を豊かにします。両者は相まって、寛容な民が開放性をただ耐え忍ぶのではなく、そこから利を得ることを可能にします。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_RAIDS_TITLE" Language="ja_JP"><Text>人材の引き抜き</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_RAIDS_BODY" Language="ja_JP"><Text>誘致は、移民が向こうから来るのを待つ必要はありません。外交画面から、競合国に対して人材掠奪・文化攻勢・通商攻勢を仕掛けることができます、相手の人々をあなたの都市へと傾ける、持続的な働きかけです。続く限り毎ターン影響力を支払い、その見返りとして、その競合国の移動はあなたへと傾き、最も優れた頭脳や文化人、商人を引き抜きます。到着した一人ひとりが、自発的な移民とまったく同じように、対応する科学・文化・ゴールドの配当をもたらします。[n][n]これは戦争ではなく冷たい競争の道具です。都市が攻撃されることも、国境が力ずくで越えられることもありません。それでも、より強い隣人の才能は、絶え間ない外交努力という代償と引き換えに、静かにあなたの利益へと吸い上げられるのです。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_TITLE" Language="ja_JP"><Text>災害と疫病</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_BODY" Language="ja_JP"><Text>洪水・火山・疫病などの環境災害は、戦争や不幸と並んで、被災した都市から人々を気候・災害難民として追い出します。事象が深刻なほど押し出す力は強く、軽微な事象は移動を静かに促す程度です。[n][n]疫病は二重に危険です。感染した都市は人口を失うだけでなく、移民が感染を運ぶ場合、その難民が定着した先で小規模な流行の種をまき、まさに逃避の道筋に沿って病をまき散らすことがあります。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OUTLET_TITLE" Language="ja_JP"><Text>逃れる場所がないとき</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OUTLET_BODY" Language="ja_JP"><Text>移動は閉じた系ではありません。都市が絶望的な状況――包囲、飢餓、あるいは災害による壊滅――にあり、安全に逃れられる場所がどこにも残っていないとき、閉じ込められた住民がただ永遠に待つことはありません。人々は死に、あるいは散り散りになり、都市は行き先のないまま人口を失います。[n][n]この排出口は最後の手段です。ただ行き先が見つからないだけの満ち足りた都市は手をつけられず、その損失は死者として数えられ、実際に新たな故郷へたどり着いた難民とは区別されます。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_TITLE" Language="ja_JP"><Text>指導者と文明</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="ja_JP"><Text>一部の指導者や文明は移住を異なるかたちで経験し、その歴史的性格がにじみ出ます。これらは世界共通のルールの上に乗る、小さく抑制された調整であり、誰かが雪だるま式に膨らむほどではありません、文明別の微調整が有効なあいだ（既定で有効）だけ適用されます。[n][n]その幸福度ゆえに本来どの都市も止められない磁石にしてしまう指導者は、引き寄せる力がやや弱まります。とりわけベンジャミン・フランクリン、そしてイサベル、アショーカ、リサールも抑えられます。富裕な征服者は戦利品を定着させる費用がかさみ、イサベルとクセルクセスは、勝ち取った人々を吸収するのにより多く支払います。[n][n]背の高い、専門家志向の勢力は過密から守られ、その密集した都市が二重に罰せられないようにします。パチャクテク、そしてとりわけアッバース朝です。人口が繁栄を上回って急成長する民は、市民を引き留めるための小さな緩衝を得ます、孔子、漢、そして清、一方でクメールは、自国の首都以外での不幸の最悪の部分を免れます。そして堅固な城壁の内に築かれた国、ノルマンとイングランド、は、城壁を持たぬ者よりはるかによく包囲のあいだ人口を保ちます。</Text></Replace>
+    </LocalizedText>
+</Database>

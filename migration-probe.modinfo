@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mod id="migration-probe" version="1" xmlns="ModInfo">
+    <Properties>
+        <Name>Migration Probe</Name>
+        <Description>Dev probe: settles whether a UI-VM mod can add/remove city population (rural/urban/worker), incl. on other civs' cities. Dock panel + console + UI.log output. Not for release.</Description>
+        <Authors>Tower</Authors>
+        <Package>MigrationProbe</Package>
+        <PackageSortIndex>1000</PackageSortIndex>
+        <Version>0.0.1</Version>
+    </Properties>
+    <Dependencies>
+        <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
+    </Dependencies>
+    <ActionCriteria>
+        <Criteria id="always">
+            <AlwaysMet></AlwaysMet>
+        </Criteria>
+    </ActionCriteria>
+    <ActionGroups>
+        <ActionGroup id="migration-probe-game" scope="game" criteria="always">
+            <Properties>
+                <LoadOrder>100</LoadOrder>
+            </Properties>
+            <Actions>
+                <UIScripts>
+                    <Item>ui/migration-probe.js</Item>
+                </UIScripts>
+            </Actions>
+        </ActionGroup>
+    </ActionGroups>
+</Mod>

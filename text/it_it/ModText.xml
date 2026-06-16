@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <LocalizedText>
+        <Replace Tag="LOC_MOD_EMIGRATION_NAME" Language="it_IT"><Text>Emigrazione</Text></Replace>
+        <Replace Tag="LOC_MOD_EMIGRATION_DESCRIPTION" Language="it_IT"><Text>I cittadini emigrano dalle città scontente e in difficoltà verso quelle più felici e prospere, all'interno delle civiltà e tra di esse, guidati da un modello di Prosperità (cibo, produzione, felicità, guerra, assedio, carestia). I dati sulla migrazione sono riportati come popolazioni storicamente rappresentative, in linea con la scala del mod Demographics.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS" Language="it_IT"><Text>Emigrazione • conteggio migrazioni</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_DESCRIPTION" Language="it_IT"><Text>Come l'emigrazione riporta il numero di persone che si spostano. «Entrambi» mostra il numero di popolazione di Civ e il conteggio di persone in scala storica (come il mod Demographics); gli altri ne mostrano solo uno.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_BOTH" Language="it_IT"><Text>Entrambi (numero Civ + storico)</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_CIV" Language="it_IT"><Text>Solo numero di popolazione Civ</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_HISTORICAL" Language="it_IT"><Text>Solo conteggio storico di persone</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_GROUP_EMIGRATION" Language="it_IT"><Text>Emigrazione</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_GROUP_EMIGRATION_ADVANCED" Language="it_IT"><Text>Emigrazione: Avanzate</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED" Language="it_IT"><Text>Impostazioni avanzate</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED_OPEN" Language="it_IT"><Text>Configura…</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED_DESCRIPTION" Language="it_IT"><Text>Apre l'intera serie di parametri di Emigrazione in una finestra separata. Sono punti di partenza, non valori bilanciati col playtest; la preimpostazione di intensità qui sopra imposta valori predefiniti sensati per la maggior parte di essi.</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_PACING" Language="it_IT"><Text>Ritmo</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_SCOPE" Language="it_IT"><Text>Ambito e politiche</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_PROSPERITY" Language="it_IT"><Text>Modello di prosperità</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_VIOLENCE" Language="it_IT"><Text>Guerra e violenza</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_GEOGRAPHY" Language="it_IT"><Text>Geografia e spostamento</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_COST" Language="it_IT"><Text>Assimilazione e costi dei migranti</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_OUTLET" Language="it_IT"><Text>Sfogo (logoramento)</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="it_IT"><Text>Disastri</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="it_IT"><Text>Notifiche</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET" Language="it_IT"><Text>Intensità dell'emigrazione</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_D" Language="it_IT"><Text>Intensità complessiva dell'emigrazione. Bassa = spostamenti rari; Alta = frequenti. «Personalizzato» mantiene i valori avanzati sottostanti. Applicare una preimpostazione aggiorna i valori avanzati: riapri le Opzioni per vederli.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_CUSTOM" Language="it_IT"><Text>Personalizzato (usa Avanzate)</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_LOW" Language="it_IT"><Text>Bassa</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_MEDIUM" Language="it_IT"><Text>Media</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_HIGH" Language="it_IT"><Text>Alta</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_BAR" Language="it_IT"><Text>Ritmo: soglia del tasso di emigrazione</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_BAR_D" Language="it_IT"><Text>Pressione che un insediamento deve accumulare prima che un punto di popolazione emigri. Più basso = emigrazione più frequente.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_COOLDOWN" Language="it_IT"><Text>Ritmo: recupero dopo l'emigrazione (turni)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_COOLDOWN_D" Language="it_IT"><Text>Turni in cui un insediamento riposa prima di poter perdere un altro punto di popolazione.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXMOVES" Language="it_IT"><Text>Ritmo: emigrazioni max per turno</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXMOVES_D" Language="it_IT"><Text>Limite di quanti punti di popolazione si spostano nel mondo a ogni passaggio.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTERVAL" Language="it_IT"><Text>Ritmo: turni tra i passaggi</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTERVAL_D" Language="it_IT"><Text>Esegui il passaggio di emigrazione una volta ogni N tuoi turni.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CROSSCIV" Language="it_IT"><Text>Ambito: consenti migrazione tra civiltà</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CROSSCIV_D" Language="it_IT"><Text>Se disattivato, le persone si spostano solo tra città della stessa civiltà.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CITYSTATES" Language="it_IT"><Text>Ambito: includi città-stato/minori</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CITYSTATES_D" Language="it_IT"><Text>Se gli insediamenti minori / città-stato partecipano alla migrazione.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_REQUIREMET" Language="it_IT"><Text>Ambito: solo civiltà conosciute</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_REQUIREMET_D" Language="it_IT"><Text>Considera solo le città straniere che la tua civiltà ha incontrato.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CIVTUNE" Language="it_IT"><Text>Ambito: regolazione per leader/civiltà</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CIVTUNE_D" Language="it_IT"><Text>Applica piccole regolazioni manuali per leader e civiltà (attenuazione del magnete, velocità di integrazione, ritenzione in guerra, bias di origine) così che i casi anomali si comportino diversamente. Disattivato = ogni civiltà usa lo stesso modello globale.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_BORDERS" Language="it_IT"><Text>Ambito: politiche di confine</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_BORDERS_D" Language="it_IT"><Text>Abilita l'effetto delle politiche Confini Aperti/Chiusi sull'immigrazione (le carte politica compaiono nel menu delle politiche e costano o concedono Influenza). Disattivato = le politiche non hanno effetto sulla migrazione.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDOPEN" Language="it_IT"><Text>Confini: apertura con Confini Chiusi</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDOPEN_D" Language="it_IT"><Text>Quanta immigrazione lascia passare una politica di Confini Chiusi (0,4 = circa il 60% respinto). Più basso = più chiuso. Usato solo con le politiche di confine attive.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN" Language="it_IT"><Text>Confini: Ritenzione dei confini chiusi</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN_D" Language="it_IT"><Text>Quanto una politica di confini chiusi trattiene la tua gente dall'andarsene verso civiltà rivali (0.6 = la loro attrazione verso altre civiltà ridotta al 60%; 1 = disattivato). Più basso = ritenzione più forte. Usato solo quando le politiche di confine sono attive.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENOPEN" Language="it_IT"><Text>Confini: spinta dei Confini Aperti</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENOPEN_D" Language="it_IT"><Text>Quanto una politica di Confini Aperti aumenta l'immigrazione (1,5 = +50%). Più alto = più aperto. Usato solo con le politiche di confine attive.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FOOD" Language="it_IT"><Text>Peso prosperità: cibo (pro capite)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FOOD_D" Language="it_IT"><Text>Quanto il cibo pro capite attira i migranti verso una città.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_PROD" Language="it_IT"><Text>Peso prosperità: produzione (pro capite)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_PROD_D" Language="it_IT"><Text>Quanto la produzione pro capite (approssimazione del «lavoro disponibile») attira i migranti.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAPPY" Language="it_IT"><Text>Peso prosperità: felicità</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAPPY_D" Language="it_IT"><Text>Con quanta forza la felicità netta di una città attira i migranti.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_POP" Language="it_IT"><Text>Peso prosperità: penalità di popolazione</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_POP_D" Language="it_IT"><Text>Quanto le dimensioni di una città giocano a suo sfavore (così le piccole città prospere attraggono ancora).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSHAPED" Language="it_IT"><Text>Felicità: usa il modello modellato</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSHAPED_D" Language="it_IT"><Text>Sostituisci il peso piatto della felicità con un modello sfumato: la felicità è misurata rispetto alla media mondiale, la sua attrazione si satura (una città molto felice non è un magnete inarrestabile) mentre la miseria respinge ancora con forza, e la felicità amplifica l'economia invece di oscurarla. Disattivato = il vecchio peso lineare.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSCALE" Language="it_IT"><Text>Felicità (modellata): scala di saturazione</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSCALE_D" Language="it_IT"><Text>Quanti punti sopra la media mondiale contano come «molto felice» prima che l'attrazione si saturi. Più alto = la felicità conta più a lungo. Usato solo dal modello modellato.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAMP" Language="it_IT"><Text>Felicità (modellata): amplificazione dell'economia</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAMP_D" Language="it_IT"><Text>Quanto l'economia di una città felice è amplificata (e quella di una misera ridotta) come richiamo migratorio. Usato solo dal modello modellato.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OCDISC" Language="it_IT"><Text>Sovraffollamento: sconto (0 = disattivato)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OCDISC_D" Language="it_IT"><Text>Restituisci parte dell'infelicità che una città subisce puramente per il sovraffollamento urbano, così che una città deliberatamente densa non sia punita due volte (la sua densità riduce già i suoi rendimenti). 0 = disattivato.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OCTHRESH" Language="it_IT"><Text>Sovraffollamento: soglia di densità urbana</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OCTHRESH_D" Language="it_IT"><Text>Popolazione urbana che una città può contenere prima che il sovraffollamento le pesi contro (rispecchia la soglia di sovraffollamento del gioco). Usato solo con lo sconto attivo.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VPP" Language="it_IT"><Text>Guerra: emigrazione per punto di violenza (%)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VPP_D" Language="it_IT"><Text>Penalità al punteggio per punto di intensità di combattimento accumulata nel territorio di una città.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VCAP" Language="it_IT"><Text>Guerra: penalità max da violenza (%)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VCAP_D" Language="it_IT"><Text>Tetto alla penalità da violenza, così che una disfatta si saturi invece di sfuggire al controllo.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VDECAY" Language="it_IT"><Text>Guerra: decadimento della violenza per turno</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VDECAY_D" Language="it_IT"><Text>Quanto rapidamente la violenza accumulata svanisce senza nuovi combattimenti (più basso = più rapido).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VFLEE" Language="it_IT"><Text>Guerra: violenza per fuggire da un invasore</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VFLEE_D" Language="it_IT"><Text>Violenza minima prima che i profughi fuggano allontanandosi dal nemico più vicino.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VASSAULT" Language="it_IT"><Text>Guerra: peso dei danni recenti alla città</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VASSAULT_D" Language="it_IT"><Text>Intensità aggiunta quando una città subisce nuovi danni di distretto in un turno (un picco d'assalto).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VSIEGE" Language="it_IT"><Text>Guerra: peso dell'assedio in corso</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VSIEGE_D" Language="it_IT"><Text>Intensità aggiunta ogni turno finché il centro città resta danneggiato.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VPILLAGE" Language="it_IT"><Text>Guerra: peso per casella saccheggiata (0 = disattivato)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VPILLAGE_D" Language="it_IT"><Text>Intensità per miglioria saccheggiata nel territorio di una città, per turno. 0 salta la scansione.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_WARSIEGE" Language="it_IT"><Text>Guerra: usa il modello d'assedio (con tetto + crescente)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_WARSIEGE_D" Language="it_IT"><Text>Fai crescere l'emigrazione dovuta alla guerra quanto più a lungo una città è assediata, ma limita il totale che una città può perdere in guerra così che non possa essere del tutto spopolata senza una cattura (il resto si trincera). Disattivato = la vecchia penalità piatta da violenza.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SRAMP" Language="it_IT"><Text>Guerra (assedio): turni alla piena intensità</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SRAMP_D" Language="it_IT"><Text>Quanti turni un assedio deve durare per raggiungere la piena pressione migratoria (un'incursione inizia lieve e cresce). Usato solo dal modello d'assedio.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SCAP" Language="it_IT"><Text>Guerra (assedio): quota max persa in guerra</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SCAP_D" Language="it_IT"><Text>Il massimo della popolazione di una città (come frazione delle sue dimensioni all'inizio dell'assedio) che l'emigrazione di guerra può portare via prima di fermarsi. Usato solo dal modello d'assedio.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_WARSURGE" Language="it_IT"><Text>Guerra: ondata di profughi per turno (1 = disattivato)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_WARSURGE_D" Language="it_IT"><Text>La massima popolazione rurale che una città pesantemente assediata può perdere in un singolo turno. I profughi di guerra fuggono allora a ondate proporzionali all'intensità dei combattimenti, invece di un flusso costante di uno per turno, sempre limitato dal tetto di perdite dell'assedio. 1 = disattivato (il vecchio flusso).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AGGRESSOR" Language="it_IT"><Text>Guerra: evita l'aggressore (0 = disattivato)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AGGRESSOR_D" Language="it_IT"><Text>Con quanta forza i profughi di guerra evitano la civiltà che li ha attaccati, prima le proprie città, poi qualsiasi terza parte, e l'aggressore per ultimo. 0 = disattivato (i profughi ignorano chi ha iniziato la guerra).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OWNCIV" Language="it_IT"><Text>Guerra: preferisci la propria civiltà</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OWNCIV_D" Language="it_IT"><Text>Con quanta forza i profughi di guerra preferiscono reinsediarsi nella propria civiltà prima di passare a un'altra. Usato solo con «evita l'aggressore» attivo.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIST" Language="it_IT"><Text>Geografia: penalità di distanza</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIST_D" Language="it_IT"><Text>Penalità di attrazione per esagono tra origine e destinazione. Più alto = migrazione più locale.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FLEE" Language="it_IT"><Text>Geografia: forza di fuga dall'invasore</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FLEE_D" Language="it_IT"><Text>Con quanta forza i profughi preferiscono destinazioni lontane dall'invasore più vicino.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_POACH" Language="it_IT"><Text>Geografia: attrito tra civiltà</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_POACH_D" Language="it_IT"><Text>Riluttanza aggiuntiva a migrare oltre un confine di civiltà.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENDEAL" Language="it_IT"><Text>Geografia: Spinta migratoria da frontiere aperte</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="it_IT"><Text>Quanto un accordo di frontiere aperte tra due civiltà facilita la migrazione tra loro, in entrambe le direzioni. 0 = disattivato.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="it_IT"><Text>Geografia: ritardo di viaggio (0 = istantaneo)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_TRANSITLAG_D" Language="it_IT"><Text>Il tempo massimo che un migrante può passare in viaggio prima di arrivare. Lascia l'origine nel turno della partenza; il ritardo effettivo dipende dalla distanza dalla destinazione (più lontano = più lungo), fino a questo limite. I profughi di guerra impiegano sempre almeno un turno. Se la loro destinazione viene distrutta mentre sono in viaggio, periscono lungo il tragitto. 0 = arrivo istantaneo.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASLOAD" Language="it_IT"><Text>Assimilazione: carico per migrante</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASLOAD_D" Language="it_IT"><Text>«Carico» di assimilazione aggiunto alla civiltà ricevente per ogni migrante assorbito. La civiltà paga un costo per turno proporzionale al carico attuale, che decade nell'arco della durata dell'assimilazione. 0 = disattivato.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASPOP" Language="it_IT"><Text>Assimilazione: scaling da sovraffollamento</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASPOP_D" Language="it_IT"><Text>Moltiplica il carico aggiunto per (1 + questo × popolazione di destinazione), così che assorbire in un grande insediamento aggiunga di più, il freno ai magneti di popolazione fuori controllo.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASDECAY" Language="it_IT"><Text>Assimilazione: decadimento per turno (durata)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASDECAY_D" Language="it_IT"><Text>Quanto rapidamente il carico di assimilazione svanisce ogni turno, questo fissa la durata del costo. Più basso = più breve (i migranti si integrano prima); più alto = il costo persiste più a lungo.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASHAP" Language="it_IT"><Text>Assimilazione: felicità per turno per carico</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASHAP_D" Language="it_IT"><Text>Felicità sottratta ogni turno per unità di carico di assimilazione. 0 = disattivato. (Leva ipotizzata, se nella tua versione non ha effetto, usa il costo in oro.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASGOLD" Language="it_IT"><Text>Assimilazione: oro per turno per carico</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASGOLD_D" Language="it_IT"><Text>Oro sottratto ogni turno per unità di carico di assimilazione. 0 = disattivato. (Leva di detrazione confermata dalla sonda, anche tra civiltà.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MHHAP" Language="it_IT"><Text>Costo: felicità per unità migrante trattenuta</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MHHAP_D" Language="it_IT"><Text>Felicità sottratta ogni turno per ogni UNIT_MIGRANT che una civiltà trattiene (non insediata), in scala col numero, così che i migranti in eccesso vengano insediati, non accumulati. 0 = disattivato. (Leva ipotizzata, vedi la nota sul costo in oro.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MHGOLD" Language="it_IT"><Text>Costo: oro per unità migrante trattenuta</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MHGOLD_D" Language="it_IT"><Text>Oro sottratto ogni turno per ogni UNIT_MIGRANT che una civiltà trattiene, in scala col numero. 0 = disattivato. (Leva di detrazione confermata dalla sonda.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CONGEST" Language="it_IT"><Text>Costo: vento contrario da congestione (0 = disattivato)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="it_IT"><Text>Rendi una civiltà che assorbe molti migranti una destinazione meno attraente per ulteriore migrazione (è impegnata a integrare i nuovi arrivati), in scala con quanto sta digerendo. Un freno strutturale ai magneti fuori controllo. 0 = disattivato.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DISASTERS" Language="it_IT"><Text>Disastri: alimenta la migrazione</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="it_IT"><Text>Lascia che i disastri ambientali (alluvioni, vulcani, pestilenze…) spingano la popolazione fuori dalle città colpite come profughi climatici/da disastro, accanto a guerra e infelicità. Disattivato = i disastri non influenzano la migrazione.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DPP" Language="it_IT"><Text>Disastri: emigrazione per punto di sofferenza (%)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DPP_D" Language="it_IT"><Text>Con quanta forza la sofferenza da disastro accumulata in una città spinge la sua gente ad andarsene. Usato solo quando i disastri alimentano la migrazione.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DDECAY" Language="it_IT"><Text>Disastri: decadimento sofferenza per turno</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DDECAY_D" Language="it_IT"><Text>Quanto rapidamente la sofferenza di un disastro svanisce una volta passato (più basso = più rapido). Usato solo quando i disastri alimentano la migrazione.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_PLAGUECARRY" Language="it_IT"><Text>Disastri: i migranti portano la peste</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_PLAGUECARRY_D" Language="it_IT"><Text>Lascia che i profughi in fuga da una città infetta seminino una minore sofferenza da epidemia a destinazione, la migrazione come vettore di contagio, oltre la diffusione tramite rete commerciale del gioco.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYMODE" Language="it_IT"><Text>Notifiche: verbosità</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYMODE_D" Language="it_IT"><Text>Quanto sono loquaci le notifiche di migrazione: 0 = disattivate, 1 = solo importanti (crisi di profughi e disastri gravi, predefinito), 2 = dettagliato (un riepilogo a ogni turno con migrazione notevole).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER" Language="it_IT"><Text>Notifiche: gravità minima del disastro</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER_D" Language="it_IT"><Text>Notifica solo i disastri di questa gravità o superiore (0 = anche eventi minori, 3 = solo leggendari come una grande eruzione). I disastri minori influenzano comunque la migrazione in silenzio.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYCD" Language="it_IT"><Text>Notifiche: intervallo minimo (turni)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYCD_D" Language="it_IT"><Text>Il minor numero di turni tra notifiche importanti, così che non si accavallino. 0 = nessun limite.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLD" Language="it_IT"><Text>Notifiche: soglia di crisi di profughi</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLD_D" Language="it_IT"><Text>Quante persone (cumulative) una civiltà deve sfollare prima che scatti un titolo di crisi di profughi, una volta per ogni multiplo superato, così che una lunga guerra produca pochi titoli e non uno per turno.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="it_IT"><Text>Resoconto migrazioni per città</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="it_IT"><Text>Mostra a richiesta un pannello che spiega perché un insediamento selezionato guadagna o perde popolazione: la causa principale, dove viene attratta la sua gente, il costo di assimilazione e cosa puoi farci.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRITION" Language="it_IT"><Text>Sfogo: attrito quando non c'è rifugio</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRITION_D" Language="it_IT"><Text>Evita che la migrazione sia un sistema chiuso: una città intrappolata e gravemente in difficoltà (assedio, carestia, violenza intensa o disastro) senza una destinazione valida perde popolazione, la gente muore o si disperde invece di restare per sempre.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRDISTRESS" Language="it_IT"><Text>Sfogo: sofferenza necessaria per l'attrito (%)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRDISTRESS_D" Language="it_IT"><Text>Quanto deve essere disperata la situazione di una città (assedio/carestia/violenza/disastro, come penalità percentuale) prima che la popolazione intrappolata inizi a morire. Più alto = solo le città più disperate. Usato solo con lo sfogo attivo.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRTHRESH" Language="it_IT"><Text>Sfogo: soglia del tasso di attrito</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRTHRESH_D" Language="it_IT"><Text>Pressione che una città intrappolata e in difficoltà deve accumulare prima di perdere un punto di popolazione. Più basso = morìa più rapida. Usato solo con lo sfogo attivo.</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION" Language="it_IT"><Text>Migrazione netta</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION_SUBTITLE" Language="it_IT"><Text>(immigrazione meno emigrazione per turno)</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT" Language="it_IT"><Text>Emigrazione</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_SUBTITLE" Language="it_IT"><Text>(persone che lasciano questa civiltà)</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN" Language="it_IT"><Text>Immigrazione</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_SUBTITLE" Language="it_IT"><Text>(persone che arrivano in questa civiltà)</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES" Language="it_IT"><Text>Profughi</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_SUBTITLE" Language="it_IT"><Text>(persone sfollate da guerra, catastrofe o conquista)</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_TOOLTIP" Language="it_IT"><Text>Popolazione sfollata da guerra, disastri e conquista.</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_WAR_GRAPHS_T_REFUGEES" Language="it_IT"><Text>Profughi generati</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_DISASTER" Language="it_IT"><Text>{1_EventName} sfolla {2_People}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_WAR" Language="it_IT"><Text>{2_People} fuggono dalla {1_WarName}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_CONQUEST" Language="it_IT"><Text>Il sacco di {1_City} disperde {2_People}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="it_IT"><Text>{2_People} lasciano {1_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="it_IT"><Text>Crisi di profughi: {1_Civ}, {2_People} sfollate.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="it_IT"><Text>{1_People} hanno lasciato {2_City}, scontenti in patria.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="it_IT"><Text>{1_People} hanno lasciato {2_City} per vicini più prosperi.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="it_IT"><Text>{1_People} sono fuggiti dai combattimenti intorno a {2_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="it_IT"><Text>{1_People} sono fuggiti da {2_City} dopo un disastro.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="it_IT"><Text>{1_People} sono andati perduti a {2_City}, senza via di fuga.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="it_IT"><Text>Aumenta la felicità della città o adotta una linea anti-immigrazione per trattenerli.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="it_IT"><Text>Un vicino supera questa città; aumenta i suoi rendimenti per trattenere la gente.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_WAR" Language="it_IT"><Text>I rifugiati fuggono dai combattimenti; togli l'assedio o fai la pace per arginare l'esodo.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_DISASTER" Language="it_IT"><Text>Sfollamento da disastro: si attenua da solo man mano che il disagio diminuisce.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_ATTRITION" Language="it_IT"><Text>Intrappolati senza scampo: apri una via d'uscita o allevia il disagio.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="it_IT"><Text>La pressione è temporanea.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="it_IT"><Text>Continua finché non ne affronti la causa.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="it_IT"><Text>Quelle persone sono perse per sempre.</Text></Replace>
+        <Replace Tag="LOC_EMIG_COST_NOTE" Language="it_IT"><Text>{1_Dest} paga circa {2_Gold} oro/turno per integrarli.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="it_IT"><Text>Posizione pro-immigrazione</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="it_IT"><Text>Accogli migranti da tutto il mondo. L'immigrazione verso le tue città aumenta del 50%, e la tua reputazione cosmopolita produce Influenza a turno: +1, +2 e poi +3 nel corso delle ere.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="it_IT"><Text>Posizione anti-immigrazione</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="it_IT"><Text>Chiudi i tuoi confini al mondo. I nuovi arrivati stranieri scendono al 40% (circa il 60% in meno), e molti meno dei tuoi cittadini se ne vanno verso civiltà rivali. Un'economia interna mobilitata aggiunge Produzione in ogni città: +2, +3 e poi +4 nel corso delle ere. L'isolamento ha il suo prezzo in Influenza a turno: -2, -3 e poi -4 nel corso delle ere.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="it_IT"><Text>Attrazione di talenti</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="it_IT"><Text>I nuovi arrivati rafforzano la tua ricerca. Ottieni +1 Scienza, che sale a +2 nell'Età Moderna, più un bonus di Scienza che cresce di circa +1.5 per ogni immigrato che attiri, fino a +12 a turno. Questo bonus svanisce se l'immigrazione si arresta.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="it_IT"><Text>Magnetismo culturale</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="it_IT"><Text>I nuovi arrivati arricchiscono la tua cultura. Ottieni +1 Cultura, che sale a +2 nell'Età Moderna, più un bonus di Cultura che cresce di circa +1.5 per ogni immigrato che attiri, fino a +12 a turno. Questo bonus svanisce se l'immigrazione si arresta.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="it_IT"><Text>Richiamo commerciale</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="it_IT"><Text>I nuovi arrivati gonfiano i tuoi mercati. Ottieni +1 Oro, che sale a +2 nell'Età Moderna, più un bonus di Oro che cresce di circa +1.5 per ogni immigrato che attiri, fino a +12 a turno. Questo bonus svanisce se l'immigrazione si arresta.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="it_IT"><Text>Asilo selettivo</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="it_IT"><Text>Apri le porte a chi fugge da guerra e catastrofe. I profughi sono fortemente attratti verso di te, i più disperati per primi, e il tuo prestigio umanitario produce +1 Influenza a turno.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="it_IT"><Text>Patto sui rifugiati</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="it_IT"><Text>Un impegno duraturo verso gli sfollati. I profughi affluiscono con forza verso di te, i più disperati per primi, arricchiscono la tua cultura e producono +2 Influenza e +1 Cultura a turno.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="it_IT"><Text>Emigrazione</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="it_IT"><Text>Emigrazione</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="it_IT"><Text>Emigrazione</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="it_IT"><Text>L'emigrazione introduce nel mondo un movimento vivo di popolazione. Ogni turno i cittadini lasciano insediamenti infelici, in difficoltà o devastati dalla guerra e si reinsediano in altri più felici e prosperi, all'interno della tua civiltà e oltre i confini, presso le altre.[n][n]Dove va la gente lo decide un modello di Prosperità che pesa felicità, rendimenti e situazione di ogni città, plasmato dalla distanza affinché la migrazione resti regionale. Accogliere migranti non è gratis: una civiltà paga un costo di assimilazione mentre i nuovi arrivati si integrano.[n][n]La maggior parte dei comportamenti più profondi del sistema, profughi che evitano un aggressore, politiche di confine, calamità e una valvola di sfogo demografica, è opzionale e si attiva in Opzioni, Mod, Emigrazione.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_TITLE" Language="it_IT"><Text>Prosperità e migrazione</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_BODY" Language="it_IT"><Text>Ogni insediamento riceve un punteggio di Prosperità dai suoi rendimenti pro capite e, soprattutto, dalla sua felicità netta. Una città infelice perde costantemente abitanti a favore di altre più felici e ricche anche in tempo di pace, mentre una piccola penalità per la pura dimensione impedisce alle città floride di diventare calamite senza fondo.[n][n]La gente preferisce le destinazioni vicine, così la migrazione si diffonde verso l'esterno nella regione invece di saltare attraverso la mappa. Guerra, assedio, carestia, disordini e calamità abbassano nettamente la Prosperità di una città, trasformandola in fonte di profughi.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_TITLE" Language="it_IT"><Text>Guerra e profughi</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_BODY" Language="it_IT"><Text>Una città genera profughi di guerra solo quando vi è violenza reale entro i suoi confini, i suoi distretti subiscono danni, o le sue terre vengono saccheggiate, non semplicemente perché il suo impero è in guerra. Più a lungo si protrae un assedio, più gente caccia via, ma una città non può mai essere svuotata del tutto dalla sola guerra: senza una conquista vera e propria, un nucleo resta sempre trincerato.[n][n]I profughi fuggono allontanandosi dall'invasore più vicino. Con l'elusione dell'aggressore attiva, preferiscono inoltre prima la propria civiltà, poi qualsiasi potenza neutrale, e trattano la civiltà che li ha attaccati come ultima risorsa.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_TITLE" Language="it_IT"><Text>Assimilazione e il costo della crescita</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_BODY" Language="it_IT"><Text>Assorbire migranti non è gratis. Ogni nuovo arrivato aggiunge un carico di assimilazione alla civiltà che lo accoglie, la quale paga un costo per turno, in oro e in felicità, finché quel carico non si dissolve nel periodo di integrazione. Chi continua ad attrarre gente continua a pagare.[n][n]Un effetto di congestione può inoltre rendere una civiltà impegnata a digerire migranti una destinazione meno attraente per altri ancora, un freno che nessuna ricchezza può semplicemente aggirare. Insieme impediscono a una singola civiltà di diventare una calamita inarrestabile per i popoli del mondo.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_BORDERS_TITLE" Language="it_IT"><Text>Confini e Influenza</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_BORDERS_BODY" Language="it_IT"><Text>Due leve modellano la migrazione attraverso i tuoi confini. La tua posizione è una carta politica, disponibile in ogni era. Scegli la Posizione pro-immigrazione per accogliere il mondo: arrivano più migranti, e la tua reputazione cosmopolita produce un po' di Influenza a turno. Oppure scegli la Posizione anti-immigrazione per isolarti: arrivano meno stranieri, meno della tua gente se ne va verso i rivali, e un'economia interna mobilitata aggiunge Produzione in ogni città, anche se il mondo giudica il tuo isolamento con un costante calo di Influenza. Scegli ciò che si adatta alla tua strategia.[n][n]Conta anche la diplomazia. Quando tu e un'altra civiltà firmate un accordo di confini aperti, i migranti fluiscono più liberamente tra le vostre due terre, in entrambe le direzioni.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_TITLE" Language="it_IT"><Text>Attrazione e asilo</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="it_IT"><Text>Dove le politiche di posizione decidono se i tuoi confini sono aperti, un secondo gruppo di carte decide cosa fai delle persone che li attraversano. Le politiche di Attrazione dei talenti, culturale e commerciale trasformano l'immigrazione in un motore: ogni nuovo arrivato che attiri accumula un dividendo crescente di Scienza, Cultura od Oro che si compone finché la gente continua ad arrivare e svanisce non appena il flusso si arresta, il riflesso luminoso del costo di assimilazione, che premia la civiltà che resta una calamita invece di punirla.[n][n]Le politiche di Asilo rispondono a un richiamo diverso. Aprire le porte a chi fugge da guerra e catastrofe attira profughi verso di te, i più disperati per primi, e il mondo ricorda il gesto in Influenza, mentre il patto successivo arricchisce inoltre la tua cultura. Insieme permettono a un popolo accogliente di trarre profitto dall'apertura anziché limitarsi a sopportarla.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_RAIDS_TITLE" Language="it_IT"><Text>Razzie di talenti</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_RAIDS_BODY" Language="it_IT"><Text>L'attrazione non deve attendere che la migrazione venga da te. Dalla schermata della diplomazia puoi puntare una Razzia di talenti, un'Offensiva culturale o un'Offensiva commerciale contro un rivale, una campagna prolungata per piegare la sua gente verso le tue città. Finché dura paghi Influenza ogni turno e, in cambio, la migrazione di quel rivale si inclina verso di te, sottraendogli le menti più brillanti, le figure culturali o i mercanti; ognuno che arriva accumula il corrispondente dividendo di Scienza, Cultura od Oro, esattamente come un immigrato volontario.[n][n]È uno strumento di fredda competizione, non di guerra: nessuna città viene attaccata e nessun confine viene varcato con la forza, eppure il talento di un vicino più forte può essere prosciugato in silenzio a tuo vantaggio al prezzo di uno sforzo diplomatico costante.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_TITLE" Language="it_IT"><Text>Calamità e pestilenza</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_BODY" Language="it_IT"><Text>Le calamità ambientali, inondazioni, vulcani, pestilenze e altro, scacciano la gente dalle città colpite come profughi climatici e di calamità, accanto a guerra e infelicità. Più grave è l'evento, più forte è la spinta; gli eventi minori danno solo un piccolo impulso silenzioso alla migrazione.[n][n]La pestilenza è doppiamente pericolosa: una città infetta perde popolazione e, se i migranti portano il contagio, può seminare un focolaio minore ovunque i suoi profughi si stabiliscano, diffondendo la malattia lungo le stesse strade della fuga.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OUTLET_TITLE" Language="it_IT"><Text>Quando non c'è rifugio</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OUTLET_BODY" Language="it_IT"><Text>La migrazione non è un sistema chiuso. Quando una città è disperata, assediata, affamata o devastata da una calamità, e non resta alcun luogo sicuro in cui fuggire, la sua popolazione intrappolata non attende per sempre. La gente muore o si disperde, e la città perde popolazione senza destinazione.[n][n]Questa valvola è un'estrema risorsa: una città soddisfatta a cui manca soltanto un posto migliore resta intatta, e la perdita è conteggiata come morti, distinta dai profughi che raggiungono davvero una nuova casa.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_TITLE" Language="it_IT"><Text>Leader e civiltà</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="it_IT"><Text>Una manciata di leader e civiltà vive la migrazione in modo diverso, così che il loro carattere storico traspare. Sono piccoli aggiustamenti limitati sopra le regole globali, mai abbastanza da far dilagare qualcuno, e si applicano solo finché la messa a punto per civiltà è attiva (lo è, per impostazione predefinita).[n][n]I leader la cui felicità renderebbe altrimenti ogni città una calamita inarrestabile attraggono un po' meno: Benjamin Franklin più di tutti, con Isabella, Ashoka e Rizal anch'essi frenati. I conquistatori ricchi trovano il bottino più costoso da insediare, Isabella e Serse pagano di più per assorbire la gente che conquistano.[n][n]Le potenze alte e orientate agli specialisti sono protette dal sovraffollamento perché le loro città dense non siano punite due volte: Pachacuti e, soprattutto, gli Abbasidi. I popoli in rapida crescita il cui numero supera la prosperità ricevono un piccolo cuscinetto per trattenere i cittadini, Confucio, gli Han e i Qing, mentre ai Khmer è risparmiato il peggio della loro stessa infelicità fuori capitale. E i regni eretti dietro mura solide, i Normanni e gli Inglesi, trattengono la popolazione durante un assedio assai meglio di chi non ha mura.</Text></Replace>
+    </LocalizedText>
+</Database>

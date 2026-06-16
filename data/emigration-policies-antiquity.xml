@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Antiquity-age border-policy cards (Feature 2). Loaded ONLY in the Antiquity gameplay
+  database (modinfo criteria AgeInUse=AGE_ANTIQUITY), because Civ VII rebuilds the
+  gameplay DB per age and NODE_CIVIC_AQ_MAIN_* only exists while Antiquity is the active
+  age. The Exploration/Modern versions live in their own age-scoped files; loading any of
+  them into the wrong age's DB fails foreign-key validation on ProgressionTreeNodeUnlocks.
+
+  Two slot-able Traditions (Open / Closed Borders) in POLICY_CULTURE_SLOT, available to
+  every civilization (no TraitType). Each carries a native per-turn Influence modifier
+  (TraditionModifiers -> MOD_EMIG_*_INFLUENCE, defined in emigration-policies-gameeffects.xml)
+  so the yield shows on the card and in the breakdown. The immigration % is applied on top by
+  the UI-VM code, which reads whether the card is slotted (Culture.isTraditionActive) - see
+  ui/emigration-borders.js.
+-->
+<Database>
+    <Kinds>
+        <InsertOrIgnore Kind="KIND_TRADITION"/>
+    </Kinds>
+
+    <Types>
+        <Row Type="TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY" Kind="KIND_TRADITION"/>
+        <Row Type="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" Kind="KIND_TRADITION"/>
+    </Types>
+
+    <Traditions>
+        <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY"
+             Name="LOC_EMIG_POLICY_OPEN_BORDERS_NAME"
+             Description="LOC_EMIG_POLICY_OPEN_BORDERS_DESC"
+             AgeType="AGE_ANTIQUITY" CultureSlotType="POLICY_CULTURE_SLOT"/>
+        <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY"
+             Name="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME"
+             Description="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC"
+             AgeType="AGE_ANTIQUITY" CultureSlotType="POLICY_CULTURE_SLOT"/>
+    </Traditions>
+
+    <!-- Native per-turn Influence modifiers (defined in emigration-policies-gameeffects.xml). -->
+    <TraditionModifiers>
+        <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_OPEN_BORDERS_INFLUENCE_AQ"/>
+        <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_CLOSED_BORDERS_INFLUENCE_AQ"/>
+        <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_CLOSED_BORDERS_PRODUCTION_AQ"/>
+    </TraditionModifiers>
+
+    <ProgressionTreeNodeUnlocks>
+        <Row ProgressionTreeNodeType="NODE_CIVIC_AQ_MAIN_CITIZENSHIP" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY" UnlockDepth="1"/>
+        <Row ProgressionTreeNodeType="NODE_CIVIC_AQ_MAIN_CITIZENSHIP" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" UnlockDepth="1"/>
+    </ProgressionTreeNodeUnlocks>
+</Database>
