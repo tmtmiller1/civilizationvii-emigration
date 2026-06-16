@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+reports/
+.stryker-tmp/
+*.bak
+.DS_Store
+
+# generated i18n index (regenerate with scripts/i18n_extract.mjs)
+i18n/i18n-source.json

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Native Influence (YIELD_DIPLOMACY) modifiers for the border-policy cards, so the bonus/
+  penalty is VISIBLE on the policy-selection card and applied as a real per-turn yield. The
+  prior UI-VM approach (DiplomacyTreasury.changeDiplomacyBalance) was a hidden balance tweak
+  that never showed in the yields breakdown. Pattern copied verbatim from the base game's
+  TRADITION_ORATORY influence modifier (EFFECT_PLAYER_ADJUST_YIELD / COLLECTION_OWNER).
+
+    PER-ERA values (Phase 1 of ../emigration-docs/immigration-interaction-plan.md): a border stance is a louder
+  diplomatic statement in later ages. Open +1/+2/+3, Closed -2/-3/-4 across Antiquity /
+  Exploration / Modern. Modifiers carry no age foreign key, so all six live in this always-loaded
+  file; the per-age emigration-policies-<age>.xml TraditionModifiers each link the matching id.
+  The immigration-% effect stays in ui/emigration-borders.js (a custom migration mechanic the
+  engine can't express).
+-->
+<GameEffects xmlns="GameEffects">
+    <!-- Open / Pro-Immigration: +1 / +2 / +3 Influence. -->
+    <Modifier id="MOD_EMIG_OPEN_BORDERS_INFLUENCE_AQ" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
+        <Argument name="Amount">1</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_OPEN_BORDERS_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_OPEN_BORDERS_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_OPEN_BORDERS_INFLUENCE_EX" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
+        <Argument name="Amount">2</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_OPEN_BORDERS_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_OPEN_BORDERS_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_OPEN_BORDERS_INFLUENCE_MO" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
+        <Argument name="Amount">3</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_OPEN_BORDERS_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_OPEN_BORDERS_DESC</String>
+    </Modifier>
+
+    <!-- Closed / Anti-Immigration: -2 / -3 / -4 Influence. -->
+    <Modifier id="MOD_EMIG_CLOSED_BORDERS_INFLUENCE_AQ" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
+        <Argument name="Amount">-2</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_CLOSED_BORDERS_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_CLOSED_BORDERS_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_CLOSED_BORDERS_INFLUENCE_EX" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
+        <Argument name="Amount">-3</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_CLOSED_BORDERS_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_CLOSED_BORDERS_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_CLOSED_BORDERS_INFLUENCE_MO" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
+        <Argument name="Amount">-4</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_CLOSED_BORDERS_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_CLOSED_BORDERS_DESC</String>
+    </Modifier>
+
+    <!-- Anti-Immigration autarky: a mobilized, self-sufficient home economy adds Production in every
+         city (war-economy / closed-off-from-the-world theme), compensating for the Influence cost the
+         stance carries. Flat +2 / +3 / +4 per city by age, applied to the owner's cities. -->
+    <Modifier id="MOD_EMIG_CLOSED_BORDERS_PRODUCTION_AQ" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_YIELD">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_CITY_IS_CITY"/>
+        </SubjectRequirements>
+        <Argument name="Amount">2</Argument>
+        <Argument name="YieldType">YIELD_PRODUCTION</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_CLOSED_BORDERS_NAME</Argument>
+    </Modifier>
+    <Modifier id="MOD_EMIG_CLOSED_BORDERS_PRODUCTION_EX" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_YIELD">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_CITY_IS_CITY"/>
+        </SubjectRequirements>
+        <Argument name="Amount">3</Argument>
+        <Argument name="YieldType">YIELD_PRODUCTION</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_CLOSED_BORDERS_NAME</Argument>
+    </Modifier>
+    <Modifier id="MOD_EMIG_CLOSED_BORDERS_PRODUCTION_MO" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_YIELD">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_CITY_IS_CITY"/>
+        </SubjectRequirements>
+        <Argument name="Amount">4</Argument>
+        <Argument name="YieldType">YIELD_PRODUCTION</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_CLOSED_BORDERS_NAME</Argument>
+    </Modifier>
+
+    <!-- Attraction cards (§1b): a small FIXED native +yield floor (line-itemed, visible). The
+         volume-scaling part is the JS carried dividend (emigration-effects.js). EX +1 / MO +2. -->
+    <Modifier id="MOD_EMIG_TALENT_YIELD_EX" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_SCIENCE</Argument>
+        <Argument name="Amount">1</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_TALENT_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_TALENT_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_TALENT_YIELD_MO" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_SCIENCE</Argument>
+        <Argument name="Amount">2</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_TALENT_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_TALENT_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_CULTPULL_YIELD_EX" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_CULTURE</Argument>
+        <Argument name="Amount">1</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_CULTPULL_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_CULTPULL_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_CULTPULL_YIELD_MO" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_CULTURE</Argument>
+        <Argument name="Amount">2</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_CULTPULL_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_CULTPULL_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_TRADEPULL_YIELD_EX" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_GOLD</Argument>
+        <Argument name="Amount">1</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_TRADEPULL_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_TRADEPULL_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_TRADEPULL_YIELD_MO" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_GOLD</Argument>
+        <Argument name="Amount">2</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_TRADEPULL_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_TRADEPULL_DESC</String>
+    </Modifier>
+
+    <!-- Asylum cards (§4a): native Influence floor (+1 EX / +2 MO), plus +1 Culture in Modern
+         (refugees enrich the receiver). The refugee-pull Tilt is the JS mechanic (engine.js). -->
+    <Modifier id="MOD_EMIG_ASYLUM_INFLUENCE_EX" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
+        <Argument name="Amount">1</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_ASYLUM_EX_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_ASYLUM_EX_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_ASYLUM_INFLUENCE_MO" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
+        <Argument name="Amount">2</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_ASYLUM_MO_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_ASYLUM_MO_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_ASYLUM_CULTURE_MO" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_CULTURE</Argument>
+        <Argument name="Amount">1</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_ASYLUM_MO_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_ASYLUM_MO_DESC</String>
+    </Modifier>
+</GameEffects>

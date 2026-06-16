@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <LocalizedText>
+        <Replace Tag="LOC_MOD_EMIGRATION_NAME" Language="ru_RU"><Text>Эмиграция</Text></Replace>
+        <Replace Tag="LOC_MOD_EMIGRATION_DESCRIPTION" Language="ru_RU"><Text>Жители эмигрируют из недовольных, бедствующих городов в более счастливые и процветающие, внутри цивилизаций и между ними, согласно модели Процветания (еда, производство, счастье, война, осада, голод). Числа миграции отображаются как исторически репрезентативное население, в соответствии с масштабом мода Demographics.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS" Language="ru_RU"><Text>Эмиграция • подсчёт миграций</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_DESCRIPTION" Language="ru_RU"><Text>Как эмиграция показывает число переселяющихся людей. «Оба» показывает число населения Civ и историческую оценку числа людей (как мод Demographics); остальные показывают только одно.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_BOTH" Language="ru_RU"><Text>Оба (число Civ + историческое)</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_CIV" Language="ru_RU"><Text>Только число населения Civ</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_HISTORICAL" Language="ru_RU"><Text>Только историческое число людей</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_GROUP_EMIGRATION" Language="ru_RU"><Text>Эмиграция</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_GROUP_EMIGRATION_ADVANCED" Language="ru_RU"><Text>Эмиграция: Расширенно</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED" Language="ru_RU"><Text>Расширенные настройки</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED_OPEN" Language="ru_RU"><Text>Настроить…</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED_DESCRIPTION" Language="ru_RU"><Text>Открывает полный набор настроек эмиграции в отдельном окне. Это отправные точки, а не выверенные в игре значения; пресет интенсивности выше задаёт разумные значения по умолчанию для большинства из них.</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_PACING" Language="ru_RU"><Text>Темп</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_SCOPE" Language="ru_RU"><Text>Охват и политики</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_PROSPERITY" Language="ru_RU"><Text>Модель процветания</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_VIOLENCE" Language="ru_RU"><Text>Война и насилие</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_GEOGRAPHY" Language="ru_RU"><Text>География и перемещение</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_COST" Language="ru_RU"><Text>Ассимиляция и расходы на мигрантов</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_OUTLET" Language="ru_RU"><Text>Отток (убыль)</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="ru_RU"><Text>Бедствия</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="ru_RU"><Text>Уведомления</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET" Language="ru_RU"><Text>Интенсивность эмиграции</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_D" Language="ru_RU"><Text>Общая интенсивность эмиграции. Низкая = редкие перемещения; Высокая = частые. «Свой» сохраняет расширенные значения ниже. Применение пресета обновляет расширенные значения, снова откройте Настройки, чтобы их увидеть.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_CUSTOM" Language="ru_RU"><Text>Свой (использовать Расширенно)</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_LOW" Language="ru_RU"><Text>Низкая</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_MEDIUM" Language="ru_RU"><Text>Средняя</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_HIGH" Language="ru_RU"><Text>Высокая</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_BAR" Language="ru_RU"><Text>Темп: порог скорости эмиграции</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_BAR_D" Language="ru_RU"><Text>Давление, которое поселение должно накопить, прежде чем эмигрирует один пункт населения. Ниже = более частая эмиграция.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_COOLDOWN" Language="ru_RU"><Text>Темп: перезарядка после эмиграции (ходы)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_COOLDOWN_D" Language="ru_RU"><Text>Ходы, в течение которых поселение отдыхает, прежде чем потерять ещё один пункт населения.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXMOVES" Language="ru_RU"><Text>Темп: макс. эмиграций за ход</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXMOVES_D" Language="ru_RU"><Text>Предел того, сколько пунктов населения перемещается по всему миру за один проход.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTERVAL" Language="ru_RU"><Text>Темп: ходы между проходами</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTERVAL_D" Language="ru_RU"><Text>Выполнять проход эмиграции раз в N ваших ходов.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CROSSCIV" Language="ru_RU"><Text>Охват: разрешить миграцию между цивилизациями</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CROSSCIV_D" Language="ru_RU"><Text>Если выключено, люди перемещаются только между городами одной цивилизации.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CITYSTATES" Language="ru_RU"><Text>Охват: включить города-государства/малые</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CITYSTATES_D" Language="ru_RU"><Text>Участвуют ли малые поселения / города-государства в миграции.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_REQUIREMET" Language="ru_RU"><Text>Охват: только знакомые цивилизации</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_REQUIREMET_D" Language="ru_RU"><Text>Учитывать только чужие города, с которыми ваша цивилизация знакома.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CIVTUNE" Language="ru_RU"><Text>Охват: настройка по лидеру/цивилизации</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CIVTUNE_D" Language="ru_RU"><Text>Применять небольшие ручные настройки по лидеру и цивилизации (ослабление магнита, скорость интеграции, удержание в войне, смещение источника), чтобы исключения вели себя по-разному. Выкл. = каждая цивилизация использует одну глобальную модель.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_BORDERS" Language="ru_RU"><Text>Охват: пограничные политики</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_BORDERS_D" Language="ru_RU"><Text>Включить эффект политик «Открытые/Закрытые границы» на иммиграцию (карты политик появляются в меню политик и стоят или дают Влияние). Выкл. = политики не влияют на миграцию.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDOPEN" Language="ru_RU"><Text>Границы: открытость при Закрытых границах</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDOPEN_D" Language="ru_RU"><Text>Сколько иммиграции пропускает политика «Закрытые границы» (0,4 = около 60% отвергнуто). Ниже = более закрыто. Используется только при включённых пограничных политиках.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN" Language="ru_RU"><Text>Границы: удержание при закрытых границах</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN_D" Language="ru_RU"><Text>Насколько политика закрытых границ удерживает ваших людей от ухода к соперникам (0.6 = их тяга к другим цивилизациям снижена до 60%; 1 = выкл.). Чем ниже, тем сильнее удержание. Используется только при включённых пограничных политиках.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENOPEN" Language="ru_RU"><Text>Границы: усиление Открытых границ</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENOPEN_D" Language="ru_RU"><Text>Насколько политика «Открытые границы» увеличивает иммиграцию (1,5 = +50%). Выше = более открыто. Используется только при включённых пограничных политиках.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FOOD" Language="ru_RU"><Text>Вес процветания: еда (на душу)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FOOD_D" Language="ru_RU"><Text>Насколько еда на душу населения притягивает мигрантов в город.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_PROD" Language="ru_RU"><Text>Вес процветания: производство (на душу)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_PROD_D" Language="ru_RU"><Text>Насколько производство на душу (приближение «доступной работы») притягивает мигрантов.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAPPY" Language="ru_RU"><Text>Вес процветания: счастье</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAPPY_D" Language="ru_RU"><Text>Насколько сильно чистое счастье города привлекает мигрантов.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_POP" Language="ru_RU"><Text>Вес процветания: штраф за население</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_POP_D" Language="ru_RU"><Text>Насколько размер города играет против него (чтобы небольшие процветающие города всё ещё привлекали).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSHAPED" Language="ru_RU"><Text>Счастье: использовать сформированную модель</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSHAPED_D" Language="ru_RU"><Text>Заменить плоский вес счастья нюансированной моделью: счастье измеряется относительно мирового среднего, его притяжение насыщается (очень счастливый город не становится неудержимым магнитом), а нищета по-прежнему сильно отталкивает, и счастье усиливает экономику, а не затмевает её. Выкл. = старый линейный вес.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSCALE" Language="ru_RU"><Text>Счастье (сформированное): шкала насыщения</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSCALE_D" Language="ru_RU"><Text>Сколько пунктов выше мирового среднего считаются «очень счастливыми», прежде чем притяжение насытится. Выше = счастье значимо дольше. Используется только сформированной моделью.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAMP" Language="ru_RU"><Text>Счастье (сформированное): усиление экономики</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAMP_D" Language="ru_RU"><Text>Насколько усиливается экономика счастливого города (и подавляется у несчастного) как миграционная привлекательность. Используется только сформированной моделью.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OCDISC" Language="ru_RU"><Text>Перенаселённость: скидка (0 = выкл.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OCDISC_D" Language="ru_RU"><Text>Вернуть часть недовольства, которое город терпит сугубо от городской перенаселённости, чтобы намеренно плотный город не наказывался дважды (его плотность уже снижает доходы). 0 = выкл.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OCTHRESH" Language="ru_RU"><Text>Перенаселённость: порог плотности города</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OCTHRESH_D" Language="ru_RU"><Text>Городское население, которое город может вместить, прежде чем перенаселённость станет ему в минус (отражает порог перенаселённости игры). Используется только при включённой скидке.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VPP" Language="ru_RU"><Text>Война: эмиграция за пункт насилия (%)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VPP_D" Language="ru_RU"><Text>Штраф к оценке за пункт накопленной интенсивности боёв в границах города.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VCAP" Language="ru_RU"><Text>Война: макс. штраф за насилие (%)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VCAP_D" Language="ru_RU"><Text>Потолок штрафа за насилие, чтобы разгром насыщался, а не выходил из-под контроля.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VDECAY" Language="ru_RU"><Text>Война: затухание насилия за ход</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VDECAY_D" Language="ru_RU"><Text>Как быстро накопленное насилие угасает без новых боёв (ниже = быстрее).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VFLEE" Language="ru_RU"><Text>Война: насилие для бегства от захватчика</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VFLEE_D" Language="ru_RU"><Text>Минимальное насилие, прежде чем беженцы устремятся прочь от ближайшего врага.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VASSAULT" Language="ru_RU"><Text>Война: вес свежего урона городу</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VASSAULT_D" Language="ru_RU"><Text>Интенсивность, добавляемая когда город получает новый урон района за ход (всплеск штурма).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VSIEGE" Language="ru_RU"><Text>Война: вес продолжающейся осады</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VSIEGE_D" Language="ru_RU"><Text>Интенсивность, добавляемая каждый ход, пока центр города остаётся повреждённым.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VPILLAGE" Language="ru_RU"><Text>Война: вес за разграбленную клетку (0 = выкл.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VPILLAGE_D" Language="ru_RU"><Text>Интенсивность за разграбленное улучшение в границах города, за ход. 0 пропускает сканирование.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_WARSIEGE" Language="ru_RU"><Text>Война: модель осады (с потолком + нарастанием)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_WARSIEGE_D" Language="ru_RU"><Text>Заставить вызванную войной эмиграцию нарастать тем сильнее, чем дольше осаждён город, но ограничить общую потерю от войны, чтобы город нельзя было полностью обезлюдить без захвата (остаток окапывается). Выкл. = старый плоский штраф за насилие.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SRAMP" Language="ru_RU"><Text>Война (осада): ходы до полной интенсивности</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SRAMP_D" Language="ru_RU"><Text>Сколько ходов должна длиться осада, чтобы достичь полного миграционного давления (набег начинается мягко и нарастает). Используется только моделью осады.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SCAP" Language="ru_RU"><Text>Война (осада): макс. доля, потерянная в войне</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SCAP_D" Language="ru_RU"><Text>Наибольшая доля населения города (как часть его размера на начало осады), которую может забрать вызванная войной эмиграция, прежде чем остановится. Используется только моделью осады.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_WARSURGE" Language="ru_RU"><Text>Война: наплыв беженцев за ход (1 = выкл.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_WARSURGE_D" Language="ru_RU"><Text>Наибольшее количество сельского населения, которое сильно осаждённый город может потерять за один ход. Военные беженцы тогда бегут волнами, нарастающими с интенсивностью боёв, а не тонкой струйкой по одному за ход, по-прежнему в пределах лимита потерь при осаде. 1 = выкл. (прежняя струйка).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AGGRESSOR" Language="ru_RU"><Text>Война: избегать агрессора (0 = выкл.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AGGRESSOR_D" Language="ru_RU"><Text>Насколько сильно беженцы войны избегают цивилизацию, напавшую на них, сперва свои города, затем любую третью сторону, а агрессора в последнюю очередь. 0 = выкл. (беженцы не учитывают, кто начал войну).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OWNCIV" Language="ru_RU"><Text>Война: предпочитать свою цивилизацию</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OWNCIV_D" Language="ru_RU"><Text>Насколько сильно беженцы войны предпочитают расселяться в своей цивилизации, прежде чем перейти к другой. Используется только при включённом «избегать агрессора».</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIST" Language="ru_RU"><Text>География: штраф за расстояние</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIST_D" Language="ru_RU"><Text>Штраф к притяжению за гекс между источником и целью. Выше = более локальная миграция.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FLEE" Language="ru_RU"><Text>География: сила бегства от захватчика</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FLEE_D" Language="ru_RU"><Text>Насколько сильно беженцы предпочитают цели вдали от ближайшего захватчика.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_POACH" Language="ru_RU"><Text>География: трение между цивилизациями</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_POACH_D" Language="ru_RU"><Text>Дополнительное нежелание мигрировать через границу цивилизации.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENDEAL" Language="ru_RU"><Text>География: прирост миграции от открытых границ</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="ru_RU"><Text>Насколько соглашение об открытых границах между двумя цивилизациями облегчает переселение между ними в обе стороны. 0 = выкл.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="ru_RU"><Text>География: задержка в пути (0 = мгновенно)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_TRANSITLAG_D" Language="ru_RU"><Text>Наибольшее время, которое мигрант может провести в пути до прибытия. Они покидают исходную точку в ход отправления; фактическая задержка зависит от расстояния до места назначения (дальше, дольше), вплоть до этого предела. Военные беженцы всегда тратят не менее одного хода. Если место назначения будет разрушено, пока они в пути, они гибнут в дороге. 0 = мгновенное прибытие.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASLOAD" Language="ru_RU"><Text>Ассимиляция: нагрузка на мигранта</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASLOAD_D" Language="ru_RU"><Text>Ассимиляционная «нагрузка», добавляемая принимающей цивилизации за каждого поглощённого мигранта. Цивилизация платит за ход стоимость пропорционально текущей нагрузке, которая спадает за время ассимиляции. 0 = выкл.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASPOP" Language="ru_RU"><Text>Ассимиляция: масштаб от перенаселённости</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASPOP_D" Language="ru_RU"><Text>Умножает добавляемую нагрузку на (1 + это × население цели), так что поглощение в крупное поселение добавляет больше, тормоз для вышедших из-под контроля магнитов населения.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASDECAY" Language="ru_RU"><Text>Ассимиляция: спад за ход (длительность)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASDECAY_D" Language="ru_RU"><Text>Как быстро нагрузка ассимиляции угасает каждый ход, это задаёт длительность затрат. Ниже = короче (мигранты интегрируются быстрее); выше = затраты держатся дольше.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASHAP" Language="ru_RU"><Text>Ассимиляция: счастье за ход на нагрузку</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASHAP_D" Language="ru_RU"><Text>Счастье, отнимаемое каждый ход за единицу нагрузки ассимиляции. 0 = выкл. (Предполагаемый рычаг, если в вашей сборке не работает, используйте золотую стоимость.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASGOLD" Language="ru_RU"><Text>Ассимиляция: золото за ход на нагрузку</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASGOLD_D" Language="ru_RU"><Text>Золото, отнимаемое каждый ход за единицу нагрузки ассимиляции. 0 = выкл. (Подтверждённый зондом рычаг списания, в том числе между цивилизациями.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MHHAP" Language="ru_RU"><Text>Стоимость: счастье за удерживаемого мигранта</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MHHAP_D" Language="ru_RU"><Text>Счастье, отнимаемое каждый ход за каждую UNIT_MIGRANT, которую удерживает цивилизация (не расселив), с ростом по числу, чтобы избыточных мигрантов расселяли, а не копили. 0 = выкл. (Предполагаемый рычаг, см. примечание о золотой стоимости.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MHGOLD" Language="ru_RU"><Text>Стоимость: золото за удерживаемого мигранта</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MHGOLD_D" Language="ru_RU"><Text>Золото, отнимаемое каждый ход за каждую UNIT_MIGRANT, которую удерживает цивилизация, с ростом по числу. 0 = выкл. (Подтверждённый зондом рычаг списания.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CONGEST" Language="ru_RU"><Text>Стоимость: встречный ветер перегрузки (0 = выкл.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="ru_RU"><Text>Сделать цивилизацию, поглощающую много мигрантов, менее привлекательной целью для дальнейшей миграции (она занята интеграцией прибывших), с ростом по тому, сколько она переваривает. Структурный тормоз для вышедших из-под контроля магнитов. 0 = выкл.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DISASTERS" Language="ru_RU"><Text>Бедствия: двигать миграцию</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="ru_RU"><Text>Позволить стихийным бедствиям (наводнения, вулканы, эпидемии…) выталкивать население из пострадавших городов как климатических беженцев / беженцев бедствий, наряду с войной и недовольством. Выкл. = бедствия не влияют на миграцию.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DPP" Language="ru_RU"><Text>Бедствия: эмиграция за пункт бедствия (%)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DPP_D" Language="ru_RU"><Text>Насколько сильно накопленное бедствие в городе побуждает его жителей уходить. Используется только когда бедствия двигают миграцию.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DDECAY" Language="ru_RU"><Text>Бедствия: спад бедствия за ход</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DDECAY_D" Language="ru_RU"><Text>Как быстро бедствие угасает после того, как минует (ниже = быстрее). Используется только когда бедствия двигают миграцию.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_PLAGUECARRY" Language="ru_RU"><Text>Бедствия: мигранты несут чуму</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_PLAGUECARRY_D" Language="ru_RU"><Text>Позволить беженцам из заражённого города сеять меньшее бедствие вспышки в месте назначения, миграция как вектор заражения, помимо распространения по торговой сети игры.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYMODE" Language="ru_RU"><Text>Уведомления: подробность</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYMODE_D" Language="ru_RU"><Text>Насколько разговорчивы уведомления о миграции: 0 = выкл., 1 = только важные (кризисы беженцев и тяжёлые бедствия, по умолчанию), 2 = подробно (сводка каждый ход с заметной миграцией).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER" Language="ru_RU"><Text>Уведомления: мин. сила бедствия</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER_D" Language="ru_RU"><Text>Уведомлять только о бедствиях этой силы и выше (0 = даже мелкие события, 3 = только легендарные, как великое извержение). Мелкие бедствия по-прежнему влияют на миграцию незаметно.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYCD" Language="ru_RU"><Text>Уведомления: минимальный интервал (ходы)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYCD_D" Language="ru_RU"><Text>Наименьшее число ходов между важными уведомлениями, чтобы они не скапливались. 0 = без ограничения.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLD" Language="ru_RU"><Text>Уведомления: порог кризиса беженцев</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLD_D" Language="ru_RU"><Text>Сколько человек (суммарно) цивилизация должна переселить, прежде чем выйдет заголовок о кризисе беженцев, раз на каждое пройденное кратное, чтобы долгая война давала несколько заголовков, а не один за ход.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="ru_RU"><Text>Сводка миграции по городу</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="ru_RU"><Text>Показывает по запросу панель с объяснением, почему выбранное поселение набирает или теряет население: основная причина, куда тянет его жителей, стоимость ассимиляции и что можно с этим сделать.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRITION" Language="ru_RU"><Text>Отвод: убыль, когда нет убежища</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRITION_D" Language="ru_RU"><Text>Не даёт миграции быть замкнутой системой: запертый, сильно бедствующий город (осада, голод, тяжёлое насилие или бедствие) без приемлемой цели теряет население, люди гибнут или рассеиваются, а не остаются навсегда.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRDISTRESS" Language="ru_RU"><Text>Отвод: бедствие, нужное для убыли (%)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRDISTRESS_D" Language="ru_RU"><Text>Насколько отчаянным должно быть положение города (осада/голод/насилие/бедствие, как процентный штраф), прежде чем запертое население начнёт гибнуть. Выше = только самые отчаянные города. Используется только при включённом отводе.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRTHRESH" Language="ru_RU"><Text>Отвод: порог скорости убыли</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ATTRTHRESH_D" Language="ru_RU"><Text>Давление, которое запертый бедствующий город должен накопить, прежде чем потеряет пункт населения. Ниже = более быстрая гибель. Используется только при включённом отводе.</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION" Language="ru_RU"><Text>Чистая миграция</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION_SUBTITLE" Language="ru_RU"><Text>(иммиграция минус эмиграция за ход)</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT" Language="ru_RU"><Text>Эмиграция</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_SUBTITLE" Language="ru_RU"><Text>(люди, покидающие эту цивилизацию)</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN" Language="ru_RU"><Text>Иммиграция</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_SUBTITLE" Language="ru_RU"><Text>(люди, прибывающие в эту цивилизацию)</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES" Language="ru_RU"><Text>Беженцы</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_SUBTITLE" Language="ru_RU"><Text>(люди, перемещённые войной, бедствием или завоеванием)</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_TOOLTIP" Language="ru_RU"><Text>Население, перемещённое войной, бедствием и завоеванием.</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_WAR_GRAPHS_T_REFUGEES" Language="ru_RU"><Text>Созданные беженцы</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_DISASTER" Language="ru_RU"><Text>{1_EventName} перемещает {2_People}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_WAR" Language="ru_RU"><Text>{2_People} бегут от {1_WarName}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_CONQUEST" Language="ru_RU"><Text>Разграбление {1_City} рассеивает {2_People}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="ru_RU"><Text>{2_People} покидают {1_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="ru_RU"><Text>Кризис беженцев: {1_Civ}, перемещено {2_People}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="ru_RU"><Text>{1_People} покинули {2_City}, недовольные жизнью дома.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="ru_RU"><Text>{1_People} покинули {2_City} в поисках более процветающих соседей.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="ru_RU"><Text>{1_People} бежали от боёв вокруг {2_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ru_RU"><Text>{1_People} бежали из {2_City} после бедствия.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ru_RU"><Text>{1_People} погибли в {2_City}, не имея пути к бегству.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="ru_RU"><Text>Повысьте счастье города или примите антииммиграционную политику, чтобы удержать их.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="ru_RU"><Text>Сосед превосходит этот город; повысьте его доходы, чтобы удержать людей.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_WAR" Language="ru_RU"><Text>Беженцы бегут от боёв; снимите осаду или заключите мир, чтобы остановить отток.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_DISASTER" Language="ru_RU"><Text>Переселение из-за бедствия - оно утихнет само, когда бедствие пойдёт на спад.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_ATTRITION" Language="ru_RU"><Text>В ловушке без выхода - откройте путь к бегству или облегчите бедствие.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="ru_RU"><Text>Это давление временно.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="ru_RU"><Text>Оно сохраняется, пока вы не устраните причину.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ru_RU"><Text>Эти люди потеряны навсегда.</Text></Replace>
+        <Replace Tag="LOC_EMIG_COST_NOTE" Language="ru_RU"><Text>{1_Dest} платит около {2_Gold} золота/ход, чтобы их принять.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="ru_RU"><Text>Проиммиграционный курс</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ru_RU"><Text>Принимайте мигрантов со всего мира. Иммиграция в ваши города возрастает на 50%, а космополитичная репутация приносит влияние каждый ход: +1, +2, затем +3 в течение эпох.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="ru_RU"><Text>Антииммиграционный курс</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ru_RU"><Text>Закройте границы от мира. Иностранные новоприбывшие падают до 40% (примерно на 60% меньше), и гораздо меньше ваших собственных граждан уходит к соперничающим цивилизациям. Мобилизованная внутренняя экономика добавляет производство в каждом городе: +2, +3, затем +4 в течение эпох. У изоляции есть цена во влиянии каждый ход: -2, -3, затем -4 в течение эпох.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="ru_RU"><Text>Привлечение талантов</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ru_RU"><Text>Новоприбывшие усиливают ваши исследования. Вы получаете +1 науку, а в Современности +2, плюс прирост науки около +1.5 за каждого привлечённого иммигранта, до +12 за ход. Этот бонус угасает, если иммиграция прекращается.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="ru_RU"><Text>Культурная притягательность</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ru_RU"><Text>Новоприбывшие обогащают вашу культуру. Вы получаете +1 культуру, а в Современности +2, плюс прирост культуры около +1.5 за каждого привлечённого иммигранта, до +12 за ход. Этот бонус угасает, если иммиграция прекращается.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="ru_RU"><Text>Коммерческая притягательность</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ru_RU"><Text>Новоприбывшие наполняют ваши рынки. Вы получаете +1 золото, а в Современности +2, плюс прирост золота около +1.5 за каждого привлечённого иммигранта, до +12 за ход. Этот бонус угасает, если иммиграция прекращается.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="ru_RU"><Text>Избирательное убежище</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ru_RU"><Text>Откройте двери тем, кто бежит от войны и бедствия. Беженцы сильно тянутся к вам (самые отчаявшиеся первыми), и гуманитарная репутация приносит +1 влияния каждый ход.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="ru_RU"><Text>Пакт о беженцах</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="ru_RU"><Text>Постоянная приверженность судьбе перемещённых. Беженцы мощно стекаются к вам (самые отчаявшиеся первыми), обогащают вашу культуру и приносят +2 влияния и +1 культуры каждый ход.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="ru_RU"><Text>Эмиграция</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="ru_RU"><Text>Эмиграция</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="ru_RU"><Text>Эмиграция</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="ru_RU"><Text>Эмиграция привносит в мир живое движение населения. Каждый ход жители покидают несчастные, бедствующие или истерзанные войной поселения и перебираются в более счастливые и процветающие, как внутри вашей цивилизации, так и через границы к другим.[n][n]Куда направляются люди, решает модель Процветания, что взвешивает счастье, доходы и положение каждого города и сглаживается расстоянием, чтобы переселение оставалось местным. Принимать переселенцев небесплатно: цивилизация платит цену ассимиляции, пока новоприбывшие приживаются.[n][n]Большинство более глубоких механик системы, беженцы, что сторонятся агрессора, пограничная политика, бедствия и отдушина для населения, необязательны и включаются в Настройках, Моды, Эмиграция.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_TITLE" Language="ru_RU"><Text>Процветание и переселение</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_BODY" Language="ru_RU"><Text>Каждое поселение получает оценку Процветания по доходам на душу населения и, прежде всего, по чистому счастью. Несчастный город даже в мирное время неуклонно теряет людей в пользу более счастливых и богатых, а небольшой штраф за сам размер не даёт процветающим городам стать бездонными магнитами.[n][n]Люди предпочитают близкие пункты назначения, поэтому переселение растекается вовне по региону, а не перескакивает через карту. Война, осада, голод, волнения и бедствия резко снижают Процветание города, превращая его в источник беженцев.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_TITLE" Language="ru_RU"><Text>Война и беженцы</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_BODY" Language="ru_RU"><Text>Город порождает военных беженцев лишь тогда, когда насилие происходит непосредственно в его границах, его районы получают урон или его земли разоряют,, а не просто потому, что его держава воюет. Чем дольше тянется осада, тем больше людей она изгоняет, но одной войной город нельзя опустошить до конца: без подлинного захвата остаток всегда окапывается.[n][n]Беженцы бегут прочь от ближайшего захватчика. Если включено избегание агрессора, они к тому же предпочитают сперва свою цивилизацию, затем любую нейтральную державу, а напавшую на них цивилизацию рассматривают как крайнее средство.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_TITLE" Language="ru_RU"><Text>Ассимиляция и цена роста</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_BODY" Language="ru_RU"><Text>Принимать переселенцев небесплатно. Каждый новоприбывший добавляет принимающей цивилизации бремя ассимиляции, за которое она платит ежеходную цену, золотом и счастьем,, пока это бремя не угаснет за срок интеграции. Кто без конца притягивает людей, тот без конца платит.[n][n]Эффект перенаселённости вдобавок способен сделать цивилизацию, занятую перевариванием переселенцев, менее привлекательной целью для новых, тормоз, который не обойти никаким богатством. Вместе они не дают одной цивилизации стать неудержимым магнитом для народов мира.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_BORDERS_TITLE" Language="ru_RU"><Text>Границы и влияние</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_BORDERS_BODY" Language="ru_RU"><Text>Два рычага определяют миграцию через ваши границы. Ваша собственная позиция задаётся картой политики, доступной в каждую эпоху. Выберите проиммиграционную позицию, чтобы принять мир: прибывает больше мигрантов, а космополитичная репутация приносит немного влияния каждый ход. Или выберите антииммиграционную позицию, чтобы замкнуться: прибывает меньше иностранцев, меньше ваших людей уходит к соперникам, а мобилизованная внутренняя экономика добавляет производство в каждом городе, хотя мир осуждает вашу замкнутость постоянной потерей влияния. Выбирайте то, что подходит вашей стратегии.[n][n]Дипломатия тоже важна. Когда вы и другая цивилизация подписываете договор об открытых границах, мигранты свободнее перемещаются между вашими землями в обе стороны.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_TITLE" Language="ru_RU"><Text>Привлечение и убежище</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="ru_RU"><Text>Если карты позиции решают, открыты ли ваши границы, то второй набор карт решает, что вы сделаете с людьми, которые через них проходят. Политики привлечения талантов, культурного и торгового притяжения превращают иммиграцию в двигатель: каждый привлечённый вами новоприбывший приносит растущий дивиденд науки, культуры или золота, который накапливается, пока люди продолжают прибывать, и угасает, как только приток прекращается,, светлое отражение издержек ассимиляции, вознаграждающее цивилизацию, остающуюся магнитом, а не наказывающее её.[n][n]Политики убежища отвечают на иной зов. Открывая двери тем, кто бежит от войны и бедствия, вы притягиваете беженцев, самых отчаявшихся в первую очередь,, и мир помнит этот жест влиянием, а позднейший договор вдобавок обогащает вашу культуру. Вместе они позволяют гостеприимному народу извлекать выгоду из открытости, а не просто терпеть её.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_RAIDS_TITLE" Language="ru_RU"><Text>Переманивание талантов</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_RAIDS_BODY" Language="ru_RU"><Text>Привлечению не обязательно ждать, пока миграция придёт к вам. С экрана дипломатии вы можете направить против соперника переманивание талантов, культурное или торговое наступление, длительную кампанию, чтобы склонить его людей к вашим городам. Пока она длится, вы платите влияние каждый ход, а взамен миграция этого соперника склоняется к вам, отбирая у него самых блестящих мыслителей, деятелей культуры или торговцев; каждый прибывший приносит соответствующий дивиденд науки, культуры или золота, точно так же, как добровольный переселенец.[n][n]Это орудие холодного соперничества, а не войны: ни один город не атакован и ни одна граница не пересечена силой, и всё же таланты более сильного соседа можно тихо вытягивать в свою пользу ценой постоянных дипломатических усилий.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_TITLE" Language="ru_RU"><Text>Бедствия и мор</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_BODY" Language="ru_RU"><Text>Стихийные бедствия, наводнения, вулканы, поветрия и прочее, наряду с войной и недовольством выгоняют людей из пострадавших городов как климатических беженцев и беженцев от бедствий. Чем тяжелее событие, тем сильнее оно толкает; мелкие события лишь тихо подталкивают переселение.[n][n]Мор вдвойне опасен: заражённый город не только теряет население, но и, если переселенцы несут заразу, способен заронить меньшую вспышку всюду, где осядут его беженцы,, разнося болезнь по самим дорогам бегства.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OUTLET_TITLE" Language="ru_RU"><Text>Когда убежища нет</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OUTLET_BODY" Language="ru_RU"><Text>Переселение, не замкнутая система. Когда город в отчаянии, в осаде, в голоде или опустошён бедствием, и не остаётся безопасного места для бегства, его запертое население не ждёт бесконечно. Люди гибнут или рассеиваются, и город теряет население без всякого пункта назначения.[n][n]Эта отдушина, крайняя мера: довольный город, которому лишь некуда податься получше, остаётся нетронутым, а потеря засчитывается как погибшие, отдельно от беженцев, что и вправду достигают нового дома.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_TITLE" Language="ru_RU"><Text>Лидеры и цивилизации</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="ru_RU"><Text>Горстка лидеров и цивилизаций переживает переселение иначе, и сквозь это проступает их исторический характер. Это небольшие, ограниченные поправки поверх общих правил, никогда не настолько, чтобы кто-то пошёл вразнос,, и они действуют лишь пока включена тонкая настройка по цивилизациям (по умолчанию она включена).[n][n]Лидеры, чьё счастье иначе сделало бы каждый город неудержимым магнитом, притягивают чуть слабее: Бенджамин Франклин сильнее всех, а также сдержаны Изабелла, Ашока и Рисаль. Богатым завоевателям трофеи обходятся дороже в обустройстве, Изабелла и Ксеркс платят больше за то, чтобы вобрать завоёванных людей.[n][n]Высокие, ориентированные на специалистов державы защищены от перенаселённости, чтобы их плотные города не наказывались дважды: Пачакутек и, прежде всего, Аббасиды. Быстрорастущие народы, чья численность обгоняет их процветание, получают небольшую подушку, чтобы удержать граждан, Конфуций, Хань и Цин,, тогда как кхмеры избавлены от худшего из своего нестоличного недовольства. А державы, выстроенные за крепкими стенами, норманны и англичане,, удерживают население во время осады куда лучше, чем те, у кого стен нет.</Text></Replace>
+    </LocalizedText>
+</Database>

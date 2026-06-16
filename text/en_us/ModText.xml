@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <EnglishText>
+        <Row Tag="LOC_MOD_EMIGRATION_NAME">
+            <Text>Emigration</Text>
+        </Row>
+        <Row Tag="LOC_MOD_EMIGRATION_DESCRIPTION">
+            <Text>Citizens emigrate from unhappy, struggling cities to happier, more prosperous ones, both within and between civilizations, driven by a Prosperity model (food, production, happiness, war, siege, starvation). Migration counts are reported as historically representative populations, aligned with the Demographics mod's scaling.</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_EMIGRATION_NUMBERS">
+            <Text>Emigration • migration counts</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_DESCRIPTION">
+            <Text>How emigration reports the number of people who move. "Both" shows the Civ population number and the historically-scaled people count (matching the Demographics mod); the others show only one.</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_BOTH">
+            <Text>Both (Civ number + historical)</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_CIV">
+            <Text>Civ population number only</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_HISTORICAL">
+            <Text>Historical people count only</Text>
+        </Row>
+
+        <Row Tag="LOC_OPTIONS_GROUP_EMIGRATION"><Text>Emigration</Text></Row>
+        <Row Tag="LOC_OPTIONS_GROUP_EMIGRATION_ADVANCED"><Text>Emigration: Advanced</Text></Row>
+
+        <Row Tag="LOC_OPTIONS_EMIGRATION_ADVANCED"><Text>Advanced settings</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIGRATION_ADVANCED_OPEN"><Text>Configure…</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIGRATION_ADVANCED_DESCRIPTION"><Text>Open the full set of Emigration tuning knobs in a separate window. These are starting points, not playtested-balanced values; the intensity preset above sets sensible defaults for most of them.</Text></Row>
+        <Row Tag="LOC_EMIG_ADVGRP_PACING"><Text>Pacing</Text></Row>
+        <Row Tag="LOC_EMIG_ADVGRP_SCOPE"><Text>Scope &amp; policies</Text></Row>
+        <Row Tag="LOC_EMIG_ADVGRP_PROSPERITY"><Text>Prosperity model</Text></Row>
+        <Row Tag="LOC_EMIG_ADVGRP_VIOLENCE"><Text>War &amp; violence</Text></Row>
+        <Row Tag="LOC_EMIG_ADVGRP_GEOGRAPHY"><Text>Geography &amp; movement</Text></Row>
+        <Row Tag="LOC_EMIG_ADVGRP_COST"><Text>Assimilation &amp; migrant costs</Text></Row>
+        <Row Tag="LOC_EMIG_ADVGRP_OUTLET"><Text>Outlet (attrition)</Text></Row>
+        <Row Tag="LOC_EMIG_ADVGRP_DISASTER"><Text>Disasters</Text></Row>
+        <Row Tag="LOC_EMIG_ADVGRP_NOTIFY"><Text>Notifications</Text></Row>
+
+        <Row Tag="LOC_EMIG_PRESET"><Text>Emigration intensity</Text></Row>
+        <Row Tag="LOC_EMIG_PRESET_D"><Text>Overall emigration intensity. Low = rare moves; High = frequent. "Custom" keeps the Advanced values below. Applying a preset updates the Advanced values, reopen Options to see them refresh.</Text></Row>
+        <Row Tag="LOC_EMIG_PRESET_CUSTOM"><Text>Custom (use Advanced)</Text></Row>
+        <Row Tag="LOC_EMIG_PRESET_LOW"><Text>Low</Text></Row>
+        <Row Tag="LOC_EMIG_PRESET_MEDIUM"><Text>Medium</Text></Row>
+        <Row Tag="LOC_EMIG_PRESET_HIGH"><Text>High</Text></Row>
+
+        <Row Tag="LOC_EMIG_T_BAR"><Text>Pacing: emigration rate threshold</Text></Row>
+        <Row Tag="LOC_EMIG_T_BAR_D"><Text>Pressure a settlement must build before one population point emigrates. Lower = more frequent emigration.</Text></Row>
+        <Row Tag="LOC_EMIG_T_COOLDOWN"><Text>Pacing: cooldown after emigrating (turns)</Text></Row>
+        <Row Tag="LOC_EMIG_T_COOLDOWN_D"><Text>Turns a settlement rests before it can lose another population point.</Text></Row>
+        <Row Tag="LOC_EMIG_T_MAXMOVES"><Text>Pacing: max emigrations per turn</Text></Row>
+        <Row Tag="LOC_EMIG_T_MAXMOVES_D"><Text>Cap on how many population points move across the whole world each pass.</Text></Row>
+        <Row Tag="LOC_EMIG_T_INTERVAL"><Text>Pacing: turns between passes</Text></Row>
+        <Row Tag="LOC_EMIG_T_INTERVAL_D"><Text>Run the emigration pass once every N of your turns.</Text></Row>
+
+        <Row Tag="LOC_EMIG_T_CROSSCIV"><Text>Scope: allow migration between civilizations</Text></Row>
+        <Row Tag="LOC_EMIG_T_CROSSCIV_D"><Text>If off, people only move between cities of the same civilization.</Text></Row>
+        <Row Tag="LOC_EMIG_T_CITYSTATES"><Text>Scope: include city-states / minors</Text></Row>
+        <Row Tag="LOC_EMIG_T_CITYSTATES_D"><Text>Whether minor / city-state settlements take part in migration.</Text></Row>
+        <Row Tag="LOC_EMIG_T_REQUIREMET"><Text>Scope: only met civilizations</Text></Row>
+        <Row Tag="LOC_EMIG_T_REQUIREMET_D"><Text>Only consider foreign cities your civilization has met.</Text></Row>
+        <Row Tag="LOC_EMIG_T_CIVTUNE"><Text>Scope: per-leader/civ tuning</Text></Row>
+        <Row Tag="LOC_EMIG_T_CIVTUNE_D"><Text>Apply small, hand-tuned per-leader and per-civilization adjustments (magnet damping, integration speed, war-time retention, source bias) so outliers behave distinctly. Off = every civ uses the same global model.</Text></Row>
+        <Row Tag="LOC_EMIG_T_BORDERS"><Text>Scope: border policies</Text></Row>
+        <Row Tag="LOC_EMIG_T_BORDERS_D"><Text>Enable the Open / Closed Borders policies' effect on immigration (the policy cards are added in the policy menu and cost or grant Influence). Off = the policies have no migration effect.</Text></Row>
+        <Row Tag="LOC_EMIG_T_CLOSEDOPEN"><Text>Borders: Closed Borders openness</Text></Row>
+        <Row Tag="LOC_EMIG_T_CLOSEDOPEN_D"><Text>How much immigration a Closed Borders policy lets through (0.4 = about 60% turned away). Lower = more closed. Only used when border policies are on.</Text></Row>
+        <Row Tag="LOC_EMIG_T_CLOSEDRETAIN"><Text>Borders: Closed Borders retention</Text></Row>
+        <Row Tag="LOC_EMIG_T_CLOSEDRETAIN_D"><Text>How strongly a Closed Borders policy keeps your own people from leaving for rival civs (0.6 = their pull toward other civs cut to 60%; 1 = off). Lower = stronger retention. Only used when border policies are on.</Text></Row>
+        <Row Tag="LOC_EMIG_T_OPENOPEN"><Text>Borders: Open Borders boost</Text></Row>
+        <Row Tag="LOC_EMIG_T_OPENOPEN_D"><Text>How much an Open Borders policy increases immigration (1.5 = +50%). Higher = more open. Only used when border policies are on.</Text></Row>
+
+        <Row Tag="LOC_EMIG_T_FOOD"><Text>Prosperity weight: food (per-capita)</Text></Row>
+        <Row Tag="LOC_EMIG_T_FOOD_D"><Text>How much per-capita food pulls migrants toward a city.</Text></Row>
+        <Row Tag="LOC_EMIG_T_PROD"><Text>Prosperity weight: production (per-capita)</Text></Row>
+        <Row Tag="LOC_EMIG_T_PROD_D"><Text>How much per-capita production (the "work available" proxy) pulls migrants.</Text></Row>
+        <Row Tag="LOC_EMIG_T_HAPPY"><Text>Prosperity weight: happiness</Text></Row>
+        <Row Tag="LOC_EMIG_T_HAPPY_D"><Text>How strongly a city's net happiness attracts migrants.</Text></Row>
+        <Row Tag="LOC_EMIG_T_POP"><Text>Prosperity weight: population penalty</Text></Row>
+        <Row Tag="LOC_EMIG_T_POP_D"><Text>How much a city's size counts against it (so small thriving towns still attract).</Text></Row>
+        <Row Tag="LOC_EMIG_T_HSHAPED"><Text>Happiness: use the shaped model</Text></Row>
+        <Row Tag="LOC_EMIG_T_HSHAPED_D"><Text>Replace the flat happiness weight with a nuanced model: happiness is measured relative to the world average, its pull saturates (so a very happy city isn't an unstoppable magnet) while misery still strongly repels, and happiness amplifies a city's economy instead of dwarfing it. Off = the legacy linear weight.</Text></Row>
+        <Row Tag="LOC_EMIG_T_HSCALE"><Text>Happiness (shaped): saturation scale</Text></Row>
+        <Row Tag="LOC_EMIG_T_HSCALE_D"><Text>How many points above the world-average happiness count as "very happy" before the pull saturates. Higher = happiness keeps mattering longer. Only used by the shaped model.</Text></Row>
+        <Row Tag="LOC_EMIG_T_HAMP"><Text>Happiness (shaped): economy amplification</Text></Row>
+        <Row Tag="LOC_EMIG_T_HAMP_D"><Text>How much a happy city's economy is amplified (and a miserable one suppressed) as a migration draw. Only used by the shaped model.</Text></Row>
+        <Row Tag="LOC_EMIG_T_OCDISC"><Text>Overcrowding: discount (0 = off)</Text></Row>
+        <Row Tag="LOC_EMIG_T_OCDISC_D"><Text>Credit back some of the unhappiness a city suffers purely from urban overcrowding, so a deliberately tall/dense city isn't double-punished (its density already suppresses its yields). 0 = off.</Text></Row>
+        <Row Tag="LOC_EMIG_T_OCTHRESH"><Text>Overcrowding: urban density threshold</Text></Row>
+        <Row Tag="LOC_EMIG_T_OCTHRESH_D"><Text>Urban population a city can hold before overcrowding counts against it (mirrors the game's overcrowding threshold). Only used when the discount is on.</Text></Row>
+
+        <Row Tag="LOC_EMIG_T_VPP"><Text>War: emigration per violence point (%)</Text></Row>
+        <Row Tag="LOC_EMIG_T_VPP_D"><Text>Score penalty per point of accumulated combat intensity in a city's borders.</Text></Row>
+        <Row Tag="LOC_EMIG_T_VCAP"><Text>War: max violence penalty (%)</Text></Row>
+        <Row Tag="LOC_EMIG_T_VCAP_D"><Text>Ceiling on the violence penalty, so a rout saturates rather than runs away.</Text></Row>
+        <Row Tag="LOC_EMIG_T_VDECAY"><Text>War: violence decay per turn</Text></Row>
+        <Row Tag="LOC_EMIG_T_VDECAY_D"><Text>How fast accumulated violence fades with no new fighting (lower = fades faster).</Text></Row>
+        <Row Tag="LOC_EMIG_T_VFLEE"><Text>War: violence needed to flee an invader</Text></Row>
+        <Row Tag="LOC_EMIG_T_VFLEE_D"><Text>Minimum violence before refugees flee directionally away from the nearest enemy.</Text></Row>
+        <Row Tag="LOC_EMIG_T_VASSAULT"><Text>War: weight of fresh city damage</Text></Row>
+        <Row Tag="LOC_EMIG_T_VASSAULT_D"><Text>Intensity added when a city takes new district damage in a turn (an assault spike).</Text></Row>
+        <Row Tag="LOC_EMIG_T_VSIEGE"><Text>War: weight of ongoing siege</Text></Row>
+        <Row Tag="LOC_EMIG_T_VSIEGE_D"><Text>Intensity added each turn while a city center stays damaged.</Text></Row>
+        <Row Tag="LOC_EMIG_T_VPILLAGE"><Text>War: weight per pillaged tile (0 = off)</Text></Row>
+        <Row Tag="LOC_EMIG_T_VPILLAGE_D"><Text>Intensity per pillaged improvement in a city's borders, per turn. 0 skips the scan.</Text></Row>
+        <Row Tag="LOC_EMIG_T_WARSIEGE"><Text>War: use the siege model (capped + escalating)</Text></Row>
+        <Row Tag="LOC_EMIG_T_WARSIEGE_D"><Text>Make war-driven emigration escalate the longer a city is besieged, but cap the total a city can lose to war so it can't be fully depopulated without a capture (the remnant digs in). Off = the legacy flat violence penalty.</Text></Row>
+        <Row Tag="LOC_EMIG_T_SRAMP"><Text>War (siege): turns to full intensity</Text></Row>
+        <Row Tag="LOC_EMIG_T_SRAMP_D"><Text>How many turns a siege must last to reach its full emigration pressure (a fresh raid starts gentle and ramps up). Only used by the siege model.</Text></Row>
+        <Row Tag="LOC_EMIG_T_SCAP"><Text>War (siege): max share lost to war</Text></Row>
+        <Row Tag="LOC_EMIG_T_SCAP_D"><Text>The most of a city's population (as a fraction of its size when the siege began) that war-driven emigration can take before it stops. Only used by the siege model.</Text></Row>
+        <Row Tag="LOC_EMIG_T_WARSURGE"><Text>War: refugee surge per turn (1 = off)</Text></Row>
+        <Row Tag="LOC_EMIG_T_WARSURGE_D"><Text>The most rural population a heavily besieged city can shed in a single turn. War refugees then leave in bursts that scale with the intensity of the fighting, instead of a steady one-per-turn trickle, still bounded by the siege loss cap. 1 = off (the old trickle).</Text></Row>
+        <Row Tag="LOC_EMIG_T_AGGRESSOR"><Text>War: avoid the aggressor (0 = off)</Text></Row>
+        <Row Tag="LOC_EMIG_T_AGGRESSOR_D"><Text>How strongly refugees fleeing a war avoid the civilization that attacked them, preferring their own cities first, then any third party, and the aggressor last. 0 = off (refugees ignore who started the war).</Text></Row>
+        <Row Tag="LOC_EMIG_T_OWNCIV"><Text>War: prefer own civilization</Text></Row>
+        <Row Tag="LOC_EMIG_T_OWNCIV_D"><Text>How strongly war refugees prefer to resettle within their own civilization before crossing to another. Only used when "avoid the aggressor" is on.</Text></Row>
+
+        <Row Tag="LOC_EMIG_T_DIST"><Text>Geography: distance penalty</Text></Row>
+        <Row Tag="LOC_EMIG_T_DIST_D"><Text>Pull penalty per hex between source and destination. Higher = more local migration.</Text></Row>
+        <Row Tag="LOC_EMIG_T_FLEE"><Text>Geography: flee-from-invader strength</Text></Row>
+        <Row Tag="LOC_EMIG_T_FLEE_D"><Text>How strongly refugees prefer destinations away from the nearest invader.</Text></Row>
+        <Row Tag="LOC_EMIG_T_POACH"><Text>Geography: cross-civ friction</Text></Row>
+        <Row Tag="LOC_EMIG_T_POACH_D"><Text>Extra reluctance to migrate across a civilization border.</Text></Row>
+        <Row Tag="LOC_EMIG_T_OPENDEAL"><Text>Geography: Open Borders migration boost</Text></Row>
+        <Row Tag="LOC_EMIG_T_OPENDEAL_D"><Text>How much a base-game Open Borders agreement between two civilizations eases migration between them, both directions. 0 = off.</Text></Row>
+        <Row Tag="LOC_EMIG_T_TRANSITLAG"><Text>Geography: transit lag (0 = instant)</Text></Row>
+        <Row Tag="LOC_EMIG_T_TRANSITLAG_D"><Text>The longest a migrant can spend traveling before arriving. They leave the source the turn they depart; the actual delay scales with the distance to their destination (farther = longer), up to this cap. War refugees always take at least a turn. If their destination is destroyed while they are en route, they perish in transit. 0 = instant arrival.</Text></Row>
+
+        <Row Tag="LOC_EMIG_T_ASLOAD"><Text>Assimilation: load per migrant</Text></Row>
+        <Row Tag="LOC_EMIG_T_ASLOAD_D"><Text>Assimilation "load" added to the receiving civilization for each migrant it absorbs. The civ pays a per-turn cost proportional to its current load, which decays over the assimilation duration. 0 = off.</Text></Row>
+        <Row Tag="LOC_EMIG_T_ASPOP"><Text>Assimilation: overcrowding scaling</Text></Row>
+        <Row Tag="LOC_EMIG_T_ASPOP_D"><Text>Multiplies the load added by (1 + this × destination population), so absorbing into a large settlement adds more, the brake on runaway population magnets.</Text></Row>
+        <Row Tag="LOC_EMIG_T_ASDECAY"><Text>Assimilation: decay per turn (duration)</Text></Row>
+        <Row Tag="LOC_EMIG_T_ASDECAY_D"><Text>How fast the assimilation load fades each turn, this sets the duration of the cost. Lower = shorter (migrants integrate faster); higher = the cost lingers longer.</Text></Row>
+        <Row Tag="LOC_EMIG_T_ASHAP"><Text>Assimilation: happiness per turn per load</Text></Row>
+        <Row Tag="LOC_EMIG_T_ASHAP_D"><Text>Happiness drained each turn per unit of assimilation load. 0 = off. (Inferred lever, if it no-ops in your build, use the gold cost.)</Text></Row>
+        <Row Tag="LOC_EMIG_T_ASGOLD"><Text>Assimilation: gold per turn per load</Text></Row>
+        <Row Tag="LOC_EMIG_T_ASGOLD_D"><Text>Gold drained each turn per unit of assimilation load. 0 = off. (Probe-confirmed deduction lever, including across civilizations.)</Text></Row>
+
+        <Row Tag="LOC_EMIG_T_MHHAP"><Text>Cost: happiness per held migrant unit</Text></Row>
+        <Row Tag="LOC_EMIG_T_MHHAP_D"><Text>Happiness drained each turn per UNIT_MIGRANT a civilization is holding (unsettled), scaling with the count, so overflow migrants must be settled, not hoarded. 0 = off. (Inferred lever, see the gold cost note.)</Text></Row>
+        <Row Tag="LOC_EMIG_T_MHGOLD"><Text>Cost: gold per held migrant unit</Text></Row>
+        <Row Tag="LOC_EMIG_T_MHGOLD_D"><Text>Gold drained each turn per UNIT_MIGRANT a civilization is holding, scaling with the count. 0 = off. (Probe-confirmed deduction lever.)</Text></Row>
+        <Row Tag="LOC_EMIG_T_CONGEST"><Text>Cost: congestion headwind (0 = off)</Text></Row>
+        <Row Tag="LOC_EMIG_T_CONGEST_D"><Text>Make a civilization that's absorbing lots of migrants a less attractive destination for further migration (it's busy integrating newcomers), scaling with how much it's digesting. A structural brake on runaway magnets. 0 = off.</Text></Row>
+        <Row Tag="LOC_EMIG_T_DISASTERS"><Text>Disasters: drive migration</Text></Row>
+        <Row Tag="LOC_EMIG_T_DISASTERS_D"><Text>Let environmental disasters (floods, volcanoes, plagues, …) push population out of struck cities as climate/disaster refugees, alongside war and unhappiness. Off = disasters don't affect migration.</Text></Row>
+        <Row Tag="LOC_EMIG_T_DPP"><Text>Disasters: emigration per distress point (%)</Text></Row>
+        <Row Tag="LOC_EMIG_T_DPP_D"><Text>How strongly accumulated disaster distress in a city pushes its people to leave. Only used when disasters drive migration.</Text></Row>
+        <Row Tag="LOC_EMIG_T_DDECAY"><Text>Disasters: distress decay per turn</Text></Row>
+        <Row Tag="LOC_EMIG_T_DDECAY_D"><Text>How fast a disaster's distress fades once it passes (lower = fades faster). Only used when disasters drive migration.</Text></Row>
+        <Row Tag="LOC_EMIG_T_PLAGUECARRY"><Text>Disasters: migrants carry plague</Text></Row>
+        <Row Tag="LOC_EMIG_T_PLAGUECARRY_D"><Text>Let refugees fleeing an infected city seed a smaller outbreak-distress at their destination, migration as a contagion vector, beyond the game's trade-network spread.</Text></Row>
+        <Row Tag="LOC_EMIG_T_NOTIFYMODE"><Text>Notifications: verbosity</Text></Row>
+        <Row Tag="LOC_EMIG_T_NOTIFYMODE_D"><Text>How chatty migration notifications are: 0 = off, 1 = important only (refugee crises and severe disasters, the default), 2 = verbose (a summary every turn there's notable migration).</Text></Row>
+        <Row Tag="LOC_EMIG_T_NOTIFYDISASTER"><Text>Notifications: min disaster severity</Text></Row>
+        <Row Tag="LOC_EMIG_T_NOTIFYDISASTER_D"><Text>Only notify for disasters at or above this severity (0 = even minor events, 3 = only legendary ones like a great eruption). Minor disasters still affect migration silently.</Text></Row>
+        <Row Tag="LOC_EMIG_T_NOTIFYCD"><Text>Notifications: minimum gap (turns)</Text></Row>
+        <Row Tag="LOC_EMIG_T_NOTIFYCD_D"><Text>The fewest turns between important notifications, so they can't bunch up. 0 = no limit.</Text></Row>
+        <Row Tag="LOC_EMIG_T_NOTIFYWORLD"><Text>Notifications: refugee-crisis threshold</Text></Row>
+        <Row Tag="LOC_EMIG_T_NOTIFYWORLD_D"><Text>How many people (cumulative) a civilization must displace before a refugee-crisis headline fires, once per multiple crossed, so a long war makes a few headlines, not one per turn.</Text></Row>
+        <Row Tag="LOC_EMIG_T_CITYREADOUT"><Text>Per-city migration readout</Text></Row>
+        <Row Tag="LOC_EMIG_T_CITYREADOUT_D"><Text>Show an on-demand panel explaining why a selected settlement is gaining or losing population: the dominant cause, where its people are pulled, the assimilation cost, and what you can do about it.</Text></Row>
+        <Row Tag="LOC_EMIG_T_ATTRITION"><Text>Outlet: attrition when there's no refuge</Text></Row>
+        <Row Tag="LOC_EMIG_T_ATTRITION_D"><Text>Keep migration from being a closed system: a trapped, badly distressed city (siege, starvation, heavy violence or disaster) with nowhere viable to flee loses population, people die or scatter rather than stay forever.</Text></Row>
+        <Row Tag="LOC_EMIG_T_ATTRDISTRESS"><Text>Outlet: distress needed for attrition (%)</Text></Row>
+        <Row Tag="LOC_EMIG_T_ATTRDISTRESS_D"><Text>How dire a city's situation (siege/starvation/violence/disaster, as a percentage penalty) must be before trapped population starts to die off. Higher = only the most desperate cities. Only used when the outlet is on.</Text></Row>
+        <Row Tag="LOC_EMIG_T_ATTRTHRESH"><Text>Outlet: attrition rate threshold</Text></Row>
+        <Row Tag="LOC_EMIG_T_ATTRTHRESH_D"><Text>Pressure a trapped, distressed city must build before it loses one population point. Lower = faster die-off. Only used when the outlet is on.</Text></Row>
+
+        <!-- Demographics graph metric names. The Demographics metric tab builds its
+             label key as LOC_DEMOGRAPHICS_METRIC_<METRIC_ID_UPPERCASED>, so these keys
+             must match our metric ids (emig_net_migration / emig_out / emig_in /
+             emig_refugees) exactly, or the tab prints the raw key. -->
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION"><Text>Net Migration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION_SUBTITLE"><Text>(immigration minus emigration each turn)</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT"><Text>Emigration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_SUBTITLE"><Text>(people leaving this civilization for elsewhere)</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN"><Text>Immigration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_SUBTITLE"><Text>(people arriving in this civilization from elsewhere)</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES"><Text>Refugees</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_SUBTITLE"><Text>(people displaced by war, disaster, or conquest)</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_TOOLTIP"><Text>Population displaced by war, disaster, and conquest.</Text></Row>
+
+        <!-- War-graph refugees title (Demographics namespace). The war-popup row label
+             and glossary live in the Demographics mod, which owns this namespace. -->
+        <Row Tag="LOC_DEMOGRAPHICS_WAR_GRAPHS_T_REFUGEES"><Text>Refugees Generated</Text></Row>
+
+        <!-- Named refugee-event headlines (toasts / world news) -->
+        <Row Tag="LOC_EMIG_NEWS_DISASTER"><Text>The {1_EventName} displaces {2_People}.</Text></Row>
+        <Row Tag="LOC_EMIG_NEWS_WAR"><Text>{2_People} flee the {1_WarName}.</Text></Row>
+        <Row Tag="LOC_EMIG_NEWS_CONQUEST"><Text>The sack of {1_City} scatters {2_People}.</Text></Row>
+        <Row Tag="LOC_EMIG_NEWS_GENERIC"><Text>{2_People} leave {1_City}.</Text></Row>
+        <Row Tag="LOC_EMIG_NEWS_CRISIS"><Text>Refugee crisis: {1_Civ}, {2_People} displaced.</Text></Row>
+
+        <!-- Phase-1 explanatory toast: per-cause loss headline for the local player's digest -->
+        <Row Tag="LOC_EMIG_DIGEST_UNHAPPINESS"><Text>{1_People} left {2_City}, unhappy at home.</Text></Row>
+        <Row Tag="LOC_EMIG_DIGEST_PROSPERITY"><Text>{1_People} left {2_City} for more prosperous neighbors.</Text></Row>
+        <Row Tag="LOC_EMIG_DIGEST_WAR"><Text>{1_People} fled the fighting around {2_City}.</Text></Row>
+        <Row Tag="LOC_EMIG_DIGEST_DISASTER"><Text>{1_People} fled {2_City} after disaster struck.</Text></Row>
+        <Row Tag="LOC_EMIG_DIGEST_ATTRITION"><Text>{1_People} were lost from {2_City} with nowhere to flee.</Text></Row>
+
+        <!-- Phase-1 explanatory toast: cause-keyed "what can I do" action hint -->
+        <Row Tag="LOC_EMIG_HINT_UNHAPPINESS"><Text>Raise this city's happiness, or slot an Anti-Immigration Stance to retain them.</Text></Row>
+        <Row Tag="LOC_EMIG_HINT_PROSPERITY"><Text>A neighbor is out-prospering this city; grow its yields to keep people home.</Text></Row>
+        <Row Tag="LOC_EMIG_HINT_WAR"><Text>Refugees flee the fighting; relieve the siege or make peace to stem the outflow.</Text></Row>
+        <Row Tag="LOC_EMIG_HINT_DISASTER"><Text>Disaster displacement - it subsides on its own as the distress decays.</Text></Row>
+        <Row Tag="LOC_EMIG_HINT_ATTRITION"><Text>Trapped with nowhere to go - open a route out or relieve the distress.</Text></Row>
+
+        <!-- Phase-1 explanatory toast: temporary / persistent / permanent cue -->
+        <Row Tag="LOC_EMIG_PERMANENCE_TEMPORARY"><Text>The pressure is temporary.</Text></Row>
+        <Row Tag="LOC_EMIG_PERMANENCE_PERSISTENT"><Text>It continues until you address the cause.</Text></Row>
+        <Row Tag="LOC_EMIG_PERMANENCE_PERMANENT"><Text>Those people are gone for good.</Text></Row>
+
+        <!-- Phase-1 explanatory toast: destination assimilation-cost note -->
+        <Row Tag="LOC_EMIG_COST_NOTE"><Text>{1_Dest} pays about {2_Gold} gold/turn to assimilate them.</Text></Row>
+
+        <!-- Border policy cards (primary UI) -->
+        <Row Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME"><Text>Pro-Immigration Stance</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC"><Text>Welcome [icon:YIELD_POPULATION] migrants from around the world. Immigration to your cities rises by 50%, and your cosmopolitan reputation earns [icon:YIELD_DIPLOMACY] Influence each turn: +1, +2, then +3 across the ages.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME"><Text>Anti-Immigration Stance</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC"><Text>Close your borders to the world. Foreign [icon:YIELD_POPULATION] newcomers fall to 40% (about 60% fewer), and far fewer of your own citizens leave for rival civilizations. A mobilized home economy adds [icon:YIELD_PRODUCTION] Production in every city: +2, +3, then +4 across the ages. Isolation has its price in [icon:YIELD_DIPLOMACY] Influence each turn: -2, -3, then -4 across the ages.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_TALENT_NAME"><Text>Talent Attraction</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_TALENT_DESC"><Text>[icon:YIELD_POPULATION] Newcomers strengthen your research. Gain +1 [icon:YIELD_SCIENCE] Science, rising to +2 in the Modern Age, plus a Science bonus that grows by about +1.5 for each immigrant you attract, up to +12 per turn. This bonus fades if immigration stops.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_CULTPULL_NAME"><Text>Cultural Magnetism</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_CULTPULL_DESC"><Text>[icon:YIELD_POPULATION] Newcomers enrich your culture. Gain +1 [icon:YIELD_CULTURE] Culture, rising to +2 in the Modern Age, plus a Culture bonus that grows by about +1.5 for each immigrant you attract, up to +12 per turn. This bonus fades if immigration stops.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_TRADEPULL_NAME"><Text>Commercial Draw</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_TRADEPULL_DESC"><Text>[icon:YIELD_POPULATION] Newcomers swell your markets. Gain +1 [icon:YIELD_GOLD] Gold, rising to +2 in the Modern Age, plus a Gold bonus that grows by about +1.5 for each immigrant you attract, up to +12 per turn. This bonus fades if immigration stops.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME"><Text>Selective Asylum</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC"><Text>Open your doors to those fleeing war and disaster. Refugees are strongly drawn to you, the most desperate first, and your humanitarian standing earns +1 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME"><Text>Refugee Compact</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC"><Text>A standing commitment to the displaced. Refugees flow strongly toward you, the most desperate first, enriching your culture and earning +2 [icon:YIELD_DIPLOMACY] Influence and +1 [icon:YIELD_CULTURE] Culture each turn.</Text></Row>
+
+        <!-- Civilopedia: dedicated "Emigration" section + concept pages -->
+        <Row Tag="LOC_PEDIA_EMIG_TITLE"><Text>Emigration</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIG_GROUP_TITLE"><Text>Emigration</Text></Row>
+
+        <Row Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE"><Text>Emigration</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY"><Text>Emigration adds living population movement to the world. Each turn, citizens leave unhappy, struggling, or war-torn settlements and resettle in happier, more prosperous ones, within your civilization and across borders to others.[n][n]Where people go is decided by a Prosperity model that weighs each city's happiness, yields, and situation, shaped by distance so migration stays regional. Receiving migrants is not free: a civilization pays an assimilation cost as newcomers integrate.[n][n]Most of the system's deeper behaviors (refugees that shun an aggressor, border policies, disasters, and a population outlet) are optional and can be enabled in Options, under Mods, Emigration.</Text></Row>
+
+        <Row Tag="LOC_PEDIA_EMIG_PROSPERITY_TITLE"><Text>Prosperity &amp; Migration</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIG_PROSPERITY_BODY"><Text>Every settlement is scored for Prosperity from its per-capita yields and, above all, its net happiness. An unhappy city steadily loses people to happier, wealthier ones even in peacetime, while a small penalty for sheer size keeps thriving towns from becoming bottomless magnets.[n][n]People prefer nearby destinations, so migration spreads outward across the region rather than leaping across the map. War, siege, starvation, unrest, and disaster all sharply lower a city's Prosperity, turning it into a source of refugees.</Text></Row>
+
+        <Row Tag="LOC_PEDIA_EMIG_REFUGEES_TITLE"><Text>War &amp; Refugees</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIG_REFUGEES_BODY"><Text>A city only sheds war refugees when there is actual violence inside its borders, its districts taking damage, or pillaging on its land, not merely because its empire is at war. The longer a siege grinds on, the more it drives people out, but a city can never be fully emptied by war alone: short of an outright capture, a remnant always digs in.[n][n]Refugees flee away from the nearest invader. With aggressor avoidance enabled, they also prefer their own civilization first, then any neutral power, and treat the civilization that attacked them as a destination of last resort.</Text></Row>
+
+        <Row Tag="LOC_PEDIA_EMIG_ASSIMILATION_TITLE"><Text>Assimilation &amp; the Cost of Growth</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIG_ASSIMILATION_BODY"><Text>Absorbing migrants is not free. Each newcomer adds an assimilation load to the receiving civilization, which pays a per-turn cost (in gold and in happiness) until that load fades over the integration period. A civilization that keeps pulling people in keeps paying.[n][n]A congestion effect can further make a civilization that is busy digesting migrants a less attractive destination for still more, a brake that no amount of wealth can simply buy past. Together these keep any single civilization from snowballing into an unstoppable magnet for the world's people.</Text></Row>
+
+        <Row Tag="LOC_PEDIA_EMIG_BORDERS_TITLE"><Text>Borders &amp; Influence</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIG_BORDERS_BODY"><Text>Two levers shape migration across your borders. Your own stance is a policy card, available in every age. Slot the Pro-Immigration Stance to welcome the world: more migrants arrive, and your cosmopolitan reputation earns a little Influence each turn. Or slot the Anti-Immigration Stance to close yourself off: fewer foreigners arrive and fewer of your own people leave for rivals, and a mobilized home economy adds Production in every city, though the world judges your isolation with a steady Influence drain. Choose whichever fits your strategy.[n][n]Diplomacy matters too. When you and another civilization sign an Open Borders agreement, migrants flow more freely between your two lands, in both directions.</Text></Row>
+
+        <Row Tag="LOC_PEDIA_EMIG_ATTRACTION_TITLE"><Text>Attraction &amp; Asylum</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY"><Text>Where the stance policies decide whether your borders are open, a second set of cards decides what you make of the people who pass through them. The Talent, Cultural, and Commercial Attraction policies turn immigration into an engine: every newcomer you draw banks a growing dividend of Science, Culture, or Gold that compounds while people keep arriving and fades once the inflow stops, the bright mirror of the assimilation cost, rewarding the civilization that stays a magnet rather than punishing it.[n][n]The Asylum policies answer a different call. Throwing your doors open to those fleeing war and catastrophe draws refugees toward you, the most desperate first, and the world remembers the gesture in Influence, with the later compact enriching your culture besides. Together they let a welcoming people profit from openness rather than merely endure it.</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIG_RAIDS_TITLE"><Text>Talent Raids</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIG_RAIDS_BODY"><Text>Attraction need not wait for migration to come to you. From the diplomacy screen you can aim a Talent Raid, Cultural Offensive, or Commercial Offensive at a rival, a sustained campaign to bend their people toward your cities. For as long as it runs you pay Influence each turn, and in return that rival's migration tilts your way, drawing off their brightest minds, cultural figures, or merchants; each one who arrives banks the matching Science, Culture, or Gold dividend, exactly as a willing immigrant would.[n][n]It is a tool of cold competition, not war: no city is attacked and no border is crossed by force, yet a stronger neighbor's talent can be quietly drained to your benefit for the price of sustained diplomatic effort.</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIG_DISASTERS_TITLE"><Text>Disasters &amp; Plague</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIG_DISASTERS_BODY"><Text>Environmental disasters (floods, volcanoes, plagues, and more) drive people out of stricken cities as climate and disaster refugees, alongside war and unhappiness. The worse the event, the harder it pushes; minor events only nudge migration quietly.[n][n]Plague is doubly dangerous: an infected city both loses population and, if migrants carry the contagion, can seed a smaller outbreak wherever its refugees settle, spreading disease along the very roads of flight.</Text></Row>
+
+        <Row Tag="LOC_PEDIA_EMIG_OUTLET_TITLE"><Text>When There Is No Refuge</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIG_OUTLET_BODY"><Text>Migration is not a sealed system. When a city is desperate, under siege, starving, or devastated by disaster, and there is nowhere safe left to flee, its trapped population does not simply wait forever. People die or scatter, and the city loses population with no destination.[n][n]This outlet is a measure of last resort: a content city with merely nowhere better to go is left untouched, and the loss is counted as deaths, kept distinct from the refugees who actually reach a new home.</Text></Row>
+
+        <Row Tag="LOC_PEDIA_EMIG_CIVTUNING_TITLE"><Text>Leaders &amp; Civilizations</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY"><Text>A handful of leaders and civilizations feel migration differently, so their historical character shows through. These are small, bounded adjustments on top of the global rules, never enough to let anyone snowball, and they apply only while per-civ tuning is on (it is, by default).[n][n]Leaders whose happiness would otherwise make every city an unstoppable magnet pull a little less strongly: Benjamin Franklin most of all, with Isabella, Ashoka, and Rizal also reined in. Wealthy conquerors find spoils costlier to settle, Isabella and Xerxes pay more to absorb the people they win.[n][n]Tall, specialist-minded powers are shielded from overcrowding so their dense cities aren't punished twice: Pachacuti, and the Abbasids most of all. Fast-growing peoples whose numbers outrun their prosperity get a small cushion to keep their citizens, Confucius, the Han, and the Qing, while the Khmer are spared the worst of their own non-capital unhappiness. And realms built behind strong walls, the Normans and the English, hold their population through a siege far better than the unwalled.</Text></Row>
+    </EnglishText>
+</Database>

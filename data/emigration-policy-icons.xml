@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Civic-tree / policy-chooser icons for the border-policy cards.
+
+  The UI resolves a tradition's icon via UI.getIconURL(TraditionType, "TRADITION")
+  (core/ui/utilities/utilities-image.js). With no IconDefinition for a type it falls back
+  to DEFAULT_TRADITION (blp:prod_tradition) - the generic card icon every base tradition
+  uses - so the cards are never blank. These rows give the two stances distinct, thematic
+  art instead: the open gate from the base Open Borders diplomacy action, and the walls
+  icon for the closed stance.
+
+  IconDefinitions.ID is a plain string key (not a foreign key to Types), so all six
+  per-age types can be mapped from one always-loaded file regardless of the active age.
+  Swap the Path values to retheme.
+
+  IMPORTANT: this file must be loaded via an <UpdateIcons> action in the modinfo, NOT
+  <UpdateDatabase>. IconDefinitions lives in the icon database, not the gameplay database;
+  loading it with <UpdateDatabase> fails with "no such table: IconDefinitions".
+-->
+<Database>
+    <IconDefinitions>
+        <Row><ID>TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY</ID><Path>blp:esp_opengate</Path></Row>
+        <Row><ID>TRADITION_EMIG_OPEN_BORDERS_EXPLORATION</ID><Path>blp:esp_opengate</Path></Row>
+        <Row><ID>TRADITION_EMIG_OPEN_BORDERS_MODERN</ID><Path>blp:esp_opengate</Path></Row>
+        <Row><ID>TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY</ID><Path>blp:advcard_walls</Path></Row>
+        <Row><ID>TRADITION_EMIG_CLOSED_BORDERS_EXPLORATION</ID><Path>blp:advcard_walls</Path></Row>
+        <Row><ID>TRADITION_EMIG_CLOSED_BORDERS_MODERN</ID><Path>blp:advcard_walls</Path></Row>
+        <Row><ID>TRADITION_EMIG_TALENT_EXPLORATION</ID><Path>blp:fi_ntf_new_population_64</Path></Row>
+        <Row><ID>TRADITION_EMIG_TALENT_MODERN</ID><Path>blp:fi_ntf_new_population_64</Path></Row>
+        <Row><ID>TRADITION_EMIG_CULTPULL_EXPLORATION</ID><Path>blp:celeb_culture_icon</Path></Row>
+        <Row><ID>TRADITION_EMIG_CULTPULL_MODERN</ID><Path>blp:celeb_culture_icon</Path></Row>
+        <Row><ID>TRADITION_EMIG_TRADEPULL_EXPLORATION</ID><Path>blp:fi_trade_income_64</Path></Row>
+        <Row><ID>TRADITION_EMIG_TRADEPULL_MODERN</ID><Path>blp:fi_trade_income_64</Path></Row>
+        <Row><ID>TRADITION_EMIG_ASYLUM_EXPLORATION</ID><Path>blp:esp_opengate</Path></Row>
+        <Row><ID>TRADITION_EMIG_ASYLUM_MODERN</ID><Path>blp:esp_opengate</Path></Row>
+    </IconDefinitions>
+</Database>
