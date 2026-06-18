@@ -17,6 +17,7 @@ import LensManager from "/core/ui/lenses/lens-manager.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
 import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
+import { civHidden } from "/emigration/ui/emigration-governance.js";
 
 const LENS = "emig-ethnicity-lens";
 const LAYER = "emig-ethnicity-layer";
@@ -52,7 +53,9 @@ function hexToFloat4(hex, alpha) {
  */
 function fillFor(dominant) {
   const alpha = MIN_ALPHA + (MAX_ALPHA - MIN_ALPHA) * Math.max(0, Math.min(1, dominant.share));
-  return hexToFloat4(civDisplayColor(dominant.civ, FALLBACK_HEX), alpha);
+  // Mask the origin's identity colour when the policy hides that civ (neutral grey instead).
+  const hex = civHidden(dominant.civ) ? FALLBACK_HEX : civDisplayColor(dominant.civ, FALLBACK_HEX);
+  return hexToFloat4(hex, alpha);
 }
 
 /**
@@ -89,6 +92,7 @@ function cityFills() {
   /** @type {{city:*, fill:*}[]} */
   const out = [];
   for (const s of signals) {
+    if (civHidden(s.owner)) continue; // don't reveal a policy-hidden civ's settlements on the map
     const comp = compositionForCity(s.city);
     if (comp && comp.dominant) out.push({ city: s.city, fill: fillFor(comp.dominant) });
   }

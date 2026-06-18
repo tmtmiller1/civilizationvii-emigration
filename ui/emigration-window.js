@@ -18,6 +18,7 @@ import { getSampleData, getSnapshotInterval } from "/emigration/ui/emigration-se
 import { sampleDashboard } from "/emigration/ui/emigration-demo-data.js";
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
+import { civHidden } from "/emigration/ui/emigration-governance.js";
 
 /**
  * The local player id, or null.
@@ -42,7 +43,9 @@ function inPlayCivs() {
   const owners = new Set();
   try {
     for (const s of collectCitySignals()) {
-      if (typeof s.owner === "number") owners.add(s.owner);
+      // Visibility masking (governance policy): the sim may run globally, but the dashboard hides
+      // civs the effective policy withholds (unmet, or non-local under own-civ-only).
+      if (typeof s.owner === "number" && !civHidden(s.owner)) owners.add(s.owner);
     }
   } catch (_) {
     /* ignore */
@@ -124,7 +127,11 @@ function nameEdges(raw) {
  */
 function gatherFlows() {
   const D = /** @type {*} */ (globalThis).EmigrationData || {};
-  return typeof D.flows === "function" ? nameEdges(D.flows()) : [];
+  if (typeof D.flows !== "function") return [];
+  // Drop edges touching a policy-hidden civ so the network/flows viz never reveals one.
+  return nameEdges(
+    (D.flows() || []).filter((/** @type {*} */ e) => !civHidden(e.src) && !civHidden(e.dest))
+  );
 }
 
 /**
@@ -149,7 +156,7 @@ function citiesByOwner() {
   const byCiv = new Map();
   try {
     for (const s of collectCitySignals()) {
-      if (typeof s.owner !== "number") continue;
+      if (typeof s.owner !== "number" || civHidden(s.owner)) continue; // mask hidden civs (network)
       let list = byCiv.get(s.owner);
       if (!list) {
         list = [];
@@ -223,7 +230,11 @@ function gatherHistory(nativeNow) {
     /** @type {Record<number, *>} */
     const pops = {};
     for (const k of Object.keys(nativeNow)) pops[+k] = scalePops(nativeNow[+k], frac);
-    return { turn: f.turn, age: f.age, year: f.year || "", flows: nameEdges(f.edges), pops };
+    // Mask hidden civs from historical flow frames too (the timeline scrubber).
+    const edges = (f.edges || []).filter(
+      (/** @type {*} */ e) => !civHidden(e.src) && !civHidden(e.dest)
+    );
+    return { turn: f.turn, age: f.age, year: f.year || "", flows: nameEdges(edges), pops };
   });
 }
 

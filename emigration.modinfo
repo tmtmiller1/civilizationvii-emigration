@@ -104,6 +104,7 @@
                     <Item>ui/emigration-flow-history.js</Item>
                     <Item>ui/emigration-telemetry.js</Item>
                     <Item>ui/emigration-composition.js</Item>
+                    <Item>ui/emigration-governance.js</Item>
                     <Item>ui/emigration-city-readout-data.js</Item>
                     <Item>ui/emigration-city-readout.js</Item>
                     <Item>ui/emigration-views.js</Item>

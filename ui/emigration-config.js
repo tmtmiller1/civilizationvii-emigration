@@ -36,7 +36,10 @@ export const CONFIG = {
   // ── scope ────────────────────────────────────────────────────────
   crossCivEnabled: true, // confirmed reachable by the probe
   includeCityStates: false,
-  requireMet: true, // only consider foreign cities the local player has met
+  // Simulation SCOPE (not a visibility control): true = met-only (default, lighter per-turn cost);
+  // false = global (every alive civ simulates from turn 1). UI visibility is handled separately by
+  // emigration-governance.js, so turning this off does not leak unmet civs into the dashboard/lens.
+  requireMet: true,
 
   // ── prosperity: per-capita productiveness yield weights ───────────
   foodFactor: 1.0, // sustenance / growth headroom
