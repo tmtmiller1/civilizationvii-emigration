@@ -211,5 +211,33 @@
         <Replace Tag="LOC_PEDIA_EMIG_OUTLET_BODY" Language="fr_FR"><Text>La migration n'est pas un système clos. Quand une ville est désespérée, assiégée, affamée ou dévastée par une catastrophe, et qu'il ne reste nulle part où fuir en sécurité, sa population prise au piège n'attend pas indéfiniment. Les gens meurent ou se dispersent, et la ville perd de la population sans destination.[n][n]Cet exutoire est un ultime recours : une ville satisfaite à qui il manque seulement un meilleur endroit reste intacte, et la perte est comptée comme des morts, distincte des réfugiés qui atteignent vraiment un nouveau foyer.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_TITLE" Language="fr_FR"><Text>Dirigeants et civilisations</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="fr_FR"><Text>Quelques dirigeants et civilisations vivent la migration autrement, si bien que leur caractère historique transparaît. Ce sont de petits ajustements bornés au-dessus des règles globales, jamais assez pour laisser qui que ce soit s'emballer, et ils ne s'appliquent que tant que le réglage par civilisation est activé (il l'est, par défaut).[n][n]Les dirigeants dont le bonheur ferait sinon de chaque ville un aimant irrésistible attirent un peu moins fort : Benjamin Franklin avant tout, avec Isabelle, Ashoka et Rizal également tempérés. Les conquérants fortunés trouvent le butin plus coûteux à installer, Isabelle et Xerxès paient davantage pour absorber les gens qu'ils gagnent.[n][n]Les puissances hautes et spécialisées sont protégées de la surpopulation pour que leurs villes denses ne soient pas punies deux fois : Pachacuti et, surtout, les Abbassides. Les peuples à croissance rapide dont le nombre dépasse la prospérité reçoivent un petit coussin pour garder leurs citoyens, Confucius, les Han et les Qing, tandis que les Khmers sont épargnés du pire de leur propre malheur hors capitale. Et les royaumes bâtis derrière de solides murailles, les Normands et les Anglais, conservent leur population durant un siège bien mieux que ceux sans murs.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_OPEN" Language="fr_FR"><Text>Migration</Text></Replace>
+        <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="fr_FR"><Text>Prospérité</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA" Language="fr_FR"><Text>Données du tableau de bord</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA_DESCRIPTION" Language="fr_FR"><Text>Affiche la migration réelle, ou des données d'exemple pour prévisualiser la visualisation avant l'apparition de vrais flux.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA_LIVE" Language="fr_FR"><Text>En direct</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA_SAMPLE" Language="fr_FR"><Text>Exemple (aperçu)</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SNAP" Language="fr_FR"><Text>Détail de la chronologie</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SNAP_DESCRIPTION" Language="fr_FR"><Text>Fréquence à laquelle le réseau migratoire enregistre un instantané pour la chronologie : moins de tours par instantané donne une lecture plus fine, pour un léger coût de taille de sauvegarde.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="fr_FR"><Text>Pas encore de migration entre civilisations — les flux apparaissent dès que des personnes franchissent les frontières.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="fr_FR"><Text>Colorer par :</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="fr_FR"><Text>Origine</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="fr_FR"><Text>Type</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_LENS_MOVEMENT" Language="fr_FR"><Text>Mouvement</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MOVE_RESIDENTS" Language="fr_FR"><Text>Résidents</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MOVE_INTERNAL" Language="fr_FR"><Text>Mouvements internes</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MOVE_IMMIGRANTS" Language="fr_FR"><Text>Immigrants</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RESIDENTS_TIP" Language="fr_FR"><Text>Afficher / masquer les résidents locaux</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIP_RESIDENT" Language="fr_FR"><Text>résident local</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIP_INTERNAL" Language="fr_FR"><Text>mouvement interne</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_CLUSTER_TIP" Language="fr_FR"><Text>arrivées {1_In} · net {2_Net}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_NOW" Language="fr_FR"><Text>maintenant</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TURN_N" Language="fr_FR"><Text>tour {1_Turn}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_START" Language="fr_FR"><Text>début</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="fr_FR"><Text>Chaque point ≈ {1_People} personnes. Le cercle d'une civilisation contient ses villes et bourgs sous forme de sous-groupes internes : les points de la couleur propre de la civilisation sont des résidents locaux, les points d'une teinte PLUS CLAIRE sont des personnes ayant migré entre ses propres villes (migration interne), et les points d'une autre couleur sont des immigrants de cette origine. La vue « Colorer par » les recolore par origine, type de migrant (guerre / catastrophe / attraction …) ou mouvement (résidents / interne / immigrants).</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_SHOW" Language="fr_FR"><Text>Afficher :</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="fr_FR"><Text>pas encore de population</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_ORIGINS" Language="fr_FR"><Text>Origines</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_ORIGINS_TIP" Language="fr_FR"><Text>Tracer des lignes vers l'origine des migrants</Text></Replace>
     </LocalizedText>
 </Database>

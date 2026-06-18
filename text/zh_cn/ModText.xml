@@ -211,5 +211,33 @@
         <Replace Tag="LOC_PEDIA_EMIG_OUTLET_BODY" Language="zh_Hans_CN"><Text>迁徙并非封闭的系统。当一座城市陷入绝境，被围、挨饿，或为灾害所摧残，而再无安全之地可逃时，被困的居民不会就这样永远等待下去。人们死去或四散，城市在无处可去之中损失人口。[n][n]这道泄流口是万不得已的最后手段：仅仅是无更好去处的满足城市不会受到触动，而这份损失计为死亡，与真正抵达新家园的难民有所区别。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_TITLE" Language="zh_Hans_CN"><Text>领袖与文明</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="zh_Hans_CN"><Text>少数领袖与文明对迁徙的感受有所不同，其历史性格因而显现。这些是叠加在全局规则之上的微小而有界的调整，绝不足以让任何一方滚雪球，且仅在按文明微调启用时生效（默认启用）。[n][n]那些幸福度本会使每座城市都成为不可阻挡磁石的领袖，吸引力会略微减弱：本杰明·富兰克林尤甚，伊莎贝拉、阿育王与黎刹也受到收敛。富有的征服者会发现安置战利品的代价更高，伊莎贝拉与薛西斯要付出更多，才能吸纳所赢得的人口。[n][n]纵向发展、专家导向的强权得以免受过度拥挤之害，使其密集的城市不致受到双重惩罚：帕查库特克,尤其是阿拔斯王朝。人口增长快于繁荣的民族会获得一点缓冲以留住其公民，孔子、汉与清，而高棉则得以免去其非首都不幸的最严重部分。而筑于坚墙之后的邦国，诺曼与英格兰，在围城期间远比无墙者更能保住人口。</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_OPEN" Language="zh_Hans_CN"><Text>迁徙</Text></Replace>
+        <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="zh_Hans_CN"><Text>繁荣</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA" Language="zh_Hans_CN"><Text>面板数据</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA_DESCRIPTION" Language="zh_Hans_CN"><Text>在面板中显示实时迁徙，或显示示例数据以在真实的跨文明流动形成之前预览可视化。</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA_LIVE" Language="zh_Hans_CN"><Text>实时</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA_SAMPLE" Language="zh_Hans_CN"><Text>示例（预览）</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SNAP" Language="zh_Hans_CN"><Text>迁徙时间线精细度</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SNAP_DESCRIPTION" Language="zh_Hans_CN"><Text>迁徙网络为时间线记录快照的频率：每个快照间隔的回合越少，回放越精细，但存档体积会略微增大。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="zh_Hans_CN"><Text>尚无跨文明迁移——当人们跨越边界时便会出现流动。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="zh_Hans_CN"><Text>着色依据：</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="zh_Hans_CN"><Text>来源</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="zh_Hans_CN"><Text>类型</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_LENS_MOVEMENT" Language="zh_Hans_CN"><Text>迁移</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MOVE_RESIDENTS" Language="zh_Hans_CN"><Text>居民</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MOVE_INTERNAL" Language="zh_Hans_CN"><Text>内部迁移</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MOVE_IMMIGRANTS" Language="zh_Hans_CN"><Text>移民</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RESIDENTS_TIP" Language="zh_Hans_CN"><Text>显示/隐藏本地居民</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIP_RESIDENT" Language="zh_Hans_CN"><Text>本地居民</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIP_INTERNAL" Language="zh_Hans_CN"><Text>内部迁移</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_CLUSTER_TIP" Language="zh_Hans_CN"><Text>迁入 {1_In} · 净 {2_Net}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_NOW" Language="zh_Hans_CN"><Text>现在</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TURN_N" Language="zh_Hans_CN"><Text>第 {1_Turn} 回合</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_START" Language="zh_Hans_CN"><Text>开始</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="zh_Hans_CN"><Text>每个圆点 ≈ {1_People} 人。一个文明的圆圈将其城市与城镇作为内部子群：文明本色的圆点是本地居民，较浅色调的圆点是在其自有城市之间迁移的人（内部迁移），其他颜色的圆点是来自该来源的移民。“着色依据”视角会按来源、迁移类型（战争／灾害／吸引 …）或迁移方式（居民／内部／移民）重新着色。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_SHOW" Language="zh_Hans_CN"><Text>显示：</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="zh_Hans_CN"><Text>尚无人口</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_ORIGINS" Language="zh_Hans_CN"><Text>来源</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_ORIGINS_TIP" Language="zh_Hans_CN"><Text>显示通往移民来源的连线</Text></Replace>
     </LocalizedText>
 </Database>

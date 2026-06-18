@@ -15,7 +15,7 @@ import { rankByProsperity } from "/emigration/ui/emigration-prosperity.js";
 import { applyTunableOverrides } from "/emigration/ui/emigration-settings.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
 import { reportMigration } from "/emigration/ui/emigration-report.js";
-import { recordMigrations } from "/emigration/ui/emigration-migration-stats.js";
+import { recordMigrations, accountLosses, markCityRemoved } from "/emigration/ui/emigration-migration-stats.js";
 import { registerMigrationMetric } from "/emigration/ui/emigration-demographics.js";
 import { tickAssimilation } from "/emigration/ui/emigration-effects.js";
 import { applyMigrantHoldingPenalty } from "/emigration/ui/emigration-migrant-units.js";
@@ -26,10 +26,24 @@ import { hasOpenBordersDeal } from "/emigration/ui/emigration-geography.js";
 import { reportPassFeedback } from "/emigration/ui/emigration-feedback.js";
 import { installEmigrationEvents } from "/emigration/ui/emigration-events.js";
 import { installCityReadout } from "/emigration/ui/emigration-city-readout.js";
-import { installEmigrationWindow } from "/emigration/ui/emigration-window.js";
+import { installEmigrationConsole } from "/emigration/ui/emigration-screen.js";
+import { installEmigrationDock } from "/emigration/ui/emigration-dock-decorator.js";
 import { registerMigrationPage } from "/emigration/ui/emigration-migration-page.js";
 
 let lastLocalTurnRun = -999;
+
+/**
+ * A monotonic millisecond clock for debug timing (Perf plan P2 #6); 0 if unavailable.
+ * @returns {number} Milliseconds.
+ */
+function nowMs() {
+  try {
+    const g = /** @type {*} */ (globalThis);
+    return g.performance && g.performance.now ? g.performance.now() : Date.now();
+  } catch (_) {
+    return 0;
+  }
+}
 
 /**
  * Run a pass and report results. Returns the migration count.
@@ -37,6 +51,7 @@ let lastLocalTurnRun = -999;
  * @returns {number} Migrations applied.
  */
 function doPass(why) {
+  const t0 = nowMs(); // Perf plan P2 #6: time the local-turn pass (debug-only via dlog).
   let migrations = [];
   try {
     migrations = runPass();
@@ -44,8 +59,15 @@ function doPass(why) {
     dlog("pass threw " + e);
     return 0;
   }
+  // Account external population loss EVERY turn (starvation/plague/razing/disasters), even when no
+  // migration happened — it's a turn-over-turn population diff, not tied to a move.
+  try {
+    accountLosses(collectCitySignals(), migrations);
+  } catch (e) {
+    dlog("accountLosses threw " + e);
+  }
   if (!migrations.length) {
-    dlog("pass (" + why + ") no migrations this turn");
+    dlog("pass (" + why + ") none, " + Math.round(nowMs() - t0) + "ms");
     return 0;
   }
   recordMigrations(migrations); // feed the Demographics net-migration graph (all phases)
@@ -54,7 +76,7 @@ function doPass(why) {
   // told the story; surfacing both would double-toast and double-count the cause summary).
   const newsworthy = migrations.filter((m) => m.phase !== "arrive");
   reportPassFeedback(newsworthy); // in-game toasts / world-news (§10)
-  dlog("pass (" + why + ") " + migrations.length + " migration(s)");
+  dlog("pass (" + why + ") " + migrations.length + " migs, " + Math.round(nowMs() - t0) + "ms");
   for (const m of newsworthy) reportMigration(m);
   return migrations.length;
 }
@@ -141,6 +163,16 @@ function dumpRanking() {
   }
 }
 
+/** Install the in-game UI hooks (readout, console, dock button, prosperity lens). */
+function installUi() {
+  installEmigrationEvents(); // disaster event hook (§10/§11)
+  installCityReadout(); // per-city migration readout: console commands + best-effort selection
+  installEmigrationConsole(); // console: emigration.window() opens the standalone screen
+  installEmigrationDock(); // in-game dock button that opens that screen (no console needed)
+  // The prosperity map lens self-registers as its own <UIScripts> entry (emigration-prosperity-lens
+  // .js), in the HUD context where LensManager lives — it is intentionally NOT wired through here.
+}
+
 /** Boot. */
 function boot() {
   applyTunableOverrides(); // push saved option values into CONFIG before any pass
@@ -186,12 +218,12 @@ function boot() {
   try {
     engine.on("DiplomacyDeclareWar", (/** @type {*} */ d) => recordWarDeclared(d));
     engine.on("DiplomacyMakePeace", (/** @type {*} */ d) => recordPeace(d));
+    // Razing (distinct from conquest's CityTransfered): credit the razed city's residual as a loss.
+    engine.on("CityRemovedFromMap", (/** @type {*} */ d) => markCityRemoved(d && d.cityID));
   } catch (_) {
     /* ignore */
   }
-  installEmigrationEvents(); // disaster event hook (§10/§11)
-  installCityReadout(); // per-city migration readout: console commands + best-effort selection
-  installEmigrationWindow(); // standalone migration dashboard window (console: emigration.window())
+  installUi();
   // Raid actions (§4b) are native diplomacy actions (Diplomacy Extended mod); they appear in the
   // diplomacy screen on their own. Emigration reads their active state; no UI hook needed here.
   // No on-screen dev controls: run-pass / dump-ranking are available via the

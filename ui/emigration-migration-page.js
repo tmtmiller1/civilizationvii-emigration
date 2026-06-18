@@ -11,7 +11,7 @@
 // If the installed Demographics predates `registerPanel`, registration is a silent no-op — the
 // standalone window still covers the same content, so nothing is lost.
 
-import { dashboardModel, renderDashboard } from "/emigration/ui/emigration-views.js";
+import { dashboardModel, renderDashboardTabbed } from "/emigration/ui/emigration-views.js";
 import { gatherDashboard } from "/emigration/ui/emigration-window.js";
 
 /**
@@ -20,7 +20,7 @@ import { gatherDashboard } from "/emigration/ui/emigration-window.js";
  */
 function renderInto(container) {
   try {
-    renderDashboard(container, dashboardModel(gatherDashboard()));
+    renderDashboardTabbed(container, dashboardModel(gatherDashboard()));
   } catch (_) {
     /* a render failure must never break the Demographics screen */
   }

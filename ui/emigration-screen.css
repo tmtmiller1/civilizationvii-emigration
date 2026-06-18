@@ -1,0 +1,36 @@
+/* emigration-screen.css
+ *
+ * Chrome for the standalone Emigration screen (screen-emigration). The dashboard CONTENT
+ * styles itself via a stylesheet injected by emigration-views.js (so the same content also
+ * looks right inside the Demographics "Migration" page); this file only sizes and frames the
+ * screen so it reads like a base-UI panel. */
+
+.emig-screen-root {
+    /* Match the Demographics screen: a near-fullscreen modal. */
+    width: 100vw;
+    height: 100vh;
+    pointer-events: auto;
+}
+
+.emig-screen-frame {
+    width: 96vw;
+    height: 94vh;
+    max-width: 96vw;
+    max-height: 94vh;
+    min-height: 0;
+}
+
+.emig-screen-title {
+    margin-bottom: 0.5rem;
+}
+
+.emig-screen-body {
+    padding: 0 1.4rem 1.4rem 1.4rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.emig-screen-host {
+    /* The injected .emig-dash supplies the card layout + spacing. */
+    min-height: 6rem;
+}

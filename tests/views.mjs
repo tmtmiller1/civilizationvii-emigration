@@ -1,17 +1,21 @@
 import assert from "node:assert/strict";
 
 // The view-model builders are pure (formatPeople + causeLabel are pure); no engine globals.
-const { civLedgerRows, causeBreakdownRows, stanceRows, pressureRows, dashboardModel } = await import(
-  "/emigration/ui/emigration-views.js"
-);
+const { civLedgerRows, causeBreakdownRows, stanceRows, pressureRows, flowNetwork, dashboardModel } =
+  await import("/emigration/ui/emigration-views.js");
 
 function testCivLedgerFormatsPeopleAndNet() {
-  const rows = civLedgerRows([{ name: "Rome", in: 5000, out: 12000, net: -7000, refugees: 3000, deaths: 0 }]);
+  const rows = civLedgerRows([
+    { name: "Rome", in: 5000, out: 12000, net: -7000, refugees: 3000, deaths: 0,
+      inPts: 1, outPts: 3, netPts: -2, refugeesPts: 1, deathsPts: 0,
+      stanceImpact: { in: 1600, out: 0, inPts: 1, outPts: 0 } }
+  ]);
   assert.equal(rows[0].name, "Rome");
-  assert.equal(rows[0].in, "5 thousand");
-  assert.equal(rows[0].out, "12 thousand");
-  assert.equal(rows[0].net, "-7 thousand"); // signed
-  assert.equal(rows[0].deaths, "0");
+  assert.equal(rows[0].inP, 5000); // scaled people, raw (formatted per number-mode at render)
+  assert.equal(rows[0].netP, -7000);
+  assert.equal(rows[0].netPts, -2); // exact pop-point net
+  assert.equal(rows[0].lossP, 0); // attrition + external population loss
+  assert.equal(rows[0].stInP, 1600); // border-stance impact on immigration carried through
 }
 
 function testCauseBreakdownSortsAndComputesShare() {
@@ -23,14 +27,16 @@ function testCauseBreakdownSortsAndComputesShare() {
   assert.equal(rows[1].pct, 25);
 }
 
-function testStanceRowsOnlyListsHolders() {
+function testStanceRowsListsAllCivsPolicyFirst() {
   const rows = stanceRows([
-    { name: "Rome", stance: "pro" },
+    { name: "Greece", stance: "none" },
     { name: "Carthage", stance: "anti" },
-    { name: "Greece", stance: "none" }
+    { name: "Rome", stance: "pro" }
   ]);
-  assert.equal(rows.length, 2); // "none" filtered out
-  assert.deepEqual(rows.map((r) => r.stance).sort(), ["Anti-Immigration", "Pro-Immigration"]);
+  assert.equal(rows.length, 3); // every civ listed (Neutral included)
+  assert.deepEqual(rows.map((r) => r.name), ["Rome", "Carthage", "Greece"]); // pro, anti, neutral
+  assert.equal(rows[2].stance, "Neutral");
+  assert.equal(rows[2].key, "none");
 }
 
 function testPressureRowsSortDescAndFlag() {
@@ -47,16 +53,47 @@ function testPressureRowsSortDescAndFlag() {
   assert.equal(rows.find((r) => r.city === "Rest").flag, "resting");
 }
 
-function testDashboardModelHasFourSections() {
-  const m = dashboardModel({ civs: [], byCause: {}, cities: [] });
-  assert.equal(m.sections.length, 4);
-  assert.deepEqual(m.sections.map((s) => s.kind), ["ledger", "bars", "stances", "pressure"]);
+function testDashboardModelSections() {
+  const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [] });
+  assert.equal(m.sections.length, 6);
+  assert.deepEqual(
+    m.sections.map((s) => s.kind),
+    ["network", "flowmap", "ledger", "pies", "cityflows", "stances"]
+  );
+}
+
+function testFlowNetworkAggregatesNodesAndEdges() {
+  const net = flowNetwork([
+    { from: 1, to: 2, fromName: "Rome", toName: "Egypt", fromCity: "Rome", toCity: "Memphis",
+      people: 9000, byCause: { war: 9000 } },
+    { from: 1, to: 2, fromName: "Rome", toName: "Egypt", fromCity: "Ostia", toCity: "Memphis",
+      people: 1000, byCause: { war: 1000 } },
+    { from: 2, to: 1, fromName: "Egypt", toName: "Rome", fromCity: "Memphis", toCity: "Rome",
+      people: 3000, byCause: { prosperity: 3000 } },
+    { from: 3, to: 1, fromName: "Maya", toName: "Rome", people: 0 } // dropped (no people)
+  ]);
+  // Nodes: Rome and Egypt only (the 0-people Maya edge contributes nothing).
+  assert.deepEqual(net.nodes.map((n) => n.name).sort(), ["Egypt", "Rome"]);
+  const rome = net.nodes.find((n) => n.name === "Rome");
+  assert.equal(rome.outflow, 10000); // 9000 + 1000 out to Egypt
+  assert.equal(rome.inflow, 3000); // 3000 in from Egypt
+  assert.equal(rome.total, 13000);
+  // Civ-level edges merge the two Rome→Egypt city pairs into one civ→civ edge.
+  assert.equal(net.edges.length, 2);
+  assert.equal(net.edges[0].people, 10000); // strongest (merged Rome→Egypt)
+  assert.equal(net.edges[0].byCause.war, 10000);
+  assert.equal(net.maxEdge, 10000);
+  // City-level edges keep each origin AND destination settlement distinct.
+  assert.equal(net.cityEdges.length, 3);
+  assert.equal(net.cityEdges[0].fromCity, "Rome");
+  assert.equal(net.cityEdges[0].toCity, "Memphis");
 }
 
 testCivLedgerFormatsPeopleAndNet();
 testCauseBreakdownSortsAndComputesShare();
-testStanceRowsOnlyListsHolders();
+testStanceRowsListsAllCivsPolicyFirst();
 testPressureRowsSortDescAndFlag();
-testDashboardModelHasFourSections();
+testDashboardModelSections();
+testFlowNetworkAggregatesNodesAndEdges();
 
 console.log("views harness passed");

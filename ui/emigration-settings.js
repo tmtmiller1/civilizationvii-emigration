@@ -13,30 +13,35 @@ import { TUNABLES, PRESETS, PRESET_NAMES } from "/emigration/ui/emigration-tunab
 const MOD_ID = "emigration";
 const OPT_NUMBER_MODE = "numberMode";
 const OPT_PRESET = "preset";
+const OPT_SAMPLE = "sampleData";
+const OPT_SNAP = "snapshotInterval";
+const SNAP_DEFAULT = 3; // turns per migration-timeline snapshot (user-adjustable 1..5)
 
 // String-keyed views over the typed config objects (same references), so the
 // generic tunable code can index them by arbitrary CONFIG key.
 const CFG = /** @type {Record<string, *>} */ (CONFIG);
 const CFG_DEF = /** @type {Record<string, *>} */ (CONFIG_DEFAULTS);
 
-/** How migration counts are presented. Default BOTH. */
+// How migration counts are presented. A two-way toggle: Civ Pop (raw pop-points) or Scaled Pop
+// (historical people). BOTH is retained only so older saved values coerce cleanly to Scaled.
 export const NumberMode = Object.freeze({
-  BOTH: 0, // "1 population point (12 thousand people)"
+  BOTH: 0, // legacy "1 point (12 thousand people)" — coerced to HISTORICAL on read
   CIV: 1, // "1 population point"
-  HISTORICAL: 2 // "12 thousand people"
+  HISTORICAL: 2 // "12 thousand people" (Scaled Pop)
 });
 
 /** @type {number|null} */
 let _mode = null;
 
 /**
- * The current display mode (lazily loaded, default BOTH).
- * @returns {number} A NumberMode value.
+ * The current display mode (lazily loaded). Civ Pop or Scaled Pop; a legacy BOTH coerces to Scaled.
+ * Default Scaled Pop.
+ * @returns {number} A NumberMode value (CIV or HISTORICAL).
  */
 export function getNumberMode() {
   if (_mode == null) {
     const v = ModOptions.load(MOD_ID, OPT_NUMBER_MODE);
-    _mode = typeof v === "number" && v >= 0 && v <= 2 ? v : NumberMode.BOTH;
+    _mode = v === NumberMode.CIV ? NumberMode.CIV : NumberMode.HISTORICAL;
   }
   return _mode;
 }
@@ -48,6 +53,57 @@ export function getNumberMode() {
 export function setNumberMode(mode) {
   _mode = typeof mode === "number" && mode >= 0 && mode <= 2 ? mode : NumberMode.BOTH;
   ModOptions.save(MOD_ID, OPT_NUMBER_MODE, _mode);
+}
+
+/** @type {boolean|null} */
+let _sample = null;
+
+/**
+ * Whether the dashboard should render synthetic SAMPLE data (preview mode). Default false (live).
+ * @returns {boolean} True when sample mode is on.
+ */
+export function getSampleData() {
+  if (_sample == null) _sample = ModOptions.load(MOD_ID, OPT_SAMPLE) === 1;
+  return _sample;
+}
+
+/**
+ * Set + persist the sample-data preference.
+ * @param {boolean} on Whether to show sample data.
+ */
+export function setSampleData(on) {
+  _sample = !!on;
+  ModOptions.save(MOD_ID, OPT_SAMPLE, _sample ? 1 : 0);
+}
+
+/** @type {number|null} */
+let _snap = null;
+
+/**
+ * Clamp a snapshot interval to 1..5 turns (defaulting when invalid).
+ * @param {*} n Candidate.
+ * @returns {number} Interval in [1,5].
+ */
+function clampSnap(n) {
+  return typeof n === "number" && n >= 1 && n <= 5 ? Math.round(n) : SNAP_DEFAULT;
+}
+
+/**
+ * Timeline-detail setting: turns between migration-flow snapshots (1 = finest). Default 3.
+ * @returns {number} Interval in [1,5].
+ */
+export function getSnapshotInterval() {
+  if (_snap == null) _snap = clampSnap(ModOptions.load(MOD_ID, OPT_SNAP));
+  return _snap;
+}
+
+/**
+ * Set + persist the timeline-detail setting (turns per snapshot).
+ * @param {number} n Interval (clamped to 1..5).
+ */
+export function setSnapshotInterval(n) {
+  _snap = clampSnap(n);
+  ModOptions.save(MOD_ID, OPT_SNAP, _snap);
 }
 
 // ── Tunables (exposed CONFIG knobs) ───────────────────────────────────────

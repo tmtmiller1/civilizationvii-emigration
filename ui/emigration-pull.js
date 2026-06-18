@@ -18,6 +18,19 @@ import { raidTilt } from "/emigration/ui/emigration-raid.js";
 import { congestionPenalty } from "/emigration/ui/emigration-effects.js";
 import { warAggressors } from "/emigration/ui/emigration-war.js";
 
+// When set, the openness/retention border multipliers are forced to neutral (1). The stance-impact
+// counterfactual (emigration-engine.js) toggles this around a "what if borders were neutral?" plan;
+// it is reset immediately after, so the real decision path always sees true stances.
+let _neutralBorders = false;
+
+/**
+ * Force border multipliers neutral (for the stance-impact counterfactual) — or restore them.
+ * @param {boolean} on Whether to neutralize border stance.
+ */
+export function setNeutralBorders(on) {
+  _neutralBorders = !!on;
+}
+
 /** @typedef {import("/emigration/ui/emigration-causes.js").MigrationCause} MigrationCause */
 
 /**
@@ -138,7 +151,7 @@ export function adjustedPull(src, dest, flee, ownerPop, aggressors) {
  * @returns {number} A positive multiplier.
  */
 function opennessFor(dest) {
-  if (!CONFIG.bordersEnabled) return 1;
+  if (_neutralBorders || !CONFIG.bordersEnabled) return 1;
   return immigrationOpenness(dest.owner);
 }
 
@@ -149,7 +162,7 @@ function opennessFor(dest) {
  * @returns {number} A positive multiplier (<= 1).
  */
 function retentionFor(src) {
-  if (!CONFIG.bordersEnabled) return 1;
+  if (_neutralBorders || !CONFIG.bordersEnabled) return 1;
   return emigrationRetention(src.owner);
 }
 

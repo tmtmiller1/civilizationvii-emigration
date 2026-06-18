@@ -19,7 +19,11 @@ import {
   getNumberMode,
   setNumberMode,
   getPresetIndex,
-  applyPresetIndex
+  applyPresetIndex,
+  getSampleData,
+  setSampleData,
+  getSnapshotInterval,
+  setSnapshotInterval
 } from "/emigration/ui/emigration-settings.js";
 import { PRESET_NAMES } from "/emigration/ui/emigration-tunables.js";
 
@@ -29,6 +33,18 @@ const NUMBER_MODE_ITEMS = [
   { label: "LOC_OPTIONS_EMIGRATION_NUMBERS_BOTH" },
   { label: "LOC_OPTIONS_EMIGRATION_NUMBERS_CIV" },
   { label: "LOC_OPTIONS_EMIGRATION_NUMBERS_HISTORICAL" }
+];
+const DATA_MODE_ITEMS = [
+  { label: "LOC_OPTIONS_EMIG_DATA_LIVE" },
+  { label: "LOC_OPTIONS_EMIG_DATA_SAMPLE" }
+];
+// Timeline detail: turns per snapshot (index 0 → every turn … index 4 → every 5 turns).
+const SNAP_ITEMS = [
+  { label: "Every turn (finest)" },
+  { label: "Every 2 turns" },
+  { label: "Every 3 turns" },
+  { label: "Every 4 turns" },
+  { label: "Every 5 turns" }
 ];
 const PRESET_ITEMS = PRESET_NAMES.map((n) => ({ label: "LOC_EMIG_PRESET_" + n.toUpperCase() }));
 
@@ -80,8 +96,40 @@ function registerAdvancedEditor() {
   });
 }
 
+/** Register the dashboard data-source dropdown (Live vs Sample preview). */
+function registerDataMode() {
+  Options.addOption({
+    category: CategoryType.Mods,
+    group: MAIN_GROUP,
+    type: OptionType.Dropdown,
+    id: "emigration-data-mode",
+    initListener: (/** @type {*} */ info) => (info.selectedItemIndex = getSampleData() ? 1 : 0),
+    updateListener: (/** @type {*} */ _i, /** @type {number} */ v) => setSampleData(v === 1),
+    label: "LOC_OPTIONS_EMIG_DATA",
+    description: "LOC_OPTIONS_EMIG_DATA_DESCRIPTION",
+    dropdownItems: DATA_MODE_ITEMS
+  });
+}
+
+/** Register the timeline-detail dropdown (turns per migration snapshot, 1..5). */
+function registerSnapshotInterval() {
+  Options.addOption({
+    category: CategoryType.Mods,
+    group: MAIN_GROUP,
+    type: OptionType.Dropdown,
+    id: "emigration-snap-interval",
+    initListener: (/** @type {*} */ info) => (info.selectedItemIndex = getSnapshotInterval() - 1),
+    updateListener: (/** @type {*} */ _i, /** @type {number} */ v) => setSnapshotInterval(v + 1),
+    label: "LOC_OPTIONS_EMIG_SNAP",
+    description: "LOC_OPTIONS_EMIG_SNAP_DESCRIPTION",
+    dropdownItems: SNAP_ITEMS
+  });
+}
+
 Options.addInitCallback(() => {
   registerNumberMode();
   registerPreset();
+  registerDataMode();
+  registerSnapshotInterval();
   registerAdvancedEditor();
 });
