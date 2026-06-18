@@ -61,7 +61,7 @@
         <Replace Tag="LOC_EMIG_T_POP" Language="zh_Hans_CN"><Text>繁荣权重: 人口惩罚</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POP_D" Language="zh_Hans_CN"><Text>城市规模在多大程度上对其不利（让繁荣的小城市仍有吸引力）。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_HSHAPED" Language="zh_Hans_CN"><Text>幸福度: 使用弧形模型</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSHAPED_D" Language="zh_Hans_CN"><Text>用更细腻的模型取代平直的幸福度权重：幸福度以世界平均为基准衡量，其吸引力会饱和（极幸福的城市不会成为不可阻挡的磁石），而苦难仍强烈排斥，且幸福度会放大经济而非掩盖经济。关闭 = 旧的线性权重。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSHAPED_D" Language="zh_Hans_CN"><Text>用更细腻的模型取代平直的幸福度权重：幸福度以世界平均为基准衡量，其吸引力会饱和（极幸福的城市不会成为主导性磁石），而苦难仍强烈排斥，且幸福度会放大经济而非掩盖经济。关闭 = 旧的线性权重。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_HSCALE" Language="zh_Hans_CN"><Text>幸福度（弧形）: 饱和尺度</Text></Replace>
         <Replace Tag="LOC_EMIG_T_HSCALE_D" Language="zh_Hans_CN"><Text>在吸引力饱和之前，高于世界平均多少点算作“非常幸福”。越高，幸福度起作用的时间越长。仅塑形模型使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_HAMP" Language="zh_Hans_CN"><Text>幸福度（弧形）: 经济放大</Text></Replace>
@@ -169,8 +169,8 @@
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="zh_Hans_CN"><Text>提升该城的幸福度，或采取反移民立场以留住他们。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="zh_Hans_CN"><Text>邻邦正在超越这座城市；提升其产出以留住人口。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="zh_Hans_CN"><Text>难民正逃离战火；解除围城或缔结和平以遏制外流。</Text></Replace>
-        <Replace Tag="LOC_EMIG_HINT_DISASTER" Language="zh_Hans_CN"><Text>灾难导致的迁徙——灾情消退后会自行缓解。</Text></Replace>
-        <Replace Tag="LOC_EMIG_HINT_ATTRITION" Language="zh_Hans_CN"><Text>走投无路——开辟一条出路或缓解灾情。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_DISASTER" Language="zh_Hans_CN"><Text>灾难导致的迁徙，灾情消退后会自行缓解。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_ATTRITION" Language="zh_Hans_CN"><Text>走投无路，开辟一条出路或缓解灾情。</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="zh_Hans_CN"><Text>这种压力是暂时的。</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="zh_Hans_CN"><Text>在你解决根源之前，它将持续。</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="zh_Hans_CN"><Text>这些人口已永远失去。</Text></Replace>
@@ -198,19 +198,19 @@
         <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_TITLE" Language="zh_Hans_CN"><Text>战争与难民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_BODY" Language="zh_Hans_CN"><Text>唯有当城市边界之内确有暴力发生时，其区域受损，或其领地遭到劫掠，城市才会涌出战争难民，而非仅因其帝国处于战争状态。围城拖得越久，被赶走的人就越多，但仅凭战争永远无法将一座城市彻底清空：只要未被真正占领，总有一部分人坚守不去。[n][n]难民朝着远离最近侵略者的方向逃亡。启用躲避侵略者后，他们还会优先选择本国文明，其次是任何中立势力，并将攻击过自己的文明视作最后的退路。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_TITLE" Language="zh_Hans_CN"><Text>同化与增长的代价</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_BODY" Language="zh_Hans_CN"><Text>吸纳移民并非无偿。每位新来者都会给接纳的文明增添一份同化负荷，文明须为此逐回合付出代价，以金币与幸福度计，直到该负荷在融入期内消退。不断吸引人口的文明，便要不断付出。[n][n]此外，拥挤效应会使一个忙于消化移民的文明，对更多移民而言成为吸引力更低的去处，这是一道再多财富也无法径直买通的闸。二者合力，防止任何单一文明沦为吸引天下人口、势不可挡的磁石。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_BODY" Language="zh_Hans_CN"><Text>吸纳移民并非无偿。每位新来者都会给接纳的文明增添一份同化负荷，文明须为此逐回合付出代价，以金币与幸福度计，直到该负荷在融入期内消退。不断吸引人口的文明，便要不断付出。[n][n]此外，拥挤效应会使一个忙于消化移民的文明，对更多移民而言成为吸引力更低的去处，这是一道单凭财富无法消除的闸。二者合力，防止任何单一文明沦为吸引天下人口的主导性迁移磁石。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_BORDERS_TITLE" Language="zh_Hans_CN"><Text>边界与影响力</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_BORDERS_BODY" Language="zh_Hans_CN"><Text>两根杠杆塑造着跨越你边境的迁徙。你自身的立场是一张每个时代都可用的政策卡。选择亲移民立场以迎接世界：更多移民到来，你的世界主义声望每回合带来少许影响力。或选择反移民立场以自我封闭：到来的外国人减少，你本国人民流向对手的也减少，动员起来的国内经济为每座城市增加生产力，尽管世界以持续流失的影响力来评判你的孤立。选择契合你战略的那一张。[n][n]外交同样重要。当你与另一个文明签订开放边境协定时，移民会在你们两国之间更自由地双向流动。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_TITLE" Language="zh_Hans_CN"><Text>吸引与庇护</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="zh_Hans_CN"><Text>立场政策决定你的边境是否敞开，而另一组政策卡则决定你如何对待经由边境而来的人。人才吸引、文化魅力与商业吸引政策把移民化为引擎：你所吸引的每一位新来者都会积攒一份不断增长的科技、文化或金币红利，只要人潮持续涌入便会累积，一旦流入停止便逐渐消退，这是同化代价的光明镜像，奖励那个始终是磁石的文明，而非惩罚它。[n][n]庇护政策回应的是另一种召唤。向逃离战争与灾难者敞开大门，会把难民引向你，最绝望者优先，而世界以影响力铭记这一姿态，其后的契约更会丰富你的文化。二者相辅，使一个好客的民族得以从开放中获益，而非仅仅承受开放。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="zh_Hans_CN"><Text>立场政策决定你的边境是否敞开，而另一组政策卡则决定你如何对待经由边境而来的人。人才吸引、文化魅力与商业吸引政策把移民化为引擎：你所吸引的每一位新来者都会积攒一份不断增长的科技、文化或金币红利，只要人潮持续涌入便会累积，一旦流入停止便逐渐消退，这是同化代价的对应物，奖励持续保持吸引力的文明。[n][n]庇护政策回应的是另一种召唤。向逃离战争与灾难者敞开大门，会把难民引向你，最绝望者优先，而世界以影响力铭记这一姿态，其后的契约更会丰富你的文化。二者相辅，使一个好客的民族得以从开放中获益，而非仅仅承受开放。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_RAIDS_TITLE" Language="zh_Hans_CN"><Text>人才掠夺</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_RAIDS_BODY" Language="zh_Hans_CN"><Text>吸引不必等待移民自行到来。在外交界面上，你可以对竞争对手发动人才掠夺、文化攻势或贸易攻势，一场持续的运作，将对方的人民引向你的城市。只要它持续，你每回合便支付影响力，作为回报，那位对手的迁徙便向你倾斜，抽走其最杰出的头脑、文化人物或商人；每一位抵达者都会像自愿的移民一样，积攒相应的科技、文化或金币红利。[n][n]这是冷竞争的工具，而非战争：没有城市遭到攻击，也没有边境被强行越过，然而只需付出持续的外交努力，便可悄然将更强邻邦的人才吸纳为己用。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_RAIDS_BODY" Language="zh_Hans_CN"><Text>吸引不必等待移民自行到来。在外交界面上，你可以对竞争对手发动人才掠夺、文化攻势或贸易攻势，一场持续的运作，将对方的人民引向你的城市。只要它持续，你每回合便支付影响力，作为回报，那位对手的迁徙便向你倾斜，抽走其最杰出的头脑、文化人物或商人；每一位抵达者都会像自愿的移民一样，积攒相应的科技、文化或金币红利。[n][n]这是战略竞争的工具，而非战争：没有城市遭到攻击，也没有边境被强行越过，然而只需付出持续的外交努力，便可悄然将更强邻邦的人才吸纳为己用。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_TITLE" Language="zh_Hans_CN"><Text>灾害与瘟疫</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_BODY" Language="zh_Hans_CN"><Text>洪水、火山、瘟疫等环境灾害，会与战争和不幸一道，将人们作为气候与灾害难民赶出受灾城市。事件越严重，推力越强；轻微事件只会悄然促动迁徙。[n][n]瘟疫尤为凶险：受感染的城市不仅会损失人口，倘若移民携带疫病，还可能在其难民落脚之处播下规模较小的疫情，沿着逃亡之路散布病患。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OUTLET_TITLE" Language="zh_Hans_CN"><Text>无处可逃之时</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OUTLET_BODY" Language="zh_Hans_CN"><Text>迁徙并非封闭的系统。当一座城市陷入绝境，被围、挨饿，或为灾害所摧残，而再无安全之地可逃时，被困的居民不会就这样永远等待下去。人们死去或四散，城市在无处可去之中损失人口。[n][n]这道泄流口是万不得已的最后手段：仅仅是无更好去处的满足城市不会受到触动，而这份损失计为死亡，与真正抵达新家园的难民有所区别。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_TITLE" Language="zh_Hans_CN"><Text>领袖与文明</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="zh_Hans_CN"><Text>少数领袖与文明对迁徙的感受有所不同，其历史性格因而显现。这些是叠加在全局规则之上的微小而有界的调整，绝不足以让任何一方滚雪球，且仅在按文明微调启用时生效（默认启用）。[n][n]那些幸福度本会使每座城市都成为不可阻挡磁石的领袖，吸引力会略微减弱：本杰明·富兰克林尤甚，伊莎贝拉、阿育王与黎刹也受到收敛。富有的征服者会发现安置战利品的代价更高，伊莎贝拉与薛西斯要付出更多，才能吸纳所赢得的人口。[n][n]纵向发展、专家导向的强权得以免受过度拥挤之害，使其密集的城市不致受到双重惩罚：帕查库特克,尤其是阿拔斯王朝。人口增长快于繁荣的民族会获得一点缓冲以留住其公民，孔子、汉与清，而高棉则得以免去其非首都不幸的最严重部分。而筑于坚墙之后的邦国，诺曼与英格兰，在围城期间远比无墙者更能保住人口。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="zh_Hans_CN"><Text>少数领袖与文明对迁徙的感受有所不同，其历史性格因而显现。这些是叠加在全局规则之上的微小而有界的调整，绝不足以引发失控的增长，且仅在按文明微调启用时生效（默认启用）。[n][n]那些幸福度本会使城市成为主导性的迁移磁石的领袖，吸引力会略微减弱：本杰明·富兰克林尤甚，伊莎贝拉、阿育王与黎刹也受到收敛。富有的征服者会发现安置战利品的代价更高，伊莎贝拉与薛西斯要付出更多，才能吸纳所赢得的人口。[n][n]纵向发展、专家导向的强权得以免受过度拥挤之害，使其密集的城市不致受到双重惩罚：帕查库特克,尤其是阿拔斯王朝。人口增长快于繁荣的民族会获得一点缓冲以留住其公民，孔子、汉与清，而高棉则得以免去其非首都不幸的最严重部分。而筑于坚墙之后的邦国，诺曼与英格兰，在围城期间远比无墙者更能保住人口。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="zh_Hans_CN"><Text>迁徙</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="zh_Hans_CN"><Text>繁荣</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_ETHNICITY" Language="zh_Hans_CN"><Text>民族构成</Text></Replace>
@@ -220,7 +220,7 @@
         <Replace Tag="LOC_OPTIONS_EMIG_DATA_SAMPLE" Language="zh_Hans_CN"><Text>示例（预览）</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP" Language="zh_Hans_CN"><Text>迁徙时间线精细度</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP_DESCRIPTION" Language="zh_Hans_CN"><Text>迁徙网络为时间线记录快照的频率：每个快照间隔的回合越少，回放越精细，但存档体积会略微增大。</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="zh_Hans_CN"><Text>尚无跨文明迁移——当人们跨越边界时便会出现流动。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="zh_Hans_CN"><Text>尚无跨文明迁移，当人们跨越边界时便会出现流动。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="zh_Hans_CN"><Text>着色依据：</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="zh_Hans_CN"><Text>来源</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="zh_Hans_CN"><Text>类型</Text></Replace>
