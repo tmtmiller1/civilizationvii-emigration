@@ -22,6 +22,7 @@ import { loadState, ownerPopulations } from "/emigration/ui/emigration-state.js"
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
 import { civAdjective } from "/emigration/ui/emigration-naming.js";
+import { civHidden } from "/emigration/ui/emigration-governance.js";
 
 /**
  * The readout view-model for one city.
@@ -178,10 +179,18 @@ export function buildCitySnapshot(o) {
 function resolveComposition(city) {
   const comp = compositionForCity(city);
   if (!comp || !comp.civs.length) return null;
-  return {
-    total: comp.total,
-    parts: comp.civs.map((c) => ({ name: civAdjective(c.civ), share: c.share }))
-  };
+  // Mask origins from policy-hidden civs (e.g. unmet) by merging them into one "Unknown" bucket,
+  // so a visible settlement's breakdown never names a civ the player isn't allowed to see.
+  /** @type {{name:string, share:number}[]} */
+  const parts = [];
+  let unknown = 0;
+  for (const c of comp.civs) {
+    if (civHidden(c.civ)) unknown += c.share;
+    else parts.push({ name: civAdjective(c.civ), share: c.share });
+  }
+  if (unknown > 0) parts.push({ name: "Unknown", share: unknown });
+  parts.sort((a, b) => b.share - a.share);
+  return { total: comp.total, parts };
 }
 
 /**
