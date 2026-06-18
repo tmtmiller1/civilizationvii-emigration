@@ -36,10 +36,13 @@ export const CONFIG = {
   // ── scope ────────────────────────────────────────────────────────
   crossCivEnabled: true, // confirmed reachable by the probe
   includeCityStates: false,
-  // Simulation SCOPE (not a visibility control): true = met-only (default, lighter per-turn cost);
-  // false = global (every alive civ simulates from turn 1). UI visibility is handled separately by
-  // emigration-governance.js, so turning this off does not leak unmet civs into the dashboard/lens.
-  requireMet: true,
+  // Simulation SCOPE (not a visibility control): false = global (every alive civ simulates from
+  // turn 1) — the DEFAULT, so migration topology isn't biased by exploration order and conquered
+  // cities carry real origin history; true = met-only (lighter per-turn cost on large saves). UI
+  // visibility is handled separately (emigration-governance.js): unmet civs stay HIDDEN in the
+  // dashboard/lens by default and are revealed only by widening the analytics-visibility policy
+  // (opt-in), so global scope never leaks unmet civs.
+  requireMet: false,
 
   // ── prosperity: per-capita productiveness yield weights ───────────
   foodFactor: 1.0, // sustenance / growth headroom

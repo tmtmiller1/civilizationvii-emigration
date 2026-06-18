@@ -68,5 +68,5 @@ o = owners();
 assert.ok(o.has(1) && o.has(2), "met civs still present under met-only");
 assert.ok(!o.has(3), "unmet civ excluded under met-only scope (toggle honored)");
 
-CONFIG.requireMet = true; // leave at shipped default
+CONFIG.requireMet = false; // leave at shipped default (global)
 console.log("city-scope-global harness passed");
