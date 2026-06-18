@@ -3,7 +3,7 @@
 // Orchestrates the destination-cluster migration view on a 2D canvas: a light force layout
 // (emigration-network-sim.js) spreads the destination clusters apart; each cluster is a swarm of
 // origin-coloured dots (emigration-network-paint.js) where one dot is a SCALED chunk of migrants;
-// plus the chrome — an origin colour key, cause-filter chips, a timeline scrubber, click-to-isolate
+// plus the chrome , an origin colour key, cause-filter chips, a timeline scrubber, click-to-isolate
 // a destination, and hover tooltips.
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
@@ -18,7 +18,7 @@ import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
 import { makeTimeline } from "/emigration/ui/emigration-network-timeline.js";
 import { makeTooltip, wireEvents } from "/emigration/ui/emigration-network-interact.js";
 
-// Logical canvas size — a WIDE 2:1 rectangle so the draggable area spans the full window width
+// Logical canvas size , a WIDE 2:1 rectangle so the draggable area spans the full window width
 // (nodes seed clustered in the centre; the buffer is 2x these for crispness).
 export const WX = 1120;
 export const WY = 560;
@@ -99,7 +99,7 @@ function loc(key, fallback, ...args) {
 const NETC_CSS =
     ".emig-netc-wrap{position:relative;display:flex;flex-direction:column;align-items:center;}" +
     // The canvas fills its stage, which is a full-width 2:1 box (padding-bottom gives it a real
-    // height so the canvas's height:100% resolves — GameFace won't derive height from the buffer).
+    // height so the canvas's height:100% resolves , GameFace won't derive height from the buffer).
     ".emig-netc-stage{position:relative;width:100%;max-width:120rem;margin:0 auto;}" +
     ".emig-netc-stage::before{content:'';display:block;padding-bottom:50%;}" +
     ".emig-netc{position:absolute;top:0;left:0;width:100%;height:100%;display:block;}" +
@@ -167,7 +167,7 @@ export function injectStyle() {
  */
 function appendEmpty(container) {
   const note = el("div", "emig-empty",
-    loc("LOC_EMIG_NETC_EMPTY", "No cross-civ migration yet — flows appear once people cross borders."));
+    loc("LOC_EMIG_NETC_EMPTY", "No cross-civ migration yet ; flows appear once people cross borders."));
   container.appendChild(note);
 }
 
@@ -294,8 +294,8 @@ const SHOW_TOGGLES = [
 ];
 
 /**
- * Append the "Show:" toggles — residents / internal movers / immigrants, each independently on or
- * off — so the player can view any combination (e.g. both migrant types without residents).
+ * Append the "Show:" toggles , residents / internal movers / immigrants, each independently on or
+ * off , so the player can view any combination (e.g. both migrant types without residents).
  * @param {HTMLElement} root The selector row.
  * @param {*} state Interaction state.
  * @param {()=>void} onChange Called after a toggle changes (requests a repaint).
@@ -604,7 +604,7 @@ function buildScene(frames, colorMap, events) {
   };
   const { sim, byId } = buildCenters(lastNet, colorMap);
   // Scaled Pop: ~TARGET_DOTS dots (each ≈ many people). Civ Pop: ~1 dot per civ pop-point (so the
-  // small "civilization population" reads as one dot each) — set the unit to people-per-point.
+  // small "civilization population" reads as one dot each) , set the unit to people-per-point.
   const civMode = getNumberMode() === NumberMode.CIV;
   const points = totalPoints(lastNet, lastFrame.pops || {});
   const unit = civMode
@@ -672,7 +672,7 @@ export function renderNetworkViz(container, section) {
   // Drop any prior render (and let its detached-canvas rAF loop stop) before building a fresh one.
   if (container && container.replaceChildren) container.replaceChildren();
   const all = (section && section.frames) || [];
-  // Keep any frame with civs to show — a frame can have residents (native population) before any
+  // Keep any frame with civs to show , a frame can have residents (native population) before any
   // cross-civ migration has happened, so we no longer require edges.
   const frames = all.filter((/** @type {*} */ f) => f.network && f.network.nodes.length);
   if (!frames.length) {

@@ -1,6 +1,6 @@
 // emigration-config-types.js
 //
-// The SHAPE of the mod's tunable settings — the documented contract for the CONFIG object whose
+// The SHAPE of the mod's tunable settings , the documented contract for the CONFIG object whose
 // concrete default VALUES live in emigration-config.js. Kept apart so the ~100-property schema (the
 // canonical reference for what every knob means) doesn't bury the values registry, and so the
 // settings/options layer can type against the contract without importing the defaults.
@@ -36,7 +36,7 @@
  * @property {number} localHappinessFactor City net-happiness weight.
  * @property {number} populationFactor Population penalty weight.
  * @property {number} unhappyCauseThreshold Net-happiness below which a peacetime departure is
- *   attributed to `unhappiness` vs `prosperity` (reporting only — no effect on movement).
+ *   attributed to `unhappiness` vs `prosperity` (reporting only ; no effect on movement).
  * @property {number} siegeModifier Percent score modifier while besieged/razed.
  * @property {number} starvationModifier Percent score modifier while starving.
  * @property {number} unrestModifier Percent score modifier during unrest.

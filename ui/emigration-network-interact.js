@@ -275,7 +275,7 @@ function onDown(ev, canvas, holder, drag) {
 }
 
 /**
- * Pointer up: end a drag. A press that didn't move is a click — toggle isolating that cluster.
+ * Pointer up: end a drag. A press that didn't move is a click , toggle isolating that cluster.
  * @param {HTMLCanvasElement} canvas Canvas.
  * @param {*} holder Render holder.
  * @param {*} state Interaction state.
