@@ -220,6 +220,8 @@
         <Replace Tag="LOC_OPTIONS_EMIG_DATA_SAMPLE" Language="ja_JP"><Text>サンプル（プレビュー）</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP" Language="ja_JP"><Text>移住タイムラインの精細さ</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP_DESCRIPTION" Language="ja_JP"><Text>移住ネットワークがタイムライン用にスナップショットを記録する頻度。1スナップショットあたりのターン数が少ないほど再生が滑らかになりますが、セーブ容量がわずかに増えます。</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DOCK" Language="ja_JP"><Text>移住ドックボタン</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DOCK_DESCRIPTION" Language="ja_JP"><Text>ゲーム内のドックに移住ボタンを表示します。オフにすると、人口統計画面の移住タブからダッシュボードを開けます。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="ja_JP"><Text>文明間の移住はまだありません。人々が国境を越えると流れが現れます。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="ja_JP"><Text>色分け:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="ja_JP"><Text>出身地</Text></Replace>

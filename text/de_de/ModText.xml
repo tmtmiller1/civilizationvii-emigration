@@ -220,6 +220,8 @@
         <Replace Tag="LOC_OPTIONS_EMIG_DATA_SAMPLE" Language="de_DE"><Text>Beispiel (Vorschau)</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP" Language="de_DE"><Text>Detailgrad der Wanderungs-Zeitleiste</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP_DESCRIPTION" Language="de_DE"><Text>Wie oft das Wanderungsnetz für den Zeitleisten-Regler eine Momentaufnahme speichert: weniger Züge je Aufnahme ergeben feinere Wiedergabe, bei etwas größerem Speicherbedarf.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DOCK" Language="de_DE"><Text>Migration-Dock-Schaltfläche</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DOCK_DESCRIPTION" Language="de_DE"><Text>Die Schaltfläche „Migration“ im Spiel-Dock anzeigen. Deaktivieren, um das Dashboard stattdessen über den Tab „Migration“ im Demografie-Bildschirm zu öffnen.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="de_DE"><Text>Noch keine zivilisationsübergreifende Wanderung – Ströme erscheinen, sobald Menschen Grenzen überqueren.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="de_DE"><Text>Färben nach:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="de_DE"><Text>Herkunft</Text></Replace>

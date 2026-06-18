@@ -15,6 +15,7 @@ const OPT_NUMBER_MODE = "numberMode";
 const OPT_PRESET = "preset";
 const OPT_SAMPLE = "sampleData";
 const OPT_SNAP = "snapshotInterval";
+const OPT_DOCK = "showDockButton";
 const SNAP_DEFAULT = 3; // turns per migration-timeline snapshot (user-adjustable 1..5)
 
 // String-keyed views over the typed config objects (same references), so the
@@ -104,6 +105,32 @@ export function getSnapshotInterval() {
 export function setSnapshotInterval(n) {
   _snap = clampSnap(n);
   ModOptions.save(MOD_ID, OPT_SNAP, _snap);
+}
+
+/** @type {boolean|null} */
+let _dock = null;
+
+/**
+ * Whether the Emigration button appears on the in-game subsystem dock. Default true. Turn it off to
+ * reach the dashboard only through the Demographics screen's Migration tab. Read once at dock attach
+ * (a changed value applies on the next reload / dock rebuild).
+ * @returns {boolean} True when the dock button should be shown.
+ */
+export function getShowDockButton() {
+  if (_dock == null) {
+    const v = ModOptions.load(MOD_ID, OPT_DOCK);
+    _dock = v == null ? true : v === 1; // default ON; persisted as 1/0
+  }
+  return _dock;
+}
+
+/**
+ * Set + persist whether the dock button is shown.
+ * @param {boolean} on Whether to show the dock button.
+ */
+export function setShowDockButton(on) {
+  _dock = !!on;
+  ModOptions.save(MOD_ID, OPT_DOCK, _dock ? 1 : 0);
 }
 
 // ── Tunables (exposed CONFIG knobs) ───────────────────────────────────────

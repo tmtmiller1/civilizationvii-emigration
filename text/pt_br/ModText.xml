@@ -220,6 +220,8 @@
         <Replace Tag="LOC_OPTIONS_EMIG_DATA_SAMPLE" Language="pt_BR"><Text>Amostra (prévia)</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP" Language="pt_BR"><Text>Detalhe da linha do tempo</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP_DESCRIPTION" Language="pt_BR"><Text>Com que frequência a rede de migração grava um instantâneo para a linha do tempo: menos turnos por instantâneo dá reprodução mais fina, com um pequeno custo no tamanho do save.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DOCK" Language="pt_BR"><Text>Botão de Migração na barra</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DOCK_DESCRIPTION" Language="pt_BR"><Text>Mostra o botão de Migração na barra do jogo. Desative para abrir o painel pela aba Migração da tela de Demografia.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="pt_BR"><Text>Ainda não há migração entre civilizações, os fluxos surgem quando as pessoas cruzam fronteiras.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="pt_BR"><Text>Colorir por:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="pt_BR"><Text>Origem</Text></Replace>

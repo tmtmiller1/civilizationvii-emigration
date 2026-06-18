@@ -367,13 +367,61 @@ function gatherFresh() {
 let _gatherMemo = null;
 
 /**
- * Cheap, obvious invalidation key for the gathered data: the live tallies only change when an
- * emigration pass advances the monotonic turn, so (mode + timeline-detail + monoTurn) suffices.
+ * Whether player `pid` is an alive MAJOR civ the local player has met (self counts as met). Safe:
+ * unreadable players / a throwing hasMet just don't count, so one bad id never aborts the scan.
+ * @param {number} pid Player id.
+ * @param {number} me Local player id.
+ * @param {((id:number)=>*)|null} hasMet The local player's met-test, or null when unavailable.
+ * @returns {boolean} True when met and an alive major.
+ */
+function countsAsMet(pid, me, hasMet) {
+  let p;
+  try {
+    p = Players.get(pid);
+  } catch (_) {
+    return false;
+  }
+  if (!p || p.isAlive !== true || p.isMajor !== true) return false;
+  if (pid === me) return true;
+  if (!hasMet) return false;
+  try {
+    return !!hasMet(pid);
+  } catch (_) {
+    return false;
+  }
+}
+
+/**
+ * The number of major civs the local player has met (self included). Cheap: a player scan with a
+ * diplomacy check, no city enumeration. Folded into the live memo key because meeting a civ is a
+ * diplomacy event, NOT an emigration pass — so monoTurn() alone wouldn't refresh the dashboard when
+ * you meet someone new, and a just-met civ would stay invisible until the next pass. Counting met
+ * civs makes meeting one invalidate the memo immediately.
+ * @returns {number} Count of met alive major civs (local included).
+ */
+function metMajorCount() {
+  let n = 0;
+  try {
+    const me = GameContext.localPlayerID;
+    const d = Players.get(me)?.Diplomacy;
+    const hasMet = d && typeof d.hasMet === "function" ? (/** @type {number} */ id) => d.hasMet(id) : null;
+    for (let pid = 0; pid < 64; pid++) if (countsAsMet(pid, me, hasMet)) n++;
+  } catch (_) {
+    /* ignore */
+  }
+  return n;
+}
+
+/**
+ * Cheap, obvious invalidation key for the gathered data. The live tallies change when an emigration
+ * pass advances the monotonic turn, AND the set of VISIBLE civs changes when the local player meets
+ * someone new (a diplomacy event between passes) — so the key folds in the met-civ count too, so a
+ * newly met civ shows on the "live" dashboard without waiting for the next pass.
  * @returns {string} The memo key.
  */
 function gatherKey() {
   if (getSampleData()) return "sample:" + getSnapshotInterval();
-  return "live:" + monoTurn();
+  return "live:" + monoTurn() + ":m" + metMajorCount();
 }
 
 /**

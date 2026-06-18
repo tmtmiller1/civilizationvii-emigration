@@ -237,5 +237,7 @@
  "LOC_EMIG_NETC_SHOW": "显示：",
  "LOC_EMIG_NETC_NOPOP": "尚无人口",
  "LOC_EMIG_NETC_ORIGINS": "来源",
- "LOC_EMIG_NETC_ORIGINS_TIP": "显示通往移民来源的连线"
+ "LOC_EMIG_NETC_ORIGINS_TIP": "显示通往移民来源的连线",
+ "LOC_OPTIONS_EMIG_DOCK": "迁徙工具栏按钮",
+ "LOC_OPTIONS_EMIG_DOCK_DESCRIPTION": "在游戏工具栏显示迁徙按钮。关闭后改为从人口统计界面的迁徙标签页打开仪表板。"
 }

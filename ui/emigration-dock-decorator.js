@@ -11,6 +11,7 @@
 // stylesheets (so the SVG must be a real file, declared in the modinfo ImportFiles).
 
 import { openEmigrationScreen } from "/emigration/ui/emigration-screen.js";
+import { getShowDockButton } from "/emigration/ui/emigration-settings.js";
 
 const DBG = false;
 /**
@@ -89,6 +90,12 @@ export class EmigrationDockDecorator {
 
   /** Lifecycle hook fired after the panel attaches: paint the icon and add the button. */
   afterAttach() {
+    // Optional dock button: when disabled in the mod's options, the dashboard is reached via the
+    // Demographics screen's Migration tab (or the console) instead. Read at attach time.
+    if (!getShowDockButton()) {
+      dlog("dock button disabled by option; skipping");
+      return;
+    }
     try {
       injectIconStyle();
     } catch (e) {

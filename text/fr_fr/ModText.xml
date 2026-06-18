@@ -220,6 +220,8 @@
         <Replace Tag="LOC_OPTIONS_EMIG_DATA_SAMPLE" Language="fr_FR"><Text>Exemple (aperçu)</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP" Language="fr_FR"><Text>Détail de la chronologie</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP_DESCRIPTION" Language="fr_FR"><Text>Fréquence à laquelle le réseau migratoire enregistre un instantané pour la chronologie : moins de tours par instantané donne une lecture plus fine, pour un léger coût de taille de sauvegarde.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DOCK" Language="fr_FR"><Text>Bouton Migration de la barre</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DOCK_DESCRIPTION" Language="fr_FR"><Text>Afficher le bouton Migration sur la barre en jeu. Désactivez-le pour ouvrir le tableau de bord depuis l’onglet Migration de l’écran Démographie.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="fr_FR"><Text>Pas encore de migration entre civilisations, les flux apparaissent dès que des personnes franchissent les frontières.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="fr_FR"><Text>Colorer par :</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="fr_FR"><Text>Origine</Text></Replace>

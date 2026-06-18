@@ -292,6 +292,12 @@
         <Row Tag="LOC_OPTIONS_EMIG_SNAP_DESCRIPTION">
             <Text>How often the migration network records a snapshot for the timeline scrubber: fewer turns per snapshot gives finer playback, at a small cost in save size.</Text>
         </Row>
+        <Row Tag="LOC_OPTIONS_EMIG_DOCK">
+            <Text>Migration dock button</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_EMIG_DOCK_DESCRIPTION">
+            <Text>Show the Migration button on the in-game dock. Turn it off to open the dashboard from the Demographics screen's Migration tab instead.</Text>
+        </Row>
         <Row Tag="LOC_EMIG_NETC_EMPTY">
             <Text>No cross-civ migration yet, flows appear once people cross borders.</Text>
         </Row>

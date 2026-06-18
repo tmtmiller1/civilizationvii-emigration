@@ -14,6 +14,7 @@ import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { causeLabel } from "/emigration/ui/emigration-causes.js";
 import { renderNetworkViz } from "/emigration/ui/emigration-network-viz.js";
 import { getNumberMode, setNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
+import { appendSnapshotReminder } from "/emigration/ui/emigration-snapshot-reminder.js";
 import { renderCityFlows, buildCivFlows } from "/emigration/ui/emigration-city-flows.js";
 import { renderFlowMap } from "/emigration/ui/emigration-network-flow.js";
 import { renderStances } from "/emigration/ui/emigration-detail-views.js";
@@ -315,17 +316,13 @@ const DASH_CSS =
   ".emig-dash{display:flex;flex-direction:column;gap:0.85rem;" +
   'font-family:"BodyFont","BodyFont-JP","BodyFont-KR","BodyFont-SC","BodyFont-TC";' +
   "color:#e5d2ac;font-size:0.95rem;}" +
-  ".emig-card{background:linear-gradient(180deg,rgba(20,24,34,0.55),rgba(8,10,16,0.55));" +
-  "border:0.0555rem solid rgba(201,162,76,0.35);border-radius:0.35rem;padding:0.6rem 0.8rem;}" +
-  ".emig-card-h{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.06rem;" +
-  "font-size:0.95rem;color:#f3c34c;margin-bottom:0.45rem;" +
-  "border-bottom:0.0555rem solid rgba(201,162,76,0.3);padding-bottom:0.25rem;}" +
+  ".emig-card{background:linear-gradient(180deg,rgba(20,24,34,0.55),rgba(8,10,16,0.55));border:0.0555rem solid rgba(201,162,76,0.35);border-radius:0.35rem;padding:0.6rem 0.8rem;}" +
+  ".emig-card-h{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.06rem;font-size:0.95rem;color:#f3c34c;margin-bottom:0.45rem;border-bottom:0.0555rem solid rgba(201,162,76,0.3);padding-bottom:0.25rem;}" +
   ".emig-empty{opacity:0.5;font-style:italic;}" +
   // Per-city pressure: flexbox rows (GameFace lays out neither <table> nor grid).
   ".emig-pr{display:flex;flex-direction:column;width:100%;}" +
   ".emig-pr-row{display:flex;align-items:center;width:100%;}" +
-  ".emig-pr-c{flex:1 1 0;padding:0.55rem 0.6rem;font-size:1.1rem;text-align:left;" +
-  "overflow:hidden;white-space:nowrap;border-top:0.0277rem solid rgba(229,210,172,0.12);}" +
+  ".emig-pr-c{flex:1 1 0;padding:0.55rem 0.6rem;font-size:1.1rem;text-align:left;overflow:hidden;white-space:nowrap;border-top:0.0277rem solid rgba(229,210,172,0.12);}" +
   ".emig-pr-c.name{flex:1.5 1 0;color:#f0dca8;font-weight:bold;}" +
   ".emig-pr-c.pres{flex:2 1 0;}" +
   ".emig-pr-head .emig-pr-c{border-top:none;opacity:0.6;text-transform:uppercase;" +
@@ -428,9 +425,7 @@ const DASH_CSS =
   ".emig-tab:hover{color:#e5d2ac;}" +
   ".emig-tab.active{color:#f3c34c;border-bottom-color:#f3c34c;}" +
   ".emig-tabbody{overflow-y:auto;overflow-x:hidden;max-height:74vh;}" +
-  ".emig-sample-badge{align-self:center;margin-bottom:0.5rem;padding:0.1rem 0.7rem;border-radius:0.9rem;" +
-  "font-size:0.74rem;letter-spacing:0.08rem;text-transform:uppercase;color:#1c1408;" +
-  "background:#e0913c;font-weight:bold;}";
+  ".emig-sample-badge{align-self:center;margin-bottom:0.5rem;padding:0.1rem 0.7rem;border-radius:0.9rem;font-size:0.74rem;letter-spacing:0.08rem;text-transform:uppercase;color:#1c1408;background:#e0913c;font-weight:bold;}";
 
 /** Inject the dashboard content stylesheet once (idempotent). */
 function injectDashboardStyle() {
@@ -617,20 +612,6 @@ function renderSectionBody(body, section) {
   if (rv) rv(body, section.rows);
 }
 
-/**
- * Render one section as a card (header + body). Used by the stacked (non-tabbed) renderer.
- * @param {HTMLElement} target The container element.
- * @param {*} section The section model.
- */
-function renderSection(target, section) {
-  const card = el("div", "emig-card");
-  card.appendChild(el("div", "emig-card-h", section.title));
-  const body = el("div", "emig-card-body");
-  renderSectionBody(body, section);
-  card.appendChild(body);
-  target.appendChild(card);
-}
-
 /** Short tab labels by section kind. */
 /** @type {Record<string,string>} */
 const TAB_LABELS = {
@@ -737,6 +718,7 @@ export function renderDashboardTabbed(target, model) {
     if (model && model.sample) {
       wrap.appendChild(el("div", "emig-sample-badge", "Sample data ; preview (switch to Live in Options)"));
     }
+    appendSnapshotReminder(wrap);
     const body = el("div", "emig-tabbody");
     let active = 0;
     const show = (/** @type {number} */ i) => {
@@ -762,20 +744,37 @@ export function renderDashboardTabbed(target, model) {
 }
 
 /**
- * Render the dashboard model into a target element (clears it first). Builds a themed,
- * card-per-section layout; styles are self-injected so it looks right in any host.
- * @param {*} target The container element.
- * @param {{sections:*[]}} model The view-model.
+ * Render ONE dashboard section (chosen externally) plus the persistent chrome (sample badge,
+ * timeline-detail reminder, number-mode toggle) into `target`. Used by the Demographics-embedded
+ * Migration page: there the section tabs come from the Demographics sub-tab row, not the in-panel
+ * tab bar, so the embedded page shows the SAME content as the standalone window but presented as
+ * native Demographics sub-tabs (no redundant "Overview" tab / second tab row).
+ * @param {HTMLElement} target The container element.
+ * @param {*} model The view-model ({sections, sample}).
+ * @param {string} kind The section kind to show (network/flowmap/ledger/pies/cityflows/stances).
  */
-export function renderDashboard(target, model) {
+export function renderDashboardSubtab(target, model, kind) {
   try {
     if (!target) return;
     injectDashboardStyle();
     target.innerHTML = "";
+    const sections = (model && model.sections) || [];
+    const section = sections.find((/** @type {*} */ s) => s.kind === kind) || sections[0];
+    if (!section) return;
     const wrap = el("div", "emig-dash");
-    for (const section of model.sections) renderSection(wrap, section);
+    if (model && model.sample) wrap.appendChild(el("div", "emig-sample-badge", "Sample data ; preview (switch to Live in Options)"));
+    appendSnapshotReminder(wrap);
+    const body = el("div", "emig-tabbody");
+    wrap.appendChild(numbersToggle(() => {
+      if (section.kind !== "flowmap") {
+        body.innerHTML = "";
+        renderSectionBody(body, section);
+      }
+    }));
+    wrap.appendChild(body);
+    renderSectionBody(body, section);
     target.appendChild(wrap);
   } catch (_) {
-    /* ignore */
+    /* a render failure must never break the host screen */
   }
 }

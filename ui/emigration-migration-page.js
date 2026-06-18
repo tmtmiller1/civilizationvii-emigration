@@ -11,28 +11,45 @@
 // If the installed Demographics predates `registerPanel`, registration is a silent no-op , the
 // standalone window still covers the same content, so nothing is lost.
 
-import { dashboardModel, renderDashboardTabbed } from "/emigration/ui/emigration-views.js";
+import { dashboardModel, renderDashboardSubtab } from "/emigration/ui/emigration-views.js";
 import { gatherDashboard } from "/emigration/ui/emigration-window.js";
 
+// The Migration page's sub-tabs — one per dashboard section, so the embedded page shows the SAME
+// content as the standalone window but presented as NATIVE Demographics sub-tabs (the same metric
+// sub-tab row the Crises / Conflicts pages use), instead of a single "Overview" tab wrapping the
+// emigration tab bar. `id` is the section kind (handed back to render); `label` is the short sub-tab
+// label; `title` is the descriptive chart title. Mirrors emigration-views.js dashboardModel() order
+// + TAB_LABELS.
+const SUBTABS = [
+  { id: "network", label: "Network", title: "Migration network" },
+  { id: "flowmap", label: "Flows", title: "Migration flows" },
+  { id: "ledger", label: "Civilizations", title: "Civilizations" },
+  { id: "pies", label: "Causes", title: "Why people move" },
+  { id: "cityflows", label: "Settlements", title: "Settlements" },
+  { id: "stances", label: "Immigration Policies", title: "Immigration policies" }
+];
+
 /**
- * Render the migration dashboard into a Demographics-provided container.
+ * Render one migration dashboard section into a Demographics-provided container.
  * @param {*} container The page's content element.
+ * @param {string} [kind] The section kind (sub-tab id); defaults to the first sub-tab.
  */
-function renderInto(container) {
+function renderInto(container, kind) {
   try {
-    renderDashboardTabbed(container, dashboardModel(gatherDashboard()));
+    renderDashboardSubtab(container, dashboardModel(gatherDashboard()), kind || SUBTABS[0].id);
   } catch (_) {
     /* a render failure must never break the Demographics screen */
   }
 }
 
-/** The panel spec handed to Demographics: a page tab whose body Emigration renders. */
+/** The panel spec handed to Demographics: a page whose sub-tabs Emigration renders per section. */
 const PANEL_SPEC = {
   id: "emig_migration_panel",
   pageLabel: "Migration",
-  tabLabel: "Overview",
   title: "Migration",
-  render: (/** @type {*} */ container) => renderInto(container)
+  tabs: SUBTABS,
+  render: (/** @type {*} */ container, /** @type {*} */ _ctx, /** @type {*} */ subId) =>
+    renderInto(container, subId)
 };
 
 /**

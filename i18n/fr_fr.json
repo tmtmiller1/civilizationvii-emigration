@@ -237,5 +237,7 @@
  "LOC_EMIG_NETC_SHOW": "Afficher :",
  "LOC_EMIG_NETC_NOPOP": "pas encore de population",
  "LOC_EMIG_NETC_ORIGINS": "Origines",
- "LOC_EMIG_NETC_ORIGINS_TIP": "Tracer des lignes vers l'origine des migrants"
+ "LOC_EMIG_NETC_ORIGINS_TIP": "Tracer des lignes vers l'origine des migrants",
+ "LOC_OPTIONS_EMIG_DOCK": "Bouton Migration de la barre",
+ "LOC_OPTIONS_EMIG_DOCK_DESCRIPTION": "Afficher le bouton Migration sur la barre en jeu. Désactivez-le pour ouvrir le tableau de bord depuis l’onglet Migration de l’écran Démographie."
 }
