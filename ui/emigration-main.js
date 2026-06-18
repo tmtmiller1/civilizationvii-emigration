@@ -16,6 +16,7 @@ import { applyTunableOverrides } from "/emigration/ui/emigration-settings.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
 import { reportMigration } from "/emigration/ui/emigration-report.js";
 import { recordMigrations, accountLosses, markCityRemoved } from "/emigration/ui/emigration-migration-stats.js";
+import { reportBalanceSignals } from "/emigration/ui/emigration-telemetry.js";
 import { registerMigrationMetric } from "/emigration/ui/emigration-demographics.js";
 import { tickAssimilation } from "/emigration/ui/emigration-effects.js";
 import { applyMigrantHoldingPenalty } from "/emigration/ui/emigration-migrant-units.js";
@@ -46,6 +47,47 @@ function nowMs() {
 }
 
 /**
+ * The current age-local game turn, or 0 (for telemetry throttling).
+ * @returns {number} Game.turn or 0.
+ */
+function gameTurnNow() {
+  try {
+    return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
+  } catch (_) {
+    return 0;
+  }
+}
+
+/**
+ * The unique owner ids present in a city-signal list.
+ * @param {{owner?:number}[]} signals City signals.
+ * @returns {number[]} Distinct owner ids.
+ */
+function ownerIdsOf(signals) {
+  /** @type {Set<number>} */
+  const owners = new Set();
+  for (const s of signals || []) if (typeof s.owner === "number") owners.add(s.owner);
+  return [...owners];
+}
+
+/**
+ * Account external population loss for this pass and emit balance telemetry.
+ * Loss accounting runs EVERY turn (starvation/plague/razing/disasters) — it's a
+ * turn-over-turn population diff, not tied to a move. Both steps are defensive.
+ * @param {*[]} migrations This pass's migrations.
+ */
+function accountAndReport(migrations) {
+  const signals = collectCitySignals();
+  try {
+    accountLosses(signals, migrations);
+  } catch (e) {
+    dlog("accountLosses threw " + e);
+  }
+  // Balance telemetry (P2.7): throttled net-flow / war-displacement outlier alerts (debug-gated).
+  reportBalanceSignals(ownerIdsOf(signals), gameTurnNow());
+}
+
+/**
  * Run a pass and report results. Returns the migration count.
  * @param {string} why Reason label for the log.
  * @returns {number} Migrations applied.
@@ -59,13 +101,7 @@ function doPass(why) {
     dlog("pass threw " + e);
     return 0;
   }
-  // Account external population loss EVERY turn (starvation/plague/razing/disasters), even when no
-  // migration happened — it's a turn-over-turn population diff, not tied to a move.
-  try {
-    accountLosses(collectCitySignals(), migrations);
-  } catch (e) {
-    dlog("accountLosses threw " + e);
-  }
+  accountAndReport(migrations);
   if (!migrations.length) {
     dlog("pass (" + why + ") none, " + Math.round(nowMs() - t0) + "ms");
     return 0;

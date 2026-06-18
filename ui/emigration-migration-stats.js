@@ -13,6 +13,13 @@ import { citySnapshot } from "/emigration/ui/emigration-city-readout-data.js";
 import { getSnapshotInterval } from "/emigration/ui/emigration-settings.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
+import {
+  addFlows,
+  sumDeltas,
+  subtractFlows,
+  mergeAdjacentDeltas,
+  migrateCumulativeToDeltas
+} from "/emigration/ui/emigration-flow-history.js";
 
 const STATE_KEY = "EmigrationMigStats_v1";
 
@@ -58,12 +65,18 @@ let _recent = [];
  *   - = citizens Closed Borders kept home).
  * @property {Record<string, number>} stanceInPts Stance impact on IN, in pop points.
  * @property {Record<string, number>} stanceOutPts Stance impact on OUT, in pop points.
- * @property {*[]} flowHistory Decimated cumulative-flow snapshots over time, for the network viz
- *   timeline scrubber. Each is {turn, age, chartTurn, flows}: the age-local turn, the age, and a
- *   MONOTONIC chartTurn that spans ages (so age-local turn resets never collide or reorder).
+ * @property {*[]} flowHistory Decimated DELTA-encoded flow snapshots over time (P0.3), for the
+ *   network viz timeline scrubber. Each is {turn, age, chartTurn, year, delta}: `delta` holds only
+ *   the migration that occurred in that interval; the cumulative network per frame is reconstructed
+ *   on read (migrationFlowHistory) by summing deltas. chartTurn is MONOTONIC across ages (so
+ *   age-local turn resets never collide or reorder).
+ * @property {number} flowSchema Flow-history encoding version (2 = delta-encoded). Legacy saves
+ *   (frames carrying a cumulative `flows` clone) are migrated to deltas once on load.
  * @property {number} chartTurn Latest monotonic cross-age turn (never resets at an age boundary).
  * @property {string} chartAge Age of the latest snapshot (to detect boundary crossings).
  * @property {number} chartLocal Age-local turn of the latest snapshot.
+ * @property {string} lossAge Age of the last external-loss accounting pass, tracked independently
+ *   of chartAge so the age-transition re-baseline guard (P0.2) is immune to call ordering.
  */
 
 /** @type {MigStatsState | null} */
@@ -111,8 +124,8 @@ function normalize(o) {
     deathsPts: mapOr(o.deathsPts),
     lossesPts: mapOr(o.lossesPts),
     flowsPts: mapOr(o.flowsPts),
-    cityPts: o.cityPts && typeof o.cityPts === "object" ? o.cityPts : {},
-    cityNames: o.cityNames && typeof o.cityNames === "object" ? o.cityNames : {},
+    cityPts: mapOr(o.cityPts),
+    cityNames: mapOr(o.cityNames),
     wmOut: mapOr(o.wmOut),
     wmIn: mapOr(o.wmIn),
     outByCause: mapOr(o.outByCause),
@@ -130,7 +143,9 @@ function normalize(o) {
     flowHistory: Array.isArray(o.flowHistory) ? o.flowHistory : [],
     chartTurn: typeof o.chartTurn === "number" ? o.chartTurn : 0,
     chartAge: typeof o.chartAge === "string" ? o.chartAge : "",
-    chartLocal: typeof o.chartLocal === "number" ? o.chartLocal : 0
+    chartLocal: typeof o.chartLocal === "number" ? o.chartLocal : 0,
+    lossAge: typeof o.lossAge === "string" ? o.lossAge : "",
+    flowSchema: typeof o.flowSchema === "number" ? o.flowSchema : 1
   };
 }
 
@@ -146,6 +161,7 @@ function load() {
       const o = JSON.parse(raw);
       if (o && typeof o === "object") {
         _s = normalize(o);
+        migrateFlowSchema(_s);
         return _s;
       }
     }
@@ -153,7 +169,20 @@ function load() {
     /* ignore */
   }
   _s = normalize({});
+  _s.flowSchema = 2; // fresh state is already delta-encoded
   return _s;
+}
+
+/**
+ * Upgrade legacy cumulative-clone flow history to delta encoding once on load (P0.3), then stamp
+ * the schema. Idempotent: a no-op for already-delta-encoded saves.
+ * @param {MigStatsState} s State.
+ */
+function migrateFlowSchema(s) {
+  if (s.flowSchema !== 2) {
+    s.flowHistory = migrateCumulativeToDeltas(s.flowHistory);
+    s.flowSchema = 2;
+  }
 }
 
 /** Persist the tallies to GameConfiguration. */
@@ -361,42 +390,34 @@ function nextChartTurn(s, age, localTurn) {
 }
 
 /**
- * Deep-copy the flow matrix (so a snapshot is frozen, not a live reference).
- * @param {Record<string, Record<string, number>>} f Flow matrix.
- * @returns {Record<string, Record<string, number>>} A copy.
- */
-function cloneFlows(f) {
-  /** @type {Record<string, Record<string, number>>} */
-  const o = {};
-  for (const k of Object.keys(f)) o[k] = Object.assign({}, f[k]);
-  return o;
-}
-
-/**
- * Snapshot the cumulative flows for the timeline. Updates the snapshot in place when the turn
- * has not advanced; otherwise appends and decimates (keep every other when over the cap, so the
- * history stays an even spread across the game rather than only the recent tail).
+ * Snapshot the cumulative flows for the timeline as a per-interval DELTA (P0.3). Within an interval
+ * window the open (last) frame is kept current in place; at an interval or age boundary a new open
+ * frame is appended. Either way the open frame's delta is recomputed as the live cumulative
+ * (`s.flows`) minus the cumulative of all prior (frozen) frames, so storage holds only each
+ * interval's increment — never a full cumulative clone per frame. Over the cap, adjacent deltas are
+ * MERGED (summed), preserving cumulative totals exactly.
  * @param {MigStatsState} s State.
  */
 function snapshotFlows(s) {
   const turn = gameTurn();
-  const age = currentAge();
+  // Minor/Polish #9: mid-transition `currentAge()` returns "", which nextChartTurn would treat as
+  // an age boundary (age !== chartAge) and stamp a spurious boundary marker in the timeline. Reuse
+  // the last valid age so the phantom boundary is deferred until the new age actually resolves.
+  const age = currentAge() || s.chartAge;
   const ct = nextChartTurn(s, age, turn);
   const interval = getSnapshotInterval();
   const h = s.flowHistory;
   const last = h[h.length - 1];
-  // Add a NEW frame only every `interval` (monotonic) turns and always at an age boundary; within
-  // the interval window just keep the latest frame current. The monotonic chartTurn keeps age-local
-  // turn resets from colliding/reordering.
-  if (last && age === last.age && ct - last.chartTurn < interval) {
-    last.flows = cloneFlows(s.flows);
-    last.turn = turn;
-    last.year = gameTurnDate();
-  } else {
-    h.push({ turn, age, chartTurn: ct, year: gameTurnDate(), flows: cloneFlows(s.flows) });
-    if (h.length > MAX_FLOW_SNAPSHOTS) {
-      s.flowHistory = h.filter((_, i) => i % 2 === 0 || i === h.length - 1);
-    }
+  // The monotonic chartTurn keeps age-local turn resets from colliding/reordering.
+  const newFrame = !(last && age === last.age && ct - last.chartTurn < interval);
+  if (newFrame) h.push({ turn, age, chartTurn: ct, year: gameTurnDate(), delta: {} });
+  // Recompute the open frame's delta = live cumulative − cumulative of all prior frozen frames.
+  const open = h[h.length - 1];
+  open.delta = subtractFlows(s.flows, sumDeltas(h.slice(0, h.length - 1)));
+  open.turn = turn;
+  open.year = gameTurnDate();
+  if (newFrame && h.length > MAX_FLOW_SNAPSHOTS) {
+    s.flowHistory = mergeAdjacentDeltas(h, MAX_FLOW_SNAPSHOTS);
   }
   s.chartTurn = ct;
   s.chartAge = age;
@@ -404,21 +425,29 @@ function snapshotFlows(s) {
 }
 
 /**
- * The decimated cumulative-flow history as a list of {turn, age, year, chartTurn, edges} frames
- * (oldest → newest), spanning ages.
+ * The flow history as a list of {turn, age, year, chartTurn, edges} frames (oldest → newest),
+ * spanning ages. Each frame's edges are the CUMULATIVE network at that point, reconstructed by
+ * summing deltas up to and including the frame (P0.3) — so the timeline-scrubber consumer is
+ * unchanged. Each edge's per-cause map is cloned per frame so the running accumulator never aliases
+ * an earlier frame's data.
  * @returns {{turn:number, age:string, year:string, chartTurn:number, edges:*[]}[]} Timeline frames.
  */
 export function migrationFlowHistory() {
   const h = load().flowHistory || [];
-  return h.map((snap) => ({
-    turn: snap.turn,
-    age: snap.age || "",
-    year: snap.year || "",
-    chartTurn: snap.chartTurn,
-    edges: Object.keys(snap.flows || {})
-      .map((k) => flowEntry(k, snap.flows[k]))
-      .filter(Boolean)
-  }));
+  /** @type {Record<string, Record<string, number>>} */
+  const running = {};
+  return h.map((snap) => {
+    addFlows(running, snap.delta || {});
+    return {
+      turn: snap.turn,
+      age: snap.age || "",
+      year: snap.year || "",
+      chartTurn: snap.chartTurn,
+      edges: Object.keys(running)
+        .map((k) => flowEntry(k, Object.assign({}, running[k])))
+        .filter(Boolean)
+    };
+  });
 }
 
 /**
@@ -534,24 +563,52 @@ function foldRemovedLosses(s, mod, t, acc) {
 }
 
 /**
+ * Re-baseline one city into `acc` (current population + name) WITHOUT crediting any loss — used on
+ * the first accounting after an age transition so an age-driven population drop on a kept
+ * settlement isn't misread as an unexplained external loss (P0.2).
+ * @param {*} sig City signal.
+ * @param {{pts:Record<string,number>, names:Record<string,string>}} acc Baseline accumulator.
+ */
+function rebaselineCity(sig, acc) {
+  if (typeof sig.owner !== "number" || !sig.key) return;
+  acc.pts[sig.key] = sig.population || 0;
+  acc.names[sig.key] = cityName(sig.city);
+}
+
+/**
  * Detect EXTERNAL population loss this turn and fold it into the per-civ `losses` tally. For each
  * visible city: any drop beyond what the mod itself moved/removed (starvation / plague / disasters)
  * is scaled the same way migration counts are and credited to its civ; razed cities credit their
  * residual via CityRemovedFromMap. Conservative — births can mask a loss (under-count), and a city
  * that merely left vision is re-baselined (never a loss). Runs every turn; never throws.
+ *
+ * Age-transition guard (P0.2): ages reduce/convert kept settlements, so the first accounting in a
+ * new age (or any pass taken mid-transition while `currentAge()` is "") only RE-BASELINES the
+ * per-city populations and credits no loss — otherwise the age-driven drop on every preserved city
+ * would spike the Losses ledger column. `lossAge` tracks the age independently of `chartAge` so the
+ * guard is immune to whether recordMigrations or accountLosses runs first on the boundary turn.
  * @param {*[]} signals Current city signals ({key, owner, city, population}).
  * @param {*[]} migs This turn's migrations (may be empty).
  */
 export function accountLosses(signals, migs) {
   const s = load();
-  const t = s.chartTurn || gameTurn();
-  const mod = modPointsByCity(migs);
+  const age = currentAge();
+  // Transition = a resolved age change, or a mid-transition pass (age === "").
+  const transition = age === "" || (s.lossAge !== "" && age !== s.lossAge);
   /** @type {{pts:Record<string,number>, names:Record<string,string>}} */
   const acc = { pts: {}, names: {} };
-  for (const sig of signals || []) foldCityLoss(s, sig, mod, t, acc);
-  foldRemovedLosses(s, mod, t, acc); // razed cities: credit the residual (no double-count)
+  if (transition) {
+    for (const sig of signals || []) rebaselineCity(sig, acc);
+    pendingRemoved.clear(); // age-removed settlements aren't razings — don't credit them as losses
+  } else {
+    const t = s.chartTurn || gameTurn();
+    const mod = modPointsByCity(migs);
+    for (const sig of signals || []) foldCityLoss(s, sig, mod, t, acc);
+    foldRemovedLosses(s, mod, t, acc); // razed cities: credit the residual (no double-count)
+  }
   s.cityPts = acc.pts; // cities merely out of vision drop out (no loss inferred from absence)
   s.cityNames = acc.names;
+  if (age !== "") s.lossAge = age; // arm the guard only once a real age has resolved
   save();
 }
 

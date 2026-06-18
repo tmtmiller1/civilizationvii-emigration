@@ -62,6 +62,10 @@
  * @property {number} assimilationDecay Per-turn decay of the load (= the assimilation duration).
  * @property {number} assimilationHappiness Happiness/turn drained per unit of load.
  * @property {number} assimilationGold Gold/turn drained per unit of load.
+ * @property {number} assimilationWealthWeight Treasury-aware bend on the gold cost (0 = off).
+ * @property {number} assimilationWealthRef Gold balance at which the wealth multiplier is ×1.
+ * @property {number} assimilationWealthMin Floor multiplier for poor civs.
+ * @property {number} assimilationWealthMax Ceiling multiplier for rich magnets.
  * @property {number} dividendPerMigrant Carried-dividend pool added per immigrant attracted.
  * @property {number} dividendDecay Per-turn decay of the carried dividend pool.
  * @property {number} dividendCap Max per-turn carried dividend granted in a yield.
