@@ -144,6 +144,54 @@ export function tickAssimilation(pid) {
 }
 
 /**
+ * A civ's current gold balance (treasury), or null when unreadable. Mirrors the probe's accessor
+ * order (goldBalance field, then getGoldBalance()).
+ * @param {number} pid Player id.
+ * @returns {number|null} Gold balance, or null off-engine / when absent.
+ */
+function goldBalanceFor(pid) {
+  try {
+    const t = typeof Players !== "undefined" ? Players.get?.(pid)?.Treasury : null;
+    if (t && typeof t.goldBalance === "number") return t.goldBalance;
+    if (t && typeof t.getGoldBalance === "function") return t.getGoldBalance();
+  } catch (_) {
+    // Players.get / Treasury can be absent or throw mid age-transition.
+  }
+  return null;
+}
+
+/**
+ * The bounded wealth-aware multiplier on the GOLD assimilation cost (P1.4): ×1 at the reference
+ * treasury, scaling up for richer civs and down for poorer ones, clamped to [min, max]. Returns 1
+ * (no effect) when the weight is 0 or the treasury can't be read — so a missing read never
+ * over-charges a civ.
+ * @param {number} pid Player id.
+ * @returns {number} A multiplier in [assimilationWealthMin, assimilationWealthMax].
+ */
+function wealthCostMultiplier(pid) {
+  const weight = CONFIG.assimilationWealthWeight;
+  if (!(weight > 0)) return 1;
+  const balance = goldBalanceFor(pid);
+  if (balance == null) return 1;
+  const ref = Math.max(1, CONFIG.assimilationWealthRef);
+  const raw = 1 + weight * (balance / ref - 1);
+  return Math.min(CONFIG.assimilationWealthMax, Math.max(CONFIG.assimilationWealthMin, raw));
+}
+
+/**
+ * The per-turn gold cost for a load, with the civ-tuning ease and the wealth-aware multiplier.
+ * @param {number} pid Player id.
+ * @param {number} load Current load.
+ * @returns {number} Gold cost (>= 0).
+ */
+function assimilationGoldCost(pid, load) {
+  // assimilationEase (civ tuning): scales the confirmed gold lever (variance, no runaway).
+  // wealthCostMultiplier (P1.4): bends the cost by the civ's treasury context.
+  const base = CONFIG.assimilationGold * load * civTuning(pid).assimilationEase;
+  return base * wealthCostMultiplier(pid);
+}
+
+/**
  * Deduct the per-turn assimilation cost for a given load and return the amounts.
  * @param {number} pid Player id.
  * @param {number} load Current load.
@@ -151,8 +199,7 @@ export function tickAssimilation(pid) {
  */
 function chargeAssimilation(pid, load) {
   const happiness = CONFIG.assimilationHappiness * load;
-  // assimilationEase (civ tuning): scales the confirmed gold lever (variance, no runaway).
-  const gold = CONFIG.assimilationGold * load * civTuning(pid).assimilationEase;
+  const gold = assimilationGoldCost(pid, load);
   deduct(pid, "YIELD_HAPPINESS", -happiness);
   deduct(pid, "YIELD_GOLD", -gold);
   return { load, happiness, gold };
@@ -179,7 +226,7 @@ export function assimilationCostFor(pid) {
   const load = assimLoadFor(pid);
   if (!(load > 0)) return { load: 0, happiness: 0, gold: 0 };
   const happiness = CONFIG.assimilationHappiness * load;
-  const gold = CONFIG.assimilationGold * load * civTuning(pid).assimilationEase;
+  const gold = assimilationGoldCost(pid, load);
   return { load, happiness, gold };
 }
 

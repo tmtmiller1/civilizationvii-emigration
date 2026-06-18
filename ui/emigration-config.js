@@ -111,6 +111,18 @@ export const CONFIG = {
   assimilationDecay: 0.7, // per-turn load decay (≈ 6–8 turn assimilation duration)
   assimilationHappiness: 0.5, // happiness/turn drained per unit of load
   assimilationGold: 1.5, // gold/turn drained per unit of load (confirmed lever)
+  // ── wealth-aware assimilation cost (P1.4) ──
+  // The gold cost above scales with intake (load) but not with the civ's ABILITY
+  // to pay. These knobs add a bounded treasury-aware multiplier on the GOLD cost
+  // only: a civ whose gold balance is at `assimilationWealthRef` pays the
+  // baseline (×1); richer magnets pay more and poorer civs less, clamped to
+  // [min, max]. The happiness cost and the structural congestion brake are
+  // unaffected (the brake stays global and can't be out-golded). 0 weight
+  // disables the wealth scaling entirely (pure intake-proportional cost).
+  assimilationWealthWeight: 0.35, // how hard treasury context bends the gold cost (0 = off)
+  assimilationWealthRef: 400, // gold-balance reference at which the multiplier is ×1
+  assimilationWealthMin: 0.5, // floor multiplier for poor civs (never free)
+  assimilationWealthMax: 2.0, // ceiling multiplier for rich magnets
 
   // ── carried dividend (§1b: the assimilation MIRROR — the "raise yours" of attraction) ──
   // When a civ holds a Talent/Cultural/Commercial Attraction card, each immigrant it receives
