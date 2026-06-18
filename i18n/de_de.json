@@ -237,5 +237,7 @@
  "LOC_EMIG_NETC_SHOW": "Zeigen:",
  "LOC_EMIG_NETC_NOPOP": "noch keine Bevölkerung",
  "LOC_EMIG_NETC_ORIGINS": "Herkünfte",
- "LOC_EMIG_NETC_ORIGINS_TIP": "Linien zur Herkunft der Migranten anzeigen"
+ "LOC_EMIG_NETC_ORIGINS_TIP": "Linien zur Herkunft der Migranten anzeigen",
+ "LOC_OPTIONS_EMIG_DOCK": "Migration-Dock-Schaltfläche",
+ "LOC_OPTIONS_EMIG_DOCK_DESCRIPTION": "Die Schaltfläche „Migration“ im Spiel-Dock anzeigen. Deaktivieren, um das Dashboard stattdessen über den Tab „Migration“ im Demografie-Bildschirm zu öffnen."
 }
