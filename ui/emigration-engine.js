@@ -226,8 +226,8 @@ function processAttrition(src, st, state) {
 }
 
 // ── Stance-impact counterfactual ──────────────────────────────────────────────
-// Each turn we PLAN the cross-civ departures twice on the SAME pre-pass world — once with the real
-// border stances, once with all borders forced neutral — and bank the per-civ difference. Planning
+// Each turn we PLAN the cross-civ departures twice on the SAME pre-pass world , once with the real
+// border stances, once with all borders forced neutral , and bank the per-civ difference. Planning
 // is side-effect-free (shallow-copied signals + a copied pressure map; it never moves real
 // population), so it runs alongside the real pass without disturbing it. The diff is the marginal
 // counterfactual: how much border policy raised (Pro) or cut (Anti / Closed-retention) each civ's

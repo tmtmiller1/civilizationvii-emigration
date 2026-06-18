@@ -3,7 +3,7 @@
 // The DEFAULT VALUES of the mod's tunable settings, mirroring the Civ V Emigration (v6)
 // `EmigrationSettings` data model, plus the population-scaling constants that keep this mod's
 // "historical" people counts ALIGNED with the Demographics mod (its scaleCityPopulationAt:
-// raw^1.11 * 3000 * 1.009^turn). The SHAPE these conform to — what every knob means — is the
+// raw^1.11 * 3000 * 1.009^turn). The SHAPE these conform to , what every knob means , is the
 // EmigrationConfig typedef in emigration-config-types.js; the settings/options layer overrides
 // these at boot via applyTunableOverrides.
 
@@ -50,7 +50,7 @@ export const CONFIG = {
   populationFactor: 1.0, // subtracted (small thriving towns still attract)
   // Cause classification: a peacetime departure from a city whose net happiness is below this is
   // attributed to `unhappiness` (push); at/above it the move is `prosperity` (a neighbour's pull).
-  // Purely a reporting/attribution split — it never changes whether or where people move.
+  // Purely a reporting/attribution split , it never changes whether or where people move.
   unhappyCauseThreshold: 0,
 
   // ── situational modifiers (percent applied to the whole score) ────
@@ -124,7 +124,7 @@ export const CONFIG = {
   assimilationWealthMin: 0.5, // floor multiplier for poor civs (never free)
   assimilationWealthMax: 2.0, // ceiling multiplier for rich magnets
 
-  // ── carried dividend (§1b: the assimilation MIRROR — the "raise yours" of attraction) ──
+  // ── carried dividend (§1b: the assimilation MIRROR ; the "raise yours" of attraction) ──
   // When a civ holds a Talent/Cultural/Commercial Attraction card, each immigrant it receives
   // accrues a decaying per-turn BENEFIT in the matching yield (+Science/Culture/Gold), granted
   // via Players.grantYield. The positive twin of assimilation load. 0 disables.

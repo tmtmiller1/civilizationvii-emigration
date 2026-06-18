@@ -1,4 +1,4 @@
-// i18n_extract.mjs — extract the canonical en_us key→text map to i18n/i18n-source.json,
+// i18n_extract.mjs , extract the canonical en_us key→text map to i18n/i18n-source.json,
 // the intermediate the apply script reads. (Generated, gitignored; the parity test reads
 // en_us directly so it doesn't depend on this file.)
 //

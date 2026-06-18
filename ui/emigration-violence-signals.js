@@ -2,7 +2,7 @@
 //
 // The POLLED, fog-independent combat signals that drive the violence model (in emigration-
 // violence.js): city-center district damage and pillaged tiles, read from the gameplay model.
-// Pure reads — no state, no mutation — so a war the player can watch and a distant AI-vs-AI war in
+// Pure reads , no state, no mutation , so a war the player can watch and a distant AI-vs-AI war in
 // the dark register identically (the base game only gates the on-screen HEALTH BAR by visibility,
 // not the underlying values). The stateful intensity accumulation / decay / siege model consumes
 // these; it lives in emigration-violence.js.

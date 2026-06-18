@@ -144,7 +144,7 @@ export function refugeeHeadline(ev) {
   const city = ev.cityName || "a settlement";
   if (ev.cause === "crisis") {
     const civ = ev.civ || "A nation";
-    return pick("LOC_EMIG_NEWS_CRISIS", civ, people, "Refugee crisis: " + civ + " — " + people + " displaced.");
+    return pick("LOC_EMIG_NEWS_CRISIS", civ, people, "Refugee crisis: " + civ + " ; " + people + " displaced.");
   }
   if (ev.cause === "disaster") {
     const n = ev.eventName || "A disaster";
@@ -246,7 +246,7 @@ export function costNote(destName, gold) {
 
 /**
  * Compose the local player's per-pass migration digest: a cause-named loss headline, the action
- * hint, the permanence cue, and — for a cross-civ loss with a material cost — the destination's
+ * hint, the permanence cue, and , for a cross-civ loss with a material cost , the destination's
  * assimilation cost note. Pure; the caller resolves the inputs.
  * @param {{cause?:string, people:string, city:string, crossCiv?:boolean,
  *          destName?:string, destGold?:number}} o The resolved digest inputs.

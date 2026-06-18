@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
 // Pure delta-encoding helpers (combined design plan P0.3). No engine globals
-// needed — these operate on plain flow matrices (key → { cause: people }).
+// needed , these operate on plain flow matrices (key → { cause: people }).
 const {
   addFlows,
   sumDeltas,

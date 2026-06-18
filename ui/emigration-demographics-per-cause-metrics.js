@@ -4,7 +4,7 @@
 // This module is NOT loaded by default - it's provided as an example for mods that want
 // detailed per-cause line charts in addition to the tooltip-based source attribution.
 //
-// Usage: Add this to emigration-main.js if granular cause tracking is desired — import
+// Usage: Add this to emigration-main.js if granular cause tracking is desired , import
 // registerPerCauseMetrics from this module and call it once at startup, after the
 // Demographics API is available.
 

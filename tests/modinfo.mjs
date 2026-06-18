@@ -2,14 +2,14 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 
 // modinfo manifest-completeness gate. NOTE: Civ VII resolves a mod's own `/emigration/…` imports
-// from its deployed file tree, so an import whose target isn't in <ImportFiles> still loads — this
+// from its deployed file tree, so an import whose target isn't in <ImportFiles> still loads , this
 // is NOT a load-failure guard. It's hygiene: it keeps each scope's manifest a complete, accurate
 // inventory of the JS it pulls in, so the modinfo doesn't silently rot when a module is split into
 // helpers (e.g. engine→pull/state, effects→dividend/migrant-units, main→log/report). The invariant
 // is per-scope import-CLOSURE: within a scope, every same-mod module imported by any declared module
 // must itself be declared in that scope (UIScripts ∪ ImportFiles both populate the VFS). We close
 // over the whole declared set, not just the UIScript entry points, so helpers pulled in by any
-// declared module are covered. JSDoc `import("…")` type refs are erased at runtime — comments are
+// declared module are covered. JSDoc `import("…")` type refs are erased at runtime , comments are
 // stripped before scanning so they're correctly ignored. Every declared .js Item must also exist.
 
 const MOD = "emigration";
@@ -30,7 +30,7 @@ const graph = new Map();
 for (const f of listJs("ui")) {
   const code = stripComments(fs.readFileSync(f, "utf8"));
   const deps = new Set();
-  // static `from "…"`, bare `import "…"`, dynamic `import("…")` — same-mod .js only
+  // static `from "…"`, bare `import "…"`, dynamic `import("…")` , same-mod .js only
   for (const m of code.matchAll(/(?:from|import)\s*\(?\s*"(\/[^"]+\.js)"/g)) {
     if (m[1].startsWith(PREFIX)) deps.add(m[1]);
   }
@@ -80,7 +80,7 @@ for (const [scope, groups] of Object.entries(SCOPES)) {
   assert.equal(
     missingList.length,
     0,
-    `${scope} scope: ${missingList.length} imported module(s) not declared — add to <ImportFiles> ` +
+    `${scope} scope: ${missingList.length} imported module(s) not declared , add to <ImportFiles> ` +
       `of the ${scope} ActionGroup so the manifest stays complete: ${missingList.join(", ")}`
   );
   totalDeclared += declared.size;

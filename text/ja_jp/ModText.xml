@@ -213,6 +213,7 @@
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="ja_JP"><Text>一部の指導者や文明は移住を異なるかたちで経験し、その歴史的性格がにじみ出ます。これらは世界共通のルールの上に乗る、小さく抑制された調整であり、誰かが雪だるま式に膨らむほどではありません、文明別の微調整が有効なあいだ（既定で有効）だけ適用されます。[n][n]その幸福度ゆえに本来どの都市も止められない磁石にしてしまう指導者は、引き寄せる力がやや弱まります。とりわけベンジャミン・フランクリン、そしてイサベル、アショーカ、リサールも抑えられます。富裕な征服者は戦利品を定着させる費用がかさみ、イサベルとクセルクセスは、勝ち取った人々を吸収するのにより多く支払います。[n][n]背の高い、専門家志向の勢力は過密から守られ、その密集した都市が二重に罰せられないようにします。パチャクテク、そしてとりわけアッバース朝です。人口が繁栄を上回って急成長する民は、市民を引き留めるための小さな緩衝を得ます、孔子、漢、そして清、一方でクメールは、自国の首都以外での不幸の最悪の部分を免れます。そして堅固な城壁の内に築かれた国、ノルマンとイングランド、は、城壁を持たぬ者よりはるかによく包囲のあいだ人口を保ちます。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="ja_JP"><Text>移住</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="ja_JP"><Text>繁栄</Text></Replace>
+        <Replace Tag="LOC_EMIG_LENS_ETHNICITY" Language="ja_JP"><Text>民族</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DATA" Language="ja_JP"><Text>ダッシュボードのデータ</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DATA_DESCRIPTION" Language="ja_JP"><Text>実際の移住を表示するか、実データが蓄積される前にビジュアライゼーションを確認するためのサンプルデータを表示します。</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DATA_LIVE" Language="ja_JP"><Text>ライブ</Text></Replace>

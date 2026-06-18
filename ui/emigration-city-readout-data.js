@@ -3,14 +3,14 @@
 // The DATA core for the per-city "why is this settlement gaining/losing population?" readout
 // (the in-game legibility plan, Phase 0). Two layers:
 //
-//   • buildCitySnapshot(opts)  — PURE: turns already-resolved inputs into the readout view-model
+//   • buildCitySnapshot(opts)  , PURE: turns already-resolved inputs into the readout view-model
 //     (cause + label + permanence + hint, distress/at-risk flags, pressure-to-bar, where people are
 //     being pulled, the destination's assimilation cost, and owner-level net/in/out). Unit-tested.
-//   • citySnapshot(cityId)     — IMPURE: gathers those inputs live (recompute-on-read, so no new
+//   • citySnapshot(cityId)     , IMPURE: gathers those inputs live (recompute-on-read, so no new
 //     persisted state) and calls the pure builder. Degrades to null on any read failure.
 //
 // Owner-level tallies are read from globalThis.EmigrationData at call time (not a static import) so
-// this module does not depend on emigration-migration-stats.js — that file imports THIS one to
+// this module does not depend on emigration-migration-stats.js , that file imports THIS one to
 // expose citySnapshot on EmigrationData, and a static back-edge would be a cycle.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
@@ -20,6 +20,8 @@ import { rankByProsperity, distress } from "/emigration/ui/emigration-prosperity
 import { bestDestination, migrationCause } from "/emigration/ui/emigration-pull.js";
 import { loadState, ownerPopulations } from "/emigration/ui/emigration-state.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
+import { compositionForCity } from "/emigration/ui/emigration-composition.js";
+import { civAdjective } from "/emigration/ui/emigration-naming.js";
 
 /**
  * The readout view-model for one city.
@@ -48,6 +50,8 @@ import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
  * @property {number} ownerNet Owner cumulative net migration (people).
  * @property {number} ownerIn Owner cumulative immigration (people).
  * @property {number} ownerOut Owner cumulative emigration (people).
+ * @property {{total:number, parts:{name:string, share:number}[]}|null} [composition] Ethnic
+ *   composition: per-origin display name + share, largest first (null when untracked).
  */
 
 /**
@@ -136,7 +140,8 @@ function pickOwner(owner) {
  *          bestDest?:{name?:string,owner?:number,crossCiv?:boolean}|null,
  *          source?:{pressure?:number,cooldown?:number}|null,
  *          assim?:{load?:number,gold?:number,happiness?:number}|null,
- *          owner?:{net?:number,in?:number,out?:number}|null}} o Inputs.
+ *          owner?:{net?:number,in?:number,out?:number}|null,
+ *          composition?:{total:number, parts:{name:string, share:number}[]}|null}} o Inputs.
  * @returns {CitySnapshot} The snapshot.
  */
 export function buildCitySnapshot(o) {
@@ -158,7 +163,24 @@ export function buildCitySnapshot(o) {
     ...pickSource(o.source || null),
     ...pickDest(o.bestDest || null),
     ...pickAssim(o.assim || null),
-    ...pickOwner(o.owner || null)
+    ...pickOwner(o.owner || null),
+    composition: o.composition || null
+  };
+}
+
+/**
+ * Resolve a settlement's ethnic composition into display-ready parts (origin civ adjective + share,
+ * largest first), or null when untracked. Lives in the engine-reading layer so buildCitySnapshot
+ * stays pure.
+ * @param {*} city City object.
+ * @returns {{total:number, parts:{name:string, share:number}[]}|null} The display composition.
+ */
+function resolveComposition(city) {
+  const comp = compositionForCity(city);
+  if (!comp || !comp.civs.length) return null;
+  return {
+    total: comp.total,
+    parts: comp.civs.map((c) => ({ name: civAdjective(c.civ), share: c.share }))
   };
 }
 
@@ -242,7 +264,8 @@ function snapshotFromRanked(sig, ranked, ownerPop, sources) {
     bestDest: best ? destInfo(sig, best.dest) : null,
     source: sources[sig.key] || null,
     assim: assimilationCostFor(sig.owner),
-    owner: ownerStats(sig.owner)
+    owner: ownerStats(sig.owner),
+    composition: resolveComposition(sig.city)
   });
 }
 

@@ -25,7 +25,7 @@ const CFG_DEF = /** @type {Record<string, *>} */ (CONFIG_DEFAULTS);
 // How migration counts are presented. A two-way toggle: Civ Pop (raw pop-points) or Scaled Pop
 // (historical people). BOTH is retained only so older saved values coerce cleanly to Scaled.
 export const NumberMode = Object.freeze({
-  BOTH: 0, // legacy "1 point (12 thousand people)" — coerced to HISTORICAL on read
+  BOTH: 0, // legacy "1 point (12 thousand people)" , coerced to HISTORICAL on read
   CIV: 1, // "1 population point"
   HISTORICAL: 2 // "12 thousand people" (Scaled Pop)
 });

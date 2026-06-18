@@ -148,7 +148,7 @@ function pinBaseConfig() {
   );
 })();
 
-// ── Scenario B: a lagged move — depart now, arrive turns later ─────────────
+// ── Scenario B: a lagged move , depart now, arrive turns later ─────────────
 (function scenarioLagged() {
   pinBaseConfig();
   Object.assign(CONFIG, { transitLagTurns: 4, transitHexPerTurn: 5 });
@@ -174,7 +174,7 @@ function pinBaseConfig() {
   assert.ok(rich.ruralPopulation > 2, "B: destination gains the point on arrival");
 })();
 
-// ── Scenario C: the attrition outlet — distressed source, no destination ───
+// ── Scenario C: the attrition outlet , distressed source, no destination ───
 (function scenarioAttrition() {
   pinBaseConfig();
   Object.assign(CONFIG, {
@@ -212,7 +212,7 @@ function pinBaseConfig() {
   assert.ok(trapped.ruralPopulation < before, "C: attrition actually removes population");
 })();
 
-// ── Scenario D: war surge — a besieged source sheds a burst in one turn ─────
+// ── Scenario D: war surge , a besieged source sheds a burst in one turn ─────
 // Drive REAL violence through the documented observation path: districtDamageFrac reads
 // Players.Districts.get(owner).getDistrictHealth(loc), so a fully-wrecked district at the source's
 // location accumulates intensity (vwAssault + vwSiege) above the flee threshold → cause "war" →

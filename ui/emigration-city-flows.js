@@ -227,8 +227,8 @@ function cityCard(c) {
   card.appendChild(isCiv ? civHeader(c.name) : el("div", "emig-city-name", cardTitle(c)));
   const cols = el("div", "emig-city-cols" + (isCiv ? " with-causes" : ""));
   if (isCiv) cols.appendChild(causeList(c.causes));
-  cols.appendChild(directionCol("Immigrants — came from", "Why:", c.in));
-  cols.appendChild(directionCol("Emigrants — left for", "Why:", c.out));
+  cols.appendChild(directionCol("Immigrants ; came from", "Why:", c.in));
+  cols.appendChild(directionCol("Emigrants ; left for", "Why:", c.out));
   // Settlements: the pressure becomes a third aligned graph column beside the two pies.
   if (!isCiv) cols.appendChild(pressureCol(c.pressure));
   card.appendChild(cols);
@@ -236,7 +236,7 @@ function cityCard(c) {
 }
 
 /**
- * Per-civilization "Came from" / "Left for" entries (the Causes tab) — the same shape as the
+ * Per-civilization "Came from" / "Left for" entries (the Causes tab) , the same shape as the
  * Settlements rows but aggregated at the civ level, from the cross-civ flow edges.
  * @param {*[]} flows Named flow edges ({from,to,fromName,toName,people,byCause}).
  * @returns {*[]} Entries [{name, in:{civs,causes}, out:{civs,causes}}], busiest first.
@@ -299,7 +299,7 @@ export function renderCityFlows(body, section) {
   const cities = section.cities || [];
   if (!cities.length) {
     body.appendChild(el("div", "emig-empty",
-      "No city migration recorded yet — flows appear as people move in and out of your cities."));
+      "No city migration recorded yet , flows appear as people move in and out of your cities."));
     return;
   }
   for (const c of cities) body.appendChild(cityCard(c));

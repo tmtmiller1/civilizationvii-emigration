@@ -1080,7 +1080,7 @@ class MigrationDockDecorator {
 
 /**
  * G2/G3 reconnaissance (read-only): inventory the diplomacy API surface so we can decide whether
- * a mod can add an initiable DiplomacyActionType (D2 — native raids/agreements), must fall back to
+ * a mod can add an initiable DiplomacyActionType (D2 ; native raids/agreements), must fall back to
  * a mod panel (D3), or should ride existing agreements (D1). Logs only; changes nothing. Run via
  * the console: `mig.diplo()`. See docs/immigration-interaction-plan.md §11 / gate G2.
  */
@@ -1162,7 +1162,7 @@ function exposeGlobals() {
       spec: () => probeSpecialists(),
       yield2b: () => probeYieldPenalty(),
       agg: () => probeAggregate(),
-      // G2/G3 diplomacy recon (read-only) — informs the §11 D2/D3 decision
+      // G2/G3 diplomacy recon (read-only) , informs the §11 D2/D3 decision
       diplo: () => probeDiplomacy()
     };
   } catch (e) {

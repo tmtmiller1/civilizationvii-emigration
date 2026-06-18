@@ -78,6 +78,7 @@
                 <UIScripts>
                     <Item>ui/emigration-main.js</Item>
                     <Item>ui/emigration-prosperity-lens.js</Item>
+                    <Item>ui/emigration-ethnicity-lens.js</Item>
                     <Item>ui/options/mod-options.js</Item>
                     <Item>ui/emigration-settings.js</Item>
                     <Item>ui/emigration-options.js</Item>
@@ -102,6 +103,7 @@
                     <Item>ui/emigration-migration-stats.js</Item>
                     <Item>ui/emigration-flow-history.js</Item>
                     <Item>ui/emigration-telemetry.js</Item>
+                    <Item>ui/emigration-composition.js</Item>
                     <Item>ui/emigration-city-readout-data.js</Item>
                     <Item>ui/emigration-city-readout.js</Item>
                     <Item>ui/emigration-views.js</Item>

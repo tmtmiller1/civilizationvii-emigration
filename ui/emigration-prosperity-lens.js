@@ -1,6 +1,6 @@
 // emigration-prosperity-lens.js
 //
-// A map LENS that paints every city's tiles by its PROSPERITY relative to the world average — the
+// A map LENS that paints every city's tiles by its PROSPERITY relative to the world average , the
 // same score that drives migration (emigration-prosperity.js). Red = below average (a city shedding
 // people), grey = about average, green = above average (a magnet). Towns and cities alike; unowned
 // tiles are left uncoloured.

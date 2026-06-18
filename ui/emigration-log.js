@@ -3,7 +3,7 @@
 // Dev debug logging for the mod. Mod console.log does not reach UI.log from the UI VM, so when
 // debugging is on we also emit through the GameFace CSS-parse channel (grep EMIG_ in
 // ~/Library/Application Support/Civilization VII/Logs/UI.log). Gated on DBG, which release.sh flips
-// to false in the shipped copy — a published build runs silently (it still moves population, it
+// to false in the shipped copy , a published build runs silently (it still moves population, it
 // just stops emitting diagnostics).
 
 const TAG = "EMIG_";
