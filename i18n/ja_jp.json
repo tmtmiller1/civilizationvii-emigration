@@ -237,5 +237,7 @@
  "LOC_EMIG_NETC_SHOW": "表示:",
  "LOC_EMIG_NETC_NOPOP": "まだ人口がいません",
  "LOC_EMIG_NETC_ORIGINS": "出身地",
- "LOC_EMIG_NETC_ORIGINS_TIP": "移民の出身地への線を表示"
+ "LOC_EMIG_NETC_ORIGINS_TIP": "移民の出身地への線を表示",
+ "LOC_OPTIONS_EMIG_DOCK": "移住ドックボタン",
+ "LOC_OPTIONS_EMIG_DOCK_DESCRIPTION": "ゲーム内のドックに移住ボタンを表示します。オフにすると、人口統計画面の移住タブからダッシュボードを開けます。"
 }

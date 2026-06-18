@@ -237,5 +237,7 @@
  "LOC_EMIG_NETC_SHOW": "표시:",
  "LOC_EMIG_NETC_NOPOP": "아직 인구 없음",
  "LOC_EMIG_NETC_ORIGINS": "출신지",
- "LOC_EMIG_NETC_ORIGINS_TIP": "이주민의 출신지로 선 표시"
+ "LOC_EMIG_NETC_ORIGINS_TIP": "이주민의 출신지로 선 표시",
+ "LOC_OPTIONS_EMIG_DOCK": "이주 독 버튼",
+ "LOC_OPTIONS_EMIG_DOCK_DESCRIPTION": "게임 내 독에 이주 버튼을 표시합니다. 끄면 인구 통계 화면의 이주 탭에서 대시보드를 엽니다."
 }

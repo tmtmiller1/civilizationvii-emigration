@@ -237,5 +237,7 @@
  "LOC_EMIG_NETC_SHOW": "Показать:",
  "LOC_EMIG_NETC_NOPOP": "населения пока нет",
  "LOC_EMIG_NETC_ORIGINS": "Источники",
- "LOC_EMIG_NETC_ORIGINS_TIP": "Показать линии к источникам мигрантов"
+ "LOC_EMIG_NETC_ORIGINS_TIP": "Показать линии к источникам мигрантов",
+ "LOC_OPTIONS_EMIG_DOCK": "Кнопка миграции на панели",
+ "LOC_OPTIONS_EMIG_DOCK_DESCRIPTION": "Показывать кнопку «Миграция» на игровой панели. Отключите, чтобы открывать панель через вкладку «Миграция» на экране демографии."
 }

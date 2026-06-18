@@ -23,7 +23,9 @@ import {
   getSampleData,
   setSampleData,
   getSnapshotInterval,
-  setSnapshotInterval
+  setSnapshotInterval,
+  getShowDockButton,
+  setShowDockButton
 } from "/emigration/ui/emigration-settings.js";
 import { PRESET_NAMES } from "/emigration/ui/emigration-tunables.js";
 
@@ -126,10 +128,25 @@ function registerSnapshotInterval() {
   });
 }
 
+/** Register the dock-button toggle (show/hide the Emigration button on the in-game dock). */
+function registerDockButton() {
+  Options.addOption({
+    category: CategoryType.Mods,
+    group: MAIN_GROUP,
+    type: OptionType.Checkbox,
+    id: "emigration-dock-button",
+    initListener: (/** @type {*} */ info) => (info.currentValue = getShowDockButton()),
+    updateListener: (/** @type {*} */ _i, /** @type {*} */ v) => setShowDockButton(!!v),
+    label: "LOC_OPTIONS_EMIG_DOCK",
+    description: "LOC_OPTIONS_EMIG_DOCK_DESCRIPTION"
+  });
+}
+
 Options.addInitCallback(() => {
   registerNumberMode();
   registerPreset();
   registerDataMode();
   registerSnapshotInterval();
+  registerDockButton();
   registerAdvancedEditor();
 });

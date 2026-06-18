@@ -220,6 +220,8 @@
         <Replace Tag="LOC_OPTIONS_EMIG_DATA_SAMPLE" Language="zh_Hans_CN"><Text>示例（预览）</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP" Language="zh_Hans_CN"><Text>迁徙时间线精细度</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP_DESCRIPTION" Language="zh_Hans_CN"><Text>迁徙网络为时间线记录快照的频率：每个快照间隔的回合越少，回放越精细，但存档体积会略微增大。</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DOCK" Language="zh_Hans_CN"><Text>迁徙工具栏按钮</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DOCK_DESCRIPTION" Language="zh_Hans_CN"><Text>在游戏工具栏显示迁徙按钮。关闭后改为从人口统计界面的迁徙标签页打开仪表板。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="zh_Hans_CN"><Text>尚无跨文明迁移，当人们跨越边界时便会出现流动。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="zh_Hans_CN"><Text>着色依据：</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="zh_Hans_CN"><Text>来源</Text></Replace>
