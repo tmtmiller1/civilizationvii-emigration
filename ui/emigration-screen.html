@@ -1,0 +1,14 @@
+<div class="emig-screen-root w-full h-full flex items-center justify-center">
+    <fxs-frame frame-style="f2" class="emig-screen-frame relative flex flex-col">
+        <fxs-header class="emig-screen-title relative font-title text-xl uppercase text-secondary"
+                    filigree-style="h4" title="LOC_EMIGRATION_OPEN"></fxs-header>
+        <div class="emig-screen-body relative flex flex-col flex-auto">
+            <!-- The migration dashboard render core (emigration-views.js) mounts here. -->
+            <div class="emig-screen-host w-full"></div>
+        </div>
+        <fxs-close-button data-ia-close
+            data-audio-group-ref="audio-screen-unlocks"
+            data-audio-activate-ref="data-audio-close-selected"
+            data-audio-press-ref="data-audio-close-press"></fxs-close-button>
+    </fxs-frame>
+</div>

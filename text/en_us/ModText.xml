@@ -53,7 +53,7 @@
         <Row Tag="LOC_EMIG_T_MAXMOVES"><Text>Pacing: max emigrations per turn</Text></Row>
         <Row Tag="LOC_EMIG_T_MAXMOVES_D"><Text>Cap on how many population points move across the whole world each pass.</Text></Row>
         <Row Tag="LOC_EMIG_T_INTERVAL"><Text>Pacing: turns between passes</Text></Row>
-        <Row Tag="LOC_EMIG_T_INTERVAL_D"><Text>Run the emigration pass once every N of your turns.</Text></Row>
+        <Row Tag="LOC_EMIG_T_INTERVAL_D"><Text>Run the emigration pass once every N of your turns. Raise it to ease per-turn cost on large saves — and, if the Demographics mod is installed, lower its sample frequency first.</Text></Row>
 
         <Row Tag="LOC_EMIG_T_CROSSCIV"><Text>Scope: allow migration between civilizations</Text></Row>
         <Row Tag="LOC_EMIG_T_CROSSCIV_D"><Text>If off, people only move between cities of the same civilization.</Text></Row>
@@ -265,5 +265,89 @@
 
         <Row Tag="LOC_PEDIA_EMIG_CIVTUNING_TITLE"><Text>Leaders &amp; Civilizations</Text></Row>
         <Row Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY"><Text>A handful of leaders and civilizations feel migration differently, so their historical character shows through. These are small, bounded adjustments on top of the global rules, never enough to let anyone snowball, and they apply only while per-civ tuning is on (it is, by default).[n][n]Leaders whose happiness would otherwise make every city an unstoppable magnet pull a little less strongly: Benjamin Franklin most of all, with Isabella, Ashoka, and Rizal also reined in. Wealthy conquerors find spoils costlier to settle, Isabella and Xerxes pay more to absorb the people they win.[n][n]Tall, specialist-minded powers are shielded from overcrowding so their dense cities aren't punished twice: Pachacuti, and the Abbasids most of all. Fast-growing peoples whose numbers outrun their prosperity get a small cushion to keep their citizens, Confucius, the Han, and the Qing, while the Khmer are spared the worst of their own non-capital unhappiness. And realms built behind strong walls, the Normans and the English, hold their population through a siege far better than the unwalled.</Text></Row>
+        <Row Tag="LOC_EMIGRATION_OPEN">
+            <Text>Migration</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_LENS_PROSPERITY">
+            <Text>Prosperity</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_EMIG_DATA">
+            <Text>Dashboard data</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_EMIG_DATA_DESCRIPTION">
+            <Text>Show live migration in the dashboard, or sample data to preview the visualization before real cross-civ flows build up.</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_EMIG_DATA_LIVE">
+            <Text>Live</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_EMIG_DATA_SAMPLE">
+            <Text>Sample (preview)</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_EMIG_SNAP">
+            <Text>Migration timeline detail</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_EMIG_SNAP_DESCRIPTION">
+            <Text>How often the migration network records a snapshot for the timeline scrubber: fewer turns per snapshot gives finer playback, at a small cost in save size.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_EMPTY">
+            <Text>No cross-civ migration yet — flows appear once people cross borders.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_COLORBY">
+            <Text>Color by:</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_LENS_ORIGIN">
+            <Text>Origin</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_LENS_TYPE">
+            <Text>Type</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_LENS_MOVEMENT">
+            <Text>Movement</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_MOVE_RESIDENTS">
+            <Text>Residents</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_MOVE_INTERNAL">
+            <Text>Internal moves</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_MOVE_IMMIGRANTS">
+            <Text>Immigrants</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_RESIDENTS_TIP">
+            <Text>Show / hide home-grown residents</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_TIP_RESIDENT">
+            <Text>home-grown resident</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_TIP_INTERNAL">
+            <Text>internal move</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_CLUSTER_TIP">
+            <Text>arrivals {1_In} · net {2_Net}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_NOW">
+            <Text>now</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_TURN_N">
+            <Text>turn {1_Turn}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_START">
+            <Text>start</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_CAPTION">
+            <Text>Each dot ≈ {1_People} people. A circle is one civilization, holding its cities and towns; its dots are home-grown residents (its own colour), people who moved between its cities (a lighter tint), and immigrants (their origin's colour). Recolour with "Color by", filter with the Show/Origins toggles, click a swatch or circle to isolate it, and press ▶ or scrub the timeline to replay history.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_SHOW">
+            <Text>Show:</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_NOPOP">
+            <Text>no population yet</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_ORIGINS">
+            <Text>Origins</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_ORIGINS_TIP">
+            <Text>Show lines to where migrants came from</Text>
+        </Row>
     </EnglishText>
 </Database>

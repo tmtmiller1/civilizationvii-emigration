@@ -211,5 +211,33 @@
         <Replace Tag="LOC_PEDIA_EMIG_OUTLET_BODY" Language="pt_BR"><Text>A migração não é um sistema fechado. Quando uma cidade está desesperada, sitiada, faminta ou devastada por um desastre, e não resta nenhum lugar seguro para onde fugir, sua população presa não espera para sempre. As pessoas morrem ou se dispersam, e a cidade perde população sem destino.[n][n]Esse escoadouro é um recurso extremo: uma cidade contente à qual falta apenas um lugar melhor permanece intocada, e a perda é contada como mortes, distinta dos refugiados que de fato alcançam um novo lar.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_TITLE" Language="pt_BR"><Text>Líderes e civilizações</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="pt_BR"><Text>Um punhado de líderes e civilizações sente a migração de outra forma, de modo que seu caráter histórico transparece. São ajustes pequenos e limitados acima das regras globais, nunca o bastante para alguém disparar, e só se aplicam enquanto o ajuste por civilização está ativado (está, por padrão).[n][n]Os líderes cuja felicidade tornaria cada cidade um ímã imparável atraem um pouco menos: Benjamin Franklin acima de todos, com Isabel, Asoka e Rizal também contidos. Os conquistadores ricos acham o espólio mais caro de assentar, Isabel e Xerxes pagam mais para absorver as pessoas que conquistam.[n][n]As potências altas e voltadas a especialistas ficam protegidas da superlotação para que suas cidades densas não sejam punidas duas vezes: Pachacuti e, sobretudo, os abássidas. Os povos de crescimento rápido cujo número supera sua prosperidade recebem um pequeno amortecedor para manter seus cidadãos, Confúcio, os han e os qing, enquanto os khmers são poupados do pior da própria infelicidade fora da capital. E os reinos erguidos atrás de muralhas fortes, os normandos e os ingleses, retêm sua população durante um cerco muito melhor do que os sem muralhas.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_OPEN" Language="pt_BR"><Text>Migração</Text></Replace>
+        <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="pt_BR"><Text>Prosperidade</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA" Language="pt_BR"><Text>Dados do painel</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA_DESCRIPTION" Language="pt_BR"><Text>Mostra a migração real no painel, ou dados de amostra para pré-visualizar a visualização antes de surgirem fluxos reais.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA_LIVE" Language="pt_BR"><Text>Ao vivo</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA_SAMPLE" Language="pt_BR"><Text>Amostra (prévia)</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SNAP" Language="pt_BR"><Text>Detalhe da linha do tempo</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SNAP_DESCRIPTION" Language="pt_BR"><Text>Com que frequência a rede de migração grava um instantâneo para a linha do tempo: menos turnos por instantâneo dá reprodução mais fina, com um pequeno custo no tamanho do save.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="pt_BR"><Text>Ainda não há migração entre civilizações — os fluxos surgem quando as pessoas cruzam fronteiras.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="pt_BR"><Text>Colorir por:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="pt_BR"><Text>Origem</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="pt_BR"><Text>Tipo</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_LENS_MOVEMENT" Language="pt_BR"><Text>Movimento</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MOVE_RESIDENTS" Language="pt_BR"><Text>Residentes</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MOVE_INTERNAL" Language="pt_BR"><Text>Movimentos internos</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MOVE_IMMIGRANTS" Language="pt_BR"><Text>Imigrantes</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RESIDENTS_TIP" Language="pt_BR"><Text>Mostrar / ocultar residentes locais</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIP_RESIDENT" Language="pt_BR"><Text>residente local</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIP_INTERNAL" Language="pt_BR"><Text>movimento interno</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_CLUSTER_TIP" Language="pt_BR"><Text>chegadas {1_In} · líquido {2_Net}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_NOW" Language="pt_BR"><Text>agora</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TURN_N" Language="pt_BR"><Text>turno {1_Turn}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_START" Language="pt_BR"><Text>início</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="pt_BR"><Text>Cada ponto ≈ {1_People} pessoas. O círculo de uma civilização contém suas cidades e vilas como subgrupos internos: pontos na cor própria da civilização são residentes locais, pontos em um tom MAIS CLARO são pessoas que se mudaram entre suas próprias cidades (migração interna) e pontos de outra cor são imigrantes daquela origem. A lente "Colorir por" os recolore por origem, tipo de migrante (guerra / desastre / atração …) ou movimento (residentes / interno / imigrantes).</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_SHOW" Language="pt_BR"><Text>Mostrar:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="pt_BR"><Text>ainda sem população</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_ORIGINS" Language="pt_BR"><Text>Origens</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_ORIGINS_TIP" Language="pt_BR"><Text>Mostrar linhas até a origem dos migrantes</Text></Replace>
     </LocalizedText>
 </Database>

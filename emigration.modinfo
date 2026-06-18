@@ -77,6 +77,7 @@
                 </UpdateText>
                 <UIScripts>
                     <Item>ui/emigration-main.js</Item>
+                    <Item>ui/emigration-prosperity-lens.js</Item>
                     <Item>ui/options/mod-options.js</Item>
                     <Item>ui/emigration-settings.js</Item>
                     <Item>ui/emigration-options.js</Item>
@@ -102,7 +103,23 @@
                     <Item>ui/emigration-city-readout-data.js</Item>
                     <Item>ui/emigration-city-readout.js</Item>
                     <Item>ui/emigration-views.js</Item>
+                    <Item>ui/emigration-network-viz.js</Item>
+                    <Item>ui/emigration-civ-colors.js</Item>
+                    <Item>ui/emigration-network-sim.js</Item>
+                    <Item>ui/emigration-network-paint.js</Item>
+                    <Item>ui/emigration-network-dots.js</Item>
+                    <Item>ui/emigration-network-timeline.js</Item>
+                    <Item>ui/emigration-network-interact.js</Item>
+                    <Item>ui/emigration-network-flow.js</Item>
+                    <Item>ui/emigration-pies.js</Item>
+                    <Item>ui/emigration-city-flows.js</Item>
+                    <Item>ui/emigration-detail-views.js</Item>
+                    <Item>ui/emigration-demo-data.js</Item>
                     <Item>ui/emigration-window.js</Item>
+                    <Item>ui/emigration-screen.js</Item>
+                    <Item>ui/emigration-screen.html</Item>
+                    <Item>ui/emigration-screen.css</Item>
+                    <Item>ui/emigration-dock-decorator.js</Item>
                     <Item>ui/emigration-migration-page.js</Item>
                     <Item>ui/emigration-engine.js</Item>
                     <Item>ui/emigration-raid.js</Item>
@@ -124,6 +141,8 @@
                     <Item>ui/emigration-violence-signals.js</Item>
                     <!-- Advanced tunables sub-window, imported by emigration-options.js. -->
                     <Item>ui/options/emigration-advanced-editor.js</Item>
+                    <!-- Dock-button icon (CSS mask asset, referenced via fs://game/emigration/...). -->
+                    <Item>images/emigration-dock-icon.svg</Item>
                 </ImportFiles>
             </Actions>
         </ActionGroup>

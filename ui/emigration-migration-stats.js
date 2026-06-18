@@ -10,6 +10,9 @@
 
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
 import { citySnapshot } from "/emigration/ui/emigration-city-readout-data.js";
+import { getSnapshotInterval } from "/emigration/ui/emigration-settings.js";
+import { cityName } from "/emigration/ui/emigration-migration-records.js";
+import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 
 const STATE_KEY = "EmigrationMigStats_v1";
 
@@ -27,12 +30,40 @@ let _recent = [];
  * @property {Record<string, number>} in Cumulative gross immigration per player.
  * @property {Record<string, number>} refugees Cumulative non-unhappiness emigration.
  * @property {Record<string, number>} deaths Cumulative population lost to attrition (the outlet).
+ * @property {Record<string, number>} cumPts Net per player, in raw pop points.
+ * @property {Record<string, number>} outPts Gross emigration per player, in pop points.
+ * @property {Record<string, number>} inPts Gross immigration per player, in pop points.
+ * @property {Record<string, number>} refugeesPts Refugee emigration per player, in pop points.
+ * @property {Record<string, number>} deathsPts Attrition deaths per player, in pop points.
+ * @property {Record<string, number>} lossesPts External population loss per player, in pop points.
+ * @property {Record<string, Record<string,number>>} flowsPts Cross-civ flow (pop points by cause).
+ * @property {Record<string, number>} losses Cumulative EXTERNAL population loss per player —
+ *   engine-driven drops (starvation / plague / razing / disasters) not explained by the mod's own
+ *   migration or attrition. Combined with `deaths` for the ledger's "Losses" column.
+ * @property {Record<string, number>} cityPts Last-seen raw population (points) per city key, to
+ *   diff turn-over-turn and detect external loss.
+ * @property {Record<string, string>} cityNames Last-seen display name per city key (to value a
+ *   razed city's residual loss against this turn's recorded departures).
  * @property {Record<string, number>} wmOut Gross-emigration watermark.
  * @property {Record<string, number>} wmIn Gross-immigration watermark.
  * @property {Record<string, Record<string, number>>} outByCause Cumulative emigration, per cause.
  * @property {Record<string, Record<string, number>>} inByCause Immigration cumulative by cause.
  * @property {Record<string, Record<string, number>>} wmOutByCause Per-cause emigration watermarks.
  * @property {Record<string, Record<string, number>>} wmInByCause Per-cause immigration watermarks.
+ * @property {Record<string, Record<string, number>>} flows Cross-civ people moved, keyed
+ *   "src>dest" then by cause (so the network viz can colour/filter edges by why people moved).
+ * @property {Record<string, number>} stanceIn Border-stance impact on immigration IN (people;
+ *   + allowed beyond a neutral baseline, - prevented), accumulated per turn.
+ * @property {Record<string, number>} stanceOut Border-stance impact on emigration OUT (people;
+ *   - = citizens Closed Borders kept home).
+ * @property {Record<string, number>} stanceInPts Stance impact on IN, in pop points.
+ * @property {Record<string, number>} stanceOutPts Stance impact on OUT, in pop points.
+ * @property {*[]} flowHistory Decimated cumulative-flow snapshots over time, for the network viz
+ *   timeline scrubber. Each is {turn, age, chartTurn, flows}: the age-local turn, the age, and a
+ *   MONOTONIC chartTurn that spans ages (so age-local turn resets never collide or reorder).
+ * @property {number} chartTurn Latest monotonic cross-age turn (never resets at an age boundary).
+ * @property {string} chartAge Age of the latest snapshot (to detect boundary crossings).
+ * @property {number} chartLocal Age-local turn of the latest snapshot.
  */
 
 /** @type {MigStatsState | null} */
@@ -70,12 +101,36 @@ function normalize(o) {
     in: mapOr(o.in),
     refugees: mapOr(o.refugees),
     deaths: mapOr(o.deaths),
+    losses: mapOr(o.losses),
+    // Parallel raw-pop-point tallies (1 point per migration) so the UI can show exact Civ
+    // population numbers, not just the historically-scaled "people" totals.
+    cumPts: mapOr(o.cumPts),
+    outPts: mapOr(o.outPts),
+    inPts: mapOr(o.inPts),
+    refugeesPts: mapOr(o.refugeesPts),
+    deathsPts: mapOr(o.deathsPts),
+    lossesPts: mapOr(o.lossesPts),
+    flowsPts: mapOr(o.flowsPts),
+    cityPts: o.cityPts && typeof o.cityPts === "object" ? o.cityPts : {},
+    cityNames: o.cityNames && typeof o.cityNames === "object" ? o.cityNames : {},
     wmOut: mapOr(o.wmOut),
     wmIn: mapOr(o.wmIn),
     outByCause: mapOr(o.outByCause),
     inByCause: mapOr(o.inByCause),
     wmOutByCause: mapOr(o.wmOutByCause),
-    wmInByCause: mapOr(o.wmInByCause)
+    wmInByCause: mapOr(o.wmInByCause),
+    flows: mapOr(o.flows),
+    // Stance-impact counterfactual (people + pop-points): how much each civ's border policy raised
+    // (Pro) or cut (Anti / Closed-retention) its cross-civ immigration in/out vs a neutral-borders
+    // world, accumulated per turn. Signed: +in = allowed beyond, -in = prevented, -out = retained.
+    stanceIn: mapOr(o.stanceIn),
+    stanceOut: mapOr(o.stanceOut),
+    stanceInPts: mapOr(o.stanceInPts),
+    stanceOutPts: mapOr(o.stanceOutPts),
+    flowHistory: Array.isArray(o.flowHistory) ? o.flowHistory : [],
+    chartTurn: typeof o.chartTurn === "number" ? o.chartTurn : 0,
+    chartAge: typeof o.chartAge === "string" ? o.chartAge : "",
+    chartLocal: typeof o.chartLocal === "number" ? o.chartLocal : 0
   };
 }
 
@@ -111,38 +166,69 @@ function save() {
 }
 
 /**
+ * A finite number, or 0.
+ * @param {*} v Value.
+ * @returns {number} v if finite, else 0.
+ */
+function numOr0(v) {
+  return typeof v === "number" && isFinite(v) ? v : 0;
+}
+
+/**
  * Fold one migration into the tallies: a gain for the destination owner, an equal loss for the
  * source owner, and - when the move was caused by war/disaster/conquest - a refugee tally on the
  * source. Also tracks per-cause emigration/immigration breakdowns for tooltips.
  * @param {MigStatsState} s State.
- * @param {{srcOwner?:number, destOwner?:number, people:number, cause?:string}} m Migration.
+ * @param {{srcOwner?:number, destOwner?:number, people:number, points?:number, cause?:string}} m
+ *   Migration.
  */
 function foldMigration(s, m) {
-  const p = typeof m.people === "number" && isFinite(m.people) ? m.people : 0;
+  const p = numOr0(m.people);
+  const pts = numOr0(m.points);
   const c = m.cause || "other"; // Default cause if unspecified
+  foldFlow(s, m, p, pts); // cross-civ src→dest edge for the migration-network viz
   // Attrition is a death, not a migration: it never touches the migration/refugee tallies (no one
   // received these people) - only the deaths counter.
   if (m.cause === "attrition") {
-    if (typeof m.srcOwner === "number") add(s.deaths, m.srcOwner, p);
+    if (typeof m.srcOwner === "number") addBoth(s.deaths, s.deathsPts, m.srcOwner, p, pts);
     return;
   }
   if (typeof m.destOwner === "number") {
-    add(s.cum, m.destOwner, p);
-    add(s.in, m.destOwner, p);
+    addBoth(s.cum, s.cumPts, m.destOwner, p, pts);
+    addBoth(s.in, s.inPts, m.destOwner, p, pts);
     add(s.inByCause, m.destOwner, p, c);
   }
   if (typeof m.srcOwner !== "number") return;
-  add(s.cum, m.srcOwner, -p);
-  add(s.out, m.srcOwner, p);
+  addBoth(s.cum, s.cumPts, m.srcOwner, -p, -pts);
+  addBoth(s.out, s.outPts, m.srcOwner, p, pts);
   add(s.outByCause, m.srcOwner, p, c);
-  if (isRefugeeCause(m.cause)) add(s.refugees, m.srcOwner, p); // war/disaster/conquest only
+  if (isRefugeeCause(m.cause)) addBoth(s.refugees, s.refugeesPts, m.srcOwner, p, pts);
+}
+
+/**
+ * Tally a cross-civ flow into the flow matrix for the migration network. The key records the origin
+ * AND destination SETTLEMENT (not just the civ): "srcCiv>destCiv>srcCity>destCity". Internal moves
+ * (same owner) and attrition deaths make no civ→civ edge.
+ * @param {MigStatsState} s State.
+ * @param {*} m Migration ({srcOwner?, destOwner?, srcName?, destName?, cause?}).
+ * @param {number} p People moved.
+ * @param {number} pts Pop points moved.
+ */
+function foldFlow(s, m, p, pts) {
+  if (m.cause === "attrition") return;
+  if (typeof m.srcOwner !== "number" || typeof m.destOwner !== "number") return;
+  if (m.srcOwner === m.destOwner) return;
+  const key = m.srcOwner + ">" + m.destOwner + ">" + (m.srcName || "") + ">" + (m.destName || "");
+  const c = m.cause || "other";
+  add(s.flows, key, p, c);
+  add(s.flowsPts, key, pts, c);
 }
 
 /**
  * Add `delta` to a tally map entry (treating missing as 0). Supports both flat maps (map[id])
  * and nested cause maps (map[id][cause]).
  * @param {Record<string, any>} map A tally map (flat, or nested by cause).
- * @param {number} id Player id.
+ * @param {number|string} id Player id, or a composite key (e.g. "src>dest" for flows).
  * @param {number} delta Signed amount.
  * @param {string} [cause] Optional cause key for nested maps.
  */
@@ -156,6 +242,320 @@ function add(map, id, delta, cause) {
 }
 
 /**
+ * Add to a people map and its parallel pop-point map at once.
+ * @param {Record<string,number>} peopleMap People tally.
+ * @param {Record<string,number>} ptsMap Pop-point tally.
+ * @param {number} id Owner id.
+ * @param {number} people Scaled people delta.
+ * @param {number} pts Pop-point delta.
+ */
+function addBoth(peopleMap, ptsMap, id, people, pts) {
+  add(peopleMap, id, people);
+  add(ptsMap, id, pts);
+}
+
+/**
+ * The cumulative cross-civ migration flows (src→dest people), for the network visualization.
+ * @returns {{src:number, dest:number, people:number}[]} Flow edges (people > 0).
+ */
+/**
+ * Coerce a stored flow value to a per-cause map (tolerating the older flat-number shape).
+ * @param {*} v Stored value.
+ * @returns {Record<string,number>} Per-cause map.
+ */
+function asCauseMap(v) {
+  if (v && typeof v === "object") return v;
+  return typeof v === "number" ? { other: v } : {};
+}
+
+/**
+ * Sum a per-cause map's values.
+ * @param {Record<string,number>} m Map.
+ * @returns {number} Total.
+ */
+function sumCauses(m) {
+  let total = 0;
+  for (const k of Object.keys(m)) total += m[k] || 0;
+  return total;
+}
+
+/**
+ * Parse one stored flow entry into a flow record (people + points + the origin/destination city),
+ * or null. Handles the city-keyed shape "srcCiv>destCiv>srcCity>destCity" AND the older civ-only
+ * "srcCiv>destCiv" (city names default to ""), and tolerates the flat-number cause shape.
+ * @param {string} key The flow key.
+ * @param {*} v The stored people value (number, or a per-cause map).
+ * @param {*} [vPts] The stored pop-point value (per-cause map), if any.
+ * @returns {*} Record {src, dest, srcCity, destCity, people, points, byCause} or null.
+ */
+function flowEntry(key, v, vPts) {
+  const parts = key.split(">");
+  const src = parseInt(parts[0], 10);
+  const dest = parseInt(parts[1], 10);
+  if (!isFinite(src) || !isFinite(dest)) return null;
+  const srcCity = parts[2] || "";
+  const destCity = parts.slice(3).join(">") || ""; // tolerate a ">" in a destination city name
+  const byCause = asCauseMap(v);
+  const people = sumCauses(byCause);
+  const points = sumCauses(asCauseMap(vPts));
+  return people > 0 ? { src, dest, srcCity, destCity, people, points, byCause } : null;
+}
+
+// Cap on retained flow snapshots (decimated to a spread when exceeded). Sized so even the finest
+// setting (a snapshot every turn) stays bounded in the save; finer than ~96 is decimated.
+const MAX_FLOW_SNAPSHOTS = 96;
+
+/**
+ * The current age-local game turn, defaulting to 0 off-engine.
+ * @returns {number} Game.turn or 0.
+ */
+function gameTurn() {
+  try {
+    return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
+  } catch (_) {
+    return 0;
+  }
+}
+
+/**
+ * The current turn's in-game date string (e.g. "4000 BC"), or "" off-engine. Same engine call the
+ * base UI clock + the Demographics mod use; it only reports the CURRENT turn, so we stamp it onto
+ * each snapshot as it is taken.
+ * @returns {string} The date label.
+ */
+function gameTurnDate() {
+  try {
+    return typeof Game !== "undefined" && typeof Game.getTurnDate === "function" ? Game.getTurnDate() : "";
+  } catch (_) {
+    return "";
+  }
+}
+
+/**
+ * The current age type (e.g. "AGE_ANTIQUITY"), or "" off-engine / mid-transition.
+ * @returns {string} Age type key.
+ */
+function currentAge() {
+  try {
+    if (typeof Game === "undefined" || Game.age === undefined) return "";
+    if (typeof GameInfo === "undefined" || typeof GameInfo?.Ages?.lookup !== "function") return "";
+    const row = GameInfo.Ages.lookup(Game.age);
+    return row && row.AgeType ? row.AgeType : "";
+  } catch (_) {
+    return "";
+  }
+}
+
+/**
+ * The next monotonic cross-age chart turn given the prior chart state. Same age advances by the
+ * age-local delta; an age boundary continues from the running chartTurn (so ages never overlap).
+ * @param {MigStatsState} s State.
+ * @param {string} age Current age.
+ * @param {number} localTurn Current age-local turn.
+ * @returns {number} The monotonic chartTurn.
+ */
+function nextChartTurn(s, age, localTurn) {
+  if (!s.flowHistory.length) return localTurn;
+  if (age === s.chartAge) return s.chartTurn + Math.max(0, localTurn - s.chartLocal);
+  return s.chartTurn + Math.max(1, localTurn);
+}
+
+/**
+ * Deep-copy the flow matrix (so a snapshot is frozen, not a live reference).
+ * @param {Record<string, Record<string, number>>} f Flow matrix.
+ * @returns {Record<string, Record<string, number>>} A copy.
+ */
+function cloneFlows(f) {
+  /** @type {Record<string, Record<string, number>>} */
+  const o = {};
+  for (const k of Object.keys(f)) o[k] = Object.assign({}, f[k]);
+  return o;
+}
+
+/**
+ * Snapshot the cumulative flows for the timeline. Updates the snapshot in place when the turn
+ * has not advanced; otherwise appends and decimates (keep every other when over the cap, so the
+ * history stays an even spread across the game rather than only the recent tail).
+ * @param {MigStatsState} s State.
+ */
+function snapshotFlows(s) {
+  const turn = gameTurn();
+  const age = currentAge();
+  const ct = nextChartTurn(s, age, turn);
+  const interval = getSnapshotInterval();
+  const h = s.flowHistory;
+  const last = h[h.length - 1];
+  // Add a NEW frame only every `interval` (monotonic) turns and always at an age boundary; within
+  // the interval window just keep the latest frame current. The monotonic chartTurn keeps age-local
+  // turn resets from colliding/reordering.
+  if (last && age === last.age && ct - last.chartTurn < interval) {
+    last.flows = cloneFlows(s.flows);
+    last.turn = turn;
+    last.year = gameTurnDate();
+  } else {
+    h.push({ turn, age, chartTurn: ct, year: gameTurnDate(), flows: cloneFlows(s.flows) });
+    if (h.length > MAX_FLOW_SNAPSHOTS) {
+      s.flowHistory = h.filter((_, i) => i % 2 === 0 || i === h.length - 1);
+    }
+  }
+  s.chartTurn = ct;
+  s.chartAge = age;
+  s.chartLocal = turn;
+}
+
+/**
+ * The decimated cumulative-flow history as a list of {turn, age, year, chartTurn, edges} frames
+ * (oldest → newest), spanning ages.
+ * @returns {{turn:number, age:string, year:string, chartTurn:number, edges:*[]}[]} Timeline frames.
+ */
+export function migrationFlowHistory() {
+  const h = load().flowHistory || [];
+  return h.map((snap) => ({
+    turn: snap.turn,
+    age: snap.age || "",
+    year: snap.year || "",
+    chartTurn: snap.chartTurn,
+    edges: Object.keys(snap.flows || {})
+      .map((k) => flowEntry(k, snap.flows[k]))
+      .filter(Boolean)
+  }));
+}
+
+/**
+ * The latest monotonic cross-age turn (for historical population scaling), 0 before any snapshot.
+ * @returns {number} Monotonic turn.
+ */
+export function monoTurn() {
+  return load().chartTurn || 0;
+}
+
+export function migrationFlows() {
+  const s = load();
+  const f = s.flows || {};
+  const fp = s.flowsPts || {};
+  /** @type {*[]} */
+  const out = [];
+  for (const key of Object.keys(f)) {
+    const e = flowEntry(key, f[key], fp[key]);
+    if (e) out.push(e);
+  }
+  return out;
+}
+
+/**
+ * Net mod population-point change this turn per "owner|cityName" key, from the pass's migrations:
+ * arrivals add points to the destination, departures/attrition remove them from the source. This is
+ * what the mod itself did to each city, so it can be subtracted from the observed change.
+ * @param {*[]} migs This turn's migrations.
+ * @returns {Record<string, number>} Net points per owner|city.
+ */
+function modPointsByCity(migs) {
+  /** @type {Record<string, number>} */
+  const map = {};
+  for (const m of migs || []) {
+    const pts = m.points || 0;
+    if (typeof m.srcOwner === "number") {
+      const k = m.srcOwner + "|" + m.srcName;
+      map[k] = (map[k] || 0) - pts;
+    }
+    if (typeof m.destOwner === "number") {
+      const k = m.destOwner + "|" + m.destName;
+      map[k] = (map[k] || 0) + pts;
+    }
+  }
+  return map;
+}
+
+/**
+ * Credit a city's unexplained pop-point loss to its civ — in raw points and in scaled people
+ * (valued the same way migration counts are). No-op for a non-positive drop.
+ * @param {MigStatsState} s State.
+ * @param {number} owner Civ id.
+ * @param {number} prev Last-turn population (points).
+ * @param {number} lossPts Unexplained pop-point drop.
+ * @param {number} t Monotonic turn (for the historical scaling).
+ */
+function creditLoss(s, owner, prev, lossPts, t) {
+  if (lossPts <= 0) return;
+  const people = scaleCityPopulation(prev, t) - scaleCityPopulation(Math.max(0, prev - lossPts), t);
+  if (people > 0) addBoth(s.losses, s.lossesPts, owner, people, lossPts);
+}
+
+/**
+ * Fold one city's external loss into the tally and record its current population + name into `acc`.
+ * @param {MigStatsState} s State.
+ * @param {*} sig City signal.
+ * @param {Record<string,number>} mod Per-city net mod points this turn.
+ * @param {number} t Monotonic turn.
+ * @param {{pts:Record<string,number>, names:Record<string,string>}} acc This turn's per-city pop +
+ *   name accumulator (becomes the next baseline).
+ */
+function foldCityLoss(s, sig, mod, t, acc) {
+  if (typeof sig.owner !== "number" || !sig.key) return;
+  const cur = sig.population || 0;
+  acc.pts[sig.key] = cur;
+  acc.names[sig.key] = cityName(sig.city);
+  const prev = s.cityPts[sig.key];
+  if (typeof prev !== "number") return; // first sighting — baseline only
+  creditLoss(s, sig.owner, prev, prev + (mod[sig.owner + "|" + acc.names[sig.key]] || 0) - cur, t);
+}
+
+// Cities razed since the last accounting (CityRemovedFromMap). Session-transient: a flag lost to a
+// save/load just means that one razing isn't credited (harmless), never a false loss.
+const pendingRemoved = new Set();
+
+/**
+ * Flag a razed city (CityRemovedFromMap) so the next accounting credits its residual population as
+ * a loss. Razing is distinct from conquest (CityTransfered), so it never fires on a captured city.
+ * @param {*} cityID The removed city's ComponentID ({owner, id}).
+ */
+export function markCityRemoved(cityID) {
+  if (cityID && typeof cityID.owner === "number") pendingRemoved.add(cityID.owner + ":" + cityID.id);
+}
+
+/**
+ * Credit the residual population of each city razed this window as a loss — the people who were
+ * still there when the city was destroyed. Uses prev + (this turn's mod departures) so the refugees
+ * who already fled (counted in Out) and everything lost earlier (already in prev) are NOT
+ * double-counted. Skips keys still present (a stale flag).
+ * @param {MigStatsState} s State.
+ * @param {Record<string,number>} mod Per-city net mod points this turn.
+ * @param {number} t Monotonic turn.
+ * @param {{pts:Record<string,number>}} acc This turn's per-city populations.
+ */
+function foldRemovedLosses(s, mod, t, acc) {
+  for (const key of pendingRemoved) {
+    pendingRemoved.delete(key);
+    const prev = s.cityPts[key];
+    if (typeof prev !== "number" || acc.pts[key] != null) continue; // unknown, or still on the map
+    const owner = parseInt(key, 10);
+    creditLoss(s, owner, prev, prev + (mod[owner + "|" + (s.cityNames[key] || "")] || 0), t);
+  }
+}
+
+/**
+ * Detect EXTERNAL population loss this turn and fold it into the per-civ `losses` tally. For each
+ * visible city: any drop beyond what the mod itself moved/removed (starvation / plague / disasters)
+ * is scaled the same way migration counts are and credited to its civ; razed cities credit their
+ * residual via CityRemovedFromMap. Conservative — births can mask a loss (under-count), and a city
+ * that merely left vision is re-baselined (never a loss). Runs every turn; never throws.
+ * @param {*[]} signals Current city signals ({key, owner, city, population}).
+ * @param {*[]} migs This turn's migrations (may be empty).
+ */
+export function accountLosses(signals, migs) {
+  const s = load();
+  const t = s.chartTurn || gameTurn();
+  const mod = modPointsByCity(migs);
+  /** @type {{pts:Record<string,number>, names:Record<string,string>}} */
+  const acc = { pts: {}, names: {} };
+  for (const sig of signals || []) foldCityLoss(s, sig, mod, t, acc);
+  foldRemovedLosses(s, mod, t, acc); // razed cities: credit the residual (no double-count)
+  s.cityPts = acc.pts; // cities merely out of vision drop out (no loss inferred from absence)
+  s.cityNames = acc.names;
+  save();
+}
+
+/**
  * Fold a pass's migrations into the cumulative tallies.
  * @param {{srcOwner?:number, destOwner?:number, people:number, cause?:string}[]} migs Migrations.
  */
@@ -163,8 +563,41 @@ export function recordMigrations(migs) {
   if (!Array.isArray(migs) || !migs.length) return;
   const s = load();
   for (const m of migs) foldMigration(s, m);
+  snapshotFlows(s); // capture the cumulative state for the timeline scrubber
   pushRecent(migs);
   save();
+}
+
+/**
+ * Bank one turn's stance-impact deltas into the cumulative tally (people + pop-points in parallel).
+ * @param {Record<number, {inP:number, outP:number, inPts:number, outPts:number}>} delta Per-owner
+ *   signed deltas vs a neutral-borders world.
+ */
+export function recordStanceImpact(delta) {
+  const keys = delta ? Object.keys(delta) : [];
+  if (!keys.length) return;
+  const s = load();
+  for (const k of keys) {
+    const d = delta[+k];
+    if (!d) continue;
+    addBoth(s.stanceIn, s.stanceInPts, +k, d.inP || 0, d.inPts || 0);
+    addBoth(s.stanceOut, s.stanceOutPts, +k, d.outP || 0, d.outPts || 0);
+  }
+  save();
+}
+
+/**
+ * A civ's cumulative border-stance impact: people (+ pop-points) its policy added/blocked on
+ * immigration IN, and kept/released on emigration OUT (signed). Zero when it holds no stance.
+ * @param {number} id Player id.
+ * @returns {{in:number, out:number, inPts:number, outPts:number}} Signed impact.
+ */
+export function stanceImpactFor(id) {
+  const s = load();
+  return {
+    in: s.stanceIn[id] || 0, out: s.stanceOut[id] || 0,
+    inPts: s.stanceInPts[id] || 0, outPts: s.stanceOutPts[id] || 0
+  };
 }
 
 /**
@@ -313,14 +746,28 @@ try {
     grossInCumFor: (/** @type {number} */ pid) => load().in[pid] || 0,
     refugeesCumFor: (/** @type {number} */ pid) => load().refugees[pid] || 0,
     deathsCumFor: (/** @type {number} */ pid) => load().deaths[pid] || 0,
+    externalLossesCumFor: (/** @type {number} */ pid) => load().losses[pid] || 0,
+    // Parallel raw-pop-point reads (exact Civ population numbers).
+    grossOutPtsFor: (/** @type {number} */ pid) => load().outPts[pid] || 0,
+    grossInPtsFor: (/** @type {number} */ pid) => load().inPts[pid] || 0,
+    refugeesPtsFor: (/** @type {number} */ pid) => load().refugeesPts[pid] || 0,
+    deathsPtsFor: (/** @type {number} */ pid) => load().deathsPts[pid] || 0,
+    externalLossesPtsFor: (/** @type {number} */ pid) => load().lossesPts[pid] || 0,
+    netPtsFor: (/** @type {number} */ pid) => load().cumPts[pid] || 0,
     netCumFor: (/** @type {number} */ pid) => load().cum[pid] || 0,
+    // Border-stance impact (signed): people/points the policy added or blocked, in and out.
+    stanceImpactFor: (/** @type {number} */ pid) => stanceImpactFor(pid),
     // Per-cause breakdowns for tooltip attribution
     emigrationByCauseFor: (/** @type {number} */ pid) => emigrationByCause(pid),
     immigrationByCauseFor: (/** @type {number} */ pid) => immigrationByCause(pid),
     // The per-city readout view-model + the session-local recent-moves feed (Phase 0 data core).
     citySnapshot: (/** @type {*} */ cityId) => citySnapshot(cityId),
     recentEventsFor: (/** @type {number} */ pid, /** @type {number=} */ limit) =>
-      recentEventsFor(pid, limit)
+      recentEventsFor(pid, limit),
+    // Cross-civ flow matrix (src→dest people) for the migration-network visualization.
+    flows: () => migrationFlows(),
+    // Decimated cumulative-flow history (timeline frames) for the network scrubber.
+    flowHistory: () => migrationFlowHistory()
   };
 } catch (_) {
   /* ignore */

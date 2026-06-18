@@ -18,7 +18,9 @@ import { moveRural, removeRural, marginalPeople } from "/emigration/ui/emigratio
 import { hexDistance } from "/emigration/ui/emigration-geography.js";
 import { tickViolence, siegeEscalation } from "/emigration/ui/emigration-violence.js";
 import { tickDisasters } from "/emigration/ui/emigration-disasters.js";
-import { migrationCause, bestDestination } from "/emigration/ui/emigration-pull.js";
+import { migrationCause, bestDestination, setNeutralBorders } from "/emigration/ui/emigration-pull.js";
+import { borderStance } from "/emigration/ui/emigration-borders.js";
+import { recordStanceImpact } from "/emigration/ui/emigration-migration-stats.js";
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
 import { loadState, saveState, prepareState, ownerPopulations } from "/emigration/ui/emigration-state.js";
 import { cityName, moveRecord, departRecord } from "/emigration/ui/emigration-migration-records.js";
@@ -223,6 +225,150 @@ function processAttrition(src, st, state) {
   };
 }
 
+// ── Stance-impact counterfactual ──────────────────────────────────────────────
+// Each turn we PLAN the cross-civ departures twice on the SAME pre-pass world — once with the real
+// border stances, once with all borders forced neutral — and bank the per-civ difference. Planning
+// is side-effect-free (shallow-copied signals + a copied pressure map; it never moves real
+// population), so it runs alongside the real pass without disturbing it. The diff is the marginal
+// counterfactual: how much border policy raised (Pro) or cut (Anti / Closed-retention) each civ's
+// cross-civ immigration in/out vs a neutral-borders world.
+
+const ZERO_PLAN = { inPts: 0, outPts: 0, inP: 0, outP: 0 };
+
+/**
+ * Add a planned cross-civ flow to the per-owner accumulator (1 point + its people).
+ * @param {Map<number, *>} acc Accumulator.
+ * @param {number} owner Civ id.
+ * @param {"in"|"out"} dir Direction.
+ * @param {number} people Scaled people.
+ */
+function planBump(acc, owner, dir, people) {
+  let e = acc.get(owner);
+  if (!e) {
+    e = { inPts: 0, outPts: 0, inP: 0, outP: 0 };
+    acc.set(owner, e);
+  }
+  e[dir + "Pts"] += 1;
+  e[dir + "P"] += people;
+}
+
+/**
+ * Shed up to `budget` points from `src` toward `best.dest`, banking each cross-civ point (no game
+ * mutation; decrements local copies only).
+ * @param {*} src Source signal (shallow copy).
+ * @param {*} ctx Plan context.
+ * @param {*} best Best destination ({dest}).
+ * @param {number} budget Points to shed.
+ * @returns {number} Points shed.
+ */
+function planApply(src, ctx, best, budget) {
+  let moved = 0;
+  for (let i = 0; i < budget && src.rural > CONFIG.minRuralToEmigrate; i++) {
+    if (best.dest.owner !== src.owner) { // cross-civ only (matches the flow tally)
+      const ppl = marginalPeople(src.population, ctx.monoTurn);
+      planBump(ctx.acc, src.owner, "out", ppl);
+      planBump(ctx.acc, best.dest.owner, "in", ppl);
+    }
+    src.rural -= 1;
+    src.population -= 1;
+    moved++;
+  }
+  return moved;
+}
+
+/**
+ * Plan ONE source's cross-civ departures for the turn into `ctx.acc` (no game mutation): the same
+ * pressure/bar/cooldown/best-destination decision as the real pass, on copied state.
+ * @param {*} src Source signal (a shallow copy; its rural/population decrement locally).
+ * @param {*} ctx Plan context {sig, st, ownerPop, acc, monoTurn}.
+ * @param {number} maxThisSource Remaining per-turn move budget.
+ * @returns {number} Points shed (for the global move budget).
+ */
+function planSource(src, ctx, maxThisSource) {
+  if (src.rural <= CONFIG.minRuralToEmigrate || maxThisSource <= 0) return 0;
+  const st = ctx.st[src.key] || (ctx.st[src.key] = { pressure: 0, cooldown: 0 });
+  if (st.cooldown > 0) return 0;
+  const best = bestDestination(src, ctx.sig, ctx.ownerPop);
+  if (!best) return 0;
+  st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
+  if (st.pressure < CONFIG.emigrationBar) return 0;
+  const budget = Math.min(maxThisSource, warSurgeBudget(src, migrationCause(src)));
+  const moved = planApply(src, ctx, best, budget);
+  if (moved) {
+    st.pressure = 0;
+    st.cooldown = CONFIG.cooldownTurns;
+  }
+  return moved;
+}
+
+/**
+ * Plan a whole turn's cross-civ departures on COPIES of the pre-pass world (no mutation).
+ * @param {*[]} ranked Ranked signals (pre-pass).
+ * @param {*} state Loaded state (sources + monoTurn).
+ * @returns {Map<number, *>} owner → {inPts, outPts, inP, outP}.
+ */
+function planTurn(ranked, state) {
+  const sig = ranked.map((s) => ({ ...s })); // own rural/population to decrement locally
+  /** @type {Record<string, *>} */
+  const st = {};
+  for (const s of ranked) {
+    const real = state.sources[s.key];
+    st[s.key] = { pressure: real ? real.pressure : 0, cooldown: real ? real.cooldown : 0 };
+  }
+  const ctx = {
+    sig, st, ownerPop: ownerPopulations(sig), acc: new Map(), monoTurn: state.monoTurn
+  };
+  let moves = 0;
+  for (const src of sig) {
+    if (moves >= CONFIG.maxMovesPerTurn) break;
+    moves += planSource(src, ctx, CONFIG.maxMovesPerTurn - moves);
+  }
+  return ctx.acc;
+}
+
+/**
+ * Whether any civ present holds a non-neutral border stance (else the counterfactual is a no-op).
+ * @param {*[]} ranked Ranked signals.
+ * @returns {boolean} True if some civ is Pro or Anti.
+ */
+function anyStance(ranked) {
+  if (!CONFIG.bordersEnabled) return false;
+  const seen = new Set();
+  for (const s of ranked) {
+    if (seen.has(s.owner)) continue;
+    seen.add(s.owner);
+    if (borderStance(s.owner) !== "none") return true;
+  }
+  return false;
+}
+
+/**
+ * Compute + bank this turn's stance impact: plan the cross-civ flows with real stances vs neutral
+ * borders, and record the per-civ difference. No-op when no civ holds a stance.
+ * @param {*[]} ranked Ranked signals (pre-pass).
+ * @param {*} state Loaded state.
+ */
+function bankStanceImpact(ranked, state) {
+  if (ranked.length < 2 || !anyStance(ranked)) return;
+  const withStance = planTurn(ranked, state);
+  setNeutralBorders(true);
+  let neutral;
+  try {
+    neutral = planTurn(ranked, state);
+  } finally {
+    setNeutralBorders(false);
+  }
+  /** @type {Record<number, *>} */
+  const delta = {};
+  for (const pid of new Set([...withStance.keys(), ...neutral.keys()])) {
+    const a = withStance.get(pid) || ZERO_PLAN;
+    const b = neutral.get(pid) || ZERO_PLAN;
+    delta[pid] = { inP: a.inP - b.inP, outP: a.outP - b.outP,
+      inPts: a.inPts - b.inPts, outPts: a.outPts - b.outPts };
+  }
+  recordStanceImpact(delta);
+}
+
 /**
  * Run one emigration pass over the whole world. Returns the migrations applied (for notification).
  * Updates + persists state, including the monotonic turn.
@@ -236,6 +382,10 @@ export function runPass() {
 
   const state = loadState();
   prepareState(state, ranked);
+
+  // Measure how border stance shaped this turn's flows (counterfactual vs neutral borders), on the
+  // pre-pass world and before any mutation below.
+  bankStanceImpact(ranked, state);
 
   // Arrivals first: land anyone whose transit completed this turn (Feature 1b). These don't count
   // against the per-turn move cap - they're completing earlier departures.

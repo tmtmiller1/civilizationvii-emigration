@@ -211,5 +211,33 @@
         <Replace Tag="LOC_PEDIA_EMIG_OUTLET_BODY" Language="de_DE"><Text>Wanderung ist kein geschlossenes System. Ist eine Stadt verzweifelt, belagert, hungernd oder von einer Katastrophe verwüstet, und bleibt nirgends sichere Zuflucht, wartet ihre gefangene Bevölkerung nicht einfach ewig. Menschen sterben oder zerstreuen sich, und die Stadt verliert Bevölkerung ohne Ziel.[n][n]Dieses Ventil ist ein letztes Mittel: Eine zufriedene Stadt, der es bloß an einem besseren Ort fehlt, bleibt unberührt, und der Verlust zählt als Tote, getrennt von den Flüchtlingen, die tatsächlich eine neue Heimat erreichen.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_TITLE" Language="de_DE"><Text>Anführer &amp; Zivilisationen</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="de_DE"><Text>Einige Anführer und Zivilisationen erleben Wanderung anders, sodass ihr historischer Charakter durchscheint. Es sind kleine, begrenzte Anpassungen über den globalen Regeln, nie genug, um jemanden ins Schneeballen zu bringen, und sie gelten nur, solange die zivilisationsspezifische Feinjustierung aktiv ist (standardmäßig ist sie es).[n][n]Anführer, deren Zufriedenheit sonst jede Stadt zu einem unaufhaltsamen Magneten machen würde, ziehen etwas schwächer an: Benjamin Franklin am meisten, daneben auch Isabella, Ashoka und Rizal gebremst. Wohlhabende Eroberer finden Beute teurer in der Eingliederung, Isabella und Xerxes zahlen mehr, um die gewonnenen Menschen aufzunehmen.[n][n]Hohe, spezialistenorientierte Mächte sind vor Überbevölkerung geschützt, damit ihre dichten Städte nicht doppelt bestraft werden: Pachacuti und vor allem die Abbasiden. Schnell wachsende Völker, deren Zahl ihren Wohlstand übersteigt, erhalten ein kleines Polster, um ihre Bürger zu halten, Konfuzius, die Han und die Qing, , während den Khmer das Schlimmste ihrer eigenen Nicht-Hauptstadt-Unzufriedenheit erspart bleibt. Und Reiche hinter starken Mauern, die Normannen und die Engländer, halten ihre Bevölkerung in einer Belagerung weit besser als die Mauerlosen.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_OPEN" Language="de_DE"><Text>Migration</Text></Replace>
+        <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="de_DE"><Text>Wohlstand</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA" Language="de_DE"><Text>Dashboard-Daten</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA_DESCRIPTION" Language="de_DE"><Text>Echte Wanderung im Dashboard anzeigen oder Beispieldaten, um die Visualisierung vorab zu sehen, bevor echte Ströme entstehen.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA_LIVE" Language="de_DE"><Text>Live</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DATA_SAMPLE" Language="de_DE"><Text>Beispiel (Vorschau)</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SNAP" Language="de_DE"><Text>Detailgrad der Wanderungs-Zeitleiste</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SNAP_DESCRIPTION" Language="de_DE"><Text>Wie oft das Wanderungsnetz für den Zeitleisten-Regler eine Momentaufnahme speichert: weniger Züge je Aufnahme ergeben feinere Wiedergabe, bei etwas größerem Speicherbedarf.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="de_DE"><Text>Noch keine zivilisationsübergreifende Wanderung – Ströme erscheinen, sobald Menschen Grenzen überqueren.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="de_DE"><Text>Färben nach:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="de_DE"><Text>Herkunft</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="de_DE"><Text>Art</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_LENS_MOVEMENT" Language="de_DE"><Text>Bewegung</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MOVE_RESIDENTS" Language="de_DE"><Text>Einheimische</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MOVE_INTERNAL" Language="de_DE"><Text>Binnenwanderung</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MOVE_IMMIGRANTS" Language="de_DE"><Text>Zuwanderer</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RESIDENTS_TIP" Language="de_DE"><Text>Einheimische ein-/ausblenden</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIP_RESIDENT" Language="de_DE"><Text>einheimischer Bewohner</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIP_INTERNAL" Language="de_DE"><Text>Binnenwanderung</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_CLUSTER_TIP" Language="de_DE"><Text>Zuzug {1_In} · netto {2_Net}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_NOW" Language="de_DE"><Text>jetzt</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TURN_N" Language="de_DE"><Text>Zug {1_Turn}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_START" Language="de_DE"><Text>Beginn</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="de_DE"><Text>Jeder Punkt ≈ {1_People} Menschen. Der Kreis einer Zivilisation enthält ihre Städte und Dörfer als innere Untergruppen: Punkte in der eigenen Farbe der Zivilisation sind einheimische Bewohner, Punkte in einem HELLEREN Ton sind Menschen, die zwischen den eigenen Städten gewandert sind (Binnenwanderung), und Punkte in anderer Farbe sind Zuwanderer aus dieser Herkunft. Die Linse „Färben nach“ färbt sie nach Herkunft, Wanderungsart (Krieg / Katastrophe / Anziehung …) oder Bewegung (Einheimische / intern / Zuwanderer) um.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_SHOW" Language="de_DE"><Text>Zeigen:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="de_DE"><Text>noch keine Bevölkerung</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_ORIGINS" Language="de_DE"><Text>Herkünfte</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_ORIGINS_TIP" Language="de_DE"><Text>Linien zur Herkunft der Migranten anzeigen</Text></Replace>
     </LocalizedText>
 </Database>

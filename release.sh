@@ -109,6 +109,7 @@ echo "==> Zipping $ZIP_PATH"
 echo "==> Verifying zip contents against allow-list"
 ALLOW='^emigration/(emigration\.modinfo|README\.md|LICENSE|CHANGELOG\.md)$'
 ALLOW="$ALLOW"'|^emigration/ui/.+\.(js|html|css)$'
+ALLOW="$ALLOW"'|^emigration/images/.+\.(svg|png)$'
 ALLOW="$ALLOW"'|^emigration/text/[a-z_]+/ModText\.xml$'
 ALLOW="$ALLOW"'|^emigration/data/.+\.(xml|sql)$'
 UNEXPECTED="$(unzip -Z1 "$ZIP_PATH" | grep -vE '/$' | grep -vE "$ALLOW" || true)"

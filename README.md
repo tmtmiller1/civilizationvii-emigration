@@ -22,6 +22,13 @@ off in **Options → Mods → Emigration - Advanced** (§10), so you can run any
 plain baseline to the complete model. New to the mod? The bullets above are all you need
 to start; treat the rest as the manual.
 
+**Performance on large saves.** If late-game turns feel heavy with both this and the **Demographics**
+mod installed, two safe levers help — in this order. First, lower **Demographics' sampling
+frequency** (it samples every civ's metrics on a cadence; a coarser cadence is the bigger win).
+Second, raise Emigration's **`turnInterval`** (Options → Mods → Emigration - Advanced) so the
+migration pass runs less often. Both change only how *often* data updates — never the migration
+behavior or the graph semantics — so they're safe to tune freely.
+
 ---
 
 Citizens leave unhappy or struggling settlements including those impacted by environmental disasters and conflict. They move toward happier, more prosperous ones, both **within and between civilizations**. 
