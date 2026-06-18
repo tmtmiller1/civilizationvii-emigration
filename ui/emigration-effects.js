@@ -163,7 +163,7 @@ function goldBalanceFor(pid) {
 /**
  * The bounded wealth-aware multiplier on the GOLD assimilation cost (P1.4): ×1 at the reference
  * treasury, scaling up for richer civs and down for poorer ones, clamped to [min, max]. Returns 1
- * (no effect) when the weight is 0 or the treasury can't be read — so a missing read never
+ * (no effect) when the weight is 0 or the treasury can't be read , so a missing read never
  * over-charges a civ.
  * @param {number} pid Player id.
  * @returns {number} A multiplier in [assimilationWealthMin, assimilationWealthMax].
@@ -218,7 +218,7 @@ export function assimLoadFor(pid) {
 
 /**
  * The per-turn assimilation cost a civ WOULD pay on its CURRENT load, without ticking or mutating
- * state — for the city readout / dashboards. Mirrors `chargeAssimilation`'s formula.
+ * state , for the city readout / dashboards. Mirrors `chargeAssimilation`'s formula.
  * @param {number} pid Player id.
  * @returns {{load:number, happiness:number, gold:number}} Current load and the per-turn cost.
  */

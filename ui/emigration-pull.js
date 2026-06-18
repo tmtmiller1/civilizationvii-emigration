@@ -7,7 +7,7 @@
 //     pull = (gradient + TILT) - friction, then x PERMEABILITY
 //
 // TILT (targeted attraction: asylum refugee-push, raid targeting) is clamped to ±tiltCap;
-// PERMEABILITY (border openness × cross-civ relationship factors) is clamped to [floor, ceil] —
+// PERMEABILITY (border openness × cross-civ relationship factors) is clamped to [floor, ceil] ,
 // so any stack of cards/agreements/ops composes without runaway. This module decides WHERE people
 // want to go; emigration-engine.js executes the moves. Pure (no state mutation, no persistence).
 
@@ -24,7 +24,7 @@ import { warAggressors } from "/emigration/ui/emigration-war.js";
 let _neutralBorders = false;
 
 /**
- * Force border multipliers neutral (for the stance-impact counterfactual) — or restore them.
+ * Force border multipliers neutral (for the stance-impact counterfactual) , or restore them.
  * @param {boolean} on Whether to neutralize border stance.
  */
 export function setNeutralBorders(on) {
@@ -35,8 +35,8 @@ export function setNeutralBorders(on) {
 
 /**
  * Classify why a source is shedding population, in precedence order: disaster distress, then
- * in-border violence (both gated on their flee thresholds), then — for an ordinary peacetime
- * departure — `unhappiness` if the city's net happiness is below `unhappyCauseThreshold` (a push)
+ * in-border violence (both gated on their flee thresholds), then , for an ordinary peacetime
+ * departure , `unhappiness` if the city's net happiness is below `unhappyCauseThreshold` (a push)
  * vs `prosperity` if it's content but a neighbour out-prospers it (a pull). This is a reporting
  * split only; it never changes whether or where people move. `conquest` is reserved (a later phase
  * emits it on capture-driven displacement).
@@ -83,7 +83,7 @@ function tiltFor(src, dest) {
 }
 
 /**
- * The PERMEABILITY channel (§1): "how easily does anyone cross from src to dest?" — the border
+ * The PERMEABILITY channel (§1): "how easily does anyone cross from src to dest?" , the border
  * openness multiplier times every cross-civ relationship factor (Open Borders, alliance, war). The
  * caller clamps the product to [permeFloor, permeCeil] so any stack of agreements stays bounded.
  * @param {*} src Source signal.

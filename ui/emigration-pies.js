@@ -126,7 +126,7 @@ function attachPieHover(canvas, slices, tip) {
       tip.style.display = "none";
       return;
     }
-    tip.textContent = (s.label || "") + " — " + Math.round((s.value / total) * 100) + "%";
+    tip.textContent = (s.label || "") + " ; " + Math.round((s.value / total) * 100) + "%";
     tip.style.left = mx + "px";
     tip.style.top = my + "px";
     tip.style.display = "block";

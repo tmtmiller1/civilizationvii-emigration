@@ -24,7 +24,7 @@ import {
 const STATE_KEY = "EmigrationMigStats_v1";
 
 /** In-memory ring of the most recent moves (newest last), for the live readout/feed. Not persisted
- * — it's a session-local "what just happened" surface, so a reload simply starts it empty. */
+ * , it's a session-local "what just happened" surface, so a reload simply starts it empty. */
 const RECENT_CAP = 50;
 /** @type {{srcOwner?:number, destOwner?:number, people?:number, cause?:string}[]} */
 let _recent = [];
@@ -44,7 +44,7 @@ let _recent = [];
  * @property {Record<string, number>} deathsPts Attrition deaths per player, in pop points.
  * @property {Record<string, number>} lossesPts External population loss per player, in pop points.
  * @property {Record<string, Record<string,number>>} flowsPts Cross-civ flow (pop points by cause).
- * @property {Record<string, number>} losses Cumulative EXTERNAL population loss per player —
+ * @property {Record<string, number>} losses Cumulative EXTERNAL population loss per player ,
  *   engine-driven drops (starvation / plague / razing / disasters) not explained by the mod's own
  *   migration or attrition. Combined with `deaths` for the ledger's "Losses" column.
  * @property {Record<string, number>} cityPts Last-seen raw population (points) per city key, to
@@ -394,7 +394,7 @@ function nextChartTurn(s, age, localTurn) {
  * window the open (last) frame is kept current in place; at an interval or age boundary a new open
  * frame is appended. Either way the open frame's delta is recomputed as the live cumulative
  * (`s.flows`) minus the cumulative of all prior (frozen) frames, so storage holds only each
- * interval's increment — never a full cumulative clone per frame. Over the cap, adjacent deltas are
+ * interval's increment , never a full cumulative clone per frame. Over the cap, adjacent deltas are
  * MERGED (summed), preserving cumulative totals exactly.
  * @param {MigStatsState} s State.
  */
@@ -427,7 +427,7 @@ function snapshotFlows(s) {
 /**
  * The flow history as a list of {turn, age, year, chartTurn, edges} frames (oldest → newest),
  * spanning ages. Each frame's edges are the CUMULATIVE network at that point, reconstructed by
- * summing deltas up to and including the frame (P0.3) — so the timeline-scrubber consumer is
+ * summing deltas up to and including the frame (P0.3) , so the timeline-scrubber consumer is
  * unchanged. Each edge's per-cause map is cloned per frame so the running accumulator never aliases
  * an earlier frame's data.
  * @returns {{turn:number, age:string, year:string, chartTurn:number, edges:*[]}[]} Timeline frames.
@@ -496,7 +496,7 @@ function modPointsByCity(migs) {
 }
 
 /**
- * Credit a city's unexplained pop-point loss to its civ — in raw points and in scaled people
+ * Credit a city's unexplained pop-point loss to its civ , in raw points and in scaled people
  * (valued the same way migration counts are). No-op for a non-positive drop.
  * @param {MigStatsState} s State.
  * @param {number} owner Civ id.
@@ -525,7 +525,7 @@ function foldCityLoss(s, sig, mod, t, acc) {
   acc.pts[sig.key] = cur;
   acc.names[sig.key] = cityName(sig.city);
   const prev = s.cityPts[sig.key];
-  if (typeof prev !== "number") return; // first sighting — baseline only
+  if (typeof prev !== "number") return; // first sighting , baseline only
   creditLoss(s, sig.owner, prev, prev + (mod[sig.owner + "|" + acc.names[sig.key]] || 0) - cur, t);
 }
 
@@ -543,7 +543,7 @@ export function markCityRemoved(cityID) {
 }
 
 /**
- * Credit the residual population of each city razed this window as a loss — the people who were
+ * Credit the residual population of each city razed this window as a loss , the people who were
  * still there when the city was destroyed. Uses prev + (this turn's mod departures) so the refugees
  * who already fled (counted in Out) and everything lost earlier (already in prev) are NOT
  * double-counted. Skips keys still present (a stale flag).
@@ -563,7 +563,7 @@ function foldRemovedLosses(s, mod, t, acc) {
 }
 
 /**
- * Re-baseline one city into `acc` (current population + name) WITHOUT crediting any loss — used on
+ * Re-baseline one city into `acc` (current population + name) WITHOUT crediting any loss , used on
  * the first accounting after an age transition so an age-driven population drop on a kept
  * settlement isn't misread as an unexplained external loss (P0.2).
  * @param {*} sig City signal.
@@ -579,12 +579,12 @@ function rebaselineCity(sig, acc) {
  * Detect EXTERNAL population loss this turn and fold it into the per-civ `losses` tally. For each
  * visible city: any drop beyond what the mod itself moved/removed (starvation / plague / disasters)
  * is scaled the same way migration counts are and credited to its civ; razed cities credit their
- * residual via CityRemovedFromMap. Conservative — births can mask a loss (under-count), and a city
+ * residual via CityRemovedFromMap. Conservative , births can mask a loss (under-count), and a city
  * that merely left vision is re-baselined (never a loss). Runs every turn; never throws.
  *
  * Age-transition guard (P0.2): ages reduce/convert kept settlements, so the first accounting in a
  * new age (or any pass taken mid-transition while `currentAge()` is "") only RE-BASELINES the
- * per-city populations and credits no loss — otherwise the age-driven drop on every preserved city
+ * per-city populations and credits no loss , otherwise the age-driven drop on every preserved city
  * would spike the Losses ledger column. `lossAge` tracks the age independently of `chartAge` so the
  * guard is immune to whether recordMigrations or accountLosses runs first on the boundary turn.
  * @param {*[]} signals Current city signals ({key, owner, city, population}).
@@ -599,7 +599,7 @@ export function accountLosses(signals, migs) {
   const acc = { pts: {}, names: {} };
   if (transition) {
     for (const sig of signals || []) rebaselineCity(sig, acc);
-    pendingRemoved.clear(); // age-removed settlements aren't razings — don't credit them as losses
+    pendingRemoved.clear(); // age-removed settlements aren't razings , don't credit them as losses
   } else {
     const t = s.chartTurn || gameTurn();
     const mod = modPointsByCity(migs);

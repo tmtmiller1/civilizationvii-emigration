@@ -6,9 +6,9 @@
 // city-banner hook), populated from the Phase-0 `citySnapshot` recompute-on-read data core.
 //
 // Two layers, mirroring the rest of the legibility work:
-//   • readoutModel(snapshot)  — PURE: turns a CitySnapshot into a title + display lines + an
+//   • readoutModel(snapshot)  , PURE: turns a CitySnapshot into a title + display lines + an
 //     optional warning. DOM-free, unit-tested.
-//   • the DOM host             — show/hide a styled panel, thin and untested like toast().
+//   • the DOM host             , show/hide a styled panel, thin and untested like toast().
 //
 // Trigger: the guaranteed path is the console command (emigration.city(id) / .hideCity()).
 // A best-effort `CitySelectionChanged` listener auto-shows it on selection; the exact UI-VM
@@ -53,6 +53,20 @@ function warnText(s) {
 }
 
 /**
+ * The ethnic-composition line ("Origins: Roman 62%, Egyptian 38%"), or null when untracked. Shows
+ * the top three origins by share, with a "(+N more)" tail when there are more. Pure.
+ * @param {{parts:{name:string, share:number}[]}|null|undefined} comp The display composition.
+ * @returns {string|null} The line, or null.
+ */
+function originsLine(comp) {
+  const parts = comp && Array.isArray(comp.parts) ? comp.parts : [];
+  if (!parts.length) return null;
+  const top = parts.slice(0, 3).map((p) => p.name + " " + Math.round(p.share * 100) + "%");
+  const extra = parts.length - 3;
+  return "Origins: " + top.join(", ") + (extra > 0 ? " (+" + extra + " more)" : "");
+}
+
+/**
  * Build the readout view-model (title + lines + optional warning) from a CitySnapshot. Pure.
  * @param {*} s A CitySnapshot (from citySnapshot()), or null.
  * @returns {{title:string, lines:string[], warn:(string|null)}|null} The model, or null.
@@ -65,6 +79,8 @@ export function readoutModel(s) {
     lines.push("Pulled toward " + s.topDestinationName + (s.crossCiv ? " (rival civ)" : ""));
   }
   if (s.assimLoad > 0) lines.push("Assimilation cost: ~" + Math.round(s.assimCostGold) + " gold/turn");
+  const origins = originsLine(s.composition);
+  if (origins) lines.push(origins);
   lines.push("Civ net migration: " + signedPeople(s.ownerNet) + " people");
   const hint = actionHint(s.cause);
   if (hint) lines.push(hint);

@@ -1,6 +1,6 @@
 // emigration-network-paint.js
 //
-// Destination-cluster dot rendering on a 2D canvas (clean, flat — no glow/sparks). Each
+// Destination-cluster dot rendering on a 2D canvas (clean, flat ; no glow/sparks). Each
 // civilization is a CLUSTER; the migrants who arrived there are drawn as a swarm of small dots
 // packed (phyllotaxis) around the cluster centre, each dot coloured by its ORIGIN civ. So a
 // cluster shows where people went (its position/size) and where they came from (the dot colours).
@@ -21,7 +21,7 @@ const CIV_PALETTE = [
   "#c9a66b", "#7fb0d6", "#e29bbd", "#7fccc0", "#cbb994"
 ];
 // Migrant-type (cause) colours for the "Type" lens. "native" is the resident (home-grown)
-// population — drawn in each civ's own colour, shown muted-grey under the Type lens.
+// population , drawn in each civ's own colour, shown muted-grey under the Type lens.
 /** @type {Record<string,string>} */
 export const CAUSE_PALETTE = {
   war: "#e5616b", disaster: "#f4a259", unhappiness: "#b39ddb",

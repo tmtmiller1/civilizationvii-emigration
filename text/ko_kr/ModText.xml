@@ -213,6 +213,7 @@
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="ko_KR"><Text>일부 지도자와 문명은 이주를 다르게 겪으며, 그들의 역사적 성격이 드러납니다. 이는 전역 규칙 위에 얹히는 작고 제한된 조정으로, 누구도 눈덩이처럼 불어나게 할 만큼은 아니며, 문명별 미세 조정이 켜져 있는 동안에만 적용됩니다(기본값은 켬).[n][n]그 행복도 때문에 모든 도시를 멈출 수 없는 자석으로 만들 법한 지도자는 끌어당기는 힘이 조금 약해집니다. 무엇보다 벤저민 프랭클린, 그리고 이사벨, 아소카, 리살도 억제됩니다. 부유한 정복자는 전리품을 정착시키는 비용이 더 들어, 이사벨과 크세르크세스는 얻어낸 사람들을 흡수하는 데 더 많이 치릅니다.[n][n]키 높은, 전문가 지향의 세력은 과밀로부터 보호되어 밀집한 도시가 두 번 벌받지 않습니다. 파차쿠텍, 그리고 무엇보다 아바스 왕조입니다. 인구가 번영을 앞질러 빠르게 성장하는 민족은 시민을 붙들기 위한 작은 완충을 얻습니다, 공자, 한, 그리고 청, 반면 크메르는 자국 비수도 지역 불행의 최악을 면합니다. 그리고 견고한 성벽 뒤에 세워진 나라, 노르만과 잉글랜드, 는 성벽 없는 이들보다 포위 동안 인구를 훨씬 잘 지켜냅니다.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="ko_KR"><Text>이주</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="ko_KR"><Text>번영</Text></Replace>
+        <Replace Tag="LOC_EMIG_LENS_ETHNICITY" Language="ko_KR"><Text>민족</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DATA" Language="ko_KR"><Text>대시보드 데이터</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DATA_DESCRIPTION" Language="ko_KR"><Text>실제 이주를 표시하거나, 실제 흐름이 쌓이기 전에 시각화를 미리 보기 위한 샘플 데이터를 표시합니다.</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DATA_LIVE" Language="ko_KR"><Text>실시간</Text></Replace>

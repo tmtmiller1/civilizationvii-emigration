@@ -295,8 +295,8 @@ function localLossSummary(migs, me) {
 
 /**
  * Fire the local player's explanatory digest (subject to the important-toast cooldown): why they
- * lost population this pass, what to do about it, whether it's temporary, and — for a cross-civ
- * loss — what the destination pays to absorb them. No-op when no local player or no local loss.
+ * lost population this pass, what to do about it, whether it's temporary, and , for a cross-civ
+ * loss , what the destination pays to absorb them. No-op when no local player or no local loss.
  * @param {{srcOwner?:number, destOwner?:number, people?:number, cause?:string,
  *          crossCiv?:boolean, srcName?:string, destName?:string}[]} migs Applied migrations.
  */

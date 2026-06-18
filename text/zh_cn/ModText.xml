@@ -213,6 +213,7 @@
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="zh_Hans_CN"><Text>少数领袖与文明对迁徙的感受有所不同，其历史性格因而显现。这些是叠加在全局规则之上的微小而有界的调整，绝不足以让任何一方滚雪球，且仅在按文明微调启用时生效（默认启用）。[n][n]那些幸福度本会使每座城市都成为不可阻挡磁石的领袖，吸引力会略微减弱：本杰明·富兰克林尤甚，伊莎贝拉、阿育王与黎刹也受到收敛。富有的征服者会发现安置战利品的代价更高，伊莎贝拉与薛西斯要付出更多，才能吸纳所赢得的人口。[n][n]纵向发展、专家导向的强权得以免受过度拥挤之害，使其密集的城市不致受到双重惩罚：帕查库特克,尤其是阿拔斯王朝。人口增长快于繁荣的民族会获得一点缓冲以留住其公民，孔子、汉与清，而高棉则得以免去其非首都不幸的最严重部分。而筑于坚墙之后的邦国，诺曼与英格兰，在围城期间远比无墙者更能保住人口。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="zh_Hans_CN"><Text>迁徙</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="zh_Hans_CN"><Text>繁荣</Text></Replace>
+        <Replace Tag="LOC_EMIG_LENS_ETHNICITY" Language="zh_Hans_CN"><Text>民族构成</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DATA" Language="zh_Hans_CN"><Text>面板数据</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DATA_DESCRIPTION" Language="zh_Hans_CN"><Text>在面板中显示实时迁徙，或显示示例数据以在真实的跨文明流动形成之前预览可视化。</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DATA_LIVE" Language="zh_Hans_CN"><Text>实时</Text></Replace>
