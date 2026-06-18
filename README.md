@@ -579,6 +579,15 @@ the live config immediately and at game boot.
   carry), **notifications** (verbosity, min severity, cooldown, crisis threshold), and the
   **outlet** (attrition).
 
+**Simulation scope & visibility (independent of each other).** By default the migration simulation
+runs only over civilizations you have met (`requireMet`, in *Scope*) — a lighter per-turn cost.
+Turning it off simulates the whole world (every alive civ, from the first turn), which removes
+exploration-order bias and gives the ethnicity lens full origin history. Either way, the dashboard
+and lens mask civilizations per a shared **analytics-visibility policy** — the same four levels the
+**Demographics** mod exposes (All / Met-only / Own-civ / Disabled), with a multiplayer host's choice
+governing both mods at once; the default (met-only) keeps unmet civs hidden until you widen it. So
+scope and on-screen visibility are decoupled: *simulate globally, reveal selectively.*
+
 The full default set lives in `emigration-config.js`; scaling constants are intentionally
 **not** exposed (they must match Demographics).
 

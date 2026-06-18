@@ -27,7 +27,8 @@
  * @property {number} refugeesPercent Reserved: % of rural that flees a razed city.
  * @property {boolean} crossCivEnabled Allow migration between civilizations.
  * @property {boolean} includeCityStates Include minor/city-state settlements.
- * @property {boolean} requireMet Only consider foreign cities the player has met.
+ * @property {boolean} requireMet Simulation scope: true = met-only (default, lighter); false =
+ *   global (all alive civs). Visibility masking is handled separately (governance), not here.
  * @property {number} foodFactor Per-capita food weight.
  * @property {number} productionFactor Per-capita production weight.
  * @property {number} goldFactor Per-capita gold weight.
