@@ -36,10 +36,10 @@ export const CONFIG = {
   raidTilt: 10, // pull tilt from an active raid's target toward the raider (pre-clamp by tiltCap)
 
   poachBlock: 12, // extra delta needed for a CROSS-CIV destination (friction)
-  refugeePoachBlock: 2, // ...but a war/disaster REFUGEE isn't being poached — they flee, so the
-  //                       cross-civ barrier is much smaller for a source in acute crisis. This is
-  //                       what lets a collapsing civ's refugees spill to neutral neighbours (the
-  //                       cross-civ network) instead of piling up internally.
+  refugeePoachBlock: 0, // ...but a war/disaster REFUGEE isn't being poached — they flee, so they pay
+  //                       NO cross-civ friction. With ownCivRefugeeBonus also lowered, a collapsing
+  //                       civ's refugees spill to neutral neighbours (populating the cross-civ
+  //                       network + net-migration chart) instead of piling up internally.
   cooldownTurns: 8, // turns a source rests after emigrating
   minRuralToEmigrate: 1, // a source keeps at least this much rural pop
   refugeesPercent: 50, // % of rural pop that flees a conquered/razed city
@@ -89,6 +89,12 @@ export const CONFIG = {
   // city), so player wars and AI-only wars are treated identically.
   vwAssault: 10, // per full-health-worth of fresh city damage taken in a turn
   vwSiege: 4, // per turn while the city center stays fully wrecked (scales w/ damage)
+  // A city that is merely BESIEGED (surrounded) but not yet damaged registers this FRACTION of full
+  // siege pressure (was an implicit 1.0). Lowered so early-game city-state / Independent harassment —
+  // which besieges without wrecking the district — doesn't instantly cross the flee threshold and
+  // flood "war" refugees; it now takes a few sustained turns or real district damage. Tune lower for
+  // gentler raids, up to 1.0 to restore the old "any siege = full war pressure" behavior.
+  siegeBesiegedFloor: 0.3,
   vwPillage: 0.6, // per turn per pillaged tile in the borders (0 disables the scan)
   violenceDecay: 0.55, // per-turn decay (a one-off skirmish fades in 2–3 turns)
   violencePerPoint: 12, // percent score penalty per intensity point
@@ -213,7 +219,9 @@ export const CONFIG = {
   attritionThreshold: 40, // distress "pressure" to remove one population point
 
   // ── Feature 1: aggressor-aware war migration (aggressorPenalty 0 = off) ──
-  ownCivRefugeeBonus: 4, // war refugees prefer their own civ's cities first
+  ownCivRefugeeBonus: 1, // war refugees lean slightly toward their own civ's cities first — but only
+  //                        slightly, so when a civ is collapsing its people genuinely spill across
+  //                        the border to safer neutral neighbours instead of all piling up internally
   aggressorPenalty: 12, // …and avoid the aggressor that attacked them (0 = inert)
 
   // ── Feature 2: border policies (ON by default) ──

@@ -13,6 +13,7 @@ import { recordDisaster, disasterKey } from "/emigration/ui/emigration-disasters
 import { disasterName, actionHint } from "/emigration/ui/emigration-naming.js";
 import { announceImportant } from "/emigration/ui/emigration-feedback.js";
 import { recordDisasterEvent } from "/emigration/ui/emigration-migration-stats.js";
+import { dlog } from "/emigration/ui/emigration-log.js";
 
 // How far from an event's epicenter to look for affected cities. A disaster (a volcanic eruption,
 // a flood) damages a RING of tiles around its epicenter, and the epicenter itself — a volcano /
@@ -86,11 +87,16 @@ function eventSeverity(data, info) {
  * @param {*} data The event payload (eventType, severity, location).
  */
 function onRandomEvent(data) {
-  if (!CONFIG.disastersEnabled || !data) return;
+  if (!CONFIG.disastersEnabled || !data) {
+    dlog("event: ignored (disastersEnabled=" + CONFIG.disastersEnabled + ", data=" + !!data + ")");
+    return;
+  }
   try {
     const info = GameInfo?.RandomEvents?.lookup?.(data.eventType);
     const sev = eventSeverity(data, info);
-    recordDisaster(info?.EventClass, sev, affectedCityKeys(data.location));
+    const keys = affectedCityKeys(data.location);
+    logEvent(data, info, sev, keys.length); // DIAGNOSTIC: grep `EMIG_event` in UI.log
+    recordDisaster(info?.EventClass, sev, keys);
     // Only notify for particularly bad disasters; minor events still drive the sim
     // silently. announceImportant adds the cooldown + notify-mode gate. The same
     // "notable" bar gates the refugees-chart marker log, keeping it meaningful + bounded.
@@ -98,17 +104,35 @@ function onRandomEvent(data) {
       announceImportant(disasterName(data.eventType) + " strikes! " + actionHint("disaster"));
       recordDisasterEvent(disasterName(data.eventType), sev);
     }
-  } catch (_) {
-    /* ignore */
+  } catch (e) {
+    dlog("event threw " + e);
   }
+}
+
+/**
+ * Debug-only: log a random event the mod received — class, severity, epicenter, and how many cities
+ * the blast-radius scan matched.
+ * @param {*} data The event payload.
+ * @param {*} info The GameInfo RandomEvents row.
+ * @param {number} sev The event severity.
+ * @param {number} nKeys The number of affected cities matched.
+ */
+function logEvent(data, info, sev, nKeys) {
+  const loc = data.location ? (data.location.x + "," + data.location.y) : "none";
+  dlog("event type=" + data.eventType + " class=" + (info && info.EventClass) + " sev=" + sev
+    + " loc=" + loc + " affectedCities=" + nKeys);
 }
 
 /** Subscribe the disaster event hook. Safe to call once at boot. */
 export function installEmigrationEvents() {
   try {
-    if (typeof engine === "undefined" || typeof engine.on !== "function") return;
+    if (typeof engine === "undefined" || typeof engine.on !== "function") {
+      dlog("events: engine.on unavailable — disaster hook NOT installed");
+      return;
+    }
     engine.on("RandomEventOccurred", (/** @type {*} */ d) => onRandomEvent(d));
-  } catch (_) {
-    /* ignore */
+    dlog("events: RandomEventOccurred hooked");
+  } catch (e) {
+    dlog("events install threw " + e);
   }
 }

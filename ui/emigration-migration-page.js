@@ -13,6 +13,7 @@
 
 import { dashboardModel, renderDashboardSubtab } from "/emigration/ui/emigration-views.js";
 import { gatherDashboard } from "/emigration/ui/emigration-window.js";
+import { setNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
 
 // The Migration page's sub-tabs — one per dashboard section, so the embedded page shows the SAME
 // content as the standalone window but presented as NATIVE Demographics sub-tabs (the same metric
@@ -22,7 +23,10 @@ import { gatherDashboard } from "/emigration/ui/emigration-window.js";
 // + TAB_LABELS.
 const SUBTABS = [
   { id: "flow", label: "Network", title: "Migration network & flows" },
-  { id: "ledger", label: "Civilizations", title: "Civilizations" },
+  // Kept declared so its panel sub-tab synthetic registers (the host needs it for metricExists), but
+  // it no longer appears as a standalone sub-tab: emigration-demographics.js's "Data" group claims
+  // this id as the "Net Migration (Table)" pill, and the host's group-merge drops it from the tab row.
+  { id: "ledger", label: "Net Migration (Table)", title: "Net migration by civilization" },
   { id: "pies", label: "Causes", title: "Why people move" },
   { id: "cityflows", label: "Settlements", title: "Settlements" },
   { id: "stances", label: "Immigration Policies", title: "Immigration policies" },
@@ -30,13 +34,22 @@ const SUBTABS = [
 ];
 
 /**
- * Render one migration dashboard section into a Demographics-provided container.
+ * Render one migration dashboard section into a Demographics-provided container. When the host renders
+ * this panel as a member of the "Data" metric-group, `ctx.groupView` carries the group's Scaled / Civ
+ * toggle — so the Net Migration (Table) follows those pills (mapping the view to the units NumberMode)
+ * and its own redundant units chip is suppressed. On the standalone sub-tabs (no group), the chip stays.
  * @param {*} container The page's content element.
  * @param {string} [kind] The section kind (sub-tab id); defaults to the first sub-tab.
+ * @param {*} [ctx] The Demographics render context (may carry `groupView`).
  */
-function renderInto(container, kind) {
+function renderInto(container, kind, ctx) {
   try {
-    renderDashboardSubtab(container, dashboardModel(gatherDashboard()), kind || SUBTABS[0].id);
+    const groupControlled = ctx && (ctx.groupView === "scaled" || ctx.groupView === "civ");
+    if (groupControlled) {
+      setNumberMode(ctx.groupView === "civ" ? NumberMode.CIV : NumberMode.HISTORICAL);
+    }
+    renderDashboardSubtab(container, dashboardModel(gatherDashboard()), kind || SUBTABS[0].id,
+      { hideUnitsToggle: !!groupControlled });
   } catch (_) {
     /* a render failure must never break the Demographics screen */
   }
@@ -57,8 +70,8 @@ const PANEL_SPEC = {
   // Historical Data) rather than as a page buried inside Historical Data. The Demographics screen
   // reads this flag to add the tab and to exclude the panel from the Historical-Data page row.
   topLevel: true,
-  render: (/** @type {*} */ container, /** @type {*} */ _ctx, /** @type {*} */ subId) =>
-    renderInto(container, subId)
+  render: (/** @type {*} */ container, /** @type {*} */ ctx, /** @type {*} */ subId) =>
+    renderInto(container, subId, ctx)
 };
 
 /**

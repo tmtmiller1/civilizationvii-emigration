@@ -183,6 +183,7 @@ function applyOneMove(src, dest, popBefore, state, cause) {
  * Shed up to `budget` rural points from `src` toward `dest` this turn (one for ordinary emigration;
  * a war burst for a besieged source). Stops early at the rural floor or a failed write. Each point
  * re-reads `src.population` so the people-scaling tracks the shrinking city.
+ *
  * @param {*} src Source signal.
  * @param {*} dest Destination signal.
  * @param {*} state Loaded state (transit + monoTurn).

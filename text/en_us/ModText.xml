@@ -200,6 +200,10 @@
         <Row Tag="LOC_EMIG_DIGEST_UNHAPPINESS"><Text>{1_People} left {2_City}, unhappy at home.</Text></Row>
         <Row Tag="LOC_EMIG_DIGEST_PROSPERITY"><Text>{1_People} left {2_City} for more prosperous neighbors.</Text></Row>
         <Row Tag="LOC_EMIG_DIGEST_WAR"><Text>{1_People} fled the fighting around {2_City}.</Text></Row>
+        <Row Tag="LOC_EMIG_DIGEST_CONQUEST"><Text>{1_People} were taken from {2_City} when it changed hands.</Text></Row>
+        <Row Tag="LOC_EMIG_NETC_UNITS"><Text>Units:</Text></Row>
+        <Row Tag="LOC_EMIG_NETC_UNITS_TIP"><Text>Switch between the Civ's own population numbers and scaled people</Text></Row>
+        <Row Tag="LOC_EMIG_NETC_TIMELINE_PENDING"><Text>Playback timeline appears once enough migration has been recorded to scrub through.</Text></Row>
         <Row Tag="LOC_EMIG_DIGEST_DISASTER"><Text>{1_People} fled {2_City} after disaster struck.</Text></Row>
         <Row Tag="LOC_EMIG_DIGEST_ATTRITION"><Text>{1_People} were lost from {2_City} with nowhere to flee.</Text></Row>
 

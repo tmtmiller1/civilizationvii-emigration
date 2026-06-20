@@ -15,6 +15,8 @@
  * @property {string} destName Destination city name.
  * @property {number} [srcOwner] Source owner id (absent on a pure arrival record).
  * @property {number} [destOwner] Destination owner id (absent for attrition / a pure departure).
+ * @property {number} [edgeDestOwner] Destination owner for the flow-network EDGE only (carried on a lagged
+ *   departure record so the cross-civ edge can be built at depart; NOT the tally-driving destOwner).
  * @property {boolean} crossCiv Whether it crossed civilizations.
  * @property {number} points Raw Civ population points moved (1 per migration).
  * @property {number} people Historically-scaled people who moved.
@@ -71,7 +73,9 @@ export function moveRecord(src, dest, people, cause, destPaidCost) {
 /**
  * Build the DEPARTURE half of a lagged move: the source loss + emigration tally land now, so it
  * carries `srcOwner` but NOT `destOwner` (the arrival credits the destination later). Keeps
- * `destName` for the notification ("left X for Y").
+ * `destName` for the notification ("left X for Y"), and `edgeDestOwner` (the destination civ) purely
+ * so the migration-network flow edge can be recorded at depart — it must NOT be the tally-driving
+ * `destOwner` field, or the immigration tally would double-count (credited again on arrival).
  * @param {*} src Source signal.
  * @param {*} dest Destination signal.
  * @param {number} people Historically-scaled people who left.
@@ -83,6 +87,7 @@ export function departRecord(src, dest, people, cause) {
     srcName: cityName(src.city),
     destName: cityName(dest.city),
     srcOwner: src.owner,
+    edgeDestOwner: dest.owner,
     crossCiv: src.owner !== dest.owner,
     points: 1,
     people,

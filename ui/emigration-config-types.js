@@ -81,6 +81,7 @@
  * @property {number} happyMultMin Min economy multiplier from happiness (shaped model).
  * @property {number} happyMultMax Max economy multiplier from happiness (shaped model).
  * @property {boolean} warSiege Use the time-gated, capped war-displacement model.
+ * @property {number} siegeBesiegedFloor Fraction of full siege pressure a besieged-but-undamaged city registers.
  * @property {number} siegeFloor Escalation at siege tenure 1 (fraction of full).
  * @property {number} siegeRampTurns Turns of sustained siege to reach full escalation.
  * @property {number} siegeLossCapPct Max fraction of onset population lost to war.

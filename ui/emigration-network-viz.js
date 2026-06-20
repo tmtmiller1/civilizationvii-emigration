@@ -27,9 +27,12 @@ import { makeTooltip, wireEvents } from "/emigration/ui/emigration-network-inter
 // (nodes seed clustered in the centre; the buffer is 2x these for crispness).
 export const WX = 1120;
 export const WY = 560;
-// Aim for ~this many dots across ALL clusters (native residents + arrivals together). This sets
-// the people-per-dot unit; the caption reports the unit derived from the dots actually drawn.
-const TARGET_DOTS = 1500;
+// Scaled Pop mode: a FIXED people-per-dot so the dot count tracks REAL population size (a bigger civ /
+// a bigger migration = more dots), rather than always squeezing the whole world into a fixed budget.
+// Capped at SCALED_DOT_CAP so a huge late-game world can't spawn an unrenderable number of dots — past
+// the cap the people-per-dot coarsens to hold the count. (Civ Pop mode stays 1 dot = 1 engine point.)
+const SCALED_PEOPLE_PER_DOT = 2000;
+const SCALED_DOT_CAP = 2000;
 
 /**
  * @typedef {import("/emigration/ui/emigration-network-dots.js").Dot} Dot
@@ -590,6 +593,7 @@ function setupPlayback(frames, holder, activate) {
     if (pb.idx + 1 >= frames.length) timeline.setPlaying(false);
     else timeline.goTo(pb.idx + 1);
   };
+  activate(pb.idx); // initial reveal: animate the latest frame's arrivals so they fly in on open
   return timeline;
 }
 
@@ -646,13 +650,14 @@ function buildScene(frames, colorMap, events) {
     lens: "origin", frameIdx: frames.length - 1
   };
   const { sim, byId } = buildCenters(lastNet, colorMap);
-  // Scaled Pop: ~TARGET_DOTS dots (each ≈ many people). Civ Pop: ~1 dot per civ pop-point (so the
-  // small "civilization population" reads as one dot each) , set the unit to people-per-point.
+  // Scaled Pop: a fixed ~SCALED_PEOPLE_PER_DOT people per dot (count tracks real size, capped at
+  // SCALED_DOT_CAP). Civ Pop: ~1 dot per civ pop-point (the small "civilization population" reads as
+  // one dot each) , set the unit to people-per-point.
   const civMode = getNumberMode() === NumberMode.CIV;
   const points = totalPoints(lastNet, lastFrame.pops || {});
   const unit = civMode
     ? Math.max(1, Math.round((total || 1) / Math.max(1, points)))
-    : Math.max(1, Math.round((total || 1) / TARGET_DOTS));
+    : Math.max(SCALED_PEOPLE_PER_DOT, Math.ceil((total || 1) / SCALED_DOT_CAP));
   const dots = buildChronoDots(frames, sim.nodes, byId, colorMap, unit);
   const shownUnit = Math.max(1, Math.round(total / Math.max(1, dots.length)));
   const evs = resolveEvents(events, byId);
@@ -696,11 +701,13 @@ function buildViz(container, frames, events, rebuildAll) {
     holder.dirty = true;
   };
   const activate = (/** @type {number} */ i) => {
-    // Advancing one frame (playback) flies the freshly-arrived dots in; a jump/back just reveals.
-    if (holder.prevIdx != null && i === holder.prevIdx + 1) {
-      for (const d of dots) if (d.appearFrame === i) startAnim(d, holder.scene);
-    } else {
-      for (const d of dots) d.anim = null;
+    // Fly in the dots that FIRST appear at frame `i` (cross-civ immigrants travel from their origin
+    // civ's cluster, see startAnim) — on every activation: continuous playback, a scrub that lands on a
+    // frame, AND the initial reveal. Without this, arrivals only animated on a +1 advance, so on load /
+    // static view a cross-civ immigrant sat motionless in the destination cluster and read as home-grown.
+    for (const d of dots) {
+      if (d.appearFrame === i) startAnim(d, holder.scene);
+      else d.anim = null;
     }
     state.frameIdx = i;
     holder.prevIdx = i;
