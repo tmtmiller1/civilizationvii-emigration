@@ -14,21 +14,54 @@ import { disasterName, actionHint } from "/emigration/ui/emigration-naming.js";
 import { announceImportant } from "/emigration/ui/emigration-feedback.js";
 import { recordDisasterEvent } from "/emigration/ui/emigration-migration-stats.js";
 
+// How far from an event's epicenter to look for affected cities. A disaster (a volcanic eruption,
+// a flood) damages a RING of tiles around its epicenter, and the epicenter itself — a volcano /
+// floodplain tile — is frequently impassable terrain on a border that NO city owns. Mapping only the
+// epicenter's owning city therefore misses the eruption entirely; scanning the surrounding ring
+// attributes the distress to every nearby city that owns a tile in the blast radius.
+const EVENT_RADIUS = 1;
+
 /**
- * The disaster-distress city keys for an event epicenter: the owning city of the
- * epicenter plot (best-effort; empty when none/unreadable).
+ * Resolve the owning city's disaster key for a single plot, or null.
+ * @param {number} x Plot x.
+ * @param {number} y Plot y.
+ * @returns {string|null} The owning city's disaster key, or null.
+ */
+function cityKeyAt(x, y) {
+  try {
+    const cid = GameplayMap.getOwningCityFromXY?.(x, y);
+    const city = cid && typeof Cities !== "undefined" ? Cities.get?.(cid) : null;
+    return city ? disasterKey(city) : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * The disaster-distress city keys for an event epicenter: every city owning a tile within
+ * EVENT_RADIUS of the epicenter (deduped), not just the epicenter's own owner — so an eruption on an
+ * unowned/border volcano tile still strikes the cities around it. Empty when none/unreadable.
  * @param {{x:number, y:number}} location The epicenter plot.
- * @returns {string[]} Affected city keys.
+ * @returns {string[]} Affected city keys (unique).
  */
 function affectedCityKeys(location) {
   /** @type {string[]} */
   const keys = [];
   try {
     if (!location || typeof GameplayMap === "undefined") return keys;
-    const cid = GameplayMap.getOwningCityFromXY?.(location.x, location.y);
-    const city = cid && typeof Cities !== "undefined" ? Cities.get?.(cid) : null;
-    const k = city ? disasterKey(city) : null;
-    if (k) keys.push(k);
+    const seen = new Set();
+    const push = (/** @type {string|null} */ k) => {
+      if (k && !seen.has(k)) {
+        seen.add(k);
+        keys.push(k);
+      }
+    };
+    push(cityKeyAt(location.x, location.y)); // epicenter first
+    const idxs = GameplayMap.getPlotIndicesInRadius?.(location.x, location.y, EVENT_RADIUS);
+    for (const idx of idxs || []) {
+      const loc = GameplayMap.getLocationFromIndex?.(idx);
+      if (loc) push(cityKeyAt(loc.x, loc.y));
+    }
   } catch (_) {
     /* ignore */
   }

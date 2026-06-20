@@ -10,6 +10,16 @@
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 /**
+ * Whether a live District has been overrun — its controlling player differs from its owner (the
+ * captured/contested test the base game's district-health UI uses).
+ * @param {*} d A live District object.
+ * @returns {boolean} True when contested.
+ */
+function districtIsContested(d) {
+  return !!(d && d.owner != null && d.controllingPlayer != null && d.owner !== d.controllingPlayer);
+}
+
+/**
  * The owner's Districts accessor, or null.
  * @param {*} city A live city object.
  * @returns {*} The Districts component, or null.
@@ -23,43 +33,121 @@ function cityDistricts(city) {
 }
 
 /**
- * The city center district's damage as a fraction of its max health (0 = pristine, 1 = destroyed),
- * read straight from the gameplay model. 0 when unreadable.
+ * Whether a live District belongs to the city identified by ComponentID `cid` (matched on owner+id,
+ * since `getDistrictIds` spans ALL of a player's cities).
+ * @param {*} d A live District object.
+ * @param {*} cid The city's ComponentID.
+ * @returns {boolean} True when the district is part of that city.
+ */
+function districtInCity(d, cid) {
+  const dc = d?.cityId;
+  return !!(d?.location && dc && cid && dc.owner === cid.owner && dc.id === cid.id);
+}
+
+/**
+ * Every district id belonging to a city's owner (spans all that player's cities), or [] if the
+ * Districts API is unavailable.
+ * @param {*} city A live city object.
+ * @returns {*[]} District ids.
+ */
+function ownerDistrictIds(city) {
+  try {
+    const pd = cityDistricts(city);
+    if (pd && typeof pd.getDistrictIds === "function") return pd.getDistrictIds() || [];
+  } catch (_) {
+    /* ignore */
+  }
+  return [];
+}
+
+/**
+ * Every district that belongs to THIS city — the city center PLUS every other urban/rural quarter —
+ * as live District objects, read the way the base game's own district-health UI does it
+ * (`getDistrictIds()` spans all the player's districts → `Districts.get` → filter by `cityId`).
+ * Empty when enumeration is unavailable (callers fall back to the city-center plot).
+ *
+ * This is what lets damage to / sieges of a city's OUTER districts register as violence: an attacker
+ * who "kills districts" on the urban edge can leave the city CENTER pristine and un-besieged, which a
+ * center-only poll reads as zero conflict even though the city is plainly under assault.
+ * @param {*} city A live city object.
+ * @returns {*[]} The city's live District objects (empty only if reads fail / API absent).
+ */
+function cityDistrictObjs(city) {
+  /** @type {*[]} */
+  const out = [];
+  const cid = city?.id;
+  if (!cid) return out;
+  for (const did of ownerDistrictIds(city)) {
+    const d = Districts?.get?.(did);
+    if (districtInCity(d, cid)) out.push(d);
+  }
+  return out;
+}
+
+/**
+ * The district plot locations to poll for this city — every district when enumerable, else just the
+ * city-center plot (so behaviour never regresses below the old center-only read).
+ * @param {*} city A live city object.
+ * @returns {Array<{x:number,y:number}>} District plot locations.
+ */
+function districtLocations(city) {
+  const locs = cityDistrictObjs(city).map(d => d.location).filter(Boolean);
+  if (locs.length) return locs;
+  return city?.location ? [city.location] : [];
+}
+
+/**
+ * The WORST damage among ALL of the city's districts as a fraction of max health (0 = every district
+ * pristine, 1 = a district destroyed), read straight from the gameplay model — not just the city
+ * center. 0 when unreadable.
  * @param {*} city A live city object.
  * @returns {number} Damage fraction in [0, 1].
  */
 export function districtDamageFrac(city) {
-  const loc = city?.location;
-  const pd = loc ? cityDistricts(city) : null;
+  const pd = cityDistricts(city);
   if (!pd) return 0;
-  try {
-    const max = pd.getDistrictMaxHealth(loc);
-    const cur = pd.getDistrictHealth(loc);
-    if (!(max > 0) || typeof cur !== "number") return 0;
-    const damage = max - cur;
-    return damage > 0 ? damage / max : 0;
-  } catch (_) {
-    return 0;
+  let worst = 0;
+  for (const loc of districtLocations(city)) {
+    try {
+      const max = pd.getDistrictMaxHealth(loc);
+      const cur = pd.getDistrictHealth(loc);
+      if (!(max > 0) || typeof cur !== "number") continue;
+      const damage = max - cur;
+      if (damage > 0) worst = Math.max(worst, damage / max);
+    } catch (_) {
+      /* skip this district, keep scanning the rest */
+    }
   }
+  return worst;
 }
 
 /**
- * Whether the city center district is currently BESIEGED (under active attack), read straight from
- * the gameplay model. Victim-side and attacker-agnostic, so it fires for an Independent Power /
- * city-state raid just as for a major-civ siege — even before the district's HEALTH drops, which is
- * the case the health/pillage polls miss for lighter raids. False when unreadable.
+ * Whether the city is currently BESIEGED at ANY of its districts — the engine besieged flag on any
+ * district, OR a district that's been overrun (its `controllingPlayer` differs from its `owner`, the
+ * same captured/contested test the base game's district-health UI uses). Victim-side and attacker-
+ * agnostic, so it fires for an Independent Power / city-state raid just as for a major-civ siege —
+ * even before a district's HEALTH drops, the case the health/pillage polls miss for lighter raids.
+ * Scans all of the city's districts (not just the center). False when unreadable.
  * @param {*} city A live city object.
- * @returns {boolean} True when the city center is besieged.
+ * @returns {boolean} True when the city is under siege at any district.
  */
 export function districtBesieged(city) {
-  const loc = city?.location;
-  const pd = loc ? cityDistricts(city) : null;
+  const pd = cityDistricts(city);
   if (!pd) return false;
-  try {
-    return typeof pd.getDistrictIsBesieged === "function" && !!pd.getDistrictIsBesieged(loc);
-  } catch (_) {
-    return false;
+  // A district whose controllingPlayer differs from its owner has been overrun (captured/contested).
+  for (const d of cityDistrictObjs(city)) {
+    if (districtIsContested(d)) return true;
   }
+  // Engine besieged flag at any of the city's district plots (the locations fall back to the center).
+  if (typeof pd.getDistrictIsBesieged !== "function") return false;
+  for (const loc of districtLocations(city)) {
+    try {
+      if (pd.getDistrictIsBesieged(loc)) return true;
+    } catch (_) {
+      /* skip this district, keep scanning */
+    }
+  }
+  return false;
 }
 
 /**

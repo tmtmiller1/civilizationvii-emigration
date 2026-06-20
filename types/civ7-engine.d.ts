@@ -13,6 +13,7 @@ declare const Controls: any;
 declare const ComponentID: any;
 declare const MapConstructibles: any;
 declare const Constructibles: any;
+declare const Districts: any;
 declare const Database: any;
 declare const Modding: any;
 declare const UI: any;

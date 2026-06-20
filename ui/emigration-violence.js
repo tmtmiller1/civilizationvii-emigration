@@ -137,12 +137,20 @@ function persist() {
  */
 function keyFromCID(cid) {
   try {
-    if (!cid || typeof ComponentID === "undefined") return null;
-    const bf = ComponentID.toBitfield(cid);
-    return typeof bf === "number" || typeof bf === "string" ? String(bf) : null;
+    if (!cid) return null;
+    // Prefer the owner:id pair directly off the component id — the same fields the district matching
+    // reads successfully. ComponentID.toBitfield does NOT reliably yield a number/string for a CITY
+    // component id (it returned a non-primitive here, so keyFromCID was returning null and the whole
+    // violence model silently no-op'd). Fall back to the bitfield only if owner:id is unavailable.
+    if (typeof cid.owner === "number" && cid.id != null) return cid.owner + ":" + cid.id;
+    if (typeof ComponentID !== "undefined") {
+      const bf = ComponentID.toBitfield(cid);
+      if (typeof bf === "number" || typeof bf === "string") return String(bf);
+    }
   } catch (_) {
-    return null;
+    /* ignore */
   }
+  return null;
 }
 
 /**

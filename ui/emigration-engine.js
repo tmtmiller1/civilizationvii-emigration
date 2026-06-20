@@ -203,6 +203,20 @@ function shedBurst(src, dest, state, cause, budget) {
 }
 
 /**
+ * Whether a source is still below the pressure bar and must keep accumulating. Forced displacement
+ * (war / disaster / conquest) flees EVERY turn — it bypasses the bar that paces voluntary migration,
+ * so a besieged city sheds refugees immediately once it has a refuge (still bounded by the war-surge
+ * burst, the siege loss cap, the rural pool, and the per-civ move ceiling). Voluntary (prosperity /
+ * unhappiness) migration must accumulate to `emigrationBar` before it moves anyone.
+ * @param {boolean} forced Whether the cause is forced displacement.
+ * @param {number} pressure The source's accumulated pressure.
+ * @returns {boolean} True when the source should wait (no move this turn).
+ */
+function belowEmigrationBar(forced, pressure) {
+  return !forced && pressure < CONFIG.emigrationBar;
+}
+
+/**
  * Process one potential source: accumulate pressure toward its best destination and, if it crosses
  * the bar, shed population. An ordinary source sheds one point; a besieged source sheds up to its
  * war-surge budget in a burst (Feature 1a), bounded by `maxThisSource` (the remaining per-turn cap)
@@ -231,7 +245,7 @@ function processSource(src, ranked, state, ownerPop, maxThisSource) {
     return a ? [a] : [];
   }
   st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
-  if (st.pressure < CONFIG.emigrationBar) return [];
+  if (belowEmigrationBar(forced, st.pressure)) return [];
 
   const budget = Math.min(maxThisSource, warSurgeBudget(src, cause));
   const out = shedBurst(src, best.dest, state, cause, budget);
@@ -344,7 +358,7 @@ function planSource(src, ctx, maxThisSource) {
   const best = bestDestination(src, ctx.sig, ctx.ownerPop);
   if (!best) return 0;
   st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
-  if (st.pressure < CONFIG.emigrationBar) return 0;
+  if (!forced && st.pressure < CONFIG.emigrationBar) return 0; // forced causes flee every turn
   const budget = Math.min(maxThisSource, warSurgeBudget(src, cause));
   const moved = planApply(src, ctx, best, budget);
   if (moved) {
