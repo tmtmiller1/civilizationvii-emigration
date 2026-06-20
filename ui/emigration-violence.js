@@ -167,11 +167,13 @@ function keyFromCID(cid) {
 function applyObservation(s, key, city) {
   const frac = districtDamageFrac(city);
   const fresh = Math.max(0, frac - (s.lastFrac[key] || 0));
-  // Standing siege pressure applies while the city center is under attack: scaled by damage, but at
-  // FULL strength the moment it's besieged even at zero damage. This is what makes an Independent
-  // Power / city-state raid (which besieges a city without necessarily wrecking its district) count
-  // as conflict like any major-civ war, instead of registering no pressure at all.
-  const siegeFrac = Math.max(frac, districtBesieged(city) ? 1 : 0);
+  // Standing siege pressure while the city center is under attack: scaled by damage, with a FLOOR the
+  // moment it's besieged even at zero damage so an Independent Power / city-state raid still registers
+  // as conflict. That floor is `siegeBesiegedFloor` (< 1) rather than full strength, so early-game
+  // harassment that besieges without wrecking the district builds pressure gradually instead of
+  // instantly crossing the flee threshold and flooding "war" refugees (real assault damage still
+  // counts at full `frac`).
+  const siegeFrac = Math.max(frac, districtBesieged(city) ? CONFIG.siegeBesiegedFloor : 0);
   let add = CONFIG.vwAssault * fresh + CONFIG.vwSiege * siegeFrac;
   add += CONFIG.vwPillage * pillagedCount(city);
   if (add > 0) s.byCity[key] = (s.byCity[key] || 0) + add;

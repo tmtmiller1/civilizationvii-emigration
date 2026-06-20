@@ -164,6 +164,10 @@
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="ko_KR"><Text>{1_People}이(가) 불만을 품고 {2_City}을(를) 떠났습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="ko_KR"><Text>{1_People}이(가) 더 번영한 이웃을 찾아 {2_City}을(를) 떠났습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="ko_KR"><Text>{1_People}이(가) {2_City} 주변의 전투를 피해 달아났습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="ko_KR"><Text>{1_People} were taken from {2_City} when it changed hands.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS" Language="ko_KR"><Text>Units:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="ko_KR"><Text>Switch between the Civ's own population numbers and scaled people</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ko_KR"><Text>Playback timeline appears once enough migration has been recorded to scrub through.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ko_KR"><Text>{1_People}이(가) 재난 이후 {2_City}에서 달아났습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ko_KR"><Text>{1_People}이(가) 달아날 곳 없이 {2_City}에서 스러졌습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="ko_KR"><Text>도시의 행복도를 높이거나 반이민 정책을 채택해 이들을 붙잡으세요.</Text></Replace>

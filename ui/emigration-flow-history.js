@@ -108,6 +108,9 @@ function mergeInto(into, from) {
   into.age = from.age;
   into.chartTurn = from.chartTurn;
   into.year = from.year;
+  // `pop` (per-civ native population at the frame) is a point-in-time SNAPSHOT, not a delta — the
+  // merged window ends at `from`, so keep the later frame's populations.
+  if (from.pop) into.pop = from.pop;
 }
 
 /**
@@ -136,7 +139,8 @@ export function mergeAdjacentDeltas(frames, maxSnapshots) {
       mergeInto(prevOut, f);
     } else {
       out.push({ turn: f.turn, age: f.age, chartTurn: f.chartTurn, year: f.year,
-        delta: Object.assign({}, deepCopyDelta(f.delta)) });
+        delta: Object.assign({}, deepCopyDelta(f.delta)),
+        pop: f.pop ? Object.assign({}, f.pop) : undefined });
     }
   }
   return out;

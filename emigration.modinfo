@@ -124,6 +124,7 @@
                     <Item>ui/emigration-pies.js</Item>
                     <Item>ui/emigration-city-flows.js</Item>
                     <Item>ui/emigration-detail-views.js</Item>
+                    <Item>ui/emigration-ledger-view.js</Item>
                     <Item>ui/emigration-demo-data.js</Item>
                     <Item>ui/emigration-window.js</Item>
                     <Item>ui/emigration-screen.js</Item>

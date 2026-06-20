@@ -164,6 +164,10 @@
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="es_ES"><Text>{1_People} abandonaron {2_City}, descontentos en casa.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="es_ES"><Text>{1_People} abandonaron {2_City} en busca de vecinos más prósperos.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="es_ES"><Text>{1_People} huyeron de los combates en torno a {2_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="es_ES"><Text>{1_People} were taken from {2_City} when it changed hands.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS" Language="es_ES"><Text>Units:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="es_ES"><Text>Switch between the Civ's own population numbers and scaled people</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="es_ES"><Text>Playback timeline appears once enough migration has been recorded to scrub through.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="es_ES"><Text>{1_People} huyeron de {2_City} tras un desastre.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="es_ES"><Text>{1_People} se perdieron en {2_City} sin lugar al que huir.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="es_ES"><Text>Aumenta la felicidad de la ciudad o adopta una postura antiinmigración para retenerlos.</Text></Replace>
