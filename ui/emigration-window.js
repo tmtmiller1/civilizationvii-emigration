@@ -77,6 +77,7 @@ function civRow(pid) {
     refugeesPts: read("refugeesPtsFor"),
     deathsPts: read("deathsPtsFor") + read("externalLossesPtsFor"),
     byCause: typeof D.emigrationByCauseFor === "function" ? D.emigrationByCauseFor(pid) || {} : {},
+    inByCause: typeof D.immigrationByCauseFor === "function" ? D.immigrationByCauseFor(pid) || {} : {},
     stance: borderStance(pid),
     stanceImpact: typeof D.stanceImpactFor === "function"
       ? D.stanceImpactFor(pid) || { in: 0, out: 0, inPts: 0, outPts: 0 }
@@ -122,16 +123,52 @@ function nameEdges(raw) {
 }
 
 /**
- * The current cross-civ migration flows (src→dest), each side resolved to its civ adjective.
- * @returns {*[]} Named flow edges.
+ * The intra-civ move ({civId,fromCity,toCity,people,points}) for a same-owner edge, or null when it's
+ * not a drawable city→city move (no people, or missing/equal city names).
+ * @param {*} e Raw same-owner flow edge.
+ * @returns {*} The intra move, or null.
+ */
+function intraEdge(e) {
+  if (!((e.people || 0) > 0)) return null;
+  if (!e.srcCity || !e.destCity || e.srcCity === e.destCity) return null;
+  return {
+    civId: e.src, fromCity: e.srcCity, toCity: e.destCity,
+    people: e.people || 0, points: e.points || 0
+  };
+}
+
+/**
+ * Split raw flow edges into CROSS-civ named edges (the civ→civ network) and INTRA-civ moves (city→city
+ * within one civ, drawn inside an expanded civ on the flow map). Edges touching a policy-hidden civ are
+ * dropped from both. Intra edges are the same-owner ones (src === dest); see intraEdge for what's drawable.
+ * @param {*[]} raw Raw flow edges ({src,dest,srcCity,destCity,people,points,byCause}).
+ * @returns {{flows:*[], intra:{civId:number,fromCity:string,toCity:string,people:number,points:number}[]}}
+ */
+function splitFlows(raw) {
+  /** @type {*[]} */
+  const cross = [];
+  /** @type {*[]} */
+  const intra = [];
+  for (const e of raw || []) {
+    if (civHidden(e.src) || civHidden(e.dest)) continue;
+    if (e.src !== e.dest) {
+      cross.push(e);
+    } else {
+      const m = intraEdge(e);
+      if (m) intra.push(m);
+    }
+  }
+  return { flows: nameEdges(cross), intra };
+}
+
+/**
+ * The current migration flows split into the cross-civ network + intra-civ city→city moves.
+ * @returns {{flows:*[], intra:*[]}} Split flows.
  */
 function gatherFlows() {
   const D = /** @type {*} */ (globalThis).EmigrationData || {};
-  if (typeof D.flows !== "function") return [];
-  // Drop edges touching a policy-hidden civ so the network/flows viz never reveals one.
-  return nameEdges(
-    (D.flows() || []).filter((/** @type {*} */ e) => !civHidden(e.src) && !civHidden(e.dest))
-  );
+  if (typeof D.flows !== "function") return { flows: [], intra: [] };
+  return splitFlows(D.flows() || []);
 }
 
 /**
@@ -231,11 +268,24 @@ function scalePops(entry, frac) {
 }
 
 /**
- * The decimated cumulative-flow history as named-edge frames, for the timeline scrubber. Per-city
- * native population isn't snapshotted historically, so it's approximated by scaling the current
- * populations linearly over the timeline (so circles still grow as you scrub).
+ * Sum a per-civ city-pop entry's native pop-POINTS (the historical-scale denominator for a frame).
+ * @param {*} entry {cities:[{pts}]}.
+ * @returns {number} Total native points.
+ */
+function nativePtsOf(entry) {
+  return ((entry && entry.cities) || []).reduce((/** @type {number} */ a, /** @type {*} */ c) => a + (c.pts || 0), 0);
+}
+
+/**
+ * The decimated cumulative-flow history as named-edge frames, for the timeline scrubber. Each frame
+ * now carries a REAL per-civ native-population snapshot (`f.pop`, civId → points), so a civ's circle
+ * reflects its ACTUAL population at that point in time. We scale the civ's CURRENT per-city breakdown
+ * by (snapshot ÷ current native points) — the per-civ TOTAL is exact; only the within-civ split across
+ * cities is approximated by today's ratio (true per-city history would be prohibitively large, and
+ * a civ's historical cities may differ). Frames from a pre-population-history save (no `f.pop`, or a
+ * civ missing from it) fall back to the old linear scale so old timelines still animate.
  * @param {Record<number, *>} nativeNow Current per-civ city populations.
- * @returns {{turn:number, age:string, flows:*[], pops:Record<number,*>}[]} Frames (old→new).
+ * @returns {{turn:number, age:string, flows:*[], intra:*[], pops:Record<number,*>}[]} Frames (old→new).
  */
 function gatherHistory(nativeNow) {
   const D = /** @type {*} */ (globalThis).EmigrationData || {};
@@ -244,15 +294,23 @@ function gatherHistory(nativeNow) {
   const raw = D.flowHistory() || [];
   const n = raw.length;
   return raw.map((/** @type {*} */ f, /** @type {number} */ i) => {
-    const frac = n > 1 ? (i + 1) / n : 1;
+    const linear = n > 1 ? (i + 1) / n : 1; // fallback when a frame/civ lacks a real snapshot
+    const realPop = f.pop || null;
     /** @type {Record<number, *>} */
     const pops = {};
-    for (const k of Object.keys(nativeNow)) pops[+k] = scalePops(nativeNow[+k], frac);
-    // Mask hidden civs from historical flow frames too (the timeline scrubber).
-    const edges = (f.edges || []).filter(
-      (/** @type {*} */ e) => !civHidden(e.src) && !civHidden(e.dest)
-    );
-    return { turn: f.turn, age: f.age, year: f.year || "", flows: nameEdges(edges), pops };
+    for (const k of Object.keys(nativeNow)) {
+      const cur = nativeNow[+k];
+      const curPts = nativePtsOf(cur);
+      const scale = realPop && typeof realPop[+k] === "number" && curPts > 0
+        ? realPop[+k] / curPts // REAL: this civ's snapshot ÷ its current native points
+        : linear;
+      pops[+k] = scalePops(cur, scale);
+    }
+    // Split each historical frame the same way as the live one: cross-civ network + intra-civ moves
+    // (splitFlows also masks policy-hidden civs), so scrubbing the timeline shows within-civ movement
+    // at each frame too, not just the latest.
+    const { flows, intra } = splitFlows(f.edges || []);
+    return { turn: f.turn, age: f.age, year: f.year || "", flows, intra, pops };
   });
 }
 
@@ -368,12 +426,13 @@ function gatherFresh() {
   const pids = inPlayCivs();
   const me = localId();
   const pops = gatherPops();
+  const { flows, intra } = gatherFlows();
   return {
     civs: pids.map(civRow),
     byCause: aggregateByCause(pids),
-    flows: gatherFlows(),
+    flows,
     pops,
-    intra: [], // intra-civ (city→city) moves aren't tracked live yet; sample data supplies them
+    intra, // intra-civ (city→city) moves, split from the same flow matrix as the cross-civ network
     history: gatherHistory(pops),
     events: [], // live disaster/war event labels are a future pull; sample data supplies them
     cities: me != null ? ownerCitySnapshots(me) : [],

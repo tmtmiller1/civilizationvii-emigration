@@ -167,6 +167,7 @@ const DIGEST_KEY = {
   prosperity: "LOC_EMIG_DIGEST_PROSPERITY",
   war: "LOC_EMIG_DIGEST_WAR",
   disaster: "LOC_EMIG_DIGEST_DISASTER",
+  conquest: "LOC_EMIG_DIGEST_CONQUEST",
   attrition: "LOC_EMIG_DIGEST_ATTRITION"
 };
 

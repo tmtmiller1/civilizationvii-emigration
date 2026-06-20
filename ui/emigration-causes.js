@@ -13,6 +13,8 @@
 // the set is ADDITIVE-ONLY: never rename a value without a load-time alias, or existing saves lose
 // their per-cause history.
 
+import { formatPeople } from "/emigration/ui/emigration-population.js";
+
 /**
  * Why population left a settlement. `attrition` is the outlet (a death , population lost with no
  * destination), tracked apart from the migration/refugee tallies. `conquest` is reserved: a later
@@ -103,4 +105,28 @@ export function causePermanence(cause) {
  */
 export function causeHint(cause) {
   return (cause && HINTS[cause]) || "";
+}
+
+/**
+ * The SIGNED net-by-cause drivers behind a civ's net migration: each cause's arrivals (+) minus
+ * departures (−), so the entries sum to the net. Sorted biggest-first, capped to the top few. "" when
+ * there's no migration. Used by the Net Migration Table to explain each civ's net.
+ * @param {Record<string,number>} [outByCause] Emigration people per cause.
+ * @param {Record<string,number>} [inByCause] Immigration people per cause.
+ * @returns {string} e.g. "Unhappiness -30 thousand, War -15 thousand", or "".
+ */
+export function netDrivers(outByCause, inByCause) {
+  const out = outByCause || {};
+  const inn = inByCause || {};
+  /** @type {{c:string, net:number}[]} */
+  const rows = [];
+  for (const c of new Set([...Object.keys(out), ...Object.keys(inn)])) {
+    const net = (inn[c] || 0) - (out[c] || 0);
+    if (Math.abs(net) >= 0.5) rows.push({ c, net });
+  }
+  rows.sort((a, b) => Math.abs(b.net) - Math.abs(a.net));
+  const shown = rows.slice(0, 4)
+    .map((r) => `${causeLabel(r.c)} ${r.net > 0 ? "+" : "-"}${formatPeople(Math.abs(r.net))}`);
+  if (rows.length > 4) shown.push(`+${rows.length - 4} more`);
+  return shown.join(", ");
 }

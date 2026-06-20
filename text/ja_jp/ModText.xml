@@ -164,6 +164,10 @@
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="ja_JP"><Text>{1_People}が不満を抱き{2_City}を去りました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="ja_JP"><Text>{1_People}がより豊かな隣国を求めて{2_City}を去りました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="ja_JP"><Text>{1_People}が{2_City}周辺の戦闘から逃れました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="ja_JP"><Text>{1_People} were taken from {2_City} when it changed hands.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS" Language="ja_JP"><Text>Units:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="ja_JP"><Text>Switch between the Civ's own population numbers and scaled people</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ja_JP"><Text>Playback timeline appears once enough migration has been recorded to scrub through.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ja_JP"><Text>{1_People}が災害の後、{2_City}から逃れました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ja_JP"><Text>{1_People}が逃げ場を失い、{2_City}で失われました。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="ja_JP"><Text>都市の幸福度を高めるか、移民排斥の方針を取って引き留めましょう。</Text></Replace>

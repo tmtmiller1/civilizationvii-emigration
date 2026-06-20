@@ -164,6 +164,10 @@
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="zh_Hans_CN"><Text>{1_People}因不满而离开了{2_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="zh_Hans_CN"><Text>{1_People}为寻求更繁荣的邻邦而离开了{2_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="zh_Hans_CN"><Text>{1_People}逃离了{2_City}周边的战火。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="zh_CN"><Text>{1_People} were taken from {2_City} when it changed hands.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS" Language="zh_CN"><Text>Units:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="zh_CN"><Text>Switch between the Civ's own population numbers and scaled people</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="zh_CN"><Text>Playback timeline appears once enough migration has been recorded to scrub through.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="zh_Hans_CN"><Text>{1_People}在灾难过后逃离了{2_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="zh_Hans_CN"><Text>{1_People}走投无路，消逝于{2_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="zh_Hans_CN"><Text>提升该城的幸福度，或采取反移民立场以留住他们。</Text></Replace>

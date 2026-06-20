@@ -9,6 +9,7 @@
 // backward-compatibly (older saves simply lack the new maps, which default to {}).
 
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
+import { dlog } from "/emigration/ui/emigration-log.js";
 import { citySnapshot } from "/emigration/ui/emigration-city-readout-data.js";
 import { getSnapshotInterval } from "/emigration/ui/emigration-settings.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
@@ -110,13 +111,16 @@ function mapOr(v) {
 }
 
 /**
- * Coerce a parsed object into the canonical state shape (filling missing maps).
+ * Coerce a parsed object into the canonical state shape (filling missing maps). Existing saves keep
+ * their tallies untouched: the v2 net-accounting change (settled cross-civ only) takes effect on new
+ * moves going forward; a pre-v2 save's accumulated net carries a fixed offset rather than being wiped.
  * @param {*} o Parsed object.
  * @returns {MigStatsState} The normalized state.
  */
 function normalize(o) {
   return {
     cum: mapOr(o.cum),
+    cumPts: mapOr(o.cumPts),
     lastSampled: mapOr(o.lastSampled),
     out: mapOr(o.out),
     in: mapOr(o.in),
@@ -125,8 +129,7 @@ function normalize(o) {
     deaths: mapOr(o.deaths),
     losses: mapOr(o.losses),
     // Parallel raw-pop-point tallies (1 point per migration) so the UI can show exact Civ
-    // population numbers, not just the historically-scaled "people" totals.
-    cumPts: mapOr(o.cumPts),
+    // population numbers, not just the historically-scaled "people" totals. (cumPts is set above.)
     outPts: mapOr(o.outPts),
     inPts: mapOr(o.inPts),
     refugeesPts: mapOr(o.refugeesPts),
@@ -217,13 +220,27 @@ function numOr0(v) {
 }
 
 /**
+ * Whether a migration record crosses a civ border. Prefers the record's own `crossCiv` flag (the
+ * only reliable signal for a lagged depart/arrive half, which carries just one owner); falls back to
+ * comparing owners when both are present (e.g. an instantaneous move or a synthetic test record).
+ * @param {*} m Migration record.
+ * @returns {boolean} True when the move is between two different civs.
+ */
+function isCrossCiv(m) {
+  if (m.crossCiv === true) return true;
+  if (m.crossCiv === false) return false;
+  return typeof m.srcOwner === "number" && typeof m.destOwner === "number" && m.srcOwner !== m.destOwner;
+}
+
+/**
  * Fold one migration into the tallies: a gain for the destination owner, an equal loss for the
  * source owner, and - when the move was caused by war/disaster/conquest - a refugee tally on the
  * source. Also tracks per-cause emigration/immigration breakdowns for tooltips.
  * @param {MigStatsState} s State.
- * @param {{srcOwner?:number, destOwner?:number, people:number, points?:number, cause?:string}} m
- *   Migration.
+ * @param {{srcOwner?:number, destOwner?:number, people:number, points?:number, cause?:string,
+ *   crossCiv?:boolean}} m Migration.
  */
+
 function foldMigration(s, m) {
   const p = numOr0(m.people);
   const pts = numOr0(m.points);
@@ -235,8 +252,13 @@ function foldMigration(s, m) {
     if (typeof m.srcOwner === "number") addBoth(s.deaths, s.deathsPts, m.srcOwner, p, pts);
     return;
   }
+  // NET migration is an INTER-CIV measure: an internal move (within one civ) doesn't change that
+  // civ's total, so it must not touch the net tally — otherwise transit lag (depart debits now,
+  // arrive credits later) leaves every actively-shedding civ with a permanent in-flight deficit, so
+  // the Net chart shows everyone negative and no one positive. Gross in/out still count every move.
+  const cross = isCrossCiv(m);
   if (typeof m.destOwner === "number") {
-    addBoth(s.cum, s.cumPts, m.destOwner, p, pts);
+    if (cross) addBoth(s.cum, s.cumPts, m.destOwner, p, pts);
     addBoth(s.in, s.inPts, m.destOwner, p, pts);
     add(s.inByCause, m.destOwner, p, c);
     // Refugee IMMIGRATION: a war/disaster/conquest arrival received here (inflow counterpart of the
@@ -244,26 +266,36 @@ function foldMigration(s, m) {
     if (isRefugeeCause(m.cause)) addBoth(s.refugeesIn, s.refugeesInPts, m.destOwner, p, pts);
   }
   if (typeof m.srcOwner !== "number") return;
-  addBoth(s.cum, s.cumPts, m.srcOwner, -p, -pts);
+  if (cross) addBoth(s.cum, s.cumPts, m.srcOwner, -p, -pts);
   addBoth(s.out, s.outPts, m.srcOwner, p, pts);
   add(s.outByCause, m.srcOwner, p, c);
   if (isRefugeeCause(m.cause)) addBoth(s.refugees, s.refugeesPts, m.srcOwner, p, pts);
 }
 
 /**
- * Tally a cross-civ flow into the flow matrix for the migration network. The key records the origin
- * AND destination SETTLEMENT (not just the civ): "srcCiv>destCiv>srcCity>destCity". Internal moves
- * (same owner) and attrition deaths make no civ→civ edge.
+ * Tally a migration flow into the matrix for the network viz. The key records the origin AND
+ * destination SETTLEMENT (not just the civ): "srcCiv>destCiv>srcCity>destCity". Same-owner moves are
+ * KEPT as intra-civ edges (srcCiv === destCiv) so the flow map can draw city→city movement WITHIN a
+ * civ; consumers split intra (src===dest) from cross-civ (src!==dest) edges by owner.
+ *
+ * The edge is recorded ONCE, at the move's initiation. The instantaneous "move" record carries both
+ * owners; the lagged "depart" record carries srcOwner + the non-tally `edgeDestOwner` (its real
+ * destOwner is withheld so the immigration tally isn't double-credited). The lagged "arrive" half
+ * carries no srcOwner, so the srcOwner guard skips it — no double count. (Previously this required
+ * BOTH owners, so with transit lag on — the default — every lagged move was dropped and the network
+ * stayed empty.)
  * @param {MigStatsState} s State.
- * @param {*} m Migration ({srcOwner?, destOwner?, srcName?, destName?, cause?}).
+ * @param {*} m Migration ({srcOwner?, destOwner?, edgeDestOwner?, srcName?, destName?, cause?}).
  * @param {number} p People moved.
  * @param {number} pts Pop points moved.
  */
 function foldFlow(s, m, p, pts) {
   if (m.cause === "attrition") return;
-  if (typeof m.srcOwner !== "number" || typeof m.destOwner !== "number") return;
-  if (m.srcOwner === m.destOwner) return;
-  const key = m.srcOwner + ">" + m.destOwner + ">" + (m.srcName || "") + ">" + (m.destName || "");
+  if (typeof m.srcOwner !== "number") return; // record at initiation (move/depart); skip arrive half
+  const destO = typeof m.destOwner === "number" ? m.destOwner
+    : typeof m.edgeDestOwner === "number" ? m.edgeDestOwner : null;
+  if (destO === null) return;
+  const key = m.srcOwner + ">" + destO + ">" + (m.srcName || "") + ">" + (m.destName || "");
   const c = m.cause || "other";
   add(s.flows, key, p, c);
   add(s.flowsPts, key, pts, c);
@@ -406,12 +438,33 @@ function nextChartTurn(s, age, localTurn) {
 }
 
 /**
- * Snapshot the cumulative flows for the timeline as a per-interval DELTA (P0.3). Within an interval
- * window the open (last) frame is kept current in place; at an interval or age boundary a new open
- * frame is appended. Either way the open frame's delta is recomputed as the live cumulative
- * (`s.flows`) minus the cumulative of all prior (frozen) frames, so storage holds only each
- * interval's increment , never a full cumulative clone per frame. Over the cap, adjacent deltas are
- * MERGED (summed), preserving cumulative totals exactly.
+ * Per-civ NATIVE population in pop-points right now, for the timeline's real population history. Sums
+ * each civ's current city populations (s.cityPts, refreshed by accountLosses earlier this pass — see
+ * emigration-main.js, which runs it before recordMigrations) and subtracts cumulative immigrant points
+ * (s.inPts), clamped ≥ 0 — mirroring the live gatherPops native fraction so a frame's totals reconcile
+ * with the current snapshot. City keys are "owner:localId", so the leading integer is the owner.
+ * @param {MigStatsState} s State.
+ * @returns {Record<number, number>} civId → native pop points.
+ */
+function nativePtsByCiv(s) {
+  /** @type {Record<number, number>} */
+  const total = {};
+  for (const key of Object.keys(s.cityPts)) {
+    const owner = parseInt(key, 10);
+    if (!isFinite(owner)) continue;
+    total[owner] = (total[owner] || 0) + (s.cityPts[key] || 0);
+  }
+  /** @type {Record<number, number>} */
+  const native = {};
+  for (const k of Object.keys(total)) native[+k] = Math.max(0, total[+k] - (s.inPts[+k] || 0));
+  return native;
+}
+
+/**
+ * Snapshot the cumulative flows for the timeline as a per-interval DELTA (P0.3): within an interval the open
+ * (last) frame is kept current in place; at an interval/age boundary a new open frame is appended. The open
+ * frame's delta = live cumulative (`s.flows`) − the cumulative of all prior frozen frames; over the cap, adjacent
+ * deltas merge (summed). Also stamps the open frame's per-civ native `pop` (nativePtsByCiv) for real pop history.
  * @param {MigStatsState} s State.
  */
 function snapshotFlows(s) {
@@ -432,6 +485,10 @@ function snapshotFlows(s) {
   open.delta = subtractFlows(s.flows, sumDeltas(h.slice(0, h.length - 1)));
   open.turn = turn;
   open.year = gameTurnDate();
+  // Stamp the open frame with the CURRENT per-civ native populations (a point-in-time snapshot, kept
+  // current until a new frame opens) so the timeline shows REAL population growth, not a linear scale
+  // of today's figures back over history.
+  open.pop = nativePtsByCiv(s);
   if (newFrame && h.length > MAX_FLOW_SNAPSHOTS) {
     s.flowHistory = mergeAdjacentDeltas(h, MAX_FLOW_SNAPSHOTS);
   }
@@ -459,6 +516,9 @@ export function migrationFlowHistory() {
       age: snap.age || "",
       year: snap.year || "",
       chartTurn: snap.chartTurn,
+      // Per-civ native pop points snapshotted at this frame (absent on pre-population-history saves);
+      // the consumer uses it for REAL growth and falls back to a scaled estimate when missing.
+      pop: snap.pop || null,
       edges: Object.keys(running)
         .map((k) => flowEntry(k, Object.assign({}, running[k])))
         .filter(Boolean)
@@ -665,6 +725,33 @@ export function recordMigrations(migs) {
   snapshotFlows(s); // capture the cumulative state for the timeline scrubber
   pushRecent(migs);
   save();
+  logNetDistribution(s, migs);
+}
+
+/**
+ * Debug-only: log the net-migration distribution across civs (cumulative points + scaled people) and
+ * this pass's per-record phases, so we can see whether any civ is net-POSITIVE or whether arrivals
+ * are failing (departures debit a source, but a destroyed-destination arrival credits no one). Grep
+ * `EMIG_netdist` in UI.log.
+ * @param {MigStatsState} s State.
+ * @param {*[]} migs This pass's migrations.
+ */
+function logNetDistribution(s, migs) {
+  try {
+    const ids = new Set([...Object.keys(s.cumPts || {}), ...Object.keys(s.cum || {})]);
+    const parts = [];
+    for (const pid of ids) {
+      const pts = Math.round(s.cumPts[pid] || 0);
+      const ppl = Math.round(s.cum[pid] || 0);
+      if (pts !== 0 || ppl !== 0) parts.push("c" + pid + ":pts=" + pts + ",ppl=" + ppl);
+    }
+    const phases = migs.map(m => (m.phase || "?") + (m.crossCiv ? "X" : "") + ">"
+      + (typeof m.srcOwner === "number" ? m.srcOwner : "-") + "/"
+      + (typeof m.destOwner === "number" ? m.destOwner : "-")).join(" ");
+    dlog("netdist [" + (parts.join(" ") || "all-zero") + "] thisPass: " + phases);
+  } catch (_) {
+    /* diagnostics must never break a pass */
+  }
 }
 
 /**

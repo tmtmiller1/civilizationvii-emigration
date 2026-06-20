@@ -194,6 +194,25 @@ matrix is available in-game on the dashboard's **Guide** tab.
 - **What happens when I capture or lose a city?** It keeps its residents' origin mix (what the Ethnicity lens paints), so a conquered city carries real origin history. War can shrink it, but only an actual capture transfers it.
 - **Why did a city suddenly lose a lot of people?** An on-screen toast names the cause (war, disaster, unhappiness, etc.), and the per-city readout breaks down its current pressures.
 
+**Post-war recovery FAQ**
+
+- **My city shrank from size 12 to 5 in a war — will it grow back?** Yes. War displacement only moves *population points*; it never razes districts or deletes buildings (only the base game's own conquest does that). So you keep the larger city's infrastructure with fewer people working it, and it regrows two ways, both additive: the base game's normal **food growth** (untouched by the mod), and **immigration** — once the fighting stops and its prosperity recovers, the surviving high-yield buildings/districts make it an attractive destination, so migrants move in and population is added back.
+- **Do the same refugees who fled come back?** No. There is no repatriation mechanism; war's "temporary" tag is only a durability cue. The people who fled resettled permanently elsewhere. The city regrows from *new* residents (births + new immigrants), not the original refugees.
+- **Does repairing pillaged tiles restore the lost population?** No. Pillaged tiles only apply *pressure* (a standing prosperity penalty that pushes people out). Repairing them **removes that pressure** — so the city stops bleeding people and its prosperity recovers faster — but a repair never adds a population point back. Repair is a recovery accelerator, not a restore button.
+- **How far can a war shrink a city?** War-driven loss is capped at **`siegeLossCapPct` (60% by default) of the city's population when the siege began**. The remnant "digs in" and the siege can't depopulate it further; only an actual capture takes the city.
+- **Fastest way to recover a war-torn city?** Relieve the cause so the city flips from a net exporter back to a magnet: **make peace** (violence decays in ~2–3 turns, lifting the war penalty), **repair pillaged tiles** (removes the lingering pressure), and **raise happiness** (the single biggest prosperity factor — it both stops unhappiness emigration and pulls migrants in).
+
+**Migration in transit (the economics of in-flight migrants)**
+
+Migration is **not instantaneous** — a move has *transit lag* (`transitLagTurns`, distance-scaled). This creates a window where a migrant has left their old city but not yet reached their new one, and that window has a small but real economic footprint.
+
+- **The lifecycle of a move.** At **departure**, the migrant's rural population point is removed from the source city *immediately* — so the source loses that worker (and the tile yields they were producing) the turn they leave. They then spend the **transit** period belonging to **no city**: working no tiles, producing no yields anywhere — but also incurring **no upkeep, gold, or happiness cost** (the one-time assimilation cost is paid by the destination only **on arrival**, not during transit). At **arrival**, the point is added to the destination, which finally gains the yields.
+- **How long is the gap.** Transit is **1–4 turns**: `transitLagTurns` (4) caps it, and the lag scales with distance at `transitHexPerTurn` (~5 hexes per turn). Because migration is distance-penalized (people move regionally), most moves are 1–2 turns; **war/disaster refugees take at least 1 turn** (they camp).
+- **How significant is it?** **Small and self-correcting.** Per migrant it is one rural point's yields suspended for ~1–2 turns, and the source was losing that worker regardless — so the only output truly *lost* is the delay before the destination picks them up. In aggregate the drag is roughly *(migrants currently in transit) × (their per-pop yields)*, where the in-transit count ≈ *departures-per-turn × average transit turns*:
+  - **Peacetime:** voluntary migration is paced slowly, so only a handful are ever in transit — effectively a rounding error on the global economy.
+  - **Wartime:** refugees flee every turn, so a meaningfully larger pool of population sits "in limbo" at once. Still bounded — every migrant clears in ≤ 4 turns — and it drains back toward zero within a few turns of the fighting stopping.
+- **What you'll see.** Transit lag is why **Emigration (gross-out) can tick up before Immigration (gross-in) catches up** — the departure is counted at the source now, the arrival lands a few turns later. This does **not** distort **Net Migration**, which counts only *settled, cross-civ* moves (internal moves and unsettled in-flight migrants don't drag it down).
+
 ---
 
 ## 2. How it works: the per-turn loop

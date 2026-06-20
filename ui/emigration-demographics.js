@@ -96,22 +96,6 @@ function formatCauseBreakdown(byCause) {
 }
 
 /**
- * Net-migration tooltip: a civ's cumulative gross inflow / outflow plus the cause breakdown behind its
- * emigration — the "why" the separate gross-flow graphs used to show. Composition is in people
- * regardless of the line's units (it's supplementary context, not the headline value).
- * @param {*} ctx Tooltip context ({id}).
- * @returns {string} The attribution line, or "".
- */
-function netTooltip(ctx) {
-  const id = ctx?.id;
-  const inP = formatPeople(cumFor("grossInCumFor", id));
-  const outP = formatPeople(cumFor("grossOutCumFor", id));
-  const sources = formatCauseBreakdown(emigrationByCause(id));
-  const flow = `In ${inP} · Out ${outP}`;
-  return sources ? `${flow} · Sources: ${sources}` : flow;
-}
-
-/**
  * The war / disaster / conquest split of a per-cause people map (refugee causes only), formatted as
  * "War: 1 thousand · Disaster: 400", or "" when none.
  * @param {Record<string, number>} byCause Per-cause people totals.
@@ -176,31 +160,34 @@ function inTooltip(ctx) {
 const NET_CUM_SPEC = {
   id: "emig_net_cum",
   label: "Net Migration",
-  title: "Net migration (cumulative)",
+  title: "Net Migration",
+  subtitle: "Net people gained minus lost to date — positive means more people arrive than leave.",
   description: "Running total of net people gained minus lost, to date (positive = net inflow).",
   category: "people",
-  chartType: "bar", // signed/diverging — bars above/below the zero baseline, not a line
+  tooltipMode: "index", // net lines cluster near zero — hover a turn to list every civ at once
   accessor: (/** @type {*} */ ctx) => cumFor("netCumFor", ctx?.id),
   format: formatSignedPeople,
-  unit: "people",
-  tooltipAttribution: netTooltip
+  unit: "people"
+  // Tooltip shows just the net total; the per-cause breakdown lives on the Net Migration Table tab.
 };
 const NET_CUM_PTS_SPEC = {
   id: "emig_net_cum_pts",
   label: "Net Migration",
-  title: "Net migration (Civ numbers)",
+  title: "Net Migration",
+  subtitle: "Net people gained minus lost to date — positive means more people arrive than leave.",
   description: "Running total of net population points gained minus lost — the exact Civ figures.",
   category: "people",
-  chartType: "bar", // signed/diverging — bars above/below the zero baseline, not a line
+  tooltipMode: "index", // net lines cluster near zero — hover a turn to list every civ at once
   accessor: (/** @type {*} */ ctx) => cumFor("netPtsFor", ctx?.id),
   format: formatSignedPoints,
-  unit: "points",
-  tooltipAttribution: netTooltip
+  unit: "points"
+  // Tooltip shows just the net total; the per-cause breakdown lives on the Net Migration Table tab.
 };
 const REF_SPEC = {
   id: "emig_refugees",
   label: "Refugees Out",
-  title: "Refugees generated (cumulative)",
+  title: "Refugees (Left)",
+  subtitle: "People displaced FROM this civilization by war, disaster, or conquest, to date.",
   description: "Running total of people displaced FROM this civilization by war, disaster, or conquest.",
   category: "people",
   accessor: (/** @type {*} */ ctx) => refugeesFor(ctx?.id),
@@ -211,7 +198,8 @@ const REF_SPEC = {
 const REF_PTS_SPEC = {
   id: "emig_refugees_pts",
   label: "Refugees Out",
-  title: "Refugees generated (Civ numbers)",
+  title: "Refugees (Left)",
+  subtitle: "People displaced FROM this civilization by war, disaster, or conquest, to date.",
   description: "Running total of population points displaced from this civ by war, disaster, or conquest.",
   category: "people",
   accessor: (/** @type {*} */ ctx) => cumFor("refugeesPtsFor", ctx?.id),
@@ -224,7 +212,8 @@ const REF_PTS_SPEC = {
 const REF_IN_SPEC = {
   id: "emig_refugees_in",
   label: "Refugees In",
-  title: "Refugees received (cumulative)",
+  title: "Refugees (Arrived)",
+  subtitle: "People who fled war, disaster, or conquest elsewhere and resettled HERE, to date.",
   description: "Running total of people who fled war, disaster, or conquest and resettled HERE.",
   category: "people",
   accessor: (/** @type {*} */ ctx) => refugeesInFor(ctx?.id),
@@ -235,7 +224,8 @@ const REF_IN_SPEC = {
 const REF_IN_PTS_SPEC = {
   id: "emig_refugees_in_pts",
   label: "Refugees In",
-  title: "Refugees received (Civ numbers)",
+  title: "Refugees (Arrived)",
+  subtitle: "People who fled war, disaster, or conquest elsewhere and resettled HERE, to date.",
   description: "Running total of population points who fled war, disaster, or conquest and resettled here.",
   category: "people",
   accessor: (/** @type {*} */ ctx) => cumFor("refugeesInPtsFor", ctx?.id),
@@ -249,6 +239,7 @@ const OUT_CUM_SPEC = {
   id: "emig_out_cum",
   label: "Emigration",
   title: "Emigration (cumulative)",
+  subtitle: "Total people who have left this civilization's cities to date.",
   description: "Running total of people who have left this civilization's cities.",
   category: "people",
   accessor: (/** @type {*} */ ctx) => cumFor("grossOutCumFor", ctx?.id),
@@ -260,6 +251,7 @@ const OUT_CUM_PTS_SPEC = {
   id: "emig_out_cum_pts",
   label: "Emigration",
   title: "Emigration (Civ numbers)",
+  subtitle: "Total people who have left this civilization's cities to date.",
   description: "Running total of population points that have left this civilization's cities.",
   category: "people",
   accessor: (/** @type {*} */ ctx) => cumFor("grossOutPtsFor", ctx?.id),
@@ -271,6 +263,7 @@ const IN_CUM_SPEC = {
   id: "emig_in_cum",
   label: "Immigration",
   title: "Immigration (cumulative)",
+  subtitle: "Total people who have arrived in this civilization's cities to date.",
   description: "Running total of people who have arrived into this civilization's cities.",
   category: "people",
   accessor: (/** @type {*} */ ctx) => cumFor("grossInCumFor", ctx?.id),
@@ -282,6 +275,7 @@ const IN_CUM_PTS_SPEC = {
   id: "emig_in_cum_pts",
   label: "Immigration",
   title: "Immigration (Civ numbers)",
+  subtitle: "Total people who have arrived in this civilization's cities to date.",
   description: "Running total of population points that have arrived into this civilization's cities.",
   category: "people",
   accessor: (/** @type {*} */ ctx) => cumFor("grossInPtsFor", ctx?.id),
@@ -303,17 +297,24 @@ const SPECS = [
 // Refugees Out / Refugees In) and the units — Scaled (historical "people", consistent w/ Demographics
 // chart) or Civ numbers (raw population points, reconciling with the in-game Emigration window). Each
 // (member, view) maps to one of the registered specs above.
+// The "Net Migration (Table)" pill charts nothing — it routes to the existing ledger sub-tab of the
+// Migration panel (emigration-migration-page.js's "ledger" tab) via its panel-subtab id, so the table
+// lives as a pill in this section right after the Net Migration graph. "<panelId>::<subId>" matches
+// the host's PANEL_SUBTAB_SEP scheme; the host's group-merge then drops this id from the standalone
+// sub-tab row. Both views map to the same id (the table carries its own units toggle).
+const LEDGER_SUBTAB_ID = "emig_migration_panel::ledger";
 const GRAPHS_GROUP = {
   id: "emig_graphs",
-  label: "Graphs",
+  label: "Data",
   first: true,
   views: [{ id: "scaled", label: "Scaled" }, { id: "civ", label: "Civ numbers" }],
   members: [
-    { label: "Net Migration", scaled: NET_CUM_SPEC.id, civ: NET_CUM_PTS_SPEC.id },
+    { label: "Net Migration (Graph)", scaled: NET_CUM_SPEC.id, civ: NET_CUM_PTS_SPEC.id },
+    { label: "Net Migration (Table)", scaled: LEDGER_SUBTAB_ID, civ: LEDGER_SUBTAB_ID },
     { label: "Emigration", scaled: OUT_CUM_SPEC.id, civ: OUT_CUM_PTS_SPEC.id },
     { label: "Immigration", scaled: IN_CUM_SPEC.id, civ: IN_CUM_PTS_SPEC.id },
-    { label: "Refugees Out", scaled: REF_SPEC.id, civ: REF_PTS_SPEC.id },
-    { label: "Refugees In", scaled: REF_IN_SPEC.id, civ: REF_IN_PTS_SPEC.id }
+    { label: "Refugees (Left)", scaled: REF_SPEC.id, civ: REF_PTS_SPEC.id },
+    { label: "Refugees (Arrived)", scaled: REF_IN_SPEC.id, civ: REF_IN_PTS_SPEC.id }
   ]
 };
 

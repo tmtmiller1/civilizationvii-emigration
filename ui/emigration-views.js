@@ -11,50 +11,15 @@
 //     "Migration network" card is delegated to emigration-network-viz.js (an animated spark graph).
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
-import { causeLabel } from "/emigration/ui/emigration-causes.js";
+import { causeLabel, netDrivers } from "/emigration/ui/emigration-causes.js";
 import { renderNetworkOrFlow } from "/emigration/ui/emigration-flow-tab.js";
 import { getNumberMode, setNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
 import { appendSnapshotReminder } from "/emigration/ui/emigration-snapshot-reminder.js";
 import { renderGuide } from "/emigration/ui/emigration-guide.js";
 import { renderCityFlows, buildCivFlows } from "/emigration/ui/emigration-city-flows.js";
 import { renderStances } from "/emigration/ui/emigration-detail-views.js";
+import { renderLedger } from "/emigration/ui/emigration-ledger-view.js";
 
-/**
- * Format a value per the active number mode: Civ pop-points, scaled people, or both.
- * @param {number} people Scaled people.
- * @param {number} points Raw pop points.
- * @param {number} mode A NumberMode value.
- * @returns {string} Formatted.
- */
-function formatCount(people, points, mode) {
-  if (mode === NumberMode.CIV) return String(Math.round(points || 0));
-  if (mode === NumberMode.HISTORICAL) return formatPeople(people);
-  return Math.round(points || 0) + " (" + formatPeople(people) + ")";
-}
-
-/**
- * A signed value per the active number mode.
- * @param {number} people Scaled people (sets the sign).
- * @param {number} points Raw pop points.
- * @param {number} mode A NumberMode value.
- * @returns {string} Signed, formatted.
- */
-function signedCount(people, points, mode) {
-  const sgn = (/** @type {number} */ v) => (v > 0 ? "+" : v < 0 ? "-" : "");
-  if (mode === NumberMode.CIV) return sgn(points) + Math.round(Math.abs(points || 0));
-  if (mode === NumberMode.HISTORICAL) return signedPeople(people);
-  return sgn(points) + Math.round(Math.abs(points || 0)) + " (" + signedPeople(people) + ")";
-}
-
-/**
- * A signed people count ("+12 thousand" / "-5 thousand" / "0").
- * @param {number} n Net people.
- * @returns {string} The display string.
- */
-function signedPeople(n) {
-  if (!n) return "0";
-  return (n > 0 ? "+" : "-") + formatPeople(Math.abs(n));
-}
 
 /**
  * Per-civ ledger rows (gross in/out, net, refugees, deaths), formatted as people.
@@ -72,6 +37,8 @@ export function civLedgerRows(civs) {
         inP: n(c.in), outP: n(c.out), netP: n(c.net), refP: n(c.refugees), lossP: n(c.deaths),
         inPts: n(c.inPts), outPts: n(c.outPts), netPts: n(c.netPts),
         refPts: n(c.refugeesPts), lossPts: n(c.deathsPts),
+        // The signed per-cause net (arrivals − departures), the "why" behind this civ's net.
+        drivers: netDrivers(c.byCause, c.inByCause),
         // Border-stance impact on immigration IN (signed people/points; proportion vs neutral).
         stInP: n(si.in), stInPts: n(si.inPts), stOutP: n(si.out), stOutPts: n(si.outPts)
       };
@@ -298,7 +265,7 @@ export function dashboardModel(input) {
     sample: !!d.sample,
     sections: [
       { title: "Migration network", kind: "flow", network: current, frames, events },
-      { title: "Civilizations", kind: "ledger", rows: civLedgerRows(d.civs || []) },
+      { title: "Net Migration (Table)", kind: "ledger", rows: civLedgerRows(d.civs || []) },
       { title: "Why people move", kind: "pies", cities: buildCivFlows(d.flows || []) },
       { title: "Settlements", kind: "cityflows", cities: d.myCities || [] },
       { title: "Immigration policies", kind: "stances", rows: stanceRows(d.civs || []) },
@@ -333,7 +300,8 @@ const DASH_CSS =
   ".emig-led-c{flex:1 1 0;text-align:right;padding:0.62rem 0.6rem;font-size:1.18rem;" +
   "overflow:hidden;white-space:nowrap;border-top:0.0277rem solid rgba(229,210,172,0.12);}" +
   ".emig-led-c.name{flex:2.4 1 0;text-align:left;color:#f0dca8;font-weight:bold;}" +
-  ".emig-led-c.net{flex:1.5 1 0;}" +
+  ".emig-led-c.net{flex:1 1 0;}" +
+  ".emig-led-c.net-bar{flex:1.7 1 0;}" +
   ".emig-led-c.stance{flex:1.8 1 0;}" +
   ".emig-led-head .emig-led-c{border-top:none;opacity:0.6;text-transform:uppercase;letter-spacing:0.03rem;font-size:0.95rem;}" +
   ".emig-led-net{display:flex;align-items:center;justify-content:flex-end;gap:0.4rem;}" +
@@ -454,133 +422,6 @@ function el(tag, cls, text) {
   return e;
 }
 
-
-/**
- * Render the civilization ledger as a table (net coloured by sign).
- * @param {HTMLElement} body Card body.
- * @param {*[]} rows Ledger rows.
- */
-/**
- * A ledger cell (string text or an element child), with optional extra classes (e.g. "name"/"net").
- * @param {string|HTMLElement} content Text or node.
- * @param {string} [extra] Extra class(es).
- * @returns {HTMLElement} The cell.
- */
-function ledgerCell(content, extra) {
-  const c = el("div", "emig-led-c" + (extra ? " " + extra : ""));
-  if (typeof content === "string") c.textContent = content;
-  else c.appendChild(content);
-  return c;
-}
-
-/**
- * The Net cell: a magnitude bar (green gain / red loss, scaled to the largest mover) + the number,
- * formatted per the active number mode.
- * @param {*} r Ledger row.
- * @param {number} maxNet Largest absolute net (people) across the rows.
- * @param {number} mode A NumberMode value.
- * @returns {HTMLElement} The cell.
- */
-function ledgerNetCell(r, maxNet, mode) {
-  const wrap = el("div", "emig-led-net");
-  const bar = el("div", "emig-led-bar");
-  bar.style.width = (Math.abs(r.netP) / maxNet) * 3.2 + "rem";
-  bar.style.backgroundColor = r.netP >= 0 ? "#5fae6b" : "#c25b54";
-  const num = el("span", r.netP > 0 ? "emig-pos" : r.netP < 0 ? "emig-neg" : "",
-    signedCount(r.netP, r.netPts, mode));
-  if (r.netP >= 0) {
-    wrap.appendChild(num);
-    wrap.appendChild(bar);
-  } else {
-    wrap.appendChild(bar);
-    wrap.appendChild(num);
-  }
-  return ledgerCell(wrap, "net");
-}
-
-/**
- * The proportion (%) the stance changed immigration vs the neutral baseline (in − impact): +Pro
- * allowed beyond, −Anti prevented. 0 when neutral or no baseline.
- * @param {*} r Ledger row.
- * @returns {number} Signed percentage.
- */
-function stancePct(r) {
-  const neutral = r.inP - r.stInP; // estimated immigration with a neutral stance
-  if (!(Math.abs(neutral) > 0)) return 0;
-  return Math.round((r.stInP / neutral) * 100);
-}
-
-/**
- * The "Stance impact" cell: how a civ's border policy changed its immigration IN , signed people
- * (allowed beyond / prevented) plus the proportion vs a neutral baseline. "—" when neutral.
- * @param {*} r Ledger row.
- * @param {number} mode A NumberMode value.
- * @returns {HTMLElement} The cell.
- */
-function ledgerStanceCell(r, mode) {
-  if (!r.stInP && !r.stOutP) return ledgerCell("—", "stance");
-  const pct = stancePct(r);
-  const txt = signedCount(r.stInP, r.stInPts, mode) + (pct ? " (" + (pct > 0 ? "+" : "") + pct + "%)" : "");
-  return ledgerCell(txt, "stance " + (r.stInP > 0 ? "emig-pos" : r.stInP < 0 ? "emig-neg" : ""));
-}
-
-/**
- * Build one ledger data row (flex) , name, net, In / Out / Stance impact / Refugees / Losses.
- * @param {*} r Ledger row.
- * @param {number} maxNet Largest absolute net (people).
- * @param {number} mode A NumberMode value.
- * @returns {HTMLElement} The row.
- */
-function ledgerDataRow(r, maxNet, mode) {
-  const row = el("div", "emig-led-row");
-  row.appendChild(ledgerCell(r.name, "name"));
-  row.appendChild(ledgerNetCell(r, maxNet, mode));
-  row.appendChild(ledgerCell(formatCount(r.inP, r.inPts, mode)));
-  row.appendChild(ledgerCell(formatCount(r.outP, r.outPts, mode)));
-  row.appendChild(ledgerStanceCell(r, mode));
-  row.appendChild(ledgerCell(formatCount(r.refP, r.refPts, mode)));
-  row.appendChild(ledgerCell(formatCount(r.lossP, r.lossPts, mode)));
-  return row;
-}
-
-/**
- * The header or totals row (plain text cells). cells: name, net, in, out, stance, refugees, losses.
- * @param {string[]} cells Cell strings.
- * @param {string} cls Row class.
- * @returns {HTMLElement} The row.
- */
-function ledgerTextRow(cells, cls) {
-  const row = el("div", "emig-led-row " + cls);
-  row.appendChild(ledgerCell(cells[0], "name"));
-  row.appendChild(ledgerCell(cells[1], "net"));
-  for (let i = 2; i < cells.length; i++) row.appendChild(ledgerCell(cells[i]));
-  return row;
-}
-
-/**
- * Render the civilization ledger as flexbox rows (proper columns + full width), sorted by net, with
- * a magnitude bar on Net, a totals row, and numbers in the active mode (Civ pop / people / both).
- * @param {HTMLElement} body Card body.
- * @param {*[]} rows Ledger rows.
- */
-function renderLedger(body, rows) {
-  const mode = getNumberMode();
-  const wrap = el("div", "emig-led");
-  wrap.appendChild(ledgerTextRow(
-    ["Civilization", "Net", "In", "Out", "Stance impact", "Refugees", "Losses"], "emig-led-head"));
-  const maxNet = rows.reduce((m, r) => Math.max(m, Math.abs(r.netP || 0)), 0) || 1;
-  for (const r of rows) wrap.appendChild(ledgerDataRow(r, maxNet, mode));
-  const sum = (/** @type {string} */ k) => rows.reduce((a, r) => a + (r[k] || 0), 0);
-  const stTot = sum("stInP") || sum("stOutP")
-    ? signedCount(sum("stInP"), sum("stInPts"), mode) : "—";
-  wrap.appendChild(ledgerTextRow([
-    "Total", signedCount(sum("netP"), sum("netPts"), mode),
-    formatCount(sum("inP"), sum("inPts"), mode), formatCount(sum("outP"), sum("outPts"), mode),
-    stTot, formatCount(sum("refP"), sum("refPts"), mode), formatCount(sum("lossP"), sum("lossPts"), mode)
-  ], "emig-led-tot"));
-  body.appendChild(wrap);
-}
-
 // Renderers that consume the whole section model (canvas/pie/card views).
 /** @type {Record<string, (body: HTMLElement, section: *) => void>} */
 const SECTION_VIEWS = {
@@ -615,7 +456,7 @@ function renderSectionBody(body, section) {
 /** Short tab labels by section kind. */
 /** @type {Record<string,string>} */
 const TAB_LABELS = {
-  flow: "Network", ledger: "Civilizations", pies: "Causes",
+  flow: "Network", ledger: "Net Migration (Table)", pies: "Causes",
   stances: "Immigration Policies",
   cityflows: "Settlements", guide: "Guide"
 };
@@ -741,6 +582,18 @@ export function renderDashboardTabbed(target, model) {
 }
 
 /**
+ * Whether to show the in-panel "Numbers:" units chip for a section: not for "flow" (it has its own
+ * inline Units toggle), and not when the host group pills already control units (`opts.hideUnitsToggle`).
+ * @param {*} section The active section.
+ * @param {{hideUnitsToggle?:boolean}} [opts] Render options.
+ * @returns {boolean} True to show the chip.
+ */
+function wantsUnitsToggle(section, opts) {
+  if (section.kind === "flow") return false;
+  return !(opts && opts.hideUnitsToggle);
+}
+
+/**
  * Render ONE dashboard section (chosen externally) plus the persistent chrome (sample badge,
  * timeline-detail reminder, number-mode toggle) into `target`. Used by the Demographics-embedded
  * Migration page: there the section tabs come from the Demographics sub-tab row, not the in-panel
@@ -749,8 +602,11 @@ export function renderDashboardTabbed(target, model) {
  * @param {HTMLElement} target The container element.
  * @param {*} model The view-model ({sections, sample}).
  * @param {string} kind The section kind to show (network/flowmap/ledger/pies/cityflows/stances).
+ * @param {{hideUnitsToggle?:boolean}} [opts] When `hideUnitsToggle`, suppress the in-panel "Numbers:"
+ *   chip — used when the host's Scaled / Civ group pills already control the units (the Net Migration
+ *   Table embedded in the Demographics "Data" group).
  */
-export function renderDashboardSubtab(target, model, kind) {
+export function renderDashboardSubtab(target, model, kind, opts) {
   try {
     if (!target) return;
     injectDashboardStyle();
@@ -763,8 +619,9 @@ export function renderDashboardSubtab(target, model, kind) {
     // The timeline-detail note is rendered by the Demographics page beside its "Analytics policy"
     // banner (see EmigrationTimelineNote), so it's NOT added at the top here in the embedded page.
     const body = el("div", "emig-tabbody");
-    // The "flow" section has its own inline "Units:" toggle (after "Origins"); skip the global chip.
-    if (section.kind !== "flow") {
+    // Skip the in-panel "Numbers:" chip when the section owns its own toggle (flow) or the host group
+    // pills already drive units (hideUnitsToggle); see wantsUnitsToggle.
+    if (wantsUnitsToggle(section, opts)) {
       wrap.appendChild(numbersToggle(() => {
         body.innerHTML = "";
         renderSectionBody(body, section);

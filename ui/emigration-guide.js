@@ -81,7 +81,14 @@ const GUIDE = [
       { q: "Can I see refugees a civ took IN, not just sent out?", a: "Yes. The Graphs tab has both: Refugees Out (people a civ displaced by war/disaster/conquest) and Refugees In (displaced people it resettled). Each line's tooltip splits the total by cause." },
       { q: "How many people move, and how often?", a: "War- and disaster-driven refugees flee every turn; voluntary (prosperity/unhappiness) migration is more gradual, resting briefly between moves. Each civilization migrates on its own per-turn budget that scales with its size and active crises, so simultaneous wars never throttle one another. Counts show as scaled people or raw population points (your choice), and the whole sim runs on a turn interval you can lengthen in Options for large saves." },
       { q: "What happens when I capture or lose a city?", a: "It keeps its residents' origin mix (what the Ethnicity lens paints), so a conquered city carries real origin history. War can shrink it, but only an actual capture transfers it." },
-      { q: "Why did a city suddenly lose a lot of people?", a: "An on-screen toast names the cause (war, disaster, unhappiness, etc.), and the per-city readout breaks down its current pressures." }
+      { q: "Why did a city suddenly lose a lot of people?", a: "An on-screen toast names the cause (war, disaster, unhappiness, etc.), and the per-city readout breaks down its current pressures." },
+      { q: "My city shrank from size 12 to 5 in a war — will it grow back?", a: "Yes. War displacement only moves population points; it never razes districts or deletes buildings (only the base game's own conquest does that). You keep the larger city's infrastructure with fewer people, and it regrows two ways, both additive: the base game's normal food growth (untouched), and immigration — once the fighting stops and its prosperity recovers, the surviving high-yield buildings/districts make it an attractive destination, so migrants move in and population is added back." },
+      { q: "Do the same refugees who fled come back?", a: "No. There's no repatriation; war's \"temporary\" tag is only a durability cue. The people who fled resettled permanently elsewhere. The city regrows from new residents (births + new immigrants), not the original refugees." },
+      { q: "Does repairing pillaged tiles restore the lost population?", a: "No. Pillaged tiles only apply pressure (a prosperity penalty that pushes people out). Repairing them removes that pressure — so the city stops bleeding people and recovers prosperity faster — but a repair never adds a population point back. It's a recovery accelerator, not a restore button." },
+      { q: "How far can a war shrink a city?", a: "War-driven loss is capped at 60% (siegeLossCapPct) of the city's population when the siege began. The remnant \"digs in\" and the siege can't depopulate it further; only an actual capture takes the city." },
+      { q: "Fastest way to recover a war-torn city?", a: "Relieve the cause so it flips from a net exporter back to a magnet: make peace (violence decays in ~2-3 turns, lifting the war penalty), repair pillaged tiles (removes the lingering pressure), and raise happiness (the biggest prosperity factor — it both stops unhappiness emigration and pulls migrants in)." },
+      { q: "What happens to a migrant while they're traveling between cities?", a: "Migration isn't instant — it has transit lag. The migrant leaves the source the turn they depart: its rural population point (and that worker's tile yields) is removed right away. They then spend the transit time belonging to NO city — working no tiles, producing nothing — but also costing no upkeep, gold, or happiness. They're added to the destination, which only then gains the yields and pays its one-time assimilation cost, when they ARRIVE. Transit is 1-4 turns, scaled by distance (~5 hexes per turn, capped at 4); refugees take at least 1 (they camp)." },
+      { q: "How big is the economic impact of migrants in transit?", a: "Small and self-correcting. Per migrant it's tiny: one rural point's worth of yields suspended for ~1-2 turns (4 at most) — and the source was losing that worker anyway, so only the delay before the destination picks them up is truly lost output. In aggregate it's roughly (migrants currently traveling) x (their per-pop yields): a rounding error in peacetime, but a noticeable pool of temporarily-idle population during a big war, since refugees flee every turn and more are in transit at once. It always drains back toward zero within a few turns of migration slowing. This transit lag is also why Emigration can tick up before Immigration catches up — the departure counts now, the arrival lands a few turns later. It does NOT distort Net Migration, which only counts settled cross-civ moves." }
     ]
   }
 ];
@@ -89,6 +96,12 @@ const GUIDE = [
 const STYLE_ID = "emig-guide-style";
 const CSS =
   ".emig-guide{display:flex;flex-direction:column;width:100%;}" +
+  // Pill row to switch the Guide between the "What counts" reference matrix and the FAQ page.
+  ".emig-guide-pills{display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;margin:0.2rem 0 0.5rem;}" +
+  ".emig-guide-pill{cursor:pointer;padding:0.16rem 0.9rem;border-radius:0.9rem;font-size:1.0rem;" +
+  "border:0.0555rem solid rgba(229,210,172,0.35);color:#e5d2ac;background:rgba(229,210,172,0.06);}" +
+  ".emig-guide-pill.active{background:#f3c34c;color:#1c1408;border-color:#f3c34c;font-weight:bold;}" +
+  ".emig-guide-body{display:flex;flex-direction:column;width:100%;}" +
   ".emig-guide-h{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.05rem;color:#f3c34c;font-size:1.15rem;margin:0.6rem 0 0.1rem;border-bottom:0.0555rem solid rgba(201,162,76,0.3);padding-bottom:0.2rem;}" +
   ".emig-guide-row{display:flex;align-items:flex-start;gap:0.6rem;padding:0.32rem 0.1rem;border-top:0.0277rem solid rgba(229,210,172,0.1);}" +
   ".emig-guide-ic{flex:0 0 1.5rem;font-weight:bold;text-align:center;font-size:1.25rem;line-height:1.3;}" +
@@ -144,8 +157,22 @@ function renderGuideSection(wrap, g) {
 }
 
 /**
- * Render the "What counts" matrix + FAQ into a dashboard tab body (groups → ✓/✗ rows + notes, then
- * an FAQ of Q→A pairs).
+ * Render the guide sections of one view into `body`, clearing it first.
+ * @param {HTMLElement} body The body element.
+ * @param {*[]} sections The GUIDE sections for the active view.
+ */
+function renderGuideView(body, sections) {
+  while (body.firstChild) body.removeChild(body.firstChild);
+  for (const g of sections) {
+    body.appendChild(ce("div", "emig-guide-h", g.title));
+    renderGuideSection(body, g);
+  }
+}
+
+/**
+ * Render the Guide into a dashboard tab body as two pill-toggled pages — "What counts" (the ✓/✗
+ * reference matrices) and "FAQ" (the Q→A page) — so neither grows into one endless scroll. Defaults
+ * to the reference page; the FAQ page is a click away.
  * @param {HTMLElement} container The tab body (already cleared by the caller).
  */
 export function renderGuide(container) {
@@ -153,10 +180,28 @@ export function renderGuide(container) {
     if (!container) return;
     injectGuideStyle();
     const wrap = ce("div", "emig-guide");
-    for (const g of GUIDE) {
-      wrap.appendChild(ce("div", "emig-guide-h", g.title));
-      renderGuideSection(wrap, g);
+    const views = [
+      { id: "ref", label: "What counts", sections: GUIDE.filter((g) => Array.isArray(g.rows)) },
+      { id: "faq", label: "FAQ", sections: GUIDE.filter((g) => Array.isArray(g.faq)) }
+    ];
+    const pills = ce("div", "emig-guide-pills");
+    const body = ce("div", "emig-guide-body");
+    /** @type {{el:HTMLElement, id:string}[]} */
+    const pillEls = [];
+    const select = (/** @type {string} */ id) => {
+      const v = views.find((x) => x.id === id) || views[0];
+      for (const pe of pillEls) pe.el.classList.toggle("active", pe.id === v.id);
+      renderGuideView(body, v.sections);
+    };
+    for (const v of views) {
+      const pill = ce("div", "emig-guide-pill", v.label);
+      pill.addEventListener("click", () => select(v.id));
+      pillEls.push({ el: pill, id: v.id });
+      pills.appendChild(pill);
     }
+    wrap.appendChild(pills);
+    wrap.appendChild(body);
+    select("ref");
     container.appendChild(wrap);
   } catch (_) {
     /* a guide-render failure must never break the dashboard */
