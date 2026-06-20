@@ -56,7 +56,7 @@ function assertGraphsGroup(/** @type {*[]} */ groups) {
   assert.equal(g.first, true);
   assert.deepEqual(g.views.map((/** @type {*} */ v) => v.id), ["scaled", "civ"]);
   assert.deepEqual(g.members.map((/** @type {*} */ m) => m.label),
-    ["Net Migration", "Emigration", "Immigration", "Refugees"]);
+    ["Net Migration", "Emigration", "Immigration", "Refugees Out", "Refugees In"]);
   for (const m of g.members) {
     assert.equal(typeof m.scaled, "string");
     assert.equal(typeof m.civ, "string");
@@ -120,14 +120,18 @@ function testGrossAndRefugeeTallies() {
   const out0 = D.grossOutCumFor(5);
   const in0 = D.grossInCumFor(6);
   const ref0 = D.refugeesCumFor(5);
+  const refIn0 = D.refugeesInCumFor(6);
   recordMigrations([{ srcOwner: 5, destOwner: 6, people: 8000, cause: "war" }]);
   assert.equal(D.grossOutCumFor(5) - out0, 8000);
   assert.equal(D.grossInCumFor(6) - in0, 8000);
-  assert.equal(D.refugeesCumFor(5) - ref0, 8000); // war → counts as refugees
-  // An unhappiness move adds to gross out but NOT to refugees.
+  assert.equal(D.refugeesCumFor(5) - ref0, 8000); // war → counts as refugees OUT for the source
+  assert.equal(D.refugeesInCumFor(6) - refIn0, 8000); // and refugees IN for the destination
+  // An unhappiness move adds to gross out/in but NOT to refugees (out or in).
   const ref1 = D.refugeesCumFor(5);
+  const refIn1 = D.refugeesInCumFor(6);
   recordMigrations([{ srcOwner: 5, destOwner: 6, people: 1000, cause: "unhappiness" }]);
   assert.equal(D.refugeesCumFor(5) - ref1, 0);
+  assert.equal(D.refugeesInCumFor(6) - refIn1, 0);
 }
 
 function testAttritionIsDeathsNotMigration() {

@@ -86,10 +86,12 @@ function readHappiness(city) {
  */
 function ownerAtWar(player) {
   try {
+    // The player object's own war flag (what the base diplo-ribbon reads). Primary signal.
+    if (typeof player?.isAtWar === "boolean") return player.isAtWar;
     const d = player?.Diplomacy;
     if (!d) return false;
-    if (typeof d.getWarCount === "function") return d.getWarCount() > 0;
-    if (typeof d.isAtWar === "function") return !!d.isAtWar();
+    // Fallbacks to the real Diplomacy API (the base game has no getWarCount()/isAtWar()).
+    if (typeof d.isAtWarWithAnyMajorCiv === "function") return !!d.isAtWarWithAnyMajorCiv();
   } catch (_) {
     /* ignore */
   }

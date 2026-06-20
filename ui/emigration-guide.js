@@ -18,13 +18,13 @@ const GUIDE = [
     title: "What makes people LEAVE a city",
     rows: [
       { q: "Unhappiness / low yields", yes: true, note: "The dominant driver of emigration: happiness is weighted more than any other factor, and yields are scored per-capita, so an unhappy, low-yield city bleeds people even at peace." },
-      { q: "War damage to the districts", yes: true, note: "District damage inside the city is read from game state (fog-independent) and scales the war penalty; more damage pushes more people out." },
-      { q: "Being besieged or attacked", yes: true, note: "Per-city: only the besieged city itself (its own district/borders) sheds people, even before its health drops. It is NOT a civ-wide score; a civ at war elsewhere keeps its unaffected cities." },
+      { q: "War damage to the districts", yes: true, note: "Damage to ANY of the city's districts — its center or an outer urban/rural quarter — is read from game state (fog-independent) and scales the war penalty. An assault that wrecks only the city's edge still registers, even while the center reads pristine." },
+      { q: "Being besieged or attacked", yes: true, note: "Per-city: only the besieged city itself sheds people. Fires when ANY of its districts is besieged or has been overrun (captured/contested), even before its health drops. It is NOT a civ-wide score; a civ at war elsewhere keeps its unaffected cities." },
       { q: "Attacked by a city-state / Independent Power", yes: true, note: "Same per-city conflict pressure as a major-civ war: an Independent/minor raid on a city still drives THAT city's people out, attacker-agnostic." },
       { q: "Pillaged tiles in the city's borders", yes: true, note: "Pillaged improvements on the city's own plots count as violence in its borders (polled, fog-independent); more pillaged tiles means more pressure." },
       { q: "Starvation", yes: true, note: "A city with negative net food is flagged starving and takes a situational penalty, shedding population until its food recovers." },
       { q: "Plague / disease", yes: true, note: "An infected city loses people, and migrants leaving it can carry the plague to their destination." },
-      { q: "Natural disasters (floods, volcanoes)", yes: true, note: "Environmental-disaster distress adds a per-city penalty on a capped sliding scale: strong, but it can't empty the city on its own." },
+      { q: "Natural disasters (floods, volcanoes)", yes: true, note: "Environmental-disaster distress adds a per-city penalty on a capped sliding scale: strong, but it can't empty the city on its own. An eruption/flood strikes every city around its epicenter, so a volcano on unowned border terrain still displaces the neighboring cities' people." },
       { q: "Overcrowding in a tall city", yes: true, note: "Urban population above a threshold adds pressure (the overcrowding term); the per-leader tuning can soften it via the overcrowding discount." }
     ]
   },
@@ -78,6 +78,7 @@ const GUIDE = [
     faq: [
       { q: "Where do people go when they leave?", a: "To the nearest higher-prosperity settlement they can reach. Migration is distance-penalized, so people move regionally, not to the single best city on the map." },
       { q: "Where do war refugees flee?", a: "Away from the nearest enemy, preferring their own civilization first, then neutral civs, and the attacker last." },
+      { q: "Can I see refugees a civ took IN, not just sent out?", a: "Yes. The Graphs tab has both: Refugees Out (people a civ displaced by war/disaster/conquest) and Refugees In (displaced people it resettled). Each line's tooltip splits the total by cause." },
       { q: "How many people move, and how often?", a: "War- and disaster-driven refugees flee every turn; voluntary (prosperity/unhappiness) migration is more gradual, resting briefly between moves. Each civilization migrates on its own per-turn budget that scales with its size and active crises, so simultaneous wars never throttle one another. Counts show as scaled people or raw population points (your choice), and the whole sim runs on a turn interval you can lengthen in Options for large saves." },
       { q: "What happens when I capture or lose a city?", a: "It keeps its residents' origin mix (what the Ethnicity lens paints), so a conquered city carries real origin history. War can shrink it, but only an actual capture transfers it." },
       { q: "Why did a city suddenly lose a lot of people?", a: "An on-screen toast names the cause (war, disaster, unhappiness, etc.), and the per-city readout breaks down its current pressures." }

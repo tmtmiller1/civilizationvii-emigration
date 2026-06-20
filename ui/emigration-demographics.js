@@ -19,6 +19,7 @@ import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { causeLabel, isRefugeeCause } from "/emigration/ui/emigration-causes.js";
 import {
   refugeesFor,
+  refugeesInFor,
   emigrationByCause,
   immigrationByCause
 } from "/emigration/ui/emigration-migration-stats.js";
@@ -111,12 +112,12 @@ function netTooltip(ctx) {
 }
 
 /**
- * Refugees tooltip: the war / disaster / conquest split behind a civ's cumulative refugee total.
- * @param {*} ctx Tooltip context ({id}).
- * @returns {string} The split (e.g. "War: 1 thousand · Disaster: 400"), or "".
+ * The war / disaster / conquest split of a per-cause people map (refugee causes only), formatted as
+ * "War: 1 thousand · Disaster: 400", or "" when none.
+ * @param {Record<string, number>} byCause Per-cause people totals.
+ * @returns {string} The refugee-cause split, or "".
  */
-function refugeesTooltip(ctx) {
-  const byCause = emigrationByCause(ctx?.id);
+function refugeeCauseSplit(byCause) {
   const parts = [];
   for (const cause in byCause) {
     if (!isRefugeeCause(cause)) continue;
@@ -124,6 +125,26 @@ function refugeesTooltip(ctx) {
     if (typeof n === "number" && n > 0) parts.push(`${causeLabel(cause)}: ${formatPeople(n)}`);
   }
   return parts.length ? parts.join(" · ") : "";
+}
+
+/**
+ * Refugees-generated tooltip: the war / disaster / conquest split behind a civ's cumulative refugee
+ * OUTFLOW.
+ * @param {*} ctx Tooltip context ({id}).
+ * @returns {string} The split (e.g. "War: 1 thousand · Disaster: 400"), or "".
+ */
+function refugeesTooltip(ctx) {
+  return refugeeCauseSplit(emigrationByCause(ctx?.id));
+}
+
+/**
+ * Refugees-received tooltip: the war / disaster / conquest split behind a civ's refugee INFLOW (which
+ * crises the people it took in were fleeing).
+ * @param {*} ctx Tooltip context ({id}).
+ * @returns {string} The split, or "".
+ */
+function refugeesInTooltip(ctx) {
+  return refugeeCauseSplit(immigrationByCause(ctx?.id));
 }
 
 /**
@@ -176,9 +197,9 @@ const NET_CUM_PTS_SPEC = {
 };
 const REF_SPEC = {
   id: "emig_refugees",
-  label: "Refugees",
+  label: "Refugees Out",
   title: "Refugees generated (cumulative)",
-  description: "Running total of people displaced by war, disaster, or conquest.",
+  description: "Running total of people displaced FROM this civilization by war, disaster, or conquest.",
   category: "people",
   accessor: (/** @type {*} */ ctx) => refugeesFor(ctx?.id),
   format: formatPeople,
@@ -187,14 +208,38 @@ const REF_SPEC = {
 };
 const REF_PTS_SPEC = {
   id: "emig_refugees_pts",
-  label: "Refugees",
+  label: "Refugees Out",
   title: "Refugees generated (Civ numbers)",
-  description: "Running total of population points displaced by war, disaster, or conquest.",
+  description: "Running total of population points displaced from this civ by war, disaster, or conquest.",
   category: "people",
   accessor: (/** @type {*} */ ctx) => cumFor("refugeesPtsFor", ctx?.id),
   format: formatPoints,
   unit: "points",
   tooltipAttribution: refugeesTooltip
+};
+// Refugee IMMIGRATION — war/disaster/conquest arrivals this civ has RECEIVED (the inflow counterpart
+// of Refugees Out), so a civ taking in the displaced shows it distinct from economic immigration.
+const REF_IN_SPEC = {
+  id: "emig_refugees_in",
+  label: "Refugees In",
+  title: "Refugees received (cumulative)",
+  description: "Running total of people who fled war, disaster, or conquest and resettled HERE.",
+  category: "people",
+  accessor: (/** @type {*} */ ctx) => refugeesInFor(ctx?.id),
+  format: formatPeople,
+  unit: "people",
+  tooltipAttribution: refugeesInTooltip
+};
+const REF_IN_PTS_SPEC = {
+  id: "emig_refugees_in_pts",
+  label: "Refugees In",
+  title: "Refugees received (Civ numbers)",
+  description: "Running total of population points who fled war, disaster, or conquest and resettled here.",
+  category: "people",
+  accessor: (/** @type {*} */ ctx) => cumFor("refugeesInPtsFor", ctx?.id),
+  format: formatPoints,
+  unit: "points",
+  tooltipAttribution: refugeesInTooltip
 };
 // Gross emigration (people leaving) and immigration (people arriving), each in scaled people + raw
 // Civ points — the per-flow detail alongside the Net Migration and Refugees headlines.
@@ -248,11 +293,12 @@ const SPECS = [
   NET_CUM_SPEC, NET_CUM_PTS_SPEC,
   OUT_CUM_SPEC, OUT_CUM_PTS_SPEC,
   IN_CUM_SPEC, IN_CUM_PTS_SPEC,
-  REF_SPEC, REF_PTS_SPEC
+  REF_SPEC, REF_PTS_SPEC,
+  REF_IN_SPEC, REF_IN_PTS_SPEC
 ];
 
 // The "Graphs" section's two-toggle group: pick a metric (Net Migration / Emigration / Immigration /
-// Refugees) and the units — Scaled (historical "people", consistent with every other Demographics
+// Refugees Out / Refugees In) and the units — Scaled (historical "people", consistent w/ Demographics
 // chart) or Civ numbers (raw population points, reconciling with the in-game Emigration window). Each
 // (member, view) maps to one of the registered specs above.
 const GRAPHS_GROUP = {
@@ -264,7 +310,8 @@ const GRAPHS_GROUP = {
     { label: "Net Migration", scaled: NET_CUM_SPEC.id, civ: NET_CUM_PTS_SPEC.id },
     { label: "Emigration", scaled: OUT_CUM_SPEC.id, civ: OUT_CUM_PTS_SPEC.id },
     { label: "Immigration", scaled: IN_CUM_SPEC.id, civ: IN_CUM_PTS_SPEC.id },
-    { label: "Refugees", scaled: REF_SPEC.id, civ: REF_PTS_SPEC.id }
+    { label: "Refugees Out", scaled: REF_SPEC.id, civ: REF_PTS_SPEC.id },
+    { label: "Refugees In", scaled: REF_IN_SPEC.id, civ: REF_IN_PTS_SPEC.id }
   ]
 };
 
