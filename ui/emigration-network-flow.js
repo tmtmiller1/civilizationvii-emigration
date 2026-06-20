@@ -12,10 +12,10 @@
 // (towns dotted, cities solid, civ boundary solid + thicker) is shared via the painter.
 
 import {
-  buildColorMap, buildCenters, setupCanvas, injectStyle, WX, WY
+  buildColorMap, buildCenters, setupCanvas, injectStyle, appendUnitsToggle, WX, WY
 } from "/emigration/ui/emigration-network-viz.js";
 import { buildChronoDots, totalPeople } from "/emigration/ui/emigration-network-dots.js";
-import { drawCivCircle, drawCityDiscs, drawCivLabel } from "/emigration/ui/emigration-network-paint.js";
+import { drawCivCircle, drawCityDiscs, drawLabelsNoOverlap } from "/emigration/ui/emigration-network-paint.js";
 import { stepSim } from "/emigration/ui/emigration-network-sim.js";
 import { makeTimeline } from "/emigration/ui/emigration-network-timeline.js";
 import { makeTooltip } from "/emigration/ui/emigration-network-interact.js";
@@ -322,30 +322,41 @@ function drawArrow(ctx, s, maxP) {
 }
 
 /**
- * Draw each civ's name label above its circle (Demographics-relations styling, via drawCivLabel).
- * @param {CanvasRenderingContext2D} ctx Context.
- * @param {*[]} centers Civ centres.
+ * Collect one expanded civ's visible city/town name labels (smaller; lower priority than the civ
+ * label so they nudge around it rather than the reverse).
+ * @param {*} c Civ centre.
+ * @param {number} now Current frame index.
+ * @param {*[]} out Label-request accumulator.
  */
-function drawCivNames(ctx, centers) {
-  for (const c of centers) {
-    if (!c.name) continue;
-    drawCivLabel(ctx, c.name, c.x, c.y - (c.clusterR || 6) - 10);
+function collectCityLabels(c, now, out) {
+  for (const ct of c.cities || []) {
+    if (!(ct.subR > 0) || now < (ct.bornFrame == null ? 0 : ct.bornFrame)) continue;
+    out.push({
+      text: ct.name, x: c.x + (ct.sx || 0),
+      y: c.y + (ct.sy || 0) - (ct.subR || 4) - 5, size: 10, priority: 1
+    });
   }
 }
 
 /**
- * Draw the city/town name labels inside one expanded civ (smaller, same styling).
+ * Draw the civ name labels plus the expanded civs' settlement labels in a single overlap-avoiding
+ * pass, so a civilization label and a settlement label never physically collide (civ labels anchor;
+ * settlement labels are nudged clear).
  * @param {CanvasRenderingContext2D} ctx Context.
- * @param {*} c Civ centre.
+ * @param {*[]} centers Civ centres.
+ * @param {*} state Interaction state (which civs are expanded).
  * @param {number} now Current frame index.
  */
-function drawCityNames(ctx, c, now) {
-  for (const ct of c.cities || []) {
-    if (!(ct.subR > 0) || now < (ct.bornFrame == null ? 0 : ct.bornFrame)) continue;
-    const x = c.x + (ct.sx || 0);
-    const y = c.y + (ct.sy || 0) - (ct.subR || 4) - 5;
-    drawCivLabel(ctx, ct.name, x, y, 10);
+function drawFlowLabels(ctx, centers, state, now) {
+  /** @type {*[]} */
+  const labels = [];
+  for (const c of centers) {
+    if (c.name && c.clusterR > 0) {
+      labels.push({ text: c.name, x: c.x, y: c.y - (c.clusterR || 6) - 10, size: 15, priority: 2 });
+    }
+    if (state.expanded.has(c.id)) collectCityLabels(c, now, labels);
   }
+  drawLabelsNoOverlap(ctx, labels);
 }
 
 /**
@@ -366,8 +377,7 @@ function paintFlow(ctx, holder) {
   holder.segs = segs; // kept for hover hit-testing (amount tooltips)
   const maxP = segs.reduce((a, s) => Math.max(a, s.people), 1);
   for (const s of segs) drawArrow(ctx, s, maxP);
-  drawCivNames(ctx, centers);
-  for (const c of centers) if (state.expanded.has(c.id)) drawCityNames(ctx, c, now);
+  drawFlowLabels(ctx, centers, state, now);
 }
 
 /**
@@ -670,8 +680,14 @@ function buildFlowScene(frames) {
  * @param {HTMLElement} wrap Wrapper.
  * @param {HTMLCanvasElement} canvas Canvas.
  * @param {*} timeline Timeline handle or null.
+ * @param {()=>void} [rebuildAll] Full re-render hook (for the Units toggle, which rescales the arrows).
  */
-function mountFlowChrome(wrap, canvas, timeline) {
+function mountFlowChrome(wrap, canvas, timeline, rebuildAll) {
+  // "Units:" toggle (Civ Pop ↔ Scaled Pop) in its own controls row, matching the Dots view. Standalone
+  // here, so no leading separator. A flip rescales the arrows, so it rebuilds the whole flow view.
+  const controls = el("div", "emig-netc-chips");
+  appendUnitsToggle(controls, rebuildAll, false);
+  wrap.appendChild(controls);
   wrap.appendChild(flowLegend());
   const stage = el("div", "emig-netc-stage");
   stage.appendChild(canvas);
@@ -684,8 +700,9 @@ function mountFlowChrome(wrap, canvas, timeline) {
  * Build the full flow viz (layout + chrome + loop).
  * @param {HTMLElement} container Card body.
  * @param {*[]} frames Usable frames.
+ * @param {()=>void} [rebuildAll] Full re-render hook (for the Units toggle, which rescales the arrows).
  */
-function buildFlowViz(container, frames) {
+function buildFlowViz(container, frames, rebuildAll) {
   const wrap = el("div", "emig-netc-wrap");
   const { canvas, ctx } = setupCanvas();
   if (!ctx) {
@@ -695,6 +712,11 @@ function buildFlowViz(container, frames) {
   const { sim, byId } = buildFlowScene(frames);
   /** @type {*} */
   const state = { frameIdx: frames.length - 1, expanded: new Set() };
+  // Default to cities shown: expand every civ that has settlements so the flow map opens drilled
+  // into city-to-city flows. Click a civ circle to collapse it back to a single civ node.
+  for (const c of sim.nodes) {
+    if (c && c.cities && c.cities.length) state.expanded.add(c.id);
+  }
   /** @type {*} */
   const holder = { sim, centers: sim.nodes, state, frames, byId, dirty: true };
   holder.tip = makeTooltip(wrap); // amount tooltip on flow-line hover
@@ -702,7 +724,7 @@ function buildFlowViz(container, frames) {
     state.frameIdx = i;
     holder.dirty = true;
   });
-  mountFlowChrome(wrap, canvas, timeline);
+  mountFlowChrome(wrap, canvas, timeline, rebuildAll);
   wireFlowInteract(canvas, holder);
   container.appendChild(wrap);
   runFlowLoop(canvas, ctx, holder);
@@ -714,7 +736,9 @@ function buildFlowViz(container, frames) {
  * @param {*} section The dashboard section ({frames}).
  */
 export function renderFlowMap(container, section) {
-  if (container && container.replaceChildren) container.replaceChildren();
+  // Use removeChild, NOT replaceChildren — Coherent GameFace doesn't implement replaceChildren, so on
+  // a re-render (e.g. the Units toggle) the old view wouldn't clear and the chrome would double up.
+  if (container) while (container.firstChild) container.removeChild(container.firstChild);
   const all = (section && section.frames) || [];
   const frames = all.filter((/** @type {*} */ f) => f.network && f.network.nodes.length);
   if (!frames.length) {
@@ -724,5 +748,5 @@ export function renderFlowMap(container, section) {
   }
   injectStyle();
   injectFlowStyle();
-  buildFlowViz(container, frames);
+  buildFlowViz(container, frames, () => renderFlowMap(container, section));
 }

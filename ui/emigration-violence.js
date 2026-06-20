@@ -30,7 +30,9 @@
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { civTuning } from "/emigration/ui/emigration-civ-tuning.js";
-import { districtDamageFrac, pillagedCount } from "/emigration/ui/emigration-violence-signals.js";
+import {
+  districtDamageFrac, districtBesieged, pillagedCount
+} from "/emigration/ui/emigration-violence-signals.js";
 
 const STATE_KEY = "EmigrationViolence_v2";
 
@@ -157,7 +159,12 @@ function keyFromCID(cid) {
 function applyObservation(s, key, city) {
   const frac = districtDamageFrac(city);
   const fresh = Math.max(0, frac - (s.lastFrac[key] || 0));
-  let add = CONFIG.vwAssault * fresh + CONFIG.vwSiege * frac;
+  // Standing siege pressure applies while the city center is under attack: scaled by damage, but at
+  // FULL strength the moment it's besieged even at zero damage. This is what makes an Independent
+  // Power / city-state raid (which besieges a city without necessarily wrecking its district) count
+  // as conflict like any major-civ war, instead of registering no pressure at all.
+  const siegeFrac = Math.max(frac, districtBesieged(city) ? 1 : 0);
+  let add = CONFIG.vwAssault * fresh + CONFIG.vwSiege * siegeFrac;
   add += CONFIG.vwPillage * pillagedCount(city);
   if (add > 0) s.byCity[key] = (s.byCity[key] || 0) + add;
   s.lastFrac[key] = frac;

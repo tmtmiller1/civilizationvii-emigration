@@ -8,21 +8,32 @@
 // (the job is queued on the shared hook for Demographics to drain when it initializes).
 //
 // The metric data itself (the per-civ tallies + samplers) lives in emigration-migration-stats.js;
-// this module is purely the graph wiring. Metrics (in Demographics' historically-scaled "people"):
-//   • Net migration  - immigration − emigration per turn (Power page).
-//   • Emigration / Immigration - gross out / in per turn (Power page).
-//   • Refugees - cumulative war/disaster/conquest-driven emigration (Conflicts page).
+// this module is purely the graph wiring. Two cumulative per-civ line graphs on Emigration's Migration
+// page, each registered in two units so the "Graphs" group's units toggle just swaps the charted spec:
+//   • Net migration - running immigration − emigration (positive = net inflow).
+//   • Refugees - running war/disaster/conquest-driven displacement.
+// Gross in/out, the emigration cause breakdown, and the war/disaster/conquest refugee split are folded
+// into each line's tooltip instead of being their own graphs.
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
-import { causeLabel } from "/emigration/ui/emigration-causes.js";
+import { causeLabel, isRefugeeCause } from "/emigration/ui/emigration-causes.js";
 import {
-  netDeltaForPlayer,
-  sampleOut,
-  sampleIn,
   refugeesFor,
   emigrationByCause,
   immigrationByCause
 } from "/emigration/ui/emigration-migration-stats.js";
+
+/**
+ * Read a cumulative-tally function off the live EmigrationData global (those tallies are exposed as
+ * methods there, not module exports). Returns 0 when absent.
+ * @param {string} fn Method name (e.g. "netCumFor").
+ * @param {number} [id] Player id.
+ * @returns {number} The cumulative value, or 0.
+ */
+function cumFor(fn, id) {
+  const D = /** @type {*} */ (globalThis).EmigrationData || {};
+  return typeof D[fn] === "function" ? D[fn](id) || 0 : 0;
+}
 
 /**
  * Format a net people count with a sign, e.g. "+12 thousand" / "-5 thousand".
@@ -32,6 +43,37 @@ import {
 function formatSignedPeople(n) {
   if (typeof n !== "number" || !isFinite(n) || n === 0) return "0";
   return (n > 0 ? "+" : "-") + formatPeople(Math.abs(n));
+}
+
+/**
+ * Insert thousands separators into a non-negative integer (e.g. 12400 → "12,400").
+ * @param {number} v A non-negative integer.
+ * @returns {string} Grouped string.
+ */
+function groupInt(v) {
+  return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+/**
+ * Format a raw population-point count as an exact grouped integer (e.g. "12,400"). These are the Civ's
+ * own numbers (1 point per migration), shown as-is rather than scaled into historical "people".
+ * @param {number} n Points.
+ * @returns {string} Display string.
+ */
+function formatPoints(n) {
+  if (typeof n !== "number" || !isFinite(n)) return "0";
+  const r = Math.round(n);
+  return r < 0 ? "-" + groupInt(-r) : groupInt(r);
+}
+
+/**
+ * Format a signed point count (e.g. "+12,400" / "-512").
+ * @param {number} n Points.
+ * @returns {string} Display string.
+ */
+function formatSignedPoints(n) {
+  if (typeof n !== "number" || !isFinite(n) || n === 0) return "0";
+  return (n > 0 ? "+" : "-") + groupInt(Math.abs(Math.round(n)));
 }
 
 /**
@@ -52,73 +94,193 @@ function formatCauseBreakdown(byCause) {
   return parts.length > 0 ? parts.join(", ") : "";
 }
 
-const NET_SPEC = {
-  id: "emig_net_migration",
-  // Demographics renders the metric `label` raw (its own labels are plain English, e.g.
-  // "Population"), so this must be a plain string, not a LOC key.
+/**
+ * Net-migration tooltip: a civ's cumulative gross inflow / outflow plus the cause breakdown behind its
+ * emigration — the "why" the separate gross-flow graphs used to show. Composition is in people
+ * regardless of the line's units (it's supplementary context, not the headline value).
+ * @param {*} ctx Tooltip context ({id}).
+ * @returns {string} The attribution line, or "".
+ */
+function netTooltip(ctx) {
+  const id = ctx?.id;
+  const inP = formatPeople(cumFor("grossInCumFor", id));
+  const outP = formatPeople(cumFor("grossOutCumFor", id));
+  const sources = formatCauseBreakdown(emigrationByCause(id));
+  const flow = `In ${inP} · Out ${outP}`;
+  return sources ? `${flow} · Sources: ${sources}` : flow;
+}
+
+/**
+ * Refugees tooltip: the war / disaster / conquest split behind a civ's cumulative refugee total.
+ * @param {*} ctx Tooltip context ({id}).
+ * @returns {string} The split (e.g. "War: 1 thousand · Disaster: 400"), or "".
+ */
+function refugeesTooltip(ctx) {
+  const byCause = emigrationByCause(ctx?.id);
+  const parts = [];
+  for (const cause in byCause) {
+    if (!isRefugeeCause(cause)) continue;
+    const n = byCause[cause];
+    if (typeof n === "number" && n > 0) parts.push(`${causeLabel(cause)}: ${formatPeople(n)}`);
+  }
+  return parts.length ? parts.join(" · ") : "";
+}
+
+/**
+ * Emigration tooltip: the cause breakdown behind a civ's people leaving (why they left).
+ * @param {*} ctx Tooltip context ({id}).
+ * @returns {string} The breakdown, or "".
+ */
+function outTooltip(ctx) {
+  const sources = formatCauseBreakdown(emigrationByCause(ctx?.id));
+  return sources ? `Sources: ${sources}` : "";
+}
+
+/**
+ * Immigration tooltip: the cause breakdown behind a civ's arrivals (why they came).
+ * @param {*} ctx Tooltip context ({id}).
+ * @returns {string} The breakdown, or "".
+ */
+function inTooltip(ctx) {
+  const sources = formatCauseBreakdown(immigrationByCause(ctx?.id));
+  return sources ? `Sources: ${sources}` : "";
+}
+
+// ── The migration graphs: Net Migration (am I winning or losing the population game?), gross
+// Emigration / Immigration (the per-flow detail), and Refugees (the human cost of war and disaster).
+// Each is a cumulative per-civ line, registered twice — once in Demographics' historically-scaled
+// "people" and once in raw Civ population points — so the "Graphs" group's units toggle (Scaled / Civ
+// numbers) just swaps which spec it charts. Cause breakdowns / splits ride in each line's tooltip.
+// Labels are plain strings (Demographics renders metric labels raw, not as LOC keys). ──
+const NET_CUM_SPEC = {
+  id: "emig_net_cum",
   label: "Net Migration",
-  title: "Net migration per turn",
+  title: "Net migration (cumulative)",
+  description: "Running total of net people gained minus lost, to date (positive = net inflow).",
   category: "people",
-  accessor: (/** @type {*} */ ctx) => netDeltaForPlayer(ctx?.id),
+  accessor: (/** @type {*} */ ctx) => cumFor("netCumFor", ctx?.id),
   format: formatSignedPeople,
-  unit: "people / turn"
+  unit: "people",
+  tooltipAttribution: netTooltip
 };
-const OUT_SPEC = {
-  id: "emig_out",
-  label: "Emigration",
-  title: "Emigration per turn",
+const NET_CUM_PTS_SPEC = {
+  id: "emig_net_cum_pts",
+  label: "Net Migration",
+  title: "Net migration (Civ numbers)",
+  description: "Running total of net population points gained minus lost — the exact Civ figures.",
   category: "people",
-  accessor: (/** @type {*} */ ctx) => sampleOut(ctx?.id),
-  format: formatPeople,
-  unit: "people / turn",
-  tooltipAttribution: (/** @type {*} */ ctx) => {
-    const causes = emigrationByCause(ctx?.id);
-    const att = formatCauseBreakdown(causes);
-    return att ? `Sources: ${att}` : "";
-  }
-};
-const IN_SPEC = {
-  id: "emig_in",
-  label: "Immigration",
-  title: "Immigration per turn",
-  category: "people",
-  accessor: (/** @type {*} */ ctx) => sampleIn(ctx?.id),
-  format: formatPeople,
-  unit: "people / turn",
-  tooltipAttribution: (/** @type {*} */ ctx) => {
-    const causes = immigrationByCause(ctx?.id);
-    const att = formatCauseBreakdown(causes);
-    return att ? `Sources: ${att}` : "";
-  }
+  accessor: (/** @type {*} */ ctx) => cumFor("netPtsFor", ctx?.id),
+  format: formatSignedPoints,
+  unit: "points",
+  tooltipAttribution: netTooltip
 };
 const REF_SPEC = {
   id: "emig_refugees",
   label: "Refugees",
   title: "Refugees generated (cumulative)",
+  description: "Running total of people displaced by war, disaster, or conquest.",
   category: "people",
   accessor: (/** @type {*} */ ctx) => refugeesFor(ctx?.id),
   format: formatPeople,
-  unit: "people"
+  unit: "people",
+  tooltipAttribution: refugeesTooltip
 };
-const SPECS = [NET_SPEC, OUT_SPEC, IN_SPEC, REF_SPEC];
+const REF_PTS_SPEC = {
+  id: "emig_refugees_pts",
+  label: "Refugees",
+  title: "Refugees generated (Civ numbers)",
+  description: "Running total of population points displaced by war, disaster, or conquest.",
+  category: "people",
+  accessor: (/** @type {*} */ ctx) => cumFor("refugeesPtsFor", ctx?.id),
+  format: formatPoints,
+  unit: "points",
+  tooltipAttribution: refugeesTooltip
+};
+// Gross emigration (people leaving) and immigration (people arriving), each in scaled people + raw
+// Civ points — the per-flow detail alongside the Net Migration and Refugees headlines.
+const OUT_CUM_SPEC = {
+  id: "emig_out_cum",
+  label: "Emigration",
+  title: "Emigration (cumulative)",
+  description: "Running total of people who have left this civilization's cities.",
+  category: "people",
+  accessor: (/** @type {*} */ ctx) => cumFor("grossOutCumFor", ctx?.id),
+  format: formatPeople,
+  unit: "people",
+  tooltipAttribution: outTooltip
+};
+const OUT_CUM_PTS_SPEC = {
+  id: "emig_out_cum_pts",
+  label: "Emigration",
+  title: "Emigration (Civ numbers)",
+  description: "Running total of population points that have left this civilization's cities.",
+  category: "people",
+  accessor: (/** @type {*} */ ctx) => cumFor("grossOutPtsFor", ctx?.id),
+  format: formatPoints,
+  unit: "points",
+  tooltipAttribution: outTooltip
+};
+const IN_CUM_SPEC = {
+  id: "emig_in_cum",
+  label: "Immigration",
+  title: "Immigration (cumulative)",
+  description: "Running total of people who have arrived into this civilization's cities.",
+  category: "people",
+  accessor: (/** @type {*} */ ctx) => cumFor("grossInCumFor", ctx?.id),
+  format: formatPeople,
+  unit: "people",
+  tooltipAttribution: inTooltip
+};
+const IN_CUM_PTS_SPEC = {
+  id: "emig_in_cum_pts",
+  label: "Immigration",
+  title: "Immigration (Civ numbers)",
+  description: "Running total of population points that have arrived into this civilization's cities.",
+  category: "people",
+  accessor: (/** @type {*} */ ctx) => cumFor("grossInPtsFor", ctx?.id),
+  format: formatPoints,
+  unit: "points",
+  tooltipAttribution: inTooltip
+};
+// All stay registered so the sampler tallies them every turn; the group below decides which one is
+// charted for the (metric, units) selection.
+const SPECS = [
+  NET_CUM_SPEC, NET_CUM_PTS_SPEC,
+  OUT_CUM_SPEC, OUT_CUM_PTS_SPEC,
+  IN_CUM_SPEC, IN_CUM_PTS_SPEC,
+  REF_SPEC, REF_PTS_SPEC
+];
+
+// The "Graphs" section's two-toggle group: pick a metric (Net Migration / Emigration / Immigration /
+// Refugees) and the units — Scaled (historical "people", consistent with every other Demographics
+// chart) or Civ numbers (raw population points, reconciling with the in-game Emigration window). Each
+// (member, view) maps to one of the registered specs above.
+const GRAPHS_GROUP = {
+  id: "emig_graphs",
+  label: "Graphs",
+  first: true,
+  views: [{ id: "scaled", label: "Scaled" }, { id: "civ", label: "Civ numbers" }],
+  members: [
+    { label: "Net Migration", scaled: NET_CUM_SPEC.id, civ: NET_CUM_PTS_SPEC.id },
+    { label: "Emigration", scaled: OUT_CUM_SPEC.id, civ: OUT_CUM_PTS_SPEC.id },
+    { label: "Immigration", scaled: IN_CUM_SPEC.id, civ: IN_CUM_PTS_SPEC.id },
+    { label: "Refugees", scaled: REF_SPEC.id, civ: REF_PTS_SPEC.id }
+  ]
+};
 
 /**
- * Register all specs + their page placements against a ready Demographics API.
+ * Register all specs + the Graphs group against a ready Demographics API.
  * @param {*} api The DemographicsMetricsAPI.
  */
 function doRegister(api) {
   for (const spec of SPECS) api.registerMetric(spec);
-  if (typeof api.registerMetricToPage !== "function") return;
-  // Place the three migration tabs right after the native "population" tab, in order (each
-  // anchored to the previous). Falls back to append on an older Demographics that ignores the arg.
-  api.registerMetricToPage("power", NET_SPEC.id, "population");
-  api.registerMetricToPage("power", OUT_SPEC.id, NET_SPEC.id);
-  api.registerMetricToPage("power", IN_SPEC.id, OUT_SPEC.id);
-  api.registerMetricToPage("conflicts", REF_SPEC.id);
-  // If Demographics supports tooltip registration, register per-cause attribution handlers.
-  if (typeof api.registerMetricTooltip === "function") {
-    api.registerMetricTooltip(OUT_SPEC.id, OUT_SPEC.tooltipAttribution);
-    api.registerMetricTooltip(IN_SPEC.id, IN_SPEC.tooltipAttribution);
+  // Collapse the migration graphs into ONE "Graphs" section (FIRST on Emigration's Migration page)
+  // with two toggles: the metric (Net Migration / Refugees) and the units (Scaled / Civ numbers).
+  // Each (member, view) maps to one of the registered specs; all stay registered above so they're
+  // still sampled. No-op on an older Demographics that lacks the group hook.
+  const MIG_PAGE = "emig_migration_panel"; // must match emigration-migration-page.js PANEL_SPEC.id
+  if (typeof api.registerMetricGroup === "function") {
+    api.registerMetricGroup(Object.assign({ pageId: MIG_PAGE }, GRAPHS_GROUP));
   }
 }
 

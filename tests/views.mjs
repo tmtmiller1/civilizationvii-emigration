@@ -55,10 +55,10 @@ function testPressureRowsSortDescAndFlag() {
 
 function testDashboardModelSections() {
   const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [] });
-  assert.equal(m.sections.length, 6);
+  assert.equal(m.sections.length, 6); // network + flowmap merged into one toggleable "flow" section
   assert.deepEqual(
     m.sections.map((s) => s.kind),
-    ["network", "flowmap", "ledger", "pies", "cityflows", "stances"]
+    ["flow", "ledger", "pies", "cityflows", "stances", "guide"]
   );
 }
 

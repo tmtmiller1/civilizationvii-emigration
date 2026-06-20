@@ -3,7 +3,8 @@
 // The DEFAULT VALUES of the mod's tunable settings, mirroring the Civ V Emigration (v6)
 // `EmigrationSettings` data model, plus the population-scaling constants that keep this mod's
 // "historical" people counts ALIGNED with the Demographics mod (its scaleCityPopulationAt:
-// raw^1.11 * 3000 * 1.009^turn). The SHAPE these conform to , what every knob means , is the
+// raw^1.11 * 12000 * 1.009^turn, plus a Modern-only smooth megacity ramp). The SHAPE these
+// conform to , what every knob means , is the
 // EmigrationConfig typedef in emigration-config-types.js; the settings/options layer overrides
 // these at boot via applyTunableOverrides.
 
@@ -11,7 +12,13 @@
 export const CONFIG = {
   // ── pacing / general ─────────────────────────────────────────────
   turnInterval: 1, // run the emigration pass every N local-player turns
-  maxMovesPerTurn: 8, // cap citizens moved per pass (perf + pacing)
+  // Per-CIV move ceiling base. This is a runaway/perf safety net, NOT the pacing knob: real pacing is
+  // each source's pressure bar + post-move cooldown (economic) and the warSurge + siege-loss cap
+  // (forced). The effective per-civ ceiling = this + movesPerCity·(its cities) + movesPerSiege·(its
+  // cities in crisis), so simultaneous wars on different civs never compete for one global budget.
+  maxMovesPerTurn: 8,
+  movesPerCity: 1, // per-civ ceiling: + this per settlement (the ceiling grows with empire size)
+  movesPerSiege: 2, // per-civ ceiling: + this per city in war/disaster crisis (refugees aren't bottlenecked)
   emigrationBar: 30, // accumulated pressure (per source) to move one citizen
   deltaExponent: 0.5, // diminishing scaling on the prosperity delta
 
@@ -237,9 +244,11 @@ export const CONFIG = {
   plagueCarryEnabled: true, // migrants from an infected city seed distress at the dest
   plagueCarryDistress: 0.3, // seeded distress per plague-carrier (kept ≪ the source)
 
-  // ── population scaling (MATCHES Demographics scaleCityPopulationAt) ─
-  // Not exposed as a tunable: changing these breaks alignment with Demographics.
-  scaleBase: 3000,
+  // ── population scaling (MATCHES Demographics scaleCityPopulationAt base curve) ─
+  // Not exposed as tunables: changing these breaks alignment with Demographics.
+  // Modern megacity ramp/boost is applied in emigration-population.js to mirror
+  // Demographics' AGE_MODERN behavior.
+  scaleBase: 12000,
   scaleExp: 1.11,
   scaleGrowth: 1.009
 };

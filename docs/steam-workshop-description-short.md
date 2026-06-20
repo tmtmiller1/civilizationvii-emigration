@@ -1,0 +1,7 @@
+Real population migration and refugee systems for Civilization VII. Unhappy, poor, besieged, starving, or disaster-struck cities lose people; prosperous, welcoming cities attract them, within and between civilizations. Refugees flee wars and disasters, immigration stances and Open Borders shape the flows, and absorbing migrants carries a real, temporary cost. A full Migration dashboard, an Ethnic Composition map lens, and deep integration with the Demographics mod show you what is happening and why. Real gameplay writes, not a UI-only layer. Best played with the Demographics mod.
+
+Storytelling is a core purpose of this mod: the goal is to make migration pressures and demographic change legible as a human narrative, not only as systems and totals.
+
+A note: this mod abstracts migration and displacement into game systems, but the human reality behind them is anything but abstract. It is meant as a respectful acknowledgment of that reality, not to trivialize or profit from it. As part of releasing it I have donated to refugee and migrant charities (UNHCR, the IRC, Doctors Without Borders, IRAP, or a local resettlement group), and if you are able, please consider doing the same.
+
+Open source: https://github.com/tmtmiller1/civilizationvii-emigration
