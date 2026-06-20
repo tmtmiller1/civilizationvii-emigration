@@ -36,6 +36,10 @@ export const CONFIG = {
   raidTilt: 10, // pull tilt from an active raid's target toward the raider (pre-clamp by tiltCap)
 
   poachBlock: 12, // extra delta needed for a CROSS-CIV destination (friction)
+  refugeePoachBlock: 2, // ...but a war/disaster REFUGEE isn't being poached — they flee, so the
+  //                       cross-civ barrier is much smaller for a source in acute crisis. This is
+  //                       what lets a collapsing civ's refugees spill to neutral neighbours (the
+  //                       cross-civ network) instead of piling up internally.
   cooldownTurns: 8, // turns a source rests after emigrating
   minRuralToEmigrate: 1, // a source keeps at least this much rural pop
   refugeesPercent: 50, // % of rural pop that flees a conquered/razed city

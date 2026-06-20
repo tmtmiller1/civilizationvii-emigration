@@ -179,6 +179,7 @@ const NET_CUM_SPEC = {
   title: "Net migration (cumulative)",
   description: "Running total of net people gained minus lost, to date (positive = net inflow).",
   category: "people",
+  chartType: "bar", // signed/diverging — bars above/below the zero baseline, not a line
   accessor: (/** @type {*} */ ctx) => cumFor("netCumFor", ctx?.id),
   format: formatSignedPeople,
   unit: "people",
@@ -190,6 +191,7 @@ const NET_CUM_PTS_SPEC = {
   title: "Net migration (Civ numbers)",
   description: "Running total of net population points gained minus lost — the exact Civ figures.",
   category: "people",
+  chartType: "bar", // signed/diverging — bars above/below the zero baseline, not a line
   accessor: (/** @type {*} */ ctx) => cumFor("netPtsFor", ctx?.id),
   format: formatSignedPoints,
   unit: "points",

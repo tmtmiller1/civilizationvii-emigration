@@ -107,6 +107,21 @@ function permeability(src, dest) {
 }
 
 /**
+ * The cross-civ friction (`poachBlock`) a source pays to send a citizen abroad — the full anti-
+ * poaching barrier for an ordinary economic migrant, but a much smaller one (`refugeePoachBlock`) for
+ * a war/disaster REFUGEE (a source in acute crisis). A refugee isn't being lured away, they're
+ * fleeing, so the border barrier shouldn't pen them inside a collapsing civ — this is what lets their
+ * outflow reach neutral neighbours and populate the cross-civ migration network.
+ * @param {*} src Source signal.
+ * @returns {number} The cross-civ delta penalty.
+ */
+function crossCivBlock(src) {
+  const inCrisis = (src.violence || 0) >= CONFIG.violenceFleeThreshold
+    || (src.disaster || 0) >= CONFIG.disasterFleeThreshold;
+  return inCrisis ? CONFIG.refugeePoachBlock : CONFIG.poachBlock;
+}
+
+/**
  * The adjusted pull from `src` to `dest`, composed as the two clamped channels over the prosperity
  * gradient and friction (see §1). War is NOT a gate here: a city under attack simply has low
  * prosperity (so its people leave) and a flee vector (so they head away from the invader) - both
@@ -134,7 +149,7 @@ export function adjustedPull(src, dest, flee, ownerPop, aggressors) {
   if (dest.isCityState || src.isCityState) pull -= CONFIG.cityStateBarrier;
   if (dest.owner !== src.owner) {
     if (!CONFIG.crossCivEnabled) return null;
-    pull -= CONFIG.poachBlock;
+    pull -= crossCivBlock(src);
   }
   pull += geoAdjust(src, dest, flee, aggressors);
   pull -= congestionFor(dest, ownerPop);

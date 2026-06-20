@@ -24,6 +24,7 @@
  * @property {number} permWar Permeability factor for being at war (< 1).
  * @property {number} raidTilt Pull tilt from an active raid's target toward the raider.
  * @property {number} poachBlock Extra delta needed for a cross-civ destination.
+ * @property {number} refugeePoachBlock Reduced cross-civ delta for a war/disaster refugee source.
  * @property {number} cooldownTurns Turns a source rests after emigrating.
  * @property {number} minRuralToEmigrate Rural floor a source keeps.
  * @property {number} refugeesPercent Reserved: % of rural that flees a razed city.
