@@ -8,6 +8,10 @@ section below by `release.sh`.
 ## [Unreleased]
 
 ### Added
+- **Population scaling alignment refresh.** Emigration's scaled-people math now
+  mirrors Demographics' current city formula exactly: `raw^1.11 · 12000 · 1.009^turn`
+  plus the same Modern-only smooth megacity ramp/boost, removing the earlier
+  baseline mismatch.
 - **Migration legibility — Demographics page (Phase 4).** When the Demographics mod is
   installed (and recent enough to expose the new `registerPanel` companion hook), Emigration
   contributes a dedicated **Migration** page to its screen, mounting the same dashboard render

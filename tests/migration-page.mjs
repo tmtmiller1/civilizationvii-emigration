@@ -11,7 +11,8 @@ function testRegistersWhenPanelHookPresent() {
   assert.equal(registerMigrationPage(), true);
   assert.equal(panels.length, 1);
   assert.equal(panels[0].id, "emig_migration_panel");
-  assert.equal(panels[0].pageLabel, "Migration");
+  assert.equal(panels[0].pageLabel, "Emigration"); // labels its own top-level Demographics tab
+  assert.equal(panels[0].topLevel, true); // shown as a top-level view tab, not a Historical-Data page
   assert.equal(typeof panels[0].render, "function"); // Emigration owns the render callback
 }
 

@@ -6,9 +6,63 @@
 // gameplay loop never depends on the options chunk loading. The Options page
 // (emigration-options.js) is the writer; emigration-main.js is the reader.
 
-import ModOptions from "/emigration/ui/options/mod-options.js";
 import { CONFIG, CONFIG_DEFAULTS } from "/emigration/ui/emigration-config.js";
 import { TUNABLES, PRESETS, PRESET_NAMES } from "/emigration/ui/emigration-tunables.js";
+
+// Cascade-safe per-mod / per-option settings store (single shared "modSettings" localStorage key).
+// Inlined here (rather than imported from a standalone mod-options.js) on purpose: GameFace's module
+// linker does not expose the exports of a UIScript that has no `import` statements - it treats such a
+// file as a classic script, so `import { ModOptions } from ".../mod-options.js"` failed with "does
+// not provide an export named 'ModOptions'". emigration-settings.js always has imports, so the store
+// lives here and links reliably in every context (shell, in-game, options).
+class ModOptionsStore {
+  /** Validate the shared root shape without deleting unrelated localStorage keys. */
+  _guard() {
+    try {
+      const raw = localStorage.getItem("modSettings");
+      if (raw == null) return;
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+        localStorage.setItem("modSettings", "{}");
+      }
+    } catch (_) {
+      localStorage.setItem("modSettings", "{}");
+    }
+  }
+
+  /**
+   * Persist a value.
+   * @param {string} modID Owning mod id. @param {string} optionID Option id. @param {*} value Value.
+   */
+  save(modID, optionID, value) {
+    try {
+      this._guard();
+      const all = JSON.parse(localStorage.getItem("modSettings") || "{}");
+      (all[modID] ??= {})[optionID] = value;
+      localStorage.setItem("modSettings", JSON.stringify(all));
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  /**
+   * Read a value.
+   * @param {string} modID Owning mod id. @param {string} optionID Option id.
+   * @returns {*} The stored value, or null if absent.
+   */
+  load(modID, optionID) {
+    try {
+      const raw = localStorage.getItem("modSettings");
+      if (!raw) return null;
+      const all = JSON.parse(raw);
+      return all?.[modID]?.[optionID] ?? null;
+    } catch (_) {
+      return null;
+    }
+  }
+}
+
+const ModOptions = new ModOptionsStore();
 
 const MOD_ID = "emigration";
 const OPT_NUMBER_MODE = "numberMode";

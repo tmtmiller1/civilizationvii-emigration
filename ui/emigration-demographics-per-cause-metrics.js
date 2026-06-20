@@ -117,16 +117,20 @@ export function registerPerCauseMetrics(api) {
     
     for (const spec of ALL_SPECS) metricsApi.registerMetric(spec);
     
-    // Optional: Place cause metrics on a new "Causes" page or after the main migration metrics
+    // Group the per-cause breakdown graphs onto Emigration's own (permanent) Migration page in
+    // Demographics too - the same single home as the main migration graphs (emigration-demographics.js)
+    // and the dashboard sub-tabs - rather than scattering them on the Population page. Chained after
+    // "emig_refugees" (the last main migration graph), each anchored to the previous so they stay in
+    // order. Falls back to append on an older Demographics that ignores the anchor arg.
     if (typeof metricsApi.registerMetricToPage === "function") {
-      // Place under "power" page, grouped after the main migration metrics
-      metricsApi.registerMetricToPage("power", WAR_EMIGRATION_SPEC.id, "emig_in");
-      metricsApi.registerMetricToPage("power", DISASTER_EMIGRATION_SPEC.id, WAR_EMIGRATION_SPEC.id);
-      metricsApi.registerMetricToPage("power", PROSPERITY_EMIGRATION_SPEC.id, DISASTER_EMIGRATION_SPEC.id);
-      metricsApi.registerMetricToPage("power", UNHAPPINESS_EMIGRATION_SPEC.id, PROSPERITY_EMIGRATION_SPEC.id);
-      metricsApi.registerMetricToPage("power", WAR_IMMIGRATION_SPEC.id, UNHAPPINESS_EMIGRATION_SPEC.id);
-      metricsApi.registerMetricToPage("power", DISASTER_IMMIGRATION_SPEC.id, WAR_IMMIGRATION_SPEC.id);
-      metricsApi.registerMetricToPage("power", PROSPERITY_IMMIGRATION_SPEC.id, DISASTER_IMMIGRATION_SPEC.id);
+      const PAGE = "emig_migration_panel"; // must match emigration-migration-page.js PANEL_SPEC.id
+      metricsApi.registerMetricToPage(PAGE, WAR_EMIGRATION_SPEC.id, "emig_refugees");
+      metricsApi.registerMetricToPage(PAGE, DISASTER_EMIGRATION_SPEC.id, WAR_EMIGRATION_SPEC.id);
+      metricsApi.registerMetricToPage(PAGE, PROSPERITY_EMIGRATION_SPEC.id, DISASTER_EMIGRATION_SPEC.id);
+      metricsApi.registerMetricToPage(PAGE, UNHAPPINESS_EMIGRATION_SPEC.id, PROSPERITY_EMIGRATION_SPEC.id);
+      metricsApi.registerMetricToPage(PAGE, WAR_IMMIGRATION_SPEC.id, UNHAPPINESS_EMIGRATION_SPEC.id);
+      metricsApi.registerMetricToPage(PAGE, DISASTER_IMMIGRATION_SPEC.id, WAR_IMMIGRATION_SPEC.id);
+      metricsApi.registerMetricToPage(PAGE, PROSPERITY_IMMIGRATION_SPEC.id, DISASTER_IMMIGRATION_SPEC.id);
     }
   } catch (_) {
     /* Silently ignore if Demographics is unavailable */

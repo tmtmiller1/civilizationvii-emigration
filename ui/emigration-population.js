@@ -5,7 +5,7 @@
 // people counts (thousands … hundreds of millions).
 //
 // The scaling formula is IDENTICAL to the Demographics mod's
-// scaleCityPopulationAt(raw, turn) = raw^1.11 * 3000 * 1.009^turn, so a town's
+// scaleCityPopulationAt(raw, turn, ageType, ageProgressPct), so a town's
 // population reads the same in both mods, and a migration of one population
 // point reports the marginal people that one point represents.
 
@@ -13,16 +13,30 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 /**
  * Scale a raw settlement population into a representative people count, matching
- * Demographics' scaleCityPopulationAt. `turn` should be a MONOTONIC turn (see
- * monotonicTurn) so the figure doesn't reset at age boundaries.
+ * Demographics' scaleCityPopulationAt.
+ *
+ * `turn` should be a MONOTONIC turn (see monotonicTurn) so the figure doesn't
+ * reset at age boundaries.
  * @param {number} raw Raw population points.
  * @param {number} turn Monotonic turn.
+ * @param {string | undefined} [ageType] Optional age type (e.g. AGE_MODERN).
+ * @param {number | undefined} [ageProgressPct] Optional age progress percent [0,100].
  * @returns {number} Scaled people count (0 for non-positive input).
  */
-export function scaleCityPopulation(raw, turn) {
+export function scaleCityPopulation(raw, turn, ageType, ageProgressPct) {
   if (typeof raw !== "number" || !isFinite(raw) || raw <= 0) return 0;
   const t = typeof turn === "number" && isFinite(turn) ? turn : 0;
-  return Math.pow(raw, CONFIG.scaleExp) * CONFIG.scaleBase * Math.pow(CONFIG.scaleGrowth, t);
+  const resolvedAgeType = ageType ?? currentAgeType();
+  const resolvedAgeProgress =
+    typeof ageProgressPct === "number" && isFinite(ageProgressPct)
+      ? ageProgressPct
+      : currentAgeProgressPct();
+
+  const base = Math.pow(raw, CONFIG.scaleExp) * CONFIG.scaleBase * Math.pow(CONFIG.scaleGrowth, t);
+  const megaTarget = raw > 20 ? Math.pow(raw / 20, 1.5) : 1;
+  const ramp = modernMegaRamp(resolvedAgeType, resolvedAgeProgress);
+  const megaBoost = 1 + (megaTarget - 1) * ramp;
+  return base * megaBoost;
 }
 
 /**
@@ -34,6 +48,71 @@ export function scaleCityPopulation(raw, turn) {
  */
 export function marginalPeople(pop, turn) {
   return Math.max(0, scaleCityPopulation(pop, turn) - scaleCityPopulation(pop - 1, turn));
+}
+
+/**
+ * Resolve the active age type from the engine.
+ * @returns {string | undefined} Age type (e.g. AGE_MODERN), if available.
+ */
+function currentAgeType() {
+  try {
+    if (typeof Game === "undefined" || Game.age === undefined) return undefined;
+    const row = GameInfo?.Ages?.lookup?.(Game.age);
+    return row && typeof row.AgeType === "string" ? row.AgeType : undefined;
+  } catch (_) {
+    return undefined;
+  }
+}
+
+/**
+ * Convert a 0–1 progress fraction to a 0–100 percent; undefined when non-finite.
+ * @param {*} v Fraction.
+ * @returns {number | undefined} Percent, or undefined.
+ */
+function fractionToPct(v) {
+  return typeof v === "number" && isFinite(v) ? v * 100 : undefined;
+}
+
+/**
+ * Probe the AgeProgressManager for a percent across its known method shapes (newest first).
+ * @param {*} mgr The Game.AgeProgressManager.
+ * @returns {number | undefined} The raw percent, or undefined.
+ */
+function readAgeProgressPercent(mgr) {
+  if (typeof mgr.getAgeProgressPercent === "function") return mgr.getAgeProgressPercent();
+  if (typeof mgr.getAgeProgress === "function") return fractionToPct(mgr.getAgeProgress());
+  if (typeof mgr.getProgress === "function") return fractionToPct(mgr.getProgress());
+  return undefined;
+}
+
+/**
+ * Resolve current age progress percent from the engine.
+ * @returns {number | undefined} Progress in [0,100], if available.
+ */
+function currentAgeProgressPct() {
+  try {
+    const mgr = Game?.AgeProgressManager;
+    if (!mgr) return undefined;
+    const pct = readAgeProgressPercent(mgr);
+    if (typeof pct !== "number" || !isFinite(pct)) return undefined;
+    return Math.max(0, Math.min(100, pct));
+  } catch (_) {
+    return undefined;
+  }
+}
+
+/**
+ * Smooth Modern-only ramp for the late-game megacity boost.
+ * @param {string | undefined} ageType Current age type.
+ * @param {number | undefined} ageProgressPct Age progress percent.
+ * @returns {number} Ramp in [0,1].
+ */
+function modernMegaRamp(ageType, ageProgressPct) {
+  if (ageType !== "AGE_MODERN") return 0;
+  if (typeof ageProgressPct !== "number" || !isFinite(ageProgressPct)) return 0;
+  const p = Math.max(0, Math.min(1, ageProgressPct / 100));
+  const x = Math.max(0, Math.min(1, (p - 0.1) / 0.8));
+  return x * x * (3 - 2 * x);
 }
 
 /**

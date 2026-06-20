@@ -13,8 +13,20 @@
 // the Options-screen chunk loading.
 
 import { CategoryType, OptionType, Options } from "/core/ui/options/model-options.js";
-import "/emigration/ui/options/mod-options.js"; // create the shared "Mods" category
+import { CategoryData } from "/core/ui/options/options-helpers.js";
 import "/emigration/ui/options/emigration-advanced-editor.js"; // register the Advanced sub-window
+
+// Create the community-convention shared "Mods" Options-screen category (idempotent: the first mod
+// to load this creates it, later mods reuse it). Lives HERE, in the Options-context module, NOT in
+// mod-options.js - that store is imported by the gameplay loop, which can't link the Options-screen
+// modules this needs.
+if (!CategoryType.Mods) CategoryType["Mods"] = "mods";
+if (!CategoryData[CategoryType.Mods]) {
+  CategoryData[CategoryType.Mods] = {
+    title: "LOC_UI_CONTENT_MGR_SUBTITLE",
+    description: "LOC_UI_CONTENT_MGR_SUBTITLE_DESCRIPTION"
+  };
+}
 import {
   getNumberMode,
   setNumberMode,
@@ -128,7 +140,8 @@ function registerSnapshotInterval() {
   });
 }
 
-/** Register the dock-button toggle (show/hide the Emigration button on the in-game dock). */
+/** Register the dock-button toggle (show/hide the standalone Emigration button on the in-game dock;
+ * the full dashboard always also lives in the Demographics screen's Migration tab). */
 function registerDockButton() {
   Options.addOption({
     category: CategoryType.Mods,

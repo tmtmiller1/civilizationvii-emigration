@@ -12,6 +12,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { recordDisaster, disasterKey } from "/emigration/ui/emigration-disasters.js";
 import { disasterName, actionHint } from "/emigration/ui/emigration-naming.js";
 import { announceImportant } from "/emigration/ui/emigration-feedback.js";
+import { recordDisasterEvent } from "/emigration/ui/emigration-migration-stats.js";
 
 /**
  * The disaster-distress city keys for an event epicenter: the owning city of the
@@ -58,9 +59,11 @@ function onRandomEvent(data) {
     const sev = eventSeverity(data, info);
     recordDisaster(info?.EventClass, sev, affectedCityKeys(data.location));
     // Only notify for particularly bad disasters; minor events still drive the sim
-    // silently. announceImportant adds the cooldown + notify-mode gate.
+    // silently. announceImportant adds the cooldown + notify-mode gate. The same
+    // "notable" bar gates the refugees-chart marker log, keeping it meaningful + bounded.
     if (sev >= CONFIG.disasterNotifyMinSeverity) {
       announceImportant(disasterName(data.eventType) + " strikes! " + actionHint("disaster"));
+      recordDisasterEvent(disasterName(data.eventType), sev);
     }
   } catch (_) {
     /* ignore */

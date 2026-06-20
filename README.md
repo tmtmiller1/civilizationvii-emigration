@@ -11,11 +11,18 @@ and across civilizations. Immigration brings growth, costs, politics, and Demogr
 - A **Pro-Immigration Stance** policy attracts migrants (and earns Influence).
 - An **Anti-Immigration Stance** policy retains your people and boosts Production, at the cost of Influence.
 - Receiving migrants creates a temporary, real assimilation cost: growth isn't free.
+- **See it on the map.** An **Ethnic Composition** lens paints every settlement by the origin
+  civilization of its people; hovering a settled tile adds the exact **per-origin percentages** to
+  the plot tooltip, so you can watch a city's makeup shift as it's founded, migrated to, conquered,
+  and regrown.
 - **It tells you why.** Population changes are explained in the moment (a toast: cause, what to
   do, whether it's temporary, who pays) and on demand per city (`emigration.city(id)`), with a
-  full **Migration dashboard** (`emigration.window()`).
+  full **Migration dashboard** (`emigration.window()`): an animated migration network, a cross-civ
+  flow map, a per-civ ledger, a cause breakdown, settlements, and policy stances.
 - Fully integrated with the **Demographics** mod: net migration / emigration / immigration /
-  refugees graphs with per-cause source breakdowns, plus a dedicated **Migration** page.
+  refugees graphs with per-cause source breakdowns, plus a dedicated **Migration** page that shows
+  the whole dashboard as native sub-tabs. The standalone dock button is optional (Options) if you'd
+  rather open everything from that page.
 
 The sections below explain migration behavior, tuning controls, and gameplay effects in detail. Every advanced layer can be tuned or switched off in **Options → Mods → Emigration - Advanced** (§10), so you can run anything from the plain baseline to the complete model. Start with the summary bullets, then use the remaining sections for detailed mechanics and trade-offs.
 
@@ -113,6 +120,78 @@ magnets. All of it is reported in-game (toasts + the Demographics graphs) and in
 dev log, e.g.
 `EMIGRATION 1 population point (12 thousand people) left Rome (Romans) for Carthage (Carthaginians)`.
 
+### Quick reference: what counts
+
+Common questions about what does and doesn't cause, attract, or participate in migration. These
+reflect the **default** settings (most can be tuned or switched off in Options, §10). The same
+matrix is available in-game on the dashboard's **Guide** tab.
+
+**What makes people leave a city**
+
+| | Counts? | |
+|---|:---:|---|
+| Unhappiness / low yields | ✓ | The dominant driver of emigration: happiness is weighted more than any other factor, and yields are scored per-capita, so an unhappy, low-yield city bleeds people even at peace |
+| War damage to the districts | ✓ | District damage inside the city is read from game state (fog-independent) and scales the war penalty; more damage pushes more people out |
+| Being besieged or attacked | ✓ | Per-city: only the besieged city itself (its own district/borders) sheds people, even before its health drops. Not a civ-wide score; a civ at war elsewhere keeps its unaffected cities |
+| Attacked by a city-state / Independent Power | ✓ | Same per-city conflict pressure as a major-civ war: an Independent/minor raid on a city still drives THAT city's people out, attacker-agnostic |
+| Pillaged tiles in the city's borders | ✓ | Pillaged improvements on the city's own plots count as violence in its borders (polled, fog-independent); more pillaged tiles means more pressure |
+| Starvation | ✓ | A city with negative net food is flagged starving and takes a situational penalty, shedding population until its food recovers |
+| Plague / disease | ✓ | An infected city loses people, and migrants leaving it can carry the plague to their destination |
+| Natural disasters (floods, volcanoes) | ✓ | Environmental-disaster distress adds a per-city penalty on a capped sliding scale: strong, but it can't empty the city on its own |
+| Overcrowding in a tall city | ✓ | Urban population above a threshold adds pressure (the overcrowding term); the per-leader tuning can soften it via the overcrowding discount |
+
+**What attracts people to a city**
+
+| | Attracts? | |
+|---|:---:|---|
+| Higher prosperity (food, production, gold, science, culture) | ✓ | Each city scores its per-capita weighted food, production, gold, science and culture; a higher score than nearby cities pulls migrants in |
+| Higher happiness | ✓ | Weighted more heavily than any other factor. In the shaped model it's measured against the world average and saturates, so a happy city is a strong magnet but can't run away without limit |
+| A Pro-Immigration stance policy | ✓ | A civic-tree Pro-Immigration stance raises the pull into your cities and earns Influence (trading some retention) |
+| An Open Borders agreement | ✓ | An Open Borders agreement adds a cross-civ pull bonus, so more people cross between the two civs |
+| Being nearby | ✓ | Migration is distance-penalized, so people move to nearby better settlements rather than across the map |
+
+**Who participates (sends / receives population)**
+
+| | Participates? | |
+|---|:---:|---|
+| Your civilization | ✓ | Sends and receives population like any major civ; its cities both lose and gain migrants |
+| Towns, not just cities | ✓ | Towns participate too; they send and receive migrants the same as cities |
+| Your own cities trade people (internal migration) | ✓ | People also move between a civ's OWN settlements, not only across civs; the dashboard colours these internal moves separately |
+| Other major civilizations | ✓ | Every major civ is simulated from turn one, met or not, so the migration map isn't biased by what you've explored |
+| City-states / minor civs / Independent Powers | ✗ | Not currently: they neither send nor receive migrating population, though attacking a major civ's city still drives THAT city's people out |
+| Unmet civilizations | ✓ | Fully simulated, but masked in the UI by default for spoiler protection until you widen the visibility policy |
+
+**Behavior**
+
+| | | |
+|---|:---:|---|
+| Migration between different civilizations | ✓ | People do cross borders, but the flow is throttled by borders, distance, and each side's immigration stance |
+| Migration driven by distant AI-vs-AI wars | ✓ | Fog-independent: war pressure reads actual game state, so a far-off AI-vs-AI war displaces people the same as one you can see |
+| An Anti-Immigration stance retains your people | ✓ | Raises retention (fewer people leave) and boosts Production, at the cost of Influence |
+| Closed Borders reduces cross-civ flow | ✓ | Without an Open Borders agreement far fewer people cross between civs; closing borders tightens it further |
+| Population & yields actually change (not just a display) | ✓ | Real per-turn gameplay writes: city populations and the yields they produce actually move; it isn't a cosmetic overlay |
+| Any layer can be tuned or switched off | ✓ | Presets plus ~57 individual knobs under Options ▸ Mods ▸ Emigration; every layer is on by default and can be turned off |
+| Migrants arrive instantly | ✗ | No. They travel, so arrival lags with distance, up to a few turns after they leave |
+| Absorbing migrants is free | ✗ | No. Receiving migrants adds a temporary, decaying assimilation cost in happiness and gold |
+| War alone can empty a city to zero | ✗ | No. Siege/war population loss is capped; a city can only be fully emptied by an actual capture |
+
+**Scope & limits**
+
+| | | |
+|---|:---:|---|
+| Changes AI strategy or replaces base-game files | ✗ | No. Additive only; population movement is layered on, and the base game's AI decisions and files are untouched |
+| Moves population instantly across the map | ✗ | No. Distance-penalized; people move to nearby better settlements, not across the world in one step |
+| Lets you directly place or pick individual migrants | ✗ | No. Flows are simulated from prosperity, war, and policy; you shape them with yields and stances, not by hand |
+| Lets one magnet city drain the whole map | ✗ | No. A congestion brake (plus the overcrowding discount) damps a runaway magnet, so no single city accretes the world |
+
+**FAQ**
+
+- **Where do people go when they leave?** To the nearest higher-prosperity settlement they can reach. Migration is distance-penalized, so people move regionally, not to the single best city on the map.
+- **Where do war refugees flee?** Away from the nearest enemy, preferring their own civilization first, then neutral civs, and the attacker last.
+- **How many people move, and how often?** War- and disaster-driven refugees flee every turn; voluntary (prosperity/unhappiness) migration is more gradual, resting briefly between moves. Each civilization migrates on its own per-turn budget that scales with its size and active crises, so simultaneous wars never throttle one another. Counts show as scaled people or raw population points (your choice, aligned with Demographics), and the whole sim runs on a turn interval you can lengthen in Options for large saves.
+- **What happens when I capture or lose a city?** It keeps its residents' origin mix (what the Ethnicity lens paints), so a conquered city carries real origin history. War can shrink it, but only an actual capture transfers it.
+- **Why did a city suddenly lose a lot of people?** An on-screen toast names the cause (war, disaster, unhappiness, etc.), and the per-city readout breaks down its current pressures.
+
 ---
 
 ## 2. How it works: the per-turn loop
@@ -128,16 +207,26 @@ On every `PlayerTurnActivated`:
    3. **Rank by Prosperity:** score every city; sort descending (§3, §5).
    4. **Advance state:** a monotonic turn counter (for scaling) + prune/tick
       cooldowns; compute per-owner populations (for congestion).
-   5. **Process each source** until `maxMovesPerTurn` is hit:
-      - Skip if its rural pool is at the floor or it's on cooldown.
+   5. **Process each source**, each civ bounded by its **own per-turn move ceiling**
+      (`civMoveCeilings`): a runaway/perf safety net (*not* the pacing knob), sized
+      `maxMovesPerTurn` + `movesPerCity`·(its settlements) + `movesPerSiege`·(its cities
+      in war/disaster crisis). It's **per-civ**, so simultaneous wars on different
+      civilizations never compete for one global budget; a maxed-out civ is skipped while
+      others keep processing. Real pacing comes from the per-source pressure bar +
+      cooldown (below):
+      - Skip if its rural pool is at the floor, or, for **voluntary** (prosperity /
+        unhappiness) migration only, it's on **cooldown**. **Forced** displacement
+        (war / disaster) **bypasses the cooldown and flees every turn**, bounded only by
+        the war-surge burst and the siege-loss cap.
       - Find its **best destination** (greatest *adjusted pull*, §3).
       - **If there's a destination:** accumulate **pressure**; on crossing
         `emigrationBar`, move one or more rural points depending on context
         (`addRuralPopulation(-1)` on the source, `+1` on the destination, works
         cross-civ). War-surge can raise same-turn war displacement up to
-        `warSurgeMax` (still bounded by `siegeLossCapPct`), transit lag can delay
-        arrival (`transitLagTurns`/`transitHexPerTurn`), and each successful intake
-        records war-loss (when besieged), can seed plague carry (§6c), and adds
+        `warSurgeMax` (still bounded by `siegeLossCapPct`); voluntary migration then
+        **rests on a `cooldownTurns` cooldown**, while war/disaster does not. Transit lag
+        can delay arrival (`transitLagTurns`/`transitHexPerTurn`), and each successful
+        intake records war-loss (when besieged), can seed plague carry (§6c), and adds
         **assimilation load** to the destination civ.
       - **If there's no destination** (the outlet, §6d): a sufficiently *distressed*
         source builds attrition pressure and eventually **loses a rural point with no
@@ -244,12 +333,16 @@ vector. People can emigrate to any civilization.
 people using the **identical formula** to the Demographics mod:
 
 ```
-scaleCityPopulation(raw, turn) = raw^scaleExp × scaleBase × scaleGrowth^turn   // 1.11, 3000, 1.009
+base(raw, turn) = raw^scaleExp × scaleBase × scaleGrowth^turn   // 1.11, 12000, 1.009
+megaTarget      = (raw > 20) ? (raw / 20)^1.5 : 1
+ramp            = smoothstep(clamp((modernProgress - 0.1) / 0.8, 0, 1))
+scaleCityPopulation = base × (1 + (megaTarget - 1) × ramp)
 ```
 
 A moved point is reported as the **marginal** people it represents
 (`scale(pop) − scale(pop−1)`), using a **monotonic** turn so the figure never resets at
-age boundaries. `formatPeople` renders "12 thousand / 1.3 million / 240 million".
+age boundaries, and applying the same Modern-only smooth ramp as Demographics.
+`formatPeople` renders "12 thousand / 1.3 million / 240 million".
 `moveRural` performs a relocation; **`removeRural`** removes a point with no
 destination (the outlet's death, §6d), using the same rural-population accounting the
 game's own starvation shrinkage uses.
@@ -506,9 +599,21 @@ hook (`globalThis.DemographicsMetricsAPI`, an order-independent handshake):
   per-cause tallies. It degrades gracefully (no tooltip) on an older Demographics that
   lacks the hook.
 - **A dedicated Migration page** on the Demographics screen (when its `registerPanel` companion
-  hook is present): the same dashboard as the standalone window, per-civ ledger, the per-cause
-  breakdown, border stances, and your cities under pressure. Registered order-independently and a
-  silent no-op on an older Demographics (the standalone window still covers it).
+  hook is present). It shows the **same content as the standalone window**, presented as **native
+  Demographics sub-tabs**, one per dashboard section (network, flows, civilizations, causes,
+  settlements, policy stances), the same metric sub-tab row the Crises/Conflicts pages use, rather
+  than a single wrapped "Overview" tab. The page declares its sub-tabs through an extended
+  `registerPanel({ …, tabs })`; the screen renders each via `render(container, ctx, subId)`.
+  Registered order-independently and a silent no-op on an older Demographics (the standalone window
+  still covers it).
+- **An Ethnic Composition map lens + plot tooltip** (`emigration-ethnicity-lens.js`,
+  `emigration-ethnicity-tooltip.js`, fed by `emigration-composition.js`). A self-registering lens
+  (Shift+E, or the lens panel) paints each settlement by the **dominant origin civilization** of
+  its people, fill intensity scaling with that civ's share; hovering any settled tile adds the
+  exact **per-origin percentages** to the game's plot tooltip. The percentages come from the same
+  ledger the dashboard uses, so they stay consistent. Both honor the spoiler-protection visibility
+  policy (§10): a policy-hidden owner shows nothing and hidden origins merge into one neutral
+  "Unknown" bucket.
 - **A Refugees graph** on the Conflicts page, and a **Refugees row in the war-effects
   tooltip** (a small Demographics-side edit: `COST_METRICS` + the war sampler reading
   `globalThis.EmigrationData.refugeesCumFor`). Refugees attribute to the besieged side and
@@ -548,9 +653,13 @@ API and `WorldUI` has no floating-text method, so toasts are the channel):
   city selection. Toggle in Options (`cityReadoutEnabled`); works without Demographics.
 - **Dashboard window** (`emigration-window.js` + the shared render core `emigration-views.js`).
   A standalone HUD window (`emigration.window()` / `emigration.closeWindow()`) with the whole
-  picture: a per-civ ledger (in/out/net/refugees/deaths), the "why people move" cause
-  breakdown, who holds Pro-/Anti-Immigration stances, and your cities ranked by migration
-  pressure. The same render core will back the Demographics page, so it works either way.
+  picture across tabbed sections: an **animated migration network** and a **cross-civ flow map**
+  (both with a timeline scrubber to replay how flows built up), a per-civ ledger
+  (in/out/net/refugees/deaths), the "why people move" cause breakdown, who holds Pro-/Anti-
+  Immigration stances, and your cities ranked by migration pressure. When the timeline-detail
+  setting samples less often than every turn, a reminder banner on every tab notes that a just-met
+  civ or a recent move can take a few turns to appear. The same render core backs the Demographics
+  Migration page (as native sub-tabs, §8), so it works either way.
 - **Anti-spam.** Disasters only notify at/above `disasterNotifyMinSeverity` (minor events
   drive the sim silently). War notifications are **once-per-milestone** on a civ's
   **cumulative** refugees (`worldRefugeeThreshold`), not per turn. A global
@@ -569,8 +678,11 @@ scopes, and it registers via `Options.addOption({ category: CategoryType.Mods, �
 Settings persist in the shared, cascade-safe `modSettings` localStorage slice and apply to
 the live config immediately and at game boot.
 
-- **Emigration** group: **Migration counts** (Both / Civ only / Historical only) and
-  **Emigration intensity** (Custom / Low / Medium / High).
+- **Emigration** group: **Migration counts** (Both / Civ only / Historical only), **Emigration
+  intensity** (Custom / Low / Medium / High), **Dashboard data** (Live / Sample preview),
+  **Migration timeline detail** (how often the network snapshots, every 1–5 turns), and a
+  **Migration dock button** toggle (on by default; turn it off to reach the dashboard only from
+  the Demographics Migration page or the console `emigration.window()`).
 - **Emigration - Advanced:** every tunable as a dropdown/checkbox, generated from a
   declarative spec (`emigration-tunables.js`), grouped: pacing, scope, prosperity weights,
   the **advanced-model** switches (§5: shaped happiness, overcrowding, congestion, civ
@@ -580,11 +692,11 @@ the live config immediately and at game boot.
   **outlet** (attrition).
 
 **Simulation scope & visibility (independent of each other).** By default the migration simulation
-runs over the **whole world** — every alive civilization, from the first turn — so migration
+runs over the **whole world** (every alive civilization, from the first turn), so migration
 topology isn't biased by which civs you've explored, and a city you later conquer carries real
 origin history in the ethnicity lens. (Set *Scope* to met-only to lighten per-turn cost on large
 saves.) Independently, the dashboard and lens **mask** civilizations for **spoiler protection**, per
-a shared **analytics-visibility policy** — the same four levels the **Demographics** mod exposes
+a shared **analytics-visibility policy**, the same four levels the **Demographics** mod exposes
 (All / Met-only / Own-civ / Disabled), host-authoritative in multiplayer. The default is met-only,
 so civilizations you haven't met are **calculated but never shown**; revealing them is opt-in (widen
 the policy to All). So scope and on-screen visibility are decoupled: *simulate everything, reveal
@@ -865,6 +977,12 @@ it touches every shared surface *additively*:
 - **Defers to the Demographics namespace.** The war-popup refugees label and glossary are owned by
   the Demographics mod; Emigration adds only the one graph-title string it introduces
   (`LOC_DEMOGRAPHICS_WAR_GRAPHS_T_REFUGEES`), so there are no duplicate `LocalizedText` definitions.
+- **Additive plot tooltip.** The Ethnic Composition per-tile breakdown is *appended* into the live
+  plot tooltip's `.tooltip__content` via a `MutationObserver`, never replacing the tooltip. The
+  base game's plot-tooltip registration (`registerPlotType` / `PlotTooltipPriority`) is winner-
+  take-all (one registrant supplies the whole tooltip), so full-tooltip mods (bz-map-trix, TCS
+  Improved Plot Tooltip) coordinate to avoid colliding. Injecting a node instead of registering a
+  competing tooltip means Emigration stacks with whichever tooltip is active rather than fighting it.
 - **Adaptive to other mods.** It reads *live* happiness / yields / Influence each turn, so a mod
   that rebalances those values is simply reflected in the Prosperity score, so effects compose rather
   than conflict. At the gameplay level it shares the world: if another mod also moves population or

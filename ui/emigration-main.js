@@ -273,7 +273,9 @@ function boot() {
   // Order-independent: registers now if its API is up, else queues for it to
   // drain when it loads (Demographics imports its metrics module lazily).
   dlog(registerMigrationMetric() ? "Demographics graph registered" : "Demographics graph deferred/absent");
-  // Contribute the dedicated Migration page to Demographics (L3). Same order-independent
+  // Contribute the dedicated Migration page to Demographics (L3). Always registered; the page carries
+  // a live `enabled` predicate (= "Demographics tab" access mode) that the Demographics screen checks
+  // each render, so the dock-button-vs-tab choice applies without a game reload. Same order-independent
   // handshake; a no-op on an older Demographics that lacks the registerPanel hook.
   dlog(registerMigrationPage() ? "Demographics page registered" : "Demographics page deferred/absent");
 }

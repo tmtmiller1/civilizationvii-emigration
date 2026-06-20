@@ -169,9 +169,9 @@ class EmigrationAdvancedEditor extends Panel {
   render() {
     this.Root.innerHTML = `
       <fxs-frame title="LOC_OPTIONS_GROUP_EMIGRATION_ADVANCED" subtitle="LOC_OPTIONS_GROUP_EMIGRATION"
-                 class="w-3/4 max-w-5xl h-3/4">
-        <fxs-scrollable class="flex-auto">
-          <fxs-vslot class="px-6 py-2" data-emig-list></fxs-vslot>
+                 class="w-11/12 max-w-5xl h-11/12">
+        <fxs-scrollable class="flex-auto overflow-y-auto" style="max-height: 82vh;">
+          <fxs-vslot class="px-6 py-2 pb-8" data-emig-list></fxs-vslot>
         </fxs-scrollable>
         <fxs-close-button></fxs-close-button>
       </fxs-frame>`;

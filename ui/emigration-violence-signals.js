@@ -44,6 +44,25 @@ export function districtDamageFrac(city) {
 }
 
 /**
+ * Whether the city center district is currently BESIEGED (under active attack), read straight from
+ * the gameplay model. Victim-side and attacker-agnostic, so it fires for an Independent Power /
+ * city-state raid just as for a major-civ siege — even before the district's HEALTH drops, which is
+ * the case the health/pillage polls miss for lighter raids. False when unreadable.
+ * @param {*} city A live city object.
+ * @returns {boolean} True when the city center is besieged.
+ */
+export function districtBesieged(city) {
+  const loc = city?.location;
+  const pd = loc ? cityDistricts(city) : null;
+  if (!pd) return false;
+  try {
+    return typeof pd.getDistrictIsBesieged === "function" && !!pd.getDistrictIsBesieged(loc);
+  } catch (_) {
+    return false;
+  }
+}
+
+/**
  * Whether a plot has a pillaged (damaged) constructible on it.
  * @param {{x:number, y:number}} loc Plot location.
  * @returns {boolean} True if any constructible there is damaged.

@@ -135,16 +135,34 @@ function gatherFlows() {
 }
 
 /**
- * A display name for one city signal (its own name when the engine exposes one, else City/Town +
- * an ordinal so names stay unique within a civ , the viz groups a civ's cities by name).
+ * Resolve a city's name handle to a display string, or null when unresolvable. In Civ VII city.name
+ * is a localization handle (LOC_CITY_NAME_*), not a display string, so it must be composed or it
+ * renders as a raw "LOC_..." key on the flow map / settlement labels.
+ * @param {*} raw The city's `name`.
+ * @returns {string|null} The composed display name, or null.
+ */
+function composeCityName(raw) {
+  if (typeof raw !== "string" || !raw) return null;
+  try {
+    if (typeof Locale !== "undefined" && Locale.compose) {
+      const c = Locale.compose(raw);
+      if (typeof c === "string" && c && !c.startsWith("LOC_")) return c;
+    }
+  } catch (_) {
+    /* ignore */
+  }
+  return raw.startsWith("LOC_") ? null : raw; // already a plain name, or unresolvable
+}
+
+/**
+ * A display name for one city signal (its composed name when readable, else City/Town + an ordinal
+ * so names stay unique within a civ , the viz groups a civ's cities by name).
  * @param {*} s City signal.
  * @param {number} ord Ordinal within the owner.
  * @returns {string} City name.
  */
 function cityName(s, ord) {
-  const raw = s && s.city && s.city.name;
-  if (typeof raw === "string" && raw) return raw;
-  return (s && s.isTown ? "Town " : "City ") + ord;
+  return composeCityName(s && s.city && s.city.name) || (s && s.isTown ? "Town " : "City ") + ord;
 }
 
 /**

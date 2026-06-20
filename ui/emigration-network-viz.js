@@ -13,7 +13,12 @@ import {
   paint, civColorByIndex, CAUSE_PALETTE, MOVE_PALETTE
 } from "/emigration/ui/emigration-network-paint.js";
 import { buildChronoDots, totalPeople, totalPoints } from "/emigration/ui/emigration-network-dots.js";
-import { getNumberMode, NumberMode, getSampleData } from "/emigration/ui/emigration-settings.js";
+import {
+  getNumberMode,
+  setNumberMode,
+  NumberMode,
+  getSampleData
+} from "/emigration/ui/emigration-settings.js";
 import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
 import { makeTimeline } from "/emigration/ui/emigration-network-timeline.js";
 import { makeTooltip, wireEvents } from "/emigration/ui/emigration-network-interact.js";
@@ -98,6 +103,8 @@ function loc(key, fallback, ...args) {
 // Canvas + controls stylesheet, injected once (module-scope so injectStyle stays small).
 const NETC_CSS =
     ".emig-netc-wrap{position:relative;display:flex;flex-direction:column;align-items:center;}" +
+    ".emig-netc-time-note{align-self:center;margin:0.5rem 0;font-size:0.82rem;opacity:0.6;" +
+    "font-style:italic;color:#e5d2ac;text-align:center;max-width:34rem;}" +
     // The canvas fills its stage, which is a full-width 2:1 box (padding-bottom gives it a real
     // height so the canvas's height:100% resolves , GameFace won't derive height from the buffer).
     ".emig-netc-stage{position:relative;width:100%;max-width:120rem;margin:0 auto;}" +
@@ -209,8 +216,15 @@ function causesPresent(frames) {
 function makeCanvas() {
   const cv = document.createElement("canvas");
   cv.className = "emig-netc";
-  cv.width = WX * 2;
-  cv.height = WY * 2;
+  // Supersample the backing store for crisp text + edges. A flat 2x is too soft on Hi-DPI / large
+  // panels (the canvas displays up to ~120rem wide), so scale the backing with devicePixelRatio,
+  // clamped to 2..3 to keep per-frame fill cost sane. setupCanvas() reads .width/.height back and
+  // applies the matching ctx.scale, so all drawing stays in logical WX/WY coords.
+  const dpr = typeof window !== "undefined" && typeof window.devicePixelRatio === "number"
+    && window.devicePixelRatio > 0 ? window.devicePixelRatio : 2;
+  const f = Math.min(3, Math.max(2, Math.ceil(dpr * 1.5)));
+  cv.width = WX * f;
+  cv.height = WY * f;
   return cv;
 }
 
@@ -333,13 +347,41 @@ function addFlowsToggle(root, state, onChange) {
   root.appendChild(c);
 }
 
+// Number-mode units toggle (Civ Pop ↔ Scaled Pop), shared with the flow-map view so both surfaces of
+// the combined Network tab carry the same "Units:" control.
+const UNITS_CYCLE = [NumberMode.CIV, NumberMode.HISTORICAL];
+/** @type {Record<number,string>} */
+const UNITS_LABEL = { [NumberMode.CIV]: "Civ Pop", [NumberMode.HISTORICAL]: "Scaled Pop" };
+
 /**
- * Build the lens selector (Color by: Origin / Type / Movement) plus the Show + Origins toggles.
+ * Append a "Units:" toggle (a labelled chip cycling Civ Pop ↔ Scaled Pop) to a controls row, styled
+ * like the network's other labelled toggles. Number mode is a persisted global, and it changes the
+ * scene's dot scaling, so a flip rebuilds the whole view via `rebuildAll`.
+ * @param {HTMLElement} root The controls row.
+ * @param {()=>void} [rebuildAll] Re-render the view after the mode changes.
+ * @param {boolean} [withSep] Prepend a separator (true when trailing other toggles; false standalone).
+ */
+export function appendUnitsToggle(root, rebuildAll, withSep = true) {
+  if (withSep) root.appendChild(el("span", "emig-lens-sep"));
+  root.appendChild(el("span", "emig-lens-lbl", loc("LOC_EMIG_NETC_UNITS", "Units:")));
+  const c = el("div", "emig-netc-chip", UNITS_LABEL[getNumberMode()] || "Scaled Pop");
+  c.title = loc("LOC_EMIG_NETC_UNITS_TIP", "Switch between the Civ's own population numbers and scaled people");
+  c.addEventListener("click", () => {
+    const i = UNITS_CYCLE.indexOf(/** @type {*} */ (getNumberMode()));
+    setNumberMode(UNITS_CYCLE[(i + 1) % UNITS_CYCLE.length]);
+    if (typeof rebuildAll === "function") rebuildAll();
+  });
+  root.appendChild(c);
+}
+
+/**
+ * Build the lens selector (Color by: Origin / Type / Movement) plus the Show + Origins + Units toggles.
  * @param {*} state Interaction state.
  * @param {()=>void} onChange Called after the lens (or toggle) changes.
+ * @param {()=>void} [rebuildAll] Full re-render (for the Units toggle, which rescales the scene).
  * @returns {HTMLElement} The selector row.
  */
-function makeLensTabs(state, onChange) {
+function makeLensTabs(state, onChange, rebuildAll) {
   const root = el("div", "emig-netc-chips");
   root.appendChild(el("span", "emig-lens-lbl", loc("LOC_EMIG_NETC_COLORBY", "Color by:")));
   /** @type {{key:string, el:HTMLElement}[]} */
@@ -356,6 +398,7 @@ function makeLensTabs(state, onChange) {
   }
   addScopeToggles(root, state, onChange);
   addFlowsToggle(root, state, onChange);
+  appendUnitsToggle(root, rebuildAll);
   return root;
 }
 
@@ -620,12 +663,24 @@ function buildScene(frames, colorMap, events) {
 }
 
 /**
+ * Placeholder shown where the playback scrubber would be, until there's enough recorded migration
+ * history to build a timeline (makeTimeline needs >= 2 frames). Keeps the control's slot occupied so
+ * the player knows the feature exists and why it isn't there yet.
+ * @returns {HTMLElement} The note element.
+ */
+function timelineNote() {
+  return el("div", "emig-netc-time-note", loc("LOC_EMIG_NETC_TIMELINE_PENDING",
+    "Playback timeline appears once enough migration has been recorded to scrub through."));
+}
+
+/**
  * Build the full viz (canvas + controls + loop) for a usable set of frames.
  * @param {HTMLElement} container Card body.
  * @param {*[]} frames Usable timeline frames.
  * @param {*[]} events Event specs (disaster/war labels).
+ * @param {()=>void} [rebuildAll] Full re-render hook (for the Units toggle, which rescales the scene).
  */
-function buildViz(container, frames, events) {
+function buildViz(container, frames, events, rebuildAll) {
   const wrap = el("div", "emig-netc-wrap");
   const colorMap = buildColorMap(frames);
   const { canvas, ctx } = setupCanvas();
@@ -655,8 +710,8 @@ function buildViz(container, frames, events) {
   const legendBox = makeLegendBox(lastNet, colorMap, state, causesPresent(frames), markDirty);
   const timeline = setupPlayback(frames, holder, activate);
   mountChrome({
-    wrap, lensTabs: makeLensTabs(state, legendBox.rebuild), canvas,
-    legend: legendBox.box, slider: timeline && timeline.root, unit: holder.unit
+    wrap, lensTabs: makeLensTabs(state, legendBox.rebuild, rebuildAll), canvas,
+    legend: legendBox.box, slider: (timeline && timeline.root) || timelineNote(), unit: holder.unit
   });
   wireEvents(canvas, holder, state, tip);
   container.appendChild(wrap);
@@ -670,7 +725,9 @@ function buildViz(container, frames, events) {
  */
 export function renderNetworkViz(container, section) {
   // Drop any prior render (and let its detached-canvas rAF loop stop) before building a fresh one.
-  if (container && container.replaceChildren) container.replaceChildren();
+  // NB: use removeChild, NOT replaceChildren — Coherent GameFace doesn't implement replaceChildren, so
+  // on a re-render (e.g. the Units toggle) the old view would NOT clear and the chrome would double up.
+  if (container) while (container.firstChild) container.removeChild(container.firstChild);
   const all = (section && section.frames) || [];
   // Keep any frame with civs to show , a frame can have residents (native population) before any
   // cross-civ migration has happened, so we no longer require edges.
@@ -680,5 +737,6 @@ export function renderNetworkViz(container, section) {
     return;
   }
   injectStyle();
-  buildViz(container, frames, (section && section.events) || []);
+  buildViz(container, frames, (section && section.events) || [],
+    () => renderNetworkViz(container, section));
 }

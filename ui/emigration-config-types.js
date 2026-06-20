@@ -10,7 +10,9 @@
  * math; the booleans scope which settlements participate / which features run.
  * @typedef {Object} EmigrationConfig
  * @property {number} turnInterval Run the pass every N local-player turns.
- * @property {number} maxMovesPerTurn Cap citizens moved per pass.
+ * @property {number} maxMovesPerTurn Per-civ move-ceiling base (safety net, not the pacing knob).
+ * @property {number} movesPerCity Per-civ move-ceiling bonus per settlement.
+ * @property {number} movesPerSiege Per-civ move-ceiling bonus per city in war/disaster crisis.
  * @property {number} emigrationBar Accumulated pressure to move one citizen.
  * @property {number} deltaExponent Diminishing scaling on the prosperity delta.
  * @property {number} tiltCap Max |targeted attraction| added to a single pull (Tilt-channel clamp).

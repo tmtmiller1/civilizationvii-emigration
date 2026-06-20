@@ -53,6 +53,7 @@ let _recent = [];
  *   razed city's residual loss against this turn's recorded departures).
  * @property {Record<string, number>} wmOut Gross-emigration watermark.
  * @property {Record<string, number>} wmIn Gross-immigration watermark.
+ * @property {Record<string, number>} wmRefugees Refugees-per-turn watermark.
  * @property {Record<string, Record<string, number>>} outByCause Cumulative emigration, per cause.
  * @property {Record<string, Record<string, number>>} inByCause Immigration cumulative by cause.
  * @property {Record<string, Record<string, number>>} wmOutByCause Per-cause emigration watermarks.
@@ -72,6 +73,9 @@ let _recent = [];
  *   age-local turn resets never collide or reorder).
  * @property {number} flowSchema Flow-history encoding version (2 = delta-encoded). Legacy saves
  *   (frames carrying a cumulative `flows` clone) are migrated to deltas once on load.
+ * @property {{turn:number, age:string, year:string, name:string, severity:number}[]} disasterEvents
+ *   Notable disaster onsets (age-local turn + age + year-label + name + severity), capped. Stamped as
+ *   each event fires so the Demographics refugees chart can mark when disasters struck.
  * @property {number} chartTurn Latest monotonic cross-age turn (never resets at an age boundary).
  * @property {string} chartAge Age of the latest snapshot (to detect boundary crossings).
  * @property {number} chartLocal Age-local turn of the latest snapshot.
@@ -128,6 +132,7 @@ function normalize(o) {
     cityNames: mapOr(o.cityNames),
     wmOut: mapOr(o.wmOut),
     wmIn: mapOr(o.wmIn),
+    wmRefugees: mapOr(o.wmRefugees),
     outByCause: mapOr(o.outByCause),
     inByCause: mapOr(o.inByCause),
     wmOutByCause: mapOr(o.wmOutByCause),
@@ -141,6 +146,7 @@ function normalize(o) {
     stanceInPts: mapOr(o.stanceInPts),
     stanceOutPts: mapOr(o.stanceOutPts),
     flowHistory: Array.isArray(o.flowHistory) ? o.flowHistory : [],
+    disasterEvents: Array.isArray(o.disasterEvents) ? o.disasterEvents : [],
     chartTurn: typeof o.chartTurn === "number" ? o.chartTurn : 0,
     chartAge: typeof o.chartAge === "string" ? o.chartAge : "",
     chartLocal: typeof o.chartLocal === "number" ? o.chartLocal : 0,
@@ -612,6 +618,32 @@ export function accountLosses(signals, migs) {
   save();
 }
 
+// Cap on retained disaster-onset events (oldest dropped past the cap). Bounded so the marker log
+// stays small in the save; the refugees chart only annotates notable events.
+const MAX_DISASTER_EVENTS = 64;
+
+/**
+ * Record a notable disaster onset for the refugees-chart timeline: stamp the current age-local turn,
+ * age, in-game year, and the event's name/severity, then persist (capped). Called as each event fires
+ * (from emigration-events), so the year is the turn the disaster actually struck.
+ * @param {string} name The disaster's display name (e.g. "Volcano").
+ * @param {number} [severity] The event severity.
+ */
+export function recordDisasterEvent(name, severity) {
+  const s = load();
+  s.disasterEvents.push({
+    turn: gameTurn(),
+    age: currentAge() || s.chartAge,
+    year: gameTurnDate(),
+    name: typeof name === "string" ? name : "",
+    severity: typeof severity === "number" ? severity : 0
+  });
+  if (s.disasterEvents.length > MAX_DISASTER_EVENTS) {
+    s.disasterEvents = s.disasterEvents.slice(s.disasterEvents.length - MAX_DISASTER_EVENTS);
+  }
+  save();
+}
+
 /**
  * Fold a pass's migrations into the cumulative tallies.
  * @param {{srcOwner?:number, destOwner?:number, people:number, cause?:string}[]} migs Migrations.
@@ -736,6 +768,17 @@ export function refugeesFor(id) {
 }
 
 /**
+ * Refugees a civ produced THIS sample (per-turn delta of the cumulative total). Advances its own
+ * watermark, so only one consumer (the Demographics per-turn refugees graph) should read it.
+ * @param {number} id Player id.
+ * @returns {number} Refugees produced this turn.
+ */
+export function sampleRefugees(id) {
+  const s = load();
+  return sampleDelta(s.refugees, s.wmRefugees, id);
+}
+
+/**
  * Per-cause emigration breakdown for a player (cumulative, read-only).
  * @param {number} pid Player id.
  * @returns {Record<string, number>} Emigration sample by cause this turn.
@@ -824,7 +867,9 @@ try {
     // Cross-civ flow matrix (src→dest people) for the migration-network visualization.
     flows: () => migrationFlows(),
     // Decimated cumulative-flow history (timeline frames) for the network scrubber.
-    flowHistory: () => migrationFlowHistory()
+    flowHistory: () => migrationFlowHistory(),
+    // Notable disaster onsets (copy), for the Demographics refugees-chart event markers.
+    disasterEvents: () => (load().disasterEvents || []).slice()
   };
 } catch (_) {
   /* ignore */

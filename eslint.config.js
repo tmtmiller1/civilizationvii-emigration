@@ -35,7 +35,8 @@ const BROWSER_GLOBALS = {
   structuredClone: "readonly",
   setTimeout: "readonly",
   clearTimeout: "readonly",
-  MutationObserver: "readonly"
+  MutationObserver: "readonly",
+  CustomEvent: "readonly"
 };
 
 export default [

@@ -18,6 +18,7 @@ import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
 import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
+import { setBasePlotTooltipHidden } from "/emigration/ui/emigration-plot-tooltip-suppress.js";
 
 const LENS = "emig-ethnicity-lens";
 const LAYER = "emig-ethnicity-layer";
@@ -122,11 +123,15 @@ class EthnicityLensLayer {
       const plots = plotsOf(c.city);
       if (plots.length) this.overlay.addPlots(plots, { fillColor: c.fill });
     }
+    // Hide the base plot tooltip while this lens is active so it doesn't clash with the mod's own
+    // ethnic-composition panel (emigration-ethnicity-tooltip.js).
+    setBasePlotTooltipHidden(true);
   }
 
-  /** Lens-layer lifecycle: clear on deactivate. */
+  /** Lens-layer lifecycle: clear on deactivate + restore the base plot tooltip. */
   removeLayer() {
     this.clear();
+    setBasePlotTooltipHidden(false);
   }
 }
 

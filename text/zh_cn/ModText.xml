@@ -193,6 +193,8 @@
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="zh_Hans_CN"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="zh_Hans_CN"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="zh_Hans_CN"><Text>移民为世界带来鲜活的人口流动。每回合，市民都会离开不幸、困苦或饱受战乱的聚落，迁往更幸福、更繁荣之处，既在你的文明内部，也越过边界前往其他文明。[n][n]人们何去何从，由一套繁荣度模型决定，它权衡每座城市的幸福度、产出与处境，并以距离加以塑造，使迁徙保持区域性。接纳移民并非无偿：在新来者融入期间，文明要支付同化成本。[n][n]本系统更深层的行为大多，躲避侵略者的难民、边界政策、灾害以及人口的泄流口，皆为可选，可在选项、模组、移民中启用。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_FAQ_TITLE" Language="zh_Hans_CN"><Text>常见问题</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_FAQ_BODY" Language="zh_Hans_CN"><Text>哪些因素会引发迁徙、哪些不会（大多可在「选项」的「模组、迁徙」中调整）。完整版见仪表板的「指南」标签页。[n][n]✓ 你的文明和其他主要文明都会迁移人口，无论是否已相遇。[n]✗ 城邦、小型文明和独立势力既不输出也不接收人口。[n]✓ 不满、低产出、战争破坏、围城（包括城邦或独立势力的攻击）、劫掠、饥荒、瘟疫、灾害和过度拥挤都会驱使人口离开。[n]✓ 繁荣、高幸福度、亲移民立场、开放边境以及邻近的位置会吸引他们。[n]✗ 移民不会立即抵达（距离会增加延迟），也并非免费（有临时同化成本）；仅靠战争无法在未占领的情况下使城市人口归零。[n][n]迁徙不会改变 AI 决策，也不会替换任何基础游戏文件。未相遇的文明会被模拟，但在你选择显示之前保持隐藏。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_TITLE" Language="zh_Hans_CN"><Text>繁荣与迁徙</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_BODY" Language="zh_Hans_CN"><Text>每个聚落都依据其人均产出，尤其是其净幸福度，获得繁荣度评分。即便在和平时期，不幸的城市也会持续将人口流失给更幸福、更富庶的城市，而针对规模本身的一点小惩罚，则防止繁荣的城市沦为无底的磁石。[n][n]人们偏好就近的去处，因此迁徙是在区域内向外扩散，而非跨越地图跳跃。战争、围城、饥荒、动乱与灾害都会大幅压低城市的繁荣度，使其化为难民之源。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_TITLE" Language="zh_Hans_CN"><Text>战争与难民</Text></Replace>
@@ -211,6 +213,10 @@
         <Replace Tag="LOC_PEDIA_EMIG_OUTLET_BODY" Language="zh_Hans_CN"><Text>迁徙并非封闭的系统。当一座城市陷入绝境，被围、挨饿，或为灾害所摧残，而再无安全之地可逃时，被困的居民不会就这样永远等待下去。人们死去或四散，城市在无处可去之中损失人口。[n][n]这道泄流口是万不得已的最后手段：仅仅是无更好去处的满足城市不会受到触动，而这份损失计为死亡，与真正抵达新家园的难民有所区别。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_TITLE" Language="zh_Hans_CN"><Text>领袖与文明</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="zh_Hans_CN"><Text>少数领袖与文明对迁徙的感受有所不同，其历史性格因而显现。这些是叠加在全局规则之上的微小而有界的调整，绝不足以引发失控的增长，且仅在按文明微调启用时生效（默认启用）。[n][n]那些幸福度本会使城市成为主导性的迁移磁石的领袖，吸引力会略微减弱：本杰明·富兰克林尤甚，伊莎贝拉、阿育王与黎刹也受到收敛。富有的征服者会发现安置战利品的代价更高，伊莎贝拉与薛西斯要付出更多，才能吸纳所赢得的人口。[n][n]纵向发展、专家导向的强权得以免受过度拥挤之害，使其密集的城市不致受到双重惩罚：帕查库特克,尤其是阿拔斯王朝。人口增长快于繁荣的民族会获得一点缓冲以留住其公民，孔子、汉与清，而高棉则得以免去其非首都不幸的最严重部分。而筑于坚墙之后的邦国，诺曼与英格兰，在围城期间远比无墙者更能保住人口。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_TITLE" Language="zh_Hans_CN"><Text>范围与可见性</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_BODY" Language="zh_Hans_CN"><Text>迁徙从第一回合起就模拟整个世界：所有存活的主要文明，而不仅是你已相遇的文明。这让迁徙保持真实：人们依据世界的实际状态移动，而你之后占领的城市会保留其居民真实的来源历史。[n][n]为避免剧透，仪表板、图表和地图镜头只显示你已相遇的文明。未相遇的文明仍在后台计算，但默认隐藏，使你无法得知尚未遇到的对手。你可以通过共享的分析可见性设置（与 Demographics 模组相同）扩大显示范围：仅自己的文明、已相遇的文明或全部。[n][n]简而言之：一切都会被模拟，而看到什么由你决定。模拟范围（整个世界或仅已相遇）与屏幕显示是相互独立的设置。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_TITLE" Language="zh_Hans_CN"><Text>解读仪表板</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="zh_Hans_CN"><Text>可从游戏内工具栏的按钮，或从 Demographics 模组的「迁徙」页面打开迁徙仪表板。它分为多个标签页：[n][n]• 迁徙网络：以通过各文明的人口量决定大小的动画视图。[n]• 流向图：将同样的流动绘制为箭头，可一直追溯到具体城市。[n]• 文明清单：流入、流出、净变化、难民与损失。[n]• 人口迁移原因的分类细目。[n]• 你的定居点，按各自距离失去人口的远近排序。[n]• 移民政策：谁采取了亲移民或反移民立场。[n]• 指南：关于哪些因素会引发迁徙、哪些不会的快速参考。[n][n]在地图上，民族构成镜头（Shift+E）按居民来源为每个定居点着色，将鼠标悬停在已定居的地块上即可在提示中看到确切的构成。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="zh_Hans_CN"><Text>迁徙</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="zh_Hans_CN"><Text>繁荣</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_ETHNICITY" Language="zh_Hans_CN"><Text>民族构成</Text></Replace>

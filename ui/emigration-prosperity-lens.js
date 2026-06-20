@@ -16,6 +16,8 @@
 import LensManager from "/core/ui/lenses/lens-manager.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { fieldContext, prosperity } from "/emigration/ui/emigration-prosperity.js";
+import { civHidden } from "/emigration/ui/emigration-governance.js";
+import { setBasePlotTooltipHidden } from "/emigration/ui/emigration-plot-tooltip-suppress.js";
 
 const LENS = "emig-prosperity-lens";
 const LAYER = "emig-prosperity-layer";
@@ -61,14 +63,18 @@ function cityTiers() {
     return [];
   }
   if (!signals.length) return [];
+  // The field (mean/spread) is computed over EVERY civ so a visible city is colored by its true
+  // global standing, but only civs the visibility policy permits are PAINTED — otherwise toggling
+  // this lens would reveal unmet civs' settlement locations + prosperity. Mirrors the ethnicity lens
+  // (emigration-ethnicity-lens.js), which skips hidden owners for the same spoiler-protection reason.
   const ctx = fieldContext(signals);
-  const rows = signals.map((s) => ({ city: s.city, p: prosperity(s, ctx) }));
+  const rows = signals.map((s) => ({ owner: s.owner, city: s.city, p: prosperity(s, ctx) }));
   const mean = rows.reduce((a, r) => a + r.p, 0) / rows.length;
   let spread = 0;
   for (const r of rows) spread = Math.max(spread, Math.abs(r.p - mean));
-  return rows.map((r) => ({
-    city: r.city, t: spread > 0 ? clamp((r.p - mean) / spread, -1, 1) : 0
-  }));
+  return rows
+    .filter((r) => !civHidden(r.owner))
+    .map((r) => ({ city: r.city, t: spread > 0 ? clamp((r.p - mean) / spread, -1, 1) : 0 }));
 }
 
 /**
@@ -114,11 +120,15 @@ class ProsperityLensLayer {
       const plots = plotsOf(c.city);
       if (plots.length) this.overlay.addPlots(plots, { fillColor: colorFor(c.t) });
     }
+    // Hide the base plot tooltip while this lens is active so it doesn't clash with the mod's own
+    // prosperity panel (emigration-prosperity-tooltip.js).
+    setBasePlotTooltipHidden(true);
   }
 
-  /** Lens-layer lifecycle: clear on deactivate. */
+  /** Lens-layer lifecycle: clear on deactivate + restore the base plot tooltip. */
   removeLayer() {
     this.clear();
+    setBasePlotTooltipHidden(false);
   }
 }
 

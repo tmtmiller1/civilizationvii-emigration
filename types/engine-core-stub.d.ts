@@ -15,3 +15,7 @@ export const CategoryData: any;
 // (emigration-advanced-editor.js).
 export const InputEngineEventName: any;
 export const FocusManager: any;
+
+// ui-next plot-tooltip visibility signal setter, used by the Ethnicity lens to
+// suppress the base plot tooltip while the lens (and its own panel) is active.
+export const SetIsPlotTooltipVisible: any;
