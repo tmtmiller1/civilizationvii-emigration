@@ -19,10 +19,12 @@ and across civilizations. Immigration brings growth, costs, politics, and Demogr
   do, whether it's temporary, who pays) and on demand per city (`emigration.city(id)`), with a
   full **Migration dashboard** (`emigration.window()`): an animated migration network, a cross-civ
   flow map, a per-civ ledger, a cause breakdown, settlements, and policy stances.
-- Fully integrated with the **Demographics** mod: net migration / emigration / immigration /
-  refugees graphs with per-cause source breakdowns, plus a dedicated **Migration** page that shows
-  the whole dashboard as native sub-tabs. The standalone dock button is optional (Options) if you'd
-  rather open everything from that page.
+- Fully integrated with the **Demographics** mod: a top-level **Emigration** tab whose **Graphs**
+  section toggles between **net migration / emigration / immigration / refugees out / refugees in** in
+  either scaled "people" or raw Civ numbers, with cause-breakdown tooltips and war/disaster markers on
+  the Refugees charts (**Refugees Out** = people this civ displaced; **Refugees In** = displaced people
+  it took in) — plus the whole dashboard (network, causes, settlements, policies, guide) as native
+  sub-tabs. The standalone dock button is optional (Options) if you'd rather open it on its own.
 
 The sections below explain migration behavior, tuning controls, and gameplay effects in detail. Every advanced layer can be tuned or switched off in **Options → Mods → Emigration - Advanced** (§10), so you can run anything from the plain baseline to the complete model. Start with the summary bullets, then use the remaining sections for detailed mechanics and trade-offs.
 
@@ -131,13 +133,13 @@ matrix is available in-game on the dashboard's **Guide** tab.
 | | Counts? | |
 |---|:---:|---|
 | Unhappiness / low yields | ✓ | The dominant driver of emigration: happiness is weighted more than any other factor, and yields are scored per-capita, so an unhappy, low-yield city bleeds people even at peace |
-| War damage to the districts | ✓ | District damage inside the city is read from game state (fog-independent) and scales the war penalty; more damage pushes more people out |
-| Being besieged or attacked | ✓ | Per-city: only the besieged city itself (its own district/borders) sheds people, even before its health drops. Not a civ-wide score; a civ at war elsewhere keeps its unaffected cities |
+| War damage to the districts | ✓ | Damage to **any** of the city's districts — its center **or** an outer urban/rural quarter — is read from game state (fog-independent) and scales the war penalty; more damage pushes more people out. An assault that wrecks only the city's edge still registers, even while the center reads pristine |
+| Being besieged or attacked | ✓ | Per-city: only the besieged city itself sheds people. Fires when **any** of its districts is besieged or has been overrun (captured/contested), even before its health drops. Not a civ-wide score; a civ at war elsewhere keeps its unaffected cities |
 | Attacked by a city-state / Independent Power | ✓ | Same per-city conflict pressure as a major-civ war: an Independent/minor raid on a city still drives THAT city's people out, attacker-agnostic |
 | Pillaged tiles in the city's borders | ✓ | Pillaged improvements on the city's own plots count as violence in its borders (polled, fog-independent); more pillaged tiles means more pressure |
 | Starvation | ✓ | A city with negative net food is flagged starving and takes a situational penalty, shedding population until its food recovers |
 | Plague / disease | ✓ | An infected city loses people, and migrants leaving it can carry the plague to their destination |
-| Natural disasters (floods, volcanoes) | ✓ | Environmental-disaster distress adds a per-city penalty on a capped sliding scale: strong, but it can't empty the city on its own |
+| Natural disasters (floods, volcanoes) | ✓ | Environmental-disaster distress adds a per-city penalty on a capped sliding scale: strong, but it can't empty the city on its own. An eruption/flood strikes **every city around its epicenter** (the blast radius), so a volcano on unowned border terrain still displaces the neighboring cities' people |
 | Overcrowding in a tall city | ✓ | Urban population above a threshold adds pressure (the overcrowding term); the per-leader tuning can soften it via the overcrowding discount |
 
 **What attracts people to a city**
@@ -590,22 +592,20 @@ All apply to **every civ on its own turn**. Set any knob to 0 to disable.
 When the **Demographics** mod is installed, Emigration contributes, via its companion
 hook (`globalThis.DemographicsMetricsAPI`, an order-independent handshake):
 
-- **Graphs on the Power page:** **Net migration**, **Emigration** (gross out),
-  **Immigration** (gross in), each per civ over time, in the same scaled people units as
-  Population.
-- **Per-cause source attribution** on the Emigration/Immigration graphs: when Demographics
-  supports tooltip registration (`registerMetricTooltip`), each graph carries a
-  `Sources: War: …, Disaster: …, Attraction: …, Unhappiness: …` breakdown derived from the
-  per-cause tallies. It degrades gracefully (no tooltip) on an older Demographics that
-  lacks the hook.
-- **A dedicated Migration page** on the Demographics screen (when its `registerPanel` companion
-  hook is present). It shows the **same content as the standalone window**, presented as **native
-  Demographics sub-tabs**, one per dashboard section (network, flows, civilizations, causes,
-  settlements, policy stances), the same metric sub-tab row the Crises/Conflicts pages use, rather
-  than a single wrapped "Overview" tab. The page declares its sub-tabs through an extended
-  `registerPanel({ …, tabs })`; the screen renders each via `render(container, ctx, subId)`.
-  Registered order-independently and a silent no-op on an older Demographics (the standalone window
-  still covers it).
+- **A top-level Emigration tab** on the Demographics screen (via `registerPanel`/`registerMetricGroup`).
+  Its first section, **Graphs**, is a metric group with two pill-row toggles: the **metric**
+  (**Net Migration / Emigration / Immigration / Refugees**, cumulative per civ) and the **units** —
+  **Scaled** (historical "people", the same scale as the Population charts) or **Civ numbers** (raw
+  population points that reconcile with the in-game window). Each line carries a cause-attribution
+  tooltip (gross in/out + the emigration cause breakdown on Net, the war/disaster/conquest split on
+  Refugees, and a `Sources: War: …, Disaster: …` breakdown on Emigration/Immigration), and the
+  Refugees chart draws **war- and disaster-onset markers** on the timeline.
+- **The full dashboard as native sub-tabs** on that same tab — **Network** (animated dot-swarm + arrow
+  flow map, each with a Civ Pop / Scaled Pop units toggle), **Civilizations**, **Causes**,
+  **Settlements**, **Immigration Policies**, and **Guide** — the **same content as the standalone
+  window**. The panel declares its sub-tabs through `registerPanel({ …, tabs })`; the screen renders
+  each via `render(container, ctx, subId)`. Registered order-independently and a silent no-op on an
+  older Demographics (the standalone window still covers it).
 - **An Ethnic Composition map lens + plot tooltip** (`emigration-ethnicity-lens.js`,
   `emigration-ethnicity-tooltip.js`, fed by `emigration-composition.js`). A self-registering lens
   (Shift+E, or the lens panel) paints each settlement by the **dominant origin civilization** of
@@ -614,10 +614,14 @@ hook (`globalThis.DemographicsMetricsAPI`, an order-independent handshake):
   ledger the dashboard uses, so they stay consistent. Both honor the spoiler-protection visibility
   policy (§10): a policy-hidden owner shows nothing and hidden origins merge into one neutral
   "Unknown" bucket.
-- **A Refugees graph** on the Conflicts page, and a **Refugees row in the war-effects
-  tooltip** (a small Demographics-side edit: `COST_METRICS` + the war sampler reading
-  `globalThis.EmigrationData.refugeesCumFor`). Refugees attribute to the besieged side and
-  render "- no data" when Emigration isn't installed.
+- **A Refugees row in the Demographics war-effects cost tooltip** (a small Demographics-side edit:
+  `COST_METRICS` + the war sampler reading `globalThis.EmigrationData.refugeesCumFor`). Refugees
+  attribute to the besieged side and render "- no data" when Emigration isn't installed. (The
+  Refugees *graph* itself lives in the Emigration tab's Graphs section, above.)
+- **A Network-only timeline-detail note**: when the migration snapshot interval is coarser than every
+  turn, Demographics shows a note next to its analytics-policy banner on the Network sub-tab
+  (exposed via `globalThis.EmigrationTimelineNote`) explaining that a newly-met civ or recent move
+  can take a few turns to appear in the flow timeline.
 
 `EmigrationData` (exposed globally) carries per-civ cumulative tallies: gross in/out, net,
 **refugees** (war/disaster/conquest displacement), **deaths** (attrition), and the

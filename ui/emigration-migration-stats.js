@@ -36,11 +36,14 @@ let _recent = [];
  * @property {Record<string, number>} out Cumulative gross emigration per player.
  * @property {Record<string, number>} in Cumulative gross immigration per player.
  * @property {Record<string, number>} refugees Cumulative non-unhappiness emigration.
+ * @property {Record<string, number>} refugeesIn Cumulative refugee IMMIGRATION per player —
+ *   war/disaster/conquest arrivals RECEIVED (the inflow counterpart of `refugees`).
  * @property {Record<string, number>} deaths Cumulative population lost to attrition (the outlet).
  * @property {Record<string, number>} cumPts Net per player, in raw pop points.
  * @property {Record<string, number>} outPts Gross emigration per player, in pop points.
  * @property {Record<string, number>} inPts Gross immigration per player, in pop points.
  * @property {Record<string, number>} refugeesPts Refugee emigration per player, in pop points.
+ * @property {Record<string, number>} refugeesInPts Refugee immigration per player, in pop points.
  * @property {Record<string, number>} deathsPts Attrition deaths per player, in pop points.
  * @property {Record<string, number>} lossesPts External population loss per player, in pop points.
  * @property {Record<string, Record<string,number>>} flowsPts Cross-civ flow (pop points by cause).
@@ -54,6 +57,7 @@ let _recent = [];
  * @property {Record<string, number>} wmOut Gross-emigration watermark.
  * @property {Record<string, number>} wmIn Gross-immigration watermark.
  * @property {Record<string, number>} wmRefugees Refugees-per-turn watermark.
+ * @property {Record<string, number>} wmRefugeesIn Refugees-received-per-turn watermark.
  * @property {Record<string, Record<string, number>>} outByCause Cumulative emigration, per cause.
  * @property {Record<string, Record<string, number>>} inByCause Immigration cumulative by cause.
  * @property {Record<string, Record<string, number>>} wmOutByCause Per-cause emigration watermarks.
@@ -117,6 +121,7 @@ function normalize(o) {
     out: mapOr(o.out),
     in: mapOr(o.in),
     refugees: mapOr(o.refugees),
+    refugeesIn: mapOr(o.refugeesIn),
     deaths: mapOr(o.deaths),
     losses: mapOr(o.losses),
     // Parallel raw-pop-point tallies (1 point per migration) so the UI can show exact Civ
@@ -125,6 +130,7 @@ function normalize(o) {
     outPts: mapOr(o.outPts),
     inPts: mapOr(o.inPts),
     refugeesPts: mapOr(o.refugeesPts),
+    refugeesInPts: mapOr(o.refugeesInPts),
     deathsPts: mapOr(o.deathsPts),
     lossesPts: mapOr(o.lossesPts),
     flowsPts: mapOr(o.flowsPts),
@@ -133,6 +139,7 @@ function normalize(o) {
     wmOut: mapOr(o.wmOut),
     wmIn: mapOr(o.wmIn),
     wmRefugees: mapOr(o.wmRefugees),
+    wmRefugeesIn: mapOr(o.wmRefugeesIn),
     outByCause: mapOr(o.outByCause),
     inByCause: mapOr(o.inByCause),
     wmOutByCause: mapOr(o.wmOutByCause),
@@ -232,6 +239,9 @@ function foldMigration(s, m) {
     addBoth(s.cum, s.cumPts, m.destOwner, p, pts);
     addBoth(s.in, s.inPts, m.destOwner, p, pts);
     add(s.inByCause, m.destOwner, p, c);
+    // Refugee IMMIGRATION: a war/disaster/conquest arrival received here (inflow counterpart of the
+    // refugee outflow tallied on the source below). Lets the dashboard show "refugees received".
+    if (isRefugeeCause(m.cause)) addBoth(s.refugeesIn, s.refugeesInPts, m.destOwner, p, pts);
   }
   if (typeof m.srcOwner !== "number") return;
   addBoth(s.cum, s.cumPts, m.srcOwner, -p, -pts);
@@ -779,6 +789,26 @@ export function sampleRefugees(id) {
 }
 
 /**
+ * The cumulative refugees a civ has RECEIVED (war/disaster/conquest arrivals; read-only).
+ * @param {number} id Player id.
+ * @returns {number} Cumulative refugees received.
+ */
+export function refugeesInFor(id) {
+  return load().refugeesIn[id] || 0;
+}
+
+/**
+ * Refugees a civ received THIS sample (per-turn delta of the cumulative total). Advances its own
+ * watermark, so only one consumer (the Demographics per-turn graph) should read it.
+ * @param {number} id Player id.
+ * @returns {number} Refugees received this turn.
+ */
+export function sampleRefugeesIn(id) {
+  const s = load();
+  return sampleDelta(s.refugeesIn, s.wmRefugeesIn, id);
+}
+
+/**
  * Per-cause emigration breakdown for a player (cumulative, read-only).
  * @param {number} pid Player id.
  * @returns {Record<string, number>} Emigration sample by cause this turn.
@@ -845,12 +875,14 @@ try {
     grossOutCumFor: (/** @type {number} */ pid) => load().out[pid] || 0,
     grossInCumFor: (/** @type {number} */ pid) => load().in[pid] || 0,
     refugeesCumFor: (/** @type {number} */ pid) => load().refugees[pid] || 0,
+    refugeesInCumFor: (/** @type {number} */ pid) => load().refugeesIn[pid] || 0,
     deathsCumFor: (/** @type {number} */ pid) => load().deaths[pid] || 0,
     externalLossesCumFor: (/** @type {number} */ pid) => load().losses[pid] || 0,
     // Parallel raw-pop-point reads (exact Civ population numbers).
     grossOutPtsFor: (/** @type {number} */ pid) => load().outPts[pid] || 0,
     grossInPtsFor: (/** @type {number} */ pid) => load().inPts[pid] || 0,
     refugeesPtsFor: (/** @type {number} */ pid) => load().refugeesPts[pid] || 0,
+    refugeesInPtsFor: (/** @type {number} */ pid) => load().refugeesInPts[pid] || 0,
     deathsPtsFor: (/** @type {number} */ pid) => load().deathsPts[pid] || 0,
     externalLossesPtsFor: (/** @type {number} */ pid) => load().lossesPts[pid] || 0,
     netPtsFor: (/** @type {number} */ pid) => load().cumPts[pid] || 0,
