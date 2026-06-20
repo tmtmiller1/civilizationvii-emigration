@@ -12,11 +12,11 @@
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { causeLabel } from "/emigration/ui/emigration-causes.js";
-import { renderNetworkViz } from "/emigration/ui/emigration-network-viz.js";
+import { renderNetworkOrFlow } from "/emigration/ui/emigration-flow-tab.js";
 import { getNumberMode, setNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
 import { appendSnapshotReminder } from "/emigration/ui/emigration-snapshot-reminder.js";
+import { renderGuide } from "/emigration/ui/emigration-guide.js";
 import { renderCityFlows, buildCivFlows } from "/emigration/ui/emigration-city-flows.js";
-import { renderFlowMap } from "/emigration/ui/emigration-network-flow.js";
 import { renderStances } from "/emigration/ui/emigration-detail-views.js";
 
 /**
@@ -297,12 +297,12 @@ export function dashboardModel(input) {
   return {
     sample: !!d.sample,
     sections: [
-      { title: "Migration network", kind: "network", network: current, frames, events },
-      { title: "Migration flows", kind: "flowmap", network: current, frames, events },
+      { title: "Migration network", kind: "flow", network: current, frames, events },
       { title: "Civilizations", kind: "ledger", rows: civLedgerRows(d.civs || []) },
       { title: "Why people move", kind: "pies", cities: buildCivFlows(d.flows || []) },
       { title: "Settlements", kind: "cityflows", cities: d.myCities || [] },
-      { title: "Immigration policies", kind: "stances", rows: stanceRows(d.civs || []) }
+      { title: "Immigration policies", kind: "stances", rows: stanceRows(d.civs || []) },
+      { title: "Guide", kind: "guide" }
     ]
   };
 }
@@ -325,8 +325,7 @@ const DASH_CSS =
   ".emig-pr-c{flex:1 1 0;padding:0.55rem 0.6rem;font-size:1.1rem;text-align:left;overflow:hidden;white-space:nowrap;border-top:0.0277rem solid rgba(229,210,172,0.12);}" +
   ".emig-pr-c.name{flex:1.5 1 0;color:#f0dca8;font-weight:bold;}" +
   ".emig-pr-c.pres{flex:2 1 0;}" +
-  ".emig-pr-head .emig-pr-c{border-top:none;opacity:0.6;text-transform:uppercase;" +
-  "letter-spacing:0.03rem;font-size:0.92rem;}" +
+  ".emig-pr-head .emig-pr-c{border-top:none;opacity:0.6;text-transform:uppercase;letter-spacing:0.03rem;font-size:0.92rem;}" +
   // Civilizations ledger: flexbox rows (GameFace lays out neither <table> nor CSS grid). Every row
   // uses the same per-column flex ratios, so the columns line up; full width with no dead gap.
   ".emig-led{display:flex;flex-direction:column;width:100%;}" +
@@ -336,8 +335,7 @@ const DASH_CSS =
   ".emig-led-c.name{flex:2.4 1 0;text-align:left;color:#f0dca8;font-weight:bold;}" +
   ".emig-led-c.net{flex:1.5 1 0;}" +
   ".emig-led-c.stance{flex:1.8 1 0;}" +
-  ".emig-led-head .emig-led-c{border-top:none;opacity:0.6;text-transform:uppercase;" +
-  "letter-spacing:0.03rem;font-size:0.95rem;}" +
+  ".emig-led-head .emig-led-c{border-top:none;opacity:0.6;text-transform:uppercase;letter-spacing:0.03rem;font-size:0.95rem;}" +
   ".emig-led-net{display:flex;align-items:center;justify-content:flex-end;gap:0.4rem;}" +
   ".emig-led-bar{height:0.7rem;border-radius:0.35rem;flex:0 0 auto;min-width:0.16rem;}" +
   ".emig-led-tot .emig-led-c{border-top:0.0833rem solid rgba(201,162,76,0.45);font-weight:bold;}" +
@@ -399,8 +397,8 @@ const DASH_CSS =
   "border-radius:0.25rem;overflow:hidden;}" +
   ".emig-cause-fill{height:100%;}" +
   ".emig-cause-num{flex:0 0 auto;min-width:3.2rem;text-align:right;opacity:0.85;}" +
-  ".emig-num-toggle{align-self:flex-end;cursor:pointer;font-size:0.76rem;color:#e5d2ac;" +
-  "padding:0.1rem 0.6rem;border-radius:0.9rem;border:0.0555rem solid rgba(201,162,76,0.4);" +
+  ".emig-num-toggle{align-self:flex-end;cursor:pointer;font-size:1rem;color:#e5d2ac;" +
+  "padding:0.34rem 1.15rem;border-radius:1rem;border:0.0555rem solid rgba(201,162,76,0.4);" +
   "background:rgba(229,210,172,0.06);margin-bottom:0.3rem;}" +
   ".emig-num-toggle:hover{background:rgba(229,210,172,0.12);color:#f3c34c;}" +
   ".emig-civ{color:#f0dca8;font-weight:bold;}" +
@@ -425,7 +423,9 @@ const DASH_CSS =
   ".emig-tab:hover{color:#e5d2ac;}" +
   ".emig-tab.active{color:#f3c34c;border-bottom-color:#f3c34c;}" +
   ".emig-tabbody{overflow-y:auto;overflow-x:hidden;max-height:74vh;}" +
-  ".emig-sample-badge{align-self:center;margin-bottom:0.5rem;padding:0.1rem 0.7rem;border-radius:0.9rem;font-size:0.74rem;letter-spacing:0.08rem;text-transform:uppercase;color:#1c1408;background:#e0913c;font-weight:bold;}";
+  ".emig-sample-badge{align-self:center;margin-bottom:0.5rem;padding:0.1rem 0.7rem;border-radius:0.9rem;font-size:0.74rem;letter-spacing:0.08rem;text-transform:uppercase;color:#1c1408;background:#e0913c;font-weight:bold;}" +
+  ".emig-flow-toggle{display:flex;gap:0.4rem;justify-content:center;margin:0.3rem 0;flex-wrap:wrap;}.emig-flow-tog{cursor:pointer;padding:0.34rem 1.15rem;font-size:1rem;color:#bfae86;border:0.0555rem solid rgba(201,162,76,0.4);border-radius:1rem;}" +
+  ".emig-flow-tog:hover{color:#e5d2ac;}.emig-flow-tog.active{color:#1c1408;background:#f3c34c;border-color:#f3c34c;font-weight:bold;}";
 
 /** Inject the dashboard content stylesheet once (idempotent). */
 function injectDashboardStyle() {
@@ -584,8 +584,8 @@ function renderLedger(body, rows) {
 // Renderers that consume the whole section model (canvas/pie/card views).
 /** @type {Record<string, (body: HTMLElement, section: *) => void>} */
 const SECTION_VIEWS = {
-  network: renderNetworkViz, flowmap: renderFlowMap,
-  pies: renderCityFlows, cityflows: renderCityFlows
+  flow: renderNetworkOrFlow,
+  pies: renderCityFlows, cityflows: renderCityFlows, guide: renderGuide
 };
 // Renderers that consume `section.rows` (flexbox tables).
 /** @type {Record<string, (body: HTMLElement, rows: *[]) => void>} */
@@ -615,9 +615,9 @@ function renderSectionBody(body, section) {
 /** Short tab labels by section kind. */
 /** @type {Record<string,string>} */
 const TAB_LABELS = {
-  network: "Network", flowmap: "Flows", ledger: "Civilizations", pies: "Causes",
+  flow: "Network", ledger: "Civilizations", pies: "Causes",
   stances: "Immigration Policies",
-  cityflows: "Settlements"
+  cityflows: "Settlements", guide: "Guide"
 };
 
 /**
@@ -726,11 +726,8 @@ export function renderDashboardTabbed(target, model) {
       body.innerHTML = "";
       renderSectionBody(body, sections[i]);
     };
-    // Numbers toggle (Civ pop-points / scaled people / both) , re-renders the active tab. The
-    // network tab is the visual, so toggling there needs no rebuild (avoids resetting it).
+    // Numbers toggle (Civ pop-points / scaled people) , re-renders the active tab.
     wrap.appendChild(numbersToggle(() => {
-      // The network dots are rebuilt on toggle (Civ Pop = ~1 dot per pop-point); the flow tab reads
-      // the mode live on hover, so it needs no rebuild.
       const k = sections[active] && sections[active].kind;
       if (k && k !== "flowmap") show(active);
     }));
@@ -763,14 +760,16 @@ export function renderDashboardSubtab(target, model, kind) {
     if (!section) return;
     const wrap = el("div", "emig-dash");
     if (model && model.sample) wrap.appendChild(el("div", "emig-sample-badge", "Sample data ; preview (switch to Live in Options)"));
-    appendSnapshotReminder(wrap);
+    // The timeline-detail note is rendered by the Demographics page beside its "Analytics policy"
+    // banner (see EmigrationTimelineNote), so it's NOT added at the top here in the embedded page.
     const body = el("div", "emig-tabbody");
-    wrap.appendChild(numbersToggle(() => {
-      if (section.kind !== "flowmap") {
+    // The "flow" section has its own inline "Units:" toggle (after "Origins"); skip the global chip.
+    if (section.kind !== "flow") {
+      wrap.appendChild(numbersToggle(() => {
         body.innerHTML = "";
         renderSectionBody(body, section);
-      }
-    }));
+      }));
+    }
     wrap.appendChild(body);
     renderSectionBody(body, section);
     target.appendChild(wrap);

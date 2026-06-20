@@ -20,6 +20,13 @@
 \AtBeginEnvironment{longtable}{\small}
 \AtBeginEnvironment{tabular}{\small}
 
+% The "what counts" matrix uses ✓/✗, which the Latin Modern body font lacks. Map those codepoints
+% to pifont dingbats so they render in the PDF (GitHub + in-game render the Unicode directly).
+\usepackage{pifont}
+\usepackage{newunicodechar}
+\newunicodechar{✓}{\ding{51}}
+\newunicodechar{✗}{\ding{55}}
+
 % Title and TOC share the first page (no page break between them); the body
 % starts on a fresh page after the TOC.
 \makeatletter

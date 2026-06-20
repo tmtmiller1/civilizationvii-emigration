@@ -88,6 +88,53 @@ function warSurgeBudget(src, cause) {
   return 1 + Math.round(scale * (CONFIG.warSurgeMax - 1));
 }
 
+// FORCED displacement causes: refugees flee every turn, so these bypass the post-move cooldown that
+// paces voluntary (prosperity / unhappiness) migration. `conquest` is reserved for capture-driven
+// displacement (a later phase emits it).
+const FORCED_CAUSES = new Set(["war", "disaster", "conquest"]);
+
+/** Whether a source is in an acute crisis (war / disaster), for sizing the per-civ move ceiling.
+ * @param {*} src Source signal. @returns {boolean} In crisis. */
+function inCrisis(src) {
+  return !!src.siege
+    || (src.violence || 0) >= CONFIG.violenceFleeThreshold
+    || (src.disaster || 0) >= CONFIG.disasterFleeThreshold;
+}
+
+/** A source rests (skips a move) only when on cooldown AND its cause is voluntary (not war/disaster).
+ * @param {{cooldown:number}} st Per-source state. @param {boolean} forced Forced-cause flag. */
+function restingOnCooldown(st, forced) {
+  return !forced && st.cooldown > 0;
+}
+
+/**
+ * Per-civ move ceilings for the turn: a runaway/perf safety net (NOT the pacing mechanism), sized so
+ * simultaneous wars on different civs never compete for one global budget. Each civ's ceiling grows
+ * with its settlement count and how many of its cities are in crisis, so a besieged empire can shed
+ * refugees from all fronts at once.
+ * @param {*[]} ranked Ranked source signals.
+ * @returns {Map<number, number>} owner id → max departures allowed this turn.
+ */
+function civMoveCeilings(ranked) {
+  /** @type {Map<number, {cities:number, crises:number}>} */
+  const by = new Map();
+  for (const s of ranked) {
+    let e = by.get(s.owner);
+    if (!e) {
+      e = { cities: 0, crises: 0 };
+      by.set(s.owner, e);
+    }
+    e.cities += 1;
+    if (inCrisis(s)) e.crises += 1;
+  }
+  /** @type {Map<number, number>} */
+  const out = new Map();
+  for (const [owner, e] of by) {
+    out.set(owner, CONFIG.maxMovesPerTurn + e.cities * CONFIG.movesPerCity + e.crises * CONFIG.movesPerSiege);
+  }
+  return out;
+}
+
 /**
  * Apply one rural point's worth of migration from `src` to `dest`. When transit lag is 0 it's
  * instantaneous (move + both consequences this turn); otherwise the source loses the point now and
@@ -171,7 +218,12 @@ function processSource(src, ranked, state, ownerPop, maxThisSource) {
   if (src.rural <= CONFIG.minRuralToEmigrate || maxThisSource <= 0) return [];
   const sources = state.sources;
   const st = sources[src.key] || (sources[src.key] = { pressure: 0, cooldown: 0 });
-  if (st.cooldown > 0) return [];
+  const cause = migrationCause(src);
+  const forced = FORCED_CAUSES.has(cause);
+  // Forced displacement (war / disaster) flees every turn: it bypasses the post-move cooldown that
+  // paces voluntary (prosperity / unhappiness) migration. A besieged city keeps shedding refugees,
+  // bounded only by the warSurge burst + the siege-loss cap, not by the cooldown.
+  if (restingOnCooldown(st, forced)) return [];
 
   const best = bestDestination(src, ranked, ownerPop);
   if (!best) {
@@ -181,12 +233,11 @@ function processSource(src, ranked, state, ownerPop, maxThisSource) {
   st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
   if (st.pressure < CONFIG.emigrationBar) return [];
 
-  const cause = migrationCause(src);
   const budget = Math.min(maxThisSource, warSurgeBudget(src, cause));
   const out = shedBurst(src, best.dest, state, cause, budget);
   if (!out.length) return [];
   st.pressure = 0;
-  st.cooldown = CONFIG.cooldownTurns;
+  if (!forced) st.cooldown = CONFIG.cooldownTurns; // only voluntary migration "rests" between moves
   return out;
 }
 
@@ -287,16 +338,18 @@ function planApply(src, ctx, best, budget) {
 function planSource(src, ctx, maxThisSource) {
   if (src.rural <= CONFIG.minRuralToEmigrate || maxThisSource <= 0) return 0;
   const st = ctx.st[src.key] || (ctx.st[src.key] = { pressure: 0, cooldown: 0 });
-  if (st.cooldown > 0) return 0;
+  const cause = migrationCause(src);
+  const forced = FORCED_CAUSES.has(cause);
+  if (restingOnCooldown(st, forced)) return 0;
   const best = bestDestination(src, ctx.sig, ctx.ownerPop);
   if (!best) return 0;
   st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
   if (st.pressure < CONFIG.emigrationBar) return 0;
-  const budget = Math.min(maxThisSource, warSurgeBudget(src, migrationCause(src)));
+  const budget = Math.min(maxThisSource, warSurgeBudget(src, cause));
   const moved = planApply(src, ctx, best, budget);
   if (moved) {
     st.pressure = 0;
-    st.cooldown = CONFIG.cooldownTurns;
+    if (!forced) st.cooldown = CONFIG.cooldownTurns;
   }
   return moved;
 }
@@ -318,10 +371,13 @@ function planTurn(ranked, state) {
   const ctx = {
     sig, st, ownerPop: ownerPopulations(sig), acc: new Map(), monoTurn: state.monoTurn
   };
-  let moves = 0;
+  const ceilings = civMoveCeilings(sig);
+  /** @type {Record<number, number>} */
+  const usedByOwner = {};
   for (const src of sig) {
-    if (moves >= CONFIG.maxMovesPerTurn) break;
-    moves += planSource(src, ctx, CONFIG.maxMovesPerTurn - moves);
+    const remaining = (ceilings.get(src.owner) || CONFIG.maxMovesPerTurn) - (usedByOwner[src.owner] || 0);
+    if (remaining <= 0) continue;
+    usedByOwner[src.owner] = (usedByOwner[src.owner] || 0) + planSource(src, ctx, remaining);
   }
   return ctx.acc;
 }
@@ -401,23 +457,28 @@ export function runPass() {
 }
 
 /**
- * Run every source's departures for the turn, respecting the global per-turn move cap (a war burst
- * from one source draws down the same budget). Returns the move/departure records.
+ * Run every source's departures for the turn, respecting each civ's own per-turn move ceiling (a
+ * safety net sized by city count + crises — see civMoveCeilings — so simultaneous wars on different
+ * civs never compete for one global budget). Returns the move/departure records.
  * @param {*} state Loaded state (sources + monoTurn + transit).
  * @param {*[]} ranked Ranked signals.
  * @returns {Migration[]} The applied records.
  */
 function processDepartures(state, ranked) {
   const ownerPop = ownerPopulations(ranked);
+  const ceilings = civMoveCeilings(ranked);
+  /** @type {Record<number, number>} */
+  const usedByOwner = {};
   /** @type {Migration[]} */
   const out = [];
-  let moves = 0;
   for (const src of ranked) {
-    if (moves >= CONFIG.maxMovesPerTurn) break;
-    const recs = processSource(src, ranked, state, ownerPop, CONFIG.maxMovesPerTurn - moves);
+    const ceiling = ceilings.get(src.owner) || CONFIG.maxMovesPerTurn;
+    const remaining = ceiling - (usedByOwner[src.owner] || 0);
+    if (remaining <= 0) continue; // this civ's per-turn budget is spent; other civs still process
+    const recs = processSource(src, ranked, state, ownerPop, remaining);
     for (const m of recs) {
       out.push(m);
-      moves += 1; // every processSource record is a departure (never an arrival)
+      usedByOwner[src.owner] = (usedByOwner[src.owner] || 0) + 1; // each record is one departure
     }
   }
   return out;

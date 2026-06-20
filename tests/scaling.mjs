@@ -7,12 +7,14 @@ import {
 } from "/emigration/ui/emigration-population.js";
 
 // The scaling MUST match the Demographics mod's scaleCityPopulationAt:
-//   raw^1.11 * 3000 * 1.009^turn
-// so a settlement reads the same population in both mods.
+//   raw^1.11 * 12000 * 1.009^turn
+// so a settlement reads the same population in both mods. (Base is 12000 in both:
+// emigration-config.js `scaleBase: 12000` and Demographics
+// `demographics-metrics-helpers.js` scaleCityPopulationAt.)
 
 function testScaleBaseline() {
   // raw 1 at turn 0 is exactly the scale base (1^1.11 = 1, 1.009^0 = 1).
-  assert.equal(scaleCityPopulation(1, 0), 3000);
+  assert.equal(scaleCityPopulation(1, 0), 12000);
 }
 
 function testScaleGrowsWithTurn() {
@@ -28,8 +30,8 @@ function testScaleRejectsNonPositive() {
 }
 
 function testMarginalPeopleIsTheDelta() {
-  // The first population point represents scale(1) - scale(0) = 3000 - 0.
-  assert.equal(marginalPeople(1, 0), 3000);
+  // The first population point represents scale(1) - scale(0) = 12000 - 0.
+  assert.equal(marginalPeople(1, 0), 12000);
   // A later point is the gap between consecutive scaled totals (always > 0).
   const m2 = marginalPeople(2, 0);
   assert.equal(m2, scaleCityPopulation(2, 0) - scaleCityPopulation(1, 0));

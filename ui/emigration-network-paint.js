@@ -233,9 +233,13 @@ function drawDots(ctx, scene) {
 }
 
 /**
- * Draw one civ/place name label, styled to mirror the Demographics global-relations node labels:
- * TitleFont, weight 600, the secondary parchment colour (--ia-text-secondary = #e5d2ac), and a soft
- * dark glow instead of a hard outline (the old 3px black stroke read as crude/chunky).
+ * Draw one civ/place name label to match the Demographics global-relations node labels
+ * (.demographics-relations-node-label): the UI BODY font (BodyFont, the same family the
+ * historical-data chart labels use), weight 600, the secondary parchment colour
+ * (--ia-text-secondary = #e5d2ac), and NOTHING else — no glow, no outline, no double-draw. The
+ * relations labels are crisp plain text on a dark backdrop; the old soft glow + doubled fill is
+ * exactly what made these read fuzzy by comparison. Crispness now comes from the Hi-DPI canvas
+ * backing (makeCanvas) rendering the text at device resolution, like the DOM labels.
  * @param {CanvasRenderingContext2D} ctx Context.
  * @param {string} name Label text.
  * @param {number} x Centre x. @param {number} y Centre y.
@@ -245,13 +249,83 @@ export function drawCivLabel(ctx, name, x, y, size) {
   ctx.save();
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.font = "600 " + (size || 15) + 'px "TitleFont", "BodyFont", sans-serif';
-  ctx.shadowColor = "#0a0804";
-  ctx.shadowBlur = size && size < 12 ? 3 : 4;
+  ctx.font = labelFont(size);
   ctx.fillStyle = "#e5d2ac";
-  ctx.fillText(name, x, y); // two passes deepen the soft halo (mirrors the doubled text-shadow)
   ctx.fillText(name, x, y);
   ctx.restore();
+}
+
+/**
+ * The label font string for a given size. BodyFont stack (with CJK + TitilliumWeb fallbacks),
+ * matching chart-line.js / the relations labels — NOT TitleFont (the display face reads differently).
+ * @param {number} [size] Font px (default 15).
+ * @returns {string} A CSS font string.
+ */
+function labelFont(size) {
+  return "600 " + (size || 15)
+    + "px BodyFont, BodyFont-SC, BodyFont-TC, BodyFont-JP, BodyFont-KR, TitilliumWeb, sans-serif";
+}
+
+/**
+ * @typedef {Object} LabelReq A label placement request.
+ * @property {string} text  Label text.
+ * @property {number} x     Centre x (fixed; only the y is nudged to avoid overlap).
+ * @property {number} y     Preferred centre y.
+ * @property {number} [size] Font px.
+ * @property {number} priority Higher = placed first (anchors); lower nudges around it.
+ */
+
+/** Axis-aligned box overlap test. */
+function boxesOverlap(/** @type {*} */ a, /** @type {*} */ b) {
+  return a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
+}
+
+/** Whether a box overlaps any already-placed box. @param {*} b @param {*[]} placed */
+function overlapsAny(b, placed) {
+  for (const p of placed) if (boxesOverlap(b, p)) return true;
+  return false;
+}
+
+/**
+ * A non-overlapping centre-y for a label: its preferred y if free, else nudged outward in 2px rings
+ * (up first, then down) until clear. Gives up at the preferred y after a bounded search.
+ * @param {(y:number)=>*} makeBox Builds the label box at a candidate y.
+ * @param {number} y0 Preferred centre y.
+ * @param {*[]} placed Already-placed boxes.
+ * @returns {number} The chosen centre y.
+ */
+function resolveY(makeBox, y0, placed) {
+  if (!overlapsAny(makeBox(y0), placed)) return y0;
+  for (let i = 1; i <= 18; i++) {
+    for (const dir of [-1, 1]) {
+      const y = y0 + dir * 2 * i;
+      if (!overlapsAny(makeBox(y), placed)) return y;
+    }
+  }
+  return y0;
+}
+
+/**
+ * Draw a set of labels with greedy overlap avoidance: higher-priority labels (civilizations) anchor
+ * at their preferred spot, and lower-priority ones (settlements) are nudged vertically so labels
+ * never physically collide. Same crisp styling as drawCivLabel.
+ * @param {CanvasRenderingContext2D} ctx Context.
+ * @param {LabelReq[]} labels Label requests.
+ */
+export function drawLabelsNoOverlap(ctx, labels) {
+  const order = labels.slice().sort((a, b) => (b.priority - a.priority) || (a.y - b.y));
+  /** @type {*[]} */
+  const placed = [];
+  for (const L of order) {
+    ctx.font = labelFont(L.size);
+    const halfW = ctx.measureText(L.text).width / 2 + 1;
+    const halfH = (L.size || 15) * 0.6;
+    const makeBox = (/** @type {number} */ yy) =>
+      ({ x0: L.x - halfW, y0: yy - halfH, x1: L.x + halfW, y1: yy + halfH });
+    const y = resolveY(makeBox, L.y, placed);
+    placed.push(makeBox(y));
+    drawCivLabel(ctx, L.text, L.x, y, L.size);
+  }
 }
 
 /**
@@ -260,10 +334,12 @@ export function drawCivLabel(ctx, name, x, y, size) {
  * @param {*[]} centers Cluster centres.
  */
 function drawLabels(ctx, centers) {
+  /** @type {*[]} */
+  const labels = [];
   for (const c of centers) {
-    if (!c.name) continue;
-    drawCivLabel(ctx, c.name, c.x, c.y - (c.clusterR || 6) - 10);
+    if (c.name) labels.push({ text: c.name, x: c.x, y: c.y - (c.clusterR || 6) - 10, size: 15, priority: 2 });
   }
+  drawLabelsNoOverlap(ctx, labels);
 }
 
 /**

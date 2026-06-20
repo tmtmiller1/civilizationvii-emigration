@@ -21,12 +21,12 @@ import { gatherDashboard } from "/emigration/ui/emigration-window.js";
 // label; `title` is the descriptive chart title. Mirrors emigration-views.js dashboardModel() order
 // + TAB_LABELS.
 const SUBTABS = [
-  { id: "network", label: "Network", title: "Migration network" },
-  { id: "flowmap", label: "Flows", title: "Migration flows" },
+  { id: "flow", label: "Network", title: "Migration network & flows" },
   { id: "ledger", label: "Civilizations", title: "Civilizations" },
   { id: "pies", label: "Causes", title: "Why people move" },
   { id: "cityflows", label: "Settlements", title: "Settlements" },
-  { id: "stances", label: "Immigration Policies", title: "Immigration policies" }
+  { id: "stances", label: "Immigration Policies", title: "Immigration policies" },
+  { id: "guide", label: "Guide", title: "What counts" }
 ];
 
 /**
@@ -42,12 +42,21 @@ function renderInto(container, kind) {
   }
 }
 
-/** The panel spec handed to Demographics: a page whose sub-tabs Emigration renders per section. */
+/**
+ * The panel spec handed to Demographics: a permanent "Migration" page whose sub-tabs Emigration
+ * renders per section. This is the single home for all emigration content in Demographics - the
+ * dashboard views (network / flows / ledger / causes / settlements / policies / guide) plus the
+ * per-civ migration line graphs registered onto this same page by emigration-demographics.js.
+ */
 const PANEL_SPEC = {
   id: "emig_migration_panel",
-  pageLabel: "Migration",
+  pageLabel: "Emigration",
   title: "Migration",
   tabs: SUBTABS,
+  // Present this panel as its OWN top-level tab in the Demographics screen (to the right of
+  // Historical Data) rather than as a page buried inside Historical Data. The Demographics screen
+  // reads this flag to add the tab and to exclude the panel from the Historical-Data page row.
+  topLevel: true,
   render: (/** @type {*} */ container, /** @type {*} */ _ctx, /** @type {*} */ subId) =>
     renderInto(container, subId)
 };

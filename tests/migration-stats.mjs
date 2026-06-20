@@ -7,7 +7,7 @@ globalThis.Configuration = {
   editGame: () => ({ setValue: (k, v) => (KV[k] = v) })
 };
 
-const { recordMigrations, recentEventsFor } = await import(
+const { recordMigrations, recentEventsFor, netDeltaForPlayer } = await import(
   "/emigration/ui/emigration-migration-stats.js"
 );
 const { registerMigrationMetric } = await import("/emigration/ui/emigration-demographics.js");
@@ -27,14 +27,15 @@ function testNetIsGainForDestLossForSrc() {
 }
 
 function testDeltaAdvancesPerSample() {
-  // After the first read above consumed player 0's 12k, a second read with no new
-  // migration is 0; then a new migration shows only the new delta.
-  let spec = captureSpec();
-  assert.equal(spec.accessor({ id: 0 }), 0); // already sampled, nothing new
-  recordMigrations([{ srcOwner: 2, destOwner: 0, people: 4000 }]);
-  spec = captureSpec();
-  assert.equal(spec.accessor({ id: 0 }), 4000); // just the new flow
-  assert.equal(captureSpec().accessor({ id: 0 }), 0); // and it's consumed
+  // netDeltaForPlayer is the per-sample delta of the cumulative net tally: each read returns the flow
+  // since the previous read (advancing a watermark), so an unchanged tally reads 0. (The registered
+  // graphs now chart the cumulative net via emig_net_cum; this exercises the underlying delta fn on a
+  // fresh player so it's independent of the cumulative reads above.)
+  recordMigrations([{ srcOwner: 30, destOwner: 31, people: 7000 }]);
+  assert.equal(netDeltaForPlayer(31), 7000); // first read: the new flow
+  assert.equal(netDeltaForPlayer(31), 0); // consumed; nothing new
+  recordMigrations([{ srcOwner: 30, destOwner: 31, people: 2000 }]);
+  assert.equal(netDeltaForPlayer(31), 2000); // just the new delta
 }
 
 function testFormatIsSignedPeople() {
@@ -44,23 +45,34 @@ function testFormatIsSignedPeople() {
   assert.equal(spec.format(-5000), "-5 thousand");
 }
 
-const EXPECTED_PAGES = [
-  ["power", "emig_net_migration"],
-  ["power", "emig_out"],
-  ["power", "emig_in"],
-  ["conflicts", "emig_refugees"]
-];
+// All migration graphs are collapsed into one "Graphs" metric-group tab placed FIRST on Emigration's
+// Migration page, with two toggle rows: a metric (Net/Emigration/Immigration/Refugees) and the units
+// (Scaled / Civ numbers). Each (member, units) maps to a registered metric id.
+function assertGraphsGroup(/** @type {*[]} */ groups) {
+  assert.equal(groups.length, 1);
+  const g = groups[0];
+  assert.equal(g.id, "emig_graphs");
+  assert.equal(g.pageId, "emig_migration_panel");
+  assert.equal(g.first, true);
+  assert.deepEqual(g.views.map((/** @type {*} */ v) => v.id), ["scaled", "civ"]);
+  assert.deepEqual(g.members.map((/** @type {*} */ m) => m.label),
+    ["Net Migration", "Emigration", "Immigration", "Refugees"]);
+  for (const m of g.members) {
+    assert.equal(typeof m.scaled, "string");
+    assert.equal(typeof m.civ, "string");
+  }
+}
 
 function testReadyApiRegistersImmediately() {
-  const pages = [];
+  const groups = [];
   const ids = [];
   globalThis.DemographicsMetricsAPI = {
     registerMetric: (s) => ids.push(s.id),
-    registerMetricToPage: (page, id) => pages.push([page, id])
+    registerMetricGroup: (g) => groups.push(g)
   };
   assert.equal(registerMigrationMetric(), true);
-  assert.ok(ids.includes("emig_net_migration") && ids.includes("emig_refugees"));
-  assert.deepEqual(pages, EXPECTED_PAGES);
+  assert.ok(ids.includes("emig_net_cum") && ids.includes("emig_refugees"));
+  assertGraphsGroup(groups);
 }
 
 function testDeferredRegistrationIsOrderIndependent() {
@@ -71,13 +83,13 @@ function testDeferredRegistrationIsOrderIndependent() {
   const api = globalThis.DemographicsMetricsAPI;
   assert.equal(api.pending.length, 1);
   // Demographics loads later and drains the queue (mirrors demographics-metrics).
-  const pages = [];
+  const groups = [];
   const ids = [];
   api.registerMetric = (s) => ids.push(s.id);
-  api.registerMetricToPage = (page, id) => pages.push([page, id]);
+  api.registerMetricGroup = (g) => groups.push(g);
   for (const job of api.pending.splice(0)) job(api);
-  assert.ok(ids.includes("emig_net_migration")); // registered after drain
-  assert.deepEqual(pages, EXPECTED_PAGES);
+  assert.ok(ids.includes("emig_net_cum")); // registered after drain
+  assertGraphsGroup(groups);
 }
 
 function testNeverInstalledNeverRegisters() {
@@ -91,7 +103,7 @@ function testNeverInstalledNeverRegisters() {
 
 // Re-register against a capturing stub to obtain the live metric spec (with its
 // closure over the real tallies), without disturbing the no-op test ordering.
-function captureSpec(id = "emig_net_migration") {
+function captureSpec(id = "emig_net_cum") {
   const specs = {};
   globalThis.DemographicsMetricsAPI = {
     registerMetric: (s) => (specs[s.id] = s),
