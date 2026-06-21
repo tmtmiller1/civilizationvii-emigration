@@ -670,9 +670,14 @@ When the **Demographics** mod is installed, Emigration contributes, via its comp
 `EmigrationData` (exposed globally) carries per-civ cumulative tallies: gross in/out, net, **refugees**
 (war/disaster/conquest), **deaths** (attrition), and the **per-cause** emigration/immigration breakdowns
 (`emigrationByCauseFor`, `immigrationByCauseFor`). If Demographics isn't installed it's all a silent
-no-op. The dot-swarm itself (`emigration-network-viz.js`) splits each cross-civ edge into per-cohort dots
-that **fly from their origin civilization's circle** to the destination — on load and on scrub, not only
-during live playback — so an immigrant never reads as home-grown.
+no-op. The dot-swarm itself (`emigration-network-viz.js`) animates **only the people who actually
+moved**: each cross-civ immigrant **flies out of its ORIGIN civ's circle** (its origin settlement's
+sub-cluster when known) across to the destination, and each intra-civ mover flies from its source
+settlement — on load and on scrub, not only during live playback — so a migrant never starts inside,
+or reads as native to, the civ it moved *to*. **Home-grown (resident) population does NOT fly**: it
+**materializes in place** inside its own city/town, rather than streaming out of the civ's centre.
+(The origin lookup uses nullish-coalescing, not `||`, so an origin civ at node index 0 isn't mistaken
+for the destination — the bug that made some immigrants appear to spawn in their destination.)
 
 ---
 
@@ -790,7 +795,7 @@ tree, gated by a test (`tests/modinfo.mjs`). Key modules:
 - `ui/emigration-migration-stats.js` / `ui/emigration-migration-records.js`: Per-civ tallies, the recent-moves feed, the `EmigrationData` global, and the `Migration` record typedef.
 - `ui/emigration-city-readout-data.js` / `ui/emigration-city-readout.js`: the per-city snapshot (`buildCitySnapshot` + `citySnapshot`, incl. the **cause mix**) and the on-demand readout panel.
 - `ui/emigration-views.js` / `ui/emigration-ledger-view.js` / `ui/emigration-window.js`: the shared dashboard render core (civ ledger + diverging Net bar, per-cause breakdown, stances, pressure table) and the standalone window host.
-- `ui/emigration-network-viz.js`: the animated dot-swarm — per-cohort dots that fly from origin to destination on load/scrub.
+- `ui/emigration-network-viz.js`: the animated dot-swarm — movers fly from their origin civ/settlement on load/scrub; residents materialize in place.
 - `ui/emigration-migration-page.js` / `ui/emigration-demographics.js`: the Demographics-page panel registration and the graph specs (Net (Graph)/(Table), Emigration, Immigration, Refugees (Left)/(Arrived)) with subtitles + per-cause tooltips.
 - `ui/emigration-prosperity-lens.js` / `ui/emigration-prosperity-tooltip.js`: the tile-by-tile Prosperity map lens (§3) and its plot tooltip.
 - `ui/emigration-ethnicity-lens.js` / `ui/emigration-ethnicity-tooltip.js` / `ui/emigration-composition.js`: the Ethnic Composition lens, plot tooltip, and origin-mix ledger.
