@@ -26,7 +26,8 @@ import {
   localDigestMessage
 } from "/emigration/ui/emigration-naming.js";
 import { formatBoth } from "/emigration/ui/emigration-population.js";
-import { causeLabel } from "/emigration/ui/emigration-causes.js";
+import { causeLabel, causeAccent } from "/emigration/ui/emigration-causes.js";
+import { logNotification } from "/emigration/ui/emigration-notifications.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 
 const NEWS_KEY = "EmigrationNews_v1";
@@ -109,16 +110,8 @@ function injectToastStyle() {
   }
 }
 
-// Per-cause theming: a left-accent-bar + eyebrow colour, so the toast's TYPE reads at a glance.
-// `crisis` is the world-news milestone pseudo-cause. The eyebrow text reuses the localized-by-code
-// causeLabel taxonomy (War / Disaster / Attraction / …); the default is the gold mod accent.
-/** @type {Record<string, string>} */
-const CAUSE_ACCENT = {
-  war: "#d24b3e", conquest: "#a83232", disaster: "#e08a3c",
-  prosperity: "#5fae6b", unhappiness: "#c9a24b", attrition: "#9aa0a6", crisis: "#d24b3e"
-};
-const DEFAULT_ACCENT = "#cba35c";
-
+// Per-cause theming (the accent bar + eyebrow colour) comes from the shared causeAccent() taxonomy,
+// so the toast and the notifications log read identically; the eyebrow TEXT reuses causeLabel.
 const TOAST_MS = 11000; // how long a toast stays before its half-second fade-out
 const TOAST_TOP = 5; // rem, the top of the topmost toast
 const TOAST_STEP = 3.4; // rem between stacked toasts
@@ -195,7 +188,7 @@ export function toast(msg, cause) {
     const root = document.body || document.documentElement;
     if (!root) return;
     injectToastStyle();
-    const accent = (cause && CAUSE_ACCENT[cause]) || DEFAULT_ACCENT;
+    const accent = causeAccent(cause);
     const el = buildToastEl(msg, cause, accent);
     root.appendChild(el);
     _toasts.push(el);
@@ -277,7 +270,10 @@ function crisisMilestone(pid, cum) {
   const data = /** @type {*} */ (globalThis).EmigrationData;
   const cumPts = data && typeof data.refugeesPtsFor === "function" ? data.refugeesPtsFor(pid) : 0;
   const ev = { cause: "crisis", civ: civAdjective(pid), people: formatBoth(cum, cumPts) };
-  announceImportant(refugeeHeadline(ev), "crisis");
+  const head = refugeeHeadline(ev);
+  logNotification({ kind: "crisis", cause: "crisis", summary: head, people: cum, points: cumPts,
+    fromCiv: civAdjective(pid) });
+  announceImportant(head, "crisis");
 }
 
 /**
@@ -315,6 +311,8 @@ function toastPerCause(migrations) {
   for (const cause of Object.keys(peopleByCause)) {
     const head = refugeeHeadline({ cause, people: formatBoth(peopleByCause[cause], ptsByCause[cause]) });
     const hint = actionHint(cause);
+    logNotification({ kind: "cause", cause, summary: head,
+      people: peopleByCause[cause], points: ptsByCause[cause] });
     toast(hint ? head + " " + hint : head, cause);
   }
 }
@@ -398,15 +396,20 @@ function localDigest(migs) {
   const lead = s.lead;
   const crossCiv = !!lead.crossCiv && typeof lead.destOwner === "number";
   const destGold = crossCiv ? assimilationCostFor(lead.destOwner).gold : 0;
-  announceImportant(
-    localDigestMessage({
-      cause: s.cause,
-      people: formatBoth(s.total, s.totalPts),
-      city: lead.srcName || "a settlement",
-      crossCiv,
-      destName: lead.destName,
-      destGold
-    }),
-    s.cause
-  );
+  const msg = localDigestMessage({
+    cause: s.cause,
+    people: formatBoth(s.total, s.totalPts),
+    city: lead.srcName || "a settlement",
+    crossCiv,
+    destName: lead.destName,
+    destGold
+  });
+  logNotification({
+    kind: "digest", cause: s.cause, summary: msg, people: s.total, points: s.totalPts,
+    fromCity: lead.srcName, fromCiv: lead.srcOwner != null ? civAdjective(lead.srcOwner) : undefined,
+    toCity: lead.destName || undefined,
+    toCiv: crossCiv && lead.destOwner != null ? civAdjective(lead.destOwner) : undefined,
+    crossCiv
+  });
+  announceImportant(msg, s.cause);
 }

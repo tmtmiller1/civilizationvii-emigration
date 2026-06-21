@@ -50,6 +50,18 @@ const LABELS = {
   other: "Other"
 };
 
+/** @type {Record<string,string>} Theme accent colour per cause (toasts + the notifications log). */
+const ACCENTS = {
+  war: "#d24b3e",
+  conquest: "#a83232",
+  disaster: "#e08a3c",
+  prosperity: "#5fae6b",
+  unhappiness: "#c9a24b",
+  attrition: "#9aa0a6",
+  crisis: "#d24b3e",
+  other: "#cba35c"
+};
+
 /** @type {Record<string,Permanence>} */
 const PERMANENCE = {
   unhappiness: "persistent",
@@ -87,6 +99,16 @@ export function isRefugeeCause(cause) {
  */
 export function causeLabel(cause) {
   return (cause && LABELS[cause]) || LABELS.other;
+}
+
+/**
+ * The theme accent colour for a cause (war red, disaster amber, prosperity green, …), for the toast
+ * accent bar and the notifications-log rows. Falls back to the gold mod accent for unknown causes.
+ * @param {string} [cause] The migration cause (or "crisis").
+ * @returns {string} A CSS colour.
+ */
+export function causeAccent(cause) {
+  return (cause && ACCENTS[cause]) || ACCENTS.other;
 }
 
 /**

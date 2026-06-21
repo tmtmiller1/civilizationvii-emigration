@@ -134,6 +134,8 @@
                     <Item>ui/emigration-migration-page.js</Item>
                     <Item>ui/emigration-engine.js</Item>
                     <Item>ui/emigration-game-speed.js</Item>
+                    <Item>ui/emigration-notifications.js</Item>
+                    <Item>ui/emigration-notifications-view.js</Item>
                     <Item>ui/emigration-raid.js</Item>
                     <!-- Submodules split out of the files above (engine→pull/state/
                          migration-records/consequences/arrivals,

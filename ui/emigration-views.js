@@ -19,6 +19,7 @@ import { renderGuide } from "/emigration/ui/emigration-guide.js";
 import { renderCityFlows, buildCivFlows } from "/emigration/ui/emigration-city-flows.js";
 import { renderStances } from "/emigration/ui/emigration-detail-views.js";
 import { renderLedger } from "/emigration/ui/emigration-ledger-view.js";
+import { renderNotifications } from "/emigration/ui/emigration-notifications-view.js";
 
 
 /**
@@ -269,6 +270,7 @@ export function dashboardModel(input) {
       { title: "Why people move", kind: "pies", cities: buildCivFlows(d.flows || []) },
       { title: "Settlements", kind: "cityflows", cities: d.myCities || [] },
       { title: "Immigration policies", kind: "stances", rows: stanceRows(d.civs || []) },
+      { title: "Migration notifications", kind: "notifications" },
       { title: "Guide", kind: "guide" }
     ]
   };
@@ -426,7 +428,8 @@ function el(tag, cls, text) {
 /** @type {Record<string, (body: HTMLElement, section: *) => void>} */
 const SECTION_VIEWS = {
   flow: renderNetworkOrFlow,
-  pies: renderCityFlows, cityflows: renderCityFlows, guide: renderGuide
+  pies: renderCityFlows, cityflows: renderCityFlows,
+  notifications: (/** @type {HTMLElement} */ body) => renderNotifications(body), guide: renderGuide
 };
 // Renderers that consume `section.rows` (flexbox tables).
 /** @type {Record<string, (body: HTMLElement, rows: *[]) => void>} */
@@ -458,7 +461,7 @@ function renderSectionBody(body, section) {
 const TAB_LABELS = {
   flow: "Network", ledger: "Net Migration (Table)", pies: "Causes",
   stances: "Immigration Policies",
-  cityflows: "Settlements", guide: "Guide"
+  cityflows: "Settlements", notifications: "Notifications", guide: "Guide"
 };
 
 /**

@@ -12,6 +12,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { recordDisaster, disasterKey } from "/emigration/ui/emigration-disasters.js";
 import { disasterName, actionHint } from "/emigration/ui/emigration-naming.js";
 import { announceImportant } from "/emigration/ui/emigration-feedback.js";
+import { logNotification } from "/emigration/ui/emigration-notifications.js";
 import { recordDisasterEvent } from "/emigration/ui/emigration-migration-stats.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
 
@@ -101,7 +102,9 @@ function onRandomEvent(data) {
     // silently. announceImportant adds the cooldown + notify-mode gate. The same
     // "notable" bar gates the refugees-chart marker log, keeping it meaningful + bounded.
     if (sev >= CONFIG.disasterNotifyMinSeverity) {
-      announceImportant(disasterName(data.eventType) + " strikes! " + actionHint("disaster"));
+      const alert = disasterName(data.eventType) + " strikes! " + actionHint("disaster");
+      logNotification({ kind: "disaster", cause: "disaster", summary: alert, people: 0, points: 0 });
+      announceImportant(alert, "disaster");
       recordDisasterEvent(disasterName(data.eventType), sev);
     }
   } catch (e) {
