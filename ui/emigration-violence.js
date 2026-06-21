@@ -29,6 +29,7 @@
 // "duration" dimension). State persists in GameConfiguration.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { speedTurns, speedDecay } from "/emigration/ui/emigration-game-speed.js";
 import { civTuning } from "/emigration/ui/emigration-civ-tuning.js";
 import {
   districtDamageFrac, districtBesieged, pillagedCount
@@ -261,7 +262,7 @@ export function siegeEscalation(city) {
   if (onset > 0 && (s.warLoss[key] || 0) >= (CONFIG.siegeLossCapPct / r) * onset) return 0;
   const t = s.tenure[key] || 0;
   // tenure 1 → siegeFloor; reaches full (×1) siegeRampTurns turns after onset.
-  const ramp = Math.min(1, Math.max(0, t - 1) / Math.max(1, CONFIG.siegeRampTurns));
+  const ramp = Math.min(1, Math.max(0, t - 1) / Math.max(1, speedTurns(CONFIG.siegeRampTurns)));
   return (CONFIG.siegeFloor + (1 - CONFIG.siegeFloor) * ramp) / r;
 }
 
@@ -294,7 +295,7 @@ export function tickViolence() {
   const turn = gameTurn();
   const elapsed = Math.max(0, turn - s.decayTurn);
   if (elapsed > 0) {
-    const factor = Math.pow(CONFIG.violenceDecay, elapsed);
+    const factor = Math.pow(speedDecay(CONFIG.violenceDecay), elapsed);
     for (const k of Object.keys(s.byCity)) {
       const v = s.byCity[k] * factor;
       if (v < 0.05) {

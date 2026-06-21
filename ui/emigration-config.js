@@ -31,6 +31,14 @@ export const CONFIG = {
   splitBudgetsEnabled: true, // false → one shared per-civ ceiling for both tracks
   splitUiReadoutEnabled: true, // false → city readout shows one dominant cause instead of a breakdown
 
+  // ── Game-speed scaling (Phase 7; see emigration-game-speed.js + docs/SHIP_PLAN.md) ──
+  // The engine paces in TURNS; Civ's game speed (Online→Marathon) stretches the same progress over
+  // a 6× range of turn counts. With tuning on, turn-count durations (cooldown/ramp/transit) and
+  // pressure thresholds scale by the speed scalar S, and decay re-bases to d^(1/S), so migration
+  // FEELS the same in game-time at any speed. Invariant magnitudes (loss caps, intensities) don't scale.
+  gameSpeedTuningEnabled: true, // false → fixed Standard-speed tuning at every game speed (legacy)
+  gameSpeedScalePopulation: false, // normalize scaleGrowth^(turn/S); CROSS-MOD — see config-types note
+
   // ── pull composition channels (docs/immigration-interaction-plan.md §1) ──
   // Pull = (gradient + TILT) - friction, then x PERMEABILITY. Both policy channels are
   // clamped so any number of cards/agreements/ops compose without runaway. Tilt is empty

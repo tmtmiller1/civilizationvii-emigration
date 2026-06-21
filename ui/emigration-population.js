@@ -10,6 +10,7 @@
 // point reports the marginal people that one point represents.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { speedScaleTurn } from "/emigration/ui/emigration-game-speed.js";
 
 /**
  * Scale a raw settlement population into a representative people count, matching
@@ -32,7 +33,8 @@ export function scaleCityPopulation(raw, turn, ageType, ageProgressPct) {
       ? ageProgressPct
       : currentAgeProgressPct();
 
-  const base = Math.pow(raw, CONFIG.scaleExp) * CONFIG.scaleBase * Math.pow(CONFIG.scaleGrowth, t);
+  const base =
+    Math.pow(raw, CONFIG.scaleExp) * CONFIG.scaleBase * Math.pow(CONFIG.scaleGrowth, speedScaleTurn(t));
   const megaTarget = raw > 20 ? Math.pow(raw / 20, 1.5) : 1;
   const ramp = modernMegaRamp(resolvedAgeType, resolvedAgeProgress);
   const megaBoost = 1 + (megaTarget - 1) * ramp;
