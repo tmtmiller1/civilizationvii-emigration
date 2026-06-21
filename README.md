@@ -644,8 +644,14 @@ When the **Demographics** mod is installed, Emigration contributes, via its comp
   - **Refugees (Arrived)** — displaced people it took in, with onset markers.
 - **The full dashboard as native sub-tabs** on that same tab — **Network** (animated dot-swarm + arrow
   flow map, each with a Civ Pop / Scaled Pop units toggle), **Civilizations**, **Causes**,
-  **Settlements**, **Immigration Policies**, and **Guide** — the **same content as the standalone
-  window**. Registered order-independently and a silent no-op on an older Demographics.
+  **Settlements**, **Immigration Policies**, **Notifications**, and **Guide** — the **same content as the
+  standalone window**. Registered order-independently and a silent no-op on an older Demographics.
+- **A Notifications log** (the **Notifications** sub-tab) — a **permanent, scrollable record of every
+  migration notification that has fired**, so the on-screen toasts can stay brief without losing the
+  history. Each row is cause-themed (the same accent as its toast) and shows the turn + a one-line
+  summary; **clicking a row expands it** to the full event detail — what caused it, which settlement it
+  left, where the people went, and how many (in both measuring systems). Persisted across save/reload
+  (`emigration-notifications.js` → `emigration-notifications-view.js`).
 - **An Ethnic Composition map lens + plot tooltip** (`emigration-ethnicity-lens.js`,
   `emigration-ethnicity-tooltip.js`, fed by `emigration-composition.js`). A self-registering lens
   (Shift+E) paints each settlement by the **dominant origin civilization** of its people, fill intensity
@@ -675,7 +681,10 @@ dwell, and vertical **stacking** so several never overlap. Each toast is **theme
 coloured left accent bar + eyebrow label (War / Disaster / Attraction / Conquest / …) so its type reads
 at a glance (war red, disaster amber, prosperity green, …) — and every count is shown in **both
 measuring systems at once**: raw Civ population points *and* scaled people, e.g. *"3 population points
-(36 thousand people)"*. It is **important-only by design**, with several anti-spam layers:
+(36 thousand people)"*. It is **important-only by design**, with several anti-spam layers — and because
+the on-screen toasts stay deliberately brief, **every notification is also recorded permanently in the
+Notifications log** (the Demographics sub-tab, §8), where it can be revisited and expanded for full
+detail. The anti-spam layers:
 
 - **Rich, named events** (`emigration-naming.js`): disasters use the **game's own names**
   (`GameInfo.RandomEvents.lookup(type).Name`), wars reuse the war name, conquest names the sacked city.
@@ -774,7 +783,8 @@ tree, gated by a test (`tests/modinfo.mjs`). Key modules:
 - `ui/emigration-migration-page.js` / `ui/emigration-demographics.js`: the Demographics-page panel registration and the graph specs (Net (Graph)/(Table), Emigration, Immigration, Refugees (Left)/(Arrived)) with subtitles + per-cause tooltips.
 - `ui/emigration-prosperity-lens.js` / `ui/emigration-prosperity-tooltip.js`: the tile-by-tile Prosperity map lens (§3) and its plot tooltip.
 - `ui/emigration-ethnicity-lens.js` / `ui/emigration-ethnicity-tooltip.js` / `ui/emigration-composition.js`: the Ethnic Composition lens, plot tooltip, and origin-mix ledger.
-- `ui/emigration-naming.js` / `ui/emigration-feedback.js` / `ui/emigration-events.js` / `ui/emigration-report.js` / `ui/emigration-log.js`: rich event naming; styled toasts + world-news + anti-spam; `RandomEventOccurred` handling; record→log lines; dev logging.
+- `ui/emigration-naming.js` / `ui/emigration-feedback.js` / `ui/emigration-events.js` / `ui/emigration-report.js` / `ui/emigration-log.js`: rich event naming; cause-themed, dual-number, stacking toasts + world-news + anti-spam; `RandomEventOccurred` handling; record→log lines; dev logging.
+- `ui/emigration-notifications.js` / `ui/emigration-notifications-view.js`: the **persistent notification log** (every fired toast, with its cause/turn/count/origin/destination detail) and its click-to-expand Notifications sub-tab.
 - `ui/emigration-settings.js` / `ui/emigration-options.js` / `ui/options/*`: number-display preference + tunable/preset getters; Options registration; the Advanced editor and the cascade-safe `modSettings` store.
 - `data/emigration-policies-*.xml`, `data/emigration-policies-gameeffects.xml`, `data/emigration-policy-icons.xml`, `data/emigration-civilopedia.xml`: DB components for the stance/attraction cards, their native modifiers, icons, and the Civilopedia pages.
 - `ui/migration-probe.js`: Dev-only API probe (separate modinfo, not shipped).
@@ -827,6 +837,7 @@ Per-game state lives in the `GameConfiguration` KV store (survives save/reload):
 - `EmigrationEthnos_v1`: per-settlement origin-composition ledger (the ethnicity lens/tooltip).
 - `EmigrationMigStats_v1`: per-civ tallies — net, gross in/out, refugees, deaths, the per-cause breakdowns, and their graph-sample watermarks.
 - `EmigrationNews_v1`: world-news announced-milestone tiers + the last-toast turn (anti-spam).
+- `EmigrationNotif_v1`: the permanent notification log (newest-first, capped) behind the Notifications sub-tab — each fired notification's cause, turn, summary, count, and origin/destination detail.
 
 Missing fields (e.g. an old save with no crisis-track pressure) are normalized on load, so the two-track
 split is **save-compatible** with pre-split games. Options/settings persist separately in the shared
