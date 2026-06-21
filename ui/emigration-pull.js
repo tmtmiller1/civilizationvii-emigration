@@ -150,6 +150,7 @@ export function adjustedPull(src, dest, flee, ownerPop, aggressors) {
   if (dest.owner !== src.owner) {
     if (!CONFIG.crossCivEnabled) return null;
     pull -= crossCivBlock(src);
+    pull -= dominanceFor(dest, ownerPop); // anti-snowball: cross-civ inflow to a runaway leader only
   }
   pull += geoAdjust(src, dest, flee, aggressors);
   pull -= congestionFor(dest, ownerPop);
@@ -190,6 +191,49 @@ function retentionFor(src) {
 function congestionFor(dest, ownerPop) {
   if (!(CONFIG.congestWeight > 0)) return 0;
   return congestionPenalty(dest.owner, ownerPop ? ownerPop[dest.owner] || 0 : 0);
+}
+
+// The world-average civ population, memoized per ownerPop snapshot (one map per pass) so the
+// anti-snowball ratio doesn't re-sum every (source × destination) pair.
+let _fieldPopRef = /** @type {Record<number, number>|null} */ (null);
+let _fieldAvg = 0;
+
+/**
+ * The mean population across all owners in `ownerPop` (the "fair share" a snowball is measured
+ * against), memoized by the map's identity.
+ * @param {Record<number, number>} ownerPop Per-owner total population.
+ * @returns {number} World-average civ population (0 when empty).
+ */
+function fieldAverage(ownerPop) {
+  if (ownerPop === _fieldPopRef) return _fieldAvg;
+  _fieldPopRef = ownerPop;
+  let sum = 0;
+  let n = 0;
+  for (const k of Object.keys(ownerPop)) {
+    sum += ownerPop[+k] || 0;
+    n++;
+  }
+  _fieldAvg = n > 0 ? sum / n : 0;
+  return _fieldAvg;
+}
+
+/**
+ * The anti-snowball headwind for a destination civ: a pull penalty that grows as the civ's
+ * population runs ahead of the world-average civ, so a runaway leader gets a self-correcting brake
+ * on further cross-civ immigration. Zero at or below the fair-share threshold, and zero when the
+ * brake is off or population data is missing.
+ * @param {*} dest Destination signal.
+ * @param {Record<number, number>|null} ownerPop Per-owner total population.
+ * @returns {number} A non-negative penalty.
+ */
+function dominanceFor(dest, ownerPop) {
+  if (!(CONFIG.antiSnowballWeight > 0) || !ownerPop) return 0;
+  const avg = fieldAverage(ownerPop);
+  if (!(avg > 0)) return 0;
+  const ratio = (ownerPop[dest.owner] || 0) / avg;
+  const excess = ratio - CONFIG.antiSnowballThreshold;
+  if (!(excess > 0)) return 0;
+  return CONFIG.antiSnowballWeight * Math.pow(excess, CONFIG.antiSnowballExponent);
 }
 
 /**

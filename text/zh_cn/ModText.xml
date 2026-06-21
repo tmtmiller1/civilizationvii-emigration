@@ -122,6 +122,10 @@
         <Replace Tag="LOC_EMIG_T_MHGOLD_D" Language="zh_Hans_CN"><Text>文明每滞留一个 UNIT_MIGRANT，每回合扣除的金币，随数量增长。0 = 关闭。（经探针确认的扣除杠杆。）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST" Language="zh_Hans_CN"><Text>成本: 拥堵逆风（0 = 关闭）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="zh_Hans_CN"><Text>让吸收大量移民的文明成为进一步迁徙的较不吸引人的目的地（它正忙于整合新来者），随其消化量增长。对失控磁石的结构性制动。0 = 关闭。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="zh_Hans_CN"><Text>成本：防滚雪球制动（0 = 关闭）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="zh_Hans_CN"><Text>让人口远远领先于其他文明的文明成为跨文明移民不那么有吸引力的目的地——对失控领跑者的自我修正制动，领先越多制动越强。绝不阻碍领跑者的人口流出或内部迁移。0 = 关闭。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="zh_Hans_CN"><Text>成本：防滚雪球触发阈值（公平份额倍数）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="zh_Hans_CN"><Text>防滚雪球制动开始生效前，一个文明的人口可以领先平均文明多少，以公平份额的倍数表示。越低＝制动越早介入（越平均）；越高＝只有极端失控的领跑者才会被减速。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="zh_Hans_CN"><Text>灾害: 驱动迁徙</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="zh_Hans_CN"><Text>让环境灾害（洪水、火山、瘟疫……）将人口逐出受灾城市，成为气候/灾害难民，与战争和不满并列。关闭 = 灾害不影响迁徙。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="zh_Hans_CN"><Text>灾害: 每点苦难的移居（%）</Text></Replace>

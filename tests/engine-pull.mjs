@@ -80,4 +80,38 @@ globalThis.Game = { Diplomacy: { getJointEvents: () => [{ actionTypeName: "DIPLO
 Object.assign(CONFIG, { permOpenBorders: 2, bordersEnabled: false });
 close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(2, 30, 5, false, 0, 0), null, null, null), 8, "C9 open-borders permeability");
 
-console.log("engine-pull characterization harness passed (9 cases)");
+// ── Anti-snowball headwind (cross-civ inflow into a runaway leader) ──────────────────────────────
+// Reset diplomacy/players so permeability is neutral (1), and pin the brake to a LINEAR exponent so
+// the arithmetic is exact: penalty = weight × max(0, civPop/avg − threshold).
+globalThis.Game = undefined;
+globalThis.Players = undefined;
+Object.assign(CONFIG, {
+  antiSnowballWeight: 15, antiSnowballThreshold: 1.25, antiSnowballExponent: 1,
+  congestWeight: 0, bordersEnabled: false, civTuningEnabled: false
+});
+// Field where civ 2 is the runaway leader (avg = 30): civ2 ratio 2.0, civ1/3 ratio 0.667.
+const fieldA = { 1: 20, 2: 60, 3: 20, 4: 20 };
+
+// C10 , cross-civ INTO the leader (civ2, ratio 2.0): excess 0.75 → penalty 15×0.75 = 11.25.
+//   pull = (40−10) −4 reluctance −12 poach −11.25 dominance = 2.75.
+close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(2, 40, 5, false, 0, 0), null, fieldA, null), 2.75, "C10 leader inflow braked");
+
+// C11 , cross-civ into a BELOW-fair-share civ (civ3, ratio 0.667 < threshold) → no penalty.
+//   pull = 30 −4 −12 = 14.
+close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(3, 40, 5, false, 0, 0), null, fieldA, null), 14, "C11 no penalty below fair share");
+
+// C12 , an overwhelming leader's headwind can fully block the move (pull ≤ 0 → null).
+//   field {1:10,2:150,3:10,4:10}: avg 45, civ2 ratio 3.333, excess 2.083 → penalty 31.25;
+//   pull = 30 −4 −12 −31.25 < 0.
+const fieldB = { 1: 10, 2: 150, 3: 10, 4: 10 };
+assert.equal(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(2, 40, 5, false, 0, 0), null, fieldB, null), null, "C12 runaway leader blocked");
+
+// C13 , the leader's OWN people leaving (src civ2 → dest civ1) are NOT braked (penalty keys on dest).
+//   pull = 30 −4 −12 = 14.
+close(adjustedPull(sig(2, 10, 5, false, 0, 0), sig(1, 40, 5, false, 0, 0), null, fieldA, null), 14, "C13 leader outflow unbraked");
+
+// C14 , an INTERNAL move inside the leader (same owner) is never braked.
+//   pull = (25−10) −4 = 11 (no cross-civ poach, no dominance).
+close(adjustedPull(sig(2, 10, 5, false, 0, 0), sig(2, 25, 5, false, 0, 0), null, fieldA, null), 11, "C14 internal move unbraked");
+
+console.log("engine-pull characterization harness passed (14 cases)");

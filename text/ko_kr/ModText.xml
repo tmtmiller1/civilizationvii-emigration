@@ -122,6 +122,10 @@
         <Replace Tag="LOC_EMIG_T_MHGOLD_D" Language="ko_KR"><Text>문명이 보유한 UNIT_MIGRANT마다 매 턴 차감되는 금. 수에 따라 증가. 0 = 끔. (프로브로 확인된 차감 레버.)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST" Language="ko_KR"><Text>비용: 혼잡 역풍(0 = 끔)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="ko_KR"><Text>많은 이주민을 흡수하는 문명을 추가 이주의 목적지로서 덜 매력적으로 만듭니다(새 이주민 통합에 바쁘므로). 소화 중인 양에 따라 증가. 폭주 자석에 대한 구조적 제동. 0 = 끔.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="ko_KR"><Text>비용: 눈덩이 효과 억제 (0 = 끄기)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="ko_KR"><Text>인구가 다른 문명들보다 크게 앞서간 문명을 문명 간 이주 목적지로서 덜 매력적으로 만듭니다. 폭주하는 선두 문명에 대한 자기 교정 제동 장치로, 앞선 정도에 비례해 강해집니다. 선두 문명의 유출이나 내부 이동은 방해하지 않습니다. 0 = 끄기.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="ko_KR"><Text>비용: 눈덩이 발동 기준 (공정 몫 배수)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="ko_KR"><Text>눈덩이 효과 억제가 작동하기 전에 한 문명의 인구가 평균 문명보다 얼마나 앞서갈 수 있는지를 공정한 몫의 배수로 지정합니다. 낮을수록 = 제동이 더 일찍 작동(더 평등); 높을수록 = 극단적으로 폭주한 선두 문명만 억제됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="ko_KR"><Text>재난: 이주 유발</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="ko_KR"><Text>환경 재난(홍수, 화산, 역병…)이 전쟁·불만과 더불어 피해 도시에서 주민을 기후/재난 난민으로 밀어내게 합니다. 끄면 재난이 이주에 영향을 주지 않습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="ko_KR"><Text>재난: 고통 포인트당 이주(%)</Text></Replace>
