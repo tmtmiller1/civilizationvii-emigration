@@ -10,6 +10,8 @@ import { pieCardSlices, legendChips } from "/emigration/ui/emigration-pies.js";
 import { civColorByIndex, CAUSE_PALETTE } from "/emigration/ui/emigration-network-paint.js";
 import { causeLabel } from "/emigration/ui/emigration-causes.js";
 import { formatPeople } from "/emigration/ui/emigration-population.js";
+import { eventDisplayName } from "/emigration/ui/emigration-naming.js";
+import { eventGroupCause } from "/emigration/ui/emigration-event-attribution.js";
 
 /**
  * Make an element with an optional class + text.
@@ -162,15 +164,58 @@ function civHeader(name) {
 /**
  * Non-zero cause rows for a per-cause map, sorted by count descending.
  * @param {Record<string,number>} causes Per-cause people.
- * @returns {{label:string, color:string, n:number}[]} Rows.
+ * @returns {{cause:string, label:string, color:string, n:number}[]} Rows.
  */
 function causeRows(causes) {
   return Object.keys(causes || {})
     .map((c) => ({
-      label: causeLabel(c), color: CAUSE_PALETTE[c] || CAUSE_PALETTE.other, n: causes[c] || 0
+      cause: c, label: causeLabel(c), color: CAUSE_PALETTE[c] || CAUSE_PALETTE.other, n: causes[c] || 0
     }))
     .filter((r) => r.n > 0)
     .sort((a, b) => b.n - a.n);
+}
+
+/**
+ * Group a civ's per-event tallies under their parent cause, named and sorted by impact, for the
+ * cause-list drill-down. Events with no parent cause (or zero impact) are dropped.
+ * @param {Record<string, {people:number, deaths:number}>} events Per-event {people, deaths}.
+ * @returns {Record<string, {name:string, people:number, deaths:number}[]>} Events by cause.
+ */
+function groupEventsByCause(events) {
+  /** @type {Record<string, *[]>} */
+  const by = {};
+  for (const k of Object.keys(events || {})) pushEvent(by, k, events[k] || {});
+  for (const c of Object.keys(by)) by[c].sort((a, b) => b.people + b.deaths - (a.people + a.deaths));
+  return by;
+}
+
+/**
+ * Push one event into its parent cause bucket (dropping unattributed / zero-impact events).
+ * @param {Record<string, *[]>} by Cause → events (mutated).
+ * @param {string} key The event key.
+ * @param {{people?:number, deaths?:number}} v The event's tallies.
+ */
+function pushEvent(by, key, v) {
+  const cause = eventGroupCause(key);
+  const people = v.people || 0;
+  const deaths = v.deaths || 0;
+  if (!cause || people + deaths <= 0) return;
+  (by[cause] = by[cause] || []).push({ name: eventDisplayName(key) || key, people, deaths });
+}
+
+/**
+ * One specific-event sub-row under a cause: "↳ Roman–Greek War  1.9k · 0.3k died".
+ * @param {{name:string, people:number, deaths:number}} ev The event.
+ * @returns {HTMLElement} The row.
+ */
+function eventSubRow(ev) {
+  const row = el("div", "emig-event-row");
+  row.appendChild(el("span", "emig-event-name", "↳ " + ev.name));
+  let num = formatPeople(ev.people);
+  if (ev.people > 0 && ev.deaths > 0) num += " · " + formatPeople(ev.deaths) + " died";
+  else if (ev.deaths > 0) num = formatPeople(ev.deaths) + " died";
+  row.appendChild(el("span", "emig-event-num", num));
+  return row;
 }
 
 /**
@@ -197,11 +242,13 @@ function causeRow(r, max) {
 
 /**
  * The civ's cause-by-count list (left column on the Causes tab), sorted so the dominant driver is
- * obvious at a glance.
+ * obvious at a glance. Each cause expands to the SPECIFIC events behind it (the wars/disasters/
+ * crises, with their emigration + deaths), when `events` carries them.
  * @param {Record<string,number>} causes Per-cause people.
+ * @param {Record<string, {people:number, deaths:number}>} [events] Per-event {people, deaths}.
  * @returns {HTMLElement} The list column.
  */
-function causeList(causes) {
+function causeList(causes, events) {
   const col = el("div", "emig-cause-list");
   col.appendChild(el("div", "emig-cause-list-h", "Causes by impact"));
   const rows = causeRows(causes);
@@ -210,7 +257,11 @@ function causeList(causes) {
     return col;
   }
   const max = rows[0].n;
-  for (const r of rows) col.appendChild(causeRow(r, max));
+  const byCause = groupEventsByCause(events || {});
+  for (const r of rows) {
+    col.appendChild(causeRow(r, max));
+    for (const ev of byCause[r.cause] || []) col.appendChild(eventSubRow(ev));
+  }
   return col;
 }
 
@@ -226,7 +277,7 @@ function cityCard(c) {
   const isCiv = !!c.causes;
   card.appendChild(isCiv ? civHeader(c.name) : el("div", "emig-city-name", cardTitle(c)));
   const cols = el("div", "emig-city-cols" + (isCiv ? " with-causes" : ""));
-  if (isCiv) cols.appendChild(causeList(c.causes));
+  if (isCiv) cols.appendChild(causeList(c.causes, c.events));
   cols.appendChild(directionCol("Immigrants ; came from", "Why:", c.in));
   cols.appendChild(directionCol("Emigrants ; left for", "Why:", c.out));
   // Settlements: the pressure becomes a third aligned graph column beside the two pies.
@@ -239,9 +290,11 @@ function cityCard(c) {
  * Per-civilization "Came from" / "Left for" entries (the Causes tab) , the same shape as the
  * Settlements rows but aggregated at the civ level, from the cross-civ flow edges.
  * @param {*[]} flows Named flow edges ({from,to,fromName,toName,people,byCause}).
- * @returns {*[]} Entries [{name, in:{civs,causes}, out:{civs,causes}}], busiest first.
+ * @param {Record<number, Record<string, {people:number, deaths:number}>>} [eventsByOwner] Per civ,
+ *   the specific events (war/disaster/crisis) behind its causes, for the drill-down.
+ * @returns {*[]} Entries [{name, in:{civs,causes}, out:{civs,causes}, events}], busiest first.
  */
-export function buildCivFlows(flows) {
+export function buildCivFlows(flows, eventsByOwner) {
   /** @type {Map<number,string>} */
   const names = new Map();
   /** @type {Map<number,*>} */
@@ -281,11 +334,12 @@ export function buildCivFlows(flows) {
     for (const k of Object.keys(b)) out[k] = (out[k] || 0) + b[k];
     return out;
   };
+  const events = eventsByOwner || {};
   return [...map.keys()]
     .map((id) => {
       const e = map.get(id);
       return { name: names.get(id) || ("#" + id), in: dir(e.in), out: dir(e.out),
-        causes: merge(e.in.causes, e.out.causes) };
+        causes: merge(e.in.causes, e.out.causes), events: events[id] || null };
     })
     .sort((a, b) => total(b) - total(a));
 }

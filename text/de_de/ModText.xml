@@ -122,6 +122,7 @@
         <Replace Tag="LOC_EMIG_T_MHGOLD_D" Language="de_DE"><Text>Gold, das je gehaltener UNIT_MIGRANT pro Runde entzogen wird, skalierend mit der Anzahl. 0 = aus. (Per Sonde bestätigter Abzugshebel.)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST" Language="de_DE"><Text>Kosten – Überlastungs-Gegenwind (0 = aus)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="de_DE"><Text>Eine Zivilisation, die viele Migranten aufnimmt, zu einem weniger attraktiven Ziel für weitere Wanderung machen (sie ist mit Integration beschäftigt), skalierend mit der Menge, die sie verdaut. Eine strukturelle Bremse gegen außer Kontrolle geratene Magnete. 0 = aus.</Text></Replace>
+        <Replace Tag="LOC_EMIG_EVENT_FAMINE" Language="de_DE"><Text>Hungersnot</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="de_DE"><Text>Kosten: Anti-Schneeball-Bremse (0 = aus)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="de_DE"><Text>Macht eine Zivilisation, deren Bevölkerung dem Feld weit vorausgeeilt ist, zu einem weniger attraktiven Ziel für zivilisationsübergreifende Migration — eine selbstkorrigierende Bremse für einen außer Kontrolle geratenen Spitzenreiter, die mit seinem Vorsprung wächst. Behindert nie die Abwanderung oder interne Züge des Spitzenreiters. 0 = aus.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="de_DE"><Text>Kosten: Anti-Schneeball-Schwelle (× fairer Anteil)</Text></Replace>

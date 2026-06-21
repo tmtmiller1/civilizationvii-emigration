@@ -25,6 +25,7 @@ import { recordStanceImpact } from "/emigration/ui/emigration-migration-stats.js
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
 import { loadState, saveState, prepareState, ownerPopulations } from "/emigration/ui/emigration-state.js";
 import { cityName, moveRecord, departRecord } from "/emigration/ui/emigration-migration-records.js";
+import { pollCrisis, eventKeyForMove, eventKeyForDeath } from "/emigration/ui/emigration-event-attribution.js";
 import {
   applyDepartureConsequences,
   applyArrivalConsequences
@@ -182,6 +183,7 @@ function voluntaryCause(src) {
 function applyOneMove(src, dest, popBefore, state, cause) {
   const people = marginalPeople(popBefore, state.monoTurn);
   const lag = transitLag(src, dest, cause);
+  const eventKey = eventKeyForMove(src, cause); // specific war/disaster/crisis behind this move
   if (lag <= 0) {
     if (!moveRural(src.city, dest.city)) return null;
     applyMoveToRanking(src, dest);
@@ -189,7 +191,7 @@ function applyOneMove(src, dest, popBefore, state, cause) {
     const cost = applyArrivalConsequences(
       dest.city, dest.owner, dest.population, src.infected, src.owner
     );
-    return moveRecord(src, dest, people, cause, cost);
+    return moveRecord(src, dest, people, cause, { destPaidCost: cost, eventKey });
   }
   // Lagged: the source loses the point now; the destination gains it on arrival.
   if (!removeRural(src.city)) return null;
@@ -208,7 +210,7 @@ function applyOneMove(src, dest, popBefore, state, cause) {
     srcName: cityName(src.city),
     destName: cityName(dest.city)
   });
-  return departRecord(src, dest, people, cause);
+  return departRecord(src, dest, people, cause, eventKey);
 }
 
 /**
@@ -421,7 +423,8 @@ function processOutletDeath(src, st, state, hasRefuge) {
     crossCiv: false,
     points: 1,
     people: marginalPeople(popBefore, state.monoTurn),
-    cause: "attrition"
+    cause: "attrition",
+    eventKey: eventKeyForDeath(src) // specific war/disaster/crisis/famine that killed them
   };
 }
 
@@ -586,6 +589,7 @@ function bankStanceImpact(ranked, state) {
 export function runPass() {
   tickViolence(); // decay accumulated combat intensity before reading it
   tickDisasters(); // decay accumulated disaster distress before reading it
+  pollCrisis(); // cache the active age crisis so moves/deaths can be attributed to it
   const signals = collectCitySignals();
   const ranked = signals.length ? rankByProsperity(signals) : [];
 
