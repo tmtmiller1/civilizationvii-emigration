@@ -238,6 +238,7 @@
         <Replace Tag="LOC_OPTIONS_EMIG_DOCK_DESCRIPTION" Language="zh_Hans_CN"><Text>在游戏工具栏显示迁徙按钮。关闭后改为从人口统计界面的迁徙标签页打开仪表板。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="zh_Hans_CN"><Text>尚无跨文明迁移，当人们跨越边界时便会出现流动。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="zh_Hans_CN"><Text>着色依据：</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_HELP" Language="zh_Hans_CN"><Text>图表说明</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="zh_Hans_CN"><Text>来源</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="zh_Hans_CN"><Text>类型</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_MOVEMENT" Language="zh_Hans_CN"><Text>迁移</Text></Replace>
