@@ -7,9 +7,9 @@ globalThis.Configuration = {
   editGame: () => ({ setValue: (k, v) => (KV[k] = v) })
 };
 
-const { recordMigrations, recentEventsFor, netDeltaForPlayer, migrationFlowHistory } = await import(
-  "/emigration/ui/emigration-migration-stats.js"
-);
+const { recordMigrations, recentEventsFor, netDeltaForPlayer, migrationFlowHistory } =
+  await import("/emigration/ui/emigration-migration-stats.js");
+const { capFlows } = await import("/emigration/ui/emigration-flow-history.js");
 const { registerMigrationMetric } = await import("/emigration/ui/emigration-demographics.js");
 
 function testNetIsGainForDestLossForSrc() {
@@ -204,7 +204,24 @@ testNeverInstalledNeverRegisters();
 testGrossAndRefugeeTallies();
 testAttritionIsDeathsNotMigration();
 testRefugeeCauseRouting();
+function testCapFlowsBoundsTheMatrixEvictingSmallest() {
+  // The cumulative flow matrices must not grow unbounded: past MAX_FLOW_KEYS, the lowest-volume edges
+  // are evicted (from flows AND flowsPts together) so the persisted blob stays bounded.
+  const s = { flows: {}, flowsPts: {} };
+  for (let i = 0; i < 4100; i++) {
+    s.flows["k" + i] = { war: i + 1 }; // k0 = smallest (1 person), k4099 = largest
+    s.flowsPts["k" + i] = { war: 1 };
+  }
+  capFlows(s.flows, s.flowsPts, 4000);
+  const n = Object.keys(s.flows).length;
+  assert.ok(n <= 4000 && n >= 3000, "capped near MAX_FLOW_KEYS (was " + n + ")");
+  assert.ok(!("k0" in s.flows), "the lowest-volume edge was evicted");
+  assert.ok("k4099" in s.flows, "the highest-volume edge was retained");
+  assert.equal(Object.keys(s.flowsPts).length, n, "flowsPts evicted in lockstep with flows");
+}
+
 testRecentEventsFeedIsPlayerFilteredNewestFirst();
 testEmptyPassRecordsPopulationFrame();
+testCapFlowsBoundsTheMatrixEvictingSmallest();
 
 console.log("migration-stats harness passed");

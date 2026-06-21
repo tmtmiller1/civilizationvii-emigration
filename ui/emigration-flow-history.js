@@ -17,6 +17,38 @@
 // a live cumulative map.
 
 /**
+ * Total people across all causes for one flow entry ({cause: people}).
+ * @param {Record<string, number>} byCause The per-cause map.
+ * @returns {number} Total people.
+ */
+function flowTotal(byCause) {
+  let t = 0;
+  for (const c of Object.keys(byCause || {})) t += byCause[c] || 0;
+  return t;
+}
+
+/**
+ * Bound a cumulative flow matrix in place: when distinct city-pair edges exceed `maxKeys`, evict the
+ * LOWEST-volume edges (smallest people totals — least informative) from both `flows` and its parallel
+ * `flowsPts` together, down to ~90% of the cap (hysteresis, so it doesn't re-sort every call). Keeps
+ * the persisted save blob bounded over a very long game; only the tiniest flows are lost, never the
+ * whole tally (unlike the prior unbounded append-only matrices, which could silently truncate a save).
+ * @param {Record<string, Record<string, number>>} flows The cumulative people matrix (mutated).
+ * @param {Record<string, Record<string, number>>|undefined} flowsPts The parallel points matrix (mutated).
+ * @param {number} maxKeys The edge-count ceiling.
+ */
+export function capFlows(flows, flowsPts, maxKeys) {
+  const keys = Object.keys(flows || {});
+  if (!(keys.length > maxKeys)) return;
+  keys.sort((a, b) => flowTotal(flows[a]) - flowTotal(flows[b]));
+  const drop = keys.length - Math.floor(maxKeys * 0.9);
+  for (let i = 0; i < drop; i++) {
+    delete flows[keys[i]];
+    if (flowsPts) delete flowsPts[keys[i]];
+  }
+}
+
+/**
  * Add one delta's per-cause counts into a running cumulative map, in place.
  * @param {Record<string, Record<string, number>>} target Running cumulative (mutated).
  * @param {Record<string, Record<string, number>>} [delta] The increment to fold in.

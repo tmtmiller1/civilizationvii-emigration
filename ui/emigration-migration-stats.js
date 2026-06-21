@@ -19,7 +19,8 @@ import {
   sumDeltas,
   subtractFlows,
   mergeAdjacentDeltas,
-  migrateCumulativeToDeltas
+  migrateCumulativeToDeltas,
+  capFlows
 } from "/emigration/ui/emigration-flow-history.js";
 
 const STATE_KEY = "EmigrationMigStats_v1";
@@ -382,6 +383,13 @@ function flowEntry(key, v, vPts) {
 // setting (a snapshot every turn) stays bounded in the save; finer than ~96 is decimated.
 const MAX_FLOW_SNAPSHOTS = 96;
 
+// Cap on distinct city-pair edges in the CUMULATIVE flow matrices (s.flows / s.flowsPts). Unlike the
+// snapshot + disaster caps, these were append-only and unbounded — a very long game could grow the
+// persisted blob until a GameConfiguration setValue silently truncates/drops it (both load + save
+// swallow exceptions), losing the WHOLE tally. When exceeded, evict the LOWEST-volume edges (smallest
+// people totals — the least informative), with hysteresis so we don't re-sort every pass.
+const MAX_FLOW_KEYS = 4000; // ceiling; capFlows (emigration-flow-history.js) evicts the smallest edges
+
 /**
  * The current age-local game turn, defaulting to 0 off-engine.
  * @returns {number} Game.turn or 0.
@@ -725,6 +733,7 @@ export function recordMigrations(migs) {
   const s = load();
   const list = Array.isArray(migs) ? migs : [];
   for (const m of list) foldMigration(s, m);
+  capFlows(s.flows, s.flowsPts, MAX_FLOW_KEYS); // bound the cumulative city-pair matrices before persist
   // Snapshot EVERY pass (self-gated to the snapshot interval inside), not only when migration
   // happened — so the timeline records per-civ population growth from turn one and is available to
   // scrub/play before any emigration occurs. The migration-only side effects stay gated on `list`.

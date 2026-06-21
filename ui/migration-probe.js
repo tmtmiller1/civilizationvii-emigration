@@ -1244,6 +1244,59 @@ function probeWarName() {
   if (!found) log("WARNAME no active declare-war events for the local player (be at war first)");
 }
 
+/** The persisted GameConfiguration keys the mod writes (for the blob-size probe). */
+const BLOB_KEYS = [
+  'EmigrationMigStats_v1', 'EmigrationState_v1', 'EmigrationViolence_v2', 'EmigrationDisaster_v1',
+  'EmigrationAssim_v1', 'EmigrationDividend_v1', 'EmigrationWar_v1', 'EmigrationEthnos_v1',
+  'EmigrationNews_v1', 'EmigrationNotif_v1'
+];
+
+/**
+ * Log one persisted blob's size (+ flow-key counts for the MigStats blob).
+ * @param {*} g The Configuration.getGame() KV reader.
+ * @param {string} k The key.
+ * @returns {number} The value length.
+ */
+function logBlobKey(g, k) {
+  let v = null;
+  try {
+    v = g.getValue(k);
+  } catch (_) {
+    /* ignore */
+  }
+  const len = typeof v === "string" ? v.length : 0;
+  let extra = "";
+  if (k === "EmigrationMigStats_v1" && len) {
+    try {
+      const o = JSON.parse(v);
+      extra = " | flowKeys=" + Object.keys(o.flows || {}).length +
+        " flowHistory=" + (Array.isArray(o.flowHistory) ? o.flowHistory.length : 0);
+    } catch (_) {
+      /* ignore */
+    }
+  }
+  log("BLOB " + k + " = " + len + " chars" + extra);
+  return len;
+}
+
+/** Log the byte-size of every persisted blob (+ flow-key counts), to confirm saves stay bounded. */
+function probeBlob() {
+  let g = null;
+  try {
+    g = Configuration?.getGame?.();
+  } catch (_) {
+    /* ignore */
+  }
+  if (!g || typeof g.getValue !== "function") {
+    log("BLOB no Configuration.getGame().getValue");
+    return;
+  }
+  log("BLOB persisted GameConfiguration value sizes:");
+  let total = 0;
+  for (const k of BLOB_KEYS) total += logBlobKey(g, k);
+  log("BLOB total = " + total + " chars across " + BLOB_KEYS.length + " keys");
+}
+
 /** Console fallback. */
 function exposeGlobals() {
   try {
@@ -1276,7 +1329,9 @@ function exposeGlobals() {
       diplo: () => probeDiplomacy(),
       // AUDIT: confirm the engine war NAME resolves (getWarData), and whether happiness is grantable.
       warName: () => probeWarName(),
-      happy: (/** @type {number} */ pid) => probeHappiness(pid)
+      happy: (/** @type {number} */ pid) => probeHappiness(pid),
+      // AUDIT: persisted-blob sizes (+ flow-key counts) — confirm the save data stays bounded.
+      blob: () => probeBlob()
     };
   } catch (e) {
     log("exposeGlobals threw " + e);
