@@ -33,6 +33,8 @@ import { civHidden } from "/emigration/ui/emigration-governance.js";
  * @property {number} rural Rural (mobile) population.
  * @property {string} [cause] Current migration cause (a MigrationCause value).
  * @property {string} causeLabel Display label for the cause.
+ * @property {{cause:string, label:string, share:number}[]|null} [causeMix] Concurrent-cause breakdown
+ *   (top pressures by share) for the multi-cause readout, or null when off / single-cause.
  * @property {import("/emigration/ui/emigration-causes.js").Permanence} permanence Durability cue.
  * @property {string} hint One-line action hint.
  * @property {number} distress Situational distress magnitude (0 when content).
@@ -156,6 +158,7 @@ export function buildCitySnapshot(o) {
     rural: num(sig.rural),
     cause,
     causeLabel: causeLabel(cause),
+    causeMix: readoutCauseMix(sig),
     permanence: causePermanence(cause),
     hint: causeHint(cause),
     distress: dist,
@@ -167,6 +170,32 @@ export function buildCitySnapshot(o) {
     ...pickOwner(o.owner || null),
     composition: o.composition || null
   };
+}
+
+/**
+ * The CONCURRENT pressures pushing people from a city, as display shares (top 3) — so the readout can
+ * show "War 60% · Prosperity 40%" instead of one dominant cause, mirroring the engine's voluntary/crisis
+ * split. Each acute pressure weighs by its intensity above threshold; prosperity is the economic
+ * baseline. Returns null when the multi-cause readout is off (CONFIG.splitUiReadoutEnabled) or a city
+ * has no signal, so the single-cause `causeLabel` is used instead.
+ * @param {*} sig City signal (carries violence / disaster / happiness).
+ * @returns {{cause:string, label:string, share:number}[]|null} Top causes by share, or null.
+ */
+function readoutCauseMix(sig) {
+  if (!CONFIG.splitUiReadoutEnabled || !sig) return null;
+  /** @type {Record<string, number>} */
+  const w = { prosperity: 1 }; // ever-present economic baseline
+  const vio = sig.violence || 0;
+  const dis = sig.disaster || 0;
+  const happy = sig.happiness || 0;
+  if (vio >= CONFIG.violenceFleeThreshold) w.war = vio;
+  if (dis >= CONFIG.disasterFleeThreshold) w.disaster = dis;
+  if (happy < CONFIG.unhappyCauseThreshold) w.unhappiness = CONFIG.unhappyCauseThreshold - happy;
+  const total = Object.keys(w).reduce((a, k) => a + w[k], 0) || 1;
+  return Object.keys(w)
+    .sort((a, b) => w[b] - w[a])
+    .slice(0, 3)
+    .map((k) => ({ cause: k, label: causeLabel(k), share: Math.round((w[k] / total) * 100) }));
 }
 
 /**
