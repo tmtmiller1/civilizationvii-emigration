@@ -132,6 +132,20 @@ export function formatPeople(n) {
 }
 
 /**
+ * Format a count in BOTH measuring systems at once — raw Civ population points and the scaled people
+ * count — as "3 population points (36 thousand people)" (singular "1 population point (…)"). The
+ * canonical dual phrasing (matches the dev log line), used where a message should always show both.
+ * @param {number} people Scaled people.
+ * @param {number} [points] Raw population points (defaults to 1).
+ * @returns {string} The dual-system phrase.
+ */
+export function formatBoth(people, points) {
+  const pts = Math.round(typeof points === "number" && isFinite(points) ? points : 1);
+  const civ = pts + (pts === 1 ? " population point" : " population points");
+  return civ + " (" + formatPeople(people) + " people)";
+}
+
+/**
  * Read a city's rural population defensively.
  * @param {*} city City object.
  * @returns {number} Rural population (0 if unreadable).

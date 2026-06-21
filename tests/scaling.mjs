@@ -3,7 +3,8 @@ import assert from "node:assert/strict";
 import {
   scaleCityPopulation,
   marginalPeople,
-  formatPeople
+  formatPeople,
+  formatBoth
 } from "/emigration/ui/emigration-population.js";
 
 // The scaling MUST match the Demographics mod's scaleCityPopulationAt:
@@ -47,10 +48,18 @@ function testFormatPeopleBuckets() {
   assert.equal(formatPeople(1_100_000_000), "1.1 billion");
 }
 
+function testFormatBothShowsBothSystems() {
+  // Popups present BOTH measuring systems at once: raw Civ points + scaled people, singular at 1.
+  assert.equal(formatBoth(12000, 1), "1 population point (12 thousand people)");
+  assert.equal(formatBoth(36000, 3), "3 population points (36 thousand people)");
+  assert.equal(formatBoth(12000), "1 population point (12 thousand people)"); // points defaults to 1
+}
+
 testScaleBaseline();
 testScaleGrowsWithTurn();
 testScaleRejectsNonPositive();
 testMarginalPeopleIsTheDelta();
 testFormatPeopleBuckets();
+testFormatBothShowsBothSystems();
 
 console.log("scaling harness passed");
