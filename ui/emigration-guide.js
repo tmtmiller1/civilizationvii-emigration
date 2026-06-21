@@ -71,7 +71,7 @@ const GUIDE = [
       { q: "Replace or overwrite base-game files", yes: false, note: "No. Additive only; no base-game files are replaced or overwritten." },
       { q: "Move population instantly across the map", yes: false, note: "No. Distance-penalized; people move to nearby better settlements, not across the world in one step." },
       { q: "Let you directly place or pick individual migrants", yes: false, note: "No. Flows are simulated from prosperity, war, and policy; you shape them with yields and stances, not by hand." },
-      { q: "Let one magnet city drain the whole map", yes: false, note: "No. A congestion brake (plus the overcrowding discount) damps a runaway magnet, so no single city accretes the world." }
+      { q: "Let one civ snowball the whole map's people", yes: false, note: "No. Three brakes compound: the saturating happiness model (a magnet's pull can't run away without limit), a congestion headwind on a civ digesting a fresh surge of arrivals, and a self-correcting anti-snowball brake — the further a civ's population runs ahead of the world average, the stronger the headwind against further migration INTO it (it never slows a leader's own people leaving, only newcomers piling in). All three are tunable under Options ▸ Mods ▸ Emigration; the anti-snowball strength has Off / gentle / standard / strong settings." }
     ]
   },
   {

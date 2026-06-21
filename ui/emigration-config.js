@@ -227,6 +227,18 @@ export const CONFIG = {
   congestWeight: 4, // pull penalty per unit of destination per-capita assimilation load
   civTuningEnabled: true,
 
+  // ── Anti-snowball headwind: a self-correcting brake on a runaway leader ──
+  // The congestion brake above fights fresh SURGES (it decays), so it doesn't stop the slow,
+  // steady accretion by which one civ snowballs to dominate net migration. This brake scales with
+  // a civ's STANDING dominance instead: the further its population runs ahead of the world-average
+  // civ, the stronger the pull penalty against further CROSS-CIV immigration INTO it (negative
+  // feedback that bounds the snowball). It never touches a civ at or below the field, never impedes
+  // OUTflow from a leader, and never touches internal moves. penalty = weight *
+  // max(0, popRatio - threshold) ^ exponent, where popRatio = civPop / world-average civ pop.
+  antiSnowballWeight: 15, // 0 = off; 8 gentle / 15 standard / 28 strong (matches the Options knob)
+  antiSnowballThreshold: 1.25, // fair-share multiple a civ may reach before the headwind bites
+  antiSnowballExponent: 1.5, // escalation steepness past the threshold (super-linear)
+
   // ── Outlet: attrition when there's nowhere to flee (ON by default) ──
   // Keeps the model from being a closed system: a trapped, distressed population
   // (siege / starvation / heavy violence / disaster) with NO viable destination loses
