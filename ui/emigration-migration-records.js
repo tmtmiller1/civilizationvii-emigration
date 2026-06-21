@@ -122,6 +122,7 @@ export function arriveRecord(e, ok, destPaidCost) {
       points: 1,
       people: e.people,
       cause: /** @type {MigrationCause} */ (e.cause),
+      eventKey: e.eventKey || "", // the war/disaster/crisis that displaced them → immigration-by-event
       destPaidCost,
       phase: "arrive"
     };

@@ -116,28 +116,31 @@ function gatherEventsByOwner(pids) {
   const D = /** @type {*} */ (globalThis).EmigrationData || {};
   /** @type {Record<number, *>} */
   const out = {};
-  const byEvent = typeof D.emigrationByEventFor === "function" ? D.emigrationByEventFor : _noEvents;
-  const deaths = typeof D.deathsByEventFor === "function" ? D.deathsByEventFor : _noEvents;
+  const fn = (/** @type {string} */ n) => (typeof D[n] === "function" ? D[n] : _noEvents);
+  const byEvent = fn("emigrationByEventFor");
+  const inEvent = fn("immigrationByEventFor");
+  const deaths = fn("deathsByEventFor");
   for (const pid of pids || []) {
-    const m = mergeEvents(byEvent(pid) || {}, deaths(pid) || {});
+    const m = mergeEvents(byEvent(pid) || {}, inEvent(pid) || {}, deaths(pid) || {});
     if (m) out[pid] = m;
   }
   return out;
 }
 
 /**
- * Merge a civ's per-event emigration and death maps into {people, deaths} per event, or null when
- * empty.
+ * Merge a civ's per-event emigration, immigration and death maps into {people, deaths} per event
+ * (people = emigration + immigration involving the civ), or null when empty.
  * @param {Record<string, number>} e Emigration by event key.
+ * @param {Record<string, number>} inn Immigration by event key.
  * @param {Record<string, number>} dd Deaths by event key.
  * @returns {Record<string, {people:number, deaths:number}>|null} Merged map, or null.
  */
-function mergeEvents(e, dd) {
-  const keys = new Set([...Object.keys(e), ...Object.keys(dd)]);
+function mergeEvents(e, inn, dd) {
+  const keys = new Set([...Object.keys(e), ...Object.keys(inn), ...Object.keys(dd)]);
   if (!keys.size) return null;
   /** @type {Record<string, *>} */
   const m = {};
-  for (const k of keys) m[k] = { people: e[k] || 0, deaths: dd[k] || 0 };
+  for (const k of keys) m[k] = { people: (e[k] || 0) + (inn[k] || 0), deaths: dd[k] || 0 };
   return m;
 }
 

@@ -267,7 +267,7 @@ export function dashboardModel(input) {
     sections: [
       { title: "Migration network", kind: "flow", network: current, frames, events },
       { title: "Net Migration (Table)", kind: "ledger", rows: civLedgerRows(d.civs || []) },
-      { title: "Why people move", kind: "pies", cities: buildCivFlows(d.flows || [], d.eventsByOwner) },
+      { title: "Why people move", kind: "pies", cities: buildCivFlows(d.flows || [], d.civs || [], d.eventsByOwner) },
       { title: "Settlements", kind: "cityflows", cities: d.myCities || [] },
       { title: "Immigration policies", kind: "stances", rows: stanceRows(d.civs || []) },
       { title: "Migration notifications", kind: "notifications" },
@@ -323,6 +323,9 @@ const DASH_CSS =
   // GameFace doesn't derive a canvas's height from width:100%+height:auto (it collapses to 0), so
   // the pie canvas needs an EXPLICIT square size.
   ".emig-pie-c{width:13.5rem;height:13.5rem;display:block;}" +
+  ".emig-pie-empty{width:13.5rem;height:13.5rem;border-radius:50%;margin:0 auto;display:flex;" +
+  "align-items:center;justify-content:center;border:0.11rem dashed rgba(229,210,172,0.2);}" +
+  ".emig-pie-empty-t{font-size:0.85rem;color:#8c8064;opacity:0.85;}" +
   ".emig-pie.big .emig-pie-c{width:17rem;height:17rem;}" +
   ".emig-pie-t{font-size:0.84rem;color:#f0dca8;font-weight:bold;text-align:center;margin-top:0.35rem;}" +
   ".emig-pie-metrics{display:flex;gap:0.7rem;font-size:0.8rem;margin-top:0.2rem;}" +
