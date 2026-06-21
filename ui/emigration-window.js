@@ -154,8 +154,8 @@ function nameEdges(raw) {
   return (raw || []).map((/** @type {*} */ e) => ({
     from: e.src,
     to: e.dest,
-    fromName: civAdjective(e.src),
-    toName: civAdjective(e.dest),
+    fromName: e.src === UNMET_ID ? UNMET_NAME : civAdjective(e.src),
+    toName: e.dest === UNMET_ID ? UNMET_NAME : civAdjective(e.dest),
     fromCity: e.srcCity || "",
     toCity: e.destCity || "",
     people: e.people || 0,
@@ -192,15 +192,45 @@ function splitFlows(raw) {
   /** @type {*[]} */
   const intra = [];
   for (const e of raw || []) {
-    if (civHidden(e.src) || civHidden(e.dest)) continue;
-    if (e.src !== e.dest) {
-      cross.push(e);
-    } else {
-      const m = intraEdge(e);
+    const ee = maskEdge(e);
+    if (!ee) continue; // both endpoints hidden → nothing to surface
+    if (ee.src !== ee.dest) cross.push(ee);
+    else {
+      const m = intraEdge(ee);
       if (m) intra.push(m);
     }
   }
   return { flows: nameEdges(cross), intra };
+}
+
+// Anonymous aggregate for civs the visibility policy hides (unmet / out-of-scope). Their migration is
+// still surfaced — so a civ whose people fled to an unmet neighbour shows them "left for Unmet" rather
+// than nothing — but it's anonymized to one bucket so no unmet civ's identity (or city) is revealed.
+const UNMET_ID = -2;
+const UNMET_NAME = "Unmet";
+
+/**
+ * Remap a flow edge's policy-hidden endpoint(s) to the anonymous "Unmet" bucket (blanking that side's
+ * city so no identity leaks). Returns the edge unchanged when both sides are visible, or null when
+ * BOTH are hidden (an unmet→unmet move has nothing to show the player).
+ * @param {*} e Raw flow edge.
+ * @returns {*} The (possibly remapped) edge, or null.
+ */
+function maskEdge(e) {
+  const sh = civHidden(e.src);
+  const dh = civHidden(e.dest);
+  if (sh && dh) return null;
+  if (!sh && !dh) return e;
+  const ee = Object.assign({}, e);
+  if (sh) {
+    ee.src = UNMET_ID;
+    ee.srcCity = "";
+  }
+  if (dh) {
+    ee.dest = UNMET_ID;
+    ee.destCity = "";
+  }
+  return ee;
 }
 
 /**
