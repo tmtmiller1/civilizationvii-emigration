@@ -14,6 +14,7 @@
 // expose citySnapshot on EmigrationData, and a static back-edge would be a cycle.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { speedBar } from "/emigration/ui/emigration-game-speed.js";
 import { causeLabel, causePermanence, causeHint } from "/emigration/ui/emigration-causes.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { rankByProsperity, distress } from "/emigration/ui/emigration-prosperity.js";
@@ -95,7 +96,7 @@ function pickSource(source) {
   const s = source || {};
   const pressure = num(s.pressure);
   const cooldown = num(s.cooldown);
-  const bar = CONFIG.emigrationBar > 0 ? CONFIG.emigrationBar : 1;
+  const bar = speedBar(CONFIG.emigrationBar) > 0 ? speedBar(CONFIG.emigrationBar) : 1;
   return { pressure, pressureToBar: clampUnit(pressure / bar), onCooldown: cooldown > 0, cooldown };
 }
 

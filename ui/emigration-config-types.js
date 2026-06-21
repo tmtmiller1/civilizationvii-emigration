@@ -18,6 +18,11 @@
  * @property {boolean} splitTracksEnabled Evaluate crisis + voluntary as two concurrent per-source tracks.
  * @property {boolean} splitBudgetsEnabled Give crisis and voluntary their own per-civ move ceilings.
  * @property {boolean} splitUiReadoutEnabled Show a multi-cause pressure breakdown in the city readout.
+ * @property {boolean} gameSpeedTuningEnabled Scale turn-based pacing by the game-speed scalar S
+ *   (Online≈0.5 … Standard 1.0 … Marathon≈3.0) so migration feels constant in game-time; false = legacy.
+ * @property {boolean} gameSpeedScalePopulation Normalize the historical population exponent to
+ *   scaleGrowth^(turn/S). Cosmetic and CROSS-MOD: only stays aligned with Demographics if that mod
+ *   applies the identical normalization, so it defaults OFF and is gated separately.
  * @property {number} tiltCap Max |targeted attraction| added to a single pull (Tilt-channel clamp).
  * @property {number} permeFloor Permeability-product floor.
  * @property {number} permeCeil Permeability-product ceiling.
