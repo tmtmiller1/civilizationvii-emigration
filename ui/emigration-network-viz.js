@@ -160,7 +160,18 @@ const NETC_CSS =
     ".emig-netc-tip-sw{display:inline-block;width:0.55rem;height:0.55rem;border-radius:50%;" +
     "margin-right:0.3rem;vertical-align:middle;}" +
     ".emig-netc-cap{opacity:0.62;font-size:0.95rem;text-align:center;margin-top:0.35rem;" +
-    "max-width:66rem;line-height:1.35;}";
+    "max-width:66rem;line-height:1.35;}" +
+    // A compact "?" help affordance in the stage corner, replacing the big caption: the explanation
+    // lives in a hover popover so it doesn't eat vertical space.
+    ".emig-help{position:absolute;top:0.4rem;right:0.4rem;z-index:30;}" +
+    '.emig-help-q{width:1.25rem;height:1.25rem;border-radius:50%;border:0.0833rem solid ' +
+    "rgba(201,162,76,0.6);background:rgba(9,12,19,0.85);color:#f0bc78;font-size:0.8rem;" +
+    'font-family:"TitleFont";display:flex;align-items:center;justify-content:center;cursor:help;}' +
+    ".emig-help-pop{display:none;position:absolute;top:1.6rem;right:0;width:24rem;max-width:80vw;" +
+    "padding:0.55rem 0.75rem;text-align:left;font-size:0.82rem;line-height:1.42;color:#e8d8b4;" +
+    "background:linear-gradient(180deg,rgba(28,32,44,0.98),rgba(9,12,19,0.98));" +
+    "border:0.0833rem solid #8c7e62;border-radius:0.25rem;box-shadow:0 0.33rem 1rem rgba(0,0,0,0.7);}" +
+    ".emig-help:hover .emig-help-pop{display:block;}";
 
 /** Inject the canvas + controls stylesheet once (idempotent). */
 export function injectStyle() {
@@ -489,24 +500,37 @@ function makeLegendBox(net, colorMap, state, causes, markDirty) {
 }
 
 /**
- * Assemble the chrome (cause chips, canvas, origin key, timeline, caption) into the wrapper.
+ * A compact "?" help affordance whose explanation appears on hover (so it doesn't take a big caption's
+ * worth of vertical space). Drop it into a `position:relative` container (e.g. the canvas stage).
+ * @param {string} text The help text.
+ * @returns {HTMLElement} The help element.
+ */
+export function helpIcon(text) {
+  const wrap = el("div", "emig-help");
+  wrap.appendChild(el("div", "emig-help-q", "?"));
+  wrap.appendChild(el("div", "emig-help-pop", text));
+  return wrap;
+}
+
+/**
+ * Assemble the chrome (cause chips, canvas, origin key, timeline) into the wrapper. The old verbose
+ * caption is now a hover-only "?" in the stage corner (helpIcon), reclaiming the vertical space.
  * @param {*} parts {wrap, chipsRoot, canvas, legend, slider, unit}.
  */
 function mountChrome(parts) {
   parts.wrap.appendChild(parts.lensTabs);
   const stage = el("div", "emig-netc-stage");
   stage.appendChild(parts.canvas);
-  parts.wrap.appendChild(stage);
-  parts.wrap.appendChild(parts.legend);
-  if (parts.slider) parts.wrap.appendChild(parts.slider);
   const capEn =
     "Each dot ≈ {1_People} people. A circle is one civilization, holding its cities and towns; its " +
     "dots are home-grown residents (its own colour), people who moved between its cities (a lighter " +
     "tint), and immigrants (their origin's colour). Recolour with \"Color by\", filter with the " +
     "Show/Origins toggles, click a swatch or circle to isolate it, and press ▶ or scrub the " +
     "timeline to replay history.";
-  const cap = el("div", "emig-netc-cap", loc("LOC_EMIG_NETC_CAPTION", capEn, formatPeople(parts.unit)));
-  parts.wrap.appendChild(cap);
+  stage.appendChild(helpIcon(loc("LOC_EMIG_NETC_CAPTION", capEn, formatPeople(parts.unit))));
+  parts.wrap.appendChild(stage);
+  parts.wrap.appendChild(parts.legend);
+  if (parts.slider) parts.wrap.appendChild(parts.slider);
 }
 
 

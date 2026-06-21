@@ -12,7 +12,8 @@
 // (towns dotted, cities solid, civ boundary solid + thicker) is shared via the painter.
 
 import {
-  buildColorMap, buildCenters, setupCanvas, injectStyle, appendUnitsToggle, timelineNote, WX, WY
+  buildColorMap, buildCenters, setupCanvas, injectStyle, appendUnitsToggle, timelineNote,
+  helpIcon, WX, WY
 } from "/emigration/ui/emigration-network-viz.js";
 import { buildChronoDots, totalPeople } from "/emigration/ui/emigration-network-dots.js";
 import { drawCivCircle, drawCityDiscs, drawLabelsNoOverlap } from "/emigration/ui/emigration-network-paint.js";
@@ -649,15 +650,14 @@ function flowLegend() {
   return box;
 }
 
-/** @returns {HTMLElement} The caption. */
-function flowCaption() {
-  return el("div", "emig-flow-cap",
-    "Each arrow is migration between civilizations , red where people leave (outflow) fading to " +
+/** @returns {string} The help text (shown via the stage-corner "?" hover, not a big caption). */
+function flowHelpText() {
+  return "Each arrow is migration between civilizations — red where people leave (outflow) fading to " +
     "green where they arrive (inflow); thicker arrows carry more people. Flows are tracked by their " +
     "origin AND destination settlement: expand a civilization to fan its arrows out to the actual " +
     "cities and towns people left and arrived at, plus the moves between its own cities. Towns are " +
     "circled with dotted lines, cities and civilizations with solid lines. Scrub the timeline to " +
-    "replay how the flows change over history.");
+    "replay how the flows change over history.";
 }
 
 /**
@@ -691,12 +691,12 @@ function mountFlowChrome(wrap, canvas, timeline, rebuildAll) {
   wrap.appendChild(flowLegend());
   const stage = el("div", "emig-netc-stage");
   stage.appendChild(canvas);
+  stage.appendChild(helpIcon(flowHelpText())); // the explanation, as a hover-only "?" in the corner
   wrap.appendChild(stage);
   // With a single recorded frame there is no scrubber (makeTimeline returns null); show the same
   // "playback appears once history accumulates" note the Dots view does, so the Flows page explains
   // the missing timeline rather than silently dropping it.
   wrap.appendChild(timeline ? timeline.root : timelineNote());
-  wrap.appendChild(flowCaption());
 }
 
 /**
