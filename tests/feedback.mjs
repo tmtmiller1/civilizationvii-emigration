@@ -30,6 +30,9 @@ globalThis.EmigrationData = { refugeesCumFor: (pid) => CUM[pid] || 0 };
 
 const { reportPassFeedback, announceImportant } = await import("/emigration/ui/emigration-feedback.js");
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
+const { notificationLog, clearNotifications } = await import(
+  "/emigration/ui/emigration-notifications.js"
+);
 
 function testImportantModeNoPerPassSpam() {
   CONFIG.notifyMode = 1;
@@ -117,6 +120,32 @@ function testLocalDigestExplainsTheLocalPlayersLoss() {
   assert.equal(toasts, 0);
 }
 
+function testLocalDigestIsPerEvent() {
+  // A pass where several of the local player's settlements shed people for different reasons must
+  // produce ONE notification PER EVENT (source settlement + cause) with accurate counts — never one
+  // confusing pass-wide aggregate — while only the LARGEST event toasts, so the HUD isn't flooded.
+  globalThis.GameContext = { localPlayerID: 0 };
+  CONFIG.notifyMode = 1;
+  CONFIG.notifyWorldNews = false;
+  CONFIG.notifyCooldownTurns = 0;
+  clearNotifications();
+  toasts = 0;
+  TURN = 80;
+  reportPassFeedback([
+    { srcOwner: 0, destOwner: 1, people: 6000, points: 1, cause: "war", crossCiv: true, srcName: "Rome", destName: "Carthage" },
+    { srcOwner: 0, destOwner: 1, people: 4000, points: 1, cause: "war", crossCiv: true, srcName: "Rome", destName: "Carthage" },
+    { srcOwner: 0, destOwner: 2, people: 2000, points: 1, cause: "unhappiness", crossCiv: true, srcName: "Athens", destName: "Sparta" }
+  ]);
+  assert.equal(toasts, 1); // only the largest event (Rome/war) toasts
+  const log = notificationLog();
+  assert.equal(log.length, 2); // one entry per event, NOT three records and NOT one lumped aggregate
+  const rome = log.find((e) => e.fromCity === "Rome");
+  assert.equal(rome.cause, "war");
+  assert.equal(rome.points, 2); // the two Rome/war records merged into one event with the real count
+  assert.equal(notificationLog().find((e) => e.fromCity === "Athens").points, 1);
+  delete globalThis.GameContext;
+}
+
 function testLocalDigestRespectsCooldown() {
   globalThis.GameContext = { localPlayerID: 0 };
   CONFIG.notifyMode = 1;
@@ -141,5 +170,6 @@ testCooldownThrottlesImportant();
 testOffModeSilent();
 testLocalDigestExplainsTheLocalPlayersLoss();
 testLocalDigestRespectsCooldown();
+testLocalDigestIsPerEvent(); // last: it advances the turn/cooldown state, so it can't perturb others
 
 console.log("feedback harness passed");

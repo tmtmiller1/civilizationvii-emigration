@@ -694,10 +694,13 @@ detail. The anti-spam layers:
 - **Rich, named events** (`emigration-naming.js`): disasters use the **game's own names**
   (`GameInfo.RandomEvents.lookup(type).Name`), wars reuse the war name, conquest names the sacked city.
   Headlines like *"The Thera eruption displaces 80,000."*
-- **Explanatory & actionable** (`emigration-feedback.js`, `emigration-causes.js`). When *your* cities
-  lose people in a pass, a single throttled **local digest** toast answers why / what-to-do /
-  temporary-or-permanent / who-pays. The cause-keyed **action hint** and **permanence cue** ride the
-  verbose per-cause toasts and disaster alert, on the same cooldown.
+- **Explanatory & actionable, per event** (`emigration-feedback.js`, `emigration-causes.js`). When
+  *your* cities lose people in a pass, the loss is broken into **distinct events — one per source
+  settlement + cause** — each answering why / what-to-do / temporary-or-permanent / who-pays with its
+  **own accurate count** (never a confusing pass-wide "7 moved" lumped across cities and causes). On
+  screen only the **largest** event toasts (subject to the cooldown), so the HUD isn't flooded; **every**
+  event is recorded individually in the Notifications log. The cause-keyed **action hint** and
+  **permanence cue** ride the toasts and disaster alert, on the same cooldown.
 - **Per-city readout** (`emigration-city-readout.js`). An on-demand HUD panel answering "why is *this*
   settlement changing?" — the **cause mix** when more than one pressure is active (*"War 60% · Prosperity
   40%"*, else the single dominant cause) + status (building pressure / resting), where its people are
