@@ -30,6 +30,7 @@ const SUBTABS = [
   { id: "pies", label: "Causes", title: "Why people move" },
   { id: "cityflows", label: "Settlements", title: "Settlements" },
   { id: "stances", label: "Immigration Policies", title: "Immigration policies" },
+  { id: "notifications", label: "Notifications", title: "Migration notifications" },
   { id: "guide", label: "Guide", title: "What counts" }
 ];
 
