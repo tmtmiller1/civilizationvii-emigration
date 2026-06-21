@@ -272,18 +272,24 @@ function cityAnimFrom(center, idx) {
 }
 
 /**
- * Start a dot's fly-in. Internal movers travel from their source CITY; immigrants travel from their
- * origin CITY when known, else their origin civ's centre.
+ * Start a dot's fly-in from where the people actually came from: internal movers travel from their
+ * source CITY; immigrants travel from their ORIGIN civ's circle — their origin city sub-cluster when
+ * known, else the origin civ's centre. (Residents never animate — the caller skips them so home-grown
+ * population materializes in place; see `activate`.)
  * @param {Dot} d Dot.
  * @param {Scene} scene Scene.
  */
-function startAnim(d, scene) {
+export function startAnim(d, scene) {
   const civ = scene.centers[d.ci];
   if (d.scope === "internal") {
     d.anim = cityAnimFrom(civ, d.fromCityIdx) || { fromX: civ.x, fromY: civ.y, p: 0 };
     return;
   }
-  const oc = scene.centers[scene.byId.get(d.originId) || d.ci] || civ;
+  // The origin civ's centre. Use nullish-coalescing, NOT `||`: byId.get() returns 0 for the FIRST
+  // node, and `0 || d.ci` would collapse to the DESTINATION — so an immigrant from that civ would fly
+  // out of the civ it's moving TO and read as that civ's home-grown population. `??` keeps index 0.
+  const oi = scene.byId.get(d.originId);
+  const oc = scene.centers[oi != null ? oi : d.ci] || civ;
   d.anim = cityAnimFrom(oc, d.fromCivCityIdx) || { fromX: oc.x, fromY: oc.y, p: 0 };
 }
 
@@ -701,12 +707,14 @@ function buildViz(container, frames, events, rebuildAll) {
     holder.dirty = true;
   };
   const activate = (/** @type {number} */ i) => {
-    // Fly in the dots that FIRST appear at frame `i` (cross-civ immigrants travel from their origin
-    // civ's cluster, see startAnim) — on every activation: continuous playback, a scrub that lands on a
-    // frame, AND the initial reveal. Without this, arrivals only animated on a +1 advance, so on load /
-    // static view a cross-civ immigrant sat motionless in the destination cluster and read as home-grown.
+    // Fly in the MOVERS that first appear at frame `i` (cross-civ immigrants travel from their ORIGIN
+    // civ/settlement; internal movers from their source city — see startAnim) — on every activation:
+    // continuous playback, a scrub that lands on a frame, AND the initial reveal. Without this, arrivals
+    // only animated on a +1 advance, so on load a cross-civ immigrant sat in the destination cluster and
+    // read as home-grown. RESIDENTS (home-grown population) are deliberately excluded: they MATERIALIZE
+    // in place inside their own city/town rather than flying from the civ's nebulous centre.
     for (const d of dots) {
-      if (d.appearFrame === i) startAnim(d, holder.scene);
+      if (d.appearFrame === i && d.scope !== "resident") startAnim(d, holder.scene);
       else d.anim = null;
     }
     state.frameIdx = i;
