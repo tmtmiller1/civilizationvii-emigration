@@ -20,11 +20,14 @@ across civilizations. Immigration brings growth, costs, politics, and Demographi
 - **See it on the map.** An **Ethnic Composition** lens paints every settlement by the origin
   civilization of its people (with exact per-origin percentages in the plot tooltip), and a
   **Prosperity** lens shades the map **tile by tile** so you can read where the pull actually is.
-- **It tells you why.** Population changes are explained in the moment (a toast: cause, what to do,
-  whether it's temporary, who pays) and on demand per city (`emigration.city(id)` — showing the live
-  **cause mix**, e.g. *War 60% · Prosperity 40%*), with a full **Migration dashboard**
+- **It tells you why — briefly on screen, permanently in a log.** Population changes are explained in
+  the moment by a short, **cause-themed toast** (color-coded for war / disaster / prosperity, showing
+  counts in *both* Civ population points and scaled people), and on demand per city
+  (`emigration.city(id)` — showing the live **cause mix**, e.g. *War 60% · Prosperity 40%*). So the
+  toasts never flood the screen, every one is also kept in a permanent **Notifications log** you can
+  scroll and click into for the full detail of each event. Plus a full **Migration dashboard**
   (`emigration.window()`): an animated migration network, a cross-civ flow map, a per-civ ledger, a
-  cause breakdown, settlements, and policy stances.
+  cause breakdown, settlements, policy stances, and that notifications log.
 - **Fully integrated with the Demographics mod:** a top-level **Emigration** tab whose **Data**
   section charts **Net Migration / Emigration / Immigration / Refugees (Left) / Refugees (Arrived)** —
   in either scaled "people" or raw Civ numbers — each with a one-line definition, cause-breakdown
@@ -889,16 +892,18 @@ npm install
 npm run verify     # tsc --noEmit + eslint + the node test harnesses
 ```
 
-`verify` runs the modularization gate (file/function length / complexity / statements) and **30 test
+`verify` runs the modularization gate (file/function length / complexity / statements) and **31 test
 harnesses**, including: `game-speed` (the speed scalar — fail-safe, the 5 shipped speeds, the kill
-switch, and game-time invariance), `engine-pass` (a 5-scenario end-to-end pass: peacetime / single-front
-war / multi-front war / disaster-only / **concurrent war + prosperity**), `engine-pull` (destination
-decision), `causes`, `city-readout-data`, `city-readout`, `views`, `migration-page`, `scaling`,
-`prosperity`, `geography`, `violence` (siege escalation + cap), `tunables`, `migration-stats`,
-`flow-history`, `composition`, `governance-mask`, `city-scope-global`, `effects`, `civ-tuning`, `war`,
-`disasters`, `borders`, `naming`, `feedback`, `dividend`, `raid`, `modinfo` (the `ImportFiles` manifest
-stays a complete, import-closed inventory), `i18n` (locale parity), and `no-empty-catch`. `./release.sh`
-produces the debug-muted, allow-listed Workshop zip (readable JS, no minification).
+switch, and game-time invariance), `notifications` (the persistent log — newest-first order, turn-stamp,
+structured detail, persistence, and the ring cap), `engine-pass` (a 5-scenario end-to-end pass:
+peacetime / single-front war / multi-front war / disaster-only / **concurrent war + prosperity**),
+`engine-pull` (destination decision), `causes`, `city-readout-data`, `city-readout`, `views`,
+`migration-page`, `scaling` (incl. the dual-system `formatBoth`), `prosperity`, `geography`, `violence`
+(siege escalation + cap), `tunables`, `migration-stats`, `flow-history`, `composition`,
+`governance-mask`, `city-scope-global`, `effects`, `civ-tuning`, `war`, `disasters`, `borders`, `naming`,
+`feedback`, `dividend`, `raid`, `modinfo` (the `ImportFiles` manifest stays a complete, import-closed
+inventory), `i18n` (locale parity), and `no-empty-catch`. `./release.sh` produces the debug-muted,
+allow-listed Workshop zip (readable JS, no minification).
 
 The **`migration-probe`** mod (its own modinfo, never shipped) is the in-engine verifier behind the
 write-surface/data claims: dock buttons + a `globalThis.mig` console API, with the **`API3`** and
