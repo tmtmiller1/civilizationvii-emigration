@@ -297,8 +297,8 @@ function pinBaseConfig() {
     attritionMinDistress: 1,
     attritionThreshold: 1,
     starvationModifier: -50,
-    starvationDeathEnabled: true,
-    starvationDeathShare: 1, // full rate so the famine death fires promptly in the test
+    crisisDeathEnabled: true,
+    crisisDeathShare: 1, // full rate so the famine death fires promptly in the test
     crossCivEnabled: true,
     foodFactor: 1
   });
@@ -325,4 +325,41 @@ function pinBaseConfig() {
   assert.ok(sawDeath, "F: AND it loses some to famine death even with a refuge (death ≠ trapped)");
 })();
 
-console.log("engine-pass harness passed (6 scenarios)");
+// ── Scenario G: WAR death concurrent with refugee flight (a refuge EXISTS) ──
+(function scenarioWarDeath() {
+  pinBaseConfig();
+  Object.assign(CONFIG, {
+    attritionEnabled: true,
+    attritionMinDistress: 1,
+    attritionThreshold: 1,
+    crisisDeathEnabled: true,
+    crisisDeathShare: 1, // full rate so the war death fires promptly in the test
+    crossCivEnabled: true,
+    foodFactor: 1,
+    vwSiege: 100, // strong siege pressure → high (lethal) violence distress
+    siegeBesiegedFloor: 1
+  });
+  installConfigStore();
+  globalThis.Game = { turn: 1 };
+  // A besieged city (owner 1) AND a safe haven (owner 2): war refugees CAN flee — yet the war must
+  // ALSO kill some (siege casualties). Lethal distress comes from war/siege, not starvation, proving
+  // the death channel generalizes beyond famine. We need BOTH a refugee (cause != attrition) AND a death.
+  const besieged = makeCity(1, 1, { population: 12, rural: 12, siege: true, yields: { YIELD_FOOD: 5 } });
+  const haven = makeCity(2, 1, { population: 10, rural: 10, yields: { YIELD_FOOD: 40 }, x: 1, y: 0 });
+  installWorld({ 1: major([besieged]), 2: major([haven]) });
+
+  let sawFlight = false;
+  let sawDeath = false;
+  for (let i = 0; i < 8 && !(sawFlight && sawDeath); i++) {
+    globalThis.Game = { turn: i + 1 };
+    for (const m of runPass()) {
+      if (m.srcOwner !== 1) continue;
+      if (m.cause === "attrition") sawDeath = true;
+      else if (typeof m.destOwner === "number") sawFlight = true;
+    }
+  }
+  assert.ok(sawFlight, "G: a besieged city with a haven sheds refugees (people flee)");
+  assert.ok(sawDeath, "G: AND the war kills some even with a haven (lethal-distress death, not famine)");
+})();
+
+console.log("engine-pass harness passed (7 scenarios)");

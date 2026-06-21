@@ -101,9 +101,10 @@
  * @property {boolean} attritionEnabled Trapped distressed cities lose population with no refuge.
  * @property {number} attritionMinDistress Min situational distress (%) before attrition fires.
  * @property {number} attritionThreshold Distress pressure to remove one population point.
- * @property {boolean} starvationDeathEnabled A starving city loses some population to death even when
- *   a refuge exists (famine kills even when people can flee), concurrent with its emigration.
- * @property {number} starvationDeathShare Famine death rate vs the trapped rate when a refuge exists (0..1).
+ * @property {boolean} crisisDeathEnabled A city under LETHAL distress (war/disaster/siege/famine) loses
+ *   some population to death even when a refuge exists — concurrent with emigration. Economic
+ *   (prosperity/unhappiness) emigration never kills (no situational distress).
+ * @property {number} crisisDeathShare Crisis death rate vs the trapped rate when a refuge exists (0..1).
  * @property {number} ownCivRefugeeBonus War-refugee pull toward own civ (Feature 1).
  * @property {number} aggressorPenalty War-refugee penalty for the aggressor (F1; 0 = off).
  * @property {boolean} bordersEnabled Apply Open/Closed Borders policy effects (F2).
