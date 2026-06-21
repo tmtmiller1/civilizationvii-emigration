@@ -8,7 +8,9 @@ const { buildCivFlows } = await import("/emigration/ui/emigration-city-flows.js"
 // 9 = Maya (received Prussian refugees), 7 = Prussia (sent them), 5 = Himiko (the aggressor — at war,
 // shedding/​losing its own people, but with NO cross-civ flow into the visible set).
 const flows = [
-  { from: 7, to: 9, fromName: "Prussian", toName: "Maya", people: 129, byCause: { war: 129 } }
+  { from: 7, to: 9, fromName: "Prussian", toName: "Maya", people: 129, byCause: { war: 129 } },
+  // Himiko's people fled to an UNMET civ (bucketed to id -2 upstream by maskEdge) — still shown.
+  { from: 5, to: -2, fromName: "Himiko", toName: "Unmet", people: 60, byCause: { prosperity: 60 } }
 ];
 const civs = [
   { pid: 9, name: "Maya", in: 129, out: 0, deaths: 0, byCause: {}, inByCause: { war: 129 } },
@@ -51,7 +53,16 @@ function testBothDirectionsPresent() {
   assert.equal(maya.out.civs.length, 0, "Maya has no Emigrants — the column renders a placeholder");
 }
 
+// People who fled to an UNMET civ still show — anonymized to the "Unmet" bucket (negative id).
+function testUnmetBucketShown() {
+  const himiko = cardsByName().get("Himiko");
+  assert.equal(himiko.out.civs.length, 1, "Himiko's emigrants pie shows the unmet destination");
+  assert.equal(himiko.out.civs[0].name, "Unmet", "the unmet destination is anonymized to 'Unmet'");
+  assert.ok(himiko.out.civs[0].id < 0, "the Unmet bucket uses a sentinel (negative) id");
+}
+
 testListsActiveCivWithoutFlow();
 testReceivedRefugeesAttributed();
 testBothDirectionsPresent();
+testUnmetBucketShown();
 console.log("causes-civs harness passed");

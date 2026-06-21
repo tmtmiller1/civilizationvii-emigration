@@ -48,8 +48,10 @@ function causeText(causes) {
  * @returns {{value:number, color:string, label:string}[]} Slices.
  */
 function civSlices(civs) {
+  // A negative id is the anonymous "Unmet" bucket (a civ the policy hides) — neutral grey, so it never
+  // mimics a real civ's banner colour.
   return (civs || []).map((c) => ({
-    value: c.people, color: civColorByIndex(c.id), label: c.name
+    value: c.people, color: c.id < 0 ? "#8c8064" : civColorByIndex(c.id), label: c.name
   }));
 }
 
