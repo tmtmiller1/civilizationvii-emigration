@@ -644,8 +644,11 @@ When the **Demographics** mod is installed, Emigration contributes, via its comp
   - **Emigration** — gross people who left each civ (with a `Sources: War …, Disaster …` breakdown).
   - **Immigration** — gross people who arrived in each civ (same source breakdown).
   - **Refugees (Left)** — people this civ displaced (war/disaster/conquest), with **war + disaster
-    onset markers** on the timeline (named, by year). These markers are **toggleable** — *Options ▸ Mods ▸
-    Demographics ▸ Show war & disaster markers* — the same on/off filter the wonder markers use.
+    onset markers** on the timeline (named, by year). War onsets come from the Demographics war history;
+    disaster onsets come from this mod's own event log (recorded whenever a disaster strikes a city, so
+    they appear independent of the toast threshold). Each family has its **own on/off toggle** —
+    *Options ▸ Mods ▸ Demographics ▸ "Show war onset markers"* and *"Show disaster onset markers"* — like
+    the wonder-markers filter; both default **on**.
   - **Refugees (Arrived)** — displaced people it took in, with the same (toggleable) onset markers.
 - **The full dashboard as native sub-tabs** on that same tab — **Network** (animated dot-swarm + arrow
   flow map, each with a Civ Pop / Scaled Pop units toggle), **Civilizations**, **Causes**,
