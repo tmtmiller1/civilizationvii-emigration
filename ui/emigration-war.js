@@ -76,10 +76,13 @@ function pickId(...vals) {
  */
 function parseWar(data) {
   if (!data || typeof data !== "object") return null;
-  // Probe-confirmed shape (API4-B): the declarer is `actingPlayer`, the target is
-  // `reactingPlayer`. The remaining names are defensive fallbacks for other builds.
-  const aggressor = pickId(data.actingPlayer, data.aggressor, data.attacker, data.player1);
-  const victim = pickId(data.reactingPlayer, data.target, data.victim, data.player2);
+  // Probe-confirmed shape (API4-B): the declarer is `actingPlayer`, the target is `reactingPlayer`.
+  // `initialPlayer`/`targetPlayer` are added as primary fallbacks because they're the FAR more common
+  // player fields on the base game's diplomacy event data (target 112× / initial 85× vs acting 19× /
+  // reacting 14× in the base UI source) — so the aggressor map still populates if this build's war
+  // event uses those. The rest are defensive. The migration-probe's passive DeclareWar dump confirms it.
+  const aggressor = pickId(data.actingPlayer, data.initialPlayer, data.aggressor, data.attacker, data.player1);
+  const victim = pickId(data.reactingPlayer, data.targetPlayer, data.target, data.victim, data.player2);
   if (typeof aggressor !== "number" || typeof victim !== "number" || aggressor === victim) return null;
   return { aggressor, victim };
 }
