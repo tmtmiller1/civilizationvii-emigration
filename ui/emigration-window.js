@@ -19,6 +19,7 @@ import { sampleDashboard } from "/emigration/ui/emigration-demo-data.js";
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
+import { compositionForCity } from "/emigration/ui/emigration-composition.js";
 
 /**
  * The local player id, or null.
@@ -203,11 +204,14 @@ function cityName(s, ord) {
 }
 
 /**
- * Group the live city signals by owner into raw {name, town, pop} city lists.
- * @returns {Map<number, {name:string, town:boolean, pop:number}[]>} owner → cities.
+ * Group the live city signals by owner into raw {name, town, pop, comp} city lists. `comp` is the
+ * settlement's origin composition (compositionForCity) — captured cities carry the ORIGINS of the
+ * people already living there, so the network can colour residents by where they came from rather
+ * than by the current owner.
+ * @returns {Map<number, {name:string, town:boolean, pop:number, comp:*}[]>} owner → cities.
  */
 function citiesByOwner() {
-  /** @type {Map<number, {name:string, town:boolean, pop:number}[]>} */
+  /** @type {Map<number, {name:string, town:boolean, pop:number, comp:*}[]>} */
   const byCiv = new Map();
   try {
     for (const s of collectCitySignals()) {
@@ -217,12 +221,87 @@ function citiesByOwner() {
         list = [];
         byCiv.set(s.owner, list);
       }
-      list.push({ name: cityName(s, list.length + 1), town: !!s.isTown, pop: s.population || 0 });
+      const comp = (() => {
+        try {
+          return compositionForCity(s.city);
+        } catch (_) {
+          return null;
+        }
+      })();
+      list.push({ name: cityName(s, list.length + 1), town: !!s.isTown, pop: s.population || 0, comp });
     }
   } catch (_) {
     /* ignore */
   }
   return byCiv;
+}
+
+/**
+ * Split a city's NATIVE (resident) population points across the ORIGIN civs its people trace to,
+ * from the composition ledger. The modeled cross-civ immigrant portion (already drawn as fly-in
+ * dots) is removed from the FOREIGN buckets only, so a conquered city's prior-owner residents keep
+ * their origin while immigrants aren't double-counted; the owner bucket is home-grown population.
+ * Falls back to 100% owner when there's no composition. The result sums to `ptsN`.
+ * @param {*} comp compositionForCity result ({total, owner, civs:[{civ,pts}]}) or null.
+ * @param {number} owner Current owner id.
+ * @param {number} ptsN Native population points to distribute.
+ * @returns {{civ:number, pts:number}[]} Origin buckets (sum ≈ ptsN).
+ */
+function residentOrigins(comp, owner, ptsN) {
+  if (!(ptsN > 0)) return [];
+  const civs = comp && comp.civs && comp.civs.length ? comp.civs : null;
+  const total = civs
+    ? comp.total || civs.reduce((/** @type {number} */ a, /** @type {*} */ c) => a + c.pts, 0)
+    : 0;
+  if (!civs || !(total > 0)) return [{ civ: owner, pts: ptsN }];
+  const keep = foreignKeepFactor(civs, owner, total, ptsN);
+  return buildOriginBuckets(civs, owner, keep, ptsN);
+}
+
+/**
+ * The fraction of each FOREIGN origin bucket that is resident (not a modeled immigrant): immigrants
+ * (the 1 − native share) are removed from foreign buckets only, leaving conquered/prior-owner
+ * residents. Returns 0..1.
+ * @param {*[]} civs Composition buckets [{civ, pts}].
+ * @param {number} owner Owner id.
+ * @param {number} total Composition total points.
+ * @param {number} ptsN Native points.
+ * @returns {number} Foreign keep factor (0..1).
+ */
+function foreignKeepFactor(civs, owner, total, ptsN) {
+  const frac = Math.min(1, ptsN / total); // native share (immigrant share = 1 - frac)
+  const ownerPts = (civs.find((/** @type {*} */ c) => c.civ === owner) || {}).pts || 0;
+  const foreignShare = Math.max(0, (total - ownerPts) / total);
+  return foreignShare > 0 ? Math.max(0, foreignShare - (1 - frac)) / foreignShare : 0;
+}
+
+/**
+ * Build the resident-origin buckets: the full owner bucket (home-grown) plus each foreign bucket
+ * scaled by `keep`, with any unattributed remainder folded into the owner. Sums to `ptsN`.
+ * @param {*[]} civs Composition buckets [{civ, pts}].
+ * @param {number} owner Owner id.
+ * @param {number} keep Foreign keep factor.
+ * @param {number} ptsN Native points.
+ * @returns {{civ:number, pts:number}[]} Origin buckets.
+ */
+function buildOriginBuckets(civs, owner, keep, ptsN) {
+  /** @type {{civ:number, pts:number}[]} */
+  const out = [];
+  let sum = 0;
+  for (const c of civs) {
+    const pts = c.civ === owner ? c.pts : c.pts * keep;
+    if (pts > 1e-6) {
+      out.push({ civ: c.civ, pts });
+      sum += pts;
+    }
+  }
+  const rem = ptsN - sum; // immigrant-heavy scale mismatch → unattributed natives fall to the owner
+  if (rem > 1e-6) {
+    const o = out.find((x) => x.civ === owner);
+    if (o) o.pts += rem;
+    else out.push({ civ: owner, pts: rem });
+  }
+  return out;
 }
 
 /**
@@ -245,7 +324,8 @@ function gatherPops() {
       .map((c) => {
         const ptsN = c.pop * frac; // native pop points (excludes immigrants)
         return {
-          name: c.name, town: c.town, pts: Math.round(ptsN), pop: scaleCityPopulation(ptsN, t)
+          name: c.name, town: c.town, pts: Math.round(ptsN), pop: scaleCityPopulation(ptsN, t),
+          origins: residentOrigins(c.comp, id, ptsN) // resident colour-by-origin (captured cities)
         };
       })
       .sort((a, b) => b.pts - a.pts); // capital (largest) first , arrivals land here
@@ -262,7 +342,9 @@ function gatherPops() {
  */
 function scalePops(entry, frac) {
   const cities = ((entry && entry.cities) || []).map((/** @type {*} */ c) => ({
-    name: c.name, town: c.town, pop: (c.pop || 0) * frac, pts: Math.round((c.pts || 0) * frac)
+    name: c.name, town: c.town, pop: (c.pop || 0) * frac, pts: Math.round((c.pts || 0) * frac),
+    // origins are ORIGIN-SHARE weights; scaling uniformly preserves the ratios the dot builder uses.
+    origins: c.origins ? c.origins.map((/** @type {*} */ o) => ({ civ: o.civ, pts: o.pts * frac })) : undefined
   }));
   return { cities };
 }
