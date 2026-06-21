@@ -238,6 +238,7 @@
         <Replace Tag="LOC_OPTIONS_EMIG_DOCK_DESCRIPTION" Language="ru_RU"><Text>Показывать кнопку «Миграция» на игровой панели. Отключите, чтобы открывать панель через вкладку «Миграция» на экране демографии.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="ru_RU"><Text>Межцивилизационной миграции пока нет, потоки появятся, когда люди начнут пересекать границы.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="ru_RU"><Text>Цвет по:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_HELP" Language="ru_RU"><Text>Как читать</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="ru_RU"><Text>Происхождение</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="ru_RU"><Text>Тип</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_MOVEMENT" Language="ru_RU"><Text>Перемещение</Text></Replace>

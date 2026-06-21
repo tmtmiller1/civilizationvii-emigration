@@ -687,11 +687,11 @@ function mountFlowChrome(wrap, canvas, timeline, rebuildAll) {
   // here, so no leading separator. A flip rescales the arrows, so it rebuilds the whole flow view.
   const controls = el("div", "emig-netc-chips");
   appendUnitsToggle(controls, rebuildAll, false);
+  controls.appendChild(helpIcon(flowHelpText())); // labelled help button, right of the controls row
   wrap.appendChild(controls);
   wrap.appendChild(flowLegend());
   const stage = el("div", "emig-netc-stage");
   stage.appendChild(canvas);
-  stage.appendChild(helpIcon(flowHelpText())); // the explanation, as a hover-only "?" in the corner
   wrap.appendChild(stage);
   // With a single recorded frame there is no scrubber (makeTimeline returns null); show the same
   // "playback appears once history accumulates" note the Dots view does, so the Flows page explains

@@ -238,6 +238,7 @@
         <Replace Tag="LOC_OPTIONS_EMIG_DOCK_DESCRIPTION" Language="ja_JP"><Text>ゲーム内のドックに移住ボタンを表示します。オフにすると、人口統計画面の移住タブからダッシュボードを開けます。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="ja_JP"><Text>文明間の移住はまだありません。人々が国境を越えると流れが現れます。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="ja_JP"><Text>色分け:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_HELP" Language="ja_JP"><Text>グラフの見方</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="ja_JP"><Text>出身地</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="ja_JP"><Text>種類</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_MOVEMENT" Language="ja_JP"><Text>移動</Text></Replace>

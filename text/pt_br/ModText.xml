@@ -238,6 +238,7 @@
         <Replace Tag="LOC_OPTIONS_EMIG_DOCK_DESCRIPTION" Language="pt_BR"><Text>Mostra o botão de Migração na barra do jogo. Desative para abrir o painel pela aba Migração da tela de Demografia.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="pt_BR"><Text>Ainda não há migração entre civilizações, os fluxos surgem quando as pessoas cruzam fronteiras.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="pt_BR"><Text>Colorir por:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_HELP" Language="pt_BR"><Text>Como ler</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="pt_BR"><Text>Origem</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="pt_BR"><Text>Tipo</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_MOVEMENT" Language="pt_BR"><Text>Movimento</Text></Replace>
