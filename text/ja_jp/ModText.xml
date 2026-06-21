@@ -122,6 +122,10 @@
         <Replace Tag="LOC_EMIG_T_MHGOLD_D" Language="ja_JP"><Text>文明が保持している UNIT_MIGRANT ごとに毎ターン差し引かれる金。数に応じて増加。0 = オフ。（プローブで確認済みの控除レバー。）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST" Language="ja_JP"><Text>コスト: 混雑による逆風（0 = オフ）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="ja_JP"><Text>多くの移民を吸収している文明を、さらなる移住先として魅力の低いものにします（新参者の統合で手一杯のため）。消化している量に応じて増加。暴走する磁石への構造的ブレーキ。0 = オフ。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="ja_JP"><Text>コスト: スノーボール抑制 (0 = オフ)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="ja_JP"><Text>人口が他の文明を大きく引き離した文明を、文明間移住の目的地として魅力的でなくします。暴走する首位文明への自己修正ブレーキで、リードが大きいほど強くなります。首位文明からの流出や内部移動は妨げません。0 = オフ。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="ja_JP"><Text>コスト: スノーボール発動閾値 (公平分配の倍率)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="ja_JP"><Text>スノーボール抑制が働き始める前に、文明の人口が平均的な文明をどれだけ上回ってよいかを、公平な分配に対する倍率で指定します。低い＝抑制が早く働く（より平等）。高い＝極端に暴走した首位文明のみが抑えられます。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="ja_JP"><Text>災害: 移住を駆動</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="ja_JP"><Text>環境災害（洪水、火山、疫病…）が、戦争や不満と並んで、被災都市から住民を気候/災害難民として押し出すようにします。オフ = 災害は移住に影響しません。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="ja_JP"><Text>災害: 苦境ポイントあたりの移住（%）</Text></Replace>

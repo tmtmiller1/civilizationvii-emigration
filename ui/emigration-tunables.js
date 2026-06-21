@@ -84,6 +84,10 @@ export const TUNABLES = [
   { key: "migrantHoldGold", group: "cost", type: "choice", values: [0, 1, 2, 5], label: "LOC_EMIG_T_MHGOLD", desc: "LOC_EMIG_T_MHGOLD_D" },
   // congestion headwind (Algorithm C; 0 = off)
   { key: "congestWeight", group: "cost", type: "choice", values: [0, 2, 4, 8], label: "LOC_EMIG_T_CONGEST", desc: "LOC_EMIG_T_CONGEST_D" },
+  // anti-snowball headwind: 0 off / 8 gentle / 15 standard / 28 strong
+  { key: "antiSnowballWeight", group: "cost", type: "choice", values: [0, 8, 15, 28], label: "LOC_EMIG_T_ANTISNOWBALL", desc: "LOC_EMIG_T_ANTISNOWBALL_D" },
+  // anti-snowball trigger: fair-share population multiple a civ may reach before the brake bites
+  { key: "antiSnowballThreshold", group: "cost", type: "choice", values: [1, 1.25, 1.5, 2], label: "LOC_EMIG_T_ANTISNOWTHRESH", desc: "LOC_EMIG_T_ANTISNOWTHRESH_D" },
   // environmental disasters as a migration driver (§11; off by default)
   { key: "disastersEnabled", group: "disaster", type: "bool", label: "LOC_EMIG_T_DISASTERS", desc: "LOC_EMIG_T_DISASTERS_D" },
   { key: "disasterPerPoint", group: "disaster", type: "choice", values: [6, 8, 10, 14, 20], label: "LOC_EMIG_T_DPP", desc: "LOC_EMIG_T_DPP_D" },

@@ -97,6 +97,10 @@
  * @property {number} overcrowdDiscount Happiness credited per over-threshold urban point (Alg B).
  * @property {number} overcrowdThreshold Urban pop before overcrowding bites (Alg B).
  * @property {number} congestWeight Pull penalty per per-capita assimilation load (Alg C).
+ * @property {number} antiSnowballWeight Headwind vs CROSS-CIV immigration into a civ whose
+ *   population runs ahead of the world-average civ (self-correcting anti-runaway brake; 0 = off).
+ * @property {number} antiSnowballThreshold Fair-share population multiple before the headwind bites.
+ * @property {number} antiSnowballExponent Escalation steepness past the threshold.
  * @property {boolean} civTuningEnabled Apply the per-leader/civ tuning table (Alg C).
  * @property {boolean} attritionEnabled Trapped distressed cities lose population with no refuge.
  * @property {number} attritionMinDistress Min situational distress (%) before attrition fires.

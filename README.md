@@ -200,7 +200,7 @@ on the dashboard's **Guide** tab.
 | Changes AI strategy or replaces base-game files | ✗ | Additive only; the base game's AI decisions and files are untouched |
 | Moves population instantly across the map | ✗ | Distance-penalized; people move to nearby better settlements |
 | Lets you directly place or pick individual migrants | ✗ | Flows are simulated from prosperity, war, and policy; you shape them with yields and stances |
-| Lets one magnet city drain the whole map | ✗ | A congestion brake (plus the overcrowding discount) damps a runaway magnet |
+| Lets one civ snowball the whole map's people | ✗ | Three compounding brakes: the saturating happiness model, a congestion headwind on a fresh surge of arrivals, and a self-correcting **anti-snowball** headwind that grows as a civ's population runs ahead of the field (cross-civ inflow only — never its own outflow). All tunable (anti-snowball: Off / gentle / standard / strong + trigger threshold) |
 
 **FAQ**
 
@@ -393,9 +393,17 @@ $$
 + \mathrm{cityStateBarrier}
 + \mathrm{poachBlock} \\
 &-\ \mathrm{geoAdjust}(s,d)
-+ \mathrm{congestionFor}(d).
++ \mathrm{congestionFor}(d)
++ \mathrm{dominanceFor}(d).
 \end{aligned}
 $$
+
+$\mathrm{dominanceFor}(d)$ is the **anti-snowball headwind**: $0$ unless the destination civ's population
+runs ahead of the world-average civ, then
+$\mathrm{antiSnowballWeight}\cdot\max\!\left(0,\frac{\mathrm{pop}_\text{civ}(d)}{\overline{\mathrm{pop}}_\text{civ}}-\mathrm{antiSnowballThreshold}\right)^{\mathrm{antiSnowballExponent}}$.
+It applies only to **cross-civ inflow** into a runaway leader — never to its own people leaving, nor to
+internal moves — so it's a self-correcting brake on the *standing* dominance the (decaying) congestion
+term can't catch. Tunable (Off / gentle / standard / strong + trigger threshold) under Options.
 
 War is **not** a hard gate: a besieged city simply has low prosperity and a flee vector, then passes
 through the same pull equation. People can emigrate to any civilization.
