@@ -589,13 +589,24 @@ signal is `city.isInfected` plus a severity-scaled spike from `RandomEventOccurr
 **Plague-as-contagion** (`plagueCarryEnabled`, off): migrants fleeing an infected city seed a smaller
 outbreak-distress at their destination.
 
-### 6d. The outlet: attrition when there's no refuge (`attritionEnabled`, off)
-Keeps the model from being a **closed system**. When a source has **no viable destination** *and* is
-genuinely distressed (`distress(s) >= attritionMinDistress`), it builds attrition pressure and, on
-crossing `attritionThreshold` (×S), **loses a rural point with no destination**: population leaves the
-*world* (a death/dispersal), via the same `addRuralPopulation(-1)` accounting the game's starvation uses.
-Attrition is tracked as **deaths**, fully isolated from the migration/refugee metrics, so it never
-inflates any flow figure.
+### 6d. The outlet: attrition death — trapped *and* famine (`attritionEnabled`)
+A **death channel** (cause `attrition`, tracked as **deaths**, isolated from the migration/refugee
+metrics) that runs on its own `deathPressure` **concurrently with emigration**, on two triggers:
+
+- **Trapped** — a distressed source (`distress ≥ attritionMinDistress`) with **no viable destination**:
+  its trapped population dies off (the original closed-system valve), at full rate.
+- **Famine** — a **starving** city *even when a refuge exists* (`starvationDeathEnabled`): because the
+  "no destination" trap almost never fires (there's nearly always somewhere to flee), starvation would
+  otherwise only ever *emigrate* and never actually kill. So a starving city now loses **some** people
+  to death **while the rest flee** — at `starvationDeathShare` (default 0.5) of the trapped rate, so
+  flight dominates and famine takes a minority. Death builds on `deathPressure`, crosses
+  `attritionThreshold` (×S), and removes a rural point via the same `addRuralPopulation(−1)` the game's
+  own starvation uses.
+
+(Related: `starvationModifier` is **−90** — the situational penalty that makes a starving city a place
+people *flee*. It was −200, but that only ever fired once the §-yields fix made `starving` real, and
+−200 drives prosperity negative on its own. With death now handled by this channel, the penalty's job
+is purely emigration, so −90 is enough.)
 
 ### 6e. Asylum and relationship permeability (targeted attraction)
 Pull is composed from a prosperity gradient plus a targeted-attraction channel (`tilt`) and relationship

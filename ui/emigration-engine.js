@@ -142,8 +142,10 @@ function civMoveCeilings(ranked) {
 /** Per-source persistent state (created with both tracks' fields; legacy uses pressure/cooldown only).
  * @param {*} state Loaded state. @param {string} key Source key. @returns {*} The source state. */
 function sourceState(state, key) {
-  return state.sources[key]
+  const s = state.sources[key]
     || (state.sources[key] = { pressure: 0, cooldown: 0, crisisPressure: 0, crisisCooldown: 0 });
+  if (typeof s.deathPressure !== "number") s.deathPressure = 0; // normalize older saves
+  return s;
 }
 
 /** Causes that draw from the CRISIS budget/track (vs voluntary prosperity/unhappiness). */
@@ -248,9 +250,32 @@ function belowEmigrationBar(forced, pressure) {
 }
 
 /**
- * LEGACY single-cause source pass (used when CONFIG.splitTracksEnabled is off): one dominant cause,
- * one pressure track. Accumulate toward the best destination and shed if it crosses the bar (forced
- * causes bypass it). An ordinary source sheds one point; a besieged source sheds a war-surge burst.
+ * The legacy single-cause EMIGRATION step: accumulate toward the best destination and shed if it
+ * crosses the bar (forced causes bypass it). No destination / on cooldown / below the bar → [].
+ * @param {*} src Source signal.
+ * @param {*} st Per-source state.
+ * @param {*} state Loaded state.
+ * @param {*} best The chosen destination ({dest, adjusted}) or null.
+ * @param {number} maxThisSource Remaining moves allowed this turn.
+ * @returns {Migration[]} The applied records.
+ */
+function legacyEmigrate(src, st, state, best, maxThisSource) {
+  const cause = migrationCause(src);
+  const forced = FORCED_CAUSES.has(cause);
+  if (!best || restingOnCooldown(st, forced)) return [];
+  st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
+  if (belowEmigrationBar(forced, st.pressure)) return [];
+  const budget = Math.min(maxThisSource, warSurgeBudget(src, cause));
+  const out = shedBurst(src, best.dest, state, cause, budget);
+  if (!out.length) return [];
+  st.pressure = 0;
+  if (!forced) st.cooldown = speedTurns(CONFIG.cooldownTurns);
+  return out;
+}
+
+/**
+ * LEGACY single-cause source pass (used when CONFIG.splitTracksEnabled is off): one emigration step
+ * plus the concurrent trapped/famine death channel.
  * @param {*} src Source signal.
  * @param {*[]} ranked Ranked signals.
  * @param {*} state Loaded state (sources + monoTurn + transit).
@@ -261,21 +286,11 @@ function belowEmigrationBar(forced, pressure) {
 function processSourceLegacy(src, ranked, state, ownerPop, maxThisSource) {
   if (src.rural <= CONFIG.minRuralToEmigrate || maxThisSource <= 0) return [];
   const st = sourceState(state, src.key);
-  const cause = migrationCause(src);
-  const forced = FORCED_CAUSES.has(cause);
-  if (restingOnCooldown(st, forced)) return [];
   const best = bestDestination(src, ranked, ownerPop);
-  if (!best) {
-    const a = processAttrition(src, st, state); // no refuge → the outlet
-    return a ? [a] : [];
-  }
-  st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
-  if (belowEmigrationBar(forced, st.pressure)) return [];
-  const budget = Math.min(maxThisSource, warSurgeBudget(src, cause));
-  const out = shedBurst(src, best.dest, state, cause, budget);
-  if (!out.length) return [];
-  st.pressure = 0;
-  if (!forced) st.cooldown = speedTurns(CONFIG.cooldownTurns);
+  /** @type {Migration[]} */
+  const out = legacyEmigrate(src, st, state, best, maxThisSource);
+  const death = processOutletDeath(src, st, state, !!best); // concurrent trapped/famine death
+  if (death) out.push(death);
   return out;
 }
 
@@ -332,18 +347,20 @@ function shedVoluntary(src, best, state, st, maxVol) {
 function processSourceSplit(src, ranked, state, ownerPop, budgets) {
   const st = sourceState(state, src.key);
   const best = bestDestination(src, ranked, ownerPop);
-  if (!best) {
-    const a = processAttrition(src, st, state);
-    return a ? [a] : [];
-  }
   /** @type {Migration[]} */
   const out = [];
-  if (budgets.crisis > 0 && inCrisis(src)) {
-    for (const m of shedCrisis(src, best, state, budgets.crisis)) out.push(m);
+  if (best) {
+    if (budgets.crisis > 0 && inCrisis(src)) {
+      for (const m of shedCrisis(src, best, state, budgets.crisis)) out.push(m);
+    }
+    // Shared pool: crisis already spent some of the common budget, so the voluntary track gets the rest.
+    const volMax = budgets.shared ? budgets.voluntary - out.length : budgets.voluntary;
+    for (const m of shedVoluntary(src, best, state, st, volMax)) out.push(m);
   }
-  // Shared pool: crisis already spent some of the common budget, so the voluntary track gets the rest.
-  const volMax = budgets.shared ? budgets.voluntary - out.length : budgets.voluntary;
-  for (const m of shedVoluntary(src, best, state, st, volMax)) out.push(m);
+  // Death channel, CONCURRENT with the above: the trapped (no refuge) — or a STARVING city even with a
+  // refuge — loses some people to death while the rest flee. Famine ≠ trapped: people die even fleeing.
+  const death = processOutletDeath(src, st, state, !!best);
+  if (death) out.push(death);
   return out;
 }
 
@@ -376,18 +393,36 @@ function processSource(src, ranked, state, ownerPop, budgets) {
  * @param {*} state Loaded state (sources + monoTurn).
  * @returns {Migration|null} The attrition record, or null.
  */
-function processAttrition(src, st, state) {
+/**
+ * The outlet's DEATH channel — population that leaves the world (cause `attrition`), tracked as deaths,
+ * not migration. Two triggers, and CRUCIALLY it runs CONCURRENTLY with emigration (its own
+ * `deathPressure`, distinct from the emigration pressure):
+ *   • TRAPPED — distressed (≥ attritionMinDistress) with NO refuge: the whole trapped population dies
+ *     off (the original closed-system valve), at full rate.
+ *   • FAMINE — a STARVING city even WHEN a refuge exists: famine kills those who can't escape in time,
+ *     so some die while the rest flee — at `starvationDeathShare` of the trapped rate. Without this the
+ *     "no refuge" trap almost never fires (there's nearly always somewhere to flee), so starvation only
+ *     ever emigrated and never actually killed.
+ * @param {*} src Source signal.
+ * @param {*} st Per-source state (uses st.deathPressure).
+ * @param {*} state Loaded state.
+ * @param {boolean} hasRefuge Whether a viable destination exists this pass.
+ * @returns {Migration|null} An attrition death record, or null.
+ */
+function processOutletDeath(src, st, state, hasRefuge) {
   const d = CONFIG.attritionEnabled ? distress(src) : 0;
-  if (d < CONFIG.attritionMinDistress) {
-    st.pressure = Math.max(0, st.pressure * 0.5); // not trapped/distressed → decay
+  const trapped = !hasRefuge && d >= CONFIG.attritionMinDistress;
+  const famine = !!src.starving && CONFIG.starvationDeathEnabled;
+  if (!trapped && !famine) {
+    st.deathPressure = Math.max(0, st.deathPressure * 0.5); // coping / can flee freely → decay
     return null;
   }
-  st.pressure += Math.pow(d, CONFIG.deltaExponent);
-  if (st.pressure < speedBar(CONFIG.attritionThreshold)) return null;
+  const rate = hasRefuge ? CONFIG.starvationDeathShare : 1; // most flee when a refuge exists
+  st.deathPressure += Math.pow(Math.max(d, 1), CONFIG.deltaExponent) * rate;
+  if (st.deathPressure < speedBar(CONFIG.attritionThreshold)) return null;
   const popBefore = src.population;
   if (!removeRural(src.city)) return null;
-  st.pressure = 0;
-  st.cooldown = speedTurns(CONFIG.cooldownTurns);
+  st.deathPressure = 0;
   src.rural -= 1;
   src.population -= 1;
   return {

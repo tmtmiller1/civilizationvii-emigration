@@ -289,4 +289,40 @@ function pinBaseConfig() {
   assert.equal(war[0].cause, "war", "E: war refugees stay labeled war next to a high-yield haven");
 })();
 
-console.log("engine-pass harness passed (5 scenarios)");
+// ── Scenario F: famine death CONCURRENT with emigration (a refuge EXISTS) ───
+(function scenarioFamineDeath() {
+  pinBaseConfig();
+  Object.assign(CONFIG, {
+    attritionEnabled: true,
+    attritionMinDistress: 1,
+    attritionThreshold: 1,
+    starvationModifier: -50,
+    starvationDeathEnabled: true,
+    starvationDeathShare: 1, // full rate so the famine death fires promptly in the test
+    crossCivEnabled: true,
+    foodFactor: 1
+  });
+  installConfigStore();
+  globalThis.Game = { turn: 1 };
+  // A STARVING city (owner 1, negative food) AND a prosperous refuge (owner 2, high food): people CAN
+  // flee — yet famine must still kill some. We must see BOTH an emigration (cause != attrition, with a
+  // destination) AND an attrition death, both from owner 1, proving death is concurrent with flight.
+  const starving = makeCity(1, 1, { population: 12, rural: 12, yields: { YIELD_FOOD: -5 } });
+  const refuge = makeCity(2, 1, { population: 10, rural: 10, yields: { YIELD_FOOD: 40 }, x: 1, y: 0 });
+  installWorld({ 1: major([starving]), 2: major([refuge]) });
+
+  let sawEmigration = false;
+  let sawDeath = false;
+  for (let i = 0; i < 8 && !(sawEmigration && sawDeath); i++) {
+    globalThis.Game = { turn: i + 1 };
+    for (const m of runPass()) {
+      if (m.srcOwner !== 1) continue;
+      if (m.cause === "attrition") sawDeath = true;
+      else if (typeof m.destOwner === "number") sawEmigration = true;
+    }
+  }
+  assert.ok(sawEmigration, "F: a starving city WITH a refuge still emigrates (people flee)");
+  assert.ok(sawDeath, "F: AND it loses some to famine death even with a refuge (death ≠ trapped)");
+})();
+
+console.log("engine-pass harness passed (6 scenarios)");

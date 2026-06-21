@@ -91,7 +91,9 @@ export const CONFIG = {
   // War alone does NOT push people out - only actual violence inside a city's
   // borders does (see the violence section). siege = the city being razed.
   siegeModifier: -100,
-  starvationModifier: -200, // net food < 0
+  starvationModifier: -90, // net food < 0 (in line with siege −100). Was −200, but that never fired
+  //   until the getNetYield fix made `starving` real — −200 drives prosperity negative on its own,
+  //   which is too hot now that it's live; −90 strongly repels without making the city instantly dead.
   unrestModifier: -60, // active unrest
   // No "settlement over cap" term: the game ALREADY penalizes over-cap civs with
   // happiness, which this model reads via the happiness term - adding another
@@ -234,6 +236,13 @@ export const CONFIG = {
   attritionEnabled: true,
   attritionMinDistress: 80, // min situational distress (%) before a trapped city loses people
   attritionThreshold: 40, // distress "pressure" to remove one population point
+  // Famine kills even when people CAN flee. The "no destination" trap almost never fires (there is
+  // nearly always somewhere to flee to), so without this a starving city only ever EMIGRATES and never
+  // actually starves to death. With this on, a STARVING city loses some population to death (cause
+  // `attrition`) concurrently with its emigration — at `starvationDeathShare` of the trapped rate, so
+  // most flee and a minority die. The fully-trapped case still dies at the full rate.
+  starvationDeathEnabled: true,
+  starvationDeathShare: 0.5, // famine death rate (vs the trapped rate) when a refuge IS available
 
   // ── Feature 1: aggressor-aware war migration (aggressorPenalty 0 = off) ──
   ownCivRefugeeBonus: 1, // war refugees lean slightly toward their own civ's cities first — but only
