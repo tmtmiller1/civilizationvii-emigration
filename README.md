@@ -667,8 +667,15 @@ during live playback — so an immigrant never reads as home-grown.
 
 ## 9. In-game feedback & notifications
 
-Migration is surfaced as **styled HUD toasts** (matching the game's look) and, for big events anywhere
-in the world, **world-news**. It is **important-only by design**, with several anti-spam layers:
+Migration is surfaced as **styled HUD toasts** and, for big events anywhere in the world,
+**world-news**. The toast is built to read as a **native Civ VII message**, not a web element: the
+game's `TitleFont` eyebrow over a `BodyFont` body, its dark panel gradient with the bronze/gold trim
+palette (`#8c7e62` frame, `#f0bc78` highlight), a slide-in animation and a fade-out, an ~11-second
+dwell, and vertical **stacking** so several never overlap. Each toast is **themed by cause** — a
+coloured left accent bar + eyebrow label (War / Disaster / Attraction / Conquest / …) so its type reads
+at a glance (war red, disaster amber, prosperity green, …) — and every count is shown in **both
+measuring systems at once**: raw Civ population points *and* scaled people, e.g. *"3 population points
+(36 thousand people)"*. It is **important-only by design**, with several anti-spam layers:
 
 - **Rich, named events** (`emigration-naming.js`): disasters use the **game's own names**
   (`GameInfo.RandomEvents.lookup(type).Name`), wars reuse the war name, conquest names the sacked city.
