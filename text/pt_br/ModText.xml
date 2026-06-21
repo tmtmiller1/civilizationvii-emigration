@@ -122,6 +122,7 @@
         <Replace Tag="LOC_EMIG_T_MHGOLD_D" Language="pt_BR"><Text>Ouro drenado a cada turno por UNIT_MIGRANT que uma civilização retém, escalando com a quantidade. 0 = desativado. (Alavanca de dedução confirmada por sonda.)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST" Language="pt_BR"><Text>Custo: resistência por congestão (0 = desativado)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="pt_BR"><Text>Tornar uma civilização que absorve muitos migrantes um destino menos atraente para mais migração (está ocupada integrando os recém-chegados), escalando com o quanto está digerindo. Um freio estrutural aos ímãs descontrolados. 0 = desativado.</Text></Replace>
+        <Replace Tag="LOC_EMIG_EVENT_FAMINE" Language="pt_BR"><Text>Fome</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="pt_BR"><Text>Custo: freio antibola de neve (0 = desligado)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="pt_BR"><Text>Torna uma civilização cuja população disparou muito à frente das demais um destino menos atraente para a migração entre civilizações — um freio autocorretivo sobre um líder descontrolado, que cresce conforme sua vantagem. Nunca atrapalha a saída nem os movimentos internos do líder. 0 = desligado.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="pt_BR"><Text>Custo: limiar antibola de neve (× parcela justa)</Text></Replace>

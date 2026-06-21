@@ -267,7 +267,7 @@ export function dashboardModel(input) {
     sections: [
       { title: "Migration network", kind: "flow", network: current, frames, events },
       { title: "Net Migration (Table)", kind: "ledger", rows: civLedgerRows(d.civs || []) },
-      { title: "Why people move", kind: "pies", cities: buildCivFlows(d.flows || []) },
+      { title: "Why people move", kind: "pies", cities: buildCivFlows(d.flows || [], d.eventsByOwner) },
       { title: "Settlements", kind: "cityflows", cities: d.myCities || [] },
       { title: "Immigration policies", kind: "stances", rows: stanceRows(d.civs || []) },
       { title: "Migration notifications", kind: "notifications" },
@@ -367,6 +367,12 @@ const DASH_CSS =
   "border-radius:0.25rem;overflow:hidden;}" +
   ".emig-cause-fill{height:100%;}" +
   ".emig-cause-num{flex:0 0 auto;min-width:3.2rem;text-align:right;opacity:0.85;}" +
+  // The specific-event sub-rows under each cause (a particular war/disaster/crisis + its toll).
+  ".emig-event-row{display:flex;align-items:baseline;gap:0.4rem;font-size:0.82rem;" +
+  "padding-left:1.1rem;opacity:0.78;}" +
+  ".emig-event-name{flex:1 1 auto;color:#cbb994;overflow:hidden;text-overflow:ellipsis;" +
+  "white-space:nowrap;}" +
+  ".emig-event-num{flex:0 0 auto;text-align:right;color:#cbb994;}" +
   ".emig-num-toggle{align-self:flex-end;cursor:pointer;font-size:1rem;color:#e5d2ac;" +
   "padding:0.34rem 1.15rem;border-radius:1rem;border:0.0555rem solid rgba(201,162,76,0.4);" +
   "background:rgba(229,210,172,0.06);margin-bottom:0.3rem;}" +

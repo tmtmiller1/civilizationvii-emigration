@@ -49,6 +49,22 @@ export function capFlows(flows, flowsPts, maxKeys) {
 }
 
 /**
+ * Bound a per-civ by-event map in place: trim each civ to its `max` largest events (evicting the
+ * smallest cumulative ones), so outByEvent/deathsByEvent can't grow unbounded across a long game.
+ * @param {Record<string, Record<string, number>>} byCiv The per-civ event map (mutated).
+ * @param {number} max Max event keys per civ.
+ */
+export function capByEvent(byCiv, max) {
+  for (const id of Object.keys(byCiv || {})) {
+    const m = byCiv[id];
+    const keys = Object.keys(m || {});
+    if (keys.length <= max) continue;
+    keys.sort((a, b) => (m[b] || 0) - (m[a] || 0));
+    for (const k of keys.slice(max)) delete m[k];
+  }
+}
+
+/**
  * Add one delta's per-cause counts into a running cumulative map, in place.
  * @param {Record<string, Record<string, number>>} target Running cumulative (mutated).
  * @param {Record<string, Record<string, number>>} [delta] The increment to fold in.

@@ -109,6 +109,32 @@ function reportRefugeeConcentration(owners, age) {
 }
 
 /**
+ * Debug-log this pass's net-distribution: each civ's cumulative net (points + people) plus this
+ * pass's per-record phases, so we can see whether any civ is net-POSITIVE or arrivals are failing
+ * (departures debit a source, but a destroyed-destination arrival credits no one). Grep
+ * `EMIG_netdist` in UI.log. Never throws.
+ * @param {*} s MigStats state (reads cum / cumPts).
+ * @param {*[]} migs This pass's migrations.
+ */
+export function logNetDistribution(s, migs) {
+  try {
+    const ids = new Set([...Object.keys(s.cumPts || {}), ...Object.keys(s.cum || {})]);
+    const parts = [];
+    for (const pid of ids) {
+      const pts = Math.round(s.cumPts[pid] || 0);
+      const ppl = Math.round(s.cum[pid] || 0);
+      if (pts !== 0 || ppl !== 0) parts.push("c" + pid + ":pts=" + pts + ",ppl=" + ppl);
+    }
+    const phases = migs.map((/** @type {*} */ m) => (m.phase || "?") + (m.crossCiv ? "X" : "") + ">"
+      + (typeof m.srcOwner === "number" ? m.srcOwner : "-") + "/"
+      + (typeof m.destOwner === "number" ? m.destOwner : "-")).join(" ");
+    dlog("netdist [" + (parts.join(" ") || "all-zero") + "] thisPass: " + phases);
+  } catch (_) {
+    /* diagnostics must never break a pass */
+  }
+}
+
+/**
  * Emit balance-health signals for the given civs, throttled to once per
  * REPORT_INTERVAL turns. Debug-gated via dlog; never throws.
  * @param {number[]} owners In-play civ ids (e.g. from city signals).
