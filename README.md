@@ -589,24 +589,28 @@ signal is `city.isInfected` plus a severity-scaled spike from `RandomEventOccurr
 **Plague-as-contagion** (`plagueCarryEnabled`, off): migrants fleeing an infected city seed a smaller
 outbreak-distress at their destination.
 
-### 6d. The outlet: attrition death — trapped *and* famine (`attritionEnabled`)
+### 6d. The outlet: crisis death — lethal distress kills even when people can flee (`attritionEnabled`)
 A **death channel** (cause `attrition`, tracked as **deaths**, isolated from the migration/refugee
-metrics) that runs on its own `deathPressure` **concurrently with emigration**, on two triggers:
+metrics) that runs on its own `deathPressure` **concurrently with emigration**. It fires under **lethal
+distress** — `distress ≥ attritionMinDistress`, i.e. the **situational crises: war, disaster, siege,
+famine**. Crucially, **economic (prosperity/unhappiness) emigration carries no situational distress, so
+it never kills** — only crises do. Two modes:
 
-- **Trapped** — a distressed source (`distress ≥ attritionMinDistress`) with **no viable destination**:
-  its trapped population dies off (the original closed-system valve), at full rate.
-- **Famine** — a **starving** city *even when a refuge exists* (`starvationDeathEnabled`): because the
-  "no destination" trap almost never fires (there's nearly always somewhere to flee), starvation would
-  otherwise only ever *emigrate* and never actually kill. So a starving city now loses **some** people
-  to death **while the rest flee** — at `starvationDeathShare` (default 0.5) of the trapped rate, so
-  flight dominates and famine takes a minority. Death builds on `deathPressure`, crosses
+- **Trapped** — no viable destination: the whole trapped population dies off (the original
+  closed-system valve), at full rate.
+- **Crisis while fleeing** — a refuge *does* exist (`crisisDeathEnabled`): because the "no destination"
+  trap almost never fires (there's nearly always somewhere to flee), a crisis would otherwise only ever
+  *displace* and never kill. So a war / disaster / besieged / starving city now loses **some** people to
+  death **while the rest flee** — at `crisisDeathShare` (default 0.5) of the trapped rate, so flight
+  dominates and the crisis takes a minority. Death builds on `deathPressure`, crosses
   `attritionThreshold` (×S), and removes a rural point via the same `addRuralPopulation(−1)` the game's
   own starvation uses.
 
-(Related: `starvationModifier` is **−90** — the situational penalty that makes a starving city a place
-people *flee*. It was −200, but that only ever fired once the §-yields fix made `starving` real, and
-−200 drives prosperity negative on its own. With death now handled by this channel, the penalty's job
-is purely emigration, so −90 is enough.)
+Two tuning notes: (1) `starvationModifier` is **−90** (was −200; it only became live once the §yields
+fix made `starving` real, and −200 flips prosperity negative on its own — with death now on this
+channel, the penalty's job is purely emigration). (2) Crisis death does **not** count against the war
+**siege-loss cap**, so a very long siege can deplete a city beyond that cap (down to the rural floor) —
+lower `crisisDeathShare` if that's too lethal.
 
 ### 6e. Asylum and relationship permeability (targeted attraction)
 Pull is composed from a prosperity gradient plus a targeted-attraction channel (`tilt`) and relationship
