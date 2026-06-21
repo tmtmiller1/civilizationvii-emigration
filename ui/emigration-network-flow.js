@@ -12,7 +12,7 @@
 // (towns dotted, cities solid, civ boundary solid + thicker) is shared via the painter.
 
 import {
-  buildColorMap, buildCenters, setupCanvas, injectStyle, appendUnitsToggle, WX, WY
+  buildColorMap, buildCenters, setupCanvas, injectStyle, appendUnitsToggle, timelineNote, WX, WY
 } from "/emigration/ui/emigration-network-viz.js";
 import { buildChronoDots, totalPeople } from "/emigration/ui/emigration-network-dots.js";
 import { drawCivCircle, drawCityDiscs, drawLabelsNoOverlap } from "/emigration/ui/emigration-network-paint.js";
@@ -692,7 +692,10 @@ function mountFlowChrome(wrap, canvas, timeline, rebuildAll) {
   const stage = el("div", "emig-netc-stage");
   stage.appendChild(canvas);
   wrap.appendChild(stage);
-  if (timeline) wrap.appendChild(timeline.root);
+  // With a single recorded frame there is no scrubber (makeTimeline returns null); show the same
+  // "playback appears once history accumulates" note the Dots view does, so the Flows page explains
+  // the missing timeline rather than silently dropping it.
+  wrap.appendChild(timeline ? timeline.root : timelineNote());
   wrap.appendChild(flowCaption());
 }
 
