@@ -715,17 +715,25 @@ export function recordDisasterEvent(name, severity) {
 }
 
 /**
- * Fold a pass's migrations into the cumulative tallies.
- * @param {{srcOwner?:number, destOwner?:number, people:number, cause?:string}[]} migs Migrations.
+ * Fold a pass's migrations into the cumulative tallies AND take the per-interval timeline snapshot.
+ * Call it every pass, including passes with no migration: the snapshot still records each civ's
+ * population (for the timeline's growth history), while the migration-only work (recent feed, net
+ * distribution log) is skipped when there's nothing to fold.
+ * @param {{srcOwner?:number, destOwner?:number, people:number, cause?:string}[]} migs Migrations (may be empty).
  */
 export function recordMigrations(migs) {
-  if (!Array.isArray(migs) || !migs.length) return;
   const s = load();
-  for (const m of migs) foldMigration(s, m);
-  snapshotFlows(s); // capture the cumulative state for the timeline scrubber
-  pushRecent(migs);
+  const list = Array.isArray(migs) ? migs : [];
+  for (const m of list) foldMigration(s, m);
+  // Snapshot EVERY pass (self-gated to the snapshot interval inside), not only when migration
+  // happened — so the timeline records per-civ population growth from turn one and is available to
+  // scrub/play before any emigration occurs. The migration-only side effects stay gated on `list`.
+  snapshotFlows(s);
+  if (list.length) {
+    pushRecent(list);
+    logNetDistribution(s, list);
+  }
   save();
-  logNetDistribution(s, migs);
 }
 
 /**

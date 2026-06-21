@@ -7,7 +7,7 @@ globalThis.Configuration = {
   editGame: () => ({ setValue: (k, v) => (KV[k] = v) })
 };
 
-const { recordMigrations, recentEventsFor, netDeltaForPlayer } = await import(
+const { recordMigrations, recentEventsFor, netDeltaForPlayer, migrationFlowHistory } = await import(
   "/emigration/ui/emigration-migration-stats.js"
 );
 const { registerMigrationMetric } = await import("/emigration/ui/emigration-demographics.js");
@@ -178,6 +178,23 @@ function testRecentEventsFeedIsPlayerFilteredNewestFirst() {
   assert.equal(recentEventsFor(20, 1).length, 1); // limit respected
 }
 
+function testEmptyPassRecordsPopulationFrame() {
+  // A peaceful pass (ZERO migrations) must still record a timeline frame carrying the per-civ
+  // population snapshot, so the network/flow timeline is available and plays population growth before
+  // any emigration occurs. Advance the game turn well past the 1..5 snapshot interval between passes
+  // so a fresh frame opens each time, then confirm the empty passes appended frames (with a `pop`).
+  globalThis.Game = { turn: 500 };
+  const before = migrationFlowHistory().length;
+  recordMigrations([]); // peaceful pass
+  globalThis.Game = { turn: 520 };
+  recordMigrations([]); // another peaceful pass, well past any interval
+  const after = migrationFlowHistory();
+  assert.ok(after.length > before, "empty passes still append timeline frames (population history)");
+  const newest = after[after.length - 1];
+  assert.ok(newest.pop && typeof newest.pop === "object", "frame carries a population snapshot");
+  delete globalThis.Game;
+}
+
 testNetIsGainForDestLossForSrc();
 testDeltaAdvancesPerSample();
 testFormatIsSignedPeople();
@@ -188,5 +205,6 @@ testGrossAndRefugeeTallies();
 testAttritionIsDeathsNotMigration();
 testRefugeeCauseRouting();
 testRecentEventsFeedIsPlayerFilteredNewestFirst();
+testEmptyPassRecordsPopulationFrame();
 
 console.log("migration-stats harness passed");
