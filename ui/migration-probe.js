@@ -1297,6 +1297,49 @@ function probeBlob() {
   log("BLOB total = " + total + " chars across " + BLOB_KEYS.length + " keys");
 }
 
+/**
+ * Classify + log one flow edge relative to `me`: cross-civ OUT, cross-civ IN, or INTERNAL (same civ).
+ * @param {*} e Flow edge ({src,dest,srcCity,destCity,people}).
+ * @param {number} me The civ id of interest.
+ * @param {{out:number, in:number, intra:number}} acc Running counts (mutated).
+ */
+function logCivFlowEdge(e, me, acc) {
+  const ppl = Math.round(e.people || 0);
+  if (!(ppl > 0)) return;
+  const internal = e.src === e.dest;
+  if (internal && e.src === me) {
+    acc.intra++;
+    log("CIVFLOW intra " + (e.srcCity || "?") + ">" + (e.destCity || "?") + " people=" + ppl);
+  } else if (e.src === me) {
+    acc.out++;
+    log("CIVFLOW OUT  " + me + ">civ" + e.dest + " (" + (e.srcCity || "?") + ">" + (e.destCity || "?") + ") people=" + ppl);
+  } else if (e.dest === me) {
+    acc.in++;
+    log("CIVFLOW IN   civ" + e.src + ">" + me + " people=" + ppl);
+  }
+}
+
+/**
+ * Dump a civ's recorded migration: its cross-civ OUT/IN edges + internal moves, plus its cumulative
+ * out/in/deaths totals — so we can see WHY a Causes-tab pie is empty (no cross-civ edges ⇒ the loss
+ * was internal moves or deaths, which have no "left for" pie; OUT edges to civ ids you haven't met
+ * should now show as the "Unmet" bucket). Usage: `mig.civflow(pid)` (defaults to the local player).
+ * @param {number} [pid] Civ id.
+ */
+function probeCivFlow(pid) {
+  const D = /** @type {*} */ (globalThis).EmigrationData || {};
+  const me = typeof pid === "number" ? pid : GameContext.localPlayerID;
+  const n = (/** @type {string} */ f) => (typeof D[f] === "function" ? Math.round(D[f](me) || 0) : 0);
+  log("CIVFLOW pid=" + me + " grossOut=" + n("grossOutCumFor") + " grossIn=" + n("grossInCumFor")
+    + " deaths=" + n("deathsCumFor"));
+  const flows = typeof D.flows === "function" ? D.flows() : [];
+  const acc = { out: 0, in: 0, intra: 0 };
+  for (const e of flows) logCivFlowEdge(e, me, acc);
+  log("CIVFLOW summary: crossOut=" + acc.out + " crossIn=" + acc.in + " internal=" + acc.intra
+    + (acc.out === 0 ? " — NO cross-civ OUT edges (the 'left for' pie is empty because this civ's"
+      + " losses are internal moves or deaths, not emigration to another civ)" : ""));
+}
+
 /** Console fallback. */
 function exposeGlobals() {
   try {
@@ -1331,7 +1374,9 @@ function exposeGlobals() {
       warName: () => probeWarName(),
       happy: (/** @type {number} */ pid) => probeHappiness(pid),
       // AUDIT: persisted-blob sizes (+ flow-key counts) — confirm the save data stays bounded.
-      blob: () => probeBlob()
+      blob: () => probeBlob(),
+      // DIAGNOSE: a civ's cross-civ OUT/IN edges + internal moves + totals (why a Causes pie is empty).
+      civflow: (/** @type {number} */ pid) => probeCivFlow(pid)
     };
   } catch (e) {
     log("exposeGlobals threw " + e);
