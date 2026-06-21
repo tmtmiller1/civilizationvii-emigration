@@ -36,11 +36,14 @@ function testProsperityFormula() {
   assert.equal(p, 38);
 }
 
-function testStarvationFlipsScoreNegative() {
-  // starvation is -200% → factor (1 - 2) = -1, so a positive base becomes its
-  // negation (a city you flee, not move to).
-  const base = signal({ food: 10, production: 10, population: 2, happiness: 5 });
-  assert.equal(prosperity({ ...base, starving: true }), -38);
+function testStarvationStronglyReducesScore() {
+  // starvation applies starvationModifier% as a situational penalty: score = base × (1 + mod/100). At
+  // the default −90 that's ×0.1 — a deeply unattractive city people flee — without flipping negative.
+  // (Death no longer comes from this penalty; it comes from the famine death channel in the engine.)
+  const base = signal({ food: 10, production: 10, population: 2, happiness: 5 }); // base 38
+  const factor = 1 + CONFIG.starvationModifier / 100;
+  assert.ok(Math.abs(prosperity({ ...base, starving: true }) - 38 * factor) < 1e-9);
+  assert.ok(prosperity({ ...base, starving: true }) < 38 * 0.5, "starvation at least halves the score");
 }
 
 function testRankSortsDescendingAndAttachesPros() {
@@ -130,7 +133,7 @@ function testOvercrowdOffByDefault() {
 }
 
 testProsperityFormula();
-testStarvationFlipsScoreNegative();
+testStarvationStronglyReducesScore();
 testRankSortsDescendingAndAttachesPros();
 testToleratesDegenerateInput();
 testViolenceSlidesScoreDown();
