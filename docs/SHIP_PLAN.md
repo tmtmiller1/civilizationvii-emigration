@@ -1,5 +1,24 @@
 # Emigration Mod — Ship-It Master Plan (umbrella)
 
+## Implementation status
+- ✅ **Phase 0** — verify gate green (`npm run verify` exits 0).
+- ✅ **Phase 1** — Refugees renamed (Left/Arrived) + definitions on all five graphs.
+- ✅ **Phase 2** — Net table follows the Scaled/Civ pills + diverging Net bar column.
+- ✅ **Phase 3** — immigrant dots animate from origin civ (on load + scrub).
+- ✅ **Phase 4** — engine two-track split (crisis + voluntary, separate budgets) behind rollout flags;
+  scenario E (concurrent war+prosperity) added; A–E pass. **+ §6.2** multi-cause city-readout line.
+- ✅ **Phase 6** — spike SUCCEEDED (base UI exposes `GameplayMap.getYields(plotIndex, playerID)` →
+  `[yieldType, amount]` tuples, and `getAppeal(x,y)`); tile-by-tile prosperity lens implemented
+  (per-plot yield sum, normalized to the world plot field, bucketed; per-city fallback). Needs in-game
+  visual verification.
+- ⏸️ **Phase 5** (city-local brakes) — DEFERRED **by design** per §5 ("ship only after Phase 1 stability
+  gates pass"); Phase 1 isn't yet verified in-game. Pick up after the in-game pass.
+
+All engine/test changes keep `npm run verify` at exit 0. UI + lens changes need an in-game pass.
+
+---
+
+
 Single source of truth for shipping the Emigration mod. **Reconciled with** `MIGRATION_SPLIT_PLAN.md`,
 which remains the authority for the **engine rebalance** (its §2–§11: design rules, two-track split, flags,
 budgets, replay, release gates). This umbrella adds (a) the **measured** ship-readiness audit, (b) the **UI/graph

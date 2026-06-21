@@ -15,6 +15,9 @@
  * @property {number} movesPerSiege Per-civ move-ceiling bonus per city in war/disaster crisis.
  * @property {number} emigrationBar Accumulated pressure to move one citizen.
  * @property {number} deltaExponent Diminishing scaling on the prosperity delta.
+ * @property {boolean} splitTracksEnabled Evaluate crisis + voluntary as two concurrent per-source tracks.
+ * @property {boolean} splitBudgetsEnabled Give crisis and voluntary their own per-civ move ceilings.
+ * @property {boolean} splitUiReadoutEnabled Show a multi-cause pressure breakdown in the city readout.
  * @property {number} tiltCap Max |targeted attraction| added to a single pull (Tilt-channel clamp).
  * @property {number} permeFloor Permeability-product floor.
  * @property {number} permeCeil Permeability-product ceiling.

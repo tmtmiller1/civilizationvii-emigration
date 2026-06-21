@@ -254,4 +254,39 @@ function pinBaseConfig() {
   assert.ok(besieged.ruralPopulation <= 8, "D: the source lost the burst from its rural pool");
 })();
 
-console.log("engine-pass harness passed (4 scenarios)");
+// ── Scenario E: CONCURRENT causes , the voluntary/crisis split ─────────────
+// A besieged city next to a high-yield haven. With the split on, the SAME source sheds war refugees
+// (crisis track, flees every turn) AND prosperity migrants (voluntary track, crosses the bar) in one
+// pass — and the war refugees are NOT relabeled "prosperity" by the pull next door (the regression
+// that the old cause-mixing experiment caused). This fails on legacy single-cause behavior.
+(function scenarioConcurrent() {
+  pinBaseConfig();
+  Object.assign(CONFIG, {
+    warSurgeMax: 3, violenceFleeThreshold: 2, warSiege: false, transitLagTurns: 0,
+    movesPerSiege: 3, splitTracksEnabled: true, splitBudgetsEnabled: true,
+    emigrationBar: 1, cooldownTurns: 0
+  });
+  installConfigStore();
+  globalThis.Game = { turn: 1 };
+  globalThis.ComponentID = { toBitfield: (cid) => cid.owner + ":" + cid.n };
+  const besieged = makeCity(1, 1, { population: 12, rural: 12, yields: { YIELD_FOOD: 1 }, x: 0, y: 0 });
+  besieged.id = { owner: 1, n: 1 };
+  const haven = makeCity(1, 2, { population: 2, rural: 2, yields: { YIELD_FOOD: 1000 }, x: 5, y: 0 });
+  haven.id = { owner: 1, n: 2 };
+  installWorld({ 1: major([besieged, haven]) });
+  globalThis.Players.Districts = {
+    get: () => ({
+      getDistrictMaxHealth: () => 100,
+      getDistrictHealth: (loc) => (loc && loc.x === 0 ? 0 : 100)
+    })
+  };
+
+  const recs = runPass();
+  const war = recs.filter((m) => m.cause === "war" && m.srcOwner === 1);
+  const pros = recs.filter((m) => m.cause === "prosperity" && m.srcOwner === 1);
+  assert.ok(war.length >= 1, "E: the besieged city sheds war refugees (crisis track)");
+  assert.ok(pros.length >= 1, "E: the SAME pass also sheds prosperity migrants (concurrent causes)");
+  assert.equal(war[0].cause, "war", "E: war refugees stay labeled war next to a high-yield haven");
+})();
+
+console.log("engine-pass harness passed (5 scenarios)");

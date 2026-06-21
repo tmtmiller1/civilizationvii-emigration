@@ -22,6 +22,15 @@ export const CONFIG = {
   emigrationBar: 30, // accumulated pressure (per source) to move one citizen
   deltaExponent: 0.5, // diminishing scaling on the prosperity delta
 
+  // ── Voluntary / Crisis SPLIT (rollout flags; see docs/MIGRATION_SPLIT_PLAN.md §4) ──
+  // A source is evaluated as TWO independent systems each pass: crisis displacement (war/disaster,
+  // flees every turn) and voluntary migration (prosperity/unhappiness, bar + cooldown), so one city
+  // can shed war refugees AND economic migrants concurrently. Each draws from its own per-civ budget,
+  // so the two never unbounded-double-drain. Flags exist so the whole split is reversible.
+  splitTracksEnabled: true, // false → legacy single-cause-per-pass behavior
+  splitBudgetsEnabled: true, // false → one shared per-civ ceiling for both tracks
+  splitUiReadoutEnabled: true, // false → city readout shows one dominant cause instead of a breakdown
+
   // ── pull composition channels (docs/immigration-interaction-plan.md §1) ──
   // Pull = (gradient + TILT) - friction, then x PERMEABILITY. Both policy channels are
   // clamped so any number of cards/agreements/ops compose without runaway. Tilt is empty

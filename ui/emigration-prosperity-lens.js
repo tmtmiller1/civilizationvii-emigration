@@ -78,18 +78,19 @@ function cityTiers() {
 }
 
 /**
- * A city's owned plots as {x, y} coordinates (from its purchased plot indices).
+ * A city's owned plots as {x, y, idx} (from its purchased plot indices). `idx` lets the tile-level
+ * scoring read per-plot yields; `{x, y}` is what the overlay paints.
  * @param {*} city City object.
- * @returns {{x:number, y:number}[]} Plot coordinates.
+ * @returns {{x:number, y:number, idx:number}[]} Plot coordinates + index.
  */
 function plotsOf(city) {
-  /** @type {{x:number, y:number}[]} */
+  /** @type {{x:number, y:number, idx:number}[]} */
   const out = [];
   try {
     const idx = city && typeof city.getPurchasedPlots === "function" ? city.getPurchasedPlots() : [];
     for (const i of idx || []) {
       const loc = GameplayMap.getLocationFromIndex(i);
-      if (loc) out.push({ x: loc.x, y: loc.y });
+      if (loc) out.push({ x: loc.x, y: loc.y, idx: i });
     }
   } catch (_) {
     /* ignore unreadable city */
@@ -97,7 +98,90 @@ function plotsOf(city) {
   return out;
 }
 
-/** The lens layer: an overlay of per-city plot fills coloured by prosperity vs the world mean. */
+/**
+ * The amount from one `GameplayMap.getYields` entry — defensive across the engine's possible shapes:
+ * a [yieldType, amount] tuple (the base UI's shape), a {amount}/{value} object, or a bare number.
+ * @param {*} e A yields entry.
+ * @returns {number} The numeric amount (0 if unreadable).
+ */
+function yieldAmount(e) {
+  if (typeof e === "number") return isFinite(e) ? e : 0;
+  if (Array.isArray(e)) return Number(e[1]) || 0;
+  if (e && typeof e === "object") return Number(e.amount ?? e.value ?? 0) || 0;
+  return 0;
+}
+
+/**
+ * A TILE's desirability: the total yield output on that plot (read for the local player), so the lens
+ * can shade tile-by-tile instead of one colour per city. Returns null when per-plot yields aren't
+ * available (caller falls back to the per-city score).
+ * @param {number} idx Plot index.
+ * @returns {number|null} The tile score, or null.
+ */
+function plotScore(idx) {
+  try {
+    if (typeof GameplayMap === "undefined" || typeof GameplayMap.getYields !== "function") return null;
+    const ys = GameplayMap.getYields(idx, GameContext.localPlayerID);
+    if (!Array.isArray(ys)) return null;
+    let s = 0;
+    for (const y of ys) s += yieldAmount(y);
+    return s;
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * Per-PLOT prosperity tiers: every visible city's plots scored by tile yield output and normalized to
+ * a [-1, 1] deviation from the world PLOT field. Empty (→ per-city fallback) when no per-plot yields.
+ * @returns {{x:number, y:number, t:number}[]} Per-plot {x, y, deviation}.
+ */
+function plotTiers() {
+  let signals = [];
+  try {
+    signals = collectCitySignals() || [];
+  } catch (_) {
+    return [];
+  }
+  /** @type {{owner:number, x:number, y:number, score:number}[]} */
+  const all = [];
+  for (const s of signals) {
+    for (const p of plotsOf(s.city)) {
+      const score = plotScore(p.idx);
+      if (score !== null) all.push({ owner: s.owner, x: p.x, y: p.y, score });
+    }
+  }
+  if (!all.length) return [];
+  const mean = all.reduce((a, r) => a + r.score, 0) / all.length;
+  let spread = 0;
+  for (const r of all) spread = Math.max(spread, Math.abs(r.score - mean));
+  return all
+    .filter((r) => !civHidden(r.owner))
+    .map((r) => ({ x: r.x, y: r.y, t: spread > 0 ? clamp((r.score - mean) / spread, -1, 1) : 0 }));
+}
+
+/**
+ * Paint per-plot tiles, grouping them into a few quantized colour buckets so the overlay takes a
+ * handful of addPlots calls instead of one per tile.
+ * @param {*} overlay The plot overlay.
+ * @param {{x:number, y:number, t:number}[]} tiles Per-plot tiers.
+ */
+function paintTileBuckets(overlay, tiles) {
+  /** @type {Map<number, {x:number, y:number}[]>} */
+  const buckets = new Map();
+  for (const t of tiles) {
+    const q = Math.round(t.t * 10) / 10; // ~21 buckets across [-1, 1]
+    let arr = buckets.get(q);
+    if (!arr) {
+      arr = [];
+      buckets.set(q, arr);
+    }
+    arr.push({ x: t.x, y: t.y });
+  }
+  for (const [q, plots] of buckets) overlay.addPlots(plots, { fillColor: colorFor(q) });
+}
+
+/** The lens layer: an overlay of plot fills coloured by TILE-level prosperity vs the world mean. */
 class ProsperityLensLayer {
   constructor() {
     this.group = WorldUI.createOverlayGroup("EmigProsperityOverlay", HEX_GRID);
@@ -113,12 +197,18 @@ class ProsperityLensLayer {
   /** Lens-layer lifecycle: init (no-op; built in the constructor). */
   initLayer() {}
 
-  /** Lens-layer lifecycle: paint every city's tiles by its prosperity tier. */
+  /** Lens-layer lifecycle: paint plots by TILE-LEVEL prosperity (per-plot yield output), falling back
+   *  to one colour per city when per-plot yields aren't available. */
   applyLayer() {
     this.clear();
-    for (const c of cityTiers()) {
-      const plots = plotsOf(c.city);
-      if (plots.length) this.overlay.addPlots(plots, { fillColor: colorFor(c.t) });
+    const tiles = plotTiers();
+    if (tiles.length) {
+      paintTileBuckets(this.overlay, tiles); // tile-by-tile (bucketed to bound overlay calls)
+    } else {
+      for (const c of cityTiers()) { // fallback: one colour per city
+        const plots = plotsOf(c.city);
+        if (plots.length) this.overlay.addPlots(plots, { fillColor: colorFor(c.t) });
+      }
     }
     // Hide the base plot tooltip while this lens is active so it doesn't clash with the mod's own
     // prosperity panel (emigration-prosperity-tooltip.js).

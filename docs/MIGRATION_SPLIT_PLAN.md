@@ -51,6 +51,7 @@ Use flags for experiments.
 2. Concurrency is produced by emitting multiple records over time, not multi-cause records.
 3. Keep existing by-cause telemetry model (`byCause`, `inByCause`, refugee tallies).
 4. Keep old-save compatibility for all persisted state changes.
+5. Demographics must remain fully shippable and correct as a standalone mod with Emigration absent.
 
 ## 3. What already exists (do not rewrite)
 
@@ -143,9 +144,12 @@ Current single-cause city displays must become multi-cause:
 - voluntary vs crisis toggle in network viz
 - promote per-cause demographics metrics by default
 
-### 6.4 Hard blocker
-Tile-by-tile prosperity lens is blocked pending per-plot API capability spike.
-Not part of Phase 1.
+### 6.4 Tile-by-tile prosperity lens (spike resolved — implemented)
+Spike SUCCEEDED: the base UI exposes per-plot data — `GameplayMap.getYields(plotIndex, playerID)`
+(returns `[yieldType, amount]` tuples) and `GameplayMap.getAppeal(x, y)`. `emigration-prosperity-lens.js`
+now scores each plot by total yield output, normalizes to the world PLOT field, and paints tile-by-tile
+(bucketed), falling back to one colour per city when per-plot yields aren't available. Needs in-game
+visual verification of the yields shape/scale.
 
 ### 6.5 Host contract checks
 Validate Demographics integration:
@@ -153,6 +157,8 @@ Validate Demographics integration:
 - group/view/member id stability
 - absent/delayed host fallback
 - no duplicate registrations
+- Demographics standalone mode remains fully functional with zero Emigration files/data/API present
+- every Emigration bridge is optional, load-order-safe, and fail-closed
 
 ## 7. KPIs and budgets
 
@@ -199,8 +205,9 @@ Merge blockers:
 4. persisted schema/semantic migration ambiguity resolved.
 5. contract parity checks pass.
 6. host contract checks pass.
-7. real-save replay suite passes.
-8. KPI + performance budgets within limits.
+7. Demographics standalone smoke test passes with Emigration absent.
+8. real-save replay suite passes.
+9. KPI + performance budgets within limits.
 
 Player-stability gate (before new feature work):
 - map/graph/table totals agree on captured snapshots
@@ -235,6 +242,9 @@ Integration/lens:
 - `emigration-network-*.js`
 - `emigration-prosperity-lens.js` (gated)
 - `emigration-prosperity-tooltip.js` (gated)
+
+Standalone-compatibility validation:
+- Demographics-side companion registration/host surfaces that must still behave when Emigration is absent
 
 Tests:
 - `tests/engine-pass.mjs`

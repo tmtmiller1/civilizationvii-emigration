@@ -106,8 +106,12 @@ export function prepareState(state, ranked) {
   const live = new Set(ranked.map((s) => s.key));
   const sources = state.sources;
   for (const k of Object.keys(sources)) {
-    if (!live.has(k)) delete sources[k];
-    else if (sources[k].cooldown > 0) sources[k].cooldown--;
+    if (!live.has(k)) {
+      delete sources[k];
+    } else {
+      if (sources[k].cooldown > 0) sources[k].cooldown--; // voluntary post-move rest
+      if (sources[k].crisisCooldown > 0) sources[k].crisisCooldown--; // crisis track (unused today; 0)
+    }
   }
 }
 
