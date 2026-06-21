@@ -203,7 +203,23 @@ export function buildColorMap(frames) {
   for (const fr of frames) {
     for (const nd of fr.network.nodes) if (!map.has(nd.id)) map.set(nd.id, map.size);
   }
+  // Also register ORIGIN civs that appear only as a captured city's residents (not as a node), so
+  // their resident dots get a stable colour index rather than falling back to the owner's.
+  for (const fr of frames) registerOriginCivs(map, fr.pops || {});
   return map;
+}
+
+/**
+ * Register every ORIGIN civ that appears in a frame's per-city resident composition.
+ * @param {Map<number,number>} map Colour-index map (mutated).
+ * @param {Record<number,*>} pops Frame pops (civId → {cities:[{origins:[{civ}]}]}).
+ */
+function registerOriginCivs(map, pops) {
+  for (const k of Object.keys(pops)) {
+    for (const c of (pops[+k].cities || [])) {
+      for (const o of (c.origins || [])) if (!map.has(o.civ)) map.set(o.civ, map.size);
+    }
+  }
 }
 
 /**

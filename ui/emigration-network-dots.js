@@ -18,6 +18,7 @@
 //     always shows at least one dot.
 
 import { civColorByIndex, CAUSE_PALETTE, MOVE_PALETTE, lighten } from "/emigration/ui/emigration-network-paint.js";
+import { civAdjective } from "/emigration/ui/emigration-naming.js";
 
 // ── Shared model typedefs (the contract between views → dots → sim → paint) ──────────────────────
 /**
@@ -26,6 +27,8 @@ import { civColorByIndex, CAUSE_PALETTE, MOVE_PALETTE, lighten } from "/emigrati
  * @property {boolean} [town] Whether it's a town (vs a city).
  * @property {number} pop Native (home-grown) people.
  * @property {number} [pts] Native population in raw pop-points (Civ population).
+ * @property {{civ:number, pts:number}[]} [origins] Resident population split by ORIGIN civ (a
+ *   captured city keeps its prior owner's people under their origin until new residents are born).
  */
 /**
  * @typedef {Object} PopEntry A civ's native population, broken down by city.
@@ -378,23 +381,110 @@ function appendCorridorDots(b, e, i) {
 }
 
 /**
- * Set the NATIVE (resident) dot count for one (civ, city) at frame i , coloured in the civ's own
- * colour, living in its city's sub-cluster, so a circle shows its home-grown population by city.
- * Counts rise and fall, so decline is shown (not just the peak).
+ * A city's resident population split by ORIGIN civ, or a single owner bucket when no composition is
+ * known. Buckets carry their share as `pts` (used as weights).
+ * @param {*} city City {name, town, pop, origins?}.
+ * @param {number} ownerId Current owner civ id.
+ * @returns {{civ:number, pts:number}[]} Origin buckets.
+ */
+function nativeOriginList(city, ownerId) {
+  return city.origins && city.origins.length
+    ? city.origins
+    : [{ civ: ownerId, pts: city.pop || 1 }];
+}
+
+/**
+ * The set of origin civs ever seen for one (owner, city), unioned across frames so an origin that
+ * later drops out of the mix is still visited (and its cohort shrunk to zero) rather than lingering.
  * @param {*} b Build context.
- * @param {number} civId Civ id.
+ * @param {number} ownerId Owner civ id.
  * @param {number} cityIdx City index.
- * @param {*} city City {name, town, pop}.
+ * @param {{civ:number}[]} origins This frame's origins.
+ * @returns {Set<number>} Civs seen so far.
+ */
+function nativeSeenSet(b, ownerId, cityIdx, origins) {
+  const key = ownerId + "|" + cityIdx;
+  let s = b.nativeSeen.get(key);
+  if (!s) {
+    s = new Set();
+    b.nativeSeen.set(key, s);
+  }
+  for (const o of origins) s.add(o.civ);
+  return s;
+}
+
+/**
+ * Apportion `total` integer dots across the seen origin civs by their current share (absent origins
+ * weigh 0, so they shrink toward zero). Returns one count per civ in `civs` order.
+ * @param {number} total Native dots for the city.
+ * @param {number[]} civs Seen origin civs.
+ * @param {Map<number,number>} present civ → this frame's points (absent = 0).
+ * @returns {number[]} Dot counts (sum = total).
+ */
+function allocNative(total, civs, present) {
+  const w = civs.map((c) => present.get(c) || 0);
+  const sum = w.reduce((a, x) => a + x, 0);
+  if (!(sum > 0) || total <= 0) return civs.map(() => 0);
+  return allocate(total, w.map((x) => x / sum));
+}
+
+/**
+ * The dot template for one origin civ's residents in a city: coloured by ORIGIN (so a captured
+ * city's prior-owner residents read in that civ's colour), but living in the OWNER's sub-cluster.
+ * @param {*} b Build context.
+ * @param {{ownerId:number, cityIdx:number, cityName:string}} loc City location.
+ * @param {number} originCiv Origin civ id.
+ * @returns {*} A dot template.
+ */
+function nativeOriginTemplate(b, loc, originCiv) {
+  const idx = b.colorMap.has(originCiv) ? b.colorMap.get(originCiv) : b.colorMap.get(loc.ownerId) || 0;
+  const col = civColorByIndex(idx);
+  const originName = civNameOf(b, originCiv) || civAdjective(originCiv);
+  return {
+    destId: loc.ownerId, originId: originCiv, cityIdx: loc.cityIdx, cityName: loc.cityName,
+    cause: "native", scope: "resident",
+    colors: { origin: col, cause: CAUSE_PALETTE.native, movement: MOVE_PALETTE.resident },
+    originName, destName: civNameOf(b, loc.ownerId)
+  };
+}
+
+/**
+ * Set the live dot count for one origin civ's residents in a city at frame i.
+ * @param {*} b Build context.
+ * @param {{ownerId:number, cityIdx:number, cityName:string}} loc City location.
+ * @param {number} originCiv Origin civ id.
+ * @param {number} target Live dot count.
  * @param {number} i Frame index.
  */
-function appendNativeDots(b, civId, cityIdx, city, i) {
-  const col = civColorByIndex(b.colorMap.get(civId) || 0);
-  const civName = civNameOf(b, civId);
-  const template = { destId: civId, originId: civId, cityIdx, cityName: city.name, cause: "native",
-    scope: "resident", colors: { origin: col, cause: CAUSE_PALETTE.native, movement: MOVE_PALETTE.resident },
-    originName: civName, destName: civName };
-  const ref = { key: civId + "|" + cityIdx + "|native", civId, cityIdx, template };
-  setCohort(b, ref, Math.floor((city.pop || 0) / b.unit), i);
+function setNativeOriginCohort(b, loc, originCiv, target, i) {
+  const ref = {
+    key: loc.ownerId + "|" + loc.cityIdx + "|native|" + originCiv, civId: loc.ownerId,
+    cityIdx: loc.cityIdx, template: nativeOriginTemplate(b, loc, originCiv)
+  };
+  setCohort(b, ref, target, i);
+}
+
+/**
+ * Set the NATIVE (resident) dots for one (owner, city) at frame i, split by ORIGIN civ: a captured
+ * city's prior residents keep their origin colour/name while new home-grown population counts as the
+ * owner. Each origin is its own cohort living in the owner's city sub-cluster, so counts rise and
+ * fall (decline is shown, not just the peak).
+ * @param {*} b Build context.
+ * @param {number} ownerId Owner civ id.
+ * @param {number} cityIdx City index.
+ * @param {*} city City {name, town, pop, origins?}.
+ * @param {number} i Frame index.
+ */
+function appendNativeDots(b, ownerId, cityIdx, city, i) {
+  const origins = nativeOriginList(city, ownerId);
+  const seen = nativeSeenSet(b, ownerId, cityIdx, origins);
+  const present = new Map(origins.map((o) => [o.civ, o.pts]));
+  const civs = [...seen];
+  const alloc = allocNative(Math.floor((city.pop || 0) / b.unit), civs, present);
+  const loc = { ownerId, cityIdx, cityName: city.name };
+  for (let k = 0; k < civs.length; k++) {
+    setNativeOriginCohort(b, loc, civs[k], alloc[k], i);
+  }
 }
 
 /**
@@ -601,7 +691,7 @@ export function buildChronoDots(frames, centers, byId, colorMap, unit) {
   const { cityList, cityIdx, cityWeights } = buildCityMeta(lastPops, centers);
   /** @type {*} */
   const b = {
-    perDest: new Map(), cohorts: new Map(), unit, colorMap, centers, byId,
+    perDest: new Map(), cohorts: new Map(), nativeSeen: new Map(), unit, colorMap, centers, byId,
     cityList, cityIdx, cityWeights
   };
   for (let i = 0; i < frames.length; i++) {
