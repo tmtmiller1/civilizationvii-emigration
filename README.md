@@ -690,6 +690,10 @@ in the world, **world-news**. It is **important-only by design**, with several a
   migration network and cross-civ flow map (both with a timeline scrubber), a per-civ ledger
   (in/out/net/refugees/deaths), the cause breakdown, who holds Pro-/Anti-Immigration stances, and cities
   ranked by migration pressure. The same render core backs the Demographics tab (as native sub-tabs, §8).
+  The timeline records a per-civ **population snapshot every pass** — including peaceful turns with no
+  migration — so the scrubber is available from the opening turns and **plays population growth** until
+  there's actual emigration to show (it appears after the first couple of recorded frames; a single
+  frame shows a short "timeline appears once there's history" note in place of the scrubber).
 - **Anti-spam.** Disasters only notify at/above `disasterNotifyMinSeverity`. War notifications are
   **once-per-milestone** on a civ's **cumulative** refugees (`worldRefugeeThreshold`). A global
   `notifyCooldownTurns` backstops everything. `notifyMode`: **0** off / **1** important-only (default) /
