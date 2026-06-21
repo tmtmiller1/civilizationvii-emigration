@@ -178,7 +178,8 @@ on the dashboard's **Guide** tab.
 | | | |
 |---|:---:|---|
 | Migration between different civilizations | ✓ | Throttled by borders, distance, and each side's immigration stance |
-| Migration driven by distant AI-vs-AI wars | ✓ | Fog-independent: war pressure reads actual game state |
+| Migration driven by distant AI-vs-AI wars | ✓ | Fog-independent — but only when the fighting actually damages, besieges, or pillages a city's **own** territory; a distant war that never touches a city does nothing to it |
+| Fighting *outside* a city's borders (field battles, wars elsewhere, pillaged tiles it doesn't own) | ✗ | Never drives that city's emigration. War pressure is strictly territory-scoped (the city's own districts + own plots); the civ-wide "at war" flag is not an emigration cause (§3) |
 | An Anti-Immigration stance retains your people | ✓ | Raises retention (fewer people leave) and boosts Production, at the cost of Influence |
 | Closed Borders reduces cross-civ flow | ✓ | Without an Open Borders agreement far fewer people cross between civs |
 | Population & yields actually change (not just a display) | ✓ | Real per-turn gameplay writes |
@@ -342,6 +343,19 @@ being at war, and it's **symmetric** for player-watched and distant AI-vs-AI war
 - The score **accumulates and decays** (`violenceDecay`, game-speed-adjusted to `d^(1/S)`): a sustained
   siege builds, a lone raid fades in ~2-3 turns of game-time. With **Algorithm D** on, the curve also
   escalates with siege *duration* (over `siegeRampTurns`, ×S) and is capped in total (§5-D).
+
+**Strictly territory-scoped — combat *outside* a settlement's borders never drives its emigration.**
+All three signals read only the city's **own** footprint: `districtDamageFrac` / `districtBesieged`
+match a district to the city by `owner:id`, and `pillagedCount` scans only the city's **own**
+`getPurchasedPlots()`. So none of the following move a single migrant out of a bystander city: a field
+battle in neutral/unowned land, a war your civ is fighting elsewhere on the map, a pillaged tile your
+city doesn't own, or a distant AI-vs-AI war that never touches your territory. The civ-wide "owner is at
+war" flag (`sig.atWar`) is **not** an emigration cause — it's used only for a dev log label, and even the
+flee *direction* (`fleeVector`) is gated on the city's **own** accumulated violence, not on the empire
+being at war. The one boundary case that *does* count is a city whose own district is flagged
+**besieged** by enemy units standing just outside its borders — because that is the city itself under
+siege (its own district carries the flag), not unrelated outside combat; `siegeBesiegedFloor` keeps that
+a gradual build rather than an instant refugee flood.
 
 ### Geography (`emigration-geography.js`)
 - **Distance decay:** `−distanceFactor × hexDistance`, keeping migration regional.
