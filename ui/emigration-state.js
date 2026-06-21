@@ -17,6 +17,8 @@ const STATE_KEY = "EmigrationState_v1";
  * @property {number} destOwner Destination owner (credited the immigration on arrival).
  * @property {boolean} crossCiv Whether it crossed civilizations.
  * @property {string} cause Why they left (for the arrival record's flavour).
+ * @property {string} [eventKey] The specific event behind the cause (war/disaster/crisis), carried
+ *   to the arrival so immigration can be attributed to it.
  * @property {boolean} infected Whether the source was infected (plague carried on arrival).
  * @property {string} srcName Source city name (arrival flavour).
  * @property {string} destName Destination city name (arrival flavour).

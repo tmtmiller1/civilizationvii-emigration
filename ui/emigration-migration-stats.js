@@ -64,6 +64,7 @@ let _recent = [];
  * @property {Record<string, Record<string, number>>} outByCause Cumulative emigration, per cause.
  * @property {Record<string, Record<string, number>>} inByCause Immigration cumulative by cause.
  * @property {Record<string, Record<string, number>>} outByEvent Emigration per SPECIFIC event key.
+ * @property {Record<string, Record<string, number>>} inByEvent Immigration per SPECIFIC event key.
  * @property {Record<string, Record<string, number>>} deathsByEvent Deaths per SPECIFIC event key.
  * @property {Record<string, Record<string, number>>} wmOutByCause Per-cause emigration watermarks.
  * @property {Record<string, Record<string, number>>} wmInByCause Per-cause immigration watermarks.
@@ -150,6 +151,7 @@ function normalize(o) {
     outByCause: mapOr(o.outByCause),
     inByCause: mapOr(o.inByCause),
     outByEvent: mapOr(o.outByEvent),
+    inByEvent: mapOr(o.inByEvent),
     deathsByEvent: mapOr(o.deathsByEvent),
     wmOutByCause: mapOr(o.wmOutByCause),
     wmInByCause: mapOr(o.wmInByCause),
@@ -239,6 +241,20 @@ function isCrossCiv(m) {
 }
 
 /**
+ * Tally a record's SPECIFIC event: a death into deathsByEvent, the out-side into outByEvent, and the
+ * in-side into inByEvent — so a civ's RECEIVED refugees name the war/disaster that displaced them,
+ * not its own cause. (Caller guards `m.eventKey`.)
+ * @param {MigStatsState} s State.
+ * @param {*} m Migration (carries eventKey).
+ */
+function foldEventTally(s, m) {
+  const p = numOr0(m.people);
+  const dst = m.cause === "attrition" ? s.deathsByEvent : s.outByEvent;
+  if (typeof m.srcOwner === "number") add(dst, m.srcOwner, p, m.eventKey);
+  if (typeof m.destOwner === "number" && m.cause !== "attrition") add(s.inByEvent, m.destOwner, p, m.eventKey);
+}
+
+/**
  * Fold one migration into the tallies: a gain for the destination owner, an equal loss for the
  * source owner, and - when the move was caused by war/disaster/conquest - a refugee tally on the
  * source. Also tracks per-cause emigration/immigration breakdowns for tooltips.
@@ -246,7 +262,6 @@ function isCrossCiv(m) {
  * @param {{srcOwner?:number, destOwner?:number, people:number, points?:number, cause?:string,
  *   eventKey?:string, crossCiv?:boolean}} m Migration.
  */
-
 function foldMigration(s, m) {
   const p = numOr0(m.people);
   const pts = numOr0(m.points);
@@ -716,11 +731,8 @@ const MAX_DISASTER_EVENTS = 64;
 export function recordDisasterEvent(name, severity) {
   const s = load();
   s.disasterEvents.push({
-    turn: gameTurn(),
-    age: currentAge() || s.chartAge,
-    year: gameTurnDate(),
-    name: typeof name === "string" ? name : "",
-    severity: typeof severity === "number" ? severity : 0
+    turn: gameTurn(), age: currentAge() || s.chartAge, year: gameTurnDate(),
+    name: typeof name === "string" ? name : "", severity: typeof severity === "number" ? severity : 0
   });
   if (s.disasterEvents.length > MAX_DISASTER_EVENTS) {
     s.disasterEvents = s.disasterEvents.slice(s.disasterEvents.length - MAX_DISASTER_EVENTS);
@@ -740,14 +752,12 @@ export function recordMigrations(migs) {
   const list = Array.isArray(migs) ? migs : [];
   for (const m of list) {
     foldMigration(s, m);
-    // Per-SPECIFIC-EVENT tally: a death folds into deathsByEvent, any other out-move into outByEvent.
-    if (m.eventKey && typeof m.srcOwner === "number") {
-      add(m.cause === "attrition" ? s.deathsByEvent : s.outByEvent, m.srcOwner, numOr0(m.people), m.eventKey);
-    }
+    // Per-SPECIFIC-EVENT tally: death→deathsByEvent, the out-side→outByEvent, the in-side→inByEvent
+    // (so a civ's RECEIVED refugees name the war/disaster that displaced them, not its own cause).
+    if (m.eventKey) foldEventTally(s, m);
   }
   capFlows(s.flows, s.flowsPts, MAX_FLOW_KEYS); // bound the cumulative city-pair matrices before persist
-  capByEvent(s.outByEvent, MAX_EVENT_KEYS); // bound the per-event tallies too
-  capByEvent(s.deathsByEvent, MAX_EVENT_KEYS);
+  for (const ev of [s.outByEvent, s.inByEvent, s.deathsByEvent]) capByEvent(ev, MAX_EVENT_KEYS);
   // Snapshot EVERY pass (self-gated to the snapshot interval inside), not only when migration
   // happened — so the timeline records per-civ population growth from turn one and is available to
   // scrub/play before any emigration occurs. The migration-only side effects stay gated on `list`.
@@ -985,6 +995,7 @@ try {
     emigrationByCauseFor: (/** @type {number} */ pid) => emigrationByCause(pid),
     immigrationByCauseFor: (/** @type {number} */ pid) => immigrationByCause(pid),
     emigrationByEventFor: (/** @type {number} */ pid) => load().outByEvent[pid] || {},
+    immigrationByEventFor: (/** @type {number} */ pid) => load().inByEvent[pid] || {},
     deathsByEventFor: (/** @type {number} */ pid) => load().deathsByEvent[pid] || {},
     // The per-city readout view-model + the session-local recent-moves feed (Phase 0 data core).
     citySnapshot: (/** @type {*} */ cityId) => citySnapshot(cityId),

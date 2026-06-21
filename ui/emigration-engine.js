@@ -206,6 +206,7 @@ function applyOneMove(src, dest, popBefore, state, cause) {
     destOwner: dest.owner,
     crossCiv: src.owner !== dest.owner,
     cause,
+    eventKey,
     infected: !!src.infected,
     srcName: cityName(src.city),
     destName: cityName(dest.city)
