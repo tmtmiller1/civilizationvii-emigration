@@ -412,98 +412,104 @@ function localPlayerId() {
 }
 
 /**
- * The dominant cause in a per-cause people map (the most-people cause).
- * @param {Record<string, number>} byCause People per cause.
- * @returns {string} The dominant cause.
+ * Get (or create) the per-event bucket for a loss record, keyed by source settlement + cause.
+ * @param {Map<string,*>} map Bucket map.
+ * @param {*} m A migration.
+ * @param {number} me Local player id.
+ * @returns {*} The bucket.
  */
-function dominantCause(byCause) {
-  let best = "other";
-  let bestN = -1;
-  for (const c of Object.keys(byCause)) {
-    if (byCause[c] > bestN) {
-      bestN = byCause[c];
-      best = c;
-    }
+function eventBucket(map, m, me) {
+  const cause = m.cause || "other";
+  const key = (m.srcName || "?") + "|" + cause;
+  let ev = map.get(key);
+  if (!ev) {
+    ev = { cause, srcOwner: me, srcName: m.srcName, destName: m.destName, destOwner: m.destOwner,
+      crossCiv: false, people: 0, points: 0, _lead: 0 };
+    map.set(key, ev);
   }
-  return best;
+  return ev;
 }
 
 /**
- * Fold one migration into the local-loss accumulator (a loss only if its source is the local
- * player): updates the running total, the per-cause tally, and the largest single loss.
- * @param {{total:number, totalPts:number, lead:*, byCause:Record<string,number>}} acc Accumulator.
- * @param {{srcOwner?:number, people?:number, points?:number, cause?:string}} m A migration.
+ * Fold one of the local player's loss records into its per-event bucket (source settlement + cause):
+ * sum people/points and track the destination that took the most people. Counts only when the source
+ * is the local player and people moved.
+ * @param {Map<string,*>} map Bucket map.
+ * @param {*} m A migration.
  * @param {number} me Local player id.
  */
-function foldLocalLoss(acc, m, me) {
-  const p = m.srcOwner === me ? m.people || 0 : 0;
-  if (!(p > 0)) return; // past here the source IS the local player, so points are this loss's points
-  acc.total += p;
-  acc.totalPts += m.points || 0;
-  const c = m.cause || "other";
-  acc.byCause[c] = (acc.byCause[c] || 0) + p;
-  if (!acc.lead || p > (acc.lead.people || 0)) acc.lead = m;
+function foldEvent(map, m, me) {
+  const ppl = m.people || 0;
+  if (m.srcOwner !== me || ppl <= 0) return;
+  const ev = eventBucket(map, m, me);
+  ev.people += ppl;
+  ev.points += m.points || 0;
+  if (ppl > ev._lead) { // the destination that took the most people defines "where they went"
+    ev._lead = ppl;
+    ev.destName = m.destName;
+    ev.destOwner = m.destOwner;
+    ev.crossCiv = !!m.crossCiv && typeof m.destOwner === "number";
+  }
 }
 
 /**
- * Summarize the local player's losses this pass: total people, dominant cause, and the largest
- * single loss (for the source/destination), or null if the player lost nobody.
- * @param {{srcOwner?:number, people?:number, cause?:string}[]} migs Applied migrations.
+ * Group the local player's losses this pass into distinct EVENTS (one per source settlement + cause),
+ * largest first — so each is a single coherent event with an accurate count, never a pass-wide sum.
+ * @param {*[]} migs Applied migrations.
  * @param {number} me Local player id.
- * @returns {{total:number, totalPts:number, cause:string, lead:*}|null} The summary, or null.
+ * @returns {*[]} Per-event buckets (people-desc).
  */
-function localLossSummary(migs, me) {
-  /** @type {{total:number, totalPts:number, lead:*, byCause:Record<string,number>}} */
-  const acc = { total: 0, totalPts: 0, lead: null, byCause: {} };
-  for (const m of migs) foldLocalLoss(acc, m, me);
-  return acc.lead
-    ? { total: acc.total, totalPts: acc.totalPts, cause: dominantCause(acc.byCause), lead: acc.lead }
-    : null;
+function groupLocalEvents(migs, me) {
+  /** @type {Map<string,*>} */
+  const map = new Map();
+  for (const m of migs) foldEvent(map, m, me);
+  return [...map.values()].sort((a, b) => b.people - a.people);
 }
 
 /**
- * Record the local digest as a structured notification-log entry (its own helper to keep localDigest
- * simple): the dominant cause, the specific event, the dual-system count, and the lead move's
- * origin/destination.
- * @param {*} s The local-loss summary ({total, totalPts, cause, lead}).
- * @param {boolean} crossCiv Whether the lead move crossed civilizations.
- * @param {string} msg The composed digest message (the row summary).
+ * Compose one event's explanatory message (cause-named headline + hint + permanence + cross-civ cost).
+ * @param {*} ev A per-event bucket.
+ * @returns {string} The message.
  */
-function logDigest(s, crossCiv, msg) {
-  const lead = s.lead;
-  const fromCiv = lead.srcOwner != null ? civAdjective(lead.srcOwner) : undefined;
-  const toCiv = crossCiv && lead.destOwner != null ? civAdjective(lead.destOwner) : undefined;
-  logNotification({
-    kind: "digest", cause: s.cause, event: eventNameFor(s.cause, lead.srcOwner) || undefined,
-    summary: msg, people: s.total, points: s.totalPts,
-    fromCity: lead.srcName, fromCiv, toCity: lead.destName || undefined, toCiv, crossCiv
+function eventMessage(ev) {
+  const destGold = ev.crossCiv && typeof ev.destOwner === "number"
+    ? assimilationCostFor(ev.destOwner).gold : 0;
+  return localDigestMessage({
+    cause: ev.cause, people: formatBoth(ev.people, ev.points), city: ev.srcName || "a settlement",
+    crossCiv: ev.crossCiv, destName: ev.destName, destGold
   });
 }
 
 /**
- * Fire the local player's explanatory digest (subject to the important-toast cooldown): why they lost
- * population this pass, what to do about it, whether it's temporary, and — for a cross-civ loss — what
- * the destination pays to absorb them. Also records it to the notification log. No-op when no local
- * player or no local loss.
- * @param {{srcOwner?:number, destOwner?:number, people?:number, cause?:string,
- *          crossCiv?:boolean, srcName?:string, destName?:string}[]} migs Applied migrations.
+ * Record one event to the notification log: its cause, specific named war/disaster, dual-system count,
+ * and origin → destination.
+ * @param {*} ev A per-event bucket.
+ * @param {string} msg The composed event message (the row summary).
+ */
+function logEvent(ev, msg) {
+  const fromCiv = ev.srcOwner != null ? civAdjective(ev.srcOwner) : undefined;
+  const toCiv = ev.crossCiv && ev.destOwner != null ? civAdjective(ev.destOwner) : undefined;
+  logNotification({
+    kind: "digest", cause: ev.cause, event: eventNameFor(ev.cause, ev.srcOwner) || undefined,
+    summary: msg, people: ev.people, points: ev.points,
+    fromCity: ev.srcName, fromCiv, toCity: ev.destName || undefined, toCiv, crossCiv: ev.crossCiv
+  });
+}
+
+/**
+ * Explain the local player's population losses this pass. Each distinct event (one source settlement +
+ * cause) is logged as its OWN notification with an accurate count — so the Notifications log reads one
+ * coherent event per row, never a confusing pass-wide "7 moved" lumped across cities and causes. On
+ * screen, only the largest event toasts (subject to the cooldown), so the HUD isn't flooded when
+ * several settlements shed people in one pass; the rest are in the log. No-op without a local loss.
+ * @param {*[]} migs Applied migrations.
  */
 function localDigest(migs) {
   const me = localPlayerId();
   if (me == null) return;
-  const s = localLossSummary(migs, me);
-  if (!s) return;
-  const lead = s.lead;
-  const crossCiv = !!lead.crossCiv && typeof lead.destOwner === "number";
-  const destGold = crossCiv ? assimilationCostFor(lead.destOwner).gold : 0;
-  const msg = localDigestMessage({
-    cause: s.cause,
-    people: formatBoth(s.total, s.totalPts),
-    city: lead.srcName || "a settlement",
-    crossCiv,
-    destName: lead.destName,
-    destGold
-  });
-  logDigest(s, crossCiv, msg);
-  announceImportant(msg, s.cause);
+  const events = groupLocalEvents(migs, me);
+  if (!events.length) return;
+  for (const ev of events) logEvent(ev, eventMessage(ev));
+  const lead = events[0];
+  announceImportant(eventMessage(lead), lead.cause);
 }
