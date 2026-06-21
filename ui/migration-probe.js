@@ -1134,6 +1134,104 @@ function probeDiplomacy() {
   log("=== END DIPLO PROBE ===");
 }
 
+// ── Audit probes (war name via getWarData, happiness grant effect) ──────────────────────────────
+
+/**
+ * All readable happiness values for a player (player-level accessors + the capital's YIELD_HAPPINESS),
+ * so a grant test can see whether ANY of them moves.
+ * @param {number} pid Player id.
+ * @returns {Record<string,*>} The readings.
+ */
+function happinessReadings(pid) {
+  /** @type {Record<string,*>} */
+  const out = {};
+  try {
+    const h = Players.get(pid)?.Happiness;
+    for (const m of ["getHappiness", "getNetHappiness", "getHappinessPerTurn"]) {
+      if (h && typeof h[m] === "function") {
+        try {
+          out[m] = h[m]();
+        } catch (_) {
+          out[m] = "threw";
+        }
+      }
+    }
+    const cap = playerCapital(pid);
+    if (cap) out.capitalYieldHappiness = cityYield(cap, "YIELD_HAPPINESS");
+  } catch (_) {
+    /* ignore */
+  }
+  return out;
+}
+
+/**
+ * Happiness-grant probe: read happiness, grantYield(YIELD_HAPPINESS, -20), re-read. If nothing moves,
+ * happiness is NOT a grantable stockpile and the assimilation-cost happiness leg is a no-op.
+ * @param {number} [pid] Target player (default local).
+ */
+function probeHappiness(pid) {
+  const target = pid == null ? GameContext.localPlayerID : pid;
+  if (typeof Players?.grantYield !== "function") {
+    log("HAPPY grantYield is NOT a function");
+    return;
+  }
+  log("HAPPY grant test -> player " + target + " before " + JSON.stringify(happinessReadings(target)));
+  try {
+    Players.grantYield(target, yieldEnum("YIELD_HAPPINESS"), -20);
+  } catch (e) {
+    log("HAPPY grantYield(YIELD_HAPPINESS,-20) THREW " + e);
+    return;
+  }
+  setTimeout(() => {
+    log("HAPPY after grant(-20) " + JSON.stringify(happinessReadings(target)));
+    log("HAPPY => if UNCHANGED, grantYield(YIELD_HAPPINESS) is a NO-OP (only the gold cost bites)");
+  }, 600);
+}
+
+/**
+ * Log the engine war name for each active declare-war between `me` and `pid`. Returns how many were
+ * found. Confirms the getJointEvents -> uniqueID -> getWarData(uniqueID, me).warName path.
+ * @param {number} me Local player id. @param {number} pid Other player id.
+ * @returns {number} Wars found.
+ */
+function probeWarBetween(me, pid) {
+  let events = null;
+  try {
+    events = Game?.Diplomacy?.getJointEvents?.(me, pid, false);
+  } catch (_) {
+    return 0;
+  }
+  let n = 0;
+  for (const e of events || []) {
+    if (!e || e.actionTypeName !== "DIPLOMACY_ACTION_DECLARE_WAR") continue;
+    n++;
+    let name = "?";
+    try {
+      name = Game.Diplomacy.getWarData(e.uniqueID, me)?.warName;
+    } catch (err) {
+      name = "threw " + err;
+    }
+    log("WARNAME " + me + " vs " + pid + " uniqueID=" + e.uniqueID + " warName=" + name);
+  }
+  return n;
+}
+
+/** War-name probe: scan the local player's active declare-war events and log each engine warName. */
+function probeWarName() {
+  log("WARNAME test: getJointEvents -> DECLARE_WAR uniqueID -> getWarData(uniqueID, me).warName");
+  let me = -1;
+  try {
+    me = GameContext.localPlayerID;
+  } catch (_) {
+    /* ignore */
+  }
+  let found = 0;
+  for (let pid = 0; pid < 64; pid++) {
+    if (pid !== me) found += probeWarBetween(me, pid);
+  }
+  if (!found) log("WARNAME no active declare-war events for the local player (be at war first)");
+}
+
 /** Console fallback. */
 function exposeGlobals() {
   try {
@@ -1163,7 +1261,10 @@ function exposeGlobals() {
       yield2b: () => probeYieldPenalty(),
       agg: () => probeAggregate(),
       // G2/G3 diplomacy recon (read-only) , informs the §11 D2/D3 decision
-      diplo: () => probeDiplomacy()
+      diplo: () => probeDiplomacy(),
+      // AUDIT: confirm the engine war NAME resolves (getWarData), and whether happiness is grantable.
+      warName: () => probeWarName(),
+      happy: (/** @type {number} */ pid) => probeHappiness(pid)
     };
   } catch (e) {
     log("exposeGlobals threw " + e);
