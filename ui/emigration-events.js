@@ -98,14 +98,16 @@ function onRandomEvent(data) {
     const keys = affectedCityKeys(data.location);
     logEvent(data, info, sev, keys.length); // DIAGNOSTIC: grep `EMIG_event` in UI.log
     recordDisaster(info?.EventClass, sev, keys);
-    // Only notify for particularly bad disasters; minor events still drive the sim
-    // silently. announceImportant adds the cooldown + notify-mode gate. The same
-    // "notable" bar gates the refugees-chart marker log, keeping it meaningful + bounded.
+    // Record a refugees-chart MARKER whenever the disaster actually struck cities (so it drove
+    // displacement), independent of the toast threshold — otherwise sub-`disasterNotifyMinSeverity`
+    // disasters drive the sim but never annotate the chart, which is why none were appearing.
+    if (keys.length > 0) recordDisasterEvent(disasterName(data.eventType), sev);
+    // The TOAST stays gated on the (higher) notify severity, so only PARTICULARLY bad disasters pop a
+    // notification + journal entry; minor ones mark the chart and drive the sim silently.
     if (sev >= CONFIG.disasterNotifyMinSeverity) {
       const alert = disasterName(data.eventType) + " strikes! " + actionHint("disaster");
       logNotification({ kind: "disaster", cause: "disaster", summary: alert, people: 0, points: 0 });
       announceImportant(alert, "disaster");
-      recordDisasterEvent(disasterName(data.eventType), sev);
     }
   } catch (e) {
     dlog("event threw " + e);
