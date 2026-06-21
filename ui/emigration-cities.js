@@ -49,14 +49,23 @@ function yEnum(key) {
 }
 
 /**
- * Read one net yield off a city, defaulting to 0.
+ * Read one NET yield off a city, defaulting to 0. Prefers `getNetYield` (income − maintenance/upkeep,
+ * which is what the base game uses for per-city figures); falls back to `getYield` (GROSS) only when
+ * getNetYield is unavailable. This matters: the old gross read made starvation (net food < 0)
+ * impossible to ever observe, and inflated gold/Prosperity by hiding maintenance.
  * @param {*} city City object.
  * @param {string} key Yield enum key.
- * @returns {number} The yield value.
+ * @returns {number} The net yield value.
  */
 function readYield(city, key) {
   try {
-    const v = city?.Yields?.getYield?.(yEnum(key));
+    const y = city && city.Yields;
+    if (!y) return 0;
+    const e = yEnum(key);
+    let v = typeof y.getNetYield === "function" ? y.getNetYield(e) : undefined;
+    if (typeof v !== "number" || !isFinite(v)) {
+      v = typeof y.getYield === "function" ? y.getYield(e) : 0;
+    }
     return typeof v === "number" && isFinite(v) ? v : 0;
   } catch (_) {
     return 0;
