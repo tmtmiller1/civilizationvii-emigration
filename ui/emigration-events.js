@@ -72,13 +72,62 @@ function affectedCityKeys(location) {
 
 /**
 /**
- * The event's severity (from the payload, else the GameInfo row, else 0).
+ * The largest `Percentage` across the rows of an effect table that match a RandomEvent type (and an
+ * optional DamageType filter). 0 when the table is missing/empty.
+ * @param {*} rows A GameInfo effect table (RandomEventYields / RandomEventDamages).
+ * @param {string} type The RandomEventType to match.
+ * @param {string|null} damageType Optional DamageType filter (null = any).
+ * @returns {number} The worst matching percent.
+ */
+function worstEventPct(rows, type, damageType) {
+  let pct = 0;
+  for (const r of rows || []) {
+    if (r.RandomEventType !== type) continue;
+    if (damageType && r.DamageType !== damageType) continue;
+    pct = Math.max(pct, Number(r.Percentage) || 0);
+  }
+  return pct;
+}
+
+/**
+ * The worst single impact percentage a RandomEvent TYPE inflicts — the larger of its biggest yield cut
+ * (food/production drive displacement) and its constructible-damage cut — from the base RandomEventYields
+ * / RandomEventDamages tables. 0 when unavailable.
+ *
+ * WHY this, not the `Severity` column: Civ7's RandomEventOccurred payload carries `phase`, not a usable
+ * severity, and the `Severity` column is a compressed/weak proxy — a "GENTLE" volcano is Severity 0 and a
+ * "CATASTROPHIC" one is only Severity 1, so the engine's own scale barely separates them. The real
+ * magnitude lives in the effect tables (gentle volcano = 25% food / 20% constructibles; catastrophic 35% / 40%).
+ * @param {*} info The GameInfo.RandomEvents row (carries RandomEventType).
+ * @returns {number} The worst impact percent (0..100).
+ */
+function eventImpactPct(info) {
+  const type = info && (info.RandomEventType || info.Type);
+  if (!type || typeof GameInfo === "undefined") return 0;
+  try {
+    return Math.max(
+      worstEventPct(GameInfo.RandomEventYields, type, null),
+      worstEventPct(GameInfo.RandomEventDamages, type, "CONSTRUCTIBLE_DAMAGED")
+    );
+  } catch (_) {
+    return 0; // effect tables absent on some builds — fall back to the named tier
+  }
+}
+
+/**
+ * The event's magnitude on a 1..4 scale (the distress multiplier + notify gate). Derived from the
+ * engine's named tier (`Severity`: gentle 0 < catastrophic 1 < … < thera 3) BUMPED a step for
+ * catastrophic-class impact (eventImpactPct), and floored at 1 so a city-striking disaster always
+ * carries real weight AND gentle < catastrophic (the old code read raw `Severity`, where the distress
+ * formula collapsed 0 and 1 to the same multiplier — every volcano displaced identically).
  * @param {*} data The event payload.
  * @param {*} info The GameInfo RandomEvents row.
- * @returns {number} Severity.
+ * @returns {number} Magnitude (1..4).
  */
 function eventSeverity(data, info) {
-  return typeof data.severity === "number" ? data.severity : info?.Severity || 0;
+  const tier = typeof data.severity === "number" ? data.severity
+    : (typeof info?.Severity === "number" ? info.Severity : 0);
+  return Math.max(1, tier + (eventImpactPct(info) >= 35 ? 1 : 0));
 }
 
 /**

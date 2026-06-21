@@ -254,7 +254,8 @@ export const CONFIG = {
   notifyFloating: true,
   notifyWorldNews: true,
   worldRefugeeThreshold: 40000, // cumulative scaled people per civ → a refugee-crisis alert
-  disasterNotifyMinSeverity: 2, // only notify for disasters at/above this severity (0–3)
+  disasterNotifyMinSeverity: 2, // min disaster magnitude to TOAST (1=gentle … 2=catastrophic … 4=Thera-tier;
+  // impact-derived, see emigration-events.eventSeverity). Markers/distress still record below this.
   notifyCooldownTurns: 6, // min turns between "important" toasts (anti-spam backstop)
 
   // ── per-city readout panel (Phase 2): an on-demand "why is this city changing?" box ──
