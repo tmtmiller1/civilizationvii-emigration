@@ -236,13 +236,17 @@ export const CONFIG = {
   attritionEnabled: true,
   attritionMinDistress: 80, // min situational distress (%) before a trapped city loses people
   attritionThreshold: 40, // distress "pressure" to remove one population point
-  // Famine kills even when people CAN flee. The "no destination" trap almost never fires (there is
-  // nearly always somewhere to flee to), so without this a starving city only ever EMIGRATES and never
-  // actually starves to death. With this on, a STARVING city loses some population to death (cause
-  // `attrition`) concurrently with its emigration — at `starvationDeathShare` of the trapped rate, so
-  // most flee and a minority die. The fully-trapped case still dies at the full rate.
-  starvationDeathEnabled: true,
-  starvationDeathShare: 0.5, // famine death rate (vs the trapped rate) when a refuge IS available
+  // Lethal CRISES kill even when people can flee — war, disaster, siege, and famine. Economic
+  // (prosperity / unhappiness) emigration never kills, because it carries no situational distress.
+  // The "no destination" trap almost never fires (there's nearly always somewhere to flee), so without
+  // this a city under crisis only ever DISPLACES and never takes casualties. With this on, a city under
+  // lethal distress (`distress ≥ attritionMinDistress`) loses SOME population to death (cause
+  // `attrition`) concurrently with its refugee/economic emigration — at `crisisDeathShare` of the
+  // trapped rate, so flight dominates and the crisis takes a minority. The fully-trapped case (no
+  // refuge) still dies at the full rate. NOTE: this does NOT count against the war siege-loss cap, so a
+  // very long siege can deplete a city beyond that cap (down to the rural floor) — tune the share if so.
+  crisisDeathEnabled: true,
+  crisisDeathShare: 0.5, // crisis death rate (vs the trapped rate) when a refuge IS available
 
   // ── Feature 1: aggressor-aware war migration (aggressorPenalty 0 = off) ──
   ownCivRefugeeBonus: 1, // war refugees lean slightly toward their own civ's cities first — but only

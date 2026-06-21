@@ -384,25 +384,15 @@ function processSource(src, ranked, state, ownerPop, budgets) {
 }
 
 /**
- * The outlet (attrition): when a distressed source has NO viable destination, let its trapped
- * population die off rather than the system staying closed. Only fires when the feature is on and
- * distress is high; otherwise the pressure simply decays. Removes one rural point (no destination)
- * and returns an `attrition` record (tracked as deaths).
- * @param {*} src Source signal.
- * @param {{pressure:number, cooldown:number}} st Per-source state.
- * @param {*} state Loaded state (sources + monoTurn).
- * @returns {Migration|null} The attrition record, or null.
- */
-/**
  * The outlet's DEATH channel — population that leaves the world (cause `attrition`), tracked as deaths,
- * not migration. Two triggers, and CRUCIALLY it runs CONCURRENTLY with emigration (its own
- * `deathPressure`, distinct from the emigration pressure):
- *   • TRAPPED — distressed (≥ attritionMinDistress) with NO refuge: the whole trapped population dies
- *     off (the original closed-system valve), at full rate.
- *   • FAMINE — a STARVING city even WHEN a refuge exists: famine kills those who can't escape in time,
- *     so some die while the rest flee — at `starvationDeathShare` of the trapped rate. Without this the
- *     "no refuge" trap almost never fires (there's nearly always somewhere to flee), so starvation only
- *     ever emigrated and never actually killed.
+ * not migration. Fires under LETHAL distress (`distress ≥ attritionMinDistress`) — i.e. the situational
+ * crises: war, disaster, siege, famine. Economic prosperity/unhappiness emigration carries NO
+ * situational distress, so it never kills. Runs CONCURRENTLY with emigration on its own `deathPressure`:
+ *   • TRAPPED (no refuge): the whole trapped population dies off (the original closed-system valve), at
+ *     full rate — gated only by `attritionEnabled`.
+ *   • CRISIS WHILE FLEEING (a refuge exists, `crisisDeathEnabled`): some die while the rest flee, at
+ *     `crisisDeathShare` of the trapped rate. Without this the "no refuge" trap almost never fires
+ *     (there's nearly always somewhere to flee), so a crisis only ever displaced and never killed.
  * @param {*} src Source signal.
  * @param {*} st Per-source state (uses st.deathPressure).
  * @param {*} state Loaded state.
@@ -411,13 +401,12 @@ function processSource(src, ranked, state, ownerPop, budgets) {
  */
 function processOutletDeath(src, st, state, hasRefuge) {
   const d = CONFIG.attritionEnabled ? distress(src) : 0;
-  const trapped = !hasRefuge && d >= CONFIG.attritionMinDistress;
-  const famine = !!src.starving && CONFIG.starvationDeathEnabled;
-  if (!trapped && !famine) {
-    st.deathPressure = Math.max(0, st.deathPressure * 0.5); // coping / can flee freely → decay
+  // Lethal distress is the situational crises (war/disaster/siege/famine); economic emigration has none.
+  if (d < CONFIG.attritionMinDistress || (hasRefuge && !CONFIG.crisisDeathEnabled)) {
+    st.deathPressure = Math.max(0, st.deathPressure * 0.5); // coping / economic / can flee freely → decay
     return null;
   }
-  const rate = hasRefuge ? CONFIG.starvationDeathShare : 1; // most flee when a refuge exists
+  const rate = hasRefuge ? CONFIG.crisisDeathShare : 1; // trapped → full rate; fleeing → a fraction die
   st.deathPressure += Math.pow(Math.max(d, 1), CONFIG.deltaExponent) * rate;
   if (st.deathPressure < speedBar(CONFIG.attritionThreshold)) return null;
   const popBefore = src.population;
