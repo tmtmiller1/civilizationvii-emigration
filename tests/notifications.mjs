@@ -42,13 +42,15 @@ function testPersistsToGameConfiguration() {
 function testKeepsStructuredDetail() {
   clearNotifications();
   logNotification({
-    kind: "digest", cause: "prosperity", summary: "left for a richer city", people: 12000, points: 1,
+    kind: "digest", cause: "war", summary: "fled the fighting", people: 12000, points: 1,
+    event: "Roman–Carthaginian War",
     fromCity: "Rome", fromCiv: "Roman", toCity: "Carthage", toCiv: "Carthaginian", crossCiv: true
   });
   const e = notificationLog()[0];
   assert.equal(e.fromCity, "Rome");
   assert.equal(e.toCiv, "Carthaginian");
   assert.equal(e.crossCiv, true);
+  assert.equal(e.event, "Roman–Carthaginian War"); // the specific named war is retained
 }
 
 function testCapsLengthKeepingNewest() {

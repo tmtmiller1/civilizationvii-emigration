@@ -651,9 +651,11 @@ When the **Demographics** mod is installed, Emigration contributes, via its comp
   standalone window**. Registered order-independently and a silent no-op on an older Demographics.
 - **A Notifications log** (the **Notifications** sub-tab) — a **permanent, scrollable record of every
   migration notification that has fired**, so the on-screen toasts can stay brief without losing the
-  history. Each row is cause-themed (the same accent as its toast) and shows the turn + a one-line
-  summary; **clicking a row expands it** to the full event detail — what caused it, which settlement it
-  left, where the people went, and how many (in both measuring systems). Persisted across save/reload
+  history. Each row is cause-themed (the same accent as its toast) and **names the specific in-world
+  event** — the named war (e.g. *the Roman–Carthaginian War*, via the aggressor map + the engine's war
+  name) or the named disaster/plague (the game's own `RandomEvents` name, e.g. *Thera*) — not a generic
+  "crisis". **Clicking a row expands it** to the full detail: cause, event, which settlement it left,
+  where the people went, and how many (in **both** measuring systems). Persisted across save/reload
   (`emigration-notifications.js` → `emigration-notifications-view.js`).
 - **An Ethnic Composition map lens + plot tooltip** (`emigration-ethnicity-lens.js`,
   `emigration-ethnicity-tooltip.js`, fed by `emigration-composition.js`). A self-registering lens
@@ -713,9 +715,12 @@ detail. The anti-spam layers:
   migration — so the scrubber is available from the opening turns and **plays population growth** until
   there's actual emigration to show (it appears after the first couple of recorded frames; a single
   frame shows a short "timeline appears once there's history" note in place of the scrubber).
-- **Anti-spam.** Disasters only notify at/above `disasterNotifyMinSeverity`. War notifications are
-  **once-per-milestone** on a civ's **cumulative** refugees (`worldRefugeeThreshold`). A global
-  `notifyCooldownTurns` backstops everything. `notifyMode`: **0** off / **1** important-only (default) /
+- **Anti-spam.** Disasters only notify at/above `disasterNotifyMinSeverity`. World refugee notifications
+  are **once-per-milestone** on a civ's **cumulative** refugees (`worldRefugeeThreshold`) — but the
+  cumulative total only *gates* the alert; the headline **names the specific war/disaster** driving it
+  and reports **that pass's** outflow, so the figure stays event-scale (it never shows a lifetime
+  cumulative that could exceed the civ's current size). A global `notifyCooldownTurns` backstops
+  everything. `notifyMode`: **0** off / **1** important-only (default) /
   **2** verbose. All player-tunable.
 
 ---
