@@ -25,11 +25,18 @@ const CITY_TABLE = [
   [["Persepolis", 66000, 0, false], ["Susa", 30000, 0.22, false], ["Pasargadae", 14000, 0.66, true]],
   [["Pataliputra", 60000, 0, false], ["Taxila", 26000, 0.34, false], ["Ujjain", 15000, 0.62, true]],
   [["Chang'an", 72000, 0, false], ["Luoyang", 34000, 0.2, false], ["Chengdu", 20000, 0.54, false], ["Linzi", 12000, 0.8, true]],
-  [["Carthage", 50000, 0, false], ["Utica", 20000, 0.4, true], ["Gadir", 14000, 0.7, true]],
+  [["Carthage", 50000, 0, false], ["Utica", 20000, 0.4, true], ["Gadir", 14000, 0.7, true], ["Lixus", 28000, 0.15, false]],
   [["Aksum", 42000, 0, false], ["Adulis", 18000, 0.46, true]],
   [["Tikal", 44000, 0, false], ["Calakmul", 20000, 0.38, false], ["Copan", 12000, 0.7, true]],
   [["Uppsala", 34000, 0, false], ["Hedeby", 16000, 0.5, true], ["Birka", 10000, 0.76, true]]
 ];
+// Cities that change hands mid-game. After `at` (global progress) the city transfers from civ
+// `from` to civ `to`, but its residents stay coded to the PRIOR owner — the network colours them in
+// `from`'s colour/name, frozen at the population it had when captured; only the growth the city adds
+// AFTER the capture counts as the conqueror (`to`). This is what `origins` carries in a live game
+// (from the composition ledger); here it's authored so the sample demonstrates the same behaviour.
+// Lixus is the Carthaginian (7) city Persia (4) storms at the height of the Punic–Persian War.
+const CONQUESTS = [{ name: "Lixus", from: 7, to: 4, at: 0.74 }];
 const SEED = 600; // population of a city the moment it is founded (≈ one dot)
 // Sample data is authored in scaled "people"; this ratio derives a believable Civ pop-point figure
 // from it (a live game uses the engine's exact per-migration points instead).
@@ -271,24 +278,69 @@ function cityPopAt(c, p) {
 }
 
 /**
- * Every civ's cities (with native, home-grown population) at global progress `p`. Cities that
- * aren't founded yet are omitted, so a civ visibly grows from one city to several over the game.
+ * The conquest record for a city by name, or null when it never changes hands.
+ * @param {string} name City name.
+ * @returns {{name:string, from:number, to:number, at:number}|null} Conquest, or null.
+ */
+function conquestOf(name) {
+  for (const q of CONQUESTS) if (q.name === name) return q;
+  return null;
+}
+
+/**
+ * The civ that OWNS a city at progress `p`: its conqueror once captured, else the table owner.
+ * @param {*[]} c City entry [name, finalPop, foundAt, isTown].
+ * @param {number} tableOwner The civ that founded it.
+ * @param {number} p Global progress.
+ * @returns {number} Owner civ id.
+ */
+function ownerAt(c, tableOwner, p) {
+  const q = conquestOf(/** @type {string} */ (c[0]));
+  return q && p >= q.at ? q.to : tableOwner;
+}
+
+/**
+ * A city's resident population split by ORIGIN civ at progress `p`. An unconquered city is 100% its
+ * owner; a captured city keeps its prior-owner residents frozen at the size it had when it fell, and
+ * the growth since the capture counts as the conqueror — exactly what the live composition ledger
+ * produces. The `pts` are origin-share weights (the dot builder normalizes them).
+ * @param {*[]} c City entry.
+ * @param {number} owner Current owner civ id.
+ * @param {number} p Global progress.
+ * @returns {{civ:number, pts:number}[]} Origin buckets.
+ */
+function cityOrigins(c, owner, p) {
+  const q = conquestOf(/** @type {string} */ (c[0]));
+  if (!q || p < q.at) return [{ civ: owner, pts: cityPopAt(c, p) }];
+  const atPop = cityPopAt(c, q.at); // residents present at the moment of capture → prior owner
+  const grown = Math.max(0, cityPopAt(c, p) - atPop); // post-capture growth → conqueror
+  const out = [{ civ: q.from, pts: atPop }];
+  if (grown > 0) out.push({ civ: q.to, pts: grown });
+  return out;
+}
+
+/**
+ * Every civ's cities (with native, home-grown population + origin split) at global progress `p`.
+ * Cities that aren't founded yet are omitted, and a captured city moves to its conqueror's list
+ * while keeping its prior-owner origins, so a civ visibly grows, founds, and conquers over the game.
  * @param {number} p Global progress 0..1.
- * @returns {Record<number, {cities:{name:string, town:boolean, pop:number}[]}>} civId → cities.
+ * @returns {Record<number, {cities:{name:string, town:boolean, pop:number,
+ *   origins:{civ:number, pts:number}[]}[]}>} civId → cities.
  */
 function nativePopsAt(p) {
   /** @type {Record<number, *>} */
   const out = {};
+  for (let id = 1; id < CITY_TABLE.length; id++) out[id] = { cities: [] };
   for (let id = 1; id < CITY_TABLE.length; id++) {
-    const cities = CITY_TABLE[id]
-      .map((c) => {
-        const pop = cityPopAt(c, p);
-        return {
-          name: /** @type {string} */ (c[0]), town: !!c[3], pop, pts: Math.round(pop / SAMPLE_PPP)
-        };
-      })
-      .filter((c) => c.pop > 0);
-    out[id] = { cities };
+    for (const c of CITY_TABLE[id]) {
+      const pop = cityPopAt(c, p);
+      if (pop <= 0) continue;
+      const owner = ownerAt(c, id, p);
+      out[owner].cities.push({
+        name: /** @type {string} */ (c[0]), town: !!c[3], pop, pts: Math.round(pop / SAMPLE_PPP),
+        origins: cityOrigins(c, owner, p)
+      });
+    }
   }
   return out;
 }
