@@ -63,8 +63,9 @@ the box. Each can be switched off individually in Options:
   displacement, brakes runaway magnets, discounts tall play, and adds bounded per-leader/per-civ tuning;
 - interactive systems (§6): refugees who avoid the aggressor that attacked them; Pro/Anti-Immigration
   stance policies (and base-game Open Borders agreements) that shape cross-civ migration;
-  asylum/relationship permeability; environmental disasters (floods, volcanoes, plague); and an outlet
-  so a trapped, dying population isn't bottled up forever;
+  asylum/relationship permeability; environmental disasters (floods, volcanoes, plague); and a death
+  outlet so that **lethal crises — war, disaster, siege, famine — kill some even when people can flee**
+  (economic migration never does), and a trapped population isn't bottled up forever;
 - in-game feedback (§9): styled toasts, named refugee headlines, world-news for major crises
   (spam-throttled), and the Demographics graphs;
 - localization across all 10 languages (§14).
@@ -150,7 +151,7 @@ on the dashboard's **Guide** tab.
 | Being besieged or attacked | ✓ | Per-city: only the besieged city itself sheds people. Fires when **any** of its districts is besieged or overrun, even before its health drops. A civ at war elsewhere keeps its unaffected cities |
 | Attacked by a city-state / Independent Power | ✓ | Same per-city conflict pressure as a major-civ war: an Independent/minor raid still drives THAT city's people out, attacker-agnostic |
 | Pillaged tiles in the city's borders | ✓ | Pillaged improvements on the city's own plots count as violence in its borders (polled, fog-independent) |
-| Starvation | ✓ | A city with negative net food is flagged starving and sheds population until its food recovers |
+| Starvation | ✓ | A city with **negative *net* food** is flagged starving: most of its people flee to better-fed cities, and — because famine kills those who can't escape in time — **some die** (a death, not a migration), until its food recovers |
 | Plague / disease | ✓ | An infected city loses people, and migrants leaving it can carry the plague to their destination |
 | Natural disasters (floods, volcanoes) | ✓ | Environmental-disaster distress adds a per-city penalty on a capped sliding scale. An eruption/flood strikes **every city around its epicenter**, so a volcano on unowned terrain still displaces neighboring cities |
 | Overcrowding in a tall city | ✓ | Urban population above a threshold adds pressure; the per-leader tuning can soften it via the overcrowding discount |
@@ -190,7 +191,7 @@ on the dashboard's **Guide** tab.
 | Any layer can be tuned or switched off | ✓ | Presets plus ~57 individual knobs under Options ▸ Mods ▸ Emigration |
 | Migrants arrive instantly | ✗ | No — they travel; arrival lags with distance, up to a few turns |
 | Absorbing migrants is free | ✗ | No — a temporary, decaying assimilation cost in happiness and gold |
-| War alone can empty a city to zero | ✗ | No — siege/war loss is capped; only an actual capture takes a city |
+| War alone can empty a city to zero | ✗ | No — war *displacement* is capped (`siegeLossCapPct`), and a city can never drop below its rural floor; a prolonged crisis (war / siege / famine) also kills some beyond the displacement cap, so a city can be devastated, but only an actual capture empties or transfers it |
 
 **Scope & limits**
 
@@ -851,7 +852,8 @@ play, with behavior checks documented in companion validation notes:
 - **War aggressor:** `DiplomacyDeclareWar` carries `actingPlayer` (declarer) + `reactingPlayer` (target).
 - **Game speed:** `Configuration.getGame().gameSpeedType` → `GameInfo.GameSpeeds.lookup(type).CostMultiplier`, read for the active game (§2).
 - **Reads (fog-independent):** district health, `city.isInfected`, `Culture.getActiveTraditions` / `isTraditionActive`, `GameInfo.RandomEvents`, `player.leaderType`/`civilizationType`, per-plot yields (`GameplayMap.getYields`), and a cheap per-civ population aggregate — all read for *all* players.
-- **The happiness economy:** pop upkeep happiness `= 0`, `OVERCROWDING_THRESHOLD = 2`, `getYield === getNetYield` (net/post-penalty), the grounding for Algorithm B.
+- **Yields are NET, not gross.** Per-city economic yields are read via `city.Yields.getNetYield(YIELD_X)` (income − maintenance/upkeep — what the base game uses for per-city figures), falling back to `getYield` only when net is unavailable. `getYield` alone is GROSS — an earlier audit found the mod was using it, which made `net food < 0` (starvation) impossible to observe and overstated gold/Prosperity by hiding maintenance.
+- **The happiness economy:** pop upkeep happiness `= 0`, `OVERCROWDING_THRESHOLD = 2` (the grounding for Algorithm B).
 
 What the VM **cannot** do (and the mod doesn't): create units for *other* civs (`CREATE_ELEMENT` is
 local-only), or raise a custom **notification type** without a DB entry (so engine notifications are
@@ -871,7 +873,7 @@ Per-game state lives in the `GameConfiguration` KV store (survives save/reload):
 - `EmigrationDividend_v1`: per-civ carried-dividend pools (attraction yields).
 - `EmigrationWar_v1`: victim → aggressors map (Feature 1).
 - `EmigrationEthnos_v1`: per-settlement origin-composition ledger (the ethnicity lens/tooltip).
-- `EmigrationMigStats_v1`: per-civ tallies — net, gross in/out, refugees, deaths, the per-cause breakdowns, and their graph-sample watermarks.
+- `EmigrationMigStats_v1`: per-civ tallies — net, gross in/out, refugees, deaths, the per-cause breakdowns, their graph-sample watermarks, and the cumulative city-pair flow matrices (capped at ~4000 edges — lowest-volume evicted — so the blob can't grow unbounded over a very long game).
 - `EmigrationNews_v1`: world-news announced-milestone tiers + the last-toast turn (anti-spam).
 - `EmigrationNotif_v1`: the permanent notification log (newest-first, capped) behind the Notifications sub-tab — each fired notification's cause, turn, summary, count, and origin/destination detail.
 
@@ -925,14 +927,15 @@ npm install
 npm run verify     # tsc --noEmit + eslint + the node test harnesses
 ```
 
-`verify` runs the modularization gate (file/function length / complexity / statements) and **31 test
+`verify` runs the modularization gate (file/function length / complexity / statements) and **32 test
 harnesses**, including: `game-speed` (the speed scalar — fail-safe, the 5 shipped speeds, the kill
 switch, and game-time invariance), `notifications` (the persistent log — newest-first order, turn-stamp,
-structured detail, persistence, and the ring cap), `engine-pass` (a 5-scenario end-to-end pass:
-peacetime / single-front war / multi-front war / disaster-only / **concurrent war + prosperity**),
-`engine-pull` (destination decision), `causes`, `city-readout-data`, `city-readout`, `views`,
+structured detail, persistence, and the ring cap), `network-anim` (immigrants fly from origin, not
+destination), `engine-pass` (a 7-scenario end-to-end pass: peacetime / single-front war / multi-front
+war / disaster-only / **concurrent war + prosperity** / **famine death + flight** / **war death +
+flight**), `engine-pull` (destination decision), `causes`, `city-readout-data`, `city-readout`, `views`,
 `migration-page`, `scaling` (incl. the dual-system `formatBoth`), `prosperity`, `geography`, `violence`
-(siege escalation + cap), `tunables`, `migration-stats`, `flow-history`, `composition`,
+(siege escalation + cap), `tunables`, `migration-stats` (incl. the flow-matrix cap), `flow-history`, `composition`,
 `governance-mask`, `city-scope-global`, `effects`, `civ-tuning`, `war`, `disasters`, `borders`, `naming`,
 `feedback`, `dividend`, `raid`, `modinfo` (the `ImportFiles` manifest stays a complete, import-closed
 inventory), `i18n` (locale parity), and `no-empty-catch`. `./release.sh` produces the debug-muted,
@@ -942,10 +945,12 @@ The **`migration-probe`** mod (its own modinfo, never shipped) is the in-engine 
 write-surface/data claims: dock buttons + a `globalThis.mig` console API, with the **`API3`** and
 **`API4`** confirmation passes + passive `DiplomacyDeclareWar` / `RandomEventOccurred` recorders.
 Audit commands: **`mig.warName()`** confirms the engine war name resolves
-(`getJointEvents → uniqueID → getWarData(uniqueID, me).warName`); **`mig.happy()`** grants
-`YIELD_HAPPINESS` and re-reads, to confirm whether happiness is a grantable stockpile; and the passive
-`API4-B DeclareWar` dump logs the real war-event payload keys (to confirm the aggressor field names —
-`actingPlayer`/`reactingPlayer` vs `initialPlayer`/`targetPlayer`).
+(`getJointEvents → uniqueID → getWarData(uniqueID, me).warName`) and dumps the full `getWarData` fields
+(to compare `initialPlayer` against the DeclareWar aggressor for directionality); **`mig.happy()`**
+grants `YIELD_HAPPINESS` and re-reads (incl. player `Stats.getNetYield`), to confirm whether happiness
+is a grantable stockpile; **`mig.blob()`** logs every persisted value's size + the flow-key counts, to
+confirm saves stay bounded; and the passive `API4-B DeclareWar` dump logs the real war-event payload
+keys (to confirm the aggressor field names — `actingPlayer`/`reactingPlayer` vs `initialPlayer`/`targetPlayer`).
 
 ---
 
