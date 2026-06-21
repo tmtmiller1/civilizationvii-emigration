@@ -65,7 +65,12 @@ function directionCol(title, whyPrefix, dir) {
   col.appendChild(el("div", "emig-city-sub", title));
   const slices = civSlices(dir && dir.civs);
   if (!slices.length) {
-    col.appendChild(el("div", "emig-empty", "none recorded"));
+    // A matching-size dashed placeholder, so a civ with only one active direction still reads as a
+    // complete card (rather than a missing pie).
+    const ph = el("div", "emig-pie-empty");
+    ph.appendChild(el("span", "emig-pie-empty-t",
+      title.indexOf("Immigrants") === 0 ? "No arrivals yet" : "No departures yet"));
+    col.appendChild(ph);
     return col;
   }
   col.appendChild(pieCardSlices("", slices, false));
@@ -287,14 +292,12 @@ function cityCard(c) {
 }
 
 /**
- * Per-civilization "Came from" / "Left for" entries (the Causes tab) , the same shape as the
- * Settlements rows but aggregated at the civ level, from the cross-civ flow edges.
+ * Index the cross-civ flow edges into per-civ "came from" / "left for" civ tallies (for the pies),
+ * plus a civ id → name map.
  * @param {*[]} flows Named flow edges ({from,to,fromName,toName,people,byCause}).
- * @param {Record<number, Record<string, {people:number, deaths:number}>>} [eventsByOwner] Per civ,
- *   the specific events (war/disaster/crisis) behind its causes, for the drill-down.
- * @returns {*[]} Entries [{name, in:{civs,causes}, out:{civs,causes}, events}], busiest first.
+ * @returns {{names:Map<number,string>, map:Map<number,*>}} Names + per-civ {in,out} flow tallies.
  */
-export function buildCivFlows(flows, eventsByOwner) {
+function indexFlowsByCiv(flows) {
   /** @type {Map<number,string>} */
   const names = new Map();
   /** @type {Map<number,*>} */
@@ -319,29 +322,60 @@ export function buildCivFlows(flows, eventsByOwner) {
     add(get(e.to).in, e.from, e);
     add(get(e.from).out, e.to, e);
   }
-  const dir = (/** @type {*} */ d) => ({
+  return { names, map };
+}
+
+/**
+ * One direction's pie payload: the other civs sorted by people, plus this direction's flow causes.
+ * @param {*} d A {civs, causes} flow tally.
+ * @param {Map<number,string>} names Civ id → name.
+ * @returns {{civs:{id:number,name:string,people:number}[], causes:Record<string,number>}} Payload.
+ */
+function flowDir(d, names) {
+  return {
     civs: Object.keys(d.civs).map((k) => ({ id: +k, name: names.get(+k) || ("#" + k), people: d.civs[k] }))
       .sort((a, b) => b.people - a.people),
     causes: d.causes
-  });
-  const total = (/** @type {*} */ c) =>
-    c.in.civs.reduce((/** @type {number} */ a, /** @type {*} */ x) => a + x.people, 0)
-    + c.out.civs.reduce((/** @type {number} */ a, /** @type {*} */ x) => a + x.people, 0);
-  // Merge in + out per-cause people for the civ's cause-by-count list (its total migration by
-  // cause, so you can see which cause drove the most movement involving the civ).
-  const merge = (/** @type {*} */ a, /** @type {*} */ b) => {
-    const out = Object.assign({}, a);
-    for (const k of Object.keys(b)) out[k] = (out[k] || 0) + b[k];
-    return out;
   };
+}
+
+/**
+ * Merge a civ's emigration-by-cause and immigration-by-cause into one per-cause people map.
+ * @param {Record<string,number>} a Emigration by cause. @param {Record<string,number>} b Immigration.
+ * @returns {Record<string,number>} Merged people per cause.
+ */
+function mergeCauses(a, b) {
+  const out = Object.assign({}, a || {});
+  for (const k of Object.keys(b || {})) out[k] = (out[k] || 0) + (b[k] || 0);
+  return out;
+}
+
+/**
+ * Per-civilization Causes-tab entries: a card for EVERY in-play civ that has migration/death activity
+ * (not just cross-civ flow endpoints, so a civ at war you've met still appears). The cause list uses
+ * the civ's real per-cause tallies (emigration + immigration, so RECEIVED refugees are attributed);
+ * the pies come from the cross-civ flow edges (empty when a direction has no cross-civ flow).
+ * @param {*[]} flows Named flow edges.
+ * @param {*[]} civs Per-civ ledger rows ({pid, name, in, out, deaths, byCause, inByCause}).
+ * @param {Record<number, Record<string, {people:number, deaths:number}>>} [eventsByOwner] Per-civ
+ *   specific events behind its causes, for the drill-down.
+ * @returns {*[]} Entries [{name, in, out, causes, events}], busiest first.
+ */
+export function buildCivFlows(flows, civs, eventsByOwner) {
+  const { names, map } = indexFlowsByCiv(flows);
   const events = eventsByOwner || {};
-  return [...map.keys()]
-    .map((id) => {
-      const e = map.get(id);
-      return { name: names.get(id) || ("#" + id), in: dir(e.in), out: dir(e.out),
-        causes: merge(e.in.causes, e.out.causes), events: events[id] || null };
+  const empty = { civs: {}, causes: {} };
+  return (civs || [])
+    .filter((r) => (r.in || 0) + (r.out || 0) + (r.deaths || 0) > 0)
+    .map((r) => {
+      const f = map.get(r.pid) || { in: empty, out: empty };
+      return {
+        name: r.name, in: flowDir(f.in, names), out: flowDir(f.out, names),
+        causes: mergeCauses(r.byCause, r.inByCause), events: events[r.pid] || null,
+        _total: (r.in || 0) + (r.out || 0) + (r.deaths || 0)
+      };
     })
-    .sort((a, b) => total(b) - total(a));
+    .sort((a, b) => b._total - a._total);
 }
 
 /**
