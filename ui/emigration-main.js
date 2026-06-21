@@ -106,11 +106,14 @@ function doPass(why) {
     return 0;
   }
   accountAndReport(migrations);
+  // Snapshot the timeline EVERY pass — feeds the Demographics net-migration graph AND records per-civ
+  // population growth even on passes with no migration, so the network/flow timeline is available and
+  // plays population history before any emigration occurs (the recorder self-gates to the interval).
+  recordMigrations(migrations);
   if (!migrations.length) {
     dlog("pass (" + why + ") none, " + Math.round(nowMs() - t0) + "ms");
     return 0;
   }
-  recordMigrations(migrations); // feed the Demographics net-migration graph (all phases)
   // Notifications/logging fire on the newsworthy half - the move + the departure. A lagged
   // ARRIVAL is the same event landing later, so it's metrics-only (the departure already
   // told the story; surfacing both would double-toast and double-count the cause summary).

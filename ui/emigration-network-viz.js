@@ -675,7 +675,7 @@ function buildScene(frames, colorMap, events) {
  */
 export function timelineNote() {
   return el("div", "emig-netc-time-note", loc("LOC_EMIG_NETC_TIMELINE_PENDING",
-    "Playback timeline appears once enough migration has been recorded to scrub through."));
+    "Playback timeline appears after a couple of turns, once there's population history to scrub through."));
 }
 
 /**
