@@ -21,6 +21,9 @@
  * @property {number} points Raw Civ population points moved (1 per migration).
  * @property {number} people Historically-scaled people who moved.
  * @property {MigrationCause} cause Why this move happened.
+ * @property {string} [eventKey] The SPECIFIC event behind the cause — a particular war / disaster /
+ *   age crisis (see emigration-event-attribution), or "" for no named event. Carried on the records
+ *   that drive the out tally (move/depart) and on crisis-death records.
  * @property {number} [destPaidCost] Assimilation load the destination civ took on for this arrival
  *   (the "did the destination pay a cost?" signal). Present on move/arrive records, not departures.
  * @property {"move"|"depart"|"arrive"} [phase] Transit phase: an instantaneous move, the
@@ -52,10 +55,11 @@ export function cityName(city) {
  * @param {*} dest Destination signal.
  * @param {number} people Historically-scaled people who moved.
  * @param {MigrationCause} cause Why this move happened.
- * @param {number} destPaidCost Assimilation load the destination took on for this arrival.
+ * @param {{destPaidCost:number, eventKey?:string}} meta Assimilation load the destination took on,
+ *   plus the specific event behind the cause (war/disaster/crisis), or "".
  * @returns {Migration} The record.
  */
-export function moveRecord(src, dest, people, cause, destPaidCost) {
+export function moveRecord(src, dest, people, cause, meta) {
   return {
     srcName: cityName(src.city),
     destName: cityName(dest.city),
@@ -65,7 +69,8 @@ export function moveRecord(src, dest, people, cause, destPaidCost) {
     points: 1,
     people,
     cause,
-    destPaidCost,
+    eventKey: (meta && meta.eventKey) || "",
+    destPaidCost: meta && meta.destPaidCost,
     phase: "move"
   };
 }
@@ -80,9 +85,10 @@ export function moveRecord(src, dest, people, cause, destPaidCost) {
  * @param {*} dest Destination signal.
  * @param {number} people Historically-scaled people who left.
  * @param {MigrationCause} cause Why they left.
+ * @param {string} [eventKey] The specific event behind the cause (war/disaster/crisis), or "".
  * @returns {Migration} The record.
  */
-export function departRecord(src, dest, people, cause) {
+export function departRecord(src, dest, people, cause, eventKey) {
   return {
     srcName: cityName(src.city),
     destName: cityName(dest.city),
@@ -92,6 +98,7 @@ export function departRecord(src, dest, people, cause) {
     points: 1,
     people,
     cause,
+    eventKey: eventKey || "",
     phase: "depart"
   };
 }

@@ -103,6 +103,44 @@ function aggregateByCause(pids) {
   return agg;
 }
 
+/** @returns {Record<string, number>} An empty by-event map (fallback when an accessor is absent). */
+const _noEvents = () => ({});
+
+/**
+ * Per-civ breakdown of EMIGRATION and DEATHS by the SPECIFIC event behind them (a particular war /
+ * disaster / crisis / famine — see emigration-event-attribution), for the Causes-tab drill-down.
+ * @param {number[]} pids Player ids.
+ * @returns {Record<number, Record<string, {people:number, deaths:number}>>} Per civ, per event key.
+ */
+function gatherEventsByOwner(pids) {
+  const D = /** @type {*} */ (globalThis).EmigrationData || {};
+  /** @type {Record<number, *>} */
+  const out = {};
+  const byEvent = typeof D.emigrationByEventFor === "function" ? D.emigrationByEventFor : _noEvents;
+  const deaths = typeof D.deathsByEventFor === "function" ? D.deathsByEventFor : _noEvents;
+  for (const pid of pids || []) {
+    const m = mergeEvents(byEvent(pid) || {}, deaths(pid) || {});
+    if (m) out[pid] = m;
+  }
+  return out;
+}
+
+/**
+ * Merge a civ's per-event emigration and death maps into {people, deaths} per event, or null when
+ * empty.
+ * @param {Record<string, number>} e Emigration by event key.
+ * @param {Record<string, number>} dd Deaths by event key.
+ * @returns {Record<string, {people:number, deaths:number}>|null} Merged map, or null.
+ */
+function mergeEvents(e, dd) {
+  const keys = new Set([...Object.keys(e), ...Object.keys(dd)]);
+  if (!keys.size) return null;
+  /** @type {Record<string, *>} */
+  const m = {};
+  for (const k of keys) m[k] = { people: e[k] || 0, deaths: dd[k] || 0 };
+  return m;
+}
+
 /**
  * Resolve a list of raw flow edges to named edges for the viz, carrying the origin/destination
  * CITY (when the tally recorded it) so the flow view can route civ→civ AND city→city.
@@ -512,6 +550,7 @@ function gatherFresh() {
   return {
     civs: pids.map(civRow),
     byCause: aggregateByCause(pids),
+    eventsByOwner: gatherEventsByOwner(pids), // specific war/disaster/crisis behind each cause
     flows,
     pops,
     intra, // intra-civ (city→city) moves, split from the same flow matrix as the cross-civ network

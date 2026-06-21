@@ -9,7 +9,7 @@
 // backward-compatibly (older saves simply lack the new maps, which default to {}).
 
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
-import { dlog } from "/emigration/ui/emigration-log.js";
+import { logNetDistribution } from "/emigration/ui/emigration-telemetry.js";
 import { citySnapshot } from "/emigration/ui/emigration-city-readout-data.js";
 import { getSnapshotInterval } from "/emigration/ui/emigration-settings.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
@@ -20,7 +20,8 @@ import {
   subtractFlows,
   mergeAdjacentDeltas,
   migrateCumulativeToDeltas,
-  capFlows
+  capFlows,
+  capByEvent
 } from "/emigration/ui/emigration-flow-history.js";
 
 const STATE_KEY = "EmigrationMigStats_v1";
@@ -62,6 +63,8 @@ let _recent = [];
  * @property {Record<string, number>} wmRefugeesIn Refugees-received-per-turn watermark.
  * @property {Record<string, Record<string, number>>} outByCause Cumulative emigration, per cause.
  * @property {Record<string, Record<string, number>>} inByCause Immigration cumulative by cause.
+ * @property {Record<string, Record<string, number>>} outByEvent Emigration per SPECIFIC event key.
+ * @property {Record<string, Record<string, number>>} deathsByEvent Deaths per SPECIFIC event key.
  * @property {Record<string, Record<string, number>>} wmOutByCause Per-cause emigration watermarks.
  * @property {Record<string, Record<string, number>>} wmInByCause Per-cause immigration watermarks.
  * @property {Record<string, Record<string, number>>} flows Cross-civ people moved, keyed
@@ -146,6 +149,8 @@ function normalize(o) {
     wmRefugeesIn: mapOr(o.wmRefugeesIn),
     outByCause: mapOr(o.outByCause),
     inByCause: mapOr(o.inByCause),
+    outByEvent: mapOr(o.outByEvent),
+    deathsByEvent: mapOr(o.deathsByEvent),
     wmOutByCause: mapOr(o.wmOutByCause),
     wmInByCause: mapOr(o.wmInByCause),
     flows: mapOr(o.flows),
@@ -239,7 +244,7 @@ function isCrossCiv(m) {
  * source. Also tracks per-cause emigration/immigration breakdowns for tooltips.
  * @param {MigStatsState} s State.
  * @param {{srcOwner?:number, destOwner?:number, people:number, points?:number, cause?:string,
- *   crossCiv?:boolean}} m Migration.
+ *   eventKey?:string, crossCiv?:boolean}} m Migration.
  */
 
 function foldMigration(s, m) {
@@ -389,6 +394,7 @@ const MAX_FLOW_SNAPSHOTS = 96;
 // swallow exceptions), losing the WHOLE tally. When exceeded, evict the LOWEST-volume edges (smallest
 // people totals — the least informative), with hysteresis so we don't re-sort every pass.
 const MAX_FLOW_KEYS = 4000; // ceiling; capFlows (emigration-flow-history.js) evicts the smallest edges
+const MAX_EVENT_KEYS = 64; // per civ, per by-event map; keeps the persisted blob bounded over a long game
 
 /**
  * The current age-local game turn, defaulting to 0 off-engine.
@@ -727,13 +733,21 @@ export function recordDisasterEvent(name, severity) {
  * Call it every pass, including passes with no migration: the snapshot still records each civ's
  * population (for the timeline's growth history), while the migration-only work (recent feed, net
  * distribution log) is skipped when there's nothing to fold.
- * @param {{srcOwner?:number, destOwner?:number, people:number, cause?:string}[]} migs Migrations (may be empty).
+ * @param {{srcOwner?:number, destOwner?:number, people:number, cause?:string, eventKey?:string}[]} migs Migrations.
  */
 export function recordMigrations(migs) {
   const s = load();
   const list = Array.isArray(migs) ? migs : [];
-  for (const m of list) foldMigration(s, m);
+  for (const m of list) {
+    foldMigration(s, m);
+    // Per-SPECIFIC-EVENT tally: a death folds into deathsByEvent, any other out-move into outByEvent.
+    if (m.eventKey && typeof m.srcOwner === "number") {
+      add(m.cause === "attrition" ? s.deathsByEvent : s.outByEvent, m.srcOwner, numOr0(m.people), m.eventKey);
+    }
+  }
   capFlows(s.flows, s.flowsPts, MAX_FLOW_KEYS); // bound the cumulative city-pair matrices before persist
+  capByEvent(s.outByEvent, MAX_EVENT_KEYS); // bound the per-event tallies too
+  capByEvent(s.deathsByEvent, MAX_EVENT_KEYS);
   // Snapshot EVERY pass (self-gated to the snapshot interval inside), not only when migration
   // happened — so the timeline records per-civ population growth from turn one and is available to
   // scrub/play before any emigration occurs. The migration-only side effects stay gated on `list`.
@@ -743,32 +757,6 @@ export function recordMigrations(migs) {
     logNetDistribution(s, list);
   }
   save();
-}
-
-/**
- * Debug-only: log the net-migration distribution across civs (cumulative points + scaled people) and
- * this pass's per-record phases, so we can see whether any civ is net-POSITIVE or whether arrivals
- * are failing (departures debit a source, but a destroyed-destination arrival credits no one). Grep
- * `EMIG_netdist` in UI.log.
- * @param {MigStatsState} s State.
- * @param {*[]} migs This pass's migrations.
- */
-function logNetDistribution(s, migs) {
-  try {
-    const ids = new Set([...Object.keys(s.cumPts || {}), ...Object.keys(s.cum || {})]);
-    const parts = [];
-    for (const pid of ids) {
-      const pts = Math.round(s.cumPts[pid] || 0);
-      const ppl = Math.round(s.cum[pid] || 0);
-      if (pts !== 0 || ppl !== 0) parts.push("c" + pid + ":pts=" + pts + ",ppl=" + ppl);
-    }
-    const phases = migs.map(m => (m.phase || "?") + (m.crossCiv ? "X" : "") + ">"
-      + (typeof m.srcOwner === "number" ? m.srcOwner : "-") + "/"
-      + (typeof m.destOwner === "number" ? m.destOwner : "-")).join(" ");
-    dlog("netdist [" + (parts.join(" ") || "all-zero") + "] thisPass: " + phases);
-  } catch (_) {
-    /* diagnostics must never break a pass */
-  }
 }
 
 /**
@@ -996,6 +984,8 @@ try {
     // Per-cause breakdowns for tooltip attribution
     emigrationByCauseFor: (/** @type {number} */ pid) => emigrationByCause(pid),
     immigrationByCauseFor: (/** @type {number} */ pid) => immigrationByCause(pid),
+    emigrationByEventFor: (/** @type {number} */ pid) => load().outByEvent[pid] || {},
+    deathsByEventFor: (/** @type {number} */ pid) => load().deathsByEvent[pid] || {},
     // The per-city readout view-model + the session-local recent-moves feed (Phase 0 data core).
     citySnapshot: (/** @type {*} */ cityId) => citySnapshot(cityId),
     recentEventsFor: (/** @type {number} */ pid, /** @type {number=} */ limit) =>

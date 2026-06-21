@@ -92,6 +92,58 @@ export function disasterName(eventType) {
 }
 
 /**
+ * Title-case a raw TYPE token ("ANTIQUITY_CRISIS_PLAGUE" → "Antiquity Plague") as a last-resort
+ * display name when no LOC string resolves.
+ * @param {string} type A raw type string.
+ * @returns {string} A readable fallback.
+ */
+function prettifyType(type) {
+  return String(type || "")
+    .split("_")
+    .filter((w) => w && w !== "CRISIS" && w !== "RANDOM" && w !== "EVENT")
+    .map((w) => w.charAt(0) + w.slice(1).toLowerCase())
+    .join(" ");
+}
+
+/**
+ * The game's display name for an age-crisis type (from the AgeCrisisEventTypes table), e.g.
+ * "The Great Plague". Falls back to a title-cased "<Age> <Kind> Crisis".
+ * @param {string} type An AgeCrisisEventType.
+ * @returns {string} The crisis name.
+ */
+export function crisisName(type) {
+  try {
+    const row = GameInfo?.AgeCrisisEventTypes?.lookup?.(type);
+    const composed = row && row.Name ? loc(row.Name) : null;
+    if (composed) return composed;
+  } catch (_) {
+    /* ignore */
+  }
+  const pretty = prettifyType(type);
+  return pretty ? pretty + " Crisis" : "Crisis";
+}
+
+/**
+ * The display name for an event KEY (see emigration-event-attribution): a specific war / disaster /
+ * crisis / famine. Null for the empty key (no specific event).
+ * @param {string} eventKey The event key.
+ * @returns {string|null} The display name, or null.
+ */
+export function eventDisplayName(eventKey) {
+  if (!eventKey) return null;
+  if (eventKey === "famine") return loc("LOC_EMIG_EVENT_FAMINE") || "Famine";
+  if (eventKey.indexOf("crisis:") === 0) return crisisName(eventKey.slice(7));
+  if (eventKey.indexOf("disaster:") === 0) return disasterName(eventKey.slice(9));
+  if (eventKey.indexOf("war:") === 0) {
+    const parts = eventKey.split(":");
+    const a = Number(parts[1]);
+    const b = Number(parts[2]);
+    return warRefugeeName(a, [b]);
+  }
+  return prettifyType(eventKey) || null;
+}
+
+/**
  * The local (viewing) player id, or 0.
  * @returns {number} The local player id.
  */

@@ -678,6 +678,12 @@ When the **Demographics** mod is installed, Emigration contributes, via its comp
   flow map, each with a Civ Pop / Scaled Pop units toggle), **Civilizations**, **Causes**,
   **Settlements**, **Immigration Policies**, **Notifications**, and **Guide** — the **same content as the
   standalone window**. Registered order-independently and a silent no-op on an older Demographics.
+- **Causes drill down to the specific event.** Each broad cause on the **Causes** tab expands to the
+  *named* events behind it — a particular war, a particular eruption/flood, or the active **age crisis**
+  — with each event's emigration **and** deaths. A crisis is attributed to its mechanism (an Invasion
+  crisis under War, a Plague crisis under Disaster, a Loyalty/Revolt crisis under Unhappiness), resolved
+  at the moment of each move so it reflects the event that was actually active then. Per-civ event
+  tallies are persisted (`outByEvent` / `deathsByEvent`, capped per civ so the save stays bounded).
 - **A Notifications log** (the **Notifications** sub-tab) — a **permanent, scrollable record of every
   migration notification that has fired**, so the on-screen toasts can stay brief without losing the
   history. Each row is cause-themed (the same accent as its toast) and **names the specific in-world

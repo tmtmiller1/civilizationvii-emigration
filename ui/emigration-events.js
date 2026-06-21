@@ -146,7 +146,7 @@ function onRandomEvent(data) {
     const sev = eventSeverity(data, info);
     const keys = affectedCityKeys(data.location);
     logEvent(data, info, sev, keys.length); // DIAGNOSTIC: grep `EMIG_event` in UI.log
-    recordDisaster(info?.EventClass, sev, keys);
+    recordDisaster(info?.EventClass, sev, keys, data.eventType); // type → per-city cause attribution
     // Record a refugees-chart MARKER whenever the disaster actually struck cities (so it drove
     // displacement), independent of the toast threshold — otherwise sub-`disasterNotifyMinSeverity`
     // disasters drive the sim but never annotate the chart, which is why none were appearing.

@@ -122,6 +122,7 @@
         <Replace Tag="LOC_EMIG_T_MHGOLD_D" Language="it_IT"><Text>Oro sottratto ogni turno per ogni UNIT_MIGRANT che una civiltà trattiene, in scala col numero. 0 = disattivato. (Leva di detrazione confermata dalla sonda.)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST" Language="it_IT"><Text>Costo: vento contrario da congestione (0 = disattivato)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="it_IT"><Text>Rendi una civiltà che assorbe molti migranti una destinazione meno attraente per ulteriore migrazione (è impegnata a integrare i nuovi arrivati), in scala con quanto sta digerendo. Un freno strutturale ai magneti fuori controllo. 0 = disattivato.</Text></Replace>
+        <Replace Tag="LOC_EMIG_EVENT_FAMINE" Language="it_IT"><Text>Carestia</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="it_IT"><Text>Costo: freno anti-valanga (0 = disattivato)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="it_IT"><Text>Rende una civiltà la cui popolazione è andata molto avanti rispetto alle altre una destinazione meno attraente per la migrazione tra civiltà: un freno autocorrettivo su un leader fuori controllo, proporzionale al suo vantaggio. Non ostacola mai l'uscita o gli spostamenti interni del leader. 0 = disattivato.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="it_IT"><Text>Costo: soglia anti-valanga (× quota equa)</Text></Replace>

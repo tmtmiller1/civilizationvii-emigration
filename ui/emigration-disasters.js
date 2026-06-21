@@ -20,6 +20,7 @@ const STATE_KEY = "EmigrationDisaster_v1";
 /**
  * @typedef {Object} DisasterState
  * @property {Record<string, number>} byCity Accumulated distress per city key.
+ * @property {Record<string, string>} typeByCity Most-recent disaster RandomEventType per city key.
  * @property {Record<string, number>} observedTurn Turn each city was last polled.
  * @property {number} decayTurn Turn distress was last decayed.
  */
@@ -76,6 +77,7 @@ function state() {
     if (o && typeof o === "object") {
       _state = {
         byCity: o.byCity || {},
+        typeByCity: o.typeByCity || {},
         observedTurn: o.observedTurn || {},
         decayTurn: o.decayTurn || gameTurn()
       };
@@ -84,7 +86,7 @@ function state() {
   } catch (_) {
     /* ignore */
   }
-  _state = { byCity: {}, observedTurn: {}, decayTurn: gameTurn() };
+  _state = { byCity: {}, typeByCity: {}, observedTurn: {}, decayTurn: gameTurn() };
   return _state;
 }
 
@@ -162,15 +164,38 @@ export function observeDisaster(city) {
  * @param {string} eventClass The event's CLASS_* string.
  * @param {number} severity The event severity (>= 1).
  * @param {string[]} cityKeys Affected city keys.
+ * @param {string} [eventType] The RandomEventType, stamped per city for cause attribution.
  */
-export function recordDisaster(eventClass, severity, cityKeys) {
+export function recordDisaster(eventClass, severity, cityKeys, eventType) {
   if (!CONFIG.disastersEnabled || !Array.isArray(cityKeys) || !cityKeys.length) return;
   const w = (CLASS_WEIGHT[eventClass] || 4) * (severity > 0 ? severity : 1);
   const s = state();
-  for (const key of cityKeys) {
-    if (key) s.byCity[key] = (s.byCity[key] || 0) + w;
-  }
+  const type = typeof eventType === "string" && eventType ? eventType : null;
+  for (const key of cityKeys) stampDisaster(s, key, w, type);
   persist();
+}
+
+/**
+ * Add `w` distress to one city and stamp the disaster `type` (latest hit wins) for attribution.
+ * @param {DisasterState} s State. @param {string} key City key. @param {number} w Distress.
+ * @param {string|null} type The RandomEventType, or null.
+ */
+function stampDisaster(s, key, w, type) {
+  if (!key) return;
+  s.byCity[key] = (s.byCity[key] || 0) + w;
+  if (type) s.typeByCity[key] = type;
+}
+
+/**
+ * The RandomEventType of the most recent disaster that struck a city (for cause attribution), or
+ * null. Cleared when the city's distress decays away (see tickDisasters).
+ * @param {string} cityKey The city key.
+ * @returns {string|null} The event type, or null.
+ */
+export function disasterTypeFor(cityKey) {
+  if (!cityKey) return null;
+  const t = state().typeByCity[cityKey];
+  return typeof t === "string" && t ? t : null;
 }
 
 /**
@@ -199,8 +224,10 @@ export function tickDisasters() {
     const factor = Math.pow(speedDecay(CONFIG.disasterDecay), elapsed);
     for (const k of Object.keys(s.byCity)) {
       const v = s.byCity[k] * factor;
-      if (v < 0.05) delete s.byCity[k];
-      else s.byCity[k] = v;
+      if (v < 0.05) {
+        delete s.byCity[k];
+        delete s.typeByCity[k]; // the disaster has faded; drop its stale type stamp
+      } else s.byCity[k] = v;
     }
     s.decayTurn = turn;
   }
