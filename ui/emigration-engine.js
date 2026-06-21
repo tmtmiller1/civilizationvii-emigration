@@ -113,7 +113,7 @@ function restingOnCooldown(st, forced) {
  * with its settlement count and how many of its cities are in crisis, so a besieged empire can shed
  * refugees from all fronts at once.
  * @param {*[]} ranked Ranked source signals.
- * @returns {Map<number, number>} owner id → max departures allowed this turn.
+ * @returns {Map<number, {voluntary:number, crisis:number}>} owner id → per-track move ceilings.
  */
 function civMoveCeilings(ranked) {
   /** @type {Map<number, {cities:number, crises:number}>} */
@@ -127,12 +127,41 @@ function civMoveCeilings(ranked) {
     e.cities += 1;
     if (inCrisis(s)) e.crises += 1;
   }
-  /** @type {Map<number, number>} */
+  /** @type {Map<number, {voluntary:number, crisis:number}>} */
   const out = new Map();
   for (const [owner, e] of by) {
-    out.set(owner, CONFIG.maxMovesPerTurn + e.cities * CONFIG.movesPerCity + e.crises * CONFIG.movesPerSiege);
+    out.set(owner, {
+      voluntary: CONFIG.maxMovesPerTurn + e.cities * CONFIG.movesPerCity,
+      crisis: e.crises * CONFIG.movesPerSiege
+    });
   }
   return out;
+}
+
+/** Per-source persistent state (created with both tracks' fields; legacy uses pressure/cooldown only).
+ * @param {*} state Loaded state. @param {string} key Source key. @returns {*} The source state. */
+function sourceState(state, key) {
+  return state.sources[key]
+    || (state.sources[key] = { pressure: 0, cooldown: 0, crisisPressure: 0, crisisCooldown: 0 });
+}
+
+/** Causes that draw from the CRISIS budget/track (vs voluntary prosperity/unhappiness). */
+const CRISIS_TRACK = new Set(["war", "disaster", "conquest", "attrition"]);
+/** @param {string} cause Cause. @returns {boolean} Whether it's a crisis-track cause. */
+function isCrisisTrack(cause) {
+  return CRISIS_TRACK.has(cause);
+}
+
+/** The crisis cause for a besieged/struck source (disaster takes precedence over war).
+ * @param {*} src Source. @returns {MigrationCause} "disaster" | "war". */
+function crisisCause(src) {
+  return (src.disaster || 0) >= CONFIG.disasterFleeThreshold ? "disaster" : "war";
+}
+
+/** The voluntary cause for a source (an unhappiness push vs a prosperity pull).
+ * @param {*} src Source. @returns {MigrationCause} "unhappiness" | "prosperity". */
+function voluntaryCause(src) {
+  return (src.happiness || 0) < CONFIG.unhappyCauseThreshold ? "unhappiness" : "prosperity";
 }
 
 /**
@@ -218,28 +247,22 @@ function belowEmigrationBar(forced, pressure) {
 }
 
 /**
- * Process one potential source: accumulate pressure toward its best destination and, if it crosses
- * the bar, shed population. An ordinary source sheds one point; a besieged source sheds up to its
- * war-surge budget in a burst (Feature 1a), bounded by `maxThisSource` (the remaining per-turn cap)
- * and the siege loss cap. Mutates `state` and the in-memory ranking.
+ * LEGACY single-cause source pass (used when CONFIG.splitTracksEnabled is off): one dominant cause,
+ * one pressure track. Accumulate toward the best destination and shed if it crosses the bar (forced
+ * causes bypass it). An ordinary source sheds one point; a besieged source sheds a war-surge burst.
  * @param {*} src Source signal.
  * @param {*[]} ranked Ranked signals.
  * @param {*} state Loaded state (sources + monoTurn + transit).
  * @param {Record<number, number>} ownerPop Per-owner total population (congestion).
- * @param {number} maxThisSource Remaining moves allowed this turn (global cap budget).
+ * @param {number} maxThisSource Remaining moves allowed this turn.
  * @returns {Migration[]} The applied records.
  */
-function processSource(src, ranked, state, ownerPop, maxThisSource) {
+function processSourceLegacy(src, ranked, state, ownerPop, maxThisSource) {
   if (src.rural <= CONFIG.minRuralToEmigrate || maxThisSource <= 0) return [];
-  const sources = state.sources;
-  const st = sources[src.key] || (sources[src.key] = { pressure: 0, cooldown: 0 });
+  const st = sourceState(state, src.key);
   const cause = migrationCause(src);
   const forced = FORCED_CAUSES.has(cause);
-  // Forced displacement (war / disaster) flees every turn: it bypasses the post-move cooldown that
-  // paces voluntary (prosperity / unhappiness) migration. A besieged city keeps shedding refugees,
-  // bounded only by the warSurge burst + the siege-loss cap, not by the cooldown.
   if (restingOnCooldown(st, forced)) return [];
-
   const best = bestDestination(src, ranked, ownerPop);
   if (!best) {
     const a = processAttrition(src, st, state); // no refuge → the outlet
@@ -247,13 +270,99 @@ function processSource(src, ranked, state, ownerPop, maxThisSource) {
   }
   st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
   if (belowEmigrationBar(forced, st.pressure)) return [];
-
   const budget = Math.min(maxThisSource, warSurgeBudget(src, cause));
   const out = shedBurst(src, best.dest, state, cause, budget);
   if (!out.length) return [];
   st.pressure = 0;
-  if (!forced) st.cooldown = CONFIG.cooldownTurns; // only voluntary migration "rests" between moves
+  if (!forced) st.cooldown = CONFIG.cooldownTurns;
   return out;
+}
+
+/**
+ * CRISIS sub-pass: a besieged/struck source flees EVERY turn (no bar, no cooldown) — its own war-surge
+ * burst, bounded by the crisis budget and the siege-loss cap (inside warSurgeBudget). Cause is
+ * disaster if distress dominates, else war.
+ * @param {*} src Source signal.
+ * @param {*} best The chosen destination ({dest, adjusted}).
+ * @param {*} state Loaded state.
+ * @param {number} maxCrisis Remaining crisis budget for the civ.
+ * @returns {Migration[]} The applied records.
+ */
+function shedCrisis(src, best, state, maxCrisis) {
+  const cause = crisisCause(src);
+  const budget = Math.min(maxCrisis, warSurgeBudget(src, cause));
+  return shedBurst(src, best.dest, state, cause, budget);
+}
+
+/**
+ * VOLUNTARY sub-pass: ordinary economic migration — accumulate the pull toward `best`, and when it
+ * crosses the bar (and not on cooldown) shed one point, then rest. Independent of any crisis flow.
+ * @param {*} src Source signal.
+ * @param {*} best The chosen destination ({dest, adjusted}).
+ * @param {*} state Loaded state.
+ * @param {*} st Source state (pressure/cooldown).
+ * @param {number} maxVol Remaining voluntary budget for the civ.
+ * @returns {Migration[]} The applied records.
+ */
+function shedVoluntary(src, best, state, st, maxVol) {
+  if (st.cooldown > 0 || maxVol <= 0) return [];
+  st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
+  if (st.pressure < CONFIG.emigrationBar) return [];
+  const out = shedBurst(src, best.dest, state, voluntaryCause(src), Math.min(maxVol, 1));
+  if (out.length) {
+    st.pressure = 0;
+    st.cooldown = CONFIG.cooldownTurns;
+  }
+  return out;
+}
+
+/**
+ * SPLIT source pass: evaluate the crisis and voluntary tracks INDEPENDENTLY for one source, so a
+ * besieged-but-attractive city can shed war refugees AND economic migrants in the same pass. Each
+ * draws from its own budget (or a shared pool when `budgets.shared`). No destination → the attrition
+ * outlet (unchanged). Records keep a single cause; concurrency is the two records, not a multi-cause.
+ * @param {*} src Source signal.
+ * @param {*[]} ranked Ranked signals.
+ * @param {*} state Loaded state.
+ * @param {Record<number, number>} ownerPop Per-owner total population.
+ * @param {{voluntary:number, crisis:number, shared?:boolean}} budgets Remaining per-track budget.
+ * @returns {Migration[]} The applied records.
+ */
+function processSourceSplit(src, ranked, state, ownerPop, budgets) {
+  const st = sourceState(state, src.key);
+  const best = bestDestination(src, ranked, ownerPop);
+  if (!best) {
+    const a = processAttrition(src, st, state);
+    return a ? [a] : [];
+  }
+  /** @type {Migration[]} */
+  const out = [];
+  if (budgets.crisis > 0 && inCrisis(src)) {
+    for (const m of shedCrisis(src, best, state, budgets.crisis)) out.push(m);
+  }
+  // Shared pool: crisis already spent some of the common budget, so the voluntary track gets the rest.
+  const volMax = budgets.shared ? budgets.voluntary - out.length : budgets.voluntary;
+  for (const m of shedVoluntary(src, best, state, st, volMax)) out.push(m);
+  return out;
+}
+
+/**
+ * Process one source — the split two-track pass, or the legacy single-cause pass when the split is off.
+ * @param {*} src Source signal.
+ * @param {*[]} ranked Ranked signals.
+ * @param {*} state Loaded state.
+ * @param {Record<number, number>} ownerPop Per-owner total population.
+ * @param {{voluntary:number, crisis:number, shared?:boolean}} budgets Remaining per-track budget.
+ * @returns {Migration[]} The applied records.
+ */
+function processSource(src, ranked, state, ownerPop, budgets) {
+  if (src.rural <= CONFIG.minRuralToEmigrate) return [];
+  if (budgets.voluntary <= 0 && budgets.crisis <= 0) return [];
+  if (CONFIG.splitTracksEnabled) return processSourceSplit(src, ranked, state, ownerPop, budgets);
+  // Legacy uses ONE merged budget: the shared pool's `voluntary` already IS the merged remaining; the
+  // separate-ceiling case sums the two tracks.
+  const merged = budgets.shared ? budgets.voluntary : budgets.voluntary + budgets.crisis;
+  return processSourceLegacy(src, ranked, state, ownerPop, merged);
 }
 
 /**
@@ -390,7 +499,11 @@ function planTurn(ranked, state) {
   /** @type {Record<number, number>} */
   const usedByOwner = {};
   for (const src of sig) {
-    const remaining = (ceilings.get(src.owner) || CONFIG.maxMovesPerTurn) - (usedByOwner[src.owner] || 0);
+    // The stance-impact counterfactual is a single-cause estimate (real vs neutral borders), so it
+    // uses the MERGED per-civ ceiling; the voluntary/crisis split only governs the real pass.
+    const c = ceilings.get(src.owner);
+    const ceiling = c ? c.voluntary + c.crisis : CONFIG.maxMovesPerTurn;
+    const remaining = ceiling - (usedByOwner[src.owner] || 0);
     if (remaining <= 0) continue;
     usedByOwner[src.owner] = (usedByOwner[src.owner] || 0) + planSource(src, ctx, remaining);
   }
@@ -472,9 +585,36 @@ export function runPass() {
 }
 
 /**
- * Run every source's departures for the turn, respecting each civ's own per-turn move ceiling (a
- * safety net sized by city count + crises — see civMoveCeilings — so simultaneous wars on different
- * civs never compete for one global budget). Returns the move/departure records.
+ * The remaining per-track budget for a civ this turn: separate voluntary/crisis ceilings
+ * (splitBudgetsEnabled) so a war never starves peacetime migration and vice versa, or one shared pool
+ * (the legacy combined ceiling) otherwise.
+ * @param {number} owner Civ id.
+ * @param {Map<number, {voluntary:number, crisis:number}>} ceilings Per-civ ceilings.
+ * @param {Record<number, {voluntary:number, crisis:number}>} used Per-civ usage so far.
+ * @returns {{voluntary:number, crisis:number, shared:boolean}} The remaining budget.
+ */
+function remainingBudgets(owner, ceilings, used) {
+  const c = ceilings.get(owner) || { voluntary: CONFIG.maxMovesPerTurn, crisis: 0 };
+  const u = used[owner] || (used[owner] = { voluntary: 0, crisis: 0 });
+  if (CONFIG.splitBudgetsEnabled) {
+    return { voluntary: c.voluntary - u.voluntary, crisis: c.crisis - u.crisis, shared: false };
+  }
+  const rem = c.voluntary + c.crisis - (u.voluntary + u.crisis);
+  return { voluntary: rem, crisis: rem, shared: true };
+}
+
+/** Count one applied record against its track's used budget (war/disaster/conquest/attrition → crisis).
+ * @param {Record<number, {voluntary:number, crisis:number}>} used Usage map.
+ * @param {number} owner Civ id. @param {string} cause The record's cause. */
+function tallyUse(used, owner, cause) {
+  const u = used[owner] || (used[owner] = { voluntary: 0, crisis: 0 });
+  if (isCrisisTrack(cause)) u.crisis += 1;
+  else u.voluntary += 1;
+}
+
+/**
+ * Run every source's departures for the turn within each civ's per-track budgets (voluntary + crisis),
+ * counting each applied record against the track its cause belongs to.
  * @param {*} state Loaded state (sources + monoTurn + transit).
  * @param {*[]} ranked Ranked signals.
  * @returns {Migration[]} The applied records.
@@ -482,18 +622,16 @@ export function runPass() {
 function processDepartures(state, ranked) {
   const ownerPop = ownerPopulations(ranked);
   const ceilings = civMoveCeilings(ranked);
-  /** @type {Record<number, number>} */
-  const usedByOwner = {};
+  /** @type {Record<number, {voluntary:number, crisis:number}>} */
+  const used = {};
   /** @type {Migration[]} */
   const out = [];
   for (const src of ranked) {
-    const ceiling = ceilings.get(src.owner) || CONFIG.maxMovesPerTurn;
-    const remaining = ceiling - (usedByOwner[src.owner] || 0);
-    if (remaining <= 0) continue; // this civ's per-turn budget is spent; other civs still process
-    const recs = processSource(src, ranked, state, ownerPop, remaining);
-    for (const m of recs) {
+    const budgets = remainingBudgets(src.owner, ceilings, used);
+    if (budgets.voluntary <= 0 && budgets.crisis <= 0) continue; // this civ's budget spent; others run
+    for (const m of processSource(src, ranked, state, ownerPop, budgets)) {
       out.push(m);
-      usedByOwner[src.owner] = (usedByOwner[src.owner] || 0) + 1; // each record is one departure
+      tallyUse(used, src.owner, m.cause);
     }
   }
   return out;

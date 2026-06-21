@@ -67,6 +67,21 @@ function originsLine(comp) {
 }
 
 /**
+ * The "Pressure:" value: the concurrent-cause breakdown ("War 60% · Prosperity 40%") when >1 cause is
+ * active (the engine's voluntary/crisis split, CONFIG.splitUiReadoutEnabled), else the single dominant
+ * label.
+ * @param {*} s The readout snapshot.
+ * @returns {string} The pressure text.
+ */
+function pressureText(s) {
+  const mix = s.causeMix;
+  if (mix && mix.length > 1) {
+    return mix.map((/** @type {*} */ c) => c.label + " " + c.share + "%").join(" · ");
+  }
+  return s.causeLabel;
+}
+
+/**
  * Build the readout view-model (title + lines + optional warning) from a CitySnapshot. Pure.
  * @param {*} s A CitySnapshot (from citySnapshot()), or null.
  * @returns {{title:string, lines:string[], warn:(string|null)}|null} The model, or null.
@@ -74,7 +89,7 @@ function originsLine(comp) {
 export function readoutModel(s) {
   if (!s) return null;
   const lines = [];
-  lines.push("Pressure: " + s.causeLabel + statusSuffix(s));
+  lines.push("Pressure: " + pressureText(s) + statusSuffix(s));
   if (s.topDestinationName) {
     lines.push("Pulled toward " + s.topDestinationName + (s.crossCiv ? " (rival civ)" : ""));
   }
