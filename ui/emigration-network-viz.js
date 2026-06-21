@@ -673,7 +673,7 @@ function buildScene(frames, colorMap, events) {
  * the player knows the feature exists and why it isn't there yet.
  * @returns {HTMLElement} The note element.
  */
-function timelineNote() {
+export function timelineNote() {
   return el("div", "emig-netc-time-note", loc("LOC_EMIG_NETC_TIMELINE_PENDING",
     "Playback timeline appears once enough migration has been recorded to scrub through."));
 }
