@@ -76,14 +76,24 @@ function fractionToPct(v) {
 }
 
 /**
- * Probe the AgeProgressManager for a percent across its known method shapes (newest first).
+ * Read current age-progress percent from the AgeProgressManager. The REAL engine API is the
+ * current/max progression-points pair (the same recipe the base game and the Demographics mod use) —
+ * `getCurrentAgeProgressionPoints()` / `getMaxAgeProgressionPoints()`. The old `getAgeProgressPercent`
+ * / `getAgeProgress` / `getProgress` names DO NOT EXIST on the manager, so the percent was always
+ * undefined and the Modern megacity ramp silently never fired (diverging from Demographics' people
+ * figure). Those names are kept only as last-ditch fallbacks.
  * @param {*} mgr The Game.AgeProgressManager.
  * @returns {number | undefined} The raw percent, or undefined.
  */
 function readAgeProgressPercent(mgr) {
+  if (typeof mgr.getCurrentAgeProgressionPoints === "function" &&
+      typeof mgr.getMaxAgeProgressionPoints === "function") {
+    const cur = mgr.getCurrentAgeProgressionPoints();
+    const max = mgr.getMaxAgeProgressionPoints();
+    if (typeof cur === "number" && typeof max === "number" && max > 0) return (cur / max) * 100;
+  }
   if (typeof mgr.getAgeProgressPercent === "function") return mgr.getAgeProgressPercent();
   if (typeof mgr.getAgeProgress === "function") return fractionToPct(mgr.getAgeProgress());
-  if (typeof mgr.getProgress === "function") return fractionToPct(mgr.getProgress());
   return undefined;
 }
 

@@ -1146,7 +1146,8 @@ function happinessReadings(pid) {
   /** @type {Record<string,*>} */
   const out = {};
   try {
-    const h = Players.get(pid)?.Happiness;
+    const p = Players.get(pid);
+    const h = p?.Happiness;
     for (const m of ["getHappiness", "getNetHappiness", "getHappinessPerTurn"]) {
       if (h && typeof h[m] === "function") {
         try {
@@ -1154,6 +1155,14 @@ function happinessReadings(pid) {
         } catch (_) {
           out[m] = "threw";
         }
+      }
+    }
+    // The audit's recommended read: player Stats net happiness (confirmed valid in base UI).
+    if (p?.Stats && typeof p.Stats.getNetYield === "function") {
+      try {
+        out.statsNetHappiness = p.Stats.getNetYield(yieldEnum("YIELD_HAPPINESS"));
+      } catch (_) {
+        out.statsNetHappiness = "threw";
       }
     }
     const cap = playerCapital(pid);
@@ -1205,13 +1214,16 @@ function probeWarBetween(me, pid) {
   for (const e of events || []) {
     if (!e || e.actionTypeName !== "DIPLOMACY_ACTION_DECLARE_WAR") continue;
     n++;
-    let name = "?";
+    let wd = null;
     try {
-      name = Game.Diplomacy.getWarData(e.uniqueID, me)?.warName;
+      wd = Game.Diplomacy.getWarData(e.uniqueID, me);
     } catch (err) {
-      name = "threw " + err;
+      log("WARNAME getWarData threw " + err);
     }
-    log("WARNAME " + me + " vs " + pid + " uniqueID=" + e.uniqueID + " warName=" + name);
+    // Dump ALL warData fields, not just warName — so `initialPlayer`/`initiatingPlayer` (the true
+    // aggressor) can be compared to the DeclareWar payload's actingPlayer to confirm directionality.
+    const fields = wd ? Object.keys(wd).map((k) => k + "=" + JSON.stringify(wd[k])).join(" ") : "(no warData)";
+    log("WARNAME " + me + " vs " + pid + " uniqueID=" + e.uniqueID + " | " + fields);
   }
   return n;
 }

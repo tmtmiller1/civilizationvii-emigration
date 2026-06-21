@@ -51,7 +51,11 @@ export const BY_LEADER = {
   LEADER_PACHACUTI: { overcrowdDiscount: 0.5 }, // extra specialist relief, above the 0.3 global
   LEADER_CONFUCIUS: { sourceBias: 0.5 }, // growth-heavy, per-capita diluted → small cushion
   LEADER_ASHOKA: { happinessPull: 0.9 }, // trim celebration-pulse magnetism
-  LEADER_RIZAL: { happinessPull: 0.9 } // longer golden ages → longer magnet windows
+  // The engine reports this leader's type as LEADER_JOSE_RIZAL (LEADER_RIZAL never matched a leader
+  // Type, so the tuning silently never applied). Keep both keys: JOSE_RIZAL is canonical, RIZAL a
+  // defensive alias (both strings appear in base data).
+  LEADER_JOSE_RIZAL: { happinessPull: 0.9 }, // longer golden ages → longer magnet windows
+  LEADER_RIZAL: { happinessPull: 0.9 }
 };
 
 /**
