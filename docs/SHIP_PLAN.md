@@ -13,8 +13,16 @@
   visual verification.
 - ⏸️ **Phase 5** (city-local brakes) — DEFERRED **by design** per §5 ("ship only after Phase 1 stability
   gates pass"); Phase 1 isn't yet verified in-game. Pick up after the in-game pass.
+- ✅ **Phase 7** — game-speed scaling (`emigration-game-speed.js`): turn-count durations + pressure
+  thresholds scale ×S, decay re-bases to `d^(1/S)`, where S = `GameSpeeds.CostMultiplier`/100
+  (Online 0.5 … Marathon 3.0); invariant magnitudes (loss caps, intensities, ceilings) unscaled.
+  Auto-read + fail-safe to S=1; behind `gameSpeedTuningEnabled` (on) + `gameSpeedScalePopulation`
+  (off, cross-mod). New `tests/game-speed.mjs` (fail-safe / 5 speeds / kill switch / game-time
+  invariance) added to the verify chain (now **30** harnesses). README rewritten ground-up to
+  integrate Phases 1–7 natively.
 
-All engine/test changes keep `npm run verify` at exit 0. UI + lens changes need an in-game pass.
+All engine/test changes keep `npm run verify` at exit 0. UI + lens changes (and the game-speed *feel*)
+need an in-game pass.
 
 ---
 

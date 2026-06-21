@@ -13,6 +13,7 @@
 // truth. State persists in GameConfiguration.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { speedDecay } from "/emigration/ui/emigration-game-speed.js";
 
 const STATE_KEY = "EmigrationDisaster_v1";
 
@@ -195,7 +196,7 @@ export function tickDisasters() {
   const turn = gameTurn();
   const elapsed = Math.max(0, turn - s.decayTurn);
   if (elapsed > 0) {
-    const factor = Math.pow(CONFIG.disasterDecay, elapsed);
+    const factor = Math.pow(speedDecay(CONFIG.disasterDecay), elapsed);
     for (const k of Object.keys(s.byCity)) {
       const v = s.byCity[k] * factor;
       if (v < 0.05) delete s.byCity[k];

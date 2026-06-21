@@ -12,6 +12,7 @@
 // here is move-planning (how many points a source sheds and how they travel) and the per-turn pass.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { speedTurns, speedBar } from "/emigration/ui/emigration-game-speed.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { rankByProsperity, distress } from "/emigration/ui/emigration-prosperity.js";
 import { moveRural, removeRural, marginalPeople } from "/emigration/ui/emigration-population.js";
@@ -66,7 +67,7 @@ function transitLag(src, dest, cause) {
   // neighbouring one. War/disaster refugees take at least a turn (camps); capped per config.
   let lag = Math.round(hexDistance(src, dest) / per);
   if (isRefugeeCause(cause)) lag = Math.max(lag, 1); // refugees camp at least a turn
-  return Math.max(0, Math.min(CONFIG.transitLagTurns, lag));
+  return Math.max(0, Math.min(speedTurns(CONFIG.transitLagTurns), lag));
 }
 
 /**
@@ -243,7 +244,7 @@ function shedBurst(src, dest, state, cause, budget) {
  * @returns {boolean} True when the source should wait (no move this turn).
  */
 function belowEmigrationBar(forced, pressure) {
-  return !forced && pressure < CONFIG.emigrationBar;
+  return !forced && pressure < speedBar(CONFIG.emigrationBar);
 }
 
 /**
@@ -274,7 +275,7 @@ function processSourceLegacy(src, ranked, state, ownerPop, maxThisSource) {
   const out = shedBurst(src, best.dest, state, cause, budget);
   if (!out.length) return [];
   st.pressure = 0;
-  if (!forced) st.cooldown = CONFIG.cooldownTurns;
+  if (!forced) st.cooldown = speedTurns(CONFIG.cooldownTurns);
   return out;
 }
 
@@ -307,11 +308,11 @@ function shedCrisis(src, best, state, maxCrisis) {
 function shedVoluntary(src, best, state, st, maxVol) {
   if (st.cooldown > 0 || maxVol <= 0) return [];
   st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
-  if (st.pressure < CONFIG.emigrationBar) return [];
+  if (st.pressure < speedBar(CONFIG.emigrationBar)) return [];
   const out = shedBurst(src, best.dest, state, voluntaryCause(src), Math.min(maxVol, 1));
   if (out.length) {
     st.pressure = 0;
-    st.cooldown = CONFIG.cooldownTurns;
+    st.cooldown = speedTurns(CONFIG.cooldownTurns);
   }
   return out;
 }
@@ -382,11 +383,11 @@ function processAttrition(src, st, state) {
     return null;
   }
   st.pressure += Math.pow(d, CONFIG.deltaExponent);
-  if (st.pressure < CONFIG.attritionThreshold) return null;
+  if (st.pressure < speedBar(CONFIG.attritionThreshold)) return null;
   const popBefore = src.population;
   if (!removeRural(src.city)) return null;
   st.pressure = 0;
-  st.cooldown = CONFIG.cooldownTurns;
+  st.cooldown = speedTurns(CONFIG.cooldownTurns);
   src.rural -= 1;
   src.population -= 1;
   return {
@@ -468,12 +469,12 @@ function planSource(src, ctx, maxThisSource) {
   const best = bestDestination(src, ctx.sig, ctx.ownerPop);
   if (!best) return 0;
   st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
-  if (!forced && st.pressure < CONFIG.emigrationBar) return 0; // forced causes flee every turn
+  if (!forced && st.pressure < speedBar(CONFIG.emigrationBar)) return 0; // forced causes flee every turn
   const budget = Math.min(maxThisSource, warSurgeBudget(src, cause));
   const moved = planApply(src, ctx, best, budget);
   if (moved) {
     st.pressure = 0;
-    if (!forced) st.cooldown = CONFIG.cooldownTurns;
+    if (!forced) st.cooldown = speedTurns(CONFIG.cooldownTurns);
   }
   return moved;
 }
