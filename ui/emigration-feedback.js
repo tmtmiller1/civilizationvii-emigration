@@ -23,8 +23,10 @@ import {
   refugeeHeadline,
   civAdjective,
   actionHint,
+  warRefugeeName,
   localDigestMessage
 } from "/emigration/ui/emigration-naming.js";
+import { warAggressors } from "/emigration/ui/emigration-war.js";
 import { formatBoth } from "/emigration/ui/emigration-population.js";
 import { causeLabel, causeAccent } from "/emigration/ui/emigration-causes.js";
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
@@ -239,6 +241,9 @@ export function announceImportant(msg, cause) {
   toast(msg, cause);
 }
 
+/** Causes that name a specific in-world event (war/disaster/conquest), vs economic migration. */
+const REFUGEE_CAUSES = new Set(["war", "disaster", "conquest"]);
+
 /**
  * The set of civs that produced refugees (war/disaster/conquest) in a pass.
  * @param {{cause?:string, srcOwner?:number}[]} migrations Applied migrations.
@@ -254,12 +259,81 @@ function refugeeCivs(migrations) {
 }
 
 /**
- * Fire a refugee-crisis alert when a civ's CUMULATIVE refugees cross a worldRefugeeThreshold
- * milestone - once per tier, so a long war produces a few headlines, not one per turn.
- * @param {number} pid Source civ id.
- * @param {number} cum Cumulative refugees produced.
+ * The most recent disaster event's in-game name (for naming disaster refugees), or null.
+ * @returns {string|null} The disaster name.
  */
-function crisisMilestone(pid, cum) {
+function recentDisasterName() {
+  const data = /** @type {*} */ (globalThis).EmigrationData;
+  const evs = data && typeof data.disasterEvents === "function" ? data.disasterEvents() : null;
+  const last = Array.isArray(evs) && evs.length ? evs[evs.length - 1] : null;
+  return last && typeof last.name === "string" && last.name ? last.name : null;
+}
+
+/**
+ * The SPECIFIC in-world event behind a refugee cause — the named war (via the aggressor map +
+ * warRefugeeName) for war/conquest, or the named disaster for disaster — so a notification reads
+ * "the Roman–Carthaginian War" / "Thera" rather than a generic cause. Null for economic migration.
+ * @param {string} [cause] The migration cause.
+ * @param {number} [srcOwner] The fleeing civ id (for the war pairing).
+ * @returns {string|null} The event name, or null.
+ */
+function eventNameFor(cause, srcOwner) {
+  if ((cause === "war" || cause === "conquest") && typeof srcOwner === "number") {
+    return warRefugeeName(srcOwner, warAggressors(srcOwner));
+  }
+  if (cause === "disaster") return recentDisasterName();
+  return null;
+}
+
+/**
+ * A civ's DOMINANT refugee cause so far (war / disaster / conquest), for naming the world milestone.
+ * @param {number} pid Civ id.
+ * @returns {string} The dominant refugee cause (defaults to "war").
+ */
+function dominantRefugeeCause(pid) {
+  const data = /** @type {*} */ (globalThis).EmigrationData;
+  const bc = data && typeof data.emigrationByCauseFor === "function" ? data.emigrationByCauseFor(pid) : null;
+  let best = "war";
+  let bestN = -1;
+  for (const c of REFUGEE_CAUSES) {
+    const n = (bc && bc[c]) || 0;
+    if (n > bestN) {
+      bestN = n;
+      best = c;
+    }
+  }
+  return best;
+}
+
+/**
+ * Per-civ refugee outflow THIS pass (people + points), so the world milestone shows an event-scale
+ * figure rather than the lifetime cumulative (which can exceed a civ's current size and reads wrong).
+ * @param {{cause?:string, srcOwner?:number, people?:number, points?:number}[]} migrations The pass.
+ * @returns {Map<number,{people:number, points:number}>} Per-source refugee totals this pass.
+ */
+function refugeePassTotals(migrations) {
+  /** @type {Map<number,{people:number, points:number}>} */
+  const map = new Map();
+  for (const m of migrations) {
+    if (!m.cause || !REFUGEE_CAUSES.has(m.cause) || typeof m.srcOwner !== "number") continue;
+    const e = map.get(m.srcOwner) || { people: 0, points: 0 };
+    e.people += m.people || 0;
+    e.points += m.points || 0;
+    map.set(m.srcOwner, e);
+  }
+  return map;
+}
+
+/**
+ * Fire a refugee-crisis alert when a civ's CUMULATIVE refugees cross a worldRefugeeThreshold
+ * milestone - once per tier, so a long war produces a few headlines, not one per turn. The cumulative
+ * total only GATES the announcement; the headline names the SPECIFIC war/disaster driving it (no
+ * generic "crisis") and shows THIS pass's refugee outflow, so the figure stays event-scale.
+ * @param {number} pid Source civ id.
+ * @param {number} cum Cumulative refugees produced (the milestone gate).
+ * @param {{people:number, points:number}} [pass] This pass's refugee outflow for the civ (displayed).
+ */
+function crisisMilestone(pid, cum, pass) {
   if (!(cum >= CONFIG.worldRefugeeThreshold)) return;
   const tier = Math.floor(cum / CONFIG.worldRefugeeThreshold);
   const s = newsState();
@@ -267,13 +341,16 @@ function crisisMilestone(pid, cum) {
   if ((s.announced[key] || 0) >= tier) return;
   s.announced[key] = tier;
   persistNews();
-  const data = /** @type {*} */ (globalThis).EmigrationData;
-  const cumPts = data && typeof data.refugeesPtsFor === "function" ? data.refugeesPtsFor(pid) : 0;
-  const ev = { cause: "crisis", civ: civAdjective(pid), people: formatBoth(cum, cumPts) };
+  const cause = dominantRefugeeCause(pid);
+  const event = eventNameFor(cause, pid);
+  const people = pass ? pass.people : cum;
+  const points = pass ? pass.points : 0;
+  const ev = { cause, civ: civAdjective(pid), people: formatBoth(people, points),
+    warName: event || undefined, eventName: event || undefined };
   const head = refugeeHeadline(ev);
-  logNotification({ kind: "crisis", cause: "crisis", summary: head, people: cum, points: cumPts,
+  logNotification({ kind: "crisis", cause, event: event || undefined, summary: head, people, points,
     fromCiv: civAdjective(pid) });
-  announceImportant(head, "crisis");
+  announceImportant(head, cause);
 }
 
 /**
@@ -290,7 +367,10 @@ export function reportPassFeedback(migrations) {
   if (!CONFIG.notifyWorldNews) return;
   const data = /** @type {*} */ (globalThis).EmigrationData;
   if (!data || typeof data.refugeesCumFor !== "function") return;
-  for (const pid of refugeeCivs(migrations)) crisisMilestone(pid, data.refugeesCumFor(pid));
+  const pass = refugeePassTotals(migrations);
+  for (const pid of refugeeCivs(migrations)) {
+    crisisMilestone(pid, data.refugeesCumFor(pid), pass.get(pid));
+  }
 }
 
 /**
@@ -382,9 +462,29 @@ function localLossSummary(migs, me) {
 }
 
 /**
- * Fire the local player's explanatory digest (subject to the important-toast cooldown): why they
- * lost population this pass, what to do about it, whether it's temporary, and — for a cross-civ
- * loss — what the destination pays to absorb them. No-op when no local player or no local loss.
+ * Record the local digest as a structured notification-log entry (its own helper to keep localDigest
+ * simple): the dominant cause, the specific event, the dual-system count, and the lead move's
+ * origin/destination.
+ * @param {*} s The local-loss summary ({total, totalPts, cause, lead}).
+ * @param {boolean} crossCiv Whether the lead move crossed civilizations.
+ * @param {string} msg The composed digest message (the row summary).
+ */
+function logDigest(s, crossCiv, msg) {
+  const lead = s.lead;
+  const fromCiv = lead.srcOwner != null ? civAdjective(lead.srcOwner) : undefined;
+  const toCiv = crossCiv && lead.destOwner != null ? civAdjective(lead.destOwner) : undefined;
+  logNotification({
+    kind: "digest", cause: s.cause, event: eventNameFor(s.cause, lead.srcOwner) || undefined,
+    summary: msg, people: s.total, points: s.totalPts,
+    fromCity: lead.srcName, fromCiv, toCity: lead.destName || undefined, toCiv, crossCiv
+  });
+}
+
+/**
+ * Fire the local player's explanatory digest (subject to the important-toast cooldown): why they lost
+ * population this pass, what to do about it, whether it's temporary, and — for a cross-civ loss — what
+ * the destination pays to absorb them. Also records it to the notification log. No-op when no local
+ * player or no local loss.
  * @param {{srcOwner?:number, destOwner?:number, people?:number, cause?:string,
  *          crossCiv?:boolean, srcName?:string, destName?:string}[]} migs Applied migrations.
  */
@@ -404,12 +504,6 @@ function localDigest(migs) {
     destName: lead.destName,
     destGold
   });
-  logNotification({
-    kind: "digest", cause: s.cause, summary: msg, people: s.total, points: s.totalPts,
-    fromCity: lead.srcName, fromCiv: lead.srcOwner != null ? civAdjective(lead.srcOwner) : undefined,
-    toCity: lead.destName || undefined,
-    toCiv: crossCiv && lead.destOwner != null ? civAdjective(lead.destOwner) : undefined,
-    crossCiv
-  });
+  logDigest(s, crossCiv, msg);
   announceImportant(msg, s.cause);
 }

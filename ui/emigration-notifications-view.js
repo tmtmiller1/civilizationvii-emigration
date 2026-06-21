@@ -91,11 +91,41 @@ function place(city, civ) {
 function detailEl(e) {
   const panel = el("div", "emig-ntf-detail");
   addLine(panel, "Cause", causeLabel(e.cause));
+  addLine(panel, "Event", e.event); // the specific named war / disaster, when applicable
   addLine(panel, "From", place(e.fromCity, e.fromCiv));
   addLine(panel, e.crossCiv ? "Moved to" : "To", place(e.toCity, e.toCiv));
   if (e.people || e.points) addLine(panel, "People", formatBoth(e.people, e.points));
   if (e.summary) addLine(panel, "Note", e.summary);
   return panel;
+}
+
+/**
+ * The row summary: lead with the specific war/disaster name when we have one and the summary doesn't
+ * already carry it, so the event reads at a glance without expanding.
+ * @param {*} e A NotifEntry.
+ * @returns {string} The display summary.
+ */
+function rowSummary(e) {
+  const base = e.summary || causeLabel(e.cause) + " event";
+  return e.event && !base.includes(e.event) ? e.event + " — " + base : base;
+}
+
+/**
+ * Build the clickable header (turn · cause chip · summary · caret).
+ * @param {*} e A NotifEntry.
+ * @param {string} accent The cause accent colour.
+ * @param {HTMLElement} caret The caret element (kept by the caller to flip on toggle).
+ * @returns {HTMLElement} The header.
+ */
+function headEl(e, accent, caret) {
+  const head = el("div", "emig-ntf-head");
+  head.appendChild(el("span", "emig-ntf-turn", "Turn " + e.turn));
+  const chip = el("span", "emig-ntf-chip", causeLabel(e.cause));
+  chip.style.color = accent;
+  head.appendChild(chip);
+  head.appendChild(el("span", "emig-ntf-sum", rowSummary(e)));
+  head.appendChild(caret);
+  return head;
 }
 
 /**
@@ -107,14 +137,8 @@ function rowEl(e) {
   const accent = causeAccent(e.cause);
   const row = el("div", "emig-ntf-row");
   row.style.borderLeftColor = accent;
-  const head = el("div", "emig-ntf-head");
-  head.appendChild(el("span", "emig-ntf-turn", "Turn " + e.turn));
-  const chip = el("span", "emig-ntf-chip", causeLabel(e.cause));
-  chip.style.color = accent;
-  head.appendChild(chip);
-  head.appendChild(el("span", "emig-ntf-sum", e.summary || causeLabel(e.cause) + " event"));
   const caret = el("span", "emig-ntf-caret", "▾");
-  head.appendChild(caret);
+  const head = headEl(e, accent, caret);
   const detail = detailEl(e);
   detail.style.display = "none";
   head.addEventListener("click", () => {
