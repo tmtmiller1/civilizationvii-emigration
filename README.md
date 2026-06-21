@@ -926,6 +926,11 @@ allow-listed Workshop zip (readable JS, no minification).
 The **`migration-probe`** mod (its own modinfo, never shipped) is the in-engine verifier behind the
 write-surface/data claims: dock buttons + a `globalThis.mig` console API, with the **`API3`** and
 **`API4`** confirmation passes + passive `DiplomacyDeclareWar` / `RandomEventOccurred` recorders.
+Audit commands: **`mig.warName()`** confirms the engine war name resolves
+(`getJointEvents → uniqueID → getWarData(uniqueID, me).warName`); **`mig.happy()`** grants
+`YIELD_HAPPINESS` and re-reads, to confirm whether happiness is a grantable stockpile; and the passive
+`API4-B DeclareWar` dump logs the real war-event payload keys (to confirm the aggressor field names —
+`actingPlayer`/`reactingPlayer` vs `initialPlayer`/`targetPlayer`).
 
 ---
 
@@ -934,7 +939,8 @@ write-surface/data claims: dock buttons + a `globalThis.mig` console API, with t
 - **Single-player.** UI-VM gameplay writes are client-side.
 - **The advanced layers are on by default but un-playtested-at-scale.** Everything beyond the baseline is implemented and unit-tested, but the knob values are starting points to tune against real games. Turn pieces off in Options (§5-§6) if a save hits balance trouble.
 - **Game-speed scaling is verified by tests, not yet in-game at every speed.** The scalar + transforms + game-time invariance are unit-tested and fail-safe to S = 1, but the *feel* at Marathon/Online benefits from a play pass; `gameSpeedTuningEnabled` is the kill switch if a speed feels off.
-- **Happiness cost is inferred.** Negative *gold* grants are probe-confirmed; negative *happiness* is inferred; set the happiness knobs to 0 if a build no-ops them (the congestion headwind, §5-C, is the gold-immune structural brake).
+- **Happiness cost is inferred (and now probe-checkable).** Negative *gold* grants are probe-confirmed; negative *happiness* is inferred — the base game exposes no player-happiness mutator (only golden-age queries), so `grantYield(YIELD_HAPPINESS, −n)` may be a no-op. Run **`mig.happy()`** to confirm in-game; if nothing moves, set the happiness knobs to 0 (the congestion headwind, §5-C, is the gold-immune structural brake).
+- **War names use the engine's, when resolvable.** The refugee war name now resolves via `getJointEvents → DECLARE_WAR uniqueID → getWarData(uniqueID, localPlayerID).warName` (the old call passed no args and always failed); it falls back to "{Victim}–{Aggressor} War". The aggressor map reads `actingPlayer`/`reactingPlayer` with `initialPlayer`/`targetPlayer` fallbacks; `mig` + the `API4-B DeclareWar` dump confirm the true fields.
 - **A few in-engine confirmations remain best-effort:** the policy cards' in-game slotting/unlock, whether disaster *plot-effects* are pollable per plot (we use `isInfected`, which is confirmed), the per-plot yield shape for the Prosperity lens (`getYields`, used defensively with a per-city fallback), and a longitudinal getYield pre/post-penalty check. The code degrades to a safe no-op where unconfirmed.
 - **On-map floating indicators are deferred:** `WorldUI` exposes no floating-text method, so feedback uses toasts.
 - **Engine notifications need a DB type:** clickable end-turn notifications would need a `NotificationType`; toasts + world-news cover it for now.

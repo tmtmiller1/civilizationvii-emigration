@@ -92,12 +92,52 @@ export function disasterName(eventType) {
 }
 
 /**
- * The engine's current war name (getWarData().warName), localized, or null.
- * @returns {string|null} The war name, or null.
+ * The local (viewing) player id, or 0.
+ * @returns {number} The local player id.
  */
-function engineWarName() {
+function localPid() {
   try {
-    const wd = typeof Game !== "undefined" ? Game.Diplomacy?.getWarData?.() : null;
+    return typeof GameContext !== "undefined" && typeof GameContext.localPlayerID === "number"
+      ? GameContext.localPlayerID : 0;
+  } catch (_) {
+    return 0;
+  }
+}
+
+/**
+ * The engine uniqueID of the active declare-war event between two players, or null. Mirrors the base
+ * diplo-ribbon (model-diplo-ribbon.js): scan getJointEvents for the DIPLOMACY_ACTION_DECLARE_WAR event.
+ * @param {number} a One player id. @param {number} b The other player id.
+ * @returns {*} The war's uniqueID, or null.
+ */
+function warIdBetween(a, b) {
+  try {
+    const events = (Game && Game.Diplomacy && Game.Diplomacy.getJointEvents)
+      ? Game.Diplomacy.getJointEvents(a, b, false) : null;
+    for (const e of events || []) {
+      if (e && e.actionTypeName === "DIPLOMACY_ACTION_DECLARE_WAR" && e.uniqueID != null) return e.uniqueID;
+    }
+  } catch (_) {
+    /* ignore */
+  }
+  return null;
+}
+
+/**
+ * The engine's NAME for the war between a victim and its aggressor — the base game's
+ * `getWarData(uniqueID, localPlayerID).warName`, localized. Null when there's no such war or the API
+ * is absent. (The old code called `getWarData()` with NO arguments, which always returned null: the
+ * engine requires the war's uniqueID + a viewing player. That's why the war name never resolved.)
+ * @param {number} victim Victim player id.
+ * @param {number} aggressor Aggressor player id.
+ * @returns {string|null} The localized war name, or null.
+ */
+function engineWarName(victim, aggressor) {
+  try {
+    const id = warIdBetween(victim, aggressor);
+    if (id == null) return null;
+    const wd = Game && Game.Diplomacy && Game.Diplomacy.getWarData
+      ? Game.Diplomacy.getWarData(id, localPid()) : null;
     const wn = wd && typeof wd.warName === "string" ? wd.warName : null;
     return wn ? loc(wn) || wn : null;
   } catch (_) {
@@ -106,17 +146,18 @@ function engineWarName() {
 }
 
 /**
- * A name for the war a victim is fleeing: the engine's war name when present, else an
+ * A name for the war a victim is fleeing: the engine's actual war name when resolvable, else an
  * adjective-based "{Victim}–{Aggressor} War".
  * @param {number} victimPid Victim player id.
  * @param {Iterable<number>} aggressorPids Aggressor ids.
  * @returns {string} A war name.
  */
 export function warRefugeeName(victimPid, aggressorPids) {
-  const wn = engineWarName();
-  if (wn) return wn;
   const arr = aggressorPids ? [...aggressorPids] : [];
-  const a = typeof arr[0] === "number" ? civAdjective(arr[0]) : "the enemy";
+  const aggressor = typeof arr[0] === "number" ? arr[0] : null;
+  const wn = aggressor != null ? engineWarName(victimPid, aggressor) : null;
+  if (wn) return wn;
+  const a = aggressor != null ? civAdjective(aggressor) : "the enemy";
   return civAdjective(victimPid) + "–" + a + " War";
 }
 
