@@ -45,7 +45,8 @@ function testPermanenceCueSelection() {
 function testLossHeadlineNamesCauseAndCity() {
   assert.match(lossHeadline("unhappiness", "12 thousand people", "Rome"), /Rome/);
   assert.match(lossHeadline("war", "5,000 people", "Akrotiri"), /Akrotiri/);
-  assert.match(lossHeadline("attrition", "3,000 people", "Ur"), /nowhere to flee/);
+  assert.match(lossHeadline("attrition", "3,000 people", "Ur"), /did not survive/);
+  assert.match(lossHeadline("attrition", "3,000 people", "Ur"), /Ur/);
 }
 
 function testCostNote() {

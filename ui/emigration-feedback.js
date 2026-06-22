@@ -31,6 +31,7 @@ import { formatBoth } from "/emigration/ui/emigration-population.js";
 import { causeLabel, causeAccent } from "/emigration/ui/emigration-causes.js";
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
+import { civHidden } from "/emigration/ui/emigration-governance.js";
 
 const NEWS_KEY = "EmigrationNews_v1";
 
@@ -466,17 +467,39 @@ function groupLocalEvents(migs, me) {
   return [...map.values()].sort((a, b) => b.people - a.people);
 }
 
+// Anonymized destination for a civ the analytics-visibility policy withholds (unmet). Mirrors the
+// dashboard's "Unmet" masking so a notification never names a civ the player hasn't met.
+const UNMET_CIV_LABEL = "an unmet civilization";
+
+/**
+ * The destination as shown to the player, with the analytics-visibility mask applied. A death
+ * (attrition) has no destination. A cross-civ move to a policy-hidden (unmet) civ is anonymized to
+ * "an unmet civilization" with its city name dropped, so the notification never leaks an unmet civ.
+ * Internal moves and moves to met civs pass through unchanged.
+ * @param {*} ev A per-event bucket.
+ * @returns {{toCiv?:string, toCity?:string}} The masked destination labels.
+ */
+function destView(ev) {
+  if (ev.cause === "attrition") return {}; // a death — they did not arrive anywhere
+  if (ev.crossCiv && typeof ev.destOwner === "number") {
+    if (civHidden(ev.destOwner)) return { toCiv: UNMET_CIV_LABEL };
+    return { toCiv: civAdjective(ev.destOwner), toCity: ev.destName || undefined };
+  }
+  return { toCity: ev.destName || undefined }; // internal move
+}
+
 /**
  * Compose one event's explanatory message (cause-named headline + hint + permanence + cross-civ cost).
  * @param {*} ev A per-event bucket.
  * @returns {string} The message.
  */
 function eventMessage(ev) {
+  const dv = destView(ev);
   const destGold = ev.crossCiv && typeof ev.destOwner === "number"
     ? assimilationCostFor(ev.destOwner).gold : 0;
   return localDigestMessage({
     cause: ev.cause, people: formatBoth(ev.people, ev.points), city: ev.srcName || "a settlement",
-    crossCiv: ev.crossCiv, destName: ev.destName, destGold
+    crossCiv: ev.crossCiv, destName: dv.toCity || dv.toCiv, destGold
   });
 }
 
@@ -488,11 +511,11 @@ function eventMessage(ev) {
  */
 function logEvent(ev, msg) {
   const fromCiv = ev.srcOwner != null ? civAdjective(ev.srcOwner) : undefined;
-  const toCiv = ev.crossCiv && ev.destOwner != null ? civAdjective(ev.destOwner) : undefined;
+  const dv = destView(ev);
   logNotification({
     kind: "digest", cause: ev.cause, event: eventNameFor(ev.cause, ev.srcOwner) || undefined,
     summary: msg, people: ev.people, points: ev.points,
-    fromCity: ev.srcName, fromCiv, toCity: ev.destName || undefined, toCiv, crossCiv: ev.crossCiv
+    fromCity: ev.srcName, fromCiv, toCity: dv.toCity, toCiv: dv.toCiv, crossCiv: ev.crossCiv
   });
 }
 

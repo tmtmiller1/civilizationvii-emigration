@@ -176,7 +176,7 @@
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="ja_JP"><Text>Switch between the Civ's own population numbers and scaled people</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ja_JP"><Text>Playback timeline appears once enough migration has been recorded to scrub through.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ja_JP"><Text>{1_People}が災害の後、{2_City}から逃れました。</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ja_JP"><Text>{1_People}が逃げ場を失い、{2_City}で失われました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ja_JP"><Text>{2_City}で{1_People}が命を落としました。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="ja_JP"><Text>都市の幸福度を高めるか、移民排斥の方針を取って引き留めましょう。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="ja_JP"><Text>隣国がこの都市を上回っています。産出を高めて住民を引き留めましょう。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="ja_JP"><Text>難民は戦闘から逃れています。包囲を解くか和平を結び、流出を食い止めましょう。</Text></Replace>
