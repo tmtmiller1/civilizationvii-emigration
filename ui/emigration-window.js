@@ -18,7 +18,7 @@ import { getSampleData, getSnapshotInterval } from "/emigration/ui/emigration-se
 import { sampleDashboard } from "/emigration/ui/emigration-demo-data.js";
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
-import { civHidden } from "/emigration/ui/emigration-governance.js";
+import { civHidden, effectivePolicy } from "/emigration/ui/emigration-governance.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
 
 /**
@@ -659,7 +659,10 @@ function metMajorCount() {
  */
 function gatherKey() {
   if (getSampleData()) return "sample:" + getSnapshotInterval();
-  return "live:" + monoTurn() + ":m" + metMajorCount();
+  // Include the effective visibility policy: the gathered model bakes in the civ masking (civHidden),
+  // so changing the policy (e.g. the Unmet-civs toggle) must invalidate the memo or the dashboard
+  // keeps showing the previously-masked data.
+  return "live:" + monoTurn() + ":m" + metMajorCount() + ":p" + effectivePolicy();
 }
 
 /**
