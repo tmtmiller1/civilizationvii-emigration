@@ -16,6 +16,8 @@
 //
 // Policy levels, least → most permissive: disabled, own-civ-only, met-civs-only, full.
 
+import { getVisibilityOverride } from "/emigration/ui/emigration-settings.js";
+
 export const POLICY_DISABLED = "disabled";
 export const POLICY_OWN = "own-civ-only";
 export const POLICY_MET = "met-civs-only";
@@ -88,12 +90,17 @@ function localPolicy() {
 }
 
 /**
- * The effective policy. PRIMARY: the value Demographics publishes to GameConfiguration (already host
- * ceiling ∧ local preference) — reliable across the Coherent localStorage wipe. FALLBACK (Demographics
- * absent / pre-publish): the more restrictive of the host ceiling and our own localStorage read.
+ * The effective policy. FIRST: Emigration's own visibility override (Options ▸ Mods ▸ Emigration) —
+ * 1 = always hide unmet, 2 = always show all — a self-contained control that always works for the
+ * Emigration tabs (the cross-mod reads below are unreliable in the Coherent UI). When that's "auto"
+ * (0, the default), follow Demographics: PRIMARY the value it publishes to GameConfiguration (already
+ * host ceiling ∧ local preference); FALLBACK the host ceiling ∧ our own localStorage read.
  * @returns {string} A policy id.
  */
 export function effectivePolicy() {
+  const override = getVisibilityOverride();
+  if (override === 1) return POLICY_MET;
+  if (override === 2) return POLICY_FULL;
   const published = publishedPolicy();
   if (published) return published;
   const local = localPolicy();

@@ -14,6 +14,7 @@ import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { causeLabel, netDrivers } from "/emigration/ui/emigration-causes.js";
 import { renderNetworkOrFlow } from "/emigration/ui/emigration-flow-tab.js";
 import { getNumberMode, setNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
+import { getVisibilityOverride, setVisibilityOverride } from "/emigration/ui/emigration-settings.js";
 import { appendSnapshotReminder } from "/emigration/ui/emigration-snapshot-reminder.js";
 import { renderGuide } from "/emigration/ui/emigration-guide.js";
 import { renderCityFlows, buildCivFlows } from "/emigration/ui/emigration-city-flows.js";
@@ -564,14 +565,54 @@ function numbersToggle(onChange) {
   return chip;
 }
 
+// Unmet-civ visibility: an Emigration-OWNED override that always works on these tabs (the cross-mod
+// read of the Demographics policy is unreliable). 0 = follow the Demographics Spoilers setting,
+// 1 = always hide unmet civs, 2 = always show them.
+const VIS_CYCLE = [0, 1, 2];
+/** @type {Record<number,string>} */
+const VIS_LABEL = { 0: "Follow Demographics", 1: "Hidden", 2: "Shown" };
+
+/**
+ * A chip that cycles the Emigration unmet-civ visibility override (Follow Demographics → Hidden →
+ * Shown) and re-renders. Lives in the same realm as the tabs' civHidden, so it always takes effect.
+ * @param {()=>void} onChange Called after the override changes (to re-render).
+ * @returns {HTMLElement} The chip.
+ */
+function visibilityToggle(onChange) {
+  const chip = el("div", "emig-num-toggle");
+  const refresh = () => {
+    chip.textContent = "Unmet civs: " + (VIS_LABEL[getVisibilityOverride()] || "Follow Demographics");
+  };
+  refresh();
+  chip.addEventListener("click", () => {
+    const i = VIS_CYCLE.indexOf(getVisibilityOverride());
+    setVisibilityOverride(VIS_CYCLE[(i + 1) % VIS_CYCLE.length]);
+    refresh();
+    onChange();
+  });
+  return chip;
+}
+
+/**
+ * Append the Numbers + Unmet-civ-visibility chips to a dashboard wrap.
+ * @param {HTMLElement} wrap The dashboard wrapper.
+ * @param {()=>void} onNumbers Numbers-toggle change handler.
+ * @param {()=>void} onVisibility Visibility-toggle change handler.
+ */
+function appendDashToggles(wrap, onNumbers, onVisibility) {
+  wrap.appendChild(numbersToggle(onNumbers));
+  wrap.appendChild(visibilityToggle(onVisibility));
+}
+
 /**
  * Render the dashboard as a TABBED view (one section at a time): the headline network gets its own
  * full space, with the detail sections behind base-UI tabs. The network canvas only exists while
  * its tab is active, so its animation loop runs only then.
  * @param {HTMLElement} target The container element.
  * @param {*} model The view-model ({sections, sample}).
+ * @param {()=>void} [rebuild] Re-gather + re-render (the visibility toggle re-filters the civ list).
  */
-export function renderDashboardTabbed(target, model) {
+export function renderDashboardTabbed(target, model, rebuild) {
   try {
     if (!target) return;
     injectDashboardStyle();
@@ -590,11 +631,12 @@ export function renderDashboardTabbed(target, model) {
       body.innerHTML = "";
       renderSectionBody(body, sections[i]);
     };
-    // Numbers toggle (Civ pop-points / scaled people) , re-renders the active tab.
-    wrap.appendChild(numbersToggle(() => {
+    // Numbers toggle re-renders the active tab; the visibility toggle re-gathers (it re-filters the
+    // civ list, which is baked into the model when it's built).
+    appendDashToggles(wrap, () => {
       const k = sections[active] && sections[active].kind;
       if (k && k !== "flowmap") show(active);
-    }));
+    }, () => (rebuild ? rebuild() : show(active)));
     wrap.appendChild(makeTabBar(sections, show));
     wrap.appendChild(body);
     target.appendChild(wrap);
@@ -622,6 +664,34 @@ function wantsUnitsToggle(section, opts) {
 }
 
 /**
+ * Re-gather + re-render the whole embedded page when a rebuild is supplied (the visibility toggle
+ * re-filters the civ list), else just re-render the current section.
+ * @param {*} opts The renderDashboardSubtab opts (may carry `rebuild`).
+ * @param {HTMLElement} body The section body element.
+ * @param {*} section The active section.
+ */
+function subtabRebuild(opts, body, section) {
+  if (opts && typeof opts.rebuild === "function") {
+    opts.rebuild();
+    return;
+  }
+  body.innerHTML = "";
+  renderSectionBody(body, section);
+}
+
+/**
+ * Append the unmet-civ visibility toggle to the embedded page (every section but the static Guide).
+ * @param {HTMLElement} wrap The dashboard wrapper.
+ * @param {*} opts The renderDashboardSubtab opts.
+ * @param {HTMLElement} body The section body element.
+ * @param {*} section The active section.
+ */
+function appendVisibilityChip(wrap, opts, body, section) {
+  if (section.kind === "guide") return;
+  wrap.appendChild(visibilityToggle(() => subtabRebuild(opts, body, section)));
+}
+
+/**
  * Render ONE dashboard section (chosen externally) plus the persistent chrome (sample badge,
  * timeline-detail reminder, number-mode toggle) into `target`. Used by the Demographics-embedded
  * Migration page: there the section tabs come from the Demographics sub-tab row, not the in-panel
@@ -630,9 +700,9 @@ function wantsUnitsToggle(section, opts) {
  * @param {HTMLElement} target The container element.
  * @param {*} model The view-model ({sections, sample}).
  * @param {string} kind The section kind to show (network/flowmap/ledger/pies/cityflows/stances).
- * @param {{hideUnitsToggle?:boolean}} [opts] When `hideUnitsToggle`, suppress the in-panel "Numbers:"
- *   chip — used when the host's Scaled / Civ group pills already control the units (the Net Migration
- *   Table embedded in the Demographics "Data" group).
+ * @param {{hideUnitsToggle?:boolean, rebuild?:()=>void}} [opts] `hideUnitsToggle` suppresses the
+ *   in-panel "Numbers:" chip (when the host group pills drive units); `rebuild` re-gathers + re-renders
+ *   the page (the unmet-civ visibility toggle re-filters the civ list, which is baked into the model).
  */
 export function renderDashboardSubtab(target, model, kind, opts) {
   try {
@@ -655,6 +725,8 @@ export function renderDashboardSubtab(target, model, kind, opts) {
         renderSectionBody(body, section);
       }));
     }
+    // Unmet-civ visibility — re-gather (the civ list is filtered when the model is built).
+    appendVisibilityChip(wrap, opts, body, section);
     wrap.appendChild(body);
     renderSectionBody(body, section);
     target.appendChild(wrap);

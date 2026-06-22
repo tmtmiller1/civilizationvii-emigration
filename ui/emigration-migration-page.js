@@ -52,7 +52,7 @@ function renderInto(container, kind, ctx) {
       setNumberMode(ctx.groupView === "civ" ? NumberMode.CIV : NumberMode.HISTORICAL);
     }
     renderDashboardSubtab(container, dashboardModel(gatherDashboard()), kind || SUBTABS[0].id,
-      { hideUnitsToggle: !!groupControlled });
+      { hideUnitsToggle: !!groupControlled, rebuild: () => renderInto(container, kind, ctx) });
   } catch (_) {
     /* a render failure must never break the Demographics screen */
   }
