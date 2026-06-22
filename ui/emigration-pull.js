@@ -116,9 +116,22 @@ function permeability(src, dest) {
  * @returns {number} The cross-civ delta penalty.
  */
 function crossCivBlock(src) {
-  const inCrisis = (src.violence || 0) >= CONFIG.violenceFleeThreshold
+  if (!srcInCrisis(src)) return CONFIG.poachBlock;
+  // A crisis refugee pays reduced friction AND gets an escape bonus (negative delta = net pull) so it
+  // flees abroad instead of being out-pulled by a nearer, equally-stricken internal city.
+  const escape = CONFIG.crisisEscapeBonus > 0 ? CONFIG.crisisEscapeBonus : 0;
+  return CONFIG.refugeePoachBlock - escape;
+}
+
+/**
+ * Whether a source is in ACUTE crisis (war or disaster distress over its flee threshold) — i.e. its
+ * people are refugees fleeing, not economic migrants.
+ * @param {*} src Source signal.
+ * @returns {boolean} True when fleeing a crisis.
+ */
+function srcInCrisis(src) {
+  return (src.violence || 0) >= CONFIG.violenceFleeThreshold
     || (src.disaster || 0) >= CONFIG.disasterFleeThreshold;
-  return inCrisis ? CONFIG.refugeePoachBlock : CONFIG.poachBlock;
 }
 
 /**
@@ -149,7 +162,7 @@ export function adjustedPull(src, dest, flee, ownerPop, aggressors) {
   if (dest.isCityState || src.isCityState) pull -= CONFIG.cityStateBarrier;
   if (dest.owner !== src.owner) {
     if (!CONFIG.crossCivEnabled) return null;
-    pull -= crossCivBlock(src);
+    pull -= crossCivBlock(src); // friction for the move, minus the crisis ESCAPE bonus for refugees
     pull -= dominanceFor(dest, ownerPop); // anti-snowball: cross-civ inflow to a runaway leader only
   }
   pull += geoAdjust(src, dest, flee, aggressors);

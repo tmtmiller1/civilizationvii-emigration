@@ -102,6 +102,8 @@
         <Replace Tag="LOC_EMIG_T_FLEE_D" Language="ko_KR"><Text>난민이 가장 가까운 침략자에서 멀어진 목적지를 얼마나 강하게 선호하는지.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH" Language="ko_KR"><Text>지리: 문명 간 마찰</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH_D" Language="ko_KR"><Text>문명 국경을 넘어 이주하는 것에 대한 추가 거부감.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="ko_KR"><Text>위기 탈출(국외로)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="ko_KR"><Text>심각한 위기(전쟁/재해)에 처한 문명이 (똑같이 피해를 입은) 자국 도시로 이주해 죽는 대신, 국경을 넘어 다른 제국으로 피란하도록 난민을 얼마나 강하게 밀어내는지. 높을수록 문명 간 탈출이 늘어납니다. 0 = 끄기.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL" Language="ko_KR"><Text>지리: 개방 국경 이주 촉진</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="ko_KR"><Text>두 문명 간의 개방 국경 협정이 양방향 이주를 얼마나 수월하게 하는지. 0 = 끔.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="ko_KR"><Text>지리: 이동 지연 (0 = 즉시)</Text></Replace>

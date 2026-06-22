@@ -33,6 +33,8 @@
  * @property {number} raidTilt Pull tilt from an active raid's target toward the raider.
  * @property {number} poachBlock Extra delta needed for a cross-civ destination.
  * @property {number} refugeePoachBlock Reduced cross-civ delta for a war/disaster refugee source.
+ * @property {number} crisisEscapeBonus Pull ADDED toward a CROSS-CIV destination for a source in
+ *   acute crisis (war/disaster), so its refugees flee abroad instead of relocating internally (0 = off).
  * @property {number} cooldownTurns Turns a source rests after emigrating.
  * @property {number} minRuralToEmigrate Rural floor a source keeps.
  * @property {number} refugeesPercent Reserved: % of rural that flees a razed city.

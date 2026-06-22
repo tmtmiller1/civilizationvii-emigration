@@ -102,6 +102,8 @@
         <Replace Tag="LOC_EMIG_T_FLEE_D" Language="it_IT"><Text>Con quanta forza i profughi preferiscono destinazioni lontane dall'invasore più vicino.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH" Language="it_IT"><Text>Geografia: attrito tra civiltà</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH_D" Language="it_IT"><Text>Riluttanza aggiuntiva a migrare oltre un confine di civiltà.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="it_IT"><Text>Fuga dalla crisi (all'estero)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="it_IT"><Text>Quanto una civiltà in crisi acuta (guerra/disastro) spinge i suoi profughi a fuggire OLTRE I CONFINI verso un altro impero, invece di trasferirsi nelle proprie città (ugualmente colpite) e morirvi. Più alto = più fuga tra civiltà. 0 = disattivato.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL" Language="it_IT"><Text>Geografia: Spinta migratoria da frontiere aperte</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="it_IT"><Text>Quanto un accordo di frontiere aperte tra due civiltà facilita la migrazione tra loro, in entrambe le direzioni. 0 = disattivato.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="it_IT"><Text>Geografia: ritardo di viaggio (0 = istantaneo)</Text></Replace>
