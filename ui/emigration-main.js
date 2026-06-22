@@ -24,6 +24,7 @@ import { applyMigrantHoldingPenalty } from "/emigration/ui/emigration-migrant-un
 import { tickAttractionDividend } from "/emigration/ui/emigration-dividend.js";
 import { raidOf } from "/emigration/ui/emigration-raid.js";
 import { recordWarDeclared, recordPeace } from "/emigration/ui/emigration-war.js";
+import { recordUnitLost } from "/emigration/ui/emigration-combat.js";
 import { hasOpenBordersDeal } from "/emigration/ui/emigration-geography.js";
 import { reportPassFeedback } from "/emigration/ui/emigration-feedback.js";
 import { installEmigrationEvents } from "/emigration/ui/emigration-events.js";
@@ -263,6 +264,8 @@ function boot() {
     engine.on("DiplomacyMakePeace", (/** @type {*} */ d) => recordPeace(d));
     // Razing (distinct from conquest's CityTransfered): credit the razed city's residual as a loss.
     engine.on("CityRemovedFromMap", (/** @type {*} */ d) => markCityRemoved(d && d.cityID));
+    // Unit losses (death/capture): per-civ combat-loss intensity for the war-severity term.
+    engine.on("UnitRemovedFromMap", (/** @type {*} */ d) => recordUnitLost(d && d.unit));
   } catch (_) {
     /* ignore */
   }
