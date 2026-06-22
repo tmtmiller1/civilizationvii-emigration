@@ -70,6 +70,7 @@ const OPT_PRESET = "preset";
 const OPT_SAMPLE = "sampleData";
 const OPT_SNAP = "snapshotInterval";
 const OPT_DOCK = "showDockButton";
+const OPT_VISIBILITY = "visibilityOverride";
 const SNAP_DEFAULT = 1; // turns per migration-timeline snapshot (user-adjustable 1..5; 1 = every turn)
 
 // String-keyed views over the typed config objects (same references), so the
@@ -188,6 +189,34 @@ export function getShowDockButton() {
 export function setShowDockButton(on) {
   _dock = !!on;
   ModOptions.save(MOD_ID, OPT_DOCK, _dock ? 1 : 0);
+}
+
+/** @type {number|null} */
+let _vis = null;
+
+/**
+ * Emigration's OWN analytics-visibility override for its dashboard tabs (cached in-memory so it's
+ * reliable even though the Coherent UI wipes the shared localStorage). 0 = follow the Demographics
+ * "Analytics visibility" setting (default); 1 = always hide unmet civs; 2 = always show all civs.
+ * Exists because the cross-mod read of the Demographics setting is unreliable, so this gives a
+ * self-contained control that always works for the Emigration tabs.
+ * @returns {number} 0 (auto), 1 (hide unmet), or 2 (show all).
+ */
+export function getVisibilityOverride() {
+  if (_vis == null) {
+    const v = ModOptions.load(MOD_ID, OPT_VISIBILITY);
+    _vis = v === 1 || v === 2 ? v : 0;
+  }
+  return _vis || 0;
+}
+
+/**
+ * Set + persist the Emigration visibility override.
+ * @param {number} v 0 (auto), 1 (hide unmet), or 2 (show all).
+ */
+export function setVisibilityOverride(v) {
+  _vis = v === 1 || v === 2 ? v : 0;
+  ModOptions.save(MOD_ID, OPT_VISIBILITY, _vis);
 }
 
 // ── Tunables (exposed CONFIG knobs) ───────────────────────────────────────
