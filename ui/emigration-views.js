@@ -388,7 +388,9 @@ const DASH_CSS =
   "padding:0.34rem 1.15rem;border-radius:1rem;border:0.0555rem solid rgba(201,162,76,0.4);" +
   "background:rgba(229,210,172,0.06);margin-bottom:0.3rem;}" +
   ".emig-num-toggle:hover{background:rgba(229,210,172,0.12);color:#f3c34c;}" +
-  ".emig-num-bar{display:flex;justify-content:flex-end;width:100%;margin-bottom:0.4rem;}" +
+  // Descriptive title at the top of the Causes / Settlements tabs.
+  ".emig-section-title{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.05rem;" +
+  "color:#f3c34c;font-size:1.1rem;text-align:center;margin:0.1rem 0 0.6rem;}" +
   ".emig-civ{color:#f0dca8;font-weight:bold;}" +
   ".emig-pos{color:#7fd08a;}.emig-neg{color:#e08a7f;}" +
   ".emig-bar-row{display:flex;align-items:center;gap:0.5rem;margin:0.2rem 0;}" +
