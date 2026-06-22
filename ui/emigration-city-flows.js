@@ -12,7 +12,7 @@ import { causeLabel } from "/emigration/ui/emigration-causes.js";
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { eventDisplayName } from "/emigration/ui/emigration-naming.js";
 import { eventGroupCause } from "/emigration/ui/emigration-event-attribution.js";
-import { getNumberMode, setNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
+import { getNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
 
 /**
  * Make an element with an optional class + text.
@@ -409,39 +409,26 @@ export function buildCivFlows(flows, civs, eventsByOwner) {
     .sort((a, b) => b._total - a._total);
 }
 
+// The descriptive heading shown at the top of each tab this renderer serves (the section tab only
+// gives the short name; this is the fuller "what this shows" title).
+/** @type {Record<string,string>} */
+const SECTION_TITLES = { pies: "Why people move", cityflows: "Your settlements" };
+
 /**
- * Render the per-city breakdown for the local player's cities.
+ * Render the per-entry breakdown (CAUSES: a card per civ; SETTLEMENTS: a card per the local player's
+ * settlements), under a descriptive tab title. The Scaled / Civ Pop toggle is supplied by the
+ * dashboard wrapper (renderDashboardSubtab), which re-renders this section on change.
  * @param {HTMLElement} body Card body.
- * @param {*} section The section ({cities}).
+ * @param {*} section The section ({title, kind, cities}).
  */
 export function renderCityFlows(body, section) {
+  body.appendChild(el("div", "emig-section-title",
+    SECTION_TITLES[section.kind] || section.title || ""));
   const cities = section.cities || [];
   if (!cities.length) {
     body.appendChild(el("div", "emig-empty",
       "No city migration recorded yet , flows appear as people move in and out of your cities."));
     return;
   }
-  body.appendChild(numbersBar(() => {
-    while (body.firstChild) body.removeChild(body.firstChild);
-    renderCityFlows(body, section);
-  }));
   for (const c of cities) body.appendChild(cityCard(c));
-}
-
-/**
- * A right-aligned Scaled Pop ↔ Civ Pop toggle row for the pie counts. Flips the shared number mode
- * and re-renders the whole tab (so every pie's slices, counts, and percentages switch together).
- * @param {()=>void} onChange Re-render callback.
- * @returns {HTMLElement} The toggle row.
- */
-function numbersBar(onChange) {
-  const bar = el("div", "emig-num-bar");
-  const chip = el("div", "emig-num-toggle",
-    "Numbers: " + (getNumberMode() === NumberMode.CIV ? "Civ Pop" : "Scaled Pop"));
-  chip.addEventListener("click", () => {
-    setNumberMode(getNumberMode() === NumberMode.CIV ? NumberMode.HISTORICAL : NumberMode.CIV);
-    onChange();
-  });
-  bar.appendChild(chip);
-  return bar;
 }
