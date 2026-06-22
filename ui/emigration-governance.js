@@ -26,6 +26,11 @@ const RANK = { [POLICY_DISABLED]: 0, [POLICY_OWN]: 1, [POLICY_MET]: 2, [POLICY_F
 
 // Shared with the Demographics mod so one host policy governs both.
 const HOST_POLICY_KEY = "DemographicsAnalyticsPolicy_v1";
+// The EFFECTIVE policy Demographics publishes to GameConfiguration (host ceiling ∧ local preference).
+// This is the PRIMARY source: Coherent UI wipes the shared localStorage between reads, so reading
+// Demographics' settings slice from localStorage returns stale/empty and we'd never see the player's
+// choice. GameConfiguration is durable and shared across mods, so the published value is reliable.
+const EFFECTIVE_POLICY_KEY = "DemographicsAnalyticsPolicyEffective_v1";
 
 /**
  * A known policy id, or null.
@@ -37,17 +42,28 @@ function asPolicy(v) {
 }
 
 /**
- * The host-set ceiling from GameConfiguration (shared with Demographics), or null when unset.
+ * Read a policy id from a GameConfiguration key, or null when unset/unreadable.
+ * @param {string} key The GameConfiguration key.
  * @returns {string|null} A policy id, or null.
  */
-function hostPolicy() {
+function gameConfigPolicy(key) {
   try {
     const g = typeof Configuration !== "undefined" ? Configuration.getGame?.() : null;
-    const raw = g && typeof g.getValue === "function" ? g.getValue(HOST_POLICY_KEY) : null;
+    const raw = g && typeof g.getValue === "function" ? g.getValue(key) : null;
     return asPolicy(raw);
   } catch (_) {
     return null;
   }
+}
+
+/** The host-set ceiling from GameConfiguration (shared with Demographics), or null when unset. */
+function hostPolicy() {
+  return gameConfigPolicy(HOST_POLICY_KEY);
+}
+
+/** The effective policy Demographics published to GameConfiguration, or null when it hasn't. */
+function publishedPolicy() {
+  return gameConfigPolicy(EFFECTIVE_POLICY_KEY);
 }
 
 /**
@@ -72,10 +88,14 @@ function localPolicy() {
 }
 
 /**
- * The effective policy: the more restrictive of the shared host ceiling and the local preference.
+ * The effective policy. PRIMARY: the value Demographics publishes to GameConfiguration (already host
+ * ceiling ∧ local preference) — reliable across the Coherent localStorage wipe. FALLBACK (Demographics
+ * absent / pre-publish): the more restrictive of the host ceiling and our own localStorage read.
  * @returns {string} A policy id.
  */
 export function effectivePolicy() {
+  const published = publishedPolicy();
+  if (published) return published;
   const local = localPolicy();
   const host = hostPolicy();
   if (!host) return local;
