@@ -176,14 +176,18 @@ function normalizeToTotal(e, total, owner) {
 
 /**
  * Seed first-sighting cities (100% owner) and flip the owner on a conquered settlement, so a later
- * arrival/growth attributes correctly. Returns the per-signal work list {key, owner, total, name}.
+ * arrival/growth attributes correctly. Also collects each ownership FLIP as a conquest event (prev →
+ * new owner + the captured population), so the caller can credit the conqueror's net migration.
  * @param {CompositionState} s State.
  * @param {*[]} signals Current city signals.
- * @returns {{key:string, owner:number, total:number, name:string}[]} Work list.
+ * @returns {{work:{key:string, owner:number, total:number, name:string}[],
+ *   conquests:{prevOwner:number, newOwner:number, name:string, points:number}[]}} Work list + flips.
  */
 function seedCities(s, signals) {
   /** @type {{key:string, owner:number, total:number, name:string}[]} */
   const work = [];
+  /** @type {{prevOwner:number, newOwner:number, name:string, points:number}[]} */
+  const conquests = [];
   for (const sig of signals || []) {
     const key = locKey(sig.city);
     if (key == null || typeof sig.owner !== "number") continue;
@@ -192,12 +196,30 @@ function seedCities(s, signals) {
     const e = s.cities[key];
     if (!e) {
       s.cities[key] = { owner: sig.owner, byCiv: { [sig.owner]: total }, total, name, seenTurn: 0 };
-    } else if (e.owner !== sig.owner) {
-      e.owner = sig.owner; // conquest: keep buckets, flip owner
+    } else {
+      const cap = captureOf(e, sig.owner, name, total); // flips e.owner; returns the capture or null
+      if (cap) conquests.push(cap);
     }
     work.push({ key, owner: sig.owner, total, name });
   }
-  return work;
+  return { work, conquests };
+}
+
+/**
+ * Flip a known city's owner to `newOwner`, returning the capture event when it actually changed hands
+ * (both owners valid + some population remained), else null. Keeps the origin buckets unchanged.
+ * @param {*} e The stored composition entry (its `owner` is updated in place).
+ * @param {number} newOwner The current owner from the signal.
+ * @param {string} name The city name.
+ * @param {number} total The city's current population (points).
+ * @returns {{prevOwner:number, newOwner:number, name:string, points:number}|null} The capture, or null.
+ */
+function captureOf(e, newOwner, name, total) {
+  if (e.owner === newOwner) return null;
+  const cap = e.owner >= 0 && newOwner >= 0 && total > 0
+    ? { prevOwner: e.owner, newOwner, name, points: total } : null;
+  e.owner = newOwner; // conquest: keep buckets, flip owner
+  return cap;
 }
 
 /**
@@ -279,7 +301,7 @@ export function recordCompositionPass(signals, migs) {
   try {
     const s = load();
     const turn = gameTurn();
-    const work = seedCities(s, signals);
+    const { work, conquests } = seedCities(s, signals);
     /** @type {Map<string,string>} */
     const nameToLoc = new Map();
     /** @type {Map<string,number>} */
@@ -291,8 +313,10 @@ export function recordCompositionPass(signals, migs) {
     for (const m of migs || []) applyMigration(s, m, nameToLoc, nameToOwner);
     for (const w of work) reconcileCity(s, w, turn);
     save();
+    return conquests;
   } catch (_) {
     /* composition is cosmetic; never disrupt the pass */
+    return [];
   }
 }
 

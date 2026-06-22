@@ -308,7 +308,11 @@ const DASH_CSS =
   ".emig-led-head .emig-led-c{border-top:none;opacity:0.6;text-transform:uppercase;letter-spacing:0.03rem;font-size:0.95rem;}" +
   ".emig-led-net{display:flex;align-items:center;justify-content:flex-end;gap:0.4rem;}" +
   ".emig-led-bar{height:0.7rem;border-radius:0.35rem;flex:0 0 auto;min-width:0.16rem;}" +
-  ".emig-led-tot .emig-led-c{border-top:0.0833rem solid rgba(201,162,76,0.45);font-weight:bold;}" +
+  // The divider sits on the ROW (one continuous full-width line) rather than each cell: the row is
+  // align-items:center, so the empty net-bar cell is shorter than the text cells and a per-cell
+  // border-top would land at a different height there, breaking the line at the graph column.
+  ".emig-led-tot{border-top:0.0833rem solid rgba(201,162,76,0.45);}" +
+  ".emig-led-tot .emig-led-c{border-top:none;font-weight:bold;}" +
   // Causes pies.
   ".emig-pie-leg{display:flex;flex-wrap:wrap;gap:0.25rem 0.9rem;justify-content:center;" +
   "margin:0.1rem 0 0.7rem;}" +
