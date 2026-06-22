@@ -113,7 +113,8 @@
  * @property {number} crisisDeathShare Base crisis-death coefficient (× warSeverity) when a refuge
  *   exists; the dynamic rate is clamped to the full trapped rate.
  * @property {number} crisisSeverityCap Max violence/flee-threshold ratio counted toward war severity.
- * @property {number} crisisParticipantWeight Severity added per attacking civ beyond the first.
+ * @property {number} crisisParticipantWeight Severity bonus per attacking civ beyond the first (small).
+ * @property {number} crisisParticipantMax Hard cap on the total participant severity bonus.
  * @property {number} ownCivRefugeeBonus War-refugee pull toward own civ (Feature 1).
  * @property {number} aggressorPenalty War-refugee penalty for the aggressor (F1; 0 = off).
  * @property {boolean} bordersEnabled Apply Open/Closed Borders policy effects (F2).

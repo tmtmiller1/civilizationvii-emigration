@@ -403,9 +403,10 @@ function processSource(src, ranked, state, ownerPop, budgets) {
  */
 function crisisSeverity(src, d) {
   const ref = Math.max(1, CONFIG.attritionMinDistress);
-  const intensity = Math.min(CONFIG.crisisSeverityCap, d / ref);
-  const attackers = warAggressors(src.owner).size;
-  return intensity * (1 + CONFIG.crisisParticipantWeight * Math.max(0, attackers - 1));
+  const intensity = Math.min(CONFIG.crisisSeverityCap, d / ref); // DOMINANT: pillaging/damage/duration
+  const extra = Math.max(0, warAggressors(src.owner).size - 1);
+  const gang = 1 + Math.min(CONFIG.crisisParticipantMax, CONFIG.crisisParticipantWeight * extra);
+  return intensity * gang;
 }
 
 /**

@@ -275,8 +275,13 @@ export const CONFIG = {
   // kills a small minority (flight dominates) while a brutal/prolonged/ganged-up war kills most of those
   // who can't escape. Lowered 0.5 → 0.2 so mild wars flee MORE; severity makes bad wars deadlier.
   crisisDeathShare: 0.2,
-  crisisSeverityCap: 6, // max violence/flee-threshold ratio counted toward severity (caps a single front)
-  crisisParticipantWeight: 0.5, // each ATTACKER beyond the first adds this much severity (a pile-on)
+  crisisSeverityCap: 6, // max distress/floor ratio counted toward severity — the DOMINANT factor (it's
+  //                       driven by pillaging, district/assault damage, and siege duration).
+  // Participants (number of attackers) are only a SMALL, BOUNDED amplifier on top — a pile-on is a bit
+  // deadlier, but it must never overtake the actual damage. Weight is per extra attacker; the total
+  // multiplier bonus is capped, so even a 10-civ dogpile adds at most crisisParticipantMax.
+  crisisParticipantWeight: 0.1, // each attacker beyond the first adds this (was 0.5 — too steep)
+  crisisParticipantMax: 0.4, // hard cap on the participant bonus (reached at ~5 attackers, then flat)
 
   // ── Feature 1: aggressor-aware war migration (aggressorPenalty 0 = off) ──
   ownCivRefugeeBonus: 1, // war refugees lean slightly toward their own civ's cities first — but only
