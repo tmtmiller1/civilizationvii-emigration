@@ -161,14 +161,14 @@ const NETC_CSS =
     "margin-right:0.3rem;vertical-align:middle;}" +
     ".emig-netc-cap{opacity:0.62;font-size:0.95rem;text-align:center;margin-top:0.35rem;" +
     "max-width:66rem;line-height:1.35;}" +
-    // A labelled help BUTTON pinned to the RIGHT of the filter-pills row (absolute, so the centred
-    // pills don't shift); its explanation lives in a hover popover so it doesn't eat vertical space.
-    ".emig-help{position:absolute;right:0.2rem;top:50%;transform:translateY(-50%);z-index:30;}" +
+    // A labelled help pill sitting inline at the END of the filter-pills row (under its own "Info:"
+    // heading, like the other pill groups); its explanation lives in a hover popover so it doesn't eat
+    // vertical space. position:relative anchors that popover.
+    ".emig-help{position:relative;display:inline-flex;align-items:center;z-index:30;}" +
     '.emig-help-q{display:flex;align-items:center;gap:0.3rem;padding:0.16rem 0.6rem;' +
     "border-radius:0.9rem;border:0.0555rem solid rgba(201,162,76,0.6);background:rgba(9,12,19,0.85);" +
     'color:#f0bc78;font-family:"TitleFont";cursor:help;white-space:nowrap;}' +
     ".emig-help-q:hover{background:rgba(243,195,76,0.16);}" +
-    ".emig-help-i{font-size:0.95rem;line-height:1;}" +
     ".emig-help-lbl{font-size:0.82rem;text-transform:uppercase;letter-spacing:0.03rem;}" +
     ".emig-help-pop{display:none;position:absolute;top:1.7rem;right:0;width:24rem;max-width:80vw;" +
     "padding:0.55rem 0.75rem;text-align:left;font-size:0.82rem;line-height:1.42;color:#e8d8b4;" +
@@ -519,16 +519,15 @@ function makeLegendBox(net, colorMap, state, causes, markDirty) {
 }
 
 /**
- * A labelled "How to read this" help button whose explanation appears on hover (so it doesn't take
- * a big caption's worth of vertical space). Drop it into a `position:relative` container — it pins
- * itself to the right of that row (e.g. the filter-pills row).
+ * A labelled "How to read this" help pill whose explanation appears on hover (so it doesn't take a
+ * big caption's worth of vertical space). Appended inline at the end of the filter-pills row under
+ * its own "Info:" heading.
  * @param {string} text The help text.
  * @returns {HTMLElement} The help element.
  */
 export function helpIcon(text) {
   const wrap = el("div", "emig-help");
   const btn = el("div", "emig-help-q");
-  btn.appendChild(el("span", "emig-help-i", "ⓘ"));
   btn.appendChild(el("span", "emig-help-lbl", loc("LOC_EMIG_NETC_HELP", "How to read this")));
   wrap.appendChild(btn);
   wrap.appendChild(el("div", "emig-help-pop", text));
@@ -547,8 +546,9 @@ function mountChrome(parts) {
     "tint), and immigrants (their origin's colour). Recolour with \"Color by\", filter with the " +
     "Show/Origins toggles, click a swatch or circle to isolate it, and press ▶ or scrub the " +
     "timeline to replay history.";
-  // The help button rides on the RIGHT of the filter-pills row (absolutely positioned, so the
-  // centred pills stay put), beside the host's Options control.
+  // The help pill is the last group in the filter-pills row, under its own "Info:" heading (like
+  // "Color by:" / "Show:" / "Units:"); its explanation opens on hover.
+  parts.lensTabs.appendChild(el("span", "emig-lens-lbl", loc("LOC_EMIG_NETC_INFO", "Info:")));
   parts.lensTabs.appendChild(helpIcon(loc("LOC_EMIG_NETC_CAPTION", capEn, formatPeople(parts.unit))));
   parts.wrap.appendChild(parts.lensTabs);
   const stage = el("div", "emig-netc-stage");

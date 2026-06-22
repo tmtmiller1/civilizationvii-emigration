@@ -31,7 +31,9 @@ const SUBTABS = [
   { id: "cityflows", label: "Settlements", title: "Settlements" },
   { id: "stances", label: "Immigration Policies", title: "Immigration policies" },
   { id: "notifications", label: "Notifications", title: "Migration notifications" },
-  { id: "guide", label: "Guide", title: "What counts" }
+  // The Guide is a static reference matrix with no per-civ data, so the host's analytics-visibility
+  // policy banner is meaningless there — opt it out (the host reads `hidePolicyBanner`).
+  { id: "guide", label: "Guide", title: "What counts", hidePolicyBanner: true }
 ];
 
 /**
