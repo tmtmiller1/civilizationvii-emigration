@@ -26,8 +26,10 @@ function el(tag, cls, text) {
 }
 
 const CSS =
-  ".emig-ntf-list{display:flex;flex-direction:column;gap:0.3rem;max-height:28rem;overflow-y:auto;" +
-  "padding-right:0.2rem;}" +
+  // No own max-height/overflow: the list grows to its natural height and the enclosing .emig-tabbody
+  // (max-height:74vh, overflow-y:auto) provides the single scrollbar, so the log uses the full window
+  // instead of being capped to a short nested scroll box.
+  ".emig-ntf-list{display:flex;flex-direction:column;gap:0.3rem;padding-right:0.2rem;}" +
   ".emig-ntf-row{background:linear-gradient(180deg,rgba(20,24,34,0.6),rgba(8,10,16,0.6));" +
   "border:0.0555rem solid rgba(201,162,76,0.25);border-left-width:0.28rem;border-radius:0.25rem;}" +
   ".emig-ntf-head{display:flex;align-items:baseline;gap:0.55rem;padding:0.4rem 0.6rem;cursor:pointer;}" +
