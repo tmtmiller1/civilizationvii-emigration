@@ -72,6 +72,10 @@ export const CONFIG = {
   // ── scope ────────────────────────────────────────────────────────
   crossCivEnabled: true, // confirmed reachable by the probe
   includeCityStates: false,
+  // Count a city capture as cross-civ "conquest" migration (the conqueror absorbs the city's
+  // population, the prior owner loses it), so the net-migration ledger reflects conquest gains/losses
+  // — not just the war-refugee flight around them. false → captures don't touch the migration tally.
+  conquestMigrationEnabled: true,
   // Simulation SCOPE (not a visibility control): false = global (every alive civ simulates from
   // turn 1) — the DEFAULT, so migration topology isn't biased by exploration order and conquered
   // cities carry real origin history; true = met-only (lighter per-turn cost on large saves). UI

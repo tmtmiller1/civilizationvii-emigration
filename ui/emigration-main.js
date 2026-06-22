@@ -15,7 +15,8 @@ import { rankByProsperity } from "/emigration/ui/emigration-prosperity.js";
 import { applyTunableOverrides } from "/emigration/ui/emigration-settings.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
 import { reportMigration } from "/emigration/ui/emigration-report.js";
-import { recordMigrations, accountLosses, markCityRemoved } from "/emigration/ui/emigration-migration-stats.js";
+import { recordMigrations, accountLosses, markCityRemoved, monoTurn } from "/emigration/ui/emigration-migration-stats.js";
+import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { reportBalanceSignals } from "/emigration/ui/emigration-telemetry.js";
 import { recordCompositionPass } from "/emigration/ui/emigration-composition.js";
 import { registerMigrationMetric } from "/emigration/ui/emigration-demographics.js";
@@ -85,10 +86,29 @@ function accountAndReport(migrations) {
     dlog("accountLosses threw " + e);
   }
   // Per-settlement ethnic composition: net this turn's births/migration/conquest into each city's
-  // origin mix (drives the ethnicity lens + the city-readout breakdown). Runs every turn.
-  recordCompositionPass(signals, migrations);
+  // origin mix (drives the ethnicity lens + the city-readout breakdown). Runs every turn. Also
+  // returns any city captures detected this pass (owner flips), so the caller can tally them.
+  const conquests = recordCompositionPass(signals, migrations);
   // Balance telemetry (P2.7): throttled net-flow / war-displacement outlier alerts (debug-gated).
   reportBalanceSignals(ownerIdsOf(signals), gameTurnNow());
+  return conquests || [];
+}
+
+/**
+ * Build the accounting record for a captured city: the population the conqueror absorbed moves from
+ * the prior owner's civ to the new owner's (a cross-civ "conquest" migration). Tally-only — the base
+ * game already transferred the city, so this never mutates population or composition (the composition
+ * tracker handles the origin buckets via the owner flip).
+ * @param {{prevOwner:number, newOwner:number, name:string, points:number}} c A capture event.
+ * @returns {*} A conquest migration record.
+ */
+function conquestRecord(c) {
+  return {
+    srcOwner: c.prevOwner, destOwner: c.newOwner,
+    srcName: c.name, destName: c.name,
+    points: c.points, people: scaleCityPopulation(c.points, monoTurn()),
+    cause: "conquest", crossCiv: true
+  };
 }
 
 /**
@@ -105,7 +125,13 @@ function doPass(why) {
     dlog("pass threw " + e);
     return 0;
   }
-  accountAndReport(migrations);
+  const conquests = accountAndReport(migrations);
+  // Credit captures as cross-civ "conquest" migration: the conqueror absorbed the city's population,
+  // so its net migration reflects the gain (and the prior owner the loss). Appended AFTER the
+  // composition pass so it isn't double-applied to the origin buckets, and kept tally-only below.
+  if (CONFIG.conquestMigrationEnabled !== false) {
+    for (const c of conquests) migrations.push(conquestRecord(c));
+  }
   // Snapshot the timeline EVERY pass — feeds the Demographics net-migration graph AND records per-civ
   // population growth even on passes with no migration, so the network/flow timeline is available and
   // plays population history before any emigration occurs (the recorder self-gates to the interval).
@@ -115,9 +141,9 @@ function doPass(why) {
     return 0;
   }
   // Notifications/logging fire on the newsworthy half - the move + the departure. A lagged
-  // ARRIVAL is the same event landing later, so it's metrics-only (the departure already
-  // told the story; surfacing both would double-toast and double-count the cause summary).
-  const newsworthy = migrations.filter((m) => m.phase !== "arrive");
+  // ARRIVAL is the same event landing later, so it's metrics-only (the departure already told the
+  // story). Conquest is tally-only (the base game already announces a capture), so it's excluded too.
+  const newsworthy = migrations.filter((m) => m.phase !== "arrive" && m.cause !== "conquest");
   reportPassFeedback(newsworthy); // in-game toasts / world-news (§10)
   dlog("pass (" + why + ") " + migrations.length + " migs, " + Math.round(nowMs() - t0) + "ms");
   for (const m of newsworthy) reportMigration(m);
