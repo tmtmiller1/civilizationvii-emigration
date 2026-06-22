@@ -561,6 +561,9 @@ function mountChrome(parts) {
 
 const ANIM_STEP = 0.045; // per-frame progress for a new dot flying into its cluster
 const PLAY_INTERVAL = 42; // rAF ticks between timeline frames while playing (~0.7s)
+// The latest frame turn we last played the on-open intro fly-in for. Re-rendering the SAME turn (a
+// visibility toggle, a tab switch) won't replay the arrival animation; only a genuinely newer turn does.
+let _lastIntroTurn = -1;
 
 /**
  * Advance new-dot fly-in animations one frame (scaled by the playback speed multiplier).
@@ -632,7 +635,7 @@ export function setupCanvas() {
  * Wire the playback driver: build the timeline and the per-tick frame-advance, stored on holder.
  * @param {*[]} frames Frames.
  * @param {*} holder Render holder (gets `tickPlayback`).
- * @param {(i:number)=>void} activate Apply a frame.
+ * @param {(i:number, noAnim?:boolean)=>void} activate Apply a frame (noAnim = place dots statically).
  * @returns {*} The timeline handle (or null for a single frame).
  */
 function setupPlayback(frames, holder, activate) {
@@ -648,7 +651,14 @@ function setupPlayback(frames, holder, activate) {
     if (pb.idx + 1 >= frames.length) timeline.setPlaying(false);
     else timeline.goTo(pb.idx + 1);
   };
-  activate(pb.idx); // initial reveal: animate the latest frame's arrivals so they fly in on open
+  // Initial reveal: fly in the latest frame's arrivals ONLY when this is genuinely-new migration (a
+  // newer latest turn than we last animated). A re-render of the same turn — a visibility toggle or a
+  // tab switch — places them statically so the last movement doesn't replay every time.
+  const latest = frames.length ? frames[frames.length - 1] : null;
+  const latestTurn = latest && typeof latest.turn === "number" ? latest.turn : -1;
+  const replay = latestTurn > _lastIntroTurn;
+  if (replay) _lastIntroTurn = latestTurn;
+  activate(pb.idx, !replay);
   return timeline;
 }
 
@@ -755,15 +765,16 @@ function buildViz(container, frames, events, rebuildAll) {
   const markDirty = () => {
     holder.dirty = true;
   };
-  const activate = (/** @type {number} */ i) => {
+  const activate = (/** @type {number} */ i, noAnim = false) => {
     // Fly in the MOVERS that first appear at frame `i` (cross-civ immigrants travel from their ORIGIN
-    // civ/settlement; internal movers from their source city — see startAnim) — on every activation:
-    // continuous playback, a scrub that lands on a frame, AND the initial reveal. Without this, arrivals
-    // only animated on a +1 advance, so on load a cross-civ immigrant sat in the destination cluster and
-    // read as home-grown. RESIDENTS (home-grown population) are deliberately excluded: they MATERIALIZE
-    // in place inside their own city/town rather than flying from the civ's nebulous centre.
+    // civ/settlement; internal movers from their source city — see startAnim) — on playback, a scrub
+    // that lands on a frame, AND a genuinely-new initial reveal. Without this, arrivals only animated on
+    // a +1 advance, so on load a cross-civ immigrant sat in the destination cluster and read as
+    // home-grown. RESIDENTS (home-grown population) are excluded (they MATERIALIZE in place). `noAnim`
+    // places dots statically — used when merely RE-rendering the same turn (a visibility toggle / tab
+    // switch) so the last migration doesn't replay every time.
     for (const d of dots) {
-      if (d.appearFrame === i && d.scope !== "resident") startAnim(d, holder.scene);
+      if (!noAnim && d.appearFrame === i && d.scope !== "resident") startAnim(d, holder.scene);
       else d.anim = null;
     }
     state.frameIdx = i;
