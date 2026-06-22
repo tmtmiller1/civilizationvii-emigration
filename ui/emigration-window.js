@@ -483,14 +483,18 @@ function cityEntry(map, city) {
 }
 
 /**
- * Add one move to a direction accumulator (by other civ + cause).
+ * Add one move to a direction accumulator (by other civ + cause). Each civ entry tracks BOTH scaled
+ * people and raw Civ population points, so the pie can switch counting modes.
  * @param {*} d Direction {civs, causes}.
  * @param {number} otherOwner The other civ id.
  * @param {string} cause Migration cause.
  * @param {number} people People moved.
+ * @param {number} [points] Raw population points moved.
  */
-function addDir(d, otherOwner, cause, people) {
-  d.civs[otherOwner] = (d.civs[otherOwner] || 0) + people;
+function addDir(d, otherOwner, cause, people, points) {
+  const c = d.civs[otherOwner] || (d.civs[otherOwner] = { people: 0, points: 0 });
+  c.people += people;
+  c.points += points || 0;
   d.causes[cause] = (d.causes[cause] || 0) + people;
 }
 
@@ -503,22 +507,23 @@ function addDir(d, otherOwner, cause, people) {
  */
 function foldMove(map, m, me) {
   const ppl = m.people || 0;
+  const pts = m.points || 0;
   if (m.destOwner === me && m.destName) {
-    addDir(cityEntry(map, m.destName).in, m.srcOwner, m.cause, ppl);
+    addDir(cityEntry(map, m.destName).in, m.srcOwner, m.cause, ppl, pts);
   }
   if (m.srcOwner === me && m.srcName) {
-    addDir(cityEntry(map, m.srcName).out, m.destOwner, m.cause, ppl);
+    addDir(cityEntry(map, m.srcName).out, m.destOwner, m.cause, ppl, pts);
   }
 }
 
 /**
- * Resolve a direction's civ map to a sorted, named list.
+ * Resolve a direction's civ map to a sorted, named list (carrying people + points per civ).
  * @param {*} d Direction accumulator {civs, causes}.
- * @returns {*} { civs: [{id, name, people}] sorted, causes }.
+ * @returns {*} { civs: [{id, name, people, points}] sorted, causes }.
  */
 function resolveDir(d) {
   const civs = Object.keys(d.civs)
-    .map((k) => ({ id: +k, name: civAdjective(+k), people: d.civs[k] }))
+    .map((k) => ({ id: +k, name: civAdjective(+k), people: d.civs[k].people, points: d.civs[k].points }))
     .sort((a, b) => b.people - a.people);
   return { civs, causes: d.causes };
 }

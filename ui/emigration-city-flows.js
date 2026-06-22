@@ -12,6 +12,7 @@ import { causeLabel } from "/emigration/ui/emigration-causes.js";
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { eventDisplayName } from "/emigration/ui/emigration-naming.js";
 import { eventGroupCause } from "/emigration/ui/emigration-event-attribution.js";
+import { getNumberMode, setNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
 
 /**
  * Make an element with an optional class + text.
@@ -47,15 +48,25 @@ function causeText(causes) {
 const DIED_ID = -3;
 
 /**
- * Pie slices for a direction's civ breakdown (coloured by the other civ; "Died" dark red, "Unmet" grey).
- * @param {{id:number, name:string, people:number}[]} civs Civs.
- * @returns {{value:number, color:string, label:string}[]} Slices.
+ * Pie slices for a direction's civ breakdown (coloured by the other civ; "Died" dark red, "Unmet"
+ * grey). The slice value + count follow the active number mode (Scaled Pop people / Civ Pop points),
+ * and each slice carries a preformatted count string for the legend and tooltip.
+ * @param {{id:number, name:string, people:number, points:number}[]} civs Civs.
+ * @returns {{value:number, people:number, points:number, countText:string, color:string,
+ *   label:string}[]} Slices.
  */
 function civSlices(civs) {
-  return (civs || []).map((c) => ({
-    value: c.people, label: c.name,
-    color: c.id === DIED_ID ? "#9a3b3b" : c.id < 0 ? "#8c8064" : civColorByIndex(c.id)
-  }));
+  const civMode = getNumberMode() === NumberMode.CIV;
+  return (civs || []).map((c) => {
+    const people = c.people || 0;
+    const points = c.points || 0;
+    return {
+      value: civMode ? points : people, people, points,
+      countText: civMode ? String(Math.round(points)) : formatPeople(people),
+      label: c.name,
+      color: c.id === DIED_ID ? "#9a3b3b" : c.id < 0 ? "#8c8064" : civColorByIndex(c.id)
+    };
+  });
 }
 
 /**
@@ -79,7 +90,11 @@ function directionCol(title, whyPrefix, dir) {
     return col;
   }
   col.appendChild(pieCardSlices("", slices, false));
-  col.appendChild(legendChips(slices.map((s) => ({ label: s.label, color: s.color }))));
+  const total = slices.reduce((a, s) => a + s.value, 0);
+  col.appendChild(legendChips(slices.map((s) => ({
+    label: s.label, color: s.color, countText: s.countText,
+    pct: total > 0 ? Math.round((s.value / total) * 100) : 0
+  }))));
   const why = causeText(dir && dir.causes);
   if (why) col.appendChild(el("div", "emig-city-why", whyPrefix + " " + why));
   return col;
@@ -316,7 +331,9 @@ function indexFlowsByCiv(flows) {
     return e;
   };
   const add = (/** @type {*} */ d, /** @type {number} */ other, /** @type {*} */ e) => {
-    d.civs[other] = (d.civs[other] || 0) + e.people;
+    const c = d.civs[other] || (d.civs[other] = { people: 0, points: 0 });
+    c.people += e.people || 0;
+    c.points += e.points || 0;
     const bc = e.byCause || {};
     for (const k of Object.keys(bc)) d.causes[k] = (d.causes[k] || 0) + (bc[k] || 0);
   };
@@ -331,15 +348,17 @@ function indexFlowsByCiv(flows) {
 }
 
 /**
- * One direction's pie payload: the other civs sorted by people, plus this direction's flow causes.
+ * One direction's pie payload: the other civs sorted by people (each carrying people + points),
+ * plus this direction's flow causes.
  * @param {*} d A {civs, causes} flow tally.
  * @param {Map<number,string>} names Civ id → name.
- * @returns {{civs:{id:number,name:string,people:number}[], causes:Record<string,number>}} Payload.
+ * @returns {{civs:{id:number,name:string,people:number,points:number}[], causes:Record<string,number>}} Payload.
  */
 function flowDir(d, names) {
   return {
-    civs: Object.keys(d.civs).map((k) => ({ id: +k, name: names.get(+k) || ("#" + k), people: d.civs[k] }))
-      .sort((a, b) => b.people - a.people),
+    civs: Object.keys(d.civs).map((k) => ({
+      id: +k, name: names.get(+k) || ("#" + k), people: d.civs[k].people, points: d.civs[k].points
+    })).sort((a, b) => b.people - a.people),
     causes: d.causes
   };
 }
@@ -378,7 +397,7 @@ export function buildCivFlows(flows, civs, eventsByOwner) {
       // Deaths are population LOST with no destination — show them as a "Died" wedge in the
       // Emigrants ("left for/died") pie, so a civ whose loss was deaths isn't a blank pie.
       if ((r.deaths || 0) > 0) {
-        out.civs.push({ id: DIED_ID, name: "Died", people: r.deaths });
+        out.civs.push({ id: DIED_ID, name: "Died", people: r.deaths, points: r.deathsPts || 0 });
         out.civs.sort((a, b) => b.people - a.people);
       }
       return {
@@ -402,5 +421,27 @@ export function renderCityFlows(body, section) {
       "No city migration recorded yet , flows appear as people move in and out of your cities."));
     return;
   }
+  body.appendChild(numbersBar(() => {
+    while (body.firstChild) body.removeChild(body.firstChild);
+    renderCityFlows(body, section);
+  }));
   for (const c of cities) body.appendChild(cityCard(c));
+}
+
+/**
+ * A right-aligned Scaled Pop ↔ Civ Pop toggle row for the pie counts. Flips the shared number mode
+ * and re-renders the whole tab (so every pie's slices, counts, and percentages switch together).
+ * @param {()=>void} onChange Re-render callback.
+ * @returns {HTMLElement} The toggle row.
+ */
+function numbersBar(onChange) {
+  const bar = el("div", "emig-num-bar");
+  const chip = el("div", "emig-num-toggle",
+    "Numbers: " + (getNumberMode() === NumberMode.CIV ? "Civ Pop" : "Scaled Pop"));
+  chip.addEventListener("click", () => {
+    setNumberMode(getNumberMode() === NumberMode.CIV ? NumberMode.HISTORICAL : NumberMode.CIV);
+    onChange();
+  });
+  bar.appendChild(chip);
+  return bar;
 }

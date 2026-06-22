@@ -126,7 +126,9 @@ function attachPieHover(canvas, slices, tip) {
       tip.style.display = "none";
       return;
     }
-    tip.textContent = (s.label || "") + " ; " + Math.round((s.value / total) * 100) + "%";
+    const pct = Math.round((s.value / total) * 100);
+    const ct = s.countText != null ? s.countText + " " : "";
+    tip.textContent = (s.label || "") + " ; " + ct + "(" + pct + "%)";
     tip.style.left = mx + "px";
     tip.style.top = my + "px";
     tip.style.display = "block";
@@ -171,8 +173,9 @@ function pieCard(title, byCause, big) {
 }
 
 /**
- * A colour key from {label, color} items.
- * @param {{label:string, color:string}[]} items Items.
+ * A colour key from {label, color} items. When an item carries `countText` (and optionally `pct`),
+ * the chip reads "Label  count (pct%)" so each slice's magnitude and share show beside its swatch.
+ * @param {{label:string, color:string, countText?:string, pct?:number}[]} items Items.
  * @returns {HTMLElement} The legend.
  */
 export function legendChips(items) {
@@ -182,7 +185,11 @@ export function legendChips(items) {
     const sw = el("span", "emig-pie-sw");
     sw.style.backgroundColor = it.color;
     item.appendChild(sw);
-    item.appendChild(el("span", "", it.label));
+    let text = it.label;
+    if (it.countText != null) {
+      text += "  " + it.countText + (it.pct != null ? " (" + it.pct + "%)" : "");
+    }
+    item.appendChild(el("span", "", text));
     box.appendChild(item);
   }
   return box;
