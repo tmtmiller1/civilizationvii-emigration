@@ -357,7 +357,9 @@ function addScopeToggles(root, state, onChange) {
   root.appendChild(el("span", "emig-lens-sep"));
   root.appendChild(el("span", "emig-lens-lbl", loc("LOC_EMIG_NETC_SHOW", "Show:")));
   for (const [scope, locKey, fallback] of SHOW_TOGGLES) {
-    const c = el("div", "emig-netc-chip active", loc(locKey, fallback));
+    // "Show:" FILTERS which dots appear → the flat boxed filter-button look (shared with the dashboard
+    // control row's Unmet-civs filter), distinct from the rounded "Color by:" / "Units:" view pills.
+    const c = el("div", "emig-filter-btn active", loc(locKey, fallback));
     c.addEventListener("click", () => {
       state.show[scope] = !state.show[scope];
       c.classList.toggle("active", state.show[scope]);
