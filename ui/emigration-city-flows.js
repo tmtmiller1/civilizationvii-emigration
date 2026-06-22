@@ -412,7 +412,10 @@ export function buildCivFlows(flows, civs, eventsByOwner) {
 // The descriptive heading shown at the top of each tab this renderer serves (the section tab only
 // gives the short name; this is the fuller "what this shows" title).
 /** @type {Record<string,string>} */
-const SECTION_TITLES = { pies: "Why people move", cityflows: "Your settlements" };
+const SECTION_TITLES = {
+  pies: "Causes: Why people move",
+  cityflows: "Settlements: Migration in and out of your settlements"
+};
 
 /**
  * Render the per-entry breakdown (CAUSES: a card per civ; SETTLEMENTS: a card per the local player's
