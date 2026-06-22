@@ -14,7 +14,6 @@ import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { causeLabel, netDrivers } from "/emigration/ui/emigration-causes.js";
 import { renderNetworkOrFlow } from "/emigration/ui/emigration-flow-tab.js";
 import { getNumberMode, setNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
-import { getVisibilityOverride, setVisibilityOverride } from "/emigration/ui/emigration-settings.js";
 import { appendSnapshotReminder } from "/emigration/ui/emigration-snapshot-reminder.js";
 import { renderGuide } from "/emigration/ui/emigration-guide.js";
 import { renderCityFlows, buildCivFlows } from "/emigration/ui/emigration-city-flows.js";
@@ -555,8 +554,6 @@ function makeTabBar(sections, onSelect) {
 // the control row reads identically on every Emigration tab.
 /** @type {Record<number,string>} */
 const NUM_LABEL = { [NumberMode.CIV]: "Civ Pop", [NumberMode.HISTORICAL]: "Scaled Pop" };
-/** @type {Record<number,string>} */
-const VIS_LABEL = { 0: "Follow Demographics", 1: "Hidden", 2: "Shown" };
 
 /**
  * A labeled pill group: a "Label:" span + one selectable chip per option (the current key `active`).
@@ -602,26 +599,30 @@ function controlGroup(label, items, current, onSelect, cls) {
 }
 
 /**
- * Build the consistent control row for a tab: the Numbers (Scaled/Civ) group when it applies, plus the
- * Unmet-civs visibility group. Numbers is omitted where the section owns its own units control (the
- * Network lens row's "Units:") or the host's group pills drive it.
+ * Append `child` to `parent` when it isn't null.
+ * @param {HTMLElement} parent The parent element.
+ * @param {HTMLElement|null} child The optional child.
+ */
+function appendOpt(parent, child) {
+  if (child) parent.appendChild(child);
+}
+
+/**
+ * Build the on-page control row: the Numbers (Scaled/Civ) group. Returns null when Numbers doesn't
+ * apply (the Network lens row owns "Units:", or the host's group pills drive it) so no empty row shows.
  * @param {boolean} showNumbers Whether to include the Numbers group.
  * @param {()=>void} rebuild Re-gather + re-render after a change.
- * @returns {HTMLElement} The control row.
+ * @returns {HTMLElement|null} The control row, or null when there's nothing to show.
  */
 function buildControlRow(showNumbers, rebuild) {
+  // The only on-page control is Numbers (Scaled/Civ) — a per-view choice. Unmet-civ visibility is a
+  // persistent setting and lives in Options ▸ Mods ▸ Emigration, not as an on-page filter.
+  if (!showNumbers) return null;
   const row = el("div", "emig-ctrl-row");
-  if (showNumbers) {
-    // Scaled/Civ numbers reads as a filter too → flat buttons like the year filters.
-    row.appendChild(filterGroup("Numbers:", [
-      { key: NumberMode.HISTORICAL, label: NUM_LABEL[NumberMode.HISTORICAL] },
-      { key: NumberMode.CIV, label: NUM_LABEL[NumberMode.CIV] }
-    ], getNumberMode(), (/** @type {number} */ k) => { setNumberMode(k); rebuild(); }));
-  }
-  // Unmet civs is a FILTER (which civs are shown) → flat buttons like the year filters, not pills.
-  row.appendChild(filterGroup("Unmet civs:", [
-    { key: 0, label: VIS_LABEL[0] }, { key: 1, label: VIS_LABEL[1] }, { key: 2, label: VIS_LABEL[2] }
-  ], getVisibilityOverride(), (/** @type {number} */ k) => { setVisibilityOverride(k); rebuild(); }));
+  row.appendChild(filterGroup("Numbers:", [
+    { key: NumberMode.HISTORICAL, label: NUM_LABEL[NumberMode.HISTORICAL] },
+    { key: NumberMode.CIV, label: NUM_LABEL[NumberMode.CIV] }
+  ], getNumberMode(), (/** @type {number} */ k) => { setNumberMode(k); rebuild(); }));
   return row;
 }
 
@@ -652,9 +653,8 @@ export function renderDashboardTabbed(target, model, rebuild) {
       body.innerHTML = "";
       renderSectionBody(body, sections[i]);
     };
-    // One consistent control row (Numbers + Unmet civs as labeled pill groups). A change re-gathers so
-    // the civ masking / counts re-apply across whichever tab is active.
-    wrap.appendChild(buildControlRow(true, () => (rebuild ? rebuild() : show(active))));
+    // The Numbers (Scaled/Civ) control row. A change re-gathers so the counts re-apply.
+    appendOpt(wrap, buildControlRow(true, () => (rebuild ? rebuild() : show(active))));
     wrap.appendChild(makeTabBar(sections, show));
     wrap.appendChild(body);
     target.appendChild(wrap);
@@ -711,8 +711,7 @@ function appendControlRow(wrap, opts, body, section) {
   const host = (opts && opts.controlsHost) || wrap;
   if (opts && opts.controlsHost) opts.controlsHost.innerHTML = ""; // re-populate the shared row
   if (section.kind === "guide") return;
-  host.appendChild(buildControlRow(
-    wantsUnitsToggle(section, opts), () => subtabRebuild(opts, body, section)));
+  appendOpt(host, buildControlRow(wantsUnitsToggle(section, opts), () => subtabRebuild(opts, body, section)));
 }
 
 /**
