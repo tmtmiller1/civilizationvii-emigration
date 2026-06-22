@@ -17,6 +17,7 @@
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { causeLabel, isRefugeeCause } from "/emigration/ui/emigration-causes.js";
+import { getNumberMode, setNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
 import {
   refugeesFor,
   refugeesInFor,
@@ -303,11 +304,21 @@ const SPECS = [
 // the host's PANEL_SUBTAB_SEP scheme; the host's group-merge then drops this id from the standalone
 // sub-tab row. Both views map to the same id (the table carries its own units toggle).
 const LEDGER_SUBTAB_ID = "emig_migration_panel::ledger";
+// Bind the group's Scaled / Civ-numbers VIEW to the shared Emigration number mode, so this toggle
+// and the "Numbers:" chip on the Network / Causes / Settlements tabs are one persistent setting —
+// switching either one sticks, and reopening restores whatever was selected last.
+const VIEW_BINDING = {
+  get: () => (getNumberMode() === NumberMode.CIV ? "civ" : "scaled"),
+  set: (/** @type {string} */ v) =>
+    setNumberMode(v === "civ" ? NumberMode.CIV : NumberMode.HISTORICAL)
+};
+
 const GRAPHS_GROUP = {
   id: "emig_graphs",
   label: "Data",
   first: true,
   views: [{ id: "scaled", label: "Scaled" }, { id: "civ", label: "Civ numbers" }],
+  viewBinding: VIEW_BINDING,
   members: [
     { label: "Net Migration (Graph)", scaled: NET_CUM_SPEC.id, civ: NET_CUM_PTS_SPEC.id },
     { label: "Net Migration (Table)", scaled: LEDGER_SUBTAB_ID, civ: LEDGER_SUBTAB_ID },
