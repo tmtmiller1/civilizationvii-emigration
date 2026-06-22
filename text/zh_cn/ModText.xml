@@ -102,6 +102,8 @@
         <Replace Tag="LOC_EMIG_T_FLEE_D" Language="zh_Hans_CN"><Text>难民多大程度上偏好远离最近入侵者的目的地。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH" Language="zh_Hans_CN"><Text>地理: 文明间摩擦</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH_D" Language="zh_Hans_CN"><Text>跨越文明边境迁徙的额外阻力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="zh_Hans_CN"><Text>危机逃离（逃往国外）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="zh_Hans_CN"><Text>处于严重危机（战争/灾害）的文明，将难民推向跨越国界逃往他国的程度，而不是迁往本国（同样受灾的）城市并在那里死去。越高＝越多跨文明逃离。0 = 关闭。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL" Language="zh_Hans_CN"><Text>地理: 开放边境的迁徙加成</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="zh_Hans_CN"><Text>两个文明之间的开放边境协定在多大程度上促进彼此之间双向的迁徙。0 = 关闭。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="zh_Hans_CN"><Text>地理: 旅途延迟（0 = 即时）</Text></Replace>

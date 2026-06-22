@@ -72,6 +72,7 @@ export const TUNABLES = [
   { key: "distanceFactor", group: "geography", type: "choice", values: [0.2, 0.4, 0.6, 0.9, 1.3], label: "LOC_EMIG_T_DIST", desc: "LOC_EMIG_T_DIST_D" },
   { key: "fleeFactor", group: "geography", type: "choice", values: [0, 3, 6, 10, 15], label: "LOC_EMIG_T_FLEE", desc: "LOC_EMIG_T_FLEE_D" },
   { key: "poachBlock", group: "geography", type: "choice", values: [4, 8, 12, 18, 25], label: "LOC_EMIG_T_POACH", desc: "LOC_EMIG_T_POACH_D" },
+  { key: "crisisEscapeBonus", group: "geography", type: "choice", values: [0, 8, 14, 22, 32], label: "LOC_EMIG_T_ESCAPE", desc: "LOC_EMIG_T_ESCAPE_D" },
   { key: "openBordersBonus", group: "geography", type: "choice", values: [0, 4, 8, 14, 20], label: "LOC_EMIG_T_OPENDEAL", desc: "LOC_EMIG_T_OPENDEAL_D" },
   { key: "transitLagTurns", group: "geography", type: "choice", values: [0, 1, 2, 4, 6], label: "LOC_EMIG_T_TRANSITLAG", desc: "LOC_EMIG_T_TRANSITLAG_D" },
   // migration cost (real grantYield consequence on the destination civ)

@@ -124,6 +124,8 @@
         <Row Tag="LOC_EMIG_T_FLEE_D"><Text>How strongly refugees prefer destinations away from the nearest invader.</Text></Row>
         <Row Tag="LOC_EMIG_T_POACH"><Text>Geography: cross-civ friction</Text></Row>
         <Row Tag="LOC_EMIG_T_POACH_D"><Text>Extra reluctance to migrate across a civilization border.</Text></Row>
+        <Row Tag="LOC_EMIG_T_ESCAPE"><Text>Crisis escape (flee abroad)</Text></Row>
+        <Row Tag="LOC_EMIG_T_ESCAPE_D"><Text>How strongly a civilization in acute crisis (war/disaster) pushes its refugees to flee ACROSS BORDERS to another empire, rather than relocating to its own (equally-stricken) cities and dying there. Higher = more cross-civ escape. 0 = off.</Text></Row>
         <Row Tag="LOC_EMIG_T_OPENDEAL"><Text>Geography: Open Borders migration boost</Text></Row>
         <Row Tag="LOC_EMIG_T_OPENDEAL_D"><Text>How much a base-game Open Borders agreement between two civilizations eases migration between them, both directions. 0 = off.</Text></Row>
         <Row Tag="LOC_EMIG_T_TRANSITLAG"><Text>Geography: transit lag (0 = instant)</Text></Row>

@@ -57,6 +57,11 @@ export const CONFIG = {
   //                       NO cross-civ friction. With ownCivRefugeeBonus also lowered, a collapsing
   //                       civ's refugees spill to neutral neighbours (populating the cross-civ
   //                       network + net-migration chart) instead of piling up internally.
+  // Removing the cross-civ FRICTION wasn't enough on its own: a nearer internal city still out-pulls a
+  // foreign one on distance alone, so crisis refugees relocated WITHIN their own (equally-stricken) civ
+  // and died there. This is a positive pull ADDED toward a cross-civ destination for a source in acute
+  // crisis (war/disaster), so its people actually flee the dying region to ANOTHER empire. 0 = off.
+  crisisEscapeBonus: 14,
   cooldownTurns: 8, // turns a source rests after emigrating
   minRuralToEmigrate: 1, // a source keeps at least this much rural pop
   refugeesPercent: 50, // % of rural pop that flees a conquered/razed city

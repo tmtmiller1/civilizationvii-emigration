@@ -102,6 +102,8 @@
         <Replace Tag="LOC_EMIG_T_FLEE_D" Language="ru_RU"><Text>Насколько сильно беженцы предпочитают цели вдали от ближайшего захватчика.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH" Language="ru_RU"><Text>География: трение между цивилизациями</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH_D" Language="ru_RU"><Text>Дополнительное нежелание мигрировать через границу цивилизации.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="ru_RU"><Text>Бегство при кризисе (за границу)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="ru_RU"><Text>Насколько сильно цивилизация в остром кризисе (война/бедствие) подталкивает беженцев бежать ЗА ГРАНИЦУ в другую империю, а не переселяться в собственные (так же пострадавшие) города и гибнуть там. Выше = больше межцивилизационного бегства. 0 = выкл.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL" Language="ru_RU"><Text>География: прирост миграции от открытых границ</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="ru_RU"><Text>Насколько соглашение об открытых границах между двумя цивилизациями облегчает переселение между ними в обе стороны. 0 = выкл.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="ru_RU"><Text>География: задержка в пути (0 = мгновенно)</Text></Replace>

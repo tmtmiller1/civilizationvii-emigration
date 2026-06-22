@@ -102,6 +102,8 @@
         <Replace Tag="LOC_EMIG_T_FLEE_D" Language="ja_JP"><Text>難民が最寄りの侵略者から離れた目的地をどれだけ強く好むか。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH" Language="ja_JP"><Text>地理: 文明間の摩擦</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH_D" Language="ja_JP"><Text>文明の国境を越えて移住することへの追加的な抵抗。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="ja_JP"><Text>危機脱出（国外へ）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="ja_JP"><Text>深刻な危機（戦争・災害）にある文明が、（同様に被害を受けた）自国の都市へ移って死ぬのではなく、国境を越えて他の帝国へ逃れるよう難民をどれだけ強く促すか。高いほど文明間脱出が増えます。0 = オフ。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL" Language="ja_JP"><Text>地理: 開かれた国境による移住促進</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="ja_JP"><Text>2つの文明間の開かれた国境協定が、双方向の移住をどれだけ容易にするか。0 = オフ。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="ja_JP"><Text>地理: 移動の遅延（0 = 即時）</Text></Replace>
