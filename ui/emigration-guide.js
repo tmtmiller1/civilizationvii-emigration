@@ -106,11 +106,14 @@ const CSS =
   ".emig-guide-pill.active{background:#f3c34c;color:#1c1408;border-color:#f3c34c;font-weight:bold;}" +
   ".emig-guide-body{display:flex;flex-direction:column;width:100%;}" +
   ".emig-guide-h{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.05rem;color:#f3c34c;font-size:1.15rem;margin:0.6rem 0 0.1rem;border-bottom:0.0555rem solid rgba(201,162,76,0.3);padding-bottom:0.2rem;}" +
-  ".emig-guide-row{display:flex;align-items:flex-start;gap:0.6rem;padding:0.32rem 0.1rem;border-top:0.0277rem solid rgba(229,210,172,0.1);}" +
-  ".emig-guide-ic{flex:0 0 1.5rem;font-weight:bold;text-align:center;font-size:1.25rem;line-height:1.3;}" +
-  ".emig-guide-ic.y{color:#7fd08a;}.emig-guide-ic.n{color:#e0726a;font-size:1.5rem;line-height:1.05;}" +
-  ".emig-guide-q{flex:1.5 1 0;color:#f0dca8;font-size:1.15rem;}" +
-  ".emig-guide-note{flex:2 1 0;opacity:0.8;font-size:1.05rem;}" +
+  // A matrix row stacks vertically: the icon + bold question on the top line, the explanation wrapping
+  // full-width beneath it (instead of a cramped second column), with a clearer divider between rows.
+  ".emig-guide-row{display:flex;align-items:flex-start;gap:0.7rem;padding:0.55rem 0.1rem;border-top:0.0555rem solid rgba(201,162,76,0.22);}" +
+  ".emig-guide-ic{flex:0 0 1.6rem;font-weight:bold;text-align:center;font-size:1.3rem;line-height:1.3;}" +
+  ".emig-guide-ic.y{color:#7fd08a;}.emig-guide-ic.n{color:#e0726a;font-size:1.55rem;line-height:1.05;}" +
+  ".emig-guide-rowtext{display:flex;flex-direction:column;gap:0.2rem;flex:1 1 0;min-width:0;}" +
+  ".emig-guide-q{color:#f6e7c0;font-weight:bold;font-size:1.18rem;line-height:1.3;}" +
+  ".emig-guide-note{opacity:0.9;font-size:1.05rem;line-height:1.45;color:#e5d2ac;}" +
   ".emig-guide-faq-q{color:#f0dca8;font-weight:bold;font-size:1.2rem;margin:0.5rem 0 0.1rem;padding-top:0.3rem;border-top:0.0277rem solid rgba(229,210,172,0.1);}" +
   ".emig-guide-faq-a{opacity:0.82;font-size:1.1rem;line-height:1.5;}";
 
@@ -153,8 +156,10 @@ function renderGuideSection(wrap, g) {
   for (const r of g.rows || []) {
     const row = ce("div", "emig-guide-row");
     row.appendChild(ce("div", "emig-guide-ic " + (r.yes ? "y" : "n"), r.yes ? YES : NO));
-    row.appendChild(ce("div", "emig-guide-q", r.q));
-    row.appendChild(ce("div", "emig-guide-note", r.note || ""));
+    const text = ce("div", "emig-guide-rowtext");
+    text.appendChild(ce("div", "emig-guide-q", r.q));
+    if (r.note) text.appendChild(ce("div", "emig-guide-note", r.note));
+    row.appendChild(text);
     wrap.appendChild(row);
   }
 }
