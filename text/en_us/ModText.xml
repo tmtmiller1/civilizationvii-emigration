@@ -322,6 +322,7 @@
             <Text>Color by:</Text>
         </Row>
         <Row Tag="LOC_EMIG_NETC_HELP"><Text>How to read this</Text></Row>
+        <Row Tag="LOC_EMIG_NETC_INFO"><Text>Info:</Text></Row>
         <Row Tag="LOC_EMIG_NETC_LENS_ORIGIN">
             <Text>Origin</Text>
         </Row>

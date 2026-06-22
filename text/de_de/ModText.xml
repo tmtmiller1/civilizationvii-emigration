@@ -242,6 +242,7 @@
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="de_DE"><Text>Noch keine zivilisationsübergreifende Wanderung – Ströme erscheinen, sobald Menschen Grenzen überqueren.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="de_DE"><Text>Färben nach:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_HELP" Language="de_DE"><Text>Diagramm-Hilfe</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_INFO" Language="de_DE"><Text>Info:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="de_DE"><Text>Herkunft</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="de_DE"><Text>Art</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_MOVEMENT" Language="de_DE"><Text>Bewegung</Text></Replace>
