@@ -670,17 +670,20 @@ function subtabRebuild(opts, body, section) {
 }
 
 /**
- * Append the consistent control row to the embedded page (every section but the static Guide).
- * Numbers is included only where the section doesn't own its own units control (the Network lens row)
- * and the host group pills don't drive it.
- * @param {HTMLElement} wrap The dashboard wrapper.
+ * Append the consistent control row for the embedded page (every section but the static Guide).
+ * Prefers the host-provided controls area (opts.controlsHost — shares the row with the Options button)
+ * and falls back to the page wrap. Numbers is included only where the section doesn't own its own units
+ * control (the Network lens row) and the host group pills don't drive it.
+ * @param {HTMLElement} wrap The dashboard wrapper (fallback target).
  * @param {*} opts The renderDashboardSubtab opts.
  * @param {HTMLElement} body The section body element.
  * @param {*} section The active section.
  */
 function appendControlRow(wrap, opts, body, section) {
+  const host = (opts && opts.controlsHost) || wrap;
+  if (opts && opts.controlsHost) opts.controlsHost.innerHTML = ""; // re-populate the shared row
   if (section.kind === "guide") return;
-  wrap.appendChild(buildControlRow(
+  host.appendChild(buildControlRow(
     wantsUnitsToggle(section, opts), () => subtabRebuild(opts, body, section)));
 }
 
@@ -693,9 +696,10 @@ function appendControlRow(wrap, opts, body, section) {
  * @param {HTMLElement} target The container element.
  * @param {*} model The view-model ({sections, sample}).
  * @param {string} kind The section kind to show (network/flowmap/ledger/pies/cityflows/stances).
- * @param {{hideUnitsToggle?:boolean, rebuild?:()=>void}} [opts] `hideUnitsToggle` suppresses the
- *   in-panel "Numbers:" chip (when the host group pills drive units); `rebuild` re-gathers + re-renders
- *   the page (the unmet-civ visibility toggle re-filters the civ list, which is baked into the model).
+ * @param {{hideUnitsToggle?:boolean, rebuild?:()=>void, controlsHost?:HTMLElement}} [opts]
+ *   `hideUnitsToggle` suppresses the Numbers group (when the host group pills drive units); `rebuild`
+ *   re-gathers + re-renders (the visibility change re-filters the civ list baked into the model);
+ *   `controlsHost` is the host's shared controls area (next to Options) the control row renders into.
  */
 export function renderDashboardSubtab(target, model, kind, opts) {
   try {
