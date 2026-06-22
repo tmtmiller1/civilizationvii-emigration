@@ -397,6 +397,15 @@ const DASH_CSS =
   ".emig-pill:hover{background:rgba(243,195,76,0.16);}" +
   ".emig-pill.active{background:#f3c34c;color:#1c1408;border-color:#f3c34c;font-weight:bold;}" +
   ".emig-pill.active:hover{background:#f7d06a;}" +
+  // FILTER controls (e.g. Unmet civs) render as the flat, square-cornered, gold-BOXED buttons the time/
+  // age filters use — distinct from the rounded gold-FILLED view pills above.
+  ".emig-filter-btn{display:inline-block;padding:0.18rem 0.55rem;border-radius:0.2rem;" +
+  "border:0.0555rem solid rgba(201,162,76,0.4);background:rgba(9,12,19,0.5);color:#cbb994;" +
+  "font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.06em;font-size:0.78rem;" +
+  "cursor:pointer;white-space:nowrap;line-height:1.2;}" +
+  ".emig-filter-btn:hover{border-color:rgba(243,195,76,0.75);}" +
+  ".emig-filter-btn.active{border-color:rgba(243,195,76,0.95);background:rgba(60,45,20,0.85);" +
+  "color:#f3c34c;font-weight:bold;}" +
   // Descriptive title at the top of the Causes / Settlements tabs.
   ".emig-section-title{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.05rem;" +
   "color:#f3c34c;font-size:1.1rem;text-align:center;margin:0.1rem 0 0.6rem;}" +
@@ -563,14 +572,41 @@ const VIS_LABEL = { 0: "Follow Demographics", 1: "Hidden", 2: "Shown" };
  * @returns {HTMLElement} The pill group.
  */
 function pillGroup(label, items, current, onSelect) {
+  return controlGroup(label, items, current, onSelect, "emig-pill");
+}
+
+/**
+ * A labeled FILTER group: a "Label:" span + one flat rectangular BUTTON per option (the current one
+ * boxed gold) — the year/age-filter look. Use for things that FILTER the data (which civs are shown),
+ * vs pillGroup for things that change the VIEW (units, colour-by).
+ * @param {string} label The leading label.
+ * @param {{key:*, label:string}[]} items The options.
+ * @param {*} current The active option key.
+ * @param {(key:*)=>void} onSelect Called with the chosen key (only when it differs from current).
+ * @returns {HTMLElement} The filter group.
+ */
+function filterGroup(label, items, current, onSelect) {
+  return controlGroup(label, items, current, onSelect, "emig-filter-btn");
+}
+
+/**
+ * Shared builder for pillGroup / filterGroup: a "Label:" span + one selectable control per option.
+ * @param {string} label The leading label.
+ * @param {{key:*, label:string}[]} items The options.
+ * @param {*} current The active option key.
+ * @param {(key:*)=>void} onSelect Called with the chosen key (only when it differs from current).
+ * @param {string} cls The per-option element class ("emig-pill" or "emig-filter-btn").
+ * @returns {HTMLElement} The group.
+ */
+function controlGroup(label, items, current, onSelect, cls) {
   const grp = el("div", "emig-pill-grp");
   grp.appendChild(el("span", "emig-pill-lbl", label));
   for (const it of items) {
-    const chip = el("div", "emig-pill" + (it.key === current ? " active" : ""), it.label);
-    chip.addEventListener("click", () => {
+    const ctl = el("div", cls + (it.key === current ? " active" : ""), it.label);
+    ctl.addEventListener("click", () => {
       if (it.key !== current) onSelect(it.key);
     });
-    grp.appendChild(chip);
+    grp.appendChild(ctl);
   }
   return grp;
 }
@@ -591,7 +627,8 @@ function buildControlRow(showNumbers, rebuild) {
       { key: NumberMode.CIV, label: NUM_LABEL[NumberMode.CIV] }
     ], getNumberMode(), (/** @type {number} */ k) => { setNumberMode(k); rebuild(); }));
   }
-  row.appendChild(pillGroup("Unmet civs:", [
+  // Unmet civs is a FILTER (which civs are shown) → flat buttons like the year filters, not pills.
+  row.appendChild(filterGroup("Unmet civs:", [
     { key: 0, label: VIS_LABEL[0] }, { key: 1, label: VIS_LABEL[1] }, { key: 2, label: VIS_LABEL[2] }
   ], getVisibilityOverride(), (/** @type {number} */ k) => { setVisibilityOverride(k); rebuild(); }));
   return row;
