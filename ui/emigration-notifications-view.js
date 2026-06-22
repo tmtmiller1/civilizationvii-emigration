@@ -96,10 +96,9 @@ function detailEl(e) {
   addLine(panel, "Event", e.event); // the specific named war / disaster, when applicable
   addLine(panel, "From", place(e.fromCity, e.fromCiv));
   if (isDeath(e)) {
-    // A death has no destination — they did not survive to arrive anywhere. Render it plainly and
-    // somberly, with the count framed as lives lost rather than people who moved.
-    addLine(panel, "Outcome", "Did not survive");
-    if (e.people || e.points) addLine(panel, "Lives lost", formatBoth(e.people, e.points));
+    // A death (the crisis-loss channel) has no destination — frame the count as casualties rather
+    // than people who moved, in the game's own losses register.
+    if (e.people || e.points) addLine(panel, "Casualties", formatBoth(e.people, e.points));
   } else {
     addLine(panel, e.crossCiv ? "Moved to" : "To", place(e.toCity, e.toCiv));
     if (e.people || e.points) addLine(panel, "People", formatBoth(e.people, e.points));
@@ -139,7 +138,7 @@ function rowSummary(e) {
 function headEl(e, accent, caret) {
   const head = el("div", "emig-ntf-head");
   head.appendChild(el("span", "emig-ntf-turn", "Turn " + e.turn));
-  const chip = el("span", "emig-ntf-chip", isDeath(e) ? "Died" : causeLabel(e.cause));
+  const chip = el("span", "emig-ntf-chip", isDeath(e) ? "Casualties" : causeLabel(e.cause));
   chip.style.color = accent;
   head.appendChild(chip);
   head.appendChild(el("span", "emig-ntf-sum", rowSummary(e)));
