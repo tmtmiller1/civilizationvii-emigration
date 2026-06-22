@@ -75,23 +75,38 @@ const GUIDE = [
     ]
   },
   {
-    title: "FAQ",
+    title: "FAQ — How migration works",
     faq: [
       { q: "Where do people go when they leave?", a: "To the nearest higher-prosperity settlement they can reach. Migration is distance-penalized, so people move regionally, not to the single best city on the map." },
       { q: "Where do war refugees flee?", a: "Away from the nearest enemy, preferring their own civilization first, then neutral civs, and the attacker last." },
-      { q: "Can I see refugees a civ took IN, not just sent out?", a: "Yes. The Graphs tab has both: Refugees Out (people a civ displaced by war/disaster/conquest) and Refugees In (displaced people it resettled). Each line's tooltip splits the total by cause." },
       { q: "How many people move, and how often?", a: "War- and disaster-driven refugees flee every turn; voluntary (prosperity/unhappiness) migration is more gradual, resting briefly between moves. Each civilization migrates on its own per-turn budget that scales with its size and active crises, so simultaneous wars never throttle one another. Counts show as scaled people or raw population points (your choice), and the whole sim runs on a turn interval you can lengthen in Options for large saves." },
+      { q: "Do people die, or just move away?", a: "Both, depending on the cause. Ordinary (prosperity / unhappiness) migration NEVER kills — people simply leave for better cities. But a LETHAL crisis — war, siege, disaster, or famine — also kills some who can't escape in time: those deaths leave the world entirely (shown in the Losses/deaths tally, separate from refugees), even while the rest flee. So a city under crisis loses people two ways at once: most flee, a minority die." }
+    ]
+  },
+  {
+    title: "FAQ — War, conquest & recovery",
+    faq: [
       { q: "What happens when I capture or lose a city?", a: "Its existing residents stay coded to the civ they came FROM — the prior owner — not to you. The Ethnicity lens paints them in that origin's colour, and on the network diagram their dots keep the old civ's colour and name; only NEW population born after the capture counts as yours. So a conquered city carries real origin history that fades only as it regrows. War can shrink it, but only an actual capture transfers it." },
-      { q: "Why did a city suddenly lose a lot of people?", a: "An on-screen toast names the cause (war, disaster, unhappiness, etc.), and the per-city readout breaks down its current pressures. The full history is kept in the Notifications tab — click any entry to see what caused it, where it left, and where the people went." },
-      { q: "Do people die, or just move away?", a: "Both, depending on the cause. Ordinary (prosperity / unhappiness) migration NEVER kills — people simply leave for better cities. But a LETHAL crisis — war, siege, disaster, or famine — also kills some who can't escape in time: those deaths leave the world entirely (shown in the Losses/deaths tally, separate from refugees), even while the rest flee. So a city under crisis loses people two ways at once: most flee, a minority die." },
-      { q: "Can I see which specific war or disaster drove it?", a: "Yes. On the Causes tab, each broad cause (War, Disaster, Unhappiness…) drills down to the SPECIFIC events behind it — a named war, a particular eruption/flood, or the active age crisis — with each event's emigration and deaths. An age crisis is attributed to itself: an Invasion crisis shows under War, a Plague crisis under Disaster, a Loyalty/Revolt crisis under Unhappiness, so you can see exactly how much of a civ's movement a single crisis caused." },
       { q: "My city shrank from size 12 to 5 in a war — will it grow back?", a: "Yes. War displacement only moves population points; it never razes districts or deletes buildings (only the base game's own conquest does that). You keep the larger city's infrastructure with fewer people, and it regrows two ways, both additive: the base game's normal food growth (untouched), and immigration — once the fighting stops and its prosperity recovers, the surviving high-yield buildings/districts make it an attractive destination, so migrants move in and population is added back." },
       { q: "Do the same refugees who fled come back?", a: "No. There's no repatriation; war's \"temporary\" tag is only a durability cue. The people who fled resettled permanently elsewhere. The city regrows from new residents (births + new immigrants), not the original refugees." },
       { q: "Does repairing pillaged tiles restore the lost population?", a: "No. Pillaged tiles only apply pressure (a prosperity penalty that pushes people out). Repairing them removes that pressure — so the city stops bleeding people and recovers prosperity faster — but a repair never adds a population point back. It's a recovery accelerator, not a restore button." },
       { q: "How far can a war shrink a city?", a: "War DISPLACEMENT (people fleeing) is capped at 60% (siegeLossCapPct) of the city's population when the siege began — the remnant \"digs in\" and can't be pushed out further. A sustained siege also kills some who can't escape, and those deaths can take a city below that displacement cap, but never below its rural floor. Only an actual capture takes the city." },
-      { q: "Fastest way to recover a war-torn city?", a: "Relieve the cause so it flips from a net exporter back to a magnet: make peace (violence decays in ~2-3 turns, lifting the war penalty), repair pillaged tiles (removes the lingering pressure), and raise happiness (the biggest prosperity factor — it both stops unhappiness emigration and pulls migrants in)." },
+      { q: "Fastest way to recover a war-torn city?", a: "Relieve the cause so it flips from a net exporter back to a magnet: make peace (violence decays in ~2-3 turns, lifting the war penalty), repair pillaged tiles (removes the lingering pressure), and raise happiness (the biggest prosperity factor — it both stops unhappiness emigration and pulls migrants in)." }
+    ]
+  },
+  {
+    title: "FAQ — Migrants in transit",
+    faq: [
       { q: "What happens to a migrant while they're traveling between cities?", a: "Migration isn't instant — it has transit lag. The migrant leaves the source the turn they depart: its rural population point (and that worker's tile yields) is removed right away. They then spend the transit time belonging to NO city — working no tiles, producing nothing — but also costing no upkeep, gold, or happiness. They're added to the destination, which only then gains the yields and pays its one-time assimilation cost, when they ARRIVE. Transit is 1-4 turns, scaled by distance (~5 hexes per turn, capped at 4); refugees take at least 1 (they camp)." },
       { q: "How big is the economic impact of migrants in transit?", a: "Small and self-correcting. Per migrant it's tiny: one rural point's worth of yields suspended for ~1-2 turns (4 at most) — and the source was losing that worker anyway, so only the delay before the destination picks them up is truly lost output. In aggregate it's roughly (migrants currently traveling) x (their per-pop yields): a rounding error in peacetime, but a noticeable pool of temporarily-idle population during a big war, since refugees flee every turn and more are in transit at once. It always drains back toward zero within a few turns of migration slowing. This transit lag is also why Emigration can tick up before Immigration catches up — the departure counts now, the arrival lands a few turns later. It does NOT distort Net Migration, which only counts settled cross-civ moves." }
+    ]
+  },
+  {
+    title: "FAQ — Reading the dashboard",
+    faq: [
+      { q: "Can I see refugees a civ took IN, not just sent out?", a: "Yes. The Graphs tab has both: Refugees Out (people a civ displaced by war/disaster/conquest) and Refugees In (displaced people it resettled). Each line's tooltip splits the total by cause." },
+      { q: "Why did a city suddenly lose a lot of people?", a: "An on-screen toast names the cause (war, disaster, unhappiness, etc.), and the per-city readout breaks down its current pressures. The full history is kept in the Notifications tab — click any entry to see what caused it, where it left, and where the people went." },
+      { q: "Can I see which specific war or disaster drove it?", a: "Yes. On the Causes tab, each broad cause (War, Disaster, Unhappiness…) drills down to the SPECIFIC events behind it — a named war, a particular eruption/flood, or the active age crisis — with each event's emigration and deaths. An age crisis is attributed to itself: an Invasion crisis shows under War, a Plague crisis under Disaster, a Loyalty/Revolt crisis under Unhappiness, so you can see exactly how much of a civ's movement a single crisis caused." }
     ]
   }
 ];
@@ -105,6 +120,10 @@ const CSS =
   "border:0.0555rem solid rgba(229,210,172,0.35);color:#e5d2ac;background:rgba(229,210,172,0.06);}" +
   ".emig-guide-pill.active{background:#f3c34c;color:#1c1408;border-color:#f3c34c;font-weight:bold;}" +
   ".emig-guide-body{display:flex;flex-direction:column;width:100%;}" +
+  // Two balanced columns on a wide window (shorter line lengths, less endless scroll); they wrap to a
+  // single column when the window is too narrow to fit both.
+  ".emig-guide-cols{display:flex;flex-wrap:wrap;gap:0 2.5rem;align-items:flex-start;width:100%;}" +
+  ".emig-guide-col{flex:1 1 26rem;min-width:0;display:flex;flex-direction:column;}" +
   ".emig-guide-h{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.05rem;color:#f3c34c;font-size:1.15rem;margin:0.6rem 0 0.1rem;border-bottom:0.0555rem solid rgba(201,162,76,0.3);padding-bottom:0.2rem;}" +
   // A matrix row stacks vertically: the icon + bold question on the top line, the explanation wrapping
   // full-width beneath it (instead of a cramped second column), with a clearer divider between rows.
@@ -165,16 +184,61 @@ function renderGuideSection(wrap, g) {
 }
 
 /**
- * Render the guide sections of one view into `body`, clearing it first.
+ * A section's rough height (heading + items), for balancing the two columns.
+ * @param {*} g A guide section.
+ * @returns {number} The weight.
+ */
+function sectionWeight(g) {
+  const items = Array.isArray(g.rows) ? g.rows.length : Array.isArray(g.faq) ? g.faq.length : 0;
+  return items + 1; // +1 for the heading itself
+}
+
+/**
+ * Split sections into two order-preserving columns: fill the first column to about half the total
+ * weight, then the rest into the second (so you read the left column top-to-bottom, then the right).
+ * @param {*[]} sections The view's sections.
+ * @returns {*[][]} [left, right] section lists.
+ */
+function splitColumns(sections) {
+  const total = sections.reduce((a, g) => a + sectionWeight(g), 0);
+  /** @type {*[][]} */
+  const cols = [[], []];
+  let acc = 0;
+  for (const g of sections) {
+    const left = !cols[0].length || acc < total / 2;
+    cols[left ? 0 : 1].push(g);
+    if (left) acc += sectionWeight(g);
+  }
+  return cols;
+}
+
+/**
+ * Render one column's sections (each a heading + its matrix/FAQ body) into a column element.
+ * @param {*[]} sections The sections for this column.
+ * @returns {HTMLElement} The column.
+ */
+function buildGuideColumn(sections) {
+  const col = ce("div", "emig-guide-col");
+  for (const g of sections) {
+    col.appendChild(ce("div", "emig-guide-h", g.title));
+    renderGuideSection(col, g);
+  }
+  return col;
+}
+
+/**
+ * Render the guide sections of one view into `body` as two balanced columns (so the wide window isn't
+ * one long single-column scroll with over-long lines), clearing it first.
  * @param {HTMLElement} body The body element.
  * @param {*[]} sections The GUIDE sections for the active view.
  */
 function renderGuideView(body, sections) {
   while (body.firstChild) body.removeChild(body.firstChild);
-  for (const g of sections) {
-    body.appendChild(ce("div", "emig-guide-h", g.title));
-    renderGuideSection(body, g);
-  }
+  const [left, right] = splitColumns(sections);
+  const cols = ce("div", "emig-guide-cols");
+  cols.appendChild(buildGuideColumn(left));
+  if (right.length) cols.appendChild(buildGuideColumn(right));
+  body.appendChild(cols);
 }
 
 /**
