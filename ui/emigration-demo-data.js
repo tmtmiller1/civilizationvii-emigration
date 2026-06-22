@@ -108,6 +108,23 @@ const CITYDEFS = [
 // where, who left for where, the cause mix, the city/town kind, and the emigration pressure shown
 // directly under each pie pair. Synthetic preview; a live game builds this from the recent feed +
 // the settlement list + the pressure snapshots.
+/**
+ * Fill each sample settlement's per-direction civ entries with a `points` count derived from its
+ * people (the preview has no engine to record exact points), so the pies' Civ Pop mode shows sane
+ * numbers. A live game carries real per-migration points instead.
+ * @param {*[]} cities The sample settlement rows.
+ * @returns {*[]} The rows with civ points filled in.
+ */
+function withCivPoints(cities) {
+  const fill = (/** @type {*} */ dir) => ({
+    causes: dir.causes,
+    civs: (dir.civs || []).map((/** @type {*} */ c) => ({
+      ...c, points: typeof c.points === "number" ? c.points : Math.max(1, Math.round(c.people / SAMPLE_PPP))
+    }))
+  });
+  return cities.map((c) => ({ ...c, in: fill(c.in), out: fill(c.out) }));
+}
+
 const MY_CITIES = [
   {
     name: "Rome", town: false,
@@ -490,7 +507,7 @@ export function sampleDashboard(step) {
     history,
     events: resolveEvents(history.length),
     cities: CITYDEFS,
-    myCities: MY_CITIES,
+    myCities: withCivPoints(MY_CITIES),
     sample: true
   };
 }
