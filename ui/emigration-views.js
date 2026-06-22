@@ -385,14 +385,18 @@ const DASH_CSS =
   ".emig-event-name{flex:1 1 auto;color:#cbb994;overflow:hidden;text-overflow:ellipsis;" +
   "white-space:nowrap;}" +
   ".emig-event-num{flex:0 0 auto;text-align:right;color:#cbb994;}" +
-  ".emig-num-toggle{align-self:flex-end;cursor:pointer;font-size:1rem;color:#e5d2ac;" +
-  "padding:0.34rem 1.15rem;border-radius:1rem;border:0.0555rem solid rgba(201,162,76,0.4);" +
-  "background:rgba(229,210,172,0.06);margin-bottom:0.3rem;}" +
-  ".emig-num-toggle:hover{background:rgba(229,210,172,0.18);color:#f3c34c;}" +
-  // Engaged (non-default) state: the same gold "active" fill the other selectable pills use, so the
-  // chip's colour reflects the current selection at a glance.
-  ".emig-num-toggle.active{background:#f3c34c;color:#1c1408;border-color:#f3c34c;font-weight:bold;}" +
-  ".emig-num-toggle.active:hover{background:#f7d06a;color:#1c1408;}" +
+  // The consistent control row: labeled pill GROUPS (a "Label:" + selectable chips), matching the
+  // Network lens row and the Demographics "Data" pills, so every Emigration tab reads the same.
+  ".emig-ctrl-row{display:flex;flex-wrap:wrap;gap:0.3rem 1.4rem;justify-content:center;align-items:center;" +
+  "margin:0.1rem 0 0.55rem;}" +
+  ".emig-pill-grp{display:flex;flex-wrap:wrap;align-items:center;gap:0.3rem;}" +
+  ".emig-pill-lbl{font-size:0.9rem;opacity:0.7;margin-right:0.1rem;text-transform:uppercase;" +
+  "letter-spacing:0.03rem;color:#cbb994;}" +
+  ".emig-pill{cursor:pointer;padding:0.16rem 0.7rem;border-radius:0.9rem;font-size:0.92rem;" +
+  "border:0.0555rem solid rgba(201,162,76,0.45);color:#e5d2ac;background:rgba(9,12,19,0.4);}" +
+  ".emig-pill:hover{background:rgba(243,195,76,0.16);}" +
+  ".emig-pill.active{background:#f3c34c;color:#1c1408;border-color:#f3c34c;font-weight:bold;}" +
+  ".emig-pill.active:hover{background:#f7d06a;}" +
   // Descriptive title at the top of the Causes / Settlements tabs.
   ".emig-section-title{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.05rem;" +
   "color:#f3c34c;font-size:1.1rem;text-align:center;margin:0.1rem 0 0.6rem;}" +
@@ -542,72 +546,55 @@ function makeTabBar(sections, onSelect) {
   return bar;
 }
 
-// Number-mode toggle: a two-way switch between Civ Pop (pop-points) and Scaled Pop (people).
-const NUM_CYCLE = [NumberMode.CIV, NumberMode.HISTORICAL];
+// The dashboard controls, shown as labeled pill GROUPS (a "Label:" + one selectable chip per option,
+// the current one gold) — the same shape as the Network lens row and the Demographics "Data" pills, so
+// the control row reads identically on every Emigration tab.
 /** @type {Record<number,string>} */
-const NUM_LABEL = {
-  [NumberMode.CIV]: "Civ Pop", [NumberMode.HISTORICAL]: "Scaled Pop"
-};
-
-/**
- * A small chip that toggles the number mode (Civ Pop ↔ Scaled Pop) and persists it.
- * @param {()=>void} onChange Called after the mode changes (to re-render).
- * @returns {HTMLElement} The chip.
- */
-function numbersToggle(onChange) {
-  const chip = el("div", "emig-num-toggle");
-  const refresh = () => {
-    chip.textContent = "Numbers: " + (NUM_LABEL[getNumberMode()] || "Scaled Pop");
-    chip.classList.toggle("active", getNumberMode() === NumberMode.CIV); // gold when off the default
-  };
-  refresh();
-  chip.addEventListener("click", () => {
-    const i = NUM_CYCLE.indexOf(/** @type {*} */ (getNumberMode()));
-    setNumberMode(NUM_CYCLE[(i + 1) % NUM_CYCLE.length]);
-    refresh();
-    onChange();
-  });
-  return chip;
-}
-
-// Unmet-civ visibility: an Emigration-OWNED override that always works on these tabs (the cross-mod
-// read of the Demographics policy is unreliable). 0 = follow the Demographics Spoilers setting,
-// 1 = always hide unmet civs, 2 = always show them.
-const VIS_CYCLE = [0, 1, 2];
+const NUM_LABEL = { [NumberMode.CIV]: "Civ Pop", [NumberMode.HISTORICAL]: "Scaled Pop" };
 /** @type {Record<number,string>} */
 const VIS_LABEL = { 0: "Follow Demographics", 1: "Hidden", 2: "Shown" };
 
 /**
- * A chip that cycles the Emigration unmet-civ visibility override (Follow Demographics → Hidden →
- * Shown) and re-renders. Lives in the same realm as the tabs' civHidden, so it always takes effect.
- * @param {()=>void} onChange Called after the override changes (to re-render).
- * @returns {HTMLElement} The chip.
+ * A labeled pill group: a "Label:" span + one selectable chip per option (the current key `active`).
+ * @param {string} label The leading label (e.g. "Numbers:").
+ * @param {{key:*, label:string}[]} items The options.
+ * @param {*} current The active option key.
+ * @param {(key:*)=>void} onSelect Called with the chosen key (only when it differs from current).
+ * @returns {HTMLElement} The pill group.
  */
-function visibilityToggle(onChange) {
-  const chip = el("div", "emig-num-toggle");
-  const refresh = () => {
-    chip.textContent = "Unmet civs: " + (VIS_LABEL[getVisibilityOverride()] || "Follow Demographics");
-    chip.classList.toggle("active", getVisibilityOverride() !== 0); // gold on an explicit override
-  };
-  refresh();
-  chip.addEventListener("click", () => {
-    const i = VIS_CYCLE.indexOf(getVisibilityOverride());
-    setVisibilityOverride(VIS_CYCLE[(i + 1) % VIS_CYCLE.length]);
-    refresh();
-    onChange();
-  });
-  return chip;
+function pillGroup(label, items, current, onSelect) {
+  const grp = el("div", "emig-pill-grp");
+  grp.appendChild(el("span", "emig-pill-lbl", label));
+  for (const it of items) {
+    const chip = el("div", "emig-pill" + (it.key === current ? " active" : ""), it.label);
+    chip.addEventListener("click", () => {
+      if (it.key !== current) onSelect(it.key);
+    });
+    grp.appendChild(chip);
+  }
+  return grp;
 }
 
 /**
- * Append the Numbers + Unmet-civ-visibility chips to a dashboard wrap.
- * @param {HTMLElement} wrap The dashboard wrapper.
- * @param {()=>void} onNumbers Numbers-toggle change handler.
- * @param {()=>void} onVisibility Visibility-toggle change handler.
+ * Build the consistent control row for a tab: the Numbers (Scaled/Civ) group when it applies, plus the
+ * Unmet-civs visibility group. Numbers is omitted where the section owns its own units control (the
+ * Network lens row's "Units:") or the host's group pills drive it.
+ * @param {boolean} showNumbers Whether to include the Numbers group.
+ * @param {()=>void} rebuild Re-gather + re-render after a change.
+ * @returns {HTMLElement} The control row.
  */
-function appendDashToggles(wrap, onNumbers, onVisibility) {
-  wrap.appendChild(numbersToggle(onNumbers));
-  wrap.appendChild(visibilityToggle(onVisibility));
+function buildControlRow(showNumbers, rebuild) {
+  const row = el("div", "emig-ctrl-row");
+  if (showNumbers) {
+    row.appendChild(pillGroup("Numbers:", [
+      { key: NumberMode.HISTORICAL, label: NUM_LABEL[NumberMode.HISTORICAL] },
+      { key: NumberMode.CIV, label: NUM_LABEL[NumberMode.CIV] }
+    ], getNumberMode(), (/** @type {number} */ k) => { setNumberMode(k); rebuild(); }));
+  }
+  row.appendChild(pillGroup("Unmet civs:", [
+    { key: 0, label: VIS_LABEL[0] }, { key: 1, label: VIS_LABEL[1] }, { key: 2, label: VIS_LABEL[2] }
+  ], getVisibilityOverride(), (/** @type {number} */ k) => { setVisibilityOverride(k); rebuild(); }));
+  return row;
 }
 
 /**
@@ -637,12 +624,9 @@ export function renderDashboardTabbed(target, model, rebuild) {
       body.innerHTML = "";
       renderSectionBody(body, sections[i]);
     };
-    // Numbers toggle re-renders the active tab; the visibility toggle re-gathers (it re-filters the
-    // civ list, which is baked into the model when it's built).
-    appendDashToggles(wrap, () => {
-      const k = sections[active] && sections[active].kind;
-      if (k && k !== "flowmap") show(active);
-    }, () => (rebuild ? rebuild() : show(active)));
+    // One consistent control row (Numbers + Unmet civs as labeled pill groups). A change re-gathers so
+    // the civ masking / counts re-apply across whichever tab is active.
+    wrap.appendChild(buildControlRow(true, () => (rebuild ? rebuild() : show(active))));
     wrap.appendChild(makeTabBar(sections, show));
     wrap.appendChild(body);
     target.appendChild(wrap);
@@ -686,15 +670,18 @@ function subtabRebuild(opts, body, section) {
 }
 
 /**
- * Append the unmet-civ visibility toggle to the embedded page (every section but the static Guide).
+ * Append the consistent control row to the embedded page (every section but the static Guide).
+ * Numbers is included only where the section doesn't own its own units control (the Network lens row)
+ * and the host group pills don't drive it.
  * @param {HTMLElement} wrap The dashboard wrapper.
  * @param {*} opts The renderDashboardSubtab opts.
  * @param {HTMLElement} body The section body element.
  * @param {*} section The active section.
  */
-function appendVisibilityChip(wrap, opts, body, section) {
+function appendControlRow(wrap, opts, body, section) {
   if (section.kind === "guide") return;
-  wrap.appendChild(visibilityToggle(() => subtabRebuild(opts, body, section)));
+  wrap.appendChild(buildControlRow(
+    wantsUnitsToggle(section, opts), () => subtabRebuild(opts, body, section)));
 }
 
 /**
@@ -723,16 +710,8 @@ export function renderDashboardSubtab(target, model, kind, opts) {
     // The timeline-detail note is rendered by the Demographics page beside its "Analytics policy"
     // banner (see EmigrationTimelineNote), so it's NOT added at the top here in the embedded page.
     const body = el("div", "emig-tabbody");
-    // Skip the in-panel "Numbers:" chip when the section owns its own toggle (flow) or the host group
-    // pills already drive units (hideUnitsToggle); see wantsUnitsToggle.
-    if (wantsUnitsToggle(section, opts)) {
-      wrap.appendChild(numbersToggle(() => {
-        body.innerHTML = "";
-        renderSectionBody(body, section);
-      }));
-    }
-    // Unmet-civ visibility — re-gather (the civ list is filtered when the model is built).
-    appendVisibilityChip(wrap, opts, body, section);
+    // One consistent control row (Numbers where it applies + Unmet civs), as labeled pill groups.
+    appendControlRow(wrap, opts, body, section);
     wrap.appendChild(body);
     renderSectionBody(body, section);
     target.appendChild(wrap);
