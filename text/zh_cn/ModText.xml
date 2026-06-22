@@ -176,7 +176,7 @@
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="zh_CN"><Text>Switch between the Civ's own population numbers and scaled people</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="zh_CN"><Text>Playback timeline appears once enough migration has been recorded to scrub through.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="zh_Hans_CN"><Text>{1_People}在灾难过后逃离了{2_City}。</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="zh_Hans_CN"><Text>{1_People}走投无路，消逝于{2_City}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="zh_Hans_CN"><Text>{2_City}有{1_People}未能幸存。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="zh_Hans_CN"><Text>提升该城的幸福度，或采取反移民立场以留住他们。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="zh_Hans_CN"><Text>邻邦正在超越这座城市；提升其产出以留住人口。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="zh_Hans_CN"><Text>难民正逃离战火；解除围城或缔结和平以遏制外流。</Text></Replace>

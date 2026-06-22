@@ -176,7 +176,7 @@
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="ko_KR"><Text>Switch between the Civ's own population numbers and scaled people</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ko_KR"><Text>Playback timeline appears once enough migration has been recorded to scrub through.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ko_KR"><Text>{1_People}이(가) 재난 이후 {2_City}에서 달아났습니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ko_KR"><Text>{1_People}이(가) 달아날 곳 없이 {2_City}에서 스러졌습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ko_KR"><Text>{2_City}에서 {1_People}이(가) 목숨을 잃었습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="ko_KR"><Text>도시의 행복도를 높이거나 반이민 정책을 채택해 이들을 붙잡으세요.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="ko_KR"><Text>이웃이 이 도시를 앞지르고 있습니다. 산출을 늘려 주민을 붙잡으세요.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="ko_KR"><Text>난민이 전투를 피해 떠납니다. 포위를 풀거나 평화를 맺어 유출을 막으세요.</Text></Replace>

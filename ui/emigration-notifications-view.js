@@ -95,10 +95,27 @@ function detailEl(e) {
   addLine(panel, "Cause", causeLabel(e.cause));
   addLine(panel, "Event", e.event); // the specific named war / disaster, when applicable
   addLine(panel, "From", place(e.fromCity, e.fromCiv));
-  addLine(panel, e.crossCiv ? "Moved to" : "To", place(e.toCity, e.toCiv));
-  if (e.people || e.points) addLine(panel, "People", formatBoth(e.people, e.points));
+  if (isDeath(e)) {
+    // A death has no destination — they did not survive to arrive anywhere. Render it plainly and
+    // somberly, with the count framed as lives lost rather than people who moved.
+    addLine(panel, "Outcome", "Did not survive");
+    if (e.people || e.points) addLine(panel, "Lives lost", formatBoth(e.people, e.points));
+  } else {
+    addLine(panel, e.crossCiv ? "Moved to" : "To", place(e.toCity, e.toCiv));
+    if (e.people || e.points) addLine(panel, "People", formatBoth(e.people, e.points));
+  }
   if (e.summary) addLine(panel, "Note", e.summary);
   return panel;
+}
+
+/**
+ * Whether a notification records people who died (the attrition / crisis-death channel) rather than
+ * migrated — so it can be worded as a loss of life, not a move.
+ * @param {*} e A NotifEntry.
+ * @returns {boolean} True for a death entry.
+ */
+function isDeath(e) {
+  return e.cause === "attrition";
 }
 
 /**
@@ -122,7 +139,7 @@ function rowSummary(e) {
 function headEl(e, accent, caret) {
   const head = el("div", "emig-ntf-head");
   head.appendChild(el("span", "emig-ntf-turn", "Turn " + e.turn));
-  const chip = el("span", "emig-ntf-chip", causeLabel(e.cause));
+  const chip = el("span", "emig-ntf-chip", isDeath(e) ? "Died" : causeLabel(e.cause));
   chip.style.color = accent;
   head.appendChild(chip);
   head.appendChild(el("span", "emig-ntf-sum", rowSummary(e)));
