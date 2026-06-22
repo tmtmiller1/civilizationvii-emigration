@@ -304,7 +304,7 @@ function digestFallback(cause, people, city) {
     case "prosperity": return `${people} left ${city} for more prosperous neighbors.`;
     case "war": return `${people} fled the fighting around ${city}.`;
     case "disaster": return `${people} fled ${city} after disaster struck.`;
-    case "attrition": return `${people} were lost from ${city} with nowhere to flee.`;
+    case "attrition": return `${people} did not survive in ${city}.`;
     default: return `${people} left ${city}.`;
   }
 }
