@@ -388,7 +388,11 @@ const DASH_CSS =
   ".emig-num-toggle{align-self:flex-end;cursor:pointer;font-size:1rem;color:#e5d2ac;" +
   "padding:0.34rem 1.15rem;border-radius:1rem;border:0.0555rem solid rgba(201,162,76,0.4);" +
   "background:rgba(229,210,172,0.06);margin-bottom:0.3rem;}" +
-  ".emig-num-toggle:hover{background:rgba(229,210,172,0.12);color:#f3c34c;}" +
+  ".emig-num-toggle:hover{background:rgba(229,210,172,0.18);color:#f3c34c;}" +
+  // Engaged (non-default) state: the same gold "active" fill the other selectable pills use, so the
+  // chip's colour reflects the current selection at a glance.
+  ".emig-num-toggle.active{background:#f3c34c;color:#1c1408;border-color:#f3c34c;font-weight:bold;}" +
+  ".emig-num-toggle.active:hover{background:#f7d06a;color:#1c1408;}" +
   // Descriptive title at the top of the Causes / Settlements tabs.
   ".emig-section-title{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.05rem;" +
   "color:#f3c34c;font-size:1.1rem;text-align:center;margin:0.1rem 0 0.6rem;}" +
@@ -554,6 +558,7 @@ function numbersToggle(onChange) {
   const chip = el("div", "emig-num-toggle");
   const refresh = () => {
     chip.textContent = "Numbers: " + (NUM_LABEL[getNumberMode()] || "Scaled Pop");
+    chip.classList.toggle("active", getNumberMode() === NumberMode.CIV); // gold when off the default
   };
   refresh();
   chip.addEventListener("click", () => {
@@ -582,6 +587,7 @@ function visibilityToggle(onChange) {
   const chip = el("div", "emig-num-toggle");
   const refresh = () => {
     chip.textContent = "Unmet civs: " + (VIS_LABEL[getVisibilityOverride()] || "Follow Demographics");
+    chip.classList.toggle("active", getVisibilityOverride() !== 0); // gold on an explicit override
   };
   refresh();
   chip.addEventListener("click", () => {
