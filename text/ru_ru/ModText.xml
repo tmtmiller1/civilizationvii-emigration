@@ -176,7 +176,7 @@
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="ru_RU"><Text>Switch between the Civ's own population numbers and scaled people</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ru_RU"><Text>Playback timeline appears once enough migration has been recorded to scrub through.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ru_RU"><Text>{1_People} бежали из {2_City} после бедствия.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ru_RU"><Text>{1_People} не выжили в {2_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ru_RU"><Text>{2_City} потерял(а) {1_People}.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="ru_RU"><Text>Повысьте счастье города или примите антииммиграционную политику, чтобы удержать их.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="ru_RU"><Text>Сосед превосходит этот город; повысьте его доходы, чтобы удержать людей.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="ru_RU"><Text>Беженцы бегут от боёв; снимите осаду или заключите мир, чтобы остановить отток.</Text></Replace>

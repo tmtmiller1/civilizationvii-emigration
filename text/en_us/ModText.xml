@@ -212,7 +212,7 @@
         <Row Tag="LOC_EMIG_NETC_UNITS_TIP"><Text>Switch between the Civ's own population numbers and scaled people</Text></Row>
         <Row Tag="LOC_EMIG_NETC_TIMELINE_PENDING"><Text>Playback timeline appears after a couple of turns, once there's population history to scrub through.</Text></Row>
         <Row Tag="LOC_EMIG_DIGEST_DISASTER"><Text>{1_People} fled {2_City} after disaster struck.</Text></Row>
-        <Row Tag="LOC_EMIG_DIGEST_ATTRITION"><Text>{1_People} did not survive in {2_City}.</Text></Row>
+        <Row Tag="LOC_EMIG_DIGEST_ATTRITION"><Text>{2_City} suffered {1_People} casualties.</Text></Row>
 
         <!-- Phase-1 explanatory toast: cause-keyed "what can I do" action hint -->
         <Row Tag="LOC_EMIG_HINT_UNHAPPINESS"><Text>Raise this city's happiness, or slot an Anti-Immigration Stance to retain them.</Text></Row>

@@ -176,7 +176,7 @@
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="de_DE"><Text>Switch between the Civ's own population numbers and scaled people</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="de_DE"><Text>Playback timeline appears once enough migration has been recorded to scrub through.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="de_DE"><Text>{1_People} flohen aus {2_City}, nachdem eine Katastrophe zuschlug.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="de_DE"><Text>{1_People} kamen in {2_City} ums Leben.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="de_DE"><Text>{2_City} erlitt {1_People} Verluste.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="de_DE"><Text>Steigere die Zufriedenheit der Stadt oder wähle eine einwanderungsfeindliche Haltung, um sie zu halten.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="de_DE"><Text>Ein Nachbar überflügelt diese Stadt; steigere ihre Erträge, um die Menschen zu halten.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="de_DE"><Text>Flüchtlinge fliehen vor den Kämpfen; brich die Belagerung oder schließe Frieden, um den Strom zu stoppen.</Text></Replace>
