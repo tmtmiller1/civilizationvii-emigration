@@ -114,4 +114,18 @@ close(adjustedPull(sig(2, 10, 5, false, 0, 0), sig(1, 40, 5, false, 0, 0), null,
 //   pull = (25−10) −4 = 11 (no cross-civ poach, no dominance).
 close(adjustedPull(sig(2, 10, 5, false, 0, 0), sig(2, 25, 5, false, 0, 0), null, fieldA, null), 11, "C14 internal move unbraked");
 
-console.log("engine-pull characterization harness passed (14 cases)");
+// ── Crisis escape: a refugee fleeing a crisis gets a cross-civ pull bonus, so it flees ABROAD ──
+globalThis.Game = undefined;
+globalThis.Players = undefined;
+Object.assign(CONFIG, {
+  crisisEscapeBonus: 14, violenceFleeThreshold: 2, refugeePoachBlock: 0,
+  asylumPushWeight: 0, antiSnowballWeight: 0, bordersEnabled: false
+});
+// C15 , a war refugee (violence ≥ threshold) crossing civs: (30−10) −4 reluctance −0 refugeePoach +14 escape = 30.
+const crisisSrc = { ...sig(1, 10, 5, false, 0, 0), violence: 5, disaster: 0 };
+close(adjustedPull(crisisSrc, sig(2, 30, 5, false, 0, 0), null, null, null), 30, "C15 crisis refugee escapes abroad");
+
+// C16 , a CALM source gets NO escape bonus and pays the full poachBlock: 20 −4 −12 = 4.
+close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(2, 30, 5, false, 0, 0), null, null, null), 4, "C16 calm source: no escape, full poach");
+
+console.log("engine-pull characterization harness passed (16 cases)");

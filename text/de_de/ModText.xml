@@ -102,6 +102,8 @@
         <Replace Tag="LOC_EMIG_T_FLEE_D" Language="de_DE"><Text>Wie stark Flüchtlinge Ziele abseits des nächsten Eindringlings bevorzugen.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH" Language="de_DE"><Text>Geografie – Reibung zwischen Civs</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH_D" Language="de_DE"><Text>Zusätzliche Zurückhaltung, über eine Zivilisationsgrenze zu wandern.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="de_DE"><Text>Krisenflucht (ins Ausland)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="de_DE"><Text>Wie stark eine Zivilisation in akuter Krise (Krieg/Katastrophe) ihre Flüchtlinge drängt, ÜBER GRENZEN in ein anderes Reich zu fliehen, statt in ihre eigenen (ebenso betroffenen) Städte umzusiedeln und dort zu sterben. Höher = mehr zivilisationsübergreifende Flucht. 0 = aus.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL" Language="de_DE"><Text>Geografie: Migrationsschub durch offene Grenzen</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="de_DE"><Text>Wie sehr ein Abkommen über offene Grenzen zwischen zwei Zivilisationen die Wanderung zwischen ihnen erleichtert, in beide Richtungen. 0 = aus.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="de_DE"><Text>Geografie: Reiseverzögerung (0 = sofort)</Text></Replace>
