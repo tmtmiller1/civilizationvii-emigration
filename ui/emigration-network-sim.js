@@ -40,17 +40,24 @@ function clamp(v, lo, hi) {
 export function seedSim(net, WX, WY, cache) {
   const cx = WX / 2;
   const cy = WY / 2;
-  const R = Math.min(WX, WY) * 0.42;
   const n = net.nodes.length;
+  // Seed on an aspect-matched ELLIPSE (uses the full WIDE canvas, not just its short side) whose extent
+  // GROWS with the civ count: a few civs stay compact in the middle, while a max-civ large game spreads
+  // across the whole canvas from the start instead of piling into a cramped central disk for the sim to
+  // slowly pry apart. `fill` is the fraction of each half-axis used (≈0.42 at a typical count, capped so
+  // the outermost cluster still clears the edge).
+  const fill = clamp(0.30 + 0.045 * Math.sqrt(n), 0.34, 0.46);
+  const rx = WX * fill;
+  const ry = WY * fill;
   const nodes = net.nodes.map((nd, i) => {
-    // Sunflower (phyllotaxis) spread so the initial layout already fills the disk, not a thin ring.
+    // Sunflower (phyllotaxis) spread so the initial layout already fills the ellipse, not a thin ring.
     const a = i * GOLDEN;
-    const rr = R * Math.sqrt((i + 0.5) / Math.max(1, n));
+    const t = Math.sqrt((i + 0.5) / Math.max(1, n)); // normalized radius 0..1
     const cached = cache && cache.get(nd.id);
     return {
       ...nd,
-      x: cached ? cached.x : cx + Math.cos(a) * rr,
-      y: cached ? cached.y : cy + Math.sin(a) * rr,
+      x: cached ? cached.x : cx + Math.cos(a) * rx * t,
+      y: cached ? cached.y : cy + Math.sin(a) * ry * t,
       vx: 0, vy: 0, fx: 0, fy: 0
     };
   });
