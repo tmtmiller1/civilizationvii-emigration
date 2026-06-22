@@ -143,7 +143,8 @@ class ScreenEmigration extends Panel {
         derr("content host not found in template");
         return;
       }
-      renderDashboardTabbed(host, dashboardModel(gatherDashboard()));
+      const rebuild = () => renderDashboardTabbed(host, dashboardModel(gatherDashboard()), rebuild);
+      rebuild();
       dlog("dashboard rendered");
     } catch (e) {
       derr("render failed:", e);

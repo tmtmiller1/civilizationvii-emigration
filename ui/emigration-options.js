@@ -37,7 +37,9 @@ import {
   getSnapshotInterval,
   setSnapshotInterval,
   getShowDockButton,
-  setShowDockButton
+  setShowDockButton,
+  getVisibilityOverride,
+  setVisibilityOverride
 } from "/emigration/ui/emigration-settings.js";
 import { PRESET_NAMES } from "/emigration/ui/emigration-tunables.js";
 
@@ -61,6 +63,13 @@ const SNAP_ITEMS = [
   { label: "Every 5 turns" }
 ];
 const PRESET_ITEMS = PRESET_NAMES.map((n) => ({ label: "LOC_EMIG_PRESET_" + n.toUpperCase() }));
+// Emigration's own analytics-visibility control for its dashboard tabs (0 follow Demographics,
+// 1 hide unmet, 2 show all). Plain-string item labels — no localization round-trip needed.
+const VISIBILITY_ITEMS = [
+  { label: "Follow Demographics setting" },
+  { label: "Hide civilizations I haven't met" },
+  { label: "Show all civilizations" }
+];
 
 /** Register the number-display dropdown. */
 function registerNumberMode() {
@@ -155,11 +164,29 @@ function registerDockButton() {
   });
 }
 
+/** Register the analytics-visibility dropdown (Emigration's own, always-reliable unmet-civ control). */
+function registerVisibility() {
+  Options.addOption({
+    category: CategoryType.Mods,
+    group: MAIN_GROUP,
+    type: OptionType.Dropdown,
+    id: "emigration-visibility",
+    initListener: (/** @type {*} */ info) => (info.selectedItemIndex = getVisibilityOverride()),
+    updateListener: (/** @type {*} */ _i, /** @type {number} */ v) => setVisibilityOverride(v),
+    label: "Emigration • analytics visibility",
+    description: "Whether the Emigration tabs show civilizations you haven't met. "
+      + "\"Follow Demographics setting\" mirrors the Demographics Spoilers option; the other two are "
+      + "self-contained overrides that always apply to the Emigration tabs.",
+    dropdownItems: VISIBILITY_ITEMS
+  });
+}
+
 Options.addInitCallback(() => {
   registerNumberMode();
   registerPreset();
   registerDataMode();
   registerSnapshotInterval();
   registerDockButton();
+  registerVisibility();
   registerAdvancedEditor();
 });
