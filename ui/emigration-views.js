@@ -314,9 +314,13 @@ const DASH_CSS =
   ".emig-led-tot{border-top:0.0833rem solid rgba(201,162,76,0.45);}" +
   ".emig-led-tot .emig-led-c{border-top:none;font-weight:bold;}" +
   // Causes pies.
+  // Cap the legend to the pie's width so it WRAPS under the pie instead of widening the (content-sized)
+  // column — otherwise a card with long "civ count (pct%)" labels makes its column wider and pushes the
+  // pies out of alignment with the other cards (and squeezes the cause bars unevenly).
   ".emig-pie-leg{display:flex;flex-wrap:wrap;gap:0.25rem 0.9rem;justify-content:center;" +
-  "margin:0.1rem 0 0.7rem;}" +
-  ".emig-pie-leg-i{display:flex;align-items:center;gap:0.3rem;font-size:0.78rem;color:#cbb994;}" +
+  "max-width:14rem;margin:0.1rem 0 0.7rem;}" +
+  ".emig-pie-leg-i{display:flex;align-items:center;gap:0.3rem;font-size:0.78rem;color:#cbb994;" +
+  "max-width:100%;}" +
   ".emig-pie-sw{width:0.62rem;height:0.62rem;border-radius:50%;display:inline-block;}" +
   ".emig-pie-row{display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;margin-bottom:1.2rem;}" +
   ".emig-pie-grid{display:flex;flex-wrap:wrap;justify-content:center;}" +
