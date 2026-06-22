@@ -18,7 +18,10 @@ export const CONFIG = {
   // cities in crisis), so simultaneous wars on different civs never compete for one global budget.
   maxMovesPerTurn: 8,
   movesPerCity: 1, // per-civ ceiling: + this per settlement (the ceiling grows with empire size)
-  movesPerSiege: 2, // per-civ ceiling: + this per city in war/disaster crisis (refugees aren't bottlenecked)
+  movesPerSiege: 4, // per-civ ceiling: + this per city in war/disaster crisis. Raised from 2 → 4 so a
+  //                   besieged city's refugees actually flee FASTER than the base game's combat removes
+  //                   them — at 2 the trickle lost the race and most population died in place. Pairs
+  //                   with warSurgeMax (a city's per-turn burst); the budget must be ≥ it to matter.
   emigrationBar: 30, // accumulated pressure (per source) to move one citizen
   deltaExponent: 0.5, // diminishing scaling on the prosperity delta
 
@@ -214,7 +217,8 @@ export const CONFIG = {
   // ── exceeds the flee threshold), up to warSurgeMax points in a turn - still ──
   // ── bounded by the siegeLossCapPct TOTAL cap above, so a city can't be fully ──
   // ── depopulated. 1 = off (the old linear trickle). ──
-  warSurgeMax: 3, // max rural points a besieged source sheds in one turn (1 = off)
+  warSurgeMax: 5, // max rural points a besieged source sheds in one turn (1 = off). Raised 3 → 5 so a
+  //                heavy assault evacuates a city in a burst instead of a slow trickle that combat outruns.
 
   // ── Algorithm B: overcrowding discount (ON by default; 0 → no change) ──
   // Civ VII pop costs ZERO happiness per head (probe API3-2); a tall city's
@@ -251,7 +255,9 @@ export const CONFIG = {
   // (addRuralPopulation(-1)), tracked as deaths, not migration. Only fires when there
   // is no destination AND distress is high; never touches a content city.
   attritionEnabled: true,
-  attritionMinDistress: 80, // min situational distress (%) before a trapped city loses people
+  attritionMinDistress: 40, // min situational distress (%) before crisis death engages. Lowered 80 → 40
+  //                           so real wars actually trigger the (now severity-scaled) death channel
+  //                           instead of the city falling to the base game first with the mod killing 0.
   attritionThreshold: 40, // distress "pressure" to remove one population point
   // Lethal CRISES kill even when people can flee — war, disaster, siege, and famine. Economic
   // (prosperity / unhappiness) emigration never kills, because it carries no situational distress.
@@ -263,7 +269,14 @@ export const CONFIG = {
   // refuge) still dies at the full rate. NOTE: this does NOT count against the war siege-loss cap, so a
   // very long siege can deplete a city beyond that cap (down to the rural floor) — tune the share if so.
   crisisDeathEnabled: true,
-  crisisDeathShare: 0.5, // crisis death rate (vs the trapped rate) when a refuge IS available
+  // The crisis-death rate is now DYNAMIC = crisisDeathShare × warSeverity (capped at the full trapped
+  // rate). crisisDeathShare is the BASE coefficient at a minimal one-front siege; warSeverity scales it
+  // up with violence (siege duration + pillaging + assault) and the number of attackers. So a mild war
+  // kills a small minority (flight dominates) while a brutal/prolonged/ganged-up war kills most of those
+  // who can't escape. Lowered 0.5 → 0.2 so mild wars flee MORE; severity makes bad wars deadlier.
+  crisisDeathShare: 0.2,
+  crisisSeverityCap: 6, // max violence/flee-threshold ratio counted toward severity (caps a single front)
+  crisisParticipantWeight: 0.5, // each ATTACKER beyond the first adds this much severity (a pile-on)
 
   // ── Feature 1: aggressor-aware war migration (aggressorPenalty 0 = off) ──
   ownCivRefugeeBonus: 1, // war refugees lean slightly toward their own civ's cities first — but only

@@ -26,6 +26,7 @@ import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
 import { loadState, saveState, prepareState, ownerPopulations } from "/emigration/ui/emigration-state.js";
 import { cityName, moveRecord, departRecord } from "/emigration/ui/emigration-migration-records.js";
 import { pollCrisis, eventKeyForMove, eventKeyForDeath } from "/emigration/ui/emigration-event-attribution.js";
+import { warAggressors } from "/emigration/ui/emigration-war.js";
 import {
   applyDepartureConsequences,
   applyArrivalConsequences
@@ -387,6 +388,27 @@ function processSource(src, ranked, state, ownerPop, budgets) {
 }
 
 /**
+ * The CRISIS-SEVERITY multiplier (≥ 0) on the crisis-death rate: the worse the crisis, the larger the
+ * share of a stricken city's people that die rather than escaping. Built from signals the mod can read:
+ *   • overall lethal DISTRESS `d` — already aggregates a war's siege DURATION (vwSiege/turn), PILLAGED
+ *     tiles (vwPillage) and ASSAULT damage (vwAssault, a casualties proxy), AND disaster/famine — so
+ *     this works for every crisis type, not just war — normalized by the firing floor and capped; and
+ *   • for a WAR specifically, the number of attacking civs (PARTICIPANTS): a multi-civ pile-on is
+ *     deadlier than a duel.
+ * (No engine hook exposes exact units-lost; cities-razed could be layered in later.) ≈ 1 at the firing
+ * floor; rises steeply for a long, heavily-pillaged, or ganged-up war.
+ * @param {*} src Source signal.
+ * @param {number} d The source's lethal distress (already computed by the caller).
+ * @returns {number} The severity multiplier.
+ */
+function crisisSeverity(src, d) {
+  const ref = Math.max(1, CONFIG.attritionMinDistress);
+  const intensity = Math.min(CONFIG.crisisSeverityCap, d / ref);
+  const attackers = warAggressors(src.owner).size;
+  return intensity * (1 + CONFIG.crisisParticipantWeight * Math.max(0, attackers - 1));
+}
+
+/**
  * The outlet's DEATH channel — population that leaves the world (cause `attrition`), tracked as deaths,
  * not migration. Fires under LETHAL distress (`distress ≥ attritionMinDistress`) — i.e. the situational
  * crises: war, disaster, siege, famine. Economic prosperity/unhappiness emigration carries NO
@@ -409,7 +431,8 @@ function processOutletDeath(src, st, state, hasRefuge) {
     st.deathPressure = Math.max(0, st.deathPressure * 0.5); // coping / economic / can flee freely → decay
     return null;
   }
-  const rate = hasRefuge ? CONFIG.crisisDeathShare : 1; // trapped → full rate; fleeing → a fraction die
+  // DYNAMIC: the worse the crisis, the larger the share that dies rather than fleeing. Trapped → full.
+  const rate = hasRefuge ? Math.min(1, CONFIG.crisisDeathShare * crisisSeverity(src, d)) : 1;
   st.deathPressure += Math.pow(Math.max(d, 1), CONFIG.deltaExponent) * rate;
   if (st.deathPressure < speedBar(CONFIG.attritionThreshold)) return null;
   const popBefore = src.population;
