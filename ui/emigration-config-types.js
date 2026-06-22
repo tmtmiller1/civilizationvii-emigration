@@ -110,7 +110,10 @@
  * @property {boolean} crisisDeathEnabled A city under LETHAL distress (war/disaster/siege/famine) loses
  *   some population to death even when a refuge exists — concurrent with emigration. Economic
  *   (prosperity/unhappiness) emigration never kills (no situational distress).
- * @property {number} crisisDeathShare Crisis death rate vs the trapped rate when a refuge exists (0..1).
+ * @property {number} crisisDeathShare Base crisis-death coefficient (× warSeverity) when a refuge
+ *   exists; the dynamic rate is clamped to the full trapped rate.
+ * @property {number} crisisSeverityCap Max violence/flee-threshold ratio counted toward war severity.
+ * @property {number} crisisParticipantWeight Severity added per attacking civ beyond the first.
  * @property {number} ownCivRefugeeBonus War-refugee pull toward own civ (Feature 1).
  * @property {number} aggressorPenalty War-refugee penalty for the aggressor (F1; 0 = off).
  * @property {boolean} bordersEnabled Apply Open/Closed Borders policy effects (F2).
