@@ -53,16 +53,20 @@ function testBothDirectionsPresent() {
   assert.equal(maya.out.civs.length, 0, "Maya has no Emigrants — the column renders a placeholder");
 }
 
-// People who fled to an UNMET civ still show — anonymized to the "Unmet" bucket (negative id).
-function testUnmetBucketShown() {
+// People who fled to an UNMET civ still show — anonymized to the "Unmet" bucket (negative id) — and
+// deaths show as a "Died" wedge in the same "left for/died" pie.
+function testUnmetAndDiedShown() {
   const himiko = cardsByName().get("Himiko");
-  assert.equal(himiko.out.civs.length, 1, "Himiko's emigrants pie shows the unmet destination");
-  assert.equal(himiko.out.civs[0].name, "Unmet", "the unmet destination is anonymized to 'Unmet'");
-  assert.ok(himiko.out.civs[0].id < 0, "the Unmet bucket uses a sentinel (negative) id");
+  const names = himiko.out.civs.map((/** @type {*} */ s) => s.name);
+  assert.ok(names.includes("Unmet"), "the unmet destination is anonymized to 'Unmet'");
+  assert.ok(names.includes("Died"), "deaths show as a 'Died' wedge in the Emigrants pie");
+  const died = himiko.out.civs.find((/** @type {*} */ s) => s.name === "Died");
+  assert.equal(died.people, 20, "the Died wedge carries the civ's death toll");
+  assert.ok(died.id < 0, "the Died wedge uses a sentinel (negative) id");
 }
 
 testListsActiveCivWithoutFlow();
 testReceivedRefugeesAttributed();
 testBothDirectionsPresent();
-testUnmetBucketShown();
+testUnmetAndDiedShown();
 console.log("causes-civs harness passed");

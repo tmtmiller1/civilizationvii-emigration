@@ -42,16 +42,19 @@ function causeText(causes) {
   return entries.slice(0, 3).map((e) => causeLabel(e.c) + " " + Math.round((e.n / total) * 100) + "%").join(", ");
 }
 
+// Synthetic slice id for the "Died" wedge (population lost to death, no destination) in the Emigrants
+// pie. Other negative ids are the anonymous "Unmet" bucket (a civ the policy hides).
+const DIED_ID = -3;
+
 /**
- * Pie slices for a direction's civ breakdown (coloured by the other civ).
+ * Pie slices for a direction's civ breakdown (coloured by the other civ; "Died" dark red, "Unmet" grey).
  * @param {{id:number, name:string, people:number}[]} civs Civs.
  * @returns {{value:number, color:string, label:string}[]} Slices.
  */
 function civSlices(civs) {
-  // A negative id is the anonymous "Unmet" bucket (a civ the policy hides) — neutral grey, so it never
-  // mimics a real civ's banner colour.
   return (civs || []).map((c) => ({
-    value: c.people, color: c.id < 0 ? "#8c8064" : civColorByIndex(c.id), label: c.name
+    value: c.people, label: c.name,
+    color: c.id === DIED_ID ? "#9a3b3b" : c.id < 0 ? "#8c8064" : civColorByIndex(c.id)
   }));
 }
 
@@ -286,7 +289,7 @@ function cityCard(c) {
   const cols = el("div", "emig-city-cols" + (isCiv ? " with-causes" : ""));
   if (isCiv) cols.appendChild(causeList(c.causes, c.events));
   cols.appendChild(directionCol("Immigrants ; came from", "Why:", c.in));
-  cols.appendChild(directionCol("Emigrants ; left for", "Why:", c.out));
+  cols.appendChild(directionCol("Emigrants ; left for/died", "Why:", c.out));
   // Settlements: the pressure becomes a third aligned graph column beside the two pies.
   if (!isCiv) cols.appendChild(pressureCol(c.pressure));
   card.appendChild(cols);
@@ -371,8 +374,15 @@ export function buildCivFlows(flows, civs, eventsByOwner) {
     .filter((r) => (r.in || 0) + (r.out || 0) + (r.deaths || 0) > 0)
     .map((r) => {
       const f = map.get(r.pid) || { in: empty, out: empty };
+      const out = flowDir(f.out, names);
+      // Deaths are population LOST with no destination — show them as a "Died" wedge in the
+      // Emigrants ("left for/died") pie, so a civ whose loss was deaths isn't a blank pie.
+      if ((r.deaths || 0) > 0) {
+        out.civs.push({ id: DIED_ID, name: "Died", people: r.deaths });
+        out.civs.sort((a, b) => b.people - a.people);
+      }
       return {
-        name: r.name, in: flowDir(f.in, names), out: flowDir(f.out, names),
+        name: r.name, in: flowDir(f.in, names), out,
         causes: mergeCauses(r.byCause, r.inByCause), events: events[r.pid] || null,
         _total: (r.in || 0) + (r.out || 0) + (r.deaths || 0)
       };
