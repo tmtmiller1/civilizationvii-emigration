@@ -392,13 +392,8 @@ const DASH_CSS =
   ".emig-pill-grp{display:flex;flex-wrap:wrap;align-items:center;gap:0.3rem;}" +
   ".emig-pill-lbl{font-size:0.9rem;opacity:0.7;margin-right:0.1rem;text-transform:uppercase;" +
   "letter-spacing:0.03rem;color:#cbb994;}" +
-  ".emig-pill{cursor:pointer;padding:0.16rem 0.7rem;border-radius:0.9rem;font-size:0.92rem;" +
-  "border:0.0555rem solid rgba(201,162,76,0.45);color:#e5d2ac;background:rgba(9,12,19,0.4);}" +
-  ".emig-pill:hover{background:rgba(243,195,76,0.16);}" +
-  ".emig-pill.active{background:#f3c34c;color:#1c1408;border-color:#f3c34c;font-weight:bold;}" +
-  ".emig-pill.active:hover{background:#f7d06a;}" +
-  // FILTER controls (e.g. Unmet civs) render as the flat, square-cornered, gold-BOXED buttons the time/
-  // age filters use — distinct from the rounded gold-FILLED view pills above.
+  // Control-row groups render as flat, square-cornered, gold-BOXED buttons — the same look as the time/
+  // age filters on the Data tab.
   ".emig-filter-btn{display:inline-block;padding:0.18rem 0.55rem;border-radius:0.2rem;" +
   "border:0.0555rem solid rgba(201,162,76,0.4);background:rgba(9,12,19,0.5);color:#cbb994;" +
   "font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.06em;font-size:0.78rem;" +
@@ -571,14 +566,9 @@ const VIS_LABEL = { 0: "Follow Demographics", 1: "Hidden", 2: "Shown" };
  * @param {(key:*)=>void} onSelect Called with the chosen key (only when it differs from current).
  * @returns {HTMLElement} The pill group.
  */
-function pillGroup(label, items, current, onSelect) {
-  return controlGroup(label, items, current, onSelect, "emig-pill");
-}
-
 /**
  * A labeled FILTER group: a "Label:" span + one flat rectangular BUTTON per option (the current one
- * boxed gold) — the year/age-filter look. Use for things that FILTER the data (which civs are shown),
- * vs pillGroup for things that change the VIEW (units, colour-by).
+ * boxed gold) — the year/age-filter look. Used for every dashboard control row group.
  * @param {string} label The leading label.
  * @param {{key:*, label:string}[]} items The options.
  * @param {*} current The active option key.
@@ -622,7 +612,8 @@ function controlGroup(label, items, current, onSelect, cls) {
 function buildControlRow(showNumbers, rebuild) {
   const row = el("div", "emig-ctrl-row");
   if (showNumbers) {
-    row.appendChild(pillGroup("Numbers:", [
+    // Scaled/Civ numbers reads as a filter too → flat buttons like the year filters.
+    row.appendChild(filterGroup("Numbers:", [
       { key: NumberMode.HISTORICAL, label: NUM_LABEL[NumberMode.HISTORICAL] },
       { key: NumberMode.CIV, label: NUM_LABEL[NumberMode.CIV] }
     ], getNumberMode(), (/** @type {number} */ k) => { setNumberMode(k); rebuild(); }));
