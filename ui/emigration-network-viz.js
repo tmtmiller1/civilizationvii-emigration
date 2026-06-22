@@ -388,9 +388,8 @@ function addFlowsToggle(root, state, onChange) {
   root.appendChild(c);
 }
 
-// Number-mode units toggle (Civ Pop ↔ Scaled Pop), shared with the flow-map view so both surfaces of
+// Number-mode units control (Scaled Pop ↔ Civ Pop), shared with the flow-map view so both surfaces of
 // the combined Network tab carry the same "Units:" control.
-const UNITS_CYCLE = [NumberMode.CIV, NumberMode.HISTORICAL];
 /** @type {Record<number,string>} */
 const UNITS_LABEL = { [NumberMode.CIV]: "Civ Pop", [NumberMode.HISTORICAL]: "Scaled Pop" };
 
@@ -405,14 +404,19 @@ const UNITS_LABEL = { [NumberMode.CIV]: "Civ Pop", [NumberMode.HISTORICAL]: "Sca
 export function appendUnitsToggle(root, rebuildAll, withSep = true) {
   if (withSep) root.appendChild(el("span", "emig-lens-sep"));
   root.appendChild(el("span", "emig-lens-lbl", loc("LOC_EMIG_NETC_UNITS", "Units:")));
-  const c = el("div", "emig-netc-chip", UNITS_LABEL[getNumberMode()] || "Scaled Pop");
-  c.title = loc("LOC_EMIG_NETC_UNITS_TIP", "Switch between the Civ's own population numbers and scaled people");
-  c.addEventListener("click", () => {
-    const i = UNITS_CYCLE.indexOf(/** @type {*} */ (getNumberMode()));
-    setNumberMode(UNITS_CYCLE[(i + 1) % UNITS_CYCLE.length]);
+  const set = (/** @type {number} */ mode) => {
+    if (getNumberMode() === mode) return;
+    setNumberMode(mode);
     if (typeof rebuildAll === "function") rebuildAll();
-  });
-  root.appendChild(c);
+  };
+  // Scaled/Civ is a filter-style choice → flat boxed buttons (Scaled first), one active, like the
+  // year filters and the dashboard control row.
+  for (const mode of [NumberMode.HISTORICAL, NumberMode.CIV]) {
+    const b = el("div", "emig-filter-btn" + (getNumberMode() === mode ? " active" : ""),
+      UNITS_LABEL[mode]);
+    b.addEventListener("click", () => set(mode));
+    root.appendChild(b);
+  }
 }
 
 /**
