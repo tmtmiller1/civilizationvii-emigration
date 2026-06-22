@@ -70,7 +70,7 @@ const OPT_PRESET = "preset";
 const OPT_SAMPLE = "sampleData";
 const OPT_SNAP = "snapshotInterval";
 const OPT_DOCK = "showDockButton";
-const SNAP_DEFAULT = 3; // turns per migration-timeline snapshot (user-adjustable 1..5)
+const SNAP_DEFAULT = 1; // turns per migration-timeline snapshot (user-adjustable 1..5; 1 = every turn)
 
 // String-keyed views over the typed config objects (same references), so the
 // generic tunable code can index them by arbitrary CONFIG key.
@@ -144,7 +144,10 @@ function clampSnap(n) {
 }
 
 /**
- * Timeline-detail setting: turns between migration-flow snapshots (1 = finest). Default 3.
+ * Timeline-detail setting: turns between migration-flow snapshots (1 = finest). Default 1 (every
+ * turn) — the per-pass compute is the same at any interval, and the saved frame count is hard-capped
+ * (MAX_FLOW_SNAPSHOTS), so the finest setting stays bounded; a coarser interval only spans more turns
+ * before the timeline decimates.
  * @returns {number} Interval in [1,5].
  */
 export function getSnapshotInterval() {
