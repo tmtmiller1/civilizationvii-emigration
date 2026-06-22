@@ -580,7 +580,7 @@ function gatherFresh() {
   const me = localId();
   const pops = gatherPops();
   const { flows, intra } = gatherFlows();
-  return {
+  const model = {
     civs: pids.map(civRow),
     byCause: aggregateByCause(pids),
     eventsByOwner: gatherEventsByOwner(pids), // specific war/disaster/crisis behind each cause
@@ -592,7 +592,9 @@ function gatherFresh() {
     cities: me != null ? ownerCitySnapshots(me) : [],
     myCities: gatherSettlements(me, pops)
   };
+  return model;
 }
+
 
 /** @type {{key:string, data:*}|null} Open-session gather memo (Perf plan P1 #4). */
 let _gatherMemo = null;
