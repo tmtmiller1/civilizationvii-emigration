@@ -40,6 +40,8 @@
  * @property {number} refugeesPercent Reserved: % of rural that flees a razed city.
  * @property {boolean} crossCivEnabled Allow migration between civilizations.
  * @property {boolean} includeCityStates Include minor/city-state settlements.
+ * @property {boolean} conquestMigrationEnabled Count a city capture as cross-civ conquest migration
+ *   (conqueror gains the absorbed population, prior owner loses it) in the net-migration tally.
  * @property {boolean} requireMet Simulation scope: false = global (all alive civs) — the default;
  *   true = met-only (lighter). Visibility masking is handled separately (governance), not here.
  * @property {number} foodFactor Per-capita food weight.

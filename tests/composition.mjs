@@ -59,11 +59,16 @@ function testFoundWarConquestRegrowth() {
   assert.equal(comp.total, 4);
   assert.equal(shareOf(comp, 0), 1); // still all civ 0
 
-  // Civ 1 conquers Rome (owner flips, population unchanged, no migration).
-  __test.recordCompositionPass([rome(1, 4)], []);
+  // Civ 1 conquers Rome (owner flips, population unchanged, no migration). The pass reports the
+  // capture so the conqueror can be credited the absorbed population in the net-migration tally.
+  const conquests = __test.recordCompositionPass([rome(1, 4)], []);
+  assert.deepEqual(conquests, [{ prevOwner: 0, newOwner: 1, name: "Rome", points: 4 }]);
   comp = __test.compositionForCity({ location: loc });
   assert.equal(comp.owner, 1);
   assert.equal(shareOf(comp, 0), 1); // conquered populace keeps its origin
+
+  // A pass with no ownership change reports no captures.
+  assert.deepEqual(__test.recordCompositionPass([rome(1, 4)], []), []);
 
   // Held a while, grows 4 → 12 (natural growth → current owner civ 1).
   __test.recordCompositionPass([rome(1, 12)], []);
