@@ -27,7 +27,7 @@ import { loadState, saveState, prepareState, ownerPopulations } from "/emigratio
 import { cityName, moveRecord, departRecord } from "/emigration/ui/emigration-migration-records.js";
 import { pollCrisis, eventKeyForMove, eventKeyForDeath } from "/emigration/ui/emigration-event-attribution.js";
 import { warAggressors } from "/emigration/ui/emigration-war.js";
-import { tickCombat, combatLossFor } from "/emigration/ui/emigration-combat.js";
+import { combatLossFor } from "/emigration/ui/emigration-combat.js";
 import {
   applyDepartureConsequences,
   applyArrivalConsequences
@@ -618,7 +618,6 @@ function bankStanceImpact(ranked, state) {
 export function runPass() {
   tickViolence(); // decay accumulated combat intensity before reading it
   tickDisasters(); // decay accumulated disaster distress before reading it
-  tickCombat(); // decay accumulated per-civ unit-loss intensity (war-severity term)
   pollCrisis(); // cache the active age crisis so moves/deaths can be attributed to it
   const signals = collectCitySignals();
   const ranked = signals.length ? rankByProsperity(signals) : [];
