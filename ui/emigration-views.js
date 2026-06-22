@@ -604,15 +604,20 @@ export function renderDashboardTabbed(target, model) {
   }
 }
 
+// Sections the "Numbers:" units chip doesn't apply to: "flow" has its own inline Units toggle, and
+// stances / notifications / guide show no population counts to switch.
+const NO_UNITS_TOGGLE = new Set(["flow", "stances", "notifications", "guide"]);
+
 /**
- * Whether to show the in-panel "Numbers:" units chip for a section: not for "flow" (it has its own
- * inline Units toggle), and not when the host group pills already control units (`opts.hideUnitsToggle`).
+ * Whether to show the in-panel "Numbers:" units chip for a section: only the count-bearing tables/pies
+ * (net table, causes, settlements), and not when the host group pills already control units
+ * (`opts.hideUnitsToggle`).
  * @param {*} section The active section.
  * @param {{hideUnitsToggle?:boolean}} [opts] Render options.
  * @returns {boolean} True to show the chip.
  */
 function wantsUnitsToggle(section, opts) {
-  if (section.kind === "flow") return false;
+  if (NO_UNITS_TOGGLE.has(section.kind)) return false;
   return !(opts && opts.hideUnitsToggle);
 }
 
