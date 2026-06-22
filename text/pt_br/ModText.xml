@@ -176,7 +176,7 @@
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="pt_BR"><Text>Switch between the Civ's own population numbers and scaled people</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="pt_BR"><Text>Playback timeline appears once enough migration has been recorded to scrub through.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="pt_BR"><Text>{1_People} fugiram de {2_City} após um desastre.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="pt_BR"><Text>{1_People} não sobreviveram em {2_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="pt_BR"><Text>{2_City} sofreu {1_People} baixas.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="pt_BR"><Text>Aumente a felicidade da cidade ou adote uma postura anti-imigração para retê-los.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="pt_BR"><Text>Um vizinho supera esta cidade em prosperidade; aumente seus rendimentos para manter o povo.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="pt_BR"><Text>Os refugiados fogem dos combates; quebre o cerco ou faça a paz para conter o êxodo.</Text></Replace>
