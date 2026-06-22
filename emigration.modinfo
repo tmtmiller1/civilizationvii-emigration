@@ -96,6 +96,7 @@
                     <Item>ui/emigration-civ-tuning.js</Item>
                     <Item>ui/emigration-effects.js</Item>
                     <Item>ui/emigration-war.js</Item>
+                    <Item>ui/emigration-combat.js</Item>
                     <Item>ui/emigration-event-attribution.js</Item>
                     <Item>ui/emigration-borders.js</Item>
                     <Item>ui/emigration-naming.js</Item>

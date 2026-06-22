@@ -282,6 +282,12 @@ export const CONFIG = {
   // multiplier bonus is capped, so even a 10-civ dogpile adds at most crisisParticipantMax.
   crisisParticipantWeight: 0.1, // each attacker beyond the first adds this (was 0.5 — too steep)
   crisisParticipantMax: 0.4, // hard cap on the participant bonus (reached at ~5 attackers, then flat)
+  // Unit CASUALTIES are a MAJOR severity factor (added on top of the damage-driven intensity): a war
+  // measured by how much army a civ is losing in the field, from UnitRemovedFromMap (emigration-combat).
+  // The DECAYING per-civ loss count × this weight, capped, so it stays a co-major factor with damage.
+  crisisCombatWeight: 0.25, // per recent unit lost (decaying) added to severity
+  crisisCombatMax: 4, // cap on the unit-casualty severity term (~16 recent losses → full)
+  combatDecay: 0.7, // per-turn decay of the per-civ unit-loss intensity (recent losses matter most)
 
   // ── Feature 1: aggressor-aware war migration (aggressorPenalty 0 = off) ──
   ownCivRefugeeBonus: 1, // war refugees lean slightly toward their own civ's cities first — but only

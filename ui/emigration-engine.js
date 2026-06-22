@@ -27,6 +27,7 @@ import { loadState, saveState, prepareState, ownerPopulations } from "/emigratio
 import { cityName, moveRecord, departRecord } from "/emigration/ui/emigration-migration-records.js";
 import { pollCrisis, eventKeyForMove, eventKeyForDeath } from "/emigration/ui/emigration-event-attribution.js";
 import { warAggressors } from "/emigration/ui/emigration-war.js";
+import { tickCombat, combatLossFor } from "/emigration/ui/emigration-combat.js";
 import {
   applyDepartureConsequences,
   applyArrivalConsequences
@@ -403,10 +404,13 @@ function processSource(src, ranked, state, ownerPop, budgets) {
  */
 function crisisSeverity(src, d) {
   const ref = Math.max(1, CONFIG.attritionMinDistress);
-  const intensity = Math.min(CONFIG.crisisSeverityCap, d / ref); // DOMINANT: pillaging/damage/duration
+  const intensity = Math.min(CONFIG.crisisSeverityCap, d / ref); // pillaging / assault damage / duration
   const extra = Math.max(0, warAggressors(src.owner).size - 1);
   const gang = 1 + Math.min(CONFIG.crisisParticipantMax, CONFIG.crisisParticipantWeight * extra);
-  return intensity * gang;
+  // Unit CASUALTIES are a MAJOR co-factor: a civ bleeding its army (field battles, not just city
+  // damage) dies harder. Bounded so it stays alongside — not over — the damage-driven intensity.
+  const combat = Math.min(CONFIG.crisisCombatMax, CONFIG.crisisCombatWeight * combatLossFor(src.owner));
+  return intensity * gang + combat;
 }
 
 /**
@@ -614,6 +618,7 @@ function bankStanceImpact(ranked, state) {
 export function runPass() {
   tickViolence(); // decay accumulated combat intensity before reading it
   tickDisasters(); // decay accumulated disaster distress before reading it
+  tickCombat(); // decay accumulated per-civ unit-loss intensity (war-severity term)
   pollCrisis(); // cache the active age crisis so moves/deaths can be attributed to it
   const signals = collectCitySignals();
   const ranked = signals.length ? rankByProsperity(signals) : [];

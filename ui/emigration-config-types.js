@@ -115,6 +115,9 @@
  * @property {number} crisisSeverityCap Max violence/flee-threshold ratio counted toward war severity.
  * @property {number} crisisParticipantWeight Severity bonus per attacking civ beyond the first (small).
  * @property {number} crisisParticipantMax Hard cap on the total participant severity bonus.
+ * @property {number} crisisCombatWeight Severity added per recent unit lost (a MAJOR war-death factor).
+ * @property {number} crisisCombatMax Cap on the unit-casualty severity term.
+ * @property {number} combatDecay Per-turn decay of the per-civ unit-loss intensity (0..1).
  * @property {number} ownCivRefugeeBonus War-refugee pull toward own civ (Feature 1).
  * @property {number} aggressorPenalty War-refugee penalty for the aggressor (F1; 0 = off).
  * @property {boolean} bordersEnabled Apply Open/Closed Borders policy effects (F2).
