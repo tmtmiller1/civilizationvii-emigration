@@ -242,6 +242,7 @@
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="es_ES"><Text>Aún no hay migración entre civilizaciones: los flujos aparecen cuando la gente cruza fronteras.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="es_ES"><Text>Colorear por:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_HELP" Language="es_ES"><Text>Cómo leer esto</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_INFO" Language="es_ES"><Text>Info:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="es_ES"><Text>Origen</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="es_ES"><Text>Tipo</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_MOVEMENT" Language="es_ES"><Text>Movimiento</Text></Replace>
