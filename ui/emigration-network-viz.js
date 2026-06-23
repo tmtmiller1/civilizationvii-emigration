@@ -29,7 +29,7 @@ export const WX = 1120;
 export const WY = 560;
 // Scaled Pop mode: a FIXED people-per-dot so the dot count tracks REAL population size (a bigger civ /
 // a bigger migration = more dots), rather than always squeezing the whole world into a fixed budget.
-// Capped at SCALED_DOT_CAP so a huge late-game world can't spawn an unrenderable number of dots — past
+// Capped at SCALED_DOT_CAP so a huge late-game world can't spawn an unrenderable number of dots, past
 // the cap the people-per-dot coarsens to hold the count. (Civ Pop mode stays 1 dot = 1 engine point.)
 const SCALED_PEOPLE_PER_DOT = 2000;
 const SCALED_DOT_CAP = 2000;
@@ -303,8 +303,8 @@ function cityAnimFrom(center, idx) {
 
 /**
  * Start a dot's fly-in from where the people actually came from: internal movers travel from their
- * source CITY; immigrants travel from their ORIGIN civ's circle — their origin city sub-cluster when
- * known, else the origin civ's centre. (Residents never animate — the caller skips them so home-grown
+ * source CITY; immigrants travel from their ORIGIN civ's circle, their origin city sub-cluster when
+ * known, else the origin civ's centre. (Residents never animate, the caller skips them so home-grown
  * population materializes in place; see `activate`.)
  * @param {Dot} d Dot.
  * @param {Scene} scene Scene.
@@ -316,7 +316,7 @@ export function startAnim(d, scene) {
     return;
   }
   // The origin civ's centre. Use nullish-coalescing, NOT `||`: byId.get() returns 0 for the FIRST
-  // node, and `0 || d.ci` would collapse to the DESTINATION — so an immigrant from that civ would fly
+  // node, and `0 || d.ci` would collapse to the DESTINATION, so an immigrant from that civ would fly
   // out of the civ it's moving TO and read as that civ's home-grown population. `??` keeps index 0.
   const oi = scene.byId.get(d.originId);
   const oc = scene.centers[oi != null ? oi : d.ci] || civ;
@@ -556,7 +556,9 @@ function mountChrome(parts) {
   // "Color by:" / "Show:" / "Units:"); its explanation opens on hover.
   parts.lensTabs.appendChild(el("span", "emig-lens-lbl", loc("LOC_EMIG_NETC_INFO", "Info:")));
   parts.lensTabs.appendChild(helpIcon(loc("LOC_EMIG_NETC_CAPTION", capEn, formatPeople(parts.unit))));
-  parts.wrap.appendChild(parts.lensTabs);
+  // Mount the filter (lens) row into the shared controls row next to the host Options button when one
+  // was provided (so it shares the Options line, like the Data tab); else inline above the canvas.
+  (parts.controlsHost || parts.wrap).appendChild(parts.lensTabs);
   const stage = el("div", "emig-netc-stage");
   stage.appendChild(parts.canvas);
   parts.wrap.appendChild(stage);
@@ -658,8 +660,8 @@ function setupPlayback(frames, holder, activate) {
     else timeline.goTo(pb.idx + 1);
   };
   // Initial reveal: fly in the latest frame's arrivals ONLY when this is genuinely-new migration (a
-  // newer latest turn than we last animated). A re-render of the same turn — a visibility toggle or a
-  // tab switch — places them statically so the last movement doesn't replay every time.
+  // newer latest turn than we last animated). A re-render of the same turn, a visibility toggle or a
+  // tab switch, places them statically so the last movement doesn't replay every time.
   const latest = frames.length ? frames[frames.length - 1] : null;
   const latestTurn = latest && typeof latest.turn === "number" ? latest.turn : -1;
   const replay = latestTurn > _lastIntroTurn;
@@ -755,8 +757,9 @@ export function timelineNote() {
  * @param {*[]} frames Usable timeline frames.
  * @param {*[]} events Event specs (disaster/war labels).
  * @param {()=>void} [rebuildAll] Full re-render hook (for the Units toggle, which rescales the scene).
+ * @param {HTMLElement} [controlsHost] Shared controls row to mount the filter row into (else inline).
  */
-function buildViz(container, frames, events, rebuildAll) {
+function buildViz(container, frames, events, rebuildAll, controlsHost) {
   const wrap = el("div", "emig-netc-wrap");
   const colorMap = buildColorMap(frames);
   const { canvas, ctx } = setupCanvas();
@@ -773,11 +776,11 @@ function buildViz(container, frames, events, rebuildAll) {
   };
   const activate = (/** @type {number} */ i, noAnim = false) => {
     // Fly in the MOVERS that first appear at frame `i` (cross-civ immigrants travel from their ORIGIN
-    // civ/settlement; internal movers from their source city — see startAnim) — on playback, a scrub
+    // civ/settlement; internal movers from their source city, see startAnim), on playback, a scrub
     // that lands on a frame, AND a genuinely-new initial reveal. Without this, arrivals only animated on
     // a +1 advance, so on load a cross-civ immigrant sat in the destination cluster and read as
     // home-grown. RESIDENTS (home-grown population) are excluded (they MATERIALIZE in place). `noAnim`
-    // places dots statically — used when merely RE-rendering the same turn (a visibility toggle / tab
+    // places dots statically, used when merely RE-rendering the same turn (a visibility toggle / tab
     // switch) so the last migration doesn't replay every time.
     for (const d of dots) {
       if (!noAnim && d.appearFrame === i && d.scope !== "resident") startAnim(d, holder.scene);
@@ -791,7 +794,7 @@ function buildViz(container, frames, events, rebuildAll) {
   const legendBox = makeLegendBox(lastNet, colorMap, state, causesPresent(frames), markDirty);
   const timeline = setupPlayback(frames, holder, activate);
   mountChrome({
-    wrap, lensTabs: makeLensTabs(state, legendBox.rebuild, rebuildAll), canvas,
+    wrap, lensTabs: makeLensTabs(state, legendBox.rebuild, rebuildAll), canvas, controlsHost,
     legend: legendBox.box, slider: (timeline && timeline.root) || timelineNote(), unit: holder.unit
   });
   wireEvents(canvas, holder, state, tip);
@@ -803,10 +806,11 @@ function buildViz(container, frames, events, rebuildAll) {
  * Render the destination-cluster migration view into `container`.
  * @param {HTMLElement} container Card body.
  * @param {*} section The dashboard section ({network, frames}).
+ * @param {HTMLElement} [controlsHost] Shared controls row for the filter row (else inline).
  */
-export function renderNetworkViz(container, section) {
+export function renderNetworkViz(container, section, controlsHost) {
   // Drop any prior render (and let its detached-canvas rAF loop stop) before building a fresh one.
-  // NB: use removeChild, NOT replaceChildren — Coherent GameFace doesn't implement replaceChildren, so
+  // NB: use removeChild, NOT replaceChildren, Coherent GameFace doesn't implement replaceChildren, so
   // on a re-render (e.g. the Units toggle) the old view would NOT clear and the chrome would double up.
   if (container) while (container.firstChild) container.removeChild(container.firstChild);
   const all = (section && section.frames) || [];
@@ -819,5 +823,5 @@ export function renderNetworkViz(container, section) {
   }
   injectStyle();
   buildViz(container, frames, (section && section.events) || [],
-    () => renderNetworkViz(container, section));
+    () => renderNetworkViz(container, section, controlsHost), controlsHost);
 }

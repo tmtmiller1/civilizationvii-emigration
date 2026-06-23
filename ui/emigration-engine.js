@@ -242,7 +242,7 @@ function shedBurst(src, dest, state, cause, budget) {
 
 /**
  * Whether a source is still below the pressure bar and must keep accumulating. Forced displacement
- * (war / disaster / conquest) flees EVERY turn — it bypasses the bar that paces voluntary migration,
+ * (war / disaster / conquest) flees EVERY turn, it bypasses the bar that paces voluntary migration,
  * so a besieged city sheds refugees immediately once it has a refuge (still bounded by the war-surge
  * burst, the siege loss cap, the rural pool, and the per-civ move ceiling). Voluntary (prosperity /
  * unhappiness) migration must accumulate to `emigrationBar` before it moves anyone.
@@ -300,7 +300,7 @@ function processSourceLegacy(src, ranked, state, ownerPop, maxThisSource) {
 }
 
 /**
- * CRISIS sub-pass: a besieged/struck source flees EVERY turn (no bar, no cooldown) — its own war-surge
+ * CRISIS sub-pass: a besieged/struck source flees EVERY turn (no bar, no cooldown), its own war-surge
  * burst, bounded by the crisis budget and the siege-loss cap (inside warSurgeBudget). Cause is
  * disaster if distress dominates, else war.
  * @param {*} src Source signal.
@@ -316,7 +316,7 @@ function shedCrisis(src, best, state, maxCrisis) {
 }
 
 /**
- * VOLUNTARY sub-pass: ordinary economic migration — accumulate the pull toward `best`, and when it
+ * VOLUNTARY sub-pass: ordinary economic migration, accumulate the pull toward `best`, and when it
  * crosses the bar (and not on cooldown) shed one point, then rest. Independent of any crisis flow.
  * @param {*} src Source signal.
  * @param {*} best The chosen destination ({dest, adjusted}).
@@ -362,15 +362,15 @@ function processSourceSplit(src, ranked, state, ownerPop, budgets) {
     const volMax = budgets.shared ? budgets.voluntary - out.length : budgets.voluntary;
     for (const m of shedVoluntary(src, best, state, st, volMax)) out.push(m);
   }
-  // Death channel, CONCURRENT with the above: the trapped (no refuge) — or a STARVING city even with a
-  // refuge — loses some people to death while the rest flee. Famine ≠ trapped: people die even fleeing.
+  // Death channel, CONCURRENT with the above: the trapped (no refuge), or a STARVING city even with a
+  // refuge, loses some people to death while the rest flee. Famine ≠ trapped: people die even fleeing.
   const death = processOutletDeath(src, st, state, !!best);
   if (death) out.push(death);
   return out;
 }
 
 /**
- * Process one source — the split two-track pass, or the legacy single-cause pass when the split is off.
+ * Process one source, the split two-track pass, or the legacy single-cause pass when the split is off.
  * @param {*} src Source signal.
  * @param {*[]} ranked Ranked signals.
  * @param {*} state Loaded state.
@@ -391,9 +391,9 @@ function processSource(src, ranked, state, ownerPop, budgets) {
 /**
  * The CRISIS-SEVERITY multiplier (≥ 0) on the crisis-death rate: the worse the crisis, the larger the
  * share of a stricken city's people that die rather than escaping. Built from signals the mod can read:
- *   • overall lethal DISTRESS `d` — already aggregates a war's siege DURATION (vwSiege/turn), PILLAGED
- *     tiles (vwPillage) and ASSAULT damage (vwAssault, a casualties proxy), AND disaster/famine — so
- *     this works for every crisis type, not just war — normalized by the firing floor and capped; and
+ *   • overall lethal DISTRESS `d`, already aggregates a war's siege DURATION (vwSiege/turn), PILLAGED
+ *     tiles (vwPillage) and ASSAULT damage (vwAssault, a casualties proxy), AND disaster/famine, so
+ *     this works for every crisis type, not just war, normalized by the firing floor and capped; and
  *   • for a WAR specifically, the number of attacking civs (PARTICIPANTS): a multi-civ pile-on is
  *     deadlier than a duel.
  * (No engine hook exposes exact units-lost; cities-razed could be layered in later.) ≈ 1 at the firing
@@ -408,18 +408,18 @@ function crisisSeverity(src, d) {
   const extra = Math.max(0, warAggressors(src.owner).size - 1);
   const gang = 1 + Math.min(CONFIG.crisisParticipantMax, CONFIG.crisisParticipantWeight * extra);
   // Unit CASUALTIES are a MAJOR co-factor: a civ bleeding its army (field battles, not just city
-  // damage) dies harder. Bounded so it stays alongside — not over — the damage-driven intensity.
+  // damage) dies harder. Bounded so it stays alongside, not over, the damage-driven intensity.
   const combat = Math.min(CONFIG.crisisCombatMax, CONFIG.crisisCombatWeight * combatLossFor(src.owner));
   return intensity * gang + combat;
 }
 
 /**
- * The outlet's DEATH channel — population that leaves the world (cause `attrition`), tracked as deaths,
- * not migration. Fires under LETHAL distress (`distress ≥ attritionMinDistress`) — i.e. the situational
+ * The outlet's DEATH channel, population that leaves the world (cause `attrition`), tracked as deaths,
+ * not migration. Fires under LETHAL distress (`distress ≥ attritionMinDistress`), i.e. the situational
  * crises: war, disaster, siege, famine. Economic prosperity/unhappiness emigration carries NO
  * situational distress, so it never kills. Runs CONCURRENTLY with emigration on its own `deathPressure`:
  *   • TRAPPED (no refuge): the whole trapped population dies off (the original closed-system valve), at
- *     full rate — gated only by `attritionEnabled`.
+ *     full rate, gated only by `attritionEnabled`.
  *   • CRISIS WHILE FLEEING (a refuge exists, `crisisDeathEnabled`): some die while the rest flee, at
  *     `crisisDeathShare` of the trapped rate. Without this the "no refuge" trap almost never fires
  *     (there's nearly always somewhere to flee), so a crisis only ever displaced and never killed.

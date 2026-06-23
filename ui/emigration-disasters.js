@@ -108,7 +108,7 @@ function keyFromCID(cid) {
   try {
     if (!cid) return null;
     // Prefer the owner:id pair directly off the component id (the fields the rest of the mod keys
-    // on). ComponentID.toBitfield does NOT reliably yield a number/string for a CITY component id —
+    // on). ComponentID.toBitfield does NOT reliably yield a number/string for a CITY component id,
     // it returned a non-primitive here, so this returned null and the disaster model silently
     // recorded distress for NO city (affectedCities=0). Fall back to the bitfield if owner:id absent.
     if (typeof cid.owner === "number" && cid.id != null) return cid.owner + ":" + cid.id;

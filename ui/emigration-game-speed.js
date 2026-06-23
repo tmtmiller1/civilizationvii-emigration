@@ -1,6 +1,6 @@
 // emigration-game-speed.js
 //
-// Phase 7 — game-speed scaling. The whole engine paces in TURNS, but Civ's game
+// Phase 7, game-speed scaling. The whole engine paces in TURNS, but Civ's game
 // speed stretches the same game-progress over a very different number of turns
 // (GameSpeeds.CostMultiplier: Online 50 · Quick 67 · Standard 100 · Epic 150 ·
 // Marathon 300 → a scalar S of 0.5–3.0). Without correction the mod is calibrated
@@ -10,14 +10,14 @@
 //
 // This module reads S once (cached, fail-safe to 1.0) and exposes three transforms
 // applied at the few CONFIG read sites so the *game-time* feel is constant:
-//   • speedTurns(n)  — turn-COUNT durations scale ×S   (longer on slow speeds)
-//   • speedBar(x)    — per-turn pressure THRESHOLDS ×S  (constant game-time rate)
-//   • speedDecay(d)  — per-turn decay → d^(1/S)         (same game-time fade)
+//   • speedTurns(n) , turn-COUNT durations scale ×S   (longer on slow speeds)
+//   • speedBar(x)   , per-turn pressure THRESHOLDS ×S  (constant game-time rate)
+//   • speedDecay(d) , per-turn decay → d^(1/S)         (same game-time fade)
 // Speed-INVARIANT magnitudes (siegeLossCapPct, intensity thresholds, yield weights,
 // per-turn safety ceilings) are deliberately NOT scaled.
 //
 // Everything is gated on CONFIG.gameSpeedTuningEnabled and degrades to identity
-// (S=1) whenever the engine globals are absent — so the headless test harnesses,
+// (S=1) whenever the engine globals are absent, so the headless test harnesses,
 // which never construct Configuration/GameInfo, are unaffected.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";

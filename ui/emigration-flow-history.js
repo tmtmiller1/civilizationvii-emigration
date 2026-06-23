@@ -29,7 +29,7 @@ function flowTotal(byCause) {
 
 /**
  * Bound a cumulative flow matrix in place: when distinct city-pair edges exceed `maxKeys`, evict the
- * LOWEST-volume edges (smallest people totals — least informative) from both `flows` and its parallel
+ * LOWEST-volume edges (smallest people totals, least informative) from both `flows` and its parallel
  * `flowsPts` together, down to ~90% of the cap (hysteresis, so it doesn't re-sort every call). Keeps
  * the persisted save blob bounded over a very long game; only the tiniest flows are lost, never the
  * whole tally (unlike the prior unbounded append-only matrices, which could silently truncate a save).
@@ -156,7 +156,7 @@ function mergeInto(into, from) {
   into.age = from.age;
   into.chartTurn = from.chartTurn;
   into.year = from.year;
-  // `pop` (per-civ native population at the frame) is a point-in-time SNAPSHOT, not a delta — the
+  // `pop` (per-civ native population at the frame) is a point-in-time SNAPSHOT, not a delta, the
   // merged window ends at `from`, so keep the later frame's populations.
   if (from.pop) into.pop = from.pop;
 }

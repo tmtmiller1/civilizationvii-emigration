@@ -362,4 +362,108 @@ function pinBaseConfig() {
   assert.ok(sawDeath, "G: AND the war kills some even with a haven (lethal-distress death, not famine)");
 })();
 
-console.log("engine-pass harness passed (7 scenarios)");
+// ── Scenario H: Empty world (no cities) returns empty records ──
+(function scenarioEmptyWorld() {
+  pinBaseConfig();
+  installConfigStore();
+  globalThis.Game = { turn: 1 };
+  // World with players but no cities
+  installWorld({ 1: major([]) });
+
+  const recs = runPass();
+  assert.ok(Array.isArray(recs), "H: runPass returns array for empty world");
+  assert.equal(recs.length, 0, "H: empty world produces no migration records");
+})();
+
+// ── Scenario I: Single city insufficient population (below minRuralToEmigrate) ──
+(function scenarioInsufficientPopulation() {
+  pinBaseConfig();
+  Object.assign(CONFIG, {
+    maxMovesPerTurn: 100,
+    minRuralToEmigrate: 5,
+    crossCivEnabled: true,
+    foodFactor: 1
+  });
+  installConfigStore();
+  globalThis.Game = { turn: 1 };
+  // Single city with only 2 rural (less than minRuralToEmigrate=5) and a haven
+  const small = makeCity(1, 1, { population: 2, rural: 2, yields: { YIELD_FOOD:
+ -5 } });
+  const haven = makeCity(2, 1, { population: 10, rural: 10, yields: { YIELD_FOOD:
+ 100 }, x: 1, y: 0 });
+  installWorld({ 1: major([small]), 2: major([haven]) });
+
+  const recs = runPass();
+  const emigrations = recs.filter((m) => m.srcOwner === 1 && typeof m.destOwner
+ === "number");
+  assert.equal(emigrations.length, 0, "I: insufficient population blocks emigration");
+})();
+
+// ── Scenario J: Turn zero boundary (game.turn = 0) ──
+(function scenarioTurnZero() {
+  pinBaseConfig();
+  installConfigStore();
+  globalThis.Game = { turn: 0 }; // Edge: turn 0
+  const city = makeCity(1, 1, { population: 10, rural: 10, yields: { YIELD_FOOD:
+ -5 } });
+  const haven = makeCity(2, 1, { population: 10, rural: 10, yields: { YIELD_FOOD:
+ 100 }, x: 1, y: 0 });
+  installWorld({ 1: major([city]), 2: major([haven]) });
+
+  const recs = runPass();
+  assert.ok(Array.isArray(recs), "J: runPass handles turn 0 safely");
+})();
+
+// ── Scenario K: Very slow game speed (0.25x) ──
+(function scenarioSlowSpeed() {
+  pinBaseConfig();
+  // At 0.25x speed, turns pass slower, affecting transit lag and cooldown scaling
+  Object.assign(CONFIG, {
+    maxMovesPerTurn: 100,
+    transitLagTurns: 4,
+    crossCivEnabled: true,
+    foodFactor: 1,
+    cooldownTurns: 2
+  });
+  installConfigStore();
+  // Mock speedTurns and speedBar to simulate slow-speed scaling
+  globalThis.speedTurns = (t) => Math.ceil(t * 0.25); // 0.25x speed scaling
+  globalThis.speedBar = (b) => Math.ceil(b * 0.25);
+  globalThis.Game = { turn: 1 };
+  const src = makeCity(1, 1, { population: 10, rural: 10, yields: { YIELD_FOOD:
+ -5 } });
+  const dest = makeCity(2, 1, { population: 10, rural: 10, yields: { YIELD_FOOD:
+ 100 }, x: 3, y: 0 });
+  installWorld({ 1: major([src]), 2: major([dest]) });
+
+  const recs = runPass();
+  assert.ok(Array.isArray(recs), "K: slow speed (0.25x) executes safely");
+})();
+
+// ── Scenario L: Very fast game speed (4x) ──
+(function scenarioFastSpeed() {
+  pinBaseConfig();
+  // At 4x speed, turns pass faster, affecting transit lag and cooldown scaling
+  Object.assign(CONFIG, {
+    maxMovesPerTurn: 100,
+    transitLagTurns: 4,
+    crossCivEnabled: true,
+    foodFactor: 1,
+    cooldownTurns: 2
+  });
+  installConfigStore();
+  // Mock speedTurns and speedBar to simulate fast-speed scaling
+  globalThis.speedTurns = (t) => Math.ceil(t * 4); // 4x speed scaling
+  globalThis.speedBar = (b) => Math.ceil(b * 4);
+  globalThis.Game = { turn: 1 };
+  const src = makeCity(1, 1, { population: 10, rural: 10, yields: { YIELD_FOOD:
+ -5 } });
+  const dest = makeCity(2, 1, { population: 10, rural: 10, yields: { YIELD_FOOD:
+ 100 }, x: 1, y: 0 });
+  installWorld({ 1: major([src]), 2: major([dest]) });
+
+  const recs = runPass();
+  assert.ok(Array.isArray(recs), "L: fast speed (4x) executes safely");
+})();
+
+console.log("engine-pass harness passed (7 scenarios + 5 edge cases)");

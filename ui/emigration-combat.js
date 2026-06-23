@@ -1,7 +1,7 @@
 // emigration-combat.js
 //
 // War-casualty input to the war-SEVERITY term (emigration-engine.crisisSeverity). The Demographics mod
-// OWNS the raw tracking — it already accumulates per-civ unit-kill STRENGTH from the engine's
+// OWNS the raw tracking, it already accumulates per-civ unit-kill STRENGTH from the engine's
 // `UnitKilledInCombat` event and exposes it on `globalThis.DemographicsData.casualtyCumFor(pid)`
 // (cumulative). This module just turns that cumulative figure into a decaying "recent casualty
 // intensity": each turn it folds in the new casualties since last turn and decays the rest, so a civ

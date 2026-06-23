@@ -15,7 +15,7 @@ import { dashboardModel, renderDashboardSubtab } from "/emigration/ui/emigration
 import { gatherDashboard } from "/emigration/ui/emigration-window.js";
 import { setNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
 
-// The Migration page's sub-tabs — one per dashboard section, so the embedded page shows the SAME
+// The Migration page's sub-tabs, one per dashboard section, so the embedded page shows the SAME
 // content as the standalone window but presented as NATIVE Demographics sub-tabs (the same metric
 // sub-tab row the Crises / Conflicts pages use), instead of a single "Overview" tab wrapping the
 // emigration tab bar. `id` is the section kind (handed back to render); `label` is the short sub-tab
@@ -32,14 +32,14 @@ const SUBTABS = [
   { id: "stances", label: "Immigration Policies", title: "Immigration policies" },
   { id: "notifications", label: "Notifications", title: "Migration notifications" },
   // The Guide is a static reference matrix with no per-civ data, so the host's analytics-visibility
-  // policy banner is meaningless there — opt it out (the host reads `hidePolicyBanner`).
+  // policy banner is meaningless there, opt it out (the host reads `hidePolicyBanner`).
   { id: "guide", label: "Guide", title: "What counts", hidePolicyBanner: true }
 ];
 
 /**
  * Render one migration dashboard section into a Demographics-provided container. When the host renders
  * this panel as a member of the "Data" metric-group, `ctx.groupView` carries the group's Scaled / Civ
- * toggle — so the Net Migration (Table) follows those pills (mapping the view to the units NumberMode)
+ * toggle, so the Net Migration (Table) follows those pills (mapping the view to the units NumberMode)
  * and its own redundant units chip is suppressed. On the standalone sub-tabs (no group), the chip stays.
  * @param {*} container The page's content element.
  * @param {string} [kind] The section kind (sub-tab id); defaults to the first sub-tab.
@@ -78,13 +78,52 @@ const PANEL_SPEC = {
     renderInto(container, subId, ctx)
 };
 
+// ── Hub mode (Phase 3) ───────────────────────────────────────────────────────
+// A hub-capable Demographics exposes registerHubPages + HUB_IDS. We then contribute FLAT pages into
+// the host's "Migration" hub (after its Population anchor) instead of a sibling top-level tab:
+//   • Net Migration, an empty metrics page the host fills with the relocated `emig_graphs` group
+//     (registered in emigration-demographics.js with pageId === NET_MIGRATION_PAGE_ID). Its line charts
+//     stay HOST-rendered via their metric accessors; this page just hosts the member/units toggles.
+//   • the rest, render pages reusing the dashboard section renderer (renderInto).
+// The panel is still registered (NON top-level) so the "Net Migration (Table)" group member can route
+// to its ledger sub-tab; with no `topLevel` it shows nowhere as a tab.
+const MIGRATION_ANCHOR = "population"; // host Migration-hub anchor page (Population)
+export const NET_MIGRATION_PAGE_ID = "emig_net_migration"; // must match emigration-demographics.js group pageId
+
+const HUB_PAGES = [
+  { id: NET_MIGRATION_PAGE_ID, label: "Population & Migration", tier: "basic", metrics: [] },
+  { id: "emig_network", label: "Network", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "flow", c) },
+  { id: "emig_causes", label: "Causes", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "pies", c) },
+  { id: "emig_cities", label: "My Cities", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "cityflows", c) },
+  { id: "emig_policies", label: "Policies", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "stances", c) },
+  { id: "emig_notifications", label: "Notifications", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "notifications", c) },
+  { id: "emig_guide", label: "Guide", tier: "standard", hidePolicyBanner: true, render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "guide", c) }
+];
+
 /**
- * Register the page against a ready Demographics API. Returns false if the API lacks the
- * panel hook (an older Demographics), so the caller can leave it queued / no-op.
+ * Whether the host supports hub-targeted contribution (Phase 3).
  * @param {*} api The DemographicsMetricsAPI.
- * @returns {boolean} Whether the panel registered.
+ * @returns {boolean} True when hub mode is available.
+ */
+function hostSupportsHubs(api) {
+  return typeof api.registerHubPages === "function"
+    && Array.isArray(api.HUB_IDS) && api.HUB_IDS.includes("migration");
+}
+
+/**
+ * Register the page against a ready Demographics API. Prefers hub mode (flat pages in the Migration
+ * hub); falls back to the legacy sibling-tab panel on an older host. Returns false if the API lacks
+ * even registerPanel, so the caller can leave it queued / no-op.
+ * @param {*} api The DemographicsMetricsAPI.
+ * @returns {boolean} Whether anything registered.
  */
 function doRegister(api) {
+  if (hostSupportsHubs(api)) {
+    // Keep the panel (NON top-level) for the ledger group-member routing; contribute the flat pages.
+    api.registerPanel(Object.assign({}, PANEL_SPEC, { topLevel: false }));
+    api.registerHubPages("migration", HUB_PAGES, { after: MIGRATION_ANCHOR });
+    return true;
+  }
   if (typeof api.registerPanel === "function") {
     api.registerPanel(PANEL_SPEC);
     return true;

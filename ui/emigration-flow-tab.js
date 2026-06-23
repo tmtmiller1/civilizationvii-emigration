@@ -28,24 +28,27 @@ function div(cls, txt) {
  * Render the combined Network/Flows section: a Dots/Flows toggle, then the selected visualization.
  * @param {HTMLElement} body The section body.
  * @param {*} section The combined section ({network, frames, events}).
+ * @param {HTMLElement} [controlsHost] The shared controls row (next to Options): the viz renders its
+ *   filter row (Color by / Show / Units) there so it shares the Options line, like the Data tab.
  */
-export function renderNetworkOrFlow(body, section) {
+export function renderNetworkOrFlow(body, section, controlsHost) {
   body.innerHTML = "";
+  if (controlsHost) controlsHost.innerHTML = ""; // re-populate the shared row (avoids duplicate rows)
   const bar = div("emig-flow-toggle");
   const mk = (/** @type {string} */ view, /** @type {string} */ label) => {
     const b = div("emig-flow-tog" + (_flowView === view ? " active" : ""), label);
     b.addEventListener("click", () => {
       if (_flowView === view) return;
       _flowView = view;
-      renderNetworkOrFlow(body, section);
+      renderNetworkOrFlow(body, section, controlsHost);
     });
     return b;
   };
   bar.appendChild(mk("network", "Dots"));
-  bar.appendChild(mk("flowmap", "Flows"));
+  bar.appendChild(mk("flowmap", "Flow"));
   body.appendChild(bar);
   const view = div("emig-flow-view");
   body.appendChild(view);
-  if (_flowView === "flowmap") renderFlowMap(view, section);
-  else renderNetworkViz(view, section);
+  if (_flowView === "flowmap") renderFlowMap(view, section, controlsHost);
+  else renderNetworkViz(view, section, controlsHost);
 }

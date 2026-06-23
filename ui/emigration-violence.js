@@ -139,7 +139,7 @@ function persist() {
 function keyFromCID(cid) {
   try {
     if (!cid) return null;
-    // Prefer the owner:id pair directly off the component id — the same fields the district matching
+    // Prefer the owner:id pair directly off the component id, the same fields the district matching
     // reads successfully. ComponentID.toBitfield does NOT reliably yield a number/string for a CITY
     // component id (it returned a non-primitive here, so keyFromCID was returning null and the whole
     // violence model silently no-op'd). Fall back to the bitfield only if owner:id is unavailable.

@@ -96,7 +96,7 @@ function accountAndReport(migrations) {
 
 /**
  * Build the accounting record for a captured city: the population the conqueror absorbed moves from
- * the prior owner's civ to the new owner's (a cross-civ "conquest" migration). Tally-only — the base
+ * the prior owner's civ to the new owner's (a cross-civ "conquest" migration). Tally-only, the base
  * game already transferred the city, so this never mutates population or composition (the composition
  * tracker handles the origin buckets via the owner flip).
  * @param {{prevOwner:number, newOwner:number, name:string, points:number}} c A capture event.
@@ -132,7 +132,7 @@ function doPass(why) {
   if (CONFIG.conquestMigrationEnabled !== false) {
     for (const c of conquests) migrations.push(conquestRecord(c));
   }
-  // Snapshot the timeline EVERY pass — feeds the Demographics net-migration graph AND records per-civ
+  // Snapshot the timeline EVERY pass, feeds the Demographics net-migration graph AND records per-civ
   // population growth even on passes with no migration, so the network/flow timeline is available and
   // plays population history before any emigration occurs (the recorder self-gates to the interval).
   recordMigrations(migrations);
