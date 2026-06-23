@@ -77,7 +77,7 @@ function fractionToPct(v) {
 
 /**
  * Read current age-progress percent from the AgeProgressManager. The REAL engine API is the
- * current/max progression-points pair (the same recipe the base game and the Demographics mod use) —
+ * current/max progression-points pair (the same recipe the base game and the Demographics mod use),
  * `getCurrentAgeProgressionPoints()` / `getMaxAgeProgressionPoints()`. The old `getAgeProgressPercent`
  * / `getAgeProgress` / `getProgress` names DO NOT EXIST on the manager, so the percent was always
  * undefined and the Modern megacity ramp silently never fired (diverging from Demographics' people
@@ -142,8 +142,8 @@ export function formatPeople(n) {
 }
 
 /**
- * Format a count in BOTH measuring systems at once — raw Civ population points and the scaled people
- * count — as "3 population points (36 thousand people)" (singular "1 population point (…)"). The
+ * Format a count in BOTH measuring systems at once, raw Civ population points and the scaled people
+ * count, as "3 population points (36 thousand people)" (singular "1 population point (…)"). The
  * canonical dual phrasing (matches the dev log line), used where a message should always show both.
  * @param {number} people Scaled people.
  * @param {number} [points] Raw population points (defaults to 1).

@@ -7,7 +7,48 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-06-23
+
+### Changed
+- **1.4.1 happiness/economy rebalance.** A full-parameter calibration sweep
+  (`scripts/calibration-sweep.mjs`, scored against a player-experience rubric) found the shaped
+  happiness model was *saturating* the prosperity score: happiness drove ~90% of the migration
+  signal and the happiness multiplier sat pinned at its clamp, so real economic differences —
+  including 1.4.1's now-harsher −5%/point unhappiness yield penalty — were invisible (a city's
+  economy barely affected whether people left it). Re-tuned the shipped defaults to de-saturate and
+  rebalance: yield weights ×2.5 (`foodFactor`/`productionFactor`/`goldFactor` 1→2.5, science 0.25→
+  0.625, culture 0.5→1.25), `happyFloor` 8→4, `happyAmp` 0.8→0.2, `happyRepulsion` 2→1.8. Result:
+  economy now carries ~28% of the signal (happiness still primary), the −5% penalty is 8× more
+  visible, prosperity is monotonic in economy at every happiness level, and the *overall* prosperity
+  scale is held constant so the friction/pacing constants are unchanged. **Snowball-checked**
+  (`scripts/snowball-stress.mjs`): the new calibration's dominance ceiling is equal-or-lower than the
+  old across happy/rich/rich+happy leader profiles (e.g. 1.60→1.30 for a happy leader), because
+  de-saturating lifts the field and shrinks the gap that fed a leader — so it is *less* snowball-prone,
+  not more. `polityModelEnabled: false` still restores the full pre-1.4.1 model (old weights included).
+
 ### Added
+- **Civ VII 1.4.1 polity model.** The migration model now reads the systems 1.4.1
+  reworked — happiness *stages*, governments, and celebrations — and feeds them in as
+  bounded, additive pull/push terms (`polityModelEnabled`, default on; set false for exact
+  pre-1.4.1 scoring):
+  - **Happiness stages.** Each settlement's 5-stage ordinal (Angry → Ecstatic, read from
+    `GameInfo.HappinessStages`) adds a happiness response. It's **pull-biased**
+    (`happinessStageMiseryScale`): full weight on the happy side (positive happiness doesn't boost
+    yields in 1.4.1, so happy-city attraction is under-modeled), quarter weight on the misery side
+    (already covered by the happiness term + the now-harsher −5%/point suppressed yields, so a
+    full-weight negative would triple-count). Balance-checked with `scripts/happiness-balance.mjs`,
+    which measured the −5% yield change to be near-inert in the happiness-dominated shaped model
+    (it shifts the content→unhappy pull gradient by ~1%).
+  - **Celebrations (Golden Ages).** A civ in a celebration — now scarcer and tourism-feeding
+    — becomes a stronger attractor (`celebrationPull`).
+  - **Governments.** A small, clamped per-government flavor lean (`governmentWeight`,
+    `governmentLeanCap`) breaks ties between similar destinations; the bulk of a government's
+    effect already reaches the model through the happiness and yields it produces.
+  - **War weariness.** A war-weary civ's settlements take a modest empire-wide push
+    (`warWearinessModifier`), distinct from the in-border violence terms it composes with.
+  - Verified against the installed 1.4.1.28 game data: all existing reads and the policy XML
+    foreign keys still resolve, so this is an additive pass, not a compatibility fix. See
+    `docs/v1.4.1-deep-pass-plan.md`.
 - **Population scaling alignment refresh.** Emigration's scaled-people math now
   mirrors Demographics' current city formula exactly: `raw^1.11 · 12000 · 1.009^turn`
   plus the same Modern-only smooth megacity ramp/boost, removing the earlier

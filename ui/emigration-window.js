@@ -108,7 +108,7 @@ const _noEvents = () => ({});
 
 /**
  * Per-civ breakdown of EMIGRATION and DEATHS by the SPECIFIC event behind them (a particular war /
- * disaster / crisis / famine — see emigration-event-attribution), for the Causes-tab drill-down.
+ * disaster / crisis / famine, see emigration-event-attribution), for the Causes-tab drill-down.
  * @param {number[]} pids Player ids.
  * @returns {Record<number, Record<string, {people:number, deaths:number}>>} Per civ, per event key.
  */
@@ -204,8 +204,8 @@ function splitFlows(raw) {
 }
 
 // Anonymous aggregate for civs the visibility policy hides (unmet / out-of-scope). Their migration is
-// still surfaced — so a civ whose people fled to an unmet neighbour shows them "left for Unmet" rather
-// than nothing — but it's anonymized to one bucket so no unmet civ's identity (or city) is revealed.
+// still surfaced, so a civ whose people fled to an unmet neighbour shows them "left for Unmet" rather
+// than nothing, but it's anonymized to one bucket so no unmet civ's identity (or city) is revealed.
 const UNMET_ID = -2;
 const UNMET_NAME = "Unmet";
 
@@ -276,7 +276,7 @@ function cityName(s, ord) {
 
 /**
  * Group the live city signals by owner into raw {name, town, pop, comp} city lists. `comp` is the
- * settlement's origin composition (compositionForCity) — captured cities carry the ORIGINS of the
+ * settlement's origin composition (compositionForCity), captured cities carry the ORIGINS of the
  * people already living there, so the network can colour residents by where they came from rather
  * than by the current owner.
  * @returns {Map<number, {name:string, town:boolean, pop:number, comp:*}[]>} owner → cities.
@@ -433,7 +433,7 @@ function nativePtsOf(entry) {
  * The decimated cumulative-flow history as named-edge frames, for the timeline scrubber. Each frame
  * now carries a REAL per-civ native-population snapshot (`f.pop`, civId → points), so a civ's circle
  * reflects its ACTUAL population at that point in time. We scale the civ's CURRENT per-city breakdown
- * by (snapshot ÷ current native points) — the per-civ TOTAL is exact; only the within-civ split across
+ * by (snapshot ÷ current native points), the per-civ TOTAL is exact; only the within-civ split across
  * cities is approximated by today's ratio (true per-city history would be prohibitively large, and
  * a civ's historical cities may differ). Frames from a pre-population-history save (no `f.pop`, or a
  * civ missing from it) fall back to the old linear scale so old timelines still animate.
@@ -632,7 +632,7 @@ function countsAsMet(pid, me, hasMet) {
 /**
  * The number of major civs the local player has met (self included). Cheap: a player scan with a
  * diplomacy check, no city enumeration. Folded into the live memo key because meeting a civ is a
- * diplomacy event, NOT an emigration pass — so monoTurn() alone wouldn't refresh the dashboard when
+ * diplomacy event, NOT an emigration pass, so monoTurn() alone wouldn't refresh the dashboard when
  * you meet someone new, and a just-met civ would stay invisible until the next pass. Counting met
  * civs makes meeting one invalidate the memo immediately.
  * @returns {number} Count of met alive major civs (local included).
@@ -653,7 +653,7 @@ function metMajorCount() {
 /**
  * Cheap, obvious invalidation key for the gathered data. The live tallies change when an emigration
  * pass advances the monotonic turn, AND the set of VISIBLE civs changes when the local player meets
- * someone new (a diplomacy event between passes) — so the key folds in the met-civ count too, so a
+ * someone new (a diplomacy event between passes), so the key folds in the met-civ count too, so a
  * newly met civ shows on the "live" dashboard without waiting for the next pass.
  * @returns {string} The memo key.
  */

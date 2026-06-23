@@ -236,7 +236,7 @@ function drawDots(ctx, scene) {
  * Draw one civ/place name label to match the Demographics global-relations node labels
  * (.demographics-relations-node-label): the UI BODY font (BodyFont, the same family the
  * historical-data chart labels use), weight 600, the secondary parchment colour
- * (--ia-text-secondary = #e5d2ac), and NOTHING else — no glow, no outline, no double-draw. The
+ * (--ia-text-secondary = #e5d2ac), and NOTHING else, no glow, no outline, no double-draw. The
  * relations labels are crisp plain text on a dark backdrop; the old soft glow + doubled fill is
  * exactly what made these read fuzzy by comparison. Crispness now comes from the Hi-DPI canvas
  * backing (makeCanvas) rendering the text at device resolution, like the DOM labels.
@@ -257,7 +257,7 @@ export function drawCivLabel(ctx, name, x, y, size) {
 
 /**
  * The label font string for a given size. BodyFont stack (with CJK + TitilliumWeb fallbacks),
- * matching chart-line.js / the relations labels — NOT TitleFont (the display face reads differently).
+ * matching chart-line.js / the relations labels, NOT TitleFont (the display face reads differently).
  * @param {number} [size] Font px (default 15).
  * @returns {string} A CSS font string.
  */

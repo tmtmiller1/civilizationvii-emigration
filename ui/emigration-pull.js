@@ -107,10 +107,10 @@ function permeability(src, dest) {
 }
 
 /**
- * The cross-civ friction (`poachBlock`) a source pays to send a citizen abroad — the full anti-
+ * The cross-civ friction (`poachBlock`) a source pays to send a citizen abroad, the full anti-
  * poaching barrier for an ordinary economic migrant, but a much smaller one (`refugeePoachBlock`) for
  * a war/disaster REFUGEE (a source in acute crisis). A refugee isn't being lured away, they're
- * fleeing, so the border barrier shouldn't pen them inside a collapsing civ — this is what lets their
+ * fleeing, so the border barrier shouldn't pen them inside a collapsing civ, this is what lets their
  * outflow reach neutral neighbours and populate the cross-civ migration network.
  * @param {*} src Source signal.
  * @returns {number} The cross-civ delta penalty.
@@ -124,7 +124,7 @@ function crossCivBlock(src) {
 }
 
 /**
- * Whether a source is in ACUTE crisis (war or disaster distress over its flee threshold) — i.e. its
+ * Whether a source is in ACUTE crisis (war or disaster distress over its flee threshold), i.e. its
  * people are refugees fleeing, not economic migrants.
  * @param {*} src Source signal.
  * @returns {boolean} True when fleeing a crisis.

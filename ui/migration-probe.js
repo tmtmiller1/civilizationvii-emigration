@@ -1220,7 +1220,7 @@ function probeWarBetween(me, pid) {
     } catch (err) {
       log("WARNAME getWarData threw " + err);
     }
-    // Dump ALL warData fields, not just warName — so `initialPlayer`/`initiatingPlayer` (the true
+    // Dump ALL warData fields, not just warName, so `initialPlayer`/`initiatingPlayer` (the true
     // aggressor) can be compared to the DeclareWar payload's actingPlayer to confirm directionality.
     const fields = wd ? Object.keys(wd).map((k) => k + "=" + JSON.stringify(wd[k])).join(" ") : "(no warData)";
     log("WARNAME " + me + " vs " + pid + " uniqueID=" + e.uniqueID + " | " + fields);
@@ -1321,7 +1321,7 @@ function logCivFlowEdge(e, me, acc) {
 
 /**
  * Dump a civ's recorded migration: its cross-civ OUT/IN edges + internal moves, plus its cumulative
- * out/in/deaths totals — so we can see WHY a Causes-tab pie is empty (no cross-civ edges ⇒ the loss
+ * out/in/deaths totals, so we can see WHY a Causes-tab pie is empty (no cross-civ edges ⇒ the loss
  * was internal moves or deaths, which have no "left for" pie; OUT edges to civ ids you haven't met
  * should now show as the "Unmet" bucket). Usage: `mig.civflow(pid)` (defaults to the local player).
  * @param {number} [pid] Civ id.
@@ -1336,7 +1336,7 @@ function probeCivFlow(pid) {
   const acc = { out: 0, in: 0, intra: 0 };
   for (const e of flows) logCivFlowEdge(e, me, acc);
   log("CIVFLOW summary: crossOut=" + acc.out + " crossIn=" + acc.in + " internal=" + acc.intra
-    + (acc.out === 0 ? " — NO cross-civ OUT edges (the 'left for' pie is empty because this civ's"
+    + (acc.out === 0 ? ", NO cross-civ OUT edges (the 'left for' pie is empty because this civ's"
       + " losses are internal moves or deaths, not emigration to another civ)" : ""));
 }
 
@@ -1373,7 +1373,7 @@ function exposeGlobals() {
       // AUDIT: confirm the engine war NAME resolves (getWarData), and whether happiness is grantable.
       warName: () => probeWarName(),
       happy: (/** @type {number} */ pid) => probeHappiness(pid),
-      // AUDIT: persisted-blob sizes (+ flow-key counts) — confirm the save data stays bounded.
+      // AUDIT: persisted-blob sizes (+ flow-key counts), confirm the save data stays bounded.
       blob: () => probeBlob(),
       // DIAGNOSE: a civ's cross-civ OUT/IN edges + internal moves + totals (why a Causes pie is empty).
       civflow: (/** @type {number} */ pid) => probeCivFlow(pid)

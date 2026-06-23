@@ -394,7 +394,7 @@ export function buildCivFlows(flows, civs, eventsByOwner) {
     .map((r) => {
       const f = map.get(r.pid) || { in: empty, out: empty };
       const out = flowDir(f.out, names);
-      // Deaths are population LOST with no destination — show them as a "Died" wedge in the
+      // Deaths are population LOST with no destination, show them as a "Died" wedge in the
       // Emigrants ("left for/died") pie, so a civ whose loss was deaths isn't a blank pie.
       if ((r.deaths || 0) > 0) {
         out.civs.push({ id: DIED_ID, name: "Died", people: r.deaths, points: r.deathsPts || 0 });

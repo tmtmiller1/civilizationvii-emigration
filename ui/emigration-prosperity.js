@@ -15,6 +15,7 @@
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { siegeEscalation } from "/emigration/ui/emigration-violence.js";
 import { civTuning } from "/emigration/ui/emigration-civ-tuning.js";
+import { governmentLean } from "/emigration/ui/emigration-polity.js";
 
 /**
  * Per-citizen weighted yield output - the core attractiveness of a city.
@@ -78,6 +79,39 @@ function happinessForScore(s, tune) {
 }
 
 /**
+ * The 1.4.1 POLITY bonus added to a city's base attractiveness (0 when polityModelEnabled is off, or
+ * when the signal predates the polity fields). Three bounded, additive terms, all scaled by the
+ * per-civ happinessPull so the civ-tuning table still modulates them:
+ *  • happinessStageWeight × stage - a magnitude-insensitive ordinal happiness response (1.4.1
+ *    formalized happiness into 5 stages); complements the field-relative term so the patch's sharper
+ *    happiness swings get a bounded voice without re-tuning the raw-magnitude knobs.
+ *  • celebrationPull while the civ is in a Golden Age - now a scarcer, tourism-feeding attractor.
+ *  • the clamped government flavor lean - a tie-breaker (most government effect already reaches the
+ *    model through happiness/yields, so this is deliberately small).
+ * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
+ * @param {import("/emigration/ui/emigration-civ-tuning.js").CivTuning} tune Civ tuning.
+ * @returns {number} The polity bonus (signed).
+ */
+function polityBonus(s, tune) {
+  if (!CONFIG.polityModelEnabled) return 0;
+  // The stage term is PULL-BIASED. On the misery side an unhappy city is already strongly repelled by
+  // the happiness term AND by its now-harsher (−5%/point, 1.4.1) suppressed yields, so a full-weight
+  // negative stage would triple-count; it's scaled down by happinessStageMiseryScale. On the happy
+  // side positive happiness does NOT boost yields in 1.4.1 (it feeds celebrations), so the attraction
+  // of happy/joyous/ecstatic settlements is genuinely under-modeled and gets full weight.
+  const stage = s.stage || 0;
+  const stageW = stage >= 0 ? CONFIG.happinessStageWeight : CONFIG.happinessStageWeight * CONFIG.happinessStageMiseryScale;
+  let b = stageW * stage * tune.happinessPull;
+  const p = s.polity;
+  if (p) {
+    if (p.celebrating) b += CONFIG.celebrationPull * tune.happinessPull;
+    const lean = CONFIG.governmentWeight * governmentLean(p.government);
+    b += clamp(lean, -CONFIG.governmentLeanCap, CONFIG.governmentLeanCap);
+  }
+  return b;
+}
+
+/**
  * The base (pre-situational) attractiveness of a city. Two models:
  *  • legacy linear (default): productiveness + happiness·w − pop·w
  *  • shaped (Algorithm A): happiness is field-relative and saturating, and it
@@ -93,15 +127,16 @@ function baseScore(s, ctx) {
   const prod = productiveness(s);
   const popPenalty = s.population * CONFIG.populationFactor;
   const h = happinessForScore(s, tune);
+  const polity = polityBonus(s, tune);
   if (!CONFIG.happinessShaped) {
     const happy = h * CONFIG.localHappinessFactor * tune.happinessPull;
-    return prod + happy - popPenalty + tune.sourceBias;
+    return prod + happy - popPenalty + tune.sourceBias + polity;
   }
   const mean = ctx && typeof ctx.meanHappiness === "number" ? ctx.meanHappiness : 0;
   const hNorm = Math.tanh((h - mean) / CONFIG.happyScale);
   const hShaped = (hNorm >= 0 ? hNorm : hNorm * CONFIG.happyRepulsion) * tune.happinessPull;
   const mult = clamp(1 + CONFIG.happyAmp * hShaped, CONFIG.happyMultMin, CONFIG.happyMultMax);
-  return prod * mult + CONFIG.happyFloor * hShaped - popPenalty + tune.sourceBias;
+  return prod * mult + CONFIG.happyFloor * hShaped - popPenalty + tune.sourceBias + polity;
 }
 
 /**
@@ -146,6 +181,10 @@ function situationalPercent(s) {
   if (s.siege) pct += CONFIG.siegeModifier;
   if (s.starving) pct += CONFIG.starvationModifier;
   if (s.unrest) pct += CONFIG.unrestModifier;
+  // 1.4.1 war weariness: an empire-wide unhappiness from prolonged war, distinct from the in-border
+  // violence terms above. A modest push that composes with (and is dominated by) violence, so a city
+  // already under siege isn't double-punished.
+  if (CONFIG.polityModelEnabled && s.polity && s.polity.warWeary) pct += CONFIG.warWearinessModifier;
   return pct;
 }
 

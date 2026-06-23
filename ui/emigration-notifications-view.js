@@ -3,7 +3,7 @@
 // Renders the persistent notification LOG (emigration-notifications.js) into the Demographics
 // "Notifications" sub-tab: a scrollable, newest-first list of every migration notification that has
 // fired, each row cause-themed (the same accent as its toast). Clicking a row expands it to the full
-// event detail — what caused it, which settlement it left, where the people went, and how many — so
+// event detail, what caused it, which settlement it left, where the people went, and how many, so
 // the on-screen toasts can stay brief while the complete record lives here. Pure DOM + a self-injected
 // stylesheet, so it renders correctly in the Demographics page or the standalone window.
 
@@ -96,7 +96,7 @@ function detailEl(e) {
   addLine(panel, "Event", e.event); // the specific named war / disaster, when applicable
   addLine(panel, "From", place(e.fromCity, e.fromCiv));
   if (isDeath(e)) {
-    // A death (the crisis-loss channel) has no destination — frame the count as casualties rather
+    // A death (the crisis-loss channel) has no destination, frame the count as casualties rather
     // than people who moved, in the game's own losses register.
     if (e.people || e.points) addLine(panel, "Casualties", formatBoth(e.people, e.points));
   } else {
@@ -109,7 +109,7 @@ function detailEl(e) {
 
 /**
  * Whether a notification records people who died (the attrition / crisis-death channel) rather than
- * migrated — so it can be worded as a loss of life, not a move.
+ * migrated, so it can be worded as a loss of life, not a move.
  * @param {*} e A NotifEntry.
  * @returns {boolean} True for a death entry.
  */
@@ -125,7 +125,7 @@ function isDeath(e) {
  */
 function rowSummary(e) {
   const base = e.summary || causeLabel(e.cause) + " event";
-  return e.event && !base.includes(e.event) ? e.event + " — " + base : base;
+  return e.event && !base.includes(e.event) ? e.event + ": " + base : base;
 }
 
 /**
@@ -179,7 +179,7 @@ export function renderNotifications(body) {
   const entries = notificationLog();
   if (!entries.length) {
     body.appendChild(el("div", "emig-empty",
-      "No migration notifications yet — they appear here as people move, with the full detail of each."));
+      "No migration notifications yet; they appear here as people move, with the full detail of each."));
     return;
   }
   const list = el("div", "emig-ntf-list");

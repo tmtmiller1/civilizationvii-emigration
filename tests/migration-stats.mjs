@@ -7,10 +7,14 @@ globalThis.Configuration = {
   editGame: () => ({ setValue: (k, v) => (KV[k] = v) })
 };
 
-const { recordMigrations, recentEventsFor, netDeltaForPlayer, migrationFlowHistory } =
-  await import("/emigration/ui/emigration-migration-stats.js");
+const {
+  recordMigrations, recentEventsFor, netDeltaForPlayer, migrationFlowHistory,
+  recordDisasterEvent, sampleOut, sampleIn, migrationFlows
+} = await import("/emigration/ui/emigration-migration-stats.js");
 const { capFlows } = await import("/emigration/ui/emigration-flow-history.js");
-const { registerMigrationMetric } = await import("/emigration/ui/emigration-demographics.js");
+const { registerMigrationMetric } = await import(
+  "/emigration/ui/emigration-demographics.js"
+);
 
 function testNetIsGainForDestLossForSrc() {
   // Player 1 → player 0: 0 loses 12k, 1 gains 12k. (Same-civ moves net to 0.)
@@ -56,7 +60,7 @@ function assertGraphsGroup(/** @type {*[]} */ groups) {
   assert.equal(g.first, true);
   assert.deepEqual(g.views.map((/** @type {*} */ v) => v.id), ["scaled", "civ"]);
   assert.deepEqual(g.members.map((/** @type {*} */ m) => m.label),
-    ["Net Migration (Graph)", "Net Migration (Table)", "Emigration", "Immigration",
+    ["Population", "Net Migration (Graph)", "Net Migration (Table)", "Emigration", "Immigration",
       "Refugees (Left)", "Refugees (Arrived)"]);
   for (const m of g.members) {
     assert.equal(typeof m.scaled, "string");
@@ -223,5 +227,200 @@ function testCapFlowsBoundsTheMatrixEvictingSmallest() {
 testRecentEventsFeedIsPlayerFilteredNewestFirst();
 testEmptyPassRecordsPopulationFrame();
 testCapFlowsBoundsTheMatrixEvictingSmallest();
+
+// ── Edge case tests for complex scenarios ────────────────────────────────────
+// Note: Tests share cumulative KV state, so use unique player IDs (100+) to avoid
+// interference with earlier tests.
+
+function testIntraCivMovesNetToZero() {
+  // Intra-civ moves (srcOwner === destOwner) should cancel from net but count
+  // as emigration/immigration for the flows. Net should be zero since people
+  // stay within the same civ.
+  recordMigrations([
+    { srcOwner: 100, destOwner: 100, people: 3000 },
+    { srcOwner: 100, destOwner: 100, people: 2000 }
+  ]);
+  const D = /** @type {*} */ (globalThis).EmigrationData;
+  assert.equal(D.netCumFor(100), 0, "intra-civ moves net to zero");
+  assert.equal(D.grossOutCumFor(100), 5000, "but count as gross emigration");
+  assert.equal(D.grossInCumFor(100), 5000, "and gross immigration");
+}
+
+function testZeroPopulationFlowsIgnored() {
+  // Flows with 0 people should not affect tallies or appear in flow history.
+  const before = migrationFlows().length;
+  recordMigrations([
+    { srcOwner: 101, destOwner: 102, people: 0 },
+    { srcOwner: 101, destOwner: 102, people: 100 }
+  ]);
+  const D = /** @type {*} */ (globalThis).EmigrationData;
+  assert.equal(D.netCumFor(101), -100);
+  assert.equal(D.netCumFor(102), 100);
+  const flows = migrationFlows();
+  const edge = flows.filter((f) => f.src === 101 && f.dest === 102)[0];
+  assert.ok(edge, "flow edge exists");
+  assert.equal(edge.people, 100, "zero-person flow not included");
+}
+
+function testCauseBreakdownAggregation() {
+  // Cause breakdowns with identical values should aggregate correctly,
+  // and zero-only causes should be dropped from display.
+  recordMigrations([
+    { srcOwner: 103, destOwner: 104, people: 1000, cause: "war" },
+    { srcOwner: 103, destOwner: 104, people: 1000, cause: "unhappiness" },
+    { srcOwner: 103, destOwner: 104, people: 1000, cause: "prosperity" }
+  ]);
+  const D = /** @type {*} */ (globalThis).EmigrationData;
+  assert.equal(D.netCumFor(103), -3000);
+  assert.equal(D.netCumFor(104), 3000);
+  const byExit = D.emigrationByCauseFor(103);
+  assert.equal((byExit.war || 0) + (byExit.unhappiness || 0) + (byExit.prosperity || 0), 3000);
+}
+
+function testWatermarkConsumptionIndependence() {
+  // Each call to sampleDelta should advance the watermark, making subsequent
+  // calls return 0 if no new migrations occurred.
+  recordMigrations([{ srcOwner: 105, destOwner: 106, people: 5000 }]);
+  // First read: 5000 change
+  const first = netDeltaForPlayer(106);
+  assert.equal(first, 5000, "initial delta");
+  // Second read (no new): 0
+  const second = netDeltaForPlayer(106);
+  assert.equal(second, 0, "watermark advanced");
+  // New migration: delta again
+  recordMigrations([{ srcOwner: 105, destOwner: 106, people: 3000 }]);
+  const third = netDeltaForPlayer(106);
+  assert.equal(third, 3000, "new delta");
+}
+
+function testRefugeeCauseFiltering() {
+  // Only certain causes (war, disaster, conquest) count as refugees.
+  // Economic causes (prosperity, unhappiness) do NOT.
+  const refBefore = migrationFlows();
+  recordMigrations([
+    { srcOwner: 107, destOwner: 108, people: 1000, cause: "war" },
+    { srcOwner: 107, destOwner: 108, people: 1000, cause: "disaster" },
+    { srcOwner: 107, destOwner: 108, people: 1000, cause: "prosperity" }
+  ]);
+  const D = /** @type {*} */ (globalThis).EmigrationData;
+  // Only war + disaster are refugees; prosperity is economic
+  assert.equal(D.refugeesCumFor(107), 2000, "only forced displacement counts");
+  assert.equal(D.grossOutCumFor(107), 3000, "but gross includes all causes");
+}
+
+function testMissingCauseHandling() {
+  // Migration without a cause should still count in all tallies (treated as "other").
+  recordMigrations([
+    { srcOwner: 109, destOwner: 110, people: 500 }, // no cause
+    { srcOwner: 109, destOwner: 110, people: 500, cause: "" }
+  ]);
+  const D = /** @type {*} */ (globalThis).EmigrationData;
+  assert.equal(D.grossOutCumFor(109), 1000, "missing cause still counts");
+  assert.equal(D.netCumFor(110), 1000);
+}
+
+function testDeathAttritionIsNotEmigration() {
+  // Attrition deaths (srcOwner only, no destOwner) increment deaths but NOT
+  // emigration or net (death is loss, not migration).
+  recordMigrations([
+    { srcOwner: 111, people: 2000, cause: "attrition" },
+    { srcOwner: 111, destOwner: 112, people: 1000, cause: "war" }
+  ]);
+  const D = /** @type {*} */ (globalThis).EmigrationData;
+  assert.equal(D.deathsCumFor(111), 2000, "attrition counted as deaths");
+  assert.equal(D.grossOutCumFor(111), 1000, "but NOT as emigration");
+  assert.equal(D.netCumFor(111), -1000, "net only includes war");
+  assert.equal(D.netCumFor(112), 1000, "dest sees only the war");
+}
+
+function testLargePopulationAccumulation() {
+  // Large flows (millions) should accumulate correctly without overflow.
+  const big1 = 1000000;  // 1M
+  const big2 = 2000000;  // 2M
+  recordMigrations([
+    { srcOwner: 113, destOwner: 114, people: big1, cause: "war" },
+    { srcOwner: 113, destOwner: 115, people: big2, cause: "prosperity" }
+  ]);
+  const D = /** @type {*} */ (globalThis).EmigrationData;
+  assert.equal(D.grossOutCumFor(113), big1 + big2, "large totals accumulate");
+  assert.equal(D.netCumFor(113), -(big1 + big2));
+  assert.equal(D.netCumFor(114), big1);
+  assert.equal(D.netCumFor(115), big2);
+}
+
+function testFlowHistoryFrameCreation() {
+  // Flow history should create frames even for empty passes (population snapshots).
+  globalThis.Game = { turn: 100 };
+  recordMigrations([]); // empty pass
+  globalThis.Game = { turn: 150 };
+  recordMigrations([{ srcOwner: 116, destOwner: 117, people: 500 }]);
+  globalThis.Game = { turn: 200 };
+  recordMigrations([]); // another empty
+  const history = migrationFlowHistory();
+  assert.ok(history.length >= 2, "flow history includes multiple frames");
+  const mostRecent = history[history.length - 1];
+  assert.ok(mostRecent.turn !== undefined, "frames carry turn data");
+  delete globalThis.Game;
+}
+
+function testEventKeyAggregation() {
+  // Migrations with eventKey should be tallied per-event for detailed ledgers.
+  recordMigrations([
+    { srcOwner: 118, destOwner: 119, people: 300, cause: "war", eventKey: "war_1" },
+    { srcOwner: 118, destOwner: 120, people: 200, cause: "disaster", eventKey: "dis_1" }
+  ]);
+  const D = /** @type {*} */ (globalThis).EmigrationData;
+  const outByEvent = D.emigrationByEventFor(118);
+  assert.ok(outByEvent !== null && typeof outByEvent === "object", "event tally exists");
+  assert.equal(D.grossOutCumFor(118), 500, "total gross emigration");
+}
+
+function testSampleOutIndependence() {
+  // sampleOut and netDelta should use independent watermarks.
+  recordMigrations([{ srcOwner: 121, destOwner: 122, people: 1000 }]);
+  const out121 = sampleOut(121);
+  assert.equal(out121, 1000, "first sample of sampleOut");
+  // Second call: watermark already advanced
+  assert.equal(sampleOut(121), 0, "sampleOut watermark advanced");
+  // netDeltaForPlayer uses a different watermark
+  const net121 = netDeltaForPlayer(121);
+  assert.equal(net121, -1000, "net delta independent of sampleOut");
+}
+
+function testSampleInIncrement() {
+  // sampleIn should track gross immigration independently.
+  recordMigrations([{ srcOwner: 123, destOwner: 124, people: 1000 }]);
+  const in124 = sampleIn(124);
+  assert.equal(in124, 1000, "gross immigration sampled");
+  assert.equal(sampleIn(124), 0, "watermark advanced");
+}
+
+function testDisasterEventStamping() {
+  // recordDisasterEvent should log events with turn, age, year, name, severity.
+  globalThis.Game = { turn: 250 };
+  recordDisasterEvent("Volcano", 5);
+  recordDisasterEvent("Meteor", 10);
+  const D = /** @type {*} */ (globalThis).EmigrationData;
+  const events = D.disasterEvents();
+  assert.ok(events.length >= 2, "events recorded");
+  const meteor = events.find((e) => e.name === "Meteor");
+  assert.ok(meteor, "meteor event found");
+  assert.equal(meteor.severity, 10);
+  delete globalThis.Game;
+}
+
+testIntraCivMovesNetToZero();
+testZeroPopulationFlowsIgnored();
+testCauseBreakdownAggregation();
+testWatermarkConsumptionIndependence();
+testRefugeeCauseFiltering();
+testMissingCauseHandling();
+testDeathAttritionIsNotEmigration();
+testLargePopulationAccumulation();
+testFlowHistoryFrameCreation();
+testEventKeyAggregation();
+testSampleOutIndependence();
+testSampleInIncrement();
+testDisasterEventStamping();
 
 console.log("migration-stats harness passed");

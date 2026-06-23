@@ -31,7 +31,7 @@ const CITY_TABLE = [
   [["Uppsala", 34000, 0, false], ["Hedeby", 16000, 0.5, true], ["Birka", 10000, 0.76, true]]
 ];
 // Cities that change hands mid-game. After `at` (global progress) the city transfers from civ
-// `from` to civ `to`, but its residents stay coded to the PRIOR owner — the network colours them in
+// `from` to civ `to`, but its residents stay coded to the PRIOR owner, the network colours them in
 // `from`'s colour/name, frozen at the population it had when captured; only the growth the city adds
 // AFTER the capture counts as the conqueror (`to`). This is what `origins` carries in a live game
 // (from the composition ledger); here it's authored so the sample demonstrates the same behaviour.
@@ -319,7 +319,7 @@ function ownerAt(c, tableOwner, p) {
 /**
  * A city's resident population split by ORIGIN civ at progress `p`. An unconquered city is 100% its
  * owner; a captured city keeps its prior-owner residents frozen at the size it had when it fell, and
- * the growth since the capture counts as the conqueror — exactly what the live composition ledger
+ * the growth since the capture counts as the conqueror, exactly what the live composition ledger
  * produces. The `pts` are origin-share weights (the dot builder normalizes them).
  * @param {*[]} c City entry.
  * @param {number} owner Current owner civ id.

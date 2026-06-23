@@ -7,7 +7,7 @@
         <SpecialThanks>Machiavelli's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>0.1.0</Version>
+        <Version>0.2.0</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -88,6 +88,7 @@
                     <Item>ui/emigration-causes.js</Item>
                     <Item>ui/emigration-tunables.js</Item>
                     <Item>ui/emigration-population.js</Item>
+                    <Item>ui/emigration-polity.js</Item>
                     <Item>ui/emigration-cities.js</Item>
                     <Item>ui/emigration-prosperity.js</Item>
                     <Item>ui/emigration-geography.js</Item>

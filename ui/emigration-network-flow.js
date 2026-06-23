@@ -652,7 +652,7 @@ function flowLegend() {
 
 /** @returns {string} The help text (shown via the stage-corner "?" hover, not a big caption). */
 function flowHelpText() {
-  return "Each arrow is migration between civilizations — red where people leave (outflow) fading to " +
+  return "Each arrow is migration between civilizations: red where people leave (outflow) fading to " +
     "green where they arrive (inflow); thicker arrows carry more people. Flows are tracked by their " +
     "origin AND destination settlement: expand a civilization to fan its arrows out to the actual " +
     "cities and towns people left and arrived at, plus the moves between its own cities. Towns are " +
@@ -676,19 +676,52 @@ function buildFlowScene(frames) {
 }
 
 /**
+ * Build the Show/Hide cities toggle: expands every civ that has settlements (so flows route to
+ * city sub-nodes) or collapses them all to single civ circles. Mirrors clicking a civ, but for all
+ * civs at once. A canvas redraw (holder.dirty) reflects it; no full rebuild needed.
+ * @param {*} holder The flow render holder ({sim, state, dirty}).
+ * @returns {HTMLElement} The toggle button.
+ */
+function buildCitiesToggle(holder) {
+  const cityIds = (holder.sim.nodes || [])
+    .filter((/** @type {*} */ c) => c && c.cities && c.cities.length)
+    .map((/** @type {*} */ c) => c.id);
+  const allShown = () =>
+    cityIds.length > 0 && cityIds.every((/** @type {*} */ id) => holder.state.expanded.has(id));
+  const btn = el("div", "emig-filter-btn");
+  const sync = () => {
+    const on = allShown();
+    btn.textContent = on ? "Hide cities" : "Show cities";
+    btn.classList.toggle("active", on);
+  };
+  btn.addEventListener("click", () => {
+    if (allShown()) holder.state.expanded.clear();
+    else for (const id of cityIds) holder.state.expanded.add(id);
+    holder.dirty = true;
+    sync();
+  });
+  sync();
+  return btn;
+}
+
+/**
  * Mount the chrome (legend, canvas, timeline, caption) into the wrapper.
  * @param {HTMLElement} wrap Wrapper.
  * @param {HTMLCanvasElement} canvas Canvas.
  * @param {*} timeline Timeline handle or null.
- * @param {()=>void} [rebuildAll] Full re-render hook (for the Units toggle, which rescales the arrows).
+ * @param {*} holder The flow render holder (for the Show/Hide cities toggle).
+ * @param {{rebuildAll?:()=>void, controlsHost?:HTMLElement}} [opts] Full re-render hook + shared controls row.
  */
-function mountFlowChrome(wrap, canvas, timeline, rebuildAll) {
-  // "Units:" toggle (Civ Pop ↔ Scaled Pop) in its own controls row, matching the Dots view. Standalone
-  // here, so no leading separator. A flip rescales the arrows, so it rebuilds the whole flow view.
-  const controls = el("div", "emig-netc-chips");
-  appendUnitsToggle(controls, rebuildAll, false);
+function mountFlowChrome(wrap, canvas, timeline, holder, opts) {
+  const controlsHost = opts && opts.controlsHost;
+  // "Units:" toggle (Civ Pop ↔ Scaled Pop) + a Show/Hide cities toggle, in the controls row (matching
+  // the Dots view). When a shared controls row was handed in, render into it (so it shares the host
+  // Options line, like the Data tab); else inline above the stage.
+  const controls = controlsHost || el("div", "emig-netc-chips");
+  appendUnitsToggle(controls, opts && opts.rebuildAll, false);
+  controls.appendChild(buildCitiesToggle(holder));
   controls.appendChild(helpIcon(flowHelpText())); // labelled help button, right of the controls row
-  wrap.appendChild(controls);
+  if (!controlsHost) wrap.appendChild(controls);
   wrap.appendChild(flowLegend());
   const stage = el("div", "emig-netc-stage");
   stage.appendChild(canvas);
@@ -704,8 +737,9 @@ function mountFlowChrome(wrap, canvas, timeline, rebuildAll) {
  * @param {HTMLElement} container Card body.
  * @param {*[]} frames Usable frames.
  * @param {()=>void} [rebuildAll] Full re-render hook (for the Units toggle, which rescales the arrows).
+ * @param {HTMLElement} [controlsHost] Shared controls row for the filter row (else inline above stage).
  */
-function buildFlowViz(container, frames, rebuildAll) {
+function buildFlowViz(container, frames, rebuildAll, controlsHost) {
   const wrap = el("div", "emig-netc-wrap");
   const { canvas, ctx } = setupCanvas();
   if (!ctx) {
@@ -727,7 +761,7 @@ function buildFlowViz(container, frames, rebuildAll) {
     state.frameIdx = i;
     holder.dirty = true;
   });
-  mountFlowChrome(wrap, canvas, timeline, rebuildAll);
+  mountFlowChrome(wrap, canvas, timeline, holder, { rebuildAll, controlsHost });
   wireFlowInteract(canvas, holder);
   container.appendChild(wrap);
   runFlowLoop(canvas, ctx, holder);
@@ -737,9 +771,10 @@ function buildFlowViz(container, frames, rebuildAll) {
  * Render the civ-to-civ flow view (arrows; click to drill into cities/towns) into `container`.
  * @param {HTMLElement} container Card body.
  * @param {*} section The dashboard section ({frames}).
+ * @param {HTMLElement} [controlsHost] Shared controls row for the filter row (else inline above stage).
  */
-export function renderFlowMap(container, section) {
-  // Use removeChild, NOT replaceChildren — Coherent GameFace doesn't implement replaceChildren, so on
+export function renderFlowMap(container, section, controlsHost) {
+  // Use removeChild, NOT replaceChildren, Coherent GameFace doesn't implement replaceChildren, so on
   // a re-render (e.g. the Units toggle) the old view wouldn't clear and the chrome would double up.
   if (container) while (container.firstChild) container.removeChild(container.firstChild);
   const all = (section && section.frames) || [];
@@ -751,5 +786,5 @@ export function renderFlowMap(container, section) {
   }
   injectStyle();
   injectFlowStyle();
-  buildFlowViz(container, frames, () => renderFlowMap(container, section));
+  buildFlowViz(container, frames, () => renderFlowMap(container, section, controlsHost), controlsHost);
 }

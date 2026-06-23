@@ -64,7 +64,7 @@ function cityTiers() {
   }
   if (!signals.length) return [];
   // The field (mean/spread) is computed over EVERY civ so a visible city is colored by its true
-  // global standing, but only civs the visibility policy permits are PAINTED — otherwise toggling
+  // global standing, but only civs the visibility policy permits are PAINTED, otherwise toggling
   // this lens would reveal unmet civs' settlement locations + prosperity. Mirrors the ethnicity lens
   // (emigration-ethnicity-lens.js), which skips hidden owners for the same spoiler-protection reason.
   const ctx = fieldContext(signals);
@@ -99,7 +99,7 @@ function plotsOf(city) {
 }
 
 /**
- * The amount from one `GameplayMap.getYields` entry — defensive across the engine's possible shapes:
+ * The amount from one `GameplayMap.getYields` entry, defensive across the engine's possible shapes:
  * a [yieldType, amount] tuple (the base UI's shape), a {amount}/{value} object, or a bare number.
  * @param {*} e A yields entry.
  * @returns {number} The numeric amount (0 if unreadable).

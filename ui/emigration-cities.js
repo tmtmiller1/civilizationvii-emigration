@@ -8,6 +8,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { ruralPop, totalPop } from "/emigration/ui/emigration-population.js";
 import { observeCity } from "/emigration/ui/emigration-violence.js";
 import { observeDisaster } from "/emigration/ui/emigration-disasters.js";
+import { cityHappinessStage, readPolity, resetPolityCache } from "/emigration/ui/emigration-polity.js";
 
 /**
  * A snapshot of one city's emigration-relevant state.
@@ -26,6 +27,9 @@ import { observeDisaster } from "/emigration/ui/emigration-disasters.js";
  * @property {number} science Net science yield.
  * @property {number} culture Net culture yield.
  * @property {number} happiness City net happiness.
+ * @property {number} stage Happiness STAGE ordinal in [-2,+2] (ANGRY −2 … ECSTATIC +2; 1.4.1).
+ * @property {import("/emigration/ui/emigration-polity.js").Polity} polity Owner-civ polity
+ *   (government / celebration / war weariness; 1.4.1). Denormalized onto each of the owner's signals.
  * @property {boolean} unrest Whether the city is in unrest.
  * @property {boolean} starving Whether net food is negative.
  * @property {boolean} siege Whether the city is being razed / besieged.
@@ -150,6 +154,8 @@ function buildSignal(city, player, isCityState) {
       science: readYield(city, "YIELD_SCIENCE"),
       culture: readYield(city, "YIELD_CULTURE"),
       happiness: readHappiness(city),
+      stage: cityHappinessStage(city),
+      polity: readPolity(owner),
       unrest: !!city?.Happiness?.hasUnrest,
       starving: food < 0,
       siege: !!city.isBeingRazed,
@@ -210,6 +216,7 @@ function collectPlayerCities(player, isCityState, out) {
 export function collectCitySignals() {
   /** @type {CitySignal[]} */
   const out = [];
+  resetPolityCache(); // read each civ's government/celebration/war-weariness at most once this pass
   for (let pid = 0; pid < 64; pid++) {
     const e = eligiblePlayer(pid);
     if (e) collectPlayerCities(e.player, e.isCityState, out);
