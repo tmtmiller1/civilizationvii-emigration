@@ -7,7 +7,7 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
-## [0.2.0] - 2026-06-23
+## [1.0.0] - 2026-06-23
 
 ### Changed
 - **1.4.1 happiness/economy rebalance.** A full-parameter calibration sweep
