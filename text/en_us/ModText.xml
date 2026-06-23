@@ -150,7 +150,7 @@
         <Row Tag="LOC_EMIG_T_CONGEST_D"><Text>Make a civilization that's absorbing lots of migrants a less attractive destination for further migration (it's busy integrating newcomers), scaling with how much it's digesting. A structural brake on runaway magnets. 0 = off.</Text></Row>
         <Row Tag="LOC_EMIG_EVENT_FAMINE"><Text>Famine</Text></Row>
         <Row Tag="LOC_EMIG_T_ANTISNOWBALL"><Text>Cost: anti-snowball brake (0 = off)</Text></Row>
-        <Row Tag="LOC_EMIG_T_ANTISNOWBALL_D"><Text>Make a civilization whose population has pulled far ahead of the field a less attractive destination for cross-civ migration — a self-correcting brake on a runaway leader that grows with how far ahead it is (0 off / 8 gentle / 15 standard / 28 strong). It never impedes a leader's OUTflow or internal moves. 0 = off.</Text></Row>
+        <Row Tag="LOC_EMIG_T_ANTISNOWBALL_D"><Text>Make a civilization whose population has pulled far ahead of the field a less attractive destination for cross-civ migration: a self-correcting brake on a runaway leader that grows with how far ahead it is (0 off / 8 gentle / 15 standard / 28 strong). It never impedes a leader's OUTflow or internal moves. 0 = off.</Text></Row>
         <Row Tag="LOC_EMIG_T_ANTISNOWTHRESH"><Text>Cost: anti-snowball trigger (fair-share ×)</Text></Row>
         <Row Tag="LOC_EMIG_T_ANTISNOWTHRESH_D"><Text>How far a civilization's population may run ahead of the world-average civ before the anti-snowball headwind starts to bite, as a multiple of fair share. Lower = the brake engages sooner (more egalitarian); higher = only an extreme runaway leader is slowed.</Text></Row>
         <Row Tag="LOC_EMIG_T_DISASTERS"><Text>Disasters: drive migration</Text></Row>

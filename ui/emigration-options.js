@@ -64,7 +64,7 @@ const SNAP_ITEMS = [
 ];
 const PRESET_ITEMS = PRESET_NAMES.map((n) => ({ label: "LOC_EMIG_PRESET_" + n.toUpperCase() }));
 // Emigration's own analytics-visibility control for its dashboard tabs (0 follow Demographics,
-// 1 hide unmet, 2 show all). Plain-string item labels — no localization round-trip needed.
+// 1 hide unmet, 2 show all). Plain-string item labels, no localization round-trip needed.
 const VISIBILITY_ITEMS = [
   { label: "Follow Demographics setting" },
   { label: "Hide civilizations I haven't met" },

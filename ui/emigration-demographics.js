@@ -15,14 +15,16 @@
 // Gross in/out, the emigration cause breakdown, and the war/disaster/conquest refugee split are folded
 // into each line's tooltip instead of being their own graphs.
 
-import { formatPeople } from "/emigration/ui/emigration-population.js";
+import { formatPeople, scaleCityPopulation } from "/emigration/ui/emigration-population.js";
+import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { causeLabel, isRefugeeCause } from "/emigration/ui/emigration-causes.js";
 import { getNumberMode, setNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
 import {
   refugeesFor,
   refugeesInFor,
   emigrationByCause,
-  immigrationByCause
+  immigrationByCause,
+  monoTurn
 } from "/emigration/ui/emigration-migration-stats.js";
 
 /**
@@ -154,18 +156,18 @@ function inTooltip(ctx) {
 
 // ── The migration graphs: Net Migration (am I winning or losing the population game?), gross
 // Emigration / Immigration (the per-flow detail), and Refugees (the human cost of war and disaster).
-// Each is a cumulative per-civ line, registered twice — once in Demographics' historically-scaled
-// "people" and once in raw Civ population points — so the "Graphs" group's units toggle (Scaled / Civ
+// Each is a cumulative per-civ line, registered twice, once in Demographics' historically-scaled
+// "people" and once in raw Civ population points, so the "Graphs" group's units toggle (Scaled / Civ
 // numbers) just swaps which spec it charts. Cause breakdowns / splits ride in each line's tooltip.
 // Labels are plain strings (Demographics renders metric labels raw, not as LOC keys). ──
 const NET_CUM_SPEC = {
   id: "emig_net_cum",
   label: "Net Migration",
-  title: "Net Migration",
-  subtitle: "Net people gained minus lost to date — positive means more people arrive than leave.",
+  title: "Net Migration Over Time",
+  subtitle: "Net people gained minus lost to date; positive means more people arrive than leave.",
   description: "Running total of net people gained minus lost, to date (positive = net inflow).",
   category: "people",
-  tooltipMode: "index", // net lines cluster near zero — hover a turn to list every civ at once
+  tooltipMode: "index", // net lines cluster near zero, hover a turn to list every civ at once
   accessor: (/** @type {*} */ ctx) => cumFor("netCumFor", ctx?.id),
   format: formatSignedPeople,
   unit: "people"
@@ -174,11 +176,11 @@ const NET_CUM_SPEC = {
 const NET_CUM_PTS_SPEC = {
   id: "emig_net_cum_pts",
   label: "Net Migration",
-  title: "Net Migration",
-  subtitle: "Net people gained minus lost to date — positive means more people arrive than leave.",
-  description: "Running total of net population points gained minus lost — the exact Civ figures.",
+  title: "Net Migration Over Time",
+  subtitle: "Net people gained minus lost to date; positive means more people arrive than leave.",
+  description: "Running total of net population points gained minus lost: the exact Civ figures.",
   category: "people",
-  tooltipMode: "index", // net lines cluster near zero — hover a turn to list every civ at once
+  tooltipMode: "index", // net lines cluster near zero, hover a turn to list every civ at once
   accessor: (/** @type {*} */ ctx) => cumFor("netPtsFor", ctx?.id),
   format: formatSignedPoints,
   unit: "points"
@@ -187,7 +189,7 @@ const NET_CUM_PTS_SPEC = {
 const REF_SPEC = {
   id: "emig_refugees",
   label: "Refugees Out",
-  title: "Refugees (Left)",
+  title: "Refugees that left over time",
   subtitle: "People displaced FROM this civilization by war, disaster, or conquest, to date.",
   description: "Running total of people displaced FROM this civilization by war, disaster, or conquest.",
   category: "people",
@@ -199,7 +201,7 @@ const REF_SPEC = {
 const REF_PTS_SPEC = {
   id: "emig_refugees_pts",
   label: "Refugees Out",
-  title: "Refugees (Left)",
+  title: "Refugees that left over time",
   subtitle: "People displaced FROM this civilization by war, disaster, or conquest, to date.",
   description: "Running total of population points displaced from this civ by war, disaster, or conquest.",
   category: "people",
@@ -208,12 +210,12 @@ const REF_PTS_SPEC = {
   unit: "points",
   tooltipAttribution: refugeesTooltip
 };
-// Refugee IMMIGRATION — war/disaster/conquest arrivals this civ has RECEIVED (the inflow counterpart
+// Refugee IMMIGRATION, war/disaster/conquest arrivals this civ has RECEIVED (the inflow counterpart
 // of Refugees Out), so a civ taking in the displaced shows it distinct from economic immigration.
 const REF_IN_SPEC = {
   id: "emig_refugees_in",
   label: "Refugees In",
-  title: "Refugees (Arrived)",
+  title: "Refugees that arrived over time",
   subtitle: "People who fled war, disaster, or conquest elsewhere and resettled HERE, to date.",
   description: "Running total of people who fled war, disaster, or conquest and resettled HERE.",
   category: "people",
@@ -225,7 +227,7 @@ const REF_IN_SPEC = {
 const REF_IN_PTS_SPEC = {
   id: "emig_refugees_in_pts",
   label: "Refugees In",
-  title: "Refugees (Arrived)",
+  title: "Refugees that arrived over time",
   subtitle: "People who fled war, disaster, or conquest elsewhere and resettled HERE, to date.",
   description: "Running total of population points who fled war, disaster, or conquest and resettled here.",
   category: "people",
@@ -235,11 +237,11 @@ const REF_IN_PTS_SPEC = {
   tooltipAttribution: refugeesInTooltip
 };
 // Gross emigration (people leaving) and immigration (people arriving), each in scaled people + raw
-// Civ points — the per-flow detail alongside the Net Migration and Refugees headlines.
+// Civ points, the per-flow detail alongside the Net Migration and Refugees headlines.
 const OUT_CUM_SPEC = {
   id: "emig_out_cum",
   label: "Emigration",
-  title: "Emigration (cumulative)",
+  title: "Emigration Over Time",
   subtitle: "Total people who have left this civilization's cities to date.",
   description: "Running total of people who have left this civilization's cities.",
   category: "people",
@@ -251,7 +253,7 @@ const OUT_CUM_SPEC = {
 const OUT_CUM_PTS_SPEC = {
   id: "emig_out_cum_pts",
   label: "Emigration",
-  title: "Emigration (Civ numbers)",
+  title: "Emigration Over Time",
   subtitle: "Total people who have left this civilization's cities to date.",
   description: "Running total of population points that have left this civilization's cities.",
   category: "people",
@@ -263,7 +265,7 @@ const OUT_CUM_PTS_SPEC = {
 const IN_CUM_SPEC = {
   id: "emig_in_cum",
   label: "Immigration",
-  title: "Immigration (cumulative)",
+  title: "Immigration Over Time",
   subtitle: "Total people who have arrived in this civilization's cities to date.",
   description: "Running total of people who have arrived into this civilization's cities.",
   category: "people",
@@ -275,7 +277,7 @@ const IN_CUM_SPEC = {
 const IN_CUM_PTS_SPEC = {
   id: "emig_in_cum_pts",
   label: "Immigration",
-  title: "Immigration (Civ numbers)",
+  title: "Immigration Over Time",
   subtitle: "Total people who have arrived in this civilization's cities to date.",
   description: "Running total of population points that have arrived into this civilization's cities.",
   category: "people",
@@ -286,7 +288,47 @@ const IN_CUM_PTS_SPEC = {
 };
 // All stay registered so the sampler tallies them every turn; the group below decides which one is
 // charted for the (metric, units) selection.
+// Per-civ CURRENT population in historically-scaled "people", computed with the SAME system as every
+// other scaled figure: sum scaleCityPopulation(cityPoints, turn) over the civ's settlements (per-city,
+// NOT on the aggregate, the curve is nonlinear, so sum-of-scaled ≠ scaled-of-sum). Cached per mono-turn
+// since the host samples every civ in one tick. This is the "Scaled" series for the Population pill; the
+// "Civ numbers" series is the host's raw `population_civ` (exact points).
+/** @type {{turn:number, people:Record<number, number>}} */
+let _popCache = { turn: -1, people: {} };
+/**
+ * Current scaled-people population for a civ (designed scaling, matches the flow graphs).
+ * @param {number} [pid] Player id.
+ * @returns {number} Scaled people, or 0.
+ */
+function civPeople(pid) {
+  if (typeof pid !== "number") return 0;
+  const turn = monoTurn();
+  if (_popCache.turn !== turn) {
+    /** @type {Record<number, number>} */
+    const people = {};
+    for (const s of collectCitySignals()) {
+      const o = s.owner;
+      if (typeof o === "number") people[o] = (people[o] || 0) + scaleCityPopulation(s.population || 0, turn);
+    }
+    _popCache = { turn, people };
+  }
+  return _popCache.people[pid] || 0;
+}
+
+const POP_PEOPLE_SPEC = {
+  id: "emig_population",
+  label: "Population",
+  title: "Population Over Time",
+  subtitle: "Current population, historically scaled to people (the same scaling as the flow graphs).",
+  description: "Each civilization's current population, scaled to historical people per the shared model.",
+  category: "people",
+  accessor: (/** @type {*} */ ctx) => civPeople(ctx?.id),
+  format: formatPeople,
+  unit: "people"
+};
+
 const SPECS = [
+  POP_PEOPLE_SPEC,
   NET_CUM_SPEC, NET_CUM_PTS_SPEC,
   OUT_CUM_SPEC, OUT_CUM_PTS_SPEC,
   IN_CUM_SPEC, IN_CUM_PTS_SPEC,
@@ -295,17 +337,17 @@ const SPECS = [
 ];
 
 // The "Graphs" section's two-toggle group: pick a metric (Net Migration / Emigration / Immigration /
-// Refugees Out / Refugees In) and the units — Scaled (historical "people", consistent w/ Demographics
+// Refugees Out / Refugees In) and the units, Scaled (historical "people", consistent w/ Demographics
 // chart) or Civ numbers (raw population points, reconciling with the in-game Emigration window). Each
 // (member, view) maps to one of the registered specs above.
-// The "Net Migration (Table)" pill charts nothing — it routes to the existing ledger sub-tab of the
+// The "Net Migration (Table)" pill charts nothing, it routes to the existing ledger sub-tab of the
 // Migration panel (emigration-migration-page.js's "ledger" tab) via its panel-subtab id, so the table
 // lives as a pill in this section right after the Net Migration graph. "<panelId>::<subId>" matches
 // the host's PANEL_SUBTAB_SEP scheme; the host's group-merge then drops this id from the standalone
 // sub-tab row. Both views map to the same id (the table carries its own units toggle).
 const LEDGER_SUBTAB_ID = "emig_migration_panel::ledger";
 // Bind the group's Scaled / Civ-numbers VIEW to the shared Emigration number mode, so this toggle
-// and the "Numbers:" chip on the Network / Causes / Settlements tabs are one persistent setting —
+// and the "Numbers:" chip on the Network / Causes / Settlements tabs are one persistent setting,
 // switching either one sticks, and reopening restores whatever was selected last.
 const VIEW_BINDING = {
   get: () => (getNumberMode() === NumberMode.CIV ? "civ" : "scaled"),
@@ -317,9 +359,15 @@ const GRAPHS_GROUP = {
   id: "emig_graphs",
   label: "Data",
   first: true,
-  views: [{ id: "scaled", label: "Scaled" }, { id: "civ", label: "Civ numbers" }],
+  views: [{ id: "scaled", label: "Scaled Population" }, { id: "civ", label: "Civ Population" }],
   viewBinding: VIEW_BINDING,
   members: [
+    // Population (the host's own metric) leads the group so the Migration hub's first page is
+    // "Population & Migration": the population level + the flows that explain it. Both units map to the
+    // same metric (population is a raw count with no Scaled/Civ points variant), like the ledger member.
+    // Scaled → Emigration's people-scaled population (emig_population, the SAME per-city scaling as the
+    // flow graphs); Civ → host's raw population points (population_civ). One scaling system everywhere.
+    { label: "Population", scaled: "emig_population", civ: "population_civ" },
     { label: "Net Migration (Graph)", scaled: NET_CUM_SPEC.id, civ: NET_CUM_PTS_SPEC.id },
     { label: "Net Migration (Table)", scaled: LEDGER_SUBTAB_ID, civ: LEDGER_SUBTAB_ID },
     { label: "Emigration", scaled: OUT_CUM_SPEC.id, civ: OUT_CUM_PTS_SPEC.id },
@@ -335,13 +383,16 @@ const GRAPHS_GROUP = {
  */
 function doRegister(api) {
   for (const spec of SPECS) api.registerMetric(spec);
-  // Collapse the migration graphs into ONE "Graphs" section (FIRST on Emigration's Migration page)
-  // with two toggles: the metric (Net Migration / Refugees) and the units (Scaled / Civ numbers).
-  // Each (member, view) maps to one of the registered specs; all stay registered above so they're
-  // still sampled. No-op on an older Demographics that lacks the group hook.
-  const MIG_PAGE = "emig_migration_panel"; // must match emigration-migration-page.js PANEL_SPEC.id
+  // Collapse the migration graphs into ONE group with two toggles: the metric (Net Migration /
+  // Refugees / …) and the units (Scaled / Civ numbers). Each (member, view) maps to a registered spec;
+  // all stay registered above so they're still sampled. No-op on a host lacking the group hook.
+  //  • hub mode (Phase 3): the group lives on the host's flat "Net Migration" Migration-hub page.
+  //  • legacy: the group lives on the Emigration sibling panel page.
+  const hubMode = typeof api.registerHubPages === "function"
+    && Array.isArray(api.HUB_IDS) && api.HUB_IDS.includes("migration");
+  const pageId = hubMode ? "emig_net_migration" : "emig_migration_panel"; // match the page that hosts it
   if (typeof api.registerMetricGroup === "function") {
-    api.registerMetricGroup(Object.assign({ pageId: MIG_PAGE }, GRAPHS_GROUP));
+    api.registerMetricGroup(Object.assign({ pageId }, GRAPHS_GROUP));
   }
 }
 

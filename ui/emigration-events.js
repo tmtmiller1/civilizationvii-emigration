@@ -17,8 +17,8 @@ import { recordDisasterEvent } from "/emigration/ui/emigration-migration-stats.j
 import { dlog } from "/emigration/ui/emigration-log.js";
 
 // How far from an event's epicenter to look for affected cities. A disaster (a volcanic eruption,
-// a flood) damages a RING of tiles around its epicenter, and the epicenter itself — a volcano /
-// floodplain tile — is frequently impassable terrain on a border that NO city owns. Mapping only the
+// a flood) damages a RING of tiles around its epicenter, and the epicenter itself, a volcano /
+// floodplain tile, is frequently impassable terrain on a border that NO city owns. Mapping only the
 // epicenter's owning city therefore misses the eruption entirely; scanning the surrounding ring
 // attributes the distress to every nearby city that owns a tile in the blast radius.
 const EVENT_RADIUS = 1;
@@ -41,7 +41,7 @@ function cityKeyAt(x, y) {
 
 /**
  * The disaster-distress city keys for an event epicenter: every city owning a tile within
- * EVENT_RADIUS of the epicenter (deduped), not just the epicenter's own owner — so an eruption on an
+ * EVENT_RADIUS of the epicenter (deduped), not just the epicenter's own owner, so an eruption on an
  * unowned/border volcano tile still strikes the cities around it. Empty when none/unreadable.
  * @param {{x:number, y:number}} location The epicenter plot.
  * @returns {string[]} Affected city keys (unique).
@@ -90,12 +90,12 @@ function worstEventPct(rows, type, damageType) {
 }
 
 /**
- * The worst single impact percentage a RandomEvent TYPE inflicts — the larger of its biggest yield cut
- * (food/production drive displacement) and its constructible-damage cut — from the base RandomEventYields
+ * The worst single impact percentage a RandomEvent TYPE inflicts, the larger of its biggest yield cut
+ * (food/production drive displacement) and its constructible-damage cut, from the base RandomEventYields
  * / RandomEventDamages tables. 0 when unavailable.
  *
  * WHY this, not the `Severity` column: Civ7's RandomEventOccurred payload carries `phase`, not a usable
- * severity, and the `Severity` column is a compressed/weak proxy — a "GENTLE" volcano is Severity 0 and a
+ * severity, and the `Severity` column is a compressed/weak proxy, a "GENTLE" volcano is Severity 0 and a
  * "CATASTROPHIC" one is only Severity 1, so the engine's own scale barely separates them. The real
  * magnitude lives in the effect tables (gentle volcano = 25% food / 20% constructibles; catastrophic 35% / 40%).
  * @param {*} info The GameInfo.RandomEvents row (carries RandomEventType).
@@ -110,7 +110,7 @@ function eventImpactPct(info) {
       worstEventPct(GameInfo.RandomEventDamages, type, "CONSTRUCTIBLE_DAMAGED")
     );
   } catch (_) {
-    return 0; // effect tables absent on some builds — fall back to the named tier
+    return 0; // effect tables absent on some builds, fall back to the named tier
   }
 }
 
@@ -119,7 +119,7 @@ function eventImpactPct(info) {
  * engine's named tier (`Severity`: gentle 0 < catastrophic 1 < … < thera 3) BUMPED a step for
  * catastrophic-class impact (eventImpactPct), and floored at 1 so a city-striking disaster always
  * carries real weight AND gentle < catastrophic (the old code read raw `Severity`, where the distress
- * formula collapsed 0 and 1 to the same multiplier — every volcano displaced identically).
+ * formula collapsed 0 and 1 to the same multiplier, every volcano displaced identically).
  * @param {*} data The event payload.
  * @param {*} info The GameInfo RandomEvents row.
  * @returns {number} Magnitude (1..4).
@@ -148,7 +148,7 @@ function onRandomEvent(data) {
     logEvent(data, info, sev, keys.length); // DIAGNOSTIC: grep `EMIG_event` in UI.log
     recordDisaster(info?.EventClass, sev, keys, data.eventType); // type → per-city cause attribution
     // Record a refugees-chart MARKER whenever the disaster actually struck cities (so it drove
-    // displacement), independent of the toast threshold — otherwise sub-`disasterNotifyMinSeverity`
+    // displacement), independent of the toast threshold, otherwise sub-`disasterNotifyMinSeverity`
     // disasters drive the sim but never annotate the chart, which is why none were appearing.
     if (keys.length > 0) recordDisasterEvent(disasterName(data.eventType), sev);
     // The TOAST stays gated on the (higher) notify severity, so only PARTICULARLY bad disasters pop a
@@ -164,7 +164,7 @@ function onRandomEvent(data) {
 }
 
 /**
- * Debug-only: log a random event the mod received — class, severity, epicenter, and how many cities
+ * Debug-only: log a random event the mod received, class, severity, epicenter, and how many cities
  * the blast-radius scan matched.
  * @param {*} data The event payload.
  * @param {*} info The GameInfo RandomEvents row.
@@ -181,7 +181,7 @@ function logEvent(data, info, sev, nKeys) {
 export function installEmigrationEvents() {
   try {
     if (typeof engine === "undefined" || typeof engine.on !== "function") {
-      dlog("events: engine.on unavailable — disaster hook NOT installed");
+      dlog("events: engine.on unavailable, disaster hook NOT installed");
       return;
     }
     engine.on("RandomEventOccurred", (/** @type {*} */ d) => onRandomEvent(d));

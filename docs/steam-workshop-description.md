@@ -1,6 +1,6 @@
 [h1]Emigration[/h1]
 
-[i]Emigration[/i] adds living population migration and refugee systems to Civilization VII. Unhappy, poor, besieged, starving, or disaster-struck cities lose people; prosperous, safe, welcoming ones attract them, within and between civilizations. Immigration brings growth, costs, and politics, including civic-tree immigration policies in every age, plus graphs, lenses, and tooltips to see it all. It pairs with the [b]Demographics[/b] mod but runs standalone, and everything is tunable in Options.
+[i]Emigration[/i] adds population migration and refugee systems to Civilization VII. Unhappy, poor, besieged, starving, or disaster-struck cities lose people; prosperous, safe, welcoming ones attract them, within and between civilizations. Immigration brings growth, costs, and politics, including civic-tree immigration policies in every age, plus graphs, lenses, and tooltips to see it all. It pairs with the [b]Demographics[/b] mod but runs standalone, and everything is tunable in Options.
 
 Storytelling is a core purpose: the mod aims to make migration pressures and demographic change legible as a human narrative, not just systems and totals.
 
@@ -13,7 +13,8 @@ As part of releasing it I made a personal donation to organizations supporting r
 
 [b]What Emigration does[/b]
 [list]
-[*][b]Prosperity-driven movement.[/b] Each turn every visible city is scored by a Civ V-style Prosperity model, per-capita food, production, gold, science, and culture, with [b]happiness dominant[/b] (so unhappy, low-yield cities bleed people even at peace), bent by a situational penalty from war, sieges, starvation, unrest, and disasters. People move toward higher-prosperity settlements, within and across civilizations.
+[*][b]Updated for Civilization VII 1.4.1.[/b] Reads the reworked systems directly: the five happiness stages (Angry to Ecstatic), governments' happiness-friendly passives, [b]Celebrations[/b] (Golden Ages) as a stronger draw, and empire-wide [b]war weariness[/b] as a push. The happiness/economy balance was re-tuned for 1.4.1's sharper happiness so a city's yields matter alongside its mood (snowball-checked, and revertible in Options).
+[*][b]Prosperity-driven movement.[/b] Each turn every visible city is scored by a Civ V-style Prosperity model, per-capita food, production, gold, science, and culture, with [b]happiness the strongest single factor[/b] (so unhappy, low-yield cities bleed people even at peace) but, after the 1.4.1 rebalance, no longer drowning out a city's economy, bent by a situational penalty from war, sieges, starvation, unrest, and disasters. People move toward higher-prosperity settlements, within and across civilizations.
 [*][b]Real, fog-independent war displacement.[/b] War migration keys on [i]actual violence inside a city's borders[/i] (district damage, pillaged tiles), read from game state rather than line of sight, so it works the same for your wars and distant AI-vs-AI wars. A capped, time-gated siege model lets a besieged city shed heavy population but never be emptied without an actual capture.
 [*][b]Refugees flee the invader.[/b] War refugees move [i]away[/i] from the nearest enemy, preferring their own civilization first, neutrals next, the attacker last. A trapped, dying population gets an outlet rather than being bottled up forever.
 [*][b]Regional, not teleporting.[/b] Migration is distance-penalized, so people move to [i]nearby[/i] better settlements, not across the map.

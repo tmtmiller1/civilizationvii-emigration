@@ -86,7 +86,7 @@ function ledgerNetCell(r, mode) {
 }
 
 /**
- * The diverging Net BAR cell: a shared zero-centred axis so rows read against each other — a RED bar
+ * The diverging Net BAR cell: a shared zero-centred axis so rows read against each other, a RED bar
  * grows LEFT of centre for a net loss, a GREEN bar grows RIGHT for a net gain, scaled to the largest
  * mover. The signed number itself stays in the "Net" column.
  * @param {*} r Ledger row.
@@ -195,6 +195,7 @@ function ledgerTextRow(cells, cls) {
  */
 export function renderLedger(body, rows) {
   const mode = getNumberMode();
+  body.appendChild(el("div", "emig-section-title", "Net Migration (Detail)"));
   const wrap = el("div", "emig-led");
   wrap.appendChild(ledgerTextRow(
     ["Civilization", "Net", "In", "Out", "Stance impact", "Refugees", "Losses"], "emig-led-head"));

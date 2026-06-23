@@ -11,7 +11,7 @@
 import { getSnapshotInterval } from "/emigration/ui/emigration-settings.js";
 
 const STYLE_ID = "emig-snap-badge-style";
-// Font size intentionally omitted — the badge carries the engine `text-sm` utility class (added in
+// Font size intentionally omitted, the badge carries the engine `text-sm` utility class (added in
 // appendSnapshotReminder) so it matches the Demographics "Analytics policy" banner it sits beside.
 const CSS =
   ".emig-snap-badge{align-self:center;margin-bottom:0.25rem;padding:0.12rem 0.75rem;border-radius:0.9rem;letter-spacing:0.04rem;color:#f3c34c;text-align:center;background:rgba(243,195,76,0.12);border:1px solid rgba(243,195,76,0.4);}";
@@ -57,7 +57,7 @@ export function appendSnapshotReminder(wrap) {
 
 // Expose the note text so the Demographics-embedded Migration page can render it next to its
 // "Analytics policy" banner (cross-mod read; absent → Demographics simply shows no timeline note).
-// `metricId` scopes the note to the Network sub-tab only — the migration-flow timeline the wording
+// `metricId` scopes the note to the Network sub-tab only, the migration-flow timeline the wording
 // refers to ("...can take up to N turns to appear here"). It's that sub-tab's synthetic metric id:
 // the Migration panel id + Demographics' "::" sub-tab separator + the "flow" (Network) sub-tab id.
 try {

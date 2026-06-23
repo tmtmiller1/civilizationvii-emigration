@@ -89,6 +89,7 @@ rsync -a --exclude='.git' --exclude='.gitignore' --exclude='.DS_Store' --exclude
     --exclude='eslint.config.js' --exclude='package.json' --exclude='package-lock.json' \
     --exclude='*.d.ts' --exclude='tests' --exclude='steam_workshop_id.txt' \
     --exclude='CONTRIBUTING.md' --exclude='scripts' --exclude='i18n' --exclude='README.pdf' \
+    --exclude='report.md' \
     --exclude='migration-probe.modinfo' --exclude='ui/migration-probe.js' \
     --exclude='coverage' --exclude='reports' --exclude='.stryker-tmp' \
     --exclude='.c8rc.json' --exclude='stryker.config.json' \

@@ -42,7 +42,7 @@
  * @property {boolean} includeCityStates Include minor/city-state settlements.
  * @property {boolean} conquestMigrationEnabled Count a city capture as cross-civ conquest migration
  *   (conqueror gains the absorbed population, prior owner loses it) in the net-migration tally.
- * @property {boolean} requireMet Simulation scope: false = global (all alive civs) — the default;
+ * @property {boolean} requireMet Simulation scope: false = global (all alive civs), the default;
  *   true = met-only (lighter). Visibility masking is handled separately (governance), not here.
  * @property {number} foodFactor Per-capita food weight.
  * @property {number} productionFactor Per-capita production weight.
@@ -56,6 +56,15 @@
  * @property {number} siegeModifier Percent score modifier while besieged/razed.
  * @property {number} starvationModifier Percent score modifier while starving.
  * @property {number} unrestModifier Percent score modifier during unrest.
+ * @property {boolean} polityModelEnabled 1.4.1 polity model (happiness stages + government +
+ *   celebration + war weariness). false → exact pre-1.4.1 scoring.
+ * @property {number} happinessStageWeight Bounded pull per happiness-stage step (ANGRY −2 … ECSTATIC +2).
+ * @property {number} happinessStageMiseryScale Scale on the negative (unhappy/angry) side of the stage
+ *   term (pull-bias; misery is already covered by happiness + suppressed yields). 1 = symmetric.
+ * @property {number} celebrationPull Attractiveness bonus while a civ is in a Golden Age (celebration).
+ * @property {number} governmentWeight Scales the per-government flavor lean.
+ * @property {number} governmentLeanCap Clamp on the (scaled) government lean term.
+ * @property {number} warWearinessModifier Percent score modifier for a war-weary civ (empire-wide push).
  * @property {number} migrantHoldHappiness Happiness/turn drained per held migrant unit.
  * @property {number} migrantHoldGold Gold/turn drained per held migrant unit.
  * @property {number} vwAssault Intensity per unit of fresh city damage taken (polled).
@@ -110,7 +119,7 @@
  * @property {number} attritionMinDistress Min situational distress (%) before attrition fires.
  * @property {number} attritionThreshold Distress pressure to remove one population point.
  * @property {boolean} crisisDeathEnabled A city under LETHAL distress (war/disaster/siege/famine) loses
- *   some population to death even when a refuge exists — concurrent with emigration. Economic
+ *   some population to death even when a refuge exists, concurrent with emigration. Economic
  *   (prosperity/unhappiness) emigration never kills (no situational distress).
  * @property {number} crisisDeathShare Base crisis-death coefficient (× warSeverity) when a refuge
  *   exists; the dynamic rate is clamped to the full trapped rate.

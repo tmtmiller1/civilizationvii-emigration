@@ -271,8 +271,8 @@ function recentDisasterName() {
 }
 
 /**
- * The SPECIFIC in-world event behind a refugee cause — the named war (via the aggressor map +
- * warRefugeeName) for war/conquest, or the named disaster for disaster — so a notification reads
+ * The SPECIFIC in-world event behind a refugee cause, the named war (via the aggressor map +
+ * warRefugeeName) for war/conquest, or the named disaster for disaster, so a notification reads
  * "the Roman–Carthaginian War" / "Thera" rather than a generic cause. Null for economic migration.
  * @param {string} [cause] The migration cause.
  * @param {number} [srcOwner] The fleeing civ id (for the war pairing).
@@ -455,7 +455,7 @@ function foldEvent(map, m, me) {
 
 /**
  * Group the local player's losses this pass into distinct EVENTS (one per source settlement + cause),
- * largest first — so each is a single coherent event with an accurate count, never a pass-wide sum.
+ * largest first, so each is a single coherent event with an accurate count, never a pass-wide sum.
  * @param {*[]} migs Applied migrations.
  * @param {number} me Local player id.
  * @returns {*[]} Per-event buckets (people-desc).
@@ -480,7 +480,7 @@ const UNMET_CIV_LABEL = "an unmet civilization";
  * @returns {{toCiv?:string, toCity?:string}} The masked destination labels.
  */
 function destView(ev) {
-  if (ev.cause === "attrition") return {}; // a death — they did not arrive anywhere
+  if (ev.cause === "attrition") return {}; // a death, they did not arrive anywhere
   if (ev.crossCiv && typeof ev.destOwner === "number") {
     if (civHidden(ev.destOwner)) return { toCiv: UNMET_CIV_LABEL };
     return { toCiv: civAdjective(ev.destOwner), toCity: ev.destName || undefined };
@@ -521,7 +521,7 @@ function logEvent(ev, msg) {
 
 /**
  * Explain the local player's population losses this pass. Each distinct event (one source settlement +
- * cause) is logged as its OWN notification with an accurate count — so the Notifications log reads one
+ * cause) is logged as its OWN notification with an accurate count, so the Notifications log reads one
  * coherent event per row, never a confusing pass-wide "7 moved" lumped across cities and causes. On
  * screen, only the largest event toasts (subject to the cooldown), so the HUD isn't flooded when
  * several settlements shed people in one pass; the rest are in the log. No-op without a local loss.

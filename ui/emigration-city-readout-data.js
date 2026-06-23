@@ -174,7 +174,7 @@ export function buildCitySnapshot(o) {
 }
 
 /**
- * The CONCURRENT pressures pushing people from a city, as display shares (top 3) — so the readout can
+ * The CONCURRENT pressures pushing people from a city, as display shares (top 3), so the readout can
  * show "War 60% · Prosperity 40%" instead of one dominant cause, mirroring the engine's voluntary/crisis
  * split. Each acute pressure weighs by its intensity above threshold; prosperity is the economic
  * baseline. Returns null when the multi-cause readout is off (CONFIG.splitUiReadoutEnabled) or a city

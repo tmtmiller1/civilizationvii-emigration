@@ -315,7 +315,7 @@ const DASH_CSS =
   ".emig-led-tot .emig-led-c{border-top:none;font-weight:bold;}" +
   // Causes pies.
   // Cap the legend to the pie's width so it WRAPS under the pie instead of widening the (content-sized)
-  // column — otherwise a card with long "civ count (pct%)" labels makes its column wider and pushes the
+  // column, otherwise a card with long "civ count (pct%)" labels makes its column wider and pushes the
   // pies out of alignment with the other cards (and squeezes the cause bars unevenly).
   ".emig-pie-leg{display:flex;flex-wrap:wrap;gap:0.25rem 0.9rem;justify-content:center;" +
   "max-width:14rem;margin:0.1rem 0 0.7rem;}" +
@@ -391,7 +391,7 @@ const DASH_CSS =
   ".emig-pill-grp{display:flex;flex-wrap:wrap;align-items:center;gap:0.3rem;}" +
   ".emig-pill-lbl{font-size:0.9rem;opacity:0.7;margin-right:0.1rem;text-transform:uppercase;" +
   "letter-spacing:0.03rem;color:#cbb994;}" +
-  // Control-row groups render as flat, square-cornered, gold-BOXED buttons — the same look as the time/
+  // Control-row groups render as flat, square-cornered, gold-BOXED buttons, the same look as the time/
   // age filters on the Data tab.
   ".emig-filter-btn{display:inline-block;padding:0.18rem 0.55rem;border-radius:0.2rem;" +
   "border:0.0555rem solid rgba(201,162,76,0.4);background:rgba(9,12,19,0.5);color:#cbb994;" +
@@ -457,7 +457,7 @@ function el(tag, cls, text) {
 }
 
 // Renderers that consume the whole section model (canvas/pie/card views).
-/** @type {Record<string, (body: HTMLElement, section: *) => void>} */
+/** @type {Record<string, (body: HTMLElement, section: *, controlsHost?: HTMLElement) => void>} */
 const SECTION_VIEWS = {
   flow: renderNetworkOrFlow,
   pies: renderCityFlows, cityflows: renderCityFlows,
@@ -473,11 +473,13 @@ const ROW_VIEWS = {
  * Render a section's kind-specific content (no card chrome) into a body element.
  * @param {HTMLElement} body The body element.
  * @param {*} section The section model ({title, kind} + either rows, network, or pie data).
+ * @param {HTMLElement} [controlsHost] The shared controls row (next to Options); the Network/Flows
+ *   view renders its filter row there so it shares the Options line, like the Data tab's time filters.
  */
-function renderSectionBody(body, section) {
+function renderSectionBody(body, section, controlsHost) {
   const sv = SECTION_VIEWS[section.kind];
   if (sv) {
-    sv(body, section);
+    sv(body, section, controlsHost);
     return;
   }
   if (!section.rows || !section.rows.length) {
@@ -492,8 +494,8 @@ function renderSectionBody(body, section) {
 /** @type {Record<string,string>} */
 const TAB_LABELS = {
   flow: "Network", ledger: "Net Migration (Table)", pies: "Causes",
-  stances: "Immigration Policies",
-  cityflows: "Settlements", notifications: "Notifications", guide: "Guide"
+  stances: "Policies",
+  cityflows: "My Cities", notifications: "Notifications", guide: "Guide"
 };
 
 /**
@@ -550,7 +552,7 @@ function makeTabBar(sections, onSelect) {
 }
 
 // The dashboard controls, shown as labeled pill GROUPS (a "Label:" + one selectable chip per option,
-// the current one gold) — the same shape as the Network lens row and the Demographics "Data" pills, so
+// the current one gold), the same shape as the Network lens row and the Demographics "Data" pills, so
 // the control row reads identically on every Emigration tab.
 /** @type {Record<number,string>} */
 const NUM_LABEL = { [NumberMode.CIV]: "Civ Pop", [NumberMode.HISTORICAL]: "Scaled Pop" };
@@ -565,7 +567,7 @@ const NUM_LABEL = { [NumberMode.CIV]: "Civ Pop", [NumberMode.HISTORICAL]: "Scale
  */
 /**
  * A labeled FILTER group: a "Label:" span + one flat rectangular BUTTON per option (the current one
- * boxed gold) — the year/age-filter look. Used for every dashboard control row group.
+ * boxed gold), the year/age-filter look. Used for every dashboard control row group.
  * @param {string} label The leading label.
  * @param {{key:*, label:string}[]} items The options.
  * @param {*} current The active option key.
@@ -615,7 +617,7 @@ function appendOpt(parent, child) {
  * @returns {HTMLElement|null} The control row, or null when there's nothing to show.
  */
 function buildControlRow(showNumbers, rebuild) {
-  // The only on-page control is Numbers (Scaled/Civ) — a per-view choice. Unmet-civ visibility is a
+  // The only on-page control is Numbers (Scaled/Civ), a per-view choice. Unmet-civ visibility is a
   // persistent setting and lives in Options ▸ Mods ▸ Emigration, not as an on-page filter.
   if (!showNumbers) return null;
   const row = el("div", "emig-ctrl-row");
@@ -699,7 +701,7 @@ function subtabRebuild(opts, body, section) {
 
 /**
  * Append the consistent control row for the embedded page (every section but the static Guide).
- * Prefers the host-provided controls area (opts.controlsHost — shares the row with the Options button)
+ * Prefers the host-provided controls area (opts.controlsHost, shares the row with the Options button)
  * and falls back to the page wrap. Numbers is included only where the section doesn't own its own units
  * control (the Network lens row) and the host group pills don't drive it.
  * @param {HTMLElement} wrap The dashboard wrapper (fallback target).
@@ -744,7 +746,7 @@ export function renderDashboardSubtab(target, model, kind, opts) {
     // One consistent control row (Numbers where it applies + Unmet civs), as labeled pill groups.
     appendControlRow(wrap, opts, body, section);
     wrap.appendChild(body);
-    renderSectionBody(body, section);
+    renderSectionBody(body, section, opts && opts.controlsHost);
     target.appendChild(wrap);
   } catch (_) {
     /* a render failure must never break the host screen */

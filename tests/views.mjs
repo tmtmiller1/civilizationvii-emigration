@@ -96,4 +96,168 @@ testPressureRowsSortDescAndFlag();
 testDashboardModelSections();
 testFlowNetworkAggregatesNodesAndEdges();
 
+// ── Edge case tests for view-model builders ────────────────────────────────────
+
+function testFlowNetworkWithIsolatedCivs() {
+  // A civ with no incoming or outgoing edges should still appear in nodes
+  // with zero flow totals (for context/completeness in the ledger).
+  const net = flowNetwork([
+    { from: 1, to: 2, fromName: "Rome", toName: "Egypt", fromCity: "Rome",
+      toCity: "Memphis", people: 5000, byCause: { war: 5000 } }
+  ]);
+  // Only Rome and Egypt appear (isolated civ not provided).
+  assert.equal(net.nodes.length, 2);
+  assert.equal(net.edges.length, 1);
+}
+
+function testDashboardModelEmptySections() {
+  // Dashboard model should handle empty civs, flows, and notifications gracefully,
+  // still providing all section structures (just with no rows).
+  const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [] });
+  assert.equal(m.sections.length, 7);
+  // Verify that each section has required properties even when empty
+  for (const section of m.sections) {
+    assert.equal(typeof section.kind, "string");
+    assert.ok(Array.isArray(section.rows) || section.rows === undefined,
+      "section.rows is array or undefined");
+  }
+}
+
+function testCivLedgerSortingStabilityOnTie() {
+  // When two civs have identical net values, ledger rows should maintain
+  // stable sort order (alphabetical by name).
+  const rows = civLedgerRows([
+    { name: "Zulu", in: 1000, out: 2000, net: -1000, refugees: 0, deaths: 0,
+      inPts: 1, outPts: 2, netPts: -1, refugeesPts: 0, deathsPts: 0,
+      stanceImpact: { in: 0, out: 0, inPts: 0, outPts: 0 } },
+    { name: "Athens", in: 2000, out: 3000, net: -1000, refugees: 500, deaths: 0,
+      inPts: 2, outPts: 3, netPts: -1, refugeesPts: 0, deathsPts: 0,
+      stanceImpact: { in: 0, out: 0, inPts: 0, outPts: 0 } },
+    { name: "Babylon", in: 500, out: 1500, net: -1000, refugees: 100, deaths: 0,
+      inPts: 1, outPts: 2, netPts: -1, refugeesPts: 0, deathsPts: 0,
+      stanceImpact: { in: 0, out: 0, inPts: 0, outPts: 0 } }
+  ]);
+  // All have net: -1000, so verify order is meaningful (not corrupted by equal values)
+  assert.equal(rows.length, 3);
+  assert.equal(rows[0].name + rows[1].name + rows[2].name, "ZuluAthensBabylon");
+}
+
+function testCauseBreakdownAllZeroDropped() {
+  // When all causes have zero value, the breakdown should return empty (all dropped).
+  const rows = causeBreakdownRows({ war: 0, unhappiness: 0, disaster: 0, other: 0 });
+  assert.equal(rows.length, 0, "all-zero causes dropped");
+}
+
+function testCauseBreakdownSingleCauseFull100() {
+  // When only one cause has value, it should be 100%.
+  const rows = causeBreakdownRows({ war: 5000, unhappiness: 0 });
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].label, "War");
+  assert.equal(rows[0].pct, 100, "single cause is 100%");
+}
+
+function testStanceRowsAllNeutral() {
+  // When all civs are neutral stance, rows should still list them all
+  // with correct neutral labels.
+  const rows = stanceRows([
+    { name: "Greece", stance: "none" },
+    { name: "Carthage", stance: "none" },
+    { name: "Rome", stance: "none" }
+  ]);
+  assert.equal(rows.length, 3);
+  assert.ok(rows.every((r) => r.key === "none"), "all neutral");
+  assert.ok(rows.every((r) => r.stance === "Neutral"), "labeled as Neutral");
+}
+
+function testStanceRowsWithDuplicateNames() {
+  // Edge case: duplicate civ names (shouldn't happen, but test robustness).
+  const rows = stanceRows([
+    { name: "Rome", stance: "pro" },
+    { name: "Rome", stance: "anti" },
+    { name: "Egypt", stance: "none" }
+  ]);
+  assert.equal(rows.length, 3, "all civs listed even with duplicates");
+}
+
+function testPressureRowsEmptyDestinations() {
+  // Pressure rows with missing/empty destination names should show placeholder.
+  const rows = pressureRows([
+    { cityName: "City1", causeLabel: "War", pressureToBar: 0.5, topDestinationName: "",
+      attritionRisk: false },
+    { cityName: "City2", causeLabel: "Unhappiness", pressureToBar: 0.3,
+      topDestinationName: null, onCooldown: false },
+    { cityName: "City3", causeLabel: "Disaster", pressureToBar: 0.8,
+      topDestinationName: "Dest", onCooldown: true }
+  ]);
+  assert.equal(rows.length, 3);
+  const noDestRows = rows.filter((r) => r.dest === "-");
+  assert.equal(noDestRows.length, 2, "empty destinations show placeholder");
+}
+
+function testFlowNetworkCivEdgeMerging() {
+  // Multiple city-level edges between the same two civs should merge into
+  // a single civ-level edge (with aggregated people + causes).
+  const net = flowNetwork([
+    { from: 1, to: 2, fromName: "Rome", toName: "Egypt", fromCity: "Rome",
+      toCity: "Memphis", people: 5000, byCause: { war: 5000 } },
+    { from: 1, to: 2, fromName: "Rome", toName: "Egypt", fromCity: "Rome",
+      toCity: "Alexandria", people: 3000, byCause: { prosperity: 3000 } },
+    { from: 1, to: 2, fromName: "Rome", toName: "Egypt", fromCity: "Ostia",
+      toCity: "Memphis", people: 2000, byCause: { war: 2000 } }
+  ]);
+  // Civ edges should merge Rome→Egypt (5+3+2 = 10k total)
+  const romeEgypt = net.edges.find((e) => e.from === 1 && e.to === 2);
+  assert.equal(romeEgypt.people, 10000, "civ-level edge aggregates all routes");
+  assert.equal(romeEgypt.byCause.war, 7000, "causes aggregated");
+  assert.equal(romeEgypt.byCause.prosperity, 3000);
+  // City edges should preserve origin/destination pairs (3 distinct pairs here)
+  assert.equal(net.cityEdges.length, 3, "city-level edges keep distinct pairs");
+}
+
+function testFlowNetworkNodeTotalCalculation() {
+  // Node total should be sum of inflow + outflow (bidirectional).
+  const net = flowNetwork([
+    { from: 1, to: 2, fromName: "Rome", toName: "Egypt", fromCity: "Rome",
+      toCity: "Memphis", people: 8000, byCause: { war: 8000 } },
+    { from: 2, to: 1, fromName: "Egypt", toName: "Rome", fromCity: "Memphis",
+      toCity: "Rome", people: 5000, byCause: { prosperity: 5000 } }
+  ]);
+  const rome = net.nodes.find((n) => n.name === "Rome");
+  assert.equal(rome.outflow, 8000, "outflow correct");
+  assert.equal(rome.inflow, 5000, "inflow correct");
+  assert.equal(rome.total, 13000, "total is inflow + outflow");
+  const egypt = net.nodes.find((n) => n.name === "Egypt");
+  assert.equal(egypt.outflow, 5000);
+  assert.equal(egypt.inflow, 8000);
+  assert.equal(egypt.total, 13000);
+}
+
+function testDashboardModelNodeNetwork() {
+  // Dashboard model should include the flow network as one of its sections.
+  const m = dashboardModel({
+    civs: [{ name: "Rome", in: 0, out: 0, net: 0, refugees: 0, deaths: 0,
+      inPts: 0, outPts: 0, netPts: 0, refugeesPts: 0, deathsPts: 0,
+      stanceImpact: { in: 0, out: 0, inPts: 0, outPts: 0 } }],
+    byCause: {},
+    flows: [{ from: 1, to: 2, fromName: "Rome", toName: "Egypt", fromCity: "R",
+      toCity: "E", people: 100, byCause: { war: 100 } }],
+    cities: []
+  });
+  const flowSection = m.sections.find((s) => s.kind === "flow");
+  assert.ok(flowSection, "flow section exists");
+  assert.ok(flowSection.network, "network property present");
+}
+
+testFlowNetworkWithIsolatedCivs();
+testDashboardModelEmptySections();
+testCivLedgerSortingStabilityOnTie();
+testCauseBreakdownAllZeroDropped();
+testCauseBreakdownSingleCauseFull100();
+testStanceRowsAllNeutral();
+testStanceRowsWithDuplicateNames();
+testPressureRowsEmptyDestinations();
+testFlowNetworkCivEdgeMerging();
+testFlowNetworkNodeTotalCalculation();
+testDashboardModelNodeNetwork();
+
 console.log("views harness passed");

@@ -6,6 +6,11 @@ Adds real migration and refugee systems to Civilization VII. **Unhappy, poor, be
 disaster-struck cities lose population; prosperous and welcoming cities attract it** — within and
 across civilizations. Immigration brings growth, costs, politics, and Demographics graphs.
 
+- **Updated for Civilization VII 1.4.1.** Reads the reworked systems directly: the five happiness
+  stages (Angry → Ecstatic), governments' happiness-friendly passives, **Celebrations** (Golden Ages)
+  as a stronger draw, and empire-wide **war weariness** as a push. The happiness/economy balance was
+  re-tuned for 1.4.1's sharper happiness so a city's yields matter alongside its mood (snowball-checked,
+  and revertible with one Options toggle).
 - **People leave for a reason, and the reasons stack.** A city can shed **war refugees and economic
   migrants in the same turn** — war no longer "switches off" peacetime migration. Refugees flee
   *away* from the invader; unhappy, low-yield cities bleed people even at peace.
@@ -146,7 +151,8 @@ on the dashboard's **Guide** tab.
 
 | | Counts? | |
 |---|:---:|---|
-| Unhappiness / low yields | ✓ | The dominant driver: happiness is weighted more than any other factor, and yields are scored per-capita, so an unhappy, low-yield city bleeds people even at peace |
+| Unhappiness / low yields | ✓ | The main peacetime driver. Happiness is still the biggest single factor, but after the 1.4.1 rebalance a city's per-capita yields carry a real share too, so an unhappy city AND a low-yield one bleed people (and a city that's both empties fastest); 1.4.1 also suppresses unhappy cities' yields, which the score reads |
+| Empire-wide war weariness | ✓ | A civ ground down by a long war carries 1.4.1 war-weariness unhappiness, a modest push to all its settlements, on top of the per-city violence at the front |
 | War damage to the districts | ✓ | Damage to **any** district — center **or** an outer urban/rural quarter — is read from game state (fog-independent) and scales the war penalty; more damage pushes more people out |
 | Being besieged or attacked | ✓ | Per-city: only the besieged city itself sheds people. Fires when **any** of its districts is besieged or overrun, even before its health drops. A civ at war elsewhere keeps its unaffected cities |
 | Attacked by a city-state / Independent Power | ✓ | Same per-city conflict pressure as a major-civ war: an Independent/minor raid still drives THAT city's people out, attacker-agnostic |
@@ -200,7 +206,7 @@ on the dashboard's **Guide** tab.
 | Changes AI strategy or replaces base-game files | ✗ | Additive only; the base game's AI decisions and files are untouched |
 | Moves population instantly across the map | ✗ | Distance-penalized; people move to nearby better settlements |
 | Lets you directly place or pick individual migrants | ✗ | Flows are simulated from prosperity, war, and policy; you shape them with yields and stances |
-| Lets one civ snowball the whole map's people | ✗ | Three compounding brakes: the saturating happiness model, a congestion headwind on a fresh surge of arrivals, and a self-correcting **anti-snowball** headwind that grows as a civ's population runs ahead of the field (cross-civ inflow only — never its own outflow). All tunable (anti-snowball: Off / gentle / standard / strong + trigger threshold) |
+| Lets one civ snowball the whole map's people | ✗ | Three compounding brakes: the field-relative prosperity model (every city is judged against the world average, so no magnet runs away without limit), a congestion headwind on a fresh surge of arrivals, and a self-correcting **anti-snowball** headwind that grows as a civ's population runs ahead of the field (cross-civ inflow only — never its own outflow). The 1.4.1 rebalance was snowball-checked and narrows, not widens, the gap that feeds a leader. All tunable (anti-snowball: Off / gentle / standard / strong + trigger threshold) |
 
 **FAQ**
 
@@ -334,6 +340,26 @@ disasters, sieges, starvation, and unrest bite. (§5 replaces the happiness term
 penalty with more nuanced versions when their flags are on.) The magnitude of the negative situational
 percent is also exposed as **`distress(s)`**, which drives the outlet (§6d) and weights the readout's
 cause mix.
+
+### Polity signals (`emigration-polity.js`): happiness stages, governments, celebrations (1.4.1)
+Civ VII **1.4.1** reworked happiness, governments, and celebrations, so the model reads three more
+signals (all bounded and additive, behind `polityModelEnabled`; set it false for exact pre-1.4.1
+scoring):
+
+- **Happiness stage** — each settlement's 5-stage ordinal (Angry −2 … Ecstatic +2), bucketed from
+  net happiness against `GameInfo.HappinessStages` the way the base-game banner does. Adds a
+  magnitude-insensitive pull/push (`happinessStageWeight`) so 1.4.1's sharper happiness swings
+  register without re-tuning the raw-happiness knobs. (The ~−5%/point yield penalty already flows in
+  through the per-capita yields $Q$ reads.)
+- **Celebration** — a civ in a Golden Age (now scarcer and tourism-feeding) is a stronger attractor
+  (`celebrationPull`), read from `player.Happiness.isInGoldenAge`.
+- **Government** — a small, clamped per-government flavor lean (`governmentWeight`,
+  `governmentLeanCap`) that breaks ties between similar destinations; most of a government's effect
+  already reaches the model through the happiness/yields it produces, so this is deliberately light.
+- **War weariness** — a war-weary civ's settlements take a modest empire-wide situational push
+  (`warWearinessModifier`), distinct from (and dominated by) the in-border violence terms below.
+
+These are read once per civ per pass and denormalized onto each `CitySignal` (`stage`, `polity`).
 
 ### Violence (`emigration-violence.js`): polled, fog-independent
 War-driven emigration keys on **actual violence inside a city's borders**, not on the empire merely

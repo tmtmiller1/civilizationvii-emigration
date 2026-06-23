@@ -126,7 +126,7 @@ function addCiv(e, civ, pts) {
   e.byCiv[civ] = (e.byCiv[civ] || 0) + pts;
 }
 
-// Origin buckets below this many population points are pruned as dust before renormalizing — a
+// Origin buckets below this many population points are pruned as dust before renormalizing, a
 // fully-departed minority leaves float crumbs that would otherwise linger as phantom origins.
 const DUST = 0.05;
 
@@ -149,7 +149,7 @@ function removeProportional(e, pts) {
 }
 
 /**
- * Prune dust origins, then rescale the survivors so the buckets sum EXACTLY to `total` — the city's
+ * Prune dust origins, then rescale the survivors so the buckets sum EXACTLY to `total`, the city's
  * real population. This is the consistency guarantee: a settlement's composition total (and so its
  * shares) always matches the population the rest of the mod reports. Falls back to 100% owner if
  * everything pruned, and clears the mix when the population is gone.
@@ -239,7 +239,7 @@ function applyMigrationSource(s, m, nameToLoc, pts) {
 
 /**
  * Apply a migration's DESTINATION side: the destination city gains `pts` people under the migrant's
- * ORIGIN civ (the source owner, or — for a destination-only lag record — the source city's owner).
+ * ORIGIN civ (the source owner, or, for a destination-only lag record, the source city's owner).
  * @param {CompositionState} s State.
  * @param {*} m Migration record.
  * @param {Map<string,string>} nameToLoc city name → loc key.
@@ -256,7 +256,7 @@ function applyMigrationDest(s, m, nameToLoc, nameToOwner, pts) {
 }
 
 /**
- * Apply one migration record to the composition. Split-owner lag records are handled — a record
+ * Apply one migration record to the composition. Split-owner lag records are handled, a record
  * contributes its source side when it carries `srcOwner` and its destination side when it carries
  * `destOwner`.
  * @param {CompositionState} s State.
@@ -293,7 +293,7 @@ function reconcileCity(s, w, turn) {
 /**
  * Update the per-settlement composition for one pass, from the current city signals and this pass's
  * migrations. Seeds new cities, applies migrations, reconciles births/losses, and persists. Never
- * throws — composition is cosmetic and must not disrupt a pass.
+ * throws, composition is cosmetic and must not disrupt a pass.
  * @param {*[]} signals Current city signals ({city, owner, population}).
  * @param {*[]} migs This pass's migrations.
  */
@@ -338,7 +338,7 @@ export function compositionForCity(city) {
 }
 
 /**
- * The aggregate ethnic composition across all of a player's settlements — the empire-wide origin
+ * The aggregate ethnic composition across all of a player's settlements, the empire-wide origin
  * mix. Its total is the sum of that player's city populations, so it stays consistent with the
  * per-city figures (and with the population the rest of the mod reports). Null when the player has
  * no tracked settlements.

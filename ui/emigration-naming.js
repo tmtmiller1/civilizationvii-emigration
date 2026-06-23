@@ -176,7 +176,7 @@ function warIdBetween(a, b) {
 }
 
 /**
- * The engine's NAME for the war between a victim and its aggressor — the base game's
+ * The engine's NAME for the war between a victim and its aggressor, the base game's
  * `getWarData(uniqueID, localPlayerID).warName`, localized. Null when there's no such war or the API
  * is absent. (The old code called `getWarData()` with NO arguments, which always returned null: the
  * engine requires the war's uniqueID + a viewing player. That's why the war name never resolved.)

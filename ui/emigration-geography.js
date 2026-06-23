@@ -195,9 +195,9 @@ export function openBordersBonus(srcOwner, destOwner) {
 /**
  * Whether two civs share an active base-game Alliance. Eases cross-civ migration as a Permeability
  * factor (§1 / Phase 4). Uses the engine's dedicated relationship-state method
- * `Players.get(a).Diplomacy.hasAllied(b)` — the base game detects a standing alliance this way (15+
+ * `Players.get(a).Diplomacy.hasAllied(b)`, the base game detects a standing alliance this way (15+
  * call sites). The OLD code scanned `getJointEvents` for `DIPLOMACY_ACTION_FORM_ALLIANCE`, which is an
- * action enum used to *initiate* an alliance, NOT a value that persists in the joint events — so it
+ * action enum used to *initiate* an alliance, NOT a value that persists in the joint events, so it
  * was always false and the alliance permeability never applied.
  * @param {number} a A player id.
  * @param {number} b Another player id.

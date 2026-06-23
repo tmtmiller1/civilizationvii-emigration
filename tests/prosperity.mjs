@@ -3,11 +3,23 @@ import assert from "node:assert/strict";
 import { prosperity, rankByProsperity, distress } from "/emigration/ui/emigration-prosperity.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
-// Ship defaults now enable the advanced model (Algorithms A/B). These tests pin the
-// legacy-linear baseline, so establish it explicitly rather than relying on defaults;
-// individual tests toggle a flag on and restore it to this baseline.
+// These tests verify the prosperity FORMULA's structure with clean round-number fixtures, so they pin
+// the scoring weights explicitly rather than tracking the shipped calibration (which the 1.4.1 balance
+// pass re-tuned: yield factors ×2.5, happiness de-saturated). Pinning the canonical weights here keeps
+// the hand-computed expectations valid and decouples these tests from future re-tuning. Individual
+// tests toggle happinessShaped on and restore it to this legacy baseline.
 CONFIG.happinessShaped = false;
 CONFIG.overcrowdDiscount = 0;
+CONFIG.foodFactor = 1.0;
+CONFIG.productionFactor = 1.0;
+CONFIG.goldFactor = 1.0;
+CONFIG.scienceFactor = 0.25;
+CONFIG.cultureFactor = 0.5;
+CONFIG.localHappinessFactor = 6.0;
+CONFIG.happyFloor = 8;
+CONFIG.happyAmp = 0.8;
+CONFIG.happyRepulsion = 2.0;
+CONFIG.happyScale = 8;
 
 // A minimal CitySignal with neutral situational flags; override per test.
 function signal(over) {
@@ -153,5 +165,57 @@ function testDistressIsMagnitudeOfSituational() {
 }
 
 testDistressIsMagnitudeOfSituational();
+
+// ── 1.4.1 polity model (happiness stages + government + celebration + war weariness) ──────
+// These run in the legacy-linear branch established at the top of the file (happinessShaped=false),
+// so a polity term shows up as a clean additive delta on the base score.
+
+function testCelebrationAddsPull() {
+  const base = { food: 10, production: 10, population: 2 };
+  const plain = prosperity(signal({ ...base }));
+  const celeb = prosperity(signal({ ...base, polity: { celebrating: true, government: "", warWeary: false } }));
+  assert.equal(celeb - plain, CONFIG.celebrationPull); // +celebrationPull (neutral civ → happinessPull 1)
+}
+
+function testStageTermScales() {
+  const base = { food: 10, production: 10, population: 2 };
+  const neutral = prosperity(signal({ ...base, stage: 0 }));
+  const ecstatic = prosperity(signal({ ...base, stage: 2 }));
+  const angry = prosperity(signal({ ...base, stage: -2 }));
+  // Pull-biased: the happy side gets full weight; the misery side is scaled by happinessStageMiseryScale.
+  assert.equal(ecstatic - neutral, CONFIG.happinessStageWeight * 2);
+  assert.equal(angry - neutral, CONFIG.happinessStageWeight * CONFIG.happinessStageMiseryScale * -2);
+}
+
+function testGovernmentLeanClamped() {
+  const base = { food: 10, production: 10, population: 2 };
+  const w = CONFIG.governmentWeight;
+  CONFIG.governmentWeight = 10; // 10 × lean(1) = 10, clamped to governmentLeanCap (3)
+  const plain = prosperity(signal({ ...base }));
+  const leaning = prosperity(signal({ ...base, polity: { celebrating: false, government: "GOVERNMENT_CLASSICAL_REPUBLIC", warWeary: false } }));
+  assert.equal(leaning - plain, CONFIG.governmentLeanCap);
+  CONFIG.governmentWeight = w;
+}
+
+function testWarWearinessIsSituationalPush() {
+  // War weariness enters the situational percent, so it surfaces as distress magnitude.
+  assert.equal(distress(signal({ polity: { warWeary: true, celebrating: false, government: "" } })),
+    Math.abs(CONFIG.warWearinessModifier));
+}
+
+function testPolityModelOffRestoresBaseline() {
+  CONFIG.polityModelEnabled = false;
+  const base = { food: 10, production: 10, population: 2 };
+  const plain = prosperity(signal({ ...base }));
+  const loaded = prosperity(signal({ ...base, stage: 2, polity: { celebrating: true, government: "GOVERNMENT_CLASSICAL_REPUBLIC", warWeary: true } }));
+  assert.equal(loaded, plain); // every polity term inert when the flag is off
+  CONFIG.polityModelEnabled = true;
+}
+
+testCelebrationAddsPull();
+testStageTermScales();
+testGovernmentLeanClamped();
+testWarWearinessIsSituationalPush();
+testPolityModelOffRestoresBaseline();
 
 console.log("prosperity harness passed");

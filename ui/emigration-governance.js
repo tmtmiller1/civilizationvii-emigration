@@ -3,7 +3,7 @@
 // Analytics-visibility masking for the migration dashboard + lens, REUSING the Demographics mod's
 // governance policy (combined design plan / global-simulation plan). The migration simulation can
 // run globally (all alive civs), but the player-facing UI must still hide civs the policy withholds
-// — so this resolves the SAME effective policy Demographics uses and exposes one `civHidden(pid)`
+//, so this resolves the SAME effective policy Demographics uses and exposes one `civHidden(pid)`
 // predicate every emigration view masks by.
 //
 // Cross-mod sharing without a hard dependency (the two mods are separate and either may be absent):
@@ -11,7 +11,7 @@
 //     choice governs both mods at once.
 //   • Local preference: read Demographics' own setting from the shared `localStorage.modSettings`
 //     slice when present; otherwise default to met-civs-only (today's behaviour).
-// Emigration only READS the policy — Demographics owns the control UI. Reads fail safe to HIDING
+// Emigration only READS the policy, Demographics owns the control UI. Reads fail safe to HIDING
 // (never leak) on error.
 //
 // Policy levels, least → most permissive: disabled, own-civ-only, met-civs-only, full.
@@ -90,8 +90,8 @@ function localPolicy() {
 }
 
 /**
- * The effective policy. FIRST: Emigration's own visibility override (Options ▸ Mods ▸ Emigration) —
- * 1 = always hide unmet, 2 = always show all — a self-contained control that always works for the
+ * The effective policy. FIRST: Emigration's own visibility override (Options ▸ Mods ▸ Emigration),
+ * 1 = always hide unmet, 2 = always show all, a self-contained control that always works for the
  * Emigration tabs (the cross-mod reads below are unreliable in the Coherent UI). When that's "auto"
  * (0, the default), follow Demographics: PRIMARY the value it publishes to GameConfiguration (already
  * host ceiling ∧ local preference); FALLBACK the host ceiling ∧ our own localStorage read.
@@ -169,7 +169,7 @@ function hasMet(pid) {
  * Whether a civ must be HIDDEN from the player-facing migration dashboard/lens under the effective
  * policy: own-civ-only / disabled hides every non-local civ; met-civs-only hides unmet civs; full
  * hides nothing. The local player's own civ is never hidden. Fails safe to HIDDEN (never leak) on
- * error. The migration SIMULATION never consults this — masking is presentation-only.
+ * error. The migration SIMULATION never consults this, masking is presentation-only.
  * @param {number} pid Player id.
  * @returns {boolean} True to hide the civ from display.
  */

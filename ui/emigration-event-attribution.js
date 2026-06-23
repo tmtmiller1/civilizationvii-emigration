@@ -2,10 +2,10 @@
 //
 // SPECIFIC-EVENT attribution for migration/death causes. The engine records a generic CAUSE
 // ("war"/"disaster"/"unhappiness"/...); this layer resolves, at the moment of the move/death, an
-// `eventKey` naming the SPECIFIC event behind it — a particular war, a particular disaster, or the
-// active age CRISIS — so the Causes tab can break each cause down by the real event that drove it.
+// `eventKey` naming the SPECIFIC event behind it, a particular war, a particular disaster, or the
+// active age CRISIS, so the Causes tab can break each cause down by the real event that drove it.
 //
-// Keys are compact and STABLE (no display text — names are resolved at view time from the key, see
+// Keys are compact and STABLE (no display text, names are resolved at view time from the key, see
 // emigration-naming.eventDisplayName):
 //   • "war:<lo>:<hi>"          a war between the two civ ids (sorted)
 //   • "disaster:<RANDOM_EVENT_TYPE>"  the disaster type that struck the city
@@ -15,7 +15,7 @@
 //
 // CRISIS precedence: when the age crisis is active and its CATEGORY matches the move's mechanism
 // (an Invasion crisis ⇒ war, a Plague crisis ⇒ disaster, a Loyalty/Revolt crisis ⇒ unhappiness), the
-// crisis is the named event — so its toll is attributed to the crisis rather than the bare mechanism.
+// crisis is the named event, so its toll is attributed to the crisis rather than the bare mechanism.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { warAggressors } from "/emigration/ui/emigration-war.js";

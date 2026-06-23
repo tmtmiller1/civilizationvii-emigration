@@ -20,7 +20,7 @@ export const CONFIG = {
   movesPerCity: 1, // per-civ ceiling: + this per settlement (the ceiling grows with empire size)
   movesPerSiege: 4, // per-civ ceiling: + this per city in war/disaster crisis. Raised from 2 → 4 so a
   //                   besieged city's refugees actually flee FASTER than the base game's combat removes
-  //                   them — at 2 the trickle lost the race and most population died in place. Pairs
+  //                   them, at 2 the trickle lost the race and most population died in place. Pairs
   //                   with warSurgeMax (a city's per-turn burst); the budget must be ≥ it to matter.
   emigrationBar: 30, // accumulated pressure (per source) to move one citizen
   deltaExponent: 0.5, // diminishing scaling on the prosperity delta
@@ -40,7 +40,7 @@ export const CONFIG = {
   // pressure thresholds scale by the speed scalar S, and decay re-bases to d^(1/S), so migration
   // FEELS the same in game-time at any speed. Invariant magnitudes (loss caps, intensities) don't scale.
   gameSpeedTuningEnabled: true, // false → fixed Standard-speed tuning at every game speed (legacy)
-  gameSpeedScalePopulation: false, // normalize scaleGrowth^(turn/S); CROSS-MOD — see config-types note
+  gameSpeedScalePopulation: false, // normalize scaleGrowth^(turn/S); CROSS-MOD, see config-types note
 
   // ── pull composition channels (docs/immigration-interaction-plan.md §1) ──
   // Pull = (gradient + TILT) - friction, then x PERMEABILITY. Both policy channels are
@@ -56,7 +56,7 @@ export const CONFIG = {
   raidTilt: 10, // pull tilt from an active raid's target toward the raider (pre-clamp by tiltCap)
 
   poachBlock: 12, // extra delta needed for a CROSS-CIV destination (friction)
-  refugeePoachBlock: 0, // ...but a war/disaster REFUGEE isn't being poached — they flee, so they pay
+  refugeePoachBlock: 0, // ...but a war/disaster REFUGEE isn't being poached, they flee, so they pay
   //                       NO cross-civ friction. With ownCivRefugeeBonus also lowered, a collapsing
   //                       civ's refugees spill to neutral neighbours (populating the cross-civ
   //                       network + net-migration chart) instead of piling up internally.
@@ -74,10 +74,10 @@ export const CONFIG = {
   includeCityStates: false,
   // Count a city capture as cross-civ "conquest" migration (the conqueror absorbs the city's
   // population, the prior owner loses it), so the net-migration ledger reflects conquest gains/losses
-  // — not just the war-refugee flight around them. false → captures don't touch the migration tally.
+  //, not just the war-refugee flight around them. false → captures don't touch the migration tally.
   conquestMigrationEnabled: true,
   // Simulation SCOPE (not a visibility control): false = global (every alive civ simulates from
-  // turn 1) — the DEFAULT, so migration topology isn't biased by exploration order and conquered
+  // turn 1), the DEFAULT, so migration topology isn't biased by exploration order and conquered
   // cities carry real origin history; true = met-only (lighter per-turn cost on large saves). UI
   // visibility is handled separately (emigration-governance.js): unmet civs stay HIDDEN in the
   // dashboard/lens by default and are revealed only by widening the analytics-visibility policy
@@ -85,11 +85,18 @@ export const CONFIG = {
   requireMet: false,
 
   // ── prosperity: per-capita productiveness yield weights ───────────
-  foodFactor: 1.0, // sustenance / growth headroom
-  productionFactor: 1.0, // the "work" proxy (jobs)
-  goldFactor: 1.0,
-  scienceFactor: 0.25, // weighted down (disproportionate magnitude)
-  cultureFactor: 0.5,
+  // Re-weighted ×2.5 in the 1.4.1 balance pass (scripts/calibration-sweep.mjs): the shaped happiness
+  // model used to so dominate the score that real economic differences — including 1.4.1's now-harsher
+  // −5%/point unhappiness yield penalty — were invisible (economy was ~10% of the migration signal,
+  // mostly because the happiness MULTIPLIER sat pinned at its clamp). Raising the yield weights while
+  // lowering happiness dominance (happyFloor/happyAmp/happyRepulsion below) rebalances economy to ~28%
+  // of the signal and de-saturates the multiplier, WITHOUT changing the overall prosperity scale (so
+  // the friction/pacing constants below stay valid). Ratios between yields are unchanged.
+  foodFactor: 2.5, // sustenance / growth headroom
+  productionFactor: 2.5, // the "work" proxy (jobs)
+  goldFactor: 2.5,
+  scienceFactor: 0.625, // weighted down (disproportionate magnitude)
+  cultureFactor: 1.25,
 
   // ── prosperity: happiness + population terms ──────────────────────
   localHappinessFactor: 6.0, // city net happiness weight
@@ -104,9 +111,31 @@ export const CONFIG = {
   // borders does (see the violence section). siege = the city being razed.
   siegeModifier: -100,
   starvationModifier: -90, // net food < 0 (in line with siege −100). Was −200, but that never fired
-  //   until the getNetYield fix made `starving` real — −200 drives prosperity negative on its own,
+  //   until the getNetYield fix made `starving` real, −200 drives prosperity negative on its own,
   //   which is too hot now that it's live; −90 strongly repels without making the city instantly dead.
   unrestModifier: -60, // active unrest
+
+  // ── 1.4.1 polity model: happiness STAGES + government + celebration + war weariness ──
+  // Civ VII 1.4.1 reworked happiness into 5 named stages, gave governments happiness-keyed passives
+  // + persistent Government Traditions, made celebrations (Golden Ages) scarcer and tourism-feeding,
+  // and surfaced empire-wide war weariness. These read those signals (emigration-polity.js) and feed
+  // them in as BOUNDED, additive terms on top of the existing happiness/yield reads (which already
+  // absorb the −5%/point yield change). All conservative; polityModelEnabled:false = exact pre-1.4.1
+  // behavior. See docs/v1.4.1-deep-pass-plan.md.
+  polityModelEnabled: true,
+  happinessStageWeight: 4, // bounded pull per happiness-stage step (ANGRY −2 … ECSTATIC +2). An
+  //                          ordinal, magnitude-insensitive complement to the raw-happiness terms.
+  happinessStageMiseryScale: 0.25, // PULL-BIAS: the negative (unhappy/angry) side of the stage term is
+  //   scaled by this, because misery is already covered by the happiness term + the now-harsher (−5%/
+  //   point, 1.4.1) suppressed yields. The positive side keeps full weight (happy-city attraction isn't
+  //   double-counted: positive happiness doesn't boost yields in 1.4.1). 1.0 = symmetric; 0 = pull-only.
+  celebrationPull: 6, // attractiveness while a civ is in a Golden Age (now scarcer + feeds Tourism)
+  governmentWeight: 2, // scales the per-government flavor lean. Small: most government effect already
+  //                      reaches the model through the happiness + yields the city signal reads, so
+  //                      this is a tie-breaker between similar destinations, not a primary driver.
+  governmentLeanCap: 3, // clamp on the (scaled) government lean term
+  warWearinessModifier: -12, // empire-wide situational push (%) for a war-weary civ. Composes with,
+  //                            and is dominated by, the in-border violence terms (no double-punish).
   // No "settlement over cap" term: the game ALREADY penalizes over-cap civs with
   // happiness, which this model reads via the happiness term - adding another
   // would double-count. (And the old "unemployed workers over cap" term was
@@ -121,8 +150,8 @@ export const CONFIG = {
   vwAssault: 10, // per full-health-worth of fresh city damage taken in a turn
   vwSiege: 4, // per turn while the city center stays fully wrecked (scales w/ damage)
   // A city that is merely BESIEGED (surrounded) but not yet damaged registers this FRACTION of full
-  // siege pressure (was an implicit 1.0). Lowered so early-game city-state / Independent harassment —
-  // which besieges without wrecking the district — doesn't instantly cross the flee threshold and
+  // siege pressure (was an implicit 1.0). Lowered so early-game city-state / Independent harassment,
+  // which besieges without wrecking the district, doesn't instantly cross the flee threshold and
   // flood "war" refugees; it now takes a few sustained turns or real district damage. Tune lower for
   // gentler raids, up to 1.0 to restore the old "any siege = full war pressure" behavior.
   siegeBesiegedFloor: 0.3,
@@ -199,9 +228,14 @@ export const CONFIG = {
   // map and misery still strongly repels. See docs/algorithmic-improvements.md.
   happinessShaped: true,
   happyScale: 8, // tanh scale on (happiness − regional mean)
-  happyRepulsion: 2, // misery side is this much steeper than the saturating pull
-  happyAmp: 0.8, // happiness multiplies productiveness, clamped to [min,max]
-  happyFloor: 8, // bounded standalone happiness term (pull above mean / push below)
+  // happyRepulsion/happyAmp/happyFloor lowered in the 1.4.1 balance pass (scripts/calibration-sweep.mjs)
+  // to stop the happiness term from saturating the score (which made economy ~10% of the signal and
+  // hid 1.4.1's −5% yield penalty). With governments + the −5% penalty now suppressing unhappy cities'
+  // YIELDS directly, the model no longer needs an oversized artificial happiness term to push refugees
+  // out; real yields carry more of it. Paired with the ×2.5 yield weights above (overall scale held).
+  happyRepulsion: 1.8, // misery side is this much steeper than the saturating pull
+  happyAmp: 0.2, // happiness multiplies productiveness, clamped to [min,max]
+  happyFloor: 4, // bounded standalone happiness term (pull above mean / push below)
   happyMultMin: 0.2,
   happyMultMax: 1.8,
 
@@ -263,15 +297,15 @@ export const CONFIG = {
   //                           so real wars actually trigger the (now severity-scaled) death channel
   //                           instead of the city falling to the base game first with the mod killing 0.
   attritionThreshold: 40, // distress "pressure" to remove one population point
-  // Lethal CRISES kill even when people can flee — war, disaster, siege, and famine. Economic
+  // Lethal CRISES kill even when people can flee, war, disaster, siege, and famine. Economic
   // (prosperity / unhappiness) emigration never kills, because it carries no situational distress.
   // The "no destination" trap almost never fires (there's nearly always somewhere to flee), so without
   // this a city under crisis only ever DISPLACES and never takes casualties. With this on, a city under
   // lethal distress (`distress ≥ attritionMinDistress`) loses SOME population to death (cause
-  // `attrition`) concurrently with its refugee/economic emigration — at `crisisDeathShare` of the
+  // `attrition`) concurrently with its refugee/economic emigration, at `crisisDeathShare` of the
   // trapped rate, so flight dominates and the crisis takes a minority. The fully-trapped case (no
   // refuge) still dies at the full rate. NOTE: this does NOT count against the war siege-loss cap, so a
-  // very long siege can deplete a city beyond that cap (down to the rural floor) — tune the share if so.
+  // very long siege can deplete a city beyond that cap (down to the rural floor), tune the share if so.
   crisisDeathEnabled: true,
   // The crisis-death rate is now DYNAMIC = crisisDeathShare × warSeverity (capped at the full trapped
   // rate). crisisDeathShare is the BASE coefficient at a minimal one-front siege; warSeverity scales it
@@ -279,12 +313,12 @@ export const CONFIG = {
   // kills a small minority (flight dominates) while a brutal/prolonged/ganged-up war kills most of those
   // who can't escape. Lowered 0.5 → 0.2 so mild wars flee MORE; severity makes bad wars deadlier.
   crisisDeathShare: 0.2,
-  crisisSeverityCap: 6, // max distress/floor ratio counted toward severity — the DOMINANT factor (it's
+  crisisSeverityCap: 6, // max distress/floor ratio counted toward severity, the DOMINANT factor (it's
   //                       driven by pillaging, district/assault damage, and siege duration).
-  // Participants (number of attackers) are only a SMALL, BOUNDED amplifier on top — a pile-on is a bit
+  // Participants (number of attackers) are only a SMALL, BOUNDED amplifier on top, a pile-on is a bit
   // deadlier, but it must never overtake the actual damage. Weight is per extra attacker; the total
   // multiplier bonus is capped, so even a 10-civ dogpile adds at most crisisParticipantMax.
-  crisisParticipantWeight: 0.1, // each attacker beyond the first adds this (was 0.5 — too steep)
+  crisisParticipantWeight: 0.1, // each attacker beyond the first adds this (was 0.5, too steep)
   crisisParticipantMax: 0.4, // hard cap on the participant bonus (reached at ~5 attackers, then flat)
   // Unit CASUALTIES are a MAJOR severity factor (added on top of the damage-driven intensity): a war
   // measured by how much army a civ is losing in the field. The figure is the DEMOGRAPHICS mod's per-civ
@@ -297,7 +331,7 @@ export const CONFIG = {
   combatDecay: 0.7, // per-turn decay of the recent casualty intensity (recent fighting matters most)
 
   // ── Feature 1: aggressor-aware war migration (aggressorPenalty 0 = off) ──
-  ownCivRefugeeBonus: 1, // war refugees lean slightly toward their own civ's cities first — but only
+  ownCivRefugeeBonus: 1, // war refugees lean slightly toward their own civ's cities first, but only
   //                        slightly, so when a civ is collapsing its people genuinely spill across
   //                        the border to safer neutral neighbours instead of all piling up internally
   aggressorPenalty: 12, // …and avoid the aggressor that attacked them (0 = inert)

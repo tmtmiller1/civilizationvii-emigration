@@ -21,7 +21,7 @@
  * @property {number} points Raw Civ population points moved (1 per migration).
  * @property {number} people Historically-scaled people who moved.
  * @property {MigrationCause} cause Why this move happened.
- * @property {string} [eventKey] The SPECIFIC event behind the cause — a particular war / disaster /
+ * @property {string} [eventKey] The SPECIFIC event behind the cause, a particular war / disaster /
  *   age crisis (see emigration-event-attribution), or "" for no named event. Carried on the records
  *   that drive the out tally (move/depart) and on crisis-death records.
  * @property {number} [destPaidCost] Assimilation load the destination civ took on for this arrival
@@ -79,7 +79,7 @@ export function moveRecord(src, dest, people, cause, meta) {
  * Build the DEPARTURE half of a lagged move: the source loss + emigration tally land now, so it
  * carries `srcOwner` but NOT `destOwner` (the arrival credits the destination later). Keeps
  * `destName` for the notification ("left X for Y"), and `edgeDestOwner` (the destination civ) purely
- * so the migration-network flow edge can be recorded at depart — it must NOT be the tally-driving
+ * so the migration-network flow edge can be recorded at depart, it must NOT be the tally-driving
  * `destOwner` field, or the immigration tally would double-count (credited again on arrival).
  * @param {*} src Source signal.
  * @param {*} dest Destination signal.

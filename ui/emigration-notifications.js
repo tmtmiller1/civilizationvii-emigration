@@ -3,8 +3,8 @@
 // The PERSISTENT notification log behind the Demographics "Notifications" sub-tab. Every toast that
 // fires (emigration-feedback.js) is also appended here as a structured entry, so the on-screen toasts
 // can stay brief and non-spammy while the full history lives in a permanent, scrollable log the
-// player can revisit. Each entry keeps the detail of the event it announced — what caused it, which
-// settlement it left, and where the people went — so the list can drill down per notification.
+// player can revisit. Each entry keeps the detail of the event it announced, what caused it, which
+// settlement it left, and where the people went, so the list can drill down per notification.
 //
 // Persisted in GameConfiguration (survives save/reload), capped, newest-first. Everything is
 // defensive: with no GameConfiguration (headless / pre-boot) reads return [] and writes no-op.

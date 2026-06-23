@@ -39,7 +39,7 @@ let _recent = [];
  * @property {Record<string, number>} out Cumulative gross emigration per player.
  * @property {Record<string, number>} in Cumulative gross immigration per player.
  * @property {Record<string, number>} refugees Cumulative non-unhappiness emigration.
- * @property {Record<string, number>} refugeesIn Cumulative refugee IMMIGRATION per player —
+ * @property {Record<string, number>} refugeesIn Cumulative refugee IMMIGRATION per player,
  *   war/disaster/conquest arrivals RECEIVED (the inflow counterpart of `refugees`).
  * @property {Record<string, number>} deaths Cumulative population lost to attrition (the outlet).
  * @property {Record<string, number>} cumPts Net per player, in raw pop points.
@@ -242,7 +242,7 @@ function isCrossCiv(m) {
 
 /**
  * Tally a record's SPECIFIC event: a death into deathsByEvent, the out-side into outByEvent, and the
- * in-side into inByEvent — so a civ's RECEIVED refugees name the war/disaster that displaced them,
+ * in-side into inByEvent, so a civ's RECEIVED refugees name the war/disaster that displaced them,
  * not its own cause. (Caller guards `m.eventKey`.)
  * @param {MigStatsState} s State.
  * @param {*} m Migration (carries eventKey).
@@ -274,7 +274,7 @@ function foldMigration(s, m) {
     return;
   }
   // NET migration is an INTER-CIV measure: an internal move (within one civ) doesn't change that
-  // civ's total, so it must not touch the net tally — otherwise transit lag (depart debits now,
+  // civ's total, so it must not touch the net tally, otherwise transit lag (depart debits now,
   // arrive credits later) leaves every actively-shedding civ with a permanent in-flight deficit, so
   // the Net chart shows everyone negative and no one positive. Gross in/out still count every move.
   const cross = isCrossCiv(m);
@@ -302,8 +302,8 @@ function foldMigration(s, m) {
  * The edge is recorded ONCE, at the move's initiation. The instantaneous "move" record carries both
  * owners; the lagged "depart" record carries srcOwner + the non-tally `edgeDestOwner` (its real
  * destOwner is withheld so the immigration tally isn't double-credited). The lagged "arrive" half
- * carries no srcOwner, so the srcOwner guard skips it — no double count. (Previously this required
- * BOTH owners, so with transit lag on — the default — every lagged move was dropped and the network
+ * carries no srcOwner, so the srcOwner guard skips it, no double count. (Previously this required
+ * BOTH owners, so with transit lag on, the default, every lagged move was dropped and the network
  * stayed empty.)
  * @param {MigStatsState} s State.
  * @param {*} m Migration ({srcOwner?, destOwner?, edgeDestOwner?, srcName?, destName?, cause?}).
@@ -404,10 +404,10 @@ function flowEntry(key, v, vPts) {
 const MAX_FLOW_SNAPSHOTS = 96;
 
 // Cap on distinct city-pair edges in the CUMULATIVE flow matrices (s.flows / s.flowsPts). Unlike the
-// snapshot + disaster caps, these were append-only and unbounded — a very long game could grow the
+// snapshot + disaster caps, these were append-only and unbounded, a very long game could grow the
 // persisted blob until a GameConfiguration setValue silently truncates/drops it (both load + save
 // swallow exceptions), losing the WHOLE tally. When exceeded, evict the LOWEST-volume edges (smallest
-// people totals — the least informative), with hysteresis so we don't re-sort every pass.
+// people totals, the least informative), with hysteresis so we don't re-sort every pass.
 const MAX_FLOW_KEYS = 4000; // ceiling; capFlows (emigration-flow-history.js) evicts the smallest edges
 const MAX_EVENT_KEYS = 64; // per civ, per by-event map; keeps the persisted blob bounded over a long game
 
@@ -468,9 +468,9 @@ function nextChartTurn(s, age, localTurn) {
 
 /**
  * Per-civ NATIVE population in pop-points right now, for the timeline's real population history. Sums
- * each civ's current city populations (s.cityPts, refreshed by accountLosses earlier this pass — see
+ * each civ's current city populations (s.cityPts, refreshed by accountLosses earlier this pass, see
  * emigration-main.js, which runs it before recordMigrations) and subtracts cumulative immigrant points
- * (s.inPts), clamped ≥ 0 — mirroring the live gatherPops native fraction so a frame's totals reconcile
+ * (s.inPts), clamped ≥ 0, mirroring the live gatherPops native fraction so a frame's totals reconcile
  * with the current snapshot. City keys are "owner:localId", so the leading integer is the owner.
  * @param {MigStatsState} s State.
  * @returns {Record<number, number>} civId → native pop points.
@@ -759,7 +759,7 @@ export function recordMigrations(migs) {
   capFlows(s.flows, s.flowsPts, MAX_FLOW_KEYS); // bound the cumulative city-pair matrices before persist
   for (const ev of [s.outByEvent, s.inByEvent, s.deathsByEvent]) capByEvent(ev, MAX_EVENT_KEYS);
   // Snapshot EVERY pass (self-gated to the snapshot interval inside), not only when migration
-  // happened — so the timeline records per-civ population growth from turn one and is available to
+  // happened, so the timeline records per-civ population growth from turn one and is available to
   // scrub/play before any emigration occurs. The migration-only side effects stay gated on `list`.
   snapshotFlows(s);
   if (list.length) {
