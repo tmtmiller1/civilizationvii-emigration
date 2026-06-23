@@ -13,13 +13,13 @@ As part of releasing it I made a personal donation to organizations supporting r
 
 [b]What Emigration does[/b]
 [list]
-[*][b]Updated for Civilization VII 1.4.1.[/b] Reads the reworked systems directly: the five happiness stages (Angry to Ecstatic), governments' happiness-friendly passives, [b]Celebrations[/b] (Golden Ages) as a stronger draw, and empire-wide [b]war weariness[/b] as a push. The happiness/economy balance was re-tuned for 1.4.1's sharper happiness so a city's yields matter alongside its mood (snowball-checked, and revertible in Options).
-[*][b]Prosperity-driven movement.[/b] Each turn every visible city is scored by a Civ V-style Prosperity model, per-capita food, production, gold, science, and culture, with [b]happiness the strongest single factor[/b] (so unhappy, low-yield cities bleed people even at peace) but, after the 1.4.1 rebalance, no longer drowning out a city's economy, bent by a situational penalty from war, sieges, starvation, unrest, and disasters. People move toward higher-prosperity settlements, within and across civilizations.
+[*][b]Updated for Civilization VII 1.4.1.[/b] Reads the reworked systems directly: the five happiness stages (Angry to Ecstatic), governments' happiness-friendly passives, [b]Celebrations[/b] (Golden Ages) as a stronger draw, and empire-wide [b]war weariness[/b] as a push. The happiness and economy balance was re-tuned for 1.4.1's sharper happiness, so a city's yields now matter alongside its mood. You can revert it in Options.
+[*][b]Prosperity-driven movement.[/b] Each turn every visible city is scored by a Civ V-style Prosperity model: per-capita food, production, gold, science, and culture, with [b]happiness as the strongest single factor[/b], then bent by a situational penalty from war, sieges, starvation, unrest, and disasters. Unhappy, low-yield cities bleed people even at peace, though after the 1.4.1 rebalance happiness no longer drowns out a city's economy. People move toward higher-prosperity settlements, within and across civilizations.
 [*][b]Real, fog-independent war displacement.[/b] War migration keys on [i]actual violence inside a city's borders[/i] (district damage, pillaged tiles), read from game state rather than line of sight, so it works the same for your wars and distant AI-vs-AI wars. A capped, time-gated siege model lets a besieged city shed heavy population but never be emptied without an actual capture.
 [*][b]Refugees flee the invader.[/b] War refugees move [i]away[/i] from the nearest enemy, preferring their own civilization first, neutrals next, the attacker last. A trapped, dying population gets an outlet rather than being bottled up forever.
 [*][b]Regional, not teleporting.[/b] Migration is distance-penalized, so people move to [i]nearby[/i] better settlements, not across the map.
 [*][b]Borders and policy matter.[/b] Pro- and Anti-Immigration stance policies (in each age's civic tree) and base-game Open Borders agreements throttle who crosses and which way, trading Influence, Production, and retention.
-[*][b]Growth has a price.[/b] Receiving migrants adds a temporary, decaying assimilation cost (happiness and gold), and a congestion brake stops any single magnet from accreting the world, you can't just out-gold it.
+[*][b]Growth has a price.[/b] Receiving migrants adds a temporary, decaying assimilation cost (happiness and gold), and a congestion brake stops any single magnet from accreting the world. You cannot out-gold it.
 [*][b]It tells you [i]why[/i].[/b] In-the-moment toasts (cause, what to do, whether it's temporary, who pays), per-city readouts, named refugee headlines, and throttled world-news for major crises.
 [/list]
 [i]Full formulas, the four advanced algorithms (shaped happiness, overcrowding discount, congestion headwind, capped war displacement), and the per-leader tuning table are documented in the README (see Source).[/i]
@@ -58,7 +58,7 @@ Pairs with the [b]Demographics[/b] mod through an order-independent handshake (d
 [i]Every tunable, its default, and the math behind it are in the README (see Source).[/i]
 
 [b]A real gameplay mod, not UI-only[/b]
-Population actually moves and yields and Influence actually change, real per-turn gameplay writes, not just a display layer.
+Population actually moves, and the yields and Influence it produces change with it. Every update is a real per-turn gameplay write.
 
 [b]What it does not do[/b]
 [list]
