@@ -16,30 +16,50 @@ import { TUNABLES, PRESETS, PRESET_NAMES } from "/emigration/ui/emigration-tunab
 // not provide an export named 'ModOptions'". emigration-settings.js always has imports, so the store
 // lives here and links reliably in every context (shell, in-game, options).
 class ModOptionsStore {
-  /** Validate the shared root shape without deleting unrelated localStorage keys. */
-  _guard() {
+  /**
+   * Read the shared `modSettings` object in preparation for a WRITE, guaranteeing we never destroy
+   * another mod's slice. `modSettings` is multi-tenant (`{ "<modId>": {...}, ... }`); the danger is
+   * that Coherent's localStorage can return a transient empty/`null` read even when data exists, and
+   * another mod can leave a value that isn't valid JSON. Treating either as "empty" and writing back
+   * only our slice would wipe every sibling — the cross-mod "cannibalized settings" bug. So:
+   *   - re-read once on an empty first read (a populated re-read proves the first was flaky);
+   *   - REFUSE to write (`safe:false`) when the current value is present but unparseable / non-object,
+   *     since siblings exist that we can't round-trip;
+   *   - only a genuinely-absent value yields a fresh `{}`.
+   * NEVER reset `modSettings` to `{}` — that is itself a sibling-wiping write.
+   * @returns {{root: Record<string, *>, safe: boolean}}
+   */
+  _readForWrite() {
+    let raw = null;
     try {
-      const raw = localStorage.getItem("modSettings");
-      if (raw == null) return;
-      const parsed = JSON.parse(raw);
-      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-        localStorage.setItem("modSettings", "{}");
-      }
+      raw = localStorage.getItem("modSettings");
+      if (!raw) raw = localStorage.getItem("modSettings"); // defeat a flaky empty read
     } catch (_) {
-      localStorage.setItem("modSettings", "{}");
+      return { root: {}, safe: false };
     }
+    if (!raw) return { root: {}, safe: true };
+    let parsed = null;
+    try {
+      parsed = JSON.parse(raw);
+    } catch (_) {
+      return { root: {}, safe: false }; // unparseable siblings — do not overwrite
+    }
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return { root: {}, safe: false };
+    }
+    return { root: parsed, safe: true };
   }
 
   /**
-   * Persist a value.
+   * Persist a value, only ever adding/updating our OWN slice and never dropping a sibling's.
    * @param {string} modID Owning mod id. @param {string} optionID Option id. @param {*} value Value.
    */
   save(modID, optionID, value) {
     try {
-      this._guard();
-      const all = JSON.parse(localStorage.getItem("modSettings") || "{}");
-      (all[modID] ??= {})[optionID] = value;
-      localStorage.setItem("modSettings", JSON.stringify(all));
+      const { root, safe } = this._readForWrite();
+      if (!safe) return; // current shared value can't be round-tripped — keep siblings intact
+      (root[modID] ??= {})[optionID] = value;
+      localStorage.setItem("modSettings", JSON.stringify(root));
     } catch (_) {
       /* ignore */
     }
