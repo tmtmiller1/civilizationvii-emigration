@@ -7,6 +7,44 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-06-25
+
+### Fixed
+- **Critical mod-compatibility fix.** Emigration could wipe other mods' settings out
+  of the shared options store. Mods share one `modSettings` blob (one slice each);
+  when the game's UI layer handed back a momentarily-empty or unreadable copy of it,
+  Emigration wrote back only its own slice — and, worse, reset the whole blob to empty
+  whenever it couldn't parse it — deleting every other mod's saved options. Emigration
+  now re-reads on an empty result, refuses to write when the shared store can't be
+  safely read, only ever touches its own slice, and never resets the blob.
+
+### Added
+- **Brush & Blade civ/leader tuning pass.** Extended the per-leader/civ variance table
+  (`ui/emigration-civ-tuning.js`, Algorithm C) to cover the expansion's new civilizations and
+  leaders, with abilities verified against `Contents_1.4.1/resources/DLC`. All nudges are bounded
+  and only applied to genuine migration *outliers* — the goal is to prevent snowballing, not flatten
+  civ identity. 8 leaders: conquerors who profit from taking cities pay more gold to absorb the
+  spoils (Alexander, Genghis Khan, Edward Teach `assimilationEase` 1.2–1.25); Bolívar instead
+  *integrates* conquests cheaply (0.85); Toyotomi takes double damage defending so his cities also
+  shed population faster under siege (`warRetention` 0.85); Himiko is a happiness/celebration magnet
+  (`happinessPull` 0.85); Napoleon's FOOD_BANE base persona gets a small growth cushion
+  (`sourceBias` 0.5); Sayyida al-Hurra's naval-garrison cities resist depopulation (`warRetention`
+  1.2). 12 civilizations: conquest economies (Assyria, Bulgaria, Ottomans, Pirate Republic) pay more
+  to absorb spoils — Pirate Republic's inland-unhappiness also makes it a net *source* (`sourceBias`
+  −0.5); tall/few-settlement shapes are shielded from the density penalty (Carthage, Nepal, Qajar);
+  fortification-defensive civs retain population under siege (Dai Viet, Sengoku `warRetention` 1.4);
+  happiness/celebration magnets are damped (Heian, Silla, Ottomans, Qajar); and high-growth Shawnee
+  gets a cushion so per-capita dilution doesn't bleed pop (`sourceBias` 0.75). Iceland, Tonga, Great
+  Britain, and four leaders (Ada Lovelace, Gilgamesh, Lakshmibai, Friedrich) were reviewed and left
+  neutral — no migration-relevant outlier. The whole layer remains gated by `civTuningEnabled`.
+- **Civ-tuning strength knob (`civTuningStrength`, default 0.7).** A single global "flatten between
+  civilizations" control that compresses every per-leader/civ profile toward neutral: 1.0 = the full
+  table as written, 0 = fully flat (equivalent to the table off). It interpolates each field toward
+  its own neutral, so relative ordering is preserved (the most defensive civ stays the most
+  defensive) while the absolute spread — the gap that feeds a snowball — shrinks uniformly across
+  base and expansion entries. The default 0.7 keeps each civ's character but trims the divergence
+  ~30% as an extra anti-snowball margin; exposed as a Scope tunable (0 / 0.4 / 0.7 / 1) for dialing.
+
 ## [1.0.0] - 2026-06-23
 
 ### Changed
