@@ -150,17 +150,34 @@ function onRandomEvent(data) {
     // Record a refugees-chart MARKER whenever the disaster actually struck cities (so it drove
     // displacement), independent of the toast threshold, otherwise sub-`disasterNotifyMinSeverity`
     // disasters drive the sim but never annotate the chart, which is why none were appearing.
-    if (keys.length > 0) recordDisasterEvent(disasterName(data.eventType), sev);
-    // The TOAST stays gated on the (higher) notify severity, so only PARTICULARLY bad disasters pop a
-    // notification + journal entry; minor ones mark the chart and drive the sim silently.
-    if (sev >= CONFIG.disasterNotifyMinSeverity) {
-      const alert = disasterName(data.eventType) + " strikes! " + actionHint("disaster");
-      logNotification({ kind: "disaster", cause: "disaster", summary: alert, people: 0, points: 0 });
-      announceImportant(alert, "disaster");
-    }
+    const struck = keys.length > 0;
+    if (struck) recordDisasterEvent(disasterName(data.eventType), sev);
+    maybeNotifyDisaster(data, sev, struck);
   } catch (e) {
     dlog("event threw " + e);
   }
+}
+
+/**
+ * Log and (maybe) pop a disaster notification. The notifications LOG keeps every
+ * severe disaster so the player can review them without a popup; the on-screen
+ * POPUP is the invasive part, gated by the disasterNotifyMode user knob:
+ *   0 = off       — log only, never pop a disaster toast
+ *   1 = migration — pop ONLY when the disaster struck a city (so it will drive
+ *                   displacement) AND is ≥ min severity  [default]
+ *   2 = any       — pop for any disaster ≥ min severity (the old behavior)
+ * disasterNotifyMinSeverity still tunes "how bad is bad enough" within each mode.
+ * @param {*} data The event payload.
+ * @param {number} sev The event severity.
+ * @param {boolean} struck Whether the disaster struck any cities (drives migration).
+ */
+function maybeNotifyDisaster(data, sev, struck) {
+  if (sev < CONFIG.disasterNotifyMinSeverity) return; // below the severity floor
+  const alert = disasterName(data.eventType) + " strikes! " + actionHint("disaster");
+  logNotification({ kind: "disaster", cause: "disaster", summary: alert, people: 0, points: 0 });
+  const mode = CONFIG.disasterNotifyMode;
+  const pop = mode === 2 ? true : mode === 1 ? struck : false;
+  if (pop) announceImportant(alert, "disaster");
 }
 
 /**

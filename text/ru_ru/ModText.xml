@@ -44,6 +44,8 @@
         <Replace Tag="LOC_EMIG_T_REQUIREMET_D" Language="ru_RU"><Text>Учитывать только чужие города, с которыми ваша цивилизация знакома.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CIVTUNE" Language="ru_RU"><Text>Охват: настройка по лидеру/цивилизации</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CIVTUNE_D" Language="ru_RU"><Text>Применять небольшие ручные настройки по лидеру и цивилизации (ослабление магнита, скорость интеграции, удержание в войне, смещение источника), чтобы исключения вели себя по-разному. Выкл. = каждая цивилизация использует одну глобальную модель.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CTSTRENGTH" Language="ru_RU"><Text>Scope: civ-tuning strength</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CTSTRENGTH_D" Language="ru_RU"><Text>How far the per-leader/civ adjustments are allowed to diverge from the global model. 1.0 = full distinct identities; lower values flatten the differences between civilizations toward the same model to curb snowballing; 0 = fully flat (same as turning the table off).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BORDERS" Language="ru_RU"><Text>Охват: пограничные политики</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BORDERS_D" Language="ru_RU"><Text>Включить эффект политик «Открытые/Закрытые границы» на иммиграцию (карты политик появляются в меню политик и стоят или дают Влияние). Выкл. = политики не влияют на миграцию.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CLOSEDOPEN" Language="ru_RU"><Text>Границы: открытость при Закрытых границах</Text></Replace>
@@ -102,8 +104,8 @@
         <Replace Tag="LOC_EMIG_T_FLEE_D" Language="ru_RU"><Text>Насколько сильно беженцы предпочитают цели вдали от ближайшего захватчика.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH" Language="ru_RU"><Text>География: трение между цивилизациями</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH_D" Language="ru_RU"><Text>Дополнительное нежелание мигрировать через границу цивилизации.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="ru_RU"><Text>Бегство при кризисе (за границу)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="ru_RU"><Text>Насколько сильно цивилизация в остром кризисе (война/бедствие) подталкивает беженцев бежать ЗА ГРАНИЦУ в другую империю, а не переселяться в собственные (так же пострадавшие) города и гибнуть там. Выше = больше межцивилизационного бегства. 0 = выкл.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="ru_RU"><Text>Crisis escape (flee abroad)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="ru_RU"><Text>How strongly a civilization in acute crisis (war/disaster) pushes its refugees to flee ACROSS BORDERS to another empire, rather than relocating to its own (equally-stricken) cities and dying there. Higher = more cross-civ escape. 0 = off.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL" Language="ru_RU"><Text>География: прирост миграции от открытых границ</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="ru_RU"><Text>Насколько соглашение об открытых границах между двумя цивилизациями облегчает переселение между ними в обе стороны. 0 = выкл.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="ru_RU"><Text>География: задержка в пути (0 = мгновенно)</Text></Replace>
@@ -124,11 +126,11 @@
         <Replace Tag="LOC_EMIG_T_MHGOLD_D" Language="ru_RU"><Text>Золото, отнимаемое каждый ход за каждую UNIT_MIGRANT, которую удерживает цивилизация, с ростом по числу. 0 = выкл. (Подтверждённый зондом рычаг списания.)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST" Language="ru_RU"><Text>Стоимость: встречный ветер перегрузки (0 = выкл.)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="ru_RU"><Text>Сделать цивилизацию, поглощающую много мигрантов, менее привлекательной целью для дальнейшей миграции (она занята интеграцией прибывших), с ростом по тому, сколько она переваривает. Структурный тормоз для вышедших из-под контроля магнитов. 0 = выкл.</Text></Replace>
-        <Replace Tag="LOC_EMIG_EVENT_FAMINE" Language="ru_RU"><Text>Голод</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="ru_RU"><Text>Стоимость: тормоз снежного кома (0 = выкл.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="ru_RU"><Text>Делает цивилизацию, население которой далеко вырвалось вперёд, менее привлекательной целью для межцивилизационной миграции — самокорректирующийся тормоз для вырвавшегося вперёд лидера, усиливающийся с ростом отрыва. Никогда не мешает оттоку из лидера и его внутренним перемещениям. 0 = выкл.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="ru_RU"><Text>Стоимость: порог снежного кома (× справедливая доля)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="ru_RU"><Text>Насколько население цивилизации может опередить среднюю цивилизацию, прежде чем включится тормоз снежного кома, в кратном справедливой доли. Ниже = тормоз включается раньше (эгалитарнее); выше = тормозится только крайне вырвавшийся вперёд лидер.</Text></Replace>
+        <Replace Tag="LOC_EMIG_EVENT_FAMINE" Language="ru_RU"><Text>Famine</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="ru_RU"><Text>Cost: anti-snowball brake (0 = off)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="ru_RU"><Text>Make a civilization whose population has pulled far ahead of the field a less attractive destination for cross-civ migration: a self-correcting brake on a runaway leader that grows with how far ahead it is (0 off / 8 gentle / 15 standard / 28 strong). It never impedes a leader's OUTflow or internal moves. 0 = off.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="ru_RU"><Text>Cost: anti-snowball trigger (fair-share ×)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="ru_RU"><Text>How far a civilization's population may run ahead of the world-average civ before the anti-snowball headwind starts to bite, as a multiple of fair share. Lower = the brake engages sooner (more egalitarian); higher = only an extreme runaway leader is slowed.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="ru_RU"><Text>Бедствия: двигать миграцию</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="ru_RU"><Text>Позволить стихийным бедствиям (наводнения, вулканы, эпидемии…) выталкивать население из пострадавших городов как климатических беженцев / беженцев бедствий, наряду с войной и недовольством. Выкл. = бедствия не влияют на миграцию.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="ru_RU"><Text>Бедствия: эмиграция за пункт бедствия (%)</Text></Replace>
@@ -141,6 +143,8 @@
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE_D" Language="ru_RU"><Text>Насколько разговорчивы уведомления о миграции: 0 = выкл., 1 = только важные (кризисы беженцев и тяжёлые бедствия, по умолчанию), 2 = подробно (сводка каждый ход с заметной миграцией).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER" Language="ru_RU"><Text>Уведомления: мин. сила бедствия</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER_D" Language="ru_RU"><Text>Уведомлять только о бедствиях этой силы и выше (0 = даже мелкие события, 3 = только легендарные, как великое извержение). Мелкие бедствия по-прежнему влияют на миграцию незаметно.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DNOTIFYMODE" Language="ru_RU"><Text>Notifications: disaster popups</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DNOTIFYMODE_D" Language="ru_RU"><Text>Which disasters pop up on screen (the notifications log always keeps every severe one regardless): 0 = off, log only; 1 = only disasters that strike a settlement, so they actually drive migration (the default); 2 = any disaster at or above the minimum severity. Combine with "min disaster severity" to tune how bad is bad enough.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD" Language="ru_RU"><Text>Уведомления: минимальный интервал (ходы)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD_D" Language="ru_RU"><Text>Наименьшее число ходов между важными уведомлениями, чтобы они не скапливались. 0 = без ограничения.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD" Language="ru_RU"><Text>Уведомления: порог кризиса беженцев</Text></Replace>
@@ -168,15 +172,16 @@
         <Replace Tag="LOC_EMIG_NEWS_CONQUEST" Language="ru_RU"><Text>Разграбление {1_City} рассеивает {2_People}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="ru_RU"><Text>{2_People} покидают {1_City}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="ru_RU"><Text>Кризис беженцев: {1_Civ}, перемещено {2_People}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_WHO" Language="ru_RU"><Text>{1_Civ}: {2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="ru_RU"><Text>{1_People} покинули {2_City}, недовольные жизнью дома.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="ru_RU"><Text>{1_People} покинули {2_City} в поисках более процветающих соседей.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="ru_RU"><Text>{1_People} бежали от боёв вокруг {2_City}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="ru_RU"><Text>{1_People} were taken from {2_City} when it changed hands.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="ru_RU"><Text>Units:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="ru_RU"><Text>Switch between the Civ's own population numbers and scaled people</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ru_RU"><Text>Playback timeline appears once enough migration has been recorded to scrub through.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ru_RU"><Text>Playback timeline appears after a couple of turns, once there's population history to scrub through.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ru_RU"><Text>{1_People} бежали из {2_City} после бедствия.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ru_RU"><Text>{2_City} потерял(а) {1_People}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ru_RU"><Text>{1_People} погибли в {2_City}, не имея пути к бегству.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="ru_RU"><Text>Повысьте счастье города или примите антииммиграционную политику, чтобы удержать их.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="ru_RU"><Text>Сосед превосходит этот город; повысьте его доходы, чтобы удержать людей.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="ru_RU"><Text>Беженцы бегут от боёв; снимите осаду или заключите мир, чтобы остановить отток.</Text></Replace>
@@ -241,8 +246,8 @@
         <Replace Tag="LOC_OPTIONS_EMIG_DOCK_DESCRIPTION" Language="ru_RU"><Text>Показывать кнопку «Миграция» на игровой панели. Отключите, чтобы открывать панель через вкладку «Миграция» на экране демографии.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="ru_RU"><Text>Межцивилизационной миграции пока нет, потоки появятся, когда люди начнут пересекать границы.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="ru_RU"><Text>Цвет по:</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_HELP" Language="ru_RU"><Text>Как читать</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_INFO" Language="ru_RU"><Text>Инфо:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_HELP" Language="ru_RU"><Text>How to read this</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_INFO" Language="ru_RU"><Text>Info:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="ru_RU"><Text>Происхождение</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="ru_RU"><Text>Тип</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_MOVEMENT" Language="ru_RU"><Text>Перемещение</Text></Replace>

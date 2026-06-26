@@ -273,6 +273,11 @@ export const CONFIG = {
   // (ui/emigration-civ-tuning.js). Both neutral when off.
   congestWeight: 4, // pull penalty per unit of destination per-capita assimilation load
   civTuningEnabled: true,
+  // civTuningStrength FLATTENS the per-leader/civ table toward neutral: 1 = full identity (table as
+  // written), 0 = fully flat. Default 0.7 keeps each civ's character and relative ordering but
+  // compresses the absolute spread ~30%, so no single leader/civ can diverge far enough to feed a
+  // snowball. Applies uniformly to base and expansion entries; only active when civTuningEnabled.
+  civTuningStrength: 0.7,
 
   // ── Anti-snowball headwind: a self-correcting brake on a runaway leader ──
   // The congestion brake above fights fresh SURGES (it decays), so it doesn't stop the slow,
@@ -351,6 +356,10 @@ export const CONFIG = {
   worldRefugeeThreshold: 40000, // cumulative scaled people per civ → a refugee-crisis alert
   disasterNotifyMinSeverity: 2, // min disaster magnitude to TOAST (1=gentle … 2=catastrophic … 4=Thera-tier;
   // impact-derived, see emigration-events.eventSeverity). Markers/distress still record below this.
+  disasterNotifyMode: 1, // disaster POPUP scope: 0 off (log only), 1 migration-affecting only
+  // (struck a city + >= min severity, the default — keeps popups centered on disasters that drive
+  // displacement), 2 any disaster >= min severity (old behavior). The log records every severe
+  // disaster regardless, so reducing popups never loses the record.
   notifyCooldownTurns: 6, // min turns between "important" toasts (anti-spam backstop)
 
   // ── per-city readout panel (Phase 2): an on-demand "why is this city changing?" box ──

@@ -8,7 +8,7 @@
 // stylesheet, so it renders correctly in the Demographics page or the standalone window.
 
 import { notificationLog } from "/emigration/ui/emigration-notifications.js";
-import { causeLabel, causeAccent } from "/emigration/ui/emigration-causes.js";
+import { causeLabel, notificationAccent } from "/emigration/ui/emigration-causes.js";
 import { formatBoth } from "/emigration/ui/emigration-population.js";
 
 /**
@@ -152,7 +152,7 @@ function headEl(e, accent, caret) {
  * @returns {HTMLElement} The row.
  */
 function rowEl(e) {
-  const accent = causeAccent(e.cause);
+  const accent = notificationAccent(e.cause, e.ownLoss);
   const row = el("div", "emig-ntf-row");
   row.style.borderLeftColor = accent;
   const caret = el("span", "emig-ntf-caret", "▾");

@@ -63,6 +63,8 @@
         <Row Tag="LOC_EMIG_T_REQUIREMET_D"><Text>Only consider foreign cities your civilization has met.</Text></Row>
         <Row Tag="LOC_EMIG_T_CIVTUNE"><Text>Scope: per-leader/civ tuning</Text></Row>
         <Row Tag="LOC_EMIG_T_CIVTUNE_D"><Text>Apply small, hand-tuned per-leader and per-civilization adjustments (magnet damping, integration speed, war-time retention, source bias) so outliers behave distinctly. Off = every civ uses the same global model.</Text></Row>
+        <Row Tag="LOC_EMIG_T_CTSTRENGTH"><Text>Scope: civ-tuning strength</Text></Row>
+        <Row Tag="LOC_EMIG_T_CTSTRENGTH_D"><Text>How far the per-leader/civ adjustments are allowed to diverge from the global model. 1.0 = full distinct identities; lower values flatten the differences between civilizations toward the same model to curb snowballing; 0 = fully flat (same as turning the table off).</Text></Row>
         <Row Tag="LOC_EMIG_T_BORDERS"><Text>Scope: border policies</Text></Row>
         <Row Tag="LOC_EMIG_T_BORDERS_D"><Text>Enable the Open / Closed Borders policies' effect on immigration (the policy cards are added in the policy menu and cost or grant Influence). Off = the policies have no migration effect.</Text></Row>
         <Row Tag="LOC_EMIG_T_CLOSEDOPEN"><Text>Borders: Closed Borders openness</Text></Row>
@@ -165,6 +167,8 @@
         <Row Tag="LOC_EMIG_T_NOTIFYMODE_D"><Text>How chatty migration notifications are: 0 = off, 1 = important only (refugee crises and severe disasters, the default), 2 = verbose (a summary every turn there's notable migration).</Text></Row>
         <Row Tag="LOC_EMIG_T_NOTIFYDISASTER"><Text>Notifications: min disaster severity</Text></Row>
         <Row Tag="LOC_EMIG_T_NOTIFYDISASTER_D"><Text>Only notify for disasters at or above this severity (0 = even minor events, 3 = only legendary ones like a great eruption). Minor disasters still affect migration silently.</Text></Row>
+        <Row Tag="LOC_EMIG_T_DNOTIFYMODE"><Text>Notifications: disaster popups</Text></Row>
+        <Row Tag="LOC_EMIG_T_DNOTIFYMODE_D"><Text>Which disasters pop up on screen (the notifications log always keeps every severe one regardless): 0 = off, log only; 1 = only disasters that strike a settlement, so they actually drive migration (the default); 2 = any disaster at or above the minimum severity. Combine with "min disaster severity" to tune how bad is bad enough.</Text></Row>
         <Row Tag="LOC_EMIG_T_NOTIFYCD"><Text>Notifications: minimum gap (turns)</Text></Row>
         <Row Tag="LOC_EMIG_T_NOTIFYCD_D"><Text>The fewest turns between important notifications, so they can't bunch up. 0 = no limit.</Text></Row>
         <Row Tag="LOC_EMIG_T_NOTIFYWORLD"><Text>Notifications: refugee-crisis threshold</Text></Row>
@@ -202,6 +206,7 @@
         <Row Tag="LOC_EMIG_NEWS_CONQUEST"><Text>The sack of {1_City} scatters {2_People}.</Text></Row>
         <Row Tag="LOC_EMIG_NEWS_GENERIC"><Text>{2_People} leave {1_City}.</Text></Row>
         <Row Tag="LOC_EMIG_NEWS_CRISIS"><Text>Refugee crisis: {1_Civ}, {2_People} displaced.</Text></Row>
+        <Row Tag="LOC_EMIG_NEWS_WHO"><Text>{1_Civ}: {2_Headline}</Text></Row>
 
         <!-- Phase-1 explanatory toast: per-cause loss headline for the local player's digest -->
         <Row Tag="LOC_EMIG_DIGEST_UNHAPPINESS"><Text>{1_People} left {2_City}, unhappy at home.</Text></Row>
