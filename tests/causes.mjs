@@ -1,8 +1,21 @@
 import assert from "node:assert/strict";
 
-const { isRefugeeCause, causeLabel, causePermanence, causeHint } = await import(
-  "/emigration/ui/emigration-causes.js"
-);
+const { isRefugeeCause, causeLabel, causePermanence, causeHint, causeAccent, notificationAccent } =
+  await import("/emigration/ui/emigration-causes.js");
+
+function testNotificationAccentReservesRedForOwnLoss() {
+  // Red causes (war/conquest/crisis) keep their alarming colour only for the player's OWN loss.
+  for (const c of ["war", "conquest", "crisis"]) {
+    assert.equal(notificationAccent(c, true), causeAccent(c), `${c} own-loss keeps its red accent`);
+    assert.notEqual(notificationAccent(c, false), causeAccent(c), `${c} world-news is NOT red`);
+    assert.equal(notificationAccent(c, false), notificationAccent("war", false), "shared neutral tone");
+  }
+  // Non-red causes are unaffected by ownLoss.
+  for (const c of ["disaster", "prosperity", "unhappiness", "attrition"]) {
+    assert.equal(notificationAccent(c, false), causeAccent(c), `${c} unchanged`);
+    assert.equal(notificationAccent(c, true), causeAccent(c), `${c} unchanged`);
+  }
+}
 
 function testRefugeeCausesAreForcedDisplacementOnly() {
   for (const c of ["war", "disaster", "conquest"]) {
@@ -56,5 +69,7 @@ testRefugeeCausesAreForcedDisplacementOnly();
 testEveryEmittedCauseHasALabel();
 testPermanenceClassifier();
 testHintsExistForEmittedCauses();
+
+testNotificationAccentReservesRedForOwnLoss();
 
 console.log("causes harness passed");

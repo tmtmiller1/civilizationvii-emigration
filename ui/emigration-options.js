@@ -39,7 +39,9 @@ import {
   getShowDockButton,
   setShowDockButton,
   getVisibilityOverride,
-  setVisibilityOverride
+  setVisibilityOverride,
+  getTunable,
+  setTunable
 } from "/emigration/ui/emigration-settings.js";
 import { PRESET_NAMES } from "/emigration/ui/emigration-tunables.js";
 
@@ -164,6 +166,24 @@ function registerDockButton() {
   });
 }
 
+/** Register the notifications on/off toggle. Maps the master notifyMode tunable: on = 1 (important),
+ * off = 0 (silence all Emigration toasts and the world-news log). Verbose mode (2) is set from the
+ * Advanced editor and reads back as "on" here. */
+function registerNotifications() {
+  Options.addOption({
+    category: CategoryType.Mods,
+    group: MAIN_GROUP,
+    type: OptionType.Checkbox,
+    id: "emigration-notifications",
+    initListener: (/** @type {*} */ info) => (info.currentValue = getTunable("notifyMode") >= 1),
+    updateListener: (/** @type {*} */ _i, /** @type {*} */ v) => setTunable("notifyMode", v ? 1 : 0),
+    label: "Emigration • notifications",
+    description: "Show Emigration's in-game notifications (the migration toasts and the world-news "
+      + "log). Turn this off to silence all Emigration pop-ups. Notification detail can be tuned "
+      + "further under Advanced settings."
+  });
+}
+
 /** Register the analytics-visibility dropdown (Emigration's own, always-reliable unmet-civ control). */
 function registerVisibility() {
   Options.addOption({
@@ -187,6 +207,7 @@ Options.addInitCallback(() => {
   registerDataMode();
   registerSnapshotInterval();
   registerDockButton();
+  registerNotifications();
   registerVisibility();
   registerAdvancedEditor();
 });

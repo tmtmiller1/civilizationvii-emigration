@@ -60,17 +60,57 @@ function civDisplayAdjective(pid) {
 }
 
 /**
+ * Whether a player is a minor (city-state / Independent Power) rather than a major civ.
+ * @param {number} pid Player id.
+ * @returns {boolean} True for a minor player.
+ */
+function isMinorPlayer(pid) {
+  try {
+    const p = Players?.get?.(pid);
+    return p ? (p.isMajor === false || p.isMinor === true) : false;
+  } catch (_) {
+    return false;
+  }
+}
+
+/**
+ * The specific name of a city-state / Independent Power ("Carthage", "Mississippian"), via
+ * Game.IndependentPowers.independentName, or null when unavailable. Minor players don't carry a
+ * useful civilization adjective, so this is how they get named.
+ * @param {number} pid Player id.
+ * @returns {string|null} The independent's name, or null.
+ */
+function independentName(pid) {
+  try {
+    const ip = typeof Game !== "undefined" ? Game.IndependentPowers : null;
+    const nm = ip && typeof ip.independentName === "function" ? ip.independentName(pid) : null;
+    if (typeof nm === "string" && nm.length) return loc(nm) || nm;
+  } catch (_) {
+    /* ignore */
+  }
+  return null;
+}
+
+/**
  * A civilization's adjective ("Roman"), from LOC_CIVILIZATION_<STEM>_ADJECTIVE, falling
- * back to the civ display name, then a generic label.
+ * back to the civ display name, then a generic label. For city-states / Independent Powers it uses
+ * the power's specific name instead, since they have no meaningful civ adjective.
  * @param {number} pid Player id.
  * @returns {string} The adjective.
  */
 export function civAdjective(pid) {
+  // City-states / Independent Powers: name them specifically (their civ type is generic otherwise).
+  if (isMinorPlayer(pid)) {
+    const indep = independentName(pid);
+    if (indep) return indep;
+  }
   const name = civTypeName(pid);
   if (name) {
     const adj = loc("LOC_CIVILIZATION_" + name.replace(/^CIVILIZATION_/, "") + "_ADJECTIVE");
     if (adj) return adj;
   }
+  const indep = independentName(pid);
+  if (indep) return indep;
   return civDisplayAdjective(pid);
 }
 
@@ -207,8 +247,14 @@ function engineWarName(victim, aggressor) {
 export function warRefugeeName(victimPid, aggressorPids) {
   const arr = aggressorPids ? [...aggressorPids] : [];
   const aggressor = typeof arr[0] === "number" ? arr[0] : null;
-  const wn = aggressor != null ? engineWarName(victimPid, aggressor) : null;
-  if (wn) return wn;
+  // Prefer the engine's own war name for major-vs-major wars. For a war involving a city-state /
+  // Independent Power the engine name is generic ("the Enemy"), so build an explicit
+  // "{Victim}–{Aggressor} War" that names the city-state directly via civAdjective.
+  const minorInvolved = isMinorPlayer(victimPid) || (aggressor != null && isMinorPlayer(aggressor));
+  if (!minorInvolved && aggressor != null) {
+    const wn = engineWarName(victimPid, aggressor);
+    if (wn) return wn;
+  }
   const a = aggressor != null ? civAdjective(aggressor) : "the enemy";
   return civAdjective(victimPid) + "–" + a + " War";
 }
@@ -239,6 +285,22 @@ export function refugeeHeadline(ev) {
     const civ = ev.civ || "A nation";
     return pick("LOC_EMIG_NEWS_CRISIS", civ, people, "Refugee crisis: " + civ + " ; " + people + " displaced.");
   }
+  const body = refugeeBody(ev, people, city);
+  // The event-named templates above name the war/disaster/city but NOT the affected
+  // civ. When the caller supplies a civ (already spoiler-guarded — an unmet civ is
+  // passed as "an unmet civilization"), lead with it so world news says WHO was hit.
+  return ev.civ ? whoLed(ev.civ, body) : body;
+}
+
+/**
+ * The event-named refugee headline body (no civ): names the disaster / war / sacked
+ * city / settlement. Split out so {@link refugeeHeadline} can optionally prefix WHO.
+ * @param {*} ev The world-news event descriptor.
+ * @param {string} people The formatted people count.
+ * @param {string} city The settlement name (fallback "a settlement").
+ * @returns {string} The headline body.
+ */
+function refugeeBody(ev, people, city) {
   if (ev.cause === "disaster") {
     const n = ev.eventName || "A disaster";
     return pick("LOC_EMIG_NEWS_DISASTER", n, people, n + " displaces " + people + ".");
@@ -251,6 +313,18 @@ export function refugeeHeadline(ev) {
     return pick("LOC_EMIG_NEWS_CONQUEST", city, people, "The sack of " + city + " scatters " + people + ".");
   }
   return pick("LOC_EMIG_NEWS_GENERIC", city, people, people + " leave " + city + ".");
+}
+
+/**
+ * Prefix a headline body with the (already spoiler-guarded) affected civ, capitalized
+ * for the leading position. e.g. "Carthaginians: 1,200 flee the war."
+ * @param {string} civ The affected-civ label (real adjective, or the unmet mask).
+ * @param {string} body The event headline body.
+ * @returns {string} The civ-led headline.
+ */
+function whoLed(civ, body) {
+  const lead = civ ? civ.charAt(0).toUpperCase() + civ.slice(1) : civ;
+  return loc("LOC_EMIG_NEWS_WHO", lead, body) || (lead + ": " + body);
 }
 
 /** Cause → its localized loss-headline LOC key (per-cause, so each sentence reads naturally). */

@@ -115,6 +115,7 @@
  * @property {number} antiSnowballThreshold Fair-share population multiple before the headwind bites.
  * @property {number} antiSnowballExponent Escalation steepness past the threshold.
  * @property {boolean} civTuningEnabled Apply the per-leader/civ tuning table (Alg C).
+ * @property {number} civTuningStrength Flatten the tuning table toward neutral (1 = full, 0 = flat).
  * @property {boolean} attritionEnabled Trapped distressed cities lose population with no refuge.
  * @property {number} attritionMinDistress Min situational distress (%) before attrition fires.
  * @property {number} attritionThreshold Distress pressure to remove one population point.
@@ -142,6 +143,8 @@
  * @property {boolean} notifyWorldNews Announce major world refugee events.
  * @property {number} worldRefugeeThreshold Per-civ cumulative people for a crisis alert.
  * @property {number} disasterNotifyMinSeverity Min disaster severity to notify (0–3).
+ * @property {number} disasterNotifyMode Disaster popup scope: 0 off (log only), 1 migration-affecting
+ *   only (struck a city + ≥ min severity, default), 2 any disaster ≥ min severity.
  * @property {number} notifyCooldownTurns Min turns between "important" toasts (anti-spam).
  * @property {boolean} cityReadoutEnabled Show the per-city migration readout panel (Phase 2).
  * @property {string} cityReadoutCorner HUD corner for the readout (top/bottom × left/right).

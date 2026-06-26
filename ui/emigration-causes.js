@@ -111,6 +111,25 @@ export function causeAccent(cause) {
   return (cause && ACCENTS[cause]) || ACCENTS.other;
 }
 
+/** The red-toned causes; the alarming red is reserved for the local player's OWN population losses. */
+const RED_CAUSES = new Set(["war", "conquest", "crisis"]);
+/** A muted slate for world-news / other-civ notifications (informational, not the player's crisis). */
+const NEUTRAL_NEWS_ACCENT = "#7d8aa0";
+
+/**
+ * The accent colour for a NOTIFICATION (toast or log row), where red is reserved for the local
+ * player's own losses. When `ownLoss` is false (world news, or another civ's event) the red causes
+ * (war / conquest / crisis) render in a neutral informational tone instead, so the player can tell at
+ * a glance whether a red notification is about THEIR civilization. Non-red causes are unaffected.
+ * @param {string} [cause] The migration cause (or "crisis").
+ * @param {boolean} [ownLoss] Whether this notification is the local player's own population loss.
+ * @returns {string} A CSS colour.
+ */
+export function notificationAccent(cause, ownLoss) {
+  if (!ownLoss && cause && RED_CAUSES.has(cause)) return NEUTRAL_NEWS_ACCENT;
+  return causeAccent(cause);
+}
+
 /**
  * How durable a loss from this cause is (the "temporary / persistent / permanent" cue).
  * @param {string} [cause] The cause.

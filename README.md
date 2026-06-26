@@ -512,6 +512,24 @@ Franklin `happinessPull 0.75`, Isabella `0.85`+`ease 1.2`, Xerxes `ease 1.25`, K
 Pachacuti `overcrowdDiscount 0.5`, Norman/England `warRetention 1.4`, and so on. None can cause a
 runaway; the structural guarantees live in the algorithms.
 
+**Brush & Blade coverage.** The table extends to the expansion's new civs and leaders, with abilities
+read from the DLC game files and mapped to the same six fields. Conquest economies pay more to absorb
+spoils (Assyria/Bulgaria/Ottomans/Pirate Republic civs; Alexander/Genghis Khan/Edward Teach leaders,
+`assimilationEase` 1.2–1.25), while Bolívar — who integrates conquests cheaply — drops to `0.85`.
+Fortification-defensive civs hold population under siege (Dai Viet/Sengoku `warRetention 1.4`), and
+Toyotomi, who takes double damage defending, instead *sheds* it (`warRetention 0.85`). Happiness/
+celebration magnets are damped (Heian/Silla civs, Himiko `happinessPull 0.85`); tall/few-settlement
+shapes are shielded from the density penalty (Carthage/Nepal/Qajar); and high-growth Shawnee plus
+FOOD-penalized Napoleon get a small `sourceBias` cushion. Civs/leaders with no migration-relevant
+outlier (Iceland, Tonga, Great Britain; Ada Lovelace, Gilgamesh, Lakshmibai, Friedrich) stay neutral.
+
+**Flatten knob (`civTuningStrength`, default 0.7).** A single global control that compresses every
+profile toward neutral — `1.0` = the full table as written, `0` = fully flat (same as the table off).
+It interpolates each field toward its own neutral, so **relative ordering is preserved** (the most
+defensive civ stays the most defensive) while the absolute spread that feeds a snowball shrinks
+uniformly across base and expansion entries. The default `0.7` keeps each civ's character but trims
+the divergence ~30% as an extra anti-snowball margin; it's exposed as a Scope tunable for dialing.
+
 ---
 
 ## 6. Interactive systems (on by default)

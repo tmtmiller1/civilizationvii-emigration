@@ -26,6 +26,8 @@ const MAX_ENTRIES = 120; // ring cap: plenty of history, bounded save size
  * @property {string} [toCity] Destination settlement name.
  * @property {string} [toCiv] Destination civilization name.
  * @property {boolean} [crossCiv] Whether the lead move crossed civilizations.
+ * @property {boolean} [ownLoss] Whether this is the local player's own population loss (drives the
+ *   red accent; world-news / other-civ entries render in a neutral tone).
  */
 
 /** @type {NotifEntry[] | null} Newest-first cache (shared across the VM's modules). */
@@ -97,7 +99,8 @@ export function logNotification(entry) {
     fromCiv: entry.fromCiv,
     toCity: entry.toCity,
     toCiv: entry.toCiv,
-    crossCiv: !!entry.crossCiv
+    crossCiv: !!entry.crossCiv,
+    ownLoss: !!entry.ownLoss
   };
   list.unshift(e);
   if (list.length > MAX_ENTRIES) list.length = MAX_ENTRIES;

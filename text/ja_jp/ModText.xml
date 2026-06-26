@@ -44,6 +44,8 @@
         <Replace Tag="LOC_EMIG_T_REQUIREMET_D" Language="ja_JP"><Text>自分の文明が出会った外国都市のみを対象とします。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CIVTUNE" Language="ja_JP"><Text>範囲: 指導者/文明ごとの調整</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CIVTUNE_D" Language="ja_JP"><Text>指導者および文明ごとに手作業の小さな調整（磁石の抑制、統合速度、戦時の保持、流出傾向）を適用し、外れ値が異なる挙動を示すようにします。オフ = すべての文明が同じ全体モデルを使用します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CTSTRENGTH" Language="ja_JP"><Text>Scope: civ-tuning strength</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CTSTRENGTH_D" Language="ja_JP"><Text>How far the per-leader/civ adjustments are allowed to diverge from the global model. 1.0 = full distinct identities; lower values flatten the differences between civilizations toward the same model to curb snowballing; 0 = fully flat (same as turning the table off).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BORDERS" Language="ja_JP"><Text>範囲: 国境政策</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BORDERS_D" Language="ja_JP"><Text>「開放国境/閉鎖国境」政策の移民への効果を有効にします（政策カードは政策メニューに追加され、影響力を消費または付与します）。オフ = 政策は移住に影響しません。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CLOSEDOPEN" Language="ja_JP"><Text>国境: 閉鎖国境の開放度</Text></Replace>
@@ -102,8 +104,8 @@
         <Replace Tag="LOC_EMIG_T_FLEE_D" Language="ja_JP"><Text>難民が最寄りの侵略者から離れた目的地をどれだけ強く好むか。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH" Language="ja_JP"><Text>地理: 文明間の摩擦</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH_D" Language="ja_JP"><Text>文明の国境を越えて移住することへの追加的な抵抗。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="ja_JP"><Text>危機脱出（国外へ）</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="ja_JP"><Text>深刻な危機（戦争・災害）にある文明が、（同様に被害を受けた）自国の都市へ移って死ぬのではなく、国境を越えて他の帝国へ逃れるよう難民をどれだけ強く促すか。高いほど文明間脱出が増えます。0 = オフ。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="ja_JP"><Text>Crisis escape (flee abroad)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="ja_JP"><Text>How strongly a civilization in acute crisis (war/disaster) pushes its refugees to flee ACROSS BORDERS to another empire, rather than relocating to its own (equally-stricken) cities and dying there. Higher = more cross-civ escape. 0 = off.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL" Language="ja_JP"><Text>地理: 開かれた国境による移住促進</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="ja_JP"><Text>2つの文明間の開かれた国境協定が、双方向の移住をどれだけ容易にするか。0 = オフ。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="ja_JP"><Text>地理: 移動の遅延（0 = 即時）</Text></Replace>
@@ -124,11 +126,11 @@
         <Replace Tag="LOC_EMIG_T_MHGOLD_D" Language="ja_JP"><Text>文明が保持している UNIT_MIGRANT ごとに毎ターン差し引かれる金。数に応じて増加。0 = オフ。（プローブで確認済みの控除レバー。）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST" Language="ja_JP"><Text>コスト: 混雑による逆風（0 = オフ）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="ja_JP"><Text>多くの移民を吸収している文明を、さらなる移住先として魅力の低いものにします（新参者の統合で手一杯のため）。消化している量に応じて増加。暴走する磁石への構造的ブレーキ。0 = オフ。</Text></Replace>
-        <Replace Tag="LOC_EMIG_EVENT_FAMINE" Language="ja_JP"><Text>飢饉</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="ja_JP"><Text>コスト: スノーボール抑制 (0 = オフ)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="ja_JP"><Text>人口が他の文明を大きく引き離した文明を、文明間移住の目的地として魅力的でなくします。暴走する首位文明への自己修正ブレーキで、リードが大きいほど強くなります。首位文明からの流出や内部移動は妨げません。0 = オフ。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="ja_JP"><Text>コスト: スノーボール発動閾値 (公平分配の倍率)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="ja_JP"><Text>スノーボール抑制が働き始める前に、文明の人口が平均的な文明をどれだけ上回ってよいかを、公平な分配に対する倍率で指定します。低い＝抑制が早く働く（より平等）。高い＝極端に暴走した首位文明のみが抑えられます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_EVENT_FAMINE" Language="ja_JP"><Text>Famine</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="ja_JP"><Text>Cost: anti-snowball brake (0 = off)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="ja_JP"><Text>Make a civilization whose population has pulled far ahead of the field a less attractive destination for cross-civ migration: a self-correcting brake on a runaway leader that grows with how far ahead it is (0 off / 8 gentle / 15 standard / 28 strong). It never impedes a leader's OUTflow or internal moves. 0 = off.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="ja_JP"><Text>Cost: anti-snowball trigger (fair-share ×)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="ja_JP"><Text>How far a civilization's population may run ahead of the world-average civ before the anti-snowball headwind starts to bite, as a multiple of fair share. Lower = the brake engages sooner (more egalitarian); higher = only an extreme runaway leader is slowed.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="ja_JP"><Text>災害: 移住を駆動</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="ja_JP"><Text>環境災害（洪水、火山、疫病…）が、戦争や不満と並んで、被災都市から住民を気候/災害難民として押し出すようにします。オフ = 災害は移住に影響しません。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="ja_JP"><Text>災害: 苦境ポイントあたりの移住（%）</Text></Replace>
@@ -141,6 +143,8 @@
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE_D" Language="ja_JP"><Text>移住通知の多さ：0 = オフ、1 = 重要のみ（難民危機と深刻な災害、既定）、2 = 詳細（顕著な移住があるたびに毎ターン要約）。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER" Language="ja_JP"><Text>通知: 災害の最小深刻度</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER_D" Language="ja_JP"><Text>この深刻度以上の災害のみ通知します（0 = 小規模な事象も、3 = 大噴火のような伝説級のみ）。小規模な災害も移住には静かに影響します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DNOTIFYMODE" Language="ja_JP"><Text>Notifications: disaster popups</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DNOTIFYMODE_D" Language="ja_JP"><Text>Which disasters pop up on screen (the notifications log always keeps every severe one regardless): 0 = off, log only; 1 = only disasters that strike a settlement, so they actually drive migration (the default); 2 = any disaster at or above the minimum severity. Combine with "min disaster severity" to tune how bad is bad enough.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD" Language="ja_JP"><Text>通知: 最小間隔（ターン）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD_D" Language="ja_JP"><Text>重要な通知の間の最小ターン数。集中しないようにします。0 = 制限なし。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD" Language="ja_JP"><Text>通知: 難民危機のしきい値</Text></Replace>
@@ -168,15 +172,16 @@
         <Replace Tag="LOC_EMIG_NEWS_CONQUEST" Language="ja_JP"><Text>{1_City}の略奪により{2_People}が四散。</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="ja_JP"><Text>{2_People}が{1_City}を去る。</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="ja_JP"><Text>難民危機：{1_Civ}、{2_People}が避難。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_WHO" Language="ja_JP"><Text>{1_Civ}: {2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="ja_JP"><Text>{1_People}が不満を抱き{2_City}を去りました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="ja_JP"><Text>{1_People}がより豊かな隣国を求めて{2_City}を去りました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="ja_JP"><Text>{1_People}が{2_City}周辺の戦闘から逃れました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="ja_JP"><Text>{1_People} were taken from {2_City} when it changed hands.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="ja_JP"><Text>Units:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="ja_JP"><Text>Switch between the Civ's own population numbers and scaled people</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ja_JP"><Text>Playback timeline appears once enough migration has been recorded to scrub through.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ja_JP"><Text>Playback timeline appears after a couple of turns, once there's population history to scrub through.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ja_JP"><Text>{1_People}が災害の後、{2_City}から逃れました。</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ja_JP"><Text>{2_City}で{1_People}の犠牲者が出ました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ja_JP"><Text>{1_People}が逃げ場を失い、{2_City}で失われました。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="ja_JP"><Text>都市の幸福度を高めるか、移民排斥の方針を取って引き留めましょう。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="ja_JP"><Text>隣国がこの都市を上回っています。産出を高めて住民を引き留めましょう。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="ja_JP"><Text>難民は戦闘から逃れています。包囲を解くか和平を結び、流出を食い止めましょう。</Text></Replace>
@@ -241,8 +246,8 @@
         <Replace Tag="LOC_OPTIONS_EMIG_DOCK_DESCRIPTION" Language="ja_JP"><Text>ゲーム内のドックに移住ボタンを表示します。オフにすると、人口統計画面の移住タブからダッシュボードを開けます。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="ja_JP"><Text>文明間の移住はまだありません。人々が国境を越えると流れが現れます。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="ja_JP"><Text>色分け:</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_HELP" Language="ja_JP"><Text>グラフの見方</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_INFO" Language="ja_JP"><Text>情報：</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_HELP" Language="ja_JP"><Text>How to read this</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_INFO" Language="ja_JP"><Text>Info:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="ja_JP"><Text>出身地</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="ja_JP"><Text>種類</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_MOVEMENT" Language="ja_JP"><Text>移動</Text></Replace>

@@ -55,7 +55,24 @@ export const BY_LEADER = {
   // Type, so the tuning silently never applied). Keep both keys: JOSE_RIZAL is canonical, RIZAL a
   // defensive alias (both strings appear in base data).
   LEADER_JOSE_RIZAL: { happinessPull: 0.9 }, // longer golden ages → longer magnet windows
-  LEADER_RIZAL: { happinessPull: 0.9 }
+  LEADER_RIZAL: { happinessPull: 0.9 },
+
+  // --- Brush & Blade expansion leaders (types verified against Contents_1.4.1/resources/DLC) ---
+  // Conquerors profit from taking cities → pay MORE gold to digest the spoils (Xerxes class).
+  LEADER_ALEXANDER: { assimilationEase: 1.2 }, // wonder-conquest; renames towns he converts
+  LEADER_GENGHIS_KHAN: { assimilationEase: 1.2 }, // archetypal conqueror; sacks, not holds
+  LEADER_EDWARD_TEACH: { assimilationEase: 1.25 }, // naval war-profiteer: plunder + unit capture
+  // Bolivar INTEGRATES: free building + purchase-through-unrest in conquests → cheaper to absorb.
+  LEADER_BOLIVAR: { assimilationEase: 0.85 },
+  // Napoleon's base persona carries a FOOD_BANE; cushion the slower growth (Confucius-shaped).
+  LEADER_NAPOLEON: { sourceBias: 0.5 },
+  LEADER_HIMIKO: { happinessPull: 0.85 }, // happiness-building + celebration yields = magnet
+  // Toyotomi takes double damage defending → a conqueror whose cities fall FASTER under siege.
+  LEADER_TOYOTOMI_HIDEYOSHI: { assimilationEase: 1.2, warRetention: 0.85 }, // <1 = sheds pop fast
+  LEADER_SAYYIDA_AL_HURRA: { warRetention: 1.2 } // naval-on-district yields reward garrisons
+  // NEUTRAL (no migration outlier): ADA_LOVELACE (science), GILGAMESH (diplomacy), LAKSHMIBAI
+  // (city-state incorporation + influence, no defense mechanic), FRIEDRICH (culture/Great Works).
+  // TRUNG_TRAC ships no leader trait data in this DLC set, so it is left untuned (cf. RIZAL above).
 };
 
 /**
@@ -68,7 +85,33 @@ export const BY_CIV = {
   CIVILIZATION_NORMAN: { warRetention: 1.4 }, // free walls = deliberate population retention
   CIVILIZATION_ENGLAND: { warRetention: 1.4 },
   CIVILIZATION_HAN: { sourceBias: 0.5 }, // +pop growth, per-capita diluted
-  CIVILIZATION_QING: { sourceBias: 0.5 }
+  CIVILIZATION_QING: { sourceBias: 0.5 },
+
+  // --- Brush & Blade expansion civilizations (types verified against Contents_1.4.1/DLC) ---
+  // Conquest economies: yields/rewards from CAPTURING settlements → pay more gold for the spoils.
+  CIVILIZATION_ASSYRIA: { assimilationEase: 1.25 }, // tech/codex + yields in captured settlements
+  CIVILIZATION_BULGARIA: { assimilationEase: 1.2 }, // Krum's Dynasty pillage/production spoils
+  // war-funded Celebrations (magnet) + conquest + Kulliye specialists
+  CIVILIZATION_OTTOMANS: { happinessPull: 0.85, assimilationEase: 1.25, overcrowdDiscount: 0.5 },
+  // settlers only by capture (conquest) + inland −Happiness makes cities a net SOURCE
+  CIVILIZATION_PIRATE_REPUBLIC: { assimilationEase: 1.25, sourceBias: -0.5 },
+  // Tall / few-settlement shapes: shield dense play from the density penalty.
+  CIVILIZATION_CARTHAGE: { overcrowdDiscount: 0.5, integrationSpeed: 1.15 }, // 1-City cap + colonists
+  // tall + mountain fortification defense + mountain Food carrying a happiness upkeep
+  CIVILIZATION_NEPAL: { overcrowdDiscount: 0.6, warRetention: 1.3, sourceBias: 0.5 },
+  // capital-concentrated tall: Bāq Celebration magnet + Eram specialists + capital Food growth
+  CIVILIZATION_QAJAR: { happinessPull: 0.85, overcrowdDiscount: 0.6, sourceBias: 0.5 },
+  // Defensive civs: empowered fortifications → cities retain population under siege (Norman class).
+  CIVILIZATION_DAI_VIET: { warRetention: 1.4, sourceBias: 0.5 }, // wall Culture + forts + farm Food
+  CIVILIZATION_SENGOKU: { warRetention: 1.4 }, // Himeji "must be conquered" + Daimyo undamaged
+  // Happiness/celebration magnets: damp the over-attraction.
+  CIVILIZATION_HEIAN: { happinessPull: 0.85 }, // Insei happiness/celebration engine + appeal theme
+  CIVILIZATION_SILLA: { happinessPull: 0.9 }, // Pagoda +Happiness + resource-happiness traditions
+  // High unconditional growth: per-capita diluted, so cushion it so the civ doesn't bleed pop.
+  CIVILIZATION_SHAWNEE: { sourceBias: 0.75 } // navigable-river Food + Bread Dance town Food
+  // NEUTRAL (no migration outlier): ICELAND (offensive-naval raiding, no defense/growth/happiness),
+  // TONGA (wide coastal-trade; width already handled by the growth model), GREAT_BRITAIN (its only
+  // outlier is a town→city conversion-cost penalty; gold/prod already reach the model via yields).
 };
 
 /**
@@ -103,9 +146,36 @@ function civName(pid) {
 }
 
 /**
+ * Compress a resolved profile toward neutral by CONFIG.civTuningStrength - the global
+ * "flatten between civilizations" knob. 1 = the table as written (full identity); 0 = fully
+ * flat (every civ neutral). Each field is interpolated toward its own neutral, so relative
+ * ordering is preserved (the most defensive civ stays the most defensive) while the absolute
+ * spread - the gap that feeds a snowball - shrinks uniformly across base AND new entries.
+ * The overcrowd discount lerps toward CONFIG.overcrowdDiscount (the value a null entry uses),
+ * and a null entry stays null. An unset/invalid strength is treated as 1 (no compression).
+ * @param {CivTuning} t The merged profile.
+ * @returns {CivTuning} The compressed profile.
+ */
+function flatten(t) {
+  const raw = CONFIG.civTuningStrength;
+  const s = typeof raw === "number" ? Math.max(0, Math.min(1, raw)) : 1;
+  if (s >= 1) return t;
+  const oc = CONFIG.overcrowdDiscount; // the discount a null (neutral) entry falls back to
+  return {
+    happinessPull: 1 + (t.happinessPull - 1) * s,
+    integrationSpeed: 1 + (t.integrationSpeed - 1) * s,
+    assimilationEase: 1 + (t.assimilationEase - 1) * s,
+    overcrowdDiscount: t.overcrowdDiscount == null ? null : oc + (t.overcrowdDiscount - oc) * s,
+    warRetention: 1 + (t.warRetention - 1) * s,
+    sourceBias: t.sourceBias * s
+  };
+}
+
+/**
  * The tuning profile for a player: the neutral profile merged with its civ entry
- * then its leader entry (leader wins on conflict). Returns the shared neutral
- * profile (and touches no globals) when the table is disabled or nothing matches.
+ * then its leader entry (leader wins on conflict), then compressed toward neutral by
+ * CONFIG.civTuningStrength. Returns the shared neutral profile (and touches no globals)
+ * when the table is disabled or nothing matches.
  * @param {number} pid Player id.
  * @returns {CivTuning} The resolved tuning.
  */
@@ -116,5 +186,5 @@ export function civTuning(pid) {
   const civ = (civKey && BY_CIV[civKey]) || null;
   const lead = (leadKey && BY_LEADER[leadKey]) || null;
   if (!civ && !lead) return NEUTRAL;
-  return { ...NEUTRAL, ...civ, ...lead };
+  return flatten({ ...NEUTRAL, ...civ, ...lead });
 }
