@@ -162,18 +162,41 @@ ABS_CONTENT="$(cd "$TARGET_DIR" && pwd)"
 # section out of CHANGELOG.md and render its bullet lines as a Steam BBCode list.
 CHANGELOG_FILE="$SRC_DIR/CHANGELOG.md"
 CHANGENOTE="Initial release."
+# Escape regex metachars (notably '.') so "1.2.0" can't match "1X2X0" in the awk pattern.
+VERSION_RE="$(printf '%s' "$VERSION" | sed -E 's/[][(){}.^$*+?|\\]/\\&/g')"
 if [ -n "$PUBLISHED_FILE_ID" ] && [ -f "$CHANGELOG_FILE" ]; then
     CHANGENOTE="v${VERSION} release."
-    BULLETS="$(awk -v ver="$VERSION" '
-        $0 ~ ("^## \\[" ver "\\]") { grab = 1; next }
-        grab && /^## / { exit }
-        grab { print }
+    # Collect the "## [VERSION]" section's bullets, JOINING each bullet's wrapped
+    # continuation lines into one logical bullet (Keep a Changelog bullets span
+    # multiple lines; we must not drop the continuations). "### Fixed"-style
+    # subheaders and blank lines are skipped.
+    BULLETS="$(awk -v verre="$VERSION_RE" '
+        function flush() { if (cur != "") { print cur; cur = "" } }
+        $0 ~ ("^## \\[" verre "\\]") { grab = 1; next }
+        grab && /^## / { flush(); exit }
+        !grab { next }
+        /^###/ { next }
+        /^[[:space:]]*[-*][[:space:]]+/ {
+            flush()
+            line = $0
+            sub(/^[[:space:]]*[-*][[:space:]]+/, "", line)
+            cur = line
+            next
+        }
+        /^[[:space:]]*$/ { next }
+        cur != "" {
+            line = $0
+            sub(/^[[:space:]]+/, "", line)
+            cur = cur " " line
+        }
+        END { flush() }
     ' "$CHANGELOG_FILE" \
-        | sed -nE 's/^[[:space:]]*[-*][[:space:]]+(.*)$/[*]\1/p' \
-        | sed -E 's/\*\*//g; s/`//g' \
+        | sed -E 's/^/[*]/; s/\*\*//g; s/`//g' \
         | tr '\n' ' ')"
     if [ -n "$BULLETS" ]; then
-        CHANGENOTE="$(printf '[list]%s[/list]' "$BULLETS" \
+        # Lead with a bold version header so the Workshop change note names the
+        # release, then the BBCode list. Escape backslashes/quotes for the VDF string.
+        CHANGENOTE="$(printf '[b]v%s[/b] [list]%s[/list]' "$VERSION" "$BULLETS" \
             | sed -E 's/\\/\\\\/g; s/"/\\"/g')"
     fi
 fi
