@@ -7,6 +7,8 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-06-25
+
 ### Changed
 - **World-news notifications now name WHO was affected, with spoiler protection.**
   Refugee-crisis headlines for wars, disasters, and conquests led with the event
