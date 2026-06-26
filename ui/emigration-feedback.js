@@ -28,7 +28,7 @@ import {
 } from "/emigration/ui/emigration-naming.js";
 import { warAggressors } from "/emigration/ui/emigration-war.js";
 import { formatBoth } from "/emigration/ui/emigration-population.js";
-import { causeLabel, causeAccent } from "/emigration/ui/emigration-causes.js";
+import { causeLabel, notificationAccent } from "/emigration/ui/emigration-causes.js";
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
@@ -184,14 +184,15 @@ function buildToastEl(msg, cause, accent) {
  * stays up TOAST_MS before fading. No-op when notifications are off.
  * @param {string} msg The message body.
  * @param {string} [cause] The migration cause (or "crisis"), for the eyebrow + accent theme.
+ * @param {boolean} [ownLoss] Whether this is the local player's own loss (reserves the red accent).
  */
-export function toast(msg, cause) {
+export function toast(msg, cause, ownLoss) {
   if (CONFIG.notifyMode < 1 || !CONFIG.notifyToasts) return;
   try {
     const root = document.body || document.documentElement;
     if (!root) return;
     injectToastStyle();
-    const accent = causeAccent(cause);
+    const accent = notificationAccent(cause, ownLoss);
     const el = buildToastEl(msg, cause, accent);
     root.appendChild(el);
     _toasts.push(el);
@@ -235,11 +236,12 @@ function cooldownOk() {
  * actually warrant a notification (bad disasters, refugee-crisis milestones).
  * @param {string} msg The message.
  * @param {string} [cause] The migration cause (or "crisis"), for the toast's theme.
+ * @param {boolean} [ownLoss] Whether this is the local player's own loss (reserves the red accent).
  */
-export function announceImportant(msg, cause) {
+export function announceImportant(msg, cause, ownLoss) {
   if (CONFIG.notifyMode < 1) return;
   if (!cooldownOk()) return;
-  toast(msg, cause);
+  toast(msg, cause, ownLoss);
 }
 
 /** Causes that name a specific in-world event (war/disaster/conquest), vs economic migration. */
@@ -346,12 +348,16 @@ function crisisMilestone(pid, cum, pass) {
   const event = eventNameFor(cause, pid);
   const people = pass ? pass.people : cum;
   const points = pass ? pass.points : 0;
-  const ev = { cause, civ: civAdjective(pid), people: formatBoth(people, points),
+  // WHO the crisis hit, spoiler-guarded: an unmet civ is never named in world news
+  // (mirrors the dashboard's "Unmet" mask) — it's reported as "an unmet civilization".
+  const who = civHidden(pid) ? UNMET_CIV_LABEL : civAdjective(pid);
+  const ev = { cause, civ: who, people: formatBoth(people, points),
     warName: event || undefined, eventName: event || undefined };
-  const head = refugeeHeadline(ev);
+  const head = refugeeHeadline(ev); // leads with WHO (spoiler-guarded) for event-named causes
+  const ownLoss = pid === localPlayerId(); // red only when it's the player's OWN civ in crisis
   logNotification({ kind: "crisis", cause, event: event || undefined, summary: head, people, points,
-    fromCiv: civAdjective(pid) });
-  announceImportant(head, cause);
+    fromCiv: who, ownLoss });
+  announceImportant(head, cause, ownLoss);
 }
 
 /**
@@ -515,7 +521,8 @@ function logEvent(ev, msg) {
   logNotification({
     kind: "digest", cause: ev.cause, event: eventNameFor(ev.cause, ev.srcOwner) || undefined,
     summary: msg, people: ev.people, points: ev.points,
-    fromCity: ev.srcName, fromCiv, toCity: dv.toCity, toCiv: dv.toCiv, crossCiv: ev.crossCiv
+    fromCity: ev.srcName, fromCiv, toCity: dv.toCity, toCiv: dv.toCiv, crossCiv: ev.crossCiv,
+    ownLoss: true // the local player's own settlement shedding population
   });
 }
 
@@ -534,5 +541,5 @@ function localDigest(migs) {
   if (!events.length) return;
   for (const ev of events) logEvent(ev, eventMessage(ev));
   const lead = events[0];
-  announceImportant(eventMessage(lead), lead.cause);
+  announceImportant(eventMessage(lead), lead.cause, true); // the local player's own loss → red
 }

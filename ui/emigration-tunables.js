@@ -36,6 +36,7 @@ export const TUNABLES = [
   { key: "includeCityStates", group: "scope", type: "bool", label: "LOC_EMIG_T_CITYSTATES", desc: "LOC_EMIG_T_CITYSTATES_D" },
   { key: "requireMet", group: "scope", type: "bool", label: "LOC_EMIG_T_REQUIREMET", desc: "LOC_EMIG_T_REQUIREMET_D" },
   { key: "civTuningEnabled", group: "scope", type: "bool", label: "LOC_EMIG_T_CIVTUNE", desc: "LOC_EMIG_T_CIVTUNE_D" },
+  { key: "civTuningStrength", group: "scope", type: "choice", values: [0, 0.4, 0.7, 1], label: "LOC_EMIG_T_CTSTRENGTH", desc: "LOC_EMIG_T_CTSTRENGTH_D" },
   { key: "bordersEnabled", group: "scope", type: "bool", label: "LOC_EMIG_T_BORDERS", desc: "LOC_EMIG_T_BORDERS_D" },
   { key: "closedBordersOpenness", group: "scope", type: "choice", values: [0.2, 0.4, 0.6, 0.8], label: "LOC_EMIG_T_CLOSEDOPEN", desc: "LOC_EMIG_T_CLOSEDOPEN_D" },
   { key: "closedBordersRetention", group: "scope", type: "choice", values: [0.4, 0.6, 0.8, 1], label: "LOC_EMIG_T_CLOSEDRETAIN", desc: "LOC_EMIG_T_CLOSEDRETAIN_D" },
@@ -97,6 +98,7 @@ export const TUNABLES = [
   // notifications (anti-spam controls)
   { key: "notifyMode", group: "notify", type: "choice", values: [0, 1, 2], label: "LOC_EMIG_T_NOTIFYMODE", desc: "LOC_EMIG_T_NOTIFYMODE_D" },
   { key: "disasterNotifyMinSeverity", group: "notify", type: "choice", values: [0, 1, 2, 3], label: "LOC_EMIG_T_NOTIFYDISASTER", desc: "LOC_EMIG_T_NOTIFYDISASTER_D" },
+  { key: "disasterNotifyMode", group: "notify", type: "choice", values: [0, 1, 2], label: "LOC_EMIG_T_DNOTIFYMODE", desc: "LOC_EMIG_T_DNOTIFYMODE_D" },
   { key: "notifyCooldownTurns", group: "notify", type: "choice", values: [0, 3, 6, 10, 20], label: "LOC_EMIG_T_NOTIFYCD", desc: "LOC_EMIG_T_NOTIFYCD_D" },
   { key: "worldRefugeeThreshold", group: "notify", type: "choice", values: [20000, 40000, 80000, 150000], label: "LOC_EMIG_T_NOTIFYWORLD", desc: "LOC_EMIG_T_NOTIFYWORLD_D" },
   { key: "cityReadoutEnabled", group: "notify", type: "bool", label: "LOC_EMIG_T_CITYREADOUT", desc: "LOC_EMIG_T_CITYREADOUT_D" },

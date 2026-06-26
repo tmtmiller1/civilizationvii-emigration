@@ -134,6 +134,7 @@ function testCongestionPenaltyScalesWithLoadAndOffByDefault() {
 function testCivTuningEaseScalesGoldCost() {
   reset();
   CONFIG.civTuningEnabled = true;
+  CONFIG.civTuningStrength = 1; // assert the raw table value, not the flattened default
   CONFIG.assimilationLoadPerMigrant = 1;
   CONFIG.assimilationCostPerPop = 0;
   CONFIG.assimilationDecay = 0.5;
