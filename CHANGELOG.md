@@ -7,6 +7,25 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+### Changed
+- **World-news notifications now name WHO was affected, with spoiler protection.**
+  Refugee-crisis headlines for wars, disasters, and conquests led with the event
+  but not the civ; they now lead with the affected civilization. Unmet civs are
+  never revealed — they're reported as "an unmet civilization" (the same mask the
+  dashboard uses), and the notification log is masked the same way.
+- **Disaster popups now default to migration-affecting events.** The on-screen
+  disaster toast was driven by severity alone, which felt invasive at high
+  disaster frequencies. By default it now pops only for disasters that strike a
+  settlement (so they actually drive migration) and meet the minimum severity.
+  The notifications log still records every severe disaster regardless, so the
+  quieter popups never lose the record.
+
+### Added
+- **"Disaster popups" knob** (Notifications group): 0 = off (log only), 1 =
+  migration-affecting only (default), 2 = any disaster at/above the minimum
+  severity (the previous behavior). Pairs with the existing "min disaster
+  severity" knob for full control.
+
 ## [1.1.0] - 2026-06-25
 
 ### Fixed

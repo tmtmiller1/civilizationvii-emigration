@@ -44,6 +44,8 @@
         <Replace Tag="LOC_EMIG_T_REQUIREMET_D" Language="fr_FR"><Text>Ne considérer que les villes étrangères que votre civilisation a rencontrées.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CIVTUNE" Language="fr_FR"><Text>Portée: réglage par dirigeant/civ</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CIVTUNE_D" Language="fr_FR"><Text>Appliquer de petits ajustements faits main par dirigeant et par civilisation (atténuation d'aimant, vitesse d'intégration, rétention en guerre, biais de source) pour que les cas atypiques se comportent différemment. Désactivé = chaque civ utilise le même modèle global.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CTSTRENGTH" Language="fr_FR"><Text>Scope: civ-tuning strength</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CTSTRENGTH_D" Language="fr_FR"><Text>How far the per-leader/civ adjustments are allowed to diverge from the global model. 1.0 = full distinct identities; lower values flatten the differences between civilizations toward the same model to curb snowballing; 0 = fully flat (same as turning the table off).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BORDERS" Language="fr_FR"><Text>Portée: politiques de frontières</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BORDERS_D" Language="fr_FR"><Text>Activer l'effet des politiques Frontières Ouvertes/Fermées sur l'immigration (les cartes de politique apparaissent dans le menu des politiques et coûtent ou octroient de l'Influence). Désactivé = les politiques n'ont aucun effet sur la migration.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CLOSEDOPEN" Language="fr_FR"><Text>Frontières: ouverture des Frontières Fermées</Text></Replace>
@@ -102,8 +104,8 @@
         <Replace Tag="LOC_EMIG_T_FLEE_D" Language="fr_FR"><Text>Avec quelle force les réfugiés préfèrent les destinations éloignées de l'envahisseur le plus proche.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH" Language="fr_FR"><Text>Géographie: friction entre civilisations</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH_D" Language="fr_FR"><Text>Réticence supplémentaire à migrer au-delà d'une frontière de civilisation.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="fr_FR"><Text>Fuite de crise (à l'étranger)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="fr_FR"><Text>À quel point une civilisation en crise aiguë (guerre/catastrophe) pousse ses réfugiés à fuir AU-DELÀ DES FRONTIÈRES vers un autre empire, plutôt que de se réinstaller dans ses propres villes (tout aussi touchées) et d'y mourir. Plus élevé = plus de fuite inter-civilisations. 0 = désactivé.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="fr_FR"><Text>Crisis escape (flee abroad)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="fr_FR"><Text>How strongly a civilization in acute crisis (war/disaster) pushes its refugees to flee ACROSS BORDERS to another empire, rather than relocating to its own (equally-stricken) cities and dying there. Higher = more cross-civ escape. 0 = off.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL" Language="fr_FR"><Text>Géographie: Bonus de migration des frontières ouvertes</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="fr_FR"><Text>À quel point un accord de frontières ouvertes entre deux civilisations facilite la migration entre elles, dans les deux sens. 0 = désactivé.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="fr_FR"><Text>Géographie: délai de trajet (0 = instantané)</Text></Replace>
@@ -125,10 +127,10 @@
         <Replace Tag="LOC_EMIG_T_CONGEST" Language="fr_FR"><Text>Coût: vent contraire de congestion (0 = désactivé)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="fr_FR"><Text>Rendre une civilisation qui absorbe beaucoup de migrants moins attrayante pour davantage de migration (elle est occupée à intégrer les nouveaux venus), proportionnellement à ce qu'elle digère. Un frein structurel aux aimants emballés. 0 = désactivé.</Text></Replace>
         <Replace Tag="LOC_EMIG_EVENT_FAMINE" Language="fr_FR"><Text>Famine</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="fr_FR"><Text>Coût: frein anti-boule de neige (0 = désactivé)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="fr_FR"><Text>Rend une civilisation dont la population a largement dépassé les autres moins attrayante pour la migration inter-civilisations — un frein auto-correcteur sur un meneur incontrôlable, proportionnel à son avance. N'entrave jamais le départ ni les mouvements internes du meneur. 0 = désactivé.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="fr_FR"><Text>Coût: seuil anti-boule de neige (× part équitable)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="fr_FR"><Text>Jusqu'où la population d'une civilisation peut dépasser la civilisation moyenne avant que le frein anti-boule de neige n'agisse, en multiple de la part équitable. Plus bas = le frein s'engage plus tôt (plus égalitaire); plus haut = seul un meneur extrême est ralenti.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="fr_FR"><Text>Cost: anti-snowball brake (0 = off)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="fr_FR"><Text>Make a civilization whose population has pulled far ahead of the field a less attractive destination for cross-civ migration: a self-correcting brake on a runaway leader that grows with how far ahead it is (0 off / 8 gentle / 15 standard / 28 strong). It never impedes a leader's OUTflow or internal moves. 0 = off.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="fr_FR"><Text>Cost: anti-snowball trigger (fair-share ×)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="fr_FR"><Text>How far a civilization's population may run ahead of the world-average civ before the anti-snowball headwind starts to bite, as a multiple of fair share. Lower = the brake engages sooner (more egalitarian); higher = only an extreme runaway leader is slowed.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="fr_FR"><Text>Catastrophes: alimenter la migration</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="fr_FR"><Text>Laisser les catastrophes environnementales (inondations, volcans, épidémies…) chasser la population des villes frappées en réfugiés climatiques/de catastrophe, en plus de la guerre et du mécontentement. Désactivé = les catastrophes n'affectent pas la migration.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="fr_FR"><Text>Catastrophes: émigration par point de détresse (%)</Text></Replace>
@@ -141,6 +143,8 @@
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE_D" Language="fr_FR"><Text>À quel point les notifications de migration sont bavardes : 0 = désactivé, 1 = importantes seulement (crises de réfugiés et catastrophes graves, par défaut), 2 = détaillé (un résumé à chaque tour avec migration notable).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER" Language="fr_FR"><Text>Notifications: gravité min. de catastrophe</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER_D" Language="fr_FR"><Text>Ne notifier que les catastrophes de cette gravité ou plus (0 = même les événements mineurs, 3 = seulement les légendaires comme une grande éruption). Les catastrophes mineures affectent toujours la migration en silence.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DNOTIFYMODE" Language="fr_FR"><Text>Notifications: disaster popups</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DNOTIFYMODE_D" Language="fr_FR"><Text>Which disasters pop up on screen (the notifications log always keeps every severe one regardless): 0 = off, log only; 1 = only disasters that strike a settlement, so they actually drive migration (the default); 2 = any disaster at or above the minimum severity. Combine with "min disaster severity" to tune how bad is bad enough.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD" Language="fr_FR"><Text>Notifications: intervalle minimal (tours)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD_D" Language="fr_FR"><Text>Le plus petit nombre de tours entre notifications importantes, pour qu'elles ne s'accumulent pas. 0 = sans limite.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD" Language="fr_FR"><Text>Notifications: seuil de crise de réfugiés</Text></Replace>
@@ -168,15 +172,16 @@
         <Replace Tag="LOC_EMIG_NEWS_CONQUEST" Language="fr_FR"><Text>Le sac de {1_City} disperse {2_People}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="fr_FR"><Text>{2_People} quittent {1_City}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="fr_FR"><Text>Crise de réfugiés : {1_Civ}, {2_People} déplacées.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_WHO" Language="fr_FR"><Text>{1_Civ}: {2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="fr_FR"><Text>{1_People} ont quitté {2_City}, mécontents chez eux.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="fr_FR"><Text>{1_People} ont quitté {2_City} pour des voisins plus prospères.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="fr_FR"><Text>{1_People} ont fui les combats autour de {2_City}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="fr_FR"><Text>{1_People} were taken from {2_City} when it changed hands.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="fr_FR"><Text>Units:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="fr_FR"><Text>Switch between the Civ's own population numbers and scaled people</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="fr_FR"><Text>Playback timeline appears once enough migration has been recorded to scrub through.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="fr_FR"><Text>Playback timeline appears after a couple of turns, once there's population history to scrub through.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="fr_FR"><Text>{1_People} ont fui {2_City} après une catastrophe.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="fr_FR"><Text>{2_City} a subi {1_People} pertes.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="fr_FR"><Text>{1_People} ont été perdus à {2_City}, sans refuge.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="fr_FR"><Text>Augmentez le bonheur de la ville ou adoptez une posture anti-immigration pour les retenir.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="fr_FR"><Text>Un voisin surpasse cette ville ; augmentez ses rendements pour retenir la population.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="fr_FR"><Text>Les réfugiés fuient les combats ; levez le siège ou faites la paix pour endiguer l'exode.</Text></Replace>
@@ -241,8 +246,8 @@
         <Replace Tag="LOC_OPTIONS_EMIG_DOCK_DESCRIPTION" Language="fr_FR"><Text>Afficher le bouton Migration sur la barre en jeu. Désactivez-le pour ouvrir le tableau de bord depuis l’onglet Migration de l’écran Démographie.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="fr_FR"><Text>Pas encore de migration entre civilisations, les flux apparaissent dès que des personnes franchissent les frontières.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="fr_FR"><Text>Colorer par :</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_HELP" Language="fr_FR"><Text>Comment lire</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_INFO" Language="fr_FR"><Text>Infos :</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_HELP" Language="fr_FR"><Text>How to read this</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_INFO" Language="fr_FR"><Text>Info:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="fr_FR"><Text>Origine</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="fr_FR"><Text>Type</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_MOVEMENT" Language="fr_FR"><Text>Mouvement</Text></Replace>

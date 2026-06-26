@@ -110,7 +110,12 @@ const NETC_CSS =
     "font-style:italic;color:#e5d2ac;text-align:center;max-width:34rem;}" +
     // The canvas fills its stage, which is a full-width 2:1 box (padding-bottom gives it a real
     // height so the canvas's height:100% resolves , GameFace won't derive height from the buffer).
-    ".emig-netc-stage{position:relative;width:100%;max-width:120rem;margin:0 auto;}" +
+    // The stage is a 2:1 box (padding-bottom derives its height from its rendered WIDTH, preserving the
+    // canvas's 2:1 logical aspect so the dots never distort). Width is capped by viewport HEIGHT so the
+    // height (half the width) stays ~42vh: the diagram plus its controls/legend/timeline then fit the
+    // dashboard panel without a scrollbar. A single-unit cap (NOT a mixed-unit min(), which GameFace
+    // drops, leaving the stage full-width and overflowing). Shared by the dot (network) + flow views.
+    ".emig-netc-stage{position:relative;width:100%;max-width:100vh;margin:0 auto;}" +
     ".emig-netc-stage::before{content:'';display:block;padding-bottom:50%;}" +
     ".emig-netc{position:absolute;top:0;left:0;width:100%;height:100%;display:block;}" +
     ".emig-netc-chips{position:relative;display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;margin:0.1rem 0 0.4rem;}" +
