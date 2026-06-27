@@ -7,6 +7,17 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [1.5.1] - 2026-06-27
+
+A small refinement to the refugee-decision dilemma.
+
+### Changed
+- **Welcoming refugees now carries a short-term happiness cost** in addition to the
+  gold, reflecting the strain of absorbing a wave of newcomers (settling them on the
+  frontier stays cheaper, turning them away still costs international standing). The
+  choice cues now spell out each cost, and the cost reads are hardened against a
+  missing/invalid tuning value.
+
 ## [1.5.0] - 2026-06-27
 
 A disaster-rebalance and game-speed-fairness release. Disasters now hurt in
