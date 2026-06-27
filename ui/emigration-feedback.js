@@ -19,6 +19,7 @@
 // no-op rather than throwing.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { speedTurns, speedBar } from "/emigration/ui/emigration-game-speed.js";
 import {
   refugeeHeadline,
   civAdjective,
@@ -291,7 +292,9 @@ function gameTurn() {
 function cooldownOk() {
   const s = newsState();
   const turn = gameTurn();
-  if (typeof s.lastToastTurn === "number" && turn - s.lastToastTurn < CONFIG.notifyCooldownTurns) {
+  // speedTurns (×S): keep the REAL-TIME spacing of important toasts constant across speeds, else they
+  // sat ~3× further apart on Marathon (event over before you're told) and spammed on Online.
+  if (typeof s.lastToastTurn === "number" && turn - s.lastToastTurn < speedTurns(CONFIG.notifyCooldownTurns)) {
     return false;
   }
   s.lastToastTurn = turn;
@@ -407,8 +410,12 @@ function refugeePassTotals(migrations) {
  * @returns {boolean} True when a new tier was crossed (and recorded).
  */
 function newCrisisTier(pid, cum) {
-  if (!(cum >= CONFIG.worldRefugeeThreshold)) return false;
-  const tier = Math.floor(cum / CONFIG.worldRefugeeThreshold);
+  // speedBar (×S): the cumulative-refugee milestone is an absolute people count, so on slow speeds it
+  // would be reached at a different fraction of the game; scaling the bar by S keeps it on-beat with
+  // game-progress (more turns ⇒ proportionally more refugees needed for the same headline).
+  const bar = speedBar(CONFIG.worldRefugeeThreshold);
+  if (!(cum >= bar)) return false;
+  const tier = Math.floor(cum / bar);
   const s = newsState();
   const key = "civ" + pid;
   if ((s.announced[key] || 0) >= tier) return false;

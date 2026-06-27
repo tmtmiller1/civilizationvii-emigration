@@ -17,6 +17,7 @@
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { civTuning } from "/emigration/ui/emigration-civ-tuning.js";
+import { speedDecay } from "/emigration/ui/emigration-game-speed.js";
 
 const STATE_KEY = "EmigrationAssim_v1";
 
@@ -130,8 +131,10 @@ export function tickAssimilation(pid) {
   const elapsed = Math.max(0, turn - (s.tickedTurn[pid] ?? turn));
   if (elapsed <= 0) return { load: cur, happiness: 0, gold: 0 };
   s.tickedTurn[pid] = turn;
-  // integrationSpeed (civ tuning): >1 clears the load faster, <1 slower.
-  const load = cur * Math.pow(CONFIG.assimilationDecay, civTuning(pid).integrationSpeed * elapsed);
+  // integrationSpeed (civ tuning): >1 clears the load faster, <1 slower. speedDecay re-bases the
+  // per-turn fade so the integration cost clears over the same GAME-TIME at any speed (else it cleared
+  // ~3× too fast on Marathon and lingered on Online).
+  const load = cur * Math.pow(speedDecay(CONFIG.assimilationDecay), civTuning(pid).integrationSpeed * elapsed);
   if (load < 0.05) {
     delete s.load[pid];
     persist();
