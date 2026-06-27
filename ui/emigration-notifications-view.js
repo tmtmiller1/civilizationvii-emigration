@@ -1,14 +1,14 @@
 // emigration-notifications-view.js
 //
 // Renders the persistent notification LOG (emigration-notifications.js) into the Demographics
-// "Notifications" sub-tab: a scrollable, newest-first list of every migration notification that has
-// fired, each row cause-themed (the same accent as its toast). Clicking a row expands it to the full
-// event detail, what caused it, which settlement it left, where the people went, and how many, so
-// the on-screen toasts can stay brief while the complete record lives here. Pure DOM + a self-injected
-// stylesheet, so it renders correctly in the Demographics page or the standalone window.
+// "Notifications" sub-tab: a scrollable, newest-first list of every migration event that has been
+// recorded, including narrative Chronicle entries. Clicking a row expands it to the full event detail,
+// what caused it, which settlement it left, where the people went, and how many, so the on-screen
+// toasts can stay brief while the complete record lives here. Pure DOM + a self-injected stylesheet,
+// so it renders correctly in the Demographics page or the standalone window.
 
 import { notificationLog } from "/emigration/ui/emigration-notifications.js";
-import { causeLabel, notificationAccent } from "/emigration/ui/emigration-causes.js";
+import { causeLabel, causeAccent, notificationAccent } from "/emigration/ui/emigration-causes.js";
 import { formatBothExact } from "/emigration/ui/emigration-population.js";
 
 /**
@@ -85,13 +85,25 @@ function place(city, civ) {
 }
 
 /**
- * Build the expandable detail panel for one notification: cause, origin, destination, and the count
- * in both measuring systems.
+ * The detail lines for a chronicled (story) entry: its title, prose body, and the underlying
+ * migration cause when the moment had one (narrative-only entries carry the generic "chronicle"
+ * cause, which the chip already names, so it's omitted).
+ * @param {HTMLElement} panel The detail panel to append into.
  * @param {*} e A NotifEntry.
- * @returns {HTMLElement} The detail panel.
  */
-function detailEl(e) {
-  const panel = el("div", "emig-ntf-detail");
+function chronicleDetail(panel, e) {
+  addLine(panel, "Title", e.title || e.summary);
+  addLine(panel, "Story", e.body);
+  if (e.cause && e.cause !== "chronicle") addLine(panel, "Cause", causeLabel(e.cause));
+}
+
+/**
+ * The detail lines for a per-event migration notification: cause, named event, origin, destination,
+ * and the count in both measuring systems (framed as casualties for a death entry).
+ * @param {HTMLElement} panel The detail panel to append into.
+ * @param {*} e A NotifEntry.
+ */
+function migrationDetail(panel, e) {
   addLine(panel, "Cause", causeLabel(e.cause));
   addLine(panel, "Event", e.event); // the specific named war / disaster, when applicable
   addLine(panel, "From", place(e.fromCity, e.fromCiv));
@@ -103,6 +115,18 @@ function detailEl(e) {
     addLine(panel, e.crossCiv ? "Moved to" : "To", place(e.toCity, e.toCiv));
     if (e.people || e.points) addLine(panel, "People", formatBothExact(e.people, e.points));
   }
+}
+
+/**
+ * Build the expandable detail panel for one notification: cause, origin, destination, and the count
+ * in both measuring systems.
+ * @param {*} e A NotifEntry.
+ * @returns {HTMLElement} The detail panel.
+ */
+function detailEl(e) {
+  const panel = el("div", "emig-ntf-detail");
+  if (e.kind === "chronicle") chronicleDetail(panel, e);
+  else migrationDetail(panel, e);
   if (e.summary) addLine(panel, "Note", e.summary);
   return panel;
 }
@@ -124,7 +148,9 @@ function isDeath(e) {
  * @returns {string} The display summary.
  */
 function rowSummary(e) {
-  const base = e.summary || causeLabel(e.cause) + " event";
+  const base = e.kind === "chronicle"
+    ? (e.title || e.summary || "A migration event")
+    : (e.summary || causeLabel(e.cause) + " event");
   return e.event && !base.includes(e.event) ? e.event + ": " + base : base;
 }
 
@@ -138,7 +164,8 @@ function rowSummary(e) {
 function headEl(e, accent, caret) {
   const head = el("div", "emig-ntf-head");
   head.appendChild(el("span", "emig-ntf-turn", "Turn " + e.turn));
-  const chip = el("span", "emig-ntf-chip", isDeath(e) ? "Casualties" : causeLabel(e.cause));
+  const chip = el("span", "emig-ntf-chip",
+    e.kind === "chronicle" ? "Chronicle" : (isDeath(e) ? "Casualties" : causeLabel(e.cause)));
   chip.style.color = accent;
   head.appendChild(chip);
   head.appendChild(el("span", "emig-ntf-sum", rowSummary(e)));
@@ -152,7 +179,9 @@ function headEl(e, accent, caret) {
  * @returns {HTMLElement} The row.
  */
 function rowEl(e) {
-  const accent = notificationAccent(e.cause, e.ownLoss);
+  const accent = e.kind === "chronicle"
+    ? causeAccent("chronicle")
+    : notificationAccent(e.cause, e.ownLoss);
   const row = el("div", "emig-ntf-row");
   row.style.borderLeftColor = accent;
   const caret = el("span", "emig-ntf-caret", "▾");
@@ -179,7 +208,7 @@ export function renderNotifications(body) {
   const entries = notificationLog();
   if (!entries.length) {
     body.appendChild(el("div", "emig-empty",
-      "No migration notifications yet; they appear here as people move, with the full detail of each."));
+      "No migration events yet; they appear here as people move, with the full detail of each."));
     return;
   }
   const list = el("div", "emig-ntf-list");

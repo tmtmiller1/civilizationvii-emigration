@@ -7,6 +7,20 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-06-27
+
+A small interface consolidation: the Migration Chronicle now lives in
+Notifications instead of its own tab.
+
+### Changed
+- **The Chronicle tab is gone; chronicle moments now appear in the Notifications
+  tab as their own type.** The world's great migrations (a city emptied by war, a
+  diaspora taking root, a people returning home) still read as short prose — now
+  as distinct, purple-accented "Chronicle" entries in the unified Notifications
+  list, where each row expands to its title and story (and the underlying cause,
+  when it had one). Removing the separate tab keeps everything that actually
+  happened in one place. The guide's FAQ now points to Notifications accordingly.
+
 ## [1.5.1] - 2026-06-27
 
 A small refinement to the refugee-decision dilemma.
