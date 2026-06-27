@@ -20,7 +20,6 @@ import { renderCityFlows, buildCivFlows } from "/emigration/ui/emigration-city-f
 import { renderStances } from "/emigration/ui/emigration-detail-views.js";
 import { renderLedger } from "/emigration/ui/emigration-ledger-view.js";
 import { renderNotifications } from "/emigration/ui/emigration-notifications-view.js";
-import { renderChronicle } from "/emigration/ui/emigration-chronicle-view.js";
 
 
 /**
@@ -272,7 +271,6 @@ export function dashboardModel(input) {
       { title: "Settlements", kind: "cityflows", cities: d.myCities || [] },
       { title: "Immigration policies", kind: "stances", rows: stanceRows(d.civs || []) },
       { title: "Migration notifications", kind: "notifications" },
-      { title: "Migration Chronicle", kind: "chronicle" },
       { title: "Guide", kind: "guide" }
     ]
   };
@@ -464,7 +462,7 @@ const SECTION_VIEWS = {
   flow: renderNetworkOrFlow,
   pies: renderCityFlows, cityflows: renderCityFlows,
   notifications: (/** @type {HTMLElement} */ body) => renderNotifications(body),
-  chronicle: (/** @type {HTMLElement} */ body) => renderChronicle(body), guide: renderGuide
+  guide: renderGuide
 };
 // Renderers that consume `section.rows` (flexbox tables).
 /** @type {Record<string, (body: HTMLElement, rows: *[]) => void>} */
@@ -498,7 +496,7 @@ function renderSectionBody(body, section, controlsHost) {
 const TAB_LABELS = {
   flow: "Network", ledger: "Net Migration (Table)", pies: "Causes",
   stances: "Policies",
-  cityflows: "My Cities", notifications: "Notifications", chronicle: "Chronicle", guide: "Guide"
+  cityflows: "My Cities", notifications: "Notifications", guide: "Guide"
 };
 
 /**
@@ -676,7 +674,7 @@ export function renderDashboardTabbed(target, model, rebuild) {
 
 // Sections the "Numbers:" units chip doesn't apply to: "flow" has its own inline Units toggle, and
 // stances / notifications / guide show no population counts to switch.
-const NO_UNITS_TOGGLE = new Set(["flow", "stances", "notifications", "chronicle", "guide"]);
+const NO_UNITS_TOGGLE = new Set(["flow", "stances", "notifications", "guide"]);
 
 /**
  * Whether to show the in-panel "Numbers:" units chip for a section: only the count-bearing tables/pies

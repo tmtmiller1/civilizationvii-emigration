@@ -4,6 +4,8 @@
 // distinct from the per-event Notifications log. Where Notifications records every wave as it happens,
 // the Chronicle keeps only the moments that read as history (a great exodus, a diaspora taking root,
 // a people returning home) and renders each as a line of prose (emigration-narrative.js).
+import { logNotification } from "/emigration/ui/emigration-notifications.js";
+
 //
 // Persisted in GameConfiguration (survives save/reload), capped, newest-first. Defensive throughout:
 // with no GameConfiguration (headless / pre-boot) reads return [] and writes no-op.
@@ -120,6 +122,23 @@ export function chronicled(key) {
 }
 
 /**
+ * Mirror a chronicled moment into the notifications log as a distinct "chronicle"-kind entry, so the
+ * Notifications tab is the single home for every migration event (the story prose included).
+ * @param {ChronicleEntry} e The normalized chronicle entry.
+ */
+function mirrorToNotifications(e) {
+  logNotification({
+    kind: "chronicle",
+    cause: e.cause || "chronicle",
+    summary: e.title || e.body,
+    title: e.title,
+    body: e.body,
+    people: typeof e.people === "number" ? e.people : 0,
+    points: 0
+  });
+}
+
+/**
  * Append a chronicle entry (newest-first), stamped with the current turn, and persist. Trims to
  * MAX_ENTRIES. No-op on a malformed entry, or when its dedupeKey was already chronicled.
  * @param {Partial<ChronicleEntry>} entry The entry (kind/title/body + optional civ/people/cause/key).
@@ -133,6 +152,7 @@ export function chronicle(entry) {
   list.unshift(e);
   if (e.dedupeKey) keys().add(e.dedupeKey);
   trimToCap(list);
+  mirrorToNotifications(e);
   persist();
   return true;
 }
