@@ -137,6 +137,12 @@
         <Replace Tag="LOC_EMIG_T_DPP_D" Language="ko_KR"><Text>도시에 누적된 재난 고통이 주민의 이탈을 얼마나 강하게 밀어내는지. 재난이 이주를 유발할 때만 사용.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DDECAY" Language="ko_KR"><Text>재난: 턴당 고통 감쇠</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DDECAY_D" Language="ko_KR"><Text>재난이 지나간 뒤 그 고통이 얼마나 빨리 옅어지는지(낮을수록 빠름). 재난이 이주를 유발할 때만 사용.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIMPACT" Language="ko_KR"><Text>재난: 실제 피해에 따라 손해 조정</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIMPACT_D" Language="ko_KR"><Text>재난으로 인한 인구 감소는 도시에 실제로 입힌 피해(약탈된 타일, 감소한 산출, 손상된 건축물)를 따르며, 종류별 상한 내에서 정해집니다. 아무것도 약탈하지 않는 폭풍은 거의 무해하고, 파국적 화산은 여전히 아픕니다. 끄면 예전의 종류별 일괄 피해로 되돌아갑니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DGAMMA" Language="ko_KR"><Text>재난: 소규모 피해 보정</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DGAMMA_D" Language="ko_KR"><Text>경미한 재난이 얼마나 아픈지(낮을수록 작은 피해를 더 키움, 1.0은 직선적). 피해가 실제 피해에 따라 조정될 때만 사용됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DSHOCK" Language="ko_KR"><Text>재난: 게임 속도 간 비용 균등화</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DSHOCK_D" Language="ko_KR"><Text>느린 속도에서는 재난의 고통이 더 여러 턴 지속됩니다. 이는 턴당 타격을 완화해 총비용이 마라톤에서도 표준과 비슷해지도록 합니다. 끄면 그 추가 턴마다 턴당 전체 타격을 그대로 부담합니다(예전의 더 가혹한 방식).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY" Language="ko_KR"><Text>재난: 이주민이 역병을 옮김</Text></Replace>
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY_D" Language="ko_KR"><Text>감염된 도시에서 도망친 난민이 목적지에 더 작은 발병 고통을 심도록 합니다, 게임의 교역망 확산을 넘어선 전염 매개체로서의 이주.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE" Language="ko_KR"><Text>알림: 상세도</Text></Replace>
@@ -172,6 +178,10 @@
         <Replace Tag="LOC_EMIG_NEWS_CONQUEST" Language="ko_KR"><Text>{1_City} 약탈로 {2_People}이(가) 흩어집니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="ko_KR"><Text>{2_People}이(가) {1_City}을(를) 떠납니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="ko_KR"><Text>난민 위기: {1_Civ}, {2_People} 쫓겨남.</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_POINT" Language="ko_KR"><Text>인구 {1_Count}포인트</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_POINTS" Language="ko_KR"><Text>인구 {1_Count}포인트</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_PEOPLE" Language="ko_KR"><Text>{1_Count}명</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_BOTH" Language="ko_KR"><Text>{1_Civ} ({2_People})</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="ko_KR"><Text>{1_Civ}: {2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="ko_KR"><Text>{1_Civ} 대 미지의 문명</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="ko_KR"><Text>{1_People}이(가) 불만을 품고 {2_City}을(를) 떠났습니다.</Text></Replace>

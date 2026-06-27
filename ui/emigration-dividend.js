@@ -8,6 +8,7 @@
 // persists separately in GameConfiguration.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { speedDecay } from "/emigration/ui/emigration-game-speed.js";
 
 const DIV_KEY = "EmigrationDividend_v1";
 const DIV_SCHEMA_VERSION = 2;
@@ -194,7 +195,9 @@ function tickOneDividend(s, pid, yk, elapsed) {
   const key = pid + ":" + yk;
   const cur = s.pool[key] || 0;
   if (cur <= 0) return 0;
-  const pool = cur * Math.pow(CONFIG.dividendDecay, elapsed);
+  // speedDecay re-bases the per-turn fade so the attraction dividend fades over the same GAME-TIME at
+  // any speed (mirrors the assimilation-load fix; else the reward decayed too fast on Marathon).
+  const pool = cur * Math.pow(speedDecay(CONFIG.dividendDecay), elapsed);
   if (pool < 0.05) {
     delete s.pool[key];
     return 0;

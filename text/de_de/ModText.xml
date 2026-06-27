@@ -137,6 +137,12 @@
         <Replace Tag="LOC_EMIG_T_DPP_D" Language="de_DE"><Text>Wie stark angesammelte Katastrophennot in einer Stadt ihre Menschen zum Gehen bewegt. Nur genutzt, wenn Katastrophen die Wanderung antreiben.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DDECAY" Language="de_DE"><Text>Katastrophen – Notabbau pro Runde</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DDECAY_D" Language="de_DE"><Text>Wie schnell die Not einer Katastrophe nach ihrem Abklingen verblasst (niedriger = schneller). Nur genutzt, wenn Katastrophen die Wanderung antreiben.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIMPACT" Language="de_DE"><Text>Katastrophen – Schaden nach gemessener Wirkung</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIMPACT_D" Language="de_DE"><Text>Der Bevölkerungsverlust einer Katastrophe richtet sich danach, was sie der Stadt tatsächlich angetan hat (geplünderte Felder, gekürzte Erträge, beschädigte Gebäude), begrenzt durch ihre Art. Ein Sturm, der nichts plündert, ist nahezu folgenlos; ein katastrophaler Vulkan schmerzt weiterhin. Aus stellt den alten pauschalen Schaden je Art wieder her.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DGAMMA" Language="de_DE"><Text>Katastrophen – Anhebung kleiner Wirkung</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DGAMMA_D" Language="de_DE"><Text>Wie stark eine geringe Katastrophe noch wehtut (niedriger hebt kleine Wirkungen stärker an; 1,0 ist linear). Nur genutzt, wenn der Schaden nach gemessener Wirkung skaliert.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DSHOCK" Language="de_DE"><Text>Katastrophen – Kosten über Spielgeschwindigkeiten ausgleichen</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DSHOCK_D" Language="de_DE"><Text>Auf langsamen Geschwindigkeiten hält die Not einer Katastrophe mehr Runden an; dies mildert den Biss pro Runde, sodass die Gesamtkosten auf Marathon etwa denen auf Standard entsprechen. Aus zahlt den vollen Rundenschaden in jeder dieser zusätzlichen Runden (das alte, härtere Verhalten).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY" Language="de_DE"><Text>Katastrophen – Migranten tragen Seuche</Text></Replace>
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY_D" Language="de_DE"><Text>Flüchtlinge aus einer infizierten Stadt eine kleinere Ausbruchsnot an ihrem Ziel säen lassen – Wanderung als Übertragungsweg, über die Handelsnetz-Ausbreitung des Spiels hinaus.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE" Language="de_DE"><Text>Benachrichtigungen – Ausführlichkeit</Text></Replace>
@@ -172,6 +178,10 @@
         <Replace Tag="LOC_EMIG_NEWS_CONQUEST" Language="de_DE"><Text>Die Plünderung von {1_City} versprengt {2_People}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="de_DE"><Text>{2_People} verlassen {1_City}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="de_DE"><Text>Flüchtlingskrise: {1_Civ} – {2_People} vertrieben.</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_POINT" Language="de_DE"><Text>{1_Count} Bevölkerungspunkt</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_POINTS" Language="de_DE"><Text>{1_Count} Bevölkerungspunkte</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_PEOPLE" Language="de_DE"><Text>{1_Count} Menschen</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_BOTH" Language="de_DE"><Text>{1_Civ} ({2_People})</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="de_DE"><Text>{1_Civ}: {2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="de_DE"><Text>{1_Civ} gegen eine unbekannte Zivilisation</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="de_DE"><Text>{1_People} verließen {2_City}, unzufrieden mit ihrer Heimat.</Text></Replace>

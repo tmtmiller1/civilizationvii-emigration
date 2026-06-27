@@ -121,10 +121,30 @@ export function aggressorAdjust(src, dest, aggressors) {
   return 0;
 }
 
+/** Smoothstep on [0,1]. @param {number} x Input. @returns {number} Smoothed value. */
+function smoothstep01(x) {
+  const c = x < 0 ? 0 : x > 1 ? 1 : x;
+  return c * c * (3 - 2 * c);
+}
+
+/**
+ * How hard a threatened city flees DIRECTIONALLY, ramped smoothly from the flee threshold up to ~2×
+ * it, instead of snapping to full strength the instant the threshold is crossed. Removes the "one bad
+ * turn suddenly empties my city" cliff: just over the bar the directional tilt eases in; a heavy
+ * assault still reaches full intensity. 0 at/below the threshold, 1 at ≥ 2× it.
+ * @param {number} value The accumulated violence. @param {number} threshold The flee threshold.
+ * @returns {number} Intensity in [0,1].
+ */
+function fleeIntensity(value, threshold) {
+  if (!(threshold > 0)) return value > 0 ? 1 : 0;
+  return smoothstep01((value - threshold) / threshold);
+}
+
 /**
  * The directional flight bonus for a move under `flee`: cosine of the angle between
  * the move and the flee direction × fleeFactor (+1 directly away from the invader,
- * −1 straight back toward them). 0 when positions are unreadable.
+ * −1 straight back toward them), ramped by {@link fleeIntensity} so it builds smoothly past the
+ * threshold rather than as a binary gate. 0 when positions are unreadable.
  * @param {*} src Source signal.
  * @param {*} dest Destination signal.
  * @param {{x:number, y:number}} flee The flee unit vector.
@@ -137,7 +157,9 @@ function fleeBonus(src, dest, flee) {
   const mx = there.x - here.x;
   const my = there.y - here.y;
   const mag = Math.hypot(mx, my);
-  return mag > 0 ? CONFIG.fleeFactor * ((mx * flee.x + my * flee.y) / mag) : 0;
+  if (!(mag > 0)) return 0;
+  const intensity = fleeIntensity(src.violence || 0, CONFIG.violenceFleeThreshold);
+  return CONFIG.fleeFactor * intensity * ((mx * flee.x + my * flee.y) / mag);
 }
 
 /**

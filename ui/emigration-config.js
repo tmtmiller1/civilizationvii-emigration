@@ -218,6 +218,7 @@ export const CONFIG = {
   dilemmaCooldownTurns: 18, // minimum turns between dilemmas
   dilemmaGoldWelcome: 30, // one-time gold to welcome the refugees in (light)
   dilemmaGoldFrontier: 15, // one-time gold to settle them on the frontier instead
+  dilemmaInfluenceAway: 20, // one-time influence cost for turning the refugees away
 
   // ── assimilation cost (duration-based consequence via grantYield) ──
   // Each migrant adds "assimilation load" to the DESTINATION civ; that load DECAYS
@@ -414,6 +415,13 @@ export const CONFIG = {
   disasterRefugeeBurstThreshold: 0.5, // distress fraction that triggers a one-time burst
   plagueCarryEnabled: true, // migrants from an infected city seed distress at the dest
   plagueCarryDistress: 0.3, // seeded distress per plague-carrier (kept ≪ the source)
+  // Impact-scaled disaster damage (the spike tracks what the disaster ACTUALLY did, not a flat
+  // per-type tax). Each flag fail-safes to the legacy CLASS_WEIGHT × severity numbers.
+  disasterImpactScalingEnabled: true, // spike = type-CEILING × shape(measured impact m); off ⇒ legacy
+  disasterImpactGamma: 0.6, // concavity of shape(m)=m^gamma; 1.0 = linear, <1 lifts small real impacts
+  disasterSpeedShockEnabled: true, // divide the spike by S so slow speeds pay the same TOTAL bite
+  disasterAccumCap: 18, // hard ceiling on a city's accumulated disaster distress (guarantees recovery)
+  disasterStackFalloff: true, // a new spike adds with diminishing returns the fuller the city already is
 
   // ── population scaling (DEPRECATED — no longer read) ──────────────────────────
   // Scaling moved to Civ VII's real per-era growth formula in emigration-population.js

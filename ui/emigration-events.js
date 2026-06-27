@@ -10,6 +10,7 @@
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { recordDisaster, disasterKey } from "/emigration/ui/emigration-disasters.js";
+import { pillagedCount } from "/emigration/ui/emigration-violence-signals.js";
 import { disasterName, actionHint, civAdjective } from "/emigration/ui/emigration-naming.js";
 import { announceImportant } from "/emigration/ui/emigration-feedback.js";
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
@@ -189,6 +190,44 @@ function eventSeverity(data, info) {
   return Math.max(1, tier + (eventImpactPct(info) >= 35 ? 1 : 0));
 }
 
+/** Clamp to [0,1]. @param {number} x Value. @returns {number} Clamped. */
+function clamp01(x) {
+  return x < 0 ? 0 : x > 1 ? 1 : x;
+}
+
+/**
+ * The directly-observable pillage fraction at the struck settlement: pillaged plots ÷ its footprint.
+ * 0 when no city, no pillage, or the build/scan doesn't expose it (graceful degradation — never
+ * invented; `impactPct` alone then drives the impact factor).
+ * @param {*} location The event location.
+ * @returns {number} Pillage fraction in [0,1].
+ */
+function pillageFraction(location) {
+  try {
+    const city = firstStruckCity(location);
+    if (!city) return 0;
+    const plots = city.getPurchasedPlots?.();
+    const footprint = Array.isArray(plots) ? plots.length : 0;
+    if (!(footprint > 0)) return 0;
+    return clamp01(pillagedCount(city) / footprint);
+  } catch (_) {
+    return 0;
+  }
+}
+
+/**
+ * The CONTINUOUS impact factor `m ∈ [0,1]` for a disaster — the larger of (a) the worst measured
+ * yield-cut / constructible-damage fraction the effect tables report and (b) the observable tile
+ * pillage. This is the magnitude the distress spike scales by (see `disasterSpike`), so a 0-impact
+ * thunderstorm lands at ~0 while a catastrophic volcano lands high.
+ * @param {*} info The GameInfo RandomEvents row.
+ * @param {*} location The event location.
+ * @returns {number} Impact factor in [0,1].
+ */
+function eventImpactFactor(info, location) {
+  return clamp01(Math.max(eventImpactPct(info) / 100, pillageFraction(location)));
+}
+
 /**
  * Handle a RandomEventOccurred payload: add a severity-scaled distress spike to the
  * struck city and toast the disaster by its own name. The resulting refugee outflow is
@@ -202,10 +241,12 @@ function onRandomEvent(data) {
   }
   try {
     const info = GameInfo?.RandomEvents?.lookup?.(data.eventType);
-    const sev = eventSeverity(data, info);
+    const sev = eventSeverity(data, info); // 1..4, kept for the notify gate + chart marker
+    const m = eventImpactFactor(info, data.location); // continuous 0..1, drives the distress spike
     const keys = affectedCityKeys(data.location);
     logEvent(data, info, sev, keys.length); // DIAGNOSTIC: grep `EMIG_event` in UI.log
-    recordDisaster(info?.EventClass, sev, keys, data.eventType); // type → per-city cause attribution
+    // m drives the impact-scaled spike; sev is passed only for the legacy fail-safe path.
+    recordDisaster(info?.EventClass, m, keys, data.eventType, sev); // type → per-city cause attribution
     // Record a refugees-chart MARKER whenever the disaster actually struck cities (so it drove
     // displacement), independent of the toast threshold, otherwise sub-`disasterNotifyMinSeverity`
     // disasters drive the sim but never annotate the chart, which is why none were appearing.

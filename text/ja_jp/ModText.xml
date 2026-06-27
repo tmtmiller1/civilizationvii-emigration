@@ -137,6 +137,12 @@
         <Replace Tag="LOC_EMIG_T_DPP_D" Language="ja_JP"><Text>都市に蓄積した災害の苦境が、住民の退去をどれだけ強く促すか。災害が移住を駆動するときのみ使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DDECAY" Language="ja_JP"><Text>災害: ターンあたりの苦境減衰</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DDECAY_D" Language="ja_JP"><Text>災害が過ぎ去った後、その苦境がどれだけ速く薄れるか（低いほど速い）。災害が移住を駆動するときのみ使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIMPACT" Language="ja_JP"><Text>災害: 実測の被害に応じて損害を調整</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIMPACT_D" Language="ja_JP"><Text>災害による人口減は、その都市に実際に与えた被害（略奪されたタイル、減少した産出、損傷した建造物）に基づき、種類ごとの上限内で決まります。何も略奪しない嵐はほぼ無害で、破滅的な火山は依然として痛手です。オフにすると、従来の種類ごとの一律被害に戻ります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DGAMMA" Language="ja_JP"><Text>災害: 小規模被害の底上げ</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DGAMMA_D" Language="ja_JP"><Text>軽微な災害がどれだけ痛むか（低いほど小さな被害を強めます。1.0で直線的）。被害が実測に応じて変化する場合のみ使用します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DSHOCK" Language="ja_JP"><Text>災害: ゲーム速度間で負担を均す</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DSHOCK_D" Language="ja_JP"><Text>低速ではマラソンほど災害の苦境が長く続きます。これは1ターンあたりの負担を和らげ、合計の負担をマラソンでも標準とほぼ同じにします。オフにすると、その追加ターンすべてで毎ターン満額の負担を払います（従来の、より厳しい挙動）。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY" Language="ja_JP"><Text>災害: 移民が疫病を運ぶ</Text></Replace>
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY_D" Language="ja_JP"><Text>感染都市から逃げる難民が、目的地で小さな発生の苦境を蒔くようにします、ゲームの交易ネットワーク拡散を超えた、伝染ベクトルとしての移住。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE" Language="ja_JP"><Text>通知: 詳細度</Text></Replace>
@@ -172,6 +178,10 @@
         <Replace Tag="LOC_EMIG_NEWS_CONQUEST" Language="ja_JP"><Text>{1_City}の略奪により{2_People}が四散。</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="ja_JP"><Text>{2_People}が{1_City}を去る。</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="ja_JP"><Text>難民危機：{1_Civ}、{2_People}が避難。</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_POINT" Language="ja_JP"><Text>人口{1_Count}ポイント</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_POINTS" Language="ja_JP"><Text>人口{1_Count}ポイント</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_PEOPLE" Language="ja_JP"><Text>{1_Count}人</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_BOTH" Language="ja_JP"><Text>{1_Civ}（{2_People}）</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="ja_JP"><Text>{1_Civ}: {2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="ja_JP"><Text>{1_Civ} 対 未知の文明</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="ja_JP"><Text>{1_People}が不満を抱き{2_City}を去りました。</Text></Replace>

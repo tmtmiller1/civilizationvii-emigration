@@ -12,7 +12,7 @@
 // here is move-planning (how many points a source sheds and how they travel) and the per-turn pass.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
-import { speedTurns, speedBar } from "/emigration/ui/emigration-game-speed.js";
+import { speedTurns, speedBar, speedDecay, speedShock } from "/emigration/ui/emigration-game-speed.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { rankByProsperity, distress } from "/emigration/ui/emigration-prosperity.js";
 import {
@@ -435,12 +435,15 @@ function processOutletDeath(src, st, state, hasRefuge) {
   const d = CONFIG.attritionEnabled ? distress(src) : 0;
   // Lethal distress is the situational crises (war/disaster/siege/famine); economic emigration has none.
   if (d < CONFIG.attritionMinDistress || (hasRefuge && !CONFIG.crisisDeathEnabled)) {
-    st.deathPressure = Math.max(0, st.deathPressure * 0.5); // coping / economic / can flee freely → decay
+    st.deathPressure = Math.max(0, st.deathPressure * speedDecay(0.5)); // coping → decay (same game-time)
     return null;
   }
   // DYNAMIC: the worse the crisis, the larger the share that dies rather than fleeing. Trapped → full.
   const rate = hasRefuge ? Math.min(1, CONFIG.crisisDeathShare * crisisSeverity(src, d)) : 1;
-  st.deathPressure += Math.pow(Math.max(d, 1), CONFIG.deltaExponent) * rate;
+  // speedShock (÷S): the kill threshold below is ×S (speedBar), and the fade is re-based (speedDecay),
+  // so the per-turn accumulation must also shrink ÷S or a slow-speed city banks ~S× the crisis distress
+  // before the kill fires. This makes the TOTAL crisis pressure to a death speed-invariant.
+  st.deathPressure += speedShock(Math.pow(Math.max(d, 1), CONFIG.deltaExponent) * rate);
   if (st.deathPressure < speedBar(CONFIG.attritionThreshold)) return null;
   const popBefore = src.population;
   if (!removeRural(src.city)) return null;

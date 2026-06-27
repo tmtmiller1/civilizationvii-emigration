@@ -161,6 +161,12 @@
         <Row Tag="LOC_EMIG_T_DPP_D"><Text>How strongly accumulated disaster distress in a city pushes its people to leave. Only used when disasters drive migration.</Text></Row>
         <Row Tag="LOC_EMIG_T_DDECAY"><Text>Disasters: distress decay per turn</Text></Row>
         <Row Tag="LOC_EMIG_T_DDECAY_D"><Text>How fast a disaster's distress fades once it passes (lower = fades faster). Only used when disasters drive migration.</Text></Row>
+        <Row Tag="LOC_EMIG_T_DIMPACT"><Text>Disasters: scale damage by measured impact</Text></Row>
+        <Row Tag="LOC_EMIG_T_DIMPACT_D"><Text>A disaster's population hit tracks what it actually did to the city (tiles pillaged, yields cut, buildings damaged), bounded by its type. A storm that pillages nothing is nearly free; a catastrophic volcano still hurts. Off restores the old flat per-type damage.</Text></Row>
+        <Row Tag="LOC_EMIG_T_DGAMMA"><Text>Disasters: small-impact lift</Text></Row>
+        <Row Tag="LOC_EMIG_T_DGAMMA_D"><Text>How much a minor disaster still stings (lower lifts small impacts more; 1.0 is straight-line). Only used when damage scales by measured impact.</Text></Row>
+        <Row Tag="LOC_EMIG_T_DSHOCK"><Text>Disasters: even out cost across game speeds</Text></Row>
+        <Row Tag="LOC_EMIG_T_DSHOCK_D"><Text>On slow speeds a disaster's distress lingers for more turns; this softens the per-turn bite so the TOTAL cost is about the same on Marathon as on Standard. Off pays the full per-turn hit every one of those extra turns (the old, harsher behavior).</Text></Row>
         <Row Tag="LOC_EMIG_T_PLAGUECARRY"><Text>Disasters: migrants carry plague</Text></Row>
         <Row Tag="LOC_EMIG_T_PLAGUECARRY_D"><Text>Let refugees fleeing an infected city seed a smaller outbreak-distress at their destination, migration as a contagion vector, beyond the game's trade-network spread.</Text></Row>
         <Row Tag="LOC_EMIG_T_NOTIFYMODE"><Text>Notifications: verbosity</Text></Row>
@@ -206,6 +212,10 @@
         <Row Tag="LOC_EMIG_NEWS_CONQUEST"><Text>The sack of {1_City} scatters {2_People}.</Text></Row>
         <Row Tag="LOC_EMIG_NEWS_GENERIC"><Text>{2_People} leave {1_City}.</Text></Row>
         <Row Tag="LOC_EMIG_NEWS_CRISIS"><Text>Refugee crisis: {1_Civ}, {2_People} displaced.</Text></Row>
+        <Row Tag="LOC_EMIG_COUNT_POINT"><Text>{1_Count} population point</Text></Row>
+        <Row Tag="LOC_EMIG_COUNT_POINTS"><Text>{1_Count} population points</Text></Row>
+        <Row Tag="LOC_EMIG_COUNT_PEOPLE"><Text>{1_Count} people</Text></Row>
+        <Row Tag="LOC_EMIG_COUNT_BOTH"><Text>{1_Civ} ({2_People})</Text></Row>
         <Row Tag="LOC_EMIG_NEWS_WHO"><Text>{1_Civ}: {2_Headline}</Text></Row>
         <Row Tag="LOC_EMIG_WAR_VS_UNMET"><Text>{1_Civ} vs. an unmet civilization</Text></Row>
 

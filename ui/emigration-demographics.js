@@ -53,12 +53,24 @@ function formatSignedPeople(n) {
 }
 
 /**
- * Insert thousands separators into a non-negative integer (e.g. 12400 → "12,400").
+ * Group an integer with the player's locale digit separators (e.g. en `12,400`, de `12.400`,
+ * fr `12 400`) via Intl.NumberFormat when the runtime exposes it, falling back to plain US-style
+ * grouping otherwise (the GameFace runtime's locale APIs have historically been unreliable, so this
+ * never assumes Intl is present or correct).
  * @param {number} v A non-negative integer.
  * @returns {string} Grouped string.
  */
 function groupInt(v) {
-  return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const n = Math.round(v);
+  try {
+    if (typeof Intl !== "undefined" && typeof Intl.NumberFormat === "function") {
+      const s = new Intl.NumberFormat().format(n);
+      if (typeof s === "string" && s.length) return s;
+    }
+  } catch (_) {
+    /* ignore — fall through to the locale-independent grouping */
+  }
+  return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 /**

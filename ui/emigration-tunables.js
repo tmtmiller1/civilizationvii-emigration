@@ -94,6 +94,9 @@ export const TUNABLES = [
   { key: "disastersEnabled", group: "disaster", type: "bool", label: "LOC_EMIG_T_DISASTERS", desc: "LOC_EMIG_T_DISASTERS_D" },
   { key: "disasterPerPoint", group: "disaster", type: "choice", values: [6, 8, 10, 14, 20], label: "LOC_EMIG_T_DPP", desc: "LOC_EMIG_T_DPP_D" },
   { key: "disasterDecay", group: "disaster", type: "choice", values: [0.4, 0.55, 0.7, 0.85], label: "LOC_EMIG_T_DDECAY", desc: "LOC_EMIG_T_DDECAY_D" },
+  { key: "disasterImpactScalingEnabled", group: "disaster", type: "bool", label: "LOC_EMIG_T_DIMPACT", desc: "LOC_EMIG_T_DIMPACT_D" },
+  { key: "disasterImpactGamma", group: "disaster", type: "choice", values: [0.5, 0.6, 0.75, 1], label: "LOC_EMIG_T_DGAMMA", desc: "LOC_EMIG_T_DGAMMA_D" },
+  { key: "disasterSpeedShockEnabled", group: "disaster", type: "bool", label: "LOC_EMIG_T_DSHOCK", desc: "LOC_EMIG_T_DSHOCK_D" },
   { key: "plagueCarryEnabled", group: "disaster", type: "bool", label: "LOC_EMIG_T_PLAGUECARRY", desc: "LOC_EMIG_T_PLAGUECARRY_D" },
   // notifications (anti-spam controls)
   { key: "notifyMode", group: "notify", type: "choice", values: [0, 1, 2], label: "LOC_EMIG_T_NOTIFYMODE", desc: "LOC_EMIG_T_NOTIFYMODE_D" },

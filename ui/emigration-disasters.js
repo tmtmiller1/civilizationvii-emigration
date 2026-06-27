@@ -13,7 +13,7 @@
 // truth. State persists in GameConfiguration.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
-import { speedDecay } from "/emigration/ui/emigration-game-speed.js";
+import { speedDecay, speedShock } from "/emigration/ui/emigration-game-speed.js";
 
 const STATE_KEY = "EmigrationDisaster_v1";
 const STATE_SCHEMA_VERSION = 2;
@@ -118,7 +118,10 @@ function normalizeState(parsed) {
 }
 
 /**
- * Per-event-class distress weights for a severity-1 event (severity multiplies).
+ * Per-event-class distress CEILING — the spike a FULL-IMPACT (m=1) event of this class lands. The
+ * measured impact factor m ∈ [0,1] picks where inside that band the actual event sits (see
+ * {@link disasterSpike}), so a harmless storm lands near 0 and a class can never out-punish a heavier
+ * one. (Legacy fail-safe path reads this as the old severity-1 weight that severity multiplies.)
  * @type {Record<string, number>}
  */
 const CLASS_WEIGHT = {
@@ -247,16 +250,48 @@ export function observeDisaster(city) {
 }
 
 /**
- * Add a severity-scaled distress spike to a set of cities hit by a RandomEvent (the
- * event-driven front-run). `cityKeys` are the keyFromCID keys of the affected cities.
+ * Concave impact shaping `m^gamma`. Lifts small REAL impacts so a genuine (if minor) disaster still
+ * registers, while keeping zero impact at zero (no cliff). `m` is clamped to [0,1].
+ * @param {number} m The measured impact factor in [0,1].
+ * @returns {number} The shaped factor in [0,1].
+ */
+function shape(m) {
+  const x = m > 0 ? (m < 1 ? m : 1) : 0;
+  return Math.pow(x, CONFIG.disasterImpactGamma);
+}
+
+/**
+ * The per-event distress SPIKE for one struck city: type-ceiling × shaped measured impact, then the
+ * one-shot speed-shock (÷S) so slow speeds pay the same TOTAL bite. Either transform is independently
+ * flag-gated; with both master flags off this is exactly the legacy `CLASS_WEIGHT × severity`. Exposed
+ * so the spike (separate from accumulation/cap) is directly testable.
  * @param {string} eventClass The event's CLASS_* string.
- * @param {number} severity The event severity (>= 1).
+ * @param {number} m Measured impact factor in [0,1] (used when impact-scaling is on).
+ * @param {number} [severity] Coarse severity (>= 1), used only on the legacy fall-back path.
+ * @returns {number} The distress spike to add.
+ */
+export function disasterSpike(eventClass, m, severity) {
+  const ceil = CLASS_WEIGHT[eventClass] || 4;
+  const sev = typeof severity === "number" && severity > 0 ? severity : 1;
+  const base = CONFIG.disasterImpactScalingEnabled
+    ? ceil * shape(m) // type bounds the worst case; measured impact picks the point inside it
+    : ceil * sev; // legacy fail-safe
+  return CONFIG.disasterSpeedShockEnabled ? speedShock(base) : base;
+}
+
+/**
+ * Add an impact-scaled distress spike to a set of cities hit by a RandomEvent (the event-driven
+ * front-run). `cityKeys` are the keyFromCID keys of the affected cities.
+ * @param {string} eventClass The event's CLASS_* string.
+ * @param {number} m Measured impact factor in [0,1] (continuous; 0 ⇒ a harmless event adds ~nothing).
  * @param {string[]} cityKeys Affected city keys.
  * @param {string} [eventType] The RandomEventType, stamped per city for cause attribution.
+ * @param {number} [severity] Coarse severity (>= 1), only used on the legacy fall-back path.
  */
-export function recordDisaster(eventClass, severity, cityKeys, eventType) {
+export function recordDisaster(eventClass, m, cityKeys, eventType, severity) {
   if (!CONFIG.disastersEnabled || !Array.isArray(cityKeys) || !cityKeys.length) return;
-  const w = (CLASS_WEIGHT[eventClass] || 4) * (severity > 0 ? severity : 1);
+  const w = disasterSpike(eventClass, m, severity);
+  if (!(w > 0)) return; // a zero-impact event (e.g. a thunderstorm that pillaged nothing) is free
   const s = state();
   const type = typeof eventType === "string" && eventType ? eventType : null;
   for (const key of cityKeys) stampDisaster(s, key, w, type);
@@ -264,13 +299,22 @@ export function recordDisaster(eventClass, severity, cityKeys, eventType) {
 }
 
 /**
- * Add `w` distress to one city and stamp the disaster `type` (latest hit wins) for attribution.
+ * Add `w` distress to one city (with diminishing-returns stacking and a hard accumulation cap so the
+ * city always recovers) and stamp the disaster `type` (latest hit wins) for attribution.
  * @param {DisasterState} s State. @param {string} key City key. @param {number} w Distress.
  * @param {string|null} type The RandomEventType, or null.
  */
 function stampDisaster(s, key, w, type) {
   if (!key) return;
-  s.byCity[key] = (s.byCity[key] || 0) + w;
+  const cap = CONFIG.disasterAccumCap;
+  const cur = s.byCity[key] || 0;
+  // Diminishing stacking: a new spike adds less the fuller the city already is, so back-to-back
+  // disasters can't linearly pile to the cap.
+  const add = CONFIG.disasterStackFalloff && cap > 0
+    ? w * (Math.max(0, cap - cur) / cap)
+    : w;
+  // Hard ceiling guarantees the per-turn penalty is bounded and decay always returns the city to zero.
+  s.byCity[key] = cap > 0 ? Math.min(cap, cur + add) : cur + add;
   if (type) s.typeByCity[key] = type;
 }
 
