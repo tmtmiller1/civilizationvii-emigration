@@ -143,6 +143,7 @@ function softCeil(x, ceiling) {
   const knee = CEIL_KNEE * ceiling;
   if (x <= knee) return x;
   const span = ceiling - knee;
+  if (!(span > 0)) return x; // defensive: a non-positive ceiling would divide by zero
   return knee + span * (1 - Math.exp(-(x - knee) / span));
 }
 

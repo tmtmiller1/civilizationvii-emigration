@@ -137,6 +137,12 @@
         <Replace Tag="LOC_EMIG_T_DPP_D" Language="fr_FR"><Text>Avec quelle force la détresse de catastrophe accumulée dans une ville pousse ses habitants à partir. Utilisé seulement quand les catastrophes alimentent la migration.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DDECAY" Language="fr_FR"><Text>Catastrophes: déclin de la détresse par tour</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DDECAY_D" Language="fr_FR"><Text>À quelle vitesse la détresse d'une catastrophe s'estompe une fois passée (plus bas = plus vite). Utilisé seulement quand les catastrophes alimentent la migration.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIMPACT" Language="fr_FR"><Text>Catastrophes: ajuster les dégâts à l'impact mesuré</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIMPACT_D" Language="fr_FR"><Text>La perte de population d'une catastrophe suit ce qu'elle a réellement fait à la ville (cases pillées, rendements réduits, bâtiments endommagés), plafonnée par son type. Un orage qui ne pille rien est presque sans effet ; un volcan catastrophique fait toujours mal. Désactivé rétablit les anciens dégâts forfaitaires par type.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DGAMMA" Language="fr_FR"><Text>Catastrophes: rehaussement des faibles impacts</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DGAMMA_D" Language="fr_FR"><Text>À quel point une catastrophe mineure pique encore (plus bas rehausse davantage les petits impacts ; 1,0 est linéaire). Utilisé uniquement quand les dégâts varient selon l'impact mesuré.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DSHOCK" Language="fr_FR"><Text>Catastrophes: égaliser le coût entre vitesses de jeu</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DSHOCK_D" Language="fr_FR"><Text>Aux vitesses lentes, la détresse d'une catastrophe persiste sur plus de tours ; ceci adoucit la morsure par tour pour que le coût TOTAL soit à peu près le même en Marathon qu'en Standard. Désactivé paie le plein coût par tour à chacun de ces tours supplémentaires (l'ancien comportement, plus dur).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY" Language="fr_FR"><Text>Catastrophes: les migrants portent la peste</Text></Replace>
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY_D" Language="fr_FR"><Text>Laisser les réfugiés fuyant une ville infectée semer une moindre détresse d'épidémie à leur destination, la migration comme vecteur de contagion, au-delà de la propagation par réseau commercial du jeu.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE" Language="fr_FR"><Text>Notifications: verbosité</Text></Replace>
@@ -172,6 +178,10 @@
         <Replace Tag="LOC_EMIG_NEWS_CONQUEST" Language="fr_FR"><Text>Le sac de {1_City} disperse {2_People}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="fr_FR"><Text>{2_People} quittent {1_City}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="fr_FR"><Text>Crise de réfugiés : {1_Civ}, {2_People} déplacées.</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_POINT" Language="fr_FR"><Text>{1_Count} point de population</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_POINTS" Language="fr_FR"><Text>{1_Count} points de population</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_PEOPLE" Language="fr_FR"><Text>{1_Count} personnes</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_BOTH" Language="fr_FR"><Text>{1_Civ} ({2_People})</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="fr_FR"><Text>{1_Civ}: {2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="fr_FR"><Text>{1_Civ} contre une civilisation inconnue</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="fr_FR"><Text>{1_People} ont quitté {2_City}, mécontents chez eux.</Text></Replace>

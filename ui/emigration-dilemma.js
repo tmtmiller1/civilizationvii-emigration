@@ -38,7 +38,7 @@ const CHOICES = [
   { id: "frontier", label: "Settle the frontier",
     note: "Send them to a smaller town to make a new start, for a little less." },
   { id: "away", label: "Turn them away",
-    note: "They move on down the road. Their burden is not yours to carry." }
+    note: "A cost in standing now; they move on down the road, their burden not yours to carry." }
 ];
 
 /**
@@ -312,8 +312,8 @@ function detectPlagueDilemma(migrations, me) {
 
 /**
  * Apply a chosen option's light effects to the local player: a one-time gold cost and (for the two
- * "take them in" options) settling one population point into a city. Records the decision in the
- * Chronicle. No-op for "turn them away" beyond the chronicle line.
+ * "take them in" options) settling one population point into a city, or a one-time influence cost for
+ * turning the refugees away. Records the decision in the Chronicle.
  * @param {string} choiceId The chosen option id.
  * @param {{origin:number}} d The dilemma descriptor.
  * @param {*[]} localCities The local player's city signals (largest first).
@@ -327,6 +327,8 @@ function applyChoice(choiceId, d, localCities, me, turn) {
     } else if (choiceId === "frontier") {
       deduct(me, "YIELD_GOLD", -CONFIG.dilemmaGoldFrontier);
       settleInto(localCities[localCities.length - 1]);
+    } else if (choiceId === "away") {
+      deduct(me, "YIELD_DIPLOMACY", -CONFIG.dilemmaInfluenceAway);
     }
     chronicleDecision(choiceId, d, localCities[0], turn);
   } catch (_) {

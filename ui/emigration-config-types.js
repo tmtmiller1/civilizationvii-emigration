@@ -88,6 +88,7 @@
  * @property {number} dilemmaCooldownTurns Minimum turns between refugee dilemmas.
  * @property {number} dilemmaGoldWelcome One-time gold cost to welcome refugees in.
  * @property {number} dilemmaGoldFrontier One-time gold cost to settle refugees on the frontier.
+ * @property {number} dilemmaInfluenceAway One-time influence cost for turning refugees away.
  * @property {boolean} returnEnabled Whether diasporas return home when the homeland recovers.
  * @property {number} returnRate Fraction of a recovered-homeland diaspora that may return per turn.
  * @property {number} returnMinShare Min diaspora share of the host city to draw returnees.
@@ -173,6 +174,11 @@
  * @property {number} disasterRefugeeBurstThreshold Distress fraction triggering a burst.
  * @property {boolean} plagueCarryEnabled Migrants from an infected city seed distress.
  * @property {number} plagueCarryDistress Distress seeded at the destination per carrier.
+ * @property {boolean} disasterImpactScalingEnabled Spike = type-ceiling × shape(measured impact); off ⇒ legacy.
+ * @property {number} disasterImpactGamma Concavity of shape(m)=m^gamma (1.0 linear, <1 lifts small impacts).
+ * @property {boolean} disasterSpeedShockEnabled Divide the disaster spike by S (speed-invariant total bite).
+ * @property {number} disasterAccumCap Hard ceiling on a city's accumulated disaster distress.
+ * @property {boolean} disasterStackFalloff Diminishing-returns stacking of repeated disaster spikes.
  * @property {number} scaleBase Population-scaling base (Demographics-aligned).
  * @property {number} scaleExp Population-scaling exponent.
  * @property {number} scaleGrowth Population-scaling per-turn growth.
