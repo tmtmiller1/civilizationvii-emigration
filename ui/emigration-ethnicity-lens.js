@@ -28,10 +28,15 @@ const LAYER = "emig-ethnicity-layer";
 const HEX_GRID = 1; // OVERLAY_PRIORITY.HEX_GRID, inlined
 const FALLBACK_HEX = "#888888"; // neutral grey when a civ colour can't be resolved
 // Per-tile opacity ramps with the tile's POPULATION DENSITY (emigration-ethnicity-distribution): the
-// built-up urban core reads vivid, the sparse rural fringe faint, so a city reads as a textured
-// population mosaic rather than a single flat wash.
-const MIN_ALPHA = 0.2;
+// built-up urban core reads vivid, the sparse rural fringe fainter, so a city reads as a textured
+// population mosaic rather than a single flat wash. The floor is kept high enough that even a sparse
+// fringe tile is clearly tinted — the lens is an ETHNIC map first, a density heat-map second.
+const MIN_ALPHA = 0.4;
 const MAX_ALPHA = 0.85;
+// A non-dominant origin (a settled diaspora) lives on the sparse fringe, so a pure density ramp would
+// render it nearly invisible. Floor its opacity so its quarter always reads as a distinct colour on
+// the map, which is the whole point of the lens — to SEE where a minority has taken root.
+const MINORITY_ALPHA_FLOOR = 0.62;
 
 // Per-tile density weights by district class — "urban districts have higher populations". A tile's
 // final weight is its class weight times a build-up bonus (constructibles on the tile).
@@ -155,14 +160,28 @@ function scaledPeopleFor(points) {
 
 /**
  * The float4 fill for one distributed tile: its assigned origin civ's colour (neutral grey when that
- * origin is a policy-hidden civ) at an opacity that ramps with the tile's population density.
+ * origin is a policy-hidden civ) at an opacity that ramps with the tile's population density. A tile
+ * whose origin is NOT the settlement's dominant civ (a diaspora) is given an opacity floor so its
+ * fringe quarter stays clearly visible on the map.
  * @param {{civ:number, density:number}} tile A distributed tile.
+ * @param {number} dominantCiv The settlement's dominant origin civ id (-1 when unknown).
  * @returns {{x:number, y:number, z:number, w:number}} Float4 fill.
  */
-function tileFill(tile) {
-  const alpha = MIN_ALPHA + (MAX_ALPHA - MIN_ALPHA) * Math.max(0, Math.min(1, tile.density));
+function tileFill(tile, dominantCiv) {
+  const ramp = MIN_ALPHA + (MAX_ALPHA - MIN_ALPHA) * Math.max(0, Math.min(1, tile.density));
+  const isMinority = typeof dominantCiv === "number" && dominantCiv >= 0 && tile.civ !== dominantCiv;
+  const alpha = isMinority ? Math.max(ramp, MINORITY_ALPHA_FLOOR) : ramp;
   const hex = civHidden(tile.civ) ? FALLBACK_HEX : civDisplayColor(tile.civ, FALLBACK_HEX);
   return hexToFloat4(hex, alpha);
+}
+
+/**
+ * The settlement's dominant origin civ id, or -1 when it can't be read. Tiles whose origin differs
+ * from this are diasporas and get a visibility floor in {@link tileFill}.
+ * @param {*} comp A composition record. @returns {number} The dominant civ id, or -1.
+ */
+function dominantCivOf(comp) {
+  return comp && comp.dominant && typeof comp.dominant.civ === "number" ? comp.dominant.civ : -1;
 }
 
 /**
@@ -187,7 +206,8 @@ function tilePaints() {
     const plots = classifyPlots(s.city);
     if (!plots.length) continue;
     const tiles = distributeTiles(plots, comp, scaledPeopleFor(comp.total));
-    for (const t of tiles) out.push({ x: t.x, y: t.y, fill: tileFill(t) });
+    const dominantCiv = dominantCivOf(comp);
+    for (const t of tiles) out.push({ x: t.x, y: t.y, fill: tileFill(t, dominantCiv) });
   }
   return out;
 }

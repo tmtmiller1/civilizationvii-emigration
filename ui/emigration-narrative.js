@@ -42,11 +42,13 @@ function pick(list, seed, salt) {
   return list[hash(seed + ":" + (salt || 0)) % list.length];
 }
 
-// Concrete places a community keeps to inside a city, so a "quarter" line names somewhere real rather
-// than staying abstract. Chosen by seed, never at random.
-const QUARTERS = [
-  "by the harbour", "near the old walls", "along the river", "around the market",
-  "beyond the granaries", "on the western hill", "outside the temple district", "by the city gate"
+// Always-true fallbacks for where a community keeps to inside a city, naming NO specific feature so a
+// line is never wrong. When the host city actually has a nameable feature, the caller
+// (emigration-diaspora.js, via emigration-quarters.js) supplies a truthful feature-based phrase as
+// `where`; this list is only the fallback. Chosen by seed, never at random.
+const GENERIC_QUARTERS = [
+  "on the edge of the city", "in the outer streets", "past the last houses",
+  "on the far side of town", "where the streets give out"
 ];
 
 // What people carried, or failed to. Human-scale detail in the Cooper register.
@@ -167,13 +169,15 @@ export function exodusLine(e) {
 /**
  * The chronicle line for a diaspora taking root: an origin people becoming a settled minority in
  * another civ's city.
- * @param {{origin:string, host:string, city:string, pct:number, seed:string, framed?:boolean}} e The event.
+ * @param {{origin:string, host:string, city:string, pct:number, seed:string, where?:string,
+ *          framed?:boolean}} e The event. `where` is a truthful, feature-based quarter phrase from the
+ *   host city (emigration-quarters.js); when absent, a generic always-true phrase is used.
  * @returns {string} The line.
  */
 export function foundingLine(e) {
   const o = adj(e.origin);
   const pct = Math.round(e.pct) + " percent";
-  const where = pick(QUARTERS, e.seed, 2);
+  const where = typeof e.where === "string" && e.where ? e.where : pick(GENERIC_QUARTERS, e.seed, 2);
   if (e.framed) {
     const fl = [
       `A community had taken root in ${e.city} from a distant land, a people we have heard called the ${o}, now ${pct} of its households, settled ${where}.`,
@@ -266,4 +270,4 @@ export function dilemmaPrompt(e) {
 }
 
 // Test hook.
-export const __test = { hash, pick, QUARTERS, warExodus, disasterExodus, dilemmaName };
+export const __test = { hash, pick, GENERIC_QUARTERS, warExodus, disasterExodus, dilemmaName };
