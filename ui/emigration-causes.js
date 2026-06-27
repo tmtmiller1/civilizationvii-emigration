@@ -48,6 +48,7 @@ const LABELS = {
   attrition: "Attrition",
   return: "Return",
   crisis: "Crisis",
+  chronicle: "Chronicle",
   other: "Other"
 };
 
@@ -61,6 +62,7 @@ const ACCENTS = {
   attrition: "#9aa0a6",
   return: "#4f9d9a",
   crisis: "#d24b3e",
+  chronicle: "#a98fd0",
   other: "#cba35c"
 };
 

@@ -31,8 +31,6 @@ const SUBTABS = [
   { id: "cityflows", label: "Settlements", title: "Settlements" },
   { id: "stances", label: "Immigration Policies", title: "Immigration policies" },
   { id: "notifications", label: "Notifications", title: "Migration notifications" },
-  // A written history of the world's great migrations; prose, so it opts out of the per-civ banner.
-  { id: "chronicle", label: "Chronicle", title: "A written history of the world's migrations", hidePolicyBanner: true },
   // The Guide is a static reference matrix with no per-civ data, so the host's analytics-visibility
   // policy banner is meaningless there, opt it out (the host reads `hidePolicyBanner`).
   { id: "guide", label: "Guide", title: "What counts", hidePolicyBanner: true }
@@ -111,7 +109,6 @@ const HUB_PAGES = [
   { id: "emig_cities", label: "My Cities", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "cityflows", c) },
   { id: "emig_policies", label: "Policies", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "stances", c) },
   { id: "emig_notifications", label: "Notifications", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "notifications", c) },
-  { id: "emig_chronicle", label: "Chronicle", tier: "standard", hidePolicyBanner: true, render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "chronicle", c) },
   { id: "emig_guide", label: "Guide", tier: "standard", hidePolicyBanner: true, render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "guide", c) }
 ];
 
