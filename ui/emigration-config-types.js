@@ -89,6 +89,7 @@
  * @property {number} dilemmaGoldWelcome One-time gold cost to welcome refugees in.
  * @property {number} dilemmaGoldFrontier One-time gold cost to settle refugees on the frontier.
  * @property {number} dilemmaInfluenceAway One-time influence cost for turning refugees away.
+ * @property {number} dilemmaHappinessWelcome One-time happiness cost for absorbing refugees into your city.
  * @property {boolean} returnEnabled Whether diasporas return home when the homeland recovers.
  * @property {number} returnRate Fraction of a recovered-homeland diaspora that may return per turn.
  * @property {number} returnMinShare Min diaspora share of the host city to draw returnees.

@@ -34,11 +34,11 @@ const MAX_SPREE_EVENTS_PER_CIV = 32;
 /** The choices offered, with a one-line consequence cue. */
 const CHOICES = [
   { id: "welcome", label: "Welcome them in",
-    note: "A cost in gold now; they settle among you and, in time, become your people." },
+    note: "A cost in gold and some short-term strain on your people; they settle among you and, in time, become your people." },
   { id: "frontier", label: "Settle the frontier",
-    note: "Send them to a smaller town to make a new start, for a little less." },
+    note: "A smaller cost in gold; send them to a smaller town to make a new start." },
   { id: "away", label: "Turn them away",
-    note: "A cost in standing now; they move on down the road, their burden not yours to carry." }
+    note: "A cost in international standing now; they move on down the road, their burden not yours to carry." }
 ];
 
 /**
@@ -321,14 +321,19 @@ function detectPlagueDilemma(migrations, me) {
  */
 function applyChoice(choiceId, d, localCities, me, turn) {
   try {
+    const welcomeGold = Math.max(0, Number(CONFIG.dilemmaGoldWelcome) || 0);
+    const frontierGold = Math.max(0, Number(CONFIG.dilemmaGoldFrontier) || 0);
+    const awayInfluence = Math.max(0, Number(CONFIG.dilemmaInfluenceAway) || 0);
+    const welcomeHappiness = Math.max(0, Number(CONFIG.dilemmaHappinessWelcome) || 0);
     if (choiceId === "welcome") {
-      deduct(me, "YIELD_GOLD", -CONFIG.dilemmaGoldWelcome);
+      deduct(me, "YIELD_GOLD", -welcomeGold);
+      deduct(me, "YIELD_HAPPINESS", -welcomeHappiness);
       settleInto(localCities[0]);
     } else if (choiceId === "frontier") {
-      deduct(me, "YIELD_GOLD", -CONFIG.dilemmaGoldFrontier);
+      deduct(me, "YIELD_GOLD", -frontierGold);
       settleInto(localCities[localCities.length - 1]);
     } else if (choiceId === "away") {
-      deduct(me, "YIELD_DIPLOMACY", -CONFIG.dilemmaInfluenceAway);
+      deduct(me, "YIELD_DIPLOMACY", -awayInfluence);
     }
     chronicleDecision(choiceId, d, localCities[0], turn);
   } catch (_) {

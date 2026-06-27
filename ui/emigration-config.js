@@ -219,6 +219,7 @@ export const CONFIG = {
   dilemmaGoldWelcome: 30, // one-time gold to welcome the refugees in (light)
   dilemmaGoldFrontier: 15, // one-time gold to settle them on the frontier instead
   dilemmaInfluenceAway: 20, // one-time influence cost for turning the refugees away
+  dilemmaHappinessWelcome: 10, // one-time happiness hit for absorbing the refugees into your city
 
   // ── assimilation cost (duration-based consequence via grantYield) ──
   // Each migrant adds "assimilation load" to the DESTINATION civ; that load DECAYS
