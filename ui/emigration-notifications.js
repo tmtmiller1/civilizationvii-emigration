@@ -18,6 +18,8 @@ const MAX_ENTRIES = 120; // ring cap: plenty of history, bounded save size
  * @property {string} cause The migration cause (war/disaster/prosperity/…) or "crisis".
  * @property {string} kind The notification kind ("digest" | "crisis" | "cause").
  * @property {string} summary A one-line summary for the list row (the toast headline).
+ * @property {string} [title] A narrative title or episode heading.
+ * @property {string} [body] A longer narrative body or story note.
  * @property {string} [event] The specific in-world event (named war / disaster), when applicable.
  * @property {number} people Scaled people involved.
  * @property {number} points Raw Civ population points involved.
@@ -75,7 +77,7 @@ function finiteOr(v, d) {
 // Optional string fields copied through only when present, so absent ones are OMITTED (not written as
 // `undefined`, which JSON.stringify would drop) — keeping the in-memory cache identical to the persisted
 // blob across a reload.
-const OPT_STR_FIELDS = ["event", "fromCity", "fromCiv", "toCity", "toCiv"];
+const OPT_STR_FIELDS = ["title", "body", "event", "fromCity", "fromCiv", "toCity", "toCiv"];
 
 /**
  * Build the canonical NotifEntry with coerced required fields and only the present optional strings.
