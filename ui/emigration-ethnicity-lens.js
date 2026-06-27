@@ -19,15 +19,28 @@ import { compositionForCity } from "/emigration/ui/emigration-composition.js";
 import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { setBasePlotTooltipHidden } from "/emigration/ui/emigration-plot-tooltip-suppress.js";
+import { distributeTiles } from "/emigration/ui/emigration-ethnicity-distribution.js";
+import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
+import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 
 const LENS = "emig-ethnicity-lens";
 const LAYER = "emig-ethnicity-layer";
 const HEX_GRID = 1; // OVERLAY_PRIORITY.HEX_GRID, inlined
 const FALLBACK_HEX = "#888888"; // neutral grey when a civ colour can't be resolved
-// Fill opacity ramps with the dominant civ's share: a 100%-one-origin city is vivid, a barely-
-// dominant (heavily mixed) one is faint.
-const MIN_ALPHA = 0.28;
-const MAX_ALPHA = 0.82;
+// Per-tile opacity ramps with the tile's POPULATION DENSITY (emigration-ethnicity-distribution): the
+// built-up urban core reads vivid, the sparse rural fringe faint, so a city reads as a textured
+// population mosaic rather than a single flat wash.
+const MIN_ALPHA = 0.2;
+const MAX_ALPHA = 0.85;
+
+// Per-tile density weights by district class — "urban districts have higher populations". A tile's
+// final weight is its class weight times a build-up bonus (constructibles on the tile).
+const W_CITY_CENTER = 3.6;
+const W_URBAN = 2.4;
+const W_RURAL = 1.0;
+const W_WILDERNESS = 0.4;
+const BUILDUP_PER = 0.18; // weight bonus per constructible on the tile…
+const BUILDUP_CAP = 4; // …capped, so a wonder-stacked tile doesn't dominate everything
 
 /**
  * Parse a `#RRGGBB` colour into an engine float4 {x,y,z,w} (channels 0-1) at the given alpha.
@@ -38,40 +51,87 @@ const MAX_ALPHA = 0.82;
 function hexToFloat4(hex, alpha) {
   const m = typeof hex === "string" ? hex.match(/^#?([0-9a-fA-F]{6})/) : null;
   const v = m ? m[1] : "888888";
+  // Every channel is clamped to a finite [0,1]: a NaN/out-of-range value reaching the Metal plot
+  // overlay is a known crash vector on the Mac build, so never let one through.
   return {
-    x: parseInt(v.slice(0, 2), 16) / 255,
-    y: parseInt(v.slice(2, 4), 16) / 255,
-    z: parseInt(v.slice(4, 6), 16) / 255,
-    w: alpha
+    x: channel(v, 0),
+    y: channel(v, 2),
+    z: channel(v, 4),
+    w: unit(alpha)
   };
 }
 
 /**
- * The fill colour for a settlement: its dominant origin civ's banner colour at an opacity that
- * scales with that civ's share.
- * @param {{civ:number, share:number}} dominant The dominant origin.
- * @returns {{x:number, y:number, z:number, w:number}} Float4 fill colour.
+ * Clamp a number to a finite [0,1] (NaN / non-finite → 0), for overlay-safe colour channels.
+ * @param {number} n A value. @returns {number} The clamped value.
  */
-function fillFor(dominant) {
-  const alpha = MIN_ALPHA + (MAX_ALPHA - MIN_ALPHA) * Math.max(0, Math.min(1, dominant.share));
-  // Mask the origin's identity colour when the policy hides that civ (neutral grey instead).
-  const hex = civHidden(dominant.civ) ? FALLBACK_HEX : civDisplayColor(dominant.civ, FALLBACK_HEX);
-  return hexToFloat4(hex, alpha);
+function unit(n) {
+  return typeof n === "number" && isFinite(n) ? Math.max(0, Math.min(1, n)) : 0;
 }
 
 /**
- * A city's owned plots as {x, y} coordinates (from its purchased plot indices).
- * @param {*} city City object.
- * @returns {{x:number, y:number}[]} Plot coordinates.
+ * One 0-1 colour channel parsed from a 2-hex pair at offset `i`, finite-guarded.
+ * @param {string} v A 6-hex string. @param {number} i The byte offset (0/2/4).
+ * @returns {number} The channel in [0,1].
  */
-function plotsOf(city) {
-  /** @type {{x:number, y:number}[]} */
+function channel(v, i) {
+  return unit(parseInt(v.slice(i, i + 2), 16) / 255);
+}
+
+/**
+ * The number of constructibles on a tile (its build-up), capped — a denser-built tile holds more
+ * people. 0 when unreadable.
+ * @param {number} x Plot x. @param {number} y Plot y.
+ * @returns {number} Constructible count (0..BUILDUP_CAP-ish, uncapped here; capped by the caller).
+ */
+function constructibleCount(x, y) {
+  try {
+    const cs = typeof MapConstructibles !== "undefined" && MapConstructibles.getConstructibles
+      ? MapConstructibles.getConstructibles(x, y) : null;
+    return Array.isArray(cs) ? cs.length : (cs && typeof cs.length === "number" ? cs.length : 0);
+  } catch (_) {
+    return 0;
+  }
+}
+
+/**
+ * A tile's district-class base density weight (city centre ≫ urban > rural > wilderness). Defaults to
+ * the rural weight when the district can't be read, so an unclassifiable tile still carries people.
+ * @param {number} x Plot x. @param {number} y Plot y.
+ * @returns {number} The base weight.
+ */
+function districtWeight(x, y) {
+  try {
+    const d = typeof Districts !== "undefined" && Districts.getAtLocation
+      ? Districts.getAtLocation({ x, y }) : null;
+    const t = d ? d.type : null;
+    if (t != null && typeof DistrictTypes !== "undefined") {
+      if (t === DistrictTypes.CITY_CENTER) return W_CITY_CENTER;
+      if (t === DistrictTypes.URBAN) return W_URBAN;
+      if (t === DistrictTypes.WILDERNESS) return W_WILDERNESS;
+    }
+  } catch (_) {
+    /* ignore */
+  }
+  return W_RURAL;
+}
+
+/**
+ * A settlement's owned tiles with their population-density weights (district class × build-up bonus),
+ * for {@link distributeTiles}. Empty when the city has no readable plots.
+ * @param {*} city City object.
+ * @returns {{x:number, y:number, weight:number}[]} Weighted plots.
+ */
+function classifyPlots(city) {
+  /** @type {{x:number, y:number, weight:number}[]} */
   const out = [];
   try {
     const idx = city && typeof city.getPurchasedPlots === "function" ? city.getPurchasedPlots() : [];
     for (const i of idx || []) {
       const loc = GameplayMap.getLocationFromIndex(i);
-      if (loc) out.push({ x: loc.x, y: loc.y });
+      if (!loc) continue;
+      const buildUp = 1 + BUILDUP_PER * Math.min(constructibleCount(loc.x, loc.y), BUILDUP_CAP);
+      out.push({ x: loc.x, y: loc.y, weight: districtWeight(loc.x, loc.y) * buildUp });
     }
   } catch (_) {
     /* ignore unreadable city */
@@ -80,24 +140,105 @@ function plotsOf(city) {
 }
 
 /**
- * Per-settlement {city, fill} for every observable settlement with a known composition.
- * @returns {{city:*, fill:{x:number,y:number,z:number,w:number}}[]} Paint list.
+ * The settlement's scaled population (people) for the density model. Unseeded (a standing TOTAL, like
+ * the rest of the mod's totals), so it stays on the shared base curve.
+ * @param {number} points The settlement's population in points.
+ * @returns {number} Scaled people.
  */
-function cityFills() {
+function scaledPeopleFor(points) {
+  try {
+    return scaleCityPopulation(points, monoTurn());
+  } catch (_) {
+    return points * 40000; // rough fallback so density still varies by tile weight
+  }
+}
+
+/**
+ * The float4 fill for one distributed tile: its assigned origin civ's colour (neutral grey when that
+ * origin is a policy-hidden civ) at an opacity that ramps with the tile's population density.
+ * @param {{civ:number, density:number}} tile A distributed tile.
+ * @returns {{x:number, y:number, z:number, w:number}} Float4 fill.
+ */
+function tileFill(tile) {
+  const alpha = MIN_ALPHA + (MAX_ALPHA - MIN_ALPHA) * Math.max(0, Math.min(1, tile.density));
+  const hex = civHidden(tile.civ) ? FALLBACK_HEX : civDisplayColor(tile.civ, FALLBACK_HEX);
+  return hexToFloat4(hex, alpha);
+}
+
+/**
+ * Every observable settlement's PER-TILE paints: each owned tile coloured by the origin civ assigned
+ * to it (density-weighted ethnic mosaic) at a population-density opacity. A policy-hidden owner's
+ * settlements are skipped entirely (never revealed on the map).
+ * @returns {{x:number, y:number, fill:{x:number,y:number,z:number,w:number}}[]} Per-tile paints.
+ */
+function tilePaints() {
   let signals = [];
   try {
     signals = collectCitySignals() || [];
   } catch (_) {
     return [];
   }
-  /** @type {{city:*, fill:*}[]} */
+  /** @type {{x:number, y:number, fill:*}[]} */
   const out = [];
   for (const s of signals) {
     if (civHidden(s.owner)) continue; // don't reveal a policy-hidden civ's settlements on the map
     const comp = compositionForCity(s.city);
-    if (comp && comp.dominant) out.push({ city: s.city, fill: fillFor(comp.dominant) });
+    if (!comp || !comp.dominant) continue;
+    const plots = classifyPlots(s.city);
+    if (!plots.length) continue;
+    const tiles = distributeTiles(plots, comp, scaledPeopleFor(comp.total));
+    for (const t of tiles) out.push({ x: t.x, y: t.y, fill: tileFill(t) });
   }
   return out;
+}
+
+/**
+ * Group per-tile paints by fill colour, so the overlay is painted in a handful of addPlots batches
+ * (one per distinct colour+opacity) instead of one call per tile.
+ * @param {{x:number, y:number, fill:*}[]} paints Per-tile paints.
+ * @returns {{fill:*, plots:{x:number,y:number}[]}[]} Batches.
+ */
+function batchByFill(paints) {
+  /** @type {Map<string, {fill:*, plots:{x:number,y:number}[]}>} */
+  const groups = new Map();
+  for (const p of paints) {
+    const f = p.fill;
+    // Quantize the alpha into the key so near-identical opacities share a batch (bounded group count).
+    const key = f.x + "," + f.y + "," + f.z + ":" + Math.round(f.w * 50);
+    let g = groups.get(key);
+    if (!g) {
+      g = { fill: f, plots: [] };
+      groups.set(key, g);
+    }
+    g.plots.push({ x: p.x, y: p.y });
+  }
+  return [...groups.values()];
+}
+
+/** @type {{turn:number, batches:*[]}|null} Per-turn cache of the batched paints. */
+let _paintCache = null;
+
+/** The current game turn for the lens cache key, or -1. @returns {number} The turn. */
+function lensTurn() {
+  try {
+    return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : -1;
+  } catch (_) {
+    return -1;
+  }
+}
+
+/**
+ * The batched per-tile paints, memoized for the current turn: the expensive per-plot Districts /
+ * MapConstructibles walk runs once per turn, so toggling the lens off and back on within the same turn
+ * (the common case on a big empire) reuses the result instead of re-scanning every owned tile.
+ * @returns {*[]} The fill batches.
+ */
+function cachedBatches() {
+  const t = lensTurn();
+  if (_paintCache && _paintCache.turn === t) return _paintCache.batches;
+  const batches = batchByFill(tilePaints());
+  _paintCache = { turn: t, batches };
+  return batches;
 }
 
 /** The lens layer: an overlay of per-settlement plot fills coloured by dominant origin civ. */
@@ -116,12 +257,16 @@ class EthnicityLensLayer {
   /** Lens-layer lifecycle: init (no-op; built in the constructor). */
   initLayer() {}
 
-  /** Lens-layer lifecycle: paint every settlement's tiles by its dominant origin civ. */
+  /** Lens-layer lifecycle: paint every settlement's tiles by per-tile origin + population density. */
   applyLayer() {
     this.clear();
-    for (const c of cityFills()) {
-      const plots = plotsOf(c.city);
-      if (plots.length) this.overlay.addPlots(plots, { fillColor: c.fill });
+    for (const b of cachedBatches()) {
+      if (!b.plots.length) continue;
+      try {
+        this.overlay.addPlots(b.plots, { fillColor: b.fill });
+      } catch (e) {
+        console.error("[Emigration.lens] addPlots failed", e); // one bad batch must not kill the lens
+      }
     }
     // Hide the base plot tooltip while this lens is active so it doesn't clash with the mod's own
     // ethnic-composition panel (emigration-ethnicity-tooltip.js).

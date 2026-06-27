@@ -54,7 +54,7 @@ export function hexDistance(a, b) {
  * @param {number} b Player id.
  * @returns {boolean} True if at war.
  */
-function atWarBetween(a, b) {
+export function atWarBetween(a, b) {
   try {
     return !!Players.get(a)?.Diplomacy?.isAtWarWith?.(b);
   } catch (_) {

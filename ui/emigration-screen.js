@@ -103,9 +103,17 @@ class ScreenEmigration extends Panel {
 
   /** Panel lifecycle: wire the close button, render the dashboard, and defer background popups. */
   onAttach() {
-    super.onAttach();
-    this._wireCloseButton();
-    this._render();
+    try {
+      super.onAttach?.();
+    } catch (e) {
+      derr("onAttach super failed:", e);
+    }
+    try {
+      this._wireCloseButton();
+      this._render();
+    } catch (e) {
+      derr("onAttach body failed:", e);
+    }
     // Hold background popups (research/civic/event …) in the queue while the window is open so they
     // don't surface over the screen and shove its layout around; they re-surface on detach.
     suspendPopups(this);
@@ -114,7 +122,13 @@ class ScreenEmigration extends Panel {
   /** Panel lifecycle: release the deferred popups when the window closes. */
   onDetach() {
     resumePopups(this);
-    super.onDetach?.();
+    try {
+      super.onDetach?.();
+    } catch (e) {
+      derr("onDetach super failed:", e);
+    }
+    // Best-effort second resume in case detach handlers toggled queue state mid-close.
+    resumePopups(this);
   }
 
   /** Wire the template's close button to {@link ScreenEmigration#close}. */
@@ -153,7 +167,14 @@ class ScreenEmigration extends Panel {
 
   /** Panel lifecycle: close. */
   close() {
-    super.close?.();
+    // Best-effort release if close fails before detach can run.
+    resumePopups(this);
+    try {
+      super.close?.();
+    } catch (e) {
+      derr("close failed:", e);
+    }
+    resumePopups(this);
   }
 }
 
@@ -181,9 +202,17 @@ try {
 export function openEmigrationScreen() {
   import("/core/ui/context-manager/context-manager.js")
     .then((m) => {
-      const cm = /** @type {*} */ (m);
-      const ContextManager = cm.default || cm.ContextManager || cm;
-      ContextManager.push("screen-emigration", { singleton: true, createMouseGuard: true });
+      try {
+        const cm = /** @type {*} */ (m);
+        const ContextManager = cm.default || cm.ContextManager || cm;
+        if (ContextManager && typeof ContextManager.push === "function") {
+          ContextManager.push("screen-emigration", { singleton: true, createMouseGuard: true });
+        } else {
+          derr("context-manager push unavailable");
+        }
+      } catch (e) {
+        derr("openEmigrationScreen failed:", e);
+      }
     })
     .catch((e) => derr("context-manager import failed:", e));
 }
@@ -192,9 +221,15 @@ export function openEmigrationScreen() {
 export function closeEmigrationScreen() {
   import("/core/ui/context-manager/context-manager.js")
     .then((m) => {
-      const cm = /** @type {*} */ (m);
-      const ContextManager = cm.default || cm.ContextManager || cm;
-      if (typeof ContextManager.pop === "function") ContextManager.pop("screen-emigration");
+      try {
+        const cm = /** @type {*} */ (m);
+        const ContextManager = cm.default || cm.ContextManager || cm;
+        if (ContextManager && typeof ContextManager.pop === "function") {
+          ContextManager.pop("screen-emigration");
+        }
+      } catch (_) {
+        /* ignore */
+      }
     })
     .catch(() => {
       /* ignore */

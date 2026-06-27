@@ -46,7 +46,9 @@ function gameTurn() {
 }
 
 /**
- * Read + parse the persisted log (newest-first), or [] when absent/unusable.
+ * Read + parse the persisted log (newest-first), or [] when absent/unusable. Each element is
+ * re-normalized on load so a corrupt or old-schema entry can't reach the list/view as a wrong-typed
+ * value; non-object elements are dropped and the list is capped.
  * @returns {NotifEntry[]} The stored entries.
  */
 function loadPersisted() {
@@ -54,10 +56,64 @@ function loadPersisted() {
     const g = Configuration?.getGame?.();
     const raw = g && typeof g.getValue === "function" ? g.getValue(STATE_KEY) : null;
     const o = typeof raw === "string" && raw.length ? JSON.parse(raw) : null;
-    return Array.isArray(o) ? o : [];
+    return Array.isArray(o) ? normalizeLoaded(o) : [];
   } catch (_) {
     return [];
   }
+}
+
+/** @param {*} v @param {string} d @returns {string} v when a string, else the fallback. */
+function strOr(v, d) {
+  return typeof v === "string" ? v : d;
+}
+
+/** @param {*} v @param {number} d @returns {number} v when a finite number, else the fallback. */
+function finiteOr(v, d) {
+  return typeof v === "number" && isFinite(v) ? v : d;
+}
+
+// Optional string fields copied through only when present, so absent ones are OMITTED (not written as
+// `undefined`, which JSON.stringify would drop) — keeping the in-memory cache identical to the persisted
+// blob across a reload.
+const OPT_STR_FIELDS = ["event", "fromCity", "fromCiv", "toCity", "toCiv"];
+
+/**
+ * Build the canonical NotifEntry with coerced required fields and only the present optional strings.
+ * @param {Partial<NotifEntry>} entry The source entry. @param {number} turn The turn to stamp.
+ * @returns {NotifEntry} The clean entry.
+ */
+function cleanEntry(entry, turn) {
+  /** @type {*} */
+  const e = {
+    turn,
+    cause: strOr(entry.cause, "other"),
+    kind: strOr(entry.kind, "cause"),
+    summary: strOr(entry.summary, ""),
+    people: finiteOr(entry.people, 0),
+    points: finiteOr(entry.points, 0),
+    crossCiv: !!entry.crossCiv,
+    ownLoss: !!entry.ownLoss
+  };
+  for (const f of OPT_STR_FIELDS) {
+    if (typeof (/** @type {*} */ (entry)[f]) === "string") e[f] = (/** @type {*} */ (entry)[f]);
+  }
+  return e;
+}
+
+/**
+ * Normalize a loaded array into clean, capped NotifEntries, dropping non-object elements. Each entry
+ * keeps its OWN stored turn.
+ * @param {*[]} arr The raw loaded array. @returns {NotifEntry[]} The clean entries.
+ */
+function normalizeLoaded(arr) {
+  /** @type {NotifEntry[]} */
+  const out = [];
+  for (const el of arr) {
+    if (out.length >= MAX_ENTRIES) break;
+    if (!el || typeof el !== "object") continue;
+    out.push(cleanEntry(el, finiteOr(el.turn, 0)));
+  }
+  return out;
 }
 
 /**
@@ -86,23 +142,7 @@ function persist() {
 export function logNotification(entry) {
   if (!entry || typeof entry !== "object") return;
   const list = log();
-  /** @type {NotifEntry} */
-  const e = {
-    turn: gameTurn(),
-    cause: typeof entry.cause === "string" ? entry.cause : "other",
-    kind: typeof entry.kind === "string" ? entry.kind : "cause",
-    summary: typeof entry.summary === "string" ? entry.summary : "",
-    event: typeof entry.event === "string" ? entry.event : undefined,
-    people: typeof entry.people === "number" ? entry.people : 0,
-    points: typeof entry.points === "number" ? entry.points : 0,
-    fromCity: entry.fromCity,
-    fromCiv: entry.fromCiv,
-    toCity: entry.toCity,
-    toCiv: entry.toCiv,
-    crossCiv: !!entry.crossCiv,
-    ownLoss: !!entry.ownLoss
-  };
-  list.unshift(e);
+  list.unshift(cleanEntry(entry, gameTurn()));
   if (list.length > MAX_ENTRIES) list.length = MAX_ENTRIES;
   persist();
 }

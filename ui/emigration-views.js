@@ -20,6 +20,7 @@ import { renderCityFlows, buildCivFlows } from "/emigration/ui/emigration-city-f
 import { renderStances } from "/emigration/ui/emigration-detail-views.js";
 import { renderLedger } from "/emigration/ui/emigration-ledger-view.js";
 import { renderNotifications } from "/emigration/ui/emigration-notifications-view.js";
+import { renderChronicle } from "/emigration/ui/emigration-chronicle-view.js";
 
 
 /**
@@ -271,6 +272,7 @@ export function dashboardModel(input) {
       { title: "Settlements", kind: "cityflows", cities: d.myCities || [] },
       { title: "Immigration policies", kind: "stances", rows: stanceRows(d.civs || []) },
       { title: "Migration notifications", kind: "notifications" },
+      { title: "Migration Chronicle", kind: "chronicle" },
       { title: "Guide", kind: "guide" }
     ]
   };
@@ -461,7 +463,8 @@ function el(tag, cls, text) {
 const SECTION_VIEWS = {
   flow: renderNetworkOrFlow,
   pies: renderCityFlows, cityflows: renderCityFlows,
-  notifications: (/** @type {HTMLElement} */ body) => renderNotifications(body), guide: renderGuide
+  notifications: (/** @type {HTMLElement} */ body) => renderNotifications(body),
+  chronicle: (/** @type {HTMLElement} */ body) => renderChronicle(body), guide: renderGuide
 };
 // Renderers that consume `section.rows` (flexbox tables).
 /** @type {Record<string, (body: HTMLElement, rows: *[]) => void>} */
@@ -495,7 +498,7 @@ function renderSectionBody(body, section, controlsHost) {
 const TAB_LABELS = {
   flow: "Network", ledger: "Net Migration (Table)", pies: "Causes",
   stances: "Policies",
-  cityflows: "My Cities", notifications: "Notifications", guide: "Guide"
+  cityflows: "My Cities", notifications: "Notifications", chronicle: "Chronicle", guide: "Guide"
 };
 
 /**
@@ -648,15 +651,20 @@ export function renderDashboardTabbed(target, model, rebuild) {
       wrap.appendChild(el("div", "emig-sample-badge", "Sample data ; preview (switch to Live in Options)"));
     }
     appendSnapshotReminder(wrap);
-    const body = el("div", "emig-tabbody");
+    // The Numbers (Scaled/Civ) control row is per-section, so it's rebuilt on every tab change into
+    // its own host: shown only where the section bears switchable counts, and hidden where the section
+    // owns its own units control (Network) or shows none to switch (stances/notifications/chronicle/
+    // guide). Matches the embedded page (appendControlRow), so the Guide tab carries no stray toggle.
+    const body = el("div", "emig-tabbody"), ctrlHost = el("div", "emig-ctrl-host");
     let active = 0;
     const show = (/** @type {number} */ i) => {
       active = i;
+      ctrlHost.innerHTML = "";
+      appendOpt(ctrlHost, buildControlRow(wantsUnitsToggle(sections[i]), () => (rebuild ? rebuild() : show(active))));
       body.innerHTML = "";
       renderSectionBody(body, sections[i]);
     };
-    // The Numbers (Scaled/Civ) control row. A change re-gathers so the counts re-apply.
-    appendOpt(wrap, buildControlRow(true, () => (rebuild ? rebuild() : show(active))));
+    wrap.appendChild(ctrlHost);
     wrap.appendChild(makeTabBar(sections, show));
     wrap.appendChild(body);
     target.appendChild(wrap);
@@ -668,7 +676,7 @@ export function renderDashboardTabbed(target, model, rebuild) {
 
 // Sections the "Numbers:" units chip doesn't apply to: "flow" has its own inline Units toggle, and
 // stances / notifications / guide show no population counts to switch.
-const NO_UNITS_TOGGLE = new Set(["flow", "stances", "notifications", "guide"]);
+const NO_UNITS_TOGGLE = new Set(["flow", "stances", "notifications", "chronicle", "guide"]);
 
 /**
  * Whether to show the in-panel "Numbers:" units chip for a section: only the count-bearing tables/pies
@@ -710,8 +718,13 @@ function subtabRebuild(opts, body, section) {
  * @param {*} section The active section.
  */
 function appendControlRow(wrap, opts, body, section) {
-  const host = (opts && opts.controlsHost) || wrap;
-  if (opts && opts.controlsHost) opts.controlsHost.innerHTML = ""; // re-populate the shared row
+  const candidateHost = opts && opts.controlsHost;
+  const host = candidateHost
+    && typeof candidateHost.appendChild === "function"
+    && typeof candidateHost.innerHTML === "string"
+    ? candidateHost
+    : wrap;
+  if (host !== wrap) host.innerHTML = ""; // re-populate the shared row
   if (section.kind === "guide") return;
   appendOpt(host, buildControlRow(wantsUnitsToggle(section, opts), () => subtabRebuild(opts, body, section)));
 }

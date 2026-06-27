@@ -31,10 +31,23 @@ const SUBTABS = [
   { id: "cityflows", label: "Settlements", title: "Settlements" },
   { id: "stances", label: "Immigration Policies", title: "Immigration policies" },
   { id: "notifications", label: "Notifications", title: "Migration notifications" },
+  // A written history of the world's great migrations; prose, so it opts out of the per-civ banner.
+  { id: "chronicle", label: "Chronicle", title: "A written history of the world's migrations", hidePolicyBanner: true },
   // The Guide is a static reference matrix with no per-civ data, so the host's analytics-visibility
   // policy banner is meaningless there, opt it out (the host reads `hidePolicyBanner`).
   { id: "guide", label: "Guide", title: "What counts", hidePolicyBanner: true }
 ];
+
+const PANEL_ID = "emig_migration_panel";
+const REGISTERED_FLAG = "__emigMigrationPageRegistered";
+const QUEUED_FLAG = "__emigMigrationPageQueued";
+
+/** @param {*} container */
+function isValidContainer(container) {
+  return !!container
+    && typeof container.appendChild === "function"
+    && typeof container.innerHTML === "string";
+}
 
 /**
  * Render one migration dashboard section into a Demographics-provided container. When the host renders
@@ -46,6 +59,7 @@ const SUBTABS = [
  * @param {*} [ctx] The Demographics render context (may carry `groupView`).
  */
 function renderInto(container, kind, ctx) {
+  if (!isValidContainer(container)) return;
   try {
     const groupControlled = ctx && (ctx.groupView === "scaled" || ctx.groupView === "civ");
     if (groupControlled) {
@@ -66,7 +80,7 @@ function renderInto(container, kind, ctx) {
  * per-civ migration line graphs registered onto this same page by emigration-demographics.js.
  */
 const PANEL_SPEC = {
-  id: "emig_migration_panel",
+  id: PANEL_ID,
   pageLabel: "Emigration",
   title: "Migration",
   tabs: SUBTABS,
@@ -97,6 +111,7 @@ const HUB_PAGES = [
   { id: "emig_cities", label: "My Cities", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "cityflows", c) },
   { id: "emig_policies", label: "Policies", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "stances", c) },
   { id: "emig_notifications", label: "Notifications", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "notifications", c) },
+  { id: "emig_chronicle", label: "Chronicle", tier: "standard", hidePolicyBanner: true, render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "chronicle", c) },
   { id: "emig_guide", label: "Guide", tier: "standard", hidePolicyBanner: true, render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "guide", c) }
 ];
 
@@ -118,14 +133,17 @@ function hostSupportsHubs(api) {
  * @returns {boolean} Whether anything registered.
  */
 function doRegister(api) {
+  if (api && api[REGISTERED_FLAG]) return true;
   if (hostSupportsHubs(api)) {
     // Keep the panel (NON top-level) for the ledger group-member routing; contribute the flat pages.
     api.registerPanel(Object.assign({}, PANEL_SPEC, { topLevel: false }));
     api.registerHubPages("migration", HUB_PAGES, { after: MIGRATION_ANCHOR });
+    api[REGISTERED_FLAG] = true;
     return true;
   }
   if (typeof api.registerPanel === "function") {
     api.registerPanel(PANEL_SPEC);
+    api[REGISTERED_FLAG] = true;
     return true;
   }
   return false;
@@ -141,7 +159,11 @@ export function registerMigrationPage() {
   try {
     const api = (/** @type {*} */ (globalThis).DemographicsMetricsAPI ??= {});
     if (doRegister(api)) return true;
-    (api.pending ??= []).push(doRegister);
+    api.pending ??= [];
+    if (!api[QUEUED_FLAG]) {
+      api.pending.push(doRegister);
+      api[QUEUED_FLAG] = true;
+    }
     return false;
   } catch (_) {
     return false;

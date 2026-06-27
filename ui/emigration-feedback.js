@@ -24,19 +24,85 @@ import {
   civAdjective,
   actionHint,
   warRefugeeName,
-  localDigestMessage
+  localDigestMessage,
+  disasterName
 } from "/emigration/ui/emigration-naming.js";
 import { warAggressors } from "/emigration/ui/emigration-war.js";
-import { formatBoth } from "/emigration/ui/emigration-population.js";
+import { worstDisasterTypeForOwner } from "/emigration/ui/emigration-disasters.js";
+import { formatBothExact } from "/emigration/ui/emigration-population.js";
 import { causeLabel, notificationAccent } from "/emigration/ui/emigration-causes.js";
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 
 const NEWS_KEY = "EmigrationNews_v1";
+const NEWS_SCHEMA_VERSION = 2;
+const MAX_ANNOUNCED_KEYS = 1024;
 
 /** @type {{ announced: Record<string, number>, lastToastTurn: number } | null} */
 let _news = null;
+
+/**
+ * @returns {{ announced: Record<string, number>, lastToastTurn: number }} Empty news state.
+ */
+function emptyNewsState() {
+  return { announced: {}, lastToastTurn: 0 };
+}
+
+/**
+ * Resolve persisted payload from a legacy or schema envelope blob.
+ * @param {*} parsed Parsed JSON value.
+ * @returns {*} Payload object, or null.
+ */
+function payloadFromBlob(parsed) {
+  if (!parsed || typeof parsed !== "object") return null;
+  const payload = typeof parsed.v === "number" && parsed.data && typeof parsed.data === "object"
+    ? parsed.data
+    : parsed;
+  return payload && typeof payload === "object" ? payload : null;
+}
+
+/**
+ * @param {*} turn Candidate turn.
+ * @returns {number} Normalized turn.
+ */
+function normalizeTurn(turn) {
+  return typeof turn === "number" && isFinite(turn) ? Math.max(0, Math.floor(turn)) : 0;
+}
+
+/**
+ * Normalize announced milestone map.
+ * @param {*} announced Candidate map.
+ * @returns {Record<string, number>} Sanitized map.
+ */
+function normalizeAnnounced(announced) {
+  /** @type {Record<string, number>} */
+  const out = {};
+  if (!announced || typeof announced !== "object") return out;
+  let n = 0;
+  for (const [key, tier] of Object.entries(announced)) {
+    if (n >= MAX_ANNOUNCED_KEYS) break;
+    if (typeof key !== "string" || !key.length) continue;
+    if (typeof tier !== "number" || !isFinite(tier)) continue;
+    out[key] = Math.max(0, Math.floor(tier));
+    n++;
+  }
+  return out;
+}
+
+/**
+ * Normalize persisted news state (legacy or schema envelope).
+ * @param {*} parsed Parsed JSON value.
+ * @returns {{ announced: Record<string, number>, lastToastTurn: number }|null} Normalized state.
+ */
+function normalizeNewsState(parsed) {
+  const payload = payloadFromBlob(parsed);
+  if (!payload) return null;
+  return {
+    announced: normalizeAnnounced(payload.announced),
+    lastToastTurn: normalizeTurn(payload.lastToastTurn)
+  };
+}
 
 /**
  * The raw persisted world-news string, or null.
@@ -54,9 +120,7 @@ function rawNews() {
 function loadNews() {
   try {
     const raw = rawNews();
-    const o = typeof raw === "string" && raw.length ? JSON.parse(raw) : null;
-    if (!o || typeof o !== "object") return null;
-    return { announced: o.announced || {}, lastToastTurn: o.lastToastTurn || 0 };
+    return typeof raw === "string" && raw.length ? normalizeNewsState(JSON.parse(raw)) : null;
   } catch (_) {
     return null;
   }
@@ -67,14 +131,18 @@ function loadNews() {
  * @returns {{ announced: Record<string, number>, lastToastTurn: number }} State.
  */
 function newsState() {
-  if (!_news) _news = loadNews() || { announced: {}, lastToastTurn: 0 };
+  if (!_news) _news = loadNews() || emptyNewsState();
   return _news;
 }
 
 /** Persist the world-news state. */
 function persistNews() {
   try {
-    Configuration?.editGame?.()?.setValue?.(NEWS_KEY, JSON.stringify(_news));
+    const normalized = normalizeNewsState(_news) || emptyNewsState();
+    Configuration?.editGame?.()?.setValue?.(
+      NEWS_KEY,
+      JSON.stringify({ v: NEWS_SCHEMA_VERSION, data: normalized })
+    );
   } catch (_) {
     /* ignore */
   }
@@ -284,7 +352,12 @@ function eventNameFor(cause, srcOwner) {
   if ((cause === "war" || cause === "conquest") && typeof srcOwner === "number") {
     return warRefugeeName(srcOwner, warAggressors(srcOwner));
   }
-  if (cause === "disaster") return recentDisasterName();
+  if (cause === "disaster") {
+    // Name the disaster striking THIS civ (its worst active event), not the globally most-recent one
+    // — a "Greek refugee crisis" must read "the Greek volcano", never a flood on another continent.
+    const type = typeof srcOwner === "number" ? worstDisasterTypeForOwner(srcOwner) : null;
+    return (type && disasterName(type)) || recentDisasterName();
+  }
   return null;
 }
 
@@ -328,6 +401,23 @@ function refugeePassTotals(migrations) {
 }
 
 /**
+ * Whether a fresh refugee-crisis tier was reached for `pid` (cumulative crossed a new
+ * worldRefugeeThreshold multiple). Stamps and persists the new tier when so, so it fires once.
+ * @param {number} pid Source civ id. @param {number} cum Cumulative refugees produced.
+ * @returns {boolean} True when a new tier was crossed (and recorded).
+ */
+function newCrisisTier(pid, cum) {
+  if (!(cum >= CONFIG.worldRefugeeThreshold)) return false;
+  const tier = Math.floor(cum / CONFIG.worldRefugeeThreshold);
+  const s = newsState();
+  const key = "civ" + pid;
+  if ((s.announced[key] || 0) >= tier) return false;
+  s.announced[key] = tier;
+  persistNews();
+  return true;
+}
+
+/**
  * Fire a refugee-crisis alert when a civ's CUMULATIVE refugees cross a worldRefugeeThreshold
  * milestone - once per tier, so a long war produces a few headlines, not one per turn. The cumulative
  * total only GATES the announcement; the headline names the SPECIFIC war/disaster driving it (no
@@ -337,13 +427,7 @@ function refugeePassTotals(migrations) {
  * @param {{people:number, points:number}} [pass] This pass's refugee outflow for the civ (displayed).
  */
 function crisisMilestone(pid, cum, pass) {
-  if (!(cum >= CONFIG.worldRefugeeThreshold)) return;
-  const tier = Math.floor(cum / CONFIG.worldRefugeeThreshold);
-  const s = newsState();
-  const key = "civ" + pid;
-  if ((s.announced[key] || 0) >= tier) return;
-  s.announced[key] = tier;
-  persistNews();
+  if (!newCrisisTier(pid, cum)) return;
   const cause = dominantRefugeeCause(pid);
   const event = eventNameFor(cause, pid);
   const people = pass ? pass.people : cum;
@@ -351,12 +435,12 @@ function crisisMilestone(pid, cum, pass) {
   // WHO the crisis hit, spoiler-guarded: an unmet civ is never named in world news
   // (mirrors the dashboard's "Unmet" mask) — it's reported as "an unmet civilization".
   const who = civHidden(pid) ? UNMET_CIV_LABEL : civAdjective(pid);
-  const ev = { cause, civ: who, people: formatBoth(people, points),
+  const ev = { cause, civ: who, people: formatBothExact(people, points),
     warName: event || undefined, eventName: event || undefined };
   const head = refugeeHeadline(ev); // leads with WHO (spoiler-guarded) for event-named causes
   const ownLoss = pid === localPlayerId(); // red only when it's the player's OWN civ in crisis
-  logNotification({ kind: "crisis", cause, event: event || undefined, summary: head, people, points,
-    fromCiv: who, ownLoss });
+  logNotification({ kind: "crisis", cause, event: event || undefined, summary: head,
+    people, points, fromCiv: who, ownLoss });
   announceImportant(head, cause, ownLoss);
 }
 
@@ -396,7 +480,7 @@ function toastPerCause(migrations) {
     ptsByCause[m.cause] = (ptsByCause[m.cause] || 0) + (m.points || 0);
   }
   for (const cause of Object.keys(peopleByCause)) {
-    const head = refugeeHeadline({ cause, people: formatBoth(peopleByCause[cause], ptsByCause[cause]) });
+    const head = refugeeHeadline({ cause, people: formatBothExact(peopleByCause[cause], ptsByCause[cause]) });
     const hint = actionHint(cause);
     logNotification({ kind: "cause", cause, summary: head,
       people: peopleByCause[cause], points: ptsByCause[cause] });
@@ -504,7 +588,7 @@ function eventMessage(ev) {
   const destGold = ev.crossCiv && typeof ev.destOwner === "number"
     ? assimilationCostFor(ev.destOwner).gold : 0;
   return localDigestMessage({
-    cause: ev.cause, people: formatBoth(ev.people, ev.points), city: ev.srcName || "a settlement",
+    cause: ev.cause, people: formatBothExact(ev.people, ev.points), city: ev.srcName || "a settlement",
     crossCiv: ev.crossCiv, destName: dv.toCity || dv.toCiv, destGold
   });
 }

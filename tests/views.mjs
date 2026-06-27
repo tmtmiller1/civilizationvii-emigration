@@ -55,10 +55,10 @@ function testPressureRowsSortDescAndFlag() {
 
 function testDashboardModelSections() {
   const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [] });
-  assert.equal(m.sections.length, 7); // network + flowmap merged into one toggleable "flow" section
+  assert.equal(m.sections.length, 8); // network + flowmap merged into one toggleable "flow" section
   assert.deepEqual(
     m.sections.map((s) => s.kind),
-    ["flow", "ledger", "pies", "cityflows", "stances", "notifications", "guide"]
+    ["flow", "ledger", "pies", "cityflows", "stances", "notifications", "chronicle", "guide"]
   );
 }
 
@@ -114,7 +114,7 @@ function testDashboardModelEmptySections() {
   // Dashboard model should handle empty civs, flows, and notifications gracefully,
   // still providing all section structures (just with no rows).
   const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [] });
-  assert.equal(m.sections.length, 7);
+  assert.equal(m.sections.length, 8);
   // Verify that each section has required properties even when empty
   for (const section of m.sections) {
     assert.equal(typeof section.kind, "string");
@@ -248,6 +248,42 @@ function testDashboardModelNodeNetwork() {
   assert.ok(flowSection.network, "network property present");
 }
 
+function testFlowNetworkRespectsMaxEdgeCap() {
+  const flows = [];
+  for (let i = 0; i < 40; i++) {
+    flows.push({
+      from: i,
+      to: i + 100,
+      fromName: "Civ" + i,
+      toName: "Civ" + (i + 100),
+      fromCity: "A" + i,
+      toCity: "B" + i,
+      people: 1000 + i,
+      byCause: { war: 1000 + i }
+    });
+  }
+  const net = flowNetwork(flows, 7);
+  assert.equal(net.edges.length, 7, "civ edge count capped by maxEdges");
+}
+
+function testFlowNetworkRespectsCityEdgeCap() {
+  const flows = [];
+  for (let i = 0; i < 200; i++) {
+    flows.push({
+      from: 1,
+      to: 2,
+      fromName: "Rome",
+      toName: "Egypt",
+      fromCity: "City" + i,
+      toCity: "Target" + i,
+      people: 500 + i,
+      byCause: { war: 500 + i }
+    });
+  }
+  const net = flowNetwork(flows);
+  assert.equal(net.cityEdges.length, 80, "city edge count is capped to keep render cost bounded");
+}
+
 testFlowNetworkWithIsolatedCivs();
 testDashboardModelEmptySections();
 testCivLedgerSortingStabilityOnTie();
@@ -259,5 +295,7 @@ testPressureRowsEmptyDestinations();
 testFlowNetworkCivEdgeMerging();
 testFlowNetworkNodeTotalCalculation();
 testDashboardModelNodeNetwork();
+testFlowNetworkRespectsMaxEdgeCap();
+testFlowNetworkRespectsCityEdgeCap();
 
 console.log("views harness passed");

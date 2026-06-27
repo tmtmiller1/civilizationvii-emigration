@@ -91,6 +91,9 @@ const OPT_SAMPLE = "sampleData";
 const OPT_SNAP = "snapshotInterval";
 const OPT_DOCK = "showDockButton";
 const OPT_VISIBILITY = "visibilityOverride";
+const OPT_DILEMMA = "refugeeDilemmas";
+const OPT_INTEGRATION = "ethnicIntegration";
+const OPT_RETURN = "returnMigration";
 const SNAP_DEFAULT = 1; // turns per migration-timeline snapshot (user-adjustable 1..5; 1 = every turn)
 
 // String-keyed views over the typed config objects (same references), so the
@@ -209,6 +212,81 @@ export function getShowDockButton() {
 export function setShowDockButton(on) {
   _dock = !!on;
   ModOptions.save(MOD_ID, OPT_DOCK, _dock ? 1 : 0);
+}
+
+/** @type {boolean|null} */
+let _dilemma = null;
+
+/**
+ * Whether the occasional refugee-DECISION pop-up is enabled. Default ON. When off, the rare narrative
+ * dilemmas never appear (the rest of the mod is unaffected). The simulation never depends on this.
+ * @returns {boolean} True when refugee dilemmas may appear.
+ */
+export function getDilemmasEnabled() {
+  if (_dilemma == null) {
+    const v = ModOptions.load(MOD_ID, OPT_DILEMMA);
+    _dilemma = v == null ? true : v === 1; // default ON; persisted as 1/0
+  }
+  return _dilemma;
+}
+
+/**
+ * Set + persist whether refugee dilemmas are enabled.
+ * @param {boolean} on Whether dilemmas may appear.
+ */
+export function setDilemmasEnabled(on) {
+  _dilemma = !!on;
+  ModOptions.save(MOD_ID, OPT_DILEMMA, _dilemma ? 1 : 0);
+}
+
+/** @type {boolean|null} */
+let _integration = null;
+
+/**
+ * Whether ethnic INTEGRATION (newcomers drifting toward the host identity over time) is enabled.
+ * Default ON. Falls back to the CONFIG default when there's no saved preference.
+ * @returns {boolean} True when integration runs.
+ */
+export function getIntegrationEnabled() {
+  if (_integration == null) {
+    const v = ModOptions.load(MOD_ID, OPT_INTEGRATION);
+    _integration = v == null ? CONFIG.integrationEnabled !== false : v === 1;
+  }
+  return _integration;
+}
+
+/**
+ * Set + persist whether ethnic integration is enabled.
+ * @param {boolean} on Whether integration runs.
+ */
+export function setIntegrationEnabled(on) {
+  _integration = !!on;
+  ModOptions.save(MOD_ID, OPT_INTEGRATION, _integration ? 1 : 0);
+}
+
+/** @type {boolean|null} */
+let _return = null;
+
+/**
+ * Whether RETURN migration (diasporas going home when the homeland recovers) is enabled. Default ON.
+ * Falls back to the CONFIG default when there's no saved preference.
+ * @returns {boolean} True when return migration runs.
+ */
+export function getReturnEnabled() {
+  if (_return == null) {
+    const v = ModOptions.load(MOD_ID, OPT_RETURN);
+    _return = v == null ? CONFIG.returnEnabled !== false : v === 1;
+  }
+  return _return;
+}
+
+/**
+ * Set + persist whether return migration is enabled.
+ * @param {boolean} on Whether return migration runs.
+ */
+export function setReturnEnabled(on) {
+  _return = !!on;
+  ModOptions.save(MOD_ID, OPT_RETURN, _return ? 1 : 0);
 }
 
 /** @type {number|null} */
