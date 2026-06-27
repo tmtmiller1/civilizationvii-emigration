@@ -7,7 +7,7 @@
         <SpecialThanks>Machiavelli's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>1.6.0</Version>
+        <Version>1.6.1</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -164,6 +164,10 @@
                     <Item>ui/emigration-chronicle.js</Item>
                     <Item>ui/emigration-diaspora.js</Item>
                     <Item>ui/emigration-chronicle-view.js</Item>
+                    <!-- Truthful "quarter" naming for diaspora lines: real city features (city-features,
+                         engine reads) resolved to an always-true phrase (quarters, pure). -->
+                    <Item>ui/emigration-city-features.js</Item>
+                    <Item>ui/emigration-quarters.js</Item>
                     <!-- Return migration (homeland recovery): moves real population back home. -->
                     <Item>ui/emigration-return.js</Item>
                     <!-- Refugee dilemmas: rare narrative decision modal + its trigger logic. -->
