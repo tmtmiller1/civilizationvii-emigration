@@ -173,6 +173,7 @@
         <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="ja_JP"><Text>{2_People}が{1_City}を去る。</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="ja_JP"><Text>難民危機：{1_Civ}、{2_People}が避難。</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="ja_JP"><Text>{1_Civ}: {2_Headline}</Text></Replace>
+        <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="ja_JP"><Text>{1_Civ} 対 未知の文明</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="ja_JP"><Text>{1_People}が不満を抱き{2_City}を去りました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="ja_JP"><Text>{1_People}がより豊かな隣国を求めて{2_City}を去りました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="ja_JP"><Text>{1_People}が{2_City}周辺の戦闘から逃れました。</Text></Replace>
@@ -233,6 +234,10 @@
         <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_BODY" Language="ja_JP"><Text>移住は最初のターンから世界全体をシミュレートします。出会ったかどうかにかかわらず、生存するすべての主要文明が対象です。これにより移住は正直なものになります。人々は世界の実際の状態に従って移動し、後で占領した都市は住民の本当の出自の歴史を引き継ぎます。[n][n]ネタバレを避けるため、ダッシュボード、グラフ、マップレンズは出会った文明のみを表示します。未接触の文明も背景で計算されますが、既定では非表示で、まだ遭遇していない相手の情報が分からないようになっています。共有の分析表示設定（Demographics Modと同じもの）で表示範囲を広げられます。自分の文明のみ、出会った文明、またはすべてです。[n][n]要するに、すべては計算され、何を見るかはあなた次第です。シミュレーション範囲（世界全体か既知のみか）と画面表示は独立した設定です。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_TITLE" Language="ja_JP"><Text>ダッシュボードの見方</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="ja_JP"><Text>移住ダッシュボードは、ゲーム内ドックのボタンから、またはDemographics Modの「移住」ページから開けます。タブで構成されています。[n][n]• 移住ネットワーク。通過する人口の量に応じて大きさが変わる文明のアニメーション表示。[n]• フローマップ。同じ流れを矢印で描き、個々の都市までたどれます。[n]• 文明一覧。流入、流出、純増減、難民、損失。[n]• 人々が移動する理由の内訳（原因別）。[n]• 自分の都市を、人口を失いそうな順に並べたもの。[n]• 移民政策。誰が移民歓迎または排斥の方針を採っているか。[n]• ガイド。何が移住を引き起こし、何が引き起こさないかの早見表。[n][n]マップ上では、民族構成レンズ（Shift+E）が各集落を住民の出自で塗り分け、居住タイルにカーソルを合わせると正確な構成がツールチップに表示されます。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_TITLE" Language="ja_JP"><Text>民族構成と同化</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_BODY" Language="ja_JP"><Text>各集落は、住民がどの文明の出自かによって、人々がどこから来たのかを記録し、征服を経てもその記録を保ちます。民族構成レンズ（Shift+E）はこれをタイルごとのモザイクで示します。密集した都市の中心は支配的な出自の色で、少数派は農村の周縁に集まり、入植済みタイルのツールチップに正確な内訳が表示されます。[n][n]時とともに、新参者は受け入れ先の文明へと同化していきます。ただし出身地との戦争や都市の不穏があれば、少数派は別個のまま留まります。そして出身地が受け入れ国と和平を保ち再び繁栄すると、帰還移住がやがてその一部を故郷へと連れ戻し、実際の人口を動かします。これらはすべて既定で有効で、オプションで無効にできます。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="ja_JP"><Text>移住の年代記と難民の決断</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="ja_JP"><Text>移住の年代記は、ダッシュボードの専用タブで、世界の大移動を短い歴史として記します。戦争や災害で空になった都市、故郷を遠く離れて根を下ろした離散の民、故郷の回復とともに帰る人々。出来事ごとの詳細は通知ログに残り、年代記はその物語です。[n][n]ときおり、本当の激変（短期間に複数の都市を征服する隣国や、疫病の危機）が難民の波をあなたの地へ送ると、どう迎えるか問われます。受け入れる、辺境に定住させる、あるいは追い返す。これらの決断はまれで影響も軽く、オプションで無効にできます。出会っていない文明は伝聞としてのみ呼ばれ、明かされることはありません。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="ja_JP"><Text>移住</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="ja_JP"><Text>繁栄</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_ETHNICITY" Language="ja_JP"><Text>民族</Text></Replace>

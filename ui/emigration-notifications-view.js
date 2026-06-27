@@ -9,7 +9,7 @@
 
 import { notificationLog } from "/emigration/ui/emigration-notifications.js";
 import { causeLabel, notificationAccent } from "/emigration/ui/emigration-causes.js";
-import { formatBoth } from "/emigration/ui/emigration-population.js";
+import { formatBothExact } from "/emigration/ui/emigration-population.js";
 
 /**
  * Make an element with an optional class + text.
@@ -98,10 +98,10 @@ function detailEl(e) {
   if (isDeath(e)) {
     // A death (the crisis-loss channel) has no destination, frame the count as casualties rather
     // than people who moved, in the game's own losses register.
-    if (e.people || e.points) addLine(panel, "Casualties", formatBoth(e.people, e.points));
+    if (e.people || e.points) addLine(panel, "Casualties", formatBothExact(e.people, e.points));
   } else {
     addLine(panel, e.crossCiv ? "Moved to" : "To", place(e.toCity, e.toCiv));
-    if (e.people || e.points) addLine(panel, "People", formatBoth(e.people, e.points));
+    if (e.people || e.points) addLine(panel, "People", formatBothExact(e.people, e.points));
   }
   if (e.summary) addLine(panel, "Note", e.summary);
   return panel;

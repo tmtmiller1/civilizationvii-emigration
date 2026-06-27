@@ -173,6 +173,7 @@
         <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="zh_Hans_CN"><Text>{2_People}离开{1_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="zh_Hans_CN"><Text>难民危机：{1_Civ}，{2_People}流离失所。</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="zh_Hans_CN"><Text>{1_Civ}: {2_Headline}</Text></Replace>
+        <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="zh_Hans_CN"><Text>{1_Civ} 对阵未知文明</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="zh_Hans_CN"><Text>{1_People}因不满而离开了{2_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="zh_Hans_CN"><Text>{1_People}为寻求更繁荣的邻邦而离开了{2_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="zh_Hans_CN"><Text>{1_People}逃离了{2_City}周边的战火。</Text></Replace>
@@ -233,6 +234,10 @@
         <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_BODY" Language="zh_Hans_CN"><Text>迁徙从第一回合起就模拟整个世界：所有存活的主要文明，而不仅是你已相遇的文明。这让迁徙保持真实：人们依据世界的实际状态移动，而你之后占领的城市会保留其居民真实的来源历史。[n][n]为避免剧透，仪表板、图表和地图镜头只显示你已相遇的文明。未相遇的文明仍在后台计算，但默认隐藏，使你无法得知尚未遇到的对手。你可以通过共享的分析可见性设置（与 Demographics 模组相同）扩大显示范围：仅自己的文明、已相遇的文明或全部。[n][n]简而言之：一切都会被模拟，而看到什么由你决定。模拟范围（整个世界或仅已相遇）与屏幕显示是相互独立的设置。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_TITLE" Language="zh_Hans_CN"><Text>解读仪表板</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="zh_Hans_CN"><Text>可从游戏内工具栏的按钮，或从 Demographics 模组的「迁徙」页面打开迁徙仪表板。它分为多个标签页：[n][n]• 迁徙网络：以通过各文明的人口量决定大小的动画视图。[n]• 流向图：将同样的流动绘制为箭头，可一直追溯到具体城市。[n]• 文明清单：流入、流出、净变化、难民与损失。[n]• 人口迁移原因的分类细目。[n]• 你的定居点，按各自距离失去人口的远近排序。[n]• 移民政策：谁采取了亲移民或反移民立场。[n]• 指南：关于哪些因素会引发迁徙、哪些不会的快速参考。[n][n]在地图上，民族构成镜头（Shift+E）按居民来源为每个定居点着色，将鼠标悬停在已定居的地块上即可在提示中看到确切的构成。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_TITLE" Language="zh_Hans_CN"><Text>族群构成与融合</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_BODY" Language="zh_Hans_CN"><Text>每个聚落都记录其居民的来历，按每个人所属的文明来源，并在征服之后依然保留这份记录。族群构成镜头（Shift+E）以逐格马赛克呈现：人口密集的城市核心为主导来源的颜色，少数族群聚集在乡村边缘，已定居地块的提示框中会显示确切构成。[n][n]随着时间推移，新来者会融入接纳他们的文明，除非与其故土的战争或城市中的动荡使某个少数族群保持独立。而一旦故土与接纳方和平相处并重新繁荣，回归移民便会逐渐将其部分人口带回故乡，移动真实人口。以上皆为默认开启，可在选项中关闭。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="zh_Hans_CN"><Text>移民编年史与难民抉择</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="zh_Hans_CN"><Text>移民编年史位于面板的专属标签页，将世界上的大迁徙写成简短的历史：被战争或灾害清空的城市、在远离故乡之地扎根的离散族群、在故土复苏后归来的人们。逐事件的细节仍保留在通知记录中，编年史则是其中的故事。[n][n]偶尔，当真正的剧变（短期内攻占数座城市的邻邦，或一场瘟疫危机）将一波难民推向你的疆土时，你会被询问如何接纳他们：接纳他们、安置于边疆，或将其拒之门外。这些抉择十分罕见、影响轻微，并可在选项中关闭。你尚未会面的文明仅以传闻提及，绝不揭示。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="zh_Hans_CN"><Text>迁徙</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="zh_Hans_CN"><Text>繁荣</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_ETHNICITY" Language="zh_Hans_CN"><Text>民族构成</Text></Replace>

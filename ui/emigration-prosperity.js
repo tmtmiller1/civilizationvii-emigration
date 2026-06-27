@@ -100,7 +100,9 @@ function polityBonus(s, tune) {
   // side positive happiness does NOT boost yields in 1.4.1 (it feeds celebrations), so the attraction
   // of happy/joyous/ecstatic settlements is genuinely under-modeled and gets full weight.
   const stage = s.stage || 0;
-  const stageW = stage >= 0 ? CONFIG.happinessStageWeight : CONFIG.happinessStageWeight * CONFIG.happinessStageMiseryScale;
+  const stageW = stage >= 0
+    ? CONFIG.happinessStageWeight
+    : CONFIG.happinessStageWeight * CONFIG.happinessStageMiseryScale;
   let b = stageW * stage * tune.happinessPull;
   const p = s.polity;
   if (p) {

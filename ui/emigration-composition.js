@@ -23,6 +23,9 @@
 // State persists in GameConfiguration under its own key (additive; older saves simply start empty).
 
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
+import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { atWarBetween } from "/emigration/ui/emigration-geography.js";
+import { getIntegrationEnabled } from "/emigration/ui/emigration-settings.js";
 
 const STATE_KEY = "EmigrationEthnos_v1";
 
@@ -62,8 +65,77 @@ function readStored() {
   return typeof v === "string" && v.length ? v : null;
 }
 
+const MAX_CITIES = 8192; // bound the persisted map even if a prior save's pruning never ran
+
 /**
- * Load (once) the persisted composition.
+ * `v` when it is a finite number, else the fallback. Mirrors the per-field coercion the sibling state
+ * files use so a corrupt/old-schema value can never reach the read paths as a string/NaN/undefined.
+ * @param {*} v A raw value. @param {number} d The fallback. @returns {number} A finite number.
+ */
+function numOr(v, d) {
+  return typeof v === "number" && isFinite(v) ? v : d;
+}
+
+/**
+ * Clean a raw byCiv map to finite, positive buckets, summing them.
+ * @param {*} raw A raw byCiv object. @returns {{byCiv:Record<string,number>, sum:number}} Clean map + sum.
+ */
+function cleanByCiv(raw) {
+  /** @type {Record<string, number>} */
+  const byCiv = {};
+  let sum = 0;
+  for (const k of Object.keys(raw)) {
+    const v = raw[k];
+    if (typeof v === "number" && isFinite(v) && v > 0) {
+      byCiv[k] = v;
+      sum += v;
+    }
+  }
+  return { byCiv, sum };
+}
+
+/**
+ * Coerce one persisted composition entry into the canonical shape, or null to drop it. Guards every
+ * read path (compositionForCity/Owner, sumByCiv, pruneStale) against a corrupt or old-schema blob:
+ * `byCiv` must be a plain object of finite positive buckets, and total/owner/seenTurn finite numbers.
+ * @param {*} e A raw entry. @returns {CityComposition|null} The clean entry, or null.
+ */
+function normalizeEntry(e) {
+  if (!e || typeof e !== "object" || !e.byCiv || typeof e.byCiv !== "object") return null;
+  const { byCiv, sum } = cleanByCiv(e.byCiv);
+  if (sum <= 0) return null;
+  const total = numOr(e.total, 0);
+  return {
+    owner: numOr(e.owner, -1),
+    byCiv,
+    total: total > 0 ? total : sum,
+    name: typeof e.name === "string" ? e.name : "",
+    seenTurn: Math.max(0, numOr(e.seenTurn, 0))
+  };
+}
+
+/**
+ * Normalize the persisted cities map: keep only well-formed entries, bounded to MAX_CITIES.
+ * @param {*} rawCities The raw cities object. @returns {Record<string, CityComposition>} The clean map.
+ */
+function normalizeCities(rawCities) {
+  /** @type {Record<string, CityComposition>} */
+  const out = {};
+  let n = 0;
+  for (const key of Object.keys(rawCities)) {
+    if (n >= MAX_CITIES) break;
+    const clean = normalizeEntry(rawCities[key]);
+    if (clean) {
+      out[key] = clean;
+      n++;
+    }
+  }
+  return out;
+}
+
+/**
+ * Load (once) the persisted composition. Every entry is normalized on load so no malformed/old-schema
+ * entry can reach the (uncaught) lens/tooltip/readout render paths.
  * @returns {CompositionState} State.
  */
 function load() {
@@ -73,7 +145,7 @@ function load() {
     if (raw) {
       const o = JSON.parse(raw);
       if (o && o.cities && typeof o.cities === "object") {
-        _s = { cities: o.cities };
+        _s = { cities: normalizeCities(o.cities) };
         return _s;
       }
     }
@@ -234,7 +306,28 @@ function applyMigrationSource(s, m, nameToLoc, pts) {
   if (typeof m.srcOwner !== "number" || !m.srcName) return;
   const srcKey = nameToLoc.get(m.srcName);
   const srcE = srcKey ? s.cities[srcKey] : null;
-  if (srcE) removeProportional(srcE, pts);
+  if (!srcE) return;
+  // A return move takes a SPECIFIC origin's people (the returnees), so remove them from that origin's
+  // bucket; everything else (ordinary departure / death) removes proportionally across the mix.
+  if (typeof m.originCiv === "number") removeFromOrigin(srcE, m.originCiv, pts);
+  else removeProportional(srcE, pts);
+}
+
+/**
+ * Remove `pts` people specifically from one origin bucket (a return takes that origin's own people),
+ * falling back to a proportional removal for any remainder the bucket couldn't cover.
+ * @param {CityComposition} e Entry. @param {number} civ The origin to remove. @param {number} pts People.
+ */
+function removeFromOrigin(e, civ, pts) {
+  if (!(pts > 0)) return;
+  const have = e.byCiv[civ] || 0;
+  const take = Math.min(have, pts);
+  if (take > 0) {
+    e.byCiv[civ] = have - take;
+    if (e.byCiv[civ] <= 1e-9) delete e.byCiv[civ];
+  }
+  const rest = pts - take;
+  if (rest > 0) removeProportional(e, rest);
 }
 
 /**
@@ -251,7 +344,10 @@ function applyMigrationDest(s, m, nameToLoc, nameToOwner, pts) {
   const destKey = nameToLoc.get(m.destName);
   const destE = destKey ? s.cities[destKey] : null;
   if (!destE) return;
-  const origin = typeof m.srcOwner === "number" ? m.srcOwner : nameToOwner.get(m.srcName);
+  // Returnees carry their TRUE origin (m.originCiv) home; an ordinary arrival is attributed to the
+  // source owner (the migrant's origin civ).
+  const origin = typeof m.originCiv === "number" ? m.originCiv
+    : typeof m.srcOwner === "number" ? m.srcOwner : nameToOwner.get(m.srcName);
   if (typeof origin === "number") addCiv(destE, origin, pts);
 }
 
@@ -291,9 +387,76 @@ function reconcileCity(s, w, turn) {
 }
 
 /**
+ * Drift a settlement's non-owner origins toward the owner's bucket (ethnic integration): each origin
+ * moves by the fraction `rateFor` returns for it. People shift BETWEEN buckets, so the total (and the
+ * reconciled population) is unchanged; a bucket emptied below DUST is dropped. Newcomers thus take on
+ * the host identity over time, except where `rateFor` returns ~0 (war with the homeland / unrest).
+ * @param {CityComposition} e The entry. @param {number} owner Current owner id.
+ * @param {(originCiv:number)=>number} rateFor Per-origin integration fraction in [0,1].
+ */
+function integrateCity(e, owner, rateFor) {
+  if (!e || typeof owner !== "number") return;
+  for (const k of Object.keys(e.byCiv)) {
+    const o = Number(k);
+    if (o === owner) continue;
+    const p = e.byCiv[k] || 0;
+    const r = rateFor(o);
+    if (!(r > 0) || !(p > 0)) continue;
+    const move = p * Math.min(1, r);
+    e.byCiv[k] = p - move;
+    e.byCiv[owner] = (e.byCiv[owner] || 0) + move;
+    if (e.byCiv[k] < DUST) delete e.byCiv[k];
+  }
+}
+
+/**
+ * Apply ethnic integration across every settlement this pass: each non-owner origin drifts toward the
+ * owner at integrationRate, held fully apart while the owner is at war with that origin's civ
+ * (integrationWarRate) and slowed while the settlement is in unrest (integrationUnrestRate). No-op
+ * when disabled. Drift is intentionally gentle, so a diaspora persists long enough to read as one.
+ * @param {CompositionState} s State. @param {{key:string, owner:number}[]} work The reconciled cities.
+ * @param {*[]} signals This pass's city signals (for the per-settlement unrest read).
+ */
+function integratePass(s, work, signals) {
+  if (!getIntegrationEnabled() || !(CONFIG.integrationRate > 0)) return;
+  /** @type {Map<string, *>} */
+  const sigByLoc = new Map();
+  for (const sig of signals || []) {
+    const k = locKey(sig.city);
+    if (k) sigByLoc.set(k, sig);
+  }
+  for (const w of work) {
+    const e = s.cities[w.key];
+    if (!e) continue;
+    const sig = sigByLoc.get(w.key);
+    const base = sig && sig.unrest ? CONFIG.integrationUnrestRate : CONFIG.integrationRate;
+    integrateCity(e, w.owner, (o) => (atWarBetween(w.owner, o) ? CONFIG.integrationWarRate : base));
+  }
+}
+
+// A settlement not observed for this many turns is treated as gone (razed) and dropped, so the
+// composition map stays bounded over a long game. The mod reads ALL cities each pass (fog-independent),
+// so absence means the settlement no longer exists. Math.abs handles the age-local turn reset.
+const STALE_TURNS = 50;
+
+/**
+ * Drop composition entries for settlements not seen in a long time (razed / gone), keeping the map
+ * bounded. Conservative: only entries untouched for STALE_TURNS turns are removed, so a settlement
+ * transiently out of the tracked set has ample time to reappear before it's forgotten.
+ * @param {CompositionState} s State. @param {number} turn The current turn.
+ */
+function pruneStale(s, turn) {
+  for (const k of Object.keys(s.cities)) {
+    const seen = s.cities[k].seenTurn || 0;
+    if (Math.abs(turn - seen) > STALE_TURNS) delete s.cities[k];
+  }
+}
+
+/**
  * Update the per-settlement composition for one pass, from the current city signals and this pass's
- * migrations. Seeds new cities, applies migrations, reconciles births/losses, and persists. Never
- * throws, composition is cosmetic and must not disrupt a pass.
+ * migrations. Seeds new cities, applies migrations, reconciles births/losses, drifts minorities toward
+ * the host identity (integration), prunes long-gone settlements, and persists. Never throws,
+ * composition is cosmetic and must not disrupt a pass.
  * @param {*[]} signals Current city signals ({city, owner, population}).
  * @param {*[]} migs This pass's migrations.
  */
@@ -312,6 +475,8 @@ export function recordCompositionPass(signals, migs) {
     }
     for (const m of migs || []) applyMigration(s, m, nameToLoc, nameToOwner);
     for (const w of work) reconcileCity(s, w, turn);
+    integratePass(s, work, signals);
+    pruneStale(s, turn);
     save();
     return conquests;
   } catch (_) {
@@ -390,6 +555,7 @@ export const __test = {
   recordCompositionPass,
   compositionForCity,
   compositionForOwner,
+  integrateCity,
   reset: () => {
     _s = { cities: {} };
   },

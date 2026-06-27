@@ -82,6 +82,21 @@
  * @property {number} openBordersBonus Cross-civ pull bonus for an Open Borders deal partner.
  * @property {number} transitLagTurns Max turns migrants spend in transit before arriving (0 = off).
  * @property {number} transitHexPerTurn Hexes covered per transit turn (distance → lag scale).
+ * @property {number} dilemmaSpreeCaptures Captures by one civ in the window that read as a spree.
+ * @property {number} dilemmaWindowTurns Rolling window (turns) for counting a conquest spree.
+ * @property {number} dilemmaMaxPerAge Hard cap on refugee dilemmas per age.
+ * @property {number} dilemmaCooldownTurns Minimum turns between refugee dilemmas.
+ * @property {number} dilemmaGoldWelcome One-time gold cost to welcome refugees in.
+ * @property {number} dilemmaGoldFrontier One-time gold cost to settle refugees on the frontier.
+ * @property {boolean} returnEnabled Whether diasporas return home when the homeland recovers.
+ * @property {number} returnRate Fraction of a recovered-homeland diaspora that may return per turn.
+ * @property {number} returnMinShare Min diaspora share of the host city to draw returnees.
+ * @property {number} returnMinPoints Min origin points the host must hold to send one back.
+ * @property {number} returnCooldownTurns Min turns between returns out of the same host settlement.
+ * @property {boolean} integrationEnabled Whether newcomers drift toward the host identity over time.
+ * @property {number} integrationRate Base per-turn fraction of a minority that integrates.
+ * @property {number} integrationWarRate Integration rate while the host is at war with the origin civ.
+ * @property {number} integrationUnrestRate Integration rate while the settlement is in unrest.
  * @property {number} assimilationLoadPerMigrant Assimilation load added to a dest civ per migrant.
  * @property {number} assimilationCostPerPop Extra load multiplier per dest population point.
  * @property {number} assimilationDecay Per-turn decay of the load (= the assimilation duration).

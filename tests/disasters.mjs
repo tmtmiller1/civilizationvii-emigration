@@ -9,6 +9,12 @@ globalThis.Game = {
 };
 globalThis.ComponentID = { toBitfield: (cid) => (cid ? cid.owner * 1000 + cid.id : 0) };
 const KV = {};
+KV["EmigrationDisaster_v1"] = JSON.stringify({
+  byCity: { "0:9": 5, bad: -2 },
+  typeByCity: { "0:9": "RANDOM_EVENT_TEST" },
+  observedTurn: { "0:9": 1 },
+  decayTurn: 1
+});
 globalThis.Configuration = {
   getGame: () => ({ getValue: (k) => (k in KV ? KV[k] : null) }),
   editGame: () => ({ setValue: (k, v) => (KV[k] = v) })
@@ -21,6 +27,7 @@ const { CONFIG } = await import("/emigration/ui/emigration-config.js");
 
 const close = (a, b) => Math.abs(a - b) < 1e-9;
 const cityA = { id: { owner: 0, id: 1 }, owner: 0, isInfected: false };
+const cityLegacy = { id: { owner: 0, id: 9 }, owner: 0, isInfected: false };
 
 function step(city, n) {
   TURN = n;
@@ -32,6 +39,12 @@ function testDisabledIsInert() {
   CONFIG.disastersEnabled = false;
   cityA.isInfected = true;
   assert.equal(observeDisaster(cityA), 0); // off → no distress, no state
+}
+
+function testLegacyStateLoads() {
+  CONFIG.disastersEnabled = true;
+  const v = observeDisaster(cityLegacy);
+  assert.ok(v >= 0, "legacy persisted distress should be readable");
 }
 
 function testInfectedAccruesDistress() {
@@ -61,11 +74,19 @@ function testEventSpikeScalesBySeverity() {
   assert.ok(close(observeDisaster(cityA) - before, 24));
 }
 
+function testPersistWritesSchemaEnvelope() {
+  const persisted = JSON.parse(KV["EmigrationDisaster_v1"]);
+  assert.equal(persisted.v, 2, "disaster state should persist as schema envelope");
+  assert.ok(persisted.data && persisted.data.byCity, "envelope should include data.byCity");
+}
+
 testDisabledIsInert();
+testLegacyStateLoads();
 testInfectedAccruesDistress();
 testIdempotentWithinTurn();
 testStandingPlagueAccumulatesThenDecays();
 testEventSpikeScalesBySeverity();
+testPersistWritesSchemaEnvelope();
 
 CONFIG.disastersEnabled = false; // restore default
 console.log("disasters harness passed");

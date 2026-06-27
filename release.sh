@@ -91,7 +91,7 @@ rsync -a --exclude='.git' --exclude='.gitignore' --exclude='.DS_Store' --exclude
     --exclude='CONTRIBUTING.md' --exclude='scripts' --exclude='i18n' --exclude='README.pdf' \
     --exclude='report.md' \
     --exclude='migration-probe.modinfo' --exclude='ui/migration-probe.js' \
-    --exclude='coverage' --exclude='reports' --exclude='.stryker-tmp' \
+    --exclude='coverage*' --exclude='reports' --exclude='.stryker-tmp' \
     --exclude='.c8rc.json' --exclude='stryker.config.json' \
     "$SRC_DIR"/ "$TARGET_DIR"/
 

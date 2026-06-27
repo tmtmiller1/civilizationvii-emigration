@@ -7,6 +7,161 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-06-27
+
+A population-realism release, in lockstep with the **Demographics** mod's 2.1.0.
+The "people" counts behind every migration figure are reworked so they read at a
+believable historical scale in **every age** instead of ballooning in the late
+game. Gameplay rules are unchanged — this is how the numbers are *displayed*.
+
+### Changed
+- **Migration people-counts are now grounded in Civilization VII's own per-era
+  growth formula.** The old `raw^1.11 × 12,000 × 1.009^turn` curve is gone.
+  Each settlement's "people" figure is derived from the game's real growth cost
+  for the age it's in, so a point leaving a town in Antiquity reads as a few
+  thousand while the same point in a Modern metropolis reads far larger — with a
+  smooth, continuous hand-off across age boundaries and no dependence on the raw
+  turn count (so it no longer drifts with game speed). Still pinned bit-for-bit
+  to Demographics by a shared parity test, so the two mods always agree on a
+  given settlement.
+- **Per-event variation now leans on real game signals.** A migration's reported
+  people-count still varies so two events never read identically, but the lean is
+  now drawn from the source settlement's actual happiness and urban/rural mix
+  (its identity only as a tie-breaker) rather than a bare name hash.
+
+### Added
+- **Modern megacities & "one more turn".** The largest Modern settlements now
+  scale into the real 10–38 million range, and if you keep playing past the
+  natural end of the game the figures keep growing instead of flat-lining
+  (bounded so they can never run away).
+
+### Internal
+- Cross-mod parity reference extended to the new growth-formula, megacity,
+  ceiling, and overtime constants; new scaling, anchor, and continuity tests.
+
+## [1.3.1] - 2026-06-27
+
+A polish, stability, and quality-assurance release. No gameplay rules changed.
+Two visible fixes (chart sizing and a stray toggle), a round of crash-hardening
+against corrupt or old saves, and a new install-integrity gate that makes a
+broken release effectively impossible to ship.
+
+### Fixed
+- **Migration charts now fill the window at every resolution.** The Network and
+  Flow diagrams were capped to roughly half the viewport height, leaving a large
+  empty band beneath them on tall / high-resolution displays (e.g. 3024x1964).
+  They now measure the space actually available and grow to use it, while still
+  shrinking to fit smaller resolutions, and keep their 2:1 aspect so the dots
+  never distort.
+- **The "Scaled Pop / Civ Pop" number toggle no longer appears on the Guide
+  tab.** It was showing on every tab of the standalone Migration window,
+  including the static Guide (under both the "What counts" and "FAQ" pills). It
+  is now hidden wherever there are no population counts to switch (Guide, Network,
+  Policies, Notifications, Chronicle), matching the embedded Demographics view.
+
+### Changed
+- Confirmed and documented that migration-event population counts use the exact
+  same age-scaled formula as the Demographics settlements board
+  (`raw^1.11 x 12000 x 1.009^turn`, plus the Modern megacity ramp). A single
+  point fleeing early in Antiquity reads as a believable ~13,000 people rather
+  than hundreds of thousands, and the two mods always agree for the same
+  settlement. No numbers changed; this behaviour is now locked in by a test.
+
+### Hardening (crash safety)
+- **Resize-listener leak fixed.** The new chart-sizing code registered a window
+  `resize` handler on every chart render (tab switch, Dots/Flow toggle, Units
+  toggle) and only cleaned it up lazily, so handlers accumulated for the whole
+  session and could cause a reflow hitch on the next window resize. A single
+  shared listener now tracks only the current chart.
+- **Ethnic-composition state is validated on load.** A corrupt or old-schema
+  saved blob could previously throw on the ethnicity-lens, hover-tooltip, and
+  city-readout render paths. Every entry is now validated and coerced on load
+  (bad entries dropped, totals derived from the data, the map bounded), so a
+  malformed save can no longer crash those screens.
+- **Chronicle and Notification logs are validated on load**, and their writes no
+  longer emit `undefined`-valued fields. The in-memory cache now stays identical
+  to what is saved (no divergence across a reload), and old-schema entries can't
+  reach the views as wrong-typed values.
+
+### Tests and quality gates
+- New **`validate-package`** install-integrity gate, run on every `verify` and
+  every release. It checks: XML well-formedness of the modinfo and all data/text
+  files across all 10 locales (catching, for example, an unescaped `&` that the
+  regex localisation test would miss); that every file the modinfo references
+  exists; no duplicate Civilopedia primary keys; full locale parity (every key
+  present, correct `Language` attribute, no duplicate tags); that every LOC key
+  used in the database is defined; and that every mod-owned database identifier
+  is uniquely namespaced so it can never collide with the base game or another
+  Workshop mod.
+- Verified **zero** database / text / id / UI collisions against 230 other
+  published mods, confirming Emigration is safe to install alongside them.
+- New **`scaling-demographics-parity`** test pins migration-event scaling to the
+  Demographics formula across the full Antiquity -> Modern range, failing if
+  either mod's constants drift.
+- New **`composition-malformed`** and **`persistence-normalization`** tests prove
+  the hardened loaders drop or repair corrupt saves without throwing, and that
+  log writes round-trip cleanly through save/reload.
+- **Major automated test-coverage expansion.** Around two dozen new branch- and
+  defensive-path regression harnesses now exercise error paths and edge cases
+  across the mod's subsystems, not just the happy path:
+  - screen lifecycle and controls (`screen-controls-throws`,
+    `screen-controls-unavailable`, `screen-context-manager-branches`,
+    `screen-lifecycle-branches`, `views-render-branches`);
+  - effects, dividends and migrant units (`effects-branches-extra`,
+    `dividend-defensive-branches`, `dividend-normalization-branches`);
+  - events and causes (`event-attribution-branches`, `per-cause-metrics`,
+    `disasters-branches-extra`, `combat-branches`);
+  - cities and Demographics integration (`cities-branches-extra`,
+    `cities-signals`, `demographics-branches-extra`, `flow-history-branches-extra`);
+  - ethnicity, governance, settings and config
+    (`ethnicity-distribution-branches`, `governance-branches-extra`,
+    `settings-branches-extra`, `config-types`, `window-state`).
+
+  The automated suite now runs 95 test scripts in total.
+
+### Internal
+- Extracted the chart viewport-fit logic into `ui/emigration-network-fit.js`.
+- `max-len` and `no-unused-vars` remain error-level; all new code passes ESLint,
+  `tsc`, and the full test suite, which now runs the four new harnesses above.
+
+## [1.3.0] - 2026-06-26
+
+### Added
+- **Migration Chronicle.** A new "Chronicle" tab in the Demographics Migration
+  screen writes the world's great migrations as short history: cities that
+  emptied in war or disaster, diasporas that took root far from home, and peoples
+  who returned once their homeland recovered.
+- **Per-tile ethnicity lens.** The Ethnic Composition lens now paints each
+  settlement as a density mosaic instead of one flat colour: urban tiles read
+  denser, minorities cluster on the rural fringe, and each origin's share of the
+  population is preserved across the tiles.
+- **Ethnic integration over time.** Newcomers gradually take on their host's
+  identity, held apart while their homeland is at war with the host or the city
+  is in unrest, so a contested city keeps its colours on the lens.
+- **Return migration.** When a homeland is at peace and prospering again, some of
+  its people abroad set out for home, moving real population back over time.
+- **Refugee decisions.** Once in a while, when a neighbour's conquest spree or a
+  plague crisis sends a wave of refugees toward your lands, a short decision
+  appears: welcome them, settle them on the frontier, or turn them away. Rare by
+  design, and toggleable under Options (Emigration, refugee decisions).
+
+### Changed
+- **War refugee events name both sides.** A war was reported as "British vs. the
+  enemy" whenever the other side wasn't tracked. It now names both belligerents
+  when you have met them, and reads "British vs. an unmet civilization" when you
+  have not, so a war is always named without revealing a civ you haven't met.
+- **Exact, varied people counts.** Notification figures are now precise numbers
+  (for example 35,670) rather than rounded prose, and vary per settlement so two
+  same-size places never report the identical count.
+- **Immediate disaster popups name the settlement struck**, and a refugee crisis
+  now names the disaster that hit that civilization rather than the most recent
+  one anywhere in the world.
+
+### Fixed
+- **Return migration no longer inflates world population.** It now draws only
+  from settlements that have rural population to give, and is paced as an
+  occasional ebb rather than a constant stream.
+
 ## [1.2.0] - 2026-06-25
 
 ### Changed

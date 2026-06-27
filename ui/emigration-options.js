@@ -40,6 +40,12 @@ import {
   setShowDockButton,
   getVisibilityOverride,
   setVisibilityOverride,
+  getDilemmasEnabled,
+  setDilemmasEnabled,
+  getIntegrationEnabled,
+  setIntegrationEnabled,
+  getReturnEnabled,
+  setReturnEnabled,
   getTunable,
   setTunable
 } from "/emigration/ui/emigration-settings.js";
@@ -201,6 +207,56 @@ function registerVisibility() {
   });
 }
 
+/** Register the refugee-dilemmas on/off toggle (the occasional narrative decision pop-up). Default
+ * on; rare by design. Turning it off never affects the simulation, only the pop-ups. */
+function registerDilemmas() {
+  Options.addOption({
+    category: CategoryType.Mods,
+    group: MAIN_GROUP,
+    type: OptionType.Checkbox,
+    id: "emigration-dilemmas",
+    initListener: (/** @type {*} */ info) => (info.currentValue = getDilemmasEnabled()),
+    updateListener: (/** @type {*} */ _i, /** @type {*} */ v) => setDilemmasEnabled(!!v),
+    label: "Emigration • refugee decisions",
+    description: "Occasionally, when a great wave of refugees reaches your lands (a neighbor's "
+      + "conquests, a plague), pause for a short decision about how to receive them. Rare by design. "
+      + "Turn off to never see these pop-ups; the simulation is unaffected."
+  });
+}
+
+/** Register the ethnic-integration toggle (newcomers drift toward the host identity over time).
+ * Default on; drives the ethnicity lens. */
+function registerIntegration() {
+  Options.addOption({
+    category: CategoryType.Mods,
+    group: MAIN_GROUP,
+    type: OptionType.Checkbox,
+    id: "emigration-integration",
+    initListener: (/** @type {*} */ info) => (info.currentValue = getIntegrationEnabled()),
+    updateListener: (/** @type {*} */ _i, /** @type {*} */ v) => setIntegrationEnabled(!!v),
+    label: "Emigration • ethnic integration",
+    description: "Migrants gradually take on their host civilization's identity over time, unless war "
+      + "with their homeland or unrest keeps them apart. Shapes the Ethnic Composition lens. On by "
+      + "default; turn off to freeze each settlement's origin mix."
+  });
+}
+
+/** Register the return-migration toggle (diasporas return home when the homeland recovers). Default
+ * on; moves real population. */
+function registerReturn() {
+  Options.addOption({
+    category: CategoryType.Mods,
+    group: MAIN_GROUP,
+    type: OptionType.Checkbox,
+    id: "emigration-return",
+    initListener: (/** @type {*} */ info) => (info.currentValue = getReturnEnabled()),
+    updateListener: (/** @type {*} */ _i, /** @type {*} */ v) => setReturnEnabled(!!v),
+    label: "Emigration • return migration",
+    description: "When a homeland is at peace and prospering again, some of its people abroad set out "
+      + "for home over time. On by default; turn off to keep diasporas where they settled."
+  });
+}
+
 Options.addInitCallback(() => {
   registerNumberMode();
   registerPreset();
@@ -209,5 +265,8 @@ Options.addInitCallback(() => {
   registerDockButton();
   registerNotifications();
   registerVisibility();
+  registerIntegration();
+  registerReturn();
+  registerDilemmas();
   registerAdvancedEditor();
 });
