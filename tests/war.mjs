@@ -7,6 +7,9 @@ globalThis.Configuration = {
   editGame: () => ({ setValue: (k, v) => (KV[k] = v) })
 };
 
+// Prime with a legacy (v1) blob to confirm migration on first load.
+KV["EmigrationWar_v1"] = JSON.stringify({ wars: { "2": [1, 1, "x"] } });
+
 const { recordWarDeclared, recordPeace, warAggressors } = await import(
   "/emigration/ui/emigration-war.js"
 );
@@ -17,6 +20,12 @@ function testRecordAndQuery() {
   recordWarDeclared({ aggressor: 1, target: 2 });
   assert.ok(warAggressors(2).has(1));
   assert.equal(warAggressors(3).size, 0);
+}
+
+function testLegacyStateLoadsAndSanitizes() {
+  const set = warAggressors(2);
+  assert.ok(set.has(1), "legacy aggressor should load");
+  assert.equal(set.size, 1, "duplicates and non-number ids should be dropped");
 }
 
 function testRealPayloadShape() {
@@ -45,6 +54,13 @@ function testPeaceClears() {
   assert.equal(warAggressors(9).size, 0);
 }
 
+function testPersistWritesSchemaEnvelope() {
+  recordWarDeclared({ aggressor: 6, target: 12 });
+  const persisted = JSON.parse(KV["EmigrationWar_v1"]);
+  assert.equal(persisted.v, 2, "war state should be stored with schema envelope");
+  assert.ok(persisted.data && persisted.data.wars && Array.isArray(persisted.data.wars["12"]));
+}
+
 function testAggressorAdjustOrders() {
   CONFIG.ownCivRefugeeBonus = 4;
   CONFIG.aggressorPenalty = 12;
@@ -65,10 +81,12 @@ function testGeoAdjustGatesOnAggressorsArg() {
 }
 
 testRecordAndQuery();
+testLegacyStateLoadsAndSanitizes();
 testRealPayloadShape();
 testCandidateFieldNames();
 testIgnoresGarbage();
 testPeaceClears();
+testPersistWritesSchemaEnvelope();
 testAggressorAdjustOrders();
 testGeoAdjustGatesOnAggressorsArg();
 

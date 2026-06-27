@@ -25,6 +25,7 @@ globalThis.Configuration = {
   getGame: () => ({ getValue: (k) => (k in KV ? KV[k] : null) }),
   editGame: () => ({ setValue: (k, v) => (KV[k] = v) })
 };
+KV["EmigrationNews_v1"] = JSON.stringify({ announced: { seed: 1 }, lastToastTurn: 8 });
 let CUM = {};
 globalThis.EmigrationData = { refugeesCumFor: (pid) => CUM[pid] || 0 };
 
@@ -46,6 +47,15 @@ function testImportantModeNoPerPassSpam() {
   // important mode must stay silent (no per-turn toast).
   reportPassFeedback([{ cause: "war", srcOwner: 1, people: 5000 }]);
   assert.equal(toasts, 0);
+}
+
+function testLegacyNewsCooldownLoadsOnBoot() {
+  CONFIG.notifyMode = 1;
+  CONFIG.notifyCooldownTurns = 5;
+  toasts = 0;
+  TURN = 10;
+  announceImportant("boot-check");
+  assert.equal(toasts, 0, "legacy persisted lastToastTurn should throttle first important toast");
 }
 
 function testCrisisFiresOncePerTier() {
@@ -93,6 +103,17 @@ function testCooldownThrottlesImportant() {
   assert.equal(toasts, 1); // cooldown elapsed → fires
 }
 
+function testPersistWritesNewsSchemaEnvelope() {
+  CONFIG.notifyMode = 1;
+  CONFIG.notifyCooldownTurns = 0;
+  toasts = 0;
+  TURN = 90;
+  announceImportant("persist-check");
+  const persisted = JSON.parse(KV["EmigrationNews_v1"]);
+  assert.equal(persisted.v, 2, "news state should be stored with schema envelope");
+  assert.ok(persisted.data && typeof persisted.data.lastToastTurn === "number");
+}
+
 function testOffModeSilent() {
   CONFIG.notifyMode = 0;
   toasts = 0;
@@ -109,7 +130,7 @@ function testLocalDigestExplainsTheLocalPlayersLoss() {
   CONFIG.notifyWorldNews = false; // isolate from crisis milestones
   CONFIG.notifyCooldownTurns = 0;
   toasts = 0;
-  TURN = 60;
+  TURN = 160;
   reportPassFeedback([
     { srcOwner: 0, destOwner: 1, people: 5000, cause: "unhappiness", crossCiv: true, srcName: "Rome", destName: "Carthage" }
   ]);
@@ -130,7 +151,7 @@ function testLocalDigestIsPerEvent() {
   CONFIG.notifyCooldownTurns = 0;
   clearNotifications();
   toasts = 0;
-  TURN = 80;
+  TURN = 180;
   reportPassFeedback([
     { srcOwner: 0, destOwner: 1, people: 6000, points: 1, cause: "war", crossCiv: true, srcName: "Rome", destName: "Carthage" },
     { srcOwner: 0, destOwner: 1, people: 4000, points: 1, cause: "war", crossCiv: true, srcName: "Rome", destName: "Carthage" },
@@ -153,20 +174,22 @@ function testLocalDigestRespectsCooldown() {
   CONFIG.notifyCooldownTurns = 5;
   const loss = [{ srcOwner: 0, destOwner: 1, people: 3000, cause: "unhappiness", srcName: "Rome" }];
   toasts = 0;
-  TURN = 70;
+  TURN = 170;
   reportPassFeedback(loss);
   assert.equal(toasts, 1); // fires, stamps turn 70
   toasts = 0;
-  TURN = 72;
+  TURN = 172;
   reportPassFeedback(loss);
   assert.equal(toasts, 0); // within cooldown → throttled like any important toast
   delete globalThis.GameContext;
 }
 
 testImportantModeNoPerPassSpam();
+testLegacyNewsCooldownLoadsOnBoot();
 testCrisisFiresOncePerTier();
 testVerboseModeSummarizesEachPass();
 testCooldownThrottlesImportant();
+testPersistWritesNewsSchemaEnvelope();
 testOffModeSilent();
 testLocalDigestExplainsTheLocalPlayersLoss();
 testLocalDigestRespectsCooldown();

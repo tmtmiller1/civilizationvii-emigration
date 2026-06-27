@@ -27,6 +27,9 @@ import {
   monoTurn
 } from "/emigration/ui/emigration-migration-stats.js";
 
+const REGISTERED_FLAG = "__emigMetricsRegistered";
+const QUEUED_FLAG = "__emigMetricsQueued";
+
 /**
  * Read a cumulative-tally function off the live EmigrationData global (those tallies are exposed as
  * methods there, not module exports). Returns 0 when absent.
@@ -382,6 +385,7 @@ const GRAPHS_GROUP = {
  * @param {*} api The DemographicsMetricsAPI.
  */
 function doRegister(api) {
+  if (api && api[REGISTERED_FLAG]) return;
   for (const spec of SPECS) api.registerMetric(spec);
   // Collapse the migration graphs into ONE group with two toggles: the metric (Net Migration /
   // Refugees / …) and the units (Scaled / Civ numbers). Each (member, view) maps to a registered spec;
@@ -394,6 +398,7 @@ function doRegister(api) {
   if (typeof api.registerMetricGroup === "function") {
     api.registerMetricGroup(Object.assign({ pageId }, GRAPHS_GROUP));
   }
+  api[REGISTERED_FLAG] = true;
 }
 
 /**
@@ -405,11 +410,16 @@ function doRegister(api) {
 export function registerMigrationMetric() {
   try {
     const api = (/** @type {*} */ (globalThis).DemographicsMetricsAPI ??= {});
+    if (api[REGISTERED_FLAG]) return true;
     if (typeof api.registerMetric === "function") {
       doRegister(api);
       return true;
     }
-    (api.pending ??= []).push(doRegister);
+    api.pending ??= [];
+    if (!api[QUEUED_FLAG]) {
+      api.pending.push(doRegister);
+      api[QUEUED_FLAG] = true;
+    }
     return false;
   } catch (_) {
     return false;

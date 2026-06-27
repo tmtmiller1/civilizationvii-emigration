@@ -4,6 +4,10 @@ import assert from "node:assert/strict";
 // globals needed — Configuration/Game/Locale are absent, so persistence no-ops and cityName falls
 // back to city.name. The internal state is reset between cases via the __test surface.
 const { __test } = await import("/emigration/ui/emigration-composition.js");
+const { CONFIG } = await import("/emigration/ui/emigration-config.js");
+// The exact-share scenarios below predate ethnic integration; run them without the per-turn drift so
+// their assertions stay deterministic. The dedicated integration case re-enables it locally.
+CONFIG.integrationEnabled = false;
 
 /** A city signal with a stable centre location. */
 function city(x, y, name, owner, population) {
@@ -162,11 +166,69 @@ function testOwnerAggregateConsistency() {
   assert.equal(Math.round(shareOf(emp, 0) * 100), 80);
 }
 
+/**
+ * Ethnic integration: a non-owner minority drifts toward the host over time, held apart by war and
+ * preserving the population total. Uses the pure integrateCity directly (no engine needed).
+ */
+function testIntegrationDrift() {
+  // A city that is 80 owner (1) / 20 foreign (9). One peaceful step at rate 0.25 moves a quarter of
+  // the minority into the owner; the total is unchanged.
+  const e = { owner: 1, byCiv: { 1: 80, 9: 20 }, total: 100, name: "Host", seenTurn: 0 };
+  __test.integrateCity(e, 1, () => 0.25);
+  assert.ok(Math.abs(e.byCiv[9] - 15) < 1e-9, "a quarter of the minority integrated (20 → 15)");
+  assert.ok(Math.abs(e.byCiv[1] - 85) < 1e-9, "the host absorbed them (80 → 85)");
+  assert.ok(Math.abs(e.byCiv[1] + e.byCiv[9] - 100) < 1e-9, "the population total is preserved");
+
+  // War holds them fully apart: rate 0 for the hostile origin → no drift.
+  const w = { owner: 1, byCiv: { 1: 80, 9: 20 }, total: 100, name: "Host", seenTurn: 0 };
+  __test.integrateCity(w, 1, (o) => (o === 9 ? 0 : 0.25));
+  assert.equal(w.byCiv[9], 20, "a homeland-at-war minority does not integrate");
+
+  // A minority drained below DUST is dropped entirely.
+  const d = { owner: 1, byCiv: { 1: 100, 9: 0.04 }, total: 100.04, name: "Host", seenTurn: 0 };
+  __test.integrateCity(d, 1, () => 1);
+  assert.ok(!(9 in d.byCiv), "a fully-integrated trace minority is pruned");
+}
+
+/**
+ * Return migration attributes the move to the returnees' TRUE origin: the host loses that origin
+ * specifically, and the homeland gains that origin (never the host's). Drives the "return" cause.
+ */
+function testReturnAttribution() {
+  __test.reset();
+  // Found a host H (owner 0) and a homeland G (owner 9).
+  __test.recordCompositionPass([city(1, 1, "H", 0, 10), city(2, 2, "G", 9, 6)], []);
+  // 4 people of origin 9 immigrate into H (its population grows to 14).
+  __test.recordCompositionPass(
+    [city(1, 1, "H", 0, 14), city(2, 2, "G", 9, 6)],
+    [{ srcOwner: 9, srcName: "elsewhere", destOwner: 0, destName: "H", points: 4, cause: "war" }]
+  );
+  const hMix = __test.compositionForCity({ location: { x: 1, y: 1 } });
+  assert.equal(Math.round(shareOf(hMix, 9) * 100), Math.round((4 / 14) * 100), "H is ~29% origin-9 before the return");
+
+  // One origin-9 point returns home: H → G, attributed to origin 9. Populations reflect the move
+  // (H 14 → 13, G 6 → 7), exactly as the engine's removeRural/addRural would leave them.
+  __test.recordCompositionPass(
+    [city(1, 1, "H", 0, 13), city(2, 2, "G", 9, 7)],
+    [{ srcOwner: 0, srcName: "H", destOwner: 9, destName: "G", originCiv: 9, points: 1, cause: "return" }]
+  );
+  const h = __test.compositionForCity({ location: { x: 1, y: 1 } });
+  const g = __test.compositionForCity({ location: { x: 2, y: 2 } });
+  assert.equal(Math.round(shareOf(h, 9) * 14), 3, "the host lost one origin-9 point (4 → 3)");
+  assertConsistent(h, 13);
+  // The homeland gained the returnee as origin 9, NOT as the host's civ 0 (the origin override).
+  assert.equal(shareOf(g, 0), 0, "the homeland gains no host-origin people from a return");
+  assert.equal(shareOf(g, 9), 1, "the returnee is home as its own origin");
+  assertConsistent(g, 7);
+}
+
 testFoundWarConquestRegrowth();
 testImmigrationAddsOriginCiv();
 testProportionalEmigration();
 testUntrackedIsNull();
 testNoPhantomDust();
 testOwnerAggregateConsistency();
+testIntegrationDrift();
+testReturnAttribution();
 
 console.log("composition harness passed");

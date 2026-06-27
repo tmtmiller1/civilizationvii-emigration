@@ -15,7 +15,9 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { speedTurns, speedBar } from "/emigration/ui/emigration-game-speed.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { rankByProsperity, distress } from "/emigration/ui/emigration-prosperity.js";
-import { moveRural, removeRural, marginalPeople } from "/emigration/ui/emigration-population.js";
+import {
+  moveRural, removeRural, marginalPeople, settlementSignal
+} from "/emigration/ui/emigration-population.js";
 import { hexDistance } from "/emigration/ui/emigration-geography.js";
 import { tickViolence, siegeEscalation } from "/emigration/ui/emigration-violence.js";
 import { tickDisasters } from "/emigration/ui/emigration-disasters.js";
@@ -183,7 +185,7 @@ function voluntaryCause(src) {
  * @returns {Migration|null} The move/departure record, or null if the write failed.
  */
 function applyOneMove(src, dest, popBefore, state, cause) {
-  const people = marginalPeople(popBefore, state.monoTurn);
+  const people = marginalPeople(popBefore, state.monoTurn, cityName(src.city), settlementSignal(src));
   const lag = transitLag(src, dest, cause);
   const eventKey = eventKeyForMove(src, cause); // specific war/disaster/crisis behind this move
   if (lag <= 0) {
@@ -451,7 +453,7 @@ function processOutletDeath(src, st, state, hasRefuge) {
     srcOwner: src.owner,
     crossCiv: false,
     points: 1,
-    people: marginalPeople(popBefore, state.monoTurn),
+    people: marginalPeople(popBefore, state.monoTurn, cityName(src.city), settlementSignal(src)),
     cause: "attrition",
     eventKey: eventKeyForDeath(src) // specific war/disaster/crisis/famine that killed them
   };
@@ -497,7 +499,7 @@ function planApply(src, ctx, best, budget) {
   let moved = 0;
   for (let i = 0; i < budget && src.rural > CONFIG.minRuralToEmigrate; i++) {
     if (best.dest.owner !== src.owner) { // cross-civ only (matches the flow tally)
-      const ppl = marginalPeople(src.population, ctx.monoTurn);
+      const ppl = marginalPeople(src.population, ctx.monoTurn, cityName(src.city), settlementSignal(src));
       planBump(ctx.acc, src.owner, "out", ppl);
       planBump(ctx.acc, best.dest.owner, "in", ppl);
     }

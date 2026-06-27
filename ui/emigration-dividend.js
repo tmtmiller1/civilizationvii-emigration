@@ -10,10 +10,84 @@
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 const DIV_KEY = "EmigrationDividend_v1";
+const DIV_SCHEMA_VERSION = 2;
+const MAX_POOL_KEYS = 8192;
+const MAX_TICKED_KEYS = 256;
 const DIVIDEND_YIELDS = ["YIELD_SCIENCE", "YIELD_CULTURE", "YIELD_GOLD"];
 
 /** @type {{ pool: Record<string, number>, tickedTurn: Record<string, number> } | null} */
 let _div = null;
+
+/**
+ * @returns {{ pool: Record<string, number>, tickedTurn: Record<string, number> }} Empty dividend state.
+ */
+function emptyState() {
+  return { pool: {}, tickedTurn: {} };
+}
+
+/**
+ * Resolve persisted payload from a legacy or schema envelope blob.
+ * @param {*} parsed Parsed JSON value.
+ * @returns {*} Payload object, or null.
+ */
+function payloadFromBlob(parsed) {
+  if (!parsed || typeof parsed !== "object") return null;
+  const payload = typeof parsed.v === "number" && parsed.data && typeof parsed.data === "object"
+    ? parsed.data
+    : parsed;
+  return payload && typeof payload === "object" ? payload : null;
+}
+
+/**
+ * @param {*} pool Candidate pool map.
+ * @returns {Record<string, number>} Sanitized pool map.
+ */
+function normalizePool(pool) {
+  /** @type {Record<string, number>} */
+  const out = {};
+  if (!pool || typeof pool !== "object") return out;
+  let n = 0;
+  for (const [key, val] of Object.entries(pool)) {
+    if (n >= MAX_POOL_KEYS) break;
+    if (typeof key !== "string" || !key.length) continue;
+    if (typeof val !== "number" || !isFinite(val) || !(val > 0)) continue;
+    out[key] = val;
+    n++;
+  }
+  return out;
+}
+
+/**
+ * @param {*} turns Candidate tick map.
+ * @returns {Record<string, number>} Sanitized tick map.
+ */
+function normalizeTickedTurn(turns) {
+  /** @type {Record<string, number>} */
+  const out = {};
+  if (!turns || typeof turns !== "object") return out;
+  let n = 0;
+  for (const [key, val] of Object.entries(turns)) {
+    if (n >= MAX_TICKED_KEYS) break;
+    if (typeof key !== "string" || !key.length) continue;
+    if (typeof val !== "number" || !isFinite(val)) continue;
+    out[key] = Math.max(0, Math.floor(val));
+    n++;
+  }
+  return out;
+}
+
+/**
+ * @param {*} parsed Parsed persisted state.
+ * @returns {{ pool: Record<string, number>, tickedTurn: Record<string, number> }|null} Normalized state.
+ */
+function normalizeState(parsed) {
+  const payload = payloadFromBlob(parsed);
+  if (!payload) return null;
+  return {
+    pool: normalizePool(payload.pool),
+    tickedTurn: normalizeTickedTurn(payload.tickedTurn)
+  };
+}
 
 /**
  * The current age-local game turn, or 0.
@@ -45,22 +119,26 @@ function divState() {
   if (_div) return _div;
   try {
     const raw = divReadStored();
-    const o = raw ? JSON.parse(raw) : null;
-    if (o && typeof o === "object") {
-      _div = { pool: o.pool || {}, tickedTurn: o.tickedTurn || {} };
+    const normalized = raw ? normalizeState(JSON.parse(raw)) : null;
+    if (normalized) {
+      _div = normalized;
       return _div;
     }
   } catch (_) {
     /* ignore */
   }
-  _div = { pool: {}, tickedTurn: {} };
+  _div = emptyState();
   return _div;
 }
 
 /** Persist the dividend state to GameConfiguration. */
 function divPersist() {
   try {
-    Configuration?.editGame?.()?.setValue?.(DIV_KEY, JSON.stringify(_div));
+    const normalized = normalizeState(_div) || emptyState();
+    Configuration?.editGame?.()?.setValue?.(
+      DIV_KEY,
+      JSON.stringify({ v: DIV_SCHEMA_VERSION, data: normalized })
+    );
   } catch (_) {
     /* ignore */
   }
