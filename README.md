@@ -24,12 +24,14 @@ across civilizations. Immigration brings growth, costs, politics, and Demographi
   Marathon, so migration *feels* the same whether a game is 150 or 600 turns long.
 - **See it on the map.** An **Ethnic Composition** lens paints every settlement as a **per-tile
   mosaic** by the origin civilization of its people — the dense urban core in the dominant origin's
-  color, minorities on the rural fringe, with exact per-origin percentages in the plot tooltip — and a
+  color, minority and diaspora communities staying clearly colored on the rural fringe, with exact
+  per-origin percentages in the plot tooltip — and a
   **Prosperity** lens shades the map **tile by tile** so you can read where the pull actually is.
 - **A world with a memory.** Every settlement remembers where its people came from. Newcomers slowly
   **integrate** into their host, **diasporas return home** once their homeland is at peace and
-  prospering again, and the world's great migrations are written up as short history in a new
-  **Migration Chronicle** tab. Now and then a large refugee wave — a neighbor's conquests, a plague —
+  prospering again, and the world's great migrations are written up as short history — recorded as
+  **Chronicle** entries in the **Notifications** tab, each line drawn from the city's real surroundings.
+  Now and then a large refugee wave — a neighbor's conquests, a plague —
   prompts a brief **decision**: welcome them, settle the frontier, or turn them away. All on by
   default, each switchable in Options.
 - **It tells you why — briefly on screen, permanently in a log.** Population changes are explained in
