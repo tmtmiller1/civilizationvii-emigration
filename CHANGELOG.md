@@ -7,6 +7,49 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-06-27
+
+A disaster-rebalance and game-speed-fairness release. Disasters now hurt in
+proportion to what they actually did (a harmless thunderstorm is nearly free; a
+catastrophic volcano still bites), they no longer over-punish slow speeds, and a
+city always recovers. A sweep of other per-turn effects that quietly drifted with
+the game-speed slider — immigration cost/reward, crisis lethality, alert pacing —
+now keep a constant game-time feel. Gameplay rules are unchanged; this is balance
+and presentation, all adjustable under Options ▸ Mods ▸ Emigration.
+
+### Changed
+- **Disasters now hurt in proportion to what they actually did.** A disaster's
+  population pressure is scaled by its measured impact (tiles pillaged, yields
+  cut, buildings damaged), bounded by its type — so a thunderstorm that pillages
+  nothing is nearly free, while a catastrophic volcano still bites. Type sets the
+  ceiling; the measured impact picks where in that band the event lands.
+- **Disasters no longer over-punish slow game speeds.** A one-shot disaster shock
+  is divided by the speed scalar so its *total* cost over the (longer) fade is
+  about the same on Marathon as on Standard, instead of paying the full per-turn
+  hit on ~3× as many turns. Repeated disasters now stack with diminishing returns
+  under a hard cap, so a city always recovers (no "dead for the rest of the game").
+  All of the above is on by default and fully adjustable under Options ▸ Mods ▸
+  Emigration.
+
+### Fixed
+- **Several per-turn effects now keep the same game-time feel across speeds.** The
+  immigrant-integration cost, the attraction-yield dividend, crisis death-pressure,
+  and the world-news notification spacing were all paced in raw turns; they are now
+  speed-scaled like the rest of the model, so immigration's cost/reward and crisis
+  lethality no longer drift with the speed slider, and alerts no longer go silent on
+  Marathon / spammy on Online.
+- **A city no longer panics off a cliff.** Directional war-flight now ramps in
+  smoothly past the flee threshold instead of snapping to full strength on a single
+  bad turn.
+- **Hardened the people-scaling soft ceiling** against a divide-by-zero in the (today
+  impossible) case of a zero ceiling.
+- **Migration readout now localizes its unit words.** The "population point(s)" /
+  "people" labels in the migration log line are now pulled from localized strings
+  (with the English phrasing as a fail-safe) instead of being hardcoded English.
+- **Exact population numbers now group digits the player's way.** Grouped integers
+  (e.g. `12,400`) use the locale's separators where the runtime exposes them
+  (`12.400`, `12 400`, …), falling back to the previous grouping otherwise.
+
 ## [1.4.0] - 2026-06-27
 
 A population-realism release, in lockstep with the **Demographics** mod's 2.1.0.

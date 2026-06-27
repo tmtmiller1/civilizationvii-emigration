@@ -137,6 +137,12 @@
         <Replace Tag="LOC_EMIG_T_DPP_D" Language="zh_Hans_CN"><Text>城市累积的灾害苦难推动其居民离开的强度。仅在灾害驱动迁徙时使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DDECAY" Language="zh_Hans_CN"><Text>灾害: 每回合苦难衰减</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DDECAY_D" Language="zh_Hans_CN"><Text>灾害过去后其苦难消退的速度（越低越快）。仅在灾害驱动迁徙时使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIMPACT" Language="zh_Hans_CN"><Text>灾害: 按实测影响缩放伤害</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIMPACT_D" Language="zh_Hans_CN"><Text>灾害造成的人口损失取决于它对城市实际造成的影响（被劫掠的地块、削减的产出、受损的建筑），并以其类型为上限。不劫掠任何地块的风暴几乎无害；灾难性的火山仍会带来重创。关闭则恢复旧的按类型固定伤害。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DGAMMA" Language="zh_Hans_CN"><Text>灾害: 小影响提升</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DGAMMA_D" Language="zh_Hans_CN"><Text>轻微灾害仍有多痛（越低越能提升小影响；1.0 为线性）。仅在伤害按实测影响缩放时生效。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DSHOCK" Language="zh_Hans_CN"><Text>灾害: 在各游戏速度间平衡代价</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DSHOCK_D" Language="zh_Hans_CN"><Text>在慢速下，灾害的苦难会持续更多回合；这会减轻每回合的冲击，使总代价在马拉松与标准速度下大致相同。关闭则在每个额外回合都付出完整的每回合冲击（旧的、更严苛的行为）。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY" Language="zh_Hans_CN"><Text>灾害: 移民携带瘟疫</Text></Replace>
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY_D" Language="zh_Hans_CN"><Text>让逃离感染城市的难民在目的地播下较小的疫情苦难，作为传染媒介的迁徙，超出游戏的贸易网络传播。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE" Language="zh_Hans_CN"><Text>通知: 详细度</Text></Replace>
@@ -172,6 +178,10 @@
         <Replace Tag="LOC_EMIG_NEWS_CONQUEST" Language="zh_Hans_CN"><Text>{1_City}遭劫使{2_People}四散。</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="zh_Hans_CN"><Text>{2_People}离开{1_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="zh_Hans_CN"><Text>难民危机：{1_Civ}，{2_People}流离失所。</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_POINT" Language="zh_Hans_CN"><Text>{1_Count} 人口点</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_POINTS" Language="zh_Hans_CN"><Text>{1_Count} 人口点</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_PEOPLE" Language="zh_Hans_CN"><Text>{1_Count} 人</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_BOTH" Language="zh_Hans_CN"><Text>{1_Civ}（{2_People}）</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="zh_Hans_CN"><Text>{1_Civ}: {2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="zh_Hans_CN"><Text>{1_Civ} 对阵未知文明</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="zh_Hans_CN"><Text>{1_People}因不满而离开了{2_City}。</Text></Replace>

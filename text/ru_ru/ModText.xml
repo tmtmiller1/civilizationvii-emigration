@@ -137,6 +137,12 @@
         <Replace Tag="LOC_EMIG_T_DPP_D" Language="ru_RU"><Text>Насколько сильно накопленное бедствие в городе побуждает его жителей уходить. Используется только когда бедствия двигают миграцию.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DDECAY" Language="ru_RU"><Text>Бедствия: спад бедствия за ход</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DDECAY_D" Language="ru_RU"><Text>Как быстро бедствие угасает после того, как минует (ниже = быстрее). Используется только когда бедствия двигают миграцию.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIMPACT" Language="ru_RU"><Text>Бедствия: урон по измеренному воздействию</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIMPACT_D" Language="ru_RU"><Text>Потери населения от бедствия зависят от того, что оно реально причинило городу (разорённые клетки, урезанные доходы, повреждённые постройки), в пределах своего типа. Гроза, ничего не разорившая, почти безвредна; катастрофическое извержение по-прежнему болезненно. Выкл. возвращает прежний фиксированный урон по типу.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DGAMMA" Language="ru_RU"><Text>Бедствия: усиление малых воздействий</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DGAMMA_D" Language="ru_RU"><Text>Насколько ощутимо лёгкое бедствие (ниже — сильнее поднимает малые воздействия; 1,0 — линейно). Используется, только когда урон зависит от измеренного воздействия.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DSHOCK" Language="ru_RU"><Text>Бедствия: выровнять цену между скоростями игры</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DSHOCK_D" Language="ru_RU"><Text>На медленных скоростях бедствие тревожит город больше ходов; это смягчает урон за ход, чтобы ОБЩАЯ цена на «Марафоне» была примерно такой же, как на «Стандарте». Выкл. — полный урон за каждый из этих лишних ходов (прежнее, более жёсткое поведение).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY" Language="ru_RU"><Text>Бедствия: мигранты несут чуму</Text></Replace>
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY_D" Language="ru_RU"><Text>Позволить беженцам из заражённого города сеять меньшее бедствие вспышки в месте назначения, миграция как вектор заражения, помимо распространения по торговой сети игры.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE" Language="ru_RU"><Text>Уведомления: подробность</Text></Replace>
@@ -172,6 +178,10 @@
         <Replace Tag="LOC_EMIG_NEWS_CONQUEST" Language="ru_RU"><Text>Разграбление {1_City} рассеивает {2_People}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="ru_RU"><Text>{2_People} покидают {1_City}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="ru_RU"><Text>Кризис беженцев: {1_Civ}, перемещено {2_People}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_POINT" Language="ru_RU"><Text>{1_Count} очко населения</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_POINTS" Language="ru_RU"><Text>{1_Count} очков населения</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_PEOPLE" Language="ru_RU"><Text>{1_Count} человек</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_BOTH" Language="ru_RU"><Text>{1_Civ} ({2_People})</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="ru_RU"><Text>{1_Civ}: {2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="ru_RU"><Text>{1_Civ} против неизвестной цивилизации</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="ru_RU"><Text>{1_People} покинули {2_City}, недовольные жизнью дома.</Text></Replace>

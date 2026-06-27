@@ -137,6 +137,12 @@
         <Replace Tag="LOC_EMIG_T_DPP_D" Language="it_IT"><Text>Con quanta forza la sofferenza da disastro accumulata in una città spinge la sua gente ad andarsene. Usato solo quando i disastri alimentano la migrazione.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DDECAY" Language="it_IT"><Text>Disastri: decadimento sofferenza per turno</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DDECAY_D" Language="it_IT"><Text>Quanto rapidamente la sofferenza di un disastro svanisce una volta passato (più basso = più rapido). Usato solo quando i disastri alimentano la migrazione.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIMPACT" Language="it_IT"><Text>Disastri: scala il danno in base all'impatto misurato</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIMPACT_D" Language="it_IT"><Text>Il colpo alla popolazione di un disastro segue ciò che ha davvero fatto alla città (caselle saccheggiate, rese ridotte, edifici danneggiati), limitato dal suo tipo. Una tempesta che non saccheggia nulla è quasi gratis; un vulcano catastrofico fa comunque male. Disattivato ripristina il vecchio danno fisso per tipo.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DGAMMA" Language="it_IT"><Text>Disastri: enfasi sugli impatti minori</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DGAMMA_D" Language="it_IT"><Text>Quanto fa ancora male un disastro minore (più basso enfatizza di più i piccoli impatti; 1,0 è lineare). Usato solo quando il danno scala in base all'impatto misurato.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DSHOCK" Language="it_IT"><Text>Disastri: uniforma il costo tra le velocità di gioco</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DSHOCK_D" Language="it_IT"><Text>Alle velocità lente la sofferenza di un disastro dura più turni; questo attenua il morso per turno così che il costo TOTALE sia simile in Maratona e in Standard. Disattivato paga il colpo pieno per turno in ognuno di quei turni extra (il vecchio comportamento, più duro).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY" Language="it_IT"><Text>Disastri: i migranti portano la peste</Text></Replace>
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY_D" Language="it_IT"><Text>Lascia che i profughi in fuga da una città infetta seminino una minore sofferenza da epidemia a destinazione, la migrazione come vettore di contagio, oltre la diffusione tramite rete commerciale del gioco.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE" Language="it_IT"><Text>Notifiche: verbosità</Text></Replace>
@@ -172,6 +178,10 @@
         <Replace Tag="LOC_EMIG_NEWS_CONQUEST" Language="it_IT"><Text>Il sacco di {1_City} disperde {2_People}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="it_IT"><Text>{2_People} lasciano {1_City}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="it_IT"><Text>Crisi di profughi: {1_Civ}, {2_People} sfollate.</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_POINT" Language="it_IT"><Text>{1_Count} punto popolazione</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_POINTS" Language="it_IT"><Text>{1_Count} punti popolazione</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_PEOPLE" Language="it_IT"><Text>{1_Count} persone</Text></Replace>
+        <Replace Tag="LOC_EMIG_COUNT_BOTH" Language="it_IT"><Text>{1_Civ} ({2_People})</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="it_IT"><Text>{1_Civ}: {2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="it_IT"><Text>{1_Civ} contro una civiltà sconosciuta</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="it_IT"><Text>{1_People} hanno lasciato {2_City}, scontenti in patria.</Text></Replace>

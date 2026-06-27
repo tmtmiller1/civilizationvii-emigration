@@ -117,6 +117,21 @@ export function speedDecay(d) {
 }
 
 /**
+ * Scale a one-shot SHOCK magnitude by 1/S. An instantaneous shock (a disaster distress spike) fades
+ * over the same game-time at any speed (see {@link speedDecay}), so on slow speeds it is alive for ~S×
+ * as many turns. Dividing the spike by S keeps the area-under-the-decay-curve (the TOTAL
+ * prosperity-turns of bite) speed-invariant: a stretched fade costs the same overall, just spread
+ * thinner per turn. This completes the speed model — turn-counts ×S, thresholds ×S, decay ^(1/S),
+ * shocks ÷S. Fail-safe to identity at Standard (S=1) or non-positive input.
+ * @param {number} x The Standard-speed shock magnitude.
+ * @returns {number} The speed-adjusted shock.
+ */
+export function speedShock(x) {
+  const s = gameSpeedScalar();
+  return s === 1 || !(x > 0) ? x : x / s;
+}
+
+/**
  * Normalize a monotonic turn for the historical population scaling exponent
  * (scaleGrowth^(turn/S)) so the "representative people" curve tracks game-PROGRESS
  * rather than raw turn count. Cosmetic and CROSS-MOD: it only stays aligned with
