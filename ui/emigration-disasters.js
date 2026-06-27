@@ -16,6 +16,8 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { speedDecay } from "/emigration/ui/emigration-game-speed.js";
 
 const STATE_KEY = "EmigrationDisaster_v1";
+const STATE_SCHEMA_VERSION = 2;
+const MAX_CITY_KEYS = 8192;
 
 /**
  * @typedef {Object} DisasterState
@@ -27,6 +29,93 @@ const STATE_KEY = "EmigrationDisaster_v1";
 
 /** @type {DisasterState | null} */
 let _state = null;
+
+/**
+ * @returns {DisasterState} Empty disaster state.
+ */
+function emptyState() {
+  return { byCity: {}, typeByCity: {}, observedTurn: {}, decayTurn: gameTurn() };
+}
+
+/**
+ * Resolve persisted payload from a legacy or schema envelope blob.
+ * @param {*} parsed Parsed JSON value.
+ * @returns {*} Payload object, or null.
+ */
+function payloadFromBlob(parsed) {
+  if (!parsed || typeof parsed !== "object") return null;
+  const payload = typeof parsed.v === "number" && parsed.data && typeof parsed.data === "object"
+    ? parsed.data
+    : parsed;
+  return payload && typeof payload === "object" ? payload : null;
+}
+
+/**
+ * @param {string} k Candidate map key.
+ * @param {*} v Candidate numeric value.
+ * @param {boolean} nonNegative Whether values must be non-negative.
+ * @returns {boolean} Whether entry is valid.
+ */
+function isValidNumericEntry(k, v, nonNegative) {
+  if (typeof k !== "string" || !k.length) return false;
+  if (typeof v !== "number" || !isFinite(v)) return false;
+  return !(nonNegative && v < 0);
+}
+
+/**
+ * @param {*} m Candidate numeric map.
+ * @param {boolean} nonNegative Whether values must be non-negative.
+ * @returns {Record<string, number>} Sanitized numeric map.
+ */
+function normalizeNumericMap(m, nonNegative) {
+  /** @type {Record<string, number>} */
+  const out = {};
+  if (!m || typeof m !== "object") return out;
+  let n = 0;
+  for (const [k, v] of Object.entries(m)) {
+    if (n >= MAX_CITY_KEYS) break;
+    if (!isValidNumericEntry(k, v, nonNegative)) continue;
+    out[k] = v;
+    n++;
+  }
+  return out;
+}
+
+/**
+ * @param {*} m Candidate disaster type map.
+ * @returns {Record<string, string>} Sanitized type map.
+ */
+function normalizeTypeMap(m) {
+  /** @type {Record<string, string>} */
+  const out = {};
+  if (!m || typeof m !== "object") return out;
+  let n = 0;
+  for (const [k, v] of Object.entries(m)) {
+    if (n >= MAX_CITY_KEYS) break;
+    if (typeof k !== "string" || !k.length) continue;
+    if (typeof v !== "string" || !v.length) continue;
+    out[k] = v;
+    n++;
+  }
+  return out;
+}
+
+/**
+ * @param {*} parsed Parsed persisted state.
+ * @returns {DisasterState|null} Normalized state.
+ */
+function normalizeState(parsed) {
+  const payload = payloadFromBlob(parsed);
+  if (!payload) return null;
+  return {
+    byCity: normalizeNumericMap(payload.byCity, true),
+    typeByCity: normalizeTypeMap(payload.typeByCity),
+    observedTurn: normalizeNumericMap(payload.observedTurn, true),
+    decayTurn: typeof payload.decayTurn === "number" && isFinite(payload.decayTurn)
+      ? Math.max(0, Math.floor(payload.decayTurn))
+      : gameTurn()
+  };
+}
 
 /**
  * Per-event-class distress weights for a severity-1 event (severity multiplies).
@@ -73,27 +162,26 @@ function state() {
   if (_state) return _state;
   try {
     const raw = readStored();
-    const o = raw ? JSON.parse(raw) : null;
-    if (o && typeof o === "object") {
-      _state = {
-        byCity: o.byCity || {},
-        typeByCity: o.typeByCity || {},
-        observedTurn: o.observedTurn || {},
-        decayTurn: o.decayTurn || gameTurn()
-      };
+    const normalized = raw ? normalizeState(JSON.parse(raw)) : null;
+    if (normalized) {
+      _state = normalized;
       return _state;
     }
   } catch (_) {
     /* ignore */
   }
-  _state = { byCity: {}, typeByCity: {}, observedTurn: {}, decayTurn: gameTurn() };
+  _state = emptyState();
   return _state;
 }
 
 /** Persist the distress state to GameConfiguration. */
 function persist() {
   try {
-    Configuration?.editGame?.()?.setValue?.(STATE_KEY, JSON.stringify(_state));
+    const normalized = normalizeState(_state) || emptyState();
+    Configuration?.editGame?.()?.setValue?.(
+      STATE_KEY,
+      JSON.stringify({ v: STATE_SCHEMA_VERSION, data: normalized })
+    );
   } catch (_) {
     /* ignore */
   }
@@ -196,6 +284,40 @@ export function disasterTypeFor(cityKey) {
   if (!cityKey) return null;
   const t = state().typeByCity[cityKey];
   return typeof t === "string" && t ? t : null;
+}
+
+/**
+ * The owner player id encoded in a city key ("owner:id"), or null when unparseable.
+ * @param {string} key A city key.
+ * @returns {number|null} The owner id, or null.
+ */
+function ownerOfKey(key) {
+  const owner = Number(String(key).split(":")[0]);
+  return Number.isInteger(owner) ? owner : null;
+}
+
+/**
+ * The RandomEventType of the WORST disaster currently afflicting any of `owner`'s cities — the one
+ * carrying the most distress right now — for naming that civ's refugee crisis. Returns the disaster
+ * actually striking THAT civ, not the globally most-recent event (which could be a flood on another
+ * continent), so a "Greek refugee crisis" names the Greek disaster. Null when none is active.
+ * @param {number} owner Owner player id.
+ * @returns {string|null} The event type, or null.
+ */
+export function worstDisasterTypeForOwner(owner) {
+  if (typeof owner !== "number") return null;
+  const s = state();
+  let bestType = null;
+  let best = -1;
+  for (const k of Object.keys(s.typeByCity)) {
+    if (ownerOfKey(k) !== owner) continue;
+    const d = s.byCity[k] || 0;
+    if (d > best) {
+      best = d;
+      bestType = s.typeByCity[k];
+    }
+  }
+  return typeof bestType === "string" && bestType ? bestType : null;
 }
 
 /**

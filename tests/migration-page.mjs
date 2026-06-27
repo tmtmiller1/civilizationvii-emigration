@@ -16,6 +16,41 @@ function testRegistersWhenPanelHookPresent() {
   assert.equal(typeof panels[0].render, "function"); // Emigration owns the render callback
 }
 
+function testRenderIgnoresInvalidContainer() {
+  const panels = [];
+  globalThis.DemographicsMetricsAPI = { registerPanel: (/** @type {*} */ s) => panels.push(s) };
+  assert.equal(registerMigrationPage(), true);
+  assert.equal(panels.length, 1);
+  assert.doesNotThrow(() => panels[0].render(null, {}, "flow"));
+  assert.doesNotThrow(() => panels[0].render({}, {}, "flow"));
+}
+
+function testRegisterIsIdempotentWhenApiReady() {
+  const panels = [];
+  globalThis.DemographicsMetricsAPI = { registerPanel: (/** @type {*} */ s) => panels.push(s) };
+  assert.equal(registerMigrationPage(), true);
+  assert.equal(registerMigrationPage(), true);
+  assert.equal(panels.length, 1, "registerPanel should run once");
+}
+
+function testHubModeRegistersPanelAndHubPagesOnce() {
+  const panels = [];
+  const hubs = [];
+  globalThis.DemographicsMetricsAPI = {
+    HUB_IDS: ["migration"],
+    registerPanel: (/** @type {*} */ s) => panels.push(s),
+    registerHubPages: (/** @type {*} */ hubId, /** @type {*} */ pages, /** @type {*} */ opts) =>
+      hubs.push({ hubId, pages, opts })
+  };
+  assert.equal(registerMigrationPage(), true);
+  assert.equal(registerMigrationPage(), true);
+  assert.equal(panels.length, 1, "hub mode panel registration should be idempotent");
+  assert.equal(hubs.length, 1, "hub pages registration should be idempotent");
+  assert.equal(hubs[0].hubId, "migration");
+  assert.equal(Array.isArray(hubs[0].pages), true);
+  assert.equal(hubs[0].opts.after, "population");
+}
+
 function testQueuesWhenApiNotReadyThenDrains() {
   delete globalThis.DemographicsMetricsAPI;
   assert.equal(registerMigrationPage(), false); // API absent → queued
@@ -31,15 +66,29 @@ function testQueuesWhenApiNotReadyThenDrains() {
 function testNoOpOnOlderDemographicsWithoutHook() {
   delete globalThis.DemographicsMetricsAPI;
   registerMigrationPage(); // queues
+  registerMigrationPage(); // should not duplicate pending callbacks
   const api = globalThis.DemographicsMetricsAPI;
+  assert.equal(api.pending.length, 1, "pending registration should be queued once");
   // Older Demographics: drains pending but has no registerPanel → registration must no-op.
   let anyRegistered = false;
   for (const job of api.pending.splice(0)) anyRegistered = job(api) || anyRegistered;
   assert.equal(anyRegistered, false);
 }
 
+function testDeferredQueueDedupeBeforeDrain() {
+  delete globalThis.DemographicsMetricsAPI;
+  assert.equal(registerMigrationPage(), false);
+  assert.equal(registerMigrationPage(), false);
+  const api = globalThis.DemographicsMetricsAPI;
+  assert.equal(api.pending.length, 1, "pending queue remains bounded under repeated calls");
+}
+
 testRegistersWhenPanelHookPresent();
+testRenderIgnoresInvalidContainer();
+testRegisterIsIdempotentWhenApiReady();
+testHubModeRegistersPanelAndHubPagesOnce();
 testQueuesWhenApiNotReadyThenDrains();
 testNoOpOnOlderDemographicsWithoutHook();
+testDeferredQueueDedupeBeforeDrain();
 
 console.log("migration-page harness passed");

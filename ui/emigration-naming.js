@@ -8,6 +8,12 @@
 // fallback when a localized string can't be composed.
 
 import { causeHint, causePermanence } from "/emigration/ui/emigration-causes.js";
+import { civHidden } from "/emigration/ui/emigration-governance.js";
+import { warOpponents } from "/emigration/ui/emigration-war.js";
+
+// The spoiler mask for a belligerent the visibility policy hides (unmet). Matches the dashboard /
+// feedback "Unmet" convention so a war name never leaks a civ the player hasn't met.
+const UNMET_LABEL = "an unmet civilization";
 
 /**
  * Compose a localized string from a LOC key + args, or null if Locale is unavailable
@@ -112,6 +118,18 @@ export function civAdjective(pid) {
   const indep = independentName(pid);
   if (indep) return indep;
   return civDisplayAdjective(pid);
+}
+
+/**
+ * A civ descriptor for NARRATIVE surfaces (the Chronicle, refugee events), where an unmet civ is
+ * named but framed as hearsay rather than revealed outright. This deliberately relaxes the analytics
+ * spoiler mask FOR NARRATIVE ONLY: the dashboard, lens, and notifications keep the strict "an unmet
+ * civilization" mask; only the story surfaces get the real name, wrapped in "we have heard tell of".
+ * @param {number} pid Player id.
+ * @returns {{adj:string, framed:boolean}} The real adjective, and whether to frame it as rumour.
+ */
+export function narrativeCiv(pid) {
+  return { adj: civAdjective(pid), framed: civHidden(pid) };
 }
 
 /**
@@ -238,25 +256,93 @@ function engineWarName(victim, aggressor) {
 }
 
 /**
- * A name for the war a victim is fleeing: the engine's actual war name when resolvable, else an
- * adjective-based "{Victim}–{Aggressor} War".
+ * A belligerent's display name for a war label, SPOILER-MASKED: a civ the visibility policy hides
+ * (unmet) is never named — it reads as "an unmet civilization" instead of a real adjective.
+ * @param {number} pid Player id.
+ * @returns {string|null} The masked name, or null when the id is unusable.
+ */
+function belligerentName(pid) {
+  if (typeof pid !== "number") return null;
+  return civHidden(pid) ? UNMET_LABEL : civAdjective(pid);
+}
+
+/**
+ * The other belligerent to name for a war the `victim` is fleeing. Prefers an explicitly supplied
+ * aggressor list (the event-tracked declarers); falls back to the engine's live at-war set
+ * ({@link warOpponents}) so an untracked / pre-existing war still resolves an opponent. Among the
+ * candidates a MET opponent wins, so the war reads with both sides named rather than masking a side
+ * we could have shown.
  * @param {number} victimPid Victim player id.
- * @param {Iterable<number>} aggressorPids Aggressor ids.
+ * @param {number[]} arr Explicitly supplied aggressor ids (may be empty).
+ * @returns {number|null} The chosen aggressor id, or null when none resolves.
+ */
+function pickAggressor(victimPid, arr) {
+  const candidates = arr.length ? arr : [...warOpponents(victimPid)];
+  let met = null;
+  let any = null;
+  for (const o of candidates) {
+    if (typeof o !== "number") continue;
+    if (any == null) any = o;
+    if (!civHidden(o)) {
+      met = o;
+      break;
+    }
+  }
+  return met != null ? met : any;
+}
+
+/**
+ * The spoiler-masked war name when EITHER side is hidden (unmet): "{Known} vs. an unmet
+ * civilization", naming the side we're allowed to show. Null when neither side is masked (a normal
+ * name applies) or both are masked (nothing safe to name).
+ * @param {string|null} victimName Victim's (already-masked) name.
+ * @param {string|null} aggressorName Aggressor's (already-masked) name, or null.
+ * @returns {string|null} The masked name, or null.
+ */
+function maskedWarName(victimName, aggressorName) {
+  if (aggressorName !== UNMET_LABEL && victimName !== UNMET_LABEL) return null;
+  const known = victimName !== UNMET_LABEL ? victimName
+    : aggressorName !== UNMET_LABEL ? aggressorName : null;
+  if (!known) return null;
+  return loc("LOC_EMIG_WAR_VS_UNMET", known) || known + " vs. an unmet civilization";
+}
+
+/**
+ * Whether both belligerents are MET majors — the only case the engine's own war name is trusted (it
+ * reads "the Enemy" for a minor / unmet side, which would defeat the spoiler mask).
+ * @param {number} victimPid Victim id. @param {number|null} aggressor Aggressor id.
+ * @returns {boolean} True when both are met majors.
+ */
+function bothMetMajors(victimPid, aggressor) {
+  if (aggressor == null) return false;
+  if (isMinorPlayer(victimPid) || isMinorPlayer(aggressor)) return false;
+  return !civHidden(victimPid) && !civHidden(aggressor);
+}
+
+/**
+ * A name for the war a victim is fleeing, naming BOTH sides whenever they're known and met:
+ *   • both met majors → the engine's own war name when it resolves, else "{Victim}–{Aggressor} War".
+ *   • opponent unmet  → "{Known} vs. an unmet civilization" (honours the spoiler mask, so the war is
+ *                       still named without leaking a civ the player hasn't met).
+ *   • no opponent at all (peace already, unreadable) → "{Victim} War" as a last resort.
+ * Replaces the old "{Victim}–the enemy War", which fired whenever the aggressor wasn't event-tracked.
+ * @param {number} victimPid Victim player id.
+ * @param {Iterable<number>} aggressorPids Aggressor ids (may be empty → engine fallback).
  * @returns {string} A war name.
  */
 export function warRefugeeName(victimPid, aggressorPids) {
-  const arr = aggressorPids ? [...aggressorPids] : [];
-  const aggressor = typeof arr[0] === "number" ? arr[0] : null;
-  // Prefer the engine's own war name for major-vs-major wars. For a war involving a city-state /
-  // Independent Power the engine name is generic ("the Enemy"), so build an explicit
-  // "{Victim}–{Aggressor} War" that names the city-state directly via civAdjective.
-  const minorInvolved = isMinorPlayer(victimPid) || (aggressor != null && isMinorPlayer(aggressor));
-  if (!minorInvolved && aggressor != null) {
+  const arr = aggressorPids ? [...aggressorPids].filter((x) => typeof x === "number") : [];
+  const aggressor = pickAggressor(victimPid, arr);
+  const victimName = belligerentName(victimPid);
+  const aggressorName = aggressor != null ? belligerentName(aggressor) : null;
+  const masked = maskedWarName(victimName, aggressorName);
+  if (masked) return masked;
+  if (aggressor != null && bothMetMajors(victimPid, aggressor)) {
     const wn = engineWarName(victimPid, aggressor);
     if (wn) return wn;
   }
-  const a = aggressor != null ? civAdjective(aggressor) : "the enemy";
-  return civAdjective(victimPid) + "–" + a + " War";
+  if (aggressorName && victimName) return victimName + "–" + aggressorName + " War";
+  return (victimName || "the") + " War"; // opponent unresolved (peace already declared, etc.)
 }
 
 /**

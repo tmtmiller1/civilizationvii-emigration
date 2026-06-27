@@ -173,6 +173,7 @@
         <Replace Tag="LOC_EMIG_NEWS_GENERIC" Language="ko_KR"><Text>{2_People}이(가) {1_City}을(를) 떠납니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_CRISIS" Language="ko_KR"><Text>난민 위기: {1_Civ}, {2_People} 쫓겨남.</Text></Replace>
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="ko_KR"><Text>{1_Civ}: {2_Headline}</Text></Replace>
+        <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="ko_KR"><Text>{1_Civ} 대 미지의 문명</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="ko_KR"><Text>{1_People}이(가) 불만을 품고 {2_City}을(를) 떠났습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="ko_KR"><Text>{1_People}이(가) 더 번영한 이웃을 찾아 {2_City}을(를) 떠났습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="ko_KR"><Text>{1_People}이(가) {2_City} 주변의 전투를 피해 달아났습니다.</Text></Replace>
@@ -233,6 +234,10 @@
         <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_BODY" Language="ko_KR"><Text>이주는 첫 턴부터 세계 전체를 시뮬레이션합니다. 만났든 아니든 살아 있는 모든 주요 문명이 대상입니다. 덕분에 이주가 정직해집니다. 사람들은 세계의 실제 상태에 따라 이동하고, 나중에 점령한 도시는 주민의 진짜 출신 내력을 그대로 지닙니다.[n][n]스포일러를 피하기 위해 대시보드, 그래프, 지도 렌즈는 만난 문명만 표시합니다. 만나지 않은 문명도 배경에서 계산되지만 기본적으로 숨겨져 있어 아직 마주치지 않은 경쟁자에 대해 알 수 없습니다. 공유 분석 표시 설정(Demographics 모드가 쓰는 것과 동일)으로 표시 범위를 넓힐 수 있습니다. 자신의 문명만, 만난 문명, 또는 전체입니다.[n][n]요컨대 모든 것이 시뮬레이션되며, 무엇을 볼지는 당신에게 달려 있습니다. 시뮬레이션 범위(전체 세계 또는 만난 문명만)와 화면 표시는 별개의 설정입니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_TITLE" Language="ko_KR"><Text>대시보드 읽기</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="ko_KR"><Text>이주 대시보드는 게임 내 독의 버튼이나 Demographics 모드의 이주 페이지에서 열 수 있습니다. 탭으로 구성되어 있습니다.[n][n]• 이주 네트워크: 통과하는 인구량에 따라 크기가 달라지는 문명의 애니메이션 보기.[n]• 흐름 지도: 같은 흐름을 화살표로 그려 개별 도시까지 따라갈 수 있습니다.[n]• 문명 장부: 유입, 유출, 순변화, 난민, 손실.[n]• 사람들이 이동하는 이유를 원인별로 나눈 내역.[n]• 인구를 잃기 직전 순서로 정렬한 당신의 정착지.[n]• 이민 정책: 누가 친이민 또는 반이민 입장을 택했는지.[n]• 가이드: 무엇이 이주를 유발하고 무엇이 그렇지 않은지에 대한 빠른 참조.[n][n]지도에서는 민족 구성 렌즈(Shift+E)가 각 정착지를 주민의 출신으로 칠하고, 거주 타일에 마우스를 올리면 정확한 구성이 툴팁에 표시됩니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_TITLE" Language="ko_KR"><Text>민족 구성과 통합</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_BODY" Language="ko_KR"><Text>각 정착지는 주민이 어느 문명의 후손인지에 따라 사람들이 어디서 왔는지를 기록하며, 정복을 거쳐도 그 기록을 유지합니다. 민족 구성 렌즈(Shift+E)는 이를 타일별 모자이크로 보여 줍니다. 인구가 밀집한 도시 중심부는 지배적 기원의 색으로, 소수자는 농촌 외곽에 모이며, 정착된 타일의 툴팁에 정확한 구성이 표시됩니다.[n][n]시간이 지나면 새 이주민은 받아들인 문명에 동화됩니다. 다만 그들의 고향과의 전쟁이나 도시의 불안이 있으면 소수자는 구별된 채 남습니다. 그리고 고향이 받아들인 측과 평화를 이루고 다시 번영하면, 귀환 이주가 시간이 지나며 그 일부를 고향으로 데려가 실제 인구를 옮깁니다. 이 모두는 기본으로 켜져 있으며 옵션에서 끌 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="ko_KR"><Text>이주 연대기와 난민 결정</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="ko_KR"><Text>이주 연대기는 대시보드의 전용 탭에서 세계의 거대한 이주를 짧은 역사로 기록합니다. 전쟁이나 재해로 비워진 도시, 고향에서 멀리 뿌리내린 디아스포라, 고향이 회복되자 돌아오는 사람들. 사건별 세부 내용은 알림 기록에 남고, 연대기는 그 이야기입니다.[n][n]가끔, 실제의 격변(짧은 기간에 여러 도시를 정복하는 이웃이나 역병 위기)이 난민의 물결을 당신의 땅으로 보내면, 그들을 어떻게 맞이할지 묻습니다. 받아들이거나, 변경에 정착시키거나, 돌려보내는 것입니다. 이 결정은 드물고 영향이 가벼우며 옵션에서 끌 수 있습니다. 만난 적 없는 문명은 풍문으로만 언급되며 드러나지 않습니다.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="ko_KR"><Text>이주</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="ko_KR"><Text>번영</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_ETHNICITY" Language="ko_KR"><Text>민족</Text></Replace>

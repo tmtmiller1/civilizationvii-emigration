@@ -7,7 +7,7 @@
         <SpecialThanks>Machiavelli's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>1.2.0</Version>
+        <Version>1.4.0</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -117,6 +117,7 @@
                     <Item>ui/emigration-views.js</Item>
                     <Item>ui/emigration-flow-tab.js</Item>
                     <Item>ui/emigration-network-viz.js</Item>
+                    <Item>ui/emigration-network-fit.js</Item>
                     <Item>ui/emigration-civ-colors.js</Item>
                     <Item>ui/emigration-network-sim.js</Item>
                     <Item>ui/emigration-network-paint.js</Item>
@@ -156,6 +157,18 @@
                     <Item>ui/emigration-log.js</Item>
                     <Item>ui/emigration-report.js</Item>
                     <Item>ui/emigration-violence-signals.js</Item>
+                    <!-- Per-tile ethnic-mosaic distribution model, imported by emigration-ethnicity-lens.js. -->
+                    <Item>ui/emigration-ethnicity-distribution.js</Item>
+                    <!-- Migration Chronicle: prose engine + persistent store + diaspora detection + view. -->
+                    <Item>ui/emigration-narrative.js</Item>
+                    <Item>ui/emigration-chronicle.js</Item>
+                    <Item>ui/emigration-diaspora.js</Item>
+                    <Item>ui/emigration-chronicle-view.js</Item>
+                    <!-- Return migration (homeland recovery): moves real population back home. -->
+                    <Item>ui/emigration-return.js</Item>
+                    <!-- Refugee dilemmas: rare narrative decision modal + its trigger logic. -->
+                    <Item>ui/emigration-dilemma.js</Item>
+                    <Item>ui/emigration-dilemma-view.js</Item>
                     <!-- Advanced tunables sub-window, imported by emigration-options.js. -->
                     <Item>ui/options/emigration-advanced-editor.js</Item>
                     <!-- Dock-button icon (CSS mask asset, referenced via fs://game/emigration/...). -->

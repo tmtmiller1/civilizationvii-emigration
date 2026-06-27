@@ -18,7 +18,7 @@
 // crisis is the named event, so its toll is attributed to the crisis rather than the bare mechanism.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
-import { warAggressors } from "/emigration/ui/emigration-war.js";
+import { warOpponents } from "/emigration/ui/emigration-war.js";
 import { disasterKey, disasterTypeFor } from "/emigration/ui/emigration-disasters.js";
 
 /** @type {{type:string, category:string|null}|null} The age crisis active this pass, or null. */
@@ -99,7 +99,9 @@ function crisisKeyFor(cause) {
  */
 function warKeyFor(victim) {
   let primary = null;
-  for (const a of warAggressors(victim)) {
+  // warOpponents = event-tracked aggressors, or the engine's live at-war set when nothing was
+  // tracked (an old save / unparsed DeclareWar), so a pre-existing war still gets a named key.
+  for (const a of warOpponents(victim)) {
     if (primary == null || a < primary) primary = a;
   }
   if (primary == null || typeof victim !== "number") return "";

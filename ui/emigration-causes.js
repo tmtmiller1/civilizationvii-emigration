@@ -20,7 +20,7 @@ import { formatPeople } from "/emigration/ui/emigration-population.js";
  * destination), tracked apart from the migration/refugee tallies. `conquest` is reserved: a later
  * phase emits it on capture-driven displacement (it is consumed by the naming layer today but not
  * yet produced).
- * @typedef {"unhappiness"|"prosperity"|"war"|"disaster"|"conquest"|"attrition"} MigrationCause
+ * @typedef {"unhappiness"|"prosperity"|"war"|"disaster"|"conquest"|"attrition"|"return"} MigrationCause
  */
 
 /**
@@ -46,6 +46,7 @@ const LABELS = {
   disaster: "Disaster",
   conquest: "Conquest",
   attrition: "Attrition",
+  return: "Return",
   crisis: "Crisis",
   other: "Other"
 };
@@ -58,6 +59,7 @@ const ACCENTS = {
   prosperity: "#5fae6b",
   unhappiness: "#c9a24b",
   attrition: "#9aa0a6",
+  return: "#4f9d9a",
   crisis: "#d24b3e",
   other: "#cba35c"
 };
@@ -69,7 +71,8 @@ const PERMANENCE = {
   war: "temporary",
   disaster: "temporary",
   conquest: "temporary",
-  attrition: "permanent"
+  attrition: "permanent",
+  return: "temporary"
 };
 
 /** @type {Record<string,string>} One-line player action hint per cause (Phase 1 localizes them). */
@@ -79,7 +82,8 @@ const HINTS = {
   war: "Refugees flee the fighting; relieve the siege or make peace to stem the outflow.",
   disaster: "Disaster displacement , it subsides on its own as the distress decays.",
   conquest: "Displaced by the city's capture; the upheaval eases as the city settles.",
-  attrition: "Trapped with nowhere to go , open a route out or relieve the distress."
+  attrition: "Trapped with nowhere to go , open a route out or relieve the distress.",
+  return: "A people drawn home as their recovered homeland finds peace and plenty again."
 };
 
 /**

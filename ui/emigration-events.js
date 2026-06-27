@@ -10,10 +10,12 @@
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { recordDisaster, disasterKey } from "/emigration/ui/emigration-disasters.js";
-import { disasterName, actionHint } from "/emigration/ui/emigration-naming.js";
+import { disasterName, actionHint, civAdjective } from "/emigration/ui/emigration-naming.js";
 import { announceImportant } from "/emigration/ui/emigration-feedback.js";
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
 import { recordDisasterEvent } from "/emigration/ui/emigration-migration-stats.js";
+import { cityName } from "/emigration/ui/emigration-migration-records.js";
+import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
 
 // How far from an event's epicenter to look for affected cities. A disaster (a volcanic eruption,
@@ -68,6 +70,63 @@ function affectedCityKeys(location) {
     /* ignore */
   }
   return keys;
+}
+
+/**
+ * The owning city object for a plot, or null.
+ * @param {number} x Plot x.
+ * @param {number} y Plot y.
+ * @returns {*} The owning city object, or null.
+ */
+function cityAt(x, y) {
+  try {
+    const cid = GameplayMap.getOwningCityFromXY?.(x, y);
+    return cid && typeof Cities !== "undefined" ? Cities.get?.(cid) : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * The first owned city a disaster struck: the epicenter's owning city, or the first owned city in
+ * the blast radius when the epicenter tile itself is unowned (a volcano / floodplain on a border).
+ * Null when nothing owned was hit.
+ * @param {{x:number, y:number}} location The epicenter plot.
+ * @returns {*} The struck city object, or null.
+ */
+function firstStruckCity(location) {
+  let city = cityAt(location.x, location.y); // epicenter first
+  if (city) return city;
+  const idxs = GameplayMap.getPlotIndicesInRadius?.(location.x, location.y, EVENT_RADIUS) || [];
+  for (const idx of idxs) {
+    const loc = GameplayMap.getLocationFromIndex?.(idx);
+    const c = loc ? cityAt(loc.x, loc.y) : null;
+    if (c) return c;
+  }
+  return null;
+}
+
+/**
+ * A spoiler-masked descriptor of the primary struck settlement: see {@link firstStruckCity}. Null
+ * when no owned city was struck or the map is unreadable.
+ * @param {{x:number, y:number}} location The epicenter plot.
+ * @returns {{owner:number, civ:string, city:string|null, hidden:boolean}|null} The struck-city label.
+ */
+function primaryStruckCity(location) {
+  try {
+    if (!location || typeof GameplayMap === "undefined") return null;
+    const city = firstStruckCity(location);
+    if (!city || typeof city.owner !== "number") return null;
+    const hidden = civHidden(city.owner);
+    return {
+      owner: city.owner,
+      civ: hidden ? "an unmet civilization" : civAdjective(city.owner),
+      city: hidden ? null : cityName(city),
+      hidden
+    };
+  } catch (_) {
+    return null;
+  }
 }
 
 /**
@@ -152,7 +211,7 @@ function onRandomEvent(data) {
     // disasters drive the sim but never annotate the chart, which is why none were appearing.
     const struck = keys.length > 0;
     if (struck) recordDisasterEvent(disasterName(data.eventType), sev);
-    maybeNotifyDisaster(data, sev, struck);
+    maybeNotifyDisaster(data, sev, struck, struck ? primaryStruckCity(data.location) : null);
   } catch (e) {
     dlog("event threw " + e);
   }
@@ -170,14 +229,46 @@ function onRandomEvent(data) {
  * @param {*} data The event payload.
  * @param {number} sev The event severity.
  * @param {boolean} struck Whether the disaster struck any cities (drives migration).
+ * @param {{owner:number, civ:string, city:string|null, hidden:boolean}|null} [where] The primary
+ *   struck settlement (spoiler-masked), so the notification names WHO was hit. Null when unknown.
  */
-function maybeNotifyDisaster(data, sev, struck) {
+function maybeNotifyDisaster(data, sev, struck, where) {
   if (sev < CONFIG.disasterNotifyMinSeverity) return; // below the severity floor
-  const alert = disasterName(data.eventType) + " strikes! " + actionHint("disaster");
-  logNotification({ kind: "disaster", cause: "disaster", summary: alert, people: 0, points: 0 });
-  const mode = CONFIG.disasterNotifyMode;
-  const pop = mode === 2 ? true : mode === 1 ? struck : false;
-  if (pop) announceImportant(alert, "disaster");
+  const name = disasterName(data.eventType);
+  const alert = disasterAlert(name, where);
+  logNotification({
+    kind: "disaster", cause: "disaster", event: name, summary: alert, people: 0, points: 0,
+    fromCity: where && where.city ? where.city : undefined,
+    fromCiv: where ? where.civ : undefined
+  });
+  if (shouldPopDisaster(CONFIG.disasterNotifyMode, struck)) announceImportant(alert, "disaster");
+}
+
+/**
+ * The disaster alert line. Leads with WHO was hit ("<Disaster> strikes Athens (Greek)!", or the
+ * unmet mask) when a struck settlement was resolved; otherwise the bare "<Disaster> strikes!" for an
+ * event that hit no owned city. Always carries the disaster action hint.
+ * @param {string} name The disaster's display name.
+ * @param {{civ:string, city:string|null}|null} [where] The struck-settlement label, or null.
+ * @returns {string} The alert line.
+ */
+function disasterAlert(name, where) {
+  const place = where ? (where.city ? where.city + " (" + where.civ + ")" : where.civ) : null;
+  const head = place ? name + " strikes " + place + "! " : name + " strikes! ";
+  return head + actionHint("disaster");
+}
+
+/**
+ * Whether to POP the on-screen disaster toast under the disasterNotifyMode knob (the LOG always
+ * records it): 0 never, 1 only when it struck a city (drives migration), 2 always.
+ * @param {number} mode The disasterNotifyMode knob.
+ * @param {boolean} struck Whether the disaster struck any city.
+ * @returns {boolean} True to pop the toast.
+ */
+function shouldPopDisaster(mode, struck) {
+  if (mode === 2) return true;
+  if (mode === 1) return struck;
+  return false;
 }
 
 /**

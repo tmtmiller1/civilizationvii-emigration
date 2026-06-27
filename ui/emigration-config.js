@@ -182,6 +182,43 @@ export const CONFIG = {
   transitLagTurns: 4, // cap on transit turns (0 = instant); the lag itself scales with distance
   transitHexPerTurn: 5, // hexes covered per transit turn (distance → lag: ~5 hexes = 1 turn)
 
+  // ── ethnic integration (composition drift) ──
+  // Newcomers gradually take on the host civ's identity. Each turn a small fraction of every
+  // non-owner origin in a settlement shifts into the owner's bucket of the composition ledger,
+  // UNLESS tension keeps them apart: the host being at war with their homeland holds them fully
+  // distinct, and a city in unrest integrates only slowly. So a peaceful, settled host absorbs a
+  // diaspora over a long span, while a contested or resentful one keeps a distinct, unintegrated
+  // minority that the ethnicity lens shows holding its colour. Set integrationRate to 0 to disable.
+  integrationEnabled: true,
+  integrationRate: 0.03, // base per-turn fraction of a minority that integrates toward the owner
+  integrationWarRate: 0.0, // …while the host is at war with that origin's civ (held fully apart)
+  integrationUnrestRate: 0.008, // …while the settlement is in unrest (integration nearly stalls)
+
+  // ── return migration (homeland recovery) ──
+  // A diaspora remembers where it came from. When an origin civ's homeland is at peace (not at war
+  // with the host) and faring well, a small share of its people abroad set out for home each turn,
+  // moving REAL population from the host settlement back to one of the homeland's cities. So a war
+  // that scattered a people can, once it ends and the home recovers, draw some of them back. Gentle
+  // and throttled, so it reads as an ebb over many turns, not a snap-back. Set returnRate 0 to disable.
+  returnEnabled: true,
+  returnRate: 0.06, // fraction of a recovered-homeland diaspora that may return per eligible turn
+  returnMinShare: 0.08, // a diaspora must be at least this share of the host city to draw returnees
+  returnMinPoints: 3, // and the host must hold at least this many of that origin's points to give one
+  returnCooldownTurns: 6, // min turns between returns out of the same host settlement
+
+  // ── refugee dilemmas (rare narrative decisions) ──
+  // Once in a while a great wave of refugees reaches your lands and you pause for a short decision
+  // (welcome / turn away / settle the frontier). Deliberately RARE: a hard per-age cap plus a long
+  // cooldown, triggered only by genuine upheavals (a neighbor's conquest spree, a plague crisis).
+  // Effects are light and flavour-first (a small gold cost, a settled population point). Toggle the
+  // whole thing off in Options (getDilemmasEnabled); the simulation never depends on it.
+  dilemmaSpreeCaptures: 3, // captures by one civ within the window that read as a "conquest spree"
+  dilemmaWindowTurns: 10, // rolling window (turns) for counting a spree
+  dilemmaMaxPerAge: 2, // hard cap: at most this many dilemmas per age
+  dilemmaCooldownTurns: 18, // minimum turns between dilemmas
+  dilemmaGoldWelcome: 30, // one-time gold to welcome the refugees in (light)
+  dilemmaGoldFrontier: 15, // one-time gold to settle them on the frontier instead
+
   // ── assimilation cost (duration-based consequence via grantYield) ──
   // Each migrant adds "assimilation load" to the DESTINATION civ; that load DECAYS
   // each turn (the duration) and the civ pays a per-turn cost proportional to its
@@ -378,10 +415,10 @@ export const CONFIG = {
   plagueCarryEnabled: true, // migrants from an infected city seed distress at the dest
   plagueCarryDistress: 0.3, // seeded distress per plague-carrier (kept ≪ the source)
 
-  // ── population scaling (MATCHES Demographics scaleCityPopulationAt base curve) ─
-  // Not exposed as tunables: changing these breaks alignment with Demographics.
-  // Modern megacity ramp/boost is applied in emigration-population.js to mirror
-  // Demographics' AGE_MODERN behavior.
+  // ── population scaling (DEPRECATED — no longer read) ──────────────────────────
+  // Scaling moved to Civ VII's real per-era growth formula in emigration-population.js
+  // (POP_K · W(size, eraGrowthParams)), pinned to Demographics by scaling-demographics-parity.mjs.
+  // These legacy keys are retained only so saved configs / config-types stay valid; they are inert.
   scaleBase: 12000,
   scaleExp: 1.11,
   scaleGrowth: 1.009

@@ -21,6 +21,7 @@ import {
 } from "/emigration/ui/emigration-settings.js";
 import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
 import { makeTimeline } from "/emigration/ui/emigration-network-timeline.js";
+import { installStageFit } from "/emigration/ui/emigration-network-fit.js";
 import { makeTooltip, wireEvents } from "/emigration/ui/emigration-network-interact.js";
 
 // Logical canvas size , a WIDE 2:1 rectangle so the draggable area spans the full window width
@@ -569,6 +570,7 @@ function mountChrome(parts) {
   parts.wrap.appendChild(stage);
   parts.wrap.appendChild(parts.legend);
   if (parts.slider) parts.wrap.appendChild(parts.slider);
+  installStageFit(parts.wrap, stage);
 }
 
 

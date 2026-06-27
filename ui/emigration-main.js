@@ -19,6 +19,9 @@ import { recordMigrations, accountLosses, markCityRemoved, monoTurn } from "/emi
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { reportBalanceSignals } from "/emigration/ui/emigration-telemetry.js";
 import { recordCompositionPass } from "/emigration/ui/emigration-composition.js";
+import { recordChroniclePass } from "/emigration/ui/emigration-diaspora.js";
+import { planReturns } from "/emigration/ui/emigration-return.js";
+import { maybeDilemma } from "/emigration/ui/emigration-dilemma.js";
 import { registerMigrationMetric } from "/emigration/ui/emigration-demographics.js";
 import { tickAssimilation } from "/emigration/ui/emigration-effects.js";
 import { applyMigrantHoldingPenalty } from "/emigration/ui/emigration-migrant-units.js";
@@ -77,9 +80,9 @@ function ownerIdsOf(signals) {
  * Loss accounting runs EVERY turn (starvation/plague/razing/disasters) , it's a
  * turn-over-turn population diff, not tied to a move. Both steps are defensive.
  * @param {*[]} migrations This pass's migrations.
+ * @param {*[]} signals This pass's city signals, collected once in doPass (post-return-moves).
  */
-function accountAndReport(migrations) {
-  const signals = collectCitySignals();
+function accountAndReport(migrations, signals) {
   try {
     accountLosses(signals, migrations);
   } catch (e) {
@@ -89,6 +92,12 @@ function accountAndReport(migrations) {
   // origin mix (drives the ethnicity lens + the city-readout breakdown). Runs every turn. Also
   // returns any city captures detected this pass (owner flips), so the caller can tally them.
   const conquests = recordCompositionPass(signals, migrations);
+  // Migration Chronicle: write any movement worth keeping as history (a great exodus, a diaspora
+  // taking root) from this pass's waves + the freshly-updated composition. Cosmetic; never throws.
+  recordChroniclePass(signals, migrations);
+  // Refugee dilemmas: the rare narrative decision when an upheaval (a conquest spree this pass, or a
+  // plague crisis) sends a wave toward the local player. Throttled + Options-gated inside; never throws.
+  maybeDilemma(conquests, migrations, signals);
   // Balance telemetry (P2.7): throttled net-flow / war-displacement outlier alerts (debug-gated).
   reportBalanceSignals(ownerIdsOf(signals), gameTurnNow());
   return conquests || [];
@@ -106,9 +115,39 @@ function conquestRecord(c) {
   return {
     srcOwner: c.prevOwner, destOwner: c.newOwner,
     srcName: c.name, destName: c.name,
-    points: c.points, people: scaleCityPopulation(c.points, monoTurn()),
+    points: c.points, people: scaleCityPopulation(c.points, monoTurn(), undefined, undefined, c.name),
     cause: "conquest", crossCiv: true
   };
+}
+
+/**
+ * Fold this pass's return migrations into `migrations`. Return migration MOVES real population (a
+ * recovered, peaceful homeland draws its diaspora back), so it's added before accounting so the flow
+ * tally + composition follow the returnees home. planReturns updates the shared `signals` in place for
+ * any city it moves population out of / into, so the single per-pass collection stays accurate for the
+ * accounting that follows. Self-throttled and gated by CONFIG.returnEnabled.
+ * @param {*[]} migrations The pass's migrations so far. @param {*[]} signals The pass's city signals.
+ * @returns {*[]} The migrations, plus any returns.
+ */
+function foldReturns(migrations, signals) {
+  try {
+    const returns = planReturns(signals);
+    return returns.length ? migrations.concat(returns) : migrations;
+  } catch (e) {
+    dlog("planReturns threw " + e);
+    return migrations;
+  }
+}
+
+/**
+ * Append capture-driven "conquest" migration records (the conqueror absorbed the city's population),
+ * unless disabled. Added AFTER the composition pass so the origin buckets aren't double-applied, and
+ * kept tally-only (the base game already announces a capture).
+ * @param {*[]} migrations The pass's migrations (mutated). @param {*[]} conquests The capture events.
+ */
+function appendConquests(migrations, conquests) {
+  if (CONFIG.conquestMigrationEnabled === false) return;
+  for (const c of conquests) migrations.push(conquestRecord(c));
 }
 
 /**
@@ -125,13 +164,13 @@ function doPass(why) {
     dlog("pass threw " + e);
     return 0;
   }
-  const conquests = accountAndReport(migrations);
-  // Credit captures as cross-civ "conquest" migration: the conqueror absorbed the city's population,
-  // so its net migration reflects the gain (and the prior owner the loss). Appended AFTER the
-  // composition pass so it isn't double-applied to the origin buckets, and kept tally-only below.
-  if (CONFIG.conquestMigrationEnabled !== false) {
-    for (const c of conquests) migrations.push(conquestRecord(c));
-  }
+  // One city-signal collection per pass (post-runPass): threaded through return migration (which
+  // mutates it in place for the cities it moves population between) and the accounting below, instead
+  // of re-scanning every city's yields twice.
+  const signals = collectCitySignals();
+  migrations = foldReturns(migrations, signals);
+  const conquests = accountAndReport(migrations, signals);
+  appendConquests(migrations, conquests);
   // Snapshot the timeline EVERY pass, feeds the Demographics net-migration graph AND records per-civ
   // population growth even on passes with no migration, so the network/flow timeline is available and
   // plays population history before any emigration occurs (the recorder self-gates to the interval).
@@ -140,14 +179,23 @@ function doPass(why) {
     dlog("pass (" + why + ") none, " + Math.round(nowMs() - t0) + "ms");
     return 0;
   }
-  // Notifications/logging fire on the newsworthy half - the move + the departure. A lagged
-  // ARRIVAL is the same event landing later, so it's metrics-only (the departure already told the
-  // story). Conquest is tally-only (the base game already announces a capture), so it's excluded too.
-  const newsworthy = migrations.filter((m) => m.phase !== "arrive" && m.cause !== "conquest");
-  reportPassFeedback(newsworthy); // in-game toasts / world-news (§10)
+  reportNewsworthy(migrations);
   dlog("pass (" + why + ") " + migrations.length + " migs, " + Math.round(nowMs() - t0) + "ms");
-  for (const m of newsworthy) reportMigration(m);
   return migrations.length;
+}
+
+/**
+ * Fire feedback for the newsworthy half of a pass: the move + the departure. A lagged ARRIVAL is the
+ * same event landing later (metrics-only); conquest is tally-only (the base game announces captures);
+ * returns are narrated by the Chronicle, not the alarm toasts. All three are excluded here but stay
+ * counted in the flow/stats via recordMigrations.
+ * @param {*[]} migrations This pass's migrations.
+ */
+function reportNewsworthy(migrations) {
+  const newsworthy = migrations.filter(
+    (m) => m.phase !== "arrive" && m.cause !== "conquest" && m.cause !== "return");
+  reportPassFeedback(newsworthy); // in-game toasts / world-news (§10)
+  for (const m of newsworthy) reportMigration(m);
 }
 
 /**

@@ -22,9 +22,16 @@ across civilizations. Immigration brings growth, costs, politics, and Demographi
 - **Growth isn't free.** Receiving migrants creates a temporary, real assimilation cost.
 - **It adapts to your game speed.** All turn-based pacing scales automatically from Online to
   Marathon, so migration *feels* the same whether a game is 150 or 600 turns long.
-- **See it on the map.** An **Ethnic Composition** lens paints every settlement by the origin
-  civilization of its people (with exact per-origin percentages in the plot tooltip), and a
+- **See it on the map.** An **Ethnic Composition** lens paints every settlement as a **per-tile
+  mosaic** by the origin civilization of its people — the dense urban core in the dominant origin's
+  color, minorities on the rural fringe, with exact per-origin percentages in the plot tooltip — and a
   **Prosperity** lens shades the map **tile by tile** so you can read where the pull actually is.
+- **A world with a memory.** Every settlement remembers where its people came from. Newcomers slowly
+  **integrate** into their host, **diasporas return home** once their homeland is at peace and
+  prospering again, and the world's great migrations are written up as short history in a new
+  **Migration Chronicle** tab. Now and then a large refugee wave — a neighbor's conquests, a plague —
+  prompts a brief **decision**: welcome them, settle the frontier, or turn them away. All on by
+  default, each switchable in Options.
 - **It tells you why — briefly on screen, permanently in a log.** Population changes are explained in
   the moment by a short, **cause-themed toast** (color-coded for war / disaster / prosperity, showing
   counts in *both* Civ population points and scaled people), and on demand per city
@@ -32,12 +39,13 @@ across civilizations. Immigration brings growth, costs, politics, and Demographi
   toasts never flood the screen, every one is also kept in a permanent **Notifications log** you can
   scroll and click into for the full detail of each event. Plus a full **Migration dashboard**
   (`emigration.window()`): an animated migration network, a cross-civ flow map, a per-civ ledger, a
-  cause breakdown, settlements, policy stances, and that notifications log.
+  cause breakdown, settlements, policy stances, a **Migration Chronicle** of the world's great
+  migrations, and that notifications log.
 - **Fully integrated with the Demographics mod:** a top-level **Emigration** tab whose **Data**
   section charts **Net Migration / Emigration / Immigration / Refugees (Left) / Refugees (Arrived)** —
   in either scaled "people" or raw Civ numbers — each with a one-line definition, cause-breakdown
   tooltips, and war/disaster markers; plus the whole dashboard (network, causes, settlements,
-  policies, guide) as native sub-tabs. The standalone dock button is optional (Options).
+  policies, chronicle, guide) as native sub-tabs. The standalone dock button is optional (Options).
 
 The sections below explain migration behavior, tuning controls, and gameplay effects in detail. Every
 advanced layer can be tuned or switched off in **Options → Mods → Emigration - Advanced** (§10), so
@@ -56,10 +64,10 @@ conflict — and move toward happier, more prosperous ones, both **within and be
 The mod is driven by a Civ V-style *Prosperity* model.
 
 Migration counts can be reported in **both** the game's own population points (1, 2, 3 …) **and** a
-historically representative people count (thousands … hundreds of millions) scaled to match the
-**Demographics** mod — shown together by default (e.g. *1 population point (12 thousand people)*), or
-either alone, via an Options toggle (§10). Absorbing migrants carries a **time-limited in-game cost**
-so growth has trade-offs.
+historically representative people count (thousands to millions, depending on the settlement's size and
+age) scaled to match the **Demographics** mod — shown together by default (e.g. *1 population point
+(≈30 thousand people)*), or either alone, via an Options toggle (§10). Absorbing migrants carries a
+**time-limited in-game cost** so growth has trade-offs.
 
 Several layers sit on top of that baseline, **all on by default**, so you get the full system out of
 the box. Each can be switched off individually in Options:
@@ -71,6 +79,10 @@ the box. Each can be switched off individually in Options:
   asylum/relationship permeability; environmental disasters (floods, volcanoes, plague); and a death
   outlet so that **lethal crises — war, disaster, siege, famine — kill some even when people can flee**
   (economic migration never does), and a trapped population isn't bottled up forever;
+- identity systems (§6): per-settlement **ethnic composition** with the per-tile lens; **ethnic
+  integration** of newcomers over time (held apart by war with their homeland or unrest); **return
+  migration** that draws diasporas home once the homeland recovers; the **Migration Chronicle** that
+  writes the great waves as history; and occasional **refugee decisions** when a wave reaches you;
 - in-game feedback (§9): styled toasts, named refugee headlines, world-news for major crises
   (spam-throttled), and the Demographics graphs;
 - localization across all 10 languages (§14).
@@ -139,7 +151,7 @@ least desirable settlements toward the most desirable ones:
   (§2) so the *rate* of migration in game-time is the same on Quick, Standard, or Marathon.
 
 All of it is reported in-game (toasts + the Demographics graphs) and in the dev log, e.g.
-`EMIGRATION 1 population point (12 thousand people) left Rome (Romans) for Carthage (Carthaginians)`.
+`EMIGRATION 1 population point (≈30 thousand people) left Rome (Romans) for Carthage (Carthaginians)`.
 
 ### Quick reference: what counts
 
@@ -198,6 +210,17 @@ on the dashboard's **Guide** tab.
 | Migrants arrive instantly | ✗ | No — they travel; arrival lags with distance, up to a few turns |
 | Absorbing migrants is free | ✗ | No — a temporary, decaying assimilation cost in happiness and gold |
 | War alone can empty a city to zero | ✗ | No — war *displacement* is capped (`siegeLossCapPct`), and a city can never drop below its rural floor; a prolonged crisis (war / siege / famine) also kills some beyond the displacement cap, so a city can be devastated, but only an actual capture empties or transfers it |
+
+**Identity, integration & return**
+
+| | | |
+|---|:---:|---|
+| Each settlement remembers where its people came from | ✓ | A running ethnic composition by origin civilization, shown as a **per-tile mosaic** on the Ethnic Composition lens (Shift+E); a captured city keeps its residents' origins |
+| Newcomers integrate into their host over time | ✓ | A small fraction of each non-owner origin drifts toward the owner per turn, so a peaceful host absorbs a diaspora over many turns. On by default (Options ▸ ethnic integration) |
+| War or unrest keeps a minority distinct | ✓ | Integration stalls while the host is at war with a minority's homeland, and slows in unrest, so a contested city holds an unintegrated community that keeps its color on the lens |
+| Diasporas return home when the homeland recovers | ✓ | Once a people's homeland is at peace with the host and prospering, a fraction return home over time, moving **real population** (a slow ebb, never a snap-back). On by default (Options ▸ return migration) |
+| Refugee waves can prompt a player decision | ✓ | A rare modal on a neighbor's conquest spree or a plague crisis — welcome, settle the frontier, or turn away — capped a few times an age, light effects, dismissible. On by default (Options ▸ refugee decisions) |
+| The world's great migrations are written as history | ✓ | The **Migration Chronicle** tab records exoduses, diasporas taking root, and returns as short prose; unmet civs are framed as hearsay |
 
 **Scope & limits**
 
@@ -447,29 +470,32 @@ tone.
 ## 4. Population scaling (Demographics alignment)
 
 `emigration-population.js` converts Civ's abstract population points into representative people using
-the **identical formula** to the Demographics mod:
+the **identical formula** to the Demographics mod — grounded in **Civilization VII's own per-era growth
+formula** (the food cost the game charges to grow a settlement, which differs by age):
 
 ```
-base(raw, turn) = raw^scaleExp × scaleBase × scaleGrowth^turn   // 1.11, 12000, 1.009
-megaTarget      = (raw > 20) ? (raw / 20)^1.5 : 1
-ramp            = smoothstep(clamp((modernProgress - 0.1) / 0.8, 0, 1))
-scaleCityPopulation = base × (1 + (megaTarget - 1) × ramp)
+W(N, era)           = Σ cost(1..N) for era's {flat, scalar, exp}   // the game's real per-era growth cost
+eraParams(age, pct) = blend(prev-era, this-era params)             // continuous across age boundaries
+scaleCityPopulation = POP_K × W(size, eraParams) × megacity × overtime, then soft-capped to the era max
 ```
 
-A moved point is reported as the **marginal** people it represents (`scale(pop) − scale(pop−1)`), using
-a **monotonic** turn so the figure never resets at age boundaries, and applying the same Modern-only
-smooth ramp as Demographics. `formatPeople` renders "12 thousand / 1.3 million / 240 million".
-`moveRural` performs a relocation; **`removeRural`** removes a point with no destination (the outlet's
-death, §6d), using the same rural-population accounting the game's own starvation shrinkage uses.
+Each age uses the game's real growth parameters (Antiquity / Exploration / Modern), so a settlement
+reads at a sane size for the age it's in, with a smooth hand-off at every age boundary. A Modern-only
+megacity term lets the largest cities reach the real 10–38M range; an endgame term keeps figures
+growing if you play past the natural end ("one more turn"); and a soft per-era ceiling caps the result
+so a bad read can never blow up. **There is no turn-based multiplier**, so the figure no longer drifts
+with game speed. A moved point is reported as the **marginal** people it represents
+(`scale(pop) − scale(pop−1)`), and its small per-event variation leans on the source settlement's real
+happiness and urban/rural mix (its name only as a tie-breaker). `formatPeople` renders
+"30 thousand / 1.3 million / 240 million". `moveRural` performs a relocation; **`removeRural`** removes
+a point with no destination (the outlet's death, §6d), using the same rural-population accounting the
+game's own starvation shrinkage uses.
 
-> **Game speed & the people-scaling exponent.** Because `scaleGrowth^turn` is keyed to the raw turn
-> count, the same civilization reaches a given size at a *later* turn on slow speeds, so its "people"
-> figure inflates on Marathon and deflates on Online relative to Standard. This is **cosmetic and
-> consistent** — both this mod and Demographics share the identical formula, so they always agree with
-> each other. An optional `gameSpeedScalePopulation` flag normalizes the exponent to
-> `scaleGrowth^(turn/S)` (tracking game-*progress* instead of turns), but it **defaults OFF** because it
-> only stays aligned with Demographics if that mod applies the identical normalization — enable it in
-> both or neither. The turn-based *pacing* knobs (§2) are scaled independently and are on by default.
+> **Always aligned with Demographics.** Both mods carry the identical scaling, pinned bit-for-bit by a
+> cross-mod parity test (`tests/scaling-demographics-parity.mjs`), so a given settlement reads the same
+> people-count in either mod. Because scaling is now keyed to the **age** (not the raw turn count), the
+> old game-speed caveat is gone — the figure is the same on Online, Standard, and Marathon. The
+> turn-based *pacing* knobs (§2) are still scaled by game speed and on by default.
 
 ---
 
@@ -673,6 +699,41 @@ movement, and **global bounds** (`tiltCap`, `permeFloor`, `permeCeil`) preventin
 hard lockout. Computed in `emigration-pull.js`, so targeted attraction composes with prosperity/
 geography/congestion rather than bypassing them.
 
+### 6f. Ethnic composition, integration & the per-tile lens (`emigration-composition.js`, `emigration-ethnicity-lens.js`)
+Every settlement keeps a running **ethnic composition**: population by the civilization each person
+descends from (`emigration-composition.js`), netted each pass from arrivals (origin = source owner),
+births (current owner), losses (proportional), and conquest (origin buckets kept, owner flips). It
+follows the settlement, not the owner, so a captured city keeps its residents' origins. The **Ethnic
+Composition lens** (Shift+E) paints it as a **per-tile mosaic** (`emigration-ethnicity-distribution.js`):
+tiles are weighted by build-up (city center ≫ urban > rural > wilderness), minorities concentrate on
+the sparse fringe with each origin's people-share preserved, and opacity tracks each tile's population
+density. **Ethnic integration** drifts a small fraction of every non-owner origin toward the owner each
+turn (`integrationRate`), held fully apart while the host is at war with that origin's homeland
+(`integrationWarRate`) and slowed in unrest (`integrationUnrestRate`), so a peaceful host absorbs a
+diaspora over many turns while a contested one keeps a distinct minority. Toggle: **Options ▸ ethnic
+integration** (on by default).
+
+### 6g. Return migration (`emigration-return.js`, `returnEnabled`)
+A diaspora remembers home. When an origin civ's homeland is at peace with the host and faring well
+(non-negative net happiness, fed), a fraction of its people abroad set out for home, moving **real
+population** (a rural point from the host to one of the homeland's cities), attributed to the returnees'
+true origin so the composition and lens follow them home. Throttled by a per-host cooldown
+(`returnCooldownTurns`) and a deterministic per-pass rate (`returnRate`), and floored so it only draws
+from a host that has rural population to give (it never invents people, and never targets a city-state
+as a "homeland"). Toggle: **Options ▸ return migration** (on by default).
+
+### 6h. Refugee decisions & the Migration Chronicle (`emigration-dilemma.js`, `emigration-chronicle.js`)
+The **Migration Chronicle** (`emigration-chronicle.js`, its own dashboard tab) writes the world's
+significant movements as short prose (`emigration-narrative.js`): a great exodus, a diaspora taking
+root, a people returning home. A **refugee decision** (`emigration-dilemma.js`) is a rare modal,
+triggered by a real upheaval — a neighbor's **conquest spree**, or a **plague crisis** — that sends a
+wave toward the local player: **welcome them** (a small gold cost, settles a point into your largest
+city), **settle the frontier** (a smaller cost, into a town), or **turn them away**. Hard-capped per
+age (`dilemmaMaxPerAge`) with a long cooldown (`dilemmaCooldownTurns`), effects intentionally light,
+and dismissible (Escape, or click outside). For both surfaces, a civ the player has not met is named as
+hearsay ("a people we have heard called the X") rather than revealed. Toggle: **Options ▸ refugee
+decisions** (on by default).
+
 ---
 
 ## 7. Consequences: the gameplay-write cost layer (`emigration-effects.js`)
@@ -720,8 +781,15 @@ When the **Demographics** mod is installed, Emigration contributes, via its comp
   - **Refugees (Arrived)** — displaced people it took in, with the same (toggleable) onset markers.
 - **The full dashboard as native sub-tabs** on that same tab — **Network** (animated dot-swarm + arrow
   flow map, each with a Civ Pop / Scaled Pop units toggle), **Civilizations**, **Causes**,
-  **Settlements**, **Immigration Policies**, **Notifications**, and **Guide** — the **same content as the
-  standalone window**. Registered order-independently and a silent no-op on an older Demographics.
+  **Settlements**, **Immigration Policies**, **Notifications**, **Chronicle**, and **Guide** — the **same
+  content as the standalone window**. Registered order-independently and a silent no-op on an older
+  Demographics.
+- **A Migration Chronicle** (the **Chronicle** sub-tab, `emigration-chronicle.js` →
+  `emigration-chronicle-view.js`) — a curated, written history of the world's significant population
+  movements, distinct from the per-event Notifications log. It keeps only the moments that read as
+  history (a great exodus, a diaspora taking root, a people returning home) and renders each as a line
+  of prose (`emigration-narrative.js`), spoiler-guarded so an unmet civ is framed as hearsay. Persisted,
+  newest-first, capped.
 - **Causes drill down to the specific event.** Each broad cause on the **Causes** tab expands to the
   *named* events behind it — a particular war, a particular eruption/flood, or the active **age crisis**
   — with each event's emigration **and** deaths. A crisis is attributed to its mechanism (an Invasion
@@ -738,9 +806,11 @@ When the **Demographics** mod is installed, Emigration contributes, via its comp
   (`emigration-notifications.js` → `emigration-notifications-view.js`).
 - **An Ethnic Composition map lens + plot tooltip** (`emigration-ethnicity-lens.js`,
   `emigration-ethnicity-tooltip.js`, fed by `emigration-composition.js`). A self-registering lens
-  (Shift+E) paints each settlement by the **dominant origin civilization** of its people, fill intensity
-  scaling with that civ's share; hovering any settled tile adds the exact **per-origin percentages** to
-  the plot tooltip. Both honor the spoiler-protection visibility policy (§10).
+  (Shift+E) paints each settlement as a **per-tile mosaic** (`emigration-ethnicity-distribution.js`):
+  tiles weighted by build-up (city center ≫ urban > rural > wilderness), the dominant origin holding the
+  dense core while minorities cluster on the sparse fringe with each origin's people-share preserved, and
+  opacity tracking each tile's population density. Hovering any settled tile adds the exact **per-origin
+  percentages** to the plot tooltip. Both honor the spoiler-protection visibility policy (§10).
 - **A Refugees row in the Demographics war-effects cost tooltip** (a small Demographics-side edit reading
   `globalThis.EmigrationData.refugeesCumFor`), rendering "- no data" when Emigration isn't installed.
 - **A Network-only timeline-detail note** when the snapshot interval is coarser than every turn

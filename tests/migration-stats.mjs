@@ -97,6 +97,29 @@ function testDeferredRegistrationIsOrderIndependent() {
   assertGraphsGroup(groups);
 }
 
+function testMetricRegistrationIsIdempotentWhenApiReady() {
+  const ids = [];
+  const groups = [];
+  globalThis.DemographicsMetricsAPI = {
+    registerMetric: (s) => ids.push(s.id),
+    registerMetricGroup: (g) => groups.push(g)
+  };
+  assert.equal(registerMigrationMetric(), true);
+  const firstMetricCount = ids.length;
+  const firstGroupCount = groups.length;
+  assert.equal(registerMigrationMetric(), true);
+  assert.equal(ids.length, firstMetricCount, "metrics should register once");
+  assert.equal(groups.length, firstGroupCount, "metric group should register once");
+}
+
+function testMetricRegistrationQueueDedupe() {
+  delete globalThis.DemographicsMetricsAPI;
+  assert.equal(registerMigrationMetric(), false);
+  assert.equal(registerMigrationMetric(), false);
+  const api = globalThis.DemographicsMetricsAPI;
+  assert.equal(api.pending.length, 1, "pending metrics registration queued once");
+}
+
 function testNeverInstalledNeverRegisters() {
   // If Demographics is never present, the queued job is simply never drained -
   // no metric, no graph. (We assert the queue holds it and nothing consumed it.)
@@ -204,6 +227,8 @@ testDeltaAdvancesPerSample();
 testFormatIsSignedPeople();
 testReadyApiRegistersImmediately();
 testDeferredRegistrationIsOrderIndependent();
+testMetricRegistrationIsIdempotentWhenApiReady();
+testMetricRegistrationQueueDedupe();
 testNeverInstalledNeverRegisters();
 testGrossAndRefugeeTallies();
 testAttritionIsDeathsNotMigration();
