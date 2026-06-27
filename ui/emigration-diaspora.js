@@ -20,6 +20,8 @@ import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { formatPeopleExact } from "/emigration/ui/emigration-population.js";
 import { chronicle, chronicled } from "/emigration/ui/emigration-chronicle.js";
 import { exodusLine, foundingLine, chronicleTitle } from "/emigration/ui/emigration-narrative.js";
+import { cityFeatureKeys } from "/emigration/ui/emigration-city-features.js";
+import { resolveQuarter } from "/emigration/ui/emigration-quarters.js";
 
 // A wave this large (scaled people, one settlement, one cause, one pass) reads as a historical
 // exodus rather than ordinary churn.
@@ -135,8 +137,12 @@ function detectFoundingForCity(city) {
   if (chronicled(dedupeKey)) return;
   const nc = narrativeCiv(lead.civ);
   const seed = name + "|" + lead.civ + "|" + tier;
+  // Name a quarter from the host city's REAL features (coast/river/mountain/granary/temple/market/
+  // walls) so the line never claims a building the city never built; the edge framing also matches
+  // where the ethnicity lens paints the diaspora (the sparse rural fringe).
+  const where = resolveQuarter(cityFeatureKeys(city), seed);
   const body = foundingLine({
-    origin: nc.adj, framed: nc.framed, host: civAdjective(comp.owner), city: name, pct: lead.share * 100, seed
+    origin: nc.adj, framed: nc.framed, host: civAdjective(comp.owner), city: name, pct: lead.share * 100, seed, where
   });
   chronicle({
     kind: "founding", title: chronicleTitle({ kind: "founding", civ: nc.adj, city: name, seed }),

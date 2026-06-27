@@ -28,6 +28,7 @@
     "ui/emigration-network-*.js",
     "ui/emigration-ethnicity-lens.js",
     "ui/emigration-ethnicity-tooltip.js",
+    "ui/emigration-city-features.js",
     "ui/emigration-lens-hover-panel.js",
     "ui/emigration-prosperity-lens.js",
     "ui/emigration-prosperity-tooltip.js",

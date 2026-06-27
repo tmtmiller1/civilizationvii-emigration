@@ -7,6 +7,26 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [1.6.1] - 2026-06-27
+
+Two truthfulness fixes for the identity systems.
+
+### Fixed
+- **The Chronicle no longer invents details a city doesn't have.** Its narrative
+  lines used to drop in flavor like "beyond the granaries" or "by the harbour" by
+  chance, whether or not the place actually had a granary or a coast. Now each
+  founding line reads the city's real surroundings — its terrain (mountains, water,
+  coast, rivers) and the buildings it has actually constructed (granary, temple,
+  market, walls) — and only mentions what's genuinely there, falling back to
+  always-true phrasing otherwise. The phrasing is framed at the city's edge, which
+  is exactly where the Ethnic Composition lens paints a diaspora, so the story and
+  the map agree.
+- **Diasporas are now clearly visible on the Ethnic Composition lens.** Minority
+  tiles (any origin that isn't the city's dominant civilization) were fading almost
+  to invisibility; they now keep a clear color so even a small foreign community
+  reads on the map. (A genuinely mono-ethnic early-game city still correctly shows a
+  single color — that "100%" reading was real data, not a rendering glitch.)
+
 ## [1.6.0] - 2026-06-27
 
 A small interface consolidation: the Migration Chronicle now lives in
