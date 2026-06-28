@@ -19,12 +19,12 @@ across civilizations. Immigration brings growth, costs, politics, and Demographi
 - **Policies shape the flow.** A **Pro-Immigration Stance** attracts migrants (and earns Influence);
   an **Anti-Immigration Stance** retains your people and mobilizes a war economy (+Production), at the
   cost of Influence.
-- **Growth isn't free.** Receiving migrants creates a temporary, real assimilation cost.
+- **Growth isn't free.** Receiving migrants creates a temporary, real integration cost.
 - **It adapts to your game speed.** All turn-based pacing scales automatically from Online to
   Marathon, so migration *feels* the same whether a game is 150 or 600 turns long.
 - **See it on the map.** An **Ethnic Composition** lens paints every settlement as a **per-tile
   mosaic** by the origin civilization of its people — the dense urban core in the dominant origin's
-  color, minority and diaspora communities staying clearly colored on the rural fringe, with exact
+  color, diaspora communities staying clearly colored and spread across the city's tiles, with exact
   per-origin percentages in the plot tooltip — and a
   **Prosperity** lens shades the map **tile by tile** so you can read where the pull actually is.
 - **A world with a memory.** Every settlement remembers where its people came from. Newcomers slowly
@@ -147,7 +147,7 @@ least desirable settlements toward the most desirable ones:
 - **Regional.** Migration is distance-penalized, so people move to *nearby* better settlements rather
   than teleporting across the map.
 - **Consequential.** Receiving migrants costs the destination civ happiness/gold for a while as it
-  assimilates them, so a magnet city converges instead of accreting forever. Hoarding unsettled
+  integrates them, so a magnet city converges instead of accreting forever. Hoarding unsettled
   migrant units costs too.
 - **Speed-aware.** All of the above is paced in turns, and that pacing scales with your **game speed**
   (§2) so the *rate* of migration in game-time is the same on Quick, Standard, or Marathon.
@@ -210,7 +210,7 @@ on the dashboard's **Guide** tab.
 | Pacing adapts to game speed | ✓ | Cooldowns, ramps, transit, and pressure thresholds scale with the speed setting (§2) so the game-time rate is constant |
 | Any layer can be tuned or switched off | ✓ | Presets plus ~57 individual knobs under Options ▸ Mods ▸ Emigration |
 | Migrants arrive instantly | ✗ | No — they travel; arrival lags with distance, up to a few turns |
-| Absorbing migrants is free | ✗ | No — a temporary, decaying assimilation cost in happiness and gold |
+| Absorbing migrants is free | ✗ | No — a temporary, decaying integration cost in happiness and gold |
 | War alone can empty a city to zero | ✗ | No — war *displacement* is capped (`siegeLossCapPct`), and a city can never drop below its rural floor; a prolonged crisis (war / siege / famine) also kills some beyond the displacement cap, so a city can be devastated, but only an actual capture empties or transfers it |
 
 **Identity, integration & return**
@@ -219,7 +219,7 @@ on the dashboard's **Guide** tab.
 |---|:---:|---|
 | Each settlement remembers where its people came from | ✓ | A running ethnic composition by origin civilization, shown as a **per-tile mosaic** on the Ethnic Composition lens (Shift+E); a captured city keeps its residents' origins |
 | Newcomers integrate into their host over time | ✓ | A small fraction of each non-owner origin drifts toward the owner per turn, so a peaceful host absorbs a diaspora over many turns. On by default (Options ▸ ethnic integration) |
-| War or unrest keeps a minority distinct | ✓ | Integration stalls while the host is at war with a minority's homeland, and slows in unrest, so a contested city holds an unintegrated community that keeps its color on the lens |
+| War or unrest keeps a community distinct | ✓ | Integration stalls while the host is at war with a diaspora's homeland, and slows in unrest, so a contested city holds an unintegrated community that keeps its color on the lens |
 | Diasporas return home when the homeland recovers | ✓ | Once a people's homeland is at peace with the host and prospering, a fraction return home over time, moving **real population** (a slow ebb, never a snap-back). On by default (Options ▸ return migration) |
 | Refugee waves can prompt a player decision | ✓ | A rare modal on a neighbor's conquest spree or a plague crisis — welcome, settle the frontier, or turn away — capped a few times an age, light effects, dismissible. On by default (Options ▸ refugee decisions) |
 | The world's great migrations are written as history | ✓ | The **Migration Chronicle** tab records exoduses, diasporas taking root, and returns as short prose; unmet civs are framed as hearsay |
@@ -255,7 +255,7 @@ Migration is **not instantaneous** — a move has *transit lag* (`transitLagTurn
 itself scaled by game speed). This creates a window where a migrant has left their old city but not yet
 reached their new one.
 
-- **The lifecycle of a move.** At **departure**, the migrant's rural point is removed from the source *immediately* — the source loses that worker and their tile yields the turn they leave. They spend the **transit** period belonging to **no city** (working no tiles, producing no yields, but incurring no upkeep), and the one-time assimilation cost is paid by the destination only **on arrival**.
+- **The lifecycle of a move.** At **departure**, the migrant's rural point is removed from the source *immediately* — the source loses that worker and their tile yields the turn they leave. They spend the **transit** period belonging to **no city** (working no tiles, producing no yields, but incurring no upkeep), and the one-time integration cost is paid by the destination only **on arrival**.
 - **How long is the gap.** Transit is **1–4 turns at Standard speed** (`transitLagTurns` caps it; the lag scales with distance at `transitHexPerTurn` ≈ 5 hexes/turn), longer on slower speeds. Most moves are 1–2 turns; **war/disaster refugees take at least 1 turn** (they camp).
 - **How significant is it?** **Small and self-correcting** in peacetime (a handful in transit), meaningfully larger but still bounded in wartime (every migrant clears within the cap, and the pool drains within a few turns of peace).
 - **What you'll see.** Transit lag is why **Emigration (gross-out) can tick up before Immigration (gross-in) catches up**. It does **not** distort **Net Migration**, which counts only *settled, cross-civ* moves.
@@ -267,7 +267,7 @@ reached their new one.
 On every `PlayerTurnActivated`:
 
 1. **Per-civ costs** (`chargePerTurnCosts`) run for *whichever* civ's turn it is: the decaying
-   assimilation cost and the migrant-holding penalty (§7).
+   integration cost and the migrant-holding penalty (§7).
 2. **The emigration pass** (`runPass`) runs once on the **local player's** turn (gated by
    `turnInterval`):
    1. **Decay** accumulated **violence** and **disaster** distress for the turn (decay rates are
@@ -683,7 +683,7 @@ it never kills** — only crises do. Two modes:
   trap almost never fires (there's nearly always somewhere to flee), a crisis would otherwise only ever
   *displace* and never kill. So a war / disaster / besieged / starving city now loses **some** people to
   death **while the rest flee** — at `crisisDeathShare` (default 0.5) of the trapped rate, so flight
-  dominates and the crisis takes a minority. Death builds on `deathPressure`, crosses
+  dominates and the crisis takes only a fraction. Death builds on `deathPressure`, crosses
   `attritionThreshold` (×S), and removes a rural point via the same `addRuralPopulation(−1)` the game's
   own starvation uses.
 
@@ -707,12 +707,13 @@ descends from (`emigration-composition.js`), netted each pass from arrivals (ori
 births (current owner), losses (proportional), and conquest (origin buckets kept, owner flips). It
 follows the settlement, not the owner, so a captured city keeps its residents' origins. The **Ethnic
 Composition lens** (Shift+E) paints it as a **per-tile mosaic** (`emigration-ethnicity-distribution.js`):
-tiles are weighted by build-up (city center ≫ urban > rural > wilderness), minorities concentrate on
-the sparse fringe with each origin's people-share preserved, and opacity tracks each tile's population
-density. **Ethnic integration** drifts a small fraction of every non-owner origin toward the owner each
+tiles are weighted by build-up (city center ≫ urban > rural > wilderness); each origin claims a
+share-proportional count of tiles (floored to one, so a small community is never invisible) spread
+evenly across the density gradient, and opacity tracks each tile's population density. **Ethnic
+integration** drifts a small fraction of every non-owner origin toward the owner each
 turn (`integrationRate`), held fully apart while the host is at war with that origin's homeland
 (`integrationWarRate`) and slowed in unrest (`integrationUnrestRate`), so a peaceful host absorbs a
-diaspora over many turns while a contested one keeps a distinct minority. Toggle: **Options ▸ ethnic
+diaspora over many turns while a contested one keeps a distinct community. Toggle: **Options ▸ ethnic
 integration** (on by default).
 
 ### 6g. Return migration (`emigration-return.js`, `returnEnabled`)
@@ -809,8 +810,8 @@ When the **Demographics** mod is installed, Emigration contributes, via its comp
 - **An Ethnic Composition map lens + plot tooltip** (`emigration-ethnicity-lens.js`,
   `emigration-ethnicity-tooltip.js`, fed by `emigration-composition.js`). A self-registering lens
   (Shift+E) paints each settlement as a **per-tile mosaic** (`emigration-ethnicity-distribution.js`):
-  tiles weighted by build-up (city center ≫ urban > rural > wilderness), the dominant origin holding the
-  dense core while minorities cluster on the sparse fringe with each origin's people-share preserved, and
+  tiles weighted by build-up (city center ≫ urban > rural > wilderness), the dominant origin holding most
+  tiles while each community claims a share-proportional set spread across the density gradient, and
   opacity tracking each tile's population density. Hovering any settled tile adds the exact **per-origin
   percentages** to the plot tooltip. Both honor the spoiler-protection visibility policy (§10).
 - **A Refugees row in the Demographics war-effects cost tooltip** (a small Demographics-side edit reading
@@ -860,7 +861,7 @@ detail. The anti-spam layers:
 - **Per-city readout** (`emigration-city-readout.js`). An on-demand HUD panel answering "why is *this*
   settlement changing?" — the **cause mix** when more than one pressure is active (*"War 60% · Prosperity
   40%"*, else the single dominant cause) + status (building pressure / resting), where its people are
-  pulled, the assimilation cost, the civ's net migration, the hint, and an at-risk / trapped-with-no-
+  pulled, the integration cost, the civ's net migration, the hint, and an at-risk / trapped-with-no-
   refuge warning. Built from the recompute-on-read `citySnapshot` (no new state); opens via
   `emigration.city(id)` / `.hideCity()` and best-effort on city selection. Toggle in Options
   (`cityReadoutEnabled`); works without Demographics.
@@ -898,7 +899,7 @@ Everything is under **Options → Mods**, in **both** the main-menu (pregame) an
 - **Emigration - Advanced:** every tunable as a dropdown/checkbox, generated from a declarative spec
   (`emigration-tunables.js`), grouped: pacing, scope, prosperity weights, the **advanced-model** switches
   (§5), **war/violence** (incl. the siege model + aggressor avoidance), **border policies**,
-  **geography**, assimilation/migrant **cost**, **disasters** (+ plague carry), **notifications**, and
+  **geography**, integration/migrant **cost**, **disasters** (+ plague carry), **notifications**, and
   the **outlet** (attrition).
 
 **Game-speed scaling is automatic, not a knob.** The §2 pacing scaling reads the active game speed and
@@ -965,7 +966,7 @@ the gameplay database each age, so a policy's civic-tree unlock can only referen
 that age's database).
 
 The Civilopedia component adds an **Emigration** section to the in-game encyclopedia with an overview
-plus one page per system (Prosperity, War & Refugees, Assimilation, Borders & Influence, Disasters &
+plus one page per system (Prosperity, War & Refugees, Integration, Borders & Influence, Disasters &
 Plague, the Outlet, Leaders & Civilizations), reusing the base `Concept` layout. All page text flows
 through the §14 localization pipeline (`LOC_PEDIA_EMIG_*`, all 10 locales).
 

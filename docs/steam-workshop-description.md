@@ -20,7 +20,7 @@ As part of releasing [i]Emigration[/i], I donated to the International Refugee A
 [*][b]War displacement and refugees.[/b] Population loss is driven by actual damage, pillaging, sieges, starvation, unrest, and disasters. Refugees flee away from invaders, preferring their own civilization first, neutrals second, and attackers last.
 [*][b]Regional movement.[/b] Distance penalties encourage migration to nearby cities rather than map-wide teleportation.
 [*][b]Borders and policy matter.[/b] Open Borders agreements and Pro-/Anti-Immigration policies influence migration flows and retention.
-[*][b]Growth has costs.[/b] Receiving migrants creates temporary assimilation pressures in happiness and gold, while congestion limits runaway population magnets.
+[*][b]Growth has costs.[/b] Receiving migrants creates temporary integration costs in happiness and gold, while congestion limits runaway population magnets.
 [*][b]Explains itself.[/b] Notifications, city readouts, refugee headlines, and crisis reports show what happened and why.
 [/list]
 
@@ -40,7 +40,7 @@ When used with [b]Demographics[/b], it adds immigration, emigration, net migrati
 
 [b]Tuning[/b]
 
-Low, Medium, High, and Custom presets plus roughly 57 advanced settings covering prosperity, borders, war, disasters, geography, assimilation, notifications, and pacing. Population can display as game points, historical estimates, or both, with separate controls for simulation scope and information visibility, performance options for large saves, and localization in all 10 supported Civilization VII languages.
+Low, Medium, High, and Custom presets plus roughly 57 advanced settings covering prosperity, borders, war, disasters, geography, integration, notifications, and pacing. Population can display as game points, historical estimates, or both, with separate controls for simulation scope and information visibility, performance options for large saves, and localization in all 10 supported Civilization VII languages.
 
 [b]A gameplay mod, not just UI[/b]
 

@@ -17,6 +17,8 @@
  * @property {number} [destOwner] Destination owner id (absent for attrition / a pure departure).
  * @property {number} [edgeDestOwner] Destination owner for the flow-network EDGE only (carried on a lagged
  *   departure record so the cross-civ edge can be built at depart; NOT the tally-driving destOwner).
+ * @property {number} [originCiv] The migrant's TRUE origin civ, overriding srcName-based attribution in
+ *   the composition ledger (a returnee's homeland, or a lagged arrival's depart-time source owner).
  * @property {boolean} crossCiv Whether it crossed civilizations.
  * @property {number} points Raw Civ population points moved (1 per migration).
  * @property {number} people Historically-scaled people who moved.
@@ -118,6 +120,13 @@ export function arriveRecord(e, ok, destPaidCost) {
       srcName: e.srcName,
       destName: e.destName,
       destOwner: e.destOwner,
+      // The migrant's TRUE origin, captured at departure. Composition attributes the arrival to this
+      // directly instead of re-deriving it from srcName at arrival time — which fails for the most
+      // visible diaspora of all, war refugees, whose home city is often razed or captured during the
+      // multi-turn transit (so a name→owner lookup would miss it or credit the conqueror). NOT the
+      // tally-driving srcOwner field (that would double-count immigration, already credited here via
+      // destOwner); originCiv is read only by the composition ledger's destination side.
+      originCiv: e.srcOwner,
       crossCiv: e.crossCiv,
       points: 1,
       people: e.people,

@@ -18,7 +18,7 @@
         <Replace Tag="LOC_EMIG_ADVGRP_PROSPERITY" Language="ko_KR"><Text>번영 모델</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_VIOLENCE" Language="ko_KR"><Text>전쟁 및 폭력</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_GEOGRAPHY" Language="ko_KR"><Text>지리 및 이동</Text></Replace>
-        <Replace Tag="LOC_EMIG_ADVGRP_COST" Language="ko_KR"><Text>동화 및 이주민 비용</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_COST" Language="ko_KR"><Text>통합 및 이주민 비용</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_OUTLET" Language="ko_KR"><Text>배출구(소모)</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="ko_KR"><Text>재해</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="ko_KR"><Text>알림</Text></Replace>
@@ -110,16 +110,16 @@
         <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="ko_KR"><Text>두 문명 간의 개방 국경 협정이 양방향 이주를 얼마나 수월하게 하는지. 0 = 끔.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="ko_KR"><Text>지리: 이동 지연 (0 = 즉시)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_TRANSITLAG_D" Language="ko_KR"><Text>이주민이 도착하기 전 이동에 쓸 수 있는 최대 시간입니다. 출발하는 턴에 출발지를 떠나며, 실제 지연은 목적지까지의 거리에 따라 달라집니다(멀수록 오래 걸림). 이 상한까지 적용됩니다. 전쟁 난민은 항상 최소 한 턴이 걸립니다. 이동 중에 목적지가 파괴되면 도중에 사망합니다. 0 = 즉시 도착.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASLOAD" Language="ko_KR"><Text>동화: 이주민당 부하</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASLOAD_D" Language="ko_KR"><Text>받아들이는 문명이 이주민을 흡수할 때마다 더해지는 동화 "부하". 문명은 현재 부하에 비례해 매 턴 비용을 지불하며, 그 부하는 동화 기간 동안 감쇠합니다. 0 = 끔.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASPOP" Language="ko_KR"><Text>동화: 과밀 스케일링</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASLOAD" Language="ko_KR"><Text>통합: 이주민당 부하</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASLOAD_D" Language="ko_KR"><Text>받아들이는 문명이 이주민을 흡수할 때마다 더해지는 통합 "부하". 문명은 현재 부하에 비례해 매 턴 비용을 지불하며, 그 부하는 통합 기간 동안 감쇠합니다. 0 = 끔.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASPOP" Language="ko_KR"><Text>통합: 과밀 스케일링</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ASPOP_D" Language="ko_KR"><Text>더해지는 부하에 (1 + 이 값 × 목적지 인구)를 곱하여, 큰 정착지로의 흡수일수록 더 많이 더합니다, 폭주하는 인구 자석에 대한 제동.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASDECAY" Language="ko_KR"><Text>동화: 턴당 감쇠(기간)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASDECAY_D" Language="ko_KR"><Text>동화 부하가 매 턴 얼마나 빨리 옅어지는지, 이것이 비용의 기간을 정합니다. 낮음 = 짧음(이주민이 더 빨리 통합), 높음 = 비용이 더 오래 지속.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASHAP" Language="ko_KR"><Text>동화: 부하당 턴별 행복도</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASHAP_D" Language="ko_KR"><Text>동화 부하 1단위당 매 턴 차감되는 행복도. 0 = 끔. (추정 레버, 사용 중인 빌드에서 효과가 없으면 금 비용을 사용하세요.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASGOLD" Language="ko_KR"><Text>동화: 부하당 턴별 금</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASGOLD_D" Language="ko_KR"><Text>동화 부하 1단위당 매 턴 차감되는 금. 0 = 끔. (문명 간을 포함해 프로브로 확인된 차감 레버.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASDECAY" Language="ko_KR"><Text>통합: 턴당 감쇠(기간)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASDECAY_D" Language="ko_KR"><Text>통합 부하가 매 턴 얼마나 빨리 옅어지는지, 이것이 비용의 기간을 정합니다. 낮음 = 짧음(이주민이 더 빨리 통합), 높음 = 비용이 더 오래 지속.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASHAP" Language="ko_KR"><Text>통합: 부하당 턴별 행복도</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASHAP_D" Language="ko_KR"><Text>통합 부하 1단위당 매 턴 차감되는 행복도. 0 = 끔. (추정 레버, 사용 중인 빌드에서 효과가 없으면 금 비용을 사용하세요.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASGOLD" Language="ko_KR"><Text>통합: 부하당 턴별 금</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASGOLD_D" Language="ko_KR"><Text>통합 부하 1단위당 매 턴 차감되는 금. 0 = 끔. (문명 간을 포함해 프로브로 확인된 차감 레버.)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MHHAP" Language="ko_KR"><Text>비용: 보유 이주민 유닛당 행복도</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MHHAP_D" Language="ko_KR"><Text>문명이 (정착시키지 않고) 보유한 UNIT_MIGRANT마다 매 턴 차감되는 행복도. 수에 따라 증가, 잉여 이주민은 비축이 아니라 정착시켜야 하기 때문. 0 = 끔. (추정 레버, 금 비용 설명 참조.)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MHGOLD" Language="ko_KR"><Text>비용: 보유 이주민 유닛당 금</Text></Replace>
@@ -156,7 +156,7 @@
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD" Language="ko_KR"><Text>알림: 난민 위기 임계값</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD_D" Language="ko_KR"><Text>난민 위기 헤드라인이 뜨기 전에 한 문명이 (누적으로) 얼마나 많은 사람을 이주시켜야 하는지, 넘긴 배수마다 한 번씩이라, 긴 전쟁은 매 턴이 아니라 몇 개의 헤드라인만 냅니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="ko_KR"><Text>도시별 이주 보고</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="ko_KR"><Text>선택한 정착지가 인구를 얻거나 잃는 이유를 필요할 때 보여주는 패널입니다. 주요 원인, 주민이 이끌리는 곳, 동화 비용, 그리고 대응 방법을 알려줍니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="ko_KR"><Text>선택한 정착지가 인구를 얻거나 잃는 이유를 필요할 때 보여주는 패널입니다. 주요 원인, 주민이 이끌리는 곳, 통합 비용, 그리고 대응 방법을 알려줍니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION" Language="ko_KR"><Text>배출구: 피난처가 없을 때의 소멸</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION_D" Language="ko_KR"><Text>이주가 닫힌 체계가 되지 않게 합니다: 달아날 곳이 없는, 갇혀 심하게 시달리는 도시(포위·기근·극심한 폭력·재난)는 인구를 잃습니다, 사람들은 영원히 머무는 대신 죽거나 흩어집니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRDISTRESS" Language="ko_KR"><Text>배출구: 소멸에 필요한 고통(%)</Text></Replace>
@@ -201,11 +201,11 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="ko_KR"><Text>이 압력은 일시적입니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="ko_KR"><Text>원인을 해결할 때까지 계속됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ko_KR"><Text>그 사람들은 영영 사라졌습니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_COST_NOTE" Language="ko_KR"><Text>{1_Dest}이(가) 이들을 동화시키기 위해 턴당 약 {2_Gold} 골드를 지불합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_COST_NOTE" Language="ko_KR"><Text>{1_Dest}이(가) 이들을 통합하기 위해 턴당 약 {2_Gold} 골드를 지불합니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="ko_KR"><Text>친이민 기조</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ko_KR"><Text>전 세계에서 오는 이주자를 환영합니다. 당신의 도시로 오는 이주가 50% 증가하고, 세계주의적 평판으로 매 턴 영향력을 얻습니다. 시대에 따라 +1, +2, 그다음 +3입니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="ko_KR"><Text>반이민 기조</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ko_KR"><Text>세계를 향해 국경을 닫습니다. 외국에서 오는 새 이주자가 40%로 감소하고(약 60% 감소), 당신의 국민이 경쟁 문명으로 떠나는 일도 크게 줄어듭니다. 동원된 국내 경제가 모든 도시에 생산력을 더합니다. 시대에 따라 +2, +3, 그다음 +4입니다. 고립에는 대가가 따라 매 턴 영향력을 잃습니다. 시대에 따라 -2, -3, 그다음 -4입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ko_KR"><Text>세계를 향해 국경을 닫습니다. 외국에서 온 신규 이주민이 40%로 감소하고(약 60% 감소), 당신의 국민이 경쟁 문명으로 떠나는 일도 크게 줄어듭니다. 동원된 국내 경제가 모든 도시에 생산력을 더합니다. 시대에 따라 +2, +3, 그다음 +4입니다. 고립에는 대가가 따라 매 턴 영향력을 잃습니다. 시대에 따라 -2, -3, 그다음 -4입니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="ko_KR"><Text>인재 유치</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ko_KR"><Text>새 이주자가 당신의 연구를 강화합니다. 과학 +1(현대에는 +2)을 얻고, 끌어들인 이주자 1명당 약 +1.5씩 늘어나는 과학 보너스를 매 턴 최대 +12까지 얻습니다. 이 보너스는 이주 유입이 멈추면 사그라듭니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="ko_KR"><Text>문화적 매력</Text></Replace>
@@ -219,19 +219,19 @@
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="ko_KR"><Text>이주</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="ko_KR"><Text>이주</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="ko_KR"><Text>이주</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="ko_KR"><Text>이주는 살아 있는 인구 이동을 세계에 더합니다. 매 턴 시민들은 불행하거나 곤궁하거나 전화에 휩싸인 정착지를 떠나 더 행복하고 번영하는 곳으로 옮겨 갑니다. 자신의 문명 안에서뿐 아니라 국경을 넘어 다른 문명으로도 이동합니다.[n][n]사람들이 어디로 가는지는 각 도시의 행복도, 산출, 상황을 저울질하는 번영 모델이 결정하며, 이주가 지역 안에 머물도록 거리에 따라 조정됩니다. 이주민을 받아들이는 일은 공짜가 아닙니다. 문명은 새로 온 이들이 정착하는 동안 동화 비용을 치릅니다.[n][n]침략자를 피하는 난민, 국경 정책, 재해, 인구 배출구 등 이 체계의 더 깊은 동작 대부분은 선택 사항이며 옵션, 모드, 이주에서 켤 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="ko_KR"><Text>이주는 살아 있는 인구 이동을 세계에 더합니다. 매 턴 시민들은 불행하거나 곤궁하거나 전화에 휩싸인 정착지를 떠나 더 행복하고 번영하는 곳으로 옮겨 갑니다. 자신의 문명 안에서뿐 아니라 국경을 넘어 다른 문명으로도 이동합니다.[n][n]사람들이 어디로 가는지는 각 도시의 행복도, 산출, 상황을 저울질하는 번영 모델이 결정하며, 이주가 지역 안에 머물도록 거리에 따라 조정됩니다. 이주민을 받아들이는 일은 공짜가 아닙니다. 문명은 새로 온 이들이 정착하는 동안 통합 비용을 치릅니다.[n][n]침략자를 피하는 난민, 국경 정책, 재해, 인구 배출구 등 이 체계의 더 깊은 동작 대부분은 선택 사항이며 옵션, 모드, 이주에서 켤 수 있습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_FAQ_TITLE" Language="ko_KR"><Text>자주 묻는 질문</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_FAQ_BODY" Language="ko_KR"><Text>무엇이 이주를 유발하고 무엇이 그렇지 않은지 요약입니다(대부분 옵션의 모드, 이주에서 조정 가능). 전체 버전은 대시보드의 가이드 탭에 있습니다.[n][n]✓ 당신의 문명과 다른 주요 문명은 만났든 아니든 인구를 이동시킵니다.[n]✗ 도시 국가, 소국, 독립 세력은 인구를 보내지도 받지도 않습니다.[n]✓ 불행, 낮은 산출, 전쟁 피해, 포위(도시 국가나 독립 세력의 공격 포함), 약탈, 기근, 역병, 재해, 과밀은 사람들을 떠나게 합니다.[n]✓ 번영, 높은 행복도, 친이민 정책, 국경 개방, 가까운 위치는 사람들을 끌어들입니다.[n]✗ 이주민은 즉시 도착하지 않으며(거리에 따라 지연) 공짜도 아닙니다(일시적 동화 비용). 전쟁만으로는 점령하지 않는 한 도시를 비울 수 없습니다.[n][n]이주는 AI의 결정을 바꾸지 않으며 기본 게임 파일을 교체하지 않습니다. 만나지 않은 문명은 시뮬레이션되지만 표시를 선택할 때까지 숨겨집니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_FAQ_BODY" Language="ko_KR"><Text>무엇이 이주를 유발하고 무엇이 그렇지 않은지 요약입니다(대부분 옵션의 모드, 이주에서 조정 가능). 전체 버전은 대시보드의 가이드 탭에 있습니다.[n][n]✓ 당신의 문명과 다른 주요 문명은 만났든 아니든 인구를 이동시킵니다.[n]✗ 도시 국가, 소국, 독립 세력은 인구를 보내지도 받지도 않습니다.[n]✓ 불행, 낮은 산출, 전쟁 피해, 포위(도시 국가나 독립 세력의 공격 포함), 약탈, 기근, 역병, 재해, 과밀은 사람들을 떠나게 합니다.[n]✓ 번영, 높은 행복도, 친이민 정책, 국경 개방, 가까운 위치는 사람들을 끌어들입니다.[n]✗ 이주민은 즉시 도착하지 않으며(거리에 따라 지연) 공짜도 아닙니다(일시적 통합 비용). 전쟁만으로는 점령하지 않는 한 도시를 비울 수 없습니다.[n][n]이주는 AI의 결정을 바꾸지 않으며 기본 게임 파일을 교체하지 않습니다. 만나지 않은 문명은 시뮬레이션되지만 표시를 선택할 때까지 숨겨집니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_TITLE" Language="ko_KR"><Text>번영과 이주</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_BODY" Language="ko_KR"><Text>모든 정착지는 1인당 산출과, 무엇보다 순 행복도로부터 번영 점수를 받습니다. 불행한 도시는 평화로운 시기에도 더 행복하고 부유한 도시로 꾸준히 사람을 잃으며, 규모 자체에 대한 작은 페널티가 번영하는 도시가 바닥없는 자석이 되는 것을 막습니다.[n][n]사람들은 가까운 목적지를 선호하므로, 이주는 지도를 가로질러 도약하기보다 지역 안에서 바깥으로 퍼져 나갑니다. 전쟁, 포위, 기근, 소요, 재해는 모두 도시의 번영을 크게 떨어뜨려 그 도시를 난민의 발생지로 바꿉니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_TITLE" Language="ko_KR"><Text>전쟁과 난민</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_BODY" Language="ko_KR"><Text>도시는 단지 제국이 전쟁 중이라는 이유가 아니라, 국경 안에서 실제 폭력이 벌어질 때, 구역이 피해를 입거나 영토가 약탈당할 때, 비로소 전쟁 난민을 내보냅니다. 포위가 길어질수록 더 많은 사람을 몰아내지만, 전쟁만으로 도시가 완전히 비는 일은 결코 없습니다. 실제 점령이 없는 한 일부는 늘 버티고 남습니다.[n][n]난민은 가장 가까운 침략자에게서 멀어지는 방향으로 달아납니다. 침략자 회피가 켜져 있으면, 먼저 자기 문명을, 다음으로 중립 세력을 선호하며, 자신을 공격한 문명은 최후의 수단으로 취급합니다.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_TITLE" Language="ko_KR"><Text>동화와 성장의 대가</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_BODY" Language="ko_KR"><Text>이주민을 흡수하는 일은 공짜가 아닙니다. 새로 온 이 한 명마다 받아들이는 문명에 동화 부담이 더해지고, 그 부담이 통합 기간에 걸쳐 사라질 때까지 문명은 매 턴 비용을, 금과 행복도로, 치릅니다. 사람을 계속 끌어들이는 문명은 계속 대가를 치릅니다.[n][n]또한 혼잡 효과는 이주민을 소화하느라 분주한 문명을 더 많은 이주민에게 덜 매력적인 목적지로 만들 수 있습니다. 이는 부만으로는 없앨 수 없는 제동입니다. 이 둘이 함께, 단일 문명이 세계의 사람들을 빨아들이는 지배적인 이주 자석이 되는 것을 막습니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_TITLE" Language="ko_KR"><Text>통합과 성장의 대가</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_BODY" Language="ko_KR"><Text>이주민을 흡수하는 일은 공짜가 아닙니다. 새로 온 이 한 명마다 받아들이는 문명에 통합 부담이 더해지고, 그 부담이 통합 기간에 걸쳐 사라질 때까지 문명은 매 턴 비용을, 금과 행복도로, 치릅니다. 사람을 계속 끌어들이는 문명은 계속 대가를 치릅니다.[n][n]또한 혼잡 효과는 신규 이주민을 정착시키느라 분주한 문명을 더 많은 이주민에게 덜 매력적인 목적지로 만들 수 있습니다. 이는 부만으로는 없앨 수 없는 제동입니다. 이 둘이 함께, 단일 문명이 세계의 사람들을 빨아들이는 지배적인 이주 자석이 되는 것을 막습니다.[n][n]통합에는 위의 금과 행복도 비용과는 별개로, 더 느린 문화적 측면도 있습니다. 여러 턴에 걸쳐, 신규 이주민은 각 정착지의 민족 구성 안에서 받아들인 문명의 정체성을 띠게 되어, 평화롭고 안정된 도시는 점차 디아스포라를 흡수합니다. 디아스포라의 고향과의 전쟁이나 도시의 소요는 그 통합을 늦추어, 민족 구성 렌즈에서 자기 색을 유지하는 뚜렷한 공동체를 남깁니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_BORDERS_TITLE" Language="ko_KR"><Text>국경과 영향력</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_BORDERS_BODY" Language="ko_KR"><Text>두 개의 지렛대가 국경을 넘는 이주를 빚어냅니다. 당신의 입장은 어느 시대에서나 쓸 수 있는 정책 카드입니다. 친이민 입장을 두면 세계를 환영하여 더 많은 이주자가 오고, 세계주의적 평판이 매 턴 약간의 영향력을 가져옵니다. 또는 반이민 입장을 두어 스스로를 닫으면, 오는 외국인이 줄고 당신의 국민이 경쟁국으로 떠나는 일도 줄며, 동원된 국내 경제가 모든 도시에 생산력을 더합니다. 다만 세계는 당신의 고립을 꾸준한 영향력 감소로 평가합니다. 당신의 전략에 맞는 것을 고르십시오.[n][n]외교도 중요합니다. 당신과 다른 문명이 개방 국경 협정을 맺으면, 이주자가 두 나라 사이를 더 자유로이 양방향으로 오갑니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_BORDERS_BODY" Language="ko_KR"><Text>두 개의 지렛대가 국경을 넘는 이주를 빚어냅니다. 당신의 입장은 어느 시대에서나 쓸 수 있는 정책 카드입니다. 친이민 입장을 두면 세계를 환영하여 더 많은 이주자가 오고, 세계주의적 평판이 매 턴 약간의 영향력을 가져옵니다. 또는 반이민 입장을 두어 스스로를 닫으면, 오는 신규 이주민이 줄고 당신의 국민이 경쟁국으로 떠나는 일도 줄며, 동원된 국내 경제가 모든 도시에 생산력을 더합니다. 다만 세계는 당신의 고립을 꾸준한 영향력 감소로 평가합니다. 당신의 전략에 맞는 것을 고르십시오.[n][n]외교도 중요합니다. 당신과 다른 문명이 개방 국경 협정을 맺으면, 이주자가 두 나라 사이를 더 자유로이 양방향으로 오갑니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_TITLE" Language="ko_KR"><Text>유치와 망명</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="ko_KR"><Text>입장 정책이 국경을 열지 말지를 결정한다면, 두 번째 카드 묶음은 그곳을 지나오는 사람들을 어떻게 활용할지를 결정합니다. 인재 유치·문화 유치·통상 유치 정책은 이주를 하나의 동력으로 바꿉니다. 당신이 끌어들이는 새 이주자 한 명 한 명이 과학·문화·금의 늘어나는 배당을 쌓아 두며, 사람들이 계속 도착하는 동안 불어나고 유입이 멈추면 사그라듭니다, 동화 비용의 대응물로서, 매력을 유지하는 문명에 보상합니다.[n][n]망명 정책은 다른 부름에 응답합니다. 전쟁과 재앙을 피해 달아나는 이들에게 문을 열면 난민이, 가장 절박한 이들부터, 당신에게로 이끌리고, 세계는 그 몸짓을 영향력으로 기억하며, 이후의 협약은 더하여 당신의 문화를 풍요롭게 합니다. 둘은 함께, 너그러운 민족이 개방성을 그저 견디는 것이 아니라 그로부터 혜택을 얻게 해 줍니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="ko_KR"><Text>입장 정책이 국경을 열지 말지를 결정한다면, 두 번째 카드 묶음은 그곳을 지나오는 사람들을 어떻게 활용할지를 결정합니다. 인재 유치·문화 유치·통상 유치 정책은 이주를 하나의 동력으로 바꿉니다. 당신이 끌어들이는 새 이주자 한 명 한 명이 과학·문화·금의 늘어나는 배당을 쌓아 두며, 사람들이 계속 도착하는 동안 불어나고 유입이 멈추면 사그라듭니다, 통합 비용의 대응물로서, 매력을 유지하는 문명에 보상합니다.[n][n]망명 정책은 다른 부름에 응답합니다. 전쟁과 재앙을 피해 달아나는 이들에게 문을 열면 난민이, 가장 절박한 이들부터, 당신에게로 이끌리고, 세계는 그 몸짓을 영향력으로 기억하며, 이후의 협약은 더하여 당신의 문화를 풍요롭게 합니다. 둘은 함께, 너그러운 민족이 개방성을 그저 견디는 것이 아니라 그로부터 혜택을 얻게 해 줍니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_RAIDS_TITLE" Language="ko_KR"><Text>인재 빼가기</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_RAIDS_BODY" Language="ko_KR"><Text>유치는 이주가 당신에게 찾아오기를 기다릴 필요가 없습니다. 외교 화면에서 경쟁국을 겨냥해 인재 약탈·문화 공세·통상 공세를 펼칠 수 있습니다, 상대의 사람들을 당신의 도시로 기울이는 지속적인 공작입니다. 지속되는 동안 매 턴 영향력을 지불하고, 그 대가로 그 경쟁국의 이주가 당신 쪽으로 기울어 가장 뛰어난 두뇌와 문화 인사, 상인을 빼냅니다. 도착하는 한 명 한 명이 자발적 이주자와 마찬가지로 그에 맞는 과학·문화·금 배당을 쌓아 줍니다.[n][n]이것은 전쟁이 아니라 전략적 경쟁의 도구입니다. 어떤 도시도 공격받지 않고 어떤 국경도 무력으로 넘지 않지만, 더 강한 이웃의 재능은 꾸준한 외교적 노력이라는 대가로 조용히 당신의 이익으로 흘러들 수 있습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_TITLE" Language="ko_KR"><Text>재해와 역병</Text></Replace>
@@ -245,7 +245,7 @@
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_TITLE" Language="ko_KR"><Text>대시보드 읽기</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="ko_KR"><Text>이주 대시보드는 게임 내 독의 버튼이나 Demographics 모드의 이주 페이지에서 열 수 있습니다. 탭으로 구성되어 있습니다.[n][n]• 이주 네트워크: 통과하는 인구량에 따라 크기가 달라지는 문명의 애니메이션 보기.[n]• 흐름 지도: 같은 흐름을 화살표로 그려 개별 도시까지 따라갈 수 있습니다.[n]• 문명 장부: 유입, 유출, 순변화, 난민, 손실.[n]• 사람들이 이동하는 이유를 원인별로 나눈 내역.[n]• 인구를 잃기 직전 순서로 정렬한 당신의 정착지.[n]• 이민 정책: 누가 친이민 또는 반이민 입장을 택했는지.[n]• 가이드: 무엇이 이주를 유발하고 무엇이 그렇지 않은지에 대한 빠른 참조.[n][n]지도에서는 민족 구성 렌즈(Shift+E)가 각 정착지를 주민의 출신으로 칠하고, 거주 타일에 마우스를 올리면 정확한 구성이 툴팁에 표시됩니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_TITLE" Language="ko_KR"><Text>민족 구성과 통합</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_BODY" Language="ko_KR"><Text>각 정착지는 주민이 어느 문명의 후손인지에 따라 사람들이 어디서 왔는지를 기록하며, 정복을 거쳐도 그 기록을 유지합니다. 민족 구성 렌즈(Shift+E)는 이를 타일별 모자이크로 보여 줍니다. 인구가 밀집한 도시 중심부는 지배적 기원의 색으로, 소수자는 농촌 외곽에 모이며, 정착된 타일의 툴팁에 정확한 구성이 표시됩니다.[n][n]시간이 지나면 새 이주민은 받아들인 문명에 동화됩니다. 다만 그들의 고향과의 전쟁이나 도시의 불안이 있으면 소수자는 구별된 채 남습니다. 그리고 고향이 받아들인 측과 평화를 이루고 다시 번영하면, 귀환 이주가 시간이 지나며 그 일부를 고향으로 데려가 실제 인구를 옮깁니다. 이 모두는 기본으로 켜져 있으며 옵션에서 끌 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_BODY" Language="ko_KR"><Text>각 정착지는 주민이 어느 문명의 후손인지에 따라 사람들이 어디서 왔는지를 기록하며, 정복을 거쳐도 그 기록을 유지합니다. 민족 구성 렌즈(Shift+E)는 이를 타일별 모자이크로 보여 줍니다. 인구가 밀집한 도시 중심부는 지배적 기원의 색으로, 소규모 공동체는 그 타일 전반에 퍼지며, 정착된 타일의 툴팁에 정확한 구성이 표시됩니다.[n][n]시간이 지나면 신규 이주민은 받아들인 문명에 통합됩니다. 다만 그들의 고향과의 전쟁이나 도시의 불안이 있으면 공동체는 구별된 채 남습니다. 그리고 고향이 받아들인 측과 평화를 이루고 다시 번영하면, 귀환 이주가 시간이 지나며 그 일부를 고향으로 데려가 실제 인구를 옮깁니다. 이 모두는 기본으로 켜져 있으며 옵션에서 끌 수 있습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="ko_KR"><Text>이주 연대기와 난민 결정</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="ko_KR"><Text>이주 연대기는 대시보드의 전용 탭에서 세계의 거대한 이주를 짧은 역사로 기록합니다. 전쟁이나 재해로 비워진 도시, 고향에서 멀리 뿌리내린 디아스포라, 고향이 회복되자 돌아오는 사람들. 사건별 세부 내용은 알림 기록에 남고, 연대기는 그 이야기입니다.[n][n]가끔, 실제의 격변(짧은 기간에 여러 도시를 정복하는 이웃이나 역병 위기)이 난민의 물결을 당신의 땅으로 보내면, 그들을 어떻게 맞이할지 묻습니다. 받아들이거나, 변경에 정착시키거나, 돌려보내는 것입니다. 이 결정은 드물고 영향이 가벼우며 옵션에서 끌 수 있습니다. 만난 적 없는 문명은 풍문으로만 언급되며 드러나지 않습니다.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="ko_KR"><Text>이주</Text></Replace>
