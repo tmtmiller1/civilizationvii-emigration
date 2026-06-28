@@ -23,7 +23,7 @@
         <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="zh_Hans_CN"><Text>灾害</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="zh_Hans_CN"><Text>通知</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET" Language="zh_Hans_CN"><Text>移居强度</Text></Replace>
-        <Replace Tag="LOC_EMIG_PRESET_D" Language="zh_Hans_CN"><Text>移居的总体强度。低 = 罕见移动；高 = 频繁。“自定义”保留下方的高级数值。应用预设会更新高级数值，重新打开选项即可看到。</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_D" Language="zh_Hans_CN"><Text>移居的总体强度——既决定人们迁移的频繁程度，也决定战争将人们驱离的猛烈程度：每回合上限、战争难民的涌出规模，以及每座城市的损失上限。低 = 温和；高 = 剧烈。改动会在一回合内生效。“自定义”保留你在高级中的数值。若需更精细的控制，请在下方的高级设置中调整各项参数。</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_CUSTOM" Language="zh_Hans_CN"><Text>自定义（使用高级）</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_LOW" Language="zh_Hans_CN"><Text>低</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_MEDIUM" Language="zh_Hans_CN"><Text>中</Text></Replace>
@@ -34,6 +34,8 @@
         <Replace Tag="LOC_EMIG_T_COOLDOWN_D" Language="zh_Hans_CN"><Text>定居点在能再失去一个人口点之前休整的回合数。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXMOVES" Language="zh_Hans_CN"><Text>节奏: 每回合最大移居数</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXMOVES_D" Language="zh_Hans_CN"><Text>每次处理中全世界可移动的人口点数量上限。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXLOSS" Language="zh_Hans_CN"><Text>节奏: 每座城市每回合最大迁出数</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXLOSS_D" Language="zh_Hans_CN"><Text>单个定居点在一回合内因迁徙（战争难民加上普通移动）所能损失的最大人口点数——直接限制围城期间城市人口的急剧流失。死亡是另一独立通道，不计入其中。强度预设会设定此值（低 1 / 中 2 / 高 4）。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL" Language="zh_Hans_CN"><Text>节奏: 处理间隔（回合）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL_D" Language="zh_Hans_CN"><Text>每 N 个你的回合执行一次移居处理。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CROSSCIV" Language="zh_Hans_CN"><Text>范围: 允许文明之间迁徙</Text></Replace>

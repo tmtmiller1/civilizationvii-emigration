@@ -264,6 +264,7 @@ function pinBaseConfig() {
   Object.assign(CONFIG, {
     warSurgeMax: 3, violenceFleeThreshold: 2, warSiege: false, transitLagTurns: 0,
     movesPerSiege: 3, splitTracksEnabled: true, splitBudgetsEnabled: true,
+    maxLossPerCityPerTurn: 0, // cap OFF here: this scenario tests concurrent crisis+voluntary, not the cap
     emigrationBar: 1, cooldownTurns: 0
   });
   installConfigStore();
@@ -287,6 +288,39 @@ function pinBaseConfig() {
   assert.ok(war.length >= 1, "E: the besieged city sheds war refugees (crisis track)");
   assert.ok(pros.length >= 1, "E: the SAME pass also sheds prosperity migrants (concurrent causes)");
   assert.equal(war[0].cause, "war", "E: war refugees stay labeled war next to a high-yield haven");
+})();
+
+// ── Scenario E2: the per-city cap bounds a heavy siege ──────────────────────
+// A city under full assault with a large war-surge + crisis budget would burst many points in one
+// turn; maxLossPerCityPerTurn caps how many MIGRATION points it can lose, so it can't hemorrhage.
+(function scenarioPerCityCap() {
+  pinBaseConfig();
+  Object.assign(CONFIG, {
+    warSurgeMax: 5, violenceFleeThreshold: 1, warSiege: false, transitLagTurns: 0,
+    movesPerSiege: 5, splitTracksEnabled: true, splitBudgetsEnabled: true,
+    maxLossPerCityPerTurn: 2, emigrationBar: 1, cooldownTurns: 0
+  });
+  installConfigStore();
+  globalThis.Game = { turn: 1 };
+  globalThis.ComponentID = { toBitfield: (cid) => cid.owner + ":" + cid.n };
+  const besieged = makeCity(1, 1, { population: 20, rural: 20, yields: { YIELD_FOOD: 1 }, x: 0, y: 0 });
+  besieged.id = { owner: 1, n: 1 };
+  const haven = makeCity(1, 2, { population: 2, rural: 2, yields: { YIELD_FOOD: 1000 }, x: 5, y: 0 });
+  haven.id = { owner: 1, n: 2 };
+  installWorld({ 1: major([besieged, haven]) });
+  globalThis.Players.Districts = {
+    get: () => ({
+      getDistrictMaxHealth: () => 100,
+      getDistrictHealth: (loc) => (loc && loc.x === 0 ? 0 : 100)
+    })
+  };
+
+  const recs = runPass();
+  // Migration points lost by the besieged city (war + voluntary; attrition deaths are a separate channel).
+  const lost = recs.filter((m) => m.srcOwner === 1 && m.srcName === besieged.name
+    && m.cause !== "attrition").length;
+  assert.ok(lost >= 1, "E2: the besieged city still sheds refugees");
+  assert.ok(lost <= 2, `E2: per-city cap holds total migration loss to ≤ 2 (got ${lost})`);
 })();
 
 // ── Scenario F: famine death CONCURRENT with emigration (a refuge EXISTS) ───

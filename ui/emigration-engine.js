@@ -318,6 +318,15 @@ function shedCrisis(src, best, state, maxCrisis) {
 }
 
 /**
+ * The hard per-city ceiling on MIGRATION points one settlement may lose this turn (crisis + voluntary),
+ * the direct guard against a single city shedding a large burst. 0 in config → no cap (Infinity).
+ * @returns {number} The per-city migration cap (people points), or Infinity when disabled.
+ */
+function cityMigrationCap() {
+  return CONFIG.maxLossPerCityPerTurn > 0 ? CONFIG.maxLossPerCityPerTurn : Infinity;
+}
+
+/**
  * VOLUNTARY sub-pass: ordinary economic migration, accumulate the pull toward `best`, and when it
  * crosses the bar (and not on cooldown) shed one point, then rest. Independent of any crisis flow.
  * @param {*} src Source signal.
@@ -357,11 +366,15 @@ function processSourceSplit(src, ranked, state, ownerPop, budgets) {
   /** @type {Migration[]} */
   const out = [];
   if (best) {
+    // Per-CITY migration ceiling this turn: crisis + voluntary together can't exceed it (out.length is
+    // the running count of points this source has shed so far), so one besieged city can't burst-evacuate.
+    const cap = cityMigrationCap();
     if (budgets.crisis > 0 && inCrisis(src)) {
-      for (const m of shedCrisis(src, best, state, budgets.crisis)) out.push(m);
+      for (const m of shedCrisis(src, best, state, Math.min(budgets.crisis, cap))) out.push(m);
     }
     // Shared pool: crisis already spent some of the common budget, so the voluntary track gets the rest.
-    const volMax = budgets.shared ? budgets.voluntary - out.length : budgets.voluntary;
+    const volBudget = budgets.shared ? budgets.voluntary - out.length : budgets.voluntary;
+    const volMax = Math.min(volBudget, cap - out.length); // cap minus crisis points already shed
     for (const m of shedVoluntary(src, best, state, st, volMax)) out.push(m);
   }
   // Death channel, CONCURRENT with the above: the trapped (no refuge), or a STARVING city even with a
@@ -385,9 +398,9 @@ function processSource(src, ranked, state, ownerPop, budgets) {
   if (budgets.voluntary <= 0 && budgets.crisis <= 0) return [];
   if (CONFIG.splitTracksEnabled) return processSourceSplit(src, ranked, state, ownerPop, budgets);
   // Legacy uses ONE merged budget: the shared pool's `voluntary` already IS the merged remaining; the
-  // separate-ceiling case sums the two tracks.
+  // separate-ceiling case sums the two tracks. Bounded by the per-city migration cap.
   const merged = budgets.shared ? budgets.voluntary : budgets.voluntary + budgets.crisis;
-  return processSourceLegacy(src, ranked, state, ownerPop, merged);
+  return processSourceLegacy(src, ranked, state, ownerPop, Math.min(merged, cityMigrationCap()));
 }
 
 /**
