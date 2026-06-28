@@ -168,9 +168,41 @@ function pressureCol(p) {
   const val = el("div", "emig-pr-value", pct + "% · " + band.label + flag);
   val.style.color = band.color;
   col.appendChild(val);
+  // The per-city driver meter: the weighted breakdown of WHAT is pushing people out, as proportional
+  // bars — so "exactly what drives migration" reads at a glance. Falls back to a single line otherwise.
+  if (Array.isArray(p.mix) && p.mix.length) col.appendChild(driverMeter(p.mix));
   const sub = (p.cause || "") + (p.dest ? " → " + p.dest : "");
   if (sub.trim()) col.appendChild(el("div", "emig-city-why", "Heading to: " + sub));
   return col;
+}
+
+/**
+ * The per-city migration-driver meter: each active cause as a labelled bar whose width is its share of
+ * the pressure (e.g. War 60% / Prosperity 40%), so a glance shows what's pushing people out and by how
+ * much. Reuses the Causes-tab bar styling.
+ * @param {{cause:string, label:string, share:number}[]} mix Weighted causes (shares 0–100, largest first).
+ * @returns {HTMLElement} The meter.
+ */
+function driverMeter(mix) {
+  const box = el("div", "emig-driver-meter");
+  box.appendChild(el("div", "emig-city-sub", "What's driving it"));
+  for (const m of mix) {
+    const color = CAUSE_PALETTE[m.cause] || CAUSE_PALETTE.other;
+    const row = el("div", "emig-cause-row");
+    const sw = el("span", "emig-cause-sw");
+    sw.style.backgroundColor = color;
+    row.appendChild(sw);
+    row.appendChild(el("span", "emig-cause-label", m.label));
+    const track = el("div", "emig-cause-bar");
+    const fill = el("div", "emig-cause-fill");
+    fill.style.width = Math.max(4, m.share || 0) + "%";
+    fill.style.backgroundColor = color;
+    track.appendChild(fill);
+    row.appendChild(track);
+    row.appendChild(el("span", "emig-cause-num", (m.share || 0) + "%"));
+    box.appendChild(row);
+  }
+  return box;
 }
 
 /**

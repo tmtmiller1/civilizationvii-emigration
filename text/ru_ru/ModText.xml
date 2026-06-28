@@ -23,7 +23,7 @@
         <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="ru_RU"><Text>Бедствия</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="ru_RU"><Text>Уведомления</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET" Language="ru_RU"><Text>Интенсивность эмиграции</Text></Replace>
-        <Replace Tag="LOC_EMIG_PRESET_D" Language="ru_RU"><Text>Общая интенсивность эмиграции. Низкая = редкие перемещения; Высокая = частые. «Свой» сохраняет расширенные значения ниже. Применение пресета обновляет расширенные значения, снова откройте Настройки, чтобы их увидеть.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_D" Language="ru_RU"><Text>Общая интенсивность миграции — задаёт, как часто люди перемещаются И насколько сильно войны их срывают с места: предел за ход, размер всплеска военных беженцев и предел потерь на город. Низкая = мягко; Высокая = интенсивно. Изменения вступают в силу в течение хода. «Свой» сохраняет ваши расширенные значения без изменений. Для более тонкой настройки измените отдельные параметры в расширенных настройках ниже.</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_CUSTOM" Language="ru_RU"><Text>Свой (использовать Расширенно)</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_LOW" Language="ru_RU"><Text>Низкая</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_MEDIUM" Language="ru_RU"><Text>Средняя</Text></Replace>
@@ -34,6 +34,8 @@
         <Replace Tag="LOC_EMIG_T_COOLDOWN_D" Language="ru_RU"><Text>Ходы, в течение которых поселение отдыхает, прежде чем потерять ещё один пункт населения.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXMOVES" Language="ru_RU"><Text>Темп: макс. эмиграций за ход</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXMOVES_D" Language="ru_RU"><Text>Предел того, сколько пунктов населения перемещается по всему миру за один проход.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXLOSS" Language="ru_RU"><Text>Темп: макс. мигрантов из города за ход</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXLOSS_D" Language="ru_RU"><Text>Наибольшее число пунктов населения, которое одно поселение может потерять из-за миграции (военные беженцы плюс обычные перемещения) за один ход — прямой предел, не дающий городу истекать населением во время осады. Гибель — отдельный канал и не учитывается. Это значение задаёт пресет интенсивности (Низкая 1 / Средняя 2 / Высокая 4).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL" Language="ru_RU"><Text>Темп: ходы между проходами</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL_D" Language="ru_RU"><Text>Выполнять проход эмиграции раз в N ваших ходов.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CROSSCIV" Language="ru_RU"><Text>Охват: разрешить миграцию между цивилизациями</Text></Replace>

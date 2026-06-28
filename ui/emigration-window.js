@@ -539,7 +539,8 @@ function pressureMap(me) {
   for (const s of me != null ? ownerCitySnapshots(me) : []) {
     map[s.cityName] = {
       bar: s.pressureToBar || 0, cause: s.causeLabel || "", dest: s.topDestinationName || "",
-      flag: s.attritionRisk ? "at risk" : s.onCooldown ? "resting" : ""
+      flag: s.attritionRisk ? "at risk" : s.onCooldown ? "resting" : "",
+      mix: s.causeMix || null // the weighted "what drives migration" breakdown, for the per-city meter
     };
   }
   return map;

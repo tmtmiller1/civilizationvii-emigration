@@ -114,6 +114,10 @@ class ScreenEmigration extends Panel {
     } catch (e) {
       derr("onAttach body failed:", e);
     }
+    // Resolution response is pure CSS: emigration-density.js's DENSITY_CSS (injected with the
+    // dashboard sheet) scales fixed content fluidly with clamp() and steps the chrome at
+    // @media (max-height) breakpoints — no measurement/re-render to wire. The network diagram
+    // re-fits on its own resize listener (emigration-network-fit.js).
     // Hold background popups (research/civic/event …) in the queue while the window is open so they
     // don't surface over the screen and shove its layout around; they re-surface on detach.
     suspendPopups(this);

@@ -23,7 +23,7 @@
         <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="es_ES"><Text>Desastres</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="es_ES"><Text>Notificaciones</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET" Language="es_ES"><Text>Intensidad de emigración</Text></Replace>
-        <Replace Tag="LOC_EMIG_PRESET_D" Language="es_ES"><Text>Intensidad general de la emigración. Baja = movimientos raros; Alta = frecuentes. «Personalizado» mantiene los valores avanzados de abajo. Aplicar un ajuste preestablecido actualiza los valores avanzados: vuelve a abrir Opciones para verlos.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_D" Language="es_ES"><Text>Intensidad general de la migración: determina con qué frecuencia se mueve la gente Y con qué dureza las guerras la desarraigan: los límites por turno, el tamaño de la oleada de refugiados de guerra y el tope de pérdidas por ciudad. Baja = suave; Alta = intensa. Los cambios surten efecto dentro del mismo turno. «Personalizado» mantiene tus valores avanzados tal cual. Para un control más fino, ajusta cada palanca individual en los ajustes avanzados de abajo.</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_CUSTOM" Language="es_ES"><Text>Personalizado (usar Avanzado)</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_LOW" Language="es_ES"><Text>Baja</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_MEDIUM" Language="es_ES"><Text>Media</Text></Replace>
@@ -34,6 +34,8 @@
         <Replace Tag="LOC_EMIG_T_COOLDOWN_D" Language="es_ES"><Text>Turnos que un asentamiento descansa antes de poder perder otro punto de población.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXMOVES" Language="es_ES"><Text>Ritmo: máx. emigraciones por turno</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXMOVES_D" Language="es_ES"><Text>Límite de cuántos puntos de población se mueven en todo el mundo por pasada.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXLOSS" Language="es_ES"><Text>Ritmo: máx. migrantes por ciudad y turno</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXLOSS_D" Language="es_ES"><Text>El máximo de puntos de población que un asentamiento puede perder por migración (refugiados de guerra más movimientos ordinarios) en un solo turno: el tope directo que impide que una ciudad se desangre de población durante un asedio. Las muertes son un canal aparte y no se contabilizan. El preajuste de intensidad lo establece (Baja 1 / Media 2 / Alta 4).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL" Language="es_ES"><Text>Ritmo: turnos entre pasadas</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL_D" Language="es_ES"><Text>Ejecutar la pasada de emigración una vez cada N de tus turnos.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CROSSCIV" Language="es_ES"><Text>Alcance: permitir migración entre civilizaciones</Text></Replace>

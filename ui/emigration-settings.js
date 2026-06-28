@@ -94,6 +94,7 @@ const OPT_VISIBILITY = "visibilityOverride";
 const OPT_DILEMMA = "refugeeDilemmas";
 const OPT_INTEGRATION = "ethnicIntegration";
 const OPT_RETURN = "returnMigration";
+const OPT_MINIMIZE = "minimizeAnalytics";
 const SNAP_DEFAULT = 1; // turns per migration-timeline snapshot (user-adjustable 1..5; 1 = every turn)
 
 // String-keyed views over the typed config objects (same references), so the
@@ -190,6 +191,33 @@ export function setSnapshotInterval(n) {
 
 /** @type {boolean|null} */
 let _dock = null;
+
+/** @type {boolean|null} */
+let _minimize = null;
+
+/**
+ * Whether the migration dashboard hides its heavy analytics tabs (the animated Network diagram and the
+ * Causes pie charts), leaving the simple, numbers-first tabs — Net Migration table, My Cities, Policies,
+ * Notifications, Guide — plus the Demographics line graphs. Default OFF (everything shown). Re-read each
+ * time the dashboard rebuilds its tab list, so toggling it takes effect on the next open.
+ * @returns {boolean} True when analytics tabs are hidden.
+ */
+export function getMinimizeAnalytics() {
+  if (_minimize == null) {
+    const v = ModOptions.load(MOD_ID, OPT_MINIMIZE);
+    _minimize = v == null ? false : v === 1; // default OFF; persisted as 1/0
+  }
+  return _minimize;
+}
+
+/**
+ * Set + persist whether the dashboard hides its heavy analytics tabs.
+ * @param {boolean} on Whether to minimize analytics.
+ */
+export function setMinimizeAnalytics(on) {
+  _minimize = !!on;
+  ModOptions.save(MOD_ID, OPT_MINIMIZE, _minimize ? 1 : 0);
+}
 
 /**
  * Whether the Emigration button appears on the in-game subsystem dock. Default true. Turn it off to
@@ -339,12 +367,21 @@ export function setTunable(key, value) {
   CFG[key] = value;
 }
 
+// Every CONFIG key the player can change: the advanced tunables PLUS any key a preset writes (some
+// preset keys — e.g. movesPerSiege — aren't individually exposed as tunables, but a preset still sets
+// them, so they must be restored here too or they'd silently revert to default on the next re-apply).
+const OVERRIDE_KEYS = [...new Set([
+  ...TUNABLES.map((t) => t.key),
+  ...Object.values(PRESETS).flatMap((p) => Object.keys(p))
+])];
+
 /**
- * Push every saved tunable override into the live CONFIG. Call once at boot,
- * before the first pass, so a loaded game reflects the player's settings.
+ * Push every saved tunable / preset override into the live CONFIG. Called at boot AND at the start of
+ * every pass (emigration-main), so a preset or tunable changed mid-game in the Options screen — which
+ * runs in a separate isolate and can only persist — takes effect on the next pass instead of next load.
  */
 export function applyTunableOverrides() {
-  for (const t of TUNABLES) CFG[t.key] = getTunable(t.key);
+  for (const key of OVERRIDE_KEYS) CFG[key] = getTunable(key);
 }
 
 /**

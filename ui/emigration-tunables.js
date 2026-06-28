@@ -30,6 +30,7 @@ export const TUNABLES = [
   { key: "emigrationBar", group: "pacing", type: "choice", values: [12, 18, 24, 30, 40, 55, 75], label: "LOC_EMIG_T_BAR", desc: "LOC_EMIG_T_BAR_D" },
   { key: "cooldownTurns", group: "pacing", type: "choice", values: [2, 4, 6, 8, 12, 18], label: "LOC_EMIG_T_COOLDOWN", desc: "LOC_EMIG_T_COOLDOWN_D" },
   { key: "maxMovesPerTurn", group: "pacing", type: "choice", values: [2, 4, 6, 8, 12, 20], label: "LOC_EMIG_T_MAXMOVES", desc: "LOC_EMIG_T_MAXMOVES_D" },
+  { key: "maxLossPerCityPerTurn", group: "pacing", type: "choice", values: [1, 2, 3, 4, 8], label: "LOC_EMIG_T_MAXLOSS", desc: "LOC_EMIG_T_MAXLOSS_D" },
   { key: "turnInterval", group: "pacing", type: "choice", values: [1, 2, 3, 5], label: "LOC_EMIG_T_INTERVAL", desc: "LOC_EMIG_T_INTERVAL_D" },
   // scope
   { key: "crossCivEnabled", group: "scope", type: "bool", label: "LOC_EMIG_T_CROSSCIV", desc: "LOC_EMIG_T_CROSSCIV_D" },
@@ -120,16 +121,16 @@ export const TUNABLES = [
  */
 export const PRESETS = {
   low: {
-    emigrationBar: 55, cooldownTurns: 12, maxMovesPerTurn: 4,
-    violencePerPoint: 9, distanceFactor: 0.9, fleeFactor: 3
+    emigrationBar: 55, cooldownTurns: 12, maxMovesPerTurn: 4, maxLossPerCityPerTurn: 1,
+    violencePerPoint: 9, distanceFactor: 0.9, fleeFactor: 3, warSurgeMax: 2, movesPerSiege: 1
   },
   medium: {
-    emigrationBar: 30, cooldownTurns: 8, maxMovesPerTurn: 8,
-    violencePerPoint: 12, distanceFactor: 0.6, fleeFactor: 6
+    emigrationBar: 30, cooldownTurns: 8, maxMovesPerTurn: 8, maxLossPerCityPerTurn: 2,
+    violencePerPoint: 12, distanceFactor: 0.6, fleeFactor: 6, warSurgeMax: 3, movesPerSiege: 2
   },
   high: {
-    emigrationBar: 18, cooldownTurns: 4, maxMovesPerTurn: 12,
-    violencePerPoint: 16, distanceFactor: 0.4, fleeFactor: 10
+    emigrationBar: 18, cooldownTurns: 4, maxMovesPerTurn: 12, maxLossPerCityPerTurn: 4,
+    violencePerPoint: 16, distanceFactor: 0.4, fleeFactor: 10, warSurgeMax: 5, movesPerSiege: 4
   }
 };
 

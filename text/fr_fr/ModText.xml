@@ -23,7 +23,7 @@
         <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="fr_FR"><Text>Catastrophes</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="fr_FR"><Text>Notifications</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET" Language="fr_FR"><Text>Intensité de l'émigration</Text></Replace>
-        <Replace Tag="LOC_EMIG_PRESET_D" Language="fr_FR"><Text>Intensité globale de l'émigration. Faible = mouvements rares ; Élevée = fréquents. « Personnalisé » conserve les valeurs avancées ci-dessous. Appliquer un préréglage met à jour les valeurs avancées, rouvrez les Options pour les voir.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_D" Language="fr_FR"><Text>Intensité globale de la migration - définit à quelle fréquence les gens se déplacent ET avec quelle violence les guerres les déracinent : les limites par tour, l'ampleur de l'afflux de réfugiés de guerre et le plafond de pertes par ville. Faible = douce ; Élevée = forte. Les changements prennent effet en cours de tour. « Personnalisé » conserve vos valeurs avancées telles quelles. Pour un contrôle plus fin, ajustez les leviers individuels dans les paramètres avancés ci-dessous.</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_CUSTOM" Language="fr_FR"><Text>Personnalisé (utiliser Avancé)</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_LOW" Language="fr_FR"><Text>Faible</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_MEDIUM" Language="fr_FR"><Text>Moyenne</Text></Replace>
@@ -34,6 +34,8 @@
         <Replace Tag="LOC_EMIG_T_COOLDOWN_D" Language="fr_FR"><Text>Tours pendant lesquels un établissement se repose avant de pouvoir perdre un autre point de population.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXMOVES" Language="fr_FR"><Text>Rythme: émigrations max. par tour</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXMOVES_D" Language="fr_FR"><Text>Limite du nombre de points de population qui se déplacent dans le monde à chaque passage.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXLOSS" Language="fr_FR"><Text>Rythme: migrants max. par ville et par tour</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXLOSS_D" Language="fr_FR"><Text>Le maximum de points de population qu'un seul établissement peut perdre à cause de la migration (réfugiés de guerre plus déplacements ordinaires) en un seul tour - le plafond direct qui empêche une ville de se vider de sa population pendant un siège. Les décès relèvent d'un canal distinct et ne sont pas comptés. Le préréglage d'intensité le définit (Faible 1 / Moyenne 2 / Élevée 4).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL" Language="fr_FR"><Text>Rythme: tours entre les passages</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL_D" Language="fr_FR"><Text>Exécuter le passage d'émigration une fois tous les N de vos tours.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CROSSCIV" Language="fr_FR"><Text>Portée: autoriser la migration entre civilisations</Text></Replace>

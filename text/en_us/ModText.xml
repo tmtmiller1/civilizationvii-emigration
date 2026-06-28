@@ -40,7 +40,7 @@
         <Row Tag="LOC_EMIG_ADVGRP_NOTIFY"><Text>Notifications</Text></Row>
 
         <Row Tag="LOC_EMIG_PRESET"><Text>Emigration intensity</Text></Row>
-        <Row Tag="LOC_EMIG_PRESET_D"><Text>Overall emigration intensity. Low = rare moves; High = frequent. "Custom" keeps the Advanced values below. Applying a preset updates the Advanced values, reopen Options to see them refresh.</Text></Row>
+        <Row Tag="LOC_EMIG_PRESET_D"><Text>Overall migration intensity — sets how often people move AND how hard wars uproot them: the per-turn limits, the war-refugee burst size, and the per-city loss cap. Low = gentle; High = heavy. Changes take effect within a turn. "Custom" leaves your Advanced values as-is. For finer control, adjust the individual knobs in Advanced settings below.</Text></Row>
         <Row Tag="LOC_EMIG_PRESET_CUSTOM"><Text>Custom (use Advanced)</Text></Row>
         <Row Tag="LOC_EMIG_PRESET_LOW"><Text>Low</Text></Row>
         <Row Tag="LOC_EMIG_PRESET_MEDIUM"><Text>Medium</Text></Row>
@@ -52,6 +52,8 @@
         <Row Tag="LOC_EMIG_T_COOLDOWN_D"><Text>Turns a settlement rests before it can lose another population point.</Text></Row>
         <Row Tag="LOC_EMIG_T_MAXMOVES"><Text>Pacing: max emigrations per turn</Text></Row>
         <Row Tag="LOC_EMIG_T_MAXMOVES_D"><Text>Cap on how many population points move across the whole world each pass.</Text></Row>
+        <Row Tag="LOC_EMIG_T_MAXLOSS"><Text>Pacing: max migrants per city per turn</Text></Row>
+        <Row Tag="LOC_EMIG_T_MAXLOSS_D"><Text>The most population points one settlement can lose to migration (war refugees plus ordinary moves) in a single turn — the direct cap that stops a city hemorrhaging population during a siege. Deaths are a separate channel and are not counted. The intensity preset sets this (Low 1 / Medium 2 / High 4).</Text></Row>
         <Row Tag="LOC_EMIG_T_INTERVAL"><Text>Pacing: turns between passes</Text></Row>
         <Row Tag="LOC_EMIG_T_INTERVAL_D"><Text>Run the emigration pass once every N of your turns. Raise it to ease per-turn cost on large saves, and, if the Demographics mod is installed, lower its sample frequency first.</Text></Row>
 
