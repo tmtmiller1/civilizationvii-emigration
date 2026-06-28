@@ -15,6 +15,7 @@ import {
   buildColorMap, buildCenters, setupCanvas, injectStyle, appendUnitsToggle, timelineNote,
   helpIcon, WX, WY
 } from "/emigration/ui/emigration-network-viz.js";
+import { installStageFit } from "/emigration/ui/emigration-network-fit.js";
 import { buildChronoDots, totalPeople } from "/emigration/ui/emigration-network-dots.js";
 import { drawCivCircle, drawCityDiscs, drawLabelsNoOverlap } from "/emigration/ui/emigration-network-paint.js";
 import { stepSim } from "/emigration/ui/emigration-network-sim.js";
@@ -730,6 +731,10 @@ function mountFlowChrome(wrap, canvas, timeline, holder, opts) {
   // "playback appears once history accumulates" note the Dots view does, so the Flows page explains
   // the missing timeline rather than silently dropping it.
   wrap.appendChild(timeline ? timeline.root : timelineNote());
+  // Size the 2:1 stage to the available panel height, exactly like the Dots view's mountChrome.
+  // Without this the flow stage stayed pinned at the CSS max-width:100vh cap and didn't fit/fill
+  // the window across resolutions.
+  installStageFit(wrap, stage);
 }
 
 /**

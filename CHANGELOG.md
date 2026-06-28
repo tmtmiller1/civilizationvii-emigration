@@ -7,6 +7,90 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [1.6.5] - 2026-06-28
+
+The Ethnic Composition lens now shows immigrated population across the whole city,
+gentler wording throughout, and a Migration-window sizing fix.
+
+### Fixed
+- **The Migration window's Dots and Flow diagrams now size to the window identically.**
+  Both views use the same fit math, but they measured the panel at different moments —
+  Dots when it first opened, before the flex layout had settled, and Flow a beat later —
+  so one could come up oversized and clipped while the other rendered small with an empty
+  band below it. Both now re-fit after the window settles (a couple of short delayed
+  passes on top of the existing frame-aligned one), so they converge on the same
+  height-bound size that fills the window without oversizing the diagram. Display sizing
+  only — no simulation or layout changes.
+- **The Ethnic Composition lens now actually shows immigrated population.** The lens
+  and its hover panel were frozen on each city's mix as it stood the first time you
+  opened them — typically all-one-civilization early on — and never reflected the
+  immigration that arrived afterward, so every city read as 100% its founder and the
+  map showed no variation. The lens, its tooltip, and the city readout now refresh
+  the composition each turn, so diasporas that settle, grow, or return appear as they
+  happen. (Cause: the recorder and the map readouts run in separate UI contexts that
+  share this data only through the save; the readers were caching it indefinitely.)
+- **War-refugee diasporas are attributed to their true homeland.** A refugee whose
+  home city was razed or captured during the multi-turn journey could lose its origin
+  on arrival (or be miscredited to the conqueror); the migrant now carries its origin
+  with it, so even displaced peoples colour the lens correctly.
+
+### Changed
+- **Immigrant communities are now spread across the whole city on the lens, not
+  banished to the barren outskirts.** Each diaspora claims a share-proportional set of
+  tiles (always at least one, so a small community is never invisible) placed evenly
+  from the dense core out to the rural fringe — a downtown block here, a rural hamlet
+  there — so the mix reads at a glance. The dominant civilization still holds the
+  majority of tiles.
+- **Gentler, clearer wording throughout.** The per-turn cost of receiving migrants is
+  now called the **integration cost** (formerly "assimilation"), matching the mod's
+  existing "ethnic integration"; the relevant options group, settings, Civilopedia
+  page, and tooltips are renamed to suit. Descriptions of immigrant communities now
+  read as "communities" and "diasporas" rather than "minorities"/"foreigners", and a
+  couple of incidental metaphors were softened. The same wording changes are applied
+  across all 10 supported languages. Wording only — no mechanics change.
+
+## [1.6.4] - 2026-06-27
+
+The Flow view now fits the window like the Dots view.
+
+### Fixed
+- **The Flow (arrows) view now sizes to the window like the Dots view.** The
+  1.6.2/1.6.3 fit work sized the Dots diagram's 2:1 stage to the available panel
+  height, but the Flow view built the same stage and never applied that sizing,
+  so its diagram stayed pinned at the CSS height cap and didn't fit/fill the
+  window across resolutions. The Flow view now runs the identical stage-fit pass,
+  so Dots and Flow render at the same size. Display sizing only — no layout,
+  simulation, or canvas-buffer changes.
+
+## [1.6.3] - 2026-06-27
+
+Network and Flow diagram now fills the standalone window.
+
+### Fixed
+- **The Network and Flow diagrams now fill the standalone Migration window at
+  every resolution.**
+  The 1.6.2 fit fix bounded the 2:1 diagram to the dashboard tab body, which is
+  capped at 74% of the screen height so it fits the embedded Demographics page.
+  Inside the dedicated standalone window (which owns a 94% tall frame) that cap
+  left a tall empty band below the diagram. The standalone window's tab body now
+  grows to fill its frame, so the diagram uses the full available height while
+  the embedded page keeps its shared-screen cap. Display sizing only — no
+  layout, simulation, or canvas-buffer changes.
+
+## [1.6.2] - 2026-06-27
+
+Network and Flow diagram scaling fix.
+
+### Fixed
+- **The Network and Flow diagrams now fit at every resolution without clipping.**
+  On smaller or shorter windows (e.g. a laptop at a moderate resolution) the
+  lowest civilization clusters were cut off by the panel edge. The diagram stage
+  is now sized against the actual scroll container it lives in — the dashboard's
+  tab body — rather than the full viewport, so the 2:1 canvas always fits inside
+  the panel. No layout, simulation, or canvas-buffer changes; only the display
+  size is adjusted. The fix is also flicker-free on resize: repeated size writes
+  are suppressed when the value has not changed.
+
 ## [1.6.1] - 2026-06-27
 
 Two truthfulness fixes for the identity systems.
