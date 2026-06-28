@@ -1,13 +1,15 @@
 // emigration-ethnicity-lens.js
 //
 // A map LENS that paints every settlement's tiles by the ORIGIN civilization of its population ,
-// the "ethnic composition" tracked in emigration-composition.js. Each settlement is filled with its
-// DOMINANT origin civ's banner colour, and the fill INTENSITY (opacity) scales with that civ's
-// share of the population: a near-homogeneous city reads vivid, a thoroughly mixed one reads faint.
+// the "ethnic composition" tracked in emigration-composition.js. Each settlement is rendered as a
+// per-tile mosaic (emigration-ethnicity-distribution.js): the dominant origin holds most tiles in its
+// banner colour, while each diaspora claims a share-proportional set of tiles spread across the city,
+// in its own origin civ's colour. Tile OPACITY ramps with population density (the built-up core reads
+// vivid, the rural fringe fainter), with a floor under minority tiles so a diaspora is never lost.
 // So a city founded by one civ, half-emptied by war, then captured and regrown shows the captor's
-// colour strengthening over time as their share rises , the demographic shift, on the map. The full
+// colour spreading over time as their share rises , the demographic shift, on the map. The full
 // per-civ percentage breakdown lives in the city readout (hover/select); this lens is the at-a-
-// glance heat map.
+// glance map.
 //
 // Same self-registering UIScript pattern as emigration-prosperity-lens.js (LensManager layer +
 // lens-panel decorate for the radio button, Shift+E hotkey). Loaded as its OWN <UIScripts> entry so
@@ -33,9 +35,10 @@ const FALLBACK_HEX = "#888888"; // neutral grey when a civ colour can't be resol
 // fringe tile is clearly tinted — the lens is an ETHNIC map first, a density heat-map second.
 const MIN_ALPHA = 0.4;
 const MAX_ALPHA = 0.85;
-// A non-dominant origin (a settled diaspora) lives on the sparse fringe, so a pure density ramp would
-// render it nearly invisible. Floor its opacity so its quarter always reads as a distinct colour on
-// the map, which is the whole point of the lens — to SEE where a minority has taken root.
+// A non-dominant origin (a settled diaspora) is spread across the city's tiles, including sparse ones
+// where a pure density ramp would render it nearly invisible. Floor every minority tile's opacity so
+// it always reads as a distinct colour on the map, which is the whole point of the lens — to SEE
+// where a minority has taken root, whether downtown or out on the rural fringe.
 const MINORITY_ALPHA_FLOOR = 0.62;
 
 // Per-tile density weights by district class — "urban districts have higher populations". A tile's
