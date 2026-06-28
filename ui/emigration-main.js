@@ -151,12 +151,27 @@ function appendConquests(migrations, conquests) {
 }
 
 /**
+ * Re-read the player's saved settings into CONFIG. The Options screen runs in a SEPARATE V8 isolate and
+ * can only persist changes (it can't reach this isolate's CONFIG), so without re-reading each pass a
+ * preset or tunable changed mid-game (e.g. switching the intensity to Low) wouldn't take effect until
+ * the next game load. Cheap + idempotent (copies persisted values / defaults into CONFIG).
+ */
+function refreshSettings() {
+  try {
+    applyTunableOverrides();
+  } catch (e) {
+    dlog("applyTunableOverrides threw " + e);
+  }
+}
+
+/**
  * Run a pass and report results. Returns the migration count.
  * @param {string} why Reason label for the log.
  * @returns {number} Migrations applied.
  */
 function doPass(why) {
   const t0 = nowMs(); // Perf plan P2 #6: time the local-turn pass (debug-only via dlog).
+  refreshSettings(); // pick up any preset/tunable change made mid-game in the Options screen
   let migrations = [];
   try {
     migrations = runPass();

@@ -7,7 +7,7 @@
         <SpecialThanks>Machiavelli's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>1.6.5</Version>
+        <Version>1.6.6</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -134,6 +134,7 @@
                     <Item>ui/emigration-screen.js</Item>
                     <Item>ui/emigration-screen.html</Item>
                     <Item>ui/emigration-screen.css</Item>
+                    <Item>ui/emigration-density.js</Item>
                     <Item>ui/emigration-dock-decorator.js</Item>
                     <Item>ui/emigration-migration-page.js</Item>
                     <Item>ui/emigration-engine.js</Item>
@@ -157,8 +158,10 @@
                     <Item>ui/emigration-log.js</Item>
                     <Item>ui/emigration-report.js</Item>
                     <Item>ui/emigration-violence-signals.js</Item>
-                    <!-- Per-tile ethnic-mosaic distribution model, imported by emigration-ethnicity-lens.js. -->
+                    <!-- Per-tile ethnic-mosaic: the pure distribution model + the shared tiles module
+                         (engine reads + per-turn cache), imported by the ethnicity lens AND its tooltip. -->
                     <Item>ui/emigration-ethnicity-distribution.js</Item>
+                    <Item>ui/emigration-ethnicity-tiles.js</Item>
                     <!-- Migration Chronicle: prose engine + persistent store + diaspora detection + view. -->
                     <Item>ui/emigration-narrative.js</Item>
                     <Item>ui/emigration-chronicle.js</Item>

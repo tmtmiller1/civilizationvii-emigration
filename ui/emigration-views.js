@@ -13,13 +13,14 @@
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { causeLabel, netDrivers } from "/emigration/ui/emigration-causes.js";
 import { renderNetworkOrFlow } from "/emigration/ui/emigration-flow-tab.js";
-import { getNumberMode, setNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
+import { getNumberMode, setNumberMode, NumberMode, getMinimizeAnalytics } from "/emigration/ui/emigration-settings.js";
 import { appendSnapshotReminder } from "/emigration/ui/emigration-snapshot-reminder.js";
 import { renderGuide } from "/emigration/ui/emigration-guide.js";
 import { renderCityFlows, buildCivFlows } from "/emigration/ui/emigration-city-flows.js";
 import { renderStances } from "/emigration/ui/emigration-detail-views.js";
 import { renderLedger } from "/emigration/ui/emigration-ledger-view.js";
 import { renderNotifications } from "/emigration/ui/emigration-notifications-view.js";
+import { DENSITY_CSS } from "/emigration/ui/emigration-density.js";
 
 
 /**
@@ -262,18 +263,30 @@ export function dashboardModel(input) {
   const current = flowNetwork(d.flows || []);
   const frames = buildFrames(d, names, current);
   const events = d.events || [];
-  return {
-    sample: !!d.sample,
-    sections: [
-      { title: "Migration network", kind: "flow", network: current, frames, events },
-      { title: "Net Migration (Table)", kind: "ledger", rows: civLedgerRows(d.civs || []) },
-      { title: "Why people move", kind: "pies", cities: buildCivFlows(d.flows || [], d.civs || [], d.eventsByOwner) },
-      { title: "Settlements", kind: "cityflows", cities: d.myCities || [] },
-      { title: "Immigration policies", kind: "stances", rows: stanceRows(d.civs || []) },
-      { title: "Migration notifications", kind: "notifications" },
-      { title: "Guide", kind: "guide" }
-    ]
-  };
+  const sections = [
+    { title: "Migration network", kind: "flow", network: current, frames, events },
+    { title: "Net Migration (Table)", kind: "ledger", rows: civLedgerRows(d.civs || []) },
+    { title: "Why people move", kind: "pies", cities: buildCivFlows(d.flows || [], d.civs || [], d.eventsByOwner) },
+    { title: "Settlements", kind: "cityflows", cities: d.myCities || [] },
+    { title: "Immigration policies", kind: "stances", rows: stanceRows(d.civs || []) },
+    { title: "Migration notifications", kind: "notifications" },
+    { title: "Guide", kind: "guide" }
+  ];
+  return { sample: !!d.sample, sections: visibleSections(sections) };
+}
+
+// The heavy-analytics section kinds the "simplify dashboard" option hides: the animated Network diagram
+// and the Causes pie charts. The numbers-first tabs (ledger, settlements, policies, notifications, guide)
+// always stay.
+const ANALYTICS_KINDS = new Set(["flow", "pies"]);
+
+/**
+ * Filter the dashboard sections by the "simplify dashboard" option: drop the heavy analytics tabs when
+ * it's on, otherwise pass them through unchanged.
+ * @param {*[]} sections The full section list. @returns {*[]} The visible sections.
+ */
+export function visibleSections(sections) {
+  return getMinimizeAnalytics() ? sections.filter((s) => !ANALYTICS_KINDS.has(s.kind)) : sections;
 }
 
 // ── Themed DOM renderer ─────────────────────────────────────────────────────
@@ -427,7 +440,15 @@ const DASH_CSS =
   ".emig-tabbody{overflow-y:auto;overflow-x:hidden;max-height:74vh;}" +
   ".emig-sample-badge{align-self:center;margin-bottom:0.5rem;padding:0.1rem 0.7rem;border-radius:0.9rem;font-size:0.74rem;letter-spacing:0.08rem;text-transform:uppercase;color:#1c1408;background:#e0913c;font-weight:bold;}" +
   ".emig-flow-toggle{display:flex;gap:0.4rem;justify-content:center;margin:0.3rem 0;flex-wrap:wrap;}.emig-flow-tog{cursor:pointer;padding:0.34rem 1.15rem;font-size:1rem;color:#bfae86;border:0.0555rem solid rgba(201,162,76,0.4);border-radius:1rem;}" +
-  ".emig-flow-tog:hover{color:#e5d2ac;}.emig-flow-tog.active{color:#1c1408;background:#f3c34c;border-color:#f3c34c;font-weight:bold;}";
+  ".emig-flow-tog:hover{color:#e5d2ac;}.emig-flow-tog.active{color:#1c1408;background:#f3c34c;border-color:#f3c34c;font-weight:bold;}" +
+  // ── Resolution density (chrome + per-tab content) ─────────────────────────
+  // Short viewports (sub-1080p laptops) pin the engine font at 18px, so every
+  // fixed-rem display would otherwise stay full size and overflow a 40-50rem
+  // column. emigration-density.js exports the paired compaction sheet
+  // (DENSITY_CSS): fixed content scales fluidly with clamp() and the chrome steps
+  // at @media (max-height) breakpoints; appended here so it injects with the
+  // dashboard and covers both the standalone screen and the embedded page.
+  DENSITY_CSS;
 
 /** Inject the dashboard content stylesheet once (idempotent). */
 function injectDashboardStyle() {

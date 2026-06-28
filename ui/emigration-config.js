@@ -18,10 +18,16 @@ export const CONFIG = {
   // cities in crisis), so simultaneous wars on different civs never compete for one global budget.
   maxMovesPerTurn: 8,
   movesPerCity: 1, // per-civ ceiling: + this per settlement (the ceiling grows with empire size)
-  movesPerSiege: 4, // per-civ ceiling: + this per city in war/disaster crisis. Raised from 2 → 4 so a
-  //                   besieged city's refugees actually flee FASTER than the base game's combat removes
-  //                   them, at 2 the trickle lost the race and most population died in place. Pairs
-  //                   with warSurgeMax (a city's per-turn burst); the budget must be ≥ it to matter.
+  movesPerSiege: 2, // per-civ ceiling: + this per city in war/disaster crisis. Pairs with warSurgeMax
+  //                   (a city's per-turn burst); the budget must be ≥ it to matter. Lowered 4 → 2 so a
+  //                   single besieged city can't reach a large per-turn loss; presets scale it (Low 1 /
+  //                   Medium 2 / High 4).
+  // Hard PER-CITY ceiling on how many population points ONE settlement may lose to MIGRATION (crisis +
+  // voluntary) in a single turn — the direct guard against "a city shed 5 pop in one turn". The per-civ
+  // budgets above bound a whole empire; this bounds each city. Deaths (attrition) are a separate, rarer
+  // channel and are not counted here. 0 = no per-city cap. Tunable (advanced) + scaled by the intensity
+  // preset (Low 1 / Medium 2 / High 4).
+  maxLossPerCityPerTurn: 2,
   emigrationBar: 30, // accumulated pressure (per source) to move one citizen
   deltaExponent: 0.5, // diminishing scaling on the prosperity delta
 
@@ -294,8 +300,10 @@ export const CONFIG = {
   // ── exceeds the flee threshold), up to warSurgeMax points in a turn - still ──
   // ── bounded by the siegeLossCapPct TOTAL cap above, so a city can't be fully ──
   // ── depopulated. 1 = off (the old linear trickle). ──
-  warSurgeMax: 5, // max rural points a besieged source sheds in one turn (1 = off). Raised 3 → 5 so a
-  //                heavy assault evacuates a city in a burst instead of a slow trickle that combat outruns.
+  warSurgeMax: 3, // max rural points a besieged source sheds in one turn (1 = off). Lowered 5 → 3: a
+  //                heavy assault still evacuates faster than a trickle, but a single city can't lose a
+  //                large burst. The per-city cap (maxLossPerCityPerTurn) bounds it further; presets scale
+  //                it (Low 2 / Medium 3 / High 5).
 
   // ── Algorithm B: overcrowding discount (ON by default; 0 → no change) ──
   // Civ VII pop costs ZERO happiness per head (probe API3-2); a tall city's

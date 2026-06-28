@@ -32,7 +32,8 @@ const INDEX_TTL = 3000; // ms a plot->settlement index is cached before a rebuil
  * @property {string} panelId  The panel element id.
  * @property {string} styleId  The injected <style> id.
  * @property {(signals:*[])=>*} [buildSnapshot] Optional per-pass context from all signals.
- * @property {(signal:*, snapshot:*)=>{title:string, rows:HoverRow[]}|null} resolve Hovered -> display.
+ * @property {(signal:*, snapshot:*, plot?:{x:number,y:number})=>{title:string, rows:HoverRow[]}|null}
+ *   resolve Hovered settlement (+ the hovered plot, for per-tile panels) -> display.
  */
 
 /** @type {{spec:HoverPanelSpec, panel:HTMLElement|null, snapshot:*, curKey:string|null}[]} */
@@ -188,8 +189,12 @@ function place(panel) {
   let y = _mouseY + CURSOR_OFFSET;
   if (x + w > window.innerWidth) x = _mouseX - w - CURSOR_OFFSET;
   if (y + h > window.innerHeight) y = _mouseY - h - CURSOR_OFFSET;
-  panel.style.left = Math.max(0, x) + "px";
-  panel.style.top = Math.max(0, y) + "px";
+  // Clamp BOTH edges to the viewport: flipping the anchor can still leave the panel off-screen on a
+  // short/narrow viewport (or when the panel is wider than the cursor's margin), so pin it inside.
+  const maxX = Math.max(0, window.innerWidth - w - 4);
+  const maxY = Math.max(0, window.innerHeight - h - 4);
+  panel.style.left = Math.min(Math.max(0, x), maxX) + "px";
+  panel.style.top = Math.min(Math.max(0, y), maxY) + "px";
 }
 
 /** Hide a panel. @param {*} e Panel entry. */
@@ -206,7 +211,9 @@ function renderPanel(e) {
   }
   const plot = hoveredPlot();
   const sig = plot ? freshIndex().get(plot.x + "," + plot.y) : null;
-  const out = sig ? e.spec.resolve(sig, e.snapshot) : null;
+  // Pass the hovered plot too, so a per-tile panel (the ethnicity lens) can read THAT tile's data;
+  // settlement-level panels (prosperity) simply ignore the extra argument.
+  const out = sig ? e.spec.resolve(sig, e.snapshot, plot) : null;
   if (!out || !out.rows || !out.rows.length || !plot) {
     hidePanel(e);
     return;

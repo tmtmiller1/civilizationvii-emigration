@@ -7,6 +7,64 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [1.6.6] - 2026-06-28
+
+Migration balance you can actually steer: settings now apply mid-game, the intensity
+presets govern war bursts, and a per-city cap stops sudden mass exodus. Plus a simpler
+dashboard option, a per-city "what drives migration" meter, a fully per-tile Ethnic
+Composition lens, and continuous low-resolution scaling.
+
+### Fixed
+- **Changing the intensity preset (or any setting) now takes effect mid-game.**
+  Switching the Emigration intensity to Low — or changing any Advanced tunable —
+  used to do nothing until you reloaded the game, because the Options screen and the
+  running simulation are separate parts of the UI that only share saved settings. The
+  simulation now re-reads your settings every turn, so a change applies on the next
+  pass. (If you switch to Low and a city is mid-siege, the gentler limits take hold
+  right away.)
+- **Migrations no longer come in huge bursts; the intensity presets now actually
+  govern them.** Early-era cities could shed ~5 population in a single turn during a
+  siege, and the Low/Medium/High presets didn't touch any of the war-driven knobs, so
+  picking "Low" couldn't calm it. Now there's a hard **per-city cap** on how many people
+  one settlement can lose to migration in a turn (Low 1 / Medium 2 / High 4, also a new
+  Advanced tunable), the war-burst defaults are lower, and the presets set all of it —
+  so Low is genuinely gentle and High stays intense. The preset selector sits in the
+  main Options panel with a note that finer control lives in Advanced settings.
+
+- **Every screen now renders properly on lower resolutions.** On sub-1080p
+  displays (1366×768, 1600×900 and similar) the game pins the UI font at its
+  smallest size, so all the fixed elements — the title, tab bar, control pills and
+  card headers, plus each tab's own displays (the Causes pies, the Net Migration
+  and pressure tables, the Policy stances, the Network timeline and legend, the
+  Notifications log and the Guide) — kept their full size and squeezed the content
+  into a sliver. The fixed-size content now scales *continuously* with the
+  available height — easing smoothly from full size down to a readable floor as
+  the window gets shorter, with no abrupt jumps between resolutions — so every tab
+  fills the frame consistently. At the standard resolutions (1080p / 1440p / 4K)
+  nothing changes.
+
+### Changed
+- **The Ethnic Composition lens now gives every tile its own ethnic mix, and the
+  tooltip matches the colour.** Before, each tile was painted a single origin's flat
+  colour and hovering any tile showed the same citywide percentages. Now each tile
+  carries its own local blend — a diaspora concentrates into a few "neighbourhood"
+  tiles where its share runs high and fades at the edges, while most tiles stay all
+  the founder's — and the tile's colour is blended from its origins in proportion to
+  those shares. Hovering a tile shows that tile's exact percentages, so the colour you
+  see and the numbers you read are the same data. The per-tile shares still add up to
+  the city's real composition (some tiles more, some less, the total conserved).
+
+### Added
+- **A "simplify dashboard" option.** Turning it on (main Options panel) hides the heavy
+  migration analytics — the animated Network diagram and the Causes pie charts — and
+  keeps the simple, numbers-first tabs: Net Migration, My Cities, Policies, Notifications
+  and the Guide, plus the Demographics line graphs. For players who want the population
+  and net-migration numbers without the charts.
+- **A per-city migration meter on the My Cities / Settlements tab.** Each settlement now
+  shows, beside its emigration-pressure bar, a "What's driving it" breakdown — the active
+  causes (war, prosperity, unhappiness, disaster) as proportional bars with percentages —
+  so you can see at a glance exactly what is pushing people out and by how much.
+
 ## [1.6.5] - 2026-06-28
 
 The Ethnic Composition lens now shows immigrated population across the whole city,
