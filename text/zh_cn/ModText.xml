@@ -18,7 +18,7 @@
         <Replace Tag="LOC_EMIG_ADVGRP_PROSPERITY" Language="zh_Hans_CN"><Text>繁荣模型</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_VIOLENCE" Language="zh_Hans_CN"><Text>战争与战斗强度</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_GEOGRAPHY" Language="zh_Hans_CN"><Text>地理与移动</Text></Replace>
-        <Replace Tag="LOC_EMIG_ADVGRP_COST" Language="zh_Hans_CN"><Text>同化与移民成本</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_COST" Language="zh_Hans_CN"><Text>融入与移民成本</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_OUTLET" Language="zh_Hans_CN"><Text>出口（损耗）</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="zh_Hans_CN"><Text>灾害</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="zh_Hans_CN"><Text>通知</Text></Replace>
@@ -110,16 +110,16 @@
         <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="zh_Hans_CN"><Text>两个文明之间的开放边境协定在多大程度上促进彼此之间双向的迁徙。0 = 关闭。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="zh_Hans_CN"><Text>地理: 旅途延迟（0 = 即时）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_TRANSITLAG_D" Language="zh_Hans_CN"><Text>移民在抵达前花在路上的最长时间。他们在出发的回合离开来源地；实际延迟取决于到目的地的距离（越远越久），以此上限为限。战争难民始终至少需要一个回合。若他们在途中目的地被摧毁，则会在途中丧生。0 = 即时抵达。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASLOAD" Language="zh_Hans_CN"><Text>同化: 每名移民的负荷</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASLOAD_D" Language="zh_Hans_CN"><Text>接收文明每吸收一名移民所增加的同化“负荷”。文明按当前负荷成比例支付每回合成本，该负荷会在同化期间衰减。0 = 关闭。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASPOP" Language="zh_Hans_CN"><Text>同化: 拥挤缩放</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASLOAD" Language="zh_Hans_CN"><Text>融入: 每名移民的负荷</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASLOAD_D" Language="zh_Hans_CN"><Text>接收文明每吸收一名移民所增加的融入“负荷”。文明按当前负荷成比例支付每回合成本，该负荷会在融入期间衰减。0 = 关闭。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASPOP" Language="zh_Hans_CN"><Text>融入: 拥挤缩放</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ASPOP_D" Language="zh_Hans_CN"><Text>将增加的负荷乘以（1 + 此值 × 目的地人口），因此吸收进大型定居点会增加更多，对失控人口磁石的制动。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASDECAY" Language="zh_Hans_CN"><Text>同化: 每回合衰减（时长）</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASDECAY_D" Language="zh_Hans_CN"><Text>同化负荷每回合消退的速度，这决定了成本的时长。越低越短（移民更快融入）；越高，成本持续越久。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASHAP" Language="zh_Hans_CN"><Text>同化: 每回合每单位负荷的幸福度</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASHAP_D" Language="zh_Hans_CN"><Text>每单位同化负荷每回合扣除的幸福度。0 = 关闭。（推测性杠杆，若在你的版本中无效，请使用金币成本。）</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASGOLD" Language="zh_Hans_CN"><Text>同化: 每回合每单位负荷的金币</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASGOLD_D" Language="zh_Hans_CN"><Text>每单位同化负荷每回合扣除的金币。0 = 关闭。（经探针确认的扣除杠杆，包括跨文明。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASDECAY" Language="zh_Hans_CN"><Text>融入: 每回合衰减（时长）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASDECAY_D" Language="zh_Hans_CN"><Text>融入负荷每回合消退的速度，这决定了成本的时长。越低越短（移民更快融入）；越高，成本持续越久。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASHAP" Language="zh_Hans_CN"><Text>融入: 每回合每单位负荷的幸福度</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASHAP_D" Language="zh_Hans_CN"><Text>每单位融入负荷每回合扣除的幸福度。0 = 关闭。（推测性杠杆，若在你的版本中无效，请使用金币成本。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASGOLD" Language="zh_Hans_CN"><Text>融入: 每回合每单位负荷的金币</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASGOLD_D" Language="zh_Hans_CN"><Text>每单位融入负荷每回合扣除的金币。0 = 关闭。（经探针确认的扣除杠杆，包括跨文明。）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MHHAP" Language="zh_Hans_CN"><Text>成本: 每个滞留移民单位的幸福度</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MHHAP_D" Language="zh_Hans_CN"><Text>文明每滞留（未安置）一个 UNIT_MIGRANT，每回合扣除的幸福度，随数量增长，以促使多余移民被安置而非囤积。0 = 关闭。（推测性杠杆，见金币成本说明。）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MHGOLD" Language="zh_Hans_CN"><Text>成本: 每个滞留移民单位的金币</Text></Replace>
@@ -156,7 +156,7 @@
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD" Language="zh_Hans_CN"><Text>通知: 难民危机阈值</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD_D" Language="zh_Hans_CN"><Text>一个文明（累计）须使多少人流离失所才触发难民危机标题，每越过一个倍数触发一次，因此长期战争只产生几则标题，而非每回合一则。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="zh_Hans_CN"><Text>各城市迁徙概览</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="zh_Hans_CN"><Text>按需显示一个面板，说明所选定居点为何增减人口：主要原因、居民被吸引的去向、同化成本，以及你能采取的对策。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="zh_Hans_CN"><Text>按需显示一个面板，说明所选定居点为何增减人口：主要原因、居民被吸引的去向、融入成本，以及你能采取的对策。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION" Language="zh_Hans_CN"><Text>泄流口: 无处可逃时的折损</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION_D" Language="zh_Hans_CN"><Text>防止迁徙成为封闭系统：被困、严重受难的城市（围城、饥荒、激烈暴力或灾害）若无可行去处便会失去人口，人们会死亡或四散，而非永远滞留。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRDISTRESS" Language="zh_Hans_CN"><Text>泄流口: 折损所需的苦难（%）</Text></Replace>
@@ -201,11 +201,11 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="zh_Hans_CN"><Text>这种压力是暂时的。</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="zh_Hans_CN"><Text>在你解决根源之前，它将持续。</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="zh_Hans_CN"><Text>这些人口已永远失去。</Text></Replace>
-        <Replace Tag="LOC_EMIG_COST_NOTE" Language="zh_Hans_CN"><Text>{1_Dest}每回合支付约{2_Gold}金币以同化他们。</Text></Replace>
+        <Replace Tag="LOC_EMIG_COST_NOTE" Language="zh_Hans_CN"><Text>{1_Dest}每回合支付约{2_Gold}金币以融入他们。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="zh_Hans_CN"><Text>亲移民立场</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="zh_Hans_CN"><Text>欢迎来自世界各地的移民。流入你城市的移民增加50%，并因你的世界主义声望每回合获得影响力：按时代为+1、+2、然后+3。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="zh_Hans_CN"><Text>反移民立场</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="zh_Hans_CN"><Text>向世界关闭你的边境。外来的新移民降至40%（约减少60%），你本国公民流向竞争文明的也大幅减少。动员起来的国内经济为每座城市增加生产力：按时代为+2、+3、然后+4。孤立自有其代价，每回合损失影响力：按时代为-2、-3、然后-4。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="zh_Hans_CN"><Text>向世界关闭你的边境。来自境外的新移民降至40%（约减少60%），你本国公民流向竞争文明的也大幅减少。动员起来的国内经济为每座城市增加生产力：按时代为+2、+3、然后+4。孤立自有其代价，每回合损失影响力：按时代为-2、-3、然后-4。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="zh_Hans_CN"><Text>人才吸引</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="zh_Hans_CN"><Text>新移民增强你的研究。获得+1科技（现代为+2），外加随你吸引的每位移民约+1.5增长的科技加成，每回合最多+12。若移民停止流入，此加成会逐渐消退。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="zh_Hans_CN"><Text>文化魅力</Text></Replace>
@@ -219,19 +219,19 @@
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="zh_Hans_CN"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="zh_Hans_CN"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="zh_Hans_CN"><Text>移民</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="zh_Hans_CN"><Text>移民为世界带来鲜活的人口流动。每回合，市民都会离开不幸、困苦或饱受战乱的聚落，迁往更幸福、更繁荣之处，既在你的文明内部，也越过边界前往其他文明。[n][n]人们何去何从，由一套繁荣度模型决定，它权衡每座城市的幸福度、产出与处境，并以距离加以塑造，使迁徙保持区域性。接纳移民并非无偿：在新来者融入期间，文明要支付同化成本。[n][n]本系统更深层的行为大多，躲避侵略者的难民、边界政策、灾害以及人口的泄流口，皆为可选，可在选项、模组、移民中启用。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="zh_Hans_CN"><Text>移民为世界带来鲜活的人口流动。每回合，市民都会离开不幸、困苦或饱受战乱的聚落，迁往更幸福、更繁荣之处，既在你的文明内部，也越过边界前往其他文明。[n][n]人们何去何从，由一套繁荣度模型决定，它权衡每座城市的幸福度、产出与处境，并以距离加以塑造，使迁徙保持区域性。接纳移民并非无偿：在新来者落脚安顿之际，文明要支付融入成本。[n][n]本系统更深层的行为大多，躲避侵略者的难民、边界政策、灾害以及人口的泄流口，皆为可选，可在选项、模组、移民中启用。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_FAQ_TITLE" Language="zh_Hans_CN"><Text>常见问题</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_FAQ_BODY" Language="zh_Hans_CN"><Text>哪些因素会引发迁徙、哪些不会（大多可在「选项」的「模组、迁徙」中调整）。完整版见仪表板的「指南」标签页。[n][n]✓ 你的文明和其他主要文明都会迁移人口，无论是否已相遇。[n]✗ 城邦、小型文明和独立势力既不输出也不接收人口。[n]✓ 不满、低产出、战争破坏、围城（包括城邦或独立势力的攻击）、劫掠、饥荒、瘟疫、灾害和过度拥挤都会驱使人口离开。[n]✓ 繁荣、高幸福度、亲移民立场、开放边境以及邻近的位置会吸引他们。[n]✗ 移民不会立即抵达（距离会增加延迟），也并非免费（有临时同化成本）；仅靠战争无法在未占领的情况下使城市人口归零。[n][n]迁徙不会改变 AI 决策，也不会替换任何基础游戏文件。未相遇的文明会被模拟，但在你选择显示之前保持隐藏。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_FAQ_BODY" Language="zh_Hans_CN"><Text>哪些因素会引发迁徙、哪些不会（大多可在「选项」的「模组、迁徙」中调整）。完整版见仪表板的「指南」标签页。[n][n]✓ 你的文明和其他主要文明都会迁移人口，无论是否已相遇。[n]✗ 城邦、小型文明和独立势力既不输出也不接收人口。[n]✓ 不满、低产出、战争破坏、围城（包括城邦或独立势力的攻击）、劫掠、饥荒、瘟疫、灾害和过度拥挤都会驱使人口离开。[n]✓ 繁荣、高幸福度、亲移民立场、开放边境以及邻近的位置会吸引他们。[n]✗ 移民不会立即抵达（距离会增加延迟），也并非免费（有临时融入成本）；仅靠战争无法在未占领的情况下使城市人口归零。[n][n]迁徙不会改变 AI 决策，也不会替换任何基础游戏文件。未相遇的文明会被模拟，但在你选择显示之前保持隐藏。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_TITLE" Language="zh_Hans_CN"><Text>繁荣与迁徙</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_BODY" Language="zh_Hans_CN"><Text>每个聚落都依据其人均产出，尤其是其净幸福度，获得繁荣度评分。即便在和平时期，不幸的城市也会持续将人口流失给更幸福、更富庶的城市，而针对规模本身的一点小惩罚，则防止繁荣的城市沦为无底的磁石。[n][n]人们偏好就近的去处，因此迁徙是在区域内向外扩散，而非跨越地图跳跃。战争、围城、饥荒、动乱与灾害都会大幅压低城市的繁荣度，使其化为难民之源。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_TITLE" Language="zh_Hans_CN"><Text>战争与难民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_BODY" Language="zh_Hans_CN"><Text>唯有当城市边界之内确有暴力发生时，其区域受损，或其领地遭到劫掠，城市才会涌出战争难民，而非仅因其帝国处于战争状态。围城拖得越久，被赶走的人就越多，但仅凭战争永远无法将一座城市彻底清空：只要未被真正占领，总有一部分人坚守不去。[n][n]难民朝着远离最近侵略者的方向逃亡。启用躲避侵略者后，他们还会优先选择本国文明，其次是任何中立势力，并将攻击过自己的文明视作最后的退路。</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_TITLE" Language="zh_Hans_CN"><Text>同化与增长的代价</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_BODY" Language="zh_Hans_CN"><Text>吸纳移民并非无偿。每位新来者都会给接纳的文明增添一份同化负荷，文明须为此逐回合付出代价，以金币与幸福度计，直到该负荷在融入期内消退。不断吸引人口的文明，便要不断付出。[n][n]此外，拥挤效应会使一个忙于消化移民的文明，对更多移民而言成为吸引力更低的去处，这是一道单凭财富无法消除的闸。二者合力，防止任何单一文明沦为吸引天下人口的主导性迁移磁石。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_TITLE" Language="zh_Hans_CN"><Text>融入与成长的代价</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_BODY" Language="zh_Hans_CN"><Text>吸纳移民并非无偿。每位新来者都会给接纳的文明增添一份融入负荷，文明须为此逐回合付出代价，以金币与幸福度计，直到该负荷在融入期内消退。不断吸引人口的文明，便要不断付出。[n][n]此外，拥挤效应会使一个忙于安顿新来者的文明，对更多移民而言成为吸引力更低的去处，这是一道单凭财富无法消除的闸。二者合力，防止任何单一文明沦为吸引天下人口的主导性迁移磁石。[n][n]融入还有一个更缓慢的文化层面，与上述金币与幸福度的成本相区别。历经许多回合，新来者会在每个定居点的族群构成中逐渐采纳接纳方文明的身份认同，因此一座和平而安定的城市会渐渐吸纳一个离散族群。与某离散族群故土的战争，或城市中的动荡，会阻滞这一融入，留下一个保持独立的社群，在民族构成镜头上保留其自身的颜色。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_BORDERS_TITLE" Language="zh_Hans_CN"><Text>边界与影响力</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_BORDERS_BODY" Language="zh_Hans_CN"><Text>两根杠杆塑造着跨越你边境的迁徙。你自身的立场是一张每个时代都可用的政策卡。选择亲移民立场以迎接世界：更多移民到来，你的世界主义声望每回合带来少许影响力。或选择反移民立场以自我封闭：到来的外国人减少，你本国人民流向对手的也减少，动员起来的国内经济为每座城市增加生产力，尽管世界以持续流失的影响力来评判你的孤立。选择契合你战略的那一张。[n][n]外交同样重要。当你与另一个文明签订开放边境协定时，移民会在你们两国之间更自由地双向流动。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_BORDERS_BODY" Language="zh_Hans_CN"><Text>两根杠杆塑造着跨越你边境的迁徙。你自身的立场是一张每个时代都可用的政策卡。选择亲移民立场以迎接世界：更多移民到来，你的世界主义声望每回合带来少许影响力。或选择反移民立场以自我封闭：到来的新移民减少，你本国人民流向对手的也减少，动员起来的国内经济为每座城市增加生产力，尽管世界以持续流失的影响力来评判你的孤立。选择契合你战略的那一张。[n][n]外交同样重要。当你与另一个文明签订开放边境协定时，移民会在你们两国之间更自由地双向流动。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_TITLE" Language="zh_Hans_CN"><Text>吸引与庇护</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="zh_Hans_CN"><Text>立场政策决定你的边境是否敞开，而另一组政策卡则决定你如何对待经由边境而来的人。人才吸引、文化魅力与商业吸引政策把移民化为引擎：你所吸引的每一位新来者都会积攒一份不断增长的科技、文化或金币红利，只要人潮持续涌入便会累积，一旦流入停止便逐渐消退，这是同化代价的对应物，奖励持续保持吸引力的文明。[n][n]庇护政策回应的是另一种召唤。向逃离战争与灾难者敞开大门，会把难民引向你，最绝望者优先，而世界以影响力铭记这一姿态，其后的契约更会丰富你的文化。二者相辅，使一个好客的民族得以从开放中获益，而非仅仅承受开放。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="zh_Hans_CN"><Text>立场政策决定你的边境是否敞开，而另一组政策卡则决定你如何对待经由边境而来的人。人才吸引、文化魅力与商业吸引政策把移民化为引擎：你所吸引的每一位新来者都会积攒一份不断增长的科技、文化或金币红利，只要人潮持续涌入便会累积，一旦流入停止便逐渐消退，这是融入代价的对应物，奖励持续保持吸引力的文明。[n][n]庇护政策回应的是另一种召唤。向逃离战争与灾难者敞开大门，会把难民引向你，最绝望者优先，而世界以影响力铭记这一姿态，其后的契约更会丰富你的文化。二者相辅，使一个好客的民族得以从开放中获益，而非仅仅承受开放。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_RAIDS_TITLE" Language="zh_Hans_CN"><Text>人才掠夺</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_RAIDS_BODY" Language="zh_Hans_CN"><Text>吸引不必等待移民自行到来。在外交界面上，你可以对竞争对手发动人才掠夺、文化攻势或贸易攻势，一场持续的运作，将对方的人民引向你的城市。只要它持续，你每回合便支付影响力，作为回报，那位对手的迁徙便向你倾斜，抽走其最杰出的头脑、文化人物或商人；每一位抵达者都会像自愿的移民一样，积攒相应的科技、文化或金币红利。[n][n]这是战略竞争的工具，而非战争：没有城市遭到攻击，也没有边境被强行越过，然而只需付出持续的外交努力，便可悄然将更强邻邦的人才吸纳为己用。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_TITLE" Language="zh_Hans_CN"><Text>灾害与瘟疫</Text></Replace>
@@ -243,9 +243,9 @@
         <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_TITLE" Language="zh_Hans_CN"><Text>范围与可见性</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_BODY" Language="zh_Hans_CN"><Text>迁徙从第一回合起就模拟整个世界：所有存活的主要文明，而不仅是你已相遇的文明。这让迁徙保持真实：人们依据世界的实际状态移动，而你之后占领的城市会保留其居民真实的来源历史。[n][n]为避免剧透，仪表板、图表和地图镜头只显示你已相遇的文明。未相遇的文明仍在后台计算，但默认隐藏，使你无法得知尚未遇到的对手。你可以通过共享的分析可见性设置（与 Demographics 模组相同）扩大显示范围：仅自己的文明、已相遇的文明或全部。[n][n]简而言之：一切都会被模拟，而看到什么由你决定。模拟范围（整个世界或仅已相遇）与屏幕显示是相互独立的设置。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_TITLE" Language="zh_Hans_CN"><Text>解读仪表板</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="zh_Hans_CN"><Text>可从游戏内工具栏的按钮，或从 Demographics 模组的「迁徙」页面打开迁徙仪表板。它分为多个标签页：[n][n]• 迁徙网络：以通过各文明的人口量决定大小的动画视图。[n]• 流向图：将同样的流动绘制为箭头，可一直追溯到具体城市。[n]• 文明清单：流入、流出、净变化、难民与损失。[n]• 人口迁移原因的分类细目。[n]• 你的定居点，按各自距离失去人口的远近排序。[n]• 移民政策：谁采取了亲移民或反移民立场。[n]• 指南：关于哪些因素会引发迁徙、哪些不会的快速参考。[n][n]在地图上，民族构成镜头（Shift+E）按居民来源为每个定居点着色，将鼠标悬停在已定居的地块上即可在提示中看到确切的构成。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="zh_Hans_CN"><Text>可从游戏内工具栏的按钮，或从 Demographics 模组的「迁徙」页面打开迁徙仪表板。它分为多个标签页：[n][n]• 迁徙网络：以通过各文明的人口量决定大小的动画视图。[n]• 流向图：将同样的流动绘制为箭头，可一直追溯到具体城市。[n]• 文明清单：流入、流出、净变化、难民与损失。[n]• 人口迁移原因的分类细目。[n]• 你的定居点，按各自距离失去人口的远近排序。[n]• 移民政策：谁采取了亲移民或反移民立场。[n]• 指南：关于哪些因素会引发迁徙、哪些不会的快速参考。[n][n]在地图上，民族构成镜头（Shift+E）按居民来源将每个定居点绘成逐格马赛克：人口密集的城市核心为主导来源的颜色，较小的社群散布于其各地块，将鼠标悬停在已定居的地块上即可在提示中看到确切的构成。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_TITLE" Language="zh_Hans_CN"><Text>族群构成与融合</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_BODY" Language="zh_Hans_CN"><Text>每个聚落都记录其居民的来历，按每个人所属的文明来源，并在征服之后依然保留这份记录。族群构成镜头（Shift+E）以逐格马赛克呈现：人口密集的城市核心为主导来源的颜色，少数族群聚集在乡村边缘，已定居地块的提示框中会显示确切构成。[n][n]随着时间推移，新来者会融入接纳他们的文明，除非与其故土的战争或城市中的动荡使某个少数族群保持独立。而一旦故土与接纳方和平相处并重新繁荣，回归移民便会逐渐将其部分人口带回故乡，移动真实人口。以上皆为默认开启，可在选项中关闭。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_BODY" Language="zh_Hans_CN"><Text>每个聚落都记录其居民的来历，按每个人所属的文明来源，并在征服之后依然保留这份记录。族群构成镜头（Shift+E）以逐格马赛克呈现：人口密集的城市核心为主导来源的颜色，较小的社群散布于其各地块，已定居地块的提示框中会显示确切构成。[n][n]随着时间推移，新来者会融入接纳他们的文明，除非与其故土的战争或城市中的动荡使某个社群保持独立。而一旦故土与接纳方和平相处并重新繁荣，回归移民便会逐渐将其部分人口带回故乡，移动真实人口。以上皆为默认开启，可在选项中关闭。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="zh_Hans_CN"><Text>移民编年史与难民抉择</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="zh_Hans_CN"><Text>移民编年史位于面板的专属标签页，将世界上的大迁徙写成简短的历史：被战争或灾害清空的城市、在远离故乡之地扎根的离散族群、在故土复苏后归来的人们。逐事件的细节仍保留在通知记录中，编年史则是其中的故事。[n][n]偶尔，当真正的剧变（短期内攻占数座城市的邻邦，或一场瘟疫危机）将一波难民推向你的疆土时，你会被询问如何接纳他们：接纳他们、安置于边疆，或将其拒之门外。这些抉择十分罕见、影响轻微，并可在选项中关闭。你尚未会面的文明仅以传闻提及，绝不揭示。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="zh_Hans_CN"><Text>迁徙</Text></Replace>

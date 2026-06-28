@@ -34,3 +34,24 @@
     /* The injected .emig-dash supplies the card layout + spacing. */
     min-height: 6rem;
 }
+
+/* The standalone window owns its whole 94vh frame, so let the active tab fill it. The dashboard
+ * content is shared with the Demographics-embedded page, where .emig-tabbody is capped at 74vh to
+ * leave room for that host screen's own chrome; inside this dedicated window that same cap leaves a
+ * tall empty band below the content (most visibly under the 2:1 network / flow diagram). Make the
+ * host -> dash -> tabbody a flex column that grows to the screen body's bottom, so the network-fit
+ * sizing measures the taller bounding box and fills the window at every resolution. Scoped to
+ * .emig-screen-host, so the embedded page keeps its 74vh cap. */
+.emig-screen-host,
+.emig-screen-host .emig-dash {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.emig-screen-host .emig-tabbody {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+}

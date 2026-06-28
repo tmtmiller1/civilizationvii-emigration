@@ -9,10 +9,13 @@
 //     built-up it is (city centre ≫ urban district > worked rural > owned wilderness). The lens maps
 //     a tile's people to OPACITY, so the dense urban core reads vivid and the rural fringe reads faint
 //     — "urban districts have higher populations", as requested.
-//   • ETHNICITY — origins are assigned to WHOLE tiles so a minority concentrates on a few tiles
-//     rather than tinting every tile by its small fraction. Minorities settle the sparse FRINGE
-//     (immigrant outskirts); the dominant origin holds the dense core. The people totals per origin
-//     still match the composition's shares, so "the percentages follow".
+//   • ETHNICITY — origins are assigned to WHOLE tiles so a minority reads as distinct coloured tiles
+//     rather than tinting every tile by its small fraction. Each origin gets a tile count proportional
+//     to its share (with a floor of one tile, so even a small diaspora is always visible), and those
+//     tiles are SPREAD evenly across the density gradient — fringe, rural, urban, and the core alike —
+//     so an immigrant community shows up as a mix of locations across the city (a downtown block, a
+//     rural hamlet, a tile with a single warehouse), not banished to the barren outskirts. The
+//     dominant origin keeps the majority of tiles, so the city still reads as predominantly its own.
 //
 // Pure: no engine reads. The lens (emigration-ethnicity-lens.js) supplies the classified plots +
 // scaled population and maps the returned per-tile origin/density to a colour + alpha.
@@ -73,14 +76,15 @@ function originsSmallestFirst(civs) {
 
 /**
  * Distribute a settlement's population across its owned tiles by density, and assign each tile a
- * single origin civ so minorities concentrate on the sparse fringe while the dominant origin holds
- * the dense core — the per-tile mosaic the ethnicity lens paints.
+ * single origin civ so a diaspora reads as distinct coloured tiles SPREAD across the whole city —
+ * the per-tile mosaic the ethnicity lens paints.
  *
- * Algorithm: weight tiles → per-tile people (urban dense, rural sparse). Sort tiles sparse→dense.
- * Walk them filling each origin's PEOPLE quota (share × total) in turn, smallest minority first; when
- * a quota is spent, advance to the next origin. The dominant origin is last and absorbs the dense
- * remainder. So minorities claim a few sparse fringe tiles (totalling their share) and the core stays
- * dominant — counts per origin still match the composition.
+ * Algorithm: weight tiles → per-tile people (urban dense, rural sparse), sorted sparse→dense. Give
+ * each origin a tile COUNT proportional to its share (floored to one tile so a small diaspora is
+ * never invisible; trimmed smallest-first if the floors would crowd out the dominant). Then stamp
+ * each origin's tiles at EVENLY-SPACED positions along the density-sorted order, so every origin —
+ * dominant and minority alike — is spread across fringe, rural, urban and core tiles rather than
+ * banded into one corner. The dominant keeps the majority of tiles, so the city still reads as its.
  * @param {PlotWeight[]} plots The settlement's owned tiles with density weights.
  * @param {{civs:{civ:number, share:number}[], dominant:{civ:number}|null}} comp The composition.
  * @param {number} scaledPeople The settlement's scaled population (people).
@@ -90,9 +94,22 @@ export function distributeTiles(plots, comp, scaledPeople) {
   if (!hasDistributableInputs(plots, comp)) return [];
   const people = typeof scaledPeople === "number" && scaledPeople > 0 ? scaledPeople : 0;
   const tiles = weightedTiles(plots, people);
-  const origins = originsSmallestFirst(comp.civs);
-  const dominantCiv = comp.dominant ? comp.dominant.civ : origins[origins.length - 1].civ;
-  return assignOrigins(tiles, origins, people, dominantCiv);
+  const dominantCiv = comp.dominant ? comp.dominant.civ
+    : originsSmallestFirst(comp.civs)[comp.civs.length - 1].civ;
+  // No people scaled yet (early game / unreadable population): paint everything dominant rather than
+  // inventing a split that the numbers don't support yet.
+  if (!(people > 0)) return tiles.map((t) => paintTile(t, dominantCiv));
+  const civForTile = assignOrigins(tiles.length, comp.civs, dominantCiv);
+  return tiles.map((t, i) => paintTile(t, civForTile[i]));
+}
+
+/**
+ * One tile's paint record: its assigned origin civ plus the density (opacity driver) from its people.
+ * @param {{x:number, y:number, people:number}} t A weighted tile. @param {number} civ Origin civ id.
+ * @returns {TilePaint} The paint record.
+ */
+function paintTile(t, civ) {
+  return { x: t.x, y: t.y, civ, people: t.people, density: tileDensity(t.people) };
 }
 
 /**
@@ -122,30 +139,74 @@ function weightedTiles(plots, people) {
 }
 
 /**
- * Walk the sparse→dense tiles filling each origin's people quota (share × total) in turn — smallest
- * minority first, dominant (last) as the dense-core catch-all — so minorities concentrate on a few
- * fringe tiles and the counts per origin still match the composition.
- * @param {{x:number, y:number, people:number}[]} tiles Sorted per-tile people.
- * @param {{civ:number, share:number}[]} origins Origins ascending by share.
- * @param {number} people The settlement's scaled people.
- * @param {number} dominantCiv The dominant origin (fallback when no people are scaled yet).
- * @returns {TilePaint[]} Per-tile paints.
+ * Map each of `n` density-sorted tiles (index 0 = sparsest … n-1 = densest) to an origin civ: the
+ * dominant fills the city, then each minority's proportional tile count is stamped at evenly-spaced
+ * positions along the order, so every diaspora is spread across the density gradient (fringe→core)
+ * instead of clustered. Deterministic.
+ * @param {number} n Tile count.
+ * @param {{civ:number, share:number}[]} civs Composition origins (any order).
+ * @param {number} dominantCiv The dominant origin id (fills every tile a minority doesn't claim).
+ * @returns {number[]} The origin civ id per tile index.
  */
-function assignOrigins(tiles, origins, people, dominantCiv) {
-  /** @type {TilePaint[]} */
-  const out = [];
-  let oi = 0;
-  let remaining = origins[0].share * people; // people quota for the current origin
-  for (const t of tiles) {
-    while (oi < origins.length - 1 && remaining <= 0) {
-      oi++;
-      remaining = origins[oi].share * people;
-    }
-    const civ = people > 0 ? origins[oi].civ : dominantCiv; // no people scaled yet → all dominant
-    remaining -= t.people;
-    out.push({ x: t.x, y: t.y, civ, people: t.people, density: tileDensity(t.people) });
+function assignOrigins(n, civs, dominantCiv) {
+  const civForTile = new Array(n).fill(dominantCiv);
+  const slots = minoritySlots(n, civs, dominantCiv);
+  if (!slots.length) return civForTile;
+  // Stamp the minority slots at evenly-spaced indices across the density-sorted tiles (each slot s at
+  // ~ (s + 0.5) · n / slots.length), probing forward on collision so each lands on its own tile. The
+  // round-robin slot order (see minoritySlots) means a single minority is spread end-to-end and
+  // several minorities interleave, so none bands into one density corner.
+  const stride = n / slots.length;
+  const used = new Set();
+  for (let s = 0; s < slots.length; s++) {
+    let idx = Math.min(n - 1, Math.floor(s * stride + stride / 2));
+    while (used.has(idx)) idx = (idx + 1) % n;
+    used.add(idx);
+    civForTile[idx] = slots[s];
   }
-  return out;
+  return civForTile;
+}
+
+/**
+ * The ordered list of minority tile assignments (origin civ ids, one per tile a minority should
+ * claim) for `n` tiles: each non-dominant origin gets max(1, round(share·n)) tiles so a small
+ * diaspora is never invisible, trimmed smallest-share-first if the floors would leave the dominant
+ * fewer than one tile, then flattened ROUND-ROBIN (largest minority first) so multiple diasporas
+ * interleave rather than each taking a contiguous density band.
+ * @param {number} n Tile count.
+ * @param {{civ:number, share:number}[]} civs Composition origins.
+ * @param {number} dominantCiv The dominant origin id (excluded from the minority slots).
+ * @returns {number[]} Minority origin ids, round-robin ordered (length ≤ n-1).
+ */
+function minoritySlots(n, civs, dominantCiv) {
+  const minorities = civs
+    .filter((c) => c.civ !== dominantCiv && c.share > 0)
+    .map((c) => ({ civ: c.civ, share: c.share }))
+    .sort((a, b) => b.share - a.share || a.civ - b.civ); // largest diaspora first
+  const counts = minorities.map((m) => Math.max(1, Math.round(m.share * n)));
+  // The dominant must keep at least one tile: if the minority floors overshoot, trim the smallest
+  // diasporas (the tail) until they fit, so the rarest origins are the ones that drop out under crowding.
+  let total = counts.reduce((a, c) => a + c, 0);
+  for (let i = minorities.length - 1; i >= 0 && total > n - 1; i--) {
+    const cut = Math.min(counts[i], total - (n - 1));
+    counts[i] -= cut;
+    total -= cut;
+  }
+  // Flatten round-robin: A,B,A,B,A,… so each origin's tiles interleave across the spaced positions.
+  /** @type {number[]} */
+  const slots = [];
+  const left = counts.slice();
+  let remaining = total;
+  let k = 0;
+  while (remaining > 0) {
+    if (left[k] > 0) {
+      slots.push(minorities[k].civ);
+      left[k] -= 1;
+      remaining -= 1;
+    }
+    k = (k + 1) % minorities.length;
+  }
+  return slots;
 }
 
 // Test-only re-exports (the lens uses distributeTiles directly).

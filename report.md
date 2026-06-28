@@ -18,8 +18,8 @@ Both mods currently present release risk due to failed local verification runs.
 1. Repository structure and package scripts for both mods.
 2. Targeted scans for obvious anti-patterns (TODO/debug placeholders, hard failures, fallback placeholders).
 3. Direct verification runs:
-   - `cd '/Users/tylermiller/Downloads/Contents copy/emigration' && npm run verify`
-   - `cd '/Users/tylermiller/Downloads/Contents copy/demographics' && npm run verify`
+   - `cd 'emigration' && npm run verify`
+   - `cd 'demographics' && npm run verify`
 4. Focused reads of files referenced by failing diagnostics and potentially player-facing fallback logic.
 
 ## Verification Results
@@ -29,7 +29,7 @@ Both mods currently present release risk due to failed local verification runs.
 Command:
 
 ```bash
-cd '/Users/tylermiller/Downloads/Contents copy/emigration' && npm run verify
+cd 'emigration' && npm run verify
 ```
 
 Result: failed with 2 TypeScript errors.
@@ -44,7 +44,7 @@ Result: failed with 2 TypeScript errors.
 Command:
 
 ```bash
-cd '/Users/tylermiller/Downloads/Contents copy/demographics' && npm run verify
+cd 'demographics' && npm run verify
 ```
 
 Result: failed with 28 TypeScript errors across 4 files.

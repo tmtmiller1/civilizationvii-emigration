@@ -5,8 +5,9 @@
 //   1. degenerate inputs → [] (no throw);
 //   2. a single origin paints every tile that origin;
 //   3. denser (higher-weight, urban) tiles carry more people → higher opacity than sparse tiles;
-//   4. a minority CONCENTRATES on the sparse fringe yet its people total still tracks its share
-//      ("the percentages follow"), and the dense core stays dominant.
+//   4. a minority's TILE COUNT tracks its share (with a floor of one tile so it's never invisible),
+//      its tiles are SPREAD across the density gradient (fringe → core, not banded in one corner),
+//      and the dominant keeps the majority of tiles.
 
 import assert from "node:assert/strict";
 import { distributeTiles, __test } from "/emigration/ui/emigration-ethnicity-distribution.js";
@@ -54,41 +55,49 @@ assert.deepEqual(distributeTiles(null, null, 0), [], "null inputs → []");
   assert.ok(core.density <= 1 && fringe.density >= 0, "density stays in [0,1]");
 }
 
-// ── 4. Minority concentrates on the fringe; percentages still follow ─────────
+// ── 4. Minority tile count tracks its share, spread across the density gradient ─
 {
-  // 91% civ 1 (dominant) / 9% civ 2 (minority), a dense centre + rurals + sparse fringe.
+  // 80% civ 1 (dominant) / 20% civ 2 (minority): a dense centre, urban ring, rurals, sparse fringe —
+  // enough tiles that a 20% diaspora claims several, so we can assert it SPREADS rather than bands.
   const plots = [
     { x: 0, y: 0, weight: 3.6 }, // city centre (densest)
-    { x: 1, y: 0, weight: 1 }, { x: 0, y: 1, weight: 1 }, { x: 1, y: 1, weight: 1 },
-    { x: 2, y: 0, weight: 1 }, { x: 0, y: 2, weight: 1 },
+    { x: 1, y: 0, weight: 2.4 }, { x: 0, y: 1, weight: 2.4 }, // urban ring
+    { x: 1, y: 1, weight: 1 }, { x: 2, y: 0, weight: 1 }, { x: 0, y: 2, weight: 1 },
+    { x: 2, y: 1, weight: 1 }, { x: 1, y: 2, weight: 1 }, // rural
     { x: 3, y: 3, weight: 0.4 }, { x: 4, y: 4, weight: 0.4 } // sparse fringe
   ];
   const comp = {
-    civs: [{ civ: 1, share: 0.91 }, { civ: 2, share: 0.09 }],
+    civs: [{ civ: 1, share: 0.8 }, { civ: 2, share: 0.2 }],
     dominant: { civ: 1 }
   };
   const total = 500000;
   const tiles = distributeTiles(plots, comp, total);
-  const by = peopleByCiv(tiles);
-
-  // The densest tile (the centre) is the dominant origin's.
-  const core = tiles.find((t) => t.x === 0 && t.y === 0);
-  assert.equal(core.civ, 1, "the dense core is dominant-coloured");
-
-  // The minority's people total tracks its share (9%), within one fringe tile's granularity.
-  const minorityShare = (by[2] || 0) / total;
-  assert.ok(minorityShare >= 0.05 && minorityShare <= 0.2,
-    `minority people track its ~9% share (got ${(minorityShare * 100).toFixed(1)}%)`);
-
-  // The minority is CONCENTRATED: it occupies only the sparse fringe tiles, not the core/rurals.
   const minorityTiles = tiles.filter((t) => t.civ === 2);
-  assert.ok(minorityTiles.length >= 1 && minorityTiles.length <= 3, "minority on just a few tiles");
-  assert.ok(minorityTiles.every((t) => t.people <= core.people),
-    "minority tiles are sparser than the dominant core");
+
+  // The minority's TILE COUNT tracks its 20% share (2 of 10), and the dominant keeps the majority.
+  assert.equal(minorityTiles.length, 2, "minority gets ~share × tiles (20% of 10 → 2)");
+  assert.ok(tiles.filter((t) => t.civ === 1).length > minorityTiles.length, "dominant keeps the most tiles");
+
+  // Every origin's people are still conserved across the whole settlement.
+  assert.ok(Math.abs(sum(tiles, (t) => t.people) - total) < 1, "per-tile people sum to the total");
+
+  // SPREAD: the two minority tiles sit in DIFFERENT density bands (not banded into one corner).
+  const bandOf = (w) => (w >= 3 ? 3 : w >= 2 ? 2 : w >= 1 ? 1 : 0);
+  const wOf = new Map(plots.map((p) => [p.x + "," + p.y, p.weight]));
+  const bands = new Set(minorityTiles.map((t) => bandOf(wOf.get(t.x + "," + t.y))));
+  assert.ok(bands.size >= 2, "minority tiles span more than one density band (spread, not clustered)");
 
   // Determinism: identical inputs → identical output.
   const again = distributeTiles(plots, comp, total);
   assert.deepEqual(again, tiles, "distribution is deterministic");
+}
+
+// ── 4b. A tiny minority is never invisible (floor of one tile) ───────────────
+{
+  const plots = Array.from({ length: 20 }, (_, i) => ({ x: i, y: 0, weight: 1 }));
+  const comp = { civs: [{ civ: 1, share: 0.99 }, { civ: 2, share: 0.01 }], dominant: { civ: 1 } };
+  const tiles = distributeTiles(plots, comp, 800000);
+  assert.equal(tiles.filter((t) => t.civ === 2).length, 1, "a 1% diaspora still claims one visible tile");
 }
 
 // ── 5. With no scaled people yet, everything falls back to the dominant origin ─

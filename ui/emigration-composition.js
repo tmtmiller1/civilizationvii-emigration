@@ -42,6 +42,15 @@ const STATE_KEY = "EmigrationEthnos_v1";
 
 /** @type {CompositionState | null} */
 let _s = null;
+// The turn `_s` was last (re)read from persistence. The recorder (gameplay context) and the readers
+// (the ethnicity lens, its hover tooltip, the city readout) run in SEPARATE V8 contexts, each with
+// its own module instance, sharing this state ONLY through the persisted GameConfiguration blob. So a
+// reader that loaded `_s` once and cached it forever would freeze on whatever the city mix was at its
+// first paint/hover — typically near-mono early game — and never see the diaspora the recorder banks
+// turn after turn. Re-reading whenever the turn advances lets every reader pick up the recorder's
+// latest save (at most one turn stale), so immigration actually shows on the lens. Harmless for the
+// recorder itself: it always save()s before the turn ticks, so a reload just re-reads its own write.
+let _loadedTurn = -1;
 
 /**
  * The current age-local game turn, or 0.
@@ -139,7 +148,9 @@ function normalizeCities(rawCities) {
  * @returns {CompositionState} State.
  */
 function load() {
-  if (_s) return _s;
+  const turn = gameTurn();
+  if (_s && _loadedTurn === turn) return _s; // same turn → reuse (no churn within a pass)
+  _loadedTurn = turn;
   try {
     const raw = readStored();
     if (raw) {
@@ -152,7 +163,9 @@ function load() {
   } catch (_) {
     /* ignore */
   }
-  _s = { cities: {} };
+  // Nothing persisted yet: keep any existing in-memory state (the recorder mid-game before its first
+  // save, or a test's seeded state) rather than wiping it; only initialise when truly empty.
+  if (!_s) _s = { cities: {} };
   return _s;
 }
 
@@ -558,6 +571,7 @@ export const __test = {
   integrateCity,
   reset: () => {
     _s = { cities: {} };
+    _loadedTurn = -1;
   },
   state: () => load()
 };
