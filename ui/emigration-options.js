@@ -38,6 +38,8 @@ import {
   setSnapshotInterval,
   getShowDockButton,
   setShowDockButton,
+  getMinimizeAnalytics,
+  setMinimizeAnalytics,
   getVisibilityOverride,
   setVisibilityOverride,
   getDilemmasEnabled,
@@ -172,6 +174,24 @@ function registerDockButton() {
   });
 }
 
+/** Register the "minimize analytics" toggle: hide the heavy dashboard tabs (Network diagram + Causes
+ * pies), keeping the simple numbers-first tabs and the Demographics graphs. Default off. */
+function registerMinimizeAnalytics() {
+  Options.addOption({
+    category: CategoryType.Mods,
+    group: MAIN_GROUP,
+    type: OptionType.Checkbox,
+    id: "emigration-minimize-analytics",
+    initListener: (/** @type {*} */ info) => (info.currentValue = getMinimizeAnalytics()),
+    updateListener: (/** @type {*} */ _i, /** @type {*} */ v) => setMinimizeAnalytics(!!v),
+    label: "Emigration • simplify dashboard",
+    description: "Hide the heavy migration analytics — the animated Network diagram and the Causes pie "
+      + "charts — and keep the simple, numbers-first tabs: Net Migration, My Cities (with the per-city "
+      + "migration meter), Policies, Notifications and the Guide, plus the Demographics graphs. Takes "
+      + "effect next time you open the dashboard."
+  });
+}
+
 /** Register the notifications on/off toggle. Maps the master notifyMode tunable: on = 1 (important),
  * off = 0 (silence all Emigration toasts and the world-news log). Verbose mode (2) is set from the
  * Advanced editor and reads back as "on" here. */
@@ -263,6 +283,7 @@ Options.addInitCallback(() => {
   registerDataMode();
   registerSnapshotInterval();
   registerDockButton();
+  registerMinimizeAnalytics();
   registerNotifications();
   registerVisibility();
   registerIntegration();

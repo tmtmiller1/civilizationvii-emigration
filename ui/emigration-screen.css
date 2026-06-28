@@ -55,3 +55,42 @@
     min-height: 0;
     max-height: none;
 }
+
+/* Frame sizing: near-fullscreen modal, widened on short OR narrow windows. This matches the
+ * Demographics frame and the base game's own panels, which widen at
+ * @media (max-height: 55.5556rem), (max-aspect-ratio: 3/2) — so a short laptop viewport AND a
+ * narrow / portrait / 4:3 display both get the extra width instead of a cramped column. rem so the
+ * breakpoint tracks the engine's scaled root font (responds to resolution AND Interface Size). */
+@media (max-height: 55.5555555556rem), (max-aspect-ratio: 3/2) {
+    .emig-screen-frame {
+        width: 98vw;
+        height: 96vh;
+        max-width: 98vw;
+        max-height: 96vh;
+    }
+}
+
+/* Resolution density (see emigration-density.js): on short viewports the engine pins the root font
+ * and the frame's own chrome (title margin + body padding) would eat the column, so claw it back to
+ * hand more space to the dashboard content. Pure CSS via @media (max-height: …rem) — rem so the
+ * breakpoint tracks the engine's scaled root font (responds to resolution AND Interface Size),
+ * matching the base game's own screens. The micro block cascades on top of the compact block. */
+@media (max-height: 53.9rem) {
+    .emig-screen-title {
+        margin-bottom: 0.3rem;
+    }
+
+    .emig-screen-body {
+        padding: 0 1rem 1rem 1rem;
+    }
+}
+
+@media (max-height: 43.9rem) {
+    .emig-screen-title {
+        margin-bottom: 0.2rem;
+    }
+
+    .emig-screen-body {
+        padding: 0 0.7rem 0.7rem 0.7rem;
+    }
+}

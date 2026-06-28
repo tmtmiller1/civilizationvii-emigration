@@ -23,7 +23,7 @@
         <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="de_DE"><Text>Katastrophen</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="de_DE"><Text>Benachrichtigungen</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET" Language="de_DE"><Text>Auswanderungsintensität</Text></Replace>
-        <Replace Tag="LOC_EMIG_PRESET_D" Language="de_DE"><Text>Gesamtintensität der Auswanderung. Niedrig = seltene Bewegungen; Hoch = häufige. „Benutzerdefiniert“ behält die erweiterten Werte unten bei. Eine Vorgabe aktualisiert die erweiterten Werte – Optionen erneut öffnen, um sie zu sehen.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_D" Language="de_DE"><Text>Gesamtintensität der Wanderung – legt fest, wie oft Menschen ziehen UND wie stark Kriege sie entwurzeln: die Obergrenzen pro Runde, die Größe der Kriegsflüchtlingswelle und die Verlustgrenze pro Stadt. Niedrig = sanft; Hoch = heftig. Änderungen werden innerhalb einer Runde wirksam. „Benutzerdefiniert“ behält deine erweiterten Werte unbeeinflusst. Für feinere Steuerung passe die einzelnen Regler in den erweiterten Einstellungen unten an.</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_CUSTOM" Language="de_DE"><Text>Benutzerdefiniert (Erweitert nutzen)</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_LOW" Language="de_DE"><Text>Niedrig</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_MEDIUM" Language="de_DE"><Text>Mittel</Text></Replace>
@@ -34,6 +34,8 @@
         <Replace Tag="LOC_EMIG_T_COOLDOWN_D" Language="de_DE"><Text>Runden, die eine Siedlung ruht, bevor sie einen weiteren Bevölkerungspunkt verlieren kann.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXMOVES" Language="de_DE"><Text>Tempo – max. Auswanderungen pro Runde</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXMOVES_D" Language="de_DE"><Text>Obergrenze, wie viele Bevölkerungspunkte sich pro Durchlauf weltweit bewegen.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXLOSS" Language="de_DE"><Text>Tempo – max. Migranten pro Stadt und Runde</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXLOSS_D" Language="de_DE"><Text>Die meisten Bevölkerungspunkte, die eine einzelne Siedlung in einer einzigen Runde durch Wanderung verlieren kann (Kriegsflüchtlinge plus gewöhnliche Bewegungen) – die direkte Obergrenze, die verhindert, dass eine Stadt während einer Belagerung Bevölkerung ausblutet. Todesfälle sind ein eigener Kanal und werden nicht mitgezählt. Die Intensitäts-Voreinstellung legt diesen Wert fest (Niedrig 1 / Mittel 2 / Hoch 4).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL" Language="de_DE"><Text>Tempo – Runden zwischen Durchläufen</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL_D" Language="de_DE"><Text>Den Auswanderungs-Durchlauf alle N deiner Runden ausführen.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CROSSCIV" Language="de_DE"><Text>Umfang – Wanderung zwischen Zivilisationen zulassen</Text></Replace>

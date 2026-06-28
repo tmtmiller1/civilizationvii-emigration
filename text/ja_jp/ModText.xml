@@ -23,7 +23,7 @@
         <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="ja_JP"><Text>災害</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="ja_JP"><Text>通知</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET" Language="ja_JP"><Text>移住の強さ</Text></Replace>
-        <Replace Tag="LOC_EMIG_PRESET_D" Language="ja_JP"><Text>移住全体の強さ。低 = まれな移動、高 = 頻繁。「カスタム」は下の詳細値を保持します。プリセットを適用すると詳細値が更新されます、オプションを開き直すと反映されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_D" Language="ja_JP"><Text>移住全体の強さ。人々が移動する頻度と、戦争が人々をどれだけ激しく追い立てるかを設定します。1ターンあたりの上限、戦争難民の一度の流出量、都市あたりの損失上限です。低 = 穏やか、高 = 激しい。変更はターン内に反映されます。「カスタム」は下の詳細値をそのまま保持します。より細かく調整するには、下の詳細設定で個々の項目を変更してください。</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_CUSTOM" Language="ja_JP"><Text>カスタム（詳細設定を使用）</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_LOW" Language="ja_JP"><Text>低</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_MEDIUM" Language="ja_JP"><Text>中</Text></Replace>
@@ -34,6 +34,8 @@
         <Replace Tag="LOC_EMIG_T_COOLDOWN_D" Language="ja_JP"><Text>集落が次の人口ポイントを失えるようになるまで休止するターン数。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXMOVES" Language="ja_JP"><Text>ペース: 1ターンの最大移住数</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXMOVES_D" Language="ja_JP"><Text>1回の処理で世界全体に移動できる人口ポイント数の上限。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXLOSS" Language="ja_JP"><Text>ペース: 都市あたり1ターンの最大移住者数</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXLOSS_D" Language="ja_JP"><Text>1つの集落が1ターンに移住（戦争難民と通常の移動を合わせて）で失える人口ポイントの最大値。包囲のあいだ都市が人口を流出させ続けるのを止める直接的な上限です。死者は別系統で扱われ、ここには数えません。強度プリセットがこの値を設定します（低 1 / 中 2 / 高 4）。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL" Language="ja_JP"><Text>ペース: 処理間のターン数</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL_D" Language="ja_JP"><Text>自分の N ターンごとに移住処理を1回実行します。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CROSSCIV" Language="ja_JP"><Text>範囲: 文明間の移住を許可</Text></Replace>

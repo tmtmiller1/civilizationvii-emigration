@@ -13,7 +13,7 @@
 
 import { dashboardModel, renderDashboardSubtab } from "/emigration/ui/emigration-views.js";
 import { gatherDashboard } from "/emigration/ui/emigration-window.js";
-import { setNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
+import { setNumberMode, NumberMode, getMinimizeAnalytics } from "/emigration/ui/emigration-settings.js";
 
 // The Migration page's sub-tabs, one per dashboard section, so the embedded page shows the SAME
 // content as the standalone window but presented as NATIVE Demographics sub-tabs (the same metric
@@ -38,6 +38,22 @@ const SUBTABS = [
 
 const PANEL_ID = "emig_migration_panel";
 const REGISTERED_FLAG = "__emigMigrationPageRegistered";
+
+// The "simplify dashboard" option (emigration-settings) hides the heavy analytics tabs. On the embedded
+// Demographics page the host owns the tab list after registration, so the option is read at registration
+// (game load) here, matching the standalone dashboard's section filter (emigration-views.visibleSections).
+const HIDDEN_SUBTAB_IDS = new Set(["flow", "pies"]);
+const HIDDEN_HUB_IDS = new Set(["emig_network", "emig_causes"]);
+
+/** The sub-tabs to show, dropping the Network + Causes analytics tabs when "simplify dashboard" is on. */
+function visibleSubtabs() {
+  return getMinimizeAnalytics() ? SUBTABS.filter((t) => !HIDDEN_SUBTAB_IDS.has(t.id)) : SUBTABS;
+}
+
+/** The hub pages to contribute, dropping the Network + Causes pages when "simplify dashboard" is on. */
+function visibleHubPages() {
+  return getMinimizeAnalytics() ? HUB_PAGES.filter((p) => !HIDDEN_HUB_IDS.has(p.id)) : HUB_PAGES;
+}
 const QUEUED_FLAG = "__emigMigrationPageQueued";
 
 /** @param {*} container */
@@ -63,7 +79,7 @@ function renderInto(container, kind, ctx) {
     if (groupControlled) {
       setNumberMode(ctx.groupView === "civ" ? NumberMode.CIV : NumberMode.HISTORICAL);
     }
-    renderDashboardSubtab(container, dashboardModel(gatherDashboard()), kind || SUBTABS[0].id,
+    renderDashboardSubtab(container, dashboardModel(gatherDashboard()), kind || visibleSubtabs()[0].id,
       { hideUnitsToggle: !!groupControlled, rebuild: () => renderInto(container, kind, ctx),
         controlsHost: ctx && ctx.panelControls });
   } catch (_) {
@@ -133,13 +149,13 @@ function doRegister(api) {
   if (api && api[REGISTERED_FLAG]) return true;
   if (hostSupportsHubs(api)) {
     // Keep the panel (NON top-level) for the ledger group-member routing; contribute the flat pages.
-    api.registerPanel(Object.assign({}, PANEL_SPEC, { topLevel: false }));
-    api.registerHubPages("migration", HUB_PAGES, { after: MIGRATION_ANCHOR });
+    api.registerPanel(Object.assign({}, PANEL_SPEC, { tabs: visibleSubtabs(), topLevel: false }));
+    api.registerHubPages("migration", visibleHubPages(), { after: MIGRATION_ANCHOR });
     api[REGISTERED_FLAG] = true;
     return true;
   }
   if (typeof api.registerPanel === "function") {
-    api.registerPanel(PANEL_SPEC);
+    api.registerPanel(Object.assign({}, PANEL_SPEC, { tabs: visibleSubtabs() }));
     api[REGISTERED_FLAG] = true;
     return true;
   }
