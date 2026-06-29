@@ -1,0 +1,4226 @@
+{
+  "generatedAt": "2026-06-28T22:38:16.463Z",
+  "sourceRoot": "../../civilization_vii_1.4.1_gamefiles",
+  "leaderCount": 33,
+  "civCount": 45,
+  "mementoCount": 124,
+  "leaders": [
+    {
+      "id": "LEADER_ADA_LOVELACE",
+      "tuned": false,
+      "traits": [
+        "TRAIT_LEADER_ADA_LOVELACE_ABILITY"
+      ],
+      "modifiers": [
+        "ADA_LOVELACE_MOD_AGENDA_ANALYTICAL_ENGINE",
+        "ADA_LOVELACE_MOD_CIVIC_MASTERY",
+        "ADA_LOVELACE_MOD_TECH_MASTERY"
+      ],
+      "channels": [
+        "science",
+        "culture",
+        "war"
+      ],
+      "risk": "medium",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_ADA_LOVELACE_NOTE_G",
+          "tag": "Military",
+          "channels": [
+            "culture"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_ADA_LOVELACE_NOTE_G_MODIFIER_1",
+            "MEMENTO_ADA_LOVELACE_NOTE_G_MODIFIER_2"
+          ]
+        },
+        {
+          "id": "MEMENTO_ADA_LOVELACE_PIANO",
+          "tag": "Military",
+          "channels": [
+            "culture"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_ADA_LOVELACE_PIANO_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_ADA_LOVELACE_PUNCH_CARDS",
+          "tag": "Scientific",
+          "channels": [
+            "science"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_ADA_LOVELACE_PUNCH_CARDS_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_ABBASID",
+        "CIVILIZATION_FRENCH_EMPIRE",
+        "CIVILIZATION_GREAT_BRITAIN",
+        "CIVILIZATION_GREECE",
+        "CIVILIZATION_NORMAN",
+        "CIVILIZATION_ROME"
+      ]
+    },
+    {
+      "id": "LEADER_ALEXANDER",
+      "tuned": true,
+      "traits": [
+        "TRAIT_LEADER_ALEXANDER_ABILITY"
+      ],
+      "modifiers": [
+        "ALEXANDER_COMBAT_BONUS_BASE",
+        "ALEXANDER_MOD_AGENDA_GODLIKE_BASILEUS",
+        "ALEXANDER_MOD_ALEXANDRIA_RENAME",
+        "ALEXANDER_MOD_SETTLEMENT_MILITARY_VICTORY",
+        "ALEXANDER_WONDER_COMBAT_STRENGTH_1",
+        "ALEXANDER_WONDER_COMBAT_STRENGTH_2",
+        "ALEXANDER_WONDER_COMBAT_STRENGTH_3",
+        "ALEXANDER_WONDER_COMBAT_STRENGTH_4",
+        "ALEXANDER_WONDER_COMBAT_STRENGTH_5",
+        "ALEXANDER_WONDER_COMBAT_STRENGTH_6",
+        "ALEXANDER_YIELD_BONUS_WITH_WONDER_CAPITAL_CONT",
+        "ALEXANDER_YIELD_BONUS_WITH_WONDER_NOT_CAPITAL_CONT"
+      ],
+      "channels": [
+        "culture",
+        "war",
+        "settlement"
+      ],
+      "risk": "medium",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_ALEXANDER_BRIDLE_OF_BUCEPHALUS",
+          "tag": "Military",
+          "channels": [
+            "economy",
+            "war"
+          ],
+          "risk": "high",
+          "modifiers": [
+            "MEMENTO_ALEXANDER_BRIDLE_OF_BUCEPHALUS_MODIFIER_COST",
+            "MEMENTO_ALEXANDER_BRIDLE_OF_BUCEPHALUS_MODIFIER_CS",
+            "MEMENTO_ALEXANDER_BRIDLE_OF_BUCEPHALUS_MODIFIER_PURCHASE"
+          ]
+        },
+        {
+          "id": "MEMENTO_ALEXANDER_DIADEM",
+          "tag": "Military",
+          "channels": [
+            "settlement"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_ALEXANDER_DIADEM_MODIFIER_GOLD_MAINTENANCE",
+            "MEMENTO_ALEXANDER_DIADEM_MODIFIER_SETTLEMENT_LIMIT"
+          ]
+        },
+        {
+          "id": "MEMENTO_ALEXANDER_ILIAD",
+          "tag": "Cultural",
+          "channels": [
+            "culture"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_ALEXANDER_ILIAD_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_ABBASID",
+        "CIVILIZATION_FRENCH_EMPIRE",
+        "CIVILIZATION_GREECE",
+        "CIVILIZATION_MONGOLIA",
+        "CIVILIZATION_PERSIA"
+      ]
+    },
+    {
+      "id": "LEADER_AMINA",
+      "tuned": false,
+      "traits": [
+        "TRAIT_LEADER_AMINA_ABILITY"
+      ],
+      "modifiers": [
+        "AMINA_LEAD_MOD_CHECK_FOR_BIOME",
+        "AMINA_MOD_AGENDA_DESERT_OF_THE_WARRIOR_QUEEN",
+        "AMINA_MOD_RESOURCE_CAPACITY",
+        "AMINA_MOD_RESOURCE_GOLD"
+      ],
+      "channels": [
+        "economy",
+        "war",
+        "settlement"
+      ],
+      "risk": "high",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_AMINA_KWALKWALI",
+          "tag": "Military",
+          "channels": [
+            "economy"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_AMINA_KWALKWALI_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_AMINA_RAWANI",
+          "tag": "Military",
+          "channels": [
+            "war"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_AMINA_RAWANI_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_AMINA_TAKOBA",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_AMINA_TAKOBA_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_ABBASID",
+        "CIVILIZATION_AKSUM",
+        "CIVILIZATION_BUGANDA",
+        "CIVILIZATION_EGYPT",
+        "CIVILIZATION_MEXICO",
+        "CIVILIZATION_SONGHAI"
+      ]
+    },
+    {
+      "id": "LEADER_ASHOKA",
+      "tuned": true,
+      "traits": [
+        "TRAIT_LEADER_ASHOKA_ABILITY",
+        "TRAIT_LEADER_ASHOKA_ALT_ABILITY"
+      ],
+      "modifiers": [
+        "ASHOKA_ALT_MOD_AGENDA_WITHOUT_REGRET",
+        "ASHOKA_ALT_MOD_CAPTURED_SETTLEMENT_PRODUCTION",
+        "ASHOKA_ALT_MOD_CONQUEROR_ABILITY",
+        "ASHOKA_ALT_MOD_HAPPINESS_PRODUCTION",
+        "ASHOKA_ALT_MOD_WAR_CELEBRATION",
+        "ASHOKA_MOD_AGENDA_WITHOUT_SORROW",
+        "ASHOKA_MOD_CELEBRATION_FOOD",
+        "ASHOKA_MOD_HAPPINESS_FOOD",
+        "ASHOKA_MOD_WILDCARD_UNIQUE_BUILDING_ADJACENCY_TO_IMPROVEMENTS"
+      ],
+      "channels": [
+        "happiness",
+        "growth",
+        "economy",
+        "war"
+      ],
+      "risk": "high",
+      "mementoCount": 6,
+      "mementos": [
+        {
+          "id": "MEMENTO_ASHOKA_CONQUEROR_CHANDA_MAHASENA",
+          "tag": "Military",
+          "channels": [
+            "war"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_ASHOKA_CONQUEROR_CHANDA_MAHASENA_MODIFIER_1"
+          ]
+        },
+        {
+          "id": "MEMENTO_ASHOKA_CONQUEROR_LION_CAPITAL",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_ASHOKA_CONQUEROR_LION_CAPITAL_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_ASHOKA_CONQUEROR_SILK_UTTARIYA",
+          "tag": "Expansionist",
+          "channels": [
+            "happiness",
+            "war"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_ASHOKA_CONQUEROR_SILK_UTTARIYA_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_ASHOKA_RENOUNCER_CHAKRA",
+          "tag": "Expansionist",
+          "channels": [
+            "happiness",
+            "growth"
+          ],
+          "risk": "high",
+          "modifiers": [
+            "MEMENTO_ASHOKA_RENOUNCER_CHAKRA_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_ASHOKA_RENOUNCER_DIAMOND_THRONE",
+          "tag": "Military",
+          "channels": [
+            "happiness"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_ASHOKA_RENOUNCER_DIAMOND_THRONE_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_ASHOKA_RENOUNCER_GOLD_SAPPHIRE_FLOWERS",
+          "tag": "Military",
+          "channels": [
+            "growth"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_ASHOKA_RENOUNCER_GOLD_SAPPHIRE_FLOWERS_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_CHOLA",
+        "CIVILIZATION_HAWAII",
+        "CIVILIZATION_KHMER",
+        "CIVILIZATION_MAURYA",
+        "CIVILIZATION_MUGHAL",
+        "CIVILIZATION_SIAM"
+      ]
+    },
+    {
+      "id": "LEADER_AUGUSTUS",
+      "tuned": false,
+      "traits": [
+        "TRAIT_LEADER_AUGUSTUS_ABILITY"
+      ],
+      "modifiers": [
+        "AUGUSTUS_MOD_AGENDA_RESTITUTOR_ORBIS",
+        "AUGUSTUS_MOD_CAPITAL_PRODUCTION_PER_TOWN",
+        "AUGUSTUS_MOD_TOWN_CULTURE_BUILDING",
+        "AUGUSTUS_MOD_TOWN_PURCHASE_RATE",
+        "AUGUSTUS_MOD_TOWN_PURCHASE_RATE_SAME_BUILDING_IN_CAPITAL"
+      ],
+      "channels": [
+        "culture",
+        "economy",
+        "war",
+        "settlement"
+      ],
+      "risk": "high",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_AUGUSTUS_BREASTPLATE",
+          "tag": "Expansionist",
+          "channels": [
+            "growth"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_AUGUSTUS_BREASTPLATE_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_AUGUSTUS_CLIPEUS_VIRTUTIS",
+          "tag": "Expansionist",
+          "channels": [
+            "settlement"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_AUGUSTUS_CLIPEUS_VIRTUTIS_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_AUGUSTUS_CORONA_CIVICA",
+          "tag": "Military",
+          "channels": [
+            "settlement"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_AUGUSTUS_CORONA_CIVICA_MODIFIER_1"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_ABBASID",
+        "CIVILIZATION_EGYPT",
+        "CIVILIZATION_FRENCH_EMPIRE",
+        "CIVILIZATION_PRUSSIA",
+        "CIVILIZATION_ROME",
+        "CIVILIZATION_SPAIN"
+      ]
+    },
+    {
+      "id": "LEADER_BENJAMIN_FRANKLIN",
+      "tuned": true,
+      "traits": [
+        "TRAIT_LEADER_BENJAMIN_FRANKLIN_ABILITY"
+      ],
+      "modifiers": [
+        "FRANKLIN_MOD_AGENDA_CIVIC_VIRTUE",
+        "FRANKLIN_MOD_AGENDA_CIVIC_VIRTUE_DESCRIPTION",
+        "FRANKLIN_MOD_DIPLO_EVENT_SCIENCE",
+        "FRANKLIN_MOD_EXTRA_SINGLE_INSTANT_DIPLO_ACTIONS",
+        "FRANKLIN_MOD_PRODUCTION_BUILDING_RATE_PER_NUM_ACTIVE_DIPLOMATIC_ACTIONS",
+        "FRANKLIN_MOD_PRODUCTION_BUILDING_SCIENCE",
+        "FRANKLIN_MOD_SCIENCE_BUILDING_SCIENCE"
+      ],
+      "channels": [
+        "science",
+        "war"
+      ],
+      "risk": "medium",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_BENJAMIN_FRANKLIN_BIFOCALS",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_BENJAMIN_FRANKLIN_BIFOCALS_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_BENJAMIN_FRANKLIN_GLASS_ARMONICA",
+          "tag": "Military",
+          "channels": [
+            "happiness",
+            "science"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_BENJAMIN_FRANKLIN_GLASS_ARMONICA_MODIFIER_1",
+            "MEMENTO_BENJAMIN_FRANKLIN_GLASS_ARMONICA_MODIFIER_2"
+          ]
+        },
+        {
+          "id": "MEMENTO_BENJAMIN_FRANKLIN_KITE",
+          "tag": "Scientific",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_BENJAMIN_FRANKLIN_KITE_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_AMERICA",
+        "CIVILIZATION_FRENCH_EMPIRE",
+        "CIVILIZATION_GREECE",
+        "CIVILIZATION_NORMAN",
+        "CIVILIZATION_ROME",
+        "CIVILIZATION_SPAIN"
+      ]
+    },
+    {
+      "id": "LEADER_BOLIVAR",
+      "tuned": true,
+      "traits": [
+        "TRAIT_LEADER_BOLIVAR_ABILITY"
+      ],
+      "modifiers": [
+        "BOLIVAR_MOD_AGENDA_CORNERSTONE_FREEDOM",
+        "BOLIVAR_MOD_FREE_BUILDING",
+        "BOLIVAR_MOD_PURCHASE_UNREST",
+        "BOLIVAR_MOD_WAR_SUPPORT_AGGRO"
+      ],
+      "channels": [
+        "economy",
+        "war",
+        "settlement"
+      ],
+      "risk": "high",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_BOLIVAR_DAVALOS_MEDAL",
+          "tag": "Military",
+          "channels": [
+            "happiness"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_BOLIVAR_DAVALOS_MEDAL_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_BOLIVAR_GOLD_SNUFF_BOX",
+          "tag": "Expansionist",
+          "channels": [
+            "growth",
+            "economy"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_BOLIVAR_GOLD_SNUFF_BOX_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_BOLIVAR_LETTER_TO_JAMAICA",
+          "tag": "Military",
+          "channels": [
+            "economy"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_BOLIVAR_LETTER_TO_JAMAICA_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": []
+    },
+    {
+      "id": "LEADER_CATHERINE",
+      "tuned": false,
+      "traits": [
+        "TRAIT_LEADER_CATHERINE_ABILITY"
+      ],
+      "modifiers": [
+        "CATHERINE_MOD_AGENDA_DUSHA",
+        "CATHERINE_MOD_CITY_SCIENCE",
+        "CATHERINE_MOD_CONSTRUCTIBLE_GREAT_WORK_SLOTS",
+        "CATHERINE_MOD_GREAT_WORK_CULTURE"
+      ],
+      "channels": [
+        "science",
+        "culture",
+        "war"
+      ],
+      "risk": "medium",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_CATHERINE_EAGLE_BANNER",
+          "tag": "Scientific",
+          "channels": [
+            "science"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_CATHERINE_EAGLE_BANNER_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_CATHERINE_GREAT_IMPERIAL_CROWN",
+          "tag": "Military",
+          "channels": [
+            "science"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_CATHERINE_GREAT_IMPERIAL_CROWN_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_CATHERINE_POTEMKINS_SWORD_KNOT",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_CATHERINE_POTEMKINS_SWORD_KNOT_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_GREECE",
+        "CIVILIZATION_MONGOLIA",
+        "CIVILIZATION_NORMAN",
+        "CIVILIZATION_PRUSSIA",
+        "CIVILIZATION_ROME",
+        "CIVILIZATION_RUSSIA"
+      ]
+    },
+    {
+      "id": "LEADER_CHARLEMAGNE",
+      "tuned": false,
+      "traits": [
+        "TRAIT_LEADER_CHARLEMAGNE_ABILITY"
+      ],
+      "modifiers": [
+        "CHARLEMAGNE_MOD_AGENDA_THE_GOLDEN_SHEPHERD",
+        "CHARLEMAGNE_MOD_CAVALRY_ABILITY",
+        "CHARLEMAGNE_MOD_MILITARY_BUILDING_ADJACENCY",
+        "CHARLEMAGNE_MOD_SCIENCE_BUILDING_ADJACENCY",
+        "CHARLEMAGNE_MOD_UNITS_ON_GOLDEN_AGE"
+      ],
+      "channels": [
+        "happiness",
+        "science",
+        "economy",
+        "war"
+      ],
+      "risk": "high",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_CHARLEMAGNE_GLOBUS_CRUCIGER",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_CHARLEMAGNE_GLOBUS_CRUCIGER_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_CHARLEMAGNE_JOYEUSE",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_CHARLEMAGNE_JOYEUSE_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_CHARLEMAGNE_TENCENDUR",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_CHARLEMAGNE_TENCENDUR_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_FRENCH_EMPIRE",
+        "CIVILIZATION_GREECE",
+        "CIVILIZATION_NORMAN",
+        "CIVILIZATION_PRUSSIA",
+        "CIVILIZATION_ROME",
+        "CIVILIZATION_SPAIN"
+      ]
+    },
+    {
+      "id": "LEADER_CONFUCIUS",
+      "tuned": true,
+      "traits": [
+        "TRAIT_LEADER_CONFUCIUS_ABILITY"
+      ],
+      "modifiers": [
+        "CONFUCIUS_MOD_AGENDA_GUANXI",
+        "CONFUCIUS_MOD_CITY_GROWTH",
+        "CONFUCIUS_MOD_WORKER_SCIENCE"
+      ],
+      "channels": [
+        "growth",
+        "science",
+        "war",
+        "specialist"
+      ],
+      "risk": "medium",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_CONFUCIUS_ALTAR_SET",
+          "tag": "Cultural",
+          "channels": [
+            "culture"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_CONFUCIUS_ALTAR_SET_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_CONFUCIUS_ANALECTS",
+          "tag": "Military",
+          "channels": [
+            "science"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_CONFUCIUS_ANALECTS_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_CONFUCIUS_BRUSH_SCROLL",
+          "tag": "Military",
+          "channels": [
+            "growth"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_CONFUCIUS_BRUSH_SCROLL_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_HAN",
+        "CIVILIZATION_MING",
+        "CIVILIZATION_MONGOLIA",
+        "CIVILIZATION_QING"
+      ]
+    },
+    {
+      "id": "LEADER_DEFAULT",
+      "tuned": false,
+      "traits": [],
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown",
+      "mementoCount": 0,
+      "mementos": [],
+      "civPriorities": []
+    },
+    {
+      "id": "LEADER_EDWARD_TEACH",
+      "tuned": true,
+      "traits": [
+        "TRAIT_LEADER_EDWARD_TEACH_ABILITY"
+      ],
+      "modifiers": [
+        "EDWARD_TEACH_MOD_AGENDA",
+        "EDWARD_TEACH_MOD_ALL_NAVAL_UNITS_PIRATES",
+        "EDWARD_TEACH_MOD_CAPTURE",
+        "EDWARD_TEACH_MOD_ENTER_FOREIGN_MOD_ADJUST_UNIT_ENTER_FOREIGN_LANDS",
+        "EDWARD_TEACH_MOD_GOLD_KILLS",
+        "EDWARD_TEACH_MOD_NAVAL_MAINTENANCE",
+        "EDWARD_TEACH_MOD_PLUNDER_TRADE_ROUTES_BETWEEN_OTHER_CIVS"
+      ],
+      "channels": [
+        "economy",
+        "war"
+      ],
+      "risk": "high",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_EDWARD_TEACH_BRACE_OF_PISTOLS",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_EDWARD_TEACH_BRACE_OF_PISTOLS_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_EDWARD_TEACH_FIGUREHEAD_OF_QUEEN_ANNES_REVENGE",
+          "tag": "Military",
+          "channels": [
+            "economy",
+            "war"
+          ],
+          "risk": "high",
+          "modifiers": [
+            "MEMENTO_EDWARD_TEACH_FIGUREHEAD_OF_QUEEN_ANNES_REVENGE_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_EDWARD_TEACH_MEDICINE_CHEST",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_EDWARD_TEACH_MEDICINE_CHEST_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_AKSUM",
+        "CIVILIZATION_FRENCH_EMPIRE",
+        "CIVILIZATION_SPAIN"
+      ]
+    },
+    {
+      "id": "LEADER_FRIEDRICH",
+      "tuned": false,
+      "traits": [
+        "TRAIT_LEADER_FRIEDRICH_ABILITY",
+        "TRAIT_LEADER_FRIEDRICH_ALT_ABILITY"
+      ],
+      "modifiers": [
+        "FRIEDRICH_ALT_MOD_AGENDA_BAROQUE",
+        "FRIEDRICH_ALT_MOD_GREATWORK",
+        "FRIEDRICH_ALT_MOD_GREAT_WORK_CULTURE",
+        "FRIEDRICH_ALT_MOD_INFANTRY_CIVIC",
+        "FRIEDRICH_ALT_MOD_INFANTRY_CONSTRUCT_CULTURE",
+        "FRIEDRICH_MOD_AGENDA_TO_ARMS",
+        "FRIEDRICH_MOD_COMMANDER_COMMENDATION",
+        "FRIEDRICH_MOD_COMMENDATION_SCIENCE_YIELD",
+        "FRIEDRICH_MOD_INFANTRY_CONSTRUCT_SCIENCE",
+        "FRIEDRICH_MOD_INFANTRY_TECH"
+      ],
+      "channels": [
+        "science",
+        "culture",
+        "war"
+      ],
+      "risk": "medium",
+      "mementoCount": 6,
+      "mementos": [
+        {
+          "id": "MEMENTO_FRIEDRICH_BAROQUE_ANTI_MACHIAVEL",
+          "tag": "Military",
+          "channels": [
+            "war"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_FRIEDRICH_BAROQUE_ANTI_MACHIAVEL_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_FRIEDRICH_BAROQUE_FLUTE",
+          "tag": "Cultural",
+          "channels": [
+            "culture"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_FRIEDRICH_BAROQUE_FLUTE_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_FRIEDRICH_BAROQUE_VOLTAIRE_EDITS",
+          "tag": "Military",
+          "channels": [
+            "culture"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_FRIEDRICH_BAROQUE_VOLTAIRE_EDITS_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_FRIEDRICH_OBLIQUE_KRONE_VON_FRIEDRICH",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_FRIEDRICH_OBLIQUE_KRONE_VON_FRIEDRICH_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_FRIEDRICH_OBLIQUE_ORDER_BLACK_EAGLE",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_FRIEDRICH_OBLIQUE_ORDER_BLACK_EAGLE_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_FRIEDRICH_OBLIQUE_WALKING_STICK",
+          "tag": "Scientific",
+          "channels": [
+            "science"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_FRIEDRICH_OBLIQUE_WALKING_STICK_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_EGYPT",
+        "CIVILIZATION_FRENCH_EMPIRE",
+        "CIVILIZATION_NORMAN",
+        "CIVILIZATION_PRUSSIA",
+        "CIVILIZATION_ROME",
+        "CIVILIZATION_SPAIN"
+      ]
+    },
+    {
+      "id": "LEADER_GENGHIS_KHAN",
+      "tuned": true,
+      "traits": [
+        "TRAIT_LEADER_GENGHIS_KHAN_ABILITY"
+      ],
+      "modifiers": [
+        "GENGHIS_KHAN_ARMY_COMMANDER_ABILITY",
+        "GENGHIS_KHAN_CAVALRY_COMBAT_STRENGTH",
+        "GENGHIS_KHAN_MOD_AGENDA_TUMEN"
+      ],
+      "channels": [
+        "war"
+      ],
+      "risk": "low",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_GENGHIS_KHAN_PAIZA",
+          "tag": "Expansionist",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_GENGHIS_KHAN_PAIZA_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_GENGHIS_KHAN_SADDLE",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_GENGHIS_KHAN_SADDLE_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_GENGHIS_KHAN_SULDE",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_GENGHIS_KHAN_SULDE_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_MONGOLIA",
+        "CIVILIZATION_MUGHAL",
+        "CIVILIZATION_PERSIA",
+        "CIVILIZATION_RUSSIA"
+      ]
+    },
+    {
+      "id": "LEADER_GILGAMESH",
+      "tuned": false,
+      "traits": [
+        "TRAIT_LEADER_GILGAMESH_ABILITY"
+      ],
+      "modifiers": [
+        "GILGAMESH_ALLIES_CAN_SUPPORT_ENDEAVORS_FOR_FREE",
+        "GILGAMESH_ENDEAVORS_WITH_ALLIES_HAVE_NO_LIMIT_PER_TYPE",
+        "GILGAMESH_INFLUENCE",
+        "GILGAMESH_MOD_AGENDA_ALLY_OF_ENKIDU",
+        "GILGAMESH_MOD_ULOCK_ALL_ENDEAVORS",
+        "GILGAMESH_SINGLE_ALLY_WAR_SUPPORT"
+      ],
+      "channels": [
+        "economy",
+        "war"
+      ],
+      "risk": "high",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_GILGAMESH_MAGIC_PLANT",
+          "tag": "Diplomatic",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_GILGAMESH_MAGIC_PLANT_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_GILGAMESH_MIKKU",
+          "tag": "Diplomatic",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_GILGAMESH_MIKKU_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_GILGAMESH_PUKKU",
+          "tag": "Diplomatic",
+          "channels": [
+            "happiness"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_GILGAMESH_PUKKU_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_ABBASID",
+        "CIVILIZATION_CHOLA",
+        "CIVILIZATION_FRENCH_EMPIRE",
+        "CIVILIZATION_NORMAN",
+        "CIVILIZATION_PERSIA"
+      ]
+    },
+    {
+      "id": "LEADER_HARRIET_TUBMAN",
+      "tuned": false,
+      "traits": [
+        "TRAIT_LEADER_HARRIET_TUBMAN_ABILITY"
+      ],
+      "modifiers": [
+        "HARRIET_TUBMAN_MOD_ADJUST_ESPIONAGE",
+        "HARRIET_TUBMAN_MOD_AGENDA_VERACITY",
+        "HARRIET_TUBMAN_MOD_ESPIONAGE_MIGRANT",
+        "HARRIET_TUBMAN_MOD_IGNORE_VEGETATION",
+        "HARRIET_TUBMAN_MOD_WAR_SUPPORT"
+      ],
+      "channels": [
+        "war"
+      ],
+      "risk": "low",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_TUBMAN_LANTERN",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_TUBMAN_LANTERN_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_TUBMAN_SATCHEL",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_TUBMAN_SATCHEL_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_TUBMAN_SIDEARM",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_TUBMAN_SIDEARM_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_AKSUM",
+        "CIVILIZATION_AMERICA",
+        "CIVILIZATION_BUGANDA",
+        "CIVILIZATION_EGYPT",
+        "CIVILIZATION_INCA",
+        "CIVILIZATION_SONGHAI"
+      ]
+    },
+    {
+      "id": "LEADER_HATSHEPSUT",
+      "tuned": false,
+      "traits": [
+        "TRAIT_LEADER_HATSHEPSUT_ABILITY"
+      ],
+      "modifiers": [
+        "HATSHEPSUT_MOD_AGENDA_WONDERS_OF_ITERU",
+        "HATSHEPSUT_MOD_BUILDING_PRODUCTION_RIVER",
+        "HATSHEPSUT_MOD_CULTURE_FROM_RESOURCES"
+      ],
+      "channels": [
+        "culture",
+        "war"
+      ],
+      "risk": "low",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_HATSHEPSUT_FALSE_BEARD",
+          "tag": "Cultural",
+          "channels": [
+            "culture"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_HATSHEPSUT_FALSE_BEARD_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_HATSHEPSUT_ROYAL_MACE",
+          "tag": "Economic",
+          "channels": [
+            "economy"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_HATSHEPSUT_ROYAL_MACE_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_HATSHEPSUT_URAEUS",
+          "tag": "Military",
+          "channels": [
+            "culture"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_HATSHEPSUT_URAEUS_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_ABBASID",
+        "CIVILIZATION_AKSUM",
+        "CIVILIZATION_BUGANDA",
+        "CIVILIZATION_EGYPT",
+        "CIVILIZATION_MUGHAL",
+        "CIVILIZATION_SONGHAI"
+      ]
+    },
+    {
+      "id": "LEADER_HIMIKO",
+      "tuned": true,
+      "traits": [
+        "TRAIT_LEADER_HIMIKO_ABILITY",
+        "TRAIT_LEADER_HIMIKO_ALT_ABILITY"
+      ],
+      "modifiers": [
+        "HIMIKO_ALT_MOD_AGENDA_SHAMAN_QUEEN",
+        "HIMIKO_ALT_MOD_CULTURE_BOOST",
+        "HIMIKO_ALT_MOD_CULTURE_BOOST_CELEBRATION",
+        "HIMIKO_ALT_MOD_DIPLOMACY_BUILDING_HAPPINESS",
+        "HIMIKO_ALT_MOD_DIPLOMACY_BUILDING_PRODUCTION_RATE",
+        "HIMIKO_ALT_MOD_HAPPINESS_BUILDING_HAPPINESS",
+        "HIMIKO_ALT_MOD_HAPPINESS_BUILDING_PRODUCTION_RATE",
+        "HIMIKO_ALT_MOD_SCIENCE_PENALTY",
+        "HIMIKO_ALT_MOD_SCIENCE_PENALTY_CELEBRATION",
+        "HIMIKO_MOD_AGENDA_YAMATAI",
+        "HIMIKO_MOD_DIPLOMATIC_RESPONSE_REJECT_COST_INCREASE",
+        "HIMIKO_MOD_FRIEND_OF_WA",
+        "HIMIKO_MOD_NO_COST_ENDEAVOR_ACCEPT",
+        "HIMIKO_MOD_SCIENCE_BONUS_FRIENDLY",
+        "HIMIKO_MOD_SCIENCE_BONUS_HELPFUL"
+      ],
+      "channels": [
+        "happiness",
+        "science",
+        "culture",
+        "economy",
+        "war"
+      ],
+      "risk": "high",
+      "mementoCount": 6,
+      "mementos": [
+        {
+          "id": "MEMENTO_HIMIKO_QUEEN_DOTAKU",
+          "tag": "Military",
+          "channels": [
+            "science"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_HIMIKO_QUEEN_DOTAKU_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_HIMIKO_QUEEN_GOLDEN_SEAL_STONE",
+          "tag": "Military",
+          "channels": [
+            "science",
+            "economy"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_HIMIKO_QUEEN_GOLDEN_SEAL_STONE_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_HIMIKO_QUEEN_YASAKANI_NO_MAGATAMA",
+          "tag": "Military",
+          "channels": [
+            "science"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_HIMIKO_QUEEN_YASAKANI_NO_MAGATAMA_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_HIMIKO_SHAMAN_KUSANAGI_NO_TSURUGI",
+          "tag": "Military",
+          "channels": [
+            "happiness",
+            "science",
+            "culture"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_HIMIKO_SHAMAN_KUSANAGI_NO_TSURUGI_MODIFIER_1",
+            "MEMENTO_HIMIKO_SHAMAN_KUSANAGI_NO_TSURUGI_MODIFIER_2"
+          ]
+        },
+        {
+          "id": "MEMENTO_HIMIKO_SHAMAN_SAKAKI_BRANCH",
+          "tag": "Military",
+          "channels": [
+            "happiness"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_HIMIKO_SHAMAN_SAKAKI_BRANCH_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_HIMIKO_SHAMAN_YATA_NO_KAGAMI",
+          "tag": "Military",
+          "channels": [
+            "happiness",
+            "culture",
+            "economy"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_HIMIKO_SHAMAN_YATA_NO_KAGAMI_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_HAWAII",
+        "CIVILIZATION_KHMER",
+        "CIVILIZATION_MAJAPAHIT",
+        "CIVILIZATION_MEIJI",
+        "CIVILIZATION_MISSISSIPPIAN",
+        "CIVILIZATION_SIAM"
+      ]
+    },
+    {
+      "id": "LEADER_IBN_BATTUTA",
+      "tuned": false,
+      "traits": [
+        "TRAIT_LEADER_IBN_BATTUTA_ABILITY"
+      ],
+      "modifiers": [
+        "IBN_BATTUTA_MOD_AGENDA_FAR_AND_WIDE",
+        "IBN_BATTUTA_MOD_TRADE_MAP",
+        "IBN_BATTUTA_MOD_UNIT_SIGHT",
+        "IBN_BATTUTA_MOD_WILDCARD_ATTRIBUTE",
+        "MOD_TRAIT_LEADER_ATTRIBUTE_UNLOCK_EXPANSIONIST_01",
+        "MOD_TRAIT_LEADER_ATTRIBUTE_UNLOCK_EXPANSIONIST_02"
+      ],
+      "channels": [
+        "economy",
+        "war"
+      ],
+      "risk": "high",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_BATTUTA_MERCHANTS_SADDLE",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_BATTUTA_MERCHANTS_SADDLE_MODIFIER_1",
+            "MEMENTO_BATTUTA_MERCHANTS_SADDLE_MODIFIER_2",
+            "MEMENTO_BATTUTA_MERCHANTS_SADDLE_MODIFIER_3",
+            "MEMENTO_BATTUTA_MERCHANTS_SADDLE_MODIFIER_4"
+          ]
+        },
+        {
+          "id": "MEMENTO_BATTUTA_RIHLA",
+          "tag": "Military",
+          "channels": [
+            "happiness",
+            "science",
+            "culture",
+            "economy"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_BATTUTA_RIHLA_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_BATTUTA_TRAVELLERS_SANDALS",
+          "tag": "Military",
+          "channels": [
+            "growth",
+            "science",
+            "culture",
+            "economy"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_BATTUTA_TRAVELLERS_SANDALS_MODIFIER_1",
+            "MEMENTO_BATTUTA_TRAVELLERS_SANDALS_MODIFIER_2",
+            "MEMENTO_BATTUTA_TRAVELLERS_SANDALS_MODIFIER_3",
+            "MEMENTO_BATTUTA_TRAVELLERS_SANDALS_MODIFIER_4",
+            "MEMENTO_BATTUTA_TRAVELLERS_SANDALS_MODIFIER_5",
+            "MEMENTO_BATTUTA_TRAVELLERS_SANDALS_MODIFIER_6"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_ABBASID",
+        "CIVILIZATION_AKSUM",
+        "CIVILIZATION_BUGANDA",
+        "CIVILIZATION_MUGHAL",
+        "CIVILIZATION_PERSIA",
+        "CIVILIZATION_SONGHAI"
+      ]
+    },
+    {
+      "id": "LEADER_INDEPENDENT",
+      "tuned": false,
+      "traits": [],
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown",
+      "mementoCount": 0,
+      "mementos": [],
+      "civPriorities": []
+    },
+    {
+      "id": "LEADER_ISABELLA",
+      "tuned": true,
+      "traits": [
+        "TRAIT_LEADER_ISABELLA_ABILITY"
+      ],
+      "modifiers": [
+        "ISABELLA_MOD_AGENDA_WONDERLUST",
+        "ISABELLA_MOD_DOUBLE_NATURAL_WONDERS_ABILITY",
+        "ISABELLA_MOD_NATURAL_WONDER_DISCOVERY",
+        "ISABELLA_MOD_NAVAL_UNIT_MAINTENANCE",
+        "ISABELLA_MOD_NAVAL_UNIT_PURCHASE"
+      ],
+      "channels": [
+        "happiness",
+        "growth",
+        "science",
+        "culture",
+        "economy",
+        "war"
+      ],
+      "risk": "high",
+      "mementoCount": 4,
+      "mementos": [
+        {
+          "id": "MEMENTO_ISABELLA_BALLESTILLA",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_ISABELLA_BALLESTILLA_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_ISABELLA_PADRON_REAL",
+          "tag": "Military",
+          "channels": [
+            "happiness"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_ISABELLA_PADRON_REAL_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_ISABELLA_QUEENS_JEWELRY",
+          "tag": "Military",
+          "channels": [
+            "economy"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_ISABELLA_QUEENS_JEWELRY_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_RIZAL_FORGET_ME_NOT",
+          "tag": "Military",
+          "channels": [
+            "happiness"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_RIZAL_FORGET_ME_NOT_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_ABBASID",
+        "CIVILIZATION_EGYPT",
+        "CIVILIZATION_FRENCH_EMPIRE",
+        "CIVILIZATION_GREECE",
+        "CIVILIZATION_MEXICO",
+        "CIVILIZATION_SPAIN"
+      ]
+    },
+    {
+      "id": "LEADER_JOSE_RIZAL",
+      "tuned": true,
+      "traits": [
+        "TRAIT_LEADER_JOSE_RIZAL_ABILITY"
+      ],
+      "modifiers": [
+        "RIZAL_MOD_AGENDA_KAPWA",
+        "RIZAL_MOD_CELEBRATION_HAPPINESS",
+        "RIZAL_MOD_CELEBRATION_LENGTH",
+        "RIZAL_MOD_EXTRA_STORIES",
+        "RIZAL_MOD_EXTRA_STORIES2",
+        "RIZAL_MOD_NARRATIVE_EVENT_CULTURE",
+        "RIZAL_MOD_NARRATIVE_EVENT_GOLD",
+        "RIZAL_MOD_NARRATIVE_EVENT_INFLUENCE"
+      ],
+      "channels": [
+        "happiness",
+        "culture",
+        "economy",
+        "war"
+      ],
+      "risk": "high",
+      "mementoCount": 2,
+      "mementos": [
+        {
+          "id": "MEMENTO_RIZAL_NOLI_ME_TANGERE",
+          "tag": "Military",
+          "channels": [
+            "science",
+            "culture",
+            "economy"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_RIZAL_NOLI_ME_TANGERE_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_RIZAL_OPHTHALMOSCOPE",
+          "tag": "Military",
+          "channels": [
+            "happiness",
+            "economy"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_RIZAL_OPHTHALMOSCOPE_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_HAWAII",
+        "CIVILIZATION_MAJAPAHIT",
+        "CIVILIZATION_MAYA",
+        "CIVILIZATION_MEIJI",
+        "CIVILIZATION_MISSISSIPPIAN",
+        "CIVILIZATION_SIAM"
+      ]
+    },
+    {
+      "id": "LEADER_LAFAYETTE",
+      "tuned": false,
+      "traits": [
+        "TRAIT_LEADER_LAFAYETTE_ABILITY"
+      ],
+      "modifiers": [
+        "LAFAYETTE_MOD_AGENDA_FRENCH_QUARTERS",
+        "LAFAYETTE_MOD_COMBAT_ABILITY_TRADITION",
+        "LAFAYETTE_MOD_CULTURE_SETTLEMENTS_DISTANT_LANDS",
+        "LAFAYETTE_MOD_CULTURE_SETTLEMENTS_HOMELANDS",
+        "LAFAYETTE_MOD_TRADITION_SLOT"
+      ],
+      "channels": [
+        "happiness",
+        "culture",
+        "war",
+        "specialist"
+      ],
+      "risk": "medium",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_LAFAYETTE_HERMIONE_MODEL",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_LAFAYETTE_HERMIONE_MODEL_MODIFIER_1"
+          ]
+        },
+        {
+          "id": "MEMENTO_LAFAYETTE_LETTER_ADRIENNE",
+          "tag": "Military",
+          "channels": [
+            "happiness"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_LAFAYETTE_LETTER_ADRIENNE_MODIFIER_1",
+            "MEMENTO_LAFAYETTE_LETTER_ADRIENNE_MODIFIER_2"
+          ]
+        },
+        {
+          "id": "MEMENTO_LAFAYETTE_TRICOLOUR_COCKADE",
+          "tag": "Military",
+          "channels": [
+            "happiness",
+            "culture"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_LAFAYETTE_TRICOLOUR_COCKADE_MODIFIER_1",
+            "MEMENTO_LAFAYETTE_TRICOLOUR_COCKADE_MODIFIER_2"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_AMERICA",
+        "CIVILIZATION_FRENCH_EMPIRE",
+        "CIVILIZATION_GREECE",
+        "CIVILIZATION_NORMAN",
+        "CIVILIZATION_ROME",
+        "CIVILIZATION_SPAIN"
+      ]
+    },
+    {
+      "id": "LEADER_LAKSHMIBAI",
+      "tuned": false,
+      "traits": [
+        "TRAIT_LEADER_LAKSHMIBAI_ABILITY"
+      ],
+      "modifiers": [
+        "LAKSHMIBAI_INFLUENCE",
+        "LAKSHMIBAI_MOD_AGENDA_ETERNAL_GLORY",
+        "LAKSHMIBAI_MOD_CS_INCORPORATE",
+        "LAKSHMIBAI_MOD_CS_INCORPORATE_UNITS"
+      ],
+      "channels": [
+        "war"
+      ],
+      "risk": "low",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_LAKSHMIBAI_BAADALS_REINS",
+          "tag": "Diplomatic",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_LAKSHMIBAI_BAADALS_REINS_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_LAKSHMIBAI_DHAL",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_LAKSHMIBAI_DHAL_MODIFIER_1"
+          ]
+        },
+        {
+          "id": "MEMENTO_LAKSHMIBAI_FLAG_OF_JHANSI",
+          "tag": "Diplomatic",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_LAKSHMIBAI_FLAG_OF_JHANSI_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_ABBASID",
+        "CIVILIZATION_CHOLA",
+        "CIVILIZATION_MAURYA",
+        "CIVILIZATION_MUGHAL",
+        "CIVILIZATION_PERSIA"
+      ]
+    },
+    {
+      "id": "LEADER_MACHIAVELLI",
+      "tuned": false,
+      "traits": [
+        "TRAIT_LEADER_MACHIAVELLI_ABILITY"
+      ],
+      "modifiers": [
+        "MACHIAVELLI_MOD_AGENDA_THE_SPIDER",
+        "MACHIAVELLI_MOD_CITY_STATE_LEVY",
+        "MACHIAVELLI_MOD_FORMAL_WAR",
+        "MACHIAVELLI_MOD_GOLD_ACTION_ACCEPT",
+        "MACHIAVELLI_MOD_GOLD_ACTION_REJECT",
+        "MACHIAVELLI_MOD_INFLUENCE"
+      ],
+      "channels": [
+        "economy",
+        "war"
+      ],
+      "risk": "high",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_MACHIAVELLI_DELL_ARTE_DELLA_GUERRA",
+          "tag": "Military",
+          "channels": [
+            "economy"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_MACHIAVELLI_DELL_ARTE_DELLA_GUERRA_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_MACHIAVELLI_DISCORSI_SOPRA_LIVIO",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_MACHIAVELLI_DISCORSI_SOPRA_LIVIO_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_MACHIAVELLI_IL_PRINCIPE",
+          "tag": "Military",
+          "channels": [
+            "war"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_MACHIAVELLI_IL_PRINCIPE_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_FRENCH_EMPIRE",
+        "CIVILIZATION_GREECE",
+        "CIVILIZATION_NORMAN",
+        "CIVILIZATION_ROME",
+        "CIVILIZATION_RUSSIA",
+        "CIVILIZATION_SPAIN"
+      ]
+    },
+    {
+      "id": "LEADER_MINOR_CIV_DEFAULT",
+      "tuned": false,
+      "traits": [],
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown",
+      "mementoCount": 0,
+      "mementos": [],
+      "civPriorities": []
+    },
+    {
+      "id": "LEADER_NAPOLEON",
+      "tuned": true,
+      "traits": [
+        "TRAIT_LEADER_NAPOLEON_ABILITY",
+        "TRAIT_LEADER_NAPOLEON_ALT_ABILITY"
+      ],
+      "modifiers": [
+        "NAPOLEON_ALT_MOD_AGENDA_CULTURE_FROM_CONQUEST",
+        "NAPOLEON_ALT_MOD_CULTURE_ON_UNIT_DEFEAT",
+        "NAPOLEON_ALT_MOD_LAND_UNIT_MOVEMENT",
+        "NAPOLEON_ALT_MOD_SPAWN_ARMY",
+        "NAPOLEON_MOD_AGENDA_NAPOLEONIC_CODE",
+        "NAPOLEON_MOD_COMBAT_STRENGTH_PER_ACTIVE_SANCTION",
+        "NAPOLEON_MOD_CULTURE_PER_SANCTIONED_PLAYER",
+        "NAPOLEON_MOD_GOLD_PER_SANCTIONED_PLAYER",
+        "NAPOLEON_MOD_LOWER_COST_SANCTIONS",
+        "NAPOLEON_MOD_ULOCK_ALL_SANCTIONS"
+      ],
+      "channels": [
+        "culture",
+        "economy",
+        "war"
+      ],
+      "risk": "high",
+      "mementoCount": 6,
+      "mementos": [
+        {
+          "id": "MEMENTO_NAPOLEON_EMPEROR_CROWN_OF_NAPOLEON",
+          "tag": "Military",
+          "channels": [
+            "economy",
+            "war"
+          ],
+          "risk": "high",
+          "modifiers": [
+            "MEMENTO_NAPOLEON_EMPEROR_CROWN_OF_NAPOLEON_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_NAPOLEON_EMPEROR_GREEN_COLONEL_JACKET",
+          "tag": "Military",
+          "channels": [
+            "economy"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_NAPOLEON_EMPEROR_GREEN_COLONEL_JACKET_MODIFIER_1",
+            "MEMENTO_NAPOLEON_EMPEROR_GREEN_COLONEL_JACKET_MODIFIER_2"
+          ]
+        },
+        {
+          "id": "MEMENTO_NAPOLEON_EMPEROR_PORTRAIT_JOSEPHINE",
+          "tag": "Military",
+          "channels": [
+            "economy"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_NAPOLEON_EMPEROR_PORTRAIT_JOSEPHINE_MODIFIER_1",
+            "MEMENTO_NAPOLEON_EMPEROR_PORTRAIT_JOSEPHINE_MODIFIER_2"
+          ]
+        },
+        {
+          "id": "MEMENTO_NAPOLEON_REVOLUTIONARY_ARTILLERYMAN_GLOVES",
+          "tag": "Military",
+          "channels": [
+            "culture"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_NAPOLEON_REVOLUTIONARY_ARTILLERYMAN_GLOVES_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_NAPOLEON_REVOLUTIONARY_BICORNE_HAT",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_NAPOLEON_REVOLUTIONARY_BICORNE_HAT_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_NAPOLEON_REVOLUTIONARY_LEGION_DHONNEUR_GRAND_EAGLE_CROSS",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_NAPOLEON_REVOLUTIONARY_LEGION_DHONNEUR_GRAND_EAGLE_CROSS_MODIFIER_1"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_EGYPT",
+        "CIVILIZATION_FRENCH_EMPIRE",
+        "CIVILIZATION_NORMAN",
+        "CIVILIZATION_ROME",
+        "CIVILIZATION_RUSSIA",
+        "CIVILIZATION_SPAIN"
+      ]
+    },
+    {
+      "id": "LEADER_PACHACUTI",
+      "tuned": true,
+      "traits": [
+        "TRAIT_LEADER_PACHACUTI_ABILITY"
+      ],
+      "modifiers": [
+        "PACHACUTI_MOD_AGENDA_MOUNTAIN_KING",
+        "PACHACUTI_MOD_CITY_PRODUCTION_FROM_FOOD",
+        "PACHACUTI_MOD_MOUNTAIN_SPECIALIST_HAPPINESS",
+        "PACHACUTI_MOD_MOUNTAIN_SPECIALIST_HAPPINESS_INVERSE",
+        "PACHACUTI_MOD_WILDCARD_ADJACENCY_MOUNTAINS"
+      ],
+      "channels": [
+        "happiness",
+        "growth",
+        "war"
+      ],
+      "risk": "high",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_PACHACUTI_ALL_TOQAPU_TUNIC",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_PACHACUTI_ALL_TOQAPU_TUNIC_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_PACHACUTI_MASCAPAYCHA",
+          "tag": "Military",
+          "channels": [
+            "economy"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_PACHACUTI_MASCAPAYCHA_MODIFIER_1",
+            "MEMENTO_PACHACUTI_MASCAPAYCHA_MODIFIER_2"
+          ]
+        },
+        {
+          "id": "MEMENTO_PACHACUTI_TOPAYAURI",
+          "tag": "Military",
+          "channels": [
+            "growth",
+            "specialist"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_PACHACUTI_TOPAYAURI_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_AMERICA",
+        "CIVILIZATION_HAWAII",
+        "CIVILIZATION_INCA",
+        "CIVILIZATION_MAYA",
+        "CIVILIZATION_MEXICO",
+        "CIVILIZATION_MISSISSIPPIAN"
+      ]
+    },
+    {
+      "id": "LEADER_SAYYIDA_AL_HURRA",
+      "tuned": true,
+      "traits": [
+        "TRAIT_LEADER_SAYYIDA_AL_HURRA_ABILITY"
+      ],
+      "modifiers": [
+        "SAYYIDA_MOD_AGENDA",
+        "SAYYIDA_MOD_FREE_NAVAL_UNIT",
+        "SAYYIDA_MOD_NO_COUNTERSPY_AGAINST",
+        "SAYYIDA_MOD_NO_INFLUENCE_PENALTY_REVEALED_SPIES",
+        "SAYYIDA_MOD_STATIONED_ON_DISTRICT_YIELDS"
+      ],
+      "channels": [
+        "culture",
+        "war"
+      ],
+      "risk": "low",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_SAYYIDA_AL_HURRA_GAZELLE_VASE",
+          "tag": "Diplomatic",
+          "channels": [
+            "culture"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_SAYYIDA_AL_HURRA_GAZELLE_VASE_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_SAYYIDA_AL_HURRA_MITHQAL",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_SAYYIDA_AL_HURRA_MITHQAL_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_SAYYIDA_AL_HURRA_NIMCHA",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_SAYYIDA_AL_HURRA_NIMCHA_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": []
+    },
+    {
+      "id": "LEADER_TECUMSEH",
+      "tuned": false,
+      "traits": [
+        "TRAIT_LEADER_TECUMSEH_ABILITY"
+      ],
+      "modifiers": [
+        "TECUMSEH_MOD_AGENDA_SUZERAIN_OF_THE_WORLD_1",
+        "TECUMSEH_MOD_AGENDA_SUZERAIN_OF_THE_WORLD_2",
+        "TECUMSEH_MOD_IP_FRIENDLY",
+        "TECUMSEH_MOD_SUZERAIN_ABILITY",
+        "TECUMSEH_MOD_SUZERAIN_FOOD",
+        "TECUMSEH_MOD_SUZERAIN_MILITARY_VICTORY",
+        "TECUMSEH_MOD_SUZERAIN_PRODUCTION"
+      ],
+      "channels": [
+        "growth",
+        "war"
+      ],
+      "risk": "low",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_TECUMSEH_POTESKWATE",
+          "tag": "Military",
+          "channels": [
+            "growth"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_TECUMSEH_POTESKWATE_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_TECUMSEH_WAMPUM_BELT",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_TECUMSEH_WAMPUM_BELT_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_TECUMSEH_WARCLUB",
+          "tag": "Military",
+          "channels": [
+            "war"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_TECUMSEH_WARCLUB_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_MISSISSIPPIAN",
+        "CIVILIZATION_SHAWNEE"
+      ]
+    },
+    {
+      "id": "LEADER_TOYOTOMI_HIDEYOSHI",
+      "tuned": true,
+      "traits": [
+        "TRAIT_LEADER_TOYOTOMI_HIDEYOSHI_ABILITY"
+      ],
+      "modifiers": [
+        "TOYOTOMI_HIDEYOSHI_MOD_AGENDA",
+        "TOYOTOMI_HIDEYOSHI_MOD_CONQUERED_CULTURE_BUILDING_PRODUCTION_TOWARDS",
+        "TOYOTOMI_HIDEYOSHI_MOD_DOUBLE_DAMAGE_ATTACK",
+        "TOYOTOMI_HIDEYOSHI_MOD_HEAL_ANYWHERE",
+        "TOYOTOMI_HIDEYOSHI_MOD_HEAL_CULTURE_OR_WONDER",
+        "TOYOTOMI_HIDEYOSHI_MOD_OPPONENTS_DOUBLE_DAMAGE_ATTACK",
+        "TOYOTOMI_HIDEYOSHI_MOD_ORIGINAL_CULTURE_BUILDING_PRODUCTION_TOWARDS"
+      ],
+      "channels": [
+        "culture",
+        "war"
+      ],
+      "risk": "low",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_TOYOTOMI_HIDEYOSHI_HONEBAMI",
+          "tag": "Military",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_TOYOTOMI_HIDEYOSHI_HONEBAMI_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_TOYOTOMI_HIDEYOSHI_KABUTO",
+          "tag": "Diplomatic",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_TOYOTOMI_HIDEYOSHI_KABUTO_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_TOYOTOMI_HIDEYOSHI_TEA_CEREMONY_KIT",
+          "tag": "Cultural",
+          "channels": [],
+          "risk": "unknown",
+          "modifiers": [
+            "MEMENTO_TOYOTOMI_HIDEYOSHI_TEA_CEREMONY_KIT_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_MEIJI"
+      ]
+    },
+    {
+      "id": "LEADER_TRUNG_TRAC",
+      "tuned": false,
+      "traits": [
+        "TRAIT_LEADER_TRUNG_TRAC_ABILITY"
+      ],
+      "modifiers": [
+        "TRUNG_TRAC_MOD_AGENDA_VAN_MINH",
+        "TRUNG_TRAC_MOD_COMMANDER_XP",
+        "TRUNG_TRAC_MOD_TROPICAL_SCIENCE",
+        "TRUNG_TRAC_MOD_TROPICAL_SCIENCE_AT_WAR",
+        "TRUNG_TRAC_MOD_TRUNG_NHI",
+        "TRUNG_TRAC_MOD_TRUNG_NHI_FASTER_RESPAWN",
+        "TRUNG_TRAC_MOD_TRUNG_NHI_GRANT_HEROIC_ASSAULT"
+      ],
+      "channels": [
+        "science",
+        "war"
+      ],
+      "risk": "medium",
+      "mementoCount": 3,
+      "mementos": [
+        {
+          "id": "MEMENTO_TRUNG_ANKUS",
+          "tag": "Military",
+          "channels": [
+            "war"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_TRUNG_ANKUS_MODIFIER_1",
+            "MEMENTO_TRUNG_ANKUS_MODIFIER_2"
+          ]
+        },
+        {
+          "id": "MEMENTO_TRUNG_DONG_SON_DRUM",
+          "tag": "Military",
+          "channels": [
+            "war"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_TRUNG_DONG_SON_DRUM_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_TRUNG_KIEM",
+          "tag": "Military",
+          "channels": [
+            "science"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_TRUNG_KIEM_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_CHOLA",
+        "CIVILIZATION_KHMER",
+        "CIVILIZATION_MAJAPAHIT",
+        "CIVILIZATION_MAURYA",
+        "CIVILIZATION_MEIJI",
+        "CIVILIZATION_SIAM"
+      ]
+    },
+    {
+      "id": "LEADER_XERXES",
+      "tuned": true,
+      "traits": [
+        "TRAIT_LEADER_XERXES_ABILITY",
+        "TRAIT_LEADER_XERXES_ALT_ABILITY"
+      ],
+      "modifiers": [
+        "XERXES_ALT_MOD_AGENDA_LORD_OF_COIN",
+        "XERXES_ALT_MOD_ROAD_CULTURE",
+        "XERXES_ALT_MOD_ROAD_GOLD",
+        "XERXES_ALT_MOD_TRADE_RANGE_EXTEND_LAND",
+        "XERXES_ALT_MOD_TRADE_RANGE_EXTEND_SEA",
+        "XERXES_ALT_MOD_TRADE_ROUTE_CAP",
+        "XERXES_ALT_MOD_TRADE_ROUTE_CULTURE",
+        "XERXES_ALT_MOD_TRADE_ROUTE_GOLD",
+        "XERXES_ALT_MOD_UNIQUE_BUILDING_YIELD",
+        "XERXES_ALT_MOD_UNIQUE_IMPROVEMENT_YIELD",
+        "XERXES_MOD_AGENDA_LORD_OF_FIRE",
+        "XERXES_MOD_CAPTURED_SETTLEMENT_GOLD",
+        "XERXES_MOD_CULTURE_ON_CAPTURE_SETTLEMENT",
+        "XERXES_MOD_GOLD_ON_CAPTURE_SETTLEMENT",
+        "XERXES_MOD_SETTLEMENT_CAP",
+        "XERXES_MOD_SETTLEMENT_GOLD",
+        "XERXES_MOD_UNIT_ATTACK_ABILITY"
+      ],
+      "channels": [
+        "culture",
+        "economy",
+        "war",
+        "settlement"
+      ],
+      "risk": "high",
+      "mementoCount": 6,
+      "mementos": [
+        {
+          "id": "MEMENTO_XERXES_ACHAEMENID_CHALCEDONY_SEAL",
+          "tag": "Military",
+          "channels": [
+            "culture",
+            "economy"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_XERXES_ACHAEMENID_CHALCEDONY_SEAL_MODIFIER_1",
+            "MEMENTO_XERXES_ACHAEMENID_CHALCEDONY_SEAL_MODIFIER_2"
+          ]
+        },
+        {
+          "id": "MEMENTO_XERXES_ACHAEMENID_GOLD_FLUTED_PHIALE",
+          "tag": "Military",
+          "channels": [
+            "economy"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_XERXES_ACHAEMENID_GOLD_FLUTED_PHIALE_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_XERXES_ACHAEMENID_INCENSE_CENSER",
+          "tag": "Military",
+          "channels": [
+            "culture",
+            "economy"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_XERXES_ACHAEMENID_INCENSE_CENSER_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_XERXES_KING_GOLDEN_SCEPTRE",
+          "tag": "Military",
+          "channels": [
+            "economy",
+            "war",
+            "settlement"
+          ],
+          "risk": "high",
+          "modifiers": [
+            "MEMENTO_XERXES_KING_GOLDEN_SCEPTRE_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_XERXES_KING_LOTUS_BLOSSOM",
+          "tag": "Military",
+          "channels": [
+            "science",
+            "culture",
+            "economy"
+          ],
+          "risk": "medium",
+          "modifiers": [
+            "MEMENTO_XERXES_KING_LOTUS_BLOSSOM_MODIFIER"
+          ]
+        },
+        {
+          "id": "MEMENTO_XERXES_KING_SCYTHIAN_AXE",
+          "tag": "Military",
+          "channels": [
+            "economy"
+          ],
+          "risk": "low",
+          "modifiers": [
+            "MEMENTO_XERXES_KING_SCYTHIAN_AXE_MODIFIER"
+          ]
+        }
+      ],
+      "civPriorities": [
+        "CIVILIZATION_ABBASID",
+        "CIVILIZATION_MAURYA",
+        "CIVILIZATION_MONGOLIA",
+        "CIVILIZATION_MUGHAL",
+        "CIVILIZATION_PERSIA",
+        "CIVILIZATION_RUSSIA"
+      ]
+    }
+  ],
+  "civilizations": [
+    {
+      "id": "CIVILIZATION_ABBASID",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_ABBASID",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_AKSUM",
+      "age": "AGE_ANTIQUITY",
+      "trait": "TRAIT_AKSUM",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_AMERICA",
+      "age": "AGE_MODERN",
+      "trait": "TRAIT_AMERICA",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_ASSYRIA",
+      "age": "AGE_ANTIQUITY",
+      "trait": "TRAIT_ASSYRIA",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_BUGANDA",
+      "age": "AGE_MODERN",
+      "trait": "TRAIT_BUGANDA",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_BULGARIA",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_BULGARIA",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_CARTHAGE",
+      "age": "AGE_ANTIQUITY",
+      "trait": "TRAIT_CARTHAGE",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_CHOLA",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_CHOLA",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_DAI_VIET",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_DAI_VIET",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_EGYPT",
+      "age": "AGE_ANTIQUITY",
+      "trait": "TRAIT_EGYPT",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_FRENCH_EMPIRE",
+      "age": "AGE_MODERN",
+      "trait": "TRAIT_FRENCH_EMPIRE",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_GREAT_BRITAIN",
+      "age": "AGE_MODERN",
+      "trait": "TRAIT_GREAT_BRITAIN",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_GREECE",
+      "age": "AGE_ANTIQUITY",
+      "trait": "TRAIT_GREECE",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_HAN",
+      "age": "AGE_ANTIQUITY",
+      "trait": "TRAIT_HAN",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_HAWAII",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_HAWAII",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_HEIAN",
+      "age": "AGE_ANTIQUITY",
+      "trait": "TRAIT_HEIAN",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_ICELAND",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_ICELAND",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_INCA",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_INCA",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_KHMER",
+      "age": "AGE_ANTIQUITY",
+      "trait": "TRAIT_KHMER",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_MAJAPAHIT",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_MAJAPAHIT",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_MAURYA",
+      "age": "AGE_ANTIQUITY",
+      "trait": "TRAIT_MAURYA",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_MAYA",
+      "age": "AGE_ANTIQUITY",
+      "trait": "TRAIT_MAYA",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_MEIJI",
+      "age": "AGE_MODERN",
+      "trait": "TRAIT_MEIJI",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_MEXICO",
+      "age": "AGE_MODERN",
+      "trait": "TRAIT_MEXICO",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_MING",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_MING",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_MISSISSIPPIAN",
+      "age": "AGE_ANTIQUITY",
+      "trait": "TRAIT_MISSISSIPPIAN",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_MONGOLIA",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_MONGOLIA",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_MUGHAL",
+      "age": "AGE_MODERN",
+      "trait": "TRAIT_MUGHAL",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_NEPAL",
+      "age": "AGE_MODERN",
+      "trait": "TRAIT_NEPAL",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_NORMAN",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_NORMAN",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_OTTOMANS",
+      "age": "AGE_MODERN",
+      "trait": "TRAIT_OTTOMANS",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_PERSIA",
+      "age": "AGE_ANTIQUITY",
+      "trait": "TRAIT_PERSIA",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_PIRATE_REPUBLIC",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_PIRATE_REPUBLIC",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_PRUSSIA",
+      "age": "AGE_MODERN",
+      "trait": "TRAIT_PRUSSIA",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_QAJAR",
+      "age": "AGE_MODERN",
+      "trait": "TRAIT_QAJAR",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_QING",
+      "age": "AGE_MODERN",
+      "trait": "TRAIT_QING",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_ROME",
+      "age": "AGE_ANTIQUITY",
+      "trait": "TRAIT_ROME",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_RUSSIA",
+      "age": "AGE_MODERN",
+      "trait": "TRAIT_RUSSIA",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_SENGOKU",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_SENGOKU",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_SHAWNEE",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_SHAWNEE",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_SIAM",
+      "age": "AGE_MODERN",
+      "trait": "TRAIT_SIAM",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_SILLA",
+      "age": "AGE_ANTIQUITY",
+      "trait": "TRAIT_SILLA",
+      "tuned": true,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_SONGHAI",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_SONGHAI",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_SPAIN",
+      "age": "AGE_EXPLORATION",
+      "trait": "TRAIT_SPAIN",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "CIVILIZATION_TONGA",
+      "age": "AGE_ANTIQUITY",
+      "trait": "TRAIT_TONGA",
+      "tuned": false,
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown"
+    }
+  ],
+  "mementos": [
+    {
+      "id": "MEMENTO_ADA_LOVELACE_NOTE_G",
+      "leader": "LEADER_ADA_LOVELACE",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Wildcard",
+      "modifiers": [
+        "MEMENTO_ADA_LOVELACE_NOTE_G_MODIFIER_1",
+        "MEMENTO_ADA_LOVELACE_NOTE_G_MODIFIER_2"
+      ],
+      "channels": [
+        "culture"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_ADA_LOVELACE_PIANO",
+      "leader": "LEADER_ADA_LOVELACE",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Cultural",
+      "modifiers": [
+        "MEMENTO_ADA_LOVELACE_PIANO_MODIFIER"
+      ],
+      "channels": [
+        "culture"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_ADA_LOVELACE_PUNCH_CARDS",
+      "leader": "LEADER_ADA_LOVELACE",
+      "tag": "Scientific",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_ADA_LOVELACE_PUNCH_CARDS_MODIFIER"
+      ],
+      "channels": [
+        "science"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_ALEXANDER_BRIDLE_OF_BUCEPHALUS",
+      "leader": "LEADER_ALEXANDER",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_ALEXANDER_BRIDLE_OF_BUCEPHALUS_MODIFIER_COST",
+        "MEMENTO_ALEXANDER_BRIDLE_OF_BUCEPHALUS_MODIFIER_CS",
+        "MEMENTO_ALEXANDER_BRIDLE_OF_BUCEPHALUS_MODIFIER_PURCHASE"
+      ],
+      "channels": [
+        "economy",
+        "war"
+      ],
+      "risk": "high"
+    },
+    {
+      "id": "MEMENTO_ALEXANDER_DIADEM",
+      "leader": "LEADER_ALEXANDER",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_ALEXANDER_DIADEM_MODIFIER_GOLD_MAINTENANCE",
+        "MEMENTO_ALEXANDER_DIADEM_MODIFIER_SETTLEMENT_LIMIT"
+      ],
+      "channels": [
+        "settlement"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_ALEXANDER_ILIAD",
+      "leader": "LEADER_ALEXANDER",
+      "tag": "Cultural",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_ALEXANDER_ILIAD_MODIFIER"
+      ],
+      "channels": [
+        "culture"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_AMINA_KWALKWALI",
+      "leader": "LEADER_AMINA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_AMINA_KWALKWALI_MODIFIER"
+      ],
+      "channels": [
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_AMINA_RAWANI",
+      "leader": "LEADER_AMINA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_AMINA_RAWANI_MODIFIER"
+      ],
+      "channels": [
+        "war"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_AMINA_TAKOBA",
+      "leader": "LEADER_AMINA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_AMINA_TAKOBA_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_ASHOKA_CONQUEROR_CHANDA_MAHASENA",
+      "leader": "LEADER_ASHOKA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_ASHOKA_CONQUEROR_CHANDA_MAHASENA_MODIFIER_1"
+      ],
+      "channels": [
+        "war"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_ASHOKA_CONQUEROR_LION_CAPITAL",
+      "leader": "LEADER_ASHOKA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_ASHOKA_CONQUEROR_LION_CAPITAL_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_ASHOKA_CONQUEROR_SILK_UTTARIYA",
+      "leader": "LEADER_ASHOKA",
+      "tag": "Expansionist",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_ASHOKA_CONQUEROR_SILK_UTTARIYA_MODIFIER"
+      ],
+      "channels": [
+        "happiness",
+        "war"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_ASHOKA_RENOUNCER_CHAKRA",
+      "leader": "LEADER_ASHOKA",
+      "tag": "Expansionist",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_ASHOKA_RENOUNCER_CHAKRA_MODIFIER"
+      ],
+      "channels": [
+        "happiness",
+        "growth"
+      ],
+      "risk": "high"
+    },
+    {
+      "id": "MEMENTO_ASHOKA_RENOUNCER_DIAMOND_THRONE",
+      "leader": "LEADER_ASHOKA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_ASHOKA_RENOUNCER_DIAMOND_THRONE_MODIFIER"
+      ],
+      "channels": [
+        "happiness"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_ASHOKA_RENOUNCER_GOLD_SAPPHIRE_FLOWERS",
+      "leader": "LEADER_ASHOKA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_ASHOKA_RENOUNCER_GOLD_SAPPHIRE_FLOWERS_MODIFIER"
+      ],
+      "channels": [
+        "growth"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_AUGUSTUS_BREASTPLATE",
+      "leader": "LEADER_AUGUSTUS",
+      "tag": "Expansionist",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_AUGUSTUS_BREASTPLATE_MODIFIER"
+      ],
+      "channels": [
+        "growth"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_AUGUSTUS_CLIPEUS_VIRTUTIS",
+      "leader": "LEADER_AUGUSTUS",
+      "tag": "Expansionist",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_AUGUSTUS_CLIPEUS_VIRTUTIS_MODIFIER"
+      ],
+      "channels": [
+        "settlement"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_AUGUSTUS_CORONA_CIVICA",
+      "leader": "LEADER_AUGUSTUS",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_AUGUSTUS_CORONA_CIVICA_MODIFIER_1"
+      ],
+      "channels": [
+        "settlement"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_BATTUTA_MERCHANTS_SADDLE",
+      "leader": "LEADER_IBN_BATTUTA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_BATTUTA_MERCHANTS_SADDLE_MODIFIER_1",
+        "MEMENTO_BATTUTA_MERCHANTS_SADDLE_MODIFIER_2",
+        "MEMENTO_BATTUTA_MERCHANTS_SADDLE_MODIFIER_3",
+        "MEMENTO_BATTUTA_MERCHANTS_SADDLE_MODIFIER_4"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_BATTUTA_RIHLA",
+      "leader": "LEADER_IBN_BATTUTA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_BATTUTA_RIHLA_MODIFIER"
+      ],
+      "channels": [
+        "happiness",
+        "science",
+        "culture",
+        "economy"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_BATTUTA_TRAVELLERS_SANDALS",
+      "leader": "LEADER_IBN_BATTUTA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_BATTUTA_TRAVELLERS_SANDALS_MODIFIER_1",
+        "MEMENTO_BATTUTA_TRAVELLERS_SANDALS_MODIFIER_2",
+        "MEMENTO_BATTUTA_TRAVELLERS_SANDALS_MODIFIER_3",
+        "MEMENTO_BATTUTA_TRAVELLERS_SANDALS_MODIFIER_4",
+        "MEMENTO_BATTUTA_TRAVELLERS_SANDALS_MODIFIER_5",
+        "MEMENTO_BATTUTA_TRAVELLERS_SANDALS_MODIFIER_6"
+      ],
+      "channels": [
+        "growth",
+        "science",
+        "culture",
+        "economy"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_BENJAMIN_FRANKLIN_BIFOCALS",
+      "leader": "LEADER_BENJAMIN_FRANKLIN",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_BENJAMIN_FRANKLIN_BIFOCALS_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_BENJAMIN_FRANKLIN_GLASS_ARMONICA",
+      "leader": "LEADER_BENJAMIN_FRANKLIN",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_BENJAMIN_FRANKLIN_GLASS_ARMONICA_MODIFIER_1",
+        "MEMENTO_BENJAMIN_FRANKLIN_GLASS_ARMONICA_MODIFIER_2"
+      ],
+      "channels": [
+        "happiness",
+        "science"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_BENJAMIN_FRANKLIN_KITE",
+      "leader": "LEADER_BENJAMIN_FRANKLIN",
+      "tag": "Scientific",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_BENJAMIN_FRANKLIN_KITE_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_BOLIVAR_DAVALOS_MEDAL",
+      "leader": "LEADER_BOLIVAR",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_BOLIVAR_DAVALOS_MEDAL_MODIFIER"
+      ],
+      "channels": [
+        "happiness"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_BOLIVAR_GOLD_SNUFF_BOX",
+      "leader": "LEADER_BOLIVAR",
+      "tag": "Expansionist",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_BOLIVAR_GOLD_SNUFF_BOX_MODIFIER"
+      ],
+      "channels": [
+        "growth",
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_BOLIVAR_LETTER_TO_JAMAICA",
+      "leader": "LEADER_BOLIVAR",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_BOLIVAR_LETTER_TO_JAMAICA_MODIFIER"
+      ],
+      "channels": [
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_CATHERINE_EAGLE_BANNER",
+      "leader": "LEADER_CATHERINE",
+      "tag": "Scientific",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_CATHERINE_EAGLE_BANNER_MODIFIER"
+      ],
+      "channels": [
+        "science"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_CATHERINE_GREAT_IMPERIAL_CROWN",
+      "leader": "LEADER_CATHERINE",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_CATHERINE_GREAT_IMPERIAL_CROWN_MODIFIER"
+      ],
+      "channels": [
+        "science"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_CATHERINE_POTEMKINS_SWORD_KNOT",
+      "leader": "LEADER_CATHERINE",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_CATHERINE_POTEMKINS_SWORD_KNOT_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_CHARLEMAGNE_GLOBUS_CRUCIGER",
+      "leader": "LEADER_CHARLEMAGNE",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_CHARLEMAGNE_GLOBUS_CRUCIGER_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_CHARLEMAGNE_JOYEUSE",
+      "leader": "LEADER_CHARLEMAGNE",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_CHARLEMAGNE_JOYEUSE_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_CHARLEMAGNE_TENCENDUR",
+      "leader": "LEADER_CHARLEMAGNE",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_CHARLEMAGNE_TENCENDUR_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_CONFUCIUS_ALTAR_SET",
+      "leader": "LEADER_CONFUCIUS",
+      "tag": "Cultural",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_CONFUCIUS_ALTAR_SET_MODIFIER"
+      ],
+      "channels": [
+        "culture"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_CONFUCIUS_ANALECTS",
+      "leader": "LEADER_CONFUCIUS",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_CONFUCIUS_ANALECTS_MODIFIER"
+      ],
+      "channels": [
+        "science"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_CONFUCIUS_BRUSH_SCROLL",
+      "leader": "LEADER_CONFUCIUS",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_CONFUCIUS_BRUSH_SCROLL_MODIFIER"
+      ],
+      "channels": [
+        "growth"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_EDWARD_TEACH_BRACE_OF_PISTOLS",
+      "leader": "LEADER_EDWARD_TEACH",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_EDWARD_TEACH_BRACE_OF_PISTOLS_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_EDWARD_TEACH_FIGUREHEAD_OF_QUEEN_ANNES_REVENGE",
+      "leader": "LEADER_EDWARD_TEACH",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Wildcard",
+      "modifiers": [
+        "MEMENTO_EDWARD_TEACH_FIGUREHEAD_OF_QUEEN_ANNES_REVENGE_MODIFIER"
+      ],
+      "channels": [
+        "economy",
+        "war"
+      ],
+      "risk": "high"
+    },
+    {
+      "id": "MEMENTO_EDWARD_TEACH_MEDICINE_CHEST",
+      "leader": "LEADER_EDWARD_TEACH",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Cultural",
+      "modifiers": [
+        "MEMENTO_EDWARD_TEACH_MEDICINE_CHEST_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_AGINCOURT_ARROWHEAD",
+      "leader": null,
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_AGINCOURT_ARROWHEAD_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_ANTIKYTHERA_MECHANISM",
+      "leader": null,
+      "tag": "Scientific",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_ANTIKYTHERA_MECHANISM_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_ART_OF_WAR",
+      "leader": null,
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_ART_OF_WAR_MODIFIER_1",
+        "MEMENTO_FOUNDATION_ART_OF_WAR_MODIFIER_2"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_COLADA_TIZONA",
+      "leader": null,
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_COLADA_TIZONA_MODIFIER"
+      ],
+      "channels": [
+        "war"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_CORPUS_JURIS_CIVILIS",
+      "leader": null,
+      "tag": "Diplomatic",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_CORPUS_JURIS_CIVILIS_MODIFIER"
+      ],
+      "channels": [
+        "culture"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_EA_NASIR",
+      "leader": null,
+      "tag": "Economic",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_EA_NASIR_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_EQUESTRIAN_FIGURE",
+      "leader": null,
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_EQUESTRIAN_FIGURE_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_GAME_OF_UR",
+      "leader": null,
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_GAME_OF_UR_MODIFIER_1",
+        "MEMENTO_FOUNDATION_GAME_OF_UR_MODIFIER_2"
+      ],
+      "channels": [
+        "science",
+        "culture"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_GARUDA_STATUE",
+      "leader": null,
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_GARUDA_STATUE_MODIFIER"
+      ],
+      "channels": [
+        "happiness",
+        "growth"
+      ],
+      "risk": "high"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_GROMA",
+      "leader": null,
+      "tag": "Expansionist",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_GROMA_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_IMAGO_MUNDI",
+      "leader": null,
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_IMAGO_MUNDI_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_LYDIAN_LION",
+      "leader": null,
+      "tag": "Economic",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_LYDIAN_LION_MODIFIER"
+      ],
+      "channels": [
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_POCHTECA_BACKPACK",
+      "leader": null,
+      "tag": "Economic",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_POCHTECA_BACKPACK_MODIFIER_1",
+        "MEMENTO_FOUNDATION_POCHTECA_BACKPACK_MODIFIER_2"
+      ],
+      "channels": [
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_SHAKOKIDOGU",
+      "leader": null,
+      "tag": "Cultural",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_SHAKOKIDOGU_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_SHISA_NECKLACE",
+      "leader": null,
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_SHISA_NECKLACE_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_SLING_BULLET",
+      "leader": null,
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_SLING_BULLET_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_SWORD_BRENNUS",
+      "leader": null,
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_SWORD_BRENNUS_MODIFIER_1"
+      ],
+      "channels": [
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_TRAVELS_MARCO_POLO",
+      "leader": null,
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_TRAVELS_MARCO_POLO_MODIFIER"
+      ],
+      "channels": [
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_FOUNDATION_TREATY_OF_KADESH",
+      "leader": null,
+      "tag": "Diplomatic",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FOUNDATION_TREATY_OF_KADESH_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_FRIEDRICH_BAROQUE_ANTI_MACHIAVEL",
+      "leader": "LEADER_FRIEDRICH",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FRIEDRICH_BAROQUE_ANTI_MACHIAVEL_MODIFIER"
+      ],
+      "channels": [
+        "war"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_FRIEDRICH_BAROQUE_FLUTE",
+      "leader": "LEADER_FRIEDRICH",
+      "tag": "Cultural",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FRIEDRICH_BAROQUE_FLUTE_MODIFIER"
+      ],
+      "channels": [
+        "culture"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_FRIEDRICH_BAROQUE_VOLTAIRE_EDITS",
+      "leader": "LEADER_FRIEDRICH",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FRIEDRICH_BAROQUE_VOLTAIRE_EDITS_MODIFIER"
+      ],
+      "channels": [
+        "culture"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_FRIEDRICH_OBLIQUE_KRONE_VON_FRIEDRICH",
+      "leader": "LEADER_FRIEDRICH",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FRIEDRICH_OBLIQUE_KRONE_VON_FRIEDRICH_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_FRIEDRICH_OBLIQUE_ORDER_BLACK_EAGLE",
+      "leader": "LEADER_FRIEDRICH",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FRIEDRICH_OBLIQUE_ORDER_BLACK_EAGLE_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_FRIEDRICH_OBLIQUE_WALKING_STICK",
+      "leader": "LEADER_FRIEDRICH",
+      "tag": "Scientific",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_FRIEDRICH_OBLIQUE_WALKING_STICK_MODIFIER"
+      ],
+      "channels": [
+        "science"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_GENGHIS_KHAN_PAIZA",
+      "leader": "LEADER_GENGHIS_KHAN",
+      "tag": "Expansionist",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_GENGHIS_KHAN_PAIZA_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_GENGHIS_KHAN_SADDLE",
+      "leader": "LEADER_GENGHIS_KHAN",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_GENGHIS_KHAN_SADDLE_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_GENGHIS_KHAN_SULDE",
+      "leader": "LEADER_GENGHIS_KHAN",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_GENGHIS_KHAN_SULDE_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_GILGAMESH_MAGIC_PLANT",
+      "leader": "LEADER_GILGAMESH",
+      "tag": "Diplomatic",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_GILGAMESH_MAGIC_PLANT_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_GILGAMESH_MIKKU",
+      "leader": "LEADER_GILGAMESH",
+      "tag": "Diplomatic",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_GILGAMESH_MIKKU_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_GILGAMESH_PUKKU",
+      "leader": "LEADER_GILGAMESH",
+      "tag": "Diplomatic",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_GILGAMESH_PUKKU_MODIFIER"
+      ],
+      "channels": [
+        "happiness"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_HATSHEPSUT_FALSE_BEARD",
+      "leader": "LEADER_HATSHEPSUT",
+      "tag": "Cultural",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_HATSHEPSUT_FALSE_BEARD_MODIFIER"
+      ],
+      "channels": [
+        "culture"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_HATSHEPSUT_ROYAL_MACE",
+      "leader": "LEADER_HATSHEPSUT",
+      "tag": "Economic",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_HATSHEPSUT_ROYAL_MACE_MODIFIER"
+      ],
+      "channels": [
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_HATSHEPSUT_URAEUS",
+      "leader": "LEADER_HATSHEPSUT",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_HATSHEPSUT_URAEUS_MODIFIER"
+      ],
+      "channels": [
+        "culture"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_HIMIKO_QUEEN_DOTAKU",
+      "leader": "LEADER_HIMIKO",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_HIMIKO_QUEEN_DOTAKU_MODIFIER"
+      ],
+      "channels": [
+        "science"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_HIMIKO_QUEEN_GOLDEN_SEAL_STONE",
+      "leader": "LEADER_HIMIKO",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_HIMIKO_QUEEN_GOLDEN_SEAL_STONE_MODIFIER"
+      ],
+      "channels": [
+        "science",
+        "economy"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_HIMIKO_QUEEN_YASAKANI_NO_MAGATAMA",
+      "leader": "LEADER_HIMIKO",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_HIMIKO_QUEEN_YASAKANI_NO_MAGATAMA_MODIFIER"
+      ],
+      "channels": [
+        "science"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_HIMIKO_SHAMAN_KUSANAGI_NO_TSURUGI",
+      "leader": "LEADER_HIMIKO",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_HIMIKO_SHAMAN_KUSANAGI_NO_TSURUGI_MODIFIER_1",
+        "MEMENTO_HIMIKO_SHAMAN_KUSANAGI_NO_TSURUGI_MODIFIER_2"
+      ],
+      "channels": [
+        "happiness",
+        "science",
+        "culture"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_HIMIKO_SHAMAN_SAKAKI_BRANCH",
+      "leader": "LEADER_HIMIKO",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_HIMIKO_SHAMAN_SAKAKI_BRANCH_MODIFIER"
+      ],
+      "channels": [
+        "happiness"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_HIMIKO_SHAMAN_YATA_NO_KAGAMI",
+      "leader": "LEADER_HIMIKO",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_HIMIKO_SHAMAN_YATA_NO_KAGAMI_MODIFIER"
+      ],
+      "channels": [
+        "happiness",
+        "culture",
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_ISABELLA_BALLESTILLA",
+      "leader": "LEADER_ISABELLA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_ISABELLA_BALLESTILLA_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_ISABELLA_PADRON_REAL",
+      "leader": "LEADER_ISABELLA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_ISABELLA_PADRON_REAL_MODIFIER"
+      ],
+      "channels": [
+        "happiness"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_ISABELLA_QUEENS_JEWELRY",
+      "leader": "LEADER_ISABELLA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_ISABELLA_QUEENS_JEWELRY_MODIFIER"
+      ],
+      "channels": [
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_LAFAYETTE_HERMIONE_MODEL",
+      "leader": "LEADER_LAFAYETTE",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_LAFAYETTE_HERMIONE_MODEL_MODIFIER_1"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_LAFAYETTE_LETTER_ADRIENNE",
+      "leader": "LEADER_LAFAYETTE",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_LAFAYETTE_LETTER_ADRIENNE_MODIFIER_1",
+        "MEMENTO_LAFAYETTE_LETTER_ADRIENNE_MODIFIER_2"
+      ],
+      "channels": [
+        "happiness"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_LAFAYETTE_TRICOLOUR_COCKADE",
+      "leader": "LEADER_LAFAYETTE",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_LAFAYETTE_TRICOLOUR_COCKADE_MODIFIER_1",
+        "MEMENTO_LAFAYETTE_TRICOLOUR_COCKADE_MODIFIER_2"
+      ],
+      "channels": [
+        "happiness",
+        "culture"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_LAKSHMIBAI_BAADALS_REINS",
+      "leader": "LEADER_LAKSHMIBAI",
+      "tag": "Diplomatic",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_LAKSHMIBAI_BAADALS_REINS_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_LAKSHMIBAI_DHAL",
+      "leader": "LEADER_LAKSHMIBAI",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_LAKSHMIBAI_DHAL_MODIFIER_1"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_LAKSHMIBAI_FLAG_OF_JHANSI",
+      "leader": "LEADER_LAKSHMIBAI",
+      "tag": "Diplomatic",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_LAKSHMIBAI_FLAG_OF_JHANSI_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_MACHIAVELLI_DELL_ARTE_DELLA_GUERRA",
+      "leader": "LEADER_MACHIAVELLI",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_MACHIAVELLI_DELL_ARTE_DELLA_GUERRA_MODIFIER"
+      ],
+      "channels": [
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_MACHIAVELLI_DISCORSI_SOPRA_LIVIO",
+      "leader": "LEADER_MACHIAVELLI",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_MACHIAVELLI_DISCORSI_SOPRA_LIVIO_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_MACHIAVELLI_IL_PRINCIPE",
+      "leader": "LEADER_MACHIAVELLI",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_MACHIAVELLI_IL_PRINCIPE_MODIFIER"
+      ],
+      "channels": [
+        "war"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_NAPOLEON_EMPEROR_CROWN_OF_NAPOLEON",
+      "leader": "LEADER_NAPOLEON",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_NAPOLEON_EMPEROR_CROWN_OF_NAPOLEON_MODIFIER"
+      ],
+      "channels": [
+        "economy",
+        "war"
+      ],
+      "risk": "high"
+    },
+    {
+      "id": "MEMENTO_NAPOLEON_EMPEROR_GREEN_COLONEL_JACKET",
+      "leader": "LEADER_NAPOLEON",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_NAPOLEON_EMPEROR_GREEN_COLONEL_JACKET_MODIFIER_1",
+        "MEMENTO_NAPOLEON_EMPEROR_GREEN_COLONEL_JACKET_MODIFIER_2"
+      ],
+      "channels": [
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_NAPOLEON_EMPEROR_PORTRAIT_JOSEPHINE",
+      "leader": "LEADER_NAPOLEON",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_NAPOLEON_EMPEROR_PORTRAIT_JOSEPHINE_MODIFIER_1",
+        "MEMENTO_NAPOLEON_EMPEROR_PORTRAIT_JOSEPHINE_MODIFIER_2"
+      ],
+      "channels": [
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_NAPOLEON_REVOLUTIONARY_ARTILLERYMAN_GLOVES",
+      "leader": "LEADER_NAPOLEON",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_NAPOLEON_REVOLUTIONARY_ARTILLERYMAN_GLOVES_MODIFIER"
+      ],
+      "channels": [
+        "culture"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_NAPOLEON_REVOLUTIONARY_BICORNE_HAT",
+      "leader": "LEADER_NAPOLEON",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_NAPOLEON_REVOLUTIONARY_BICORNE_HAT_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_NAPOLEON_REVOLUTIONARY_LEGION_DHONNEUR_GRAND_EAGLE_CROSS",
+      "leader": "LEADER_NAPOLEON",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_NAPOLEON_REVOLUTIONARY_LEGION_DHONNEUR_GRAND_EAGLE_CROSS_MODIFIER_1"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_PACHACUTI_ALL_TOQAPU_TUNIC",
+      "leader": "LEADER_PACHACUTI",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_PACHACUTI_ALL_TOQAPU_TUNIC_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_PACHACUTI_MASCAPAYCHA",
+      "leader": "LEADER_PACHACUTI",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_PACHACUTI_MASCAPAYCHA_MODIFIER_1",
+        "MEMENTO_PACHACUTI_MASCAPAYCHA_MODIFIER_2"
+      ],
+      "channels": [
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_PACHACUTI_TOPAYAURI",
+      "leader": "LEADER_PACHACUTI",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_PACHACUTI_TOPAYAURI_MODIFIER"
+      ],
+      "channels": [
+        "growth",
+        "specialist"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_RIZAL_FORGET_ME_NOT",
+      "leader": "LEADER_ISABELLA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_RIZAL_FORGET_ME_NOT_MODIFIER"
+      ],
+      "channels": [
+        "happiness"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_RIZAL_NOLI_ME_TANGERE",
+      "leader": "LEADER_JOSE_RIZAL",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_RIZAL_NOLI_ME_TANGERE_MODIFIER"
+      ],
+      "channels": [
+        "science",
+        "culture",
+        "economy"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_RIZAL_OPHTHALMOSCOPE",
+      "leader": "LEADER_JOSE_RIZAL",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_RIZAL_OPHTHALMOSCOPE_MODIFIER"
+      ],
+      "channels": [
+        "happiness",
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_SAYYIDA_AL_HURRA_GAZELLE_VASE",
+      "leader": "LEADER_SAYYIDA_AL_HURRA",
+      "tag": "Diplomatic",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_SAYYIDA_AL_HURRA_GAZELLE_VASE_MODIFIER"
+      ],
+      "channels": [
+        "culture"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_SAYYIDA_AL_HURRA_MITHQAL",
+      "leader": "LEADER_SAYYIDA_AL_HURRA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_SAYYIDA_AL_HURRA_MITHQAL_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_SAYYIDA_AL_HURRA_NIMCHA",
+      "leader": "LEADER_SAYYIDA_AL_HURRA",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_SAYYIDA_AL_HURRA_NIMCHA_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_TECUMSEH_POTESKWATE",
+      "leader": "LEADER_TECUMSEH",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_TECUMSEH_POTESKWATE_MODIFIER"
+      ],
+      "channels": [
+        "growth"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_TECUMSEH_WAMPUM_BELT",
+      "leader": "LEADER_TECUMSEH",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_TECUMSEH_WAMPUM_BELT_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_TECUMSEH_WARCLUB",
+      "leader": "LEADER_TECUMSEH",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_TECUMSEH_WARCLUB_MODIFIER"
+      ],
+      "channels": [
+        "war"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_TOYOTOMI_HIDEYOSHI_HONEBAMI",
+      "leader": "LEADER_TOYOTOMI_HIDEYOSHI",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_TOYOTOMI_HIDEYOSHI_HONEBAMI_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_TOYOTOMI_HIDEYOSHI_KABUTO",
+      "leader": "LEADER_TOYOTOMI_HIDEYOSHI",
+      "tag": "Diplomatic",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_TOYOTOMI_HIDEYOSHI_KABUTO_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_TOYOTOMI_HIDEYOSHI_TEA_CEREMONY_KIT",
+      "leader": "LEADER_TOYOTOMI_HIDEYOSHI",
+      "tag": "Cultural",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_TOYOTOMI_HIDEYOSHI_TEA_CEREMONY_KIT_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_TRUNG_ANKUS",
+      "leader": "LEADER_TRUNG_TRAC",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_TRUNG_ANKUS_MODIFIER_1",
+        "MEMENTO_TRUNG_ANKUS_MODIFIER_2"
+      ],
+      "channels": [
+        "war"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_TRUNG_DONG_SON_DRUM",
+      "leader": "LEADER_TRUNG_TRAC",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_TRUNG_DONG_SON_DRUM_MODIFIER"
+      ],
+      "channels": [
+        "war"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_TRUNG_KIEM",
+      "leader": "LEADER_TRUNG_TRAC",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_TRUNG_KIEM_MODIFIER"
+      ],
+      "channels": [
+        "science"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_TUBMAN_LANTERN",
+      "leader": "LEADER_HARRIET_TUBMAN",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_TUBMAN_LANTERN_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_TUBMAN_SATCHEL",
+      "leader": "LEADER_HARRIET_TUBMAN",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_TUBMAN_SATCHEL_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_TUBMAN_SIDEARM",
+      "leader": "LEADER_HARRIET_TUBMAN",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_TUBMAN_SIDEARM_MODIFIER"
+      ],
+      "channels": [],
+      "risk": "unknown"
+    },
+    {
+      "id": "MEMENTO_XERXES_ACHAEMENID_CHALCEDONY_SEAL",
+      "leader": "LEADER_XERXES",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_XERXES_ACHAEMENID_CHALCEDONY_SEAL_MODIFIER_1",
+        "MEMENTO_XERXES_ACHAEMENID_CHALCEDONY_SEAL_MODIFIER_2"
+      ],
+      "channels": [
+        "culture",
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_XERXES_ACHAEMENID_GOLD_FLUTED_PHIALE",
+      "leader": "LEADER_XERXES",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_XERXES_ACHAEMENID_GOLD_FLUTED_PHIALE_MODIFIER"
+      ],
+      "channels": [
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_XERXES_ACHAEMENID_INCENSE_CENSER",
+      "leader": "LEADER_XERXES",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_XERXES_ACHAEMENID_INCENSE_CENSER_MODIFIER"
+      ],
+      "channels": [
+        "culture",
+        "economy"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "MEMENTO_XERXES_KING_GOLDEN_SCEPTRE",
+      "leader": "LEADER_XERXES",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_XERXES_KING_GOLDEN_SCEPTRE_MODIFIER"
+      ],
+      "channels": [
+        "economy",
+        "war",
+        "settlement"
+      ],
+      "risk": "high"
+    },
+    {
+      "id": "MEMENTO_XERXES_KING_LOTUS_BLOSSOM",
+      "leader": "LEADER_XERXES",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_XERXES_KING_LOTUS_BLOSSOM_MODIFIER"
+      ],
+      "channels": [
+        "science",
+        "culture",
+        "economy"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "MEMENTO_XERXES_KING_SCYTHIAN_AXE",
+      "leader": "LEADER_XERXES",
+      "tag": "Military",
+      "tier": "1",
+      "region": "Unrestricted",
+      "modifiers": [
+        "MEMENTO_XERXES_KING_SCYTHIAN_AXE_MODIFIER"
+      ],
+      "channels": [
+        "economy"
+      ],
+      "risk": "low"
+    }
+  ]
+}

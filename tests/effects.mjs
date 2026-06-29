@@ -5,6 +5,7 @@ import assert from "node:assert/strict";
 const calls = [];
 const playerUnits = {};
 const LEADER = {}; // pid → leader type string (for civ-tuning resolution)
+const MEMENTOS = {}; // pid → equipped memento descriptors
 let TURN = 1;
 const KV = {};
 globalThis.Game = {
@@ -26,6 +27,11 @@ globalThis.GameInfo = {
 globalThis.Configuration = {
   getGame: () => ({ getValue: (k) => (k in KV ? KV[k] : null) }),
   editGame: () => ({ setValue: (k, v) => (KV[k] = v) })
+};
+globalThis.Online = {
+  Metaprogression: {
+    getEquippedMementos: (pid) => MEMENTOS[pid] || []
+  }
 };
 
 const { addAssimilationLoad, tickAssimilation, congestionPenalty } =
@@ -150,6 +156,25 @@ function testCivTuningEaseScalesGoldCost() {
   CONFIG.civTuningEnabled = false;
 }
 
+function testMementoTuningScalesGoldCost() {
+  reset();
+  CONFIG.civTuningEnabled = true;
+  CONFIG.civTuningStrength = 1;
+  CONFIG.assimilationLoadPerMigrant = 1;
+  CONFIG.assimilationCostPerPop = 0;
+  CONFIG.assimilationDecay = 0.5;
+  CONFIG.assimilationHappiness = 0;
+  CONFIG.assimilationGold = 2;
+  MEMENTOS[18] = [{ mementoTypeId: "MEMENTO_FOUNDATION_LYDIAN_LION" }]; // assimilationEase 1.1
+  TURN = 110;
+  addAssimilationLoad(18, 0);
+  TURN = 111;
+  const r = tickAssimilation(18); // load 0.5; gold = 2 × 0.5 × 1.1 = 1.1
+  assert.ok(Math.abs(r.gold - 1.1) < 1e-9);
+  assert.deepEqual(calls, [[18, "GOLD", -1.1]]);
+  CONFIG.civTuningEnabled = false;
+}
+
 testAddLoadScalesWithPop();
 testTickDecaysAndCharges();
 testTickIdempotentWithinTurn();
@@ -160,5 +185,6 @@ testMigrantHoldPenaltyScalesWithCount();
 testNoMigrantsNoCharge();
 testCongestionPenaltyScalesWithLoadAndOffByDefault();
 testCivTuningEaseScalesGoldCost();
+testMementoTuningScalesGoldCost();
 
 console.log("effects harness passed");

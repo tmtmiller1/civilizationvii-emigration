@@ -94,6 +94,8 @@
     "test:effects": "node --loader ./tests/loader.mjs ./tests/effects.mjs",
     "test:effects-branches-extra": "node --loader ./tests/loader.mjs ./tests/effects-branches-extra.mjs",
     "test:civ-tuning": "node --loader ./tests/loader.mjs ./tests/civ-tuning.mjs",
+    "test:civ-tuning-coverage": "node --loader ./tests/loader.mjs ./tests/civ-tuning-coverage.mjs",
+    "test:hypotheticals": "node --loader ./tests/loader.mjs ./tests/hypotheticals.mjs",
     "test:war": "node --loader ./tests/loader.mjs ./tests/war.mjs",
     "test:disasters": "node --loader ./tests/loader.mjs ./tests/disasters.mjs",
     "test:disasters-branches-extra": "node --loader ./tests/loader.mjs ./tests/disasters-branches-extra.mjs",

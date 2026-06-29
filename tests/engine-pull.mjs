@@ -6,6 +6,7 @@
 import assert from "node:assert/strict";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { adjustedPull } from "/emigration/ui/emigration-pull.js";
+import { resetBorderCache } from "/emigration/ui/emigration-borders.js";
 
 // Deterministic deps: no Open Borders deal (Game absent → bonus 0), Manhattan hex distance,
 // no slotted policy.
@@ -70,6 +71,7 @@ CONFIG.opennessFloor = 0.25;
 //   pull = (20-10) + 6 − 4 = 12.
 globalThis.Database = { makeHash: (t) => t }; // so policy hashes resolve
 globalThis.Players = { get: () => ({ Culture: { isTraditionActive: () => true } }) }; // dest "holds" asylum
+resetBorderCache(); // new game-state stub → fresh policy reads (mirrors the per-pass reset in production)
 Object.assign(CONFIG, { asylumPushWeight: 3, violenceFleeThreshold: 2, disasterFleeThreshold: 2 });
 const refugeeSrc = { ...sig(1, 10, 5, false, 0, 0), violence: 2, disaster: 0 };
 close(adjustedPull(refugeeSrc, sig(1, 20, 5, false, 0, 0), null, null, null), 12, "C8 asylum tilt");
@@ -85,6 +87,7 @@ close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(2, 30, 5, false, 0, 0), null,
 // the arithmetic is exact: penalty = weight × max(0, civPop/avg − threshold).
 globalThis.Game = undefined;
 globalThis.Players = undefined;
+resetBorderCache(); // policy stubs cleared → fresh reads
 Object.assign(CONFIG, {
   antiSnowballWeight: 15, antiSnowballThreshold: 1.25, antiSnowballExponent: 1,
   congestWeight: 0, bordersEnabled: false, civTuningEnabled: false
@@ -117,6 +120,7 @@ close(adjustedPull(sig(2, 10, 5, false, 0, 0), sig(2, 25, 5, false, 0, 0), null,
 // ── Crisis escape: a refugee fleeing a crisis gets a cross-civ pull bonus, so it flees ABROAD ──
 globalThis.Game = undefined;
 globalThis.Players = undefined;
+resetBorderCache(); // policy stubs cleared → fresh reads
 Object.assign(CONFIG, {
   crisisEscapeBonus: 14, violenceFleeThreshold: 2, refugeePoachBlock: 0,
   asylumPushWeight: 0, antiSnowballWeight: 0, bordersEnabled: false
