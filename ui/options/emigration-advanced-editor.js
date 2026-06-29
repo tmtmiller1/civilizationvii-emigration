@@ -40,6 +40,7 @@ const CHECKBOX_CHANGE = "component-value-changed"; // fxs-checkbox → detail.va
 const DROPDOWN_CHANGE = "dropdown-selection-change"; // fxs-dropdown → detail.selectedIndex
 
 const GRID_COLS = "repeat(auto-fit, minmax(22rem, 1fr))"; // two columns on a wide window, one when narrow
+const BODY_GRID_STYLE = "display:grid;grid-template-columns:" + GRID_COLS + ";column-gap:2rem;";
 
 // Group render order + human title. Any tunable group not listed still renders, after
 // these, under its raw key (so a new group never silently disappears).
@@ -127,6 +128,48 @@ function makeRowText(t) {
   return { text, mark };
 }
 
+/**
+ * One group header row with a dedicated +/- toggle button.
+ * @param {string} titleKey Group title LOC key.
+ * @returns {{header:*, chev:*, toggleBtn:*, toggleGlyph:*}} Header pieces.
+ */
+function makeGroupToggleButton() {
+  const toggleBtn = document.createElement("fxs-minus-plus");
+  toggleBtn.className = "ml-4";
+  toggleBtn.setAttribute("data-audio-group-ref", "options");
+  toggleBtn.setAttribute("type", "minus");
+  const toggleGlyph = toggleBtn; // type attribute is set on the button itself
+  return { toggleBtn, toggleGlyph };
+}
+
+/**
+ * Header title row (chevron + localized group title).
+ * @param {string} titleKey Group title LOC key.
+ * @returns {{row:*, chev:*}} Title row and chevron.
+ */
+function makeGroupTitleRow(titleKey) {
+  const row = document.createElement("div");
+  row.className = "flex flex-row items-center";
+  const chev = document.createElement("span");
+  chev.className = "font-body text-base mr-2 text-accent-2";
+  chev.textContent = "▾";
+  const title = document.createElement("fxs-header");
+  title.setAttribute("title", titleKey);
+  row.appendChild(chev);
+  row.appendChild(title);
+  return { row, chev };
+}
+
+function makeGroupHeader(titleKey) {
+  const header = document.createElement("div");
+  header.className = "flex flex-row items-center justify-between mt-4 mb-1";
+  const { row, chev } = makeGroupTitleRow(titleKey);
+  const { toggleBtn, toggleGlyph } = makeGroupToggleButton();
+  header.appendChild(row);
+  header.appendChild(toggleBtn);
+  return { header, chev, toggleBtn, toggleGlyph };
+}
+
 class EmigrationAdvancedEditor extends Panel {
   /** @type {*} */ closeBtn;
   /** @type {*} */ listEl;
@@ -135,7 +178,7 @@ class EmigrationAdvancedEditor extends Panel {
   /** @type {string} */ query = "";
   /** @type {{row:*, group:string, key:string, type:string, control:*, mark:*, search:string}[]} */
   rows = [];
-  /** @type {{key:string, header:*, body:*, chev:*, collapsed:boolean}[]} */
+  /** @type {{key:string, header:*, body:*, chev:*, toggleGlyph:*, collapsed:boolean}[]} */
   groups = [];
   engineInputListener = this.onEngineInput.bind(this);
   closeListener = () => this.close();
@@ -227,19 +270,12 @@ class EmigrationAdvancedEditor extends Panel {
    * @param {*} g The group spec. @param {*[]} items The group's tunables.
    */
   buildGroupSection(g, items) {
-    const header = document.createElement("div");
-    header.className = "flex flex-row items-center mt-4 mb-1 cursor-pointer";
-    const chev = document.createElement("span");
-    chev.className = "font-body text-base mr-2 text-accent-2";
-    chev.textContent = "▾";
-    const title = document.createElement("fxs-header");
-    title.setAttribute("title", g.title);
-    header.appendChild(chev);
-    header.appendChild(title);
+    const { header, chev, toggleBtn, toggleGlyph } = makeGroupHeader(g.title);
     const body = document.createElement("div");
-    body.setAttribute("style", "display:grid;grid-template-columns:" + GRID_COLS + ";column-gap:2rem;");
-    const entry = { key: g.key, header, body, chev, collapsed: false };
-    header.addEventListener("click", () => this.toggleGroup(entry));
+    body.setAttribute("style", BODY_GRID_STYLE);
+    const entry = { key: g.key, header, body, chev, toggleGlyph, collapsed: false };
+    const onToggle = () => this.toggleGroup(entry);
+    toggleBtn.addEventListener("action-activate", onToggle);
     this.groups.push(entry);
     this.listEl.appendChild(header);
     this.listEl.appendChild(body);
@@ -354,7 +390,7 @@ class EmigrationAdvancedEditor extends Panel {
     for (const m of this.rows) m.row.style.display = m.search.includes(q) ? "" : "none";
     for (const g of this.groups) {
       const any = this.rows.some((m) => m.group === g.key && m.row.style.display !== "none");
-      g.body.style.display = any ? "grid" : "none";
+      g.body.setAttribute("style", any ? BODY_GRID_STYLE : BODY_GRID_STYLE + "display:none;");
       g.header.style.display = any ? "" : "none";
     }
   }
@@ -364,7 +400,7 @@ class EmigrationAdvancedEditor extends Panel {
     for (const m of this.rows) m.row.style.display = "";
     for (const g of this.groups) {
       g.header.style.display = "";
-      g.body.style.display = g.collapsed ? "none" : "grid";
+      g.body.setAttribute("style", g.collapsed ? BODY_GRID_STYLE + "display:none;" : BODY_GRID_STYLE);
     }
   }
 
@@ -373,10 +409,10 @@ class EmigrationAdvancedEditor extends Panel {
    * @param {*} g The group entry.
    */
   toggleGroup(g) {
-    if (this.query) return; // don't fight an active search
     g.collapsed = !g.collapsed;
-    g.body.style.display = g.collapsed ? "none" : "grid";
+    g.body.setAttribute("style", g.collapsed ? BODY_GRID_STYLE + "display:none;" : BODY_GRID_STYLE);
     g.chev.textContent = g.collapsed ? "▸" : "▾";
+    g.toggleGlyph.setAttribute("type", g.collapsed ? "plus" : "minus");
   }
 
   /**
