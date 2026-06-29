@@ -256,13 +256,15 @@ function dominanceFor(dest, ownerPop) {
  * @param {*} src Ranked source signal.
  * @param {*[]} ranked All ranked signals.
  * @param {Record<number, number>|null} ownerPop Per-owner total population (congestion).
+ * @param {(dest: any) => boolean} [acceptDest] Optional destination predicate (false skips a candidate).
  * @returns {{dest:*, adjusted:number}|null} Best destination + its adjusted pull.
  */
-export function bestDestination(src, ranked, ownerPop) {
+export function bestDestination(src, ranked, ownerPop, acceptDest) {
   const flee = fleeVector(src, ranked);
   const aggressors = warRefugeeAggressors(src);
   let best = null;
   for (const dest of ranked) {
+    if (typeof acceptDest === "function" && !acceptDest(dest)) continue;
     const adjusted = adjustedPull(src, dest, flee, ownerPop, aggressors);
     if (adjusted !== null && (!best || adjusted > best.adjusted)) {
       best = { dest, adjusted };

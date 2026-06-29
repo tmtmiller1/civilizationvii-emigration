@@ -28,6 +28,11 @@ export const CONFIG = {
   // channel and are not counted here. 0 = no per-city cap. Tunable (advanced) + scaled by the intensity
   // preset (Low 1 / Medium 2 / High 4).
   maxLossPerCityPerTurn: 2,
+  // Hard PER-CITY ceiling on how many population points ONE settlement may GAIN from migration in a
+  // single turn (departures landing now + due transit arrivals). This is the symmetric anti-spike
+  // guard for destination "black holes": one city can no longer absorb dozens of points in one pass.
+  // 0 = no per-city cap.
+  maxGainPerCityPerTurn: 4,
   emigrationBar: 30, // accumulated pressure (per source) to move one citizen
   deltaExponent: 0.5, // diminishing scaling on the prosperity delta
 

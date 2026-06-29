@@ -9,6 +9,7 @@ import { ruralPop, totalPop } from "/emigration/ui/emigration-population.js";
 import { observeCity } from "/emigration/ui/emigration-violence.js";
 import { observeDisaster } from "/emigration/ui/emigration-disasters.js";
 import { cityHappinessStage, readPolity, resetPolityCache } from "/emigration/ui/emigration-polity.js";
+import { resetBorderCache } from "/emigration/ui/emigration-borders.js";
 
 /**
  * A snapshot of one city's emigration-relevant state.
@@ -217,6 +218,7 @@ export function collectCitySignals() {
   /** @type {CitySignal[]} */
   const out = [];
   resetPolityCache(); // read each civ's government/celebration/war-weariness at most once this pass
+  resetBorderCache(); // read each civ's slotted border/attraction cards at most once this pass
   for (let pid = 0; pid < 64; pid++) {
     const e = eligiblePlayer(pid);
     if (e) collectPlayerCities(e.player, e.isCityState, out);

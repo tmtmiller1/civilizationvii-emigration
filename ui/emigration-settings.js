@@ -367,6 +367,28 @@ export function setTunable(key, value) {
   CFG[key] = value;
 }
 
+/**
+ * Reset one tunable to its pristine default (persists the default as the override + restores CONFIG),
+ * so the Advanced editor's "↺" gives players a way back. Idempotent.
+ * @param {string} key A CONFIG key.
+ */
+export function resetTunable(key) {
+  setTunable(key, CFG_DEF[key]);
+}
+
+/** Reset every exposed tunable to its default (the Advanced editor's "Reset all"). */
+export function resetAllTunables() {
+  for (const t of TUNABLES) resetTunable(t.key);
+}
+
+/**
+ * Whether a tunable currently differs from its pristine default (drives the editor's "modified" mark).
+ * @param {string} key A CONFIG key. @returns {boolean} True when changed from default.
+ */
+export function isTunableModified(key) {
+  return getTunable(key) !== CFG_DEF[key];
+}
+
 // Every CONFIG key the player can change: the advanced tunables PLUS any key a preset writes (some
 // preset keys — e.g. movesPerSiege — aren't individually exposed as tunables, but a preset still sets
 // them, so they must be restored here too or they'd silently revert to default on the next re-apply).
@@ -404,4 +426,14 @@ export function applyPresetIndex(index) {
   const profile = PRESETS[PRESET_NAMES[index]];
   if (!profile) return;
   for (const key of Object.keys(profile)) setTunable(key, profile[key]);
+}
+
+/**
+ * Mark the intensity preset as "Custom" (index 0). Called when the player hand-edits a value in the
+ * Advanced editor: they're no longer on a named preset, so the main-panel selector should say Custom.
+ * Does NOT touch any tunable value (unlike applyPresetIndex(0), which is identical here but reads as a
+ * deliberate "the user customised" signal).
+ */
+export function markPresetCustom() {
+  ModOptions.save(MOD_ID, OPT_PRESET, 0);
 }

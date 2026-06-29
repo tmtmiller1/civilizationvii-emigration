@@ -20,8 +20,10 @@ globalThis.localStorage = (() => {
   };
 })();
 
-const { getTunable, setTunable, applyTunableOverrides, applyPresetIndex, getPresetIndex } =
-  await import("/emigration/ui/emigration-settings.js");
+const {
+  getTunable, setTunable, applyTunableOverrides, applyPresetIndex, getPresetIndex,
+  resetTunable, resetAllTunables, isTunableModified, markPresetCustom
+} = await import("/emigration/ui/emigration-settings.js");
 const { CONFIG, CONFIG_DEFAULTS } = await import("/emigration/ui/emigration-config.js");
 const { PRESETS } = await import("/emigration/ui/emigration-tunables.js");
 
@@ -59,10 +61,46 @@ function testCustomPresetLeavesValuesUntouched() {
   assert.equal(getPresetIndex(), 0);
 }
 
+function testResetAndModified() {
+  setTunable("emigrationBar", 18);
+  assert.equal(isTunableModified("emigrationBar"), true, "changed knob reads as modified");
+  resetTunable("emigrationBar");
+  assert.equal(getTunable("emigrationBar"), CONFIG_DEFAULTS.emigrationBar, "reset restores the default");
+  assert.equal(CONFIG.emigrationBar, CONFIG_DEFAULTS.emigrationBar, "reset restores live CONFIG");
+  assert.equal(isTunableModified("emigrationBar"), false, "a reset knob is no longer modified");
+}
+
+function testResetAll() {
+  setTunable("emigrationBar", 12);
+  setTunable("cooldownTurns", 2);
+  resetAllTunables();
+  assert.equal(getTunable("emigrationBar"), CONFIG_DEFAULTS.emigrationBar, "reset-all clears emigrationBar");
+  assert.equal(getTunable("cooldownTurns"), CONFIG_DEFAULTS.cooldownTurns, "reset-all clears cooldownTurns");
+}
+
+function testMarkPresetCustom() {
+  applyPresetIndex(2); // medium
+  assert.equal(getPresetIndex(), 2);
+  markPresetCustom(); // hand-edit signal
+  assert.equal(getPresetIndex(), 0, "editing a value flips the preset to custom");
+}
+
+function testGainCapTunableExposed() {
+  // The symmetric inbound cap is a real tunable + preset knob.
+  assert.equal(typeof CONFIG_DEFAULTS.maxGainPerCityPerTurn, "number");
+  for (const name of ["low", "medium", "high"]) {
+    assert.equal(typeof PRESETS[name].maxGainPerCityPerTurn, "number", name + " preset sets the gain cap");
+  }
+}
+
 testDefaultBeforeOverride();
 testSetPersistsAndMutatesConfig();
 testApplyOverridesPushesSavedIntoConfig();
 testPresetAppliesProfile();
 testCustomPresetLeavesValuesUntouched();
+testResetAndModified();
+testResetAll();
+testMarkPresetCustom();
+testGainCapTunableExposed();
 
 console.log("tunables harness passed");

@@ -5,6 +5,7 @@
 
 declare const Game: any;
 declare const GameContext: any;
+declare const Online: any;
 declare const Players: any;
 declare const Configuration: any;
 declare const Locale: any;

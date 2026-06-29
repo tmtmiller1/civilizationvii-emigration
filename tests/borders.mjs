@@ -12,8 +12,13 @@ globalThis.Players = {
 };
 globalThis.Database = { makeHash: (s) => "H_" + s }; // hash = "H_" + type string
 
-const { immigrationOpenness, emigrationRetention } = await import("/emigration/ui/emigration-borders.js");
+const { immigrationOpenness, emigrationRetention, borderStance, resetBorderCache } = await import(
+  "/emigration/ui/emigration-borders.js"
+);
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
+
+const OPEN = "H_TRADITION_EMIG_OPEN_BORDERS_MODERN";
+const CLOSED = "H_TRADITION_EMIG_CLOSED_BORDERS_MODERN";
 
 const close = (a, b) => Math.abs(a - b) < 1e-9;
 
@@ -75,6 +80,44 @@ function testNoRetentionWithoutClosed() {
   assert.equal(emigrationRetention(9), 1); // no card → neutral
 }
 
+// ── Both cards slotted: Open and Closed cancel each other out → fully neutral ──
+
+function testBothBordersCancelOut() {
+  CONFIG.bordersEnabled = true;
+  CONFIG.closedBordersOpenness = 0.4;
+  CONFIG.openBordersOpenness = 1.5;
+  CONFIG.closedBordersRetention = 0.6;
+  ACTIVE[10] = new Set([OPEN, CLOSED]); // both slotted simultaneously
+  resetBorderCache();
+  assert.equal(immigrationOpenness(10), 1, "Open + Closed cancel → neutral openness");
+  assert.equal(borderStance(10), "none", "Open + Closed cancel → no stance");
+  assert.equal(emigrationRetention(10), 1, "Open + Closed cancel → no retention");
+}
+
+function testStanceSingleCard() {
+  CONFIG.bordersEnabled = true;
+  ACTIVE[11] = new Set([OPEN]);
+  ACTIVE[12] = new Set([CLOSED]);
+  resetBorderCache();
+  assert.equal(borderStance(11), "pro");
+  assert.equal(borderStance(12), "anti");
+}
+
+// ── Per-pass cache: a civ's slotted cards are read once per pass and held until reset ──
+
+function testBorderCacheHoldsUntilReset() {
+  CONFIG.bordersEnabled = true;
+  CONFIG.closedBordersOpenness = 0.4;
+  CONFIG.opennessFloor = 0.15;
+  resetBorderCache();
+  ACTIVE[13] = new Set([CLOSED]);
+  assert.ok(close(immigrationOpenness(13), 0.4), "first read sees the Closed card");
+  ACTIVE[13] = new Set(); // policy changes mid-pass...
+  assert.ok(close(immigrationOpenness(13), 0.4), "...but the cached value holds within the pass");
+  resetBorderCache(); // next pass
+  assert.equal(immigrationOpenness(13), 1, "after reset the fresh (empty) policy is read");
+}
+
 testNeutralWhenOff();
 testNeutralWithNoCard();
 testClosedBordersThrottles();
@@ -83,6 +126,9 @@ testOpennessFloor();
 testRetentionNeutralWhenOff();
 testClosedBordersRetains();
 testNoRetentionWithoutClosed();
+testBothBordersCancelOut();
+testStanceSingleCard();
+testBorderCacheHoldsUntilReset();
 
 CONFIG.bordersEnabled = false;
 console.log("borders harness passed");
