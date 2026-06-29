@@ -18,6 +18,7 @@
 // behaves exactly as if the table were empty.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { CIV_ROSTER, LEADER_ROSTER, MEMENTO_ROSTER } from "/emigration/ui/emigration-civ-roster.js";
 
 /**
  * A civ's tuning profile. All multipliers are 1 (neutral) and biases 0 by default.
@@ -115,6 +116,61 @@ export const BY_CIV = {
 };
 
 /**
+ * Per-memento nudges.
+ *
+ * Most mementos are neutral for migration because their effects are military /
+ * situational / age-scoped and already read via yields or conflict signals. This
+ * table only lists mementos with direct migration-facing pressure (happiness/gold
+ * magnetism) and leaves the rest explicitly neutral.
+ * @type {Record<string, Partial<CivTuning>>}
+ */
+export const BY_MEMENTO = {
+  MEMENTO_BENJAMIN_FRANKLIN_GLASS_ARMONICA: { happinessPull: 0.9 },
+  MEMENTO_ISABELLA_PADRON_REAL: { happinessPull: 0.92 },
+  MEMENTO_LAFAYETTE_LETTER_ADRIENNE: { happinessPull: 0.93 },
+  MEMENTO_BATTUTA_RIHLA: { happinessPull: 0.95, assimilationEase: 1.1 },
+  MEMENTO_FOUNDATION_LYDIAN_LION: { assimilationEase: 1.1 },
+  MEMENTO_FOUNDATION_TRAVELS_MARCO_POLO: { assimilationEase: 1.08 },
+  MEMENTO_AMINA_KWALKWALI: { assimilationEase: 1.08 },
+  MEMENTO_XERXES_KING_GOLDEN_SCEPTRE: { assimilationEase: 1.1 },
+  MEMENTO_XERXES_KING_LOTUS_BLOSSOM: { assimilationEase: 1.08 }
+};
+
+// Full roster coverage: every leader/civ is either explicitly tuned above or
+// explicitly neutral here (decision recorded for regression checks).
+export const EXPLICIT_NEUTRAL_LEADERS = Object.freeze(
+  LEADER_ROSTER.filter((leaderType) => !Object.hasOwn(BY_LEADER, leaderType))
+);
+
+export const EXPLICIT_NEUTRAL_CIVS = Object.freeze(
+  CIV_ROSTER.filter((civilizationType) => !Object.hasOwn(BY_CIV, civilizationType))
+);
+
+export const EXPLICIT_NEUTRAL_MEMENTOS = Object.freeze(
+  MEMENTO_ROSTER.filter((mementoType) => !Object.hasOwn(BY_MEMENTO, mementoType))
+);
+
+const MEMENTO_BOUNDS = Object.freeze({
+  happinessPull: [0.75, 1.25],
+  integrationSpeed: [0.75, 1.35],
+  assimilationEase: [0.75, 1.35],
+  warRetention: [0.75, 1.35],
+  sourceBias: [-1.5, 1.5],
+  overcrowdDiscount: [0, 1]
+});
+
+/**
+ * Clamp a numeric value to [lo, hi].
+ * @param {number} v Value.
+ * @param {number} lo Lower bound.
+ * @param {number} hi Upper bound.
+ * @returns {number} Clamped value.
+ */
+function clamp(v, lo, hi) {
+  return v < lo ? lo : v > hi ? hi : v;
+}
+
+/**
  * The normalized leader type string for a player (base persona, `_ALT` stripped),
  * or null if unreadable.
  * @param {number} pid Player id.
@@ -143,6 +199,111 @@ function civName(pid) {
   } catch (_) {
     return null;
   }
+}
+
+// The memento tuning fields that COMPOSE MULTIPLICATIVELY (a stack multiplies them); sourceBias adds
+// and overcrowdDiscount averages, handled separately. Shared by the accumulate/clamp/merge helpers.
+const MULT_FIELDS = ["happinessPull", "integrationSpeed", "assimilationEase", "warRetention"];
+
+/**
+ * The MEMENTO_* type id carried by one equipped-memento entry, across the runtime's varying shapes
+ * (the value itself, or a typed field). Null when none looks like a memento id.
+ * @param {*} entry One equipped-memento entry. @returns {string|null} The MEMENTO_ id, or null.
+ */
+function mementoIdOf(entry) {
+  if (!entry) return null;
+  const candidates = [entry, entry.mementoTypeId, entry.mementoType, entry.Type, entry.type, entry.id, entry.value];
+  for (const c of candidates) {
+    if (typeof c === "string" && c.startsWith("MEMENTO_")) return c;
+  }
+  return null;
+}
+
+/**
+ * Pull equipped memento type ids for a player from metaprogression runtime APIs.
+ * Returns an empty list when unavailable/offline.
+ * @param {number} pid Player id.
+ * @returns {string[]} Equipped memento type ids (MEMENTO_*), de-duplicated.
+ */
+function equippedMementos(pid) {
+  try {
+    const meta = Online?.Metaprogression;
+    if (!meta || typeof meta.getEquippedMementos !== "function") return [];
+    const raw = meta.getEquippedMementos(pid);
+    if (!Array.isArray(raw)) return [];
+    const out = [];
+    for (const entry of raw) {
+      const id = mementoIdOf(entry);
+      if (id) out.push(id);
+    }
+    return Array.from(new Set(out));
+  } catch (_) {
+    return [];
+  }
+}
+
+/**
+ * Merge all equipped memento tuning entries into one bounded profile.
+ * Multipliers compose multiplicatively and sourceBias adds; the combined profile
+ * is clamped to conservative bounds to prevent stack-driven runaway.
+ * @param {number} pid Player id.
+ * @returns {Partial<CivTuning>|null} Merged memento profile, or null when no tuned mementos are equipped.
+ */
+function mementoProfile(pid) {
+  const acc = accumulateMementos(equippedMementos(pid));
+  return acc ? clampMementoProfile(acc) : null;
+}
+
+/**
+ * Fold a player's equipped memento tunings into one raw (un-clamped) profile: multiplicative fields
+ * multiply, sourceBias adds, overcrowdDiscount averages. A field stays `undefined`/null until some
+ * memento sets it (so it's omitted from the output). Null when no recognized memento is equipped.
+ * @param {string[]} ids Equipped memento ids.
+ * @returns {Record<string, number>|null} The raw accumulator, or null.
+ */
+function accumulateMementos(ids) {
+  /** @type {Record<string, number>} */
+  const a = {};
+  let any = false;
+  let oc = null;
+  for (const id of ids) {
+    const t = BY_MEMENTO[id];
+    if (!t) continue;
+    any = true;
+    accumulateFields(a, /** @type {Record<string, number>} */ (t));
+    if (typeof t.overcrowdDiscount === "number") {
+      oc = oc == null ? t.overcrowdDiscount : (oc + t.overcrowdDiscount) / 2;
+    }
+  }
+  if (!any) return null;
+  if (oc != null) a.overcrowdDiscount = oc;
+  return a;
+}
+
+/**
+ * Fold one memento's multiplicative fields + sourceBias into the running accumulator (in place).
+ * @param {Record<string, number>} a The accumulator. @param {Record<string, number>} t The memento.
+ */
+function accumulateFields(a, t) {
+  for (const f of MULT_FIELDS) {
+    if (typeof t[f] === "number") a[f] = (a[f] == null ? 1 : a[f]) * t[f];
+  }
+  if (typeof t.sourceBias === "number") a.sourceBias = (a.sourceBias || 0) + t.sourceBias;
+}
+
+/**
+ * Clamp a raw memento accumulator to its conservative bounds, keeping only the fields that were set.
+ * @param {Record<string, number>} a The raw accumulator.
+ * @returns {Partial<CivTuning>} The bounded profile.
+ */
+function clampMementoProfile(a) {
+  /** @type {Record<string, number>} */
+  const o = {};
+  const b = /** @type {Record<string, number[]>} */ (MEMENTO_BOUNDS);
+  for (const f of [...MULT_FIELDS, "sourceBias", "overcrowdDiscount"]) {
+    if (a[f] != null) o[f] = clamp(a[f], b[f][0], b[f][1]);
+  }
+  return o;
 }
 
 /**
@@ -181,10 +342,39 @@ function flatten(t) {
  */
 export function civTuning(pid) {
   if (!CONFIG.civTuningEnabled || typeof pid !== "number") return NEUTRAL;
-  const civKey = civName(pid);
-  const leadKey = leaderName(pid);
-  const civ = (civKey && BY_CIV[civKey]) || null;
-  const lead = (leadKey && BY_LEADER[leadKey]) || null;
-  if (!civ && !lead) return NEUTRAL;
-  return flatten({ ...NEUTRAL, ...civ, ...lead });
+  const civ = lookupEntry(BY_CIV, civName(pid));
+  const lead = lookupEntry(BY_LEADER, leaderName(pid));
+  const mem = mementoProfile(pid);
+  if (!civ && !lead && !mem) return NEUTRAL;
+  const merged = { ...NEUTRAL, ...civ, ...lead };
+  if (mem) applyMemento(merged, mem);
+  return flatten(merged);
+}
+
+/**
+ * A table entry for a (possibly null/empty) key, or null.
+ * @param {Record<string, *>} map The lookup table. @param {*} key The key (falsy → null).
+ * @returns {*} The entry, or null.
+ */
+function lookupEntry(map, key) {
+  return (key && map[key]) || null;
+}
+
+/**
+ * Fold a clamped memento profile into a player's merged tuning IN PLACE: multiplicative fields
+ * multiply, sourceBias adds, overcrowdDiscount averages (or seeds a null entry).
+ * @param {CivTuning} merged The civ+leader merged tuning (mutated).
+ * @param {Partial<CivTuning>} mem The clamped memento profile.
+ */
+function applyMemento(merged, mem) {
+  const m = /** @type {Record<string, number>} */ (merged);
+  const p = /** @type {Record<string, number>} */ (mem);
+  for (const f of MULT_FIELDS) {
+    if (typeof p[f] === "number") m[f] *= p[f];
+  }
+  if (typeof mem.sourceBias === "number") merged.sourceBias += mem.sourceBias;
+  if (typeof mem.overcrowdDiscount === "number") {
+    merged.overcrowdDiscount = merged.overcrowdDiscount == null
+      ? mem.overcrowdDiscount : (merged.overcrowdDiscount + mem.overcrowdDiscount) / 2;
+  }
 }

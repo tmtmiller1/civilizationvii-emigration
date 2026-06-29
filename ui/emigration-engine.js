@@ -35,8 +35,12 @@ import {
   applyArrivalConsequences
 } from "/emigration/ui/emigration-consequences.js";
 import { processArrivals } from "/emigration/ui/emigration-arrivals.js";
+import {
+  makeInboundCtx, canReceiveInbound, noteInbound
+} from "/emigration/ui/emigration-inbound.js";
 
 /** @typedef {import("/emigration/ui/emigration-causes.js").MigrationCause} MigrationCause */
+/** @typedef {import("/emigration/ui/emigration-inbound.js").InboundCtx} InboundCtx */
 /**
  * @typedef {import("/emigration/ui/emigration-state.js").EmigState} EmigState
  * @typedef {import("/emigration/ui/emigration-migration-records.js").Migration} Migration
@@ -182,16 +186,20 @@ function voluntaryCause(src) {
  * @param {number} popBefore Source population before this point left (for people-scaling).
  * @param {*} state Loaded state (transit queue + monoTurn).
  * @param {MigrationCause} cause Why they're leaving.
+ * @param {InboundCtx} inboundCtx Per-turn destination-inbound cap context.
  * @returns {Migration|null} The move/departure record, or null if the write failed.
  */
-function applyOneMove(src, dest, popBefore, state, cause) {
+// eslint-disable-next-line max-params
+function applyOneMove(src, dest, popBefore, state, cause, inboundCtx) {
   const people = marginalPeople(popBefore, state.monoTurn, cityName(src.city), settlementSignal(src));
   const lag = transitLag(src, dest, cause);
   const eventKey = eventKeyForMove(src, cause); // specific war/disaster/crisis behind this move
   if (lag <= 0) {
+    if (!canReceiveInbound(dest.key, inboundCtx)) return null;
     if (!moveRural(src.city, dest.city)) return null;
     applyMoveToRanking(src, dest);
     applyDepartureConsequences(src);
+    noteInbound(dest.key, inboundCtx);
     const cost = applyArrivalConsequences(
       dest.city, dest.owner, dest.population, src.infected, src.owner
     );
@@ -228,18 +236,32 @@ function applyOneMove(src, dest, popBefore, state, cause) {
  * @param {*} state Loaded state (transit + monoTurn).
  * @param {MigrationCause} cause Why they're leaving.
  * @param {number} budget Max points to shed this turn.
+ * @param {InboundCtx} inboundCtx Per-turn destination-inbound cap context.
  * @returns {Migration[]} The applied records.
  */
-function shedBurst(src, dest, state, cause, budget) {
+// eslint-disable-next-line max-params
+function shedBurst(src, dest, state, cause, budget, inboundCtx) {
   /** @type {Migration[]} */
   const out = [];
   for (let i = 0; i < budget; i++) {
     if (src.rural <= CONFIG.minRuralToEmigrate) break;
-    const rec = applyOneMove(src, dest, src.population, state, cause);
+    const rec = applyOneMove(src, dest, src.population, state, cause, inboundCtx);
     if (!rec) break;
     out.push(rec);
   }
   return out;
+}
+
+/**
+ * The best destination for `src` that can still receive migrants this turn.
+ * @param {*} src Source signal.
+ * @param {*[]} ranked Ranked city signals.
+ * @param {Record<number, number>} ownerPop Per-owner populations.
+ * @param {InboundCtx} inboundCtx Per-turn destination-inbound cap context.
+ * @returns {{dest:*, adjusted:number}|null} Best open destination.
+ */
+function bestOpenDestination(src, ranked, ownerPop, inboundCtx) {
+  return bestDestination(src, ranked, ownerPop, (d) => canReceiveInbound(d.key, inboundCtx));
 }
 
 /**
@@ -264,16 +286,18 @@ function belowEmigrationBar(forced, pressure) {
  * @param {*} state Loaded state.
  * @param {*} best The chosen destination ({dest, adjusted}) or null.
  * @param {number} maxThisSource Remaining moves allowed this turn.
+ * @param {InboundCtx} inboundCtx Per-turn destination-inbound cap context.
  * @returns {Migration[]} The applied records.
  */
-function legacyEmigrate(src, st, state, best, maxThisSource) {
+// eslint-disable-next-line max-params
+function legacyEmigrate(src, st, state, best, maxThisSource, inboundCtx) {
   const cause = migrationCause(src);
   const forced = FORCED_CAUSES.has(cause);
   if (!best || restingOnCooldown(st, forced)) return [];
   st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
   if (belowEmigrationBar(forced, st.pressure)) return [];
   const budget = Math.min(maxThisSource, warSurgeBudget(src, cause));
-  const out = shedBurst(src, best.dest, state, cause, budget);
+  const out = shedBurst(src, best.dest, state, cause, budget, inboundCtx);
   if (!out.length) return [];
   st.pressure = 0;
   if (!forced) st.cooldown = speedTurns(CONFIG.cooldownTurns);
@@ -288,14 +312,16 @@ function legacyEmigrate(src, st, state, best, maxThisSource) {
  * @param {*} state Loaded state (sources + monoTurn + transit).
  * @param {Record<number, number>} ownerPop Per-owner total population (congestion).
  * @param {number} maxThisSource Remaining moves allowed this turn.
+ * @param {InboundCtx} inboundCtx Per-turn destination-inbound cap context.
  * @returns {Migration[]} The applied records.
  */
-function processSourceLegacy(src, ranked, state, ownerPop, maxThisSource) {
+// eslint-disable-next-line max-params
+function processSourceLegacy(src, ranked, state, ownerPop, maxThisSource, inboundCtx) {
   if (src.rural <= CONFIG.minRuralToEmigrate || maxThisSource <= 0) return [];
   const st = sourceState(state, src.key);
-  const best = bestDestination(src, ranked, ownerPop);
+  const best = bestOpenDestination(src, ranked, ownerPop, inboundCtx);
   /** @type {Migration[]} */
-  const out = legacyEmigrate(src, st, state, best, maxThisSource);
+  const out = legacyEmigrate(src, st, state, best, maxThisSource, inboundCtx);
   const death = processOutletDeath(src, st, state, !!best); // concurrent trapped/famine death
   if (death) out.push(death);
   return out;
@@ -309,12 +335,13 @@ function processSourceLegacy(src, ranked, state, ownerPop, maxThisSource) {
  * @param {*} best The chosen destination ({dest, adjusted}).
  * @param {*} state Loaded state.
  * @param {number} maxCrisis Remaining crisis budget for the civ.
+ * @param {InboundCtx} inboundCtx Per-turn destination-inbound cap context.
  * @returns {Migration[]} The applied records.
  */
-function shedCrisis(src, best, state, maxCrisis) {
+function shedCrisis(src, best, state, maxCrisis, inboundCtx) {
   const cause = crisisCause(src);
   const budget = Math.min(maxCrisis, warSurgeBudget(src, cause));
-  return shedBurst(src, best.dest, state, cause, budget);
+  return shedBurst(src, best.dest, state, cause, budget, inboundCtx);
 }
 
 /**
@@ -334,13 +361,22 @@ function cityMigrationCap() {
  * @param {*} state Loaded state.
  * @param {*} st Source state (pressure/cooldown).
  * @param {number} maxVol Remaining voluntary budget for the civ.
+ * @param {InboundCtx} inboundCtx Per-turn destination-inbound cap context.
  * @returns {Migration[]} The applied records.
  */
-function shedVoluntary(src, best, state, st, maxVol) {
+// eslint-disable-next-line max-params
+function shedVoluntary(src, best, state, st, maxVol, inboundCtx) {
   if (st.cooldown > 0 || maxVol <= 0) return [];
   st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
   if (st.pressure < speedBar(CONFIG.emigrationBar)) return [];
-  const out = shedBurst(src, best.dest, state, voluntaryCause(src), Math.min(maxVol, 1));
+  const out = shedBurst(
+    src,
+    best.dest,
+    state,
+    voluntaryCause(src),
+    Math.min(maxVol, 1),
+    inboundCtx
+  );
   if (out.length) {
     st.pressure = 0;
     st.cooldown = speedTurns(CONFIG.cooldownTurns);
@@ -358,28 +394,46 @@ function shedVoluntary(src, best, state, st, maxVol) {
  * @param {*} state Loaded state.
  * @param {Record<number, number>} ownerPop Per-owner total population.
  * @param {{voluntary:number, crisis:number, shared?:boolean}} budgets Remaining per-track budget.
+ * @param {InboundCtx} inboundCtx Per-turn destination-inbound cap context.
  * @returns {Migration[]} The applied records.
  */
-function processSourceSplit(src, ranked, state, ownerPop, budgets) {
+// eslint-disable-next-line max-params
+function processSourceSplit(src, ranked, state, ownerPop, budgets, inboundCtx) {
   const st = sourceState(state, src.key);
-  const best = bestDestination(src, ranked, ownerPop);
   /** @type {Migration[]} */
   const out = [];
-  if (best) {
+  const bestCrisis = bestOpenDestination(src, ranked, ownerPop, inboundCtx);
+  if (bestCrisis) {
     // Per-CITY migration ceiling this turn: crisis + voluntary together can't exceed it (out.length is
     // the running count of points this source has shed so far), so one besieged city can't burst-evacuate.
     const cap = cityMigrationCap();
     if (budgets.crisis > 0 && inCrisis(src)) {
-      for (const m of shedCrisis(src, best, state, Math.min(budgets.crisis, cap))) out.push(m);
+      for (const m of shedCrisis(
+        src,
+        bestCrisis,
+        state,
+        Math.min(budgets.crisis, cap),
+        inboundCtx
+      )) out.push(m);
     }
     // Shared pool: crisis already spent some of the common budget, so the voluntary track gets the rest.
     const volBudget = budgets.shared ? budgets.voluntary - out.length : budgets.voluntary;
     const volMax = Math.min(volBudget, cap - out.length); // cap minus crisis points already shed
-    for (const m of shedVoluntary(src, best, state, st, volMax)) out.push(m);
+    const bestVoluntary = bestOpenDestination(src, ranked, ownerPop, inboundCtx);
+    if (bestVoluntary) {
+      for (const m of shedVoluntary(
+        src,
+        bestVoluntary,
+        state,
+        st,
+        volMax,
+        inboundCtx
+      )) out.push(m);
+    }
   }
   // Death channel, CONCURRENT with the above: the trapped (no refuge), or a STARVING city even with a
   // refuge, loses some people to death while the rest flee. Famine ≠ trapped: people die even fleeing.
-  const death = processOutletDeath(src, st, state, !!best);
+  const death = processOutletDeath(src, st, state, !!bestCrisis);
   if (death) out.push(death);
   return out;
 }
@@ -391,16 +445,27 @@ function processSourceSplit(src, ranked, state, ownerPop, budgets) {
  * @param {*} state Loaded state.
  * @param {Record<number, number>} ownerPop Per-owner total population.
  * @param {{voluntary:number, crisis:number, shared?:boolean}} budgets Remaining per-track budget.
+ * @param {InboundCtx} inboundCtx Per-turn destination-inbound cap context.
  * @returns {Migration[]} The applied records.
  */
-function processSource(src, ranked, state, ownerPop, budgets) {
+// eslint-disable-next-line max-params
+function processSource(src, ranked, state, ownerPop, budgets, inboundCtx) {
   if (src.rural <= CONFIG.minRuralToEmigrate) return [];
   if (budgets.voluntary <= 0 && budgets.crisis <= 0) return [];
-  if (CONFIG.splitTracksEnabled) return processSourceSplit(src, ranked, state, ownerPop, budgets);
+  if (CONFIG.splitTracksEnabled) {
+    return processSourceSplit(src, ranked, state, ownerPop, budgets, inboundCtx);
+  }
   // Legacy uses ONE merged budget: the shared pool's `voluntary` already IS the merged remaining; the
   // separate-ceiling case sums the two tracks. Bounded by the per-city migration cap.
   const merged = budgets.shared ? budgets.voluntary : budgets.voluntary + budgets.crisis;
-  return processSourceLegacy(src, ranked, state, ownerPop, Math.min(merged, cityMigrationCap()));
+  return processSourceLegacy(
+    src,
+    ranked,
+    state,
+    ownerPop,
+    Math.min(merged, cityMigrationCap()),
+    inboundCtx
+  );
 }
 
 /**
@@ -647,13 +712,15 @@ export function runPass() {
   // pre-pass world and before any mutation below.
   bankStanceImpact(ranked, state);
 
+  const inboundCtx = makeInboundCtx();
+
   // Arrivals first: land anyone whose transit completed this turn (Feature 1b). These don't count
   // against the per-turn move cap - they're completing earlier departures.
-  const migrations = processArrivals(state, ranked);
+  const migrations = processArrivals(state, ranked, inboundCtx);
 
   // Departures: need at least two cities for a move to be meaningful.
   if (ranked.length >= 2) {
-    for (const m of processDepartures(state, ranked)) migrations.push(m);
+    for (const m of processDepartures(state, ranked, inboundCtx)) migrations.push(m);
   }
 
   saveState(state);
@@ -693,9 +760,10 @@ function tallyUse(used, owner, cause) {
  * counting each applied record against the track its cause belongs to.
  * @param {*} state Loaded state (sources + monoTurn + transit).
  * @param {*[]} ranked Ranked signals.
+ * @param {InboundCtx} inboundCtx Per-turn destination-inbound cap context.
  * @returns {Migration[]} The applied records.
  */
-function processDepartures(state, ranked) {
+function processDepartures(state, ranked, inboundCtx) {
   const ownerPop = ownerPopulations(ranked);
   const ceilings = civMoveCeilings(ranked);
   /** @type {Record<number, {voluntary:number, crisis:number}>} */
@@ -705,7 +773,7 @@ function processDepartures(state, ranked) {
   for (const src of ranked) {
     const budgets = remainingBudgets(src.owner, ceilings, used);
     if (budgets.voluntary <= 0 && budgets.crisis <= 0) continue; // this civ's budget spent; others run
-    for (const m of processSource(src, ranked, state, ownerPop, budgets)) {
+    for (const m of processSource(src, ranked, state, ownerPop, budgets, inboundCtx)) {
       out.push(m);
       tallyUse(used, src.owner, m.cause);
     }

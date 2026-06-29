@@ -36,6 +36,8 @@
         <Replace Tag="LOC_EMIG_T_MAXMOVES_D" Language="zh_Hans_CN"><Text>每次处理中全世界可移动的人口点数量上限。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXLOSS" Language="zh_Hans_CN"><Text>节奏: 每座城市每回合最大迁出数</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXLOSS_D" Language="zh_Hans_CN"><Text>单个定居点在一回合内因迁徙（战争难民加上普通移动）所能损失的最大人口点数——直接限制围城期间城市人口的急剧流失。死亡是另一独立通道，不计入其中。强度预设会设定此值（低 1 / 中 2 / 高 4）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXGAIN" Language="zh_Hans_CN"><Text>节奏: 每座城市每回合最大迁入数</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXGAIN_D" Language="zh_Hans_CN"><Text>单个定居点在一回合内因迁徙（新来者加上已完成旅途者）所能获得的最大人口点数——这是对称的上限，防止单座繁荣新城一次性吸纳数十名移民。强度预设会设定此值（低 2 / 中 4 / 高 8）。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL" Language="zh_Hans_CN"><Text>节奏: 处理间隔（回合）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL_D" Language="zh_Hans_CN"><Text>每 N 个你的回合执行一次移居处理。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CROSSCIV" Language="zh_Hans_CN"><Text>范围: 允许文明之间迁徙</Text></Replace>
@@ -223,11 +225,11 @@
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="zh_Hans_CN"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="zh_Hans_CN"><Text>移民为世界带来鲜活的人口流动。每回合，市民都会离开不幸、困苦或饱受战乱的聚落，迁往更幸福、更繁荣之处，既在你的文明内部，也越过边界前往其他文明。[n][n]人们何去何从，由一套繁荣度模型决定，它权衡每座城市的幸福度、产出与处境，并以距离加以塑造，使迁徙保持区域性。接纳移民并非无偿：在新来者落脚安顿之际，文明要支付融入成本。[n][n]本系统更深层的行为大多，躲避侵略者的难民、边界政策、灾害以及人口的泄流口，皆为可选，可在选项、模组、移民中启用。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_FAQ_TITLE" Language="zh_Hans_CN"><Text>常见问题</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_FAQ_BODY" Language="zh_Hans_CN"><Text>哪些因素会引发迁徙、哪些不会（大多可在「选项」的「模组、迁徙」中调整）。完整版见仪表板的「指南」标签页。[n][n]✓ 你的文明和其他主要文明都会迁移人口，无论是否已相遇。[n]✗ 城邦、小型文明和独立势力既不输出也不接收人口。[n]✓ 不满、低产出、战争破坏、围城（包括城邦或独立势力的攻击）、劫掠、饥荒、瘟疫、灾害和过度拥挤都会驱使人口离开。[n]✓ 繁荣、高幸福度、亲移民立场、开放边境以及邻近的位置会吸引他们。[n]✗ 移民不会立即抵达（距离会增加延迟），也并非免费（有临时融入成本）；仅靠战争无法在未占领的情况下使城市人口归零。[n][n]迁徙不会改变 AI 决策，也不会替换任何基础游戏文件。未相遇的文明会被模拟，但在你选择显示之前保持隐藏。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_FAQ_BODY" Language="zh_Hans_CN"><Text>哪些因素会引发迁徙、哪些不会（大多可在「选项」的「模组、迁徙」中调整）。完整版见仪表板的「指南」标签页。[n][n]✓ 你的文明和其他主要文明都会迁移人口，无论是否已相遇。[n]✗ 城邦、小型文明和独立势力既不输出也不接收人口。[n]✓ 不满、低产出、战争破坏、围城（包括城邦或独立势力的攻击）、劫掠、饥荒、瘟疫、灾害和过度拥挤都会驱使人口离开。[n]✓ 繁荣、高幸福度、亲移民立场、开放边境以及邻近的位置会吸引他们。[n]✗ 移民不会立即抵达（距离会增加延迟），也并非免费（有临时融入成本）；仅靠战争无法在未占领的情况下使城市人口归零。[n]✓ 一个定居点每回合所能增减的人口数量有限，每座城市每个方向各有一个上限，并随强度预设缩放，因此围城不会在一回合内使城市人口归零，繁荣新城也不会一次性吞下数十人；超出上限的抵达者会在途中等待，而无处落脚的难民则会在途中丧生。[n][n]迁徙不会改变 AI 决策，也不会替换任何基础游戏文件。未相遇的文明会被模拟，但在你选择显示之前保持隐藏。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_TITLE" Language="zh_Hans_CN"><Text>繁荣与迁徙</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_BODY" Language="zh_Hans_CN"><Text>每个聚落都依据其人均产出，尤其是其净幸福度，获得繁荣度评分。即便在和平时期，不幸的城市也会持续将人口流失给更幸福、更富庶的城市，而针对规模本身的一点小惩罚，则防止繁荣的城市沦为无底的磁石。[n][n]人们偏好就近的去处，因此迁徙是在区域内向外扩散，而非跨越地图跳跃。战争、围城、饥荒、动乱与灾害都会大幅压低城市的繁荣度，使其化为难民之源。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_TITLE" Language="zh_Hans_CN"><Text>战争与难民</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_BODY" Language="zh_Hans_CN"><Text>唯有当城市边界之内确有暴力发生时，其区域受损，或其领地遭到劫掠，城市才会涌出战争难民，而非仅因其帝国处于战争状态。围城拖得越久，被赶走的人就越多，但仅凭战争永远无法将一座城市彻底清空：只要未被真正占领，总有一部分人坚守不去。[n][n]难民朝着远离最近侵略者的方向逃亡。启用躲避侵略者后，他们还会优先选择本国文明，其次是任何中立势力，并将攻击过自己的文明视作最后的退路。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_BODY" Language="zh_Hans_CN"><Text>唯有当城市边界之内确有暴力发生时，其区域受损，或其领地遭到劫掠，城市才会涌出战争难民，而非仅因其帝国处于战争状态。围城拖得越久，被赶走的人就越多，但仅凭战争永远无法将一座城市彻底清空：只要未被真正占领，总有一部分人坚守不去。[n][n]难民朝着远离最近侵略者的方向逃亡。启用躲避侵略者后，他们还会优先选择本国文明，其次是任何中立势力，并将攻击过自己的文明视作最后的退路。[n][n]重新安置既非即时，亦无保证。移民会在途中花费数个回合，而一座城市在单个回合内能接纳的新来者数量有限，正如受难的城市每回合所能流失的人口也有限，因此超出该上限的抵达者只得等待并再行尝试，等待最久者优先。倘若他们所奔赴的避难之地在途中被攻占或被夷平，或始终人满为患而无法接纳他们，这些难民便会在途中丧生，被计入损失，而非新的抵达者。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_TITLE" Language="zh_Hans_CN"><Text>融入与成长的代价</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_BODY" Language="zh_Hans_CN"><Text>吸纳移民并非无偿。每位新来者都会给接纳的文明增添一份融入负荷，文明须为此逐回合付出代价，以金币与幸福度计，直到该负荷在融入期内消退。不断吸引人口的文明，便要不断付出。[n][n]此外，拥挤效应会使一个忙于安顿新来者的文明，对更多移民而言成为吸引力更低的去处，这是一道单凭财富无法消除的闸。二者合力，防止任何单一文明沦为吸引天下人口的主导性迁移磁石。[n][n]融入还有一个更缓慢的文化层面，与上述金币与幸福度的成本相区别。历经许多回合，新来者会在每个定居点的族群构成中逐渐采纳接纳方文明的身份认同，因此一座和平而安定的城市会渐渐吸纳一个离散族群。与某离散族群故土的战争，或城市中的动荡，会阻滞这一融入，留下一个保持独立的社群，在民族构成镜头上保留其自身的颜色。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_BORDERS_TITLE" Language="zh_Hans_CN"><Text>边界与影响力</Text></Replace>
