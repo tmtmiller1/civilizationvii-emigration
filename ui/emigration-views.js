@@ -632,17 +632,44 @@ function appendOpt(parent, child) {
 }
 
 /**
+ * Open the Emigration advanced settings editor (best-effort).
+ */
+function openAdvancedOptions() {
+  import("/core/ui/context-manager/context-manager.js")
+    .then((m) => {
+      try {
+        const cm = /** @type {*} */ (m);
+        const ContextManager = cm.default || cm.ContextManager || cm;
+        if (ContextManager && typeof ContextManager.push === "function") {
+          ContextManager.push("emigration-advanced-editor", { singleton: true, createMouseGuard: true });
+        }
+      } catch (_) {
+        /* ignore */
+      }
+    })
+    .catch(() => {
+      /* ignore */
+    });
+}
+
+/**
  * Build the on-page control row: the Numbers (Scaled/Civ) group. Returns null when Numbers doesn't
  * apply (the Network lens row owns "Units:", or the host's group pills drive it) so no empty row shows.
  * @param {boolean} showNumbers Whether to include the Numbers group.
  * @param {()=>void} rebuild Re-gather + re-render after a change.
  * @returns {HTMLElement|null} The control row, or null when there's nothing to show.
  */
-function buildControlRow(showNumbers, rebuild) {
+function buildControlRow(showNumbers, rebuild, includeOptionsButton = false) {
   // The only on-page control is Numbers (Scaled/Civ), a per-view choice. Unmet-civ visibility is a
   // persistent setting and lives in Options ▸ Mods ▸ Emigration, not as an on-page filter.
-  if (!showNumbers) return null;
+  if (!showNumbers && !includeOptionsButton) return null;
   const row = el("div", "emig-ctrl-row");
+  if (includeOptionsButton) {
+    row.appendChild(filterGroup("Options:", [
+      { key: "advanced", label: "Advanced" }
+    ], "", () => openAdvancedOptions()));
+  }
+  if (!showNumbers) return row;
   row.appendChild(filterGroup("Numbers:", [
     { key: NumberMode.HISTORICAL, label: NUM_LABEL[NumberMode.HISTORICAL] },
     { key: NumberMode.CIV, label: NUM_LABEL[NumberMode.CIV] }
@@ -679,7 +706,8 @@ export function renderDashboardTabbed(target, model, rebuild) {
     const show = (/** @type {number} */ i) => {
       active = i;
       ctrlHost.innerHTML = "";
-      appendOpt(ctrlHost, buildControlRow(wantsUnitsToggle(sections[i]), () => (rebuild ? rebuild() : show(active))));
+      appendOpt(ctrlHost,
+        buildControlRow(wantsUnitsToggle(sections[i]), () => (rebuild ? rebuild() : show(active)), true));
       body.innerHTML = "";
       renderSectionBody(body, sections[i]);
     };
@@ -745,7 +773,9 @@ function appendControlRow(wrap, opts, body, section) {
     : wrap;
   if (host !== wrap) host.innerHTML = ""; // re-populate the shared row
   if (section.kind === "guide") return;
-  appendOpt(host, buildControlRow(wantsUnitsToggle(section, opts), () => subtabRebuild(opts, body, section)));
+  appendOpt(host,
+    buildControlRow(wantsUnitsToggle(section, opts), () => subtabRebuild(opts, body, section),
+      !!(opts && opts.includeOptionsButton)));
 }
 
 /**
@@ -757,10 +787,12 @@ function appendControlRow(wrap, opts, body, section) {
  * @param {HTMLElement} target The container element.
  * @param {*} model The view-model ({sections, sample}).
  * @param {string} kind The section kind to show (network/flowmap/ledger/pies/cityflows/stances).
- * @param {{hideUnitsToggle?:boolean, rebuild?:()=>void, controlsHost?:HTMLElement}} [opts]
+ * @param {{hideUnitsToggle?:boolean, rebuild?:()=>void, controlsHost?:HTMLElement,
+ *   includeOptionsButton?:boolean}} [opts]
  *   `hideUnitsToggle` suppresses the Numbers group (when the host group pills drive units); `rebuild`
  *   re-gathers + re-renders (the visibility change re-filters the civ list baked into the model);
- *   `controlsHost` is the host's shared controls area (next to Options) the control row renders into.
+ *   `controlsHost` is the host's shared controls area (next to Options) the control row renders into;
+ *   `includeOptionsButton` adds a local Advanced-settings entry (used by the standalone screen).
  */
 export function renderDashboardSubtab(target, model, kind, opts) {
   try {
