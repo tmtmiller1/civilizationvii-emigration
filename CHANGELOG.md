@@ -5,7 +5,58 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
-## [Unreleased]
+## [1.6.7] - 2026-06-28
+
+Migration plumbing hardened and the advanced tuning editor rebuilt for controller
+support. Border policy now resolves consistently — slotting both Open and Closed Borders
+cancels out — lagged arrivals wait their turn fairly and perish only as a last resort,
+and per-civ border reads are cached for the heavy pull pass. Plus runtime memento tuning
+and new regression harnesses carried over from the balance-audit work.
+
+### Added
+- **Full leader/civ ability matrix generation now includes mementos.**
+  The matrix generator (`scripts/generate-leader-civ-matrix.mjs`) now parses base + DLC
+  memento data, links mementos to leaders (including legend-path specific entries), and
+  emits memento channel/risk overlays into the generated JSON/Markdown artifacts. This
+  extends the balance audit surface beyond leader/civ traits to include memento effects.
+- **Regression harness for complete tuning decision coverage.**
+  Added `tests/civ-tuning-coverage.mjs` (+ `npm run test:civ-tuning-coverage`) to enforce
+  that every rostered leader/civ from game data has an explicit tuning decision (outlier
+  or neutral), with known alias allowances guarded in one place.
+- **Runtime memento tuning now composes into leader/civ tuning.**
+  `ui/emigration-civ-tuning.js` now reads equipped mementos via
+  `Online.Metaprogression.getEquippedMementos(pid)`, applies bounded memento deltas to the
+  tuning profile, and keeps explicit outlier/neutral memento decisions under coverage.
+- **Hypotheticals sweep harness for hidden anomalies.**
+  Added `tests/hypotheticals.mjs` (+ `npm run test:hypotheticals`) with Ulema-like
+  specialist/science stress cases, memento-stack pressure cases, and invariants for no
+  NaN migration records and strict per-city loss/gain cap adherence.
+
+### Changed
+- **Advanced tuning editor rebuilt for full controller support.**
+  `ui/options/emigration-advanced-editor.js` now uses a native `fxs-textbox` search box,
+  `fxs-button` / `fxs-activatable` controls for reset-all and per-row reset, collapsible
+  groups, a modified-value dot, and a two-column grid. Editing any value switches the
+  active preset to Custom, and the panel re-syncs its displayed values on focus.
+- **Open and Closed Borders now cancel out instead of stacking.**
+  `ui/emigration-borders.js` resolves a civ that has BOTH an Open and a Closed Borders
+  card slotted to a neutral stance (openness ×1, no retention, stance "none") rather than
+  multiplying the two opposing effects together. Border/attraction policy reads are now
+  memoized per pass (`resetBorderCache()` runs alongside `resetPolityCache()`), so each
+  civ's slotted cards are read once per pass instead of once per candidate on the
+  O(cities²) pull hot path; the tradition families and attraction yields are a single
+  data-driven registry.
+
+### Fixed
+- **Lagged arrivals now wait their turn fairly and perish only as a last resort.**
+  `ui/emigration-arrivals.js` defers an arrival whose destination is at its inbound cap
+  (or momentarily can't accept it) and retries for up to `MAX_DEFERS` turns, with the
+  longest-waiting arrivals landing first so a saturated destination never starves old
+  arrivals behind fresh ones. A refugee that still can't find room then perishes (a death)
+  rather than force-landing past the cap or lingering in transit forever; a destination
+  razed or captured en route still charges a death immediately. This keeps Feature 1b
+  transit queues stable during destination spikes and the `maxGainPerCityPerTurn` bound
+  strict.
 
 ## [1.6.6] - 2026-06-28
 

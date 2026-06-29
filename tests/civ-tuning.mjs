@@ -4,10 +4,16 @@ import assert from "node:assert/strict";
 // GameInfo; here the lookup treats the type value AS the string for simplicity.
 const LEADER = {};
 const CIV = {};
+const MEMENTOS = {};
 globalThis.Players = { get: (pid) => ({ leaderType: LEADER[pid], civilizationType: CIV[pid] }) };
 globalThis.GameInfo = {
   Leaders: { lookup: (lt) => (lt ? { LeaderType: lt } : null) },
   Civilizations: { lookup: (ct) => (ct ? { CivilizationType: ct } : null) }
+};
+globalThis.Online = {
+  Metaprogression: {
+    getEquippedMementos: (pid) => MEMENTOS[pid] || []
+  }
 };
 
 const { civTuning } = await import("/emigration/ui/emigration-civ-tuning.js");
@@ -121,6 +127,46 @@ function testFlattenZeroIsNeutral() {
   CONFIG.civTuningStrength = 1;
 }
 
+function testMementoEntryApplies() {
+  CONFIG.civTuningEnabled = true;
+  MEMENTOS[16] = [{ mementoTypeId: "MEMENTO_BENJAMIN_FRANKLIN_GLASS_ARMONICA" }];
+  const t = civTuning(16);
+  assert.equal(t.happinessPull, 0.9);
+}
+
+function testMementoAndLeaderCompose() {
+  CONFIG.civTuningEnabled = true;
+  LEADER[17] = "LEADER_ISABELLA"; // happinessPull 0.85, assimilationEase 1.2
+  MEMENTOS[17] = [{ mementoTypeId: "MEMENTO_FOUNDATION_LYDIAN_LION" }]; // assimilationEase 1.1
+  const t = civTuning(17);
+  assert.equal(t.happinessPull, 0.85);
+  assert.equal(t.assimilationEase, 1.32);
+}
+
+function testMementoParserAcceptsDifferentShapes() {
+  CONFIG.civTuningEnabled = true;
+  MEMENTOS[18] = [
+    { mementoType: "MEMENTO_LAFAYETTE_LETTER_ADRIENNE" },
+    { value: "MEMENTO_FOUNDATION_TRAVELS_MARCO_POLO" }
+  ];
+  const t = civTuning(18);
+  assert.equal(t.happinessPull, 0.93);
+  assert.equal(t.assimilationEase, 1.08);
+}
+
+function testMementoStackIsBounded() {
+  CONFIG.civTuningEnabled = true;
+  MEMENTOS[19] = [
+    { id: "MEMENTO_FOUNDATION_LYDIAN_LION" },
+    { id: "MEMENTO_FOUNDATION_TRAVELS_MARCO_POLO" },
+    { id: "MEMENTO_AMINA_KWALKWALI" },
+    { id: "MEMENTO_XERXES_KING_GOLDEN_SCEPTRE" },
+    { id: "MEMENTO_XERXES_KING_LOTUS_BLOSSOM" }
+  ];
+  const t = civTuning(19);
+  assert.ok(t.assimilationEase <= 1.35);
+}
+
 CONFIG.civTuningStrength = 1; // exact-value tests below assume the full table
 testDisabledIsNeutral();
 testLeaderEntryApplies();
@@ -132,6 +178,10 @@ testUnknownIsNeutral();
 testFlattenCompresses();
 testFlattenOvercrowd();
 testFlattenZeroIsNeutral();
+testMementoEntryApplies();
+testMementoAndLeaderCompose();
+testMementoParserAcceptsDifferentShapes();
+testMementoStackIsBounded();
 CONFIG.civTuningEnabled = false;
 
 console.log("civ-tuning harness passed");

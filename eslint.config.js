@@ -6,6 +6,7 @@ const ENGINE_GLOBALS = {
   // Civ7 true globals used without importing.
   Game: "readonly",
   GameContext: "readonly",
+  Online: "readonly",
   Players: "readonly",
   GameInfo: "readonly",
   GameplayMap: "readonly",

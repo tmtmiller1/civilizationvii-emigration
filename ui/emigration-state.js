@@ -144,6 +144,8 @@ function normalizeTransitList(transit) {
  * @property {boolean} infected Whether the source was infected (plague carried on arrival).
  * @property {string} srcName Source city name (arrival flavour).
  * @property {string} destName Destination city name (arrival flavour).
+ * @property {number} [defers] Times this arrival has been deferred (destination at its inbound cap);
+ *   force-landed once it exceeds MAX_DEFERS so it's never stuck in transit forever.
  */
 
 /**

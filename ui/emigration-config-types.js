@@ -14,6 +14,8 @@
  * @property {number} movesPerCity Per-civ move-ceiling bonus per settlement.
  * @property {number} movesPerSiege Per-civ move-ceiling bonus per city in war/disaster crisis.
  * @property {number} maxLossPerCityPerTurn Hard per-city cap on migration points lost in one turn (0 = off).
+ * @property {number} maxGainPerCityPerTurn Hard per-city cap on migration points gained in one turn
+ *   (including same-turn departures + due transit arrivals; 0 = off).
  * @property {number} emigrationBar Accumulated pressure to move one citizen.
  * @property {number} deltaExponent Diminishing scaling on the prosperity delta.
  * @property {boolean} splitTracksEnabled Evaluate crisis + voluntary as two concurrent per-source tracks.
