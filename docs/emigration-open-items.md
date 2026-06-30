@@ -11,6 +11,12 @@ gate.
 > trigger) are in [wont-fix-with-justifications.md](wont-fix-with-justifications.md) — keep that list
 > current too. This file is for work that's still open or conditionally on the table.
 
+> **Released in v1.7.0 (2026-06-30).** Everything marked **✓ Completed** below shipped in
+> [v1.7.0](../CHANGELOG.md): §2 (redundant exports), §4 (reset-caches-on-game-boot convention), and §7
+> (`compositionForCity` self-guard) are fully closed; §3 and §6 had their actionable items resolved and
+> now carry only trigger-gated leftovers. What remains genuinely open: §3 items 1–4, §5 (in-game manual
+> QA), and the conditional cleanups in §6.
+
 > Project invariants for any work below: never touch the population-scaling constants (pinned to
 > Demographics by `tests/scaling-demographics-parity.mjs`), never change the network/flow sim
 > coordinates (`WX=1120`, `WY=560`), keep ESLint complexity ≤ 10, gate new behavior behind a `CONFIG`
@@ -34,7 +40,7 @@ monoTurn-jump guard). Add new deliberate non-changes there, not here.
 
 ---
 
-## 2. Redundant `export` keywords — ✓ Completed 2026-06-30
+## 2. Redundant `export` keywords — ✓ Completed 2026-06-30 (shipped v1.7.0)
 
 Worked through case-by-case (not a blind sweep). Each of the 14 symbols was grep-verified to be
 referenced **only within its own file** — no cross-file imports, no test imports, no dynamic-import
@@ -54,7 +60,7 @@ renamed**, originates as raw returns in `migrationCause()`
 ([pull.js:47-50](../ui/emigration-pull.js#L47-L50)), and every getter falls back to `other` / `""` — which
 is why most of these are YAGNI today.
 
-> **Worked through 2026-06-30.** The two-colour-map drift item was resolved by deciding intent (the
+> **Worked through 2026-06-30 (shipped v1.7.0).** The two-colour-map drift item was resolved by deciding intent (the
 > `ACCENTS` toast/log accents and `CAUSE_PALETTE` network-dot fills are *deliberately* distinct — the
 > latter is tuned to harmonize with `CIV_PALETTE`) and adding cross-referencing comments in both files
 > rather than consolidating. Three cosmetic-only items with no "revisit if" trigger (split `LABELS`,
@@ -77,11 +83,11 @@ is why most of these are YAGNI today.
 
 ---
 
-## 4. Latent robustness — mod-wide "reset persisted caches on game boot" — ✓ Completed 2026-06-30
+## 4. Latent robustness — mod-wide "reset persisted caches on game boot" — ✓ Completed 2026-06-30 (shipped v1.7.0)
 
 Implemented as the **shared convention** the item called for (not a one-off). New module
 [emigration-cache-reset.js](../ui/emigration-cache-reset.js) holds a per-isolate registry + a game-id
-(`Configuration.getGame().gameSeed`) guard; all 13 persisted-cache modules (`notifications`, `dividend`,
+(`Configuration.getGame().gameSeed`) guard; all 12 persisted-cache modules (`notifications`, `dividend`,
 `dilemma`, `migration-stats`, `chronicle`, `composition`, `effects`, `violence`, `feedback`, `disasters`,
 `return`, `war`) register a resetter and call `resetCachesOnNewGame()` at the top of their lazy loader.
 The first such call after a `gameSeed` change nulls every registered cache in that isolate, so each
@@ -125,7 +131,7 @@ All parked with reasoning in the now-deleted per-module backlogs; only the genui
 conditional ones are kept here (the rest defended states the producer makes unreachable — don't
 re-litigate).
 
-> **Worked through 2026-06-30.** The one genuinely-actionable item shipped: the chronicle-view
+> **Worked through 2026-06-30 (shipped v1.7.0).** The one genuinely-actionable item shipped: the chronicle-view
 > narrow-panel UX fix (`.emig-chr-head{flex-wrap:wrap}`) is in
 > [emigration-chronicle-view.js](../ui/emigration-chronicle-view.js#L27) — a long title now lets the
 > kind label wrap to its own line instead of crowding it. One cosmetic (rebuild the `CSS` string as a
@@ -161,7 +167,7 @@ re-litigate).
   stable, additive set hand-typed across a few modules. Same call: centralizing adds computed-key churn
   for marginal safety. *Revisit if* a third consumer appears or a drift bug actually bites.
 
-## 7. Latent guard note — `compositionForCity` — ✓ Completed 2026-06-30
+## 7. Latent guard note — `compositionForCity` — ✓ Completed 2026-06-30 (shipped v1.7.0)
 
 `compositionForCity` ([emigration-composition.js](../ui/emigration-composition.js#L513)) was the one
 cross-module callee reached inside broad `catch` blocks that wasn't itself fully try-guarded. The note
