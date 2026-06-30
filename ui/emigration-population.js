@@ -208,9 +208,15 @@ function baseScaledPopulation(raw, _turn, ageType, ageProgressPct) {
  * @returns {number} Marginal people (>= 0).
  */
 export function marginalPeople(pop, turn, seedKey, signal) {
-  return Math.max(0,
-    scaleCityPopulation(pop, turn, undefined, undefined, seedKey, signal)
-    - scaleCityPopulation(pop - 1, turn, undefined, undefined, seedKey, signal));
+  const delta = scaleCityPopulation(pop, turn, undefined, undefined, seedKey, signal)
+    - scaleCityPopulation(pop - 1, turn, undefined, undefined, seedKey, signal);
+  if (delta >= 1) return delta;
+  // At the era ceiling the saturated curve flattens, so consecutive totals can differ by less than a
+  // whole person and a real one-point move would read as "0 people" (C4). A population point that
+  // actually emigrated represents at least one person, so floor a real point at 1. (pop < 1 has no
+  // point to move → 0.) This only engages in the sub-1 underflow regime, which the Demographics
+  // parity matrix never reaches, so the pinned marginal values (all >> 1) are unchanged.
+  return pop >= 1 ? 1 : 0;
 }
 
 /**

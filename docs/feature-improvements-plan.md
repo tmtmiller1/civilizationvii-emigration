@@ -34,12 +34,13 @@ Conventions (match the rest of the mod):
     `civs` is sorted by `share` descending. This is the single source of truth for "who lives here".
   - `compositionForOwner(pid)` (**L528**) → same shape, empire-wide.
   - `recordCompositionPass(signals, migs)` (**L476**) — per-pass update; calls `integratePass()`.
-  - `integrateCity(e, owner, rateFor)` (**L437**) / `integratePass(s, work, signals)` (**L454**) — the
+  - `integrateCity(e, owner, rateFor)` (**L410**) / `integratePass(s, work, signals)` (**L454**) — the
     **integration-over-time** drift of non-owner origins toward the host, rate from
     `CONFIG.integrationRate` / `integrationUnrestRate` / `integrationWarRate`.
-  - `load()` (**L144**) with `_loadedTurn` (**L53**) — the per-turn cache that the v1.6.x "refresh each
-    turn" fix relies on. `STATE_KEY = "EmigrationEthnos_v1"` (**L37**); `CityComposition` typedef
-    `{ owner, byCiv: Record<string,number>, total, name, seenTurn }` (**L32**).
+  - `load()` (**L150**) with `_loadedTurn` (**L53**) — the per-turn cache that the v1.6.x "refresh each
+    turn" fix relies on. `STATE_KEY = "EmigrationEthnos_v1"` (**L30**); `CityComposition` typedef
+    `{ owner, byCiv: Record<string,number>, total, name, seenTurn }` (**L33**). Enumerate all cities via
+    `Object.keys(load().cities)` (**L533**).
 - **Lens paint — [emigration-ethnicity-lens.js](../ui/emigration-ethnicity-lens.js)**
   - `tilePaints()` (**L190**) → `[{ x, y, fill: {x,y,z,w} }]` (float4 RGBA); calls
     `compositionForCity()` per settlement (**L203**).
@@ -62,7 +63,7 @@ Conventions (match the rest of the mod):
     topDestinationName, composition: { total, parts: [{ name, share }] } | null, ownerNet, ownerIn,
     ownerOut, ... }`.
 - **Render — [emigration-city-readout.js](../ui/emigration-city-readout.js)**
-  - `readoutModel()` (**L168**), `originsLine(comp)` (**L127**), corner placement via
+  - `readoutModel()` (**L89**), `originsLine(comp)` (**L61**), `renderPanel()` (**L167**), corner placement via
     `CONFIG.cityReadoutCorner`.
 
 ### 0.3 Network / flow visualization
@@ -89,17 +90,19 @@ Conventions (match the rest of the mod):
 
 ### 0.4 Chronicle / narrative / return / effects / causes
 
-- **Chronicle — [emigration-chronicle.js](../ui/emigration-chronicle.js)**: `chronicle(entry)` (**L147**),
-  `chronicled(key)` (**L120**), `chronicleLog(limit)` (**L209**). `ChronicleEntry { turn, kind:
-  "exodus"|"founding"|"return", title, body, civ?, people?, cause?, dedupeKey? }` (**L17**);
-  `STATE_KEY = "EmigrationChronicle_v1"`, `MAX_ENTRIES = 80` (**L13**). Mirrors to Notifications via
-  `mirrorToNotifications()` (**L133**).
+- **Chronicle — [emigration-chronicle.js](../ui/emigration-chronicle.js)**: `chronicle(entry)` (**L153**),
+  `chronicled(key)` (**L120**), `chronicleLog(limit)` (**L215**). `ChronicleEntry { turn, kind:
+  "exodus"|"founding"|"return", title, body, civ?, people?, cause?, dedupeKey? }` (**L17–26**);
+  `STATE_KEY = "EmigrationChronicle_v1"`, `MAX_ENTRIES = 80` (**L14**). Mirrors to Notifications via
+  `mirrorToNotifications()` (**L131**). View kind→label map `KIND_LABEL`
+  ([emigration-chronicle-view.js](../ui/emigration-chronicle-view.js#L52)).
 - **Narrative — [emigration-narrative.js](../ui/emigration-narrative.js)**: `exodusLine(e)` (**L158**),
   `foundingLine(e)` (**L177**), `returnLine(e)` (**L202**), `chronicleTitle(e)` (**L224**),
   `dilemmaPrompt(e)` (**L253**). All deterministic via `pick(list, seed, salt)` (FNV-1a, **L23–31**).
 - **Diaspora chronicling — [emigration-diaspora.js](../ui/emigration-diaspora.js)**: `recordChroniclePass()`
-  (**L169**), `detectFoundingForCity(city)` (**L143**), `leadForeignOrigin(comp)` (**L131**);
-  `DIASPORA_MIN = 0.15` (**L32**), `DIASPORA_STEP = 0.15` (**L33**).
+  (**L169**), `detectFoundingForCity(city)` (**L127**), `leadForeignOrigin(comp)` (**L113**);
+  `DIASPORA_MIN = 0.15` (**L33**), `DIASPORA_STEP = 0.15` (**L34**); founding `dedupeKey =
+  "founding:"+city+"|"+civ+"|"+tier` (**L136**).
 - **Return migration — [emigration-return.js](../ui/emigration-return.js)**: `planReturns(signals)` (**L322**),
   `planOneReturn(host, ctx)` (**L264**), `returnAllowed()` (**L207**), `prosperingOwners(signals)`
   (**L126**), `eligibleDiaspora(comp)` (**L161**), `chronicleReturn()` (**L220**). `STATE_KEY =
@@ -110,12 +113,16 @@ Conventions (match the rest of the mod):
   "EmigrationAssim_v1"`. (Note: the changelog renames "assimilation" → "integration" in player text;
   internal identifiers stay.)
 - **Causes — [emigration-causes.js](../ui/emigration-causes.js)**: `MigrationCause =
-  "unhappiness"|"prosperity"|"war"|"disaster"|"conquest"|"attrition"|"return"` (**L23**); refugee set
-  `{war,disaster,conquest}` (**L35**); `causeLabel` (**L106**), `causeHint` (**L153**), `isRefugeeCause`
-  (**L97**).
+  "unhappiness"|"prosperity"|"war"|"disaster"|"conquest"|"attrition"|"return"` (**L23**); `REFUGEE_CAUSES`
+  `{war,disaster,conquest}` (**L39**); `causeLabel` (**L106**), `causeHint` (**L153**), `isRefugeeCause`
+  (**L97**); per-cause breakdown string `netDrivers(outByCause, inByCause)` (**L193**).
 - **Records — [emigration-migration-records.js](../ui/emigration-migration-records.js)**: `moveRecord()`
-  (**L45**), `departRecord()` (**L68**), `arriveRecord()` (**L89**). Record carries `originCiv`,
-  `destOwner`, `cause`, `destPaidCost`, `people`, `phase`.
+  (**L64**), `departRecord()` (**L93**), `arriveRecord()` (**L117**). Record carries `originCiv`,
+  `destOwner`, `cause`, `eventKey`, `destPaidCost`, `people`, `phase`. **Records are not persisted here** —
+  they flow into [emigration-migration-stats.js](../ui/emigration-migration-stats.js) `recordMigrations()`
+  (**L752**), which keeps the session-local `recentEventsFor(pid, limit)` ring (**L822**, `RECENT_CAP = 50`
+  **L31**), cumulative `netCumFor`/`grossInCumFor`/`grossOutCumFor` (**L979–993**), and the per-corridor
+  flow matrix `migrationFlows()` (**L566**) / `foldFlow()` key `"srcCiv>destCiv>srcCity>destCity"` (**L313**).
 
 ### 0.5 Per-turn loop (where new systems hook)
 
@@ -130,10 +137,11 @@ Conventions (match the rest of the mod):
 ### 0.6 Border policy / immigration stance (relevant to §12 — read this for the user's question)
 
 - **Stance VM — [emigration-borders.js](../ui/emigration-borders.js)**: reads slotted **native Traditions**
-  via `Culture.isTraditionActive`. Exports `immigrationOpenness(pid)` (**L85**), `emigrationRetention(pid)`
-  (**L103**), `activeAttractions(pid)` (**L115**), `hasAsylum(pid)` (**L129**), `borderStance(pid)`
-  (**L139** → `"pro"|"anti"|"none"`). Tradition type arrays: `OPEN_TYPES`, `CLOSED_TYPES`, `TALENT_TYPES`,
-  `CULTPULL_TYPES`, `TRADEPULL_TYPES`, `ASYLUM_TYPES` (**L13–35**).
+  via `Culture.isTraditionActive`. Exports `immigrationOpenness(pid)` (**L137**), `emigrationRetention(pid)`
+  (**L157**), `activeAttractions(pid)` (**L171**), `hasAsylum(pid)` (**L180**), `borderStance(pid)`
+  (**L191** → `"pro"|"anti"|"none"`); per-pass cached `policyState(pid)` (**L115**). Tradition types are
+  consolidated in the frozen `POLICY_TYPES` registry (**L21**) `{ open, closed, talent, cultpull, tradepull,
+  asylum }` + the `ATTRACTIONS` table (**L42**).
 - **Consumed in pull — [emigration-pull.js](../ui/emigration-pull.js)**: imports those three at **L16**;
   `permeability(src, dest)` (**L93**) multiplies `opennessFor(dest)` (**L~180**) × `retentionFor(src)`
   (**L~192**) × deal/alliance/war factors, clamped to `[permeFloor, permeCeil]` in `adjustedPull()`
@@ -715,3 +723,631 @@ more than one dimension, with the mix depending on government/age.
 
 Each item is independently shippable behind its flag, so they can be released incrementally rather than
 as one large version.
+
+---
+
+## 15. Migration Intelligence Update — readability & explainability features
+
+The features above (A–K, §12) mostly add *new simulation* and *new visuals*. The community pattern for
+Civ VII mods, though, rewards **readability and explainability** first: tooltips that expose hidden math,
+lenses, policy-yield previews, "why is this happening?" surfaces, and screenshot-friendly rankings. This
+section specs a batch (**Features L–Z**) that turns Emigration from a *historical record* into a
+*migration-intelligence layer*: it explains **why** people moved, **what** the player can do, and **who**
+the diasporas are — almost entirely **read-only over data the sim already produces**, so the balance risk
+is low and most of these can default **on**.
+
+All of §13 (cross-cutting: config/tunables/modinfo/localization/tests/lint) applies verbatim to every
+feature here. New player-facing visual toggles join a new **`readout`** tunable group (alongside the
+`visuals` group proposed in §13.1). Where a feature is genuinely off-by-default (it changes gameplay or is
+a strong visual), that is called out explicitly.
+
+> Anchors below are verified against the current tree, but the codebase moves: treat the **function name**
+> as source of truth and the line as a hint. Re-grep before editing.
+
+### 15.0 Shared substrate (build these once; L/M/N/P all consume them)
+
+Five of these features ("why did they leave / go there", forecast, advisor, policy preview) all need the
+same two primitives. Build them **once** as pure modules so each feature is thin formatting on top.
+
+#### 15.0a `emigration-explain.js` — decompose push & pull into labeled contributions *(new file)*
+
+The single source of "why". Two pure builders, both deterministic, both read-only:
+
+- **Pull decomposition.** `explainPull(src, dest, ctx) → [{ key, label, delta, kind: "pull"|"push" }]`.
+  The honest way to attribute a number that mixes additive and multiplicative terms is **leave-one-out
+  (ceteris-paribus) deltas**: re-evaluate `adjustedPull()`
+  ([emigration-pull.js](../ui/emigration-pull.js#L150)) with one factor neutralized and measure the
+  change. The factors and their anchors (already enumerated by `adjustedPull`'s body) are:
+  prosperity gradient + `tiltFor()` (**L72/L154**), `baseReluctance` (**L158**), the extra-population
+  penalty (**L159–161**), `cityStateBarrier` (**L162**), `crossCivBlock()` (**L165**), `dominanceFor()`
+  anti-snowball headwind (**L166**), `geoAdjust()` distance/flee (**L168**), `congestionFor()` (**L169**),
+  and the multiplicative `permeability()` clamp (**L93/L172**) which itself factors into
+  `opennessFor()` (**L182**) × `retentionFor()` (**L193**) × deal/alliance/war. For the **multiplicative**
+  terms (permeability/openness/retention) report the delta as "pull × N → with-this-neutral pull"; for
+  **additive** terms report the signed point delta. Return the list sorted by `|delta|` descending. Keep
+  each helper ≤ 10 complexity by giving each neutralization its own thunk in a small table
+  `[{ key, label, neutralize(ctx) }]` that `explainPull` maps over.
+- **Push decomposition.** `explainPush(signal) → [{ key, label, delta, kind: "push" }]`. The push side is
+  cheaper — it is already decomposed inside `prosperity()`/`distress()`
+  ([emigration-prosperity.js](../ui/emigration-prosperity.js#L211)/[**L200**](../ui/emigration-prosperity.js#L200))
+  as `situationalPercent()` (**L181**) summing `violencePercent()` (**L155**), `disasterPercent()`
+  (**L169**), siege/starvation/unrest/war-weariness, minus `happinessForScore()` (**L74**) and the
+  population penalty. Export those component percents (today they're folded into one number) and label
+  them with `causeLabel()`/`causeHint()` ([emigration-causes.js](../ui/emigration-causes.js#L106)/[**L153**](../ui/emigration-causes.js#L153)).
+  For the empire-wide "leaving because" mix, reuse the existing `netDrivers(outByCause, inByCause)`
+  string-builder ([emigration-causes.js](../ui/emigration-causes.js#L193)) — it already produces a
+  per-cause breakdown.
+
+**Honesty rule (carry into every consumer):** these are **contributions to a model score**, not a
+guaranteed headcount. Label the section "Why people are leaving / where they're drawn" and render the
+push/pull factors as **relative weights** (normalize `|delta|` to a percent of total `Σ|delta|`), never as
+"−42% of your population". This matches the doc's existing "do not overpromise precision" stance.
+
+**Config / tunables.** No flag of its own (it's infrastructure); consumers gate themselves.
+**Tests.** `tests/explain.mjs`: leave-one-out deltas reconstruct (additive factors sum back to the raw
+pull within ε); neutralizing permeability on a closed-border dest moves pull the right direction; a
+single-factor scenario yields one dominant row; disabled/edge inputs (null dest, zero pull) yield `[]`,
+never throw.
+
+#### 15.0b City-scoped record feed substrate (O/U/Y/W all read this)
+
+`recentEventsFor(pid, limit)` ([emigration-migration-stats.js](../ui/emigration-migration-stats.js#L822))
+already keeps a session-local ring (`RECENT_CAP = 50`, **L31**) of recent moves as
+`{ srcOwner, destOwner, people, cause }`. That is **per-owner**, not **per-city**, and lacks the turn and
+city names the feeds want. Add **one** pure getter `cityEvents(cityKey, limit)` to that module that filters
+the same ring (and, when present, the flow snapshots `migrationFlows()` **L566** / `foldFlow()` key
+`"srcCiv>destCiv>srcCity>destCity"` **L313**) to a per-city, newest-first list
+`[{ turn, kind: "in"|"out"|"diaspora"|"return", people, otherName, cause }]`. Every city-feed feature (O,
+the corridor/severity/digest features) formats this one list; do not re-derive per feature.
+
+---
+
+### Feature L — "Why did they leave / go there?" explainer tooltip *(low–medium; top pick)*
+
+**Goal.** On hover of a city, a migration arrow, or a readout number, show a compact **cause stack**:
+"Leaving because of: Unhappiness, War pressure, Closed borders nearby, Distance…" and "Drawn there by:
+Prosperity, Open borders, Existing Roman community, Alliance…", each with a relative weight. Makes the
+whole mod legible without the guide.
+
+**Current state.** All the inputs exist: `citySnapshot(cityId)`
+([emigration-city-readout-data.js](../ui/emigration-city-readout-data.js#L318)) already carries `cause`,
+`causeLabel`, `causeMix`, `distress`, `pressureToBar`, `topDestinationName`, `crossCiv`, and `composition`.
+The push/pull decomposition is exactly §15.0a. Hover hosts already exist: the lens hover panel
+([emigration-lens-hover-panel.js](../ui/emigration-lens-hover-panel.js)), the ethnicity tooltip
+([emigration-ethnicity-tooltip.js](../ui/emigration-ethnicity-tooltip.js)), and the network interaction
+tooltip ([emigration-network-interact.js](../ui/emigration-network-interact.js)).
+
+**Implementation.**
+1. **Model.** New `explainModel(cityId) → { leaving: [{label, weight}], drawnTo: [{label, weight, dest}] }`
+   in a new file [emigration-explain-view.js](../ui/emigration-explain-view.js): call `explainPush(signal)`
+   for `leaving`, and `explainPull(signal, bestDest, ctx)` (via `bestDestination()`
+   [emigration-pull.js](../ui/emigration-pull.js#L262)) for `drawnTo`. Fold the **enclave** term: if the
+   destination's `compositionForCity()`/`compositionForOwner()`
+   ([emigration-composition.js](../ui/emigration-composition.js#L510)/[**L528**](../ui/emigration-composition.js#L528))
+   has a share of the mover's origin, surface it as "Existing _ community" (this is also the §3-Feature-K
+   `enclaveAffinity` signal — reuse if K shipped).
+2. **Render.** `renderExplain(parent, model)` — two labeled groups, each a row per factor with a small
+   weight bar (the GameFace-safe `<span>`-height idiom from §5/§1, not a `<canvas>`). Reuse
+   `civDisplayColor()` ([emigration-civ-colors.js](../ui/emigration-civ-colors.js)) for the community row's
+   swatch.
+3. **Mount points.** (a) **Readout:** append the two groups under `readoutModel()`
+   ([emigration-city-readout.js](../ui/emigration-city-readout.js#L89)) when expanded. (b) **Arrow/cluster
+   hover:** add to the network tooltip in
+   [emigration-network-interact.js](../ui/emigration-network-interact.js). (c) **Lens hover:** add to
+   [emigration-lens-hover-panel.js](../ui/emigration-lens-hover-panel.js). Keep each mount thin — all three
+   call the same `renderExplain`.
+
+**Config / tunables.** `migrationExplainer: true` (config + `bool` in the new `readout` group).
+**Localization.** `LOC_EMIG_EXPLAIN_LEAVING` ("Why people are leaving"), `LOC_EMIG_EXPLAIN_DRAWN`
+("Where they're drawn"), `LOC_EMIG_EXPLAIN_COMMUNITY` ("Existing {civ} community"),
+`LOC_EMIG_EXPLAIN_FRICTION` ("Distance & friction"). Reuse `causeLabel` strings for the rest.
+**Tests.** `tests/explain-view.mjs`: model groups are non-empty for a distressed city; weights normalize
+to ~100% within each group; community row appears only when the dest hosts the origin; off flag → no rows.
+**Risk.** Low–medium — read-only; the only subtlety is **not overpromising precision** (render weights, not
+headcounts). GameFace-safe DOM (`removeChild` loop).
+
+---
+
+### Feature M — Migration forecast ("next 5 turns") *(low–medium)*
+
+**Goal.** A forward-looking line in the readout: *"Forecast: losing ~23k people over the next ~5 turns
+unless happiness or safety improves,"* or *"likely to become a destination for refugees from Persia."*
+Turns the mod from record into strategy. **Explicitly framed as a projection, not certainty.**
+
+**Current state.** Per-city net is available as `ownerNet/ownerIn/ownerOut` on the snapshot
+([emigration-city-readout-data.js](../ui/emigration-city-readout-data.js#L151)); cumulative per-owner net
+via `netCumFor()` ([emigration-migration-stats.js](../ui/emigration-migration-stats.js#L993)). `pressure`/
+`pressureToBar`/`distress` and `onCooldown`/`cooldown` are on the snapshot; the per-pass budget is
+`CONFIG.emigrationBar`. **No model change is required** — this is a conservative linear projection.
+
+**Implementation.**
+1. **Projection.** `forecastFor(snapshot, turns = CONFIG.forecastTurns) → { netPeople, direction, driver,
+   topSourceName? }` in a new file [emigration-forecast.js](../ui/emigration-forecast.js): project recent
+   per-city net (from the §15.0b feed or `ownerNet` scaled by the city's share of empire flow) forward by
+   `turns`, **damped** toward zero by `onCooldown` and by a configurable `forecastDecay` so it never reads
+   as a guarantee. `driver` is the top `explainPush` factor; for inbound forecasts, the top likely source
+   is the largest current outflow corridor toward this city (from `migrationFlows()`
+   [emigration-migration-stats.js](../ui/emigration-migration-stats.js#L566)).
+2. **Render.** One line appended in `readoutModel()` (**L89**), worded as a forecast
+   (`formatPeopleExact()` for the count, "~" prefix, "unless …" suffix from the driver's `causeHint()`).
+3. **Conservatism.** Clamp the horizon (`forecastTurns` default 5, max ~10) and the magnitude (cap at, e.g.,
+   the city's rural pool so it can't predict draining below the floor).
+
+**Config / tunables.** `cityReadoutForecast: true`, `forecastTurns` (choice `[3,5,8]`), `forecastDecay`
+(module const). `readout` group.
+**Localization.** `LOC_EMIG_FORECAST_LOSE`, `LOC_EMIG_FORECAST_GAIN`, `LOC_EMIG_FORECAST_DEST`
+("…destination for refugees from {civ}"), `LOC_EMIG_FORECAST_STABLE`.
+**Tests.** `tests/forecast.mjs`: monotonic in recent net; damped by cooldown; never projects below the
+rural floor; stable city → "stable" branch; off flag → no line.
+**Risk.** Low — but word it as a forecast and keep the cap, or players will treat it as a promise.
+
+---
+
+### Feature N — Migration advisor (actionable recommendations) *(low–medium)*
+
+**Goal.** A short advisor block tied **only to levers the player actually controls**: *"To reduce
+emigration from Ravenna: raise happiness, end nearby war pressure, or slot Open Borders. To attract
+migrants to Carthage: improve prosperity, keep Open Borders, build stability before the age transition."*
+
+**Current state.** The levers are all readable: happiness via `cityHappinessStage()`
+([emigration-polity.js](../ui/emigration-polity.js#L133)); war/violence via the push components
+(§15.0a); border stance via `borderStance()` ([emigration-borders.js](../ui/emigration-borders.js#L191))
+and `activeAttractions()` (**L171**); government via `readGovernment()` (**L188**); integration load via
+`assimLoad` on the snapshot. **The advisor must map the top push/pull factor to its controllable lever —
+not invent options.**
+
+**Implementation.**
+1. **Lever table.** `ADVISOR_LEVERS` in a new file [emigration-advisor.js](../ui/emigration-advisor.js):
+   `[{ factorKey, available(snapshot): bool, tipLoc }]` mapping each `explainPush`/`explainPull` `key` to a
+   recommendation **only if the lever is reachable** (e.g. suggest "slot Open Borders" only when the civ
+   isn't already Open and `bordersEnabled`; suggest "end the war" only when `isRefugeeCause`/violence is the
+   top push). This guard is the whole point — `available()` filters out non-options.
+2. **Builder.** `advise(cityId) → { reduceOutflow: string[], attract: string[] }`: take the top 2–3
+   `explainPush` factors → reduce-outflow tips; top 2–3 `explainPull` gaps → attract tips. Cap at 3 each.
+3. **Render.** Collapsible advisor block under the readout (or a "💡" toggle), reusing `renderExplain`'s
+   row idiom. Gate behind the same expand state as L.
+
+**Config / tunables.** `migrationAdvisor: true` (`readout` group).
+**Localization.** One `LOC_EMIG_ADVISE_*` per lever (`_HAPPINESS`, `_WAR`, `_OPEN_BORDERS`, `_PROSPERITY`,
+`_STABILITY`, `_INTEGRATION`, `_GROWTH`), plus headers `LOC_EMIG_ADVISE_REDUCE` / `LOC_EMIG_ADVISE_ATTRACT`.
+**Tests.** `tests/advisor.mjs`: a war-pushed city yields the war tip; an already-Open civ never gets
+"slot Open Borders"; tips cap at 3; off flag → empty.
+**Risk.** Low — the only failure mode is recommending an unavailable lever; the `available()` guard plus a
+test prevents it.
+
+---
+
+### Feature O — Per-city migration event feed *(low)*
+
+**Goal.** A short recent-history strip in the readout: *"Turn 87: 34k left for Athens after war began · Turn
+90: 12k arrived from Egypt · Turn 93: Greek community reached 25% · Turn 96: return migration began."*
+Makes the city feel alive moment-to-moment (finer-grained than the Chronicle).
+
+**Current state.** The substrate is §15.0b (`cityEvents(cityKey, limit)`). Record shapes carry everything
+needed: `moveRecord/departRecord/arriveRecord`
+([emigration-migration-records.js](../ui/emigration-migration-records.js#L64)/[**L93**](../ui/emigration-migration-records.js#L93)/[**L117**](../ui/emigration-migration-records.js#L117))
+carry `srcName/destName/people/cause/phase/originCiv`. Diaspora-tier crossings come from
+`detectFoundingForCity()` ([emigration-diaspora.js](../ui/emigration-diaspora.js#L127)); returns from the
+return system. The chronicle already aggregates the *grand* moments — this is the *local, frequent* feed.
+
+**Implementation.**
+1. **Source.** `cityEvents(cityKey, n)` from §15.0b for the move rows; merge the city's chronicle entries
+   (`chronicleLog()` ([emigration-chronicle.js](../ui/emigration-chronicle.js#L215)) filtered to this city)
+   for the diaspora/return rows so tier-crossings appear. Merge, sort by `turn` desc, slice to `n`.
+2. **Render.** `renderCityFeed(parent, rows)` in [emigration-city-readout.js](../ui/emigration-city-readout.js):
+   one muted line per row, `formatPeopleExact()` + localized verb by `kind` + `otherName`.
+3. **Throttle.** Cap rows (`cityFeedRows` default 5).
+
+**Config / tunables.** `cityReadoutFeed: true`, `cityFeedRows` (choice `[3,5,8]`). `readout` group.
+**Localization.** `LOC_EMIG_FEED_OUT` ("{people} left for {city}"), `_IN`, `_DIASPORA`
+("{civ} community reached {pct}%"), `_RETURN`.
+**Tests.** `tests/city-feed.mjs`: `cityEvents` filters to the right city, newest-first, length-capped;
+empty city → empty feed (no throw); merges chronicle + moves without dupes.
+**Risk.** Minimal — presentation over existing records.
+
+---
+
+### Feature P — Contextual policy impact preview *(medium; high community appeal)*
+
+**Goal.** Civ players love hidden-yield clarity. When inspecting a border/attraction/asylum card, show its
+**expected effect in the current game**, not a static description: *"Open Borders → ~+18k immigration/turn,
++3 Influence/turn, +2 integration load; likely top sources: Rome, Egypt, Persia."*
+
+**Current state.** The card layer is fully modeled: `immigrationOpenness()`
+([emigration-borders.js](../ui/emigration-borders.js#L137)), `emigrationRetention()` (**L157**),
+`activeAttractions()` (**L171**), `ATTRACTIONS` (**L42**), `policyState()` (**L115**). The yield side:
+`addAttractionDividend()`/`tickAttractionDividend()`/`dividendFor()`
+([emigration-dividend.js](../ui/emigration-dividend.js#L176)/[**L217**](../ui/emigration-dividend.js#L217)/[**L241**](../ui/emigration-dividend.js#L241))
+plus `CONFIG.dividendPerMigrant`/`dividendCap`; integration load via `addAssimilationLoad()`
+([emigration-consequences.js](../ui/emigration-consequences.js#L49)). The native flat parts (Influence/
+Production per age) are already in
+[data/emigration-policies-gameeffects.xml](../data/emigration-policies-gameeffects.xml).
+
+**Implementation.**
+1. **Counterfactual estimate.** `previewPolicy(pid, cardKind) → { immigrationDelta, influenceDelta,
+   integrationDelta, topSources: string[] }` in a new file [emigration-policy-preview.js](../ui/emigration-policy-preview.js).
+   Re-rank under the toggled stance: snapshot current pull totals, then re-evaluate with the candidate
+   stance applied (the borders module already has the neutral-toggle path used by `permeability()`); the
+   delta in summed inbound pull × the per-pass budget approximates `immigrationDelta`. Influence/Production
+   deltas read straight off the card's native modifier table (per-age constants). Integration delta =
+   `immigrationDelta ×` the per-migrant load constant. `topSources` = the largest current outflow corridors
+   that the stance would open (from `migrationFlows()` [**L566**](../ui/emigration-migration-stats.js#L566)).
+2. **Honest hedging.** Prefix with "~" and label "estimated this turn"; clamp to the per-pass budget so it
+   can't claim more than the bar allows.
+3. **Render.** `renderPolicyPreview(parent, model)` — mount on the dilemma/border UI and in the guide. The
+   dock decorator path ([emigration-dock-decorator.js](../ui/emigration-dock-decorator.js#L138)) or the
+   dilemma view ([emigration-dilemma-view.js](../ui/emigration-dilemma-view.js#L122)) are the natural hosts.
+
+**Config / tunables.** `policyPreview: true` (`readout` group).
+**Localization.** `LOC_EMIG_PREVIEW_IMMIG`, `_INFLUENCE`, `_INTEGRATION`, `_SOURCES`, `_ESTIMATE_NOTE`.
+**Tests.** `tests/policy-preview.mjs`: Open stance yields positive immigration delta, Closed negative;
+Influence delta matches the card's per-age constant; `topSources` capped; off flag → no preview.
+**Risk.** Medium — the counterfactual must reuse the **existing clamped** permeability path (no new
+unbounded math) and must hedge ("~", "estimated"). Do not promise exact yields.
+
+---
+
+### Feature Q — Diaspora profile cards *(low–medium; coolest narrative extension)*
+
+**Goal.** For each major diaspora in a city, a small flavor card: *"Roman Community in Carthage — Share 31%
+· Arrived mostly during The Western War · Status: integrating · Effects: moderate integration load · Homeland:
+recovering."* Gives names and continuity to abstract population shares.
+
+**Current state.** Composition is the data source: `compositionForCity(city).civs`
+([emigration-composition.js](../ui/emigration-composition.js#L510)) is the sorted `[{civ, pts, share}]`;
+`leadForeignOrigin()` ([emigration-diaspora.js](../ui/emigration-diaspora.js#L113)) finds the dominant
+foreign origin; tier/dedupe data is in the founding chronicle (`dedupeKey = "founding:"+city+"|"+civ+"|"+tier`,
+**L136**). "Arrived during {event}" can be recovered from the matching chronicle entry's `cause`/`title`.
+Homeland status from `readPolity(originOwner)` ([emigration-polity.js](../ui/emigration-polity.js#L155))
+(`celebrating`/`warWeary`). Integration trend from `integrateCity()` drift (**L410**). Quarter naming reuses
+the existing `resolveQuarter()` prose helper already used by diaspora foundings.
+
+**Implementation.**
+1. **Builder.** `diasporaCard(cityKey, civ) → { origin, host, share, arrivalEvent, status, effects[],
+   homeland }` in a new file [emigration-diaspora-card.js](../ui/emigration-diaspora-card.js): assemble from
+   `compositionForCity` (share), the latest matching founding chronicle entry (arrivalEvent/title), the
+   composition trend (status = "growing"/"integrating" by comparing successive shares via `seenTurn`), and
+   `readPolity(origin)` (homeland = "recovering"/"stable"/"unstable"). `effects` = integration-load tier +
+   (if F shipped) blend potential.
+2. **List.** `cityDiasporaCards(cityKey)` → cards for every foreign origin ≥ `DIASPORA_MIN`
+   ([emigration-diaspora.js](../ui/emigration-diaspora.js#L33)).
+3. **Render.** `renderDiasporaCards(parent, cards)` — a compact card stack in the readout (and optionally
+   in the chronicle detail). Color the header swatch with `civDisplayColor()`. Use `pick()`
+   ([emigration-narrative.js](../ui/emigration-narrative.js#L40)) seeded on `city|civ` for deterministic
+   flavor verbs.
+
+**Config / tunables.** `diasporaCards: true` (`readout` group).
+**Localization.** `LOC_EMIG_DIASPORA_CARD_TITLE` ("{civ} community in {city}"), `_ARRIVED`
+("Arrived mostly during {event}"), `_STATUS_*` (growing/integrating/blended), `_HOMELAND_*`.
+**Tests.** `tests/diaspora-cards.mjs`: one card per foreign origin ≥ min; status reflects share trend;
+single-origin city → no foreign cards; missing chronicle → graceful "arrived gradually" fallback.
+**Risk.** Low–medium — read-only; the only care is graceful fallback when no chronicle row exists for an
+origin (don't throw). Overlaps Feature I (story follow-ups) — share the status/tier wording.
+
+---
+
+### Feature R — Migration milestones (in-mod "achievements") *(low)*
+
+**Goal.** Memorable, shareable in-mod milestones (not Steam achievements): *First Great Exodus · First
+Cosmopolitan Capital · Largest Diaspora in the World · City of Many Peoples · Homeland Recovered · Closed
+Gate, Empty Streets · Refuge of Nations · Brain Drain Crisis · Great Return.* Cheap, fun, screenshot-bait.
+
+**Current state.** The chronicle is the perfect host: `chronicle(entry)`
+([emigration-chronicle.js](../ui/emigration-chronicle.js#L153)) with `chronicled(key)` dedupe (**L120**),
+`MAX_ENTRIES = 80` (**L14**), and `mirrorToNotifications()` (**L131**). The conditions are all readable:
+exodus/founding/return events (diaspora module), diversity (composition, see Feature S), net flow
+(`netCumFor()` [**L993**](../ui/emigration-migration-stats.js#L993)), homeland recovery (`readPolity`).
+
+**Implementation.**
+1. **Milestone table.** `MILESTONES` in a new file [emigration-milestones.js](../ui/emigration-milestones.js):
+   `[{ key, titleLoc, test(ctx): bool }]` where `ctx` bundles the per-pass signals + composition + flow
+   tallies. Each `test` is a pure predicate (e.g. *City of Many Peoples* = a city with ≥ N origins above
+   5%; *Brain Drain Crisis* = a city with net outflow past a threshold over K passes; *Refuge of Nations* =
+   refugee inflow from ≥ M distinct origins).
+2. **Detect & record.** `checkMilestones(ctx)` called from `recordChroniclePass()`
+   ([emigration-diaspora.js](../ui/emigration-diaspora.js#L169)) (or `doPass()` between L165–L178): for each
+   untriggered milestone whose `test` passes, `chronicle({ kind: "founding"|new "milestone", dedupeKey:
+   "milestone:"+key, ... })`. Dedupe via `chronicled()` so each fires once per game. If a new `"milestone"`
+   kind is added, extend `ChronicleEntry.kind` (**L19**), `KIND_LABEL`
+   ([emigration-chronicle-view.js](../ui/emigration-chronicle-view.js#L52)), and `chronicleTitle()`
+   ([emigration-narrative.js](../ui/emigration-narrative.js#L224)).
+3. **Surface.** One toast on unlock via `announceImportant()`
+   ([emigration-feedback.js](../ui/emigration-feedback.js#L312)) (respects the existing cooldown
+   `cooldownOk()` **L292**).
+
+**Config / tunables.** `milestonesEnabled: true` (`readout` group).
+**Localization.** One `LOC_EMIG_MILESTONE_*` title + flavor per milestone in all locales.
+**Tests.** `tests/milestones.mjs`: each predicate fires on a crafted ctx and not otherwise; each fires once
+(dedupe); off flag → none; a `"milestone"` kind (if added) renders a label.
+**Risk.** Low — chronicle-only, deterministic predicates. Keep predicates cheap (run once/pass).
+
+---
+
+### Feature S — "Most diverse cities" ranking *(low; screenshot-friendly)*
+
+**Goal.** A simple leaderboard panel: *Carthage — 5 communities, no majority · Alexandria — 4, Egyptian
+plurality · Rome — 3, Roman majority.* Pairs naturally with the demographics/ranking instinct and reads
+well in screenshots.
+
+**Current state.** Composition is enumerable: `Object.keys(load().cities)`
+([emigration-composition.js](../ui/emigration-composition.js#L533)) over the persisted map; per-city
+breakdown via `compositionForCity()` (**L510**) → `.civs` (sorted shares) + `.dominant`. **No diversity
+metric exists yet** — only `rankByProsperity()` ([emigration-prosperity.js](../ui/emigration-prosperity.js#L225)).
+
+**Implementation.**
+1. **Metric.** `diversityScore(comp) → { originsAbove5: number, index: number, largestNonOwner: number,
+   noMajority: bool }` in a new file [emigration-diversity.js](../ui/emigration-diversity.js): `index` =
+   Shannon entropy (or 1 − Σ share², Simpson) over `comp.civs[].share`; `noMajority` = `dominant.share <
+   0.5`. Pure.
+2. **Ranking.** `diverseCityRanking(limit) → [{ cityName, originsAbove5, label }]`: enumerate cities (via
+   the composition keys), score, sort by `index` desc, slice. `label` summarizes ("5 communities, no
+   majority" / "Egyptian plurality" / "Roman majority").
+3. **Render.** A panel/section in the existing dashboard. Mirror the ledger renderer idiom (`renderLedger()`
+   [emigration-ledger-view.js](../ui/emigration-ledger-view.js#L196), `ledgerDataRow()` **L148**); add a
+   `diverseCityRows()` to [emigration-views.js](../ui/emigration-views.js) next to `civLedgerRows()`
+   (**L31**) and surface it via `gatherDashboard()` ([emigration-window.js](../ui/emigration-window.js#L676)).
+
+**Config / tunables.** `diversityRanking: true` (`readout` group).
+**Localization.** `LOC_EMIG_DIVERSE_TITLE` ("Most diverse cities"), `_NO_MAJORITY`, `_PLURALITY`
+("{civ} plurality"), `_MAJORITY`, `_COMMUNITIES` ("{n} communities").
+**Tests.** `tests/diversity.mjs`: entropy is max for an even split, 0 for single-origin; `noMajority`
+boundary at 50%; ranking sorts and caps; empty world → empty ranking.
+**Risk.** Low — read-only aggregate. Word everything as "communities/composition," never value-laden.
+
+---
+
+### Feature T — "Cosmopolitanism" score *(low; cosmetic readout — pairs with S)*
+
+**Goal.** A derived, **readout-only** label per city/civ from diversity + integration + openness + inbound
+flow: *Homogeneous · Local Majority · Mixed City · Cosmopolitan Center · World City.* Historically evocative,
+non-judgmental. **Cosmetic at first — no yields.**
+
+**Current state.** All inputs exist: diversity (Feature S `diversityScore`), integration (composition drift
+/ `assimLoad`), openness (`borderStance()`/`immigrationOpenness()`
+[emigration-borders.js](../ui/emigration-borders.js#L191)/[**L137**](../ui/emigration-borders.js#L137)),
+inbound flow (`ownerIn`/`grossInCumFor()` [emigration-migration-stats.js](../ui/emigration-migration-stats.js#L980)).
+Empire-wide composition via `compositionForOwner()` ([emigration-composition.js](../ui/emigration-composition.js#L528)).
+
+**Implementation.**
+1. **Score → tier.** `cosmopolitanism(comp, ctx) → { score: number, tierKey }` in
+   [emigration-diversity.js](../ui/emigration-diversity.js) (co-locate with S): blend the normalized
+   diversity index, an openness term, and a normalized inbound term into `[0,1]`; bucket into 5 tiers by
+   fixed thresholds (`COSMO_TIERS`). Pure, deterministic.
+2. **Surface.** A one-line label in the readout (under origins) and as a column in the Feature-S ranking.
+   Reuse the score in T's panel rather than recomputing.
+
+**Config / tunables.** `cosmopolitanismScore: true` (`readout` group). **Explicitly cosmetic** — note in
+config types that it grants no yields (a future opt-in could, but not in this batch).
+**Localization.** `LOC_EMIG_COSMO_*` for the 5 tiers; `_DESC` clarifying it describes composition, not
+superiority.
+**Tests.** `tests/cosmopolitanism.mjs`: tier boundaries monotonic; homogeneous city → lowest tier; high
+diversity + open + inbound → top tier; off flag → no label.
+**Risk.** Low — cosmetic. The only real risk is **wording**; keep it about "community composition" and
+"cosmopolitanism," never ranking peoples. Document the framing in the guide/Civilopedia.
+
+---
+
+### Feature U — Refugee-crisis severity scale *(low–medium)*
+
+**Goal.** For war/disaster/conquest waves, surface explicit severity: *"Refugee Crisis: Severe — 82k
+displaced this turn · primary cause War · main route Rome → Carthage · receiving: Carthage, Egypt, Greece."*
+Gives moral/historical weight without being exploitative.
+
+**Current state.** Refugee causes are tagged: `REFUGEE_CAUSES`/`isRefugeeCause()`
+([emigration-causes.js](../ui/emigration-causes.js#L39)/[**L97**](../ui/emigration-causes.js#L97)). Per-pass
+refugee volume and routes are in the stats tallies (refugees in/out; corridors via `migrationFlows()`
+[**L566**](../ui/emigration-migration-stats.js#L566) / `foldFlow()` **L313**). Disaster onsets are recorded
+by `recordDisasterEvent()` (**L733**). The toast path with cooldown is `announceImportant()`/`cooldownOk()`
+([emigration-feedback.js](../ui/emigration-feedback.js#L312)/[**L292**](../ui/emigration-feedback.js#L292)).
+
+**Implementation.**
+1. **Severity.** `crisisSeverity(passMigs) → { tierKey, displaced, cause, routeLabel, receivers[] } | null`
+   in a new file [emigration-crisis.js](../ui/emigration-crisis.js): sum refugee-cause people this pass,
+   bucket into Minor/Notable/Severe/Catastrophic by thresholds scaled to game speed; `routeLabel` = the
+   largest refugee corridor; `receivers` = top destination civ names. `null` when below the Minor floor.
+2. **Surface.** (a) **Toast** via `announceImportant()` (one per crisis tier change, cooldown-gated). (b)
+   **Chronicle** entry (`kind: "exodus"`, severity in the title via `chronicleTitle()`). (c) optional **map
+   badge** reusing the network `drawEventBadge()` path ([emigration-network-paint.js](../ui/emigration-network-paint.js#L480)).
+3. **Hook.** Call from `recordChroniclePass()`/`doPass()` after `recordMigrations()` so the pass's records
+   are available.
+
+**Config / tunables.** `refugeeCrisisScale: true`, `crisisToasts: true` (separate so the scale can show in
+the readout/chronicle without toasting). `readout` group.
+**Localization.** `LOC_EMIG_CRISIS_*` (Minor/Notable/Severe/Catastrophic), `_DISPLACED`, `_ROUTE`,
+`_RECEIVING`. Respectful, factual wording.
+**Tests.** `tests/crisis.mjs`: tiering by displaced volume + game speed; only refugee causes count;
+sub-floor pass → null; route/receiver extraction; off flags → silent.
+**Risk.** Low–medium — keep wording respectful and throttle toasts hard (reuse `cooldownOk`).
+
+---
+
+### Feature V — "Humanitarian response" dilemma *(higher; gameplay + sensitive theme)*
+
+**Goal.** A choice layer over refugee waves: *"Refugees at the Border — admit them fully (more integration
+load, more population, diplomatic benefit) · establish camps (reduced load, lower growth/integration) ·
+close the border (lower inflow, Influence penalty, possible unrest)."* Higher-risk: changes gameplay and
+touches a sensitive real-world theme. **Make it rare, respectful, grounded in existing mechanics.**
+
+**Current state.** The dilemma framework already exists and is reusable: `showDilemma(view, onChoice)`
+([emigration-dilemma-view.js](../ui/emigration-dilemma-view.js#L122)), `buildPanel()` (**L100**),
+`choiceButton()` (**L86**); model side `CHOICES` ([emigration-dilemma.js](../ui/emigration-dilemma.js#L34))
+`{id,label,note}`, `DilemmaState` (**L45**, `STATE_KEY = "EmigrationDilemma_v1"`), `detectConquestDilemma()`
+(**L268**). Consequences plug into the per-turn economy via `grantYield`/`deduct`
+([emigration-effects.js](../ui/emigration-effects.js)) and `chargePerTurnCosts()`
+([emigration-main.js](../ui/emigration-main.js#L207)). Asylum cards (§12) and `hasAsylum()` already exist as
+the *standing* analog — the dilemma is the *acute* event version.
+
+**Implementation.**
+1. **Trigger.** New `detectHumanitarianDilemma(passMigs, me) → view | null` next to `detectConquestDilemma()`:
+   fire only on a **Severe+** crisis (reuse Feature U's `crisisSeverity`) directed at the local player, and
+   **rate-limit** via the existing `DilemmaState.spree`/`lastTurn` so it is rare.
+2. **Options & consequences.** Three `CHOICES` (`admit` / `camps` / `close`), each mapping to **existing**
+   levers only: `admit` → higher inbound permeability for a few turns + integration load + a diplomacy/
+   Influence nudge; `camps` → capped intake + reduced integration drift; `close` → lower openness +
+   Influence penalty + a small unrest charge — all via `chargePerTurnCosts()` and the borders multipliers.
+   No new unbounded mechanics.
+3. **Surface.** Reuse `showDilemma()`; record the outcome to the chronicle and `logNotification()`
+   ([emigration-notifications.js](../ui/emigration-notifications.js#L144)).
+
+**Config / tunables.** `humanitarianDilemma: false` (**off by default** — gameplay + sensitive),
+`humanitarianMinSeverity` (default "severe"), `humanitarianCooldownTurns`.
+**Localization.** `LOC_EMIG_HUMAN_TITLE`/`_BODY` and per-option `_ADMIT`/`_CAMPS`/`_CLOSE` + notes, all
+locales, **carefully worded** (grounded, non-exploitative).
+**Tests.** `tests/humanitarian-dilemma.mjs`: fires only on Severe+ and rate-limited; each option charges
+the expected per-turn cost (mock `grantYield`/`deduct`); within `[permeFloor, permeCeil]`; off flag → never.
+**Risk.** **Highest of this batch** (gameplay + theme). Ship off by default; keep rare, respectful, and
+strictly inside existing bounded mechanics; document the intent in the guide.
+
+---
+
+### Feature W — Migration routes become named "cultural corridors" *(low–medium)*
+
+**Goal.** When a route carries enough people over time, name it — *The Eastern Passage · The Carthaginian
+Road · The Nile Refuge Route* — surfaced on the flow view and in age recaps. Makes repeated migration feel
+historically consequential. **Mechanically just a threshold on cumulative origin→dest flow.**
+
+**Current state.** Cumulative per-corridor flow already exists: `migrationFlows()`/`foldFlow()`
+([emigration-migration-stats.js](../ui/emigration-migration-stats.js#L566)/[**L313**](../ui/emigration-migration-stats.js#L313))
+key `"srcCiv>destCiv>srcCity>destCity"`; the flow view consumes `frameSegments()`
+([emigration-network-flow.js](../ui/emigration-network-flow.js#L258)). Deterministic naming via `pick()`
+([emigration-narrative.js](../ui/emigration-narrative.js#L40)).
+
+**Implementation.**
+1. **Detect & name.** `namedCorridors() → [{ key, fromCity, toCity, totalPeople, name }]` in a new file
+   [emigration-corridors.js](../ui/emigration-corridors.js): scan cumulative flows; any corridor past
+   `CONFIG.corridorThreshold` (scaled to game speed) gets a deterministic `name` via `pick(CORRIDOR_NAMES,
+   key)` (refugee-cause corridors draw from a "Refuge Route" name set). Persist the assigned name once per
+   corridor (new small state key `EmigrationCorridors_v1`) so it's stable across passes.
+2. **Surface.** (a) Label the flow segment in `frameSegments()`/`drawArrow()` when a corridor is named. (b)
+   Feed names into the **age recap** (Feature H) and the **chronicle**. (c) optional list in the dashboard.
+
+**Config / tunables.** `culturalCorridors: true`, `corridorThreshold` (choice). `readout`/`visuals` group.
+**Localization.** `LOC_EMIG_CORRIDOR_*` name fragments + `_REFUGE_*` variants; all locales.
+**Tests.** `tests/corridors.mjs`: corridor named only past threshold; name stable across passes (persisted);
+refugee corridor draws the refuge name set; below threshold → unnamed.
+**Risk.** Low–medium — additive; keep naming deterministic and persisted so a corridor doesn't rename
+between passes.
+
+---
+
+### Feature X — City "migration micro-icons" *(medium; constrained by engine)*
+
+**Goal.** Tiny status glyphs so a player can read a city at a glance: ▲ net gaining · ▼ net losing ·
+split-person = major diaspora present · refugee/flame = active crisis intake · home-arrow = return migration
+active.
+
+**Reality check (important).** Probing confirmed Civ VII exposes **no native city-banner DOM hook** for
+mods. What *does* exist: the subsystem-dock decorator (`Controls.decorate("panel-sub-system-dock")`,
+[emigration-dock-decorator.js](../ui/emigration-dock-decorator.js#L138)) and the selection-driven readout
+panel (`SELECTION_EVENTS` [emigration-city-readout.js](../ui/emigration-city-readout.js#L213),
+`showCityReadout()` **L195**). So "icons literally on the city banner" is **not reliably achievable**; spec
+the achievable version and say so.
+
+**Implementation (achievable form).**
+1. **Status resolver.** `cityStatusIcons(cityId) → string[]` (glyph keys) in a new file
+   [emigration-city-status.js](../ui/emigration-city-status.js): derive ▲/▼ from `ownerNet`/the §15.0b feed,
+   diaspora from `leadForeignOrigin()` ≥ min, crisis from Feature U, return from the return system's active
+   set. Pure.
+2. **Surface (two non-banner hosts).** (a) Prepend the glyph row to the **city readout** header
+   (`renderPanel()` [emigration-city-readout.js](../ui/emigration-city-readout.js#L167)) — guaranteed path.
+   (b) Add an **aggregate count badge** to the **dock button** (`addButton()`
+   [emigration-dock-decorator.js](../ui/emigration-dock-decorator.js#L114), e.g. "3 cities in crisis").
+3. **Stretch (best-effort, gated).** A world-anchored overlay placing a glyph near the city via
+   world→screen coordinate conversion (the same fixed-position injection the toasts use). Mark this
+   experimental and feature-flag it separately; **never** assume a banner hook.
+
+**Config / tunables.** `cityStatusIcons: true`, `cityStatusOverlay: false` (the experimental world-anchored
+form, off by default). `readout` group.
+**Localization.** `LOC_EMIG_ICON_*` tooltips (gaining/losing/diaspora/crisis/return).
+**Tests.** `tests/city-status.mjs`: resolver returns the right glyphs for crafted snapshots; net-zero city →
+no arrow; flags off → empty.
+**Risk.** Medium — **scope honesty**: deliver the readout/dock form; treat true banner placement as
+experimental. Don't regress selection wiring.
+
+---
+
+### Feature Y — "What changed this turn?" digest *(low; overlaps H)*
+
+**Goal.** A small, frequent end/start-of-turn digest: *"Migration this turn — Rome lost 41k (mostly to
+Carthage) · Athens became a net importer · a Persian community formed in Memphis."* The per-turn cousin of
+the end-of-age recap (Feature H). **Optional and throttled** so it isn't notification spam.
+
+**Current state.** Per-pass records flow through `recordMigrations()`
+([emigration-migration-stats.js](../ui/emigration-migration-stats.js#L752)); the pass loop is `doPass()`
+([emigration-main.js](../ui/emigration-main.js#L158)). The feedback pass already summarizes per-cause via
+`reportPassFeedback()` ([emigration-feedback.js](../ui/emigration-feedback.js#L461)) — the digest is a
+*compact* sibling, not a second toast storm. Net-importer flips come from `netCumFor()` deltas; new
+communities from `detectFoundingForCity()`.
+
+**Implementation.**
+1. **Builder.** `turnDigest(passMigs) → { lines: string[] } | null` in a new file
+   [emigration-digest.js](../ui/emigration-digest.js): top mover (biggest single-civ net change + its main
+   corridor), any net-importer/exporter **flips** this pass, any new diaspora crossings. Cap at ~3 lines;
+   `null` on a quiet pass.
+2. **Surface.** Mount once per turn in the dashboard header and/or a **single** throttled toast via
+   `announceImportant()` (cooldown-gated, `cooldownOk()` **L292**). Do **not** add per-event toasts.
+
+**Config / tunables.** `turnDigestEnabled: false` (**off by default** to avoid spam), `digestToast: false`,
+`digestLines` (choice). `readout` group.
+**Localization.** `LOC_EMIG_DIGEST_TITLE`, `_LOST` ("{civ} lost {people}, mostly to {city}"), `_FLIP_IN`
+("{civ} became a net importer"), `_NEW_COMMUNITY`.
+**Tests.** `tests/digest.mjs`: top-mover selection; flip detection from net deltas; line cap; quiet pass →
+null; off flag → silent. Overlaps H — share the corridor/`formatPeopleExact()` helpers.
+**Risk.** Low — but **default off** and single-toast-throttled; the failure mode is spam, not correctness.
+
+---
+
+### Feature Z — Exportable migration history *(low; data-export audience)*
+
+**Goal.** The chart/rankings/archive audience likes data export. Add: copy migration records to CSV, copy
+city composition to CSV, copy age recap to clipboard, export the chronicle as text.
+
+**Current state.** The data is all in hand: flows/tallies in
+[emigration-migration-stats.js](../ui/emigration-migration-stats.js) (`migrationFlows()` **L566**,
+`netCumFor`/`grossInCumFor`/`grossOutCumFor` **L979–993**); composition via `compositionForCity`/
+`compositionForOwner` ([emigration-composition.js](../ui/emigration-composition.js#L510)); chronicle via
+`chronicleLog()` ([emigration-chronicle.js](../ui/emigration-chronicle.js#L215)); the recap from Feature H.
+
+**Implementation.**
+1. **Serializers.** `toCsvRecords()`, `toCsvComposition()`, `chronicleToText()`, `recapToText()` (pure
+   string builders) in a new file [emigration-export.js](../ui/emigration-export.js): iterate the existing
+   getters, emit RFC-4180-safe CSV (quote/escape) and plain text. No engine reads — accept the already-built
+   arrays so the functions are trivially testable.
+2. **Surface.** Small "Copy CSV / Copy text" buttons in the dashboard footer. Clipboard write is GameFace-
+   constrained — probe for a clipboard API; if absent, fall back to rendering the text into a selectable
+   `<textarea>`/`<pre>` the player can copy manually (document the fallback).
+
+**Config / tunables.** `historyExport: true` (`readout` group).
+**Localization.** `LOC_EMIG_EXPORT_*` button labels + the manual-copy fallback hint.
+**Tests.** `tests/export.mjs`: CSV escapes quotes/commas/newlines; row counts match input; empty input →
+header-only CSV; chronicle/recap text round-trips the entries. (Clipboard side-effect is not unit-tested;
+assert the serializers.)
+**Risk.** Minimal — pure serializers; the only unknown is the clipboard API, handled by the `<textarea>`
+fallback.
+
+---
+
+### 15.16 Sequencing & the version headline
+
+These are mostly **read-only and low-balance-risk**, so they can ship faster than the gameplay batch. The
+shared substrate (§15.0) is the gate — build it first; L/M/N/P collapse to thin formatting afterward.
+
+1. **§15.0 substrate** (`emigration-explain.js` + `cityEvents`) — prerequisite for L/M/N/P/O.
+2. **L — Explainer** (the keystone; makes everything legible) → **O — City feed** → **E/M — sparkline +
+   forecast** (the readout becomes live and forward-looking).
+3. **N — Advisor** + **P — Policy preview** (turn legibility into agency; P is high community appeal).
+4. **S — Diversity ranking** + **T — Cosmopolitanism** + **Q — Diaspora cards** (flavor + screenshot bait;
+   S/T share `emigration-diversity.js`, Q overlaps F/I).
+5. **R — Milestones** + **U — Crisis severity** + **W — Cultural corridors** + **Y — Digest** (chronicle/
+   feed surfaces; U feeds V and X; Y and W overlap H; default Y off).
+6. **X — Micro-icons** (deliver the readout/dock form; world-overlay experimental) and **Z — Export**
+   (data audience).
+7. **V — Humanitarian dilemma** last (highest risk: gameplay + sensitive theme; off by default, rare,
+   respectful, strictly bounded).
+
+**Version headline — "Migration Intelligence Update":** *Adds migration explainers, city forecasts, an
+advisor, contextual policy-impact previews, diversity & cosmopolitanism rankings, and diaspora profile
+cards — so players understand not just **where** people moved, but **why**, and **what they can do about
+it**.* The shortlist that carries that headline: **L (explainer), N (advisor), S/T (diversity/cosmopolitan
+ranking), O (city feed), P (policy preview), Q (diaspora cards), X (micro-icons)** — all readability-first,
+all low balance risk, most default on.

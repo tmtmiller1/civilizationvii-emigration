@@ -155,9 +155,37 @@ export function causeHint(cause) {
 }
 
 /**
+ * Tie-break order for equal-magnitude net drivers: forced/alarming causes first, voluntary last,
+ * so rows that sort to the same magnitude still render in a stable, meaningful order (steadier
+ * screenshots + tests). Unknown causes sort last.
+ */
+const CAUSE_ORDER = ["war", "conquest", "disaster", "attrition", "unhappiness", "prosperity", "return"];
+
+/**
+ * A cause's tie-break rank (unknown causes sort after all known ones).
+ * @param {string} cause The cause.
+ * @returns {number} The rank.
+ */
+function causeOrder(cause) {
+  const i = CAUSE_ORDER.indexOf(cause);
+  return i === -1 ? CAUSE_ORDER.length : i;
+}
+
+/**
+ * A finite number, or 0. `(x || 0)` already maps NaN→0 (NaN is falsy); this additionally maps
+ * ±Infinity→0, so a corrupted save-loaded tally can't render "Infinity thousand".
+ * @param {number} [n] The value.
+ * @returns {number} `n` if finite, else 0.
+ */
+function finite(n) {
+  return Number.isFinite(n) ? Number(n) : 0;
+}
+
+/**
  * The SIGNED net-by-cause drivers behind a civ's net migration: each cause's arrivals (+) minus
- * departures (−), so the entries sum to the net. Sorted biggest-first, capped to the top few. "" when
- * there's no migration. Used by the Net Migration Table to explain each civ's net.
+ * departures (−), so the entries sum to the net. Sorted biggest-first (ties broken by CAUSE_ORDER),
+ * capped to the top few. "" when there's no migration. Used by the Net Migration Table to explain
+ * each civ's net.
  * @param {Record<string,number>} [outByCause] Emigration people per cause.
  * @param {Record<string,number>} [inByCause] Immigration people per cause.
  * @returns {string} e.g. "Unhappiness -30 thousand, War -15 thousand", or "".
@@ -168,10 +196,10 @@ export function netDrivers(outByCause, inByCause) {
   /** @type {{c:string, net:number}[]} */
   const rows = [];
   for (const c of new Set([...Object.keys(out), ...Object.keys(inn)])) {
-    const net = (inn[c] || 0) - (out[c] || 0);
+    const net = finite(inn[c]) - finite(out[c]);
     if (Math.abs(net) >= 0.5) rows.push({ c, net });
   }
-  rows.sort((a, b) => Math.abs(b.net) - Math.abs(a.net));
+  rows.sort((a, b) => Math.abs(b.net) - Math.abs(a.net) || causeOrder(a.c) - causeOrder(b.c));
   const shown = rows.slice(0, 4)
     .map((r) => `${causeLabel(r.c)} ${r.net > 0 ? "+" : "-"}${formatPeople(Math.abs(r.net))}`);
   if (rows.length > 4) shown.push(`+${rows.length - 4} more`);

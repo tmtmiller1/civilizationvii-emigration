@@ -124,18 +124,24 @@ export function chronicled(key) {
 /**
  * Mirror a chronicled moment into the notifications log as a distinct "chronicle"-kind entry, so the
  * Notifications tab is the single home for every migration event (the story prose included).
+ * Best-effort: a failure here must never throw into the engine pass or undo the chronicle insert that
+ * already succeeded, so it's swallowed (the chronicle's own state is persisted before this runs).
  * @param {ChronicleEntry} e The normalized chronicle entry.
  */
 function mirrorToNotifications(e) {
-  logNotification({
-    kind: "chronicle",
-    cause: e.cause || "chronicle",
-    summary: e.title || e.body,
-    title: e.title,
-    body: e.body,
-    people: typeof e.people === "number" ? e.people : 0,
-    points: 0
-  });
+  try {
+    logNotification({
+      kind: "chronicle",
+      cause: e.cause || "chronicle",
+      summary: e.title || e.body,
+      title: e.title,
+      body: e.body,
+      people: typeof e.people === "number" ? e.people : 0,
+      points: 0
+    });
+  } catch (_) {
+    /* ignore */
+  }
 }
 
 /**
@@ -152,8 +158,8 @@ export function chronicle(entry) {
   list.unshift(e);
   if (e.dedupeKey) keys().add(e.dedupeKey);
   trimToCap(list);
-  mirrorToNotifications(e);
-  persist();
+  persist(); // persist our own state first, so a notifications-mirror failure can't lose it
+  mirrorToNotifications(e); // best-effort; never throws (see mirrorToNotifications)
   return true;
 }
 

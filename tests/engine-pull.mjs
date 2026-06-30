@@ -7,6 +7,7 @@ import assert from "node:assert/strict";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { adjustedPull } from "/emigration/ui/emigration-pull.js";
 import { resetBorderCache } from "/emigration/ui/emigration-borders.js";
+import { resetDiplomacyCache } from "/emigration/ui/emigration-geography.js";
 
 // Deterministic deps: no Open Borders deal (Game absent → bonus 0), Manhattan hex distance,
 // no slotted policy.
@@ -79,6 +80,7 @@ close(adjustedPull(refugeeSrc, sig(1, 20, 5, false, 0, 0), null, null, null), 12
 // C9 , PERMEABILITY relationship factor: an Open Borders deal multiplies cross-civ pull.
 //   permeability = openness(1) × permOpenBorders(2) = 2; pull = (20 − 4 reluctance − 12 poach) × 2 = 8.
 globalThis.Game = { Diplomacy: { getJointEvents: () => [{ actionTypeName: "DIPLOMACY_ACTION_OPEN_BORDERS" }] } };
+resetDiplomacyCache(); // new diplomacy stub → fresh per-pair reads (mirrors the per-pass reset in production)
 Object.assign(CONFIG, { permOpenBorders: 2, bordersEnabled: false });
 close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(2, 30, 5, false, 0, 0), null, null, null), 8, "C9 open-borders permeability");
 
@@ -88,6 +90,7 @@ close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(2, 30, 5, false, 0, 0), null,
 globalThis.Game = undefined;
 globalThis.Players = undefined;
 resetBorderCache(); // policy stubs cleared → fresh reads
+resetDiplomacyCache(); // diplomacy stubs cleared → fresh reads (no stale open-borders/war from C9)
 Object.assign(CONFIG, {
   antiSnowballWeight: 15, antiSnowballThreshold: 1.25, antiSnowballExponent: 1,
   congestWeight: 0, bordersEnabled: false, civTuningEnabled: false

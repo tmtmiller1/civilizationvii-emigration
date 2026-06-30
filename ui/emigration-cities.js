@@ -10,6 +10,7 @@ import { observeCity } from "/emigration/ui/emigration-violence.js";
 import { observeDisaster } from "/emigration/ui/emigration-disasters.js";
 import { cityHappinessStage, readPolity, resetPolityCache } from "/emigration/ui/emigration-polity.js";
 import { resetBorderCache } from "/emigration/ui/emigration-borders.js";
+import { resetDistanceCache, resetDiplomacyCache } from "/emigration/ui/emigration-geography.js";
 
 /**
  * A snapshot of one city's emigration-relevant state.
@@ -124,7 +125,24 @@ function localHasMet(owner) {
     const lp = Players.get(me);
     return !!lp?.Diplomacy?.hasMet?.(owner);
   } catch (_) {
-    return true;
+    return true; // fail open: if diplomacy is unreadable, don't hide the whole world under requireMet
+  }
+}
+
+/**
+ * Read an optional numeric distress signal, degrading to 0 if its subsystem throws or returns a
+ * non-finite value. Without this, one broken observer (violence / disaster) would nuke the WHOLE
+ * city via buildSignal's outer catch, contradicting this module's "degrade to a neutral default
+ * rather than throwing" contract.
+ * @param {() => number} fn The observer call.
+ * @returns {number} The signal, or 0.
+ */
+function safeSignal(fn) {
+  try {
+    const v = fn();
+    return typeof v === "number" && isFinite(v) ? v : 0;
+  } catch (_) {
+    return 0;
   }
 }
 
@@ -139,16 +157,27 @@ function buildSignal(city, player, isCityState) {
   try {
     if (!city) return null;
     const owner = city.owner;
+    // A stable per-city key is REQUIRED: per-city pressure/cooldown/stats are keyed on it, and a
+    // self-move is detected as dest.key === src.key. Collapsing an unreadable id to a shared sentinel
+    // ("?") would merge distinct cities' state and block valid moves between them, so skip instead.
+    const localId = city.localId ?? city.id;
+    if (localId == null) return null;
     const food = readYield(city, "YIELD_FOOD");
+    const population = totalPop(city);
+    const rural = ruralPop(city);
     return {
       city,
-      key: owner + ":" + (city.localId ?? city.id ?? "?"),
+      key: owner + ":" + localId,
       owner,
       isTown: !!city.isTown,
       isCityState,
-      population: totalPop(city),
-      rural: ruralPop(city),
-      urban: typeof city.urbanPopulation === "number" ? city.urbanPopulation : 0,
+      population,
+      rural,
+      // Fall back to population − rural (matching emigration-population.js) rather than 0, so a city
+      // with an unreadable urbanPopulation isn't mistaken for fully rural by the overcrowding model.
+      urban: typeof city.urbanPopulation === "number" && isFinite(city.urbanPopulation)
+        ? city.urbanPopulation
+        : Math.max(0, population - rural),
       food,
       production: readYield(city, "YIELD_PRODUCTION"),
       gold: readYield(city, "YIELD_GOLD"),
@@ -161,8 +190,8 @@ function buildSignal(city, player, isCityState) {
       starving: food < 0,
       siege: !!city.isBeingRazed,
       atWar: ownerAtWar(player),
-      violence: observeCity(city),
-      disaster: observeDisaster(city),
+      violence: safeSignal(() => observeCity(city)),
+      disaster: safeSignal(() => observeDisaster(city)),
       infected: !!city.isInfected
     };
   } catch (_) {
@@ -219,6 +248,8 @@ export function collectCitySignals() {
   const out = [];
   resetPolityCache(); // read each civ's government/celebration/war-weariness at most once this pass
   resetBorderCache(); // read each civ's slotted border/attraction cards at most once this pass
+  resetDistanceCache(); // memoize each city-pair hex distance at most once this pass (P1)
+  resetDiplomacyCache(); // memoize each owner-pair open-borders/alliance/war read once this pass (P2)
   for (let pid = 0; pid < 64; pid++) {
     const e = eligiblePlayer(pid);
     if (e) collectPlayerCities(e.player, e.isCityState, out);

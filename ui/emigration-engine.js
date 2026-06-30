@@ -25,7 +25,9 @@ import { migrationCause, bestDestination, setNeutralBorders } from "/emigration/
 import { borderStance } from "/emigration/ui/emigration-borders.js";
 import { recordStanceImpact } from "/emigration/ui/emigration-migration-stats.js";
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
-import { loadState, saveState, prepareState, ownerPopulations } from "/emigration/ui/emigration-state.js";
+import {
+  loadState, saveState, prepareState, ownerPopulations, transitAtCapacity
+} from "/emigration/ui/emigration-state.js";
 import { cityName, moveRecord, departRecord } from "/emigration/ui/emigration-migration-records.js";
 import { pollCrisis, eventKeyForMove, eventKeyForDeath } from "/emigration/ui/emigration-event-attribution.js";
 import { warAggressors } from "/emigration/ui/emigration-war.js";
@@ -205,7 +207,10 @@ function applyOneMove(src, dest, popBefore, state, cause, inboundCtx) {
     );
     return moveRecord(src, dest, people, cause, { destPaidCost: cost, eventKey });
   }
-  // Lagged: the source loses the point now; the destination gains it on arrival.
+  // Lagged: the source loses the point now; the destination gains it on arrival. But if the transit
+  // queue is already at its hard cap, the row couldn't survive persistence (load-time truncation would
+  // drop it), so refuse to start the journey - the migrant stays home this turn rather than vanishing.
+  if (transitAtCapacity(state)) return null;
   if (!removeRural(src.city)) return null;
   src.rural -= 1;
   src.population -= 1;
@@ -419,7 +424,13 @@ function processSourceSplit(src, ranked, state, ownerPop, budgets, inboundCtx) {
     // Shared pool: crisis already spent some of the common budget, so the voluntary track gets the rest.
     const volBudget = budgets.shared ? budgets.voluntary - out.length : budgets.voluntary;
     const volMax = Math.min(volBudget, cap - out.length); // cap minus crisis points already shed
-    const bestVoluntary = bestOpenDestination(src, ranked, ownerPop, inboundCtx);
+    // Reuse the crisis destination when the crisis track shed nothing (P4): bestDestination's inputs
+    // (ranking populations + the inbound-cap predicate) are unchanged only if no point moved, so a
+    // recompute would return the identical result. When crisis DID shed (out.length > 0), a move
+    // mutated the ranking and noted inbound, so re-query for the voluntary track.
+    const bestVoluntary = out.length === 0
+      ? bestCrisis
+      : bestOpenDestination(src, ranked, ownerPop, inboundCtx);
     if (bestVoluntary) {
       for (const m of shedVoluntary(
         src,
