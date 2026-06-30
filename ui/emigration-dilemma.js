@@ -25,6 +25,7 @@ import { activeCrisis } from "/emigration/ui/emigration-event-attribution.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
 import { showDilemma } from "/emigration/ui/emigration-dilemma-view.js";
+import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
 const STATE_KEY = "EmigrationDilemma_v1";
 const STATE_SCHEMA_VERSION = 2;
@@ -47,6 +48,7 @@ const CHOICES = [
  */
 /** @type {DilemmaState | null} */
 let _state = null;
+registerCacheReset(() => { _state = null; });
 
 /**
  * @returns {DilemmaState} Empty persisted dilemma state.
@@ -182,6 +184,7 @@ function localPid() {
  * @returns {{ spree: Record<string, *[]>, age:number, count:number, lastTurn:number }} State.
  */
 function state() {
+  resetCachesOnNewGame();
   if (!_state) _state = loadState() || emptyState();
   return _state;
 }

@@ -21,6 +21,7 @@ import { formatPeopleExact } from "/emigration/ui/emigration-population.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
 import { returnLine, chronicleTitle } from "/emigration/ui/emigration-narrative.js";
 import { getReturnEnabled } from "/emigration/ui/emigration-settings.js";
+import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
 const STATE_KEY = "EmigrationReturn_v1";
 const STATE_SCHEMA_VERSION = 2;
@@ -28,6 +29,7 @@ const MAX_HOST_ENTRIES = 8192;
 
 /** @type {{ lastByHost: Record<string, number> } | null} Per-host last-return turn. */
 let _state = null;
+registerCacheReset(() => { _state = null; });
 
 /**
  * @returns {{ lastByHost: Record<string, number> }} Empty cooldown state.
@@ -85,6 +87,7 @@ function normalizeState(parsed) {
  * @returns {{ lastByHost: Record<string, number> }} State.
  */
 function state() {
+  resetCachesOnNewGame();
   if (!_state) _state = loadState() || emptyState();
   return _state;
 }

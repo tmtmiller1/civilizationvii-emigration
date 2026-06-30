@@ -31,6 +31,7 @@
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { speedTurns, speedDecay } from "/emigration/ui/emigration-game-speed.js";
 import { civTuning } from "/emigration/ui/emigration-civ-tuning.js";
+import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 import {
   districtDamageFrac, districtBesieged, pillagedCount
 } from "/emigration/ui/emigration-violence-signals.js";
@@ -50,6 +51,7 @@ const STATE_KEY = "EmigrationViolence_v2";
 
 /** @type {ViolenceState | null} */
 let _state = null;
+registerCacheReset(() => { _state = null; });
 
 /**
  * The current age-local game turn, or 0.
@@ -110,6 +112,7 @@ function normalizeViolence(s) {
  * @returns {ViolenceState} The state.
  */
 function state() {
+  resetCachesOnNewGame();
   if (_state) return _state;
   try {
     _state = loadPersisted();

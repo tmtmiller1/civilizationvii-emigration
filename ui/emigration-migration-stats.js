@@ -9,6 +9,7 @@
 // backward-compatibly (older saves simply lack the new maps, which default to {}).
 
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
+import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 import { logNetDistribution } from "/emigration/ui/emigration-telemetry.js";
 import { citySnapshot } from "/emigration/ui/emigration-city-readout-data.js";
 import { getSnapshotInterval } from "/emigration/ui/emigration-settings.js";
@@ -95,6 +96,7 @@ let _recent = [];
 
 /** @type {MigStatsState | null} */
 let _s = null;
+registerCacheReset(() => { _s = null; _recent = []; });
 
 /**
  * The raw persisted state string, or null.
@@ -178,6 +180,7 @@ function normalize(o) {
  * @returns {MigStatsState} State.
  */
 function load() {
+  resetCachesOnNewGame();
   if (_s) return _s;
   try {
     const raw = readStored();
@@ -541,10 +544,8 @@ export function migrationFlowHistory() {
   return h.map((snap) => {
     addFlows(running, snap.delta || {});
     return {
-      turn: snap.turn,
-      age: snap.age || "",
-      year: snap.year || "",
-      chartTurn: snap.chartTurn,
+      turn: snap.turn, age: snap.age || "",
+      year: snap.year || "", chartTurn: snap.chartTurn,
       // Per-civ native pop points snapshotted at this frame (absent on pre-population-history saves);
       // the consumer uses it for REAL growth and falls back to a scaled estimate when missing.
       pop: snap.pop || null,

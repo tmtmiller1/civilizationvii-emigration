@@ -5,6 +5,7 @@
 // the Chronicle keeps only the moments that read as history (a great exodus, a diaspora taking root,
 // a people returning home) and renders each as a line of prose (emigration-narrative.js).
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
+import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
 //
 // Persisted in GameConfiguration (survives save/reload), capped, newest-first. Defensive throughout:
@@ -30,6 +31,7 @@ let _log = null;
 
 /** @type {Set<string> | null} The set of dedupe keys currently in the log, for O(1) `chronicled`. */
 let _keys = null;
+registerCacheReset(() => { _log = null; _keys = null; });
 
 /**
  * The dedupe-key set, lazily built from the log. Kept in sync by {@link chronicle} on insert/trim and
@@ -38,6 +40,7 @@ let _keys = null;
  * @returns {Set<string>} The dedupe keys present in the log.
  */
 function keys() {
+  resetCachesOnNewGame(); // dedupe gate reads keys() BEFORE log(); guard here too so a new game resets it
   if (!_keys) {
     _keys = new Set();
     for (const e of log()) {
@@ -99,6 +102,7 @@ function normalizeLoaded(arr) {
  * @returns {ChronicleEntry[]} Entries (newest-first).
  */
 function log() {
+  resetCachesOnNewGame();
   if (!_log) _log = loadPersisted();
   return _log;
 }

@@ -48,8 +48,8 @@
         <Replace Tag="LOC_EMIG_T_REQUIREMET_D" Language="de_DE"><Text>Nur fremde Städte berücksichtigen, die deine Zivilisation kennengelernt hat.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CIVTUNE" Language="de_DE"><Text>Umfang – Feinabstimmung je Anführer/Civ</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CIVTUNE_D" Language="de_DE"><Text>Kleine, handabgestimmte Anpassungen je Anführer und Zivilisation anwenden (Magnetdämpfung, Integrationstempo, Kriegsverbleib, Quellbias), damit Ausreißer sich unterschiedlich verhalten. Aus = jede Civ nutzt dasselbe globale Modell.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CTSTRENGTH" Language="de_DE"><Text>Scope: civ-tuning strength</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CTSTRENGTH_D" Language="de_DE"><Text>How far the per-leader/civ adjustments are allowed to diverge from the global model. 1.0 = full distinct identities; lower values flatten the differences between civilizations toward the same model to curb snowballing; 0 = fully flat (same as turning the table off).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CTSTRENGTH" Language="de_DE"><Text>Umfang – Stärke der Civ-Feinabstimmung</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CTSTRENGTH_D" Language="de_DE"><Text>Wie weit die Anpassungen je Anführer/Civ vom globalen Modell abweichen dürfen. 1.0 = vollständig eigenständige Identitäten; niedrigere Werte gleichen die Unterschiede zwischen Zivilisationen zum selben Modell hin an, um Schneeballeffekte zu bremsen; 0 = völlig flach (wie das Abschalten der Tabelle).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BORDERS" Language="de_DE"><Text>Umfang – Grenzpolitiken</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BORDERS_D" Language="de_DE"><Text>Die Wirkung der Politiken „Offene/Geschlossene Grenzen“ auf die Einwanderung aktivieren (die Politikkarten erscheinen im Politikmenü und kosten oder gewähren Einfluss). Aus = die Politiken haben keine Wanderungswirkung.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CLOSEDOPEN" Language="de_DE"><Text>Grenzen – Offenheit bei Geschlossenen Grenzen</Text></Replace>
@@ -108,8 +108,8 @@
         <Replace Tag="LOC_EMIG_T_FLEE_D" Language="de_DE"><Text>Wie stark Flüchtlinge Ziele abseits des nächsten Eindringlings bevorzugen.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH" Language="de_DE"><Text>Geografie – Reibung zwischen Civs</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH_D" Language="de_DE"><Text>Zusätzliche Zurückhaltung, über eine Zivilisationsgrenze zu wandern.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="de_DE"><Text>Crisis escape (flee abroad)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="de_DE"><Text>How strongly a civilization in acute crisis (war/disaster) pushes its refugees to flee ACROSS BORDERS to another empire, rather than relocating to its own (equally-stricken) cities and dying there. Higher = more cross-civ escape. 0 = off.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="de_DE"><Text>Krisenflucht (ins Ausland fliehen)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="de_DE"><Text>Wie stark eine Zivilisation in akuter Krise (Krieg/Katastrophe) ihre Flüchtlinge dazu drängt, ÜBER GRENZEN HINWEG in ein anderes Reich zu fliehen, statt in ihre eigenen (ebenso betroffenen) Städte umzusiedeln und dort zu sterben. Höher = mehr zivilisationsübergreifende Flucht. 0 = aus.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL" Language="de_DE"><Text>Geografie: Migrationsschub durch offene Grenzen</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="de_DE"><Text>Wie sehr ein Abkommen über offene Grenzen zwischen zwei Zivilisationen die Wanderung zwischen ihnen erleichtert, in beide Richtungen. 0 = aus.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="de_DE"><Text>Geografie: Reiseverzögerung (0 = sofort)</Text></Replace>
@@ -130,11 +130,11 @@
         <Replace Tag="LOC_EMIG_T_MHGOLD_D" Language="de_DE"><Text>Gold, das je gehaltener UNIT_MIGRANT pro Runde entzogen wird, skalierend mit der Anzahl. 0 = aus. (Per Sonde bestätigter Abzugshebel.)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST" Language="de_DE"><Text>Kosten – Überlastungs-Gegenwind (0 = aus)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="de_DE"><Text>Eine Zivilisation, die viele Migranten aufnimmt, zu einem weniger attraktiven Ziel für weitere Wanderung machen (sie ist mit Integration beschäftigt), skalierend mit der Menge, die sie verdaut. Eine strukturelle Bremse gegen außer Kontrolle geratene Magnete. 0 = aus.</Text></Replace>
-        <Replace Tag="LOC_EMIG_EVENT_FAMINE" Language="de_DE"><Text>Famine</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="de_DE"><Text>Cost: anti-snowball brake (0 = off)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="de_DE"><Text>Make a civilization whose population has pulled far ahead of the field a less attractive destination for cross-civ migration: a self-correcting brake on a runaway leader that grows with how far ahead it is (0 off / 8 gentle / 15 standard / 28 strong). It never impedes a leader's OUTflow or internal moves. 0 = off.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="de_DE"><Text>Cost: anti-snowball trigger (fair-share ×)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="de_DE"><Text>How far a civilization's population may run ahead of the world-average civ before the anti-snowball headwind starts to bite, as a multiple of fair share. Lower = the brake engages sooner (more egalitarian); higher = only an extreme runaway leader is slowed.</Text></Replace>
+        <Replace Tag="LOC_EMIG_EVENT_FAMINE" Language="de_DE"><Text>Hungersnot</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="de_DE"><Text>Kosten – Anti-Schneeball-Bremse (0 = aus)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="de_DE"><Text>Eine Zivilisation, deren Bevölkerung dem Feld weit vorausgeeilt ist, zu einem weniger attraktiven Ziel für zivilisationsübergreifende Wanderung machen: eine selbstkorrigierende Bremse für einen außer Kontrolle geratenen Spitzenreiter, die mit seinem Vorsprung wächst (0 aus / 8 sanft / 15 normal / 28 stark). Sie behindert nie den ABfluss eines Spitzenreiters oder interne Bewegungen. 0 = aus.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="de_DE"><Text>Kosten – Anti-Schneeball-Auslöser (fairer Anteil ×)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="de_DE"><Text>Wie weit die Bevölkerung einer Zivilisation der durchschnittlichen Civ vorauseilen darf, bevor der Anti-Schneeball-Gegenwind zu greifen beginnt, als Vielfaches des fairen Anteils. Niedriger = die Bremse greift früher (egalitärer); höher = nur ein extrem außer Kontrolle geratener Spitzenreiter wird gebremst.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="de_DE"><Text>Katastrophen – Wanderung antreiben</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="de_DE"><Text>Umweltkatastrophen (Fluten, Vulkane, Seuchen …) Bevölkerung aus betroffenen Städten treiben lassen als Klima-/Katastrophenflüchtlinge, neben Krieg und Unzufriedenheit. Aus = Katastrophen beeinflussen die Wanderung nicht.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="de_DE"><Text>Katastrophen – Auswanderung je Notpunkt (%)</Text></Replace>
@@ -153,8 +153,8 @@
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE_D" Language="de_DE"><Text>Wie gesprächig Wanderungsbenachrichtigungen sind: 0 = aus, 1 = nur wichtige (Flüchtlingskrisen und schwere Katastrophen – Standard), 2 = ausführlich (jede Runde mit nennenswerter Wanderung eine Zusammenfassung).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER" Language="de_DE"><Text>Benachrichtigungen – min. Katastrophenstärke</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER_D" Language="de_DE"><Text>Nur bei Katastrophen ab dieser Stärke benachrichtigen (0 = auch kleine Ereignisse, 3 = nur legendäre wie ein großer Ausbruch). Kleine Katastrophen beeinflussen die Wanderung weiterhin still.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DNOTIFYMODE" Language="de_DE"><Text>Notifications: disaster popups</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DNOTIFYMODE_D" Language="de_DE"><Text>Which disasters pop up on screen (the notifications log always keeps every severe one regardless): 0 = off, log only; 1 = only disasters that strike a settlement, so they actually drive migration (the default); 2 = any disaster at or above the minimum severity. Combine with "min disaster severity" to tune how bad is bad enough.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DNOTIFYMODE" Language="de_DE"><Text>Benachrichtigungen – Katastrophen-Pop-ups</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DNOTIFYMODE_D" Language="de_DE"><Text>Welche Katastrophen auf dem Bildschirm aufpoppen (das Benachrichtigungsprotokoll behält ohnehin jede schwere): 0 = aus, nur Protokoll; 1 = nur Katastrophen, die eine Siedlung treffen, sodass sie tatsächlich Wanderung antreiben (Standard); 2 = jede Katastrophe ab der Mindeststärke. Mit „min. Katastrophenstärke“ kombinieren, um abzustimmen, wie schlimm schlimm genug ist.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD" Language="de_DE"><Text>Benachrichtigungen – Mindestabstand (Runden)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD_D" Language="de_DE"><Text>Die wenigsten Runden zwischen wichtigen Benachrichtigungen, damit sie sich nicht häufen. 0 = kein Limit.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD" Language="de_DE"><Text>Benachrichtigungen – Schwelle der Flüchtlingskrise</Text></Replace>
@@ -191,10 +191,10 @@
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="de_DE"><Text>{1_People} verließen {2_City}, unzufrieden mit ihrer Heimat.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="de_DE"><Text>{1_People} verließen {2_City} auf der Suche nach wohlhabenderen Nachbarn.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="de_DE"><Text>{1_People} flohen vor den Kämpfen um {2_City}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="de_DE"><Text>{1_People} were taken from {2_City} when it changed hands.</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_UNITS" Language="de_DE"><Text>Units:</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="de_DE"><Text>Switch between the Civ's own population numbers and scaled people</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="de_DE"><Text>Playback timeline appears after a couple of turns, once there's population history to scrub through.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="de_DE"><Text>{1_People} wurden aus {2_City} verschleppt, als die Stadt den Besitzer wechselte.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS" Language="de_DE"><Text>Einheiten:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="de_DE"><Text>Zwischen den eigenen Bevölkerungszahlen der Civ und skalierten Menschen wechseln</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="de_DE"><Text>Die Wiedergabe-Zeitleiste erscheint nach ein paar Runden, sobald es eine Bevölkerungshistorie zum Durchscrubben gibt.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="de_DE"><Text>{1_People} flohen aus {2_City}, nachdem eine Katastrophe zuschlug.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="de_DE"><Text>{1_People} gingen in {2_City} verloren, ohne Fluchtweg.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="de_DE"><Text>Steigere die Zufriedenheit der Stadt oder wähle eine einwanderungsfeindliche Haltung, um sie zu halten.</Text></Replace>
@@ -265,7 +265,7 @@
         <Replace Tag="LOC_OPTIONS_EMIG_DOCK_DESCRIPTION" Language="de_DE"><Text>Die Schaltfläche „Migration“ im Spiel-Dock anzeigen. Deaktivieren, um das Dashboard stattdessen über den Tab „Migration“ im Demografie-Bildschirm zu öffnen.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="de_DE"><Text>Noch keine zivilisationsübergreifende Wanderung – Ströme erscheinen, sobald Menschen Grenzen überqueren.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="de_DE"><Text>Färben nach:</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_HELP" Language="de_DE"><Text>How to read this</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_HELP" Language="de_DE"><Text>So liest du das</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_INFO" Language="de_DE"><Text>Info:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="de_DE"><Text>Herkunft</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="de_DE"><Text>Art</Text></Replace>

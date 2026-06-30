@@ -251,12 +251,16 @@ net importers, red for net exporters — so the migration winners/losers are obv
 per-civ in/out/net for the dashboard — reuse that rather than re-deriving.
 
 **Implementation.**
-1. **Source the totals.** Prefer the existing ledger math. Check
-   [emigration-ledger-view.js](../ui/emigration-ledger-view.js) and
-   [emigration-migration-stats.js](../ui/emigration-migration-stats.js) for a per-owner
-   `{in, out, net}` builder; if present, export a pure `netByCiv(section)` helper and import it into the
-   viz. If not, add `netByCiv(frames)` to [emigration-flow-history.js](../ui/emigration-flow-history.js):
-   fold `edges[]` to `out[from] += people`, `in[to] += people`, `net = in - out`.
+1. **Source the totals (the builder already exists — reuse, do not re-derive).** Cumulative per-owner
+   net/in/out is `netCumFor(pid)` / `grossInCumFor(pid)` / `grossOutCumFor(pid)`
+   ([emigration-migration-stats.js](../ui/emigration-migration-stats.js#L979) **L979–993**), also surfaced
+   as `ownerStats(pid)` ([emigration-city-readout-data.js](../ui/emigration-city-readout-data.js#L263)) and
+   `civLedgerRows(civs)` ([emigration-views.js](../ui/emigration-views.js#L31)). Export a thin
+   `netByCiv(section)` adapter over those and import it into the viz. **This is the same per-owner totals
+   source Features S, X, Y, and M consume — they all read `netCumFor`/`ownerStats`, not a parallel fold.**
+   Only if you need net **scoped to the visible timeline window** (not cumulative) add `netByCiv(frames)` to
+   [emigration-flow-history.js](../ui/emigration-flow-history.js): fold `edges[]` to `out[from] += people`,
+   `in[to] += people`, `net = in - out`.
 2. **Map net → color.** Add `brainDrainTint(net, maxAbs)` returning an rgba ramp
    (red↔neutral↔green). Pass a per-civ `net` into the scene nodes (extend `NetworkNode` with a
    transient `net` field set at build time in `buildCenters()` /
@@ -323,17 +327,20 @@ correctly (it does for the existing marks).
 panel feels live and answers "is this getting better or worse?"
 
 **Current state.** [emigration-city-readout-data.js](../ui/emigration-city-readout-data.js) exposes
-`ownerNet/ownerIn/ownerOut` and the session-local `recentEventsFor` feed; the readout renders via
-`readoutModel()` ([emigration-city-readout.js](../ui/emigration-city-readout.js#L168)).
+`ownerNet/ownerIn/ownerOut`; the readout renders via `readoutModel()`
+([emigration-city-readout.js](../ui/emigration-city-readout.js#L89)). Note: the session-local
+`recentEventsFor(pid, limit)` feed is **not** in readout-data — it lives in
+[emigration-migration-stats.js](../ui/emigration-migration-stats.js#L822) and is keyed **per-owner**, not
+per-city. Use the per-city `cityEvents()` getter from §15.0b as the series source (build §15.0b first).
 
 **Implementation.**
-1. **Series.** Add a small ring buffer of recent per-city net values. Cheapest: derive from the existing
-   migration timeline (`recordMigrations` history) — add `cityNetSeries(cityId, n)` to
-   [emigration-migration-records.js](../ui/emigration-migration-records.js) or the readout-data module,
-   returning the last `n` net values (in/out per recorded pass for that city).
+1. **Series.** Do **not** add a second per-city history store. `cityNetSeries(cityKey, n)` is a thin
+   reduction of the §15.0b `cityEvents(cityKey, n)` substrate (sum `in − out` per pass), co-located in
+   [emigration-migration-stats.js](../ui/emigration-migration-stats.js), returning the last `n` net values.
+   Features E (this sparkline), M (forecast), and O (event feed) all read that one substrate.
 2. **Render.** Add `sparkline(values, w, h)` returning an inline SVG/canvas-free `<div>` bar strip
    (GameFace-safe: a row of `<span>`s with heights, or a tiny `<canvas>` reusing `setupCanvas()` from the
-   network module). Insert into `readoutModel()` near `originsLine()` (**L127**).
+   network module). Insert into `readoutModel()` near `originsLine()` (**L61**).
 
 **Config / tunables.** `cityReadoutSparkline: true` (bool tunable).
 
@@ -351,9 +358,9 @@ handles all-zero / single-point series.
 integration system you already simulate *matters* mechanically.
 
 **Current state.** Integration-over-time lives in `integrateCity()` /
-[emigration-composition.js](../ui/emigration-composition.js#L437). Diaspora *visibility* milestones are
+[emigration-composition.js](../ui/emigration-composition.js#L410). Diaspora *visibility* milestones are
 already detected by tier in `detectFoundingForCity()`
-([emigration-diaspora.js](../ui/emigration-diaspora.js#L143), `DIASPORA_STEP = 0.15`). There is no
+([emigration-diaspora.js](../ui/emigration-diaspora.js#L127), `DIASPORA_STEP = 0.15`). There is no
 "fully blended" outcome yet. The per-turn yield-grant plumbing exists in
 [emigration-effects.js](../ui/emigration-effects.js) (`Players.grantYield` via `deduct()` — can grant
 positive too) and the dividend path (`tickAttractionDividend`).
@@ -373,9 +380,10 @@ positive too) and the dividend path (`tickAttractionDividend`).
 3. **Narrative.** Add `blendLine(e)` to [emigration-narrative.js](../ui/emigration-narrative.js) (a
    "Cultural Quarter" / "the newcomers are now simply locals" prose set) and chronicle it
    (`kind: "founding"` reused, or a new `"blend"` kind — if new, extend the `ChronicleEntry.kind` union
-   **L17**, the view's kind label in
-   [emigration-chronicle-view.js](../ui/emigration-chronicle-view.js#L49), and `chronicleTitle()`
-   **L224**).
+   **L19**, the view's kind label `KIND_LABEL` in
+   [emigration-chronicle-view.js](../ui/emigration-chronicle-view.js#L52), and `chronicleTitle()`
+   **L224**). **F's `"blend"`, H's `"recap"`, and R's `"milestone"` are the same coordinated union edit —
+   see §16.4; add all kinds in one pass, not three.**
 
 **Config / tunables.** `culturalBlendEnabled: false` (off by default — it's a new reward),
 `blendFromShare: 0.3`, `blendToShare: 0.05`, `blendBonusYield: "YIELD_CULTURE"`, `blendBonusAmount`,
@@ -467,7 +475,7 @@ top corridor; no-data age → graceful empty recap (no throw).
 follow-up (e.g. "the Roman diaspora that fled to Carthage is now 40% integrated").
 
 **Current state.** Founding moments are chronicled with a `dedupeKey` that already encodes
-`city|origin|tier` ([emigration-diaspora.js](../ui/emigration-diaspora.js#L151)). Integration share is
+`city|origin|tier` ([emigration-diaspora.js](../ui/emigration-diaspora.js#L136)). Integration share is
 queryable any turn via `compositionForCity()`.
 
 **Implementation.** When `detectFoundingForCity()` crosses a *downward* tier (integration progressing),
@@ -590,7 +598,7 @@ do so), while an autocratic/mobilized government closes cheaply (and is *penaliz
   `{ canClose: boolean, closeOpennessMult, openInfluencePenalty, closeHappinessPenalty }` per known
   government, with a neutral default for unknown ones.
 - **Apply it.**
-  - In `immigrationOpenness(pid)` (**L85**): if the government's `canClose === false`, clamp the Closed
+  - In `immigrationOpenness(pid)` (**L137**): if the government's `canClose === false`, clamp the Closed
     effect toward neutral (the card still grants its native Production, but the *immigration throttle*
     is reduced — "you can post the policy, but your open society keeps leaking"). Otherwise scale the
     throttle by `closeOpennessMult`.
@@ -824,8 +832,8 @@ tooltip ([emigration-network-interact.js](../ui/emigration-network-interact.js))
    [emigration-pull.js](../ui/emigration-pull.js#L262)) for `drawnTo`. Fold the **enclave** term: if the
    destination's `compositionForCity()`/`compositionForOwner()`
    ([emigration-composition.js](../ui/emigration-composition.js#L510)/[**L528**](../ui/emigration-composition.js#L528))
-   has a share of the mover's origin, surface it as "Existing _ community" (this is also the §3-Feature-K
-   `enclaveAffinity` signal — reuse if K shipped).
+   has a share of the mover's origin, surface it as "Existing _ community" (this is the same signal as
+   §11 / Feature K's `enclaveAffinity` — reuse it if K shipped, otherwise read the share directly).
 2. **Render.** `renderExplain(parent, model)` — two labeled groups, each a row per factor with a small
    weight bar (the GameFace-safe `<span>`-height idiom from §5/§1, not a `<canvas>`). Reuse
    `civDisplayColor()` ([emigration-civ-colors.js](../ui/emigration-civ-colors.js)) for the community row's
@@ -1221,7 +1229,8 @@ key `"srcCiv>destCiv>srcCity>destCity"`; the flow view consumes `frameSegments()
 2. **Surface.** (a) Label the flow segment in `frameSegments()`/`drawArrow()` when a corridor is named. (b)
    Feed names into the **age recap** (Feature H) and the **chronicle**. (c) optional list in the dashboard.
 
-**Config / tunables.** `culturalCorridors: true`, `corridorThreshold` (choice). `readout`/`visuals` group.
+**Config / tunables.** `culturalCorridors: true`, `corridorThreshold` (choice). `visuals` group (it paints
+on the flow view; keep flow-view toggles together with B/C/D rather than splitting across two groups).
 **Localization.** `LOC_EMIG_CORRIDOR_*` name fragments + `_REFUGE_*` variants; all locales.
 **Tests.** `tests/corridors.mjs`: corridor named only past threshold; name stable across passes (persisted);
 refugee corridor draws the refuge name set; below threshold → unnamed.
@@ -1351,3 +1360,166 @@ cards — so players understand not just **where** people moved, but **why**, an
 it**.* The shortlist that carries that headline: **L (explainer), N (advisor), S/T (diversity/cosmopolitan
 ranking), O (city feed), P (policy preview), Q (diaspora cards), X (micro-icons)** — all readability-first,
 all low balance risk, most default on.
+
+---
+
+## 16. Consistency pass — overlaps, collisions & contradictions resolved
+
+This section reconciles the whole plan (A–K, §12, and L–Z) after a verification pass. Each item below is
+either an overlap to **share once**, a collision to **arbitrate**, or a contradiction to **correct**. The
+inline specs above were edited to match these resolutions; this section is the index of why.
+
+### 16.1 Anchor drift — §15's line numbers are authoritative
+
+The §0 map and Features A–K were written against an earlier tree and several anchors had drifted (e.g.
+`readoutModel()` was listed at **L168**, actually **L89**; the border-stance exports were ~50 lines off;
+`moveRecord/departRecord/arriveRecord` at **L45/68/89**, actually **L64/93/117**). The §0 map and the A–K
+"Current state" blocks were **corrected inline** to the verified anchors. Standing rule (already in the
+header note): **the function name is the source of truth; re-grep before editing.** Where two sections ever
+disagree again, the **§15** values are the most recently verified.
+
+### 16.2 One per-city history substrate, not three (E ∩ M ∩ O)
+
+Feature E originally proposed `cityNetSeries()` in `emigration-migration-records.js`, and separately claimed
+the `recentEventsFor` feed lived in `emigration-city-readout-data.js`. Both were wrong: `recentEventsFor` is
+in `emigration-migration-stats.js` (**L822**) and is **per-owner**. **Resolution:** §15.0b's
+`cityEvents(cityKey, limit)` is the single per-city history getter; E's `cityNetSeries` is a thin reduction
+of it, M's forecast reads it, O's feed formats it. Build §15.0b first. (E's spec was corrected.)
+
+### 16.3 One per-owner totals source (C ∩ S ∩ X ∩ Y ∩ M)
+
+Feature C speculated "if no per-owner `{in,out,net}` builder exists, add one." It **does**:
+`netCumFor`/`grossInCumFor`/`grossOutCumFor` (stats **L979–993**), `ownerStats` (readout-data **L263**),
+`civLedgerRows` (views **L31**). All of C (brain-drain tint), S (diversity ranking adjuncts), X (▲/▼
+icons), Y (digest flips), and M (forecast) read **those**, not a parallel fold. C's "add `netByCiv(frames)`"
+path now applies **only** to timeline-window-scoped net, which is a genuinely different number. (C corrected.)
+
+### 16.4 One coordinated `ChronicleEntry.kind` extension (F ∩ H ∩ R)
+
+Three features add a new chronicle kind: F (`"blend"`), H (`"recap"`), R (`"milestone"`). These are the
+**same edit** to three spots — the `kind` union (**L19**), `KIND_LABEL`
+([emigration-chronicle-view.js](../ui/emigration-chronicle-view.js#L52)), and `chronicleTitle()` (**L224**).
+**Resolution:** if more than one of F/H/R ships, add all needed kinds in **one** pass with one label-map and
+one title-switch update; don't land three half-edits to the same union. (Noted inline in F.)
+
+### 16.5 Dilemma arbitration — V must not collide with the existing dilemma (V ∩ §12.2b ∩ existing)
+
+Feature V (`detectHumanitarianDilemma`) and the shipped `detectConquestDilemma()`
+([emigration-dilemma.js](../ui/emigration-dilemma.js#L268)) can both want to fire in the same turn, and
+§12.2b option-2 proposes a *third* dilemma-style panel. There is **one** dilemma surface (`showDilemma()`,
+one modal). **Resolution:** add a single arbiter in the dilemma module — at most one dilemma per turn,
+priority `conquest > humanitarian > (selective-borders panel)`, all sharing the existing
+`DilemmaState.spree`/`lastTurn` rate-limit (**L45**). Do not let two `showDilemma()` calls race. V's spec
+already routes through that state; this makes the precedence explicit.
+
+### 16.6 Tunable groups — `visuals` and `readout` are each created once
+
+Features B/C/D each say "a new `visuals` group" and §13.1 says the same; §15 adds a `readout` group. Only
+the **first** feature to land in each group creates it; the rest **join**. Allocation: **`visuals`** = the
+canvas/flow-view toggles (B particles, C brain-drain, D pins, W corridor labels, J pressure lens);
+**`readout`** = the intelligence panel toggles (L–T, U scale, X icons, Y digest, Z export). Feature W's
+earlier "`readout`/`visuals`" ambiguity was resolved to **`visuals`** (it paints on the flow view).
+
+### 16.7 Cross-batch sequencing — E moves into the §15 wave
+
+Feature E (sparkline) is listed in the original §14 plan (step 2) **and** in §15.16 (step 2). That's
+intentional, not a contradiction: E shares the §15.0b per-city substrate with M/O, so it is most cheaply
+built **with** the intelligence batch. **§15.16 supersedes the §14 placement of E.** The rest of §14 (A,
+B, C, D, F, G, H, J, K, §12) is unchanged.
+
+### 16.8 Smaller overlaps (share, don't duplicate)
+
+- **Enclave share (K ∩ L):** "Existing _ community" in L's explainer is the same composition-share signal as
+  K's `enclaveAffinity`. Reuse K's helper if shipped; otherwise read `compositionFor*` share directly.
+- **Diaspora narrative (Q ∩ I ∩ F):** Q's card "status" (growing/integrating/blended) shares wording with
+  I's follow-ups and F's blend milestone — one status vocabulary across all three.
+- **Crisis surface (U ∩ D ∩ V):** U's optional map badge reuses D's `drawEventBadge()` path; U's severity is
+  the trigger input to V. One `crisisSeverity()` (U) feeds all three; don't recompute.
+- **Corridors (W ∩ H):** named corridors feed H's age recap and the chronicle — one `namedCorridors()`
+  source, consumed by H, not a second corridor scan.
+- **`formatPeopleExact()`** is treated as existing by H and reused by M/O/U/Y/Z — verify it's exported
+  before the first consumer lands (it's used by the flow view today).
+
+---
+
+## 17. Carried-over deferred features (from the open-items backlog)
+
+These two were tracked in [emigration-open-items.md](emigration-open-items.md) but are genuine
+**net-new features**, not the correctness/perf/maintainability cleanups that file descends from — so
+they're moved here to live with the rest of the feature roadmap. Both follow §13's cross-cutting rules
+(flag-gating, modinfo registration, localization parity, tests wired into the gate). Each carries the
+"revisit when" trigger it had in the backlog.
+
+### 17.1 Feature AA — Wire the staged Migration Chronicle view *(low; frontend wiring)*
+
+**Goal.** Mount the already-built Migration Chronicle **view** into a Demographics sub-tab so the live
+chronicle data has a home in the UI.
+
+**Current state.** `renderChronicle(body)`
+([emigration-chronicle-view.js:74](../ui/emigration-chronicle-view.js#L74)) exists and its
+idempotent-render bug is already fixed, but it is **not mounted** anywhere yet. The Chronicle **data**
+layer is fully live — `chronicle()` ([emigration-chronicle.js:153](../ui/emigration-chronicle.js#L153))
+is written by the dilemma/return paths and mirrored to Notifications via `mirrorToNotifications()`
+([**L131**](../ui/emigration-chronicle.js#L131)). This is a built-ahead-of-wiring feature; **do not
+delete it** — the action is to wire it up.
+
+**Implementation.**
+1. **Mount.** Add a "Chronicle" sub-tab to the Demographics window and call `renderChronicle(body)` from
+   the same dashboard-gather path the other tabs use (`gatherDashboard()`
+   [emigration-window.js:676](../ui/emigration-window.js#L676)). Refresh on the same turn-advance signal
+   the other views use so entries appear as they're chronicled.
+2. **Kind labels.** Confirm the view's `KIND_LABEL`
+   ([emigration-chronicle-view.js:52](../ui/emigration-chronicle-view.js#L52)) covers every
+   `ChronicleEntry.kind` in play (and any new kinds added by §6-F/H/R — coordinate with §16.4).
+
+**Config / tunables.** `chronicleTabEnabled: true` (`readout` group). **Localization.** Reuse the view's
+existing strings; fold its raw English (`"Turn "`, fallback title, empty-state prose, `KIND_LABEL`) into
+the Phase-1 `LOC_*` sweep noted in the open-items cross-cutting list. **Tests.** Extend the chronicle-view
+test: the tab renders without throwing on an empty log, is idempotent across re-render, and shows entries
+newest-first.
+
+**Risk.** Low — additive frontend over a live data layer. Deliberately excluded from the behavior-neutral
+dead-code pass because it's a feature, not cleanup.
+
+### 17.2 Feature AB — City-local migration brakes (Phase 5) *(higher — gameplay; off until shakedown)*
+
+**Goal.** Move the assimilation / congestion **braking** load from **civ scope to city scope** so
+congestion penalties bite per destination city rather than empire-wide — the optional follow-on to the
+shipped two-track voluntary/crisis split.
+
+**Current state.** The voluntary/crisis split **shipped** (engine `processSourceSplit`,
+`crisisPressure`/`crisisCooldown` state, split per-civ budgets, counterfactual parity, the
+`splitTracksEnabled` / `splitBudgetsEnabled` / `splitUiReadoutEnabled` flags, and the multi-cause
+`causeMix` city readout). The brakes today are **civ-scoped**: `addAssimilationLoad()`,
+`tickAssimilation()`, `assimLoadFor()`, `congestionPenalty()`
+([emigration-effects.js](../ui/emigration-effects.js#L105)) key load by owner, not city (verified: no
+city-keyed load in effects.js). This piece was explicitly gated "ship only after Phase 1 stability gates
+pass" / after the in-game pass. (Source: the now-deleted `MIGRATION_SPLIT_PLAN.md` §5 / `SHIP_PLAN.md`
+Phase 5.)
+
+**Implementation.**
+1. **Re-key the load by destination city id.** Change the `EmigrationAssim_v1` load store and
+   `addAssimilationLoad(destOwner, destPopulation)` / `tickAssimilation()` / `assimLoadFor()` /
+   `congestionPenalty()` to key on destination city id instead of owner pid. Ship a **compatibility
+   migration** that folds any existing owner-scoped persisted load into the new city-keyed shape on first
+   load (don't drop accumulated load on upgrade).
+2. **Bound it.** Keep the same caps/clamps the civ-scoped version uses so per-city braking can't exceed
+   the existing empire-wide ceiling; run the migrated path through the balance harnesses
+   (`scripts/snowball-stress.mjs`, `calibration-sweep`).
+
+**Config / tunables.** `cityScopedBrakes: false` (**off by default** — it changes braking behavior);
+ship behind the flag and validate in-game before defaulting on.
+
+**Optional enhancements (lower value, not started).**
+- A **voluntary-vs-crisis toggle** in the network viz (let the player filter the flow/dots view to one
+  track).
+- Promote the **per-cause Demographics metrics** to **on-by-default** (today opt-in via
+  `splitUiReadoutEnabled`).
+
+**Tests.** Add `tests/city-scoped-brakes.mjs`: city-keyed load accumulates/decays per city; the
+owner→city compatibility migration preserves total load; congestion penalty stays within the existing
+clamp; off flag → byte-identical to the current civ-scoped behavior (characterization test).
+
+**Revisit when** the split has had its in-game shakedown and city-granular braking is actually wanted.
+**Risk.** Gameplay/balance + a persisted-state migration — ship off by default, validate with the
+balance scripts, and document.

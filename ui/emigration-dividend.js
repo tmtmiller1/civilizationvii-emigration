@@ -9,6 +9,7 @@
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { speedDecay } from "/emigration/ui/emigration-game-speed.js";
+import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
 const DIV_KEY = "EmigrationDividend_v1";
 const DIV_SCHEMA_VERSION = 2;
@@ -18,6 +19,7 @@ const DIVIDEND_YIELDS = ["YIELD_SCIENCE", "YIELD_CULTURE", "YIELD_GOLD"];
 
 /** @type {{ pool: Record<string, number>, tickedTurn: Record<string, number> } | null} */
 let _div = null;
+registerCacheReset(() => { _div = null; });
 
 /**
  * @returns {{ pool: Record<string, number>, tickedTurn: Record<string, number> }} Empty dividend state.
@@ -117,6 +119,7 @@ function divReadStored() {
  * @returns {{ pool: Record<string, number>, tickedTurn: Record<string, number> }} State.
  */
 function divState() {
+  resetCachesOnNewGame();
   if (_div) return _div;
   try {
     const raw = divReadStored();

@@ -190,7 +190,7 @@ function renderPanel(model) {
  * disabled or when no snapshot can be built (hides any stale panel in the latter case).
  * @param {*} cityId The city identifier.
  */
-export function showCityReadout(cityId) {
+function showCityReadout(cityId) {
   if (!CONFIG.cityReadoutEnabled) return;
   const model = readoutModel(citySnapshot(cityId));
   if (!model) {
@@ -201,7 +201,7 @@ export function showCityReadout(cityId) {
 }
 
 /** Hide the readout panel. */
-export function hideCityReadout() {
+function hideCityReadout() {
   try {
     if (_el && _el.parentNode) _el.remove();
   } catch (_) {

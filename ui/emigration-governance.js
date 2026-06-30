@@ -18,10 +18,10 @@
 
 import { getVisibilityOverride } from "/emigration/ui/emigration-settings.js";
 
-export const POLICY_DISABLED = "disabled";
-export const POLICY_OWN = "own-civ-only";
-export const POLICY_MET = "met-civs-only";
-export const POLICY_FULL = "full";
+const POLICY_DISABLED = "disabled";
+const POLICY_OWN = "own-civ-only";
+const POLICY_MET = "met-civs-only";
+const POLICY_FULL = "full";
 
 /** @type {Record<string, number>} */
 const RANK = { [POLICY_DISABLED]: 0, [POLICY_OWN]: 1, [POLICY_MET]: 2, [POLICY_FULL]: 3 };
@@ -113,7 +113,7 @@ export function effectivePolicy() {
  * Whether the effective policy restricts views to the local civ only (own-civ-only / disabled).
  * @returns {boolean} True when only the local civ may be shown.
  */
-export function policyOwnCivOnly() {
+function policyOwnCivOnly() {
   return RANK[effectivePolicy()] <= RANK[POLICY_OWN];
 }
 
@@ -121,7 +121,7 @@ export function policyOwnCivOnly() {
  * Whether the effective policy hides unmet civs (anything other than full).
  * @returns {boolean} True to hide unmet civs.
  */
-export function policyHidesUnmet() {
+function policyHidesUnmet() {
   return effectivePolicy() !== POLICY_FULL;
 }
 
@@ -145,7 +145,7 @@ export function localPlayerId() {
  * @param {number} pid Player id.
  * @returns {boolean} True when local.
  */
-export function isLocalCiv(pid) {
+function isLocalCiv(pid) {
   const me = localPlayerId();
   return me !== undefined && Number(pid) === me;
 }

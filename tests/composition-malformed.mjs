@@ -42,6 +42,13 @@ for (const [x, y] of [[2, 2], [3, 3], [4, 4], [5, 5]]) {
 const derived = compositionForCity(city(6, 6));
 assert.ok(derived && derived.total === 7, "missing total should derive from the byCiv sum");
 
+// compositionForCity is self-guarding: even a LIVE city whose `location` accessor THROWS degrades to
+// null (the one residual throw vector load-normalization can't reach, since locKey reads city.location
+// off the engine object). Without the source guard this propagates onto the uncaught lens / tooltip /
+// readout / diaspora / return paths, or is silently masked by the network window's broad per-city catch.
+const throwingCity = { get location() { throw new Error("unreadable plot accessor"); } };
+assert.equal(compositionForCity(throwingCity), null, "a throwing city read must drop to null, not throw");
+
 // Owner aggregates over a map that still contains (pre-normalization) malformed entries never throw.
 assert.doesNotThrow(() => compositionForOwner(0), "owner 0 aggregate must not throw");
 assert.doesNotThrow(() => compositionForOwner(4), "owner 4 aggregate must not throw");

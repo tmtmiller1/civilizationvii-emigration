@@ -9,6 +9,8 @@
 // Persisted in GameConfiguration (survives save/reload), capped, newest-first. Everything is
 // defensive: with no GameConfiguration (headless / pre-boot) reads return [] and writes no-op.
 
+import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
+
 const STATE_KEY = "EmigrationNotif_v1";
 const MAX_ENTRIES = 120; // ring cap: plenty of history, bounded save size
 
@@ -34,6 +36,7 @@ const MAX_ENTRIES = 120; // ring cap: plenty of history, bounded save size
 
 /** @type {NotifEntry[] | null} Newest-first cache (shared across the VM's modules). */
 let _log = null;
+registerCacheReset(() => { _log = null; });
 
 /**
  * The current game turn, or 0.
@@ -123,6 +126,7 @@ function normalizeLoaded(arr) {
  * @returns {NotifEntry[]} Entries (newest-first).
  */
 function log() {
+  resetCachesOnNewGame();
   if (!_log) _log = loadPersisted();
   return _log;
 }

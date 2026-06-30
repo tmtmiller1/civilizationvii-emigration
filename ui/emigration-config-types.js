@@ -183,6 +183,7 @@
  * @property {boolean} disasterSpeedShockEnabled Divide the disaster spike by S (speed-invariant total bite).
  * @property {number} disasterAccumCap Hard ceiling on a city's accumulated disaster distress.
  * @property {boolean} disasterStackFalloff Diminishing-returns stacking of repeated disaster spikes.
+ * @property {boolean} resetCachesOnGameBoot Reset per-module persisted caches when a new game id (gameSeed) is seen.
  * @property {number} scaleBase Population-scaling base (Demographics-aligned).
  * @property {number} scaleExp Population-scaling exponent.
  * @property {number} scaleGrowth Population-scaling per-turn growth.
