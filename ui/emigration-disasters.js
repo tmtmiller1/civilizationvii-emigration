@@ -14,6 +14,7 @@
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { speedDecay, speedShock } from "/emigration/ui/emigration-game-speed.js";
+import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
 const STATE_KEY = "EmigrationDisaster_v1";
 const STATE_SCHEMA_VERSION = 2;
@@ -29,6 +30,7 @@ const MAX_CITY_KEYS = 8192;
 
 /** @type {DisasterState | null} */
 let _state = null;
+registerCacheReset(() => { _state = null; });
 
 /**
  * @returns {DisasterState} Empty disaster state.
@@ -162,6 +164,7 @@ function readStored() {
  * @returns {DisasterState} State.
  */
 function state() {
+  resetCachesOnNewGame();
   if (_state) return _state;
   try {
     const raw = readStored();

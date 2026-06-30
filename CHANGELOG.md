@@ -5,6 +5,48 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [1.7.0] - 2026-06-30
+
+Two more languages, a controller-friendly route into the advanced editor, a faster
+late-game pull pass, and a round of correctness + robustness hardening — including a
+shared safeguard so starting a new game without relaunching can never inherit the
+previous game's migration data.
+
+### Added
+- **Two new localizations: Polish and Traditional Chinese (Hong Kong).**
+  Adds full `pl_PL` and `zh_Hant_HK` ModText, bringing the mod to 11 localized languages.
+- **"Options: Advanced" entry on the standalone dashboard.**
+  A control row that pushes the advanced-settings editor via the context manager, so the
+  full tuning editor is reachable directly from the dashboard.
+
+### Changed
+- **Simplified Chinese locale renamed to the canonical `zh_hans_cn`.**
+  The folder was `zh_cn`; the manifest now points the `zh_Hans_CN` locale at `text/zh_hans_cn/`.
+- **Advanced tuning editor is fully controller-navigable.**
+  Group headers use native `fxs-minus-plus` toggle buttons (gamepad-focusable) instead of a
+  click-anywhere header, and collapsing now works while a search filter is active.
+- **Faster late-game migration pass.**
+  The heavy pull pass memoizes the per-pass hex-distance matrix and the per-civ-pair
+  open-borders / alliance / war reads, and reuses the chosen destination across the split
+  tracks when the crisis track shed nothing — cutting the late-game O(N²) cost.
+- **Cross-game cache safety (internal robustness).**
+  A shared "reset persisted caches on game boot" convention: every module that lazy-loads its
+  state from the save now drops that cache when a new game id is detected, so a new game
+  started inside a still-running UI can't read or persist the prior game's data. Gated by the
+  `resetCachesOnGameBoot` flag.
+- **Maintainability:** removed redundant module exports, consolidated the developer docs, and
+  hardened the test gate so no test file can be added without being wired into the suite.
+
+### Fixed
+- **Lagged migrants keep their deferral count across save/reload.**
+  It was reset every turn, so the "force-land or perish after too many defers" guard and the
+  longest-waiting-first arrival order never actually fired; both work now.
+- **A migrant at the in-flight transit cap is no longer lost.**
+  The cap is enforced at enqueue, so a capped migrant stays home (population conserved) rather
+  than being removed from its source and then dropped.
+- **A genuine one-point migration never reads as "0 people"** in the era-ceiling underflow
+  regime — a real move's reported people are floored at 1.
+
 ## [1.6.7] - 2026-06-28
 
 Migration plumbing hardened and the advanced tuning editor rebuilt for controller

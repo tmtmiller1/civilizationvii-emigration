@@ -52,7 +52,13 @@ const LABELS = {
   other: "Other"
 };
 
-/** @type {Record<string,string>} Theme accent colour per cause (toasts + the notifications log). */
+// Theme accent colour per cause, for TEXT-ADJACENT chrome: the toast accent bar and notifications-log
+// rows. Deliberately DISTINCT from `CAUSE_PALETTE` in emigration-network-paint.js — that map fills the
+// network-canvas migrant dots and is tuned to harmonize with `CIV_PALETTE` (brighter, e.g. war
+// #e5616b), whereas these are darker, more saturated tones that read as accents beside text (war
+// #d24b3e). The divergence is intentional; do NOT consolidate the two. A NEW cause needs a colour in
+// BOTH maps.
+/** @type {Record<string,string>} */
 const ACCENTS = {
   war: "#d24b3e",
   conquest: "#a83232",

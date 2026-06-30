@@ -22,6 +22,10 @@ const CIV_PALETTE = [
 ];
 // Migrant-type (cause) colours for the "Type" lens. "native" is the resident (home-grown)
 // population , drawn in each civ's own colour, shown muted-grey under the Type lens.
+// These are canvas DOT FILLS, tuned to harmonize with `CIV_PALETTE` above (brighter, e.g. war
+// #e5616b). They deliberately DIVERGE from `ACCENTS` in emigration-causes.js, which are the darker,
+// more saturated tones used for text-adjacent toast/log accents (war #d24b3e). Keep them separate; a
+// NEW cause needs a colour in BOTH maps.
 /** @type {Record<string,string>} */
 export const CAUSE_PALETTE = {
   war: "#e5616b", disaster: "#f4a259", unhappiness: "#b39ddb",
@@ -185,7 +189,7 @@ function drawEventRing(ctx, d, p, now) {
  * @param {NetworkNode} c The dot's destination centre.
  * @returns {{x:number, y:number}} Canvas position.
  */
-export function dotXY(d, c) {
+function dotXY(d, c) {
   let x = c.x + d.ox;
   let y = c.y + d.oy;
   if (d.anim && d.anim.p < 1) {
@@ -245,7 +249,7 @@ function drawDots(ctx, scene) {
  * @param {number} x Centre x. @param {number} y Centre y.
  * @param {number} [size] Font px (default 15).
  */
-export function drawCivLabel(ctx, name, x, y, size) {
+function drawCivLabel(ctx, name, x, y, size) {
   ctx.save();
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";

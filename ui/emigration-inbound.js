@@ -15,7 +15,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
  * The per-city inbound cap for this turn, or Infinity when the feature is off (config value <= 0).
  * @returns {number} The cap.
  */
-export function cityInboundCap() {
+function cityInboundCap() {
   return CONFIG.maxGainPerCityPerTurn > 0 ? CONFIG.maxGainPerCityPerTurn : Infinity;
 }
 
