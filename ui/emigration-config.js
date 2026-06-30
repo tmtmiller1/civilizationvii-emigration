@@ -437,6 +437,14 @@ export const CONFIG = {
   disasterAccumCap: 18, // hard ceiling on a city's accumulated disaster distress (guarantees recovery)
   disasterStackFalloff: true, // a new spike adds with diminishing returns the fuller the city already is
 
+  // ── latent robustness: reset persisted caches on game boot ──
+  // Backstop for the (normally isolate-teardown-driven) reset of the per-module lazy persistence
+  // caches: when a NEW game is detected within a still-live UIScript isolate (the game's gameSeed
+  // changed), every module that registered with emigration-cache-reset.js drops its cache so it
+  // reloads from the new game's store instead of persisting the prior game's data into it. A no-op
+  // unless the game id actually changes. false → rely solely on isolate teardown (legacy behavior).
+  resetCachesOnGameBoot: true,
+
   // ── population scaling (DEPRECATED — no longer read) ──────────────────────────
   // Scaling moved to Civ VII's real per-era growth formula in emigration-population.js
   // (POP_K · W(size, eraGrowthParams)), pinned to Demographics by scaling-demographics-parity.mjs.

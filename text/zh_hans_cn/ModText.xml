@@ -48,8 +48,8 @@
         <Replace Tag="LOC_EMIG_T_REQUIREMET_D" Language="zh_Hans_CN"><Text>仅考虑你的文明已经遇到过的外国城市。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CIVTUNE" Language="zh_Hans_CN"><Text>范围: 按领袖/文明微调</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CIVTUNE_D" Language="zh_Hans_CN"><Text>按领袖和文明应用手工微调（磁力抑制、整合速度、战时留存、来源偏向），使异常者表现不同。关闭 = 所有文明使用同一全局模型。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CTSTRENGTH" Language="zh_Hans_CN"><Text>Scope: civ-tuning strength</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CTSTRENGTH_D" Language="zh_Hans_CN"><Text>How far the per-leader/civ adjustments are allowed to diverge from the global model. 1.0 = full distinct identities; lower values flatten the differences between civilizations toward the same model to curb snowballing; 0 = fully flat (same as turning the table off).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CTSTRENGTH" Language="zh_Hans_CN"><Text>范围: 文明微调强度</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CTSTRENGTH_D" Language="zh_Hans_CN"><Text>按领袖/文明的调整被允许偏离全局模型的程度。1.0 = 完整的独特性格；越低越会把各文明之间的差异拉平至同一模型，以抑制滚雪球；0 = 完全拉平（等同于关闭该微调表）。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BORDERS" Language="zh_Hans_CN"><Text>范围: 边境政策</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BORDERS_D" Language="zh_Hans_CN"><Text>启用“开放/封闭边境”政策对移民的影响（政策卡会加入政策菜单，并消耗或给予影响力）。关闭 = 政策不影响迁徙。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CLOSEDOPEN" Language="zh_Hans_CN"><Text>边境: 封闭边境开放度</Text></Replace>
@@ -108,8 +108,8 @@
         <Replace Tag="LOC_EMIG_T_FLEE_D" Language="zh_Hans_CN"><Text>难民多大程度上偏好远离最近入侵者的目的地。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH" Language="zh_Hans_CN"><Text>地理: 文明间摩擦</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH_D" Language="zh_Hans_CN"><Text>跨越文明边境迁徙的额外阻力。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="zh_Hans_CN"><Text>Crisis escape (flee abroad)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="zh_Hans_CN"><Text>How strongly a civilization in acute crisis (war/disaster) pushes its refugees to flee ACROSS BORDERS to another empire, rather than relocating to its own (equally-stricken) cities and dying there. Higher = more cross-civ escape. 0 = off.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="zh_Hans_CN"><Text>危机外逃（逃往他国）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="zh_Hans_CN"><Text>处于剧烈危机（战争/灾害）的文明在多大程度上促使其难民跨越国界逃往他国，而非迁往本国（同样受灾的）城市并在那里殒命。越高，跨文明外逃越多。0 = 关闭。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL" Language="zh_Hans_CN"><Text>地理: 开放边境的迁徙加成</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="zh_Hans_CN"><Text>两个文明之间的开放边境协定在多大程度上促进彼此之间双向的迁徙。0 = 关闭。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_TRANSITLAG" Language="zh_Hans_CN"><Text>地理: 旅途延迟（0 = 即时）</Text></Replace>
@@ -130,11 +130,11 @@
         <Replace Tag="LOC_EMIG_T_MHGOLD_D" Language="zh_Hans_CN"><Text>文明每滞留一个 UNIT_MIGRANT，每回合扣除的金币，随数量增长。0 = 关闭。（经探针确认的扣除杠杆。）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST" Language="zh_Hans_CN"><Text>成本: 拥堵逆风（0 = 关闭）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="zh_Hans_CN"><Text>让吸收大量移民的文明成为进一步迁徙的较不吸引人的目的地（它正忙于整合新来者），随其消化量增长。对失控磁石的结构性制动。0 = 关闭。</Text></Replace>
-        <Replace Tag="LOC_EMIG_EVENT_FAMINE" Language="zh_Hans_CN"><Text>Famine</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="zh_Hans_CN"><Text>Cost: anti-snowball brake (0 = off)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="zh_Hans_CN"><Text>Make a civilization whose population has pulled far ahead of the field a less attractive destination for cross-civ migration: a self-correcting brake on a runaway leader that grows with how far ahead it is (0 off / 8 gentle / 15 standard / 28 strong). It never impedes a leader's OUTflow or internal moves. 0 = off.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="zh_Hans_CN"><Text>Cost: anti-snowball trigger (fair-share ×)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="zh_Hans_CN"><Text>How far a civilization's population may run ahead of the world-average civ before the anti-snowball headwind starts to bite, as a multiple of fair share. Lower = the brake engages sooner (more egalitarian); higher = only an extreme runaway leader is slowed.</Text></Replace>
+        <Replace Tag="LOC_EMIG_EVENT_FAMINE" Language="zh_Hans_CN"><Text>饥荒</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="zh_Hans_CN"><Text>成本: 反滚雪球制动（0 = 关闭）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="zh_Hans_CN"><Text>让人口已远远领先于群雄的文明，成为跨文明迁徙的较不吸引人的去处：对失控领跑者的自我纠正式制动，并随其领先幅度增长（0 关闭 / 8 轻微 / 15 标准 / 28 强力）。它绝不会阻碍领跑者的流出或内部迁移。0 = 关闭。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="zh_Hans_CN"><Text>成本: 反滚雪球触发阈值（公平份额 ×）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="zh_Hans_CN"><Text>一个文明的人口可领先于世界平均文明多少，反滚雪球逆风才开始起作用，以公平份额的倍数计。越低，制动介入越早（更平均主义）；越高，只有极端失控的领跑者才会被减速。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="zh_Hans_CN"><Text>灾害: 驱动迁徙</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="zh_Hans_CN"><Text>让环境灾害（洪水、火山、瘟疫……）将人口逐出受灾城市，成为气候/灾害难民，与战争和不满并列。关闭 = 灾害不影响迁徙。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="zh_Hans_CN"><Text>灾害: 每点苦难的移居（%）</Text></Replace>
@@ -153,8 +153,8 @@
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE_D" Language="zh_Hans_CN"><Text>迁徙通知的频繁程度：0 = 关闭，1 = 仅重要（难民危机与严重灾害，默认），2 = 详细（每个有显著迁徙的回合都有摘要）。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER" Language="zh_Hans_CN"><Text>通知: 最低灾害严重度</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER_D" Language="zh_Hans_CN"><Text>仅就此严重度及以上的灾害通知（0 = 连小事件，3 = 仅大喷发等传奇级）。小灾害仍会悄然影响迁徙。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DNOTIFYMODE" Language="zh_Hans_CN"><Text>Notifications: disaster popups</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DNOTIFYMODE_D" Language="zh_Hans_CN"><Text>Which disasters pop up on screen (the notifications log always keeps every severe one regardless): 0 = off, log only; 1 = only disasters that strike a settlement, so they actually drive migration (the default); 2 = any disaster at or above the minimum severity. Combine with "min disaster severity" to tune how bad is bad enough.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DNOTIFYMODE" Language="zh_Hans_CN"><Text>通知: 灾害弹窗</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DNOTIFYMODE_D" Language="zh_Hans_CN"><Text>哪些灾害会在屏幕上弹出（无论如何，通知记录始终保留每一次严重灾害）：0 = 关闭，仅记录；1 = 仅袭击定居点、从而真正驱动迁徙的灾害（默认）；2 = 达到或超过最低严重度的任意灾害。与“最低灾害严重度”配合使用，以调节多严重才算够严重。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD" Language="zh_Hans_CN"><Text>通知: 最小间隔（回合）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD_D" Language="zh_Hans_CN"><Text>重要通知之间的最少回合数，避免扎堆。0 = 无限制。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD" Language="zh_Hans_CN"><Text>通知: 难民危机阈值</Text></Replace>
@@ -191,10 +191,10 @@
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="zh_Hans_CN"><Text>{1_People}因不满而离开了{2_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="zh_Hans_CN"><Text>{1_People}为寻求更繁荣的邻邦而离开了{2_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="zh_Hans_CN"><Text>{1_People}逃离了{2_City}周边的战火。</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="zh_Hans_CN"><Text>{1_People} were taken from {2_City} when it changed hands.</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_UNITS" Language="zh_Hans_CN"><Text>Units:</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="zh_Hans_CN"><Text>Switch between the Civ's own population numbers and scaled people</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="zh_Hans_CN"><Text>Playback timeline appears after a couple of turns, once there's population history to scrub through.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="zh_Hans_CN"><Text>{2_City}易主时，{1_People}被掳走。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS" Language="zh_Hans_CN"><Text>单位：</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="zh_Hans_CN"><Text>在 Civ 自身的人口数值与按比例换算的人数之间切换</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="zh_Hans_CN"><Text>回放时间轴将在数回合后出现，届时已有可供拖动查看的人口历史。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="zh_Hans_CN"><Text>{1_People}在灾难过后逃离了{2_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="zh_Hans_CN"><Text>{1_People}走投无路，消逝于{2_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="zh_Hans_CN"><Text>提升该城的幸福度，或采取反移民立场以留住他们。</Text></Replace>
@@ -265,8 +265,8 @@
         <Replace Tag="LOC_OPTIONS_EMIG_DOCK_DESCRIPTION" Language="zh_Hans_CN"><Text>在游戏工具栏显示迁徙按钮。关闭后改为从人口统计界面的迁徙标签页打开仪表板。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_EMPTY" Language="zh_Hans_CN"><Text>尚无跨文明迁移，当人们跨越边界时便会出现流动。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_COLORBY" Language="zh_Hans_CN"><Text>着色依据：</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_HELP" Language="zh_Hans_CN"><Text>How to read this</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_INFO" Language="zh_Hans_CN"><Text>Info:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_HELP" Language="zh_Hans_CN"><Text>如何解读</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_INFO" Language="zh_Hans_CN"><Text>信息：</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_ORIGIN" Language="zh_Hans_CN"><Text>来源</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_TYPE" Language="zh_Hans_CN"><Text>类型</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_LENS_MOVEMENT" Language="zh_Hans_CN"><Text>迁移</Text></Replace>

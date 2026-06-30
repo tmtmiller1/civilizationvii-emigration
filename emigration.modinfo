@@ -7,7 +7,7 @@
         <SpecialThanks>Machiavelli's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>1.6.7</Version>
+        <Version>1.7.0</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -40,12 +40,15 @@
                     <Item locale="it_IT">text/it_it/ModText.xml</Item>
                     <Item locale="ja_JP">text/ja_jp/ModText.xml</Item>
                     <Item locale="ko_KR">text/ko_kr/ModText.xml</Item>
+                    <Item locale="pl_PL">text/pl_pl/ModText.xml</Item>
                     <Item locale="pt_BR">text/pt_br/ModText.xml</Item>
                     <Item locale="ru_RU">text/ru_ru/ModText.xml</Item>
-                    <Item locale="zh_Hans_CN">text/zh_cn/ModText.xml</Item>
+                    <Item locale="zh_Hans_CN">text/zh_hans_cn/ModText.xml</Item>
+                    <Item locale="zh_Hant_HK">text/zh_hant_hk/ModText.xml</Item>
                 </UpdateText>
                 <UIScripts>
                     <Item>ui/emigration-config.js</Item>
+                    <Item>ui/emigration-cache-reset.js</Item>
                     <Item>ui/emigration-tunables.js</Item>
                     <Item>ui/emigration-settings.js</Item>
                     <Item>ui/emigration-options.js</Item>
@@ -70,9 +73,11 @@
                     <Item locale="it_IT">text/it_it/ModText.xml</Item>
                     <Item locale="ja_JP">text/ja_jp/ModText.xml</Item>
                     <Item locale="ko_KR">text/ko_kr/ModText.xml</Item>
+                    <Item locale="pl_PL">text/pl_pl/ModText.xml</Item>
                     <Item locale="pt_BR">text/pt_br/ModText.xml</Item>
                     <Item locale="ru_RU">text/ru_ru/ModText.xml</Item>
-                    <Item locale="zh_Hans_CN">text/zh_cn/ModText.xml</Item>
+                    <Item locale="zh_Hans_CN">text/zh_hans_cn/ModText.xml</Item>
+                    <Item locale="zh_Hant_HK">text/zh_hant_hk/ModText.xml</Item>
                 </UpdateText>
                 <UIScripts>
                     <Item>ui/emigration-main.js</Item>
@@ -85,6 +90,7 @@
                 </UIScripts>
                 <ImportFiles>
                     <Item>ui/emigration-config.js</Item>
+                    <Item>ui/emigration-cache-reset.js</Item>
                     <Item>ui/emigration-causes.js</Item>
                     <Item>ui/emigration-tunables.js</Item>
                     <Item>ui/emigration-population.js</Item>

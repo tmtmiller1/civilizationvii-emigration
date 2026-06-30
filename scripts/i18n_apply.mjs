@@ -23,9 +23,11 @@ const LOCALES = {
   it_it: "it_IT",
   ja_jp: "ja_JP",
   ko_kr: "ko_KR",
+  pl_pl: "pl_PL",
   pt_br: "pt_BR",
   ru_ru: "ru_RU",
-  zh_cn: "zh_Hans_CN"
+  zh_hans_cn: "zh_Hans_CN",
+  zh_hant_hk: "zh_Hant_HK"
 };
 
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");

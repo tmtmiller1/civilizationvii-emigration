@@ -49,3 +49,46 @@ population scaling (pinned by `tests/scaling-demographics-parity.mjs`), so pertu
 near-zero benefit.
 
 **Verdict:** left as-is intentionally; no automatic guard can tell the supported case from the corrupt one.
+
+## causes — split `LABELS` into `CAUSE_LABELS` + `PSEUDO_CAUSE_LABELS`
+
+The tempting tidy — `LABELS` in [emigration-causes.js](../ui/emigration-causes.js#L41) mixes real
+`MigrationCause` values (`war`, `disaster`, …) with display/pseudo causes (`crisis`, `chronicle`,
+`other`), so "separate them into two maps for clarity." But the `MigrationCause` vs `HeadlineCause`
+typedefs already encode that distinction at the type layer, and every consumer reaches `LABELS` through
+the single `causeLabel()` getter (with an `other` fallback), so the flat map has no behavioral or
+lookup cost. Splitting it adds a second map + a merge/branch at the getter for zero functional gain.
+
+**Verdict:** cosmetic only; the typedefs already encode the real-vs-pseudo split. Left as one map.
+
+## causes — reword the `return` label "Return" → "Return Migration"
+
+Proposed to disambiguate the `return` cause's short label. But the only place the bare word could read
+ambiguously is the Net Migration Table, and there `netDrivers()`
+([emigration-causes.js](../ui/emigration-causes.js#L193)) already renders it SIGNED (`Return +5
+thousand`), which carries the "people coming back" meaning. The longer label also risks crowding the
+fixed-width Net table pills. The cause string is additive-only and unaffected either way; this is pure
+display copy with the ambiguity already handled.
+
+**Verdict:** ambiguity already resolved by the signed net display; not worth the copy churn.
+
+## causes — mechanical comment punctuation / spelling sweep
+
+Proposed to "normalize" the ` , ` spacing and non-US spellings throughout
+[emigration-causes.js](../ui/emigration-causes.js) (and siblings). But the spaced comma is a deliberate
+rhetorical em-dash-comma used consistently codebase-wide, and some spellings (`colour`, `flavours`,
+`centre`) are an intentional British-English convention, not typos. A mechanical sweep would churn many
+files to overwrite deliberate style with no reader benefit.
+
+**Verdict:** the style is deliberate and codebase-wide; a normalizing sweep is churn, not a fix.
+
+## chronicle-view — rebuild the `CSS` string as an array + `.join("")`
+
+Proposed to express the chronicle stylesheet in [emigration-chronicle-view.js](../ui/emigration-chronicle-view.js#L24)
+as a `[...].join("")` array instead of `+`-concatenated string literals, "for readability." But the
+string is injected once at module init, the `+` form is the same pattern the sibling dashboard
+stylesheets use, and an array adds bracket/comma noise without changing the output one byte. The
+original backlog only ever flagged it as "bundle into an unrelated CSS edit if ever" — i.e. never worth
+a standalone change.
+
+**Verdict:** zero functional difference, matches the sibling stylesheet idiom; not worth the churn.

@@ -116,7 +116,7 @@ const PANEL_SPEC = {
 // The panel is still registered (NON top-level) so the "Net Migration (Table)" group member can route
 // to its ledger sub-tab; with no `topLevel` it shows nowhere as a tab.
 const MIGRATION_ANCHOR = "population"; // host Migration-hub anchor page (Population)
-export const NET_MIGRATION_PAGE_ID = "emig_net_migration"; // must match emigration-demographics.js group pageId
+const NET_MIGRATION_PAGE_ID = "emig_net_migration"; // must match emigration-demographics.js group pageId
 
 const HUB_PAGES = [
   { id: NET_MIGRATION_PAGE_ID, label: "Population & Migration", tier: "basic", metrics: [] },

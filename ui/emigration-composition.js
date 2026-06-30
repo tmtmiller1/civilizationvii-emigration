@@ -26,6 +26,7 @@ import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { atWarBetween } from "/emigration/ui/emigration-geography.js";
 import { getIntegrationEnabled } from "/emigration/ui/emigration-settings.js";
+import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
 const STATE_KEY = "EmigrationEthnos_v1";
 
@@ -51,6 +52,7 @@ let _s = null;
 // latest save (at most one turn stale), so immigration actually shows on the lens. Harmless for the
 // recorder itself: it always save()s before the turn ticks, so a reload just re-reads its own write.
 let _loadedTurn = -1;
+registerCacheReset(() => { _s = null; _loadedTurn = -1; });
 
 /**
  * The current age-local game turn, or 0.
@@ -148,6 +150,7 @@ function normalizeCities(rawCities) {
  * @returns {CompositionState} State.
  */
 function load() {
+  resetCachesOnNewGame();
   const turn = gameTurn();
   if (_s && _loadedTurn === turn) return _s; // same turn → reuse (no churn within a pass)
   _loadedTurn = turn;
@@ -508,11 +511,21 @@ export function recordCompositionPass(signals, migs) {
  *   The composition, or null.
  */
 export function compositionForCity(city) {
-  const key = locKey(city);
-  if (key == null) return null;
-  const e = load().cities[key];
-  if (!e) return null;
-  return summarize(e.byCiv, e.total, e.owner);
+  // Self-guarding: returns null on ANY failure, never throws. Reached on the uncaught lens / hover-
+  // tooltip / city-readout / diaspora / return paths AND inside a broad per-city catch in the network
+  // window (citiesByOwner). load() is already try-guarded and summarize() is pure over normalized data,
+  // but locKey reads `city.location` off a LIVE engine object — a throwing accessor is the one residual
+  // throw vector load-normalization can't cover. Degrade to null here so a single bad city can't null a
+  // whole render, and so no caller's broad `catch{return null}` can silently mask it. (open-items §7)
+  try {
+    const key = locKey(city);
+    if (key == null) return null;
+    const e = load().cities[key];
+    if (!e) return null;
+    return summarize(e.byCiv, e.total, e.owner);
+  } catch (_) {
+    return null;
+  }
 }
 
 /**
