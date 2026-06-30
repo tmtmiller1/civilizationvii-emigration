@@ -311,16 +311,3 @@ export function tickViolence() {
   }
   persist();
 }
-
-/**
- * The current violence intensity inside a city's borders (0 if none/unknown).
- * Read-only; does not poll. Use {@link observeCity} when building signals.
- * @param {*} city A live city object.
- * @returns {number} Intensity (>= 0).
- */
-export function violenceFor(city) {
-  const key = keyFromCID(city?.id);
-  if (!key) return 0;
-  const v = state().byCity[key];
-  return typeof v === "number" && isFinite(v) ? v : 0;
-}

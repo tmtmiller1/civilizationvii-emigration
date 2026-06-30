@@ -73,6 +73,9 @@ function rowEl(e) {
  */
 export function renderChronicle(body) {
   injectStyle();
+  // Idempotent: clear first so a tab refresh or re-render can't stack a duplicate chronicle. Use
+  // innerHTML, NOT replaceChildren , Coherent GameFace doesn't implement replaceChildren.
+  body.innerHTML = "";
   const entries = chronicleLog();
   if (!entries.length) {
     body.appendChild(el("div", "emig-empty",

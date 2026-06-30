@@ -1,15 +1,9 @@
 // emigration-pies.js
 //
-// The "Why people move" CAUSES tab: a combined pie (all civs summed), an average-civ pie, and a
-// pie per civ. Pure canvas pies (GameFace draws 2D canvas fine); styling lives in the dashboard's
-// injected stylesheet (emigration-views.js). Split out to keep that render core under its size cap.
-
-import { CAUSE_PALETTE } from "/emigration/ui/emigration-network-paint.js";
-import { causeLabel } from "/emigration/ui/emigration-causes.js";
-import { formatPeople } from "/emigration/ui/emigration-population.js";
-
-// Cause slices in a stable display order.
-const PIE_CAUSES = ["war", "disaster", "unhappiness", "prosperity", "conquest", "attrition", "other"];
+// Canvas pie-chart building blocks for the migration dashboard: a pie "card" from explicit slices
+// (`pieCardSlices`) and a colour-key legend (`legendChips`), both consumed by emigration-city-flows.js.
+// Pure canvas pies (GameFace draws 2D canvas fine); styling lives in the dashboard's injected
+// stylesheet (emigration-views.js). Split out to keep that render core under its size cap.
 
 /**
  * Make an element with an optional class + text.
@@ -23,20 +17,6 @@ function el(tag, cls, text) {
   if (cls) e.className = cls;
   if (text != null) e.textContent = text;
   return e;
-}
-
-/**
- * Non-zero {cause, value} slices for a per-cause map, in display order.
- * @param {Record<string,number>} byCause Per-cause people.
- * @returns {{value:number, color:string, label:string}[]} Slices.
- */
-function pieSlices(byCause) {
-  const src = byCause || {};
-  return PIE_CAUSES
-    .map((c) => ({
-      value: src[c] || 0, color: CAUSE_PALETTE[c] || CAUSE_PALETTE.other, label: causeLabel(c)
-    }))
-    .filter((e) => e.value > 0);
 }
 
 /**
@@ -162,17 +142,6 @@ export function pieCardSlices(title, slices, big) {
 }
 
 /**
- * A pie card for a per-cause map.
- * @param {string} title Caption.
- * @param {Record<string,number>} byCause Per-cause people.
- * @param {boolean} [big] Larger canvas.
- * @returns {HTMLElement} The card.
- */
-function pieCard(title, byCause, big) {
-  return pieCardSlices(title, pieSlices(byCause), big);
-}
-
-/**
  * A colour key from {label, color} items. When an item carries `countText` (and optionally `pct`),
  * the chip reads "Label  count (pct%)" so each slice's magnitude and share show beside its swatch.
  * @param {{label:string, color:string, countText?:string, pct?:number}[]} items Items.
@@ -195,75 +164,3 @@ export function legendChips(items) {
   return box;
 }
 
-/**
- * The shared cause colour key.
- * @param {Record<string,number>} byCause Per-cause people (which causes to list).
- * @returns {HTMLElement} The legend.
- */
-function pieLegend(byCause) {
-  return legendChips(pieSlices(byCause).map((e) => ({ label: e.label, color: e.color })));
-}
-
-/**
- * The "average civilization" cause profile: the mean of each civ's own cause distribution (so every
- * civ counts equally, regardless of size). Returns per-cause average shares.
- * @param {*[]} civs Civs (each with byCause).
- * @returns {Record<string,number>} Average per-cause share.
- */
-function averageProfile(civs) {
-  /** @type {Record<string,number>} */
-  const sum = {};
-  let n = 0;
-  for (const c of civs || []) {
-    const bc = c.byCause || {};
-    const total = Object.keys(bc).reduce((a, k) => a + (bc[k] || 0), 0);
-    if (total <= 0) continue;
-    n++;
-    for (const k of Object.keys(bc)) sum[k] = (sum[k] || 0) + (bc[k] || 0) / total;
-  }
-  if (!n) return {};
-  for (const k of Object.keys(sum)) sum[k] /= n;
-  return sum;
-}
-
-/**
- * A civ's overall in/out metrics: green ▲ immigration, red ▼ emigration.
- * @param {*} c Civ ({in, out}).
- * @returns {HTMLElement} The metrics row.
- */
-function civMetrics(c) {
-  const row = el("div", "emig-pie-metrics");
-  row.appendChild(el("span", "emig-pie-in", "▲ " + formatPeople(c.in || 0)));
-  row.appendChild(el("span", "emig-pie-out", "▼ " + formatPeople(c.out || 0)));
-  return row;
-}
-
-/**
- * Render the Causes tab as pie charts: a combined pie (all civs summed), an average-civ pie, then
- * one pie per civ that produced migration.
- * @param {HTMLElement} body Card body.
- * @param {*} section The section ({combined, civs}).
- */
-export function renderPies(body, section) {
-  const combined = section.combined || {};
-  const civs = section.civs || [];
-  if (!pieSlices(combined).length) {
-    body.appendChild(el("div", "emig-empty", "No migration causes yet."));
-    return;
-  }
-  body.appendChild(pieLegend(combined));
-  // Row 1: the two global pies (larger, natural width). Below: per-civ pies, three to a row, each
-  // with its overall in/out metrics (green ▲ immigration, red ▼ emigration).
-  const summary = el("div", "emig-pie-row");
-  summary.appendChild(pieCard("All civilizations (total)", combined, true));
-  summary.appendChild(pieCard("Average civilization", averageProfile(civs), true));
-  body.appendChild(summary);
-  const grid = el("div", "emig-pie-grid");
-  for (const c of civs) {
-    if (!pieSlices(c.byCause).length) continue;
-    const card = pieCard(c.name, c.byCause);
-    card.appendChild(civMetrics(c));
-    grid.appendChild(card);
-  }
-  body.appendChild(grid);
-}

@@ -129,9 +129,8 @@ function makeRowText(t) {
 }
 
 /**
- * One group header row with a dedicated +/- toggle button.
- * @param {string} titleKey Group title LOC key.
- * @returns {{header:*, chev:*, toggleBtn:*, toggleGlyph:*}} Header pieces.
+ * The dedicated +/- collapse toggle button for a group header.
+ * @returns {{toggleBtn:*, toggleGlyph:*}} The toggle button (and its glyph alias).
  */
 function makeGroupToggleButton() {
   const toggleBtn = document.createElement("fxs-minus-plus");
@@ -160,6 +159,11 @@ function makeGroupTitleRow(titleKey) {
   return { row, chev };
 }
 
+/**
+ * One group header row: the chevron + localized title on the left, a +/- collapse toggle on the right.
+ * @param {string} titleKey Group title LOC key.
+ * @returns {{header:*, chev:*, toggleBtn:*, toggleGlyph:*}} Header pieces.
+ */
 function makeGroupHeader(titleKey) {
   const header = document.createElement("div");
   header.className = "flex flex-row items-center justify-between mt-4 mb-1";

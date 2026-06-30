@@ -31,13 +31,64 @@ function cityLoc(sig) {
   return l && typeof l.x === "number" && typeof l.y === "number" ? l : null;
 }
 
+// Per-pass hex-distance memo (P1). One runPass scans every (source, destination) pair up to ~4×
+// (crisis + voluntary tracks, plus the with-stance/neutral counterfactual), and each scan recomputes
+// `getPlotDistance` - an engine call - for the same fixed city pair. City locations never move within
+// a pass, so we cache by the symmetric pair of stable city keys and reset once per pass (in
+// collectCitySignals, alongside the polity/border caches). Signals without a `.key` (hand-built test
+// signals) bypass the cache and compute directly, so behaviour is unchanged off-engine.
+/** @type {Map<string, number>} */
+const _distCache = new Map();
+
+/** Clear the per-pass hex-distance memo. Called at the start of each city-signal collection. */
+export function resetDistanceCache() {
+  _distCache.clear();
+}
+
+// Per-pass diplomacy memo (P2). Open-borders/alliance/war reads are per-(srcOwner,destOwner) engine
+// calls evaluated inside the O(N^2) pull loop; there are only O(civs^2) distinct owner pairs, and the
+// relationship state doesn't change mid-pass. Cache by the owner pair and reset once per pass.
+/** @type {Map<string, boolean>} */
+const _openBordersCache = new Map();
+/** @type {Map<string, boolean>} */
+const _allianceCache = new Map();
+/** @type {Map<string, boolean>} */
+const _atWarCache = new Map();
+
+/** Clear the per-pass diplomacy memo. Called at the start of each city-signal collection. */
+export function resetDiplomacyCache() {
+  _openBordersCache.clear();
+  _allianceCache.clear();
+  _atWarCache.clear();
+}
+
 /**
- * Hex distance between two signals' cities, or 0 if either is unreadable.
+ * Memoize a boolean per ordered (a, b) player pair in `cache`, computing it once via `compute`.
+ * @param {Map<string, boolean>} cache The per-pass cache.
+ * @param {number} a First player id.
+ * @param {number} b Second player id.
+ * @param {() => boolean} compute The uncached read.
+ * @returns {boolean} The cached or freshly-computed value.
+ */
+function memoPair(cache, a, b, compute) {
+  const k = a + ":" + b;
+  let v = cache.get(k);
+  if (v === undefined) {
+    v = compute();
+    cache.set(k, v);
+  }
+  return v;
+}
+
+/**
+ * Hex distance between two signals' cities, or 0 if either is unreadable. Memoized per pass on the
+ * symmetric city-key pair (see {@link resetDistanceCache}); distance is symmetric and locations are
+ * fixed within a pass.
  * @param {*} a A CitySignal.
  * @param {*} b A CitySignal.
  * @returns {number} Hex distance (>= 0).
  */
-export function hexDistance(a, b) {
+function rawHexDistance(a, b) {
   const la = cityLoc(a);
   const lb = cityLoc(b);
   if (!la || !lb) return 0;
@@ -49,17 +100,48 @@ export function hexDistance(a, b) {
 }
 
 /**
- * Whether player `a` is at war with player `b` (best-effort).
+ * Hex distance between two signals' cities, or 0 if either is unreadable. Memoized per pass on the
+ * symmetric city-key pair (see {@link resetDistanceCache}); distance is symmetric and locations are
+ * fixed within a pass. Signals without a string `.key` bypass the cache and compute directly.
+ * @param {*} a A CitySignal.
+ * @param {*} b A CitySignal.
+ * @returns {number} Hex distance (>= 0).
+ */
+export function hexDistance(a, b) {
+  const ka = a?.key;
+  const kb = b?.key;
+  if (typeof ka !== "string" || typeof kb !== "string") return rawHexDistance(a, b);
+  const ck = ka < kb ? ka + " " + kb : kb + " " + ka;
+  let d = _distCache.get(ck);
+  if (d === undefined) {
+    d = rawHexDistance(a, b);
+    _distCache.set(ck, d);
+  }
+  return d;
+}
+
+/**
+ * Uncached war read between two players (best-effort).
+ * @param {number} a Player id.
+ * @param {number} b Player id.
+ * @returns {boolean} True if at war.
+ */
+function rawAtWar(a, b) {
+  try {
+    return !!Players?.get?.(a)?.Diplomacy?.isAtWarWith?.(b);
+  } catch (_) {
+    return false;
+  }
+}
+
+/**
+ * Whether player `a` is at war with player `b` (best-effort). Memoized per pass on the player pair.
  * @param {number} a Player id.
  * @param {number} b Player id.
  * @returns {boolean} True if at war.
  */
 export function atWarBetween(a, b) {
-  try {
-    return !!Players.get(a)?.Diplomacy?.isAtWarWith?.(b);
-  } catch (_) {
-    return false;
-  }
+  return memoPair(_atWarCache, a, b, () => rawAtWar(a, b));
 }
 
 /**
@@ -180,14 +262,12 @@ export function geoAdjust(src, dest, flee, aggressors) {
 }
 
 /**
- * Whether two civs have an active base-game Open Borders agreement - a diplomatic deal
- * (DIPLOMACY_ACTION_OPEN_BORDERS), distinct from the mod's Pro/Anti-Immigration policy
- * cards. Read defensively from the joint diplomatic-events API; false on any error.
+ * Uncached Open Borders agreement read between two players, from the joint diplomatic-events API.
  * @param {number} a Player id.
  * @param {number} b Player id.
- * @returns {boolean} True if an Open Borders agreement is active between them.
+ * @returns {boolean} True if an Open Borders agreement is active.
  */
-export function hasOpenBordersDeal(a, b) {
+function rawOpenBorders(a, b) {
   try {
     if (typeof Game === "undefined") return false;
     const events = Game?.Diplomacy?.getJointEvents?.(a, b, false);
@@ -199,6 +279,18 @@ export function hasOpenBordersDeal(a, b) {
     /* a failed diplomacy read must never break the pass */
   }
   return false;
+}
+
+/**
+ * Whether two civs have an active base-game Open Borders agreement - a diplomatic deal
+ * (DIPLOMACY_ACTION_OPEN_BORDERS), distinct from the mod's Pro/Anti-Immigration policy
+ * cards. Memoized per pass on the player pair; false on any error.
+ * @param {number} a Player id.
+ * @param {number} b Player id.
+ * @returns {boolean} True if an Open Borders agreement is active between them.
+ */
+export function hasOpenBordersDeal(a, b) {
+  return memoPair(_openBordersCache, a, b, () => rawOpenBorders(a, b));
 }
 
 /**
@@ -215,22 +307,32 @@ export function openBordersBonus(srcOwner, destOwner) {
 }
 
 /**
- * Whether two civs share an active base-game Alliance. Eases cross-civ migration as a Permeability
- * factor (§1 / Phase 4). Uses the engine's dedicated relationship-state method
- * `Players.get(a).Diplomacy.hasAllied(b)`, the base game detects a standing alliance this way (15+
+ * Uncached alliance read between two players, via the engine's dedicated relationship-state method
+ * `Players.get(a).Diplomacy.hasAllied(b)` (the base game detects a standing alliance this way, 15+
  * call sites). The OLD code scanned `getJointEvents` for `DIPLOMACY_ACTION_FORM_ALLIANCE`, which is an
- * action enum used to *initiate* an alliance, NOT a value that persists in the joint events, so it
- * was always false and the alliance permeability never applied.
- * @param {number} a A player id.
- * @param {number} b Another player id.
+ * action enum used to *initiate* an alliance, NOT a value that persists in the joint events, so it was
+ * always false and the alliance permeability never applied.
+ * @param {number} a Player id.
+ * @param {number} b Player id.
  * @returns {boolean} True if an alliance is active.
  */
-export function hasAlliance(a, b) {
+function rawAlliance(a, b) {
   try {
     return !!Players?.get?.(a)?.Diplomacy?.hasAllied?.(b);
   } catch (_) {
     return false; // a failed diplomacy read must never break the pass
   }
+}
+
+/**
+ * Whether two civs share an active base-game Alliance. Eases cross-civ migration as a Permeability
+ * factor (§1 / Phase 4). Memoized per pass on the player pair.
+ * @param {number} a A player id.
+ * @param {number} b Another player id.
+ * @returns {boolean} True if an alliance is active.
+ */
+export function hasAlliance(a, b) {
+  return memoPair(_allianceCache, a, b, () => rawAlliance(a, b));
 }
 
 /**
@@ -240,10 +342,6 @@ export function hasAlliance(a, b) {
  * @returns {boolean} True if a is at war with b.
  */
 export function atWar(a, b) {
-  try {
-    if (a === b) return false;
-    return !!Players?.get?.(a)?.Diplomacy?.isAtWarWith?.(b);
-  } catch (_) {
-    return false;
-  }
+  if (a === b) return false;
+  return memoPair(_atWarCache, a, b, () => rawAtWar(a, b));
 }

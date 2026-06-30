@@ -176,6 +176,18 @@ function testMarginalPeopleIsTheDelta() {
   assert.ok(m2 > 0);
 }
 
+function testMarginalPeopleFloorsRealPoint() {
+  // C4: at the era ceiling the saturated curve flattens, so consecutive totals can differ by < 1 person
+  // and a real one-point move would otherwise read as "0 people". A point that actually emigrated is at
+  // least one person, so marginalPeople floors a real point at 1 once the raw delta underflows below 1.
+  const rawDelta = scaleCityPopulation(1000, 0) - scaleCityPopulation(999, 0);
+  assert.ok(rawDelta < 1, `expected the curve to saturate (raw delta < 1) at pop 1000, got ${rawDelta}`);
+  assert.equal(marginalPeople(1000, 0), 1, "a real point in the saturated regime reads as >= 1 person");
+  // The floor must NOT perturb the unsaturated regime: small pops keep the exact delta (so the
+  // Demographics parity pin is unaffected).
+  assert.equal(marginalPeople(2, 0), scaleCityPopulation(2, 0) - scaleCityPopulation(1, 0));
+}
+
 function testFormatPeopleBuckets() {
   assert.equal(formatPeople(0), "0");
   assert.equal(formatPeople(500), "500");
@@ -259,6 +271,7 @@ testAgeBoundaryContinuity();
 testModernMegaRampAndAgeProgressReaders();
 testScaleRejectsNonPositive();
 testMarginalPeopleIsTheDelta();
+testMarginalPeopleFloorsRealPoint();
 testFormatPeopleBuckets();
 testFormatBothShowsBothSystems();
 testExactAndVariedFormats();
