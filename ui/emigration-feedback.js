@@ -19,6 +19,7 @@
 // no-op rather than throwing.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 import { speedTurns, speedBar } from "/emigration/ui/emigration-game-speed.js";
 import {
   refugeeHeadline,
@@ -42,6 +43,7 @@ const MAX_ANNOUNCED_KEYS = 1024;
 
 /** @type {{ announced: Record<string, number>, lastToastTurn: number } | null} */
 let _news = null;
+registerCacheReset(() => { _news = null; });
 
 /**
  * @returns {{ announced: Record<string, number>, lastToastTurn: number }} Empty news state.
@@ -132,6 +134,7 @@ function loadNews() {
  * @returns {{ announced: Record<string, number>, lastToastTurn: number }} State.
  */
 function newsState() {
+  resetCachesOnNewGame();
   if (!_news) _news = loadNews() || emptyNewsState();
   return _news;
 }

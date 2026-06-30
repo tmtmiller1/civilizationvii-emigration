@@ -18,11 +18,13 @@
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { civTuning } from "/emigration/ui/emigration-civ-tuning.js";
 import { speedDecay } from "/emigration/ui/emigration-game-speed.js";
+import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
 const STATE_KEY = "EmigrationAssim_v1";
 
 /** @type {{ load: Record<string, number>, tickedTurn: Record<string, number> } | null} */
 let _state = null;
+registerCacheReset(() => { _state = null; });
 
 /**
  * The current age-local game turn, or 0.
@@ -51,6 +53,7 @@ function readStored() {
  * @returns {{ load: Record<string, number>, tickedTurn: Record<string, number> }} State.
  */
 function state() {
+  resetCachesOnNewGame();
   if (_state) return _state;
   try {
     const raw = readStored();

@@ -1,7 +1,7 @@
 // validate-package.mjs
 //
 // Install / load-time package-integrity gate: the structural checks that decide whether INSTALLING
-// this mod can crash a game on load — for a fresh installer, for any of the 9 non-English locales, and
+// this mod can crash a game on load — for a fresh installer, for any of the 11 non-English locales, and
 // for a player who ALSO has other Workshop mods installed. These are the failure classes the existing
 // gate misses: the i18n test is regex-based and does NOT catch XML well-formedness, and the modinfo
 // test covers JS import-closure but not data/text XML, duplicate database keys, or the namespacing

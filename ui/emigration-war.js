@@ -11,6 +11,8 @@
 // The event is public (declaring war isn't fog-gated), so this stays consistent with
 // the mod's fog-independent design. State persists in GameConfiguration.
 
+import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
+
 const STATE_KEY = "EmigrationWar_v1";
 const STATE_SCHEMA_VERSION = 2;
 const MAX_VICTIMS = 256;
@@ -18,6 +20,7 @@ const MAX_AGGRESSORS_PER_VICTIM = 32;
 
 /** @type {{ wars: Record<string, number[]> } | null} */
 let _state = null;
+registerCacheReset(() => { _state = null; });
 
 /**
  * @returns {{ wars: Record<string, number[]> }} Empty war state.
@@ -105,6 +108,7 @@ function readStored() {
  * @returns {{ wars: Record<string, number[]> }} State.
  */
 function state() {
+  resetCachesOnNewGame();
   if (_state) return _state;
   try {
     const raw = readStored();
@@ -245,7 +249,7 @@ function alivePlayerIds() {
  * @param {number} victim The besieged player id.
  * @returns {Set<number>} Opponent ids at war with `victim`.
  */
-export function engineWarOpponents(victim) {
+function engineWarOpponents(victim) {
   /** @type {Set<number>} */
   const set = new Set();
   if (typeof victim !== "number") return set;

@@ -24,7 +24,9 @@ function el(tag, cls, text) {
 const CSS =
   ".emig-chr-list{display:flex;flex-direction:column;gap:0.55rem;padding-right:0.2rem;max-width:46rem;}" +
   ".emig-chr-row{border-left:0.16rem solid rgba(201,162,76,0.5);padding:0.1rem 0 0.2rem 0.7rem;}" +
-  ".emig-chr-head{display:flex;align-items:baseline;gap:0.6rem;margin-bottom:0.12rem;}" +
+  // flex-wrap so a long title can't crowd the right-aligned kind label on a narrow Civ VII panel: the
+  // kind wraps to its own line (still pushed right by margin-left:auto) rather than being squeezed.
+  ".emig-chr-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:0.6rem;margin-bottom:0.12rem;}" +
   '.emig-chr-title{font-family:"TitleFont";letter-spacing:0.04em;font-size:0.92rem;color:#f0bc78;}' +
   ".emig-chr-turn{font-size:0.7rem;opacity:0.55;white-space:nowrap;}" +
   ".emig-chr-body{font-size:0.92rem;line-height:1.5;color:#e8d8b4;}" +

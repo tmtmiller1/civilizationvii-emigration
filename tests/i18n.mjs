@@ -1,14 +1,14 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 
-// Locale parity gate: every key in en_us must exist in all nine non-English ModText.xml files
+// Locale parity gate: every key in en_us must exist in all eleven non-English ModText.xml files
 // (so no string silently falls back to English). Guards against drift as new keys are added ,
 // run `node scripts/i18n_extract.mjs && node scripts/i18n_apply.mjs` to refresh after editing
 // en_us. Reads the key set straight from en_us so the gate needs no generated/ignored file.
 
 const enXml = fs.readFileSync("text/en_us/ModText.xml", "utf8");
 const SRC = [...enXml.matchAll(/Tag="(LOC_[A-Z0-9_]+)"/g)].map((m) => m[1]);
-const FOLDERS = ["de_de", "es_es", "fr_fr", "it_it", "ja_jp", "ko_kr", "pt_br", "ru_ru", "zh_cn"];
+const FOLDERS = ["de_de", "es_es", "fr_fr", "it_it", "ja_jp", "ko_kr", "pl_pl", "pt_br", "ru_ru", "zh_hans_cn", "zh_hant_hk"];
 
 let checked = 0;
 for (const f of FOLDERS) {
