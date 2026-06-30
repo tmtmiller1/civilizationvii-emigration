@@ -644,7 +644,9 @@ const pendingRemoved = new Set();
  * @param {*} cityID The removed city's ComponentID ({owner, id}).
  */
 export function markCityRemoved(cityID) {
-  if (cityID && typeof cityID.owner === "number") pendingRemoved.add(cityID.owner + ":" + cityID.id);
+  // Guard id != null (as keyFromCID does in violence/disasters): a missing id would flag "owner:undefined",
+  // a key that can never match a real city, silently dropping the razed city's residual-population credit.
+  if (cityID && typeof cityID.owner === "number" && cityID.id != null) pendingRemoved.add(cityID.owner + ":" + cityID.id);
 }
 
 /**

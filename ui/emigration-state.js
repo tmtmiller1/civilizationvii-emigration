@@ -62,7 +62,8 @@ function normalizeTransitEntry(v) {
   if (!destKey || nums.some((n) => !isFinite(n))) {
     return null;
   }
-  return {
+  /** @type {Transit} */
+  const row = {
     destKey,
     arriveTurn,
     people,
@@ -75,6 +76,12 @@ function normalizeTransitEntry(v) {
     srcName: stringOr(v.srcName, ""),
     destName: stringOr(v.destName, "")
   };
+  // Carry the deferral counter across persist/load: runPass reloads + re-saves state every turn, so
+  // dropping it here would reset `defers` to 0 each turn and the MAX_DEFERS force-land/perish guard
+  // (and the longest-waiting-first arrival sort) could never fire. Kept optional (only when > 0).
+  const defers = Math.max(0, Math.floor(finiteNumberOr(v.defers, 0)));
+  if (defers > 0) row.defers = defers;
+  return row;
 }
 
 /**
@@ -226,6 +233,19 @@ export function saveState(state) {
   } catch (_) {
     /* ignore */
   }
+}
+
+/**
+ * Whether the in-flight transit queue is at its hard cap (`MAX_TRANSIT_ENTRIES`). Checked at ENQUEUE
+ * time so a lagged departure is never started when it couldn't be persisted: the load-time
+ * `normalizeTransitList` truncation would otherwise drop the overflow rows AFTER the source already
+ * shed the point, silently destroying in-flight population. At capacity the migrant simply stays home
+ * this turn (population conserved) and may depart once the queue drains.
+ * @param {*} state Loaded state (transit queue).
+ * @returns {boolean} True when no further transit rows may be enqueued this turn.
+ */
+export function transitAtCapacity(state) {
+  return !!state && Array.isArray(state.transit) && state.transit.length >= MAX_TRANSIT_ENTRIES;
 }
 
 /**
