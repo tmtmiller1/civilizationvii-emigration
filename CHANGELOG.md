@@ -22,7 +22,14 @@ matching guide and Civilopedia updates and wider engine test coverage.
 - **Guide and Civilopedia match the mechanic.** The in-game guide and Civilopedia (English plus all 11
   translations) now describe crisis deaths accurately: they build over a sustained crisis and are
   uncapped. Earlier text wrongly implied deaths stop at the rural floor.
-- **Maintainability:** expanded the migration engine's automated test coverage.
+- **Maintainability: mutation-tested the migration engine.** Raised `emigration-engine.js` mutation
+  score from 41% to 88% (474 of 539 mutants killed). Added two harnesses, `tests/engine-rigor.mjs` and
+  `tests/engine-rigor-fixtures.mjs` (~110 exact-boundary, arithmetic, and branch assertions, plus
+  seeded war/combat/siege fixtures), a `__test` surface exposing the engine's internal decision and
+  sizing helpers, and a fast engine-only mutation loop (`npm run mutation:engine` via
+  `stryker.engine.config.json`). Every kill is a real assertion; no mutants were suppressed to inflate
+  the score, and the surviving ones are genuine equivalent mutants. Also tightened the harness itself so
+  a fixture that fails to set up now fails loudly instead of passing silently.
 
 ## [1.7.0] - 2026-06-30
 
