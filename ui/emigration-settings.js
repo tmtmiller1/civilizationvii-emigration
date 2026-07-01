@@ -21,12 +21,12 @@ class ModOptionsStore {
    * another mod's slice. `modSettings` is multi-tenant (`{ "<modId>": {...}, ... }`); the danger is
    * that Coherent's localStorage can return a transient empty/`null` read even when data exists, and
    * another mod can leave a value that isn't valid JSON. Treating either as "empty" and writing back
-   * only our slice would wipe every sibling — the cross-mod "cannibalized settings" bug. So:
+   * only our slice would wipe every sibling, the cross-mod "cannibalized settings" bug. So:
    *   - re-read once on an empty first read (a populated re-read proves the first was flaky);
    *   - REFUSE to write (`safe:false`) when the current value is present but unparseable / non-object,
    *     since siblings exist that we can't round-trip;
    *   - only a genuinely-absent value yields a fresh `{}`.
-   * NEVER reset `modSettings` to `{}` — that is itself a sibling-wiping write.
+   * NEVER reset `modSettings` to `{}`, that is itself a sibling-wiping write.
    * @returns {{root: Record<string, *>, safe: boolean}}
    */
   _readForWrite() {
@@ -42,7 +42,7 @@ class ModOptionsStore {
     try {
       parsed = JSON.parse(raw);
     } catch (_) {
-      return { root: {}, safe: false }; // unparseable siblings — do not overwrite
+      return { root: {}, safe: false }; // unparseable siblings, do not overwrite
     }
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
       return { root: {}, safe: false };
@@ -57,7 +57,7 @@ class ModOptionsStore {
   save(modID, optionID, value) {
     try {
       const { root, safe } = this._readForWrite();
-      if (!safe) return; // current shared value can't be round-tripped — keep siblings intact
+      if (!safe) return; // current shared value can't be round-tripped, keep siblings intact
       (root[modID] ??= {})[optionID] = value;
       localStorage.setItem("modSettings", JSON.stringify(root));
     } catch (_) {
@@ -105,7 +105,7 @@ const CFG_DEF = /** @type {Record<string, *>} */ (CONFIG_DEFAULTS);
 // How migration counts are presented. A two-way toggle: Civ Pop (raw pop-points) or Scaled Pop
 // (historical people). BOTH is retained only so older saved values coerce cleanly to Scaled.
 export const NumberMode = Object.freeze({
-  BOTH: 0, // legacy "1 point (12 thousand people)" , coerced to HISTORICAL on read
+  BOTH: 0, // legacy "1 point (12 thousand people)", coerced to HISTORICAL on read
   CIV: 1, // "1 population point"
   HISTORICAL: 2 // "12 thousand people" (Scaled Pop)
 });
@@ -197,8 +197,8 @@ let _minimize = null;
 
 /**
  * Whether the migration dashboard hides its heavy analytics tabs (the animated Network diagram and the
- * Causes pie charts), leaving the simple, numbers-first tabs — Net Migration table, My Cities, Policies,
- * Notifications, Guide — plus the Demographics line graphs. Default OFF (everything shown). Re-read each
+ * Causes pie charts), leaving the simple, numbers-first tabs, Net Migration table, My Cities, Policies,
+ * Notifications, Guide, plus the Demographics line graphs. Default OFF (everything shown). Re-read each
  * time the dashboard rebuilds its tab list, so toggling it takes effect on the next open.
  * @returns {boolean} True when analytics tabs are hidden.
  */
@@ -390,7 +390,7 @@ export function isTunableModified(key) {
 }
 
 // Every CONFIG key the player can change: the advanced tunables PLUS any key a preset writes (some
-// preset keys — e.g. movesPerSiege — aren't individually exposed as tunables, but a preset still sets
+// preset keys (e.g. movesPerSiege) aren't individually exposed as tunables, but a preset still sets
 // them, so they must be restored here too or they'd silently revert to default on the next re-apply).
 const OVERRIDE_KEYS = [...new Set([
   ...TUNABLES.map((t) => t.key),
@@ -399,8 +399,8 @@ const OVERRIDE_KEYS = [...new Set([
 
 /**
  * Push every saved tunable / preset override into the live CONFIG. Called at boot AND at the start of
- * every pass (emigration-main), so a preset or tunable changed mid-game in the Options screen — which
- * runs in a separate isolate and can only persist — takes effect on the next pass instead of next load.
+ * every pass (emigration-main), so a preset or tunable changed mid-game in the Options screen, which
+ * runs in a separate isolate and can only persist, takes effect on the next pass instead of next load.
  */
 export function applyTunableOverrides() {
   for (const key of OVERRIDE_KEYS) CFG[key] = getTunable(key);

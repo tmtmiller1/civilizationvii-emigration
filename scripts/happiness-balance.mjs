@@ -2,8 +2,8 @@
 //
 // Balance analysis for the Civ VII 1.4.1 happiness change (unhappiness yield penalty ~−2% → −5% per
 // point of negative happiness, capped at −80%, Food exempt). Drives the REAL shipped prosperity model
-// off-engine (via tests/loader.mjs) to measure how a city's attractiveness — and the emigration pull
-// gradient between an unhappy city and a content one — shifts between the two penalty regimes, and how
+// off-engine (via tests/loader.mjs) to measure how a city's attractiveness, and the emigration pull
+// gradient between an unhappy city and a content one, shifts between the two penalty regimes, and how
 // much the new polity stage term adds on top. No game globals needed (owner-less signals → neutral civ
 // tuning). Run: node --loader ./tests/loader.mjs ./scripts/happiness-balance.mjs
 //

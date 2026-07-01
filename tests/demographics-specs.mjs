@@ -3,8 +3,8 @@
 // The Demographics-bridge graph specs (emigration-demographics.js): every registered metric's
 // accessor + formatter + tooltip-attribution, plus the Scaled/Civ view binding. demographics-branches-
 // extra.mjs covers the registration plumbing (queue/drain/dup-guard) and the cumFor=0 fallbacks; this
-// covers the VALUE side — the per-civ formatters (people + raw points, signed and unsigned), the
-// cause-breakdown / refugee-split tooltips (with and without data), and the population accessor — by
+// covers the VALUE side, the per-civ formatters (people + raw points, signed and unsigned), the
+// cause-breakdown / refugee-split tooltips (with and without data), and the population accessor, by
 // seeding the persisted migration tallies + a live EmigrationData and driving each spec end-to-end.
 
 import assert from "node:assert/strict";

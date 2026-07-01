@@ -39,7 +39,7 @@ function testScaleGrowsWithSizeAndAge() {
 }
 
 function testHistoricalAnchors() {
-  // A top Exploration city (size ~20) reads ~0.8M; size ~21 ~0.9M — i.e. the live "968" (thousands).
+  // A top Exploration city (size ~20) reads ~0.8M; size ~21 ~0.9M, i.e. the live "968" (thousands).
   assert.equal(scaleCityPopulation(20, 0, "AGE_EXPLORATION", 100), 31 * 25450); // 789,950
   const size21 = scaleCityPopulation(21, 0, "AGE_EXPLORATION", 100);
   assert.ok(size21 > 850_000 && size21 < 950_000, `size 21 Exploration ~0.9M, got ${size21}`);
@@ -48,7 +48,7 @@ function testHistoricalAnchors() {
 }
 
 function testModernMegacityBand() {
-  // Below the knee (size 35): no boost — same as the bare curve.
+  // Below the knee (size 35): no boost, same as the bare curve.
   assert.equal(
     scaleCityPopulation(35, 0, "AGE_MODERN", 100),
     scaleCityPopulation(35, 0, "AGE_MODERN", 100)

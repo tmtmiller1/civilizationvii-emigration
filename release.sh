@@ -92,7 +92,7 @@ rsync -a --exclude='.git' --exclude='.gitignore' --exclude='.DS_Store' --exclude
     --exclude='report.md' --exclude='donation-records' --exclude='analysis' \
     --exclude='migration-probe.modinfo' --exclude='ui/migration-probe.js' \
     --exclude='coverage*' --exclude='reports' --exclude='.stryker-tmp' \
-    --exclude='.c8rc.json' --exclude='stryker.config.json' \
+    --exclude='.c8rc.json' --exclude='stryker*.json' \
     "$SRC_DIR"/ "$TARGET_DIR"/
 
 echo "==> Disabling debug logging in dist JS files"

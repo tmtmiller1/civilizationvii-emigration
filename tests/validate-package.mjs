@@ -1,20 +1,20 @@
 // validate-package.mjs
 //
 // Install / load-time package-integrity gate: the structural checks that decide whether INSTALLING
-// this mod can crash a game on load — for a fresh installer, for any of the 11 non-English locales, and
+// this mod can crash a game on load, for a fresh installer, for any of the 11 non-English locales, and
 // for a player who ALSO has other Workshop mods installed. These are the failure classes the existing
 // gate misses: the i18n test is regex-based and does NOT catch XML well-formedness, and the modinfo
 // test covers JS import-closure but not data/text XML, duplicate database keys, or the namespacing
 // invariant that keeps this mod from colliding with other mods' database rows.
 //
 // Checks:
-//   1. XML well-formedness — modinfo + every data/*.xml + every text/<locale>/ModText.xml (xmllint).
-//   2. modinfo file references — every <Item>/<File> path exists on disk.
-//   3. Civilopedia duplicate primary keys — per table, no duplicate PK rows (a dup PK crashes DB load).
-//   4. Locale parity — every en_us key present in each declared locale, correct <Replace Language=…>,
+//   1. XML well-formedness, modinfo + every data/*.xml + every text/<locale>/ModText.xml (xmllint).
+//   2. modinfo file references, every <Item>/<File> path exists on disk.
+//   3. Civilopedia duplicate primary keys, per table, no duplicate PK rows (a dup PK crashes DB load).
+//   4. Locale parity, every en_us key present in each declared locale, correct <Replace Language=…>,
 //      and no duplicate Tags within a locale.
-//   5. Data LOC references — every LOC_ key referenced by data/*.xml is defined in en_us text.
-//   6. Namespace invariant — every mod-OWNED database identifier (Types/Traditions/Modifiers/Requirements)
+//   5. Data LOC references, every LOC_ key referenced by data/*.xml is defined in en_us text.
+//   6. Namespace invariant, every mod-OWNED database identifier (Types/Traditions/Modifiers/Requirements)
 //      + Civilopedia Section/PageGroup ids + every LOC tag carries the mod's namespace token, so it can
 //      NEVER collide with the base game or another mod (the cross-mod install-crash guarantee).
 //
@@ -27,7 +27,7 @@ import { execFileSync } from "node:child_process";
 const NS = "EMIG"; // every mod-owned identifier must carry this token (collision-proof vs base/other mods)
 const failures = [];
 const fail = (msg) => failures.push(msg);
-const ok = (label, detail) => console.log(`  ok   ${label}${detail ? " — " + detail : ""}`);
+const ok = (label, detail) => console.log(`  ok   ${label}${detail ? ", " + detail : ""}`);
 
 // ── helpers ────────────────────────────────────────────────────────────────
 const read = (p) => fs.readFileSync(p, "utf8");
@@ -71,7 +71,7 @@ try {
   xmllintAvailable = false;
 }
 if (!xmllintAvailable) {
-  fail("xmllint not found — cannot validate XML well-formedness (install libxml2 / xmllint)");
+  fail("xmllint not found, cannot validate XML well-formedness (install libxml2 / xmllint)");
 } else {
   for (const f of allXmlFiles()) {
     try {
@@ -177,7 +177,7 @@ for (const r of rowsOf(blockOf(pedia, "CivilopediaPageGroups"), "Row")) {
 // LOC tags must sit in this mod's namespace OR the coordinated companion (Demographics) namespace,
 // into which Emigration deliberately contributes a few metric/series labels so they render inside the
 // Demographics screen. Text-tag collisions are last-wins (never a DB crash), so this part is hygiene
-// against shadowing an UNRELATED base/other key — not crash-safety. The DB-identifier check above is
+// against shadowing an UNRELATED base/other key, not crash-safety. The DB-identifier check above is
 // the actual cross-mod crash guarantee.
 const LOC_OK = [NS, "DEMOGRAPHICS"];
 const badLoc = [...enKeys].filter((k) => !LOC_OK.some((ns) => k.toUpperCase().includes(ns)));
@@ -186,7 +186,7 @@ else ok("Namespace invariant", `${ownedCount} owned DB ids carry ${NS}; ${enKeys
 
 // ── report ───────────────────────────────────────────────────────────────────
 if (failures.length) {
-  console.error("\n❌ validate-package FAILED — installing this mod could crash a game:");
+  console.error("\n❌ validate-package FAILED, installing this mod could crash a game:");
   for (const f of failures) console.error("   - " + f);
   process.exit(1);
 }

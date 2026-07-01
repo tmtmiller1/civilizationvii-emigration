@@ -5,9 +5,9 @@
 // (emigration-migration-page.js) both mount these same widgets, so the content is built once here.
 //
 //   • Pure view-model builders (civ ledger, per-cause breakdown, border stances, the per-city
-//     pressure table, the cross-civ flow network, and the top-level `dashboardModel`) , DOM-free,
+//     pressure table, the cross-civ flow network, and the top-level `dashboardModel`), DOM-free,
 //     unit-tested.
-//   • `renderDashboard(target, model)` , a themed, card-per-section DOM renderer. The headline
+//   • `renderDashboard(target, model)`, a themed, card-per-section DOM renderer. The headline
 //     "Migration network" card is delegated to emigration-network-viz.js (an animated spark graph).
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
@@ -73,7 +73,7 @@ const STANCE_LABEL = { pro: "Pro-Immigration", anti: "Anti-Immigration", none: "
 const STANCE_ORDER = { pro: 0, anti: 1, none: 2 };
 
 /**
- * Border-stance rows for every civ , its immigration policy: Pro-Immigration (open/attracting),
+ * Border-stance rows for every civ, its immigration policy: Pro-Immigration (open/attracting),
  * Anti-Immigration (closed), or Neutral (no border policy). Pro/anti are listed first. Each row
  * also carries the stance-impact figures (in/out effect) for the Borders breakdown.
  * @param {*[]} civs Civs ({name, stance?, in?, stanceImpact?}).
@@ -363,7 +363,7 @@ const DASH_CSS =
   ".emig-city-sub{font-size:0.8rem;text-transform:uppercase;letter-spacing:0.04rem;opacity:0.75;" +
   "color:#cbb994;margin-bottom:0.2rem;}" +
   ".emig-city-why{font-size:0.78rem;opacity:0.8;text-align:center;margin-top:0.2rem;}" +
-  // Settlements: the Emigration-pressure column , a labelled bar aligned beside the pies.
+  // Settlements: the Emigration-pressure column, a labelled bar aligned beside the pies.
   ".emig-pr-track{width:100%;max-width:13rem;height:0.85rem;margin-top:1.2rem;" +
   "background:rgba(229,210,172,0.14);border-radius:0.4rem;overflow:hidden;}" +
   ".emig-pr-fill{height:100%;border-radius:0.4rem;}" +

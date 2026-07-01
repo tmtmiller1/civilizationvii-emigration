@@ -3,7 +3,7 @@
 // Orchestrates the destination-cluster migration view on a 2D canvas: a light force layout
 // (emigration-network-sim.js) spreads the destination clusters apart; each cluster is a swarm of
 // origin-coloured dots (emigration-network-paint.js) where one dot is a SCALED chunk of migrants;
-// plus the chrome , an origin colour key, cause-filter chips, a timeline scrubber, click-to-isolate
+// plus the chrome, an origin colour key, cause-filter chips, a timeline scrubber, click-to-isolate
 // a destination, and hover tooltips.
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
@@ -24,7 +24,7 @@ import { makeTimeline } from "/emigration/ui/emigration-network-timeline.js";
 import { installStageFit } from "/emigration/ui/emigration-network-fit.js";
 import { makeTooltip, wireEvents } from "/emigration/ui/emigration-network-interact.js";
 
-// Logical canvas size , a WIDE 2:1 rectangle so the draggable area spans the full window width
+// Logical canvas size, a WIDE 2:1 rectangle so the draggable area spans the full window width
 // (nodes seed clustered in the centre; the buffer is 2x these for crispness).
 export const WX = 1120;
 export const WY = 560;
@@ -110,7 +110,7 @@ const NETC_CSS =
     ".emig-netc-time-note{align-self:center;margin:0.5rem 0;font-size:0.82rem;opacity:0.6;" +
     "font-style:italic;color:#e5d2ac;text-align:center;max-width:34rem;}" +
     // The canvas fills its stage, which is a full-width 2:1 box (padding-bottom gives it a real
-    // height so the canvas's height:100% resolves , GameFace won't derive height from the buffer).
+    // height so the canvas's height:100% resolves, GameFace won't derive height from the buffer).
     // The stage is a 2:1 box (padding-bottom derives its height from its rendered WIDTH, preserving the
     // canvas's 2:1 logical aspect so the dots never distort). Width is capped by viewport HEIGHT so the
     // height (half the width) stays ~42vh: the diagram plus its controls/legend/timeline then fit the
@@ -353,8 +353,8 @@ const SHOW_TOGGLES = [
 ];
 
 /**
- * Append the "Show:" toggles , residents / internal movers / immigrants, each independently on or
- * off , so the player can view any combination (e.g. both migrant types without residents).
+ * Append the "Show:" toggles, residents / internal movers / immigrants, each independently on or
+ * off, so the player can view any combination (e.g. both migrant types without residents).
  * @param {HTMLElement} root The selector row.
  * @param {*} state Interaction state.
  * @param {()=>void} onChange Called after a toggle changes (requests a repaint).
@@ -732,7 +732,7 @@ function buildScene(frames, colorMap, events) {
   const { sim, byId } = buildCenters(lastNet, colorMap);
   // Scaled Pop: a fixed ~SCALED_PEOPLE_PER_DOT people per dot (count tracks real size, capped at
   // SCALED_DOT_CAP). Civ Pop: ~1 dot per civ pop-point (the small "civilization population" reads as
-  // one dot each) , set the unit to people-per-point.
+  // one dot each), set the unit to people-per-point.
   const civMode = getNumberMode() === NumberMode.CIV;
   const points = totalPoints(lastNet, lastFrame.pops || {});
   const unit = civMode
@@ -821,7 +821,7 @@ export function renderNetworkViz(container, section, controlsHost) {
   // on a re-render (e.g. the Units toggle) the old view would NOT clear and the chrome would double up.
   if (container) while (container.firstChild) container.removeChild(container.firstChild);
   const all = (section && section.frames) || [];
-  // Keep any frame with civs to show , a frame can have residents (native population) before any
+  // Keep any frame with civs to show, a frame can have residents (native population) before any
   // cross-civ migration has happened, so we no longer require edges.
   const frames = all.filter((/** @type {*} */ f) => f.network && f.network.nodes.length);
   if (!frames.length) {

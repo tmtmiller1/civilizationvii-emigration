@@ -12,7 +12,7 @@
 // cache in that isolate, so each one reloads from the new game's store on next access. The game
 // identity is `Configuration.getGame().gameSeed` (unique per game; startPosition is NOT). This is a
 // distinct failure mode from the recorder-vs-reader isolate gotcha (two isolates within the SAME
-// game) — that one is handled by each reader reloading from persistence.
+// game), that one is handled by each reader reloading from persistence.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
@@ -27,7 +27,7 @@ let _lastGameId = NO_GAME;
 
 /**
  * The current game's unique id (its seed), or null when unreadable. Read defensively: Configuration is
- * absent off-engine and getGame() may be missing during teardown. `gameSeed` — not `startPosition` —
+ * absent off-engine and getGame() may be missing during teardown. `gameSeed`, not `startPosition`,
  * is the value that is unique per game.
  * @returns {number|string|null} The game id, or null when unavailable.
  */
@@ -53,7 +53,7 @@ export function registerCacheReset(fn) {
 /**
  * Reset every registered persisted-state cache when a NEW game is detected (the game id changed since
  * the last call in this isolate). No-op when the feature is off, the id is unreadable, the id is
- * unchanged, or this is the first id seen (the caches are already fresh — adopt the id, don't reset).
+ * unchanged, or this is the first id seen (the caches are already fresh, adopt the id, don't reset).
  * Cheap and idempotent in the steady state (one property read + a compare). Call at the top of each
  * persisted-state lazy loader so the first access after a boot clears all sibling caches too.
  * @returns {boolean} True when a reset was performed.
@@ -61,12 +61,12 @@ export function registerCacheReset(fn) {
 export function resetCachesOnNewGame() {
   if (!CONFIG.resetCachesOnGameBoot) return false;
   const id = currentGameId();
-  if (id === null) return false; // unreadable — keep caches, don't thrash
+  if (id === null) return false; // unreadable, keep caches, don't thrash
   if (_lastGameId === NO_GAME) { // first id this isolate: adopt it, the caches are already fresh
     _lastGameId = id;
     return false;
   }
-  if (id === _lastGameId) return false; // same game — nothing to do
+  if (id === _lastGameId) return false; // same game, nothing to do
   _lastGameId = id;
   for (const fn of _resetters) {
     try {

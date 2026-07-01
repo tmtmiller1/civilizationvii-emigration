@@ -1,7 +1,7 @@
 // scripts/snowball-stress.mjs
 //
 // Does the 1.4.1 balance rebalance (economy weighted ×2.5, happiness de-saturated) let a rich, growing
-// civ SNOWBALL — accrete cross-civ migrants faster than the anti-snowball brake can counter? The brake
+// civ SNOWBALL, accrete cross-civ migrants faster than the anti-snowball brake can counter? The brake
 // (emigration-pull.js dominanceFor) scales with POPULATION dominance, not economy, so making economy
 // matter more could open a window where a rich-but-not-yet-huge leader runs away.
 //

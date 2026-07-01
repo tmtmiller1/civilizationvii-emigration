@@ -115,7 +115,7 @@ function buildPanel(view, resolve) {
 
 /**
  * Show the refugee-dilemma modal. Resolves with the chosen option id (clicking the dim area outside
- * the panel resolves as "away" — turning them away). Calls `onChoice(id)` exactly once.
+ * the panel resolves as "away", turning them away). Calls `onChoice(id)` exactly once.
  * @param {{title:string, body:string, choices:{id:string,label:string,note?:string}[]}} view The model.
  * @param {(id:string)=>void} onChoice The choice callback.
  */
@@ -152,7 +152,7 @@ export function showDilemma(view, onChoice) {
     try {
       window.addEventListener("keydown", onKey, true); // Escape = turn away (keyboard safety exit)
     } catch (_) {
-      /* no window/keydown — the click exits still apply */
+      /* no window/keydown, the click exits still apply */
     }
   } catch (_) {
     /* a modal failure must never break the game */

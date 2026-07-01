@@ -68,7 +68,7 @@ function groupInt(v) {
       if (typeof s === "string" && s.length) return s;
     }
   } catch (_) {
-    /* ignore — fall through to the locale-independent grouping */
+    /* ignore, fall through to the locale-independent grouping */
   }
   return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

@@ -6,9 +6,9 @@
 // city-banner hook), populated from the Phase-0 `citySnapshot` recompute-on-read data core.
 //
 // Two layers, mirroring the rest of the legibility work:
-//   • readoutModel(snapshot)  , PURE: turns a CitySnapshot into a title + display lines + an
+//   • readoutModel(snapshot), PURE: turns a CitySnapshot into a title + display lines + an
 //     optional warning. DOM-free, unit-tested.
-//   • the DOM host             , show/hide a styled panel, thin and untested like toast().
+//   • the DOM host, show/hide a styled panel, thin and untested like toast().
 //
 // Trigger: the guaranteed path is the console command (emigration.city(id) / .hideCity()).
 // A best-effort `CitySelectionChanged` listener auto-shows it on selection; the exact UI-VM

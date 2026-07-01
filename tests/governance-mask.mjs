@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 
 // Guardrail for the analytics-visibility masking (emigration-governance.js): civHidden(pid) must
 // follow the effective policy (shared host ceiling + local preference), so the dashboard/lens never
-// reveal a civ the policy withholds — independent of the simulation scope.
+// reveal a civ the policy withholds, independent of the simulation scope.
 
 // ── Stub the engine surfaces governance reads ──────────────────────────────
 let _ls = {};

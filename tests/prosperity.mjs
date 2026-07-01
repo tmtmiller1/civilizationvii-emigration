@@ -50,7 +50,7 @@ function testProsperityFormula() {
 
 function testStarvationStronglyReducesScore() {
   // starvation applies starvationModifier% as a situational penalty: score = base × (1 + mod/100). At
-  // the default −90 that's ×0.1 — a deeply unattractive city people flee — without flipping negative.
+  // the default −90 that's ×0.1 (a deeply unattractive city people flee) without flipping negative.
   // (Death no longer comes from this penalty; it comes from the famine death channel in the engine.)
   const base = signal({ food: 10, production: 10, population: 2, happiness: 5 }); // base 38
   const factor = 1 + CONFIG.starvationModifier / 100;

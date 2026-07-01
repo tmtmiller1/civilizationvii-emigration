@@ -360,7 +360,7 @@ function eventNameFor(cause, srcOwner) {
   }
   if (cause === "disaster") {
     // Name the disaster striking THIS civ (its worst active event), not the globally most-recent one
-    // — a "Greek refugee crisis" must read "the Greek volcano", never a flood on another continent.
+    //, a "Greek refugee crisis" must read "the Greek volcano", never a flood on another continent.
     const type = typeof srcOwner === "number" ? worstDisasterTypeForOwner(srcOwner) : null;
     return (type && disasterName(type)) || recentDisasterName();
   }
@@ -443,7 +443,7 @@ function crisisMilestone(pid, cum, pass) {
   const people = pass ? pass.people : cum;
   const points = pass ? pass.points : 0;
   // WHO the crisis hit, spoiler-guarded: an unmet civ is never named in world news
-  // (mirrors the dashboard's "Unmet" mask) — it's reported as "an unmet civilization".
+  // (mirrors the dashboard's "Unmet" mask), it's reported as "an unmet civilization".
   const who = civHidden(pid) ? UNMET_CIV_LABEL : civAdjective(pid);
   const ev = { cause, civ: who, people: formatBothExact(people, points),
     warName: event || undefined, eventName: event || undefined };

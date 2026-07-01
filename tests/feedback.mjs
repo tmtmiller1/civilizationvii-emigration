@@ -143,8 +143,8 @@ function testLocalDigestExplainsTheLocalPlayersLoss() {
 
 function testLocalDigestIsPerEvent() {
   // A pass where several of the local player's settlements shed people for different reasons must
-  // produce ONE notification PER EVENT (source settlement + cause) with accurate counts — never one
-  // confusing pass-wide aggregate — while only the LARGEST event toasts, so the HUD isn't flooded.
+  // produce ONE notification PER EVENT (source settlement + cause) with accurate counts, never one
+  // confusing pass-wide aggregate, while only the LARGEST event toasts, so the HUD isn't flooded.
   globalThis.GameContext = { localPlayerID: 0 };
   CONFIG.notifyMode = 1;
   CONFIG.notifyWorldNews = false;

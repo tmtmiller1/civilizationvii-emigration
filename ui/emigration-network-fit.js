@@ -55,7 +55,7 @@ function nearestClipBox(stage, getStyle) {
  * The bottom edge (viewport CSS px) that actually BOUNDS the stage: the nearest scrollable / clipped
  * ancestor (the dashboard's `.emig-tabbody`, capped at max-height:74vh, or the screen body), less its
  * bottom padding, clamped to the viewport. The diagram lives inside that box, so it must fit above
- * this line or it spills past the panel — measuring the viewport bottom instead (the old behaviour)
+ * this line or it spills past the panel, measuring the viewport bottom instead (the old behaviour)
  * over-budgets the stage on a near-fullscreen modal and clips the lowest clusters. Falls back to the
  * viewport bottom when no bounding ancestor is found.
  * @param {HTMLElement} stage The 2:1 stage. @returns {number} The bounding bottom in CSS px.

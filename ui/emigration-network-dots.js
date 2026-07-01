@@ -6,7 +6,7 @@
 // the canvas, chrome, playback, and interaction; the painter (emigration-network-paint.js) draws.
 //
 // SEMANTICS (so the chart is an honest accounting, not "residents + migrants double-counted"):
-//   • A `pops` entry is NATIVE (home-grown) population only , upstream already nets out arrivals
+//   • A `pops` entry is NATIVE (home-grown) population only, upstream already nets out arrivals
 //     (gatherPops subtracts grossIn; the sample's nativePopsAt is independent of flows). So
 //     native dots + immigrant dots = the civ's whole population, with no overlap.
 //   • Counts can GROW *and* SHRINK over time: each cohort tracks how many dots are live per frame;
@@ -218,7 +218,7 @@ function growCohort(b, ref, co, target, i) {
 
 /**
  * Shrink a cohort to `target` live dots: stamp `disappearFrame` on the most-recently-added live
- * dots (so a cluster shrinks from its rim) , this is how population DECLINE is shown.
+ * dots (so a cluster shrinks from its rim), this is how population DECLINE is shown.
  * @param {*} co Cohort state {dots, live}.
  * @param {number} target Desired live count.
  * @param {number} i Frame index (disappear frame).
@@ -336,7 +336,7 @@ function addCityCauseDots(b, o, total) {
 }
 
 /**
- * Spread an immigrant cohort across the destination civ's cities by population , the legacy path,
+ * Spread an immigrant cohort across the destination civ's cities by population, the legacy path,
  * used only when a flow has no destination city recorded (e.g. an older save).
  * @param {*} b Build context.
  * @param {*} o { e, c, i } edge / cause / frame.
@@ -490,7 +490,7 @@ function appendNativeDots(b, ownerId, cityIdx, city, i) {
 /**
  * The shared template for one internal-move dot (colour/scope/names); copied per dot with its
  * frame. Internal movers relocated between this civ's OWN cities, so they live in the destination
- * city's sub-cluster, coloured a LIGHTER tint of the civ's colour (origin lens) , distinct from
+ * city's sub-cluster, coloured a LIGHTER tint of the civ's colour (origin lens), distinct from
  * home-grown residents and foreign immigrants.
  * @param {*} b Build context.
  * @param {number} civId Civ id.
@@ -676,8 +676,8 @@ function cityPopWeights(src) {
 }
 
 /**
- * Build every dot ONCE in chronological order across all frames , each civ's growing per-city
- * native population plus the cross-civ arrivals , tagged with the frame it first appears (so
+ * Build every dot ONCE in chronological order across all frames, each civ's growing per-city
+ * native population plus the cross-civ arrivals, tagged with the frame it first appears (so
  * playback reveals them in time order) and a fixed sub-cluster slot.
  * @param {Frame[]} frames Timeline frames.
  * @param {NetworkNode[]} centers Civ centres.

@@ -257,7 +257,7 @@ function engineWarName(victim, aggressor) {
 
 /**
  * A belligerent's display name for a war label, SPOILER-MASKED: a civ the visibility policy hides
- * (unmet) is never named — it reads as "an unmet civilization" instead of a real adjective.
+ * (unmet) is never named, it reads as "an unmet civilization" instead of a real adjective.
  * @param {number} pid Player id.
  * @returns {string|null} The masked name, or null when the id is unusable.
  */
@@ -308,7 +308,7 @@ function maskedWarName(victimName, aggressorName) {
 }
 
 /**
- * Whether both belligerents are MET majors — the only case the engine's own war name is trusted (it
+ * Whether both belligerents are MET majors, the only case the engine's own war name is trusted (it
  * reads "the Enemy" for a minor / unmet side, which would defeat the spoiler mask).
  * @param {number} victimPid Victim id. @param {number|null} aggressor Aggressor id.
  * @returns {boolean} True when both are met majors.
@@ -373,7 +373,7 @@ export function refugeeHeadline(ev) {
   }
   const body = refugeeBody(ev, people, city);
   // The event-named templates above name the war/disaster/city but NOT the affected
-  // civ. When the caller supplies a civ (already spoiler-guarded — an unmet civ is
+  // civ. When the caller supplies a civ (already spoiler-guarded, an unmet civ is
   // passed as "an unmet civilization"), lead with it so world news says WHO was hit.
   return ev.civ ? whoLed(ev.civ, body) : body;
 }
@@ -500,7 +500,7 @@ export function costNote(destName, gold) {
 
 /**
  * Compose the local player's per-pass migration digest: a cause-named loss headline, the action
- * hint, the permanence cue, and , for a cross-civ loss with a material cost , the destination's
+ * hint, the permanence cue, and, for a cross-civ loss with a material cost, the destination's
  * assimilation cost note. Pure; the caller resolves the inputs.
  * @param {{cause?:string, people:string, city:string, crossCiv?:boolean,
  *          destName?:string, destGold?:number}} o The resolved digest inputs.

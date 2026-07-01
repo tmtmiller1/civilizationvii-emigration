@@ -3,10 +3,10 @@
 // Reads the world each pass and decides which population movements are worth writing into the
 // Migration Chronicle (emigration-chronicle.js). Two kinds of moment qualify:
 //
-//   • EXODUS  — a single settlement sheds a large wave in one pass under a real pressure (war,
+//   • EXODUS, a single settlement sheds a large wave in one pass under a real pressure (war,
 //               disaster, conquest). Throttled per settlement+cause so a long war yields a few
 //               entries, not one a turn.
-//   • FOUNDING — a people from one civ has become a settled minority in ANOTHER civ's city, crossing
+//   • FOUNDING, a people from one civ has become a settled minority in ANOTHER civ's city, crossing
 //               a share threshold (15% / 30% / 45% …). Read straight from the composition ledger.
 //
 // Spoiler-safe: a settlement or origin belonging to a civ the visibility policy hides is never

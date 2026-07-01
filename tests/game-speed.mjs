@@ -1,6 +1,6 @@
 // game-speed.mjs
 //
-// Phase 7 — game-speed scaling (emigration-game-speed.js). The engine paces in turns,
+// Phase 7, game-speed scaling (emigration-game-speed.js). The engine paces in turns,
 // but Civ's game speed stretches the same progress over a 6× range of turn counts. This
 // harness pins each speed via a stubbed Configuration/GameInfo and asserts:
 //   1. fail-safe: no engine globals → scalar 1 → every transform is identity;
@@ -69,7 +69,7 @@ CONFIG.gameSpeedTuningEnabled = true;
 // ── 5. Game-TIME invariance (the property that justifies the whole phase) ──
 // At any speed: a duration of n Standard-turns and a threshold of x both scale by the SAME S,
 // so the ratio (turns to cross the bar) is preserved; and decay^S returns the original per-turn
-// fade — i.e. the same transient fades over exactly S× the turns.
+// fade, i.e. the same transient fades over exactly S× the turns.
 for (const mult of Object.values(SPEEDS)) {
   setSpeed(mult);
   const s = gameSpeedScalar();

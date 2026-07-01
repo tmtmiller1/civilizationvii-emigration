@@ -35,7 +35,7 @@ const PID = 5;
 // Legacy pool should load for unrelated pid as a migration sanity check.
 close(dividendFor(99, "YIELD_GOLD"), 2.5, "legacy pool migration");
 
-// Turn 1 , a migrant arrives under Talent: accrue 1.5 into the Science pool, seed the clock.
+// Turn 1, a migrant arrives under Talent: accrue 1.5 into the Science pool, seed the clock.
 addAttractionDividend(PID, "YIELD_SCIENCE", CONFIG.dividendPerMigrant);
 close(dividendFor(PID, "YIELD_SCIENCE"), 1.5, "accrued pool");
 
@@ -43,18 +43,18 @@ close(dividendFor(PID, "YIELD_SCIENCE"), 1.5, "accrued pool");
 assert.deepEqual(tickAttractionDividend(PID), {}, "no grant on accrual turn");
 assert.equal(grants.length, 0, "no grant yet");
 
-// Turn 2 , decay 1.5 × 0.7 = 1.05, grant 1.05 Science.
+// Turn 2, decay 1.5 × 0.7 = 1.05, grant 1.05 Science.
 TURN = 2;
 close(tickAttractionDividend(PID).YIELD_SCIENCE, 1.05, "turn-2 grant");
 assert.equal(grants.length, 1, "one grant");
 assert.equal(grants[0].yt, 1, "granted Science yield");
 close(grants[0].amt, 1.05, "grant amount");
 
-// Idempotent within a turn , re-tick turn 2 grants nothing more.
+// Idempotent within a turn, re-tick turn 2 grants nothing more.
 assert.deepEqual(tickAttractionDividend(PID), {}, "idempotent within a turn");
 assert.equal(grants.length, 1, "still one grant");
 
-// Turn 3 , decay again 1.05 × 0.7 = 0.735.
+// Turn 3, decay again 1.05 × 0.7 = 0.735.
 TURN = 3;
 close(tickAttractionDividend(PID).YIELD_SCIENCE, 0.735, "turn-3 grant");
 
@@ -62,7 +62,7 @@ close(tickAttractionDividend(PID).YIELD_SCIENCE, 0.735, "turn-3 grant");
 addAttractionDividend(PID, "YIELD_SCIENCE", 1.5);
 close(dividendFor(PID, "YIELD_SCIENCE"), 0.735 + 1.5, "stacked pool");
 
-// Cap , a huge pool grants at most dividendCap per turn.
+// Cap, a huge pool grants at most dividendCap per turn.
 addAttractionDividend(PID, "YIELD_GOLD", 100);
 TURN = 4;
 const g4 = tickAttractionDividend(PID);

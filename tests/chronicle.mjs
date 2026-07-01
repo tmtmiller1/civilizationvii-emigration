@@ -49,7 +49,7 @@ import { __test as dia } from "/emigration/ui/emigration-diaspora.js";
     samples.push(returnLine({ origin: "Songhai", city: "Gao" + i, people: "9,000", reason: "prosperous", seed: "r" + i }));
   }
   const text = samples.join("\n");
-  assert.ok(!text.includes("—"), "no em dashes in chronicle prose");
+  assert.ok(!text.includes("-"), "no em dashes in chronicle prose");
   const tells = ["tapestry", "testament", "vibrant", "rich history", "boasts", "nestled", "not only", "bustling", "delve"];
   for (const t of tells) {
     assert.ok(!new RegExp(t, "i").test(text), `prose avoids the AI tell "${t}"`);

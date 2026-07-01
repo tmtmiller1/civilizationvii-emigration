@@ -148,7 +148,7 @@ function pinBaseConfig() {
   );
 })();
 
-// ── Scenario B: a lagged move , depart now, arrive turns later ─────────────
+// ── Scenario B: a lagged move, depart now, arrive turns later ─────────────
 (function scenarioLagged() {
   pinBaseConfig();
   Object.assign(CONFIG, { transitLagTurns: 4, transitHexPerTurn: 5 });
@@ -174,7 +174,7 @@ function pinBaseConfig() {
   assert.ok(rich.ruralPopulation > 2, "B: destination gains the point on arrival");
 })();
 
-// ── Scenario C: the attrition outlet , distressed source, no destination ───
+// ── Scenario C: the attrition outlet, distressed source, no destination ───
 (function scenarioAttrition() {
   pinBaseConfig();
   Object.assign(CONFIG, {
@@ -212,7 +212,7 @@ function pinBaseConfig() {
   assert.ok(trapped.ruralPopulation < before, "C: attrition actually removes population");
 })();
 
-// ── Scenario D: war surge , a besieged source sheds a burst in one turn ─────
+// ── Scenario D: war surge, a besieged source sheds a burst in one turn ─────
 // Drive REAL violence through the documented observation path: districtDamageFrac reads
 // Players.Districts.get(owner).getDistrictHealth(loc), so a fully-wrecked district at the source's
 // location accumulates intensity (vwAssault + vwSiege) above the flee threshold → cause "war" →
@@ -254,10 +254,10 @@ function pinBaseConfig() {
   assert.ok(besieged.ruralPopulation <= 8, "D: the source lost the burst from its rural pool");
 })();
 
-// ── Scenario E: CONCURRENT causes , the voluntary/crisis split ─────────────
+// ── Scenario E: CONCURRENT causes, the voluntary/crisis split ─────────────
 // A besieged city next to a high-yield haven. With the split on, the SAME source sheds war refugees
 // (crisis track, flees every turn) AND prosperity migrants (voluntary track, crosses the bar) in one
-// pass — and the war refugees are NOT relabeled "prosperity" by the pull next door (the regression
+// pass, and the war refugees are NOT relabeled "prosperity" by the pull next door (the regression
 // that the old cause-mixing experiment caused). This fails on legacy single-cause behavior.
 (function scenarioConcurrent() {
   pinBaseConfig();
@@ -339,7 +339,7 @@ function pinBaseConfig() {
   installConfigStore();
   globalThis.Game = { turn: 1 };
   // A STARVING city (owner 1, negative food) AND a prosperous refuge (owner 2, high food): people CAN
-  // flee — yet famine must still kill some. We must see BOTH an emigration (cause != attrition, with a
+  // flee, yet famine must still kill some. We must see BOTH an emigration (cause != attrition, with a
   // destination) AND an attrition death, both from owner 1, proving death is concurrent with flight.
   const starving = makeCity(1, 1, { population: 12, rural: 12, yields: { YIELD_FOOD: -5 } });
   const refuge = makeCity(2, 1, { population: 10, rural: 10, yields: { YIELD_FOOD: 40 }, x: 1, y: 0 });
@@ -375,7 +375,7 @@ function pinBaseConfig() {
   });
   installConfigStore();
   globalThis.Game = { turn: 1 };
-  // A besieged city (owner 1) AND a safe haven (owner 2): war refugees CAN flee — yet the war must
+  // A besieged city (owner 1) AND a safe haven (owner 2): war refugees CAN flee, yet the war must
   // ALSO kill some (siege casualties). Lethal distress comes from war/siege, not starvation, proving
   // the death channel generalizes beyond famine. We need BOTH a refugee (cause != attrition) AND a death.
   const besieged = makeCity(1, 1, { population: 12, rural: 12, siege: true, yields: { YIELD_FOOD: 5 } });

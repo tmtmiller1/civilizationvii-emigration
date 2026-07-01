@@ -241,7 +241,7 @@
         <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_TITLE" Language="zh_Hant_HK"><Text>災害與瘟疫</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_BODY" Language="zh_Hant_HK"><Text>洪水、火山、瘟疫等環境災害，會與戰爭和不幸一道，將人們作為氣候與災害難民趕出受災城市。事件越嚴重，推力越強；輕微事件只會悄然促動遷徙。[n][n]瘟疫尤為凶險：受感染的城市不僅會損失人口，倘若移民攜帶疫病，還可能在其難民落腳之處播下規模較小的疫情，沿著逃亡之路散布病患。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OUTLET_TITLE" Language="zh_Hant_HK"><Text>無處可逃之時</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_OUTLET_BODY" Language="zh_Hant_HK"><Text>遷徙並非封閉的系統。當一座城市陷入絕境，被圍、挨餓，或為災害所摧殘，而再無安全之地可逃時，被困的居民不會就這樣永遠等待下去。人們死去或四散，城市在無處可去之中損失人口。[n][n]這道出口是萬不得已的最後手段：僅僅是無更好去處的滿足城市不會受到觸動，而這份損失計為死亡，與真正抵達新家園的難民有所區別。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OUTLET_BODY" Language="zh_Hant_HK"><Text>遷徙並非封閉的系統。當一座城市陷入絕境，遭受圍攻、饑荒，或被災害摧毀，而再也無處安全逃離時，被困的居民不會就此永遠等待下去。人們死去或四散，城市失去人口卻無處可去。[n][n]即使仍有去處可逃，致命的危機也會奪走一些來不及逃脫的人。這些損失起初很小，危機拖得越久就越嚴重，一旦危機消退又會減緩：突如其來的打擊尚可捱過，曠日持久的圍攻或饑荒卻難以承受。它沒有上限：足夠漫長的災難可以把一座城市的鄉村人口消耗殆盡，但其城市區塊與聚落本身會堅持到真正被佔領為止。[n][n]這個出口是最後的手段。僅僅是沒有更好去處的安定城市不會受到影響，損失計為死亡人數，與抵達新家園的難民分開統計。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_TITLE" Language="zh_Hant_HK"><Text>領袖與文明</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="zh_Hant_HK"><Text>少數領袖與文明對遷徙的感受有所不同，其歷史性格因而顯現。這些是疊加在全域規則之上的微小而有界的調整，絕不足以引發失控的增長，且僅在按文明微調啟用時生效（預設啟用）。[n][n]那些幸福度本會使城市成為主導性遷移磁石的領袖，吸引力會略微減弱：富蘭克林尤甚，伊莎貝拉、阿育王與黎剎也受到收斂。富有的征服者會發現安置戰利品的代價更高，伊莎貝拉與薛西斯要付出更多，才能吸納所贏得的人口。[n][n]縱向發展、專家導向的強權得以免受過度擁擠之害，使其密集的城市不致受到雙重懲罰：帕查庫特克，尤其是阿拔斯王朝。人口增長快於繁榮的民族會獲得一點緩衝以留住其公民，孔子、漢與清，而高棉則得以免去其非首都不幸的最嚴重部分。而築於堅牆之後的邦國，諾曼與英格蘭，在圍城期間遠比無牆者更能保住人口。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_TITLE" Language="zh_Hant_HK"><Text>範圍與可見性</Text></Replace>

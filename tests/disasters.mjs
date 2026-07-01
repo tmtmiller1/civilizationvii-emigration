@@ -151,7 +151,7 @@ function decayTailSum(costMultiplier) {
   return sum;
 }
 
-// (4) The ÷S shock makes the TOTAL bite (area under the decay tail) roughly speed-invariant — Marathon
+// (4) The ÷S shock makes the TOTAL bite (area under the decay tail) roughly speed-invariant, Marathon
 // costs about the same overall as Standard, instead of ~S× more.
 function testSpeedInvarianceOfTotalBite() {
   setImpactDefaults();

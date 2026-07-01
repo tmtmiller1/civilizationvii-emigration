@@ -1,6 +1,6 @@
 // emigration-config-types.js
 //
-// The SHAPE of the mod's tunable settings , the documented contract for the CONFIG object whose
+// The SHAPE of the mod's tunable settings, the documented contract for the CONFIG object whose
 // concrete default VALUES live in emigration-config.js. Kept apart so the ~100-property schema (the
 // canonical reference for what every knob means) doesn't bury the values registry, and so the
 // settings/options layer can type against the contract without importing the defaults.
@@ -150,6 +150,9 @@
  * @property {number} crisisCombatWeight Severity added per recent unit lost (a MAJOR war-death factor).
  * @property {number} crisisCombatMax Cap on the unit-casualty severity term.
  * @property {number} combatDecay Per-turn decay of the per-civ unit-loss intensity (0..1).
+ * @property {boolean} deathRampEnabled Smooth the death-channel ONSET over sustained-crisis turns (no cap).
+ * @property {number} deathRampFloor Death-pressure accrual multiplier on turn 1 of a lethal crisis (0..1).
+ * @property {number} deathRampTurns Turns of sustained lethal distress to reach the full death rate.
  * @property {number} ownCivRefugeeBonus War-refugee pull toward own civ (Feature 1).
  * @property {number} aggressorPenalty War-refugee penalty for the aggressor (F1; 0 = off).
  * @property {boolean} bordersEnabled Apply Open/Closed Borders policy effects (F2).
