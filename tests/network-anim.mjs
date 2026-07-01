@@ -3,13 +3,13 @@ import assert from "node:assert/strict";
 const { startAnim } = await import("/emigration/ui/emigration-network-viz.js");
 
 // Two civ centres: index 0 is the ORIGIN, index 1 the DESTINATION. The origin sitting at node index 0
-// is the regression case — `byId.get(originId)` returns 0, and the old `0 || d.ci` collapsed to the
+// is the regression case, `byId.get(originId)` returns 0, and the old `0 || d.ci` collapsed to the
 // destination, so an immigrant flew out of the civ it was moving TO (reading as home-grown).
 function scene() {
   return {
     centers: [
-      { id: 10, x: 0, y: 0, cities: [] }, // index 0 — ORIGIN
-      { id: 20, x: 100, y: 50, cities: [] } // index 1 — DESTINATION
+      { id: 10, x: 0, y: 0, cities: [] }, // index 0, ORIGIN
+      { id: 20, x: 100, y: 50, cities: [] } // index 1, DESTINATION
     ],
     byId: new Map([[10, 0], [20, 1]])
   };
@@ -27,7 +27,7 @@ function testImmigrantFliesFromOriginNotDestination() {
 
 function testImmigrantFromHigherIndexAlsoFromOrigin() {
   const s = scene();
-  // Origin at index 1, destination at index 0 — the symmetric case.
+  // Origin at index 1, destination at index 0, the symmetric case.
   const d = { scope: "immigrant", originId: 20, ci: 0 };
   startAnim(d, s);
   assert.equal(d.anim.fromX, 100, "flies from civ 20 (x=100), the origin");

@@ -169,7 +169,7 @@ function pressureCol(p) {
   val.style.color = band.color;
   col.appendChild(val);
   // The per-city driver meter: the weighted breakdown of WHAT is pushing people out, as proportional
-  // bars — so "exactly what drives migration" reads at a glance. Falls back to a single line otherwise.
+  // bars, so "exactly what drives migration" reads at a glance. Falls back to a single line otherwise.
   if (Array.isArray(p.mix) && p.mix.length) col.appendChild(driverMeter(p.mix));
   const sub = (p.cause || "") + (p.dest ? " → " + p.dest : "");
   if (sub.trim()) col.appendChild(el("div", "emig-city-why", "Heading to: " + sub));
@@ -462,7 +462,7 @@ export function renderCityFlows(body, section) {
   const cities = section.cities || [];
   if (!cities.length) {
     body.appendChild(el("div", "emig-empty",
-      "No city migration recorded yet , flows appear as people move in and out of your cities."));
+      "No city migration recorded yet, flows appear as people move in and out of your cities."));
     return;
   }
   for (const c of cities) body.appendChild(cityCard(c));

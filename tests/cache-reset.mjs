@@ -23,7 +23,7 @@ globalThis.Configuration = {
 globalThis.Game = { turn: 5 };
 
 // Import chronicle FIRST, while its resetter is freshly registered (the unit block below clears the
-// registry, which would also drop chronicle's resetter — so the end-to-end must run before that).
+// registry, which would also drop chronicle's resetter, so the end-to-end must run before that).
 const cacheReset = await import("/emigration/ui/emigration-cache-reset.js");
 const { registerCacheReset, resetCachesOnNewGame, currentGameId, __test } = cacheReset;
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
@@ -51,7 +51,7 @@ const chronicle = await import("/emigration/ui/emigration-chronicle.js");
   assert.equal(log.length, 1, "the new game's chronicle holds ONLY its own entry");
   assert.equal(log[0].body, "Game B event", "no stale game-A entry leaked into the new game");
 
-  // And the PERSISTED store for the new game must contain only the new game's data — the core bug the
+  // And the PERSISTED store for the new game must contain only the new game's data, the core bug the
   // convention prevents (persisting the prior game's cached data into the new game's store).
   const persisted = JSON.parse(_kv.EmigrationChronicle_v1);
   assert.equal(persisted.length, 1, "the new game's store holds exactly one entry");

@@ -1,6 +1,6 @@
 // emigration-ethnicity-lens.js
 //
-// A map LENS that paints every settlement's tiles by the ORIGIN civilization of its population ,
+// A map LENS that paints every settlement's tiles by the ORIGIN civilization of its population,
 // the "ethnic composition" tracked in emigration-composition.js. Each settlement is rendered as a
 // per-tile mosaic (emigration-ethnicity-tiles.js + emigration-ethnicity-distribution.js): every owned
 // tile carries its OWN local origin mix, and the lens paints each tile a colour BLENDED from its
@@ -79,7 +79,7 @@ function blendShares(shares) {
 
 /**
  * The float4 fill for one tile: its origins blended by local share (the mix as a colour) at an opacity
- * that ramps with population density. Every channel is finite-clamped — a NaN reaching the Metal plot
+ * that ramps with population density. Every channel is finite-clamped, a NaN reaching the Metal plot
  * overlay is a known Mac crash vector.
  * @param {import("/emigration/ui/emigration-ethnicity-distribution.js").TilePaint} tile A tile.
  * @returns {{x:number, y:number, z:number, w:number}} Float4 RGBA.

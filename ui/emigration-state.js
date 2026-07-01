@@ -36,14 +36,20 @@ function stringOr(v, fallback) {
 
 /**
  * @param {*} v Candidate source row.
- * @returns {{pressure:number, cooldown:number, crisisCooldown:number}} Normalized source row.
+ * @returns {{pressure:number, cooldown:number, crisisCooldown:number, deathPressure:number, crisisTenure:number}}
+ *   Normalized source row.
  */
 function normalizeSourceEntry(v) {
-  if (!v || typeof v !== "object") return { pressure: 0, cooldown: 0, crisisCooldown: 0 };
+  if (!v || typeof v !== "object") {
+    return { pressure: 0, cooldown: 0, crisisCooldown: 0, deathPressure: 0, crisisTenure: 0 };
+  }
   return {
     pressure: finiteNumberOr(v.pressure, 0),
     cooldown: Math.max(0, Math.floor(finiteNumberOr(v.cooldown, 0))),
-    crisisCooldown: Math.max(0, Math.floor(finiteNumberOr(v.crisisCooldown, 0)))
+    crisisCooldown: Math.max(0, Math.floor(finiteNumberOr(v.crisisCooldown, 0))),
+    // Death-channel state persists so the onset ramp survives save/reload during a long crisis.
+    deathPressure: Math.max(0, finiteNumberOr(v.deathPressure, 0)),
+    crisisTenure: Math.max(0, Math.floor(finiteNumberOr(v.crisisTenure, 0)))
   };
 }
 

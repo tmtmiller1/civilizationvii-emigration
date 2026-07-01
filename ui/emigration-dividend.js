@@ -1,9 +1,9 @@
 // emigration-dividend.js
 //
-// The carried dividend (docs/immigration-interaction-plan.md §1b) , the positive MIRROR of the
+// The carried dividend, the positive MIRROR of the
 // assimilation load (emigration-effects.js): when a civ holds an attraction card (or runs a raid),
 // each migrant it receives accrues a decaying per-turn BENEFIT in a chosen yield (+Science/Culture/
-// Gold). This is the "raise yours" mechanism , it decouples the gain from migration throughput (the
+// Gold). This is the "raise yours" mechanism, it decouples the gain from migration throughput (the
 // G1 finding), because each migrant is worth a tunable chunk regardless of how few move. State
 // persists separately in GameConfiguration.
 

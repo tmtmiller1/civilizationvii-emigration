@@ -8,7 +8,7 @@
 // globalThis.DemographicsMetricsAPI; the new hook is `registerPanel(spec)`, where spec.render is an
 // Emigration-owned callback the screen invokes with a container element. We register now if the
 // hook is up, else queue on the shared `pending` array for Demographics to drain when it loads.
-// If the installed Demographics predates `registerPanel`, registration is a silent no-op , the
+// If the installed Demographics predates `registerPanel`, registration is a silent no-op, the
 // standalone window still covers the same content, so nothing is lost.
 
 import { dashboardModel, renderDashboardSubtab } from "/emigration/ui/emigration-views.js";

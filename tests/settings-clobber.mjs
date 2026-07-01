@@ -1,5 +1,5 @@
 // Regression test for the shared-localStorage "cannibalization" bug: Emigration's ModOptionsStore
-// must NEVER drop another mod's slice of the shared `modSettings` blob — not on a flaky-empty read,
+// must NEVER drop another mod's slice of the shared `modSettings` blob, not on a flaky-empty read,
 // and not when another mod left an unparseable value. (It previously reset `modSettings` to "{}" on
 // any unparseable read, actively wiping every sibling.)
 import assert from "node:assert/strict";

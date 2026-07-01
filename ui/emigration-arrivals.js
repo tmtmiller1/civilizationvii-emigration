@@ -8,9 +8,9 @@
 // The per-city INBOUND cap (emigration-inbound.js) can defer an arrival when its destination already
 // filled its quota this turn (shared with the departure side, so one boomtown can't absorb dozens).
 // Deferrals are FAIR (longest-waiting lands first) and BOUNDED: a refugee that can't find room for
-// MAX_DEFERS turns PERISHES (the cap stays strict — never force-landed past it). A transient inability
+// MAX_DEFERS turns PERISHES (the cap stays strict, never force-landed past it). A transient inability
 // to accept a point retries first (so a read glitch doesn't kill anyone instantly), but a genuinely
-// gone destination — razed/captured en route — charges a death immediately.
+// gone destination (razed/captured en route) charges a death immediately.
 
 import { addRural } from "/emigration/ui/emigration-population.js";
 import { arriveRecord } from "/emigration/ui/emigration-migration-records.js";
@@ -25,7 +25,7 @@ import { dlog } from "/emigration/ui/emigration-log.js";
  * @typedef {import("/emigration/ui/emigration-inbound.js").InboundCtx} InboundCtx
  */
 
-// After this many turns unable to land (destination saturated / unreadable), an arrival PERISHES — the
+// After this many turns unable to land (destination saturated / unreadable), an arrival PERISHES, the
 // refugees couldn't find room and died waiting, rather than being stuck in transit forever. Keeps the
 // inbound cap strict (no force-landing past it).
 const MAX_DEFERS = 4;
@@ -44,7 +44,7 @@ function deferArrival(e, state, now) {
 /**
  * Resolve one completed transit into an outcome: "land" (with its arrival record), "defer" (the
  * destination is at its inbound cap, or exists but can't accept a point right now), or "die" (the
- * destination is gone — razed/captured en route — or it's force-land time and it still can't accept).
+ * destination is gone (razed/captured en route) or it's force-land time and it still can't accept).
  * @param {Transit} e The completed transit entry. @param {Map<string, *>} byKey Live ranking by key.
  * @param {InboundCtx|undefined} ctx The per-turn inbound cap context. @param {boolean} forced Past MAX_DEFERS.
  * @returns {{action:"land"|"defer"|"die", rec?:Migration}} The outcome.
@@ -53,7 +53,7 @@ function resolveArrival(e, byKey, ctx, forced) {
   const destSig = byKey.get(e.destKey);
   if (!destSig) return { action: "die" }; // razed/captured en route → perished in transit
   // At the destination's inbound cap, or it momentarily can't accept a point: retry a few turns, then
-  // PERISH (forced) rather than ever force past the cap — a refugee who can't find room dies waiting.
+  // PERISH (forced) rather than ever force past the cap, a refugee who can't find room dies waiting.
   if (!canReceiveInbound(e.destKey, ctx)) return { action: forced ? "die" : "defer" };
   if (!addRural(destSig.city)) return { action: forced ? "die" : "defer" };
   destSig.rural += 1;

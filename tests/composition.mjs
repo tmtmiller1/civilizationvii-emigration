@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
 // Per-settlement ethnic-composition ledger (the ethnicity lens / readout data core). No engine
-// globals needed — Configuration/Game/Locale are absent, so persistence no-ops and cityName falls
+// globals needed, Configuration/Game/Locale are absent, so persistence no-ops and cityName falls
 // back to city.name. The internal state is reset between cases via the __test surface.
 const { __test } = await import("/emigration/ui/emigration-composition.js");
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
@@ -19,7 +19,7 @@ function move(srcOwner, srcName, destOwner, destName, points) {
   return { srcOwner, srcName, destOwner, destName, points, cause: "opportunity" };
 }
 
-/** A pure departure (source side only — the lagged-move shape). */
+/** A pure departure (source side only, the lagged-move shape). */
 function departure(srcOwner, srcName, destName, points) {
   return { srcOwner, srcName, destName, points, cause: "war" };
 }

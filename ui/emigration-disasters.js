@@ -120,7 +120,7 @@ function normalizeState(parsed) {
 }
 
 /**
- * Per-event-class distress CEILING — the spike a FULL-IMPACT (m=1) event of this class lands. The
+ * Per-event-class distress CEILING, the spike a FULL-IMPACT (m=1) event of this class lands. The
  * measured impact factor m ∈ [0,1] picks where inside that band the actual event sits (see
  * {@link disasterSpike}), so a harmless storm lands near 0 and a class can never out-punish a heavier
  * one. (Legacy fail-safe path reads this as the old severity-1 weight that severity multiplies.)
@@ -344,8 +344,8 @@ function ownerOfKey(key) {
 }
 
 /**
- * The RandomEventType of the WORST disaster currently afflicting any of `owner`'s cities — the one
- * carrying the most distress right now — for naming that civ's refugee crisis. Returns the disaster
+ * The RandomEventType of the WORST disaster currently afflicting any of `owner`'s cities, the one
+ * carrying the most distress right now, for naming that civ's refugee crisis. Returns the disaster
  * actually striking THAT civ, not the globally most-recent event (which could be a flood on another
  * continent), so a "Greek refugee crisis" names the Greek disaster. Null when none is active.
  * @param {number} owner Owner player id.

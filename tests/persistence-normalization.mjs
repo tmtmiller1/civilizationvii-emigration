@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 // Regression guard for the chronicle + notification persistence hardening:
 //   (1) malformed / old-schema entries are normalized or dropped on LOAD (never reach the view as a
 //       wrong-typed value), and
-//   (2) writes round-trip cleanly — the in-memory cache stays byte-identical to the persisted blob,
+//   (2) writes round-trip cleanly, the in-memory cache stays byte-identical to the persisted blob,
 //       i.e. absent optional fields are OMITTED, not written as `undefined` (which JSON.stringify drops,
 //       silently diverging the cache from disk until reload).
 // We seed corrupt blobs BEFORE importing the modules so their lazy load() must cope.
