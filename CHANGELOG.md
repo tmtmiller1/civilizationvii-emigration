@@ -5,6 +5,25 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [1.7.1] - 2026-07-01
+
+Crisis deaths now ease in over a few turns instead of striking all at once, with
+matching guide and Civilopedia updates and wider engine test coverage.
+
+### Changed
+- **Crisis deaths ramp up instead of hitting all at once.**
+  A city under lethal distress (war/disaster/siege/famine) no longer takes its full casualty rate the
+  instant the crisis turns lethal. Attrition death-pressure builds gently at first and deepens over a
+  few turns of *sustained* crisis (`deathRamp`: from `deathRampFloor` on turn 1 to full after
+  `deathRampTurns`), and relaxes again if the crisis eases, so a sudden catastrophe is no longer
+  immediately devastating and a brief scare is recoverable. It is **not** capped: a prolonged
+  catastrophe still takes its full toll over time (rural population only, never the settlement itself).
+  The death-channel state now persists across save/reload.
+- **Guide and Civilopedia match the mechanic.** The in-game guide and Civilopedia (English plus all 11
+  translations) now describe crisis deaths accurately: they build over a sustained crisis and are
+  uncapped. Earlier text wrongly implied deaths stop at the rural floor.
+- **Maintainability:** expanded the migration engine's automated test coverage.
+
 ## [1.7.0] - 2026-06-30
 
 Two more languages, a controller-friendly route into the advanced editor, a faster
@@ -34,17 +53,8 @@ previous game's migration data.
   state from the save now drops that cache when a new game id is detected, so a new game
   started inside a still-running UI can't read or persist the prior game's data. Gated by the
   `resetCachesOnGameBoot` flag.
-- **Crisis deaths now ramp up instead of hitting all at once.**
-  A city under lethal distress (war/disaster/siege/famine) no longer takes its full casualty rate the
-  instant the crisis turns lethal. Attrition death-pressure builds gently at first and deepens over a
-  few turns of *sustained* crisis (`deathRamp`: from `deathRampFloor` on turn 1 to full after
-  `deathRampTurns`), and relaxes again if the crisis eases, so a sudden catastrophe is no longer
-  immediately devastating and a brief scare is recoverable. It is **not** capped: a prolonged
-  catastrophe still takes its full toll over time (rural population only, never the settlement itself).
-  The death-channel state now persists across save/reload.
-- **Maintainability:** removed redundant module exports, consolidated the developer docs, hardened
-  the test gate so no test file can be added without being wired into the suite, and expanded the
-  migration engine's automated test coverage.
+- **Maintainability:** removed redundant module exports, consolidated the developer docs, and
+  hardened the test gate so no test file can be added without being wired into the suite.
 
 ### Fixed
 - **Lagged migrants keep their deferral count across save/reload.**
