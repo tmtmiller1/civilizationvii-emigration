@@ -1,15 +1,15 @@
 import assert from "node:assert/strict";
 
 // The Causes tab lists a card for EVERY in-play civ with migration/death activity (not only cross-civ
-// flow endpoints), and a civ's RECEIVED refugees are attributed — via inByCause + the event tally —
+// flow endpoints), and a civ's RECEIVED refugees are attributed, via inByCause + the event tally,
 // to the specific war that displaced them, so its cause reads as someone else's war.
 const { buildCivFlows } = await import("/emigration/ui/emigration-city-flows.js");
 
-// 9 = Maya (received Prussian refugees), 7 = Prussia (sent them), 5 = Himiko (the aggressor — at war,
+// 9 = Maya (received Prussian refugees), 7 = Prussia (sent them), 5 = Himiko (the aggressor, at war,
 // shedding/​losing its own people, but with NO cross-civ flow into the visible set).
 const flows = [
   { from: 7, to: 9, fromName: "Prussian", toName: "Maya", people: 129, byCause: { war: 129 } },
-  // Himiko's people fled to an UNMET civ (bucketed to id -2 upstream by maskEdge) — still shown.
+  // Himiko's people fled to an UNMET civ (bucketed to id -2 upstream by maskEdge), still shown.
   { from: 5, to: -2, fromName: "Himiko", toName: "Unmet", people: 60, byCause: { prosperity: 60 } }
 ];
 const civs = [
@@ -42,7 +42,7 @@ function testReceivedRefugeesAttributed() {
   const maya = cardsByName().get("Maya");
   assert.equal(maya.causes.war, 129, "received war refugees populate the Maya's War cause");
   assert.ok(maya.events && maya.events["war:5:7"], "the received refugees carry the specific war key");
-  // Neither belligerent in the key (5,7) is the Maya (9) — so its name reads as someone else's war.
+  // Neither belligerent in the key (5,7) is the Maya (9), so its name reads as someone else's war.
   assert.ok(!"war:5:7".split(":").includes("9"), "the war key names Himiko & Prussia, not the Maya");
 }
 
@@ -50,10 +50,10 @@ function testReceivedRefugeesAttributed() {
 function testBothDirectionsPresent() {
   const maya = cardsByName().get("Maya");
   assert.equal(maya.in.civs.length, 1, "Maya has an Immigrants pie (from Prussia)");
-  assert.equal(maya.out.civs.length, 0, "Maya has no Emigrants — the column renders a placeholder");
+  assert.equal(maya.out.civs.length, 0, "Maya has no Emigrants, the column renders a placeholder");
 }
 
-// People who fled to an UNMET civ still show — anonymized to the "Unmet" bucket (negative id) — and
+// People who fled to an UNMET civ still show (anonymized to the "Unmet" bucket (negative id)) and
 // deaths show as a "Died" wedge in the same "left for/died" pie.
 function testUnmetAndDiedShown() {
   const himiko = cardsByName().get("Himiko");

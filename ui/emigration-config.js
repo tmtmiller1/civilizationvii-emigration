@@ -4,7 +4,7 @@
 // `EmigrationSettings` data model, plus the population-scaling constants that keep this mod's
 // "historical" people counts ALIGNED with the Demographics mod (its scaleCityPopulationAt:
 // raw^1.11 * 12000 * 1.009^turn, plus a Modern-only smooth megacity ramp). The SHAPE these
-// conform to , what every knob means , is the
+// conform to, what every knob means, is the
 // EmigrationConfig typedef in emigration-config-types.js; the settings/options layer overrides
 // these at boot via applyTunableOverrides.
 
@@ -23,7 +23,7 @@ export const CONFIG = {
   //                   single besieged city can't reach a large per-turn loss; presets scale it (Low 1 /
   //                   Medium 2 / High 4).
   // Hard PER-CITY ceiling on how many population points ONE settlement may lose to MIGRATION (crisis +
-  // voluntary) in a single turn — the direct guard against "a city shed 5 pop in one turn". The per-civ
+  // voluntary) in a single turn, the direct guard against "a city shed 5 pop in one turn". The per-civ
   // budgets above bound a whole empire; this bounds each city. Deaths (attrition) are a separate, rarer
   // channel and are not counted here. 0 = no per-city cap. Tunable (advanced) + scaled by the intensity
   // preset (Low 1 / Medium 2 / High 4).
@@ -36,7 +36,7 @@ export const CONFIG = {
   emigrationBar: 30, // accumulated pressure (per source) to move one citizen
   deltaExponent: 0.5, // diminishing scaling on the prosperity delta
 
-  // ── Voluntary / Crisis SPLIT (rollout flags; see docs/MIGRATION_SPLIT_PLAN.md §4) ──
+  // ── Voluntary / Crisis SPLIT (rollout flags) ──
   // A source is evaluated as TWO independent systems each pass: crisis displacement (war/disaster,
   // flees every turn) and voluntary migration (prosperity/unhappiness, bar + cooldown), so one city
   // can shed war refugees AND economic migrants concurrently. Each draws from its own per-civ budget,
@@ -45,7 +45,7 @@ export const CONFIG = {
   splitBudgetsEnabled: true, // false → one shared per-civ ceiling for both tracks
   splitUiReadoutEnabled: true, // false → city readout shows one dominant cause instead of a breakdown
 
-  // ── Game-speed scaling (Phase 7; see emigration-game-speed.js + docs/SHIP_PLAN.md) ──
+  // ── Game-speed scaling (see emigration-game-speed.js) ──
   // The engine paces in TURNS; Civ's game speed (Online→Marathon) stretches the same progress over
   // a 6× range of turn counts. With tuning on, turn-count durations (cooldown/ramp/transit) and
   // pressure thresholds scale by the speed scalar S, and decay re-bases to d^(1/S), so migration
@@ -53,7 +53,7 @@ export const CONFIG = {
   gameSpeedTuningEnabled: true, // false → fixed Standard-speed tuning at every game speed (legacy)
   gameSpeedScalePopulation: false, // normalize scaleGrowth^(turn/S); CROSS-MOD, see config-types note
 
-  // ── pull composition channels (docs/immigration-interaction-plan.md §1) ──
+  // ── pull composition channels ──
   // Pull = (gradient + TILT) - friction, then x PERMEABILITY. Both policy channels are
   // clamped so any number of cards/agreements/ops compose without runaway. Tilt is empty
   // and the permeability product is a single factor until later phases add to them.
@@ -97,8 +97,8 @@ export const CONFIG = {
 
   // ── prosperity: per-capita productiveness yield weights ───────────
   // Re-weighted ×2.5 in the 1.4.1 balance pass (scripts/calibration-sweep.mjs): the shaped happiness
-  // model used to so dominate the score that real economic differences — including 1.4.1's now-harsher
-  // −5%/point unhappiness yield penalty — were invisible (economy was ~10% of the migration signal,
+  // model used to so dominate the score that real economic differences, including 1.4.1's now-harsher
+  // −5%/point unhappiness yield penalty, were invisible (economy was ~10% of the migration signal,
   // mostly because the happiness MULTIPLIER sat pinned at its clamp). Raising the yield weights while
   // lowering happiness dominance (happyFloor/happyAmp/happyRepulsion below) rebalances economy to ~28%
   // of the signal and de-saturates the multiplier, WITHOUT changing the overall prosperity scale (so
@@ -114,7 +114,7 @@ export const CONFIG = {
   populationFactor: 1.0, // subtracted (small thriving towns still attract)
   // Cause classification: a peacetime departure from a city whose net happiness is below this is
   // attributed to `unhappiness` (push); at/above it the move is `prosperity` (a neighbour's pull).
-  // Purely a reporting/attribution split , it never changes whether or where people move.
+  // Purely a reporting/attribution split, it never changes whether or where people move.
   unhappyCauseThreshold: 0,
 
   // ── situational modifiers (percent applied to the whole score) ────
@@ -387,6 +387,17 @@ export const CONFIG = {
   crisisCombatMax: 4, // cap on the unit-casualty severity term (a sustained war reaches it)
   combatDecay: 0.7, // per-turn decay of the recent casualty intensity (recent fighting matters most)
 
+  // Death-ONSET smoothing (NOT a cap): the death channel builds its per-turn pressure gently at the
+  // start of a lethal crisis and DEEPENS as the crisis persists, so a sudden catastrophe is never
+  // instantly devastating, yet a prolonged one still reaches the full rate (and, with no floor on
+  // attrition, can eventually drain a city, depopulation-by-catastrophe is intended). The ramp is a
+  // multiplier on the death-pressure accumulation, in [deathRampFloor, 1]: at the first lethal turn it
+  // sits at the floor and reaches 1 after deathRampTurns of SUSTAINED lethal distress. A turn of relief
+  // relaxes the crisis-tenure counter by one (reversible), so a crisis that lets up starts gentle again.
+  deathRampEnabled: true,
+  deathRampFloor: 0.25, // death-pressure accrual on turn 1 of a lethal crisis (gentle onset, not devastating)
+  deathRampTurns: 6, // turns of sustained lethal distress to reach the full (uncapped) death rate
+
   // ── Feature 1: aggressor-aware war migration (aggressorPenalty 0 = off) ──
   ownCivRefugeeBonus: 1, // war refugees lean slightly toward their own civ's cities first, but only
   //                        slightly, so when a civ is collapsing its people genuinely spill across
@@ -409,7 +420,7 @@ export const CONFIG = {
   disasterNotifyMinSeverity: 2, // min disaster magnitude to TOAST (1=gentle … 2=catastrophic … 4=Thera-tier;
   // impact-derived, see emigration-events.eventSeverity). Markers/distress still record below this.
   disasterNotifyMode: 1, // disaster POPUP scope: 0 off (log only), 1 migration-affecting only
-  // (struck a city + >= min severity, the default — keeps popups centered on disasters that drive
+  // (struck a city + >= min severity, the default, keeps popups centered on disasters that drive
   // displacement), 2 any disaster >= min severity (old behavior). The log records every severe
   // disaster regardless, so reducing popups never loses the record.
   notifyCooldownTurns: 6, // min turns between "important" toasts (anti-spam backstop)
@@ -445,7 +456,7 @@ export const CONFIG = {
   // unless the game id actually changes. false → rely solely on isolate teardown (legacy behavior).
   resetCachesOnGameBoot: true,
 
-  // ── population scaling (DEPRECATED — no longer read) ──────────────────────────
+  // ── population scaling (DEPRECATED, no longer read) ──────────────────────────
   // Scaling moved to Civ VII's real per-era growth formula in emigration-population.js
   // (POP_K · W(size, eraGrowthParams)), pinned to Demographics by scaling-demographics-parity.mjs.
   // These legacy keys are retained only so saved configs / config-types stay valid; they are inert.

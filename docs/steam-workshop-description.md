@@ -17,7 +17,7 @@ As part of releasing [i]Emigration[/i], I donated to the International Refugee A
 [list]
 [*][b]Updated for Civilization VII 1.4.1.[/b] Uses the reworked happiness system, government passives, Celebrations, and war weariness. Happiness remains the strongest migration factor, but city yields now matter more after the 1.4.1 rebalance.
 [*][b]Prosperity-driven migration.[/b] Cities are scored using per-capita food, production, gold, science, culture, happiness, and local conditions. People move from struggling cities toward more prosperous settlements.
-[*][b]War displacement and refugees.[/b] Population loss is driven by actual damage, pillaging, sieges, starvation, unrest, and disasters. Refugees flee away from invaders, preferring their own civilization first, neutrals second, and attackers last.
+[*][b]War displacement and refugees.[/b] Population loss is driven by actual damage, pillaging, sieges, starvation, unrest, and disasters. Refugees flee away from invaders, preferring their own civilization first, neutrals second, and attackers last. A prolonged crisis also costs lives, not just refugees: some who cannot escape die, and the toll builds the longer a siege or famine drags on rather than striking all at once.
 [*][b]Regional movement.[/b] Distance penalties encourage migration to nearby cities rather than map-wide teleportation.
 [*][b]Borders and policy matter.[/b] Open Borders agreements and Pro-/Anti-Immigration policies influence migration flows and retention.
 [*][b]Growth has costs.[/b] Receiving migrants creates temporary integration costs in happiness and gold, while congestion limits runaway population magnets.

@@ -10,9 +10,9 @@
 //
 // This module reads S once (cached, fail-safe to 1.0) and exposes three transforms
 // applied at the few CONFIG read sites so the *game-time* feel is constant:
-//   • speedTurns(n) , turn-COUNT durations scale ×S   (longer on slow speeds)
-//   • speedBar(x)   , per-turn pressure THRESHOLDS ×S  (constant game-time rate)
-//   • speedDecay(d) , per-turn decay → d^(1/S)         (same game-time fade)
+//   • speedTurns(n), turn-COUNT durations scale ×S   (longer on slow speeds)
+//   • speedBar(x), per-turn pressure THRESHOLDS ×S  (constant game-time rate)
+//   • speedDecay(d), per-turn decay → d^(1/S)         (same game-time fade)
 // Speed-INVARIANT magnitudes (siegeLossCapPct, intensity thresholds, yield weights,
 // per-turn safety ceilings) are deliberately NOT scaled.
 //
@@ -121,7 +121,7 @@ export function speedDecay(d) {
  * over the same game-time at any speed (see {@link speedDecay}), so on slow speeds it is alive for ~S×
  * as many turns. Dividing the spike by S keeps the area-under-the-decay-curve (the TOTAL
  * prosperity-turns of bite) speed-invariant: a stretched fade costs the same overall, just spread
- * thinner per turn. This completes the speed model — turn-counts ×S, thresholds ×S, decay ^(1/S),
+ * thinner per turn. This completes the speed model, turn-counts ×S, thresholds ×S, decay ^(1/S),
  * shocks ÷S. Fail-safe to identity at Standard (S=1) or non-positive input.
  * @param {number} x The Standard-speed shock magnitude.
  * @returns {number} The speed-adjusted shock.

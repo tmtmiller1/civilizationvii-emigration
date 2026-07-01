@@ -265,7 +265,7 @@ function composeCityName(raw) {
 
 /**
  * A display name for one city signal (its composed name when readable, else City/Town + an ordinal
- * so names stay unique within a civ , the viz groups a civ's cities by name).
+ * so names stay unique within a civ, the viz groups a civ's cities by name).
  * @param {*} s City signal.
  * @param {number} ord Ordinal within the owner.
  * @returns {string} City name.
@@ -399,7 +399,7 @@ function gatherPops() {
           origins: residentOrigins(c.comp, id, ptsN) // resident colour-by-origin (captured cities)
         };
       })
-      .sort((a, b) => b.pts - a.pts); // capital (largest) first , arrivals land here
+      .sort((a, b) => b.pts - a.pts); // capital (largest) first, arrivals land here
     out[id] = { cities };
   }
   return out;
@@ -547,7 +547,7 @@ function pressureMap(me) {
 }
 
 /**
- * The local player's settlements (cities AND towns) , each with its recent immigration / emigration
+ * The local player's settlements (cities AND towns), each with its recent immigration / emigration
  * by origin/destination + cause and its emigration pressure. Driven by the full settlement list (so
  * every settlement shows, not only those with recent moves). (Lifetime per-city flow isn't
  * persisted; the flows are recent activity.)

@@ -121,7 +121,7 @@ export function arriveRecord(e, ok, destPaidCost) {
       destName: e.destName,
       destOwner: e.destOwner,
       // The migrant's TRUE origin, captured at departure. Composition attributes the arrival to this
-      // directly instead of re-deriving it from srcName at arrival time — which fails for the most
+      // directly instead of re-deriving it from srcName at arrival time, which fails for the most
       // visible diaspora of all, war refugees, whose home city is often razed or captured during the
       // multi-turn transit (so a name→owner lookup would miss it or credit the conqueror). NOT the
       // tally-driving srcOwner field (that would double-count immigration, already credited here via

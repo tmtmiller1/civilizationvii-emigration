@@ -1,6 +1,6 @@
 // emigration-detail-views.js
 //
-// The two flexbox "detail table" renderers for the migration dashboard , Border stances and the
+// The two flexbox "detail table" renderers for the migration dashboard, Border stances and the
 // per-city pressure table. Split out of emigration-views.js to keep that render core under its size
 // cap. GameFace lays out neither <table> nor CSS grid, so both are built from flexbox rows; styling
 // lives in the dashboard's injected stylesheet (emigration-views.js).
@@ -28,7 +28,7 @@ function el(tag, cls, text) {
  * @returns {string} The detail text.
  */
 function stanceDetailText(r) {
-  if (r.key === "none") return "No border policy , migration unaffected.";
+  if (r.key === "none") return "No border policy, migration unaffected.";
   const neutralIn = r.in - r.inImpact;
   const pct = Math.abs(neutralIn) > 0 ? Math.round((Math.abs(r.inImpact) / neutralIn) * 100) : 0;
   /** @type {string[]} */

@@ -1,19 +1,19 @@
 // emigration-ethnicity-distribution.js
 //
 // The ETHNICITY-LENS distribution model: turns a settlement's single ethnic-composition record
-// (emigration-composition.js — "this city is 80% Roman, 20% Carthaginian") into a believable PER-TILE
+// (emigration-composition.js, "this city is 80% Roman, 20% Carthaginian") into a believable PER-TILE
 // mosaic the lens can paint, where every tile carries its OWN local mix instead of a flat citywide one.
 //
 // Three things vary per tile, deterministically (no RNG, so the map is stable across redraws):
-//   • DENSITY — each owned tile carries a share of the city's scaled population weighted by how
+//   • DENSITY, each owned tile carries a share of the city's scaled population weighted by how
 //     built-up it is (city centre ≫ urban district > worked rural > owned wilderness). The lens maps
 //     a tile's people to OPACITY, so the dense urban core reads vivid and the rural fringe reads faint.
-//   • LOCAL MIX — each tile gets its own per-origin SHARES (summing to 1), and they DIFFER tile to
+//   • LOCAL MIX, each tile gets its own per-origin SHARES (summing to 1), and they DIFFER tile to
 //     tile: a diaspora concentrates into a few "neighbourhood" tiles where its local share is high
 //     (the hottest tile near PEAK_SHARE, the rest tapering off), while most tiles stay all-dominant.
 //     So no two immigrant tiles read the same, yet the people totals per origin still add up to the
-//     city's composition — "some tiles have more, others less, and the total matches".
-//   • COLOUR ENCODES THE MIX — the lens blends each tile's colour from its origins weighted by those
+//     city's composition, "some tiles have more, others less, and the total matches".
+//   • COLOUR ENCODES THE MIX, the lens blends each tile's colour from its origins weighted by those
 //     local shares, so the colour you see and the percentages in the tile's tooltip are the same data.
 //
 // Pure: no engine reads. The shared tiles module (emigration-ethnicity-tiles.js) supplies the
@@ -50,7 +50,7 @@ const REF_TILE_PEOPLE = 60000;
 // A diaspora's local share on the HOTTEST tile of its cluster, the geometric falloff of that share
 // across the next tiles it claims, and a floor so the taper never drops to a thin smear. PEAK gives a
 // cluster centre that reads clearly as that origin's colour; FALLOFF + FLOOR give a gradient (≈ 0.6,
-// 0.36, 0.25, 0.25 …) that fades at the edges yet still concentrates — so the quota lands in a few
+// 0.36, 0.25, 0.25 …) that fades at the edges yet still concentrates, so the quota lands in a few
 // neighbourhood tiles, not spread across the whole city. The people each tile takes is capped by these
 // AND by the tile's capacity; any remainder is drained to capacity so the origin's TOTAL always lands.
 const PEAK_SHARE = 0.6;
@@ -99,7 +99,7 @@ function originsSmallestFirst(civs) {
 /**
  * Distribute a settlement's population across its owned tiles, giving each tile its own LOCAL origin
  * mix: diasporas concentrate into a few neighbourhood tiles (high local share, tapering) while most
- * tiles stay all-dominant — so tiles differ, yet each origin's people still total its citywide share.
+ * tiles stay all-dominant, so tiles differ, yet each origin's people still total its citywide share.
  * @param {PlotWeight[]} plots The settlement's owned tiles with density weights.
  * @param {{civs:{civ:number, share:number}[], dominant:{civ:number}|null}} comp The composition.
  * @param {number} scaledPeople The settlement's scaled population (people).
@@ -142,7 +142,7 @@ function hasDistributableInputs(plots, comp) {
 
 /**
  * The plots as per-tile people (density weight × the settlement's scaled people), in stable
- * coordinate order. Order here is incidental — allocation walks each origin's own hashed order.
+ * coordinate order. Order here is incidental, allocation walks each origin's own hashed order.
  * @param {PlotWeight[]} plots Weighted plots. @param {number} people The settlement's scaled people.
  * @returns {{x:number, y:number, people:number}[]} Per-tile people.
  */
@@ -189,7 +189,7 @@ function allocate(tiles, civs, dominantCiv, total) {
  * Pour one minority's `quota` people into its cluster: walk the tiles most-populated-first (perturbed
  * per-civ so diasporas pick different neighbourhoods), depositing a tapering share
  * (max(FLOOR_SHARE, PEAK_SHARE·FALLOFFʲ) of each tile's people) up to capacity, then, if any quota
- * remains, a second pass fills remaining capacity flat — so the full quota always lands.
+ * remains, a second pass fills remaining capacity flat, so the full quota always lands.
  * @param {AllocCtx} ctx The allocation context. @param {number} civ The minority origin.
  * @param {number} quota People to place.
  */

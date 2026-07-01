@@ -1,7 +1,7 @@
 // emigration-inbound.js
 //
 // The per-city INBOUND cap (CONFIG.maxGainPerCityPerTurn): one settlement may GAIN at most this many
-// migration points in a single turn — same-turn departures landing instantly AND completed transit
+// migration points in a single turn, same-turn departures landing instantly AND completed transit
 // arrivals together. The departure side (emigration-engine.js) and the arrival side
 // (emigration-arrivals.js) both enforce this ONE cap over ONE shared per-turn tally, so a destination
 // "boomtown" can't absorb dozens at once via either path. Kept here (not duplicated in each file) so

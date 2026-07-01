@@ -33,7 +33,7 @@ function testAppendsNewestFirstStampedWithTurn() {
 }
 
 function testPersistsToGameConfiguration() {
-  // The log must survive save/reload — it writes the full list to GameConfiguration on every append.
+  // The log must survive save/reload, it writes the full list to GameConfiguration on every append.
   assert.equal(typeof KV.EmigrationNotif_v1, "string");
   const parsed = JSON.parse(KV.EmigrationNotif_v1);
   assert.equal(parsed[0].summary, "B"); // newest-first preserved in the persisted blob

@@ -110,7 +110,7 @@ const capture = (prevOwner, newOwner, points) => ({ prevOwner, newOwner, name: "
   assert.ok(conquest.body.includes("we have heard called the Norse"), "an unmet instigator is framed as hearsay");
   const plague = dilemmaPrompt({ kind: "plague", instigator: met, origin: met, people: "40,000", seed: "y" });
   assert.ok(plague.title === "The Sick at the Gates" && plague.body.includes("Roman"), "plague prompt composes");
-  assert.ok(!(conquest.body + plague.body + conquest.title).includes("—"), "no em dashes in dilemma prose");
+  assert.ok(!(conquest.body + plague.body + conquest.title).includes("-"), "no em dashes in dilemma prose");
 }
 
 console.log("dilemma harness passed");

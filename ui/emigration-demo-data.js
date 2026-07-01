@@ -8,7 +8,7 @@
 // population growing the whole time. The migration profile mirrors the real engine: war/disaster
 // are SHOCKS (large counts crammed into a few turns around their event, then they stop), prosperity
 // is a STEADY trickle that converges on a few magnet civs, and unhappiness is EPISODIC. Flows are
-// CONCENTRATED, not spread evenly , refugees flee to one regional neighbour, magnets pull the rest.
+// CONCENTRATED, not spread evenly, refugees flee to one regional neighbour, magnets pull the rest.
 
 const NAMES = ["", "Rome", "Egypt", "Greece", "Persia", "Maurya",
   "Han", "Carthage", "Aksum", "Maya", "Norse"];
@@ -16,7 +16,7 @@ const NAMES = ["", "Rome", "Egypt", "Greece", "Persia", "Maurya",
 // Each civ's cities, indexed by civ id. Entry: [name, finalPop, foundAt, isTown]. `foundAt` is the
 // global progress (0..1) when the city is founded (the capital is founded at 0); a city grows from
 // a small SEED at its founding to finalPop by the end. So every civ starts as one small city and
-// sprouts new ones over the game , the intra-civ structure you see inside each circle.
+// sprouts new ones over the game, the intra-civ structure you see inside each circle.
 const CITY_TABLE = [
   [],
   [["Rome", 70000, 0, false], ["Ostia", 26000, 0.25, true], ["Capua", 22000, 0.5, false], ["Mediolanum", 16000, 0.72, true]],
@@ -45,7 +45,7 @@ const SAMPLE_PPP = 3500; // people per pop point, for the preview's "Civ populat
 // Migration corridors: [fromId, toId, cause, people, a, b]. `people` is the total who travel this
 // corridor over the game; [a,b] is the GLOBAL-PROGRESS window across which they leave (the corridor
 // fills via smoothstep, so the cumulative arrives steeply in a NARROW window and gently in a WIDE
-// one). This mirrors the real engine (see report): war/disaster are SHOCKS , large counts crammed
+// one). This mirrors the real engine (see report): war/disaster are SHOCKS, large counts crammed
 // into the short window of their event, then they stop (siege cap / cooldown); prosperity is a
 // STEADY trickle over a long span; unhappiness is EPISODIC (a bump while a civ is net-unhappy).
 // Destinations are CONCENTRATED, not even: the engine picks the single best target, so prosperity
@@ -55,7 +55,7 @@ const SAMPLE_PPP = 3500; // people per pop point, for the preview's "Civ populat
 // ORIGIN and DESTINATION settlement (not just the civ), so the flow view can drill into cities. The
 // chosen origin/destination cities exist within the corridor's window (founded earlier).
 const CORRIDORS = [
-  // War / disaster SHOCKS , big counts in a tight window, aligned to the events below.
+  // War / disaster SHOCKS, big counts in a tight window, aligned to the events below.
   [2, "Thebes", 3, "Athens", "disaster", 20000, 0.08, 0.2], // Nile flood: Egypt → Greece
   [1, "Capua", 4, "Susa", "war", 18000, 0.25, 0.45], // Roman–Greek War: Rome → Persia
   [3, "Sparta", 2, "Memphis", "war", 14000, 0.25, 0.45], // Roman–Greek War: Greece → Egypt
@@ -66,7 +66,7 @@ const CORRIDORS = [
   [5, "Taxila", 4, "Susa", "war", 8000, 0.72, 0.88], // Maurya–Han War: Maurya → Persia
   [6, "Luoyang", 9, "Calakmul", "war", 9000, 0.72, 0.88], // Maurya–Han War: Han → Maya
   [6, "Chengdu", 5, "Ujjain", "disaster", 18000, 0.88, 0.98], // Yellow River flood: Han → Maurya
-  // Prosperity TRICKLES , modest counts over long spans, converging on the magnets.
+  // Prosperity TRICKLES, modest counts over long spans, converging on the magnets.
   [3, "Athens", 1, "Rome", "prosperity", 9000, 0.1, 0.95], // Greece → Rome
   [5, "Pataliputra", 6, "Chang'an", "prosperity", 10000, 0.15, 1.0], // Maurya → Han
   [4, "Persepolis", 1, "Rome", "prosperity", 8000, 0.2, 1.0], // Persia → Rome
@@ -74,12 +74,12 @@ const CORRIDORS = [
   [9, "Tikal", 6, "Chang'an", "prosperity", 6000, 0.3, 1.0], // Maya → Han
   [2, "Alexandria", 4, "Persepolis", "prosperity", 7000, 0.25, 1.0], // Egypt → Persia
   [8, "Aksum", 6, "Luoyang", "prosperity", 5000, 0.5, 1.0], // Aksum → Han
-  // Unhappiness EPISODES , a bump while the source civ is net-unhappy, then it subsides.
+  // Unhappiness EPISODES, a bump while the source civ is net-unhappy, then it subsides.
   [5, "Taxila", 4, "Susa", "unhappiness", 6000, 0.55, 0.72], // Maurya unrest → Persia
   [10, "Uppsala", 6, "Luoyang", "unhappiness", 4000, 0.3, 0.46] // Norse unrest → Han
 ];
 
-// Intra-civ moves: [civId, fromCity, toCity, people, a, b] , people who relocate BETWEEN a civ's
+// Intra-civ moves: [civId, fromCity, toCity, people, a, b], people who relocate BETWEEN a civ's
 // OWN cities (mostly urbanisation toward the capital, or settling a new city). Real-engine
 // behaviour: same-civ moves are favoured (no cross-civ poach block, own-civ refugee bonus). Windows
 // start after the source city exists. Shown as a lighter tint of the civ's colour.
@@ -104,7 +104,7 @@ const CITYDEFS = [
   { cityName: "Capua", causeLabel: "Disaster", pressureToBar: 0.18, topDestinationName: "-", attritionRisk: true, onCooldown: false }
 ];
 
-// Per-settlement flow breakdown for the local player's (Rome's) settlements , who arrived from
+// Per-settlement flow breakdown for the local player's (Rome's) settlements, who arrived from
 // where, who left for where, the cause mix, the city/town kind, and the emigration pressure shown
 // directly under each pie pair. Synthetic preview; a live game builds this from the recent feed +
 // the settlement list + the pressure snapshots.
@@ -229,7 +229,7 @@ function smoothstep(t) {
 /**
  * Cumulative fraction (0..1) of a corridor realized by global progress `p` over its window [a,b].
  * Narrow windows (war/disaster shocks) fill steeply ; a surge; wide windows (prosperity) fill
- * gently , a trickle.
+ * gently, a trickle.
  * @param {number} p Global progress 0..1.
  * @param {number} a Window start.
  * @param {number} b Window end.
@@ -281,7 +281,7 @@ function buildIntraAt(p) {
 }
 
 /**
- * One city's population at global progress `p` , 0 before it's founded, else growing from SEED to
+ * One city's population at global progress `p`, 0 before it's founded, else growing from SEED to
  * its final size since founding.
  * @param {*[]} c City entry [name, finalPop, foundAt, isTown].
  * @param {number} p Global progress 0..1.
@@ -451,7 +451,7 @@ function aggregateByCause(flows) {
 
 /**
  * A full game's worth of cumulative-flow frames (3 ages × 75 turns): migration growing + shifting,
- * cities founding, populations rising , snapshotted every `step` turns (the timeline-detail
+ * cities founding, populations rising, snapshotted every `step` turns (the timeline-detail
  * setting).
  * @param {number} step Turns per snapshot (1..5).
  * @returns {{turn:number, age:string, flows:*[], pops:*, intra:*[]}[]} History frames (old→new).

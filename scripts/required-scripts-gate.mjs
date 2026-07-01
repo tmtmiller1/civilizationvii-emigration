@@ -58,7 +58,7 @@ if (!releaseGate.includes("npm run verify") || !releaseGate.includes("npm run co
 
 // ── Anti-drift coverage gate (M2) ───────────────────────────────────────────────────────────────
 // EVERY test file under tests/*.mjs must be run by some `test:*` script that is itself wired into the
-// verify chain OR the test:js chain (release:gate runs both — verify directly, test:js via coverage).
+// verify chain OR the test:js chain (release:gate runs both, verify directly, test:js via coverage).
 // This makes the M1 hazard structurally impossible: a test added to the folder but never wired in
 // fails this gate instead of silently never running. Helpers (the loader + the stub modules) are
 // excluded; the tests/stubs/ subdir isn't enumerated (non-recursive readdir).

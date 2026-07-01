@@ -84,7 +84,7 @@ function addBuildingKeys(x, y, out) {
 }
 
 /**
- * The set of REAL feature keys a settlement has across its owned plots — terrain (coast/river/
+ * The set of REAL feature keys a settlement has across its owned plots, terrain (coast/river/
  * mountain) and notable buildings (granary/temple/market/walls). Fully guarded: an unreadable city
  * yields an empty set, and the caller falls back to a generic quarter phrase. Never throws.
  * @param {*} city A city object. @returns {Set<string>} The present feature keys.
