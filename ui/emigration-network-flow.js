@@ -1,6 +1,6 @@
 // emigration-network-flow.js
 //
-// The "Flows" tab , the SAME civ layout as the migration network, but instead of dots it draws
+// The "Flows" tab, the SAME civ layout as the migration network, but instead of dots it draws
 // directed arrows between civilizations: each arrow runs red (where people LEAVE, an outflow) to
 // green (where they ARRIVE, an inflow), thickness scaled to how many migrants it carries. Click a
 // civilization circle to EXPAND it: its cities and towns appear as sub-nodes and the flows route to
@@ -26,8 +26,8 @@ import { getNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js
 
 const TARGET_DOTS = 1500; // matches the network view, so city sub-cluster sizes line up
 const PLAY_INTERVAL = 42; // rAF ticks between timeline frames while playing
-const OUTFLOW = "#e0786b"; // red , people leaving (the arrow's tail end)
-const INFLOW = "#7fd08a"; // green , people arriving (the arrow's head end)
+const OUTFLOW = "#e0786b"; // red, people leaving (the arrow's tail end)
+const INFLOW = "#7fd08a"; // green, people arriving (the arrow's head end)
 // Line thickness scales LINEARLY with the migrant count relative to the busiest flow, between a
 // floor (always visible + easy to hover) and a cap (so the biggest arrow stays sane).
 const FLOW_MIN_W = 1.6;
@@ -161,7 +161,7 @@ function sumCollapsed(map, e, fi, ti) {
 }
 
 /**
- * The hover label for a city-level edge , origin → destination, using the real settlement name on
+ * The hover label for a city-level edge, origin → destination, using the real settlement name on
  * any expanded end and the civ name otherwise.
  * @param {*} e Edge.
  * @param {boolean} se Source civ expanded.
@@ -523,7 +523,7 @@ function hoverFlow(canvas, holder, ev) {
 }
 
 /**
- * Drag the grabbed civ circle (clamped to the canvas), or , when not dragging , show the amount
+ * Drag the grabbed civ circle (clamped to the canvas), or, when not dragging, show the amount
  * tooltip for the flow line under the cursor.
  * @param {HTMLCanvasElement} canvas Canvas.
  * @param {*} holder Render holder.
@@ -786,7 +786,7 @@ export function renderFlowMap(container, section, controlsHost) {
   const frames = all.filter((/** @type {*} */ f) => f.network && f.network.nodes.length);
   if (!frames.length) {
     container.appendChild(el("div", "emig-empty",
-      "No cross-civ migration yet , flows appear once people cross borders."));
+      "No cross-civ migration yet, flows appear once people cross borders."));
     return;
   }
   injectStyle();

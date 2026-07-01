@@ -1,4 +1,4 @@
-// i18n_apply.mjs , regenerate every non-English text/<locale>/ModText.xml from the
+// i18n_apply.mjs, regenerate every non-English text/<locale>/ModText.xml from the
 // canonical en_us key set (i18n/i18n-source.json) plus a per-locale translation map
 // (i18n/<folder>.json). Idempotent: re-running reproduces the same files. Any key
 // missing a translation falls back to the English source so locale parity is preserved.

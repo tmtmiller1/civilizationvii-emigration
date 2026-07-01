@@ -36,7 +36,7 @@ const POLICY_TYPES = Object.freeze({
 });
 
 // Attraction cards (§1b): each turns the civ's immigration into a carried dividend in one yield
-// (debut Exploration, strengthen Modern). Data-driven so activeAttractions is just a filter — a new
+// (debut Exploration, strengthen Modern). Data-driven so activeAttractions is just a filter, a new
 // attraction card is one row here (the policy family + the yield it accrues), no new branch.
 /** @type {ReadonlyArray<{family:keyof typeof POLICY_TYPES, yield:string}>} */
 const ATTRACTIONS = Object.freeze([
@@ -66,7 +66,7 @@ function hashFor(type) {
 }
 
 /**
- * Whether a player has any of `types` active in a policy slot. Raw read — callers go through the
+ * Whether a player has any of `types` active in a policy slot. Raw read, callers go through the
  * per-pass cache (policyState) rather than calling this directly on the hot path.
  * @param {number} pid Player id.
  * @param {string[]} types Tradition type strings.

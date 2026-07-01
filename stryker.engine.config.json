@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "_comment": "Fast engine-only mutation loop. engine.js mutants are killed ONLY by the three harnesses that execute runPass (engine-pass, engine-legacy-snapshots, engine-rigor, hypotheticals) - verified no other test imports emigration-engine.js - so the command runner reruns just those instead of the full 108-test suite: ~seconds/mutant instead of ~16s. Use `npm run mutation:engine`. The full 5-module run remains `npm run mutation`.",
+  "testRunner": "command",
+  "commandRunner": {
+    "command": "node --loader ./tests/loader.mjs ./tests/engine-pass.mjs && node --loader ./tests/loader.mjs ./tests/engine-legacy-snapshots.mjs && node --loader ./tests/loader.mjs ./tests/engine-rigor.mjs && node --loader ./tests/loader.mjs ./tests/engine-rigor-fixtures.mjs && node --loader ./tests/loader.mjs ./tests/hypotheticals.mjs"
+  },
+  "coverageAnalysis": "off",
+  "mutate": ["ui/emigration-engine.js"],
+  "reporters": ["clear-text", "json"],
+  "jsonReporter": { "fileName": "reports/mutation/engine.json" },
+  "concurrency": 6,
+  "timeoutMS": 30000
+}

@@ -12,7 +12,7 @@
 //
 // The tunables are read straight from the declarative TUNABLES spec and laid out
 // under their group sub-headers. Each control writes immediately through the shared
-// settings store (getTunable/setTunable) — no separate Apply/Cancel — and:
+// settings store (getTunable/setTunable) (no separate Apply/Cancel) and:
 //   • an fxs-textbox SEARCH box filters the long list by (localized) label/description;
 //   • each group HEADER collapses/expands its section;
 //   • a "modified" dot marks any knob that differs from its default;

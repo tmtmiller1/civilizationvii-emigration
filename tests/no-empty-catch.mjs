@@ -2,7 +2,7 @@
 //
 // An empty catch silently swallows errors, which is the exact "random flakiness / masked breakage"
 // risk flagged in report.md (Finding 3). The codebase convention is to ANNOTATE an intentional swallow
-// with a short rationale comment, e.g. `catch (_) { /* ignore: best-effort persistence */ }` — that
+// with a short rationale comment, e.g. `catch (_) { /* ignore: best-effort persistence */ }`, that
 // form is permitted (the body isn't whitespace-only). A new truly-empty catch fails this gate and must
 // either add such a comment or actually handle the error.
 import fs from "node:fs";
@@ -38,7 +38,7 @@ walk(UI_ROOT);
 
 if (offenders.length > 0) {
   console.error(
-    `no-empty-catch: ${offenders.length} empty catch block(s) found — add a rationale comment ` +
+    `no-empty-catch: ${offenders.length} empty catch block(s) found, add a rationale comment ` +
       `(e.g. \`catch (_) { /* ignore: ... */ }\`) or handle the error:\n  ${offenders.join("\n  ")}`
   );
   process.exit(1);

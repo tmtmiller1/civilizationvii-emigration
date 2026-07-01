@@ -90,7 +90,7 @@ function testSuccessfulArrivalCreditsDestinationAndUpdatesSignal() {
 
 function testPresentDestinationThatCannotAcceptDefers() {
   // The destination EXISTS in the ranking but can't take a point right now (no addRural API): it should
-  // DEFER (try again next turn), not charge a death — only a GONE destination dies.
+  // DEFER (try again next turn), not charge a death, only a GONE destination dies.
   const sig = { key: "2:9", city: {}, rural: 7, population: 13 };
   const state = { monoTurn: 5, transit: [makeTransit({ destKey: "2:9" })] };
 

@@ -1,6 +1,6 @@
 // emigration-ethnicity-tooltip.js
 //
-// The Ethnicity lens's cursor panel: the ETHNIC COMPOSITION OF THE HOVERED TILE — its per-origin-civ
+// The Ethnicity lens's cursor panel: the ETHNIC COMPOSITION OF THE HOVERED TILE, its per-origin-civ
 // percentages, with the same banner-colour swatches the lens blends into that tile's colour, so the
 // panel and the map agree exactly. Each tile carries its own local mix (a diaspora's neighbourhood
 // reads high, an all-dominant tile reads 100% the owner), computed by the shared tiles module so the

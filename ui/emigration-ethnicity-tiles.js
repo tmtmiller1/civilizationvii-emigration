@@ -1,8 +1,8 @@
 // emigration-ethnicity-tiles.js
 //
 // Shared per-tile ethnic-composition computation for the ethnicity LENS (emigration-ethnicity-lens.js)
-// and its hover TOOLTIP (emigration-ethnicity-tooltip.js). Those run as separate <UIScripts> entries —
-// hence separate V8 isolates with no shared memory — so each imports THIS module and computes the
+// and its hover TOOLTIP (emigration-ethnicity-tooltip.js). Those run as separate <UIScripts> entries,
+// hence separate V8 isolates with no shared memory, so each imports THIS module and computes the
 // per-tile mosaic independently. Because the model is pure + deterministic and both read the same
 // engine state, they arrive at the IDENTICAL result: the lens colours each tile by its local mix, and
 // the tooltip reads the hovered tile's shares, so colour and percentages always agree.
@@ -15,7 +15,7 @@ import { distributeTiles } from "/emigration/ui/emigration-ethnicity-distributio
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 
-// Per-tile density weights by district class — "urban districts have higher populations". A tile's
+// Per-tile density weights by district class, "urban districts have higher populations". A tile's
 // final weight is its class weight times a build-up bonus (constructibles on the tile).
 const W_CITY_CENTER = 3.6;
 const W_URBAN = 2.4;
@@ -29,7 +29,7 @@ const BUILDUP_CAP = 4; // …capped, so a wonder-stacked tile doesn't dominate e
  */
 
 /**
- * The number of constructibles on a tile (its build-up), capped — a denser-built tile holds more
+ * The number of constructibles on a tile (its build-up), capped, a denser-built tile holds more
  * people. 0 when unreadable.
  * @param {number} x Plot x. @param {number} y Plot y.
  * @returns {number} Constructible count.

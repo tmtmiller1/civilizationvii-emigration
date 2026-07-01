@@ -2,7 +2,7 @@
 //
 // Per-settlement ETHNIC COMPOSITION ledger: for each settlement, the standing mix of population by
 // the CIVILIZATION its people originate from. Unlike the cumulative flow matrix (who-moved-where),
-// this is the current makeup of each city, netted over time , and it follows the SETTLEMENT, not
+// this is the current makeup of each city, netted over time, and it follows the SETTLEMENT, not
 // the owner, so a conquered city keeps the origins of the people already living there. It feeds the
 // ethnicity lens (tile colouring) and the per-city readout breakdown.
 //
@@ -47,7 +47,7 @@ let _s = null;
 // (the ethnicity lens, its hover tooltip, the city readout) run in SEPARATE V8 contexts, each with
 // its own module instance, sharing this state ONLY through the persisted GameConfiguration blob. So a
 // reader that loaded `_s` once and cached it forever would freeze on whatever the city mix was at its
-// first paint/hover — typically near-mono early game — and never see the diaspora the recorder banks
+// first paint/hover (typically near-mono early game) and never see the diaspora the recorder banks
 // turn after turn. Re-reading whenever the turn advances lets every reader pick up the recorder's
 // latest save (at most one turn stale), so immigration actually shows on the lens. Harmless for the
 // recorder itself: it always save()s before the turn ticks, so a reload just re-reads its own write.
@@ -514,7 +514,7 @@ export function compositionForCity(city) {
   // Self-guarding: returns null on ANY failure, never throws. Reached on the uncaught lens / hover-
   // tooltip / city-readout / diaspora / return paths AND inside a broad per-city catch in the network
   // window (citiesByOwner). load() is already try-guarded and summarize() is pure over normalized data,
-  // but locKey reads `city.location` off a LIVE engine object — a throwing accessor is the one residual
+  // but locKey reads `city.location` off a LIVE engine object, a throwing accessor is the one residual
   // throw vector load-normalization can't cover. Degrade to null here so a single bad city can't null a
   // whole render, and so no caller's broad `catch{return null}` can silently mask it. (open-items §7)
   try {

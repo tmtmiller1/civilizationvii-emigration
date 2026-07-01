@@ -1,18 +1,18 @@
 // emigration-raid.js
 //
 // The MIGRATION layer of the "Talent Raid" diplomacy actions (Phase 4 §4b). The actions themselves
-// , their Influence/token cost, 10-turn duration, the Grievance they land on the target, the lump
-// yield they steal, the per-pair cooldown, and the diplomacy-screen UI , are NATIVE diplomacy
+//, their Influence/token cost, 10-turn duration, the Grievance they land on the target, the lump
+// yield they steal, the per-pair cooldown, and the diplomacy-screen UI, are NATIVE diplomacy
 // actions owned by the Diplomacy Extended mod (data/talent-raid-actions.xml):
 //   DIPLOMACY_ACTION_TALENT_RAID / CULTURAL_OFFENSIVE / TRADE_OFFENSIVE.
 //
 // This module only READS whether a civ has one of those active against a rival (the live
 // Game.Diplomacy player events) and applies the emigration-specific effect on top:
-//   1. TILT , pull the target's migration toward the raider while the op runs (pull.js raidTilt).
-//   2. DIVIDEND , bank the raider the domain's carried dividend per migrant pulled FROM the target.
+//   1. TILT, pull the target's migration toward the raider while the op runs (pull.js raidTilt).
+//   2. DIVIDEND, bank the raider the domain's carried dividend per migrant pulled FROM the target.
 //
 // Optional integration, exactly like the Demographics graphs: if Diplomacy Extended isn't installed
-// the actions don't exist, getPlayerEvents returns none, and this whole layer is a silent no-op ,
+// the actions don't exist, getPlayerEvents returns none, and this whole layer is a silent no-op,
 // the rest of Emigration is unaffected.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";

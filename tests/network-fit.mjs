@@ -66,7 +66,7 @@ const { boundingBottom, fitStageToViewport } = __test;
 // ── boundingBottom stops at the clipped tab-body, not the viewport ────────────
 {
   const bottom = boundingBottom(stage);
-  // The tab body's bottom (860) minus its 20px bottom padding = 840 — NOT the 1000 viewport bottom.
+  // The tab body's bottom (860) minus its 20px bottom padding = 840, NOT the 1000 viewport bottom.
   assert.equal(bottom, 840, "bounding bottom is the clipped tab-body, less its padding");
   assert.ok(bottom < VIEWPORT_H, "the bound is above the viewport bottom (no over-budget)");
 }

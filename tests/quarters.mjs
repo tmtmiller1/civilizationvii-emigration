@@ -2,7 +2,7 @@
 //
 // The truthful "quarter" engine for diaspora chronicle lines (emigration-quarters.js) and its contract
 // with the prose engine (emigration-narrative.js). The core guarantee under test: a quarter phrase
-// NEVER names a city feature that wasn't supplied — no "granary" unless the city has one — while a
+// NEVER names a city feature that wasn't supplied (no "granary" unless the city has one) while a
 // supplied feature is named, and the choice is deterministic per seed.
 
 import assert from "node:assert/strict";

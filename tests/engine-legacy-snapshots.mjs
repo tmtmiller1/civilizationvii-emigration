@@ -1,14 +1,14 @@
 // engine-legacy-snapshots.mjs
 //
 // Coverage for the two engine paths the end-to-end engine-pass.mjs harness doesn't drive, plus the
-// engine-reading city-snapshot readers — all over the SAME tiny fake world (so collectCitySignals,
+// engine-reading city-snapshot readers, all over the SAME tiny fake world (so collectCitySignals,
 // the engine pass, and the snapshot builders share one setup):
 //   1. the LEGACY single-cause pass (CONFIG.splitTracksEnabled = false): processSourceLegacy /
-//      legacyEmigrate / belowEmigrationBar / restingOnCooldown — below-the-bar wait, shed, cooldown;
+//      legacyEmigrate / belowEmigrationBar / restingOnCooldown, below-the-bar wait, shed, cooldown;
 //   2. the STANCE counterfactual (planTurn / planSource / planApply / planBump): real vs neutral
 //      borders, banked as the per-civ flow difference, driven by a slotted Open-Borders tradition;
 //   3. citySnapshot / ownerCitySnapshots (emigration-city-readout-data.js): resolveComposition,
-//      resolveCityName, findSignal, ownerStats, destInfo, snapshotFromRanked — live recompute-on-read.
+//      resolveCityName, findSignal, ownerStats, destInfo, snapshotFromRanked, live recompute-on-read.
 //
 // Off-engine: the loader maps /emigration/ specifiers and stubs /core; we stub the handful of engine
 // globals the readers touch (Players/Cities/Yields, Configuration, Game.turn, GameplayMap, Locale).
@@ -107,7 +107,7 @@ function pinBaseConfig() {
 
 // ── 2. Stance counterfactual: planTurn / planSource / planApply / planBump ────
 // Two civs with a cross-civ pull; civ 1 slots Open Borders. The pass plans the cross-civ flows once
-// with real stances and once with neutral borders and banks the difference — exercising the whole
+// with real stances and once with neutral borders and banks the difference, exercising the whole
 // side-effect-free planning path without disturbing the real move.
 (function stanceCounterfactual() {
   pinBaseConfig();

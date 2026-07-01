@@ -1,6 +1,6 @@
 // emigration-quarters.js
 //
-// Truthful "quarter" phrases for the Migration Chronicle's diaspora lines — where a settled minority
+// Truthful "quarter" phrases for the Migration Chronicle's diaspora lines, where a settled minority
 // "kept a district of their own". Every feature phrase names only a REAL feature of the host city (a
 // coast, a river, the mountains, or a building it has actually raised), so the Chronicle never claims
 // a granary the city never built. The present-feature keys are supplied by emigration-city-features.js
@@ -8,8 +8,8 @@
 // is unit-testable and never throws.
 //
 // The phrases are framed at the EDGE of the city ("beyond the granaries", "by the harbour", "on the
-// far side of town"), which is also where the ethnicity lens paints a diaspora — its people fill the
-// sparse rural fringe, not the dense core — so the prose and the map agree.
+// far side of town"), which is also where the ethnicity lens paints a diaspora, its people fill the
+// sparse rural fringe, not the dense core, so the prose and the map agree.
 
 /** @type {Record<string, string[]>} Truthful edge-of-city phrases, one list per real feature key. */
 const FEATURE_QUARTERS = {

@@ -9,7 +9,7 @@
 // population reads the same in both mods, and a migration of one population
 // point reports the marginal people that one point represents.
 
-// ── Population scaling — grounded in Civ VII's REAL per-era growth formula ──────────────────────────
+// ── Population scaling, grounded in Civ VII's REAL per-era growth formula ──────────────────────────
 // IDENTICAL to Demographics' demographics-metrics-helpers.js (eraGrowthParams / growthEffort /
 // scaleCityPopulationAt), pinned by scaling-demographics-parity.mjs, so a town reads the same in both
 // mods. Civ VII charges food per size step, cost(x)=Flat+Scalar·x+Exponent·x², with per-AGE params;
@@ -22,7 +22,7 @@ const ERA_GROWTH_PARAMS = {
   AGE_MODERN: { flat: 60, scalar: 60, exp: 6 }
 };
 const ERA_ORDER = ["AGE_ANTIQUITY", "AGE_EXPLORATION", "AGE_MODERN"];
-const POP_K = 31; // people per food-unit — the single global scale anchor
+const POP_K = 31; // people per food-unit, the single global scale anchor
 const BLEND_PCT = 25; // blend prev→cur era params over the first 25% of an age (cross-age continuity)
 // Modern-only megacity bump (super-linear above MEGA_KNEE, age-ramped) + per-era ceiling with smooth
 // C¹ saturation. Mirrors Demographics; doubles as the safety bound (any out-of-range size degrades to
@@ -120,7 +120,7 @@ function eraCeiling(ageType, ageProgressPct) {
 }
 
 /**
- * Endgame ("one more turn") ceiling multiplier — grows once the final age runs past 100%. Mirrors
+ * Endgame ("one more turn") ceiling multiplier, grows once the final age runs past 100%. Mirrors
  * Demographics. Modern-only.
  * @param {string|undefined} ageType Age. @param {number|undefined} ageProgressPct Progress % (may exceed 100).
  * @returns {number} Multiplier (>= 1).
@@ -176,7 +176,7 @@ export function scaleCityPopulation(raw, turn, ageType, ageProgressPct, seedKey,
 }
 
 /**
- * The base (un-varied) scaled people figure for a settlement size — the growth-formula curve
+ * The base (un-varied) scaled people figure for a settlement size, the growth-formula curve
  * `POP_K · W(size, eraGrowthParams(age, progress))`, identical to Demographics' scaleCityPopulationAt.
  * Split out so {@link scaleCityPopulation} stays a thin guard + optional per-settlement variation.
  * @param {number} raw Settlement size (already validated > 0).
@@ -274,7 +274,7 @@ function currentAgeProgressPct() {
     if (!mgr) return undefined;
     const pct = readAgeProgressPercent(mgr);
     if (typeof pct !== "number" || !isFinite(pct)) return undefined;
-    return Math.max(0, pct); // floor only — allow >100 so "one more turn" overtime expands the cap
+    return Math.max(0, pct); // floor only, allow >100 so "one more turn" overtime expands the cap
   } catch (_) {
     return undefined;
   }
@@ -346,13 +346,13 @@ export function formatBothExact(people, points) {
 // believable, wide enough that two same-size events never read identically (the immersion break we
 // fix). At event scale (~20–40k) this ±10% is comparable to the Demographics settlements board's own
 // per-settlement variance floor (±2,500), so the two mods feel like one system. Standing TOTAL
-// population displays are NOT varied here — they stay on the shared base curve, matching the
+// population displays are NOT varied here, they stay on the shared base curve, matching the
 // Demographics base before its board applies its own variance + uniqueness pass.
 const PEOPLE_VARIANCE = 0.1;
 
 /**
  * A stable 32-bit hash of a seed string (FNV-1a). Deterministic and dependency-free, so the SAME
- * seed yields the SAME value everywhere — including a sibling mod that copies this function, letting
+ * seed yields the SAME value everywhere, including a sibling mod that copies this function, letting
  * two mods agree on a settlement's varied figure when they seed it the same way.
  * @param {string} s The seed string.
  * @returns {number} An unsigned 32-bit hash.
@@ -377,7 +377,7 @@ function clampUnit(x) {
 }
 
 /**
- * A directional bias in [-1,1] derived from a settlement's REAL game metrics — net happiness and the
+ * A directional bias in [-1,1] derived from a settlement's REAL game metrics, net happiness and the
  * urban:rural mix (denser, happier settlements lean a touch larger). Pass the result as the `signal`
  * arg to {@link scaleCityPopulation} / {@link marginalPeople} / {@link variedPeople} so the per-event
  * people figure is grounded in game state, not just the settlement's name. `urban` defaults to
@@ -398,8 +398,8 @@ export function settlementSignal(m) {
 
 /**
  * Apply a deterministic, narrow ±{@link PEOPLE_VARIANCE} variation to a scaled people figure. The
- * variation is GROUNDED in real game metrics when a `signal` ({@link settlementSignal}) is supplied —
- * a thriving settlement reads a touch larger than a stagnant one — with the stable `seedKey` hash
+ * variation is GROUNDED in real game metrics when a `signal` ({@link settlementSignal}) is supplied,
+ * a thriving settlement reads a touch larger than a stagnant one, with the stable `seedKey` hash
  * folded in for entropy/uniqueness (and used alone when no signal is given, preserving prior behaviour).
  * Same inputs → same factor, so a given settlement's figure is consistent across redraws and across
  * both mods. Presentation only: the underlying scaling is untouched, so analytics/aggregates stay exact.

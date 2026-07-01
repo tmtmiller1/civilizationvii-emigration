@@ -9,7 +9,7 @@
 // Readability is gauged by HSL lightness (not raw luminance): a saturated pure red reads fine on a
 // dark background while a desaturated dark grey of the same luminance does not.
 
-// Minimum HSL lightness a colour needs on the dark canvas , higher for greys (no hue to aid it).
+// Minimum HSL lightness a colour needs on the dark canvas, higher for greys (no hue to aid it).
 const MIN_L_GREY = 0.65;
 const MIN_L_SAT = 0.5;
 // A primary banner colour worth replacing with the secondary: dark AND nearly colourless.

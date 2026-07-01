@@ -77,7 +77,7 @@ function ownerIdsOf(signals) {
 
 /**
  * Account external population loss for this pass and emit balance telemetry.
- * Loss accounting runs EVERY turn (starvation/plague/razing/disasters) , it's a
+ * Loss accounting runs EVERY turn (starvation/plague/razing/disasters), it's a
  * turn-over-turn population diff, not tied to a move. Both steps are defensive.
  * @param {*[]} migrations This pass's migrations.
  * @param {*[]} signals This pass's city signals, collected once in doPass (post-return-moves).
@@ -230,7 +230,7 @@ function chargePerTurnCosts(who, local) {
     dlog("migrant-hold: " + mh.count + " migrant(s) cost -" + mh.happiness.toFixed(1) + " happy -" + Math.round(mh.gold) + " gold");
   }
   // Raid (§4b): the op's cost/duration/grievance are native (Diplomacy Extended); Emigration just
-  // reads the active action each turn during the pass (raidTilt) , nothing to charge here.
+  // reads the active action each turn during the pass (raidTilt), nothing to charge here.
   // Carried dividend (§1b): grant the per-turn attraction bonus (the assimilation mirror).
   const d = tickAttractionDividend(who);
   if (who === local) {
@@ -302,7 +302,7 @@ function installUi() {
   installEmigrationConsole(); // console: emigration.window() opens the standalone screen
   installEmigrationDock(); // in-game dock button that opens that screen (no console needed)
   // The prosperity map lens self-registers as its own <UIScripts> entry (emigration-prosperity-lens
-  // .js), in the HUD context where LensManager lives , it is intentionally NOT wired through here.
+  // .js), in the HUD context where LensManager lives, it is intentionally NOT wired through here.
 }
 
 /** Boot. */

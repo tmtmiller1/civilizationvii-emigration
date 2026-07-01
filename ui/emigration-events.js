@@ -197,7 +197,7 @@ function clamp01(x) {
 
 /**
  * The directly-observable pillage fraction at the struck settlement: pillaged plots ÷ its footprint.
- * 0 when no city, no pillage, or the build/scan doesn't expose it (graceful degradation — never
+ * 0 when no city, no pillage, or the build/scan doesn't expose it (graceful degradation, never
  * invented; `impactPct` alone then drives the impact factor).
  * @param {*} location The event location.
  * @returns {number} Pillage fraction in [0,1].
@@ -216,7 +216,7 @@ function pillageFraction(location) {
 }
 
 /**
- * The CONTINUOUS impact factor `m ∈ [0,1]` for a disaster — the larger of (a) the worst measured
+ * The CONTINUOUS impact factor `m ∈ [0,1]` for a disaster, the larger of (a) the worst measured
  * yield-cut / constructible-damage fraction the effect tables report and (b) the observable tile
  * pillage. This is the magnitude the distress spike scales by (see `disasterSpike`), so a 0-impact
  * thunderstorm lands at ~0 while a catastrophic volcano lands high.
@@ -262,10 +262,10 @@ function onRandomEvent(data) {
  * Log and (maybe) pop a disaster notification. The notifications LOG keeps every
  * severe disaster so the player can review them without a popup; the on-screen
  * POPUP is the invasive part, gated by the disasterNotifyMode user knob:
- *   0 = off       — log only, never pop a disaster toast
- *   1 = migration — pop ONLY when the disaster struck a city (so it will drive
+ *   0 = off, log only, never pop a disaster toast
+ *   1 = migration, pop ONLY when the disaster struck a city (so it will drive
  *                   displacement) AND is ≥ min severity  [default]
- *   2 = any       — pop for any disaster ≥ min severity (the old behavior)
+ *   2 = any, pop for any disaster ≥ min severity (the old behavior)
  * disasterNotifyMinSeverity still tunes "how bad is bad enough" within each mode.
  * @param {*} data The event payload.
  * @param {number} sev The event severity.

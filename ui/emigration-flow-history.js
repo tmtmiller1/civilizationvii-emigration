@@ -3,7 +3,7 @@
 // Delta-encoded flow-history helpers (combined design plan P0.3).
 //
 // The migration-network timeline used to store, in every history frame, a full
-// CLONE of the cumulative city-pair flow matrix , so storage grew as
+// CLONE of the cumulative city-pair flow matrix, so storage grew as
 // snapshots × cumulative-matrix and the whole blob was JSON-serialized to
 // GameConfiguration every turn. These helpers let the history store only each
 // interval's DELTA (the migration that occurred in that window). The cumulative
@@ -116,7 +116,7 @@ function subtractCauses(causes, baseCauses) {
 /**
  * Subtract `prior` from `cumulative` per key/cause, dropping zero/empty entries.
  * Flows are monotonic (people only ever accumulate), so every retained value is
- * non-negative , the result is the migration that happened SINCE `prior`.
+ * non-negative, the result is the migration that happened SINCE `prior`.
  * Produces fresh objects.
  * @param {Record<string, Record<string, number>>} cumulative The newer cumulative.
  * @param {Record<string, Record<string, number>>} prior The older cumulative to subtract.
@@ -146,7 +146,7 @@ function isAgeBoundary(frame, prev) {
 
 /**
  * Merge a frame's delta into the accumulator frame, in place (later frame's
- * metadata , turn / age / chartTurn / year , is kept as the merged window's).
+ * metadata, turn / age / chartTurn / year, is kept as the merged window's).
  * @param {*} into The accumulator frame (mutated).
  * @param {*} from The later frame whose delta + metadata are merged in.
  */
@@ -210,7 +210,7 @@ function deepCopyDelta(delta) {
 /**
  * One-time backward-compat migration: convert legacy frames that carry a
  * cumulative `.flows` clone into delta-encoded frames (`.delta`). Exact:
- * delta[0] = flows[0], delta[i] = flows[i] − flows[i-1]. Idempotent , a no-op
+ * delta[0] = flows[0], delta[i] = flows[i] − flows[i-1]. Idempotent, a no-op
  * once every frame is already delta-encoded. Mutates and returns `frames`.
  * @param {*[]} frames The persisted frames.
  * @returns {*[]} The migrated frames.

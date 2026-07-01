@@ -2,7 +2,7 @@
 //
 // The standalone Emigration screen: a real base-UI panel (fxs-frame + header + close button,
 // pushed through the ContextManager) that mounts the migration dashboard render core
-// (emigration-views.js) , the same content the Demographics "Migration" page shows. This
+// (emigration-views.js), the same content the Demographics "Migration" page shows. This
 // replaces the old console-only HUD overlay so any player can open the dashboard from the
 // subsystem-dock button (emigration-dock-decorator.js) without the developer console.
 //
@@ -31,7 +31,7 @@ function derr(...a) {
 
 /**
  * Resolve the engine display-queue manager (the popup/notification sequencer the base game's own
- * cinematics defer through) and invoke `fn` with it. Dynamic import , a no-op if unavailable.
+ * cinematics defer through) and invoke `fn` with it. Dynamic import, a no-op if unavailable.
  * @param {(dq:*)=>void} fn Callback receiving the DisplayQueueManager.
  */
 function withDisplayQueue(fn) {
@@ -116,7 +116,7 @@ class ScreenEmigration extends Panel {
     }
     // Resolution response is pure CSS: emigration-density.js's DENSITY_CSS (injected with the
     // dashboard sheet) scales fixed content fluidly with clamp() and steps the chrome at
-    // @media (max-height) breakpoints — no measurement/re-render to wire. The network diagram
+    // @media (max-height) breakpoints, no measurement/re-render to wire. The network diagram
     // re-fits on its own resize listener (emigration-network-fit.js).
     // Hold background popups (research/civic/event …) in the queue while the window is open so they
     // don't surface over the screen and shove its layout around; they re-surface on detach.
@@ -186,7 +186,7 @@ try {
   if (typeof Controls !== "undefined" && typeof Controls.define === "function") {
     Controls.define("screen-emigration", {
       createInstance: ScreenEmigration,
-      description: "Emigration , migration dashboard panel.",
+      description: "Emigration, migration dashboard panel.",
       styles: ["fs://game/emigration/ui/emigration-screen.css"],
       content: ["fs://game/emigration/ui/emigration-screen.html"],
       attributes: [],

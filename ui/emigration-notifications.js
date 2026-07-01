@@ -78,7 +78,7 @@ function finiteOr(v, d) {
 }
 
 // Optional string fields copied through only when present, so absent ones are OMITTED (not written as
-// `undefined`, which JSON.stringify would drop) — keeping the in-memory cache identical to the persisted
+// `undefined`, which JSON.stringify would drop), keeping the in-memory cache identical to the persisted
 // blob across a reload.
 const OPT_STR_FIELDS = ["title", "body", "event", "fromCity", "fromCiv", "toCity", "toCiv"];
 

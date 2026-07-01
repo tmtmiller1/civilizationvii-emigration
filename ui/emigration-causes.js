@@ -1,6 +1,6 @@
 // emigration-causes.js
 //
-// The SINGLE SOURCE OF TRUTH for migration CAUSES , the taxonomy shared by the engine (which emits
+// The SINGLE SOURCE OF TRUTH for migration CAUSES, the taxonomy shared by the engine (which emits
 // them), the per-civ tallies + Demographics attribution (which key on them), the naming/feedback
 // layer (which flavours them), and the city readout (which explains them).
 //
@@ -16,7 +16,7 @@
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 
 /**
- * Why population left a settlement. `attrition` is the outlet (a death , population lost with no
+ * Why population left a settlement. `attrition` is the outlet (a death, population lost with no
  * destination), tracked apart from the migration/refugee tallies. `conquest` is reserved: a later
  * phase emits it on capture-driven displacement (it is consumed by the naming layer today but not
  * yet produced).
@@ -24,7 +24,7 @@ import { formatPeople } from "/emigration/ui/emigration-population.js";
  */
 
 /**
- * A cause usable in a refugee HEADLINE. Adds `crisis` , a world-news milestone pseudo-cause that is
+ * A cause usable in a refugee HEADLINE. Adds `crisis`, a world-news milestone pseudo-cause that is
  * deliberately NOT a MigrationCause (no single move carries it; it summarizes a civ's cumulative
  * refugees).
  * @typedef {MigrationCause | "crisis"} HeadlineCause
@@ -53,7 +53,7 @@ const LABELS = {
 };
 
 // Theme accent colour per cause, for TEXT-ADJACENT chrome: the toast accent bar and notifications-log
-// rows. Deliberately DISTINCT from `CAUSE_PALETTE` in emigration-network-paint.js — that map fills the
+// rows. Deliberately DISTINCT from `CAUSE_PALETTE` in emigration-network-paint.js, that map fills the
 // network-canvas migrant dots and is tuned to harmonize with `CIV_PALETTE` (brighter, e.g. war
 // #e5616b), whereas these are darker, more saturated tones that read as accents beside text (war
 // #d24b3e). The divergence is intentional; do NOT consolidate the two. A NEW cause needs a colour in
@@ -88,9 +88,9 @@ const HINTS = {
   unhappiness: "Raise this city's happiness, or slot an Anti-Immigration Stance to retain them.",
   prosperity: "A neighbor is out-prospering this city; grow its yields to keep people home.",
   war: "Refugees flee the fighting; relieve the siege or make peace to stem the outflow.",
-  disaster: "Disaster displacement , it subsides on its own as the distress decays.",
+  disaster: "Disaster displacement, it subsides on its own as the distress decays.",
   conquest: "Displaced by the city's capture; the upheaval eases as the city settles.",
-  attrition: "Trapped with nowhere to go , open a route out or relieve the distress.",
+  attrition: "Trapped with nowhere to go, open a route out or relieve the distress.",
   return: "A people drawn home as their recovered homeland finds peace and plenty again."
 };
 

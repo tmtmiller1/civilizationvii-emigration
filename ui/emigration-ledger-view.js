@@ -125,8 +125,8 @@ function stancePct(r) {
 }
 
 /**
- * The "Stance impact" cell: how a civ's border policy changed its immigration IN , signed people
- * (allowed beyond / prevented) plus the proportion vs a neutral baseline. "—" when neutral.
+ * The "Stance impact" cell: how a civ's border policy changed its immigration IN, signed people
+ * (allowed beyond / prevented) plus the proportion vs a neutral baseline. "-" when neutral.
  * @param {*} r Ledger row.
  * @param {number} mode A NumberMode value.
  * @returns {HTMLElement} The cell.
@@ -139,7 +139,7 @@ function ledgerStanceCell(r, mode) {
 }
 
 /**
- * Build one ledger data row (flex) , name, net, In / Out / Stance impact / Refugees / Losses.
+ * Build one ledger data row (flex), name, net, In / Out / Stance impact / Refugees / Losses.
  * @param {*} r Ledger row.
  * @param {number} maxNet Largest absolute net (people).
  * @param {number} mode A NumberMode value.

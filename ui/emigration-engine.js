@@ -156,6 +156,7 @@ function sourceState(state, key) {
   const s = state.sources[key]
     || (state.sources[key] = { pressure: 0, cooldown: 0, crisisPressure: 0, crisisCooldown: 0 });
   if (typeof s.deathPressure !== "number") s.deathPressure = 0; // normalize older saves
+  if (typeof s.crisisTenure !== "number") s.crisisTenure = 0; // crisis-onset ramp counter (older saves)
   return s;
 }
 
@@ -505,6 +506,21 @@ function crisisSeverity(src, d) {
 }
 
 /**
+ * The death-ONSET ramp in [deathRampFloor, 1] (NOT a cap): a lethal crisis accrues death-pressure
+ * gently at first (floor) and deepens over `deathRampTurns` of SUSTAINED lethal distress, then holds
+ * at the full rate. Smooths the onset so a sudden catastrophe is never instantly devastating; it never
+ * caps the eventual toll. 1 when disabled.
+ * @param {number} tenure Consecutive turns the source has been under lethal distress (>= 1 here).
+ * @returns {number} The per-turn death-pressure accrual multiplier.
+ */
+function deathRamp(tenure) {
+  if (!CONFIG.deathRampEnabled) return 1;
+  const floor = CONFIG.deathRampFloor;
+  const ramp = Math.min(1, Math.max(0, tenure - 1) / Math.max(1, speedTurns(CONFIG.deathRampTurns)));
+  return floor + (1 - floor) * ramp;
+}
+
+/**
  * The outlet's DEATH channel, population that leaves the world (cause `attrition`), tracked as deaths,
  * not migration. Fires under LETHAL distress (`distress ≥ attritionMinDistress`), i.e. the situational
  * crises: war, disaster, siege, famine. Economic prosperity/unhappiness emigration carries NO
@@ -525,14 +541,19 @@ function processOutletDeath(src, st, state, hasRefuge) {
   // Lethal distress is the situational crises (war/disaster/siege/famine); economic emigration has none.
   if (d < CONFIG.attritionMinDistress || (hasRefuge && !CONFIG.crisisDeathEnabled)) {
     st.deathPressure = Math.max(0, st.deathPressure * speedDecay(0.5)); // coping → decay (same game-time)
+    st.crisisTenure = Math.max(0, (st.crisisTenure || 0) - 1); // crisis eased → the onset ramp relaxes (reversible)
     return null;
   }
+  st.crisisTenure = (st.crisisTenure || 0) + 1; // sustained lethal distress → the crisis deepens over time
   // DYNAMIC: the worse the crisis, the larger the share that dies rather than fleeing. Trapped → full.
   const rate = hasRefuge ? Math.min(1, CONFIG.crisisDeathShare * crisisSeverity(src, d)) : 1;
+  // ONSET SMOOTHING (deathRamp, [floor,1], NOT a cap): a fresh lethal crisis accrues death-pressure
+  // gently and deepens over deathRampTurns of sustained distress, so a sudden catastrophe is never
+  // instantly devastating; a prolonged one still reaches the full rate and can eventually drain the city.
   // speedShock (÷S): the kill threshold below is ×S (speedBar), and the fade is re-based (speedDecay),
   // so the per-turn accumulation must also shrink ÷S or a slow-speed city banks ~S× the crisis distress
   // before the kill fires. This makes the TOTAL crisis pressure to a death speed-invariant.
-  st.deathPressure += speedShock(Math.pow(Math.max(d, 1), CONFIG.deltaExponent) * rate);
+  st.deathPressure += speedShock(Math.pow(Math.max(d, 1), CONFIG.deltaExponent) * rate * deathRamp(st.crisisTenure));
   if (st.deathPressure < speedBar(CONFIG.attritionThreshold)) return null;
   const popBefore = src.population;
   if (!removeRural(src.city)) return null;
@@ -552,8 +573,8 @@ function processOutletDeath(src, st, state, hasRefuge) {
 }
 
 // ── Stance-impact counterfactual ──────────────────────────────────────────────
-// Each turn we PLAN the cross-civ departures twice on the SAME pre-pass world , once with the real
-// border stances, once with all borders forced neutral , and bank the per-civ difference. Planning
+// Each turn we PLAN the cross-civ departures twice on the SAME pre-pass world, once with the real
+// border stances, once with all borders forced neutral, and bank the per-civ difference. Planning
 // is side-effect-free (shallow-copied signals + a copied pressure map; it never moves real
 // population), so it runs alongside the real pass without disturbing it. The diff is the marginal
 // counterfactual: how much border policy raised (Pro) or cut (Anti / Closed-retention) each civ's
@@ -703,6 +724,20 @@ function bankStanceImpact(ranked, state) {
   }
   recordStanceImpact(delta);
 }
+
+/**
+ * Dev-only test surface: the internal decision/sizing helpers, exposed so the mutation-rigor harness
+ * (`tests/engine-rigor.mjs`) can unit-test them with exact-boundary inputs rather than only through
+ * `runPass`. Not used by the shipped UI (mirrors the `__test` convention in emigration-composition.js).
+ */
+export const __test = {
+  applyMoveToRanking, transitLag, warSurgeBudget, inCrisis, restingOnCooldown, civMoveCeilings,
+  sourceState, isCrisisTrack, crisisCause, voluntaryCause, applyOneMove, shedBurst, belowEmigrationBar,
+  legacyEmigrate, processSourceLegacy, shedCrisis, cityMigrationCap, shedVoluntary, processSourceSplit,
+  processSource, crisisSeverity, processOutletDeath, deathRamp, planBump, planApply, planSource, planTurn,
+  anyStance, bankStanceImpact, remainingBudgets, tallyUse, processDepartures, bestOpenDestination,
+  FORCED_CAUSES, CRISIS_TRACK, ZERO_PLAN
+};
 
 /**
  * Run one emigration pass over the whole world. Returns the migrations applied (for notification).

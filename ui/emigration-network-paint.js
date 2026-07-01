@@ -21,7 +21,7 @@ const CIV_PALETTE = [
   "#c9a66b", "#7fb0d6", "#e29bbd", "#7fccc0", "#cbb994"
 ];
 // Migrant-type (cause) colours for the "Type" lens. "native" is the resident (home-grown)
-// population , drawn in each civ's own colour, shown muted-grey under the Type lens.
+// population, drawn in each civ's own colour, shown muted-grey under the Type lens.
 // These are canvas DOT FILLS, tuned to harmonize with `CIV_PALETTE` above (brighter, e.g. war
 // #e5616b). They deliberately DIVERGE from `ACCENTS` in emigration-causes.js, which are the darker,
 // more saturated tones used for text-adjacent toast/log accents (war #d24b3e). Keep them separate; a

@@ -185,8 +185,8 @@ function registerMinimizeAnalytics() {
     initListener: (/** @type {*} */ info) => (info.currentValue = getMinimizeAnalytics()),
     updateListener: (/** @type {*} */ _i, /** @type {*} */ v) => setMinimizeAnalytics(!!v),
     label: "Emigration • simplify dashboard",
-    description: "Hide the heavy migration analytics — the animated Network diagram and the Causes pie "
-      + "charts — and keep the simple, numbers-first tabs: Net Migration, My Cities (with the per-city "
+    description: "Hide the heavy migration analytics, the animated Network diagram and the Causes pie "
+      + "charts, and keep the simple, numbers-first tabs: Net Migration, My Cities (with the per-city "
       + "migration meter), Policies, Notifications and the Guide, plus the Demographics graphs. Takes "
       + "effect next time you open the dashboard."
   });

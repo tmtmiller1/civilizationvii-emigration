@@ -9,7 +9,7 @@ import { scaleCityPopulation, marginalPeople } from "/emigration/ui/emigration-p
 // so migration-event population counts can never silently drift away from what Demographics shows for
 // the same settlement (and so events stay believable instead of ballooning to millions).
 //
-// The contract — Demographics' demographics-metrics-helpers.js scaleCityPopulationAt, from Civ VII's
+// The contract, Demographics' demographics-metrics-helpers.js scaleCityPopulationAt, from Civ VII's
 // real per-era growth formula:
 //   W(N,{flat,scalar,exp}) = flat*N + scalar*N(N+1)/2 + exp*N(N+1)(2N+1)/6   (cumulative growth food)
 //   eraGrowthParams blends the previous era's {flat,scalar,exp} → the current era's over the opening
@@ -102,7 +102,7 @@ function refSoftCeil(x, ceiling) {
 }
 
 /**
- * Reference copy of Demographics' scaleCityPopulationAt — the authoritative scaling contract
+ * Reference copy of Demographics' scaleCityPopulationAt, the authoritative scaling contract
  * (growth curve · Modern megacity boost · soft era ceiling).
  * @param {number} raw Settlement size. @param {number} _turn Unused (signature compat).
  * @param {string} [ageType] Age type. @param {number} [ageProgressPct] Progress %.
@@ -157,7 +157,7 @@ function testScaleMatchesDemographicsAcrossAges() {
 
 function testMarginalMatchesDemographicsAcrossAges() {
   // marginalPeople resolves age from the engine; off-engine (no globalThis.Game) that yields no ramp,
-  // so it equals the reference marginal with no age — exactly the antiquity/early-game regime.
+  // so it equals the reference marginal with no age, exactly the antiquity/early-game regime.
   for (const turn of [0, 8, 30, 90, 180, 250]) {
     for (const pop of [1, 2, 5, 10]) {
       const want = Math.max(0, refScale(pop, turn) - refScale(pop - 1, turn));

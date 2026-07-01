@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
 // buildChronoDots must colour a CAPTURED city's residents by the civ they ORIGINATED from (the
-// prior owner) — not the new owner — while any NEW home-grown population counts as the new owner.
+// prior owner) (not the new owner) while any NEW home-grown population counts as the new owner.
 // The origin breakdown rides in on each city's `origins` (built by the composition ledger).
 const { buildChronoDots } = await import("/emigration/ui/emigration-network-dots.js");
 const { civColorByIndex } = await import("/emigration/ui/emigration-network-paint.js");
@@ -40,7 +40,7 @@ function testCapturedResidentsKeepOrigin() {
   assert.ok(old.every((d) => d.destId === 20), "captured residents live in the new owner's cluster");
 }
 
-// As the captured city grows, the NEW population is the new owner — the old-owner cohort is frozen.
+// As the captured city grows, the NEW population is the new owner, the old-owner cohort is frozen.
 function testGrowthAfterCaptureIsNewOwner() {
   const f0 = { name: "Carthage", town: false, pop: 10, pts: 10,
     origins: [{ civ: 10, pts: 8 }, { civ: 20, pts: 2 }] };
