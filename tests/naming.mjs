@@ -43,7 +43,7 @@ function testPermanenceCueSelection() {
 }
 
 function testLossHeadlineNamesCauseAndCity() {
-  assert.match(lossHeadline("unhappiness", "12 thousand people", "Rome"), /Rome/);
+  assert.match(lossHeadline("unhappiness", "12,000 people", "Rome"), /Rome/);
   assert.match(lossHeadline("war", "5,000 people", "Akrotiri"), /Akrotiri/);
   assert.match(lossHeadline("attrition", "3,000 people", "Ur"), /casualties/);
   assert.match(lossHeadline("attrition", "3,000 people", "Ur"), /Ur/);
@@ -55,7 +55,7 @@ function testCostNote() {
 }
 
 function testLocalDigestComposesAndGatesCostNote() {
-  const base = { cause: "unhappiness", people: "12 thousand people", city: "Rome" };
+  const base = { cause: "unhappiness", people: "12,000 people", city: "Rome" };
   const msg = localDigestMessage(base);
   assert.match(msg, /Rome/); // headline
   assert.match(msg, /happiness/i); // hint
@@ -69,6 +69,27 @@ function testLocalDigestComposesAndGatesCostNote() {
   assert.doesNotMatch(noCost, /pays about/);
 }
 
+function testLocalDigestNamesDestinationAndTagsScope() {
+  const base = { cause: "prosperity", people: "12,000 people", city: "Rome" };
+  // An internal relocation names where they went and is tagged as an internal move.
+  const internal = localDigestMessage({ ...base, crossCiv: false, destName: "Neapolis" });
+  assert.match(internal, /Bound for Neapolis\./);
+  assert.match(internal, /\(Internal Move\)$/);
+  assert.doesNotMatch(internal, /\(External Move\)/);
+  // A cross-civ move names the destination and is tagged as an external move.
+  const external = localDigestMessage({ ...base, crossCiv: true, destName: "Carthage" });
+  assert.match(external, /Bound for Carthage\./);
+  assert.match(external, /\(External Move\)$/);
+  assert.doesNotMatch(external, /\(Internal Move\)/);
+  // A death (attrition) went nowhere → no destination clause and no scope tag.
+  const death = localDigestMessage({ cause: "attrition", people: "3,000 people", city: "Ur", destName: "Ur" });
+  assert.doesNotMatch(death, /Bound for/);
+  assert.doesNotMatch(death, /\((Internal|External) Move\)/);
+  // A move with no resolved destination → no destination clause (no dangling "Bound for .").
+  const noDest = localDigestMessage({ ...base, crossCiv: false });
+  assert.doesNotMatch(noDest, /Bound for/);
+}
+
 testHeadlineFallbacks();
 testDisasterNameFallback();
 testCivAdjectiveFallback();
@@ -77,4 +98,5 @@ testPermanenceCueSelection();
 testLossHeadlineNamesCauseAndCity();
 testCostNote();
 testLocalDigestComposesAndGatesCostNote();
+testLocalDigestNamesDestinationAndTagsScope();
 console.log("naming harness passed");

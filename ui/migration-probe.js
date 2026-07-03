@@ -22,6 +22,52 @@
 // to UI.log via GameFace's CSS-parse channel (mod console.log doesn't reach the
 // log files): grep MIGPROBE in
 //   ~/Library/Application Support/Civilization VII/Logs/UI.log
+//
+// ── SETTLED (2026-07-01 run) — capability + GlobalParameter findings; do NOT re-probe ──
+// Context: boot/API smoke run only (reached turn 4, single civ Augustus/Great Britain,
+// no opponents met) → zero live-migration data; every pass was "none" and the COUNTERS
+// dump was all-zero. The value below is capability discovery, not behavioral data.
+//
+// API3 (read/algorithmic):
+//   • Leader/civ identity resolves; civ-tuning table key stable (AUGUSTUS / GREAT_BRITAIN
+//     as numeric hashes). ✓
+//   • GlobalParameters readable via GameInfo — confirmed real engine values:
+//       UNHAPPINESS_OVERCROWDING_THRESHOLD_STANDARD_SPEED = 2  (config overcrowdThreshold:2 mirrors it ✓)
+//       CITY_YIELD_PENALTY_PERCENT_PER_HAPPINESS_DEFICIT = 5.0
+//       CITY_UNHAPPINESS_RAZED_REDUCTION = 30 ; ...PER_COMMANDER_BASE = 10
+//       HAPPINESS_RURAL_POP_UPKEEP_BASE = 0.0 ; HAPPINESS_URBAN_POP_UPKEEP_BASE = 0.0
+//       CITY_RESOURCE_DIVERSITY_HAPPINESS = 2.0
+//       GOLDEN_AGE_HAPPINESS_CURVE A/B/C/D = 1.0 / 140 / 70 / 35
+//       CITY_NORMAL_PLOT_WORKER_CAPACITY = 1 ; CITY_WORKER_STARTING_CAP = 0 ; WORKER_ADJACENCY_SCALAR = 1.0
+//       APPEAL_FOR_HAPPINESS_TILE_YIELD = 3 ; APPEAL_FOR_DOUBLE_HAPPINESS_TILE_YIELD = 5
+//   • per-civ population via civPopulation aggregate works (one pass). ✓
+//   • specialist_worker_maintenance table ABSENT ✗ — specialist cost must be inferred via the
+//     Workers API + happiness rule, not a data table.
+//
+// API4 (interactive/write):
+//   • changeDiplomacyBalance LOCAL write CONFIRMED: balance 0→100→200 (net unchanged). ✓
+//     Cross-civ variant UNTESTED this run (no foreign player) — still inferred, not proven.
+//   • Policy / Tradition / Government slots readable (empty at t1). ✓
+//   • city.isInfected accessor exists (plague-carry). ✓
+//   • RandomEvents table present (21 rows). Disaster class+severity enumerated:
+//       FLOOD sev 0/1/2 (moderate/major/1000-year); VOLCANO sev 0/1/3 (gentle/catastrophic/kilimanjaro).
+//       NOTE non-monotonic: catastrophic=1 < kilimanjaro=3 — don't assume severity tracks name order.
+//   • Notifications API present (Game.Notifications: activate/dismiss/find/send/getEndTurnBlocking…);
+//     GameInfo notification table present. ✓
+//   • WorldAnchor = undefined ✗ and createNotification = undefined ✗ (only WorldUI is an object) —
+//     world-anchored notifications NOT available via that path.
+//   • Passive recorders install cleanly: DeclareWar, MakePeace, RandomEventOccurred. ✓
+//
+// REVOLT / crisis:
+//   • CityTransfered recorder installs; transfer-cause enums captured
+//     BY_REVOLT / BY_COMBAT / BY_INCORP_CS → conquest vs revolt vs CS-incorporation distinguishable. ✓
+//   • Crisis API present: isCrisisEnabled, getNumCrisisStages, getCurrentCrisisStage,
+//     stage trigger %, turns elapsed/remaining. ✓
+//   • Happiness accessors: getUnhappiness, hasUnrest, highestActiveUnrestDuration,
+//     netHappinessPerTurn, turnsOfUnrest. ✓
+//   • grantYield happiness +20 to local city executes (pressure-inject path), but netHappy was
+//     unchanged in the same-turn snapshot — needs an end-turn to observe. worker accessor returned
+//     undefined at pop 1 → guard the worker read for tiny cities.
 
 const LOG = "[MigProbe]";
 const TAG = "MIGPROBE_";
@@ -472,6 +518,227 @@ function verifyNew() {
   const f = firstForeign();
   if (f) dumpUnitsAndStats(f.pid, "FOREIGN");
   else log("VERIFY no foreign player for the unit-enumeration test");
+}
+
+// ── NEW: revolt / uprising feasibility probes ─────────────────────────────
+
+/**
+ * Best-effort enum value lookup.
+ * @param {*} bag Enum bag.
+ * @param {string} key Member name.
+ * @returns {*} Value or undefined.
+ */
+function enumValue(bag, key) {
+  try {
+    return bag ? bag[key] : undefined;
+  } catch (_) {
+    return undefined;
+  }
+}
+
+/**
+ * Read common revolt-relevant fields off a city and its Happiness subobject.
+ * @param {*} city City.
+ * @returns {string[]} Key=value parts.
+ */
+function revoltCityParts(city) {
+  if (!city) return ["city=null"];
+  const out = [];
+  const push = (k, v) => out.push(k + "=" + v);
+  push("owner", city.owner);
+  push("name", city.name || "?");
+  push("happyYield", cityYield(city, "YIELD_HAPPINESS"));
+  appendRevoltExtras(out, city);
+  return out;
+}
+
+/** @param {string[]} out @param {*} city */
+function appendRevoltExtras(out, city) {
+  tryPush(out, "netHappy", city?.Happiness?.netHappinessPerTurn);
+  tryPush(out, "hasUnrest", city?.Happiness?.hasUnrest);
+  tryPush(out, "mostRecentTransfer", city?.mostRecentTranseferType);
+  tryPush(out, "originalOwner", city?.originalOwner);
+  tryPush(out, "isTown", city?.isTown);
+  tryPush(out, "isCapital", city?.isCapital);
+}
+
+/**
+ * Append a key=value pair when value is readable.
+ * @param {string[]} out Accumulator.
+ * @param {string} key Field name.
+ * @param {*} value Field value.
+ */
+function tryPush(out, key, value) {
+  if (value === undefined) return;
+  out.push(key + "=" + value);
+}
+
+/**
+ * Log native transfer-type enum values when available.
+ */
+function probeTransferEnums() {
+  const revolt = enumValue(globalThis.CityTransferTypes, "BY_REVOLT");
+  const combat = enumValue(globalThis.CityTransferTypes, "BY_COMBAT");
+  const incorp = enumValue(globalThis.CityTransferTypes, "BY_INCORPORATE_CITY_STATE");
+  log("REVOLT enums BY_REVOLT=" + revolt + " BY_COMBAT=" + combat + " BY_INCORP_CS=" + incorp);
+}
+
+/**
+ * Reflect likely revolt-related methods on city, happiness, player, and crisis handles.
+ */
+function probeRevoltSurface() {
+  const city = targetCity();
+  if (!city) {
+    log("REVOLT surface no target city");
+    return;
+  }
+  log("REVOLT city " + revoltCityParts(city).join(" "));
+  log("REVOLT city methods " + methodsMatching(city, /revolt|riot|unrest|transfer|happ/i).join(" "));
+  log("REVOLT happy methods " + methodsMatching(city?.Happiness, /revolt|riot|unrest|happ/i).join(" "));
+  log("REVOLT player methods " + methodsMatching(Players.get(city.owner), /revolt|riot|unrest|city|happ/i).join(" "));
+  log("REVOLT crisis methods " + methodsMatching(Game?.CrisisManager, /crisis|revolt|stage|event/i).join(" "));
+  probeTransferEnums();
+}
+
+/**
+ * Method/property names matching a regex.
+ * @param {*} obj Object.
+ * @param {RegExp} re Matcher.
+ * @returns {string[]} Matching names.
+ */
+function methodsMatching(obj, re) {
+  return methodsOf(obj).filter((n) => re.test(n));
+}
+
+/** @param {*} d */
+function revoltCityIdFromEvent(d) {
+  return d?.cityID ?? d?.cityId ?? d?.city;
+}
+
+/** @param {*} cityId */
+function revoltCityFromId(cityId) {
+  try {
+    return cityId != null && typeof Cities !== "undefined" && Cities.get ? Cities.get(cityId) : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+/** @param {*} d */
+function logRevoltTransferEvent(d) {
+  const city = revoltCityFromId(revoltCityIdFromEvent(d));
+  log(
+    "REVOLT CityTransfered transferType=" + d?.transferType +
+      " eventKeys=" + Object.keys(d || {}).join(",") +
+      (city ? " cityState=" + revoltCityParts(city).join(" ") : " cityState=unreadable")
+  );
+}
+
+/**
+ * Best-effort subscription to transfer events, logging the transfer type and city state.
+ */
+function installRevoltTransferRecorder() {
+  try {
+    if (typeof engine === "undefined" || typeof engine.on !== "function") {
+      log("REVOLT recorder engine.on unavailable");
+      return;
+    }
+    engine.on("CityTransfered", (/** @type {*} */ d) => logRevoltTransferEvent(d));
+    log("REVOLT CityTransfered recorder installed");
+  } catch (e) {
+    log("REVOLT recorder threw " + e);
+  }
+}
+
+/**
+ * One-shot combined probe for revolt/uprising feasibility.
+ */
+function probeRevolt() {
+  probeRevoltSurface();
+  installRevoltTransferRecorder();
+}
+
+/** @param {*} city @returns {boolean} */
+function localOwnedCity(city) {
+  try {
+    return !!city && city.owner === GameContext.localPlayerID;
+  } catch (_) {
+    return false;
+  }
+}
+
+/** @param {*} city @returns {number|null} */
+function cityIdNum(city) {
+  try {
+    return city?.id?.id ?? null;
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * Best-effort local-city resource clear to worsen happiness conditions.
+ * Mirrors the commerce screen's ASSIGN_RESOURCE clear path.
+ * @param {*} city City.
+ */
+function clearCityResourcesProbe(city) {
+  if (!localOwnedCity(city)) {
+    log("REVOLT pressure resource-clear skipped (selected city is not locally owned)");
+    return;
+  }
+  const cityNum = cityIdNum(city);
+  const op = globalThis.PlayerOperationTypes?.ASSIGN_RESOURCE;
+  const none = globalThis.ResourceTypes?.NO_RESOURCE;
+  const clear = globalThis.PlayerOperationParameters?.Clear;
+  if (cityNum == null || op == null || none == null || clear == null || !Game?.PlayerOperations?.sendRequest) {
+    log("REVOLT pressure resource-clear unavailable (missing op enums/API)");
+    return;
+  }
+  try {
+    Game.PlayerOperations.sendRequest(GameContext.localPlayerID, op, {
+      ResourceType: none,
+      City: cityNum,
+      Action: clear
+    });
+    log("REVOLT pressure requested city resource clear for local city " + cityNum);
+  } catch (e) {
+    log("REVOLT pressure resource-clear THREW " + e);
+  }
+}
+
+/**
+ * Try to intensify the selected city's native revolt risk.
+ * This is dev-only and may change the active save. It uses only already-proven or
+ * plausibly native-compatible levers: install transfer recorder, deduct happiness,
+ * and clear local-city resources when available.
+ * @param {number} [happyDelta] Negative happiness grant amount.
+ */
+function probeRevoltPressure(happyDelta) {
+  const city = targetCity();
+  if (!city) {
+    log("REVOLT pressure no target city");
+    return;
+  }
+  const owner = city.owner;
+  const delta = happyDelta == null ? -20 : happyDelta;
+  log("REVOLT pressure START city=" + (city.name || "?") + " owner=" + owner + " delta=" + delta);
+  probeRevolt();
+  inspectCity(city, "revolt-pressure before");
+  try {
+    if (typeof Players?.grantYield === "function") {
+      Players.grantYield(owner, yieldEnum("YIELD_HAPPINESS"), delta);
+      log("REVOLT pressure grantYield happiness " + delta + " -> owner " + owner);
+    } else {
+      log("REVOLT pressure Players.grantYield unavailable");
+    }
+  } catch (e) {
+    log("REVOLT pressure happiness grant THREW " + e);
+  }
+  clearCityResourcesProbe(city);
+  setTimeout(() => {
+    inspectCity(city, "revolt-pressure after");
+    log("REVOLT pressure: end turn and watch for ADVISOR_WARNING_CITY_REVOLT / NOTIFICATION_REVOLT / CityTransfered");
+  }, 800);
 }
 
 // ── NEW: 3 API confirmations for the algorithmic-improvements design ──────
@@ -1000,7 +1267,19 @@ class MigrationDockDecorator {
         callback: () => probeApi4(),
         class: ["migp-api4"]
       });
-      log("API3 + API4 buttons added");
+      this._panel.addButton({
+        tooltip: "API5: revolt/uprising audit - native revolt fields, transfer types, CityTransfered recorder",
+        modifierClass: "migp-api5",
+        callback: () => probeRevolt(),
+        class: ["migp-api5"]
+      });
+      this._panel.addButton({
+        tooltip: "API6: revolt pressure - deduct happiness / clear local city resources / watch for revolt",
+        modifierClass: "migp-api6",
+        callback: () => probeRevoltPressure(),
+        class: ["migp-api6"]
+      });
+      log("API3 + API4 + API5 + API6 buttons added");
       const SHOW_ALL = false;
       if (!SHOW_ALL) return;
       this._panel.addButton({
@@ -1364,6 +1643,8 @@ function exposeGlobals() {
       // the 3 API confirmations for algorithmic-improvements (run all, or each)
       api3: () => probeApi3(),
       api4: () => probeApi4(),
+      revolt: () => probeRevolt(),
+      revoltPressure: (n) => probeRevoltPressure(n),
       ident: () => probeIdentity(),
       spec: () => probeSpecialists(),
       yield2b: () => probeYieldPenalty(),

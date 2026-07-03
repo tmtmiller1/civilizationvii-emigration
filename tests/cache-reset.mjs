@@ -66,6 +66,29 @@ const chronicle = await import("/emigration/ui/emigration-chronicle.js");
   assert.equal(currentGameId(), 12345, "numeric gameSeed read through");
   _seed = "abc";
   assert.equal(currentGameId(), "abc", "string gameSeed read through");
+  globalThis.Configuration = { getGame: 123 };
+  assert.equal(currentGameId(), null, "non-callable getGame → null");
+  globalThis.Configuration = {
+    getGame: () => {
+      throw new Error("boom");
+    }
+  };
+  assert.equal(currentGameId(), null, "throwing getGame → null");
+  globalThis.Configuration = {
+    getGame: () => ({
+      gameSeed: _seed,
+      getValue: (k) => (k in _kv ? _kv[k] : null)
+    })
+  };
+}
+
+// ── registerCacheReset ignores non-functions ──
+{
+  __test.clear();
+  registerCacheReset(null);
+  registerCacheReset(undefined);
+  registerCacheReset(42);
+  assert.equal(__test.resetterCount(), 0, "non-functions must not register");
 }
 
 // ── resetCachesOnNewGame: first-observation adopts, same id no-ops, change resets, then re-adopts ──

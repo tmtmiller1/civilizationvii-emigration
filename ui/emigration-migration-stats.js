@@ -15,6 +15,7 @@ import { citySnapshot } from "/emigration/ui/emigration-city-readout-data.js";
 import { getSnapshotInterval } from "/emigration/ui/emigration-settings.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
+import { modPointsByCity, recordCityNet, cityNetSeriesFrom } from "/emigration/ui/emigration-city-net.js";
 import {
   addFlows,
   sumDeltas,
@@ -92,6 +93,8 @@ let _recent = [];
  * @property {number} chartLocal Age-local turn of the latest snapshot.
  * @property {string} lossAge Age of the last external-loss accounting pass, tracked independently
  *   of chartAge so the age-transition re-baseline guard (P0.2) is immune to call ordering.
+ * @property {Record<string, number[]>} cityNet Per-city rolling net pop-point change ("owner|cityName"
+ *   -> recent nets), bounded, for the city-readout sparkline (Feature E).
  */
 
 /** @type {MigStatsState | null} */
@@ -158,6 +161,9 @@ function normalize(o) {
     wmOutByCause: mapOr(o.wmOutByCause),
     wmInByCause: mapOr(o.wmInByCause),
     flows: mapOr(o.flows),
+    // Per-city rolling net pop-point series ("owner|cityName" -> recent net values), for the
+    // city-readout sparkline (Feature E). Bounded per city and in city count.
+    cityNet: mapOr(o.cityNet),
     // Stance-impact counterfactual (people + pop-points): how much each civ's border policy raised
     // (Pro) or cut (Anti / Closed-retention) its cross-civ immigration in/out vs a neutral-borders
     // world, accumulated per turn. Signed: +in = allowed beyond, -in = prevented, -out = retained.
@@ -578,30 +584,6 @@ export function migrationFlows() {
 }
 
 /**
- * Net mod population-point change this turn per "owner|cityName" key, from the pass's migrations:
- * arrivals add points to the destination, departures/attrition remove them from the source. This is
- * what the mod itself did to each city, so it can be subtracted from the observed change.
- * @param {*[]} migs This turn's migrations.
- * @returns {Record<string, number>} Net points per owner|city.
- */
-function modPointsByCity(migs) {
-  /** @type {Record<string, number>} */
-  const map = {};
-  for (const m of migs || []) {
-    const pts = m.points || 0;
-    if (typeof m.srcOwner === "number") {
-      const k = m.srcOwner + "|" + m.srcName;
-      map[k] = (map[k] || 0) - pts;
-    }
-    if (typeof m.destOwner === "number") {
-      const k = m.destOwner + "|" + m.destName;
-      map[k] = (map[k] || 0) + pts;
-    }
-  }
-  return map;
-}
-
-/**
  * Credit a city's unexplained pop-point loss to its civ, in raw points and in scaled people
  * (valued the same way migration counts are). No-op for a non-positive drop.
  * @param {MigStatsState} s State.
@@ -767,9 +749,21 @@ export function recordMigrations(migs) {
   snapshotFlows(s);
   if (list.length) {
     pushRecent(list);
+    recordCityNet(s.cityNet, list);
     logNetDistribution(s, list);
   }
   save();
+}
+
+/**
+ * The last `n` net pop-point changes for a city ("owner|cityName" key), oldest first. Empty when the
+ * city has no recorded movement yet. Feeds the city-readout sparkline (Feature E).
+ * @param {string} cityKey "owner|cityName".
+ * @param {number} [n] Max points to return.
+ * @returns {number[]} Recent net values.
+ */
+export function cityNetSeries(cityKey, n = 12) {
+  return cityNetSeriesFrom(load().cityNet || {}, cityKey, n);
 }
 
 /**
@@ -1004,6 +998,8 @@ try {
     citySnapshot: (/** @type {*} */ cityId) => citySnapshot(cityId),
     recentEventsFor: (/** @type {number} */ pid, /** @type {number=} */ limit) =>
       recentEventsFor(pid, limit),
+    // Per-city recent net-migration series ("owner|cityName") for the readout sparkline.
+    cityNetSeries: (/** @type {string} */ k, /** @type {number=} */ n) => cityNetSeries(k, n),
     // Cross-civ flow matrix (src→dest people) for the migration-network visualization.
     flows: () => migrationFlows(),
     // Decimated cumulative-flow history (timeline frames) for the network scrubber.

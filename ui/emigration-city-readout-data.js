@@ -18,17 +18,20 @@ import { speedBar } from "/emigration/ui/emigration-game-speed.js";
 import { causeLabel, causePermanence, causeHint } from "/emigration/ui/emigration-causes.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { rankByProsperity, distress } from "/emigration/ui/emigration-prosperity.js";
-import { bestDestination, migrationCause } from "/emigration/ui/emigration-pull.js";
+import { bestDestination, migrationCause, crisisTypeReasons } from "/emigration/ui/emigration-pull.js";
 import { loadState, ownerPopulations } from "/emigration/ui/emigration-state.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
 import { civAdjective } from "/emigration/ui/emigration-naming.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
+import { refugeePoolTotal } from "/emigration/ui/emigration-refugee-pool.js";
+import { refugeeBurdenFor } from "/emigration/ui/emigration-refugee-burden.js";
 
 /**
  * The readout view-model for one city.
  * @typedef {Object} CitySnapshot
  * @property {number} [owner] Owner player id.
+ * @property {string} [cityKey] Stable source key (owner:localId).
  * @property {string} cityName Display name.
  * @property {number} population Total population.
  * @property {number} rural Rural (mobile) population.
@@ -41,6 +44,8 @@ import { civHidden } from "/emigration/ui/emigration-governance.js";
  * @property {number} distress Situational distress magnitude (0 when content).
  * @property {boolean} atRisk Whether the city is under any situational distress.
  * @property {boolean} attritionRisk Distressed with no viable refuge (the outlet may fire).
+ * @property {string[]} riskReasons The crisis-type tags behind any distress (siege/disaster/famine),
+ *   for the readout warning's "why" (P0.2). Empty when the city is content.
  * @property {number} pressure Accumulated emigration pressure.
  * @property {number} pressureToBar Pressure as a fraction of the move bar (0–1).
  * @property {boolean} onCooldown Whether the source is resting after a recent move.
@@ -48,6 +53,7 @@ import { civHidden } from "/emigration/ui/emigration-governance.js";
  * @property {string} topDestinationName Where this city's people are currently pulled.
  * @property {number} [topDestinationOwner] That destination's owner id.
  * @property {boolean} crossCiv Whether the pull is to another civilization.
+ * @property {string[]} destReasons The "why here" reason-tag keys for the current pull target (P0.1).
  * @property {number} assimLoad Destination-side assimilation load this owner carries.
  * @property {number} assimCostGold Per-turn gold the owner pays for that load.
  * @property {number} assimCostHappiness Per-turn happiness the owner pays for that load.
@@ -56,6 +62,11 @@ import { civHidden } from "/emigration/ui/emigration-governance.js";
  * @property {number} ownerOut Owner cumulative emigration (people).
  * @property {{total:number, parts:{name:string, share:number}[]}|null} [composition] Ethnic
  *   composition: per-origin display name + share, largest first (null when untracked).
+ * @property {number[]} netSeries Recent per-pass net migration for this city (oldest first), for the
+ *   readout sparkline (Feature E). Empty when the option is off or there is no history.
+ * @property {number} refugeePool Held refugee points currently assigned to this city.
+ * @property {number} refugeeBurdenGold Owner-level refugee holding burden (gold/turn).
+ * @property {number} refugeeBurdenHappiness Owner-level refugee holding burden (happiness/turn).
  */
 
 /**
@@ -88,6 +99,15 @@ function attritionRisk(dist, hasRefuge) {
 }
 
 /**
+ * The crisis-type "why at risk" tags for the readout warning (P0.2): empty for a content city.
+ * @param {number} dist Situational distress. @param {*} sig The city signal.
+ * @returns {string[]} Crisis-type tags.
+ */
+function riskReasonsFor(dist, sig) {
+  return dist > 0 ? crisisTypeReasons(sig) : [];
+}
+
+/**
  * Source-state-derived fields (pressure / cooldown).
  * @param {{pressure?:number, cooldown?:number}|null} source Per-source state.
  * @returns {{pressure:number, pressureToBar:number, onCooldown:boolean, cooldown:number}} Fields.
@@ -102,15 +122,18 @@ function pickSource(source) {
 
 /**
  * Best-destination-derived fields (where people are pulled).
- * @param {{name?:string, owner?:number, crossCiv?:boolean}|null} bestDest The pull target.
- * @returns {{topDestinationName:string, topDestinationOwner?:number, crossCiv:boolean}} Fields.
+ * @param {{name?:string, owner?:number, crossCiv?:boolean, reasons?:string[]}|null} bestDest The pull target.
+ * @returns {{topDestinationName:string, topDestinationOwner?:number, crossCiv:boolean, destReasons:string[]}} Fields.
  */
 function pickDest(bestDest) {
-  if (!bestDest) return { topDestinationName: "", topDestinationOwner: undefined, crossCiv: false };
+  if (!bestDest) {
+    return { topDestinationName: "", topDestinationOwner: undefined, crossCiv: false, destReasons: [] };
+  }
   return {
     topDestinationName: bestDest.name || "",
     topDestinationOwner: bestDest.owner,
-    crossCiv: !!bestDest.crossCiv
+    crossCiv: !!bestDest.crossCiv,
+    destReasons: Array.isArray(bestDest.reasons) ? bestDest.reasons : []
   };
 }
 
@@ -139,13 +162,28 @@ function pickOwner(owner) {
 }
 
 /**
+ * Refugee holding + burden fields.
+ * @param {{refugeePool?:number, refugeeBurden?:{gold?:number,happiness?:number}|null}} o Inputs.
+ * @returns {{refugeePool:number, refugeeBurdenGold:number, refugeeBurdenHappiness:number}} Fields.
+ */
+function pickRefugee(o) {
+  return {
+    refugeePool: num(o.refugeePool),
+    refugeeBurdenGold: num(o.refugeeBurden?.gold),
+    refugeeBurdenHappiness: num(o.refugeeBurden?.happiness)
+  };
+}
+
+/**
  * Build the readout view-model from already-resolved inputs (pure; no engine reads).
  * @param {{signal:*, cityName?:string, cause?:string, distress?:number,
- *          bestDest?:{name?:string,owner?:number,crossCiv?:boolean}|null,
+ *          bestDest?:{name?:string,owner?:number,crossCiv?:boolean,reasons?:string[]}|null,
  *          source?:{pressure?:number,cooldown?:number}|null,
  *          assim?:{load?:number,gold?:number,happiness?:number}|null,
  *          owner?:{net?:number,in?:number,out?:number}|null,
- *          composition?:{total:number, parts:{name:string, share:number}[]}|null}} o Inputs.
+ *          composition?:{total:number, parts:{name:string, share:number}[]}|null,
+ *          netSeries?:number[], refugeePool?:number,
+ *          refugeeBurden?:{gold?:number,happiness?:number}|null}} o Inputs.
  * @returns {CitySnapshot} The snapshot.
  */
 export function buildCitySnapshot(o) {
@@ -154,6 +192,7 @@ export function buildCitySnapshot(o) {
   const dist = num(o.distress);
   return {
     owner: sig.owner,
+    cityKey: typeof sig.key === "string" ? sig.key : "",
     cityName: o.cityName || "a settlement",
     population: num(sig.population),
     rural: num(sig.rural),
@@ -165,12 +204,29 @@ export function buildCitySnapshot(o) {
     distress: dist,
     atRisk: dist > 0,
     attritionRisk: attritionRisk(dist, !!o.bestDest),
+    riskReasons: riskReasonsFor(dist, sig),
     ...pickSource(o.source || null),
     ...pickDest(o.bestDest || null),
     ...pickAssim(o.assim || null),
     ...pickOwner(o.owner || null),
-    composition: o.composition || null
+    ...pickRefugee(o),
+    composition: o.composition || null,
+    netSeries: Array.isArray(o.netSeries) ? o.netSeries : []
   };
+}
+
+/**
+ * The city's recent net-migration series (Feature E sparkline), read from the stats API at call time
+ * (no static import; that would be a cycle). Empty when the sparkline is off or nothing is recorded yet.
+ * @param {*} sig City signal.
+ * @returns {number[]} Recent per-pass net pop-point values.
+ */
+function netSeriesFor(sig) {
+  if (!CONFIG.cityReadoutSparkline || !sig) return [];
+  const D = /** @type {*} */ (globalThis).EmigrationData;
+  if (!D || typeof D.cityNetSeries !== "function") return [];
+  const v = D.cityNetSeries(sig.owner + "|" + resolveCityName(sig.city));
+  return Array.isArray(v) ? v : [];
 }
 
 /**
@@ -274,13 +330,15 @@ function ownerStats(pid) {
  * The best-destination descriptor for a source's current pull, or null.
  * @param {*} src Source signal.
  * @param {*} dest The chosen destination signal.
- * @returns {{name:string, owner:number, crossCiv:boolean}} The descriptor.
+ * @param {string[]} [reasons] The "why here" reason tags for this pull (P0.1).
+ * @returns {{name:string, owner:number, crossCiv:boolean, reasons:string[]}} The descriptor.
  */
-function destInfo(src, dest) {
+function destInfo(src, dest, reasons) {
   return {
     name: resolveCityName(dest.city),
     owner: dest.owner,
-    crossCiv: src.owner !== dest.owner
+    crossCiv: src.owner !== dest.owner,
+    reasons: reasons || []
   };
 }
 
@@ -300,11 +358,14 @@ function snapshotFromRanked(sig, ranked, ownerPop, sources) {
     cityName: resolveCityName(sig.city),
     cause: migrationCause(sig),
     distress: distress(sig),
-    bestDest: best ? destInfo(sig, best.dest) : null,
+    bestDest: best ? destInfo(sig, best.dest, best.reasons) : null,
     source: sources[sig.key] || null,
     assim: assimilationCostFor(sig.owner),
     owner: ownerStats(sig.owner),
-    composition: resolveComposition(sig.city)
+    composition: resolveComposition(sig.city),
+    netSeries: netSeriesFor(sig),
+    refugeePool: refugeePoolTotal(sig.key),
+    refugeeBurden: refugeeBurdenFor(sig.owner)
   });
 }
 

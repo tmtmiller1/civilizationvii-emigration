@@ -86,6 +86,7 @@ const ModOptions = new ModOptionsStore();
 
 const MOD_ID = "emigration";
 const OPT_NUMBER_MODE = "numberMode";
+const OPT_FLOW_VIEW = "networkView"; // Dots vs Flow sub-view of the Network tab (persisted, see below)
 const OPT_PRESET = "preset";
 const OPT_SAMPLE = "sampleData";
 const OPT_SNAP = "snapshotInterval";
@@ -107,7 +108,7 @@ const CFG_DEF = /** @type {Record<string, *>} */ (CONFIG_DEFAULTS);
 export const NumberMode = Object.freeze({
   BOTH: 0, // legacy "1 point (12 thousand people)", coerced to HISTORICAL on read
   CIV: 1, // "1 population point"
-  HISTORICAL: 2 // "12 thousand people" (Scaled Pop)
+  HISTORICAL: 2 // "12,000 people" (Scaled Pop)
 });
 
 /** @type {number|null} */
@@ -133,6 +134,31 @@ export function getNumberMode() {
 export function setNumberMode(mode) {
   _mode = typeof mode === "number" && mode >= 0 && mode <= 2 ? mode : NumberMode.BOTH;
   ModOptions.save(MOD_ID, OPT_NUMBER_MODE, _mode);
+}
+
+// Which visualization the combined Network tab shows: "network" (the dot swarm) or "flowmap" (the
+// arrows). Persisted (not just a module variable) so the choice survives a panel re-render or a
+// fresh UIScript isolate: without this, the module re-initializes to its "network" default and the
+// player is bounced back to Dots whenever the host rebuilds the panel (e.g. after a Units toggle).
+/** @type {string|null} */
+let _flowView = null;
+
+/**
+ * The current Network sub-view (lazily loaded). "network" (Dots) or "flowmap" (Flow); default Dots.
+ * @returns {string} "network" or "flowmap".
+ */
+export function getFlowView() {
+  if (_flowView == null) _flowView = ModOptions.load(MOD_ID, OPT_FLOW_VIEW) === "flowmap" ? "flowmap" : "network";
+  return _flowView;
+}
+
+/**
+ * Set + persist the Network sub-view.
+ * @param {string} view "network" (Dots) or "flowmap" (Flow).
+ */
+export function setFlowView(view) {
+  _flowView = view === "flowmap" ? "flowmap" : "network";
+  ModOptions.save(MOD_ID, OPT_FLOW_VIEW, _flowView);
 }
 
 /** @type {boolean|null} */

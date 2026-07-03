@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 
-import { prosperity, rankByProsperity, distress } from "/emigration/ui/emigration-prosperity.js";
+import { prosperity, rankByProsperity, distress, fieldContext } from "/emigration/ui/emigration-prosperity.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 // These tests verify the prosperity FORMULA's structure with clean round-number fixtures, so they pin
@@ -48,6 +48,23 @@ function testProsperityFormula() {
   assert.equal(p, 38);
 }
 
+function testProsperityUsesAllWeightedYields() {
+  // weighted = food*1 + production*1 + gold*1 + science*0.25 + culture*0.5
+  //          = 1 + 2 + 3 + 1 + 2.5 = 9.5; / pop(5) = 1.9
+  // base = 1.9 + happiness*6 - pop*1 = 1.9 + 6 - 5 = 2.9
+  const p = prosperity(
+    signal({ food: 1, production: 2, gold: 3, science: 4, culture: 5, population: 5, happiness: 1 })
+  );
+  assert.ok(Math.abs(p - 2.9) < 1e-9);
+}
+
+function testPopulationFloorAtOne() {
+  // population <= 0 still divides by 1 via Math.max(1, population)
+  const p = prosperity(signal({ food: 10, production: 10, population: 0, happiness: 0 }));
+  // productiveness 20/1, popPenalty 0, no situational modifiers
+  assert.equal(p, 20);
+}
+
 function testStarvationStronglyReducesScore() {
   // starvation applies starvationModifier% as a situational penalty: score = base × (1 + mod/100). At
   // the default −90 that's ×0.1 (a deeply unattractive city people flee) without flipping negative.
@@ -85,6 +102,45 @@ function testViolenceSlidesScoreDown() {
   assert.ok(Math.abs(prosperity(routed) - -45.6) < 1e-9);
 }
 
+function testDisasterSlidesAndCaps() {
+  // base = 38 as in testViolenceSlidesScoreDown
+  const calm = signal({ food: 10, production: 10, population: 2, happiness: 5 });
+  const basePros = prosperity(calm);
+  // disaster uses the same sliding and cap pattern as violence.
+  const stressed = { ...calm, disaster: 4 };
+  const stressedPct = -Math.min(CONFIG.disasterCapPct, 4 * CONFIG.disasterPerPoint);
+  assert.ok(Math.abs(prosperity(stressed) - basePros * (1 + stressedPct / 100)) < 1e-9);
+  // heavy disaster saturates at disasterCapPct
+  const collapsed = { ...calm, disaster: 100 };
+  const collapsedPct = -Math.min(CONFIG.disasterCapPct, 100 * CONFIG.disasterPerPoint);
+  assert.ok(Math.abs(prosperity(collapsed) - basePros * (1 + collapsedPct / 100)) < 1e-9);
+}
+
+function testSituationalCompositionAddsLinearlyInPercentSpace() {
+  const base = signal({ food: 10, production: 10, population: 2, happiness: 5 }); // 38
+  const modded = signal({
+    food: 10,
+    production: 10,
+    population: 2,
+    happiness: 5,
+    starving: true,
+    unrest: true,
+    siege: true,
+    violence: 2,
+    disaster: 1,
+    polity: { warWeary: true, celebrating: false, government: "" }
+  });
+  const totalPct =
+    -Math.min(CONFIG.violenceCapPct, 2 * CONFIG.violencePerPoint) +
+    -Math.min(CONFIG.disasterCapPct, 1 * CONFIG.disasterPerPoint) +
+    CONFIG.siegeModifier +
+    CONFIG.starvationModifier +
+    CONFIG.unrestModifier +
+    CONFIG.warWearinessModifier;
+  assert.ok(Math.abs(prosperity(modded) - 38 * (1 + totalPct / 100)) < 1e-9);
+  assert.equal(distress(modded), Math.abs(totalPct));
+}
+
 // ── Algorithm A: shaped happiness (field-relative, saturating, asymmetric) ──
 
 // prosperity of the test city at happiness h, centred on a given field mean.
@@ -120,6 +176,32 @@ function testShapedIsFieldRelative() {
   CONFIG.happinessShaped = false;
 }
 
+function testFieldContextMeanAndFiltering() {
+  const ctx = fieldContext([
+    { happiness: 2 },
+    { happiness: 8 },
+    { happiness: Number.POSITIVE_INFINITY },
+    { happiness: "bad" }
+  ]);
+  assert.deepEqual(ctx, { meanHappiness: 5 });
+}
+
+function testFieldContextRejectsNumericStrings() {
+  const ctx = fieldContext([
+    { happiness: 2 },
+    { happiness: 8 },
+    { happiness: "6" }
+  ]);
+  assert.deepEqual(ctx, { meanHappiness: 5 });
+}
+
+function testShapedNullContextFallsBackToZeroMean() {
+  CONFIG.happinessShaped = true;
+  const p = prosperity(signal({ food: 10, production: 10, population: 2, happiness: 5 }), null);
+  assert.ok(Number.isFinite(p));
+  CONFIG.happinessShaped = false;
+}
+
 function testShapedLeavesLegacyUntouchedWhenOff() {
   // With the flag off, the score is exactly the legacy linear formula.
   assert.equal(prosperity(signal({ food: 10, production: 10, population: 2, happiness: 5 })), 38);
@@ -145,13 +227,20 @@ function testOvercrowdOffByDefault() {
 }
 
 testProsperityFormula();
+testProsperityUsesAllWeightedYields();
+testPopulationFloorAtOne();
 testStarvationStronglyReducesScore();
 testRankSortsDescendingAndAttachesPros();
 testToleratesDegenerateInput();
 testViolenceSlidesScoreDown();
+testDisasterSlidesAndCaps();
+testSituationalCompositionAddsLinearlyInPercentSpace();
 testShapedPullSaturates();
 testShapedMiseryIsSteeperThanPull();
 testShapedIsFieldRelative();
+testFieldContextMeanAndFiltering();
+testFieldContextRejectsNumericStrings();
+testShapedNullContextFallsBackToZeroMean();
 testShapedLeavesLegacyUntouchedWhenOff();
 testOvercrowdDiscountCreditsTallCities();
 testOvercrowdOffByDefault();

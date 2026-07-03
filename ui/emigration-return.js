@@ -22,6 +22,7 @@ import { chronicle } from "/emigration/ui/emigration-chronicle.js";
 import { returnLine, chronicleTitle } from "/emigration/ui/emigration-narrative.js";
 import { getReturnEnabled } from "/emigration/ui/emigration-settings.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
+import { consumeForReturn } from "/emigration/ui/emigration-refugee-pool.js";
 
 const STATE_KEY = "EmigrationReturn_v1";
 const STATE_SCHEMA_VERSION = 2;
@@ -214,12 +215,15 @@ function returnAllowed(host, origin, hostKey, ctx) {
  * Move one population point of returnees from the host city home, undoing the removal if the homeland
  * can't receive it (so population is never lost). Returns whether the move applied.
  * @param {*} hostCity The host city object. @param {*} homeCity The homeland city object.
+ * @param {string} hostKey Host city signal key.
+ * @param {number} originCiv Origin civ for the returnees.
  * @returns {boolean} True when the population actually moved.
  */
-function moveReturnees(hostCity, homeCity) {
-  if (!removeRural(hostCity)) return false;
+function moveReturnees(hostCity, homeCity, hostKey, originCiv) {
+  const fromPool = !!hostKey && typeof originCiv === "number" && consumeForReturn(hostKey, originCiv);
+  if (!fromPool && !removeRural(hostCity)) return false;
   if (!addRural(homeCity)) {
-    addRural(hostCity); // undo: the homeland couldn't take them, so keep them where they were
+    if (!fromPool) addRural(hostCity); // undo: homeland couldn't take them, keep them where they were
     return false;
   }
   return true;
@@ -291,7 +295,7 @@ function planOneReturn(host, ctx) {
   if (!returnAllowed(host.owner, dia.civ, hostKey, ctx)) return null;
   if (!returnRoll(hostKey, ctx.turn)) return null; // returnRate: occasional, deterministic
   const homeCity = ctx.homelands.get(dia.civ);
-  if (!moveReturnees(host.city, homeCity.city)) return null;
+  if (!moveReturnees(host.city, homeCity.city, host.key, dia.civ)) return null;
   const popBefore = host.population || 0;
   syncSignalsForMove(host, homeCity); // keep the shared pass signals accurate for the accounting below
   state().lastByHost[hostKey] = ctx.turn;

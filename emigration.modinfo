@@ -7,7 +7,7 @@
         <SpecialThanks>Machiavelli's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>1.7.1</Version>
+        <Version>1.8.0</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -91,6 +91,7 @@
                 <ImportFiles>
                     <Item>ui/emigration-config.js</Item>
                     <Item>ui/emigration-cache-reset.js</Item>
+                    <Item>ui/emigration-loc.js</Item>
                     <Item>ui/emigration-causes.js</Item>
                     <Item>ui/emigration-tunables.js</Item>
                     <Item>ui/emigration-population.js</Item>
@@ -111,6 +112,7 @@
                     <Item>ui/emigration-feedback.js</Item>
                     <Item>ui/emigration-events.js</Item>
                     <Item>ui/emigration-migration-stats.js</Item>
+                    <Item>ui/emigration-city-net.js</Item>
                     <Item>ui/emigration-flow-history.js</Item>
                     <Item>ui/emigration-telemetry.js</Item>
                     <Item>ui/emigration-composition.js</Item>
@@ -119,6 +121,8 @@
                     <Item>ui/emigration-lens-hover-panel.js</Item>
                     <Item>ui/emigration-city-readout-data.js</Item>
                     <Item>ui/emigration-city-readout.js</Item>
+                    <Item>ui/emigration-city-panel-data.js</Item>
+                    <Item>ui/emigration-city-panel.js</Item>
                     <Item>ui/emigration-snapshot-reminder.js</Item>
                     <Item>ui/emigration-guide.js</Item>
                     <Item>ui/emigration-views.js</Item>
@@ -155,11 +159,15 @@
                          main→log/report, violence→violence-signals). Imported by their
                          parents, so they must be registered to resolve at load. -->
                     <Item>ui/emigration-pull.js</Item>
+                    <Item>ui/emigration-move-reasons.js</Item>
                     <Item>ui/emigration-state.js</Item>
                     <Item>ui/emigration-migration-records.js</Item>
                     <Item>ui/emigration-consequences.js</Item>
                     <Item>ui/emigration-arrivals.js</Item>
                     <Item>ui/emigration-inbound.js</Item>
+                    <Item>ui/emigration-refugee-pool.js</Item>
+                    <Item>ui/emigration-refugee-staging.js</Item>
+                    <Item>ui/emigration-refugee-burden.js</Item>
                     <Item>ui/emigration-dividend.js</Item>
                     <Item>ui/emigration-migrant-units.js</Item>
                     <Item>ui/emigration-demographics.js</Item>
@@ -178,12 +186,18 @@
                     <!-- Truthful "quarter" naming for diaspora lines: real city features (city-features,
                          engine reads) resolved to an always-true phrase (quarters, pure). -->
                     <Item>ui/emigration-city-features.js</Item>
-                    <Item>ui/emigration-quarters.js</Item>
+                    <Item>ui/emigration-quarter-phrases.js</Item>
                     <!-- Return migration (homeland recovery): moves real population back home. -->
                     <Item>ui/emigration-return.js</Item>
                     <!-- Refugee dilemmas: rare narrative decision modal + its trigger logic. -->
                     <Item>ui/emigration-dilemma.js</Item>
                     <Item>ui/emigration-dilemma-view.js</Item>
+                    <!-- Cultural Quarters: an established diaspora becomes a persistent, player-shaped
+                         district. Pure option catalogue + per-tile persistent store + the decision/
+                         change-of-hands/contested runtime (reuses the dilemma modal). -->
+                    <Item>ui/emigration-quarter-registry.js</Item>
+                    <Item>ui/emigration-quarter-state.js</Item>
+                    <Item>ui/emigration-quarter.js</Item>
                     <!-- Advanced tunables sub-window, imported by emigration-options.js. -->
                     <Item>ui/options/emigration-advanced-editor.js</Item>
                     <!-- Dock-button icon (CSS mask asset, referenced via fs://game/emigration/...). -->

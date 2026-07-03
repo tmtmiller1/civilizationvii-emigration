@@ -12,7 +12,7 @@
         <Replace Tag="LOC_OPTIONS_GROUP_EMIGRATION_ADVANCED" Language="ja_JP"><Text>移住: 詳細設定</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED" Language="ja_JP"><Text>詳細設定</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED_OPEN" Language="ja_JP"><Text>設定する…</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED_DESCRIPTION" Language="ja_JP"><Text>移民の調整項目をすべて別ウィンドウで開きます。これらは出発点であり、プレイテストで調整済みの値ではありません。上の強度プリセットが、ほとんどの項目に妥当な初期値を設定します。</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED_DESCRIPTION" Language="ja_JP"><Text>移住の調整項目をすべて別ウィンドウで開きます。これらは出発点であり、プレイテストで調整済みの値ではありません。上の強度プリセットが、ほとんどの項目に妥当な初期値を設定します。</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_PACING" Language="ja_JP"><Text>ペース</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_SCOPE" Language="ja_JP"><Text>範囲とポリシー</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_PROSPERITY" Language="ja_JP"><Text>繁栄モデル</Text></Replace>
@@ -54,9 +54,9 @@
         <Replace Tag="LOC_EMIG_T_BORDERS_D" Language="ja_JP"><Text>「開放国境/閉鎖国境」政策の移民への効果を有効にします（政策カードは政策メニューに追加され、影響力を消費または付与します）。オフ = 政策は移住に影響しません。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CLOSEDOPEN" Language="ja_JP"><Text>国境: 閉鎖国境の開放度</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CLOSEDOPEN_D" Language="ja_JP"><Text>閉鎖国境政策が通す移民の量（0.4 = 約60%を拒否）。低いほど閉鎖的。国境政策が有効なときのみ使用されます。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN" Language="ja_JP"><Text>国境: 封鎖時の定住</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN_D" Language="ja_JP"><Text>封鎖国境の政策が、自国民を競合国へ去らせない度合い（0.6 = 他文明への誘引が60%に低下、1 = 無効）。低いほど定住が強くなります。国境政策が有効なときのみ使用されます。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_OPENOPEN" Language="ja_JP"><Text>国境: 開放国境の増加</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN" Language="ja_JP"><Text>国境: 閉鎖国境での流出抑制</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN_D" Language="ja_JP"><Text>閉鎖国境政策が、自国民をライバル文明へ去らせない度合い（0.6 = 他文明への誘引が60%に低下、1 = オフ）。低いほど流出を強く抑えます。国境政策が有効なときのみ使用されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENOPEN" Language="ja_JP"><Text>国境: 開放国境の移民促進</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENOPEN_D" Language="ja_JP"><Text>開放国境政策が移民をどれだけ増やすか（1.5 = +50%）。高いほど開放的。国境政策が有効なときのみ使用されます。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_FOOD" Language="ja_JP"><Text>繁栄の重み: 食料（1人あたり）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_FOOD_D" Language="ja_JP"><Text>1人あたりの食料が移民を都市にどれだけ引き寄せるか。</Text></Replace>
@@ -66,12 +66,12 @@
         <Replace Tag="LOC_EMIG_T_HAPPY_D" Language="ja_JP"><Text>都市の純幸福度が移民をどれだけ強く引き寄せるか。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POP" Language="ja_JP"><Text>繁栄の重み: 人口ペナルティ</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POP_D" Language="ja_JP"><Text>都市の規模がどれだけ不利に働くか（小さくとも繁栄する都市が魅力を保つように）。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSHAPED" Language="ja_JP"><Text>幸福度: 整形モデルを使用</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSHAPED" Language="ja_JP"><Text>幸福度: 調整モデルを使用</Text></Replace>
         <Replace Tag="LOC_EMIG_T_HSHAPED_D" Language="ja_JP"><Text>平坦な幸福度の重みを、よりきめ細かいモデルに置き換えます。幸福度は世界平均との相対で測られ、その引力は飽和し（非常に幸福な都市も支配的な磁石にはならない）、一方で悲惨さは依然として強く反発し、幸福度は経済を覆い隠すのではなく増幅します。オフ = 従来の線形の重み。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSCALE" Language="ja_JP"><Text>幸福度（整形）: 飽和スケール</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSCALE_D" Language="ja_JP"><Text>引力が飽和する前に「非常に幸福」とみなされる、世界平均より上の点数。高いほど幸福度が長く意味を持ちます。整形モデルのみで使用。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HAMP" Language="ja_JP"><Text>幸福度（整形）: 経済の増幅</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HAMP_D" Language="ja_JP"><Text>移住の誘因として、幸福な都市の経済をどれだけ増幅するか（悲惨な都市は抑制）。整形モデルのみで使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSCALE" Language="ja_JP"><Text>幸福度（調整）: 飽和スケール</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSCALE_D" Language="ja_JP"><Text>引力が飽和する前に「非常に幸福」とみなされる、世界平均より上の点数。高いほど幸福度が長く意味を持ちます。調整モデルのみで使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAMP" Language="ja_JP"><Text>幸福度（調整）: 経済の増幅</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAMP_D" Language="ja_JP"><Text>移住の誘因として、幸福な都市の経済をどれだけ増幅するか（悲惨な都市は抑制）。調整モデルのみで使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OCDISC" Language="ja_JP"><Text>過密: 割引（0 = オフ）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OCDISC_D" Language="ja_JP"><Text>都市が純粋に都市の過密だけで被る不満の一部を還元し、意図的に密集した都市が二重に罰せられないようにします（密度はすでに産出を抑えています）。0 = オフ。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OCTHRESH" Language="ja_JP"><Text>過密: 都市密度のしきい値</Text></Replace>
@@ -91,7 +91,7 @@
         <Replace Tag="LOC_EMIG_T_VPILLAGE" Language="ja_JP"><Text>戦争: 略奪タイルあたりの重み（0 = オフ）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_VPILLAGE_D" Language="ja_JP"><Text>都市の領域内で略奪された改善1つあたり、ターンごとの強度。0 はスキャンを省略します。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_WARSIEGE" Language="ja_JP"><Text>戦争: 包囲モデルを使用（上限付き + 漸増）</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_WARSIEGE_D" Language="ja_JP"><Text>都市が包囲される期間が長いほど戦争による移住を増大させますが、戦争で失える総量に上限を設け、占領なしには完全に無人化されないようにします（残りは塹壕を掘ります）。オフ = 従来の平坦な暴力ペナルティ。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_WARSIEGE_D" Language="ja_JP"><Text>都市が包囲される期間が長いほど戦争による移住を増大させますが、戦争で失える総量に上限を設け、占領なしには完全に無人化されないようにします（残る人々は踏みとどまります）。オフ = 従来の平坦な暴力ペナルティ。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SRAMP" Language="ja_JP"><Text>戦争（包囲）: 最大強度までのターン</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SRAMP_D" Language="ja_JP"><Text>包囲が最大の移住圧力に達するまでに続くべきターン数（襲撃は緩やかに始まり高まります）。包囲モデルのみで使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP" Language="ja_JP"><Text>戦争（包囲）: 戦争で失う最大割合</Text></Replace>
@@ -135,6 +135,8 @@
         <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="ja_JP"><Text>人口が他を大きく引き離した文明を、文明間移住の移住先として魅力の低いものにします。先行する独走者への自己修正ブレーキで、どれだけ先行しているかに応じて強まります（0 オフ / 8 穏やか / 15 標準 / 28 強い）。独走者の流出や内部の移動を妨げることはありません。0 = オフ。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="ja_JP"><Text>コスト: 暴走抑制の発動（公平な分け前の倍率 ×）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="ja_JP"><Text>暴走抑制の逆風が効き始める前に、文明の人口が世界平均の文明をどれだけ上回ってよいか、公平な分け前の倍数として指定します。低いほどブレーキが早く効きます（より平等主義的）、高いほど極端に独走する文明のみが抑えられます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QUARTERS" Language="ja_JP"><Text>コスト：文化街</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QUARTERS_D" Language="ja_JP"><Text>外国からのディアスポラがあなたの都市で確立した共同体に成長すると、一度きりの選択（受け入れ・課税・放任）が提示され、小さな産出の利益と不利益が生じます。都市ごとに永続的な街区が記録され、その母国と戦争している間は「係争状態」となり（小さな幸福度の負担）ます。オフ＝街区の決定も係争の負担もなし。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="ja_JP"><Text>災害: 移住を駆動</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="ja_JP"><Text>環境災害（洪水、火山、疫病…）が、戦争や不満と並んで、被災都市から住民を気候/災害難民として押し出すようにします。オフ = 災害は移住に影響しません。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="ja_JP"><Text>災害: 苦境ポイントあたりの移住（%）</Text></Replace>
@@ -161,6 +163,8 @@
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD_D" Language="ja_JP"><Text>難民危機の見出しが出るまでに文明が（累計で）どれだけの人を避難させる必要があるか、超えた倍数ごとに1回。長い戦争では毎ターンではなく数件の見出しになります。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="ja_JP"><Text>都市ごとの移住レポート</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="ja_JP"><Text>選択した集落が人口を増減させている理由を、必要に応じて表示するパネルです。主な原因、人々が引き寄せられる先、統合コスト、そして対処法を示します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SPARKLINE" Language="ja_JP"><Text>リードアウト: 最近の傾向スパークライン</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SPARKLINE_D" Language="ja_JP"><Text>都市のリードアウトに小さな棒グラフを追加し、直近数回の純移動を表示します（増加は緑、減少は赤の棒）。状況が良くなっているか悪くなっているかを一目で把握できます。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION" Language="ja_JP"><Text>排出口: 逃げ場がない場合の消耗</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION_D" Language="ja_JP"><Text>移住が閉じた系になるのを防ぎます。逃れる先のない、追い詰められて深刻に苦しむ都市（包囲・飢饉・激しい暴力・災害）は人口を失います、人々は永遠に留まるのではなく、死ぬか散り散りになります。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRDISTRESS" Language="ja_JP"><Text>排出口: 消耗に必要な苦境（%）</Text></Replace>
@@ -197,6 +201,28 @@
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ja_JP"><Text>再生タイムラインは数ターン後、たどれる人口の履歴がたまると表示されます。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ja_JP"><Text>{1_People}が災害の後、{2_City}から逃れました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ja_JP"><Text>{1_People}が逃げ場を失い、{2_City}で失われました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SCOPE_INTERNAL" Language="ja_JP"><Text>(帝国内の移動)</Text></Replace>
+        <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="ja_JP"><Text>(帝国外への移動)</Text></Replace>
+        <Replace Tag="LOC_EMIG_DEST_CLAUSE" Language="ja_JP"><Text>{1_Dest}へ向かいました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_WHY_CLAUSE" Language="ja_JP"><Text>移住先の理由：{1_Why}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_RICHER" Language="ja_JP"><Text>より豊か</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_NEARBY" Language="ja_JP"><Text>近い</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_SAFER_DIR" Language="ja_JP"><Text>戦火から離れて</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_OWN_CIV" Language="ja_JP"><Text>より安全な内陸</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_CRISIS_ESCAPE" Language="ja_JP"><Text>危機からの脱出</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_AGGRESSOR_AVOIDED" Language="ja_JP"><Text>侵略者を回避</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_OPEN_BORDERS" Language="ja_JP"><Text>開かれた国境</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_ALLIED" Language="ja_JP"><Text>同盟国</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_ASYLUM" Language="ja_JP"><Text>亡命を受け入れ</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_RAID" Language="ja_JP"><Text>襲撃に引き寄せられて</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_SIEGE" Language="ja_JP"><Text>包囲下</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_UNDER_ATTACK" Language="ja_JP"><Text>攻撃下</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_DISASTER" Language="ja_JP"><Text>災害</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_FAMINE" Language="ja_JP"><Text>飢饉</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_NO_REFUGE" Language="ja_JP"><Text>安全な避難先なし</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_CRISIS_LOSSES" Language="ja_JP"><Text>逃亡中に喪失</Text></Replace>
+        <Replace Tag="LOC_EMIG_DEATH_WHY_CLAUSE" Language="ja_JP"><Text>原因：{1_Why}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_CUE" Language="ja_JP"><Text>移住圧力の高まり：{1_City}の市民が次第に{2_Dest}に引き寄せられています。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="ja_JP"><Text>都市の幸福度を高めるか、移民排斥の方針を取って引き留めましょう。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="ja_JP"><Text>隣国がこの都市を上回っています。産出を高めて住民を引き留めましょう。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="ja_JP"><Text>難民は戦闘から逃れています。包囲を解くか和平を結び、流出を食い止めましょう。</Text></Replace>
@@ -207,19 +233,19 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ja_JP"><Text>その人々は永遠に失われました。</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="ja_JP"><Text>{1_Dest}は彼らを統合するために毎ターン約{2_Gold}のゴールドを支払います。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="ja_JP"><Text>移民歓迎の方針</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ja_JP"><Text>世界中から移民を歓迎します。あなたの都市への移民が50%増加し、国際的な評判により毎ターン影響力を得ます。時代に応じて+1、+2、そして+3です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ja_JP"><Text>世界中から[icon:YIELD_POPULATION]移民を歓迎します。あなたの都市への移民が50%増加し、国際的な評判により毎ターン[icon:YIELD_DIPLOMACY]影響力を得ます。時代に応じて+1、+2、そして+3です。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="ja_JP"><Text>移民排斥の方針</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ja_JP"><Text>世界に対して国境を閉ざします。外国からの新規移住者は40%に減少し（約60%減）、自国民が競合文明へ去ることも大幅に減ります。動員された国内経済が各都市に生産力を加えます。時代に応じて+2、+3、そして+4です。孤立には代償が伴い、毎ターン影響力を失います。時代に応じて-2、-3、そして-4です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ja_JP"><Text>世界に対して国境を閉ざします。外国からの[icon:YIELD_POPULATION]新規移住者は40%に減少し（約60%減）、自国民が競合文明へ去ることも大幅に減ります。動員された国内経済が各都市に[icon:YIELD_PRODUCTION]生産力を加えます。時代に応じて+2、+3、そして+4です。孤立には代償が伴い、毎ターン[icon:YIELD_DIPLOMACY]影響力を失います。時代に応じて-2、-3、そして-4です。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="ja_JP"><Text>才能の誘致</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ja_JP"><Text>新参者があなたの研究を強化します。科学+1（現代では+2）を得て、さらに引き寄せた移民1人につき約+1.5ずつ増える科学ボーナスを、毎ターン最大+12まで得ます。このボーナスは移民の流入が止まると薄れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION]新規移住者があなたの研究を強化します。[icon:YIELD_SCIENCE]科学+1（現代では+2）を得て、さらに引き寄せた移民1人につき約+1.5ずつ増える科学ボーナスを、毎ターン最大+12まで得ます。このボーナスは移民の流入が止まると薄れます。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="ja_JP"><Text>文化的魅力</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ja_JP"><Text>新参者があなたの文化を豊かにします。文化+1（現代では+2）を得て、さらに引き寄せた移民1人につき約+1.5ずつ増える文化ボーナスを、毎ターン最大+12まで得ます。このボーナスは移民の流入が止まると薄れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION]新規移住者があなたの文化を豊かにします。[icon:YIELD_CULTURE]文化+1（現代では+2）を得て、さらに引き寄せた移民1人につき約+1.5ずつ増える文化ボーナスを、毎ターン最大+12まで得ます。このボーナスは移民の流入が止まると薄れます。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="ja_JP"><Text>商業的な魅力</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ja_JP"><Text>新参者があなたの市場を潤します。ゴールド+1（現代では+2）を得て、さらに引き寄せた移民1人につき約+1.5ずつ増えるゴールドボーナスを、毎ターン最大+12まで得ます。このボーナスは移民の流入が止まると薄れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION]新規移住者があなたの市場を潤します。[icon:YIELD_GOLD]ゴールド+1（現代では+2）を得て、さらに引き寄せた移民1人につき約+1.5ずつ増えるゴールドボーナスを、毎ターン最大+12まで得ます。このボーナスは移民の流入が止まると薄れます。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="ja_JP"><Text>選択的庇護</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ja_JP"><Text>戦争や災害から逃れる者へ門戸を開きます。難民が強くあなたのもとへ引き寄せられ（最も切迫した者から順に）、人道的な評判により毎ターン影響力+1を得ます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ja_JP"><Text>戦争や災害から逃れてきた人々に門戸を開きます。難民は強くあなたのもとへ引き寄せられ、最も絶望的な人々が優先されます。人道的な評判により、毎ターン+1 [icon:YIELD_DIPLOMACY]影響力を得ます。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="ja_JP"><Text>難民協定</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="ja_JP"><Text>避難民への恒久的な献身です。難民が強くあなたのもとへ流れ込み（最も切迫した者から順に）、あなたの文化を豊かにし、毎ターン影響力+2と文化+1を得ます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="ja_JP"><Text>避難民への恒久的な約束です。難民は強くあなたのもとへ流入し、最も絶望的な人々が優先されます。彼らはあなたの文化を豊かにし、毎ターン+2 [icon:YIELD_DIPLOMACY]影響力と+1 [icon:YIELD_CULTURE]文化をもたらします。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
@@ -285,5 +311,202 @@
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="ja_JP"><Text>まだ人口がいません</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_ORIGINS" Language="ja_JP"><Text>出身地</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_ORIGINS_TIP" Language="ja_JP"><Text>移民の出身地への線を表示</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="ja_JP"><Text>移住 - {1_City}</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="ja_JP"><Text>住民の出自</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTING" Language="ja_JP"><Text>移出先</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ARRIVING" Language="ja_JP"><Text>移入元</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_NO_MIGRATION" Language="ja_JP"><Text>この集落ではまだ移住が記録されていません。</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_MORE" Language="ja_JP"><Text>（他に{1_Count}件）</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_ONE" Language="ja_JP"><Text>{1_Count}人の難民がここでの定住を待っています。</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_MANY" Language="ja_JP"><Text>{1_Count}人の難民がここでの定住を待っています。</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_TITLE" Language="ja_JP"><Text>文化街</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_NO_QUARTER" Language="ja_JP"><Text>ここには外国の街区は根づいていません。</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_ROOT" Language="ja_JP"><Text>{1_Quarter}がこの集落に根づきました。</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_STANCE" Language="ja_JP"><Text>あなたの方針：{1_Stance}。</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_GRANTS" Language="ja_JP"><Text>都市に{1_Amount}の{2_Yield}をもたらします。</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_COSTS" Language="ja_JP"><Text>毎ターン{1_Amount}の{2_Yield}を消費します。</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_CONTESTED" Language="ja_JP"><Text>係争状態：その母国と戦争しており、街区に負担がかかっています。</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_STANCE_PRO" Language="ja_JP"><Text>移民歓迎</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_STANCE_ANTI" Language="ja_JP"><Text>移民排斥</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_STANCE_NEUTRAL" Language="ja_JP"><Text>中立</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_FLAG_AT_RISK" Language="ja_JP"><Text>危機</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_FLAG_RESTING" Language="ja_JP"><Text>休止中</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_NETWORK" Language="ja_JP"><Text>移住ネットワーク</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_NET_TABLE" Language="ja_JP"><Text>純移住（表）</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_WHY" Language="ja_JP"><Text>人々が移動する理由</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_SETTLEMENTS" Language="ja_JP"><Text>集落</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_POLICIES" Language="ja_JP"><Text>移民政策</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_NOTIFICATIONS" Language="ja_JP"><Text>移住通知</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_GUIDE" Language="ja_JP"><Text>ガイド</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_EMPTY" Language="ja_JP"><Text>まだ表示するものがありません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_NETWORK" Language="ja_JP"><Text>ネットワーク</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_NET_TABLE" Language="ja_JP"><Text>純移住（表）</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_CAUSES" Language="ja_JP"><Text>原因</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_POLICIES" Language="ja_JP"><Text>政策</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_MY_CITIES" Language="ja_JP"><Text>自分の都市</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_NOTIFICATIONS" Language="ja_JP"><Text>通知</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_GUIDE" Language="ja_JP"><Text>ガイド</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NUM_CIV" Language="ja_JP"><Text>Civ の人口値</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NUM_SCALED" Language="ja_JP"><Text>歴史スケールの人数</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SAMPLE_BADGE" Language="ja_JP"><Text>サンプルデータ ; プレビュー（オプションでライブに切り替え）</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_OPTIONS_LABEL" Language="ja_JP"><Text>オプション:</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_OPTIONS_ADVANCED" Language="ja_JP"><Text>詳細設定</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NUMBERS_LABEL" Language="ja_JP"><Text>数値:</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NO_ARRIVALS" Language="ja_JP"><Text>まだ到着がありません</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NO_DEPARTURES" Language="ja_JP"><Text>まだ出発がありません</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_WHY_LINE" Language="ja_JP"><Text>{1_Prefix}{2_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_WHY_PREFIX" Language="ja_JP"><Text>理由:</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_TITLE_TOWN" Language="ja_JP"><Text>{1_Name}（町）</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_TITLE_CITY" Language="ja_JP"><Text>{1_Name}（都市）</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_CRITICAL" Language="ja_JP"><Text>危機的</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_HIGH" Language="ja_JP"><Text>高</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_MODERATE" Language="ja_JP"><Text>中程度</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_LOW" Language="ja_JP"><Text>低</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_PRESSURE" Language="ja_JP"><Text>移出圧力</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NONE_RECORDED" Language="ja_JP"><Text>記録なし</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_FLAG_PAREN" Language="ja_JP"><Text>（{1_Flag}）</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_HEADING_TO" Language="ja_JP"><Text>行き先: {1_Sub}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_WHATS_DRIVING" Language="ja_JP"><Text>その要因</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EVENT_NAME" Language="ja_JP"><Text>↳ {1_Name}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EVENT_BOTH" Language="ja_JP"><Text> · {1_Deaths}人死亡</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EVENT_DIED" Language="ja_JP"><Text>{1_Deaths}人死亡</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_CAUSES_BY_IMPACT" Language="ja_JP"><Text>影響の大きい原因</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NO_MIGRATION" Language="ja_JP"><Text>まだ移住がありません</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_DIR_IMMIGRANTS" Language="ja_JP"><Text>移入 ; 出身地</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_DIR_EMIGRANTS" Language="ja_JP"><Text>移出 ; 移動先／死亡</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_DIED" Language="ja_JP"><Text>死亡</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_SECTION_CAUSES" Language="ja_JP"><Text>原因：人々が移動する理由</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_SECTION_SETTLEMENTS" Language="ja_JP"><Text>集落：あなたの集落への移入と移出</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EMPTY" Language="ja_JP"><Text>まだ都市の移住は記録されていません。人々が都市に出入りすると流れが現れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_DRIVERS" Language="ja_JP"><Text>要因: {1_Drivers}</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_TITLE" Language="ja_JP"><Text>純移住（詳細）</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_CIV" Language="ja_JP"><Text>文明</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_NET" Language="ja_JP"><Text>純増減</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_IN" Language="ja_JP"><Text>移入</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_OUT" Language="ja_JP"><Text>移出</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_STANCE" Language="ja_JP"><Text>方針の影響</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_REFUGEES" Language="ja_JP"><Text>難民</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_LOSSES" Language="ja_JP"><Text>損失</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_TOTAL" Language="ja_JP"><Text>合計</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_NONE" Language="ja_JP"><Text>国境政策なし。移住に影響しません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_ALLOWED" Language="ja_JP"><Text>中立より+{1_People}人の移民を追加で受け入れ{2_Pct}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_TURNED_AWAY" Language="ja_JP"><Text>{1_People}人の移民希望者を追い返し{2_Pct}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_KEPT_HOME" Language="ja_JP"><Text>自国民{1_People}人を引き留め</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_NO_EFFECT" Language="ja_JP"><Text>政策は設定済みですが、まだ移住への影響はありません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_1" Language="ja_JP"><Text>都市の外れに</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_2" Language="ja_JP"><Text>町外れの通りに</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_3" Language="ja_JP"><Text>最後の家並みの先に</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_4" Language="ja_JP"><Text>町の向こう側に</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_5" Language="ja_JP"><Text>通りが途切れるあたりに</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_1" Language="ja_JP"><Text>運べるだけのもの</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_2" Language="ja_JP"><Text>道具のほか、わずかな持ち物</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_3" Language="ja_JP"><Text>荷車に載る分だけ</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_4" Language="ja_JP"><Text>子どもたちと種もみ</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_5" Language="ja_JP"><Text>本当に大切なわずかなもの</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_1" Language="ja_JP"><Text>{1_War}が{2_City}に及ぶと、その民{3_People}人が{4_Carried}を携えて去った。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_2" Language="ja_JP"><Text>その年、{3_People}人の{5_Civ}難民が{1_War}に追われて{2_City}を捨てた。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_3" Language="ja_JP"><Text>{1_War}が迫るなか、{2_City}から続く道は難民であふれた。{3_People}人は二度と戻らなかった。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_4" Language="ja_JP"><Text>{1_War}が訪れ、{2_City}は空になった。{3_People}人の{5_Civ}の家族は、戦火の及ばぬ地へと向かった。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DISASTER_EXODUS_1" Language="ja_JP"><Text>{1_DisasterCap}が{3_City}を襲った。{4_People}人の{5_Civ}の家族は{6_Carried}を集め、より安全な地を求めて旅立った。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DISASTER_EXODUS_2" Language="ja_JP"><Text>{2_Disaster}の後、{4_People}人の{5_Civ}難民は破壊された{3_City}を後にした。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DISASTER_EXODUS_3" Language="ja_JP"><Text>{2_Disaster}の後の数か月で、{4_People}人の{5_Civ}の家族が{3_City}から逃れ、周囲の畑は静まり返った。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_PLAIN_EXODUS_1" Language="ja_JP"><Text>その年、{1_People}人の{2_Civ}の家族が、よりよい暮らしを求めて{3_City}を去った。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_PLAIN_EXODUS_2" Language="ja_JP"><Text>仕事と穏やかな国境の噂が、{1_People}世帯の{2_Civ}を{3_City}から引き離した。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_PLAIN_EXODUS_3" Language="ja_JP"><Text>{3_City}は、幾家族かずつ長い道へと去り、{1_People}人の民を失った。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FRAMED_EXODUS_1" Language="ja_JP"><Text>我らの知る土地のはるか彼方で、{1_City}は空になった。{3_Civ}と呼ばれると聞く民の{2_People}人が旅路についた。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FRAMED_EXODUS_2" Language="ja_JP"><Text>遠い民、噂にのみ聞く{3_Civ}の都市{1_City}から、{2_People}人の難民が逃れた。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FRAMED_EXODUS_3" Language="ja_JP"><Text>地図の縁の彼方のどこか、{1_City}の報せが届いた。噂にのみ聞く民、{3_Civ}の{2_People}人が家を追われたという。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_FRAMED_1" Language="ja_JP"><Text>{1_City}には遠い地からの共同体が根づいていた。{2_Civ}と呼ばれると聞く民で、いまや全世帯の{3_Pct}を占め、{4_Where}暮らしている。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_FRAMED_2" Language="ja_JP"><Text>{1_City}は遠方からの新参者の住まいとなっていた。我らには{2_Civ}としてのみ知られる民で、都市の{3_Pct}を占める。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_1" Language="ja_JP"><Text>いまや{1_City}の{2_Civ}の世帯は都市の{3_Pct}を占めていた。彼らは{4_Where}に独自の地区を構えていた。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_2" Language="ja_JP"><Text>{2_Civ}の共同体が{1_City}に根づいていた。都市の{3_Pct}を占め、なお増え続け、{4_Where}暮らしていた。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_3" Language="ja_JP"><Text>{1_City}は{2_Civ}の少数派の住まいとなり、全世帯の{3_Pct}が{4_Where}に集まっていた。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_FRAMED_1" Language="ja_JP"><Text>{2_City}の{1_People}世帯が、遠い故郷へと旅立った。我らには{3_Civ}としてのみ知られる民で、いまやその地が{4_Reason}となったからだ。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_FRAMED_2" Language="ja_JP"><Text>遠い国が再び平穏を取り戻したとの報せが{2_City}に届いた。{3_Civ}と呼ばれると聞く国だ。その血を引く{1_People}人が故郷へと出発した。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_1" Language="ja_JP"><Text>故郷が{4_Reason}になったとの報せが広まると、{2_City}の{1_People}人の{3_Civ}の家族が、長い帰郷の道につきはじめた。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_2" Language="ja_JP"><Text>その年、{2_City}の{3_Civ}街は人が減った。故郷が{4_Reason}になったいま、{1_People}人が戻っていった。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_3" Language="ja_JP"><Text>{1_People}世帯の{3_Civ}が、かつて逃れてきた国が{4_Reason}になっていくのに引かれ、{2_City}を離れて帰っていった。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_FOUNDING" Language="ja_JP"><Text>{2_City}の{1_Civ}街</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_RETURN" Language="ja_JP"><Text>{1_Civ}の帰還</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_EXODUS_1" Language="ja_JP"><Text>{1_Civ}の脱出</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_EXODUS_2" Language="ja_JP"><Text>{2_City}からの逃避</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_EXODUS_3" Language="ja_JP"><Text>{2_City}の空洞化</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_MIGRATION" Language="ja_JP"><Text>{1_Civ}の移住</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_NAME_FRAMED" Language="ja_JP"><Text>{1_Civ}と呼ばれると聞く民</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_NAME" Language="ja_JP"><Text>{1_Civ}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_PLAGUE_TITLE" Language="ja_JP"><Text>門前の病者たち</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_PLAGUE_BODY" Language="ja_JP"><Text>疫病が{1_Origin}の都市を空にした。生き残った者たちは長い道のりを歩き、いまあなたの城壁の外で待っている。その数{2_People}人、怯え、病んでいる。受け入れれば、その危険をともに背負うことになる。追い返せば、彼らをその運命に見捨てることになる。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_CONQUEST_TITLE" Language="ja_JP"><Text>国境の難民たち</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_CONQUEST_BODY" Language="ja_JP"><Text>{1_By}の軍が{2_Origin}を蹂躙し、その民はあなたの地へと押し寄せている。{3_People}人が、救い出せるだけのものを携えて国境に集まり、庇護を求めている。</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHR_FOOTHOLD_TITLE" Language="ja_JP"><Text>{2_City}における{1_Civ}の足がかり</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHR_FOOTHOLD_BODY" Language="ja_JP"><Text>{2_City}に恒久的な{1_Civ}の共同体が形成された。長い年月をかけて{4_People}人が到着し、いまや都市の{3_Pct}パーセントを占めている。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_TITLE" Language="ja_JP"><Text>タイトル</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_STORY" Language="ja_JP"><Text>物語</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CAUSE" Language="ja_JP"><Text>原因</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_EVENT" Language="ja_JP"><Text>出来事</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_FROM" Language="ja_JP"><Text>出発地</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CASUALTIES" Language="ja_JP"><Text>死傷者</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_MOVED_TO" Language="ja_JP"><Text>移動先</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_TO" Language="ja_JP"><Text>行き先</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_PEOPLE" Language="ja_JP"><Text>人数</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_WHY_THERE" Language="ja_JP"><Text>その理由</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_NOTE" Language="ja_JP"><Text>注記</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_DEFAULT_SUMMARY" Language="ja_JP"><Text>移住の出来事</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CAUSE_EVENT" Language="ja_JP"><Text>{1_Cause}の出来事</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_EVENT_PREFIX" Language="ja_JP"><Text>{1_Event}: {2_Summary}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_TURN" Language="ja_JP"><Text>ターン{1_Turn}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CHRONICLE" Language="ja_JP"><Text>年代記</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_EMPTY" Language="ja_JP"><Text>まだ移住の出来事はありません。人々が移動すると、それぞれの詳細とともにここに表示されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WARN_HOLDING" Language="ja_JP"><Text>この集落で難民の受け入れが行われています</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WARN_TRAPPED" Language="ja_JP"><Text>危機：逃げ場がなく閉じ込められています{1_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WARN_DISTRESS" Language="ja_JP"><Text>苦境下：人々が退去を考えています{1_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BADGE_HIGH" Language="ja_JP"><Text>受け入れ: 高</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BADGE_MEDIUM" Language="ja_JP"><Text>受け入れ: 中</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BADGE_LOW" Language="ja_JP"><Text>受け入れ: 低</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_ORIGINS" Language="ja_JP"><Text>出身地: {1_List}{2_Tail}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_ORIGINS_MORE" Language="ja_JP"><Text>（他に+{1_Count}件）</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CAUSE_ITEM" Language="ja_JP"><Text>{1_Label} {2_Share}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_POOL_ONE" Language="ja_JP"><Text>難民受け入れプール: {1_Count}ポイント</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_POOL_MANY" Language="ja_JP"><Text>難民受け入れプール: {1_Count}ポイント</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BURDEN" Language="ja_JP"><Text>難民支援の負担: 約{1_Gold}ゴールド/ターン、幸福度{2_Happiness}/ターン</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WHY_THERE" Language="ja_JP"><Text>その理由: {1_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STATUS_RESTING" Language="ja_JP"><Text>（休止中 {1_Cooldown}）</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STATUS_TO_MOVE" Language="ja_JP"><Text>（次の移動まで{1_Pct}%）</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_PRESSURE" Language="ja_JP"><Text>圧力: {1_Val}{2_Status}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_PULLED_TOWARD" Language="ja_JP"><Text>{1_Name}に引き寄せられています{2_Rival}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_RIVAL_CIV" Language="ja_JP"><Text>（競合文明）</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_ASSIM_COST" Language="ja_JP"><Text>統合コスト: 約{1_Gold}ゴールド/ターン</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CIV_NET" Language="ja_JP"><Text>文明の純移住: {1_People}人</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_TITLE" Language="ja_JP"><Text>{1_City} - 移住</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_DEFAULT_CITY" Language="ja_JP"><Text>集落</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_SPARK_LABEL" Language="ja_JP"><Text>最近の純移住</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_TOAST_ESTABLISHED" Language="ja_JP"><Text>{1_City}が難民の受け入れを開始（{2_Pts}ポイント）</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_TOAST_CLEARED" Language="ja_JP"><Text>{1_City}が難民受け入れプールを解消しました</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_A_SETTLEMENT" Language="ja_JP"><Text>ある集落</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WELCOME_LABEL" Language="ja_JP"><Text>受け入れる</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WELCOME_NOTE" Language="ja_JP"><Text>ゴールドの負担と、民への短期的な圧力が生じます。彼らはあなたの民の中に定住し、やがてあなたの民となります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_FRONTIER_LABEL" Language="ja_JP"><Text>辺境に定住させる</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_FRONTIER_NOTE" Language="ja_JP"><Text>ゴールドの負担は小さめです。彼らを小さな町へ送り、新たな出発をさせます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AWAY_LABEL" Language="ja_JP"><Text>追い返す</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AWAY_NOTE" Language="ja_JP"><Text>いま国際的な評判に代償が生じます。彼らは道を先へと進み、その重荷はあなたが背負うものではなくなります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WHO_UNKNOWN" Language="ja_JP"><Text>噂にのみ聞いていた民</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WHO_KNOWN" Language="ja_JP"><Text>{1_Adj}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_YOUR_LANDS" Language="ja_JP"><Text>あなたの地</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_BODY_WELCOME" Language="ja_JP"><Text>あなたは{2_Adj}の難民に{1_Place}を開きました。彼らはいまやあなたの民、あるいはやがてそうなります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_BODY_FRONTIER" Language="ja_JP"><Text>あなたは{1_Adj}の難民を辺境へ送り、彼ら自身のものを築かせました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_BODY_AWAY" Language="ja_JP"><Text>あなたは{1_Adj}の難民を{2_Place}から追い返しました。彼らは道を先へと進んでいきました、{3_Who}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_CHRON_TITLE" Language="ja_JP"><Text>国境での決断</Text></Replace>
+        <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="ja_JP"><Text>難民</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_TITLE" Language="ja_JP"><Text>街が主を替える</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_BODY" Language="ja_JP"><Text>{1_Place}では、{2_PriorAdj}の街が{3_Name}へと移り、新たな民がその地区を自らのものとして手にした。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_EMBRACE" Language="ja_JP"><Text>あなたは{1_Name}を受け入れ、その文化が都市を豊かにしています。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_TAX" Language="ja_JP"><Text>あなたは{1_Name}の交易に課税しました。その富はあなたの国庫に流れ込み、その民は不満を募らせています。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_LETBE" Language="ja_JP"><Text>あなたは{1_Name}を放任しました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_DECISION_TITLE" Language="ja_JP"><Text>{1_Name}</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_EYEBROW" Language="ja_JP"><Text>文化街</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_TITLE" Language="ja_JP"><Text>{1_Name}が根づく</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_BODY" Language="ja_JP"><Text>{1_Adj}からの恒久的な共同体が、いまや{2_Place}で独自の地区を保ち、都市の{3_Pct}パーセントにまで成長しました。彼らをどう迎えますか。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_TITLE" Language="ja_JP"><Text>街が不穏になる</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_BODY" Language="ja_JP"><Text>{1_Adj}との戦争が{2_Name}を苛立たせ、地区はくすぶっている。</Text></Replace>
     </LocalizedText>
 </Database>

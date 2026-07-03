@@ -160,43 +160,12 @@ Conventions (match the rest of the mod):
   `openBordersOpenness: 1.5` (**L387**), `opennessFloor: 0.15` (**L388**), `permOpenBorders` (**L53**),
   `openBordersBonus` (**L172**). Tunables at [emigration-tunables.js](../ui/emigration-tunables.js#L40-L43).
 
----
+### 0.7 Migration scenarios — reference diagrams (standalone)
 
-## 1. Feature A — Diaspora legend on the lens *(low risk, high value)*
-
-**Goal.** When the Ethnic Composition lens is on (or on hover), show a compact key listing the origins
-present in the focused city with their **share %** and **color swatch**, so the mosaic is readable.
-
-**Why it's cheap.** The data already exists: `compositionForCity(city).civs` is the sorted
-`[{civ, pts, share}]` array, and `civDisplayColor(civ)` gives each origin's color. Two natural hosts
-already render origins.
-
-**Implementation.**
-1. **Hover panel (preferred).** In
-   [emigration-ethnicity-tooltip.js](../ui/emigration-ethnicity-tooltip.js) where it renders `parts[]`
-   (**L86–97**), add a per-origin row: a `<span>` swatch (`background = civDisplayColor(p.civ)`) +
-   localized civ name + `Math.round(p.share*100) + "%"`. The `parts[]` already carries `share`; add `civ`
-   to it if not present (it is computed from `compositionForCity`, so thread `p.civ` through).
-2. **Optional fixed legend.** Add a small always-on overlay when the lens is active. New helper
-   `buildDiasporaLegend(comp)` in a new file [emigration-lens-legend.js](../ui/emigration-lens-legend.js)
-   (keep the lens paint file under the complexity gate). Mount it from the lens activation path in
-   [emigration-ethnicity-lens.js](../ui/emigration-ethnicity-lens.js) near `cachedBatches()` (**L254**);
-   rebuild on the same `lensTurn()` cache-bust so it refreshes each turn.
-3. **CSS.** Add `.emig-diaspora-leg` styles via the existing injected-stylesheet pattern (see
-   `NETC_CSS` in [emigration-network-viz.js](../ui/emigration-network-viz.js#L108) for the idiom) or the
-   lens's own style block.
-
-**Config / tunables.** `lensLegendEnabled: true` (config + a `bool` tunable in the `scope` group).
-
-**Localization.** `LOC_EMIG_LENS_LEGEND_TITLE` ("Communities here"), `LOC_EMIG_LENS_LEGEND_OTHER`
-("Other"). Use the existing "community/diaspora" wording (not "minority").
-
-**Tests.** Extend `tests/ethnicity-distribution-branches.mjs` or add `tests/lens-legend.mjs`: feed a
-known composition, assert the legend rows match `civs` order, shares sum to ~100%, and a single-origin
-city yields one row.
-
-**Risk.** Minimal — read-only over existing data, GameFace-safe DOM (use `removeChild` loop, not
-`replaceChildren`).
+The full scenario graphics are maintained in
+[migration-scenarios-diagrams.md](migration-scenarios-diagrams.md) so they can evolve independently from
+the implementation plan. They map directly to the hooks in §0.1–§0.6 and the quarter rules in
+[cultural-quarters-plan.md](cultural-quarters-plan.md).
 
 ---
 
@@ -351,53 +320,39 @@ handles all-zero / single-point series.
 
 ---
 
-## 6. Feature F — Cultural-blending outcomes at high integration *(higher — gameplay)*
+## 6. Feature F — Cultural quarters: named, per-civ, player-choosable blending outcomes *(higher — gameplay)*
 
-**Goal.** When a diaspora reaches **high integration** in a host city, grant a small, flavorful,
-**bounded** reward (a one-time yield bump and/or a named "Cultural Quarter" chronicle moment), so the
-integration system you already simulate *matters* mechanically.
+> **Moved to its own document for deeper refinement:** the full spec (detection, the choice modal, the
+> per-tile no-stacking/replacement rule, the 44-civ bonus registry, and the real-attributed flavour
+> quotes) now lives in **[cultural-quarters-plan.md](cultural-quarters-plan.md)**. This section keeps only
+> the summary and the cross-cutting hooks the rest of this plan references.
 
-**Current state.** Integration-over-time lives in `integrateCity()` /
-[emigration-composition.js](../ui/emigration-composition.js#L410). Diaspora *visibility* milestones are
-already detected by tier in `detectFoundingForCity()`
-([emigration-diaspora.js](../ui/emigration-diaspora.js#L127), `DIASPORA_STEP = 0.15`). There is no
-"fully blended" outcome yet. The per-turn yield-grant plumbing exists in
-[emigration-effects.js](../ui/emigration-effects.js) (`Players.grantYield` via `deduct()` — can grant
-positive too) and the dividend path (`tickAttractionDividend`).
+**In one line.** A foreign diaspora now follows a staged arc in a host city: **foothold** from real
+cumulative migration, **established Cultural Quarter** once that community also advances through
+integration, and eventually a **blended / host-imprint quarter** when it becomes part of the city's local
+identity. The quarter is surfaced as a **chronicle moment with a player choice** — 2–3 options that are
+scaled-down, city-local echoes of that civ's real Civ VII identity, each a **benefit + a matching
+drawback** with a justification and a real historical quote. A civ never forms a quarter for its **own**
+people, and quarters **do not stack**: a different origin on an occupied tile **replaces** the quarter
+(old modifier reversed, bonus rewritten) via a "changes hands" event. Quarter viability is gated by both
+share **and** a minimum immigrant-mass floor (see
+[cultural-quarters-plan.md](cultural-quarters-plan.md)).
 
-**Implementation.**
-1. **Detect the milestone.** A diaspora has "blended" when a once-significant foreign origin has
-   integrated down past a low threshold *after* having been high — i.e. its `share` fell from ≥
-   `CONFIG.blendFromShare` to ≤ `CONFIG.blendToShare`. Track a per-(city,origin) high-water mark in a new
-   tiny persisted map (or piggyback the composition `seenTurn`/tier dedupe). Add
-   `detectBlendForCity(city)` next to `detectFoundingForCity()` in
-   [emigration-diaspora.js](../ui/emigration-diaspora.js), called from `recordChroniclePass()` (**L169**).
-2. **Reward (bounded, flag-gated).** On first blend per (city,origin), grant a **one-time** yield bump
-   (e.g. small Culture or Happiness) via a new `grantBlendBonus(owner, kind, amount)` in
-   [emigration-effects.js](../ui/emigration-effects.js), reusing the `grantYield` path. Cap total
-   blend bonuses per civ per age to prevent farming. Default the reward small; expose `blendBonusYield`
-   / `blendBonusAmount` tunables; `0` disables (chronicle-only).
-3. **Narrative.** Add `blendLine(e)` to [emigration-narrative.js](../ui/emigration-narrative.js) (a
-   "Cultural Quarter" / "the newcomers are now simply locals" prose set) and chronicle it
-   (`kind: "founding"` reused, or a new `"blend"` kind — if new, extend the `ChronicleEntry.kind` union
-   **L19**, the view's kind label `KIND_LABEL` in
-   [emigration-chronicle-view.js](../ui/emigration-chronicle-view.js#L52), and `chronicleTitle()`
-   **L224**). **F's `"blend"`, H's `"recap"`, and R's `"milestone"` are the same coordinated union edit —
-   see §16.4; add all kinds in one pass, not three.**
+**Cross-cutting hooks other sections depend on:**
+- **New `"quarter"` chronicle kind** — F's `"quarter"`, H's `"recap"`, and R's `"milestone"` are the same
+  coordinated union edit; see §16.4 (union **L19**, `KIND_LABEL`
+  [emigration-chronicle-view.js](../ui/emigration-chronicle-view.js#L52), `chronicleTitle()` **L224**).
+- **Dilemma arbiter** — the quarter choice reuses `showDilemma()` and must sit **below** refugee dilemmas
+  in the single-arbiter precedence (`conquest > humanitarian > quarter`); see §16.5.
+- **Overlaps with I** — self-origin blends route only to Feature I's `followupLine`, never a quarter; the
+  growing/integrating/blended status vocabulary is shared (see §16.8).
+- **Overlaps with petition/uprising work** — large, contested quarters are the natural political substrate
+   for majority-immigrant petitions and wartime unrest; the quarter plan now scopes a `contested` stage and
+   hands city-defection outcomes off to the native revolt pipeline when it fires, else to a mod-owned
+   uprising path.
 
-**Config / tunables.** `culturalBlendEnabled: false` (off by default — it's a new reward),
-`blendFromShare: 0.3`, `blendToShare: 0.05`, `blendBonusYield: "YIELD_CULTURE"`, `blendBonusAmount`,
-`blendBonusCapPerAge`.
-
-**Balance.** Must be snowball-safe: a magnet civ integrates more diasporas, so cap per-age and keep the
-bonus token. Add a note to `scripts/snowball-stress.mjs` coverage if the bonus is yield-material.
-
-**Tests.** `tests/cultural-blend.mjs`: high-water tracking; first-blend fires once (dedupe); cap
-enforced; disabled flag → no grant, chronicle still optional.
-
-**Risk.** Gameplay/balance — ship **off by default**, document in the guide
-([emigration-guide.js](../ui/emigration-guide.js)) and Civilopedia
-([data/emigration-civilopedia.xml](../data/emigration-civilopedia.xml)).
+See **[cultural-quarters-plan.md](cultural-quarters-plan.md)** for the config/tunables, the full civ
+registry and quote tables, and the `tests/cultural-quarters.mjs` gate.
 
 ---
 
@@ -476,15 +431,26 @@ follow-up (e.g. "the Roman diaspora that fled to Carthage is now 40% integrated"
 
 **Current state.** Founding moments are chronicled with a `dedupeKey` that already encodes
 `city|origin|tier` ([emigration-diaspora.js](../ui/emigration-diaspora.js#L136)). Integration share is
-queryable any turn via `compositionForCity()`.
+queryable any turn via `compositionForCity()`. Migration records already carry `people` and are folded
+in [emigration-migration-stats.js](../ui/emigration-migration-stats.js), so a city+origin immigrant-mass
+counter can be derived without adding a second movement ledger.
 
 **Implementation.** When `detectFoundingForCity()` crosses a *downward* tier (integration progressing),
 emit a short follow-up line via a new `followupLine(e)` in
 [emigration-narrative.js](../ui/emigration-narrative.js), reusing the same dedupe scheme keyed on the new
-tier. This largely overlaps Feature F — implement F and I together (F = the mechanical reward at full
-blend; I = the narrative breadcrumbs along the way).
+tier **only if** a minimum immigrant-mass gate is satisfied: `migrantMass(city, origin) >=
+CONFIG.integrationMilestoneMinImmigrants`. `migrantMass` should be a persisted or foldable total of
+migrated `people` for that `(city,origin)` pair (source: migration records/stat folds), so tiny trickles
+that happen to cross a share tier do not fire milestone narrative. This largely overlaps Feature F —
+implement F and I together (F = the mechanical reward + named quarter at full integration, with its own
+`quarterMinImmigrants` gate; I = the narrative breadcrumbs along the way).
 
-**Tests.** Folded into `tests/cultural-blend.mjs`.
+**Config / tunables.** `integrationMilestoneMinImmigrants` (conservative default; `0` preserves old
+share-only behaviour).
+
+**Tests.** Folded into `tests/cultural-blend.mjs`: assert no follow-up when a tier crossing occurs below
+`integrationMilestoneMinImmigrants`, and assert follow-up fires once when the same crossing occurs above
+the threshold.
 
 ---
 
@@ -718,15 +684,14 @@ more than one dimension, with the mix depending on government/age.
 
 ## 14. Suggested sequencing (impact ÷ effort)
 
-1. **A — Diaspora legend** (tiny, immediately useful; no balance risk).
-2. **E — Net sparkline** + **I — story follow-ups** (small, make existing data feel alive).
-3. **D — Timeline event pins** (medium, additive DOM, no balance risk).
-4. **B — Flow particles** + **C — Brain-drain highlight** (medium; the Flow view finally looks distinct).
-5. **12.2a/c — Government-gated stance + richer consequences** (deepens a shipped system; mostly JS +
+1. **E — Net sparkline** + **I — story follow-ups** (small, make existing data feel alive).
+2. **D — Timeline event pins** (medium, additive DOM, no balance risk).
+3. **B — Flow particles** + **C — Brain-drain highlight** (medium; the Flow view finally looks distinct).
+4. **12.2a/c — Government-gated stance + richer consequences** (deepens a shipped system; mostly JS +
    a few native modifiers; off by default).
-6. **F — Cultural blending** + **G — Homeland pull-back** + **H — Age recap** (gameplay/narrative; off by
+5. **F — Cultural quarters** + **G — Homeland pull-back** + **H — Age recap** (gameplay/narrative; off by
    default, validate balance).
-7. **K — Chain migration** + **12.2b — Selective closure** + **J — Pressure lens** (model/UI changes;
+6. **K — Chain migration** + **12.2b — Selective closure** + **J — Pressure lens** (model/UI changes;
    highest risk; gate off, run the snowball/calibration scripts first).
 
 Each item is independently shippable behind its flag, so they can be released incrementally rather than
@@ -736,7 +701,7 @@ as one large version.
 
 ## 15. Migration Intelligence Update — readability & explainability features
 
-The features above (A–K, §12) mostly add *new simulation* and *new visuals*. The community pattern for
+The features above (B–K, §12) mostly add *new simulation* and *new visuals*. The community pattern for
 Civ VII mods, though, rewards **readability and explainability** first: tooltips that expose hidden math,
 lenses, policy-yield previews, "why is this happening?" surfaces, and screenshot-friendly rankings. This
 section specs a batch (**Features L–Z**) that turns Emigration from a *historical record* into a
@@ -1365,15 +1330,15 @@ all low balance risk, most default on.
 
 ## 16. Consistency pass — overlaps, collisions & contradictions resolved
 
-This section reconciles the whole plan (A–K, §12, and L–Z) after a verification pass. Each item below is
+This section reconciles the whole plan (B–K, §12, and L–Z) after a verification pass. Each item below is
 either an overlap to **share once**, a collision to **arbitrate**, or a contradiction to **correct**. The
 inline specs above were edited to match these resolutions; this section is the index of why.
 
 ### 16.1 Anchor drift — §15's line numbers are authoritative
 
-The §0 map and Features A–K were written against an earlier tree and several anchors had drifted (e.g.
+The §0 map and Features B–K were written against an earlier tree and several anchors had drifted (e.g.
 `readoutModel()` was listed at **L168**, actually **L89**; the border-stance exports were ~50 lines off;
-`moveRecord/departRecord/arriveRecord` at **L45/68/89**, actually **L64/93/117**). The §0 map and the A–K
+`moveRecord/departRecord/arriveRecord` at **L45/68/89**, actually **L64/93/117**). The §0 map and the B–K
 "Current state" blocks were **corrected inline** to the verified anchors. Standing rule (already in the
 header note): **the function name is the source of truth; re-grep before editing.** Where two sections ever
 disagree again, the **§15** values are the most recently verified.
@@ -1396,7 +1361,7 @@ path now applies **only** to timeline-window-scoped net, which is a genuinely di
 
 ### 16.4 One coordinated `ChronicleEntry.kind` extension (F ∩ H ∩ R)
 
-Three features add a new chronicle kind: F (`"blend"`), H (`"recap"`), R (`"milestone"`). These are the
+Three features add a new chronicle kind: F (`"quarter"`), H (`"recap"`), R (`"milestone"`). These are the
 **same edit** to three spots — the `kind` union (**L19**), `KIND_LABEL`
 ([emigration-chronicle-view.js](../ui/emigration-chronicle-view.js#L52)), and `chronicleTitle()` (**L224**).
 **Resolution:** if more than one of F/H/R ships, add all needed kinds in **one** pass with one label-map and
@@ -1432,7 +1397,7 @@ B, C, D, F, G, H, J, K, §12) is unchanged.
 - **Enclave share (K ∩ L):** "Existing _ community" in L's explainer is the same composition-share signal as
   K's `enclaveAffinity`. Reuse K's helper if shipped; otherwise read `compositionFor*` share directly.
 - **Diaspora narrative (Q ∩ I ∩ F):** Q's card "status" (growing/integrating/blended) shares wording with
-  I's follow-ups and F's blend milestone — one status vocabulary across all three.
+  I's follow-ups and F's quarter milestone — one status vocabulary across all three.
 - **Crisis surface (U ∩ D ∩ V):** U's optional map badge reuses D's `drawEventBadge()` path; U's severity is
   the trigger input to V. One `crisisSeverity()` (U) feeds all three; don't recompute.
 - **Corridors (W ∩ H):** named corridors feed H's age recap and the chronicle — one `namedCorridors()`

@@ -4,7 +4,7 @@
         <Replace Tag="LOC_MOD_EMIGRATION_NAME" Language="ru_RU"><Text>Эмиграция</Text></Replace>
         <Replace Tag="LOC_MOD_EMIGRATION_DESCRIPTION" Language="ru_RU"><Text>Жители эмигрируют из недовольных, бедствующих городов в более счастливые и процветающие, внутри цивилизаций и между ними, согласно модели Процветания (еда, производство, счастье, война, осада, голод). Числа миграции отображаются как исторически репрезентативное население, в соответствии с масштабом мода Demographics.</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS" Language="ru_RU"><Text>Эмиграция • подсчёт миграций</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_DESCRIPTION" Language="ru_RU"><Text>Как эмиграция показывает число переселяющихся людей. «Оба» показывает число населения Civ и историческую оценку числа людей (как мод Demographics); остальные показывают только одно.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_DESCRIPTION" Language="ru_RU"><Text>Как Эмиграция показывает число переселяющихся людей. «Оба» показывает и число населения Civ, и исторически масштабированное число людей (как в моде Demographics); остальные варианты показывают только одно из них.</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_BOTH" Language="ru_RU"><Text>Оба (число Civ + историческое)</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_CIV" Language="ru_RU"><Text>Только число населения Civ</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_HISTORICAL" Language="ru_RU"><Text>Только историческое число людей</Text></Replace>
@@ -12,7 +12,7 @@
         <Replace Tag="LOC_OPTIONS_GROUP_EMIGRATION_ADVANCED" Language="ru_RU"><Text>Эмиграция: Расширенно</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED" Language="ru_RU"><Text>Расширенные настройки</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED_OPEN" Language="ru_RU"><Text>Настроить…</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED_DESCRIPTION" Language="ru_RU"><Text>Открывает полный набор настроек эмиграции в отдельном окне. Это отправные точки, а не выверенные в игре значения; пресет интенсивности выше задаёт разумные значения по умолчанию для большинства из них.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_ADVANCED_DESCRIPTION" Language="ru_RU"><Text>Открывает полный набор параметров Эмиграции в отдельном окне. Это отправные точки, а не значения, сбалансированные в ходе тестов; пресет интенсивности выше задаёт разумные значения по умолчанию для большинства из них.</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_PACING" Language="ru_RU"><Text>Темп</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_SCOPE" Language="ru_RU"><Text>Охват и политики</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_PROSPERITY" Language="ru_RU"><Text>Модель процветания</Text></Replace>
@@ -23,15 +23,15 @@
         <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="ru_RU"><Text>Бедствия</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="ru_RU"><Text>Уведомления</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET" Language="ru_RU"><Text>Интенсивность эмиграции</Text></Replace>
-        <Replace Tag="LOC_EMIG_PRESET_D" Language="ru_RU"><Text>Общая интенсивность миграции — задаёт, как часто люди перемещаются И насколько сильно войны их срывают с места: предел за ход, размер всплеска военных беженцев и предел потерь на город. Низкая = мягко; Высокая = интенсивно. Изменения вступают в силу в течение хода. «Свой» сохраняет ваши расширенные значения без изменений. Для более тонкой настройки измените отдельные параметры в расширенных настройках ниже.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESET_D" Language="ru_RU"><Text>Общая интенсивность миграции — задаёт, как часто люди перемещаются И насколько сильно войны срывают их с места: пределы за ход, размер волны военных беженцев и предел потерь на город. Низкая = мягко; Высокая = интенсивно. Изменения вступают в силу в течение хода. «Свой» сохраняет ваши расширенные значения без изменений. Для более тонкой настройки измените отдельные параметры в расширенных настройках ниже.</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_CUSTOM" Language="ru_RU"><Text>Свой (использовать Расширенно)</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_LOW" Language="ru_RU"><Text>Низкая</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_MEDIUM" Language="ru_RU"><Text>Средняя</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_HIGH" Language="ru_RU"><Text>Высокая</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BAR" Language="ru_RU"><Text>Темп: порог скорости эмиграции</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BAR_D" Language="ru_RU"><Text>Давление, которое поселение должно накопить, прежде чем эмигрирует один пункт населения. Ниже = более частая эмиграция.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_COOLDOWN" Language="ru_RU"><Text>Темп: перезарядка после эмиграции (ходы)</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_COOLDOWN_D" Language="ru_RU"><Text>Ходы, в течение которых поселение отдыхает, прежде чем потерять ещё один пункт населения.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_COOLDOWN" Language="ru_RU"><Text>Темп: пауза после эмиграции (ходы)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_COOLDOWN_D" Language="ru_RU"><Text>Число ходов, в течение которых поселение не может потерять ещё один пункт населения после эмиграции.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXMOVES" Language="ru_RU"><Text>Темп: макс. эмиграций за ход</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXMOVES_D" Language="ru_RU"><Text>Предел того, сколько пунктов населения перемещается по всему миру за один проход.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXLOSS" Language="ru_RU"><Text>Темп: макс. мигрантов из города за ход</Text></Replace>
@@ -47,9 +47,9 @@
         <Replace Tag="LOC_EMIG_T_REQUIREMET" Language="ru_RU"><Text>Охват: только знакомые цивилизации</Text></Replace>
         <Replace Tag="LOC_EMIG_T_REQUIREMET_D" Language="ru_RU"><Text>Учитывать только чужие города, с которыми ваша цивилизация знакома.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CIVTUNE" Language="ru_RU"><Text>Охват: настройка по лидеру/цивилизации</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CIVTUNE_D" Language="ru_RU"><Text>Применять небольшие ручные настройки по лидеру и цивилизации (ослабление магнита, скорость интеграции, удержание в войне, смещение источника), чтобы исключения вели себя по-разному. Выкл. = каждая цивилизация использует одну глобальную модель.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CIVTUNE_D" Language="ru_RU"><Text>Применять небольшие ручные настройки по лидеру и цивилизации (ослабление эффекта магнита, скорость интеграции, удержание в войне, смещение источника), чтобы крайние случаи вели себя по-разному. Выкл. = каждая цивилизация использует одну глобальную модель.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CTSTRENGTH" Language="ru_RU"><Text>Охват: сила настройки цивилизаций</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CTSTRENGTH_D" Language="ru_RU"><Text>Насколько настройкам по лидеру/цивилизации позволено отклоняться от глобальной модели. 1.0 = полностью различимые характеры; меньшие значения сглаживают различия между цивилизациями в сторону одной модели, чтобы сдержать выход из-под контроля; 0 = полностью плоско (то же, что отключить таблицу).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CTSTRENGTH_D" Language="ru_RU"><Text>Насколько настройкам по лидеру/цивилизации позволено отклоняться от глобальной модели. 1.0 = полностью различимые характеры; меньшие значения сглаживают различия между цивилизациями в сторону одной модели, чтобы сдерживать эффект снежного кома; 0 = полностью плоско (то же, что отключить таблицу).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BORDERS" Language="ru_RU"><Text>Охват: пограничные политики</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BORDERS_D" Language="ru_RU"><Text>Включить эффект политик «Открытые/Закрытые границы» на иммиграцию (карты политик появляются в меню политик и стоят или дают Влияние). Выкл. = политики не влияют на миграцию.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CLOSEDOPEN" Language="ru_RU"><Text>Границы: открытость при Закрытых границах</Text></Replace>
@@ -66,13 +66,13 @@
         <Replace Tag="LOC_EMIG_T_HAPPY_D" Language="ru_RU"><Text>Насколько сильно чистое счастье города привлекает мигрантов.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POP" Language="ru_RU"><Text>Вес процветания: штраф за население</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POP_D" Language="ru_RU"><Text>Насколько размер города играет против него (чтобы небольшие процветающие города всё ещё привлекали).</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSHAPED" Language="ru_RU"><Text>Счастье: использовать сформированную модель</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSHAPED_D" Language="ru_RU"><Text>Заменить плоский вес счастья нюансированной моделью: счастье измеряется относительно мирового среднего, его притяжение насыщается (очень счастливый город не становится доминирующим магнитом), а нищета по-прежнему сильно отталкивает, и счастье усиливает экономику, а не затмевает её. Выкл. = старый линейный вес.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSCALE" Language="ru_RU"><Text>Счастье (сформированное): шкала насыщения</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSCALE_D" Language="ru_RU"><Text>Сколько пунктов выше мирового среднего считаются «очень счастливыми», прежде чем притяжение насытится. Выше = счастье значимо дольше. Используется только сформированной моделью.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HAMP" Language="ru_RU"><Text>Счастье (сформированное): усиление экономики</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HAMP_D" Language="ru_RU"><Text>Насколько усиливается экономика счастливого города (и подавляется у несчастного) как миграционная привлекательность. Используется только сформированной моделью.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_OCDISC" Language="ru_RU"><Text>Перенаселённость: скидка (0 = выкл.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSHAPED" Language="ru_RU"><Text>Счастье: использовать нелинейную модель</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSHAPED_D" Language="ru_RU"><Text>Заменить плоский вес счастья более нюансированной моделью: счастье измеряется относительно мирового среднего, его притяжение насыщается (очень счастливый город не становится доминирующим магнитом), а нищета по-прежнему сильно отталкивает; счастье усиливает экономику, а не затмевает её. Выкл. = старый линейный вес.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSCALE" Language="ru_RU"><Text>Счастье (нелинейное): шкала насыщения</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSCALE_D" Language="ru_RU"><Text>Сколько пунктов выше мирового среднего считаются «очень счастливыми», прежде чем притяжение насытится. Выше = счастье значимо дольше. Используется только нелинейной моделью.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAMP" Language="ru_RU"><Text>Счастье (нелинейное): усиление экономики</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAMP_D" Language="ru_RU"><Text>Насколько усиливается экономика счастливого города (и подавляется у несчастного) как миграционная привлекательность. Используется только нелинейной моделью.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OCDISC" Language="ru_RU"><Text>Перенаселённость: компенсация (0 = выкл.)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OCDISC_D" Language="ru_RU"><Text>Вернуть часть недовольства, которое город терпит сугубо от городской перенаселённости, чтобы намеренно плотный город не наказывался дважды (его плотность уже снижает доходы). 0 = выкл.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OCTHRESH" Language="ru_RU"><Text>Перенаселённость: порог плотности города</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OCTHRESH_D" Language="ru_RU"><Text>Городское население, которое город может вместить, прежде чем перенаселённость станет ему в минус (отражает порог перенаселённости игры). Используется только при включённой скидке.</Text></Replace>
@@ -135,6 +135,8 @@
         <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="ru_RU"><Text>Сделать цивилизацию, чьё население сильно вырвалось вперёд остальных, менее привлекательной целью для миграции между цивилизациями: самокорректирующийся тормоз для вышедшего из-под контроля лидера, который растёт с тем, насколько далеко тот ушёл вперёд (0 выкл. / 8 мягко / 15 стандартно / 28 сильно). Он никогда не мешает ОТТОКУ лидера или его внутренним перемещениям. 0 = выкл.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="ru_RU"><Text>Стоимость: порог против снежного кома (× справедливой доли)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="ru_RU"><Text>Насколько население цивилизации может вырваться вперёд средней по миру цивилизации, прежде чем начнёт кусаться встречный ветер против снежного кома, как кратное справедливой доли. Ниже = тормоз включается раньше (более уравнительно); выше = замедляется только лидер с крайним выходом из-под контроля.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QUARTERS" Language="ru_RU"><Text>Издержки: культурные кварталы</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QUARTERS_D" Language="ru_RU"><Text>Когда иностранная диаспора вырастает в устоявшуюся общину в одном из ваших городов, предлагается разовый выбор (принять, обложить налогом или оставить как есть) с небольшой наградой и штрафом к выходу ресурсов; постоянный квартал отслеживается для каждого города и становится «спорным» (небольшой штраф к счастью), пока вы находитесь в войне с его родиной. Выкл = нет решений по кварталам и штрафа за спор.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="ru_RU"><Text>Бедствия: двигать миграцию</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="ru_RU"><Text>Позволить стихийным бедствиям (наводнения, вулканы, эпидемии…) выталкивать население из пострадавших городов как климатических беженцев / беженцев бедствий, наряду с войной и недовольством. Выкл. = бедствия не влияют на миграцию.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="ru_RU"><Text>Бедствия: эмиграция за пункт бедствия (%)</Text></Replace>
@@ -161,6 +163,8 @@
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD_D" Language="ru_RU"><Text>Сколько человек (суммарно) цивилизация должна переселить, прежде чем выйдет заголовок о кризисе беженцев, раз на каждое пройденное кратное, чтобы долгая война давала несколько заголовков, а не один за ход.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="ru_RU"><Text>Сводка миграции по городу</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="ru_RU"><Text>Показывает по запросу панель с объяснением, почему выбранное поселение набирает или теряет население: основная причина, куда тянет его жителей, стоимость интеграции и что можно с этим сделать.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SPARKLINE" Language="ru_RU"><Text>Сводка: спарклайн недавнего тренда</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SPARKLINE_D" Language="ru_RU"><Text>Добавляет в сводку по городу небольшую полоску столбиков с чистой миграцией за последние проходы (зелёные столбики — прирост, красные — убыль), чтобы с одного взгляда понять, становится лучше или хуже.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION" Language="ru_RU"><Text>Отвод: убыль, когда нет убежища</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION_D" Language="ru_RU"><Text>Не даёт миграции быть замкнутой системой: запертый, сильно бедствующий город (осада, голод, тяжёлое насилие или бедствие) без приемлемой цели теряет население, люди гибнут или рассеиваются, а не остаются навсегда.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRDISTRESS" Language="ru_RU"><Text>Отвод: бедствие, нужное для убыли (%)</Text></Replace>
@@ -197,6 +201,28 @@
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ru_RU"><Text>Хронология воспроизведения появится через пару ходов, как только накопится история населения для прокрутки.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ru_RU"><Text>{1_People} бежали из {2_City} после бедствия.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ru_RU"><Text>{1_People} погибли в {2_City}, не имея пути к бегству.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SCOPE_INTERNAL" Language="ru_RU"><Text>(Внутреннее перемещение)</Text></Replace>
+        <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="ru_RU"><Text>(Внешнее перемещение)</Text></Replace>
+        <Replace Tag="LOC_EMIG_DEST_CLAUSE" Language="ru_RU"><Text>Направляются в {1_Dest}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_WHY_CLAUSE" Language="ru_RU"><Text>Их влечёт туда: {1_Why}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_RICHER" Language="ru_RU"><Text>более процветающий</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_NEARBY" Language="ru_RU"><Text>поблизости</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_SAFER_DIR" Language="ru_RU"><Text>прочь от боёв</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_OWN_CIV" Language="ru_RU"><Text>более безопасные внутренние земли</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_CRISIS_ESCAPE" Language="ru_RU"><Text>бегство от кризиса</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_AGGRESSOR_AVOIDED" Language="ru_RU"><Text>избегая агрессора</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_OPEN_BORDERS" Language="ru_RU"><Text>открытые границы</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_ALLIED" Language="ru_RU"><Text>союзник</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_ASYLUM" Language="ru_RU"><Text>предоставляет убежище</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_RAID" Language="ru_RU"><Text>привлечены набегом</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_SIEGE" Language="ru_RU"><Text>в осаде</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_UNDER_ATTACK" Language="ru_RU"><Text>под атакой</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_DISASTER" Language="ru_RU"><Text>бедствие</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_FAMINE" Language="ru_RU"><Text>голод</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_NO_REFUGE" Language="ru_RU"><Text>нет безопасного убежища</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_CRISIS_LOSSES" Language="ru_RU"><Text>погибли при бегстве</Text></Replace>
+        <Replace Tag="LOC_EMIG_DEATH_WHY_CLAUSE" Language="ru_RU"><Text>Причина: {1_Why}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_CUE" Language="ru_RU"><Text>Растущее миграционное давление: жителей города {1_City} всё больше влечёт в {2_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="ru_RU"><Text>Повысьте счастье города или примите антииммиграционную политику, чтобы удержать их.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="ru_RU"><Text>Сосед превосходит этот город; повысьте его доходы, чтобы удержать людей.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="ru_RU"><Text>Беженцы бегут от боёв; снимите осаду или заключите мир, чтобы остановить отток.</Text></Replace>
@@ -207,19 +233,19 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ru_RU"><Text>Эти люди потеряны навсегда.</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="ru_RU"><Text>{1_Dest} платит около {2_Gold} золота/ход на их интеграцию.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="ru_RU"><Text>Проиммиграционный курс</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ru_RU"><Text>Принимайте мигрантов со всего мира. Иммиграция в ваши города возрастает на 50%, а космополитичная репутация приносит влияние каждый ход: +1, +2, затем +3 в течение эпох.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ru_RU"><Text>Принимайте [icon:YIELD_POPULATION] мигрантов со всего мира. Иммиграция в ваши города возрастает на 50%, а космополитичная репутация приносит [icon:YIELD_DIPLOMACY] влияние каждый ход: +1, +2, затем +3 по эпохам.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="ru_RU"><Text>Антииммиграционный курс</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ru_RU"><Text>Закройте границы от мира. Новоприбывшие из-за рубежа падают до 40% (примерно на 60% меньше), и гораздо меньше ваших собственных граждан уходит к соперничающим цивилизациям. Мобилизованная внутренняя экономика добавляет производство в каждом городе: +2, +3, затем +4 в течение эпох. У изоляции есть цена во влиянии каждый ход: -2, -3, затем -4 в течение эпох.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ru_RU"><Text>Закройте границы от мира. [icon:YIELD_POPULATION] Новоприбывшие из-за рубежа падают до 40% (примерно на 60% меньше), и гораздо меньше ваших собственных граждан уходит к соперничающим цивилизациям. Мобилизованная внутренняя экономика добавляет [icon:YIELD_PRODUCTION] производство в каждом городе: +2, +3, затем +4 по эпохам. У изоляции есть цена в [icon:YIELD_DIPLOMACY] влиянии каждый ход: -2, -3, затем -4 по эпохам.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="ru_RU"><Text>Привлечение талантов</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ru_RU"><Text>Новоприбывшие усиливают ваши исследования. Вы получаете +1 науку, а в Современности +2, плюс прирост науки около +1.5 за каждого привлечённого иммигранта, до +12 за ход. Этот бонус угасает, если иммиграция прекращается.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ru_RU"><Text>[icon:YIELD_POPULATION] Новоприбывшие усиливают ваши исследования. Вы получаете +1 [icon:YIELD_SCIENCE] науки, а в Современности +2, плюс прирост науки около +1.5 за каждого привлечённого иммигранта, до +12 за ход. Этот бонус угасает, если иммиграция прекращается.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="ru_RU"><Text>Культурная притягательность</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ru_RU"><Text>Новоприбывшие обогащают вашу культуру. Вы получаете +1 культуру, а в Современности +2, плюс прирост культуры около +1.5 за каждого привлечённого иммигранта, до +12 за ход. Этот бонус угасает, если иммиграция прекращается.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ru_RU"><Text>[icon:YIELD_POPULATION] Новоприбывшие обогащают вашу культуру. Вы получаете +1 [icon:YIELD_CULTURE] культуры, а в Современности +2, плюс прирост культуры около +1.5 за каждого привлечённого иммигранта, до +12 за ход. Этот бонус угасает, если иммиграция прекращается.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="ru_RU"><Text>Коммерческая притягательность</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ru_RU"><Text>Новоприбывшие наполняют ваши рынки. Вы получаете +1 золото, а в Современности +2, плюс прирост золота около +1.5 за каждого привлечённого иммигранта, до +12 за ход. Этот бонус угасает, если иммиграция прекращается.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ru_RU"><Text>[icon:YIELD_POPULATION] Новоприбывшие наполняют ваши рынки. Вы получаете +1 [icon:YIELD_GOLD] золота, а в Современности +2, плюс прирост золота около +1.5 за каждого привлечённого иммигранта, до +12 за ход. Этот бонус угасает, если иммиграция прекращается.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="ru_RU"><Text>Избирательное убежище</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ru_RU"><Text>Откройте двери тем, кто бежит от войны и бедствия. Беженцы сильно тянутся к вам (самые отчаявшиеся первыми), и гуманитарная репутация приносит +1 влияния каждый ход.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ru_RU"><Text>Откройте двери тем, кто бежит от войны и бедствия. Беженцы сильно тянутся к вам (самые отчаявшиеся первыми), и гуманитарная репутация приносит +1 [icon:YIELD_DIPLOMACY] влияния каждый ход.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="ru_RU"><Text>Пакт о беженцах</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="ru_RU"><Text>Постоянная приверженность судьбе перемещённых. Беженцы мощно стекаются к вам (самые отчаявшиеся первыми), обогащают вашу культуру и приносят +2 влияния и +1 культуры каждый ход.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="ru_RU"><Text>Постоянная приверженность перемещённым людям. Беженцы мощно стекаются к вам (самые отчаявшиеся первыми), обогащают вашу культуру и приносят +2 [icon:YIELD_DIPLOMACY] влияния и +1 [icon:YIELD_CULTURE] культуры каждый ход.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="ru_RU"><Text>Эмиграция</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="ru_RU"><Text>Эмиграция</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="ru_RU"><Text>Эмиграция</Text></Replace>
@@ -285,5 +311,202 @@
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="ru_RU"><Text>населения пока нет</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_ORIGINS" Language="ru_RU"><Text>Источники</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_ORIGINS_TIP" Language="ru_RU"><Text>Показать линии к источникам мигрантов</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="ru_RU"><Text>Миграция - {1_City}</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="ru_RU"><Text>Происхождение населения</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTING" Language="ru_RU"><Text>Отбывают в</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ARRIVING" Language="ru_RU"><Text>Прибывают из</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_NO_MIGRATION" Language="ru_RU"><Text>Для этого поселения миграция ещё не зафиксирована.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_MORE" Language="ru_RU"><Text>(+{1_Count} ещё)</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_ONE" Language="ru_RU"><Text>{1_Count} беженец ожидает расселения здесь.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_MANY" Language="ru_RU"><Text>{1_Count} беженцев ожидают расселения здесь.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_TITLE" Language="ru_RU"><Text>Культурный квартал</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_NO_QUARTER" Language="ru_RU"><Text>Здесь не укоренился ни один иностранный квартал.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_ROOT" Language="ru_RU"><Text>{1_Quarter} укоренился в этом поселении.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_STANCE" Language="ru_RU"><Text>Ваша позиция: {1_Stance}.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_GRANTS" Language="ru_RU"><Text>Приносит городу {1_Amount} {2_Yield}.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_COSTS" Language="ru_RU"><Text>Стоит {1_Amount} {2_Yield} за ход.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_CONTESTED" Language="ru_RU"><Text>Спорный: вы в состоянии войны с его родиной, что создаёт напряжение в квартале.</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_STANCE_PRO" Language="ru_RU"><Text>Проиммиграционная</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_STANCE_ANTI" Language="ru_RU"><Text>Антииммиграционная</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_STANCE_NEUTRAL" Language="ru_RU"><Text>Нейтральная</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_FLAG_AT_RISK" Language="ru_RU"><Text>под угрозой</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_FLAG_RESTING" Language="ru_RU"><Text>на отдыхе</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_NETWORK" Language="ru_RU"><Text>Сеть миграции</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_NET_TABLE" Language="ru_RU"><Text>Чистая миграция (таблица)</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_WHY" Language="ru_RU"><Text>Почему люди переселяются</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_SETTLEMENTS" Language="ru_RU"><Text>Поселения</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_POLICIES" Language="ru_RU"><Text>Иммиграционная политика</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_NOTIFICATIONS" Language="ru_RU"><Text>Уведомления о миграции</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_GUIDE" Language="ru_RU"><Text>Руководство</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_EMPTY" Language="ru_RU"><Text>Пока нечего показать.</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_NETWORK" Language="ru_RU"><Text>Сеть</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_NET_TABLE" Language="ru_RU"><Text>Чистая миграция (таблица)</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_CAUSES" Language="ru_RU"><Text>Причины</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_POLICIES" Language="ru_RU"><Text>Политика</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_MY_CITIES" Language="ru_RU"><Text>Мои города</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_NOTIFICATIONS" Language="ru_RU"><Text>Уведомления</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_GUIDE" Language="ru_RU"><Text>Руководство</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NUM_CIV" Language="ru_RU"><Text>Число Civ</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NUM_SCALED" Language="ru_RU"><Text>Масштаб. население</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SAMPLE_BADGE" Language="ru_RU"><Text>Образцовые данные ; предпросмотр (переключитесь на «Вживую» в настройках)</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_OPTIONS_LABEL" Language="ru_RU"><Text>Настройки:</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_OPTIONS_ADVANCED" Language="ru_RU"><Text>Расширенно</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NUMBERS_LABEL" Language="ru_RU"><Text>Числа:</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NO_ARRIVALS" Language="ru_RU"><Text>Прибытий пока нет</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NO_DEPARTURES" Language="ru_RU"><Text>Убытий пока нет</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_WHY_LINE" Language="ru_RU"><Text>{1_Prefix} {2_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_WHY_PREFIX" Language="ru_RU"><Text>Почему:</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_TITLE_TOWN" Language="ru_RU"><Text>{1_Name} (посёлок)</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_TITLE_CITY" Language="ru_RU"><Text>{1_Name} (город)</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_CRITICAL" Language="ru_RU"><Text>Критическое</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_HIGH" Language="ru_RU"><Text>Высокое</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_MODERATE" Language="ru_RU"><Text>Умеренное</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_LOW" Language="ru_RU"><Text>Низкое</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_PRESSURE" Language="ru_RU"><Text>Эмиграционное давление</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NONE_RECORDED" Language="ru_RU"><Text>ничего не зафиксировано</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_FLAG_PAREN" Language="ru_RU"><Text> ({1_Flag})</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_HEADING_TO" Language="ru_RU"><Text>Направляются в: {1_Sub}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_WHATS_DRIVING" Language="ru_RU"><Text>Что движет этим</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EVENT_NAME" Language="ru_RU"><Text>↳ {1_Name}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EVENT_BOTH" Language="ru_RU"><Text> · погибло {1_Deaths}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EVENT_DIED" Language="ru_RU"><Text>погибло {1_Deaths}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_CAUSES_BY_IMPACT" Language="ru_RU"><Text>Причины по воздействию</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NO_MIGRATION" Language="ru_RU"><Text>миграции пока нет</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_DIR_IMMIGRANTS" Language="ru_RU"><Text>Иммигранты ; прибыли из</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_DIR_EMIGRANTS" Language="ru_RU"><Text>Эмигранты ; ушли/погибли</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_DIED" Language="ru_RU"><Text>Погибло</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_SECTION_CAUSES" Language="ru_RU"><Text>Причины: почему люди переселяются</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_SECTION_SETTLEMENTS" Language="ru_RU"><Text>Поселения: миграция в ваши поселения и из них</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EMPTY" Language="ru_RU"><Text>Городская миграция пока не зафиксирована; потоки появятся, когда люди начнут прибывать в ваши города и уходить из них.</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_DRIVERS" Language="ru_RU"><Text>Движущие силы: {1_Drivers}</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_TITLE" Language="ru_RU"><Text>Чистая миграция (подробно)</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_CIV" Language="ru_RU"><Text>Цивилизация</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_NET" Language="ru_RU"><Text>Сальдо</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_IN" Language="ru_RU"><Text>Прибыло</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_OUT" Language="ru_RU"><Text>Убыло</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_STANCE" Language="ru_RU"><Text>Влияние позиции</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_REFUGEES" Language="ru_RU"><Text>Беженцы</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_LOSSES" Language="ru_RU"><Text>Потери</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_TOTAL" Language="ru_RU"><Text>Итого</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_NONE" Language="ru_RU"><Text>Пограничной политики нет, миграция не затронута.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_ALLOWED" Language="ru_RU"><Text>+{1_People} иммигрантов допущено сверх нейтрального уровня{2_Pct}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_TURNED_AWAY" Language="ru_RU"><Text>{1_People} потенциальных иммигрантов отвергнуто{2_Pct}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_KEPT_HOME" Language="ru_RU"><Text>{1_People} собственных граждан удержано дома</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_NO_EFFECT" Language="ru_RU"><Text>Политика в ячейке, но миграция пока не затронута.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_1" Language="ru_RU"><Text>на краю города</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_2" Language="ru_RU"><Text>на дальних улицах</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_3" Language="ru_RU"><Text>за последними домами</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_4" Language="ru_RU"><Text>на дальней стороне города</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_5" Language="ru_RU"><Text>там, где кончаются улицы</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_1" Language="ru_RU"><Text>что могли унести</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_2" Language="ru_RU"><Text>свои инструменты и почти ничего больше</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_3" Language="ru_RU"><Text>что помещалось на телегу</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_4" Language="ru_RU"><Text>своих детей и семенное зерно</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_5" Language="ru_RU"><Text>те немногие вещи, что были важны</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_1" Language="ru_RU"><Text>Когда {1_War} докатилась до {2_City}, {3_People} его жителей взяли {4_Carried} и ушли.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_2" Language="ru_RU"><Text>{3_People} беженцев из народа {5_Civ} покинули {2_City} в тот год, изгнанные войной ({1_War}).</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_3" Language="ru_RU"><Text>Дороги из {2_City} наполнились беженцами, когда {1_War} подступила вплотную. {3_People} не вернулись.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_4" Language="ru_RU"><Text>{2_City} опустел, когда пришла {1_War}. {3_People} семей народа {5_Civ} ушли туда, где не было боёв.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DISASTER_EXODUS_1" Language="ru_RU"><Text>{1_DisasterCap} обрушилось на {3_City}. {4_People} семей народа {5_Civ} собрали {6_Carried} и отправились искать более безопасные земли.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DISASTER_EXODUS_2" Language="ru_RU"><Text>После бедствия ({2_Disaster}) {4_People} беженцев народа {5_Civ} оставили руины {3_City} позади.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DISASTER_EXODUS_3" Language="ru_RU"><Text>{4_People} семей народа {5_Civ} бежали из {3_City} в месяцы после бедствия ({2_Disaster}), и поля вокруг него затихли.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_PLAIN_EXODUS_1" Language="ru_RU"><Text>{1_People} семей народа {2_Civ} покинули {3_City} в тот год в поисках лучшей жизни в других краях.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_PLAIN_EXODUS_2" Language="ru_RU"><Text>Молва о работе и спокойных границах увела {1_People} дворов народа {2_Civ} прочь из {3_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_PLAIN_EXODUS_3" Language="ru_RU"><Text>{3_City} потерял {1_People} своих жителей на долгих дорогах, по нескольку семей за раз.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FRAMED_EXODUS_1" Language="ru_RU"><Text>Далеко за пределами знакомых нам земель опустел {1_City}. {2_People} человек из народа, о котором мы слышали как о {3_Civ}, вышли на дороги.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FRAMED_EXODUS_2" Language="ru_RU"><Text>{2_People} беженцев бежали из {1_City}, города далёкого народа — {3_Civ}, — о котором до нас доходили лишь слухи.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FRAMED_EXODUS_3" Language="ru_RU"><Text>Пришла весть о {1_City}, что где-то за краем карты: {2_People} человек народа {3_Civ}, о котором мы лишь слышали, изгнаны из своих домов.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_FRAMED_1" Language="ru_RU"><Text>Община из далёкой земли пустила корни в {1_City} — народ, о котором мы слышали как о {2_Civ}, теперь {3_Pct} его дворов, поселилась {4_Where}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_FRAMED_2" Language="ru_RU"><Text>{1_City} стал домом для пришельцев издалека — народа, известного нам лишь как {2_Civ}, — {3_Pct} города.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_1" Language="ru_RU"><Text>К этому времени дворы народа {2_Civ} в {1_City} составляли {3_Pct} города. Они держали собственный квартал {4_Where}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_2" Language="ru_RU"><Text>Община народа {2_Civ} пустила корни в {1_City}, {3_Pct} его жителей и всё ещё прибывая, поселилась {4_Where}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_3" Language="ru_RU"><Text>{1_City} стал домом для меньшинства народа {2_Civ}, {3_Pct} его дворов, сгрудившихся {4_Where}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_FRAMED_1" Language="ru_RU"><Text>{1_People} семей из {2_City} отправились в далёкую родину — народ, известный нам лишь как {3_Civ}, — теперь, когда там стало {4_Reason}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_FRAMED_2" Language="ru_RU"><Text>До {2_City} дошла весть о далёкой стране, вновь обретшей мир, — о той, что мы слышали как о {3_Civ}. {1_People}, ведущих от неё свой род, тронулись домой.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_1" Language="ru_RU"><Text>Когда разнеслась весть, что на родине стало {4_Reason}, {1_People} семей народа {3_Civ} из {2_City} двинулись в долгий путь домой.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_2" Language="ru_RU"><Text>Квартал народа {3_Civ} в {2_City} поредел в тот год. {1_People} вернулись, теперь, когда дома стало {4_Reason}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_3" Language="ru_RU"><Text>{1_People} дворов народа {3_Civ} покинули {2_City}, уходя в страну, из которой бежали, влекомые назад по мере того, как там становилось {4_Reason}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_FOUNDING" Language="ru_RU"><Text>Квартал народа {1_Civ} в {2_City}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_RETURN" Language="ru_RU"><Text>Возвращение народа {1_Civ}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_EXODUS_1" Language="ru_RU"><Text>Исход народа {1_Civ}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_EXODUS_2" Language="ru_RU"><Text>Бегство из {2_City}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_EXODUS_3" Language="ru_RU"><Text>Опустение {2_City}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_MIGRATION" Language="ru_RU"><Text>Переселение народа {1_Civ}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_NAME_FRAMED" Language="ru_RU"><Text>народ, о котором мы слышали как о {1_Civ}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_NAME" Language="ru_RU"><Text>народ {1_Civ}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_PLAGUE_TITLE" Language="ru_RU"><Text>Больные у ворот</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_PLAGUE_BODY" Language="ru_RU"><Text>Чума опустошила города страны {1_Origin}. Уцелевшие прошли долгий путь и теперь ждут за вашими стенами — {2_People} человек, напуганных и больных. Принять их — значит разделить их опасность. Прогнать их — значит оставить их на её милость.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_CONQUEST_TITLE" Language="ru_RU"><Text>Беженцы у границы</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_CONQUEST_BODY" Language="ru_RU"><Text>Армии державы {1_By} захватили {2_Origin}, и её народ хлынул к вашим землям. {3_People} человек собрались у границы, неся то, что смогли спасти, и просят приюта.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHR_FOOTHOLD_TITLE" Language="ru_RU"><Text>Опора народа {1_Civ} в {2_City}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHR_FOOTHOLD_BODY" Language="ru_RU"><Text>Прочная община народа {1_Civ} сложилась в {2_City}, теперь {3_Pct} процентов города после {4_People} прибытий за это время.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_TITLE" Language="ru_RU"><Text>Название</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_STORY" Language="ru_RU"><Text>История</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CAUSE" Language="ru_RU"><Text>Причина</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_EVENT" Language="ru_RU"><Text>Событие</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_FROM" Language="ru_RU"><Text>Откуда</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CASUALTIES" Language="ru_RU"><Text>Потери</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_MOVED_TO" Language="ru_RU"><Text>Переселились в</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_TO" Language="ru_RU"><Text>Куда</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_PEOPLE" Language="ru_RU"><Text>Люди</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_WHY_THERE" Language="ru_RU"><Text>Почему туда</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_NOTE" Language="ru_RU"><Text>Примечание</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_DEFAULT_SUMMARY" Language="ru_RU"><Text>Событие миграции</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CAUSE_EVENT" Language="ru_RU"><Text>Событие: {1_Cause}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_EVENT_PREFIX" Language="ru_RU"><Text>{1_Event}: {2_Summary}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_TURN" Language="ru_RU"><Text>Ход {1_Turn}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CHRONICLE" Language="ru_RU"><Text>Хроника</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_EMPTY" Language="ru_RU"><Text>Событий миграции пока нет; они появятся здесь по мере переселения людей, с полными подробностями каждого.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WARN_HOLDING" Language="ru_RU"><Text>В этом поселении действует накопитель беженцев</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WARN_TRAPPED" Language="ru_RU"><Text>Под угрозой: заперты, бежать некуда{1_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WARN_DISTRESS" Language="ru_RU"><Text>В бедствии — люди готовятся уйти{1_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BADGE_HIGH" Language="ru_RU"><Text>Накопитель: высокий</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BADGE_MEDIUM" Language="ru_RU"><Text>Накопитель: средний</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BADGE_LOW" Language="ru_RU"><Text>Накопитель: низкий</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_ORIGINS" Language="ru_RU"><Text>Происхождение: {1_List}{2_Tail}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_ORIGINS_MORE" Language="ru_RU"><Text> (+{1_Count} ещё)</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CAUSE_ITEM" Language="ru_RU"><Text>{1_Label} {2_Share}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_POOL_ONE" Language="ru_RU"><Text>Накопитель беженцев: {1_Count} пункт</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_POOL_MANY" Language="ru_RU"><Text>Накопитель беженцев: {1_Count} пунктов</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BURDEN" Language="ru_RU"><Text>Бремя содержания беженцев: ~{1_Gold} золота/ход, {2_Happiness} счастья/ход</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WHY_THERE" Language="ru_RU"><Text>Почему туда: {1_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STATUS_RESTING" Language="ru_RU"><Text> (отдых {1_Cooldown})</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STATUS_TO_MOVE" Language="ru_RU"><Text> ({1_Pct}% до следующего перемещения)</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_PRESSURE" Language="ru_RU"><Text>Давление: {1_Val}{2_Status}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_PULLED_TOWARD" Language="ru_RU"><Text>Влечёт к {1_Name}{2_Rival}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_RIVAL_CIV" Language="ru_RU"><Text> (цивилизация-соперник)</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_ASSIM_COST" Language="ru_RU"><Text>Стоимость интеграции: ~{1_Gold} золота/ход</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CIV_NET" Language="ru_RU"><Text>Чистая миграция цивилизации: {1_People} человек</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_TITLE" Language="ru_RU"><Text>{1_City} — миграция</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_DEFAULT_CITY" Language="ru_RU"><Text>Поселение</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_SPARK_LABEL" Language="ru_RU"><Text>Недавняя чистая миграция</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_TOAST_ESTABLISHED" Language="ru_RU"><Text>{1_City} создал накопитель беженцев ({2_Pts} пт)</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_TOAST_CLEARED" Language="ru_RU"><Text>{1_City} очистил свой накопитель беженцев</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_A_SETTLEMENT" Language="ru_RU"><Text>Поселение</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WELCOME_LABEL" Language="ru_RU"><Text>Впустить их</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WELCOME_NOTE" Language="ru_RU"><Text>Стоит золота и создаёт краткое напряжение среди вашего народа; они оседают среди вас и со временем становятся вашим народом.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_FRONTIER_LABEL" Language="ru_RU"><Text>Заселить границу</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_FRONTIER_NOTE" Language="ru_RU"><Text>Меньшая цена в золоте; отправьте их в небольшой посёлок, чтобы начать заново.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AWAY_LABEL" Language="ru_RU"><Text>Прогнать их</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AWAY_NOTE" Language="ru_RU"><Text>Цена в международной репутации сейчас; они идут дальше своей дорогой, и их бремя нести не вам.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WHO_UNKNOWN" Language="ru_RU"><Text>народ, о котором мы лишь слышали</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WHO_KNOWN" Language="ru_RU"><Text>{1_Adj}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_YOUR_LANDS" Language="ru_RU"><Text>ваши земли</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_BODY_WELCOME" Language="ru_RU"><Text>Вы открыли {1_Place} для беженцев народа {2_Adj}. Теперь они ваш народ — или станут им.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_BODY_FRONTIER" Language="ru_RU"><Text>Вы отправили беженцев народа {1_Adj} на границу, чтобы построить что-то своё.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_BODY_AWAY" Language="ru_RU"><Text>Вы прогнали беженцев народа {1_Adj} от {2_Place}. Они пошли дальше своей дорогой, {3_Who}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_CHRON_TITLE" Language="ru_RU"><Text>Решение на границе</Text></Replace>
+        <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="ru_RU"><Text>Беженцы</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_TITLE" Language="ru_RU"><Text>Квартал переходит в другие руки</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_BODY" Language="ru_RU"><Text>В {1_Place} квартал народа {2_PriorAdj} уступил место народу {3_Name} — новому народу, теперь владеющему кварталом как своим.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_EMBRACE" Language="ru_RU"><Text>Вы приняли народ {1_Name}, и его обычаи обогащают город.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_TAX" Language="ru_RU"><Text>Вы обложили налогом торговлю народа {1_Name}; его монета течёт в вашу казну, а его люди ропщут.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_LETBE" Language="ru_RU"><Text>Вы оставили народ {1_Name} жить по-своему.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_DECISION_TITLE" Language="ru_RU"><Text>Народ {1_Name}</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_EYEBROW" Language="ru_RU"><Text>Культурный квартал</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_TITLE" Language="ru_RU"><Text>Народ {1_Name} пускает корни</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_BODY" Language="ru_RU"><Text>Прочная община из {1_Adj} теперь держит собственный квартал в {2_Place}, разросшись до {3_Pct} процентов города. Как вы поступите с ними?</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_TITLE" Language="ru_RU"><Text>Квартал охватывает беспокойство</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_BODY" Language="ru_RU"><Text>Война с {1_Adj} будоражит народ {2_Name}; квартал бурлит.</Text></Replace>
     </LocalizedText>
 </Database>

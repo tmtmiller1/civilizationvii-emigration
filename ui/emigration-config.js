@@ -44,6 +44,10 @@ export const CONFIG = {
   splitTracksEnabled: true, // false → legacy single-cause-per-pass behavior
   splitBudgetsEnabled: true, // false → one shared per-civ ceiling for both tracks
   splitUiReadoutEnabled: true, // false → city readout shows one dominant cause instead of a breakdown
+  // P0.3 voluntary-pressure cue: a low-key notification when a city is building toward a move.
+  voluntaryCueEnabled: true, // false → no "rising emigration pressure" cues
+  voluntaryCueFraction: 0.66, // fraction of the emigration bar a source must cross to cue
+  voluntaryCueCooldownTurns: 12, // min turns between cues from the same settlement
 
   // ── Game-speed scaling (see emigration-game-speed.js) ──
   // The engine paces in TURNS; Civ's game speed (Online→Marathon) stretches the same progress over
@@ -193,6 +197,21 @@ export const CONFIG = {
   transitLagTurns: 4, // cap on transit turns (0 = instant); the lag itself scales with distance
   transitHexPerTurn: 5, // hexes covered per transit turn (distance → lag: ~5 hexes = 1 turn)
 
+  // ── Refugee holding pools (staged settlement) ──
+  // Refugees can be assigned to a host city immediately but only a bounded share settles into
+  // working population per turn. This models temporary surge pressure (camps/shelter load) without
+  // turning every war wave into instant labor growth.
+  refugeePoolEnabled: true,
+  refugeeImmediateSettlePct: 0.2, // fraction of arrivals that settle immediately (deterministic roll)
+  refugeePoolMinHoldTurns: 2, // minimum turns refugees stay in holding before eligible to settle
+  refugeePoolSettlePerCityPerTurn: 1, // base points a host city can settle from pool each turn
+  refugeePoolHappyScale: 1.25, // settlement-rate multiplier when host happiness is non-negative
+  refugeePoolUnhappyScale: 0.6, // settlement-rate multiplier when host happiness is negative
+  refugeePoolOvercrowdPenalty: 0.25, // per-urban-over-threshold penalty on settlement rate
+  refugeePoolBurdenEnabled: true, // apply temporary support burden while refugees remain in holding
+  refugeePoolBurdenGoldPerPoint: 0.35, // gold/turn per held refugee point
+  refugeePoolBurdenHappinessPerPoint: 0.12, // happiness/turn per held refugee point
+
   // ── ethnic integration (composition drift) ──
   // Newcomers gradually take on the host civ's identity. Each turn a small fraction of every
   // non-owner origin in a settlement shifts into the owner's bucket of the composition ledger,
@@ -231,6 +250,22 @@ export const CONFIG = {
   dilemmaGoldFrontier: 15, // one-time gold to settle them on the frontier instead
   dilemmaInfluenceAway: 20, // one-time influence cost for turning the refugees away
   dilemmaHappinessWelcome: 10, // one-time happiness hit for absorbing the refugees into your city
+
+  // ── cultural quarters (established diasporas that become player-shaped districts) ──
+  // When a foreign diaspora grows into a lasting "quarter" of one of YOUR cities, you're offered a
+  // short stance (embrace / tax / let be) with a bounded one-time yield, and the district is recorded
+  // per host tile (one quarter per tile: a new origin overtaking it reverses the old yields and takes
+  // over). Ranked BELOW the refugee dilemma and throttled (a per-age cap + cooldown), so the decision
+  // stays rare. While the host is at war with a quarter's homeland the quarter turns "contested" and
+  // strains the host's happiness (bounded, capped), reacting to war without any native-revolt hook.
+  // Set quartersEnabled false to disable the whole system.
+  quartersEnabled: true,
+  quarterCapPerAge: 3, // hard cap on quarter decisions per age
+  quarterCooldownTurns: 12, // minimum turns between quarter decisions
+  quarterRewardAmount: 40, // one-time benefit granted by a chosen stance (in its benefit yield)
+  quarterDrawbackAmount: 20, // one-time drawback charged by a chosen stance (in its drawback yield)
+  contestedQuarterPenalty: 4, // per-pass happiness strain per contested quarter (host at war with its homeland)
+  diasporaWarStrainCap: 12, // hard cap on total per-pass contested-quarter happiness strain per host
 
   // ── assimilation cost (duration-based consequence via grantYield) ──
   // Each migrant adds "assimilation load" to the DESTINATION civ; that load DECAYS
@@ -428,6 +463,9 @@ export const CONFIG = {
   // ── per-city readout panel (Phase 2): an on-demand "why is this city changing?" box ──
   cityReadoutEnabled: true, // show the per-city migration readout (off = never render it)
   cityReadoutCorner: "top-right", // HUD corner: top-right | top-left | bottom-right | bottom-left
+  cityReadoutSparkline: true, // show a recent net-migration trend strip in the readout (Feature E)
+  cityReadoutPoolToasts: true, // toast when the selected settlement enters/exits refugee holding
+  refugeePoolLensMarkers: true, // prosperity lens: center-tile markers for active refugee holding
 
   // ── §11: environmental disasters as a migration driver (ON by default) ──
   disastersEnabled: true,

@@ -4,6 +4,8 @@ const { distributeTiles, __test } = await import(
   "/emigration/ui/emigration-ethnicity-distribution.js"
 );
 
+// The tile's primary (largest-share) origin, and a helper for a specific origin's local share.
+const primaryOf = (tile) => tile.primary;
 const localShareOf = (tile, civ) => {
   const e = tile.shares.find((s) => s.civ === civ);
   return e ? e.share : 0;
@@ -17,6 +19,7 @@ function testGuardsAndHelpers() {
   assert.equal(__test.tileDensity(0), 0);
   assert.equal(__test.tileDensity(-4), 0);
   assert.ok(__test.tileDensity(__test.REF_TILE_PEOPLE) > 0.6);
+  assert.equal(__test.hexDistance(2, 2, 2, 2), 0, "hex distance to self is 0");
 
   const sorted = __test.originsSmallestFirst([
     { civ: 4, share: 0.4 },
@@ -27,7 +30,8 @@ function testGuardsAndHelpers() {
 }
 
 function testDistributionAndFallbacks() {
-  // Non-positive weights → zero per-tile people → every tile falls back to the dominant origin.
+  // Non-positive weights → zero per-tile people → the affinity·people denominator is 0, so no minority
+  // is spread and every tile falls back to the host (no spurious split on a zero-population city).
   const zeroWeights = distributeTiles(
     [{ x: 1, y: 1, weight: 0 }, { x: 2, y: 2, weight: -1 }, { x: 3, y: 3, weight: 0 }],
     { civs: [{ civ: 1, share: 0.8 }, { civ: 2, share: 0.2 }], dominant: { civ: 1 } },
@@ -35,11 +39,11 @@ function testDistributionAndFallbacks() {
   );
   assert.equal(zeroWeights.length, 3);
   assert.ok(zeroWeights.every((t) => t.primary === 1 && t.shares.length === 1),
-    "no per-tile people → all dominant (no spurious minority split)");
+    "no per-tile people → all host (no spurious minority split)");
   assert.equal(zeroWeights.reduce((a, t) => a + t.people, 0), 0, "zero effective population");
   assert.ok(zeroWeights.every((t) => t.density >= 0 && t.density <= 1));
 
-  // No scaled population yet: assign the dominant civ to every tile.
+  // No scaled population yet: every tile is 100% the dominant civ.
   const zero = distributeTiles(
     [{ x: 5, y: 5, weight: 1 }],
     { civs: [{ civ: 3, share: 1 }], dominant: { civ: 9 } },
@@ -48,23 +52,23 @@ function testDistributionAndFallbacks() {
   assert.equal(zero[0].primary, 9);
   assert.equal(zero[0].people, 0);
 
-  // No explicit dominant should fall back to the largest-share origin (which then fills every tile,
+  // No explicit dominant → fall back to the largest-share origin (which then fills every tile,
   // the other origin having zero share).
   const noDominant = distributeTiles(
     [{ x: 9, y: 1, weight: 1 }, { x: 9, y: 2, weight: 2 }],
     { civs: [{ civ: 8, share: 0 }, { civ: 6, share: 1 }], dominant: null },
     100
   );
-  assert.ok(noDominant.every((t) => t.primary === 6), "largest-share origin is the dominant");
+  assert.ok(noDominant.every((t) => primaryOf(t) === 6), "largest-share origin is the host");
 
-  // A zero-share origin places nothing; the lone real origin holds every tile.
+  // A zero-share origin places nothing; the lone real origin holds every tile at 100%.
   const oneReal = distributeTiles(
     [{ x: 4, y: 4, weight: 1 }, { x: 4, y: 5, weight: 1 }],
     { civs: [{ civ: 3, share: 0 }, { civ: 2, share: 1 }], dominant: { civ: 2 } },
     50
   );
-  assert.ok(oneReal.every((t) => t.primary === 2 && localShareOf(t, 3) === 0),
-    "a zero-share origin claims no tiles");
+  assert.ok(oneReal.every((t) => primaryOf(t) === 2 && localShareOf(t, 3) === 0),
+    "a zero-share origin never appears in any tile's mix");
 }
 
 testGuardsAndHelpers();

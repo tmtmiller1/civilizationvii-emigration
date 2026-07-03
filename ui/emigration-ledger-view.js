@@ -7,6 +7,7 @@
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { getNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 
 /**
  * Create an element with an optional class + text.
@@ -166,7 +167,7 @@ function ledgerDataRow(r, maxNet, mode) {
  */
 function ledgerDriversRow(r) {
   if (!r.drivers) return null;
-  const row = el("div", "emig-led-drivers", "Drivers: " + r.drivers);
+  const row = el("div", "emig-led-drivers", loc("LOC_EMIG_LG_DRIVERS", "Drivers: {1_Drivers}", r.drivers));
   row.style.cssText = "opacity:0.7;font-size:0.85rem;padding:0 0 0.3rem 0.4rem;width:100%;";
   return row;
 }
@@ -195,10 +196,13 @@ function ledgerTextRow(cells, cls) {
  */
 export function renderLedger(body, rows) {
   const mode = getNumberMode();
-  body.appendChild(el("div", "emig-section-title", "Net Migration (Detail)"));
+  body.appendChild(el("div", "emig-section-title", loc("LOC_EMIG_LG_TITLE", "Net Migration (Detail)")));
   const wrap = el("div", "emig-led");
   wrap.appendChild(ledgerTextRow(
-    ["Civilization", "Net", "In", "Out", "Stance impact", "Refugees", "Losses"], "emig-led-head"));
+    [loc("LOC_EMIG_LG_COL_CIV", "Civilization"), loc("LOC_EMIG_LG_COL_NET", "Net"),
+      loc("LOC_EMIG_LG_COL_IN", "In"), loc("LOC_EMIG_LG_COL_OUT", "Out"),
+      loc("LOC_EMIG_LG_COL_STANCE", "Stance impact"), loc("LOC_EMIG_LG_COL_REFUGEES", "Refugees"),
+      loc("LOC_EMIG_LG_COL_LOSSES", "Losses")], "emig-led-head"));
   const maxNet = rows.reduce((m, r) => Math.max(m, Math.abs(r.netP || 0)), 0) || 1;
   for (const r of rows) {
     wrap.appendChild(ledgerDataRow(r, maxNet, mode));
@@ -209,7 +213,7 @@ export function renderLedger(body, rows) {
   const stTot = sum("stInP") || sum("stOutP")
     ? signedCount(sum("stInP"), sum("stInPts"), mode) : "—";
   wrap.appendChild(ledgerTextRow([
-    "Total", signedCount(sum("netP"), sum("netPts"), mode),
+    loc("LOC_EMIG_LG_TOTAL", "Total"), signedCount(sum("netP"), sum("netPts"), mode),
     formatCount(sum("inP"), sum("inPts"), mode), formatCount(sum("outP"), sum("outPts"), mode),
     stTot, formatCount(sum("refP"), sum("refPts"), mode), formatCount(sum("lossP"), sum("lossPts"), mode)
   ], "emig-led-tot"));

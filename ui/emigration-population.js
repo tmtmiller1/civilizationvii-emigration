@@ -281,17 +281,22 @@ function currentAgeProgressPct() {
 }
 
 /**
- * Format a people count the historical way: "12 thousand", "1.3 million",
- * "240 million", "1.1 billion".
+ * Format a people count as comma-grouped Arabic numerals ("12,000", "1,300,000", "240,000,000",
+ * "1,100,000,000"). Rounded by magnitude so large figures stay legible without carrying false
+ * precision (nearest thousand under a million, then coarser tiers up), matching what the old
+ * "12 thousand" / "1.3 million" phrasing conveyed, just written in digits.
  * @param {number} n People count.
- * @returns {string} Human-readable string.
+ * @returns {string} Human-readable grouped number.
  */
 export function formatPeople(n) {
   if (typeof n !== "number" || !isFinite(n) || n <= 0) return "0";
-  if (n >= 1e9) return (n / 1e9).toFixed(n >= 1e10 ? 0 : 1) + " billion";
-  if (n >= 1e6) return (n / 1e6).toFixed(n >= 1e7 ? 0 : 1) + " million";
-  if (n >= 1e3) return Math.round(n / 1e3) + " thousand";
-  return String(Math.round(n));
+  let step = 1;
+  if (n >= 1e10) step = 1e9; // >= 10 billion: nearest billion
+  else if (n >= 1e9) step = 1e8; // billions: nearest hundred-million (was "1.1 billion")
+  else if (n >= 1e7) step = 1e6; // >= 10 million: nearest million (was "240 million")
+  else if (n >= 1e6) step = 1e5; // millions: nearest hundred-thousand (was "1.3 million")
+  else if (n >= 1e3) step = 1e3; // thousands: nearest thousand (was "12 thousand")
+  return groupThousands(Math.round(n / step) * step);
 }
 
 /**

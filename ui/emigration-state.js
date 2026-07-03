@@ -83,7 +83,7 @@ function normalizeTransitEntry(v) {
     destName: stringOr(v.destName, "")
   };
   // Carry the deferral counter across persist/load: runPass reloads + re-saves state every turn, so
-  // dropping it here would reset `defers` to 0 each turn and the MAX_DEFERS force-land/perish guard
+  // dropping it here would reset `defers` to 0 each turn and the MAX_DEFERS perish guard
   // (and the longest-waiting-first arrival sort) could never fire. Kept optional (only when > 0).
   const defers = Math.max(0, Math.floor(finiteNumberOr(v.defers, 0)));
   if (defers > 0) row.defers = defers;
@@ -154,11 +154,13 @@ function normalizeTransitList(transit) {
  * @property {string} cause Why they left (for the arrival record's flavour).
  * @property {string} [eventKey] The specific event behind the cause (war/disaster/crisis), carried
  *   to the arrival so immigration can be attributed to it.
+ * @property {string[]} [reasons] The "why here" reason tags captured at departure (P0.1), forwarded
+ *   to the arrival record.
  * @property {boolean} infected Whether the source was infected (plague carried on arrival).
  * @property {string} srcName Source city name (arrival flavour).
  * @property {string} destName Destination city name (arrival flavour).
  * @property {number} [defers] Times this arrival has been deferred (destination at its inbound cap);
- *   force-landed once it exceeds MAX_DEFERS so it's never stuck in transit forever.
+ *   perishes once it exceeds MAX_DEFERS so it's never stuck in transit forever.
  */
 
 /**
