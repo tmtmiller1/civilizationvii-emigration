@@ -133,6 +133,18 @@ export function narrativeCiv(pid) {
 }
 
 /**
+ * The name of a Cultural Quarter held by a civ's diaspora ("the Roman Quarter"), built from the
+ * origin's adjective. Falls back to a generic "foreign quarter" when the adjective is unreadable, so
+ * the label is always well-formed. Narrative surface, so it does not apply the analytics spoiler mask.
+ * @param {number} originCiv The origin civ id.
+ * @returns {string} The quarter name, e.g. "Roman Quarter".
+ */
+export function quarterName(originCiv) {
+  const adj = civAdjective(originCiv);
+  return adj ? adj + " Quarter" : "foreign quarter";
+}
+
+/**
  * The game's display name for a RandomEvent type ("Thera", "Catastrophic Eruption", …),
  * or a generic "disaster" when unreadable.
  * @param {*} eventType A RandomEventType (hash or string).
@@ -499,15 +511,49 @@ export function costNote(destName, gold) {
 }
 
 /**
- * Compose the local player's per-pass migration digest: a cause-named loss headline, the action
- * hint, the permanence cue, and, for a cross-civ loss with a material cost, the destination's
- * assimilation cost note. Pure; the caller resolves the inputs.
+ * The trailing movement-scope tag that flags whether a move stayed WITHIN the player's empire (an
+ * internal relocation to another of their own settlements) or LEFT it for another empire. The two
+ * read very differently to a player — losing people to a rival is not the same as citizens shuffling
+ * between your own cities — so the digest ends with a short "(Internal Move)" / "(External Move)"
+ * label rather than letting every move read as a loss. A death (attrition) went nowhere, so it gets
+ * no tag.
+ * @param {string|undefined} cause The migration cause.
+ * @param {boolean|undefined} crossCiv True when the destination is a different empire.
+ * @returns {string} The parenthetical tag (leading space), or "".
+ */
+export function scopeClause(cause, crossCiv) {
+  if (cause === "attrition") return ""; // a death went nowhere to label
+  const key = crossCiv ? "LOC_EMIG_SCOPE_EXTERNAL" : "LOC_EMIG_SCOPE_INTERNAL";
+  const fb = crossCiv ? "(External Move)" : "(Internal Move)";
+  return " " + (loc(key) || fb);
+}
+
+/**
+ * The "where they went" clause naming a move's destination — the settlement for an internal move; the
+ * settlement, or the unmet-civ label, for an external one — so the digest says where people left for.
+ * A death (attrition) went nowhere, and a move with no resolved destination, get no clause.
+ * @param {string|undefined} cause The migration cause.
+ * @param {string|undefined} destName The destination label.
+ * @returns {string} The clause (leading space), or "".
+ */
+export function destClause(cause, destName) {
+  if (cause === "attrition" || !destName) return ""; // a death, or an unresolved destination
+  return " " + (loc("LOC_EMIG_DEST_CLAUSE", destName) || `Bound for ${destName}.`);
+}
+
+/**
+ * Compose the local player's per-pass migration digest: a cause-named loss headline, the destination
+ * ("where they went") clause, the action hint, the permanence cue, for a cross-civ loss with a
+ * material cost the destination's assimilation cost note, the "why here" clause, and a trailing
+ * internal-vs-external movement-scope tag. Pure; the caller resolves the inputs.
  * @param {{cause?:string, people:string, city:string, crossCiv?:boolean,
- *          destName?:string, destGold?:number}} o The resolved digest inputs.
+ *          destName?:string, destGold?:number, why?:string}} o The resolved digest inputs. `why` is
+ *   the pre-localized "why here" phrase (P0.1), appended as a short clause when present.
  * @returns {string} The composed message.
  */
 export function localDigestMessage(o) {
   let msg = lossHeadline(o.cause, o.people, o.city);
+  msg += destClause(o.cause, o.destName); // "Bound for <destination>." — where they left for
   const hint = actionHint(o.cause);
   if (hint) msg += " " + hint;
   const perm = permanenceCue(o.cause);
@@ -515,5 +561,36 @@ export function localDigestMessage(o) {
   if (o.crossCiv && o.destName && (o.destGold || 0) >= 1) {
     msg += " " + costNote(o.destName, Math.round(o.destGold || 0));
   }
+  msg += whyClause(o.cause, o.why);
+  msg += scopeClause(o.cause, o.crossCiv); // trailing (Internal Move) / (External Move) tag
   return msg;
+}
+
+/**
+ * The trailing "why" clause for a digest: a death reads as a cause ("The cause: siege, no safe
+ * refuge."); a move reads as a pull ("Drawn there: nearby, open borders."). Empty when no why.
+ * @param {string|undefined} cause The migration cause.
+ * @param {string|undefined} why The pre-localized reason phrase.
+ * @returns {string} The clause (leading space), or "".
+ */
+function whyClause(cause, why) {
+  if (!why) return "";
+  const isDeath = cause === "attrition";
+  const key = isDeath ? "LOC_EMIG_DEATH_WHY_CLAUSE" : "LOC_EMIG_WHY_CLAUSE";
+  const fb = isDeath ? `The cause: ${why}.` : `Drawn there: ${why}.`;
+  return " " + (loc(key, why) || fb);
+}
+
+/**
+ * The low-key "rising emigration pressure" trend cue line (P0.3): a settlement is building toward a
+ * voluntary move without anyone having left yet.
+ * @param {string} srcName Source settlement name.
+ * @param {string} destName Where its people are drawn.
+ * @returns {string} The cue line.
+ */
+export function pressureCueMessage(srcName, destName) {
+  return (
+    loc("LOC_EMIG_PRESSURE_CUE", srcName, destName) ||
+    `Rising emigration pressure: citizens in ${srcName} are increasingly drawn to ${destName}.`
+  );
 }

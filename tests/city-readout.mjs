@@ -26,7 +26,7 @@ function testProsperityPullReadout() {
   assert.equal(m.lines[0], "Pressure: Attraction (50% to next move)");
   assert.ok(has(m.lines, /Pulled toward Carthage \(rival civ\)/));
   assert.ok(has(m.lines, /Assimilation cost: ~3 gold\/turn/));
-  assert.ok(has(m.lines, /Civ net migration: -5 thousand people/));
+  assert.ok(has(m.lines, /Civ net migration: -5,000 people/));
   assert.ok(has(m.lines, /prosper|yields/i)); // localized action hint (English fallback)
   assert.ok(has(m.lines, /until you address the cause/)); // persistent permanence cue
   assert.equal(m.warn, null);

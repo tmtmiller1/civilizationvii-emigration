@@ -19,7 +19,7 @@
         <Replace Tag="LOC_EMIG_ADVGRP_VIOLENCE" Language="ko_KR"><Text>전쟁 및 폭력</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_GEOGRAPHY" Language="ko_KR"><Text>지리 및 이동</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_COST" Language="ko_KR"><Text>통합 및 이주민 비용</Text></Replace>
-        <Replace Tag="LOC_EMIG_ADVGRP_OUTLET" Language="ko_KR"><Text>배출구(소모)</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_OUTLET" Language="ko_KR"><Text>탈출구(소모)</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="ko_KR"><Text>재해</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="ko_KR"><Text>알림</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET" Language="ko_KR"><Text>이주 강도</Text></Replace>
@@ -54,9 +54,9 @@
         <Replace Tag="LOC_EMIG_T_BORDERS_D" Language="ko_KR"><Text>개방/폐쇄 국경 정책의 이민 효과를 활성화합니다(정책 카드가 정책 메뉴에 추가되며 영향력을 소모하거나 부여합니다). 끄면 정책이 이주에 영향을 주지 않습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CLOSEDOPEN" Language="ko_KR"><Text>국경: 폐쇄 국경 개방도</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CLOSEDOPEN_D" Language="ko_KR"><Text>폐쇄 국경 정책이 통과시키는 이민의 양(0.4 = 약 60% 거부). 낮을수록 폐쇄적. 국경 정책이 켜져 있을 때만 사용됩니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN" Language="ko_KR"><Text>국경: 폐쇄 국경 정착</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN_D" Language="ko_KR"><Text>폐쇄 국경 정책이 당신의 국민을 경쟁 문명으로 떠나지 못하게 붙드는 정도(0.6 = 다른 문명으로의 유인을 60%로 감소, 1 = 끄기). 낮을수록 정착이 강해집니다. 국경 정책이 켜져 있을 때만 사용됩니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_OPENOPEN" Language="ko_KR"><Text>국경: 개방 국경 증가</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN" Language="ko_KR"><Text>국경: 폐쇄 국경의 유출 억제</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN_D" Language="ko_KR"><Text>폐쇄 국경 정책이 당신의 국민을 경쟁 문명으로 떠나지 못하게 붙드는 정도(0.6 = 다른 문명으로 향하는 유인이 60%로 감소, 1 = 끔). 낮을수록 유출 억제가 강해집니다. 국경 정책이 켜져 있을 때만 사용됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENOPEN" Language="ko_KR"><Text>국경: 개방 국경 보너스</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENOPEN_D" Language="ko_KR"><Text>개방 국경 정책이 이민을 얼마나 늘리는지(1.5 = +50%). 높을수록 개방적. 국경 정책이 켜져 있을 때만 사용됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_FOOD" Language="ko_KR"><Text>번영 가중치: 식량(1인당)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_FOOD_D" Language="ko_KR"><Text>1인당 식량이 이주민을 도시로 얼마나 끌어들이는지.</Text></Replace>
@@ -66,12 +66,12 @@
         <Replace Tag="LOC_EMIG_T_HAPPY_D" Language="ko_KR"><Text>도시의 순 행복도가 이주민을 얼마나 강하게 끌어들이는지.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POP" Language="ko_KR"><Text>번영 가중치: 인구 페널티</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POP_D" Language="ko_KR"><Text>도시 규모가 얼마나 불리하게 작용하는지(작아도 번영하는 도시가 여전히 매력을 갖도록).</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSHAPED" Language="ko_KR"><Text>행복도: 형상화 모델 사용</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSHAPED_D" Language="ko_KR"><Text>평탄한 행복도 가중치를 정교한 모델로 대체합니다. 행복도는 세계 평균 대비로 측정되고, 그 끌림은 포화하며(아주 행복한 도시도 지배적인 자석이 되지 않음), 비참함은 여전히 강하게 밀어내며, 행복도는 경제를 가리는 대신 증폭합니다. 끄면 기존 선형 가중치.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSCALE" Language="ko_KR"><Text>행복도(형상화): 포화 척도</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSCALE_D" Language="ko_KR"><Text>끌림이 포화하기 전에 "매우 행복"으로 간주되는, 세계 평균보다 높은 점수. 높을수록 행복도가 더 오래 중요합니다. 형상화 모델에서만 사용.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HAMP" Language="ko_KR"><Text>행복도(형상화): 경제 증폭</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HAMP_D" Language="ko_KR"><Text>이주 유인으로서 행복한 도시의 경제를 얼마나 증폭하는지(비참한 도시는 억제). 형상화 모델에서만 사용.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSHAPED" Language="ko_KR"><Text>행복도: 조정된 모델 사용</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSHAPED_D" Language="ko_KR"><Text>평탄한 행복도 가중치를 더 정교한 모델로 대체합니다. 행복도는 세계 평균 대비로 측정되고, 그 끌림은 포화하며(아주 행복한 도시도 지배적인 자석이 되지 않음), 비참함은 여전히 강하게 밀어내고, 행복도는 경제를 가리는 대신 증폭합니다. 끄면 기존 선형 가중치입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSCALE" Language="ko_KR"><Text>행복도(조정): 포화 척도</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSCALE_D" Language="ko_KR"><Text>끌림이 포화하기 전에 "매우 행복"으로 간주되는, 세계 평균보다 높은 점수. 높을수록 행복도가 더 오래 중요합니다. 조정된 모델에서만 사용됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAMP" Language="ko_KR"><Text>행복도(조정): 경제 증폭</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAMP_D" Language="ko_KR"><Text>이주 유인으로서 행복한 도시의 경제를 얼마나 증폭하는지(비참한 도시는 억제). 조정된 모델에서만 사용됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OCDISC" Language="ko_KR"><Text>과밀: 할인(0 = 끔)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OCDISC_D" Language="ko_KR"><Text>도시가 순전히 도시 과밀 때문에 겪는 불만 일부를 되돌려, 의도적으로 밀집한 도시가 이중으로 벌받지 않도록 합니다(밀도는 이미 산출을 떨어뜨립니다). 0 = 끔.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OCTHRESH" Language="ko_KR"><Text>과밀: 도시 밀도 임계값</Text></Replace>
@@ -135,6 +135,8 @@
         <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="ko_KR"><Text>인구가 다른 문명들보다 크게 앞서 나간 문명을 문명 간 이주의 목적지로서 덜 매력적으로 만듭니다: 앞선 정도에 따라 커지는, 폭주하는 선두 주자에 대한 자기 교정 제동(0 끔 / 8 완만 / 15 표준 / 28 강함). 선두 주자의 유출이나 내부 이동은 결코 방해하지 않습니다. 0 = 끔.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="ko_KR"><Text>비용: 폭주 억제 발동(공정 몫 ×)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="ko_KR"><Text>폭주 억제 역풍이 작용하기 시작하기 전에 한 문명의 인구가 세계 평균 문명보다 얼마나 앞서 나갈 수 있는지를 공정 몫의 배수로 나타낸 값. 낮을수록 제동이 더 일찍 걸리고(더 평등), 높을수록 극단적으로 폭주하는 선두 주자만 둔화됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QUARTERS" Language="ko_KR"><Text>비용: 문화 구역</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QUARTERS_D" Language="ko_KR"><Text>외국 디아스포라가 당신의 도시에서 자리 잡은 공동체로 성장하면 일회성 선택(수용, 과세, 방임)이 제시되며 작은 산출 보상과 불이익이 따릅니다. 도시별로 지속되는 구역이 기록되고, 그 본국과 전쟁 중인 동안 「분쟁」 상태가 되어 작은 행복도 부담이 생깁니다. 끄면 구역 결정과 분쟁 부담이 없습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="ko_KR"><Text>재난: 이주 유발</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="ko_KR"><Text>환경 재난(홍수, 화산, 역병…)이 전쟁·불만과 더불어 피해 도시에서 주민을 기후/재난 난민으로 밀어내게 합니다. 끄면 재난이 이주에 영향을 주지 않습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="ko_KR"><Text>재난: 고통 포인트당 이주(%)</Text></Replace>
@@ -161,6 +163,8 @@
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD_D" Language="ko_KR"><Text>난민 위기 헤드라인이 뜨기 전에 한 문명이 (누적으로) 얼마나 많은 사람을 이주시켜야 하는지, 넘긴 배수마다 한 번씩이라, 긴 전쟁은 매 턴이 아니라 몇 개의 헤드라인만 냅니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="ko_KR"><Text>도시별 이주 보고</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="ko_KR"><Text>선택한 정착지가 인구를 얻거나 잃는 이유를 필요할 때 보여주는 패널입니다. 주요 원인, 주민이 이끌리는 곳, 통합 비용, 그리고 대응 방법을 알려줍니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SPARKLINE" Language="ko_KR"><Text>읽기 패널: 최근 추세 스파크라인</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SPARKLINE_D" Language="ko_KR"><Text>도시 읽기 패널에 최근 몇 번의 순이주를 보여 주는 작은 막대 줄을 추가합니다(증가는 초록, 감소는 빨강 막대). 상황이 나아지는지 나빠지는지 한눈에 알 수 있습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION" Language="ko_KR"><Text>배출구: 피난처가 없을 때의 소멸</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION_D" Language="ko_KR"><Text>이주가 닫힌 체계가 되지 않게 합니다: 달아날 곳이 없는, 갇혀 심하게 시달리는 도시(포위·기근·극심한 폭력·재난)는 인구를 잃습니다, 사람들은 영원히 머무는 대신 죽거나 흩어집니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRDISTRESS" Language="ko_KR"><Text>배출구: 소멸에 필요한 고통(%)</Text></Replace>
@@ -197,6 +201,28 @@
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ko_KR"><Text>재생 타임라인은 훑어볼 인구 기록이 쌓이면, 몇 턴 뒤에 나타납니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ko_KR"><Text>{1_People}이(가) 재난 이후 {2_City}에서 달아났습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ko_KR"><Text>{1_People}이(가) 달아날 곳 없이 {2_City}에서 스러졌습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SCOPE_INTERNAL" Language="ko_KR"><Text>(제국 내 이동)</Text></Replace>
+        <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="ko_KR"><Text>(제국 외 이동)</Text></Replace>
+        <Replace Tag="LOC_EMIG_DEST_CLAUSE" Language="ko_KR"><Text>{1_Dest}(으)로 향했습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_WHY_CLAUSE" Language="ko_KR"><Text>이주 이유: {1_Why}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_RICHER" Language="ko_KR"><Text>더 번영함</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_NEARBY" Language="ko_KR"><Text>가까움</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_SAFER_DIR" Language="ko_KR"><Text>전투에서 멀리</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_OWN_CIV" Language="ko_KR"><Text>더 안전한 내륙</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_CRISIS_ESCAPE" Language="ko_KR"><Text>위기에서 탈출</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_AGGRESSOR_AVOIDED" Language="ko_KR"><Text>침략자 회피</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_OPEN_BORDERS" Language="ko_KR"><Text>개방된 국경</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_ALLIED" Language="ko_KR"><Text>동맹국</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_ASYLUM" Language="ko_KR"><Text>망명 제공</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_RAID" Language="ko_KR"><Text>약탈에 이끌려</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_SIEGE" Language="ko_KR"><Text>포위 중</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_UNDER_ATTACK" Language="ko_KR"><Text>공격 받는 중</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_DISASTER" Language="ko_KR"><Text>재해</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_FAMINE" Language="ko_KR"><Text>기근</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_NO_REFUGE" Language="ko_KR"><Text>안전한 피난처 없음</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_CRISIS_LOSSES" Language="ko_KR"><Text>피난 중 손실</Text></Replace>
+        <Replace Tag="LOC_EMIG_DEATH_WHY_CLAUSE" Language="ko_KR"><Text>원인: {1_Why}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_CUE" Language="ko_KR"><Text>이주 압력 증가: {1_City}의 시민들이 점점 {2_Dest}에 이끌리고 있습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="ko_KR"><Text>도시의 행복도를 높이거나 반이민 정책을 채택해 이들을 붙잡으세요.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="ko_KR"><Text>이웃이 이 도시를 앞지르고 있습니다. 산출을 늘려 주민을 붙잡으세요.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="ko_KR"><Text>난민이 전투를 피해 떠납니다. 포위를 풀거나 평화를 맺어 유출을 막으세요.</Text></Replace>
@@ -207,19 +233,19 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ko_KR"><Text>그 사람들은 영영 사라졌습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="ko_KR"><Text>{1_Dest}이(가) 이들을 통합하기 위해 턴당 약 {2_Gold} 골드를 지불합니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="ko_KR"><Text>친이민 기조</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ko_KR"><Text>전 세계에서 오는 이주자를 환영합니다. 당신의 도시로 오는 이주가 50% 증가하고, 세계주의적 평판으로 매 턴 영향력을 얻습니다. 시대에 따라 +1, +2, 그다음 +3입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ko_KR"><Text>전 세계에서 오는 [icon:YIELD_POPULATION] 이주자를 환영합니다. 당신의 도시로 오는 이주가 50% 증가하고, 세계주의적 평판으로 매 턴 [icon:YIELD_DIPLOMACY] 영향력을 얻습니다. 시대에 따라 +1, +2, 그다음 +3입니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="ko_KR"><Text>반이민 기조</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ko_KR"><Text>세계를 향해 국경을 닫습니다. 외국에서 온 신규 이주민이 40%로 감소하고(약 60% 감소), 당신의 국민이 경쟁 문명으로 떠나는 일도 크게 줄어듭니다. 동원된 국내 경제가 모든 도시에 생산력을 더합니다. 시대에 따라 +2, +3, 그다음 +4입니다. 고립에는 대가가 따라 매 턴 영향력을 잃습니다. 시대에 따라 -2, -3, 그다음 -4입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ko_KR"><Text>세계를 향해 국경을 닫습니다. 외국에서 온 [icon:YIELD_POPULATION] 신규 이주민이 40%로 감소하고(약 60% 감소), 당신의 국민이 경쟁 문명으로 떠나는 일도 크게 줄어듭니다. 동원된 국내 경제가 모든 도시에 [icon:YIELD_PRODUCTION] 생산력을 더합니다. 시대에 따라 +2, +3, 그다음 +4입니다. 고립에는 대가가 따라 매 턴 [icon:YIELD_DIPLOMACY] 영향력을 잃습니다. 시대에 따라 -2, -3, 그다음 -4입니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="ko_KR"><Text>인재 유치</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ko_KR"><Text>새 이주자가 당신의 연구를 강화합니다. 과학 +1(현대에는 +2)을 얻고, 끌어들인 이주자 1명당 약 +1.5씩 늘어나는 과학 보너스를 매 턴 최대 +12까지 얻습니다. 이 보너스는 이주 유입이 멈추면 사그라듭니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ko_KR"><Text>[icon:YIELD_POPULATION] 신규 이주자가 당신의 연구를 강화합니다. [icon:YIELD_SCIENCE] 과학 +1(현대에는 +2)을 얻고, 끌어들인 이주자 1명당 약 +1.5씩 늘어나는 과학 보너스를 매 턴 최대 +12까지 얻습니다. 이 보너스는 이주 유입이 멈추면 사그라듭니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="ko_KR"><Text>문화적 매력</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ko_KR"><Text>새 이주자가 당신의 문화를 풍요롭게 합니다. 문화 +1(현대에는 +2)을 얻고, 끌어들인 이주자 1명당 약 +1.5씩 늘어나는 문화 보너스를 매 턴 최대 +12까지 얻습니다. 이 보너스는 이주 유입이 멈추면 사그라듭니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ko_KR"><Text>[icon:YIELD_POPULATION] 신규 이주자가 당신의 문화를 풍요롭게 합니다. [icon:YIELD_CULTURE] 문화 +1(현대에는 +2)을 얻고, 끌어들인 이주자 1명당 약 +1.5씩 늘어나는 문화 보너스를 매 턴 최대 +12까지 얻습니다. 이 보너스는 이주 유입이 멈추면 사그라듭니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="ko_KR"><Text>상업적 매력</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ko_KR"><Text>새 이주자가 당신의 시장을 키웁니다. 금 +1(현대에는 +2)을 얻고, 끌어들인 이주자 1명당 약 +1.5씩 늘어나는 금 보너스를 매 턴 최대 +12까지 얻습니다. 이 보너스는 이주 유입이 멈추면 사그라듭니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ko_KR"><Text>[icon:YIELD_POPULATION] 신규 이주자가 당신의 시장을 키웁니다. [icon:YIELD_GOLD] 금 +1(현대에는 +2)을 얻고, 끌어들인 이주자 1명당 약 +1.5씩 늘어나는 금 보너스를 매 턴 최대 +12까지 얻습니다. 이 보너스는 이주 유입이 멈추면 사그라듭니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="ko_KR"><Text>선별적 망명</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ko_KR"><Text>전쟁과 재난을 피해 달아나는 이들에게 문을 엽니다. 난민이 강하게 당신에게 이끌리며(가장 절박한 이들부터), 인도주의적 명성으로 매 턴 영향력 +1을 얻습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ko_KR"><Text>전쟁과 재해를 피해 달아나는 이들에게 문을 엽니다. 난민은 당신에게 강하게 이끌리며, 가장 절박한 이들이 먼저 향합니다. 인도주의적 명성으로 매 턴 +1 [icon:YIELD_DIPLOMACY] 영향력을 얻습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="ko_KR"><Text>난민 협약</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="ko_KR"><Text>실향민을 향한 항구적 약속입니다. 난민이 강하게 당신에게 흘러들며(가장 절박한 이들부터) 당신의 문화를 풍요롭게 하고, 매 턴 영향력 +2와 문화 +1을 얻습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="ko_KR"><Text>실향민을 향한 지속적인 약속입니다. 난민은 당신에게 강하게 흘러들고, 가장 절박한 이들이 먼저 향합니다. 그들은 당신의 문화를 풍요롭게 하며 매 턴 +2 [icon:YIELD_DIPLOMACY] 영향력과 +1 [icon:YIELD_CULTURE] 문화를 제공합니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="ko_KR"><Text>이주</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="ko_KR"><Text>이주</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="ko_KR"><Text>이주</Text></Replace>
@@ -285,5 +311,202 @@
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="ko_KR"><Text>아직 인구 없음</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_ORIGINS" Language="ko_KR"><Text>출신지</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_ORIGINS_TIP" Language="ko_KR"><Text>이주민의 출신지로 선 표시</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="ko_KR"><Text>이주 - {1_City}</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="ko_KR"><Text>인구 출신</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTING" Language="ko_KR"><Text>이주 대상지</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ARRIVING" Language="ko_KR"><Text>유입 출신지</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_NO_MIGRATION" Language="ko_KR"><Text>이 정착지에는 아직 기록된 이주가 없습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_MORE" Language="ko_KR"><Text>(+{1_Count}개 더)</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_ONE" Language="ko_KR"><Text>{1_Count}명의 난민이 이곳 정착을 기다리고 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_MANY" Language="ko_KR"><Text>{1_Count}명의 난민이 이곳 정착을 기다리고 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_TITLE" Language="ko_KR"><Text>문화 구역</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_NO_QUARTER" Language="ko_KR"><Text>이곳에는 외국인 구역이 자리 잡지 않았습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_ROOT" Language="ko_KR"><Text>{1_Quarter}이(가) 이 정착지에 자리 잡았습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_STANCE" Language="ko_KR"><Text>당신의 입장: {1_Stance}.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_GRANTS" Language="ko_KR"><Text>도시에 {1_Amount} {2_Yield}을(를) 제공합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_COSTS" Language="ko_KR"><Text>매 턴 {1_Amount} {2_Yield}을(를) 소모합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_CONTESTED" Language="ko_KR"><Text>분쟁: 그들의 본국과 전쟁 중이어서 구역에 부담이 됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_STANCE_PRO" Language="ko_KR"><Text>친이민</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_STANCE_ANTI" Language="ko_KR"><Text>반이민</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_STANCE_NEUTRAL" Language="ko_KR"><Text>중립</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_FLAG_AT_RISK" Language="ko_KR"><Text>위험</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_FLAG_RESTING" Language="ko_KR"><Text>휴지 중</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_NETWORK" Language="ko_KR"><Text>이주 네트워크</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_NET_TABLE" Language="ko_KR"><Text>순이주 (표)</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_WHY" Language="ko_KR"><Text>사람들이 이동하는 이유</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_SETTLEMENTS" Language="ko_KR"><Text>정착지</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_POLICIES" Language="ko_KR"><Text>이민 정책</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_NOTIFICATIONS" Language="ko_KR"><Text>이주 알림</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_GUIDE" Language="ko_KR"><Text>가이드</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_EMPTY" Language="ko_KR"><Text>아직 표시할 내용이 없습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_NETWORK" Language="ko_KR"><Text>네트워크</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_NET_TABLE" Language="ko_KR"><Text>순이주 (표)</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_CAUSES" Language="ko_KR"><Text>원인</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_POLICIES" Language="ko_KR"><Text>정책</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_MY_CITIES" Language="ko_KR"><Text>내 도시</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_NOTIFICATIONS" Language="ko_KR"><Text>알림</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_GUIDE" Language="ko_KR"><Text>가이드</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NUM_CIV" Language="ko_KR"><Text>Civ 인구</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NUM_SCALED" Language="ko_KR"><Text>척도 인구</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SAMPLE_BADGE" Language="ko_KR"><Text>샘플 데이터 ; 미리보기 (옵션에서 실시간으로 전환)</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_OPTIONS_LABEL" Language="ko_KR"><Text>옵션:</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_OPTIONS_ADVANCED" Language="ko_KR"><Text>고급</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NUMBERS_LABEL" Language="ko_KR"><Text>수치:</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NO_ARRIVALS" Language="ko_KR"><Text>아직 유입 없음</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NO_DEPARTURES" Language="ko_KR"><Text>아직 유출 없음</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_WHY_LINE" Language="ko_KR"><Text>{1_Prefix} {2_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_WHY_PREFIX" Language="ko_KR"><Text>이유:</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_TITLE_TOWN" Language="ko_KR"><Text>{1_Name} (마을)</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_TITLE_CITY" Language="ko_KR"><Text>{1_Name} (도시)</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_CRITICAL" Language="ko_KR"><Text>심각</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_HIGH" Language="ko_KR"><Text>높음</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_MODERATE" Language="ko_KR"><Text>보통</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_LOW" Language="ko_KR"><Text>낮음</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_PRESSURE" Language="ko_KR"><Text>이주 압력</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NONE_RECORDED" Language="ko_KR"><Text>기록 없음</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_FLAG_PAREN" Language="ko_KR"><Text> ({1_Flag})</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_HEADING_TO" Language="ko_KR"><Text>행선지: {1_Sub}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_WHATS_DRIVING" Language="ko_KR"><Text>무엇이 원인인가</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EVENT_NAME" Language="ko_KR"><Text>↳ {1_Name}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EVENT_BOTH" Language="ko_KR"><Text> · {1_Deaths}명 사망</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EVENT_DIED" Language="ko_KR"><Text>{1_Deaths}명 사망</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_CAUSES_BY_IMPACT" Language="ko_KR"><Text>영향순 원인</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NO_MIGRATION" Language="ko_KR"><Text>아직 이주 없음</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_DIR_IMMIGRANTS" Language="ko_KR"><Text>이민자 ; 출신지</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_DIR_EMIGRANTS" Language="ko_KR"><Text>이주민 ; 떠난 곳/사망</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_DIED" Language="ko_KR"><Text>사망</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_SECTION_CAUSES" Language="ko_KR"><Text>원인: 사람들이 이동하는 이유</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_SECTION_SETTLEMENTS" Language="ko_KR"><Text>정착지: 당신 정착지의 이주 유입과 유출</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EMPTY" Language="ko_KR"><Text>아직 도시 이주가 기록되지 않았습니다. 사람들이 도시를 드나들면 흐름이 나타납니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_DRIVERS" Language="ko_KR"><Text>동력: {1_Drivers}</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_TITLE" Language="ko_KR"><Text>순이주 (상세)</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_CIV" Language="ko_KR"><Text>문명</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_NET" Language="ko_KR"><Text>순변화</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_IN" Language="ko_KR"><Text>유입</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_OUT" Language="ko_KR"><Text>유출</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_STANCE" Language="ko_KR"><Text>입장 영향</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_REFUGEES" Language="ko_KR"><Text>난민</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_LOSSES" Language="ko_KR"><Text>손실</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_TOTAL" Language="ko_KR"><Text>합계</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_NONE" Language="ko_KR"><Text>국경 정책 없음, 이주에 영향 없음.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_ALLOWED" Language="ko_KR"><Text>중립보다 이민자 +{1_People}명 추가 허용{2_Pct}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_TURNED_AWAY" Language="ko_KR"><Text>이민 희망자 {1_People}명 거부됨{2_Pct}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_KEPT_HOME" Language="ko_KR"><Text>자국민 {1_People}명 붙잡음</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_NO_EFFECT" Language="ko_KR"><Text>정책 배치됨, 그러나 아직 영향받은 이주 없음.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_1" Language="ko_KR"><Text>도시 변두리에</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_2" Language="ko_KR"><Text>바깥 거리에</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_3" Language="ko_KR"><Text>마지막 집들 너머에</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_4" Language="ko_KR"><Text>도시 저편에</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_5" Language="ko_KR"><Text>거리가 끝나는 곳에</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_1" Language="ko_KR"><Text>가져갈 수 있는 것을</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_2" Language="ko_KR"><Text>연장과 그 밖의 몇 가지를</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_3" Language="ko_KR"><Text>수레에 실을 만한 것을</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_4" Language="ko_KR"><Text>아이들과 씨앗 곡식을</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_5" Language="ko_KR"><Text>소중한 몇 가지를</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_1" Language="ko_KR"><Text>{1_War}이(가) {2_City}에 이르자, 주민 {3_People}명이 {4_Carried} 챙겨 떠났습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_2" Language="ko_KR"><Text>그해 {3_People}명의 {5_Civ} 난민이 {1_War}에 쫓겨 {2_City}을(를) 버렸습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_3" Language="ko_KR"><Text>{1_War}이(가) 다가오자 {2_City}에서 나가는 길은 난민으로 가득 찼습니다. {3_People}명은 돌아오지 않았습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_4" Language="ko_KR"><Text>{1_War}이(가) 닥치자 {2_City}은(는) 텅 비었습니다. {3_People}명의 {5_Civ} 가족은 전화가 미치지 않는 곳이면 어디로든 떠났습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DISASTER_EXODUS_1" Language="ko_KR"><Text>{1_DisasterCap}이(가) {3_City}을(를) 강타했습니다. {4_People}명의 {5_Civ} 가족이 {6_Carried} 챙겨 더 안전한 땅을 찾아 떠났습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DISASTER_EXODUS_2" Language="ko_KR"><Text>{2_Disaster} 이후, {4_People}명의 {5_Civ} 난민이 폐허가 된 {3_City}을(를) 뒤로하고 떠났습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DISASTER_EXODUS_3" Language="ko_KR"><Text>{2_Disaster}이(가) 지난 뒤 몇 달 동안 {4_People}명의 {5_Civ} 가족이 {3_City}에서 달아났고, 주변의 들판은 조용해졌습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_PLAIN_EXODUS_1" Language="ko_KR"><Text>그해 {1_People}명의 {2_Civ} 가족이 더 나은 삶을 찾아 {3_City}을(를) 떠났습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_PLAIN_EXODUS_2" Language="ko_KR"><Text>일자리와 평온한 국경 소식이 {1_People}명의 {2_Civ} 가구를 {3_City}에서 이끌어 냈습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_PLAIN_EXODUS_3" Language="ko_KR"><Text>{3_City}은(는) 몇 가족씩 조금씩, 먼 길로 떠나는 {1_People}명의 주민을 잃었습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FRAMED_EXODUS_1" Language="ko_KR"><Text>우리가 알던 땅 저 너머, {1_City}이(가) 텅 비었습니다. {3_Civ}(이)라 불린다는 한 민족의 {2_People}명이 길을 떠났습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FRAMED_EXODUS_2" Language="ko_KR"><Text>{2_People}명의 난민이 {1_City}에서 달아났습니다. 소문으로만 듣던 먼 민족, {3_Civ}의 도시였습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FRAMED_EXODUS_3" Language="ko_KR"><Text>지도의 끝 어딘가에 있는 {1_City} 소식이 전해졌습니다. 풍문으로만 듣던 민족, {3_Civ}의 {2_People}명이 고향에서 쫓겨났습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_FRAMED_1" Language="ko_KR"><Text>먼 땅에서 온 공동체가 {1_City}에 뿌리내렸습니다. {2_Civ}(이)라 불린다는 민족으로, 이제 가구의 {3_Pct}를 이루며 {4_Where} 자리 잡았습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_FRAMED_2" Language="ko_KR"><Text>{1_City}은(는) 먼 곳에서 온 이들의 보금자리가 되었습니다. 우리에게는 {2_Civ}(으)로만 알려진 민족으로, 도시의 {3_Pct}를 차지합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_1" Language="ko_KR"><Text>어느덧 {1_City}의 {2_Civ} 가구가 도시의 {3_Pct}를 이루었습니다. 그들은 {4_Where} 자신들만의 구역을 두었습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_2" Language="ko_KR"><Text>{2_Civ} 공동체가 {1_City}에 뿌리내렸습니다. 주민의 {3_Pct}를 이루며 여전히 늘어나는 중이고, {4_Where} 자리 잡았습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_3" Language="ko_KR"><Text>{1_City}은(는) {2_Civ} 소수 공동체의 보금자리가 되었습니다. 가구의 {3_Pct}를 이루며 {4_Where} 모여 살고 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_FRAMED_1" Language="ko_KR"><Text>{2_City}의 {1_People} 가족이 먼 고향을 향해 길을 나섰습니다. 우리에게는 {3_Civ}(으)로만 알려진 민족으로, 이제 고향이 {4_Reason} 되었기 때문입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_FRAMED_2" Language="ko_KR"><Text>{3_Civ}(이)라 불린다는, 다시 평화를 찾은 먼 나라의 소식이 {2_City}에 닿았습니다. 그 피를 이은 {1_People}명이 고향을 향해 떠났습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_1" Language="ko_KR"><Text>고향이 {4_Reason} 되었다는 소식이 퍼지자, {2_City}의 {1_People}명의 {3_Civ} 가족이 먼 귀향길에 올랐습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_2" Language="ko_KR"><Text>그해 {2_City}의 {3_Civ} 구역은 한산해졌습니다. 고향이 {4_Reason} 되자 {1_People}명이 돌아갔습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_3" Language="ko_KR"><Text>{1_People}명의 {3_Civ} 가구가 자신들이 떠나왔던 나라로 {2_City}을(를) 떠났습니다. 그곳이 {4_Reason} 되자 다시 이끌린 것입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_FOUNDING" Language="ko_KR"><Text>{2_City}의 {1_Civ} 구역</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_RETURN" Language="ko_KR"><Text>{1_Civ}의 귀환</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_EXODUS_1" Language="ko_KR"><Text>{1_Civ}의 대탈출</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_EXODUS_2" Language="ko_KR"><Text>{2_City}로부터의 피난</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_EXODUS_3" Language="ko_KR"><Text>{2_City}의 공동화</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_MIGRATION" Language="ko_KR"><Text>{1_Civ}의 이주</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_NAME_FRAMED" Language="ko_KR"><Text>{1_Civ}(이)라 불린다는 민족</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_NAME" Language="ko_KR"><Text>{1_Civ}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_PLAGUE_TITLE" Language="ko_KR"><Text>성문 앞의 병자들</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_PLAGUE_BODY" Language="ko_KR"><Text>역병이 {1_Origin}의 도시들을 텅 비웠습니다. 살아남은 이들은 먼 길을 걸어와 이제 당신의 성벽 밖에서 기다립니다. {2_People}명이 겁에 질리고 병든 채로 말입니다. 그들을 받아들이는 것은 그 위험을 함께 지는 것이요, 돌려보내는 것은 그들을 그 위험에 내버려 두는 것입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_CONQUEST_TITLE" Language="ko_KR"><Text>국경의 난민들</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_CONQUEST_BODY" Language="ko_KR"><Text>{1_By}의 군대가 {2_Origin}을(를) 짓밟았고, 그 백성이 당신의 땅으로 밀려들고 있습니다. {3_People}명이 지킬 수 있었던 것을 챙겨 국경에 모여 피난처를 구합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHR_FOOTHOLD_TITLE" Language="ko_KR"><Text>{2_City}의 {1_Civ} 거점</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHR_FOOTHOLD_BODY" Language="ko_KR"><Text>{2_City}에 항구적인 {1_Civ} 공동체가 형성되었습니다. 오랜 시간에 걸친 {4_People}명의 유입 끝에 이제 도시의 {3_Pct} 퍼센트를 차지합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_TITLE" Language="ko_KR"><Text>제목</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_STORY" Language="ko_KR"><Text>이야기</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CAUSE" Language="ko_KR"><Text>원인</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_EVENT" Language="ko_KR"><Text>사건</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_FROM" Language="ko_KR"><Text>출발지</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CASUALTIES" Language="ko_KR"><Text>사상자</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_MOVED_TO" Language="ko_KR"><Text>이동처</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_TO" Language="ko_KR"><Text>도착지</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_PEOPLE" Language="ko_KR"><Text>사람</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_WHY_THERE" Language="ko_KR"><Text>그곳인 이유</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_NOTE" Language="ko_KR"><Text>비고</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_DEFAULT_SUMMARY" Language="ko_KR"><Text>이주 사건</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CAUSE_EVENT" Language="ko_KR"><Text>{1_Cause} 사건</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_EVENT_PREFIX" Language="ko_KR"><Text>{1_Event}: {2_Summary}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_TURN" Language="ko_KR"><Text>{1_Turn}턴</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CHRONICLE" Language="ko_KR"><Text>연대기</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_EMPTY" Language="ko_KR"><Text>아직 이주 사건이 없습니다. 사람들이 이동하면 각 사건의 상세 내용과 함께 여기에 나타납니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WARN_HOLDING" Language="ko_KR"><Text>이 정착지에 난민 수용이 진행 중입니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WARN_TRAPPED" Language="ko_KR"><Text>위험: 달아날 곳 없이 갇혔습니다{1_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WARN_DISTRESS" Language="ko_KR"><Text>고통 상태 - 사람들이 떠나려 합니다{1_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BADGE_HIGH" Language="ko_KR"><Text>수용: 높음</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BADGE_MEDIUM" Language="ko_KR"><Text>수용: 보통</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BADGE_LOW" Language="ko_KR"><Text>수용: 낮음</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_ORIGINS" Language="ko_KR"><Text>출신지: {1_List}{2_Tail}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_ORIGINS_MORE" Language="ko_KR"><Text> (+{1_Count}개 더)</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CAUSE_ITEM" Language="ko_KR"><Text>{1_Label} {2_Share}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_POOL_ONE" Language="ko_KR"><Text>난민 수용 풀: {1_Count}포인트</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_POOL_MANY" Language="ko_KR"><Text>난민 수용 풀: {1_Count}포인트</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BURDEN" Language="ko_KR"><Text>난민 지원 부담: 턴당 약 {1_Gold} 골드, {2_Happiness} 행복도/턴</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WHY_THERE" Language="ko_KR"><Text>그곳인 이유: {1_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STATUS_RESTING" Language="ko_KR"><Text> (휴지 중 {1_Cooldown})</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STATUS_TO_MOVE" Language="ko_KR"><Text> (다음 이동까지 {1_Pct}%)</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_PRESSURE" Language="ko_KR"><Text>압력: {1_Val}{2_Status}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_PULLED_TOWARD" Language="ko_KR"><Text>{1_Name}에 이끌림{2_Rival}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_RIVAL_CIV" Language="ko_KR"><Text> (경쟁 문명)</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_ASSIM_COST" Language="ko_KR"><Text>통합 비용: 턴당 약 {1_Gold} 골드</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CIV_NET" Language="ko_KR"><Text>문명 순이주: {1_People}명</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_TITLE" Language="ko_KR"><Text>{1_City} - 이주</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_DEFAULT_CITY" Language="ko_KR"><Text>정착지</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_SPARK_LABEL" Language="ko_KR"><Text>최근 순이주</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_TOAST_ESTABLISHED" Language="ko_KR"><Text>{1_City}이(가) 난민 수용을 시작했습니다 ({2_Pts}포인트)</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_TOAST_CLEARED" Language="ko_KR"><Text>{1_City}이(가) 난민 수용 풀을 비웠습니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_A_SETTLEMENT" Language="ko_KR"><Text>한 정착지</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WELCOME_LABEL" Language="ko_KR"><Text>받아들이기</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WELCOME_NOTE" Language="ko_KR"><Text>골드 비용과 함께 국민에게 단기적인 부담이 따릅니다. 그들은 당신 곁에 정착하여, 시간이 지나면 당신의 백성이 됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_FRONTIER_LABEL" Language="ko_KR"><Text>변경에 정착시키기</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_FRONTIER_NOTE" Language="ko_KR"><Text>더 적은 골드 비용. 그들을 작은 마을로 보내 새 출발을 하게 합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AWAY_LABEL" Language="ko_KR"><Text>돌려보내기</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AWAY_NOTE" Language="ko_KR"><Text>지금 국제적 평판에 대가가 따릅니다. 그들은 길을 따라 계속 나아가며, 그 짐은 당신이 질 몫이 아닙니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WHO_UNKNOWN" Language="ko_KR"><Text>풍문으로만 듣던 민족</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WHO_KNOWN" Language="ko_KR"><Text>{1_Adj}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_YOUR_LANDS" Language="ko_KR"><Text>당신의 땅</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_BODY_WELCOME" Language="ko_KR"><Text>당신은 {2_Adj}의 난민에게 {1_Place}을(를) 열었습니다. 그들은 이제 당신의 백성이거나, 곧 그리될 것입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_BODY_FRONTIER" Language="ko_KR"><Text>당신은 {1_Adj}의 난민을 변경으로 보내 그들만의 것을 일구게 했습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_BODY_AWAY" Language="ko_KR"><Text>당신은 {1_Adj}의 난민을 {2_Place}에서 돌려보냈습니다. 그들은 길을 따라 계속 나아갔습니다, {3_Who}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_CHRON_TITLE" Language="ko_KR"><Text>국경에서의 결정</Text></Replace>
+        <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="ko_KR"><Text>난민</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_TITLE" Language="ko_KR"><Text>주인이 바뀐 구역</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_BODY" Language="ko_KR"><Text>{1_Place}에서, {2_PriorAdj} 구역이 {3_Name}에 자리를 내주었습니다. 이제 새로운 민족이 그 구역을 자신들의 것으로 삼습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_EMBRACE" Language="ko_KR"><Text>당신은 {1_Name}을(를) 받아들였고, 그 관습이 도시를 풍요롭게 합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_TAX" Language="ko_KR"><Text>당신은 {1_Name}의 교역에 세금을 매겼습니다. 그 돈은 당신의 국고로 흘러들지만, 그 사람들은 불만을 품습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_LETBE" Language="ko_KR"><Text>당신은 {1_Name}을(를) 그대로 두었습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_DECISION_TITLE" Language="ko_KR"><Text>{1_Name}</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_EYEBROW" Language="ko_KR"><Text>문화 구역</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_TITLE" Language="ko_KR"><Text>{1_Name}이(가) 뿌리내리다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_BODY" Language="ko_KR"><Text>{1_Adj}에서 온 항구적인 공동체가 이제 {2_Place}에서 자신들만의 구역을 차지하며, 도시의 {3_Pct} 퍼센트까지 자랐습니다. 그들을 어떻게 맞이하시겠습니까?</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_TITLE" Language="ko_KR"><Text>동요하는 구역</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_BODY" Language="ko_KR"><Text>{1_Adj}과(와)의 전쟁이 {2_Name}을(를) 술렁이게 합니다. 그 구역은 부글거립니다.</Text></Replace>
     </LocalizedText>
 </Database>

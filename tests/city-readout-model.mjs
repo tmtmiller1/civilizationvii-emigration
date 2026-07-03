@@ -13,6 +13,7 @@ function testReadoutModelBuildsExpectedLines() {
     pressureToBar: 0.42,
     topDestinationName: "Memphis",
     crossCiv: true,
+    destReasons: ["nearby", "open-borders"],
     assimLoad: 1,
     assimCostGold: 3.2,
     composition: {
@@ -32,9 +33,11 @@ function testReadoutModelBuildsExpectedLines() {
   assert.equal(model.title, "Rome - Migration");
   assert.ok(model.lines.some((l) => l.includes("Pressure: War 60%") && l.includes("42% to next move")));
   assert.ok(model.lines.some((l) => l.includes("Pulled toward Memphis (rival civ)")));
+  assert.ok(model.lines.some((l) => l.includes("Why there: nearby, open borders")),
+    "the readout explains why the pull target was chosen (P0.1)");
   assert.ok(model.lines.some((l) => l.includes("Assimilation cost: ~3 gold/turn")));
   assert.ok(model.lines.some((l) => l.includes("Origins: Roman 62%, Egyptian 23%, Greek 10% (+1 more)")));
-  assert.ok(model.lines.some((l) => l.includes("Civ net migration: -3 thousand people")));
+  assert.ok(model.lines.some((l) => l.includes("Civ net migration: -3,000 people")));
   assert.equal(model.warn, "Under distress - people are looking to leave");
 }
 

@@ -191,17 +191,17 @@ function testMarginalPeopleFloorsRealPoint() {
 function testFormatPeopleBuckets() {
   assert.equal(formatPeople(0), "0");
   assert.equal(formatPeople(500), "500");
-  assert.equal(formatPeople(3000), "3 thousand");
-  assert.equal(formatPeople(1_300_000), "1.3 million");
-  assert.equal(formatPeople(240_000_000), "240 million");
-  assert.equal(formatPeople(1_100_000_000), "1.1 billion");
+  assert.equal(formatPeople(3000), "3,000");
+  assert.equal(formatPeople(1_300_000), "1,300,000");
+  assert.equal(formatPeople(240_000_000), "240,000,000");
+  assert.equal(formatPeople(1_100_000_000), "1,100,000,000");
 }
 
 function testFormatBothShowsBothSystems() {
   // Popups present BOTH measuring systems at once: raw Civ points + scaled people, singular at 1.
-  assert.equal(formatBoth(12000, 1), "1 population point (12 thousand people)");
-  assert.equal(formatBoth(36000, 3), "3 population points (36 thousand people)");
-  assert.equal(formatBoth(12000), "1 population point (12 thousand people)"); // points defaults to 1
+  assert.equal(formatBoth(12000, 1), "1 population point (12,000 people)");
+  assert.equal(formatBoth(36000, 3), "3 population points (36,000 people)");
+  assert.equal(formatBoth(12000), "1 population point (12,000 people)"); // points defaults to 1
 }
 
 function testExactAndVariedFormats() {

@@ -16,6 +16,8 @@
 //
 // Pure: no engine reads. Callers pass already-resolved names/counts.
 
+import { loc as tr } from "/emigration/ui/emigration-loc.js";
+
 /**
  * A stable 32-bit FNV-1a hash of a seed string, for deterministic fragment choice.
  * @param {string} s The seed.
@@ -44,11 +46,18 @@ function pick(list, seed, salt) {
 
 // Always-true fallbacks for where a community keeps to inside a city, naming NO specific feature so a
 // line is never wrong. When the host city actually has a nameable feature, the caller
-// (emigration-diaspora.js, via emigration-quarters.js) supplies a truthful feature-based phrase as
+// (emigration-diaspora.js, via emigration-quarter-phrases.js) supplies a truthful feature-based phrase as
 // `where`; this list is only the fallback. Chosen by seed, never at random.
 const GENERIC_QUARTERS = [
   "on the edge of the city", "in the outer streets", "past the last houses",
   "on the far side of town", "where the streets give out"
+];
+
+// Parallel LOC keys for GENERIC_QUARTERS (same order); the seed picks the index, then the phrase is
+// localized via its key with the English fragment as the fallback.
+const GENERIC_QUARTERS_KEYS = [
+  "LOC_EMIG_NARR_QUARTER_GENERIC_1", "LOC_EMIG_NARR_QUARTER_GENERIC_2", "LOC_EMIG_NARR_QUARTER_GENERIC_3",
+  "LOC_EMIG_NARR_QUARTER_GENERIC_4", "LOC_EMIG_NARR_QUARTER_GENERIC_5"
 ];
 
 // What people carried, or failed to. Human-scale detail in the Cooper register.
@@ -56,6 +65,26 @@ const CARRIED = [
   "what they could carry", "their tools and little else", "what would fit on a cart",
   "their children and their seed grain", "the few things that mattered"
 ];
+
+// Parallel LOC keys for CARRIED (same order).
+const CARRIED_KEYS = [
+  "LOC_EMIG_NARR_CARRIED_1", "LOC_EMIG_NARR_CARRIED_2", "LOC_EMIG_NARR_CARRIED_3",
+  "LOC_EMIG_NARR_CARRIED_4", "LOC_EMIG_NARR_CARRIED_5"
+];
+
+/**
+ * Deterministically pick a fragment from a parallel (English, LOC-key) pair and localize it, so a
+ * seeded fragment reads the same off-engine (fallback) as it does localized. The seed selection is
+ * identical to {@link pick}, keeping output deterministic.
+ * @param {string[]} list The English fragments. @param {string[]} keys The parallel LOC keys.
+ * @param {string} seed The seed. @param {number} [salt] A per-slot salt.
+ * @returns {string} The localized fragment.
+ */
+function pickLoc(list, keys, seed, salt) {
+  if (!list.length) return "";
+  const i = hash(seed + ":" + (salt || 0)) % list.length;
+  return tr(keys[i], list[i]);
+}
 
 /**
  * A civ adjective for prose, falling back to a neutral "a people" when none was resolved. Civ
@@ -91,13 +120,19 @@ function cap(s) {
  */
 function warExodus(e) {
   const c = adj(e.civ);
-  const lines = [
-    `When the ${e.war} reached ${e.city}, ${e.people} of its people took ${pick(CARRIED, e.seed, 1)} and left.`,
-    `${e.people} ${c} refugees abandoned ${e.city} that year, driven out by the ${e.war}.`,
-    `The roads out of ${e.city} filled with refugees as the ${e.war} closed in. ${e.people} did not return.`,
-    `${e.city} emptied as the ${e.war} came. ${e.people} ${c} families went wherever the fighting was not.`
+  const carried = pickLoc(CARRIED, CARRIED_KEYS, e.seed, 1);
+  const keys = [
+    "LOC_EMIG_NARR_WAR_EXODUS_1", "LOC_EMIG_NARR_WAR_EXODUS_2",
+    "LOC_EMIG_NARR_WAR_EXODUS_3", "LOC_EMIG_NARR_WAR_EXODUS_4"
   ];
-  return pick(lines, e.seed, 0);
+  const en = [
+    "When the {1_War} reached {2_City}, {3_People} of its people took {4_Carried} and left.",
+    "{3_People} {5_Civ} refugees abandoned {2_City} that year, driven out by the {1_War}.",
+    "The roads out of {2_City} filled with refugees as the {1_War} closed in. {3_People} did not return.",
+    "{2_City} emptied as the {1_War} came. {3_People} {5_Civ} families went wherever the fighting was not."
+  ];
+  const i = hash(e.seed + ":" + 0) % en.length;
+  return tr(keys[i], en[i], e.war, e.city, e.people, carried, c);
 }
 
 /**
@@ -108,12 +143,18 @@ function warExodus(e) {
 function disasterExodus(e) {
   const c = adj(e.civ);
   const d = bare(e.disaster);
-  const lines = [
-    `The ${cap(d)} struck ${e.city}. ${e.people} ${c} families gathered ${pick(CARRIED, e.seed, 1)} and went looking for safer country.`,
-    `After the ${d}, ${e.people} ${c} refugees left the wreck of ${e.city} behind them.`,
-    `${e.people} ${c} families fled ${e.city} in the months after the ${d}, and the fields around it went quiet.`
+  const dCap = cap(d);
+  const carried = pickLoc(CARRIED, CARRIED_KEYS, e.seed, 1);
+  const keys = [
+    "LOC_EMIG_NARR_DISASTER_EXODUS_1", "LOC_EMIG_NARR_DISASTER_EXODUS_2", "LOC_EMIG_NARR_DISASTER_EXODUS_3"
   ];
-  return pick(lines, e.seed, 0);
+  const en = [
+    "The {1_DisasterCap} struck {3_City}. {4_People} {5_Civ} families gathered {6_Carried} and went looking for safer country.",
+    "After the {2_Disaster}, {4_People} {5_Civ} refugees left the wreck of {3_City} behind them.",
+    "{4_People} {5_Civ} families fled {3_City} in the months after the {2_Disaster}, and the fields around it went quiet."
+  ];
+  const i = hash(e.seed + ":" + 0) % en.length;
+  return tr(keys[i], en[i], dCap, d, e.city, e.people, c, carried);
 }
 
 /**
@@ -123,12 +164,16 @@ function disasterExodus(e) {
  */
 function plainExodus(e) {
   const c = adj(e.civ);
-  const lines = [
-    `${e.people} ${c} families left ${e.city} that year, looking for a better living elsewhere.`,
-    `Word of work and quiet borders drew ${e.people} ${c} households away from ${e.city}.`,
-    `${e.city} lost ${e.people} of its people to the long roads, a few families at a time.`
+  const keys = [
+    "LOC_EMIG_NARR_PLAIN_EXODUS_1", "LOC_EMIG_NARR_PLAIN_EXODUS_2", "LOC_EMIG_NARR_PLAIN_EXODUS_3"
   ];
-  return pick(lines, e.seed, 0);
+  const en = [
+    "{1_People} {2_Civ} families left {3_City} that year, looking for a better living elsewhere.",
+    "Word of work and quiet borders drew {1_People} {2_Civ} households away from {3_City}.",
+    "{3_City} lost {1_People} of its people to the long roads, a few families at a time."
+  ];
+  const i = hash(e.seed + ":" + 0) % en.length;
+  return tr(keys[i], en[i], e.people, c, e.city);
 }
 
 /**
@@ -140,12 +185,16 @@ function plainExodus(e) {
  */
 function framedExodus(e) {
   const o = adj(e.civ);
-  const lines = [
-    `Far beyond the lands we knew, ${e.city} emptied. ${e.people} of a people we have heard called the ${o} took to the roads.`,
-    `${e.people} refugees fled ${e.city}, a city of a distant people, the ${o}, of whom we had only rumour.`,
-    `Word came of ${e.city}, somewhere past the edge of the map: ${e.people} of the ${o}, a people we have only heard tell of, driven from their homes.`
+  const keys = [
+    "LOC_EMIG_NARR_FRAMED_EXODUS_1", "LOC_EMIG_NARR_FRAMED_EXODUS_2", "LOC_EMIG_NARR_FRAMED_EXODUS_3"
   ];
-  return pick(lines, e.seed, 0);
+  const en = [
+    "Far beyond the lands we knew, {1_City} emptied. {2_People} of a people we have heard called the {3_Civ} took to the roads.",
+    "{2_People} refugees fled {1_City}, a city of a distant people, the {3_Civ}, of whom we had only rumour.",
+    "Word came of {1_City}, somewhere past the edge of the map: {2_People} of the {3_Civ}, a people we have only heard tell of, driven from their homes."
+  ];
+  const i = hash(e.seed + ":" + 0) % en.length;
+  return tr(keys[i], en[i], e.city, e.people, o);
 }
 
 /**
@@ -171,26 +220,34 @@ export function exodusLine(e) {
  * another civ's city.
  * @param {{origin:string, host:string, city:string, pct:number, seed:string, where?:string,
  *          framed?:boolean}} e The event. `where` is a truthful, feature-based quarter phrase from the
- *   host city (emigration-quarters.js); when absent, a generic always-true phrase is used.
+ *   host city (emigration-quarter-phrases.js); when absent, a generic always-true phrase is used.
  * @returns {string} The line.
  */
 export function foundingLine(e) {
   const o = adj(e.origin);
   const pct = Math.round(e.pct) + " percent";
-  const where = typeof e.where === "string" && e.where ? e.where : pick(GENERIC_QUARTERS, e.seed, 2);
+  const where = typeof e.where === "string" && e.where
+    ? e.where
+    : pickLoc(GENERIC_QUARTERS, GENERIC_QUARTERS_KEYS, e.seed, 2);
   if (e.framed) {
-    const fl = [
-      `A community had taken root in ${e.city} from a distant land, a people we have heard called the ${o}, now ${pct} of its households, settled ${where}.`,
-      `${e.city} had become home to newcomers from far off, a people known to us only as the ${o}, ${pct} of the city.`
+    const flKeys = ["LOC_EMIG_NARR_FOUNDING_FRAMED_1", "LOC_EMIG_NARR_FOUNDING_FRAMED_2"];
+    const flEn = [
+      "A community had taken root in {1_City} from a distant land, a people we have heard called the {2_Civ}, now {3_Pct} of its households, settled {4_Where}.",
+      "{1_City} had become home to newcomers from far off, a people known to us only as the {2_Civ}, {3_Pct} of the city."
     ];
-    return pick(fl, e.seed, 0);
+    const fi = hash(e.seed + ":" + 0) % flEn.length;
+    return tr(flKeys[fi], flEn[fi], e.city, o, pct, where);
   }
-  const lines = [
-    `By now the ${o} households of ${e.city} made up ${pct} of the city. They kept a district of their own ${where}.`,
-    `A ${o} community had taken root in ${e.city}, ${pct} of its people and still arriving, settled ${where}.`,
-    `${e.city} had become home to a ${o} minority, ${pct} of its households, clustered ${where}.`
+  const keys = [
+    "LOC_EMIG_NARR_FOUNDING_1", "LOC_EMIG_NARR_FOUNDING_2", "LOC_EMIG_NARR_FOUNDING_3"
   ];
-  return pick(lines, e.seed, 0);
+  const en = [
+    "By now the {2_Civ} households of {1_City} made up {3_Pct} of the city. They kept a district of their own {4_Where}.",
+    "A {2_Civ} community had taken root in {1_City}, {3_Pct} of its people and still arriving, settled {4_Where}.",
+    "{1_City} had become home to a {2_Civ} minority, {3_Pct} of its households, clustered {4_Where}."
+  ];
+  const i = hash(e.seed + ":" + 0) % en.length;
+  return tr(keys[i], en[i], e.city, o, pct, where);
 }
 
 /**
@@ -202,18 +259,24 @@ export function foundingLine(e) {
 export function returnLine(e) {
   const o = adj(e.origin);
   if (e.framed) {
-    const fl = [
-      `${e.people} families of ${e.city} set out for a far homeland, a people known to us only as the ${o}, now that it was ${e.reason}.`,
-      `Word reached ${e.city} of a distant country at peace again, one we have heard called the ${o}. ${e.people} who traced their blood to it started for home.`
+    const flKeys = ["LOC_EMIG_NARR_RETURN_FRAMED_1", "LOC_EMIG_NARR_RETURN_FRAMED_2"];
+    const flEn = [
+      "{1_People} families of {2_City} set out for a far homeland, a people known to us only as the {3_Civ}, now that it was {4_Reason}.",
+      "Word reached {2_City} of a distant country at peace again, one we have heard called the {3_Civ}. {1_People} who traced their blood to it started for home."
     ];
-    return pick(fl, e.seed, 0);
+    const fi = hash(e.seed + ":" + 0) % flEn.length;
+    return tr(flKeys[fi], flEn[fi], e.people, e.city, o, e.reason);
   }
-  const lines = [
-    `As word spread that the homeland was ${e.reason}, ${e.people} ${o} families of ${e.city} started the long road home.`,
-    `The ${o} quarter of ${e.city} thinned that year. ${e.people} went back, now that home was ${e.reason}.`,
-    `${e.people} ${o} households left ${e.city} for the country they had fled, drawn back as it grew ${e.reason}.`
+  const keys = [
+    "LOC_EMIG_NARR_RETURN_1", "LOC_EMIG_NARR_RETURN_2", "LOC_EMIG_NARR_RETURN_3"
   ];
-  return pick(lines, e.seed, 0);
+  const en = [
+    "As word spread that the homeland was {4_Reason}, {1_People} {3_Civ} families of {2_City} started the long road home.",
+    "The {3_Civ} quarter of {2_City} thinned that year. {1_People} went back, now that home was {4_Reason}.",
+    "{1_People} {3_Civ} households left {2_City} for the country they had fled, drawn back as it grew {4_Reason}."
+  ];
+  const i = hash(e.seed + ":" + 0) % en.length;
+  return tr(keys[i], en[i], e.people, e.city, o, e.reason);
 }
 
 /**
@@ -223,13 +286,19 @@ export function returnLine(e) {
  */
 export function chronicleTitle(e) {
   const civ = e.civ ? adj(e.civ) : "";
-  if (e.kind === "founding") return `The ${civ} Quarter of ${e.city}`;
-  if (e.kind === "return") return `The ${civ} Return`;
-  if (e.kind === "exodus") {
-    const named = [`The ${civ} Exodus`, `The Flight from ${e.city}`, `The Emptying of ${e.city}`];
-    return pick(named, e.seed, 5);
+  if (e.kind === "founding") {
+    return tr("LOC_EMIG_NARR_TITLE_FOUNDING", "The {1_Civ} Quarter of {2_City}", civ, e.city);
   }
-  return e.event || `The ${civ} Migration`;
+  if (e.kind === "return") return tr("LOC_EMIG_NARR_TITLE_RETURN", "The {1_Civ} Return", civ);
+  if (e.kind === "exodus") {
+    const keys = [
+      "LOC_EMIG_NARR_TITLE_EXODUS_1", "LOC_EMIG_NARR_TITLE_EXODUS_2", "LOC_EMIG_NARR_TITLE_EXODUS_3"
+    ];
+    const en = ["The {1_Civ} Exodus", "The Flight from {2_City}", "The Emptying of {2_City}"];
+    const i = hash(e.seed + ":" + 5) % en.length;
+    return tr(keys[i], en[i], civ, e.city);
+  }
+  return e.event || tr("LOC_EMIG_NARR_TITLE_MIGRATION", "The {1_Civ} Migration", civ);
 }
 
 /**
@@ -240,7 +309,9 @@ export function chronicleTitle(e) {
  */
 function dilemmaName(nc) {
   const a = adj(nc.adj);
-  return nc.framed ? "a people we have heard called the " + a : "the " + a;
+  return nc.framed
+    ? tr("LOC_EMIG_NARR_DILEMMA_NAME_FRAMED", "a people we have heard called the {1_Civ}", a)
+    : tr("LOC_EMIG_NARR_DILEMMA_NAME", "the {1_Civ}", a);
 }
 
 /**
@@ -254,18 +325,26 @@ export function dilemmaPrompt(e) {
   const origin = dilemmaName(e.origin);
   if (e.kind === "plague") {
     return {
-      title: "The Sick at the Gates",
-      body: `Plague has emptied the cities of ${origin}. The survivors have walked a long way and now `
-        + `wait outside your walls, ${e.people} of them, frightened and ill. To take them in is to `
-        + `share their danger. To turn them away is to leave them to it.`
+      title: tr("LOC_EMIG_NARR_DILEMMA_PLAGUE_TITLE", "The Sick at the Gates"),
+      body: tr(
+        "LOC_EMIG_NARR_DILEMMA_PLAGUE_BODY",
+        "Plague has emptied the cities of {1_Origin}. The survivors have walked a long way and now "
+          + "wait outside your walls, {2_People} of them, frightened and ill. To take them in is to "
+          + "share their danger. To turn them away is to leave them to it.",
+        origin, e.people
+      )
     };
   }
   const by = dilemmaName(e.instigator);
   return {
-    title: "Refugees at the Border",
-    body: `The armies of ${by} have overrun ${origin}, and its people are streaming toward your `
-      + `lands. ${cap(e.people)} have gathered at the border, carrying what they could save, and they `
-      + `ask for shelter.`
+    title: tr("LOC_EMIG_NARR_DILEMMA_CONQUEST_TITLE", "Refugees at the Border"),
+    body: tr(
+      "LOC_EMIG_NARR_DILEMMA_CONQUEST_BODY",
+      "The armies of {1_By} have overrun {2_Origin}, and its people are streaming toward your "
+        + "lands. {3_People} have gathered at the border, carrying what they could save, and they "
+        + "ask for shelter.",
+      by, origin, cap(e.people)
+    )
   };
 }
 

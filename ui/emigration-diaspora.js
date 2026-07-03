@@ -21,7 +21,9 @@ import { formatPeopleExact } from "/emigration/ui/emigration-population.js";
 import { chronicle, chronicled } from "/emigration/ui/emigration-chronicle.js";
 import { exodusLine, foundingLine, chronicleTitle } from "/emigration/ui/emigration-narrative.js";
 import { cityFeatureKeys } from "/emigration/ui/emigration-city-features.js";
-import { resolveQuarter } from "/emigration/ui/emigration-quarters.js";
+import { resolveQuarter } from "/emigration/ui/emigration-quarter-phrases.js";
+import { migrationFlows } from "/emigration/ui/emigration-migration-stats.js";
+import { loc as tr } from "/emigration/ui/emigration-loc.js";
 
 // A wave this large (scaled people, one settlement, one cause, one pass) reads as a historical
 // exodus rather than ordinary churn.
@@ -32,6 +34,11 @@ const EXODUS_COOLDOWN = 8;
 // crosses another step (so a growing diaspora earns a short series, not a single line).
 const DIASPORA_MIN = 0.15;
 const DIASPORA_STEP = 0.15;
+
+// Quarter progression starts only after durable mass and then deepens with share growth.
+const QUARTER_MIN_IMMIGRANTS = 250000;
+const QUARTER_FOOTHOLD_SHARE = 0.25;
+const QUARTER_ESTABLISHED_SHARE = 0.35;
 
 /**
  * The current game turn, or 0.
@@ -120,6 +127,104 @@ function leadForeignOrigin(comp) {
 }
 
 /**
+ * Aggregate cumulative arrivals by destination-city-name + origin civ.
+ * Key shape: "destCity|originCiv".
+ * @param {*[]} flows migrationFlows() output.
+ * @returns {Map<string, number>} Indexed cumulative arrivals (scaled people).
+ */
+function arrivalMassIndex(flows) {
+  /** @type {Map<string, number>} */
+  const idx = new Map();
+  for (const f of flows || []) {
+    if (!f || typeof f.src !== "number" || typeof f.dest !== "number") continue;
+    if (!f.destCity || f.src === f.dest) continue;
+    const key = f.destCity + "|" + f.src;
+    idx.set(key, (idx.get(key) || 0) + (f.people || 0));
+  }
+  return idx;
+}
+
+/**
+ * Quarter progression stage from share + immigrant mass.
+ * @param {number} share Lead-origin share in the city.
+ * @param {number} migrantMass Cumulative arrivals for city+origin (scaled people).
+ * @returns {"none"|"foothold"|"established"} Stage.
+ */
+function quarterStage(share, migrantMass) {
+  if (share >= QUARTER_ESTABLISHED_SHARE && migrantMass >= QUARTER_MIN_IMMIGRANTS) {
+    return "established";
+  }
+  if (share >= QUARTER_FOOTHOLD_SHARE && migrantMass >= QUARTER_MIN_IMMIGRANTS) {
+    return "foothold";
+  }
+  return "none";
+}
+
+/**
+ * Chronicle a diaspora's FOOTHOLD stage (a lasting community, not yet a full quarter).
+ * @param {{civ:number, share:number}} lead The lead foreign origin. @param {string} name Host city name.
+ * @param {number} migrantMass Cumulative arrivals (scaled people). @param {{adj:string}} nc Origin descriptor.
+ */
+function chronicleFoothold(lead, name, migrantMass, nc) {
+  const dedupeKey = "quarter:foothold:" + name + "|" + lead.civ;
+  if (chronicled(dedupeKey)) return;
+  chronicle({
+    kind: "founding",
+    title: tr("LOC_EMIG_CHR_FOOTHOLD_TITLE", "A {1_Civ} Foothold in {2_City}", nc.adj, name),
+    body: tr(
+      "LOC_EMIG_CHR_FOOTHOLD_BODY",
+      "A lasting {1_Civ} community had formed in {2_City}, now {3_Pct} percent of the city after "
+        + "{4_People} arrivals over time.",
+      nc.adj, name, Math.round(lead.share * 100), formatPeopleExact(migrantMass)
+    ),
+    civ: nc.adj,
+    dedupeKey
+  });
+}
+
+/**
+ * Chronicle a diaspora's ESTABLISHED stage (a full quarter of its own, named from the city's features).
+ * @param {*} city Live city object. @param {{civ:number, share:number}} lead The lead foreign origin.
+ * @param {string} name Host city name. @param {number} owner Host player id.
+ * @param {{adj:string, framed:boolean}} nc Origin descriptor.
+ */
+function chronicleEstablished(city, lead, name, owner, nc) {
+  const dedupeKey = "quarter:established:" + name + "|" + lead.civ;
+  if (chronicled(dedupeKey)) return;
+  const seed = name + "|" + lead.civ + "|established";
+  const where = resolveQuarter(cityFeatureKeys(city), seed);
+  chronicle({
+    kind: "founding",
+    title: chronicleTitle({ kind: "founding", civ: nc.adj, city: name, seed }),
+    body: foundingLine({
+      origin: nc.adj, framed: nc.framed, host: civAdjective(owner),
+      city: name, pct: lead.share * 100, seed, where
+    }),
+    civ: nc.adj,
+    dedupeKey
+  });
+}
+
+/**
+ * Chronicle quarter progression moments derived from cumulative immigrant mass + share.
+ * @param {*} city Live city object.
+ * @param {Map<string, number>} massIdx city+origin cumulative-arrivals index.
+ */
+function detectQuarterForCity(city, massIdx) {
+  const comp = compositionForCity(city);
+  if (!comp || typeof comp.owner !== "number" || civHidden(comp.owner)) return;
+  const lead = leadForeignOrigin(comp);
+  if (!lead) return;
+  const name = cityName(city);
+  const migrantMass = massIdx.get(name + "|" + lead.civ) || 0;
+  const stage = quarterStage(lead.share, migrantMass);
+  if (stage === "none") return;
+  const nc = narrativeCiv(lead.civ);
+  if (stage === "foothold") chronicleFoothold(lead, name, migrantMass, nc);
+  else chronicleEstablished(city, lead, name, comp.owner, nc);
+}
+
+/**
  * Chronicle a city's notable foreign-origin minority when it crosses a fresh share step. Skips when
  * either the host or the origin is a policy-hidden (unmet) civ.
  * @param {*} city A live city object.
@@ -161,6 +266,48 @@ function detectFoundings(signals) {
 }
 
 /**
+ * Scan the pass's settlements for quarter progression milestones that are independent of native
+ * revolt hooks (foothold + established stage).
+ * @param {*[]} signals The pass's city signals ({city, owner, …}).
+ */
+function detectQuarterProgress(signals) {
+  const massIdx = arrivalMassIndex(migrationFlows());
+  for (const s of signals || []) {
+    if (s && s.city) detectQuarterForCity(s.city, massIdx);
+  }
+}
+
+/**
+ * Build the cumulative arrival index (destCity|originCiv → scaled people) from the live migration
+ * flows, for callers that need to assess quarter formation outside the chronicle pass (the Cultural
+ * Quarter decision system).
+ * @returns {Map<string, number>} The arrival-mass index.
+ */
+export function buildArrivalMassIndex() {
+  return arrivalMassIndex(migrationFlows());
+}
+
+/**
+ * Assess whether a city currently hosts an ESTABLISHED foreign quarter (the lead foreign minority has
+ * crossed both the established share and the cumulative-mass threshold). Returns the origin, host, and
+ * share for the decision system, or null. Reads the composition ledger + the given arrival index; pure
+ * of side effects.
+ * @param {*} city A live city object.
+ * @param {Map<string, number>} massIdx The arrival-mass index (from {@link buildArrivalMassIndex}).
+ * @returns {{civ:number, owner:number, share:number, mass:number, name:string}|null} The quarter, or null.
+ */
+export function establishedQuarterForCity(city, massIdx) {
+  const comp = compositionForCity(city);
+  if (!comp || typeof comp.owner !== "number") return null;
+  const lead = leadForeignOrigin(comp);
+  if (!lead) return null;
+  const name = cityName(city);
+  const mass = (massIdx && massIdx.get(name + "|" + lead.civ)) || 0;
+  if (quarterStage(lead.share, mass) !== "established") return null;
+  return { civ: lead.civ, owner: comp.owner, share: lead.share, mass, name };
+}
+
+/**
  * Read the pass and write any history worth keeping into the Migration Chronicle. Never throws into
  * the pass (the chronicle is cosmetic).
  * @param {*[]} signals The pass's city signals.
@@ -170,10 +317,22 @@ export function recordChroniclePass(signals, migrations) {
   try {
     detectExoduses(migrations);
     detectFoundings(signals);
+    detectQuarterProgress(signals);
   } catch (_) {
     /* the chronicle must never disrupt a pass */
   }
 }
 
 // Test hook: the pure pieces the harness exercises directly.
-export const __test = { wavesByCityCause, leadForeignOrigin, EXODUS_PEOPLE, DIASPORA_MIN, DIASPORA_STEP };
+export const __test = {
+  wavesByCityCause,
+  leadForeignOrigin,
+  arrivalMassIndex,
+  quarterStage,
+  EXODUS_PEOPLE,
+  DIASPORA_MIN,
+  DIASPORA_STEP,
+  QUARTER_MIN_IMMIGRANTS,
+  QUARTER_FOOTHOLD_SHARE,
+  QUARTER_ESTABLISHED_SHARE
+};

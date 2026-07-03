@@ -9,7 +9,7 @@
 //   ~/Library/Application Support/Civilization VII/Logs/UI.log
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
-import { runPass } from "/emigration/ui/emigration-engine.js";
+import { runPass, takePressureCues } from "/emigration/ui/emigration-engine.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { rankByProsperity } from "/emigration/ui/emigration-prosperity.js";
 import { applyTunableOverrides } from "/emigration/ui/emigration-settings.js";
@@ -17,26 +17,47 @@ import { dlog } from "/emigration/ui/emigration-log.js";
 import { reportMigration } from "/emigration/ui/emigration-report.js";
 import { recordMigrations, accountLosses, markCityRemoved, monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
-import { reportBalanceSignals } from "/emigration/ui/emigration-telemetry.js";
+import { reportBalanceSignals, recordPassCounters, dumpCounters } from "/emigration/ui/emigration-telemetry.js";
 import { recordCompositionPass } from "/emigration/ui/emigration-composition.js";
 import { recordChroniclePass } from "/emigration/ui/emigration-diaspora.js";
 import { planReturns } from "/emigration/ui/emigration-return.js";
 import { maybeDilemma } from "/emigration/ui/emigration-dilemma.js";
+import { maybeQuarter, tickContestedQuarters } from "/emigration/ui/emigration-quarter.js";
 import { registerMigrationMetric } from "/emigration/ui/emigration-demographics.js";
 import { tickAssimilation } from "/emigration/ui/emigration-effects.js";
 import { applyMigrantHoldingPenalty } from "/emigration/ui/emigration-migrant-units.js";
 import { tickAttractionDividend } from "/emigration/ui/emigration-dividend.js";
+import { tickRefugeeBurden } from "/emigration/ui/emigration-refugee-burden.js";
 import { raidOf } from "/emigration/ui/emigration-raid.js";
 import { recordWarDeclared, recordPeace } from "/emigration/ui/emigration-war.js";
 import { hasOpenBordersDeal } from "/emigration/ui/emigration-geography.js";
-import { reportPassFeedback } from "/emigration/ui/emigration-feedback.js";
+import { reportPassFeedback, reportPressureCues } from "/emigration/ui/emigration-feedback.js";
 import { installEmigrationEvents } from "/emigration/ui/emigration-events.js";
 import { installCityReadout } from "/emigration/ui/emigration-city-readout.js";
 import { installEmigrationConsole } from "/emigration/ui/emigration-screen.js";
 import { installEmigrationDock } from "/emigration/ui/emigration-dock-decorator.js";
+import { installEmigrationCityPanel } from "/emigration/ui/emigration-city-panel.js";
 import { registerMigrationPage } from "/emigration/ui/emigration-migration-page.js";
 
 let lastLocalTurnRun = -999;
+
+/** @param {{load:number,happiness:number,gold:number}} a @param {number} who @param {number} local */
+function logAssimilation(a, who, local) {
+  if (!(a.load > 0) || who !== local) return;
+  dlog("assimilation: load " + a.load.toFixed(1) + " cost -" + a.happiness.toFixed(1) + " happy -" + Math.round(a.gold) + " gold");
+}
+
+/** @param {{count:number,happiness:number,gold:number}} mh @param {number} who @param {number} local */
+function logMigrantHold(mh, who, local) {
+  if (!(mh.count > 0) || who !== local) return;
+  dlog("migrant-hold: " + mh.count + " migrant(s) cost -" + mh.happiness.toFixed(1) + " happy -" + Math.round(mh.gold) + " gold");
+}
+
+/** @param {{pool:number,happiness:number,gold:number}} rb @param {number} who @param {number} local */
+function logRefugeeBurden(rb, who, local) {
+  if (!(rb.pool > 0) || who !== local) return;
+  dlog("refugee-hold: " + rb.pool + " pool point(s) cost -" + rb.happiness.toFixed(1) + " happy -" + Math.round(rb.gold) + " gold");
+}
 
 /**
  * A monotonic millisecond clock for debug timing (Perf plan P2 #6); 0 if unavailable.
@@ -97,7 +118,13 @@ function accountAndReport(migrations, signals) {
   recordChroniclePass(signals, migrations);
   // Refugee dilemmas: the rare narrative decision when an upheaval (a conquest spree this pass, or a
   // plague crisis) sends a wave toward the local player. Throttled + Options-gated inside; never throws.
-  maybeDilemma(conquests, migrations, signals);
+  const dilemmaFired = maybeDilemma(conquests, migrations, signals);
+  // Cultural Quarters: an established foreign diaspora becomes a persistent, player-shaped district.
+  // Ranked BELOW the refugee dilemma (stands down if one fired this pass) so two modals never race;
+  // then the war-strain tick marks quarters contested while the host is at war with their homeland.
+  // Both are flag-gated + throttled inside and never throw into the pass.
+  maybeQuarter(signals, dilemmaFired);
+  tickContestedQuarters(signals);
   // Balance telemetry (P2.7): throttled net-flow / war-displacement outlier alerts (debug-gated).
   reportBalanceSignals(ownerIdsOf(signals), gameTurnNow());
   return conquests || [];
@@ -165,6 +192,26 @@ function refreshSettings() {
 }
 
 /**
+ * Post-runPass accounting + reporting for one pass, on a single fresh city-signal read (threaded
+ * through return migration, which mutates it in place, and the accounting below, so yields aren't
+ * re-scanned twice): fold returns, account losses/composition, append conquests, snapshot the
+ * timeline, fold the balance counters (P0.4), and surface any rising-pressure cues (P0.3, even on a
+ * 0-move pass). Returns the final migration list.
+ * @param {*[]} migrations This pass's migrations from runPass.
+ * @returns {*[]} The migrations after returns/conquests are folded in.
+ */
+function accountPass(migrations) {
+  const signals = collectCitySignals();
+  migrations = foldReturns(migrations, signals);
+  const conquests = accountAndReport(migrations, signals);
+  appendConquests(migrations, conquests);
+  recordMigrations(migrations);
+  recordPassCounters(migrations); // P0.4 balance counters (voluntary/crisis/deaths)
+  reportPressureCues(takePressureCues()); // P0.3 low-key "rising pressure" cues
+  return migrations;
+}
+
+/**
  * Run a pass and report results. Returns the migration count.
  * @param {string} why Reason label for the log.
  * @returns {number} Migrations applied.
@@ -179,17 +226,7 @@ function doPass(why) {
     dlog("pass threw " + e);
     return 0;
   }
-  // One city-signal collection per pass (post-runPass): threaded through return migration (which
-  // mutates it in place for the cities it moves population between) and the accounting below, instead
-  // of re-scanning every city's yields twice.
-  const signals = collectCitySignals();
-  migrations = foldReturns(migrations, signals);
-  const conquests = accountAndReport(migrations, signals);
-  appendConquests(migrations, conquests);
-  // Snapshot the timeline EVERY pass, feeds the Demographics net-migration graph AND records per-civ
-  // population growth even on passes with no migration, so the network/flow timeline is available and
-  // plays population history before any emigration occurs (the recorder self-gates to the interval).
-  recordMigrations(migrations);
+  migrations = accountPass(migrations);
   if (!migrations.length) {
     dlog("pass (" + why + ") none, " + Math.round(nowMs() - t0) + "ms");
     return 0;
@@ -222,13 +259,11 @@ function reportNewsworthy(migrations) {
 function chargePerTurnCosts(who, local) {
   if (typeof who !== "number") return;
   const a = tickAssimilation(who);
-  if (a.load > 0 && who === local) {
-    dlog("assimilation: load " + a.load.toFixed(1) + " cost -" + a.happiness.toFixed(1) + " happy -" + Math.round(a.gold) + " gold");
-  }
+  logAssimilation(a, who, local);
   const mh = applyMigrantHoldingPenalty(who);
-  if (mh.count > 0 && who === local) {
-    dlog("migrant-hold: " + mh.count + " migrant(s) cost -" + mh.happiness.toFixed(1) + " happy -" + Math.round(mh.gold) + " gold");
-  }
+  logMigrantHold(mh, who, local);
+  const rb = tickRefugeeBurden(who);
+  logRefugeeBurden(rb, who, local);
   // Raid (§4b): the op's cost/duration/grievance are native (Diplomacy Extended); Emigration just
   // reads the active action each turn during the pass (raidTilt), nothing to charge here.
   // Carried dividend (§1b): grant the per-turn attraction bonus (the assimilation mirror).
@@ -301,6 +336,7 @@ function installUi() {
   installCityReadout(); // per-city migration readout: console commands + best-effort selection
   installEmigrationConsole(); // console: emigration.window() opens the standalone screen
   installEmigrationDock(); // in-game dock button that opens that screen (no console needed)
+  installEmigrationCityPanel(); // inject population + quarter data into the base City Details panel
   // The prosperity map lens self-registers as its own <UIScripts> entry (emigration-prosperity-lens
   // .js), in the HUD context where LensManager lives, it is intentionally NOT wired through here.
 }
@@ -313,6 +349,9 @@ function boot() {
     globalThis.emigration = {
       runNow: () => doPass("global"),
       rank: () => dumpRanking(),
+      // Balance telemetry dump (P0.4): raw counters + reason histogram + derived shares, for tuning
+      // and the measure-before-build decisions. Logs and returns the snapshot.
+      metrics: () => dumpCounters(),
       // Diagnostic for the Open Borders bonus: logs the joint diplomatic-event action
       // names between two players and whether an Open Borders agreement is detected.
       openBorders: (/** @type {number} */ a, /** @type {number} */ b) => {

@@ -92,3 +92,19 @@ original backlog only ever flagged it as "bundle into an unrelated CSS edit if e
 a standalone change.
 
 **Verdict:** zero functional difference, matches the sibling stylesheet idiom; not worth the churn.
+
+## arrivals — soften capped-arrival death into a holding-pool overflow
+
+Proposed (2026-07-02 arrivals review, Tier 4) that a refugee who reaches a valid destination but still
+can't be accepted after `MAX_DEFERS` turns should overflow into the refugee holding pool (or redirect /
+return) instead of perishing, because "city is full, therefore migrants die" can feel harsh. But the
+strict inbound cap → perish-on-no-refuge outcome is a **deliberate design pillar**, not an oversight:
+it's the same "no refuge → attrition" philosophy that governs the outlet/death system, and it's what
+keeps the cap honest (a boomtown cannot absorb dozens, and blocked refugees are a real cost of the
+crisis, not a free redirect). Routing capped arrivals into the pool would make the cap soft — the pool
+becomes an unbounded overflow that always accepts — quietly erasing the scarcity the whole system
+models. The [emigration-arrivals.js](../ui/emigration-arrivals.js) comments already state the intent
+("the cap stays strict, never force-landed past it").
+
+**Verdict:** by design — the strict cap and its perish outcome are intentional; softening it into a
+pool overflow is a balance/design change that removes modeled scarcity, not a hardening.

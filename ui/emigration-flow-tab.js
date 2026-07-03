@@ -7,9 +7,7 @@
 
 import { renderNetworkViz } from "/emigration/ui/emigration-network-viz.js";
 import { renderFlowMap } from "/emigration/ui/emigration-network-flow.js";
-
-/** Selected view inside the combined tab: "network" (dot swarm) | "flowmap" (arrows). Persists. */
-let _flowView = "network";
+import { getFlowView, setFlowView } from "/emigration/ui/emigration-settings.js";
 
 /**
  * Create a div with a class and optional text.
@@ -34,12 +32,13 @@ function div(cls, txt) {
 export function renderNetworkOrFlow(body, section, controlsHost) {
   body.innerHTML = "";
   if (controlsHost) controlsHost.innerHTML = ""; // re-populate the shared row (avoids duplicate rows)
+  const active = getFlowView();
   const bar = div("emig-flow-toggle");
   const mk = (/** @type {string} */ view, /** @type {string} */ label) => {
-    const b = div("emig-flow-tog" + (_flowView === view ? " active" : ""), label);
+    const b = div("emig-flow-tog" + (active === view ? " active" : ""), label);
     b.addEventListener("click", () => {
-      if (_flowView === view) return;
-      _flowView = view;
+      if (getFlowView() === view) return;
+      setFlowView(view);
       renderNetworkOrFlow(body, section, controlsHost);
     });
     return b;
@@ -49,6 +48,10 @@ export function renderNetworkOrFlow(body, section, controlsHost) {
   body.appendChild(bar);
   const view = div("emig-flow-view");
   body.appendChild(view);
-  if (_flowView === "flowmap") renderFlowMap(view, section, controlsHost);
-  else renderNetworkViz(view, section, controlsHost);
+  // Re-render this same sub-view IN PLACE (used by the inline Units toggle, which rescales the counts):
+  // route through renderNetworkOrFlow so the persisted view is honored and the shared controls row is
+  // cleared + repopulated (never duplicated), rather than each viz appending another controls set.
+  const rebuildInPlace = () => renderNetworkOrFlow(body, section, controlsHost);
+  if (active === "flowmap") renderFlowMap(view, section, controlsHost, rebuildInPlace);
+  else renderNetworkViz(view, section, controlsHost, rebuildInPlace);
 }

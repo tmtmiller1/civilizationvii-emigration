@@ -12,6 +12,10 @@ const SPRING_LEN = 150; // edge rest length
 const GRAVITY = 0.006; // gentle pull toward centre (low, so clusters fill the whole canvas)
 const DAMP = 0.85; // velocity damping per step
 const PAD = 16; // keep cluster EDGES this far from the canvas edges (radius added per node)
+// The civ NAME label is drawn ABOVE each circle (paint.js: c.y - clusterR - 10, ~15px text), so a
+// top-row circle needs extra headroom or its label rides the canvas top edge and collides with the
+// filter row above the diagram. Reserve that label height at the top only (shared by dots + flows).
+const TOP_PAD = 32; // keep cluster TOPS this far from the top (PAD + room for the name label above)
 const COLLIDE_PAD = 12; // minimum gap between two cluster discs (prevents overlap)
 const GOLDEN = Math.PI * (3 - Math.sqrt(5)); // golden angle for the sunflower seed spread
 
@@ -177,14 +181,16 @@ function integrate(sim) {
 }
 
 /**
- * Keep every cluster's whole disc within the canvas (PAD + its radius from each edge).
+ * Keep every cluster's whole disc within the canvas (PAD + its radius from each edge), with extra
+ * headroom at the TOP so the civ name label drawn above the disc clears the canvas top edge (and so
+ * the diagram content never rides up into the filter row above it).
  * @param {{nodes:*[], WX:number, WY:number}} sim The sim state.
  */
 function clampNodes(sim) {
   for (const nd of sim.nodes) {
     const r = nd.clusterR || 8;
     nd.x = clamp(nd.x, PAD + r, sim.WX - PAD - r);
-    nd.y = clamp(nd.y, PAD + r, sim.WY - PAD - r);
+    nd.y = clamp(nd.y, TOP_PAD + r, sim.WY - PAD - r);
   }
 }
 

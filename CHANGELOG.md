@@ -5,6 +5,91 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [1.8.0] - 2026-07-02
+
+This release makes migration explain itself: every move and death now says why it
+happened, cities warn you before people start leaving, and refugees from war and
+disaster wait in holding pools instead of instantly becoming workers. The Ethnic
+Composition map lens was also redrawn to read clearly — host colour, a grey "mixed"
+midpoint, and the incomer's colour, with each city framed in its main civ's colour.
+Population counts also read as plain numbers now.
+
+### Added
+- **Refugee holding pools.** War and disaster refugees can now arrive at a host city and wait in a
+  holding pool before joining its working population, instead of every intake spike becoming instant
+  labor growth. Only a bounded share settles per turn (scaled by the host's happiness, borders, and
+  crowding), a small fraction settles right away, and the rest stay as visible, temporary displacement
+  pressure. While people are held, the host civ pays a small per-turn support cost in gold and
+  happiness, separate from assimilation. Held refugees show up on the migration map lens (a marker over
+  hosting settlements) and in the per-city readout. Tunable via the `refugeePool*` settings.
+- **Migration explanations.** Each move now records *why* those people chose that destination (nearby,
+  more prosperous, open borders, an ally, offered asylum, escaping the crisis, safer interior, away
+  from the fighting, avoiding the aggressor) and shows it in the notification ("Drawn there: ...") and
+  the city readout ("Why there: ..."). Attrition deaths explain their cause too (under siege, disaster,
+  famine, no safe refuge, or lost while fleeing) on the death notice and the readout warning. English
+  plus all 11 translations.
+- **Rising-pressure cue.** When one of your settlements is steadily building toward a move but no one
+  has left yet, a low-key Notifications entry flags it ("Rising emigration pressure: citizens in X are
+  increasingly drawn to Y"), throttled per settlement so it never floods the log.
+- **City readout trend sparkline.** The per-city readout can show a small bar strip of recent net
+  migration (green bars for gaining, red for losing), so you can tell at a glance whether a settlement
+  is filling or emptying. Toggle it in the tunables.
+- **Cultural quarters.** When a foreign diaspora grows into an established community in one of your
+  cities, you're offered a one-time choice of how to treat it (embrace, tax, or let be), each with a
+  small one-time yield reward and drawback. It's a durable, per-city-tile district: only one quarter
+  per city, and if a different origin later overtakes that city the old stance's yields are reversed
+  and the quarter changes hands (noted in the Migration Chronicle). While you're at war with a
+  quarter's homeland it turns "contested" and adds a small, capped happiness strain until the war ends.
+  The prompt is rare (a per-age cap plus a cooldown) and never collides with a refugee dilemma. Turn
+  the whole system off with `quartersEnabled`.
+- **Emigration data in the City Details panel.** The base game's City Details panel now shows the mod's
+  per-settlement migration data, read live when the panel opens and on each city switch, so it's
+  legible without opening the standalone dashboard. The Citizen Growth tab gains a population block
+  (origin mix, where recent emigrants departed to, where arrivals came from, and any refugees still
+  held awaiting settlement); the Building Breakdown tab gains a Cultural Quarter block (its origin, your
+  stance, its one-time yields, and whether it's contested). Injected via a non-invasive panel decorator,
+  so it coexists with other City Details mods. English plus all 11 translations.
+
+### Changed
+- **Ethnic Composition lens redraw.** The lens is far easier to read at a glance. Each tile's FILL is
+  now a diverging colour scale on how mixed that tile is: a settlement's own people show the host civ's
+  banner colour, a genuinely mixed tile reads neutral GREY (instead of a muddy host-tinted blend), and a
+  tile taken over by an incoming diaspora reads that origin's colour. Every tile is also BORDERED in the
+  settlement's main-origin colour, so you always see whose city it is regardless of the fill. A diaspora
+  now concentrates into a believable neighbourhood cluster that fades to the host over a few tiles
+  (rather than being smeared invisibly thin), each origin's people still total its real citywide share,
+  and tile opacity is normalized per settlement — the built-up core reads vivid, the rural fringe faint,
+  with a subtle per-tile texture — so a city reads as a population mosaic at any size. The hover panel
+  lists the settlement's exact origin percentages.
+- **The whole in-game UI is now localized.** Previously only the Options screen and a few labels were
+  translated; the dashboard tables and tabs, the per-city readout, the refugee-dilemma and
+  cultural-quarter modals, the notifications log, and the procedural Migration Chronicle prose all read
+  hardcoded English. They now route through the mod's localization pipeline: 182 new strings across
+  those surfaces, translated into all 11 languages (English is the fallback for anything unresolved).
+  The generated Chronicle lines stay deterministic and read identically in English.
+- **Population counts read as plain numbers.** "12 thousand" now shows as "12,000", "1.3 million" as
+  "1,300,000", and so on, everywhere counts appear (city readout, notifications, network tooltips, and
+  the README examples). The rounding is unchanged; only the wording became digits.
+
+### Fixed
+- **The Network tab remembers Dots vs Flow.** On the Flows view, using the Scaled Pop / Civ Pop toggle
+  no longer bounces you back to the Dots diagram; the sub-view choice is remembered (even across a panel
+  rebuild) and the counts change in place. Also fixes the controls row duplicating on repeated toggles.
+- **The network diagram no longer collides with the filter row.** The top row of civilization circles
+  and their name labels now sits clear of the Dots/Flows filters instead of riding up underneath them.
+
+### Maintainability
+- **Balance telemetry counters.** Session counters for the migration system's health: voluntary vs
+  crisis moves (crisis and overall split own-civ vs cross-civ), return moves, outlet attrition deaths
+  (trapped vs lost-while-fleeing), transit deaths (razed vs perished-at-cap), arrivals into a city that
+  turned unsafe mid-journey, refugee-pool inflow/outflow, a pass denominator, and a histogram of which
+  destination factors actually drive moves. Summarized to the debug log, dumpable on demand via the
+  `emigration.metrics()` console command, so the pacing knobs can be tuned from real numbers.
+- **Docs + tests.** Added a migration scenario/system diagram reference, a migration enhancement plan,
+  and a cultural-quarters design note (developer docs); a shared reason-tag module; and new test
+  harnesses for the sparkline, the Dots/Flow sub-view, the reason tags, the pressure cue, the telemetry
+  counters, and the cultural-quarter decision, state, and registry.
+
 ## [1.7.1] - 2026-07-01
 
 Crisis deaths now ease in over a few turns instead of striking all at once, with

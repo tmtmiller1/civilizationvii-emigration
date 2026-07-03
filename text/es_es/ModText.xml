@@ -49,13 +49,13 @@
         <Replace Tag="LOC_EMIG_T_CIVTUNE" Language="es_ES"><Text>Alcance: ajuste por líder/civilización</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CIVTUNE_D" Language="es_ES"><Text>Aplicar pequeños ajustes hechos a mano por líder y civilización (amortiguación de imán, velocidad de integración, retención en guerra, sesgo de origen) para que los casos atípicos se comporten distinto. Desactivado = cada civ usa el mismo modelo global.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CTSTRENGTH" Language="es_ES"><Text>Alcance: fuerza del ajuste por civilización</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CTSTRENGTH_D" Language="es_ES"><Text>Cuánto pueden divergir del modelo global los ajustes por líder/civilización. 1,0 = identidades totalmente distintas; valores menores aplanan las diferencias entre civilizaciones hacia el mismo modelo para frenar el desbordamiento; 0 = totalmente plano (igual que desactivar la tabla).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CTSTRENGTH_D" Language="es_ES"><Text>Cuánto pueden divergir del modelo global los ajustes por líder/civilización. 1,0 = identidades plenamente distintas; valores menores acercan las diferencias entre civilizaciones al mismo modelo para frenar el efecto bola de nieve; 0 = totalmente plano (igual que desactivar la tabla).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BORDERS" Language="es_ES"><Text>Alcance: políticas de fronteras</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BORDERS_D" Language="es_ES"><Text>Activar el efecto de las políticas de Fronteras Abiertas/Cerradas sobre la inmigración (las cartas de política aparecen en el menú de políticas y cuestan o conceden Influencia). Desactivado = las políticas no afectan a la migración.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CLOSEDOPEN" Language="es_ES"><Text>Fronteras: apertura con Fronteras Cerradas</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CLOSEDOPEN_D" Language="es_ES"><Text>Cuánta inmigración deja pasar una política de Fronteras Cerradas (0,4 = se rechaza un 60 %). Menor = más cerrado. Solo se usa con las políticas de fronteras activas.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN" Language="es_ES"><Text>Fronteras: Retención de las fronteras cerradas</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN_D" Language="es_ES"><Text>Cuánto retiene una política de fronteras cerradas a tu propia gente para que no se vaya a civilizaciones rivales (0.6 = su atracción hacia otras civilizaciones reducida al 60 %; 1 = desactivado). Más bajo = mayor retención. Solo se usa cuando las políticas de fronteras están activas.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN" Language="es_ES"><Text>Fronteras: retención con Fronteras Cerradas</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN_D" Language="es_ES"><Text>Cuánto ayuda una política de Fronteras Cerradas a retener a tu propia gente para que no se marche a civilizaciones rivales (0,6 = su atracción hacia otras civilizaciones se reduce al 60 %; 1 = desactivado). Menor = mayor retención. Solo se usa cuando las políticas de fronteras están activas.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENOPEN" Language="es_ES"><Text>Fronteras: impulso de Fronteras Abiertas</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENOPEN_D" Language="es_ES"><Text>Cuánto aumenta la inmigración una política de Fronteras Abiertas (1,5 = +50 %). Mayor = más abierto. Solo se usa con las políticas de fronteras activas.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_FOOD" Language="es_ES"><Text>Peso de prosperidad: comida (per cápita)</Text></Replace>
@@ -66,12 +66,12 @@
         <Replace Tag="LOC_EMIG_T_HAPPY_D" Language="es_ES"><Text>Con qué fuerza la felicidad neta de una ciudad atrae a los migrantes.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POP" Language="es_ES"><Text>Peso de prosperidad: penalización de población</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POP_D" Language="es_ES"><Text>Cuánto cuenta en contra el tamaño de una ciudad (para que las pequeñas y prósperas sigan atrayendo).</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSHAPED" Language="es_ES"><Text>Felicidad: usar el modelo modelado</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSHAPED_D" Language="es_ES"><Text>Sustituir el peso plano de felicidad por un modelo matizado: la felicidad se mide respecto a la media mundial, su atracción se satura (una ciudad muy feliz no se convierte en un imán dominante) mientras la miseria sigue repeliendo con fuerza, y la felicidad amplifica la economía en lugar de eclipsarla. Desactivado = el peso lineal antiguo.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSCALE" Language="es_ES"><Text>Felicidad (modelada): escala de saturación</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSCALE_D" Language="es_ES"><Text>Cuántos puntos por encima de la media mundial cuentan como «muy feliz» antes de que la atracción se sature. Mayor = la felicidad importa durante más tiempo. Solo la usa el modelo modelado.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HAMP" Language="es_ES"><Text>Felicidad (modelada): amplificación de economía</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HAMP_D" Language="es_ES"><Text>Cuánto se amplifica la economía de una ciudad feliz (y se reduce la de una miserable) como atractivo migratorio. Solo la usa el modelo modelado.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSHAPED" Language="es_ES"><Text>Felicidad: usar el modelo no lineal</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSHAPED_D" Language="es_ES"><Text>Sustituye el peso plano de felicidad por un modelo más matizado: la felicidad se mide respecto a la media mundial, su atracción se satura (una ciudad muy feliz no se convierte en un imán dominante), la miseria sigue repeliendo con fuerza y la felicidad amplifica la economía en lugar de eclipsarla. Desactivado = el peso lineal antiguo.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSCALE" Language="es_ES"><Text>Felicidad (no lineal): escala de saturación</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSCALE_D" Language="es_ES"><Text>Cuántos puntos por encima de la media mundial cuentan como «muy feliz» antes de que la atracción se sature. Mayor = la felicidad sigue importando durante más tiempo. Solo se usa en el modelo no lineal.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAMP" Language="es_ES"><Text>Felicidad (no lineal): amplificación de economía</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HAMP_D" Language="es_ES"><Text>Cuánto se amplifica la economía de una ciudad feliz (y se reduce la de una ciudad miserable) como atractivo migratorio. Solo se usa en el modelo no lineal.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OCDISC" Language="es_ES"><Text>Hacinamiento: descuento (0 = desactivado)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OCDISC_D" Language="es_ES"><Text>Devolver parte de la infelicidad que sufre una ciudad solo por el hacinamiento urbano, para que una ciudad deliberadamente densa no sea castigada dos veces (su densidad ya reduce sus rendimientos). 0 = desactivado.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OCTHRESH" Language="es_ES"><Text>Hacinamiento: umbral de densidad urbana</Text></Replace>
@@ -135,6 +135,8 @@
         <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="es_ES"><Text>Hacer que una civilización cuya población se ha adelantado mucho al resto sea un destino menos atractivo para la migración entre civilizaciones: un freno autocorrectivo a un líder desbocado que crece según lo adelantado que esté (0 desactivado / 8 suave / 15 estándar / 28 fuerte). Nunca impide la SALIDA de un líder ni sus movimientos internos. 0 = desactivado.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="es_ES"><Text>Coste: activación antidesbordamiento (× cuota justa)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="es_ES"><Text>Cuánto puede adelantarse la población de una civilización respecto a la civ media mundial antes de que el viento en contra antidesbordamiento empiece a notarse, como múltiplo de la cuota justa. Menor = el freno se activa antes (más igualitario); mayor = solo se ralentiza a un líder desbocado extremo.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QUARTERS" Language="es_ES"><Text>Coste: barrios culturales</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QUARTERS_D" Language="es_ES"><Text>Cuando una diáspora extranjera se convierte en una comunidad establecida en una de tus ciudades, se ofrece una decisión única (acoger, gravar o dejar estar) con una pequeña recompensa y penalización de rendimiento, y se registra un barrio persistente por ciudad que pasa a estar «en disputa» (una pequeña merma de felicidad) mientras estás en guerra con su tierra natal. Desactivado = sin decisiones de barrio ni merma por disputa.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="es_ES"><Text>Desastres: impulsar la migración</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="es_ES"><Text>Dejar que los desastres ambientales (inundaciones, volcanes, plagas…) expulsen población de las ciudades afectadas como refugiados climáticos/de desastre, junto a la guerra y la infelicidad. Desactivado = los desastres no afectan a la migración.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="es_ES"><Text>Desastres: emigración por punto de angustia (%)</Text></Replace>
@@ -161,6 +163,8 @@
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD_D" Language="es_ES"><Text>Cuántas personas (acumuladas) debe desplazar una civilización antes de que salte un titular de crisis de refugiados, una vez por cada múltiplo cruzado, para que una guerra larga genere unos pocos titulares y no uno por turno.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="es_ES"><Text>Informe de migración por ciudad</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="es_ES"><Text>Muestra un panel a demanda que explica por qué un asentamiento seleccionado gana o pierde población: la causa principal, hacia dónde se atrae a su gente, el coste de integración y qué puedes hacer al respecto.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SPARKLINE" Language="es_ES"><Text>Panel: minigráfico de tendencia</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SPARKLINE_D" Language="es_ES"><Text>Añade una pequeña tira de barras al panel de la ciudad que muestra su migración neta en los últimos pasos (barras verdes si gana, rojas si pierde), para ver de un vistazo si va a mejor o a peor.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION" Language="es_ES"><Text>Válvula: mortandad cuando no hay refugio</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION_D" Language="es_ES"><Text>Evita que la migración sea un sistema cerrado: una ciudad atrapada y muy angustiada (asedio, hambruna, violencia intensa o desastre) sin un destino viable pierde población: la gente muere o se dispersa en vez de quedarse para siempre.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRDISTRESS" Language="es_ES"><Text>Válvula: angustia necesaria para la mortandad (%)</Text></Replace>
@@ -197,6 +201,28 @@
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="es_ES"><Text>La línea de tiempo de reproducción aparece tras un par de turnos, una vez que haya historial de población que recorrer.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="es_ES"><Text>{1_People} huyeron de {2_City} tras un desastre.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="es_ES"><Text>{1_People} se perdieron en {2_City} sin lugar al que huir.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SCOPE_INTERNAL" Language="es_ES"><Text>(Movimiento interno)</Text></Replace>
+        <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="es_ES"><Text>(Movimiento externo)</Text></Replace>
+        <Replace Tag="LOC_EMIG_DEST_CLAUSE" Language="es_ES"><Text>Con destino a {1_Dest}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_WHY_CLAUSE" Language="es_ES"><Text>Atraídos allí: {1_Why}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_RICHER" Language="es_ES"><Text>más próspera</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_NEARBY" Language="es_ES"><Text>cercana</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_SAFER_DIR" Language="es_ES"><Text>lejos de los combates</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_OWN_CIV" Language="es_ES"><Text>interior más seguro</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_CRISIS_ESCAPE" Language="es_ES"><Text>huyendo de la crisis</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_AGGRESSOR_AVOIDED" Language="es_ES"><Text>evitando al agresor</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_OPEN_BORDERS" Language="es_ES"><Text>fronteras abiertas</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_ALLIED" Language="es_ES"><Text>un aliado</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_ASYLUM" Language="es_ES"><Text>ofrece asilo</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_RAID" Language="es_ES"><Text>atraídos por una incursión</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_SIEGE" Language="es_ES"><Text>bajo asedio</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_UNDER_ATTACK" Language="es_ES"><Text>bajo ataque</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_DISASTER" Language="es_ES"><Text>desastre</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_FAMINE" Language="es_ES"><Text>hambruna</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_NO_REFUGE" Language="es_ES"><Text>sin refugio seguro</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_CRISIS_LOSSES" Language="es_ES"><Text>perdidos al huir</Text></Replace>
+        <Replace Tag="LOC_EMIG_DEATH_WHY_CLAUSE" Language="es_ES"><Text>La causa: {1_Why}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_CUE" Language="es_ES"><Text>Aumenta la presión migratoria: los ciudadanos de {1_City} se sienten cada vez más atraídos por {2_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="es_ES"><Text>Aumenta la felicidad de la ciudad o adopta una postura antiinmigración para retenerlos.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="es_ES"><Text>Un vecino supera en prosperidad a esta ciudad; mejora sus rendimientos para retener a la gente.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="es_ES"><Text>Los refugiados huyen de los combates; rompe el asedio o firma la paz para frenar la salida.</Text></Replace>
@@ -207,19 +233,19 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="es_ES"><Text>Esa gente se ha perdido para siempre.</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="es_ES"><Text>{1_Dest} paga unos {2_Gold} de oro/turno para integrarlos.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="es_ES"><Text>Postura proinmigración</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="es_ES"><Text>Da la bienvenida a migrantes de todo el mundo. La inmigración a tus ciudades aumenta un 50 %, y tu reputación cosmopolita genera Influencia por turno: +1, +2 y luego +3 a lo largo de las eras.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="es_ES"><Text>Da la bienvenida a [icon:YIELD_POPULATION] migrantes de todo el mundo. La inmigración hacia tus ciudades aumenta un 50 %, y tu reputación cosmopolita genera [icon:YIELD_DIPLOMACY] Influencia cada turno: +1, +2 y luego +3 a lo largo de las eras.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="es_ES"><Text>Postura antiinmigración</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="es_ES"><Text>Cierra tus fronteras al mundo. Los recién llegados del extranjero caen al 40 % (cerca de un 60 % menos), y muchos menos de tus propios ciudadanos se marchan a civilizaciones rivales. Una economía interna movilizada añade Producción en cada ciudad: +2, +3 y luego +4 a lo largo de las eras. El aislamiento tiene su precio en Influencia por turno: -2, -3 y luego -4 a lo largo de las eras.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="es_ES"><Text>Cierra tus fronteras al mundo. Los [icon:YIELD_POPULATION] recién llegados del extranjero caen al 40 % (cerca de un 60 % menos), y muchos menos de tus propios ciudadanos se marchan a civilizaciones rivales. Una economía interna movilizada añade [icon:YIELD_PRODUCTION] Producción en cada ciudad: +2, +3 y luego +4 a lo largo de las eras. El aislamiento tiene su precio en [icon:YIELD_DIPLOMACY] Influencia cada turno: -2, -3 y luego -4 a lo largo de las eras.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="es_ES"><Text>Atracción de talento</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="es_ES"><Text>Los recién llegados refuerzan tu investigación. Obtienes +1 Ciencia, que sube a +2 en la Edad Moderna, más una bonificación de Ciencia que crece unos +1.5 por cada inmigrante que atraes, hasta +12 por turno. Esta bonificación se desvanece si la inmigración se detiene.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="es_ES"><Text>Los [icon:YIELD_POPULATION] recién llegados refuerzan tu investigación. Obtienes +1 [icon:YIELD_SCIENCE] Ciencia, que sube a +2 en la Edad Moderna, más una bonificación de Ciencia que crece unos +1,5 por cada inmigrante que atraes, hasta +12 por turno. Esta bonificación se desvanece si la inmigración se detiene.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="es_ES"><Text>Magnetismo cultural</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="es_ES"><Text>Los recién llegados enriquecen tu cultura. Obtienes +1 Cultura, que sube a +2 en la Edad Moderna, más una bonificación de Cultura que crece unos +1.5 por cada inmigrante que atraes, hasta +12 por turno. Esta bonificación se desvanece si la inmigración se detiene.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="es_ES"><Text>Los [icon:YIELD_POPULATION] recién llegados enriquecen tu cultura. Obtienes +1 [icon:YIELD_CULTURE] Cultura, que sube a +2 en la Edad Moderna, más una bonificación de Cultura que crece unos +1,5 por cada inmigrante que atraes, hasta +12 por turno. Esta bonificación se desvanece si la inmigración se detiene.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="es_ES"><Text>Atractivo comercial</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="es_ES"><Text>Los recién llegados engrosan tus mercados. Obtienes +1 Oro, que sube a +2 en la Edad Moderna, más una bonificación de Oro que crece unos +1.5 por cada inmigrante que atraes, hasta +12 por turno. Esta bonificación se desvanece si la inmigración se detiene.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="es_ES"><Text>Los [icon:YIELD_POPULATION] recién llegados engrosan tus mercados. Obtienes +1 [icon:YIELD_GOLD] Oro, que sube a +2 en la Edad Moderna, más una bonificación de Oro que crece unos +1,5 por cada inmigrante que atraes, hasta +12 por turno. Esta bonificación se desvanece si la inmigración se detiene.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="es_ES"><Text>Asilo selectivo</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="es_ES"><Text>Abre tus puertas a quienes huyen de la guerra y el desastre. Los refugiados se sienten fuertemente atraídos hacia ti, los más desesperados primero, y tu prestigio humanitario genera +1 de Influencia por turno.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="es_ES"><Text>Abre tus puertas a quienes huyen de la guerra y los desastres. Los refugiados se sienten fuertemente atraídos hacia ti, empezando por los más desesperados, y tu prestigio humanitario genera +1 [icon:YIELD_DIPLOMACY] Influencia cada turno.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="es_ES"><Text>Pacto de refugiados</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="es_ES"><Text>Un compromiso permanente con los desplazados. Los refugiados afluyen con fuerza hacia ti, los más desesperados primero, enriquecen tu cultura y generan +2 de Influencia y +1 de Cultura por turno.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="es_ES"><Text>Un compromiso permanente con las personas desplazadas. Los refugiados fluyen con fuerza hacia ti, empezando por los más desesperados, enriquecen tu cultura y generan +2 [icon:YIELD_DIPLOMACY] Influencia y +1 [icon:YIELD_CULTURE] Cultura cada turno.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="es_ES"><Text>Emigración</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="es_ES"><Text>Emigración</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="es_ES"><Text>Emigración</Text></Replace>
@@ -285,5 +311,202 @@
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="es_ES"><Text>aún sin población</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_ORIGINS" Language="es_ES"><Text>Orígenes</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_ORIGINS_TIP" Language="es_ES"><Text>Mostrar líneas hacia el origen de los migrantes</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="es_ES"><Text>Migración - {1_City}</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="es_ES"><Text>Orígenes de la población</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTING" Language="es_ES"><Text>Emigración hacia</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ARRIVING" Language="es_ES"><Text>Inmigración desde</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_NO_MIGRATION" Language="es_ES"><Text>Aún no se ha registrado migración para este asentamiento.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_MORE" Language="es_ES"><Text>(+{1_Count} más)</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_ONE" Language="es_ES"><Text>{1_Count} refugiado espera asentarse aquí.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_MANY" Language="es_ES"><Text>{1_Count} refugiados esperan asentarse aquí.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_TITLE" Language="es_ES"><Text>Barrio cultural</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_NO_QUARTER" Language="es_ES"><Text>Ningún barrio extranjero ha arraigado aquí.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_ROOT" Language="es_ES"><Text>Un {1_Quarter} ha arraigado en este asentamiento.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_STANCE" Language="es_ES"><Text>Tu postura: {1_Stance}.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_GRANTS" Language="es_ES"><Text>Otorga {1_Amount} {2_Yield} a la ciudad.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_COSTS" Language="es_ES"><Text>Cuesta {1_Amount} {2_Yield} por turno.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_CONTESTED" Language="es_ES"><Text>En disputa: estás en guerra con su tierra natal, lo que tensa el barrio.</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_STANCE_PRO" Language="es_ES"><Text>Proinmigración</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_STANCE_ANTI" Language="es_ES"><Text>Antiinmigración</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_STANCE_NEUTRAL" Language="es_ES"><Text>Neutral</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_FLAG_AT_RISK" Language="es_ES"><Text>en riesgo</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_FLAG_RESTING" Language="es_ES"><Text>descansando</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_NETWORK" Language="es_ES"><Text>Red de migración</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_NET_TABLE" Language="es_ES"><Text>Migración neta (tabla)</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_WHY" Language="es_ES"><Text>Por qué se mueve la gente</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_SETTLEMENTS" Language="es_ES"><Text>Asentamientos</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_POLICIES" Language="es_ES"><Text>Políticas de inmigración</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_NOTIFICATIONS" Language="es_ES"><Text>Notificaciones de migración</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_GUIDE" Language="es_ES"><Text>Guía</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_EMPTY" Language="es_ES"><Text>Aún no hay nada que mostrar.</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_NETWORK" Language="es_ES"><Text>Red</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_NET_TABLE" Language="es_ES"><Text>Migración neta (tabla)</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_CAUSES" Language="es_ES"><Text>Causas</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_POLICIES" Language="es_ES"><Text>Políticas</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_MY_CITIES" Language="es_ES"><Text>Mis ciudades</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_NOTIFICATIONS" Language="es_ES"><Text>Notificaciones</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_GUIDE" Language="es_ES"><Text>Guía</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NUM_CIV" Language="es_ES"><Text>Población de Civ</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NUM_SCALED" Language="es_ES"><Text>Población a escala</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SAMPLE_BADGE" Language="es_ES"><Text>Datos de muestra ; vista previa (cambia a En vivo en Opciones)</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_OPTIONS_LABEL" Language="es_ES"><Text>Opciones:</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_OPTIONS_ADVANCED" Language="es_ES"><Text>Avanzado</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NUMBERS_LABEL" Language="es_ES"><Text>Cifras:</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NO_ARRIVALS" Language="es_ES"><Text>Aún no hay llegadas</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NO_DEPARTURES" Language="es_ES"><Text>Aún no hay salidas</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_WHY_LINE" Language="es_ES"><Text>{1_Prefix} {2_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_WHY_PREFIX" Language="es_ES"><Text>Motivo:</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_TITLE_TOWN" Language="es_ES"><Text>{1_Name} (pueblo)</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_TITLE_CITY" Language="es_ES"><Text>{1_Name} (ciudad)</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_CRITICAL" Language="es_ES"><Text>Crítica</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_HIGH" Language="es_ES"><Text>Alta</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_MODERATE" Language="es_ES"><Text>Moderada</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_LOW" Language="es_ES"><Text>Baja</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_PRESSURE" Language="es_ES"><Text>Presión de emigración</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NONE_RECORDED" Language="es_ES"><Text>ninguna registrada</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_FLAG_PAREN" Language="es_ES"><Text> ({1_Flag})</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_HEADING_TO" Language="es_ES"><Text>Con destino a: {1_Sub}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_WHATS_DRIVING" Language="es_ES"><Text>Qué lo impulsa</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EVENT_NAME" Language="es_ES"><Text>↳ {1_Name}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EVENT_BOTH" Language="es_ES"><Text> · {1_Deaths} murieron</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EVENT_DIED" Language="es_ES"><Text>{1_Deaths} murieron</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_CAUSES_BY_IMPACT" Language="es_ES"><Text>Causas por impacto</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NO_MIGRATION" Language="es_ES"><Text>aún sin migración</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_DIR_IMMIGRANTS" Language="es_ES"><Text>Inmigrantes ; llegados desde</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_DIR_EMIGRANTS" Language="es_ES"><Text>Emigrantes ; partidos hacia/muertos</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_DIED" Language="es_ES"><Text>Murieron</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_SECTION_CAUSES" Language="es_ES"><Text>Causas: por qué se mueve la gente</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_SECTION_SETTLEMENTS" Language="es_ES"><Text>Asentamientos: migración de entrada y salida de tus asentamientos</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_EMPTY" Language="es_ES"><Text>Aún no se ha registrado migración urbana; los flujos aparecen a medida que la gente entra y sale de tus ciudades.</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_DRIVERS" Language="es_ES"><Text>Impulsores: {1_Drivers}</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_TITLE" Language="es_ES"><Text>Migración neta (detalle)</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_CIV" Language="es_ES"><Text>Civilización</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_NET" Language="es_ES"><Text>Neto</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_IN" Language="es_ES"><Text>Entradas</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_OUT" Language="es_ES"><Text>Salidas</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_STANCE" Language="es_ES"><Text>Efecto de la postura</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_REFUGEES" Language="es_ES"><Text>Refugiados</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_COL_LOSSES" Language="es_ES"><Text>Pérdidas</Text></Replace>
+        <Replace Tag="LOC_EMIG_LG_TOTAL" Language="es_ES"><Text>Total</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_NONE" Language="es_ES"><Text>Sin política de fronteras; la migración no se ve afectada.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_ALLOWED" Language="es_ES"><Text>+{1_People} inmigrantes admitidos más allá del punto neutral{2_Pct}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_TURNED_AWAY" Language="es_ES"><Text>{1_People} aspirantes a inmigrantes rechazados{2_Pct}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_KEPT_HOME" Language="es_ES"><Text>{1_People} de sus propios ciudadanos retenidos en casa</Text></Replace>
+        <Replace Tag="LOC_EMIG_DV_STANCE_NO_EFFECT" Language="es_ES"><Text>Política asignada, pero aún no afecta a la migración.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_1" Language="es_ES"><Text>al borde de la ciudad</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_2" Language="es_ES"><Text>en las calles exteriores</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_3" Language="es_ES"><Text>más allá de las últimas casas</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_4" Language="es_ES"><Text>en el otro extremo del pueblo</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_QUARTER_GENERIC_5" Language="es_ES"><Text>donde las calles se acaban</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_1" Language="es_ES"><Text>lo que pudieron cargar</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_2" Language="es_ES"><Text>sus herramientas y poco más</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_3" Language="es_ES"><Text>lo que cabía en un carro</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_4" Language="es_ES"><Text>a sus hijos y su grano de siembra</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_CARRIED_5" Language="es_ES"><Text>las pocas cosas que importaban</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_1" Language="es_ES"><Text>Cuando la {1_War} alcanzó {2_City}, {3_People} de sus gentes tomaron {4_Carried} y se marcharon.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_2" Language="es_ES"><Text>{3_People} refugiados {5_Civ} abandonaron {2_City} aquel año, expulsados por la {1_War}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_3" Language="es_ES"><Text>Los caminos que salían de {2_City} se llenaron de refugiados a medida que la {1_War} se acercaba. {3_People} no regresaron.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_WAR_EXODUS_4" Language="es_ES"><Text>{2_City} se vació al llegar la {1_War}. {3_People} familias {5_Civ} fueron adonde no había combates.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DISASTER_EXODUS_1" Language="es_ES"><Text>El {1_DisasterCap} golpeó {3_City}. {4_People} familias {5_Civ} reunieron {6_Carried} y partieron en busca de tierras más seguras.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DISASTER_EXODUS_2" Language="es_ES"><Text>Tras el {2_Disaster}, {4_People} refugiados {5_Civ} dejaron atrás las ruinas de {3_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DISASTER_EXODUS_3" Language="es_ES"><Text>{4_People} familias {5_Civ} huyeron de {3_City} en los meses posteriores al {2_Disaster}, y los campos que la rodeaban quedaron en silencio.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_PLAIN_EXODUS_1" Language="es_ES"><Text>{1_People} familias {2_Civ} dejaron {3_City} aquel año, en busca de una vida mejor en otro lugar.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_PLAIN_EXODUS_2" Language="es_ES"><Text>La noticia de trabajo y fronteras tranquilas alejó a {1_People} hogares {2_Civ} de {3_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_PLAIN_EXODUS_3" Language="es_ES"><Text>{3_City} perdió {1_People} de sus gentes en los largos caminos, unas pocas familias cada vez.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FRAMED_EXODUS_1" Language="es_ES"><Text>Mucho más allá de las tierras que conocíamos, {1_City} se vació. {2_People} de un pueblo al que hemos oído llamar los {3_Civ} se echaron a los caminos.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FRAMED_EXODUS_2" Language="es_ES"><Text>{2_People} refugiados huyeron de {1_City}, una ciudad de un pueblo lejano, los {3_Civ}, de quienes solo teníamos rumores.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FRAMED_EXODUS_3" Language="es_ES"><Text>Llegó noticia de {1_City}, en algún lugar más allá del borde del mapa: {2_People} de los {3_Civ}, un pueblo del que solo hemos oído hablar, expulsados de sus hogares.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_FRAMED_1" Language="es_ES"><Text>Una comunidad había echado raíces en {1_City} desde una tierra lejana, un pueblo al que hemos oído llamar los {2_Civ}, ahora {3_Pct} de sus hogares, asentados {4_Where}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_FRAMED_2" Language="es_ES"><Text>{1_City} se había convertido en hogar de recién llegados de lejos, un pueblo conocido para nosotros solo como los {2_Civ}, {3_Pct} de la ciudad.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_1" Language="es_ES"><Text>Para entonces, los hogares {2_Civ} de {1_City} constituían {3_Pct} de la ciudad. Mantenían un distrito propio {4_Where}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_2" Language="es_ES"><Text>Una comunidad {2_Civ} había echado raíces en {1_City}, {3_Pct} de sus gentes y aún llegando, asentada {4_Where}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_FOUNDING_3" Language="es_ES"><Text>{1_City} se había convertido en hogar de una minoría {2_Civ}, {3_Pct} de sus hogares, agrupada {4_Where}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_FRAMED_1" Language="es_ES"><Text>{1_People} familias de {2_City} partieron hacia una tierra natal lejana, un pueblo conocido para nosotros solo como los {3_Civ}, ahora que estaba {4_Reason}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_FRAMED_2" Language="es_ES"><Text>A {2_City} llegó la noticia de un país lejano de nuevo en paz, uno al que hemos oído llamar los {3_Civ}. {1_People} que rastreaban su sangre hasta él partieron rumbo a casa.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_1" Language="es_ES"><Text>A medida que se corrió la voz de que la tierra natal estaba {4_Reason}, {1_People} familias {3_Civ} de {2_City} emprendieron el largo camino a casa.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_2" Language="es_ES"><Text>El barrio {3_Civ} de {2_City} se despobló aquel año. {1_People} regresaron, ahora que el hogar estaba {4_Reason}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_RETURN_3" Language="es_ES"><Text>{1_People} hogares {3_Civ} dejaron {2_City} rumbo al país del que habían huido, atraídos de vuelta a medida que se volvía {4_Reason}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_FOUNDING" Language="es_ES"><Text>El barrio {1_Civ} de {2_City}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_RETURN" Language="es_ES"><Text>El regreso {1_Civ}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_EXODUS_1" Language="es_ES"><Text>El éxodo {1_Civ}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_EXODUS_2" Language="es_ES"><Text>La huida de {2_City}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_EXODUS_3" Language="es_ES"><Text>El vaciamiento de {2_City}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_TITLE_MIGRATION" Language="es_ES"><Text>La migración {1_Civ}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_NAME_FRAMED" Language="es_ES"><Text>un pueblo al que hemos oído llamar los {1_Civ}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_NAME" Language="es_ES"><Text>los {1_Civ}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_PLAGUE_TITLE" Language="es_ES"><Text>Los enfermos a las puertas</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_PLAGUE_BODY" Language="es_ES"><Text>La peste ha vaciado las ciudades de {1_Origin}. Los supervivientes han caminado un largo trecho y ahora esperan a las puertas de tus murallas, {2_People} de ellos, asustados y enfermos. Acogerlos es compartir su peligro. Rechazarlos es abandonarlos a él.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_CONQUEST_TITLE" Language="es_ES"><Text>Refugiados en la frontera</Text></Replace>
+        <Replace Tag="LOC_EMIG_NARR_DILEMMA_CONQUEST_BODY" Language="es_ES"><Text>Los ejércitos de {1_By} han arrasado {2_Origin}, y sus gentes fluyen hacia tus tierras. {3_People} se han congregado en la frontera, cargando lo que pudieron salvar, y piden refugio.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHR_FOOTHOLD_TITLE" Language="es_ES"><Text>Un enclave {1_Civ} en {2_City}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHR_FOOTHOLD_BODY" Language="es_ES"><Text>Una comunidad {1_Civ} duradera se había formado en {2_City}, ahora {3_Pct} por ciento de la ciudad tras {4_People} llegadas a lo largo del tiempo.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_TITLE" Language="es_ES"><Text>Título</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_STORY" Language="es_ES"><Text>Relato</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CAUSE" Language="es_ES"><Text>Causa</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_EVENT" Language="es_ES"><Text>Evento</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_FROM" Language="es_ES"><Text>Desde</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CASUALTIES" Language="es_ES"><Text>Bajas</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_MOVED_TO" Language="es_ES"><Text>Se trasladaron a</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_TO" Language="es_ES"><Text>Hacia</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_PEOPLE" Language="es_ES"><Text>Personas</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_WHY_THERE" Language="es_ES"><Text>Por qué allí</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_NOTE" Language="es_ES"><Text>Nota</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_DEFAULT_SUMMARY" Language="es_ES"><Text>Un evento de migración</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CAUSE_EVENT" Language="es_ES"><Text>Evento de {1_Cause}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_EVENT_PREFIX" Language="es_ES"><Text>{1_Event}: {2_Summary}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_TURN" Language="es_ES"><Text>Turno {1_Turn}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_CHRONICLE" Language="es_ES"><Text>Crónica</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_EMPTY" Language="es_ES"><Text>Aún no hay eventos de migración; aparecen aquí a medida que la gente se mueve, con todo el detalle de cada uno.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WARN_HOLDING" Language="es_ES"><Text>Acogida de refugiados activa en este asentamiento</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WARN_TRAPPED" Language="es_ES"><Text>En riesgo: atrapados sin lugar al que huir{1_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WARN_DISTRESS" Language="es_ES"><Text>En apuros: la gente busca marcharse{1_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BADGE_HIGH" Language="es_ES"><Text>Acogida: alta</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BADGE_MEDIUM" Language="es_ES"><Text>Acogida: media</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BADGE_LOW" Language="es_ES"><Text>Acogida: baja</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_ORIGINS" Language="es_ES"><Text>Orígenes: {1_List}{2_Tail}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_ORIGINS_MORE" Language="es_ES"><Text> (+{1_Count} más)</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CAUSE_ITEM" Language="es_ES"><Text>{1_Label} {2_Share}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_POOL_ONE" Language="es_ES"><Text>Reserva de acogida de refugiados: {1_Count} punto</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_POOL_MANY" Language="es_ES"><Text>Reserva de acogida de refugiados: {1_Count} puntos</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BURDEN" Language="es_ES"><Text>Carga de sostén de refugiados: ~{1_Gold} de oro/turno, {2_Happiness} de felicidad/turno</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_WHY_THERE" Language="es_ES"><Text>Por qué allí: {1_Why}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STATUS_RESTING" Language="es_ES"><Text> (descansando {1_Cooldown})</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STATUS_TO_MOVE" Language="es_ES"><Text> ({1_Pct}% hasta el próximo movimiento)</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_PRESSURE" Language="es_ES"><Text>Presión: {1_Val}{2_Status}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_PULLED_TOWARD" Language="es_ES"><Text>Atraídos hacia {1_Name}{2_Rival}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_RIVAL_CIV" Language="es_ES"><Text> (civ rival)</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_ASSIM_COST" Language="es_ES"><Text>Coste de integración: ~{1_Gold} de oro/turno</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CIV_NET" Language="es_ES"><Text>Migración neta de la civ: {1_People} personas</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_TITLE" Language="es_ES"><Text>{1_City} - Migración</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_DEFAULT_CITY" Language="es_ES"><Text>Asentamiento</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_SPARK_LABEL" Language="es_ES"><Text>Migración neta reciente</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_TOAST_ESTABLISHED" Language="es_ES"><Text>{1_City} estableció una acogida de refugiados ({2_Pts} pts)</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_TOAST_CLEARED" Language="es_ES"><Text>{1_City} vació su reserva de acogida de refugiados</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_A_SETTLEMENT" Language="es_ES"><Text>Un asentamiento</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WELCOME_LABEL" Language="es_ES"><Text>Acógelos</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WELCOME_NOTE" Language="es_ES"><Text>Un coste en oro y cierta tensión a corto plazo sobre tu gente; se asientan entre los tuyos y, con el tiempo, se vuelven tu gente.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_FRONTIER_LABEL" Language="es_ES"><Text>Coloniza la frontera</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_FRONTIER_NOTE" Language="es_ES"><Text>Un coste menor en oro; envíalos a un pueblo más pequeño para empezar de nuevo.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AWAY_LABEL" Language="es_ES"><Text>Recházalos</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AWAY_NOTE" Language="es_ES"><Text>Un coste en prestigio internacional ahora; siguen su camino, con su carga a cuestas y no la tuya.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WHO_UNKNOWN" Language="es_ES"><Text>un pueblo del que solo habíamos oído hablar</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_WHO_KNOWN" Language="es_ES"><Text>los {1_Adj}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_YOUR_LANDS" Language="es_ES"><Text>tus tierras</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_BODY_WELCOME" Language="es_ES"><Text>Abriste {1_Place} a los refugiados de {2_Adj}. Ahora son tu gente, o lo serán.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_BODY_FRONTIER" Language="es_ES"><Text>Enviaste a los refugiados de {1_Adj} a la frontera, para levantar algo propio.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_BODY_AWAY" Language="es_ES"><Text>Rechazaste a los refugiados de {1_Adj} en {2_Place}. Siguieron su camino, {3_Who}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_CHRON_TITLE" Language="es_ES"><Text>Una decisión en la frontera</Text></Replace>
+        <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="es_ES"><Text>Refugiados</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_TITLE" Language="es_ES"><Text>El barrio cambia de manos</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_BODY" Language="es_ES"><Text>En {1_Place}, el barrio {2_PriorAdj} dio paso a los {3_Name}, un nuevo pueblo que ahora tiene el distrito como propio.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_EMBRACE" Language="es_ES"><Text>Acogiste a los {1_Name}, y sus costumbres enriquecen la ciudad.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_TAX" Language="es_ES"><Text>Gravaste el comercio de los {1_Name}; su moneda fluye a tu tesoro, su gente se irrita.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_LETBE" Language="es_ES"><Text>Dejaste que los {1_Name} vivieran a su aire.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_DECISION_TITLE" Language="es_ES"><Text>Un {1_Name}</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_EYEBROW" Language="es_ES"><Text>Barrio cultural</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_TITLE" Language="es_ES"><Text>El {1_Name} echa raíces</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_BODY" Language="es_ES"><Text>Una comunidad duradera de {1_Adj} ocupa ahora un distrito propio en {2_Place}, crecida hasta el {3_Pct} por ciento de la ciudad. ¿Cómo los recibirás?</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_TITLE" Language="es_ES"><Text>Un barrio se inquieta</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_BODY" Language="es_ES"><Text>La guerra con {1_Adj} pone en tensión a los {2_Name}; el distrito hierve a fuego lento.</Text></Replace>
     </LocalizedText>
 </Database>

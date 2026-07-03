@@ -22,7 +22,8 @@ function testMoveRecordCarriesBothOwnersAndMeta() {
   globalThis.Locale = { compose: (s) => s };
   const src = { owner: 1, city: { name: "SRC" } };
   const dest = { owner: 2, city: { name: "DEST" } };
-  const rec = moveRecord(src, dest, 42000, "war", { destPaidCost: 3.25, eventKey: "war:1:2" });
+  const rec = moveRecord(src, dest, 42000, "war",
+    { destPaidCost: 3.25, eventKey: "war:1:2", reasons: ["nearby"] });
 
   assert.deepEqual(rec, {
     srcName: "SRC",
@@ -35,6 +36,7 @@ function testMoveRecordCarriesBothOwnersAndMeta() {
     cause: "war",
     eventKey: "war:1:2",
     destPaidCost: 3.25,
+    reasons: ["nearby"],
     phase: "move"
   });
 }

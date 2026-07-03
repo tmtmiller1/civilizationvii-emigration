@@ -21,6 +21,7 @@ import { renderStances } from "/emigration/ui/emigration-detail-views.js";
 import { renderLedger } from "/emigration/ui/emigration-ledger-view.js";
 import { renderNotifications } from "/emigration/ui/emigration-notifications-view.js";
 import { DENSITY_CSS } from "/emigration/ui/emigration-density.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 
 
 /**
@@ -68,7 +69,7 @@ export function causeBreakdownRows(byCause) {
 
 /** Stance code → display label. */
 /** @type {Record<string,string>} */
-const STANCE_LABEL = { pro: "Pro-Immigration", anti: "Anti-Immigration", none: "Neutral" };
+const STANCE_LABEL = { pro: loc("LOC_EMIG_VIEW_STANCE_PRO", "Pro-Immigration"), anti: loc("LOC_EMIG_VIEW_STANCE_ANTI", "Anti-Immigration"), none: loc("LOC_EMIG_VIEW_STANCE_NEUTRAL", "Neutral") };
 /** @type {Record<string, number>} */
 const STANCE_ORDER = { pro: 0, anti: 1, none: 2 };
 
@@ -106,7 +107,7 @@ export function pressureRows(snapshots) {
     cause: s.causeLabel,
     pressure: Math.round((s.pressureToBar || 0) * 100) + "%",
     dest: s.topDestinationName || "-",
-    flag: s.attritionRisk ? "at risk" : s.onCooldown ? "resting" : ""
+    flag: s.attritionRisk ? loc("LOC_EMIG_VIEW_FLAG_AT_RISK", "at risk") : s.onCooldown ? loc("LOC_EMIG_VIEW_FLAG_RESTING", "resting") : ""
   }));
 }
 
@@ -264,13 +265,13 @@ export function dashboardModel(input) {
   const frames = buildFrames(d, names, current);
   const events = d.events || [];
   const sections = [
-    { title: "Migration network", kind: "flow", network: current, frames, events },
-    { title: "Net Migration (Table)", kind: "ledger", rows: civLedgerRows(d.civs || []) },
-    { title: "Why people move", kind: "pies", cities: buildCivFlows(d.flows || [], d.civs || [], d.eventsByOwner) },
-    { title: "Settlements", kind: "cityflows", cities: d.myCities || [] },
-    { title: "Immigration policies", kind: "stances", rows: stanceRows(d.civs || []) },
-    { title: "Migration notifications", kind: "notifications" },
-    { title: "Guide", kind: "guide" }
+    { title: loc("LOC_EMIG_VIEW_SEC_NETWORK", "Migration network"), kind: "flow", network: current, frames, events },
+    { title: loc("LOC_EMIG_VIEW_SEC_NET_TABLE", "Net Migration (Table)"), kind: "ledger", rows: civLedgerRows(d.civs || []) },
+    { title: loc("LOC_EMIG_VIEW_SEC_WHY", "Why people move"), kind: "pies", cities: buildCivFlows(d.flows || [], d.civs || [], d.eventsByOwner) },
+    { title: loc("LOC_EMIG_VIEW_SEC_SETTLEMENTS", "Settlements"), kind: "cityflows", cities: d.myCities || [] },
+    { title: loc("LOC_EMIG_VIEW_SEC_POLICIES", "Immigration policies"), kind: "stances", rows: stanceRows(d.civs || []) },
+    { title: loc("LOC_EMIG_VIEW_SEC_NOTIFICATIONS", "Migration notifications"), kind: "notifications" },
+    { title: loc("LOC_EMIG_VIEW_SEC_GUIDE", "Guide"), kind: "guide" }
   ];
   return { sample: !!d.sample, sections: visibleSections(sections) };
 }
@@ -505,7 +506,7 @@ function renderSectionBody(body, section, controlsHost) {
     return;
   }
   if (!section.rows || !section.rows.length) {
-    body.appendChild(el("div", "emig-empty", "Nothing to show yet."));
+    body.appendChild(el("div", "emig-empty", loc("LOC_EMIG_VIEW_EMPTY", "Nothing to show yet.")));
     return;
   }
   const rv = ROW_VIEWS[section.kind];
@@ -515,9 +516,10 @@ function renderSectionBody(body, section, controlsHost) {
 /** Short tab labels by section kind. */
 /** @type {Record<string,string>} */
 const TAB_LABELS = {
-  flow: "Network", ledger: "Net Migration (Table)", pies: "Causes",
-  stances: "Policies",
-  cityflows: "My Cities", notifications: "Notifications", guide: "Guide"
+  flow: loc("LOC_EMIG_VIEW_TAB_NETWORK", "Network"),
+  ledger: loc("LOC_EMIG_VIEW_TAB_NET_TABLE", "Net Migration (Table)"), pies: loc("LOC_EMIG_VIEW_TAB_CAUSES", "Causes"),
+  stances: loc("LOC_EMIG_VIEW_TAB_POLICIES", "Policies"), cityflows: loc("LOC_EMIG_VIEW_TAB_MY_CITIES", "My Cities"),
+  notifications: loc("LOC_EMIG_VIEW_TAB_NOTIFICATIONS", "Notifications"), guide: loc("LOC_EMIG_VIEW_TAB_GUIDE", "Guide")
 };
 
 /**
@@ -577,7 +579,7 @@ function makeTabBar(sections, onSelect) {
 // the current one gold), the same shape as the Network lens row and the Demographics "Data" pills, so
 // the control row reads identically on every Emigration tab.
 /** @type {Record<number,string>} */
-const NUM_LABEL = { [NumberMode.CIV]: "Civ Pop", [NumberMode.HISTORICAL]: "Scaled Pop" };
+const NUM_LABEL = { [NumberMode.CIV]: loc("LOC_EMIG_VIEW_NUM_CIV", "Civ Pop"), [NumberMode.HISTORICAL]: loc("LOC_EMIG_VIEW_NUM_SCALED", "Scaled Pop") };
 
 /**
  * A labeled pill group: a "Label:" span + one selectable chip per option (the current key `active`).
@@ -665,12 +667,11 @@ function buildControlRow(showNumbers, rebuild, includeOptionsButton = false) {
   if (!showNumbers && !includeOptionsButton) return null;
   const row = el("div", "emig-ctrl-row");
   if (includeOptionsButton) {
-    row.appendChild(filterGroup("Options:", [
-      { key: "advanced", label: "Advanced" }
-    ], "", () => openAdvancedOptions()));
+    row.appendChild(filterGroup(loc("LOC_EMIG_VIEW_OPTIONS_LABEL", "Options:"),
+      [{ key: "advanced", label: loc("LOC_EMIG_VIEW_OPTIONS_ADVANCED", "Advanced") }], "", () => openAdvancedOptions()));
   }
   if (!showNumbers) return row;
-  row.appendChild(filterGroup("Numbers:", [
+  row.appendChild(filterGroup(loc("LOC_EMIG_VIEW_NUMBERS_LABEL", "Numbers:"), [
     { key: NumberMode.HISTORICAL, label: NUM_LABEL[NumberMode.HISTORICAL] },
     { key: NumberMode.CIV, label: NUM_LABEL[NumberMode.CIV] }
   ], getNumberMode(), (/** @type {number} */ k) => { setNumberMode(k); rebuild(); }));
@@ -694,7 +695,7 @@ export function renderDashboardTabbed(target, model, rebuild) {
     if (!sections.length) return;
     const wrap = el("div", "emig-dash");
     if (model && model.sample) {
-      wrap.appendChild(el("div", "emig-sample-badge", "Sample data ; preview (switch to Live in Options)"));
+      wrap.appendChild(el("div", "emig-sample-badge", loc("LOC_EMIG_VIEW_SAMPLE_BADGE", "Sample data ; preview (switch to Live in Options)")));
     }
     appendSnapshotReminder(wrap);
     // The Numbers (Scaled/Civ) control row is per-section, so it's rebuilt on every tab change into
@@ -803,7 +804,7 @@ export function renderDashboardSubtab(target, model, kind, opts) {
     const section = sections.find((/** @type {*} */ s) => s.kind === kind) || sections[0];
     if (!section) return;
     const wrap = el("div", "emig-dash");
-    if (model && model.sample) wrap.appendChild(el("div", "emig-sample-badge", "Sample data ; preview (switch to Live in Options)"));
+    if (model && model.sample) wrap.appendChild(el("div", "emig-sample-badge", loc("LOC_EMIG_VIEW_SAMPLE_BADGE", "Sample data ; preview (switch to Live in Options)")));
     // The timeline-detail note is rendered by the Demographics page beside its "Analytics policy"
     // banner (see EmigrationTimelineNote), so it's NOT added at the top here in the embedded page.
     const body = el("div", "emig-tabbody");

@@ -88,6 +88,25 @@ import { __test as dia } from "/emigration/ui/emigration-diaspora.js";
   const lead = dia.leadForeignOrigin(comp);
   assert.equal(lead.civ, 9, "lead foreign origin is the largest non-owner origin");
   assert.equal(dia.leadForeignOrigin({ owner: 5, civs: [{ civ: 5, share: 1 }] }), null, "single-origin city → no foreign lead");
+
+  const idx = dia.arrivalMassIndex([
+    { src: 9, dest: 5, destCity: "Ostia", people: 120000 },
+    { src: 9, dest: 5, destCity: "Ostia", people: 130000 },
+    { src: 5, dest: 5, destCity: "Ostia", people: 999999 }, // intra-civ ignored
+    { src: 4, dest: 5, destCity: "Ostia", people: 70000 }
+  ]);
+  assert.equal(idx.get("Ostia|9"), 250000, "arrival mass indexes by destination city + origin civ");
+
+  assert.equal(
+    dia.quarterStage(dia.QUARTER_FOOTHOLD_SHARE, dia.QUARTER_MIN_IMMIGRANTS),
+    "foothold",
+    "quarter foothold gate uses both share and immigrant mass"
+  );
+  assert.equal(
+    dia.quarterStage(dia.QUARTER_ESTABLISHED_SHARE, dia.QUARTER_MIN_IMMIGRANTS),
+    "established",
+    "quarter established gate upgrades at the higher share threshold"
+  );
 }
 
 console.log("chronicle harness passed");
