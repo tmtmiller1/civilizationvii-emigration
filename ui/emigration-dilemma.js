@@ -26,6 +26,7 @@ import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
 import { showDilemma } from "/emigration/ui/emigration-dilemma-view.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 
 const STATE_KEY = "EmigrationDilemma_v1";
 const STATE_SCHEMA_VERSION = 2;
@@ -34,12 +35,12 @@ const MAX_SPREE_EVENTS_PER_CIV = 32;
 
 /** The choices offered, with a one-line consequence cue. */
 const CHOICES = [
-  { id: "welcome", label: "Welcome them in",
-    note: "A cost in gold and some short-term strain on your people; they settle among you and, in time, become your people." },
-  { id: "frontier", label: "Settle the frontier",
-    note: "A smaller cost in gold; send them to a smaller town to make a new start." },
-  { id: "away", label: "Turn them away",
-    note: "A cost in international standing now; they move on down the road, their burden not yours to carry." }
+  { id: "welcome", label: loc("LOC_EMIG_DIL_WELCOME_LABEL", "Welcome them in"),
+    note: loc("LOC_EMIG_DIL_WELCOME_NOTE", "A cost in gold and some short-term strain on your people; they settle among you and, in time, become your people.") },
+  { id: "frontier", label: loc("LOC_EMIG_DIL_FRONTIER_LABEL", "Settle the frontier"),
+    note: loc("LOC_EMIG_DIL_FRONTIER_NOTE", "A smaller cost in gold; send them to a smaller town to make a new start.") },
+  { id: "away", label: loc("LOC_EMIG_DIL_AWAY_LABEL", "Turn them away"),
+    note: loc("LOC_EMIG_DIL_AWAY_NOTE", "A cost in international standing now; they move on down the road, their burden not yours to carry.") }
 ];
 
 /**
@@ -360,15 +361,23 @@ function settleInto(citySig) {
  */
 function chronicleDecision(choiceId, d, hostSig, turn) {
   const nc = narrativeCiv(d.origin);
-  const who = nc.framed ? "a people we had only heard tell of" : "the " + nc.adj;
-  const place = hostSig && hostSig.city ? cityName(hostSig.city) : "your lands";
+  const who = nc.framed
+    ? loc("LOC_EMIG_DIL_WHO_UNKNOWN", "a people we had only heard tell of")
+    : loc("LOC_EMIG_DIL_WHO_KNOWN", "the {1_Adj}", nc.adj);
+  const place = hostSig && hostSig.city
+    ? cityName(hostSig.city)
+    : loc("LOC_EMIG_DIL_YOUR_LANDS", "your lands");
   const body = choiceId === "welcome"
-    ? `You opened ${place} to the refugees of ${nc.adj}. They are your people now, or will be.`
+    ? loc("LOC_EMIG_DIL_BODY_WELCOME",
+      "You opened {1_Place} to the refugees of {2_Adj}. They are your people now, or will be.", place, nc.adj)
     : choiceId === "frontier"
-      ? `You sent the refugees of ${nc.adj} to the frontier, to build something of their own.`
-      : `You turned the refugees of ${nc.adj} away from ${place}. They went on down the road, ${who}.`;
-  chronicle({ kind: "founding", title: "A Decision at the Border", body, civ: nc.adj,
-    dedupeKey: "dilemma:" + d.origin + "|" + turn });
+      ? loc("LOC_EMIG_DIL_BODY_FRONTIER",
+        "You sent the refugees of {1_Adj} to the frontier, to build something of their own.", nc.adj)
+      : loc("LOC_EMIG_DIL_BODY_AWAY",
+        "You turned the refugees of {1_Adj} away from {2_Place}. They went on down the road, {3_Who}.",
+        nc.adj, place, who);
+  chronicle({ kind: "founding", title: loc("LOC_EMIG_DIL_CHRON_TITLE", "A Decision at the Border"),
+    body, civ: nc.adj, dedupeKey: "dilemma:" + d.origin + "|" + turn });
 }
 
 /**
@@ -391,11 +400,12 @@ function dilemmaView(d, turn) {
  * Options toggle; never throws into the pass.
  * @param {*[]} conquests This pass's capture events. @param {*[]} migrations This pass's migrations.
  * @param {*[]} signals This pass's city signals.
+ * @returns {boolean} Whether a dilemma modal fired this pass (so lower-priority modals can stand down).
  */
 export function maybeDilemma(conquests, migrations, signals) {
-  if (!getDilemmasEnabled()) return;
+  if (!getDilemmasEnabled()) return false;
   const me = localPid();
-  if (me == null) return;
+  if (me == null) return false;
   try {
     const s = state();
     const turn = monoTurn(); // monotonic, so the window + cooldown survive age-boundary turn resets
@@ -405,8 +415,10 @@ export function maybeDilemma(conquests, migrations, signals) {
       : null;
     if (d) fireDilemma(s, d, signals, me, turn);
     persist();
+    return !!d;
   } catch (_) {
     /* never disrupt a pass */
+    return false;
   }
 }
 

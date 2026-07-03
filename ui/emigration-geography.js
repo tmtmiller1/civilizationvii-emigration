@@ -245,6 +245,25 @@ function fleeBonus(src, dest, flee) {
 }
 
 /**
+ * The geographic pull terms for a (src, dest) pair, split so callers can both sum them (geoAdjust)
+ * and read the individual contributions for the per-move reason tags: a distance-decay penalty
+ * (always ≤ 0), an aggressor/own-civ owner preference for war refugees (when `aggressors` is given),
+ * and a directional flight bonus when `flee` is set (positive away from the invader).
+ * @param {*} src Source signal.
+ * @param {*} dest Destination signal.
+ * @param {{x:number, y:number}|null} flee The source's flee vector, or null.
+ * @param {Set<number>|null} [aggressors] The source's aggressors (war refugees only).
+ * @returns {{distance:number, aggressor:number, flight:number}} The signed geographic terms.
+ */
+export function geoBreakdown(src, dest, flee, aggressors) {
+  return {
+    distance: -CONFIG.distanceFactor * hexDistance(src, dest),
+    aggressor: aggressors ? aggressorAdjust(src, dest, aggressors) : 0,
+    flight: flee ? fleeBonus(src, dest, flee) : 0
+  };
+}
+
+/**
  * The geographic delta added to a destination's pull: a distance-decay penalty
  * (always), an aggressor/own-civ owner preference for war refugees (when
  * `aggressors` is given), and a directional flight bonus when `flee` is set.
@@ -255,10 +274,8 @@ function fleeBonus(src, dest, flee) {
  * @returns {number} The geographic adjustment (can be negative).
  */
 export function geoAdjust(src, dest, flee, aggressors) {
-  let g = -CONFIG.distanceFactor * hexDistance(src, dest);
-  if (aggressors) g += aggressorAdjust(src, dest, aggressors);
-  if (flee) g += fleeBonus(src, dest, flee);
-  return g;
+  const b = geoBreakdown(src, dest, flee, aggressors);
+  return b.distance + b.aggressor + b.flight;
 }
 
 /**

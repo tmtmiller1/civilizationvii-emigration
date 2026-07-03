@@ -44,7 +44,7 @@ globalThis.Database = { makeHash: (t) => t };
 globalThis.GameContext = { localPlayerID: 1 };
 globalThis.Locale = { compose: (s) => s };
 globalThis.Game = { turn: 1 };
-globalThis.EmigrationData = { netCumFor: () => -3000, grossInCumFor: () => 10, grossOutCumFor: () => 30 };
+globalThis.EmigrationData = { netCumFor: () => -3000, grossInCumFor: () => 10, grossOutCumFor: () => 30, cityNetSeries: () => [-2, 1, 3, -1, 2] };
 const kv = {};
 globalThis.Configuration = { getGame: () => ({ getValue: (k) => kv[k] }), editGame: () => ({ setValue: (k, v) => (kv[k] = v) }) };
 
@@ -62,6 +62,7 @@ const { installCityReadout } = await import("/emigration/ui/emigration-city-read
 
 // ── installCityReadout: console API + selection subscription. ──
 CONFIG.cityReadoutEnabled = true;
+CONFIG.cityReadoutSparkline = true;
 installCityReadout();
 const api = /** @type {*} */ (globalThis).emigration;
 assert.equal(typeof api.city, "function", "console api.city installed");
@@ -79,6 +80,13 @@ const panel = body.children.find((c) => c.id === "emig-readout");
 assert.ok(panel.children.length >= 2, "panel has a title + at least one line");
 assert.equal(panel.style.right, "1rem", "top-right corner positions to the right");
 assert.equal(panel.style.top, "9rem", "top-right corner positions to the top");
+
+// ── Feature E: the readout renders a net-migration sparkline when enabled + history exists. ──
+const spark = panel.children.find((c) => c.className === "emig-rt-spark");
+assert.ok(spark, "a sparkline strip is rendered");
+assert.equal(spark.children.length, 5, "one bar per net value in the series");
+assert.ok(spark.children.every((b) => b.className === "emig-rt-bar" && b.style.height), "each bar has a height");
+assert.ok(panel.children.some((c) => c.className === "emig-rt-sparklabel"), "the sparkline has a caption");
 
 // ── Re-show with a different corner → repositions, reuses the element (no duplicate mount). ──
 CONFIG.cityReadoutCorner = "bottom-left";

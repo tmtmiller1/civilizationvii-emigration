@@ -13,6 +13,7 @@ import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { eventDisplayName } from "/emigration/ui/emigration-naming.js";
 import { eventGroupCause } from "/emigration/ui/emigration-event-attribution.js";
 import { getNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 
 /**
  * Make an element with an optional class + text.
@@ -85,7 +86,9 @@ function directionCol(title, whyPrefix, dir) {
     // complete card (rather than a missing pie).
     const ph = el("div", "emig-pie-empty");
     ph.appendChild(el("span", "emig-pie-empty-t",
-      title.indexOf("Immigrants") === 0 ? "No arrivals yet" : "No departures yet"));
+      title.indexOf("Immigrants") === 0
+        ? loc("LOC_EMIG_CF_NO_ARRIVALS", "No arrivals yet")
+        : loc("LOC_EMIG_CF_NO_DEPARTURES", "No departures yet")));
     col.appendChild(ph);
     return col;
   }
@@ -96,7 +99,7 @@ function directionCol(title, whyPrefix, dir) {
     pct: total > 0 ? Math.round((s.value / total) * 100) : 0
   }))));
   const why = causeText(dir && dir.causes);
-  if (why) col.appendChild(el("div", "emig-city-why", whyPrefix + " " + why));
+  if (why) col.appendChild(el("div", "emig-city-why", loc("LOC_EMIG_CF_WHY_LINE", "{1_Prefix} {2_Why}", whyPrefix, why)));
   return col;
 }
 
@@ -107,18 +110,18 @@ function directionCol(title, whyPrefix, dir) {
  * @returns {string} Title.
  */
 function cardTitle(c) {
-  if (c.town === true) return c.name + " (Town)";
-  if (c.town === false) return c.name + " (City)";
+  if (c.town === true) return loc("LOC_EMIG_CF_TITLE_TOWN", "{1_Name} (Town)", c.name);
+  if (c.town === false) return loc("LOC_EMIG_CF_TITLE_CITY", "{1_Name} (City)", c.name);
   return c.name;
 }
 
 // Emigration-pressure bands (proximity to shedding population, 0..1): number + a colour-coded label
 // so you can read at a glance how high a settlement's pressure is.
 const PR_BANDS = [
-  { min: 0.9, label: "Critical", color: "#c25b54" },
-  { min: 0.66, label: "High", color: "#e0913c" },
-  { min: 0.33, label: "Moderate", color: "#d8b24a" },
-  { min: 0, label: "Low", color: "#5fae6b" }
+  { min: 0.9, label: loc("LOC_EMIG_CF_BAND_CRITICAL", "Critical"), color: "#c25b54" },
+  { min: 0.66, label: loc("LOC_EMIG_CF_BAND_HIGH", "High"), color: "#e0913c" },
+  { min: 0.33, label: loc("LOC_EMIG_CF_BAND_MODERATE", "Moderate"), color: "#d8b24a" },
+  { min: 0, label: loc("LOC_EMIG_CF_BAND_LOW", "Low"), color: "#5fae6b" }
 ];
 
 /**
@@ -156,15 +159,15 @@ function pressureBar(pct, color) {
  */
 function pressureCol(p) {
   const col = el("div", "emig-city-col");
-  col.appendChild(el("div", "emig-city-sub", "Emigration pressure"));
+  col.appendChild(el("div", "emig-city-sub", loc("LOC_EMIG_CF_PRESSURE", "Emigration pressure")));
   if (!p) {
-    col.appendChild(el("div", "emig-empty", "none recorded"));
+    col.appendChild(el("div", "emig-empty", loc("LOC_EMIG_CF_NONE_RECORDED", "none recorded")));
     return col;
   }
   const pct = Math.round((p.bar || 0) * 100);
   const band = pressureBand(p.bar || 0);
   col.appendChild(pressureBar(pct, band.color));
-  const flag = p.flag ? " (" + p.flag + ")" : "";
+  const flag = p.flag ? loc("LOC_EMIG_CF_FLAG_PAREN", " ({1_Flag})", p.flag) : "";
   const val = el("div", "emig-pr-value", pct + "% · " + band.label + flag);
   val.style.color = band.color;
   col.appendChild(val);
@@ -172,7 +175,7 @@ function pressureCol(p) {
   // bars, so "exactly what drives migration" reads at a glance. Falls back to a single line otherwise.
   if (Array.isArray(p.mix) && p.mix.length) col.appendChild(driverMeter(p.mix));
   const sub = (p.cause || "") + (p.dest ? " → " + p.dest : "");
-  if (sub.trim()) col.appendChild(el("div", "emig-city-why", "Heading to: " + sub));
+  if (sub.trim()) col.appendChild(el("div", "emig-city-why", loc("LOC_EMIG_CF_HEADING_TO", "Heading to: {1_Sub}", sub)));
   return col;
 }
 
@@ -185,7 +188,7 @@ function pressureCol(p) {
  */
 function driverMeter(mix) {
   const box = el("div", "emig-driver-meter");
-  box.appendChild(el("div", "emig-city-sub", "What's driving it"));
+  box.appendChild(el("div", "emig-city-sub", loc("LOC_EMIG_CF_WHATS_DRIVING", "What's driving it")));
   for (const m of mix) {
     const color = CAUSE_PALETTE[m.cause] || CAUSE_PALETTE.other;
     const row = el("div", "emig-cause-row");
@@ -267,10 +270,10 @@ function pushEvent(by, key, v) {
  */
 function eventSubRow(ev) {
   const row = el("div", "emig-event-row");
-  row.appendChild(el("span", "emig-event-name", "↳ " + ev.name));
+  row.appendChild(el("span", "emig-event-name", loc("LOC_EMIG_CF_EVENT_NAME", "↳ {1_Name}", ev.name)));
   let num = formatPeople(ev.people);
-  if (ev.people > 0 && ev.deaths > 0) num += " · " + formatPeople(ev.deaths) + " died";
-  else if (ev.deaths > 0) num = formatPeople(ev.deaths) + " died";
+  if (ev.people > 0 && ev.deaths > 0) num += loc("LOC_EMIG_CF_EVENT_BOTH", " · {1_Deaths} died", formatPeople(ev.deaths));
+  else if (ev.deaths > 0) num = loc("LOC_EMIG_CF_EVENT_DIED", "{1_Deaths} died", formatPeople(ev.deaths));
   row.appendChild(el("span", "emig-event-num", num));
   return row;
 }
@@ -307,10 +310,10 @@ function causeRow(r, max) {
  */
 function causeList(causes, events) {
   const col = el("div", "emig-cause-list");
-  col.appendChild(el("div", "emig-cause-list-h", "Causes by impact"));
+  col.appendChild(el("div", "emig-cause-list-h", loc("LOC_EMIG_CF_CAUSES_BY_IMPACT", "Causes by impact")));
   const rows = causeRows(causes);
   if (!rows.length) {
-    col.appendChild(el("div", "emig-empty", "no migration yet"));
+    col.appendChild(el("div", "emig-empty", loc("LOC_EMIG_CF_NO_MIGRATION", "no migration yet")));
     return col;
   }
   const max = rows[0].n;
@@ -335,8 +338,10 @@ function cityCard(c) {
   card.appendChild(isCiv ? civHeader(c.name) : el("div", "emig-city-name", cardTitle(c)));
   const cols = el("div", "emig-city-cols" + (isCiv ? " with-causes" : ""));
   if (isCiv) cols.appendChild(causeList(c.causes, c.events));
-  cols.appendChild(directionCol("Immigrants ; came from", "Why:", c.in));
-  cols.appendChild(directionCol("Emigrants ; left for/died", "Why:", c.out));
+  cols.appendChild(directionCol(loc("LOC_EMIG_CF_DIR_IMMIGRANTS", "Immigrants ; came from"),
+    loc("LOC_EMIG_CF_WHY_PREFIX", "Why:"), c.in));
+  cols.appendChild(directionCol(loc("LOC_EMIG_CF_DIR_EMIGRANTS", "Emigrants ; left for/died"),
+    loc("LOC_EMIG_CF_WHY_PREFIX", "Why:"), c.out));
   // Settlements: the pressure becomes a third aligned graph column beside the two pies.
   if (!isCiv) cols.appendChild(pressureCol(c.pressure));
   card.appendChild(cols);
@@ -429,7 +434,7 @@ export function buildCivFlows(flows, civs, eventsByOwner) {
       // Deaths are population LOST with no destination, show them as a "Died" wedge in the
       // Emigrants ("left for/died") pie, so a civ whose loss was deaths isn't a blank pie.
       if ((r.deaths || 0) > 0) {
-        out.civs.push({ id: DIED_ID, name: "Died", people: r.deaths, points: r.deathsPts || 0 });
+        out.civs.push({ id: DIED_ID, name: loc("LOC_EMIG_CF_DIED", "Died"), people: r.deaths, points: r.deathsPts || 0 });
         out.civs.sort((a, b) => b.people - a.people);
       }
       return {
@@ -445,8 +450,8 @@ export function buildCivFlows(flows, civs, eventsByOwner) {
 // gives the short name; this is the fuller "what this shows" title).
 /** @type {Record<string,string>} */
 const SECTION_TITLES = {
-  pies: "Causes: Why people move",
-  cityflows: "Settlements: Migration in and out of your settlements"
+  pies: loc("LOC_EMIG_CF_SECTION_CAUSES", "Causes: Why people move"),
+  cityflows: loc("LOC_EMIG_CF_SECTION_SETTLEMENTS", "Settlements: Migration in and out of your settlements")
 };
 
 /**
@@ -462,7 +467,7 @@ export function renderCityFlows(body, section) {
   const cities = section.cities || [];
   if (!cities.length) {
     body.appendChild(el("div", "emig-empty",
-      "No city migration recorded yet, flows appear as people move in and out of your cities."));
+      loc("LOC_EMIG_CF_EMPTY", "No city migration recorded yet, flows appear as people move in and out of your cities.")));
     return;
   }
   for (const c of cities) body.appendChild(cityCard(c));

@@ -814,8 +814,11 @@ function buildViz(container, frames, events, rebuildAll, controlsHost) {
  * @param {HTMLElement} container Card body.
  * @param {*} section The dashboard section ({network, frames}).
  * @param {HTMLElement} [controlsHost] Shared controls row for the filter row (else inline).
+ * @param {()=>void} [rebuildAll] Re-render hook for the Units toggle (rescales the scene). Defaults to
+ *   re-rendering this view; the combined Network tab passes one that re-renders the whole sub-tab so
+ *   the Dots/Flow choice is preserved and the shared controls row isn't duplicated.
  */
-export function renderNetworkViz(container, section, controlsHost) {
+export function renderNetworkViz(container, section, controlsHost, rebuildAll) {
   // Drop any prior render (and let its detached-canvas rAF loop stop) before building a fresh one.
   // NB: use removeChild, NOT replaceChildren, Coherent GameFace doesn't implement replaceChildren, so
   // on a re-render (e.g. the Units toggle) the old view would NOT clear and the chrome would double up.
@@ -830,5 +833,5 @@ export function renderNetworkViz(container, section, controlsHost) {
   }
   injectStyle();
   buildViz(container, frames, (section && section.events) || [],
-    () => renderNetworkViz(container, section, controlsHost), controlsHost);
+    rebuildAll || (() => renderNetworkViz(container, section, controlsHost)), controlsHost);
 }

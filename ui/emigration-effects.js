@@ -251,3 +251,54 @@ export function congestionPenalty(pid, civPopulation) {
   if (!(load > 0)) return 0;
   return CONFIG.congestWeight * (load / Math.max(1, civPopulation));
 }
+
+/**
+ * Grant a SIGNED amount of a yield to a player (the two-sided sibling of {@link deduct}, which only
+ * ever applies costs). Used for the one-time Cultural Quarter yields, where a benefit is granted and
+ * a drawback deducted, and where a change-of-hands reverses both exactly. No-ops for a zero amount,
+ * a bad id, or a missing grantYield API; never throws.
+ * @param {number} pid Player id. @param {string} yieldKey e.g. "YIELD_CULTURE". @param {number} amount Signed amount.
+ */
+function grantSigned(pid, yieldKey, amount) {
+  if (typeof pid !== "number" || !(Math.abs(amount) > 0)) return;
+  try {
+    const yt = typeof YieldTypes !== "undefined" ? YieldTypes[yieldKey] : undefined;
+    if (yt != null && typeof Players?.grantYield === "function") {
+      Players.grantYield(pid, yt, amount);
+    }
+  } catch (_) {
+    /* ignore - a one-time yield must never break the pass */
+  }
+}
+
+/**
+ * @typedef {{benefitYield:(string|null), benefitAmount:number,
+ *   penaltyYield:(string|null), penaltyAmount:number}} QuarterApplied
+ */
+
+/**
+ * Apply a Cultural Quarter's one-time yields to the host: grant its benefit and charge its drawback.
+ * The amounts are read from the record's `applied` block (already resolved from CONFIG at formation),
+ * so this and {@link reverseQuarterYields} stay exact mirrors.
+ * @param {number} owner Host player id.
+ * @param {QuarterApplied} applied The resolved yields.
+ */
+export function applyQuarterYields(owner, applied) {
+  if (!applied) return;
+  const { benefitYield, benefitAmount, penaltyYield, penaltyAmount } = applied;
+  if (benefitYield && benefitAmount > 0) grantSigned(owner, benefitYield, benefitAmount);
+  if (penaltyYield && penaltyAmount > 0) grantSigned(owner, penaltyYield, -penaltyAmount);
+}
+
+/**
+ * Reverse a Cultural Quarter's one-time yields on the former host (undo the exact amounts a prior
+ * stance applied), used when the quarter changes hands to a new origin so the old host is made whole.
+ * @param {number} owner Former host player id.
+ * @param {QuarterApplied} applied The resolved yields.
+ */
+export function reverseQuarterYields(owner, applied) {
+  if (!applied) return;
+  const { benefitYield, benefitAmount, penaltyYield, penaltyAmount } = applied;
+  if (benefitYield && benefitAmount > 0) grantSigned(owner, benefitYield, -benefitAmount);
+  if (penaltyYield && penaltyAmount > 0) grantSigned(owner, penaltyYield, penaltyAmount);
+}

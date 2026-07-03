@@ -8,6 +8,8 @@
 // Pure DOM + a self-injected stylesheet, shown from the gameplay pass context (the same place the
 // mod's toasts render). Fully defensive: with no DOM it's a silent no-op.
 
+import { loc } from "/emigration/ui/emigration-loc.js";
+
 /**
  * Make an element with an optional class + text.
  * @param {string} tag Tag. @param {string} [cls] Class. @param {string} [text] Text.
@@ -96,15 +98,15 @@ function choiceButton(c, resolve) {
 
 /**
  * Build the dilemma panel (eyebrow + title + body + choice buttons). Clicks inside the panel don't
- * bubble to the guard (so they don't count as "turn away").
- * @param {{title:string, body:string, choices:{id:string,label:string,note?:string}[]}} view The model.
+ * bubble to the guard (so they don't count as a dismiss).
+ * @param {{title:string, body:string, eyebrow?:string, choices:*[]}} view The model.
  * @param {(id:string)=>void} resolve Resolve the dilemma with a choice id.
  * @returns {HTMLElement} The panel element.
  */
 function buildPanel(view, resolve) {
   const panel = el("div", "emig-dlg-panel");
   panel.addEventListener("click", (ev) => ev.stopPropagation());
-  panel.appendChild(el("div", "emig-dlg-eyebrow", "Refugees"));
+  panel.appendChild(el("div", "emig-dlg-eyebrow", (view && view.eyebrow) || loc("LOC_EMIG_DILV_EYEBROW_DEFAULT", "Refugees")));
   panel.appendChild(el("div", "emig-dlg-title", view.title));
   panel.appendChild(el("div", "emig-dlg-body", view.body));
   const choices = el("div", "emig-dlg-choices");
@@ -115,8 +117,10 @@ function buildPanel(view, resolve) {
 
 /**
  * Show the refugee-dilemma modal. Resolves with the chosen option id (clicking the dim area outside
- * the panel resolves as "away", turning them away). Calls `onChoice(id)` exactly once.
- * @param {{title:string, body:string, choices:{id:string,label:string,note?:string}[]}} view The model.
+ * the panel resolves as the dismiss option, default "away"). Calls `onChoice(id)` exactly once. An
+ * optional `eyebrow` overrides the "Refugees" kicker, and `dismissId` the click-outside/Escape choice,
+ * so the same modal can host the Cultural Quarter decision.
+ * @param {{title:string, body:string, eyebrow?:string, dismissId?:string, choices:*[]}} view The model.
  * @param {(id:string)=>void} onChoice The choice callback.
  */
 export function showDilemma(view, onChoice) {
@@ -125,14 +129,15 @@ export function showDilemma(view, onChoice) {
     if (!root || !view) return;
     injectStyle();
     let done = false;
+    const dismissId = typeof view.dismissId === "string" && view.dismissId.length ? view.dismissId : "away";
     const guard = el("div", "emig-dlg-guard");
-    // Escape always dismisses (as "turn them away"), so the full-screen input guard can never trap the
+    // Escape always dismisses (as the dismiss option), so the full-screen input guard can never trap the
     // player if a pointer click doesn't register (a Mac GameFace input quirk). Listener is removed when
     // the dilemma resolves, however it resolves.
     const onKey = (/** @type {*} */ ev) => {
       if (ev && (ev.key === "Escape" || ev.keyCode === 27)) {
         ev.stopPropagation();
-        resolve("away");
+        resolve(dismissId);
       }
     };
     const resolve = (/** @type {string} */ id) => {
@@ -147,7 +152,7 @@ export function showDilemma(view, onChoice) {
       safeChoice(onChoice, id);
     };
     guard.appendChild(buildPanel(view, resolve));
-    guard.addEventListener("click", () => resolve("away")); // click outside the panel = turn away
+    guard.addEventListener("click", () => resolve(dismissId)); // click outside the panel = dismiss
     root.appendChild(guard);
     try {
       window.addEventListener("keydown", onKey, true); // Escape = turn away (keyboard safety exit)

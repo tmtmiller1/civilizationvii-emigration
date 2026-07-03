@@ -12,11 +12,14 @@
 // want to go; emigration-engine.js executes the moves. Pure (no state mutation, no persistence).
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
-import { fleeVector, geoAdjust, hasOpenBordersDeal, hasAlliance, atWar } from "/emigration/ui/emigration-geography.js";
+import {
+  fleeVector, geoAdjust, geoBreakdown, hexDistance, hasOpenBordersDeal, hasAlliance, atWar
+} from "/emigration/ui/emigration-geography.js";
 import { immigrationOpenness, emigrationRetention, hasAsylum } from "/emigration/ui/emigration-borders.js";
 import { raidTilt } from "/emigration/ui/emigration-raid.js";
 import { congestionPenalty } from "/emigration/ui/emigration-effects.js";
 import { warAggressors } from "/emigration/ui/emigration-war.js";
+import { REASON, DEATH_REASON } from "/emigration/ui/emigration-move-reasons.js";
 
 // When set, the openness/retention border multipliers are forced to neutral (1). The stance-impact
 // counterfactual (emigration-engine.js) toggles this around a "what if borders were neutral?" plan;
@@ -249,19 +252,146 @@ function dominanceFor(dest, ownerPop) {
   return CONFIG.antiSnowballWeight * Math.pow(excess, CONFIG.antiSnowballExponent);
 }
 
+// "Nearby" cutoff for the reason tag: a move within this many hexes reads as a short hop.
+const NEAR_HEXES = 6;
+
+/** @typedef {{tag:string, w:number}} ReasonCand A candidate reason tag + its weight. */
+
+/**
+ * Economic "why here" candidates: the prosperity gradient and a short-hop bonus.
+ * @param {*} src Source. @param {*} dest Destination. @returns {ReasonCand[]} Candidates.
+ */
+function econReasons(src, dest) {
+  const out = [];
+  const grad = dest.pros - src.pros;
+  if (grad > 0) out.push({ tag: REASON.RICHER, w: grad });
+  const dist = hexDistance(src, dest);
+  if (dist > 0 && dist <= NEAR_HEXES) {
+    out.push({ tag: REASON.NEARBY, w: (NEAR_HEXES - dist + 1) * (CONFIG.distanceFactor || 0.1) });
+  }
+  return out;
+}
+
+/**
+ * Targeted-pull candidates: an asylum offer to a refugee, or an active raid.
+ * @param {*} src Source. @param {*} dest Destination. @returns {ReasonCand[]} Candidates.
+ */
+function tiltReasons(src, dest) {
+  const out = [];
+  const cause = migrationCause(src);
+  if ((cause === "war" || cause === "disaster") && hasAsylum(dest.owner)) {
+    out.push({ tag: REASON.ASYLUM, w: CONFIG.asylumPushWeight * ((src.violence || 0) + (src.disaster || 0)) });
+  }
+  const rt = raidTilt(src.owner, dest.owner);
+  if (rt > 0) out.push({ tag: REASON.RAID, w: rt });
+  return out;
+}
+
+/**
+ * Crisis/flight candidates: directional flight, safer own-lands, cross-border escape, aggressor
+ * avoidance. Only meaningful for a source in acute crisis (or with a flee vector).
+ * @param {*} src Source. @param {*} dest Destination. @param {{x:number,y:number}|null} flee Flee vector.
+ * @param {Set<number>|null} aggressors The source's aggressors. @param {boolean} crossCiv Cross-civ move.
+ * @returns {ReasonCand[]} Candidates.
+ */
+function crisisReasons(src, dest, flee, aggressors, crossCiv) {
+  const out = [];
+  const geo = geoBreakdown(src, dest, flee, aggressors);
+  if (geo.flight > 0) out.push({ tag: REASON.SAFER_DIR, w: geo.flight });
+  if (srcInCrisis(src)) {
+    if (!crossCiv) out.push({ tag: REASON.OWN_CIV, w: (CONFIG.ownCivRefugeeBonus || 0) + 1 });
+    else if (CONFIG.crisisEscapeBonus > 0) out.push({ tag: REASON.CRISIS_ESCAPE, w: CONFIG.crisisEscapeBonus });
+  }
+  if (aggressors && crossCiv && !aggressors.has(dest.owner)) {
+    out.push({ tag: REASON.AGGRESSOR_AVOIDED, w: CONFIG.aggressorPenalty || 0 });
+  }
+  return out;
+}
+
+/**
+ * Cross-civ relationship candidates: an open destination and an alliance.
+ * @param {*} src Source. @param {*} dest Destination. @param {boolean} crossCiv Cross-civ move.
+ * @returns {ReasonCand[]} Candidates.
+ */
+function relationReasons(src, dest, crossCiv) {
+  if (!crossCiv) return [];
+  const out = [];
+  if (opennessFor(dest) > 1 || hasOpenBordersDeal(src.owner, dest.owner)) {
+    out.push({ tag: REASON.OPEN_BORDERS, w: 2 });
+  }
+  if (hasAlliance(src.owner, dest.owner)) out.push({ tag: REASON.ALLIED, w: 1.5 });
+  return out;
+}
+
+/**
+ * The top "why here" reason tags for a chosen (src → dest) move, ordered by contribution, for the
+ * per-move explanation surfaces (P0.1). Pure, and mirrors the exact terms {@link adjustedPull}
+ * scores, so a tag is only shown when it truly helped pick this destination. Returns at most three
+ * stable keys (see emigration-move-reasons.js).
+ * @param {*} src Source signal.
+ * @param {*} dest The chosen destination signal.
+ * @param {{x:number, y:number}|null} flee The source's flee vector, or null.
+ * @param {Record<number, number>|null} ownerPop Per-owner total population (unused today; kept for parity).
+ * @param {Set<number>|null} aggressors The source's aggressors (war refugees only).
+ * @returns {string[]} Up to three reason-tag keys, most significant first.
+ */
+export function deriveMoveReasons(src, dest, flee, ownerPop, aggressors) {
+  const crossCiv = dest.owner !== src.owner;
+  const cand = econReasons(src, dest)
+    .concat(tiltReasons(src, dest))
+    .concat(crisisReasons(src, dest, flee, aggressors, crossCiv))
+    .concat(relationReasons(src, dest, crossCiv));
+  cand.sort((a, b) => b.w - a.w);
+  const out = [];
+  for (const c of cand) {
+    if (out.indexOf(c.tag) === -1) out.push(c.tag);
+    if (out.length >= 3) break;
+  }
+  return out;
+}
+
+/**
+ * The crisis-type tags describing WHY a settlement is in lethal distress (P0.2): siege, in-border
+ * violence, disaster, or famine. Read straight off the source signal, so they're always truthful.
+ * @param {*} src Source signal.
+ * @returns {string[]} Crisis-type tags (may be empty for non-lethal distress).
+ */
+export function crisisTypeReasons(src) {
+  const out = [];
+  if (src.siege) out.push(DEATH_REASON.SIEGE);
+  else if ((src.violence || 0) >= CONFIG.violenceFleeThreshold) out.push(DEATH_REASON.UNDER_ATTACK);
+  if ((src.disaster || 0) >= CONFIG.disasterFleeThreshold) out.push(DEATH_REASON.DISASTER);
+  if (src.starving) out.push(DEATH_REASON.FAMINE);
+  return out;
+}
+
+/**
+ * The "why did they die" tags for an attrition death (P0.2): the crisis type(s) plus whether the
+ * settlement was trapped (no refuge) or lost people while the rest fled.
+ * @param {*} src Source signal.
+ * @param {boolean} hasRefuge Whether a viable destination existed this pass.
+ * @returns {string[]} Up to three death-reason tags.
+ */
+export function deriveDeathReasons(src, hasRefuge) {
+  const out = crisisTypeReasons(src);
+  out.push(hasRefuge ? DEATH_REASON.CRISIS_LOSSES : DEATH_REASON.NO_REFUGE);
+  return out.slice(0, 3);
+}
+
 /**
  * Find the best destination for a source: the city with the greatest adjusted pull. The source's
  * flee vector (away from its nearest invader, if any) is computed once and shared across all
- * candidates.
+ * candidates. The winner carries its `reasons` (the "why here" tags) for the explanation surfaces.
  * @param {*} src Ranked source signal.
  * @param {*[]} ranked All ranked signals.
  * @param {Record<number, number>|null} ownerPop Per-owner total population (congestion).
  * @param {(dest: any) => boolean} [acceptDest] Optional destination predicate (false skips a candidate).
- * @returns {{dest:*, adjusted:number}|null} Best destination + its adjusted pull.
+ * @returns {{dest:*, adjusted:number, reasons?:string[]}|null} Best destination + its adjusted pull + reasons.
  */
 export function bestDestination(src, ranked, ownerPop, acceptDest) {
   const flee = fleeVector(src, ranked);
   const aggressors = warRefugeeAggressors(src);
+  /** @type {{dest:*, adjusted:number, reasons?:string[]}|null} */
   let best = null;
   for (const dest of ranked) {
     if (typeof acceptDest === "function" && !acceptDest(dest)) continue;
@@ -270,6 +400,7 @@ export function bestDestination(src, ranked, ownerPop, acceptDest) {
       best = { dest, adjusted };
     }
   }
+  if (best) best.reasons = deriveMoveReasons(src, best.dest, flee, ownerPop, aggressors);
   return best;
 }
 

@@ -28,6 +28,8 @@
  *   that drive the out tally (move/depart) and on crisis-death records.
  * @property {number} [destPaidCost] Assimilation load the destination civ took on for this arrival
  *   (the "did the destination pay a cost?" signal). Present on move/arrive records, not departures.
+ * @property {string[]} [reasons] The "why here" reason-tag keys for the chosen destination (P0.1);
+ *   see emigration-move-reasons.js. Carried on move/depart (and forwarded to arrive) records.
  * @property {"move"|"depart"|"arrive"} [phase] Transit phase: an instantaneous move, the
  *   departure half of a lagged move (out-tally now), or the arrival half (in-tally later).
  *   Only `arrive` records are suppressed from notifications; metrics fold all three.
@@ -57,8 +59,9 @@ export function cityName(city) {
  * @param {*} dest Destination signal.
  * @param {number} people Historically-scaled people who moved.
  * @param {MigrationCause} cause Why this move happened.
- * @param {{destPaidCost:number, eventKey?:string}} meta Assimilation load the destination took on,
- *   plus the specific event behind the cause (war/disaster/crisis), or "".
+ * @param {{destPaidCost:number, eventKey?:string, reasons?:string[]}} meta Assimilation load the
+ *   destination took on, the specific event behind the cause (war/disaster/crisis) or "", and the
+ *   "why here" reason tags.
  * @returns {Migration} The record.
  */
 export function moveRecord(src, dest, people, cause, meta) {
@@ -73,6 +76,7 @@ export function moveRecord(src, dest, people, cause, meta) {
     cause,
     eventKey: (meta && meta.eventKey) || "",
     destPaidCost: meta && meta.destPaidCost,
+    reasons: (meta && meta.reasons) || [],
     phase: "move"
   };
 }
@@ -88,9 +92,11 @@ export function moveRecord(src, dest, people, cause, meta) {
  * @param {number} people Historically-scaled people who left.
  * @param {MigrationCause} cause Why they left.
  * @param {string} [eventKey] The specific event behind the cause (war/disaster/crisis), or "".
+ * @param {string[]} [reasons] The "why here" reason-tag keys for the chosen destination.
  * @returns {Migration} The record.
  */
-export function departRecord(src, dest, people, cause, eventKey) {
+// eslint-disable-next-line max-params
+export function departRecord(src, dest, people, cause, eventKey, reasons) {
   return {
     srcName: cityName(src.city),
     destName: cityName(dest.city),
@@ -101,6 +107,7 @@ export function departRecord(src, dest, people, cause, eventKey) {
     people,
     cause,
     eventKey: eventKey || "",
+    reasons: reasons || [],
     phase: "depart"
   };
 }
@@ -133,6 +140,7 @@ export function arriveRecord(e, ok, destPaidCost) {
       cause: /** @type {MigrationCause} */ (e.cause),
       eventKey: e.eventKey || "", // the war/disaster/crisis that displaced them → immigration-by-event
       destPaidCost,
+      reasons: e.reasons || [], // "why here" tags captured at departure, forwarded to the arrival
       phase: "arrive"
     };
   }

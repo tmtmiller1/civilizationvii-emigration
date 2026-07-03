@@ -6,6 +6,11 @@ globalThis.Players = { get: () => null };
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
 const { processArrivals } = await import("/emigration/ui/emigration-arrivals.js");
 
+const priorRefugeePoolEnabled = CONFIG.refugeePoolEnabled;
+const priorRefugeeImmediatePct = CONFIG.refugeeImmediateSettlePct;
+CONFIG.refugeePoolEnabled = false;
+CONFIG.refugeeImmediateSettlePct = 1;
+
 function makeTransit(overrides = {}) {
   return {
     srcName: "From",
@@ -173,8 +178,79 @@ function testLongestWaitingLandsFirst() {
   assert.equal(state.transit[0].srcName, "Fresh");
 }
 
+/** A signal that throws when its city is read, to force an exception inside arrival processing. */
+function boomSignal(key) {
+  return {
+    key,
+    get city() {
+      throw new Error("boom");
+    },
+    rural: 2,
+    population: 8
+  };
+}
+
+/** A live signal at `key` with a working addRural API. */
+function landableSignal(key) {
+  const sig = destSignal();
+  sig.key = key;
+  return sig;
+}
+
+function testOneThrowDoesNotDropRemainingDueArrivals() {
+  // A single arrival that throws must not nuke the rest of the due queue nor the future (pending)
+  // entries. The good arrival still lands; the throwing one is defensively re-queued; the future one
+  // is preserved.
+  const state = {
+    monoTurn: 5,
+    transit: [
+      makeTransit({ destKey: "2:boom", arriveTurn: 5, srcName: "Boom" }),
+      makeTransit({ destKey: "2:good", arriveTurn: 5, srcName: "Good" }),
+      makeTransit({ destKey: "2:later", arriveTurn: 9, srcName: "Later" })
+    ]
+  };
+
+  const out = processArrivals(state, [boomSignal("2:boom"), landableSignal("2:good")]);
+  assert.equal(out.length, 1, "the good arrival still lands despite the other throwing");
+  assert.equal(out[0].srcName, "Good");
+
+  const keys = state.transit.map((e) => e.destKey).sort();
+  assert.deepEqual(keys, ["2:boom", "2:later"], "throwing arrival re-queued; future arrival preserved");
+  const boomRe = state.transit.find((e) => e.destKey === "2:boom");
+  assert.equal(boomRe.defers, 1, "the throwing arrival is defensively deferred, not dropped");
+}
+
+function testExpiredThrowingArrivalPerishes() {
+  // A deterministically-throwing arrival that has already exhausted its retry window must NOT defer
+  // forever (permanent limbo). It records a death and leaves the queue.
+  const e = makeTransit({ destKey: "2:boom", arriveTurn: 5, defers: 4 });
+  const state = { monoTurn: 5, transit: [e] };
+
+  const out = processArrivals(state, [boomSignal("2:boom")]);
+  assert.equal(out.length, 1, "an expired throwing arrival resolves to a death record");
+  assert.equal(out[0].cause, "attrition", "recorded as a transit death, not force-landed");
+  assert.equal(out[0].destOwner, undefined, "no destination credited");
+  assert.equal(state.transit.length, 0, "it leaves the queue (no permanent limbo from a poison record)");
+}
+
+function testEmptyRankingHoldsWithoutDeferralPenalty() {
+  // An empty ranking is a transient read failure: due arrivals are HELD, not deferred, so defers and
+  // arriveTurn are untouched (they don't inch toward perishing while the read path is broken).
+  const e = makeTransit({ destKey: "2:9", arriveTurn: 5, defers: 2 });
+  const state = { monoTurn: 5, transit: [e] };
+
+  const out = processArrivals(state, []);
+  assert.deepEqual(out, []);
+  assert.equal(state.transit.length, 1, "due arrivals are held, not consumed");
+  assert.equal(state.transit[0].defers, 2, "empty ranking holds WITHOUT a deferral penalty");
+  assert.equal(state.transit[0].arriveTurn, 5, "arriveTurn is not pushed forward");
+}
+
 testSkipsWhenNoTransitOrNoRanked();
 testConsumesOnlyDueTransitEntries();
+testOneThrowDoesNotDropRemainingDueArrivals();
+testExpiredThrowingArrivalPerishes();
+testEmptyRankingHoldsWithoutDeferralPenalty();
 testDestinationGoneBecomesAttritionArrival();
 testSuccessfulArrivalCreditsDestinationAndUpdatesSignal();
 testPresentDestinationThatCannotAcceptDefers();
@@ -182,5 +258,8 @@ testInboundCapDefersDueArrival();
 testInboundCounterIncrementsOnSuccessfulArrival();
 testPerishesAfterMaxDefers();
 testLongestWaitingLandsFirst();
+
+CONFIG.refugeePoolEnabled = priorRefugeePoolEnabled;
+CONFIG.refugeeImmediateSettlePct = priorRefugeeImmediatePct;
 
 console.log("arrivals harness passed");

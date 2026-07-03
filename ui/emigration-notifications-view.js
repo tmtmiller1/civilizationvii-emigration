@@ -10,6 +10,7 @@
 import { notificationLog } from "/emigration/ui/emigration-notifications.js";
 import { causeLabel, causeAccent, notificationAccent } from "/emigration/ui/emigration-causes.js";
 import { formatBothExact } from "/emigration/ui/emigration-population.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 
 /**
  * Make an element with an optional class + text.
@@ -92,9 +93,9 @@ function place(city, civ) {
  * @param {*} e A NotifEntry.
  */
 function chronicleDetail(panel, e) {
-  addLine(panel, "Title", e.title || e.summary);
-  addLine(panel, "Story", e.body);
-  if (e.cause && e.cause !== "chronicle") addLine(panel, "Cause", causeLabel(e.cause));
+  addLine(panel, loc("LOC_EMIG_NV_TITLE", "Title"), e.title || e.summary);
+  addLine(panel, loc("LOC_EMIG_NV_STORY", "Story"), e.body);
+  if (e.cause && e.cause !== "chronicle") addLine(panel, loc("LOC_EMIG_NV_CAUSE", "Cause"), causeLabel(e.cause));
 }
 
 /**
@@ -104,16 +105,22 @@ function chronicleDetail(panel, e) {
  * @param {*} e A NotifEntry.
  */
 function migrationDetail(panel, e) {
-  addLine(panel, "Cause", causeLabel(e.cause));
-  addLine(panel, "Event", e.event); // the specific named war / disaster, when applicable
-  addLine(panel, "From", place(e.fromCity, e.fromCiv));
+  addLine(panel, loc("LOC_EMIG_NV_CAUSE", "Cause"), causeLabel(e.cause));
+  addLine(panel, loc("LOC_EMIG_NV_EVENT", "Event"), e.event); // the specific named war / disaster, when applicable
+  addLine(panel, loc("LOC_EMIG_NV_FROM", "From"), place(e.fromCity, e.fromCiv));
   if (isDeath(e)) {
     // A death (the crisis-loss channel) has no destination, frame the count as casualties rather
     // than people who moved, in the game's own losses register.
-    if (e.people || e.points) addLine(panel, "Casualties", formatBothExact(e.people, e.points));
+    if (e.people || e.points) {
+      addLine(panel, loc("LOC_EMIG_NV_CASUALTIES", "Casualties"), formatBothExact(e.people, e.points));
+    }
   } else {
-    addLine(panel, e.crossCiv ? "Moved to" : "To", place(e.toCity, e.toCiv));
-    if (e.people || e.points) addLine(panel, "People", formatBothExact(e.people, e.points));
+    addLine(panel, e.crossCiv ? loc("LOC_EMIG_NV_MOVED_TO", "Moved to") : loc("LOC_EMIG_NV_TO", "To"),
+      place(e.toCity, e.toCiv));
+    if (e.people || e.points) {
+      addLine(panel, loc("LOC_EMIG_NV_PEOPLE", "People"), formatBothExact(e.people, e.points));
+    }
+    addLine(panel, loc("LOC_EMIG_NV_WHY_THERE", "Why there"), e.reasons); // the "why here" explanation tags (P0.1)
   }
 }
 
@@ -127,7 +134,7 @@ function detailEl(e) {
   const panel = el("div", "emig-ntf-detail");
   if (e.kind === "chronicle") chronicleDetail(panel, e);
   else migrationDetail(panel, e);
-  if (e.summary) addLine(panel, "Note", e.summary);
+  if (e.summary) addLine(panel, loc("LOC_EMIG_NV_NOTE", "Note"), e.summary);
   return panel;
 }
 
@@ -149,9 +156,11 @@ function isDeath(e) {
  */
 function rowSummary(e) {
   const base = e.kind === "chronicle"
-    ? (e.title || e.summary || "A migration event")
-    : (e.summary || causeLabel(e.cause) + " event");
-  return e.event && !base.includes(e.event) ? e.event + ": " + base : base;
+    ? (e.title || e.summary || loc("LOC_EMIG_NV_DEFAULT_SUMMARY", "A migration event"))
+    : (e.summary || loc("LOC_EMIG_NV_CAUSE_EVENT", "{1_Cause} event", causeLabel(e.cause)));
+  return e.event && !base.includes(e.event)
+    ? loc("LOC_EMIG_NV_EVENT_PREFIX", "{1_Event}: {2_Summary}", e.event, base)
+    : base;
 }
 
 /**
@@ -163,9 +172,11 @@ function rowSummary(e) {
  */
 function headEl(e, accent, caret) {
   const head = el("div", "emig-ntf-head");
-  head.appendChild(el("span", "emig-ntf-turn", "Turn " + e.turn));
+  head.appendChild(el("span", "emig-ntf-turn", loc("LOC_EMIG_NV_TURN", "Turn {1_Turn}", e.turn)));
   const chip = el("span", "emig-ntf-chip",
-    e.kind === "chronicle" ? "Chronicle" : (isDeath(e) ? "Casualties" : causeLabel(e.cause)));
+    e.kind === "chronicle"
+      ? loc("LOC_EMIG_NV_CHRONICLE", "Chronicle")
+      : (isDeath(e) ? loc("LOC_EMIG_NV_CASUALTIES", "Casualties") : causeLabel(e.cause)));
   chip.style.color = accent;
   head.appendChild(chip);
   head.appendChild(el("span", "emig-ntf-sum", rowSummary(e)));
@@ -208,7 +219,8 @@ export function renderNotifications(body) {
   const entries = notificationLog();
   if (!entries.length) {
     body.appendChild(el("div", "emig-empty",
-      "No migration events yet; they appear here as people move, with the full detail of each."));
+      loc("LOC_EMIG_NV_EMPTY",
+        "No migration events yet; they appear here as people move, with the full detail of each.")));
     return;
   }
   const list = el("div", "emig-ntf-list");

@@ -1,4 +1,4 @@
-// emigration-quarters.js
+// emigration-quarter-phrases.js
 //
 // Truthful "quarter" phrases for the Migration Chronicle's diaspora lines, where a settled minority
 // "kept a district of their own". Every feature phrase names only a REAL feature of the host city (a

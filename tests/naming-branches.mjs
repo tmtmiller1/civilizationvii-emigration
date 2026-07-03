@@ -72,6 +72,9 @@ globalThis.Locale = {
       LOC_EMIG_EVENT_FAMINE: "Famine",
       LOC_EMIG_WAR_VS_UNMET: `${args[0]} vs. an unmet civilization`,
       LOC_EMIG_NEWS_WHO: `${args[0]}: ${args[1]}`,
+      LOC_EMIG_SCOPE_INTERNAL: "(Internal Move)",
+      LOC_EMIG_SCOPE_EXTERNAL: "(External Move)",
+      LOC_EMIG_DEST_CLAUSE: `Bound for ${args[0]}.`,
       LOC_IP_CARTHAGE: "Carthage"
     };
     return map[key] ?? key;
@@ -104,7 +107,10 @@ const {
   warRefugeeName,
   disasterName,
   crisisName,
-  refugeeHeadline
+  refugeeHeadline,
+  scopeClause,
+  destClause,
+  localDigestMessage
 } = await import("/emigration/ui/emigration-naming.js");
 
 function testAdjectivesAndNarrativeMasking() {
@@ -158,10 +164,26 @@ function testDisasterCrisisAndWhoLedHeadline() {
   assert.ok(h.includes("Border War"));
 }
 
+function testMovementScopeUsesLocalizedStrings() {
+  // With Locale present, the scope tag and destination clause resolve through the LOC keys (the
+  // localized branch); a death gets neither, and a destination-less move gets no dest clause.
+  assert.equal(scopeClause("prosperity", false), " (Internal Move)");
+  assert.equal(scopeClause("prosperity", true), " (External Move)");
+  assert.equal(scopeClause("attrition", false), ""); // a death went nowhere
+  assert.equal(destClause("prosperity", "Neapolis"), " Bound for Neapolis.");
+  assert.equal(destClause("attrition", "Ur"), ""); // a death went nowhere
+  assert.equal(destClause("prosperity", undefined), ""); // no destination → no clause
+  // Composed into the full digest, an internal move names its destination and ends with the tag.
+  const msg = localDigestMessage({ cause: "prosperity", people: "9,000 people", city: "Rome", destName: "Neapolis" });
+  assert.match(msg, /Bound for Neapolis\./);
+  assert.match(msg, /\(Internal Move\)$/);
+}
+
 testAdjectivesAndNarrativeMasking();
 testEventDisplayNameDispatch();
 testWarNamingMaskedAndFallbackBranches();
 testDisasterCrisisAndWhoLedHeadline();
+testMovementScopeUsesLocalizedStrings();
 
 delete globalThis.Game;
 delete globalThis.GameInfo;

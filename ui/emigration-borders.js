@@ -57,12 +57,44 @@ function hashFor(type) {
   if (_hash.has(type)) return _hash.get(type);
   let h = null;
   try {
-    h = typeof Database !== "undefined" ? Database?.makeHash?.(type) : null;
+    const database = typeof Database !== "undefined" ? Database : null;
+    const makeHash = database && typeof database.makeHash === "function" ? database.makeHash.bind(database) : null;
+    h = makeHash ? makeHash(type) : null;
   } catch (_) {
     h = null;
   }
   _hash.set(type, h);
   return h;
+}
+
+/**
+ * Read the current player's Culture safely, or null when unavailable.
+ * @param {number} pid Player id.
+ * @returns {*} The Culture object, or null.
+ */
+function readCulture(pid) {
+  try {
+    const players = typeof Players !== "undefined" ? Players : null;
+    const getPlayer = players && typeof players.get === "function" ? players.get.bind(players) : null;
+    const player = getPlayer ? getPlayer(pid) : null;
+    return player ? player.Culture : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * Whether any tradition in `types` is active for `culture`.
+ * @param {*} culture The Culture object.
+ * @param {string[]} types Tradition type strings.
+ * @returns {boolean} True if any type is active.
+ */
+function hasAnyPolicy(culture, types) {
+  for (const type of types) {
+    const h = hashFor(type);
+    if (h != null && culture.isTraditionActive(h)) return true;
+  }
+  return false;
 }
 
 /**
@@ -73,17 +105,13 @@ function hashFor(type) {
  * @returns {boolean} True if any is active.
  */
 function hasPolicy(pid, types) {
+  const culture = readCulture(pid);
+  if (!culture || typeof culture.isTraditionActive !== "function") return false;
   try {
-    const culture = Players?.get?.(pid)?.Culture;
-    if (typeof culture?.isTraditionActive !== "function") return false;
-    for (const type of types) {
-      const h = hashFor(type);
-      if (h != null && culture.isTraditionActive(h)) return true;
-    }
+    return hasAnyPolicy(culture, types);
   } catch (_) {
-    /* ignore */
+    return false;
   }
-  return false;
 }
 
 /**
@@ -196,3 +224,8 @@ export function borderStance(pid) {
   if (closed) return "anti";
   return "none";
 }
+
+/** @type {*} Test-only hooks. */
+export const __test = {
+  clearHashCache: () => _hash.clear()
+};

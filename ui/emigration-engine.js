@@ -16,12 +16,14 @@ import { speedTurns, speedBar, speedDecay, speedShock } from "/emigration/ui/emi
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { rankByProsperity, distress } from "/emigration/ui/emigration-prosperity.js";
 import {
-  moveRural, removeRural, marginalPeople, settlementSignal
+  removeRural, addRural, marginalPeople, settlementSignal
 } from "/emigration/ui/emigration-population.js";
 import { hexDistance } from "/emigration/ui/emigration-geography.js";
 import { tickViolence, siegeEscalation } from "/emigration/ui/emigration-violence.js";
 import { tickDisasters } from "/emigration/ui/emigration-disasters.js";
-import { migrationCause, bestDestination, setNeutralBorders } from "/emigration/ui/emigration-pull.js";
+import {
+  migrationCause, bestDestination, setNeutralBorders, deriveDeathReasons
+} from "/emigration/ui/emigration-pull.js";
 import { borderStance } from "/emigration/ui/emigration-borders.js";
 import { recordStanceImpact } from "/emigration/ui/emigration-migration-stats.js";
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
@@ -40,6 +42,16 @@ import { processArrivals } from "/emigration/ui/emigration-arrivals.js";
 import {
   makeInboundCtx, canReceiveInbound, noteInbound
 } from "/emigration/ui/emigration-inbound.js";
+import {
+  queueRefugees,
+  saveRefugeePools
+} from "/emigration/ui/emigration-refugee-pool.js";
+import {
+  consumeSourcePoint,
+  undoSourceConsume,
+  immediateRefugeeSettlement,
+  settleRefugeePools
+} from "/emigration/ui/emigration-refugee-staging.js";
 
 /** @typedef {import("/emigration/ui/emigration-causes.js").MigrationCause} MigrationCause */
 /** @typedef {import("/emigration/ui/emigration-inbound.js").InboundCtx} InboundCtx */
@@ -47,6 +59,43 @@ import {
  * @typedef {import("/emigration/ui/emigration-state.js").EmigState} EmigState
  * @typedef {import("/emigration/ui/emigration-migration-records.js").Migration} Migration
  */
+
+// P0.3 voluntary-pressure cues collected during a pass (transient; the reporter drains them each pass
+// via takePressureCues, so nothing is persisted and a reload can't replay stale cues).
+/** @type {{srcName:string, srcOwner:number, destName:string, cause:MigrationCause, frac:number}[]} */
+let _pressureCues = [];
+
+/**
+ * Drain and return this pass's voluntary-pressure cues (P0.3): sources building toward the bar
+ * without moving anyone yet. The caller (reportPressureCues) throttles + filters to the local player.
+ * @returns {{srcName:string, srcOwner:number, destName:string, cause:MigrationCause, frac:number}[]} The cues.
+ */
+export function takePressureCues() {
+  const cues = _pressureCues;
+  _pressureCues = [];
+  return cues;
+}
+
+/**
+ * Note a voluntary source building toward the emigration bar without firing this turn, so the reporter
+ * can surface a low-key "rising pressure" cue. Only when the option is on and the source has crossed
+ * `voluntaryCueFraction` of the bar toward its best destination.
+ * @param {*} src Source signal.
+ * @param {*} best The chosen destination ({dest}) or null.
+ * @param {number} pressure The source's accumulated voluntary pressure.
+ */
+function noteVoluntaryCue(src, best, pressure) {
+  if (!CONFIG.voluntaryCueEnabled || !best) return;
+  const bar = speedBar(CONFIG.emigrationBar);
+  if (!(bar > 0) || pressure < CONFIG.voluntaryCueFraction * bar) return;
+  _pressureCues.push({
+    srcName: cityName(src.city),
+    srcOwner: src.owner,
+    destName: cityName(best.dest.city),
+    cause: voluntaryCause(src),
+    frac: pressure / bar
+  });
+}
 
 /**
  * Reflect an applied move in the in-memory ranking so later picks in the same pass see the updated
@@ -190,32 +239,80 @@ function voluntaryCause(src) {
  * @param {*} state Loaded state (transit queue + monoTurn).
  * @param {MigrationCause} cause Why they're leaving.
  * @param {InboundCtx} inboundCtx Per-turn destination-inbound cap context.
+ * @param {string[]} [reasons] The "why here" reason tags for the chosen destination (P0.1).
  * @returns {Migration|null} The move/departure record, or null if the write failed.
  */
 // eslint-disable-next-line max-params
-function applyOneMove(src, dest, popBefore, state, cause, inboundCtx) {
+function applyOneMove(src, dest, popBefore, state, cause, inboundCtx, reasons) {
   const people = marginalPeople(popBefore, state.monoTurn, cityName(src.city), settlementSignal(src));
-  const lag = transitLag(src, dest, cause);
   const eventKey = eventKeyForMove(src, cause); // specific war/disaster/crisis behind this move
+  const consumed = consumeSourcePoint(src, cause);
+  if (!consumed.ok) return null;
+  if (!consumed.fromPool) applyDepartureConsequences(src);
+  const lag = transitLag(src, dest, cause);
   if (lag <= 0) {
-    if (!canReceiveInbound(dest.key, inboundCtx)) return null;
-    if (!moveRural(src.city, dest.city)) return null;
-    applyMoveToRanking(src, dest);
-    applyDepartureConsequences(src);
-    noteInbound(dest.key, inboundCtx);
-    const cost = applyArrivalConsequences(
-      dest.city, dest.owner, dest.population, src.infected, src.owner
-    );
-    return moveRecord(src, dest, people, cause, { destPaidCost: cost, eventKey });
+    return commitImmediateArrival({ src, dest, state, cause, inboundCtx, consumed, people, eventKey, reasons });
   }
-  // Lagged: the source loses the point now; the destination gains it on arrival. But if the transit
-  // queue is already at its hard cap, the row couldn't survive persistence (load-time truncation would
-  // drop it), so refuse to start the journey - the migrant stays home this turn rather than vanishing.
-  if (transitAtCapacity(state)) return null;
-  if (!removeRural(src.city)) return null;
-  src.rural -= 1;
-  src.population -= 1;
-  applyDepartureConsequences(src);
+  return enqueueLaggedDeparture({ src, dest, state, lag, cause, consumed, people, eventKey, reasons });
+}
+
+/**
+ * Apply an immediate arrival (or queue into holding) after source-side departure has already been consumed.
+ * @param {{
+ *   src:*,
+ *   dest:*,
+ *   state:*,
+ *   cause:MigrationCause,
+ *   inboundCtx:InboundCtx,
+ *   consumed:{ok:boolean, fromPool:boolean, originCiv?:number, since?:number},
+ *   people:number,
+ *   eventKey:string,
+ *   reasons?:string[]
+ * }} a Function args.
+ * @returns {Migration|null} Applied record or null.
+ */
+function commitImmediateArrival(a) {
+  const { src, dest, state, cause, inboundCtx, consumed, people, eventKey, reasons } = a;
+  if (!canReceiveInbound(dest.key, inboundCtx)) {
+    undoSourceConsume(src, consumed);
+    return null;
+  }
+  if (immediateRefugeeSettlement(src, dest, state, cause)) {
+    if (!addRural(dest.city)) {
+      undoSourceConsume(src, consumed);
+      return null;
+    }
+    dest.rural += 1;
+    dest.population += 1;
+  } else {
+    queueRefugees(dest.key, src.owner, state.monoTurn, 1);
+  }
+  noteInbound(dest.key, inboundCtx);
+  const cost = applyArrivalConsequences(dest.city, dest.owner, dest.population, src.infected, src.owner);
+  return moveRecord(src, dest, people, cause, { destPaidCost: cost, eventKey, reasons });
+}
+
+/**
+ * Enqueue a lagged departure after source-side departure has already been consumed.
+ * @param {{
+ *   src:*,
+ *   dest:*,
+ *   state:*,
+ *   lag:number,
+ *   cause:MigrationCause,
+ *   consumed:{ok:boolean, fromPool:boolean, originCiv?:number, since?:number},
+ *   people:number,
+ *   eventKey:string,
+ *   reasons?:string[]
+ * }} a Function args.
+ * @returns {Migration|null} Applied record or null.
+ */
+function enqueueLaggedDeparture(a) {
+  const { src, dest, state, lag, cause, consumed, people, eventKey, reasons } = a;
+  if (transitAtCapacity(state)) {
+    undoSourceConsume(src, consumed);
+    return null;
+  }
   state.transit.push({
     destKey: dest.key,
     arriveTurn: state.monoTurn + lag,
@@ -225,11 +322,12 @@ function applyOneMove(src, dest, popBefore, state, cause, inboundCtx) {
     crossCiv: src.owner !== dest.owner,
     cause,
     eventKey,
+    reasons: reasons || [],
     infected: !!src.infected,
     srcName: cityName(src.city),
     destName: cityName(dest.city)
   });
-  return departRecord(src, dest, people, cause, eventKey);
+  return departRecord(src, dest, people, cause, eventKey, reasons);
 }
 
 /**
@@ -243,15 +341,16 @@ function applyOneMove(src, dest, popBefore, state, cause, inboundCtx) {
  * @param {MigrationCause} cause Why they're leaving.
  * @param {number} budget Max points to shed this turn.
  * @param {InboundCtx} inboundCtx Per-turn destination-inbound cap context.
+ * @param {string[]} [reasons] The "why here" reason tags for the chosen destination (P0.1).
  * @returns {Migration[]} The applied records.
  */
 // eslint-disable-next-line max-params
-function shedBurst(src, dest, state, cause, budget, inboundCtx) {
+function shedBurst(src, dest, state, cause, budget, inboundCtx, reasons) {
   /** @type {Migration[]} */
   const out = [];
   for (let i = 0; i < budget; i++) {
     if (src.rural <= CONFIG.minRuralToEmigrate) break;
-    const rec = applyOneMove(src, dest, src.population, state, cause, inboundCtx);
+    const rec = applyOneMove(src, dest, src.population, state, cause, inboundCtx, reasons);
     if (!rec) break;
     out.push(rec);
   }
@@ -301,9 +400,12 @@ function legacyEmigrate(src, st, state, best, maxThisSource, inboundCtx) {
   const forced = FORCED_CAUSES.has(cause);
   if (!best || restingOnCooldown(st, forced)) return [];
   st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
-  if (belowEmigrationBar(forced, st.pressure)) return [];
+  if (belowEmigrationBar(forced, st.pressure)) {
+    if (!forced) noteVoluntaryCue(src, best, st.pressure); // building toward the bar → trend cue (P0.3)
+    return [];
+  }
   const budget = Math.min(maxThisSource, warSurgeBudget(src, cause));
-  const out = shedBurst(src, best.dest, state, cause, budget, inboundCtx);
+  const out = shedBurst(src, best.dest, state, cause, budget, inboundCtx, best.reasons);
   if (!out.length) return [];
   st.pressure = 0;
   if (!forced) st.cooldown = speedTurns(CONFIG.cooldownTurns);
@@ -347,7 +449,7 @@ function processSourceLegacy(src, ranked, state, ownerPop, maxThisSource, inboun
 function shedCrisis(src, best, state, maxCrisis, inboundCtx) {
   const cause = crisisCause(src);
   const budget = Math.min(maxCrisis, warSurgeBudget(src, cause));
-  return shedBurst(src, best.dest, state, cause, budget, inboundCtx);
+  return shedBurst(src, best.dest, state, cause, budget, inboundCtx, best.reasons);
 }
 
 /**
@@ -374,14 +476,18 @@ function cityMigrationCap() {
 function shedVoluntary(src, best, state, st, maxVol, inboundCtx) {
   if (st.cooldown > 0 || maxVol <= 0) return [];
   st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
-  if (st.pressure < speedBar(CONFIG.emigrationBar)) return [];
+  if (st.pressure < speedBar(CONFIG.emigrationBar)) {
+    noteVoluntaryCue(src, best, st.pressure); // building toward the bar → low-key trend cue (P0.3)
+    return [];
+  }
   const out = shedBurst(
     src,
     best.dest,
     state,
     voluntaryCause(src),
     Math.min(maxVol, 1),
-    inboundCtx
+    inboundCtx,
+    best.reasons
   );
   if (out.length) {
     st.pressure = 0;
@@ -568,7 +674,8 @@ function processOutletDeath(src, st, state, hasRefuge) {
     points: 1,
     people: marginalPeople(popBefore, state.monoTurn, cityName(src.city), settlementSignal(src)),
     cause: "attrition",
-    eventKey: eventKeyForDeath(src) // specific war/disaster/crisis/famine that killed them
+    eventKey: eventKeyForDeath(src), // specific war/disaster/crisis/famine that killed them
+    reasons: deriveDeathReasons(src, hasRefuge) // P0.2 "why": siege/disaster/famine + trapped/fleeing
   };
 }
 
@@ -745,6 +852,7 @@ export const __test = {
  * @returns {Migration[]} Applied migrations.
  */
 export function runPass() {
+  _pressureCues = []; // fresh cue buffer per pass (P0.3); drained by the reporter after the pass
   tickViolence(); // decay accumulated combat intensity before reading it
   tickDisasters(); // decay accumulated disaster distress before reading it
   pollCrisis(); // cache the active age crisis so moves/deaths can be attributed to it
@@ -764,12 +872,16 @@ export function runPass() {
   // against the per-turn move cap - they're completing earlier departures.
   const migrations = processArrivals(state, ranked, inboundCtx);
 
+  // Refugee holding pools settle gradually into working population (staged intake).
+  settleRefugeePools(ranked, state);
+
   // Departures: need at least two cities for a move to be meaningful.
   if (ranked.length >= 2) {
     for (const m of processDepartures(state, ranked, inboundCtx)) migrations.push(m);
   }
 
   saveState(state);
+  saveRefugeePools();
   return migrations;
 }
 

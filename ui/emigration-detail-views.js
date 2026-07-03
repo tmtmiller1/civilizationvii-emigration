@@ -6,6 +6,7 @@
 // lives in the dashboard's injected stylesheet (emigration-views.js).
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 
 /**
  * Make an element with an optional class + text.
@@ -28,20 +29,21 @@ function el(tag, cls, text) {
  * @returns {string} The detail text.
  */
 function stanceDetailText(r) {
-  if (r.key === "none") return "No border policy, migration unaffected.";
+  if (r.key === "none") return loc("LOC_EMIG_DV_STANCE_NONE", "No border policy, migration unaffected.");
   const neutralIn = r.in - r.inImpact;
   const pct = Math.abs(neutralIn) > 0 ? Math.round((Math.abs(r.inImpact) / neutralIn) * 100) : 0;
   /** @type {string[]} */
   const parts = [];
   if (r.inImpact > 0) {
-    parts.push("+" + formatPeople(r.inImpact) + " immigrants allowed beyond neutral"
-      + (pct ? " (+" + pct + "%)" : ""));
+    parts.push(loc("LOC_EMIG_DV_STANCE_ALLOWED", "+{1_People} immigrants allowed beyond neutral{2_Pct}",
+      formatPeople(r.inImpact), pct ? " (+" + pct + "%)" : ""));
   } else if (r.inImpact < 0) {
-    parts.push(formatPeople(-r.inImpact) + " would-be immigrants turned away"
-      + (pct ? " (−" + pct + "%)" : ""));
+    parts.push(loc("LOC_EMIG_DV_STANCE_TURNED_AWAY", "{1_People} would-be immigrants turned away{2_Pct}",
+      formatPeople(-r.inImpact), pct ? " (−" + pct + "%)" : ""));
   }
-  if (r.outImpact < 0) parts.push(formatPeople(-r.outImpact) + " of its own citizens kept home");
-  return parts.length ? parts.join("; ") + "." : "Policy slotted, but no migration affected yet.";
+  if (r.outImpact < 0) parts.push(loc("LOC_EMIG_DV_STANCE_KEPT_HOME", "{1_People} of its own citizens kept home",
+    formatPeople(-r.outImpact)));
+  return parts.length ? parts.join("; ") + "." : loc("LOC_EMIG_DV_STANCE_NO_EFFECT", "Policy slotted, but no migration affected yet.");
 }
 
 /**

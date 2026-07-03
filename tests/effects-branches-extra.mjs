@@ -41,7 +41,9 @@ const {
   tickAssimilation,
   assimLoadFor,
   assimilationCostFor,
-  congestionPenalty
+  congestionPenalty,
+  applyQuarterYields,
+  reverseQuarterYields
 } = await import("/emigration/ui/emigration-effects.js");
 
 // deduct guards
@@ -82,7 +84,14 @@ globalThis.Players.get = () => ({ Treasury: { getGoldBalance: () => 10000 } });
 assert.equal(addAssimilationLoad(3, 5), 1);
 TURN += 1;
 const rich = tickAssimilation(3);
-assert.ok(rich.gold >= rich.load * CONFIG.assimilationGold, "wealth multiplier should bend cost upward");
+assert.equal(rich.gold, 1, "wealth multiplier should clamp upward at max");
+
+// wealth multiplier: poor treasury clamps down to min
+globalThis.Players.get = () => ({ Treasury: { goldBalance: 0 } });
+assert.equal(addAssimilationLoad(31, 5), 1);
+TURN += 1;
+const poor = tickAssimilation(31);
+assert.equal(poor.gold, 0.25, "wealth multiplier should clamp downward at min");
 
 // wealth multiplier: unreadable treasury -> neutral multiplier 1
 CONFIG.assimilationWealthWeight = 1;
@@ -116,6 +125,66 @@ assert.deepEqual(faded, { load: 0, happiness: 0, gold: 0 });
 // congestion guards and positive path
 CONFIG.congestWeight = 0;
 assert.equal(congestionPenalty(2, 10), 0);
+
+// quarter one-time yields apply with exact signs and reverse exactly mirrors them
+grants.length = 0;
+globalThis.YieldTypes.YIELD_CULTURE = 3;
+const quarterApplied = {
+  benefitYield: "YIELD_CULTURE",
+  benefitAmount: 7,
+  penaltyYield: "YIELD_GOLD",
+  penaltyAmount: 3
+};
+applyQuarterYields(42, quarterApplied);
+assert.deepEqual(grants.slice(-2), [
+  { pid: 42, yt: 3, amt: 7 },
+  { pid: 42, yt: 2, amt: -3 }
+]);
+
+reverseQuarterYields(42, quarterApplied);
+assert.deepEqual(grants.slice(-2), [
+  { pid: 42, yt: 3, amt: -7 },
+  { pid: 42, yt: 2, amt: 3 }
+]);
+
+// falsey / non-positive branch guards: none of these should emit yields
+const beforeGuards = grants.length;
+applyQuarterYields(42, {
+  benefitYield: "YIELD_CULTURE",
+  benefitAmount: 0,
+  penaltyYield: "YIELD_GOLD",
+  penaltyAmount: 0
+});
+applyQuarterYields(42, {
+  benefitYield: "YIELD_CULTURE",
+  benefitAmount: -1,
+  penaltyYield: "YIELD_GOLD",
+  penaltyAmount: -1
+});
+applyQuarterYields(42, {
+  benefitYield: "",
+  benefitAmount: 9,
+  penaltyYield: null,
+  penaltyAmount: 9
+});
+assert.equal(grants.length, beforeGuards, "non-positive or missing yield keys should no-op");
+
+// grantSigned should no-op when yield mapping is unavailable
+const ytBackup = globalThis.YieldTypes;
+delete globalThis.YieldTypes;
+applyQuarterYields(42, quarterApplied);
+assert.equal(grants.length, beforeGuards, "missing YieldTypes should no-op safely");
+globalThis.YieldTypes = ytBackup;
+
+// grantSigned should no-op when owner id is invalid
+applyQuarterYields("not-a-number", quarterApplied);
+reverseQuarterYields("not-a-number", quarterApplied);
+assert.equal(grants.length, beforeGuards, "invalid owner id should no-op safely");
+
+const beforeNoop = grants.length;
+applyQuarterYields(42, null);
+reverseQuarterYields(42, null);
+assert.equal(grants.length, beforeNoop, "null applied payload should no-op");
 CONFIG.congestWeight = 4;
 assert.ok(congestionPenalty(2, 10) >= 0);
 assert.equal(congestionPenalty(999, 10), 0);

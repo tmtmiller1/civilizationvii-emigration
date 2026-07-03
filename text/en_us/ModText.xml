@@ -159,6 +159,8 @@
         <Row Tag="LOC_EMIG_T_ANTISNOWBALL_D"><Text>Make a civilization whose population has pulled far ahead of the field a less attractive destination for cross-civ migration: a self-correcting brake on a runaway leader that grows with how far ahead it is (0 off / 8 gentle / 15 standard / 28 strong). It never impedes a leader's OUTflow or internal moves. 0 = off.</Text></Row>
         <Row Tag="LOC_EMIG_T_ANTISNOWTHRESH"><Text>Cost: anti-snowball trigger (fair-share ×)</Text></Row>
         <Row Tag="LOC_EMIG_T_ANTISNOWTHRESH_D"><Text>How far a civilization's population may run ahead of the world-average civ before the anti-snowball headwind starts to bite, as a multiple of fair share. Lower = the brake engages sooner (more egalitarian); higher = only an extreme runaway leader is slowed.</Text></Row>
+        <Row Tag="LOC_EMIG_T_QUARTERS"><Text>Cost: cultural quarters</Text></Row>
+        <Row Tag="LOC_EMIG_T_QUARTERS_D"><Text>When a foreign diaspora grows into an established community in one of your cities, offer a one-time choice (embrace, tax, or let be) with a small yield reward and drawback, and track a persistent per-city quarter that turns "contested" (a small happiness strain) while you are at war with its homeland. Off = no quarter decisions or contested strain.</Text></Row>
         <Row Tag="LOC_EMIG_T_DISASTERS"><Text>Disasters: drive migration</Text></Row>
         <Row Tag="LOC_EMIG_T_DISASTERS_D"><Text>Let environmental disasters (floods, volcanoes, plagues, …) push population out of struck cities as climate/disaster refugees, alongside war and unhappiness. Off = disasters don't affect migration.</Text></Row>
         <Row Tag="LOC_EMIG_T_DPP"><Text>Disasters: emigration per distress point (%)</Text></Row>
@@ -185,6 +187,8 @@
         <Row Tag="LOC_EMIG_T_NOTIFYWORLD_D"><Text>How many people (cumulative) a civilization must displace before a refugee-crisis headline fires, once per multiple crossed, so a long war makes a few headlines, not one per turn.</Text></Row>
         <Row Tag="LOC_EMIG_T_CITYREADOUT"><Text>Per-city migration readout</Text></Row>
         <Row Tag="LOC_EMIG_T_CITYREADOUT_D"><Text>Show an on-demand panel explaining why a selected settlement is gaining or losing population: the dominant cause, where its people are pulled, the integration cost, and what you can do about it.</Text></Row>
+        <Row Tag="LOC_EMIG_T_SPARKLINE"><Text>Readout: recent-trend sparkline</Text></Row>
+        <Row Tag="LOC_EMIG_T_SPARKLINE_D"><Text>Add a small bar strip to the per-city readout showing its net migration over the last several passes (green bars for gaining, red for losing), so you can tell at a glance whether things are getting better or worse.</Text></Row>
         <Row Tag="LOC_EMIG_T_ATTRITION"><Text>Outlet: attrition when there's no refuge</Text></Row>
         <Row Tag="LOC_EMIG_T_ATTRITION_D"><Text>Keep migration from being a closed system: a trapped, badly distressed city (siege, starvation, heavy violence or disaster) with nowhere viable to flee loses population, people die or scatter rather than stay forever.</Text></Row>
         <Row Tag="LOC_EMIG_T_ATTRDISTRESS"><Text>Outlet: distress needed for attrition (%)</Text></Row>
@@ -233,6 +237,35 @@
         <Row Tag="LOC_EMIG_NETC_TIMELINE_PENDING"><Text>Playback timeline appears after a couple of turns, once there's population history to scrub through.</Text></Row>
         <Row Tag="LOC_EMIG_DIGEST_DISASTER"><Text>{1_People} fled {2_City} after disaster struck.</Text></Row>
         <Row Tag="LOC_EMIG_DIGEST_ATTRITION"><Text>{2_City} suffered {1_People} casualties.</Text></Row>
+
+        <!-- Movement-scope tag: an internal relocation within the empire vs. a move that leaves it -->
+        <Row Tag="LOC_EMIG_SCOPE_INTERNAL"><Text>(Internal Move)</Text></Row>
+        <Row Tag="LOC_EMIG_SCOPE_EXTERNAL"><Text>(External Move)</Text></Row>
+        <!-- Destination clause: names where a move's people left for -->
+        <Row Tag="LOC_EMIG_DEST_CLAUSE"><Text>Bound for {1_Dest}.</Text></Row>
+
+        <!-- P0.1 per-move "why here" reason tags (short phrases; joined for the readout + notifications) -->
+        <Row Tag="LOC_EMIG_WHY_CLAUSE"><Text>Drawn there: {1_Why}.</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_RICHER"><Text>more prosperous</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_NEARBY"><Text>nearby</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_SAFER_DIR"><Text>away from the fighting</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_OWN_CIV"><Text>safer interior</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_CRISIS_ESCAPE"><Text>escaping the crisis</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_AGGRESSOR_AVOIDED"><Text>avoiding the aggressor</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_OPEN_BORDERS"><Text>open borders</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_ALLIED"><Text>an ally</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_ASYLUM"><Text>offered asylum</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_RAID"><Text>drawn by a raid</Text></Row>
+
+        <!-- P0.2 attrition "why" tags + the death-cause clause, and the P0.3 rising-pressure cue -->
+        <Row Tag="LOC_EMIG_REASON_SIEGE"><Text>under siege</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_UNDER_ATTACK"><Text>under attack</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_DISASTER"><Text>disaster</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_FAMINE"><Text>famine</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_NO_REFUGE"><Text>no safe refuge</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_CRISIS_LOSSES"><Text>lost while fleeing</Text></Row>
+        <Row Tag="LOC_EMIG_DEATH_WHY_CLAUSE"><Text>The cause: {1_Why}.</Text></Row>
+        <Row Tag="LOC_EMIG_PRESSURE_CUE"><Text>Rising emigration pressure: citizens in {1_City} are increasingly drawn to {2_Dest}.</Text></Row>
 
         <!-- Phase-1 explanatory toast: cause-keyed "what can I do" action hint -->
         <Row Tag="LOC_EMIG_HINT_UNHAPPINESS"><Text>Raise this city's happiness, or slot an Anti-Immigration Stance to retain them.</Text></Row>
@@ -400,6 +433,597 @@
         </Row>
         <Row Tag="LOC_EMIG_NETC_ORIGINS_TIP">
             <Text>Show lines to where migrants came from</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_POP_TITLE">
+            <Text>Migration - {1_City}</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_ORIGINS">
+            <Text>Population origins</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_DEPARTING">
+            <Text>Departing to</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_ARRIVING">
+            <Text>Arriving from</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_NO_MIGRATION">
+            <Text>No migration recorded for this settlement yet.</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_MORE">
+            <Text>(+{1_Count} more)</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_REFUGEE_ONE">
+            <Text>{1_Count} refugee awaits settlement here.</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_REFUGEE_MANY">
+            <Text>{1_Count} refugees await settlement here.</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_QUARTER_TITLE">
+            <Text>Cultural Quarter</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_NO_QUARTER">
+            <Text>No foreign quarter has taken root here.</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_QUARTER_ROOT">
+            <Text>A {1_Quarter} has taken root in this settlement.</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_QUARTER_STANCE">
+            <Text>Your stance: {1_Stance}.</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_QUARTER_GRANTS">
+            <Text>Grants {1_Amount} {2_Yield} to the city.</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_QUARTER_COSTS">
+            <Text>Costs {1_Amount} {2_Yield} each turn.</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_QUARTER_CONTESTED">
+            <Text>Contested: you are at war with their homeland, straining the quarter.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_STANCE_PRO">
+            <Text>Pro-Immigration</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_STANCE_ANTI">
+            <Text>Anti-Immigration</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_STANCE_NEUTRAL">
+            <Text>Neutral</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_FLAG_AT_RISK">
+            <Text>at risk</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_FLAG_RESTING">
+            <Text>resting</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_SEC_NETWORK">
+            <Text>Migration network</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_SEC_NET_TABLE">
+            <Text>Net Migration (Table)</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_SEC_WHY">
+            <Text>Why people move</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_SEC_SETTLEMENTS">
+            <Text>Settlements</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_SEC_POLICIES">
+            <Text>Immigration policies</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_SEC_NOTIFICATIONS">
+            <Text>Migration notifications</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_SEC_GUIDE">
+            <Text>Guide</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_EMPTY">
+            <Text>Nothing to show yet.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_TAB_NETWORK">
+            <Text>Network</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_TAB_NET_TABLE">
+            <Text>Net Migration (Table)</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_TAB_CAUSES">
+            <Text>Causes</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_TAB_POLICIES">
+            <Text>Policies</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_TAB_MY_CITIES">
+            <Text>My Cities</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_TAB_NOTIFICATIONS">
+            <Text>Notifications</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_TAB_GUIDE">
+            <Text>Guide</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_NUM_CIV">
+            <Text>Civ Pop</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_NUM_SCALED">
+            <Text>Scaled Pop</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_SAMPLE_BADGE">
+            <Text>Sample data ; preview (switch to Live in Options)</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_OPTIONS_LABEL">
+            <Text>Options:</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_OPTIONS_ADVANCED">
+            <Text>Advanced</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_VIEW_NUMBERS_LABEL">
+            <Text>Numbers:</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_NO_ARRIVALS">
+            <Text>No arrivals yet</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_NO_DEPARTURES">
+            <Text>No departures yet</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_WHY_LINE">
+            <Text>{1_Prefix} {2_Why}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_WHY_PREFIX">
+            <Text>Why:</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_TITLE_TOWN">
+            <Text>{1_Name} (Town)</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_TITLE_CITY">
+            <Text>{1_Name} (City)</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_BAND_CRITICAL">
+            <Text>Critical</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_BAND_HIGH">
+            <Text>High</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_BAND_MODERATE">
+            <Text>Moderate</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_BAND_LOW">
+            <Text>Low</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_PRESSURE">
+            <Text>Emigration pressure</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_NONE_RECORDED">
+            <Text>none recorded</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_FLAG_PAREN">
+            <Text> ({1_Flag})</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_HEADING_TO">
+            <Text>Heading to: {1_Sub}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_WHATS_DRIVING">
+            <Text>What's driving it</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_EVENT_NAME">
+            <Text>↳ {1_Name}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_EVENT_BOTH">
+            <Text> · {1_Deaths} died</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_EVENT_DIED">
+            <Text>{1_Deaths} died</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_CAUSES_BY_IMPACT">
+            <Text>Causes by impact</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_NO_MIGRATION">
+            <Text>no migration yet</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_DIR_IMMIGRANTS">
+            <Text>Immigrants ; came from</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_DIR_EMIGRANTS">
+            <Text>Emigrants ; left for/died</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_DIED">
+            <Text>Died</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_SECTION_CAUSES">
+            <Text>Causes: Why people move</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_SECTION_SETTLEMENTS">
+            <Text>Settlements: Migration in and out of your settlements</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CF_EMPTY">
+            <Text>No city migration recorded yet, flows appear as people move in and out of your cities.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_LG_DRIVERS">
+            <Text>Drivers: {1_Drivers}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_LG_TITLE">
+            <Text>Net Migration (Detail)</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_LG_COL_CIV">
+            <Text>Civilization</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_LG_COL_NET">
+            <Text>Net</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_LG_COL_IN">
+            <Text>In</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_LG_COL_OUT">
+            <Text>Out</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_LG_COL_STANCE">
+            <Text>Stance impact</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_LG_COL_REFUGEES">
+            <Text>Refugees</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_LG_COL_LOSSES">
+            <Text>Losses</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_LG_TOTAL">
+            <Text>Total</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DV_STANCE_NONE">
+            <Text>No border policy, migration unaffected.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DV_STANCE_ALLOWED">
+            <Text>+{1_People} immigrants allowed beyond neutral{2_Pct}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DV_STANCE_TURNED_AWAY">
+            <Text>{1_People} would-be immigrants turned away{2_Pct}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DV_STANCE_KEPT_HOME">
+            <Text>{1_People} of its own citizens kept home</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DV_STANCE_NO_EFFECT">
+            <Text>Policy slotted, but no migration affected yet.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_QUARTER_GENERIC_1">
+            <Text>on the edge of the city</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_QUARTER_GENERIC_2">
+            <Text>in the outer streets</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_QUARTER_GENERIC_3">
+            <Text>past the last houses</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_QUARTER_GENERIC_4">
+            <Text>on the far side of town</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_QUARTER_GENERIC_5">
+            <Text>where the streets give out</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_CARRIED_1">
+            <Text>what they could carry</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_CARRIED_2">
+            <Text>their tools and little else</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_CARRIED_3">
+            <Text>what would fit on a cart</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_CARRIED_4">
+            <Text>their children and their seed grain</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_CARRIED_5">
+            <Text>the few things that mattered</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_WAR_EXODUS_1">
+            <Text>When the {1_War} reached {2_City}, {3_People} of its people took {4_Carried} and left.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_WAR_EXODUS_2">
+            <Text>{3_People} {5_Civ} refugees abandoned {2_City} that year, driven out by the {1_War}.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_WAR_EXODUS_3">
+            <Text>The roads out of {2_City} filled with refugees as the {1_War} closed in. {3_People} did not return.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_WAR_EXODUS_4">
+            <Text>{2_City} emptied as the {1_War} came. {3_People} {5_Civ} families went wherever the fighting was not.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_DISASTER_EXODUS_1">
+            <Text>The {1_DisasterCap} struck {3_City}. {4_People} {5_Civ} families gathered {6_Carried} and went looking for safer country.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_DISASTER_EXODUS_2">
+            <Text>After the {2_Disaster}, {4_People} {5_Civ} refugees left the wreck of {3_City} behind them.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_DISASTER_EXODUS_3">
+            <Text>{4_People} {5_Civ} families fled {3_City} in the months after the {2_Disaster}, and the fields around it went quiet.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_PLAIN_EXODUS_1">
+            <Text>{1_People} {2_Civ} families left {3_City} that year, looking for a better living elsewhere.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_PLAIN_EXODUS_2">
+            <Text>Word of work and quiet borders drew {1_People} {2_Civ} households away from {3_City}.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_PLAIN_EXODUS_3">
+            <Text>{3_City} lost {1_People} of its people to the long roads, a few families at a time.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_FRAMED_EXODUS_1">
+            <Text>Far beyond the lands we knew, {1_City} emptied. {2_People} of a people we have heard called the {3_Civ} took to the roads.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_FRAMED_EXODUS_2">
+            <Text>{2_People} refugees fled {1_City}, a city of a distant people, the {3_Civ}, of whom we had only rumour.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_FRAMED_EXODUS_3">
+            <Text>Word came of {1_City}, somewhere past the edge of the map: {2_People} of the {3_Civ}, a people we have only heard tell of, driven from their homes.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_FOUNDING_FRAMED_1">
+            <Text>A community had taken root in {1_City} from a distant land, a people we have heard called the {2_Civ}, now {3_Pct} of its households, settled {4_Where}.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_FOUNDING_FRAMED_2">
+            <Text>{1_City} had become home to newcomers from far off, a people known to us only as the {2_Civ}, {3_Pct} of the city.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_FOUNDING_1">
+            <Text>By now the {2_Civ} households of {1_City} made up {3_Pct} of the city. They kept a district of their own {4_Where}.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_FOUNDING_2">
+            <Text>A {2_Civ} community had taken root in {1_City}, {3_Pct} of its people and still arriving, settled {4_Where}.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_FOUNDING_3">
+            <Text>{1_City} had become home to a {2_Civ} minority, {3_Pct} of its households, clustered {4_Where}.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_RETURN_FRAMED_1">
+            <Text>{1_People} families of {2_City} set out for a far homeland, a people known to us only as the {3_Civ}, now that it was {4_Reason}.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_RETURN_FRAMED_2">
+            <Text>Word reached {2_City} of a distant country at peace again, one we have heard called the {3_Civ}. {1_People} who traced their blood to it started for home.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_RETURN_1">
+            <Text>As word spread that the homeland was {4_Reason}, {1_People} {3_Civ} families of {2_City} started the long road home.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_RETURN_2">
+            <Text>The {3_Civ} quarter of {2_City} thinned that year. {1_People} went back, now that home was {4_Reason}.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_RETURN_3">
+            <Text>{1_People} {3_Civ} households left {2_City} for the country they had fled, drawn back as it grew {4_Reason}.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_TITLE_FOUNDING">
+            <Text>The {1_Civ} Quarter of {2_City}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_TITLE_RETURN">
+            <Text>The {1_Civ} Return</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_TITLE_EXODUS_1">
+            <Text>The {1_Civ} Exodus</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_TITLE_EXODUS_2">
+            <Text>The Flight from {2_City}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_TITLE_EXODUS_3">
+            <Text>The Emptying of {2_City}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_TITLE_MIGRATION">
+            <Text>The {1_Civ} Migration</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_DILEMMA_NAME_FRAMED">
+            <Text>a people we have heard called the {1_Civ}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_DILEMMA_NAME">
+            <Text>the {1_Civ}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_DILEMMA_PLAGUE_TITLE">
+            <Text>The Sick at the Gates</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_DILEMMA_PLAGUE_BODY">
+            <Text>Plague has emptied the cities of {1_Origin}. The survivors have walked a long way and now wait outside your walls, {2_People} of them, frightened and ill. To take them in is to share their danger. To turn them away is to leave them to it.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_DILEMMA_CONQUEST_TITLE">
+            <Text>Refugees at the Border</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NARR_DILEMMA_CONQUEST_BODY">
+            <Text>The armies of {1_By} have overrun {2_Origin}, and its people are streaming toward your lands. {3_People} have gathered at the border, carrying what they could save, and they ask for shelter.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CHR_FOOTHOLD_TITLE">
+            <Text>A {1_Civ} Foothold in {2_City}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_CHR_FOOTHOLD_BODY">
+            <Text>A lasting {1_Civ} community had formed in {2_City}, now {3_Pct} percent of the city after {4_People} arrivals over time.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_TITLE">
+            <Text>Title</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_STORY">
+            <Text>Story</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_CAUSE">
+            <Text>Cause</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_EVENT">
+            <Text>Event</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_FROM">
+            <Text>From</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_CASUALTIES">
+            <Text>Casualties</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_MOVED_TO">
+            <Text>Moved to</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_TO">
+            <Text>To</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_PEOPLE">
+            <Text>People</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_WHY_THERE">
+            <Text>Why there</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_NOTE">
+            <Text>Note</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_DEFAULT_SUMMARY">
+            <Text>A migration event</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_CAUSE_EVENT">
+            <Text>{1_Cause} event</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_EVENT_PREFIX">
+            <Text>{1_Event}: {2_Summary}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_TURN">
+            <Text>Turn {1_Turn}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_CHRONICLE">
+            <Text>Chronicle</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NV_EMPTY">
+            <Text>No migration events yet; they appear here as people move, with the full detail of each.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_WARN_HOLDING">
+            <Text>Refugee holding active in this settlement</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_WARN_TRAPPED">
+            <Text>At risk: trapped with nowhere to flee{1_Why}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_WARN_DISTRESS">
+            <Text>Under distress - people are looking to leave{1_Why}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_BADGE_HIGH">
+            <Text>Holding: High</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_BADGE_MEDIUM">
+            <Text>Holding: Medium</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_BADGE_LOW">
+            <Text>Holding: Low</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_ORIGINS">
+            <Text>Origins: {1_List}{2_Tail}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_ORIGINS_MORE">
+            <Text> (+{1_Count} more)</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_CAUSE_ITEM">
+            <Text>{1_Label} {2_Share}%</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_POOL_ONE">
+            <Text>Refugee holding pool: {1_Count} point</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_POOL_MANY">
+            <Text>Refugee holding pool: {1_Count} points</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_BURDEN">
+            <Text>Refugee support burden: ~{1_Gold} gold/turn, {2_Happiness} happiness/turn</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_WHY_THERE">
+            <Text>Why there: {1_Why}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_STATUS_RESTING">
+            <Text> (resting {1_Cooldown})</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_STATUS_TO_MOVE">
+            <Text> ({1_Pct}% to next move)</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_PRESSURE">
+            <Text>Pressure: {1_Val}{2_Status}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_PULLED_TOWARD">
+            <Text>Pulled toward {1_Name}{2_Rival}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_RIVAL_CIV">
+            <Text> (rival civ)</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_ASSIM_COST">
+            <Text>Assimilation cost: ~{1_Gold} gold/turn</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_CIV_NET">
+            <Text>Civ net migration: {1_People} people</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_TITLE">
+            <Text>{1_City} - Migration</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_DEFAULT_CITY">
+            <Text>Settlement</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_SPARK_LABEL">
+            <Text>Recent net migration</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_TOAST_ESTABLISHED">
+            <Text>{1_City} established refugee holding ({2_Pts} pts)</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_TOAST_CLEARED">
+            <Text>{1_City} cleared its refugee holding pool</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_RO_A_SETTLEMENT">
+            <Text>A settlement</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DIL_WELCOME_LABEL">
+            <Text>Welcome them in</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DIL_WELCOME_NOTE">
+            <Text>A cost in gold and some short-term strain on your people; they settle among you and, in time, become your people.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DIL_FRONTIER_LABEL">
+            <Text>Settle the frontier</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DIL_FRONTIER_NOTE">
+            <Text>A smaller cost in gold; send them to a smaller town to make a new start.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DIL_AWAY_LABEL">
+            <Text>Turn them away</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DIL_AWAY_NOTE">
+            <Text>A cost in international standing now; they move on down the road, their burden not yours to carry.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DIL_WHO_UNKNOWN">
+            <Text>a people we had only heard tell of</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DIL_WHO_KNOWN">
+            <Text>the {1_Adj}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DIL_YOUR_LANDS">
+            <Text>your lands</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DIL_BODY_WELCOME">
+            <Text>You opened {1_Place} to the refugees of {2_Adj}. They are your people now, or will be.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DIL_BODY_FRONTIER">
+            <Text>You sent the refugees of {1_Adj} to the frontier, to build something of their own.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DIL_BODY_AWAY">
+            <Text>You turned the refugees of {1_Adj} away from {2_Place}. They went on down the road, {3_Who}.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DIL_CHRON_TITLE">
+            <Text>A Decision at the Border</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT">
+            <Text>Refugees</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_QTR_CHRON_HANDS_TITLE">
+            <Text>The Quarter Changes Hands</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_QTR_CHRON_HANDS_BODY">
+            <Text>In {1_Place}, the {2_PriorAdj} quarter gave way to the {3_Name}, a new people now holding the district as their own.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_QTR_STANCE_EMBRACE">
+            <Text>You embraced the {1_Name}, and its customs enrich the city.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_QTR_STANCE_TAX">
+            <Text>You taxed the trade of the {1_Name}; its coin flows to your treasury, its people chafe.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_QTR_STANCE_LETBE">
+            <Text>You let the {1_Name} keep to itself.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_QTR_CHRON_DECISION_TITLE">
+            <Text>A {1_Name}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_QTR_EYEBROW">
+            <Text>Cultural Quarter</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_QTR_TITLE">
+            <Text>The {1_Name} Takes Root</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_QTR_BODY">
+            <Text>A lasting community from {1_Adj} now holds a district of its own in {2_Place}, grown to {3_Pct} percent of the city. How will you meet them?</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_QTR_CHRON_RESTLESS_TITLE">
+            <Text>A Quarter Grows Restless</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_QTR_CHRON_RESTLESS_BODY">
+            <Text>War with {1_Adj} sets the {2_Name} on edge; the district simmers.</Text>
         </Row>
     </EnglishText>
 </Database>

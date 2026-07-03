@@ -21,6 +21,9 @@
  * @property {boolean} splitTracksEnabled Evaluate crisis + voluntary as two concurrent per-source tracks.
  * @property {boolean} splitBudgetsEnabled Give crisis and voluntary their own per-civ move ceilings.
  * @property {boolean} splitUiReadoutEnabled Show a multi-cause pressure breakdown in the city readout.
+ * @property {boolean} voluntaryCueEnabled Emit a low-key "rising emigration pressure" cue (P0.3).
+ * @property {number} voluntaryCueFraction Fraction of the emigration bar a source crosses to cue.
+ * @property {number} voluntaryCueCooldownTurns Minimum turns between cues from the same settlement.
  * @property {boolean} gameSpeedTuningEnabled Scale turn-based pacing by the game-speed scalar S
  *   (Online≈0.5 … Standard 1.0 … Marathon≈3.0) so migration feels constant in game-time; false = legacy.
  * @property {boolean} gameSpeedScalePopulation Normalize the historical population exponent to
@@ -85,6 +88,16 @@
  * @property {number} openBordersBonus Cross-civ pull bonus for an Open Borders deal partner.
  * @property {number} transitLagTurns Max turns migrants spend in transit before arriving (0 = off).
  * @property {number} transitHexPerTurn Hexes covered per transit turn (distance → lag scale).
+ * @property {boolean} refugeePoolEnabled Stage refugee arrivals in a city holding pool before full settlement.
+ * @property {number} refugeeImmediateSettlePct Fraction of refugee arrivals that settle immediately.
+ * @property {number} refugeePoolMinHoldTurns Min holding turns before pooled refugees are eligible to settle.
+ * @property {number} refugeePoolSettlePerCityPerTurn Base refugee points a city can settle from pool each turn.
+ * @property {number} refugeePoolHappyScale Settlement-rate multiplier when host happiness is non-negative.
+ * @property {number} refugeePoolUnhappyScale Settlement-rate multiplier when host happiness is negative.
+ * @property {number} refugeePoolOvercrowdPenalty Per-urban-over-threshold settlement-rate penalty.
+ * @property {boolean} refugeePoolBurdenEnabled Apply support burden while refugees are in holding pools.
+ * @property {number} refugeePoolBurdenGoldPerPoint Gold/turn cost per held refugee point.
+ * @property {number} refugeePoolBurdenHappinessPerPoint Happiness/turn cost per held refugee point.
  * @property {number} dilemmaSpreeCaptures Captures by one civ in the window that read as a spree.
  * @property {number} dilemmaWindowTurns Rolling window (turns) for counting a conquest spree.
  * @property {number} dilemmaMaxPerAge Hard cap on refugee dilemmas per age.
@@ -93,6 +106,13 @@
  * @property {number} dilemmaGoldFrontier One-time gold cost to settle refugees on the frontier.
  * @property {number} dilemmaInfluenceAway One-time influence cost for turning refugees away.
  * @property {number} dilemmaHappinessWelcome One-time happiness cost for absorbing refugees into your city.
+ * @property {boolean} quartersEnabled Whether established diasporas become player-shaped Cultural Quarters.
+ * @property {number} quarterCapPerAge Hard cap on Cultural Quarter decisions per age.
+ * @property {number} quarterCooldownTurns Minimum turns between Cultural Quarter decisions.
+ * @property {number} quarterRewardAmount One-time benefit granted by a chosen quarter stance.
+ * @property {number} quarterDrawbackAmount One-time drawback charged by a chosen quarter stance.
+ * @property {number} contestedQuarterPenalty Per-pass happiness strain per contested quarter.
+ * @property {number} diasporaWarStrainCap Hard cap on total per-pass contested-quarter strain per host.
  * @property {boolean} returnEnabled Whether diasporas return home when the homeland recovers.
  * @property {number} returnRate Fraction of a recovered-homeland diaspora that may return per turn.
  * @property {number} returnMinShare Min diaspora share of the host city to draw returnees.
@@ -171,6 +191,9 @@
  * @property {number} notifyCooldownTurns Min turns between "important" toasts (anti-spam).
  * @property {boolean} cityReadoutEnabled Show the per-city migration readout panel (Phase 2).
  * @property {string} cityReadoutCorner HUD corner for the readout (top/bottom × left/right).
+ * @property {boolean} cityReadoutSparkline Show a recent net-migration trend strip in the readout.
+ * @property {boolean} cityReadoutPoolToasts Toast when selected city holding starts/clears.
+ * @property {boolean} refugeePoolLensMarkers Prosperity-lens center markers for active holding pools.
  * @property {boolean} disastersEnabled Treat disasters as a migration driver (§11).
  * @property {number} disasterPlagueWeight Standing disaster distress/turn while a city is infected.
  * @property {number} disasterPerPoint Percent prosperity penalty per disaster-distress point.

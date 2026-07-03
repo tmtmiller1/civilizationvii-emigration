@@ -45,8 +45,8 @@ function testDeltaAdvancesPerSample() {
 function testFormatIsSignedPeople() {
   const spec = captureSpec();
   assert.equal(spec.format(0), "0");
-  assert.equal(spec.format(12000), "+12 thousand");
-  assert.equal(spec.format(-5000), "-5 thousand");
+  assert.equal(spec.format(12000), "+12,000");
+  assert.equal(spec.format(-5000), "-5,000");
 }
 
 // All migration graphs are collapsed into one "Graphs" metric-group tab placed FIRST on Emigration's

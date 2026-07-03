@@ -29,6 +29,8 @@ const MAX_ENTRIES = 120; // ring cap: plenty of history, bounded save size
  * @property {string} [fromCiv] Origin civilization name.
  * @property {string} [toCity] Destination settlement name.
  * @property {string} [toCiv] Destination civilization name.
+ * @property {string} [reasons] The "why here" explanation phrase for the lead move (P0.1), already
+ *   localized (e.g. "nearby, open borders").
  * @property {boolean} [crossCiv] Whether the lead move crossed civilizations.
  * @property {boolean} [ownLoss] Whether this is the local player's own population loss (drives the
  *   red accent; world-news / other-civ entries render in a neutral tone).
@@ -80,7 +82,7 @@ function finiteOr(v, d) {
 // Optional string fields copied through only when present, so absent ones are OMITTED (not written as
 // `undefined`, which JSON.stringify would drop), keeping the in-memory cache identical to the persisted
 // blob across a reload.
-const OPT_STR_FIELDS = ["title", "body", "event", "fromCity", "fromCiv", "toCity", "toCiv"];
+const OPT_STR_FIELDS = ["title", "body", "event", "fromCity", "fromCiv", "toCity", "toCiv", "reasons"];
 
 /**
  * Build the canonical NotifEntry with coerced required fields and only the present optional strings.

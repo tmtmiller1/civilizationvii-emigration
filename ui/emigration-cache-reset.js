@@ -33,7 +33,11 @@ let _lastGameId = NO_GAME;
  */
 export function currentGameId() {
   try {
-    const g = typeof Configuration !== "undefined" && Configuration.getGame ? Configuration.getGame() : null;
+    const getGame =
+      typeof Configuration !== "undefined" && typeof Configuration.getGame === "function"
+        ? Configuration.getGame.bind(Configuration)
+        : null;
+    const g = getGame ? getGame() : null;
     const id = g ? g.gameSeed : null;
     return typeof id === "number" || typeof id === "string" ? id : null;
   } catch (_) {

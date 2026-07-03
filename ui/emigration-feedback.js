@@ -27,6 +27,7 @@ import {
   actionHint,
   warRefugeeName,
   localDigestMessage,
+  pressureCueMessage,
   disasterName
 } from "/emigration/ui/emigration-naming.js";
 import { warAggressors } from "/emigration/ui/emigration-war.js";
@@ -34,6 +35,7 @@ import { worstDisasterTypeForOwner } from "/emigration/ui/emigration-disasters.j
 import { formatBothExact } from "/emigration/ui/emigration-population.js";
 import { causeLabel, notificationAccent } from "/emigration/ui/emigration-causes.js";
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
+import { reasonsPhrase } from "/emigration/ui/emigration-move-reasons.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 
@@ -525,7 +527,7 @@ function eventBucket(map, m, me) {
   let ev = map.get(key);
   if (!ev) {
     ev = { cause, srcOwner: me, srcName: m.srcName, destName: m.destName, destOwner: m.destOwner,
-      crossCiv: false, people: 0, points: 0, _lead: 0 };
+      crossCiv: false, people: 0, points: 0, reasons: [], _lead: 0 };
     map.set(key, ev);
   }
   return ev;
@@ -550,6 +552,7 @@ function foldEvent(map, m, me) {
     ev.destName = m.destName;
     ev.destOwner = m.destOwner;
     ev.crossCiv = !!m.crossCiv && typeof m.destOwner === "number";
+    ev.reasons = Array.isArray(m.reasons) ? m.reasons : []; // the lead move's "why here" tags (P0.1)
   }
 }
 
@@ -599,7 +602,7 @@ function eventMessage(ev) {
     ? assimilationCostFor(ev.destOwner).gold : 0;
   return localDigestMessage({
     cause: ev.cause, people: formatBothExact(ev.people, ev.points), city: ev.srcName || "a settlement",
-    crossCiv: ev.crossCiv, destName: dv.toCity || dv.toCiv, destGold
+    crossCiv: ev.crossCiv, destName: dv.toCity || dv.toCiv, destGold, why: reasonsPhrase(ev.reasons)
   });
 }
 
@@ -616,6 +619,7 @@ function logEvent(ev, msg) {
     kind: "digest", cause: ev.cause, event: eventNameFor(ev.cause, ev.srcOwner) || undefined,
     summary: msg, people: ev.people, points: ev.points,
     fromCity: ev.srcName, fromCiv, toCity: dv.toCity, toCiv: dv.toCiv, crossCiv: ev.crossCiv,
+    reasons: reasonsPhrase(ev.reasons) || undefined, // "why here" tags for the log detail (P0.1)
     ownLoss: true // the local player's own settlement shedding population
   });
 }
@@ -636,4 +640,46 @@ function localDigest(migs) {
   for (const ev of events) logEvent(ev, eventMessage(ev));
   const lead = events[0];
   announceImportant(eventMessage(lead), lead.cause, true); // the local player's own loss → red
+}
+
+// P0.3 per-source cue cooldown (session-only; a reload resetting a low-key cue is harmless).
+/** @type {Map<string, number>} */
+const _cueTurn = new Map();
+registerCacheReset(() => _cueTurn.clear());
+
+/**
+ * Surface low-key "rising emigration pressure" cues for the local player's settlements building toward
+ * a voluntary move without anyone having left yet (P0.3). Logged to the Notifications list only (no HUD
+ * toast, so it never floods the screen), throttled per source to one per `voluntaryCueCooldownTurns`.
+ * No-op without a local player.
+ * @param {{srcName:string, srcOwner:number, destName:string, cause:string}[]} cues This pass's cues.
+ */
+export function reportPressureCues(cues) {
+  if (!Array.isArray(cues) || !cues.length) return;
+  const me = localPlayerId();
+  if (me == null) return;
+  const turn = gameTurn();
+  const cd = CONFIG.voluntaryCueCooldownTurns > 0 ? speedTurns(CONFIG.voluntaryCueCooldownTurns) : 0;
+  for (const c of cues) emitPressureCue(c, me, turn, cd);
+}
+
+/**
+ * Log one pressure cue if it's the local player's and past its per-source cooldown.
+ * @param {*} c A cue ({srcName, srcOwner, destName, cause}).
+ * @param {number} me Local player id.
+ * @param {number} turn Current game turn.
+ * @param {number} cd Cooldown turns.
+ */
+function emitPressureCue(c, me, turn, cd) {
+  if (c.srcOwner !== me || !c.srcName || !c.destName) return;
+  const last = _cueTurn.get(c.srcName);
+  if (typeof last === "number" && turn - last < cd) return;
+  _cueTurn.set(c.srcName, turn);
+  logNotification({
+    kind: "cue",
+    cause: c.cause || "prosperity",
+    summary: pressureCueMessage(c.srcName, c.destName),
+    fromCity: c.srcName,
+    toCity: c.destName
+  });
 }

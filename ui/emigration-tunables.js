@@ -94,6 +94,7 @@ export const TUNABLES = [
   { key: "antiSnowballWeight", group: "cost", type: "choice", values: [0, 8, 15, 28], label: "LOC_EMIG_T_ANTISNOWBALL", desc: "LOC_EMIG_T_ANTISNOWBALL_D" },
   // anti-snowball trigger: fair-share population multiple a civ may reach before the brake bites
   { key: "antiSnowballThreshold", group: "cost", type: "choice", values: [1, 1.25, 1.5, 2], label: "LOC_EMIG_T_ANTISNOWTHRESH", desc: "LOC_EMIG_T_ANTISNOWTHRESH_D" },
+  { key: "quartersEnabled", group: "cost", type: "bool", label: "LOC_EMIG_T_QUARTERS", desc: "LOC_EMIG_T_QUARTERS_D" },
   // environmental disasters as a migration driver (§11; off by default)
   { key: "disastersEnabled", group: "disaster", type: "bool", label: "LOC_EMIG_T_DISASTERS", desc: "LOC_EMIG_T_DISASTERS_D" },
   { key: "disasterPerPoint", group: "disaster", type: "choice", values: [6, 8, 10, 14, 20], label: "LOC_EMIG_T_DPP", desc: "LOC_EMIG_T_DPP_D" },
@@ -109,6 +110,7 @@ export const TUNABLES = [
   { key: "notifyCooldownTurns", group: "notify", type: "choice", values: [0, 3, 6, 10, 20], label: "LOC_EMIG_T_NOTIFYCD", desc: "LOC_EMIG_T_NOTIFYCD_D" },
   { key: "worldRefugeeThreshold", group: "notify", type: "choice", values: [20000, 40000, 80000, 150000], label: "LOC_EMIG_T_NOTIFYWORLD", desc: "LOC_EMIG_T_NOTIFYWORLD_D" },
   { key: "cityReadoutEnabled", group: "notify", type: "bool", label: "LOC_EMIG_T_CITYREADOUT", desc: "LOC_EMIG_T_CITYREADOUT_D" },
+  { key: "cityReadoutSparkline", group: "notify", type: "bool", label: "LOC_EMIG_T_SPARKLINE", desc: "LOC_EMIG_T_SPARKLINE_D" },
   // outlet - attrition when there's nowhere to flee (the pressure-release valve)
   { key: "attritionEnabled", group: "outlet", type: "bool", label: "LOC_EMIG_T_ATTRITION", desc: "LOC_EMIG_T_ATTRITION_D" },
   { key: "attritionMinDistress", group: "outlet", type: "choice", values: [40, 80, 120, 200], label: "LOC_EMIG_T_ATTRDISTRESS", desc: "LOC_EMIG_T_ATTRDISTRESS_D" },

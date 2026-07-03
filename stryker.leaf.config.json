@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "_comment": "Fast mutation loop for non-engine migration leaf modules. Runs all known direct and integration harnesses that exercise borders/effects/geography/prosperity without executing the full test suite.",
+  "testRunner": "command",
+  "commandRunner": {
+    "command": "node --loader ./tests/loader.mjs ./tests/prosperity.mjs && node --loader ./tests/loader.mjs ./tests/geography.mjs && node --loader ./tests/loader.mjs ./tests/geography-distance-cache.mjs && node --loader ./tests/loader.mjs ./tests/geography-diplomacy-cache.mjs && node --loader ./tests/loader.mjs ./tests/war.mjs && node --loader ./tests/loader.mjs ./tests/borders.mjs && node --loader ./tests/loader.mjs ./tests/effects.mjs && node --loader ./tests/loader.mjs ./tests/effects-branches-extra.mjs && node --loader ./tests/loader.mjs ./tests/engine-pull.mjs && node --loader ./tests/loader.mjs ./tests/engine-pass.mjs"
+  },
+  "coverageAnalysis": "off",
+  "mutate": [
+    "ui/emigration-borders.js",
+    "ui/emigration-effects.js",
+    "ui/emigration-geography.js",
+    "ui/emigration-prosperity.js"
+  ],
+  "reporters": ["clear-text", "json"],
+  "jsonReporter": {
+    "fileName": "reports/mutation/leaf.json"
+  },
+  "concurrency": 4,
+  "timeoutMS": 30000
+}

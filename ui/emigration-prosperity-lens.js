@@ -18,6 +18,8 @@ import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { fieldContext, prosperity } from "/emigration/ui/emigration-prosperity.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { setBasePlotTooltipHidden } from "/emigration/ui/emigration-plot-tooltip-suppress.js";
+import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { refugeePoolTotal } from "/emigration/ui/emigration-refugee-pool.js";
 
 const LENS = "emig-prosperity-lens";
 const LAYER = "emig-prosperity-layer";
@@ -27,6 +29,9 @@ const HEX_GRID = 1; // OVERLAY_PRIORITY.HEX_GRID, inlined
 const GREY = [140, 140, 140];
 const GREEN = [60, 200, 90];
 const RED = [212, 72, 60];
+const HOLD_MARKER_LOW = { x: 0.39, y: 0.78, z: 0.85, w: 0.88 };
+const HOLD_MARKER_MED = { x: 0.96, y: 0.71, z: 0.26, w: 0.9 };
+const HOLD_MARKER_HIGH = { x: 0.92, y: 0.35, z: 0.35, w: 0.92 };
 
 /**
  * Clamp v into [lo, hi].
@@ -160,6 +165,56 @@ function plotTiers() {
     .map((r) => ({ x: r.x, y: r.y, t: spread > 0 ? clamp((r.score - mean) / spread, -1, 1) : 0 }));
 }
 
+/** @param {*} s @returns {{x:number,y:number,pool:number}|null} */
+function markerEntry(s) {
+  if (!s || civHidden(s.owner)) return null;
+  const pool = refugeePoolTotal(s.key);
+  if (!(pool > 0)) return null;
+  const loc = s.city && s.city.location;
+  if (!loc || typeof loc.x !== "number" || typeof loc.y !== "number") return null;
+  return { x: loc.x, y: loc.y, pool };
+}
+
+/** @param {number} pool @returns {"low"|"medium"|"high"} */
+function markerBucket(pool) {
+  if (pool >= 8) return "high";
+  if (pool >= 4) return "medium";
+  return "low";
+}
+
+/**
+ * Group visible city-center plots by holding-pool severity.
+ * @returns {{low:{x:number,y:number}[], medium:{x:number,y:number}[], high:{x:number,y:number}[]}} Buckets.
+ */
+function refugeeMarkerBuckets() {
+  /** @type {{low:{x:number,y:number}[], medium:{x:number,y:number}[], high:{x:number,y:number}[]}} */
+  const out = { low: [], medium: [], high: [] };
+  let signals = [];
+  try {
+    signals = collectCitySignals() || [];
+  } catch (_) {
+    return out;
+  }
+  for (const s of signals) {
+    const e = markerEntry(s);
+    if (!e) continue;
+    out[markerBucket(e.pool)].push({ x: e.x, y: e.y });
+  }
+  return out;
+}
+
+/**
+ * Paint city-center markers for active refugee holding pools.
+ * @param {*} overlay The prosperity overlay.
+ */
+function paintRefugeeMarkers(overlay) {
+  if (!CONFIG.refugeePoolLensMarkers) return;
+  const buckets = refugeeMarkerBuckets();
+  if (buckets.low.length) overlay.addPlots(buckets.low, { fillColor: HOLD_MARKER_LOW });
+  if (buckets.medium.length) overlay.addPlots(buckets.medium, { fillColor: HOLD_MARKER_MED });
+  if (buckets.high.length) overlay.addPlots(buckets.high, { fillColor: HOLD_MARKER_HIGH });
+}
+
 /**
  * Paint per-plot tiles, grouping them into a few quantized colour buckets so the overlay takes a
  * handful of addPlots calls instead of one per tile.
@@ -210,6 +265,7 @@ class ProsperityLensLayer {
         if (plots.length) this.overlay.addPlots(plots, { fillColor: colorFor(c.t) });
       }
     }
+    paintRefugeeMarkers(this.overlay);
     // Hide the base plot tooltip while this lens is active so it doesn't clash with the mod's own
     // prosperity panel (emigration-prosperity-tooltip.js).
     setBasePlotTooltipHidden(true);

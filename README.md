@@ -68,7 +68,7 @@ The mod is driven by a Civ V-style *Prosperity* model.
 Migration counts can be reported in **both** the game's own population points (1, 2, 3 …) **and** a
 historically representative people count (thousands to millions, depending on the settlement's size and
 age) scaled to match the **Demographics** mod, shown together by default (e.g. *1 population point
-(≈30 thousand people)*), or either alone, via an Options toggle (§10). Absorbing migrants carries a
+(≈30,000 people)*), or either alone, via an Options toggle (§10). Absorbing migrants carries a
 **time-limited in-game cost** so growth has trade-offs.
 
 Several layers sit on top of that baseline, **all on by default**, so you get the full system out of
@@ -152,7 +152,7 @@ least desirable settlements toward the most desirable ones:
   (§2) so the *rate* of migration in game-time is the same on Quick, Standard, or Marathon.
 
 All of it is reported in-game (toasts + the Demographics graphs) and in the dev log, e.g.
-`EMIGRATION 1 population point (≈30 thousand people) left Rome (Romans) for Carthage (Carthaginians)`.
+`EMIGRATION 1 population point (≈30,000 people) left Rome (Romans) for Carthage (Carthaginians)`.
 
 ### Quick reference: what counts
 
@@ -490,7 +490,7 @@ so a bad read can never blow up. **There is no turn-based multiplier**, so the f
 with game speed. A moved point is reported as the **marginal** people it represents
 (`scale(pop) − scale(pop−1)`), and its small per-event variation leans on the source settlement's real
 happiness and urban/rural mix (its name only as a tie-breaker). `formatPeople` renders
-"30 thousand / 1.3 million / 240 million". `moveRural` performs a relocation; **`removeRural`** removes
+"30,000 / 1,300,000 / 240,000,000". `moveRural` performs a relocation; **`removeRural`** removes
 a point with no destination (the outlet's death, §6d), using the same rural-population accounting the
 game's own starvation shrinkage uses.
 
@@ -853,7 +853,7 @@ dwell, and vertical **stacking** so several never overlap. Each toast is **theme
 coloured left accent bar + eyebrow label (War / Disaster / Attraction / Conquest / …) so its type reads
 at a glance (war red, disaster amber, prosperity green, …), and every count is shown in **both
 measuring systems at once**: raw Civ population points *and* scaled people, e.g. *"3 population points
-(36 thousand people)"*. It is **important-only by design**, with several anti-spam layers, and because
+(36,000 people)"*. It is **important-only by design**, with several anti-spam layers, and because
 the on-screen toasts stay deliberately brief, **every notification is also recorded permanently in the
 Notifications log** (the Demographics sub-tab, §8), where it can be revisited and expanded for full
 detail. The anti-spam layers:
