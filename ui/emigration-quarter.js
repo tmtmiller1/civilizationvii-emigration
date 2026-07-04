@@ -5,12 +5,13 @@
 // district. Three responsibilities, all defensive and flag-gated:
 //
 //   1. FORM + DECIDE. When one of the local player's cities hosts a newly-established quarter, offer a
-//      short choice (embrace / tax / let be) and apply its bounded one-time yields. Throttled with a
-//      per-age cap + a cooldown, and RANKED BELOW the refugee dilemma: if a dilemma modal already
-//      fired this pass, the quarter waits for a later pass, so two modals never race.
+//      short choice (embrace / tax / let be); the chosen stance's small bounded yields are then applied
+//      every turn (see tickContestedQuarters), so the effect actually persists and reads in the city's
+//      yields. Throttled with a per-age cap + a cooldown, and RANKED BELOW the refugee dilemma: if a
+//      dilemma modal already fired this pass, the quarter waits for a later pass, so two modals never race.
 //   2. NO STACKING / CHANGE OF HANDS. One quarter per host tile (the city-centre plot). If a different
-//      origin overtakes the tile, the prior stance's yields are reversed exactly and the record is
-//      replaced (the Chronicle notes the quarter changing hands).
+//      origin overtakes the tile, the record is simply replaced; because yields are applied per-turn
+//      from the current record, nothing needs reversing (the Chronicle notes the quarter changing hands).
 //   3. CONTESTED WAR-STRAIN. While the host is at war with a quarter's homeland, the quarter turns
 //      "contested": a bounded per-pass happiness strain on the host, capped across all its quarters.
 //      This reacts to war WITHOUT assuming any callable native-revolt trigger (the engine owns revolts).
@@ -25,7 +26,7 @@ import {
   quarterAt, putQuarter, quartersForOwner, canDecide, noteDecision, setContested, saveQuarters
 } from "/emigration/ui/emigration-quarter-state.js";
 import { quarterOptions, quarterOption } from "/emigration/ui/emigration-quarter-registry.js";
-import { applyQuarterYields, reverseQuarterYields, deduct } from "/emigration/ui/emigration-effects.js";
+import { applyQuarterYields, deduct } from "/emigration/ui/emigration-effects.js";
 import { quarterName, narrativeCiv } from "/emigration/ui/emigration-naming.js";
 import { warOpponents } from "/emigration/ui/emigration-war.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
@@ -154,8 +155,12 @@ function chronicleDecision(optionId, quarter, prior, turn) {
 }
 
 /**
- * Apply the chosen stance: reverse any prior (different-origin) yields, apply the new stance's yields,
- * write the tile record, stamp the throttle, chronicle it, and persist. Fully guarded.
+ * Apply the chosen stance: write the tile record (one quarter per tile, so a different origin simply
+ * REPLACES it), stamp the throttle, chronicle it, and persist. The stance's yields are not granted here
+ * as a one-time lump (a one-time Happiness/Culture grant is wiped by the engine's per-turn recompute, so
+ * it never showed up); instead they are applied every turn by {@link tickContestedQuarters} from
+ * whatever record currently holds the tile, which also makes a change-of-hands self-correct with no reversal.
+ * Fully guarded.
  * @param {string} optionId The chosen option id. @param {string} tileKey The plot key.
  * @param {{civ:number,owner:number,name:string}} quarter The quarter.
  * @param {number} me Local player id. @param {number} turn Now.
@@ -165,8 +170,6 @@ function applyQuarterChoice(optionId, tileKey, quarter, me, turn) {
     const option = quarterOption(optionId);
     const applied = resolveApplied(option);
     const prior = quarterAt(tileKey);
-    if (prior && prior.civ !== quarter.civ) reverseQuarterYields(prior.owner, prior.applied);
-    applyQuarterYields(me, applied);
     putQuarter(tileKey, {
       civ: quarter.civ, owner: me, optionId: option.id, turn,
       applied, contested: false, contestedTurn: -999
@@ -252,10 +255,23 @@ function accrueContestedStrain(owner, turn) {
 }
 
 /**
- * Per-pass entry point (2): react to war strain on the local player's quarters. Marks quarters
- * contested while the host is at war with their homeland and charges a bounded happiness strain
- * (capped across all of the host's quarters). Never throws into the pass; never assumes a callable
- * native-revolt trigger.
+ * Apply every one of the local player's quarters' recorded stance yields for THIS turn: the small
+ * benefit (+) and drawback (−) each quarter grants ongoing. Applied fresh each turn (mirroring the
+ * assimilation cost loop) so the effect actually persists and reads in the city's yields, and so a
+ * change-of-hands needs no reversal — the current tile record is the single source of truth.
+ * @param {number} owner Local player id.
+ */
+function applyOwnerQuarterYields(owner) {
+  for (const { rec } of quartersForOwner(owner)) {
+    applyQuarterYields(owner, rec.applied);
+  }
+}
+
+/**
+ * Per-pass entry point (2): apply each of the local player's quarters' ongoing stance yields, then
+ * react to war strain — mark quarters contested while the host is at war with their homeland and charge
+ * a bounded happiness strain (capped across all of the host's quarters). Never throws into the pass;
+ * never assumes a callable native-revolt trigger.
  * @param {*[]} _signals The pass's city signals (unused; state-driven).
  */
 export function tickContestedQuarters(_signals) {
@@ -264,6 +280,7 @@ export function tickContestedQuarters(_signals) {
   if (me == null) return;
   try {
     const turn = monoTurn();
+    applyOwnerQuarterYields(me);
     const strain = accrueContestedStrain(me, turn);
     if (strain > 0) {
       const cap = Math.max(0, Number(CONFIG.diasporaWarStrainCap) || 0);

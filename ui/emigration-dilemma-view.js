@@ -10,6 +10,37 @@
 
 import { loc } from "/emigration/ui/emigration-loc.js";
 
+// The world-input gate (core ViewManager). A mod overlay is only VISUALLY on top of the map; Civ VII
+// still routes clicks/selection/camera to the world unless `ViewManager.isWorldInputAllowed` is false
+// (the same lever ContextManager flips when it pushes a real screen). Without it the greyed map keeps
+// input and the choice buttons never receive a click (the player can only Escape). Loaded once via a
+// guarded dynamic import so this module stays engine-free for tests/shell and degrades to a no-op.
+/** @type {*} */
+let _viewManager = null;
+try {
+  import("/core/ui/views/view-manager.js")
+    .then((m) => { const mm = /** @type {*} */ (m); _viewManager = (mm && (mm.default || mm.ViewManager)) || null; })
+    .catch(() => { /* no core view-manager (shell/test) - Escape still exits */ });
+} catch (_) {
+  /* dynamic import unavailable - overlay still renders, Escape still exits */
+}
+
+/**
+ * Turn world (map/selection/camera) input off while a modal is open, or restore it. Returns the prior
+ * state so the caller can restore exactly what it found (never force-enables input a screen had off).
+ * @param {boolean} allow Whether world input should be allowed. @returns {boolean|null} The prior state, or null.
+ */
+function setWorldInput(allow) {
+  try {
+    if (!_viewManager) return null;
+    const prior = _viewManager.isWorldInputAllowed;
+    _viewManager.isWorldInputAllowed = allow;
+    return typeof prior === "boolean" ? prior : null;
+  } catch (_) {
+    return null;
+  }
+}
+
 /**
  * Make an element with an optional class + text.
  * @param {string} tag Tag. @param {string} [cls] Class. @param {string} [text] Text.
@@ -129,6 +160,9 @@ export function showDilemma(view, onChoice) {
     if (!root || !view) return;
     injectStyle();
     let done = false;
+    // Take world input while the modal is up so the map behind can't swallow the button clicks (the
+    // reported "can only press Escape" bug). Restore the exact prior state when the modal resolves.
+    const priorWorldInput = setWorldInput(false);
     const dismissId = typeof view.dismissId === "string" && view.dismissId.length ? view.dismissId : "away";
     const guard = el("div", "emig-dlg-guard");
     // Escape always dismisses (as the dismiss option), so the full-screen input guard can never trap the
@@ -146,6 +180,7 @@ export function showDilemma(view, onChoice) {
       try {
         window.removeEventListener("keydown", onKey, true);
         guard.remove();
+        setWorldInput(priorWorldInput === false ? false : true); // hand world input back as we found it
       } catch (_) {
         /* ignore */
       }

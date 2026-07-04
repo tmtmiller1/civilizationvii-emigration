@@ -186,7 +186,7 @@ function refugeeText(compose, pool) {
  */
 function grantsLine(compose, amount, yieldKey) {
   const y = yieldLabel(compose, yieldKey);
-  const english = "Grants " + amount + " " + y + " to the city.";
+  const english = "Grants " + amount + " " + y + " to the city each turn.";
   return pick(compose, "LOC_EMIGRATION_PANEL_QUARTER_GRANTS", [amount, y], english);
 }
 

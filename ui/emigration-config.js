@@ -253,17 +253,18 @@ export const CONFIG = {
 
   // ── cultural quarters (established diasporas that become player-shaped districts) ──
   // When a foreign diaspora grows into a lasting "quarter" of one of YOUR cities, you're offered a
-  // short stance (embrace / tax / let be) with a bounded one-time yield, and the district is recorded
-  // per host tile (one quarter per tile: a new origin overtaking it reverses the old yields and takes
-  // over). Ranked BELOW the refugee dilemma and throttled (a per-age cap + cooldown), so the decision
+  // short stance (embrace / tax / let be) with a small bounded PER-TURN yield, and the district is
+  // recorded per host tile (one quarter per tile: a new origin overtaking it simply replaces the record,
+  // so the yield follows whoever holds the tile). Ranked BELOW the refugee dilemma and throttled (a
+  // per-age cap + cooldown), so the decision
   // stays rare. While the host is at war with a quarter's homeland the quarter turns "contested" and
   // strains the host's happiness (bounded, capped), reacting to war without any native-revolt hook.
   // Set quartersEnabled false to disable the whole system.
   quartersEnabled: true,
   quarterCapPerAge: 3, // hard cap on quarter decisions per age
   quarterCooldownTurns: 12, // minimum turns between quarter decisions
-  quarterRewardAmount: 40, // one-time benefit granted by a chosen stance (in its benefit yield)
-  quarterDrawbackAmount: 20, // one-time drawback charged by a chosen stance (in its drawback yield)
+  quarterRewardAmount: 2, // per-turn benefit a chosen stance grants (its benefit yield); small (design §7: ±1-2)
+  quarterDrawbackAmount: 1, // per-turn drawback a chosen stance charges (its drawback yield)
   contestedQuarterPenalty: 4, // per-pass happiness strain per contested quarter (host at war with its homeland)
   diasporaWarStrainCap: 12, // hard cap on total per-pass contested-quarter happiness strain per host
 

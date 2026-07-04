@@ -13,7 +13,8 @@
 //
 // Sibling write-layers split out for cohesion: the carried dividend (the positive mirror) lives in
 // emigration-dividend.js; the migrant-holding penalty in emigration-migrant-units.js. Both reuse
-// the `deduct`/grant grantYield wrappers. Probe-confirmed: grantYield deducts cross-civ for gold.
+// the `deduct`/grant grantYield wrappers. Probe-confirmed: grantYield deducts cross-civ for gold. The
+// Cultural Quarter yields reuse the same per-turn grantYield path (grantSigned/applyQuarterYields).
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { civTuning } from "/emigration/ui/emigration-civ-tuning.js";
@@ -254,9 +255,9 @@ export function congestionPenalty(pid, civPopulation) {
 
 /**
  * Grant a SIGNED amount of a yield to a player (the two-sided sibling of {@link deduct}, which only
- * ever applies costs). Used for the one-time Cultural Quarter yields, where a benefit is granted and
- * a drawback deducted, and where a change-of-hands reverses both exactly. No-ops for a zero amount,
- * a bad id, or a missing grantYield API; never throws.
+ * ever applies costs). Used for the per-turn Cultural Quarter yields, where a benefit is granted and
+ * a drawback deducted each turn from the tile's current record. No-ops for a zero amount, a bad id, or
+ * a missing grantYield API; never throws.
  * @param {number} pid Player id. @param {string} yieldKey e.g. "YIELD_CULTURE". @param {number} amount Signed amount.
  */
 function grantSigned(pid, yieldKey, amount) {
@@ -277,9 +278,10 @@ function grantSigned(pid, yieldKey, amount) {
  */
 
 /**
- * Apply a Cultural Quarter's one-time yields to the host: grant its benefit and charge its drawback.
- * The amounts are read from the record's `applied` block (already resolved from CONFIG at formation),
- * so this and {@link reverseQuarterYields} stay exact mirrors.
+ * Apply a Cultural Quarter's yields to the host for ONE turn: grant its benefit and charge its
+ * drawback. Called every turn from the quarter tick against whatever record currently holds the tile
+ * (a one-time grant of Happiness/Culture was wiped by the engine's per-turn recompute and never
+ * showed). The amounts are read from the record's `applied` block (resolved from CONFIG at formation).
  * @param {number} owner Host player id.
  * @param {QuarterApplied} applied The resolved yields.
  */
@@ -291,9 +293,11 @@ export function applyQuarterYields(owner, applied) {
 }
 
 /**
- * Reverse a Cultural Quarter's one-time yields on the former host (undo the exact amounts a prior
- * stance applied), used when the quarter changes hands to a new origin so the old host is made whole.
- * @param {number} owner Former host player id.
+ * Reverse one turn's worth of a Cultural Quarter's yields on a host (grant the exact inverse). Retained
+ * as the exact mirror of {@link applyQuarterYields} for tests and for any caller that needs to undo a
+ * single turn's application; the per-turn model itself needs no reversal (the tile's current record is
+ * the single source of truth, so a change-of-hands self-corrects on the next tick).
+ * @param {number} owner Host player id.
  * @param {QuarterApplied} applied The resolved yields.
  */
 export function reverseQuarterYields(owner, applied) {

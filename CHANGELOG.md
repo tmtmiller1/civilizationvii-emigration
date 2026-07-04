@@ -5,6 +5,27 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [1.8.1] - 2026-07-04
+
+This is a bug-fix release for the Cultural Quarters feature: the choice pop-up is
+clickable again, and the stance you pick now actually changes the city's yields.
+
+### Fixed
+- **Cultural Quarter pop-up could not be clicked.** The choice modal is a DOM overlay, but Civ VII
+  still routes clicks, selection, and camera to the map behind it unless a screen explicitly takes
+  world input. The modal now turns off world input while it is open (the same lever the game's own
+  screens use) and restores it exactly as it found it on close, so the three options are selectable
+  with the mouse again instead of only being dismissable with Escape. Applies to the refugee dilemma
+  modal too, since both share the same surface.
+- **Cultural Quarter stance had no effect on yields.** The chosen stance's benefit/drawback was applied
+  as a one-time `grantYield`, which the engine's per-turn recompute wiped for Happiness and which never
+  showed for the other yields — so nothing changed. The stance's yields are now applied **every turn**
+  from the tile's current quarter record (matching the city panel, which already read "each turn", and
+  the design's small ±1–2 intent). Default amounts were re-scaled from the old one-time 40/20 lump to a
+  small per-turn +2 benefit / −1 drawback. Because yields now follow whichever origin holds the tile,
+  a change-of-hands self-corrects with no separate reversal. "Grants … each turn" wording updated in
+  all 12 locales.
+
 ## [1.8.0] - 2026-07-02
 
 This release makes migration explain itself: every move and death now says why it
