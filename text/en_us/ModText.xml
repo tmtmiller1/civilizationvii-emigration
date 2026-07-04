@@ -471,7 +471,7 @@
             <Text>Your stance: {1_Stance}.</Text>
         </Row>
         <Row Tag="LOC_EMIGRATION_PANEL_QUARTER_GRANTS">
-            <Text>Grants {1_Amount} {2_Yield} to the city.</Text>
+            <Text>Grants {1_Amount} {2_Yield} to the city each turn.</Text>
         </Row>
         <Row Tag="LOC_EMIGRATION_PANEL_QUARTER_COSTS">
             <Text>Costs {1_Amount} {2_Yield} each turn.</Text>

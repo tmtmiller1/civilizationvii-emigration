@@ -47,7 +47,7 @@ function testFullModelBuildsBothBlocks() {
   assert.equal(model.quarters.present, true);
   assert.ok(model.quarters.lines.some((l) => l.includes("Egyptian Quarter")));
   assert.ok(model.quarters.lines.some((l) => l.includes("Embrace the quarter")));
-  assert.ok(model.quarters.lines.some((l) => l === "Grants 40 Culture to the city."));
+  assert.ok(model.quarters.lines.some((l) => l === "Grants 40 Culture to the city each turn."));
   assert.ok(model.quarters.lines.some((l) => l === "Costs 5 Happiness each turn."));
   assert.ok(model.quarters.lines.some((l) => l.includes("Contested")));
 }
