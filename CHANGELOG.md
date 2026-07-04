@@ -5,6 +5,19 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [1.9.1] - 2026-07-04
+
+### Fixed
+- **No more duplicate migration rows in Demographics' All Civilizations view.**
+  Each migration figure (Emigration, Immigration, Net Migration, Refugees In/Out,
+  Population) is registered twice — a scaled-"people" series and a raw Civ-numbers
+  twin — for the graph's Scaled/Civ toggle. In Demographics' new metrics-as-rows
+  comparison both twins showed up as separate, identically-labelled rows (two
+  "Emigration", two "Immigration", …). The Civ-numbers twins are now hidden from
+  that comparison, so each flow shows once; Demographics' own Scaled/Civ toggle
+  swaps the whole table between the two unit systems. The migration graphs are
+  unchanged.
+
 ## [1.9.0] - 2026-07-04
 
 A localization release. Numbers now read in the player's own language, and the
