@@ -502,5 +502,8 @@
   "LOC_EMIG_QTR_TITLE": "{1_Name}就此扎根",
   "LOC_EMIG_QTR_BODY": "一个来自{1_Adj}的持久社群，如今在{2_Place}占据了一片属于自己的街区，已发展至全城的 {3_Pct} 个百分点。你将如何对待他们？",
   "LOC_EMIG_QTR_CHRON_RESTLESS_TITLE": "街区渐生躁动",
-  "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "与{1_Adj}的战争令{2_Name}焦躁不安；这片街区暗流涌动。"
+  "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "与{1_Adj}的战争令{2_Name}焦躁不安；这片街区暗流涌动。",
+  "LOC_EMIG_SCOPE_INTERNAL": "(内部迁移)",
+  "LOC_EMIG_SCOPE_EXTERNAL": "(外部迁移)",
+  "LOC_EMIG_DEST_CLAUSE": "前往{1_Dest}。"
 }

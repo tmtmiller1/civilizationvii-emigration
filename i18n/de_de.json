@@ -502,5 +502,8 @@
  "LOC_EMIG_QTR_TITLE": "Das {1_Name} schlägt Wurzeln",
  "LOC_EMIG_QTR_BODY": "Eine dauerhafte Gemeinschaft aus {1_Adj} hält nun einen eigenen Bezirk in {2_Place}, angewachsen auf {3_Pct} Prozent der Stadt. Wie wirst du ihnen begegnen?",
  "LOC_EMIG_QTR_CHRON_RESTLESS_TITLE": "Ein Viertel wird unruhig",
- "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "Der Krieg mit {1_Adj} setzt die {2_Name} unter Spannung; der Bezirk brodelt."
+ "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "Der Krieg mit {1_Adj} setzt die {2_Name} unter Spannung; der Bezirk brodelt.",
+ "LOC_EMIG_SCOPE_INTERNAL": "(Interne Wanderung)",
+ "LOC_EMIG_SCOPE_EXTERNAL": "(Externe Wanderung)",
+ "LOC_EMIG_DEST_CLAUSE": "Unterwegs nach {1_Dest}."
 }

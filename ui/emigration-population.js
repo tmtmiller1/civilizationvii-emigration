@@ -314,13 +314,38 @@ export function formatBoth(people, points) {
 }
 
 /**
- * Group an integer with thousands separators ("35670" → "35,670"). Locale-independent (the GameFace
- * runtime's toLocaleString is unreliable), so it reads the same everywhere.
+ * Format a number through the engine's locale-aware `Locale.toNumber`, so grouping and the decimal
+ * mark follow the player's language (German "1.234", French "1 234"), or return `fallback` — the
+ * manual English formatting — when that API is unavailable (Node tests, early load) or throws. This is
+ * the same API the base game uses for scores/yields, which likewise concatenates any suffix afterwards.
+ * The engine does NOT abbreviate magnitudes, so the mod's own tiering stays in the callers; only the
+ * mantissa localizes. Mirrors the Demographics mod's helper of the same name (metrics-format.js).
+ * @param {number} n The value to format.
+ * @param {string} spec A .NET-style numeric format ("0.0", "0.00"); "" for a plain grouped integer.
+ * @param {string} fallback The off-engine result (must match the prior English output).
+ * @returns {string} The locale-formatted number, or `fallback`.
+ */
+export function localeNumber(n, spec, fallback) {
+  try {
+    if (typeof Locale !== "undefined" && typeof Locale.toNumber === "function") {
+      return spec ? Locale.toNumber(n, spec) : Locale.toNumber(n);
+    }
+  } catch (_) {
+    // Locale.toNumber can throw on malformed input; use the manual fallback.
+  }
+  return fallback;
+}
+
+/**
+ * Group an integer with the player's locale digit separators ("35670" → en "35,670", de "35.670",
+ * fr "35 670") via {@link localeNumber}. Off-engine (the GameFace runtime's toLocaleString was never
+ * reliable, and tests run in Node) it falls back to plain US-style grouping, so it reads the same as
+ * before wherever the engine Locale API is absent.
  * @param {number} n An integer.
  * @returns {string} The grouped string.
  */
 function groupThousands(n) {
-  return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return localeNumber(n, "", String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 }
 
 /**

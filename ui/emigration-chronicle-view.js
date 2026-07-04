@@ -6,6 +6,7 @@
 // in the Demographics page and the standalone window.
 
 import { chronicleLog } from "/emigration/ui/emigration-chronicle.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 
 /**
  * Make an element with an optional class + text.
@@ -49,9 +50,25 @@ function injectStyle() {
   }
 }
 
-/** Title-case label for an entry kind. */
-/** @type {Record<string, string>} */
-const KIND_LABEL = { exodus: "Exodus", founding: "Diaspora", return: "Return" };
+// Title-case label per entry kind: the LOC key plus its English fallback (used off-engine and when a
+// key is unresolved). The entry's own stored `title`/`body` prose is already composed for its locale
+// upstream; these are the display-time chrome labels the view supplies around it.
+/** @type {Record<string, [string, string]>} */
+const KIND_LABEL = {
+  exodus: ["LOC_EMIG_CHRONICLE_KIND_EXODUS", "Exodus"],
+  founding: ["LOC_EMIG_CHRONICLE_KIND_DIASPORA", "Diaspora"],
+  return: ["LOC_EMIG_CHRONICLE_KIND_RETURN", "Return"]
+};
+
+/**
+ * The localized kind label for an entry kind, or "" for an unknown kind.
+ * @param {string} kind The entry kind.
+ * @returns {string} The label.
+ */
+function kindLabel(kind) {
+  const pair = KIND_LABEL[kind];
+  return pair ? loc(pair[0], pair[1]) : "";
+}
 
 /**
  * Build one chronicle row: turn · title · kind, then the prose body.
@@ -61,9 +78,11 @@ const KIND_LABEL = { exodus: "Exodus", founding: "Diaspora", return: "Return" };
 function rowEl(e) {
   const row = el("div", "emig-chr-row");
   const head = el("div", "emig-chr-head");
-  head.appendChild(el("span", "emig-chr-title", e.title || KIND_LABEL[e.kind] || "A movement of peoples"));
-  head.appendChild(el("span", "emig-chr-turn", "Turn " + e.turn));
-  head.appendChild(el("span", "emig-chr-kind", KIND_LABEL[e.kind] || ""));
+  const title = e.title || kindLabel(e.kind)
+    || loc("LOC_EMIG_CHRONICLE_TITLE_FALLBACK", "A movement of peoples");
+  head.appendChild(el("span", "emig-chr-title", title));
+  head.appendChild(el("span", "emig-chr-turn", loc("LOC_EMIG_CHRONICLE_TURN", "Turn {1_Turn}", e.turn)));
+  head.appendChild(el("span", "emig-chr-kind", kindLabel(e.kind)));
   row.appendChild(head);
   row.appendChild(el("div", "emig-chr-body", e.body));
   return row;
@@ -81,8 +100,9 @@ export function renderChronicle(body) {
   const entries = chronicleLog();
   if (!entries.length) {
     body.appendChild(el("div", "emig-empty",
-      "The chronicle is empty. As great waves of people move across the world, their stories are "
-      + "written here: the cities that emptied, and the communities that took root far from home."));
+      loc("LOC_EMIG_CHRONICLE_EMPTY",
+        "The chronicle is empty. As great waves of people move across the world, their stories are "
+        + "written here: the cities that emptied, and the communities that took root far from home.")));
     return;
   }
   const list = el("div", "emig-chr-list");

@@ -15,7 +15,7 @@
 // Gross in/out, the emigration cause breakdown, and the war/disaster/conquest refugee split are folded
 // into each line's tooltip instead of being their own graphs.
 
-import { formatPeople, scaleCityPopulation } from "/emigration/ui/emigration-population.js";
+import { formatPeople, localeNumber, scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { causeLabel, isRefugeeCause } from "/emigration/ui/emigration-causes.js";
 import { getNumberMode, setNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
@@ -54,23 +54,16 @@ function formatSignedPeople(n) {
 
 /**
  * Group an integer with the player's locale digit separators (e.g. en `12,400`, de `12.400`,
- * fr `12 400`) via Intl.NumberFormat when the runtime exposes it, falling back to plain US-style
- * grouping otherwise (the GameFace runtime's locale APIs have historically been unreliable, so this
- * never assumes Intl is present or correct).
+ * fr `12 400`) via the engine's `Locale.toNumber` (shared {@link localeNumber} helper), falling back
+ * to plain US-style grouping off-engine. Uses the same locale-aware API as the base game rather than
+ * `Intl.NumberFormat`, whose no-locale default never tracked the player's chosen Civ language in the
+ * GameFace runtime.
  * @param {number} v A non-negative integer.
  * @returns {string} Grouped string.
  */
 function groupInt(v) {
   const n = Math.round(v);
-  try {
-    if (typeof Intl !== "undefined" && typeof Intl.NumberFormat === "function") {
-      const s = new Intl.NumberFormat().format(n);
-      if (typeof s === "string" && s.length) return s;
-    }
-  } catch (_) {
-    /* ignore, fall through to the locale-independent grouping */
-  }
-  return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return localeNumber(n, "", String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 }
 
 /**

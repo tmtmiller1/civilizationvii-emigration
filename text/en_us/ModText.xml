@@ -273,6 +273,30 @@
         <Row Tag="LOC_EMIG_HINT_WAR"><Text>Refugees flee the fighting; relieve the siege or make peace to stem the outflow.</Text></Row>
         <Row Tag="LOC_EMIG_HINT_DISASTER"><Text>Disaster displacement - it subsides on its own as the distress decays.</Text></Row>
         <Row Tag="LOC_EMIG_HINT_ATTRITION"><Text>Trapped with nowhere to go - open a route out or relieve the distress.</Text></Row>
+        <Row Tag="LOC_EMIG_HINT_CONQUEST"><Text>Displaced by the city's capture; the upheaval eases as the city settles.</Text></Row>
+        <Row Tag="LOC_EMIG_HINT_RETURN"><Text>A people drawn home as their recovered homeland finds peace and plenty again.</Text></Row>
+
+        <!-- Cause display labels (city readout, flows, attribution). Keyed by MigrationCause; the code
+             carries the same English as fallback (see emigration-causes.js LABELS). -->
+        <Row Tag="LOC_EMIG_CAUSE_LABEL_UNHAPPINESS"><Text>Unhappiness</Text></Row>
+        <Row Tag="LOC_EMIG_CAUSE_LABEL_PROSPERITY"><Text>Attraction</Text></Row>
+        <Row Tag="LOC_EMIG_CAUSE_LABEL_WAR"><Text>War</Text></Row>
+        <Row Tag="LOC_EMIG_CAUSE_LABEL_DISASTER"><Text>Disaster</Text></Row>
+        <Row Tag="LOC_EMIG_CAUSE_LABEL_CONQUEST"><Text>Conquest</Text></Row>
+        <Row Tag="LOC_EMIG_CAUSE_LABEL_ATTRITION"><Text>Attrition</Text></Row>
+        <Row Tag="LOC_EMIG_CAUSE_LABEL_RETURN"><Text>Return</Text></Row>
+        <Row Tag="LOC_EMIG_CAUSE_LABEL_CRISIS"><Text>Crisis</Text></Row>
+        <Row Tag="LOC_EMIG_CAUSE_LABEL_CHRONICLE"><Text>Chronicle</Text></Row>
+        <Row Tag="LOC_EMIG_CAUSE_LABEL_OTHER"><Text>Other</Text></Row>
+
+        <!-- Migration Chronicle view chrome: the display-time kind labels, title/turn stamp, and
+             empty-state prose the view supplies around each entry's own composed title/body. -->
+        <Row Tag="LOC_EMIG_CHRONICLE_KIND_EXODUS"><Text>Exodus</Text></Row>
+        <Row Tag="LOC_EMIG_CHRONICLE_KIND_DIASPORA"><Text>Diaspora</Text></Row>
+        <Row Tag="LOC_EMIG_CHRONICLE_KIND_RETURN"><Text>Return</Text></Row>
+        <Row Tag="LOC_EMIG_CHRONICLE_TITLE_FALLBACK"><Text>A movement of peoples</Text></Row>
+        <Row Tag="LOC_EMIG_CHRONICLE_TURN"><Text>Turn {1_Turn}</Text></Row>
+        <Row Tag="LOC_EMIG_CHRONICLE_EMPTY"><Text>The chronicle is empty. As great waves of people move across the world, their stories are written here: the cities that emptied, and the communities that took root far from home.</Text></Row>
 
         <!-- Phase-1 explanatory toast: temporary / persistent / permanent cue -->
         <Row Tag="LOC_EMIG_PERMANENCE_TEMPORARY"><Text>The pressure is temporary.</Text></Row>

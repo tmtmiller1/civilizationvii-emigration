@@ -14,6 +14,7 @@
 // their per-cause history.
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 
 /**
  * Why population left a settlement. `attrition` is the outlet (a death, population lost with no
@@ -38,7 +39,12 @@ import { formatPeople } from "/emigration/ui/emigration-population.js";
 /** Forced-displacement causes (vs. economic unhappiness/prosperity migration). */
 const REFUGEE_CAUSES = new Set(["war", "disaster", "conquest"]);
 
-/** @type {Record<string,string>} Short English labels (Demographics renders metric labels raw). */
+/**
+ * Short display labels per cause. The English strings here are the fail-safe fallback used off-engine
+ * (tests, headless) and when a key is unresolved; in-game the matching `LOC_EMIG_CAUSE_LABEL_*` key is
+ * composed instead so the label follows the player's language (see {@link causeLabel}).
+ * @type {Record<string,string>}
+ */
 const LABELS = {
   unhappiness: "Unhappiness",
   prosperity: "Attraction",
@@ -50,6 +56,20 @@ const LABELS = {
   crisis: "Crisis",
   chronicle: "Chronicle",
   other: "Other"
+};
+
+/** @type {Record<string,string>} The LOC key per cause, paired with the English fallback in `LABELS`. */
+const LABEL_KEYS = {
+  unhappiness: "LOC_EMIG_CAUSE_LABEL_UNHAPPINESS",
+  prosperity: "LOC_EMIG_CAUSE_LABEL_PROSPERITY",
+  war: "LOC_EMIG_CAUSE_LABEL_WAR",
+  disaster: "LOC_EMIG_CAUSE_LABEL_DISASTER",
+  conquest: "LOC_EMIG_CAUSE_LABEL_CONQUEST",
+  attrition: "LOC_EMIG_CAUSE_LABEL_ATTRITION",
+  return: "LOC_EMIG_CAUSE_LABEL_RETURN",
+  crisis: "LOC_EMIG_CAUSE_LABEL_CRISIS",
+  chronicle: "LOC_EMIG_CAUSE_LABEL_CHRONICLE",
+  other: "LOC_EMIG_CAUSE_LABEL_OTHER"
 };
 
 // Theme accent colour per cause, for TEXT-ADJACENT chrome: the toast accent bar and notifications-log
@@ -83,7 +103,11 @@ const PERMANENCE = {
   return: "temporary"
 };
 
-/** @type {Record<string,string>} One-line player action hint per cause (Phase 1 localizes them). */
+/**
+ * One-line player action hint per cause. As with {@link LABELS} the English text is the off-engine
+ * fallback; in-game the matching `LOC_EMIG_HINT_*` key is composed (see {@link causeHint}).
+ * @type {Record<string,string>}
+ */
 const HINTS = {
   unhappiness: "Raise this city's happiness, or slot an Anti-Immigration Stance to retain them.",
   prosperity: "A neighbor is out-prospering this city; grow its yields to keep people home.",
@@ -92,6 +116,17 @@ const HINTS = {
   conquest: "Displaced by the city's capture; the upheaval eases as the city settles.",
   attrition: "Trapped with nowhere to go, open a route out or relieve the distress.",
   return: "A people drawn home as their recovered homeland finds peace and plenty again."
+};
+
+/** @type {Record<string,string>} The LOC key per hint, paired with the English fallback in `HINTS`. */
+const HINT_KEYS = {
+  unhappiness: "LOC_EMIG_HINT_UNHAPPINESS",
+  prosperity: "LOC_EMIG_HINT_PROSPERITY",
+  war: "LOC_EMIG_HINT_WAR",
+  disaster: "LOC_EMIG_HINT_DISASTER",
+  conquest: "LOC_EMIG_HINT_CONQUEST",
+  attrition: "LOC_EMIG_HINT_ATTRITION",
+  return: "LOC_EMIG_HINT_RETURN"
 };
 
 /**
@@ -105,12 +140,16 @@ export function isRefugeeCause(cause) {
 }
 
 /**
- * The short display label for a cause (English; Demographics renders metric labels raw).
+ * The short, localized display label for a cause ("War", "Attraction", …), composed from its
+ * `LOC_EMIG_CAUSE_LABEL_*` key with the English `LABELS` entry as the fallback. Unknown causes fall
+ * back to the "Other" label.
  * @param {string} [cause] The cause.
  * @returns {string} The label.
  */
 export function causeLabel(cause) {
-  return (cause && LABELS[cause]) || LABELS.other;
+  const key = (cause && LABEL_KEYS[cause]) || LABEL_KEYS.other;
+  const fallback = (cause && LABELS[cause]) || LABELS.other;
+  return loc(key, fallback);
 }
 
 /**
@@ -152,12 +191,14 @@ export function causePermanence(cause) {
 }
 
 /**
- * A one-line, player-facing "what can I do" hint for a cause, or "" if none.
+ * A one-line, player-facing "what can I do" hint for a cause (localized from `LOC_EMIG_HINT_*` with
+ * the English `HINTS` entry as fallback), or "" when the cause has no hint.
  * @param {string} [cause] The cause.
  * @returns {string} The hint.
  */
 export function causeHint(cause) {
-  return (cause && HINTS[cause]) || "";
+  if (!cause || !HINTS[cause]) return "";
+  return loc(HINT_KEYS[cause], HINTS[cause]);
 }
 
 /**

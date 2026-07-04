@@ -502,5 +502,8 @@
  "LOC_EMIG_QTR_TITLE": "Le {1_Name} s'enracine",
  "LOC_EMIG_QTR_BODY": "Une communauté durable venue des {1_Adj} tient désormais un quartier bien à elle à {2_Place}, portée à {3_Pct} pour cent de la ville. Comment allez-vous les accueillir ?",
  "LOC_EMIG_QTR_CHRON_RESTLESS_TITLE": "Un quartier s'agite",
- "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "La guerre avec les {1_Adj} met les {2_Name} sur les nerfs ; le quartier bouillonne."
+ "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "La guerre avec les {1_Adj} met les {2_Name} sur les nerfs ; le quartier bouillonne.",
+ "LOC_EMIG_SCOPE_INTERNAL": "(Déplacement interne)",
+ "LOC_EMIG_SCOPE_EXTERNAL": "(Déplacement externe)",
+ "LOC_EMIG_DEST_CLAUSE": "En route vers {1_Dest}."
 }

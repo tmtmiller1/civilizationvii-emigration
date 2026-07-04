@@ -502,5 +502,8 @@
   "LOC_EMIG_QTR_TITLE": "{1_Name} zapuszcza korzenie",
   "LOC_EMIG_QTR_BODY": "Trwała społeczność z {1_Adj} trzyma teraz własną dzielnicę w {2_Place}, rozrosłą do {3_Pct} procent miasta. Jak ją potraktujesz?",
   "LOC_EMIG_QTR_CHRON_RESTLESS_TITLE": "Dzielnica narasta niepokojem",
-  "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "Wojna z {1_Adj} wprawia {2_Name} w napięcie; dzielnica wrze."
+  "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "Wojna z {1_Adj} wprawia {2_Name} w napięcie; dzielnica wrze.",
+  "LOC_EMIG_SCOPE_INTERNAL": "(Migracja wewnętrzna)",
+  "LOC_EMIG_SCOPE_EXTERNAL": "(Migracja zewnętrzna)",
+  "LOC_EMIG_DEST_CLAUSE": "Kierują się do {1_Dest}."
 }

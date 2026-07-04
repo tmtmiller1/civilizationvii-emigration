@@ -502,5 +502,8 @@
   "LOC_EMIG_QTR_TITLE": "Народ {1_Name} пускает корни",
   "LOC_EMIG_QTR_BODY": "Прочная община из {1_Adj} теперь держит собственный квартал в {2_Place}, разросшись до {3_Pct} процентов города. Как вы поступите с ними?",
   "LOC_EMIG_QTR_CHRON_RESTLESS_TITLE": "Квартал охватывает беспокойство",
-  "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "Война с {1_Adj} будоражит народ {2_Name}; квартал бурлит."
+  "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "Война с {1_Adj} будоражит народ {2_Name}; квартал бурлит.",
+  "LOC_EMIG_SCOPE_INTERNAL": "(Внутреннее перемещение)",
+  "LOC_EMIG_SCOPE_EXTERNAL": "(Внешнее перемещение)",
+  "LOC_EMIG_DEST_CLAUSE": "Направляются в {1_Dest}."
 }

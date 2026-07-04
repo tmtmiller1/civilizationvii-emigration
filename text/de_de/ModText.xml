@@ -228,6 +228,24 @@
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="de_DE"><Text>Flüchtlinge fliehen vor den Kämpfen; brich die Belagerung oder schließe Frieden, um den Strom zu stoppen.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_DISASTER" Language="de_DE"><Text>Katastrophenvertreibung – sie lässt von selbst nach, wenn die Not abklingt.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_ATTRITION" Language="de_DE"><Text>Gefangen ohne Ausweg – öffne einen Fluchtweg oder lindere die Not.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_CONQUEST" Language="de_DE"><Text>Displaced by the city's capture; the upheaval eases as the city settles.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_RETURN" Language="de_DE"><Text>A people drawn home as their recovered homeland finds peace and plenty again.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_UNHAPPINESS" Language="de_DE"><Text>Unhappiness</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_PROSPERITY" Language="de_DE"><Text>Attraction</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_WAR" Language="de_DE"><Text>War</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_DISASTER" Language="de_DE"><Text>Disaster</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CONQUEST" Language="de_DE"><Text>Conquest</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_ATTRITION" Language="de_DE"><Text>Attrition</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_RETURN" Language="de_DE"><Text>Return</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CRISIS" Language="de_DE"><Text>Crisis</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CHRONICLE" Language="de_DE"><Text>Chronicle</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_OTHER" Language="de_DE"><Text>Other</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_EXODUS" Language="de_DE"><Text>Exodus</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_DIASPORA" Language="de_DE"><Text>Diaspora</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_RETURN" Language="de_DE"><Text>Return</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_TITLE_FALLBACK" Language="de_DE"><Text>A movement of peoples</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_TURN" Language="de_DE"><Text>Turn {1_Turn}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_EMPTY" Language="de_DE"><Text>The chronicle is empty. As great waves of people move across the world, their stories are written here: the cities that emptied, and the communities that took root far from home.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="de_DE"><Text>Der Druck ist vorübergehend.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="de_DE"><Text>Er hält an, bis du die Ursache behebst.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="de_DE"><Text>Diese Menschen sind für immer verloren.</Text></Replace>

@@ -502,5 +502,8 @@
   "LOC_EMIG_QTR_TITLE": "O {1_Name} Se Enraíza",
   "LOC_EMIG_QTR_BODY": "Uma comunidade duradoura de {1_Adj} agora detém um distrito próprio em {2_Place}, tendo crescido a {3_Pct} por cento da cidade. Como você os receberá?",
   "LOC_EMIG_QTR_CHRON_RESTLESS_TITLE": "Um Bairro Fica Inquieto",
-  "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "A guerra com {1_Adj} deixa os {2_Name} em polvorosa; o distrito ferve em surdina."
+  "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "A guerra com {1_Adj} deixa os {2_Name} em polvorosa; o distrito ferve em surdina.",
+  "LOC_EMIG_SCOPE_INTERNAL": "(Movimento interno)",
+  "LOC_EMIG_SCOPE_EXTERNAL": "(Movimento externo)",
+  "LOC_EMIG_DEST_CLAUSE": "Rumo a {1_Dest}."
 }

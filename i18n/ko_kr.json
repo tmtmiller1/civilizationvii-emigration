@@ -502,5 +502,8 @@
  "LOC_EMIG_QTR_TITLE": "{1_Name}이(가) 뿌리내리다",
  "LOC_EMIG_QTR_BODY": "{1_Adj}에서 온 항구적인 공동체가 이제 {2_Place}에서 자신들만의 구역을 차지하며, 도시의 {3_Pct} 퍼센트까지 자랐습니다. 그들을 어떻게 맞이하시겠습니까?",
  "LOC_EMIG_QTR_CHRON_RESTLESS_TITLE": "동요하는 구역",
- "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "{1_Adj}과(와)의 전쟁이 {2_Name}을(를) 술렁이게 합니다. 그 구역은 부글거립니다."
+ "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "{1_Adj}과(와)의 전쟁이 {2_Name}을(를) 술렁이게 합니다. 그 구역은 부글거립니다.",
+ "LOC_EMIG_SCOPE_INTERNAL": "(제국 내 이동)",
+ "LOC_EMIG_SCOPE_EXTERNAL": "(제국 외 이동)",
+ "LOC_EMIG_DEST_CLAUSE": "{1_Dest}(으)로 향했습니다."
 }
