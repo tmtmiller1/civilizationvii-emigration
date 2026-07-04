@@ -502,5 +502,8 @@
  "LOC_EMIG_QTR_TITLE": "Il {1_Name} mette radici",
  "LOC_EMIG_QTR_BODY": "Una comunità duratura da {1_Adj} tiene ora un distretto tutto suo a {2_Place}, cresciuta fino al {3_Pct} percento della città. Come li accoglierai?",
  "LOC_EMIG_QTR_CHRON_RESTLESS_TITLE": "Un quartiere si fa inquieto",
- "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "La guerra con {1_Adj} mette in agitazione i {2_Name}; il distretto ribolle."
+ "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "La guerra con {1_Adj} mette in agitazione i {2_Name}; il distretto ribolle.",
+ "LOC_EMIG_SCOPE_INTERNAL": "(Spostamento interno)",
+ "LOC_EMIG_SCOPE_EXTERNAL": "(Spostamento esterno)",
+ "LOC_EMIG_DEST_CLAUSE": "Diretti a {1_Dest}."
 }

@@ -228,6 +228,24 @@
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="ko_KR"><Text>난민이 전투를 피해 떠납니다. 포위를 풀거나 평화를 맺어 유출을 막으세요.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_DISASTER" Language="ko_KR"><Text>재난에 의한 이주입니다. 피해가 가라앉으면 저절로 완화됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_ATTRITION" Language="ko_KR"><Text>달아날 곳 없이 갇혔습니다. 탈출로를 열거나 피해를 완화하세요.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_CONQUEST" Language="ko_KR"><Text>Displaced by the city's capture; the upheaval eases as the city settles.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_RETURN" Language="ko_KR"><Text>A people drawn home as their recovered homeland finds peace and plenty again.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_UNHAPPINESS" Language="ko_KR"><Text>Unhappiness</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_PROSPERITY" Language="ko_KR"><Text>Attraction</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_WAR" Language="ko_KR"><Text>War</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_DISASTER" Language="ko_KR"><Text>Disaster</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CONQUEST" Language="ko_KR"><Text>Conquest</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_ATTRITION" Language="ko_KR"><Text>Attrition</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_RETURN" Language="ko_KR"><Text>Return</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CRISIS" Language="ko_KR"><Text>Crisis</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CHRONICLE" Language="ko_KR"><Text>Chronicle</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_OTHER" Language="ko_KR"><Text>Other</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_EXODUS" Language="ko_KR"><Text>Exodus</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_DIASPORA" Language="ko_KR"><Text>Diaspora</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_RETURN" Language="ko_KR"><Text>Return</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_TITLE_FALLBACK" Language="ko_KR"><Text>A movement of peoples</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_TURN" Language="ko_KR"><Text>Turn {1_Turn}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_EMPTY" Language="ko_KR"><Text>The chronicle is empty. As great waves of people move across the world, their stories are written here: the cities that emptied, and the communities that took root far from home.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="ko_KR"><Text>이 압력은 일시적입니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="ko_KR"><Text>원인을 해결할 때까지 계속됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ko_KR"><Text>그 사람들은 영영 사라졌습니다.</Text></Replace>
