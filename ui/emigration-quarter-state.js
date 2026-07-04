@@ -2,10 +2,10 @@
 //
 // The persistent record of every Cultural Quarter that has formed in the world: ONE quarter per host
 // tile (the city-centre plot), keyed "x,y". A quarter is a foreign diaspora that grew large enough to
-// keep a district of its own, the stance the player took toward it, and the exact one-time yields that
-// stance applied (kept so a later change-of-hands can reverse them precisely). No stacking: a second
-// origin overtaking the same tile REPLACES the record (the caller reverses the old yields first), so a
-// tile always names a single quarter. Also carries the per-age decision throttle (a cap + a cooldown,
+// keep a district of its own, the stance the player took toward it, and the small yields that stance
+// grants each turn (applied per-turn from this record). No stacking: a second origin overtaking the
+// same tile REPLACES the record, so a tile always names a single quarter and the per-turn yields simply
+// follow whoever currently holds it. Also carries the per-age decision throttle (a cap + a cooldown,
 // shared in spirit with the refugee dilemmas) and a "contested" flag set while the host is at war with
 // the quarter's homeland.
 //
@@ -33,7 +33,7 @@ const MAX_TILES = 4096;
  * @property {number} owner Host player id.
  * @property {string} optionId The stance chosen.
  * @property {number} turn Formation turn (monotonic).
- * @property {QuarterApplied} applied The exact one-time yields applied (for reversal).
+ * @property {QuarterApplied} applied The small yields this stance grants each turn.
  * @property {boolean} contested Whether the host is at war with the origin's homeland.
  * @property {number} contestedTurn Turn the quarter last became contested (-999 if never).
  */
