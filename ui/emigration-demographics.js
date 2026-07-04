@@ -183,6 +183,10 @@ const NET_CUM_SPEC = {
 };
 const NET_CUM_PTS_SPEC = {
   id: "emig_net_cum_pts",
+  // Civ-points twin of emig_net_cum (same flow, different units — only for the graph's
+  // Scaled/Civ toggle). Hide from the All Civilizations comparison so it doesn't render
+  // as a second "Net Migration" row next to the scaled-people one.
+  worldRankingsAllCivsHidden: true,
   label: "Net Migration",
   title: "Net Migration Over Time",
   subtitle: "Net people gained minus lost to date; positive means more people arrive than leave.",
@@ -208,6 +212,8 @@ const REF_SPEC = {
 };
 const REF_PTS_SPEC = {
   id: "emig_refugees_pts",
+  // Civ-points twin of emig_refugees; hidden from All Civilizations (see NET_CUM_PTS_SPEC).
+  worldRankingsAllCivsHidden: true,
   label: "Refugees Out",
   title: "Refugees that left over time",
   subtitle: "People displaced FROM this civilization by war, disaster, or conquest, to date.",
@@ -234,6 +240,8 @@ const REF_IN_SPEC = {
 };
 const REF_IN_PTS_SPEC = {
   id: "emig_refugees_in_pts",
+  // Civ-points twin of emig_refugees_in; hidden from All Civilizations (see NET_CUM_PTS_SPEC).
+  worldRankingsAllCivsHidden: true,
   label: "Refugees In",
   title: "Refugees that arrived over time",
   subtitle: "People who fled war, disaster, or conquest elsewhere and resettled HERE, to date.",
@@ -260,6 +268,8 @@ const OUT_CUM_SPEC = {
 };
 const OUT_CUM_PTS_SPEC = {
   id: "emig_out_cum_pts",
+  // Civ-points twin of emig_out_cum; hidden from All Civilizations (see NET_CUM_PTS_SPEC).
+  worldRankingsAllCivsHidden: true,
   label: "Emigration",
   title: "Emigration Over Time",
   subtitle: "Total people who have left this civilization's cities to date.",
@@ -284,6 +294,8 @@ const IN_CUM_SPEC = {
 };
 const IN_CUM_PTS_SPEC = {
   id: "emig_in_cum_pts",
+  // Civ-points twin of emig_in_cum; hidden from All Civilizations (see NET_CUM_PTS_SPEC).
+  worldRankingsAllCivsHidden: true,
   label: "Immigration",
   title: "Immigration Over Time",
   subtitle: "Total people who have arrived in this civilization's cities to date.",
@@ -325,6 +337,11 @@ function civPeople(pid) {
 
 const POP_PEOPLE_SPEC = {
   id: "emig_population",
+  // The host already shows its own "Population" metric in the All Civilizations
+  // comparison; this is Emigration's people-scaled population for the migration
+  // graphs, so hide it there to avoid a duplicate "Population" row. Still sampled
+  // and charted in the Graphs group as normal.
+  worldRankingsAllCivsHidden: true,
   label: "Population",
   title: "Population Over Time",
   subtitle: "Current population, historically scaled to people (the same scaling as the flow graphs).",
