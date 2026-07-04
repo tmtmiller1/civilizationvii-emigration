@@ -502,5 +502,8 @@
   "LOC_EMIG_QTR_TITLE": "{1_Name}扎根",
   "LOC_EMIG_QTR_BODY": "一個源自{1_Adj}的持久社群，如今在{2_Place}擁有屬於自己的街區，已增長至全城的百分之{3_Pct}。你將如何對待他們？",
   "LOC_EMIG_QTR_CHRON_RESTLESS_TITLE": "街區躁動不安",
-  "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "與{1_Adj}的戰爭令{2_Name}心緒不寧；該街區暗流湧動。"
+  "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "與{1_Adj}的戰爭令{2_Name}心緒不寧；該街區暗流湧動。",
+  "LOC_EMIG_SCOPE_INTERNAL": "(內部遷移)",
+  "LOC_EMIG_SCOPE_EXTERNAL": "(外部遷移)",
+  "LOC_EMIG_DEST_CLAUSE": "前往{1_Dest}。"
 }

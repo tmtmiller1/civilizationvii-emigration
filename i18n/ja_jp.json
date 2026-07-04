@@ -502,5 +502,8 @@
  "LOC_EMIG_QTR_TITLE": "{1_Name}が根づく",
  "LOC_EMIG_QTR_BODY": "{1_Adj}からの恒久的な共同体が、いまや{2_Place}で独自の地区を保ち、都市の{3_Pct}パーセントにまで成長しました。彼らをどう迎えますか。",
  "LOC_EMIG_QTR_CHRON_RESTLESS_TITLE": "街が不穏になる",
- "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "{1_Adj}との戦争が{2_Name}を苛立たせ、地区はくすぶっている。"
+ "LOC_EMIG_QTR_CHRON_RESTLESS_BODY": "{1_Adj}との戦争が{2_Name}を苛立たせ、地区はくすぶっている。",
+ "LOC_EMIG_SCOPE_INTERNAL": "(帝国内の移動)",
+ "LOC_EMIG_SCOPE_EXTERNAL": "(帝国外への移動)",
+ "LOC_EMIG_DEST_CLAUSE": "{1_Dest}へ向かいました。"
 }

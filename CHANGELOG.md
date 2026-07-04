@@ -5,6 +5,46 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [1.9.0] - 2026-07-04
+
+A localization release. Numbers now read in the player's own language, and the
+last hardcoded interface strings — the cause labels and hints, and the Migration
+Chronicle's own chrome — move behind translation tags so they localize with the
+rest of the UI.
+
+### Fixed
+- **Numbers now format for the player's language.** Grouped figures (people and
+  population-point counts, the refugee-support burden) previously always used
+  English separators (`12,400`) regardless of language. They now route through
+  the game's own `Locale.toNumber` — the same API the base game uses for scores
+  and yields — so a German player sees `12.400`, a French player `12 400`, and
+  the burden's decimal reads `3,4` rather than `3.4`. This replaces the earlier
+  `Intl.NumberFormat` path, whose no-locale default never actually tracked the
+  chosen Civ language in the game's UI runtime. Off-engine (and if the API is
+  ever unavailable) every formatter falls back to the previous grouping, so
+  nothing regresses.
+
+### Added
+- **Cause labels and hints now localize.** The migration-cause names shown in the
+  city readout, flow bars, and attribution ("War", "Attraction", "Conquest", …)
+  and their one-line "what can I do" hints were still emitted as raw English.
+  They now resolve through `LOC_EMIG_CAUSE_LABEL_*` / `LOC_EMIG_HINT_*` tags
+  (the two hints that lacked a tag — Conquest and Return — gained one), so they
+  translate with the rest of the interface. The English text is kept in code as
+  the off-engine fallback, so behaviour is unchanged where the engine Locale API
+  is absent.
+- **The Migration Chronicle's own labels now localize.** The view's chrome — the
+  kind labels (*Exodus / Diaspora / Return*), the "Turn N" stamp, the untitled-
+  entry fallback, and the empty-state prose — was hardcoded English drawn around
+  each entry's own (already-localized) title and body. It now composes through
+  translation tags too. Entry titles and bodies are unchanged and still stored as
+  written, so existing saves' Chronicles are unaffected.
+- **Restored three drifted translations.** The internal/external move labels and
+  the "Bound for …" destination clause had been hand-translated in every language
+  file but were missing from the translation source, so they would have silently
+  reverted to English on the next regeneration. They are now back in the source
+  in all eleven languages.
+
 ## [1.8.1] - 2026-07-04
 
 This is a bug-fix release for the Cultural Quarters feature: the choice pop-up is

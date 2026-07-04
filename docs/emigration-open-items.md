@@ -77,9 +77,10 @@ is why most of these are YAGNI today.
 3. **`netDrivers()` Map-aggregation by normalized cause** — sum into a `Map` keyed by canonical cause.
    *Revisit if:* item 2 lands. **Implementation caveat:** apply the `>= 0.5` threshold *after* the sum,
    not before (the review's draft dropped two sub-threshold contributions that should sum past it).
-4. **Localization keys (`LABEL_KEYS` / `causeLabelKey()`)** — store `LOC_*` keys instead of raw English.
-   Module header assigns this to "Phase 1"; labels are intentionally English-raw today (Demographics
-   renders metric labels raw). *Revisit if:* Phase 1 localization starts.
+4. **Localization keys (`LABEL_KEYS` / `causeLabelKey()`)** — ✓ **Shipped v1.9.0.** `causeLabel()` and
+   `causeHint()` now compose `LOC_EMIG_CAUSE_LABEL_*` / `LOC_EMIG_HINT_*` through `loc()`, with the
+   English `LABELS` / `HINTS` maps kept as the off-engine fallback. (The old "Demographics renders metric
+   labels raw" justification lapsed when Demographics 2.3.0 added `localizedMetricName()`.)
 
 ---
 
@@ -160,9 +161,12 @@ re-litigate).
     feature," a design decision, not a bug.
 
 **Cross-cutting (collapse when picked up):**
-- **Phase 1 localization sweep** — the raw English user strings in `emigration-causes.js` (§3 item 4)
-  *and* `emigration-chronicle-view.js` (`"Turn "`, fallback title, empty-state prose, `KIND_LABEL`)
-  belong to the same move to `LOC_*` keys. Do them together as the Phase 1 sweep, not piecemeal.
+- **Phase 1 localization sweep** — ✓ **Shipped v1.9.0.** Done together as intended: the raw English user
+  strings in `emigration-causes.js` (labels + hints) *and* `emigration-chronicle-view.js` (`"Turn "`,
+  fallback title, empty-state prose, `KIND_LABEL`) now resolve through `LOC_*` keys via `loc()`. The pass
+  also localized the display-time number formatting (`Locale.toNumber`, replacing `Intl.NumberFormat`)
+  and restored three drifted translations (`SCOPE_INTERNAL/EXTERNAL`, `DEST_CLAUSE`) that were live in the
+  per-language XML but missing from the i18n source.
 - **Frozen-constants family** — the cause-keys (§3 item 1) and `CITY_FEATURE` keys are the same small,
   stable, additive set hand-typed across a few modules. Same call: centralizing adds computed-key churn
   for marginal safety. *Revisit if* a third consumer appears or a drift bug actually bites.

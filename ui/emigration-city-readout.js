@@ -18,7 +18,7 @@
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { citySnapshot } from "/emigration/ui/emigration-city-readout-data.js";
 import { actionHint, permanenceCue } from "/emigration/ui/emigration-naming.js";
-import { formatPeople } from "/emigration/ui/emigration-population.js";
+import { formatPeople, localeNumber } from "/emigration/ui/emigration-population.js";
 import { reasonsPhrase } from "/emigration/ui/emigration-move-reasons.js";
 import { toast } from "/emigration/ui/emigration-feedback.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
@@ -140,8 +140,8 @@ function refugeeBurdenLine(s) {
   return loc(
     "LOC_EMIG_RO_BURDEN",
     "Refugee support burden: ~{1_Gold} gold/turn, {2_Happiness} happiness/turn",
-    Math.round(s.refugeeBurdenGold),
-    s.refugeeBurdenHappiness.toFixed(1)
+    localeNumber(Math.round(s.refugeeBurdenGold), "", String(Math.round(s.refugeeBurdenGold))),
+    localeNumber(s.refugeeBurdenHappiness, "0.0", s.refugeeBurdenHappiness.toFixed(1))
   );
 }
 
