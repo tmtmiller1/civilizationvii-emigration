@@ -85,6 +85,7 @@ ui/
   emigration-settings.js     the migration-count display preference (no Options-UI dep)
   emigration-options.js      registers the Options "Mods" tab dropdown
   options/mod-options.js     shared "Mods" category + cascade-safe modSettings store
+devtools/
   migration-probe.js     dev-only API probe (separate modinfo; not shipped)
 text/<locale>/ModText.xml    localized strings (10 locales)
 ```

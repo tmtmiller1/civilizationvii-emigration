@@ -7,6 +7,40 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [2.0.2] - 2026-07-06
+
+An internal code-quality and repository-hygiene release. **No gameplay rules, UI,
+or player-facing text changed** — the mod behaves identically and existing saves
+are unaffected. The work removes the last special-case carve-outs from the quality
+gate so the entire shipped `ui/` tree is now held to one uniform standard, moves
+the dev-only diagnostic out of the shipped-source tree, and hardens a test to
+exercise real code instead of stubs.
+
+### Internal
+- **The dev-only API probe moved out of the shipped-source tree** from
+  `ui/migration-probe.js` to a dedicated `devtools/migration-probe.js`. It was
+  always excluded from the release zip, but living under `ui/` meant every tool
+  that scans `ui/` had to special-case it. With the probe in its own `devtools/`
+  directory, those carve-outs are simply deleted: the ESLint `ignores` entry, the
+  `scripts/hotspot-score.mjs` skip line, and the ad-hoc path checks all go away;
+  `tsconfig.json`, `scripts/inventory.mjs`, its own `migration-probe.modinfo`, and
+  the docs now reference the new path; and `release.sh` excludes the whole
+  dev-only `devtools/` directory (like `tests/` and `scripts/`) so not even an
+  empty folder leaks into the shipped zip. The probe file itself is unchanged (a
+  pure move).
+- **Removed the last per-file exemption from the ESLint modularization gate.**
+  `ui/emigration-config.js` (the tunable-settings catalog) was exempted from the
+  `max-lines` / `max-lines-per-function` length rules on the grounds that it is
+  "data, not logic". That exemption is gone — the whole `ui/` tree now passes the
+  same complexity and length gate with **no** per-file carve-outs, so nothing
+  quietly grows outside the limits.
+- **Hardened the violence-signals branch test to drive the real modules.**
+  `tests/violence-signals-branches.mjs` previously fabricated `globalThis.CONFIG`
+  and hand-rolled globals; it now imports the actual `emigration-config.js` and
+  `emigration-violence-signals.js` and exercises them through realistic
+  district-health / besieged / pillage mocks, resetting globals between cases. The
+  branch coverage now reflects production code paths rather than stubs.
+
 ## [2.0.1] - 2026-07-06
 
 Localization plus a persistence-and-tuning pass for the Cultural Enclaves feature

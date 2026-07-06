@@ -200,7 +200,7 @@ note's own prescription, the fix was to **make `compositionForCity` self-guardin
 
 ## Notes / context
 
-- `migration-probe.js` is a separate diagnostic tool (own `migration-probe.modinfo`); its exports serve
+- `devtools/migration-probe.js` is a separate diagnostic tool (own `migration-probe.modinfo`); its exports serve
   that probe and are not mod dead code.
 - No orphaned *files* exist — every `ui/*.js` is listed in `emigration.modinfo` and runs.
 - The mod's larger gameplay roadmap (Features A–K + deepened refugee stance + L–Z, plus the carried-over
