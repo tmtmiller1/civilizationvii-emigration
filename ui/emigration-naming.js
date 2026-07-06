@@ -10,6 +10,7 @@
 import { causeHint, causePermanence } from "/emigration/ui/emigration-causes.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { warOpponents } from "/emigration/ui/emigration-war.js";
+import { quarterBonus } from "/emigration/ui/emigration-quarter-bonuses.js";
 
 // The spoiler mask for a belligerent the visibility policy hides (unmet). Matches the dashboard /
 // feedback "Unmet" convention so a war name never leaks a civ the player hasn't met.
@@ -35,11 +36,12 @@ function loc(key, ...args) {
 }
 
 /**
- * A player's civilization type string, or null.
+ * A player's civilization type string, or null. Exported so the Cultural Quarter system can key its
+ * per-civ bonus registry (emigration-quarter-bonuses.js) on the same identity used for naming.
  * @param {number} pid Player id.
  * @returns {string|null} e.g. "CIVILIZATION_ROME".
  */
-function civTypeName(pid) {
+export function civType(pid) {
   try {
     const ct = Players?.get?.(pid)?.civilizationType;
     const name = GameInfo?.Civilizations?.lookup?.(ct)?.CivilizationType;
@@ -47,6 +49,11 @@ function civTypeName(pid) {
   } catch (_) {
     return null;
   }
+}
+
+/** Back-compat internal alias. @param {number} pid @returns {string|null} */
+function civTypeName(pid) {
+  return civType(pid);
 }
 
 /**
@@ -133,15 +140,18 @@ export function narrativeCiv(pid) {
 }
 
 /**
- * The name of a Cultural Quarter held by a civ's diaspora ("the Roman Quarter"), built from the
- * origin's adjective. Falls back to a generic "foreign quarter" when the adjective is unreadable, so
- * the label is always well-formed. Narrative surface, so it does not apply the analytics spoiler mask.
+ * The name of a Cultural Quarter held by a civ's diaspora ("the Roman Quarter"). Prefers the per-civ
+ * registry demonym (so Carthage reads "Punic Quarter", Pirate Republic "Buccaneer Quarter"), then the
+ * origin's game adjective, then a generic "foreign quarter" — always well-formed. Narrative surface,
+ * so it does not apply the analytics spoiler mask.
  * @param {number} originCiv The origin civ id.
  * @returns {string} The quarter name, e.g. "Roman Quarter".
  */
 export function quarterName(originCiv) {
+  const demonym = quarterBonus(civType(originCiv)).demonym;
+  if (demonym) return demonym + " Enclave";
   const adj = civAdjective(originCiv);
-  return adj ? adj + " Quarter" : "foreign quarter";
+  return adj ? adj + " Enclave" : "foreign enclave";
 }
 
 /**

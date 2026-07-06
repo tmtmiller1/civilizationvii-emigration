@@ -5,6 +5,111 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [Unreleased]
+
+## [2.0.1] - 2026-07-06
+
+Localization plus a persistence-and-tuning pass for the Cultural Enclaves feature
+(2.0.0). Every enclave string is now translated in all eleven non-English languages,
+and enclaves gained a persistence requirement plus exposed frequency knobs, so the
+one-time decision fires only for a diaspora that has genuinely settled in — not a
+transient spike. Existing saves are unaffected.
+
+### Added
+- **Cultural Enclaves now require a diaspora to persist before they offer their
+  decision.** An established enclave must hold the bar for a configurable number of
+  turns (default 8) before its one-time choice is presented, so a transient
+  spike — a war-refugee wave that later integrates or goes home — no longer
+  triggers a permanent enclave. The dwell clock is sticky: a brief dip below the
+  bar (within a small grace window) doesn't reset it, but a genuine collapse does,
+  and a different origin overtaking the tile restarts it from scratch.
+- **Four enclave-frequency knobs are now exposed in Options → Advanced
+  (Integration & migrant costs).** "Enclaves: share to form" (how much of a city one
+  foreign origin must make up, default 35%), "Enclaves: persistence before offer"
+  (the new dwell requirement, 0 = legacy "offer as soon as it forms"), "Enclaves:
+  turns between decisions" (the cooldown), and "Enclaves: decisions per age" (the
+  per-age cap). Raising the share or the persistence, or lowering the per-age cap,
+  makes enclave decisions rarer. Existing saves are unaffected; the new pending
+  dwell clocks are tracked per host tile in the enclave state and default to empty.
+- **Cultural Enclaves are now fully translated in all eleven non-English
+  locales** (German, Spanish, French, Italian, Japanese, Korean, Polish,
+  Portuguese, Russian, Simplified Chinese, Traditional Chinese). The full 2.0.0
+  string set — the enclave decision prose, each civilization's two option labels
+  and "why" lines, the passive "let them be" stance, the enclave dashboard/guide
+  and FAQ, and the Civilopedia enclave page — is localized, using each language's
+  standard Civilization yield names (Culture/Gold/Production/Science/Faith/Food/
+  Happiness and their equivalents). Every `{name}`-style placeholder and line
+  break was preserved and verified against the English source.
+
+### Changed
+- **The attributed historical quotes stay in their native-language original
+  followed by an English gloss in every locale, by design** — they are epigraphs,
+  not UI copy, and are not re-translated per language. The surrounding text that
+  describes them now correctly says the quote appears beside its **English**
+  translation in every language (a few locales had localized that phrase to their
+  own language, which would have misdescribed what the player actually sees).
+
+## [2.0.0] - 2026-07-05
+
+The Cultural Enclaves release. When a foreign community grows into a lasting part
+of one of your cities, it now forms a named **Cultural Enclave** (renamed from
+Cultural Quarter) with a one-time, identity-grounded choice — and each enclave
+reads as a page of history, carrying a real, primary-source-verified quote in the
+origin people's own language beside its English translation. This is also the
+release where the feature's decision actually bites: the yield effect persists
+turn to turn, enclaves form only where a diaspora genuinely lives right now, and a
+full sensitivity pass reworked the flavour throughout. Existing saves are
+unaffected — only the player-facing name and the strings changed.
+
+### Added
+- **Cultural Enclaves show a real, attributed historical quote — in the origin
+  people's own language, with an English translation.** When you're offered the
+  enclave decision, a short epigraph now sits between the prose and the choices,
+  e.g. "倉廩實而知禮節 (When the granaries are full, the people know propriety.)" —
+  Guanzi. Every translated quote carries its **native-language original followed
+  by an English gloss** (Greek, Latin, Classical Chinese, Japanese, Russian,
+  German, French, Spanish, Persian, Arabic, Thai, Old Norse, Old English, Prakrit,
+  K'iche', Ge'ez, and more). Each original was **verified against a primary
+  source** (Perseus, ctext, Oracc/RINAP, ganjoor, and the like) rather than
+  reconstructed. Right-to-left originals (Arabic, Persian) are bidi-isolated so
+  they render correctly beside the English attribution.
+
+### Changed
+- **"Cultural Quarters" are now "Cultural Enclaves"** in all player-facing
+  in-game text (the other locales follow in 2.0.1). The internal systems, save
+  data, and code identifiers are unchanged, so existing saves are unaffected.
+- **One quote per enclave, not one per option.** The decision modal now shows a
+  single quote for the enclave as a whole, instead of a separate quote under each
+  of the two choices. Which one appears is set by ordinal: an origin's **first**
+  enclave shows quote A, its **second** shows quote B.
+- **A single civilization can hold at most two enclaves in your empire — per
+  civilization, not overall.** You can still have two Roman, two Norman, and two Han
+  enclaves at once; reaching the cap for one origin never blocks another.
+  Once an origin has two, no third same-origin enclave is offered. Identity is by
+  civilization (captured and persisted when the enclave forms), so the cap stays
+  correct even if the origin player later changes civilization across an age, and
+  two players sharing a civilization count together.
+- **Enclave and quote text passed a full sensitivity review.** Removed
+  trope-adjacent flavour (e.g. a Semitic "greed" slur, a "barbarian" atrocity
+  quote, "great-replacement"-style cultural-erosion phrasing, and a
+  fifth-column/loyalty framing on the wartime "contested" line), and replaced a
+  misattributed hadith and a handful of misattributed or unsourceable quotes with
+  correctly sourced, own-voice alternatives.
+
+### Fixed
+- **Cultural Enclaves now gate on the diaspora's CURRENT size, not lifetime
+  arrivals.** A quarter's second gate (beyond the share threshold) required
+  250,000 cumulative arrivals from an origin into a city — a lifetime inflow total
+  that only ever grew and was never reduced by integration, return-home, or
+  attrition. So a city that had merely **processed** many migrants over the ages
+  could clear it even after that diaspora had largely gone. The gate is now a true
+  first-over-the-line on **current standing stock**: the lead foreign origin must
+  be at least 5 population points **right now** (read from the netted composition
+  ledger) as well as ≥25% (foothold) / ≥35% (established) of the city. If the
+  diaspora later integrates or leaves, the city drops back below the line. The
+  foothold Chronicle line now reads a standing community size rather than
+  "arrivals over time".
+
 ## [1.9.1] - 2026-07-04
 
 ### Fixed

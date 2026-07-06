@@ -67,33 +67,33 @@ export const DENSITY_CSS =
   // readable floor as the window shortens, no buckets, recomputed live on every
   // resize. The canvas pies draw at a fixed 320px bitmap and are only DISPLAYED
   // at this size, so CSS rescales them with no redraw.
-  ".emig-dash .emig-led-c{font-size:clamp(0.95rem,1.97vh,1.18rem);}" +
-  ".emig-dash .emig-pr-c{font-size:clamp(0.92rem,1.83vh,1.1rem);}" +
+  ".emig-dash .emig-led-c{font-size:var(--dg-fs-120);}" +
+  ".emig-dash .emig-pr-c{font-size:var(--dg-fs-105);}" +
   ".emig-dash .emig-led-bar{height:clamp(0.6rem,1.17vh,0.7rem);}" +
   ".emig-dash .emig-pie-c,.emig-dash .emig-pie-empty" +
   "{width:clamp(9.5rem,22.5vh,13.5rem);height:clamp(9.5rem,22.5vh,13.5rem);}" +
   ".emig-dash .emig-pie.big .emig-pie-c" +
   "{width:clamp(12rem,28.33vh,17rem);height:clamp(12rem,28.33vh,17rem);}" +
-  ".emig-dash .emig-stance-row{font-size:clamp(1.05rem,2.33vh,1.4rem);}" +
-  ".emig-dash .emig-stance-detail{font-size:clamp(0.92rem,1.83vh,1.1rem);}" +
-  ".emig-dash .emig-filter-btn{font-size:clamp(0.74rem,1.3vh,0.78rem);}" +
-  ".emig-dash .emig-flow-tog{font-size:clamp(0.92rem,1.67vh,1rem);}" +
-  ".emig-dash .emig-netc-cap{font-size:clamp(0.88rem,1.58vh,0.95rem);}" +
-  ".emig-dash .emig-netc-time-note{font-size:clamp(0.78rem,1.37vh,0.82rem);}" +
-  ".emig-dash .emig-guide-h{font-size:clamp(1.05rem,1.92vh,1.15rem);}" +
-  ".emig-dash .emig-guide-q{font-size:clamp(1rem,1.97vh,1.18rem);}" +
-  ".emig-dash .emig-guide-note{font-size:clamp(0.94rem,1.75vh,1.05rem);}" +
-  ".emig-dash .emig-guide-faq-q{font-size:clamp(1.04rem,2vh,1.2rem);}" +
-  ".emig-dash .emig-guide-faq-a{font-size:clamp(0.96rem,1.83vh,1.1rem);}" +
+  ".emig-dash .emig-stance-row{font-size:var(--dg-fs-140);}" +
+  ".emig-dash .emig-stance-detail{font-size:var(--dg-fs-105);}" +
+  ".emig-dash .emig-filter-btn{font-size:var(--dg-fs-72);}" +
+  ".emig-dash .emig-flow-tog{font-size:var(--dg-fs-95);}" +
+  ".emig-dash .emig-netc-cap{font-size:var(--dg-fs-95);}" +
+  ".emig-dash .emig-netc-time-note{font-size:var(--dg-fs-85);}" +
+  ".emig-dash .emig-guide-h{font-size:var(--dg-fs-120);}" +
+  ".emig-dash .emig-guide-q{font-size:var(--dg-fs-120);}" +
+  ".emig-dash .emig-guide-note{font-size:var(--dg-fs-105);}" +
+  ".emig-dash .emig-guide-faq-q{font-size:var(--dg-fs-120);}" +
+  ".emig-dash .emig-guide-faq-a{font-size:var(--dg-fs-105);}" +
   // ── COMPACT chrome (viewport ≲ 54rem tall) ────────────────────────────────
   "@media (max-height: 53.9rem){" +
   ".emig-dash{gap:0.55rem;}" +
   ".emig-dash .emig-tabs{margin-bottom:0.45rem;}" +
-  ".emig-dash .emig-tab{padding:0.2rem 0.7rem;font-size:0.78rem;}" +
+  ".emig-dash .emig-tab{padding:0.2rem 0.7rem;font-size:var(--dg-fs-72);}" +
   ".emig-dash .emig-ctrl-row{margin:0.05rem 0 0.3rem;gap:0.25rem 1rem;}" +
   ".emig-dash .emig-card{padding:0.42rem 0.6rem;}" +
   ".emig-dash .emig-card-h{margin-bottom:0.3rem;padding-bottom:0.15rem;}" +
-  ".emig-dash .emig-section-title{font-size:1rem;margin:0.05rem 0 0.4rem;}" +
+  ".emig-dash .emig-section-title{font-size:var(--dg-fs-95);margin:0.05rem 0 0.4rem;}" +
   ".emig-dash .emig-tabbody{max-height:80vh;}" +
   ".emig-screen-host .emig-tabbody{max-height:none;}" +
   ".emig-dash .emig-led-c{padding:0.5rem 0.55rem;}" +
@@ -112,12 +112,12 @@ export const DENSITY_CSS =
   "@media (max-height: 43.9rem){" +
   ".emig-dash{gap:0.4rem;}" +
   ".emig-dash .emig-tabs{margin-bottom:0.3rem;}" +
-  ".emig-dash .emig-tab{padding:0.14rem 0.6rem;font-size:0.74rem;}" +
+  ".emig-dash .emig-tab{padding:0.14rem 0.6rem;font-size:var(--dg-fs-72);}" +
   ".emig-dash .emig-ctrl-row{margin:0.04rem 0 0.22rem;gap:0.2rem 0.8rem;}" +
-  ".emig-dash .emig-pill-lbl{font-size:0.8rem;}" +
+  ".emig-dash .emig-pill-lbl{font-size:var(--dg-fs-85);}" +
   ".emig-dash .emig-card{padding:0.3rem 0.5rem;}" +
-  ".emig-dash .emig-card-h{font-size:0.85rem;margin-bottom:0.22rem;padding-bottom:0.1rem;}" +
-  ".emig-dash .emig-section-title{font-size:0.92rem;margin:0.04rem 0 0.32rem;}" +
+  ".emig-dash .emig-card-h{font-size:var(--dg-fs-85);margin-bottom:0.22rem;padding-bottom:0.1rem;}" +
+  ".emig-dash .emig-section-title{font-size:var(--dg-fs-95);margin:0.04rem 0 0.32rem;}" +
   ".emig-dash .emig-tabbody{max-height:84vh;}" +
   ".emig-screen-host .emig-tabbody{max-height:none;}" +
   ".emig-dash .emig-led-c{padding:0.4rem 0.5rem;}" +
@@ -125,7 +125,7 @@ export const DENSITY_CSS =
   ".emig-dash .emig-pie-row{gap:1rem;margin-bottom:0.7rem;}" +
   ".emig-dash .emig-pie{padding:0.3rem 0.3rem 0.7rem;}" +
   ".emig-dash .emig-stance-block{padding:0.4rem 0.2rem;}" +
-  ".emig-dash .emig-tag{font-size:1rem;}" +
+  ".emig-dash .emig-tag{font-size:var(--dg-fs-95);}" +
   ".emig-dash .emig-filter-btn{padding:0.14rem 0.5rem;}" +
   ".emig-dash .emig-flow-tog{padding:0.26rem 0.95rem;}" +
   ".emig-dash .emig-netc-chips{margin:0.06rem 0 0.22rem;gap:0.3rem;}" +

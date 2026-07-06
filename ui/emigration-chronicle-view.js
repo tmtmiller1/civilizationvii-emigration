@@ -28,10 +28,10 @@ const CSS =
   // flex-wrap so a long title can't crowd the right-aligned kind label on a narrow Civ VII panel: the
   // kind wraps to its own line (still pushed right by margin-left:auto) rather than being squeezed.
   ".emig-chr-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:0.6rem;margin-bottom:0.12rem;}" +
-  '.emig-chr-title{font-family:"TitleFont";letter-spacing:0.04em;font-size:0.92rem;color:#f0bc78;}' +
-  ".emig-chr-turn{font-size:0.7rem;opacity:0.55;white-space:nowrap;}" +
-  ".emig-chr-body{font-size:0.92rem;line-height:1.5;color:#e8d8b4;}" +
-  ".emig-chr-kind{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;opacity:0.5;" +
+  '.emig-chr-title{font-family:"TitleFont";letter-spacing:0.04em;font-size:var(--dg-fs-95);color:#f0bc78;}' +
+  ".emig-chr-turn{font-size:var(--dg-fs-72);opacity:0.55;white-space:nowrap;}" +
+  ".emig-chr-body{font-size:var(--dg-fs-95);line-height:1.5;color:#e8d8b4;}" +
+  ".emig-chr-kind{font-size:var(--dg-fs-65);text-transform:uppercase;letter-spacing:0.1em;opacity:0.5;" +
   "margin-left:auto;white-space:nowrap;}" +
   // Self-contained empty-state (the dashboard stylesheet also defines .emig-empty, but the chronicle
   // can render standalone, so it carries its own copy rather than depend on that being injected).

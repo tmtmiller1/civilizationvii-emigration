@@ -49,11 +49,11 @@ function el(tag, cls, text) {
 
 const FLOW_CSS =
   ".emig-flow-leg{display:flex;flex-wrap:wrap;gap:0.3rem 1.1rem;justify-content:center;" +
-  "align-items:center;margin:0.2rem 0 0.3rem;font-size:0.78rem;color:#cbb994;}" +
+  "align-items:center;margin:0.2rem 0 0.3rem;font-size:var(--dg-fs-72);color:#cbb994;}" +
   ".emig-flow-leg-i{display:flex;align-items:center;gap:0.35rem;}" +
   ".emig-flow-sw{width:1.1rem;height:0.32rem;border-radius:0.16rem;display:inline-block;}" +
   ".emig-flow-hint{opacity:0.72;font-style:italic;flex-basis:100%;text-align:center;}" +
-  ".emig-flow-cap{opacity:0.55;font-size:0.78rem;text-align:center;margin-top:0.3rem;max-width:34rem;}";
+  ".emig-flow-cap{opacity:0.55;font-size:var(--dg-fs-72);text-align:center;margin-top:0.3rem;max-width:34rem;}";
 
 /** Inject the flow-tab stylesheet once (idempotent). */
 function injectFlowStyle() {

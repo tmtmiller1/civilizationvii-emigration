@@ -85,4 +85,52 @@ const rec = (civ, optionId) => ({
   assert.ok(!normalized.tiles.bad, "an invalid record is dropped on normalization");
 }
 
+// ── candidacy (dwell-clock) store: put / get / drop / listing ────────────────
+{
+  const { candidacyAt, putCandidacy, dropCandidacy, allCandidacyEntries } = state;
+  putCandidacy("5,6", { civ: 2, originCiv: "CIVILIZATION_ROME", since: 10, lastSeen: 10 });
+  assert.equal(candidacyAt("5,6").civ, 2, "candidacy is stored on its tile");
+  assert.equal(candidacyAt("5,6").since, 10, "the dwell clock's start is stored");
+  assert.equal(allCandidacyEntries().some((e) => e.tileKey === "5,6"), true, "listing finds the candidacy");
+  dropCandidacy("5,6");
+  assert.equal(candidacyAt("5,6"), null, "candidacy can be removed");
+}
+
+// ── dwellSatisfied: gate on quarterDwellTurns since the streak began ─────────
+{
+  const { candidacyAt, putCandidacy, dwellSatisfied, dropCandidacy } = state;
+  const savedDwell = CONFIG.quarterDwellTurns;
+  CONFIG.quarterDwellTurns = 8;
+  putCandidacy("7,7", { civ: 2, originCiv: "CIVILIZATION_ROME", since: 100, lastSeen: 100 });
+  assert.equal(dwellSatisfied("7,7", "CIVILIZATION_ROME", 2, 107), false, "before the dwell window elapses, not offered");
+  assert.equal(dwellSatisfied("7,7", "CIVILIZATION_ROME", 2, 108), true, "at the dwell window it becomes offerable");
+  assert.equal(dwellSatisfied("7,7", "CIVILIZATION_GREECE", 9, 200), false, "a different origin does not satisfy this tile's clock");
+  assert.equal(dwellSatisfied("nope", "CIVILIZATION_ROME", 2, 200), false, "no candidacy record → never satisfied");
+  // legacy fallback: when a CivilizationType is unavailable, identity falls back to the raw origin id.
+  putCandidacy("8,8", { civ: 5, originCiv: null, since: 0, lastSeen: 0 });
+  assert.equal(dwellSatisfied("8,8", null, 5, 8), true, "legacy record matches by origin player id");
+  assert.equal(dwellSatisfied("8,8", null, 6, 8), false, "a mismatched origin id does not satisfy");
+  // dwell = 0 is legacy 'offer as soon as it forms'.
+  CONFIG.quarterDwellTurns = 0;
+  putCandidacy("9,1", { civ: 2, originCiv: "CIVILIZATION_ROME", since: 50, lastSeen: 50 });
+  assert.equal(dwellSatisfied("9,1", "CIVILIZATION_ROME", 2, 50), true, "dwell 0 is satisfied the moment a candidacy exists");
+  CONFIG.quarterDwellTurns = savedDwell;
+  dropCandidacy("7,7"); dropCandidacy("8,8"); dropCandidacy("9,1");
+}
+
+// ── candidacy round-trips through the persistence envelope + normalization ───
+{
+  const { putCandidacy, saveQuarters, __test: st } = state;
+  putCandidacy("2,3", { civ: 3, originCiv: "CIVILIZATION_HAN", since: 4, lastSeen: 6 });
+  saveQuarters();
+  const blob = JSON.parse(KV.EmigrationQuarters_v1);
+  assert.ok(blob.data.candidacy && blob.data.candidacy["2,3"], "envelope includes the candidacy record");
+  assert.equal(blob.data.candidacy["2,3"].since, 4, "the candidacy start persists");
+  // A malformed candidacy record (no civ) is dropped on normalization.
+  assert.equal(st.normalizeCandidacyRecord({ since: 1 }), null, "a candidacy without a civ is rejected");
+  const normalized = st.normalizeState({ candidacy: { "1,2": { civ: 2, since: 3, lastSeen: 3 }, bad: { since: 1 } } });
+  assert.ok(normalized.candidacy["1,2"], "a valid candidacy survives normalization");
+  assert.ok(!normalized.candidacy.bad, "an invalid candidacy is dropped on normalization");
+}
+
 console.log("quarter-state harness passed");

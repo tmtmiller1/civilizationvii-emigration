@@ -272,7 +272,7 @@ export function returnLine(e) {
   ];
   const en = [
     "As word spread that the homeland was {4_Reason}, {1_People} {3_Civ} families of {2_City} started the long road home.",
-    "The {3_Civ} quarter of {2_City} thinned that year. {1_People} went back, now that home was {4_Reason}.",
+    "The {3_Civ} enclave of {2_City} thinned that year. {1_People} went back, now that home was {4_Reason}.",
     "{1_People} {3_Civ} households left {2_City} for the country they had fled, drawn back as it grew {4_Reason}."
   ];
   const i = hash(e.seed + ":" + 0) % en.length;
