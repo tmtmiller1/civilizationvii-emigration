@@ -6,7 +6,7 @@
 // modules). Dependency-free (Node built-ins only).
 //
 // Scope: every file under the mod root, excluding .git, node_modules, and the gitignored build
-// artifacts (dist/, coverage/, reports/, .stryker-tmp/) plus the dev-only ui/migration-probe.js
+// artifacts (dist/, coverage/, reports/, .stryker-tmp/) plus the dev-only devtools/migration-probe.js
 // - matching the documented scope of monoliths-analysis.md.
 //
 // Per file it reports: ext, raw line count, bytes, function-declaration count, class count, and
@@ -36,7 +36,7 @@ function listFiles(dir) {
       continue;
     }
     const rel = relative(ROOT, join(dir, ent.name)).split("\\").join("/");
-    if (rel === "ui/migration-probe.js") continue; // dev-only probe (excluded by scope)
+    if (rel === "devtools/migration-probe.js") continue; // dev-only probe (excluded by scope)
     out.push(rel);
   }
   return out;
@@ -91,7 +91,7 @@ function main() {
   const lines = [
     `Generated: (regenerate with \`node scripts/inventory.mjs --md\`)`,
     `Scope: every file under emigration/, excluding .git, node_modules, gitignored build`,
-    `artifacts (dist/, coverage/, reports/, .stryker-tmp/), and dev-only ui/migration-probe.js`,
+    `artifacts (dist/, coverage/, reports/, .stryker-tmp/), and dev-only devtools/migration-probe.js`,
     `Total files analyzed: ${rows.length}`,
     `Files flagged by quick monolith threshold (raw lines > 500): ${flagged.length}` +
       (flagged.length ? " (" + flagged.map((r) => basename(r.file)).join(", ") + ")" : ""),

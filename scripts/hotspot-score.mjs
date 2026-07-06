@@ -40,7 +40,7 @@ const WINDOW = Number(argVal("--window", "120"));
 const TOP = Number(argVal("--top", "15"));
 const AS_JSON = argv.includes("--json");
 
-// Recursively list every ui/ .js path relative to ROOT (posix-style), minus the dev probe.
+// Recursively list every ui/ .js path relative to ROOT (posix-style).
 function listUiJs() {
   /** @type {string[]} */
   const out = [];
@@ -48,7 +48,6 @@ function listUiJs() {
     if (!ent.isFile() || !ent.name.endsWith(".js")) continue;
     const abs = join(ent.parentPath || ent.path, ent.name);
     const rel = relative(ROOT, abs).split("\\").join("/");
-    if (rel === "ui/migration-probe.js") continue;
     out.push(rel);
   }
   return out;

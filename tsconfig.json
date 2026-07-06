@@ -19,5 +19,5 @@
     "types": []
   },
   "include": ["ui/**/*.js", "types/**/*.d.ts"],
-  "exclude": ["node_modules", "dist", "ui/migration-probe.js"]
+  "exclude": ["node_modules", "dist", "devtools/migration-probe.js"]
 }

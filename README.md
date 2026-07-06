@@ -997,7 +997,7 @@ tree, gated by a test (`tests/modinfo.mjs`). Key modules:
 - `ui/emigration-notifications.js` / `ui/emigration-notifications-view.js`: the **persistent notification log** (every fired toast, with its cause/turn/count/origin/destination detail) and its click-to-expand Notifications sub-tab.
 - `ui/emigration-settings.js` / `ui/emigration-options.js` / `ui/options/*`: number-display preference + tunable/preset getters; Options registration; the Advanced editor and the cascade-safe `modSettings` store.
 - `data/emigration-policies-*.xml`, `data/emigration-policies-gameeffects.xml`, `data/emigration-policy-icons.xml`, `data/emigration-civilopedia.xml`: DB components for the stance/attraction cards, their native modifiers, icons, and the Civilopedia pages.
-- `ui/migration-probe.js`: Dev-only API probe (separate modinfo, not shipped).
+- `devtools/migration-probe.js`: Dev-only API probe (separate modinfo, not shipped).
 - `text/<locale>/ModText.xml` + `scripts/i18n_*.mjs`: localized strings (all 10 locales) and the dev-only localization pipeline (§14).
 
 `emigration.modinfo`'s ActionGroups: the options layer in **both** shell + game scopes; the engine and
