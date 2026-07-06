@@ -31,7 +31,7 @@ As part of releasing [i]Emigration[/i], I donated to the International Refugee A
 [*][b]Regional movement.[/b] Distance penalties encourage nearby migration rather than map-wide teleportation.
 [*][b]Borders and policy matter.[/b] Open Borders agreements and Pro-/Anti-Immigration policies influence migration, refugee settlement, retention, and costs.
 [*][b]Growth has costs.[/b] Receiving migrants creates temporary happiness and gold integration costs, while congestion limits runaway population magnets.
-[*][b]A world with a memory.[/b] Settlements remember where their people came from. Newcomers integrate over time, diasporas can return home, and lasting foreign communities can grow into Cultural Quarters with a one-time choice: embrace, tax, or let be.
+[*][b]A world with a memory.[/b] Settlements remember where their people came from. Newcomers integrate over time, diasporas can return home, and lasting foreign communities can grow into named Cultural Enclaves with a one-time choice grounded in the origin civilization's real character.
 [*][b]Explains itself.[/b] Each move records why people chose that destination — prosperity, distance, safety, open borders, allies, asylum, crisis, or war. Notifications, city readouts, pressure warnings, crisis reports, and a permanent log show what happened and why.
 [/list]
 
@@ -45,9 +45,13 @@ Available through an optional dock button or the Demographics mod interface. Tab
 
 Paints every settlement as a per-tile population mosaic by the origin civilization of its people. Diaspora communities cluster into neighborhoods, tooltips show exact origin percentages, and cities visibly change as they are conquered, depopulated, or rebuilt. A companion Prosperity lens shows where migration pull is strongest.
 
+[b]Cultural Enclaves[/b]
+
+When a lasting foreign community takes root in one of your cities, it forms a named Cultural Enclave (the Roman Enclave, the Punic Enclave...) and offers a one-time choice: two identity-grounded options — each a small benefit paired with a matching drawback, drawn from that civilization's real character — or simply let them be. The moment reads as a page of history: each enclave carries a short, real, attributed quote shown in the origin people's own language with an English translation, verified against primary sources. A civilization can hold up to two enclaves in your empire (per civilization, not overall), each showing a different quote. Enclaves persist, can change hands as demographics shift, and turn restless if you go to war with their homeland.
+
 [b]In the base-game City Details panel[/b]
 
-Per-settlement migration data appears directly in the game's own City Details panel: origin mix, recent emigrants, arrivals, held refugees, and Cultural Quarter status. Injected non-invasively, so it coexists with other City Details mods.
+Per-settlement migration data appears directly in the game's own City Details panel: origin mix, recent emigrants, arrivals, held refugees, and Cultural Enclave status. Injected non-invasively, so it coexists with other City Details mods.
 
 [b]Demographics integration[/b]
 
@@ -55,7 +59,7 @@ When used with [b]Demographics[/b], it adds immigration, emigration, net migrati
 
 [b]Tuning[/b]
 
-Low, Medium, High, and Custom presets plus advanced settings covering prosperity, borders, war, disasters, geography, integration, refugee holding pools, cultural quarters, notifications, pacing, performance, and information visibility. Population can display as game points, historical estimates, or both. Full in-game localization is included for all 12 supported Civilization VII languages.
+Low, Medium, High, and Custom presets plus advanced settings covering prosperity, borders, war, disasters, geography, integration, refugee holding pools, cultural enclaves, notifications, pacing, performance, and information visibility. Population can display as game points, historical estimates, or both. Full in-game localization is included for all 12 supported Civilization VII languages.
 
 [b]A gameplay mod, not just UI[/b]
 

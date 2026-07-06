@@ -7,7 +7,7 @@
         <SpecialThanks>Machiavelli's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>1.9.1</Version>
+        <Version>2.0.1</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -193,8 +193,10 @@
                     <Item>ui/emigration-dilemma.js</Item>
                     <Item>ui/emigration-dilemma-view.js</Item>
                     <!-- Cultural Quarters: an established diaspora becomes a persistent, player-shaped
-                         district. Pure option catalogue + per-tile persistent store + the decision/
-                         change-of-hands/contested runtime (reuses the dilemma modal). -->
+                         district. Per-civ bonus registry (origin-specific trade-off options) + option
+                         catalogue + per-tile persistent store + the decision/change-of-hands/contested
+                         runtime (reuses the dilemma modal). -->
+                    <Item>ui/emigration-quarter-bonuses.js</Item>
                     <Item>ui/emigration-quarter-registry.js</Item>
                     <Item>ui/emigration-quarter-state.js</Item>
                     <Item>ui/emigration-quarter.js</Item>

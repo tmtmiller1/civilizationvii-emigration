@@ -168,7 +168,7 @@ function ledgerDataRow(r, maxNet, mode) {
 function ledgerDriversRow(r) {
   if (!r.drivers) return null;
   const row = el("div", "emig-led-drivers", loc("LOC_EMIG_LG_DRIVERS", "Drivers: {1_Drivers}", r.drivers));
-  row.style.cssText = "opacity:0.7;font-size:0.85rem;padding:0 0 0.3rem 0.4rem;width:100%;";
+  row.style.cssText = "opacity:0.7;font-size:var(--dg-fs-85);padding:0 0 0.3rem 0.4rem;width:100%;";
   return row;
 }
 

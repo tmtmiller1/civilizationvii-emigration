@@ -137,6 +137,14 @@
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="ko_KR"><Text>폭주 억제 역풍이 작용하기 시작하기 전에 한 문명의 인구가 세계 평균 문명보다 얼마나 앞서 나갈 수 있는지를 공정 몫의 배수로 나타낸 값. 낮을수록 제동이 더 일찍 걸리고(더 평등), 높을수록 극단적으로 폭주하는 선두 주자만 둔화됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QUARTERS" Language="ko_KR"><Text>비용: 문화 구역</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QUARTERS_D" Language="ko_KR"><Text>외국 디아스포라가 당신의 도시에서 자리 잡은 공동체로 성장하면 일회성 선택(수용, 과세, 방임)이 제시되며 작은 산출 보상과 불이익이 따릅니다. 도시별로 지속되는 구역이 기록되고, 그 본국과 전쟁 중인 동안 「분쟁」 상태가 되어 작은 행복도 부담이 생깁니다. 끄면 구역 결정과 분쟁 부담이 없습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSHARE" Language="ko_KR"><Text>Enclaves: share to form</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSHARE_D" Language="ko_KR"><Text>How much of a city a single foreign origin must make up before it can become a Cultural Enclave. Higher = rarer enclaves, as fewer cities ever qualify.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QDWELL" Language="ko_KR"><Text>Enclaves: persistence before offer</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QDWELL_D" Language="ko_KR"><Text>How many turns an established community must persist before its one-time enclave decision is offered, so a brief spike (such as a war-refugee wave that later moves on) never triggers a permanent enclave. A short dip below the threshold is forgiven. 0 = offer as soon as the community forms.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QCOOLDOWN" Language="ko_KR"><Text>Enclaves: turns between decisions</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QCOOLDOWN_D" Language="ko_KR"><Text>Minimum turns between two Cultural Enclave decisions. Higher = the offers are spaced further apart.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QCAP" Language="ko_KR"><Text>Enclaves: decisions per age</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QCAP_D" Language="ko_KR"><Text>The most Cultural Enclave decisions that can be offered in a single age. Lower = fewer enclave choices each age.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="ko_KR"><Text>재난: 이주 유발</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="ko_KR"><Text>환경 재난(홍수, 화산, 역병…)이 전쟁·불만과 더불어 피해 도시에서 주민을 기후/재난 난민으로 밀어내게 합니다. 끄면 재난이 이주에 영향을 주지 않습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="ko_KR"><Text>재난: 고통 포인트당 이주(%)</Text></Replace>
@@ -228,24 +236,24 @@
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="ko_KR"><Text>난민이 전투를 피해 떠납니다. 포위를 풀거나 평화를 맺어 유출을 막으세요.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_DISASTER" Language="ko_KR"><Text>재난에 의한 이주입니다. 피해가 가라앉으면 저절로 완화됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_ATTRITION" Language="ko_KR"><Text>달아날 곳 없이 갇혔습니다. 탈출로를 열거나 피해를 완화하세요.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HINT_CONQUEST" Language="ko_KR"><Text>Displaced by the city's capture; the upheaval eases as the city settles.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HINT_RETURN" Language="ko_KR"><Text>A people drawn home as their recovered homeland finds peace and plenty again.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_UNHAPPINESS" Language="ko_KR"><Text>Unhappiness</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_PROSPERITY" Language="ko_KR"><Text>Attraction</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_WAR" Language="ko_KR"><Text>War</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_DISASTER" Language="ko_KR"><Text>Disaster</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CONQUEST" Language="ko_KR"><Text>Conquest</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_ATTRITION" Language="ko_KR"><Text>Attrition</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_RETURN" Language="ko_KR"><Text>Return</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CRISIS" Language="ko_KR"><Text>Crisis</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CHRONICLE" Language="ko_KR"><Text>Chronicle</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_OTHER" Language="ko_KR"><Text>Other</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_EXODUS" Language="ko_KR"><Text>Exodus</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_DIASPORA" Language="ko_KR"><Text>Diaspora</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_RETURN" Language="ko_KR"><Text>Return</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TITLE_FALLBACK" Language="ko_KR"><Text>A movement of peoples</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TURN" Language="ko_KR"><Text>Turn {1_Turn}</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_EMPTY" Language="ko_KR"><Text>The chronicle is empty. As great waves of people move across the world, their stories are written here: the cities that emptied, and the communities that took root far from home.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_CONQUEST" Language="ko_KR"><Text>도시 함락으로 인해 삶의 터전을 잃었습니다. 도시가 안정되면서 혼란도 차차 가라앉습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_RETURN" Language="ko_KR"><Text>되찾은 고향에 다시 평화와 풍요가 찾아오자 사람들이 고향으로 이끌려 돌아옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_UNHAPPINESS" Language="ko_KR"><Text>불행</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_PROSPERITY" Language="ko_KR"><Text>매력</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_WAR" Language="ko_KR"><Text>전쟁</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_DISASTER" Language="ko_KR"><Text>재난</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CONQUEST" Language="ko_KR"><Text>정복</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_ATTRITION" Language="ko_KR"><Text>소모</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_RETURN" Language="ko_KR"><Text>귀환</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CRISIS" Language="ko_KR"><Text>위기</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CHRONICLE" Language="ko_KR"><Text>연대기</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_OTHER" Language="ko_KR"><Text>기타</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_EXODUS" Language="ko_KR"><Text>대탈출</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_DIASPORA" Language="ko_KR"><Text>이산</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_RETURN" Language="ko_KR"><Text>귀환</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_TITLE_FALLBACK" Language="ko_KR"><Text>민족의 이동</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_TURN" Language="ko_KR"><Text>{1_Turn}턴</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_EMPTY" Language="ko_KR"><Text>연대기가 비어 있습니다. 거대한 인파가 세계를 가로질러 이동할 때, 그들의 이야기가 이곳에 기록됩니다. 텅 비어버린 도시들과, 고향에서 멀리 떨어진 곳에 뿌리내린 공동체들의 이야기가 말입니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="ko_KR"><Text>이 압력은 일시적입니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="ko_KR"><Text>원인을 해결할 때까지 계속됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ko_KR"><Text>그 사람들은 영영 사라졌습니다.</Text></Replace>
@@ -294,6 +302,8 @@
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="ko_KR"><Text>이주 대시보드는 게임 내 독의 버튼이나 Demographics 모드의 이주 페이지에서 열 수 있습니다. 탭으로 구성되어 있습니다.[n][n]• 이주 네트워크: 통과하는 인구량에 따라 크기가 달라지는 문명의 애니메이션 보기.[n]• 흐름 지도: 같은 흐름을 화살표로 그려 개별 도시까지 따라갈 수 있습니다.[n]• 문명 장부: 유입, 유출, 순변화, 난민, 손실.[n]• 사람들이 이동하는 이유를 원인별로 나눈 내역.[n]• 인구를 잃기 직전 순서로 정렬한 당신의 정착지.[n]• 이민 정책: 누가 친이민 또는 반이민 입장을 택했는지.[n]• 가이드: 무엇이 이주를 유발하고 무엇이 그렇지 않은지에 대한 빠른 참조.[n][n]지도에서는 민족 구성 렌즈(Shift+E)가 각 정착지를 주민의 출신으로 칠하고, 거주 타일에 마우스를 올리면 정확한 구성이 툴팁에 표시됩니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_TITLE" Language="ko_KR"><Text>민족 구성과 통합</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_BODY" Language="ko_KR"><Text>각 정착지는 주민이 어느 문명의 후손인지에 따라 사람들이 어디서 왔는지를 기록하며, 정복을 거쳐도 그 기록을 유지합니다. 민족 구성 렌즈(Shift+E)는 이를 타일별 모자이크로 보여 줍니다. 인구가 밀집한 도시 중심부는 지배적 기원의 색으로, 소규모 공동체는 그 타일 전반에 퍼지며, 정착된 타일의 툴팁에 정확한 구성이 표시됩니다.[n][n]시간이 지나면 신규 이주민은 받아들인 문명에 통합됩니다. 다만 그들의 고향과의 전쟁이나 도시의 불안이 있으면 공동체는 구별된 채 남습니다. 그리고 고향이 받아들인 측과 평화를 이루고 다시 번영하면, 귀환 이주가 시간이 지나며 그 일부를 고향으로 데려가 실제 인구를 옮깁니다. 이 모두는 기본으로 켜져 있으며 옵션에서 끌 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_TITLE" Language="ko_KR"><Text>문화 거류지</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_BODY" Language="ko_KR"><Text>외래 공동체가 자라나 당신의 도시 중 한 곳의 지속적인 일부가 되면 — 단지 과거에 온 이들의 기억이 아니라, 지금 그곳에 살아가는 실재하는 존재로서 — 그것은 출신 민족의 이름을 딴 도시 외곽의 구역, 즉 문화 거류지로 자리 잡습니다. 당신은 도시가 이들을 어떻게 받아들일지 일회성 선택을 제안받습니다. 해당 문명 고유의 성격에서 비롯된 두 가지 선택지가 있으며, 각각은 작은 이점과 그에 상응하는 단점이 짝을 이룹니다. 아니면 그저 내버려 둘 수도 있습니다. 당신이 택한 입장은 매 턴 제국의 산출량에 적용됩니다.[n][n]각 거류지는 역사의 한 페이지처럼 읽히며, 출신 민족의 언어로 된 짧고 실재하는 역사적 인용문 하나를 그 영어 번역과 나란히 담고 있습니다. 하나의 문명은 제국 전체에서 최대 두 개의 거류지를 가질 수 있지만 문명마다 각각 두 개씩이므로, 로마 거류지와 노르만 거류지는 서로를 밀어내지 않습니다. 거류지는 지속되며, 도시의 인구 구성이 변함에 따라 주인이 바뀔 수 있고, 당신이 그들의 고향과 전쟁을 벌이면 불안해집니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="ko_KR"><Text>이주 연대기와 난민 결정</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="ko_KR"><Text>이주 연대기는 대시보드의 전용 탭에서 세계의 거대한 이주를 짧은 역사로 기록합니다. 전쟁이나 재해로 비워진 도시, 고향에서 멀리 뿌리내린 디아스포라, 고향이 회복되자 돌아오는 사람들. 사건별 세부 내용은 알림 기록에 남고, 연대기는 그 이야기입니다.[n][n]가끔, 실제의 격변(짧은 기간에 여러 도시를 정복하는 이웃이나 역병 위기)이 난민의 물결을 당신의 땅으로 보내면, 그들을 어떻게 맞이할지 묻습니다. 받아들이거나, 변경에 정착시키거나, 돌려보내는 것입니다. 이 결정은 드물고 영향이 가벼우며 옵션에서 끌 수 있습니다. 만난 적 없는 문명은 풍문으로만 언급되며 드러나지 않습니다.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="ko_KR"><Text>이주</Text></Replace>
@@ -515,16 +525,383 @@
         <Replace Tag="LOC_EMIG_DIL_BODY_AWAY" Language="ko_KR"><Text>당신은 {1_Adj}의 난민을 {2_Place}에서 돌려보냈습니다. 그들은 길을 따라 계속 나아갔습니다, {3_Who}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_CHRON_TITLE" Language="ko_KR"><Text>국경에서의 결정</Text></Replace>
         <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="ko_KR"><Text>난민</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_TITLE" Language="ko_KR"><Text>주인이 바뀐 구역</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_BODY" Language="ko_KR"><Text>{1_Place}에서, {2_PriorAdj} 구역이 {3_Name}에 자리를 내주었습니다. 이제 새로운 민족이 그 구역을 자신들의 것으로 삼습니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_STANCE_EMBRACE" Language="ko_KR"><Text>당신은 {1_Name}을(를) 받아들였고, 그 관습이 도시를 풍요롭게 합니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_STANCE_TAX" Language="ko_KR"><Text>당신은 {1_Name}의 교역에 세금을 매겼습니다. 그 돈은 당신의 국고로 흘러들지만, 그 사람들은 불만을 품습니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_STANCE_LETBE" Language="ko_KR"><Text>당신은 {1_Name}을(를) 그대로 두었습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_TITLE" Language="ko_KR"><Text>거류지의 주인이 바뀌다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_BODY" Language="ko_KR"><Text>옛 {1_Name}은(는) 그 가문들이 떠나거나, 혼인으로 섞이거나, 새로 온 이들에게 밀려나면서 쇠퇴했습니다. {2_Where}, 이제 {3_Adj} 가구들이 이 구역에 이름과 관습, 그리고 거래를 부여합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_EMBRACE" Language="ko_KR"><Text>당신은 {1_Name}을(를) 받아들였고, 그들의 관습이 도시를 풍요롭게 합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_TAX" Language="ko_KR"><Text>당신은 {1_Name}의 교역에 세금을 매겼습니다. 그들의 돈은 당신의 국고로 흘러들지만, 사람들은 불만을 품습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_LETBE" Language="ko_KR"><Text>당신은 {1_Name}을(를) 그대로 내버려 두었습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_DECISION_TITLE" Language="ko_KR"><Text>{1_Name}</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_EYEBROW" Language="ko_KR"><Text>문화 구역</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_TITLE" Language="ko_KR"><Text>{1_Name}이(가) 뿌리내리다</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_BODY" Language="ko_KR"><Text>{1_Adj}에서 온 항구적인 공동체가 이제 {2_Place}에서 자신들만의 구역을 차지하며, 도시의 {3_Pct} 퍼센트까지 자랐습니다. 그들을 어떻게 맞이하시겠습니까?</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_TITLE" Language="ko_KR"><Text>동요하는 구역</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_BODY" Language="ko_KR"><Text>{1_Adj}과(와)의 전쟁이 {2_Name}을(를) 술렁이게 합니다. 그 구역은 부글거립니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_EYEBROW" Language="ko_KR"><Text>문화 거류지</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_TITLE" Language="ko_KR"><Text>{1_Name}</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_BODY" Language="ko_KR"><Text>{2_Place}의 {1_Adj} 가문들은 이제 단순히 새로 온 이들 이상의 존재가 되었습니다. {3_Where}, 그들의 상점과 사당, 공방, 축제, 그리고 습속이 이제 그 자체로 하나의 삶을 이루어 냅니다. 다른 곳의 기억을 지닌 하나의 구역인 것입니다. 이 거류지를 인정하고, 도시가 어떤 전통을 받아들일지 결정하십시오.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_TITLE" Language="ko_KR"><Text>전쟁이 {1_Name}을(를) 시험하다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_BODY" Language="ko_KR"><Text>{1_Adj}과(와)의 전쟁은 {2_Name}에 무겁게 드리웁니다. 그 가문들은 전화(戰火) 속에서 친족과 단절되고, 일부 이웃들은 그들이 이 전쟁을 택하지 않았음을 잊은 채 차가운 시선을 보냅니다. 평화가 돌아올 때까지, 그 긴장은 거류지가 도시의 삶에 온전히 녹아들지 못하게 합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ABBASID_A" Language="ko_KR"><Text>"طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ. (Seeking knowledge is an obligation upon every Muslim.)" — the Prophet Muhammad, Sunan Ibn Mājah 224</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ABBASID_B" Language="ko_KR"><Text>"Baghdad became the intellectual capital of the medieval world." — Philip K. Hitti, History of the Arabs (1937)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_AKSUM_A" Language="ko_KR"><Text>"ΤΟΥΤΟ ΑΡΕΣΗ ΤΗ ΧΩΡΑ (Toûto arésē tê chôra — may this please the country.)" — Aksumite coinage, coin legend, reign of Ezana (4th c.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_AKSUM_B" Language="ko_KR"><Text>"ፍሥሓ ፡ ለይኲን ፡ ለአሕዛብ (Fǝśśǝḥā läyǝkʷǝn läʾaḥzāb — let the people be glad.)" — Emperor Armah, Aksumite coin legend (7th c.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ASSYRIA_A" Language="ko_KR"><Text>"BÀD šalḫû ušēpišma uzaqqir ḫuršāniš (I had a wall built and raised it as high as mountains.)" — Sennacherib, Taylor Prism / RINAP 3 (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ASSYRIA_B" Language="ko_KR"><Text>"aḫuz nēmeqī Nabû, kullat ṭupšarrūti (I grasped the wisdom of Nabû, the whole art of the scribe.)" — Ashurbanipal, royal inscription (RINAP 5, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_CARTHAGE_A" Language="ko_KR"><Text>"Ἔδοξε Καρχηδονίοις Ἅννωνα πλεῖν ἔξω Στηλῶν Ἡρακλείων (It was resolved by the Carthaginians that Hanno should sail beyond the Pillars of Heracles.)" — Hanno the Navigator, Periplus of Hanno (5th c. BCE, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_CARTHAGE_B" Language="ko_KR"><Text>"νεωρίων αἱ κρηπῖδες ἐς ναῦς διακοσίας καὶ εἴκοσι πεποιημένων (The dockyard quays were built for two hundred and twenty ships.)" — Appian, Roman History (Punica) (2nd c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_EGYPT_A" Language="ko_KR"><Text>"πλεῖστα θωμάσια ἔχει ἢ ἡ ἄλλη πᾶσα χώρη καὶ ἔργα λόγου μέζω παρέχεται (It has more marvels than any other land, and works too great for words.)" — Herodotus, Histories, Bk. II (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_EGYPT_B" Language="ko_KR"><Text>"Αἴγυπτος… δῶρον τοῦ ποταμοῦ (Egypt… is the gift of the river.)" — Herodotus (after Hecataeus), Histories, Bk. II (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_GREECE_A" Language="ko_KR"><Text>"ὁ ἀνεξέταστος βίος οὐ βιωτὸς ἀνθρώπῳ. (The unexamined life is not worth living.)" — Socrates, in Plato, Apology (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_GREECE_B" Language="ko_KR"><Text>"φιλοκαλοῦμέν τε μετ' εὐτελείας καὶ φιλοσοφοῦμεν ἄνευ μαλακίας (We love the beautiful with economy, and wisdom without softness.)" — Pericles, in Thucydides, History of the Peloponnesian War, Bk. II (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_HAN_A" Language="ko_KR"><Text>"農，天下之大本也 (Agriculture is the great foundation of all under heaven.)" — Emperor Wen of Han, edict, Book of Han (2nd c. BCE, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_HAN_B" Language="ko_KR"><Text>"倉廩實而知禮節。 (When the granaries are full, the people know propriety.)" — Guanzi, quoted in Sima Qian, Records of the Grand Historian (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_KHMER_A" Language="ko_KR"><Text>"大抵一歲中，可三四番收種。 (In general, three or four harvests a year can be had.)" — Zhou Daguan, The Customs of Cambodia (1296, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_KHMER_B" Language="ko_KR"><Text>"當國之中有金塔一座 (At the centre of the kingdom stands a tower of gold.)" — Zhou Daguan, The Customs of Cambodia (1296, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MAURYA_A" Language="ko_KR"><Text>"sabe munise paja mama (All men are my children.)" — Ashoka, Kalinga Edict (Prakrit, 3rd c. BCE)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MAURYA_B" Language="ko_KR"><Text>"magesu pi me nigohani lopapitani… amba-vadikya lopapita (On the roads banyan trees were planted by me… and mango-groves.)" — Ashoka, Pillar Edict VII (Prakrit, Hultzsch)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MAYA_A" Language="ko_KR"><Text>"Xa q'ana jal, saqi jal u tio'jil (Merely yellow maize and white maize made their flesh.)" — Popol Vuh, K'iche' original (Christenson ed.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MAYA_B" Language="ko_KR"><Text>"The Maya were the most brilliant civilization of the New World." — Michael D. Coe, The Maya (1966)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MISSISSIPPIAN_A" Language="ko_KR"><Text>"Cahokia was the first city in what would become the United States." — Timothy Pauketat, Cahokia (2009)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MISSISSIPPIAN_B" Language="ko_KR"><Text>"Maize agriculture underpinned the rise of the Mississippian towns." — George Milner, The Moundbuilders (2004)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_PERSIA_A" Language="ko_KR"><Text>"ἀρχὰς κατεστήσατο εἴκοσι, τὰς αὐτοὶ καλέουσι σατραπηίας (He set up twenty provinces, which they themselves call satrapies.)" — Herodotus, Histories, Bk. III (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_PERSIA_B" Language="ko_KR"><Text>"ἔστι δ' αὐτῶν ἃ καὶ ἐφύτευσα αὐτός (There are some of these that I planted myself.)" — Cyrus the Younger, in Xenophon, Oeconomicus, Bk. IV (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ROME_A" Language="ko_KR"><Text>"Tot aquarum tam multis necessariis molibus pyramidas videlicet otiosas compares… (Would you set the idle Pyramids beside these many indispensable works of water?)" — Frontinus, On the Aqueducts of Rome (1st c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ROME_B" Language="ko_KR"><Text>"ἄγεται ἐκ πάσης γῆς καὶ θαλάττης ὅσα ὧραι φύουσι καὶ χῶραι ἕκασται φέρουσι (From every land and sea is brought whatever the seasons grow and each country bears.)" — Aelius Aristides, Roman Oration (2nd c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_BULGARIA_A" Language="ko_KR"><Text>"The Bulgar state was built for war, its horsemen disciplined and its frontier strong." — Steven Runciman, A History of the First Bulgarian Empire (1930)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_BULGARIA_B" Language="ko_KR"><Text>"The Bulgarians commanded the great roads of trade between the empires." — Steven Runciman, A History of the First Bulgarian Empire (1930)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_CHOLA_A" Language="ko_KR"><Text>"The Chola navy was the most powerful in the Indian Ocean of its day." — K. A. Nilakanta Sastri, The Cōḷas (1955)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_CHOLA_B" Language="ko_KR"><Text>"Rajaraja raised the great temple at Tanjore, a wonder of the age." — K. A. Nilakanta Sastri, The Cōḷas (1955)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_DAI_VIET_A" Language="ko_KR"><Text>"賢才國家之元氣 (Hiền tài là nguyên khí của quốc gia — the virtuous and talented are the vital force of the state.)" — Thân Nhân Trung, Temple of Literature stele (1442, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_DAI_VIET_B" Language="ko_KR"><Text>"訓練士卒，習爾弓矢 (Drill the soldiers, and practise the bow and arrow.)" — Trần Hưng Đạo, Proclamation to the Officers (1284, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_HAWAII_A" Language="ko_KR"><Text>"He aliʻi ka ʻāina; he kauwā ke kanaka. (The land is chief; man is its servant.)" — ʻŌlelo Noʻeau, coll. Mary Kawena Pukui (1983)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_HAWAII_B" Language="ko_KR"><Text>"I ka ʻōlelo nō ke ola, i ka ʻōlelo nō ka make. (In the word there is life; in the word there is death.)" — ʻŌlelo Noʻeau, coll. Mary Kawena Pukui (1983)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_INCA_A" Language="ko_KR"><Text>"desde que hay memoria de gentes no se ha leído de tanta grandeza como tuvo este camino hecho por valles hondos y por sierras altas (Since men have memory, none has read of so great a road as this, made through deep valleys and high sierras.)" — Pedro Cieza de León, El Señorío de los Incas (1554, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_INCA_B" Language="ko_KR"><Text>"En los cerros y laderas hazían andenes para allanarlas, como hoy se veen en el Cozco y en todo el Perú (On the hills and slopes they made terraces to level them, as are seen today in Cuzco and all Peru.)" — Garcilaso de la Vega, Comentarios Reales de los Incas (1609, Bk. V, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MAJAPAHIT_A" Language="ko_KR"><Text>"milwang balyadi nusantara sahana saha prabhrti (All the vassals of Nusantara come, every one, bringing tribute.)" — Mpu Prapanca, Nagarakretagama (Old Javanese, 1365)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MAJAPAHIT_B" Language="ko_KR"><Text>"民甚殷富，其各處番船多到此地買賣 (The people are very rich, and foreign ships from every place come here to trade.)" — Ma Huan, Yingya Shenglan (1433, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MING_A" Language="ko_KR"><Text>"涉滄溟十萬餘里。 (We have traversed more than one hundred thousand li of vast water-spaces.)" — Zheng He, Changle stele (1431, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MING_B" Language="ko_KR"><Text>"In the late Ming, the appreciation of fine things became the mark of the cultivated gentleman." — Craig Clunas, Superfluous Things (1991) (re-verify before ship)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MONGOLIA_A" Language="ko_KR"><Text>"One can conquer the world on horseback, but one cannot govern it from there." — attributed to Genghis Khan / Yelü Chucai (attr. debated)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MONGOLIA_B" Language="ko_KR"><Text>"di capo de le 25 miglie egli truovano una posta, ove albergano li messaggi del Grande Sire (Every twenty-five miles the messengers find a post-house, where the Great Khan's couriers lodge.)" — Marco Polo, The Travels (Il Milione, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_NORMAN_A" Language="ko_KR"><Text>"and fylden þe land ful of castles (And they filled the land full of castles.)" — Anglo-Saxon Chronicle, 1137 (Peterborough Chronicle, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_NORMAN_B" Language="ko_KR"><Text>"þæt næs an ælpig hide… þæt næs gesæt on his gewrite (Not one single hide… was left unset in his record.)" — Anglo-Saxon Chronicle, on Domesday, 1085 (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SONGHAI_A" Language="ko_KR"><Text>"sono molte botteghe di artigiani e mercatanti, e massimamente di tessitori di tele di bambagio (There are many shops of craftsmen and merchants, above all weavers of cotton cloth.)" — Leo Africanus, Description of Africa (1550, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SONGHAI_B" Language="ko_KR"><Text>"Vendonsi molti libri scritti a mano, che vengono di Barberia; e di questi si fa più guadagno che del rimanente delle mercatanzie (Many handwritten books are sold, brought from Barbary; and more profit is made on these than on all other goods.)" — Leo Africanus, Description of Africa (1550, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SPAIN_A" Language="ko_KR"><Text>"Soy el rico Potosí, del mundo soy el tesoro, el rey de los montes y la envidia de los reyes (I am rich Potosí, treasure of the world, king of the mountains and envy of kings.)" — Villa Imperial de Potosí, royal coat-of-arms motto (1547, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SPAIN_B" Language="ko_KR"><Text>"Han muerto y destruido tan infinito número de ánimas los cristianos… por la insaciable codicia de oro. (The Christians have destroyed such infinite numbers of souls… out of insatiable greed for gold.)" — Bartolomé de las Casas, A Short Account of the Destruction of the Indies (1552, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_AMERICA_A" Language="ko_KR"><Text>"The chief business of the American people is business." — Calvin Coolidge, address to newspaper editors (1925)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_AMERICA_B" Language="ko_KR"><Text>"America will be remembered for the Constitution, jazz music, and baseball." — Gerald Early, in Ken Burns, Jazz (2001)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_BUGANDA_A" Language="ko_KR"><Text>"The banana was the staple food of the country; plantations surrounded every house." — John Roscoe, The Baganda (1911)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_BUGANDA_B" Language="ko_KR"><Text>"Agali awamu ge galuma ennyama. (Teeth set together are the ones that chew the meat — unity gives strength.)" — Ganda proverb, coll. F. Walser, Luganda Proverbs</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_FRENCH_EMPIRE_A" Language="ko_KR"><Text>"If you are lucky enough to have lived in Paris as a young man, it stays with you." — Ernest Hemingway, A Moveable Feast (1964)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_FRENCH_EMPIRE_B" Language="ko_KR"><Text>"L’art de l’imposition consiste à plumer l’oie pour obtenir le plus possible de plumes avec le moins possible de cris. (The art of taxation is to pluck the goose so as to get the most feathers with the least hissing.)" — Jean-Baptiste Colbert (attr.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_GREAT_BRITAIN_A" Language="ko_KR"><Text>"A project fit only for a nation of shopkeepers." — Adam Smith, The Wealth of Nations (1776)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_GREAT_BRITAIN_B" Language="ko_KR"><Text>"And was Jerusalem builded here, among these dark Satanic Mills?" — William Blake, Milton (1804)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_HEIAN_A" Language="ko_KR"><Text>"春はあけぼの、やうやう白くなりゆく山ぎは… (In spring, the dawn — when the slowly paling mountain rim grows faintly light.)" — Sei Shōnagon, The Pillow Book (c. 1002, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_HEIAN_B" Language="ko_KR"><Text>"一条の大路、所なく、むくつけきまで騒ぎたり (The great avenue, with no room to spare, was astir with the festival throng.)" — Murasaki Shikibu, The Tale of Genji, 'Aoi' (11th c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ICELAND_A" Language="ko_KR"><Text>"En ef þú vill vera kaupmaðr… hygg þú vandliga at, hvárt skip þitt sé vel tjǫrgat (If you would be a merchant… look carefully whether your ship is well tarred.)" — Konungs skuggsjá (The King's Mirror) (13th c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ICELAND_B" Language="ko_KR"><Text>"Deyr fé, deyja frændr, deyr sjalfr it sama; ek veit einn, at aldri deyr: dómr um dauðan hvern. (Cattle die, kinsmen die, but the fame of a dead man never dies.)" — Hávamál, Poetic Edda (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MEIJI_A" Language="ko_KR"><Text>"富国強兵 (Fukoku kyōhei — enrich the country, strengthen the army.)" — Meiji national slogan (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MEIJI_B" Language="ko_KR"><Text>"天は人の上に人を造らず人の下に人を造らず。 (Heaven does not create one man above or below another.)" — Fukuzawa Yukichi, An Encouragement of Learning (1872, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MEXICO_A" Language="ko_KR"><Text>"El solitario mexicano ama las fiestas y las reuniones públicas. (The solitary Mexican loves fiestas and public gatherings.)" — Octavio Paz, The Labyrinth of Solitude (1950, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MEXICO_B" Language="ko_KR"><Text>"El respeto al derecho ajeno es la paz. (Respect for the rights of others is peace.)" — Benito Juárez (1867)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MUGHAL_A" Language="ko_KR"><Text>"اگر فردوس بر روی زمین است، همین است و همین است و همین است (If there is a paradise on earth, it is this, it is this, it is this.)" — attributed to Amir Khusrow, Red Fort inscription (attr. debated)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MUGHAL_B" Language="ko_KR"><Text>"L’or et l’argent, après avoir circulé dans le monde, passent dans l’Hindoustan, d’où ils ne reviennent plus. (Gold and silver, after circling the world, pass into Hindustan, from which they never return.)" — François Bernier, Travels in the Mogul Empire (1670s, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_PRUSSIA_A" Language="ko_KR"><Text>"La Prusse n’est pas un État qui possède une armée, mais une armée qui possède un État. (Prussia is not a state that has an army, but an army that has a state.)" — attributed to Mirabeau (attr. debated)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_PRUSSIA_B" Language="ko_KR"><Text>"Der Krieg ist eine bloße Fortsetzung der Politik mit anderen Mitteln. (War is the continuation of policy by other means.)" — Carl von Clausewitz, On War (1832, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_QING_A" Language="ko_KR"><Text>"天朝物產豐盈，無所不有，原不藉外夷貨物以通有無。 (The Celestial Empire possesses all things in abundance and lacks nothing; it has never relied on foreign goods.)" — the Qianlong Emperor, letter to King George III (1793, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_QING_B" Language="ko_KR"><Text>"貴國王累世相傳，皆稱恭順；唯通商已久，遂有夾帶鴉片 (Your kings for generations have professed obedience; yet trade being long established, opium has been smuggled in.)" — Lin Zexu, letter to Queen Victoria (1839, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_RUSSIA_A" Language="ko_KR"><Text>"Здесь будет город заложён на зло надменному соседу. (Here a city shall be founded, to spite our arrogant neighbour.)" — Alexander Pushkin, The Bronze Horseman (1833, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_RUSSIA_B" Language="ko_KR"><Text>"Красота спасёт мир. (Beauty will save the world.)" — Fyodor Dostoevsky, The Idiot (1869, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SIAM_A" Language="ko_KR"><Text>"เมื่อออกพรรษากรานกฐิน… เสียงพาทย์ เสียงพิณ เสียงเลื่อน เสียงขับ (When the rains end they hold the Kathin… with sounds of pipes, lute, chant, and song.)" — Ramkhamhaeng Inscription (1292, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SIAM_B" Language="ko_KR"><Text>"ในน้ำมีปลา ในนามีข้าว (In the water there are fish, in the fields there is rice.)" — Ramkhamhaeng Inscription (1292, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SILLA_A" Language="ko_KR"><Text>"心生則種種法生，心滅則種種法滅 (When the mind arises, all things arise; when the mind ceases, all things cease.)" — Wonhyo, after the Awakening of Faith (7th c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SILLA_B" Language="ko_KR"><Text>"新羅全盛之時，歌吹滿路，晝夜不絕 (In Silla's golden age, song and music filled the streets, unceasing day and night.)" — Samguk Yusa, Iryeon (13th c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_NEPAL_A" Language="ko_KR"><Text>"The whole valley is a highly cultivated garden, terraced and watered with singular industry." — William Kirkpatrick, An Account of the Kingdom of Nepaul (1811) (re-verify before ship)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_NEPAL_B" Language="ko_KR"><Text>"यो राजे दुई ढुङ्गाको तरुल जस्तो रहेछ (This realm is like a yam between two stones.)" — Prithvi Narayan Shah, Divya Upadesh (18th c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_OTTOMAN_A" Language="ko_KR"><Text>"Halk içinde mu'teber bir nesne yok devlet gibi, olmaya devlet cihanda bir nefes sıhhat gibi. (Among people nothing is prized like the state — yet no fortune on earth is like one breath of health.)" — Süleyman the Magnificent (Muhibbî), Dîvân-ı Muhibbî (16th c.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_OTTOMAN_B" Language="ko_KR"><Text>"Bir safâ bahşedelim gel şu dil-i nâ-şâda, gidelim serv-i revânım yürü Sa'd-âbâd'a. (Let us grant some joy to this joyless heart; come, my graceful cypress, let us away to Sa'dabad.)" — Nedîm, Dîvân (Tulip Era, 18th c.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_PIRATE_REPUBLIC_A" Language="ko_KR"><Text>"A merry life and a short one shall be my motto." — Bartholomew Roberts, in A General History of the Pyrates (1724)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_PIRATE_REPUBLIC_B" Language="ko_KR"><Text>"The pirates careened their ships at New Providence, which they made their republic." — Charles Johnson, A General History of the Pyrates (1724)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_QAJAR_A" Language="ko_KR"><Text>"درخت دوستی بنشان که کام دل به بار آرد (Plant the tree of friendship, that it bring the heart's desire to fruit.)" — Hafez, Divan, Ghazal 115 (14th c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_QAJAR_B" Language="ko_KR"><Text>"گر دست دهد ز مغز گندم نانی… عیشی بود آن نه حد هر سلطانی (Given but a loaf of wheaten bread… that were a joy beyond any sultan.)" — Omar Khayyám, Rubáiyát (rubāʿī 175, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SENGOKU_A" Language="ko_KR"><Text>"疾如風、徐如林、侵掠如火、不動如山 (Swift as the wind, silent as the forest, fierce as fire, immovable as the mountain.)" — Takeda Shingen, Fūrinkazan banner (after Sun Tzu, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SENGOKU_B" Language="ko_KR"><Text>"楽市楽座 (Rakuichi rakuza — free markets, open guilds.)" — Oda Nobunaga, Azuchi market edicts (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SHAWNEE_A" Language="ko_KR"><Text>"Sell a country! Why not sell the air, the clouds, and the great sea?" — Tecumseh (1810)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SHAWNEE_B" Language="ko_KR"><Text>"A single twig breaks, but the bundle of twigs is strong." — attributed to Tecumseh (attr. debated)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_TONGA_A" Language="ko_KR"><Text>"Fonua ko e tangata, tangata ko e fonua. (The land is the people, the people are the land.)" — Tongan proverb</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_TONGA_B" Language="ko_KR"><Text>"The Tuʻi Tonga held a maritime empire across the central Pacific." — I. C. Campbell, Island Kingdom: Tonga Ancient and Modern (1992)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ABBASID_A" Language="ko_KR"><Text>지혜의 집 학자들이 번역에 힘쓰지만, 그들의 봉급이 국고를 축냅니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ABBASID_B" Language="ko_KR"><Text>이름난 정원과 살롱이 도시를 달래지만, 뜰을 가꿀 일손은 부족합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_AKSUM_A" Language="ko_KR"><Text>홍해 상인들이 부두를 풍요롭게 하지만, 돈은 옛 의례가 아니라 선창으로 흘러듭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_AKSUM_B" Language="ko_KR"><Text>그들의 비석 교회가 순례자를 끌어들여, 인파가 구역을 가득 메웁니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ASSYRIA_A" Language="ko_KR"><Text>그들의 공성 기술자들이 당신의 병기창을 무장시켜 — 파성퇴와 공성탑이 쏟아져 나옵니다 — 다만 그들의 호전적 태도가 구역을 불편하게 합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_ASSYRIA_A" Language="ko_KR"><Text>공성 병기를 무장시키기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ASSYRIA_B" Language="ko_KR"><Text>노획한 사본들이 문서고를 채우지만, 전리품을 관리하는 데 돈이 듭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CARTHAGE_A" Language="ko_KR"><Text>포에니 상인들이 부두를 가득 메우며, 밭에서 일손을 끌어갑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CARTHAGE_B" Language="ko_KR"><Text>조선공들이 분주한 조선소를 세우고, 도시는 신전보다 선박 톤수를 중시합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_EGYPT_A" Language="ko_KR"><Text>기념비 석공들이 구역을 장식하지만, 그 작품들의 유지비가 만만치 않습니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_EGYPT_B" Language="ko_KR"><Text>나일식 범람 농법이 구역을 먹여 살리지만, 공사에서 일손을 빼갑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREECE_A" Language="ko_KR"><Text>철학자들의 아고라, 그리고 그들의 파벌 정치</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREECE_B" Language="ko_KR"><Text>극장과 주랑이 번성하는 동안 공방은 멈춰 섭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HAN_A" Language="ko_KR"><Text>집약 농법이 많은 이를 먹여 살리지만, 그 대가로 과밀이 생깁니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HAN_B" Language="ko_KR"><Text>공공 공사 인부들이 빠르게 건설하지만, 부역에 보조금이 듭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_KHMER_A" Language="ko_KR"><Text>바라이식 관개가 변두리를 푸르게 하지만, 수리 시설에 돈이 듭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_KHMER_B" Language="ko_KR"><Text>그들의 사원 행렬이 거리를 가득 메우는 큰 인파를 끌어들입니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAURYA_A" Language="ko_KR"><Text>고행 교단이 구역을 축복하며, 시주로 유지됩니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAURYA_B" Language="ko_KR"><Text>계단식 우물 정원이 풍성하게 산출하지만, 일손을 묶어 둡니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAYA_A" Language="ko_KR"><Text>천문 관측자들은 공방이 아니라 관측소를 지킵니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAYA_B" Language="ko_KR"><Text>빽빽한 밀파 경작지가 많은 이를 먹여 살리지만, 변두리를 붐비게 합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MISSISSIPPIAN_A" Language="ko_KR"><Text>봉분 의례가 구역의 삶을 풍요롭게 하며, 공물로 유지됩니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MISSISSIPPIAN_B" Language="ko_KR"><Text>삼림 채집이 구역을 먹여 살리지만, 뜰에서 일손을 빼갑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PERSIA_A" Language="ko_KR"><Text>태수령의 공물이 흘러들고, 그와 함께 원망도 쌓입니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PERSIA_B" Language="ko_KR"><Text>성벽을 두른 유원지 정원이 즐거움을 주지만, 좋은 농지를 잡아먹습니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ROME_A" Language="ko_KR"><Text>로마 기술자와 노병들이 당신의 공사를 일으키고 군단을 훈련시킵니다 — 다만 독수리의 그림자가 거슬립니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_ROME_A" Language="ko_KR"><Text>군단을 훈련시키기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ROME_B" Language="ko_KR"><Text>그들의 도로가 교역을 도시로 끌어들이고, 돈이 유행을 좌우합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BULGARIA_A" Language="ko_KR"><Text>그들의 기마·단조 노병들이 당신의 기병을 단련시킵니다 — 그리고 싸우는 만큼 거칠게 주먹다짐도 합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_BULGARIA_A" Language="ko_KR"><Text>기병을 단련시키기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BULGARIA_B" Language="ko_KR"><Text>변경 시장이 번성하고, 도시는 달력보다 장부를 더 빼곡히 채웁니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CHOLA_A" Language="ko_KR"><Text>타밀 해상 상인들이 항구를 가득 메우며, 땅에서 일손을 끌어갑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CHOLA_B" Language="ko_KR"><Text>거대한 사원 저수지가 순례자를 끌어들이고, 축제 인파가 구역을 가득 메웁니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_DAI_VIET_A" Language="ko_KR"><Text>성벽 학자들이 학문의 명맥을 잇지만, 공적 비용이 듭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_DAI_VIET_B" Language="ko_KR"><Text>요새 공사가 밭에서 많은 일손을 빼갑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HAWAII_A" Language="ko_KR"><Text>양어장과 산호초가 구역을 먹여 살리며, 뜰에서 일손을 끌어갑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HAWAII_B" Language="ko_KR"><Text>헤이아우 의례가 섬의 관습을 풍요롭게 하며, 도시가 그 비용을 댑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_INCA_A" Language="ko_KR"><Text>계단밭 석공과 도로 인부들이 훌륭하게 건설하지만, 비용이 듭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_INCA_B" Language="ko_KR"><Text>산악 계단밭이 붐비는 구역에서 많은 이를 먹여 살립니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAJAPAHIT_A" Language="ko_KR"><Text>향신료 교역상들이 부두를 풍요롭게 하고, 선창에서는 볼거리보다 이익을 이야기합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAJAPAHIT_B" Language="ko_KR"><Text>연안 어업이 뜰에서 일손을 빼가며 변두리를 먹여 살립니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MING_A" Language="ko_KR"><Text>도자기와 비단 교역상들이 장부를 채우는 동안 가마는 식어 갑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MING_B" Language="ko_KR"><Text>황실의 예술이 구역을 세련되게 하고, 그 화려함이 초라한 거리들을 무색하게 합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MONGOLIA_A" Language="ko_KR"><Text>그들의 마구간과 대장장이가 당신의 기병에 편자를 박고, 새 말과 무기를 갖춰 줍니다 — 다만 그 거만함이 거슬립니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_MONGOLIA_A" Language="ko_KR"><Text>기병을 소집하기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MONGOLIA_B" Language="ko_KR"><Text>초원 공물 교역로가 후하게 벌어들이고, 도시는 한때 의례를 지키던 자리에서 이제 돈을 셉니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NORMAN_A" Language="ko_KR"><Text>그들의 성채 석공과 기사들이 견고한 공사를 일으키고 당신의 병사들을 단련시킵니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_NORMAN_A" Language="ko_KR"><Text>기사를 양성하기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NORMAN_B" Language="ko_KR"><Text>봉건 소작료가 국고를 채우지만, 농지에서 일손을 빼갑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SONGHAI_A" Language="ko_KR"><Text>강·소금 대상(隊商)이 시장을 채우며, 땅에서 일손을 끌어갑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SONGHAI_B" Language="ko_KR"><Text>그들의 학자들은 이름난 도서관을 지키고, 이름난 반목도 벌입니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SPAIN_A" Language="ko_KR"><Text>보물 선단 교역상들이 개종을 둘러싼 분란 속에서 항구를 풍요롭게 합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SPAIN_B" Language="ko_KR"><Text>그들의 선교가 영혼을 얻고 옛 관습을 덮어씁니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_AMERICA_A" Language="ko_KR"><Text>공장 일꾼들이 생산을 끌어올리지만, 교대 근무가 불안을 낳습니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_AMERICA_B" Language="ko_KR"><Text>그들의 영화와 재즈가 구역에 활기를 불어넣지만, 보조금이 듭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BUGANDA_A" Language="ko_KR"><Text>호숫가 정원이 구역을 먹여 살리지만, 가꾸는 데 비용이 듭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BUGANDA_B" Language="ko_KR"><Text>나무껍질 천 장인들이 관습을 풍요롭게 하지만, 뜰에서 일손을 빼갑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_FRENCH_EMPIRE_A" Language="ko_KR"><Text>살롱과 위대한 작품이 번성하는 동안 공방은 멈춰 섭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_FRENCH_EMPIRE_B" Language="ko_KR"><Text>사치품 교역이 구역을 풍요롭게 하지만, 그 거드름이 가난한 이들을 성가시게 합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREAT_BRITAIN_A" Language="ko_KR"><Text>회계소와 서기들이 이익을 내고, 방적 공장은 불만을 낳습니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREAT_BRITAIN_B" Language="ko_KR"><Text>공업 공장이 뜨겁게 돌아가며, 농지에서 일손을 끌어갑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HEIAN_A" Language="ko_KR"><Text>궁정의 세련됨이 꽃피는 동안 공방은 멈춰 섭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HEIAN_B" Language="ko_KR"><Text>그들의 축제가 도시 전체를 들뜨게 하지만, 국고에 비용이 듭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ICELAND_A" Language="ko_KR"><Text>그들의 조선공과 선원들이 빠르게 롱십을 만들며, 농지에서 일손을 끌어갑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_ICELAND_A" Language="ko_KR"><Text>롱십을 출항시키기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ICELAND_B" Language="ko_KR"><Text>사가 음유시인들이 구역의 기억을 지키며, 도시가 그 비용을 댑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MEIJI_A" Language="ko_KR"><Text>그들의 무기고와 징집병 훈련이 힘겨운 인적 대가를 치르며 근대적 군대를 세웁니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_MEIJI_A" Language="ko_KR"><Text>군대를 근대화하기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MEIJI_B" Language="ko_KR"><Text>무모한 근대화, 그리고 뒷전으로 밀려난 옛 관습</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MEXICO_A" Language="ko_KR"><Text>벽화와 피에스타가 구역을 물들이며, 도시가 그 비용을 댑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MEXICO_B" Language="ko_KR"><Text>끈끈한 공동체가 생산보다 사기를 북돋웁니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MUGHAL_A" Language="ko_KR"><Text>세밀화가와 건축가들이 구역을 장식하지만, 비용이 듭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MUGHAL_B" Language="ko_KR"><Text>고급 직물 교역이 부두를 채우며, 밭에서 일손을 끌어갑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PRUSSIA_A" Language="ko_KR"><Text>그들의 훈련 교관과 무기고가 규율 잡힌 군대를 딱딱하게 벼려 냅니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_PRUSSIA_A" Language="ko_KR"><Text>연대를 훈련시키기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PRUSSIA_B" Language="ko_KR"><Text>그들의 사관학교가 혹독하게 가르치며, 옛 방식을 뒷전으로 밀어냅니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QING_A" Language="ko_KR"><Text>밀집 성장이 붐비는 구역에서 많은 이를 먹여 살립니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QING_B" Language="ko_KR"><Text>개항장 교역상들이 장부를 채우고, 공방은 느려집니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_RUSSIA_A" Language="ko_KR"><Text>중공업 인부들이 굶주린 구역에서 고되게 일합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_RUSSIA_B" Language="ko_KR"><Text>그들의 문학과 연극이 도시를 풍요롭게 하지만, 보조금이 듭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SIAM_A" Language="ko_KR"><Text>사원 예술과 춤이 구역을 풍요롭게 하며, 도시가 그 비용을 댑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SIAM_B" Language="ko_KR"><Text>그들의 활발한 교역이 후하게 벌어들이고 거리를 붐비게 합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SILLA_A" Language="ko_KR"><Text>탑 의례가 구역을 드높이며, 시주로 유지됩니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SILLA_B" Language="ko_KR"><Text>그들의 공예가 관습을 세련되게 하는 동안 공방은 멈춰 섭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEPAL_A" Language="ko_KR"><Text>산악 계단밭이 구역을 먹여 살리지만, 가꾸는 데 비용이 듭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEPAL_B" Language="ko_KR"><Text>그들의 산성 석공과 훈련 교관이 견고한 공사와 강인한 병사를 길러 냅니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_NEPAL_B" Language="ko_KR"><Text>산악 병사를 훈련시키기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_OTTOMAN_A" Language="ko_KR"><Text>퀼리예 전문가들이 가르치고 치료하지만, 공적 비용이 듭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_OTTOMAN_B" Language="ko_KR"><Text>성대한 축전이 관습을 풍요롭게 하는 동안 공방은 멈춰 섭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PIRATE_REPUBLIC_A" Language="ko_KR"><Text>그들의 사략선과 나포 선원들이 무법하게 당신의 국고를 채우고 갑판을 채웁니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_PIRATE_REPUBLIC_A" Language="ko_KR"><Text>사략선을 고용하기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PIRATE_REPUBLIC_B" Language="ko_KR"><Text>분주한 선체 수리소가 빠르게 일하고, 항구는 의례보다 속도를 중시합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QAJAR_A" Language="ko_KR"><Text>성벽을 두른 정원 농장이 구역을 먹여 살리지만, 가꾸는 데 비용이 듭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QAJAR_B" Language="ko_KR"><Text>Bāgh 축전이 관습을 풍요롭게 하는 동안 공방은 멈춰 섭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SENGOKU_A" Language="ko_KR"><Text>그들의 성하마을 무기 장인들이 칼날을 벼리고 당신의 전사들을 엄하게 단련시킵니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_SENGOKU_A" Language="ko_KR"><Text>칼날을 벼리기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SENGOKU_B" Language="ko_KR"><Text>다이묘 시장이 후하게 벌어들이지만, 밭에서 일손을 빼갑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SHAWNEE_A" Language="ko_KR"><Text>강가 저지대 채집이 구역을 먹여 살리지만, 어느 정도 비용이 듭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SHAWNEE_B" Language="ko_KR"><Text>협의회 의례가 관습을 풍요롭게 하는 동안 공방은 멈춰 섭니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_TONGA_A" Language="ko_KR"><Text>대양 어업이 변두리를 먹여 살리며, 뜰에서 일손을 끌어갑니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_TONGA_B" Language="ko_KR"><Text>섬 교역로가 후하게 벌어들이고, 도시는 의례보다 장부를 먼저 챙깁니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEUTRAL_A" Language="ko_KR"><Text>두 삶의 방식이 나란히 자리 잡으면서, 그들의 관습이 도시를 풍요롭게 합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEUTRAL_B" Language="ko_KR"><Text>그들의 거류지가 당신의 국고에 세금을 내지만, 그 부담에 불만을 품습니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_CULTURE" Language="ko_KR"><Text>그들의 문화를 받아들이기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_GOLD" Language="ko_KR"><Text>그들의 교역에 과세하기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_PRODUCTION" Language="ko_KR"><Text>그들의 공예를 활용하기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_SCIENCE" Language="ko_KR"><Text>그들의 학문을 지원하기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_FAITH" Language="ko_KR"><Text>그들의 신앙을 존중하기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_FOOD" Language="ko_KR"><Text>그들의 농법을 받아들이기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_HAPPINESS" Language="ko_KR"><Text>그들의 축제에 함께하기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_DEFAULT" Language="ko_KR"><Text>거류지를 장려하기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_CULTURE" Language="ko_KR"><Text>문화</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_GOLD" Language="ko_KR"><Text>금</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_PRODUCTION" Language="ko_KR"><Text>생산력</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_SCIENCE" Language="ko_KR"><Text>과학</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_FAITH" Language="ko_KR"><Text>신앙</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_FOOD" Language="ko_KR"><Text>식량</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_HAPPINESS" Language="ko_KR"><Text>행복</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_IGNORE" Language="ko_KR"><Text>내버려 두기</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_NOTE_IGNORE" Language="ko_KR"><Text>당신은 그들을 회유하지도 과세하지도 않습니다. 거류지는 자기들끼리 지내며 당신에게 아무것도 요구하지 않습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_TITLE" Language="ko_KR"><Text>무엇이 사람들을 도시에서 떠나게 하는가</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R0_Q" Language="ko_KR"><Text>불행 / 낮은 산출량</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R0_N" Language="ko_KR"><Text>평시의 주된 원동력. 행복은 여전히 가장 큰 단일 요인이지만, 1.4.1 재조정 이후에는 도시의 인구당 산출량도 결정에 실질적인 몫을 차지합니다. 따라서 불행한 도시와 산출량이 낮은 도시 모두 사람을 잃으며, 둘 다에 해당하는 도시가 가장 빨리 비워집니다. 불행한 정착지는 이중으로 타격을 받습니다. 1.4.1은 그런 도시의 산출량도 억제하는데, 번영 점수가 이를 직접 반영하기 때문입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R1_Q" Language="ko_KR"><Text>구역에 대한 전쟁 피해</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R1_N" Language="ko_KR"><Text>도시의 어떤 구역이든(중심부든 외곽 도시/농촌 구역이든) 입은 피해는 게임 상태에서 읽혀(안개와 무관하게) 전쟁 페널티를 조정합니다. 도시의 가장자리만 파괴한 공격이라도, 중심부는 멀쩡해 보여도, 여전히 반영됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R2_Q" Language="ko_KR"><Text>포위당하거나 공격받음</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R2_N" Language="ko_KR"><Text>도시별로 적용됩니다. 포위당한 도시 자체만 사람을 잃습니다. 도시의 어떤 구역이든 포위되거나 유린당하면(함락/분쟁 상태), 도시 체력이 떨어지기 전이라도 발동합니다. 이는 문명 전체의 점수가 아닙니다. 다른 곳에서 전쟁 중인 문명이라도 영향받지 않는 도시들은 그대로 유지됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R3_Q" Language="ko_KR"><Text>도시 국가 / 독립 세력에게 공격받음</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R3_N" Language="ko_KR"><Text>주요 문명과의 전쟁과 동일한 도시별 분쟁 압력. 독립/소국 세력의 도시 습격 역시 공격자가 누구든 그 도시의 사람들을 몰아냅니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R4_Q" Language="ko_KR"><Text>도시 경계 내에서 약탈된 타일</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R4_N" Language="ko_KR"><Text>도시 자체 부지에서 약탈된 시설물은 경계 내의 폭력으로 간주됩니다(조사되며, 안개와 무관). 약탈된 타일이 많을수록 압력도 커집니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R5_Q" Language="ko_KR"><Text>기아</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R5_N" Language="ko_KR"><Text>순 식량이 마이너스인 도시는 기아 상태로 표시됩니다. 대부분의 사람들이 더 잘 먹는 도시로 달아나며, 기근이 제때 탈출하지 못한 이들을 죽이기에 일부는 사망하기도 합니다(이주가 아니라 죽음). 순 식량이 회복되면 해제됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R6_Q" Language="ko_KR"><Text>역병 / 질병</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R6_N" Language="ko_KR"><Text>감염된 도시는 사람을 잃으며, 그곳을 떠나는 이주민이 역병을 목적지로 옮길 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R7_Q" Language="ko_KR"><Text>자연재해(홍수, 화산)</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R7_N" Language="ko_KR"><Text>환경 재해로 인한 고통은 상한이 있는 가변 척도에 따라 도시별 페널티를 더하며, 재해의 실제 영향(약한 심각도 플래그가 아니라 산출량/피해 표)에 비례해 조정됩니다. 여느 치명적 위기와 마찬가지로 사람들을 몰아내는 동시에 달아나지 못한 일부를 죽입니다. 분화/홍수는 진앙 주변의 모든 도시를 강타하므로, 주인 없는 경계 지형의 화산이라도 인접 도시의 사람들을 타격합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R8_Q" Language="ko_KR"><Text>인구가 많은 도시의 과밀</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R8_N" Language="ko_KR"><Text>기준치를 넘는 도시 인구는 압력을 더합니다(과밀 항목). 지도자별 조정을 통해 과밀 할인으로 이를 완화할 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R9_Q" Language="ko_KR"><Text>제국 전역의 전쟁 피로</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R9_N" Language="ko_KR"><Text>장기전에 시달린 문명은 제국 전역의 전쟁 피로 불행(1.4.1)을 안게 되며, 이는 전선의 도시별 폭력에 더해 모든 정착지에 완만한 추가 압력을 가합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_TITLE" Language="ko_KR"><Text>무엇이 사람들을 도시로 끌어들이는가</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R0_Q" Language="ko_KR"><Text>더 높은 번영(식량, 생산력, 금, 과학, 문화)</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R0_N" Language="ko_KR"><Text>각 도시는 인구당 가중치를 적용한 식량, 생산력, 금, 과학, 문화를 점수화합니다. 인근 도시보다 높은 점수는 이주민을 끌어들입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R1_Q" Language="ko_KR"><Text>더 높은 행복</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R1_N" Language="ko_KR"><Text>가장 큰 단일 유인 요인. 세계 평균을 기준으로 판단되므로, 이웃보다 행복한 도시는 이주민을 끌어들입니다. 1.4.1 재조정 이후로는 더 이상 다른 모든 요소를 압도하지 않아, 강한 산출량이 함께 사람을 끌어들입니다. 1.4.1의 다섯 행복 단계(불행부터 황홀까지)가 이를 직접 반영합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R2_Q" Language="ko_KR"><Text>축전(황금기) 중인 문명</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R2_N" Language="ko_KR"><Text>1.4.1의 축전은 더 드물어지고 관광에 기여하므로, 축전 중인 문명은 지속되는 몇 턴 동안 눈에 띄게 더 강한 유인력을 갖습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R3_Q" Language="ko_KR"><Text>행복 친화적인 정부</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R3_N" Language="ko_KR"><Text>행복한 정착지에 보상을 주는 소극 효과를 지닌 정부는 문명의 도시를 조금 더 매력적으로 만듭니다. 그 효과는 의도적으로 작습니다. 정부의 영향 대부분은 이미 그것이 낳는 행복과 산출량을 통해 모델에 반영되기 때문입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R4_Q" Language="ko_KR"><Text>이민 우호 입장 정책</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R4_N" Language="ko_KR"><Text>사회 정책 계통의 이민 우호 입장은 당신의 도시로의 유인력을 높이고 영향력을 벌어들입니다(약간의 인구 유지력을 맞바꿈).</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R5_Q" Language="ko_KR"><Text>국경 개방 협정</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R5_N" Language="ko_KR"><Text>국경 개방 협정은 문명 간 유인 보너스를 더하므로, 두 문명 사이를 오가는 사람이 늘어납니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R6_Q" Language="ko_KR"><Text>인접함</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R6_N" Language="ko_KR"><Text>이주에는 거리 페널티가 있으므로, 사람들은 지도 반대편이 아니라 인근의 더 나은 정착지로 이동합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_TITLE" Language="ko_KR"><Text>누가 참여하는가(인구를 보내거나 받음)</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R0_Q" Language="ko_KR"><Text>당신의 문명</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R0_N" Language="ko_KR"><Text>여느 주요 문명처럼 인구를 보내고 받습니다. 그 도시들은 이주민을 잃기도 하고 얻기도 합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R1_Q" Language="ko_KR"><Text>도시뿐 아니라 마을도</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R1_N" Language="ko_KR"><Text>마을도 참여합니다. 도시와 똑같이 이주민을 보내고 받습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R2_Q" Language="ko_KR"><Text>자신의 도시끼리 사람을 주고받음(내부 이주)</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R2_N" Language="ko_KR"><Text>사람들은 문명 간뿐 아니라 한 문명의 자체 정착지 사이에서도 이동합니다. 대시보드는 이 내부 이동을 별도의 색으로 표시합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R3_Q" Language="ko_KR"><Text>다른 주요 문명들</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R3_N" Language="ko_KR"><Text>모든 주요 문명은 만났든 아니든 첫 턴부터 시뮬레이션되므로, 이주 지도가 당신이 탐험한 범위에 치우치지 않습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R4_Q" Language="ko_KR"><Text>도시 국가 / 소규모 문명 / 독립 세력</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R4_N" Language="ko_KR"><Text>현재로서는 아닙니다. 이들은 이주 인구를 보내지도 받지도 않습니다. 다만 주요 문명의 도시를 공격하면 여전히 그 도시의 사람들을 몰아냅니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R5_Q" Language="ko_KR"><Text>만나지 않은 문명들</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R5_N" Language="ko_KR"><Text>완전히 시뮬레이션되지만, 스포일러 방지를 위해 가시성 정책을 넓히기 전까지는 기본적으로 UI에서 가려집니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_TITLE" Language="ko_KR"><Text>동작 방식</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R0_Q" Language="ko_KR"><Text>서로 다른 문명 간의 이주</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R0_N" Language="ko_KR"><Text>사람들은 실제로 국경을 넘지만, 그 흐름은 국경, 거리, 그리고 양측의 이민 입장에 의해 조절됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R1_Q" Language="ko_KR"><Text>멀리 떨어진 AI 대 AI 전쟁으로 인한 이주</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R1_N" Language="ko_KR"><Text>안개와 무관합니다. 전쟁 압력은 실제 게임 상태를 읽으므로, 멀리 떨어진 AI 대 AI 전쟁도 당신이 볼 수 있는 전쟁과 똑같이 사람들을 몰아냅니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R2_Q" Language="ko_KR"><Text>이민 반대 입장이 당신의 사람들을 붙잡음</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R2_N" Language="ko_KR"><Text>인구 유지력을 높이고(떠나는 사람이 줄어듦) 생산력을 높이지만, 영향력을 대가로 치릅니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R3_Q" Language="ko_KR"><Text>국경 폐쇄가 문명 간 흐름을 줄임</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R3_N" Language="ko_KR"><Text>국경 개방 협정이 없으면 문명 간을 오가는 사람이 훨씬 줄어듭니다. 국경을 닫으면 이를 더욱 조입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R4_Q" Language="ko_KR"><Text>인구와 산출량이 실제로 변함(단순 표시가 아님)</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R4_N" Language="ko_KR"><Text>실제 매 턴 게임플레이에 기록됩니다. 도시 인구와 그들이 내는 산출량이 실제로 움직이며, 겉치레 오버레이가 아닙니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R5_Q" Language="ko_KR"><Text>모든 계층을 조정하거나 끌 수 있음</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R5_N" Language="ko_KR"><Text>프리셋과 함께 옵션 ▸ 모드 ▸ Emigration에 약 57개의 개별 설정이 있습니다. 모든 계층은 기본적으로 켜져 있으며 끌 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R6_Q" Language="ko_KR"><Text>이주민이 즉시 도착함</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R6_N" Language="ko_KR"><Text>아닙니다. 그들은 이동하므로, 거리에 따라 도착이 지연되어 떠난 뒤 최대 몇 턴이 걸립니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R7_Q" Language="ko_KR"><Text>이주민을 받아들이는 것은 공짜임</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R7_N" Language="ko_KR"><Text>아닙니다. 이주민을 받으면 행복과 금에 일시적이고 점차 사라지는 통합 비용이 더해집니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R8_Q" Language="ko_KR"><Text>전쟁만으로 도시를 0까지 비울 수 있음</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R8_N" Language="ko_KR"><Text>아닙니다. 전쟁 이탈(사람들이 달아나는 것)은 상한이 있으며(siegeLossCapPct) 도시를 농촌 하한선 아래로 절대 떨어뜨리지 않습니다. 위기 사망은 별개의 경로이며 그런 식으로 하한이 걸리지 않습니다. 장기간의 위기(전쟁, 포위, 기근)는 제때 탈출하지 못한 일부를 계속 죽이므로, 충분히 오래 지속되는 참사는 도시의 농촌 인구를 바닥까지 소진시킬 수 있습니다. 죽음은 완만하게 시작해 위기가 길어질수록 커지며, 오직 농촌 인구만 제거하므로 도시 핵심부와 정착지 자체는 실제 함락 전까지 살아남습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R9_Q" Language="ko_KR"><Text>치명적 위기는 단지 몰아내는 것이 아니라 죽음</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R9_N" Language="ko_KR"><Text>전쟁, 포위, 재난, 기근은 달아날 곳이 있어도 제때 탈출하지 못한 일부를 죽입니다. 그것은 이주가 아니라 죽음이며(별도의 손실 집계), 이주가 아닙니다. 평범한 번영/불행 이주는 결코 사람을 죽이지 않습니다. 사람들은 그저 더 나은 도시로 떠날 뿐입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_TITLE" Language="ko_KR"><Text>정체성, 통합 및 귀환</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R0_Q" Language="ko_KR"><Text>각 정착지는 사람들이 어디에서 왔는지 기억함</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R0_N" Language="ko_KR"><Text>모든 정착지는 진행 중인 민족 구성을 유지합니다. 각 사람이 어느 문명에서 유래했는지에 따른 인구 비율 말입니다. 함락된 도시는 이미 그곳에 살던 사람들의 출신을 그대로 간직합니다. 민족 구성 렌즈(Shift+E)는 이를 타일별 모자이크로 그려 냅니다. 밀집된 도시 핵심부는 지배적 출신의 색으로, 더 작은 공동체는 타일 전역에 퍼져 있으며, 각 출신의 비율이 타일 전반에 보존되어 도시의 인구 역사가 한눈에 읽힙니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R1_Q" Language="ko_KR"><Text>새로 온 이들은 시간이 지나며 정착지에 통합됨</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R1_N" Language="ko_KR"><Text>이주민은 서서히 정착 문명의 정체성을 받아들이므로, 평화롭고 안정된 도시는 여러 턴에 걸쳐 이산민을 천천히 흡수하며 렌즈는 그 색이 소유자의 색으로 섞여 가는 것을 보여줍니다. 기본적으로 켜져 있으며, 옵션에서 전환할 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R2_Q" Language="ko_KR"><Text>전쟁이나 소요는 공동체를 뚜렷이 유지시킴</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R2_N" Language="ko_KR"><Text>정착지가 이산민의 고향과 전쟁 중이면 통합이 멈추고, 소요 중인 도시에서는 느려집니다. 따라서 분쟁 중이거나 원한이 서린 도시는 렌즈에서 자기 색을 유지하는 뚜렷하고 미통합된 공동체를 간직합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R3_Q" Language="ko_KR"><Text>고향이 회복되면 이산민이 귀환함</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R3_N" Language="ko_KR"><Text>귀환 이주. 한 민족의 원래 문명이 그들의 정착지와 평화롭고 다시 번영하게 되면, 타지에 사는 이들의 일부가 시간이 지나며 고향길에 올라 실제 인구를 되돌려 놓습니다. 여러 턴에 걸친 느린 흐름이지 결코 급격한 복귀가 아니며, 관계가 평화롭게 유지되는 동안에만 일어납니다. 기본적으로 켜져 있으며, 옵션에서 전환할 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R4_Q" Language="ko_KR"><Text>난민 물결이 플레이어의 결정을 촉발할 수 있음</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R4_N" Language="ko_KR"><Text>때때로 실제 격변(이웃의 정복 행각이나 역병 위기)이 당신의 영토로 큰 물결을 보내면, 짧은 결정이 나타납니다. 그들을 환영하거나, 변경에 정착시키거나, 돌려보내는 것입니다. 효과는 가볍고 설계상 드뭅니다(많아야 한 시대에 몇 번). 옵션 ▸ 난민 결정에서 전환할 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_TITLE" Language="ko_KR"><Text>범위 및 한계</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R0_Q" Language="ko_KR"><Text>AI 전략이나 결정을 바꿈</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R0_N" Language="ko_KR"><Text>아닙니다. 오직 인구의 이동만 덧입혀집니다. 기본 게임의 AI 의사 결정은 손대지 않습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R1_Q" Language="ko_KR"><Text>기본 게임 파일을 대체하거나 덮어씀</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R1_N" Language="ko_KR"><Text>아닙니다. 추가 방식일 뿐이며, 어떤 기본 게임 파일도 대체되거나 덮어써지지 않습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R2_Q" Language="ko_KR"><Text>지도를 가로질러 인구를 즉시 이동시킴</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R2_N" Language="ko_KR"><Text>아닙니다. 거리 페널티가 적용됩니다. 사람들은 한 번에 세계를 가로지르는 것이 아니라 인근의 더 나은 정착지로 이동합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R3_Q" Language="ko_KR"><Text>개별 이주민을 직접 배치하거나 지정하게 함</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R3_N" Language="ko_KR"><Text>아닙니다. 흐름은 번영, 전쟁, 정책으로부터 시뮬레이션됩니다. 당신은 직접 손으로가 아니라 산출량과 입장으로 그 흐름을 빚어냅니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R4_Q" Language="ko_KR"><Text>한 문명이 지도 전체의 인구를 눈덩이처럼 불리게 함</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R4_N" Language="ko_KR"><Text>아닙니다. 세 가지 제동 장치가 복합적으로 작동합니다. 필드 상대적 번영 모델(모든 도시가 세계 평균을 기준으로 판단되므로, 어떤 단일 자석의 유인력도 한없이 폭주하지 않음), 새로 밀려든 유입을 소화 중인 문명에 대한 혼잡 역풍, 그리고 자기 교정하는 반(反)눈덩이 제동입니다. 한 문명의 인구가 세계 평균보다 앞서 나갈수록, 그 안으로의 추가 이주에 맞서는 역풍이 강해집니다(선두 문명 자체의 사람들이 떠나는 것은 결코 늦추지 않고, 오직 밀려드는 신규 유입만 늦춤). 1.4.1 재조정은 눈덩이 방지 검증을 거쳤으며, 덜 짓눌린 필드를 기준으로 도시를 판단함으로써 선두 문명을 키우는 격차를 넓히기는커녕 실제로 좁힙니다. 세 제동 장치 모두 옵션 ▸ 모드 ▸ Emigration에서 조정 가능하며, 반눈덩이 강도는 끔 / 약함 / 표준 / 강함 설정이 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_TITLE" Language="ko_KR"><Text>FAQ: 이주는 어떻게 작동하는가</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F0_Q" Language="ko_KR"><Text>사람들이 떠나면 어디로 가나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F0_A" Language="ko_KR"><Text>그들이 다다를 수 있는 가장 가까운 더 번영한 정착지로 갑니다. 이주에는 거리 페널티가 있으므로, 사람들은 지도상 최고의 단일 도시가 아니라 지역 내에서 이동합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F1_Q" Language="ko_KR"><Text>전쟁 난민은 어디로 달아나나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F1_A" Language="ko_KR"><Text>가장 가까운 적에게서 멀어지며, 먼저 자신의 문명을, 그다음 중립 문명을, 그리고 공격자를 마지막으로 선호합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F2_Q" Language="ko_KR"><Text>얼마나 많은 사람이, 얼마나 자주 이동하나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F2_A" Language="ko_KR"><Text>전쟁과 재난으로 인한 난민은 매 턴 달아납니다. 자발적(번영/불행) 이주는 더 완만하여, 이동 사이에 잠시 쉽니다. 각 문명은 규모와 활성 위기에 비례해 조정되는 자체 매 턴 예산으로 이주하므로, 동시다발적 전쟁이 서로를 막지 않습니다. 집계는 환산된 사람 수 또는 원시 인구 점수로 표시되며(선택 가능), 전체 시뮬레이션은 옵션에서 대규모 세이브를 위해 늘릴 수 있는 턴 간격으로 실행됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F3_Q" Language="ko_KR"><Text>사람들이 죽나요, 아니면 그저 떠나나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F3_A" Language="ko_KR"><Text>원인에 따라 둘 다입니다. 평범한(번영 / 불행) 이주는 결코 사람을 죽이지 않습니다. 사람들은 그저 더 나은 도시로 떠날 뿐입니다. 그러나 치명적 위기(전쟁, 포위, 재난, 기근)는 제때 탈출하지 못한 일부를 죽이기도 합니다. 그 죽음은 나머지가 달아나는 와중에도 세계에서 완전히 사라집니다(난민과 별개로 손실/사망 집계에 표시됨). 그래서 위기에 처한 도시는 한 번에 두 방식으로 사람을 잃습니다. 대부분은 달아나고, 소수는 죽습니다. 사망자 수는 한꺼번에 닥치기보다 점차 쌓여, 위기가 길게 끌수록 커지고 해소되면 완화됩니다. 이와 별개로, 난민은 이동 중에도 목숨을 잃을 수 있습니다. 달아나던 목적지 도시가 도착 전에 함락되거나 파괴되거나, 그들을 받아들이기에 너무 가득 차 있으면 말입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_TITLE" Language="ko_KR"><Text>FAQ: 전쟁, 정복 및 회복</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F0_Q" Language="ko_KR"><Text>도시를 점령하거나 잃으면 어떻게 되나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F0_A" Language="ko_KR"><Text>기존 주민들은 당신이 아니라 그들이 유래한 문명(이전 소유자)으로 계속 표시됩니다. 민족 렌즈는 도시의 타일을 그 출신의 색으로 칠하며(타일별 모자이크), 네트워크 도표에서 그들의 점은 옛 문명의 색과 이름을 유지합니다. 오직 함락 이후에 태어난 새 인구만 당신의 것으로 집계됩니다. 그래서 정복된 도시는 실제 출신 역사를 지니며, 이는 도시가 다시 성장하고 새로 온 이들이 통합되면서야 서서히 옅어집니다. 전쟁은 도시를 줄일 수 있지만, 오직 실제 함락만이 그것을 넘겨받습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F1_Q" Language="ko_KR"><Text>전쟁으로 도시가 규모 12에서 5로 줄었는데, 다시 자라나나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F1_A" Language="ko_KR"><Text>네. 전쟁 이탈은 인구 점수만 옮길 뿐, 결코 구역을 파괴하거나 건물을 삭제하지 않습니다(그것은 기본 게임 자체의 정복만이 합니다). 당신은 더 적은 인구로 큰 도시의 기반 시설을 유지하며, 도시는 두 가지 방식으로, 모두 추가 방식으로 다시 자라납니다. 기본 게임의 정상적인 식량 성장(그대로 유지됨)과 이주입니다. 전투가 멈추고 번영이 회복되면, 살아남은 고산출 건물/구역이 도시를 매력적인 목적지로 만들어 이주민이 유입되고 인구가 다시 더해집니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F2_Q" Language="ko_KR"><Text>달아났던 바로 그 난민들이 돌아오나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F2_A" Language="ko_KR"><Text>이제 일부는 돌아옵니다. 고향이 회복되면 말입니다. 대부분은 달아난 곳에 영구히 재정착하지만, 귀환 이주가 고향으로의 이끌림을 더합니다. 이산민의 원래 문명이 그들의 정착지와 평화롭고 다시 잘 지내게 되면, 일부가 시간이 지나며 고향길에 올라 실제 인구를 되돌려 놓습니다. 여러 턴에 걸친 느린 흐름이지 결코 급격한 복귀가 아니며, 관계가 평화롭게 유지되는 동안에만 흐릅니다. 전쟁으로 피폐해진 도시는 여전히 주로 출생과 새 이주민으로 다시 자라나며, 귀환은 평화와 번영이 돌아온 뒤의 추가적이고 완만한 원천입니다. 옵션에서 귀환 이주를 끌 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F3_Q" Language="ko_KR"><Text>약탈된 타일을 수리하면 잃은 인구가 복구되나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F3_A" Language="ko_KR"><Text>아닙니다. 약탈된 타일은 압력만 가할 뿐입니다(사람들을 몰아내는 번영 페널티). 이를 수리하면 그 압력이 사라져 도시가 사람을 잃는 것을 멈추고 번영을 더 빨리 회복하지만, 수리가 인구 점수를 되돌려 놓지는 않습니다. 회복 촉진제일 뿐, 복구 버튼이 아닙니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F4_Q" Language="ko_KR"><Text>전쟁은 도시를 얼마나 줄일 수 있나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F4_A" Language="ko_KR"><Text>전쟁 이탈(사람들이 달아나는 것)은 포위가 시작될 때 도시 인구의 60%(siegeLossCapPct)로 상한이 걸립니다. 남은 이들은 "버티며" 더는 밀려날 수 없습니다. 지속되는 포위는 탈출하지 못한 일부를 죽이기도 합니다. 그 죽음은 이탈 상한이나 농촌 하한선에 얽매이지 않으므로, 충분히 오래 끄는 포위는 도시의 농촌 인구를 바닥까지 소진시킬 수 있습니다. 다만 도시 핵심부와 정착지는 실제 함락 전까지 여전히 서 있습니다. 죽음은 한꺼번이 아니라 점차 쌓이며, 포위가 풀리면 완화됩니다. 오직 실제 함락만이 도시를 넘겨받습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F5_Q" Language="ko_KR"><Text>전쟁으로 피폐해진 도시를 가장 빨리 회복하는 방법은?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F5_A" Language="ko_KR"><Text>원인을 해소해 도시가 순 유출지에서 다시 자석으로 뒤집히게 하십시오. 평화를 맺고(폭력은 약 2~3턴 만에 감쇠하여 전쟁 페널티를 걷어냄), 약탈된 타일을 수리하고(잔존 압력을 제거함), 행복을 높이십시오(가장 큰 번영 요인으로, 불행 이주를 멈추는 동시에 이주민을 끌어들임).</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_8_TITLE" Language="ko_KR"><Text>FAQ: 이동 중인 이주민</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_8_F0_Q" Language="ko_KR"><Text>도시 사이를 이동하는 동안 이주민에게 무슨 일이 일어나나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_8_F0_A" Language="ko_KR"><Text>이주는 즉각적이지 않습니다. 이동 지연이 있습니다. 이주민은 떠나는 턴에 출발지를 떠납니다. 그 농촌 인구 점수(그리고 그 일꾼의 타일 산출량)는 즉시 제거됩니다. 그들은 이동 시간 동안 어느 도시에도 속하지 않은 채, 타일도 일구지 않고 아무것도 생산하지 않지만, 유지비나 금, 행복도 들지 않습니다. 그들이 도착할 때에야 목적지에 더해지며, 그제서야 목적지가 산출량을 얻고 일회성 통합 비용을 치릅니다. 이동은 거리에 따라 1~4턴이며(턴당 약 5헥스, 최대 4로 상한), 난민은 최소 1턴이 걸립니다(그들은 야영함). 도착이 보장되지는 않습니다. 도시는 턴당 일정 수의 신규 유입만 받아들일 수 있으므로(도시별 수용 상한), 그 턴에 목적지가 가득 차 있으면 이주민은 이동 중에 기다렸다가 다음 턴에 다시 시도합니다. 그리고 그들이 이동하는 동안 목적지가 함락되거나 파괴되면(혹은 며칠을 기다린 뒤에도 여전히 자리를 찾지 못하면) 난민은 이동 중에 목숨을 잃습니다(도착이 아니라 손실로 집계됨).</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_8_F1_Q" Language="ko_KR"><Text>이동 중인 이주민의 경제적 영향은 얼마나 큰가요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_8_F1_A" Language="ko_KR"><Text>작고 자기 교정적입니다. 이주민 한 명당은 미미합니다. 농촌 점수 하나 분량의 산출량이 약 1~2턴(많아야 4턴) 정지되며, 출발지는 어차피 그 일꾼을 잃고 있었으므로 목적지가 그들을 받아들이기 전의 지연만이 진정으로 상실된 산출입니다. 총합으로는 대략 (현재 이동 중인 이주민) × (그들의 인구당 산출량)입니다. 평시에는 반올림 오차 수준이지만, 큰 전쟁 중에는 눈에 띄는 일시적 유휴 인구 풀이 됩니다. 난민이 매 턴 달아나면서 한 번에 더 많은 이가 이동 중이기 때문입니다. 이는 이주가 느려지면 언제나 몇 턴 안에 0을 향해 빠져나갑니다. 이 이동 지연은 이민이 따라잡기 전에 이주가 먼저 오를 수 있는 이유이기도 합니다. 출발은 지금 집계되고, 도착은 몇 턴 뒤에 이루어지기 때문입니다. 이는 순 이주를 왜곡하지 않으며, 순 이주는 정착이 완료된 문명 간 이동만 집계합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_8_F2_Q" Language="ko_KR"><Text>한 도시가 턴당 얻거나 잃는 인구에 한계가 있나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_8_F2_A" Language="ko_KR"><Text>네, 양쪽 모두요. 정착지는 턴당 최대 몇 이주 점수만 내보낼 수 있고(그래서 포위된 도시라도 한 번의 파국적 턴에 비워지는 대신 꾸준히 사람을 잃음) 최대 몇 점수만 받아들일 수 있어, 한 신흥 도시가 한꺼번에 수십의 신규 유입을 삼킬 수 없습니다. 수용 상한을 넘는 도착민은 그저 이동 중에 기다렸다가 나중 턴에 다다릅니다. 두 상한 모두 Emigration 강도 프리셋(낮음 / 중간 / 높음)에 따라 조정되며 고급 설정에서 개별적으로 미세 조정할 수 있습니다. 전쟁, 기근, 재난으로 인한 사망은 별개의 경로이며 어느 상한에도 집계되지 않습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_9_TITLE" Language="ko_KR"><Text>FAQ: 1.4.1 업데이트</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_9_F0_Q" Language="ko_KR"><Text>이 모드는 1.4.1의 행복, 정부, 축전 변경을 어떻게 활용하나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_9_F0_A" Language="ko_KR"><Text>직접 읽어 들입니다. 행복은 이제 다섯 단계 척도(분노, 불행, 행복, 기쁨, 황홀)로, 도시의 매력에 반영됩니다. 축전(황금기) 중인 문명은 지속되는 동안 더 강한 유인력을 갖고, 정부의 행복 친화적 소극 효과는 그 도시들을 조금 끌어올리며, 제국 전역의 전쟁 피로는 전쟁에 지친 문명의 정착지에 추가 압력을 더합니다. 1.4.1은 또한 불행한 도시가 산출량을 더 많이 잃게 하는데, 인구당 번영 점수가 이를 이미 반영합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_9_F1_Q" Language="ko_KR"><Text>1.4.1이 행복이 이주를 얼마나 강하게 좌우하는지를 바꿨나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_9_F1_A" Language="ko_KR"><Text>네, 그리고 모드는 그에 맞춰 재조정되었습니다. 행복은 여전히 가장 큰 단일 요인이지만, 더 이상 도시의 경제를 압도하지 않습니다. 산출량이 이제 결정에서 의미 있는 몫을 차지하므로, 도시의 생산력이나 금, 식량을 높이면 사람을 붙잡고 끌어들이는 데 눈에 띄게 도움이 됩니다. 재조정은 어떤 문명도 눈덩이처럼 불어나지 않도록 검증되었으며, 옵션 토글 하나로 1.4.1 이전의 정확한 동작으로 되돌릴 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_TITLE" Language="ko_KR"><Text>FAQ: 대시보드 읽기</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F0_Q" Language="ko_KR"><Text>"사람" 숫자는 무엇을 의미하며, 왜 이제 현실적인가요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F0_A" Language="ko_KR"><Text>문명의 인구는 추상적입니다(1, 2, 3…). 이 모드는 각 점수를 Civilization VII 자체의 시대별 성장 계산법을 사용해 대표 인원수로 바꿉니다. 그래서 그 수치는 당신이 어느 시대에 있든 그럴듯한 역사적 규모로 읽힙니다. 고대에 마을을 떠나는 한 점수는 수천 명이고, 광활한 근대 대도시의 같은 점수는 훨씬 더 많으며, 가장 큰 근대 도시들은 실제 1,000만~3,800만의 메가시티 범위에 이릅니다. 각 시대 경계에서 매끄럽게 변하고(갑작스러운 도약 없음), 같은 규모의 두 정착지가 결코 동일하게 읽히지 않으며(그 작은 편차는 실제 행복과 도시/농촌 구성을 따름), 수치는 Demographics 모드와 정확히 일치합니다. 단위 토글로 환산된 사람과 원시 문명 숫자 사이를 언제든 전환하십시오.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F1_Q" Language="ko_KR"><Text>게임이 끝난 뒤에도 계속 플레이하면 인구가 계속 환산되나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F1_A" Language="ko_KR"><Text>네. 자연스러운 종료 이후 "한 턴 더"로 계속 진행하면, 메가시티는 역사적 상한선에서 멈추는 대신 가상의 미래로 계속 성장합니다(폭주하지 못하도록 제한됨).</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F2_Q" Language="ko_KR"><Text>문명이 내보낸 난민뿐 아니라 받아들인 난민도 볼 수 있나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F2_A" Language="ko_KR"><Text>네. 그래프 탭에는 둘 다 있습니다. 난민 유출(문명이 전쟁/재난/정복으로 몰아낸 사람)과 난민 유입(재정착시킨 몰아내진 사람)입니다. 각 선의 툴팁은 총계를 원인별로 나눕니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F3_Q" Language="ko_KR"><Text>왜 한 도시가 갑자기 많은 사람을 잃었나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F3_A" Language="ko_KR"><Text>화면 알림이 원인(전쟁, 재난, 불행 등)을 알려주고, 도시별 표시가 현재의 압력들을 분해해 보여줍니다. 알림 탭은 이제 서사적 연대기 항목을 포함한 전체 사건 장부를 보관하므로, 아무 행이나 클릭해 무엇이 그것을 일으켰는지, 어디를 떠났는지, 사람들이 어디로 갔는지 볼 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F4_Q" Language="ko_KR"><Text>어떤 특정 전쟁이나 재난이 그것을 일으켰는지 볼 수 있나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F4_A" Language="ko_KR"><Text>네. 원인 탭에서 각 대분류 원인(전쟁, 재난, 불행…)은 그 뒤의 특정 사건(이름 붙은 전쟁, 특정 분화/홍수, 또는 활성 시대 위기)으로 파고들며, 각 사건의 이주와 사망을 보여줍니다. 시대 위기는 자신에게 귀속됩니다. 침략 위기는 전쟁 아래에, 역병 위기는 재난 아래에, 충성/반란 위기는 불행 아래에 표시되므로, 단일 위기가 문명 이동의 얼마만큼을 일으켰는지 정확히 볼 수 있습니다. 전쟁 난민 사건은 양측을 만났으면 둘 다의 이름을 밝히고, 만나지 않았으면 "&lt;문명&gt; 대 만나지 않은 문명"으로 읽히므로, 만나지 않은 문명을 드러내지 않으면서도 전쟁은 언제나 이름 붙여집니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_TITLE" Language="ko_KR"><Text>FAQ: 민족성, 연대기 및 결정</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F0_Q" Language="ko_KR"><Text>민족 구성 렌즈는 무엇을 보여주나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F0_A" Language="ko_KR"><Text>각 정착지가 그 사람들이 어디에서 왔는지에 따라 칠해집니다. 도시마다 하나의 단조로운 색이 아니라, 소유한 모든 타일이 출신과 인구 밀집도에 따라 음영이 들어갑니다. 도시 핵심부는 지배적 출신의 색으로 선명하게, 일구는 농촌 타일은 더 옅게, 더 작은 공동체는 도시 전역에 퍼져 읽힙니다. 이산민 타일은 흐려지는 대신 뚜렷하게 색을 유지하므로, 작은 이민 공동체라도 지도에서 읽히며, 진정으로 단일 출신인 도시는 여전히 올바르게 하나의 색을 보입니다. 각 출신의 인구 비율이 타일 전반에 보존되며, 한 문명이 세운 뒤 전쟁으로 절반이 비고 함락되어 다시 자라난 도시는 정복자의 색이 시간이 지나며 짙어지는 것을, 즉 인구 변화를 지도에서 보여줍니다. Shift+E를 눌러 전환하십시오.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F1_Q" Language="ko_KR"><Text>이주 연대기란 무엇인가요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F1_A" Language="ko_KR"><Text>세계의 위대한 이주에 대한 기록된 역사로, 일어나는 대로 기록됩니다. 큰 물결이 이동할 때, 간직할 만한 순간들을 포착합니다. 전쟁이나 재난으로 비워진 도시, 고향에서 멀리 뿌리내리는 이산민, 고향이 회복되자 돌아가는 민족, 각각을 짧은 산문 한 줄로 담아냅니다. 각 줄은 정착지의 실제 주변 환경에서 이끌어 냅니다(이산민이 "항구 곁에" 또는 "곡창 너머에" 정착하는 것은 그 도시에 실제로 해안이나 곡창이 있을 때에만 나옵니다). 그래서 산문은 그곳에 없는 지형을 결코 지어내지 않으며, 렌즈가 새로 온 이들을 칠하는 바로 그 도시 가장자리에서 읽힙니다. 이것들은 알림 탭에 "연대기" 항목으로, 사건별 세부 정보와 나란히 나타나므로, 이야기 전체가 한곳에 모입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F2_Q" Language="ko_KR"><Text>팝업이 난민을 어떻게 할지 물었는데, 그게 무엇인가요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F2_A" Language="ko_KR"><Text>난민 결정입니다. 실제 격변(이웃이 짧은 기간에 여러 도시를 차지하거나, 역병 위기)이 당신의 영토로 물결을 보내면, 때때로 그들을 어떻게 받아들일지 묻습니다. 그들을 맞아들이거나(약간의 금 비용이 들고, 그들은 당신 곁에 정착해 시간이 지나며 당신의 백성이 됨), 변경에 정착시키거나, 돌려보내는 것입니다. 효과는 가볍고 사건은 드뭅니다(많아야 한 시대에 몇 번). 옵션 ▸ 모드 ▸ Emigration ▸ 난민 결정에서 전부 끌 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F3_Q" Language="ko_KR"><Text>새로운 정체성 시스템을 어떻게 켜거나 끄나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F3_A" Language="ko_KR"><Text>셋 모두 기본적으로 켜져 있으며 각각 옵션 ▸ 모드 ▸ Emigration 아래에 자체 스위치가 있습니다. "민족 통합"(새로 온 이들이 정착 정체성으로 표류함), "귀환 이주"(이산민이 고향으로 감), "난민 결정"(가끔 나타나는 팝업)입니다. 민족 구성 렌즈는 언제나 사용할 수 있으며, 연대기 항목은 알림 탭에 기록됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_TITLE" Language="ko_KR"><Text>FAQ: 문화 거류지</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F0_Q" Language="ko_KR"><Text>문화 거류지란 무엇인가요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F0_A" Language="ko_KR"><Text>외래 공동체가 당신의 도시 중 한 곳의 지속적이고 확고한 일부가 될 만큼 커지면 — 단지 과거에 온 이들이 많은 것이 아니라 실재하는 상주 존재로서 — 그것은 출신 민족의 이름을 딴(로마 거류지, 포에니 거류지 등) 도시 가장자리의 한 구역에 문화 거류지로 자리 잡습니다. 당신은 도시가 이들을 어떻게 받아들일지 일회성 선택을 제안받습니다. 기본적으로 켜져 있으며, 옵션 ▸ 모드 ▸ Emigration ▸ 문화 거류지에서 끌 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F1_Q" Language="ko_KR"><Text>선택지에는 무엇이 있나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F1_A" Language="ko_KR"><Text>해당 문명의 실제 성격에 근거한 두 가지 선택지로, 각각 작은 이점과 그에 상응하는 단점이 짝을 이룹니다(로마 거류지는 생산력 쪽으로 기울지만 불편을 낳고, 페르시아 거류지는 금을 가져오지만 원망을 자아냅니다). 여기에 소극적인 "내버려 두기"가 더해집니다. 절대적으로 최선인 선택지는 없습니다. 당신이 택한 입장은 그다음 매 턴 작은 산출량을 적용하므로, 거류지가 한 번뿐이 아니라 실제로 도시에서 읽힙니다. 모달을 닫으면(Escape 또는 바깥 클릭) 조용한 "내버려 두기"로 자리 잡습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F2_Q" Language="ko_KR"><Text>산문 아래의 인용문은 무엇인가요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F2_A" Language="ko_KR"><Text>거류지에 대한 실재하고 출처가 밝혀진 역사적 인용문 하나로, 역사의 한 페이지처럼 표시됩니다. 출신 민족의 언어(그리스어, 중국어, 페르시아어, 라틴어, 고대 노르드어 등 다수)에 이어 영어 번역이 나오며, 각각 1차 사료에 대조해 검증되었습니다. 한 출신에는 두 개의 인용문이 있습니다. 첫 번째 거류지는 하나를, 두 번째는 다른 하나를 보여줍니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F3_Q" Language="ko_KR"><Text>한 문명은 몇 개의 거류지를 가질 수 있나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F3_A" Language="ko_KR"><Text>제국 전체에서 최대 두 개입니다. 다만 이는 문명별이지 전체가 아닙니다. 로마 두 개, 노르만 두 개, 한 두 개의 거류지를 동시에 가질 수 있습니다. 한 출신의 상한에 도달해도 다른 출신을 결코 막지 않습니다. 다른 민족이 기존 거류지의 타일을 차지하는 것은 주인이 바뀌는 것이며(연대기가 이를 기록하고 당신은 다시 선택함), 세 번째로 쌓이는 거류지가 아닙니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F4_Q" Language="ko_KR"><Text>거류지의 고향과 전쟁을 벌이면 어떻게 되나요?</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F4_A" Language="ko_KR"><Text>거류지는 "분쟁" 상태가 됩니다. 전쟁이 지속되는 동안 작고 상한이 있는 행복 긴장이 생기며, 이는 거류지가 불충한 것이 아니라 도시의 전시 불안이 이 전쟁을 택하지 않은 가문들에게 드리우는 것으로 표현됩니다. 평화가 돌아오면 다시 자리를 잡습니다.</Text></Replace>
     </LocalizedText>
 </Database>

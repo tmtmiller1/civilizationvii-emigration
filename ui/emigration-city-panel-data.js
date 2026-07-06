@@ -223,7 +223,7 @@ function quarterLines(compose, q) {
     lines.push(costsLine(compose, q.penaltyAmount, q.penaltyYield));
   }
   if (q.contested) {
-    const en = "Contested: you are at war with their homeland, straining the quarter.";
+    const en = "Contested: you are at war with their homeland, straining the enclave.";
     lines.push(pick(compose, "LOC_EMIGRATION_PANEL_QUARTER_CONTESTED", [], en));
   }
   return lines;
@@ -270,8 +270,8 @@ export function cityPanelModel(input, compose) {
   return {
     population: populationBlock(c, i),
     quarters: {
-      title: pick(c, "LOC_EMIGRATION_PANEL_QUARTER_TITLE", [], "Cultural Quarter"),
-      noQuarterText: pick(c, "LOC_EMIGRATION_PANEL_NO_QUARTER", [], "No foreign quarter has taken root here."),
+      title: pick(c, "LOC_EMIGRATION_PANEL_QUARTER_TITLE", [], "Cultural Enclave"),
+      noQuarterText: pick(c, "LOC_EMIGRATION_PANEL_NO_QUARTER", [], "No foreign enclave has taken root here."),
       present: !!q,
       lines: q ? quarterLines(c, q) : []
     }

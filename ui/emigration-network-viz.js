@@ -107,7 +107,7 @@ function loc(key, fallback, ...args) {
 // Canvas + controls stylesheet, injected once (module-scope so injectStyle stays small).
 const NETC_CSS =
     ".emig-netc-wrap{position:relative;display:flex;flex-direction:column;align-items:center;}" +
-    ".emig-netc-time-note{align-self:center;margin:0.5rem 0;font-size:0.82rem;opacity:0.6;" +
+    ".emig-netc-time-note{align-self:center;margin:0.5rem 0;font-size:var(--dg-fs-85);opacity:0.6;" +
     "font-style:italic;color:#e5d2ac;text-align:center;max-width:34rem;}" +
     // The canvas fills its stage, which is a full-width 2:1 box (padding-bottom gives it a real
     // height so the canvas's height:100% resolves, GameFace won't derive height from the buffer).
@@ -120,14 +120,14 @@ const NETC_CSS =
     ".emig-netc-stage::before{content:'';display:block;padding-bottom:50%;}" +
     ".emig-netc{position:absolute;top:0;left:0;width:100%;height:100%;display:block;}" +
     ".emig-netc-chips{position:relative;display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;margin:0.1rem 0 0.4rem;}" +
-    ".emig-netc-chip{cursor:pointer;padding:0.16rem 0.7rem;border-radius:0.9rem;font-size:0.92rem;" +
+    ".emig-netc-chip{cursor:pointer;padding:0.16rem 0.7rem;border-radius:0.9rem;font-size:var(--dg-fs-95);" +
     "border:0.0555rem solid rgba(229,210,172,0.35);color:#e5d2ac;background:rgba(229,210,172,0.06);}" +
     ".emig-netc-chip.active{background:#f3c34c;color:#1c1408;border-color:#f3c34c;font-weight:bold;}" +
-    ".emig-lens-lbl{align-self:center;font-size:0.9rem;opacity:0.7;margin-right:0.2rem;" +
+    ".emig-lens-lbl{align-self:center;font-size:var(--dg-fs-95);opacity:0.7;margin-right:0.2rem;" +
     "text-transform:uppercase;letter-spacing:0.04rem;}" +
     ".emig-lens-sep{width:0.0555rem;align-self:stretch;background:rgba(229,210,172,0.25);margin:0 0.1rem;}" +
     ".emig-legend{display:flex;flex-wrap:wrap;gap:0.25rem 0.9rem;justify-content:center;margin:0.4rem 0;}" +
-    ".emig-leg{display:flex;align-items:center;gap:0.35rem;cursor:pointer;font-size:0.92rem;" +
+    ".emig-leg{display:flex;align-items:center;gap:0.35rem;cursor:pointer;font-size:var(--dg-fs-95);" +
     "color:#cbb994;opacity:0.85;}" +
     ".emig-leg:hover{opacity:1;}.emig-leg.active{color:#f3c34c;opacity:1;font-weight:bold;}" +
     ".emig-sw{width:0.74rem;height:0.74rem;border-radius:50%;display:inline-block;}" +
@@ -135,7 +135,7 @@ const NETC_CSS =
     ".emig-netc-tl{position:relative;background:rgba(8,10,16,0.5);border-radius:0.35rem;" +
     "border:0.0555rem solid rgba(201,162,76,0.35);padding:0.3rem 0.5rem 1.05rem;}" +
     ".emig-netc-ages{display:flex;width:100%;height:1rem;position:relative;z-index:1;}" +
-    ".emig-netc-age{flex:1 1 0;text-align:center;font-size:0.82rem;color:#f0dca8;opacity:0.92;" +
+    ".emig-netc-age{flex:1 1 0;text-align:center;font-size:var(--dg-fs-85);color:#f0dca8;opacity:0.92;" +
     "text-transform:uppercase;letter-spacing:0.06rem;white-space:nowrap;overflow:hidden;}" +
     ".emig-netc-tl input{width:100%;display:block;margin:0.2rem 0 0;background:transparent;" +
     "-webkit-appearance:none;appearance:none;accent-color:#f3c34c;height:0.9rem;cursor:pointer;" +
@@ -149,23 +149,23 @@ const NETC_CSS =
     "pointer-events:none;z-index:2;}" +
     ".emig-netc-sep{position:absolute;top:0;bottom:0.85rem;width:0.14rem;transform:translateX(-50%);" +
     "background:#d8483f;opacity:0.9;}" +
-    ".emig-netc-tick{position:absolute;bottom:0;transform:translateX(-50%);font-size:0.74rem;" +
+    ".emig-netc-tick{position:absolute;bottom:0;transform:translateX(-50%);font-size:var(--dg-fs-72);" +
     "color:#bfae86;white-space:nowrap;}" +
     ".emig-netc-tick::before{content:'';position:absolute;left:50%;top:-0.5rem;width:0.0555rem;" +
     "height:0.35rem;background:rgba(201,162,76,0.5);}" +
     ".emig-netc-ctrl{display:flex;align-items:center;gap:0.5rem;}" +
     ".emig-netc-spacer{flex:1 1 auto;}" +
-    ".emig-netc-play{cursor:pointer;color:#f3c34c;font-size:1.15rem;user-select:none;padding:0 0.4rem;}" +
+    ".emig-netc-play{cursor:pointer;color:#f3c34c;font-size:var(--dg-fs-120);user-select:none;padding:0 0.4rem;}" +
     ".emig-netc-speed{display:flex;gap:0.2rem;}" +
-    ".emig-netc-speed .emig-netc-chip{font-size:0.82rem;padding:0.06rem 0.5rem;}" +
-    ".emig-netc-time-lbl{font-size:0.95rem;color:#f0dca8;opacity:0.9;min-width:8rem;}" +
+    ".emig-netc-speed .emig-netc-chip{font-size:var(--dg-fs-85);padding:0.06rem 0.5rem;}" +
+    ".emig-netc-time-lbl{font-size:var(--dg-fs-95);color:#f0dca8;opacity:0.9;min-width:8rem;}" +
     ".emig-netc-tip{position:absolute;pointer-events:none;background:rgba(8,10,16,0.96);" +
     "border:0.0555rem solid rgba(201,162,76,0.5);border-radius:0.3rem;padding:0.3rem 0.55rem;" +
-    "font-size:0.9rem;color:#e5d2ac;z-index:60;transform:translate(-50%,-115%);white-space:nowrap;" +
+    "font-size:var(--dg-fs-95);color:#e5d2ac;z-index:60;transform:translate(-50%,-115%);white-space:nowrap;" +
     "display:none;}" +
     ".emig-netc-tip-sw{display:inline-block;width:0.55rem;height:0.55rem;border-radius:50%;" +
     "margin-right:0.3rem;vertical-align:middle;}" +
-    ".emig-netc-cap{opacity:0.62;font-size:0.95rem;text-align:center;margin-top:0.35rem;" +
+    ".emig-netc-cap{opacity:0.62;font-size:var(--dg-fs-95);text-align:center;margin-top:0.35rem;" +
     "max-width:66rem;line-height:1.35;}" +
     // A labelled help pill sitting inline at the END of the filter-pills row (under its own "Info:"
     // heading, like the other pill groups); its explanation lives in a hover popover so it doesn't eat
@@ -175,9 +175,9 @@ const NETC_CSS =
     "border-radius:0.9rem;border:0.0555rem solid rgba(201,162,76,0.6);background:rgba(9,12,19,0.85);" +
     'color:#f0bc78;font-family:"TitleFont";cursor:help;white-space:nowrap;}' +
     ".emig-help-q:hover{background:rgba(243,195,76,0.16);}" +
-    ".emig-help-lbl{font-size:0.82rem;text-transform:uppercase;letter-spacing:0.03rem;}" +
+    ".emig-help-lbl{font-size:var(--dg-fs-85);text-transform:uppercase;letter-spacing:0.03rem;}" +
     ".emig-help-pop{display:none;position:absolute;top:1.7rem;right:0;width:24rem;max-width:80vw;" +
-    "padding:0.55rem 0.75rem;text-align:left;font-size:0.82rem;line-height:1.42;color:#e8d8b4;" +
+    "padding:0.55rem 0.75rem;text-align:left;font-size:var(--dg-fs-85);line-height:1.42;color:#e8d8b4;" +
     "background:linear-gradient(180deg,rgba(28,32,44,0.98),rgba(9,12,19,0.98));" +
     "border:0.0833rem solid #8c7e62;border-radius:0.25rem;box-shadow:0 0.33rem 1rem rgba(0,0,0,0.7);}" +
     ".emig-help:hover .emig-help-pop{display:block;}";

@@ -69,10 +69,10 @@ const CSS =
   "border:0.0833rem solid #8c7e62;border-radius:0.22rem;" +
   "box-shadow:0 0 0 0.0555rem rgba(0,0,0,0.7),inset 0 0 0 0.0555rem rgba(240,188,120,0.22)," +
   "0 0.6rem 2rem rgba(0,0,0,0.75);animation:emig-dlg-rise 0.24s ease-out;}" +
-  '.emig-dlg-eyebrow{font-family:"TitleFont";font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;' +
+  '.emig-dlg-eyebrow{font-family:"TitleFont";font-size:var(--dg-fs-72);letter-spacing:0.16em;text-transform:uppercase;' +
   "color:#f0bc78;opacity:0.85;margin-bottom:0.2rem;}" +
-  '.emig-dlg-title{font-family:"TitleFont";font-size:1.25rem;color:#f4d79e;margin-bottom:0.55rem;}' +
-  ".emig-dlg-body{font-size:0.98rem;line-height:1.5;margin-bottom:0.9rem;}" +
+  '.emig-dlg-title{font-family:"TitleFont";font-size:var(--dg-fs-120);color:#f4d79e;margin-bottom:0.55rem;}' +
+  ".emig-dlg-body{font-size:var(--dg-fs-95);line-height:1.5;margin-bottom:0.9rem;}" +
   ".emig-dlg-choices{display:flex;flex-direction:column;gap:0.45rem;}" +
   ".emig-dlg-choice{text-align:left;cursor:pointer;padding:0.5rem 0.7rem;color:#e8d8b4;" +
   "background:linear-gradient(180deg,rgba(40,46,62,0.7),rgba(16,20,30,0.7));" +
@@ -80,8 +80,15 @@ const CSS =
   "transition:background 0.12s ease,border-color 0.12s ease;}" +
   ".emig-dlg-choice:hover{background:linear-gradient(180deg,rgba(60,52,32,0.85),rgba(28,24,14,0.85));" +
   "border-color:#f0bc78;}" +
-  '.emig-dlg-choice-label{font-family:"TitleFont";font-size:0.95rem;color:#f4d79e;}' +
-  ".emig-dlg-choice-note{font-size:0.82rem;opacity:0.8;margin-top:0.1rem;}" +
+  '.emig-dlg-choice-label{font-family:"TitleFont";font-size:var(--dg-fs-95);color:#f4d79e;}' +
+  ".emig-dlg-choice-note{font-size:var(--dg-fs-85);opacity:0.8;margin-top:0.1rem;}" +
+  // A single enclave-level epigraph, sat between the body and the choices (not per option).
+  ".emig-dlg-quote{font-size:var(--dg-fs-85);font-style:italic;opacity:0.72;margin:0 0 0.9rem;" +
+  "padding-left:0.6rem;border-left:0.14rem solid rgba(201,162,76,0.42);line-height:1.45;" +
+  // Base direction LTR (the attribution/gloss is English); the RTL originals are bidi-isolated inline
+  // (see bidiIsolate) so an Arabic/Persian/Hebrew run renders right-to-left without dragging the
+  // surrounding punctuation, quotes, and attribution with it.
+  "direction:ltr;unicode-bidi:isolate;}" +
   "@keyframes emig-dlg-fade{from{opacity:0;}to{opacity:1;}}" +
   "@keyframes emig-dlg-rise{from{opacity:0;transform:translateY(0.7rem);}to{opacity:1;transform:translateY(0);}}";
 
@@ -110,6 +117,22 @@ function safeChoice(onChoice, id) {
   }
 }
 
+/** A single right-to-left character (Hebrew + Arabic/Persian script families). */
+const RTL_CHAR = "\\u0590-\\u05FF\\u0600-\\u06FF\\u0750-\\u077F\\u08A0-\\u08FF\\uFB1D-\\uFDFF\\uFE70-\\uFEFF";
+/** A maximal RTL run: an RTL char, then any RTL/space/punctuation, ending on an RTL char. */
+const RTL_RUN = new RegExp("[" + RTL_CHAR + "](?:[" + RTL_CHAR + "\\s.,;:?!()\\u060C\\u061B\\u061F]*[" + RTL_CHAR + "])?", "g");
+
+/**
+ * Wrap each right-to-left run (Arabic/Persian/Hebrew — e.g. a native-language quote original) in Unicode
+ * isolates (FSI/PDI, U+2068/U+2069) so it lays out right-to-left as a self-contained island inside the
+ * LTR line, without dragging the surrounding quotes, parenthetical gloss, or English attribution with it.
+ * A no-op for LTR-only text.
+ * @param {string} s The display string. @returns {string} The bidi-isolated string.
+ */
+function bidiIsolate(s) {
+  return typeof s === "string" ? s.replace(RTL_RUN, "⁨$&⁩") : s;
+}
+
 /**
  * Build one choice button (label + consequence note) wired to resolve the dilemma.
  * @param {{id:string,label:string,note?:string}} c The choice.
@@ -128,9 +151,11 @@ function choiceButton(c, resolve) {
 }
 
 /**
- * Build the dilemma panel (eyebrow + title + body + choice buttons). Clicks inside the panel don't
- * bubble to the guard (so they don't count as a dismiss).
- * @param {{title:string, body:string, eyebrow?:string, choices:*[]}} view The model.
+ * Build the dilemma panel (eyebrow + title + body + optional epigraph quote + choice buttons). Clicks
+ * inside the panel don't bubble to the guard (so they don't count as a dismiss). A single attributed
+ * quote (Cultural Enclave decisions) is shown once between the body and the choices, with any RTL
+ * original bidi-isolated so mixed-script quotes read correctly.
+ * @param {{title:string, body:string, eyebrow?:string, quote?:string, choices:*[]}} view The model.
  * @param {(id:string)=>void} resolve Resolve the dilemma with a choice id.
  * @returns {HTMLElement} The panel element.
  */
@@ -140,6 +165,7 @@ function buildPanel(view, resolve) {
   panel.appendChild(el("div", "emig-dlg-eyebrow", (view && view.eyebrow) || loc("LOC_EMIG_DILV_EYEBROW_DEFAULT", "Refugees")));
   panel.appendChild(el("div", "emig-dlg-title", view.title));
   panel.appendChild(el("div", "emig-dlg-body", view.body));
+  if (view.quote) panel.appendChild(el("div", "emig-dlg-quote", bidiIsolate(view.quote)));
   const choices = el("div", "emig-dlg-choices");
   for (const c of view.choices || []) choices.appendChild(choiceButton(c, resolve));
   panel.appendChild(choices);

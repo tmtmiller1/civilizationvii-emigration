@@ -84,28 +84,32 @@ import { __test as dia } from "/emigration/ui/emigration-diaspora.js";
   assert.equal(waves.get("Tyre|war").eventKey, "war:1:2", "wave keeps the event behind it");
   assert.ok(!waves.has("Tyre|prosperity"), "economic drift is not an exodus");
 
-  const comp = { owner: 5, civs: [{ civ: 5, share: 0.7 }, { civ: 9, share: 0.25 }, { civ: 4, share: 0.05 }] };
+  const comp = { owner: 5, civs: [{ civ: 5, pts: 14, share: 0.7 }, { civ: 9, pts: 5, share: 0.25 }, { civ: 4, pts: 1, share: 0.05 }] };
   const lead = dia.leadForeignOrigin(comp);
   assert.equal(lead.civ, 9, "lead foreign origin is the largest non-owner origin");
-  assert.equal(dia.leadForeignOrigin({ owner: 5, civs: [{ civ: 5, share: 1 }] }), null, "single-origin city → no foreign lead");
+  assert.equal(lead.pts, 5, "lead foreign origin carries its current standing pop points");
+  assert.equal(dia.leadForeignOrigin({ owner: 5, civs: [{ civ: 5, pts: 20, share: 1 }] }), null, "single-origin city → no foreign lead");
 
-  const idx = dia.arrivalMassIndex([
-    { src: 9, dest: 5, destCity: "Ostia", people: 120000 },
-    { src: 9, dest: 5, destCity: "Ostia", people: 130000 },
-    { src: 5, dest: 5, destCity: "Ostia", people: 999999 }, // intra-civ ignored
-    { src: 4, dest: 5, destCity: "Ostia", people: 70000 }
-  ]);
-  assert.equal(idx.get("Ostia|9"), 250000, "arrival mass indexes by destination city + origin civ");
-
+  // Quarter stage is gated on CURRENT standing stock (pop points now), not lifetime inflow.
   assert.equal(
-    dia.quarterStage(dia.QUARTER_FOOTHOLD_SHARE, dia.QUARTER_MIN_IMMIGRANTS),
+    dia.quarterStage(dia.QUARTER_FOOTHOLD_SHARE, dia.QUARTER_MIN_STOCK),
     "foothold",
-    "quarter foothold gate uses both share and immigrant mass"
+    "quarter foothold gate uses both share and current standing stock"
   );
   assert.equal(
-    dia.quarterStage(dia.QUARTER_ESTABLISHED_SHARE, dia.QUARTER_MIN_IMMIGRANTS),
+    dia.quarterStage(dia.QUARTER_ESTABLISHED_SHARE, dia.QUARTER_MIN_STOCK),
     "established",
     "quarter established gate upgrades at the higher share threshold"
+  );
+  assert.equal(
+    dia.quarterStage(dia.QUARTER_ESTABLISHED_SHARE, dia.QUARTER_MIN_STOCK - 1),
+    "none",
+    "a big share with too little standing stock is not a quarter"
+  );
+  assert.equal(
+    dia.quarterStage(dia.QUARTER_FOOTHOLD_SHARE - 0.01, dia.QUARTER_MIN_STOCK + 50),
+    "none",
+    "lots of standing stock below the foothold share is not a quarter"
   );
 }
 

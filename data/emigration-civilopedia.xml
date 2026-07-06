@@ -27,6 +27,7 @@
         <Row SectionID="EMIGRATION" PageID="REFUGEES" PageGroupID="EMIG_TOPICS" PageLayoutID="Concept" Name="LOC_PEDIA_EMIG_REFUGEES_TITLE" SortIndex="30"/>
         <Row SectionID="EMIGRATION" PageID="ASSIMILATION" PageGroupID="EMIG_TOPICS" PageLayoutID="Concept" Name="LOC_PEDIA_EMIG_ASSIMILATION_TITLE" SortIndex="40"/>
         <Row SectionID="EMIGRATION" PageID="ETHNICITY" PageGroupID="EMIG_TOPICS" PageLayoutID="Concept" Name="LOC_PEDIA_EMIG_ETHNICITY_TITLE" SortIndex="45"/>
+        <Row SectionID="EMIGRATION" PageID="ENCLAVES" PageGroupID="EMIG_TOPICS" PageLayoutID="Concept" Name="LOC_PEDIA_EMIG_ENCLAVES_TITLE" SortIndex="47"/>
         <Row SectionID="EMIGRATION" PageID="BORDERS" PageGroupID="EMIG_TOPICS" PageLayoutID="Concept" Name="LOC_PEDIA_EMIG_BORDERS_TITLE" SortIndex="50"/>
         <Row SectionID="EMIGRATION" PageID="ATTRACTION" PageGroupID="EMIG_TOPICS" PageLayoutID="Concept" Name="LOC_PEDIA_EMIG_ATTRACTION_TITLE" SortIndex="55"/>
         <Row SectionID="EMIGRATION" PageID="RAIDS" PageGroupID="EMIG_TOPICS" PageLayoutID="Concept" Name="LOC_PEDIA_EMIG_RAIDS_TITLE" SortIndex="58"/>
@@ -45,6 +46,7 @@
         <Row SectionID="EMIGRATION" PageID="REFUGEES" ChapterID="CONTENT" Paragraph="LOC_PEDIA_EMIG_REFUGEES_BODY"/>
         <Row SectionID="EMIGRATION" PageID="ASSIMILATION" ChapterID="CONTENT" Paragraph="LOC_PEDIA_EMIG_ASSIMILATION_BODY"/>
         <Row SectionID="EMIGRATION" PageID="ETHNICITY" ChapterID="CONTENT" Paragraph="LOC_PEDIA_EMIG_ETHNICITY_BODY"/>
+        <Row SectionID="EMIGRATION" PageID="ENCLAVES" ChapterID="CONTENT" Paragraph="LOC_PEDIA_EMIG_ENCLAVES_BODY"/>
         <Row SectionID="EMIGRATION" PageID="BORDERS" ChapterID="CONTENT" Paragraph="LOC_PEDIA_EMIG_BORDERS_BODY"/>
         <Row SectionID="EMIGRATION" PageID="ATTRACTION" ChapterID="CONTENT" Paragraph="LOC_PEDIA_EMIG_ATTRACTION_BODY"/>
         <Row SectionID="EMIGRATION" PageID="RAIDS" ChapterID="CONTENT" Paragraph="LOC_PEDIA_EMIG_RAIDS_BODY"/>

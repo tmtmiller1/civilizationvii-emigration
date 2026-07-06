@@ -137,6 +137,14 @@
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="zh_Hant_HK"><Text>一個文明的人口可領先於世界平均文明多遠，反滾雪球逆風才開始起作用，以公平份額的倍數計。越低 = 制動越早介入（越平等）；越高 = 只有極端失控的領跑者才會被減速。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QUARTERS" Language="zh_Hant_HK"><Text>成本：文化街區</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QUARTERS_D" Language="zh_Hant_HK"><Text>當外來族裔在你的某座城市中發展為穩固的社區時，會提供一次性選擇（接納、徵稅或放任），帶來小幅產出獎勵與懲罰，並按城市記錄一處持久的街區；當你與其母國交戰時，該街區會變為「爭議」狀態（小幅幸福度負擔）。關閉＝沒有街區決策，也沒有爭議負擔。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSHARE" Language="zh_Hant_HK"><Text>Enclaves: share to form</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSHARE_D" Language="zh_Hant_HK"><Text>How much of a city a single foreign origin must make up before it can become a Cultural Enclave. Higher = rarer enclaves, as fewer cities ever qualify.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QDWELL" Language="zh_Hant_HK"><Text>Enclaves: persistence before offer</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QDWELL_D" Language="zh_Hant_HK"><Text>How many turns an established community must persist before its one-time enclave decision is offered, so a brief spike (such as a war-refugee wave that later moves on) never triggers a permanent enclave. A short dip below the threshold is forgiven. 0 = offer as soon as the community forms.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QCOOLDOWN" Language="zh_Hant_HK"><Text>Enclaves: turns between decisions</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QCOOLDOWN_D" Language="zh_Hant_HK"><Text>Minimum turns between two Cultural Enclave decisions. Higher = the offers are spaced further apart.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QCAP" Language="zh_Hant_HK"><Text>Enclaves: decisions per age</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QCAP_D" Language="zh_Hant_HK"><Text>The most Cultural Enclave decisions that can be offered in a single age. Lower = fewer enclave choices each age.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="zh_Hant_HK"><Text>災害：驅動遷徙</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="zh_Hant_HK"><Text>讓環境災害（洪水、火山、瘟疫……）將人口逐出受災城市，成為氣候/災害難民，與戰爭和不滿並列。關閉 = 災害不影響遷徙。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="zh_Hant_HK"><Text>災害：每點苦難的移民（%）</Text></Replace>
@@ -228,24 +236,24 @@
         <Replace Tag="LOC_EMIG_HINT_WAR" Language="zh_Hant_HK"><Text>難民正逃離戰火；解除圍城或締結和平以遏制外流。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_DISASTER" Language="zh_Hant_HK"><Text>災害導致的遷徙——隨苦難消退會自行緩解。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_ATTRITION" Language="zh_Hant_HK"><Text>走投無路——開闢一條出路或緩解苦難。</Text></Replace>
-        <Replace Tag="LOC_EMIG_HINT_CONQUEST" Language="zh_Hant_HK"><Text>Displaced by the city's capture; the upheaval eases as the city settles.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HINT_RETURN" Language="zh_Hant_HK"><Text>A people drawn home as their recovered homeland finds peace and plenty again.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_UNHAPPINESS" Language="zh_Hant_HK"><Text>Unhappiness</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_PROSPERITY" Language="zh_Hant_HK"><Text>Attraction</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_WAR" Language="zh_Hant_HK"><Text>War</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_DISASTER" Language="zh_Hant_HK"><Text>Disaster</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CONQUEST" Language="zh_Hant_HK"><Text>Conquest</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_ATTRITION" Language="zh_Hant_HK"><Text>Attrition</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_RETURN" Language="zh_Hant_HK"><Text>Return</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CRISIS" Language="zh_Hant_HK"><Text>Crisis</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CHRONICLE" Language="zh_Hant_HK"><Text>Chronicle</Text></Replace>
-        <Replace Tag="LOC_EMIG_CAUSE_LABEL_OTHER" Language="zh_Hant_HK"><Text>Other</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_EXODUS" Language="zh_Hant_HK"><Text>Exodus</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_DIASPORA" Language="zh_Hant_HK"><Text>Diaspora</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_RETURN" Language="zh_Hant_HK"><Text>Return</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TITLE_FALLBACK" Language="zh_Hant_HK"><Text>A movement of peoples</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TURN" Language="zh_Hant_HK"><Text>Turn {1_Turn}</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_EMPTY" Language="zh_Hant_HK"><Text>The chronicle is empty. As great waves of people move across the world, their stories are written here: the cities that emptied, and the communities that took root far from home.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_CONQUEST" Language="zh_Hant_HK"><Text>因城市被攻佔而流離失所；隨着城市重歸安定，動盪漸漸平息。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_RETURN" Language="zh_Hant_HK"><Text>隨着故土重獲和平與富足，這群人被召喚回鄉。</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_UNHAPPINESS" Language="zh_Hant_HK"><Text>不滿</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_PROSPERITY" Language="zh_Hant_HK"><Text>吸引力</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_WAR" Language="zh_Hant_HK"><Text>戰爭</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_DISASTER" Language="zh_Hant_HK"><Text>災難</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CONQUEST" Language="zh_Hant_HK"><Text>征服</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_ATTRITION" Language="zh_Hant_HK"><Text>消耗</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_RETURN" Language="zh_Hant_HK"><Text>回歸</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CRISIS" Language="zh_Hant_HK"><Text>危機</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_CHRONICLE" Language="zh_Hant_HK"><Text>編年史</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSE_LABEL_OTHER" Language="zh_Hant_HK"><Text>其他</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_EXODUS" Language="zh_Hant_HK"><Text>大遷徙</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_DIASPORA" Language="zh_Hant_HK"><Text>離散</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_RETURN" Language="zh_Hant_HK"><Text>回歸</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_TITLE_FALLBACK" Language="zh_Hant_HK"><Text>民族的遷徙</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_TURN" Language="zh_Hant_HK"><Text>第 {1_Turn} 回合</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHRONICLE_EMPTY" Language="zh_Hant_HK"><Text>編年史尚無記載。當一波波人潮橫越世界遷徙時，他們的故事將寫於此：那些人去樓空的城市，以及在異鄉落地生根的社群。</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="zh_Hant_HK"><Text>這種壓力是暫時的。</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="zh_Hant_HK"><Text>在你解決根源之前，它將持續。</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="zh_Hant_HK"><Text>這些人口已永遠失去。</Text></Replace>
@@ -294,6 +302,8 @@
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="zh_Hant_HK"><Text>可從遊戲內工具列的按鈕，或從 Demographics 模組的「移民」頁面開啟移民儀表板。它分為多個標籤頁：[n][n]• 遷徙網絡：一個動畫視圖，各文明的大小按通過它們的人口量決定，圓點沿著路線流動。[n]• 流向圖：將同樣的流動繪製為箭頭，可一直追溯到具體城市。[n]• 文明清單：流入、流出、淨變化、難民與損失。[n]• 人口遷移原因的分類細目。[n]• 你的聚落，按各自距離失去人口的遠近排序。[n]• 移民政策：顯示誰採取了親移民或反移民立場。[n]• 移民編年史：世界大遷徙的書面歷史：被戰爭或災害清空的城市、在遠離故鄉之地扎根的離散族群，以及在故土復甦後歸來的人們。[n]• 指南：關於哪些因素會引發遷徙、哪些不會的快速參考。[n][n]在地圖上，族群構成鏡頭（Shift+E）按居民來源將每個聚落繪成逐格馬賽克，人口密集的都市核心為主導來源的顏色，較小的社群散布於其各地塊，將鼠標懸停在已定居的地塊上即可在提示中看到確切的構成。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_TITLE" Language="zh_Hant_HK"><Text>族群與融入</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_BODY" Language="zh_Hant_HK"><Text>每個聚落都記錄其居民的來歷，按每個人所屬的文明來源，並在征服之後依然保留這份記錄。族群構成鏡頭（Shift+E）以逐格馬賽克呈現：人口密集的都市核心為主導來源的顏色，較小的社群散布於其各地塊，已定居地塊的提示框中會顯示確切構成。[n][n]隨著時間推移，新來者會融入接納他們的文明，除非與其故土的戰爭或城市中的動亂使某個社群保持獨立。而一旦故土與接納方和平相處並重新繁榮，回歸遷徙便會逐漸將其部分人口帶回故鄉，移動真實人口。以上皆為預設開啟，可在「選項」中關閉。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_TITLE" Language="zh_Hant_HK"><Text>文化聚居區</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_BODY" Language="zh_Hant_HK"><Text>當一個外來社群成長為你某座城市中長久的一部分——是如今真實居住在此的存在，而非僅是昔日移民的記憶——它便會作為文化聚居區落地生根，成為城市邊緣一處以其原生民族命名的區域。你將獲得一次性的抉擇，決定城市如何為其騰出空間：兩個取自該文明自身特質的選項，各自帶來一份小小的益處並伴隨相應的弊端，或乾脆任其自處。你所選擇的立場將於每回合套用至帝國的產出。[n][n]每處聚居區都如同一頁歷史，以其原生民族的語言載有一句簡短而真實的歷史引言，並附上英文翻譯。單一文明在你整個帝國中最多可擁有兩處聚居區，但此上限是每個文明各自計算，因此羅馬與諾曼的聚居區絕不會互相排擠。聚居區會長久存續，並隨城市人口變遷而易主，若你與其故土開戰，它們亦會變得躁動不安。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="zh_Hant_HK"><Text>編年史與難民抉擇</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="zh_Hant_HK"><Text>移民編年史位於儀表板的專屬標籤頁，將世界上的大遷徙寫成簡短的歷史：被戰爭或災害清空的城市、在遠離故鄉之地扎根的離散族群、在故土復甦後歸來的人們。逐事件的細節仍保留在通知記錄中，編年史則是其中的故事。[n][n]偶爾，當真正的劇變（短期內攻占數座城市的鄰邦，或一場瘟疫危機）將一波難民推向你的疆土時，你會被詢問如何接納他們：接納他們、安置於邊疆，或將其拒之門外。這些抉擇十分罕見、影響輕微，並可在「選項」中關閉。你尚未會面的文明僅以傳聞提及，絕不揭示。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="zh_Hant_HK"><Text>移民</Text></Replace>
@@ -515,16 +525,383 @@
         <Replace Tag="LOC_EMIG_DIL_BODY_AWAY" Language="zh_Hant_HK"><Text>你將{1_Adj}的難民拒於{2_Place}之外。他們繼續上路，{3_Who}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_CHRON_TITLE" Language="zh_Hant_HK"><Text>邊境上的抉擇</Text></Replace>
         <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="zh_Hant_HK"><Text>難民</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_TITLE" Language="zh_Hant_HK"><Text>街區易主</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_BODY" Language="zh_Hant_HK"><Text>在{1_Place}，{2_PriorAdj}街區讓位於{3_Name}，一個新的族群如今將此街區據為己有。</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_STANCE_EMBRACE" Language="zh_Hant_HK"><Text>你接納了{1_Name}，其風俗令這座城市更為豐盈。</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_STANCE_TAX" Language="zh_Hant_HK"><Text>你對{1_Name}的貿易課稅；其財貨流入你的國庫，其人民則心生不滿。</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_STANCE_LETBE" Language="zh_Hant_HK"><Text>你任由{1_Name}自成一體。</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_CHRON_DECISION_TITLE" Language="zh_Hant_HK"><Text>一處{1_Name}</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_EYEBROW" Language="zh_Hant_HK"><Text>文化街區</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_TITLE" Language="zh_Hant_HK"><Text>{1_Name}扎根</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_BODY" Language="zh_Hant_HK"><Text>一個源自{1_Adj}的持久社群，如今在{2_Place}擁有屬於自己的街區，已增長至全城的百分之{3_Pct}。你將如何對待他們？</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_TITLE" Language="zh_Hant_HK"><Text>街區躁動不安</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_BODY" Language="zh_Hant_HK"><Text>與{1_Adj}的戰爭令{2_Name}心緒不寧；該街區暗流湧動。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_TITLE" Language="zh_Hant_HK"><Text>聚居區易主</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_BODY" Language="zh_Hant_HK"><Text>昔日的{1_Name}已隨其家族遷離、通婚融入或被新來者取代而漸漸消逝。{2_Where}，{3_Adj}的家族如今為這片街區賦予其名號、習俗與交易。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_EMBRACE" Language="zh_Hant_HK"><Text>你接納了{1_Name}，其習俗豐富了這座城市。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_TAX" Language="zh_Hant_HK"><Text>你對{1_Name}的貿易徵稅；其錢財流入你的國庫，其人民則心生不滿。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_STANCE_LETBE" Language="zh_Hant_HK"><Text>你任由{1_Name}自處。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_DECISION_TITLE" Language="zh_Hant_HK"><Text>一個{1_Name}</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_EYEBROW" Language="zh_Hant_HK"><Text>文化聚居區</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_TITLE" Language="zh_Hant_HK"><Text>{1_Name}</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_BODY" Language="zh_Hant_HK"><Text>來自{2_Place}的{1_Adj}家族已不再只是新來者。{3_Where}，他們的店舖、神龕、工坊、節慶與習慣如今自成一片天地——一個承載着他鄉記憶的區域。承認這處聚居區，並決定城市將為何種傳統騰出空間。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_TITLE" Language="zh_Hant_HK"><Text>戰爭考驗着{1_Name}</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_BODY" Language="zh_Hant_HK"><Text>與{1_Adj}的戰爭沉重地壓在{2_Name}身上：其家族在戰火中與親人斷絕聯繫，一些鄰里更以冷眼相待，忘卻了他們並未選擇這場戰爭。在和平重臨之前，這份張力使聚居區無法完全融入城市的生活。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ABBASID_A" Language="zh_Hant_HK"><Text>"طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ. (Seeking knowledge is an obligation upon every Muslim.)" — the Prophet Muhammad, Sunan Ibn Mājah 224</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ABBASID_B" Language="zh_Hant_HK"><Text>"Baghdad became the intellectual capital of the medieval world." — Philip K. Hitti, History of the Arabs (1937)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_AKSUM_A" Language="zh_Hant_HK"><Text>"ΤΟΥΤΟ ΑΡΕΣΗ ΤΗ ΧΩΡΑ (Toûto arésē tê chôra — may this please the country.)" — Aksumite coinage, coin legend, reign of Ezana (4th c.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_AKSUM_B" Language="zh_Hant_HK"><Text>"ፍሥሓ ፡ ለይኲን ፡ ለአሕዛብ (Fǝśśǝḥā läyǝkʷǝn läʾaḥzāb — let the people be glad.)" — Emperor Armah, Aksumite coin legend (7th c.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ASSYRIA_A" Language="zh_Hant_HK"><Text>"BÀD šalḫû ušēpišma uzaqqir ḫuršāniš (I had a wall built and raised it as high as mountains.)" — Sennacherib, Taylor Prism / RINAP 3 (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ASSYRIA_B" Language="zh_Hant_HK"><Text>"aḫuz nēmeqī Nabû, kullat ṭupšarrūti (I grasped the wisdom of Nabû, the whole art of the scribe.)" — Ashurbanipal, royal inscription (RINAP 5, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_CARTHAGE_A" Language="zh_Hant_HK"><Text>"Ἔδοξε Καρχηδονίοις Ἅννωνα πλεῖν ἔξω Στηλῶν Ἡρακλείων (It was resolved by the Carthaginians that Hanno should sail beyond the Pillars of Heracles.)" — Hanno the Navigator, Periplus of Hanno (5th c. BCE, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_CARTHAGE_B" Language="zh_Hant_HK"><Text>"νεωρίων αἱ κρηπῖδες ἐς ναῦς διακοσίας καὶ εἴκοσι πεποιημένων (The dockyard quays were built for two hundred and twenty ships.)" — Appian, Roman History (Punica) (2nd c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_EGYPT_A" Language="zh_Hant_HK"><Text>"πλεῖστα θωμάσια ἔχει ἢ ἡ ἄλλη πᾶσα χώρη καὶ ἔργα λόγου μέζω παρέχεται (It has more marvels than any other land, and works too great for words.)" — Herodotus, Histories, Bk. II (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_EGYPT_B" Language="zh_Hant_HK"><Text>"Αἴγυπτος… δῶρον τοῦ ποταμοῦ (Egypt… is the gift of the river.)" — Herodotus (after Hecataeus), Histories, Bk. II (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_GREECE_A" Language="zh_Hant_HK"><Text>"ὁ ἀνεξέταστος βίος οὐ βιωτὸς ἀνθρώπῳ. (The unexamined life is not worth living.)" — Socrates, in Plato, Apology (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_GREECE_B" Language="zh_Hant_HK"><Text>"φιλοκαλοῦμέν τε μετ' εὐτελείας καὶ φιλοσοφοῦμεν ἄνευ μαλακίας (We love the beautiful with economy, and wisdom without softness.)" — Pericles, in Thucydides, History of the Peloponnesian War, Bk. II (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_HAN_A" Language="zh_Hant_HK"><Text>"農，天下之大本也 (Agriculture is the great foundation of all under heaven.)" — Emperor Wen of Han, edict, Book of Han (2nd c. BCE, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_HAN_B" Language="zh_Hant_HK"><Text>"倉廩實而知禮節。 (When the granaries are full, the people know propriety.)" — Guanzi, quoted in Sima Qian, Records of the Grand Historian (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_KHMER_A" Language="zh_Hant_HK"><Text>"大抵一歲中，可三四番收種。 (In general, three or four harvests a year can be had.)" — Zhou Daguan, The Customs of Cambodia (1296, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_KHMER_B" Language="zh_Hant_HK"><Text>"當國之中有金塔一座 (At the centre of the kingdom stands a tower of gold.)" — Zhou Daguan, The Customs of Cambodia (1296, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MAURYA_A" Language="zh_Hant_HK"><Text>"sabe munise paja mama (All men are my children.)" — Ashoka, Kalinga Edict (Prakrit, 3rd c. BCE)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MAURYA_B" Language="zh_Hant_HK"><Text>"magesu pi me nigohani lopapitani… amba-vadikya lopapita (On the roads banyan trees were planted by me… and mango-groves.)" — Ashoka, Pillar Edict VII (Prakrit, Hultzsch)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MAYA_A" Language="zh_Hant_HK"><Text>"Xa q'ana jal, saqi jal u tio'jil (Merely yellow maize and white maize made their flesh.)" — Popol Vuh, K'iche' original (Christenson ed.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MAYA_B" Language="zh_Hant_HK"><Text>"The Maya were the most brilliant civilization of the New World." — Michael D. Coe, The Maya (1966)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MISSISSIPPIAN_A" Language="zh_Hant_HK"><Text>"Cahokia was the first city in what would become the United States." — Timothy Pauketat, Cahokia (2009)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MISSISSIPPIAN_B" Language="zh_Hant_HK"><Text>"Maize agriculture underpinned the rise of the Mississippian towns." — George Milner, The Moundbuilders (2004)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_PERSIA_A" Language="zh_Hant_HK"><Text>"ἀρχὰς κατεστήσατο εἴκοσι, τὰς αὐτοὶ καλέουσι σατραπηίας (He set up twenty provinces, which they themselves call satrapies.)" — Herodotus, Histories, Bk. III (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_PERSIA_B" Language="zh_Hant_HK"><Text>"ἔστι δ' αὐτῶν ἃ καὶ ἐφύτευσα αὐτός (There are some of these that I planted myself.)" — Cyrus the Younger, in Xenophon, Oeconomicus, Bk. IV (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ROME_A" Language="zh_Hant_HK"><Text>"Tot aquarum tam multis necessariis molibus pyramidas videlicet otiosas compares… (Would you set the idle Pyramids beside these many indispensable works of water?)" — Frontinus, On the Aqueducts of Rome (1st c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ROME_B" Language="zh_Hant_HK"><Text>"ἄγεται ἐκ πάσης γῆς καὶ θαλάττης ὅσα ὧραι φύουσι καὶ χῶραι ἕκασται φέρουσι (From every land and sea is brought whatever the seasons grow and each country bears.)" — Aelius Aristides, Roman Oration (2nd c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_BULGARIA_A" Language="zh_Hant_HK"><Text>"The Bulgar state was built for war, its horsemen disciplined and its frontier strong." — Steven Runciman, A History of the First Bulgarian Empire (1930)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_BULGARIA_B" Language="zh_Hant_HK"><Text>"The Bulgarians commanded the great roads of trade between the empires." — Steven Runciman, A History of the First Bulgarian Empire (1930)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_CHOLA_A" Language="zh_Hant_HK"><Text>"The Chola navy was the most powerful in the Indian Ocean of its day." — K. A. Nilakanta Sastri, The Cōḷas (1955)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_CHOLA_B" Language="zh_Hant_HK"><Text>"Rajaraja raised the great temple at Tanjore, a wonder of the age." — K. A. Nilakanta Sastri, The Cōḷas (1955)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_DAI_VIET_A" Language="zh_Hant_HK"><Text>"賢才國家之元氣 (Hiền tài là nguyên khí của quốc gia — the virtuous and talented are the vital force of the state.)" — Thân Nhân Trung, Temple of Literature stele (1442, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_DAI_VIET_B" Language="zh_Hant_HK"><Text>"訓練士卒，習爾弓矢 (Drill the soldiers, and practise the bow and arrow.)" — Trần Hưng Đạo, Proclamation to the Officers (1284, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_HAWAII_A" Language="zh_Hant_HK"><Text>"He aliʻi ka ʻāina; he kauwā ke kanaka. (The land is chief; man is its servant.)" — ʻŌlelo Noʻeau, coll. Mary Kawena Pukui (1983)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_HAWAII_B" Language="zh_Hant_HK"><Text>"I ka ʻōlelo nō ke ola, i ka ʻōlelo nō ka make. (In the word there is life; in the word there is death.)" — ʻŌlelo Noʻeau, coll. Mary Kawena Pukui (1983)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_INCA_A" Language="zh_Hant_HK"><Text>"desde que hay memoria de gentes no se ha leído de tanta grandeza como tuvo este camino hecho por valles hondos y por sierras altas (Since men have memory, none has read of so great a road as this, made through deep valleys and high sierras.)" — Pedro Cieza de León, El Señorío de los Incas (1554, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_INCA_B" Language="zh_Hant_HK"><Text>"En los cerros y laderas hazían andenes para allanarlas, como hoy se veen en el Cozco y en todo el Perú (On the hills and slopes they made terraces to level them, as are seen today in Cuzco and all Peru.)" — Garcilaso de la Vega, Comentarios Reales de los Incas (1609, Bk. V, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MAJAPAHIT_A" Language="zh_Hant_HK"><Text>"milwang balyadi nusantara sahana saha prabhrti (All the vassals of Nusantara come, every one, bringing tribute.)" — Mpu Prapanca, Nagarakretagama (Old Javanese, 1365)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MAJAPAHIT_B" Language="zh_Hant_HK"><Text>"民甚殷富，其各處番船多到此地買賣 (The people are very rich, and foreign ships from every place come here to trade.)" — Ma Huan, Yingya Shenglan (1433, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MING_A" Language="zh_Hant_HK"><Text>"涉滄溟十萬餘里。 (We have traversed more than one hundred thousand li of vast water-spaces.)" — Zheng He, Changle stele (1431, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MING_B" Language="zh_Hant_HK"><Text>"In the late Ming, the appreciation of fine things became the mark of the cultivated gentleman." — Craig Clunas, Superfluous Things (1991) (re-verify before ship)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MONGOLIA_A" Language="zh_Hant_HK"><Text>"One can conquer the world on horseback, but one cannot govern it from there." — attributed to Genghis Khan / Yelü Chucai (attr. debated)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MONGOLIA_B" Language="zh_Hant_HK"><Text>"di capo de le 25 miglie egli truovano una posta, ove albergano li messaggi del Grande Sire (Every twenty-five miles the messengers find a post-house, where the Great Khan's couriers lodge.)" — Marco Polo, The Travels (Il Milione, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_NORMAN_A" Language="zh_Hant_HK"><Text>"and fylden þe land ful of castles (And they filled the land full of castles.)" — Anglo-Saxon Chronicle, 1137 (Peterborough Chronicle, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_NORMAN_B" Language="zh_Hant_HK"><Text>"þæt næs an ælpig hide… þæt næs gesæt on his gewrite (Not one single hide… was left unset in his record.)" — Anglo-Saxon Chronicle, on Domesday, 1085 (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SONGHAI_A" Language="zh_Hant_HK"><Text>"sono molte botteghe di artigiani e mercatanti, e massimamente di tessitori di tele di bambagio (There are many shops of craftsmen and merchants, above all weavers of cotton cloth.)" — Leo Africanus, Description of Africa (1550, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SONGHAI_B" Language="zh_Hant_HK"><Text>"Vendonsi molti libri scritti a mano, che vengono di Barberia; e di questi si fa più guadagno che del rimanente delle mercatanzie (Many handwritten books are sold, brought from Barbary; and more profit is made on these than on all other goods.)" — Leo Africanus, Description of Africa (1550, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SPAIN_A" Language="zh_Hant_HK"><Text>"Soy el rico Potosí, del mundo soy el tesoro, el rey de los montes y la envidia de los reyes (I am rich Potosí, treasure of the world, king of the mountains and envy of kings.)" — Villa Imperial de Potosí, royal coat-of-arms motto (1547, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SPAIN_B" Language="zh_Hant_HK"><Text>"Han muerto y destruido tan infinito número de ánimas los cristianos… por la insaciable codicia de oro. (The Christians have destroyed such infinite numbers of souls… out of insatiable greed for gold.)" — Bartolomé de las Casas, A Short Account of the Destruction of the Indies (1552, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_AMERICA_A" Language="zh_Hant_HK"><Text>"The chief business of the American people is business." — Calvin Coolidge, address to newspaper editors (1925)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_AMERICA_B" Language="zh_Hant_HK"><Text>"America will be remembered for the Constitution, jazz music, and baseball." — Gerald Early, in Ken Burns, Jazz (2001)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_BUGANDA_A" Language="zh_Hant_HK"><Text>"The banana was the staple food of the country; plantations surrounded every house." — John Roscoe, The Baganda (1911)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_BUGANDA_B" Language="zh_Hant_HK"><Text>"Agali awamu ge galuma ennyama. (Teeth set together are the ones that chew the meat — unity gives strength.)" — Ganda proverb, coll. F. Walser, Luganda Proverbs</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_FRENCH_EMPIRE_A" Language="zh_Hant_HK"><Text>"If you are lucky enough to have lived in Paris as a young man, it stays with you." — Ernest Hemingway, A Moveable Feast (1964)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_FRENCH_EMPIRE_B" Language="zh_Hant_HK"><Text>"L’art de l’imposition consiste à plumer l’oie pour obtenir le plus possible de plumes avec le moins possible de cris. (The art of taxation is to pluck the goose so as to get the most feathers with the least hissing.)" — Jean-Baptiste Colbert (attr.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_GREAT_BRITAIN_A" Language="zh_Hant_HK"><Text>"A project fit only for a nation of shopkeepers." — Adam Smith, The Wealth of Nations (1776)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_GREAT_BRITAIN_B" Language="zh_Hant_HK"><Text>"And was Jerusalem builded here, among these dark Satanic Mills?" — William Blake, Milton (1804)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_HEIAN_A" Language="zh_Hant_HK"><Text>"春はあけぼの、やうやう白くなりゆく山ぎは… (In spring, the dawn — when the slowly paling mountain rim grows faintly light.)" — Sei Shōnagon, The Pillow Book (c. 1002, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_HEIAN_B" Language="zh_Hant_HK"><Text>"一条の大路、所なく、むくつけきまで騒ぎたり (The great avenue, with no room to spare, was astir with the festival throng.)" — Murasaki Shikibu, The Tale of Genji, 'Aoi' (11th c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ICELAND_A" Language="zh_Hant_HK"><Text>"En ef þú vill vera kaupmaðr… hygg þú vandliga at, hvárt skip þitt sé vel tjǫrgat (If you would be a merchant… look carefully whether your ship is well tarred.)" — Konungs skuggsjá (The King's Mirror) (13th c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_ICELAND_B" Language="zh_Hant_HK"><Text>"Deyr fé, deyja frændr, deyr sjalfr it sama; ek veit einn, at aldri deyr: dómr um dauðan hvern. (Cattle die, kinsmen die, but the fame of a dead man never dies.)" — Hávamál, Poetic Edda (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MEIJI_A" Language="zh_Hant_HK"><Text>"富国強兵 (Fukoku kyōhei — enrich the country, strengthen the army.)" — Meiji national slogan (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MEIJI_B" Language="zh_Hant_HK"><Text>"天は人の上に人を造らず人の下に人を造らず。 (Heaven does not create one man above or below another.)" — Fukuzawa Yukichi, An Encouragement of Learning (1872, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MEXICO_A" Language="zh_Hant_HK"><Text>"El solitario mexicano ama las fiestas y las reuniones públicas. (The solitary Mexican loves fiestas and public gatherings.)" — Octavio Paz, The Labyrinth of Solitude (1950, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MEXICO_B" Language="zh_Hant_HK"><Text>"El respeto al derecho ajeno es la paz. (Respect for the rights of others is peace.)" — Benito Juárez (1867)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MUGHAL_A" Language="zh_Hant_HK"><Text>"اگر فردوس بر روی زمین است، همین است و همین است و همین است (If there is a paradise on earth, it is this, it is this, it is this.)" — attributed to Amir Khusrow, Red Fort inscription (attr. debated)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MUGHAL_B" Language="zh_Hant_HK"><Text>"L’or et l’argent, après avoir circulé dans le monde, passent dans l’Hindoustan, d’où ils ne reviennent plus. (Gold and silver, after circling the world, pass into Hindustan, from which they never return.)" — François Bernier, Travels in the Mogul Empire (1670s, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_PRUSSIA_A" Language="zh_Hant_HK"><Text>"La Prusse n’est pas un État qui possède une armée, mais une armée qui possède un État. (Prussia is not a state that has an army, but an army that has a state.)" — attributed to Mirabeau (attr. debated)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_PRUSSIA_B" Language="zh_Hant_HK"><Text>"Der Krieg ist eine bloße Fortsetzung der Politik mit anderen Mitteln. (War is the continuation of policy by other means.)" — Carl von Clausewitz, On War (1832, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_QING_A" Language="zh_Hant_HK"><Text>"天朝物產豐盈，無所不有，原不藉外夷貨物以通有無。 (The Celestial Empire possesses all things in abundance and lacks nothing; it has never relied on foreign goods.)" — the Qianlong Emperor, letter to King George III (1793, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_QING_B" Language="zh_Hant_HK"><Text>"貴國王累世相傳，皆稱恭順；唯通商已久，遂有夾帶鴉片 (Your kings for generations have professed obedience; yet trade being long established, opium has been smuggled in.)" — Lin Zexu, letter to Queen Victoria (1839, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_RUSSIA_A" Language="zh_Hant_HK"><Text>"Здесь будет город заложён на зло надменному соседу. (Here a city shall be founded, to spite our arrogant neighbour.)" — Alexander Pushkin, The Bronze Horseman (1833, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_RUSSIA_B" Language="zh_Hant_HK"><Text>"Красота спасёт мир. (Beauty will save the world.)" — Fyodor Dostoevsky, The Idiot (1869, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SIAM_A" Language="zh_Hant_HK"><Text>"เมื่อออกพรรษากรานกฐิน… เสียงพาทย์ เสียงพิณ เสียงเลื่อน เสียงขับ (When the rains end they hold the Kathin… with sounds of pipes, lute, chant, and song.)" — Ramkhamhaeng Inscription (1292, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SIAM_B" Language="zh_Hant_HK"><Text>"ในน้ำมีปลา ในนามีข้าว (In the water there are fish, in the fields there is rice.)" — Ramkhamhaeng Inscription (1292, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SILLA_A" Language="zh_Hant_HK"><Text>"心生則種種法生，心滅則種種法滅 (When the mind arises, all things arise; when the mind ceases, all things cease.)" — Wonhyo, after the Awakening of Faith (7th c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SILLA_B" Language="zh_Hant_HK"><Text>"新羅全盛之時，歌吹滿路，晝夜不絕 (In Silla's golden age, song and music filled the streets, unceasing day and night.)" — Samguk Yusa, Iryeon (13th c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_NEPAL_A" Language="zh_Hant_HK"><Text>"The whole valley is a highly cultivated garden, terraced and watered with singular industry." — William Kirkpatrick, An Account of the Kingdom of Nepaul (1811) (re-verify before ship)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_NEPAL_B" Language="zh_Hant_HK"><Text>"यो राजे दुई ढुङ्गाको तरुल जस्तो रहेछ (This realm is like a yam between two stones.)" — Prithvi Narayan Shah, Divya Upadesh (18th c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_OTTOMAN_A" Language="zh_Hant_HK"><Text>"Halk içinde mu'teber bir nesne yok devlet gibi, olmaya devlet cihanda bir nefes sıhhat gibi. (Among people nothing is prized like the state — yet no fortune on earth is like one breath of health.)" — Süleyman the Magnificent (Muhibbî), Dîvân-ı Muhibbî (16th c.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_OTTOMAN_B" Language="zh_Hant_HK"><Text>"Bir safâ bahşedelim gel şu dil-i nâ-şâda, gidelim serv-i revânım yürü Sa'd-âbâd'a. (Let us grant some joy to this joyless heart; come, my graceful cypress, let us away to Sa'dabad.)" — Nedîm, Dîvân (Tulip Era, 18th c.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_PIRATE_REPUBLIC_A" Language="zh_Hant_HK"><Text>"A merry life and a short one shall be my motto." — Bartholomew Roberts, in A General History of the Pyrates (1724)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_PIRATE_REPUBLIC_B" Language="zh_Hant_HK"><Text>"The pirates careened their ships at New Providence, which they made their republic." — Charles Johnson, A General History of the Pyrates (1724)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_QAJAR_A" Language="zh_Hant_HK"><Text>"درخت دوستی بنشان که کام دل به بار آرد (Plant the tree of friendship, that it bring the heart's desire to fruit.)" — Hafez, Divan, Ghazal 115 (14th c., trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_QAJAR_B" Language="zh_Hant_HK"><Text>"گر دست دهد ز مغز گندم نانی… عیشی بود آن نه حد هر سلطانی (Given but a loaf of wheaten bread… that were a joy beyond any sultan.)" — Omar Khayyám, Rubáiyát (rubāʿī 175, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SENGOKU_A" Language="zh_Hant_HK"><Text>"疾如風、徐如林、侵掠如火、不動如山 (Swift as the wind, silent as the forest, fierce as fire, immovable as the mountain.)" — Takeda Shingen, Fūrinkazan banner (after Sun Tzu, trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SENGOKU_B" Language="zh_Hant_HK"><Text>"楽市楽座 (Rakuichi rakuza — free markets, open guilds.)" — Oda Nobunaga, Azuchi market edicts (trans.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SHAWNEE_A" Language="zh_Hant_HK"><Text>"Sell a country! Why not sell the air, the clouds, and the great sea?" — Tecumseh (1810)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_SHAWNEE_B" Language="zh_Hant_HK"><Text>"A single twig breaks, but the bundle of twigs is strong." — attributed to Tecumseh (attr. debated)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_TONGA_A" Language="zh_Hant_HK"><Text>"Fonua ko e tangata, tangata ko e fonua. (The land is the people, the people are the land.)" — Tongan proverb</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_TONGA_B" Language="zh_Hant_HK"><Text>"The Tuʻi Tonga held a maritime empire across the central Pacific." — I. C. Campbell, Island Kingdom: Tonga Ancient and Modern (1992)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ABBASID_A" Language="zh_Hant_HK"><Text>智慧宮的學者從事翻譯，但他們的津貼耗損國庫</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ABBASID_B" Language="zh_Hant_HK"><Text>著名的花園與沙龍撫慰着城市，但少有人手耕作田園</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_AKSUM_A" Language="zh_Hant_HK"><Text>紅海商人使碼頭富庶，但錢財流向港埠，而非古老的祭儀</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_AKSUM_B" Language="zh_Hant_HK"><Text>他們的方尖碑教堂吸引朝聖者，人潮擠滿街區</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ASSYRIA_A" Language="zh_Hant_HK"><Text>他們的攻城工程師武裝你的鑄造場——攻城槌與塔樓源源而出——儘管其尚武之風令街區氣氛緊繃</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_ASSYRIA_A" Language="zh_Hant_HK"><Text>武裝你的攻城器械</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ASSYRIA_B" Language="zh_Hant_HK"><Text>擄獲的典籍充實檔案館，但整理戰利品耗費錢財</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CARTHAGE_A" Language="zh_Hant_HK"><Text>布匿商人擠滿碼頭，將人手從田地抽離</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CARTHAGE_B" Language="zh_Hant_HK"><Text>造船工匠建起繁忙的船塢，城市重噸位甚於重神廟</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_EGYPT_A" Language="zh_Hant_HK"><Text>紀念碑石匠妝點着區域，但其作品的維護所費不貲</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_EGYPT_B" Language="zh_Hant_HK"><Text>尼羅河式的氾濫農耕餵養街區，但將勞力從工程抽離</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREECE_A" Language="zh_Hant_HK"><Text>一座哲人雲集的市集廣場，以及他們的派系政治</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREECE_B" Language="zh_Hant_HK"><Text>劇場與柱廊興盛，而工坊卻閒置</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HAN_A" Language="zh_Hant_HK"><Text>精耕細作餵養眾人，代價是擁擠</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HAN_B" Language="zh_Hant_HK"><Text>公共工程隊伍建設迅速，但徭役需要補貼</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_KHMER_A" Language="zh_Hant_HK"><Text>巴萊式灌溉使邊緣地帶綠意盎然，但水利工程耗費錢財</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_KHMER_B" Language="zh_Hant_HK"><Text>他們的神廟遊行吸引大批人潮擠滿街道</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAURYA_A" Language="zh_Hant_HK"><Text>苦行教團庇佑街區，靠布施維持</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAURYA_B" Language="zh_Hant_HK"><Text>階梯井花園產出豐厚，但佔用人手</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAYA_A" Language="zh_Hant_HK"><Text>觀星者經營天文台，而非工坊</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAYA_B" Language="zh_Hant_HK"><Text>密集的米爾帕耕地餵養眾人，但使邊緣地帶擁擠</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MISSISSIPPIAN_A" Language="zh_Hant_HK"><Text>土墩祭儀豐富街區生活，靠貢賦資助</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MISSISSIPPIAN_B" Language="zh_Hant_HK"><Text>林地採集餵養區域，卻抽離田園人手</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PERSIA_A" Language="zh_Hant_HK"><Text>總督轄地的貢賦源源流入，怨恨也隨之而來</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PERSIA_B" Language="zh_Hant_HK"><Text>圍牆環繞的遊樂花園令人愉悅，卻侵佔良田</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ROME_A" Language="zh_Hant_HK"><Text>羅馬工程師與老兵建起你的工程並操練你的軍團——但鷹徽的陰影令人不安</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_ROME_A" Language="zh_Hant_HK"><Text>操練你的軍團</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ROME_B" Language="zh_Hant_HK"><Text>他們的道路將貿易引向城市，錢財主導風尚</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BULGARIA_A" Language="zh_Hant_HK"><Text>他們善騎擅鍛的老兵磨練你的騎兵——鬥毆起來也如作戰般兇猛</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_BULGARIA_A" Language="zh_Hant_HK"><Text>磨練他們的騎手</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BULGARIA_B" Language="zh_Hant_HK"><Text>邊境市集興旺，城市的帳簿比曆書記得更滿</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CHOLA_A" Language="zh_Hant_HK"><Text>泰米爾海上商人擠滿港口，將人手從土地抽離</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CHOLA_B" Language="zh_Hant_HK"><Text>宏偉的神廟水池吸引朝聖者，節慶人潮擠滿街區</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_DAI_VIET_A" Language="zh_Hant_HK"><Text>學宮學者延續學術命脈，由公帑負擔</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_DAI_VIET_B" Language="zh_Hant_HK"><Text>堡壘工程僱用大量人手，抽離田地</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HAWAII_A" Language="zh_Hant_HK"><Text>魚塘與珊瑚礁餵養街區，將人手從田園抽離</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HAWAII_B" Language="zh_Hant_HK"><Text>heiau 神廟祭儀豐富島嶼習俗，由城市資助</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_INCA_A" Language="zh_Hant_HK"><Text>梯田石匠與築路隊伍建造精湛，但耗費不菲</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_INCA_B" Language="zh_Hant_HK"><Text>山地梯田餵養眾人，街區卻擁擠</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAJAPAHIT_A" Language="zh_Hant_HK"><Text>香料之路的商賈使碼頭富庶，港埠談利甚於論排場</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAJAPAHIT_B" Language="zh_Hant_HK"><Text>沿海漁業餵養邊緣地帶，卻抽離田園人手</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MING_A" Language="zh_Hant_HK"><Text>瓷器與絲綢商賈充實帳簿，窯爐卻漸漸冷卻</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MING_B" Language="zh_Hant_HK"><Text>宮廷藝術使街區精緻典雅，其華美更勝樸實的街巷</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MONGOLIA_A" Language="zh_Hant_HK"><Text>他們的馬群與鐵匠讓你的騎兵有蹄鐵、有坐騎、有武裝——但那份傲氣令人不快</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_MONGOLIA_A" Language="zh_Hant_HK"><Text>召集他們的騎兵</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MONGOLIA_B" Language="zh_Hant_HK"><Text>草原的貢賦路線收益豐厚，城市在昔日重禮儀之處如今數錢財</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NORMAN_A" Language="zh_Hant_HK"><Text>他們的城堡石匠與騎士建起堅固工事並磨練你的武裝士兵</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_NORMAN_A" Language="zh_Hant_HK"><Text>培養他們的騎士</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NORMAN_B" Language="zh_Hant_HK"><Text>封建租稅充實金庫，卻抽離農場人手</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SONGHAI_A" Language="zh_Hant_HK"><Text>河運與鹽運的商隊擠滿市集，將人手從土地抽離</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SONGHAI_B" Language="zh_Hant_HK"><Text>他們的學者經營著名的圖書館，也有著名的爭端</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SPAIN_A" Language="zh_Hant_HK"><Text>珍寶船隊的商賈使港口富庶，卻夾雜着改宗的紛爭</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SPAIN_B" Language="zh_Hant_HK"><Text>他們的傳教使團贏得信眾，卻覆蓋了舊有習俗</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_AMERICA_A" Language="zh_Hant_HK"><Text>工廠工人推動產出，但輪班制滋生動盪</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_AMERICA_B" Language="zh_Hant_HK"><Text>他們的電影與爵士樂為街區增添活力，但需要補貼</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BUGANDA_A" Language="zh_Hant_HK"><Text>湖畔花園餵養街區，打理需要成本</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BUGANDA_B" Language="zh_Hant_HK"><Text>樹皮布工匠豐富習俗，卻抽離田園人手</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_FRENCH_EMPIRE_A" Language="zh_Hant_HK"><Text>沙龍與傑作興盛，工坊卻閒置</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_FRENCH_EMPIRE_B" Language="zh_Hant_HK"><Text>奢侈品貿易使街區富庶，其做派卻惹惱窮人</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREAT_BRITAIN_A" Language="zh_Hant_HK"><Text>帳房與文書牟利；工廠卻滋生怨氣</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREAT_BRITAIN_B" Language="zh_Hant_HK"><Text>工業廠房火熱運轉，將人手從農場抽離</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HEIAN_A" Language="zh_Hant_HK"><Text>宮廷的雅緻綻放，工坊卻閒置</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HEIAN_B" Language="zh_Hant_HK"><Text>他們的節慶提振整座城市，代價由國庫承擔</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ICELAND_A" Language="zh_Hant_HK"><Text>他們的造船工匠與船員打造快捷的長船，將人手從農場抽離</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_ICELAND_A" Language="zh_Hant_HK"><Text>啟航他們的長船</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ICELAND_B" Language="zh_Hant_HK"><Text>薩迦吟唱者守護街區的記憶，由城市資助</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MEIJI_A" Language="zh_Hant_HK"><Text>他們的兵工廠與徵兵操練以艱苦的人力節奏打造一支現代軍隊</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_MEIJI_A" Language="zh_Hant_HK"><Text>現代化你的軍隊</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MEIJI_B" Language="zh_Hant_HK"><Text>急速的現代化，舊有習俗被擱置一旁</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MEXICO_A" Language="zh_Hant_HK"><Text>壁畫與節慶為街區增添色彩，由城市資助</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MEXICO_B" Language="zh_Hant_HK"><Text>緊密團結的社群提振士氣甚於產出</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MUGHAL_A" Language="zh_Hant_HK"><Text>細密畫師與建築師妝點街區，但所費不菲</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MUGHAL_B" Language="zh_Hant_HK"><Text>精美紡織品貿易擠滿碼頭，將人手從田地抽離</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PRUSSIA_A" Language="zh_Hant_HK"><Text>他們的操練教官與兵工廠鍛造出一支紀律嚴明的軍隊，作風刻板</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_PRUSSIA_A" Language="zh_Hant_HK"><Text>操練你的兵團</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PRUSSIA_B" Language="zh_Hant_HK"><Text>他們的軍事學院嚴格施教，將舊有方式擱置一旁</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QING_A" Language="zh_Hant_HK"><Text>密集的增長餵養眾人，街區卻擁擠</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QING_B" Language="zh_Hant_HK"><Text>通商口岸的商賈充實帳簿，工坊卻放緩</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_RUSSIA_A" Language="zh_Hant_HK"><Text>重工業隊伍在飢餓的街區辛勤勞作</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_RUSSIA_B" Language="zh_Hant_HK"><Text>他們的文學與戲劇豐富城市，但需要補貼</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SIAM_A" Language="zh_Hant_HK"><Text>神廟藝術與舞蹈豐富街區，由城市資助</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SIAM_B" Language="zh_Hant_HK"><Text>他們熙攘的貿易收益豐厚，也使街道擁擠</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SILLA_A" Language="zh_Hant_HK"><Text>佛塔祭儀提振街區，靠布施維持</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SILLA_B" Language="zh_Hant_HK"><Text>他們的工藝使習俗精緻，工坊卻閒置</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEPAL_A" Language="zh_Hant_HK"><Text>山地梯田餵養街區，打理需要成本</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEPAL_B" Language="zh_Hant_HK"><Text>他們的山堡石匠與操練教官建起堅固工事並訓練出強悍的士兵</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_NEPAL_B" Language="zh_Hant_HK"><Text>訓練他們的山地兵</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_OTTOMAN_A" Language="zh_Hant_HK"><Text>külliye 綜合建築群的專家施教與行醫，由公帑負擔</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_OTTOMAN_B" Language="zh_Hant_HK"><Text>盛大的慶典豐富習俗，工坊卻閒置</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PIRATE_REPUBLIC_A" Language="zh_Hant_HK"><Text>他們的私掠者與捕獲船員充實你的金庫並填滿你的甲板，卻無法無天</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_PIRATE_REPUBLIC_A" Language="zh_Hant_HK"><Text>僱用他們的私掠者</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PIRATE_REPUBLIC_B" Language="zh_Hant_HK"><Text>繁忙的傾船修理場運作迅速，港口重速度甚於重禮儀</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QAJAR_A" Language="zh_Hant_HK"><Text>圍牆環繞的花園農場餵養街區，打理需要成本</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QAJAR_B" Language="zh_Hant_HK"><Text>Bāgh 慶典豐富習俗，工坊卻閒置</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SENGOKU_A" Language="zh_Hant_HK"><Text>他們的城下町兵器匠鍛造刀劍並磨練你的武士，作風嚴厲</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_SENGOKU_A" Language="zh_Hant_HK"><Text>鍛造他們的刀劍</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SENGOKU_B" Language="zh_Hant_HK"><Text>大名的市集收益豐厚，卻抽離田地人手</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SHAWNEE_A" Language="zh_Hant_HK"><Text>河谷低地的採集餵養街區，但有些代價</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SHAWNEE_B" Language="zh_Hant_HK"><Text>議事會祭儀豐富習俗，工坊卻閒置</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_TONGA_A" Language="zh_Hant_HK"><Text>海洋漁業餵養邊緣地帶，將人手從田園抽離</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_TONGA_B" Language="zh_Hant_HK"><Text>島嶼貿易路線收益豐厚，城市把帳目看得比祭儀更重</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEUTRAL_A" Language="zh_Hant_HK"><Text>他們的習俗豐富城市，兩種生活方式並肩共存</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEUTRAL_B" Language="zh_Hant_HK"><Text>他們的聚居區向你的國庫繳納，卻對稅賦心生不滿</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_CULTURE" Language="zh_Hant_HK"><Text>接納他們的文化</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_GOLD" Language="zh_Hant_HK"><Text>對他們的貿易徵稅</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_PRODUCTION" Language="zh_Hant_HK"><Text>運用他們的工藝</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_SCIENCE" Language="zh_Hant_HK"><Text>資助他們的學術</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_FAITH" Language="zh_Hant_HK"><Text>尊崇他們的信仰</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_FOOD" Language="zh_Hant_HK"><Text>採用他們的農耕</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_HAPPINESS" Language="zh_Hant_HK"><Text>參與他們的節慶</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_DEFAULT" Language="zh_Hant_HK"><Text>鼓勵這處聚居區</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_CULTURE" Language="zh_Hant_HK"><Text>文化</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_GOLD" Language="zh_Hant_HK"><Text>金幣</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_PRODUCTION" Language="zh_Hant_HK"><Text>生產力</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_SCIENCE" Language="zh_Hant_HK"><Text>科技</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_FAITH" Language="zh_Hant_HK"><Text>信仰</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_FOOD" Language="zh_Hant_HK"><Text>食物</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_HAPPINESS" Language="zh_Hant_HK"><Text>幸福度</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_IGNORE" Language="zh_Hant_HK"><Text>任其自處</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_NOTE_IGNORE" Language="zh_Hant_HK"><Text>你既不拉攏他們，也不徵他們的稅；聚居區自處一隅，對你別無所求。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_TITLE" Language="zh_Hant_HK"><Text>是甚麼令人們離開城市</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R0_Q" Language="zh_Hant_HK"><Text>不滿／產出低落</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R0_N" Language="zh_Hant_HK"><Text>和平時期的主要驅動因素。幸福度仍是單一最大的因素，但在 1.4.1 的重新平衡後，城市的人均產出也在此決策中佔有實質份量，因此不滿的城市與低產出的城市都會流失人口，而兩者兼具的城市流失得最快。不滿的聚落遭受雙重打擊：1.4.1 亦會壓低其產出，而繁榮分數會直接讀取這一點。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R1_Q" Language="zh_Hant_HK"><Text>區域遭受的戰爭破壞</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R1_N" Language="zh_Hant_HK"><Text>城市任何區域（其中心或外圍的市區／鄉郊街坊）所受的破壞都會從遊戲狀態讀取（不受戰爭迷霧影響），並據此調整戰爭懲罰的強度。即使只摧毀了城市邊緣的攻擊，也仍會被記錄，哪怕城市中心依然完好無損。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R2_Q" Language="zh_Hant_HK"><Text>遭受圍攻或攻擊</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R2_N" Language="zh_Hant_HK"><Text>以城市為單位：只有被圍攻的城市本身才會流失人口。當其任何區域遭受圍攻或被攻陷（佔領／爭奪中）時便會觸發，即使在其生命值下降之前亦然。這並非全文明範圍的分數；一個在他處交戰的文明，其未受影響的城市仍安然無恙。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R3_Q" Language="zh_Hant_HK"><Text>遭受城邦／獨立勢力攻擊</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R3_N" Language="zh_Hant_HK"><Text>與主要文明戰爭相同的、以城市為單位的衝突壓力：獨立勢力／次要勢力對城市的劫掠仍會驅使該城市的人口外逃，不論攻擊者是誰。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R4_Q" Language="zh_Hant_HK"><Text>城市邊界內被劫掠的地塊</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R4_N" Language="zh_Hant_HK"><Text>城市自身地塊上被劫掠的設施會被視為其邊界內的暴力（經輪詢，不受戰爭迷霧影響）；被劫掠的地塊越多，壓力就越大。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R5_Q" Language="zh_Hant_HK"><Text>饑荒</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R5_N" Language="zh_Hant_HK"><Text>淨食物為負的城市會被標記為饑荒：其大部分人口會逃往糧食較充足的城市，而由於饑荒會奪去那些來不及逃離者的性命，部分人亦會死亡（屬死亡，而非遷徙）。一旦淨食物恢復，此狀態便會解除。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R6_Q" Language="zh_Hant_HK"><Text>瘟疫／疾病</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R6_N" Language="zh_Hant_HK"><Text>受感染的城市會流失人口，而離開它的移民可能將瘟疫帶往目的地。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R7_Q" Language="zh_Hant_HK"><Text>自然災害（洪水、火山）</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R7_N" Language="zh_Hant_HK"><Text>環境災害的苦難會依一個設有上限的浮動比例施加以城市為單位的懲罰，並根據災害的實際影響（其產出／破壞數據表，而非薄弱的「嚴重程度」標記）來調整強度。如同任何致命危機，它既會使人口流離失所，也會奪去部分無法逃離者的性命。噴發／洪水會襲擊其震央周圍的每一座城市，因此位於無主邊境地形上的火山，仍會波及鄰近城市的人口。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R8_Q" Language="zh_Hant_HK"><Text>高度發展城市的過度擁擠</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R8_N" Language="zh_Hant_HK"><Text>市區人口超過某一門檻便會增加壓力（過度擁擠項）；每位領袖的調校可透過過度擁擠折扣來緩和此效應。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R9_Q" Language="zh_Hant_HK"><Text>全帝國範圍的厭戰情緒</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_0_R9_N" Language="zh_Hant_HK"><Text>被漫長戰爭消磨的文明會承受全帝國範圍的厭戰不滿（1.4.1），這會在前線各城市所受的暴力之外，對其所有聚落施加一份適度的推力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_TITLE" Language="zh_Hant_HK"><Text>是甚麼吸引人們前往城市</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R0_Q" Language="zh_Hant_HK"><Text>更高的繁榮（食物、生產力、金幣、科技、文化）</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R0_N" Language="zh_Hant_HK"><Text>每座城市會就其人均加權的食物、生產力、金幣、科技與文化計分；分數高於鄰近城市便會吸引移民前來。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R1_Q" Language="zh_Hant_HK"><Text>更高的幸福度</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R1_N" Language="zh_Hant_HK"><Text>單一最大的吸引因素。它以世界平均值為基準來評判，因此比鄰居更幸福的城市會吸引移民。在 1.4.1 的重新平衡後，它不再壓過其他一切，因此強勁的產出會與它一同發揮吸引力。1.4.1 的五個幸福階段（由「不滿」至「狂喜」）會直接為此提供依據。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R2_Q" Language="zh_Hant_HK"><Text>處於慶典（黃金時代）的文明</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R2_N" Language="zh_Hant_HK"><Text>1.4.1 的慶典更為稀有並會帶來旅遊業，因此處於慶典中的文明在其持續的少數幾個回合裏，會是明顯更強的吸引力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R3_Q" Language="zh_Hant_HK"><Text>利於幸福的政府</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R3_N" Language="zh_Hant_HK"><Text>被動效果獎勵幸福聚落的政府會使文明的城市稍具吸引力。此效應刻意設得微小：政府的大部分影響已透過其產生的幸福度與產出反映於模型之中。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R4_Q" Language="zh_Hant_HK"><Text>親移民立場政策</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R4_N" Language="zh_Hant_HK"><Text>社會政策樹中的親移民立場會提高對你城市的吸引力並賺取影響力（以犧牲部分人口留存為代價）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R5_Q" Language="zh_Hant_HK"><Text>開放邊界協議</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R5_N" Language="zh_Hant_HK"><Text>開放邊界協議會增添跨文明的吸引力加成，因此會有更多人往來於兩個文明之間。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R6_Q" Language="zh_Hant_HK"><Text>距離相近</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_1_R6_N" Language="zh_Hant_HK"><Text>遷徙會受距離懲罰，因此人們會遷往鄰近較佳的聚落，而非橫越整張地圖。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_TITLE" Language="zh_Hant_HK"><Text>誰會參與（送出／接收人口）</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R0_Q" Language="zh_Hant_HK"><Text>你的文明</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R0_N" Language="zh_Hant_HK"><Text>如同任何主要文明一樣送出與接收人口；其城市既會流失亦會獲得移民。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R1_Q" Language="zh_Hant_HK"><Text>城鎮，而不僅是城市</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R1_N" Language="zh_Hant_HK"><Text>城鎮亦會參與；它們與城市一樣送出與接收移民。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R2_Q" Language="zh_Hant_HK"><Text>你自己的城市之間互相交流人口（內部遷徙）</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R2_N" Language="zh_Hant_HK"><Text>人口亦會在一個文明自己的聚落之間流動，而不僅是跨文明流動；儀表板會以不同顏色標示這些內部遷移。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R3_Q" Language="zh_Hant_HK"><Text>其他主要文明</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R3_N" Language="zh_Hant_HK"><Text>每個主要文明都從第一回合起便納入模擬，無論是否已相遇，因此遷徙地圖不會因你的探索範圍而有所偏頗。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R4_Q" Language="zh_Hant_HK"><Text>城邦／次要文明／獨立勢力</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R4_N" Language="zh_Hant_HK"><Text>目前不會：它們既不送出亦不接收遷徙人口，不過攻擊主要文明的城市仍會驅使該城市的人口外逃。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R5_Q" Language="zh_Hant_HK"><Text>尚未相遇的文明</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_2_R5_N" Language="zh_Hant_HK"><Text>會完整納入模擬，但在你放寬可見度政策之前，介面預設會將其遮蔽以防劇透。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_TITLE" Language="zh_Hant_HK"><Text>運作行為</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R0_Q" Language="zh_Hant_HK"><Text>不同文明之間的遷徙</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R0_N" Language="zh_Hant_HK"><Text>人們確實會跨越邊界，但這股流動會受邊界、距離以及各方移民立場所節制。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R1_Q" Language="zh_Hant_HK"><Text>由遙遠的 AI 對 AI 戰爭所驅動的遷徙</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R1_N" Language="zh_Hant_HK"><Text>不受戰爭迷霧影響：戰爭壓力會讀取實際的遊戲狀態，因此一場遙遠的 AI 對 AI 戰爭，會如同你眼前所見的戰爭一樣使人口流離失所。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R2_Q" Language="zh_Hant_HK"><Text>反移民立場能留住你的人口</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R2_N" Language="zh_Hant_HK"><Text>提高人口留存（更少人離開）並提升生產力，代價是影響力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R3_Q" Language="zh_Hant_HK"><Text>封閉邊界會減少跨文明流動</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R3_N" Language="zh_Hant_HK"><Text>沒有開放邊界協議，跨文明往來的人口便會大幅減少；封閉邊界則會進一步收緊。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R4_Q" Language="zh_Hant_HK"><Text>人口與產出會實際改變（而非僅是顯示）</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R4_N" Language="zh_Hant_HK"><Text>這是真實的逐回合遊戲寫入：城市人口及其產出會實際變動；並非僅是裝飾性的疊層顯示。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R5_Q" Language="zh_Hant_HK"><Text>任何一層皆可調校或關閉</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R5_N" Language="zh_Hant_HK"><Text>在「選項 ▸ 模組 ▸ Emigration」下設有預設組合以及約 57 個獨立調節項；每一層皆預設開啟，並可關閉。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R6_Q" Language="zh_Hant_HK"><Text>移民會即時抵達</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R6_N" Language="zh_Hant_HK"><Text>並非如此。他們需要旅行，因此抵達會隨距離而延遲，最多在離開後數個回合才會到達。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R7_Q" Language="zh_Hant_HK"><Text>吸納移民是免費的</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R7_N" Language="zh_Hant_HK"><Text>並非如此。接收移民會增添一項暫時性、會逐漸消退的融合成本，體現於幸福度與金幣上。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R8_Q" Language="zh_Hant_HK"><Text>單憑戰爭就能將城市清空至零</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R8_N" Language="zh_Hant_HK"><Text>並非如此。戰爭造成的「流離失所」（人們逃離）設有上限（siegeLossCapPct），且絕不會使城市人口跌破其鄉郊下限。危機造成的「死亡」則屬另一獨立管道，不受此下限約束：漫長的危機（戰爭、圍攻、饑荒）會持續奪去部分無法逃離者的性命，因此足夠長久的災難能將城市的鄉郊人口徹底消磨殆盡。死亡起初和緩，隨危機持續愈久而加劇，且只會移除鄉郊人口，因此在真正被佔領之前，市區核心與聚落本身仍得以存續。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R9_Q" Language="zh_Hant_HK"><Text>致命危機會奪命，而不僅是使人流離失所</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R9_N" Language="zh_Hant_HK"><Text>戰爭、圍攻、災害與饑荒會奪去部分來不及逃離者的性命，即使尚有可逃之處亦然；這些屬死亡（另計於獨立的「損失」統計），而非遷徙。一般由繁榮／不滿驅動的移民絕不會致命；人們只是離開前往更好的城市。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_TITLE" Language="zh_Hant_HK"><Text>身分認同、融合與回歸</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R0_Q" Language="zh_Hant_HK"><Text>每座聚落都記得其人民的來源</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R0_N" Language="zh_Hant_HK"><Text>每座聚落都持續記錄其族裔構成：按每個人所承襲的文明來劃分其人口的比例。被佔領的城市會保留原本居住於此者的來源。族裔構成透鏡（Shift+E）會將其描繪為逐地塊的鑲嵌圖：密集的市區核心呈現主導來源的顏色，較小的社群則散佈於各地塊之間，每個來源的比例都跨地塊得以保留，因此一座城市的人口歷史一目了然。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R1_Q" Language="zh_Hant_HK"><Text>新來者會隨時間融入其接收方</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R1_N" Language="zh_Hant_HK"><Text>移民會逐漸接受其接收文明的身分認同，因此一座和平安定的城市會在許多回合間慢慢吸納一群離散族群，而透鏡會顯示其顏色朝擁有者的顏色融合。預設開啟；可於選項中切換。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R2_Q" Language="zh_Hant_HK"><Text>戰爭或動盪會使社群保持獨特</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R2_N" Language="zh_Hant_HK"><Text>當接收方與某離散族群的故土交戰時，融合會停滯；在陷入動盪的城市中則會放緩，因此一座陷入爭奪或心懷怨恨的城市會保有一個獨特、未融合的社群，並在透鏡上保持其顏色。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R3_Q" Language="zh_Hant_HK"><Text>當故土復原時，離散族群會返鄉</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R3_N" Language="zh_Hant_HK"><Text>回歸遷徙：一旦某民族的原生文明與其接收方和平相處並再度繁榮，僑居海外者中的一部分便會隨時間動身返鄉，將真實人口遷回。這是歷經許多回合的緩慢回落，絕非驟然回彈，且僅在關係維持和平時才會發生。預設開啟；可於選項中切換。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R4_Q" Language="zh_Hant_HK"><Text>難民潮可能觸發玩家抉擇</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_4_R4_N" Language="zh_Hant_HK"><Text>偶爾，當一場真實的動盪（鄰國的征服狂潮，或一場瘟疫危機）將大批人潮送往你的領土時，會出現一個簡短的抉擇：歡迎他們、將他們安置於邊疆，或拒之門外。效果輕微，按設計十分罕見（一個時代最多數次），並可於「選項 ▸ 難民抉擇」下切換。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_TITLE" Language="zh_Hant_HK"><Text>範圍與限制</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R0_Q" Language="zh_Hant_HK"><Text>改變 AI 的策略或決策</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R0_N" Language="zh_Hant_HK"><Text>不會。只是疊加了人口的流動；基礎遊戲的 AI 決策不受影響。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R1_Q" Language="zh_Hant_HK"><Text>取代或覆蓋基礎遊戲檔案</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R1_N" Language="zh_Hant_HK"><Text>不會。僅為附加性質；沒有任何基礎遊戲檔案被取代或覆蓋。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R2_Q" Language="zh_Hant_HK"><Text>在地圖上即時遷移人口</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R2_N" Language="zh_Hant_HK"><Text>不會。會受距離懲罰；人們遷往鄰近較佳的聚落，而非一步橫越世界。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R3_Q" Language="zh_Hant_HK"><Text>讓你直接安置或挑選個別移民</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R3_N" Language="zh_Hant_HK"><Text>不會。流動是依繁榮、戰爭與政策模擬而成；你透過產出與立場來塑造它們，而非親手為之。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R4_Q" Language="zh_Hant_HK"><Text>讓單一文明滾雪球般吞併整張地圖的人口</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_5_R4_N" Language="zh_Hant_HK"><Text>不會。三重制動相互疊加：以整體場域為基準的繁榮模型（每座城市都以世界平均值為基準評判，因此沒有任何單一磁極的吸引力會無限失控）；針對正在消化新一波湧入者的文明所施加的擁塞逆風；以及一個自我修正的反雪球制動：一個文明的人口越是遠超世界平均值，阻止人口進一步遷「入」它的逆風就越強（它從不減緩領先者自身人口的離開，只針對不斷湧入的新來者）。1.4.1 的重新平衡經過雪球檢驗，並且藉由以一個較不受壓抑的場域為基準來評判城市，實際上縮窄了餵養領先者的差距，而非將其擴大。這三重制動皆可於「選項 ▸ 模組 ▸ Emigration」下調校；反雪球強度設有「關閉／和緩／標準／強力」等設定。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_TITLE" Language="zh_Hant_HK"><Text>常見問題：遷徙如何運作</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F0_Q" Language="zh_Hant_HK"><Text>人們離開後會去哪裏？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F0_A" Language="zh_Hant_HK"><Text>前往他們所能抵達、最近的繁榮度更高的聚落。遷徙會受距離懲罰，因此人們是在區域內遷移，而非湧向地圖上唯一最佳的城市。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F1_Q" Language="zh_Hant_HK"><Text>戰爭難民會逃往何處？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F1_A" Language="zh_Hant_HK"><Text>遠離最近的敵人，優先選擇自己的文明，其次是中立文明，最後才是攻擊者。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F2_Q" Language="zh_Hant_HK"><Text>有多少人遷移，又有多頻繁？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F2_A" Language="zh_Hant_HK"><Text>由戰爭與災害驅動的難民每回合都會逃離；自願性（繁榮／不滿）的遷徙則較為漸進，會在兩次遷移之間短暫停歇。每個文明都依其自身的逐回合額度遷徙，該額度會隨其規模與進行中的危機而調整，因此同時發生的多場戰爭絕不會互相牽制。數量會以換算後的人數或原始人口點數顯示（由你選擇），而整套模擬會依一個回合間隔運行，你可於選項中為大型存檔延長此間隔。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F3_Q" Language="zh_Hant_HK"><Text>人們會死亡，還是只會遷走？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_6_F3_A" Language="zh_Hant_HK"><Text>兩者皆有，視乎成因。一般（繁榮／不滿）遷徙絕不會致命；人們只是離開前往更好的城市。但致命危機（戰爭、圍攻、災害或饑荒）也會奪去部分來不及逃離者的性命：這些死亡會徹底離開這個世界（顯示於「損失／死亡」統計中，與難民分開計算），即使其餘的人成功逃離亦然。因此陷入危機的城市會同時以兩種方式流失人口：多數逃離，少數死亡。死亡人數是逐漸累積，而非一次性襲來，隨危機拖延愈久而增長，並在危機解除時緩和，因此短暫的驚嚇尚可復原，而持續磨耗的圍攻或饑荒則無法挽回。此外，若難民逃往的城市在他們抵達之前被佔領或夷平，或始終過於擁擠而無法接納他們，難民亦可能在途中喪生。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_TITLE" Language="zh_Hant_HK"><Text>常見問題：戰爭、征服與復原</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F0_Q" Language="zh_Hant_HK"><Text>當我佔領或失去一座城市時會發生甚麼？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F0_A" Language="zh_Hant_HK"><Text>其現有居民仍會被標記為他們的來源文明（前任擁有者），而非你。族裔透鏡會以該來源的顏色描繪城市的地塊（逐地塊的鑲嵌圖），在網絡圖上，他們的圓點會保留舊文明的顏色與名稱；只有佔領後出生的新人口才算作你的。因此被征服的城市承載着真實的來源歷史，唯有隨其重新增長、新來者逐漸融合，這段歷史才會淡去。戰爭能使其縮小，但唯有真正的佔領才能使其易主。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F1_Q" Language="zh_Hant_HK"><Text>我的城市在一場戰爭中從規模 12 縮減到 5，它會重新成長嗎？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F1_A" Language="zh_Hant_HK"><Text>會。戰爭造成的流離失所只會遷移人口點數；它絕不會夷平區域或刪除建築（只有基礎遊戲本身的征服才會如此）。你會保有這座較大城市的基礎設施，只是人口較少，而它會以兩種方式重新成長，兩者皆為附加性質：基礎遊戲的正常食物增長（不受影響），以及移民：一旦戰事停止、其繁榮復原，倖存的高產出建築／區域便會使它成為吸引人的目的地，於是移民遷入，人口得以補回。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F2_Q" Language="zh_Hant_HK"><Text>當初逃離的那批難民會回來嗎？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F2_A" Language="zh_Hant_HK"><Text>如今有部分會，只要故土復原。多數人會在他們逃往之處永久定居，但回歸遷徙增添了一股返鄉的吸引力：當某離散族群的原生文明與其接收方和平相處並再度順遂時，一部分人便會隨時間動身返鄉，將真實人口遷回。這是歷經許多回合的緩慢回落，絕非驟然回彈，且僅在關係維持和平時才會流動。一座飽受戰火摧殘的城市，其重新成長主要仍靠出生與新移民；回歸只是在和平與繁榮重臨後，一項額外而較溫和的來源。你可於選項中關閉回歸遷徙。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F3_Q" Language="zh_Hant_HK"><Text>修復被劫掠的地塊能恢復失去的人口嗎？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F3_A" Language="zh_Hant_HK"><Text>不能。被劫掠的地塊只會施加壓力（一種將人口推離的繁榮懲罰）。修復它們會消除該壓力，因此城市會停止流失人口並更快恢復繁榮，但修復絕不會補回任何一個人口點數。它是復原的加速器，而非還原的按鈕。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F4_Q" Language="zh_Hant_HK"><Text>戰爭最多能使一座城市縮減到甚麼程度？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F4_A" Language="zh_Hant_HK"><Text>戰爭造成的「流離失所」（人們逃離）上限為圍攻開始時城市人口的 60%（siegeLossCapPct）；殘留者會「堅守下來」，無法被進一步驅離。持續的圍攻亦會奪去部分無法逃離者的性命。這些死亡不受流離失所上限或鄉郊下限約束，因此足夠長久的圍攻能將城市的鄉郊人口徹底消磨殆盡，不過在真正被佔領之前，其市區核心與聚落仍屹立不倒。死亡是逐漸累積，而非一次性發生，並會在圍攻解除時緩和。唯有真正的佔領才能奪取城市。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F5_Q" Language="zh_Hant_HK"><Text>復原一座飽受戰火摧殘城市的最快方法？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F5_A" Language="zh_Hant_HK"><Text>消除成因，使它從人口淨輸出方翻轉回吸引人口的磁極：締結和平（暴力會在約 2-3 回合內消退，解除戰爭懲罰）、修復被劫掠的地塊（消除揮之不去的壓力），以及提升幸福度（最大的繁榮因素：它既能遏止不滿造成的移民外流，又能吸引移民遷入）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_8_TITLE" Language="zh_Hant_HK"><Text>常見問題：途中的移民</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_8_F0_Q" Language="zh_Hant_HK"><Text>移民在城市之間旅行時會發生甚麼？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_8_F0_A" Language="zh_Hant_HK"><Text>遷徙並非即時；它存在旅途延遲。移民會在啟程當回合離開來源地：其鄉郊人口點數（以及該工人的地塊產出）會立即被移除。接着，他們在旅途期間不隸屬於任何城市，不耕作任何地塊，不產出任何東西，但也不耗費任何維護費、金幣或幸福度。唯有當他們抵達時，才會被加入目的地，目的地也才在此時獲得產出並支付其一次性的融合成本。旅途為 1-4 回合，依距離調整（每回合約 5 格，上限為 4）；難民至少需 1 回合（他們會紮營）。抵達並無保證：一座城市每回合只能吸納一定數量的新來者（以城市為單位的接收上限），因此若目的地在該回合已滿，移民便會在途中等候，並於下回合再試。而若目的地在他們旅途中被佔領或夷平（或他們等候數回合後仍找不到容身之處），難民便會在途中喪生（計為損失，而非抵達）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_8_F1_Q" Language="zh_Hant_HK"><Text>途中移民的經濟影響有多大？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_8_F1_A" Language="zh_Hant_HK"><Text>微小且會自我修正。就每名移民而言微不足道：相當於一個鄉郊點數的產出被暫停約 1-2 回合（最多 4 回合），而來源地本來就會失去該工人，因此真正損失的產出，僅是目的地接收他們之前的那段延遲。整體而言，大致為（目前正在旅行的移民數）×（其每人口產出）：在和平時期只是一個捨入誤差，但在大戰期間則是一批可觀的暫時閒置人口，因為難民每回合都在逃離，同時在途中的人數也更多。在遷徙放緩的數回合內，它總會回落趨近於零。這段旅途延遲也正是移出量可能先於移入量上升的原因：離境此刻便計入，抵達則在數回合後才落定。它「不會」扭曲淨遷徙量，後者只計算已定居的跨文明遷移。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_8_F2_Q" Language="zh_Hant_HK"><Text>一座城市每回合獲得或失去的人口有上限嗎？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_8_F2_A" Language="zh_Hant_HK"><Text>有，兩個方向皆然。一個聚落每回合最多只能流失若干個遷徙點數（因此即使是被圍攻的城市也是穩定流失人口，而非在單一災難性的回合內清空），而它每回合最多也只能接收若干個，因此一座繁榮暴發的城市無法一次吞下數十名新來者。超出接收上限的抵達者只會在途中等候，於稍後的回合落定。這兩個上限都會隨移出強度預設（低／中／高）而調整，並可於進階設定中個別微調。戰爭、饑荒與災害造成的死亡屬另一獨立管道，不計入這兩個上限之內。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_9_TITLE" Language="zh_Hant_HK"><Text>常見問題：1.4.1 更新</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_9_F0_Q" Language="zh_Hant_HK"><Text>此模組如何運用 1.4.1 對幸福度、政府與慶典的改動？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_9_F0_A" Language="zh_Hant_HK"><Text>它會直接讀取這些改動。幸福度如今是一個五階等級（憤怒、不滿、幸福、喜悅、狂喜），會影響城市的吸引力；處於慶典（黃金時代）中的文明在其持續期間會成為更強的吸引力；政府利於幸福的被動效果會使其城市略微提升；而全帝國範圍的厭戰情緒則會對飽經戰火的文明其聚落施加推力。1.4.1 亦使不滿的城市流失更多產出，而人均繁榮分數已將此納入考量。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_9_F1_Q" Language="zh_Hant_HK"><Text>1.4.1 是否改變了幸福度驅動遷徙的強度？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_9_F1_A" Language="zh_Hant_HK"><Text>是的，且此模組為此重新進行了平衡。幸福度仍是單一最大的因素，但它不再壓過城市的經濟：產出如今在決策中佔有實質份量，因此提升城市的生產力、金幣或食物，會明顯有助於它留住與吸引人口。此番重新平衡經過檢驗，以確保不會讓任何文明滾雪球，並可透過一個選項開關還原至 1.4.1 之前的確切運作方式。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_TITLE" Language="zh_Hant_HK"><Text>常見問題：解讀儀表板</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F0_Q" Language="zh_Hant_HK"><Text>那些「人數」數字代表甚麼，又為何如今顯得寫實？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F0_A" Language="zh_Hant_HK"><Text>《文明》的人口是抽象的（1、2、3……）。此模組運用《文明 VII》自身的各時代增長算式，將每個點數換算成一個具代表性的人口數，因此無論你身處哪個時代，該數字都能以可信的歷史尺度呈現：在上古時代離開一座城鎮的一個點數是數千人，同一個點數在現代蔓延的大都會中則多得多，而最大的現代城市則會達到真實的 1,000 萬至 3,800 萬的超級都會規模。它在每個時代交界處都平滑變化（沒有突然的跳躍），兩座相同規模的聚落絕不會顯示相同的數字（那微小的差異取決於它們真實的幸福度與市區／鄉郊比例），而這些數字與 Demographics 模組完全吻合。你可隨時透過單位開關在換算人數與原始《文明》數字之間切換。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F1_Q" Language="zh_Hant_HK"><Text>如果我玩到超過遊戲結束之後，人口還會繼續換算增長嗎？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F1_A" Language="zh_Hant_HK"><Text>會。如果你在自然結束之後繼續「再玩一回合」，超級都會會持續增長，邁入一個推想的未來，而非凍結於歷史上限（但設有邊界，使其不致失控）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F2_Q" Language="zh_Hant_HK"><Text>我能看到一個文明「接收」的難民，而不僅是送出的嗎？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F2_A" Language="zh_Hant_HK"><Text>可以。「圖表」分頁兩者兼備：移出難民（一個文明因戰爭／災害／征服而使之流離失所的人口）以及移入難民（它所安置的流離失所者）。每條線的工具提示都會按成因拆分總數。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F3_Q" Language="zh_Hant_HK"><Text>為何一座城市突然流失大量人口？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F3_A" Language="zh_Hant_HK"><Text>螢幕上的快顯提示會標明成因（戰爭、災害、不滿等），而以城市為單位的讀數則會拆解其當前所受的各種壓力。「通知」分頁如今會保存完整的事件記錄，包括敘事性的編年史條目，因此你可點擊任何一列，查看是甚麼造成的、人口從何處離開，以及他們去了哪裏。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F4_Q" Language="zh_Hant_HK"><Text>我能看到是哪一場具體的戰爭或災害所導致的嗎？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_10_F4_A" Language="zh_Hant_HK"><Text>可以。在「成因」分頁中，每個廣義成因（戰爭、災害、不滿……）都可深入查看其背後的具體事件（一場有名有姓的戰爭、某一次特定的噴發／洪水，或進行中的時代危機），並附上每個事件的移出人口與死亡人數。時代危機會歸因於自身：入侵危機顯示於「戰爭」之下，瘟疫危機於「災害」之下，忠誠／叛亂危機於「不滿」之下，因此你能確切看到一個文明的人口流動中有多少是由單一危機所造成。當你已與交戰雙方相遇時，戰爭難民事件會標明雙方名稱；若尚未相遇，則顯示為「&lt;文明&gt; 對一個尚未相遇的文明」，如此一來，戰爭總能被命名，卻不會揭露你尚未相遇的文明。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_TITLE" Language="zh_Hant_HK"><Text>常見問題：族裔、編年史與抉擇</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F0_Q" Language="zh_Hant_HK"><Text>族裔構成透鏡顯示的是甚麼？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F0_A" Language="zh_Hant_HK"><Text>每座聚落都按其人民的來源着色。它並非為每座城市塗上單一的均勻顏色，而是將每一個所擁有的地塊，依其來源及人口密集程度着色：市區核心以主導來源的顏色鮮明呈現，被耕作的鄉郊地塊較淡，較小的社群則散佈於城市各處。離散族群的地塊會保持清晰的顏色而不會淡出，因此即使是一個小型移民社群也能在地圖上顯現，而一座真正單一來源的城市則仍會正確地只顯示一種顏色。每個來源的人口比例都跨地塊得以保留，而一座由某文明建立、因戰爭而人口減半、隨後被佔領並重新成長的城市，會在地圖上顯示佔領者的顏色隨時間增強——即人口結構的變遷。按 Shift+E 可切換此透鏡。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F1_Q" Language="zh_Hant_HK"><Text>遷徙編年史是甚麼？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F1_A" Language="zh_Hant_HK"><Text>一部記述世界大遷徙的文字歷史，在事件發生之際即時記錄。當大批人潮遷移時，它會捕捉值得留存的時刻——一座因戰爭或災害而人去樓空的城市、一群在遠離故鄉之處落地生根的離散族群、一個在故土復原後返鄉的民族——各以一小段散文呈現。每一句都取材自聚落的真實環境（唯有當該城市確實擁有海岸或穀倉時，離散族群才會定居於「港口旁」或「穀倉之外」），因此這些散文絕不會杜撰該地並不具備的特徵，並且會呈現於城市邊緣，正是透鏡描繪新來者之處。這些會以「編年史」條目的形式出現在「通知」分頁中，與逐事件的詳情並列，因此整段故事都匯聚於一處。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F2_Q" Language="zh_Hant_HK"><Text>有個彈出視窗問我該如何處置難民，那是甚麼？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F2_A" Language="zh_Hant_HK"><Text>一個難民抉擇。當一場真實的動盪（鄰國在短時間內攻取數座城市，或一場瘟疫危機）將人潮送往你的領土時，你偶爾會被詢問該如何接納他們：歡迎他們入境（花費少量金幣，他們會在你之中定居，並假以時日成為你的子民）、將他們安置於邊疆，或拒之門外。效果輕微，事件罕見，一個時代最多數次。可於「選項 ▸ 模組 ▸ Emigration ▸ 難民抉擇」下將整項功能關閉。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F3_Q" Language="zh_Hant_HK"><Text>我該如何開啟或關閉這些新的身分認同系統？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_11_F3_A" Language="zh_Hant_HK"><Text>三者皆預設開啟，且各自在「選項 ▸ 模組 ▸ Emigration」下設有獨立開關：「族裔融合」（新來者逐漸向接收方的身分認同靠攏）、「回歸遷徙」（離散族群返鄉），以及「難民抉擇」（那偶爾出現的彈出視窗）。族裔構成透鏡則始終可用，而編年史條目會記錄於「通知」分頁中。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_TITLE" Language="zh_Hant_HK"><Text>常見問題：文化聚居區</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F0_Q" Language="zh_Hant_HK"><Text>文化聚居區是甚麼？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F0_A" Language="zh_Hant_HK"><Text>當一個外來社群成長到足以成為你某座城市中長久而穩固的一部分——是真實存在的常駐群體，而非僅是大量昔日的移民——它便會作為文化聚居區在城市邊緣的一處區域落地生根，並以其原生民族命名（羅馬聚居區、布匿聚居區等等）。你將獲得一次性的抉擇，決定城市如何為其騰出空間。它預設開啟；可於「選項 ▸ 模組 ▸ Emigration ▸ 文化聚居區」下將其關閉。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F1_Q" Language="zh_Hant_HK"><Text>有哪些選擇？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F1_A" Language="zh_Hant_HK"><Text>兩個植根於該文明真實特質的選項，各自帶來一份小小的益處並伴隨相應的弊端（羅馬聚居區傾向生產力但令人不安；波斯聚居區帶來金幣卻激起怨恨），外加一個被動的「任其自處」。並無絕對最佳的選項。你所選擇的立場此後會每回合套用其微小的產出，因此聚居區會確實地在城市中發揮作用，而不僅是一次性的。關閉此模態視窗（按 Escape 或點擊視窗外）便會使其歸於安靜的「任其自處」。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F2_Q" Language="zh_Hant_HK"><Text>散文下方的引言是甚麼？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F2_A" Language="zh_Hant_HK"><Text>為該聚居區所配、一句真實且註明出處的歷史引言，以一頁歷史的形式呈現——先以其原生民族的語言，隨後附上英文翻譯（希臘語、漢語、波斯語、拉丁語、古諾斯語，以及其他許多語言），每一句都經第一手史料核實。每個來源都有兩句引言：其第一處聚居區顯示其中一句，第二處則顯示另一句。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F3_Q" Language="zh_Hant_HK"><Text>單一文明能擁有多少處聚居區？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F3_A" Language="zh_Hant_HK"><Text>在你整個帝國中最多兩處——但這是「每個文明」計算，而非總數。你可同時擁有兩處羅馬、兩處諾曼和兩處漢的聚居區；某一來源達到上限絕不會阻礙另一個來源。若有不同民族取代了某現有聚居區的地塊，那屬易主（編年史會記下，而你需重新抉擇），而非第三處疊加的聚居區。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F4_Q" Language="zh_Hant_HK"><Text>如果我與某聚居區的故土開戰會怎樣？</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F4_A" Language="zh_Hant_HK"><Text>聚居區會轉為「爭議」狀態：在戰爭持續期間帶來一份微小、設有上限的幸福度壓力，其構想是城市在戰時的不安落在了那些並未選擇這場戰爭的家族身上——而非聚居區不忠。一旦和平重臨，它便會再度安定下來。</Text></Replace>
     </LocalizedText>
 </Database>

@@ -298,28 +298,28 @@ export function visibleSections(sections) {
 const DASH_CSS =
   ".emig-dash{display:flex;flex-direction:column;gap:0.85rem;" +
   'font-family:"BodyFont","BodyFont-JP","BodyFont-KR","BodyFont-SC","BodyFont-TC";' +
-  "color:#e5d2ac;font-size:0.95rem;}" +
+  "color:#e5d2ac;font-size:var(--dg-fs-95);}" +
   ".emig-card{background:linear-gradient(180deg,rgba(20,24,34,0.55),rgba(8,10,16,0.55));border:0.0555rem solid rgba(201,162,76,0.35);border-radius:0.35rem;padding:0.6rem 0.8rem;}" +
-  ".emig-card-h{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.06rem;font-size:0.95rem;color:#f3c34c;margin-bottom:0.45rem;border-bottom:0.0555rem solid rgba(201,162,76,0.3);padding-bottom:0.25rem;}" +
+  ".emig-card-h{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.06rem;font-size:var(--dg-fs-95);color:#f3c34c;margin-bottom:0.45rem;border-bottom:0.0555rem solid rgba(201,162,76,0.3);padding-bottom:0.25rem;}" +
   ".emig-empty{opacity:0.5;font-style:italic;}" +
   // Per-city pressure: flexbox rows (GameFace lays out neither <table> nor grid).
   ".emig-pr{display:flex;flex-direction:column;width:100%;}" +
   ".emig-pr-row{display:flex;align-items:center;width:100%;}" +
-  ".emig-pr-c{flex:1 1 0;padding:0.55rem 0.6rem;font-size:1.1rem;text-align:left;overflow:hidden;white-space:nowrap;border-top:0.0277rem solid rgba(229,210,172,0.12);}" +
+  ".emig-pr-c{flex:1 1 0;padding:0.55rem 0.6rem;font-size:var(--dg-fs-105);text-align:left;overflow:hidden;white-space:nowrap;border-top:0.0277rem solid rgba(229,210,172,0.12);}" +
   ".emig-pr-c.name{flex:1.5 1 0;color:#f0dca8;font-weight:bold;}" +
   ".emig-pr-c.pres{flex:2 1 0;}" +
-  ".emig-pr-head .emig-pr-c{border-top:none;opacity:0.6;text-transform:uppercase;letter-spacing:0.03rem;font-size:0.92rem;}" +
+  ".emig-pr-head .emig-pr-c{border-top:none;opacity:0.6;text-transform:uppercase;letter-spacing:0.03rem;font-size:var(--dg-fs-95);}" +
   // Civilizations ledger: flexbox rows (GameFace lays out neither <table> nor CSS grid). Every row
   // uses the same per-column flex ratios, so the columns line up; full width with no dead gap.
   ".emig-led{display:flex;flex-direction:column;width:100%;}" +
   ".emig-led-row{display:flex;align-items:center;width:100%;}" +
-  ".emig-led-c{flex:1 1 0;text-align:right;padding:0.62rem 0.6rem;font-size:1.18rem;" +
+  ".emig-led-c{flex:1 1 0;text-align:right;padding:0.62rem 0.6rem;font-size:var(--dg-fs-120);" +
   "overflow:hidden;white-space:nowrap;border-top:0.0277rem solid rgba(229,210,172,0.12);}" +
   ".emig-led-c.name{flex:2.4 1 0;text-align:left;color:#f0dca8;font-weight:bold;}" +
   ".emig-led-c.net{flex:1 1 0;}" +
   ".emig-led-c.net-bar{flex:1.7 1 0;}" +
   ".emig-led-c.stance{flex:1.8 1 0;}" +
-  ".emig-led-head .emig-led-c{border-top:none;opacity:0.6;text-transform:uppercase;letter-spacing:0.03rem;font-size:0.95rem;}" +
+  ".emig-led-head .emig-led-c{border-top:none;opacity:0.6;text-transform:uppercase;letter-spacing:0.03rem;font-size:var(--dg-fs-95);}" +
   ".emig-led-net{display:flex;align-items:center;justify-content:flex-end;gap:0.4rem;}" +
   ".emig-led-bar{height:0.7rem;border-radius:0.35rem;flex:0 0 auto;min-width:0.16rem;}" +
   // The divider sits on the ROW (one continuous full-width line) rather than each cell: the row is
@@ -333,7 +333,7 @@ const DASH_CSS =
   // pies out of alignment with the other cards (and squeezes the cause bars unevenly).
   ".emig-pie-leg{display:flex;flex-wrap:wrap;gap:0.25rem 0.9rem;justify-content:center;" +
   "max-width:14rem;margin:0.1rem 0 0.7rem;}" +
-  ".emig-pie-leg-i{display:flex;align-items:center;gap:0.3rem;font-size:0.78rem;color:#cbb994;" +
+  ".emig-pie-leg-i{display:flex;align-items:center;gap:0.3rem;font-size:var(--dg-fs-72);color:#cbb994;" +
   "max-width:100%;}" +
   ".emig-pie-sw{width:0.62rem;height:0.62rem;border-radius:50%;display:inline-block;}" +
   ".emig-pie-row{display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;margin-bottom:1.2rem;}" +
@@ -347,33 +347,33 @@ const DASH_CSS =
   ".emig-pie-c{width:13.5rem;height:13.5rem;display:block;}" +
   ".emig-pie-empty{width:13.5rem;height:13.5rem;border-radius:50%;margin:0 auto;display:flex;" +
   "align-items:center;justify-content:center;border:0.11rem dashed rgba(229,210,172,0.2);}" +
-  ".emig-pie-empty-t{font-size:0.85rem;color:#8c8064;opacity:0.85;}" +
+  ".emig-pie-empty-t{font-size:var(--dg-fs-85);color:#8c8064;opacity:0.85;}" +
   ".emig-pie.big .emig-pie-c{width:17rem;height:17rem;}" +
-  ".emig-pie-t{font-size:0.84rem;color:#f0dca8;font-weight:bold;text-align:center;margin-top:0.35rem;}" +
-  ".emig-pie-metrics{display:flex;gap:0.7rem;font-size:0.8rem;margin-top:0.2rem;}" +
+  ".emig-pie-t{font-size:var(--dg-fs-85);color:#f0dca8;font-weight:bold;text-align:center;margin-top:0.35rem;}" +
+  ".emig-pie-metrics{display:flex;gap:0.7rem;font-size:var(--dg-fs-85);margin-top:0.2rem;}" +
   ".emig-pie-in{color:#7fd08a;}.emig-pie-out{color:#e08a7f;}" +
   ".emig-pie-tip{position:absolute;pointer-events:none;display:none;z-index:30;" +
   "background:rgba(8,10,16,0.96);border:0.0555rem solid rgba(201,162,76,0.5);border-radius:0.3rem;" +
-  "padding:0.2rem 0.45rem;font-size:0.74rem;color:#e5d2ac;white-space:nowrap;" +
+  "padding:0.2rem 0.45rem;font-size:var(--dg-fs-72);color:#e5d2ac;white-space:nowrap;" +
   "transform:translate(-50%,-130%);}" +
   // My-cities flow cards.
   ".emig-city-card{padding:0.5rem 0;border-top:0.0555rem solid rgba(201,162,76,0.25);}" +
-  ".emig-city-name{font-family:\"TitleFont\";color:#f0dca8;font-size:1rem;margin-bottom:0.4rem;}" +
+  ".emig-city-name{font-family:\"TitleFont\";color:#f0dca8;font-size:var(--dg-fs-95);margin-bottom:0.4rem;}" +
   ".emig-city-cols{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;}" +
   ".emig-city-col{flex:1 1 16rem;display:flex;flex-direction:column;align-items:center;}" +
-  ".emig-city-sub{font-size:0.8rem;text-transform:uppercase;letter-spacing:0.04rem;opacity:0.75;" +
+  ".emig-city-sub{font-size:var(--dg-fs-85);text-transform:uppercase;letter-spacing:0.04rem;opacity:0.75;" +
   "color:#cbb994;margin-bottom:0.2rem;}" +
-  ".emig-city-why{font-size:0.78rem;opacity:0.8;text-align:center;margin-top:0.2rem;}" +
+  ".emig-city-why{font-size:var(--dg-fs-72);opacity:0.8;text-align:center;margin-top:0.2rem;}" +
   // Settlements: the Emigration-pressure column, a labelled bar aligned beside the pies.
   ".emig-pr-track{width:100%;max-width:13rem;height:0.85rem;margin-top:1.2rem;" +
   "background:rgba(229,210,172,0.14);border-radius:0.4rem;overflow:hidden;}" +
   ".emig-pr-fill{height:100%;border-radius:0.4rem;}" +
-  ".emig-pr-value{font-size:1.05rem;font-weight:bold;margin-top:0.35rem;}" +
+  ".emig-pr-value{font-size:var(--dg-fs-105);font-weight:bold;margin-top:0.35rem;}" +
   // Causes tab: centred civ title with fading flank lines (section-title embellishment).
   ".emig-civ-head{display:flex;align-items:center;justify-content:center;gap:0.7rem;" +
   "margin:0.2rem 0 0.5rem;}" +
   ".emig-civ-head-name{flex:0 0 auto;font-family:\"TitleFont\";text-transform:uppercase;" +
-  "letter-spacing:0.08rem;color:#f3c34c;font-size:1.05rem;}" +
+  "letter-spacing:0.08rem;color:#f3c34c;font-size:var(--dg-fs-105);}" +
   ".emig-civ-head-line{flex:1 1 auto;height:0.0833rem;" +
   "background:linear-gradient(90deg,transparent,rgba(201,162,76,0.55));}" +
   ".emig-civ-head-line:last-child{background:linear-gradient(90deg,rgba(201,162,76,0.55),transparent);}" +
@@ -383,9 +383,9 @@ const DASH_CSS =
   ".emig-city-cols.with-causes .emig-cause-list{flex:1 1 auto;}" +
   ".emig-city-cols.with-causes .emig-city-col{flex:0 0 auto;}" +
   ".emig-cause-list{display:flex;flex-direction:column;gap:0.35rem;min-width:13rem;padding-top:1.2rem;}" +
-  ".emig-cause-list-h{font-size:0.8rem;text-transform:uppercase;letter-spacing:0.04rem;opacity:0.75;" +
+  ".emig-cause-list-h{font-size:var(--dg-fs-85);text-transform:uppercase;letter-spacing:0.04rem;opacity:0.75;" +
   "color:#cbb994;margin-bottom:0.2rem;}" +
-  ".emig-cause-row{display:flex;align-items:center;gap:0.4rem;font-size:0.95rem;}" +
+  ".emig-cause-row{display:flex;align-items:center;gap:0.4rem;font-size:var(--dg-fs-95);}" +
   ".emig-cause-sw{flex:0 0 auto;width:0.7rem;height:0.7rem;border-radius:0.15rem;display:inline-block;}" +
   ".emig-cause-label{flex:0 0 6.5rem;color:#e5d2ac;}" +
   ".emig-cause-bar{flex:1 1 auto;height:0.5rem;background:rgba(229,210,172,0.12);" +
@@ -393,7 +393,7 @@ const DASH_CSS =
   ".emig-cause-fill{height:100%;}" +
   ".emig-cause-num{flex:0 0 auto;min-width:3.2rem;text-align:right;opacity:0.85;}" +
   // The specific-event sub-rows under each cause (a particular war/disaster/crisis + its toll).
-  ".emig-event-row{display:flex;align-items:baseline;gap:0.4rem;font-size:0.82rem;" +
+  ".emig-event-row{display:flex;align-items:baseline;gap:0.4rem;font-size:var(--dg-fs-85);" +
   "padding-left:1.1rem;opacity:0.78;}" +
   ".emig-event-name{flex:1 1 auto;color:#cbb994;overflow:hidden;text-overflow:ellipsis;" +
   "white-space:nowrap;}" +
@@ -403,20 +403,20 @@ const DASH_CSS =
   ".emig-ctrl-row{display:flex;flex-wrap:wrap;gap:0.3rem 1.4rem;justify-content:center;align-items:center;" +
   "margin:0.1rem 0 0.55rem;}" +
   ".emig-pill-grp{display:flex;flex-wrap:wrap;align-items:center;gap:0.3rem;}" +
-  ".emig-pill-lbl{font-size:0.9rem;opacity:0.7;margin-right:0.1rem;text-transform:uppercase;" +
+  ".emig-pill-lbl{font-size:var(--dg-fs-95);opacity:0.7;margin-right:0.1rem;text-transform:uppercase;" +
   "letter-spacing:0.03rem;color:#cbb994;}" +
   // Control-row groups render as flat, square-cornered, gold-BOXED buttons, the same look as the time/
   // age filters on the Data tab.
   ".emig-filter-btn{display:inline-block;padding:0.18rem 0.55rem;border-radius:0.2rem;" +
   "border:0.0555rem solid rgba(201,162,76,0.4);background:rgba(9,12,19,0.5);color:#cbb994;" +
-  "font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.06em;font-size:0.78rem;" +
+  "font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.06em;font-size:var(--dg-fs-72);" +
   "cursor:pointer;white-space:nowrap;line-height:1.2;}" +
   ".emig-filter-btn:hover{border-color:rgba(243,195,76,0.75);}" +
   ".emig-filter-btn.active{border-color:rgba(243,195,76,0.95);background:rgba(60,45,20,0.85);" +
   "color:#f3c34c;font-weight:bold;}" +
   // Descriptive title at the top of the Causes / Settlements tabs.
   ".emig-section-title{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.05rem;" +
-  "color:#f3c34c;font-size:1.1rem;text-align:center;margin:0.1rem 0 0.6rem;}" +
+  "color:#f3c34c;font-size:var(--dg-fs-105);text-align:center;margin:0.1rem 0 0.6rem;}" +
   ".emig-civ{color:#f0dca8;font-weight:bold;}" +
   ".emig-pos{color:#7fd08a;}.emig-neg{color:#e08a7f;}" +
   ".emig-bar-row{display:flex;align-items:center;gap:0.5rem;margin:0.2rem 0;}" +
@@ -424,23 +424,23 @@ const DASH_CSS =
   ".emig-bar-track{flex:1 1 auto;height:0.6rem;background:rgba(229,210,172,0.12);" +
   "border-radius:0.3rem;overflow:hidden;}" +
   ".emig-bar-fill{height:100%;background:linear-gradient(90deg,#c9a24c,#f3c34c);}" +
-  ".emig-tag{display:inline-block;padding:0.22rem 0.8rem;border-radius:0.8rem;font-size:1.15rem;}" +
+  ".emig-tag{display:inline-block;padding:0.22rem 0.8rem;border-radius:0.8rem;font-size:var(--dg-fs-120);}" +
   ".emig-tag.pro{background:rgba(127,208,138,0.2);color:#9fe0a8;}" +
   ".emig-tag.anti{background:rgba(224,138,127,0.2);color:#e8a89f;}" +
   ".emig-tag.none{background:rgba(229,210,172,0.12);color:#cbb994;}" +
-  ".emig-flag{font-size:0.92rem;opacity:0.7;font-style:italic;margin-left:0.4rem;}" +
+  ".emig-flag{font-size:var(--dg-fs-95);opacity:0.7;font-style:italic;margin-left:0.4rem;}" +
   ".emig-stance-block{padding:0.7rem 0.2rem;border-top:0.0277rem solid rgba(229,210,172,0.1);}" +
-  ".emig-stance-row{display:flex;justify-content:space-between;align-items:center;font-size:1.4rem;}" +
-  ".emig-stance-detail{font-size:1.1rem;opacity:0.82;margin-top:0.3rem;}" +
+  ".emig-stance-row{display:flex;justify-content:space-between;align-items:center;font-size:var(--dg-fs-140);}" +
+  ".emig-stance-detail{font-size:var(--dg-fs-105);opacity:0.82;margin-top:0.3rem;}" +
   ".emig-tabs{display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;" +
   "border-bottom:0.0555rem solid rgba(201,162,76,0.3);margin-bottom:0.8rem;}" +
   ".emig-tab{cursor:pointer;padding:0.3rem 0.85rem;font-family:\"TitleFont\";text-transform:uppercase;" +
-  "font-size:0.82rem;letter-spacing:0.04rem;color:#bfae86;border-bottom:0.14rem solid transparent;}" +
+  "font-size:var(--dg-fs-85);letter-spacing:0.04rem;color:#bfae86;border-bottom:0.14rem solid transparent;}" +
   ".emig-tab:hover{color:#e5d2ac;}" +
   ".emig-tab.active{color:#f3c34c;border-bottom-color:#f3c34c;}" +
   ".emig-tabbody{overflow-y:auto;overflow-x:hidden;max-height:74vh;}" +
-  ".emig-sample-badge{align-self:center;margin-bottom:0.5rem;padding:0.1rem 0.7rem;border-radius:0.9rem;font-size:0.74rem;letter-spacing:0.08rem;text-transform:uppercase;color:#1c1408;background:#e0913c;font-weight:bold;}" +
-  ".emig-flow-toggle{display:flex;gap:0.4rem;justify-content:center;margin:0.3rem 0;flex-wrap:wrap;}.emig-flow-tog{cursor:pointer;padding:0.34rem 1.15rem;font-size:1rem;color:#bfae86;border:0.0555rem solid rgba(201,162,76,0.4);border-radius:1rem;}" +
+  ".emig-sample-badge{align-self:center;margin-bottom:0.5rem;padding:0.1rem 0.7rem;border-radius:0.9rem;font-size:var(--dg-fs-72);letter-spacing:0.08rem;text-transform:uppercase;color:#1c1408;background:#e0913c;font-weight:bold;}" +
+  ".emig-flow-toggle{display:flex;gap:0.4rem;justify-content:center;margin:0.3rem 0;flex-wrap:wrap;}.emig-flow-tog{cursor:pointer;padding:0.34rem 1.15rem;font-size:var(--dg-fs-95);color:#bfae86;border:0.0555rem solid rgba(201,162,76,0.4);border-radius:1rem;}" +
   ".emig-flow-tog:hover{color:#e5d2ac;}.emig-flow-tog.active{color:#1c1408;background:#f3c34c;border-color:#f3c34c;font-weight:bold;}" +
   // ── Resolution density (chrome + per-tab content) ─────────────────────────
   // Short viewports (sub-1080p laptops) pin the engine font at 18px, so every

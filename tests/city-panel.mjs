@@ -27,7 +27,7 @@ function testFullModelBuildsBothBlocks() {
     inflows: [{ place: "Carthage", civName: "Phoenician", people: 8000 }],
     refugeePool: 5,
     quarter: {
-      originName: "Egyptian Quarter",
+      originName: "Egyptian Enclave",
       stanceLabel: "Embrace the quarter",
       contested: true,
       benefitYield: "YIELD_CULTURE",
@@ -45,7 +45,7 @@ function testFullModelBuildsBothBlocks() {
   assert.equal(model.population.refugeeLine, "5 refugees await settlement here.");
 
   assert.equal(model.quarters.present, true);
-  assert.ok(model.quarters.lines.some((l) => l.includes("Egyptian Quarter")));
+  assert.ok(model.quarters.lines.some((l) => l.includes("Egyptian Enclave")));
   assert.ok(model.quarters.lines.some((l) => l.includes("Embrace the quarter")));
   assert.ok(model.quarters.lines.some((l) => l === "Grants 40 Culture to the city each turn."));
   assert.ok(model.quarters.lines.some((l) => l === "Costs 5 Happiness each turn."));
@@ -65,7 +65,7 @@ function testEmptyModelDegradesGracefully() {
 
 function testPassiveQuarterHasNoYieldLines() {
   const lines = __test.quarterLines(__test.noCompose, {
-    originName: "Greek Quarter",
+    originName: "Greek Enclave",
     stanceLabel: "Let them be",
     contested: false,
     benefitYield: null,
@@ -74,7 +74,7 @@ function testPassiveQuarterHasNoYieldLines() {
     penaltyAmount: 0
   });
   assert.deepEqual(lines, [
-    "A Greek Quarter has taken root in this settlement.",
+    "A Greek Enclave has taken root in this settlement.",
     "Your stance: Let them be."
   ]);
 }
@@ -109,7 +109,7 @@ function testComposeLocalizesLabels() {
     inflows: [],
     refugeePool: 2,
     quarter: {
-      originName: "Egyptian Quarter", stanceLabel: "Embrace", contested: false,
+      originName: "Egyptian Enclave", stanceLabel: "Embrace", contested: false,
       benefitYield: "YIELD_CULTURE", benefitAmount: 40, penaltyYield: null, penaltyAmount: 0
     }
   }, compose);
