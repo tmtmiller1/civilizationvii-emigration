@@ -1,9 +1,19 @@
-# Emigration — Cultural Quarters: Design & Implementation Plan
+# Emigration — Cultural Enclaves: Design & Implementation Plan
 
 > **Status:** extracted from [feature-improvements-plan.md](feature-improvements-plan.md) §6 (Feature F)
-> for deeper refinement. This is the authoritative spec for the **Cultural Quarters** feature; the parent
+> for deeper refinement. This is the authoritative spec for the **Cultural Enclaves** feature; the parent
 > plan links here. Cross-references to `§16.x` and other features (I, H, R) refer to sections in
 > [feature-improvements-plan.md](feature-improvements-plan.md).
+>
+> **Terminology (2026-07-05):** the player-facing term is now **"enclave"** (e.g. *the Roman Enclave*,
+> *Cultural Enclave*), not "quarter". The **canonical player-facing prose lives in §3.1** and is what the
+> implementation ships. The older design/algorithm body below (§1–§2, §4–§10) still says "quarter" for the
+> internal concept — read every such prose "quarter" as "enclave"; a mechanical rename of that body text is
+> deferred (it is interleaved with code tokens and links that must not change). **Code identifiers are
+> unchanged** and still read `quarter` — function names (`quarterName`, `quarterOptionsFor`), LOC keys
+> (`LOC_EMIG_QTR_*`), CONFIG keys (`quartersEnabled`, `quarterFromShare`, …), the `EmigrationQuarters_v1`
+> state key, and the `emigration-quarter*.js` file names all stay as-is (renaming them would break saves
+> and buys nothing). When this doc names a code token, treat the literal `quarter` spelling as truth.
 >
 > House-style conventions from the parent plan apply verbatim: every new behaviour is **flag-gated** in
 > [emigration-config.js](../ui/emigration-config.js) and, where player-facing, a tunable in
@@ -19,7 +29,7 @@
 
 **Goal.** When a diaspora reaches **real cumulative mass** in a host city and then advances through
 **integration**, the newcomers "keep a district of their own". Turn that long arc into a staged,
-player-readable feature: a visible **foothold**, then a **named, foreign-flavoured Cultural Quarter** on a
+player-readable feature: a visible **foothold**, then a **named, foreign-flavoured Cultural Enclave** on a
 specific edge tile, and finally, for the largest and longest-lived communities, a **blended / host-imprint
 quarter** that has become part of the city's identity. The quarter is named after the **origin** population
 (e.g. *American Quarter*, *Roman Quarter*), and each choice is a **scaled-down, city-local echo of that
@@ -32,9 +42,14 @@ Five rules define the feature:
 2. **Never your own people.** A civ **never** forms a quarter for its own diaspora — the origin must be a
    **foreign** civ (`lead.civ !== comp.owner`'s civilization). Self-origin blends are chronicled by the
    existing follow-up line (Feature I) only; they never open a quarter or a choice.
-3. **Minimum immigrant mass required.** A quarter is only viable after a **real amount of migration** has
-  occurred from that origin into that city; share alone is insufficient. Require `migrantMass >=
-  CONFIG.quarterMinImmigrants` before any quarter event can fire.
+3. **Minimum standing stock required.** A quarter is only viable while the diaspora is a **real standing
+  presence right now**; share alone is insufficient (a tiny hamlet that happens to be 40% foreign is not a
+  quarter). The gate reads the **netted composition ledger** — the origin's *current* pop points, after
+  integration / return-home / attrition — not lifetime inflow. Require the lead foreign origin's current
+  `pts >= QUARTER_MIN_STOCK` (5 points) before any quarter event can fire. Because it is current stock, a
+  diaspora that later integrates or leaves falls back below the line. *(Superseded design: an earlier draft
+  gated on cumulative lifetime arrivals `migrantMass >= quarterMinImmigrants`; that total never decremented,
+  so a city could clear it long after the diaspora had gone — fixed to standing stock.)*
 4. **A real choice with trade-offs.** The chronicle moment presents **2–3 options**, each a small
    **tile/city-scoped** yield tied to the origin civ's actual bonuses, **each with a downside** and a
    one-line justification. There is no strictly-dominant option.
@@ -132,10 +147,87 @@ priority than refugee dilemmas** (`conquest > humanitarian > quarter`), sharing 
 default to the **first** option (the "keep it simple" one) — never leave a formed quarter without a
 modifier.
 
+**Per-civ enclave cap (per origin civ, NOT global).** Each origin **civilisation** may hold at most
+**`MAX_ENCLAVES_PER_CIV` = 2** enclaves across the host's cities — independently: a host can hold two
+Roman *and* two Norman *and* two Han enclaves at once. The count (`enclaveCountForCiv`) is per-origin, so
+reaching the cap for one civ never blocks a different civ. Once an origin has two, no third *same-origin*
+enclave is offered — `candidateFromSignal` returns null.
+
+Identity is by **CivilizationType, not player.** Each record persists `originCiv` — the CivilizationType
+captured *when the enclave formed* — so the cap is stable even if the origin player later changes
+civilisation across an age, and two players sharing a civilisation count together. `enclaveCountForCiv`
+compares `originCiv` (falling back to a live `civType(rec.civ)` for pre-persistence legacy records, and to
+the raw origin player id only when neither civ resolves — a deterministic last resort, not a design
+choice). A *different* origin overtaking an occupied tile is a change-of-hands (§6), not a new enclave, so
+it is unaffected by the cap. This same per-civ count is the enclave's **ordinal** that picks quote A
+(first same-origin enclave) vs quote B (second) in §8.
+
 Footholds do **not** open the full modal; they only chronicle and surface in the progression UI. Blended /
-host-imprint upgrades may either auto-upgrade the current quarter option or open a **lighter-weight**
+host-imprint upgrades may either auto-upgrade the current enclave option or open a **lighter-weight**
 follow-up choice if we want the player to decide whether the district preserves a stronger foreign identity
-or becomes more hybridized (see §6.1). The main quarter choice remains the only guaranteed modal.
+or becomes more hybridized (see §6.1). The main enclave choice remains the only guaranteed modal.
+
+### 3.1 Finalized player-facing prose (source of truth for the LOC strings)
+
+The canonical prose for every enclave state. **Implemented** blocks are live in the code today and match
+`text/en_us/ModText.xml` verbatim (the JS fallback in the cited function is identical); **planned** blocks
+(Foothold, Blended) describe states that are not yet rendered and are the spec for when they are built.
+`{Name}` = the enclave name from `quarterName()` (e.g. *the Roman Enclave*); `{Where}` = a truthful,
+capitalised edge phrase from `resolveQuarter()` (e.g. *By the harbour*); `{Adj}`/`{OriginCiv}` = the origin
+civ's adjective/name; `{City}` = the host city name.
+
+**Cultural Enclave — the decision modal** *(implemented — `quarterView()`, keys `LOC_EMIG_QTR_EYEBROW` /
+`_TITLE` / `_BODY`; below the body a **single** attributed §8 quote (see §8 for the one-quote-per-enclave
+rule), then each option renders its label + `{Gain}; {Cost}. {why}` note — options no longer carry quotes):*
+
+> **CULTURAL ENCLAVE**
+> **The {Name}**
+>
+> The {Adj} families of {City} have become more than new arrivals. {Where}, their shops, shrines,
+> workshops, festivals, and habits now draw a life of their own — a district with a memory from elsewhere.
+> Recognize the enclave, and decide what tradition the city will make room for.
+
+**Foothold** *(planned — a chronicle/readout milestone, no modal; see §2.1):*
+
+> **FOOTHOLD**
+> **A Foreign Community Takes Root**
+>
+> The {Adj} families of {City} are no longer a trickle. {Where}, familiar speech, food, rites, and trades
+> have begun to gather into a visible community. No formal enclave has been recognized yet.
+
+**Blended Enclave** *(planned — mature end-state; see §6.1):*
+
+> **BLENDED ENCLAVE**
+> **The {Name} Becomes Part of {City}**
+>
+> Generations have passed {Where}. What began as a foreign enclave is now woven into the city's own life:
+> still marked by {Adj} memory, but no longer merely apart from its neighbours. The enclave's strain
+> softens, but its identity remains visible.
+
+**The Enclave Changes Hands** *(implemented — `chronicleDecision()`, keys `LOC_EMIG_QTR_CHRON_HANDS_TITLE` /
+`_BODY`):*
+
+> **THE ENCLAVE CHANGES HANDS**
+> **The Enclave Changes Hands**
+>
+> The old {OldName} has faded as its families moved on, married in, or were overtaken by new arrivals.
+> {Where}, {NewAdj} households now give the ward its name, its customs, and its bargains.
+>
+> *(A fresh decision modal for the new origin then opens.)*
+
+**Contested Enclave** *(implemented — `accrueContestedStrain()`, keys `LOC_EMIG_QTR_CHRON_RESTLESS_TITLE` /
+`_BODY`):*
+
+> **CONTESTED ENCLAVE**
+> **War Tests the {Name}**
+>
+> War with {OriginCiv} falls hard on the {Name}: its families are cut off from kin in the fighting, and
+> some neighbours meet them with cold looks, forgetting they did not choose this war. Until peace returns,
+> that strain keeps the enclave from settling fully into the city's life.
+>
+> *(Framing rule: the strain is the host's — the enclave's severed ties home and its neighbours' unjust
+> wartime suspicion. Never assert the diaspora is disloyal; the "doubted loyalties / fifth-column" register
+> is out of bounds.)*
 
 ## 4. Apply the bounded reward + drawback
 
@@ -224,6 +316,16 @@ The conservative version is:
 This keeps the system readable without turning every mature quarter into a new subgame.
 
 ### 6.2 Closed borders, war strain, and uprisings
+
+> **Framing guardrail (sensitivity).** This section models wartime strain, contested enclaves, petitions,
+> and uprisings — mechanics that sit dangerously close to the "enemy-alien / fifth-column / dual-loyalty"
+> trope historically weaponized against diasporas (Jews, Japanese-Americans, and others). All player-facing
+> prose built from these mechanics **must** center the *host's* (often unjust) suspicion and the diaspora's
+> severed ties home, and treat an uprising as a failure of the host's treatment of the community — **never**
+> assert or imply the diaspora is inherently disloyal, treacherous, or a natural fifth column. The shipped
+> contested-enclave string (§3.1) is the reference tone. A "petition to rejoin a homeland" must read as a
+> political response to sustained mistreatment/unrest, not as proof that immigrants' true loyalty always
+> lies elsewhere.
 
 Closed borders should **not** add a separate quarter-specific slowdown by default. They already reduce new
 cross-border arrivals upstream, so cumulative immigrant mass grows more slowly on its own. Adding a second,
@@ -428,33 +530,33 @@ Yields are small (±1–2) and grounded in the origin civ's real identity.
 | Civ | Quarter | Option A (benefit ▸ cost ▸ why) | Option B (benefit ▸ cost ▸ why) |
 | --- | --- | --- | --- |
 | ABBASID | Abbasid Quarter | +Science ▸ −Gold ▸ House-of-Wisdom scholars translate, but their stipends drain the treasury | +Happiness ▸ −Production ▸ famed gardens and salons soothe the city, but few hands work the yards |
-| AKSUM | Aksumite Quarter | +Gold ▸ −Culture ▸ Red-Sea traders enrich the docks, but foreign custom crowds out local rites | +Faith ▸ −Happiness ▸ their stelae-churches draw pilgrims, but rival liturgy unsettles neighbours |
+| AKSUM | Aksumite Quarter | +Gold ▸ −Culture ▸ Red-Sea traders enrich the docks, but coin flows to the quays, not the old rites | +Faith ▸ −Happiness ▸ their stelae-churches draw pilgrims, and the crowds throng the ward |
 | ASSYRIA | Assyrian Quarter | +Production ▸ −Happiness ▸ siege-artisans man the foundries, but their martial bearing sours the ward | +Science ▸ −Gold ▸ captured codices fill the archives, but curating spoils costs coin |
-| CARTHAGE | Punic Quarter | +Gold ▸ −Food ▸ Punic merchants work the wharves, not the fields | +Production ▸ −Culture ▸ shipwrights raise busy yards, but trade-tongue drowns local custom |
+| CARTHAGE | Punic Quarter | +Gold ▸ −Food ▸ Punic merchants fill the wharves, drawing hands off the fields | +Production ▸ −Culture ▸ shipwrights raise busy yards, and the city prizes tonnage over temples |
 | EGYPT | Egyptian Quarter | +Culture ▸ −Gold ▸ monument-masons adorn the district, but upkeep of their works is dear | +Food ▸ −Production ▸ Nile-style flood-farming feeds the ward, but pulls labour off the works |
 | GREECE | Greek Quarter | +Science ▸ −Happiness ▸ an agora of philosophers, and their factional politics | +Culture ▸ −Production ▸ theatres and porticoes flourish while the workshops idle |
 | HAN | Han Quarter | +Food ▸ −Happiness ▸ intensive farming feeds many, at the cost of crowding | +Production ▸ −Gold ▸ public-works crews build fast, but the corvée is subsidised |
-| KHMER | Khmer Quarter | +Food ▸ −Gold ▸ baray-style irrigation greens the fringe, but the waterworks cost coin | +Faith ▸ −Happiness ▸ their temple-processions draw crowds and some resentment |
+| KHMER | Khmer Quarter | +Food ▸ −Gold ▸ baray-style irrigation greens the fringe, but the waterworks cost coin | +Faith ▸ −Happiness ▸ their temple-processions draw great crowds that throng the streets |
 | MAURYA | Mauryan Quarter | +Faith ▸ −Gold ▸ ascetic orders bless the ward, sustained by alms | +Food ▸ −Production ▸ stepwell gardens yield well, but tie up hands |
 | MAYA | Maya Quarter | +Science ▸ −Production ▸ sky-watchers keep observatories, not workshops | +Food ▸ −Happiness ▸ dense milpa plots feed many, but crowd the fringe |
 | MISSISSIPPIAN | Mississippian Quarter | +Culture ▸ −Gold ▸ mound-rites enrich the ward's life, funded by tribute | +Food ▸ −Production ▸ woodland gathering feeds the district, off the yards |
 | PERSIA | Persian Quarter | +Gold ▸ −Happiness ▸ satrapal tribute flows in, and resentment with it | +Culture ▸ −Food ▸ walled pleasure-gardens delight, but eat good farmland |
-| ROME | Roman Quarter | +Production ▸ −Happiness ▸ Roman engineering drives the works, but the legion's air chafes | +Gold ▸ −Culture ▸ their roads pull trade, and dilute the old ways |
+| ROME | Roman Quarter | +Production ▸ −Happiness ▸ Roman engineering drives the works, but the legion's air chafes | +Gold ▸ −Culture ▸ their roads pull trade to the city, and coin sets the fashion |
 
 **Exploration origins**
 
 | Civ | Quarter | Option A (benefit ▸ cost ▸ why) | Option B (benefit ▸ cost ▸ why) |
 | --- | --- | --- | --- |
-| BULGARIA | Bulgar Quarter | +Production ▸ −Happiness ▸ horse-and-forge veterans work hard and brawl harder | +Gold ▸ −Culture ▸ frontier markets thrive as old custom fades |
-| CHOLA | Chola Quarter | +Gold ▸ −Food ▸ Tamil maritime traders work the sea, not the soil | +Faith ▸ −Happiness ▸ great temple-tanks draw devotion and dispute |
+| BULGARIA | Bulgar Quarter | +Production ▸ −Happiness ▸ horse-and-forge veterans work hard and brawl harder | +Gold ▸ −Culture ▸ frontier markets thrive, and the city keeps fuller ledgers than calendars |
+| CHOLA | Chola Quarter | +Gold ▸ −Food ▸ Tamil maritime traders fill the harbours, drawing hands off the soil | +Faith ▸ −Happiness ▸ great temple-tanks draw pilgrims, and the festival crowds throng the ward |
 | DAI_VIET | Dai Viet Quarter | +Culture ▸ −Gold ▸ wall-scholars keep learning alive, at public cost | +Production ▸ −Food ▸ fort-works employ many hands off the fields |
-| HAWAII | Hawaiian Quarter | +Food ▸ −Production ▸ fish-ponds and reefs feed the ward, not the yards | +Culture ▸ −Gold ▸ heiau rites enrich island custom, funded by the city |
+| HAWAII | Hawaiian Quarter | +Food ▸ −Production ▸ fish-ponds and reefs feed the ward, drawing hands off the yards | +Culture ▸ −Gold ▸ heiau rites enrich island custom, funded by the city |
 | INCA | Inca Quarter | +Production ▸ −Gold ▸ terrace-masons and road-crews build superbly, at expense | +Food ▸ −Happiness ▸ mountain terraces feed many in a crowded ward |
-| MAJAPAHIT | Majapahit Quarter | +Gold ▸ −Culture ▸ spice-route factors enrich the docks, trade-tongue and all | +Food ▸ −Production ▸ coastal fisheries feed the fringe off the yards |
-| MING | Ming Quarter | +Gold ▸ −Production ▸ porcelain and silk factors trade richly, not toil | +Culture ▸ −Happiness ▸ imperial arts refine the ward, and its airs vex neighbours |
-| MONGOLIA | Mongol Quarter | +Production ▸ −Happiness ▸ horse-lines and smiths work fast; their swagger grates | +Gold ▸ −Culture ▸ steppe tribute-routes pay well, and thin the old ways |
+| MAJAPAHIT | Majapahit Quarter | +Gold ▸ −Culture ▸ spice-route factors enrich the docks, and the wharves talk profit over pageantry | +Food ▸ −Production ▸ coastal fisheries feed the fringe off the yards |
+| MING | Ming Quarter | +Gold ▸ −Production ▸ porcelain and silk factors fill the ledgers while the kilns run cool | +Culture ▸ −Happiness ▸ imperial arts refine the ward, and its finery outshines humbler streets |
+| MONGOLIA | Mongol Quarter | +Production ▸ −Happiness ▸ horse-lines and smiths work fast; their swagger grates | +Gold ▸ −Culture ▸ steppe tribute-routes pay well, and the city counts coin where it once kept ceremony |
 | NORMAN | Norman Quarter | +Production ▸ −Happiness ▸ castle-masons raise strong works and a martial air | +Gold ▸ −Food ▸ feudal rents fill the coffers, off the farms |
-| SONGHAI | Songhai Quarter | +Gold ▸ −Food ▸ river-and-salt traders work the trade, not the soil | +Science ▸ −Happiness ▸ their scholars keep famed libraries, and famed feuds |
+| SONGHAI | Songhai Quarter | +Gold ▸ −Food ▸ river-and-salt caravans fill the market, drawing hands off the soil | +Science ▸ −Happiness ▸ their scholars keep famed libraries, and famed feuds |
 | SPAIN | Spanish Quarter | +Gold ▸ −Happiness ▸ treasure-fleet factors enrich the port amid conversion strife | +Faith ▸ −Culture ▸ their missions win souls and overwrite old custom |
 
 **Modern origins**
@@ -465,28 +567,28 @@ Yields are small (±1–2) and grounded in the origin civ's real identity.
 | BUGANDA | Bugandan Quarter | +Food ▸ −Gold ▸ lakeshore gardens feed the ward, tended at cost | +Culture ▸ −Production ▸ bark-cloth artisans enrich custom, off the yards |
 | FRENCH_EMPIRE | French Quarter | +Culture ▸ −Production ▸ salons and Great Works flourish while workshops idle | +Gold ▸ −Happiness ▸ luxury trade enriches the ward, and its airs vex the poor |
 | GREAT_BRITAIN | British Quarter | +Gold ▸ −Happiness ▸ counting-houses and clerks profit; the mills breed grievance | +Production ▸ −Food ▸ industrial works run hot, drawing hands off the farms |
-| HEIAN | Heian Quarter | +Culture ▸ −Production ▸ courtly refinement flowers over honest labour | +Happiness ▸ −Gold ▸ their festivals lift the whole city, at the treasury's cost |
-| ICELAND | Icelandic Quarter | +Production ▸ −Food ▸ shipwrights and sailors build and raid, not farm | +Culture ▸ −Gold ▸ saga-singers keep the ward's memory, funded by the city |
+| HEIAN | Heian Quarter | +Culture ▸ −Production ▸ courtly refinement flowers while the workshops idle | +Happiness ▸ −Gold ▸ their festivals lift the whole city, at the treasury's cost |
+| ICELAND | Icelandic Quarter | +Production ▸ −Food ▸ shipwrights and sailors build and crew fast longships, drawing hands off the farms | +Culture ▸ −Gold ▸ saga-singers keep the ward's memory, funded by the city |
 | MEIJI | Meiji Quarter | +Production ▸ −Happiness ▸ rapid industry drives output at a hard human pace | +Science ▸ −Culture ▸ headlong modernisation, and old custom set aside |
 | MEXICO | Mexican Quarter | +Culture ▸ −Gold ▸ murals and fiestas colour the ward, funded by the city | +Happiness ▸ −Production ▸ tight-knit community lifts spirits over output |
-| MUGHAL | Mughal Quarter | +Culture ▸ −Gold ▸ miniaturists and architects adorn the ward, at expense | +Gold ▸ −Food ▸ fine-textile trade enriches the docks, not the fields |
+| MUGHAL | Mughal Quarter | +Culture ▸ −Gold ▸ miniaturists and architects adorn the ward, at expense | +Gold ▸ −Food ▸ fine-textile trade fills the docks, drawing hands off the fields |
 | PRUSSIA | Prussian Quarter | +Production ▸ −Happiness ▸ disciplined arsenals out-work the city, stiffly | +Science ▸ −Culture ▸ their war-academies teach hard, and set old ways aside |
-| QING | Qing Quarter | +Food ▸ −Happiness ▸ dense growth feeds many in a crowded ward | +Gold ▸ −Production ▸ treaty-port factors trade richly, not toil |
+| QING | Qing Quarter | +Food ▸ −Happiness ▸ dense growth feeds many in a crowded ward | +Gold ▸ −Production ▸ treaty-port factors fill the ledgers, and the workshops slow |
 | RUSSIA | Russian Quarter | +Production ▸ −Food ▸ heavy-industry crews work hard in a hungry ward | +Culture ▸ −Gold ▸ their letters and theatre enrich the city, at a subsidy |
 | SIAM | Siamese Quarter | +Culture ▸ −Gold ▸ temple-arts and dance enrich the ward, funded by the city | +Gold ▸ −Happiness ▸ their bustling trade pays well and crowds the streets |
-| SILLA | Silla Quarter | +Happiness ▸ −Gold ▸ pagoda-rites lift the ward, sustained by alms | +Culture ▸ −Production ▸ their crafts refine custom over honest labour |
+| SILLA | Silla Quarter | +Happiness ▸ −Gold ▸ pagoda-rites lift the ward, sustained by alms | +Culture ▸ −Production ▸ their crafts refine custom while the workshops idle |
 
 **Age-flex origins (Nepal, Ottomans, Pirate Republic, Qajar, Sengoku, Shawnee, Tonga)**
 
 | Civ | Quarter | Option A (benefit ▸ cost ▸ why) | Option B (benefit ▸ cost ▸ why) |
 | --- | --- | --- | --- |
 | NEPAL | Nepali Quarter | +Food ▸ −Gold ▸ mountain terraces feed the ward, tended at cost | +Production ▸ −Happiness ▸ fort-masons raise strong works and a martial air |
-| OTTOMANS | Ottoman Quarter | +Science ▸ −Gold ▸ külliye specialists teach and heal, at public cost | +Culture ▸ −Production ▸ grand celebrations enrich custom over labour |
-| PIRATE_REPUBLIC | Buccaneer Quarter | +Gold ▸ −Happiness ▸ prize-goods and black markets pay well, lawlessly | +Production ▸ −Culture ▸ busy careening-yards work fast, trade-tongue and all |
-| QAJAR | Qajar Quarter | +Food ▸ −Gold ▸ walled garden-farms feed the ward, tended at cost | +Culture ▸ −Production ▸ Bāq celebrations enrich custom over labour |
+| OTTOMANS | Ottoman Quarter | +Science ▸ −Gold ▸ külliye specialists teach and heal, at public cost | +Culture ▸ −Production ▸ grand celebrations enrich custom while the workshops idle |
+| PIRATE_REPUBLIC | Buccaneer Quarter | +Gold ▸ −Happiness ▸ prize-goods and black markets pay well, lawlessly | +Production ▸ −Culture ▸ busy careening-yards work fast, and the port prizes speed over ceremony |
+| QAJAR | Qajar Quarter | +Food ▸ −Gold ▸ walled garden-farms feed the ward, tended at cost | +Culture ▸ −Production ▸ Bāq celebrations enrich custom while the workshops idle |
 | SENGOKU | Sengoku Quarter | +Production ▸ −Happiness ▸ castle-town armourers out-work the ward, sternly | +Gold ▸ −Food ▸ daimyō markets pay well, off the fields |
-| SHAWNEE | Shawnee Quarter | +Food ▸ −Gold ▸ river-bottom gathering feeds the ward, at some cost | +Culture ▸ −Production ▸ council-rites enrich custom over honest labour |
-| TONGA | Tongan Quarter | +Food ▸ −Production ▸ ocean fisheries feed the fringe, not the yards | +Gold ▸ −Culture ▸ island trade-routes pay well as old custom thins |
+| SHAWNEE | Shawnee Quarter | +Food ▸ −Gold ▸ river-bottom gathering feeds the ward, at some cost | +Culture ▸ −Production ▸ council-rites enrich custom while the workshops idle |
+| TONGA | Tongan Quarter | +Food ▸ −Production ▸ ocean fisheries feed the fringe, drawing hands off the yards | +Gold ▸ −Culture ▸ island trade-routes pay well, and the city keeps its accounts before its rites |
 
 > The registry is **origin-agnostic about the host**: a *Roman Quarter* reads the same in a Norman or a
 > Han city. Rule 2 still guarantees Rome's own cities never grow a Roman Quarter (self-origin is skipped
@@ -495,8 +597,13 @@ Yields are small (±1–2) and grounded in the origin civ's real identity.
 
 ## 8. Flavour quotes for the choice moment (real, attributed)
 
-Each option carries a short **historical quote** shown in the choice modal (§3) beneath its
-benefit/cost line, so the moment reads as a page of history rather than a menu. Quotes are keyed
+Each enclave shows **one** short **historical quote** in the choice modal (§3), as a single epigraph
+between the body and the options (not one-per-option), so the moment reads as a page of history rather
+than a menu. **Which of the civ's two quotes shows is set by enclave ordinal:** the origin's **first**
+enclave shows quote **A**, its **second** shows quote **B** (`quarterView(quarter, ordinal)` →
+`enclaveQuote()` in emigration-quarter.js; `ordinal` = count of the origin's existing enclaves). Since an
+origin civ is **capped at two enclaves** per host (§3 / `MAX_ENCLAVES_PER_CIV`), both quotes are reachable
+and never exhausted. Quotes are keyed
 `QUARTER_QUOTES[civ][optionId] = { text, who, source }` in
 [emigration-quarter-bonuses.js](../ui/emigration-quarter-bonuses.js) (same module as the registry) and go
 in **all** locales as `LOC_EMIG_QUARTER_Q_*` strings (translated where a canonical translation exists;
@@ -520,72 +627,107 @@ otherwise the original with an English gloss).
 
 | Civ | Option A quote (— speaker, *source*) | Option B quote (— speaker, *source*) |
 | --- | --- | --- |
-| ABBASID | "Seek knowledge from the cradle to the grave." — attributed to the Prophet Muhammad, *Islamic tradition* *(attr. debated)* | "Baghdad became the intellectual capital of the medieval world." — Philip K. Hitti, *History of the Arabs* (1937) |
-| AKSUM | "There are four great kingdoms on earth… the third is the Kingdom of the Aksumites." — Mani, *Kephalaia* (3rd c.) | "Through the might of the Lord of Heaven… I set up this throne." — King Ezana, *Ezana Stone inscription* (4th c., trans.) |
-| ASSYRIA | "I built a wall… I made it great, I raised it mountain-high." — Sennacherib, *Taylor Prism* (7th c. BCE, trans.) | "I read the cunning tablets of Sumer and the dark Akkadian… I solved the laborious problems of division and multiplication." — Ashurbanipal, *royal inscription* (trans.) |
-| CARTHAGE | "The Carthaginians consider nothing disgraceful that leads to gain." — Polybius, *Histories*, Bk. VI (2nd c. BCE, trans.) | "The docks had room for two hundred and twenty ships." — Appian, *Roman History (Punica)* (2nd c., trans.) |
-| EGYPT | "Nowhere are there so many marvellous things, nor works of such unspeakable greatness." — Herodotus, *Histories*, Bk. II (trans.) | "Egypt is the gift of the Nile." — Herodotus (after Hecataeus), *Histories*, Bk. II (trans.) |
-| GREECE | "The unexamined life is not worth living." — Socrates, in Plato, *Apology* (trans.) | "We are lovers of the beautiful, yet simple in our tastes." — Pericles, in Thucydides, *History of the Peloponnesian War*, Bk. II (trans.) |
-| HAN | "Agriculture is the great foundation of the empire." — Chao Cuo, *Memorial on the Value of Grain* (2nd c. BCE, trans.) | "When the granaries are full, the people know propriety." — *Guanzi*, quoted in Sima Qian, *Records of the Grand Historian* (trans.) |
-| KHMER | "Three or four rice harvests a year can be had." — Zhou Daguan, *The Customs of Cambodia* (1296, trans.) | "At the centre of the kingdom rises a tower of gold." — Zhou Daguan, *The Customs of Cambodia* (1296, trans.) |
-| MAURYA | "All men are my children." — Ashoka, *Kalinga Rock Edict* (3rd c. BCE, trans.) | "Along the roads I have had banyan trees planted… and mango-groves." — Ashoka, *Pillar Edict VII* (trans.) |
-| MAYA | "Of yellow corn and of white corn their flesh was made." — *Popol Vuh* (Tedlock trans.) | "The Maya were the most brilliant civilization of the New World." — Michael D. Coe, *The Maya* (1966) |
+| ABBASID | "طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ. (Seeking knowledge is an obligation upon every Muslim.)" — the Prophet Muhammad, *Sunan Ibn Mājah 224* | "Baghdad became the intellectual capital of the medieval world." — Philip K. Hitti, *History of the Arabs* (1937) |
+| AKSUM | "ΤΟΥΤΟ ΑΡΕΣΗ ΤΗ ΧΩΡΑ (Toûto arésē tê chôra — may this please the country.)" — Mani, *Kephalaia* (3rd c.) | "ፍሥሓ ፡ ለይኲን ፡ ለአሕዛብ (Fǝśśǝḥā läyǝkʷǝn läʾaḥzāb — let the people be glad.)" — King Ezana, *Ezana Stone inscription* (4th c., trans.) |
+| ASSYRIA | "BÀD šalḫû ušēpišma uzaqqir ḫuršāniš (I had a wall built and raised it as high as mountains.)" — Sennacherib, *Taylor Prism* (7th c. BCE, trans.) | "aḫuz nēmeqī Nabû, kullat ṭupšarrūti (I grasped the wisdom of Nabû, the whole art of the scribe.)" — Ashurbanipal, *royal inscription* (trans.) |
+| CARTHAGE | "Ἔδοξε Καρχηδονίοις Ἅννωνα πλεῖν ἔξω Στηλῶν Ἡρακλείων (It was resolved by the Carthaginians that Hanno should sail beyond the Pillars of Heracles.)" — Hanno the Navigator, *Periplus of Hanno* (5th c. BCE, trans.) | "νεωρίων αἱ κρηπῖδες ἐς ναῦς διακοσίας καὶ εἴκοσι πεποιημένων (The dockyard quays were built for two hundred and twenty ships.)" — Appian, *Roman History (Punica)* (2nd c., trans.) |
+| EGYPT | "πλεῖστα θωμάσια ἔχει ἢ ἡ ἄλλη πᾶσα χώρη καὶ ἔργα λόγου μέζω παρέχεται (It has more marvels than any other land, and works too great for words.)" — Herodotus, *Histories*, Bk. II (trans.) | "Αἴγυπτος… δῶρον τοῦ ποταμοῦ (Egypt… is the gift of the river.)" — Herodotus (after Hecataeus), *Histories*, Bk. II (trans.) |
+| GREECE | "ὁ ἀνεξέταστος βίος οὐ βιωτὸς ἀνθρώπῳ. (The unexamined life is not worth living.)" — Socrates, in Plato, *Apology* (trans.) | "φιλοκαλοῦμέν τε μετ' εὐτελείας καὶ φιλοσοφοῦμεν ἄνευ μαλακίας (We love the beautiful with economy, and wisdom without softness.)" — Pericles, in Thucydides, *History of the Peloponnesian War*, Bk. II (trans.) |
+| HAN | "農，天下之大本也 (Agriculture is the great foundation of all under heaven.)" — Chao Cuo, *Memorial on the Value of Grain* (2nd c. BCE, trans.) | "倉廩實而知禮節。 (When the granaries are full, the people know propriety.)" — *Guanzi*, quoted in Sima Qian, *Records of the Grand Historian* (trans.) |
+| KHMER | "大抵一歲中，可三四番收種。 (In general, three or four harvests a year can be had.)" — Zhou Daguan, *The Customs of Cambodia* (1296, trans.) | "當國之中有金塔一座 (At the centre of the kingdom stands a tower of gold.)" — Zhou Daguan, *The Customs of Cambodia* (1296, trans.) |
+| MAURYA | "sabe munise paja mama (All men are my children.)" — Ashoka, *Kalinga Rock Edict* (3rd c. BCE, trans.) | "magesu pi me nigohani lopapitani… amba-vadikya lopapita (On the roads banyan trees were planted by me… and mango-groves.)" — Ashoka, *Pillar Edict VII* (trans.) |
+| MAYA | "Xa q'ana jal, saqi jal u tio'jil (Merely yellow maize and white maize made their flesh.)" — *Popol Vuh* (Tedlock trans.) | "The Maya were the most brilliant civilization of the New World." — Michael D. Coe, *The Maya* (1966) |
 | MISSISSIPPIAN | "Cahokia was the first city in what would become the United States." — Timothy Pauketat, *Cahokia* (2009) | "Maize agriculture underpinned the rise of the Mississippian towns." — George Milner, *The Moundbuilders* (2004) |
-| PERSIA | "The Persians called Darius a huckster, because he fixed the tribute." — Herodotus, *Histories*, Bk. III (trans.) | "I myself planted some of these trees with my own hands." — Cyrus the Younger, in Xenophon, *Oeconomicus*, Bk. IV (trans.) |
-| ROME | "Will anyone compare the idle Pyramids with these many indispensable aqueducts?" — Frontinus, *On the Aqueducts of Rome* (1st c., trans.) | "Here may be seen whatever each season brings, and all the goods of every land and sea." — Aelius Aristides, *Roman Oration* (2nd c., trans.) |
+| PERSIA | "ἀρχὰς κατεστήσατο εἴκοσι, τὰς αὐτοὶ καλέουσι σατραπηίας (He set up twenty provinces, which they themselves call satrapies.)" — Herodotus, *Histories*, Bk. III (trans.) | "ἔστι δ' αὐτῶν ἃ καὶ ἐφύτευσα αὐτός (There are some of these that I planted myself.)" — Cyrus the Younger, in Xenophon, *Oeconomicus*, Bk. IV (trans.) |
+| ROME | "Tot aquarum tam multis necessariis molibus pyramidas videlicet otiosas compares… (Would you set the idle Pyramids beside these many indispensable works of water?)" — Frontinus, *On the Aqueducts of Rome* (1st c., trans.) | "ἄγεται ἐκ πάσης γῆς καὶ θαλάττης ὅσα ὧραι φύουσι καὶ χῶραι ἕκασται φέρουσι (From every land and sea is brought whatever the seasons grow and each country bears.)" — Aelius Aristides, *Roman Oration* (2nd c., trans.) |
 
 **Exploration origins**
 
 | Civ | Option A quote (— speaker, *source*) | Option B quote (— speaker, *source*) |
 | --- | --- | --- |
-| BULGARIA | "Khan Krum made a drinking-cup of the emperor's skull." — Theophanes the Confessor, *Chronographia* (9th c., trans.) | "The Bulgarians commanded the great roads of trade between the empires." — Steven Runciman, *A History of the First Bulgarian Empire* (1930) |
+| BULGARIA | "The Bulgar state was built for war, its horsemen disciplined and its frontier strong." — Steven Runciman, *A History of the First Bulgarian Empire* (1930) | "The Bulgarians commanded the great roads of trade between the empires." — Steven Runciman, *A History of the First Bulgarian Empire* (1930) |
 | CHOLA | "The Chola navy was the most powerful in the Indian Ocean of its day." — K. A. Nilakanta Sastri, *The CōĻas* (1955) | "Rajaraja raised the great temple at Tanjore, a wonder of the age." — K. A. Nilakanta Sastri, *The CōĻas* (1955) |
-| DAI_VIET | "Virtuous and talented men are the vital force of the state; when it is strong, the country prospers." — Thân Nhân Trung, *Temple of Literature stele* (1442, trans.) | "We sharpen our weapons and train our soldiers, that we may defeat the foe." — Trần Hưng Đạo, *Proclamation to the Officers* (1284, trans.) |
+| DAI_VIET | "賢才國家之元氣 (Hiền tài là nguyên khí của quốc gia — the virtuous and talented are the vital force of the state.)" — Thân Nhân Trung, *Temple of Literature stele* (1442, trans.) | "訓練士卒，習爾弓矢 (Drill the soldiers, and practise the bow and arrow.)" — Trần Hưng Đạo, *Proclamation to the Officers* (1284, trans.) |
 | HAWAII | "He aliʻi ka ʻāina; he kauwā ke kanaka." (The land is chief; man is its servant.) — *ʻŌlelo Noʻeau*, coll. Mary Kawena Pukui (1983) | "I ka ʻōlelo nō ke ola, i ka ʻōlelo nō ka make." (In the word there is life; in the word there is death.) — *ʻŌlelo Noʻeau*, coll. Mary Kawena Pukui (1983) |
-| INCA | "In the memory of men there is no record of so great a road, built through deep valleys and high mountains." — Pedro Cieza de León, *Crónica del Perú* (1553, trans.) | "They terraced the mountainsides, and there was never a year of famine." — Garcilaso de la Vega, *Comentarios Reales de los Incas* (1609, trans.) |
-| MAJAPAHIT | "All the lands of the archipelago come to offer their tribute." — Mpu Prapanca, *Nagarakretagama* (1365, trans.) | "The country is rich, and foreign ships gather at its ports." — Ma Huan, *Yingya Shenglan* (1433, trans.) |
-| MING | "We have traversed more than one hundred thousand li of vast water-spaces." — Zheng He, *Changle stele* (1431, trans.) | "The Yongle Encyclopedia was the largest compilation of knowledge of its age." — historian's summary, *re-verify a named source before ship* |
-| MONGOLIA | "One can conquer the world on horseback, but one cannot govern it from there." — attributed to Genghis Khan / Yelü Chucai *(attr. debated)* | "Along the roads, at every twenty-five miles, the messengers find a post-house." — Marco Polo, *The Travels* (trans.) |
-| NORMAN | "Castles, which the French call castella, they built widely throughout the land." — *Anglo-Saxon Chronicle* (trans.) | "So narrowly did he have it searched out that not one hide was left out of his record." — *Anglo-Saxon Chronicle*, on Domesday (1085, trans.) |
-| SONGHAI | "Here are many shops of craftsmen and merchants, especially weavers of cloth." — Leo Africanus, *Description of Africa* (1550, trans.) | "More profit is made from the book-trade here than from any other line of goods." — Leo Africanus, *Description of Africa* (1550, trans.) |
-| SPAIN | "Potosí, the richest hill of all the world." — Luis Capoche, *Relación de la Villa Imperial de Potosí* (1585, trans.) | "The Christians have destroyed such infinite numbers of souls, moved by their wish for gold." — Bartolomé de las Casas, *A Short Account of the Destruction of the Indies* (1552, trans.) |
+| INCA | "desde que hay memoria de gentes no se ha leído de tanta grandeza como tuvo este camino hecho por valles hondos y por sierras altas (Since men have memory, none has read of so great a road as this, made through deep valleys and high sierras.)" — Pedro Cieza de León, *Crónica del Perú* (1553, trans.) | "En los cerros y laderas hazían andenes para allanarlas, como hoy se veen en el Cozco y en todo el Perú (On the hills and slopes they made terraces to level them, as are seen today in Cuzco and all Peru.)" — Garcilaso de la Vega, *Comentarios Reales de los Incas* (1609, trans.) |
+| MAJAPAHIT | "milwang balyadi nusantara sahana saha prabhrti (All the vassals of Nusantara come, every one, bringing tribute.)" — Mpu Prapanca, *Nagarakretagama* (1365, trans.) | "民甚殷富，其各處番船多到此地買賣 (The people are very rich, and foreign ships from every place come here to trade.)" — Ma Huan, *Yingya Shenglan* (1433, trans.) |
+| MING | "涉滄溟十萬餘里。 (We have traversed more than one hundred thousand li of vast water-spaces.)" — Zheng He, *Changle stele* (1431, trans.) | "In the late Ming, the appreciation of fine things became the mark of the cultivated gentleman." — Craig Clunas, *Superfluous Things* (1991) *(re-verify before ship)* |
+| MONGOLIA | "One can conquer the world on horseback, but one cannot govern it from there." — attributed to Genghis Khan / Yelü Chucai *(attr. debated)* | "di capo de le 25 miglie egli truovano una posta, ove albergano li messaggi del Grande Sire (Every twenty-five miles the messengers find a post-house, where the Great Khan's couriers lodge.)" — Marco Polo, *The Travels* (trans.) |
+| NORMAN | "and fylden þe land ful of castles (And they filled the land full of castles.)" — *Anglo-Saxon Chronicle* (trans.) | "þæt næs an ælpig hide… þæt næs gesæt on his gewrite (Not one single hide… was left unset in his record.)" — *Anglo-Saxon Chronicle*, on Domesday (1085, trans.) |
+| SONGHAI | "sono molte botteghe di artigiani e mercatanti, e massimamente di tessitori di tele di bambagio (There are many shops of craftsmen and merchants, above all weavers of cotton cloth.)" — Leo Africanus, *Description of Africa* (1550, trans.) | "Vendonsi molti libri scritti a mano, che vengono di Barberia; e di questi si fa più guadagno che del rimanente delle mercatanzie (Many handwritten books are sold, brought from Barbary; and more profit is made on these than on all other goods.)" — Leo Africanus, *Description of Africa* (1550, trans.) |
+| SPAIN | "Soy el rico Potosí, del mundo soy el tesoro, el rey de los montes y la envidia de los reyes (I am rich Potosí, treasure of the world, king of the mountains and envy of kings.)" — Luis Capoche, *Relación de la Villa Imperial de Potosí* (1585, trans.) | "Han muerto y destruido tan infinito número de ánimas los cristianos… por la insaciable codicia de oro. (The Christians have destroyed such infinite numbers of souls… out of insatiable greed for gold.)" — Bartolomé de las Casas, *A Short Account of the Destruction of the Indies* (1552, trans.) |
 
 **Modern origins**
 
 | Civ | Option A quote (— speaker, *source*) | Option B quote (— speaker, *source*) |
 | --- | --- | --- |
 | AMERICA | "The chief business of the American people is business." — Calvin Coolidge, *address to newspaper editors* (1925) | "America will be remembered for the Constitution, jazz music, and baseball." — Gerald Early, in Ken Burns, *Jazz* (2001) |
-| BUGANDA | "The banana was the staple food of the country; plantations surrounded every house." — John Roscoe, *The Baganda* (1911) | "The making of bark-cloth was an honoured craft among the Baganda." — after Apolo Kaggwa, *The Customs of the Baganda* (1905) |
-| FRENCH_EMPIRE | "If you are lucky enough to have lived in Paris as a young man, it stays with you." — Ernest Hemingway, *A Moveable Feast* (1964) | "The art of taxation consists in so plucking the goose as to get the most feathers with the least hissing." — Jean-Baptiste Colbert *(attr.)* |
+| BUGANDA | "The banana was the staple food of the country; plantations surrounded every house." — John Roscoe, *The Baganda* (1911) | "Agali awamu ge galuma ennyama. (Teeth set together are the ones that chew the meat — unity gives strength.)" — after Apolo Kaggwa, *The Customs of the Baganda* (1905) |
+| FRENCH_EMPIRE | "If you are lucky enough to have lived in Paris as a young man, it stays with you." — Ernest Hemingway, *A Moveable Feast* (1964) | "L’art de l’imposition consiste à plumer l’oie pour obtenir le plus possible de plumes avec le moins possible de cris. (The art of taxation is to pluck the goose so as to get the most feathers with the least hissing.)" — Jean-Baptiste Colbert *(attr.)* |
 | GREAT_BRITAIN | "A project fit only for a nation of shopkeepers." — Adam Smith, *The Wealth of Nations* (1776) | "And was Jerusalem builded here, among these dark Satanic Mills?" — William Blake, *Milton* (1804) |
-| HEIAN | "In spring, the dawn — when the slowly paling mountain rim grows faintly light." — Sei Shōnagon, *The Pillow Book* (c. 1002, trans.) | "The whole city was agog with excitement over the Festival." — Murasaki Shikibu, *The Tale of Genji* (11th c., trans.) |
-| ICELAND | "If you would be a merchant, keep your ship well tarred and put out to sea." — *Konungs skuggsjá (The King's Mirror)* (13th c., trans.) | "Cattle die, kinsmen die, but the fame of a dead man never dies." — *Hávamál*, *Poetic Edda* (trans.) |
-| MEIJI | "Fukoku kyōhei — enrich the country, strengthen the army." — *Meiji national slogan* (trans.) | "Heaven does not create one man above or below another." — Fukuzawa Yukichi, *An Encouragement of Learning* (1872, trans.) |
-| MEXICO | "The solitary Mexican loves fiestas and public gatherings." — Octavio Paz, *The Labyrinth of Solitude* (1950, trans.) | "El respeto al derecho ajeno es la paz." (Respect for the rights of others is peace.) — Benito Juárez (1867) |
-| MUGHAL | "If there is a paradise on earth, it is this, it is this, it is this." — attributed to Amir Khusrow, *Red Fort inscription* *(attr. debated)* | "Gold and silver come from every quarter of the globe to Hindustan." — François Bernier, *Travels in the Mogul Empire* (1670s, trans.) |
-| PRUSSIA | "Prussia is not a state that has an army, but an army that has a state." — attributed to Mirabeau *(attr. debated)* | "War is the continuation of policy by other means." — Carl von Clausewitz, *On War* (1832, trans.) |
-| QING | "The Celestial Empire possesses all things in prolific abundance and lacks no product." — Qianlong Emperor, *letter to King George III* (1793, trans.) | "The kings of your honourable country have long traded with us; yet you bring opium." — Lin Zexu, *letter to Queen Victoria* (1839, trans.) |
-| RUSSIA | "Here a city shall be founded, to spite our arrogant neighbour." — Alexander Pushkin, *The Bronze Horseman* (1833, trans.) | "Beauty will save the world." — Fyodor Dostoevsky, *The Idiot* (1869, trans.) |
-| SIAM | "At the end of the rains comes the Kathin festival; the town roars with music and merriment." — *Ramkhamhaeng Inscription* (1292, trans.) | "In the water there are fish, in the fields there is rice; whoever wishes to trade may trade." — *Ramkhamhaeng Inscription* (1292, trans.) |
-| SILLA | "When the mind arises, all things arise; when the mind ceases, all things cease." — Wonhyo (7th c., trans.) | "Silla wrought the finest goldwork of ancient Korea." — historian's summary, *re-verify a named source before ship* |
+| HEIAN | "春はあけぼの、やうやう白くなりゆく山ぎは… (In spring, the dawn — when the slowly paling mountain rim grows faintly light.)" — Sei Shōnagon, *The Pillow Book* (c. 1002, trans.) | "一条の大路、所なく、むくつけきまで騒ぎたり (The great avenue, with no room to spare, was astir with the festival throng.)" — Murasaki Shikibu, *The Tale of Genji* (11th c., trans.) |
+| ICELAND | "En ef þú vill vera kaupmaðr… hygg þú vandliga at, hvárt skip þitt sé vel tjǫrgat (If you would be a merchant… look carefully whether your ship is well tarred.)" — *Konungs skuggsjá (The King's Mirror)* (13th c., trans.) | "Deyr fé, deyja frændr, deyr sjalfr it sama; ek veit einn, at aldri deyr: dómr um dauðan hvern. (Cattle die, kinsmen die, but the fame of a dead man never dies.)" — *Hávamál*, *Poetic Edda* (trans.) |
+| MEIJI | "富国強兵 (Fukoku kyōhei — enrich the country, strengthen the army.)" — *Meiji national slogan* (trans.) | "天は人の上に人を造らず人の下に人を造らず。 (Heaven does not create one man above or below another.)" — Fukuzawa Yukichi, *An Encouragement of Learning* (1872, trans.) |
+| MEXICO | "El solitario mexicano ama las fiestas y las reuniones públicas. (The solitary Mexican loves fiestas and public gatherings.)" — Octavio Paz, *The Labyrinth of Solitude* (1950, trans.) | "El respeto al derecho ajeno es la paz." (Respect for the rights of others is peace.) — Benito Juárez (1867) |
+| MUGHAL | "اگر فردوس بر روی زمین است، همین است و همین است و همین است (If there is a paradise on earth, it is this, it is this, it is this.)" — attributed to Amir Khusrow, *Red Fort inscription* *(attr. debated)* | "L’or et l’argent, après avoir circulé dans le monde, passent dans l’Hindoustan, d’où ils ne reviennent plus. (Gold and silver, after circling the world, pass into Hindustan, from which they never return.)" — François Bernier, *Travels in the Mogul Empire* (1670s, trans.) |
+| PRUSSIA | "La Prusse n’est pas un État qui possède une armée, mais une armée qui possède un État. (Prussia is not a state that has an army, but an army that has a state.)" — attributed to Mirabeau *(attr. debated)* | "Der Krieg ist eine bloße Fortsetzung der Politik mit anderen Mitteln. (War is the continuation of policy by other means.)" — Carl von Clausewitz, *On War* (1832, trans.) |
+| QING | "天朝物產豐盈，無所不有，原不藉外夷貨物以通有無。 (The Celestial Empire possesses all things in abundance and lacks nothing; it has never relied on foreign goods.)" — Qianlong Emperor, *letter to King George III* (1793, trans.) | "貴國王累世相傳，皆稱恭順；唯通商已久，遂有夾帶鴉片 (Your kings for generations have professed obedience; yet trade being long established, opium has been smuggled in.)" — Lin Zexu, *letter to Queen Victoria* (1839, trans.) |
+| RUSSIA | "Здесь будет город заложён на зло надменному соседу. (Here a city shall be founded, to spite our arrogant neighbour.)" — Alexander Pushkin, *The Bronze Horseman* (1833, trans.) | "Красота спасёт мир. (Beauty will save the world.)" — Fyodor Dostoevsky, *The Idiot* (1869, trans.) |
+| SIAM | "เมื่อออกพรรษากรานกฐิน… เสียงพาทย์ เสียงพิณ เสียงเลื่อน เสียงขับ (When the rains end they hold the Kathin… with sounds of pipes, lute, chant, and song.)" — *Ramkhamhaeng Inscription* (1292, trans.) | "ในน้ำมีปลา ในนามีข้าว (In the water there are fish, in the fields there is rice.)" — *Ramkhamhaeng Inscription* (1292, trans.) |
+| SILLA | "心生則種種法生，心滅則種種法滅 (When the mind arises, all things arise; when the mind ceases, all things cease.)" — Wonhyo (7th c., trans.) | "新羅全盛之時，歌吹滿路，晝夜不絕 (In Silla's golden age, song and music filled the streets, unceasing day and night.)" — *Samguk Yusa*, Iryeon (13th c., trans.) *(re-verify before ship)* |
 
 **Age-flex origins**
 
 | Civ | Option A quote (— speaker, *source*) | Option B quote (— speaker, *source*) |
 | --- | --- | --- |
-| NEPAL | "The hills are terraced to their summits; not a foot of soil is left to waste." — traveller's account, *re-verify a named source before ship* | "Nepal is a yam between two boulders." — Prithvi Narayan Shah, *Divya Upadesh* (18th c., trans.) |
-| OTTOMANS | "In Istanbul there are colleges and hospitals, where the sick are tended without charge." — Evliya Çelebi, *Seyahatname (Book of Travels)* (17th c., trans.) | "The guilds pass in procession, the whole city given over to festival." — Evliya Çelebi, *Seyahatname* (17th c., trans.) |
+| NEPAL | "The whole valley is a highly cultivated garden, terraced and watered with singular industry." — William Kirkpatrick, *An Account of the Kingdom of Nepaul* (1811) *(re-verify before ship)* | "यो राजे दुई ढुङ्गाको तरुल जस्तो रहेछ (This realm is like a yam between two stones.)" — Prithvi Narayan Shah, *Divya Upadesh* (18th c., trans.) |
+| OTTOMANS | "Halk içinde mu'teber bir nesne yok devlet gibi, olmaya devlet cihanda bir nefes sıhhat gibi. (Among people nothing is prized like the state — yet no fortune on earth is like one breath of health.)" — Evliya Çelebi, *Seyahatname (Book of Travels)* (17th c., trans.) | "Bir safâ bahşedelim gel şu dil-i nâ-şâda, gidelim serv-i revânım yürü Sa'd-âbâd'a. (Let us grant some joy to this joyless heart; come, my graceful cypress, let us away to Sa'dabad.)" — Evliya Çelebi, *Seyahatname* (17th c., trans.) |
 | PIRATE_REPUBLIC | "A merry life and a short one shall be my motto." — Bartholomew Roberts (18th c.), in *A General History of the Pyrates* (1724) | "The pirates careened their ships at New Providence, which they made their republic." — Charles Johnson, *A General History of the Pyrates* (1724) |
-| QAJAR | "Plant the tree of friendship that bears the fruit of the heart's desire." — Hafez, *Divan* (14th c., trans.) | "A jug of wine, a loaf of bread — and thou beside me singing in the wilderness." — Omar Khayyám, *Rubáiyát* (FitzGerald trans., 1859) |
-| SENGOKU | "Swift as the wind, silent as the forest, fierce as fire, immovable as the mountain." — Takeda Shingen, *Fūrinkazan banner* (after Sun Tzu, trans.) | "Free markets, open guilds — rakuichi rakuza." — Oda Nobunaga, *Azuchi market edicts* (trans.) |
+| QAJAR | "درخت دوستی بنشان که کام دل به بار آرد (Plant the tree of friendship, that it bring the heart's desire to fruit.)" — Hafez, *Divan* (14th c., trans.) | "گر دست دهد ز مغز گندم نانی… عیشی بود آن نه حد هر سلطانی (Given but a loaf of wheaten bread… that were a joy beyond any sultan.)" — Omar Khayyám, *Rubáiyát* (FitzGerald trans., 1859) |
+| SENGOKU | "疾如風、徐如林、侵掠如火、不動如山 (Swift as the wind, silent as the forest, fierce as fire, immovable as the mountain.)" — Takeda Shingen, *Fūrinkazan banner* (after Sun Tzu, trans.) | "楽市楽座 (Rakuichi rakuza — free markets, open guilds.)" — Oda Nobunaga, *Azuchi market edicts* (trans.) |
 | SHAWNEE | "Sell a country! Why not sell the air, the clouds, and the great sea?" — Tecumseh (1810) | "A single twig breaks, but the bundle of twigs is strong." — attributed to Tecumseh *(attr. debated)* |
 | TONGA | "Fonua ko e tangata, tangata ko e fonua." (The land is the people, the people are the land.) — *Tongan proverb* | "The Tuʻi Tonga held a maritime empire across the central Pacific." — I. C. Campbell, *Island Kingdom: Tonga Ancient and Modern* (1992) |
 
 > **Sensitivity note.** Conquest- and colonialism-heavy civs deliberately quote a *critical or plain*
-> primary voice (Spain → Las Casas' protest; Assyria/Bulgaria → the chroniclers' record, not a boast;
-> Mongolia → a governance line, not a massacre line). Two cells are placeholders pending a named source
-> (Ming-B, Silla-B, Nepal-A) and must be filled before ship — the test asserts every shipped quote has a
-> concrete `source` string, so a placeholder fails the gate rather than silently shipping.
+> voice (Spain → Las Casas' protest; Mongolia → a governance line, not a massacre line; Bulgaria →
+> Runciman on the state's discipline, not an atrocity). No group is characterized by a slur.
+>
+> **Sensitivity revision (2026-07-05).** A full anti-trope pass swept every quote and every per-civ
+> "why" line (this doc, the live registry, prose.md, and all 12 locales). Removed: (1) the Carthage
+> "greed" quote (Polybius' *Punica fides* — an antisemitic-adjacent slur against a Semitic people →
+> replaced with Hanno's *Periplus*, their own seafaring voice); (2) the Bulgaria skull-cup quote
+> (barbarian-savage trope → Runciman on Bulgar statecraft); (3) the Persia "huckster" line (merchant
+> slur → Herodotus on the satrapy tribute system). Systemically reframed: the −Culture "why" lines that
+> had immigrants "drown / dilute / thin / crowd out / overwrite" native culture (nativist replacement
+> register → recast as the host city's *own* priorities shifting to trade); the "trade, not honest toil"
+> merchant-as-parasite formula that had landed on Semitic/colonized peoples (→ neutral labour-allocation,
+> "drawing hands off the fields"); and the minority-faith-as-disruptive lines (Aksum/Khmer/Chola "rival
+> liturgy unsettles / draws resentment / dispute" → crowding). The **contested-enclave** prose was
+> rewritten to center the host's *unjust* wartime suspicion and the diaspora's severed ties home, not the
+> "doubted loyalties" fifth-column trope. The `QUARTER_QUOTES` gate still requires every shipped option a
+> concrete `source`; the three previously-blank cells (Ming-B, Silla-B, Nepal-A) are now filled with named
+> sources marked *(re-verify before ship)*.
+>
+> **Bilingual-originals pass (2026-07-05).** Each translated quote now shows its **native-language
+> original followed by an English gloss** (the Hawaiian/Tongan format), e.g. *"倉廩實而知禮節 (When the
+> granaries are full, the people know propriety.)"*. Originals were **web-verified against primary
+> sources** (Perseus TEI for Greek/Latin; ctext / zh.wikisource for Chinese; ganjoor for Persian; Oracc
+> RINAP for Akkadian; Hultzsch for Prakrit; Christenson for K'iche'; etc.) — nothing was reconstructed
+> from memory. **68 of 90 options** carry an original; the RTL originals (Arabic/Persian) are bidi-isolated
+> at render (`bidiIsolate` in emigration-dilemma-view.js). The five quotes whose originals proved
+> un-sourceable verbatim (Mani/*Kephalaia*, Ezana stone, Evliya Çelebi's *Seyahatname* ×2, Kaggwa's
+> Luganda) were **dropped and replaced with sourced own-voice alternatives**: Aksum → its Greek and Ge'ez
+> **coin mottos** (*ΤΟΥΤΟ ΑΡΕΣΗ ΤΗ ΧΩΡΑ*; Armah's *ፍሥሓ ፡ ለይኲን ፡ ለአሕዛብ*); Ottoman → **Süleyman/Muhibbî**
+> and **Nedîm**; Buganda → the Ganda proverb *Agali awamu ge galuma ennyama*. The remaining 22 English
+> quotes are English-**authored** (modern historians Hitti/Coe/Runciman/Sastri/Clunas/Pauketat/Milner and
+> English voices Coolidge/Blake/Tecumseh/Adam Smith/Hemingway/…), which have no foreign original.
+> **Verification also caught
+> real errors**, now fixed: HAN-a "農，天下之大本也" is **Emperor Wen's edict**, not Chao Cuo; INCA-a is from
+> *El Señorío de los Incas* (1554), not the 1553 *Crónica*; INCA-b's "never a year of famine" (contradicted
+> by Garcilaso) → his real terrace line; SPAIN-a's "richest hill" (the modern editor's words) → the genuine
+> Potosí coat-of-arms motto; NORMAN-a's "which the French call *castella*" (a translator's embellishment
+> absent from the 1137 annal) → the real *"and fylden þe land ful of castles"*; SILLA-a is canonically the
+> *Awakening of Faith*, associated with Wonhyo by his awakening story.
 
 ## 9. Config / tunables, balance, tests, risk
 

@@ -13,16 +13,16 @@
 // narrated (the Chronicle would otherwise leak a civ the player hasn't met). Pure detection + writes
 // to the chronicle; never throws into the pass.
 
+import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
-import { civAdjective, eventDisplayName, narrativeCiv } from "/emigration/ui/emigration-naming.js";
+import { civAdjective, eventDisplayName, narrativeCiv, civType } from "/emigration/ui/emigration-naming.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
-import { formatPeopleExact } from "/emigration/ui/emigration-population.js";
+import { formatPeopleExact, scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { chronicle, chronicled } from "/emigration/ui/emigration-chronicle.js";
 import { exodusLine, foundingLine, chronicleTitle } from "/emigration/ui/emigration-narrative.js";
 import { cityFeatureKeys } from "/emigration/ui/emigration-city-features.js";
 import { resolveQuarter } from "/emigration/ui/emigration-quarter-phrases.js";
-import { migrationFlows } from "/emigration/ui/emigration-migration-stats.js";
 import { loc as tr } from "/emigration/ui/emigration-loc.js";
 
 // A wave this large (scaled people, one settlement, one cause, one pass) reads as a historical
@@ -35,10 +35,25 @@ const EXODUS_COOLDOWN = 8;
 const DIASPORA_MIN = 0.15;
 const DIASPORA_STEP = 0.15;
 
-// Quarter progression starts only after durable mass and then deepens with share growth.
-const QUARTER_MIN_IMMIGRANTS = 250000;
+// Quarter progression is gated on the diaspora's CURRENT STANDING presence (its pop points right now,
+// netted for integration / return-home / attrition by the composition ledger — NOT lifetime inflow),
+// and then deepens with share growth. It is a first-over-the-line: the moment a lead foreign origin is
+// both large enough in absolute stock and a big enough share of the city, the stage fires; if that
+// diaspora later integrates or leaves, the stock falls back below the line. The established bar (share +
+// min stock) is player-tunable via CONFIG; the foothold share is a fixed chronicle-only milestone.
 const QUARTER_FOOTHOLD_SHARE = 0.25;
-const QUARTER_ESTABLISHED_SHARE = 0.35;
+
+/** @returns {number} The tunable established-enclave share bar (falls back to 0.35). */
+function establishedShare() {
+  const v = Number(CONFIG.quarterEstablishedShare);
+  return isFinite(v) ? v : 0.35;
+}
+
+/** @returns {number} The tunable minimum standing stock for an enclave to count (falls back to 5). */
+function minStock() {
+  const v = Number(CONFIG.quarterMinStock);
+  return isFinite(v) ? v : 5;
+}
 
 /**
  * The current game turn, or 0.
@@ -115,7 +130,8 @@ function detectExoduses(migrations) {
  * The largest FOREIGN-origin minority in a city (an origin civ other than the owner), or null when
  * the city is effectively single-origin. Reads the composition ledger.
  * @param {*} comp A city composition (from compositionForCity).
- * @returns {{civ:number, share:number}|null} The lead foreign origin, or null.
+ * @returns {{civ:number, pts:number, share:number}|null} The lead foreign origin (with its current
+ *   standing pop points), or null.
  */
 function leadForeignOrigin(comp) {
   let best = null;
@@ -127,45 +143,60 @@ function leadForeignOrigin(comp) {
 }
 
 /**
- * Aggregate cumulative arrivals by destination-city-name + origin civ.
- * Key shape: "destCity|originCiv".
- * @param {*[]} flows migrationFlows() output.
- * @returns {Map<string, number>} Indexed cumulative arrivals (scaled people).
+ * The lead foreign origin for QUARTER purposes, with rule 2 enforced: a civilization never forms a
+ * Cultural Quarter for its OWN people. leadForeignOrigin already excludes the owner PLAYER, but a
+ * captured/allied city can host a diaspora of the SAME civilization from a different player (e.g. Rome
+ * conquers a city that then draws Roman migrants from another Roman player). This compares the resolved
+ * CivilizationType of host and origin and rejects a same-civ lead, so "Rome" never gets a "Roman
+ * Quarter". Falls back to the plain lead when either civ type is unresolved (keeps the player-id guard).
+ * @param {*} comp A city composition (from compositionForCity).
+ * @returns {{civ:number, pts:number, share:number}|null} The foreign-civ lead, or null.
  */
-function arrivalMassIndex(flows) {
-  /** @type {Map<string, number>} */
-  const idx = new Map();
-  for (const f of flows || []) {
-    if (!f || typeof f.src !== "number" || typeof f.dest !== "number") continue;
-    if (!f.destCity || f.src === f.dest) continue;
-    const key = f.destCity + "|" + f.src;
-    idx.set(key, (idx.get(key) || 0) + (f.people || 0));
-  }
-  return idx;
+function leadForeignCivOrigin(comp) {
+  const lead = leadForeignOrigin(comp);
+  if (!lead) return null;
+  const hostCiv = civType(comp.owner);
+  const leadCiv = civType(lead.civ);
+  if (hostCiv && leadCiv && hostCiv === leadCiv) return null; // rule 2: same civilization is not "foreign"
+  return lead;
 }
 
 /**
- * Quarter progression stage from share + immigrant mass.
+ * Quarter progression stage from current standing share + stock.
  * @param {number} share Lead-origin share in the city.
- * @param {number} migrantMass Cumulative arrivals for city+origin (scaled people).
+ * @param {number} stock Lead-origin CURRENT standing pop points (netted, not lifetime inflow).
  * @returns {"none"|"foothold"|"established"} Stage.
  */
-function quarterStage(share, migrantMass) {
-  if (share >= QUARTER_ESTABLISHED_SHARE && migrantMass >= QUARTER_MIN_IMMIGRANTS) {
+function quarterStage(share, stock) {
+  const stockFloor = minStock();
+  if (share >= establishedShare() && stock >= stockFloor) {
     return "established";
   }
-  if (share >= QUARTER_FOOTHOLD_SHARE && migrantMass >= QUARTER_MIN_IMMIGRANTS) {
+  if (share >= QUARTER_FOOTHOLD_SHARE && stock >= stockFloor) {
     return "foothold";
   }
   return "none";
 }
 
 /**
+ * The lead diaspora's CURRENT standing size in scaled people: its share of the city's scaled
+ * population, using the same age-based scaler as the Demographics board so the figure reads
+ * consistently with the rest of the mod. A standing figure (netted now), not lifetime inflow.
+ * @param {{total:number}} comp The city composition. @param {{share:number}} lead The lead foreign origin.
+ * @returns {number} The diaspora's standing people count.
+ */
+function standingPeople(comp, lead) {
+  const cityPeople = scaleCityPopulation(comp.total, gameTurn());
+  return (lead.share || 0) * (cityPeople || 0);
+}
+
+/**
  * Chronicle a diaspora's FOOTHOLD stage (a lasting community, not yet a full quarter).
  * @param {{civ:number, share:number}} lead The lead foreign origin. @param {string} name Host city name.
- * @param {number} migrantMass Cumulative arrivals (scaled people). @param {{adj:string}} nc Origin descriptor.
+ * @param {number} standingPeople The diaspora's CURRENT standing size (scaled people).
+ * @param {{adj:string}} nc Origin descriptor.
  */
-function chronicleFoothold(lead, name, migrantMass, nc) {
+function chronicleFoothold(lead, name, standingPeople, nc) {
   const dedupeKey = "quarter:foothold:" + name + "|" + lead.civ;
   if (chronicled(dedupeKey)) return;
   chronicle({
@@ -173,9 +204,9 @@ function chronicleFoothold(lead, name, migrantMass, nc) {
     title: tr("LOC_EMIG_CHR_FOOTHOLD_TITLE", "A {1_Civ} Foothold in {2_City}", nc.adj, name),
     body: tr(
       "LOC_EMIG_CHR_FOOTHOLD_BODY",
-      "A lasting {1_Civ} community had formed in {2_City}, now {3_Pct} percent of the city after "
-        + "{4_People} arrivals over time.",
-      nc.adj, name, Math.round(lead.share * 100), formatPeopleExact(migrantMass)
+      "A lasting {1_Civ} community has taken root in {2_City}, now {3_Pct} percent of the city, a "
+        + "standing community of {4_People}.",
+      nc.adj, name, Math.round(lead.share * 100), formatPeopleExact(standingPeople)
     ),
     civ: nc.adj,
     dedupeKey
@@ -206,21 +237,20 @@ function chronicleEstablished(city, lead, name, owner, nc) {
 }
 
 /**
- * Chronicle quarter progression moments derived from cumulative immigrant mass + share.
+ * Chronicle quarter progression moments derived from the diaspora's CURRENT standing stock + share.
  * @param {*} city Live city object.
- * @param {Map<string, number>} massIdx city+origin cumulative-arrivals index.
  */
-function detectQuarterForCity(city, massIdx) {
+function detectQuarterForCity(city) {
   const comp = compositionForCity(city);
   if (!comp || typeof comp.owner !== "number" || civHidden(comp.owner)) return;
-  const lead = leadForeignOrigin(comp);
+  const lead = leadForeignCivOrigin(comp);
   if (!lead) return;
-  const name = cityName(city);
-  const migrantMass = massIdx.get(name + "|" + lead.civ) || 0;
-  const stage = quarterStage(lead.share, migrantMass);
+  const stock = typeof lead.pts === "number" ? lead.pts : 0;
+  const stage = quarterStage(lead.share, stock);
   if (stage === "none") return;
+  const name = cityName(city);
   const nc = narrativeCiv(lead.civ);
-  if (stage === "foothold") chronicleFoothold(lead, name, migrantMass, nc);
+  if (stage === "foothold") chronicleFoothold(lead, name, standingPeople(comp, lead), nc);
   else chronicleEstablished(city, lead, name, comp.owner, nc);
 }
 
@@ -271,40 +301,32 @@ function detectFoundings(signals) {
  * @param {*[]} signals The pass's city signals ({city, owner, …}).
  */
 function detectQuarterProgress(signals) {
-  const massIdx = arrivalMassIndex(migrationFlows());
   for (const s of signals || []) {
-    if (s && s.city) detectQuarterForCity(s.city, massIdx);
+    if (s && s.city) detectQuarterForCity(s.city);
   }
 }
 
 /**
- * Build the cumulative arrival index (destCity|originCiv → scaled people) from the live migration
- * flows, for callers that need to assess quarter formation outside the chronicle pass (the Cultural
- * Quarter decision system).
- * @returns {Map<string, number>} The arrival-mass index.
- */
-export function buildArrivalMassIndex() {
-  return arrivalMassIndex(migrationFlows());
-}
-
-/**
  * Assess whether a city currently hosts an ESTABLISHED foreign quarter (the lead foreign minority has
- * crossed both the established share and the cumulative-mass threshold). Returns the origin, host, and
- * share for the decision system, or null. Reads the composition ledger + the given arrival index; pure
+ * crossed both the established share and the current standing-stock threshold). Returns the origin,
+ * host, share, and standing stock for the decision system, or null. Reads the composition ledger; pure
  * of side effects.
  * @param {*} city A live city object.
- * @param {Map<string, number>} massIdx The arrival-mass index (from {@link buildArrivalMassIndex}).
- * @returns {{civ:number, owner:number, share:number, mass:number, name:string}|null} The quarter, or null.
+ * @returns {{civ:number, owner:number, share:number, stock:number, name:string, where:string}|null}
+ *   The quarter (with a truthful edge phrase), or null.
  */
-export function establishedQuarterForCity(city, massIdx) {
+export function establishedQuarterForCity(city) {
   const comp = compositionForCity(city);
   if (!comp || typeof comp.owner !== "number") return null;
-  const lead = leadForeignOrigin(comp);
+  const lead = leadForeignCivOrigin(comp);
   if (!lead) return null;
+  const stock = typeof lead.pts === "number" ? lead.pts : 0;
+  if (quarterStage(lead.share, stock) !== "established") return null;
   const name = cityName(city);
-  const mass = (massIdx && massIdx.get(name + "|" + lead.civ)) || 0;
-  if (quarterStage(lead.share, mass) !== "established") return null;
-  return { civ: lead.civ, owner: comp.owner, share: lead.share, mass, name };
+  // A truthful, deterministic edge phrase for the enclave ("by the harbour", "in the outer streets"),
+  // stable per (city, origin) so the decision modal and its chronicle name the same place each time.
+  const where = resolveQuarter(cityFeatureKeys(city), name + ":" + lead.civ);
+  return { civ: lead.civ, owner: comp.owner, share: lead.share, stock, name, where };
 }
 
 /**
@@ -327,12 +349,12 @@ export function recordChroniclePass(signals, migrations) {
 export const __test = {
   wavesByCityCause,
   leadForeignOrigin,
-  arrivalMassIndex,
   quarterStage,
+  standingPeople,
   EXODUS_PEOPLE,
   DIASPORA_MIN,
   DIASPORA_STEP,
-  QUARTER_MIN_IMMIGRANTS,
   QUARTER_FOOTHOLD_SHARE,
-  QUARTER_ESTABLISHED_SHARE
+  get QUARTER_MIN_STOCK() { return minStock(); },
+  get QUARTER_ESTABLISHED_SHARE() { return establishedShare(); }
 };

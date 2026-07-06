@@ -4,7 +4,11 @@
 // cause, attract, or participate in migration, kept in step with the mod's actual DEFAULT behavior.
 // Rendered as flexbox rows (GameFace lays out neither <table> nor CSS grid) for the dashboard's
 // Guide tab; the same matrix is mirrored in the README. Self-contained (own style + DOM) so the
-// line-capped render core (emigration-views.js) only has to wire it in.
+// line-capped render core (emigration-views.js) only has to wire it in. Every visible string is
+// localized at render through a stable, position-derived LOC key (LOC_EMIG_GUIDE_<section>_...), with
+// the English text below kept in code as the fallback.
+
+import { loc } from "/emigration/ui/emigration-loc.js";
 
 const YES = "✓"; // U+2713 CHECK MARK (renders in the GameFace body/title fonts)
 // U+00D7 MULTIPLICATION SIGN, not U+2717 BALLOT X: the ballot-X glyph is absent from the GameFace
@@ -12,7 +16,12 @@ const YES = "✓"; // U+2713 CHECK MARK (renders in the GameFace body/title font
 // Styled bold + larger via `.emig-guide-ic.n` so it reads as a clear red X.
 const NO = "×";
 
-/** @type {{title:string, rows?:{q:string, yes:boolean, note:string}[], faq?:{q:string, a:string}[]}[]} */
+/**
+ * @typedef {Object} GuideSection
+ * @property {string} title @property {number} [_i] Stable index (for LOC keys).
+ * @property {{q:string, yes:boolean, note:string}[]} [rows] @property {{q:string, a:string}[]} [faq]
+ */
+/** @type {GuideSection[]} */
 const GUIDE = [
   {
     title: "What makes people LEAVE a city",
@@ -140,15 +149,28 @@ const GUIDE = [
       { q: "A pop-up asked me what to do about refugees, what is that?", a: "A refugee decision. When a real upheaval (a neighbour taking several cities in a short span, or a plague crisis) sends a wave toward your lands, you're occasionally asked how to receive them: welcome them in (a small gold cost, and they settle among you and, in time, become your people), settle them on the frontier, or turn them away. The effects are light and the event is rare, a few times an age at most. Turn the whole thing off under Options ▸ Mods ▸ Emigration ▸ refugee decisions." },
       { q: "How do I turn the new identity systems on or off?", a: "All three are on by default and each has its own switch under Options ▸ Mods ▸ Emigration: \"ethnic integration\" (newcomers drifting toward the host identity), \"return migration\" (diasporas going home), and \"refugee decisions\" (the occasional pop-up). The Ethnic Composition lens is always available, and Chronicle entries are recorded in the Notifications tab." }
     ]
+  },
+  {
+    title: "FAQ: Cultural Enclaves",
+    faq: [
+      { q: "What is a Cultural Enclave?", a: "When a foreign community grows large enough to become a lasting, established part of one of your cities — a real standing presence, not just a lot of past arrivals — it takes root as a Cultural Enclave on a district at the city's edge, named for the origin people (the Roman Enclave, the Punic Enclave, and so on). You're offered a one-time choice of how the city makes room for it. It's on by default; turn it off under Options ▸ Mods ▸ Emigration ▸ cultural enclaves." },
+      { q: "What are the choices?", a: "Two options grounded in that civilization's real character, each a small benefit paired with a matching drawback (a Roman enclave leans Production but chafes; a Persian one brings Gold but stirs resentment), plus a passive \"let them be.\" There's no strictly best option. Your chosen stance then applies its small yields every turn, so the enclave actually reads in the city, not just once. Dismiss the modal (Escape or click outside) and it settles into the quiet \"let them be.\"" },
+      { q: "What's the quote below the prose?", a: "A single real, attributed historical quote for the enclave, shown as a page of history — in the origin people's own language followed by an English translation (Greek, Chinese, Persian, Latin, Old Norse, and many more), each verified against a primary source. An origin has two quotes: its first enclave shows one, its second shows the other." },
+      { q: "How many enclaves can one civilization have?", a: "At most two in your whole empire — but that's PER civilization, not overall. You can hold two Roman and two Norman and two Han enclaves at the same time; reaching the cap for one origin never blocks a different one. A different people overtaking an existing enclave's tile is a change of hands (the Chronicle notes it and you choose again), not a third stacked enclave." },
+      { q: "What happens if I go to war with an enclave's homeland?", a: "The enclave turns \"contested\": a small, capped happiness strain while the war lasts, framed as the city's wartime unease falling on families who did not choose the fighting — not as the enclave being disloyal. It settles again once peace returns." }
+    ]
   }
 ];
+
+// Tag each section with its stable position so render-time LOC keys don't depend on column layout.
+GUIDE.forEach((g, i) => { g._i = i; });
 
 const STYLE_ID = "emig-guide-style";
 const CSS =
   ".emig-guide{display:flex;flex-direction:column;width:100%;}" +
   // Pill row to switch the Guide between the "What counts" reference matrix and the FAQ page.
   ".emig-guide-pills{display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;margin:0.2rem 0 0.5rem;}" +
-  ".emig-guide-pill{cursor:pointer;padding:0.16rem 0.9rem;border-radius:0.9rem;font-size:1.0rem;" +
+  ".emig-guide-pill{cursor:pointer;padding:0.16rem 0.9rem;border-radius:0.9rem;font-size:var(--dg-fs-95);" +
   "border:0.0555rem solid rgba(229,210,172,0.35);color:#e5d2ac;background:rgba(229,210,172,0.06);}" +
   ".emig-guide-pill.active{background:#f3c34c;color:#1c1408;border-color:#f3c34c;font-weight:bold;}" +
   ".emig-guide-body{display:flex;flex-direction:column;width:100%;}" +
@@ -156,17 +178,17 @@ const CSS =
   // single column when the window is too narrow to fit both.
   ".emig-guide-cols{display:flex;flex-wrap:wrap;gap:0 2.5rem;align-items:flex-start;width:100%;}" +
   ".emig-guide-col{flex:1 1 26rem;min-width:0;display:flex;flex-direction:column;}" +
-  ".emig-guide-h{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.05rem;color:#f3c34c;font-size:1.15rem;margin:0.6rem 0 0.1rem;border-bottom:0.0555rem solid rgba(201,162,76,0.3);padding-bottom:0.2rem;}" +
+  ".emig-guide-h{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.05rem;color:#f3c34c;font-size:var(--dg-fs-120);margin:0.6rem 0 0.1rem;border-bottom:0.0555rem solid rgba(201,162,76,0.3);padding-bottom:0.2rem;}" +
   // A matrix row stacks vertically: the icon + bold question on the top line, the explanation wrapping
   // full-width beneath it (instead of a cramped second column), with a clearer divider between rows.
   ".emig-guide-row{display:flex;align-items:flex-start;gap:0.7rem;padding:0.55rem 0.1rem;border-top:0.0555rem solid rgba(201,162,76,0.22);}" +
-  ".emig-guide-ic{flex:0 0 1.6rem;font-weight:bold;text-align:center;font-size:1.3rem;line-height:1.3;}" +
-  ".emig-guide-ic.y{color:#7fd08a;}.emig-guide-ic.n{color:#e0726a;font-size:1.55rem;line-height:1.05;}" +
+  ".emig-guide-ic{flex:0 0 1.6rem;font-weight:bold;text-align:center;font-size:var(--dg-fs-140);line-height:1.3;}" +
+  ".emig-guide-ic.y{color:#7fd08a;}.emig-guide-ic.n{color:#e0726a;font-size:var(--dg-fs-160);line-height:1.05;}" +
   ".emig-guide-rowtext{display:flex;flex-direction:column;gap:0.2rem;flex:1 1 0;min-width:0;}" +
-  ".emig-guide-q{color:#f6e7c0;font-weight:bold;font-size:1.18rem;line-height:1.3;}" +
-  ".emig-guide-note{opacity:0.9;font-size:1.05rem;line-height:1.45;color:#e5d2ac;}" +
-  ".emig-guide-faq-q{color:#f0dca8;font-weight:bold;font-size:1.2rem;margin:0.5rem 0 0.1rem;padding-top:0.3rem;border-top:0.0277rem solid rgba(229,210,172,0.1);}" +
-  ".emig-guide-faq-a{opacity:0.82;font-size:1.1rem;line-height:1.5;}";
+  ".emig-guide-q{color:#f6e7c0;font-weight:bold;font-size:var(--dg-fs-120);line-height:1.3;}" +
+  ".emig-guide-note{opacity:0.9;font-size:var(--dg-fs-105);line-height:1.45;color:#e5d2ac;}" +
+  ".emig-guide-faq-q{color:#f0dca8;font-weight:bold;font-size:var(--dg-fs-120);margin:0.5rem 0 0.1rem;padding-top:0.3rem;border-top:0.0277rem solid rgba(229,210,172,0.1);}" +
+  ".emig-guide-faq-a{opacity:0.82;font-size:var(--dg-fs-105);line-height:1.5;}";
 
 /**
  * Create an element with an optional class + text.
@@ -194,25 +216,26 @@ function injectGuideStyle() {
 /**
  * Render one guide section's body: a `faq` section as Q→A pairs (no icon), else the ✓/✗ matrix rows.
  * @param {HTMLElement} wrap The guide container.
- * @param {*} g The section ({title} + either `rows` or `faq`).
+ * @param {GuideSection} g The section ({title} + either `rows` or `faq`).
  */
 function renderGuideSection(wrap, g) {
+  const base = "LOC_EMIG_GUIDE_" + g._i;
   if (Array.isArray(g.faq)) {
-    for (const f of g.faq) {
-      wrap.appendChild(ce("div", "emig-guide-faq-q", f.q));
-      wrap.appendChild(ce("div", "emig-guide-faq-a", f.a));
-    }
+    g.faq.forEach((f, fi) => {
+      wrap.appendChild(ce("div", "emig-guide-faq-q", loc(base + "_F" + fi + "_Q", f.q)));
+      wrap.appendChild(ce("div", "emig-guide-faq-a", loc(base + "_F" + fi + "_A", f.a)));
+    });
     return;
   }
-  for (const r of g.rows || []) {
+  (g.rows || []).forEach((r, ri) => {
     const row = ce("div", "emig-guide-row");
     row.appendChild(ce("div", "emig-guide-ic " + (r.yes ? "y" : "n"), r.yes ? YES : NO));
     const text = ce("div", "emig-guide-rowtext");
-    text.appendChild(ce("div", "emig-guide-q", r.q));
-    if (r.note) text.appendChild(ce("div", "emig-guide-note", r.note));
+    text.appendChild(ce("div", "emig-guide-q", loc(base + "_R" + ri + "_Q", r.q)));
+    if (r.note) text.appendChild(ce("div", "emig-guide-note", loc(base + "_R" + ri + "_N", r.note)));
     row.appendChild(text);
     wrap.appendChild(row);
-  }
+  });
 }
 
 /**
@@ -252,7 +275,7 @@ function splitColumns(sections) {
 function buildGuideColumn(sections) {
   const col = ce("div", "emig-guide-col");
   for (const g of sections) {
-    col.appendChild(ce("div", "emig-guide-h", g.title));
+    col.appendChild(ce("div", "emig-guide-h", loc("LOC_EMIG_GUIDE_" + g._i + "_TITLE", g.title)));
     renderGuideSection(col, g);
   }
   return col;
@@ -311,3 +334,6 @@ export function renderGuide(container) {
     /* a guide-render failure must never break the dashboard */
   }
 }
+
+// Test hook: the section data (its LOC keys and English fallbacks are generated from this).
+export const __test = { GUIDE };

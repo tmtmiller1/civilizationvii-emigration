@@ -15,10 +15,10 @@ import { cityPanelModel } from "/emigration/ui/emigration-city-panel-data.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
 import { migrationFlows } from "/emigration/ui/emigration-migration-stats.js";
 import { quarterAt } from "/emigration/ui/emigration-quarter-state.js";
-import { quarterOption } from "/emigration/ui/emigration-quarter-registry.js";
+import { quarterOptionFor } from "/emigration/ui/emigration-quarter-registry.js";
 import { refugeePoolTotal } from "/emigration/ui/emigration-refugee-pool.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
-import { civAdjective, quarterName } from "/emigration/ui/emigration-naming.js";
+import { civAdjective, quarterName, civType } from "/emigration/ui/emigration-naming.js";
 
 const DBG = false;
 /**
@@ -133,7 +133,7 @@ function gatherQuarter(city) {
     const applied = rec.applied || {};
     return {
       originName: quarterName(rec.civ),
-      stanceLabel: quarterOption(rec.optionId).label,
+      stanceLabel: quarterOptionFor(civType(rec.civ), rec.optionId).label,
       contested: !!rec.contested,
       benefitYield: applied.benefitYield || null,
       benefitAmount: applied.benefitAmount || 0,

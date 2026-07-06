@@ -261,6 +261,18 @@ export const CONFIG = {
   // strains the host's happiness (bounded, capped), reacting to war without any native-revolt hook.
   // Set quartersEnabled false to disable the whole system.
   quartersEnabled: true,
+  // Formation bar: the lead FOREIGN origin must hold at least this share of the city AND at least
+  // quarterMinStock standing pop points before the city hosts an "established" enclave at all. Raising
+  // the share makes enclaves rarer (fewer cities qualify); the stock floor keeps a tiny diaspora from
+  // qualifying on share alone.
+  quarterEstablishedShare: 0.35, // share of a city a lead foreign origin must hold to be "established"
+  quarterMinStock: 5, // minimum current standing pop points of that lead origin
+  // Persistence gate: an enclave must stay established for this many turns before its one-time decision
+  // is OFFERED, so a transient spike (a war-refugee wave that later integrates or goes home) never
+  // triggers a permanent enclave. 0 = offer as soon as the bar is crossed (legacy behaviour). The dwell
+  // clock tolerates brief dips below the bar (see quarterDwellGrace) so a one-pass wobble doesn't reset it.
+  quarterDwellTurns: 8, // turns an enclave must persist before the decision is offered
+  quarterDwellGrace: 3, // turns the diaspora may dip below the bar without resetting the dwell clock (grace/sticky)
   quarterCapPerAge: 3, // hard cap on quarter decisions per age
   quarterCooldownTurns: 12, // minimum turns between quarter decisions
   quarterRewardAmount: 2, // per-turn benefit a chosen stance grants (its benefit yield); small (design §7: ±1-2)

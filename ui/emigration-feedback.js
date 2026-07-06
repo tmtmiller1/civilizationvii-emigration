@@ -169,8 +169,8 @@ const TOAST_CSS =
   "0 0.33rem 1rem rgba(0,0,0,0.7);opacity:1;transition:opacity 0.5s ease,top 0.25s ease;" +
   "animation:emig-toast-in 0.26s ease-out;}" +
   '.emig-toast-eye{font-family:"TitleFont","TitleFont-JP","TitleFont-KR","TitleFont-SC","TitleFont-TC";' +
-  "font-size:0.72rem;letter-spacing:0.13em;text-transform:uppercase;margin-bottom:0.15rem;color:#f0bc78;}" +
-  ".emig-toast-msg{font-size:1rem;line-height:1.32;}" +
+  "font-size:var(--dg-fs-72);letter-spacing:0.13em;text-transform:uppercase;margin-bottom:0.15rem;color:#f0bc78;}" +
+  ".emig-toast-msg{font-size:var(--dg-fs-95);line-height:1.32;}" +
   "@keyframes emig-toast-in{from{opacity:0;transform:translateX(-50%) translateY(-0.55rem);}" +
   "to{opacity:1;transform:translateX(-50%) translateY(0);}}";
 

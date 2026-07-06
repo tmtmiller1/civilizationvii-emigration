@@ -29,6 +29,30 @@ function derr(...a) {
   console.error("[Emigration.screen]", ...a);
 }
 
+// Shared 10-step type scale (rem). The dashboard's CSS strings size text with
+// `var(--dg-fs-<n>)`; this bridge publishes each as a fully-computed rem value
+// scaled by the in-game font-size setting (Coherent applies that setting by
+// regenerating its own text-* classes, which don't reach our fixed-rem content).
+// MUST match the Demographics mod's ladder so emig content rendered inside the
+// Demographics screen (Migration hub) resolves the same vars.
+const FONT_SIZE_LADDER = [0.65, 0.72, 0.85, 0.95, 1.05, 1.2, 1.4, 1.6, 1.85, 2.4];
+
+/**
+ * The in-game font-size setting (`uiFontScale` 0…4) as a multiplier over the
+ * engine's 18px base (16/18 … 24/18), defensively.
+ * @returns {number} The multiplier.
+ */
+function readUiFontScaleMultiplier() {
+  const PX = [16, 18, 20, 22, 24];
+  try {
+    const idx = typeof Configuration !== "undefined" ? Configuration.getUser?.()?.uiFontScale : undefined;
+    if (typeof idx === "number" && PX[idx]) return PX[idx] / 18;
+  } catch (_) {
+    // fall through to 1
+  }
+  return 1;
+}
+
 /**
  * Resolve the engine display-queue manager (the popup/notification sequencer the base game's own
  * cinematics defer through) and invoke `fn` with it. Dynamic import, a no-op if unavailable.
@@ -108,11 +132,32 @@ class ScreenEmigration extends Panel {
     } catch (e) {
       derr("onAttach super failed:", e);
     }
+    // Publish the font-size setting as CSS vars BEFORE rendering so the dashboard's
+    // var(--dg-fs-*) text sizes resolve at the right scale; re-apply live on change.
+    this._onFontScaleChange = () => {
+      try {
+        this._applyFontScale();
+      } catch (_) {
+        // best-effort live update
+      }
+    };
+    try {
+      this._applyFontScale();
+    } catch (e) {
+      derr("font-scale apply failed:", e);
+    }
     try {
       this._wireCloseButton();
       this._render();
     } catch (e) {
       derr("onAttach body failed:", e);
+    }
+    try {
+      if (typeof engine !== "undefined" && typeof engine.on === "function") {
+        engine.on("UIFontScaleChanged", this._onFontScaleChange);
+      }
+    } catch (e) {
+      derr("font-scale subscribe failed:", e);
     }
     // Resolution response is pure CSS: emigration-density.js's DENSITY_CSS (injected with the
     // dashboard sheet) scales fixed content fluidly with clamp() and steps the chrome at
@@ -126,6 +171,17 @@ class ScreenEmigration extends Panel {
   /** Panel lifecycle: release the deferred popups when the window closes. */
   onDetach() {
     resumePopups(this);
+    const onFontScale = this._onFontScaleChange;
+    if (onFontScale) {
+      try {
+        if (typeof engine !== "undefined" && typeof engine.off === "function") {
+          engine.off("UIFontScaleChanged", onFontScale);
+        }
+      } catch (_) {
+        // best-effort teardown
+      }
+      this._onFontScaleChange = null;
+    }
     try {
       super.onDetach?.();
     } catch (e) {
@@ -133,6 +189,20 @@ class ScreenEmigration extends Panel {
     }
     // Best-effort second resume in case detach handlers toggled queue state mid-close.
     resumePopups(this);
+  }
+
+  /**
+   * Publish the in-game font-size setting as `--dg-fs-<n>` CSS variables (fully
+   * computed rem values) on the screen root, so the dashboard's `var(--dg-fs-*)`
+   * text sizes track the setting AND the UI scale. Mirrors the Demographics bridge.
+   */
+  _applyFontScale() {
+    const root = this.Root;
+    if (!root || !root.style || typeof root.style.setProperty !== "function") return;
+    const scale = readUiFontScaleMultiplier();
+    for (const v of FONT_SIZE_LADDER) {
+      root.style.setProperty("--dg-fs-" + Math.round(v * 100), (v * scale).toFixed(4) + "rem");
+    }
   }
 
   /** Wire the template's close button to {@link ScreenEmigration#close}. */

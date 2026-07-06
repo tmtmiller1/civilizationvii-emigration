@@ -29,7 +29,10 @@ const MAX_TILES = 4096;
  */
 /**
  * @typedef {Object} QuarterRecord
- * @property {number} civ Origin civ id (whose diaspora holds the quarter).
+ * @property {number} civ Origin PLAYER id (whose diaspora holds the quarter); used for naming/war reads.
+ * @property {string|null} originCiv Origin CivilizationType captured at formation (e.g. "CIVILIZATION_ROME"),
+ *   or null for legacy records. This is the STABLE identity used for the per-civ enclave cap — it does not
+ *   drift if the origin player later changes civilisation across an age.
  * @property {number} owner Host player id.
  * @property {string} optionId The stance chosen.
  * @property {number} turn Formation turn (monotonic).
@@ -38,7 +41,21 @@ const MAX_TILES = 4096;
  * @property {number} contestedTurn Turn the quarter last became contested (-999 if never).
  */
 /**
- * @typedef {{tiles: Record<string, QuarterRecord>, age:number, count:number, lastTurn:number}} QuartersState
+ * A pending-enclave dwell clock: an established diaspora that has NOT yet been offered its decision. Kept
+ * per host tile so the decision can require the enclave to persist (quarterDwellTurns) before it fires.
+ * @typedef {Object} CandidacyRecord
+ * @property {number} civ Origin PLAYER id (legacy-fallback identity when a CivilizationType is unavailable).
+ * @property {string|null} originCiv Origin CivilizationType captured while observing (stable identity).
+ * @property {number} since Turn the current established streak began (the dwell clock's start).
+ * @property {number} lastSeen Last turn observed established (for grace-window pruning of a lapsed streak).
+ */
+/**
+ * @typedef {Object} QuartersState
+ * @property {Record<string, QuarterRecord>} tiles The formed quarters, one per host tile.
+ * @property {Record<string, CandidacyRecord>} candidacy The pending-enclave dwell clocks, one per host tile.
+ * @property {number} age The age ordinal the per-age throttle count belongs to.
+ * @property {number} count Decisions made this age (per-age cap).
+ * @property {number} lastTurn The last decision turn (cooldown clock).
  */
 
 /** @type {QuartersState | null} */
@@ -61,7 +78,7 @@ function currentAge() {
  * @returns {QuartersState} An empty persisted quarters state.
  */
 function emptyState() {
-  return { tiles: {}, age: currentAge(), count: 0, lastTurn: -999 };
+  return { tiles: {}, candidacy: {}, age: currentAge(), count: 0, lastTurn: -999 };
 }
 
 /**
@@ -116,6 +133,11 @@ function normalizeApplied(a) {
   };
 }
 
+/** @param {*} v @returns {string|null} A non-empty string, else null. */
+function strOrNull(v) {
+  return typeof v === "string" && v ? v : null;
+}
+
 /**
  * @param {*} rec Candidate tile record.
  * @returns {QuarterRecord|null} Sanitized record, or null when unusable.
@@ -127,6 +149,7 @@ function normalizeRecord(rec) {
   const optionId = isQuarterOption(rec.optionId) ? rec.optionId : "ignore";
   return {
     civ: rec.civ,
+    originCiv: strOrNull(rec.originCiv),
     owner: rec.owner,
     optionId,
     turn: nonNegInt(rec.turn, 0),
@@ -158,6 +181,41 @@ function normalizeTiles(tiles) {
 }
 
 /**
+ * @param {*} rec Candidate candidacy record.
+ * @returns {CandidacyRecord|null} Sanitized record, or null when unusable.
+ */
+function normalizeCandidacyRecord(rec) {
+  if (!rec || typeof rec !== "object") return null;
+  if (typeof rec.civ !== "number" || !isFinite(rec.civ)) return null;
+  return {
+    civ: rec.civ,
+    originCiv: strOrNull(rec.originCiv),
+    since: nonNegInt(rec.since, 0),
+    lastSeen: nonNegInt(rec.lastSeen, 0)
+  };
+}
+
+/**
+ * @param {*} map Candidate candidacy map.
+ * @returns {Record<string, CandidacyRecord>} Sanitized candidacy map.
+ */
+function normalizeCandidacy(map) {
+  /** @type {Record<string, CandidacyRecord>} */
+  const out = {};
+  if (!map || typeof map !== "object") return out;
+  let n = 0;
+  for (const [key, raw] of Object.entries(map)) {
+    if (n >= MAX_TILES) break;
+    if (typeof key !== "string" || !key.length) continue;
+    const rec = normalizeCandidacyRecord(raw);
+    if (!rec) continue;
+    out[key] = rec;
+    n++;
+  }
+  return out;
+}
+
+/**
  * @param {*} parsed Parsed persisted state.
  * @returns {QuartersState|null} Normalized state, or null.
  */
@@ -166,6 +224,7 @@ function normalizeState(parsed) {
   if (!payload) return null;
   return {
     tiles: normalizeTiles(payload.tiles),
+    candidacy: normalizeCandidacy(payload.candidacy),
     age: nonNegInt(payload.age, 0),
     count: nonNegInt(payload.count, 0),
     lastTurn: typeof payload.lastTurn === "number" && isFinite(payload.lastTurn)
@@ -253,6 +312,65 @@ export function dropQuarter(tileKey) {
 }
 
 /**
+ * The dwell-clock candidacy record on a tile, or null when none.
+ * @param {string} tileKey The plot key.
+ * @returns {CandidacyRecord|null} The record, or null.
+ */
+export function candidacyAt(tileKey) {
+  if (typeof tileKey !== "string" || !tileKey.length) return null;
+  return state().candidacy[tileKey] || null;
+}
+
+/**
+ * Write (or replace) a tile's candidacy record. Caps the store size like the tiles map. Does NOT persist.
+ * @param {string} tileKey The plot key. @param {CandidacyRecord} rec The record.
+ */
+export function putCandidacy(tileKey, rec) {
+  if (typeof tileKey !== "string" || !tileKey.length) return;
+  const clean = normalizeCandidacyRecord(rec);
+  if (!clean) return;
+  const s = state();
+  if (!s.candidacy[tileKey] && Object.keys(s.candidacy).length >= MAX_TILES) return;
+  s.candidacy[tileKey] = clean;
+}
+
+/**
+ * Remove a tile's candidacy record (if any). Does NOT persist.
+ * @param {string} tileKey The plot key.
+ */
+export function dropCandidacy(tileKey) {
+  if (typeof tileKey !== "string") return;
+  delete state().candidacy[tileKey];
+}
+
+/**
+ * Every candidacy record with its tile key.
+ * @returns {{tileKey:string, rec:CandidacyRecord}[]} The entries.
+ */
+export function allCandidacyEntries() {
+  const s = state();
+  return Object.keys(s.candidacy).map((tileKey) => ({ tileKey, rec: s.candidacy[tileKey] }));
+}
+
+/**
+ * Whether a tile's established enclave has persisted long enough (its dwell clock has run at least
+ * CONFIG.quarterDwellTurns turns) to OFFER its decision. Requires a candidacy record that still names this
+ * origin (identity by CivilizationType, with a legacy fallback to the raw origin player id). With
+ * quarterDwellTurns = 0 this is satisfied as soon as a candidacy exists (legacy "offer on cross").
+ * @param {string} tileKey The plot key. @param {string|null} originCiv The origin's resolved CivilizationType.
+ * @param {number} civ The origin player id (legacy fallback). @param {number} turn Now (monotonic).
+ * @returns {boolean} True when the enclave has dwelt long enough.
+ */
+export function dwellSatisfied(tileKey, originCiv, civ, turn) {
+  const rec = candidacyAt(tileKey);
+  if (!rec) return false;
+  const same = originCiv && rec.originCiv ? rec.originCiv === originCiv : rec.civ === civ;
+  if (!same) return false;
+  const dwell = Math.max(0, Number(CONFIG.quarterDwellTurns) || 0);
+  return typeof turn === "number" && isFinite(turn) && turn - rec.since >= dwell;
+}
+
+/**
  * Every quarter record with its tile key.
  * @returns {{tileKey:string, rec:QuarterRecord}[]} The entries.
  */
@@ -319,6 +437,7 @@ export const __test = {
   emptyState,
   normalizeState,
   normalizeRecord,
+  normalizeCandidacyRecord,
   loadStateForTest: () => loadState(),
   readStateForTest: () => state(),
   persistStateForTest: () => saveQuarters()

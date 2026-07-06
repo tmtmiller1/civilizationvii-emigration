@@ -65,7 +65,7 @@ function cssFor(id) {
   return (
     "#" + id + "{position:fixed;pointer-events:none;z-index:9999;display:none;max-width:20rem;" +
     "background:rgba(8,10,16,0.96);border:0.0555rem solid rgba(201,162,76,0.5);border-radius:0.3rem;" +
-    "padding:0.4rem 0.6rem;color:#e5d2ac;font-size:0.85rem;" +
+    "padding:0.4rem 0.6rem;color:#e5d2ac;font-size:var(--dg-fs-85);" +
     'font-family:"BodyFont","BodyFont-JP","BodyFont-KR","BodyFont-SC","BodyFont-TC";}' +
     "#" + id + " .t{color:#f3c34c;font-weight:bold;margin-bottom:0.2rem;}" +
     "#" + id + " .r{display:flex;align-items:center;gap:0.35rem;line-height:1.55;}" +

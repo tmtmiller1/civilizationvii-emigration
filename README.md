@@ -747,6 +747,38 @@ and dismissible (Escape, or click outside). For both surfaces, a civ the player 
 hearsay ("a people we have heard called the X") rather than revealed. Toggle: **Options ▸ refugee
 decisions** (on by default).
 
+### 6i. Cultural Enclaves (`emigration-quarter.js`, `emigration-quarter-registry.js`, `emigration-quarter-bonuses.js`)
+When a **foreign** diaspora grows into a lasting, established community in one of **your** cities — a real
+standing presence, not a lifetime-arrivals total — it forms a **Cultural Enclave** on a specific edge tile,
+named for the origin people (e.g. *the Roman Enclave*, *the Punic Enclave*). You're offered a one-time
+choice of how the city makes room for it: **two identity-grounded options**, each a small **benefit paired
+with a matching drawback** grounded in that civilization's real character (a Roman enclave offers
+Production/Gold, a Persian one Gold/Culture, and so on — 44 civs curated in `emigration-quarter-bonuses.js`),
+plus a passive **"let them be."** The chosen stance applies its small yields **every turn** (bounded, ±1–2),
+so the effect actually reads in the city; an unknown/DLC origin falls back to a neutral pair so the feature
+never breaks.
+
+The moment reads as **a page of history**: below the prose sits a single short, **real, attributed
+historical quote**, shown in the **origin people's own language with an English translation** (e.g.
+*"ὁ ἀνεξέταστος βίος οὐ βιωτὸς ἀνθρώπῳ. (The unexamined life is not worth living.)" — Socrates*). Each
+original was verified against a primary source, and right-to-left scripts (Arabic, Persian) are
+bidi-isolated so they render correctly. An origin has two quotes: its **first** enclave shows quote A, its
+**second** shows quote B.
+
+Rules that keep it bounded and legible:
+- **One enclave per host tile.** A different origin overtaking the same tile is a **change of hands** (the
+  Chronicle notes it and a fresh choice is offered), never a second stacked enclave.
+- **At most two enclaves per origin civilization** across your empire — *per civilization, not overall*, so
+  you can hold two Roman **and** two Norman **and** two Han enclaves at once. Identity is fixed by
+  CivilizationType when the enclave forms (persisted on the record), so the cap stays correct even if the
+  origin player later changes civ across an age.
+- **Contested in war.** While you're at war with an enclave's homeland it turns **contested** — a bounded
+  happiness strain (capped across all your enclaves), framed as the host's wartime suspicion falling unjustly
+  on families who did not choose the war, never as the enclave being disloyal.
+- Throttled with a per-age cap and a cooldown, and ranked **below** the refugee decision so two modals never
+  race. Toggle: **Options ▸ Mods ▸ Emigration ▸ cultural enclaves** (on by default). *(Internally the code,
+  config keys, and save data still use "quarter"; only the player-facing name changed.)*
+
 ---
 
 ## 7. Consequences: the gameplay-write cost layer (`emigration-effects.js`)

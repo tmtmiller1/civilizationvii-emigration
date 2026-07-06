@@ -5,6 +5,24 @@
  * looks right inside the Demographics "Migration" page); this file only sizes and frames the
  * screen so it reads like a base-UI panel. */
 
+/* Type-scale defaults. The dashboard's injected CSS sizes text with var(--dg-fs-<n>);
+   the screen's font-scale bridge (emigration-screen.js) overrides these on the root
+   with values scaled by the in-game font-size setting. Defaults = the base sizes so
+   text renders correctly before the bridge runs / off-engine. (Inside the Demographics
+   Migration page the same content instead inherits Demographics' own --dg-fs-* vars.) */
+.emig-screen {
+    --dg-fs-65: 0.65rem;
+    --dg-fs-72: 0.72rem;
+    --dg-fs-85: 0.85rem;
+    --dg-fs-95: 0.95rem;
+    --dg-fs-105: 1.05rem;
+    --dg-fs-120: 1.2rem;
+    --dg-fs-140: 1.4rem;
+    --dg-fs-160: 1.6rem;
+    --dg-fs-185: 1.85rem;
+    --dg-fs-240: 2.4rem;
+}
+
 .emig-screen-root {
     /* Match the Demographics screen: a near-fullscreen modal. */
     width: 100vw;

@@ -107,6 +107,10 @@
  * @property {number} dilemmaInfluenceAway One-time influence cost for turning refugees away.
  * @property {number} dilemmaHappinessWelcome One-time happiness cost for absorbing refugees into your city.
  * @property {boolean} quartersEnabled Whether established diasporas become player-shaped Cultural Quarters.
+ * @property {number} quarterEstablishedShare Share of a city a lead foreign origin must hold to be "established".
+ * @property {number} quarterMinStock Minimum current standing pop points of the lead origin for an established enclave.
+ * @property {number} quarterDwellTurns Turns an enclave must persist before its one-time decision is offered.
+ * @property {number} quarterDwellGrace Turns a diaspora may dip below the bar without resetting the dwell clock.
  * @property {number} quarterCapPerAge Hard cap on Cultural Quarter decisions per age.
  * @property {number} quarterCooldownTurns Minimum turns between Cultural Quarter decisions.
  * @property {number} quarterRewardAmount One-time benefit granted by a chosen quarter stance.

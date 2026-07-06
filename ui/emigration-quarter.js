@@ -17,17 +17,19 @@
 //      This reacts to war WITHOUT assuming any callable native-revolt trigger (the engine owns revolts).
 //
 // The player-facing decision reuses the refugee-dilemma modal (emigration-dilemma-view.js) with a
-// "Cultural Quarter" eyebrow. State persists via emigration-quarter-state.js. Never throws into a pass.
+// "Cultural Enclave" eyebrow. State persists via emigration-quarter-state.js. Never throws into a pass.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
-import { buildArrivalMassIndex, establishedQuarterForCity } from "/emigration/ui/emigration-diaspora.js";
+import { establishedQuarterForCity } from "/emigration/ui/emigration-diaspora.js";
 import {
-  quarterAt, putQuarter, quartersForOwner, canDecide, noteDecision, setContested, saveQuarters
+  quarterAt, putQuarter, quartersForOwner, canDecide, noteDecision, setContested, saveQuarters,
+  candidacyAt, putCandidacy, dropCandidacy, allCandidacyEntries, dwellSatisfied
 } from "/emigration/ui/emigration-quarter-state.js";
-import { quarterOptions, quarterOption } from "/emigration/ui/emigration-quarter-registry.js";
+import { quarterOptionsFor, quarterOptionFor } from "/emigration/ui/emigration-quarter-registry.js";
+import { quarterQuote, quarterQuoteKey, quoteDisplay } from "/emigration/ui/emigration-quarter-bonuses.js";
 import { applyQuarterYields, deduct } from "/emigration/ui/emigration-effects.js";
-import { quarterName, narrativeCiv } from "/emigration/ui/emigration-naming.js";
+import { quarterName, narrativeCiv, civType } from "/emigration/ui/emigration-naming.js";
 import { warOpponents } from "/emigration/ui/emigration-war.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
 import { showDilemma } from "/emigration/ui/emigration-dilemma-view.js";
@@ -44,6 +46,16 @@ function localPid() {
   } catch (_) {
     return null;
   }
+}
+
+/**
+ * Capitalise the first letter of an edge phrase for sentence-initial use ("by the harbour" →
+ * "By the harbour"), with a safe fallback when the phrase is missing.
+ * @param {string|null|undefined} s The edge phrase. @returns {string} The capitalised phrase.
+ */
+function capFirst(s) {
+  const t = typeof s === "string" && s.length ? s : "at the city's edge";
+  return t.charAt(0).toUpperCase() + t.slice(1);
 }
 
 /**
@@ -90,64 +102,165 @@ function resolveApplied(option) {
   };
 }
 
+/** Most enclaves ONE origin civilisation may hold across a host's cities (a different origin overtaking
+ * a tile is a change-of-hands, not a new one). Beyond this, a fresh same-origin enclave is not offered. */
+const MAX_ENCLAVES_PER_CIV = 2;
+
 /**
- * The candidate-quarter record for one city signal, or null when it isn't a fresh offer (not the
- * local player's, unreadable tile, no established quarter, or already recorded for the same origin).
- * @param {*} s A city signal. @param {number} me Local player id. @param {Map<string, number>} massIdx Arrival index.
- * @returns {{city:*, tileKey:string, quarter:*, pop:number}|null} The candidate, or null.
+ * How many enclaves the owner already holds from the SAME origin CIVILISATION, excluding `exceptTileKey`
+ * (the candidate's own tile). This is a **per-civ** count, not a global one — it only sees enclaves whose
+ * origin matches, so a host can hold up to the cap from EACH distinct origin civ independently.
+ *
+ * Identity is by **CivilizationType**, not player: two players sharing a civ count together, and an
+ * origin player that later changes civ across an age does not merge its old and new enclaves. Each record
+ * carries its `originCiv` (the CivilizationType captured when it formed); the target civ (`originCiv`) is
+ * resolved once by the caller. When either side's CivilizationType is unavailable (a legacy record or an
+ * unreadable player), the comparison falls back deterministically to the raw origin player id.
+ * @param {number} owner Host player id. @param {number} originPid Origin player id.
+ * @param {string|null} originCiv The origin's resolved CivilizationType, or null.
+ * @param {string|null} exceptTileKey A tile to exclude, or null.
+ * @returns {number} The count of existing same-origin enclaves.
  */
-function candidateFromSignal(s, me, massIdx) {
+function enclaveCountForCiv(owner, originPid, originCiv, exceptTileKey) {
+  let n = 0;
+  for (const { tileKey, rec } of quartersForOwner(owner)) {
+    if (tileKey === exceptTileKey) continue;
+    const recCiv = rec.originCiv || civType(rec.civ); // persisted identity, else resolve a legacy record
+    const same = originCiv && recCiv ? recCiv === originCiv : rec.civ === originPid;
+    if (same) n++;
+  }
+  return n;
+}
+
+/**
+ * The fresh established quarter on a city's tile, or null when it isn't a fresh offer (not the local
+ * player's, unreadable tile, no established quarter, or already recorded for the same origin). Shared by
+ * the offer path and the dwell-clock observer so both agree on what "an offerable enclave" is.
+ * @param {*} s A city signal. @param {number} me Local player id.
+ * @returns {{tileKey:string, quarter:*}|null} The tile + established quarter, or null.
+ */
+function offerableQuarter(s, me) {
   if (!s || s.owner !== me || !s.city) return null;
   const tileKey = tileKeyOf(s.city);
   if (!tileKey) return null;
-  const quarter = establishedQuarterForCity(s.city, massIdx);
+  const quarter = establishedQuarterForCity(s.city);
   if (!quarter) return null;
   const existing = quarterAt(tileKey);
-  if (existing && existing.civ === quarter.civ) return null; // already settled this origin's quarter
-  return { city: s.city, tileKey, quarter, pop: s.population || 0 };
+  if (existing && existing.civ === quarter.civ) return null; // already settled this origin's enclave
+  return { tileKey, quarter };
+}
+
+/**
+ * The candidate-quarter record for one city signal, or null when it isn't offerable (see
+ * {@link offerableQuarter}), the enclave hasn't dwelt long enough yet, or the origin civ is already at
+ * its per-civ enclave cap. `ordinal` is the count of the origin's existing enclaves (0 for the first, 1
+ * for the second) — it selects which single quote the modal shows.
+ * @param {*} s A city signal. @param {number} me Local player id. @param {number} turn Now (monotonic).
+ * @returns {{city:*, tileKey:string, quarter:*, pop:number, ordinal:number, originCiv:(string|null)}|null}
+ *   The candidate, or null.
+ */
+function candidateFromSignal(s, me, turn) {
+  const base = offerableQuarter(s, me);
+  if (!base) return null;
+  const { tileKey, quarter } = base;
+  const originCiv = civType(quarter.civ);
+  // Persistence gate: the enclave must have stayed established for quarterDwellTurns (its dwell clock is
+  // tracked per pass by observeQuarterDwell), so a transient spike never triggers a permanent enclave.
+  if (!dwellSatisfied(tileKey, originCiv, quarter.civ, turn)) return null;
+  const ordinal = enclaveCountForCiv(me, quarter.civ, originCiv, tileKey);
+  if (ordinal >= MAX_ENCLAVES_PER_CIV) return null; // §3: cap enclaves PER origin civilisation (not global)
+  return { city: s.city, tileKey, quarter, pop: s.population || 0, ordinal, originCiv };
+}
+
+/**
+ * Whether a candidacy record still names the same origin (by CivilizationType, else by raw player id).
+ * @param {*} cur The current candidacy record, or null. @param {string|null} originCiv The origin's
+ *   CivilizationType, or null. @param {number} civ The origin player id (legacy fallback).
+ * @returns {boolean} True when the record names this origin.
+ */
+function sameCandidacyOrigin(cur, originCiv, civ) {
+  if (!cur) return false;
+  return originCiv && cur.originCiv ? cur.originCiv === originCiv : cur.civ === civ;
+}
+
+/**
+ * Refresh (or start) one local city's dwell clock this pass. Non-established cities are left to lapse.
+ * @param {*} s A city signal. @param {number} me Local player id. @param {number} turn Now (monotonic).
+ */
+function touchDwellClock(s, me, turn) {
+  if (!s || s.owner !== me || !s.city) return;
+  const tileKey = tileKeyOf(s.city);
+  if (!tileKey) return;
+  const quarter = establishedQuarterForCity(s.city);
+  if (!quarter) return; // not established this pass → its clock (if any) may lapse in the prune
+  const originCiv = civType(quarter.civ);
+  const cur = candidacyAt(tileKey);
+  if (cur && sameCandidacyOrigin(cur, originCiv, quarter.civ)) cur.lastSeen = turn; // keep start, refresh last-seen
+  else putCandidacy(tileKey, { civ: quarter.civ, originCiv, since: turn, lastSeen: turn });
+}
+
+/**
+ * Update the per-tile dwell clocks for the local player's established enclaves. Called EVERY pass (before
+ * the offer gate, even on passes where nothing is offered) so the clocks stay current. For each of the
+ * owner's cities currently hosting an established foreign enclave: start a clock the first time the origin
+ * is seen, keep the existing clock's start while the SAME origin persists (only refreshing lastSeen), and
+ * restart it when a DIFFERENT origin has overtaken the tile. A candidacy whose enclave has lapsed for
+ * longer than quarterDwellGrace turns is pruned, so a diaspora that shrinks below the bar (integrated,
+ * returned home, fled) loses its accrued dwell — but a brief dip within the grace window does not.
+ * @param {*[]} signals The pass's city signals. @param {number} me Local player id. @param {number} turn Now.
+ */
+function observeQuarterDwell(signals, me, turn) {
+  for (const s of signals || []) touchDwellClock(s, me, turn);
+  const grace = Math.max(0, Number(CONFIG.quarterDwellGrace) || 0);
+  for (const { tileKey, rec } of allCandidacyEntries()) {
+    if (turn - rec.lastSeen > grace) dropCandidacy(tileKey);
+  }
 }
 
 /**
  * The candidate quarter to offer this pass: the largest local city hosting an established quarter that
  * ISN'T already recorded for the same origin (a fresh quarter, or a change-of-hands to a new origin).
- * @param {*[]} signals The pass's city signals. @param {number} me Local player id.
- * @returns {{city:*, tileKey:string, quarter:*}|null} The candidate, or null.
+ * @param {*[]} signals The pass's city signals. @param {number} me Local player id. @param {number} turn Now.
+ * @returns {{city:*, tileKey:string, quarter:*, ordinal:number, originCiv:(string|null)}|null} The candidate, or null.
  */
-function pickCandidate(signals, me) {
-  const massIdx = buildArrivalMassIndex();
-  /** @type {{city:*, tileKey:string, quarter:*, pop:number}[]} */
+function pickCandidate(signals, me, turn) {
+  /** @type {{city:*, tileKey:string, quarter:*, pop:number, ordinal:number, originCiv:(string|null)}[]} */
   const found = [];
   for (const s of signals || []) {
-    const cand = candidateFromSignal(s, me, massIdx);
+    const cand = candidateFromSignal(s, me, turn);
     if (cand) found.push(cand);
   }
   found.sort((a, b) => b.pop - a.pop);
-  return found.length ? { city: found[0].city, tileKey: found[0].tileKey, quarter: found[0].quarter } : null;
+  const t = found[0];
+  if (!t) return null;
+  return { city: t.city, tileKey: t.tileKey, quarter: t.quarter, ordinal: t.ordinal, originCiv: t.originCiv };
 }
 
 /**
  * Record the player's stance in the Migration Chronicle, and (on a change-of-hands) that the quarter
- * changed hands to a new origin.
- * @param {string} optionId The chosen stance. @param {{civ:number,name:string}} quarter The quarter.
+ * changed hands to a new origin. The active-stance line is drawn from the chosen origin-specific
+ * option (its action + one-line flavour "why"), so the record reads uniquely per civilization; the
+ * passive stance keeps its own line.
+ * @param {{id:string,label:string,note:string,benefitYield:(string|null)}} option The chosen option.
+ * @param {{civ:number,name:string,where:string}} quarter The quarter.
  * @param {{civ:number}|null} prior The prior record on the tile, or null. @param {number} turn Now.
  */
-function chronicleDecision(optionId, quarter, prior, turn) {
+function chronicleDecision(option, quarter, prior, turn) {
   const name = quarterName(quarter.civ);
   if (prior && prior.civ !== quarter.civ) {
     chronicle({
-      kind: "founding", title: tr("LOC_EMIG_QTR_CHRON_HANDS_TITLE", "The Quarter Changes Hands"),
+      kind: "founding", title: tr("LOC_EMIG_QTR_CHRON_HANDS_TITLE", "The Enclave Changes Hands"),
       body: tr("LOC_EMIG_QTR_CHRON_HANDS_BODY",
-        "In {1_Place}, the {2_PriorAdj} quarter gave way to the {3_Name}, a new people now holding the district as their own.",
-        quarter.name, narrativeCiv(prior.civ).adj, name),
+        "The old {1_Name} has faded as its families moved on, married in, or were overtaken by new arrivals. {2_Where}, {3_Adj} households now give the ward its name, its customs, and its bargains.",
+        quarterName(prior.civ), capFirst(quarter.where), narrativeCiv(quarter.civ).adj),
       civ: narrativeCiv(quarter.civ).adj, dedupeKey: "quarter:hands:" + quarter.name + "|" + quarter.civ + "|" + turn
     });
   }
-  const stance = optionId === "embrace"
-    ? tr("LOC_EMIG_QTR_STANCE_EMBRACE", "You embraced the {1_Name}, and its customs enrich the city.", name)
-    : optionId === "tax"
-      ? tr("LOC_EMIG_QTR_STANCE_TAX",
-        "You taxed the trade of the {1_Name}; its coin flows to your treasury, its people chafe.", name)
-      : tr("LOC_EMIG_QTR_STANCE_LETBE", "You let the {1_Name} keep to itself.", name);
+  const stance = option.benefitYield
+    ? tr("LOC_EMIG_QTR_STANCE_ACTIVE_" + option.id,
+      "In {1_Place}, you chose to {2_Act} — the {3_Name} takes its place in the city's life.",
+      quarter.name, String(option.label || "").toLowerCase(), name)
+    : tr("LOC_EMIG_QTR_STANCE_LETBE", "You let the {1_Name} keep to itself.", name);
   chronicle({
     kind: "founding", title: tr("LOC_EMIG_QTR_CHRON_DECISION_TITLE", "A {1_Name}", name), body: stance,
     civ: narrativeCiv(quarter.civ).adj, dedupeKey: "quarter:decision:" + quarter.name + "|" + quarter.civ + "|" + turn
@@ -162,20 +275,22 @@ function chronicleDecision(optionId, quarter, prior, turn) {
  * whatever record currently holds the tile, which also makes a change-of-hands self-correct with no reversal.
  * Fully guarded.
  * @param {string} optionId The chosen option id. @param {string} tileKey The plot key.
- * @param {{civ:number,owner:number,name:string}} quarter The quarter.
+ * @param {{civ:number,owner:number,name:string,where:string}} quarter The quarter.
  * @param {number} me Local player id. @param {number} turn Now.
  */
 function applyQuarterChoice(optionId, tileKey, quarter, me, turn) {
   try {
-    const option = quarterOption(optionId);
+    const ct = civType(quarter.civ);
+    const option = quarterOptionFor(ct, optionId);
     const applied = resolveApplied(option);
     const prior = quarterAt(tileKey);
     putQuarter(tileKey, {
-      civ: quarter.civ, owner: me, optionId: option.id, turn,
+      civ: quarter.civ, originCiv: ct || null, owner: me, optionId: option.id, turn,
       applied, contested: false, contestedTurn: -999
     });
+    dropCandidacy(tileKey); // the enclave has formed — its dwell clock has done its job
     noteDecision(turn);
-    chronicleDecision(option.id, quarter, prior, turn);
+    chronicleDecision(option, quarter, prior, turn);
     saveQuarters();
   } catch (_) {
     /* a quarter outcome must never break anything */
@@ -183,22 +298,40 @@ function applyQuarterChoice(optionId, tileKey, quarter, me, turn) {
 }
 
 /**
- * The modal view model for a quarter decision (the "Cultural Quarter" eyebrow, a titled prompt, and
- * the three stances). Dismissing (click-outside / Escape) resolves as the passive "ignore" stance.
- * @param {{civ:number,name:string,share:number}} quarter The quarter.
- * @returns {{title:string, body:string, eyebrow:string, dismissId:string, choices:*[]}} The view.
+ * The single flavour quote shown for an enclave: the origin's FIRST enclave shows quote "a", its SECOND
+ * shows quote "b" (`ordinal` is the count of the origin's existing enclaves). Localized through its LOC
+ * key with the English display as the fallback; "" when the civ has no quote.
+ * @param {string|null} ct The origin CivilizationType. @param {number} ordinal 0 = first, 1 = second.
+ * @returns {string} The composed quote display, or "".
  */
-function quarterView(quarter) {
+function enclaveQuote(ct, ordinal) {
+  if (!ct) return "";
+  const qid = ordinal >= 1 ? "b" : "a";
+  const q = quarterQuote(ct, qid);
+  return q ? tr(quarterQuoteKey(ct, qid), quoteDisplay(q)) : "";
+}
+
+/**
+ * The modal view model for a quarter decision (the "Cultural Enclave" eyebrow, a titled prompt, ONE
+ * attributed quote, and the three stances). Dismissing (click-outside / Escape) resolves as the passive
+ * "ignore" stance. Only a single quote is shown — the origin's first enclave uses quote "a", its second
+ * uses quote "b".
+ * @param {{civ:number,name:string,share:number,where:string}} quarter The quarter.
+ * @param {number} [ordinal] Count of the origin's existing enclaves (0 = first, 1 = second).
+ * @returns {{title:string, body:string, eyebrow:string, dismissId:string, quote:string, choices:*[]}} The view.
+ */
+function quarterView(quarter, ordinal) {
   const name = quarterName(quarter.civ);
-  const pct = Math.round((quarter.share || 0) * 100);
+  const ct = civType(quarter.civ);
   return {
-    eyebrow: tr("LOC_EMIG_QTR_EYEBROW", "Cultural Quarter"),
+    eyebrow: tr("LOC_EMIG_QTR_EYEBROW", "Cultural Enclave"),
     dismissId: "ignore",
-    title: tr("LOC_EMIG_QTR_TITLE", "The {1_Name} Takes Root", name),
+    title: tr("LOC_EMIG_QTR_TITLE", "The {1_Name}", name),
     body: tr("LOC_EMIG_QTR_BODY",
-      "A lasting community from {1_Adj} now holds a district of its own in {2_Place}, grown to {3_Pct} percent of the city. How will you meet them?",
-      narrativeCiv(quarter.civ).adj, quarter.name, pct),
-    choices: quarterOptions()
+      "The {1_Adj} families of {2_Place} have become more than new arrivals. {3_Where}, their shops, shrines, workshops, festivals, and habits now draw a life of their own — a district with a memory from elsewhere. Recognize the enclave, and decide what tradition the city will make room for.",
+      narrativeCiv(quarter.civ).adj, quarter.name, capFirst(quarter.where)),
+    quote: enclaveQuote(ct, ordinal || 0),
+    choices: quarterOptionsFor(ct)
   };
 }
 
@@ -210,15 +343,19 @@ function quarterView(quarter) {
  * @param {boolean} dilemmaFired Whether a refugee dilemma fired this pass.
  */
 export function maybeQuarter(signals, dilemmaFired) {
-  if (!CONFIG.quartersEnabled || dilemmaFired) return;
+  if (!CONFIG.quartersEnabled) return;
   const me = localPid();
   if (me == null) return;
   try {
     const turn = monoTurn();
+    // Keep the dwell clocks current EVERY pass — including passes where a refugee dilemma fired or the
+    // throttle blocks an offer — so a persistent enclave keeps accruing dwell toward its eventual offer.
+    observeQuarterDwell(signals, me, turn);
+    if (dilemmaFired) return; // ranked BELOW the refugee dilemma: never race two modals in one pass
     if (!canDecide(turn, currentAge())) return;
-    const cand = pickCandidate(signals, me);
+    const cand = pickCandidate(signals, me, turn);
     if (!cand) return;
-    showDilemma(quarterView(cand.quarter), (/** @type {string} */ id) =>
+    showDilemma(quarterView(cand.quarter, cand.ordinal), (/** @type {string} */ id) =>
       applyQuarterChoice(id, cand.tileKey, cand.quarter, me, turn));
   } catch (_) {
     /* never disrupt a pass */
@@ -242,9 +379,9 @@ function accrueContestedStrain(owner, turn) {
     setContested(tileKey, nowContested, turn);
     if (nowContested && !wasContested) {
       chronicle({
-        kind: "founding", title: tr("LOC_EMIG_QTR_CHRON_RESTLESS_TITLE", "A Quarter Grows Restless"),
+        kind: "founding", title: tr("LOC_EMIG_QTR_CHRON_RESTLESS_TITLE", "War Tests the {1_Name}", quarterName(rec.civ)),
         body: tr("LOC_EMIG_QTR_CHRON_RESTLESS_BODY",
-          "War with {1_Adj} sets the {2_Name} on edge; the district simmers.",
+          "War with {1_Adj} falls hard on the {2_Name}: its families are cut off from kin in the fighting, and some neighbours meet them with cold looks, forgetting they did not choose this war. Until peace returns, that strain keeps the enclave from settling fully into the city's life.",
           narrativeCiv(rec.civ).adj, quarterName(rec.civ)),
         civ: narrativeCiv(rec.civ).adj, dedupeKey: "quarter:contested:" + tileKey + "|" + rec.civ + "|" + turn
       });
@@ -294,4 +431,7 @@ export function tickContestedQuarters(_signals) {
 }
 
 // Test hook: the pure decision pieces.
-export const __test = { resolveApplied, pickCandidate, quarterView, accrueContestedStrain, tileKeyOf };
+export const __test = {
+  resolveApplied, pickCandidate, candidateFromSignal, observeQuarterDwell, quarterView, accrueContestedStrain,
+  tileKeyOf, enclaveCountForCiv, MAX_ENCLAVES_PER_CIV
+};
