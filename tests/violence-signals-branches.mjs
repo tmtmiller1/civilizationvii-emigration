@@ -1,218 +1,188 @@
 import assert from "node:assert/strict";
 
-// Setup comprehensive mocks for violence-signals testing
-globalThis.CONFIG = { vwPillage: 1 };
-globalThis.Players = {
-  Districts: {
-    get: (pid) => ({
-      getDistrictIds: () => [
-        { x: 10, y: 20, owner: pid },
-        { x: 11, y: 20, owner: pid },
-        { x: 12, y: 20, owner: pid }
-      ],
-      getDistrictMaxHealth: () => 100,
-      getDistrictHealth: (loc) => {
-        if (loc.x === 11) return 50;  // 50% damaged
-        if (loc.x === 12) return 0;   // 100% destroyed
-        return 100;  // Pristine
-      },
-      getDistrictIsBesieged: (loc) => loc.x === 12
-    })
-  }
-};
-
-globalThis.MapConstructibles = {
-  getConstructibles: (x, y) => {
-    if (x === 10 && y === 20) return [{ id: "c1" }];
-    if (x === 11 && y === 20) return [{ id: "c2" }];
-    return null;
-  }
-};
-
-globalThis.Constructibles = {
-  getByComponentID: (cid) => {
-    if (cid.id === "c2") return { damaged: true };
-    return { damaged: false };
-  }
-};
-
-globalThis.GameplayMap = {
-  getLocationFromIndex: (idx) => {
-    const locs = { 0: { x: 10, y: 20 }, 1: { x: 11, y: 20 }, 2: { x: 12, y: 20 } };
-    return locs[idx] || null;
-  }
-};
-
+const { CONFIG } = await import("/emigration/ui/emigration-config.js");
 const { districtDamageFrac, districtBesieged, pillagedCount } =
   await import("/emigration/ui/emigration-violence-signals.js");
 
-function testDistrictDamageFracWithDamagedDistricts() {
-  const city = {
-    owner: 1,
-    getPurchasedPlots: () => [0, 1, 2]
+const originalVwPillage = CONFIG.vwPillage;
+
+function resetGlobals() {
+  delete globalThis.Players;
+  delete globalThis.Districts;
+  delete globalThis.MapConstructibles;
+  delete globalThis.Constructibles;
+  delete globalThis.GameplayMap;
+}
+
+function setDistrictMocks({ city, districtRows, healthByKey, besiegedByKey }) {
+  const byId = new Map(districtRows.map(d => [d.__id, d]));
+  const pd = {
+    getDistrictIds: () => districtRows.map(d => d.__id),
+    getDistrictMaxHealth: (loc) => healthByKey[`${loc.x},${loc.y}`]?.max,
+    getDistrictHealth: (loc) => healthByKey[`${loc.x},${loc.y}`]?.cur,
+    getDistrictIsBesieged: (loc) => !!besiegedByKey[`${loc.x},${loc.y}`]
   };
-  
-  const damage = districtDamageFrac(city);
-  assert.equal(typeof damage, "number", "should return a number");
-  assert.ok(damage >= 0 && damage <= 1, "damage should be between 0 and 1");
-}
-
-function testDistrictDamageFracWithNoCityDistricts() {
-  const city = { owner: 999 };  // Non-existent owner
-  const damage = districtDamageFrac(city);
-  assert.equal(damage, 0, "should return 0 when city districts unavailable");
-}
-
-function testDistrictDamageFracWithNullCity() {
-  const damage = districtDamageFrac(null);
-  assert.equal(damage, 0, "should return 0 for null city");
-}
-
-function testDistrictBesiegedWithContestedDistrict() {
-  // Create a mock with a contested district
-  const origDistricts = globalThis.Players.Districts;
-  globalThis.Players.Districts = {
-    get: (pid) => ({
-      getDistrictIds: () => [{ x: 10, y: 20, owner: pid }],
-      getDistrictIsBesieged: () => false
-    })
-  };
-  
-  // Mock cityDistrictObjs to return a contested district
-  const city = {
-    owner: 1,
-    getPurchasedPlots: () => []
-  };
-  
-  // Should check contested status - we need to test the logic path
-  const besieged = districtBesieged(city);
-  assert.equal(typeof besieged, "boolean", "should return a boolean");
-  
-  globalThis.Players.Districts = origDistricts;
-}
-
-function testDistrictBesiegedWithBesiegeFlagSet() {
-  const city = {
-    owner: 1,
-    getPurchasedPlots: () => [0, 1, 2]
-  };
-  
-  const besieged = districtBesieged(city);
-  assert.equal(typeof besieged, "boolean", "should return a boolean");
-  // With mock setup, district at x=12 should be besieged
-}
-
-function testDistrictBesiegedWithNullCity() {
-  const besieged = districtBesieged(null);
-  assert.equal(besieged, false, "should return false for null city");
-}
-
-function testDistrictBesiegedWithoutDistrictsAPI() {
-  globalThis.Players.Districts = null;
-  const city = { owner: 1, getPurchasedPlots: () => [] };
-  
-  const besieged = districtBesieged(city);
-  assert.equal(besieged, false, "should return false when Districts API unavailable");
-  
-  globalThis.Players.Districts = {
-    get: () => null
-  };
-  const besieged2 = districtBesieged(city);
-  assert.equal(besieged2, false, "should return false when cityDistricts returns null");
-}
-
-function testPillagedCountWithPillagedPlots() {
-  const city = {
-    owner: 1,
-    getPurchasedPlots: () => [0, 1, 2]
-  };
-  
-  const count = pillagedCount(city);
-  assert.equal(typeof count, "number", "should return a number");
-  assert.ok(count >= 0, "pillaged count should be non-negative");
-  // Plot 1 should have pillage
-  assert.ok(count > 0, "should count pillaged plots");
-}
-
-function testPillagedCountWithNoPillagedPlots() {
-  globalThis.MapConstructibles = {
-    getConstructibles: () => null
-  };
-  
-  const city = {
-    owner: 1,
-    getPurchasedPlots: () => [0, 1, 2]
-  };
-  
-  const count = pillagedCount(city);
-  assert.equal(count, 0, "should return 0 when no pillage detected");
-}
-
-function testPillagedCountWhenConfigDisabled() {
-  const origConfig = globalThis.CONFIG.vwPillage;
-  globalThis.CONFIG.vwPillage = 0;
-  
-  const city = {
-    owner: 1,
-    getPurchasedPlots: () => [0, 1, 2]
-  };
-  
-  const count = pillagedCount(city);
-  assert.equal(count, 0, "should return 0 when vwPillage is disabled");
-  
-  globalThis.CONFIG.vwPillage = origConfig;
-}
-
-function testPillagedCountWithNullCity() {
-  const count = pillagedCount(null);
-  assert.equal(count, 0, "should return 0 for null city");
-}
-
-function testPillagedCountWithoutPurchasedPlots() {
-  const city = { owner: 1, getPurchasedPlots: () => null };
-  const count = pillagedCount(city);
-  assert.equal(count, 0, "should handle null purchased plots");
-}
-
-function testPillagedCountErrorHandling() {
-  globalThis.MapConstructibles = {
-    getConstructibles: () => {
-      throw new Error("API error");
+  globalThis.Players = {
+    Districts: {
+      get: (owner) => (owner === city.owner ? pd : null)
     }
   };
-  
-  const city = {
-    owner: 1,
-    getPurchasedPlots: () => [0, 1, 2]
+  globalThis.Districts = {
+    get: (did) => byId.get(did) || null
   };
-  
-  // Should not throw
-  try {
-    const count = pillagedCount(city);
-    assert.equal(typeof count, "number");
-  } catch (e) {
-    assert.fail(`should handle errors gracefully: ${e.message}`);
-  }
 }
 
-testDistrictDamageFracWithDamagedDistricts();
-testDistrictDamageFracWithNoCityDistricts();
-testDistrictDamageFracWithNullCity();
-testDistrictBesiegedWithContestedDistrict();
-testDistrictBesiegedWithBesiegeFlagSet();
-testDistrictBesiegedWithNullCity();
-testDistrictBesiegedWithoutDistrictsAPI();
-testPillagedCountWithPillagedPlots();
-testPillagedCountWithNoPillagedPlots();
-testPillagedCountWhenConfigDisabled();
-testPillagedCountWithNullCity();
-testPillagedCountWithoutPurchasedPlots();
-testPillagedCountErrorHandling();
+const city = {
+  owner: 1,
+  id: { owner: 1, id: 77 },
+  location: { x: 10, y: 20 },
+  getPurchasedPlots: () => [1, 2, 3, 4]
+};
 
-delete globalThis.CONFIG;
-delete globalThis.Players;
-delete globalThis.MapConstructibles;
-delete globalThis.Constructibles;
-delete globalThis.GameplayMap;
+resetGlobals();
+setDistrictMocks({
+  city,
+  districtRows: [
+    {
+      __id: "center",
+      cityId: { owner: 1, id: 77 },
+      location: { x: 10, y: 20 },
+      owner: 1,
+      controllingPlayer: 1
+    },
+    {
+      __id: "outer",
+      cityId: { owner: 1, id: 77 },
+      location: { x: 11, y: 20 },
+      owner: 1,
+      controllingPlayer: 1
+    },
+    {
+      __id: "other-city",
+      cityId: { owner: 1, id: 78 },
+      location: { x: 99, y: 99 },
+      owner: 1,
+      controllingPlayer: 1
+    }
+  ],
+  healthByKey: {
+    "10,20": { max: 100, cur: 100 },
+    "11,20": { max: 100, cur: 40 }
+  },
+  besiegedByKey: {}
+});
+assert.equal(districtDamageFrac(city), 0.6, "worst district damage should be returned");
 
+// Defensive path coverage: missing/invalid district health values are skipped.
+setDistrictMocks({
+  city,
+  districtRows: [
+    {
+      __id: "bad",
+      cityId: { owner: 1, id: 77 },
+      location: { x: 12, y: 20 },
+      owner: 1,
+      controllingPlayer: 1
+    }
+  ],
+  healthByKey: {
+    "12,20": { max: 0, cur: "NaN" }
+  },
+  besiegedByKey: {}
+});
+assert.equal(districtDamageFrac(city), 0, "invalid district health inputs should produce zero damage");
+
+// Missing Districts API path.
+globalThis.Players = { Districts: null };
+assert.equal(districtDamageFrac(city), 0, "missing Districts API should produce zero damage");
+
+resetGlobals();
+setDistrictMocks({
+  city,
+  districtRows: [
+    {
+      __id: "contested",
+      cityId: { owner: 1, id: 77 },
+      location: { x: 10, y: 20 },
+      owner: 1,
+      controllingPlayer: 2
+    }
+  ],
+  healthByKey: {
+    "10,20": { max: 100, cur: 100 }
+  },
+  besiegedByKey: {}
+});
+assert.equal(districtBesieged(city), true, "contested districts should be reported as besieged");
+
+// Non-contested districts with an explicit besieged flag path.
+setDistrictMocks({
+  city,
+  districtRows: [
+    {
+      __id: "safe",
+      cityId: { owner: 1, id: 77 },
+      location: { x: 10, y: 20 },
+      owner: 1,
+      controllingPlayer: 1
+    }
+  ],
+  healthByKey: {
+    "10,20": { max: 100, cur: 100 }
+  },
+  besiegedByKey: {
+    "10,20": true
+  }
+});
+assert.equal(districtBesieged(city), true, "district besieged flag should be respected");
+
+// Missing getDistrictIsBesieged fallback path.
+globalThis.Players = {
+  Districts: {
+    get: () => ({
+      getDistrictIds: () => [],
+      getDistrictMaxHealth: () => 100,
+      getDistrictHealth: () => 100
+    })
+  }
+};
+assert.equal(districtBesieged(city), false, "missing besiege accessor should return false");
+
+resetGlobals();
+globalThis.MapConstructibles = {
+  getConstructibles: (x, y) => {
+    if (x === 10 && y === 20) return [{ id: "ok" }];
+    if (x === 11 && y === 20) return [{ id: "pillaged" }];
+    return null;
+  }
+};
+globalThis.Constructibles = {
+  getByComponentID: (cid) => ({ damaged: cid.id === "pillaged" })
+};
+globalThis.GameplayMap = {
+  getLocationFromIndex: (idx) => {
+    if (idx === 1) return { x: 10, y: 20 };
+    if (idx === 2) return { x: 11, y: 20 };
+    if (idx === 3) return { x: 12, y: 20 };
+    return null;
+  }
+};
+CONFIG.vwPillage = 1;
+assert.equal(pillagedCount(city), 1, "only damaged constructibles should count as pillaged");
+
+// Guard path: disabled pillage weight short-circuits expensive scans.
+CONFIG.vwPillage = 0;
+globalThis.MapConstructibles = {
+  getConstructibles: () => {
+    throw new Error("should not run when vwPillage is 0");
+  }
+};
+assert.equal(pillagedCount(city), 0, "disabled pillage weight should short-circuit to zero");
+
+// Catch path: city plot accessor failure is swallowed.
+CONFIG.vwPillage = 1;
+assert.equal(pillagedCount({ getPurchasedPlots: () => { throw new Error("boom"); } }), 0);
+
+CONFIG.vwPillage = originalVwPillage;
+resetGlobals();
 console.log("violence-signals-branches harness passed");
