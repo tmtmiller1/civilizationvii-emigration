@@ -167,6 +167,48 @@ function testLocalDigestIsPerEvent() {
   delete globalThis.GameContext;
 }
 
+function testLaggedCrossCivDepartureNotifiesAsExternal() {
+  // A lagged cross-civ DEPARTURE record carries edgeDestOwner (the dest civ) but withholds destOwner
+  // (so the immigration tally isn't double-credited on arrival). The notification must still classify
+  // it as a cross-civ move - it must NOT collapse to "internal" just because destOwner is absent.
+  globalThis.GameContext = { localPlayerID: 0 };
+  CONFIG.notifyMode = 1;
+  CONFIG.notifyWorldNews = false;
+  CONFIG.notifyCooldownTurns = 0;
+  clearNotifications();
+  TURN = 200;
+  reportPassFeedback([
+    { srcOwner: 0, edgeDestOwner: 1, people: 5000, points: 1, cause: "unhappiness", crossCiv: true,
+      srcName: "Rome", destName: "Carthage" }
+  ]);
+  const entry = notificationLog().find((e) => e.fromCity === "Rome");
+  assert.equal(entry.crossCiv, true, "lagged cross-civ departure must notify as external, not internal");
+  assert.ok(entry.toCiv, "the destination civ must be named (recovered from edgeDestOwner)");
+  delete globalThis.GameContext;
+}
+
+function testMixedScopeSplitsIntoInternalAndExternalRows() {
+  // One settlement shedding the SAME cause to both its own settlement and a foreign civ must split
+  // into two correctly-labelled rows, never one row mislabelled by the larger stream.
+  globalThis.GameContext = { localPlayerID: 0 };
+  CONFIG.notifyMode = 1;
+  CONFIG.notifyWorldNews = false;
+  CONFIG.notifyCooldownTurns = 0;
+  clearNotifications();
+  TURN = 210;
+  reportPassFeedback([
+    { srcOwner: 0, destOwner: 0, people: 6000, points: 1, cause: "unhappiness", crossCiv: false,
+      srcName: "Rome", destName: "Ostia" },   // internal (bigger stream)
+    { srcOwner: 0, destOwner: 1, people: 2000, points: 1, cause: "unhappiness", crossCiv: true,
+      srcName: "Rome", destName: "Carthage" }  // external (smaller stream)
+  ]);
+  const rows = notificationLog().filter((e) => e.fromCity === "Rome");
+  assert.equal(rows.length, 2, "a mixed-scope source must yield two rows, not one");
+  assert.equal(rows.filter((e) => e.crossCiv === true).length, 1, "one row is the external stream");
+  assert.equal(rows.filter((e) => !e.crossCiv).length, 1, "one row is the internal stream");
+  delete globalThis.GameContext;
+}
+
 function testLocalDigestRespectsCooldown() {
   globalThis.GameContext = { localPlayerID: 0 };
   CONFIG.notifyMode = 1;
@@ -193,6 +235,10 @@ testPersistWritesNewsSchemaEnvelope();
 testOffModeSilent();
 testLocalDigestExplainsTheLocalPlayersLoss();
 testLocalDigestRespectsCooldown();
-testLocalDigestIsPerEvent(); // last: it advances the turn/cooldown state, so it can't perturb others
+testLocalDigestIsPerEvent();
+// These advance the turn/cooldown state, so they run last where they can't perturb the others; both
+// assert on the cooldown-independent notification log rather than toast counts.
+testLaggedCrossCivDepartureNotifiesAsExternal();
+testMixedScopeSplitsIntoInternalAndExternalRows();
 
 console.log("feedback harness passed");

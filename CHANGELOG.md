@@ -7,6 +7,25 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+### Fixed
+- **Migration notifications and toasts labeled moves internal-vs-external
+  incorrectly in both directions.** The scope tag ("(Internal Move)" /
+  "(External Move)"), the "Moved to" vs "To" wording, and the destination-civ
+  naming are all driven by one per-event `crossCiv` flag in the feedback digest,
+  and two defects corrupted it. First, the flag was gated on the record carrying a
+  `destOwner` — but a *lagged departure* record deliberately withholds `destOwner`
+  (it carries `edgeDestOwner` so the arrival isn't double-counted), so with transit
+  lag on (the default) genuine cross-civ moves collapsed to "internal." The flag
+  now trusts the record's own scope, and the destination civ is recovered from
+  `edgeDestOwner` so it is still named and unmet-masked. Second, per-event buckets
+  were keyed by source settlement + cause only, so a settlement shedding one cause
+  to both its own settlements *and* a foreign civ merged into a single row labeled
+  by whichever stream was larger, mislabeling the other. The bucket key now
+  includes scope, so internal and external streams split into two correctly
+  labeled rows. Tallies, the Demographics graphs, and the flow map were unaffected
+  (they read the record flags directly); this was purely the notification/popup
+  layer.
+
 ## [2.0.2] - 2026-07-06
 
 An internal code-quality and repository-hygiene release. **No gameplay rules, UI,
