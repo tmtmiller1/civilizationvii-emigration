@@ -515,7 +515,25 @@ function localPlayerId() {
 }
 
 /**
- * Get (or create) the per-event bucket for a loss record, keyed by source settlement + cause.
+ * The destination owner as the notification layer sees it: the tally-driving `destOwner` when present
+ * (an instantaneous move or an arrival), else the non-tally `edgeDestOwner` a lagged DEPARTURE record
+ * carries (it withholds `destOwner` so the immigration tally isn't double-credited on arrival). Reading
+ * `edgeDestOwner` here is safe: this digest is separate from the migration/immigration tallies, so it
+ * can't double-count - it only needs the destination civ to name it and apply unmet-masking.
+ * @param {*} m A migration record.
+ * @returns {number|undefined} The destination player id, or undefined when neither owner is present.
+ */
+function moveDestOwner(m) {
+  if (typeof m.destOwner === "number") return m.destOwner;
+  if (typeof m.edgeDestOwner === "number") return m.edgeDestOwner;
+  return undefined;
+}
+
+/**
+ * Get (or create) the per-event bucket for a loss record, keyed by source settlement + cause + scope.
+ * Scope (internal vs cross-civ) is part of the key so a source shedding the SAME cause to both its own
+ * settlements AND a foreign civ splits into two correctly-labelled rows, never one row mislabelled by
+ * whichever stream happened to be larger.
  * @param {Map<string,*>} map Bucket map.
  * @param {*} m A migration.
  * @param {number} me Local player id.
@@ -523,11 +541,12 @@ function localPlayerId() {
  */
 function eventBucket(map, m, me) {
   const cause = m.cause || "other";
-  const key = (m.srcName || "?") + "|" + cause;
+  const cross = !!m.crossCiv; // the record's authoritative scope flag (src.owner !== dest.owner)
+  const key = (m.srcName || "?") + "|" + cause + "|" + (cross ? "x" : "i");
   let ev = map.get(key);
   if (!ev) {
-    ev = { cause, srcOwner: me, srcName: m.srcName, destName: m.destName, destOwner: m.destOwner,
-      crossCiv: false, people: 0, points: 0, reasons: [], _lead: 0 };
+    ev = { cause, srcOwner: me, srcName: m.srcName, destName: m.destName, destOwner: moveDestOwner(m),
+      crossCiv: cross, people: 0, points: 0, reasons: [], _lead: 0 };
     map.set(key, ev);
   }
   return ev;
@@ -550,8 +569,10 @@ function foldEvent(map, m, me) {
   if (ppl > ev._lead) { // the destination that took the most people defines "where they went"
     ev._lead = ppl;
     ev.destName = m.destName;
-    ev.destOwner = m.destOwner;
-    ev.crossCiv = !!m.crossCiv && typeof m.destOwner === "number";
+    ev.destOwner = moveDestOwner(m); // recover the dest civ from edgeDestOwner on a lagged departure
+    // ev.crossCiv is fixed per bucket (part of the key) - trust the record's flag, never gate it on
+    // destOwner being present, or a lagged cross-civ departure (which withholds destOwner) mislabels
+    // as internal.
     ev.reasons = Array.isArray(m.reasons) ? m.reasons : []; // the lead move's "why here" tags (P0.1)
   }
 }
