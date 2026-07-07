@@ -7,33 +7,44 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [2.0.3] - 2026-07-07
+
+This release fixes migration notifications mislabeling where people went. The
+technical details are in the commit history; the player-facing summary is below.
+
 ### Fixed
-- **Migration notifications and toasts labeled moves internal-vs-external
-  incorrectly in both directions.** The scope tag ("(Internal Move)" /
-  "(External Move)"), the "Moved to" vs "To" wording, and the destination-civ
-  naming are all driven by one per-event `crossCiv` flag in the feedback digest,
-  and two defects corrupted it. First, the flag was gated on the record carrying a
-  `destOwner` — but a *lagged departure* record deliberately withholds `destOwner`
-  (it carries `edgeDestOwner` so the arrival isn't double-counted), so with transit
-  lag on (the default) genuine cross-civ moves collapsed to "internal." The flag
-  now trusts the record's own scope, and the destination civ is recovered from
-  `edgeDestOwner` so it is still named and unmet-masked. Second, per-event buckets
-  were keyed by source settlement + cause only, so a settlement shedding one cause
-  to both its own settlements *and* a foreign civ merged into a single row labeled
-  by whichever stream was larger, mislabeling the other. The bucket key now
-  includes scope, so internal and external streams split into two correctly
-  labeled rows. Tallies, the Demographics graphs, and the flow map were unaffected
-  (they read the record flags directly); this was purely the notification/popup
-  layer.
+- **Migration notifications and toasts mislabeled moves as "Internal" vs
+  "External" (and named the wrong destination).** A move to another civilization
+  could show up tagged as an internal move within your own empire, and a mix of
+  people leaving one city for both your own settlements and a foreign power could
+  be lumped into a single row with the wrong label. Notifications now classify
+  each move correctly and split a mixed departure into a properly labeled internal
+  row and external row. Only the notifications and pop-ups were affected — the
+  Demographics graphs, migration totals, and flow map were always correct.
 
 ## [2.0.2] - 2026-07-06
 
-An internal code-quality and repository-hygiene release. **No gameplay rules, UI,
-or player-facing text changed** — the mod behaves identically and existing saves
-are unaffected. The work removes the last special-case carve-outs from the quality
-gate so the entire shipped `ui/` tree is now held to one uniform standard, moves
-the dev-only diagnostic out of the shipped-source tree, and hardens a test to
-exercise real code instead of stubs.
+Primarily an internal code-quality and repository-hygiene release — it removes the
+last special-case carve-outs from the quality gate so the entire shipped `ui/`
+tree is held to one uniform standard, moves the dev-only diagnostic out of the
+shipped-source tree, and hardens a test to exercise real code instead of stubs.
+It also carried one gameplay fix (the disaster strike-floor, below).
+
+> **Changelog correction (2026-07-07):** the disaster strike-floor shipped in the
+> v2.0.2 Workshop build but its source and this entry were only committed later,
+> during the 2.0.3 prep. Documented here, under the version players actually
+> received it in, rather than back-dated silently.
+
+### Fixed
+- **Disasters that struck a city but couldn't be measured did nothing.** When the
+  engine confirmed a disaster hit a settlement but the mod had no way to gauge its
+  size (the effect tables were absent, or a lava-scorched tile that never counts
+  as "pillage"), the distress spike collapsed to zero and the disaster silently
+  had no effect. A confirmed strike now floors its impact factor to
+  `disasterStrikeFloor` (0.15) so it always lands *some* distress. The floor
+  scales by disaster class, so a floored volcano clears the flee threshold (a
+  struck city sheds refugees as it should) while a floored thunderstorm stays
+  ambient. Set `disasterStrikeFloor: 0` to restore the legacy behavior.
 
 ### Internal
 - **The dev-only API probe moved out of the shipped-source tree** from
