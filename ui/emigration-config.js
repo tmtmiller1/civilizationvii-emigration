@@ -495,6 +495,12 @@ export const CONFIG = {
   // per-type tax). Each flag fail-safes to the legacy CLASS_WEIGHT × severity numbers.
   disasterImpactScalingEnabled: true, // spike = type-CEILING × shape(measured impact m); off ⇒ legacy
   disasterImpactGamma: 0.6, // concavity of shape(m)=m^gamma; 1.0 = linear, <1 lifts small real impacts
+  // Floor on `m` for a CONFIRMED city strike the mod couldn't MEASURE (effect tables absent, or a
+  // lava-scorched tile that isn't "pillage"): a disaster the engine says hit a city always lands SOME
+  // distress, so it never scores as harmless and drops to zero. Scales by CLASS_WEIGHT via shape(), so
+  // at 0.15 a volcano floor ≈3.3 (over disasterFleeThreshold ⇒ a small forced outflow) while a
+  // thunderstorm stays ambient. 0 ⇒ legacy (an unmeasurable strike can silently do nothing).
+  disasterStrikeFloor: 0.15,
   disasterSpeedShockEnabled: true, // divide the spike by S so slow speeds pay the same TOTAL bite
   disasterAccumCap: 18, // hard ceiling on a city's accumulated disaster distress (guarantees recovery)
   disasterStackFalloff: true, // a new spike adds with diminishing returns the fuller the city already is

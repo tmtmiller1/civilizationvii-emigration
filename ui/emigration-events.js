@@ -9,7 +9,7 @@
 // Defensive throughout: every engine read is guarded and a failure degrades to a no-op.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
-import { recordDisaster, disasterKey } from "/emigration/ui/emigration-disasters.js";
+import { recordDisaster, disasterSpike, disasterKey } from "/emigration/ui/emigration-disasters.js";
 import { pillagedCount } from "/emigration/ui/emigration-violence-signals.js";
 import { disasterName, actionHint, civAdjective } from "/emigration/ui/emigration-naming.js";
 import { announceImportant } from "/emigration/ui/emigration-feedback.js";
@@ -229,6 +229,21 @@ function eventImpactFactor(info, location) {
 }
 
 /**
+ * Floor the impact factor for a CONFIRMED city strike the mod couldn't MEASURE — the effect tables are
+ * absent, or a lava-scorched tile that never counts as "pillage" — so a disaster the engine says hit a
+ * city always lands SOME distress instead of collapsing to a zero spike and silently doing nothing.
+ * The floor scales by disaster type downstream (shape() × CLASS_WEIGHT), so a floored volcano clears
+ * the flee threshold while a floored thunderstorm stays ambient. Un-struck events (open terrain) and
+ * genuinely bigger measured impacts pass through untouched.
+ * @param {number} measured The measured impact factor in [0,1].
+ * @param {boolean} struck Whether the engine confirmed the blast hit at least one city.
+ * @returns {number} The impact factor to drive the spike with.
+ */
+function strikeFloored(measured, struck) {
+  return struck ? Math.max(measured, CONFIG.disasterStrikeFloor) : measured;
+}
+
+/**
  * Handle a RandomEventOccurred payload: add a severity-scaled distress spike to the
  * struck city and toast the disaster by its own name. The resulting refugee outflow is
  * applied by the normal per-turn pass (the distress lowers the city's prosperity).
@@ -241,12 +256,15 @@ function onRandomEvent(data) {
   }
   try {
     const info = GameInfo?.RandomEvents?.lookup?.(data.eventType);
+    const eventClass = info?.EventClass;
     const sev = eventSeverity(data, info); // 1..4, kept for the notify gate + chart marker
-    const m = eventImpactFactor(info, data.location); // continuous 0..1, drives the distress spike
     const keys = affectedCityKeys(data.location);
-    logEvent(data, info, sev, keys.length); // DIAGNOSTIC: grep `EMIG_event` in UI.log
+    // m is floored for a confirmed strike so it never collapses to a zero spike (see strikeFloored).
+    const m = strikeFloored(eventImpactFactor(info, data.location), keys.length > 0);
+    const w = disasterSpike(eventClass, m, sev); // the spike actually landed, for the diagnostic
+    logEvent(data, info, sev, keys.length, { m, w }); // DIAGNOSTIC: grep `EMIG_event` in UI.log
     // m drives the impact-scaled spike; sev is passed only for the legacy fail-safe path.
-    recordDisaster(info?.EventClass, m, keys, data.eventType, sev); // type → per-city cause attribution
+    recordDisaster(eventClass, m, keys, data.eventType, sev); // type → per-city cause attribution
     // Record a refugees-chart MARKER whenever the disaster actually struck cities (so it drove
     // displacement), independent of the toast threshold, otherwise sub-`disasterNotifyMinSeverity`
     // disasters drive the sim but never annotate the chart, which is why none were appearing.
@@ -319,11 +337,13 @@ function shouldPopDisaster(mode, struck) {
  * @param {*} info The GameInfo RandomEvents row.
  * @param {number} sev The event severity.
  * @param {number} nKeys The number of affected cities matched.
+ * @param {{m:number, w:number}} [impact] The floored impact factor and the spike that actually landed.
  */
-function logEvent(data, info, sev, nKeys) {
+function logEvent(data, info, sev, nKeys, impact) {
   const loc = data.location ? (data.location.x + "," + data.location.y) : "none";
+  const spike = impact ? " m=" + impact.m.toFixed(2) + " spike=" + (impact.w || 0).toFixed(1) : "";
   dlog("event type=" + data.eventType + " class=" + (info && info.EventClass) + " sev=" + sev
-    + " loc=" + loc + " affectedCities=" + nKeys);
+    + " loc=" + loc + " affectedCities=" + nKeys + spike);
 }
 
 /** Subscribe the disaster event hook. Safe to call once at boot. */
