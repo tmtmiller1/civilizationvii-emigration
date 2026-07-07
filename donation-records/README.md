@@ -9,3 +9,4 @@ would reject it as a second safeguard).
 
 - `Gmail - Doctors Without Borders donation (redacted).pdf` — $50 to Doctors Without Borders / Médecins Sans Frontières (MSF)
 - `IRC donation - $25 (redacted).png` — $25 to the International Rescue Committee (Venezuela earthquake response)
+- `irap-donation-receipt-anonymized.pdf` — $100 to the International Refugee Assistance Project (IRAP)
