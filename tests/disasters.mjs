@@ -199,6 +199,26 @@ function testFlagsOffIsLegacy() {
   setImpactDefaults();
 }
 
+// (7) Strike-floor calibration: a CONFIRMED-but-unmeasurable strike (m floored to disasterStrikeFloor)
+// must still bite hard enough to matter. A volcano at the floor clears disasterFleeThreshold (so a
+// struck city actually sheds refugees instead of silently doing nothing — the bug this fixes), while a
+// thunderstorm at the same floor stays BELOW it (a minor event correctly registers only as ambient
+// distress). Guards the gamma × CLASS_WEIGHT × floor calibration the fix depends on.
+function testStrikeFloorClearsFleeThreshold() {
+  setImpactDefaults();
+  const floor = CONFIG.disasterStrikeFloor;
+  const volcano = disasterSpike("CLASS_VOLCANO", floor);
+  const storm = disasterSpike("CLASS_THUNDERSTORM", floor);
+  assert.ok(
+    volcano >= CONFIG.disasterFleeThreshold,
+    `a floored volcano strike (${volcano.toFixed(2)}) must clear the flee threshold (${CONFIG.disasterFleeThreshold})`
+  );
+  assert.ok(
+    storm < CONFIG.disasterFleeThreshold,
+    `a floored thunderstorm (${storm.toFixed(2)}) must stay below the flee threshold (ambient only)`
+  );
+}
+
 function testPersistWritesSchemaEnvelope() {
   const persisted = JSON.parse(KV["EmigrationDisaster_v1"]);
   assert.equal(persisted.v, 2, "disaster state should persist as schema envelope");
@@ -216,6 +236,7 @@ testTypeCeiling();
 testSpeedInvarianceOfTotalBite();
 testAccumCapAndRecovery();
 testFlagsOffIsLegacy();
+testStrikeFloorClearsFleeThreshold();
 testPersistWritesSchemaEnvelope();
 
 CONFIG.disastersEnabled = false; // restore default
