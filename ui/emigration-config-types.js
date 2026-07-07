@@ -210,6 +210,7 @@
  * @property {number} plagueCarryDistress Distress seeded at the destination per carrier.
  * @property {boolean} disasterImpactScalingEnabled Spike = type-ceiling × shape(measured impact); off ⇒ legacy.
  * @property {number} disasterImpactGamma Concavity of shape(m)=m^gamma (1.0 linear, <1 lifts small impacts).
+ * @property {number} disasterStrikeFloor Floor on m for a confirmed-but-unmeasurable city strike (0 ⇒ legacy).
  * @property {boolean} disasterSpeedShockEnabled Divide the disaster spike by S (speed-invariant total bite).
  * @property {number} disasterAccumCap Hard ceiling on a city's accumulated disaster distress.
  * @property {boolean} disasterStackFalloff Diminishing-returns stacking of repeated disaster spikes.
