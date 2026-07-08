@@ -42,7 +42,7 @@ const ls = (() => {
 })();
 globalThis.localStorage = ls;
 
-const { setNumberMode, NumberMode } = await import("/emigration/ui/emigration-settings.js");
+const { setNumberMode, NumberMode, getTunable, setTunable } = await import("/emigration/ui/emigration-settings.js");
 
 // ── 1. Normal write preserves the sibling slice and records ours. ─────────────────────────────────
 ls.raw = JSON.stringify({ [SIB]: { enabled: true, magic: 42 }, emigration: {} });
@@ -70,5 +70,40 @@ setNumberMode(NumberMode.CIV);
 blob = JSON.parse(ls.raw);
 assert.equal(blob.emigration.numberMode, NumberMode.CIV, "first-run persistence must still work");
 
+// ── 5. GameConfiguration mirror: an in-game write persists durably even when Coherent wipes the shared
+//      localStorage between isolates - the "Advanced Options don't stick" bug. ──────────────────────
+const KV = {};
+globalThis.Configuration = {
+  getGame: () => ({ gameSeed: 777, getValue: (k) => (k in KV ? KV[k] : null) }),
+  editGame: () => ({ setValue: (k, v) => (KV[k] = String(v)) })
+};
+
+// An in-game write mirrors to GameConfiguration AND localStorage.
+ls.raw = JSON.stringify({ emigration: {} });
+setTunable("emigrationBar", 21);
+assert.equal(typeof KV.ModOptions_emigration, "string", "an in-game write must mirror to GameConfiguration");
+assert.equal(JSON.parse(KV.ModOptions_emigration).t_emigrationBar, 21, "the GC mirror holds the value");
+assert.equal(JSON.parse(ls.raw).emigration.t_emigrationBar, 21, "localStorage is still written in-game");
+
+// GameConfiguration is PREFERRED on read: a stale / divergent localStorage value must not win.
+ls.raw = JSON.stringify({ emigration: { t_emigrationBar: 99 } });
+assert.equal(getTunable("emigrationBar"), 21, "the GC value wins over a divergent localStorage value");
+
+// The wipe that caused the bug: localStorage cleared between isolates, GC still serves the value.
+ls.clear();
+assert.equal(getTunable("emigrationBar"), 21, "the value survives a wiped localStorage via GameConfiguration");
+
+// ── 6. A corrupt shared blob no longer loses an in-game write: localStorage refuses, GC still persists.
+ls.raw = "{ not valid json";
+setTunable("emigrationBar", 33);
+assert.equal(ls.raw, "{ not valid json", "the unparseable shared blob is left untouched");
+assert.equal(JSON.parse(KV.ModOptions_emigration).t_emigrationBar, 33, "GC persists even when localStorage refuses");
+assert.equal(getTunable("emigrationBar"), 33, "the in-game write reads back from GC");
+
+// ── 7. Shell fallback: with no game (no Configuration), reads use localStorage alone. ───────────────
+delete globalThis.Configuration;
+ls.raw = JSON.stringify({ emigration: { t_emigrationBar: 44 } });
+assert.equal(getTunable("emigrationBar"), 44, "shell reads fall back to localStorage");
+
 delete globalThis.localStorage;
-console.log("settings-clobber harness passed (sibling slices preserved across flaky / unparseable / empty reads)");
+console.log("settings-clobber harness passed (sibling slices preserved; GameConfiguration mirror survives localStorage wipe / corruption; shell falls back to localStorage)");
