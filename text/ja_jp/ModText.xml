@@ -213,6 +213,8 @@
         <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="ja_JP"><Text>(帝国外への移動)</Text></Replace>
         <Replace Tag="LOC_EMIG_DEST_CLAUSE" Language="ja_JP"><Text>{1_Dest}へ向かいました。</Text></Replace>
         <Replace Tag="LOC_EMIG_WHY_CLAUSE" Language="ja_JP"><Text>移住先の理由：{1_Why}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_INBOUND_HEADLINE" Language="ja_JP"><Text>{1_People} settled in {2_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_INBOUND_FROM" Language="ja_JP"><Text>Newcomers drawn from {1_Civ}.</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_RICHER" Language="ja_JP"><Text>より豊か</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_NEARBY" Language="ja_JP"><Text>近い</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_SAFER_DIR" Language="ja_JP"><Text>戦火から離れて</Text></Replace>

@@ -213,6 +213,8 @@
         <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="es_ES"><Text>(Movimiento externo)</Text></Replace>
         <Replace Tag="LOC_EMIG_DEST_CLAUSE" Language="es_ES"><Text>Con destino a {1_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_WHY_CLAUSE" Language="es_ES"><Text>Atraídos allí: {1_Why}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_INBOUND_HEADLINE" Language="es_ES"><Text>{1_People} settled in {2_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_INBOUND_FROM" Language="es_ES"><Text>Newcomers drawn from {1_Civ}.</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_RICHER" Language="es_ES"><Text>más próspera</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_NEARBY" Language="es_ES"><Text>cercana</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_SAFER_DIR" Language="es_ES"><Text>lejos de los combates</Text></Replace>

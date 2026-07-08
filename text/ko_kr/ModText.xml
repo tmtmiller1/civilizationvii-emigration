@@ -213,6 +213,8 @@
         <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="ko_KR"><Text>(제국 외 이동)</Text></Replace>
         <Replace Tag="LOC_EMIG_DEST_CLAUSE" Language="ko_KR"><Text>{1_Dest}(으)로 향했습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_WHY_CLAUSE" Language="ko_KR"><Text>이주 이유: {1_Why}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_INBOUND_HEADLINE" Language="ko_KR"><Text>{1_People} settled in {2_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_INBOUND_FROM" Language="ko_KR"><Text>Newcomers drawn from {1_Civ}.</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_RICHER" Language="ko_KR"><Text>더 번영함</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_NEARBY" Language="ko_KR"><Text>가까움</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_SAFER_DIR" Language="ko_KR"><Text>전투에서 멀리</Text></Replace>

@@ -464,6 +464,10 @@ export const CONFIG = {
   notifyToasts: true,
   notifyFloating: true,
   notifyWorldNews: true,
+  inboundNotifyPoints: 2, // min population points arriving in one settlement (per cause+origin) this pass
+  // to surface an INBOUND immigration notification, so a steady 1-point trickle stays quiet but a wave
+  // reads as "important" news for a prosperous, receiving empire. The shared toast cooldown throttles
+  // it further; the value is per-pass points, not cumulative. 0 → surface any inbound (>=1).
   worldRefugeeThreshold: 40000, // cumulative scaled people per civ → a refugee-crisis alert
   disasterNotifyMinSeverity: 2, // min disaster magnitude to TOAST (1=gentle … 2=catastrophic … 4=Thera-tier;
   // impact-derived, see emigration-events.eventSeverity). Markers/distress still record below this.
