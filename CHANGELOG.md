@@ -7,6 +7,29 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [2.0.4] - 2026-07-08
+
+This release fixes mod options — presets, display toggles, and every Advanced
+tunable — silently reverting to their defaults when you reopened the Options
+screen mid-game.
+
+### Fixed
+- **Options (including the Advanced editor) no longer reset to their defaults
+  when you reopen the screen.** Changes made in-game — a preset, a display
+  toggle, or any of the Advanced tunables — could revert to default the next time
+  the Options screen was opened. The settings were persisted only in the shared
+  `modSettings` localStorage, which Coherent's in-game UI can wipe between UIScript
+  isolates: the reopened screen re-read an empty store and every value fell back to
+  its default. Options are now **dual-backed** — mirrored, in-game, into the same
+  durable, save-persistent `GameConfiguration` store the rest of the mod already
+  uses for its state, and read back from there first — so a mid-game change sticks
+  across the screen being reopened and across a save/reload. The shared
+  localStorage remains the main-menu / cross-game fallback, and an in-game save now
+  lands durably even when another mod has left the shared blob unparseable (which
+  previously made the mod silently refuse to save). The in-game store is per-save;
+  the mod's cache-reset convention was extended to the settings caches so a
+  different save loaded in a live isolate can't read a prior game's values.
+
 ## [2.0.3] - 2026-07-07
 
 This release fixes migration notifications mislabeling where people went. The

@@ -8,8 +8,19 @@
 
 import { CONFIG, CONFIG_DEFAULTS } from "/emigration/ui/emigration-config.js";
 import { TUNABLES, PRESETS, PRESET_NAMES } from "/emigration/ui/emigration-tunables.js";
+import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
-// Cascade-safe per-mod / per-option settings store (single shared "modSettings" localStorage key).
+// Cascade-safe per-mod / per-option settings store, dual-backed for reliability:
+//   • localStorage "modSettings" (single shared, multi-tenant key) is the SHELL / main-menu / global
+//     store. It works before any game exists and carries a preference into new games. But Coherent's
+//     in-game UI can WIPE the shared localStorage between UIScript isolates, so a reopened Options
+//     screen re-reads an empty store and every value falls back to its default - the reported
+//     "Advanced Options don't stick" bug.
+//   • GameConfiguration (Configuration.editGame().setValue) is the durable, save-persistent, per-save
+//     store the rest of the mod already uses for its state (emigration-notifications.js, -dividend.js,
+//     -migration-stats.js, …). It survives isolate wipes AND save/reload. In-game we MIRROR every
+//     write here and PREFER it on read, so options set mid-game persist across the Options screen being
+//     reopened. In the shell (no game) there is no GameConfiguration, so localStorage is used alone.
 // Inlined here (rather than imported from a standalone mod-options.js) on purpose: GameFace's module
 // linker does not expose the exports of a UIScript that has no `import` statements - it treats such a
 // file as a classic script, so `import { ModOptions } from ".../mod-options.js"` failed with "does
@@ -51,31 +62,99 @@ class ModOptionsStore {
   }
 
   /**
-   * Persist a value, only ever adding/updating our OWN slice and never dropping a sibling's.
+   * The per-mod GameConfiguration key holding that mod's whole option object (JSON string).
+   * @param {string} modID Owning mod id. @returns {string} The key.
+   */
+  _gcKey(modID) {
+    return "ModOptions_" + modID;
+  }
+
+  /** The read-only GameConfiguration handle, or null in the shell (no game) / off-engine. Never throws. */
+  _gameRead() {
+    try {
+      const g = typeof Configuration !== "undefined" ? Configuration.getGame?.() : null;
+      return g && typeof g.getValue === "function" ? g : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /**
+   * The mod's option object as stored in GameConfiguration, or null when there is no game (shell /
+   * off-engine), nothing is stored yet, or the value is unusable. Read-only; never throws.
+   * @param {string} modID Owning mod id. @returns {Record<string, *>|null}
+   */
+  _gcLoadAll(modID) {
+    const g = this._gameRead();
+    if (!g) return null;
+    try {
+      const raw = g.getValue(this._gcKey(modID));
+      const o = typeof raw === "string" && raw.length ? JSON.parse(raw) : null;
+      return o && typeof o === "object" && !Array.isArray(o) ? o : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /**
+   * Mirror one option into GameConfiguration (in-game only). No-op in the shell / off-engine. Merges
+   * into the mod's existing object so sibling options are preserved. Independent of the localStorage
+   * write, so an in-game save still lands durably even when the shared blob refused a localStorage write.
    * @param {string} modID Owning mod id. @param {string} optionID Option id. @param {*} value Value.
    */
-  save(modID, optionID, value) {
+  _gcSave(modID, optionID, value) {
+    let edit = null;
     try {
-      const { root, safe } = this._readForWrite();
-      if (!safe) return; // current shared value can't be round-tripped, keep siblings intact
-      (root[modID] ??= {})[optionID] = value;
-      localStorage.setItem("modSettings", JSON.stringify(root));
+      edit = typeof Configuration !== "undefined" && typeof Configuration.editGame === "function" ? Configuration.editGame() : null;
+    } catch (_) {
+      return;
+    }
+    if (!edit || typeof edit.setValue !== "function") return;
+    const all = this._gcLoadAll(modID) || {};
+    all[optionID] = value;
+    try {
+      edit.setValue(this._gcKey(modID), JSON.stringify(all));
     } catch (_) {
       /* ignore */
     }
   }
 
   /**
-   * Read a value.
+   * Persist a value, only ever adding/updating our OWN slice and never dropping a sibling's. Writes to
+   * BOTH backends: the shared localStorage blob (shell / global) and, in-game, the durable per-save
+   * GameConfiguration mirror. The GC mirror runs even when the localStorage write is refused (an
+   * unparseable sibling blob) or throws, so an in-game save always lands somewhere reliable.
+   * @param {string} modID Owning mod id. @param {string} optionID Option id. @param {*} value Value.
+   */
+  save(modID, optionID, value) {
+    try {
+      const { root, safe } = this._readForWrite();
+      if (safe) {
+        // current shared value can't be round-tripped -> keep siblings intact, skip only localStorage
+        (root[modID] ??= {})[optionID] = value;
+        localStorage.setItem("modSettings", JSON.stringify(root));
+      }
+    } catch (_) {
+      /* ignore */
+    }
+    this._gcSave(modID, optionID, value);
+  }
+
+  /**
+   * Read a value. PREFERS the durable GameConfiguration store when a game is present (so a mid-game
+   * change survives the Options screen being reopened in a fresh isolate); falls back to the shared
+   * localStorage blob for the shell and for any option not yet written in-game.
    * @param {string} modID Owning mod id. @param {string} optionID Option id.
    * @returns {*} The stored value, or null if absent.
    */
   load(modID, optionID) {
+    const all = this._gcLoadAll(modID);
+    if (all && Object.prototype.hasOwnProperty.call(all, optionID)) return all[optionID];
     try {
       const raw = localStorage.getItem("modSettings");
       if (!raw) return null;
-      const all = JSON.parse(raw);
-      return all?.[modID]?.[optionID] ?? null;
+      const parsed = JSON.parse(raw);
+      return parsed?.[modID]?.[optionID] ?? null;
     } catch (_) {
       return null;
     }
@@ -120,6 +199,7 @@ let _mode = null;
  * @returns {number} A NumberMode value (CIV or HISTORICAL).
  */
 export function getNumberMode() {
+  resetCachesOnNewGame();
   if (_mode == null) {
     const v = ModOptions.load(MOD_ID, OPT_NUMBER_MODE);
     _mode = v === NumberMode.CIV ? NumberMode.CIV : NumberMode.HISTORICAL;
@@ -148,6 +228,7 @@ let _flowView = null;
  * @returns {string} "network" or "flowmap".
  */
 export function getFlowView() {
+  resetCachesOnNewGame();
   if (_flowView == null) _flowView = ModOptions.load(MOD_ID, OPT_FLOW_VIEW) === "flowmap" ? "flowmap" : "network";
   return _flowView;
 }
@@ -169,6 +250,7 @@ let _sample = null;
  * @returns {boolean} True when sample mode is on.
  */
 export function getSampleData() {
+  resetCachesOnNewGame();
   if (_sample == null) _sample = ModOptions.load(MOD_ID, OPT_SAMPLE) === 1;
   return _sample;
 }
@@ -202,6 +284,7 @@ function clampSnap(n) {
  * @returns {number} Interval in [1,5].
  */
 export function getSnapshotInterval() {
+  resetCachesOnNewGame();
   if (_snap == null) _snap = clampSnap(ModOptions.load(MOD_ID, OPT_SNAP));
   return _snap;
 }
@@ -229,6 +312,7 @@ let _minimize = null;
  * @returns {boolean} True when analytics tabs are hidden.
  */
 export function getMinimizeAnalytics() {
+  resetCachesOnNewGame();
   if (_minimize == null) {
     const v = ModOptions.load(MOD_ID, OPT_MINIMIZE);
     _minimize = v == null ? false : v === 1; // default OFF; persisted as 1/0
@@ -252,6 +336,7 @@ export function setMinimizeAnalytics(on) {
  * @returns {boolean} True when the dock button should be shown.
  */
 export function getShowDockButton() {
+  resetCachesOnNewGame();
   if (_dock == null) {
     const v = ModOptions.load(MOD_ID, OPT_DOCK);
     _dock = v == null ? true : v === 1; // default ON; persisted as 1/0
@@ -277,6 +362,7 @@ let _dilemma = null;
  * @returns {boolean} True when refugee dilemmas may appear.
  */
 export function getDilemmasEnabled() {
+  resetCachesOnNewGame();
   if (_dilemma == null) {
     const v = ModOptions.load(MOD_ID, OPT_DILEMMA);
     _dilemma = v == null ? true : v === 1; // default ON; persisted as 1/0
@@ -302,6 +388,7 @@ let _integration = null;
  * @returns {boolean} True when integration runs.
  */
 export function getIntegrationEnabled() {
+  resetCachesOnNewGame();
   if (_integration == null) {
     const v = ModOptions.load(MOD_ID, OPT_INTEGRATION);
     _integration = v == null ? CONFIG.integrationEnabled !== false : v === 1;
@@ -327,6 +414,7 @@ let _return = null;
  * @returns {boolean} True when return migration runs.
  */
 export function getReturnEnabled() {
+  resetCachesOnNewGame();
   if (_return == null) {
     const v = ModOptions.load(MOD_ID, OPT_RETURN);
     _return = v == null ? CONFIG.returnEnabled !== false : v === 1;
@@ -355,6 +443,7 @@ let _vis = null;
  * @returns {number} 0 (auto), 1 (hide unmet), or 2 (show all).
  */
 export function getVisibilityOverride() {
+  resetCachesOnNewGame();
   if (_vis == null) {
     const v = ModOptions.load(MOD_ID, OPT_VISIBILITY);
     _vis = v === 1 || v === 2 ? v : 0;
@@ -370,6 +459,24 @@ export function setVisibilityOverride(v) {
   _vis = v === 1 || v === 2 ? v : 0;
   ModOptions.save(MOD_ID, OPT_VISIBILITY, _vis);
 }
+
+// The lazy UI-preference caches above now read the per-save GameConfiguration store first (see
+// ModOptionsStore.load), so a NEW game started inside a still-live isolate must drop them - otherwise a
+// prior game's value could be returned for a save that set its own. Register with the shared cache-reset
+// hook; each getter above calls resetCachesOnNewGame() before its cache check. (The tunables below are
+// uncached - getTunable reads the store every call - so they are already correct per-save.)
+registerCacheReset(() => {
+  _mode = null;
+  _flowView = null;
+  _sample = null;
+  _snap = null;
+  _dock = null;
+  _minimize = null;
+  _dilemma = null;
+  _integration = null;
+  _return = null;
+  _vis = null;
+});
 
 // ── Tunables (exposed CONFIG knobs) ───────────────────────────────────────
 
