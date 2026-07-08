@@ -577,6 +577,24 @@ export function localDigestMessage(o) {
 }
 
 /**
+ * Compose the local player's per-pass INBOUND immigration digest: a "people settled in <city>"
+ * headline plus, for a known (met) origin, a "drawn from <civ>" clause. The mirror of
+ * {@link localDigestMessage} for people ARRIVING in the player's empire rather than leaving it, so a
+ * prosperous, receiving empire also gets news. Pure; the caller resolves + unmet-masks the inputs.
+ * @param {{cause?:string, people:string, city:string, fromCiv?:string}} o The resolved inputs. `people`
+ *   is the pre-formatted dual-count string; `fromCiv` is the (already unmet-masked) origin civ, omitted
+ *   when unknown.
+ * @returns {string} The composed message.
+ */
+export function inboundDigestMessage(o) {
+  let msg = loc("LOC_EMIG_INBOUND_HEADLINE", o.people, o.city) || `${o.people} settled in ${o.city}.`;
+  if (o.fromCiv) {
+    msg += " " + (loc("LOC_EMIG_INBOUND_FROM", o.fromCiv) || `Newcomers drawn from ${o.fromCiv}.`);
+  }
+  return msg;
+}
+
+/**
  * The trailing "why" clause for a digest: a death reads as a cause ("The cause: siege, no safe
  * refuge."); a move reads as a pull ("Drawn there: nearby, open borders."). Empty when no why.
  * @param {string|undefined} cause The migration cause.

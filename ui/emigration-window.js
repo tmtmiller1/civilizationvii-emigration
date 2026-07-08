@@ -631,24 +631,31 @@ function countsAsMet(pid, me, hasMet) {
 }
 
 /**
- * The number of major civs the local player has met (self included). Cheap: a player scan with a
- * diplomacy check, no city enumeration. Folded into the live memo key because meeting a civ is a
- * diplomacy event, NOT an emigration pass, so monoTurn() alone wouldn't refresh the dashboard when
- * you meet someone new, and a just-met civ would stay invisible until the next pass. Counting met
- * civs makes meeting one invalidate the memo immediately.
- * @returns {number} Count of met alive major civs (local included).
+ * A compact signature of WHICH alive major civs the local player has met (self included), as two
+ * 32-bit hex chunks over player slots 0-63. Cheap: a player scan with a diplomacy check, no city
+ * enumeration. Folded into the live memo key because meeting a civ is a diplomacy event, NOT an
+ * emigration pass, so monoTurn() alone wouldn't refresh the dashboard when the met-set changes, and a
+ * just-met civ would stay masked until the next pass. Keying on the SET (not just the count) also
+ * invalidates correctly in the rare same-pass case where one civ is met while a previously-met civ
+ * dies (a met-count would net unchanged and could serve one stale, still-masked render).
+ * @returns {string} Hex signature of the met-major set (local included).
  */
-function metMajorCount() {
-  let n = 0;
+function metMajorSig() {
+  let lo = 0;
+  let hi = 0;
   try {
     const me = GameContext.localPlayerID;
     const d = Players.get(me)?.Diplomacy;
     const hasMet = d && typeof d.hasMet === "function" ? (/** @type {number} */ id) => d.hasMet(id) : null;
-    for (let pid = 0; pid < 64; pid++) if (countsAsMet(pid, me, hasMet)) n++;
+    for (let pid = 0; pid < 64; pid++) {
+      if (!countsAsMet(pid, me, hasMet)) continue;
+      if (pid < 32) lo |= 1 << pid;
+      else hi |= 1 << (pid - 32);
+    }
   } catch (_) {
     /* ignore */
   }
-  return n;
+  return (hi >>> 0).toString(16) + "-" + (lo >>> 0).toString(16);
 }
 
 /**
@@ -663,7 +670,7 @@ function gatherKey() {
   // Include the effective visibility policy: the gathered model bakes in the civ masking (civHidden),
   // so changing the policy (e.g. the Unmet-civs toggle) must invalidate the memo or the dashboard
   // keeps showing the previously-masked data.
-  return "live:" + monoTurn() + ":m" + metMajorCount() + ":p" + effectivePolicy();
+  return "live:" + monoTurn() + ":m" + metMajorSig() + ":p" + effectivePolicy();
 }
 
 /**

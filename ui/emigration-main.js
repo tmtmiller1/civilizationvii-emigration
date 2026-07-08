@@ -31,7 +31,7 @@ import { tickRefugeeBurden } from "/emigration/ui/emigration-refugee-burden.js";
 import { raidOf } from "/emigration/ui/emigration-raid.js";
 import { recordWarDeclared, recordPeace } from "/emigration/ui/emigration-war.js";
 import { hasOpenBordersDeal } from "/emigration/ui/emigration-geography.js";
-import { reportPassFeedback, reportPressureCues } from "/emigration/ui/emigration-feedback.js";
+import { reportPassFeedback, reportInboundFeedback, reportPressureCues } from "/emigration/ui/emigration-feedback.js";
 import { installEmigrationEvents } from "/emigration/ui/emigration-events.js";
 import { installCityReadout } from "/emigration/ui/emigration-city-readout.js";
 import { installEmigrationConsole } from "/emigration/ui/emigration-screen.js";
@@ -246,7 +246,11 @@ function doPass(why) {
 function reportNewsworthy(migrations) {
   const newsworthy = migrations.filter(
     (m) => m.phase !== "arrive" && m.cause !== "conquest" && m.cause !== "return");
-  reportPassFeedback(newsworthy); // in-game toasts / world-news (§10)
+  reportPassFeedback(newsworthy); // in-game toasts / world-news (§10): own losses + world crises
+  // Inbound immigration is announced on the ARRIVAL (when the player's city actually gains people), so
+  // it needs the FULL pass (arrivals are filtered out of `newsworthy` above). Run AFTER the loss/crisis
+  // toasts so those claim the shared cooldown first when several things happen in one pass.
+  reportInboundFeedback(migrations);
   for (const m of newsworthy) reportMigration(m);
 }
 

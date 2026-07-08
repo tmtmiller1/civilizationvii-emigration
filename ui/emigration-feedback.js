@@ -27,6 +27,7 @@ import {
   actionHint,
   warRefugeeName,
   localDigestMessage,
+  inboundDigestMessage,
   pressureCueMessage,
   disasterName
 } from "/emigration/ui/emigration-naming.js";
@@ -159,8 +160,15 @@ function persistNews() {
 // (#8c7e62 bronze frame, #f0bc78 gold highlight, parchment #e8d8b4 text), plus a slide-in animation
 // and a fade-out. A LEFT ACCENT BAR + eyebrow colour is themed PER CAUSE (set inline, below) so a
 // glance tells war from disaster from prosperity.
+// z-index sits ABOVE the game's top HUD layers: root-game.html mounts #uinext-tooltips and
+// #uinext-dropdowns at z-index 10000 and #tooltip-root at 99, so the old z-index:99 let tooltips and
+// dropdowns paint OVER a top-center toast (a prime cause of "notifications never show"). 10001 clears
+// them. The font sizes are hard values (not the dashboard's --dg-fs-* custom properties): the toast
+// renders in the HUD document, where those dashboard-scoped vars are UNDEFINED, so a bare var() left the
+// text at an inherited size. Fallbacks keep the intended 0.72/0.95rem there while still honouring the
+// dashboard vars if ever present.
 const TOAST_CSS =
-  ".emig-toast{position:fixed;left:50%;transform:translateX(-50%);z-index:99;" +
+  ".emig-toast{position:fixed;left:50%;transform:translateX(-50%);z-index:10001;" +
   "min-width:15rem;max-width:38rem;padding:0.5rem 1.3rem 0.6rem;text-align:center;pointer-events:none;" +
   'font-family:"BodyFont","BodyFont-JP","BodyFont-KR","BodyFont-SC","BodyFont-TC";color:#e8d8b4;' +
   "background:linear-gradient(180deg,rgba(28,32,44,0.97) 0%,rgba(9,12,19,0.97) 100%);" +
@@ -169,8 +177,8 @@ const TOAST_CSS =
   "0 0.33rem 1rem rgba(0,0,0,0.7);opacity:1;transition:opacity 0.5s ease,top 0.25s ease;" +
   "animation:emig-toast-in 0.26s ease-out;}" +
   '.emig-toast-eye{font-family:"TitleFont","TitleFont-JP","TitleFont-KR","TitleFont-SC","TitleFont-TC";' +
-  "font-size:var(--dg-fs-72);letter-spacing:0.13em;text-transform:uppercase;margin-bottom:0.15rem;color:#f0bc78;}" +
-  ".emig-toast-msg{font-size:var(--dg-fs-95);line-height:1.32;}" +
+  "font-size:var(--dg-fs-72,0.72rem);letter-spacing:0.13em;text-transform:uppercase;margin-bottom:0.15rem;color:#f0bc78;}" +
+  ".emig-toast-msg{font-size:var(--dg-fs-95,0.95rem);line-height:1.32;}" +
   "@keyframes emig-toast-in{from{opacity:0;transform:translateX(-50%) translateY(-0.55rem);}" +
   "to{opacity:1;transform:translateX(-50%) translateY(0);}}";
 
@@ -299,7 +307,11 @@ function cooldownOk() {
   const turn = gameTurn();
   // speedTurns (×S): keep the REAL-TIME spacing of important toasts constant across speeds, else they
   // sat ~3× further apart on Marathon (event over before you're told) and spammed on Online.
-  if (typeof s.lastToastTurn === "number" && turn - s.lastToastTurn < speedTurns(CONFIG.notifyCooldownTurns)) {
+  // Guard on lastToastTurn > 0, not just "is a number": the empty state seeds it to 0, so the plain
+  // number check silently suppressed EVERY important toast for the first notifyCooldownTurns of a fresh
+  // game (turn - 0 < 6). 0 means "never toasted yet" → always allow the first one; the cooldown then
+  // applies normally once a real turn is stamped.
+  if (s.lastToastTurn > 0 && turn - s.lastToastTurn < speedTurns(CONFIG.notifyCooldownTurns)) {
     return false;
   }
   s.lastToastTurn = turn;
@@ -466,7 +478,33 @@ function crisisMilestone(pid, cum, pass) {
 export function reportPassFeedback(migrations) {
   if (CONFIG.notifyMode < 1 || !Array.isArray(migrations) || !migrations.length) return;
   if (CONFIG.notifyMode >= 2) toastPerCause(migrations);
+  // Priority order for the SHARED toast cooldown (one important toast per pass): the player's own
+  // losses first, then world crises (the player's own INBOUND gains are reported separately via
+  // reportInboundFeedback, which the caller runs last so losses/crises claim the HUD first). Each
+  // channel still LOGS every event; only the on-screen toast is throttled.
   localDigest(migrations); // the local player's own "why am I losing people?" explainer
+  reportWorldCrises(migrations); // per-civ refugee-crisis milestones (world news)
+}
+
+/**
+ * Report the local player's INBOUND immigration for the pass (people SETTLING in the player's cities).
+ * Kept separate from {@link reportPassFeedback} because it must see the ARRIVAL records - the loss side
+ * is announced at DEPARTURE and the caller filters arrivals out of reportPassFeedback's stream, but a
+ * gain is only real when the migrant ARRIVES, so this runs on the full, unfiltered pass. Call it AFTER
+ * reportPassFeedback so the more urgent loss/crisis toasts claim the shared cooldown first.
+ * @param {*[]} migrations The pass's FULL migrations (arrivals included).
+ */
+export function reportInboundFeedback(migrations) {
+  if (CONFIG.notifyMode < 1 || !Array.isArray(migrations) || !migrations.length) return;
+  inboundDigest(migrations); // the local player's own "who is moving IN?" explainer (immigration)
+}
+
+/**
+ * Fire per-civ refugee-crisis milestones for the pass (the "world news" channel). No-op when world news
+ * is off or the shared data facade isn't available.
+ * @param {{cause?:string, srcOwner?:number, people?:number, points?:number}[]} migrations Applied migrations.
+ */
+function reportWorldCrises(migrations) {
   if (!CONFIG.notifyWorldNews) return;
   const data = /** @type {*} */ (globalThis).EmigrationData;
   if (!data || typeof data.refugeesCumFor !== "function") return;
@@ -661,6 +699,108 @@ function localDigest(migs) {
   for (const ev of events) logEvent(ev, eventMessage(ev));
   const lead = events[0];
   announceImportant(eventMessage(lead), lead.cause, true); // the local player's own loss → red
+}
+
+/**
+ * Fold one INBOUND (immigration) record into its per-destination bucket, keyed by destination
+ * settlement + cause + origin civ. Counts only CROSS-CIV arrivals credited to the local player (people
+ * settling in the player's empire from another civ); internal relocations and the player's own
+ * departures are excluded. Arrival records carry `destOwner` (the player) + `originCiv` (the true source
+ * civ) but NOT the tally-driving `srcOwner`, so origin is read from `originCiv`.
+ * @param {Map<string,*>} map Bucket map. @param {*} m A migration. @param {number} me Local player id.
+ */
+function foldInbound(map, m, me) {
+  const ppl = m.people || 0;
+  if (m.destOwner !== me || !m.crossCiv || ppl <= 0) return;
+  const ev = inboundBucket(map, m);
+  ev.people += ppl;
+  ev.points += m.points || 0;
+}
+
+/**
+ * Get (or create) the per-event inbound bucket, keyed by destination settlement + cause + origin civ.
+ * @param {Map<string,*>} map Bucket map. @param {*} m An inbound migration. @returns {*} The bucket.
+ */
+function inboundBucket(map, m) {
+  const cause = m.cause || "other";
+  const origin = typeof m.originCiv === "number" ? m.originCiv : undefined;
+  const key = (m.destName || "?") + "|" + cause + "|" + (origin != null ? origin : "?");
+  let ev = map.get(key);
+  if (!ev) {
+    ev = { cause, destName: m.destName, originCiv: origin, people: 0, points: 0 };
+    map.set(key, ev);
+  }
+  return ev;
+}
+
+/**
+ * Group the local player's INBOUND immigration this pass into distinct events (one per destination
+ * settlement + cause + origin), largest first.
+ * @param {*[]} migs Applied migrations. @param {number} me Local player id.
+ * @returns {*[]} Per-event buckets (people-desc).
+ */
+function groupInboundEvents(migs, me) {
+  /** @type {Map<string,*>} */
+  const map = new Map();
+  for (const m of migs) foldInbound(map, m, me);
+  return [...map.values()].sort((a, b) => b.people - a.people);
+}
+
+/**
+ * The origin as shown to the player, with the analytics-visibility mask applied: a cross-civ arrival
+ * from a policy-hidden (unmet) civ is anonymized to "an unmet civilization" so a notification never
+ * leaks an unmet civ (mirrors {@link destView}). Unknown origin → no clause.
+ * @param {*} ev An inbound event bucket.
+ * @returns {{fromCiv?:string}} The masked origin label.
+ */
+function inboundOriginView(ev) {
+  if (typeof ev.originCiv !== "number") return {};
+  if (civHidden(ev.originCiv)) return { fromCiv: UNMET_CIV_LABEL };
+  return { fromCiv: civAdjective(ev.originCiv) };
+}
+
+/**
+ * Compose one inbound event's message ("N settled in <city>, drawn from <origin>").
+ * @param {*} ev An inbound event bucket. @returns {string} The message.
+ */
+function inboundMessage(ev) {
+  const ov = inboundOriginView(ev);
+  return inboundDigestMessage({
+    cause: ev.cause, people: formatBothExact(ev.people, ev.points),
+    city: ev.destName || "a settlement", fromCiv: ov.fromCiv
+  });
+}
+
+/**
+ * Record one inbound event to the notification log: its cause, dual-system count, and origin →
+ * destination. `ownLoss:false` (a GAIN to the player's empire → neutral, not red).
+ * @param {*} ev An inbound event bucket. @param {string} msg The composed message (the row summary).
+ */
+function logInbound(ev, msg) {
+  const ov = inboundOriginView(ev);
+  logNotification({
+    kind: "digest", cause: ev.cause, summary: msg, people: ev.people, points: ev.points,
+    fromCiv: ov.fromCiv, toCity: ev.destName, crossCiv: true, ownLoss: false
+  });
+}
+
+/**
+ * Explain the local player's INBOUND immigration this pass: cross-civ newcomers settling in the
+ * player's cities. Each event over the `inboundNotifyPoints` floor is logged, and the largest is toasted
+ * (subject to the shared cooldown), so a prosperous, peaceful empire that is RECEIVING migrants also
+ * gets "important" news, not only one that is losing people. A steady 1-point trickle (below the floor)
+ * stays quiet. No-op without a qualifying inbound wave.
+ * @param {*[]} migs Applied migrations.
+ */
+function inboundDigest(migs) {
+  const me = localPlayerId();
+  if (me == null) return;
+  const floor = CONFIG.inboundNotifyPoints > 0 ? CONFIG.inboundNotifyPoints : 1;
+  const events = groupInboundEvents(migs, me).filter((ev) => ev.points >= floor);
+  if (!events.length) return;
+  for (const ev of events) logInbound(ev, inboundMessage(ev));
+  const lead = events[0];
+  announceImportant(inboundMessage(lead), lead.cause, false); // a gain → neutral accent
 }
 
 // P0.3 per-source cue cooldown (session-only; a reload resetting a low-key cue is harmless).
