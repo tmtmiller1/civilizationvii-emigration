@@ -1488,3 +1488,38 @@ clamp; off flag → byte-identical to the current civ-scoped behavior (character
 **Revisit when** the split has had its in-game shakedown and city-granular braking is actually wanted.
 **Risk.** Gameplay/balance + a persisted-state migration — ship off by default, validate with the
 balance scripts, and document.
+
+### 17.3 Feature AC — Emigration of urban population *(higher — gameplay; unspecced, probe-gated)*
+
+**Goal.** Extend the migration model beyond rural population so a city's **urban** population can also
+leave under sufficient pressure — a besieged/collapsing city today only ever bleeds its rural workers,
+so the urban core is effectively immortal to migration.
+
+**Current state.** The mod's **only** population write is `city.addRuralPopulation(±1)`, wrapped by
+`moveRural` / `removeRural` / `addRural`
+([emigration-population.js:487-533](../ui/emigration-population.js#L487-L533)). By design it "only ever
+removes rural population, so the urban core and the settlement itself survive until an actual capture"
+(README §Outlet). This feature would relax that deliberate floor for the crisis track only.
+
+**Open questions (resolve before design).**
+1. **Is there an engine lever at all?** Verify whether a symmetric `city.addUrbanPopulation(±1)` (or
+   equivalent) exists and is callable/writable from the UI VM, cross-civ, the way `addRuralPopulation`
+   is — **probe first** (extend `devtools/migration-probe.js`); if there is no such write, the feature is
+   dead on arrival and should be recorded in [wont-fix-with-justifications.md](wont-fix-with-justifications.md).
+2. **What does losing an urban point do to the district/building on that tile?** Rural removal leaves the
+   improvement intact and merely unworked; the urban analogue (specialists, buildings) is unknown and must
+   be observed in-game, not assumed.
+3. **Should urban emigration ever be voluntary, or crisis-only?** Likely crisis-only — voluntary urban
+   flight would trivialize city collapse. Gate under the existing crisis track, not the voluntary one.
+
+**Implementation (sketch, pending Q1).** Add urban-aware wrappers alongside the rural ones and route them
+only from the crisis/outlet path once rural population is exhausted (urban is the *last* to leave, never
+the first). Reuse the deterministic pressure math and the transit queue; do **not** add a second RNG.
+
+**Config / tunables.** New flag, **off by default** (`urbanEmigrationEnabled: false`) — it changes the
+core invariant that cities survive migration. **Tests.** Characterization test proving off → byte-identical
+to today; a rural-exhausted-then-urban ordering test.
+
+**Revisit when** the Q1 probe confirms an urban-population write is reachable. **Risk.** High — touches
+the mod's central "cities don't die from migration" invariant and depends on an unverified engine API;
+must be probe-gated and shipped off by default.

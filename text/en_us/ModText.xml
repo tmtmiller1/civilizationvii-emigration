@@ -254,6 +254,9 @@
 
         <!-- P0.1 per-move "why here" reason tags (short phrases; joined for the readout + notifications) -->
         <Row Tag="LOC_EMIG_WHY_CLAUSE"><Text>Drawn there: {1_Why}.</Text></Row>
+        <!-- Inbound (immigration) digest: people settling in the local player's cities -->
+        <Row Tag="LOC_EMIG_INBOUND_HEADLINE"><Text>{1_People} settled in {2_City}.</Text></Row>
+        <Row Tag="LOC_EMIG_INBOUND_FROM"><Text>Newcomers drawn from {1_Civ}.</Text></Row>
         <Row Tag="LOC_EMIG_REASON_RICHER"><Text>more prosperous</Text></Row>
         <Row Tag="LOC_EMIG_REASON_NEARBY"><Text>nearby</Text></Row>
         <Row Tag="LOC_EMIG_REASON_SAFER_DIR"><Text>away from the fighting</Text></Row>

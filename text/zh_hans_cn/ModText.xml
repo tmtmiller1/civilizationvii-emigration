@@ -213,6 +213,8 @@
         <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="zh_Hans_CN"><Text>(外部迁移)</Text></Replace>
         <Replace Tag="LOC_EMIG_DEST_CLAUSE" Language="zh_Hans_CN"><Text>前往{1_Dest}。</Text></Replace>
         <Replace Tag="LOC_EMIG_WHY_CLAUSE" Language="zh_Hans_CN"><Text>迁往此处的原因：{1_Why}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_INBOUND_HEADLINE" Language="zh_Hans_CN"><Text>{1_People} settled in {2_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_INBOUND_FROM" Language="zh_Hans_CN"><Text>Newcomers drawn from {1_Civ}.</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_RICHER" Language="zh_Hans_CN"><Text>更繁荣</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_NEARBY" Language="zh_Hans_CN"><Text>邻近</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_SAFER_DIR" Language="zh_Hans_CN"><Text>远离战火</Text></Replace>

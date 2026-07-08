@@ -213,6 +213,8 @@
         <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="ru_RU"><Text>(Внешнее перемещение)</Text></Replace>
         <Replace Tag="LOC_EMIG_DEST_CLAUSE" Language="ru_RU"><Text>Направляются в {1_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_WHY_CLAUSE" Language="ru_RU"><Text>Их влечёт туда: {1_Why}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_INBOUND_HEADLINE" Language="ru_RU"><Text>{1_People} settled in {2_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_INBOUND_FROM" Language="ru_RU"><Text>Newcomers drawn from {1_Civ}.</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_RICHER" Language="ru_RU"><Text>более процветающий</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_NEARBY" Language="ru_RU"><Text>поблизости</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_SAFER_DIR" Language="ru_RU"><Text>прочь от боёв</Text></Replace>

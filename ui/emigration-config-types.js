@@ -188,6 +188,8 @@
  * @property {boolean} notifyToasts Show transient toast lines.
  * @property {boolean} notifyFloating Show on-map floating migration indicators.
  * @property {boolean} notifyWorldNews Announce major world refugee events.
+ * @property {number} inboundNotifyPoints Min population points arriving in one settlement this pass to
+ *   surface an inbound immigration notification (0 → any inbound).
  * @property {number} worldRefugeeThreshold Per-civ cumulative people for a crisis alert.
  * @property {number} disasterNotifyMinSeverity Min disaster severity to notify (0–3).
  * @property {number} disasterNotifyMode Disaster popup scope: 0 off (log only), 1 migration-affecting
