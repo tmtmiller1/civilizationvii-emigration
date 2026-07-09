@@ -101,158 +101,142 @@ yield/Influence changes are real gameplay writes (§12).
 
 ## 1. What it does (player-facing)
 
-Each turn the mod scores every city it can see and moves population from the lowest-scoring settlements
-to the highest:
+Each turn the mod scores every visible city and moves population from the lowest-scoring settlements to
+the highest:
 
-- **Peacetime.** Happiness is the largest factor, so an unhappy or low-yield city loses population to
-  happier, wealthier ones. No war required.
-- **War refugees.** A city taking district damage or with pillaging in its borders sheds population
-  fast, and refugees flee away from the nearest invader.
-- **Concurrent causes.** War, disaster, and economic pressure are evaluated independently and at the
-  same time (§2), so a besieged but still-attractive city can shed war refugees and economic migrants
-  in one turn. Each move has one cause; the concurrency is multiple moves.
-- **Cross-civilization.** People move between civs, not only between your own cities.
-- **Regional.** Migration is distance-penalized; people move to nearby better settlements, not across
-  the map.
+- **Peacetime.** Happiness is the largest factor; unhappy or low-yield cities lose people to happier,
+  wealthier ones. No war required.
+- **War refugees.** A city taking district damage or with pillaging in its borders sheds people fast,
+  fleeing away from the nearest invader.
+- **Concurrent causes.** War, disaster, and economic pressure are scored independently and at the same
+  time (§2), so one city can shed war refugees and economic migrants in the same turn. Each move has one
+  cause.
+- **Cross-civilization.** People move between civs, not only within your own.
+- **Regional.** Distance-penalized: people move to nearby better settlements, not across the map.
 - **Consequential.** Receiving migrants costs the destination happiness and gold while it integrates
-  them, so a magnet city converges rather than growing without limit. Holding unsettled migrant units
-  also costs.
-- **Speed-aware.** Pacing scales with game speed (§2), so the game-time rate of migration is the same
-  on Quick, Standard, or Marathon.
+  them, so magnets converge instead of growing without limit. Holding unsettled migrant units also costs.
+- **Speed-aware.** Pacing scales with game speed (§2); the game-time rate is the same on Quick, Standard,
+  or Marathon.
 
-All of it is reported in-game (toasts + Demographics graphs) and in the dev log, e.g.
+Reported in-game (toasts + Demographics graphs) and in the dev log, e.g.
 `EMIGRATION 1 population point (≈30,000 people) left Rome (Romans) for Carthage (Carthaginians)`.
 
 ### Quick reference: what counts
 
-Default settings (most are tunable or switchable, §10). The same matrix is on the dashboard's **Guide**
-tab.
+Default settings (most tunable, §10). Also on the dashboard's **Guide** tab.
 
-**What makes people leave a city**
+**What makes people leave**
 
 | | Counts? | |
 |---|:---:|---|
-| Unhappiness / low yields | ✓ | Main peacetime driver. Happiness is the biggest single factor; after 1.4.1 per-capita yields also carry weight, so a city that's both unhappy and low-yield empties fastest. 1.4.1 also suppresses unhappy cities' yields, which the score reads |
-| Empire-wide war weariness | ✓ | 1.4.1 war-weariness unhappiness adds a modest push to all of a civ's settlements, on top of per-city violence at the front |
-| War damage to districts | ✓ | Damage to any district (center or outer quarter) is read from game state (fog-independent) and scales the war penalty |
-| Being besieged or attacked | ✓ | Per-city: only the besieged city sheds people. Fires when any of its districts is besieged or overrun, before health drops. Unaffected cities are unaffected |
-| Attacked by a city-state / Independent Power | ✓ | Same per-city conflict pressure as a major-civ war; attacker-agnostic |
-| Pillaged tiles in the city's borders | ✓ | Pillaged improvements on the city's own plots count as in-border violence (polled, fog-independent) |
-| Starvation | ✓ | A city with negative net food is starving: most people flee to better-fed cities and some die (a death, not a migration) until food recovers |
-| Plague / disease | ✓ | An infected city loses people; migrants leaving it can carry plague to the destination |
-| Natural disasters (floods, volcanoes) | ✓ | Disaster distress adds a capped per-city penalty. A strike hits every city around its epicenter, so a volcano on unowned terrain still displaces neighbors |
-| Overcrowding in a tall city | ✓ | Urban population above a threshold adds pressure; per-leader tuning can soften it (overcrowding discount) |
+| Unhappiness / low yields | ✓ | Main peacetime driver; happiness weighs most, low per-capita yields add to it (1.4.1 also suppresses unhappy cities' yields) |
+| Empire-wide war weariness | ✓ | A modest empire-wide push, on top of per-city violence |
+| War damage to districts | ✓ | Read from game state (fog-independent); more damage, more push |
+| Being besieged or attacked | ✓ | Only the besieged city; fires when any of its districts is besieged or overrun |
+| Attacked by a city-state / Independent Power | ✓ | Same conflict pressure as a major-civ war |
+| Pillaged tiles in the city's borders | ✓ | Damaged improvements on the city's own plots (polled, fog-independent) |
+| Starvation | ✓ | Negative net food: most flee, some die, until food recovers |
+| Plague / disease | ✓ | An infected city loses people; migrants can carry plague onward |
+| Natural disasters (floods, volcanoes) | ✓ | A capped per-city penalty; a strike hits every city around its epicenter |
+| Overcrowding in a tall city | ✓ | Urban population over a threshold; softened by per-leader tuning |
 
-**What attracts people to a city**
+**What attracts**
 
 | | Attracts? | |
 |---|:---:|---|
-| Higher prosperity (food, production, gold, science, culture) | ✓ | Per-capita weighted yields; a higher score than nearby cities pulls migrants in |
-| Higher happiness | ✓ | Weighted most heavily. In the shaped model it's measured against the world average and saturates, so a happy city is a strong magnet but can't run away |
-| Pro-Immigration stance | ✓ | Raises inbound pull and earns Influence, trading some retention |
-| Open Borders agreement | ✓ | Adds a cross-civ pull bonus |
-| Being nearby | ✓ | Migration is distance-penalized |
+| Higher prosperity (food, production, gold, science, culture) | ✓ | Per-capita weighted yields above nearby cities |
+| Higher happiness | ✓ | Weighted most; in the shaped model it saturates, so no runaway magnet |
+| Pro-Immigration stance | ✓ | Raises inbound pull, earns Influence |
+| Open Borders agreement | ✓ | Cross-civ pull bonus |
+| Being nearby | ✓ | Distance-penalized |
 
-**Who participates (sends / receives population)**
+**Who participates**
 
 | | Participates? | |
 |---|:---:|---|
 | Your civilization | ✓ | Sends and receives like any major civ |
-| Towns, not just cities | ✓ | Same as cities |
-| Your own cities trade people (internal migration) | ✓ | People move between a civ's own settlements; the dashboard colours internal moves separately |
-| Other major civilizations | ✓ | Every major civ is simulated from turn one, met or not, so the map isn't biased by exploration |
-| City-states / minor civs / Independent Powers | ✗ | Neither send nor receive; attacking a major civ's city still drives that city's people out |
-| Unmet civilizations | ✓ | Simulated, but masked in the UI by default until you widen the visibility policy |
+| Towns | ✓ | Same as cities |
+| Your own cities (internal migration) | ✓ | Coloured separately on the dashboard |
+| Other major civilizations | ✓ | All simulated from turn one, met or not |
+| City-states / minor civs / Independent Powers | ✗ | Don't send or receive (but attacking a city still drives its people out) |
+| Unmet civilizations | ✓ | Simulated, masked in the UI by default |
 
 **Behavior**
 
 | | | |
 |---|:---:|---|
-| Migration between civilizations | ✓ | Throttled by borders, distance, and each side's immigration stance |
-| Migration driven by distant AI-vs-AI wars | ✓ | Fog-independent, but only when the fighting damages, besieges, or pillages a city's own territory |
-| Fighting outside a city's borders (field battles, wars elsewhere, tiles it doesn't own) | ✗ | Never drives that city's emigration. War pressure is territory-scoped; the civ-wide "at war" flag is not an emigration cause (§3) |
-| Anti-Immigration stance retains your people | ✓ | Raises retention and boosts Production, at the cost of Influence |
-| Closed Borders reduces cross-civ flow | ✓ | Without an Open Borders agreement, far fewer people cross between civs |
+| Migration between civilizations | ✓ | Throttled by borders, distance, and stance |
+| Distant AI-vs-AI wars | ✓ | Only when they damage, besiege, or pillage a city's own territory |
+| Fighting outside a city's borders | ✗ | Never drives its emigration; war pressure is territory-scoped (§3) |
+| Anti-Immigration stance retains people | ✓ | More retention + Production, less Influence |
+| Closed Borders reduces cross-civ flow | ✓ | Far fewer cross without an Open Borders agreement |
 | Population & yields actually change | ✓ | Real per-turn gameplay writes |
-| Pacing adapts to game speed | ✓ | Cooldowns, ramps, transit, and thresholds scale with the speed setting (§2) |
-| Any layer can be tuned or switched off | ✓ | Presets plus ~57 knobs under Options ▸ Mods ▸ Emigration |
-| Migrants arrive instantly | ✗ | They travel; arrival lags with distance, up to a few turns |
-| Absorbing migrants is free | ✗ | A temporary, decaying integration cost in happiness and gold |
-| War alone can empty a city to zero | ✗ | War displacement is capped (`siegeLossCapPct`) and never goes below the rural floor. Crisis deaths are a separate, unfloored channel: a prolonged crisis can wear rural population down, but only rural, so the urban core survives. Only a capture empties or transfers a city |
+| Pacing adapts to game speed | ✓ | Cooldowns, ramps, transit, thresholds scale (§2) |
+| Any layer tunable or off | ✓ | Presets + ~57 knobs, Options ▸ Mods ▸ Emigration |
+| Migrants arrive instantly | ✗ | They travel; arrival lags with distance |
+| Absorbing migrants is free | ✗ | A temporary, decaying happiness + gold cost |
+| War can empty a city to zero | ✗ | Displacement is capped (`siegeLossCapPct`) above the rural floor; only a capture empties/transfers. Crisis deaths (separate, unfloored) can wear rural pop down, but the urban core survives |
 
 **Identity, integration & return**
 
 | | | |
 |---|:---:|---|
-| Settlements remember where their people came from | ✓ | A running ethnic composition by origin civ, shown as a per-tile mosaic on the Ethnic Composition lens (Shift+E); a captured city keeps its residents' origins |
-| Newcomers integrate over time | ✓ | A small fraction of each non-owner origin drifts toward the owner per turn. On by default (Options ▸ ethnic integration) |
-| War or unrest keeps a community distinct | ✓ | Integration stalls while the host is at war with a diaspora's homeland, and slows in unrest |
-| Diasporas return home when the homeland recovers | ✓ | Once a homeland is at peace with the host and prospering, a fraction return over time, moving real population. On by default (Options ▸ return migration) |
-| Refugee waves can prompt a decision | ✓ | A rare modal on a conquest spree or plague crisis (welcome, settle the frontier, or turn away), capped a few times per age, light effects, dismissible. On by default |
-| The world's migrations are written as history | ✓ | The Migration Chronicle tab records exoduses, diasporas, and returns as short prose; unmet civs are framed as hearsay |
+| Settlements remember origins | ✓ | Running composition by origin civ; a per-tile mosaic on the Ethnic Composition lens (Shift+E); kept through capture |
+| Newcomers integrate over time | ✓ | Each non-owner origin drifts toward the owner per turn (Options ▸ ethnic integration) |
+| War / unrest keeps a community distinct | ✓ | Integration stalls at war with the homeland, slows in unrest |
+| Diasporas return home | ✓ | When the homeland is at peace and prospering, a fraction return, moving real population (Options ▸ return migration) |
+| Refugee waves prompt a decision | ✓ | A rare modal (welcome / settle the frontier / turn away), capped per age, dismissible |
+| Migrations written as history | ✓ | The Migration Chronicle tab; unmet civs framed as hearsay |
 
 **Scope & limits**
 
 | | | |
 |---|:---:|---|
-| Changes AI strategy or replaces base-game files | ✗ | Additive only |
-| Moves population instantly across the map | ✗ | Distance-penalized |
-| Lets you place or pick individual migrants | ✗ | Flows are simulated; you shape them with yields and stances |
-| Lets one civ snowball the whole map's people | ✗ | Three compounding brakes: the field-relative prosperity model, a congestion headwind on fresh arrivals, and an anti-snowball headwind that grows as a civ runs ahead of the field (cross-civ inflow only). All tunable (anti-snowball: Off / gentle / standard / strong + threshold) |
+| Changes AI or replaces base-game files | ✗ | Additive only |
+| Moves population instantly | ✗ | Distance-penalized |
+| Lets you place individual migrants | ✗ | Simulated; you shape flows with yields and stances |
+| Lets one civ snowball the map | ✗ | Three brakes: field-relative scoring, a congestion headwind, and an anti-snowball headwind on cross-civ inflow (all tunable) |
 
 **FAQ**
 
-- **Where do people go when they leave?** To the nearest higher-prosperity settlement they can reach.
-- **Where do war refugees flee?** Away from the nearest enemy: own civ first, then neutrals, attacker last.
-- **How many move, and how often?** War/disaster refugees flee every turn; voluntary migration is
-  gradual, with a rest between moves. The two run concurrently. Each civ migrates on its own per-turn
-  budget scaled by size and active crises, so simultaneous wars don't throttle one another. Pace scales
-  with game speed.
-- **What happens when I capture or lose a city?** It keeps its residents' origin mix. War can shrink it;
-  only a capture transfers it.
-- **Why did a city suddenly lose a lot of people?** A toast names the cause; the per-city readout breaks
-  down its pressures, including the mix when more than one is active.
+- **Where do people go?** The nearest higher-prosperity settlement they can reach.
+- **Where do war refugees flee?** Away from the nearest enemy: own civ, then neutrals, attacker last.
+- **How many, how often?** War/disaster refugees flee every turn; voluntary migration is gradual. Each
+  civ has its own per-turn budget, so simultaneous wars don't throttle one another.
+- **Capturing or losing a city?** It keeps its origin mix; only a capture transfers it.
+- **Why the sudden drop?** A toast names the cause; the per-city readout shows the pressure mix.
 
-**Post-war recovery FAQ**
+**Post-war recovery**
 
-- **My city shrank from 12 to 5 in a war, will it grow back?** Yes. War displacement moves population
-  points; it never razes districts or deletes buildings (only base-game conquest does). You keep the
-  infrastructure with fewer workers, and it regrows via normal food growth and immigration once fighting
-  stops and prosperity recovers.
-- **Do the same refugees come back?** No. There is no repatriation; the city regrows from new residents.
-- **Does repairing pillaged tiles restore lost population?** No. Pillaged tiles apply pressure; repairing
-  them removes that pressure (the city stops bleeding and recovers faster) but never adds a population
-  point back.
-- **How far can a war shrink a city?** War displacement is capped at `siegeLossCapPct` (60% by default)
-  of the population when the siege began; the remnant digs in. Crisis deaths are separate and uncapped: a
-  sustained siege keeps killing some who can't escape, so a long enough siege can wear rural population
-  past that cap. Deaths remove only rural population; only a capture takes the city. (The displacement
-  cap is a fraction and does not change with game speed.)
-- **Fastest recovery?** Flip the city from net exporter back to magnet: make peace (violence decays in
-  ~2–3 turns of game-time), repair pillaged tiles, and raise happiness.
+- **Will a war-shrunk city grow back?** Yes. Displacement moves population points, never razes districts
+  or buildings (only conquest does). It regrows via food growth and immigration once fighting stops.
+- **Do the same refugees return?** No repatriation; it regrows from new residents.
+- **Does repairing pillaged tiles restore population?** No. Repair removes the pressure (faster recovery)
+  but adds no population back.
+- **How far can war shrink a city?** Displacement is capped at `siegeLossCapPct` (60% by default) of
+  onset population. Crisis deaths are separate and uncapped and can wear rural pop past that, but only a
+  capture takes the city. (The cap is a fraction, speed-invariant.)
+- **Fastest recovery?** Make peace (violence decays in ~2–3 turns), repair pillaged tiles, raise
+  happiness.
 
 **Migration in transit**
 
-Migration is not instantaneous; a move has transit lag (`transitLagTurns`, distance-scaled and
-game-speed-scaled), so a migrant has left the source but not yet reached the destination.
+Moves aren't instant: transit lag (`transitLagTurns`, distance- and speed-scaled) leaves a migrant
+between cities.
 
-- **Lifecycle.** At departure the rural point is removed from the source immediately (it loses that
-  worker's tile yields that turn). During transit the migrant belongs to no city (no yields, no upkeep).
-  The one-time integration cost is paid by the destination on arrival.
-- **Per-city caps.** A settlement loses at most `maxLossPerCityPerTurn` and gains at most
-  `maxGainPerCityPerTurn` per turn. The inbound cap is shared across arrival and departure via one
-  per-turn tally, so it bounds total intake. Both scale with the intensity preset and are Advanced
-  tunables. Deaths are a separate channel, not counted against either.
-- **Arrival isn't guaranteed.** An arrival into a city at its intake cap waits in transit and retries
-  (longest-waiting first). If the destination was razed/captured en route, or a refugee still can't find
-  room after several turns, the migrants perish in transit (a death). The inbound cap is never overrun.
-- **How long.** 1–4 turns at Standard (`transitLagTurns` caps it; scales with distance at
-  `transitHexPerTurn` ≈ 5 hexes/turn), longer on slower speeds. Most moves are 1–2 turns; war/disaster
-  refugees take at least 1 turn.
-- **Significance.** Small and self-correcting in peacetime; larger but bounded in wartime (the pool
-  drains within a few turns of peace).
-- **What you'll see.** Transit lag is why gross Emigration can tick up before gross Immigration catches
-  up. It does not distort Net Migration, which counts only settled, cross-civ moves.
+- **Lifecycle.** Departure removes the source's rural point immediately (losing that tile's yields). In
+  transit the migrant belongs to no city (no yields, no upkeep). The integration cost is paid by the
+  destination on arrival.
+- **Per-city caps.** A city loses at most `maxLossPerCityPerTurn` and gains at most
+  `maxGainPerCityPerTurn` per turn (the inbound cap bounds total intake). Both scale with the intensity
+  preset. Deaths aren't counted against either.
+- **Arrival isn't guaranteed.** An arrival into a full city waits and retries (longest-waiting first); if
+  the destination is razed/captured or still full after several turns, the migrants perish in transit. The
+  cap is never overrun.
+- **How long.** 1–4 turns at Standard (`transitHexPerTurn` ≈ 5 hexes/turn), longer on slower speeds;
+  war/disaster refugees take at least 1.
+- **What you'll see.** Gross Emigration can tick up before Immigration catches up. Net Migration counts
+  only settled, cross-civ moves.
 
 ---
 
@@ -287,11 +271,10 @@ the same destination:
   on crossing it, then rests for `cooldownTurns`. Cause is *unhappiness* when happiness is low, else
   *prosperity*.
 
-Each track draws from its own per-civ budget (`splitBudgetsEnabled`), so they don't double-drain a
-shared pool. Every migration record carries exactly one cause; concurrency is multiple records, not
-multi-cause records, so all by-cause telemetry is unchanged. The city readout shows the live mix
-("War 60% · Prosperity 40%", `splitUiReadoutEnabled`). The counterfactual/planner path mirrors the split
-so stance telemetry doesn't drift. All three flags default on; off restores single-cause-per-pass.
+Each track has its own per-civ budget (`splitBudgetsEnabled`). Every record still carries one cause
+(concurrency = multiple records), so by-cause telemetry is unchanged. The city readout shows the live
+mix ("War 60% · Prosperity 40%", `splitUiReadoutEnabled`). All three flags default on; off restores
+single-cause-per-pass.
 
 When a source has no viable destination (the outlet, §6d), a sufficiently distressed source builds
 attrition pressure and eventually loses a rural point with no destination (a death, not a move).
@@ -378,14 +361,12 @@ visibility-gated events:
   lone raid fades in ~2–3 turns of game-time. With Algorithm D on, the curve also escalates with siege
   duration (over `siegeRampTurns`, ×S) and is capped in total (§5-D).
 
-Territory-scoped: combat outside a settlement's borders never drives its emigration. All three signals
-read only the city's own footprint (`districtDamageFrac` / `districtBesieged` match by `owner:id`;
-`pillagedCount` scans only the city's own `getPurchasedPlots()`). So a field battle in neutral land, a
-war elsewhere, a pillaged tile the city doesn't own, or a distant AI-vs-AI war never moves a migrant out
-of a bystander city. The civ-wide `sig.atWar` flag is not an emigration cause (used only for a dev-log
-label), and the flee direction (`fleeVector`) is gated on the city's own accumulated violence. The one
-boundary case that counts is a city whose own district is flagged besieged by units just outside its
-borders; `siegeBesiegedFloor` keeps that a gradual build.
+Territory-scoped: all three signals read only the city's own footprint (`districtDamageFrac` /
+`districtBesieged` match by `owner:id`; `pillagedCount` scans the city's own `getPurchasedPlots()`). A
+field battle in neutral land, a war elsewhere, a tile the city doesn't own, or a distant AI-vs-AI war
+never moves its people. The civ-wide `sig.atWar` flag is not a cause (dev-log label only); `fleeVector`
+is gated on the city's own violence. One boundary case counts: a district flagged besieged by units just
+outside its borders, which `siegeBesiegedFloor` keeps gradual.
 
 ### Geography (`emigration-geography.js`)
 - **Distance decay:** `−distanceFactor × hexDistance`.
