@@ -215,7 +215,7 @@ tab.
 
 **Post-war recovery FAQ**
 
-- **My city shrank from 12 to 5 in a war — will it grow back?** Yes. War displacement moves population
+- **My city shrank from 12 to 5 in a war, will it grow back?** Yes. War displacement moves population
   points; it never razes districts or deletes buildings (only base-game conquest does). You keep the
   infrastructure with fewer workers, and it regrows via normal food growth and immigration once fighting
   stops and prosperity recovers.
@@ -408,7 +408,7 @@ $$
 $$
 
 In permeability $\Pi$, $\mathrm{openness}(d)$ is the destination's inbound throttle and
-$\mathrm{retention}(s)$ the source's cross-civ outbound throttle — the two halves of the Anti-Immigration
+$\mathrm{retention}(s)$ the source's cross-civ outbound throttle, the two halves of the Anti-Immigration
 stance (§6b). Both are 1 unless border policies are on, and retention applies only cross-civ.
 
 Friction:
@@ -666,7 +666,7 @@ global bounds (`tiltCap`, `permeFloor`, `permeCeil`). Computed in `emigration-pu
 with prosperity/geography/congestion rather than bypassing them.
 
 ### 6f. Ethnic composition, integration & the per-tile lens (`emigration-composition.js`, `emigration-ethnicity-lens.js`)
-Every settlement keeps a running ethnic composition — population by the civilization each person descends
+Every settlement keeps a running ethnic composition: population by the civilization each person descends
 from (`emigration-composition.js`), netted each pass from arrivals (origin = source owner), births
 (current owner), losses (proportional), and conquest (origin buckets kept, owner flips). It follows the
 settlement, not the owner, so a captured city keeps its residents' origins. The Ethnic Composition lens
@@ -716,7 +716,7 @@ Bounds:
 - **At most two enclaves per origin civilization** across your empire (per civilization, not overall).
   Identity is fixed by CivilizationType when the enclave forms (persisted), so the cap stays correct even
   if the origin player changes civ across an age.
-- **Contested in war.** While you're at war with an enclave's homeland it turns contested — a bounded
+- **Contested in war.** While you're at war with an enclave's homeland it turns contested: a bounded
   happiness strain (capped across all your enclaves), framed as wartime suspicion, not disloyalty.
 - Throttled with a per-age cap and cooldown, ranked below the refugee decision so two modals never race.
   Toggle: Options ▸ Mods ▸ Emigration ▸ cultural enclaves (on by default). (Internally the code, config
@@ -751,7 +751,7 @@ When the Demographics mod is installed, Emigration contributes via its companion
 (`globalThis.DemographicsMetricsAPI`, an order-independent handshake):
 
 - **A top-level Emigration tab** (`registerPanel`/`registerMetricGroup`). Its first section, **Data**, is
-  a metric group with two pill-row toggles: metric and units — **Scaled** (historical people) or **Civ
+  a metric group with two pill-row toggles: metric and units, **Scaled** (historical people) or **Civ
   numbers** (raw points). Each metric carries a one-line definition:
   - **Net Migration (Graph):** cumulative arrivals minus departures per civ, over time.
   - **Net Migration (Table):** the same net per civ; the units pills drive the values, magnitude drawn as
@@ -770,12 +770,12 @@ When the Demographics mod is installed, Emigration contributes via its companion
   log. Keeps only the moments that read as history and renders each as prose (`emigration-narrative.js`),
   spoiler-guarded. Persisted, newest-first, capped.
 - **Causes drill down to the event.** Each broad cause on the Causes tab expands to the named events
-  behind it — a particular war, eruption/flood, or the active age crisis — with each event's emigration
+  behind it (a particular war, eruption/flood, or the active age crisis), with each event's emigration
   and deaths. A crisis is attributed to its mechanism (Invasion under War, Plague under Disaster,
   Loyalty/Revolt under Unhappiness), resolved at the moment of each move. Per-civ event tallies are
   persisted (`outByEvent` / `deathsByEvent`, capped per civ).
 - **A Notifications log** (the Notifications sub-tab): a permanent, scrollable record of every migration
-  notification that has fired. Each row is cause-themed and names the specific event — the named war
+  notification that has fired. Each row is cause-themed and names the specific event: the named war
   (via the aggressor map + engine war name) or the named disaster/plague (the game's own `RandomEvents`
   name). Clicking a row expands it: cause, event, source settlement, destination, and count (both
   systems). Persisted across save/reload (`emigration-notifications.js` → `-view.js`).
@@ -833,7 +833,7 @@ Notifications log (§8). The layers:
   including peaceful turns, so the scrubber is available from the opening turns.
 - **Anti-spam.** Disasters notify only at/above `disasterNotifyMinSeverity`. World refugee notifications
   are once-per-milestone on a civ's cumulative refugees (`worldRefugeeThreshold`), but the cumulative
-  total only gates the alert — the headline names the specific war/disaster and reports that pass's
+  total only gates the alert; the headline names the specific war/disaster and reports that pass's
   outflow, so the figure stays event-scale. A global `notifyCooldownTurns` backstops everything.
   `notifyMode`: 0 off / 1 important-only (default) / 2 verbose.
 
@@ -1051,7 +1051,7 @@ logs every persisted value's size + flow-key counts to confirm saves stay bounde
   game-time invariance are unit-tested and fail-safe to S = 1; `gameSpeedTuningEnabled` is the kill
   switch if a speed feels off.
 - **Happiness cost is inferred (and probe-checkable).** Negative gold grants are probe-confirmed; negative
-  happiness is inferred — the base game exposes no player-happiness mutator, so
+  happiness is inferred: the base game exposes no player-happiness mutator, so
   `grantYield(YIELD_HAPPINESS, −n)` may be a no-op. Run `mig.happy()` to confirm; if nothing moves, set
   the happiness knobs to 0 (the congestion headwind, §5-C, is the gold-immune structural brake).
 - **War names use the engine's when resolvable.** Resolves via
@@ -1112,7 +1112,7 @@ Open source on GitHub: https://github.com/tmtmiller1/civilizationvii-emigration
 
 ### Special Thanks
 
-- **Potato McWhisky** — for teaching me to love again, Civilization-wise (Civ VI), after growing up as
+- **Potato McWhisky**, for teaching me to love again, Civilization-wise (Civ VI), after growing up as
   a Civilization II, IV, and V player. Making this mod is an act of faith that the community will
   eventually help make Civilization VII as good as the previous entries.
 
