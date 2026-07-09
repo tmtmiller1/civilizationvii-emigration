@@ -9,70 +9,36 @@ section below by `release.sh`.
 
 ## [2.0.5] - 2026-07-08
 
-This release makes the mod's notifications actually reach you: they could render
-behind the HUD (so a firing toast was never seen), were silently muted for the
-first several turns of a game, and never fired at all for a prosperous empire that
-was *receiving* migrants rather than losing them — all three are fixed, and there
-is now a proper immigration notification for people settling in your cities. It
-also polishes the enclave / refugee decision pop-up (text wrapping, a visible
-dismiss button, and focus handling).
+Notification delivery fixes (z-order, first-turn suppression) plus a new
+immigration notification, and enclave/refugee pop-up polish.
 
 ### Added
-- **Immigration notifications: your cities now tell you when people move IN, not
-  only when they leave.** Until now, "important" notifications fired almost only on
-  your own settlements *losing* population (plus world refugee crises), so a
-  prosperous, peaceful empire — a net *importer* of people — could legitimately see
-  nothing. There is now a matching inbound digest: when a notable wave of newcomers
-  from another civilization settles in one of your cities, it logs an entry and
-  (the largest that pass) toasts, themed by cause and naming the origin civ
-  (unmet-masked, like the rest of the mod). It's announced on *arrival* — when your
-  city actually gains the population — mirroring how losses announce on departure.
-  A steady one-point trickle stays quiet (see `inboundNotifyPoints`), and the
-  shared anti-spam cooldown still caps it, with your own losses and world crises
-  taking priority for the on-screen toast when several things happen at once.
+- **Immigration notifications.** Inbound counterpart to the existing loss/crisis
+  notifications: when a notable inbound wave settles in a local city, log an entry
+  and toast the largest, themed by cause and naming the (unmet-masked) origin civ.
+  Fires on arrival. One-point trickles stay quiet (`inboundNotifyPoints`); the
+  shared cooldown applies; own losses and world crises keep toast priority.
 
 ### Fixed
-- **Notifications could render behind the HUD and never be seen.** The transient
-  toast used `z-index:99`, which tied the game's tooltip layer and sat far below
-  `#uinext-tooltips` / `#uinext-dropdowns` (`z-index:10000`), so a tooltip or open
-  dropdown painted right over it — and it was anchored top-center, the busiest part
-  of the HUD. It now sits above those layers (`z-index:10001`). Its font size also
-  no longer depends on the dashboard's `--dg-*` variables (undefined in the HUD
-  document, which left the text at an inherited size); it carries explicit
-  fallbacks. This is the most likely reason a firing notification was never seen.
-- **The first several turns of a fresh game silently suppressed every important
-  notification.** The anti-spam cooldown seeded its "last toast" turn to 0 and
-  treated that as a real toast, so nothing could fire until `notifyCooldownTurns`
-  had elapsed (turns 1–5 by default). "Never toasted yet" now always allows the
-  first one; the cooldown applies normally afterward.
-- **Enclave / refugee decision pop-up: the per-choice description no longer runs
-  off the side of the panel.** The consequence note under each option is rendered
-  inside a `<button>`, which in the Mac GameFace build does not wrap its text by
-  default, so a long "why" line overflowed the panel edge. The choice buttons now
-  force `white-space:normal` (and shrink as flex items via `min-width:0`), with
-  `overflow-wrap` on the label/note for a stray long origin or place name. Pure
-  CSS; no behavior change.
-- **Decision pop-up now has a visible dismiss button and grabs focus when it
-  opens.** The v1.8.1 fix that took world input so the choices are clickable is
-  retained; this adds belt-and-suspenders for the "I can only close it with
-  Escape" report. A ✕ button in the panel corner resolves the same dismiss option
-  as Escape / clicking outside (so a player who doesn't know the Escape shortcut
-  is never trapped), and the modal now pulls keyboard/gamepad focus onto its
-  buttons on open — and hands focus back exactly as it found it on close — so
-  navigation targets the modal even if another surface held focus. *Note: this
-  path still needs in-game confirmation on the affected setups.*
-- **Migration dashboard could, in one rare case, keep showing an origin as
-  "Unmet" for a single frame after you met that civ.** The dashboard's per-turn
-  memo keyed on the *number* of major civs met, so the astronomically rare
-  same-turn coincidence of meeting one civ while a previously-met civ died (net
-  count unchanged) could serve one stale, still-masked render. It now keys on the
-  actual met-civ *set*, so any change to who you've met invalidates immediately.
-  ("Unmet"/"Unknown" was already recomputed live everywhere else; nothing was ever
-  persisted, so meeting everyone on a Pangaea always drops unmet origins to zero.)
+- **Toast rendered below the HUD.** `z-index:99` sat under `#uinext-tooltips` /
+  `#uinext-dropdowns` (`10000`); raised to `10001`. Toast font size no longer
+  depends on the dashboard `--dg-*` vars (undefined in the HUD document); explicit
+  fallbacks added.
+- **First `notifyCooldownTurns` turns suppressed all important notifications.** The
+  cooldown seeded its last-toast turn to 0 and treated it as a real toast; "never
+  toasted" now always permits the first, cooldown applies thereafter.
+- **Decision pop-up choice note didn't wrap.** The consequence note is rendered in
+  a `<button>`, which GameFace doesn't wrap by default; added `white-space:normal`
+  + `min-width:0` (+ `overflow-wrap` on label/note). CSS only.
+- **Decision pop-up dismiss/focus hardening.** Added a ✕ dismiss button (resolves
+  the dismiss option, as Escape / click-outside) and focus capture/restore on
+  open/close; retains the 1.8.1 world-input handling. Unverified in-game.
+- **Dashboard could show a stale "Unmet" origin for one frame.** The per-turn memo
+  keyed on met-major *count*, so a same-turn meet+death (net count unchanged) could
+  serve one masked render; now keyed on the met *set*.
 
 ### Changed
-- **The enclave decision's flavour quote is very slightly smaller** (0.85rem →
-  0.8rem), so the attributed epigraph sits more quietly under the prose.
+- Enclave flavour quote `0.85rem` → `0.8rem`.
 
 ## [2.0.4] - 2026-07-08
 
