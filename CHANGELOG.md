@@ -5,6 +5,16 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [2.0.7] - 2026-07-10
+
+### Fixed
+- **The refugee and Cultural-Enclave decision pop-ups now use the game's own native dialog.**
+  The border-refugee dilemma and the Cultural-Enclave decision were drawn in a custom panel whose
+  choice buttons could come up dead — the reported "the choices are unclickable and there's no way to
+  X out of it" pop-up. They now render through the engine's native decision dialog, the same system
+  the base game uses for its own choices, so the options, Escape, and the ✕ always respond. The
+  obsolete custom-panel markup was removed.
+
 ## [2.0.6] - 2026-07-10
 
 ### Fixed
