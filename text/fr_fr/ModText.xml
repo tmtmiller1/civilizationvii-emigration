@@ -139,12 +139,18 @@
         <Replace Tag="LOC_EMIG_T_QUARTERS_D" Language="fr_FR"><Text>Quand une diaspora étrangère devient une communauté établie dans l'une de vos villes, une décision unique est proposée (accueillir, taxer ou laisser faire) avec un petit bonus et malus de rendement ; un quartier persistant est suivi par ville et devient « contesté » (une légère pénalité de bonheur) tant que vous êtes en guerre avec sa patrie. Désactivé = aucune décision de quartier ni pénalité de contestation.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSHARE" Language="fr_FR"><Text>Enclaves: share to form</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSHARE_D" Language="fr_FR"><Text>How much of a city a single foreign origin must make up before it can become a Cultural Enclave. Higher = rarer enclaves, as fewer cities ever qualify.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QMINSTOCK" Language="fr_FR"><Text>Enclaves: minimum population</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QMINSTOCK_D" Language="fr_FR"><Text>The smallest standing population (in city-size points) a single foreign origin must reach before it can form a Cultural Enclave, so a tiny community can't qualify on share alone. Lower = small settlements can host enclaves too.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSTICKY" Language="fr_FR"><Text>Enclaves: stickiness</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSTICKY_D" Language="fr_FR"><Text>How strongly a foreign community that has reached a foothold resists blending into the host, so it can grow into a full enclave instead of being absorbed first. Stronger = enclaves form more readily; Off = communities integrate at the normal rate and rarely reach the enclave threshold.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QDWELL" Language="fr_FR"><Text>Enclaves: persistence before offer</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QDWELL_D" Language="fr_FR"><Text>How many turns an established community must persist before its one-time enclave decision is offered, so a brief spike (such as a war-refugee wave that later moves on) never triggers a permanent enclave. A short dip below the threshold is forgiven. 0 = offer as soon as the community forms.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCOOLDOWN" Language="fr_FR"><Text>Enclaves: turns between decisions</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCOOLDOWN_D" Language="fr_FR"><Text>Minimum turns between two Cultural Enclave decisions. Higher = the offers are spaced further apart.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCAP" Language="fr_FR"><Text>Enclaves: decisions per age</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCAP_D" Language="fr_FR"><Text>The most Cultural Enclave decisions that can be offered in a single age. Lower = fewer enclave choices each age.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QFORCE" Language="fr_FR"><Text>Enclaves: force the next decision</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QFORCE_D" Language="fr_FR"><Text>Testing aid. While on, your largest qualifying foreign community is offered its Cultural Enclave decision right away, skipping the persistence wait, the per-age limit, and the wait behind other events, and accepting a community that has only reached a foothold. It still needs the minimum population. Turn off once you've seen the decision.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="fr_FR"><Text>Catastrophes: alimenter la migration</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="fr_FR"><Text>Laisser les catastrophes environnementales (inondations, volcans, épidémies…) chasser la population des villes frappées en réfugiés climatiques/de catastrophe, en plus de la guerre et du mécontentement. Désactivé = les catastrophes n'affectent pas la migration.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="fr_FR"><Text>Catastrophes: émigration par point de détresse (%)</Text></Replace>
@@ -167,12 +173,16 @@
         <Replace Tag="LOC_EMIG_T_DNOTIFYMODE_D" Language="fr_FR"><Text>Quelles catastrophes apparaissent à l'écran (le journal des notifications conserve toujours chaque catastrophe grave quoi qu'il arrive) : 0 = désactivé, journal seulement ; 1 = seulement les catastrophes qui frappent un établissement, pour qu'elles alimentent réellement la migration (par défaut) ; 2 = toute catastrophe à la gravité minimale ou plus. Combinez avec « gravité min. de catastrophe » pour régler à partir de quand c'est assez grave.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD" Language="fr_FR"><Text>Notifications: intervalle minimal (tours)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD_D" Language="fr_FR"><Text>Le plus petit nombre de tours entre notifications importantes, pour qu'elles ne s'accumulent pas. 0 = sans limite.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLDNEWS" Language="fr_FR"><Text>Notifications: world refugee news</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLDNEWS_D" Language="fr_FR"><Text>Show "world news" alerts when another civilization hits a major refugee crisis. Off = only notifications about your own settlements. On by default.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD" Language="fr_FR"><Text>Notifications: seuil de crise de réfugiés</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD_D" Language="fr_FR"><Text>Combien de personnes (cumulées) une civilisation doit déplacer avant qu'un titre de crise de réfugiés ne se déclenche, une fois par multiple franchi, pour qu'une longue guerre produise quelques titres et non un par tour.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="fr_FR"><Text>Aperçu des migrations par ville</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="fr_FR"><Text>Affiche à la demande un panneau expliquant pourquoi une colonie sélectionnée gagne ou perd de la population : la cause principale, vers où sa population est attirée, le coût d'intégration et ce que vous pouvez y faire.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE" Language="fr_FR"><Text>Encart : courbe de tendance récente</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE_D" Language="fr_FR"><Text>Ajoute une petite bande de barres à l'encart de la ville montrant sa migration nette sur les derniers passages (barres vertes pour un gain, rouges pour une perte), afin de voir d'un coup d'œil si la situation s'améliore ou empire.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SELFTEST" Language="fr_FR"><Text>On-screen self-test panel</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SELFTEST_D" Language="fr_FR"><Text>Show a floating "Self-Test" button in-game that runs live diagnostics for the reported issues (settlement coverage, cultural enclaves, the two population measures, notifications, persistence) and can force the enclave pop-up and a test toast on demand — no developer console needed. For troubleshooting; leave off for normal play. Takes effect after reloading the save.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION" Language="fr_FR"><Text>Exutoire: attrition en l'absence de refuge</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION_D" Language="fr_FR"><Text>Empêche la migration d'être un système fermé : une ville piégée et gravement en détresse (siège, famine, violence intense ou catastrophe) sans destination viable perd de la population, les gens meurent ou se dispersent au lieu de rester pour toujours.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRDISTRESS" Language="fr_FR"><Text>Exutoire: détresse requise pour l'attrition (%)</Text></Replace>
@@ -205,6 +215,8 @@
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="fr_FR"><Text>{1_People} ont fui les combats autour de {2_City}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="fr_FR"><Text>{1_People} ont été emmenés de {2_City} lorsqu'elle a changé de mains.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="fr_FR"><Text>Unités :</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_CIV_TIP" Language="fr_FR"><Text>Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city actually grows, so this figure looks steady. Shares and percentages are always measured on this base.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_SCALED_TIP" Language="fr_FR"><Text>Scaled Pop: a historically-scaled "people" headcount for flavour. It drifts upward as an age progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="fr_FR"><Text>Basculer entre les chiffres de population propres à Civ et les personnes à l'échelle</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="fr_FR"><Text>La frise de lecture apparaît après quelques tours, une fois qu'il y a un historique de population à parcourir.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="fr_FR"><Text>{1_People} ont fui {2_City} après une catastrophe.</Text></Replace>
@@ -309,6 +321,7 @@
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="fr_FR"><Text>La Chronique et les décisions sur les réfugiés</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="fr_FR"><Text>La Chronique des migrations, dans son propre onglet du tableau de bord, écrit les grandes migrations du monde sous forme de brève histoire : une ville vidée par la guerre ou une catastrophe, une diaspora qui s'enracine loin de chez elle, un peuple qui revient une fois sa terre d'origine rétablie. Le détail de chaque événement reste dans le journal des notifications ; la Chronique en est le récit.[n][n]De temps à autre, lorsqu'un véritable bouleversement (un voisin conquérant plusieurs villes en peu de temps, ou une crise de peste) envoie une vague de réfugiés vers vos terres, on vous demande comment les accueillir : les accueillir, les installer à la frontière ou les refouler. Ces décisions sont rares et d'effets légers, et peuvent être désactivées dans les Options. Une civilisation que vous n'avez pas rencontrée n'est nommée que par ouï-dire, jamais révélée.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="fr_FR"><Text>Migration</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_SELFTEST_OPEN" Language="fr_FR"><Text>Migration Self-Test (diagnostics)</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="fr_FR"><Text>Prospérité</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_ETHNICITY" Language="fr_FR"><Text>Ethnies</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DATA" Language="fr_FR"><Text>Données du tableau de bord</Text></Replace>
@@ -351,6 +364,8 @@
         <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_MANY" Language="fr_FR"><Text>{1_Count} réfugiés attendent de s'installer ici.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_TITLE" Language="fr_FR"><Text>Quartier culturel</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_NO_QUARTER" Language="fr_FR"><Text>Aucun quartier étranger ne s'est implanté ici.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ENCLAVE_PENDING" Language="fr_FR"><Text>A {1_Origin} enclave has taken root ({2_Share}% of this settlement) and awaits your decision.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ENCLAVE_FORMING" Language="fr_FR"><Text>{1_Origin} residents are {2_Share}% of this settlement; an enclave forms at {3_Threshold}% and {5_MinStock} standing population (now {4_Stock}).</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_ROOT" Language="fr_FR"><Text>Un {1_Quarter} s'est implanté dans cette colonie.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_STANCE" Language="fr_FR"><Text>Votre position : {1_Stance}.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_GRANTS" Language="fr_FR"><Text>Accorde {1_Amount} {2_Yield} à la ville.</Text></Replace>

@@ -125,6 +125,27 @@ visual pass" note (from `SHIP_PLAN.md` and the disaster plan). These are verific
   (Full rationale: the implemented `v1.4.1-deep-pass-plan.md` in `mods_research_and_analysis/emigration-docs/`.)
 - **UI polish from the ship plan** — Refugees pill/title wording, per-graph definitions, the Net table
   pills + diverging bar alignment, and cross-civ immigrant dots flying from their origin on load/scrub.
+- **Player-report round (Unreleased): network display + enclave reachability.** Off-engine tests cover
+  the layout floor (`network-anim`), pinned pie shares, enclave stickiness + force relaxation
+  (`composition`), and the pending/forming panel readout (`city-panel`). Still needs an in-game pass:
+  confirm all settlements render on both network sub-views, that the Scaled/Civ Pop toggle no longer
+  moves the flow-pie percentages, that the City Details panel shows the enclave-progress line, and that
+  the new **Force enclave** option actually surfaces the decision modal for a qualifying local city
+  (and that enclaves now occur in normal play with stickiness on).
+
+## 5a. Deferred — notification DELIVERY (out of scope for the Unreleased player-report round)
+
+The player also reported "notifications not working yet." Confirmed **not** part of the enclave fix: the
+persistent Notifications *log* works (it's what surfaces the all-civ chronicle milestone entries the
+player mistook for "the AI getting enclaves"), and the enclave decision uses the `showDilemma` modal,
+not the notification feed. What remains deferred:
+
+- **On-screen HUD toasts** are DOM-injected onto the HUD root (`emigration-feedback.js`) because the
+  engine exposes no toast API; this is inherently fragile across GameFace updates. Revisit if toasts
+  are reported missing after the z-order/first-turn fixes in v2.0.5.
+- **Clickable end-turn engine notifications** need a DB `NotificationType` (see the note in
+  `emigration-feedback.js` and README §"Engine notifications need a DB type"). Larger effort; deferred
+  until there's appetite for the DB-side work.
 
 ## 6. More deferred module cleanups (low priority — chronicle-view / cities / city-features)
 

@@ -139,12 +139,18 @@
         <Replace Tag="LOC_EMIG_T_QUARTERS_D" Language="zh_Hans_CN"><Text>当外来族裔在你的某座城市中发展为稳固的社区时，会提供一次性选择（接纳、征税或放任），带来小幅产出奖励与惩罚，并按城市记录一处持久的街区；当你与其母国交战时，该街区会变为“争议”状态（小幅幸福度负担）。关闭＝没有街区决策，也没有争议负担。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSHARE" Language="zh_Hans_CN"><Text>Enclaves: share to form</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSHARE_D" Language="zh_Hans_CN"><Text>How much of a city a single foreign origin must make up before it can become a Cultural Enclave. Higher = rarer enclaves, as fewer cities ever qualify.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QMINSTOCK" Language="zh_Hans_CN"><Text>Enclaves: minimum population</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QMINSTOCK_D" Language="zh_Hans_CN"><Text>The smallest standing population (in city-size points) a single foreign origin must reach before it can form a Cultural Enclave, so a tiny community can't qualify on share alone. Lower = small settlements can host enclaves too.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSTICKY" Language="zh_Hans_CN"><Text>Enclaves: stickiness</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSTICKY_D" Language="zh_Hans_CN"><Text>How strongly a foreign community that has reached a foothold resists blending into the host, so it can grow into a full enclave instead of being absorbed first. Stronger = enclaves form more readily; Off = communities integrate at the normal rate and rarely reach the enclave threshold.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QDWELL" Language="zh_Hans_CN"><Text>Enclaves: persistence before offer</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QDWELL_D" Language="zh_Hans_CN"><Text>How many turns an established community must persist before its one-time enclave decision is offered, so a brief spike (such as a war-refugee wave that later moves on) never triggers a permanent enclave. A short dip below the threshold is forgiven. 0 = offer as soon as the community forms.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCOOLDOWN" Language="zh_Hans_CN"><Text>Enclaves: turns between decisions</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCOOLDOWN_D" Language="zh_Hans_CN"><Text>Minimum turns between two Cultural Enclave decisions. Higher = the offers are spaced further apart.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCAP" Language="zh_Hans_CN"><Text>Enclaves: decisions per age</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCAP_D" Language="zh_Hans_CN"><Text>The most Cultural Enclave decisions that can be offered in a single age. Lower = fewer enclave choices each age.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QFORCE" Language="zh_Hans_CN"><Text>Enclaves: force the next decision</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QFORCE_D" Language="zh_Hans_CN"><Text>Testing aid. While on, your largest qualifying foreign community is offered its Cultural Enclave decision right away, skipping the persistence wait, the per-age limit, and the wait behind other events, and accepting a community that has only reached a foothold. It still needs the minimum population. Turn off once you've seen the decision.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="zh_Hans_CN"><Text>灾害: 驱动迁徙</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="zh_Hans_CN"><Text>让环境灾害（洪水、火山、瘟疫……）将人口逐出受灾城市，成为气候/灾害难民，与战争和不满并列。关闭 = 灾害不影响迁徙。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="zh_Hans_CN"><Text>灾害: 每点苦难的移民（%）</Text></Replace>
@@ -167,12 +173,16 @@
         <Replace Tag="LOC_EMIG_T_DNOTIFYMODE_D" Language="zh_Hans_CN"><Text>哪些灾害会在屏幕上弹出（无论如何，通知记录始终保留每一次严重灾害）：0 = 关闭，仅记录；1 = 仅袭击定居点、从而真正驱动迁徙的灾害（默认）；2 = 达到或超过最低严重度的任意灾害。与“最低灾害严重度”配合使用，以调节多严重才算够严重。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD" Language="zh_Hans_CN"><Text>通知: 最小间隔（回合）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD_D" Language="zh_Hans_CN"><Text>重要通知之间的最少回合数，避免扎堆。0 = 无限制。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLDNEWS" Language="zh_Hans_CN"><Text>Notifications: world refugee news</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLDNEWS_D" Language="zh_Hans_CN"><Text>Show "world news" alerts when another civilization hits a major refugee crisis. Off = only notifications about your own settlements. On by default.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD" Language="zh_Hans_CN"><Text>通知: 难民危机阈值</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD_D" Language="zh_Hans_CN"><Text>一个文明（累计）须使多少人流离失所才触发难民危机标题，每越过一个倍数触发一次，因此长期战争只产生几则标题，而非每回合一则。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="zh_Hans_CN"><Text>各城市迁徙概览</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="zh_Hans_CN"><Text>按需显示一个面板，说明所选定居点为何增减人口：主要原因、居民被吸引的去向、融入成本，以及你能采取的对策。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE" Language="zh_Hans_CN"><Text>读出面板：近期趋势迷你图</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE_D" Language="zh_Hans_CN"><Text>在城市读出面板中加入一小条柱状图，显示最近几轮的净迁徙（绿色表示增加，红色表示减少），让你一眼看出情况在变好还是变坏。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SELFTEST" Language="zh_Hans_CN"><Text>On-screen self-test panel</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SELFTEST_D" Language="zh_Hans_CN"><Text>Show a floating "Self-Test" button in-game that runs live diagnostics for the reported issues (settlement coverage, cultural enclaves, the two population measures, notifications, persistence) and can force the enclave pop-up and a test toast on demand — no developer console needed. For troubleshooting; leave off for normal play. Takes effect after reloading the save.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION" Language="zh_Hans_CN"><Text>泄流口: 无处可逃时的折损</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION_D" Language="zh_Hans_CN"><Text>防止迁徙成为封闭系统：被困、严重受难的城市（围城、饥荒、激烈暴力或灾害）若无可行去处便会失去人口，人们会死亡或四散，而非永远滞留。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRDISTRESS" Language="zh_Hans_CN"><Text>泄流口: 折损所需的苦难（%）</Text></Replace>
@@ -205,6 +215,8 @@
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="zh_Hans_CN"><Text>{1_People}逃离了{2_City}周边的战火。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="zh_Hans_CN"><Text>{2_City}易主时，{1_People}被掳走。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="zh_Hans_CN"><Text>单位：</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_CIV_TIP" Language="zh_Hans_CN"><Text>Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city actually grows, so this figure looks steady. Shares and percentages are always measured on this base.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_SCALED_TIP" Language="zh_Hans_CN"><Text>Scaled Pop: a historically-scaled "people" headcount for flavour. It drifts upward as an age progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="zh_Hans_CN"><Text>在 Civ 自身的人口数值与按比例换算的人数之间切换</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="zh_Hans_CN"><Text>回放时间轴将在数回合后出现，届时已有可供拖动查看的人口历史。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="zh_Hans_CN"><Text>{1_People}在灾难过后逃离了{2_City}。</Text></Replace>
@@ -309,6 +321,7 @@
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="zh_Hans_CN"><Text>移民编年史与难民抉择</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="zh_Hans_CN"><Text>移民编年史位于面板的专属标签页，将世界上的大迁徙写成简短的历史：被战争或灾害清空的城市、在远离故乡之地扎根的离散族群、在故土复苏后归来的人们。逐事件的细节仍保留在通知记录中，编年史则是其中的故事。[n][n]偶尔，当真正的剧变（短期内攻占数座城市的邻邦，或一场瘟疫危机）将一波难民推向你的疆土时，你会被询问如何接纳他们：接纳他们、安置于边疆，或将其拒之门外。这些抉择十分罕见、影响轻微，并可在选项中关闭。你尚未会面的文明仅以传闻提及，绝不揭示。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="zh_Hans_CN"><Text>迁徙</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_SELFTEST_OPEN" Language="zh_Hans_CN"><Text>Migration Self-Test (diagnostics)</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="zh_Hans_CN"><Text>繁荣</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_ETHNICITY" Language="zh_Hans_CN"><Text>民族构成</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DATA" Language="zh_Hans_CN"><Text>面板数据</Text></Replace>
@@ -351,6 +364,8 @@
         <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_MANY" Language="zh_Hans_CN"><Text>{1_Count}名难民正在此处等待安置。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_TITLE" Language="zh_Hans_CN"><Text>文化街区</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_NO_QUARTER" Language="zh_Hans_CN"><Text>此处尚无外来街区扎根。</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ENCLAVE_PENDING" Language="zh_Hans_CN"><Text>A {1_Origin} enclave has taken root ({2_Share}% of this settlement) and awaits your decision.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ENCLAVE_FORMING" Language="zh_Hans_CN"><Text>{1_Origin} residents are {2_Share}% of this settlement; an enclave forms at {3_Threshold}% and {5_MinStock} standing population (now {4_Stock}).</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_ROOT" Language="zh_Hans_CN"><Text>{1_Quarter}已在这座定居点扎根。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_STANCE" Language="zh_Hans_CN"><Text>你的立场：{1_Stance}。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_GRANTS" Language="zh_Hans_CN"><Text>为城市提供{1_Amount}点{2_Yield}。</Text></Replace>

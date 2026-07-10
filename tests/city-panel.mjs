@@ -123,6 +123,37 @@ function testComposeLocalizesLabels() {
     "LOC_EMIGRATION_PANEL_QUARTER_GRANTS[40,LOC_YIELD_CULTURE_NAME]"));
 }
 
+function testPendingEnclaveReplacesNoQuarterText() {
+  // No settled quarter, but a foreign origin has crossed the bar → the "no enclave" line is replaced by
+  // an "awaits your decision" readout carrying the share.
+  const pending = cityPanelModel({
+    cityName: "Rome", outflows: [], inflows: [], refugeePool: 0, quarter: null,
+    enclave: { originName: "Egyptian", pending: true, sharePct: 41, thresholdPct: 30, stock: 6, minStock: 3 }
+  });
+  assert.equal(pending.quarters.present, false, "no settled quarter yet");
+  assert.ok(pending.quarters.noQuarterText.includes("Egyptian"), "names the origin");
+  assert.ok(pending.quarters.noQuarterText.includes("41%"), "shows the current share");
+  assert.ok(/awaits your decision/i.test(pending.quarters.noQuarterText), "flags it as awaiting the decision");
+
+  // A forming (foothold, below the bar) enclave shows progress toward the threshold instead.
+  const forming = cityPanelModel({
+    cityName: "Rome", outflows: [], inflows: [], refugeePool: 0, quarter: null,
+    enclave: { originName: "Greek", pending: false, sharePct: 27, thresholdPct: 30, stock: 4, minStock: 3 }
+  });
+  assert.ok(forming.quarters.noQuarterText.includes("27%"), "shows the current share");
+  assert.ok(forming.quarters.noQuarterText.includes("30%"), "shows the threshold it must reach");
+  assert.ok(!/awaits your decision/i.test(forming.quarters.noQuarterText), "not yet awaiting a decision");
+
+  // A settled quarter always wins over any progress readout.
+  const settled = cityPanelModel({
+    cityName: "Rome", outflows: [], inflows: [], refugeePool: 0,
+    quarter: { originName: "Egyptian Enclave", stanceLabel: "Embrace", contested: false,
+      benefitYield: null, benefitAmount: 0, penaltyYield: null, penaltyAmount: 0 },
+    enclave: { originName: "Greek", pending: true, sharePct: 50, thresholdPct: 30, stock: 9, minStock: 3 }
+  });
+  assert.equal(settled.quarters.present, true, "the settled quarter is authoritative");
+}
+
 // ── Decorator install + lifecycle with a minimal fake panel + DOM. ──
 function makeEl(tag) {
   return {
@@ -213,6 +244,7 @@ testPassiveQuarterHasNoYieldLines();
 testFlowRowsSortCapAndTail();
 testYieldAndRefugeeHelpers();
 testComposeLocalizesLabels();
+testPendingEnclaveReplacesNoQuarterText();
 await testInstallAndLifecycle();
 
 console.log("city-panel harness passed");

@@ -109,6 +109,9 @@
  * @property {boolean} quartersEnabled Whether established diasporas become player-shaped Cultural Quarters.
  * @property {number} quarterEstablishedShare Share of a city a lead foreign origin must hold to be "established".
  * @property {number} quarterMinStock Minimum current standing pop points of the lead origin for an established enclave.
+ * @property {number} quarterEnclaveStickiness Integration multiplier (0..1) for an at/above-foothold origin (1 = off).
+ * @property {boolean} quarterForce Testing flag: offer the best qualifying enclave now, bypassing the soft gates.
+ * @property {boolean} selftestEnabled Install the on-screen self-test launcher (live diagnostics + forced pop-up).
  * @property {number} quarterDwellTurns Turns an enclave must persist before its one-time decision is offered.
  * @property {number} quarterDwellGrace Turns a diaspora may dip below the bar without resetting the dwell clock.
  * @property {number} quarterCapPerAge Hard cap on Cultural Quarter decisions per age.

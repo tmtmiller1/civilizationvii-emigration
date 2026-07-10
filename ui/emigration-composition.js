@@ -27,6 +27,8 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { atWarBetween } from "/emigration/ui/emigration-geography.js";
 import { getIntegrationEnabled } from "/emigration/ui/emigration-settings.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
+// Only used at call time (inside integrateCity), so the composition↔diaspora import cycle stays safe.
+import { QUARTER_FOOTHOLD_SHARE } from "/emigration/ui/emigration-diaspora.js";
 
 const STATE_KEY = "EmigrationEthnos_v1";
 
@@ -402,23 +404,51 @@ function reconcileCity(s, w, turn) {
   e.seenTurn = turn;
 }
 
+/** @returns {number} The enclave-stickiness multiplier in [0,1] (falls back to 1 = no stickiness). */
+function enclaveStickiness() {
+  const v = Number(CONFIG.quarterEnclaveStickiness);
+  return isFinite(v) ? Math.max(0, Math.min(1, v)) : 1;
+}
+
+/**
+ * The integration fraction to actually apply to one origin: the base `rateFor` rate, slowed by the
+ * enclave-stickiness multiplier once that origin has reached the enclave foothold share.
+ * @param {number} p The origin's standing points. @param {number} total The city's total points.
+ * @param {number} r The base rate from `rateFor`. @param {number} sticky The stickiness multiplier.
+ * @returns {number} The effective rate.
+ */
+function stickyRate(p, total, r, sticky) {
+  if (sticky < 1 && total > 0 && p / total >= QUARTER_FOOTHOLD_SHARE) return r * sticky;
+  return r;
+}
+
 /**
  * Drift a settlement's non-owner origins toward the owner's bucket (ethnic integration): each origin
  * moves by the fraction `rateFor` returns for it. People shift BETWEEN buckets, so the total (and the
  * reconciled population) is unchanged; a bucket emptied below DUST is dropped. Newcomers thus take on
  * the host identity over time, except where `rateFor` returns ~0 (war with the homeland / unrest).
+ *
+ * Enclave stickiness: an origin that has already reached the cultural-enclave foothold share
+ * (QUARTER_FOOTHOLD_SHARE) integrates more SLOWLY (its rate is scaled by CONFIG.quarterEnclaveStickiness),
+ * so a real diaspora can climb from foothold to "established" instead of being drifted back below the
+ * enclave bar before its dwell clock completes. This is what lets a HUMAN city's enclave actually form
+ * in normal play. Stickiness = 1 restores the legacy uniform drift.
  * @param {CityComposition} e The entry. @param {number} owner Current owner id.
  * @param {(originCiv:number)=>number} rateFor Per-origin integration fraction in [0,1].
  */
 function integrateCity(e, owner, rateFor) {
   if (!e || typeof owner !== "number") return;
+  const sticky = enclaveStickiness();
+  // Share denominator: the buckets sum to the reconciled total (integration preserves it), so summing
+  // byCiv is exact even when e.total isn't set (e.g. a synthetic test entry).
+  const total = Object.keys(e.byCiv).reduce((a, k) => a + (e.byCiv[k] || 0), 0);
   for (const k of Object.keys(e.byCiv)) {
     const o = Number(k);
     if (o === owner) continue;
     const p = e.byCiv[k] || 0;
     const r = rateFor(o);
     if (!(r > 0) || !(p > 0)) continue;
-    const move = p * Math.min(1, r);
+    const move = p * Math.min(1, stickyRate(p, total, r, sticky));
     e.byCiv[k] = p - move;
     e.byCiv[owner] = (e.byCiv[owner] || 0) + move;
     if (e.byCiv[k] < DUST) delete e.byCiv[k];

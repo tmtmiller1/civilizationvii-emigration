@@ -108,3 +108,21 @@ models. The [emigration-arrivals.js](../ui/emigration-arrivals.js) comments alre
 
 **Verdict:** by design — the strict cap and its perish outcome are intentional; softening it into a
 pool overflow is a balance/design change that removes modeled scarcity, not a hardening.
+
+## population — make "Civ Pop" drift over time like "Scaled Pop"
+
+A player reported "scaled population changes over time, but civ population doesn't" and asked whether
+that's a bug. Tempting fix: make the two figures track each other so neither looks "frozen."
+
+It is **not** a bug and must not be changed. **Civ Pop** is the game's exact city size in discrete
+population points (`c.pop`), which only changes when a city actually gains/loses a pop point — a rare
+event, so it looks steady. **Scaled Pop** is the intentional age-scaled "historical people" headcount
+(`scaleCityPopulation`, pinned to the Demographics mod by `tests/scaling-demographics-parity.mjs`),
+which drifts upward with age progress even at a fixed city size. Making raw points "drift" would either
+corrupt the exact game-state figure or desync the scaler from Demographics. The confusion was a
+labeling gap, closed by adding hover tips to the Scaled/Civ Pop toggle (v.Unreleased) that explain the
+difference, and by pinning all displayed **percentages** to the raw-points base so a share no longer
+moves when the toggle flips.
+
+**Verdict:** by design — the two measures are legitimately different (exact discrete size vs scaled
+historical headcount); fix the *labeling*, never make raw points drift.
