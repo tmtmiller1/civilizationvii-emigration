@@ -8,6 +8,8 @@
     "ui/migration-probe.js",
     "ui/options/**",
     "ui/emigration-main.js",
+    "ui/emigration-selftest.js",
+    "ui/emigration-selftest-checks.js",
     "ui/emigration-window.js",
     "ui/emigration-options.js",
     "ui/emigration-guide.js",

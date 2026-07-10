@@ -163,12 +163,18 @@
         <Row Tag="LOC_EMIG_T_QUARTERS_D"><Text>When a foreign diaspora grows into an established community in one of your cities, offer a one-time choice (embrace, tax, or let be) with a small yield reward and drawback, and track a persistent per-city enclave that turns "contested" (a small happiness strain) while you are at war with its homeland. Off = no enclave decisions or contested strain.</Text></Row>
         <Row Tag="LOC_EMIG_T_QSHARE"><Text>Enclaves: share to form</Text></Row>
         <Row Tag="LOC_EMIG_T_QSHARE_D"><Text>How much of a city a single foreign origin must make up before it can become a Cultural Enclave. Higher = rarer enclaves, as fewer cities ever qualify.</Text></Row>
+        <Row Tag="LOC_EMIG_T_QMINSTOCK"><Text>Enclaves: minimum population</Text></Row>
+        <Row Tag="LOC_EMIG_T_QMINSTOCK_D"><Text>The smallest standing population (in city-size points) a single foreign origin must reach before it can form a Cultural Enclave, so a tiny community can't qualify on share alone. Lower = small settlements can host enclaves too.</Text></Row>
+        <Row Tag="LOC_EMIG_T_QSTICKY"><Text>Enclaves: stickiness</Text></Row>
+        <Row Tag="LOC_EMIG_T_QSTICKY_D"><Text>How strongly a foreign community that has reached a foothold resists blending into the host, so it can grow into a full enclave instead of being absorbed first. Stronger = enclaves form more readily; Off = communities integrate at the normal rate and rarely reach the enclave threshold.</Text></Row>
         <Row Tag="LOC_EMIG_T_QDWELL"><Text>Enclaves: persistence before offer</Text></Row>
         <Row Tag="LOC_EMIG_T_QDWELL_D"><Text>How many turns an established community must persist before its one-time enclave decision is offered, so a brief spike (such as a war-refugee wave that later moves on) never triggers a permanent enclave. A short dip below the threshold is forgiven. 0 = offer as soon as the community forms.</Text></Row>
         <Row Tag="LOC_EMIG_T_QCOOLDOWN"><Text>Enclaves: turns between decisions</Text></Row>
         <Row Tag="LOC_EMIG_T_QCOOLDOWN_D"><Text>Minimum turns between two Cultural Enclave decisions. Higher = the offers are spaced further apart.</Text></Row>
         <Row Tag="LOC_EMIG_T_QCAP"><Text>Enclaves: decisions per age</Text></Row>
         <Row Tag="LOC_EMIG_T_QCAP_D"><Text>The most Cultural Enclave decisions that can be offered in a single age. Lower = fewer enclave choices each age.</Text></Row>
+        <Row Tag="LOC_EMIG_T_QFORCE"><Text>Enclaves: force the next decision</Text></Row>
+        <Row Tag="LOC_EMIG_T_QFORCE_D"><Text>Testing aid. While on, your largest qualifying foreign community is offered its Cultural Enclave decision right away, skipping the persistence wait, the per-age limit, and the wait behind other events, and accepting a community that has only reached a foothold. It still needs the minimum population. Turn off once you've seen the decision.</Text></Row>
         <Row Tag="LOC_EMIG_T_DISASTERS"><Text>Disasters: drive migration</Text></Row>
         <Row Tag="LOC_EMIG_T_DISASTERS_D"><Text>Let environmental disasters (floods, volcanoes, plagues, …) push population out of struck cities as climate/disaster refugees, alongside war and unhappiness. Off = disasters don't affect migration.</Text></Row>
         <Row Tag="LOC_EMIG_T_DPP"><Text>Disasters: emigration per distress point (%)</Text></Row>
@@ -191,12 +197,16 @@
         <Row Tag="LOC_EMIG_T_DNOTIFYMODE_D"><Text>Which disasters pop up on screen (the notifications log always keeps every severe one regardless): 0 = off, log only; 1 = only disasters that strike a settlement, so they actually drive migration (the default); 2 = any disaster at or above the minimum severity. Combine with "min disaster severity" to tune how bad is bad enough.</Text></Row>
         <Row Tag="LOC_EMIG_T_NOTIFYCD"><Text>Notifications: minimum gap (turns)</Text></Row>
         <Row Tag="LOC_EMIG_T_NOTIFYCD_D"><Text>The fewest turns between important notifications, so they can't bunch up. 0 = no limit.</Text></Row>
+        <Row Tag="LOC_EMIG_T_NOTIFYWORLDNEWS"><Text>Notifications: world refugee news</Text></Row>
+        <Row Tag="LOC_EMIG_T_NOTIFYWORLDNEWS_D"><Text>Show "world news" alerts when another civilization hits a major refugee crisis. Off = only notifications about your own settlements. On by default.</Text></Row>
         <Row Tag="LOC_EMIG_T_NOTIFYWORLD"><Text>Notifications: refugee-crisis threshold</Text></Row>
         <Row Tag="LOC_EMIG_T_NOTIFYWORLD_D"><Text>How many people (cumulative) a civilization must displace before a refugee-crisis headline fires, once per multiple crossed, so a long war makes a few headlines, not one per turn.</Text></Row>
         <Row Tag="LOC_EMIG_T_CITYREADOUT"><Text>Per-city migration readout</Text></Row>
         <Row Tag="LOC_EMIG_T_CITYREADOUT_D"><Text>Show an on-demand panel explaining why a selected settlement is gaining or losing population: the dominant cause, where its people are pulled, the integration cost, and what you can do about it.</Text></Row>
         <Row Tag="LOC_EMIG_T_SPARKLINE"><Text>Readout: recent-trend sparkline</Text></Row>
         <Row Tag="LOC_EMIG_T_SPARKLINE_D"><Text>Add a small bar strip to the per-city readout showing its net migration over the last several passes (green bars for gaining, red for losing), so you can tell at a glance whether things are getting better or worse.</Text></Row>
+        <Row Tag="LOC_EMIG_T_SELFTEST"><Text>On-screen self-test panel</Text></Row>
+        <Row Tag="LOC_EMIG_T_SELFTEST_D"><Text>Show a floating "Self-Test" button in-game that runs live diagnostics for the reported issues (settlement coverage, cultural enclaves, the two population measures, notifications, persistence) and can force the enclave pop-up and a test toast on demand — no developer console needed. For troubleshooting; leave off for normal play. Takes effect after reloading the save.</Text></Row>
         <Row Tag="LOC_EMIG_T_ATTRITION"><Text>Outlet: attrition when there's no refuge</Text></Row>
         <Row Tag="LOC_EMIG_T_ATTRITION_D"><Text>Keep migration from being a closed system: a trapped, badly distressed city (siege, starvation, heavy violence or disaster) with nowhere viable to flee loses population, people die or scatter rather than stay forever.</Text></Row>
         <Row Tag="LOC_EMIG_T_ATTRDISTRESS"><Text>Outlet: distress needed for attrition (%)</Text></Row>
@@ -241,6 +251,8 @@
         <Row Tag="LOC_EMIG_DIGEST_WAR"><Text>{1_People} fled the fighting around {2_City}.</Text></Row>
         <Row Tag="LOC_EMIG_DIGEST_CONQUEST"><Text>{1_People} were taken from {2_City} when it changed hands.</Text></Row>
         <Row Tag="LOC_EMIG_NETC_UNITS"><Text>Units:</Text></Row>
+        <Row Tag="LOC_EMIG_NETC_UNITS_CIV_TIP"><Text>Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city actually grows, so this figure looks steady. Shares and percentages are always measured on this base.</Text></Row>
+        <Row Tag="LOC_EMIG_NETC_UNITS_SCALED_TIP"><Text>Scaled Pop: a historically-scaled "people" headcount for flavour. It drifts upward as an age progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.</Text></Row>
         <Row Tag="LOC_EMIG_NETC_UNITS_TIP"><Text>Switch between the Civ's own population numbers and scaled people</Text></Row>
         <Row Tag="LOC_EMIG_NETC_TIMELINE_PENDING"><Text>Playback timeline appears after a couple of turns, once there's population history to scrub through.</Text></Row>
         <Row Tag="LOC_EMIG_DIGEST_DISASTER"><Text>{1_People} fled {2_City} after disaster struck.</Text></Row>
@@ -379,6 +391,9 @@
         <Row Tag="LOC_EMIGRATION_OPEN">
             <Text>Migration</Text>
         </Row>
+        <Row Tag="LOC_EMIGRATION_SELFTEST_OPEN">
+            <Text>Migration Self-Test (diagnostics)</Text>
+        </Row>
         <Row Tag="LOC_EMIG_LENS_PROSPERITY">
             <Text>Prosperity</Text>
         </Row>
@@ -500,6 +515,12 @@
         </Row>
         <Row Tag="LOC_EMIGRATION_PANEL_NO_QUARTER">
             <Text>No foreign enclave has taken root here.</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_ENCLAVE_PENDING">
+            <Text>A {1_Origin} enclave has taken root ({2_Share}% of this settlement) and awaits your decision.</Text>
+        </Row>
+        <Row Tag="LOC_EMIGRATION_PANEL_ENCLAVE_FORMING">
+            <Text>{1_Origin} residents are {2_Share}% of this settlement; an enclave forms at {3_Threshold}% and {5_MinStock} standing population (now {4_Stock}).</Text>
         </Row>
         <Row Tag="LOC_EMIGRATION_PANEL_QUARTER_ROOT">
             <Text>A {1_Quarter} has taken root in this settlement.</Text>

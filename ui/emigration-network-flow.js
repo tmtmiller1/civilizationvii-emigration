@@ -16,7 +16,7 @@ import {
   helpIcon, WX, WY
 } from "/emigration/ui/emigration-network-viz.js";
 import { installStageFit } from "/emigration/ui/emigration-network-fit.js";
-import { buildChronoDots, totalPeople } from "/emigration/ui/emigration-network-dots.js";
+import { buildChronoDots, totalPeople, totalPoints } from "/emigration/ui/emigration-network-dots.js";
 import { drawCivCircle, drawCityDiscs, drawLabelsNoOverlap } from "/emigration/ui/emigration-network-paint.js";
 import { stepSim } from "/emigration/ui/emigration-network-sim.js";
 import { makeTimeline } from "/emigration/ui/emigration-network-timeline.js";
@@ -671,7 +671,14 @@ function buildFlowScene(frames) {
   const lastFrame = frames[frames.length - 1];
   const { sim, byId } = buildCenters(lastFrame.network, colorMap);
   const total = totalPeople(lastFrame.network, lastFrame.pops || {}) || 1;
-  const unit = Math.max(1, Math.round(total / TARGET_DOTS));
+  // Civ Pop mode sizes dots at ~1 per civ pop-point (so small settlements populate too), matching the
+  // network Dots view; Scaled Pop keeps the fixed people-per-dot target. Without this the Civ Pop toggle
+  // was a no-op here, and pop-poor settlements stayed dotless/hidden.
+  const civMode = getNumberMode() === NumberMode.CIV;
+  const points = totalPoints(lastFrame.network, lastFrame.pops || {});
+  const unit = civMode
+    ? Math.max(1, Math.round(total / Math.max(1, points)))
+    : Math.max(1, Math.round(total / TARGET_DOTS));
   buildChronoDots(frames, sim.nodes, byId, colorMap, unit); // positions centers[].cities + clusterR
   return { sim, byId };
 }

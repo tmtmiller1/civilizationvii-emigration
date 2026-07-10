@@ -5,6 +5,10 @@ import assert from "node:assert/strict";
 // back to city.name. The internal state is reset between cases via the __test surface.
 const { __test } = await import("/emigration/ui/emigration-composition.js");
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
+// Diaspora reads the SAME composition ledger singleton, so a case can seed a city here and then assert
+// on the enclave read (progress stage + the "force" relaxation the player's Force-enclave option uses).
+const { establishedQuarterForCity, enclaveProgressForCity } =
+  await import("/emigration/ui/emigration-diaspora.js");
 // The exact-share scenarios below predate ethnic integration; run them without the per-turn drift so
 // their assertions stay deterministic. The dedicated integration case re-enables it locally.
 CONFIG.integrationEnabled = false;
@@ -191,6 +195,38 @@ function testIntegrationDrift() {
 }
 
 /**
+ * Enclave stickiness: once a foreign origin reaches the foothold share, its integration is slowed by
+ * CONFIG.quarterEnclaveStickiness, so a real diaspora can climb to an "established" enclave instead of
+ * being drifted back below the bar. Below the foothold share, stickiness never applies.
+ */
+function testEnclaveStickiness() {
+  const prev = CONFIG.quarterEnclaveStickiness;
+  try {
+    // A 70/30 city: origin-9 is 30% ≥ the 25% foothold, so stickiness applies. At base rate 0.2 and
+    // stickiness 0.25 the effective rate is 0.05 → only 1.5 of the 30 integrates (30 → 28.5), whereas
+    // with stickiness off (1.0) a full 6 would (30 → 24). The sticky diaspora keeps more of itself.
+    CONFIG.quarterEnclaveStickiness = 0.25;
+    const sticky = { owner: 1, byCiv: { 1: 70, 9: 30 }, total: 100, name: "Host", seenTurn: 0 };
+    __test.integrateCity(sticky, 1, () => 0.2);
+    assert.ok(Math.abs(sticky.byCiv[9] - 28.5) < 1e-9, "an at-foothold origin integrates slowly (30 → 28.5)");
+    assert.ok(Math.abs(sticky.byCiv[1] + sticky.byCiv[9] - 100) < 1e-9, "the total is still preserved");
+
+    CONFIG.quarterEnclaveStickiness = 1; // off
+    const loose = { owner: 1, byCiv: { 1: 70, 9: 30 }, total: 100, name: "Host", seenTurn: 0 };
+    __test.integrateCity(loose, 1, () => 0.2);
+    assert.ok(Math.abs(loose.byCiv[9] - 24) < 1e-9, "with stickiness off the same origin drifts fully (30 → 24)");
+
+    // A below-foothold minority (20% < 25%) is unaffected by stickiness: full rate either way.
+    CONFIG.quarterEnclaveStickiness = 0.25;
+    const small = { owner: 1, byCiv: { 1: 80, 9: 20 }, total: 100, name: "Host", seenTurn: 0 };
+    __test.integrateCity(small, 1, () => 0.2);
+    assert.ok(Math.abs(small.byCiv[9] - 16) < 1e-9, "a below-foothold minority is not made sticky (20 → 16)");
+  } finally {
+    CONFIG.quarterEnclaveStickiness = prev;
+  }
+}
+
+/**
  * Return migration attributes the move to the returnees' TRUE origin: the host loses that origin
  * specifically, and the homeland gains that origin (never the host's). Drives the "return" cause.
  */
@@ -228,7 +264,43 @@ testProportionalEmigration();
 testUntrackedIsNull();
 testNoPhantomDust();
 testOwnerAggregateConsistency();
+/**
+ * The enclave read the decision system uses: a foothold-stage diaspora (past the foothold share but
+ * below the established bar) is NOT offerable normally, but IS when forced (the player's Force-enclave
+ * option relaxes the bar to foothold). A diaspora past the established bar is offerable either way.
+ * enclaveProgressForCity reports the same stage regardless, so a readout built from it always agrees.
+ */
+function testEnclaveProgressAndForce() {
+  // Defaults: established 0.30, min stock 3, foothold 0.25.
+  __test.reset();
+  // Seed Nova as 100% owner 0, then draw a civ-2 diaspora to 28% (foothold: ≥25% but <30%), stock 7.
+  __test.recordCompositionPass([city(7, 7, "Nova", 0, 18)], []);
+  __test.recordCompositionPass(
+    [city(7, 7, "Nova", 0, 25)],
+    [move(2, "Homeland", 0, "Nova", 7)]
+  );
+  const at = { location: { x: 7, y: 7 }, name: "Nova" };
+  const prog = enclaveProgressForCity(at);
+  assert.ok(prog, "a foreign minority yields an enclave-progress read");
+  assert.equal(prog.stage, "foothold", "28% is a foothold (past 25%, below the 30% bar)");
+  assert.equal(establishedQuarterForCity(at), null, "a foothold enclave is NOT offered without forcing");
+  assert.ok(establishedQuarterForCity(at, true), "forcing offers the foothold enclave (bar relaxed)");
+
+  // A diaspora past the established bar (40%) is offered with or without force.
+  __test.reset();
+  __test.recordCompositionPass([city(8, 8, "Ecbatana", 0, 12)], []);
+  __test.recordCompositionPass(
+    [city(8, 8, "Ecbatana", 0, 20)],
+    [move(2, "Homeland", 0, "Ecbatana", 8)]
+  );
+  const est = { location: { x: 8, y: 8 }, name: "Ecbatana" };
+  assert.equal(enclaveProgressForCity(est).stage, "established", "40% clears the established bar");
+  assert.ok(establishedQuarterForCity(est), "an established enclave is offered without forcing");
+}
+
 testIntegrationDrift();
+testEnclaveStickiness();
+testEnclaveProgressAndForce();
 testReturnAttribution();
 
 console.log("composition harness passed");

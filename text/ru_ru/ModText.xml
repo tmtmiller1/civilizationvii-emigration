@@ -139,12 +139,18 @@
         <Replace Tag="LOC_EMIG_T_QUARTERS_D" Language="ru_RU"><Text>Когда иностранная диаспора вырастает в устоявшуюся общину в одном из ваших городов, предлагается разовый выбор (принять, обложить налогом или оставить как есть) с небольшой наградой и штрафом к выходу ресурсов; постоянный квартал отслеживается для каждого города и становится «спорным» (небольшой штраф к счастью), пока вы находитесь в войне с его родиной. Выкл = нет решений по кварталам и штрафа за спор.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSHARE" Language="ru_RU"><Text>Enclaves: share to form</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSHARE_D" Language="ru_RU"><Text>How much of a city a single foreign origin must make up before it can become a Cultural Enclave. Higher = rarer enclaves, as fewer cities ever qualify.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QMINSTOCK" Language="ru_RU"><Text>Enclaves: minimum population</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QMINSTOCK_D" Language="ru_RU"><Text>The smallest standing population (in city-size points) a single foreign origin must reach before it can form a Cultural Enclave, so a tiny community can't qualify on share alone. Lower = small settlements can host enclaves too.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSTICKY" Language="ru_RU"><Text>Enclaves: stickiness</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSTICKY_D" Language="ru_RU"><Text>How strongly a foreign community that has reached a foothold resists blending into the host, so it can grow into a full enclave instead of being absorbed first. Stronger = enclaves form more readily; Off = communities integrate at the normal rate and rarely reach the enclave threshold.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QDWELL" Language="ru_RU"><Text>Enclaves: persistence before offer</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QDWELL_D" Language="ru_RU"><Text>How many turns an established community must persist before its one-time enclave decision is offered, so a brief spike (such as a war-refugee wave that later moves on) never triggers a permanent enclave. A short dip below the threshold is forgiven. 0 = offer as soon as the community forms.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCOOLDOWN" Language="ru_RU"><Text>Enclaves: turns between decisions</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCOOLDOWN_D" Language="ru_RU"><Text>Minimum turns between two Cultural Enclave decisions. Higher = the offers are spaced further apart.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCAP" Language="ru_RU"><Text>Enclaves: decisions per age</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCAP_D" Language="ru_RU"><Text>The most Cultural Enclave decisions that can be offered in a single age. Lower = fewer enclave choices each age.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QFORCE" Language="ru_RU"><Text>Enclaves: force the next decision</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QFORCE_D" Language="ru_RU"><Text>Testing aid. While on, your largest qualifying foreign community is offered its Cultural Enclave decision right away, skipping the persistence wait, the per-age limit, and the wait behind other events, and accepting a community that has only reached a foothold. It still needs the minimum population. Turn off once you've seen the decision.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="ru_RU"><Text>Бедствия: двигать миграцию</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="ru_RU"><Text>Позволить стихийным бедствиям (наводнения, вулканы, эпидемии…) выталкивать население из пострадавших городов как климатических беженцев / беженцев бедствий, наряду с войной и недовольством. Выкл. = бедствия не влияют на миграцию.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="ru_RU"><Text>Бедствия: эмиграция за пункт бедствия (%)</Text></Replace>
@@ -167,12 +173,16 @@
         <Replace Tag="LOC_EMIG_T_DNOTIFYMODE_D" Language="ru_RU"><Text>Какие бедствия всплывают на экране (журнал уведомлений в любом случае всегда хранит каждое тяжёлое): 0 = выкл., только журнал; 1 = только бедствия, поражающие поселение, чтобы они действительно двигали миграцию (по умолчанию); 2 = любое бедствие минимальной силы и выше. Сочетайте с «мин. силой бедствия», чтобы настроить, насколько плохо — достаточно плохо.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD" Language="ru_RU"><Text>Уведомления: минимальный интервал (ходы)</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD_D" Language="ru_RU"><Text>Наименьшее число ходов между важными уведомлениями, чтобы они не скапливались. 0 = без ограничения.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLDNEWS" Language="ru_RU"><Text>Notifications: world refugee news</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLDNEWS_D" Language="ru_RU"><Text>Show "world news" alerts when another civilization hits a major refugee crisis. Off = only notifications about your own settlements. On by default.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD" Language="ru_RU"><Text>Уведомления: порог кризиса беженцев</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD_D" Language="ru_RU"><Text>Сколько человек (суммарно) цивилизация должна переселить, прежде чем выйдет заголовок о кризисе беженцев, раз на каждое пройденное кратное, чтобы долгая война давала несколько заголовков, а не один за ход.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="ru_RU"><Text>Сводка миграции по городу</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="ru_RU"><Text>Показывает по запросу панель с объяснением, почему выбранное поселение набирает или теряет население: основная причина, куда тянет его жителей, стоимость интеграции и что можно с этим сделать.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE" Language="ru_RU"><Text>Сводка: спарклайн недавнего тренда</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE_D" Language="ru_RU"><Text>Добавляет в сводку по городу небольшую полоску столбиков с чистой миграцией за последние проходы (зелёные столбики — прирост, красные — убыль), чтобы с одного взгляда понять, становится лучше или хуже.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SELFTEST" Language="ru_RU"><Text>On-screen self-test panel</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SELFTEST_D" Language="ru_RU"><Text>Show a floating "Self-Test" button in-game that runs live diagnostics for the reported issues (settlement coverage, cultural enclaves, the two population measures, notifications, persistence) and can force the enclave pop-up and a test toast on demand — no developer console needed. For troubleshooting; leave off for normal play. Takes effect after reloading the save.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION" Language="ru_RU"><Text>Отвод: убыль, когда нет убежища</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION_D" Language="ru_RU"><Text>Не даёт миграции быть замкнутой системой: запертый, сильно бедствующий город (осада, голод, тяжёлое насилие или бедствие) без приемлемой цели теряет население, люди гибнут или рассеиваются, а не остаются навсегда.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRDISTRESS" Language="ru_RU"><Text>Отвод: бедствие, нужное для убыли (%)</Text></Replace>
@@ -205,6 +215,8 @@
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="ru_RU"><Text>{1_People} бежали от боёв вокруг {2_City}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="ru_RU"><Text>{1_People} были уведены из {2_City}, когда он сменил владельца.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="ru_RU"><Text>Единицы:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_CIV_TIP" Language="ru_RU"><Text>Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city actually grows, so this figure looks steady. Shares and percentages are always measured on this base.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_SCALED_TIP" Language="ru_RU"><Text>Scaled Pop: a historically-scaled "people" headcount for flavour. It drifts upward as an age progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="ru_RU"><Text>Переключение между собственными числами населения Civ и масштабированными людьми</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ru_RU"><Text>Хронология воспроизведения появится через пару ходов, как только накопится история населения для прокрутки.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ru_RU"><Text>{1_People} бежали из {2_City} после бедствия.</Text></Replace>
@@ -309,6 +321,7 @@
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="ru_RU"><Text>Хроника и решения о беженцах</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="ru_RU"><Text>Хроника миграций на отдельной вкладке панели записывает великие переселения мира краткой историей: город, опустевший от войны или бедствия, диаспора, пустившая корни вдали от дома, народ, возвращающийся после восстановления родины. Подробности каждого события остаются в журнале уведомлений; Хроника — это рассказ.[n][n]Время от времени, когда настоящее потрясение (сосед, захвативший несколько городов за короткий срок, или эпидемия) направляет волну беженцев к вашим землям, вас спрашивают, как их принять: впустить, расселить на границе или отказать. Эти решения редки и слабо влияют на игру, и их можно отключить в настройках. Цивилизация, которую вы не встречали, упоминается лишь по слухам и не раскрывается.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="ru_RU"><Text>Миграция</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_SELFTEST_OPEN" Language="ru_RU"><Text>Migration Self-Test (diagnostics)</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="ru_RU"><Text>Процветание</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_ETHNICITY" Language="ru_RU"><Text>Народы</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DATA" Language="ru_RU"><Text>Данные панели</Text></Replace>
@@ -351,6 +364,8 @@
         <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_MANY" Language="ru_RU"><Text>{1_Count} беженцев ожидают расселения здесь.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_TITLE" Language="ru_RU"><Text>Культурный квартал</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_NO_QUARTER" Language="ru_RU"><Text>Здесь не укоренился ни один иностранный квартал.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ENCLAVE_PENDING" Language="ru_RU"><Text>A {1_Origin} enclave has taken root ({2_Share}% of this settlement) and awaits your decision.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ENCLAVE_FORMING" Language="ru_RU"><Text>{1_Origin} residents are {2_Share}% of this settlement; an enclave forms at {3_Threshold}% and {5_MinStock} standing population (now {4_Stock}).</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_ROOT" Language="ru_RU"><Text>{1_Quarter} укоренился в этом поселении.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_STANCE" Language="ru_RU"><Text>Ваша позиция: {1_Stance}.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_GRANTS" Language="ru_RU"><Text>Приносит городу {1_Amount} {2_Yield}.</Text></Replace>

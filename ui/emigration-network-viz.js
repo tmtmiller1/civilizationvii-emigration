@@ -398,6 +398,17 @@ function addFlowsToggle(root, state, onChange) {
 // the combined Network tab carry the same "Units:" control.
 /** @type {Record<number,string>} */
 const UNITS_LABEL = { [NumberMode.CIV]: "Civ Pop", [NumberMode.HISTORICAL]: "Scaled Pop" };
+// Hover hints that explain WHY the two measures differ (and why Civ Pop looks frozen while Scaled Pop
+// drifts): Civ Pop is the game's exact, discrete city size; Scaled Pop is the historical "people"
+// headcount that grows through an age. Percentages read off the raw Civ-Pop base in either mode.
+const UNITS_TIP = {
+  [NumberMode.CIV]: loc("LOC_EMIG_NETC_UNITS_CIV_TIP",
+    "Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city " +
+    "actually grows, so this figure looks steady. Shares/percentages are always measured on this base."),
+  [NumberMode.HISTORICAL]: loc("LOC_EMIG_NETC_UNITS_SCALED_TIP",
+    "Scaled Pop: a historically-scaled 'people' headcount for flavour. It drifts upward as an age " +
+    "progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.")
+};
 
 /**
  * Append a "Units:" toggle (a labelled chip cycling Civ Pop ↔ Scaled Pop) to a controls row, styled
@@ -420,6 +431,7 @@ export function appendUnitsToggle(root, rebuildAll, withSep = true) {
   for (const mode of [NumberMode.HISTORICAL, NumberMode.CIV]) {
     const b = el("div", "emig-filter-btn" + (getNumberMode() === mode ? " active" : ""),
       UNITS_LABEL[mode]);
+    b.title = UNITS_TIP[mode];
     b.addEventListener("click", () => set(mode));
     root.appendChild(b);
   }
