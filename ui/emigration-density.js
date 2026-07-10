@@ -77,7 +77,6 @@ export const DENSITY_CSS =
   ".emig-dash .emig-stance-row{font-size:var(--dg-fs-140);}" +
   ".emig-dash .emig-stance-detail{font-size:var(--dg-fs-105);}" +
   ".emig-dash .emig-filter-btn{font-size:var(--dg-fs-72);}" +
-  ".emig-dash .emig-flow-tog{font-size:var(--dg-fs-95);}" +
   ".emig-dash .emig-netc-cap{font-size:var(--dg-fs-95);}" +
   ".emig-dash .emig-netc-time-note{font-size:var(--dg-fs-85);}" +
   ".emig-dash .emig-guide-h{font-size:var(--dg-fs-120);}" +
@@ -127,7 +126,6 @@ export const DENSITY_CSS =
   ".emig-dash .emig-stance-block{padding:0.4rem 0.2rem;}" +
   ".emig-dash .emig-tag{font-size:var(--dg-fs-95);}" +
   ".emig-dash .emig-filter-btn{padding:0.14rem 0.5rem;}" +
-  ".emig-dash .emig-flow-tog{padding:0.26rem 0.95rem;}" +
   ".emig-dash .emig-netc-chips{margin:0.06rem 0 0.22rem;gap:0.3rem;}" +
   ".emig-dash .emig-legend{margin:0.22rem 0;gap:0.2rem 0.7rem;}" +
   ".emig-dash .emig-netc-time{margin:0.25rem 0;}" +

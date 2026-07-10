@@ -8,6 +8,7 @@
 // Pure drawing; the orchestrator owns layout, the dot set, state, and interaction.
 
 import { withAlpha } from "/emigration/ui/emigration-civ-colors.js";
+import { buildFlowSegments, drawFlowArrows } from "/emigration/ui/emigration-network-flow-arrows.js";
 
 /**
  * @typedef {import("/emigration/ui/emigration-network-dots.js").Dot} Dot
@@ -384,126 +385,24 @@ function drawEvents(ctx, scene) {
 }
 
 /**
- * Coerce an optional number to 0.
- * @param {number|undefined} v Value.
- * @returns {number} v or 0.
- */
-function n0(v) {
-  return v || 0;
-}
-
-/**
- * The city→city segment for an internal mover, or null.
- * @param {Dot} d Dot.
- * @param {NetworkNode} dest The civ centre.
- * @returns {*} Segment or null.
- */
-function internalSegment(d, dest) {
-  const cs = dest.cities || [];
-  const fc = d.fromCityIdx != null ? cs[d.fromCityIdx] : null;
-  const tc = cs[d.cityIdx];
-  if (!fc || !tc || d.fromCityIdx === d.cityIdx) return null;
-  return {
-    x0: dest.x + n0(fc.sx), y0: dest.y + n0(fc.sy),
-    x1: dest.x + n0(tc.sx), y1: dest.y + n0(tc.sy),
-    color: d.colors.origin, key: "n" + d.ci + ":" + d.fromCityIdx + ">" + d.cityIdx
-  };
-}
-
-/**
- * A point at a civ centre, offset to one of its city sub-centres when that index is known.
- * @param {NetworkNode} center Civ centre.
- * @param {number|undefined} idx City index.
- * @returns {{x:number, y:number}} Point.
- */
-function cityXYOr(center, idx) {
-  const cs = center.cities || [];
-  if (idx != null && cs[idx]) return { x: center.x + n0(cs[idx].sx), y: center.y + n0(cs[idx].sy) };
-  return { x: center.x, y: center.y };
-}
-
-/**
- * The origin-city→destination-city segment for an immigrant (falls back to civ centres when the
- * cities aren't known), or null.
- * @param {Dot} d Dot.
- * @param {Scene} scene Scene.
- * @returns {*} Segment or null.
- */
-function immigrantSegment(d, scene) {
-  const dest = scene.centers[d.ci];
-  const oi = scene.byId.get(d.originId);
-  const oc = oi != null ? scene.centers[oi] : null;
-  if (!oc || oc === dest) return null;
-  const o = cityXYOr(oc, d.fromCivCityIdx);
-  const t = cityXYOr(dest, d.cityIdx);
-  return { x0: o.x, y0: o.y, x1: t.x, y1: t.y, color: d.colors.origin,
-    key: "i" + d.originId + ":" + (d.fromCivCityIdx == null ? "" : d.fromCivCityIdx) +
-      ">" + d.destId + ":" + d.cityIdx };
-}
-
-/**
- * The origin→destination segment for a migration dot (city→city internal, civ→civ immigrant), or
- * null for residents.
- * @param {Dot} d Dot.
- * @param {Scene} scene Scene.
- * @returns {*} Segment {x0,y0,x1,y1,color,key} or null.
- */
-function flowSegment(d, scene) {
-  if (d.scope === "internal") return internalSegment(d, scene.centers[d.ci]);
-  if (d.scope === "immigrant") return immigrantSegment(d, scene);
-  return null;
-}
-
-/**
- * Draw one aggregated flow as a gently-curved line, thickness scaled to how many migrants it
- * carries, with a dot marking the ORIGIN end (where they came from).
- * @param {CanvasRenderingContext2D} ctx Context.
- * @param {*} f Aggregated segment {x0,y0,x1,y1,color,count}.
- */
-function drawFlowLine(ctx, f) {
-  const dx = f.x1 - f.x0;
-  const dy = f.y1 - f.y0;
-  const len = Math.sqrt(dx * dx + dy * dy) || 1;
-  const off = Math.min(38, len * 0.16);
-  const cx = (f.x0 + f.x1) / 2 - (dy / len) * off;
-  const cy = (f.y0 + f.y1) / 2 + (dx / len) * off;
-  ctx.strokeStyle = f.color;
-  ctx.lineWidth = Math.min(4.5, 0.7 + Math.sqrt(f.count) * 0.5);
-  ctx.globalAlpha = 0.6;
-  ctx.beginPath();
-  ctx.moveTo(f.x0, f.y0);
-  ctx.quadraticCurveTo(cx, cy, f.x1, f.y1);
-  ctx.stroke();
-  ctx.fillStyle = f.color;
-  ctx.beginPath();
-  ctx.arc(f.x0, f.y0, 2.6, 0, Math.PI * 2);
-  ctx.fill();
-}
-
-/**
- * Draw the currently-active migration as aggregated origin→destination lines (toggle: showFlows).
- * Only visible, non-dimmed migrants count, so isolating a cause/origin shows just those paths.
+ * The memoized flow-arrow overlay: build the red/green migrant-flow segments for the current frame
+ * (filtered by the Dots view's origin-isolate / focus-destination / scope state) and draw them over the
+ * dots. Segments are per-frame static, so they're cached by (frame + filter) and only rebuilt when that
+ * changes — the paint loop runs every rAF while animating/playing.
  * @param {CanvasRenderingContext2D} ctx Context.
  * @param {Scene} scene Scene.
  */
-function drawFlows(ctx, scene) {
-  const { dots, state } = scene;
-  const now = typeof state.frameIdx === "number" ? state.frameIdx : Infinity;
-  /** @type {Map<string,*>} */
-  const agg = new Map();
-  for (const d of dots) {
-    if (dotHidden(d, state, now) || !dotActive(d, state)) continue;
-    const seg = flowSegment(d, scene);
-    if (!seg) continue;
-    const a = agg.get(seg.key);
-    if (a) a.count++;
-    else {
-      seg.count = 1;
-      agg.set(seg.key, seg);
-    }
+function drawFlowOverlay(ctx, scene) {
+  const sc = /** @type {*} */ (scene);
+  const state = sc.state;
+  const show = state.show || {};
+  const key = state.frameIdx + "|" + state.origin + "|" + state.focusDest + "|" +
+    (show.immigrant ? 1 : 0) + (show.internal ? 1 : 0) + "|" + (state.expanded ? state.expanded.size : 0);
+  if (!sc._flowCache || sc._flowCache.key !== key) {
+    const segs = buildFlowSegments({ state, centers: sc.centers, byId: sc.byId, frames: sc.frames });
+    sc._flowCache = { key, segs };
   }
-  for (const f of agg.values()) drawFlowLine(ctx, f);
-  ctx.globalAlpha = 1;
+  drawFlowArrows(ctx, sc._flowCache.segs);
 }
 
 /**
@@ -515,7 +414,7 @@ export function paint(ctx, scene) {
   ctx.clearRect(0, 0, scene.WX, scene.WY);
   drawClusterDiscs(ctx, scene);
   drawDots(ctx, scene);
-  if (scene.state.showFlows) drawFlows(ctx, scene);
+  if (scene.state.showFlows) drawFlowOverlay(ctx, scene);
   drawLabels(ctx, scene.centers);
   drawEvents(ctx, scene);
 }

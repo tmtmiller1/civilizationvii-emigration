@@ -7,7 +7,7 @@
         <SpecialThanks>Machiavelli's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>2.1.0</Version>
+        <Version>2.2.0</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -127,16 +127,15 @@
                     <Item>ui/emigration-snapshot-reminder.js</Item>
                     <Item>ui/emigration-guide.js</Item>
                     <Item>ui/emigration-views.js</Item>
-                    <Item>ui/emigration-flow-tab.js</Item>
                     <Item>ui/emigration-network-viz.js</Item>
                     <Item>ui/emigration-network-fit.js</Item>
                     <Item>ui/emigration-civ-colors.js</Item>
                     <Item>ui/emigration-network-sim.js</Item>
                     <Item>ui/emigration-network-paint.js</Item>
+                    <Item>ui/emigration-network-flow-arrows.js</Item>
                     <Item>ui/emigration-network-dots.js</Item>
                     <Item>ui/emigration-network-timeline.js</Item>
                     <Item>ui/emigration-network-interact.js</Item>
-                    <Item>ui/emigration-network-flow.js</Item>
                     <Item>ui/emigration-pies.js</Item>
                     <Item>ui/emigration-city-flows.js</Item>
                     <Item>ui/emigration-detail-views.js</Item>

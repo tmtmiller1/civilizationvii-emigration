@@ -35,7 +35,7 @@ import { runChecks, pickPreviewOrigin, errMsg } from "/emigration/ui/emigration-
 const SCREEN_ID = "screen-emigration-selftest";
 // Kept in sync with emigration.modinfo <Version>; shown in the bug-report snapshot so a report names the
 // build. Bump alongside the modinfo version on release.
-const MOD_VERSION = "2.1.0";
+const MOD_VERSION = "2.2.0";
 const DBG = false;
 /** Error logger; always emits. @param {...*} a */
 function derr(...a) {
