@@ -227,3 +227,178 @@ note's own prescription, the fix was to **make `compositionForCity` self-guardin
 - The mod's larger gameplay roadmap (Features A–K + deepened refugee stance + L–Z, plus the carried-over
   AA/AB in §17) lives in [feature-improvements-plan.md](feature-improvements-plan.md); those are net-new
   features, out of scope for the correctness/perf/maintainability review this file descends from.
+
+---
+
+## 9. Corpus bug-hunt findings (2026-07-10)
+
+Open correctness items surfaced by the tower_mods-wide bug-hunt audit. Each carries
+[severity · confidence] and a file:line. Not yet fixed. F1 is the load-bearing one.
+
+- **F1 — [High · Confirmed] Age-boundary turn reset stalls the core pass and freezes decay clocks.**
+  Sites: [emigration-main.js:296](../ui/emigration-main.js) (`lastLocalTurnRun`),
+  [emigration-violence.js:299](../ui/emigration-violence.js) (`tickViolence`),
+  [emigration-disasters.js:391](../ui/emigration-disasters.js) (`tickDisasters`),
+  [emigration-effects.js:135](../ui/emigration-effects.js) (`tickAssimilation`),
+  [emigration-combat.js:60](../ui/emigration-combat.js); notification variants
+  [emigration-feedback.js:314](../ui/emigration-feedback.js) and `:837`. Each compares the current
+  `Game.turn` against a retained/persisted turn marker, but `Game.turn` is **age-local and resets** at
+  each age boundary — which is exactly why `emigration-state.js:266` maintains `monoTurn` ("never resets
+  at age boundaries") and why `composition.js:485` / `dilemma.js:411` already switched to it. Failure:
+  Antiquity ends at `Game.turn=133` so the markers freeze at 133; Exploration restarts at `Game.turn=1`,
+  so `1-133 < turnInterval` early-returns the pass every turn (core sim dormant for most of the age) and
+  `s.decayTurn=turn` sits *inside* the `if(elapsed>0)` guard so war/disaster distress never decays and
+  never re-advances until the turn climbs past 133. Confirmed at both age transitions of every game (the
+  persisted decay clocks are unconditionally affected; core-pass dormancy additionally depends on isolate
+  lifecycle at the transition). **Fix:** gate these on the monotonic turn, or detect `turn < retainedTurn`
+  and rebase the markers on age transition.
+- **F2 — [Med · Plausible] Prosperity sign-flip ranks a devastated city as attractive.**
+  [emigration-prosperity.js:213-214](../ui/emigration-prosperity.js): `factor = 1 + situationalPercent/100`
+  applied unclamped; `situationalPercent` can fall below −100 and `baseScore` can be negative for a
+  war-torn city, so `negative × negative = positive` and `bestDestination` can route refugees *into* the
+  war zone. **Fix:** `const factor = Math.max(0, 1 + situationalPercent(s)/100);`.
+- **R1 — [Med · Confirmed] Pool-sourced returnee can be silently lost (population leak).**
+  [emigration-return.js:222-230](../ui/emigration-return.js): on the `fromPool` path
+  `consumeForReturn` already popped a held refugee, but if `addRural(homeCity)` fails the undo is gated
+  `if(!fromPool) addRural(hostCity)`, so nothing is restored and nothing delivered — 1 point vanishes,
+  contradicting the file's "undone rather than leaking" promise. **Fix:** re-queue the pool on `addRural`
+  failure for the `fromPool` branch.
+- **R2 — [Med · Plausible] Host signal decremented even for a virtual-pool returnee.**
+  [emigration-return.js:298-300](../ui/emigration-return.js): `syncSignalsForMove` unconditionally does
+  `host.population -= 1; host.rural -= 1`, but on `fromPool` the person was never a settled rural
+  resident, so the per-pass host signal is under-counted by 1. **Fix:** only mirror the host decrement when
+  `!fromPool`.
+- **F3 — [Low · Confirmed] `carryPlague`/`addDistress` bypasses the disaster accumulation cap.**
+  [emigration-disasters.js:375-380](../ui/emigration-disasters.js) (called from
+  [emigration-consequences.js:27](../ui/emigration-consequences.js)) does uncapped `byCity[key] += amount`
+  unlike `stampDisaster`. **Fix:** route through `stampDisaster` / apply the `Math.min(cap, …)` clamp.
+- **F4 — [Low · Confirmed] Empty-state column label uses an English substring test.**
+  [emigration-city-flows.js:92](../ui/emigration-city-flows.js): `title.indexOf("Immigrants") === 0` on a
+  localized string → wrong placeholder in non-English locales. **Fix:** pass an explicit direction flag.
+- **F5 — [Low · Plausible] Stance-impact percent can render `(+-NN%)`.**
+  [emigration-ledger-view.js:122-126](../ui/emigration-ledger-view.js) (+`:138`) and
+  [emigration-detail-views.js:33-38](../ui/emigration-detail-views.js) divide by the *signed* baseline
+  after a hard-coded `"+"`. **Fix:** divide by `Math.abs(neutral)` and take the sign from the impact.
+- **F6 — [Low · Plausible] `breakdownTip` mislabels a non-node origin civ via `|| 0`.**
+  [emigration-network-interact.js:196-198](../ui/emigration-network-interact.js):
+  `scene.centers[scene.byId.get(oid) || 0]` collapses an unknown `oid` to node 0 (shows the first civ).
+  `network-viz.js:300` uses `??` for the same trap. **Fix:** use `??`/`has()` and fall back to the dot's
+  own `originName`.
+- **F7 — [Low · Plausible] `collectPlayerCities` iterates outside its guard.**
+  [emigration-cities.js:236](../ui/emigration-cities.js): the `try` wraps only `getCities()`; the
+  following `for` loop and the caller `collectCitySignals` have no guard, so a truthy-non-iterable return
+  would throw and abort the signal pass. **Fix:** `Array.isArray(cities)` guard or move the loop inside
+  `try`.
+- **F8 — [Low · Plausible] `normalizeViolence` doesn't sanitize numeric maps on load.**
+  [emigration-violence.js:98-108](../ui/emigration-violence.js) copies `byCity`/`lastFrac` straight
+  through; a corrupted save can seed `NaN` for one cycle (self-heals; reads are `isFinite`-guarded).
+  **Fix:** sanitize numeric maps on load as disasters/war do.
+- **L1 — [Low · Confirmed] Lens tooltips emit hardcoded English + raw percentages.**
+  [emigration-prosperity-tooltip.js:44-50](../ui/emigration-prosperity-tooltip.js) (+`:61-67`) and
+  [emigration-ethnicity-tooltip.js:36](../ui/emigration-ethnicity-tooltip.js) (+`:55,88,107`) emit raw
+  English with no `loc()` and format percentages as `Math.round(t*100)+"%"` instead of `Locale.toPercent`.
+  **Fix:** route through `loc()` with LOC keys and the locale percent formatter.
+- **L2 — [Low · Plausible] `dilemma.js` `CHOICES` localized once at module-eval.**
+  [emigration-dilemma.js:37-44](../ui/emigration-dilemma.js) calls `loc(...)` at top-level to build the
+  frozen array, unlike `emigration-quarter-registry.js:52-60` which re-localizes per call. Small impact
+  (UIScripts load after Locale is up). **Fix:** build the choices at call time.
+- **Watch (isolate-cache class, audited separately) — migration-stats reader staleness.**
+  [emigration-migration-stats.js](../ui/emigration-migration-stats.js) `load()` caches `_s` for the module
+  lifetime and, unlike `composition.js`, does not re-read on turn change, so the City Details
+  Departing/Arriving lists can show a frozen snapshot while the co-located Population-origins block stays
+  fresh. Falls in the isolate-cache-reload class (audited clean overall); fix if confirmed = invalidate
+  `_s` when `chartTurn`/`gameTurn()` advances.
+
+### §9 — solution designs
+
+Full designs for the findings above (keyed by ID). Grounded against the code 2026-07-10.
+
+**F1 design — switch gating/decay to the monotonic turn.** Reuse the existing exported
+accessor `monoTurn()` (`emigration-migration-stats.js:569` — returns the monotonic cross-age
+`chartTurn`; already used by `dilemma.js:411`). For each site, `import { monoTurn } from
+"/emigration/ui/emigration-migration-stats.js"` and replace the age-local turn read used
+**for gating/decay** with `monoTurn()`:
+- Persisted-marker sites — move BOTH the read and the marker write to `monoTurn()` together
+  (else a save straddling the change mixes scales): `violence.js:299` (`s.decayTurn`),
+  `disasters.js:391` (`s.decayTurn`), `effects.js:135` (`s.tickedTurn[pid]`),
+  `feedback.js:314` (`s.lastToastTurn`).
+- Module-level markers — in-session read/write only, no persistence concern: `main.js:295`
+  (`lastLocalTurnRun`), `combat.js:60` (`_track[pid].turn`), `feedback.js:837` (`_cueTurn`).
+- **No migration step.** After the switch an old save's persisted marker holds an age-local
+  value smaller than `monoTurn()`, so the first `elapsed` is large-positive → a one-time
+  near-full decay. That is *correct*: a whole age elapsed, so stale siege/disaster distress
+  *should* decay. The existing `Math.max(0, …)` guards already prevent negative-elapsed
+  corruption; add a code comment noting the one-time catch-up is intended.
+- Do NOT touch `state.monoTurn` (a different pool-engine field) or `composition.js` (already
+  mitigated via `Math.abs` in `pruneStale`).
+- **Verify:** raise violence distress via a siege, transition Antiquity→Exploration, confirm
+  (a) the pass runs on the first Exploration turn (not dormant) and (b) distress decays; add a
+  unit test asserting `tickViolence` decays when `monoTurn` advances across a simulated reset.
+- **IMPLEMENTED (revised approach).** The `monoTurn()` route was abandoned: importing
+  migration-stats into these low-level modules pulls in its module-load side effect
+  (`globalThis.EmigrationData = …`) which clobbers test mocks, and every decay unit test drives
+  the clock via `Game.turn` (not `monoTurn`). Shipped the backlog's **fallback** instead —
+  keep `gameTurn()` and rebase the retained marker down when `turn < marker` (age reset):
+  `violence.js`/`disasters.js` (`if (turn < s.decayTurn) s.decayTurn = turn`), `effects.js`
+  (extracted `elapsedSince(map,key,turn)` helper), `combat.js` (`if (t && turn < t.turn) t.turn = turn`),
+  `feedback.js` cooldownOk (`if (s.lastToastTurn > turn) …`) + emitPressureCue (`turn >= last` guard),
+  `main.js` (`if (turn < lastLocalTurnRun) lastLocalTurnRun = turn`). No migration-stats coupling;
+  all 121 tests pass.
+
+**F2 design — clamp the prosperity factor.** ~~`const factor = Math.max(0, 1 + situationalPercent(s) / 100);`~~
+**REVISED — the `Math.max(0, factor)` clamp was wrong.** It also flattened the *intended*
+behavior for a POSITIVE base: a routed city (base=38, violence saturated → factor=−1.2) must
+slide to −45.6 (very unattractive), which the existing `testViolenceSlidesScoreDown` asserts;
+clamping factor to 0 made it 0. The real bug is only the double-negative sign flip. **Shipped:**
+```js
+let p = base * factor;                       // factor = 1 + situationalPercent(s)/100
+if (base < 0 && factor < 0) p = -Math.abs(p); // poor AND besieged: force negative, never a magnet
+```
+This keeps base>0 sliding into negative (−45.6 preserved) and fixes only base<0 × factor<0 →
+spurious positive. **Verify:** `prosperity` harness green; base<0 & factor<0 now yields a
+negative score, `bestDestination` never routes into it.
+
+**R1/R2 design — one return.js correctness pass.**
+- R1 (leak): in `moveReturnees` (`:222-230`), preserve the consumed refugee's `since` so it can
+  be re-queued on `addRural` failure. Add a metadata-returning consume that mirrors the
+  existing rollback helper `consumeOneForReshed` (`refugee-pool.js:261`, returns
+  `{originCiv, since}`); on the `fromPool` branch, if `addRural(homeCity)` fails, restore via
+  `queueRefugees(hostKey, originCiv, since, 1)` (`refugee-pool.js:223`) instead of dropping.
+- R2 (miscount): return/propagate `fromPool` from `moveReturnees` to `planOneReturn` (`:298`)
+  and have `syncSignalsForMove` (`:272`) decrement host `population`/`rural` only when
+  `!fromPool` (pool refugees were never counted host rural residents), mirroring the same
+  asymmetry `moveReturnees` already applies to `removeRural`.
+- **Verify:** a pool-sourced return that then fails `addRural` leaves pool count unchanged
+  (no net population change); host signals are unchanged for a pool-sourced return.
+
+**Low-tail designs:**
+- **F3** `disasters.js:375` `addDistress`: clamp on write —
+  `s.byCity[k] = Math.min(disasterAccumCap, (s.byCity[k] || 0) + amount)` (reuse the
+  `disasterAccumCap` that `stampDisaster` already applies).
+- **F4** `city-flows.js:92`: pass an explicit `isArrivals`/`dir` boolean into the empty-state
+  builder and branch on it, instead of `title.indexOf("Immigrants") === 0`.
+- **F5** `ledger-view.js:122` (`stancePct`) + `detail-views.js:33`: divide by
+  `Math.abs(neutral)` and derive the sign from the impact, so a negative baseline can't
+  render `(+-NN%)`.
+- **F6** `network-interact.js:196`: `const idx = scene.byId.has(oid) ? scene.byId.get(oid) : -1;`
+  then `const node = idx >= 0 ? scene.centers[idx] : null;` (mirror `network-viz.js:300`'s
+  `??`); fall back to the dot's own `originName`, and localize the `"#"+oid` label via `loc()`.
+- **F7** `cities.js:236`: widen the `try` to enclose the `for` loop (or add
+  `if (!Array.isArray(cities)) return;` before iterating) so a `buildSignal` throw can't abort
+  the whole signal pass.
+- **F8** `violence.js:98` `normalizeViolence`: coerce numeric maps to finite on load (reuse the
+  same per-entry sanitizer disasters/war apply) so a corrupted save can't seed `NaN`.
+- **L1** lens tooltips (`prosperity-tooltip.js:44-67`, `ethnicity-tooltip.js:36/55/88/107`):
+  add `LOC_EMIG_*` keys to `text/en_us/ModText.xml` (convention `LOC_EMIG_<AREA>_<NAME>`) and
+  route each string through `loc(key, english)` (`emigration-loc.js`). There is **no**
+  `Locale.toPercent` in the mod — format percentages via `loc()` with a `{n_Pct}` placeholder,
+  the pattern already at `detail-views.js:38`.
+- **L2** `dilemma.js:37`: replace the module-eval `const CHOICES = [...]` with a
+  `function choices() { return [...] }` so `loc()` resolves lazily after `Locale` is live
+  (mirror `quarter-registry.js:52`); call `choices()` where `CHOICES` was read.
+- **Watch** `migration-stats.js`: if confirmed, invalidate the module `_s` cache when
+  `chartTurn`/`gameTurn()` advances so City Details re-reads fresh (isolate-cache class).
+
+**Cross-cutting verify:** run `npm run verify` (lint + syntax + tests) and add/extend unit
+tests for F1 (decay across simulated age reset), F2 (clamp), and R1/R2 (pool restore /
+signal parity) — the mod already gates new tests through `verify` + `test:js`.

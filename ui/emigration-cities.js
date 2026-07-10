@@ -226,16 +226,17 @@ function eligiblePlayer(pid) {
  * @param {CitySignal[]} out Accumulator.
  */
 function collectPlayerCities(player, isCityState, out) {
-  let cities;
   try {
-    cities = player.Cities?.getCities?.();
+    const cities = player.Cities?.getCities?.();
+    if (!Array.isArray(cities)) return;
+    // F7: iterate inside the guard so a buildSignal throw can't abort the whole
+    // signal pass (contract is "degrade, don't throw").
+    for (const c of cities) {
+      const sig = buildSignal(c, player, isCityState);
+      if (sig) out.push(sig);
+    }
   } catch (_) {
-    return;
-  }
-  if (!cities) return;
-  for (const c of cities) {
-    const sig = buildSignal(c, player, isCityState);
-    if (sig) out.push(sig);
+    /* degrade: skip this player's cities */
   }
 }
 

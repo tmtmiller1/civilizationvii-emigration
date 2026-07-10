@@ -13,6 +13,7 @@
 // one neutral "Unknown" bucket. Reads only; never touches the pass.
 
 import { registerLensHoverPanel, cityTitle } from "/emigration/ui/emigration-lens-hover-panel.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
 import { tilesForCity } from "/emigration/ui/emigration-ethnicity-tiles.js";
 import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
@@ -33,7 +34,7 @@ function capRows(parts) {
   const head = parts.slice(0, MAX_ROWS - 1);
   const tail = parts.slice(MAX_ROWS - 1);
   const tailShare = tail.reduce((sum, p) => sum + (p.share || 0), 0);
-  head.push({ name: "+" + tail.length + " more", color: FALLBACK_HEX, share: tailShare });
+  head.push({ name: loc("LOC_EMIG_ETH_MORE", "+{1_Count} more", tail.length), color: FALLBACK_HEX, share: tailShare });
   return head;
 }
 
@@ -52,7 +53,7 @@ function partsFromShares(shares) {
     if (civHidden(c.civ)) unknown += c.share;
     else parts.push({ name: civAdjective(c.civ), color: civDisplayColor(c.civ, FALLBACK_HEX), share: c.share });
   }
-  if (unknown > 0) parts.push({ name: "Unknown", color: FALLBACK_HEX, share: unknown });
+  if (unknown > 0) parts.push({ name: loc("LOC_EMIG_ETH_UNKNOWN", "Unknown"), color: FALLBACK_HEX, share: unknown });
   parts.sort((a, b) => b.share - a.share);
   return capRows(parts);
 }
@@ -85,7 +86,7 @@ function cityParts(city) {
   if (comp && comp.civs && comp.civs.length) return partsFromShares(comp.civs);
   const owner = city && typeof city.owner === "number" ? city.owner : null;
   if (owner == null) return null;
-  if (civHidden(owner)) return [{ name: "Unknown", color: FALLBACK_HEX, share: 1 }];
+  if (civHidden(owner)) return [{ name: loc("LOC_EMIG_ETH_UNKNOWN", "Unknown"), color: FALLBACK_HEX, share: 1 }];
   return [{ name: civAdjective(owner), color: civDisplayColor(owner, FALLBACK_HEX), share: 1 }];
 }
 
@@ -102,10 +103,10 @@ function resolve(sig, _snap, plot) {
   const local = tileShares(city, plot);
   const parts = local ? partsFromShares(local) : cityParts(city);
   if (!parts || !parts.length) return null;
-  const base = cityTitle(city, "Ethnic Composition");
+  const base = cityTitle(city, loc("LOC_EMIG_ETH_TITLE", "Ethnic Composition"));
   return {
-    title: local ? base + " · this tile" : base,
-    rows: parts.map((p) => ({ color: p.color, name: p.name, value: Math.round(p.share * 100) + "%" }))
+    title: local ? base + loc("LOC_EMIG_ETH_TILE_SUFFIX", " · this tile") : base,
+    rows: parts.map((p) => ({ color: p.color, name: p.name, value: loc("LOC_EMIG_PCT", "{1_Pct}%", Math.round(p.share * 100)) }))
   };
 }
 
