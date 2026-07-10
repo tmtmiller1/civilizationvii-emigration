@@ -35,7 +35,7 @@ import { runChecks, pickPreviewOrigin, errMsg } from "/emigration/ui/emigration-
 const SCREEN_ID = "screen-emigration-selftest";
 // Kept in sync with emigration.modinfo <Version>; shown in the bug-report snapshot so a report names the
 // build. Bump alongside the modinfo version on release.
-const MOD_VERSION = "2.0.6";
+const MOD_VERSION = "2.0.7";
 const DBG = false;
 /** Error logger; always emits. @param {...*} a */
 function derr(...a) {
@@ -100,12 +100,12 @@ function syntheticEnclaveView(origin) {
 
 /**
  * Force the Cultural-Enclave decision pop-up. SPOOFS the requirements: it builds a synthetic decision
- * and shows it via the real (now mouse-guard-backed, clickable) modal — so it always fires, even with no
- * foreign community. Closes this screen first so the modal isn't layered behind it. Applies nothing.
+ * and shows it via the real showDilemma path — the game's own native dialog, so its buttons are always
+ * clickable — so it always fires, even with no foreign community. Applies nothing.
  */
 function forceEnclavePopup() {
-  // The dilemma is a ContextManager screen, so it stacks ON TOP of this one (no pop-then-push race);
-  // closing it returns here. deferSafe guards against any throw crashing the game via a timer.
+  // The decision renders in the engine's native dialog queue, which layers above this self-test screen;
+  // dismissing it returns here. deferSafe guards against any throw crashing the game via a timer.
   deferSafe(() => {
     const view = syntheticEnclaveView(pickPreviewOrigin());
     showDilemma(view, (id) =>
