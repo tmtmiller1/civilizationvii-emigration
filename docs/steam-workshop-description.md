@@ -12,7 +12,7 @@ As part of creating [i]Emigration[/i], I donated to the International Refugee As
 
 [b]100 subscribers:[/b] Donated $100 to the International Refugee Assistance Project.
 [b]50 subscribers:[/b] Donated $50 to Médecins Sans Frontières.
-[b]25 subscribers:[/b] Donated $25 donation to the International Rescue Committee.
+[b]25 subscribers:[/b] Donated $25 to the International Rescue Committee.
 [b]10 subscribers:[/b] I will mark this milestone by pledging one hour of volunteer time for a refugee-support, humanitarian, or mutual-aid organization.
 [b]Release donation:[/b] When I uploaded [i]Emigration[/i], I made an initial donation to the International Refugee Assistance Project.
 
