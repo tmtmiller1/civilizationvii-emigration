@@ -7,32 +7,12 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
-## [2.2.0] - 2026-07-10
+## [2.0.5] - 2026-07-10
 
-Network-tab consolidation and a rebuilt playback timeline.
-
-### Changed
-- **Network tab consolidated into one diagram.** The separate "Flows" sub-view (and the Dots/Flows
-  switcher) is gone. The Dots view's old "Origins" toggle is now **"Migrant flows"**, and instead of
-  simple origin lines it overlays the Flows view's green/red arrow system (red where people leave,
-  green where they arrive; thicker = more migrants) directly on the dots — one diagram with both
-  capabilities. The arrows honour the active isolate / focus / scope filters, and the "How to read
-  this" note was updated to match. Arrow amount-tooltips and the click-to-expand/drag interactions
-  from the old Flows view are dropped (the dots keep their own tooltips). The arrow renderer was
-  lifted into `emigration-network-flow-arrows.js`.
-- **Timeline/playback controls rebuilt.** The play/pause button is now CSS-drawn (a triangle vs two
-  bars) instead of a glyph — the pause glyph rendered as invisible tofu in-game, which looked like the
-  button vanishing. Added a visible track with a gold progress fill and a bright playhead line + knob,
-  a denser year scale (~12 labelled ticks + fine minor ticks), and hid a stray "0" the native slider
-  drew on the line.
-
-## [2.1.0] - 2026-07-10
-
-Migration-network display, population-percentage clarity, and cultural-enclave
-reachability fixes, from a player report ("only 4 of my 12 settlements show", "the
-percentages differ by scaled vs civ population", "I never get an enclave pop-up
-though the AI seems to"). Also fixes the decision modals being unclickable and adds
-an on-screen self-test harness for verifying the mod in-game without a dev console.
+Everything since the last Workshop release (2.0.4), shipped together: migration-network
+display and population-percentage fixes, cultural-enclave reachability, clickable decision
+modals, an on-screen self-test harness, notification-delivery fixes with full volume control,
+the consolidated one-diagram Network tab, and a rebuilt playback timeline.
 
 ### Added
 - **On-screen self-test harness (no dev console needed).** A new `On-screen self-test panel`
@@ -43,92 +23,67 @@ an on-screen self-test harness for verifying the mod in-game without a dev conso
   the force option — plus actions to **run a migration pass**, **force the enclave decision**,
   **force a refugee dilemma**, **fire test/all notifications**, **open the dashboard**, and
   **copy a screenshot-friendly bug-report snapshot** (version + every check + key settings).
-  Lets a player confirm each fix — and report issues with an actionable snapshot — without a
-  developer console. Off by default; takes effect after reloading the save.
+  Off by default; takes effect after reloading the save.
 - **Every settlement now draws on the migration network, and carries its population.**
   A pop-poor settlement that earns zero dots at the current scale kept a radius of 0
   and was skipped by the canvas (and its label), so only the largest few civ cities
   showed. City sub-cluster radius is now floored (`MIN_CITY_SUB_R`) and a dotless
   settlement's `bornFrame` is set finite, so all settlements render regardless of dot
-  count. Additionally, any settlement that HAS population now gets at least one dot
-  (the dot-count analog of the radius floor), so a freshly-founded (or otherwise
-  sub-`unit`) settlement shows its initial population instead of an empty disc. The
-  Flow view's dot scale also honors the Civ Pop toggle now (it was ignored).
+  count. Additionally, any settlement that HAS population now gets at least one dot, so
+  a freshly-founded (or otherwise sub-`unit`) settlement shows its initial population
+  instead of an empty disc.
 - **Cultural-enclave progress in the City Details panel.** When no enclave is
   settled, the panel shows the lead foreign origin's share vs the forming
   threshold — "awaits your decision" once it qualifies, or how far it must still
-  climb — instead of the bare "no enclave has taken root". The number is read from
-  the same base the mechanic uses, so it always matches whether an enclave forms.
+  climb — read from the same base the mechanic uses, so it always matches.
 - **Enclave tunables + a Force option.** `Enclaves: minimum population` (the
   previously-hidden hard stock floor), `Enclaves: stickiness` (how strongly a
   foothold community resists integrating away so it can reach the bar), and
-  `Enclaves: force the next decision` (a testing aid that offers your best
-  qualifying enclave immediately, skipping the dwell/throttle waits).
-
-### Fixed
-- **Decision modals were unclickable (refugee dilemma + Cultural-Enclave decision).** The shared modal
-  was a HUD DOM overlay relying on `ViewManager.isWorldInputAllowed`; on this build that does NOT free
-  its buttons for input (only a ContextManager mouse guard does), so the choices could not be clicked —
-  the player could only press Escape. The modal is now a real base-UI screen pushed with
-  `createMouseGuard: true` (like the dashboard), so its buttons receive clicks. Same fix replaces the
-  hand-drawn ✕ (which rendered as a stray glyph) with the engine's native close button, and centres the
-  panel absolutely (flexbox centring drifted off-screen). Escape / ✕ / clicking outside still resolve as
-  the dismiss option, exactly as before.
-- **Flow-pie percentages shifted with the Scaled/Civ Pop toggle.** Each slice's %
-  was recomputed from whichever measure the toggle selected. Percentages are now
-  always the raw pop-points share (the base the enclave threshold uses); the toggle
-  changes only the displayed count, not the share.
-- **Human enclaves effectively never fired in normal play.** Integration drift kept
-  pulling a foreign minority back below the enclave bar before it could establish,
-  and the only hard gate (min stock) wasn't tunable. Enclave stickiness (default on)
-  lets a real diaspora climb from foothold to established; default share lowered
-  0.35 → 0.30 and default min stock 5 → 3. (The "AI is getting them" the report saw
-  was the all-civ chronicle *milestone* line, not an AI decision — no AI civ ever
-  gets the enclave decision; only the local human does.)
-
-### Changed
-- **Units toggle now explains itself.** Hover tips on Scaled Pop / Civ Pop spell out
-  why the two differ and why Civ Pop looks steady while Scaled Pop drifts with the
-  age (Civ Pop = exact discrete city size; Scaled Pop = historical headcount).
-- **Notification volume is fully controllable.** The anti-spam filtering (why quiet
-  games show few toasts) is tunable via the existing `Notifications` mode
-  (Off / Important / Verbose) and `minimum gap` cooldown (0 = every event); a new
-  `Notifications: world refugee news` toggle exposes the previously-hardcoded
-  other-civ crisis alerts. The self-test's "Run a migration pass" now also fires the
-  real notification feedback (with the throttle relaxed), so notifications can be
-  verified end-to-end in a quiet game.
-
-## [2.0.5] - 2026-07-08
-
-Notification delivery fixes (z-order, first-turn suppression) plus a new
-immigration notification, and enclave/refugee pop-up polish.
-
-### Added
+  `Enclaves: force the next decision` (a testing aid).
 - **Immigration notifications.** Inbound counterpart to the existing loss/crisis
   notifications: when a notable inbound wave settles in a local city, log an entry
   and toast the largest, themed by cause and naming the (unmet-masked) origin civ.
-  Fires on arrival. One-point trickles stay quiet (`inboundNotifyPoints`); the
-  shared cooldown applies; own losses and world crises keep toast priority.
 
 ### Fixed
-- **Toast rendered below the HUD.** `z-index:99` sat under `#uinext-tooltips` /
-  `#uinext-dropdowns` (`10000`); raised to `10001`. Toast font size no longer
-  depends on the dashboard `--dg-*` vars (undefined in the HUD document); explicit
-  fallbacks added.
-- **First `notifyCooldownTurns` turns suppressed all important notifications.** The
-  cooldown seeded its last-toast turn to 0 and treated it as a real toast; "never
-  toasted" now always permits the first, cooldown applies thereafter.
-- **Decision pop-up choice note didn't wrap.** The consequence note is rendered in
-  a `<button>`, which GameFace doesn't wrap by default; added `white-space:normal`
-  + `min-width:0` (+ `overflow-wrap` on label/note). CSS only.
-- **Decision pop-up dismiss/focus hardening.** Added a ✕ dismiss button (resolves
-  the dismiss option, as Escape / click-outside) and focus capture/restore on
-  open/close; retains the 1.8.1 world-input handling. Unverified in-game.
-- **Dashboard could show a stale "Unmet" origin for one frame.** The per-turn memo
-  keyed on met-major *count*, so a same-turn meet+death (net count unchanged) could
-  serve one masked render; now keyed on the met *set*.
+- **Decision modals were unclickable (refugee dilemma + Cultural-Enclave decision).** The shared
+  modal was a HUD DOM overlay relying on `ViewManager.isWorldInputAllowed`; on this build that does
+  NOT free its buttons for input (only a ContextManager mouse guard does), so the choices could not
+  be clicked. The modal is now a real base-UI screen pushed with `createMouseGuard: true`, so its
+  buttons receive clicks; the hand-drawn ✕ is replaced with the engine's native close button, and the
+  panel is centred absolutely. Escape / ✕ / clicking outside still resolve as the dismiss option.
+- **Flow-pie percentages shifted with the Scaled/Civ Pop toggle.** Percentages are now always the raw
+  pop-points share (the base the enclave threshold uses); the toggle changes only the displayed count.
+- **Human enclaves effectively never fired in normal play.** Integration drift kept pulling a foreign
+  minority back below the enclave bar before it could establish. Enclave stickiness (default on) lets a
+  real diaspora climb from foothold to established; default share lowered 0.35 → 0.30 and min stock 5 → 3.
+  (The "AI is getting them" some players saw was the all-civ chronicle *milestone* line, not an AI
+  decision — no AI civ gets the enclave decision; only the local human does.)
+- **Toast rendered below the HUD.** `z-index:99` sat under the game's tooltips/dropdowns (`10000`);
+  raised to `10001`, with explicit font-size fallbacks for the HUD document.
+- **First `notifyCooldownTurns` turns suppressed all important notifications.** The cooldown seeded its
+  last-toast turn to 0 and treated it as a real toast; "never toasted" now always permits the first.
+- **Decision pop-up choice note didn't wrap.** Added `white-space:normal` + `min-width:0` (GameFace
+  doesn't wrap `<button>` text by default).
+- **Dashboard could show a stale "Unmet" origin for one frame.** The per-turn memo now keys on the met
+  *set* rather than the met-major *count*.
 
 ### Changed
+- **Network tab consolidated into one diagram.** The separate "Flows" sub-view (and the Dots/Flows
+  switcher) is gone. The Dots view's old "Origins" toggle is now **"Migrant flows"**, and instead of
+  simple origin lines it overlays the green/red arrow system (red where people leave, green where they
+  arrive; thicker = more migrants) directly on the dots — one diagram with both capabilities. The
+  arrows honour the active isolate / focus / scope filters, and the "How to read this" note was updated
+  to match. Arrow amount-tooltips and the click-to-expand/drag interactions from the old Flows view are
+  dropped (the dots keep their own tooltips).
+- **Timeline/playback controls rebuilt.** The play/pause button is now CSS-drawn (a triangle vs two
+  bars) instead of a glyph — the pause glyph rendered as invisible tofu in-game, which looked like the
+  button vanishing. Added a visible track with a gold progress fill and a bright playhead line + knob,
+  a denser year scale (~12 labelled ticks + fine minor ticks), and hid a stray "0" the native slider drew.
+- **Units toggle now explains itself.** Hover tips on Scaled Pop / Civ Pop spell out why the two
+  differ and why Civ Pop looks steady while Scaled Pop drifts with the age.
+- **Notification volume is fully controllable.** The anti-spam filtering is tunable via the
+  `Notifications` mode (Off / Important / Verbose) and `minimum gap` cooldown (0 = every event); a new
+  `Notifications: world refugee news` toggle exposes the previously-hardcoded other-civ crisis alerts.
 - Enclave flavour quote `0.85rem` → `0.8rem`.
 
 ## [2.0.4] - 2026-07-08
