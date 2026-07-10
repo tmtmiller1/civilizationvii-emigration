@@ -920,5 +920,22 @@
         <Replace Tag="LOC_EMIG_GUIDE_12_F3_A" Language="pl_PL"><Text>Najwyżej dwie w całym twoim imperium — ale to NA cywilizację, nie łącznie. Możesz mieć jednocześnie dwie enklawy rzymskie, dwie normańskie i dwie han; osiągnięcie limitu dla jednego pochodzenia nigdy nie blokuje innego. Inny lud przejmujący pole istniejącej enklawy to zmiana właściciela (Kronika ją odnotowuje i wybierasz ponownie), a nie trzecia dołożona enklawa.</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_Q" Language="pl_PL"><Text>Co się dzieje, gdy wypowiem wojnę ojczyźnie enklawy?</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_A" Language="pl_PL"><Text>Enklawa staje się "sporna": niewielkie, ograniczone obciążenie zadowolenia na czas trwania wojny, ujęte jako wojenny niepokój miasta spadający na rodziny, które nie wybrały tej walki — a nie jako nielojalność enklawy. Uspokaja się ponownie, gdy wróci pokój.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_MAGNET" Language="pl_PL"><Text>Strong magnet</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_ABOVE" Language="pl_PL"><Text>Above average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_AVG" Language="pl_PL"><Text>About average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_BELOW" Language="pl_PL"><Text>Below average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_SHEDDING" Language="pl_PL"><Text>Shedding population</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_ATTACK" Language="pl_PL"><Text>Under attack</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_SIEGE" Language="pl_PL"><Text>Besieged</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_DISASTER" Language="pl_PL"><Text>Disaster</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_PLAGUE" Language="pl_PL"><Text>Plague</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_STARVING" Language="pl_PL"><Text>Starving</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_UNREST" Language="pl_PL"><Text>Unrest</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_MORE" Language="pl_PL"><Text>+{1_Count} more</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_UNKNOWN" Language="pl_PL"><Text>Unknown</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TITLE" Language="pl_PL"><Text>Ethnic Composition</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TILE_SUFFIX" Language="pl_PL"><Text>· this tile</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT" Language="pl_PL"><Text>{1_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT_SIGNED" Language="pl_PL"><Text>{1_Pct}%</Text></Replace>
     </LocalizedText>
 </Database>

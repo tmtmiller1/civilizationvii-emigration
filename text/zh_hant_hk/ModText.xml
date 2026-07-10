@@ -920,5 +920,22 @@
         <Replace Tag="LOC_EMIG_GUIDE_12_F3_A" Language="zh_Hant_HK"><Text>在你整個帝國中最多兩處——但這是「每個文明」計算，而非總數。你可同時擁有兩處羅馬、兩處諾曼和兩處漢的聚居區；某一來源達到上限絕不會阻礙另一個來源。若有不同民族取代了某現有聚居區的地塊，那屬易主（編年史會記下，而你需重新抉擇），而非第三處疊加的聚居區。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_Q" Language="zh_Hant_HK"><Text>如果我與某聚居區的故土開戰會怎樣？</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_A" Language="zh_Hant_HK"><Text>聚居區會轉為「爭議」狀態：在戰爭持續期間帶來一份微小、設有上限的幸福度壓力，其構想是城市在戰時的不安落在了那些並未選擇這場戰爭的家族身上——而非聚居區不忠。一旦和平重臨，它便會再度安定下來。</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_MAGNET" Language="zh_Hant_HK"><Text>Strong magnet</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_ABOVE" Language="zh_Hant_HK"><Text>Above average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_AVG" Language="zh_Hant_HK"><Text>About average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_BELOW" Language="zh_Hant_HK"><Text>Below average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_SHEDDING" Language="zh_Hant_HK"><Text>Shedding population</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_ATTACK" Language="zh_Hant_HK"><Text>Under attack</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_SIEGE" Language="zh_Hant_HK"><Text>Besieged</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_DISASTER" Language="zh_Hant_HK"><Text>Disaster</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_PLAGUE" Language="zh_Hant_HK"><Text>Plague</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_STARVING" Language="zh_Hant_HK"><Text>Starving</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_UNREST" Language="zh_Hant_HK"><Text>Unrest</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_MORE" Language="zh_Hant_HK"><Text>+{1_Count} more</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_UNKNOWN" Language="zh_Hant_HK"><Text>Unknown</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TITLE" Language="zh_Hant_HK"><Text>Ethnic Composition</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TILE_SUFFIX" Language="zh_Hant_HK"><Text>· this tile</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT" Language="zh_Hant_HK"><Text>{1_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT_SIGNED" Language="zh_Hant_HK"><Text>{1_Pct}%</Text></Replace>
     </LocalizedText>
 </Database>

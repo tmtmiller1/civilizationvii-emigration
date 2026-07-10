@@ -33,15 +33,22 @@ const STATE_SCHEMA_VERSION = 2;
 const MAX_SPREE_CIVS = 64;
 const MAX_SPREE_EVENTS_PER_CIV = 32;
 
-/** The choices offered, with a one-line consequence cue. */
-const CHOICES = [
-  { id: "welcome", label: loc("LOC_EMIG_DIL_WELCOME_LABEL", "Welcome them in"),
-    note: loc("LOC_EMIG_DIL_WELCOME_NOTE", "A cost in gold and some short-term strain on your people; they settle among you and, in time, become your people.") },
-  { id: "frontier", label: loc("LOC_EMIG_DIL_FRONTIER_LABEL", "Settle the frontier"),
-    note: loc("LOC_EMIG_DIL_FRONTIER_NOTE", "A smaller cost in gold; send them to a smaller town to make a new start.") },
-  { id: "away", label: loc("LOC_EMIG_DIL_AWAY_LABEL", "Turn them away"),
-    note: loc("LOC_EMIG_DIL_AWAY_NOTE", "A cost in international standing now; they move on down the road, their burden not yours to carry.") }
-];
+/**
+ * The choices offered, with a one-line consequence cue. Built at call time (not
+ * module-eval) so loc() resolves after Locale is live (L2) — mirrors
+ * emigration-quarter-registry.js.
+ * @returns {{id:string, label:string, note:string}[]} The offered choices.
+ */
+function choices() {
+  return [
+    { id: "welcome", label: loc("LOC_EMIG_DIL_WELCOME_LABEL", "Welcome them in"),
+      note: loc("LOC_EMIG_DIL_WELCOME_NOTE", "A cost in gold and some short-term strain on your people; they settle among you and, in time, become your people.") },
+    { id: "frontier", label: loc("LOC_EMIG_DIL_FRONTIER_LABEL", "Settle the frontier"),
+      note: loc("LOC_EMIG_DIL_FRONTIER_NOTE", "A smaller cost in gold; send them to a smaller town to make a new start.") },
+    { id: "away", label: loc("LOC_EMIG_DIL_AWAY_LABEL", "Turn them away"),
+      note: loc("LOC_EMIG_DIL_AWAY_NOTE", "A cost in international standing now; they move on down the road, their burden not yours to carry.") }
+  ];
+}
 
 /**
  * @typedef {{spree: Record<string, {turn:number, victim:number, points:number}[]>,
@@ -391,7 +398,7 @@ function dilemmaView(d, turn) {
   const instigator = typeof d.instigator === "number" ? narrativeCiv(d.instigator) : origin;
   const people = formatPeopleExact(scaleCityPopulation(d.points, turn, "dilemma" + d.origin));
   const prompt = dilemmaPrompt({ kind: d.kind, instigator, origin, people, seed: "d" + d.origin + turn });
-  return { title: prompt.title, body: prompt.body, choices: CHOICES };
+  return { title: prompt.title, body: prompt.body, choices: choices() };
 }
 
 /**
@@ -443,7 +450,7 @@ export const __test = {
   canFire,
   detectConquestDilemma,
   detectPlagueDilemma,
-  CHOICES,
+  choices,
   readStateForTest: () => state(),
   persistStateForTest: () => persist(),
   loadStateForTest: () => loadState()

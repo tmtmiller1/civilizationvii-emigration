@@ -193,7 +193,11 @@ function breakdownTip(scene, title, keep) {
   const rows = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6);
   let html = `<b>${esc(title)}</b>`;
   for (const [oid, n] of rows) {
-    const node = scene.centers[scene.byId.get(oid) || 0];
+    // F6: an oid that isn't a current node must NOT collapse to index 0 (that showed
+    // the first civ's name/colour). get() returns undefined for a missing id → null node,
+    // so the neutral fallbacks below apply.
+    const idx = scene.byId.get(oid);
+    const node = typeof idx === "number" ? scene.centers[idx] : null;
     const color = (node && node.color) || "#9fb6c6";
     const name = (node && node.name) || ("#" + oid);
     html += `<br><span class="emig-netc-tip-sw" style="background:${esc(color)}"></span>` +

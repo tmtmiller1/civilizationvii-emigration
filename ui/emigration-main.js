@@ -293,6 +293,10 @@ function onTurnActivated(data) {
     chargePerTurnCosts(who, local);
     if (who !== local) return;
     const turn = typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
+    // F1: Game.turn resets to a low value at each age boundary. Without this rebase the
+    // gate `turn - lastLocalTurnRun` would stay below the interval for most of the new age
+    // (the pass going dormant) until the turn climbs back past the prior age's last run.
+    if (turn < lastLocalTurnRun) lastLocalTurnRun = turn;
     if (turn - lastLocalTurnRun < CONFIG.turnInterval) return;
     lastLocalTurnRun = turn;
     doPass("turn " + turn);

@@ -31,7 +31,9 @@ function el(tag, cls, text) {
 function stanceDetailText(r) {
   if (r.key === "none") return loc("LOC_EMIG_DV_STANCE_NONE", "No border policy, migration unaffected.");
   const neutralIn = r.in - r.inImpact;
-  const pct = Math.abs(neutralIn) > 0 ? Math.round((Math.abs(r.inImpact) / neutralIn) * 100) : 0;
+  // F5: divide by the magnitude of the baseline; pct is a magnitude and the +/− is
+  // supplied by the branch below (a signed divisor could render "(+-NN%)").
+  const pct = Math.abs(neutralIn) > 0 ? Math.round((Math.abs(r.inImpact) / Math.abs(neutralIn)) * 100) : 0;
   /** @type {string[]} */
   const parts = [];
   if (r.inImpact > 0) {

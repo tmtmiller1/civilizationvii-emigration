@@ -274,6 +274,19 @@ export function consumeForReturn(cityKey, originCiv) {
 }
 
 /**
+ * Consume one held refugee of a specific origin for return migration, preserving
+ * origin metadata for rollback (mirrors consumeOneForReshed). Lets a caller
+ * re-queue the exact refugee — with its original `since` — if the move can't land.
+ * @param {string} cityKey City signal key.
+ * @param {number} originCiv Origin civ to return.
+ * @returns {{originCiv:number, since:number}|null} The consumed refugee metadata, or null.
+ */
+export function consumeOneForReturn(cityKey, originCiv) {
+  if (!cityKey || typeof originCiv !== "number") return null;
+  return popOldest(cityKey, (/** @type {string} */ o) => Number(o) === originCiv);
+}
+
+/**
  * How many held refugees are old enough to settle this turn.
  * @param {string} cityKey City signal key.
  * @param {number} turn Current monotonic turn.

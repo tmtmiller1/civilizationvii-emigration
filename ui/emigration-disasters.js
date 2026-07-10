@@ -375,7 +375,11 @@ export function worstDisasterTypeForOwner(owner) {
 export function addDistress(cityKey, amount) {
   if (!CONFIG.disastersEnabled || !cityKey || !(amount > 0)) return;
   const s = state();
-  s.byCity[cityKey] = (s.byCity[cityKey] || 0) + amount;
+  // F3: clamp to disasterAccumCap like stampDisaster, so repeated migrant-borne
+  // plague can't push stored distress above the cap (and decay back slower).
+  const cap = CONFIG.disasterAccumCap;
+  const cur = s.byCity[cityKey] || 0;
+  s.byCity[cityKey] = cap > 0 ? Math.min(cap, cur + amount) : cur + amount;
   persist();
 }
 
@@ -388,6 +392,9 @@ export function tickDisasters() {
   if (!CONFIG.disastersEnabled) return;
   const s = state();
   const turn = gameTurn();
+  // F1: rebase the decay clock down when Game.turn resets at an age boundary, so distress
+  // decay resumes in the new age instead of freezing until the turn climbs back.
+  if (turn < s.decayTurn) s.decayTurn = turn;
   const elapsed = Math.max(0, turn - s.decayTurn);
   if (elapsed > 0) {
     const factor = Math.pow(speedDecay(CONFIG.disasterDecay), elapsed);
