@@ -139,12 +139,18 @@
         <Replace Tag="LOC_EMIG_T_QUARTERS_D" Language="zh_Hant_HK"><Text>當外來族裔在你的某座城市中發展為穩固的社區時，會提供一次性選擇（接納、徵稅或放任），帶來小幅產出獎勵與懲罰，並按城市記錄一處持久的街區；當你與其母國交戰時，該街區會變為「爭議」狀態（小幅幸福度負擔）。關閉＝沒有街區決策，也沒有爭議負擔。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSHARE" Language="zh_Hant_HK"><Text>Enclaves: share to form</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSHARE_D" Language="zh_Hant_HK"><Text>How much of a city a single foreign origin must make up before it can become a Cultural Enclave. Higher = rarer enclaves, as fewer cities ever qualify.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QMINSTOCK" Language="zh_Hant_HK"><Text>Enclaves: minimum population</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QMINSTOCK_D" Language="zh_Hant_HK"><Text>The smallest standing population (in city-size points) a single foreign origin must reach before it can form a Cultural Enclave, so a tiny community can't qualify on share alone. Lower = small settlements can host enclaves too.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSTICKY" Language="zh_Hant_HK"><Text>Enclaves: stickiness</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSTICKY_D" Language="zh_Hant_HK"><Text>How strongly a foreign community that has reached a foothold resists blending into the host, so it can grow into a full enclave instead of being absorbed first. Stronger = enclaves form more readily; Off = communities integrate at the normal rate and rarely reach the enclave threshold.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QDWELL" Language="zh_Hant_HK"><Text>Enclaves: persistence before offer</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QDWELL_D" Language="zh_Hant_HK"><Text>How many turns an established community must persist before its one-time enclave decision is offered, so a brief spike (such as a war-refugee wave that later moves on) never triggers a permanent enclave. A short dip below the threshold is forgiven. 0 = offer as soon as the community forms.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCOOLDOWN" Language="zh_Hant_HK"><Text>Enclaves: turns between decisions</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCOOLDOWN_D" Language="zh_Hant_HK"><Text>Minimum turns between two Cultural Enclave decisions. Higher = the offers are spaced further apart.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCAP" Language="zh_Hant_HK"><Text>Enclaves: decisions per age</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCAP_D" Language="zh_Hant_HK"><Text>The most Cultural Enclave decisions that can be offered in a single age. Lower = fewer enclave choices each age.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QFORCE" Language="zh_Hant_HK"><Text>Enclaves: force the next decision</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QFORCE_D" Language="zh_Hant_HK"><Text>Testing aid. While on, your largest qualifying foreign community is offered its Cultural Enclave decision right away, skipping the persistence wait, the per-age limit, and the wait behind other events, and accepting a community that has only reached a foothold. It still needs the minimum population. Turn off once you've seen the decision.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="zh_Hant_HK"><Text>災害：驅動遷徙</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="zh_Hant_HK"><Text>讓環境災害（洪水、火山、瘟疫……）將人口逐出受災城市，成為氣候/災害難民，與戰爭和不滿並列。關閉 = 災害不影響遷徙。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="zh_Hant_HK"><Text>災害：每點苦難的移民（%）</Text></Replace>
@@ -167,12 +173,16 @@
         <Replace Tag="LOC_EMIG_T_DNOTIFYMODE_D" Language="zh_Hant_HK"><Text>哪些災害會在畫面上彈出（通知記錄無論如何都會保留每一個嚴重者）：0 = 關閉，僅記錄；1 = 僅襲擊聚落、因而確實會驅動遷徙的災害（預設）；2 = 任何達到或高於最低嚴重度的災害。可與「最低災害嚴重度」搭配，調整怎樣才算夠嚴重。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD" Language="zh_Hant_HK"><Text>通知：最小間隔（回合）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD_D" Language="zh_Hant_HK"><Text>重要通知之間的最少回合數，避免扎堆。0 = 無限制。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLDNEWS" Language="zh_Hant_HK"><Text>Notifications: world refugee news</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLDNEWS_D" Language="zh_Hant_HK"><Text>Show "world news" alerts when another civilization hits a major refugee crisis. Off = only notifications about your own settlements. On by default.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD" Language="zh_Hant_HK"><Text>通知：難民危機閾值</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD_D" Language="zh_Hant_HK"><Text>一個文明（累計）須使多少人流離失所才觸發難民危機標題，每越過一個倍數觸發一次，因此長期戰爭只產生幾則標題，而非每回合一則。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="zh_Hant_HK"><Text>各城市遷徙概覽</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="zh_Hant_HK"><Text>按需顯示一個面板，說明所選聚落為何增減人口：主要原因、居民被吸引的去向、融入成本，以及你能採取的對策。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE" Language="zh_Hant_HK"><Text>讀出面板：近期趨勢迷你圖</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE_D" Language="zh_Hant_HK"><Text>在城市讀出面板中加入一小條柱狀圖，顯示最近幾輪的淨遷徙（綠色代表增加，紅色代表減少），讓你一眼看出情況是變好還是變壞。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SELFTEST" Language="zh_Hant_HK"><Text>On-screen self-test panel</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SELFTEST_D" Language="zh_Hant_HK"><Text>Show a floating "Self-Test" button in-game that runs live diagnostics for the reported issues (settlement coverage, cultural enclaves, the two population measures, notifications, persistence) and can force the enclave pop-up and a test toast on demand — no developer console needed. For troubleshooting; leave off for normal play. Takes effect after reloading the save.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION" Language="zh_Hant_HK"><Text>出口：無處可逃時的損耗</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION_D" Language="zh_Hant_HK"><Text>防止遷徙成為封閉系統：被困、嚴重受難的城市（圍城、饑荒、激烈暴力或災害）若無可行去處便會失去人口，人們會死亡或四散，而非永遠滯留。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRDISTRESS" Language="zh_Hant_HK"><Text>出口：損耗所需的苦難（%）</Text></Replace>
@@ -205,6 +215,8 @@
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="zh_Hant_HK"><Text>{1_People}逃離了{2_City}周邊的戰火。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="zh_Hant_HK"><Text>{2_City}易手時，{1_People}被擄走。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="zh_Hant_HK"><Text>單位：</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_CIV_TIP" Language="zh_Hant_HK"><Text>Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city actually grows, so this figure looks steady. Shares and percentages are always measured on this base.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_SCALED_TIP" Language="zh_Hant_HK"><Text>Scaled Pop: a historically-scaled "people" headcount for flavour. It drifts upward as an age progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="zh_Hant_HK"><Text>在 Civ 自身的人口數值與按比例縮放的人數之間切換</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="zh_Hant_HK"><Text>回放時間線會在數個回合後出現，待累積足夠的人口歷史可供拖曳檢視。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="zh_Hant_HK"><Text>{1_People}在災難過後逃離了{2_City}。</Text></Replace>
@@ -309,6 +321,7 @@
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="zh_Hant_HK"><Text>編年史與難民抉擇</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="zh_Hant_HK"><Text>移民編年史位於儀表板的專屬標籤頁，將世界上的大遷徙寫成簡短的歷史：被戰爭或災害清空的城市、在遠離故鄉之地扎根的離散族群、在故土復甦後歸來的人們。逐事件的細節仍保留在通知記錄中，編年史則是其中的故事。[n][n]偶爾，當真正的劇變（短期內攻占數座城市的鄰邦，或一場瘟疫危機）將一波難民推向你的疆土時，你會被詢問如何接納他們：接納他們、安置於邊疆，或將其拒之門外。這些抉擇十分罕見、影響輕微，並可在「選項」中關閉。你尚未會面的文明僅以傳聞提及，絕不揭示。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="zh_Hant_HK"><Text>移民</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_SELFTEST_OPEN" Language="zh_Hant_HK"><Text>Migration Self-Test (diagnostics)</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="zh_Hant_HK"><Text>繁榮</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_ETHNICITY" Language="zh_Hant_HK"><Text>族群</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DATA" Language="zh_Hant_HK"><Text>儀表板數據</Text></Replace>
@@ -351,6 +364,8 @@
         <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_MANY" Language="zh_Hant_HK"><Text>{1_Count}名難民正在此處等待安置。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_TITLE" Language="zh_Hant_HK"><Text>文化街區</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_NO_QUARTER" Language="zh_Hant_HK"><Text>此處尚無外來街區扎根。</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ENCLAVE_PENDING" Language="zh_Hant_HK"><Text>A {1_Origin} enclave has taken root ({2_Share}% of this settlement) and awaits your decision.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ENCLAVE_FORMING" Language="zh_Hant_HK"><Text>{1_Origin} residents are {2_Share}% of this settlement; an enclave forms at {3_Threshold}% and {5_MinStock} standing population (now {4_Stock}).</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_ROOT" Language="zh_Hant_HK"><Text>{1_Quarter}已在這座定居點扎根。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_STANCE" Language="zh_Hant_HK"><Text>你的立場：{1_Stance}。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_GRANTS" Language="zh_Hant_HK"><Text>為城市提供{1_Amount}點{2_Yield}。</Text></Replace>

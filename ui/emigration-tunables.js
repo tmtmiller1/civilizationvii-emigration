@@ -95,11 +95,14 @@ export const TUNABLES = [
   // anti-snowball trigger: fair-share population multiple a civ may reach before the brake bites
   { key: "antiSnowballThreshold", group: "cost", type: "choice", values: [1, 1.25, 1.5, 2], label: "LOC_EMIG_T_ANTISNOWTHRESH", desc: "LOC_EMIG_T_ANTISNOWTHRESH_D" },
   { key: "quartersEnabled", group: "cost", type: "bool", label: "LOC_EMIG_T_QUARTERS", desc: "LOC_EMIG_T_QUARTERS_D" },
-  // cultural enclaves - how often the decision fires (share bar + dwell time + throttle)
+  // cultural enclaves - how often the decision fires (share bar + stock floor + stickiness + dwell + throttle)
   { key: "quarterEstablishedShare", group: "cost", type: "choice", values: [0.3, 0.35, 0.4, 0.45, 0.5], choiceLabels: ["30%", "35%", "40%", "45%", "50%"], label: "LOC_EMIG_T_QSHARE", desc: "LOC_EMIG_T_QSHARE_D" },
+  { key: "quarterMinStock", group: "cost", type: "choice", values: [2, 3, 5, 8], label: "LOC_EMIG_T_QMINSTOCK", desc: "LOC_EMIG_T_QMINSTOCK_D" },
+  { key: "quarterEnclaveStickiness", group: "cost", type: "choice", values: [1, 0.5, 0.25, 0.1], choiceLabels: ["Off", "Weak", "Standard", "Strong"], label: "LOC_EMIG_T_QSTICKY", desc: "LOC_EMIG_T_QSTICKY_D" },
   { key: "quarterDwellTurns", group: "cost", type: "choice", values: [0, 4, 8, 12, 18], label: "LOC_EMIG_T_QDWELL", desc: "LOC_EMIG_T_QDWELL_D" },
   { key: "quarterCooldownTurns", group: "cost", type: "choice", values: [8, 12, 18, 24, 36], label: "LOC_EMIG_T_QCOOLDOWN", desc: "LOC_EMIG_T_QCOOLDOWN_D" },
   { key: "quarterCapPerAge", group: "cost", type: "choice", values: [1, 2, 3, 5], label: "LOC_EMIG_T_QCAP", desc: "LOC_EMIG_T_QCAP_D" },
+  { key: "quarterForce", group: "cost", type: "bool", label: "LOC_EMIG_T_QFORCE", desc: "LOC_EMIG_T_QFORCE_D" },
   // environmental disasters as a migration driver (§11; off by default)
   { key: "disastersEnabled", group: "disaster", type: "bool", label: "LOC_EMIG_T_DISASTERS", desc: "LOC_EMIG_T_DISASTERS_D" },
   { key: "disasterPerPoint", group: "disaster", type: "choice", values: [6, 8, 10, 14, 20], label: "LOC_EMIG_T_DPP", desc: "LOC_EMIG_T_DPP_D" },
@@ -113,9 +116,11 @@ export const TUNABLES = [
   { key: "disasterNotifyMinSeverity", group: "notify", type: "choice", values: [0, 1, 2, 3], choiceLabels: ["Any", "Minor+", "Moderate+", "Major only"], label: "LOC_EMIG_T_NOTIFYDISASTER", desc: "LOC_EMIG_T_NOTIFYDISASTER_D" },
   { key: "disasterNotifyMode", group: "notify", type: "choice", values: [0, 1, 2], choiceLabels: ["Off", "Important", "Verbose"], label: "LOC_EMIG_T_DNOTIFYMODE", desc: "LOC_EMIG_T_DNOTIFYMODE_D" },
   { key: "notifyCooldownTurns", group: "notify", type: "choice", values: [0, 3, 6, 10, 20], label: "LOC_EMIG_T_NOTIFYCD", desc: "LOC_EMIG_T_NOTIFYCD_D" },
+  { key: "notifyWorldNews", group: "notify", type: "bool", label: "LOC_EMIG_T_NOTIFYWORLDNEWS", desc: "LOC_EMIG_T_NOTIFYWORLDNEWS_D" },
   { key: "worldRefugeeThreshold", group: "notify", type: "choice", values: [20000, 40000, 80000, 150000], label: "LOC_EMIG_T_NOTIFYWORLD", desc: "LOC_EMIG_T_NOTIFYWORLD_D" },
   { key: "cityReadoutEnabled", group: "notify", type: "bool", label: "LOC_EMIG_T_CITYREADOUT", desc: "LOC_EMIG_T_CITYREADOUT_D" },
   { key: "cityReadoutSparkline", group: "notify", type: "bool", label: "LOC_EMIG_T_SPARKLINE", desc: "LOC_EMIG_T_SPARKLINE_D" },
+  { key: "selftestEnabled", group: "notify", type: "bool", label: "LOC_EMIG_T_SELFTEST", desc: "LOC_EMIG_T_SELFTEST_D" },
   // outlet - attrition when there's nowhere to flee (the pressure-release valve)
   { key: "attritionEnabled", group: "outlet", type: "bool", label: "LOC_EMIG_T_ATTRITION", desc: "LOC_EMIG_T_ATTRITION_D" },
   { key: "attritionMinDistress", group: "outlet", type: "choice", values: [40, 80, 120, 200], label: "LOC_EMIG_T_ATTRDISTRESS", desc: "LOC_EMIG_T_ATTRDISTRESS_D" },

@@ -267,16 +267,43 @@ export function cityPanelModel(input, compose) {
   const c = typeof compose === "function" ? compose : noCompose;
   const i = /** @type {*} */ (input || {});
   const q = i.quarter || null;
+  const enclave = !q && i.enclave ? i.enclave : null;
   return {
     population: populationBlock(c, i),
     quarters: {
       title: pick(c, "LOC_EMIGRATION_PANEL_QUARTER_TITLE", [], "Cultural Enclave"),
-      noQuarterText: pick(c, "LOC_EMIGRATION_PANEL_NO_QUARTER", [], "No foreign enclave has taken root here."),
+      // When no enclave is settled, prefer a progress readout (a real diaspora forming / awaiting the
+      // decision) over the bare "nothing here" line, so the numbers the player sees match the mechanic.
+      noQuarterText: enclave
+        ? enclaveProgressText(c, enclave)
+        : pick(c, "LOC_EMIGRATION_PANEL_NO_QUARTER", [], "No foreign enclave has taken root here."),
       present: !!q,
       lines: q ? quarterLines(c, q) : []
     }
   };
 }
 
+/**
+ * One line describing a pending/forming cultural enclave: either it qualifies and awaits the player's
+ * decision, or it is still climbing toward the bar. Always states the lead origin's current share and
+ * the threshold (share + standing stock) it is measured against, so the figure matches the mechanic.
+ * @param {Compose} c The localization resolver. @param {*} e The resolved enclave-progress readout.
+ * @returns {string} The line.
+ */
+function enclaveProgressText(c, e) {
+  const name = e.originName || "";
+  const share = String(e.sharePct || 0);
+  const threshold = String(e.thresholdPct || 0);
+  const stock = String(e.stock || 0);
+  const minStock = String(e.minStock || 0);
+  if (e.pending) {
+    return pick(c, "LOC_EMIGRATION_PANEL_ENCLAVE_PENDING", [name, share],
+      "A " + name + " enclave has taken root (" + share + "% of this settlement) and awaits your decision.");
+  }
+  return pick(c, "LOC_EMIGRATION_PANEL_ENCLAVE_FORMING", [name, share, threshold, stock, minStock],
+    name + " residents are " + share + "% of this settlement; an enclave forms at " + threshold +
+    "% and " + minStock + " standing population (now " + stock + ").");
+}
+
 // Test hook: expose the small pure helpers so the harness can exercise their branches directly.
-export const __test = { yieldLabel, flowRows, originLines, refugeeText, quarterLines, noCompose };
+export const __test = { yieldLabel, flowRows, originLines, refugeeText, quarterLines, enclaveProgressText, noCompose };

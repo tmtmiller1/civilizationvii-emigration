@@ -265,8 +265,23 @@ export const CONFIG = {
   // quarterMinStock standing pop points before the city hosts an "established" enclave at all. Raising
   // the share makes enclaves rarer (fewer cities qualify); the stock floor keeps a tiny diaspora from
   // qualifying on share alone.
-  quarterEstablishedShare: 0.35, // share of a city a lead foreign origin must hold to be "established"
-  quarterMinStock: 5, // minimum current standing pop points of that lead origin
+  quarterEstablishedShare: 0.3, // share of a city a lead foreign origin must hold to be "established"
+  quarterMinStock: 3, // minimum current standing pop points of that lead origin
+  // Enclave stickiness: once a foreign origin reaches the foothold share, integration drift on it is
+  // multiplied by this factor (≤1) so the diaspora can actually climb from foothold to "established"
+  // instead of being pulled back below the bar before its dwell clock completes. 1 = no stickiness
+  // (legacy drift); lower = stickier enclaves. This is the main lever that lets a HUMAN city's enclave
+  // form in normal play (the AI never gets the decision — only the human does). See emigration-composition.js.
+  quarterEnclaveStickiness: 0.25,
+  // Testing/force flag: when true, the local player's single best qualifying diaspora is OFFERED its
+  // enclave decision this pass regardless of the soft gates (dwell, per-age cap/cooldown, refugee-dilemma
+  // ranking), and the established-share bar is relaxed to the foothold share. Lets a player deliberately
+  // trigger an enclave to see the decision. Off by default; the min-stock floor still applies.
+  quarterForce: false,
+  // On-screen self-test: when true, installs a floating "Self-Test" launcher on the HUD (see
+  // emigration-selftest.js) that runs live diagnostics and can force the enclave pop-up / a toast, so a
+  // player can verify the reported issues in-game without a dev console. Off by default.
+  selftestEnabled: false,
   // Persistence gate: an enclave must stay established for this many turns before its one-time decision
   // is OFFERED, so a transient spike (a war-refugee wave that later integrates or goes home) never
   // triggers a permanent enclave. 0 = offer as soon as the bar is crossed (legacy behaviour). The dwell

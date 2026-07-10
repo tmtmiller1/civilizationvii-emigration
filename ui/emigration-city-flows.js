@@ -50,8 +50,11 @@ const DIED_ID = -3;
 
 /**
  * Pie slices for a direction's civ breakdown (coloured by the other civ; "Died" dark red, "Unmet"
- * grey). The slice value + count follow the active number mode (Scaled Pop people / Civ Pop points),
- * and each slice carries a preformatted count string for the legend and tooltip.
+ * grey). The slice SHARE (`value`, which drives the pie geometry and the legend/tooltip percentage) is
+ * always the raw pop-POINTS base — the same base the cultural-enclave threshold uses — so a slice's %
+ * does not shift when the player flips the Scaled/Civ Pop toggle. Only the displayed `countText` follows
+ * the toggle (scaled people vs civ points). Points fall back to people if a slice carries no points, so
+ * a people-only slice still renders rather than vanishing.
  * @param {{id:number, name:string, people:number, points:number}[]} civs Civs.
  * @returns {{value:number, people:number, points:number, countText:string, color:string,
  *   label:string}[]} Slices.
@@ -62,7 +65,7 @@ function civSlices(civs) {
     const people = c.people || 0;
     const points = c.points || 0;
     return {
-      value: civMode ? points : people, people, points,
+      value: points > 0 ? points : people, people, points,
       countText: civMode ? String(Math.round(points)) : formatPeople(people),
       label: c.name,
       color: c.id === DIED_ID ? "#9a3b3b" : c.id < 0 ? "#8c8064" : civColorByIndex(c.id)

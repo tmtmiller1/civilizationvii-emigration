@@ -341,6 +341,8 @@ function installUi() {
   installEmigrationConsole(); // console: emigration.window() opens the standalone screen
   installEmigrationDock(); // in-game dock button that opens that screen (no console needed)
   installEmigrationCityPanel(); // inject population + quarter data into the base City Details panel
+  // (the on-screen self-test button rides the subsystem dock — see emigration-dock-decorator.js — so it
+  // renders in the proven HUD context; installEmigrationDock() below wires it when selftestEnabled)
   // The prosperity map lens self-registers as its own <UIScripts> entry (emigration-prosperity-lens
   // .js), in the HUD context where LensManager lives, it is intentionally NOT wired through here.
 }

@@ -41,7 +41,7 @@ const DIASPORA_STEP = 0.15;
 // both large enough in absolute stock and a big enough share of the city, the stage fires; if that
 // diaspora later integrates or leaves, the stock falls back below the line. The established bar (share +
 // min stock) is player-tunable via CONFIG; the foothold share is a fixed chronicle-only milestone.
-const QUARTER_FOOTHOLD_SHARE = 0.25;
+export const QUARTER_FOOTHOLD_SHARE = 0.25;
 
 /** @returns {number} The tunable established-enclave share bar (falls back to 0.35). */
 function establishedShare() {
@@ -312,21 +312,52 @@ function detectQuarterProgress(signals) {
  * host, share, and standing stock for the decision system, or null. Reads the composition ledger; pure
  * of side effects.
  * @param {*} city A live city object.
+ * @param {boolean} [force] When true, a FOOTHOLD-stage diaspora also qualifies (the established-share
+ *   bar is relaxed to the foothold share). The min-stock floor still applies. Used by the player-facing
+ *   "Force enclave" testing option so a diaspora the player can already see actually offers its decision.
  * @returns {{civ:number, owner:number, share:number, stock:number, name:string, where:string}|null}
  *   The quarter (with a truthful edge phrase), or null.
  */
-export function establishedQuarterForCity(city) {
+export function establishedQuarterForCity(city, force) {
   const comp = compositionForCity(city);
   if (!comp || typeof comp.owner !== "number") return null;
   const lead = leadForeignCivOrigin(comp);
   if (!lead) return null;
   const stock = typeof lead.pts === "number" ? lead.pts : 0;
-  if (quarterStage(lead.share, stock) !== "established") return null;
+  const stage = quarterStage(lead.share, stock);
+  const qualifies = force ? stage !== "none" : stage === "established";
+  if (!qualifies) return null;
   const name = cityName(city);
   // A truthful, deterministic edge phrase for the enclave ("by the harbour", "in the outer streets"),
   // stable per (city, origin) so the decision modal and its chronicle name the same place each time.
   const where = resolveQuarter(cityFeatureKeys(city), name + ":" + lead.civ);
   return { civ: lead.civ, owner: comp.owner, share: lead.share, stock, name, where };
+}
+
+/**
+ * The cultural-enclave PROGRESS for a city: the lead foreign origin's current share + standing stock,
+ * the stage it has reached, and the live thresholds it is measured against — regardless of whether it
+ * has crossed the bar yet. Uses the exact same lead-origin, share, stock, and thresholds the decision
+ * mechanic uses, so a readout built from this always agrees with whether an enclave will actually form.
+ * Returns null when the city has no foreign minority. Pure; reads the composition ledger.
+ * @param {*} city A live city object.
+ * @returns {{civ:number, share:number, stock:number, stage:("none"|"foothold"|"established"),
+ *   establishedShare:number, minStock:number}|null} The progress, or null.
+ */
+export function enclaveProgressForCity(city) {
+  const comp = compositionForCity(city);
+  if (!comp || typeof comp.owner !== "number") return null;
+  const lead = leadForeignCivOrigin(comp);
+  if (!lead) return null;
+  const stock = typeof lead.pts === "number" ? lead.pts : 0;
+  return {
+    civ: lead.civ,
+    share: lead.share || 0,
+    stock,
+    stage: quarterStage(lead.share, stock),
+    establishedShare: establishedShare(),
+    minStock: minStock()
+  };
 }
 
 /**

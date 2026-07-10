@@ -13,6 +13,7 @@
 
 import { cityPanelModel } from "/emigration/ui/emigration-city-panel-data.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
+import { enclaveProgressForCity } from "/emigration/ui/emigration-diaspora.js";
 import { migrationFlows } from "/emigration/ui/emigration-migration-stats.js";
 import { quarterAt } from "/emigration/ui/emigration-quarter-state.js";
 import { quarterOptionFor } from "/emigration/ui/emigration-quarter-registry.js";
@@ -147,6 +148,33 @@ function gatherQuarter(city) {
 }
 
 /**
+ * The pending/forming cultural-enclave readout for a city that has NO settled quarter yet, or null.
+ * Surfaces the lead foreign origin's progress toward the enclave bar (the same numbers the decision
+ * mechanic uses) so the player can see a qualifying-but-unoffered enclave ("awaits your decision") or
+ * one still forming, instead of the bare "no enclave has taken root" when one actually has. Only shown
+ * from the foothold stage up, so a small foreign sprinkle doesn't clutter the panel.
+ * @param {*} city A live city object.
+ * @returns {*} The resolved enclave-progress readout, or null.
+ */
+function gatherEnclaveProgress(city) {
+  try {
+    const p = enclaveProgressForCity(city);
+    if (!p || p.stage === "none") return null;
+    return {
+      originName: quarterName(p.civ),
+      pending: p.stage === "established", // qualifies now, but the decision hasn't been offered/made
+      sharePct: Math.round((p.share || 0) * 100),
+      thresholdPct: Math.round((p.establishedShare || 0) * 100),
+      stock: Math.round(p.stock || 0),
+      minStock: Math.round(p.minStock || 0)
+    };
+  } catch (e) {
+    derr("gatherEnclaveProgress threw:", e);
+    return null;
+  }
+}
+
+/**
  * The origin composition parts for a city, with civ ids resolved to adjectives.
  * @param {*} comp The raw compositionForCity result (or null).
  * @returns {{name:string, share:number}[]} The resolved parts.
@@ -166,6 +194,7 @@ function gatherPanelInput(city) {
   if (!city) return null;
   const name = cityName(city);
   const comp = compositionForCity(city);
+  const quarter = gatherQuarter(city);
   const flows = safeFlows();
   const outflows = flows.filter((f) => f.srcCity === name)
     .map((f) => ({ place: f.destCity, civName: civAdjective(f.dest), people: f.people }));
@@ -177,7 +206,10 @@ function gatherPanelInput(city) {
     outflows,
     inflows,
     refugeePool: refugeePoolFor(city),
-    quarter: gatherQuarter(city)
+    quarter,
+    // Only surface pending/forming enclave progress when no quarter is settled yet (once decided, the
+    // settled record above is authoritative).
+    enclave: quarter ? null : gatherEnclaveProgress(city)
   };
 }
 

@@ -12,6 +12,7 @@
 
 import { openEmigrationScreen } from "/emigration/ui/emigration-screen.js";
 import { getShowDockButton } from "/emigration/ui/emigration-settings.js";
+import { addSelfTestDockButton, selfTestEnabled } from "/emigration/ui/emigration-selftest.js";
 
 const DBG = false;
 /**
@@ -88,12 +89,16 @@ export class EmigrationDockDecorator {
   /** Lifecycle hook fired before the panel attaches. */
   beforeAttach() {}
 
-  /** Lifecycle hook fired after the panel attaches: paint the icon and add the button. */
+  /** Lifecycle hook fired after the panel attaches: paint the icon and add the button(s). */
   afterAttach() {
-    // Optional dock button: when disabled in the mod's options, the dashboard is reached via the
-    // Demographics screen's Migration tab (or the console) instead. Read at attach time.
-    if (!getShowDockButton()) {
-      dlog("dock button disabled by option; skipping");
+    // Optional dashboard dock button: when disabled in the mod's options, the dashboard is reached via
+    // the Demographics screen's Migration tab (or the console) instead. Read at attach time. The
+    // separate self-test button rides the SAME dock (the proven HUD surface) when selftestEnabled, and
+    // is independent of the dashboard button so it shows even if that one is turned off.
+    const showDock = getShowDockButton();
+    const showSelfTest = selfTestEnabled();
+    if (!showDock && !showSelfTest) {
+      dlog("no dock buttons enabled; skipping");
       return;
     }
     try {
@@ -101,7 +106,8 @@ export class EmigrationDockDecorator {
     } catch (e) {
       derr("injectIconStyle threw:", e);
     }
-    this._addDockButton();
+    if (showDock) this._addDockButton();
+    if (showSelfTest) addSelfTestDockButton(this._panel);
   }
 
   /** Add the Emigration button to the dock, defensively. Never throws. */

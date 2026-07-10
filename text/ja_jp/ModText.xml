@@ -139,12 +139,18 @@
         <Replace Tag="LOC_EMIG_T_QUARTERS_D" Language="ja_JP"><Text>外国からのディアスポラがあなたの都市で確立した共同体に成長すると、一度きりの選択（受け入れ・課税・放任）が提示され、小さな産出の利益と不利益が生じます。都市ごとに永続的な街区が記録され、その母国と戦争している間は「係争状態」となり（小さな幸福度の負担）ます。オフ＝街区の決定も係争の負担もなし。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSHARE" Language="ja_JP"><Text>Enclaves: share to form</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSHARE_D" Language="ja_JP"><Text>How much of a city a single foreign origin must make up before it can become a Cultural Enclave. Higher = rarer enclaves, as fewer cities ever qualify.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QMINSTOCK" Language="ja_JP"><Text>Enclaves: minimum population</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QMINSTOCK_D" Language="ja_JP"><Text>The smallest standing population (in city-size points) a single foreign origin must reach before it can form a Cultural Enclave, so a tiny community can't qualify on share alone. Lower = small settlements can host enclaves too.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSTICKY" Language="ja_JP"><Text>Enclaves: stickiness</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSTICKY_D" Language="ja_JP"><Text>How strongly a foreign community that has reached a foothold resists blending into the host, so it can grow into a full enclave instead of being absorbed first. Stronger = enclaves form more readily; Off = communities integrate at the normal rate and rarely reach the enclave threshold.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QDWELL" Language="ja_JP"><Text>Enclaves: persistence before offer</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QDWELL_D" Language="ja_JP"><Text>How many turns an established community must persist before its one-time enclave decision is offered, so a brief spike (such as a war-refugee wave that later moves on) never triggers a permanent enclave. A short dip below the threshold is forgiven. 0 = offer as soon as the community forms.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCOOLDOWN" Language="ja_JP"><Text>Enclaves: turns between decisions</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCOOLDOWN_D" Language="ja_JP"><Text>Minimum turns between two Cultural Enclave decisions. Higher = the offers are spaced further apart.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCAP" Language="ja_JP"><Text>Enclaves: decisions per age</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCAP_D" Language="ja_JP"><Text>The most Cultural Enclave decisions that can be offered in a single age. Lower = fewer enclave choices each age.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QFORCE" Language="ja_JP"><Text>Enclaves: force the next decision</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QFORCE_D" Language="ja_JP"><Text>Testing aid. While on, your largest qualifying foreign community is offered its Cultural Enclave decision right away, skipping the persistence wait, the per-age limit, and the wait behind other events, and accepting a community that has only reached a foothold. It still needs the minimum population. Turn off once you've seen the decision.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS" Language="ja_JP"><Text>災害: 移住を駆動</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DISASTERS_D" Language="ja_JP"><Text>環境災害（洪水、火山、疫病…）が、戦争や不満と並んで、被災都市から住民を気候/災害難民として押し出すようにします。オフ = 災害は移住に影響しません。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DPP" Language="ja_JP"><Text>災害: 苦境ポイントあたりの移住（%）</Text></Replace>
@@ -167,12 +173,16 @@
         <Replace Tag="LOC_EMIG_T_DNOTIFYMODE_D" Language="ja_JP"><Text>どの災害を画面にポップアップ表示するか（通知ログは深刻なものをすべて常に保持します）：0 = オフ、ログのみ、1 = 集落を襲い実際に移住を駆動する災害のみ（既定）、2 = 最小深刻度以上の任意の災害。「災害の最小深刻度」と組み合わせて、どの程度を深刻とみなすか調整してください。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD" Language="ja_JP"><Text>通知: 最小間隔（ターン）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYCD_D" Language="ja_JP"><Text>重要な通知の間の最小ターン数。集中しないようにします。0 = 制限なし。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLDNEWS" Language="ja_JP"><Text>Notifications: world refugee news</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYWORLDNEWS_D" Language="ja_JP"><Text>Show "world news" alerts when another civilization hits a major refugee crisis. Off = only notifications about your own settlements. On by default.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD" Language="ja_JP"><Text>通知: 難民危機のしきい値</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD_D" Language="ja_JP"><Text>難民危機の見出しが出るまでに文明が（累計で）どれだけの人を避難させる必要があるか、超えた倍数ごとに1回。長い戦争では毎ターンではなく数件の見出しになります。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="ja_JP"><Text>都市ごとの移住レポート</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="ja_JP"><Text>選択した集落が人口を増減させている理由を、必要に応じて表示するパネルです。主な原因、人々が引き寄せられる先、統合コスト、そして対処法を示します。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE" Language="ja_JP"><Text>リードアウト: 最近の傾向スパークライン</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE_D" Language="ja_JP"><Text>都市のリードアウトに小さな棒グラフを追加し、直近数回の純移動を表示します（増加は緑、減少は赤の棒）。状況が良くなっているか悪くなっているかを一目で把握できます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SELFTEST" Language="ja_JP"><Text>On-screen self-test panel</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SELFTEST_D" Language="ja_JP"><Text>Show a floating "Self-Test" button in-game that runs live diagnostics for the reported issues (settlement coverage, cultural enclaves, the two population measures, notifications, persistence) and can force the enclave pop-up and a test toast on demand — no developer console needed. For troubleshooting; leave off for normal play. Takes effect after reloading the save.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION" Language="ja_JP"><Text>排出口: 逃げ場がない場合の消耗</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION_D" Language="ja_JP"><Text>移住が閉じた系になるのを防ぎます。逃れる先のない、追い詰められて深刻に苦しむ都市（包囲・飢饉・激しい暴力・災害）は人口を失います、人々は永遠に留まるのではなく、死ぬか散り散りになります。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRDISTRESS" Language="ja_JP"><Text>排出口: 消耗に必要な苦境（%）</Text></Replace>
@@ -205,6 +215,8 @@
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="ja_JP"><Text>{1_People}が{2_City}周辺の戦闘から逃れました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="ja_JP"><Text>{1_People}が{2_City}の支配権が移った際に連れ去られました。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="ja_JP"><Text>単位:</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_CIV_TIP" Language="ja_JP"><Text>Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city actually grows, so this figure looks steady. Shares and percentages are always measured on this base.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNITS_SCALED_TIP" Language="ja_JP"><Text>Scaled Pop: a historically-scaled "people" headcount for flavour. It drifts upward as an age progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="ja_JP"><Text>Civ 独自の人口値とスケールした人数を切り替えます</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ja_JP"><Text>再生タイムラインは数ターン後、たどれる人口の履歴がたまると表示されます。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ja_JP"><Text>{1_People}が災害の後、{2_City}から逃れました。</Text></Replace>
@@ -309,6 +321,7 @@
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="ja_JP"><Text>移住の年代記と難民の決断</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="ja_JP"><Text>移住の年代記は、ダッシュボードの専用タブで、世界の大移動を短い歴史として記します。戦争や災害で空になった都市、故郷を遠く離れて根を下ろした離散の民、故郷の回復とともに帰る人々。出来事ごとの詳細は通知ログに残り、年代記はその物語です。[n][n]ときおり、本当の激変（短期間に複数の都市を征服する隣国や、疫病の危機）が難民の波をあなたの地へ送ると、どう迎えるか問われます。受け入れる、辺境に定住させる、あるいは追い返す。これらの決断はまれで影響も軽く、オプションで無効にできます。出会っていない文明は伝聞としてのみ呼ばれ、明かされることはありません。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="ja_JP"><Text>移住</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_SELFTEST_OPEN" Language="ja_JP"><Text>Migration Self-Test (diagnostics)</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="ja_JP"><Text>繁栄</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_ETHNICITY" Language="ja_JP"><Text>民族</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DATA" Language="ja_JP"><Text>ダッシュボードのデータ</Text></Replace>
@@ -351,6 +364,8 @@
         <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_MANY" Language="ja_JP"><Text>{1_Count}人の難民がここでの定住を待っています。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_TITLE" Language="ja_JP"><Text>文化街</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_NO_QUARTER" Language="ja_JP"><Text>ここには外国の街区は根づいていません。</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ENCLAVE_PENDING" Language="ja_JP"><Text>A {1_Origin} enclave has taken root ({2_Share}% of this settlement) and awaits your decision.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ENCLAVE_FORMING" Language="ja_JP"><Text>{1_Origin} residents are {2_Share}% of this settlement; an enclave forms at {3_Threshold}% and {5_MinStock} standing population (now {4_Stock}).</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_ROOT" Language="ja_JP"><Text>{1_Quarter}がこの集落に根づきました。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_STANCE" Language="ja_JP"><Text>あなたの方針：{1_Stance}。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_GRANTS" Language="ja_JP"><Text>都市に{1_Amount}の{2_Yield}をもたらします。</Text></Replace>

@@ -167,6 +167,12 @@ export function totalPoints(lastNet, lastPops) {
   return mig + pop;
 }
 
+// Smallest disc a settlement is ever drawn at. A settlement whose native population falls below one
+// `unit` earns 0 dots (clusterRadius 0) and would otherwise vanish from the canvas even though it
+// exists — the "only 4 of my 12 settlements show" bug. Flooring the radius here draws every settlement
+// as a (dotless) disc without faking dots, so the "1 dot = N people" density semantics stay intact.
+const MIN_CITY_SUB_R = 3;
+
 /**
  * Sub-cluster (city) radius for a dot count.
  * @param {number} n Dot count.
@@ -480,7 +486,12 @@ function appendNativeDots(b, ownerId, cityIdx, city, i) {
   const seen = nativeSeenSet(b, ownerId, cityIdx, origins);
   const present = new Map(origins.map((o) => [o.civ, o.pts]));
   const civs = [...seen];
-  const alloc = allocNative(Math.floor((city.pop || 0) / b.unit), civs, present);
+  // Any settlement that HAS native population gets at least one dot, so a freshly-founded (or otherwise
+  // sub-`unit`) settlement shows its initial population instead of an empty disc — the dot-count analog of
+  // the MIN_CITY_SUB_R radius floor. `city.pop` here is the settlement's scaled native population.
+  const pop = city.pop || 0;
+  const dotCount = pop > 0 ? Math.max(1, Math.floor(pop / b.unit)) : 0;
+  const alloc = allocNative(dotCount, civs, present);
   const loc = { ownerId, cityIdx, cityName: city.name };
   for (let k = 0; k < civs.length; k++) {
     setNativeOriginCohort(b, loc, civs[k], alloc[k], i);
@@ -591,8 +602,10 @@ function layoutCityDots(cm, list, dots) {
  */
 function layoutCiv(center, byCity, dots) {
   const cities = center.cities;
+  // Floor each sub-cluster radius so a pop-poor settlement (0 dots) still draws a disc; flooring here (not
+  // just at paint time) also keeps the spacing/spread below wide enough that the small discs don't overlap.
   const subRs = cities.map((/** @type {*} */ _c, /** @type {number} */ idx) =>
-    clusterRadius((byCity.get(idx) || []).length));
+    Math.max(MIN_CITY_SUB_R, clusterRadius((byCity.get(idx) || []).length)));
   const area = subRs.reduce((/** @type {number} */ a, /** @type {number} */ r) => a + r * r, 0);
   // Push the city sub-clusters a bit further apart so they read as distinct discs (the civ circle's
   // clusterR below grows to contain them).
@@ -607,6 +620,9 @@ function layoutCiv(center, byCity, dots) {
     cm.subR = subRs[idx];
     cm.bornFrame = Infinity;
     layoutCityDots(cm, byCity.get(idx) || [], dots);
+    // A dotless settlement keeps bornFrame = Infinity (layoutCityDots never lowered it), which the paint
+    // guard reads as "never born" → disc hidden. Show it from the start of the timeline instead.
+    if (!Number.isFinite(cm.bornFrame)) cm.bornFrame = 0;
     reach = Math.max(reach, rad + Math.max(subRs[idx], 5));
   }
   center.clusterR = reach;

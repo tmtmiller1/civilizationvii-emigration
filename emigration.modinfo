@@ -7,7 +7,7 @@
         <SpecialThanks>Machiavelli's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>2.0.5</Version>
+        <Version>2.1.0</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -81,6 +81,7 @@
                 </UpdateText>
                 <UIScripts>
                     <Item>ui/emigration-main.js</Item>
+                    <Item>ui/emigration-selftest.js</Item>
                     <Item>ui/emigration-prosperity-lens.js</Item>
                     <Item>ui/emigration-prosperity-tooltip.js</Item>
                     <Item>ui/emigration-ethnicity-lens.js</Item>
@@ -145,6 +146,9 @@
                     <Item>ui/emigration-screen.js</Item>
                     <Item>ui/emigration-screen.html</Item>
                     <Item>ui/emigration-screen.css</Item>
+                    <Item>ui/emigration-selftest-checks.js</Item>
+                    <Item>ui/emigration-selftest.html</Item>
+                    <Item>ui/emigration-selftest.css</Item>
                     <Item>ui/emigration-density.js</Item>
                     <Item>ui/emigration-dock-decorator.js</Item>
                     <Item>ui/emigration-migration-page.js</Item>
@@ -192,6 +196,8 @@
                     <!-- Refugee dilemmas: rare narrative decision modal + its trigger logic. -->
                     <Item>ui/emigration-dilemma.js</Item>
                     <Item>ui/emigration-dilemma-view.js</Item>
+                    <Item>ui/emigration-dilemma.html</Item>
+                    <Item>ui/emigration-dilemma.css</Item>
                     <!-- Cultural Quarters: an established diaspora becomes a persistent, player-shaped
                          district. Per-civ bonus registry (origin-specific trade-off options) + option
                          catalogue + per-tile persistent store + the decision/change-of-hands/contested

@@ -136,14 +136,15 @@ function enclaveCountForCiv(owner, originPid, originCiv, exceptTileKey) {
  * The fresh established quarter on a city's tile, or null when it isn't a fresh offer (not the local
  * player's, unreadable tile, no established quarter, or already recorded for the same origin). Shared by
  * the offer path and the dwell-clock observer so both agree on what "an offerable enclave" is.
- * @param {*} s A city signal. @param {number} me Local player id.
+ * @param {*} s A city signal. @param {number} me Local player id. @param {boolean} [force] Relax the
+ *   established-share bar to the foothold share (the "Force enclave" option).
  * @returns {{tileKey:string, quarter:*}|null} The tile + established quarter, or null.
  */
-function offerableQuarter(s, me) {
+function offerableQuarter(s, me, force) {
   if (!s || s.owner !== me || !s.city) return null;
   const tileKey = tileKeyOf(s.city);
   if (!tileKey) return null;
-  const quarter = establishedQuarterForCity(s.city);
+  const quarter = establishedQuarterForCity(s.city, force);
   if (!quarter) return null;
   const existing = quarterAt(tileKey);
   if (existing && existing.civ === quarter.civ) return null; // already settled this origin's enclave
@@ -156,17 +157,20 @@ function offerableQuarter(s, me) {
  * its per-civ enclave cap. `ordinal` is the count of the origin's existing enclaves (0 for the first, 1
  * for the second) — it selects which single quote the modal shows.
  * @param {*} s A city signal. @param {number} me Local player id. @param {number} turn Now (monotonic).
+ * @param {boolean} [force] Bypass the dwell gate and relax the share bar to foothold (the "Force enclave"
+ *   option); the per-civ enclave cap and "already settled this origin" checks still apply.
  * @returns {{city:*, tileKey:string, quarter:*, pop:number, ordinal:number, originCiv:(string|null)}|null}
  *   The candidate, or null.
  */
-function candidateFromSignal(s, me, turn) {
-  const base = offerableQuarter(s, me);
+function candidateFromSignal(s, me, turn, force) {
+  const base = offerableQuarter(s, me, force);
   if (!base) return null;
   const { tileKey, quarter } = base;
   const originCiv = civType(quarter.civ);
   // Persistence gate: the enclave must have stayed established for quarterDwellTurns (its dwell clock is
   // tracked per pass by observeQuarterDwell), so a transient spike never triggers a permanent enclave.
-  if (!dwellSatisfied(tileKey, originCiv, quarter.civ, turn)) return null;
+  // Forcing skips this so a tester can trigger the decision without waiting out the dwell clock.
+  if (!force && !dwellSatisfied(tileKey, originCiv, quarter.civ, turn)) return null;
   const ordinal = enclaveCountForCiv(me, quarter.civ, originCiv, tileKey);
   if (ordinal >= MAX_ENCLAVES_PER_CIV) return null; // §3: cap enclaves PER origin civilisation (not global)
   return { city: s.city, tileKey, quarter, pop: s.population || 0, ordinal, originCiv };
@@ -221,13 +225,14 @@ function observeQuarterDwell(signals, me, turn) {
  * The candidate quarter to offer this pass: the largest local city hosting an established quarter that
  * ISN'T already recorded for the same origin (a fresh quarter, or a change-of-hands to a new origin).
  * @param {*[]} signals The pass's city signals. @param {number} me Local player id. @param {number} turn Now.
+ * @param {boolean} [force] Forward the "Force enclave" relaxation to each candidate check.
  * @returns {{city:*, tileKey:string, quarter:*, ordinal:number, originCiv:(string|null)}|null} The candidate, or null.
  */
-function pickCandidate(signals, me, turn) {
+function pickCandidate(signals, me, turn, force) {
   /** @type {{city:*, tileKey:string, quarter:*, pop:number, ordinal:number, originCiv:(string|null)}[]} */
   const found = [];
   for (const s of signals || []) {
-    const cand = candidateFromSignal(s, me, turn);
+    const cand = candidateFromSignal(s, me, turn, force);
     if (cand) found.push(cand);
   }
   found.sort((a, b) => b.pop - a.pop);
@@ -351,9 +356,14 @@ export function maybeQuarter(signals, dilemmaFired) {
     // Keep the dwell clocks current EVERY pass — including passes where a refugee dilemma fired or the
     // throttle blocks an offer — so a persistent enclave keeps accruing dwell toward its eventual offer.
     observeQuarterDwell(signals, me, turn);
-    if (dilemmaFired) return; // ranked BELOW the refugee dilemma: never race two modals in one pass
-    if (!canDecide(turn, currentAge())) return;
-    const cand = pickCandidate(signals, me, turn);
+    // Force mode (a testing option) offers the best qualifying diaspora regardless of the soft gates:
+    // it ignores the refugee-dilemma ranking and the per-age throttle, and relaxes the share bar to
+    // foothold. The min-stock floor and per-civ cap still apply, so it can't manufacture an enclave from
+    // nothing — it just skips the waiting.
+    const force = !!CONFIG.quarterForce;
+    if (!force && dilemmaFired) return; // ranked BELOW the refugee dilemma: never race two modals in one pass
+    if (!force && !canDecide(turn, currentAge())) return;
+    const cand = pickCandidate(signals, me, turn, force);
     if (!cand) return;
     showDilemma(quarterView(cand.quarter, cand.ordinal), (/** @type {string} */ id) =>
       applyQuarterChoice(id, cand.tileKey, cand.quarter, me, turn));
