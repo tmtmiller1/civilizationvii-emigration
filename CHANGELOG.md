@@ -7,6 +7,25 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-07-10
+
+Network-tab consolidation and a rebuilt playback timeline.
+
+### Changed
+- **Network tab consolidated into one diagram.** The separate "Flows" sub-view (and the Dots/Flows
+  switcher) is gone. The Dots view's old "Origins" toggle is now **"Migrant flows"**, and instead of
+  simple origin lines it overlays the Flows view's green/red arrow system (red where people leave,
+  green where they arrive; thicker = more migrants) directly on the dots — one diagram with both
+  capabilities. The arrows honour the active isolate / focus / scope filters, and the "How to read
+  this" note was updated to match. Arrow amount-tooltips and the click-to-expand/drag interactions
+  from the old Flows view are dropped (the dots keep their own tooltips). The arrow renderer was
+  lifted into `emigration-network-flow-arrows.js`.
+- **Timeline/playback controls rebuilt.** The play/pause button is now CSS-drawn (a triangle vs two
+  bars) instead of a glyph — the pause glyph rendered as invisible tofu in-game, which looked like the
+  button vanishing. Added a visible track with a gold progress fill and a bright playhead line + knob,
+  a denser year scale (~12 labelled ticks + fine minor ticks), and hid a stray "0" the native slider
+  drew on the line.
+
 ## [2.1.0] - 2026-07-10
 
 Migration-network display, population-percentage clarity, and cultural-enclave

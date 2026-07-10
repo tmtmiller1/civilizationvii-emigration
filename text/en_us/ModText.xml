@@ -472,7 +472,7 @@
             <Text>start</Text>
         </Row>
         <Row Tag="LOC_EMIG_NETC_CAPTION">
-            <Text>Each dot ≈ {1_People} people. A circle is one civilization, holding its cities and towns; its dots are home-grown residents (its own colour), people who moved between its cities (a lighter tint), and immigrants (their origin's colour). Recolour with "Color by", filter with the Show/Origins toggles, click a swatch or circle to isolate it, and press ▶ or scrub the timeline to replay history.</Text>
+            <Text>Each dot ≈ {1_People} people. A circle is one civilization, holding its cities and towns; its dots are home-grown residents (its own colour), people who moved between its cities (a lighter tint), and immigrants (their origin's colour). Turn on "Migrant flows" to overlay the movement as arrows — red where people leave, green where they arrive, thicker for bigger flows. Recolour with "Color by", filter with the Show / Migrant-flows toggles, click a swatch or circle to isolate it (the arrows follow your filter), and press play or scrub the timeline to replay history.</Text>
         </Row>
         <Row Tag="LOC_EMIG_NETC_SHOW">
             <Text>Show:</Text>
@@ -480,11 +480,11 @@
         <Row Tag="LOC_EMIG_NETC_NOPOP">
             <Text>no population yet</Text>
         </Row>
-        <Row Tag="LOC_EMIG_NETC_ORIGINS">
-            <Text>Origins</Text>
+        <Row Tag="LOC_EMIG_NETC_MIGFLOWS">
+            <Text>Migrant flows</Text>
         </Row>
-        <Row Tag="LOC_EMIG_NETC_ORIGINS_TIP">
-            <Text>Show lines to where migrants came from</Text>
+        <Row Tag="LOC_EMIG_NETC_MIGFLOWS_TIP">
+            <Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text>
         </Row>
         <Row Tag="LOC_EMIGRATION_PANEL_POP_TITLE">
             <Text>Migration - {1_City}</Text>

@@ -20,7 +20,7 @@ import {
   getSampleData
 } from "/emigration/ui/emigration-settings.js";
 import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
-import { makeTimeline } from "/emigration/ui/emigration-network-timeline.js";
+import { makeTimeline, TIMELINE_CSS } from "/emigration/ui/emigration-network-timeline.js";
 import { installStageFit } from "/emigration/ui/emigration-network-fit.js";
 import { makeTooltip, wireEvents } from "/emigration/ui/emigration-network-interact.js";
 
@@ -131,34 +131,7 @@ const NETC_CSS =
     "color:#cbb994;opacity:0.85;}" +
     ".emig-leg:hover{opacity:1;}.emig-leg.active{color:#f3c34c;opacity:1;font-weight:bold;}" +
     ".emig-sw{width:0.74rem;height:0.74rem;border-radius:50%;display:inline-block;}" +
-    ".emig-netc-time{display:flex;flex-direction:column;gap:0.35rem;margin:0.5rem 0;width:86%;}" +
-    ".emig-netc-tl{position:relative;background:rgba(8,10,16,0.5);border-radius:0.35rem;" +
-    "border:0.0555rem solid rgba(201,162,76,0.35);padding:0.3rem 0.5rem 1.05rem;}" +
-    ".emig-netc-ages{display:flex;width:100%;height:1rem;position:relative;z-index:1;}" +
-    ".emig-netc-age{flex:1 1 0;text-align:center;font-size:var(--dg-fs-85);color:#f0dca8;opacity:0.92;" +
-    "text-transform:uppercase;letter-spacing:0.06rem;white-space:nowrap;overflow:hidden;}" +
-    ".emig-netc-tl input{width:100%;display:block;margin:0.2rem 0 0;background:transparent;" +
-    "-webkit-appearance:none;appearance:none;accent-color:#f3c34c;height:0.9rem;cursor:pointer;" +
-    "position:relative;z-index:1;}" +
-    ".emig-netc-tl input::-webkit-slider-runnable-track{height:0.35rem;border-radius:0.3rem;" +
-    "background:rgba(201,162,76,0.3);border:0.0555rem solid rgba(201,162,76,0.5);}" +
-    ".emig-netc-tl input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;" +
-    "width:0.9rem;height:0.9rem;border-radius:50%;background:#f3c34c;" +
-    "border:0.0833rem solid #1c1408;margin-top:-0.3rem;}" +
-    ".emig-netc-marks{position:absolute;left:0.5rem;right:0.5rem;top:0;bottom:0;" +
-    "pointer-events:none;z-index:2;}" +
-    ".emig-netc-sep{position:absolute;top:0;bottom:0.85rem;width:0.14rem;transform:translateX(-50%);" +
-    "background:#d8483f;opacity:0.9;}" +
-    ".emig-netc-tick{position:absolute;bottom:0;transform:translateX(-50%);font-size:var(--dg-fs-72);" +
-    "color:#bfae86;white-space:nowrap;}" +
-    ".emig-netc-tick::before{content:'';position:absolute;left:50%;top:-0.5rem;width:0.0555rem;" +
-    "height:0.35rem;background:rgba(201,162,76,0.5);}" +
-    ".emig-netc-ctrl{display:flex;align-items:center;gap:0.5rem;}" +
-    ".emig-netc-spacer{flex:1 1 auto;}" +
-    ".emig-netc-play{cursor:pointer;color:#f3c34c;font-size:var(--dg-fs-120);user-select:none;padding:0 0.4rem;}" +
-    ".emig-netc-speed{display:flex;gap:0.2rem;}" +
-    ".emig-netc-speed .emig-netc-chip{font-size:var(--dg-fs-85);padding:0.06rem 0.5rem;}" +
-    ".emig-netc-time-lbl{font-size:var(--dg-fs-95);color:#f0dca8;opacity:0.9;min-width:8rem;}" +
+    TIMELINE_CSS +
     ".emig-netc-tip{position:absolute;pointer-events:none;background:rgba(8,10,16,0.96);" +
     "border:0.0555rem solid rgba(201,162,76,0.5);border-radius:0.3rem;padding:0.3rem 0.55rem;" +
     "font-size:var(--dg-fs-95);color:#e5d2ac;z-index:60;transform:translate(-50%,-115%);white-space:nowrap;" +
@@ -376,16 +349,17 @@ function addScopeToggles(root, state, onChange) {
 }
 
 /**
- * Append an "Origins" toggle: draw lines from each highlighted migrant back to where it came from
- * (its origin civ, or its source city for an internal move).
+ * Append a "Migrant flows" toggle: overlay the green/red migrant-flow arrows on the dots (red where
+ * people leave, green where they arrive; thickness ∝ volume). Respects the active isolate/scope filters.
  * @param {HTMLElement} root The selector row.
  * @param {*} state Interaction state.
  * @param {()=>void} onChange Called after the toggle changes.
  */
 function addFlowsToggle(root, state, onChange) {
   root.appendChild(el("span", "emig-lens-sep"));
-  const c = el("div", "emig-netc-chip", loc("LOC_EMIG_NETC_ORIGINS", "Origins"));
-  c.title = loc("LOC_EMIG_NETC_ORIGINS_TIP", "Show lines to where migrants came from");
+  const c = el("div", "emig-netc-chip", loc("LOC_EMIG_NETC_MIGFLOWS", "Migrant flows"));
+  c.title = loc("LOC_EMIG_NETC_MIGFLOWS_TIP",
+    "Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people");
   c.addEventListener("click", () => {
     state.showFlows = !state.showFlows;
     c.classList.toggle("active", state.showFlows);
@@ -567,9 +541,10 @@ function mountChrome(parts) {
   const capEn =
     "Each dot ≈ {1_People} people. A circle is one civilization, holding its cities and towns; its " +
     "dots are home-grown residents (its own colour), people who moved between its cities (a lighter " +
-    "tint), and immigrants (their origin's colour). Recolour with \"Color by\", filter with the " +
-    "Show/Origins toggles, click a swatch or circle to isolate it, and press ▶ or scrub the " +
-    "timeline to replay history.";
+    "tint), and immigrants (their origin's colour). Turn on \"Migrant flows\" to overlay the movement " +
+    "as arrows — red where people leave, green where they arrive, thicker for bigger flows. Recolour " +
+    "with \"Color by\", filter with the Show / Migrant-flows toggles, click a swatch or circle to " +
+    "isolate it (the arrows follow your filter), and press play or scrub the timeline to replay history.";
   // The help pill is the last group in the filter-pills row, under its own "Info:" heading (like
   // "Color by:" / "Show:" / "Units:"); its explanation opens on hover.
   parts.lensTabs.appendChild(el("span", "emig-lens-lbl", loc("LOC_EMIG_NETC_INFO", "Info:")));
@@ -739,7 +714,7 @@ function buildScene(frames, colorMap, events) {
   const state = {
     causes: new Set(), origin: null, focusDest: null, scope: null,
     show: { resident: true, internal: true, immigrant: true }, showFlows: false,
-    lens: "origin", frameIdx: frames.length - 1
+    lens: "origin", frameIdx: frames.length - 1, expanded: new Set()
   };
   const { sim, byId } = buildCenters(lastNet, colorMap);
   // Scaled Pop: a fixed ~SCALED_PEOPLE_PER_DOT people per dot (count tracks real size, capped at
@@ -754,8 +729,14 @@ function buildScene(frames, colorMap, events) {
   const shownUnit = Math.max(1, Math.round(total / Math.max(1, dots.length)));
   const evs = resolveEvents(events, byId);
   tagEventDots(dots, evs);
+  // Pre-expand every civ that has settlements so the "Migrant flows" arrow overlay routes to the city
+  // sub-nodes the dots already form (matches the former Flows view's default), and carry the frames so
+  // the overlay can read each frame's edges as the timeline scrubs.
+  for (const c of sim.nodes) {
+    if (c && c.cities && c.cities.length) state.expanded.add(c.id);
+  }
   /** @type {*} */
-  const scene = { WX, WY, centers: sim.nodes, dots, state, byId, events: evs, civMode };
+  const scene = { WX, WY, centers: sim.nodes, dots, state, byId, events: evs, civMode, frames };
   return { sim, byId, state, dots, scene, shownUnit, lastNet, civMode };
 }
 

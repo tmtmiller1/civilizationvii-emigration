@@ -352,8 +352,8 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="ru_RU"><Text>Каждая точка ≈ {1_People} человек. Круг цивилизации содержит её города и посёлки в виде внутренних подгрупп: точки собственного цвета цивилизации, местные жители, точки более СВЕТЛОГО оттенка, люди, переселившиеся между её городами (внутренняя миграция), а точки другого цвета, иммигранты из этого источника. Линза «Цвет по» перекрашивает их по происхождению, типу миграции (война / бедствие / притяжение …) или перемещению (жители / внутренние / иммигранты).</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="ru_RU"><Text>Показать:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="ru_RU"><Text>населения пока нет</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_ORIGINS" Language="ru_RU"><Text>Источники</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_ORIGINS_TIP" Language="ru_RU"><Text>Показать линии к источникам мигрантов</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="ru_RU"><Text>Migrant flows</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="ru_RU"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="ru_RU"><Text>Миграция - {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="ru_RU"><Text>Происхождение населения</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTING" Language="ru_RU"><Text>Отбывают в</Text></Replace>

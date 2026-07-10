@@ -12,7 +12,7 @@
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { causeLabel, netDrivers } from "/emigration/ui/emigration-causes.js";
-import { renderNetworkOrFlow } from "/emigration/ui/emigration-flow-tab.js";
+import { renderNetworkViz } from "/emigration/ui/emigration-network-viz.js";
 import { getNumberMode, setNumberMode, NumberMode, getMinimizeAnalytics } from "/emigration/ui/emigration-settings.js";
 import { appendSnapshotReminder } from "/emigration/ui/emigration-snapshot-reminder.js";
 import { renderGuide } from "/emigration/ui/emigration-guide.js";
@@ -440,8 +440,6 @@ const DASH_CSS =
   ".emig-tab.active{color:#f3c34c;border-bottom-color:#f3c34c;}" +
   ".emig-tabbody{overflow-y:auto;overflow-x:hidden;max-height:74vh;}" +
   ".emig-sample-badge{align-self:center;margin-bottom:0.5rem;padding:0.1rem 0.7rem;border-radius:0.9rem;font-size:var(--dg-fs-72);letter-spacing:0.08rem;text-transform:uppercase;color:#1c1408;background:#e0913c;font-weight:bold;}" +
-  ".emig-flow-toggle{display:flex;gap:0.4rem;justify-content:center;margin:0.3rem 0;flex-wrap:wrap;}.emig-flow-tog{cursor:pointer;padding:0.34rem 1.15rem;font-size:var(--dg-fs-95);color:#bfae86;border:0.0555rem solid rgba(201,162,76,0.4);border-radius:1rem;}" +
-  ".emig-flow-tog:hover{color:#e5d2ac;}.emig-flow-tog.active{color:#1c1408;background:#f3c34c;border-color:#f3c34c;font-weight:bold;}" +
   // ── Resolution density (chrome + per-tab content) ─────────────────────────
   // Short viewports (sub-1080p laptops) pin the engine font at 18px, so every
   // fixed-rem display would otherwise stay full size and overflow a 40-50rem
@@ -481,7 +479,7 @@ function el(tag, cls, text) {
 // Renderers that consume the whole section model (canvas/pie/card views).
 /** @type {Record<string, (body: HTMLElement, section: *, controlsHost?: HTMLElement) => void>} */
 const SECTION_VIEWS = {
-  flow: renderNetworkOrFlow,
+  flow: renderNetworkViz, // the "Network" tab: dots + the toggleable green/red migrant-flow overlay
   pies: renderCityFlows, cityflows: renderCityFlows,
   notifications: (/** @type {HTMLElement} */ body) => renderNotifications(body),
   guide: renderGuide

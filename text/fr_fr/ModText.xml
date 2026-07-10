@@ -352,8 +352,8 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="fr_FR"><Text>Chaque point ≈ {1_People} personnes. Le cercle d'une civilisation contient ses villes et bourgs sous forme de sous-groupes internes : les points de la couleur propre de la civilisation sont des résidents locaux, les points d'une teinte PLUS CLAIRE sont des personnes ayant migré entre ses propres villes (migration interne), et les points d'une autre couleur sont des immigrants de cette origine. La vue « Colorer par » les recolore par origine, type de migrant (guerre / catastrophe / attraction …) ou mouvement (résidents / interne / immigrants).</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="fr_FR"><Text>Afficher :</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="fr_FR"><Text>pas encore de population</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_ORIGINS" Language="fr_FR"><Text>Origines</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_ORIGINS_TIP" Language="fr_FR"><Text>Tracer des lignes vers l'origine des migrants</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="fr_FR"><Text>Migrant flows</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="fr_FR"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="fr_FR"><Text>Migration - {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="fr_FR"><Text>Origines de la population</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTING" Language="fr_FR"><Text>Départs vers</Text></Replace>

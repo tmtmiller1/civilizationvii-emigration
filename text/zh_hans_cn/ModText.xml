@@ -352,8 +352,8 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="zh_Hans_CN"><Text>每个圆点 ≈ {1_People} 人。一个文明的圆圈将其城市与城镇作为内部子群：文明本色的圆点是本地居民，较浅色调的圆点是在其自有城市之间迁移的人（内部迁移），其他颜色的圆点是来自该来源的移民。“着色依据”视角会按来源、迁移类型（战争／灾害／吸引 …）或迁移方式（居民／内部／移民）重新着色。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="zh_Hans_CN"><Text>显示：</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="zh_Hans_CN"><Text>尚无人口</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_ORIGINS" Language="zh_Hans_CN"><Text>来源</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_ORIGINS_TIP" Language="zh_Hans_CN"><Text>显示通往移民来源的连线</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="zh_Hans_CN"><Text>Migrant flows</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="zh_Hans_CN"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="zh_Hans_CN"><Text>移民 - {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="zh_Hans_CN"><Text>人口来源</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTING" Language="zh_Hans_CN"><Text>迁往</Text></Replace>

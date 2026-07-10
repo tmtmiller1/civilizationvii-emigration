@@ -352,8 +352,8 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="ja_JP"><Text>各ドット ≈ {1_People} 人。文明の円は都市や町を内側のサブクラスターとして含みます。文明自身の色のドットは土着の住民、より明るい色合いのドットは自国の都市間を移動した人々（国内移動）、別の色のドットはその出身地からの移民です。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="ja_JP"><Text>表示:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="ja_JP"><Text>まだ人口がいません</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_ORIGINS" Language="ja_JP"><Text>出身地</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_ORIGINS_TIP" Language="ja_JP"><Text>移民の出身地への線を表示</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="ja_JP"><Text>Migrant flows</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="ja_JP"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="ja_JP"><Text>移住 - {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="ja_JP"><Text>住民の出自</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTING" Language="ja_JP"><Text>移出先</Text></Replace>
