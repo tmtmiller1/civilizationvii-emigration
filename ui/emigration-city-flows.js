@@ -78,9 +78,10 @@ function civSlices(civs) {
  * @param {string} title Column heading.
  * @param {string} whyPrefix "Why" label.
  * @param {*} dir { civs, causes } for this direction.
+ * @param {boolean} isArrivals True for the Immigrants column (selects the empty-state label).
  * @returns {HTMLElement} The column.
  */
-function directionCol(title, whyPrefix, dir) {
+function directionCol(title, whyPrefix, dir, isArrivals) {
   const col = el("div", "emig-city-col");
   col.appendChild(el("div", "emig-city-sub", title));
   const slices = civSlices(dir && dir.civs);
@@ -88,8 +89,10 @@ function directionCol(title, whyPrefix, dir) {
     // A matching-size dashed placeholder, so a civ with only one active direction still reads as a
     // complete card (rather than a missing pie).
     const ph = el("div", "emig-pie-empty");
+    // F4: branch on an explicit direction flag, not a substring of the localized title
+    // (which failed in non-English locales).
     ph.appendChild(el("span", "emig-pie-empty-t",
-      title.indexOf("Immigrants") === 0
+      isArrivals
         ? loc("LOC_EMIG_CF_NO_ARRIVALS", "No arrivals yet")
         : loc("LOC_EMIG_CF_NO_DEPARTURES", "No departures yet")));
     col.appendChild(ph);
@@ -342,9 +345,9 @@ function cityCard(c) {
   const cols = el("div", "emig-city-cols" + (isCiv ? " with-causes" : ""));
   if (isCiv) cols.appendChild(causeList(c.causes, c.events));
   cols.appendChild(directionCol(loc("LOC_EMIG_CF_DIR_IMMIGRANTS", "Immigrants ; came from"),
-    loc("LOC_EMIG_CF_WHY_PREFIX", "Why:"), c.in));
+    loc("LOC_EMIG_CF_WHY_PREFIX", "Why:"), c.in, true));
   cols.appendChild(directionCol(loc("LOC_EMIG_CF_DIR_EMIGRANTS", "Emigrants ; left for/died"),
-    loc("LOC_EMIG_CF_WHY_PREFIX", "Why:"), c.out));
+    loc("LOC_EMIG_CF_WHY_PREFIX", "Why:"), c.out, false));
   // Settlements: the pressure becomes a third aligned graph column beside the two pies.
   if (!isCiv) cols.appendChild(pressureCol(c.pressure));
   card.appendChild(cols);

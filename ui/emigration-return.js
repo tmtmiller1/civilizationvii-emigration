@@ -22,7 +22,7 @@ import { chronicle } from "/emigration/ui/emigration-chronicle.js";
 import { returnLine, chronicleTitle } from "/emigration/ui/emigration-narrative.js";
 import { getReturnEnabled } from "/emigration/ui/emigration-settings.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
-import { consumeForReturn } from "/emigration/ui/emigration-refugee-pool.js";
+import { consumeOneForReturn, queueRefugees } from "/emigration/ui/emigration-refugee-pool.js";
 
 const STATE_KEY = "EmigrationReturn_v1";
 const STATE_SCHEMA_VERSION = 2;
@@ -213,20 +213,29 @@ function returnAllowed(host, origin, hostKey, ctx) {
 
 /**
  * Move one population point of returnees from the host city home, undoing the removal if the homeland
- * can't receive it (so population is never lost). Returns whether the move applied.
+ * can't receive it (so population is never lost). Returns whether the move applied and its source.
  * @param {*} hostCity The host city object. @param {*} homeCity The homeland city object.
  * @param {string} hostKey Host city signal key.
  * @param {number} originCiv Origin civ for the returnees.
- * @returns {boolean} True when the population actually moved.
+ * @returns {{ok:boolean, fromPool:boolean}} ok=true when the population actually moved; fromPool
+ *   tells the caller whether it came from the virtual holding pool (not settled host rural).
  */
 function moveReturnees(hostCity, homeCity, hostKey, originCiv) {
-  const fromPool = !!hostKey && typeof originCiv === "number" && consumeForReturn(hostKey, originCiv);
-  if (!fromPool && !removeRural(hostCity)) return false;
+  const pooled =
+    hostKey && typeof originCiv === "number" ? consumeOneForReturn(hostKey, originCiv) : null;
+  const fromPool = !!pooled;
+  if (!fromPool && !removeRural(hostCity)) return { ok: false, fromPool: false };
   if (!addRural(homeCity)) {
-    if (!fromPool) addRural(hostCity); // undo: homeland couldn't take them, keep them where they were
-    return false;
+    if (fromPool) {
+      // R1: homeland couldn't receive them — restore the consumed pool refugee
+      // (preserving its original `since`) instead of destroying the population.
+      queueRefugees(hostKey, originCiv, pooled.since, 1);
+    } else {
+      addRural(hostCity); // undo the rural removal, keep them where they were
+    }
+    return { ok: false, fromPool };
   }
-  return true;
+  return { ok: true, fromPool };
 }
 
 /**
@@ -268,10 +277,14 @@ function returnRoll(hostKey, turn) {
  * Mirror a one-point return move on the shared signal objects (the engine cities were just mutated):
  * one rural point leaves the host for the homeland, so the single per-pass collection stays accurate.
  * @param {*} host The host city signal. @param {*} homeCity The homeland city signal.
+ * @param {boolean} fromPool When the returnee came from the virtual holding pool (not settled host
+ *   rural), the host's counted population was never touched — so don't decrement it (R2).
  */
-function syncSignalsForMove(host, homeCity) {
-  host.population = (host.population || 0) - 1;
-  host.rural = (host.rural || 0) - 1;
+function syncSignalsForMove(host, homeCity, fromPool) {
+  if (!fromPool) {
+    host.population = (host.population || 0) - 1;
+    host.rural = (host.rural || 0) - 1;
+  }
   homeCity.population = (homeCity.population || 0) + 1;
   homeCity.rural = (homeCity.rural || 0) + 1;
 }
@@ -295,9 +308,12 @@ function planOneReturn(host, ctx) {
   if (!returnAllowed(host.owner, dia.civ, hostKey, ctx)) return null;
   if (!returnRoll(hostKey, ctx.turn)) return null; // returnRate: occasional, deterministic
   const homeCity = ctx.homelands.get(dia.civ);
-  if (!moveReturnees(host.city, homeCity.city, host.key, dia.civ)) return null;
+  const mv = moveReturnees(host.city, homeCity.city, host.key, dia.civ);
+  if (!mv.ok) return null;
   const popBefore = host.population || 0;
-  syncSignalsForMove(host, homeCity); // keep the shared pass signals accurate for the accounting below
+  // keep the shared pass signals accurate for the accounting below (host decrement
+  // skipped for pool-sourced returnees — they were never counted host rural; R2)
+  syncSignalsForMove(host, homeCity, mv.fromPool);
   state().lastByHost[hostKey] = ctx.turn;
   const people = marginalPeople(popBefore, ctx.turn, hostKey);
   chronicleReturn(dia.civ, hostKey, people, ctx.turn);

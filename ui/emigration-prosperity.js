@@ -211,7 +211,14 @@ export function distress(s) {
 export function prosperity(s, ctx) {
   const base = baseScore(s, ctx || null);
   const factor = 1 + situationalPercent(s) / 100;
-  const p = base * factor;
+  let p = base * factor;
+  // F2: situationalPercent can drop below −100 (siege+starvation+unrest stack), making
+  // factor negative. For a positive base that correctly slides the score negative (a
+  // routed city is unattractive). But a NEGATIVE base (poor, unhappy, high-pop) × a
+  // negative factor flips the product POSITIVE, ranking a devastated city as an
+  // attractive destination. Force the magnitude negative in exactly that case so
+  // distress can never make a poor city read as a magnet.
+  if (base < 0 && factor < 0) p = -Math.abs(p);
   return isFinite(p) ? p : 0;
 }
 

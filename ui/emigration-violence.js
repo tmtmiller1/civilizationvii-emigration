@@ -90,20 +90,39 @@ function loadPersisted() {
 }
 
 /**
+ * Keep only finite-number values from a parsed map (drops NaN/garbage).
+ * @param {*} m Parsed map object.
+ * @returns {Record<string, number>} The sanitized numeric map.
+ */
+function finiteMap(m) {
+  /** @type {Record<string, number>} */
+  const out = {};
+  if (m && typeof m === "object") {
+    for (const k of Object.keys(m)) {
+      const v = Number(m[k]);
+      if (Number.isFinite(v)) out[k] = v;
+    }
+  }
+  return out;
+}
+
+/**
  * Coerce a parsed object into the canonical ViolenceState shape (filling any
  * missing maps and seeding decayTurn to "now").
  * @param {*} s Parsed object.
  * @returns {ViolenceState} The normalized state.
  */
 function normalizeViolence(s) {
+  // Sanitize every numeric map on load (F8) so a corrupted/hand-edited save
+  // can't seed NaN that propagates through the decay math for a cycle.
   return {
-    byCity: s.byCity || {},
-    lastFrac: s.lastFrac || {},
-    observedTurn: s.observedTurn || {},
-    decayTurn: s.decayTurn || gameTurn(),
-    tenure: s.tenure || {},
-    onsetPop: s.onsetPop || {},
-    warLoss: s.warLoss || {}
+    byCity: finiteMap(s.byCity),
+    lastFrac: finiteMap(s.lastFrac),
+    observedTurn: finiteMap(s.observedTurn),
+    decayTurn: Number.isFinite(Number(s.decayTurn)) ? Number(s.decayTurn) : gameTurn(),
+    tenure: finiteMap(s.tenure),
+    onsetPop: finiteMap(s.onsetPop),
+    warLoss: finiteMap(s.warLoss)
   };
 }
 
@@ -296,6 +315,11 @@ export function recordWarLoss(city) {
 export function tickViolence() {
   const s = state();
   const turn = gameTurn();
+  // F1: Game.turn resets to a low value at each age boundary. Without this rebase the
+  // decay clock would sit above the current turn (elapsed pinned to 0 by the guard
+  // below) and never decay again for the rest of the age; rebasing lets decay resume
+  // from the new age's turns.
+  if (turn < s.decayTurn) s.decayTurn = turn;
   const elapsed = Math.max(0, turn - s.decayTurn);
   if (elapsed > 0) {
     const factor = Math.pow(speedDecay(CONFIG.violenceDecay), elapsed);

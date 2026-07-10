@@ -40,6 +40,21 @@ function gameTurn() {
 }
 
 /**
+ * Turns elapsed since a per-key marker, rebasing an absent/stale-future marker down to the
+ * current turn first (F1): Game.turn resets at age boundaries, so a marker left above `turn`
+ * would pin elapsed to 0 forever and freeze decay; pulling it down lets decay resume.
+ * @param {Record<string, number>} map Per-key turn markers.
+ * @param {number} key The entry key.
+ * @param {number} turn Current game turn.
+ * @returns {number} Non-negative turns elapsed.
+ */
+function elapsedSince(map, key, turn) {
+  const prev = map[key];
+  if (prev == null || prev > turn) map[key] = turn;
+  return Math.max(0, turn - map[key]);
+}
+
+/**
  * The raw persisted assimilation state string, or null.
  * @returns {string|null} JSON, or null.
  */
@@ -132,7 +147,7 @@ export function tickAssimilation(pid) {
   const cur = s.load[pid] || 0;
   if (cur <= 0) return none;
   const turn = gameTurn();
-  const elapsed = Math.max(0, turn - (s.tickedTurn[pid] ?? turn));
+  const elapsed = elapsedSince(s.tickedTurn, pid, turn); // F1: rebases a stale age-reset marker
   if (elapsed <= 0) return { load: cur, happiness: 0, gold: 0 };
   s.tickedTurn[pid] = turn;
   // integrationSpeed (civ tuning): >1 clears the load faster, <1 slower. speedDecay re-bases the

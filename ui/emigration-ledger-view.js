@@ -122,7 +122,10 @@ function ledgerNetBarCell(r, maxNet) {
 function stancePct(r) {
   const neutral = r.inP - r.stInP; // estimated immigration with a neutral stance
   if (!(Math.abs(neutral) > 0)) return 0;
-  return Math.round((r.stInP / neutral) * 100);
+  // F5: divide by the magnitude of the baseline and keep the sign from the impact
+  // (r.stInP). Dividing by a signed, possibly-negative baseline flipped the sign and
+  // could render "(+-NN%)".
+  return Math.round((r.stInP / Math.abs(neutral)) * 100);
 }
 
 /**

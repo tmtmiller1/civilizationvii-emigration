@@ -305,6 +305,10 @@ function gameTurn() {
 function cooldownOk() {
   const s = newsState();
   const turn = gameTurn();
+  // F1: rebase the cooldown clock down when Game.turn resets at an age boundary, so the
+  // comparison below can't be corrupted (a stale future lastToastTurn either spamming or
+  // over-suppressing).
+  if (s.lastToastTurn > turn) s.lastToastTurn = turn;
   // speedTurns (×S): keep the REAL-TIME spacing of important toasts constant across speeds, else they
   // sat ~3× further apart on Marathon (event over before you're told) and spammed on Online.
   // Guard on lastToastTurn > 0, not just "is a number": the empty state seeds it to 0, so the plain
@@ -834,7 +838,9 @@ export function reportPressureCues(cues) {
 function emitPressureCue(c, me, turn, cd) {
   if (c.srcOwner !== me || !c.srcName || !c.destName) return;
   const last = _cueTurn.get(c.srcName);
-  if (typeof last === "number" && turn - last < cd) return;
+  // F1: a `last` above the current turn is stale from a prior age (Game.turn reset); ignore
+  // it (the `turn >= last` guard) so the cue isn't suppressed for the rest of the new age.
+  if (typeof last === "number" && turn >= last && turn - last < cd) return;
   _cueTurn.set(c.srcName, turn);
   logNotification({
     kind: "cue",

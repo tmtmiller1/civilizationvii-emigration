@@ -920,5 +920,22 @@
         <Replace Tag="LOC_EMIG_GUIDE_12_F3_A" Language="ru_RU"><Text>Не более двух во всей вашей державе — но это НА цивилизацию, а не всего. Вы можете держать два римских, два норманнских и два ханьских анклава одновременно; достижение предела для одного происхождения никогда не блокирует другое. Иной народ, вытесняющий клетку существующего анклава, — это переход из рук в руки (Хроника отмечает это, и вы выбираете снова), а не третий сложенный анклав.</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_Q" Language="ru_RU"><Text>Что произойдёт, если я вступлю в войну с родиной анклава?</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_A" Language="ru_RU"><Text>Анклав становится «оспариваемым»: небольшое, ограниченное напряжение счастья, пока длится война, поданное как военная тревога города, ложащаяся на семьи, которые не выбирали боёв, — а не как нелояльность анклава. Он вновь оседает, как только возвращается мир.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_MAGNET" Language="ru_RU"><Text>Strong magnet</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_ABOVE" Language="ru_RU"><Text>Above average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_AVG" Language="ru_RU"><Text>About average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_BELOW" Language="ru_RU"><Text>Below average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_SHEDDING" Language="ru_RU"><Text>Shedding population</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_ATTACK" Language="ru_RU"><Text>Under attack</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_SIEGE" Language="ru_RU"><Text>Besieged</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_DISASTER" Language="ru_RU"><Text>Disaster</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_PLAGUE" Language="ru_RU"><Text>Plague</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_STARVING" Language="ru_RU"><Text>Starving</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_UNREST" Language="ru_RU"><Text>Unrest</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_MORE" Language="ru_RU"><Text>+{1_Count} more</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_UNKNOWN" Language="ru_RU"><Text>Unknown</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TITLE" Language="ru_RU"><Text>Ethnic Composition</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TILE_SUFFIX" Language="ru_RU"><Text>· this tile</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT" Language="ru_RU"><Text>{1_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT_SIGNED" Language="ru_RU"><Text>{1_Pct}%</Text></Replace>
     </LocalizedText>
 </Database>

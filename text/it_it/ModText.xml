@@ -920,5 +920,22 @@
         <Replace Tag="LOC_EMIG_GUIDE_12_F3_A" Language="it_IT"><Text>Al massimo due in tutto il tuo impero — ma questo è PER civiltà, non complessivamente. Puoi avere due enclavi romane e due normanne e due han contemporaneamente; raggiungere il tetto per un'origine non blocca mai un'origine diversa. Un popolo diverso che soppianta la casella di un'enclave esistente è un cambio di mano (la Cronaca lo annota e tu scegli di nuovo), non una terza enclave impilata.</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_Q" Language="it_IT"><Text>Cosa succede se entro in guerra con la patria di un'enclave?</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_A" Language="it_IT"><Text>L'enclave diventa "contesa": una piccola tensione di felicità con un tetto massimo mentre dura la guerra, inquadrata come il disagio bellico della città che ricade su famiglie che non hanno scelto il conflitto — non come l'enclave che è sleale. Si assesta di nuovo una volta che torna la pace.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_MAGNET" Language="it_IT"><Text>Strong magnet</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_ABOVE" Language="it_IT"><Text>Above average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_AVG" Language="it_IT"><Text>About average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_BELOW" Language="it_IT"><Text>Below average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_SHEDDING" Language="it_IT"><Text>Shedding population</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_ATTACK" Language="it_IT"><Text>Under attack</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_SIEGE" Language="it_IT"><Text>Besieged</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_DISASTER" Language="it_IT"><Text>Disaster</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_PLAGUE" Language="it_IT"><Text>Plague</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_STARVING" Language="it_IT"><Text>Starving</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_UNREST" Language="it_IT"><Text>Unrest</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_MORE" Language="it_IT"><Text>+{1_Count} more</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_UNKNOWN" Language="it_IT"><Text>Unknown</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TITLE" Language="it_IT"><Text>Ethnic Composition</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TILE_SUFFIX" Language="it_IT"><Text>· this tile</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT" Language="it_IT"><Text>{1_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT_SIGNED" Language="it_IT"><Text>{1_Pct}%</Text></Replace>
     </LocalizedText>
 </Database>

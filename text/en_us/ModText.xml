@@ -1630,5 +1630,22 @@
         <Row Tag="LOC_EMIG_GUIDE_12_F3_A"><Text>At most two in your whole empire — but that's PER civilization, not overall. You can hold two Roman and two Norman and two Han enclaves at the same time; reaching the cap for one origin never blocks a different one. A different people overtaking an existing enclave's tile is a change of hands (the Chronicle notes it and you choose again), not a third stacked enclave.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_12_F4_Q"><Text>What happens if I go to war with an enclave's homeland?</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_12_F4_A"><Text>The enclave turns "contested": a small, capped happiness strain while the war lasts, framed as the city's wartime unease falling on families who did not choose the fighting — not as the enclave being disloyal. It settles again once peace returns.</Text></Row>
+        <Row Tag="LOC_EMIG_PROS_TIER_MAGNET"><Text>Strong magnet</Text></Row>
+        <Row Tag="LOC_EMIG_PROS_TIER_ABOVE"><Text>Above average</Text></Row>
+        <Row Tag="LOC_EMIG_PROS_TIER_AVG"><Text>About average</Text></Row>
+        <Row Tag="LOC_EMIG_PROS_TIER_BELOW"><Text>Below average</Text></Row>
+        <Row Tag="LOC_EMIG_PROS_TIER_SHEDDING"><Text>Shedding population</Text></Row>
+        <Row Tag="LOC_EMIG_PRESSURE_ATTACK"><Text>Under attack</Text></Row>
+        <Row Tag="LOC_EMIG_PRESSURE_SIEGE"><Text>Besieged</Text></Row>
+        <Row Tag="LOC_EMIG_PRESSURE_DISASTER"><Text>Disaster</Text></Row>
+        <Row Tag="LOC_EMIG_PRESSURE_PLAGUE"><Text>Plague</Text></Row>
+        <Row Tag="LOC_EMIG_PRESSURE_STARVING"><Text>Starving</Text></Row>
+        <Row Tag="LOC_EMIG_PRESSURE_UNREST"><Text>Unrest</Text></Row>
+        <Row Tag="LOC_EMIG_ETH_MORE"><Text>+{1_Count} more</Text></Row>
+        <Row Tag="LOC_EMIG_ETH_UNKNOWN"><Text>Unknown</Text></Row>
+        <Row Tag="LOC_EMIG_ETH_TITLE"><Text>Ethnic Composition</Text></Row>
+        <Row Tag="LOC_EMIG_ETH_TILE_SUFFIX"><Text> · this tile</Text></Row>
+        <Row Tag="LOC_EMIG_PCT"><Text>{1_Pct}%</Text></Row>
+        <Row Tag="LOC_EMIG_PCT_SIGNED"><Text>{1_Pct}%</Text></Row>
     </EnglishText>
 </Database>

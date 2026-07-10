@@ -22,20 +22,20 @@ As part of creating [i]Emigration[/i], I donated to the International Refugee As
 
 [list]
 [*][b]Compatible with 1.4.1.[/b]
-[*][b]Migration scoring.[/b] Each settlement gets a score from its yields, happiness, war weariness, and government passives. Population moves from low-scoring settlements to higher-scoring ones each turn.
-[*][b]Displacement.[/b] Damage, pillaging, sieges, starvation, unrest, and disasters generate refugees. Refugee destination priority: own civilization, then neutrals, then the attacker.
-[*][b]Attrition.[/b] Sustained sieges, famine, war, or disaster kill population that cannot relocate. The death chance accumulates over several turns instead of resolving in one.
-[*][b]Delay.[/b] Arriving refugees sit idle for a time before joining the host's working population. These refugees don't produce yields, but do carry a support cost, and show on the map lens and city readout.
-[*][b]Distance penalty.[/b] Move probability falls off with distance, so migration favors nearby settlements over cross-map jumps.
-[*][b]Borders and policy.[/b] Open Borders agreements and Pro-/Anti-Immigration policies raise or lower migration rates, settlement chance, retention, and integration cost.
-[*][b]Integration cost.[/b] Each incoming migrant applies a temporary happiness and gold cost to the host. A congestion penalty caps how much any single settlement can absorb.
-[*][b]Origin tracking.[/b] Settlements record the origin civilization of their population. Migrants integrate over time, diasporas can return home, and a persistent foreign population can form a cultural enclave.
-[*][b]Attribution.[/b] Every move stores the factor that decided it (prosperity, distance, safety, open borders, allies, asylum, crisis, or war), surfaced in notifications, city readouts, pressure warnings, crisis reports, and a persistent log.
+[*][b]Migration scoring.[/b] Each settlement scores on yields, happiness, war weariness, and government passives. Population moves from lower- to higher-scoring settlements each pass.
+[*][b]Displacement.[/b] Combat damage, pillaging, sieges, starvation, unrest, and disasters produce refugees. Destination priority: own civilization, then neutrals, then the attacker.
+[*][b]Attrition.[/b] Population that cannot relocate under sustained siege, famine, war, or disaster dies. The death chance accrues over several turns rather than resolving in one.
+[*][b]Settlement delay.[/b] Arriving refugees are held before entering the working population. They produce no yields, carry a support cost, and appear on the map lens and city readout.
+[*][b]Distance falloff.[/b] Move probability decreases with distance. Nearby settlements are favored over cross-map moves.
+[*][b]Borders and policy.[/b] Open Borders agreements and Pro-/Anti-Immigration policies adjust migration rate, settlement chance, retention, and integration cost.
+[*][b]Integration cost.[/b] Each migrant applies a temporary happiness and gold cost to the host. A congestion cap limits per-settlement intake.
+[*][b]Origin tracking.[/b] Settlements record population origin. Minorities integrate over time, diasporas may return home, and a sustained foreign presence can form a cultural enclave.
+[*][b]Attribution.[/b] Each move records its deciding factor (prosperity, distance, safety, open borders, allies, asylum, crisis, or war), surfaced in notifications, city readouts, pressure warnings, crisis reports, and a persistent log.
 [/list]
 
 [b]Migration dashboard[/b]
 
-Available through an optional dock button or the Demographics mod's interface. Tabs cover the Migration Network, Net Migration, Why People Move, Settlements, Immigration Policies, Guide, Notifications log, and Migration notifications.
+Available through an optional dock button or the Demographics mod's interface. Tabs cover the Migration Network, Net Migration, Why People Move, Settlements, Immigration Policies, Migration Notifications, and a Guide.
 
 [b]Source[/b]
 

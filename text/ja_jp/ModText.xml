@@ -920,5 +920,22 @@
         <Replace Tag="LOC_EMIG_GUIDE_12_F3_A" Language="ja_JP"><Text>あなたの帝国全体で最大二つ——だがこれは全体でではなく、文明ごとの数だ。ローマ二つ、ノルマン二つ、漢二つの街区を同時に持つことができる。ある出自の上限に達しても、別の出自を妨げることは決してない。別の民族が既存の街区のタイルを乗っ取るのは担い手の交代であって（年代記がそれを記し、あなたは再び選択する）、三つ目の重なった街区ではない。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_Q" Language="ja_JP"><Text>街区の故国と戦争を始めるとどうなるのか？</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_A" Language="ja_JP"><Text>街区は「係争」状態になる。すなわち戦争が続く間の、小さく上限のある幸福への負担だ。これは街区が不忠だからではなく、都市の戦時の不安が、戦いを選んだわけではない家々に降りかかるものとして描かれる。平和が戻れば、街区は再び落ち着く。</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_MAGNET" Language="ja_JP"><Text>Strong magnet</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_ABOVE" Language="ja_JP"><Text>Above average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_AVG" Language="ja_JP"><Text>About average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_BELOW" Language="ja_JP"><Text>Below average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_SHEDDING" Language="ja_JP"><Text>Shedding population</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_ATTACK" Language="ja_JP"><Text>Under attack</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_SIEGE" Language="ja_JP"><Text>Besieged</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_DISASTER" Language="ja_JP"><Text>Disaster</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_PLAGUE" Language="ja_JP"><Text>Plague</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_STARVING" Language="ja_JP"><Text>Starving</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_UNREST" Language="ja_JP"><Text>Unrest</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_MORE" Language="ja_JP"><Text>+{1_Count} more</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_UNKNOWN" Language="ja_JP"><Text>Unknown</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TITLE" Language="ja_JP"><Text>Ethnic Composition</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TILE_SUFFIX" Language="ja_JP"><Text>· this tile</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT" Language="ja_JP"><Text>{1_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT_SIGNED" Language="ja_JP"><Text>{1_Pct}%</Text></Replace>
     </LocalizedText>
 </Database>

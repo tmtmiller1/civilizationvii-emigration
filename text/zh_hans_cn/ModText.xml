@@ -920,5 +920,22 @@
         <Replace Tag="LOC_EMIG_GUIDE_12_F3_A" Language="zh_Hans_CN"><Text>在你整个帝国中至多两处——但这是按每个文明计算，而非总计。你可以同时拥有两处罗马、两处诺曼与两处汉飞地；达到某一来源的上限绝不会妨碍另一个来源。另一个民族取代某处现有飞地的地块属于易主（编年史会记录它，你也会再次选择），而非第三处叠加的飞地。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_Q" Language="zh_Hans_CN"><Text>如果我与某处飞地的故土开战会发生什么？</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_A" Language="zh_Hans_CN"><Text>这处飞地会转为“争议状态”：在战争持续期间，产生一份微小且设有上限的幸福度压力，其立意是城市的战时不安落在了那些并未选择这场战争的家族身上——而非将飞地视为不忠。一旦和平重临，它便会重归安定。</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_MAGNET" Language="zh_Hans_CN"><Text>Strong magnet</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_ABOVE" Language="zh_Hans_CN"><Text>Above average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_AVG" Language="zh_Hans_CN"><Text>About average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_BELOW" Language="zh_Hans_CN"><Text>Below average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_SHEDDING" Language="zh_Hans_CN"><Text>Shedding population</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_ATTACK" Language="zh_Hans_CN"><Text>Under attack</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_SIEGE" Language="zh_Hans_CN"><Text>Besieged</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_DISASTER" Language="zh_Hans_CN"><Text>Disaster</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_PLAGUE" Language="zh_Hans_CN"><Text>Plague</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_STARVING" Language="zh_Hans_CN"><Text>Starving</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_UNREST" Language="zh_Hans_CN"><Text>Unrest</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_MORE" Language="zh_Hans_CN"><Text>+{1_Count} more</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_UNKNOWN" Language="zh_Hans_CN"><Text>Unknown</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TITLE" Language="zh_Hans_CN"><Text>Ethnic Composition</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TILE_SUFFIX" Language="zh_Hans_CN"><Text>· this tile</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT" Language="zh_Hans_CN"><Text>{1_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT_SIGNED" Language="zh_Hans_CN"><Text>{1_Pct}%</Text></Replace>
     </LocalizedText>
 </Database>

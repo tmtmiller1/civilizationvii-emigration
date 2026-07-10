@@ -920,5 +920,22 @@
         <Replace Tag="LOC_EMIG_GUIDE_12_F3_A" Language="ko_KR"><Text>제국 전체에서 최대 두 개입니다. 다만 이는 문명별이지 전체가 아닙니다. 로마 두 개, 노르만 두 개, 한 두 개의 거류지를 동시에 가질 수 있습니다. 한 출신의 상한에 도달해도 다른 출신을 결코 막지 않습니다. 다른 민족이 기존 거류지의 타일을 차지하는 것은 주인이 바뀌는 것이며(연대기가 이를 기록하고 당신은 다시 선택함), 세 번째로 쌓이는 거류지가 아닙니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_Q" Language="ko_KR"><Text>거류지의 고향과 전쟁을 벌이면 어떻게 되나요?</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_A" Language="ko_KR"><Text>거류지는 "분쟁" 상태가 됩니다. 전쟁이 지속되는 동안 작고 상한이 있는 행복 긴장이 생기며, 이는 거류지가 불충한 것이 아니라 도시의 전시 불안이 이 전쟁을 택하지 않은 가문들에게 드리우는 것으로 표현됩니다. 평화가 돌아오면 다시 자리를 잡습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_MAGNET" Language="ko_KR"><Text>Strong magnet</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_ABOVE" Language="ko_KR"><Text>Above average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_AVG" Language="ko_KR"><Text>About average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_BELOW" Language="ko_KR"><Text>Below average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_SHEDDING" Language="ko_KR"><Text>Shedding population</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_ATTACK" Language="ko_KR"><Text>Under attack</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_SIEGE" Language="ko_KR"><Text>Besieged</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_DISASTER" Language="ko_KR"><Text>Disaster</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_PLAGUE" Language="ko_KR"><Text>Plague</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_STARVING" Language="ko_KR"><Text>Starving</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_UNREST" Language="ko_KR"><Text>Unrest</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_MORE" Language="ko_KR"><Text>+{1_Count} more</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_UNKNOWN" Language="ko_KR"><Text>Unknown</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TITLE" Language="ko_KR"><Text>Ethnic Composition</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TILE_SUFFIX" Language="ko_KR"><Text>· this tile</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT" Language="ko_KR"><Text>{1_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT_SIGNED" Language="ko_KR"><Text>{1_Pct}%</Text></Replace>
     </LocalizedText>
 </Database>

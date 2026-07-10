@@ -920,5 +920,22 @@
         <Replace Tag="LOC_EMIG_GUIDE_12_F3_A" Language="de_DE"><Text>Höchstens zwei in deinem ganzen Reich — aber das gilt JE Zivilisation, nicht insgesamt. Du kannst zugleich zwei römische und zwei normannische und zwei Han-Enklaven halten; das Erreichen der Grenze für eine Herkunft blockiert nie eine andere. Ein anderes Volk, das das Feld einer bestehenden Enklave überholt, ist ein Besitzerwechsel (die Chronik vermerkt ihn, und du wählst erneut), keine dritte gestapelte Enklave.</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_Q" Language="de_DE"><Text>Was geschieht, wenn ich Krieg gegen die Heimat einer Enklave führe?</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_A" Language="de_DE"><Text>Die Enklave wird "umkämpft": eine kleine, gedeckelte Zufriedenheitsbelastung, solange der Krieg dauert, gerahmt als das kriegsbedingte Unbehagen der Stadt, das auf Familien fällt, die die Kämpfe nicht gewählt haben — nicht als sei die Enklave illoyal. Sie fügt sich wieder ein, sobald der Frieden zurückkehrt.</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_MAGNET" Language="de_DE"><Text>Strong magnet</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_ABOVE" Language="de_DE"><Text>Above average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_AVG" Language="de_DE"><Text>About average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_BELOW" Language="de_DE"><Text>Below average</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_TIER_SHEDDING" Language="de_DE"><Text>Shedding population</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_ATTACK" Language="de_DE"><Text>Under attack</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_SIEGE" Language="de_DE"><Text>Besieged</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_DISASTER" Language="de_DE"><Text>Disaster</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_PLAGUE" Language="de_DE"><Text>Plague</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_STARVING" Language="de_DE"><Text>Starving</Text></Replace>
+        <Replace Tag="LOC_EMIG_PRESSURE_UNREST" Language="de_DE"><Text>Unrest</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_MORE" Language="de_DE"><Text>+{1_Count} more</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_UNKNOWN" Language="de_DE"><Text>Unknown</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TITLE" Language="de_DE"><Text>Ethnic Composition</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETH_TILE_SUFFIX" Language="de_DE"><Text>· this tile</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT" Language="de_DE"><Text>{1_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_PCT_SIGNED" Language="de_DE"><Text>{1_Pct}%</Text></Replace>
     </LocalizedText>
 </Database>

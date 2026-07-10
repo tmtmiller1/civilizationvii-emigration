@@ -11,6 +11,7 @@
 
 import { registerLensHoverPanel, cityTitle } from "/emigration/ui/emigration-lens-hover-panel.js";
 import { fieldContext, prosperity } from "/emigration/ui/emigration-prosperity.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 
 const LENS = "emig-prosperity-lens"; // must match emigration-prosperity-lens.js
 const PRESSURE_HEX = "#d4483c"; // red dot for active migration pressures (matches the lens "below" red)
@@ -42,11 +43,11 @@ function tierColor(t) {
 
 /** A human standing label for a normalized deviation t ∈ [-1, 1]. @param {number} t Deviation. */
 function tierLabel(t) {
-  if (t >= 0.6) return "Strong magnet";
-  if (t >= 0.2) return "Above average";
-  if (t > -0.2) return "About average";
-  if (t > -0.6) return "Below average";
-  return "Shedding population";
+  if (t >= 0.6) return loc("LOC_EMIG_PROS_TIER_MAGNET", "Strong magnet");
+  if (t >= 0.2) return loc("LOC_EMIG_PROS_TIER_ABOVE", "Above average");
+  if (t > -0.2) return loc("LOC_EMIG_PROS_TIER_AVG", "About average");
+  if (t > -0.6) return loc("LOC_EMIG_PROS_TIER_BELOW", "Below average");
+  return loc("LOC_EMIG_PROS_TIER_SHEDDING", "Shedding population");
 }
 
 /**
@@ -58,12 +59,12 @@ function tierLabel(t) {
 function pressures(s) {
   /** @type {string[]} */
   const out = [];
-  if (s.violence > 0) out.push("Under attack");
-  if (s.siege) out.push("Besieged");
-  if (s.disaster > 0) out.push("Disaster");
-  if (s.infected) out.push("Plague");
-  if (s.starving) out.push("Starving");
-  if (s.unrest) out.push("Unrest");
+  if (s.violence > 0) out.push(loc("LOC_EMIG_PRESSURE_ATTACK", "Under attack"));
+  if (s.siege) out.push(loc("LOC_EMIG_PRESSURE_SIEGE", "Besieged"));
+  if (s.disaster > 0) out.push(loc("LOC_EMIG_PRESSURE_DISASTER", "Disaster"));
+  if (s.infected) out.push(loc("LOC_EMIG_PRESSURE_PLAGUE", "Plague"));
+  if (s.starving) out.push(loc("LOC_EMIG_PRESSURE_STARVING", "Starving"));
+  if (s.unrest) out.push(loc("LOC_EMIG_PRESSURE_UNREST", "Unrest"));
   return out;
 }
 
@@ -94,8 +95,9 @@ function resolve(sig, snap) {
   const t = snap.spread > 0 ? clamp((p - snap.mean) / snap.spread, -1, 1) : 0;
   const color = tierColor(t);
   const pct = Math.round(t * 100);
+  const pctText = loc("LOC_EMIG_PCT_SIGNED", "{1_Pct}%", (pct >= 0 ? "+" : "") + pct);
   /** @type {{color:string, name:string, value:string}[]} */
-  const rows = [{ color, name: tierLabel(t), value: (pct >= 0 ? "+" : "") + pct + "%" }];
+  const rows = [{ color, name: tierLabel(t), value: pctText }];
   for (const pr of pressures(sig)) rows.push({ color: PRESSURE_HEX, name: pr, value: "" });
   return { title: cityTitle(sig.city, "Prosperity"), rows };
 }

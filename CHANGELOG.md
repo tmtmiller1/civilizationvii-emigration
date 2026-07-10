@@ -5,7 +5,22 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
-## [Unreleased]
+## [2.0.6] - 2026-07-10
+
+### Fixed
+- **Migration no longer stalls after an age change.** The per-turn migration pass and the
+  war/disaster/assimilation/combat decay clocks were keyed on the age-local game turn, which
+  resets at each age boundary — so the simulation went dormant and distress stopped decaying
+  for a large stretch of every post-Antiquity age. The clocks now rebase across the reset.
+- **A besieged, ruined city is no longer treated as an attractive destination.** A scoring
+  sign-flip could rank a devastated city as a magnet and route refugees into a war zone.
+- **Returnees are no longer lost.** A returning migrant drawn from the holding pool that the
+  homeland couldn't receive was dropped instead of restored; it is now re-queued. A related
+  host-population miscount for pool-sourced returns is fixed.
+- **Localization + robustness:** the Prosperity/Ethnicity lens tooltips and an empty-column
+  label are now translatable (they showed English regardless of language); migrant-borne
+  plague distress respects its cap; a network hover no longer mislabels an unknown origin;
+  and corrupted violence-save numbers are sanitized on load.
 
 ## [2.0.5] - 2026-07-10
 

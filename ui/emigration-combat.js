@@ -53,6 +53,9 @@ export function combatLossFor(pid) {
   const cum = casualtyCum(pid);
   const turn = gameTurn();
   const t = _track[pid];
+  // F1: rebase down on age-boundary Game.turn reset so `turn > t.turn` can fire again and
+  // the decay/delta fold resumes instead of stalling until the turn climbs back.
+  if (t && turn < t.turn) t.turn = turn;
   if (!t) {
     _track[pid] = { turn, cum, intensity: 0 }; // first sighting → baseline only (no phantom spike)
     return 0;
