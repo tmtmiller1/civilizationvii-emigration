@@ -352,8 +352,8 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="pl_PL"><Text>Każda kropka ≈ {1_People} ludzi. Okrąg to jedna cywilizacja, mieszcząca jej miasta i miasteczka; jej kropki to rodzimi mieszkańcy (jej własny kolor), ludzie, którzy przemieścili się między jej miastami (jaśniejszy odcień), oraz imigranci (kolor ich pochodzenia). Przekoloruj za pomocą „Koloruj według”, filtruj przełącznikami Pokaż/Pochodzenie, kliknij próbkę lub okrąg, aby je wyodrębnić, i naciśnij ▶ lub przewiń oś czasu, aby odtworzyć historię.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="pl_PL"><Text>Pokaż:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="pl_PL"><Text>brak jeszcze populacji</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_ORIGINS" Language="pl_PL"><Text>Pochodzenie</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_ORIGINS_TIP" Language="pl_PL"><Text>Pokaż linie do miejsc, skąd przybyli migranci</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="pl_PL"><Text>Migrant flows</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="pl_PL"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="pl_PL"><Text>Migracja - {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="pl_PL"><Text>Pochodzenie ludności</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTING" Language="pl_PL"><Text>Wyjazdy do</Text></Replace>

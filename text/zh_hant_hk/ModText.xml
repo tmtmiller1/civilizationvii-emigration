@@ -352,8 +352,8 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="zh_Hant_HK"><Text>每個圓點 ≈ {1_People} 人。一個圓圈是一個文明，包含其城市與城鎮；其圓點為本地居民（文明本色）、在其城市之間遷移的人（較淺色調）以及移民（其來源的顏色）。以「著色依據」重新著色，以「顯示/來源」開關篩選，點按色塊或圓圈以將其單獨顯示，並按 ▶ 或拖曳時間線以重播歷史。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="zh_Hant_HK"><Text>顯示：</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="zh_Hant_HK"><Text>尚無人口</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_ORIGINS" Language="zh_Hant_HK"><Text>來源</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_ORIGINS_TIP" Language="zh_Hant_HK"><Text>顯示通往移民來源的連線</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="zh_Hant_HK"><Text>Migrant flows</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="zh_Hant_HK"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="zh_Hant_HK"><Text>移民 - {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="zh_Hant_HK"><Text>人口來源</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTING" Language="zh_Hant_HK"><Text>遷往</Text></Replace>

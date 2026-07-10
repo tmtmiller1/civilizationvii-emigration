@@ -352,8 +352,8 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="de_DE"><Text>Jeder Punkt ≈ {1_People} Menschen. Der Kreis einer Zivilisation enthält ihre Städte und Dörfer als innere Untergruppen: Punkte in der eigenen Farbe der Zivilisation sind einheimische Bewohner, Punkte in einem HELLEREN Ton sind Menschen, die zwischen den eigenen Städten gewandert sind (Binnenwanderung), und Punkte in anderer Farbe sind Zuwanderer aus dieser Herkunft. Die Linse „Färben nach“ färbt sie nach Herkunft, Wanderungsart (Krieg / Katastrophe / Anziehung …) oder Bewegung (Einheimische / intern / Zuwanderer) um.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="de_DE"><Text>Zeigen:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="de_DE"><Text>noch keine Bevölkerung</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_ORIGINS" Language="de_DE"><Text>Herkünfte</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_ORIGINS_TIP" Language="de_DE"><Text>Linien zur Herkunft der Migranten anzeigen</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="de_DE"><Text>Migrant flows</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="de_DE"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="de_DE"><Text>Migration – {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="de_DE"><Text>Bevölkerungsherkunft</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTING" Language="de_DE"><Text>Abwanderung nach</Text></Replace>
