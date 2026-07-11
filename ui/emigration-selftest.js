@@ -25,6 +25,7 @@ import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 import { toast, reportPassFeedback, reportInboundFeedback } from "/emigration/ui/emigration-feedback.js";
 import { openEmigrationScreen } from "/emigration/ui/emigration-screen.js";
 import { showDilemma } from "/emigration/ui/emigration-dilemma-view.js";
+import { fireRealDilemmaForTest } from "/emigration/ui/emigration-dilemma.js";
 import { quarterOptionsFor } from "/emigration/ui/emigration-quarter-registry.js";
 import { civType, quarterName, narrativeCiv } from "/emigration/ui/emigration-naming.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
@@ -206,41 +207,18 @@ function disarmDilemma(h) {
 }
 
 /**
- * Present the real-path test dilemma. Called SYNCHRONOUSLY from inside the PlayerTurnActivated handler —
- * identical to onTurnActivated → maybeDilemma → fireDilemma → showDilemma. showDilemma defers its own
- * presentation (that internal defer is the fix under test). No self-test screen is open here, so nothing
- * to layer against. Applies no game effect.
- */
-function presentRealPathDilemma() {
-  const note = loc("LOC_EMIG_SELFTEST_REALPATH_NOTE", "Real-path test — no game effect.");
-  const view = {
-    eyebrow: "Refugees",
-    dismissId: "away",
-    title: loc("LOC_EMIG_SELFTEST_REALPATH_TITLE", "Refugees at the Gate (real-path self-test)"),
-    body: loc("LOC_EMIG_SELFTEST_REALPATH_BODY",
-      "This fired from INSIDE the real turn event — the exact path a live game uses. If these buttons " +
-      "respond, the in-game pop-up is fixed. Your choice here does not change your game."),
-    choices: [
-      { id: "welcome", label: loc("LOC_EMIG_DIL_WELCOME_LABEL", "Welcome them in"), note },
-      { id: "frontier", label: loc("LOC_EMIG_DIL_FRONTIER_LABEL", "Settle the frontier"), note },
-      { id: "away", label: loc("LOC_EMIG_DIL_AWAY_LABEL", "Turn them away"), note }
-    ]
-  };
-  showDilemma(view, (id) =>
-    toast("Real-path self-test: choice “" + id + "” registered — the IN-GAME pop-up works.", "war"));
-}
-
-/**
  * Arm the ACTUAL in-game trigger. Registers a one-shot on the real `PlayerTurnActivated` engine event and,
- * on the local player's next turn, fires the decision pop-up SYNCHRONOUSLY from inside that event — the
- * exact context that broke in a live game. The button-fired previews above are DEFERRED (setTimeout), so
- * they run outside any engine event and therefore can NOT reproduce this bug; that is why they always
- * "passed" while real games failed. This mode is the faithful end-to-end test: arm it, end one turn, and
- * if the pop-up's buttons respond, the in-game path is genuinely fixed. Applies no game effect.
+ * on the local player's next turn, fires a REAL refugee dilemma SYNCHRONOUSLY from inside that event — the
+ * exact context that broke in a live game — WITH its real applied effects (gold/happiness/influence cost +
+ * a settled population point), so a choice visibly moves your yields. The button-fired previews above are
+ * DEFERRED (setTimeout) and apply no effect, so they can neither reproduce the engine-event bug nor prove
+ * the outcome; that is why they always "passed" while real games failed. This is the faithful end-to-end
+ * test: arm it, end one turn, and if the pop-up appears, its buttons respond, AND the chosen effect lands
+ * on your yields, the in-game path is genuinely working.
  */
 function armRealDilemma() {
   if (_armedDilemmaHandler) {
-    banner("Already armed — close this panel and end your turn to fire the real-path dilemma.");
+    banner("Already armed — close this panel and end your turn to fire the real dilemma.");
     return;
   }
   const handler = (/** @type {*} */ data) => {
@@ -249,7 +227,9 @@ function armRealDilemma() {
     if (me == null || who !== me) return; // wait for YOUR turn, matching emigration-main.onTurnActivated
     disarmDilemma(handler);
     try {
-      presentRealPathDilemma();
+      if (!fireRealDilemmaForTest()) {
+        toast("Real dilemma self-test: couldn't fire — enable 'Refugee dilemmas' in Advanced options first.", "war");
+      }
     } catch (e) {
       dlog("armRealDilemma handler threw", e);
     }
@@ -261,8 +241,9 @@ function armRealDilemma() {
     }
     engine.on("PlayerTurnActivated", handler);
     _armedDilemmaHandler = handler;
-    banner("Armed. Close this panel and END YOUR TURN — the dilemma will fire from INSIDE the real turn " +
-      "event on your next turn, exactly as a live game does. If its buttons respond, the in-game pop-up is fixed.");
+    banner("Armed. Close this panel and END YOUR TURN — a REAL dilemma fires from INSIDE the real turn " +
+      "event on your next turn, exactly as a live game does. Your choice applies its real effect, so watch " +
+      "your gold / happiness / influence (and a settled city) change. That confirms the in-game path works.");
   } catch (e) {
     banner("Arm failed: " + errMsg(e));
   }
