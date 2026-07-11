@@ -176,6 +176,7 @@ function makeGroupHeader(titleKey) {
 
 class EmigrationAdvancedEditor extends Panel {
   /** @type {*} */ closeBtn;
+  /** @type {*} */ confirmBtn;
   /** @type {*} */ listEl;
   /** @type {*} */ mainSlot;
   /** @type {*} */ searchInput;
@@ -196,12 +197,14 @@ class EmigrationAdvancedEditor extends Panel {
   onAttach() {
     super.onAttach();
     this.closeBtn?.addEventListener("action-activate", this.closeListener);
+    this.confirmBtn?.addEventListener("action-activate", this.closeListener);
     this.Root.addEventListener(InputEngineEventName, this.engineInputListener);
     this.wireControls();
   }
 
   onDetach() {
     this.closeBtn?.removeEventListener("action-activate", this.closeListener);
+    this.confirmBtn?.removeEventListener("action-activate", this.closeListener);
     this.Root.removeEventListener(InputEngineEventName, this.engineInputListener);
     super.onDetach();
   }
@@ -232,15 +235,17 @@ class EmigrationAdvancedEditor extends Panel {
       <fxs-frame title="LOC_OPTIONS_GROUP_EMIGRATION_ADVANCED" subtitle="LOC_OPTIONS_GROUP_EMIGRATION"
                  class="w-11/12 max-w-5xl h-11/12">
         <div data-emig-toolbar class="flex flex-row items-center px-6 pt-2"></div>
-        <fxs-scrollable class="flex-auto overflow-y-auto" style="max-height: 78vh;">
+        <fxs-scrollable class="flex-auto overflow-y-auto" style="max-height: 72vh;">
           <fxs-vslot class="px-6 py-2 pb-8" data-emig-list></fxs-vslot>
         </fxs-scrollable>
+        <div data-emig-footer class="flex flex-row justify-center px-6 pt-3 pb-5"></div>
         <fxs-close-button></fxs-close-button>
       </fxs-frame>`;
     this.listEl = this.Root.querySelector("[data-emig-list]");
     this.mainSlot = this.listEl;
     this.closeBtn = this.Root.querySelector("fxs-close-button");
     this.buildToolbar(this.Root.querySelector("[data-emig-toolbar]"));
+    this.buildFooter(this.Root.querySelector("[data-emig-footer]"));
     for (const g of orderedGroups()) {
       const items = TUNABLES.filter((t) => t.group === g.key);
       if (items.length) this.buildGroupSection(g, items);
@@ -267,6 +272,24 @@ class EmigrationAdvancedEditor extends Panel {
     reset.setAttribute("data-audio-group-ref", "options");
     reset.addEventListener("action-activate", () => this.onResetAll());
     host.appendChild(reset);
+  }
+
+  /**
+   * The footer: a "Confirm Changes" button that returns to the main Options window. Every setting is
+   * already written live as you edit it (there is no pending/Apply step), so this is purely the familiar
+   * confirm affordance from the base Options screen — a labelled way back that doesn't require hunting for
+   * the ✕. The listener is added/removed in onAttach/onDetach alongside the ✕.
+   * @param {*} host The footer container.
+   */
+  buildFooter(host) {
+    if (!host) return;
+    const confirm = document.createElement("fxs-button");
+    const caption = (typeof Locale !== "undefined" && typeof Locale.compose === "function")
+      ? Locale.compose("LOC_OPTIONS_CONFIRM_CHANGES") : "Confirm Changes";
+    confirm.setAttribute("caption", caption);
+    confirm.setAttribute("data-audio-group-ref", "options");
+    this.confirmBtn = confirm;
+    host.appendChild(confirm);
   }
 
   /**
