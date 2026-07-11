@@ -1,43 +1,32 @@
 // emigration-dilemma-view.js
 //
 // The refugee-dilemma / Cultural-Enclave DECISION pop-up. Rendered with the GAME'S OWN native decision
-// dialog — DialogBoxManager.createDialog_CustomOptions — laid out like a narrative-event pop-up: a framed
-// card with a title, flavour body, and a vertical list of choice "chooser" cards (icon + title +
-// consequence line). Input is owned by the engine's dialog layer and each choice is a real dialog option,
-// so the choice cards, Escape, and the ✕ ALWAYS respond.
+// dialog — DialogBoxManager.createDialog_MultiOption: a framed pop-up with a title, the flavour body, and
+// one stacked button per choice. Input is owned by the engine's dialog layer and each choice is a real
+// dialog option, so the buttons, Escape, and the ✕ ALWAYS respond.
 //
 // WHY THIS SHAPE: an earlier build hand-rolled a ContextManager Panel whose buttons could come up dead
-// (the "choices are unclickable, no way to X out" report). Using the engine's dialog removes that whole
-// class of failure — we no longer own the input path, the engine does — and the chooser-card layout is
-// exactly how the base game renders its own multi-choice decisions.
+// (the "choices are unclickable, no way to X out" report). The engine's dialog removes that whole class of
+// failure — we no longer own the input path, the engine does. NOTE: the fancier createDialog_CustomOptions
+// "chooser card" path (icons + per-choice descriptions) was tried and rendered as a COLLAPSED horizontal
+// strip in-game (it needs layout wrappers the base UI supplies internally), so we use the plain, reliable
+// multi-option layout instead. Per-choice consequence cues live in each button's hover tooltip.
 //
 // showDilemma(view, onChoice) keeps its signature; every caller (refugee dilemma, enclave decision,
-// self-test) is unchanged. Fully defensive: where the core dialog module (or a DOM) is unavailable
-// (shell / node tests) it is a silent no-op.
+// self-test) is unchanged. Fully defensive: where the core dialog module is unavailable (shell / node
+// tests) it is a silent no-op.
 //
 // View → native dialog mapping:
 //   title     → dialog title
 //   body      → dialog body (the optional attributed `quote` is appended on its own line)
-//   choices[] → one clickable chooser card each (icon + label + the consequence cue as a description line)
-//   dismissId → the card ALSO wired to Escape / the ✕ / cancel (default "away")
+//   choices[] → one stacked option button each (label + the consequence cue as its hover tooltip)
+//   dismissId → the button ALSO wired to Escape / the ✕ / cancel (default "away")
 //   eyebrow   → not shown (the native pop-up supplies its own framing; the title carries the context)
 
 import { loc } from "/emigration/ui/emigration-loc.js";
 
 // The engine dialog queue for generic in-game decisions (as used by the base game's own system pop-ups).
 const DISPLAY_QUEUE = "SystemMessage";
-
-// A per-choice icon for the chooser card. A choice may override with `choice.icon`; otherwise it is keyed
-// off the choice id, falling back to a neutral yield icon. These are stock engine yield glyphs, so they
-// always resolve.
-/** @type {Record<string, string>} */
-const CHOICE_ICONS = {
-  welcome: "fs://game/yield_happiness",
-  frontier: "fs://game/yield_gold",
-  away: "fs://game/yield_influence",
-  ignore: "fs://game/yield_influence"
-};
-const DEFAULT_ICON = "fs://game/yield_influence";
 
 /** Error logger; always emits. @param {...*} a */
 function derr(...a) {
@@ -81,70 +70,35 @@ function composeBody(view) {
 }
 
 /**
- * Make a `div` with utility classes + optional already-localized text.
- * @param {string} cls Space-separated class list. @param {string} [text] Text content.
- * @returns {HTMLElement} The element.
- */
-function div(cls, text) {
-  const e = document.createElement("div");
-  if (cls) e.className = cls;
-  if (text != null) e.textContent = text;
-  return e;
-}
-
-/**
- * Build one narrative-style chooser card: an icon on the left, the choice title, and (if present) the
- * consequence cue as a description line. The engine wraps this content in a clickable chooser button.
- * @param {{id:string,label:string,note?:string,icon?:string}} c The choice. @returns {HTMLElement} The card content.
- */
-function buildChooserCard(c) {
-  const card = div("flow-row items-center w-full text-left");
-  const icon = document.createElement("img");
-  icon.className = "size-12 mr-3 flex-none";
-  icon.src = c.icon || CHOICE_ICONS[c.id] || DEFAULT_ICON;
-  const text = div("flow-column flex-auto");
-  text.appendChild(div("font-title text-base uppercase tracking-100", c.label));
-  if (c.note) text.appendChild(div("font-body text-xs", c.note));
-  card.appendChild(icon);
-  card.appendChild(text);
-  return card;
-}
-
-/**
- * Build the paired option + chooser-card lists for the native dialog. options[i] carries choice i's
- * action + callback; customOptions[i] is its clickable narrative chooser card. The dismiss choice is also
- * wired to Escape / cancel / the ✕. A safety-net cancel option is appended only if no choice carries the
- * dismiss id (real callers always include it).
- * @param {{choices?:{id:string,label:string,note?:string,icon?:string}[]}} view The view model.
+ * Build the native dialog's option buttons — one per choice (label + the consequence cue as its hover
+ * tooltip), each wired to resolve the decision once. The dismiss choice is also bound to Escape / cancel /
+ * the ✕. A safety-net cancel option is appended only if no choice carries the dismiss id (real callers
+ * always include it, so it normally adds no visible button).
+ * @param {{choices?:{id:string,label:string,note?:string}[]}} view The view model.
  * @param {string} dismissId The dismiss option id. @param {(id:string)=>void} resolve One-shot resolver.
- * @returns {{options:*[], customOptions:*[]}} The paired lists.
+ * @returns {{actions:string[], label:string, tooltip?:string, callback:()=>void}[]} The option buttons.
  */
-function buildDialogLists(view, dismissId, resolve) {
+function buildOptions(view, dismissId, resolve) {
   const choices = Array.isArray(view.choices) ? view.choices : [];
-  /** @type {*[]} */
-  const options = [];
-  /** @type {*[]} */
-  const customOptions = [];
-  for (const c of choices) {
-    options.push({
-      actions: c.id === dismissId ? ["cancel", "keyboard-escape"] : [],
-      label: c.label,
-      callback: () => resolve(c.id)
-    });
-    customOptions.push({ useChooserItem: true, chooserInfo: buildChooserCard(c) });
-  }
+  const options = choices.map((c) => ({
+    actions: c.id === dismissId ? ["cancel", "keyboard-escape"] : [],
+    label: c.label,
+    tooltip: c.note || void 0,
+    callback: () => resolve(c.id)
+  }));
   if (!choices.some((c) => c.id === dismissId)) {
     options.push({
       actions: ["cancel", "keyboard-escape"],
       label: loc("LOC_EMIG_DILV_DISMISS", "Not now"),
+      tooltip: void 0,
       callback: () => resolve(dismissId)
     });
   }
-  return { options, customOptions };
+  return options;
 }
 
 /**
- * Show the decision pop-up in the game's own native narrative-style dialog. Resolves with the chosen
+ * Show the decision pop-up in the game's own native multi-option dialog. Resolves with the chosen
  * option id (Escape / the ✕ / cancel resolve as `view.dismissId`, default "away"). Calls `onChoice(id)`
  * exactly once. A silent no-op where the core dialog module or a DOM is unavailable (shell / node tests).
  * @param {{title:string, body:string, eyebrow?:string, dismissId?:string, quote?:string, choices:*[]}} view The model.
@@ -152,7 +106,7 @@ function buildDialogLists(view, dismissId, resolve) {
  */
 export function showDilemma(view, onChoice) {
   try {
-    if (!view || typeof document === "undefined") return;
+    if (!view) return;
     const dismissId = (typeof view.dismissId === "string" && view.dismissId.length) ? view.dismissId : "away";
     let resolved = false;
     const resolve = (/** @type {string} */ id) => {
@@ -164,24 +118,21 @@ export function showDilemma(view, onChoice) {
       ? view.title
       : loc("LOC_EMIG_DILV_EYEBROW_DEFAULT", "Refugees");
     const body = composeBody(view);
-    const { options, customOptions } = buildDialogLists(view, dismissId, resolve);
+    const options = buildOptions(view, dismissId, resolve);
     const present = () => {
       import("/core/ui/dialog-box/manager-dialog-box.js")
         .then((m) => {
           try {
             const mod = /** @type {*} */ (m);
             const mgr = mod && (mod.DialogBoxManager || mod.default);
-            if (mgr && typeof mgr.createDialog_CustomOptions === "function") {
-              mgr.createDialog_CustomOptions({
-                title, body, canClose: true, displayQueue: DISPLAY_QUEUE,
-                custom: true, styles: true, name: "emigration-decision",
-                options, customOptions
-              });
-            } else if (mgr && typeof mgr.createDialog_MultiOption === "function") {
-              // Fallback: a build without CustomOptions still gets a working (plainer) decision dialog.
+            if (mgr && typeof mgr.createDialog_MultiOption === "function") {
+              // The plain multi-option dialog: a framed pop-up with the title, the prompt body, and one
+              // stacked button per choice. This is the layout shipped mods use; the fancier
+              // createDialog_CustomOptions "chooser card" path rendered as a collapsed strip here, so it
+              // is intentionally NOT used.
               mgr.createDialog_MultiOption({ title, body, canClose: true, displayQueue: DISPLAY_QUEUE, options });
             } else {
-              derr("DialogBoxManager decision API unavailable; decision not shown");
+              derr("DialogBoxManager.createDialog_MultiOption unavailable; decision not shown");
             }
           } catch (e) {
             derr("showDilemma failed:", e);
