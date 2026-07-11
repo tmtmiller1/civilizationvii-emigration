@@ -104,8 +104,11 @@ function syntheticEnclaveView(origin) {
  * clickable — so it always fires, even with no foreign community. Applies nothing.
  */
 function forceEnclavePopup() {
-  // The decision renders in the engine's native dialog queue, which layers above this self-test screen;
-  // dismissing it returns here. deferSafe guards against any throw crashing the game via a timer.
+  // Close THIS self-test screen first. The decision now renders through the engine's native dialog
+  // (DialogBoxManager); shown while this mouse-guard-backed screen is still up, that dialog can sit
+  // behind it / have its input eaten — which is exactly why the probe pop-up looked dead. Popping this
+  // screen first lets the dialog own the foreground and receive clicks, matching the in-game path.
+  closeSelfTestScreen();
   deferSafe(() => {
     const view = syntheticEnclaveView(pickPreviewOrigin());
     showDilemma(view, (id) =>
@@ -157,6 +160,9 @@ function runMigrationPass() {
 /** Force the OTHER modal — a refugee dilemma — via the real showDilemma path (a preview; no game effect). */
 function forceRefugeeDilemma() {
   try {
+    // Close this self-test screen first so the native dialog owns the foreground and receives clicks
+    // (see forceEnclavePopup) — the deferred showDilemma then presents cleanly, exactly like in-game.
+    closeSelfTestScreen();
     deferSafe(() => {
       const view = {
         eyebrow: "Refugees",
