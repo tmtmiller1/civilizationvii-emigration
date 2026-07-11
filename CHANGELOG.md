@@ -10,12 +10,18 @@ section below by `release.sh`.
 ### Fixed
 - **The refugee and Cultural-Enclave decision pop-ups are now clickable in an actual game.**
   Two problems compounded: the decisions were drawn in a custom panel whose buttons could come up dead,
-  and — the reason the in-game pop-up failed even when the self-test showed it working — the decision was
+  and — the reason the in-game pop-up failed even when a self-test showed it working — the decision was
   raised *synchronously from inside the turn-start engine event*, which Civ VII will not surface a working,
   input-receiving modal from. The decision now (1) renders through the engine's own native decision dialog
-  (the same system the base game uses for its choices), styled as stacked choice cards with icons, and
-  (2) is presented on a deferred tick so it appears cleanly after the turn event settles. Options, Escape,
-  and the ✕ all respond. The obsolete custom-panel markup was removed.
+  (the same multi-option pop-up the base game uses for its own choices — a framed box with the prompt and
+  one button per choice), and (2) is presented on a deferred tick so it appears cleanly after the turn
+  event settles. The buttons, Escape, and the ✕ all respond, and the prompt is wrapped to a tidy width.
+  The obsolete custom-panel markup was removed.
+
+### Added
+- **"Arm real dilemma" self-test.** A new Advanced-options self-test action registers a one-shot on the
+  real turn event and fires the decision pop-up from inside it on your next turn, so the exact in-game
+  path can be confirmed in a single turn instead of waiting for the rare natural trigger.
 
 ## [2.0.6] - 2026-07-10
 
