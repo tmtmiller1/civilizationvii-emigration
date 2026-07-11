@@ -184,6 +184,90 @@ function forceRefugeeDilemma() {
   }
 }
 
+// One-shot handler while a real-path test is armed (null when not armed), so a second arm is a no-op and
+// the listener is removed the instant it fires.
+/** @type {((data:*)=>void) | null} */
+let _armedDilemmaHandler = null;
+
+/** The local player id, or null. @returns {number|null} */
+function localPlayerId() {
+  return (typeof GameContext !== "undefined" && typeof GameContext.localPlayerID === "number")
+    ? GameContext.localPlayerID : null;
+}
+
+/** Remove the armed one-shot `PlayerTurnActivated` listener and clear the armed slot. @param {*} h The handler. */
+function disarmDilemma(h) {
+  try {
+    if (typeof engine !== "undefined" && typeof engine.off === "function") engine.off("PlayerTurnActivated", h);
+  } catch (_) {
+    /* ignore */
+  }
+  _armedDilemmaHandler = null;
+}
+
+/**
+ * Present the real-path test dilemma. Called SYNCHRONOUSLY from inside the PlayerTurnActivated handler —
+ * identical to onTurnActivated → maybeDilemma → fireDilemma → showDilemma. showDilemma defers its own
+ * presentation (that internal defer is the fix under test). No self-test screen is open here, so nothing
+ * to layer against. Applies no game effect.
+ */
+function presentRealPathDilemma() {
+  const note = loc("LOC_EMIG_SELFTEST_REALPATH_NOTE", "Real-path test — no game effect.");
+  const view = {
+    eyebrow: "Refugees",
+    dismissId: "away",
+    title: loc("LOC_EMIG_SELFTEST_REALPATH_TITLE", "Refugees at the Gate (real-path self-test)"),
+    body: loc("LOC_EMIG_SELFTEST_REALPATH_BODY",
+      "This fired from INSIDE the real turn event — the exact path a live game uses. If these buttons " +
+      "respond, the in-game pop-up is fixed. Your choice here does not change your game."),
+    choices: [
+      { id: "welcome", label: loc("LOC_EMIG_DIL_WELCOME_LABEL", "Welcome them in"), note },
+      { id: "frontier", label: loc("LOC_EMIG_DIL_FRONTIER_LABEL", "Settle the frontier"), note },
+      { id: "away", label: loc("LOC_EMIG_DIL_AWAY_LABEL", "Turn them away"), note }
+    ]
+  };
+  showDilemma(view, (id) =>
+    toast("Real-path self-test: choice “" + id + "” registered — the IN-GAME pop-up works.", "war"));
+}
+
+/**
+ * Arm the ACTUAL in-game trigger. Registers a one-shot on the real `PlayerTurnActivated` engine event and,
+ * on the local player's next turn, fires the decision pop-up SYNCHRONOUSLY from inside that event — the
+ * exact context that broke in a live game. The button-fired previews above are DEFERRED (setTimeout), so
+ * they run outside any engine event and therefore can NOT reproduce this bug; that is why they always
+ * "passed" while real games failed. This mode is the faithful end-to-end test: arm it, end one turn, and
+ * if the pop-up's buttons respond, the in-game path is genuinely fixed. Applies no game effect.
+ */
+function armRealDilemma() {
+  if (_armedDilemmaHandler) {
+    banner("Already armed — close this panel and end your turn to fire the real-path dilemma.");
+    return;
+  }
+  const handler = (/** @type {*} */ data) => {
+    const me = localPlayerId();
+    const who = data && (data.player ?? data.Player);
+    if (me == null || who !== me) return; // wait for YOUR turn, matching emigration-main.onTurnActivated
+    disarmDilemma(handler);
+    try {
+      presentRealPathDilemma();
+    } catch (e) {
+      dlog("armRealDilemma handler threw", e);
+    }
+  };
+  try {
+    if (typeof engine === "undefined" || typeof engine.on !== "function") {
+      banner("Can't arm: the engine event API isn't available in this context.");
+      return;
+    }
+    engine.on("PlayerTurnActivated", handler);
+    _armedDilemmaHandler = handler;
+    banner("Armed. Close this panel and END YOUR TURN — the dilemma will fire from INSIDE the real turn " +
+      "event on your next turn, exactly as a live game does. If its buttons respond, the in-game pop-up is fixed.");
+  } catch (e) {
+    banner("Arm failed: " + errMsg(e));
+  }
+}
+
 /** Whether on-screen toasts are enabled in this profile. @returns {boolean} */
 function toastsEnabled() {
   return (CONFIG.notifyMode >= 1) && !!CONFIG.notifyToasts;
@@ -334,6 +418,7 @@ function actionRow() {
   actions.appendChild(button("Run a migration pass", runMigrationPass));
   actions.appendChild(button("Force enclave pop-up", forceEnclavePopup));
   actions.appendChild(button("Force refugee dilemma", forceRefugeeDilemma));
+  actions.appendChild(button("Arm REAL dilemma (end turn to fire)", armRealDilemma));
   actions.appendChild(button("Fire test toast", fireTestToast));
   actions.appendChild(button("Fire all notifications", fireSampleNotifications));
   actions.appendChild(button("Open dashboard", openDashboard));
