@@ -35,18 +35,31 @@ const MAX_SPREE_CIVS = 64;
 const MAX_SPREE_EVENTS_PER_CIV = 32;
 
 /**
- * The choices offered, with a one-line consequence cue. Built at call time (not
- * module-eval) so loc() resolves after Locale is live (L2) — mirrors
- * emigration-quarter-registry.js.
- * @returns {{id:string, label:string, note:string}[]} The offered choices.
+ * The choices offered, each with a one-line flavour cue (`note`) and a concrete `effect` string built
+ * from the live CONFIG costs (so the displayed trade-off tracks the player's tunables). Built at call
+ * time (not module-eval) so loc() resolves after Locale is live (L2) — mirrors emigration-quarter-registry.js.
+ * @returns {{id:string, label:string, note:string, effect:string}[]} The offered choices.
  */
 function choices() {
+  const n = (/** @type {*} */ v) => Math.max(0, Math.round(Number(v) || 0));
+  const gw = n(CONFIG.dilemmaGoldWelcome);
+  const hw = n(CONFIG.dilemmaHappinessWelcome);
+  const gf = n(CONFIG.dilemmaGoldFrontier);
+  const ia = n(CONFIG.dilemmaInfluenceAway);
+  const gold = loc("LOC_EMIG_DIL_FX_GOLD", "Gold");
+  const happy = loc("LOC_EMIG_DIL_FX_HAPPINESS", "Happiness");
+  const infl = loc("LOC_EMIG_DIL_FX_INFLUENCE", "Influence");
+  const pop = loc("LOC_EMIG_DIL_FX_POP", "population");
+  const join = (/** @type {string[]} */ parts) => parts.filter(Boolean).join(", ");
   return [
     { id: "welcome", label: loc("LOC_EMIG_DIL_WELCOME_LABEL", "Welcome them in"),
+      effect: join(["-" + gw + " " + gold, hw ? ("-" + hw + " " + happy) : "", "+1 " + pop]),
       note: loc("LOC_EMIG_DIL_WELCOME_NOTE", "A cost in gold and some short-term strain on your people; they settle among you and, in time, become your people.") },
     { id: "frontier", label: loc("LOC_EMIG_DIL_FRONTIER_LABEL", "Settle the frontier"),
+      effect: join(["-" + gf + " " + gold, "+1 " + pop]),
       note: loc("LOC_EMIG_DIL_FRONTIER_NOTE", "A smaller cost in gold; send them to a smaller town to make a new start.") },
     { id: "away", label: loc("LOC_EMIG_DIL_AWAY_LABEL", "Turn them away"),
+      effect: join(["-" + ia + " " + infl]),
       note: loc("LOC_EMIG_DIL_AWAY_NOTE", "A cost in international standing now; they move on down the road, their burden not yours to carry.") }
   ];
 }
@@ -389,17 +402,24 @@ function chronicleDecision(choiceId, d, hostSig, turn) {
 }
 
 /**
- * The view model for the modal: the prompt prose + the choices.
+ * The view model for the modal: the prompt prose, then a plain list of each choice and the concrete
+ * effect it applies (so the trade-off is visible before choosing, not just in prose), and the choices.
  * @param {{kind:string, instigator?:number, origin:number, points:number}} d The descriptor.
  * @param {number} turn Now.
- * @returns {{title:string, body:string, choices:{id:string,label:string,note:string}[]}} The view model.
+ * @returns {{title:string, body:string, choices:{id:string,label:string,note:string,effect?:string}[]}} The view model.
  */
 function dilemmaView(d, turn) {
   const origin = narrativeCiv(d.origin);
   const instigator = typeof d.instigator === "number" ? narrativeCiv(d.instigator) : origin;
   const people = formatPeopleExact(scaleCityPopulation(d.points, turn, "dilemma" + d.origin));
   const prompt = dilemmaPrompt({ kind: d.kind, instigator, origin, people, seed: "d" + d.origin + turn });
-  return { title: prompt.title, body: prompt.body, choices: choices() };
+  const cs = choices();
+  const effectsList = cs
+    .filter((c) => c.effect)
+    .map((c) => c.label + ": " + c.effect)
+    .join("[N]");
+  const body = effectsList ? (prompt.body + "[N][N]" + effectsList) : prompt.body;
+  return { title: prompt.title, body, choices: cs };
 }
 
 /**
