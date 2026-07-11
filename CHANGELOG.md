@@ -8,12 +8,14 @@ section below by `release.sh`.
 ## [2.0.7] - 2026-07-10
 
 ### Fixed
-- **The refugee and Cultural-Enclave decision pop-ups now use the game's own native dialog.**
-  The border-refugee dilemma and the Cultural-Enclave decision were drawn in a custom panel whose
-  choice buttons could come up dead — the reported "the choices are unclickable and there's no way to
-  X out of it" pop-up. They now render through the engine's native decision dialog, the same system
-  the base game uses for its own choices, so the options, Escape, and the ✕ always respond. The
-  obsolete custom-panel markup was removed.
+- **The refugee and Cultural-Enclave decision pop-ups are now clickable in an actual game.**
+  Two problems compounded: the decisions were drawn in a custom panel whose buttons could come up dead,
+  and — the reason the in-game pop-up failed even when the self-test showed it working — the decision was
+  raised *synchronously from inside the turn-start engine event*, which Civ VII will not surface a working,
+  input-receiving modal from. The decision now (1) renders through the engine's own native decision dialog
+  (the same system the base game uses for its choices), styled as stacked choice cards with icons, and
+  (2) is presented on a deferred tick so it appears cleanly after the turn event settles. Options, Escape,
+  and the ✕ all respond. The obsolete custom-panel markup was removed.
 
 ## [2.0.6] - 2026-07-10
 
