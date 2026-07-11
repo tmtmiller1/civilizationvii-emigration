@@ -59,13 +59,50 @@ function safeChoice(onChoice, id) {
   }
 }
 
+// Soft-wrap width for the dialog body. The native dialog sizes/reads best as a tidy block rather than one
+// edge-to-edge line, so we insert engine newline tokens ([N]) at word boundaries near this many characters.
+const BODY_WRAP = 64;
+
 /**
- * The dialog body: the prompt prose, with the optional attributed quote appended on its own line.
+ * Word-wrap one paragraph to ~maxLen characters per line using engine newline tokens ([N]), never
+ * splitting a word. A single over-long word is left on its own line.
+ * @param {string} para The paragraph. @param {number} maxLen Target line length. @returns {string} Wrapped.
+ */
+function wrapParagraph(para, maxLen) {
+  const words = para.split(/\s+/).filter(Boolean);
+  if (!words.length) return para;
+  /** @type {string[]} */
+  const lines = [];
+  let line = "";
+  for (const w of words) {
+    if (line && (line.length + 1 + w.length) > maxLen) {
+      lines.push(line);
+      line = w;
+    } else {
+      line = line ? (line + " " + w) : w;
+    }
+  }
+  if (line) lines.push(line);
+  return lines.join("[N]");
+}
+
+/**
+ * Soft-wrap a display string, preserving any paragraph breaks the source already has ([N]).
+ * @param {string} s The string. @param {number} maxLen Target line length. @returns {string} Wrapped.
+ */
+function softWrap(s, maxLen) {
+  if (typeof s !== "string" || !s) return s;
+  return s.split("[N]").map((seg) => wrapParagraph(seg, maxLen)).join("[N]");
+}
+
+/**
+ * The dialog body: the prompt prose, soft-wrapped to a tidy width, with the optional attributed quote
+ * appended on its own line.
  * @param {{body?:string, quote?:string}} view The view model. @returns {string} The composed body.
  */
 function composeBody(view) {
-  const body = typeof view.body === "string" ? view.body : "";
-  const quote = view.quote ? bidiIsolate(view.quote) : "";
+  const body = softWrap(typeof view.body === "string" ? view.body : "", BODY_WRAP);
+  const quote = view.quote ? softWrap(bidiIsolate(view.quote), BODY_WRAP) : "";
   return quote ? (body + "[N][N]" + quote) : body;
 }
 
