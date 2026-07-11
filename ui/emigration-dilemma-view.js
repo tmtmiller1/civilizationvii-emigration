@@ -165,28 +165,38 @@ export function showDilemma(view, onChoice) {
       : loc("LOC_EMIG_DILV_EYEBROW_DEFAULT", "Refugees");
     const body = composeBody(view);
     const { options, customOptions } = buildDialogLists(view, dismissId, resolve);
-    import("/core/ui/dialog-box/manager-dialog-box.js")
-      .then((m) => {
-        try {
-          const mod = /** @type {*} */ (m);
-          const mgr = mod && (mod.DialogBoxManager || mod.default);
-          if (mgr && typeof mgr.createDialog_CustomOptions === "function") {
-            mgr.createDialog_CustomOptions({
-              title, body, canClose: true, displayQueue: DISPLAY_QUEUE,
-              custom: true, styles: true, name: "emigration-decision",
-              options, customOptions
-            });
-          } else if (mgr && typeof mgr.createDialog_MultiOption === "function") {
-            // Fallback: a build without CustomOptions still gets a working (plainer) decision dialog.
-            mgr.createDialog_MultiOption({ title, body, canClose: true, displayQueue: DISPLAY_QUEUE, options });
-          } else {
-            derr("DialogBoxManager decision API unavailable; decision not shown");
+    const present = () => {
+      import("/core/ui/dialog-box/manager-dialog-box.js")
+        .then((m) => {
+          try {
+            const mod = /** @type {*} */ (m);
+            const mgr = mod && (mod.DialogBoxManager || mod.default);
+            if (mgr && typeof mgr.createDialog_CustomOptions === "function") {
+              mgr.createDialog_CustomOptions({
+                title, body, canClose: true, displayQueue: DISPLAY_QUEUE,
+                custom: true, styles: true, name: "emigration-decision",
+                options, customOptions
+              });
+            } else if (mgr && typeof mgr.createDialog_MultiOption === "function") {
+              // Fallback: a build without CustomOptions still gets a working (plainer) decision dialog.
+              mgr.createDialog_MultiOption({ title, body, canClose: true, displayQueue: DISPLAY_QUEUE, options });
+            } else {
+              derr("DialogBoxManager decision API unavailable; decision not shown");
+            }
+          } catch (e) {
+            derr("showDilemma failed:", e);
           }
-        } catch (e) {
-          derr("showDilemma failed:", e);
-        }
-      })
-      .catch((e) => derr("dialog-box import failed:", e));
+        })
+        .catch((e) => derr("dialog-box import failed:", e));
+    };
+    // CRITICAL: present on a deferred tick, NOT synchronously. The real dilemma fires from inside the
+    // PlayerTurnActivated engine-event handler (emigration-main.onTurnActivated → runPass → maybeDilemma),
+    // and Civ VII will not surface a working, input-receiving modal raised from inside an engine event —
+    // the pop-up either doesn't appear or its buttons are dead. Deferring to a timer lets the event stack
+    // unwind first, which is exactly why the self-test path (which already wraps this in a timer) works in
+    // isolation while the in-game trigger did not. A short delay gives the turn transition room to settle.
+    if (typeof setTimeout === "function") setTimeout(present, 80);
+    else present();
   } catch (_) {
     /* a decision-modal failure must never break the game */
   }
