@@ -19,9 +19,16 @@ section below by `release.sh`.
   The obsolete custom-panel markup was removed.
 
 ### Added
+- **The refugee dilemma now lists each choice's effect.** Under the prompt, each option shows its
+  concrete trade-off — gold/happiness/influence cost and the population it settles — read from your live
+  settings, so the outcome is clear before you choose instead of only hinted at in prose.
+- **"Confirm Changes" button in the Advanced options window.** A labelled way back to the main Options
+  window, matching the base Options screen, so you no longer have to hunt for the corner ✕. (Settings
+  still apply live as you edit; the button simply closes.)
 - **"Arm real dilemma" self-test.** A new Advanced-options self-test action registers a one-shot on the
-  real turn event and fires the decision pop-up from inside it on your next turn, so the exact in-game
-  path can be confirmed in a single turn instead of waiting for the rare natural trigger.
+  real turn event and fires the decision pop-up from inside it on your next turn — with its real applied
+  effects — so the exact in-game path can be confirmed in a single turn instead of waiting for the rare
+  natural trigger.
 
 ## [2.0.6] - 2026-07-10
 
