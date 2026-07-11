@@ -26,6 +26,7 @@ import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
 import { showDilemma } from "/emigration/ui/emigration-dilemma-view.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
+import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
 
 const STATE_KEY = "EmigrationDilemma_v1";
@@ -442,6 +443,46 @@ function fireDilemma(s, d, signals, me, turn) {
     .filter((x) => x.owner === me)
     .sort((a, b) => (b.population || 0) - (a.population || 0));
   showDilemma(dilemmaView(d, monoTurn()), (/** @type {string} */ id) => applyChoice(id, d, localCities, me, turn));
+}
+
+/**
+ * A plausible descriptor for a forced (self-test) dilemma: the origin is a non-local civ present on the
+ * map so its people resolve to a real name; a second such civ (if any) plays the aggressor. Falls back to
+ * neutral ids when the map read is empty.
+ * @param {*[]} signals Live city signals. @param {number} me Local player id.
+ * @returns {{kind:string, instigator:number, origin:number, points:number}} The descriptor.
+ */
+function forcedDescriptor(signals, me) {
+  /** @type {number[]} */
+  const others = [];
+  for (const s of signals || []) {
+    if (typeof s.owner === "number" && s.owner !== me && !others.includes(s.owner)) others.push(s.owner);
+    if (others.length >= 2) break;
+  }
+  const origin = others.length ? others[0] : (me === 0 ? 1 : 0);
+  const instigator = others.length >= 2 ? others[1] : origin;
+  return { kind: "conquest", instigator, origin, points: 3 };
+}
+
+/**
+ * TEST HOOK — fire a REAL refugee dilemma now, with its REAL applied effects (gold/happiness/influence
+ * cost + settling a population point), spoofing only the trigger. Reads live city signals + the local
+ * player and runs the exact production path (fireDilemma → showDilemma → applyChoice), so a self-test can
+ * confirm end-to-end that a choice actually moves yields. Gated by the Options toggle like the real
+ * trigger; never throws.
+ * @returns {boolean} Whether it fired.
+ */
+export function fireRealDilemmaForTest() {
+  try {
+    if (!getDilemmasEnabled()) return false;
+    const me = localPid();
+    if (me == null) return false;
+    const signals = collectCitySignals();
+    fireDilemma(state(), forcedDescriptor(signals, me), signals, me, monoTurn());
+    return true;
+  } catch (_) {
+    return false;
+  }
 }
 
 // Test hook: the pure decision pieces and persistence helpers.
