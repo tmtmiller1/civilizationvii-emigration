@@ -273,19 +273,19 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ja_JP"><Text>その人々は永遠に失われました。</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="ja_JP"><Text>{1_Dest}は彼らを統合するために毎ターン約{2_Gold}のゴールドを支払います。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="ja_JP"><Text>移民歓迎の方針</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ja_JP"><Text>世界中から[icon:YIELD_POPULATION]移民を歓迎します。あなたの都市への移民が50%増加し、国際的な評判により毎ターン[icon:YIELD_DIPLOMACY]影響力を得ます。時代に応じて+1、+2、そして+3です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ja_JP"><Text>世界中から[icon:YIELD_POPULATION]移民を歓迎します。あなたの都市への移民が50%増加し、国際的な評判により毎ターン[icon:YIELD_DIPLOMACY]影響力を得ます。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="ja_JP"><Text>移民排斥の方針</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ja_JP"><Text>世界に対して国境を閉ざします。外国からの[icon:YIELD_POPULATION]新規移住者は40%に減少し（約60%減）、自国民が競合文明へ去ることも大幅に減ります。動員された国内経済が各都市に[icon:YIELD_PRODUCTION]生産力を加えます。時代に応じて+2、+3、そして+4です。孤立には代償が伴い、毎ターン[icon:YIELD_DIPLOMACY]影響力を失います。時代に応じて-2、-3、そして-4です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ja_JP"><Text>世界に対して国境を閉ざします。外国からの[icon:YIELD_POPULATION]新規移住者は40%に減少し（約60%減）、自国民が競合文明へ去ることも大幅に減ります。動員された国内経済が各都市に[icon:YIELD_PRODUCTION]生産力を加えますが、その代償として毎ターン[icon:YIELD_DIPLOMACY]影響力を失います。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="ja_JP"><Text>才能の誘致</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION]新規移住者があなたの研究を強化します。[icon:YIELD_SCIENCE]科学+1（現代では+2）を得て、さらに引き寄せた移民1人につき約+1.5ずつ増える科学ボーナスを、毎ターン最大+12まで得ます。このボーナスは移民の流入が止まると薄れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION]新規移住者があなたの研究を強化し、引き寄せた移民1人ごとに約+1.5、毎ターン最大+12まで増える[icon:YIELD_SCIENCE]科学力を加えます。移民が止まるとこのボーナスは薄れます。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="ja_JP"><Text>文化的魅力</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION]新規移住者があなたの文化を豊かにします。[icon:YIELD_CULTURE]文化+1（現代では+2）を得て、さらに引き寄せた移民1人につき約+1.5ずつ増える文化ボーナスを、毎ターン最大+12まで得ます。このボーナスは移民の流入が止まると薄れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION]新規移住者があなたの文化を豊かにし、引き寄せた移民1人ごとに約+1.5、毎ターン最大+12まで増える[icon:YIELD_CULTURE]文化力を加えます。移民が止まるとこのボーナスは薄れます。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="ja_JP"><Text>商業的な魅力</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION]新規移住者があなたの市場を潤します。[icon:YIELD_GOLD]ゴールド+1（現代では+2）を得て、さらに引き寄せた移民1人につき約+1.5ずつ増えるゴールドボーナスを、毎ターン最大+12まで得ます。このボーナスは移民の流入が止まると薄れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION]新規移住者があなたの市場を潤し、引き寄せた移民1人ごとに約+1.5、毎ターン最大+12まで増える[icon:YIELD_GOLD]ゴールドを加えます。移民が止まるとこのボーナスは薄れます。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="ja_JP"><Text>選択的庇護</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ja_JP"><Text>戦争や災害から逃れてきた人々に門戸を開きます。難民は強くあなたのもとへ引き寄せられ、最も絶望的な人々が優先されます。人道的な評判により、毎ターン+1 [icon:YIELD_DIPLOMACY]影響力を得ます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ja_JP"><Text>戦争や災害から逃れてきた人々に門戸を開きます。難民は強くあなたのもとへ引き寄せられ、最も絶望的な人々が優先されます。人道的な評判により、毎ターン[icon:YIELD_DIPLOMACY]影響力を得ます。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="ja_JP"><Text>難民協定</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="ja_JP"><Text>避難民への恒久的な約束です。難民は強くあなたのもとへ流入し、最も絶望的な人々が優先されます。彼らはあなたの文化を豊かにし、毎ターン+2 [icon:YIELD_DIPLOMACY]影響力と+1 [icon:YIELD_CULTURE]文化をもたらします。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="ja_JP"><Text>避難民への恒久的な約束です。難民は強くあなたのもとへ流入し、最も絶望的な人々が優先されます。彼らはあなたの文化を豊かにし、毎ターン[icon:YIELD_DIPLOMACY]影響力と[icon:YIELD_CULTURE]文化をもたらします。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="ja_JP"><Text>移民</Text></Replace>

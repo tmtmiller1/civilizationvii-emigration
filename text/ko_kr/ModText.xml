@@ -273,19 +273,19 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ko_KR"><Text>그 사람들은 영영 사라졌습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="ko_KR"><Text>{1_Dest}이(가) 이들을 통합하기 위해 턴당 약 {2_Gold} 골드를 지불합니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="ko_KR"><Text>친이민 기조</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ko_KR"><Text>전 세계에서 오는 [icon:YIELD_POPULATION] 이주자를 환영합니다. 당신의 도시로 오는 이주가 50% 증가하고, 세계주의적 평판으로 매 턴 [icon:YIELD_DIPLOMACY] 영향력을 얻습니다. 시대에 따라 +1, +2, 그다음 +3입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ko_KR"><Text>전 세계에서 오는 [icon:YIELD_POPULATION] 이주자를 환영합니다. 당신의 도시로 오는 이주가 50% 증가하고, 세계주의적 평판으로 매 턴 [icon:YIELD_DIPLOMACY] 영향력을 얻습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="ko_KR"><Text>반이민 기조</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ko_KR"><Text>세계를 향해 국경을 닫습니다. 외국에서 온 [icon:YIELD_POPULATION] 신규 이주민이 40%로 감소하고(약 60% 감소), 당신의 국민이 경쟁 문명으로 떠나는 일도 크게 줄어듭니다. 동원된 국내 경제가 모든 도시에 [icon:YIELD_PRODUCTION] 생산력을 더합니다. 시대에 따라 +2, +3, 그다음 +4입니다. 고립에는 대가가 따라 매 턴 [icon:YIELD_DIPLOMACY] 영향력을 잃습니다. 시대에 따라 -2, -3, 그다음 -4입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ko_KR"><Text>세계를 향해 국경을 닫습니다. 외국에서 온 [icon:YIELD_POPULATION] 신규 이주민이 40%로 감소하고(약 60% 감소), 당신의 국민이 경쟁 문명으로 떠나는 일도 크게 줄어듭니다. 동원된 국내 경제가 모든 도시에 [icon:YIELD_PRODUCTION] 생산력을 더하지만, 그 대가로 매 턴 [icon:YIELD_DIPLOMACY] 영향력을 잃습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="ko_KR"><Text>인재 유치</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ko_KR"><Text>[icon:YIELD_POPULATION] 신규 이주자가 당신의 연구를 강화합니다. [icon:YIELD_SCIENCE] 과학 +1(현대에는 +2)을 얻고, 끌어들인 이주자 1명당 약 +1.5씩 늘어나는 과학 보너스를 매 턴 최대 +12까지 얻습니다. 이 보너스는 이주 유입이 멈추면 사그라듭니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ko_KR"><Text>[icon:YIELD_POPULATION] 신규 이주민이 당신의 연구를 강화하여, 끌어들인 이주자 1명당 약 +1.5씩, 매 턴 최대 +12까지 늘어나는 [icon:YIELD_SCIENCE] 과학을 더합니다. 이주가 멈추면 이 보너스는 사라집니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="ko_KR"><Text>문화적 매력</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ko_KR"><Text>[icon:YIELD_POPULATION] 신규 이주자가 당신의 문화를 풍요롭게 합니다. [icon:YIELD_CULTURE] 문화 +1(현대에는 +2)을 얻고, 끌어들인 이주자 1명당 약 +1.5씩 늘어나는 문화 보너스를 매 턴 최대 +12까지 얻습니다. 이 보너스는 이주 유입이 멈추면 사그라듭니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ko_KR"><Text>[icon:YIELD_POPULATION] 신규 이주민이 당신의 문화를 강화하여, 끌어들인 이주자 1명당 약 +1.5씩, 매 턴 최대 +12까지 늘어나는 [icon:YIELD_CULTURE] 문화를 더합니다. 이주가 멈추면 이 보너스는 사라집니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="ko_KR"><Text>상업적 매력</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ko_KR"><Text>[icon:YIELD_POPULATION] 신규 이주자가 당신의 시장을 키웁니다. [icon:YIELD_GOLD] 금 +1(현대에는 +2)을 얻고, 끌어들인 이주자 1명당 약 +1.5씩 늘어나는 금 보너스를 매 턴 최대 +12까지 얻습니다. 이 보너스는 이주 유입이 멈추면 사그라듭니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ko_KR"><Text>[icon:YIELD_POPULATION] 신규 이주민이 당신의 시장을 강화하여, 끌어들인 이주자 1명당 약 +1.5씩, 매 턴 최대 +12까지 늘어나는 [icon:YIELD_GOLD] 금을 더합니다. 이주가 멈추면 이 보너스는 사라집니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="ko_KR"><Text>선별적 망명</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ko_KR"><Text>전쟁과 재해를 피해 달아나는 이들에게 문을 엽니다. 난민은 당신에게 강하게 이끌리며, 가장 절박한 이들이 먼저 향합니다. 인도주의적 명성으로 매 턴 +1 [icon:YIELD_DIPLOMACY] 영향력을 얻습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ko_KR"><Text>전쟁과 재해를 피해 달아나는 이들에게 문을 엽니다. 난민은 당신에게 강하게 이끌리며, 가장 절박한 이들이 먼저 향합니다. 인도주의적 명성으로 매 턴 [icon:YIELD_DIPLOMACY] 영향력을 얻습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="ko_KR"><Text>난민 협약</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="ko_KR"><Text>실향민을 향한 지속적인 약속입니다. 난민은 당신에게 강하게 흘러들고, 가장 절박한 이들이 먼저 향합니다. 그들은 당신의 문화를 풍요롭게 하며 매 턴 +2 [icon:YIELD_DIPLOMACY] 영향력과 +1 [icon:YIELD_CULTURE] 문화를 제공합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="ko_KR"><Text>실향민을 향한 지속적인 약속입니다. 난민은 당신에게 강하게 흘러들고, 가장 절박한 이들이 먼저 향합니다. 그들은 당신의 문화를 풍요롭게 하며 매 턴 [icon:YIELD_DIPLOMACY] 영향력과 [icon:YIELD_CULTURE] 문화를 제공합니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="ko_KR"><Text>이주</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="ko_KR"><Text>이주</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="ko_KR"><Text>이주</Text></Replace>
