@@ -331,19 +331,19 @@
 
         <!-- Border policy cards (primary UI) -->
         <Row Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME"><Text>Pro-Immigration Stance</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC"><Text>Welcome [icon:YIELD_POPULATION] migrants from around the world. Immigration to your cities rises by 50%, and your cosmopolitan reputation earns [icon:YIELD_DIPLOMACY] Influence each turn: +1, +2, then +3 across the ages.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC"><Text>Welcome [icon:YIELD_POPULATION] migrants from around the world: immigration to your cities rises by 50%, and your cosmopolitan reputation earns [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME"><Text>Anti-Immigration Stance</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC"><Text>Close your borders to the world. [icon:YIELD_POPULATION] Newcomers from abroad fall to 40% (about 60% fewer), and far fewer of your own citizens leave for rival civilizations. A mobilized home economy adds [icon:YIELD_PRODUCTION] Production in every city: +2, +3, then +4 across the ages. Isolation has its price in [icon:YIELD_DIPLOMACY] Influence each turn: -2, -3, then -4 across the ages.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC"><Text>Close your borders to the world. [icon:YIELD_POPULATION] Newcomers from abroad fall to 40% (about 60% fewer), and far fewer of your own citizens leave for rival civilizations. A mobilized home economy adds [icon:YIELD_PRODUCTION] Production, at the cost of [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_TALENT_NAME"><Text>Talent Attraction</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_TALENT_DESC"><Text>[icon:YIELD_POPULATION] Newcomers strengthen your research. Gain +1 [icon:YIELD_SCIENCE] Science, rising to +2 in the Modern Age, plus a Science bonus that grows by about +1.5 for each immigrant you attract, up to +12 per turn. This bonus fades if immigration stops.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_TALENT_DESC"><Text>[icon:YIELD_POPULATION] Newcomers strengthen your research, adding [icon:YIELD_SCIENCE] Science that grows by about +1.5 for each immigrant you attract, up to +12 per turn. The bonus fades if immigration stops.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_CULTPULL_NAME"><Text>Cultural Magnetism</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_CULTPULL_DESC"><Text>[icon:YIELD_POPULATION] Newcomers enrich your culture. Gain +1 [icon:YIELD_CULTURE] Culture, rising to +2 in the Modern Age, plus a Culture bonus that grows by about +1.5 for each immigrant you attract, up to +12 per turn. This bonus fades if immigration stops.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_CULTPULL_DESC"><Text>[icon:YIELD_POPULATION] Newcomers enrich your culture, adding [icon:YIELD_CULTURE] Culture that grows by about +1.5 for each immigrant you attract, up to +12 per turn. The bonus fades if immigration stops.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_TRADEPULL_NAME"><Text>Commercial Draw</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_TRADEPULL_DESC"><Text>[icon:YIELD_POPULATION] Newcomers swell your markets. Gain +1 [icon:YIELD_GOLD] Gold, rising to +2 in the Modern Age, plus a Gold bonus that grows by about +1.5 for each immigrant you attract, up to +12 per turn. This bonus fades if immigration stops.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_TRADEPULL_DESC"><Text>[icon:YIELD_POPULATION] Newcomers swell your markets, adding [icon:YIELD_GOLD] Gold that grows by about +1.5 for each immigrant you attract, up to +12 per turn. The bonus fades if immigration stops.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME"><Text>Selective Asylum</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC"><Text>Open your doors to those fleeing war and disaster. Refugees are strongly drawn to you, the most desperate first, and your humanitarian standing earns +1 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC"><Text>Open your doors to those fleeing war and disaster. Refugees are strongly drawn to you, the most desperate first, and your humanitarian standing earns [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME"><Text>Refugee Compact</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC"><Text>A standing commitment to the displaced. Refugees flow strongly toward you, the most desperate first, enriching your culture and earning +2 [icon:YIELD_DIPLOMACY] Influence and +1 [icon:YIELD_CULTURE] Culture each turn.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC"><Text>A standing commitment to the displaced. Refugees flow strongly toward you, the most desperate first, enriching your culture and earning [icon:YIELD_DIPLOMACY] Influence and [icon:YIELD_CULTURE] Culture each turn.</Text></Row>
 
         <!-- Civilopedia: dedicated "Emigration" section + concept pages -->
         <Row Tag="LOC_PEDIA_EMIG_TITLE"><Text>Emigration</Text></Row>
