@@ -273,19 +273,19 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="zh_Hant_HK"><Text>這些人口已永遠失去。</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="zh_Hant_HK"><Text>{1_Dest}每回合支付約{2_Gold}金幣以融入他們。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="zh_Hant_HK"><Text>親移民立場</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="zh_Hant_HK"><Text>歡迎來自世界各地的[icon:YIELD_POPULATION]移民。流入你城市的移民增加 50%，並因你的世界主義聲望每回合獲得[icon:YIELD_DIPLOMACY]影響力：隨時代為 +1、+2、然後 +3。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="zh_Hant_HK"><Text>歡迎來自世界各地的[icon:YIELD_POPULATION]移民。流入你城市的移民增加 50%，並因你的世界主義聲望每回合獲得[icon:YIELD_DIPLOMACY]影響力。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="zh_Hant_HK"><Text>反移民立場</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="zh_Hant_HK"><Text>向世界關閉你的邊境。來自境外的[icon:YIELD_POPULATION]新移民降至 40%（約減少 60%），你本國公民流向對手文明的也大幅減少。動員起來的國內經濟為每座城市增加[icon:YIELD_PRODUCTION]生產：隨時代為 +2、+3、然後 +4。孤立自有其代價，每回合損失[icon:YIELD_DIPLOMACY]影響力：隨時代為 -2、-3、然後 -4。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="zh_Hant_HK"><Text>向世界關閉你的邊境。來自境外的[icon:YIELD_POPULATION]新移民降至 40%（約減少 60%），你本國公民流向對手文明的也大幅減少。動員起來的國內經濟為每座城市增加[icon:YIELD_PRODUCTION]生產，但代價是每回合損失[icon:YIELD_DIPLOMACY]影響力。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="zh_Hant_HK"><Text>人才吸引</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION]新移民增強你的研究。獲得 +1 [icon:YIELD_SCIENCE]科技，於現代時代升至 +2，外加隨你吸引的每位移民約 +1.5 增長的科技加成，每回合最多 +12。若移民停止流入，此加成會逐漸消退。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION]新移民增強你的研究，每吸引一名移民便增加約 +1.5、每回合最多 +12 的[icon:YIELD_SCIENCE]科技。若移民停止，該加成會消退。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="zh_Hant_HK"><Text>文化魅力</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION]新移民豐富你的文化。獲得 +1 [icon:YIELD_CULTURE]文化，於現代時代升至 +2，外加隨你吸引的每位移民約 +1.5 增長的文化加成，每回合最多 +12。若移民停止流入，此加成會逐漸消退。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION]新移民豐富你的文化，每吸引一名移民便增加約 +1.5、每回合最多 +12 的[icon:YIELD_CULTURE]文化。若移民停止，該加成會消退。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="zh_Hant_HK"><Text>商業吸引</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION]新移民壯大你的市場。獲得 +1 [icon:YIELD_GOLD]金幣，於現代時代升至 +2，外加隨你吸引的每位移民約 +1.5 增長的金幣加成，每回合最多 +12。若移民停止流入，此加成會逐漸消退。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION]新移民壯大你的市場，每吸引一名移民便增加約 +1.5、每回合最多 +12 的[icon:YIELD_GOLD]金幣。若移民停止，該加成會消退。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="zh_Hant_HK"><Text>選擇性庇護</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="zh_Hant_HK"><Text>向逃離戰爭與災難者敞開大門。難民會被強烈吸引向你（最絕望者優先），你的人道主義聲譽令你每回合獲得 +1 [icon:YIELD_DIPLOMACY]影響力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="zh_Hant_HK"><Text>向逃離戰爭與災難者敞開大門。難民會被強烈吸引向你（最絕望者優先），你的人道主義聲譽令你每回合獲得[icon:YIELD_DIPLOMACY]影響力。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="zh_Hant_HK"><Text>難民契約</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="zh_Hant_HK"><Text>對流離失所者的長期承諾。難民會強烈湧向你（最絕望者優先），豐富你的文化，並令你每回合獲得 +2 [icon:YIELD_DIPLOMACY]影響力和 +1 [icon:YIELD_CULTURE]文化。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="zh_Hant_HK"><Text>對流離失所者的長期承諾。難民會強烈湧向你（最絕望者優先），豐富你的文化，並令你每回合獲得[icon:YIELD_DIPLOMACY]影響力和[icon:YIELD_CULTURE]文化。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="zh_Hant_HK"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="zh_Hant_HK"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="zh_Hant_HK"><Text>移民</Text></Replace>

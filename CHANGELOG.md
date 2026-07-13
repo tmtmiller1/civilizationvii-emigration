@@ -5,6 +5,18 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [2.0.8] - 2026-07-13
+
+### Changed
+- **Policy (Tradition) cards are more compact and no longer take up excess vertical space.**
+  The Open/Closed Borders and attraction cards spelled out full per-age value tables
+  (e.g. "+1, +2, then +3 across the ages") and flat yield numbers that the game already
+  prints on the card from the Tradition's own modifiers. That duplicated text made the
+  cards noticeably taller than base-game policy cards. Each description now keeps only the
+  numbers unique to the text — the immigration percentage and the per-immigrant scaling
+  bonus — and lets the card's native modifier lines show the rest. Applied across all 12
+  supported languages.
+
 ## [2.0.7] - 2026-07-10
 
 ### Fixed
