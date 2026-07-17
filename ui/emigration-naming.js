@@ -449,18 +449,21 @@ const DIGEST_KEY = {
 /** Permanence class → English fallback cue (used when the LOC string can't be composed). */
 const PERMANENCE_FALLBACK = {
   temporary: "The pressure is temporary.",
-  persistent: "It continues until you address the cause.",
+  persistent: "Migrants will continue to leave until you address the cause.",
   permanent: "Those people are gone for good."
 };
 
 /**
  * The localized "what can I do" action hint for a cause, falling back to the shared English hint.
+ * `city` fills the `{1_City}` placeholder the prosperity hint carries (it names the settlement being
+ * out-prospered); hints without a placeholder ignore it, so passing it is always safe.
  * @param {string} [cause] The migration cause.
+ * @param {string} [city] The settlement name, for hints that name it.
  * @returns {string} The hint.
  */
-export function actionHint(cause) {
+export function actionHint(cause, city) {
   const part = typeof cause === "string" ? cause.toUpperCase() : "";
-  return (part && loc("LOC_EMIG_HINT_" + part)) || causeHint(cause);
+  return (part && loc("LOC_EMIG_HINT_" + part, city)) || causeHint(cause, city);
 }
 
 /**
@@ -551,29 +554,68 @@ export function destClause(cause, destName) {
   return " " + (loc("LOC_EMIG_DEST_CLAUSE", destName) || `Bound for ${destName}.`);
 }
 
+// The blank line separating a digest's SITUATION (what happened + where the people went) from its
+// GUIDANCE (what you can do, how long it lasts, why they moved). Surfaces that honour it — the HUD
+// toast and the expanded log row (white-space:pre-line) — render a paragraph break; the compact
+// one-line log row and any other consumer collapse it to a space, so it degrades cleanly.
+const DIGEST_GAP = "\n\n";
+
+// Causes whose permanence cue is intentionally omitted from the digest: war reads as plainly temporary
+// from the event itself (a separate "temporary" line is noise), and attrition folds "gone for good"
+// into its own hint, so repeating it as a permanence line is redundant. Every other cause keeps its cue.
+const DIGEST_NO_PERMANENCE = new Set(["war", "attrition"]);
+
 /**
- * Compose the local player's per-pass migration digest: a cause-named loss headline, the destination
- * ("where they went") clause, the action hint, the permanence cue, for a cross-civ loss with a
- * material cost the destination's assimilation cost note, the "why here" clause, and a trailing
- * internal-vs-external movement-scope tag. Pure; the caller resolves the inputs.
+ * The permanence cue to show in the DIGEST for a cause, or "" for the causes that suppress it
+ * ({@link DIGEST_NO_PERMANENCE}). Only the digest suppresses these; {@link permanenceCue} is unchanged
+ * for its other consumers (e.g. the city readout).
+ * @param {string} [cause] The migration cause.
+ * @returns {string} The cue, or "".
+ */
+function digestPermanence(cause) {
+  return cause && DIGEST_NO_PERMANENCE.has(cause) ? "" : permanenceCue(cause);
+}
+
+/**
+ * The digest's opening "situation" sentence: the cause-named loss headline plus where the people went.
+ * Disaster reads as one flowing sentence ("… after disaster struck, and are bound for <dest>.") when a
+ * destination resolved; every other cause keeps the headline and a separate "Bound for <dest>." clause.
+ * @param {{cause?:string, people:string, city:string, destName?:string}} o The resolved inputs.
+ * @returns {string} The situation sentence.
+ */
+function headlineWithDest(o) {
+  if (o.cause === "disaster" && o.destName) {
+    return loc("LOC_EMIG_DIGEST_DISASTER_TO", o.people, o.city, o.destName)
+      || `${o.people} fled ${o.city} after disaster struck, and are bound for ${o.destName}.`;
+  }
+  return lossHeadline(o.cause, o.people, o.city) + destClause(o.cause, o.destName);
+}
+
+/**
+ * Compose the local player's per-pass migration digest as two blocks separated by {@link DIGEST_GAP}:
+ * the SITUATION (cause-named loss headline + "where they went") and the GUIDANCE (action hint, the
+ * permanence cue for causes that keep it, a cross-civ assimilation cost note when material, the "why
+ * here" clause, and a trailing internal-vs-external movement-scope tag). Pure; the caller resolves the
+ * inputs.
  * @param {{cause?:string, people:string, city:string, crossCiv?:boolean,
  *          destName?:string, destGold?:number, why?:string}} o The resolved digest inputs. `why` is
  *   the pre-localized "why here" phrase (P0.1), appended as a short clause when present.
  * @returns {string} The composed message.
  */
 export function localDigestMessage(o) {
-  let msg = lossHeadline(o.cause, o.people, o.city);
-  msg += destClause(o.cause, o.destName); // "Bound for <destination>." — where they left for
-  const hint = actionHint(o.cause);
-  if (hint) msg += " " + hint;
-  const perm = permanenceCue(o.cause);
-  if (perm) msg += " " + perm;
+  const situation = headlineWithDest(o);
+  let guidance = "";
+  const hint = actionHint(o.cause, o.city);
+  if (hint) guidance += " " + hint;
+  const perm = digestPermanence(o.cause);
+  if (perm) guidance += " " + perm;
   if (o.crossCiv && o.destName && (o.destGold || 0) >= 1) {
-    msg += " " + costNote(o.destName, Math.round(o.destGold || 0));
+    guidance += " " + costNote(o.destName, Math.round(o.destGold || 0));
   }
-  msg += whyClause(o.cause, o.why);
-  msg += scopeClause(o.cause, o.crossCiv); // trailing (Internal Move) / (External Move) tag
-  return msg;
+  guidance += whyClause(o.cause, o.why);
+  guidance += scopeClause(o.cause, o.crossCiv); // trailing (Internal Move) / (External Move) tag
+  guidance = guidance.trim();
+  return guidance ? situation + DIGEST_GAP + guidance : situation;
 }
 
 /**

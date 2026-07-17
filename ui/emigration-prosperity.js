@@ -114,7 +114,17 @@ function polityBonus(s, tune) {
 }
 
 /**
- * The base (pre-situational) attractiveness of a city. Two models:
+ * The signed terms of {@link baseScore}, in score points, summing to it exactly. `economy` carries
+ * the shaped model's happiness AMPLIFICATION (it is `productiveness × mult`, kept as one term so the
+ * sum reproduces `baseScore` bit-for-bit rather than re-associating the multiply); `happiness` is
+ * then only the standalone happiness term. `population` is already negated.
+ * @typedef {{economy:number, happiness:number, population:number, civBias:number, polity:number}} BaseTerms
+ */
+
+/**
+ * The base (pre-situational) attractiveness of a city, decomposed. THE source of truth for the base
+ * score: {@link baseScore} is just its sum, so the explainer (emigration-explain.js) and the score
+ * can never disagree. Two models:
  *  • legacy linear (default): productiveness + happiness·w − pop·w
  *  • shaped (Algorithm A): happiness is field-relative and saturating, and it
  *    AMPLIFIES the economy (bounded multiplier) plus a bounded standalone term,
@@ -122,23 +132,38 @@ function polityBonus(s, tune) {
  * Both apply the per-civ overcrowding discount, happiness-pull, and source bias.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
  * @param {{meanHappiness:number}|null} ctx Per-pass context (for the shaped model).
- * @returns {number} Base score.
+ * @returns {BaseTerms} The base terms.
  */
-function baseScore(s, ctx) {
+export function baseBreakdown(s, ctx) {
   const tune = civTuning(s.owner);
   const prod = productiveness(s);
-  const popPenalty = s.population * CONFIG.populationFactor;
   const h = happinessForScore(s, tune);
-  const polity = polityBonus(s, tune);
+  const common = {
+    population: -(s.population * CONFIG.populationFactor),
+    civBias: tune.sourceBias,
+    polity: polityBonus(s, tune)
+  };
   if (!CONFIG.happinessShaped) {
     const happy = h * CONFIG.localHappinessFactor * tune.happinessPull;
-    return prod + happy - popPenalty + tune.sourceBias + polity;
+    return Object.assign({ economy: prod, happiness: happy }, common);
   }
   const mean = ctx && typeof ctx.meanHappiness === "number" ? ctx.meanHappiness : 0;
   const hNorm = Math.tanh((h - mean) / CONFIG.happyScale);
   const hShaped = (hNorm >= 0 ? hNorm : hNorm * CONFIG.happyRepulsion) * tune.happinessPull;
   const mult = clamp(1 + CONFIG.happyAmp * hShaped, CONFIG.happyMultMin, CONFIG.happyMultMax);
-  return prod * mult + CONFIG.happyFloor * hShaped - popPenalty + tune.sourceBias + polity;
+  return Object.assign({ economy: prod * mult, happiness: CONFIG.happyFloor * hShaped }, common);
+}
+
+/**
+ * The base (pre-situational) attractiveness of a city: the sum of {@link baseBreakdown}'s terms, in
+ * their declared order so the arithmetic is identical to the pre-decomposition implementation.
+ * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
+ * @param {{meanHappiness:number}|null} ctx Per-pass context (for the shaped model).
+ * @returns {number} Base score.
+ */
+function baseScore(s, ctx) {
+  const b = baseBreakdown(s, ctx);
+  return b.economy + b.happiness + b.population + b.civBias + b.polity;
 }
 
 /**
@@ -173,21 +198,43 @@ function disasterPercent(s) {
 }
 
 /**
+ * The situational percent modifiers, one per source, summing to {@link situationalPercent}. Each is
+ * a percent (e.g. -40 means -40%) and each is a penalty under the shipped constants.
+ * @typedef {{violence:number, disaster:number, siege:number, starvation:number, unrest:number,
+ *   warWeariness:number}} SituationalTerms
+ */
+
+/**
+ * The situational percent modifiers for a city, decomposed by source. THE source of truth:
+ * {@link situationalPercent} is just its sum, so the explainer (emigration-explain.js) reads the
+ * same numbers the score does rather than re-deriving them.
+ * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
+ * @returns {SituationalTerms} The per-source percents.
+ */
+export function situationalBreakdown(s) {
+  return {
+    violence: violencePercent(s),
+    disaster: disasterPercent(s),
+    siege: s.siege ? CONFIG.siegeModifier : 0,
+    starvation: s.starving ? CONFIG.starvationModifier : 0,
+    unrest: s.unrest ? CONFIG.unrestModifier : 0,
+    // 1.4.1 war weariness: an empire-wide unhappiness from prolonged war, distinct from the in-border
+    // violence terms above. A modest push that composes with (and is dominated by) violence, so a city
+    // already under siege isn't double-punished.
+    warWeariness: CONFIG.polityModelEnabled && s.polity && s.polity.warWeary ? CONFIG.warWearinessModifier : 0
+  };
+}
+
+/**
  * Sum of situational percent modifiers for a city (violence, disaster, siege,
- * starvation, unrest).
+ * starvation, unrest), summed in the terms' declared order so the arithmetic is identical to the
+ * pre-decomposition implementation.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
  * @returns {number} Total percent (e.g. -210 means -210%).
  */
 function situationalPercent(s) {
-  let pct = violencePercent(s) + disasterPercent(s);
-  if (s.siege) pct += CONFIG.siegeModifier;
-  if (s.starving) pct += CONFIG.starvationModifier;
-  if (s.unrest) pct += CONFIG.unrestModifier;
-  // 1.4.1 war weariness: an empire-wide unhappiness from prolonged war, distinct from the in-border
-  // violence terms above. A modest push that composes with (and is dominated by) violence, so a city
-  // already under siege isn't double-punished.
-  if (CONFIG.polityModelEnabled && s.polity && s.polity.warWeary) pct += CONFIG.warWearinessModifier;
-  return pct;
+  const b = situationalBreakdown(s);
+  return b.violence + b.disaster + b.siege + b.starvation + b.unrest + b.warWeariness;
 }
 
 /**

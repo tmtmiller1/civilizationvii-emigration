@@ -8,7 +8,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 
-const { QUARTER_BONUSES, NEUTRAL_QUARTER, quarterBonus, QUARTER_QUOTES, quarterQuote, quarterQuoteKey, quoteDisplay } =
+const { QUARTER_BONUSES, NEUTRAL_QUARTER, quarterBonus, QUARTER_QUOTES, quarterQuote, quarterQuoteKey, quoteDisplay, renderableLine } =
   await import("/emigration/ui/emigration-quarter-bonuses.js");
 
 const YIELDS = new Set([
@@ -127,6 +127,32 @@ function checkEntry(key, entry) {
     }
   }
   assert.equal(have.size, Object.keys(QUARTER_QUOTES).length * 2, "no orphan LOC_EMIG_QTR_Q_ rows in en_us");
+}
+
+// ── renderableLine: the enclave pop-up must never show a script the dialog font can't draw ───
+// In-game the quote comes back WHOLE from Locale.compose (the raw-script LOC row), skipping quoteDisplay's
+// own guard, so renderableLine is the last line of defence. Every shipped quote row, once passed through
+// it, must be free of unrenderable script — this is what was showing as tofu boxes / scrambled RTL.
+{
+  const UNRENDERABLE = /[Ͱ-ϿЀ-ӿ֐-׿؀-ۿሀ-፿぀-ヿ一-鿿가-힯]/;
+  const enXml = fs.readFileSync("text/en_us/ModText.xml", "utf8");
+  const rows = [...enXml.matchAll(/Tag="(LOC_EMIG_QTR_Q_[A-Z0-9_]+)"\s*>\s*<Text>([\s\S]*?)<\/Text>/g)];
+  assert.ok(rows.length > 0, "found quote rows to check");
+  for (const [, tag, raw] of rows) {
+    const text = raw.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").trim();
+    const out = renderableLine(text);
+    assert.ok(!UNRENDERABLE.test(out), tag + " still carries unrenderable script after renderableLine: " + out);
+    assert.ok(out.startsWith('"'), tag + " keeps its opening quote after renderableLine: " + out);
+  }
+  // A run of unrenderable script paired with a "(translation)" collapses to just the translation…
+  assert.equal(
+    renderableLine('"農，天下之大本也 (Agriculture is the foundation.)" — Emperor Wen'),
+    '"Agriculture is the foundation." — Emperor Wen',
+    "collapses <original> (translation) to the translation");
+  // …while an all-Latin line (incl. diacritics) is returned untouched.
+  const latin = '"A project fit only for a nation of shopkeepers." — Adam Smith, The Wealth of Nations (1776)';
+  assert.equal(renderableLine(latin), latin, "all-Latin line passes through unchanged");
+  assert.equal(renderableLine(""), "", "empty line stays empty");
 }
 
 console.log("quarter-bonuses harness passed");

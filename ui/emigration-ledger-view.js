@@ -25,12 +25,14 @@ function el(tag, cls, text) {
 
 /**
  * Format a value per the active number mode: Civ pop-points, scaled people, or both.
+ * Exported so every count-bearing table reads identically under the shared Numbers toggle (the
+ * diversity ranking's population column reuses this rather than growing a second formatter).
  * @param {number} people Scaled people.
  * @param {number} points Raw pop points.
  * @param {number} mode A NumberMode value.
  * @returns {string} Formatted.
  */
-function formatCount(people, points, mode) {
+export function formatCount(people, points, mode) {
   if (mode === NumberMode.CIV) return String(Math.round(points || 0));
   if (mode === NumberMode.HISTORICAL) return formatPeople(people);
   return Math.round(points || 0) + " (" + formatPeople(people) + ")";

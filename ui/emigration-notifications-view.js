@@ -40,7 +40,9 @@ const CSS =
   "font-size:var(--dg-fs-72);white-space:nowrap;}" +
   ".emig-ntf-sum{flex:1 1 auto;font-size:var(--dg-fs-85);color:#e8d8b4;overflow:hidden;text-overflow:ellipsis;" +
   "white-space:nowrap;}" +
-  ".emig-ntf-row.open .emig-ntf-sum{white-space:normal;}" +
+  // pre-line (not plain normal) so an expanded row honours the blank line the digest puts between its
+  // situation and guidance; the collapsed row stays nowrap + ellipsis, so the compact list is unchanged.
+  ".emig-ntf-row.open .emig-ntf-sum{white-space:pre-line;}" +
   ".emig-ntf-caret{opacity:0.5;font-size:var(--dg-fs-72);}" +
   ".emig-ntf-detail{padding:0.1rem 0.7rem 0.5rem 0.9rem;display:flex;flex-direction:column;gap:0.12rem;}" +
   ".emig-ntf-d{display:flex;gap:0.5rem;font-size:var(--dg-fs-85);}" +

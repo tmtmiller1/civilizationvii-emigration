@@ -6,6 +6,8 @@
 // label, playback speed). Styling lives in the orchestrator's injected stylesheet; this module just
 // builds the DOM and returns goTo/setPlaying so the orchestrator's playback driver can move it.
 
+import { causeAccent } from "/emigration/ui/emigration-causes.js";
+
 // The timeline's stylesheet, concatenated into the network view's injected sheet (emigration-network-viz
 // injectStyle). Co-located with the component it styles. GameFace-safe: hex/rgba, flexbox, explicit
 // properties, and CSS-DRAWN play/pause + playhead (no glyphs — ⏸ renders as invisible tofu in-game).
@@ -48,6 +50,22 @@ export const TIMELINE_CSS =
   "color:#cbb98f;white-space:nowrap;}" +
   ".emig-netc-tick::before{content:'';position:absolute;left:50%;top:-0.42rem;width:0.07rem;" +
   "height:0.34rem;background:rgba(201,162,76,0.7);transform:translateX(-50%);}" +
+  // EVENT PINS: the wars/disasters that drove the migration, pinned at the frame they landed on.
+  // The marks layer is pointer-events:none (it sits over the scrubber), so each pin re-enables
+  // pointer events for itself to be clickable/hoverable without blocking scrubbing elsewhere.
+  // The per-kind FILL is set inline from the shared causeAccent() taxonomy (the same colours the
+  // notifications log and toasts theme with), so the palette has one source of truth — never
+  // hard-code an event colour here.
+  ".emig-netc-pin{position:absolute;top:0.1rem;width:0.62rem;height:0.62rem;" +
+  "transform:translateX(-50%);border-radius:50%;cursor:pointer;pointer-events:auto;" +
+  "border:0.0555rem solid rgba(8,10,16,0.75);box-shadow:0 0 0.22rem rgba(0,0,0,0.55);}" +
+  ".emig-netc-pin:hover{transform:translateX(-50%) scale(1.25);}" +
+  ".emig-netc-pin-tip{position:absolute;bottom:1.1rem;left:50%;transform:translateX(-50%);" +
+  "display:none;white-space:nowrap;z-index:6;pointer-events:none;" +
+  "background:rgba(8,10,16,0.95);border:0.0555rem solid rgba(201,162,76,0.5);border-radius:0.3rem;" +
+  "padding:0.15rem 0.4rem;font-size:var(--dg-fs-85);color:#f0dca8;" +
+  "box-shadow:0 0.1rem 0.4rem rgba(0,0,0,0.6);}" +
+  ".emig-netc-pin:hover .emig-netc-pin-tip{display:block;}" +
   ".emig-netc-ctrl{display:flex;align-items:center;gap:0.5rem;}" +
   ".emig-netc-spacer{flex:1 1 auto;}" +
   // CSS-DRAWN play/pause: a triangle by default, two bars when .playing.
@@ -249,25 +267,94 @@ function makeMarks(frames) {
 }
 
 /**
+ * Group events by the frame column they pin to, preserving each column's event order.
+ * @param {*[]} events Event specs (each with a `from` frame index).
+ * @param {number} last The final frame index (clamps out-of-range specs).
+ * @returns {Map<number, *[]>} frame index → the events pinned there.
+ */
+export function clusterPinsByColumn(events, last) {
+  /** @type {Map<number, *[]>} */
+  const cols = new Map();
+  for (const ev of events || []) {
+    if (!ev || typeof ev.from !== "number" || !isFinite(ev.from)) continue;
+    const col = Math.max(0, Math.min(last, Math.round(ev.from)));
+    const at = cols.get(col);
+    if (at) at.push(ev);
+    else cols.set(col, [ev]);
+  }
+  return cols;
+}
+
+/**
+ * The pin's class, colour + tooltip text for one frame column.
+ *
+ * Colour comes from the SHARED cause taxonomy (`causeAccent`, emigration-causes.js) — the same map
+ * that themes the notifications log's rows and the toast accent bars — so a war pin is the same red
+ * as a war notification and a disaster pin the same amber. A column holding more than one KIND has
+ * no single honest type colour, so it takes the taxonomy's own `other` fallback rather than
+ * arbitrarily picking one of its events' colours.
+ * @param {*[]} at The column's events.
+ * @returns {{cls:string, color:string, text:string}} Pin class suffix, fill colour + tooltip text.
+ */
+function pinFor(at) {
+  const kinds = new Set(at.map((/** @type {*} */ e) => e.kind));
+  const text = at.map((/** @type {*} */ e) => String(e.label || "")).filter(Boolean).join(" · ");
+  if (at.length === 1) return { cls: at[0].kind === "war" ? "war" : "disaster", color: causeAccent(at[0].kind), text };
+  // Same-kind crowding keeps its type colour; a mixed column falls back to the neutral accent.
+  const only = kinds.size === 1 ? [...kinds][0] : null;
+  return { cls: "multi", color: causeAccent(only || "other"), text };
+}
+
+/**
+ * Build the event-pin layer: one pin per frame column that has wars/disasters, positioned as a % of
+ * the timeline width (the same scale the age separators and ticks use), with a hover tooltip and
+ * click-to-scrub. Events sharing a column merge into a single count-free "multi" pin listing them
+ * all, so a busy turn can't stack unreadable pins on one pixel.
+ * @param {*[]} frames Frames (in time order).
+ * @param {*[]} events Event specs `{kind, label, from, to}` (frame indices).
+ * @param {(i:number)=>void} [goTo] Scrub handler — clicking a pin jumps the timeline to its frame.
+ * @returns {HTMLElement} The pin layer (empty when there are no placeable events).
+ */
+export function makeEventPins(frames, events, goTo) {
+  const layer = el("div", "emig-netc-pins");
+  const last = Math.max(1, frames.length - 1);
+  for (const [col, at] of clusterPinsByColumn(events, last)) {
+    const { cls, color, text } = pinFor(at);
+    const pin = el("div", "emig-netc-pin " + cls);
+    pin.style.left = (col / last) * 100 + "%";
+    pin.style.backgroundColor = color;
+    pin.appendChild(el("div", "emig-netc-pin-tip", text));
+    pin.setAttribute("role", "button");
+    pin.title = text; // native tooltip fallback if the CSS one is clipped
+    if (goTo) pin.addEventListener("click", () => goTo(col));
+    layer.appendChild(pin);
+  }
+  return layer;
+}
+
+/**
  * Build the timeline area: the age band, a rail (visible track + progress fill + a clear playhead
- * line, with the transparent scrubber on top for interaction), and the year-tick overlay.
+ * line, with the transparent scrubber on top for interaction), the year-tick overlay, and the
+ * war/disaster event pins.
  * @param {*[]} frames Frames.
- * @param {HTMLInputElement} input The scrubber (transparent; drives interaction).
- * @param {HTMLElement} fill The progress-fill element (its width is updated by goTo).
- * @param {HTMLElement} head The playhead element (its left is updated by goTo).
+ * @param {*} o Bag of {input, fill, head, events, goTo}: `input` is the transparent scrubber that
+ *   drives interaction, `fill`/`head` are the progress fill + playhead (goTo updates their geometry),
+ *   `events` are the specs to pin (optional), and `goTo` scrubs when a pin is clicked.
  * @returns {HTMLElement} The timeline panel.
  */
-function makeTimelineArea(frames, input, fill, head) {
+function makeTimelineArea(frames, o) {
   const tl = el("div", "emig-netc-tl");
   const ageBar = makeAgeBar(frames);
   if (ageBar) tl.appendChild(ageBar);
   const rail = el("div", "emig-netc-rail");
   rail.appendChild(el("div", "emig-netc-track")); // the unplayed rail
-  rail.appendChild(fill); // the played portion (gold), width set by goTo
-  rail.appendChild(input); // transparent range on top — handles click/drag/keys
-  rail.appendChild(head); // the bright playhead line + knob, left set by goTo
+  rail.appendChild(o.fill); // the played portion (gold), width set by goTo
+  rail.appendChild(o.input); // transparent range on top — handles click/drag/keys
+  rail.appendChild(o.head); // the bright playhead line + knob, left set by goTo
   tl.appendChild(rail);
-  tl.appendChild(makeMarks(frames));
+  const marks = makeMarks(frames);
+  if (o.events && o.events.length) marks.appendChild(makeEventPins(frames, o.events, o.goTo));
+  tl.appendChild(marks);
   return tl;
 }
 
@@ -316,9 +403,11 @@ function wireAndSeed(o) {
  * @param {*[]} frames Frames.
  * @param {*} pb Playback state {playing, ticks, idx}.
  * @param {(i:number)=>void} onSet Apply a frame index.
+ * @param {*[]} [events] War/disaster specs `{kind, label, from, to}` to pin onto the scrubber
+ *   (default none — the signature stays backward-compatible with callers that pin nothing).
  * @returns {{root:HTMLElement, goTo:(i:number)=>void, setPlaying:(p:boolean)=>void}|null} Handle.
  */
-export function makeTimeline(frames, pb, onSet) {
+export function makeTimeline(frames, pb, onSet, events) {
   if (frames.length < 2) return null;
   const last = frames.length - 1;
   const root = el("div", "emig-netc-time");
@@ -353,7 +442,8 @@ export function makeTimeline(frames, pb, onSet) {
     btn.setAttribute("aria-label", p ? "Pause" : "Play");
     btn.title = p ? "Pause" : "Play";
   };
-  root.appendChild(makeTimelineArea(frames, input, fill, head));
+  // Pins scrub via `goTo` (defined above), so clicking a war/disaster jumps the timeline to it.
+  root.appendChild(makeTimelineArea(frames, { input, fill, head, events, goTo }));
   root.appendChild(makeControlsRow(btn, lbl, pb));
   wireAndSeed({ btn, input, fill, head, pb, last, goTo, setPlaying, setLabel });
   return { root, goTo, setPlaying };

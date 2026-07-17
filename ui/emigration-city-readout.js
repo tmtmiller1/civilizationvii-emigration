@@ -20,6 +20,7 @@ import { citySnapshot } from "/emigration/ui/emigration-city-readout-data.js";
 import { actionHint, permanenceCue } from "/emigration/ui/emigration-naming.js";
 import { formatPeople, localeNumber } from "/emigration/ui/emigration-population.js";
 import { reasonsPhrase } from "/emigration/ui/emigration-move-reasons.js";
+import { mountExplain } from "/emigration/ui/emigration-explain-view.js";
 import { toast } from "/emigration/ui/emigration-feedback.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
 
@@ -188,7 +189,9 @@ export function readoutModel(s) {
     : "");
   pushLineIf(lines, originsLine(s.composition));
   lines.push(loc("LOC_EMIG_RO_CIV_NET", "Civ net migration: {1_People} people", signedPeople(s.ownerNet)));
-  pushLineIf(lines, actionHint(s.cause));
+  // Pass the settlement name so the prosperity hint's {1_City} placeholder resolves (it names the
+  // settlement being out-prospered); other hints ignore the arg.
+  pushLineIf(lines, actionHint(s.cause, s.cityName || loc("LOC_EMIG_RO_DEFAULT_CITY", "Settlement")));
   pushLineIf(lines, permanenceCue(s.cause));
   return {
     title: loc("LOC_EMIG_RO_TITLE", "{1_City} - Migration", s.cityName || loc("LOC_EMIG_RO_DEFAULT_CITY", "Settlement")),
@@ -322,11 +325,31 @@ function appendTitle(parent, title, badge, badgeTone) {
 }
 
 /**
- * Render the model into the (created-on-demand) panel element.
+ * Append the panel's own content: title, lines, warning, sparkline. Split out of renderPanel so both
+ * stay within the complexity cap now that the panel also hosts the Feature L explainer.
+ * @param {*} el The panel element.
  * @param {{title:string, titleBadge?:string, titleBadgeTone?:string,
  *   lines:string[], warn:(string|null), spark:(number[]|null)}} model The view-model.
  */
-function renderPanel(model) {
+function appendBody(el, model) {
+  appendTitle(el, model.title, model.titleBadge, model.titleBadgeTone);
+  for (const line of model.lines) appendLine(el, "emig-rt-line", line);
+  if (model.warn) appendLine(el, "emig-rt-warn", model.warn);
+  if (model.spark && model.spark.length) {
+    appendLine(el, "emig-rt-sparklabel", loc("LOC_EMIG_RO_SPARK_LABEL", "Recent net migration"));
+    el.appendChild(sparkline(model.spark));
+  }
+}
+
+/**
+ * Render the model into the (created-on-demand) panel element.
+ * @param {{title:string, titleBadge?:string, titleBadgeTone?:string,
+ *   lines:string[], warn:(string|null), spark:(number[]|null)}} model The view-model.
+ * @param {string} [cityKey] The rendered settlement's stable key, for the Feature L explainer (the
+ *   readout's own model can't carry its rows: they are decomposed from the live signal, not the
+ *   snapshot).
+ */
+function renderPanel(model, cityKey) {
   try {
     const root = document.body || document.documentElement;
     if (!root) return;
@@ -337,13 +360,8 @@ function renderPanel(model) {
       _el.id = "emig-readout";
     }
     _el.innerHTML = "";
-    appendTitle(_el, model.title, model.titleBadge, model.titleBadgeTone);
-    for (const line of model.lines) appendLine(_el, "emig-rt-line", line);
-    if (model.warn) appendLine(_el, "emig-rt-warn", model.warn);
-    if (model.spark && model.spark.length) {
-      appendLine(_el, "emig-rt-sparklabel", loc("LOC_EMIG_RO_SPARK_LABEL", "Recent net migration"));
-      _el.appendChild(sparkline(model.spark));
-    }
+    appendBody(_el, model);
+    if (cityKey) mountExplain(_el, cityKey); // no-op when the explainer is off
     positionPanel(_el);
     if (!_el.parentNode) root.appendChild(_el);
   } catch (_) {
@@ -395,7 +413,7 @@ function showCityReadout(cityId) {
     return;
   }
   maybeToastHoldingTransition(snap);
-  renderPanel(model);
+  renderPanel(model, snap?.cityKey);
 }
 
 /** Hide the readout panel. */

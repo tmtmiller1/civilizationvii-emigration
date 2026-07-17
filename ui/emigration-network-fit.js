@@ -10,6 +10,7 @@
 const STAGE_BOTTOM_PAD = 14; // px kept clear below the diagram + its legend/timeline
 const STAGE_MIN_W = 360;     // px floor so a very short viewport still shows a usable chart
 
+
 /** @returns {number} Viewport height in CSS px (0 if unavailable). */
 function viewportHeight() {
   const g = /** @type {*} */ (globalThis);

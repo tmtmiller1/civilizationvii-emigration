@@ -21,20 +21,20 @@
     <Traditions>
         <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_MODERN"
              Name="LOC_EMIG_POLICY_OPEN_BORDERS_NAME"
-             Description="LOC_EMIG_POLICY_OPEN_BORDERS_DESC"
+             Description="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO"
              AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_MODERN"
              Name="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME"
-             Description="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC"
+             Description="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO"
              AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
         <Row TraditionType="TRADITION_EMIG_TALENT_MODERN"
-             Name="LOC_EMIG_POLICY_TALENT_NAME" Description="LOC_EMIG_POLICY_TALENT_DESC"
+             Name="LOC_EMIG_POLICY_TALENT_NAME" Description="LOC_EMIG_POLICY_TALENT_DESC_MO"
              AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
         <Row TraditionType="TRADITION_EMIG_CULTPULL_MODERN"
-             Name="LOC_EMIG_POLICY_CULTPULL_NAME" Description="LOC_EMIG_POLICY_CULTPULL_DESC"
+             Name="LOC_EMIG_POLICY_CULTPULL_NAME" Description="LOC_EMIG_POLICY_CULTPULL_DESC_MO"
              AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
         <Row TraditionType="TRADITION_EMIG_TRADEPULL_MODERN"
-             Name="LOC_EMIG_POLICY_TRADEPULL_NAME" Description="LOC_EMIG_POLICY_TRADEPULL_DESC"
+             Name="LOC_EMIG_POLICY_TRADEPULL_NAME" Description="LOC_EMIG_POLICY_TRADEPULL_DESC_MO"
              AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
         <Row TraditionType="TRADITION_EMIG_ASYLUM_MODERN"
              Name="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Description="LOC_EMIG_POLICY_ASYLUM_MO_DESC"

@@ -393,6 +393,9 @@ const GRAPHS_GROUP = {
     // Scaled → Emigration's people-scaled population (emig_population, the SAME per-city scaling as the
     // flow graphs); Civ → host's raw population points (population_civ). One scaling system everywhere.
     { label: "Population", scaled: "emig_population", civ: "population_civ" },
+    // Population Share is the host's (Demographics) 100%-stacked share-of-world area. It has no
+    // Scaled/Civ variant, so both views map to the one metric (like the Net Migration table below).
+    { label: "Population Share", scaled: "pop_share_area", civ: "pop_share_area" },
     { label: "Net Migration (Graph)", scaled: NET_CUM_SPEC.id, civ: NET_CUM_PTS_SPEC.id },
     { label: "Net Migration (Table)", scaled: LEDGER_SUBTAB_ID, civ: LEDGER_SUBTAB_ID },
     { label: "Emigration", scaled: OUT_CUM_SPEC.id, civ: OUT_CUM_PTS_SPEC.id },

@@ -2,7 +2,7 @@
 <Mod id="migration-probe" version="1" xmlns="ModInfo">
     <Properties>
         <Name>Migration Probe</Name>
-        <Description>Dev probe: settles whether a UI-VM mod can add/remove city population (rural/urban/worker), incl. on other civs' cities. Dock panel + console + UI.log output. Not for release.</Description>
+        <Description>Dev probe: settles UI-VM gameplay-write questions (population add/remove, CREATE_ELEMENT, grants, revolt) and — API7 — whether JS can PLACE a tile IMPROVEMENT on a city and have its yield show in the breakdown (the enclave-as-a-Constructible test). On-screen result panel + dock buttons. Not for release.</Description>
         <Authors>Tower</Authors>
         <Package>MigrationProbe</Package>
         <PackageSortIndex>1000</PackageSortIndex>
@@ -17,6 +17,12 @@
         </Criteria>
     </ActionCriteria>
     <ActionGroups>
+        <!-- NOTE: the throwaway-improvement UpdateDatabase group was removed. The enclave placement test
+             now lives in the emigration mod's self-test screen (ui/emigration-enclave-probe.js), which
+             tests with a REAL runtime-discovered improvement and needs no custom data. Keeping this probe
+             pure-UIScript avoids any chance a blind-authored data row rolls back the mod's game-scope
+             load. devtools/migration-probe-enclave.xml is retained in source for reference only (kept out
+             of data/ so it is not scanned by the package validator). -->
         <ActionGroup id="migration-probe-game" scope="game" criteria="always">
             <Properties>
                 <LoadOrder>100</LoadOrder>

@@ -26,6 +26,16 @@
  * @property {string} desc LOC key for the description.
  */
 
+/**
+ * The diaspora "foothold" share milestone — a FIXED chronicle-only threshold (not a player option).
+ * It lives in this leaf module (which imports nothing) so that BOTH emigration-diaspora.js and
+ * emigration-composition.js can read it without importing each other. Those two previously formed a
+ * composition↔diaspora import cycle for this one constant; harmless until a new early-registered
+ * UIScript (emigration-enclave-gate.js) forced the cycle to resolve first and fatally, which took down
+ * the whole emigration panel at load. Keeping the shared constant in a leaf breaks the cycle for good.
+ */
+export const QUARTER_FOOTHOLD_SHARE = 0.25;
+
 /** @type {Tunable[]} */
 export const TUNABLES = [
   // pacing
@@ -121,6 +131,14 @@ export const TUNABLES = [
   { key: "cityReadoutEnabled", group: "notify", type: "bool", label: "LOC_EMIG_T_CITYREADOUT", desc: "LOC_EMIG_T_CITYREADOUT_D" },
   { key: "cityReadoutSparkline", group: "notify", type: "bool", label: "LOC_EMIG_T_SPARKLINE", desc: "LOC_EMIG_T_SPARKLINE_D" },
   { key: "selftestEnabled", group: "notify", type: "bool", label: "LOC_EMIG_T_SELFTEST", desc: "LOC_EMIG_T_SELFTEST_D" },
+  // readout — the migration-intelligence panels (roadmap §15/§16.6). This group is created here by
+  // the diversity ranking (Features S/T); later readout features JOIN it rather than making their own.
+  { key: "diversityRanking", group: "readout", type: "bool", label: "LOC_EMIG_T_DIVERSITY", desc: "LOC_EMIG_T_DIVERSITY_D" },
+  { key: "cosmopolitanismScore", group: "readout", type: "bool", label: "LOC_EMIG_T_COSMO", desc: "LOC_EMIG_T_COSMO_D" },
+  { key: "diversityRows", group: "readout", type: "choice", values: [3, 5, 8, 12], label: "LOC_EMIG_T_DIVERSITYROWS", desc: "LOC_EMIG_T_DIVERSITYROWS_D" },
+  { key: "migrationExplainer", group: "readout", type: "bool", label: "LOC_EMIG_T_EXPLAINER", desc: "LOC_EMIG_T_EXPLAINER_D" },
+  // visuals — presentation only; nothing here touches the simulation.
+  { key: "timelineEventPins", group: "visuals", type: "bool", label: "LOC_EMIG_T_TLPINS", desc: "LOC_EMIG_T_TLPINS_D" },
   // outlet - attrition when there's nowhere to flee (the pressure-release valve)
   { key: "attritionEnabled", group: "outlet", type: "bool", label: "LOC_EMIG_T_ATTRITION", desc: "LOC_EMIG_T_ATTRITION_D" },
   { key: "attritionMinDistress", group: "outlet", type: "choice", values: [40, 80, 120, 200], label: "LOC_EMIG_T_ATTRDISTRESS", desc: "LOC_EMIG_T_ATTRDISTRESS_D" },

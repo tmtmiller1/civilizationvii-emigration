@@ -14,6 +14,7 @@
 import { dashboardModel, renderDashboardSubtab } from "/emigration/ui/emigration-views.js";
 import { gatherDashboard } from "/emigration/ui/emigration-window.js";
 import { setNumberMode, NumberMode, getMinimizeAnalytics } from "/emigration/ui/emigration-settings.js";
+import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 // The Migration page's sub-tabs, one per dashboard section, so the embedded page shows the SAME
 // content as the standalone window but presented as NATIVE Demographics sub-tabs (the same metric
@@ -29,6 +30,7 @@ const SUBTABS = [
   { id: "ledger", label: "Net Migration (Table)", title: "Net migration by civilization" },
   { id: "pies", label: "Causes", title: "Why people move" },
   { id: "cityflows", label: "Settlements", title: "Settlements" },
+  { id: "diversity", label: "Diversity", title: "Most diverse cities" },
   { id: "stances", label: "Immigration Policies", title: "Immigration policies" },
   { id: "notifications", label: "Notifications", title: "Migration notifications" },
   // The Guide is a static reference matrix with no per-civ data, so the host's analytics-visibility
@@ -45,14 +47,28 @@ const REGISTERED_FLAG = "__emigMigrationPageRegistered";
 const HIDDEN_SUBTAB_IDS = new Set(["flow", "pies"]);
 const HIDDEN_HUB_IDS = new Set(["emig_network", "emig_causes"]);
 
+/**
+ * Whether a tab must be dropped for a reason other than "simplify dashboard": the Diversity tab is
+ * flag-gated (CONFIG.diversityRanking), and dashboardModel omits its section entirely when the flag
+ * is off. Registering the tab anyway would be worse than useless — renderDashboardSubtab falls back
+ * to sections[0] for an unknown kind, so a "Diversity" tab would render the Network.
+ * @param {string} kind The section kind the tab renders.
+ * @returns {boolean} True to drop it.
+ */
+function tabGatedOff(kind) {
+  return kind === "diversity" && !CONFIG.diversityRanking;
+}
+
 /** The sub-tabs to show, dropping the Network + Causes analytics tabs when "simplify dashboard" is on. */
 function visibleSubtabs() {
-  return getMinimizeAnalytics() ? SUBTABS.filter((t) => !HIDDEN_SUBTAB_IDS.has(t.id)) : SUBTABS;
+  const shown = SUBTABS.filter((t) => !tabGatedOff(t.id));
+  return getMinimizeAnalytics() ? shown.filter((t) => !HIDDEN_SUBTAB_IDS.has(t.id)) : shown;
 }
 
 /** The hub pages to contribute, dropping the Network + Causes pages when "simplify dashboard" is on. */
 function visibleHubPages() {
-  return getMinimizeAnalytics() ? HUB_PAGES.filter((p) => !HIDDEN_HUB_IDS.has(p.id)) : HUB_PAGES;
+  const shown = HUB_PAGES.filter((p) => !(p.id === "emig_diversity" && tabGatedOff("diversity")));
+  return getMinimizeAnalytics() ? shown.filter((p) => !HIDDEN_HUB_IDS.has(p.id)) : shown;
 }
 const QUEUED_FLAG = "__emigMigrationPageQueued";
 
@@ -61,6 +77,37 @@ function isValidContainer(container) {
   return !!container
     && typeof container.appendChild === "function"
     && typeof container.innerHTML === "string";
+}
+
+// Host-fill rules for the EMBEDDED page only (the standalone window has its own host and is left
+// alone). Lives here rather than in the shared sheet because it is purely about how the dashboard
+// meets THIS host — which is exactly what this module owns.
+//
+// Demographics' render-page host now stretches to its view-host column (screen-demographics-base.css)
+// instead of sizing to content; these make our boxes fill it in turn. That matters because the
+// network diagram sizes itself by MEASURING `.emig-tabbody`: while that box was content-sized, the
+// measurement was circular — it reported the space the diagram already occupied, never the space
+// left over — so the diagram sat at its CSS ceiling with a large empty band beneath it. (Probe,
+// 2026-07-17 @2880x1800: budget 915 vs a stage of 900; ~297px below it unused.)
+//
+// `max-height` has to go with the flex: 74vh (1332px at that height) would otherwise re-cap the box
+// below the ~1399px actually available.
+const HOST_FILL_CSS =
+  ".demographics-history-render-page > .emig-dash{height:100%;}" +
+  ".demographics-history-render-page .emig-tabbody{flex:1 1 auto;min-height:0;max-height:none;}";
+
+/** Inject the embedded-page host-fill rules once. Never throws (styling is best-effort). */
+function injectHostFillStyle() {
+  try {
+    if (typeof document === "undefined" || !document.head) return;
+    if (document.getElementById("emig-mig-page-style")) return;
+    const st = document.createElement("style");
+    st.id = "emig-mig-page-style";
+    st.textContent = HOST_FILL_CSS;
+    document.head.appendChild(st);
+  } catch (_) {
+    /* best-effort: without it the page still renders, just without filling the host */
+  }
 }
 
 /**
@@ -75,6 +122,7 @@ function isValidContainer(container) {
 function renderInto(container, kind, ctx) {
   if (!isValidContainer(container)) return;
   try {
+    injectHostFillStyle();
     const groupControlled = ctx && (ctx.groupView === "scaled" || ctx.groupView === "civ");
     if (groupControlled) {
       setNumberMode(ctx.groupView === "civ" ? NumberMode.CIV : NumberMode.HISTORICAL);
@@ -123,6 +171,7 @@ const HUB_PAGES = [
   { id: "emig_network", label: "Network", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "flow", c) },
   { id: "emig_causes", label: "Causes", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "pies", c) },
   { id: "emig_cities", label: "My Cities", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "cityflows", c) },
+  { id: "emig_diversity", label: "Diversity", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "diversity", c) },
   { id: "emig_policies", label: "Policies", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "stances", c) },
   { id: "emig_notifications", label: "Notifications", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "notifications", c) },
   { id: "emig_guide", label: "Guide", tier: "standard", hidePolicyBanner: true, render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "guide", c) }

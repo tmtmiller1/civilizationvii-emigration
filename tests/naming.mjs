@@ -38,7 +38,7 @@ function testActionHintFallsBackToSharedHint() {
 function testPermanenceCueSelection() {
   assert.equal(permanenceCue("war"), "The pressure is temporary."); // temporary
   assert.equal(permanenceCue("disaster"), "The pressure is temporary.");
-  assert.equal(permanenceCue("unhappiness"), "It continues until you address the cause."); // persistent
+  assert.equal(permanenceCue("unhappiness"), "Migrants will continue to leave until you address the cause."); // persistent
   assert.equal(permanenceCue("attrition"), "Those people are gone for good."); // permanent
 }
 
@@ -59,7 +59,7 @@ function testLocalDigestComposesAndGatesCostNote() {
   const msg = localDigestMessage(base);
   assert.match(msg, /Rome/); // headline
   assert.match(msg, /happiness/i); // hint
-  assert.match(msg, /continues until/i); // permanence cue
+  assert.match(msg, /continue to leave until/i); // permanence cue
   assert.doesNotMatch(msg, /pays about/); // no cross-civ cost note
   // Cross-civ loss with a material destination cost → the cost note is appended.
   const withCost = localDigestMessage({ ...base, crossCiv: true, destName: "Carthage", destGold: 4 });

@@ -593,37 +593,151 @@ function layoutCityDots(cm, list, dots) {
   }
 }
 
+// Clear space between two DRAWN city discs. drawCityDiscs strokes each at `subR + 3`, so 6 is the
+// smallest gap that still leaves daylight between two rings.
+const CITY_GAP = 6;
+
+/**
+ * The smallest radius along the unit ray `(ux, uy)` at which a disc of radius `r` clears every disc
+ * already placed.
+ *
+ * Closed form, not a search: a disc travelling out along the ray must satisfy
+ * `|rad·u − Cp| ≥ r + p.r + CITY_GAP` for each placed disc `p`. Squaring gives a quadratic in `rad`
+ * whose forbidden interval is `(t − half, t + half)`, where `t = Cp·u` is p's projection on the ray
+ * and `half = √(need² − h²)` with `h²` p's squared perpendicular distance from it. When `h² ≥ need²`
+ * the ray never passes close enough to matter. Taking the far root for every constraining disc
+ * yields a radius that clears them all.
+ * @param {number} ux Ray x. @param {number} uy Ray y. @param {number} r The disc's radius.
+ * @param {{x:number, y:number, r:number}[]} placed Discs already positioned.
+ * @returns {number} The clearing radius (0 when nothing blocks the ray).
+ */
+function clearRadiusAlong(ux, uy, r, placed) {
+  let rad = 0;
+  for (const p of placed) {
+    const need = r + p.r + CITY_GAP;
+    const t = p.x * ux + p.y * uy;
+    const h2 = (p.x * p.x + p.y * p.y) - t * t;
+    if (h2 >= need * need) continue; // the ray never comes within `need` of this disc
+    const far = t + Math.sqrt(need * need - h2);
+    if (far > rad) rad = far;
+  }
+  return rad;
+}
+
+/**
+ * Pack a civ's city discs biggest-first: the largest at the origin, each next one out along its
+ * golden-angle ray only as far as it must to clear the discs already down. Pure geometry — returns a
+ * position per ORIGINAL city index (dot buckets stay keyed by that index).
+ * @param {number[]} subRs Disc radius per city index.
+ * @returns {{x:number, y:number, r:number}[]} Packed positions, indexed by original city index.
+ */
+function packCityDiscs(subRs) {
+  // Biggest first; the index tiebreak keeps equal-sized cities in a stable, engine-order-independent
+  // sequence rather than relying on the sort's stability.
+  const order = subRs.map((/** @type {number} */ _r, /** @type {number} */ i) => i)
+    .sort((/** @type {number} */ a, /** @type {number} */ b) => (subRs[b] - subRs[a]) || (a - b));
+  /** @type {{x:number, y:number, r:number}[]} */
+  const placed = [];
+  const pos = new Array(subRs.length);
+  order.forEach((/** @type {number} */ idx, /** @type {number} */ slot) => {
+    const r = subRs[idx];
+    const ang = slot * GOLDEN;
+    const ux = Math.cos(ang);
+    const uy = Math.sin(ang);
+    const rad = clearRadiusAlong(ux, uy, r, placed);
+    const p = { x: ux * rad, y: uy * rad, r };
+    placed.push(p);
+    pos[idx] = p;
+  });
+  return pos;
+}
+
+const RECENTER_ITERS = 64; // converges to <0.2% of the settled 1-centre (measured), for any real n
+
+/**
+ * The centre of the (approximately) smallest circle enclosing the packed discs — the point that
+ * minimises the farthest `distance + radius`. Packing anchors the biggest disc at the origin and
+ * fans the rest to ONE side, so measuring the civ circle from the origin leaves a large empty half
+ * (two equal cities filled only ~20% of the circle). Re-centring on this point removes that
+ * asymmetry (~46% for the same case) and never enlarges the circle — the origin is just one
+ * candidate centre, so the minimiser is always ≤ it.
+ *
+ * Solved by the standard shrinking-step 1-centre iteration: from the centroid, step toward the
+ * current farthest disc by a step that decays each round. Cheap (a few dozen iterations over a
+ * handful of discs, once per civ per render) and deterministic.
+ * @param {{x:number, y:number, r:number}[]} discs The packed discs.
+ * @returns {{cx:number, cy:number}} The enclosing-circle centre.
+ */
+function enclosingCentre(discs) {
+  const c = { x: 0, y: 0 };
+  for (const d of discs) { c.x += d.x; c.y += d.y; }
+  c.x /= discs.length;
+  c.y /= discs.length;
+  let step = Math.max(...discs.map((d) => Math.hypot(d.x - c.x, d.y - c.y) + d.r), 1);
+  for (let it = 0; it < RECENTER_ITERS; it++) {
+    const far = farthestDisc(discs, c);
+    const len = Math.hypot(far.x - c.x, far.y - c.y) || 1;
+    c.x += ((far.x - c.x) / len) * step;
+    c.y += ((far.y - c.y) / len) * step;
+    step *= 0.9;
+  }
+  return { cx: c.x, cy: c.y };
+}
+
+/**
+ * The disc whose `distance-to-`c` + radius` is largest (the one the enclosing circle must reach).
+ * @param {{x:number, y:number, r:number}[]} discs Discs. @param {{x:number, y:number}} c Centre.
+ * @returns {{x:number, y:number, r:number}} The farthest disc.
+ */
+function farthestDisc(discs, c) {
+  let far = discs[0];
+  let fd = -1;
+  for (const d of discs) {
+    const dist = Math.hypot(d.x - c.x, d.y - c.y) + d.r;
+    if (dist > fd) { fd = dist; far = d; }
+  }
+  return far;
+}
+
 /**
  * Lay out one civ's city sub-clusters (each a small phyllotaxis-packed disc) within the civ circle,
- * spreading them so they roughly tile the civ's area; sets each civ centre's clusterR.
+ * and set the civ centre's clusterR to the radius that contains them.
+ *
+ * Cities are packed biggest-first (packCityDiscs), then the whole arrangement is re-centred on its
+ * enclosing-circle centre (enclosingCentre) so the civ circle hugs the discs evenly instead of
+ * leaving an empty half. Two properties this layout gives that the old one lacked:
+ *
+ *  • **Size reflects content.** The old rule spread every city onto a ring of radius
+ *    `1.75·√(Σ subR²)` regardless of size, so one dominant city flung its 1-dot hamlets out to
+ *    ~1.75× its own radius and the circle grew to contain them (a single hamlet took a lone 400-dot
+ *    city from r=54 to r=102). Packing against the actual discs removes that halo.
+ *  • **Determinism.** `rad` used to come from the city's INDEX, and `center.cities` arrives in the
+ *    engine's (founding) order — so the same civ drew a ~47% bigger circle if its largest city
+ *    happened to be founded last. Ordering by size makes every permutation agree.
  * @param {*} center Civ centre (gets clusterR; its `.cities` get sx/sy/subR/bornFrame).
  * @param {Map<number,*[]>} byCity cityIdx → dot list.
  * @param {*[]} dots Flat output list.
  */
 function layoutCiv(center, byCity, dots) {
   const cities = center.cities;
-  // Floor each sub-cluster radius so a pop-poor settlement (0 dots) still draws a disc; flooring here (not
-  // just at paint time) also keeps the spacing/spread below wide enough that the small discs don't overlap.
+  // Floor each sub-cluster radius so a pop-poor settlement (0 dots) still draws a disc; flooring here
+  // (not just at paint time) also keeps the packing below clear of the small discs.
   const subRs = cities.map((/** @type {*} */ _c, /** @type {number} */ idx) =>
     Math.max(MIN_CITY_SUB_R, clusterRadius((byCity.get(idx) || []).length)));
-  const area = subRs.reduce((/** @type {number} */ a, /** @type {number} */ r) => a + r * r, 0);
-  // Push the city sub-clusters a bit further apart so they read as distinct discs (the civ circle's
-  // clusterR below grows to contain them).
-  const spread = cities.length > 1 ? 1.75 * Math.sqrt(area) : 0;
+  const pos = packCityDiscs(subRs);
+  const { cx, cy } = enclosingCentre(pos);
   let reach = 8;
   for (let idx = 0; idx < cities.length; idx++) {
-    const ang = idx * GOLDEN;
-    const rad = cities.length > 1 ? spread * Math.sqrt((idx + 0.5) / cities.length) : 0;
     const cm = cities[idx];
-    cm.sx = Math.cos(ang) * rad;
-    cm.sy = Math.sin(ang) * rad;
+    cm.sx = pos[idx].x - cx; // re-centre the arrangement on the enclosing-circle centre
+    cm.sy = pos[idx].y - cy;
     cm.subR = subRs[idx];
     cm.bornFrame = Infinity;
     layoutCityDots(cm, byCity.get(idx) || [], dots);
     // A dotless settlement keeps bornFrame = Infinity (layoutCityDots never lowered it), which the paint
     // guard reads as "never born" → disc hidden. Show it from the start of the timeline instead.
     if (!Number.isFinite(cm.bornFrame)) cm.bornFrame = 0;
-    reach = Math.max(reach, rad + Math.max(subRs[idx], 5));
+    reach = Math.max(reach, Math.hypot(cm.sx, cm.sy) + Math.max(subRs[idx], 5));
   }
   center.clusterR = reach;
 }

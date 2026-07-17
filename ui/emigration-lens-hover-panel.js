@@ -34,6 +34,11 @@ const INDEX_TTL = 3000; // ms a plot->settlement index is cached before a rebuil
  * @property {(signals:*[])=>*} [buildSnapshot] Optional per-pass context from all signals.
  * @property {(signal:*, snapshot:*, plot?:{x:number,y:number})=>{title:string, rows:HoverRow[]}|null}
  *   resolve Hovered settlement (+ the hovered plot, for per-tile panels) -> display.
+ * @property {(panel:HTMLElement, signal:*)=>void} [decorate] Optional: append richer DOM under the
+ *   rows once the panel has been rebuilt for a NEW tile. The `rows` contract is title + flat strings,
+ *   so anything with structure (the Feature L weight bars) mounts through here instead. Kept as a
+ *   spec hook rather than a call in this module so the shared panel stays agnostic about which
+ *   features exist - a lens opts in, this file does not import them.
  */
 
 /** @type {{spec:HoverPanelSpec, panel:HTMLElement|null, snapshot:*, curKey:string|null}[]} */
@@ -203,6 +208,22 @@ function hidePanel(e) {
   e.curKey = null;
 }
 
+/**
+ * Run a panel's optional `decorate` hook. Isolated so a decorator that throws costs its own DOM, not
+ * the whole hover panel (which is otherwise built and shown fine).
+ * @param {*} e Panel entry.
+ * @param {HTMLElement} panel The rebuilt panel element.
+ * @param {*} sig The hovered settlement's signal.
+ */
+function decorate(e, panel, sig) {
+  if (typeof e.spec.decorate !== "function") return;
+  try {
+    e.spec.decorate(panel, sig);
+  } catch (err) {
+    console.error("[Emigration.hoverpanel] decorate failed", err);
+  }
+}
+
 /** Recompute + show/hide one panel for the currently hovered tile (lens-gated). @param {*} e Entry. */
 function renderPanel(e) {
   if (!lensActive(e.spec.lens)) {
@@ -223,6 +244,7 @@ function renderPanel(e) {
   const key = e.spec.lens + ":" + plot.x + "," + plot.y;
   if (key !== e.curKey) {
     panel.innerHTML = buildHTML(out.title, out.rows);
+    decorate(e, panel, sig);
     e.curKey = key;
   }
   panel.style.display = "block";

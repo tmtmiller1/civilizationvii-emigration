@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 // The view-model builders are pure (formatPeople + causeLabel are pure); no engine globals.
 const { civLedgerRows, causeBreakdownRows, stanceRows, pressureRows, flowNetwork, dashboardModel } =
   await import("/emigration/ui/emigration-views.js");
+// The Diversity section is flag-gated, so the section-list cases read/restore its CONFIG flag.
+const { CONFIG } = await import("/emigration/ui/emigration-config.js");
 
 function testCivLedgerFormatsPeopleAndNet() {
   const rows = civLedgerRows([
@@ -55,11 +57,27 @@ function testPressureRowsSortDescAndFlag() {
 
 function testDashboardModelSections() {
   const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [] });
-  assert.equal(m.sections.length, 7); // network + flowmap merged into one toggleable "flow" section
+  assert.equal(m.sections.length, 8); // network + flowmap merged into one toggleable "flow" section
   assert.deepEqual(
     m.sections.map((s) => s.kind),
-    ["flow", "ledger", "pies", "cityflows", "stances", "notifications", "guide"]
+    ["flow", "ledger", "pies", "cityflows", "diversity", "stances", "notifications", "guide"]
   );
+}
+
+function testDiversitySectionIsFlagGated() {
+  // Features S/T ship behind CONFIG.diversityRanking: off → the tab is absent entirely (not an empty
+  // one), and every other section keeps its place and order.
+  const prev = CONFIG.diversityRanking;
+  CONFIG.diversityRanking = false;
+  try {
+    const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [] });
+    assert.deepEqual(
+      m.sections.map((s) => s.kind),
+      ["flow", "ledger", "pies", "cityflows", "stances", "notifications", "guide"]
+    );
+  } finally {
+    CONFIG.diversityRanking = prev;
+  }
 }
 
 function testFlowNetworkAggregatesNodesAndEdges() {
@@ -114,7 +132,7 @@ function testDashboardModelEmptySections() {
   // Dashboard model should handle empty civs, flows, and notifications gracefully,
   // still providing all section structures (just with no rows).
   const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [] });
-  assert.equal(m.sections.length, 7);
+  assert.equal(m.sections.length, 8);
   // Verify that each section has required properties even when empty
   for (const section of m.sections) {
     assert.equal(typeof section.kind, "string");
@@ -297,5 +315,6 @@ testFlowNetworkNodeTotalCalculation();
 testDashboardModelNodeNetwork();
 testFlowNetworkRespectsMaxEdgeCap();
 testFlowNetworkRespectsCityEdgeCap();
+testDiversitySectionIsFlagGated();
 
 console.log("views harness passed");

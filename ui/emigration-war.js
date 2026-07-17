@@ -14,19 +14,70 @@
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
 const STATE_KEY = "EmigrationWar_v1";
-const STATE_SCHEMA_VERSION = 2;
+const STATE_SCHEMA_VERSION = 3;
 const MAX_VICTIMS = 256;
 const MAX_AGGRESSORS_PER_VICTIM = 32;
+const MAX_WAR_EVENTS = 64; // keeps the persisted blob bounded over a long game
 
-/** @type {{ wars: Record<string, number[]> } | null} */
+/**
+ * @typedef {object} WarEvent
+ * @property {number} turn Age-local turn of the declaration.
+ * @property {string} age Age type at declaration (e.g. "AGE_ANTIQUITY").
+ * @property {string} year In-game date label at declaration (e.g. "1200 BC").
+ * @property {number} aggressor Declaring player id.
+ * @property {number} victim Target player id.
+ * @property {number|null} endTurn Age-local turn peace was made, or null while ongoing.
+ * @property {string} endAge Age type at peace ("" while ongoing).
+ */
+
+/** @type {{ wars: Record<string, number[]>, warEvents: WarEvent[] } | null} */
 let _state = null;
 registerCacheReset(() => { _state = null; });
 
 /**
- * @returns {{ wars: Record<string, number[]> }} Empty war state.
+ * @returns {{ wars: Record<string, number[]>, warEvents: WarEvent[] }} Empty war state.
  */
 function emptyState() {
-  return { wars: {} };
+  return { wars: {}, warEvents: [] };
+}
+
+/**
+ * The current age-local game turn, defaulting to 0 off-engine.
+ * @returns {number} Game.turn or 0.
+ */
+function gameTurn() {
+  try {
+    return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
+  } catch (_) {
+    return 0;
+  }
+}
+
+/**
+ * The current turn's in-game date string (e.g. "4000 BC"), or "" off-engine.
+ * @returns {string} The date label.
+ */
+function gameTurnDate() {
+  try {
+    return typeof Game !== "undefined" && typeof Game.getTurnDate === "function" ? Game.getTurnDate() : "";
+  } catch (_) {
+    return "";
+  }
+}
+
+/**
+ * The current age type (e.g. "AGE_ANTIQUITY"), or "" off-engine / mid-transition.
+ * @returns {string} Age type key.
+ */
+function currentAge() {
+  try {
+    if (typeof Game === "undefined" || Game.age === undefined) return "";
+    if (typeof GameInfo === "undefined" || typeof GameInfo?.Ages?.lookup !== "function") return "";
+    const row = GameInfo.Ages.lookup(Game.age);
+    return row && row.AgeType ? row.AgeType : "";
+  } catch (_) {
+    return "";
+  }
 }
 
 /**
@@ -83,14 +134,59 @@ function normalizeWars(rawWars) {
 }
 
 /**
+ * A finite number, or `fallback` when the value isn't one.
+ * @param {*} v Candidate. @param {*} fallback Fallback.
+ * @returns {*} The number, or the fallback.
+ */
+function numOr(v, fallback) {
+  return typeof v === "number" && isFinite(v) ? v : fallback;
+}
+
+/**
+ * Normalize one persisted war-event row, or null when it isn't a usable declaration.
+ * @param {*} e Candidate row.
+ * @returns {WarEvent|null} The sanitized event, or null.
+ */
+function normalizeWarEvent(e) {
+  if (!e || typeof e !== "object") return null;
+  const aggressor = numOr(e.aggressor, null);
+  const victim = numOr(e.victim, null);
+  if (aggressor == null || victim == null || aggressor === victim) return null;
+  return {
+    turn: numOr(e.turn, 0), age: typeof e.age === "string" ? e.age : "",
+    year: typeof e.year === "string" ? e.year : "",
+    aggressor, victim,
+    endTurn: numOr(e.endTurn, null), endAge: typeof e.endAge === "string" ? e.endAge : ""
+  };
+}
+
+/**
+ * Normalize the persisted war-event log (drop unusable rows, keep the newest `MAX_WAR_EVENTS`).
+ * Absent on a legacy (schema < 3) blob, which normalizes to an empty log — wars declared before the
+ * upgrade were never stamped, so they simply have no timeline pin.
+ * @param {*} raw Candidate log.
+ * @returns {WarEvent[]} Sanitized events.
+ */
+function normalizeWarEvents(raw) {
+  if (!Array.isArray(raw)) return [];
+  /** @type {WarEvent[]} */
+  const list = [];
+  for (const row of raw) {
+    const e = normalizeWarEvent(row);
+    if (e) list.push(e);
+  }
+  return list.length > MAX_WAR_EVENTS ? list.slice(list.length - MAX_WAR_EVENTS) : list;
+}
+
+/**
  * Normalize a persisted war state payload (legacy or schema envelope).
  * @param {*} parsed Parsed JSON value.
- * @returns {{ wars: Record<string, number[]> }|null} Normalized state, or null.
+ * @returns {{ wars: Record<string, number[]>, warEvents: WarEvent[] }|null} Normalized state, or null.
  */
 function normalizeState(parsed) {
   const payload = payloadFromBlob(parsed);
   if (!payload) return null;
-  return { wars: normalizeWars(payload.wars) };
+  return { wars: normalizeWars(payload.wars), warEvents: normalizeWarEvents(payload.warEvents) };
 }
 
 /**
@@ -105,7 +201,7 @@ function readStored() {
 
 /**
  * Load (once) the persisted aggressor map (victim id → aggressor ids).
- * @returns {{ wars: Record<string, number[]> }} State.
+ * @returns {{ wars: Record<string, number[]>, warEvents: WarEvent[] }} State.
  */
 function state() {
   resetCachesOnNewGame();
@@ -179,12 +275,54 @@ export function recordWarDeclared(data) {
   const s = state();
   const list = s.wars[w.victim] || (s.wars[w.victim] = []);
   if (!list.includes(w.aggressor)) list.push(w.aggressor);
+  stampDeclaration(s, w);
   persist();
 }
 
 /**
+ * Whether a logged event is the still-open war between these two belligerents (either direction —
+ * peace is mutual, and the payload's acting/reacting roles can be the reverse of the declaration).
+ * @param {WarEvent} e Logged event. @param {{aggressor:number, victim:number}} w The pairing.
+ * @returns {boolean} True when `e` is that ongoing war.
+ */
+function isOpenWarBetween(e, w) {
+  if (e.endTurn != null) return false;
+  return (e.aggressor === w.aggressor && e.victim === w.victim)
+    || (e.aggressor === w.victim && e.victim === w.aggressor);
+}
+
+/**
+ * Append a turn-stamped declaration to the war log (capped, newest kept). A duplicate declaration
+ * for an already-open war is ignored, so a re-fired event can't double-pin the timeline.
+ * @param {{ warEvents: WarEvent[] }} s State. @param {{aggressor:number, victim:number}} w The pairing.
+ */
+function stampDeclaration(s, w) {
+  if (s.warEvents.some((/** @type {WarEvent} */ e) => isOpenWarBetween(e, w))) return;
+  s.warEvents.push({
+    turn: gameTurn(), age: currentAge(), year: gameTurnDate(),
+    aggressor: w.aggressor, victim: w.victim, endTurn: null, endAge: ""
+  });
+  if (s.warEvents.length > MAX_WAR_EVENTS) {
+    s.warEvents = s.warEvents.slice(s.warEvents.length - MAX_WAR_EVENTS);
+  }
+}
+
+/**
+ * Close the open logged war between these belligerents at the current turn (no-op when none is
+ * open — e.g. a war that predates the v3 upgrade, or an unparsed declaration).
+ * @param {{ warEvents: WarEvent[] }} s State. @param {{aggressor:number, victim:number}} w The pairing.
+ */
+function stampPeace(s, w) {
+  for (const e of s.warEvents) {
+    if (!isOpenWarBetween(e, w)) continue;
+    e.endTurn = gameTurn();
+    e.endAge = currentAge();
+  }
+}
+
+/**
  * Remove `aggressor` from `victim`'s list (pruning the list if it empties).
- * @param {{ wars: Record<string, number[]> }} s State.
+ * @param {{ wars: Record<string, number[]>, warEvents: WarEvent[] }} s State.
  * @param {number} victim Victim id.
  * @param {number} aggressor Aggressor id.
  */
@@ -206,7 +344,18 @@ export function recordPeace(data) {
   const s = state();
   unpair(s, w.victim, w.aggressor);
   unpair(s, w.aggressor, w.victim);
+  stampPeace(s, w);
   persist();
+}
+
+/**
+ * The turn-stamped war log (a copy): each declaration with its age-local turn, age, year label,
+ * belligerents, and the turn peace was made (`endTurn: null` while the war is ongoing). Feeds the
+ * network timeline's event pins; only wars declared since the v3 schema upgrade appear.
+ * @returns {WarEvent[]} The logged wars, oldest first.
+ */
+export function warEvents() {
+  return state().warEvents.map((/** @type {WarEvent} */ e) => ({ ...e }));
 }
 
 /**

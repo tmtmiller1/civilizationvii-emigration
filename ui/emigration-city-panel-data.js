@@ -4,8 +4,11 @@
 // Two blocks are surfaced there (emigration-city-panel.js does the engine reads + DOM; this module
 // is DOM-free and unit-tested, mirroring the readoutModel split in emigration-city-readout.js):
 //   • population (on the "Citizen Growth" tab): where the settlement's people came from, plus the
-//     recent emigration OUT (with destinations) and immigration IN (with origins) and any refugees
-//     still held awaiting settlement.
+//     emigration OUT (with destinations) and immigration IN (with origins) and any refugees still
+//     held awaiting settlement. The flow figures are CUMULATIVE over the whole game — a historical
+//     ledger of who ALREADY left/arrived, never a live "leaving now" count — so the headings are past
+//     tense and say "(all game)". They only ever grow: a settlement that stopped bleeding people 50
+//     turns ago still shows every departure it ever had, and must not read as an ongoing loss.
 //   • quarters (on the "Building Breakdown" tab): the established Cultural Quarter record, if any -
 //     its origin, the stance the player took, its one-time yields, and whether it is contested.
 //
@@ -47,7 +50,10 @@ const YIELD_LABELS = {
  * @typedef {Object} CityPanelFlow
  * @property {string} place The other settlement's name.
  * @property {string} civName The other settlement's civilization adjective (resolved).
- * @property {number} people The historically-scaled people moved along this edge.
+ * @property {number} people The historically-scaled people moved along this edge, CUMULATIVE over the
+ *   whole game (the tally only ever grows; nothing here is in-flight or pending).
+ * @property {string} [causeName] The resolved label of the cause that moved most of this edge's people
+ *   (the engine host resolves it, like civName). Absent/"" when the edge predates per-cause flows.
  */
 
 /**
@@ -57,10 +63,13 @@ const YIELD_LABELS = {
  * @property {string} originName The quarter's display name (e.g. "Roman Quarter").
  * @property {string} stanceLabel The label of the stance the player chose.
  * @property {boolean} contested Whether the host is at war with the origin's homeland.
- * @property {string|null} benefitYield The yield the quarter grants (or null).
- * @property {number} benefitAmount The amount granted.
- * @property {string|null} penaltyYield The yield the quarter costs (or null).
- * @property {number} penaltyAmount The amount cost.
+ * @property {boolean} [invested] Whether this origin's enclave IMPROVEMENT is built in the city. When it
+ *   is, the stance grant has stepped aside (roadmap §22a) and the benefit/penalty below are NOT being
+ *   paid — the improvement's own native yield is. Absent/false on a legacy input means "not built".
+ * @property {string|null} benefitYield The yield the quarter grants while UNBUILT (or null).
+ * @property {number} benefitAmount The amount granted while unbuilt.
+ * @property {string|null} penaltyYield The yield the quarter costs while UNBUILT (or null).
+ * @property {number} penaltyAmount The amount cost while unbuilt.
  */
 
 /**
@@ -137,12 +146,18 @@ function originLines(comp) {
 }
 
 /**
- * One flow row ("Memphis (Egyptian): 12,000").
+ * One flow row ("Memphis (Egyptian): 12,000 - mostly Unhappiness"). The cause is the corridor's
+ * DOMINANT one, not its only one, so it is worded "mostly": naming it flatly would overclaim on a
+ * mixed corridor. Omitted entirely when the edge carries no per-cause detail (a legacy save), since a
+ * guessed reason is worse than none on a panel whose whole job here is to explain WHY people left.
+ * @param {Compose} compose The resolver.
  * @param {CityPanelFlow} f The flow.
  * @returns {string} The row text.
  */
-function flowRow(f) {
-  return f.place + " (" + f.civName + "): " + formatPeople(f.people);
+function flowRow(compose, f) {
+  const base = f.place + " (" + f.civName + "): " + formatPeople(f.people);
+  if (!f.causeName) return base;
+  return base + " - " + pick(compose, "LOC_EMIGRATION_PANEL_FLOW_CAUSE", [f.causeName], "mostly " + f.causeName);
 }
 
 /**
@@ -157,7 +172,7 @@ function flowRows(compose, flows) {
     .filter((f) => f && typeof f.place === "string" && f.people > 0)
     .sort((a, b) => b.people - a.people);
   const top = list.slice(0, MAX_FLOW_ROWS);
-  const rows = top.map(flowRow);
+  const rows = top.map((f) => flowRow(compose, f));
   const extra = list.length - top.length;
   if (extra > 0) rows.push(pick(compose, "LOC_EMIGRATION_PANEL_MORE", [extra], "(+" + extra + " more)"));
   return rows;
@@ -204,6 +219,30 @@ function costsLine(compose, amount, yieldKey) {
 }
 
 /**
+ * What the enclave pays THIS turn — the two-tier reward made legible (roadmap §22b).
+ *
+ * RECOGNIZED (enclave not built): the stance's per-turn dividend. The engine cannot attribute a runtime
+ * `grantYield` to anything the player can see (wont-fix CANTFIX-1), so these lines are the ONLY place that
+ * dividend is readable — which is the whole reason §22b exists.
+ * INVESTED (enclave built): the stance grant has stepped aside (§22a), so claiming it here would be a lie.
+ * Say the improvement has taken over instead; ITS yield is natively attributed, so the game shows the
+ * number itself and this module must not restate (and drift from) a constant that lives in the XML.
+ * @param {Compose} compose The resolver.
+ * @param {CityPanelQuarter} q The resolved quarter.
+ * @returns {string[]} The yield lines.
+ */
+function stanceYieldLines(compose, q) {
+  if (q.invested) {
+    const en = "Its enclave is built: the enclave's own yield now applies instead of this dividend.";
+    return [pick(compose, "LOC_EMIGRATION_PANEL_QUARTER_INVESTED", [], en)];
+  }
+  const lines = [];
+  if (q.benefitYield && q.benefitAmount > 0) lines.push(grantsLine(compose, q.benefitAmount, q.benefitYield));
+  if (q.penaltyYield && q.penaltyAmount > 0) lines.push(costsLine(compose, q.penaltyAmount, q.penaltyYield));
+  return lines;
+}
+
+/**
  * The display lines for an established quarter.
  * @param {Compose} compose The resolver.
  * @param {CityPanelQuarter} q The resolved quarter.
@@ -216,12 +255,7 @@ function quarterLines(compose, q) {
     const en = "Your stance: " + q.stanceLabel + ".";
     lines.push(pick(compose, "LOC_EMIGRATION_PANEL_QUARTER_STANCE", [q.stanceLabel], en));
   }
-  if (q.benefitYield && q.benefitAmount > 0) {
-    lines.push(grantsLine(compose, q.benefitAmount, q.benefitYield));
-  }
-  if (q.penaltyYield && q.penaltyAmount > 0) {
-    lines.push(costsLine(compose, q.penaltyAmount, q.penaltyYield));
-  }
+  lines.push(...stanceYieldLines(compose, q));
   if (q.contested) {
     const en = "Contested: you are at war with their homeland, straining the enclave.";
     lines.push(pick(compose, "LOC_EMIGRATION_PANEL_QUARTER_CONTESTED", [], en));
@@ -244,8 +278,8 @@ function populationBlock(c, i) {
   return {
     title: pick(c, "LOC_EMIGRATION_PANEL_POP_TITLE", [cityName], "Migration - " + cityName),
     originsHeading: pick(c, "LOC_EMIGRATION_PANEL_ORIGINS", [], "Population origins"),
-    departingHeading: pick(c, "LOC_EMIGRATION_PANEL_DEPARTING", [], "Departing to"),
-    arrivingHeading: pick(c, "LOC_EMIGRATION_PANEL_ARRIVING", [], "Arriving from"),
+    departingHeading: pick(c, "LOC_EMIGRATION_PANEL_DEPARTED", [], "Departed to (all game)"),
+    arrivingHeading: pick(c, "LOC_EMIGRATION_PANEL_ARRIVED", [], "Arrived from (all game)"),
     noDataText: pick(c, "LOC_EMIGRATION_PANEL_NO_MIGRATION", [], "No migration recorded for this settlement yet."),
     originLines: origins,
     outflowLines,

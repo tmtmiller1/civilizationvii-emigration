@@ -22,6 +22,71 @@
         <Replace Tag="LOC_EMIG_ADVGRP_OUTLET" Language="zh_Hans_CN"><Text>出口（损耗）</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="zh_Hans_CN"><Text>灾害</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="zh_Hans_CN"><Text>通知</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_VISUALS" Language="zh_Hans_CN"><Text>Visuals</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_TLPINS" Language="zh_Hans_CN"><Text>Timeline event pins</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_TLPINS_D" Language="zh_Hans_CN"><Text>Pin the wars and disasters that drove migration onto the migration network's playback timeline, so a spike can be traced back to what caused it. Hover a pin to name the event; click it to scrub there. Display only — it never changes who moves. Only events recorded from now on can be pinned: wars and disasters from earlier in an existing save were never stamped with the turn they happened.</Text></Replace>
+        <Replace Tag="LOC_EMIG_TL_PIN_DISASTER" Language="zh_Hans_CN"><Text>Disaster</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_READOUT" Language="zh_Hans_CN"><Text>面板与排行</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIVERSITY" Language="zh_Hans_CN"><Text>最多元城市排行</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIVERSITY_D" Language="zh_Hans_CN"><Text>在迁徙面板中新增“多元性”标签页，按居民来源——他们最初来自哪个文明——的混合程度为你的聚落排名，并为每个聚落显示一条彩色条形，将该构成与其人口对照呈现。仅作显示：它读取模组本就记录的居民来源，不会改变谁迁徙，也不提供任何产出。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_COSMO" Language="zh_Hans_CN"><Text>世界性标签</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_COSMO_D" Language="zh_Hans_CN"><Text>在多元性排行中新增“特征”列，将每个聚落归纳为同质、本地多数、混合城市、世界性中心或世界城市，依据其来源构成、边境开放度以及流入人数综合得出。纯粹为描述性：不提供产出，也不影响迁徙。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIVERSITYROWS" Language="zh_Hans_CN"><Text>多元性排行：显示行数</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIVERSITYROWS_D" Language="zh_Hans_CN"><Text>标签页顶部“最多元城市”排行列出的聚落数量。其下方的“所有聚落”完整列表始终显示全部聚落，与此设置无关。仅在排行开启时使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_EXPLAINER" Language="zh_Hans_CN"><Text>迁徙原因解读</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_EXPLAINER_D" Language="zh_Hans_CN"><Text>在聚落报告和繁荣透镜提示中显示“为什么?”的细分：哪些压力在把人们推走，以及目的地的什么在吸引他们，各自以占总体的比例呈现。仅为显示：它呈现本模组移动人口时本就使用的推算依据，不改变谁会迁徙，也不提供任何产出。</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_LEAVING" Language="zh_Hans_CN"><Text>人们离开的原因</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_DRAWN" Language="zh_Hans_CN"><Text>他们被吸引的去向</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_DRAWN_TO" Language="zh_Hans_CN"><Text>他们被{1_Dest}吸引的原因</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_COMMUNITY" Language="zh_Hans_CN"><Text>当地的{1_Civ}社群：{2_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_PERMEABILITY_NOTE" Language="zh_Hans_CN"><Text>{1_Label}：×{2_Factor}</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_GRADIENT" Language="zh_Hans_CN"><Text>繁荣差距</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_TILT" Language="zh_Hans_CN"><Text>定向吸引</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_RELUCTANCE" Language="zh_Hans_CN"><Text>迁移意愿低</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CROWDING" Language="zh_Hans_CN"><Text>过度拥挤</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CITY_STATE" Language="zh_Hans_CN"><Text>城邦壁垒</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CROSS_CIV" Language="zh_Hans_CN"><Text>外国边境</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_DOMINANCE" Language="zh_Hans_CN"><Text>主导强权</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_DISTANCE" Language="zh_Hans_CN"><Text>距离</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_AGGRESSOR" Language="zh_Hans_CN"><Text>避开侵略者</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_FLIGHT" Language="zh_Hans_CN"><Text>远离战火</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CONGESTION" Language="zh_Hans_CN"><Text>拥堵</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_PERMEABILITY" Language="zh_Hans_CN"><Text>边境通透性</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_ECONOMY" Language="zh_Hans_CN"><Text>经济</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS" Language="zh_Hans_CN"><Text>幸福度</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_POPULATION" Language="zh_Hans_CN"><Text>人口规模</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CIV_BIAS" Language="zh_Hans_CN"><Text>地方特色</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_POLITY" Language="zh_Hans_CN"><Text>政体与庆典</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_VIOLENCE" Language="zh_Hans_CN"><Text>战斗</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_DISASTER" Language="zh_Hans_CN"><Text>灾害</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_SIEGE" Language="zh_Hans_CN"><Text>围城</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_STARVATION" Language="zh_Hans_CN"><Text>饥荒</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_UNREST" Language="zh_Hans_CN"><Text>动乱</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_WAR_WEARINESS" Language="zh_Hans_CN"><Text>厌战</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_DIVERSITY" Language="zh_Hans_CN"><Text>最多元城市</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_DIVERSITY" Language="zh_Hans_CN"><Text>多元性</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_TITLE" Language="zh_Hans_CN"><Text>最多元城市</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_SUBTITLE" Language="zh_Hans_CN"><Text>各聚落的居民，按其最初所属文明着色。条形宽度表示人口多少。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_CITY" Language="zh_Hans_CN"><Text>聚落</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_ORIGINS" Language="zh_Hans_CN"><Text>居民来自何处</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_POP" Language="zh_Hans_CN"><Text>人口</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_MIX" Language="zh_Hans_CN"><Text>构成</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_CHARACTER" Language="zh_Hans_CN"><Text>特征</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ORIGINS" Language="zh_Hans_CN"><Text>{1_N} 种来源</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ORIGIN_ONE" Language="zh_Hans_CN"><Text>1 种来源</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_UNKNOWN" Language="zh_Hans_CN"><Text>未知</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ALL_TITLE" Language="zh_Hans_CN"><Text>所有聚落</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ALL_SUB" Language="zh_Hans_CN"><Text>你可见的所有聚落，按文明分组。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_YOUR_CIV" Language="zh_Hans_CN"><Text>{1_Civ}（你）</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_NO_MAJORITY" Language="zh_Hans_CN"><Text>无多数</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_PLURALITY" Language="zh_Hans_CN"><Text>{1_Civ}相对多数</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_MAJORITY" Language="zh_Hans_CN"><Text>{1_Civ}多数</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_HOMOGENEOUS" Language="zh_Hans_CN"><Text>同质</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_LOCAL" Language="zh_Hans_CN"><Text>本地多数</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_MIXED" Language="zh_Hans_CN"><Text>混合城市</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_CENTER" Language="zh_Hans_CN"><Text>世界性中心</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_WORLD" Language="zh_Hans_CN"><Text>世界城市</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_DESC" Language="zh_Hans_CN"><Text>描述各聚落的居民来自何处——而非其文化街区。不附带任何产出。</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET" Language="zh_Hans_CN"><Text>移民强度</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_D" Language="zh_Hans_CN"><Text>移民的总体强度——既决定人们迁移的频繁程度，也决定战争将人们驱离家园的猛烈程度：每回合上限、战争难民的涌出规模，以及每座城市的损失上限。低 = 温和；高 = 剧烈。改动会在一回合内生效。“自定义”保留你在高级设置中的数值。若需更精细的控制，请在下方的高级设置中调整各项参数。</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_CUSTOM" Language="zh_Hans_CN"><Text>自定义（使用高级）</Text></Replace>
@@ -220,6 +285,7 @@
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="zh_Hans_CN"><Text>在 Civ 自身的人口数值与按比例换算的人数之间切换</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="zh_Hans_CN"><Text>回放时间轴将在数回合后出现，届时已有可供拖动查看的人口历史。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="zh_Hans_CN"><Text>{1_People}在灾难过后逃离了{2_City}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_DISASTER_TO" Language="zh_Hans_CN"><Text>{1_People} fled {2_City} after disaster struck, and are bound for {3_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="zh_Hans_CN"><Text>{1_People}走投无路，消逝于{2_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_INTERNAL" Language="zh_Hans_CN"><Text>(内部迁移)</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="zh_Hans_CN"><Text>(外部迁移)</Text></Replace>
@@ -273,19 +339,26 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="zh_Hans_CN"><Text>这些人口已永远失去。</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="zh_Hans_CN"><Text>{1_Dest}每回合支付约{2_Gold}金币以融入他们。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="zh_Hans_CN"><Text>亲移民立场</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="zh_Hans_CN"><Text>欢迎来自世界各地的[icon:YIELD_POPULATION]移民。流入你城市的移民增加 50%，并因你的世界主义声望每回合获得[icon:YIELD_DIPLOMACY]影响力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="zh_Hans_CN"><Text>欢迎来自世界各地的[icon:YIELD_POPULATION]移民。流入你城市的移民增加 50%，并因你的世界主义声望每回合获得[icon:YIELD_DIPLOMACY]影响力：随时代为 +1、+2、然后 +3。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION] Immigration to your cities rises by 50%, and you earn +2 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION] Immigration to your cities rises by 50%, and you earn +3 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="zh_Hans_CN"><Text>反移民立场</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="zh_Hans_CN"><Text>向世界关闭你的边境。来自境外的[icon:YIELD_POPULATION]新移民降至 40%（约减少 60%），你本国公民流向对手文明的也大幅减少。动员起来的国内经济为每座城市增加[icon:YIELD_PRODUCTION]生产力，但代价是每回合损失[icon:YIELD_DIPLOMACY]影响力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="zh_Hans_CN"><Text>向世界关闭你的边境。来自境外的[icon:YIELD_POPULATION]新移民降至 40%（约减少 60%），你本国公民流向对手文明的也大幅减少。动员起来的国内经济为每座城市增加[icon:YIELD_PRODUCTION]生产力：随时代为 +2、+3、然后 +4。孤立自有其代价，每回合损失[icon:YIELD_DIPLOMACY]影响力：随时代为 -2、-3、然后 -4。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION] Immigration falls to 40%, and 40% fewer of your own citizens leave for rival civilizations. Each city gains +3 [icon:YIELD_PRODUCTION] Production, at the cost of -3 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION] Immigration falls to 40%, and 40% fewer of your own citizens leave for rival civilizations. Each city gains +4 [icon:YIELD_PRODUCTION] Production, at the cost of -4 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="zh_Hans_CN"><Text>人才吸引</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION]新移民增强你的研究，每吸引一名移民便增加约 +1.5、每回合最多 +12 的[icon:YIELD_SCIENCE]科技。若移民停止流入，此加成会逐渐消退。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION]新移民增强你的研究。获得 +1 [icon:YIELD_SCIENCE]科技，现代时代升至 +2，外加随你吸引的每位移民约 +1.5 增长的科技加成，每回合最多 +12。若移民停止流入，此加成会逐渐消退。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION] Gain +2 [icon:YIELD_SCIENCE] Science each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="zh_Hans_CN"><Text>文化魅力</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION]新移民增强你的文化，每吸引一名移民便增加约 +1.5、每回合最多 +12 的[icon:YIELD_CULTURE]文化。若移民停止流入，此加成会逐渐消退。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION]新移民丰富你的文化。获得 +1 [icon:YIELD_CULTURE]文化，现代时代升至 +2，外加随你吸引的每位移民约 +1.5 增长的文化加成，每回合最多 +12。若移民停止流入，此加成会逐渐消退。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION] Gain +2 [icon:YIELD_CULTURE] Culture each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="zh_Hans_CN"><Text>商业吸引</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION]新移民增强你的市场，每吸引一名移民便增加约 +1.5、每回合最多 +12 的[icon:YIELD_GOLD]金币。若移民停止流入，此加成会逐渐消退。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION]新移民壮大你的市场。获得 +1 [icon:YIELD_GOLD]金币，现代时代升至 +2，外加随你吸引的每位移民约 +1.5 增长的金币加成，每回合最多 +12。若移民停止流入，此加成会逐渐消退。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC_MO" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION] Gain +2 [icon:YIELD_GOLD] Gold each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="zh_Hans_CN"><Text>选择性庇护</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="zh_Hans_CN"><Text>向逃离战争与灾难者敞开大门。难民会被强烈吸引向你（最绝望者优先），你的人道主义声誉令你每回合获得[icon:YIELD_DIPLOMACY]影响力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="zh_Hans_CN"><Text>向逃离战争与灾难者敞开大门。难民会被强烈吸引向你（最绝望者优先），你的人道主义声誉令你每回合获得 +1 [icon:YIELD_DIPLOMACY]影响力。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="zh_Hans_CN"><Text>难民契约</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="zh_Hans_CN"><Text>对流离失所者的长期承诺。难民会强烈涌向你（最绝望者优先），丰富你的文化，并令你每回合获得[icon:YIELD_DIPLOMACY]影响力和[icon:YIELD_CULTURE]文化。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="zh_Hans_CN"><Text>对流离失所者的长期承诺。难民会强烈涌向你（最绝望者优先），丰富你的文化，并令你每回合获得 +2 [icon:YIELD_DIPLOMACY]影响力和 +1 [icon:YIELD_CULTURE]文化。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="zh_Hans_CN"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="zh_Hans_CN"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="zh_Hans_CN"><Text>移民</Text></Replace>
@@ -352,12 +425,14 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="zh_Hans_CN"><Text>每个圆点 ≈ {1_People} 人。一个文明的圆圈将其城市与城镇作为内部子群：文明本色的圆点是本地居民，较浅色调的圆点是在其自有城市之间迁移的人（内部迁移），其他颜色的圆点是来自该来源的移民。“着色依据”视角会按来源、迁移类型（战争／灾害／吸引 …）或迁移方式（居民／内部／移民）重新着色。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="zh_Hans_CN"><Text>显示：</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="zh_Hans_CN"><Text>尚无人口</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNMET" Language="zh_Hans_CN"><Text>未知</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="zh_Hans_CN"><Text>Migrant flows</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="zh_Hans_CN"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="zh_Hans_CN"><Text>移民 - {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="zh_Hans_CN"><Text>人口来源</Text></Replace>
-        <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTING" Language="zh_Hans_CN"><Text>迁往</Text></Replace>
-        <Replace Tag="LOC_EMIGRATION_PANEL_ARRIVING" Language="zh_Hans_CN"><Text>迁自</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTED" Language="zh_Hans_CN"><Text>已迁往（全局）</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ARRIVED" Language="zh_Hans_CN"><Text>已迁自（全局）</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_FLOW_CAUSE" Language="zh_Hans_CN"><Text>主要因为{1_Cause}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_NO_MIGRATION" Language="zh_Hans_CN"><Text>该定居点尚未记录到移民。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_MORE" Language="zh_Hans_CN"><Text>（另有{1_Count}项）</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_ONE" Language="zh_Hans_CN"><Text>{1_Count}名难民正在此处等待安置。</Text></Replace>
@@ -370,6 +445,7 @@
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_STANCE" Language="zh_Hans_CN"><Text>你的立场：{1_Stance}。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_GRANTS" Language="zh_Hans_CN"><Text>为城市提供{1_Amount}点{2_Yield}。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_COSTS" Language="zh_Hans_CN"><Text>每回合消耗{1_Amount}点{2_Yield}。</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_INVESTED" Language="zh_Hans_CN"><Text>Its enclave is built: the enclave's own yield now applies instead of this dividend.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_CONTESTED" Language="zh_Hans_CN"><Text>争议：你正与其母国交战，令该街区承受压力。</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_STANCE_PRO" Language="zh_Hans_CN"><Text>亲移民</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_STANCE_ANTI" Language="zh_Hans_CN"><Text>反移民</Text></Replace>
@@ -937,5 +1013,8 @@
         <Replace Tag="LOC_EMIG_ETH_TILE_SUFFIX" Language="zh_Hans_CN"><Text>· this tile</Text></Replace>
         <Replace Tag="LOC_EMIG_PCT" Language="zh_Hans_CN"><Text>{1_Pct}%</Text></Replace>
         <Replace Tag="LOC_EMIG_PCT_SIGNED" Language="zh_Hans_CN"><Text>{1_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_ENCLAVE_IMPROVEMENT_NAME" Language="zh_Hans_CN"><Text>Cultural Enclave</Text></Replace>
+        <Replace Tag="LOC_EMIG_ENCLAVE_IMPROVEMENT_DESCRIPTION" Language="zh_Hans_CN"><Text>A quarter settled by a foreign diaspora that has put down roots and works the surrounding land. Yields +2 Gold.</Text></Replace>
+        <Replace Tag="LOC_EMIG_ENCLAVE_IMPROVEMENT_TOOLTIP" Language="zh_Hans_CN"><Text>A tile improvement marking an established migrant community. Provides +2 Gold to the city.</Text></Replace>
     </LocalizedText>
 </Database>

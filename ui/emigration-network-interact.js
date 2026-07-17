@@ -5,6 +5,10 @@
 // click-to-isolate a cluster. Kept apart from the orchestrator (emigration-network-viz.js) so that
 // file stays focused on layout + chrome + playback.
 
+import { civAdjective } from "/emigration/ui/emigration-naming.js";
+import { civHidden } from "/emigration/ui/emigration-governance.js";
+import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
+
 /**
  * @typedef {import("/emigration/ui/emigration-network-dots.js").Dot} Dot
  * @typedef {import("/emigration/ui/emigration-network-dots.js").NetworkNode} NetworkNode
@@ -178,6 +182,30 @@ function composition(scene, keep) {
   return { counts, total };
 }
 
+const ORIGIN_FALLBACK_HEX = "#9fb6c6"; // neutral slate for an unresolvable / masked origin swatch
+
+/**
+ * The display name + swatch colour for an origin civ id in the breakdown.
+ *
+ * Prefer the civ's DRAWN node (its name/colour are already resolved). Otherwise the origin has no
+ * cluster in this view — an eliminated civ, a met civ with no current cities, or a policy-hidden one
+ * — and the old code printed a raw "#<id>". Resolve it the way the ethnicity lens tooltip does
+ * instead: mask a hidden/unmet origin to "Unmet" (never leaking a civ the player hasn't met), and
+ * name a known-but-nodeless civ properly. A synthetic sentinel id (the negative "Unmet" bucket, when
+ * it has no node) also reads "Unmet".
+ * @param {Scene} scene Scene. @param {number} oid Origin civ id.
+ * @returns {{name:string, color:string}} The label + swatch colour.
+ */
+function originLabel(scene, oid) {
+  // F6: an oid that isn't a current node must NOT collapse to index 0 (that showed the first civ's
+  // name/colour). get() returns undefined for a missing id → the resolvers below apply.
+  const idx = scene.byId.get(oid);
+  const node = typeof idx === "number" ? scene.centers[idx] : null;
+  if (node) return { name: node.name, color: node.color || ORIGIN_FALLBACK_HEX };
+  if (oid < 0 || civHidden(oid)) return { name: loc("LOC_EMIG_NETC_UNMET", "Unmet"), color: ORIGIN_FALLBACK_HEX };
+  return { name: civAdjective(oid), color: civDisplayColor(oid, ORIGIN_FALLBACK_HEX) };
+}
+
 /**
  * An ethnicity-breakdown tooltip (title + top origin civs by share, with colour swatches).
  * @param {Scene} scene Scene.
@@ -193,13 +221,7 @@ function breakdownTip(scene, title, keep) {
   const rows = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6);
   let html = `<b>${esc(title)}</b>`;
   for (const [oid, n] of rows) {
-    // F6: an oid that isn't a current node must NOT collapse to index 0 (that showed
-    // the first civ's name/colour). get() returns undefined for a missing id → null node,
-    // so the neutral fallbacks below apply.
-    const idx = scene.byId.get(oid);
-    const node = typeof idx === "number" ? scene.centers[idx] : null;
-    const color = (node && node.color) || "#9fb6c6";
-    const name = (node && node.name) || ("#" + oid);
+    const { name, color } = originLabel(scene, oid);
     html += `<br><span class="emig-netc-tip-sw" style="background:${esc(color)}"></span>` +
       `${esc(name)} ${Math.round((n / total) * 100)}%`;
   }

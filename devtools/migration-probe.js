@@ -1213,6 +1213,311 @@ function installRecorders() {
   }
 }
 
+// ══ API7: ENCLAVE-AS-A-TILE-IMPROVEMENT placement probe ════════════════════════════════════════
+// Settles the ONE question that can't be read from game code (CREATE_ELEMENT / BUILD are compiled
+// C++): can UI-script JS PLACE an IMPROVEMENT-class Constructible on a city tile at runtime, and does
+// its yield then enter the real yield accounting (Stats.getNetYield → the GPT banner + global
+// breakdown) the way every native improvement's does? If yes, the Cultural Quarter stance can drop the
+// invisible Players.grantYield injection for a real improvement that shows in the breakdown.
+//
+// Runs on the LOCAL CAPITAL at turn 1 — no playthrough needed. Two tracks: (A) a REAL improvement
+// discovered at runtime (the load-bearing answer; needs no custom data), and (B) our throwaway
+// IMPROVEMENT_EMIG_PROBE_ENCLAVE (+10 Gold, data/migration-probe-enclave.xml) to also prove custom
+// authoring is valid. Results render ON-SCREEN via showResultPanel() (no console/UI.log needed).
+
+const CUSTOM_ENCLAVE_TYPE = "IMPROVEMENT_EMIG_PROBE_ENCLAVE";
+
+/** Round for display; "?" for null/undefined. @param {*} v @returns {*} */
+function fmt(v) {
+  return v == null ? "?" : Math.round(Number(v) * 100) / 100;
+}
+
+/** $index of a constructible type name (the Type payload CREATE_ELEMENT/BUILD want), or -1. */
+function constructibleIndexByType(name) {
+  try {
+    const def = GameInfo?.Constructibles?.lookup?.(name);
+    return def && typeof def.$index === "number" ? def.$index : -1;
+  } catch (_) {
+    return -1;
+  }
+}
+
+/** Every IMPROVEMENT-class constructible the DB knows (also reveals the ConstructibleClass vocab). */
+function listImprovementTypes() {
+  const out = [];
+  try {
+    for (const def of GameInfo?.Constructibles || []) {
+      if (!def || !/IMPROVEMENT/i.test(String(def.ConstructibleClass || ""))) continue;
+      out.push({ type: def.ConstructibleType, idx: def.$index, cls: String(def.ConstructibleClass), cost: def.Cost });
+    }
+  } catch (_) {
+    /* ignore - table may not be for-of iterable on some builds */
+  }
+  return out;
+}
+
+/** {x,y} for a plot index, or null. */
+function locFromIndex(idx) {
+  try {
+    return GameplayMap?.getLocationFromIndex?.(idx) ?? null;
+  } catch (_) {
+    return null;
+  }
+}
+
+/** Count of constructibles on a plot (-1 = unreadable). A NEW one appearing proves placement. */
+function plotConstructibleCount(loc) {
+  try {
+    if (!loc || typeof MapConstructibles?.getConstructibles !== "function") return -1;
+    const c = MapConstructibles.getConstructibles(loc.x, loc.y);
+    return Array.isArray(c) ? c.length : c ? 1 : 0;
+  } catch (_) {
+    return -1;
+  }
+}
+
+/** A city's owned plots as {idx, loc, existing}, empties first, capped. */
+function ownedCandidatePlots(city, max) {
+  const out = [];
+  try {
+    const plots = city?.getPurchasedPlots?.();
+    if (!plots) return out;
+    for (const idx of plots) {
+      const loc = locFromIndex(idx);
+      if (!loc) continue;
+      out.push({ idx, loc, existing: plotConstructibleCount(loc) });
+      if (out.length >= (max || 60)) break;
+    }
+  } catch (_) {
+    /* ignore */
+  }
+  out.sort((a, b) => (a.existing === 0 ? 0 : 1) - (b.existing === 0 ? 0 : 1));
+  return out;
+}
+
+/** The engine's BUILD placement check (non-mutating): { success, plots:[idx,...] } for a type. */
+function buildablePlotsFor(cityCID, idx) {
+  try {
+    if (idx < 0 || !cityCID || typeof Game?.CityOperations?.canStart !== "function") return { success: false, plots: [] };
+    const op = typeof CityOperationTypes !== "undefined" ? CityOperationTypes.BUILD : "BUILD";
+    const res = Game.CityOperations.canStart(cityCID, op, { ConstructibleType: idx }, false);
+    return { success: !!res?.Success, plots: Array.isArray(res?.Plots) ? res.Plots : [] };
+  } catch (_) {
+    return { success: false, plots: [] };
+  }
+}
+
+/** The total worked-yield on a tile as seen by a city (number), or null. */
+function tileYieldTotal(loc, cityCID) {
+  try {
+    if (!loc || !cityCID || typeof GameplayMap?.getYieldsWithCity !== "function") return null;
+    const y = GameplayMap.getYieldsWithCity(loc.x, loc.y, cityCID);
+    if (y == null) return null;
+    if (typeof y === "number") return y;
+    let t = 0;
+    for (const v of Array.isArray(y) ? y : Object.values(y)) if (typeof v === "number") t += v;
+    return t;
+  } catch (_) {
+    return null;
+  }
+}
+
+/** A player's NET per-turn yield RATE (the exact value the GPT banner / breakdown read), or null. */
+function netYieldOf(pid, key) {
+  try {
+    const s = Players?.get?.(pid)?.Stats;
+    const yt = yieldEnum(key);
+    if (!s || typeof s.getNetYield !== "function" || yt == null) return null;
+    const v = s.getNetYield(yt);
+    return typeof v === "number" ? v : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+/** CREATE_ELEMENT a constructible on a tile: { sent, canStart, reason }. Fire-and-forget send. */
+function tryCreateConstructible(city, idx, loc) {
+  try {
+    if (!city || idx < 0 || !loc || !Game?.PlayerOperations?.sendRequest) return { sent: false, canStart: null, reason: "no-api-or-args" };
+    const args = { Kind: "CONSTRUCTIBLE", Type: idx, Location: loc, Parent: city.id, Owner: city.owner };
+    let cs = null;
+    try {
+      const r = Game.PlayerOperations.canStart(city.owner, "CREATE_ELEMENT", args, false);
+      cs = r && typeof r.Success === "boolean" ? r.Success : null;
+    } catch (_) {
+      /* canStart may be picky about the payload; the send below is the real test */
+    }
+    Game.PlayerOperations.sendRequest(city.owner, "CREATE_ELEMENT", args);
+    return { sent: true, canStart: cs, reason: "sent" };
+  } catch (e) {
+    return { sent: false, canStart: null, reason: "throw " + e };
+  }
+}
+
+/**
+ * The main enclave-placement probe. Reports on-screen: what the DB knows, whether our custom
+ * improvement registered, the BUILD buildable-check for custom + a real control, then actually places
+ * one and reads back tile-constructibles + tile yield + player net-gold before/after.
+ */
+function probeEnclavePlacement() {
+  const lines = [];
+  const push = (s) => {
+    lines.push(s);
+    log("ENCLAVE " + s);
+  };
+
+  const city = localCapital();
+  if (!city) {
+    push("no local capital — cannot probe");
+    showResultPanel("Enclave placement probe", lines);
+    return;
+  }
+  const owner = city.owner;
+  const cityCID = city.id;
+  push("capital owner=" + owner + " cityId=" + cityIdNum(city));
+
+  const improvements = listImprovementTypes();
+  push("DB knows " + improvements.length + " IMPROVEMENT-class constructibles");
+  const customIdx = constructibleIndexByType(CUSTOM_ENCLAVE_TYPE);
+  push("custom " + CUSTOM_ENCLAVE_TYPE + " idx=" + customIdx + (customIdx < 0 ? " (NOT registered — data rejected; control still runs)" : " (registered ✓)"));
+
+  const control = improvements.find((i) => i.idx !== customIdx) || null;
+
+  const checkBuild = (label, idx) => {
+    if (idx < 0) return { plots: [] };
+    const b = buildablePlotsFor(cityCID, idx);
+    push(label + " BUILD canStart=" + b.success + " validPlots=" + b.plots.length);
+    return b;
+  };
+  const customBuild = checkBuild("custom", customIdx);
+  const controlBuild = control ? checkBuild("control(" + control.type + ")", control.idx) : { plots: [] };
+
+  const placeIdx = customIdx >= 0 ? customIdx : control ? control.idx : -1;
+  const placeLabel = customIdx >= 0 ? CUSTOM_ENCLAVE_TYPE : control ? control.type : "none";
+  if (placeIdx < 0) {
+    push("nothing placeable — abort");
+    showResultPanel("Enclave placement probe", lines);
+    return;
+  }
+
+  const buildPlots = customIdx >= 0 ? customBuild.plots : controlBuild.plots;
+  let targetIdx = buildPlots.length ? buildPlots[0] : -1;
+  if (targetIdx < 0) {
+    const owned = ownedCandidatePlots(city, 60);
+    const pick = owned.find((p) => p.existing === 0) || owned[0];
+    targetIdx = pick ? pick.idx : -1;
+  }
+  const targetLoc = targetIdx >= 0 ? locFromIndex(targetIdx) : null;
+  if (!targetLoc) {
+    push("no target tile found (capital exposes no readable owned plot)");
+    showResultPanel("Enclave placement probe", lines);
+    return;
+  }
+  push("placing " + placeLabel + " (idx=" + placeIdx + ") at " + targetLoc.x + "," + targetLoc.y);
+
+  const before = {
+    plotCons: plotConstructibleCount(targetLoc),
+    tileGold: tileYieldTotal(targetLoc, cityCID),
+    netGold: netYieldOf(owner, "YIELD_GOLD")
+  };
+  push("BEFORE tileConstructibles=" + before.plotCons + " tileYield=" + fmt(before.tileGold) + " playerNetGold=" + fmt(before.netGold));
+
+  const res = tryCreateConstructible(city, placeIdx, targetLoc);
+  push("CREATE_ELEMENT canStart=" + res.canStart + " sent=" + res.sent + (res.reason && res.reason !== "sent" ? " (" + res.reason + ")" : ""));
+
+  showResultPanel("Enclave placement probe", lines);
+
+  setTimeout(() => {
+    const after = {
+      plotCons: plotConstructibleCount(targetLoc),
+      tileGold: tileYieldTotal(targetLoc, cityCID),
+      netGold: netYieldOf(owner, "YIELD_GOLD")
+    };
+    push("AFTER  tileConstructibles=" + after.plotCons + " tileYield=" + fmt(after.tileGold) + " playerNetGold=" + fmt(after.netGold));
+    const placed = after.plotCons > before.plotCons && before.plotCons >= 0;
+    const goldDelta = after.netGold != null && before.netGold != null ? after.netGold - before.netGold : null;
+    push("VERDICT placedOnTile=" + placed + " playerNetGoldDelta=" + fmt(goldDelta));
+    push(
+      placed
+        ? "→ constructible APPEARED on the tile. If net-gold delta reads 0 now, END ONE TURN then run mig.enclaveReadback() — net yield usually recomputes at the turn roll."
+        : "→ NO new constructible on the tile (placement rejected). The BUILD canStart line above tells you whether the type is even recognized/buildable here."
+    );
+    globalThis.__enclaveProbe = { targetLoc, cityCID, owner, before };
+    showResultPanel("Enclave placement probe", lines);
+  }, 800);
+}
+
+/** Post-end-turn re-read of the last placement (net yield often only updates at the turn roll). */
+function enclaveReadback() {
+  const lines = [];
+  const push = (s) => {
+    lines.push(s);
+    log("ENCLAVE-RB " + s);
+  };
+  const st = globalThis.__enclaveProbe;
+  if (!st) {
+    push("no prior placement this session — run the placement probe first");
+    showResultPanel("Enclave re-read", lines);
+    return;
+  }
+  const netNow = netYieldOf(st.owner, "YIELD_GOLD");
+  const tileNow = tileYieldTotal(st.targetLoc, st.cityCID);
+  push("tile " + st.targetLoc.x + "," + st.targetLoc.y);
+  push("net gold before=" + fmt(st.before.netGold) + " now=" + fmt(netNow) + " delta=" + fmt(netNow != null && st.before.netGold != null ? netNow - st.before.netGold : null));
+  push("tile yield before=" + fmt(st.before.tileGold) + " now=" + fmt(tileNow));
+  push("tile constructibles now=" + plotConstructibleCount(st.targetLoc));
+  push("→ if net-gold delta now ≈ the tile's yield, a placed improvement DOES surface in the real yield accounting (banner + breakdown). Feature unblocked.");
+  showResultPanel("Enclave re-read (post-turn)", lines);
+}
+
+/** HTML-escape for the on-screen panel. @param {*} s @returns {string} */
+function esc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+/**
+ * Render probe results ON-SCREEN (the user has no console/UI.log). A dismissable fixed panel;
+ * Gameface-safe styling (hex + flex only — no hsl()/grid). Re-renders in place on each call.
+ * @param {string} title Panel heading. @param {string[]} lines Result lines.
+ */
+function showResultPanel(title, lines) {
+  try {
+    let el = document.getElementById("migp-result-panel");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "migp-result-panel";
+      el.style.cssText = [
+        "position:fixed", "top:7%", "right:1%", "width:40%", "max-height:86%", "overflow-y:auto",
+        "z-index:99999", "background-color:#0b1020f2", "color:#e6ecff", "border:2px solid #33aa66",
+        "border-radius:8px", "padding:12px 14px", "font-family:monospace", "font-size:13px",
+        "line-height:1.45", "display:flex", "flex-direction:column"
+      ].join(";");
+      document.body.appendChild(el);
+    }
+    const head =
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
+      '<b style="color:#88ffdd">' + esc(title) + "</b>" +
+      '<span id="migp-result-close" style="cursor:pointer;color:#ff8888;padding:0 6px">x</span></div>';
+    const body = lines
+      .map((l) => {
+        const c = /VERDICT|→/.test(l) ? "#ffd76b" : /NOT registered|rejected|NO new|no /.test(l) ? "#ff9b9b" : "#cceeff";
+        return '<div style="color:' + c + ';margin-bottom:3px;white-space:pre-wrap">' + esc(l) + "</div>";
+      })
+      .join("");
+    el.innerHTML = head + body;
+    const close = document.getElementById("migp-result-close");
+    if (close) close.addEventListener("click", () => {
+      try {
+        el.remove();
+      } catch (_) {
+        /* ignore */
+      }
+    });
+  } catch (e) {
+    log("showResultPanel threw " + e);
+  }
+}
+
 /** One-time icon tint for the dock buttons. */
 function injectStyle() {
   try {
@@ -1232,7 +1537,8 @@ function injectStyle() {
       ".ssb__button-icon.migp-grantf{background-color:#d29;border-radius:50%;}" +
       ".ssb__button-icon.migp-verify{background-color:#494;border-radius:50%;}" +
       ".ssb__button-icon.migp-api3{background-color:#92c;border-radius:50%;}" +
-      ".ssb__button-icon.migp-api4{background-color:#27a;border-radius:50%;}";
+      ".ssb__button-icon.migp-api4{background-color:#27a;border-radius:50%;}" +
+      ".ssb__button-icon.migp-api7{background-color:#3a6;border-radius:50%;}";
     document.head.appendChild(s);
   } catch (e) {
     log("injectStyle threw " + e);
@@ -1279,7 +1585,13 @@ class MigrationDockDecorator {
         callback: () => probeRevoltPressure(),
         class: ["migp-api6"]
       });
-      log("API3 + API4 + API5 + API6 buttons added");
+      this._panel.addButton({
+        tooltip: "API7: ENCLAVE placement - place a tile IMPROVEMENT on your capital, prove its yield shows in the breakdown (on-screen panel)",
+        modifierClass: "migp-api7",
+        callback: () => probeEnclavePlacement(),
+        class: ["migp-api7"]
+      });
+      log("API3 + API4 + API5 + API6 + API7 buttons added");
       const SHOW_ALL = false;
       if (!SHOW_ALL) return;
       this._panel.addButton({
@@ -1657,7 +1969,11 @@ function exposeGlobals() {
       // AUDIT: persisted-blob sizes (+ flow-key counts), confirm the save data stays bounded.
       blob: () => probeBlob(),
       // DIAGNOSE: a civ's cross-civ OUT/IN edges + internal moves + totals (why a Causes pie is empty).
-      civflow: (/** @type {number} */ pid) => probeCivFlow(pid)
+      civflow: (/** @type {number} */ pid) => probeCivFlow(pid),
+      // API7: ENCLAVE-as-a-tile-improvement placement + yield-visibility probe (on-screen panel).
+      enclave: () => probeEnclavePlacement(),
+      // post-end-turn re-read of the last enclave placement (net yield updates at the turn roll).
+      enclaveReadback: () => enclaveReadback()
     };
   } catch (e) {
     log("exposeGlobals threw " + e);

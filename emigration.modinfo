@@ -7,7 +7,7 @@
         <SpecialThanks>Machiavelli's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>2.0.8</Version>
+        <Version>2.0.9</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -81,6 +81,7 @@
                 </UpdateText>
                 <UIScripts>
                     <Item>ui/emigration-main.js</Item>
+                    <Item>ui/emigration-origins-diag.js</Item>
                     <Item>ui/emigration-selftest.js</Item>
                     <Item>ui/emigration-prosperity-lens.js</Item>
                     <Item>ui/emigration-prosperity-tooltip.js</Item>
@@ -134,10 +135,12 @@
                     <Item>ui/emigration-network-paint.js</Item>
                     <Item>ui/emigration-network-flow-arrows.js</Item>
                     <Item>ui/emigration-network-dots.js</Item>
+                    <Item>ui/emigration-timeline-events.js</Item>
                     <Item>ui/emigration-network-timeline.js</Item>
                     <Item>ui/emigration-network-interact.js</Item>
                     <Item>ui/emigration-pies.js</Item>
                     <Item>ui/emigration-city-flows.js</Item>
+                    <Item>ui/emigration-diversity.js</Item>
                     <Item>ui/emigration-detail-views.js</Item>
                     <Item>ui/emigration-ledger-view.js</Item>
                     <Item>ui/emigration-demo-data.js</Item>
@@ -162,6 +165,8 @@
                          main→log/report, violence→violence-signals). Imported by their
                          parents, so they must be registered to resolve at load. -->
                     <Item>ui/emigration-pull.js</Item>
+                    <Item>ui/emigration-explain.js</Item>
+                    <Item>ui/emigration-explain-view.js</Item>
                     <Item>ui/emigration-move-reasons.js</Item>
                     <Item>ui/emigration-state.js</Item>
                     <Item>ui/emigration-migration-records.js</Item>

@@ -294,15 +294,59 @@ export const QUARTER_QUOTES = Object.freeze({
   CIVILIZATION_TONGA: { a: q("Fonua ko e tangata, tangata ko e fonua. (The land is the people, the people are the land.)", "Tongan proverb", ""), b: q("The Tuʻi Tonga held a maritime empire across the central Pacific.", "I. C. Campbell", "Island Kingdom: Tonga Ancient and Modern (1992)") }
 });
 
+// Unicode blocks the game's UI font renders as tofu (□) — RTL and CJK/Greek/Cyrillic/Ethiopic/Hebrew
+// scripts. Latin-extended DIACRITICS (ā, ê, š, ḫ, ǝ, …) are NOT here: they render fine, so transliterations
+// are preserved. Every registry quote in one of these scripts is written "<original> (<Latin translation>)",
+// so when the original won't render we fall back to the parenthetical translation.
+const UNRENDERABLE_SCRIPT =
+  /[Ͱ-ϿЀ-ӿ֐-׿؀-ۿሀ-፿぀-ヿ一-鿿가-힯]/;
+
+/**
+ * A display-safe quote line. When the quoted text is in a script the game font cannot draw (Arabic, Greek,
+ * CJK, …) it would render as boxes and, for RTL, scramble the surrounding punctuation — so return the
+ * trailing "(translation)" the registry pairs with every such quote instead. Latin quotes pass through
+ * unchanged.
+ * @param {string} text The raw quote text. @returns {string} A renderable version.
+ */
+function renderableQuote(text) {
+  if (!UNRENDERABLE_SCRIPT.test(text)) return text;
+  const paren = text.match(/\(([^()]*)\)\s*$/);
+  const inner = paren ? paren[1].trim() : text.replace(new RegExp(UNRENDERABLE_SCRIPT.source + "+", "g"), "").trim();
+  return inner.replace(/^[\s.,;:—–-]+|[\s]+$/g, "").trim() || text;
+}
+
+// A run of unrenderable text followed by its parenthetical Latin translation, wherever it sits inside a
+// larger line. `[^"()]*` on each side stops at the wrapping quotes / the source's own parens, so ONLY the
+// "<original script> (translation)" span is captured — the surrounding "…" and — who, source are left be.
+const UNRENDERABLE_RUN = new RegExp('[^"()]*' + UNRENDERABLE_SCRIPT.source + '[^"()]*\\(([^()]*)\\)', "g");
+
+/**
+ * A display-safe version of an ALREADY-COMPOSED quote line (`"<text>" — <who>[, <source>]`), for the
+ * in-game path where the line comes back whole from Locale.compose and so never passed through
+ * {@link renderableQuote}. Collapses each "<unrenderable original> (Latin translation)" span to just the
+ * translation, then drops any residual unrenderable characters that had no paired translation. A no-op for
+ * an all-renderable line (Latin, incl. ā/ê/š diacritics). This is what keeps the enclave decision pop-up
+ * from showing tofu boxes / scrambled RTL when the game returns the raw-script LOC row.
+ * @param {string} line The composed quote line. @returns {string} The renderable line.
+ */
+export function renderableLine(line) {
+  if (typeof line !== "string" || !UNRENDERABLE_SCRIPT.test(line)) return line;
+  const collapsed = line
+    .replace(UNRENDERABLE_RUN, (_m, inner) => String(inner).trim())
+    .replace(new RegExp(UNRENDERABLE_SCRIPT.source + "+", "g"), "");
+  return collapsed.replace(/\s+([.,;:])/g, "$1").replace(/\s{2,}/g, " ").trim();
+}
+
 /**
  * Compose a quote for display: `"<text>" — <who>[, <source>]`. A parenthetical source (e.g. "(trans.)")
  * is joined with a space, not a comma, so it reads naturally; an empty source is omitted entirely.
+ * Unrenderable original scripts fall back to their paired Latin translation (see {@link renderableQuote}).
  * @param {QQuote|null|undefined} quote @returns {string} The one-line display string ("" when no quote).
  */
 export function quoteDisplay(quote) {
   if (!quote || !quote.text) return "";
   const src = quote.source ? (quote.source.charAt(0) === "(" ? " " : ", ") + quote.source : "";
-  return '"' + quote.text + '" — ' + quote.who + src;
+  return '"' + renderableQuote(quote.text) + '" — ' + quote.who + src;
 }
 
 /**

@@ -22,6 +22,71 @@
         <Replace Tag="LOC_EMIG_ADVGRP_OUTLET" Language="ja_JP"><Text>はけ口（消耗）</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="ja_JP"><Text>災害</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="ja_JP"><Text>通知</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_VISUALS" Language="ja_JP"><Text>Visuals</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_TLPINS" Language="ja_JP"><Text>Timeline event pins</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_TLPINS_D" Language="ja_JP"><Text>Pin the wars and disasters that drove migration onto the migration network's playback timeline, so a spike can be traced back to what caused it. Hover a pin to name the event; click it to scrub there. Display only — it never changes who moves. Only events recorded from now on can be pinned: wars and disasters from earlier in an existing save were never stamped with the turn they happened.</Text></Replace>
+        <Replace Tag="LOC_EMIG_TL_PIN_DISASTER" Language="ja_JP"><Text>Disaster</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_READOUT" Language="ja_JP"><Text>表示とランキング</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIVERSITY" Language="ja_JP"><Text>最も多様な都市ランキング</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIVERSITY_D" Language="ja_JP"><Text>移住ダッシュボードに「多様性」タブを追加し、住民の出身 — もともとどの文明から来たか — の混ざり具合で集落を順位付けします。集落ごとに色分けされたバーで、その構成を人口と対比して表示します。表示のみ：MODがすでに記録している住民の出身を読むだけで、誰が移住するかは変わらず、産出も与えません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_COSMO" Language="ja_JP"><Text>コスモポリタン度の表示</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_COSMO_D" Language="ja_JP"><Text>多様性ランキングに「性格」列を追加し、各集落を「均質」「地元多数派」「混成都市」「国際都市」「世界都市」のいずれかにまとめます。出身の構成、国境の開放度、流入人数から算出されます。純粋に説明的で、産出は与えず、移住にも影響しません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIVERSITYROWS" Language="ja_JP"><Text>多様性ランキング：表示行数</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIVERSITYROWS_D" Language="ja_JP"><Text>タブ上部の「最も多様な都市」ランキングに表示する集落の数。その下の「すべての集落」一覧は、この設定にかかわらず常にすべての集落を表示します。ランキングが有効な場合のみ使用されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_EXPLAINER" Language="ja_JP"><Text>移住理由の内訳</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_EXPLAINER_D" Language="ja_JP"><Text>集落レポートと繁栄レンズのツールチップに「なぜ?」の内訳を表示します。どの圧力が人々を追い出しているのか、そして移住先の何が人々を引きつけているのかを、それぞれ全体に占める割合として示します。表示のみ: このモッドが人々を動かす際に元々使っている判断材料を示すだけで、誰が移住するかは変わらず、産出も与えません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_LEAVING" Language="ja_JP"><Text>人々が去る理由</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_DRAWN" Language="ja_JP"><Text>引き寄せられる先</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_DRAWN_TO" Language="ja_JP"><Text>{1_Dest}に引き寄せられる理由</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_COMMUNITY" Language="ja_JP"><Text>現地の{1_Civ}コミュニティ: {2_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_PERMEABILITY_NOTE" Language="ja_JP"><Text>{1_Label}: ×{2_Factor}</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_GRADIENT" Language="ja_JP"><Text>繁栄の差</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_TILT" Language="ja_JP"><Text>特定の誘引</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_RELUCTANCE" Language="ja_JP"><Text>移住への抵抗</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CROWDING" Language="ja_JP"><Text>過密</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CITY_STATE" Language="ja_JP"><Text>都市国家の障壁</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CROSS_CIV" Language="ja_JP"><Text>外国の国境</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_DOMINANCE" Language="ja_JP"><Text>支配的勢力</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_DISTANCE" Language="ja_JP"><Text>距離</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_AGGRESSOR" Language="ja_JP"><Text>侵略者の回避</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_FLIGHT" Language="ja_JP"><Text>戦火からの避難</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CONGESTION" Language="ja_JP"><Text>混雑</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_PERMEABILITY" Language="ja_JP"><Text>国境の通りやすさ</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_ECONOMY" Language="ja_JP"><Text>経済</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS" Language="ja_JP"><Text>幸福度</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_POPULATION" Language="ja_JP"><Text>人口規模</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CIV_BIAS" Language="ja_JP"><Text>土地柄</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_POLITY" Language="ja_JP"><Text>政府と祝祭</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_VIOLENCE" Language="ja_JP"><Text>戦闘</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_DISASTER" Language="ja_JP"><Text>災害</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_SIEGE" Language="ja_JP"><Text>包囲</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_STARVATION" Language="ja_JP"><Text>飢饉</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_UNREST" Language="ja_JP"><Text>不穏</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_WAR_WEARINESS" Language="ja_JP"><Text>厭戦感</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_DIVERSITY" Language="ja_JP"><Text>最も多様な都市</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_DIVERSITY" Language="ja_JP"><Text>多様性</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_TITLE" Language="ja_JP"><Text>最も多様な都市</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_SUBTITLE" Language="ja_JP"><Text>各集落の住民を、もともとの出身文明ごとに色分けしています。バーの幅は人口を表します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_CITY" Language="ja_JP"><Text>集落</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_ORIGINS" Language="ja_JP"><Text>住民の出身</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_POP" Language="ja_JP"><Text>人口</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_MIX" Language="ja_JP"><Text>構成</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_CHARACTER" Language="ja_JP"><Text>性格</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ORIGINS" Language="ja_JP"><Text>出身{1_N}種</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ORIGIN_ONE" Language="ja_JP"><Text>出身1種</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_UNKNOWN" Language="ja_JP"><Text>不明</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ALL_TITLE" Language="ja_JP"><Text>すべての集落</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ALL_SUB" Language="ja_JP"><Text>あなたが確認できるすべての集落を、文明別に表示します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_YOUR_CIV" Language="ja_JP"><Text>{1_Civ}（あなた）</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_NO_MAJORITY" Language="ja_JP"><Text>過半数なし</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_PLURALITY" Language="ja_JP"><Text>{1_Civ}が最大勢力</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_MAJORITY" Language="ja_JP"><Text>{1_Civ}が過半数</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_HOMOGENEOUS" Language="ja_JP"><Text>均質</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_LOCAL" Language="ja_JP"><Text>地元多数派</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_MIXED" Language="ja_JP"><Text>混成都市</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_CENTER" Language="ja_JP"><Text>国際都市</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_WORLD" Language="ja_JP"><Text>世界都市</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_DESC" Language="ja_JP"><Text>各集落の住民がどこから来たかを示します（文化地区ではありません）。産出は伴いません。</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET" Language="ja_JP"><Text>移住の強さ</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_D" Language="ja_JP"><Text>移住全体の強さ。人々が移動する頻度と、戦争が人々をどれだけ激しく追い立てるかを設定します。1ターンあたりの上限、戦争難民の一度の流出量、都市あたりの損失上限です。低 = 穏やか、高 = 激しい。変更はターン内に反映されます。「カスタム」は下の詳細値をそのまま保持します。より細かく調整するには、下の詳細設定で個々の項目を変更してください。</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_CUSTOM" Language="ja_JP"><Text>カスタム（詳細設定を使用）</Text></Replace>
@@ -220,6 +285,7 @@
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="ja_JP"><Text>Civ 独自の人口値とスケールした人数を切り替えます</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ja_JP"><Text>再生タイムラインは数ターン後、たどれる人口の履歴がたまると表示されます。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ja_JP"><Text>{1_People}が災害の後、{2_City}から逃れました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_DISASTER_TO" Language="ja_JP"><Text>{1_People} fled {2_City} after disaster struck, and are bound for {3_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ja_JP"><Text>{1_People}が逃げ場を失い、{2_City}で失われました。</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_INTERNAL" Language="ja_JP"><Text>(帝国内の移動)</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="ja_JP"><Text>(帝国外への移動)</Text></Replace>
@@ -273,19 +339,26 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ja_JP"><Text>その人々は永遠に失われました。</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="ja_JP"><Text>{1_Dest}は彼らを統合するために毎ターン約{2_Gold}のゴールドを支払います。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="ja_JP"><Text>移民歓迎の方針</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ja_JP"><Text>世界中から[icon:YIELD_POPULATION]移民を歓迎します。あなたの都市への移民が50%増加し、国際的な評判により毎ターン[icon:YIELD_DIPLOMACY]影響力を得ます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ja_JP"><Text>世界中から[icon:YIELD_POPULATION]移民を歓迎します。あなたの都市への移民が50%増加し、国際的な評判により毎ターン[icon:YIELD_DIPLOMACY]影響力を得ます。時代に応じて+1、+2、そして+3です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="ja_JP"><Text>[icon:YIELD_POPULATION] Immigration to your cities rises by 50%, and you earn +2 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="ja_JP"><Text>[icon:YIELD_POPULATION] Immigration to your cities rises by 50%, and you earn +3 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="ja_JP"><Text>移民排斥の方針</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ja_JP"><Text>世界に対して国境を閉ざします。外国からの[icon:YIELD_POPULATION]新規移住者は40%に減少し（約60%減）、自国民が競合文明へ去ることも大幅に減ります。動員された国内経済が各都市に[icon:YIELD_PRODUCTION]生産力を加えますが、その代償として毎ターン[icon:YIELD_DIPLOMACY]影響力を失います。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ja_JP"><Text>世界に対して国境を閉ざします。外国からの[icon:YIELD_POPULATION]新規移住者は40%に減少し（約60%減）、自国民が競合文明へ去ることも大幅に減ります。動員された国内経済が各都市に[icon:YIELD_PRODUCTION]生産力を加えます。時代に応じて+2、+3、そして+4です。孤立には代償が伴い、毎ターン[icon:YIELD_DIPLOMACY]影響力を失います。時代に応じて-2、-3、そして-4です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="ja_JP"><Text>[icon:YIELD_POPULATION] Immigration falls to 40%, and 40% fewer of your own citizens leave for rival civilizations. Each city gains +3 [icon:YIELD_PRODUCTION] Production, at the cost of -3 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="ja_JP"><Text>[icon:YIELD_POPULATION] Immigration falls to 40%, and 40% fewer of your own citizens leave for rival civilizations. Each city gains +4 [icon:YIELD_PRODUCTION] Production, at the cost of -4 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="ja_JP"><Text>才能の誘致</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION]新規移住者があなたの研究を強化し、引き寄せた移民1人ごとに約+1.5、毎ターン最大+12まで増える[icon:YIELD_SCIENCE]科学力を加えます。移民が止まるとこのボーナスは薄れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION]新規移住者があなたの研究を強化します。[icon:YIELD_SCIENCE]科学+1（現代では+2）を得て、さらに引き寄せた移民1人につき約+1.5ずつ増える科学ボーナスを、毎ターン最大+12まで得ます。このボーナスは移民の流入が止まると薄れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="ja_JP"><Text>[icon:YIELD_POPULATION] Gain +2 [icon:YIELD_SCIENCE] Science each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="ja_JP"><Text>文化的魅力</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION]新規移住者があなたの文化を豊かにし、引き寄せた移民1人ごとに約+1.5、毎ターン最大+12まで増える[icon:YIELD_CULTURE]文化力を加えます。移民が止まるとこのボーナスは薄れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION]新規移住者があなたの文化を豊かにします。[icon:YIELD_CULTURE]文化+1（現代では+2）を得て、さらに引き寄せた移民1人につき約+1.5ずつ増える文化ボーナスを、毎ターン最大+12まで得ます。このボーナスは移民の流入が止まると薄れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO" Language="ja_JP"><Text>[icon:YIELD_POPULATION] Gain +2 [icon:YIELD_CULTURE] Culture each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="ja_JP"><Text>商業的な魅力</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION]新規移住者があなたの市場を潤し、引き寄せた移民1人ごとに約+1.5、毎ターン最大+12まで増える[icon:YIELD_GOLD]ゴールドを加えます。移民が止まるとこのボーナスは薄れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION]新規移住者があなたの市場を潤します。[icon:YIELD_GOLD]ゴールド+1（現代では+2）を得て、さらに引き寄せた移民1人につき約+1.5ずつ増えるゴールドボーナスを、毎ターン最大+12まで得ます。このボーナスは移民の流入が止まると薄れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC_MO" Language="ja_JP"><Text>[icon:YIELD_POPULATION] Gain +2 [icon:YIELD_GOLD] Gold each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="ja_JP"><Text>選択的庇護</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ja_JP"><Text>戦争や災害から逃れてきた人々に門戸を開きます。難民は強くあなたのもとへ引き寄せられ、最も絶望的な人々が優先されます。人道的な評判により、毎ターン[icon:YIELD_DIPLOMACY]影響力を得ます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ja_JP"><Text>戦争や災害から逃れてきた人々に門戸を開きます。難民は強くあなたのもとへ引き寄せられ、最も絶望的な人々が優先されます。人道的な評判により、毎ターン+1 [icon:YIELD_DIPLOMACY]影響力を得ます。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="ja_JP"><Text>難民協定</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="ja_JP"><Text>避難民への恒久的な約束です。難民は強くあなたのもとへ流入し、最も絶望的な人々が優先されます。彼らはあなたの文化を豊かにし、毎ターン[icon:YIELD_DIPLOMACY]影響力と[icon:YIELD_CULTURE]文化をもたらします。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="ja_JP"><Text>避難民への恒久的な約束です。難民は強くあなたのもとへ流入し、最も絶望的な人々が優先されます。彼らはあなたの文化を豊かにし、毎ターン+2 [icon:YIELD_DIPLOMACY]影響力と+1 [icon:YIELD_CULTURE]文化をもたらします。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
@@ -352,12 +425,14 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="ja_JP"><Text>各ドット ≈ {1_People} 人。文明の円は都市や町を内側のサブクラスターとして含みます。文明自身の色のドットは土着の住民、より明るい色合いのドットは自国の都市間を移動した人々（国内移動）、別の色のドットはその出身地からの移民です。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="ja_JP"><Text>表示:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="ja_JP"><Text>まだ人口がいません</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNMET" Language="ja_JP"><Text>未接触</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="ja_JP"><Text>Migrant flows</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="ja_JP"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="ja_JP"><Text>移住 - {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="ja_JP"><Text>住民の出自</Text></Replace>
-        <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTING" Language="ja_JP"><Text>移出先</Text></Replace>
-        <Replace Tag="LOC_EMIGRATION_PANEL_ARRIVING" Language="ja_JP"><Text>移入元</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTED" Language="ja_JP"><Text>これまでの移出先</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ARRIVED" Language="ja_JP"><Text>これまでの移入元</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_FLOW_CAUSE" Language="ja_JP"><Text>主に{1_Cause}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_NO_MIGRATION" Language="ja_JP"><Text>この集落ではまだ移住が記録されていません。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_MORE" Language="ja_JP"><Text>（他に{1_Count}件）</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_ONE" Language="ja_JP"><Text>{1_Count}人の難民がここでの定住を待っています。</Text></Replace>
@@ -370,6 +445,7 @@
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_STANCE" Language="ja_JP"><Text>あなたの方針：{1_Stance}。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_GRANTS" Language="ja_JP"><Text>都市に{1_Amount}の{2_Yield}をもたらします。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_COSTS" Language="ja_JP"><Text>毎ターン{1_Amount}の{2_Yield}を消費します。</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_INVESTED" Language="ja_JP"><Text>Its enclave is built: the enclave's own yield now applies instead of this dividend.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_CONTESTED" Language="ja_JP"><Text>係争状態：その母国と戦争しており、街区に負担がかかっています。</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_STANCE_PRO" Language="ja_JP"><Text>移民歓迎</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_STANCE_ANTI" Language="ja_JP"><Text>移民排斥</Text></Replace>
@@ -937,5 +1013,8 @@
         <Replace Tag="LOC_EMIG_ETH_TILE_SUFFIX" Language="ja_JP"><Text>· this tile</Text></Replace>
         <Replace Tag="LOC_EMIG_PCT" Language="ja_JP"><Text>{1_Pct}%</Text></Replace>
         <Replace Tag="LOC_EMIG_PCT_SIGNED" Language="ja_JP"><Text>{1_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_ENCLAVE_IMPROVEMENT_NAME" Language="ja_JP"><Text>Cultural Enclave</Text></Replace>
+        <Replace Tag="LOC_EMIG_ENCLAVE_IMPROVEMENT_DESCRIPTION" Language="ja_JP"><Text>A quarter settled by a foreign diaspora that has put down roots and works the surrounding land. Yields +2 Gold.</Text></Replace>
+        <Replace Tag="LOC_EMIG_ENCLAVE_IMPROVEMENT_TOOLTIP" Language="ja_JP"><Text>A tile improvement marking an established migrant community. Provides +2 Gold to the city.</Text></Replace>
     </LocalizedText>
 </Database>

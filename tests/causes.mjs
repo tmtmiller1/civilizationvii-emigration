@@ -1,7 +1,23 @@
 import assert from "node:assert/strict";
 
-const { isRefugeeCause, causeLabel, causePermanence, causeHint, causeAccent, notificationAccent } =
+const { isRefugeeCause, causeLabel, causePermanence, causeHint, causeAccent, notificationAccent, topCause } =
   await import("/emigration/ui/emigration-causes.js");
+
+// The dominant cause of a per-cause map — what the City Details flow rows name when there's room for
+// only one. "" means "no per-cause detail", which callers must render as silence rather than "Other".
+function testTopCausePicksTheDominantDriver() {
+  assert.equal(topCause({ unhappiness: 10, war: 3 }), "unhappiness");
+  assert.equal(topCause({ unhappiness: 3, war: 10 }), "war");
+  // Ties break on CAUSE_ORDER (war outranks unhappiness), the same rank netDrivers uses, so a given
+  // corridor always names the same driver instead of flipping on object key order.
+  assert.equal(topCause({ unhappiness: 5, war: 5 }), "war");
+  assert.equal(topCause({ war: 5, unhappiness: 5 }), "war");
+  // Absent / empty / all-zero / negative-only maps carry no driver to name.
+  assert.equal(topCause(), "");
+  assert.equal(topCause({}), "");
+  assert.equal(topCause({ war: 0, unhappiness: 0 }), "");
+  assert.equal(topCause({ war: NaN }), "");
+}
 
 function testNotificationAccentReservesRedForOwnLoss() {
   // Red causes (war/conquest/crisis) keep their alarming colour only for the player's OWN loss.
@@ -71,5 +87,6 @@ testPermanenceClassifier();
 testHintsExistForEmittedCauses();
 
 testNotificationAccentReservesRedForOwnLoss();
+testTopCausePicksTheDominantDriver();
 
 console.log("causes harness passed");

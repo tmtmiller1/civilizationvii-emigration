@@ -60,8 +60,8 @@ function assertGraphsGroup(/** @type {*[]} */ groups) {
   assert.equal(g.first, true);
   assert.deepEqual(g.views.map((/** @type {*} */ v) => v.id), ["scaled", "civ"]);
   assert.deepEqual(g.members.map((/** @type {*} */ m) => m.label),
-    ["Population", "Net Migration (Graph)", "Net Migration (Table)", "Emigration", "Immigration",
-      "Refugees (Left)", "Refugees (Arrived)"]);
+    ["Population", "Population Share", "Net Migration (Graph)", "Net Migration (Table)", "Emigration",
+      "Immigration", "Refugees (Left)", "Refugees (Arrived)"]);
   for (const m of g.members) {
     assert.equal(typeof m.scaled, "string");
     assert.equal(typeof m.civ, "string");
