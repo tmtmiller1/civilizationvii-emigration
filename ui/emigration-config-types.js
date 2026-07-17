@@ -111,6 +111,12 @@
  * @property {number} quarterMinStock Minimum current standing pop points of the lead origin for an established enclave.
  * @property {number} quarterEnclaveStickiness Integration multiplier (0..1) for an at/above-foothold origin (1 = off).
  * @property {boolean} quarterForce Testing flag: offer the best qualifying enclave now, bypassing the soft gates.
+ * @property {boolean} diversityRanking Show the "most diverse cities" dashboard tab (read-only; no yields).
+ * @property {boolean} cosmopolitanismScore Add the derived Cosmopolitanism "Character" column.
+ *   COSMETIC: grants no yields.
+ * @property {number} diversityRows Rows shown in the diversity ranking table.
+ * @property {boolean} migrationExplainer Show the push/pull cause stack in the readout + hover panels
+ *   (Feature L). READ-ONLY: it explains the scores the sim already computed; it moves no one.
  * @property {boolean} selftestEnabled Install the on-screen self-test launcher (live diagnostics + forced pop-up).
  * @property {number} quarterDwellTurns Turns an enclave must persist before its one-time decision is offered.
  * @property {number} quarterDwellGrace Turns a diaspora may dip below the bar without resetting the dwell clock.
@@ -201,6 +207,7 @@
  * @property {boolean} cityReadoutEnabled Show the per-city migration readout panel (Phase 2).
  * @property {string} cityReadoutCorner HUD corner for the readout (top/bottom × left/right).
  * @property {boolean} cityReadoutSparkline Show a recent net-migration trend strip in the readout.
+ * @property {boolean} timelineEventPins Pin the causal wars/disasters onto the network timeline.
  * @property {boolean} cityReadoutPoolToasts Toast when selected city holding starts/clears.
  * @property {boolean} refugeePoolLensMarkers Prosperity-lens center markers for active holding pools.
  * @property {boolean} disastersEnabled Treat disasters as a migration driver (§11).

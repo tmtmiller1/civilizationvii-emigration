@@ -5,6 +5,128 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [Unreleased]
+
+### Added
+- **The settlement readout now tells you *why* people are leaving — and why they're going where they're
+  going.** The mod has always weighed the same handful of things when it decides someone moves: how a
+  settlement's economy and happiness compare to its neighbours, whether it's under siege or starving,
+  how far the journey is, how open the borders are. All of it was invisible. A settlement readout, and
+  the Prosperity lens tooltip, now show two short stacks — **Why people are leaving** and **Why they're
+  drawn to {city}** — with each factor's share of the decision as a small bar. These are shares, not
+  headcounts: the mod reports which pressures mattered *relative to each other*, because that ratio is
+  the honest part. It never claims "42% of your population." Border openness is shown separately as what
+  it actually is — a multiplier on the whole move (`×1.5`) rather than one factor among many. If the
+  destination already hosts a community of the movers' origin, that's noted too, as context: it doesn't
+  pull anyone today, and the readout doesn't pretend otherwise. Purely descriptive — it reports the
+  reasoning the mod already used to move people, changes nothing about who moves, and grants **no
+  yields**. Toggle it in Options ▸ Advanced ▸ Readouts & rankings.
+- **A new "Diversity" tab ranks your settlements by who actually lives in them.** The mod has always
+  tracked which civilization each person in a city came from — that mix drove the ethnicity lens and the
+  city readout, but nothing ever showed you the whole picture at once. The Diversity tab now lists your
+  most mixed settlements: how many communities live there, and whether any one of them holds a majority
+  ("5 communities, no majority" · "Egyptian plurality" · "Roman majority"). A settlement whose top two
+  origins are neck-and-neck reads as "no majority" rather than crowning a leader by a single point.
+  Alongside it, an optional **Character** column sums each settlement up as Homogeneous, Local Majority,
+  Mixed City, Cosmopolitan Center or World City, blending its origin mix with how open its borders are
+  and how many people are arriving. Both are descriptive only: they read data the mod already keeps,
+  change nothing about who moves, and grant **no yields**. Unmet civilizations are respected — their
+  settlements never appear, and an unmet origin is never named. Toggle either in Options ▸ Advanced ▸
+  Readouts & rankings (the ranking also sets how many rows to show).
+
+### Changed
+- **The City Details migration lists now say what they actually are — and why people left.** The two
+  lists were headed "Departing to" and "Arriving from", which read as though the settlement were losing
+  those people *right now*. They never were: the figures are a running total of everyone who has *ever*
+  left or arrived over the whole game, a number that only grows, so a city whose troubles you fixed 50
+  turns ago still showed a fat "departing" list as if it were bleeding out. The headings are now honest
+  about that — **"Departed to (all game)"** and **"Arrived from (all game)"**, past tense. And each line
+  now names the main reason behind that corridor — *"Rome (Roman): 12,000 — mostly Unhappiness"* — so
+  you can tell *why* a settlement lost people, not just where they went. (A settlement's live,
+  turn-by-turn pressures already have a home in the per-city readout; this is the historical ledger.)
+
+### Fixed
+- **The City Details migration lists no longer freeze on an old snapshot.** The panel could sit
+  on whatever the migration figures were when you first opened it, while the Population-origins block
+  right beside it kept updating — two numbers about the same city, disagreeing. The lists are read in a
+  different context from the one that records the moves, and that reader was caching the tallies for as
+  long as it lived instead of re-reading them. It now re-reads once per turn, the same way the
+  population mix already did, so everything on the panel is telling you about the same turn.
+- **A Cultural Enclave no longer pays you twice — and building one is now worth it.** Recognizing an
+  enclave at the decision modal grants its stance's small per-turn benefit and drawback, and separately
+  the enclave improvement you build on a tile carries its own yield. Nothing connected the two, so taking
+  the stance *and* building quietly paid double for one enclave — a reward nobody designed. The two are
+  now one ladder: **recognizing** an enclave costs nothing and pays a token dividend (+2 of its yield,
+  −1 of its drawback, per turn); **investing** in it — building the enclave, your government endowing the
+  community's workshops, schools and halls — replaces that dividend with a strictly better one (+4, no
+  drawback). They never stack. The improvement's yield rose from +2 to +4 so that investing is actually
+  worth its 40 production, its tile, and its population point; at +2 it was a net gain of just +1 per
+  turn, which was no bargain at all. Enclave descriptions reworded to say plainly what each tier pays.
+- **The City Details panel now tells you which tier an enclave is on.** It reports the stance dividend
+  while the enclave is unbuilt — the only place that per-turn effect is readable, since the game cannot
+  attribute it in the yield breakdown — and once you build the enclave it says so plainly instead of
+  continuing to claim a dividend you no longer receive. Also fixes enclaves recognized in older saves,
+  which could keep drawing the stance dividend after their enclave was built.
+
+### Internal
+- **The migration model can now explain itself: a new push/pull decomposition substrate.** No
+  player-visible change in this release — `ui/emigration-explain.js` renders nothing and no surface
+  imports it yet. It is the shared foundation (roadmap §15.0a) that the planned explainer tooltip,
+  city forecast, advisor and policy-impact preview are each meant to be thin formatting over, so that
+  four features share one answer to "why did these people move" instead of growing four subtly
+  different ones. `explainPull()` / `explainPush()` return the labeled, signed contributions behind a
+  pull score and a settlement's prosperity, biggest first; `weigh()` normalizes them to relative
+  weights. That last one is the point: the deltas are model-score points with no player-meaningful
+  unit, so only the ratios between factors may ever be shown — never "−42% of your population".
+- **The scoring formulas now itemize themselves rather than being re-derived.** Rather than copy the
+  pull and prosperity math into the new module (where it would quietly drift), the sim's own scorers
+  hand out their terms, following the existing `geoBreakdown`/`geoAdjust` split. `emigration-pull.js`
+  gained `pullBreakdown()` and `emigration-prosperity.js` gained `baseBreakdown()` /
+  `situationalBreakdown()`; `baseScore()` and `situationalPercent()` are now simply their sums, added
+  in the same order as before, so the engine's output over a fixed fake world is byte-identical
+  (`engine-rigor` / `engine-pass` snapshots unchanged). `adjustedPull()` is the one exception and
+  deliberately keeps its own flat accumulate: it runs for every source-destination pair of every pass
+  and bails early on a non-positive gradient, so it must not pay to build an itemized list. Its mirror
+  is held in place by tests that reconstruct the real `adjustedPull()` from the explainer's rows.
+- **Two spec corrections worth recording.** The roadmap called for attributing each factor by
+  *leave-one-out* — re-scoring with one factor neutralized. There is no seam for that (the factors come
+  from `CONFIG` globals and private helpers, so neutralizing one means mutating global state and racing
+  the engine's own stance counterfactual), and it is redundant anyway: pull is a sum times a multiplier,
+  so a term's leave-one-out delta *is* its raw value times that multiplier, which the shipped code
+  computes directly and exactly. The push side was also specced to label every factor a "push"; it now
+  follows the sign, because a fixed label has to call a thriving economy a push, and the factors that
+  *retain* people are exactly the ones an advisor needs to name.
+- **A negative-prosperity edge case is handled explicitly.** Prosperity is a base score times a
+  situational multiplier, so a penalty's contribution is a share of that base. On a city whose base has
+  already gone negative — poor, unhappy, overcrowded — a signed multiply flips a siege into a positive
+  "attraction", the same pathology the existing F2 guard exists to stop. Situational penalties are
+  scaled by the base's magnitude so a penalty always reads as a push; for an ordinary positive base the
+  attribution is exact.
+- **`tests/explain.mjs`** (23 cases) is wired into `test:js`, `verify` and the required-scripts gate.
+  Its load-bearing cases reconstruct the real `adjustedPull()` and `prosperity()` from the explainer's
+  rows, so a term added to one side and not the other fails the build. One of them turns every pull
+  channel on at once and asserts each term is present — added after the first version of that test was
+  found to pass while the congestion, dominance, tilt, flight and aggressor terms were deleted, because
+  the fixture left them all at zero. A mirror test only pins the terms its fixture actually exercises.
+
+## [2.0.9] - 2026-07-13
+
+### Changed
+- **Policy (Tradition) card descriptions now spell out every effect with its exact number, and
+  each age shows only its own value.** 2.0.8 trimmed the cards by dropping numbers; this release
+  restores full, self-contained wording while keeping the flavour prose cut, so each card is
+  shorter than the pre-2.0.8 text yet states everything it does. Each border and attraction card
+  is now a separate description per age — an Antiquity Pro-Immigration card reads "+1 Influence,"
+  the Exploration one "+2," the Modern one "+3" — instead of one card listing "+1/+2/+3 across the
+  ages." The Anti-Immigration card names its per-city Production (+2/+3/+4 by age), its Influence
+  cost (−2/−3/−4), the immigration cut (to 40%) and the retention effect (40% fewer of your
+  citizens leave); the attraction cards give the flat yield (+1/+2 by age) alongside the
+  ~+1.5-per-immigrant scaling and +12 cap; the asylum cards state their exact Influence/Culture.
+  The refugee draw stays qualitative because it has no single scalar (its pull scales with each
+  refugee's war/disaster distress). Implemented by splitting each shared description key into
+  per-age keys (`..._DESC`, `..._DESC_EX`, `..._DESC_MO`) and pointing each age's Tradition at its
+  own. Applied across all 12 supported languages.
+
 ## [2.0.8] - 2026-07-13
 
 ### Changed

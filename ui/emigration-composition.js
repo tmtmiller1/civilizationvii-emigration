@@ -28,7 +28,7 @@ import { atWarBetween } from "/emigration/ui/emigration-geography.js";
 import { getIntegrationEnabled } from "/emigration/ui/emigration-settings.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 // Only used at call time (inside integrateCity), so the composition↔diaspora import cycle stays safe.
-import { QUARTER_FOOTHOLD_SHARE } from "/emigration/ui/emigration-diaspora.js";
+import { QUARTER_FOOTHOLD_SHARE } from "/emigration/ui/emigration-tunables.js";
 
 const STATE_KEY = "EmigrationEthnos_v1";
 
@@ -583,6 +583,33 @@ export function compositionForOwner(owner) {
 }
 
 /**
+ * Every tracked settlement's composition, for the empire-wide readers that rank/aggregate across
+ * cities (the diversity ranking) rather than asking about one city. Reads the same persisted ledger
+ * as compositionForCity, but keyed by the ledger itself rather than by a live city object, so it
+ * needs no engine access and works for settlements the caller doesn't hold a handle to.
+ * Entries whose bucket total is empty are skipped (summarize returns null for them).
+ * @returns {{key:string, name:string, owner:number, comp:{total:number, owner:number,
+ *   civs:{civ:number, pts:number, share:number}[], dominant:{civ:number, share:number}|null}}[]}
+ *   One entry per tracked settlement with a non-empty composition.
+ */
+export function allCityCompositions() {
+  try {
+    const cities = load().cities;
+    /** @type {*[]} */
+    const out = [];
+    for (const key of Object.keys(cities)) {
+      const e = cities[key];
+      const comp = summarize(e.byCiv, e.total, e.owner);
+      if (comp) out.push({ key, name: e.name, owner: e.owner, comp });
+    }
+    return out;
+  } catch (_) {
+    // Cosmetic reader (the diversity ranking): a bad ledger degrades to an empty ranking, never a throw.
+    return [];
+  }
+}
+
+/**
  * Summarize a byCiv map into sorted shares of `total` (the real population), the dominant origin,
  * and the owner. Shares are exact fractions of `total`, so they match the reported population.
  * @param {Record<string, number>} byCiv Points by origin civ.
@@ -616,5 +643,28 @@ export const __test = {
     _s = { cities: {} };
     _loadedTurn = -1;
   },
-  state: () => load()
+  state: () => load(),
+  /**
+   * TEST-ONLY: seed a city's composition ledger with an ESTABLISHED foreign diaspora of `foreignPid`, and
+   * persist it (so a reader in another UI isolate — e.g. the production chooser — sees it). Used by the
+   * Self-Test "Seed diaspora + build" probe to exercise the real enclave flow without waiting for organic
+   * migration. EPHEMERAL: the next real recordCompositionPass rebuilds from actual city pops and overwrites
+   * this. foreign share 30/40 = 0.75, stock 30 — comfortably past the default 0.35/5 thresholds.
+   * @param {*} city A live city. @param {number} foreignPid An origin (foreign) player id ≠ city.owner.
+   * @returns {string|null} The ledger key seeded, or null on bad input.
+   */
+  seedEstablishedForeign: (city, foreignPid) => {
+    const key = locKey(city);
+    if (key == null || typeof foreignPid !== "number" || foreignPid === city.owner) return null;
+    const s = load();
+    s.cities[key] = {
+      owner: city.owner,
+      byCiv: { [city.owner]: 10, [foreignPid]: 30 },
+      total: 40,
+      name: cityName(city),
+      seenTurn: gameTurn()
+    };
+    save();
+    return key;
+  }
 };

@@ -9,6 +9,9 @@
 //      every turn (see tickContestedQuarters), so the effect actually persists and reads in the city's
 //      yields. Throttled with a per-age cap + a cooldown, and RANKED BELOW the refugee dilemma: if a
 //      dilemma modal already fired this pass, the quarter waits for a later pass, so two modals never race.
+//      The stance grant is the "recognized but UNBUILT" reward: once the origin's enclave IMPROVEMENT is
+//      built in that city, its native yield takes over and the grant steps aside, so one enclave is never
+//      paid for twice (roadmap §22a; see emigration-enclave-built.js).
 //   2. NO STACKING / CHANGE OF HANDS. One quarter per host tile (the city-centre plot). If a different
 //      origin overtakes the tile, the record is simply replaced; because yields are applied per-turn
 //      from the current record, nothing needs reversing (the Chronicle notes the quarter changing hands).
@@ -27,7 +30,7 @@ import {
   candidacyAt, putCandidacy, dropCandidacy, allCandidacyEntries, dwellSatisfied
 } from "/emigration/ui/emigration-quarter-state.js";
 import { quarterOptionsFor, quarterOptionFor } from "/emigration/ui/emigration-quarter-registry.js";
-import { quarterQuote, quarterQuoteKey, quoteDisplay } from "/emigration/ui/emigration-quarter-bonuses.js";
+import { quarterQuote, quarterQuoteKey, quoteDisplay, renderableLine } from "/emigration/ui/emigration-quarter-bonuses.js";
 import { applyQuarterYields, deduct } from "/emigration/ui/emigration-effects.js";
 import { quarterName, narrativeCiv, civType } from "/emigration/ui/emigration-naming.js";
 import { warOpponents } from "/emigration/ui/emigration-war.js";
@@ -313,7 +316,9 @@ function enclaveQuote(ct, ordinal) {
   if (!ct) return "";
   const qid = ordinal >= 1 ? "b" : "a";
   const q = quarterQuote(ct, qid);
-  return q ? tr(quarterQuoteKey(ct, qid), quoteDisplay(q)) : "";
+  // The LOC row ships the quote's ORIGINAL script (Arabic/CJK/Greek/…) which the dialog font can't draw,
+  // so guard the composed line — the in-game Locale.compose path skips quoteDisplay's own renderable pass.
+  return q ? renderableLine(tr(quarterQuoteKey(ct, qid), quoteDisplay(q))) : "";
 }
 
 /**
@@ -406,6 +411,11 @@ function accrueContestedStrain(owner, turn) {
  * benefit (+) and drawback (−) each quarter grants ongoing. Applied fresh each turn (mirroring the
  * assimilation cost loop) so the effect actually persists and reads in the city's yields, and so a
  * change-of-hands needs no reversal — the current tile record is the single source of truth.
+ *
+ * A quarter whose origin has its ENCLAVE IMPROVEMENT BUILT in that city is SKIPPED: the improvement's
+ * native Constructible_YieldChanges row is then the reward, and granting the stance yield on top would
+ * pay twice for one enclave (roadmap §22a). The stance grant is the "recognized but unbuilt" reward and
+ * steps aside once the enclave actually stands. The index is read once per turn, not once per quarter.
  * @param {number} owner Local player id.
  */
 function applyOwnerQuarterYields(owner) {
@@ -443,5 +453,5 @@ export function tickContestedQuarters(_signals) {
 // Test hook: the pure decision pieces.
 export const __test = {
   resolveApplied, pickCandidate, candidateFromSignal, observeQuarterDwell, quarterView, accrueContestedStrain,
-  tileKeyOf, enclaveCountForCiv, MAX_ENCLAVES_PER_CIV
+  tileKeyOf, enclaveCountForCiv, MAX_ENCLAVES_PER_CIV, applyOwnerQuarterYields
 };

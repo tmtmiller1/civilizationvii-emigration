@@ -16,6 +16,12 @@ export const CategoryData: any;
 export const InputEngineEventName: any;
 export const FocusManager: any;
 
+// Production-chooser panel class the enclave gate decorates. The real game
+// module (base-standard/.../panel-production-chooser.js) exports this as a
+// NAMED export (`export { ProductionChooserScreen }`), so the mod's named
+// import is runtime-correct; declared here so the untyped stub matches.
+export const ProductionChooserScreen: any;
+
 // ui-next plot-tooltip visibility signal setter, used by the Ethnicity lens to
 // suppress the base plot tooltip while the lens (and its own panel) is active.
 export const SetIsPlotTooltipVisible: any;

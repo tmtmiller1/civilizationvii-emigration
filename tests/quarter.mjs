@@ -25,7 +25,7 @@ globalThis.Players = {
 const quarter = await import("/emigration/ui/emigration-quarter.js");
 const stateMod = await import("/emigration/ui/emigration-quarter-state.js");
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
-const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCountForCiv, MAX_ENCLAVES_PER_CIV } = quarter.__test;
+const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCountForCiv, MAX_ENCLAVES_PER_CIV, applyOwnerQuarterYields } = quarter.__test;
 
 // ── resolveApplied: CONFIG amounts, null yields contribute nothing ──────────
 {
@@ -95,6 +95,30 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
   stateMod.putQuarter("73,73", { civ: 5, originCiv: null, owner: 9, optionId: "a", turn: 5, applied: ap, contested: false, contestedTurn: -999 });
   assert.equal(enclaveCountForCiv(9, 5, null, null), 1, "legacy record with no CivilizationType falls back to origin player id");
   assert.equal(MAX_ENCLAVES_PER_CIV, 2, "the per-civ enclave cap is two");
+}
+
+// ── stance grant: every established quarter pays its "recognized" reward each pass ──
+// (The old "built enclave replaces the stance grant" path was removed with the cultural-enclave BUILD
+//  feature; nothing is ever built now, so every established quarter always pays its stance grant.)
+{
+  const applied = { benefitYield: "YIELD_CULTURE", benefitAmount: 2, penaltyYield: "YIELD_HAPPINESS", penaltyAmount: 1 };
+  // A FRESH host (11), so the quarters seeded for host 0 above cannot leak into the grant tally.
+  stateMod.putQuarter("80,80", { civ: 2, originCiv: "CIVILIZATION_ROME", owner: 11, optionId: "a", turn: 5, applied, contested: false, contestedTurn: -999 });
+  stateMod.putQuarter("81,81", { civ: 3, originCiv: "CIVILIZATION_GREECE", owner: 11, optionId: "a", turn: 5, applied, contested: false, contestedTurn: -999 });
+
+  // grantSigned resolves the yield KEY through YieldTypes before granting, so the stub must supply it.
+  globalThis.YieldTypes = { YIELD_CULTURE: "yt-culture", YIELD_HAPPINESS: "yt-happiness" };
+
+  /** @type {{yield:string, amount:number}[]} */
+  let granted = [];
+  const realPlayers = globalThis.Players;
+  globalThis.Players = { grantYield: (_pid, y, amount) => { granted.push({ yield: y, amount }); } };
+
+  applyOwnerQuarterYields(11);
+  // Both quarters pay their +2 Culture / -1 Happiness stance grant: 2 quarters x 2 yields = 4.
+  assert.equal(granted.length, 4, "every established quarter's stance grant pays (Roman and Greek)");
+
+  globalThis.Players = realPlayers;
 }
 
 console.log("quarter harness passed");

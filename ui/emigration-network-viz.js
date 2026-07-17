@@ -20,6 +20,8 @@ import {
   getSampleData
 } from "/emigration/ui/emigration-settings.js";
 import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
+import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { buildTimelineEvents } from "/emigration/ui/emigration-timeline-events.js";
 import { makeTimeline, TIMELINE_CSS } from "/emigration/ui/emigration-network-timeline.js";
 import { installStageFit } from "/emigration/ui/emigration-network-fit.js";
 import { makeTooltip, wireEvents } from "/emigration/ui/emigration-network-interact.js";
@@ -28,6 +30,7 @@ import { makeTooltip, wireEvents } from "/emigration/ui/emigration-network-inter
 // (nodes seed clustered in the centre; the buffer is 2x these for crispness).
 export const WX = 1120;
 export const WY = 560;
+
 // Scaled Pop mode: a FIXED people-per-dot so the dot count tracks REAL population size (a bigger civ /
 // a bigger migration = more dots), rather than always squeezing the whole world into a fixed budget.
 // Capped at SCALED_DOT_CAP so a huge late-game world can't spawn an unrenderable number of dots, past
@@ -220,6 +223,7 @@ function causesPresent(frames) {
   }
   return order.filter((c) => seen.has(c));
 }
+
 
 /**
  * Create the (2x-resolution) canvas element.
@@ -622,6 +626,7 @@ function runLoop(canvas, ctx, holder) {
   else paint(ctx, holder.scene);
 }
 
+
 /**
  * Create the 2x canvas + scaled 2D context (ctx is null if the environment has no 2D context).
  * @returns {{canvas:HTMLCanvasElement, ctx:CanvasRenderingContext2D|null}} Canvas + context.
@@ -638,13 +643,14 @@ export function setupCanvas() {
  * @param {*[]} frames Frames.
  * @param {*} holder Render holder (gets `tickPlayback`).
  * @param {(i:number, noAnim?:boolean)=>void} activate Apply a frame (noAnim = place dots statically).
+ * @param {*[]} [events] War/disaster specs to pin onto the scrubber.
  * @returns {*} The timeline handle (or null for a single frame).
  */
-function setupPlayback(frames, holder, activate) {
+function setupPlayback(frames, holder, activate, events) {
   /** @type {*} */
   const pb = { playing: false, ticks: 0, idx: frames.length - 1, speedMul: 1 };
   holder.pb = pb;
-  const timeline = makeTimeline(frames, pb, activate);
+  const timeline = makeTimeline(frames, pb, activate, events);
   holder.tickPlayback = () => {
     if (!timeline || !pb.playing) return;
     const interval = Math.max(4, Math.round(PLAY_INTERVAL / (pb.speedMul || 1)));
@@ -752,6 +758,22 @@ export function timelineNote() {
 }
 
 /**
+ * The war/disaster event specs for this render, in the frame-index space of `frames` (the FILTERED
+ * list this view actually draws — positioning against the unfiltered history would shift every pin).
+ * Sample data ships specs already positioned against its own synthetic timeline; live data ships raw
+ * turn-stamped records, placed here.
+ * @param {*} section The network section. @param {*[]} frames The filtered frames.
+ * @returns {*[]} Event specs `{kind, label, from, to, civs}`.
+ */
+function sectionEvents(section, frames) {
+  const pre = (section && section.events) || [];
+  if (pre.length) return pre;
+  const recs = (section && section.eventRecords) || null;
+  if (!recs) return [];
+  return buildTimelineEvents(frames, recs.disasters, recs.wars);
+}
+
+/**
  * Build the full viz (canvas + controls + loop) for a usable set of frames.
  * @param {HTMLElement} container Card body.
  * @param {*[]} frames Usable timeline frames.
@@ -792,7 +814,7 @@ function buildViz(container, frames, events, rebuildAll, controlsHost) {
   };
   const tip = makeTooltip(wrap);
   const legendBox = makeLegendBox(lastNet, colorMap, state, causesPresent(frames), markDirty);
-  const timeline = setupPlayback(frames, holder, activate);
+  const timeline = setupPlayback(frames, holder, activate, CONFIG.timelineEventPins ? events : []);
   mountChrome({
     wrap, lensTabs: makeLensTabs(state, legendBox.rebuild, rebuildAll), canvas, controlsHost,
     legend: legendBox.box, slider: (timeline && timeline.root) || timelineNote(), unit: holder.unit
@@ -825,6 +847,6 @@ export function renderNetworkViz(container, section, controlsHost, rebuildAll) {
     return;
   }
   injectStyle();
-  buildViz(container, frames, (section && section.events) || [],
+  buildViz(container, frames, sectionEvents(section, frames),
     rebuildAll || (() => renderNetworkViz(container, section, controlsHost)), controlsHost);
 }

@@ -12,12 +12,16 @@
 
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { ownerCitySnapshots } from "/emigration/ui/emigration-city-readout-data.js";
-import { borderStance } from "/emigration/ui/emigration-borders.js";
+import { borderStance, immigrationOpenness } from "/emigration/ui/emigration-borders.js";
+import { diverseCityRanking } from "/emigration/ui/emigration-diversity.js";
 import { civAdjective } from "/emigration/ui/emigration-naming.js";
+import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 import { getSampleData, getSnapshotInterval } from "/emigration/ui/emigration-settings.js";
 import { sampleDashboard } from "/emigration/ui/emigration-demo-data.js";
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
+import { warEvents } from "/emigration/ui/emigration-war.js";
 import { civHidden, effectivePolicy } from "/emigration/ui/emigration-governance.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
 
@@ -105,6 +109,19 @@ function aggregateByCause(pids) {
 
 /** @returns {Record<string, number>} An empty by-event map (fallback when an accessor is absent). */
 const _noEvents = () => ({});
+
+/**
+ * The notable disaster onsets (age-local turn + age + year + name + severity), read off the live
+ * EmigrationData global the same way the other tallies are. Empty when the accessor is absent (an
+ * older core, or before the stats module has installed the API).
+ * @returns {*[]} Disaster onset records.
+ */
+function gatherDisasterEvents() {
+  const D = /** @type {*} */ (globalThis).EmigrationData || {};
+  if (typeof D.disasterEvents !== "function") return [];
+  const list = D.disasterEvents();
+  return Array.isArray(list) ? list : [];
+}
 
 /**
  * Per-civ breakdown of EMIGRATION and DEATHS by the SPECIFIC event behind them (a particular war /
@@ -580,6 +597,64 @@ function gatherSettlements(me, pops) {
  * the cross-civ flow network, the local player's per-city pressure snapshots, and per-city flows.
  * @returns {*} Gathered inputs.
  */
+/** Colour for the merged "Unknown" (spoiler-masked) slice of a composition bar: a neutral grey. */
+const UNKNOWN_ORIGIN_COLOR = "#6d6a63";
+
+/**
+ * One settlement's origin breakdown, resolved for display: each origin's civ NAME and banner COLOUR,
+ * share-sorted. Mirrors the city readout's `resolveComposition` masking exactly — origins from
+ * policy-hidden (unmet) civs merge into ONE "Unknown" slice rather than being named, so a visible
+ * settlement's bar never reveals a civ the player hasn't met.
+ * @param {{civ:number, share:number}[]} civs The raw origin shares.
+ * @returns {{name:string, share:number, color:string}[]} Display slices, largest first.
+ */
+function diversityParts(civs) {
+  /** @type {{name:string, share:number, color:string}[]} */
+  const parts = [];
+  let unknown = 0;
+  for (const c of civs || []) {
+    if (civHidden(c.civ)) unknown += c.share;
+    else parts.push({ name: civAdjective(c.civ), share: c.share, color: civDisplayColor(c.civ, "#8a8f98") });
+  }
+  if (unknown > 0) {
+    parts.push({ name: loc("LOC_EMIG_DIVERSE_UNKNOWN", "Unknown"), share: unknown, color: UNKNOWN_ORIGIN_COLOR });
+  }
+  parts.sort((a, b) => b.share - a.share);
+  return parts;
+}
+
+/**
+ * The "most diverse cities" ranking (Features S/T) over the composition ledger, with the dashboard's
+ * spoiler mask applied: a settlement owned by a civ the visibility policy hides never appears, and a
+ * hidden origin is never NAMED as a city's plurality/majority (the row falls back to "no majority").
+ * The local player's own cities are never hidden, so the ranking is populated from turn one.
+ * Also resolves each row's population both ways (raw points + scaled people), so the table can honour
+ * the shared Numbers (Scaled / Civ) mode like every other count-bearing view.
+ * @returns {*[]} Ranked rows, each carrying resolved `parts`, `pts`/`people` and a masked `dominantName`.
+ */
+function gatherDiversity() {
+  const D = /** @type {*} */ (globalThis).EmigrationData || {};
+  const t = monoTurn();
+  const me = localId();
+  // limit 0 = NO cap: the view needs every settlement for its "All settlements" list, and applies
+  // CONFIG.diversityRows itself to the "most diverse" table on top. Capping here would truncate both.
+  const rows = diverseCityRanking({
+    openness: immigrationOpenness,
+    inbound: (pid) => (typeof D.grossInCumFor === "function" ? D.grossInCumFor(pid) || 0 : 0),
+    visible: (pid) => !civHidden(pid)
+  }, 0);
+  return rows.map((r) => ({
+    ...r,
+    parts: diversityParts(r.civs),
+    pts: Math.round(r.total || 0),
+    people: scaleCityPopulation(r.total || 0, t),
+    // The owner is always a visible civ (the ranking filtered hidden ones out), so naming it is safe.
+    ownerName: civAdjective(r.owner),
+    own: me != null && r.owner === me,
+    dominantName: r.dominantCiv != null && !civHidden(r.dominantCiv) ? civAdjective(r.dominantCiv) : null
+  }));
+}
+
 function gatherFresh() {
   if (getSampleData()) return sampleDashboard(getSnapshotInterval());
   const pids = inPlayCivs();
@@ -594,9 +669,15 @@ function gatherFresh() {
     pops,
     intra, // intra-civ (city→city) moves, split from the same flow matrix as the cross-civ network
     history: gatherHistory(pops),
-    events: [], // live disaster/war event labels are a future pull; sample data supplies them
+    // Pre-positioned event specs are the SAMPLE path only (demo data defines them as fractions of a
+    // synthetic timeline). Live events are turn-stamped records instead: they carry an age-local turn
+    // and must be positioned against the viz's FINAL frame list, which the network view filters after
+    // this model is built — so the raw records travel through and the view places them.
+    events: [],
+    eventRecords: { disasters: gatherDisasterEvents(), wars: warEvents() },
     cities: me != null ? ownerCitySnapshots(me) : [],
-    myCities: gatherSettlements(me, pops)
+    myCities: gatherSettlements(me, pops),
+    diversity: gatherDiversity()
   };
   return model;
 }

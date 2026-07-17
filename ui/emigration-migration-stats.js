@@ -99,7 +99,35 @@ let _recent = [];
 
 /** @type {MigStatsState | null} */
 let _s = null;
-registerCacheReset(() => { _s = null; _recent = []; });
+// The turn `_s` was last (re)read from persistence. The recorder (gameplay context) and the readers
+// (City Details Departing/Arriving, the Demographics graphs, the feedback layer) run in SEPARATE V8
+// contexts, each with its own module instance, sharing these tallies ONLY through the persisted blob.
+// A reader that cached `_s` for the module lifetime would freeze on the tallies as of its first read
+// and never see what the recorder banks turn after turn — so City Details could show a frozen
+// Departing/Arriving list beside a Population-origins block that stays fresh (that one reloads per
+// turn; see emigration-composition.js). Re-reading on each turn advance keeps every reader at most one
+// turn stale. Harmless for the recorder: it save()s every pass, so a reload re-reads its own write.
+let _loadedTurn = -1;
+registerCacheReset(() => { _s = null; _loadedTurn = -1; _recent = []; });
+
+/**
+ * Carry the outgoing state's per-sample watermarks onto a freshly reloaded one. The samplers
+ * (netDeltaForPlayer, sampleOut/In, sampleRefugees*, sample*ByCause) advance a watermark in memory and
+ * do NOT save, so in a reader context they live only in `_s`. Without this, each turn's reload would
+ * rewind them to the recorder's persisted values and the graphs would replay flow already charted.
+ * @param {MigStatsState} next The reloaded state (mutated).
+ * @param {MigStatsState|null} prev The state being replaced.
+ */
+function carryWatermarks(next, prev) {
+  if (!prev) return;
+  next.lastSampled = prev.lastSampled;
+  next.wmOut = prev.wmOut;
+  next.wmIn = prev.wmIn;
+  next.wmRefugees = prev.wmRefugees;
+  next.wmRefugeesIn = prev.wmRefugeesIn;
+  next.wmOutByCause = prev.wmOutByCause;
+  next.wmInByCause = prev.wmInByCause;
+}
 
 /**
  * The raw persisted state string, or null.
@@ -182,12 +210,16 @@ function normalize(o) {
 }
 
 /**
- * Load (once) the persisted tallies.
+ * Load the persisted tallies, re-reading once per turn so a reader context picks up the recorder's
+ * newer saves (see `_loadedTurn`). Within a turn the cached state is reused, so a pass never churns.
  * @returns {MigStatsState} State.
  */
 function load() {
   resetCachesOnNewGame();
-  if (_s) return _s;
+  const turn = gameTurn();
+  if (_s && _loadedTurn === turn) return _s;
+  const prev = _s;
+  _loadedTurn = turn;
   try {
     const raw = readStored();
     if (raw) {
@@ -195,12 +227,16 @@ function load() {
       if (o && typeof o === "object") {
         _s = normalize(o);
         migrateFlowSchema(_s);
+        carryWatermarks(_s, prev);
         return _s;
       }
     }
   } catch (_) {
     /* ignore */
   }
+  // Nothing readable (off-engine, or before the first save): keep the state we already have rather
+  // than wiping live tallies on a turn tick.
+  if (prev) return (_s = prev);
   _s = normalize({});
   _s.flowSchema = 2; // fresh state is already delta-encoded
   return _s;
@@ -926,24 +962,35 @@ export function immigrationByCause(pid) {
 }
 
 /**
+ * Cumulative → per-sample delta for one player's per-cause map, advancing its per-cause watermarks
+ * (the nested-map counterpart of sampleDelta).
+ * @param {Record<string, Record<string, number>>} cumByCause Cumulative map, keyed by player.
+ * @param {Record<string, Record<string, number>>} wmByCause Watermark map, keyed by player.
+ * @param {number} pid Player id.
+ * @returns {Record<string, number>} Flow since the last sample, by cause.
+ */
+function sampleByCause(cumByCause, wmByCause, pid) {
+  const cum = cumByCause[pid] || {};
+  if (!wmByCause[pid]) wmByCause[pid] = {};
+  const wmRef = wmByCause[pid];
+  /** @type {Record<string, number>} */
+  const result = {};
+  for (const cause in cum) {
+    const cur = cum[cause] || 0;
+    result[cause] = cur - (wmRef[cause] || 0);
+    wmRef[cause] = cur;
+  }
+  return result;
+}
+
+/**
  * Per-cause emigration sample delta for a player this turn.
  * @param {number} pid Player id.
  * @returns {Record<string, number>} Emigration sample by cause.
  */
 export function sampleOutByCause(pid) {
   const s = load();
-  const out = s.outByCause[pid] || {};
-  if (!s.wmOutByCause[pid]) s.wmOutByCause[pid] = {};
-  const wmRef = s.wmOutByCause[pid];
-  /** @type {Record<string, number>} */
-  const result = {};
-  for (const cause in out) {
-    const cur = out[cause] || 0;
-    const prev = wmRef[cause] || 0;
-    wmRef[cause] = cur;
-    result[cause] = cur - prev;
-  }
-  return result;
+  return sampleByCause(s.outByCause, s.wmOutByCause, pid);
 }
 
 /**
@@ -953,18 +1000,7 @@ export function sampleOutByCause(pid) {
  */
 export function sampleInByCause(pid) {
   const s = load();
-  const inn = s.inByCause[pid] || {};
-  if (!s.wmInByCause[pid]) s.wmInByCause[pid] = {};
-  const wmRef = s.wmInByCause[pid];
-  /** @type {Record<string, number>} */
-  const result = {};
-  for (const cause in inn) {
-    const cur = inn[cause] || 0;
-    const prev = wmRef[cause] || 0;
-    wmRef[cause] = cur;
-    result[cause] = cur - prev;
-  }
-  return result;
+  return sampleByCause(s.inByCause, s.wmInByCause, pid);
 }
 
 // Expose per-civ cumulative tallies for the Demographics war tooltip + the feedback layer

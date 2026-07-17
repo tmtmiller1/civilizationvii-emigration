@@ -18,6 +18,17 @@ const requiredScripts = [
   "test:hypotheticals",
   "test:window-state",
   "test:transit-defers-persistence",
+  // Feature D (timeline event pins): the pin layer + the war/disaster → frame positioning.
+  "test:timeline-events",
+  "test:network-timeline-pins",
+  // Features S/T (diversity ranking + cosmopolitanism): the metrics, ranking and view rows.
+  "test:diversity",
+  // §15.0a (the explain substrate): the reconstruction identities that pin the push/pull
+  // decomposition to the real adjustedPull()/prosperity(). L/M/N/P all read this.
+  "test:explain",
+  // Feature L (the explainer surface): the honesty rule made testable - weights are shares, and
+  // permeability/community stay OUT of them.
+  "test:explain-view",
   "release:gate"
 ];
 
@@ -32,7 +43,12 @@ const requiredVerifyRuns = [
   "test:civ-tuning-coverage",
   "test:hypotheticals",
   "test:window-state",
-  "test:transit-defers-persistence"
+  "test:transit-defers-persistence",
+  "test:timeline-events",
+  "test:network-timeline-pins",
+  "test:diversity",
+  "test:explain",
+  "test:explain-view"
 ];
 
 const missing = requiredScripts.filter((name) => !Object.prototype.hasOwnProperty.call(scripts, name));

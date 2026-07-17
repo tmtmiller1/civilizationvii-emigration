@@ -143,6 +143,10 @@ function srcInCrisis(src) {
  * prosperity (so its people leave) and a flee vector (so they head away from the invader) - both
  * folded into the score, not a hard block. Exported for the characterization test. Returns null
  * when the destination is ineligible or the net pull is not positive.
+ *
+ * Hot path: this runs for every (source × destination) pair, so it stays a flat accumulate with an
+ * early bail. {@link pullBreakdown} mirrors these exact terms for the explanation surfaces - edit
+ * the two together.
  * @param {*} src Source signal.
  * @param {*} dest Candidate destination signal.
  * @param {{x:number, y:number}|null} flee The source's flee vector, or null.
@@ -174,6 +178,71 @@ export function adjustedPull(src, dest, flee, ownerPop, aggressors) {
   // PERMEABILITY: openness × clamped relationship factors (Open Borders / alliance / war).
   pull *= clamp(permeability(src, dest), CONFIG.permeFloor, CONFIG.permeCeil);
   return pull > 0 ? pull : null;
+}
+
+/** @typedef {{key:string, raw:number}} PullTerm One additive term of the pull score, in raw points. */
+
+/**
+ * @typedef {{terms:PullTerm[], scale:number, reject:string|null}} PullBreakdown
+ *   `terms` are the ADDITIVE terms; `scale` is the clamped PERMEABILITY multiplier they are all
+ *   subject to; `reject` is null when the move is viable, else why {@link adjustedPull} returned null.
+ */
+
+/**
+ * The terms {@link adjustedPull} scores, itemized for the explanation surfaces
+ * (emigration-explain.js). Identity: when `reject` is null,
+ * `adjustedPull() === (Σ terms.raw) × scale` (within float re-association ε — the three geographic
+ * terms are summed separately here but as one `geoAdjust()` there).
+ *
+ * This deliberately MIRRORS `adjustedPull` rather than being called by it: `adjustedPull` runs for
+ * every (source × destination) pair of every pass and bails early once the gradient is non-positive,
+ * so it must not pay for an itemized array. `pullBreakdown` is on-demand (one hovered city). The
+ * mirror is pinned by the reconstruction case in tests/explain.mjs — if either side gains a term and
+ * the other doesn't, that test fails. Keep the two functions adjacent and edit them together.
+ * @param {*} src Source signal.
+ * @param {*} dest Candidate destination signal.
+ * @param {{x:number, y:number}|null} flee The source's flee vector, or null.
+ * @param {Record<number, number>|null} ownerPop Per-owner total population (congestion).
+ * @param {Set<number>|null} aggressors The source's aggressors (war refugees only).
+ * @returns {PullBreakdown} The itemized pull.
+ */
+export function pullBreakdown(src, dest, flee, ownerPop, aggressors) {
+  const crossCiv = dest.owner !== src.owner;
+  const geo = geoBreakdown(src, dest, flee, aggressors);
+  const extra = dest.population > src.population ? dest.population - src.population : 0;
+  const terms = [
+    { key: "gradient", raw: dest.pros - src.pros },
+    { key: "tilt", raw: clamp(tiltFor(src, dest), -CONFIG.tiltCap, CONFIG.tiltCap) },
+    { key: "reluctance", raw: -CONFIG.baseReluctance },
+    { key: "crowding", raw: -(CONFIG.perExtraPop * extra) },
+    { key: "cityState", raw: dest.isCityState || src.isCityState ? -CONFIG.cityStateBarrier : 0 },
+    { key: "crossCiv", raw: crossCiv ? -crossCivBlock(src) : 0 },
+    { key: "dominance", raw: crossCiv ? -dominanceFor(dest, ownerPop) : 0 },
+    { key: "distance", raw: geo.distance },
+    { key: "aggressor", raw: geo.aggressor },
+    { key: "flight", raw: geo.flight },
+    { key: "congestion", raw: -congestionFor(dest, ownerPop) }
+  ];
+  const scale = clamp(permeability(src, dest), CONFIG.permeFloor, CONFIG.permeCeil);
+  return { terms, scale, reject: pullReject(src, dest, terms, scale) };
+}
+
+/**
+ * Why {@link adjustedPull} would return null for this pair, mirroring its gates in the same order,
+ * or null when the move is viable.
+ * @param {*} src Source signal.
+ * @param {*} dest Candidate destination signal.
+ * @param {PullTerm[]} terms The additive terms (gradient and tilt first).
+ * @param {number} scale The clamped permeability.
+ * @returns {string|null} The rejection reason, or null when viable.
+ */
+function pullReject(src, dest, terms, scale) {
+  if (dest.key === src.key) return "same-city";
+  if (terms[0].raw + terms[1].raw <= 0) return "no-gradient";
+  if (dest.owner !== src.owner && !CONFIG.crossCivEnabled) return "cross-civ-disabled";
+  let sum = 0;
+  for (const t of terms) sum += t.raw;
+  return sum * scale > 0 ? null : "outweighed";
 }
 
 /**
@@ -379,6 +448,34 @@ export function deriveDeathReasons(src, hasRefuge) {
 }
 
 /**
+ * @typedef {{flee:{x:number,y:number}|null, ownerPop:Record<number,number>|null,
+ *   aggressors:Set<number>|null}} PullContext The per-source inputs every candidate pair is scored
+ *   against: the flee vector (away from the nearest invader), the population map (congestion and the
+ *   anti-snowball brake), and the aggressors war refugees avoid.
+ */
+
+/**
+ * Build the per-source scoring context once, for reuse across every candidate destination.
+ *
+ * {@link bestDestination} needs it to score a pass; the explanation surfaces
+ * (emigration-explain.js and its consumers) need the SAME context, or a hovered city would be
+ * explained against different inputs than the ones the sim decided with — an aggressor row would
+ * read 0 for a besieged city simply because the tooltip forgot to look up its aggressors. Both go
+ * through here so that cannot drift.
+ * @param {*} src Ranked source signal.
+ * @param {*[]} ranked All ranked signals.
+ * @param {Record<number, number>|null} [ownerPop] Per-owner total population (congestion).
+ * @returns {PullContext} The context.
+ */
+export function pullContext(src, ranked, ownerPop) {
+  return {
+    flee: fleeVector(src, ranked),
+    ownerPop: ownerPop || null,
+    aggressors: warRefugeeAggressors(src)
+  };
+}
+
+/**
  * Find the best destination for a source: the city with the greatest adjusted pull. The source's
  * flee vector (away from its nearest invader, if any) is computed once and shared across all
  * candidates. The winner carries its `reasons` (the "why here" tags) for the explanation surfaces.
@@ -389,18 +486,17 @@ export function deriveDeathReasons(src, hasRefuge) {
  * @returns {{dest:*, adjusted:number, reasons?:string[]}|null} Best destination + its adjusted pull + reasons.
  */
 export function bestDestination(src, ranked, ownerPop, acceptDest) {
-  const flee = fleeVector(src, ranked);
-  const aggressors = warRefugeeAggressors(src);
+  const { flee, ownerPop: pop, aggressors } = pullContext(src, ranked, ownerPop);
   /** @type {{dest:*, adjusted:number, reasons?:string[]}|null} */
   let best = null;
   for (const dest of ranked) {
     if (typeof acceptDest === "function" && !acceptDest(dest)) continue;
-    const adjusted = adjustedPull(src, dest, flee, ownerPop, aggressors);
+    const adjusted = adjustedPull(src, dest, flee, pop, aggressors);
     if (adjusted !== null && (!best || adjusted > best.adjusted)) {
       best = { dest, adjusted };
     }
   }
-  if (best) best.reasons = deriveMoveReasons(src, best.dest, flee, ownerPop, aggressors);
+  if (best) best.reasons = deriveMoveReasons(src, best.dest, flee, pop, aggressors);
   return best;
 }
 

@@ -22,6 +22,71 @@
         <Replace Tag="LOC_EMIG_ADVGRP_OUTLET" Language="de_DE"><Text>Ventil (Schwund)</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_DISASTER" Language="de_DE"><Text>Katastrophen</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_NOTIFY" Language="de_DE"><Text>Benachrichtigungen</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_VISUALS" Language="de_DE"><Text>Visuals</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_TLPINS" Language="de_DE"><Text>Timeline event pins</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_TLPINS_D" Language="de_DE"><Text>Pin the wars and disasters that drove migration onto the migration network's playback timeline, so a spike can be traced back to what caused it. Hover a pin to name the event; click it to scrub there. Display only — it never changes who moves. Only events recorded from now on can be pinned: wars and disasters from earlier in an existing save were never stamped with the turn they happened.</Text></Replace>
+        <Replace Tag="LOC_EMIG_TL_PIN_DISASTER" Language="de_DE"><Text>Disaster</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADVGRP_READOUT" Language="de_DE"><Text>Anzeigen &amp; Ranglisten</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIVERSITY" Language="de_DE"><Text>Rangliste der vielfältigsten Städte</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIVERSITY_D" Language="de_DE"><Text>Fügt dem Wanderungs-Dashboard den Reiter "Vielfalt" hinzu, der Ihre Siedlungen danach ordnet, wie gemischt die Herkunft ihrer Menschen ist – die Zivilisationen, aus denen sie ursprünglich stammen – mit einem farbcodierten Balken je Siedlung, der diese Mischung im Verhältnis zur Bevölkerung zeigt. Reine Anzeige: liest die ohnehin erfassten Bevölkerungsherkünfte, ändert nichts daran, wer abwandert, und gewährt keine Erträge.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_COSMO" Language="de_DE"><Text>Weltoffenheits-Bezeichnung</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_COSMO_D" Language="de_DE"><Text>Fügt der Vielfalts-Rangliste die Spalte "Charakter" hinzu, die jede Siedlung als Homogen, Lokale Mehrheit, Gemischte Stadt, Kosmopolitisches Zentrum oder Weltstadt zusammenfasst – aus Herkunftsmischung, Grenzoffenheit und Zuzug. Rein beschreibend: gewährt keine Erträge und beeinflusst die Wanderung nicht.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIVERSITYROWS" Language="de_DE"><Text>Vielfalts-Rangliste: angezeigte Zeilen</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIVERSITYROWS_D" Language="de_DE"><Text>Wie viele Siedlungen die Rangliste "Vielfältigste Städte" oben im Reiter auflistet. Die vollständige Liste "Alle Siedlungen" darunter zeigt unabhängig davon stets alle Siedlungen. Nur wirksam, wenn die Rangliste aktiv ist.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_EXPLAINER" Language="de_DE"><Text>Wanderungs-Erklärung</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_EXPLAINER_D" Language="de_DE"><Text>Zeigt im Siedlungsbericht und im Tooltip der Wohlstands-Lupe eine "Warum?"-Aufschlüsselung: welche Belastungen die Menschen vertreiben und was sie an ihr Ziel zieht, jeweils als Anteil am Gesamten. Reine Anzeige: gibt die Abwägung wieder, die der Mod ohnehin zum Bewegen der Menschen nutzt, ändert nichts daran, wer abwandert, und gewährt keine Erträge.</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_LEAVING" Language="de_DE"><Text>Warum die Menschen fortziehen</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_DRAWN" Language="de_DE"><Text>Wohin es sie zieht</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_DRAWN_TO" Language="de_DE"><Text>Warum es sie nach {1_Dest} zieht</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_COMMUNITY" Language="de_DE"><Text>{1_Civ} Gemeinschaft dort: {2_Pct} %</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_PERMEABILITY_NOTE" Language="de_DE"><Text>{1_Label}: ×{2_Factor}</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_GRADIENT" Language="de_DE"><Text>Wohlstandsgefälle</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_TILT" Language="de_DE"><Text>Gezielte Anziehung</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_RELUCTANCE" Language="de_DE"><Text>Widerwille umzuziehen</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CROWDING" Language="de_DE"><Text>Überfüllung</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CITY_STATE" Language="de_DE"><Text>Stadtstaat-Barriere</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CROSS_CIV" Language="de_DE"><Text>Fremde Grenze</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_DOMINANCE" Language="de_DE"><Text>Vorherrschende Macht</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_DISTANCE" Language="de_DE"><Text>Entfernung</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_AGGRESSOR" Language="de_DE"><Text>Meidung des Angreifers</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_FLIGHT" Language="de_DE"><Text>Weg von den Kämpfen</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CONGESTION" Language="de_DE"><Text>Überlastung</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_PERMEABILITY" Language="de_DE"><Text>Grenzdurchlässigkeit</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_ECONOMY" Language="de_DE"><Text>Wirtschaft</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS" Language="de_DE"><Text>Zufriedenheit</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_POPULATION" Language="de_DE"><Text>Bevölkerungsgröße</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CIV_BIAS" Language="de_DE"><Text>Lokaler Charakter</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_POLITY" Language="de_DE"><Text>Regierung &amp; Feierlichkeiten</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_VIOLENCE" Language="de_DE"><Text>Kämpfe</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_DISASTER" Language="de_DE"><Text>Katastrophe</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_SIEGE" Language="de_DE"><Text>Belagerung</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_STARVATION" Language="de_DE"><Text>Hungersnot</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_UNREST" Language="de_DE"><Text>Unruhen</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_WAR_WEARINESS" Language="de_DE"><Text>Kriegsmüdigkeit</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_DIVERSITY" Language="de_DE"><Text>Vielfältigste Städte</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_DIVERSITY" Language="de_DE"><Text>Vielfalt</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_TITLE" Language="de_DE"><Text>Vielfältigste Städte</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_SUBTITLE" Language="de_DE"><Text>Die Menschen jeder Siedlung, eingefärbt nach der Zivilisation, aus der sie ursprünglich stammen. Die Balkenbreite zeigt die Bevölkerung.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_CITY" Language="de_DE"><Text>Siedlung</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_ORIGINS" Language="de_DE"><Text>Herkunft ihrer Menschen</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_POP" Language="de_DE"><Text>Bevölkerung</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_MIX" Language="de_DE"><Text>Mischung</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_CHARACTER" Language="de_DE"><Text>Charakter</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ORIGINS" Language="de_DE"><Text>{1_N} Herkünfte</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ORIGIN_ONE" Language="de_DE"><Text>1 Herkunft</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_UNKNOWN" Language="de_DE"><Text>Unbekannt</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ALL_TITLE" Language="de_DE"><Text>Alle Siedlungen</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ALL_SUB" Language="de_DE"><Text>Alle für Sie sichtbaren Siedlungen, nach Zivilisation.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_YOUR_CIV" Language="de_DE"><Text>{1_Civ} (Sie)</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_NO_MAJORITY" Language="de_DE"><Text>keine Mehrheit</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_PLURALITY" Language="de_DE"><Text>{1_Civ} relative Mehrheit</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_MAJORITY" Language="de_DE"><Text>{1_Civ} Mehrheit</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_HOMOGENEOUS" Language="de_DE"><Text>Homogen</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_LOCAL" Language="de_DE"><Text>Lokale Mehrheit</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_MIXED" Language="de_DE"><Text>Gemischte Stadt</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_CENTER" Language="de_DE"><Text>Kosmopolitisches Zentrum</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_WORLD" Language="de_DE"><Text>Weltstadt</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_DESC" Language="de_DE"><Text>Beschreibt, woher die Menschen jeder Siedlung stammen – nicht ihre Kulturviertel. Keine Erträge damit verbunden.</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET" Language="de_DE"><Text>Auswanderungsintensität</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_D" Language="de_DE"><Text>Gesamtintensität der Wanderung – legt fest, wie oft Menschen ziehen UND wie stark Kriege sie entwurzeln: die Obergrenzen pro Runde, die Größe der Kriegsflüchtlingswelle und die Verlustgrenze pro Stadt. Niedrig = sanft; Hoch = heftig. Änderungen werden innerhalb einer Runde wirksam. „Benutzerdefiniert“ behält deine erweiterten Werte unbeeinflusst. Für feinere Steuerung passe die einzelnen Regler in den erweiterten Einstellungen unten an.</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_CUSTOM" Language="de_DE"><Text>Benutzerdefiniert (Erweitert nutzen)</Text></Replace>
@@ -220,6 +285,7 @@
         <Replace Tag="LOC_EMIG_NETC_UNITS_TIP" Language="de_DE"><Text>Zwischen den eigenen Bevölkerungszahlen der Civ und skalierten Menschen wechseln</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="de_DE"><Text>Die Wiedergabe-Zeitleiste erscheint nach ein paar Runden, sobald es eine Bevölkerungshistorie zum Durchscrubben gibt.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="de_DE"><Text>{1_People} flohen aus {2_City}, nachdem eine Katastrophe zuschlug.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_DISASTER_TO" Language="de_DE"><Text>{1_People} fled {2_City} after disaster struck, and are bound for {3_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="de_DE"><Text>{1_People} gingen in {2_City} verloren, ohne Fluchtweg.</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_INTERNAL" Language="de_DE"><Text>(Interne Wanderung)</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="de_DE"><Text>(Externe Wanderung)</Text></Replace>
@@ -273,19 +339,26 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="de_DE"><Text>Diese Menschen sind für immer verloren.</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="de_DE"><Text>{1_Dest} zahlt etwa {2_Gold} Gold/Runde, um sie zu integrieren.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="de_DE"><Text>Einwanderungsfreundliche Haltung</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="de_DE"><Text>Heiße [icon:YIELD_POPULATION] Migranten aus aller Welt willkommen: Die Zuwanderung in deine Städte steigt um 50 %, und dein weltoffener Ruf bringt jede Runde [icon:YIELD_DIPLOMACY] Einfluss.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="de_DE"><Text>Heiße [icon:YIELD_POPULATION] Migranten aus aller Welt willkommen. Die Zuwanderung in deine Städte steigt um 50 %, und dein weltoffener Ruf bringt jede Runde [icon:YIELD_DIPLOMACY] Einfluss: +1, +2, dann +3 über die Zeitalter.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="de_DE"><Text>[icon:YIELD_POPULATION] Immigration to your cities rises by 50%, and you earn +2 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="de_DE"><Text>[icon:YIELD_POPULATION] Immigration to your cities rises by 50%, and you earn +3 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="de_DE"><Text>Einwanderungsfeindliche Haltung</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="de_DE"><Text>Schließe deine Grenzen vor der Welt. [icon:YIELD_POPULATION] Neuankömmlinge aus dem Ausland sinken auf 40 % (rund 60 % weniger), und deutlich weniger deiner eigenen Bürger ziehen zu rivalisierenden Zivilisationen ab. Eine mobilisierte Binnenwirtschaft bringt [icon:YIELD_PRODUCTION] Produktion, allerdings auf Kosten von [icon:YIELD_DIPLOMACY] Einfluss pro Runde.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="de_DE"><Text>Schließe deine Grenzen vor der Welt. [icon:YIELD_POPULATION] Neuankömmlinge aus dem Ausland sinken auf 40 % (rund 60 % weniger), und deutlich weniger deiner eigenen Bürger ziehen zu rivalisierenden Zivilisationen ab. Eine mobilisierte Binnenwirtschaft bringt [icon:YIELD_PRODUCTION] Produktion in jeder Stadt: +2, +3, dann +4 über die Zeitalter. Die Isolation kostet jede Runde [icon:YIELD_DIPLOMACY] Einfluss: -2, -3, dann -4 über die Zeitalter.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="de_DE"><Text>[icon:YIELD_POPULATION] Immigration falls to 40%, and 40% fewer of your own citizens leave for rival civilizations. Each city gains +3 [icon:YIELD_PRODUCTION] Production, at the cost of -3 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="de_DE"><Text>[icon:YIELD_POPULATION] Immigration falls to 40%, and 40% fewer of your own citizens leave for rival civilizations. Each city gains +4 [icon:YIELD_PRODUCTION] Production, at the cost of -4 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="de_DE"><Text>Talentanziehung</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="de_DE"><Text>[icon:YIELD_POPULATION] Neuankömmlinge stärken deine Forschung und bringen [icon:YIELD_SCIENCE] Wissenschaft, die je angezogenem Einwanderer um etwa +1,5 steigt, bis zu +12 pro Runde. Der Bonus verblasst, wenn die Zuwanderung endet.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="de_DE"><Text>[icon:YIELD_POPULATION] Neuankömmlinge stärken deine Forschung. Du erhältst +1 [icon:YIELD_SCIENCE] Wissenschaft, in der Moderne +2, dazu einen Wissenschaftsbonus, der je angezogenem Einwanderer um etwa +1,5 steigt, bis zu +12 pro Runde. Dieser Bonus verblasst, wenn die Zuwanderung endet.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="de_DE"><Text>[icon:YIELD_POPULATION] Gain +2 [icon:YIELD_SCIENCE] Science each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="de_DE"><Text>Kulturelle Anziehungskraft</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="de_DE"><Text>[icon:YIELD_POPULATION] Neuankömmlinge bereichern deine Kultur und bringen [icon:YIELD_CULTURE] Kultur, die je angezogenem Einwanderer um etwa +1,5 steigt, bis zu +12 pro Runde. Der Bonus verblasst, wenn die Zuwanderung endet.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="de_DE"><Text>[icon:YIELD_POPULATION] Neuankömmlinge bereichern deine Kultur. Du erhältst +1 [icon:YIELD_CULTURE] Kultur, in der Moderne +2, dazu einen Kulturbonus, der je angezogenem Einwanderer um etwa +1,5 steigt, bis zu +12 pro Runde. Dieser Bonus verblasst, wenn die Zuwanderung endet.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO" Language="de_DE"><Text>[icon:YIELD_POPULATION] Gain +2 [icon:YIELD_CULTURE] Culture each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="de_DE"><Text>Kommerzielle Anziehung</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="de_DE"><Text>[icon:YIELD_POPULATION] Neuankömmlinge füllen deine Märkte und bringen [icon:YIELD_GOLD] Gold, das je angezogenem Einwanderer um etwa +1,5 steigt, bis zu +12 pro Runde. Der Bonus verblasst, wenn die Zuwanderung endet.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="de_DE"><Text>[icon:YIELD_POPULATION] Neuankömmlinge füllen deine Märkte. Du erhältst +1 [icon:YIELD_GOLD] Gold, in der Moderne +2, dazu einen Goldbonus, der je angezogenem Einwanderer um etwa +1,5 steigt, bis zu +12 pro Runde. Dieser Bonus verblasst, wenn die Zuwanderung endet.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC_MO" Language="de_DE"><Text>[icon:YIELD_POPULATION] Gain +2 [icon:YIELD_GOLD] Gold each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="de_DE"><Text>Selektives Asyl</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="de_DE"><Text>Öffne deine Türen für Menschen, die vor Krieg und Katastrophe fliehen. Flüchtlinge werden stark zu dir hingezogen, die Verzweifeltsten zuerst, und dein humanitäres Ansehen bringt jede Runde [icon:YIELD_DIPLOMACY] Einfluss.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="de_DE"><Text>Öffne deine Türen für Menschen, die vor Krieg und Katastrophe fliehen. Flüchtlinge werden stark zu dir hingezogen, die Verzweifeltsten zuerst, und dein humanitäres Ansehen bringt jede Runde +1 [icon:YIELD_DIPLOMACY] Einfluss.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="de_DE"><Text>Flüchtlingspakt</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="de_DE"><Text>Ein dauerhaftes Bekenntnis zu den Vertriebenen. Flüchtlinge strömen stark zu dir, die Verzweifeltsten zuerst, bereichern deine Kultur und bringen jede Runde [icon:YIELD_DIPLOMACY] Einfluss und [icon:YIELD_CULTURE] Kultur.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="de_DE"><Text>Ein dauerhaftes Bekenntnis zu den Vertriebenen. Flüchtlinge strömen stark zu dir, die Verzweifeltsten zuerst, bereichern deine Kultur und bringen jede Runde +2 [icon:YIELD_DIPLOMACY] Einfluss und +1 [icon:YIELD_CULTURE] Kultur.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="de_DE"><Text>Auswanderung</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="de_DE"><Text>Auswanderung</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="de_DE"><Text>Auswanderung</Text></Replace>
@@ -352,12 +425,14 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="de_DE"><Text>Jeder Punkt ≈ {1_People} Menschen. Der Kreis einer Zivilisation enthält ihre Städte und Dörfer als innere Untergruppen: Punkte in der eigenen Farbe der Zivilisation sind einheimische Bewohner, Punkte in einem HELLEREN Ton sind Menschen, die zwischen den eigenen Städten gewandert sind (Binnenwanderung), und Punkte in anderer Farbe sind Zuwanderer aus dieser Herkunft. Die Linse „Färben nach“ färbt sie nach Herkunft, Wanderungsart (Krieg / Katastrophe / Anziehung …) oder Bewegung (Einheimische / intern / Zuwanderer) um.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="de_DE"><Text>Zeigen:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="de_DE"><Text>noch keine Bevölkerung</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNMET" Language="de_DE"><Text>Unbekannt</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="de_DE"><Text>Migrant flows</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="de_DE"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="de_DE"><Text>Migration – {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="de_DE"><Text>Bevölkerungsherkunft</Text></Replace>
-        <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTING" Language="de_DE"><Text>Abwanderung nach</Text></Replace>
-        <Replace Tag="LOC_EMIGRATION_PANEL_ARRIVING" Language="de_DE"><Text>Zuwanderung aus</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTED" Language="de_DE"><Text>Abgewandert nach (gesamtes Spiel)</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_ARRIVED" Language="de_DE"><Text>Zugewandert aus (gesamtes Spiel)</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_FLOW_CAUSE" Language="de_DE"><Text>hauptsächlich {1_Cause}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_NO_MIGRATION" Language="de_DE"><Text>Für diese Siedlung ist noch keine Migration verzeichnet.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_MORE" Language="de_DE"><Text>(+{1_Count} weitere)</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_REFUGEE_ONE" Language="de_DE"><Text>{1_Count} Flüchtling wartet hier auf Ansiedlung.</Text></Replace>
@@ -370,6 +445,7 @@
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_STANCE" Language="de_DE"><Text>Deine Haltung: {1_Stance}.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_GRANTS" Language="de_DE"><Text>Gewährt der Stadt {1_Amount} {2_Yield}.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_COSTS" Language="de_DE"><Text>Kostet {1_Amount} {2_Yield} pro Runde.</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_INVESTED" Language="de_DE"><Text>Its enclave is built: the enclave's own yield now applies instead of this dividend.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_CONTESTED" Language="de_DE"><Text>Umkämpft: Du bist mit ihrer Heimat im Krieg, was das Viertel belastet.</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_STANCE_PRO" Language="de_DE"><Text>Pro-Einwanderung</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_STANCE_ANTI" Language="de_DE"><Text>Anti-Einwanderung</Text></Replace>
@@ -937,5 +1013,8 @@
         <Replace Tag="LOC_EMIG_ETH_TILE_SUFFIX" Language="de_DE"><Text>· this tile</Text></Replace>
         <Replace Tag="LOC_EMIG_PCT" Language="de_DE"><Text>{1_Pct}%</Text></Replace>
         <Replace Tag="LOC_EMIG_PCT_SIGNED" Language="de_DE"><Text>{1_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_ENCLAVE_IMPROVEMENT_NAME" Language="de_DE"><Text>Cultural Enclave</Text></Replace>
+        <Replace Tag="LOC_EMIG_ENCLAVE_IMPROVEMENT_DESCRIPTION" Language="de_DE"><Text>A quarter settled by a foreign diaspora that has put down roots and works the surrounding land. Yields +2 Gold.</Text></Replace>
+        <Replace Tag="LOC_EMIG_ENCLAVE_IMPROVEMENT_TOOLTIP" Language="de_DE"><Text>A tile improvement marking an established migrant community. Provides +2 Gold to the city.</Text></Replace>
     </LocalizedText>
 </Database>
