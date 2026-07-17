@@ -19,6 +19,7 @@ import { recordMigrations, accountLosses, markCityRemoved, monoTurn } from "/emi
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { reportBalanceSignals, recordPassCounters, dumpCounters } from "/emigration/ui/emigration-telemetry.js";
 import { recordCompositionPass } from "/emigration/ui/emigration-composition.js";
+import { dumpOrigins } from "/emigration/ui/emigration-origins-diag.js";
 import { recordChroniclePass } from "/emigration/ui/emigration-diaspora.js";
 import { planReturns } from "/emigration/ui/emigration-return.js";
 import { maybeDilemma } from "/emigration/ui/emigration-dilemma.js";
@@ -362,6 +363,10 @@ function boot() {
       // Balance telemetry dump (P0.4): raw counters + reason histogram + derived shares, for tuning
       // and the measure-before-build decisions. Logs and returns the snapshot.
       metrics: () => dumpCounters(),
+      // Ethnic-ledger diagnostic: for settlements matching a name substring (omit for all), dump the
+      // recorded per-origin mix + the all-game inbound corridors (with causes) that produced it, so a
+      // surprising "Population origins" figure can be traced to real immigration vs a conquest baseline.
+      origins: (/** @type {string=} */ name) => dumpOrigins(name),
       // Diagnostic for the Open Borders bonus: logs the joint diplomatic-event action
       // names between two players and whether an Open Borders agreement is detected.
       openBorders: (/** @type {number} */ a, /** @type {number} */ b) => {

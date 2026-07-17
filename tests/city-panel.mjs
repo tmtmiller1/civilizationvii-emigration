@@ -52,6 +52,41 @@ function testFullModelBuildsBothBlocks() {
   assert.ok(model.quarters.lines.some((l) => l.includes("Contested")));
 }
 
+// The flow figures are the CUMULATIVE all-game tally (migrationFlows()), not a live "leaving now"
+// count, so the headings must read as a historical ledger. A present-tense "Departing to" told the
+// player a settlement was actively bleeding people when the number it sat above could only ever grow
+// — a city whose crisis ended 50 turns ago still shows every departure it ever had.
+function testFlowHeadingsArePastTenseAndScoped() {
+  const p = cityPanelModel({ cityName: "Rome" }).population;
+  assert.equal(p.departingHeading, "Departed to (all game)");
+  assert.equal(p.arrivingHeading, "Arrived from (all game)");
+}
+
+// Each corridor names the cause that moved most of its people, so the panel answers WHY people left
+// and not just where they went. "mostly" is load-bearing: the edge is usually mixed.
+function testFlowRowNamesItsDominantCause() {
+  const model = cityPanelModel({
+    cityName: "Rome",
+    outflows: [{ place: "Memphis", civName: "Egyptian", people: 12000, causeName: "Unhappiness" }],
+    inflows: [{ place: "Carthage", civName: "Phoenician", people: 8000, causeName: "Disaster" }]
+  });
+  assert.equal(model.population.outflowLines[0], "Memphis (Egyptian): 12,000 - mostly Unhappiness");
+  assert.equal(model.population.inflowLines[0], "Carthage (Phoenician): 8,000 - mostly Disaster");
+}
+
+// A save written before per-cause flows carries no byCause detail, so the host resolves no label. The
+// row must then say nothing about why: a guessed reason is worse than none on a diagnostic surface.
+function testFlowRowOmitsUnknownCause() {
+  const model = cityPanelModel({
+    cityName: "Rome",
+    outflows: [
+      { place: "Athens", civName: "Greek", people: 3000 },
+      { place: "Tyre", civName: "Phoenician", people: 2000, causeName: "" }
+    ]
+  });
+  assert.deepEqual(model.population.outflowLines, ["Athens (Greek): 3,000", "Tyre (Phoenician): 2,000"]);
+}
+
 function testEmptyModelDegradesGracefully() {
   const model = cityPanelModel(null);
   assert.equal(model.population.title, "Migration - this settlement");
@@ -76,6 +111,63 @@ function testPassiveQuarterHasNoYieldLines() {
   assert.deepEqual(lines, [
     "A Greek Enclave has taken root in this settlement.",
     "Your stance: Let them be."
+  ]);
+}
+
+// §22a/§22b: an UNBUILT enclave still pays its stance dividend, so the panel states it — this is the only
+// surface that can (the engine cannot attribute a runtime grantYield; see wont-fix CANTFIX-1).
+function testRecognizedQuarterStatesItsDividend() {
+  const lines = __test.quarterLines(__test.noCompose, {
+    originName: "Roman Enclave",
+    stanceLabel: "Embrace them",
+    contested: false,
+    invested: false,
+    benefitYield: "YIELD_CULTURE",
+    benefitAmount: 2,
+    penaltyYield: "YIELD_HAPPINESS",
+    penaltyAmount: 1
+  });
+  assert.deepEqual(lines, [
+    "A Roman Enclave has taken root in this settlement.",
+    "Your stance: Embrace them.",
+    "Grants 2 Culture to the city each turn.",
+    "Costs 1 Happiness each turn."
+  ]);
+}
+
+// §22a: once the enclave is BUILT the stance grant steps aside, so the panel must NOT keep claiming the
+// dividend — it would be stating a yield the player is no longer paid.
+function testInvestedQuarterDoesNotClaimTheDividend() {
+  const q = {
+    originName: "Roman Enclave",
+    stanceLabel: "Embrace them",
+    contested: false,
+    invested: true,
+    benefitYield: "YIELD_CULTURE",
+    benefitAmount: 2,
+    penaltyYield: "YIELD_HAPPINESS",
+    penaltyAmount: 1
+  };
+  const lines = __test.quarterLines(__test.noCompose, q);
+  assert.deepEqual(lines, [
+    "A Roman Enclave has taken root in this settlement.",
+    "Your stance: Embrace them.",
+    "Its enclave is built: the enclave's own yield now applies instead of this dividend."
+  ]);
+  assert.ok(!lines.some((l) => /Grants|Costs/.test(l)),
+    "a built enclave's panel never restates the stance dividend it no longer pays");
+}
+
+// A contested BUILT enclave still reports the war strain (that charge is unaffected by §22a).
+function testInvestedQuarterStillReportsContest() {
+  const lines = __test.quarterLines(__test.noCompose, {
+    originName: "Roman Enclave", stanceLabel: "", contested: true, invested: true,
+    benefitYield: "YIELD_CULTURE", benefitAmount: 2, penaltyYield: null, penaltyAmount: 0
+  });
+  assert.deepEqual(lines, [
+    "A Roman Enclave has taken root in this settlement.",
+    "Its enclave is built: the enclave's own yield now applies instead of this dividend.",
+    "Contested: you are at war with their homeland, straining the enclave."
   ]);
 }
 
@@ -239,8 +331,14 @@ async function testInstallAndLifecycle() {
 }
 
 testFullModelBuildsBothBlocks();
+testFlowHeadingsArePastTenseAndScoped();
+testFlowRowNamesItsDominantCause();
+testFlowRowOmitsUnknownCause();
 testEmptyModelDegradesGracefully();
 testPassiveQuarterHasNoYieldLines();
+testRecognizedQuarterStatesItsDividend();
+testInvestedQuarterDoesNotClaimTheDividend();
+testInvestedQuarterStillReportsContest();
 testFlowRowsSortCapAndTail();
 testYieldAndRefugeeHelpers();
 testComposeLocalizesLabels();

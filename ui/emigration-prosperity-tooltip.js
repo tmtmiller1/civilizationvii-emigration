@@ -11,6 +11,7 @@
 
 import { registerLensHoverPanel, cityTitle } from "/emigration/ui/emigration-lens-hover-panel.js";
 import { fieldContext, prosperity } from "/emigration/ui/emigration-prosperity.js";
+import { mountExplain } from "/emigration/ui/emigration-explain-view.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
 
 const LENS = "emig-prosperity-lens"; // must match emigration-prosperity-lens.js
@@ -105,7 +106,11 @@ function resolve(sig, snap) {
 // ── Self-registration (runs on UIScript load, in the HUD context) ───────────────────────
 try {
   registerLensHoverPanel({
-    lens: LENS, panelId: "emig-prospanel", styleId: "emig-prospanel-style", buildSnapshot, resolve
+    lens: LENS, panelId: "emig-prospanel", styleId: "emig-prospanel-style", buildSnapshot, resolve,
+    // Feature L: the prosperity lens is the "who is doing well / badly?" surface, so the push/pull
+    // cause stack belongs under it - it answers the follow-up question the colour raises. No-op when
+    // the explainer option is off.
+    decorate: (panel, sig) => mountExplain(panel, sig.city)
   });
 } catch (e) {
   console.error("[Emigration.prospanel] registration failed", e);

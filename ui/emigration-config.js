@@ -499,6 +499,13 @@ export const CONFIG = {
   cityReadoutPoolToasts: true, // toast when the selected settlement enters/exits refugee holding
   refugeePoolLensMarkers: true, // prosperity lens: center-tile markers for active refugee holding
 
+  // ── Feature D: network-timeline event pins ──
+  // Pin the wars/disasters that drove the migration onto the network view's playback scrubber, so a
+  // spike can be traced to its cause (click a pin to scrub to it). Read-only over the turn-stamped
+  // war log (emigration-war.warEvents) + disaster onsets (emigration-migration-stats.disasterEvents);
+  // no simulation effect. Only events stamped since those logs existed can be pinned.
+  timelineEventPins: true,
+
   // ── §11: environmental disasters as a migration driver (ON by default) ──
   disastersEnabled: true,
   disasterPerPoint: 10, // percent prosperity penalty per distress point
@@ -523,6 +530,22 @@ export const CONFIG = {
   disasterSpeedShockEnabled: true, // divide the spike by S so slow speeds pay the same TOTAL bite
   disasterAccumCap: 18, // hard ceiling on a city's accumulated disaster distress (guarantees recovery)
   disasterStackFalloff: true, // a new spike adds with diminishing returns the fuller the city already is
+
+  // ── readout: composition-diversity ranking (Features S + T) ──────────────────
+  // A read-only dashboard tab ranking settlements by the diversity of their origin mix, plus a
+  // derived "cosmopolitanism" character label. Both are DESCRIPTIVE: they report which communities
+  // live where and grant NO yields, touch no sim state, and are computed from the composition ledger
+  // the mod already keeps. diversityRows caps the table; cosmopolitanismScore is separate so the
+  // ranking can ship without the derived label.
+  diversityRanking: true,
+  cosmopolitanismScore: true,
+  diversityRows: 8, // rows in the ranking table
+
+  // ── readout: the push/pull explainer (Feature L) ─────────────────────────────
+  // The "why are they leaving / why there?" cause stack, shown in the city readout and the network /
+  // lens hover panels. Read-only: it decomposes the scores the sim already computed (via
+  // emigration-explain.js) and renders them as RELATIVE weights - it changes nothing about who moves.
+  migrationExplainer: true,
 
   // ── latent robustness: reset persisted caches on game boot ──
   // Backstop for the (normally isolate-teardown-driven) reset of the per-module lazy persistence

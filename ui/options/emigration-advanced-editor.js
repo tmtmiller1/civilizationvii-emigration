@@ -39,8 +39,11 @@ const TAG = "emigration-advanced-editor";
 const CHECKBOX_CHANGE = "component-value-changed"; // fxs-checkbox → detail.value (bool)
 const DROPDOWN_CHANGE = "dropdown-selection-change"; // fxs-dropdown → detail.selectedIndex
 
-const GRID_COLS = "repeat(auto-fit, minmax(22rem, 1fr))"; // two columns on a wide window, one when narrow
-const BODY_GRID_STYLE = "display:grid;grid-template-columns:" + GRID_COLS + ";column-gap:2rem;";
+// GameFace (Coherent) CSS — Civ7's UI engine — does NOT support `display:grid` or `1fr` units. Setting a
+// grid style logs "Unable to parse declaration: display - grid" / "syntax error near text: 1fr" and the
+// body never lays out, so every tunable row (incl. the self-test toggle) renders into a broken container.
+// Flexbox is fully supported (the rest of this screen uses it); the rows are w-full, so stack them.
+const BODY_GRID_STYLE = "display:flex;flex-direction:column;";
 
 // Group render order + human title. Any tunable group not listed still renders, after
 // these, under its raw key (so a new group never silently disappears).
@@ -53,7 +56,9 @@ const GROUPS = [
   { key: "cost", title: "LOC_EMIG_ADVGRP_COST" },
   { key: "outlet", title: "LOC_EMIG_ADVGRP_OUTLET" },
   { key: "disaster", title: "LOC_EMIG_ADVGRP_DISASTER" },
-  { key: "notify", title: "LOC_EMIG_ADVGRP_NOTIFY" }
+  { key: "notify", title: "LOC_EMIG_ADVGRP_NOTIFY" },
+  { key: "visuals", title: "LOC_EMIG_ADVGRP_VISUALS" },
+  { key: "readout", title: "LOC_EMIG_ADVGRP_READOUT" }
 ];
 
 /**

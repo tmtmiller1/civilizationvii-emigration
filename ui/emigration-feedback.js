@@ -178,7 +178,9 @@ const TOAST_CSS =
   "animation:emig-toast-in 0.26s ease-out;}" +
   '.emig-toast-eye{font-family:"TitleFont","TitleFont-JP","TitleFont-KR","TitleFont-SC","TitleFont-TC";' +
   "font-size:var(--dg-fs-72,0.72rem);letter-spacing:0.13em;text-transform:uppercase;margin-bottom:0.15rem;color:#f0bc78;}" +
-  ".emig-toast-msg{font-size:var(--dg-fs-95,0.95rem);line-height:1.32;}" +
+  // white-space:pre-line honours the blank line localDigestMessage puts between the situation and the
+  // guidance, so the toast shows them as two paragraphs; a message with no break renders unchanged.
+  ".emig-toast-msg{font-size:var(--dg-fs-95,0.95rem);line-height:1.32;white-space:pre-line;}" +
   "@keyframes emig-toast-in{from{opacity:0;transform:translateX(-50%) translateY(-0.55rem);}" +
   "to{opacity:1;transform:translateX(-50%) translateY(0);}}";
 

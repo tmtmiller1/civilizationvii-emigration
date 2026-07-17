@@ -110,11 +110,11 @@ const PERMANENCE = {
  */
 const HINTS = {
   unhappiness: "Raise this city's happiness, or slot an Anti-Immigration Stance to retain them.",
-  prosperity: "A neighbor is out-prospering this city; grow its yields to keep people home.",
+  prosperity: "A neighbor settlement is out-prospering {1_City}; grow its yields to prevent its people from leaving.",
   war: "Refugees flee the fighting; relieve the siege or make peace to stem the outflow.",
-  disaster: "Disaster displacement, it subsides on its own as the distress decays.",
+  disaster: "Disaster displacement subsides on its own as the distress decays.",
   conquest: "Displaced by the city's capture; the upheaval eases as the city settles.",
-  attrition: "Trapped with nowhere to go, open a route out or relieve the distress.",
+  attrition: "Trapped with nowhere to go, these people have perished and are gone for good.",
   return: "A people drawn home as their recovered homeland finds peace and plenty again."
 };
 
@@ -192,13 +192,16 @@ export function causePermanence(cause) {
 
 /**
  * A one-line, player-facing "what can I do" hint for a cause (localized from `LOC_EMIG_HINT_*` with
- * the English `HINTS` entry as fallback), or "" when the cause has no hint.
+ * the English `HINTS` entry as fallback), or "" when the cause has no hint. `city` fills the `{1_City}`
+ * placeholder some hints carry (the prosperity hint names the settlement being out-prospered); it is
+ * ignored by hints without a placeholder, so passing it is always safe.
  * @param {string} [cause] The cause.
+ * @param {string} [city] The settlement name, for hints that name it.
  * @returns {string} The hint.
  */
-export function causeHint(cause) {
+export function causeHint(cause, city) {
   if (!cause || !HINTS[cause]) return "";
-  return loc(HINT_KEYS[cause], HINTS[cause]);
+  return loc(HINT_KEYS[cause], HINTS[cause], city);
 }
 
 /**
@@ -226,6 +229,30 @@ function causeOrder(cause) {
  */
 function finite(n) {
   return Number.isFinite(n) ? Number(n) : 0;
+}
+
+/**
+ * The cause that moved the most people in a per-cause map — the one to name where there is room for
+ * only one (the City Details flow rows). Ties break on CAUSE_ORDER, the same rank `netDrivers` uses,
+ * so a given corridor always names the same driver. "" when the map is absent, empty, or all-zero
+ * (a legacy flat-number flow value carries no per-cause detail, and must read as "unknown", not
+ * "Other" — the caller decides what to show).
+ * @param {Record<string,number>} [byCause] People per cause.
+ * @returns {string} The dominant cause key, or "".
+ */
+export function topCause(byCause) {
+  const m = byCause || {};
+  let best = "";
+  let bestN = 0;
+  for (const c of Object.keys(m)) {
+    const n = finite(m[c]);
+    if (n <= 0) continue;
+    if (best === "" || n > bestN || (n === bestN && causeOrder(c) < causeOrder(best))) {
+      best = c;
+      bestN = n;
+    }
+  }
+  return best;
 }
 
 /**

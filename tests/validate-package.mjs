@@ -137,9 +137,17 @@ for (const { lang, file } of declared) {
 ok("Locale parity", `${enKeys.size} keys × ${seenLocaleFiles.size} locales (coverage + Language + dups)`);
 
 // ── 5) Data LOC references all defined in en_us ──────────────────────────────
+// en_us also defines keys in dedicated text files beyond ModText.xml (e.g. EnclaveText.xml for the
+// enclave improvements — registered in the modinfo, en_us-only by design since Civ VII falls back to
+// en_us for untranslated keys). Those belong to the "defined in en_us" set checked here, but NOT to the
+// per-locale parity set above (§4), which intentionally governs only the ModText.xml translation surface.
+const enDefinedKeys = new Set(enKeys);
+for (const f of walk("text/en_us").filter((p) => p.endsWith(".xml") && !p.endsWith("ModText.xml"))) {
+  for (const r of rowsOf(read(f), "Row")) if (r.Tag) enDefinedKeys.add(r.Tag);
+}
 const dataBlob = dataXmlFiles().map(read).join("\n");
 const dataLoc = new Set([...dataBlob.matchAll(/LOC_[A-Z0-9_]+/g)].map((m) => m[0]));
-const undefinedLoc = [...dataLoc].filter((k) => !enKeys.has(k));
+const undefinedLoc = [...dataLoc].filter((k) => !enDefinedKeys.has(k));
 if (undefinedLoc.length) fail(`data XML references undefined LOC key(s): ${undefinedLoc.join(", ")}`);
 else ok("Data LOC references", `${dataLoc.size} keys all defined in en_us`);
 

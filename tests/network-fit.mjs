@@ -5,6 +5,10 @@
 // `.emig-tabbody` scroll box (max-height:74vh). On a near-fullscreen modal the viewport bottom sits
 // well below that box, so the stage was over-budgeted and the lowest civ clusters spilled past the
 // panel and were clipped. The fit must measure the bounding scroll/clip box, not the viewport.
+//
+// NOTE: this fake DOM has FIXED rects, so it cannot reproduce the real page's feedback loop (the
+// `.emig-tabbody` is content-sized, so what the fit measures is partly the stage's own height).
+// See the note in emigration-network-fit.js.
 
 import assert from "node:assert/strict";
 
@@ -81,6 +85,9 @@ const { boundingBottom, fitStageToViewport } = __test;
   const stageHeight = px / 2;
   assert.ok(240 + stageHeight <= 840, "the 2:1 stage fits above the tab-body bottom");
 }
+
+
+
 
 // ── A no-op re-fit doesn't rewrite the style (avoids reflow jump on resize) ───
 {

@@ -17,7 +17,7 @@ import { getNumberMode, setNumberMode, NumberMode, getMinimizeAnalytics } from "
 import { appendSnapshotReminder } from "/emigration/ui/emigration-snapshot-reminder.js";
 import { renderGuide } from "/emigration/ui/emigration-guide.js";
 import { renderCityFlows, buildCivFlows } from "/emigration/ui/emigration-city-flows.js";
-import { renderStances } from "/emigration/ui/emigration-detail-views.js";
+import { renderStances, renderDiversity, diversitySections } from "/emigration/ui/emigration-detail-views.js";
 import { renderLedger } from "/emigration/ui/emigration-ledger-view.js";
 import { renderNotifications } from "/emigration/ui/emigration-notifications-view.js";
 import { DENSITY_CSS } from "/emigration/ui/emigration-density.js";
@@ -265,10 +265,14 @@ export function dashboardModel(input) {
   const frames = buildFrames(d, names, current);
   const events = d.events || [];
   const sections = [
-    { title: loc("LOC_EMIG_VIEW_SEC_NETWORK", "Migration network"), kind: "flow", network: current, frames, events },
+    // `events` are pre-positioned frame windows (the sample path); `eventRecords` are the live
+    // turn-stamped war/disaster logs, which the network view positions against its final frame list.
+    { title: loc("LOC_EMIG_VIEW_SEC_NETWORK", "Migration network"), kind: "flow", network: current, frames, events,
+      eventRecords: d.eventRecords || null },
     { title: loc("LOC_EMIG_VIEW_SEC_NET_TABLE", "Net Migration (Table)"), kind: "ledger", rows: civLedgerRows(d.civs || []) },
     { title: loc("LOC_EMIG_VIEW_SEC_WHY", "Why people move"), kind: "pies", cities: buildCivFlows(d.flows || [], d.civs || [], d.eventsByOwner) },
     { title: loc("LOC_EMIG_VIEW_SEC_SETTLEMENTS", "Settlements"), kind: "cityflows", cities: d.myCities || [] },
+    ...diversitySections(d),
     { title: loc("LOC_EMIG_VIEW_SEC_POLICIES", "Immigration policies"), kind: "stances", rows: stanceRows(d.civs || []) },
     { title: loc("LOC_EMIG_VIEW_SEC_NOTIFICATIONS", "Migration notifications"), kind: "notifications" },
     { title: loc("LOC_EMIG_VIEW_SEC_GUIDE", "Guide"), kind: "guide" }
@@ -277,8 +281,8 @@ export function dashboardModel(input) {
 }
 
 // The heavy-analytics section kinds the "simplify dashboard" option hides: the animated Network diagram
-// and the Causes pie charts. The numbers-first tabs (ledger, settlements, policies, notifications, guide)
-// always stay.
+// and the Causes pie charts. The numbers-first tabs (ledger, settlements, diversity, policies,
+// notifications, guide) always stay.
 const ANALYTICS_KINDS = new Set(["flow", "pies"]);
 
 /**
@@ -487,7 +491,7 @@ const SECTION_VIEWS = {
 // Renderers that consume `section.rows` (flexbox tables).
 /** @type {Record<string, (body: HTMLElement, rows: *[]) => void>} */
 const ROW_VIEWS = {
-  ledger: renderLedger, stances: renderStances
+  ledger: renderLedger, stances: renderStances, diversity: renderDiversity
 };
 
 /**
@@ -517,7 +521,7 @@ const TAB_LABELS = {
   flow: loc("LOC_EMIG_VIEW_TAB_NETWORK", "Network"),
   ledger: loc("LOC_EMIG_VIEW_TAB_NET_TABLE", "Net Migration (Table)"), pies: loc("LOC_EMIG_VIEW_TAB_CAUSES", "Causes"),
   stances: loc("LOC_EMIG_VIEW_TAB_POLICIES", "Policies"), cityflows: loc("LOC_EMIG_VIEW_TAB_MY_CITIES", "My Cities"),
-  notifications: loc("LOC_EMIG_VIEW_TAB_NOTIFICATIONS", "Notifications"), guide: loc("LOC_EMIG_VIEW_TAB_GUIDE", "Guide")
+  diversity: loc("LOC_EMIG_VIEW_TAB_DIVERSITY", "Diversity"), notifications: loc("LOC_EMIG_VIEW_TAB_NOTIFICATIONS", "Notifications"), guide: loc("LOC_EMIG_VIEW_TAB_GUIDE", "Guide")
 };
 
 /**
@@ -721,7 +725,8 @@ export function renderDashboardTabbed(target, model, rebuild) {
 }
 
 // Sections the "Numbers:" units chip doesn't apply to: "flow" has its own inline Units toggle, and
-// stances / notifications / guide show no population counts to switch.
+// stances / notifications / guide show no population counts to switch. (Diversity DOES carry counts —
+// each settlement's population beside its origin bar — so it takes the chip like the other tables.)
 const NO_UNITS_TOGGLE = new Set(["flow", "stances", "notifications", "guide"]);
 
 /**

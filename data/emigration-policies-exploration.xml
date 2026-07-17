@@ -22,11 +22,11 @@
     <Traditions>
         <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_EXPLORATION"
              Name="LOC_EMIG_POLICY_OPEN_BORDERS_NAME"
-             Description="LOC_EMIG_POLICY_OPEN_BORDERS_DESC"
+             Description="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX"
              AgeType="AGE_EXPLORATION" CultureSlotType="POLICY_CULTURE_SLOT"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_EXPLORATION"
              Name="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME"
-             Description="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC"
+             Description="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX"
              AgeType="AGE_EXPLORATION" CultureSlotType="POLICY_CULTURE_SLOT"/>
         <Row TraditionType="TRADITION_EMIG_TALENT_EXPLORATION"
              Name="LOC_EMIG_POLICY_TALENT_NAME" Description="LOC_EMIG_POLICY_TALENT_DESC"

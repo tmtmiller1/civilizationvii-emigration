@@ -25,13 +25,13 @@
         <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
         <Argument name="Amount">2</Argument>
         <Argument name="Tooltip">LOC_EMIG_POLICY_OPEN_BORDERS_NAME</Argument>
-        <String context="Description">LOC_EMIG_POLICY_OPEN_BORDERS_DESC</String>
+        <String context="Description">LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX</String>
     </Modifier>
     <Modifier id="MOD_EMIG_OPEN_BORDERS_INFLUENCE_MO" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
         <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
         <Argument name="Amount">3</Argument>
         <Argument name="Tooltip">LOC_EMIG_POLICY_OPEN_BORDERS_NAME</Argument>
-        <String context="Description">LOC_EMIG_POLICY_OPEN_BORDERS_DESC</String>
+        <String context="Description">LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO</String>
     </Modifier>
 
     <!-- Closed / Anti-Immigration: -2 / -3 / -4 Influence. -->
@@ -45,13 +45,13 @@
         <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
         <Argument name="Amount">-3</Argument>
         <Argument name="Tooltip">LOC_EMIG_POLICY_CLOSED_BORDERS_NAME</Argument>
-        <String context="Description">LOC_EMIG_POLICY_CLOSED_BORDERS_DESC</String>
+        <String context="Description">LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX</String>
     </Modifier>
     <Modifier id="MOD_EMIG_CLOSED_BORDERS_INFLUENCE_MO" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
         <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
         <Argument name="Amount">-4</Argument>
         <Argument name="Tooltip">LOC_EMIG_POLICY_CLOSED_BORDERS_NAME</Argument>
-        <String context="Description">LOC_EMIG_POLICY_CLOSED_BORDERS_DESC</String>
+        <String context="Description">LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO</String>
     </Modifier>
 
     <!-- Anti-Immigration autarky: a mobilized, self-sufficient home economy adds Production in every
@@ -94,7 +94,7 @@
         <Argument name="YieldType">YIELD_SCIENCE</Argument>
         <Argument name="Amount">2</Argument>
         <Argument name="Tooltip">LOC_EMIG_POLICY_TALENT_NAME</Argument>
-        <String context="Description">LOC_EMIG_POLICY_TALENT_DESC</String>
+        <String context="Description">LOC_EMIG_POLICY_TALENT_DESC_MO</String>
     </Modifier>
     <Modifier id="MOD_EMIG_CULTPULL_YIELD_EX" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
         <Argument name="YieldType">YIELD_CULTURE</Argument>
@@ -106,7 +106,7 @@
         <Argument name="YieldType">YIELD_CULTURE</Argument>
         <Argument name="Amount">2</Argument>
         <Argument name="Tooltip">LOC_EMIG_POLICY_CULTPULL_NAME</Argument>
-        <String context="Description">LOC_EMIG_POLICY_CULTPULL_DESC</String>
+        <String context="Description">LOC_EMIG_POLICY_CULTPULL_DESC_MO</String>
     </Modifier>
     <Modifier id="MOD_EMIG_TRADEPULL_YIELD_EX" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
         <Argument name="YieldType">YIELD_GOLD</Argument>
@@ -118,7 +118,7 @@
         <Argument name="YieldType">YIELD_GOLD</Argument>
         <Argument name="Amount">2</Argument>
         <Argument name="Tooltip">LOC_EMIG_POLICY_TRADEPULL_NAME</Argument>
-        <String context="Description">LOC_EMIG_POLICY_TRADEPULL_DESC</String>
+        <String context="Description">LOC_EMIG_POLICY_TRADEPULL_DESC_MO</String>
     </Modifier>
 
     <!-- Asylum cards (§4a): native Influence floor (+1 EX / +2 MO), plus +1 Culture in Modern

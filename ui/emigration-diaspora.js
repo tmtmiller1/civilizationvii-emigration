@@ -24,6 +24,7 @@ import { exodusLine, foundingLine, chronicleTitle } from "/emigration/ui/emigrat
 import { cityFeatureKeys } from "/emigration/ui/emigration-city-features.js";
 import { resolveQuarter } from "/emigration/ui/emigration-quarter-phrases.js";
 import { loc as tr } from "/emigration/ui/emigration-loc.js";
+import { QUARTER_FOOTHOLD_SHARE } from "/emigration/ui/emigration-tunables.js";
 
 // A wave this large (scaled people, one settlement, one cause, one pass) reads as a historical
 // exodus rather than ordinary churn.
@@ -41,7 +42,8 @@ const DIASPORA_STEP = 0.15;
 // both large enough in absolute stock and a big enough share of the city, the stage fires; if that
 // diaspora later integrates or leaves, the stock falls back below the line. The established bar (share +
 // min stock) is player-tunable via CONFIG; the foothold share is a fixed chronicle-only milestone.
-export const QUARTER_FOOTHOLD_SHARE = 0.25;
+// QUARTER_FOOTHOLD_SHARE (the 0.25 foothold milestone) now lives in emigration-tunables.js (a leaf) and
+// is imported above — this breaks the composition↔diaspora import cycle. Re-exported below for callers.
 
 /** @returns {number} The tunable established-enclave share bar (falls back to 0.35). */
 function establishedShare() {

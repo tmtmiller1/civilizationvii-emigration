@@ -20,6 +20,7 @@ import { quarterOptionFor } from "/emigration/ui/emigration-quarter-registry.js"
 import { refugeePoolTotal } from "/emigration/ui/emigration-refugee-pool.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { civAdjective, quarterName, civType } from "/emigration/ui/emigration-naming.js";
+import { causeLabel, topCause } from "/emigration/ui/emigration-causes.js";
 
 const DBG = false;
 /**
@@ -136,6 +137,9 @@ function gatherQuarter(city) {
       originName: quarterName(rec.civ),
       stanceLabel: quarterOptionFor(civType(rec.civ), rec.optionId).label,
       contested: !!rec.contested,
+      // Once the enclave is BUILT the stance grant steps aside (roadmap §22a), so the panel must not keep
+      // claiming the dividend. Resolve a legacy record's origin from its player id, as the grant path does.
+      invested: false, // cultural-enclave BUILD feature removed; nothing is ever built/invested
       benefitYield: applied.benefitYield || null,
       benefitAmount: applied.benefitAmount || 0,
       penaltyYield: applied.penaltyYield || null,
@@ -185,6 +189,19 @@ function resolveParts(comp) {
 }
 
 /**
+ * The display label of the cause that moved most of an edge's people, or "" when the edge carries no
+ * per-cause detail (a legacy flat-number flow value, from a save written before per-cause flows).
+ * Resolved HERE rather than in the pure view-model because localizing a cause is an engine read, the
+ * same reason civ ids are turned into names on this side of the boundary.
+ * @param {*} f A flow edge from migrationFlows() ({byCause}).
+ * @returns {string} The resolved cause label, or "".
+ */
+function topCauseName(f) {
+  const c = topCause(f && f.byCause);
+  return c ? causeLabel(c) : "";
+}
+
+/**
  * Gather the LIVE, resolved inputs for the selected city, ready for the pure view-model. Never
  * throws; returns null when there is no selected city.
  * @param {*} city The selected city object (or null).
@@ -197,9 +214,9 @@ function gatherPanelInput(city) {
   const quarter = gatherQuarter(city);
   const flows = safeFlows();
   const outflows = flows.filter((f) => f.srcCity === name)
-    .map((f) => ({ place: f.destCity, civName: civAdjective(f.dest), people: f.people }));
+    .map((f) => ({ place: f.destCity, civName: civAdjective(f.dest), people: f.people, causeName: topCauseName(f) }));
   const inflows = flows.filter((f) => f.destCity === name)
-    .map((f) => ({ place: f.srcCity, civName: civAdjective(f.src), people: f.people }));
+    .map((f) => ({ place: f.srcCity, civName: civAdjective(f.src), people: f.people, causeName: topCauseName(f) }));
   return {
     cityName: name,
     composition: comp ? { total: comp.total, parts: resolveParts(comp) } : null,
