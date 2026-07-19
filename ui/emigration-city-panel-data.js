@@ -222,7 +222,7 @@ function costsLine(compose, amount, yieldKey) {
  * What the enclave pays THIS turn — the two-tier reward made legible (roadmap §22b).
  *
  * RECOGNIZED (enclave not built): the stance's per-turn dividend. The engine cannot attribute a runtime
- * `grantYield` to anything the player can see (wont-fix CANTFIX-1), so these lines are the ONLY place that
+ * `grantYield` to anything the player can see (won't-implement CANTFIX-1), so these lines are the ONLY place that
  * dividend is readable — which is the whole reason §22b exists.
  * INVESTED (enclave built): the stance grant has stepped aside (§22a), so claiming it here would be a lie.
  * Say the improvement has taken over instead; ITS yield is natively attributed, so the game shows the
@@ -257,7 +257,7 @@ function quarterLines(compose, q) {
   }
   lines.push(...stanceYieldLines(compose, q));
   if (q.contested) {
-    const en = "Contested: you are at war with their homeland, straining the enclave.";
+    const en = "Contested: at war with their homeland - the enclave contributes less (its benefit above is reduced) and the city's morale suffers.";
     lines.push(pick(compose, "LOC_EMIGRATION_PANEL_QUARTER_CONTESTED", [], en));
   }
   return lines;

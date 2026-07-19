@@ -11,6 +11,8 @@
 // far side of town"), which is also where the ethnicity lens paints a diaspora, its people fill the
 // sparse rural fringe, not the dense core, so the prose and the map agree.
 
+import { loc } from "/emigration/ui/emigration-loc.js";
+
 /** @type {Record<string, string[]>} Truthful edge-of-city phrases, one list per real feature key. */
 const FEATURE_QUARTERS = {
   coast: ["by the harbour", "along the waterfront", "in the dock quarter"],
@@ -22,6 +24,20 @@ const FEATURE_QUARTERS = {
   walls: ["near the old walls", "by the city gate"]
 };
 
+// Parallel LOC keys for FEATURE_QUARTERS (same order per feature); the seed picks the index, then the
+// phrase is localized via its key with the English fragment as the fallback (loc() returns the fallback
+// off-engine, so the seeded choice reads identically in tests and in non-English locales).
+/** @type {Record<string, string[]>} */
+const FEATURE_QUARTERS_KEYS = {
+  coast: ["LOC_EMIG_QTR_COAST_1", "LOC_EMIG_QTR_COAST_2", "LOC_EMIG_QTR_COAST_3"],
+  river: ["LOC_EMIG_QTR_RIVER_1", "LOC_EMIG_QTR_RIVER_2"],
+  mountain: ["LOC_EMIG_QTR_MOUNTAIN_1", "LOC_EMIG_QTR_MOUNTAIN_2"],
+  granary: ["LOC_EMIG_QTR_GRANARY_1", "LOC_EMIG_QTR_GRANARY_2"],
+  temple: ["LOC_EMIG_QTR_TEMPLE_1", "LOC_EMIG_QTR_TEMPLE_2"],
+  market: ["LOC_EMIG_QTR_MARKET_1", "LOC_EMIG_QTR_MARKET_2"],
+  walls: ["LOC_EMIG_QTR_WALLS_1", "LOC_EMIG_QTR_WALLS_2"]
+};
+
 // Preference order when a city has several nameable features: a distinctive landmark reads better than
 // a generic edge. Among the features actually present, the seed picks one deterministically.
 const FEATURE_ORDER = ["coast", "river", "mountain", "granary", "temple", "market", "walls"];
@@ -30,6 +46,13 @@ const FEATURE_ORDER = ["coast", "river", "mountain", "granary", "temple", "marke
 const GENERIC_QUARTERS = [
   "on the edge of the city", "in the outer streets", "past the last houses",
   "on the far side of town", "where the streets give out"
+];
+
+// Parallel LOC keys for GENERIC_QUARTERS (same order + identical English text as
+// emigration-narrative.js's generics, so we reuse its already-translated LOC_EMIG_NARR_QUARTER_GENERIC_* keys).
+const GENERIC_QUARTERS_KEYS = [
+  "LOC_EMIG_NARR_QUARTER_GENERIC_1", "LOC_EMIG_NARR_QUARTER_GENERIC_2", "LOC_EMIG_NARR_QUARTER_GENERIC_3",
+  "LOC_EMIG_NARR_QUARTER_GENERIC_4", "LOC_EMIG_NARR_QUARTER_GENERIC_5"
 ];
 
 /**
@@ -74,9 +97,11 @@ export function resolveQuarter(keys, seed) {
   if (present.length) {
     const feat = present[hash(s + ":qf") % present.length];
     const opts = FEATURE_QUARTERS[feat];
-    return opts[hash(s + ":qp") % opts.length];
+    const i = hash(s + ":qp") % opts.length;
+    return loc(FEATURE_QUARTERS_KEYS[feat][i], opts[i]);
   }
-  return GENERIC_QUARTERS[hash(s + ":qg") % GENERIC_QUARTERS.length];
+  const gi = hash(s + ":qg") % GENERIC_QUARTERS.length;
+  return loc(GENERIC_QUARTERS_KEYS[gi], GENERIC_QUARTERS[gi]);
 }
 
 // Test hook.

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 
-import { prosperity, rankByProsperity, distress, fieldContext } from "/emigration/ui/emigration-prosperity.js";
+import { prosperity, rankByProsperity, distress, lethalDistress, fieldContext } from "/emigration/ui/emigration-prosperity.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 // These tests verify the prosperity FORMULA's structure with clean round-number fixtures, so they pin
@@ -254,6 +254,30 @@ function testDistressIsMagnitudeOfSituational() {
 }
 
 testDistressIsMagnitudeOfSituational();
+
+// ── Lethal distress (drives the DEATH gate; unrest only counts when earned) ────────────────
+// The bug this guards: unrest alone (-60) fed the full distress() into the death gate and, since
+// 60 ≥ attritionMinDistress (40), killed a peaceful city with an untagged "unexplained" death.
+// lethalDistress excludes unrest unless the caller passes unrestCounts, so unrest kills only after
+// the engine's sustained-unrest tenure gate — while distress() keeps it for economic-emigration push.
+function testLethalDistressGatesUnrest() {
+  const unrestOnly = signal({ unrest: true });
+  // The DEATH gate ignores unrest until it's earned...
+  assert.equal(lethalDistress(unrestOnly, false), 0);
+  // ...and counts it once earned.
+  assert.equal(lethalDistress(unrestOnly, true), Math.abs(CONFIG.unrestModifier));
+  // The economic-push measure is unaffected either way — unrest still pushes emigration immediately.
+  assert.equal(distress(unrestOnly), Math.abs(CONFIG.unrestModifier));
+  // Immediate crises (siege/disaster/famine) are lethal regardless of the unrest flag.
+  assert.equal(lethalDistress(signal({ starving: true }), false), Math.abs(CONFIG.starvationModifier));
+  assert.equal(lethalDistress(signal({ siege: true }), false), Math.abs(CONFIG.siegeModifier));
+  // With a real crisis present, the unrest term still only adds when earned.
+  const siegeAndUnrest = signal({ siege: true, unrest: true });
+  assert.equal(lethalDistress(siegeAndUnrest, false), Math.abs(CONFIG.siegeModifier));
+  assert.equal(lethalDistress(siegeAndUnrest, true), Math.abs(CONFIG.siegeModifier) + Math.abs(CONFIG.unrestModifier));
+}
+
+testLethalDistressGatesUnrest();
 
 // ── 1.4.1 polity model (happiness stages + government + celebration + war weariness) ──────
 // These run in the legacy-linear branch established at the top of the file (happinessShaped=false),

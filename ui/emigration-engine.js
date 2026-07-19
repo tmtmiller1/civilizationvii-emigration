@@ -14,7 +14,7 @@
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { speedTurns, speedBar, speedDecay, speedShock } from "/emigration/ui/emigration-game-speed.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
-import { rankByProsperity, distress } from "/emigration/ui/emigration-prosperity.js";
+import { rankByProsperity, lethalDistress } from "/emigration/ui/emigration-prosperity.js";
 import {
   removeRural, addRural, marginalPeople, settlementSignal
 } from "/emigration/ui/emigration-population.js";
@@ -206,6 +206,7 @@ function sourceState(state, key) {
     || (state.sources[key] = { pressure: 0, cooldown: 0, crisisPressure: 0, crisisCooldown: 0 });
   if (typeof s.deathPressure !== "number") s.deathPressure = 0; // normalize older saves
   if (typeof s.crisisTenure !== "number") s.crisisTenure = 0; // crisis-onset ramp counter (older saves)
+  if (typeof s.unrestTenure !== "number") s.unrestTenure = 0; // sustained-unrest lethality counter (older saves)
   return s;
 }
 
@@ -248,7 +249,7 @@ function applyOneMove(src, dest, popBefore, state, cause, inboundCtx, reasons) {
   const eventKey = eventKeyForMove(src, cause); // specific war/disaster/crisis behind this move
   const consumed = consumeSourcePoint(src, cause);
   if (!consumed.ok) return null;
-  if (!consumed.fromPool) applyDepartureConsequences(src);
+  if (!consumed.fromPool) applyDepartureConsequences(src, cause);
   const lag = transitLag(src, dest, cause);
   if (lag <= 0) {
     return commitImmediateArrival({ src, dest, state, cause, inboundCtx, consumed, people, eventKey, reasons });
@@ -627,10 +628,27 @@ function deathRamp(tenure) {
 }
 
 /**
+ * Advance (or relax) the per-source sustained-unrest counter and report whether unrest has been
+ * sustained long enough to count as LETHAL this pass. Called BEFORE the death gate's early-return so
+ * the counter still climbs on pre-lethal unrest turns. Unrest pushes economic emigration immediately
+ * (via distress()), but only joins the death gate after `unrestLethalDelayTurns` of continuous unrest.
+ * @param {*} src Source signal.
+ * @param {*} st Per-source state (mutates st.unrestTenure).
+ * @returns {boolean} Whether sustained unrest is lethal this pass.
+ */
+function tickUnrestLethality(src, st) {
+  st.unrestTenure = src.unrest ? (st.unrestTenure || 0) + 1 : Math.max(0, (st.unrestTenure || 0) - 1);
+  return !!src.unrest && st.unrestTenure >= speedTurns(CONFIG.unrestLethalDelayTurns);
+}
+
+/**
  * The outlet's DEATH channel, population that leaves the world (cause `attrition`), tracked as deaths,
- * not migration. Fires under LETHAL distress (`distress ≥ attritionMinDistress`), i.e. the situational
- * crises: war, disaster, siege, famine. Economic prosperity/unhappiness emigration carries NO
- * situational distress, so it never kills. Runs CONCURRENTLY with emigration on its own `deathPressure`:
+ * not migration. Fires under LETHAL distress (`lethalDistress ≥ attritionMinDistress`), i.e. the
+ * situational crises: war, disaster, siege, famine (all immediate), plus SUSTAINED civic unrest -
+ * unrest is lethal too, but only after `unrestLethalDelayTurns` of continuous unrest (tracked in
+ * `st.unrestTenure`), so a peaceful unrest city dies only under prolonged neglect, not on turn one.
+ * Economic prosperity/happiness emigration carries no lethal distress, so it never kills. Runs
+ * CONCURRENTLY with emigration on its own `deathPressure`:
  *   • TRAPPED (no refuge): the whole trapped population dies off (the original closed-system valve), at
  *     full rate, gated only by `attritionEnabled`.
  *   • CRISIS WHILE FLEEING (a refuge exists, `crisisDeathEnabled`): some die while the rest flee, at
@@ -643,8 +661,9 @@ function deathRamp(tenure) {
  * @returns {Migration|null} An attrition death record, or null.
  */
 function processOutletDeath(src, st, state, hasRefuge) {
-  const d = CONFIG.attritionEnabled ? distress(src) : 0;
-  // Lethal distress is the situational crises (war/disaster/siege/famine); economic emigration has none.
+  const unrestLethal = tickUnrestLethality(src, st);
+  const d = CONFIG.attritionEnabled ? lethalDistress(src, unrestLethal) : 0;
+  // Lethal distress is the situational crises (war/disaster/siege/famine, plus sustained unrest).
   if (d < CONFIG.attritionMinDistress || (hasRefuge && !CONFIG.crisisDeathEnabled)) {
     st.deathPressure = Math.max(0, st.deathPressure * speedDecay(0.5)); // coping → decay (same game-time)
     st.crisisTenure = Math.max(0, (st.crisisTenure || 0) - 1); // crisis eased → the onset ramp relaxes (reversible)
@@ -675,7 +694,7 @@ function processOutletDeath(src, st, state, hasRefuge) {
     people: marginalPeople(popBefore, state.monoTurn, cityName(src.city), settlementSignal(src)),
     cause: "attrition",
     eventKey: eventKeyForDeath(src), // specific war/disaster/crisis/famine that killed them
-    reasons: deriveDeathReasons(src, hasRefuge) // P0.2 "why": siege/disaster/famine + trapped/fleeing
+    reasons: deriveDeathReasons(src, hasRefuge, unrestLethal) // P0.2 "why": crisis/unrest + trapped/fleeing
   };
 }
 

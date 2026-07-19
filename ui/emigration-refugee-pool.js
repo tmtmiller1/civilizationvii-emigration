@@ -237,40 +237,12 @@ export function queueRefugees(cityKey, originCiv, turn, pts = 1) {
 }
 
 /**
- * Pull refugees from holding first when a host city is under attack and re-shedding people.
- * @param {string} cityKey City signal key.
- * @param {number} maxPts Maximum points to consume.
- * @returns {number} Points consumed from pool.
- */
-export function consumeForReshed(cityKey, maxPts) {
-  const want = Math.max(0, Math.floor(numOr(maxPts, 0)));
-  let got = 0;
-  for (let i = 0; i < want; i++) {
-    const one = popOldest(cityKey);
-    if (!one) break;
-    got++;
-  }
-  return got;
-}
-
-/**
  * Consume one oldest held refugee for re-shed routing, preserving origin metadata for rollback.
  * @param {string} cityKey City signal key.
  * @returns {{originCiv:number, since:number}|null} The consumed refugee metadata.
  */
 export function consumeOneForReshed(cityKey) {
   return popOldest(cityKey);
-}
-
-/**
- * Consume one refugee of a specific origin for return migration, before pulling from settled locals.
- * @param {string} cityKey City signal key.
- * @param {number} originCiv Origin civ to return.
- * @returns {boolean} True when one held refugee was consumed.
- */
-export function consumeForReturn(cityKey, originCiv) {
-  if (!cityKey || typeof originCiv !== "number") return false;
-  return !!popOldest(cityKey, (/** @type {string} */ o) => Number(o) === originCiv);
 }
 
 /**

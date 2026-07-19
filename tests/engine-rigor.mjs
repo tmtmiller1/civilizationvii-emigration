@@ -137,7 +137,7 @@ function sig(o = {}) {
 {
   const state = { sources: {} };
   const s = E.sourceState(state, "x");
-  assert.deepEqual(s, { pressure: 0, cooldown: 0, crisisPressure: 0, crisisCooldown: 0, deathPressure: 0, crisisTenure: 0 },
+  assert.deepEqual(s, { pressure: 0, cooldown: 0, crisisPressure: 0, crisisCooldown: 0, deathPressure: 0, crisisTenure: 0, unrestTenure: 0 },
     "a fresh source state has all tracks zeroed");
   state.sources.y = { pressure: 3, cooldown: 1, crisisPressure: 0, crisisCooldown: 0 }; // older save: no deathPressure
   assert.equal(E.sourceState(state, "y").deathPressure, 0, "a legacy state's missing deathPressure is normalized to 0");
@@ -290,7 +290,7 @@ function makeCity(owner, localId, o = {}) {
     population: o.population, ruralPopulation: o.rural, location: { x: o.x || 0, y: o.y || 0 },
     addRuralPopulation(d) { this.ruralPopulation += d; this.population += d; },
     Yields: { getYield: (ev) => (o.yields && o.yields[ev]) || 0 },
-    Happiness: { netHappinessPerTurn: o.happiness || 0, hasUnrest: false }
+    Happiness: { netHappinessPerTurn: o.happiness || 0, hasUnrest: !!o.unrest }
   };
 }
 function major(cities, o = {}) {
@@ -397,6 +397,51 @@ function rankedWorld() { return rankByProsperity(collectCitySignals()); }
   const st2 = { deathPressure: 4 };
   assert.equal(E.processOutletDeath(src, st2, state, false), null, "no lethal distress → no death");
   assert.ok(st2.deathPressure < 4, "deathPressure decays when the crisis isn't lethal");
+}
+
+// ── processOutletDeath: unrest is lethal, but ONLY after the sustained-unrest tenure gate ─────
+// Regression: unrest alone (-60) once fed the full distress() into the death gate and killed a
+// peaceful city immediately with an untagged death. Now unrest must persist unrestLethalDelayTurns
+// before it joins lethalDistress, and when it does the death is tagged "unrest" (never unexplained).
+{
+  pin();
+  Object.assign(CONFIG, {
+    gameSpeedTuningEnabled: false, // speed* helpers identity → the tenure gate is exactly unrestLethalDelayTurns
+    attritionEnabled: true, attritionMinDistress: 10, attritionThreshold: 1,
+    crisisDeathEnabled: true, deathRampEnabled: true, deathRampFloor: 0.25,
+    unrestModifier: -60, unrestLethalDelayTurns: 3
+  });
+  freshConfigStore();
+  globalThis.Game = { turn: 1 };
+  // A peaceful city in sustained unrest: positive food (not starving), no siege, no violence.
+  const city = makeCity(1, 1, { population: 6, rural: 6, yields: { YIELD_FOOD: 5 }, unrest: true, x: 0, y: 0 });
+  installWorld({ 1: major([city]) });
+  const ranked = rankedWorld();
+  const src = ranked[0];
+  assert.ok(src.unrest, "fixture: the city is in unrest");
+  assert.ok(!src.siege && !src.starving && (src.violence || 0) === 0, "fixture: unrest only, no immediate crisis");
+  const gate = CONFIG.unrestLethalDelayTurns; // speed* identity here
+  const state = loadState(); prepareState(state, ranked);
+  const st = E.sourceState(state, src.key);
+
+  // Below the tenure gate: unrest is not yet lethal → no death, and NO death-pressure accrues.
+  for (let i = 0; i < gate - 1; i++) {
+    assert.equal(E.processOutletDeath(src, st, state, false), null, "unrest below the tenure gate does not kill");
+  }
+  assert.equal(st.deathPressure, 0, "no death-pressure accrues while unrest is pre-lethal");
+  assert.equal(st.unrestTenure, gate - 1, "the unrest tenure counter climbs each pre-lethal turn");
+
+  // At/after the gate: unrest becomes lethal, pressure accrues, and a death eventually fires — tagged.
+  let death = null;
+  for (let i = 0; i < 12 && !death; i++) death = E.processOutletDeath(src, st, state, false);
+  assert.ok(death, "sustained unrest past the tenure gate eventually kills");
+  assert.equal(death.cause, "attrition", "the unrest death carries cause 'attrition'");
+  assert.ok(death.reasons.includes("unrest"), "the death is tagged 'unrest' (no more unexplained deaths)");
+
+  // Relief resets the counter: once unrest clears, the tenure relaxes back toward 0.
+  src.unrest = false;
+  E.processOutletDeath(src, st, state, false);
+  assert.ok(st.unrestTenure < gate, "clearing unrest relaxes the tenure counter (reversible)");
 }
 
 // ── applyOneMove: instant move record fields (L196-208) + lagged depart (L213-231) ──

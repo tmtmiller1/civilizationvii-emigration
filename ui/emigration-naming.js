@@ -13,8 +13,15 @@ import { warOpponents } from "/emigration/ui/emigration-war.js";
 import { quarterBonus } from "/emigration/ui/emigration-quarter-bonuses.js";
 
 // The spoiler mask for a belligerent the visibility policy hides (unmet). Matches the dashboard /
-// feedback "Unmet" convention so a war name never leaks a civ the player hasn't met.
-const UNMET_LABEL = "an unmet civilization";
+// feedback "Unmet" convention so a war name never leaks a civ the player hasn't met. Localized lazily
+// and cached at first RUNTIME use (never at module load, where Locale may not be ready yet), so the
+// value is stable both as display text and for the identity comparisons in maskedWarName().
+/** @type {string|null} */
+let _unmetLabel = null;
+function unmetLabel() {
+  if (_unmetLabel == null) _unmetLabel = loc("LOC_EMIG_FALLBACK_UNMET_CIV") || "an unmet civilization";
+  return _unmetLabel;
+}
 
 /**
  * Compose a localized string from a LOC key + args, or null if Locale is unavailable
@@ -33,6 +40,16 @@ function loc(key, ...args) {
     /* ignore */
   }
   return null;
+}
+
+/**
+ * {@link loc} with a guaranteed English fallback: composes the key, or returns `fallback` on a miss.
+ * Keeps the `loc(key) || english` idiom in ONE place so callers stay under the complexity budget.
+ * @param {string} key A LOC key. @param {string} fallback The English fallback.
+ * @param {...*} args Substitution args. @returns {string} The composed string, or the fallback.
+ */
+function locOr(key, fallback, ...args) {
+  return loc(key, ...args) || fallback;
 }
 
 /**
@@ -69,7 +86,7 @@ function civDisplayAdjective(pid) {
   } catch (_) {
     /* ignore */
   }
-  return "a people";
+  return loc("LOC_EMIG_FALLBACK_A_PEOPLE") || "a people";
 }
 
 /**
@@ -172,9 +189,10 @@ export function narrativeCiv(pid) {
  */
 export function quarterName(originCiv) {
   const demonym = quarterBonus(civType(originCiv)).demonym;
-  if (demonym) return demonym + " Enclave";
+  if (demonym) return loc("LOC_EMIG_QUARTER_ENCLAVE", demonym) || demonym + " Enclave";
   const adj = civAdjective(originCiv);
-  return adj ? adj + " Enclave" : "foreign enclave";
+  if (adj) return loc("LOC_EMIG_QUARTER_ENCLAVE", adj) || adj + " Enclave";
+  return loc("LOC_EMIG_QUARTER_ENCLAVE_FOREIGN") || "foreign enclave";
 }
 
 /**
@@ -191,7 +209,7 @@ export function disasterName(eventType) {
   } catch (_) {
     /* ignore */
   }
-  return "a disaster";
+  return loc("LOC_EMIG_FALLBACK_A_DISASTER") || "a disaster";
 }
 
 /**
@@ -223,7 +241,9 @@ export function crisisName(type) {
     /* ignore */
   }
   const pretty = prettifyType(type);
-  return pretty ? pretty + " Crisis" : "Crisis";
+  return pretty
+    ? locOr("LOC_EMIG_EVENT_CRISIS_SUFFIX", pretty + " Crisis", pretty)
+    : locOr("LOC_EMIG_EVENT_CRISIS", "Crisis");
 }
 
 /**
@@ -308,7 +328,7 @@ function engineWarName(victim, aggressor) {
  */
 function belligerentName(pid) {
   if (typeof pid !== "number") return null;
-  return civHidden(pid) ? UNMET_LABEL : civAdjective(pid);
+  return civHidden(pid) ? unmetLabel() : civAdjective(pid);
 }
 
 /**
@@ -345,9 +365,10 @@ function pickAggressor(victimPid, arr) {
  * @returns {string|null} The masked name, or null.
  */
 function maskedWarName(victimName, aggressorName) {
-  if (aggressorName !== UNMET_LABEL && victimName !== UNMET_LABEL) return null;
-  const known = victimName !== UNMET_LABEL ? victimName
-    : aggressorName !== UNMET_LABEL ? aggressorName : null;
+  const unmet = unmetLabel();
+  if (aggressorName !== unmet && victimName !== unmet) return null;
+  const known = victimName !== unmet ? victimName
+    : aggressorName !== unmet ? aggressorName : null;
   if (!known) return null;
   return loc("LOC_EMIG_WAR_VS_UNMET", known) || known + " vs. an unmet civilization";
 }
@@ -386,8 +407,12 @@ export function warRefugeeName(victimPid, aggressorPids) {
     const wn = engineWarName(victimPid, aggressor);
     if (wn) return wn;
   }
-  if (aggressorName && victimName) return victimName + "–" + aggressorName + " War";
-  return (victimName || "the") + " War"; // opponent unresolved (peace already declared, etc.)
+  if (aggressorName && victimName) {
+    return locOr("LOC_EMIG_WARNAME_TWO", victimName + "–" + aggressorName + " War", victimName, aggressorName);
+  }
+  // opponent unresolved (peace already declared, etc.)
+  const vn = victimName || "the";
+  return locOr("LOC_EMIG_WARNAME_ONE", vn + " War", vn);
 }
 
 /**
@@ -410,10 +435,10 @@ function pick(key, a, b, fallback) {
  * @returns {string} The headline.
  */
 export function refugeeHeadline(ev) {
-  const people = ev.people || "people";
-  const city = ev.cityName || "a settlement";
+  const people = ev.people || loc("LOC_EMIG_FALLBACK_PEOPLE") || "people";
+  const city = ev.cityName || loc("LOC_EMIG_FALLBACK_A_SETTLEMENT") || "a settlement";
   if (ev.cause === "crisis") {
-    const civ = ev.civ || "A nation";
+    const civ = ev.civ || loc("LOC_EMIG_FALLBACK_A_NATION") || "A nation";
     return pick("LOC_EMIG_NEWS_CRISIS", civ, people, "Refugee crisis: " + civ + " ; " + people + " displaced.");
   }
   const body = refugeeBody(ev, people, city);
@@ -433,11 +458,11 @@ export function refugeeHeadline(ev) {
  */
 function refugeeBody(ev, people, city) {
   if (ev.cause === "disaster") {
-    const n = ev.eventName || "A disaster";
+    const n = ev.eventName || loc("LOC_EMIG_FALLBACK_A_DISASTER_START") || "A disaster";
     return pick("LOC_EMIG_NEWS_DISASTER", n, people, n + " displaces " + people + ".");
   }
   if (ev.cause === "war") {
-    const w = ev.warName || "war";
+    const w = ev.warName || loc("LOC_EMIG_FALLBACK_WAR") || "war";
     return pick("LOC_EMIG_NEWS_WAR", w, people, people + " flee the " + w + ".");
   }
   if (ev.cause === "conquest") {

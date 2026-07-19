@@ -5,7 +5,7 @@
 //   • Number display dropdown (how migration counts are shown).
 //   • Intensity PRESET dropdown (Custom / Low / Medium / High) - the simple knob.
 //   • An "Advanced settings…" row that opens a dedicated sub-window
-//     (emigration-advanced-editor.js) holding the ~57 individual tunables, so the
+//     (emigration-advanced-editor.js) holding the 85 individual tunables, so the
 //     Mods tab itself stays uncluttered. Applying a preset writes the relevant
 //     advanced values; advanced edits (made in the sub-window) layer on top.
 //
@@ -66,19 +66,19 @@ const DATA_MODE_ITEMS = [
 ];
 // Timeline detail: turns per snapshot (index 0 → every turn … index 4 → every 5 turns).
 const SNAP_ITEMS = [
-  { label: "Every turn (finest)" },
-  { label: "Every 2 turns" },
-  { label: "Every 3 turns" },
-  { label: "Every 4 turns" },
-  { label: "Every 5 turns" }
+  { label: "LOC_OPTIONS_EMIG_SNAP_1" },
+  { label: "LOC_OPTIONS_EMIG_SNAP_2" },
+  { label: "LOC_OPTIONS_EMIG_SNAP_3" },
+  { label: "LOC_OPTIONS_EMIG_SNAP_4" },
+  { label: "LOC_OPTIONS_EMIG_SNAP_5" }
 ];
 const PRESET_ITEMS = PRESET_NAMES.map((n) => ({ label: "LOC_EMIG_PRESET_" + n.toUpperCase() }));
 // Emigration's own analytics-visibility control for its dashboard tabs (0 follow Demographics,
-// 1 hide unmet, 2 show all). Plain-string item labels, no localization round-trip needed.
+// 1 hide unmet, 2 show all).
 const VISIBILITY_ITEMS = [
-  { label: "Follow Demographics setting" },
-  { label: "Hide civilizations I haven't met" },
-  { label: "Show all civilizations" }
+  { label: "LOC_OPTIONS_EMIG_VISIBILITY_FOLLOW" },
+  { label: "LOC_OPTIONS_EMIG_VISIBILITY_HIDE" },
+  { label: "LOC_OPTIONS_EMIG_VISIBILITY_SHOWALL" }
 ];
 
 /** Register the number-display dropdown. */
@@ -114,7 +114,7 @@ function registerPreset() {
 /**
  * Register the "Advanced settings…" row. It's an Editor option: activating it pushes the
  * custom `emigration-advanced-editor` screen (the tunables sub-window) via ContextManager,
- * keeping the ~57 individual knobs off the main Mods tab.
+ * keeping the 85 individual knobs off the main Mods tab.
  */
 function registerAdvancedEditor() {
   Options.addOption({
@@ -184,11 +184,8 @@ function registerMinimizeAnalytics() {
     id: "emigration-minimize-analytics",
     initListener: (/** @type {*} */ info) => (info.currentValue = getMinimizeAnalytics()),
     updateListener: (/** @type {*} */ _i, /** @type {*} */ v) => setMinimizeAnalytics(!!v),
-    label: "Emigration • simplify dashboard",
-    description: "Hide the heavy migration analytics, the animated Network diagram and the Causes pie "
-      + "charts, and keep the simple, numbers-first tabs: Net Migration, My Cities (with the per-city "
-      + "migration meter), Policies, Notifications and the Guide, plus the Demographics graphs. Takes "
-      + "effect next time you open the dashboard."
+    label: "LOC_OPTIONS_EMIG_MINIMIZE",
+    description: "LOC_OPTIONS_EMIG_MINIMIZE_DESCRIPTION"
   });
 }
 
@@ -203,10 +200,8 @@ function registerNotifications() {
     id: "emigration-notifications",
     initListener: (/** @type {*} */ info) => (info.currentValue = getTunable("notifyMode") >= 1),
     updateListener: (/** @type {*} */ _i, /** @type {*} */ v) => setTunable("notifyMode", v ? 1 : 0),
-    label: "Emigration • notifications",
-    description: "Show Emigration's in-game notifications (the migration toasts and the world-news "
-      + "log). Turn this off to silence all Emigration pop-ups. Notification detail can be tuned "
-      + "further under Advanced settings."
+    label: "LOC_OPTIONS_EMIG_NOTIFICATIONS",
+    description: "LOC_OPTIONS_EMIG_NOTIFICATIONS_DESCRIPTION"
   });
 }
 
@@ -219,10 +214,8 @@ function registerVisibility() {
     id: "emigration-visibility",
     initListener: (/** @type {*} */ info) => (info.selectedItemIndex = getVisibilityOverride()),
     updateListener: (/** @type {*} */ _i, /** @type {number} */ v) => setVisibilityOverride(v),
-    label: "Emigration • analytics visibility",
-    description: "Whether the Emigration tabs show civilizations you haven't met. "
-      + "\"Follow Demographics setting\" mirrors the Demographics Spoilers option; the other two are "
-      + "self-contained overrides that always apply to the Emigration tabs.",
+    label: "LOC_OPTIONS_EMIG_VISIBILITY",
+    description: "LOC_OPTIONS_EMIG_VISIBILITY_DESCRIPTION",
     dropdownItems: VISIBILITY_ITEMS
   });
 }
@@ -237,10 +230,8 @@ function registerDilemmas() {
     id: "emigration-dilemmas",
     initListener: (/** @type {*} */ info) => (info.currentValue = getDilemmasEnabled()),
     updateListener: (/** @type {*} */ _i, /** @type {*} */ v) => setDilemmasEnabled(!!v),
-    label: "Emigration • refugee decisions",
-    description: "Occasionally, when a great wave of refugees reaches your lands (a neighbor's "
-      + "conquests, a plague), pause for a short decision about how to receive them. Rare by design. "
-      + "Turn off to never see these pop-ups; the simulation is unaffected."
+    label: "LOC_OPTIONS_EMIG_DILEMMAS",
+    description: "LOC_OPTIONS_EMIG_DILEMMAS_DESCRIPTION"
   });
 }
 
@@ -254,10 +245,8 @@ function registerIntegration() {
     id: "emigration-integration",
     initListener: (/** @type {*} */ info) => (info.currentValue = getIntegrationEnabled()),
     updateListener: (/** @type {*} */ _i, /** @type {*} */ v) => setIntegrationEnabled(!!v),
-    label: "Emigration • ethnic integration",
-    description: "Migrants gradually take on their host civilization's identity over time, unless war "
-      + "with their homeland or unrest keeps them apart. Shapes the Ethnic Composition lens. On by "
-      + "default; turn off to freeze each settlement's origin mix."
+    label: "LOC_OPTIONS_EMIG_ETHNIC",
+    description: "LOC_OPTIONS_EMIG_ETHNIC_DESCRIPTION"
   });
 }
 
@@ -271,9 +260,8 @@ function registerReturn() {
     id: "emigration-return",
     initListener: (/** @type {*} */ info) => (info.currentValue = getReturnEnabled()),
     updateListener: (/** @type {*} */ _i, /** @type {*} */ v) => setReturnEnabled(!!v),
-    label: "Emigration • return migration",
-    description: "When a homeland is at peace and prospering again, some of its people abroad set out "
-      + "for home over time. On by default; turn off to keep diasporas where they settled."
+    label: "LOC_OPTIONS_EMIG_RETURN",
+    description: "LOC_OPTIONS_EMIG_RETURN_DESCRIPTION"
   });
 }
 

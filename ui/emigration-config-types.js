@@ -126,6 +126,8 @@
  * @property {number} quarterDrawbackAmount One-time drawback charged by a chosen quarter stance.
  * @property {number} contestedQuarterPenalty Per-pass happiness strain per contested quarter.
  * @property {number} diasporaWarStrainCap Hard cap on total per-pass contested-quarter strain per host.
+ * @property {number} contestedQuarterYieldFactor Share of its benefit yield a contested quarter still
+ *   pays (drawback stays full).
  * @property {boolean} returnEnabled Whether diasporas return home when the homeland recovers.
  * @property {number} returnRate Fraction of a recovered-homeland diaspora that may return per turn.
  * @property {number} returnMinShare Min diaspora share of the host city to draw returnees.
@@ -172,6 +174,7 @@
  * @property {boolean} attritionEnabled Trapped distressed cities lose population with no refuge.
  * @property {number} attritionMinDistress Min situational distress (%) before attrition fires.
  * @property {number} attritionThreshold Distress pressure to remove one population point.
+ * @property {number} unrestLethalDelayTurns Turns of sustained unrest before it joins the death gate.
  * @property {boolean} crisisDeathEnabled A city under LETHAL distress (war/disaster/siege/famine) loses
  *   some population to death even when a refuge exists, concurrent with emigration. Economic
  *   (prosperity/unhappiness) emigration never kills (no situational distress).

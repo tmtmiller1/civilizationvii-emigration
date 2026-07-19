@@ -15,11 +15,64 @@ Goal: convert every player-visible hardcoded string (except the opt-in Sample-pr
 class of drift is caught in CI going forward. Outcome: a fully localized emigration UI with no
 English leaks in supported languages.
 
+> **The counts and file inventory above are the original audit snapshot.** For what is actually done
+> vs. pending as of 2026-07-19, see **[Current status](#current-status-audited-2026-07-19-mod-at-changelog-2010)** below — the L1 lens tooltips
+> have since shipped; every other tier is still outstanding.
+
 Decisions locked with the user:
 - **Translations:** author real translations in all 11 locale files (not English placeholders).
 - **Scope:** Tier 1 (options) + Tier 2 (Demographics charts) + Tier 3 (concatenated fragments) +
   the L1 lens tooltips already tracked in docs. **Skip** `emigration-demo-data.js` sample-preview
   text and log it as a deliberate wont-fix.
+
+---
+
+## Current status (audited 2026-07-19, mod at CHANGELOG 2.0.10)
+
+A read-only re-audit of the live `ui/**` tree against this plan. `text/en_us/ModText.xml` now holds
+**1,014 `<Row>` keys** (up from the ~947 cited below); ~572 distinct `LOC_` literals are referenced in
+`ui/`. State of each tier:
+
+| Tier | Status | Notes |
+|------|--------|-------|
+| **L1 — Lens tooltips** | ✅ **DONE** | Both files now route through `loc()`; keys exist in ModText. See the L1 section for the one residual leak. |
+| **Tier 1 — Options / tunables / advanced editor** | ❌ Not started | All literals intact; none of the proposed `LOC_OPTIONS_EMIG_*` / `LOC_EMIG_CHOICE_*` / `LOC_EMIG_ADV_*` keys exist. Line numbers drifted — corrected inline below. |
+| **Tier 1b — Guide nav-pills** | ❌ Not started | `"What counts"` / `"FAQ"` still literal in `views[]`. Line refs still accurate. |
+| **Tier 2 — Demographics chart specs** | ❌ Not started | No `LOC_DEMOGRAPHICS_METRIC_EMIG_*` id-derived keys added; view labels / `"people / turn"` unit still literal. Dead `…_EMIG_NET_MIGRATION` keys still present (2 rows). |
+| **Tier 3 — Concatenated fragments** | ❌ Not started | Every literal still present. Line numbers drifted in `naming.js` / `causes.js` — corrected inline below. |
+| **Hardening — CI guard** | ❌ Not created | `tests/i18n-ui-keys.mjs` does not exist. |
+| **Follow-up — re-translate polished en_us** | ⏳ Pending | Still applies; batch with the new-key work as written. |
+
+Net: **L1 is the only completed piece.** Everything else remains exactly as scoped — the plan below
+holds, with the line-number corrections noted per section.
+
+### Key reconciliation (which `LOC_` codes we need vs. don't) — audited 2026-07-19
+
+Cross-checked every key this plan proposes against the 1,014 en_us tags.
+
+- **We DO need to add all of them — none are stray.** Every proposed Tier 1 / 1b / 2 / 3 key is
+  genuinely **absent** from ModText (verified by exact-tag grep). Nothing on the "to add" list already
+  exists, so there's no redundant work to prune.
+- **Two Tier-2 keys already exist and stay:** `LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES` and its
+  `_SUBTITLE` (they correctly match id `emig_refugees`). Do **not** re-add them.
+- **Six Tier-2 keys we DON'T want — remove, don't add:** `LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION`,
+  `_EMIG_IN`, `_EMIG_OUT` (+ their `_SUBTITLE`s) are defined in all 12 locale files but are dead
+  (no matching id, zero references). **72 rows to delete.** See Tier 2 step 2.
+- **`emigration-migration-page.js` needs NO new keys** — the `SUBTABS`/`HUB_PAGES` labels it hardcodes
+  ("Network", "Net Migration (Table)", "Causes", …) already have shipped siblings in
+  `emigration-views.js` (`LOC_EMIG_VIEW_TAB_NETWORK`, `_TAB_NET_TABLE`, `_TAB_CAUSES`, `_TAB_POLICIES`,
+  `_TAB_MY_CITIES`, `_TAB_DIVERSITY`, `_TAB_NOTIFICATIONS`, `_TAB_GUIDE`). Reuse them; only mint a new
+  key where the label text differs (e.g. migration-page's "Settlements" vs. views' "My Cities",
+  "Immigration Policies" vs. "Policies") — decide per label whether to reuse the near-equivalent or add one.
+- **Two keys the plan didn't list but we'd need if we close the L1 residual:** localizing the
+  `cityTitle(..., "Prosperity")` / `cityTitle(..., "Ethnic Composition")` fallback titles (see L1
+  section) would add `LOC_EMIG_PROS_TITLE` / `LOC_EMIG_ETH_TITLE_FALLBACK` (names TBD). Optional.
+
+### Version target
+
+**Next release = `2.1.0`** (minor bump — "full interface localization" is a feature, mirroring the
+demographics mod's localization release), not a `2.0.11` patch. CHANGELOG's `[Unreleased]` section is
+currently empty; the localization work lands there under `## [2.1.0]`.
 
 ---
 
@@ -61,12 +114,12 @@ These sit next to siblings that already use `LOC_` keys — pure inconsistency.
   `_DESCRIPTION`, `_DILEMMAS` / `_DESCRIPTION`, `_ETHNIC` / `_DESCRIPTION`, `_RETURN` / `_DESCRIPTION`.
   Follow the existing `LOC_OPTIONS_EMIGRATION_*` / `_DESCRIPTION` convention already in the file.
 
-**[ui/emigration-tunables.js](../ui/emigration-tunables.js)** — `choiceLabels` arrays (L101, L115–117). Convert to `LOC_` keys resolved at render time. Confirm how `choiceLabels` reach the dropdown in `emigration-advanced-editor.js`: if the editor renders them verbatim, either store keys and `loc()` them at build time in the editor, or store `LOC_` strings if the dropdown widget auto-resolves. Keys: `LOC_EMIG_CHOICE_OFF/WEAK/STANDARD/STRONG`, `LOC_EMIG_CHOICE_OFF/IMPORTANT/VERBOSE`, `LOC_EMIG_CHOICE_ANY/MINOR/MODERATE/MAJOR`. (Numeric `"30%"` labels stay literal.)
+**[ui/emigration-tunables.js](../ui/emigration-tunables.js)** — `choiceLabels` arrays (current lines: L111 `Off/Weak/Standard/Strong`, L125 & L127 `Off/Important/Verbose`, L126 `Any/Minor+/Moderate+/Major only`). Convert to `LOC_` keys resolved at render time. Confirm how `choiceLabels` reach the dropdown in `emigration-advanced-editor.js`: if the editor renders them verbatim, either store keys and `loc()` them at build time in the editor, or store `LOC_` strings if the dropdown widget auto-resolves. Keys: `LOC_EMIG_CHOICE_OFF/WEAK/STANDARD/STRONG`, `LOC_EMIG_CHOICE_OFF/IMPORTANT/VERBOSE`, `LOC_EMIG_CHOICE_ANY/MINOR/MODERATE/MAJOR`. (Numeric `"30%"` labels at L109 stay literal.)
 
-**[ui/options/emigration-advanced-editor.js](../ui/options/emigration-advanced-editor.js)** — 3 UI-chrome strings via `loc()`:
-- L263 placeholder "Search settings…" → `LOC_EMIG_ADV_SEARCH_PLACEHOLDER`
-- L271 caption "Reset all to defaults" → `LOC_EMIG_ADV_RESET_ALL`
-- L339 tooltip "Reset to default" → `LOC_EMIG_ADV_RESET_ONE`
+**[ui/options/emigration-advanced-editor.js](../ui/options/emigration-advanced-editor.js)** — 3 UI-chrome strings via `loc()` (current lines):
+- L268 placeholder "Search settings…" → `LOC_EMIG_ADV_SEARCH_PLACEHOLDER`
+- L276 caption "Reset all to defaults" → `LOC_EMIG_ADV_RESET_ALL`
+- L344 tooltip "Reset to default" → `LOC_EMIG_ADV_RESET_ONE`
 
 ---
 
@@ -104,10 +157,11 @@ Therefore:
      `…_EMIG_UNHAPPINESS_EMIGRATION`, `…_EMIG_WAR_IMMIGRATION`, `…_EMIG_DISASTER_IMMIGRATION`,
      `…_EMIG_PROSPERITY_IMMIGRATION`.
    Keep the raw English `label`/`title`/`subtitle` in the spec objects as the fallback.
-2. **Reconcile dead keys:** existing `LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION` / `_IN` / `_OUT`
-   (+ their `_SUBTITLE`s) do **not** match any `id` → the host never composes them. Grep the whole repo
-   for each; if unreferenced, remove them (all 12 files) to avoid confusion; if referenced elsewhere,
-   leave and note. `EMIG_REFUGEES*` correctly matches id `emig_refugees` — keep.
+2. **Reconcile dead keys — ✅ confirmed dead (audited 2026-07-19):** `LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION`,
+   `_EMIG_IN`, `_EMIG_OUT` (+ their three `_SUBTITLE`s) exist but match **no** metric `id` and are
+   **referenced nowhere** in `ui/` or `data/` (whole-word grep = 0 hits outside their own ModText rows).
+   → **Remove all 6 keys, all 12 locale files = 72 `<Row>`/`<Replace>` rows.** `EMIG_REFUGEES` /
+   `_SUBTITLE` **already exist and correctly match** id `emig_refugees` — keep (don't re-add).
 3. **`description` has no host key path** — the host renders `metricObj.description` verbatim as the
    title hover-tooltip (`history-tabs.js:295`). To localize, **pre-compose in the spec**: set
    `description: loc("LOC_DEMOGRAPHICS_METRIC_EMIG_<ID>_DESC", "<english>")`. (Import/using the file's
@@ -132,19 +186,35 @@ The connectors/fallbacks glued onto localized names leak English. Fix by moving 
 into a `LOC_` template with `{n_X}` placeholders (the `loc()` helper fills them), instead of `+`
 concatenation.
 
-- **[ui/emigration-naming.js](../ui/emigration-naming.js)** (largest): war name `victim + "–" + aggressor + " War"` (L366) and `"the … War"` (L367) → `LOC_EMIG_WARNAME_TWO` `"{1_Victim}–{2_Aggressor} War"` / `LOC_EMIG_WARNAME_ONE`. `" Enclave"` (L152/154, `"foreign enclave"`) → `LOC_EMIG_QUARTER_ENCLAVE` `"{1_Demonym} Enclave"` / `LOC_EMIG_QUARTER_ENCLAVE_FOREIGN`. `" Crisis"` (L203) → `LOC_EMIG_EVENT_CRISIS_SUFFIX` template. Generic fallbacks (`UNMET_LABEL="an unmet civilization"` L17/288, `"a people"` L72, `"a disaster"` L171, and the `|| "people"/"a settlement"/"A nation"/"A disaster"/"war"` at L390–417) → `LOC_EMIG_FALLBACK_UNMET_CIV`, `_A_PEOPLE`, `_A_DISASTER`, `_PEOPLE`, `_A_SETTLEMENT`, `_A_NATION`, `_WAR`. (These are already `loc(key) || fallback` in places — where a key already exists, just ensure it's defined; where the literal is the only source, add a key.)
+- **[ui/emigration-naming.js](../ui/emigration-naming.js)** (largest; current lines): war name `victim + "–" + aggressor + " War"` (L389) and `(victim || "the") + " War"` (L390) → `LOC_EMIG_WARNAME_TWO` `"{1_Victim}–{2_Aggressor} War"` / `LOC_EMIG_WARNAME_ONE`. `" Enclave"` (L175/177, `"foreign enclave"`) → `LOC_EMIG_QUARTER_ENCLAVE` `"{1_Demonym} Enclave"` / `LOC_EMIG_QUARTER_ENCLAVE_FOREIGN`. `" Crisis"` (L226) → `LOC_EMIG_EVENT_CRISIS_SUFFIX` template. Generic fallbacks (`UNMET_LABEL="an unmet civilization"` def L17, used L311/348–350, `"a people"` L72, `"a disaster"` L194, and the `|| "people"/"a settlement"/"A nation"/"A disaster"/"war"` at L413–440) → `LOC_EMIG_FALLBACK_UNMET_CIV`, `_A_PEOPLE`, `_A_DISASTER`, `_PEOPLE`, `_A_SETTLEMENT`, `_A_NATION`, `_WAR`. (These are already `loc(key) || fallback` in places — where a key already exists, just ensure it's defined; where the literal is the only source, add a key.)
 - **[ui/emigration-events.js:316](../ui/emigration-events.js)** — `name + " strikes " + place + "! "` → `LOC_EMIG_DISASTER_STRIKES_AT` `"{1_Name} strikes {2_Place}! "` and `LOC_EMIG_DISASTER_STRIKES` `"{1_Name} strikes! "`.
 - **[ui/emigration-narrative.js:228](../ui/emigration-narrative.js)** — `Math.round(e.pct) + " percent"` feeding `{n_Pct}`. Prefer `Locale.toPercent`/existing percent helper; if a bare number is needed, add `LOC_EMIG_PERCENT` `"{1_N} percent"`. Check for an existing percent formatter in the mod first.
 - **[ui/emigration-return.js:251](../ui/emigration-return.js)** — `reason: "at peace again"` → `LOC_EMIG_RETURN_REASON_PEACE`, composed before passing as `{4_Reason}`.
-- **[ui/emigration-feedback.js:640](../ui/emigration-feedback.js)** — `UNMET_CIV_LABEL="an unmet civilization"` → reuse `LOC_EMIG_FALLBACK_UNMET_CIV` from naming.js.
-- **[ui/emigration-causes.js:255](../ui/emigration-causes.js)** — `` `+${n} more` `` → `LOC_EMIG_CAUSES_MORE` `"+{1_N} more"`.
+- **[ui/emigration-feedback.js:641](../ui/emigration-feedback.js)** — `UNMET_CIV_LABEL="an unmet civilization"` (def L641; used L468/654/685/778) → reuse `LOC_EMIG_FALLBACK_UNMET_CIV` from naming.js.
+- **[ui/emigration-causes.js:279](../ui/emigration-causes.js)** — `` `+${rows.length - 4} more` `` → `LOC_EMIG_CAUSES_MORE` `"+{1_N} more"`.
 - **[ui/emigration-quarter-phrases.js](../ui/emigration-quarter-phrases.js)** — ~20 diaspora phrases (L16–33) with **no `_KEYS` sibling**. `emigration-narrative.js` already has localized parallel copies WITH `_KEYS` arrays; **converge on that**: add `LOC_EMIG_QTR_FEATURE_*` / `LOC_EMIG_QTR_GENERIC_*` keys and a parallel `_KEYS` array here, and confirm `emigration-diaspora.js` (`chronicleEstablished`) consumes the localized version. Reuse the narrative.js keys if the phrase text is identical.
 
 ---
 
-## L1 — Lens tooltips (already tracked in docs/emigration-roadmap-and-backlog.md)
+## L1 — Lens tooltips — ✅ DONE (already tracked in docs/emigration-roadmap-and-backlog.md)
 
-- **[ui/emigration-prosperity-tooltip.js](../ui/emigration-prosperity-tooltip.js)** (L44–50, 61–67) and **[ui/emigration-ethnicity-tooltip.js](../ui/emigration-ethnicity-tooltip.js)** (L36, 55, 88, 107): route hardcoded English through `loc()` with `LOC_EMIG_LENS_*` keys, and replace `Math.round(t*100)+"%"` with `Locale.toPercent` (mirror the graceful-fallback number helper the demographics mod / emigration already use). Mark L1 resolved in [emigration-roadmap-and-backlog.md](emigration-roadmap-and-backlog.md).
+**Completed.** Both tooltip files now route every visible string through `loc()` and the keys are
+defined in ModText:
+- **[ui/emigration-prosperity-tooltip.js](../ui/emigration-prosperity-tooltip.js)** — tier labels
+  `LOC_EMIG_PROS_TIER_*` (L47–51), pressure rows `LOC_EMIG_PRESSURE_*` (L63–68); the signed percent is
+  `loc("LOC_EMIG_PCT_SIGNED", "{1_Pct}%", …)` (L99), not a bare `Math.round(t*100)+"%"`.
+- **[ui/emigration-ethnicity-tooltip.js](../ui/emigration-ethnicity-tooltip.js)** — `LOC_EMIG_ETH_MORE`
+  (L37), `LOC_EMIG_ETH_UNKNOWN` (L43/56/89), `LOC_EMIG_ETH_TITLE` / `_TILE_SUFFIX` (L106/108), and the
+  per-row percent via `loc("LOC_EMIG_PCT", "{1_Pct}%", …)` (L109).
+
+**One residual leak (optional cleanup, not blocking):** the panel *title fallback* passed to
+`cityTitle(city, fallback)` ([emigration-lens-hover-panel.js:295](../ui/emigration-lens-hover-panel.js#L295))
+is still raw English — `"Prosperity"` (prosperity-tooltip L103) and `"Ethnic Composition"`
+(ethnicity-tooltip L106). `cityTitle` returns the resolved settlement name when it can, so this string
+only surfaces when the name can't resolve. If localizing it, wrap the fallback in `loc()` before the
+call. (The keys chosen were `LOC_EMIG_PROS_TIER_*` / `LOC_EMIG_PRESSURE_*` / `LOC_EMIG_ETH_*`, **not** the
+`LOC_EMIG_LENS_*` namespace this plan originally proposed — match the shipped keys.) L1 is marked
+resolved in [emigration-roadmap-and-backlog.md](emigration-roadmap-and-backlog.md).
 
 ---
 
@@ -175,6 +245,16 @@ missing-key one:
   against the last pre-polish commit.
 - **Batch it** with the new-key work above so translators touch each locale file once.
 
+**Addendum (2026-07-19) — three mechanics fixes also revised en_us copy.** The lower-confidence
+border/enclave/crisis fixes changed the *meaning* of some strings (not just their wording), so these
+stale-translation rows carry a mechanics change, not only a polish edit — re-translate with the same
+hand pass:
+- **Closed-Borders / Anti-Immigration** now notes refugees settle more slowly: `LOC_EMIG_T_CLOSEDOPEN_D`
+  and `LOC_EMIG_POLICY_CLOSED_BORDERS_DESC` + `_EX` / `_MO`.
+- **Contested enclave** now *reduces the enclave's yield* (new `contestedQuarterYieldFactor`), so the
+  "happiness strain only" framing is gone: `LOC_EMIGRATION_PANEL_QUARTER_CONTESTED`, `LOC_EMIG_T_QUARTERS_D`,
+  `LOC_EMIG_GUIDE_12_F4_A`. (README + `ui/emigration-guide.js` FAQ fallback updated in en_us only, as usual.)
+
 ---
 
 ## Hardening — catch this class of drift in CI
@@ -197,7 +277,9 @@ There is currently **no test that a `loc()`/`tr()` key referenced in `ui/*.js` e
 4. **Reconcile** dead `LOC_DEMOGRAPHICS_METRIC_*` keys.
 5. **Log** demo-data wont-fix; mark L1 done in open-items.
 6. **Add** the UI-key CI guard.
-7. **Version bump + CHANGELOG** entry (mirror demographics' "full interface localization" note).
+7. **Version bump to `2.1.0` + CHANGELOG** entry under `## [2.1.0]` (minor bump; mirror demographics'
+   "full interface localization" note). Also sync the `emigration.modinfo` version if it tracks releases
+   (currently shows a stale `1.0`).
 
 ## Verification
 

@@ -276,6 +276,6 @@ export function netDrivers(outByCause, inByCause) {
   rows.sort((a, b) => Math.abs(b.net) - Math.abs(a.net) || causeOrder(a.c) - causeOrder(b.c));
   const shown = rows.slice(0, 4)
     .map((r) => `${causeLabel(r.c)} ${r.net > 0 ? "+" : "-"}${formatPeople(Math.abs(r.net))}`);
-  if (rows.length > 4) shown.push(`+${rows.length - 4} more`);
+  if (rows.length > 4) shown.push(loc("LOC_EMIG_CAUSES_MORE", "+{1_N} more", rows.length - 4));
   return shown.join(", ");
 }

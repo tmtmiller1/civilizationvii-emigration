@@ -23,6 +23,7 @@ import { returnLine, chronicleTitle } from "/emigration/ui/emigration-narrative.
 import { getReturnEnabled } from "/emigration/ui/emigration-settings.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 import { consumeOneForReturn, queueRefugees } from "/emigration/ui/emigration-refugee-pool.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 
 const STATE_KEY = "EmigrationReturn_v1";
 const STATE_SCHEMA_VERSION = 2;
@@ -248,7 +249,7 @@ function chronicleReturn(origin, hostName, people, turn) {
   const seed = hostName + "|return|" + origin + "|" + Math.floor(turn / CONFIG.returnCooldownTurns);
   const body = returnLine({
     origin: nc.adj, framed: nc.framed, city: hostName, people: formatPeopleExact(people),
-    reason: "at peace again", seed
+    reason: loc("LOC_EMIG_RETURN_REASON_PEACE", "at peace again"), seed
   });
   chronicle({
     kind: "return", title: chronicleTitle({ kind: "return", civ: nc.adj, city: hostName, seed }),

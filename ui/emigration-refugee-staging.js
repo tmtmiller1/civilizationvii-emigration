@@ -99,7 +99,10 @@ function refugeeSettlementBudget(sig) {
   if (over > 0 && CONFIG.refugeePoolOvercrowdPenalty > 0) {
     b *= Math.max(0.1, 1 - Math.min(0.9, over * CONFIG.refugeePoolOvercrowdPenalty));
   }
-  if (CONFIG.bordersEnabled) b *= Math.max(0.25, immigrationOpenness(sig.owner));
+  // Anti-Immigration throttles refugee SETTLEMENT too (on top of the border turn-away in the pull
+  // path), so a closed civ absorbs its holding pool more slowly. Floored on the same `opennessFloor`
+  // the pull path uses, so the two stages share one floor (never hard-zeros pool drain).
+  if (CONFIG.bordersEnabled) b *= Math.max(CONFIG.opennessFloor, immigrationOpenness(sig.owner));
   return Math.max(0, Math.floor(b));
 }
 
@@ -128,3 +131,6 @@ export function settleRefugeePools(ranked, state) {
     }
   }
 }
+
+// Test hook: the pure per-city settlement-budget computation.
+export const __test = { refugeeSettlementBudget };

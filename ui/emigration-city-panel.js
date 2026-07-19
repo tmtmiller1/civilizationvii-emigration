@@ -21,6 +21,7 @@ import { refugeePoolTotal } from "/emigration/ui/emigration-refugee-pool.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { civAdjective, quarterName, civType } from "/emigration/ui/emigration-naming.js";
 import { causeLabel, topCause } from "/emigration/ui/emigration-causes.js";
+import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 const DBG = false;
 /**
@@ -123,6 +124,17 @@ function refugeePoolFor(city) {
 }
 
 /**
+ * The share of its benefit yield a quarter pays: a contested enclave pays only a clamped fraction
+ * (matching the grant path in emigration-quarter.js), a settled one pays full.
+ * @param {*} rec A resolved quarter record.
+ * @returns {number} The benefit factor in [0, 1].
+ */
+function quarterBenefitFactor(rec) {
+  if (!rec.contested) return 1;
+  return Math.max(0, Math.min(1, Number(CONFIG.contestedQuarterYieldFactor) || 1));
+}
+
+/**
  * The resolved quarter record for a city (civ ids turned into display strings), or null.
  * @param {*} city A live city object.
  * @returns {*} The resolved quarter, or null.
@@ -133,15 +145,19 @@ function gatherQuarter(city) {
     const rec = key ? quarterAt(key) : null;
     if (!rec) return null;
     const applied = rec.applied || {};
+    // A contested enclave pays only a share of its benefit (see quarterBenefitFactor), so the panel
+    // shows the reduced number the sim actually grants — not a full figure the yields never reflect.
+    const contested = !!rec.contested;
+    const benefitFactor = quarterBenefitFactor(rec);
     return {
       originName: quarterName(rec.civ),
       stanceLabel: quarterOptionFor(civType(rec.civ), rec.optionId).label,
-      contested: !!rec.contested,
+      contested,
       // Once the enclave is BUILT the stance grant steps aside (roadmap §22a), so the panel must not keep
       // claiming the dividend. Resolve a legacy record's origin from its player id, as the grant path does.
       invested: false, // cultural-enclave BUILD feature removed; nothing is ever built/invested
       benefitYield: applied.benefitYield || null,
-      benefitAmount: applied.benefitAmount || 0,
+      benefitAmount: (applied.benefitAmount || 0) * benefitFactor,
       penaltyYield: applied.penaltyYield || null,
       penaltyAmount: applied.penaltyAmount || 0
     };

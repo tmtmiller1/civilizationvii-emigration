@@ -38,7 +38,7 @@ function testApplyDepartureConsequencesWithHighViolence() {
     city: { location: { x: 10, y: 20 } }
   };
 
-  assert.doesNotThrow(() => applyDepartureConsequences(src), "high-violence departure should be safe");
+  assert.doesNotThrow(() => applyDepartureConsequences(src, "war"), "high-violence departure should be safe");
 }
 
 function testApplyDepartureConsequencesWithLowViolence() {
@@ -47,7 +47,7 @@ function testApplyDepartureConsequencesWithLowViolence() {
     city: { location: { x: 10, y: 20 } }
   };
 
-  assert.doesNotThrow(() => applyDepartureConsequences(src), "low-violence departure should be safe");
+  assert.doesNotThrow(() => applyDepartureConsequences(src, "war"), "low-violence departure should be safe");
 }
 
 function testApplyDepartureConsequencesAtThreshold() {
@@ -56,18 +56,70 @@ function testApplyDepartureConsequencesAtThreshold() {
     city: { location: { x: 10, y: 20 } }
   };
 
-  assert.doesNotThrow(() => applyDepartureConsequences(src), "threshold departure should be safe");
+  assert.doesNotThrow(() => applyDepartureConsequences(src, "war"), "threshold departure should be safe");
 }
 
 function testApplyDepartureConsequencesWithNullCity() {
   warLossRecorded = false;
   const src = { violence: 1.0, city: null };
-  
+
   try {
-    applyDepartureConsequences(src);
+    applyDepartureConsequences(src, "war");
   } catch (e) {
     assert.fail(`should handle null city: ${e.message}`);
   }
+}
+
+// The siege loss cap governs the flee-the-violence channel only: a departure from a besieged
+// city that leaves for an ECONOMIC reason (prosperity/unhappiness) must NOT book a war-loss,
+// or economic movers would drain the cap and shut off the war exodus early. Observed via the
+// real violence module's siege escalation (recordWarLoss is a no-op off-engine, so we exercise
+// the whole path against a real besieged city).
+async function testCauseGatesTheSiegeCap() {
+  const KV = {};
+  const HEALTH = {};
+  const hkey = (owner, loc) => `${owner}:${loc.x}:${loc.y}`;
+  let TURN = 1;
+  globalThis.Game = { get turn() { return TURN; } };
+  globalThis.Players = {
+    Districts: {
+      get: (owner) => ({
+        getDistrictHealth: (loc) => HEALTH[hkey(owner, loc)]?.cur ?? 100,
+        getDistrictMaxHealth: (loc) => HEALTH[hkey(owner, loc)]?.max ?? 100
+      })
+    }
+  };
+  globalThis.ComponentID = { toBitfield: (cid) => (cid ? cid.owner * 1000 + cid.id : 0) };
+  globalThis.GameplayMap = { getLocationFromIndex: () => null };
+  globalThis.MapConstructibles = { getConstructibles: () => [] };
+  globalThis.Constructibles = { getByComponentID: () => ({ damaged: false }) };
+  globalThis.Configuration = {
+    getGame: () => ({ getValue: (k) => (k in KV ? KV[k] : null) }),
+    editGame: () => ({ setValue: (k, v) => { KV[k] = v; } })
+  };
+  const { tickViolence, observeCity, siegeEscalation } =
+    await import("/emigration/ui/emigration-violence.js");
+
+  const city = { id: { owner: 0, id: 1 }, owner: 0, location: { x: 5, y: 0 }, population: 10 };
+  HEALTH[hkey(0, city.location)] = { cur: 50, max: 100 }; // ≈ half-health → intensity ≥ threshold
+  TURN = 1; tickViolence(); observeCity(city); // tenure 1, onsetPop = 10, warLoss = 0
+  const escStart = siegeEscalation(city);
+  assert.ok(escStart > 0, "siege should be active before any losses");
+
+  const src = { violence: 10, city };
+  // onsetPop 10 → cap = siegeLossCapPct*10 = 6 losses would zero the escalation.
+  for (let i = 0; i < 6; i++) applyDepartureConsequences(src, "prosperity");
+  assert.ok(siegeEscalation(city) > 0, "economic (prosperity) departures must NOT drain the war cap");
+
+  for (let i = 0; i < 6; i++) applyDepartureConsequences(src, "war");
+  assert.equal(siegeEscalation(city), 0, "war departures DO drain the cap (real channel intact)");
+
+  delete globalThis.Game;
+  delete globalThis.Players;
+  delete globalThis.ComponentID;
+  delete globalThis.GameplayMap;
+  delete globalThis.MapConstructibles;
+  delete globalThis.Constructibles;
 }
 
 function testApplyArrivalConsequencesWithPlague() {
@@ -135,6 +187,7 @@ testApplyArrivalConsequencesWithPlaguDisabled();
 testApplyArrivalConsequencesAttractionDividends();
 testApplyArrivalConsequencesZeroPopulation();
 testApplyArrivalConsequencesNullCity();
+await testCauseGatesTheSiegeCap();
 
 delete globalThis.recordWarLoss;
 delete globalThis.addDistress;

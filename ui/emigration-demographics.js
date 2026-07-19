@@ -19,6 +19,7 @@ import { formatPeople, localeNumber, scaleCityPopulation } from "/emigration/ui/
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { causeLabel, isRefugeeCause } from "/emigration/ui/emigration-causes.js";
 import { getNumberMode, setNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 import {
   refugeesFor,
   refugeesInFor,
@@ -149,7 +150,7 @@ function refugeesInTooltip(ctx) {
  */
 function outTooltip(ctx) {
   const sources = formatCauseBreakdown(emigrationByCause(ctx?.id));
-  return sources ? `Sources: ${sources}` : "";
+  return sources ? loc("LOC_EMIG_SOURCES", "Sources: {1_List}", sources) : "";
 }
 
 /**
@@ -159,7 +160,7 @@ function outTooltip(ctx) {
  */
 function inTooltip(ctx) {
   const sources = formatCauseBreakdown(immigrationByCause(ctx?.id));
-  return sources ? `Sources: ${sources}` : "";
+  return sources ? loc("LOC_EMIG_SOURCES", "Sources: {1_List}", sources) : "";
 }
 
 // ── The migration graphs: Net Migration (am I winning or losing the population game?), gross
@@ -384,7 +385,10 @@ const GRAPHS_GROUP = {
   id: "emig_graphs",
   label: "Data",
   first: true,
-  views: [{ id: "scaled", label: "Scaled Population" }, { id: "civ", label: "Civ Population" }],
+  views: [
+    { id: "scaled", key: "LOC_EMIG_VIEW_SCALED_POP", label: "Scaled Population" },
+    { id: "civ", key: "LOC_EMIG_VIEW_CIV_POP", label: "Civ Population" }
+  ],
   viewBinding: VIEW_BINDING,
   members: [
     // Population (the host's own metric) leads the group so the Migration hub's first page is
@@ -392,18 +396,45 @@ const GRAPHS_GROUP = {
     // same metric (population is a raw count with no Scaled/Civ points variant), like the ledger member.
     // Scaled → Emigration's people-scaled population (emig_population, the SAME per-city scaling as the
     // flow graphs); Civ → host's raw population points (population_civ). One scaling system everywhere.
-    { label: "Population", scaled: "emig_population", civ: "population_civ" },
+    { key: "LOC_EMIG_MEMBER_POPULATION", label: "Population", scaled: "emig_population", civ: "population_civ" },
     // Population Share is the host's (Demographics) 100%-stacked share-of-world area. It has no
     // Scaled/Civ variant, so both views map to the one metric (like the Net Migration table below).
-    { label: "Population Share", scaled: "pop_share_area", civ: "pop_share_area" },
-    { label: "Net Migration (Graph)", scaled: NET_CUM_SPEC.id, civ: NET_CUM_PTS_SPEC.id },
-    { label: "Net Migration (Table)", scaled: LEDGER_SUBTAB_ID, civ: LEDGER_SUBTAB_ID },
-    { label: "Emigration", scaled: OUT_CUM_SPEC.id, civ: OUT_CUM_PTS_SPEC.id },
-    { label: "Immigration", scaled: IN_CUM_SPEC.id, civ: IN_CUM_PTS_SPEC.id },
-    { label: "Refugees (Left)", scaled: REF_SPEC.id, civ: REF_PTS_SPEC.id },
-    { label: "Refugees (Arrived)", scaled: REF_IN_SPEC.id, civ: REF_IN_PTS_SPEC.id }
+    { key: "LOC_EMIG_MEMBER_POP_SHARE", label: "Population Share", scaled: "pop_share_area", civ: "pop_share_area" },
+    { key: "LOC_EMIG_MEMBER_NET_GRAPH", label: "Net Migration (Graph)", scaled: NET_CUM_SPEC.id, civ: NET_CUM_PTS_SPEC.id },
+    { key: "LOC_EMIG_MEMBER_NET_TABLE", label: "Net Migration (Table)", scaled: LEDGER_SUBTAB_ID, civ: LEDGER_SUBTAB_ID },
+    { key: "LOC_EMIG_MEMBER_EMIGRATION", label: "Emigration", scaled: OUT_CUM_SPEC.id, civ: OUT_CUM_PTS_SPEC.id },
+    { key: "LOC_EMIG_MEMBER_IMMIGRATION", label: "Immigration", scaled: IN_CUM_SPEC.id, civ: IN_CUM_PTS_SPEC.id },
+    { key: "LOC_EMIG_MEMBER_REF_LEFT", label: "Refugees (Left)", scaled: REF_SPEC.id, civ: REF_PTS_SPEC.id },
+    { key: "LOC_EMIG_MEMBER_REF_ARRIVED", label: "Refugees (Arrived)", scaled: REF_IN_SPEC.id, civ: REF_IN_PTS_SPEC.id }
   ]
 };
+
+/**
+ * A registration-time copy of a spec with its `description` localized. The host renders `description`
+ * verbatim (no key derivation) and reads `label`/`title`/`subtitle` only as raw fallback behind the
+ * id-derived LOC_DEMOGRAPHICS_METRIC_<ID>[/_TITLE/_SUBTITLE] keys, so those need no JS change — only the
+ * verbatim `description` is pre-composed here (at runtime, where Locale is ready). `unit` stays raw:
+ * "people"/"points" are already in the host's UNIT_LOC table.
+ * @param {*} spec A metric spec. @returns {*} The localized copy.
+ */
+function localizeSpec(spec) {
+  const descKey = "LOC_DEMOGRAPHICS_METRIC_" + String(spec.id).toUpperCase() + "_DESC";
+  return Object.assign({}, spec, { description: loc(descKey, spec.description) });
+}
+
+/**
+ * A registration-time copy of the Graphs group with its group label, view labels, and member labels
+ * localized. These three are rendered verbatim by the host (unlike the id-derived metric names), so
+ * each carries a `key` we compose here and strip before handing the clean object to the host.
+ * @returns {*} The localized group.
+ */
+function localizeGraphsGroup() {
+  return Object.assign({}, GRAPHS_GROUP, {
+    label: loc("LOC_DEMOGRAPHICS_METRIC_EMIG_GRAPHS", GRAPHS_GROUP.label),
+    views: GRAPHS_GROUP.views.map(({ key, ...v }) => Object.assign(v, { label: loc(key, v.label) })),
+    members: GRAPHS_GROUP.members.map(({ key, ...m }) => Object.assign(m, { label: loc(key, m.label) }))
+  });
+}
 
 /**
  * Register all specs + the Graphs group against a ready Demographics API.
@@ -411,7 +442,7 @@ const GRAPHS_GROUP = {
  */
 function doRegister(api) {
   if (api && api[REGISTERED_FLAG]) return;
-  for (const spec of SPECS) api.registerMetric(spec);
+  for (const spec of SPECS) api.registerMetric(localizeSpec(spec));
   // Collapse the migration graphs into ONE group with two toggles: the metric (Net Migration /
   // Refugees / …) and the units (Scaled / Civ numbers). Each (member, view) maps to a registered spec;
   // all stay registered above so they're still sampled. No-op on a host lacking the group hook.
@@ -421,7 +452,7 @@ function doRegister(api) {
     && Array.isArray(api.HUB_IDS) && api.HUB_IDS.includes("migration");
   const pageId = hubMode ? "emig_net_migration" : "emig_migration_panel"; // match the page that hosts it
   if (typeof api.registerMetricGroup === "function") {
-    api.registerMetricGroup(Object.assign({ pageId }, GRAPHS_GROUP));
+    api.registerMetricGroup(Object.assign({ pageId }, localizeGraphsGroup()));
   }
   api[REGISTERED_FLAG] = true;
 }

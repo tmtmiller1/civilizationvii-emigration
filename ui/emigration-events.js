@@ -18,6 +18,7 @@ import { recordDisasterEvent } from "/emigration/ui/emigration-migration-stats.j
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
+import { loc as tr } from "/emigration/ui/emigration-loc.js";
 
 // How far from an event's epicenter to look for affected cities. A disaster (a volcanic eruption,
 // a flood) damages a RING of tiles around its epicenter, and the epicenter itself, a volcano /
@@ -313,7 +314,9 @@ function maybeNotifyDisaster(data, sev, struck, where) {
  */
 function disasterAlert(name, where) {
   const place = where ? (where.city ? where.city + " (" + where.civ + ")" : where.civ) : null;
-  const head = place ? name + " strikes " + place + "! " : name + " strikes! ";
+  const head = place
+    ? tr("LOC_EMIG_DISASTER_STRIKES_AT", "{1_Name} strikes {2_Place}! ", name, place)
+    : tr("LOC_EMIG_DISASTER_STRIKES", "{1_Name} strikes! ", name);
   return head + actionHint("disaster");
 }
 

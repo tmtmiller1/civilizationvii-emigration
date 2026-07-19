@@ -167,7 +167,7 @@ function testInvestedQuarterStillReportsContest() {
   assert.deepEqual(lines, [
     "A Roman Enclave has taken root in this settlement.",
     "Its enclave is built: the enclave's own yield now applies instead of this dividend.",
-    "Contested: you are at war with their homeland, straining the enclave."
+    "Contested: at war with their homeland - the enclave contributes less (its benefit above is reduced) and the city's morale suffers."
   ]);
 }
 

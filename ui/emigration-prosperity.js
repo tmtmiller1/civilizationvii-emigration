@@ -239,13 +239,33 @@ function situationalPercent(s) {
 
 /**
  * A city's distress: the magnitude of its negative situational percent (violence,
- * disaster, siege, starvation, unrest). 0 when the city is content. Drives the attrition
- * outlet - a trapped, highly-distressed city loses population when it can't flee.
+ * disaster, siege, starvation, unrest, war weariness). 0 when the city is content. This is the FULL
+ * push measure - it drives prosperity/attractiveness and the per-city readout, so unrest lowers a
+ * city's standing and pushes economic emigration the moment it appears. The DEATH gate uses the
+ * narrower `lethalDistress` instead (unrest only kills after sustained neglect).
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
  * @returns {number} Distress (>= 0).
  */
 export function distress(s) {
   const pct = situationalPercent(s);
+  return pct < 0 ? -pct : 0;
+}
+
+/**
+ * A city's LETHAL distress: the magnitude of the negative situational terms that can KILL. The
+ * immediate crises - violence, disaster, siege, famine - plus war weariness always count. Unrest is
+ * lethal TOO, but only after sustained neglect, so the caller (the engine, which alone tracks the
+ * unrest tenure) passes `unrestCounts` once the city has been in unrest long enough. Below that gate
+ * unrest still shows up in `distress`/prosperity (it pushes economic emigration) but not here, so a
+ * peaceful unrest city bleeds migrants immediately yet only starts dying after prolonged neglect.
+ * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
+ * @param {boolean} unrestCounts Whether sustained unrest has earned lethal status this pass.
+ * @returns {number} Lethal distress (>= 0).
+ */
+export function lethalDistress(s, unrestCounts) {
+  const b = situationalBreakdown(s);
+  let pct = b.violence + b.disaster + b.siege + b.starvation + b.warWeariness;
+  if (unrestCounts) pct += b.unrest;
   return pct < 0 ? -pct : 0;
 }
 

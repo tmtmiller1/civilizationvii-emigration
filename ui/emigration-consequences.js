@@ -29,11 +29,16 @@ function carryPlague(infected, destCity) {
 
 /**
  * Source-side consequence applied when the people LEAVE: a capped war-loss tally if the source is
- * besieged (so the siege cap counts them the moment they depart).
+ * besieged (so the siege cap counts them the moment they depart). ONLY war-caused departures count
+ * toward the cap - the siegeLossCapPct ceiling governs the flee-the-violence channel alone. Without
+ * the cause gate, economic movers (prosperity/unhappiness) shed by a city that happens to also be
+ * under siege would drain the cap, collapsing siegeEscalation and shutting off the war exodus early.
  * @param {*} src Source signal.
+ * @param {import("/emigration/ui/emigration-causes.js").MigrationCause} cause Why they're leaving
+ *   (only "war" feeds the siege loss cap).
  */
-export function applyDepartureConsequences(src) {
-  if (src.violence >= CONFIG.violenceFleeThreshold) recordWarLoss(src.city);
+export function applyDepartureConsequences(src, cause) {
+  if (cause === "war" && src.violence >= CONFIG.violenceFleeThreshold) recordWarLoss(src.city);
 }
 
 /**

@@ -26,6 +26,7 @@ export const DEATH_REASON = Object.freeze({
   UNDER_ATTACK: "under-attack", // in-border violence over the flee threshold (no active siege flag)
   DISASTER: "disaster", // disaster distress over the flee threshold
   FAMINE: "famine", // net food is negative (starving)
+  UNREST: "unrest", // sustained civic unrest, lethal only after prolonged neglect (unrestLethalDelayTurns)
   NO_REFUGE: "no-refuge", // trapped: no viable destination to flee to
   CRISIS_LOSSES: "crisis-losses" // some died while the rest fled (a refuge existed)
 });
@@ -48,6 +49,7 @@ const FALLBACK = {
   "under-attack": "under attack",
   "disaster": "disaster",
   "famine": "famine",
+  "unrest": "sustained unrest",
   "no-refuge": "no safe refuge",
   "crisis-losses": "lost while fleeing"
 };
@@ -69,6 +71,7 @@ const LOC = {
   "under-attack": "LOC_EMIG_REASON_UNDER_ATTACK",
   "disaster": "LOC_EMIG_REASON_DISASTER",
   "famine": "LOC_EMIG_REASON_FAMINE",
+  "unrest": "LOC_EMIG_REASON_UNREST",
   "no-refuge": "LOC_EMIG_REASON_NO_REFUGE",
   "crisis-losses": "LOC_EMIG_REASON_CRISIS_LOSSES"
 };

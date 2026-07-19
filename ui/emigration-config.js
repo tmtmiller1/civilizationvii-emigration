@@ -294,6 +294,9 @@ export const CONFIG = {
   quarterDrawbackAmount: 1, // per-turn drawback a chosen stance charges (its drawback yield)
   contestedQuarterPenalty: 4, // per-pass happiness strain per contested quarter (host at war with its homeland)
   diasporaWarStrainCap: 12, // hard cap on total per-pass contested-quarter happiness strain per host
+  contestedQuarterYieldFactor: 0.5, // share of its stance BENEFIT a contested enclave still pays while at
+  //                                   war with its homeland (drawback stays full: a strained enclave gives
+  //                                   less good, not less bad). 1 = no yield effect; 0 = benefit fully withheld.
 
   // ── assimilation cost (duration-based consequence via grantYield) ──
   // Each migrant adds "assimilation load" to the DESTINATION civ; that load DECAYS
@@ -417,6 +420,12 @@ export const CONFIG = {
   //                           so real wars actually trigger the (now severity-scaled) death channel
   //                           instead of the city falling to the base game first with the mod killing 0.
   attritionThreshold: 40, // distress "pressure" to remove one population point
+  // Unrest is lethal too, but ONLY after this many turns of SUSTAINED unrest (tracked per-city in
+  // st.unrestTenure); the immediate crises (war/siege/disaster/famine) skip this delay. Below the gate
+  // unrest still pushes economic emigration (via the full distress()), it just can't kill yet, so a
+  // peaceful unrest city loses people to death only under prolonged neglect. Game-speed scaled
+  // (speedTurns), like deathRampTurns. Sits on TOP of the deathRampTurns onset once it becomes lethal.
+  unrestLethalDelayTurns: 10,
   // Lethal CRISES kill even when people can flee, war, disaster, siege, and famine. Economic
   // (prosperity / unhappiness) emigration never kills, because it carries no situational distress.
   // The "no destination" trap almost never fires (there's nearly always somewhere to flee), so without

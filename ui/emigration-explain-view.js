@@ -254,13 +254,6 @@ function passData() {
   return _pass;
 }
 
-/** Drop the per-turn memo (for tests and the cache-reset convention). */
-export function resetExplainCache() {
-  _pass = null;
-  _passTurn = -1;
-  _models.clear();
-}
-
 /**
  * Build a live explainer model for one city (recompute-on-read, memoized per turn). Null when the
  * option is off, the city can't be found, or any read fails.
