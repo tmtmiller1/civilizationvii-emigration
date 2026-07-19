@@ -1,8 +1,8 @@
 # Emigration
 
-Adds more detailed migration and refugee systems to Civilization VII. When a settlement is starving,
-unhappy, or under siege, people leave. When a settlement is thriving, they move there instead.
-Population moves between settlements, changing yields, growth, and Influence as it goes. This happens
+When a settlement is starving, unhappy, or under siege, people leave. When a settlement is thriving,
+they move there instead. *Emigration* adds detailed migration and refugee systems to Civilization VII:
+population moves between settlements, changing yields, growth, and Influence as it goes. This happens
 within and between civilizations. Every move is recorded in the notification log with its cause.
 
 ## A note on the human reality behind this mod
@@ -31,7 +31,7 @@ such as UNHCR, the IRC, MSF, IRAP, or local refugee and mutual-aid groups.
 ## Mechanics
 
 - **Compatible with 1.4.1.**
-- **Migration scoring.** Each settlement gets a score from its yields, happiness, war weariness, and
+- **Prosperity model.** Each settlement gets a score from its yields, happiness, war weariness, and
   government passives. Population moves from low-scoring settlements to higher-scoring ones each turn.
 - **Displacement.** Damage, pillaging, sieges, starvation, unrest, and disasters generate refugees.
   Destination priority: own civilization, then neutrals, then the attacker.
@@ -56,11 +56,11 @@ such as UNHCR, the IRC, MSF, IRAP, or local refugee and mutual-aid groups.
 ## Migration dashboard
 
 Available through an optional dock button or the Demographics mod's interface. Tabs cover the Migration
-Network, Net Migration, Why People Move, Settlements, Immigration Policies, Guide, Notifications log,
-and Migration notifications.
+Network, Net Migration, Why People Move, Settlements, Diversity, Immigration Policies, Notifications,
+and a Guide.
 
-It runs in the UI VM (GameFace JS) each turn. This is not a UI-only mod: population moves and
-yield/Influence changes are real gameplay writes (§12).
+This is not a UI-only mod: population moves and the yield/Influence changes they cause are real, saved
+gameplay effects, not a cosmetic display (see §12 for the runtime detail).
 
 ### Documentation
 - Migration mechanics overview: [../emigration-docs/DESIGN.md](../emigration-docs/DESIGN.md)
@@ -75,6 +75,9 @@ yield/Influence changes are real gameplay writes (§12).
 ---
 
 ## System Guide and Feature Reference
+
+*Everything above is the overview. Everything below is the full technical manual — the systems,
+formulas, module map, and tuning reference. Skip to a section from the Contents list.*
 
 ## Contents
 
@@ -186,7 +189,7 @@ Default settings (most tunable, §10). Also on the dashboard's **Guide** tab.
 | War / unrest keeps a community distinct | ✓ | Integration stalls at war with the homeland, slows in unrest |
 | Diasporas return home | ✓ | When the homeland is at peace and prospering, a fraction return, moving real population (Options ▸ return migration) |
 | Refugee waves prompt a decision | ✓ | A rare modal (welcome / settle the frontier / turn away), capped per age, dismissible |
-| Migrations written as history | ✓ | The Migration Chronicle tab; unmet civs framed as hearsay |
+| Migrations written as history | ✓ | The Migration Chronicle, surfaced as prose entries in the Notifications tab; unmet civs framed as hearsay |
 
 **Scope & limits**
 
@@ -667,9 +670,9 @@ them home. Throttled by a per-host cooldown (`returnCooldownTurns`) and a determ
 people, never targets a city-state as a homeland). Toggle: Options ▸ return migration (on by default).
 
 ### 6h. Refugee decisions & the Migration Chronicle (`emigration-dilemma.js`, `emigration-chronicle.js`)
-The Migration Chronicle (`emigration-chronicle.js`, its own dashboard tab) writes significant movements
-as short prose (`emigration-narrative.js`): a great exodus, a diaspora taking root, a people returning
-home. A refugee decision (`emigration-dilemma.js`) is a rare modal triggered by a real upheaval (a
+The Migration Chronicle (`emigration-chronicle.js`) writes significant movements as short prose
+(`emigration-narrative.js`): a great exodus, a diaspora taking root, a people returning home. Each entry is
+mirrored into the Notifications tab as a chronicle-styled entry rather than living on its own tab. A refugee decision (`emigration-dilemma.js`) is a rare modal triggered by a real upheaval (a
 neighbor's conquest spree, or a plague crisis) that sends a wave toward the local player: welcome them (a
 small gold cost, settles a point into your largest city), settle the frontier (a smaller cost, into a
 town), or turn them away. Hard-capped per age (`dilemmaMaxPerAge`) with a long cooldown
@@ -744,12 +747,14 @@ When the Demographics mod is installed, Emigration contributes via its companion
     has its own toggle (Options ▸ Mods ▸ Demographics), both default on.
   - **Refugees (Arrived):** displaced people it took in, same toggleable markers.
 - **The full dashboard as native sub-tabs:** Network (animated dot-swarm + arrow flow map, each with a Civ
-  Pop / Scaled Pop toggle), Civilizations, Causes, Settlements, Immigration Policies, Notifications,
-  Chronicle, Guide. Registered order-independently; a silent no-op on an older Demographics.
-- **A Migration Chronicle** (the Chronicle sub-tab, `emigration-chronicle.js` →
-  `emigration-chronicle-view.js`): a written history of significant movements, distinct from the per-event
-  log. Keeps only the moments that read as history and renders each as prose (`emigration-narrative.js`),
-  spoiler-guarded. Persisted, newest-first, capped.
+  Pop / Scaled Pop toggle), Causes, Settlements, Diversity, Immigration Policies, Notifications, and Guide.
+  Registered order-independently; a silent no-op on an older Demographics.
+- **A Migration Chronicle** (`emigration-chronicle.js`): a persisted, written history of the movements that
+  read as history — a great exodus, a diaspora taking root, a return home — distinct from the per-event
+  log. Each moment is composed as prose (`emigration-narrative.js`), spoiler-guarded, and kept newest-first
+  and capped. It is not a separate tab: every entry is mirrored into the **Notifications** sub-tab as a
+  chronicle-styled entry, so the Notifications log is the single home for every migration event, the story
+  prose included.
 - **Causes drill down to the event.** Each broad cause on the Causes tab expands to the named events
   behind it (a particular war, eruption/flood, or the active age crisis), with each event's emigration
   and deaths. A crisis is attributed to its mechanism (Invasion under War, Plague under Disaster,

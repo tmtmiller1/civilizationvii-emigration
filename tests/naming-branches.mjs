@@ -173,9 +173,10 @@ function testMovementScopeUsesLocalizedStrings() {
   assert.equal(destClause("prosperity", "Neapolis"), " Bound for Neapolis.");
   assert.equal(destClause("attrition", "Ur"), ""); // a death went nowhere
   assert.equal(destClause("prosperity", undefined), ""); // no destination → no clause
-  // Composed into the full digest, an internal move names its destination and ends with the tag.
+  // Composed into the full digest, an internal prosperity move names its neighbor in one flowing
+  // sentence (not a separate "Bound for …" clause) and ends with the scope tag.
   const msg = localDigestMessage({ cause: "prosperity", people: "9,000 people", city: "Rome", destName: "Neapolis" });
-  assert.match(msg, /Bound for Neapolis\./);
+  assert.match(msg, /for its more prosperous neighbor, Neapolis\./);
   assert.match(msg, /\(Internal Move\)$/);
 }
 

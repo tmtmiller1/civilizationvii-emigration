@@ -4,10 +4,10 @@
         <Name>LOC_MOD_EMIGRATION_NAME</Name>
         <Description>LOC_MOD_EMIGRATION_DESCRIPTION</Description>
         <Authors>Tower</Authors>
-        <SpecialThanks>Machiavelli's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
+        <SpecialThanks>Tomahawk, Mk Z, and Tim_The_Texan's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>2.0.9</Version>
+        <Version>2.0.10</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -186,11 +186,11 @@
                          (engine reads + per-turn cache), imported by the ethnicity lens AND its tooltip. -->
                     <Item>ui/emigration-ethnicity-distribution.js</Item>
                     <Item>ui/emigration-ethnicity-tiles.js</Item>
-                    <!-- Migration Chronicle: prose engine + persistent store + diaspora detection + view. -->
+                    <!-- Migration Chronicle: prose engine + persistent store + diaspora detection.
+                         Entries surface in the Notifications tab (v1.6.0 folded the Chronicle in). -->
                     <Item>ui/emigration-narrative.js</Item>
                     <Item>ui/emigration-chronicle.js</Item>
                     <Item>ui/emigration-diaspora.js</Item>
-                    <Item>ui/emigration-chronicle-view.js</Item>
                     <!-- Truthful "quarter" naming for diaspora lines: real city features (city-features,
                          engine reads) resolved to an always-true phrase (quarters, pure). -->
                     <Item>ui/emigration-city-features.js</Item>

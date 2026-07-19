@@ -24,6 +24,7 @@ import { speedTurns, speedBar } from "/emigration/ui/emigration-game-speed.js";
 import {
   refugeeHeadline,
   civAdjective,
+  civName,
   actionHint,
   warRefugeeName,
   localDigestMessage,
@@ -667,8 +668,21 @@ function eventMessage(ev) {
     ? assimilationCostFor(ev.destOwner).gold : 0;
   return localDigestMessage({
     cause: ev.cause, people: formatBothExact(ev.people, ev.points), city: ev.srcName || "a settlement",
-    crossCiv: ev.crossCiv, destName: dv.toCity || dv.toCiv, destGold, why: reasonsPhrase(ev.reasons)
+    crossCiv: ev.crossCiv, destName: dv.toCity || dv.toCiv, destGold, why: reasonsPhrase(ev.reasons),
+    byCiv: conquerorName(ev) // the (unmet-masked) conquering civ NAME; only the conquest headline reads it
   });
+}
+
+/**
+ * The conquering civ's NAME (a proper noun, e.g. "Rome"), unmet-masked, for the conquest headline;
+ * undefined for any other cause. Uses the civ NAME rather than its adjective so "conquered by <civ>"
+ * reads correctly ("…by Rome", not "…by Roman"). destOwner is the new owner of the captured city.
+ * @param {*} ev A per-event bucket.
+ * @returns {string|undefined} The conqueror's name, or undefined.
+ */
+function conquerorName(ev) {
+  if (ev.cause !== "conquest" || typeof ev.destOwner !== "number") return undefined;
+  return civHidden(ev.destOwner) ? UNMET_CIV_LABEL : civName(ev.destOwner);
 }
 
 /**

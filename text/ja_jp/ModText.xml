@@ -276,9 +276,12 @@
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="ja_JP"><Text>{1_Civ}: {2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="ja_JP"><Text>{1_Civ} 対 未知の文明</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="ja_JP"><Text>{1_People}が不満を抱き{2_City}を去りました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS_TO" Language="ja_JP"><Text>{1_People} left {2_City} for {3_Dest}, unhappy at home.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="ja_JP"><Text>{1_People}がより豊かな隣国を求めて{2_City}を去りました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="ja_JP"><Text>{1_People}が{2_City}周辺の戦闘から逃れました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_WAR_TO" Language="ja_JP"><Text>{1_People} fled the fighting around {2_City} for the safety of {3_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="ja_JP"><Text>{1_People}が{2_City}の支配権が移った際に連れ去られました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_CONQUEST_BY" Language="ja_JP"><Text>{1_People} were captured when {2_City} was conquered by {3_Civ}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="ja_JP"><Text>単位:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_CIV_TIP" Language="ja_JP"><Text>Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city actually grows, so this figure looks steady. Shares and percentages are always measured on this base.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_SCALED_TIP" Language="ja_JP"><Text>Scaled Pop: a historically-scaled "people" headcount for flavour. It drifts upward as an age progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.</Text></Replace>
@@ -286,6 +289,7 @@
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ja_JP"><Text>再生タイムラインは数ターン後、たどれる人口の履歴がたまると表示されます。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ja_JP"><Text>{1_People}が災害の後、{2_City}から逃れました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER_TO" Language="ja_JP"><Text>{1_People} fled {2_City} after disaster struck, and are bound for {3_Dest}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY_TO" Language="ja_JP"><Text>{1_People} left {2_City} for its more prosperous neighbor, {3_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ja_JP"><Text>{1_People}が逃げ場を失い、{2_City}で失われました。</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_INTERNAL" Language="ja_JP"><Text>(帝国内の移動)</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="ja_JP"><Text>(帝国外への移動)</Text></Replace>
@@ -328,12 +332,9 @@
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_CRISIS" Language="ja_JP"><Text>危機</Text></Replace>
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_CHRONICLE" Language="ja_JP"><Text>年代記</Text></Replace>
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_OTHER" Language="ja_JP"><Text>その他</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_EXODUS" Language="ja_JP"><Text>脱出</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_DIASPORA" Language="ja_JP"><Text>離散</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_RETURN" Language="ja_JP"><Text>帰還</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TITLE_FALLBACK" Language="ja_JP"><Text>民族の移動</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TURN" Language="ja_JP"><Text>ターン{1_Turn}</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_EMPTY" Language="ja_JP"><Text>年代記はまだ空白です。人々の大きな波が世界を移り動くにつれ、その物語がここに記されます。空になった都市、そして故郷を遠く離れて根を下ろした共同体の物語が。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_INTERNAL" Language="ja_JP"><Text>Internal Migration</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_EXTERNAL" Language="ja_JP"><Text>Emigration (Leaving)</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_INBOUND" Language="ja_JP"><Text>Immigration (Arriving)</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="ja_JP"><Text>この圧力は一時的なものです。</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="ja_JP"><Text>原因に対処するまで続きます。</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ja_JP"><Text>その人々は永遠に失われました。</Text></Replace>
@@ -425,7 +426,7 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="ja_JP"><Text>各ドット ≈ {1_People} 人。文明の円は都市や町を内側のサブクラスターとして含みます。文明自身の色のドットは土着の住民、より明るい色合いのドットは自国の都市間を移動した人々（国内移動）、別の色のドットはその出身地からの移民です。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="ja_JP"><Text>表示:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="ja_JP"><Text>まだ人口がいません</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_UNMET" Language="ja_JP"><Text>未接触</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNMET" Language="ja_JP"><Text>Unmet</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="ja_JP"><Text>Migrant flows</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="ja_JP"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="ja_JP"><Text>移住 - {1_City}</Text></Replace>

@@ -128,17 +128,6 @@ files to overwrite deliberate style with no reader benefit.
 
 **Verdict:** the style is deliberate and codebase-wide; a normalizing sweep is churn, not a fix.
 
-## chronicle-view — rebuild the `CSS` string as an array + `.join("")`
-
-Proposed to express the chronicle stylesheet in [emigration-chronicle-view.js](../ui/emigration-chronicle-view.js#L24)
-as a `[...].join("")` array instead of `+`-concatenated string literals, "for readability." But the
-string is injected once at module init, the `+` form is the same pattern the sibling dashboard
-stylesheets use, and an array adds bracket/comma noise without changing the output one byte. The
-original backlog only ever flagged it as "bundle into an unrelated CSS edit if ever" — i.e. never worth
-a standalone change.
-
-**Verdict:** zero functional difference, matches the sibling stylesheet idiom; not worth the churn.
-
 ## arrivals — soften capped-arrival death into a holding-pool overflow
 
 Proposed (2026-07-02 arrivals review, Tier 4) that a refugee who reaches a valid destination but still
@@ -247,3 +236,22 @@ a UI-script mod, not merely unpaintable. Do NOT re-open this: do not re-probe `c
 `getYieldsWithCity`, or constructible scans for a "which tile went unworked" read. Revisit only if a
 future game patch adds a rural-tile-worked accessor. Full trail:
 [vacated-tile-marker-plan.md](vacated-tile-marker-plan.md).
+
+## README — relocate the LaTeX `$$…$$` formula blocks out of the marketing README
+
+Tier 4 item 27 of [text-polish-plan.md](text-polish-plan.md) proposed moving the three `$$…$$` math
+blocks in `README.md` (the §3 Prosperity-score model, the §5/§6b pull + friction equations, and the
+§6b dividend pool) into the linked `../emigration-docs/` files, on the premise that GitHub renders them
+as raw text on the repo page.
+
+**Why it's a won't-fix:** the premise is stale. GitHub has rendered `$$…$$` math natively (MathJax)
+since May 2022, so the blocks display correctly on the repo page today — there is no raw-text problem to
+solve. Relocating the formulas would also *fragment* the manual: each block sits inline with the prose
+that defines its symbols, and pulling the math into a separate file would split an explanation from its
+equation for no rendering benefit. The one genuinely-actionable half of item 27 — a signpost at the
+marketing→manual boundary — **was done** ("## System Guide and Feature Reference" now carries a one-line
+overview/manual note).
+
+**Verdict:** premise no longer holds; the formulas render fine on GitHub and read better inline next to
+their explanations. Signpost shipped; relocation is churn, not a fix. Revisit only if GitHub drops math
+rendering.

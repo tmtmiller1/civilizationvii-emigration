@@ -22,7 +22,6 @@
     "ui/emigration-narrative.js",
     "ui/emigration-detail-views.js",
     "ui/emigration-ledger-view.js",
-    "ui/emigration-chronicle-view.js",
     "ui/emigration-notifications-view.js",
     "ui/emigration-flow-tab.js",
     "ui/emigration-city-flows.js",

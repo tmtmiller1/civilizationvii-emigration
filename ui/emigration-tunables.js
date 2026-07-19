@@ -128,17 +128,21 @@ export const TUNABLES = [
   { key: "notifyCooldownTurns", group: "notify", type: "choice", values: [0, 3, 6, 10, 20], label: "LOC_EMIG_T_NOTIFYCD", desc: "LOC_EMIG_T_NOTIFYCD_D" },
   { key: "notifyWorldNews", group: "notify", type: "bool", label: "LOC_EMIG_T_NOTIFYWORLDNEWS", desc: "LOC_EMIG_T_NOTIFYWORLDNEWS_D" },
   { key: "worldRefugeeThreshold", group: "notify", type: "choice", values: [20000, 40000, 80000, 150000], label: "LOC_EMIG_T_NOTIFYWORLD", desc: "LOC_EMIG_T_NOTIFYWORLD_D" },
-  { key: "cityReadoutEnabled", group: "notify", type: "bool", label: "LOC_EMIG_T_CITYREADOUT", desc: "LOC_EMIG_T_CITYREADOUT_D" },
-  { key: "cityReadoutSparkline", group: "notify", type: "bool", label: "LOC_EMIG_T_SPARKLINE", desc: "LOC_EMIG_T_SPARKLINE_D" },
-  { key: "selftestEnabled", group: "notify", type: "bool", label: "LOC_EMIG_T_SELFTEST", desc: "LOC_EMIG_T_SELFTEST_D" },
   // readout — the migration-intelligence panels (roadmap §15/§16.6). This group is created here by
   // the diversity ranking (Features S/T); later readout features JOIN it rather than making their own.
   { key: "diversityRanking", group: "readout", type: "bool", label: "LOC_EMIG_T_DIVERSITY", desc: "LOC_EMIG_T_DIVERSITY_D" },
   { key: "cosmopolitanismScore", group: "readout", type: "bool", label: "LOC_EMIG_T_COSMO", desc: "LOC_EMIG_T_COSMO_D" },
   { key: "diversityRows", group: "readout", type: "choice", values: [3, 5, 8, 12], label: "LOC_EMIG_T_DIVERSITYROWS", desc: "LOC_EMIG_T_DIVERSITYROWS_D" },
   { key: "migrationExplainer", group: "readout", type: "bool", label: "LOC_EMIG_T_EXPLAINER", desc: "LOC_EMIG_T_EXPLAINER_D" },
+  // the per-city readout panel + its sparkline are readout features, so they JOIN this group (per the
+  // note above) rather than the notify group where they were originally, mistakenly, filed.
+  { key: "cityReadoutEnabled", group: "readout", type: "bool", label: "LOC_EMIG_T_CITYREADOUT", desc: "LOC_EMIG_T_CITYREADOUT_D" },
+  { key: "cityReadoutSparkline", group: "readout", type: "bool", label: "LOC_EMIG_T_SPARKLINE", desc: "LOC_EMIG_T_SPARKLINE_D" },
   // visuals — presentation only; nothing here touches the simulation.
   { key: "timelineEventPins", group: "visuals", type: "bool", label: "LOC_EMIG_T_TLPINS", desc: "LOC_EMIG_T_TLPINS_D" },
+  // the self-test panel is a UI-only diagnostics tool (touches nothing in the sim), so it belongs here,
+  // not under notify.
+  { key: "selftestEnabled", group: "visuals", type: "bool", label: "LOC_EMIG_T_SELFTEST", desc: "LOC_EMIG_T_SELFTEST_D" },
   // outlet - attrition when there's nowhere to flee (the pressure-release valve)
   { key: "attritionEnabled", group: "outlet", type: "bool", label: "LOC_EMIG_T_ATTRITION", desc: "LOC_EMIG_T_ATTRITION_D" },
   { key: "attritionMinDistress", group: "outlet", type: "choice", values: [40, 80, 120, 200], label: "LOC_EMIG_T_ATTRDISTRESS", desc: "LOC_EMIG_T_ATTRDISTRESS_D" },

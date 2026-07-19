@@ -6,6 +6,7 @@ const {
   refugeeHeadline,
   disasterName,
   civAdjective,
+  civName,
   actionHint,
   permanenceCue,
   lossHeadline,
@@ -26,6 +27,7 @@ function testDisasterNameFallback() {
 
 function testCivAdjectiveFallback() {
   assert.equal(civAdjective(0), "a people"); // Players absent → generic
+  assert.equal(civName(0), "a people"); // civ NAME variant falls back the same way off-engine
 }
 
 function testActionHintFallsBackToSharedHint() {
@@ -59,7 +61,8 @@ function testLocalDigestComposesAndGatesCostNote() {
   const msg = localDigestMessage(base);
   assert.match(msg, /Rome/); // headline
   assert.match(msg, /happiness/i); // hint
-  assert.match(msg, /continue to leave until/i); // permanence cue
+  // The hint already conveys how durable the loss is, so the digest no longer repeats a permanence line.
+  assert.doesNotMatch(msg, /continue to leave until/i);
   assert.doesNotMatch(msg, /pays about/); // no cross-civ cost note
   // Cross-civ loss with a material destination cost → the cost note is appended.
   const withCost = localDigestMessage({ ...base, crossCiv: true, destName: "Carthage", destGold: 4 });
@@ -71,14 +74,18 @@ function testLocalDigestComposesAndGatesCostNote() {
 
 function testLocalDigestNamesDestinationAndTagsScope() {
   const base = { cause: "prosperity", people: "12,000 people", city: "Rome" };
-  // An internal relocation names where they went and is tagged as an internal move.
+  // An internal prosperity move reads as one flowing sentence naming the neighbor (not a separate
+  // "Bound for …" clause) and is still tagged as an internal move.
   const internal = localDigestMessage({ ...base, crossCiv: false, destName: "Neapolis" });
-  assert.match(internal, /Bound for Neapolis\./);
+  assert.match(internal, /for its more prosperous neighbor, Neapolis\./);
+  assert.doesNotMatch(internal, /Bound for/);
   assert.match(internal, /\(Internal Move\)$/);
   assert.doesNotMatch(internal, /\(External Move\)/);
-  // A cross-civ move names the destination and is tagged as an external move.
+  // A cross-civ prosperity move reads with the SAME one-sentence neighbor pattern as internal (no
+  // separate "Bound for …" clause) and is tagged as an external move.
   const external = localDigestMessage({ ...base, crossCiv: true, destName: "Carthage" });
-  assert.match(external, /Bound for Carthage\./);
+  assert.match(external, /for its more prosperous neighbor, Carthage\./);
+  assert.doesNotMatch(external, /Bound for/);
   assert.match(external, /\(External Move\)$/);
   assert.doesNotMatch(external, /\(Internal Move\)/);
   // A death (attrition) went nowhere → no destination clause and no scope tag.
@@ -90,6 +97,18 @@ function testLocalDigestNamesDestinationAndTagsScope() {
   assert.doesNotMatch(noDest, /Bound for/);
 }
 
+function testConquestNamesTheConqueror() {
+  // Conquest names the CONQUERING civ (its "destination" is the captured city itself), not a "to <dest>".
+  const msg = localDigestMessage({ cause: "conquest", people: "4,000 people", city: "Veii",
+    crossCiv: true, destName: "Veii", byCiv: "Rome" });
+  assert.match(msg, /were captured when Veii was conquered by Rome\./);
+  assert.doesNotMatch(msg, /to Veii/); // never "captured from Veii to Veii"
+  // No conqueror resolved → the plain capture headline, still no dangling destination.
+  const noBy = localDigestMessage({ cause: "conquest", people: "4,000 people", city: "Veii", crossCiv: true });
+  assert.doesNotMatch(noBy, /conquered by/);
+  assert.doesNotMatch(noBy, /Bound for/);
+}
+
 testHeadlineFallbacks();
 testDisasterNameFallback();
 testCivAdjectiveFallback();
@@ -99,4 +118,5 @@ testLossHeadlineNamesCauseAndCity();
 testCostNote();
 testLocalDigestComposesAndGatesCostNote();
 testLocalDigestNamesDestinationAndTagsScope();
+testConquestNamesTheConqueror();
 console.log("naming harness passed");

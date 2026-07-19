@@ -188,7 +188,11 @@ function ledgerTextRow(cells, cls) {
   row.appendChild(ledgerCell(cells[0], "name"));
   row.appendChild(ledgerCell(cells[1], "net"));
   row.appendChild(ledgerCell("", "net-bar")); // align with the data rows' diverging-bar column
-  for (let i = 2; i < cells.length; i++) row.appendChild(ledgerCell(cells[i]));
+  // cells[4] is the Stance-impact column; it must carry the same ".stance" (flex:1.8) class the data
+  // rows give it (ledgerStanceCell), or the header/total row's total flex-basis differs from the data
+  // rows and EVERY column (In/Out included) renders at a slightly different width, so the numbers no
+  // longer line up vertically under their headers.
+  for (let i = 2; i < cells.length; i++) row.appendChild(ledgerCell(cells[i], i === 4 ? "stance" : undefined));
   return row;
 }
 

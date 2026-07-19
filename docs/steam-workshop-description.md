@@ -1,28 +1,12 @@
 [h1]Emigration[/h1]
 
-Adds more detailed migration and refugee systems to Civilization VII. When a settlement is starving, unhappy, or under siege, people leave. When a settlement is thriving, they move there instead. Population moves between settlements, changes yields, growth, and Influence as they move. This occurs within and between civilizations. Every move is recorded in the notification log with justification.
-
-[b]A note on the human reality behind this mod[/b]
-
-Migration and displacement are abstracted here into game systems. In reality, many people leave home because of war, persecution, disaster, or hardship. This mod aims to acknowledge those realities rather than trivialize them.
-
-As part of creating [i]Emigration[/i], I donated to the International Refugee Assistance Project. While I'm not able to sustain a per-subscriber pledge indefinitely, I intend to mark major milestones with donations of time or money within my means. If you are able, please consider supporting organizations such as UNHCR, the IRC, MSF, IRAP, or local refugee and mutual-aid groups.
-
-[b]Subscriber milestones[/b]
-
-[b]100 subscribers:[/b] Donated $100 to the International Refugee Assistance Project.
-[b]50 subscribers:[/b] Donated $50 to Médecins Sans Frontières.
-[b]25 subscribers:[/b] Donated $25 to the International Rescue Committee.
-[b]10 subscribers:[/b] I will mark this milestone by pledging one hour of volunteer time for a refugee-support, humanitarian, or mutual-aid organization.
-[b]Release donation:[/b] When I uploaded [i]Emigration[/i], I made an initial donation to the International Refugee Assistance Project.
-
-[i]Anonymized receipts for these donations will be added to the github.[/i]
+When a settlement is starving, unhappy, or under siege, people leave. When a settlement is thriving, they move there instead. [i]Emigration[/i] adds detailed migration and refugee systems to Civilization VII: population moves between settlements, changing yields, growth, and Influence as it goes. This happens within and between civilizations, and every move is recorded in the notification log with its cause.
 
 [b]Mechanics[/b]
 
 [list]
 [*][b]Compatible with 1.4.1.[/b]
-[*][b]Migration scoring.[/b] Each settlement scores on yields, happiness, war weariness, and government passives. Population moves from lower- to higher-scoring settlements each pass.
+[*][b]Prosperity model.[/b] Each settlement scores on yields, happiness, war weariness, and government passives. Population moves from lower- to higher-scoring settlements each pass.
 [*][b]Displacement.[/b] Combat damage, pillaging, sieges, starvation, unrest, and disasters produce refugees. Destination priority: own civilization, then neutrals, then the attacker.
 [*][b]Attrition.[/b] Population that cannot relocate under sustained siege, famine, war, or disaster dies. The death chance accrues over several turns rather than resolving in one.
 [*][b]Settlement delay.[/b] Arriving refugees are held before entering the working population. They produce no yields, carry a support cost, and appear on the map lens and city readout.
@@ -35,7 +19,13 @@ As part of creating [i]Emigration[/i], I donated to the International Refugee As
 
 [b]Migration dashboard[/b]
 
-Available through an optional dock button or the Demographics mod's interface. Tabs cover the Migration Network, Net Migration, Why People Move, Settlements, Immigration Policies, Migration Notifications, and a Guide.
+Available through an optional dock button or the Demographics mod's interface. Tabs cover the Migration Network, Net Migration, Why People Move, Settlements, Diversity, Immigration Policies, Notifications, and a Guide.
+
+[b]A note on the human reality behind this mod[/b]
+
+Migration and displacement are abstracted here into game systems. In reality, many people leave home because of war, persecution, disaster, or hardship. This mod aims to acknowledge those realities rather than trivialize them.
+
+As part of creating [i]Emigration[/i] I have donated to refugee and humanitarian charities, and I intend to mark major milestones with further donations of time or money within my means. Anonymized receipts and the full milestone ledger are in the repository. If you are able, please consider supporting organizations such as UNHCR, the IRC, Médecins Sans Frontières (MSF), IRAP, or local refugee and mutual-aid groups.
 
 [b]Source[/b]
 

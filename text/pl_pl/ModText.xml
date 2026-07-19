@@ -276,9 +276,12 @@
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="pl_PL"><Text>{1_Civ}: {2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="pl_PL"><Text>{1_Civ} przeciw niepoznanej cywilizacji</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="pl_PL"><Text>{1_People} opuściło {2_City}, nieszczęśliwi u siebie.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS_TO" Language="pl_PL"><Text>{1_People} left {2_City} for {3_Dest}, unhappy at home.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="pl_PL"><Text>{1_People} opuściło {2_City} na rzecz bardziej prosperujących sąsiadów.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="pl_PL"><Text>{1_People} uciekło przed walkami wokół {2_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_WAR_TO" Language="pl_PL"><Text>{1_People} fled the fighting around {2_City} for the safety of {3_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="pl_PL"><Text>{1_People} zabrano z {2_City}, gdy zmieniło właściciela.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_CONQUEST_BY" Language="pl_PL"><Text>{1_People} were captured when {2_City} was conquered by {3_Civ}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="pl_PL"><Text>Jednostki:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_CIV_TIP" Language="pl_PL"><Text>Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city actually grows, so this figure looks steady. Shares and percentages are always measured on this base.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_SCALED_TIP" Language="pl_PL"><Text>Scaled Pop: a historically-scaled "people" headcount for flavour. It drifts upward as an age progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.</Text></Replace>
@@ -286,6 +289,7 @@
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="pl_PL"><Text>Oś czasu odtwarzania pojawia się po kilku turach, gdy będzie historia populacji do przewijania.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="pl_PL"><Text>{1_People} uciekło z {2_City} po uderzeniu katastrofy.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER_TO" Language="pl_PL"><Text>{1_People} fled {2_City} after disaster struck, and are bound for {3_Dest}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY_TO" Language="pl_PL"><Text>{1_People} left {2_City} for its more prosperous neighbor, {3_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="pl_PL"><Text>{2_City} poniosło straty: {1_People}.</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_INTERNAL" Language="pl_PL"><Text>(Migracja wewnętrzna)</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="pl_PL"><Text>(Migracja zewnętrzna)</Text></Replace>
@@ -328,12 +332,9 @@
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_CRISIS" Language="pl_PL"><Text>Kryzys</Text></Replace>
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_CHRONICLE" Language="pl_PL"><Text>Kronika</Text></Replace>
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_OTHER" Language="pl_PL"><Text>Inne</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_EXODUS" Language="pl_PL"><Text>Exodus</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_DIASPORA" Language="pl_PL"><Text>Diaspora</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_RETURN" Language="pl_PL"><Text>Powrót</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TITLE_FALLBACK" Language="pl_PL"><Text>Wędrówka ludów</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TURN" Language="pl_PL"><Text>Tura {1_Turn}</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_EMPTY" Language="pl_PL"><Text>Kronika jest pusta. Gdy wielkie fale ludzi przemieszczają się przez świat, ich historie zapisują się tutaj: miasta, które opustoszały, i społeczności, które zapuściły korzenie z dala od domu.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_INTERNAL" Language="pl_PL"><Text>Internal Migration</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_EXTERNAL" Language="pl_PL"><Text>Emigration (Leaving)</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_INBOUND" Language="pl_PL"><Text>Immigration (Arriving)</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="pl_PL"><Text>Ta presja jest tymczasowa.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="pl_PL"><Text>Trwa, dopóki nie zajmiesz się przyczyną.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="pl_PL"><Text>Ci ludzie odeszli na dobre.</Text></Replace>
@@ -425,7 +426,7 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="pl_PL"><Text>Każda kropka ≈ {1_People} ludzi. Okrąg to jedna cywilizacja, mieszcząca jej miasta i miasteczka; jej kropki to rodzimi mieszkańcy (jej własny kolor), ludzie, którzy przemieścili się między jej miastami (jaśniejszy odcień), oraz imigranci (kolor ich pochodzenia). Przekoloruj za pomocą „Koloruj według”, filtruj przełącznikami Pokaż/Pochodzenie, kliknij próbkę lub okrąg, aby je wyodrębnić, i naciśnij ▶ lub przewiń oś czasu, aby odtworzyć historię.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="pl_PL"><Text>Pokaż:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="pl_PL"><Text>brak jeszcze populacji</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_UNMET" Language="pl_PL"><Text>Niepoznana</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNMET" Language="pl_PL"><Text>Unmet</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="pl_PL"><Text>Migrant flows</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="pl_PL"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="pl_PL"><Text>Migracja - {1_City}</Text></Replace>
