@@ -225,7 +225,7 @@ export function exodusLine(e) {
  */
 export function foundingLine(e) {
   const o = adj(e.origin);
-  const pct = Math.round(e.pct) + " percent";
+  const pct = tr("LOC_EMIG_PERCENT", "{1_N} percent", Math.round(e.pct));
   const where = typeof e.where === "string" && e.where
     ? e.where
     : pickLoc(GENERIC_QUARTERS, GENERIC_QUARTERS_KEYS, e.seed, 2);

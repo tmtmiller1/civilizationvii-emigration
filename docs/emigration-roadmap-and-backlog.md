@@ -1657,10 +1657,12 @@ re-litigate).
 ## 22. Enclave STANCE yields — reconcile with the built improvement, then make them legible
 
 The enclave stance yield can never appear in the game's GPT banner / global yields breakdown (closed
-2026-07-16 — see [wont-fix CANTFIX-1](wont-fix-with-justifications.md): runtime modifier-attach has no
-API, and runtime `CREATE_ELEMENT` improvement placement is disproven). The player-built enclave
-improvement solved the *visibility* goal by another route — its `Constructible_YieldChanges` are
-natively attributed — but the **stance** yield is a separate, still-invisible per-turn `grantYield`.
+2026-07-16 — see [won't-implement CANTFIX-1](wont-implement-with-justifications.md): runtime
+modifier-attach has no API, and runtime `CREATE_ELEMENT` improvement placement is disproven). The
+player-built enclave improvement briefly solved the *visibility* goal by another route — its
+`Constructible_YieldChanges` were natively attributed — but that improvement was **removed 2026-07-17**
+(it crashed the AI turn; see the won't-implement doc), so the **stance** yield is once again the only
+route and stays a still-invisible per-turn `grantYield`.
 
 **22a. Reconcile the two reward paths — DONE (2026-07-16).** Resolved as *"both, deliberately: the
 improvement REPLACES the grant — and pays strictly more, framed as an optional government investment in
@@ -2252,19 +2254,20 @@ any item here — several may be retired if their counter stays near zero.
 >   cumulative-*mass* trigger is exactly **Feature I (§9)**'s `migrantMass` gate — build it there, not as a
 >   separate item.
 > - **P2.7 (majority-immigrant petition / secession)** — moved to its detailed home,
->   [indefinitely-paused-features.md](indefinitely-paused-features.md) → *Petition / secession /
->   uprising*, which owns the framing guardrail, native-revolt scoping, probe plan, and the full state
->   machine / exact gates / recipient resolution / wiring. **Paused indefinitely** — triaged
->   recommend-against 2026-07-16; do not queue it without clearing the blockers named there. The
->   `contested`-enclave half already ships ([cultural-enclaves.md](cultural-enclaves.md) §6.1).
+>   [wont-implement-with-justifications.md](wont-implement-with-justifications.md) → *Petition /
+>   secession / uprising*, which owns the framing guardrail, native-revolt scoping, probe plan, and the
+>   full state machine / exact gates / recipient resolution / wiring. **Abandoned as specced**
+>   (2026-07-19) — its payoff depends on an unproven native-revolt hook; do not queue it without clearing
+>   the blockers named there. The `contested`-enclave half already ships.
 
 ### 27.3 Priority 3 — Optional deeper simulation (defer)
 
 > **P3.1 (bidirectional integration / large-diaspora imprint)** — "at 35%+ share the host gains a minor
 > persistent cultural imprint / integration floor" is the **"blended / host-imprint quarter"** already
 > specified for the shipped Cultural Enclave system (Feature F / Feature I §9) and detailed in
-> [indefinitely-paused-features.md](indefinitely-paused-features.md) → *Blended / host-imprint enclave*.
-> Track it there, not as a separate P3 item; it is **paused** pending the reward-model decision (§22a).
+> [wont-implement-with-justifications.md](wont-implement-with-justifications.md) → *Blended / host-imprint
+> enclave*. Track it there, not as a separate P3 item; it is **abandoned as designed** (2026-07-19) — its
+> re-scalable-`grantYield` mechanics can't be built, though a chronicle-only version remains possible.
 > Config sketch if ever pulled out standalone: `diasporaImprintShare(0.35)`,
 > `integrationFloorForLargeDiaspora`. High risk (touches the composition core) — defer until 27.1–27.2 land
 > and are tuned.
@@ -2374,8 +2377,8 @@ an RC; carried here so it isn't lost.
 The per-civ Cultural Enclave constructibles ship as tile IMPROVEMENTs (build menu gated to the city's
 established diaspora, civic-tree unlock hidden, native yield in the breakdown, on-map icon+label marker
 via [ui/emigration-enclave-markers.js](../ui/emigration-enclave-markers.js)). A distinct 3D model is a
-closed can't-do (see [wont-fix-with-justifications.md](wont-fix-with-justifications.md) →
-*cultural-enclaves — a distinct 3D model*). Deferred, each with its revisit trigger:
+closed can't-do (see [wont-implement-with-justifications.md](wont-implement-with-justifications.md) →
+*A distinct 3D model for the per-civ enclave constructibles*). Deferred, each with its revisit trigger:
 
 - **Enforce empty-tile-only placement (never overbuild an existing improvement).** A tile improvement
   takes the tile's one improvement slot, so building the enclave on a farmed tile replaces the farm.
@@ -2389,19 +2392,20 @@ closed can't-do (see [wont-fix-with-justifications.md](wont-fix-with-justificati
 - **Marker polish** — icon/label size + height are tunable constants (`ICON_Z`/`TEXT_Z`/`TEXT_FONT_SIZE`
   in the marker module); *revisit if* the on-map marker reads too big/small/crowded at typical zoom.
 
-### Unbuilt stages — paused indefinitely (triaged 2026-07-16)
+### Unbuilt stages — abandoned as unbuildable (triaged 2026-07-16, abandoned 2026-07-19)
 
 Three stages were specced alongside the enclave system and **never built**: the **blended / host-imprint
-enclave**, **petition / secession / uprising**, and the **enclave progression screen**. They are **not
-queued** — each is paused in [indefinitely-paused-features.md](indefinitely-paused-features.md), which
-owns their designs, the triage reasoning, and the blocker each waits on. Summary of the verdicts:
+enclave**, **petition / secession / uprising**, and the **enclave progression screen**. They turned out
+to be unbuildable as designed (the same engine walls that killed the enclave yield/attribution work), so
+each was moved to [wont-implement-with-justifications.md](wont-implement-with-justifications.md), which
+owns their full designs, verdicts, and revisit triggers. Summary:
 
-- **Blended stage** — conditional; chronicle-only if ever built. Blocked on §22a (the reward-model
-  decision) — its drafted mechanics assume a re-scalable `grantYield` that CANTFIX-1 rules out.
-- **Petition / uprising** — recommend against; probe-first if ever. Its payoff depends on an unproven
-  native-revolt hook, and it gates behind an enclave state that barely occurs.
-- **Progression screen** — the useful remainder is live work, folded into **§22b** as a city-readout
-  subpanel. The dedicated screen is over-built and stays paused.
+- **Blended stage** — abandoned as designed; chronicle-only if ever built. Its drafted mechanics assume a
+  re-scalable `grantYield` that CANTFIX-1 rules out.
+- **Petition / uprising** — abandoned as specced; warning-only + a live probe if ever. Its payoff depends
+  on an unproven native-revolt hook, and it gates behind an enclave state that barely occurs.
+- **Progression screen** — only the *dedicated screen* is abandoned; the useful remainder is **live
+  work**, folded into **§22b** as a city-readout subpanel.
 
 **Blocker shared by all three:** nobody has measured how often an enclave actually forms.
 `quarterMinStock: 3` / `quarterEstablishedShare: 0.3` / `quarterEnclaveStickiness: 0.25` /

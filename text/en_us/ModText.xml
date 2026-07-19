@@ -139,7 +139,7 @@
         <Row Tag="LOC_EMIG_T_BORDERS"><Text>Scope: border policies</Text></Row>
         <Row Tag="LOC_EMIG_T_BORDERS_D"><Text>Enable the Pro- / Anti-Immigration Stance cards' effect on immigration (the cards are added in the policy menu and cost or grant Influence). Off = the stances have no migration effect.</Text></Row>
         <Row Tag="LOC_EMIG_T_CLOSEDOPEN"><Text>Borders: Anti-Immigration openness</Text></Row>
-        <Row Tag="LOC_EMIG_T_CLOSEDOPEN_D"><Text>How much immigration the Anti-Immigration Stance lets through (0.4 = about 60% turned away). Lower = more closed. Only used when border policies are on.</Text></Row>
+        <Row Tag="LOC_EMIG_T_CLOSEDOPEN_D"><Text>How much immigration the Anti-Immigration Stance lets through (0.4 = about 60% turned away, and any refugees you do admit settle more slowly). Lower = more closed. Only used when border policies are on.</Text></Row>
         <Row Tag="LOC_EMIG_T_CLOSEDRETAIN"><Text>Borders: Anti-Immigration retention</Text></Row>
         <Row Tag="LOC_EMIG_T_CLOSEDRETAIN_D"><Text>How strongly the Anti-Immigration Stance keeps your own people from leaving for rival civilizations (0.6 = their pull toward other civilizations cut to 60%; 1 = off). Lower = stronger retention. Only used when border policies are on.</Text></Row>
         <Row Tag="LOC_EMIG_T_OPENOPEN"><Text>Borders: Pro-Immigration boost</Text></Row>
@@ -227,7 +227,7 @@
         <Row Tag="LOC_EMIG_T_ANTISNOWTHRESH"><Text>Cost: anti-snowball trigger (fair-share ×)</Text></Row>
         <Row Tag="LOC_EMIG_T_ANTISNOWTHRESH_D"><Text>How far a civilization's population may run ahead of the world-average civilization before the anti-snowball headwind starts to bite, as a multiple of fair share. Lower = the brake engages sooner (more egalitarian); higher = only an extreme runaway leader is slowed.</Text></Row>
         <Row Tag="LOC_EMIG_T_QUARTERS"><Text>Cost: cultural enclaves</Text></Row>
-        <Row Tag="LOC_EMIG_T_QUARTERS_D"><Text>When a foreign diaspora grows into an established community in one of your cities, offer a one-time choice (embrace, tax, or let be) with a small yield reward and drawback, and track a persistent per-city enclave that turns "contested" (a small happiness strain) while you are at war with its homeland. Off = no enclave decisions or contested strain.</Text></Row>
+        <Row Tag="LOC_EMIG_T_QUARTERS_D"><Text>When a foreign diaspora grows into an established community in one of your cities, offer a one-time choice (embrace, tax, or let be) with a small yield reward and drawback, and track a persistent per-city enclave that turns "contested" (its yield benefit is reduced and it adds a small happiness strain) while you are at war with its homeland. Off = no enclave decisions or contested strain.</Text></Row>
         <Row Tag="LOC_EMIG_T_QSHARE"><Text>Enclaves: share to form</Text></Row>
         <Row Tag="LOC_EMIG_T_QSHARE_D"><Text>How much of a city a single foreign origin must make up before it can become a Cultural Enclave. Higher = rarer enclaves, as fewer cities ever qualify.</Text></Row>
         <Row Tag="LOC_EMIG_T_QMINSTOCK"><Text>Enclaves: minimum population</Text></Row>
@@ -285,12 +285,6 @@
              label key as LOC_DEMOGRAPHICS_METRIC_<METRIC_ID_UPPERCASED>, so these keys
              must match our metric ids (emig_net_migration / emig_out / emig_in /
              emig_refugees) exactly, or the tab prints the raw key. -->
-        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION"><Text>Net Migration</Text></Row>
-        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION_SUBTITLE"><Text>(immigration minus emigration each turn)</Text></Row>
-        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT"><Text>Emigration</Text></Row>
-        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_SUBTITLE"><Text>(people leaving this civilization for elsewhere)</Text></Row>
-        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN"><Text>Immigration</Text></Row>
-        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_SUBTITLE"><Text>(people arriving in this civilization from elsewhere)</Text></Row>
         <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES"><Text>Refugees</Text></Row>
         <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_SUBTITLE"><Text>(people displaced by war, disaster, or conquest)</Text></Row>
         <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_TOOLTIP"><Text>Population displaced by war, disaster, and conquest.</Text></Row>
@@ -362,6 +356,7 @@
         <Row Tag="LOC_EMIG_REASON_UNDER_ATTACK"><Text>under attack</Text></Row>
         <Row Tag="LOC_EMIG_REASON_DISASTER"><Text>disaster</Text></Row>
         <Row Tag="LOC_EMIG_REASON_FAMINE"><Text>famine</Text></Row>
+        <Row Tag="LOC_EMIG_REASON_UNREST"><Text>sustained unrest</Text></Row>
         <Row Tag="LOC_EMIG_REASON_NO_REFUGE"><Text>no safe refuge</Text></Row>
         <Row Tag="LOC_EMIG_REASON_CRISIS_LOSSES"><Text>lost while fleeing</Text></Row>
         <Row Tag="LOC_EMIG_DEATH_WHY_CLAUSE"><Text>The cause: {1_Why}.</Text></Row>
@@ -412,9 +407,9 @@
         <Row Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX"><Text>[icon:YIELD_POPULATION] Immigration to your cities rises by 50%, and you earn +2 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO"><Text>[icon:YIELD_POPULATION] Immigration to your cities rises by 50%, and you earn +3 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME"><Text>Anti-Immigration Stance</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC"><Text>[icon:YIELD_POPULATION] Immigration falls by 60%, and 40% fewer of your own citizens leave for rival civilizations. Each city gains +2 [icon:YIELD_PRODUCTION] Production, at the cost of -2 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX"><Text>[icon:YIELD_POPULATION] Immigration falls by 60%, and 40% fewer of your own citizens leave for rival civilizations. Each city gains +3 [icon:YIELD_PRODUCTION] Production, at the cost of -3 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO"><Text>[icon:YIELD_POPULATION] Immigration falls by 60%, and 40% fewer of your own citizens leave for rival civilizations. Each city gains +4 [icon:YIELD_PRODUCTION] Production, at the cost of -4 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC"><Text>[icon:YIELD_POPULATION] Immigration falls by 60%, and 40% fewer of your own citizens leave for rival civilizations. Refugees you still take in settle more slowly. Each city gains +2 [icon:YIELD_PRODUCTION] Production, at the cost of -2 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX"><Text>[icon:YIELD_POPULATION] Immigration falls by 60%, and 40% fewer of your own citizens leave for rival civilizations. Refugees you still take in settle more slowly. Each city gains +3 [icon:YIELD_PRODUCTION] Production, at the cost of -3 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO"><Text>[icon:YIELD_POPULATION] Immigration falls by 60%, and 40% fewer of your own citizens leave for rival civilizations. Refugees you still take in settle more slowly. Each city gains +4 [icon:YIELD_PRODUCTION] Production, at the cost of -4 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_TALENT_NAME"><Text>Talent Attraction</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_TALENT_DESC"><Text>[icon:YIELD_POPULATION] Gain +1 [icon:YIELD_SCIENCE] Science each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_TALENT_DESC_MO"><Text>[icon:YIELD_POPULATION] Gain +2 [icon:YIELD_SCIENCE] Science each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Row>
@@ -626,7 +621,7 @@
             <Text>Its enclave is built: the enclave's own yield now applies instead of this dividend.</Text>
         </Row>
         <Row Tag="LOC_EMIGRATION_PANEL_QUARTER_CONTESTED">
-            <Text>Contested: you are at war with their homeland, straining the enclave.</Text>
+            <Text>Contested: at war with their homeland — the enclave contributes less (its benefit above is reduced) and the city's morale suffers.</Text>
         </Row>
         <Row Tag="LOC_EMIG_VIEW_STANCE_PRO">
             <Text>Pro-Immigration</Text>
@@ -1625,7 +1620,7 @@
         <Row Tag="LOC_EMIG_GUIDE_3_R4_Q"><Text>Population &amp; yields actually change (not just a display)</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_3_R4_N"><Text>Real per-turn gameplay writes: city populations and the yields they produce actually move; it isn't a cosmetic overlay.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_3_R5_Q"><Text>Any layer can be tuned or switched off</Text></Row>
-        <Row Tag="LOC_EMIG_GUIDE_3_R5_N"><Text>Presets plus ~57 individual knobs under Options ▸ Mods ▸ Emigration; every layer is on by default and can be turned off.</Text></Row>
+        <Row Tag="LOC_EMIG_GUIDE_3_R5_N"><Text>Presets plus ~85 individual knobs under Options ▸ Mods ▸ Emigration; every layer is on by default and can be turned off.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_3_R6_Q"><Text>Migrants arrive instantly</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_3_R6_N"><Text>No. They travel, so arrival lags with distance, up to a few turns after they leave.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_3_R7_Q"><Text>Absorbing migrants is free</Text></Row>
@@ -1720,7 +1715,7 @@
         <Row Tag="LOC_EMIG_GUIDE_12_F3_Q"><Text>How many enclaves can one civilization have?</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_12_F3_A"><Text>At most two in your whole empire — but that's PER civilization, not overall. You can hold two Roman and two Norman and two Han enclaves at the same time; reaching the cap for one origin never blocks a different one. A different people overtaking an existing enclave's tile is a change of hands (the Chronicle notes it and you choose again), not a third stacked enclave.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_12_F4_Q"><Text>What happens if I go to war with an enclave's homeland?</Text></Row>
-        <Row Tag="LOC_EMIG_GUIDE_12_F4_A"><Text>The enclave turns "contested": a small, capped happiness strain while the war lasts, framed as the city's wartime unease falling on families who did not choose the fighting — not as the enclave being disloyal. It settles again once peace returns.</Text></Row>
+        <Row Tag="LOC_EMIG_GUIDE_12_F4_A"><Text>The enclave turns "contested": its yield benefit is reduced and a small, capped happiness strain applies while the war lasts, framed as the city's wartime unease falling on families who did not choose the fighting — not as the enclave being disloyal. It contributes fully again once peace returns.</Text></Row>
         <Row Tag="LOC_EMIG_PROS_TIER_MAGNET"><Text>Strong magnet</Text></Row>
         <Row Tag="LOC_EMIG_PROS_TIER_ABOVE"><Text>Above average</Text></Row>
         <Row Tag="LOC_EMIG_PROS_TIER_AVG"><Text>About average</Text></Row>
@@ -1738,5 +1733,161 @@
         <Row Tag="LOC_EMIG_ETH_TILE_SUFFIX"><Text> · this tile</Text></Row>
         <Row Tag="LOC_EMIG_PCT"><Text>{1_Pct}%</Text></Row>
         <Row Tag="LOC_EMIG_PCT_SIGNED"><Text>{1_Pct}%</Text></Row>
+        <!-- v2.1.0 full-localization pass — Tier 1: Settings & Advanced editor -->
+        <Row Tag="LOC_OPTIONS_EMIG_SNAP_1"><Text>Every turn (finest)</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_SNAP_2"><Text>Every 2 turns</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_SNAP_3"><Text>Every 3 turns</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_SNAP_4"><Text>Every 4 turns</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_SNAP_5"><Text>Every 5 turns</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_VISIBILITY_FOLLOW"><Text>Follow Demographics setting</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_VISIBILITY_HIDE"><Text>Hide civilizations I haven't met</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_VISIBILITY_SHOWALL"><Text>Show all civilizations</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_MINIMIZE"><Text>Emigration • simplify dashboard</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_MINIMIZE_DESCRIPTION"><Text>Hide the heavy migration analytics, the animated Network diagram and the Causes pie charts, and keep the simple, numbers-first tabs: Net Migration, My Cities (with the per-city migration meter), Policies, Notifications and the Guide, plus the Demographics graphs. Takes effect next time you open the dashboard.</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_NOTIFICATIONS"><Text>Emigration • notifications</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_NOTIFICATIONS_DESCRIPTION"><Text>Show Emigration's in-game notifications (the migration toasts and the world-news log). Turn this off to silence all Emigration pop-ups. Notification detail can be tuned further under Advanced settings.</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_VISIBILITY"><Text>Emigration • analytics visibility</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_VISIBILITY_DESCRIPTION"><Text>Whether the Emigration tabs show civilizations you haven't met. "Follow Demographics setting" mirrors the Demographics Spoilers option; the other two are self-contained overrides that always apply to the Emigration tabs.</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_DILEMMAS"><Text>Emigration • refugee decisions</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_DILEMMAS_DESCRIPTION"><Text>Occasionally, when a great wave of refugees reaches your lands (a neighbor's conquests, a plague), pause for a short decision about how to receive them. Rare by design. Turn off to never see these pop-ups; the simulation is unaffected.</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_ETHNIC"><Text>Emigration • ethnic integration</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_ETHNIC_DESCRIPTION"><Text>Migrants gradually take on their host civilization's identity over time, unless war with their homeland or unrest keeps them apart. Shapes the Ethnic Composition lens. On by default; turn off to freeze each settlement's origin mix.</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_RETURN"><Text>Emigration • return migration</Text></Row>
+        <Row Tag="LOC_OPTIONS_EMIG_RETURN_DESCRIPTION"><Text>When a homeland is at peace and prospering again, some of its people abroad set out for home over time. On by default; turn off to keep diasporas where they settled.</Text></Row>
+        <Row Tag="LOC_EMIG_CHOICE_OFF"><Text>Off</Text></Row>
+        <Row Tag="LOC_EMIG_CHOICE_WEAK"><Text>Weak</Text></Row>
+        <Row Tag="LOC_EMIG_CHOICE_STANDARD"><Text>Standard</Text></Row>
+        <Row Tag="LOC_EMIG_CHOICE_STRONG"><Text>Strong</Text></Row>
+        <Row Tag="LOC_EMIG_CHOICE_IMPORTANT"><Text>Important</Text></Row>
+        <Row Tag="LOC_EMIG_CHOICE_VERBOSE"><Text>Verbose</Text></Row>
+        <Row Tag="LOC_EMIG_CHOICE_ANY"><Text>Any</Text></Row>
+        <Row Tag="LOC_EMIG_CHOICE_MINOR"><Text>Minor+</Text></Row>
+        <Row Tag="LOC_EMIG_CHOICE_MODERATE"><Text>Moderate+</Text></Row>
+        <Row Tag="LOC_EMIG_CHOICE_MAJOR"><Text>Major only</Text></Row>
+        <Row Tag="LOC_EMIG_ADV_SEARCH_PLACEHOLDER"><Text>Search settings…</Text></Row>
+        <Row Tag="LOC_EMIG_ADV_RESET_ALL"><Text>Reset all to defaults</Text></Row>
+        <Row Tag="LOC_EMIG_ADV_RESET_ONE"><Text>Reset to default</Text></Row>
+        <Row Tag="LOC_EMIG_GUIDE_VIEW_REF"><Text>What counts</Text></Row>
+        <Row Tag="LOC_EMIG_GUIDE_VIEW_FAQ"><Text>FAQ</Text></Row>
+        <!-- v2.1.0 full-localization pass — Tier 3: concatenated fragments (notifications / world-news / chronicle) -->
+        <Row Tag="LOC_EMIG_FALLBACK_UNMET_CIV"><Text>an unmet civilization</Text></Row>
+        <Row Tag="LOC_EMIG_FALLBACK_A_PEOPLE"><Text>a people</Text></Row>
+        <Row Tag="LOC_EMIG_FALLBACK_PEOPLE"><Text>people</Text></Row>
+        <Row Tag="LOC_EMIG_FALLBACK_A_SETTLEMENT"><Text>a settlement</Text></Row>
+        <Row Tag="LOC_EMIG_FALLBACK_A_NATION"><Text>A nation</Text></Row>
+        <Row Tag="LOC_EMIG_FALLBACK_A_DISASTER"><Text>a disaster</Text></Row>
+        <Row Tag="LOC_EMIG_FALLBACK_A_DISASTER_START"><Text>A disaster</Text></Row>
+        <Row Tag="LOC_EMIG_FALLBACK_WAR"><Text>war</Text></Row>
+        <Row Tag="LOC_EMIG_QUARTER_ENCLAVE"><Text>{1_Demonym} Enclave</Text></Row>
+        <Row Tag="LOC_EMIG_QUARTER_ENCLAVE_FOREIGN"><Text>foreign enclave</Text></Row>
+        <Row Tag="LOC_EMIG_EVENT_CRISIS_SUFFIX"><Text>{1_Name} Crisis</Text></Row>
+        <Row Tag="LOC_EMIG_EVENT_CRISIS"><Text>Crisis</Text></Row>
+        <Row Tag="LOC_EMIG_WARNAME_TWO"><Text>{1_Victim}–{2_Aggressor} War</Text></Row>
+        <Row Tag="LOC_EMIG_WARNAME_ONE"><Text>{1_Victim} War</Text></Row>
+        <Row Tag="LOC_EMIG_DISASTER_STRIKES_AT"><Text>{1_Name} strikes {2_Place}! </Text></Row>
+        <Row Tag="LOC_EMIG_DISASTER_STRIKES"><Text>{1_Name} strikes! </Text></Row>
+        <Row Tag="LOC_EMIG_PERCENT"><Text>{1_N} percent</Text></Row>
+        <Row Tag="LOC_EMIG_RETURN_REASON_PEACE"><Text>at peace again</Text></Row>
+        <Row Tag="LOC_EMIG_CAUSES_MORE"><Text>+{1_N} more</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_COAST_1"><Text>by the harbour</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_COAST_2"><Text>along the waterfront</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_COAST_3"><Text>in the dock quarter</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_RIVER_1"><Text>along the river</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_RIVER_2"><Text>by the river landings</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_MOUNTAIN_1"><Text>below the mountains</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_MOUNTAIN_2"><Text>on the high ground</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_GRANARY_1"><Text>beyond the granaries</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_GRANARY_2"><Text>past the granaries</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_TEMPLE_1"><Text>outside the temple district</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_TEMPLE_2"><Text>by the temple precinct</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_MARKET_1"><Text>around the market</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_MARKET_2"><Text>by the market stalls</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_WALLS_1"><Text>near the old walls</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_WALLS_2"><Text>by the city gate</Text></Row>
+        <!-- v2.1.0 full-localization pass — Tier 2: Demographics chart specs (id-derived name/title/subtitle + verbatim desc) -->
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_POPULATION"><Text>Population</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_POPULATION_TITLE"><Text>Population Over Time</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_POPULATION_SUBTITLE"><Text>Current population, historically scaled to people (the same scaling as the flow graphs).</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_POPULATION_DESC"><Text>Each civilization's current population, scaled to historical people per the shared model.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM"><Text>Net Migration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM_TITLE"><Text>Net Migration Over Time</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM_SUBTITLE"><Text>Net people gained minus lost to date; positive means more people arrive than leave.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM_DESC"><Text>Running total of net people gained minus lost, to date (positive = net inflow).</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM_PTS"><Text>Net Migration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM_PTS_TITLE"><Text>Net Migration Over Time</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM_PTS_SUBTITLE"><Text>Net people gained minus lost to date; positive means more people arrive than leave.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM_PTS_DESC"><Text>Running total of net population points gained minus lost: the exact Civ figures.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM"><Text>Emigration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM_TITLE"><Text>Emigration Over Time</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM_SUBTITLE"><Text>Total people who have left this civilization's cities to date.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM_DESC"><Text>Running total of people who have left this civilization's cities.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM_PTS"><Text>Emigration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM_PTS_TITLE"><Text>Emigration Over Time</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM_PTS_SUBTITLE"><Text>Total people who have left this civilization's cities to date.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM_PTS_DESC"><Text>Running total of population points that have left this civilization's cities.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM"><Text>Immigration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM_TITLE"><Text>Immigration Over Time</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM_SUBTITLE"><Text>Total people who have arrived in this civilization's cities to date.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM_DESC"><Text>Running total of people who have arrived into this civilization's cities.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM_PTS"><Text>Immigration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM_PTS_TITLE"><Text>Immigration Over Time</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM_PTS_SUBTITLE"><Text>Total people who have arrived in this civilization's cities to date.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM_PTS_DESC"><Text>Running total of population points that have arrived into this civilization's cities.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_TITLE"><Text>Refugees that left over time</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_DESC"><Text>Running total of people displaced FROM this civilization by war, disaster, or conquest.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_PTS"><Text>Refugees Out</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_PTS_TITLE"><Text>Refugees that left over time</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_PTS_SUBTITLE"><Text>People displaced FROM this civilization by war, disaster, or conquest, to date.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_PTS_DESC"><Text>Running total of population points displaced from this civ by war, disaster, or conquest.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN"><Text>Refugees In</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN_TITLE"><Text>Refugees that arrived over time</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN_SUBTITLE"><Text>People who fled war, disaster, or conquest elsewhere and resettled HERE, to date.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN_DESC"><Text>Running total of people who fled war, disaster, or conquest and resettled HERE.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN_PTS"><Text>Refugees In</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN_PTS_TITLE"><Text>Refugees that arrived over time</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN_PTS_SUBTITLE"><Text>People who fled war, disaster, or conquest elsewhere and resettled HERE, to date.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN_PTS_DESC"><Text>Running total of population points who fled war, disaster, or conquest and resettled here.</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_GRAPHS"><Text>Data</Text></Row>
+        <Row Tag="LOC_EMIG_VIEW_SCALED_POP"><Text>Scaled Population</Text></Row>
+        <Row Tag="LOC_EMIG_VIEW_CIV_POP"><Text>Civ Population</Text></Row>
+        <Row Tag="LOC_EMIG_MEMBER_POPULATION"><Text>Population</Text></Row>
+        <Row Tag="LOC_EMIG_MEMBER_POP_SHARE"><Text>Population Share</Text></Row>
+        <Row Tag="LOC_EMIG_MEMBER_NET_GRAPH"><Text>Net Migration (Graph)</Text></Row>
+        <Row Tag="LOC_EMIG_MEMBER_NET_TABLE"><Text>Net Migration (Table)</Text></Row>
+        <Row Tag="LOC_EMIG_MEMBER_EMIGRATION"><Text>Emigration</Text></Row>
+        <Row Tag="LOC_EMIG_MEMBER_IMMIGRATION"><Text>Immigration</Text></Row>
+        <Row Tag="LOC_EMIG_MEMBER_REF_LEFT"><Text>Refugees (Left)</Text></Row>
+        <Row Tag="LOC_EMIG_MEMBER_REF_ARRIVED"><Text>Refugees (Arrived)</Text></Row>
+        <Row Tag="LOC_EMIG_SOURCES"><Text>Sources: {1_List}</Text></Row>
+        <!-- v2.1.0 full-localization pass — Tier 2: per-cause metrics (optional module) -->
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_WAR_EMIGRATION"><Text>War Emigration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_WAR_EMIGRATION_TITLE"><Text>Refugees from war per turn</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_DISASTER_EMIGRATION"><Text>Disaster Emigration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_DISASTER_EMIGRATION_TITLE"><Text>Refugees from disaster per turn</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_PROSPERITY_EMIGRATION"><Text>Prosperity Emigration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_PROSPERITY_EMIGRATION_TITLE"><Text>Attracted emigration per turn</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_UNHAPPINESS_EMIGRATION"><Text>Unhappiness Emigration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_UNHAPPINESS_EMIGRATION_TITLE"><Text>Unhappiness-driven emigration per turn</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_WAR_IMMIGRATION"><Text>War Immigration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_WAR_IMMIGRATION_TITLE"><Text>War refugees received per turn</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_DISASTER_IMMIGRATION"><Text>Disaster Immigration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_DISASTER_IMMIGRATION_TITLE"><Text>Disaster refugees received per turn</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_PROSPERITY_IMMIGRATION"><Text>Prosperity Immigration</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_PROSPERITY_IMMIGRATION_TITLE"><Text>Attracted immigration per turn</Text></Row>
+        <Row Tag="LOC_DEMOGRAPHICS_UNIT_PEOPLE_PER_TURN"><Text>people / turn</Text></Row>
+        <!-- v2.1.0 full-localization pass — Tier 2: Migration page tab bar (reuses dashboard view keys where identical) -->
+        <Row Tag="LOC_EMIG_PAGE_LABEL"><Text>Emigration</Text></Row>
+        <Row Tag="LOC_EMIG_PAGE_TITLE"><Text>Migration</Text></Row>
+        <Row Tag="LOC_EMIG_PAGE_FLOW_TITLE"><Text>Migration network &amp; flows</Text></Row>
+        <Row Tag="LOC_EMIG_PAGE_LEDGER_TITLE"><Text>Net migration by civilization</Text></Row>
+        <Row Tag="LOC_EMIG_PAGE_DIVERSITY_TITLE"><Text>Most diverse cities</Text></Row>
+        <Row Tag="LOC_EMIG_PAGE_STANCES_TAB"><Text>Immigration Policies</Text></Row>
+        <Row Tag="LOC_EMIG_HUB_POP_MIGRATION"><Text>Population &amp; Migration</Text></Row>
+        <!-- v2.1.0 full-localization pass — pre-existing undefined refs folded in (refugee-dilemma effect labels) -->
+        <Row Tag="LOC_EMIG_DIL_FX_GOLD"><Text>Gold</Text></Row>
+        <Row Tag="LOC_EMIG_DIL_FX_HAPPINESS"><Text>Happiness</Text></Row>
+        <Row Tag="LOC_EMIG_DIL_FX_INFLUENCE"><Text>Influence</Text></Row>
+        <Row Tag="LOC_EMIG_DIL_FX_POP"><Text>population</Text></Row>
+        <Row Tag="LOC_EMIG_DILV_DISMISS"><Text>Not now</Text></Row>
     </EnglishText>
 </Database>

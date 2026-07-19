@@ -121,4 +121,27 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
   globalThis.Players = realPlayers;
 }
 
+// ── contested stance grant: a contested enclave pays a REDUCED benefit, full drawback ──
+{
+  const applied = { benefitYield: "YIELD_CULTURE", benefitAmount: 2, penaltyYield: "YIELD_HAPPINESS", penaltyAmount: 1 };
+  stateMod.putQuarter("90,90", { civ: 2, originCiv: "CIVILIZATION_ROME", owner: 12, optionId: "a", turn: 5, applied, contested: true, contestedTurn: 5 });
+  globalThis.YieldTypes = { YIELD_CULTURE: "yt-culture", YIELD_HAPPINESS: "yt-happiness" };
+
+  const priorFactor = CONFIG.contestedQuarterYieldFactor;
+  CONFIG.contestedQuarterYieldFactor = 0.5;
+  /** @type {{yield:string, amount:number}[]} */
+  let granted = [];
+  const realPlayers = globalThis.Players;
+  globalThis.Players = { grantYield: (_pid, y, amount) => { granted.push({ yield: y, amount }); } };
+
+  applyOwnerQuarterYields(12);
+  const benefit = granted.find((g) => g.yield === "yt-culture");
+  const penalty = granted.find((g) => g.yield === "yt-happiness");
+  assert.equal(benefit.amount, 1, "a contested enclave's +2 benefit is halved to +1");
+  assert.equal(penalty.amount, -1, "a contested enclave's drawback stays full");
+
+  CONFIG.contestedQuarterYieldFactor = priorFactor;
+  globalThis.Players = realPlayers;
+}
+
 console.log("quarter harness passed");

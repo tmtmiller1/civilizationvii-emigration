@@ -7,6 +7,40 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-07-19
+
+### Changed
+- **Full interface localization — every player-facing string now translates.** The mod already routed
+  the vast majority of its text through the localization database; this release closes the remaining
+  leaks so that in a non-English game there is no English left in the Emigration UI. 150 new keys were
+  authored and translated across all 11 supported languages (German, Spanish, French, Italian,
+  Japanese, Korean, Polish, Portuguese, Russian, Simplified Chinese, Traditional Chinese):
+  - **Settings & Advanced editor** — the timeline-detail and analytics-visibility dropdowns, the six
+    Emigration checkboxes and their descriptions, the Advanced-editor search box / reset buttons, and
+    the enum knob labels (Off / Weak / Standard / Strong, Important / Verbose, severity bands) now
+    render in your language instead of English.
+  - **Demographics charts** — every Emigration metric name, chart title, subtitle, description and unit,
+    the "Data" group with its Scaled / Civ Population toggle and member pills, and the per-cause
+    breakdown metrics now localize; the embedded Migration page's tab bar does too.
+  - **Notifications, world-news & Chronicle** — sentences that were glued together from English
+    fragments (war names, "{Disaster} strikes {place}!", enclave and crisis names, diaspora "quarter"
+    phrases, "at peace again", "+N more", unmet-civilization fallbacks) are now single localized
+    templates with placeholders, so they read naturally in every language.
+  - **Guide** — the "What counts" / "FAQ" navigation pills now localize.
+
+### Fixed
+- **Removed six dead Demographics metric keys** (`…_EMIG_NET_MIGRATION` / `_IN` / `_OUT` and their
+  subtitles) that matched no metric id and were referenced nowhere — 72 stale rows across all 12 text
+  files.
+- **Refugee-dilemma effect labels** (Gold / Happiness / Influence / population / "Not now") were
+  referenced from the UI but never defined in the text database, so they only ever showed in English;
+  they now have keys and translations.
+
+### Internal
+- Added a CI guard (`tests/i18n-ui-keys.mjs`, wired into `npm run verify`) that fails the build if any
+  `LOC_` key referenced from `ui/**/*.js` is missing from `text/en_us/ModText.xml`, catching this class
+  of drift going forward.
+
 ## [2.0.10] - 2026-07-19
 
 ### Changed

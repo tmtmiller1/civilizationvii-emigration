@@ -297,13 +297,17 @@ function grantSigned(pid, yieldKey, amount) {
  * drawback. Called every turn from the quarter tick against whatever record currently holds the tile
  * (a one-time grant of Happiness/Culture was wiped by the engine's per-turn recompute and never
  * showed). The amounts are read from the record's `applied` block (resolved from CONFIG at formation).
+ * A `benefitScale` < 1 shrinks only the BENEFIT (a contested enclave gives less good while at war with
+ * its homeland); the drawback is always charged in full.
  * @param {number} owner Host player id.
  * @param {QuarterApplied} applied The resolved yields.
+ * @param {number} [benefitScale] Multiplier on the benefit amount (default 1 = full).
  */
-export function applyQuarterYields(owner, applied) {
+export function applyQuarterYields(owner, applied, benefitScale = 1) {
   if (!applied) return;
   const { benefitYield, benefitAmount, penaltyYield, penaltyAmount } = applied;
-  if (benefitYield && benefitAmount > 0) grantSigned(owner, benefitYield, benefitAmount);
+  const scaled = benefitAmount * (benefitScale >= 0 ? benefitScale : 1);
+  if (benefitYield && scaled > 0) grantSigned(owner, benefitYield, scaled);
   if (penaltyYield && penaltyAmount > 0) grantSigned(owner, penaltyYield, -penaltyAmount);
 }
 

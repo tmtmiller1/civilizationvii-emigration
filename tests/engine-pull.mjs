@@ -135,4 +135,10 @@ close(adjustedPull(crisisSrc, sig(2, 30, 5, false, 0, 0), null, null, null), 30,
 // C16, a CALM source gets NO escape bonus and pays the full poachBlock: 20 −4 −12 = 4.
 close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(2, 30, 5, false, 0, 0), null, null, null), 4, "C16 calm source: no escape, full poach");
 
-console.log("engine-pull characterization harness passed (16 cases)");
+// C17, a RAZING source (siege, sub-threshold violence) is an acute crisis and escapes ABROAD like a
+// war refugee — same math as C15 (−0 refugeePoach +14 escape), NOT the full poachBlock of C16. This
+// pins srcInCrisis/migrationCause counting siege, matching the engine's inCrisis shed track.
+const razingSrc = { ...sig(1, 10, 5, false, 0, 0), siege: true, violence: 0, disaster: 0 };
+close(adjustedPull(razingSrc, sig(2, 30, 5, false, 0, 0), null, null, null), 30, "C17 razing source escapes abroad");
+
+console.log("engine-pull characterization harness passed (17 cases)");

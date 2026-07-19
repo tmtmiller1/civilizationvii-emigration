@@ -7,7 +7,7 @@
         <SpecialThanks>Tomahawk, Mk Z, and Tim_The_Texan's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>2.0.10</Version>
+        <Version>2.1.0</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -57,6 +57,8 @@
                     <!-- Imported (side-effect) by emigration-options.js to register the
                          Advanced tunables sub-window; must be importable in the shell too. -->
                     <Item>ui/options/emigration-advanced-editor.js</Item>
+                    <!-- Shared localization helper, imported by the Advanced editor (and others). -->
+                    <Item>ui/emigration-loc.js</Item>
                 </ImportFiles>
             </Actions>
         </ActionGroup>

@@ -5,7 +5,6 @@
   "exclude": [
     "tests/**",
     "**/*.d.ts",
-    "ui/migration-probe.js",
     "ui/options/**",
     "ui/emigration-main.js",
     "ui/emigration-selftest.js",
@@ -23,7 +22,6 @@
     "ui/emigration-detail-views.js",
     "ui/emigration-ledger-view.js",
     "ui/emigration-notifications-view.js",
-    "ui/emigration-flow-tab.js",
     "ui/emigration-city-flows.js",
     "ui/emigration-pies.js",
     "ui/emigration-network-*.js",
