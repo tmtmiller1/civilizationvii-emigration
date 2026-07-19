@@ -70,6 +70,21 @@ These sit next to siblings that already use `LOC_` keys — pure inconsistency.
 
 ---
 
+## Tier 1b — Guide tab nav-pill labels (found in the 2026-07-19 text-polish audit)
+
+**[ui/emigration-guide.js](../ui/emigration-guide.js)** — *not in the original 14-file inventory; a full
+audit of this file was run 2026-07-19.* The Guide tab is otherwise **fully localized**: 157
+`LOC_EMIG_GUIDE_*` keys already cover every section title (`_<i>_TITLE`), matrix row (`_<i>_R<n>_Q` /
+`_N`), and FAQ pair (`_<i>_F<n>_Q` / `_A`) via stable, position-derived keys resolved through `loc()` at
+render (L225–235, 278). The **only** hardcoded leak is the two nav-pill labels — `"What counts"` and
+`"FAQ"` — defined in the `views[]` array (L311–312) and rendered raw at L324
+(`ce("div", "emig-guide-pill", v.label)`). **Fix:** add a `key:` to each `views[]` entry and wrap at
+render — `loc("LOC_EMIG_GUIDE_VIEW_REF", "What counts")` / `loc("LOC_EMIG_GUIDE_VIEW_FAQ", "FAQ")`; add
+both keys as 1 en_us `<Row>` + 11 `<Replace>` rows. (The `YES`/`NO` `✓` / `×` are glyphs, not
+translatable — leave them. No other hardcoded visible text exists in the file.)
+
+---
+
 ## Tier 2 — Demographics chart specs (needs the id-derived key mechanism, not a simple wrap)
 
 **Critical mechanism:** the Demographics host does **not** compose the `label`/`title`/`subtitle`
@@ -137,6 +152,28 @@ concatenation.
 
 - **[ui/emigration-demo-data.js](../ui/emigration-demo-data.js)** — sample event names ("Nile flood", "Roman–Greek War") and `" BC"`/`" AD"` suffixes (L175–204). Visible only in the opt-in **Sample** data-preview mode. Log to
   [wont-fix-with-justifications.md](wont-fix-with-justifications.md) with verdict + reasoning (developer/preview-only fixture data, not live gameplay).
+
+---
+
+## Follow-up — re-translate the strings revised by the text/language polish pass
+
+Carried over from `docs/text-polish-plan.md` (Tiers 0–3 executed **en_us-only**, 2026-07-19). Those tiers
+revised many **existing** en_us strings — grammar fixes, terminology unification ("Enclave"/"Integration"/
+"Stance"), British-spelling normalization, and readability trims. This is a **re-translation** task, not a
+missing-key one:
+
+- **Nothing to add, nothing failing.** The parity gate (`tests/i18n.mjs`) stays green — the keys still
+  exist in all 11 locales. But each revised key's 11 `<Replace>` rows now translate the *old* English and
+  are semantically **stale**.
+- **The "pipeline vs. accept-drift" question is already resolved here.** Per *Localization machinery* above,
+  the i18n pipeline is **off the table** (it regenerates from stale `i18n/*.json` and clobbers
+  hand-authored translations). So the resolution is a **hand re-translation pass** of the affected
+  `<Replace>` rows in `text/**/ModText.xml`, reusing each locale's established vocabulary — *not* a pipeline
+  run. This retires the open decision `text-polish-plan.md` used to carry.
+- **Which keys:** every en_us `<Row>` whose text changed in Tiers 0–3 — the ✅ items in
+  `text-polish-plan.md` cite the exact tags/lines. Fastest precise set: `git diff` `text/en_us/ModText.xml`
+  against the last pre-polish commit.
+- **Batch it** with the new-key work above so translators touch each locale file once.
 
 ---
 

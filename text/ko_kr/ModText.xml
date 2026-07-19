@@ -276,9 +276,12 @@
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="ko_KR"><Text>{1_Civ}: {2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="ko_KR"><Text>{1_Civ} 대 미지의 문명</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="ko_KR"><Text>{1_People}이(가) 불만을 품고 {2_City}을(를) 떠났습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS_TO" Language="ko_KR"><Text>{1_People} left {2_City} for {3_Dest}, unhappy at home.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="ko_KR"><Text>{1_People}이(가) 더 번영한 이웃을 찾아 {2_City}을(를) 떠났습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="ko_KR"><Text>{1_People}이(가) {2_City} 주변의 전투를 피해 달아났습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_WAR_TO" Language="ko_KR"><Text>{1_People} fled the fighting around {2_City} for the safety of {3_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="ko_KR"><Text>{1_People}이(가) {2_City}이(가) 주인이 바뀌면서 끌려갔습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_CONQUEST_BY" Language="ko_KR"><Text>{1_People} were captured when {2_City} was conquered by {3_Civ}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="ko_KR"><Text>단위:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_CIV_TIP" Language="ko_KR"><Text>Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city actually grows, so this figure looks steady. Shares and percentages are always measured on this base.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_SCALED_TIP" Language="ko_KR"><Text>Scaled Pop: a historically-scaled "people" headcount for flavour. It drifts upward as an age progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.</Text></Replace>
@@ -286,6 +289,7 @@
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ko_KR"><Text>재생 타임라인은 훑어볼 인구 기록이 쌓이면, 몇 턴 뒤에 나타납니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ko_KR"><Text>{1_People}이(가) 재난 이후 {2_City}에서 달아났습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER_TO" Language="ko_KR"><Text>{1_People} fled {2_City} after disaster struck, and are bound for {3_Dest}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY_TO" Language="ko_KR"><Text>{1_People} left {2_City} for its more prosperous neighbor, {3_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ko_KR"><Text>{1_People}이(가) 달아날 곳 없이 {2_City}에서 스러졌습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_INTERNAL" Language="ko_KR"><Text>(제국 내 이동)</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="ko_KR"><Text>(제국 외 이동)</Text></Replace>
@@ -328,12 +332,9 @@
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_CRISIS" Language="ko_KR"><Text>위기</Text></Replace>
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_CHRONICLE" Language="ko_KR"><Text>연대기</Text></Replace>
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_OTHER" Language="ko_KR"><Text>기타</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_EXODUS" Language="ko_KR"><Text>대탈출</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_DIASPORA" Language="ko_KR"><Text>이산</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_RETURN" Language="ko_KR"><Text>귀환</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TITLE_FALLBACK" Language="ko_KR"><Text>민족의 이동</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TURN" Language="ko_KR"><Text>{1_Turn}턴</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_EMPTY" Language="ko_KR"><Text>연대기가 비어 있습니다. 거대한 인파가 세계를 가로질러 이동할 때, 그들의 이야기가 이곳에 기록됩니다. 텅 비어버린 도시들과, 고향에서 멀리 떨어진 곳에 뿌리내린 공동체들의 이야기가 말입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_INTERNAL" Language="ko_KR"><Text>Internal Migration</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_EXTERNAL" Language="ko_KR"><Text>Emigration (Leaving)</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_INBOUND" Language="ko_KR"><Text>Immigration (Arriving)</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="ko_KR"><Text>이 압력은 일시적입니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="ko_KR"><Text>원인을 해결할 때까지 계속됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ko_KR"><Text>그 사람들은 영영 사라졌습니다.</Text></Replace>
@@ -425,7 +426,7 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="ko_KR"><Text>각 점 ≈ {1_People}명. 문명의 원은 도시와 마을을 내부 하위 클러스터로 담습니다. 문명 고유 색의 점은 토착 주민, 더 밝은 색조의 점은 자국 도시 간을 이동한 사람들(내부 이주), 다른 색의 점은 그 출신지에서 온 이민자입니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="ko_KR"><Text>표시:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="ko_KR"><Text>아직 인구 없음</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_UNMET" Language="ko_KR"><Text>미접촉</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNMET" Language="ko_KR"><Text>Unmet</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="ko_KR"><Text>Migrant flows</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="ko_KR"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="ko_KR"><Text>이주 - {1_City}</Text></Replace>

@@ -128,6 +128,29 @@ export function civAdjective(pid) {
 }
 
 /**
+ * A civilization's NAME as a proper noun ("Rome", "Egypt"), from LOC_CIVILIZATION_<STEM>_NAME — the
+ * counterpart to {@link civAdjective}, for sentences that read "…by <civ>" where an adjective ("Roman")
+ * would be ungrammatical. City-states / Independent Powers use their specific name; falls back to the
+ * civ display name, then the adjective.
+ * @param {number} pid Player id.
+ * @returns {string} The civ name.
+ */
+export function civName(pid) {
+  if (isMinorPlayer(pid)) {
+    const indep = independentName(pid);
+    if (indep) return indep;
+  }
+  const name = civTypeName(pid);
+  if (name) {
+    const nm = loc("LOC_CIVILIZATION_" + name.replace(/^CIVILIZATION_/, "") + "_NAME");
+    if (nm) return nm;
+  }
+  const indep = independentName(pid);
+  if (indep) return indep;
+  return civDisplayAdjective(pid);
+}
+
+/**
  * A civ descriptor for NARRATIVE surfaces (the Chronicle, refugee events), where an unmet civ is
  * named but framed as hearsay rather than revealed outright. This deliberately relaxes the analytics
  * spoiler mask FOR NARRATIVE ONLY: the dashboard, lens, and notifications keep the strict "an unmet
@@ -555,51 +578,74 @@ export function destClause(cause, destName) {
 }
 
 // The blank line separating a digest's SITUATION (what happened + where the people went) from its
-// GUIDANCE (what you can do, how long it lasts, why they moved). Surfaces that honour it — the HUD
-// toast and the expanded log row (white-space:pre-line) — render a paragraph break; the compact
-// one-line log row and any other consumer collapse it to a space, so it degrades cleanly.
+// GUIDANCE (what you can do, why they moved). Surfaces that honour it — the HUD toast and the expanded
+// log row (white-space:pre-line) — render a paragraph break; the compact one-line log row and any other
+// consumer collapse it to a space, so it degrades cleanly.
 const DIGEST_GAP = "\n\n";
 
-// Causes whose permanence cue is intentionally omitted from the digest: war reads as plainly temporary
-// from the event itself (a separate "temporary" line is noise), and attrition folds "gone for good"
-// into its own hint, so repeating it as a permanence line is redundant. Every other cause keeps its cue.
-const DIGEST_NO_PERMANENCE = new Set(["war", "attrition"]);
+// Causes whose flowing "…for <dest>" headline already conveys WHY the people moved, so the digest omits
+// the redundant "Drawn there: …" clause for them. Only the VOLUNTARY pull (prosperity) is fully stated
+// by its headline; the forced causes (war/disaster/conquest) keep their clause, which names the specific
+// refuge the people fled toward — information the "for the safety of <dest>" headline doesn't carry.
+const HEADLINE_STATES_WHY = new Set(["prosperity"]);
 
 /**
- * The permanence cue to show in the DIGEST for a cause, or "" for the causes that suppress it
- * ({@link DIGEST_NO_PERMANENCE}). Only the digest suppresses these; {@link permanenceCue} is unchanged
- * for its other consumers (e.g. the city readout).
- * @param {string} [cause] The migration cause.
- * @returns {string} The cue, or "".
- */
-function digestPermanence(cause) {
-  return cause && DIGEST_NO_PERMANENCE.has(cause) ? "" : permanenceCue(cause);
-}
+// Per-cause "flowing headline WITH a resolved destination": one sentence that folds where the people
+// went into the loss headline, instead of a headline + a separate "Bound for <dest>." clause. Each
+// entry is the LOC key plus an English fallback builder (people, city, dest). Causes absent here keep
+// the two-part "headline. Bound for <dest>." form (see {@link headlineWithDest}).
+/** @type {Record<string, {key:string, fb:(p:string,c:string,d:string)=>string}>} */
+const DIGEST_TO = {
+  disaster: { key: "LOC_EMIG_DIGEST_DISASTER_TO",
+    fb: (p, c, d) => `${p} fled ${c} after disaster struck, and are bound for ${d}.` },
+  prosperity: { key: "LOC_EMIG_DIGEST_PROSPERITY_TO",
+    fb: (p, c, d) => `${p} left ${c} for its more prosperous neighbor, ${d}.` },
+  war: { key: "LOC_EMIG_DIGEST_WAR_TO",
+    fb: (p, c, d) => `${p} fled the fighting around ${c} for the safety of ${d}.` },
+  unhappiness: { key: "LOC_EMIG_DIGEST_UNHAPPINESS_TO",
+    fb: (p, c, d) => `${p} left ${c} for ${d}, unhappy at home.` }
+  // Conquest is NOT here: its "destination" is the captured city itself (src === dest), so it names the
+  // conquering civ instead — see the dedicated branch in headlineWithDest.
+};
 
 /**
  * The digest's opening "situation" sentence: the cause-named loss headline plus where the people went.
- * Disaster reads as one flowing sentence ("… after disaster struck, and are bound for <dest>.") when a
- * destination resolved; every other cause keeps the headline and a separate "Bound for <dest>." clause.
- * @param {{cause?:string, people:string, city:string, destName?:string}} o The resolved inputs.
+ * Conquest is its own shape — the population was seized when the city fell, so it names the CONQUERING
+ * civ ("… were captured when <city> was conquered by <civ>.") rather than a destination. A cause with a
+ * {@link DIGEST_TO} entry AND a resolved destination reads as one flowing sentence naming that
+ * destination ("… for its more prosperous neighbor, <dest>." / "… for the safety of <dest>."); any other
+ * case keeps the headline and a separate "Bound for <dest>." clause. For an external move the destination
+ * is whatever destView resolved — a met civ's city, or the masked "an unmet civilization".
+ * @param {{cause?:string, people:string, city:string, destName?:string, byCiv?:string}} o Inputs. `byCiv`
+ *   is the (already unmet-masked) conquering civ, present only for conquest.
  * @returns {string} The situation sentence.
  */
 function headlineWithDest(o) {
-  if (o.cause === "disaster" && o.destName) {
-    return loc("LOC_EMIG_DIGEST_DISASTER_TO", o.people, o.city, o.destName)
-      || `${o.people} fled ${o.city} after disaster struck, and are bound for ${o.destName}.`;
+  if (o.cause === "conquest") {
+    // Conquest's destName is the captured city itself, so never a "… to <dest>" clause; name the conqueror.
+    if (o.byCiv) {
+      return loc("LOC_EMIG_DIGEST_CONQUEST_BY", o.people, o.city, o.byCiv)
+        || `${o.people} were captured when ${o.city} was conquered by ${o.byCiv}.`;
+    }
+    return lossHeadline(o.cause, o.people, o.city); // no conqueror resolved → the plain capture headline
   }
+  const dest = o.destName;
+  const spec = o.cause && dest ? DIGEST_TO[o.cause] : null;
+  if (spec && dest) return loc(spec.key, o.people, o.city, dest) || spec.fb(o.people, o.city, dest);
   return lossHeadline(o.cause, o.people, o.city) + destClause(o.cause, o.destName);
 }
 
 /**
  * Compose the local player's per-pass migration digest as two blocks separated by {@link DIGEST_GAP}:
- * the SITUATION (cause-named loss headline + "where they went") and the GUIDANCE (action hint, the
- * permanence cue for causes that keep it, a cross-civ assimilation cost note when material, the "why
- * here" clause, and a trailing internal-vs-external movement-scope tag). Pure; the caller resolves the
- * inputs.
- * @param {{cause?:string, people:string, city:string, crossCiv?:boolean,
- *          destName?:string, destGold?:number, why?:string}} o The resolved digest inputs. `why` is
- *   the pre-localized "why here" phrase (P0.1), appended as a short clause when present.
+ * the SITUATION (cause-named loss headline + "where they went") and the GUIDANCE (action hint, a
+ * cross-civ assimilation cost note when material, the "why here" clause, and a trailing
+ * internal-vs-external movement-scope tag). The action hint already conveys how durable the loss is and
+ * whether acting helps, so a separate permanence cue is not repeated here. Pure; the caller resolves
+ * the inputs.
+ * @param {{cause?:string, people:string, city:string, crossCiv?:boolean, destName?:string,
+ *          destGold?:number, why?:string, byCiv?:string}} o The resolved digest inputs. `why` is the
+ *   pre-localized "why here" phrase (P0.1), appended as a short clause when present; `byCiv` is the
+ *   (already unmet-masked) conquering civ, used only by the conquest headline.
  * @returns {string} The composed message.
  */
 export function localDigestMessage(o) {
@@ -607,12 +653,13 @@ export function localDigestMessage(o) {
   let guidance = "";
   const hint = actionHint(o.cause, o.city);
   if (hint) guidance += " " + hint;
-  const perm = digestPermanence(o.cause);
-  if (perm) guidance += " " + perm;
   if (o.crossCiv && o.destName && (o.destGold || 0) >= 1) {
     guidance += " " + costNote(o.destName, Math.round(o.destGold || 0));
   }
-  guidance += whyClause(o.cause, o.why);
+  // Causes whose flowing headline already states the pull ("…for its more prosperous neighbor, X" /
+  // "…for the safety of X") don't repeat it as a "Drawn there: …" clause — that would just be noise.
+  // Every other cause keeps the clause (a death names its fatal cause, etc.).
+  if (!(o.cause && HEADLINE_STATES_WHY.has(o.cause))) guidance += whyClause(o.cause, o.why);
   guidance += scopeClause(o.cause, o.crossCiv); // trailing (Internal Move) / (External Move) tag
   guidance = guidance.trim();
   return guidance ? situation + DIGEST_GAP + guidance : situation;

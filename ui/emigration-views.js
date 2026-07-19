@@ -702,7 +702,7 @@ export function renderDashboardTabbed(target, model, rebuild) {
     appendSnapshotReminder(wrap);
     // The Numbers (Scaled/Civ) control row is per-section, so it's rebuilt on every tab change into
     // its own host: shown only where the section bears switchable counts, and hidden where the section
-    // owns its own units control (Network) or shows none to switch (stances/notifications/chronicle/
+    // owns its own units control (Network) or shows none to switch (stances/notifications/
     // guide). Matches the embedded page (appendControlRow), so the Guide tab carries no stray toggle.
     const body = el("div", "emig-tabbody"), ctrlHost = el("div", "emig-ctrl-host");
     let active = 0;

@@ -110,8 +110,8 @@ const PERMANENCE = {
  */
 const HINTS = {
   unhappiness: "Raise this city's happiness, or slot an Anti-Immigration Stance to retain them.",
-  prosperity: "A neighbor settlement is out-prospering {1_City}; grow its yields to prevent its people from leaving.",
-  war: "Refugees flee the fighting; relieve the siege or make peace to stem the outflow.",
+  prosperity: "Grow {1_City}'s yields so fewer of its people are tempted away.",
+  war: "Relieve the siege or make peace to stem the outflow.",
   disaster: "Disaster displacement subsides on its own as the distress decays.",
   conquest: "Displaced by the city's capture; the upheaval eases as the city settles.",
   attrition: "Trapped with nowhere to go, these people have perished and are gone for good.",

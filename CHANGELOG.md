@@ -7,6 +7,31 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [2.0.10] - 2026-07-19
+
+### Changed
+- **Migration notifications read as clean sentences instead of repeated fragments.** Each row now leads
+  with one flowing line that names where its people went — "…left London for its more prosperous
+  neighbor, Leeds", "…fled the fighting around Akrotiri for the safety of Thebes", "…were captured when
+  Veii was conquered by Rome" — instead of a generic headline followed by a separate "Bound for X."
+  clause. Expanding a row no longer repeats that same sentence back as a "Note", drops the "Why there"
+  line that only echoed it, and no longer stacks a permanence reminder on top of the action hint that
+  already implied it. Prosperity moves in particular stop saying "prosperous" three times over. Every
+  header still carries the dual population count (civ points and scaled people). Applied across all 12
+  supported languages.
+- **Notification rows now name the direction of each move and colour it to match.** The row tag reads
+  "Internal Migration", "Emigration (Leaving)", or "Immigration (Arriving)" — telling the two kinds of
+  cross-border movement apart — and is tinted by what it means for you: green when people stay within
+  your empire or arrive from abroad, red when your own people leave for a rival. A captured city names
+  the conquering civilization outright.
+
+### Fixed
+- **The Net Migration table's totals row lines up with the columns above it.** The Stance-impact column
+  was sized differently in the header and totals rows than in the per-civilization rows, which nudged
+  every figure — In and Out included — out of vertical alignment. All rows now share one column grid.
+
+## [2.0.9] - 2026-07-18
+
 ### Added
 - **The settlement readout now tells you *why* people are leaving — and why they're going where they're
   going.** The mod has always weighed the same handful of things when it decides someone moves: how a
@@ -44,6 +69,20 @@ section below by `release.sh`.
   now names the main reason behind that corridor — *"Rome (Roman): 12,000 — mostly Unhappiness"* — so
   you can tell *why* a settlement lost people, not just where they went. (A settlement's live,
   turn-by-turn pressures already have a home in the per-city readout; this is the historical ledger.)
+- **Policy (Tradition) card descriptions now spell out every effect with its exact number, and
+  each age shows only its own value.** 2.0.8 trimmed the cards by dropping numbers; this release
+  restores full, self-contained wording while keeping the flavour prose cut, so each card is
+  shorter than the pre-2.0.8 text yet states everything it does. Each border and attraction card
+  is now a separate description per age — an Antiquity Pro-Immigration card reads "+1 Influence,"
+  the Exploration one "+2," the Modern one "+3" — instead of one card listing "+1/+2/+3 across the
+  ages." The Anti-Immigration card names its per-city Production (+2/+3/+4 by age), its Influence
+  cost (−2/−3/−4), the immigration cut (to 40%) and the retention effect (40% fewer of your
+  citizens leave); the attraction cards give the flat yield (+1/+2 by age) alongside the
+  ~+1.5-per-immigrant scaling and +12 cap; the asylum cards state their exact Influence/Culture.
+  The refugee draw stays qualitative because it has no single scalar (its pull scales with each
+  refugee's war/disaster distress). Implemented by splitting each shared description key into
+  per-age keys (`..._DESC`, `..._DESC_EX`, `..._DESC_MO`) and pointing each age's Tradition at its
+  own. Applied across all 12 supported languages.
 
 ### Fixed
 - **The City Details migration lists no longer freeze on an old snapshot.** The panel could sit
@@ -108,24 +147,6 @@ section below by `release.sh`.
   channel on at once and asserts each term is present — added after the first version of that test was
   found to pass while the congestion, dominance, tilt, flight and aggressor terms were deleted, because
   the fixture left them all at zero. A mirror test only pins the terms its fixture actually exercises.
-
-## [2.0.9] - 2026-07-13
-
-### Changed
-- **Policy (Tradition) card descriptions now spell out every effect with its exact number, and
-  each age shows only its own value.** 2.0.8 trimmed the cards by dropping numbers; this release
-  restores full, self-contained wording while keeping the flavour prose cut, so each card is
-  shorter than the pre-2.0.8 text yet states everything it does. Each border and attraction card
-  is now a separate description per age — an Antiquity Pro-Immigration card reads "+1 Influence,"
-  the Exploration one "+2," the Modern one "+3" — instead of one card listing "+1/+2/+3 across the
-  ages." The Anti-Immigration card names its per-city Production (+2/+3/+4 by age), its Influence
-  cost (−2/−3/−4), the immigration cut (to 40%) and the retention effect (40% fewer of your
-  citizens leave); the attraction cards give the flat yield (+1/+2 by age) alongside the
-  ~+1.5-per-immigrant scaling and +12 cap; the asylum cards state their exact Influence/Culture.
-  The refugee draw stays qualitative because it has no single scalar (its pull scales with each
-  refugee's war/disaster distress). Implemented by splitting each shared description key into
-  per-age keys (`..._DESC`, `..._DESC_EX`, `..._DESC_MO`) and pointing each age's Tradition at its
-  own. Applied across all 12 supported languages.
 
 ## [2.0.8] - 2026-07-13
 

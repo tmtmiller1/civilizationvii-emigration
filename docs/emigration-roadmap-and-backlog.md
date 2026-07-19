@@ -117,8 +117,7 @@ invariants that must never be violated:
   `chronicled(key)` (**L120**), `chronicleLog(limit)` (**L215**). `ChronicleEntry { turn, kind:
   "exodus"|"founding"|"return", title, body, civ?, people?, cause?, dedupeKey? }` (**L17–26**);
   `STATE_KEY = "EmigrationChronicle_v1"`, `MAX_ENTRIES = 80` (**L14**). Mirrors to Notifications via
-  `mirrorToNotifications()` (**L131**). View kind→label map `KIND_LABEL`
-  ([emigration-chronicle-view.js](../ui/emigration-chronicle-view.js#L52)).
+  `mirrorToNotifications()` (**L131**).
 - **Narrative — [emigration-narrative.js](../ui/emigration-narrative.js)**: `exodusLine(e)` (**L158**),
   `foundingLine(e)` (**L177**), `returnLine(e)` (**L202**), `chronicleTitle(e)` (**L224**),
   `dilemmaPrompt(e)` (**L253**). All deterministic via `pick(list, seed, salt)` (FNV-1a, **L23–31**).
@@ -1042,8 +1041,7 @@ exodus/founding/return events (diaspora module), diversity (the **shipped** `div
    ([emigration-diaspora.js](../ui/emigration-diaspora.js#L169)) (or `doPass()` between L165–L178): for each
    untriggered milestone whose `test` passes, `chronicle({ kind: "founding"|new "milestone", dedupeKey:
    "milestone:"+key, ... })`. Dedupe via `chronicled()` so each fires once per game. If a new `"milestone"`
-   kind is added, extend `ChronicleEntry.kind` (**L19**), `KIND_LABEL`
-   ([emigration-chronicle-view.js](../ui/emigration-chronicle-view.js#L52)), and `chronicleTitle()`
+   kind is added, extend `ChronicleEntry.kind` (**L19**) and `chronicleTitle()`
    ([emigration-narrative.js](../ui/emigration-narrative.js#L224)).
 3. **Surface.** One toast on unlock via `announceImportant()`
    ([emigration-feedback.js](../ui/emigration-feedback.js#L312)) (respects the existing cooldown
@@ -1328,8 +1326,7 @@ keeps the metrics pure and unit-testable off-engine. Later readout features can 
 ### 16.4 One coordinated `ChronicleEntry.kind` extension (H ∩ R)
 
 Two remaining features add a new chronicle kind: H (`"recap"`) and R (`"milestone"`). These are the
-**same edit** to three spots — the `kind` union (**L19**), `KIND_LABEL`
-([emigration-chronicle-view.js](../ui/emigration-chronicle-view.js#L52)), and `chronicleTitle()` (**L224**).
+**same edit** to two spots — the `kind` union (**L19**) and `chronicleTitle()` (**L224**).
 **Resolution:** if both H/R ship, add all needed kinds in **one** pass with one label-map and one
 title-switch update; don't land two half-edits to the same union. (The shipped Cultural Quarter system did
 **not** add a chronicle kind — quarters surface via the dilemma modal and reuse the existing
@@ -1406,36 +1403,15 @@ correctness/perf/maintainability cleanups that backlog descends from — so they
 the feature roadmap. Each follows the §13 cross-cutting checklist and carries the "revisit when" trigger
 it had in the backlog.
 
-### 17.1 Feature AA — Wire the staged Migration Chronicle view *(low; frontend wiring)*
+### 17.1 Feature AA — Wire the staged Migration Chronicle view *(DROPPED)*
 
-**Goal.** Mount the already-built Migration Chronicle **view** into a Demographics sub-tab so the live
-chronicle data has a home in the UI.
-
-**Current state.** `renderChronicle(body)`
-([emigration-chronicle-view.js:74](../ui/emigration-chronicle-view.js#L74)) exists and its
-idempotent-render bug is already fixed, but it is **not mounted** anywhere yet. The Chronicle **data**
-layer is fully live — `chronicle()` ([emigration-chronicle.js:153](../ui/emigration-chronicle.js#L153))
-is written by the dilemma/return paths and mirrored to Notifications via `mirrorToNotifications()`
-([**L131**](../ui/emigration-chronicle.js#L131)). This is a built-ahead-of-wiring feature; **do not
-delete it** — the action is to wire it up.
-
-**Implementation.**
-1. **Mount.** Add a "Chronicle" sub-tab to the Demographics window and call `renderChronicle(body)` from
-   the same dashboard-gather path the other tabs use (`gatherDashboard()`
-   [emigration-window.js:676](../ui/emigration-window.js#L676)). Refresh on the same turn-advance signal
-   the other views use so entries appear as they're chronicled.
-2. **Kind labels.** Confirm the view's `KIND_LABEL`
-   ([emigration-chronicle-view.js:52](../ui/emigration-chronicle-view.js#L52)) covers every
-   `ChronicleEntry.kind` in play (and any new kinds added by H/R — coordinate with §16.4).
-
-**Config / tunables.** `chronicleTabEnabled: true` (`readout` group). **Localization.** Reuse the view's
-existing strings; fold its raw English (`"Turn "`, fallback title, empty-state prose, `KIND_LABEL`) into
-the Phase-1 `LOC_*` sweep noted in the open-items cross-cutting list. **Tests.** Extend the chronicle-view
-test: the tab renders without throwing on an empty log, is idempotent across re-render, and shows entries
-newest-first.
-
-**Risk.** Low — additive frontend over a live data layer. Deliberately excluded from the behavior-neutral
-dead-code pass because it's a feature, not cleanup.
+**Dropped.** The Chronicle already has a UI home: v1.6.0 folded it into the **Notifications** tab, where
+each chronicled moment surfaces as a purple-accented "Chronicle"-type entry via `mirrorToNotifications()`
+([emigration-chronicle.js](../ui/emigration-chronicle.js)). A second, dedicated Chronicle sub-tab was
+judged redundant, so the staged standalone renderer (`renderChronicle` / `emigration-chronicle-view.js`,
+never mounted) was **removed** rather than wired up. The Chronicle **data** layer stays fully live. Reopen
+this only if a dedicated Chronicle tab is genuinely wanted, in which case the view must be rebuilt (see
+git history for the removed renderer).
 
 ### 17.2 Feature AB — City-local migration brakes (Phase 5) *(higher — gameplay; off until shakedown)*
 
@@ -1641,7 +1617,7 @@ scrubbing; (3) a `decorate`-style hook on the tooltip, mirroring the one added t
 Do **not** implement it by folding the live stack into the historical tip and hoping the scrubber is
 parked at the end.
 
-## 21. More deferred module cleanups (low priority — chronicle-view / cities / city-features)
+## 21. More deferred module cleanups (low priority — cities / city-features)
 
 All parked with reasoning in the now-deleted per-module backlogs; only the genuinely-actionable or
 conditional ones are kept here (the rest defended states the producer makes unreachable — don't
@@ -1657,10 +1633,6 @@ re-litigate).
 > localization phase, or gameplay that hasn't been observed yet) — each kept with its trigger, none
 > safe to "complete" by guessing.
 
-- **chronicle-view** ([emigration-chronicle-view.js](../ui/emigration-chronicle-view.js)): only one
-  cosmetic remains — chronicle-specific empty class vs the shared `.emig-empty` (today it deliberately
-  carries its own copy so it can render standalone; [view.js:34-35](../ui/emigration-chronicle-view.js#L34-L35)
-  already documents why). *Revisit only if a real class collision is observed*; do not rename pre-emptively.
 - **cities** ([emigration-cities.js](../ui/emigration-cities.js)): split `siege` from `razing` — today
   `siege: !!city.isBeingRazed` ([cities.js:191](../ui/emigration-cities.js#L191)) conflates the two.
   **Revisit only with a confirmed Civ VII city-siege / under-attack API** (current API is unverified
@@ -2340,7 +2312,7 @@ The only item carried unresolved across every analysis refresh, and the largest 
 `.c8rc.json` deliberately **excludes the engine-bound render/visualization layer** — `emigration-network-*`
 (sim/flow/viz/paint/dots/interact/timeline/fit), [emigration-window.js](../ui/emigration-window.js),
 [emigration-main.js](../ui/emigration-main.js), `emigration-options.js`, the lens/tooltip modules,
-`ledger-view`, `pies`, `return`, `dilemma`, `narrative`, `detail-views`, `chronicle-view`,
+`ledger-view`, `pies`, `return`, `dilemma`, `narrative`, `detail-views`,
 `notifications-view`, `flow-tab`, `city-flows`, `city-features` — because the off-engine harnesses cannot
 mount Gameface DOM/canvas. So the headline **96.07% statements** means "of the instrumented logic layer,"
 **not** of every shipped line; §13.4 already codifies the exclusion as the convention for new viz files.
