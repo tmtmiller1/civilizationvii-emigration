@@ -275,7 +275,7 @@ in/out/net; `brainDrainTint()` is monotonic and symmetric around 0.
 
 ---
 
-## 4. Feature D — Timeline event pins — ✅ SHIPPED
+## 4. Feature D — Timeline event pins — SHIPPED
 
 > **This section is stale and kept only for its rationale.** D is in the tree: `timelineEventPins`
 > (config), `makeEventPins()` ([emigration-network-timeline.js](../ui/emigration-network-timeline.js)),
@@ -694,7 +694,7 @@ Five of these features ("why did they leave / go there", forecast, advisor, poli
 same two primitives. Build them **once** as pure modules so each feature is thin formatting on top.
 **15.0a has shipped** (below); 15.0b is still open.
 
-#### 15.0a `emigration-explain.js` — decompose push & pull into labeled contributions — ✅ SHIPPED
+#### 15.0a `emigration-explain.js` — decompose push & pull into labeled contributions — SHIPPED
 
 The single source of "why", live as [emigration-explain.js](../ui/emigration-explain.js). Read it before
 building L/M/N/P — each is meant to be thin formatting over these rows, never its own reasoning.
@@ -755,7 +755,7 @@ the corridor/severity/digest features) formats this one list; do not re-derive p
 
 ---
 
-### Feature L — "Why did they leave / go there?" explainer — ✅ SHIPPED
+### Feature L — "Why did they leave / go there?" explainer — SHIPPED
 
 > **Kept only for the two design corrections below**; the rest is in the tree. `migrationExplainer`
 > (config + `readout` tunable), [emigration-explain-view.js](../ui/emigration-explain-view.js)
@@ -896,7 +896,7 @@ not invent options.**
    top push). This guard is the whole point — `available()` filters out non-options.
 2. **Builder.** `advise(cityId) → { reduceOutflow: string[], attract: string[] }`: take the top 2–3
    `explainPush` factors → reduce-outflow tips; top 2–3 `explainPull` gaps → attract tips. Cap at 3 each.
-3. **Render.** Collapsible advisor block under the readout (or a "💡" toggle), reusing `renderExplain`'s
+3. **Render.** Collapsible advisor block under the readout (or an "advisor" toggle), reusing `renderExplain`'s
    row idiom. Gate behind the same expand state as L.
 
 **Config / tunables.** `migrationAdvisor: true` (`readout` group).
@@ -1690,7 +1690,7 @@ API, and runtime `CREATE_ELEMENT` improvement placement is disproven). The playe
 improvement solved the *visibility* goal by another route — its `Constructible_YieldChanges` are
 natively attributed — but the **stance** yield is a separate, still-invisible per-turn `grantYield`.
 
-**22a. Reconcile the two reward paths — ✅ DONE (2026-07-16).** Resolved as *"both, deliberately: the
+**22a. Reconcile the two reward paths — DONE (2026-07-16).** Resolved as *"both, deliberately: the
 improvement REPLACES the grant — and pays strictly more, framed as an optional government investment in
 the enclave community."* The two-tier reward now reads:
 
@@ -1744,7 +1744,7 @@ clearly worth its cost. They never stack. Shipped as:
 >    as one improvement per option (~92 rows) with a penalty row each, plus per-option build gating and
 >    localization.
 
-**22b. Make the surviving stance yield legible — ✅ DONE (2026-07-16).**
+**22b. Make the surviving stance yield legible — DONE (2026-07-16).**
 
 **This section was stale: the core ask was already shipped, in the City Details panel, not the readout.**
 `gatherQuarter()` ([emigration-city-panel.js](../ui/emigration-city-panel.js)) already read the tile

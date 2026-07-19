@@ -564,7 +564,7 @@ shared `modSettings`). Keep as-is; document the namespace reservation in contrib
 **Both mods now pass `npm run verify` end-to-end** (verified: `tsc --noEmit` 0 errors, `eslint ui` 0
 errors, all JS test suites + `test:modinfo` + `test:i18n` green, in `emigration` and `demographics`).
 
-## ✅ Fixed
+## Fixed
 - **Demographics 28 TS errors → 0.**
   - Added the `model-options` named exports (`CategoryType`, `CategoryData`, `OptionType`, `Options`)
     to `demographics/types/engine-core-stub.d.ts` — clears all 5 TS2614 import errors in
@@ -591,7 +591,7 @@ errors, all JS test suites + `test:modinfo` + `test:i18n` green, in `emigration`
   Net/Emigration/Immigration/Refugees) and re-pointed the per-sample-delta assertion at the data-layer
   `netDeltaForPlayer`. Not a runtime defect — the implementation matches the intended design.
 
-## ⏸️ Intentionally NOT changed (accurate, but by design — not defects)
+## Intentionally NOT changed (accurate, but by design — not defects)
 - **Finding 3 — silent `catch (_) {}`**: deliberate "a render failure must never break the host
   screen" guards. Left as-is.
 - **Finding 4 — NYI metric placeholder**: deliberate safety net for an unwired metric tab (shows a
@@ -599,7 +599,7 @@ errors, all JS test suites + `test:modinfo` + `test:i18n` green, in `emigration`
 - **Second-Pass C — localStorage stray-key purge**: the documented self-heal that prevents a stray
   `demographics[_-]`-prefixed key from cascade-breaking shared `modSettings`. Left as-is.
 
-## ✅ Priority-2 hardening (now implemented)
+## Priority-2 hardening (now implemented)
 Both Priority-2 recommendations are done and wired into `verify` (so they run on every release gate):
 
 - **Options-registration test (demographics).** `tests/options-registration.mjs` (+ `test:options` in
@@ -616,6 +616,6 @@ Both Priority-2 recommendations are done and wired into `verify` (so they run on
   offenders in either mod, so this locks in Finding 3's "annotate intentional swallows" policy for new
   code without touching the existing intentional guards.
 
-## ❌ Not applied (rejected)
+## Not applied (rejected)
 - Finding 1's `tsc` suggestion to switch to **default imports**: rejected — it would **break runtime**
   (the engine module uses *named* exports, confirmed at `model-options.js:287`). The stub fix is correct.
