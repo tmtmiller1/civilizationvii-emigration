@@ -276,9 +276,12 @@
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="zh_Hant_HK"><Text>{1_Civ}：{2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="zh_Hant_HK"><Text>{1_Civ} 對陣未知文明</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="zh_Hant_HK"><Text>{1_People}因家鄉不滿而離開了{2_City}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS_TO" Language="zh_Hant_HK"><Text>{1_People} left {2_City} for {3_Dest}, unhappy at home.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="zh_Hant_HK"><Text>{1_People}為尋求更繁榮的鄰邦而離開了{2_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="zh_Hant_HK"><Text>{1_People}逃離了{2_City}周邊的戰火。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_WAR_TO" Language="zh_Hant_HK"><Text>{1_People} fled the fighting around {2_City} for the safety of {3_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="zh_Hant_HK"><Text>{2_City}易手時，{1_People}被擄走。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_CONQUEST_BY" Language="zh_Hant_HK"><Text>{1_People} were captured when {2_City} was conquered by {3_Civ}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="zh_Hant_HK"><Text>單位：</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_CIV_TIP" Language="zh_Hant_HK"><Text>Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city actually grows, so this figure looks steady. Shares and percentages are always measured on this base.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_SCALED_TIP" Language="zh_Hant_HK"><Text>Scaled Pop: a historically-scaled "people" headcount for flavour. It drifts upward as an age progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.</Text></Replace>
@@ -286,6 +289,7 @@
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="zh_Hant_HK"><Text>回放時間線會在數個回合後出現，待累積足夠的人口歷史可供拖曳檢視。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="zh_Hant_HK"><Text>{1_People}在災難過後逃離了{2_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER_TO" Language="zh_Hant_HK"><Text>{1_People} fled {2_City} after disaster struck, and are bound for {3_Dest}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY_TO" Language="zh_Hant_HK"><Text>{1_People} left {2_City} for its more prosperous neighbor, {3_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="zh_Hant_HK"><Text>{2_City}蒙受了{1_People}傷亡。</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_INTERNAL" Language="zh_Hant_HK"><Text>(內部遷移)</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="zh_Hant_HK"><Text>(外部遷移)</Text></Replace>
@@ -328,12 +332,9 @@
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_CRISIS" Language="zh_Hant_HK"><Text>危機</Text></Replace>
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_CHRONICLE" Language="zh_Hant_HK"><Text>編年史</Text></Replace>
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_OTHER" Language="zh_Hant_HK"><Text>其他</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_EXODUS" Language="zh_Hant_HK"><Text>大遷徙</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_DIASPORA" Language="zh_Hant_HK"><Text>離散</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_RETURN" Language="zh_Hant_HK"><Text>回歸</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TITLE_FALLBACK" Language="zh_Hant_HK"><Text>民族的遷徙</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TURN" Language="zh_Hant_HK"><Text>第 {1_Turn} 回合</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_EMPTY" Language="zh_Hant_HK"><Text>編年史尚無記載。當一波波人潮橫越世界遷徙時，他們的故事將寫於此：那些人去樓空的城市，以及在異鄉落地生根的社群。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_INTERNAL" Language="zh_Hant_HK"><Text>Internal Migration</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_EXTERNAL" Language="zh_Hant_HK"><Text>Emigration (Leaving)</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_INBOUND" Language="zh_Hant_HK"><Text>Immigration (Arriving)</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="zh_Hant_HK"><Text>這種壓力是暫時的。</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="zh_Hant_HK"><Text>在你解決根源之前，它將持續。</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="zh_Hant_HK"><Text>這些人口已永遠失去。</Text></Replace>
@@ -425,7 +426,7 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="zh_Hant_HK"><Text>每個圓點 ≈ {1_People} 人。一個圓圈是一個文明，包含其城市與城鎮；其圓點為本地居民（文明本色）、在其城市之間遷移的人（較淺色調）以及移民（其來源的顏色）。以「著色依據」重新著色，以「顯示/來源」開關篩選，點按色塊或圓圈以將其單獨顯示，並按 ▶ 或拖曳時間線以重播歷史。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="zh_Hant_HK"><Text>顯示：</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="zh_Hant_HK"><Text>尚無人口</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_UNMET" Language="zh_Hant_HK"><Text>未知</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNMET" Language="zh_Hant_HK"><Text>Unmet</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="zh_Hant_HK"><Text>Migrant flows</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="zh_Hant_HK"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="zh_Hant_HK"><Text>移民 - {1_City}</Text></Replace>

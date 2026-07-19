@@ -5,6 +5,10 @@ const { civLedgerRows, causeBreakdownRows, stanceRows, pressureRows, flowNetwork
   await import("/emigration/ui/emigration-views.js");
 // The Diversity section is flag-gated, so the section-list cases read/restore its CONFIG flag.
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
+// Pure helpers behind the Notifications de-duplication + direction-aware chip / accent.
+const { splitSummary, stripScopeTag, chipLabel, rowAccent } =
+  await import("/emigration/ui/emigration-notifications-view.js");
+const { causeAccent } = await import("/emigration/ui/emigration-causes.js");
 
 function testCivLedgerFormatsPeopleAndNet() {
   const rows = civLedgerRows([
@@ -315,6 +319,61 @@ testFlowNetworkNodeTotalCalculation();
 testDashboardModelNodeNetwork();
 testFlowNetworkRespectsMaxEdgeCap();
 testFlowNetworkRespectsCityEdgeCap();
+
+function testSplitSummarySeparatesSituationFromGuidance() {
+  // A composed digest: situation, a blank line, then guidance. The header takes only the situation and
+  // the Note takes only the guidance, so the full paragraph never renders twice.
+  const s = splitSummary("1 point left London. Bound for Leeds.\n\nGrow its yields. (Internal Move)");
+  assert.equal(s.situation, "1 point left London. Bound for Leeds.");
+  assert.equal(s.guidance, "Grow its yields. (Internal Move)");
+  // A headline with no guidance block (crisis/cause/inbound, chronicle title): all situation, no Note.
+  const flat = splitSummary("British: 5,000 flee the war.");
+  assert.equal(flat.situation, "British: 5,000 flee the war.");
+  assert.equal(flat.guidance, "");
+  // Defensive: a missing/non-string summary yields empty blocks, never throws.
+  assert.deepEqual(splitSummary(undefined), { situation: "", guidance: "" });
+}
+
+function testStripScopeTagRemovesTrailingMoveTag() {
+  // The chip names the scope, so the Note drops a trailing "(Internal Move)" / "(External Move)".
+  assert.equal(stripScopeTag("Grow London's yields. Drawn there: nearby. (Internal Move)"),
+    "Grow London's yields. Drawn there: nearby.");
+  assert.equal(stripScopeTag("Refugees flee. (External Move)"), "Refugees flee.");
+  // No trailing tag → unchanged; non-string → "".
+  assert.equal(stripScopeTag("Grow London's yields."), "Grow London's yields.");
+  assert.equal(stripScopeTag(undefined), "");
+}
+
+function testChipLabelNamesTheDirection() {
+  // A per-event row names WHICH DIRECTION the migration ran; the cause lives in the header, not the chip.
+  assert.equal(chipLabel({ kind: "digest", cause: "prosperity", ownLoss: true, crossCiv: false }),
+    "Internal Migration");
+  assert.equal(chipLabel({ kind: "digest", cause: "war", ownLoss: true, crossCiv: true }),
+    "Emigration (Leaving)");
+  // An arrival (not the player's own loss) is immigration.
+  assert.equal(chipLabel({ kind: "digest", cause: "prosperity", ownLoss: false, crossCiv: true }),
+    "Immigration (Arriving)");
+  // A death is "Casualties"; a chronicle entry is "Chronicle"; world-news kinds keep the flavour label.
+  assert.equal(chipLabel({ kind: "digest", cause: "attrition", ownLoss: true }), "Casualties");
+  assert.equal(chipLabel({ kind: "chronicle", cause: "chronicle" }), "Chronicle");
+  assert.equal(chipLabel({ kind: "crisis", cause: "war" }), "War");
+}
+
+function testRowAccentColoursByDirection() {
+  const green = causeAccent("prosperity");
+  const red = causeAccent("war");
+  // Internal + inbound read green (a gain / neutral shuffle); own cross-civ loss reads red.
+  assert.equal(rowAccent({ kind: "digest", cause: "prosperity", ownLoss: true, crossCiv: false }), green);
+  assert.equal(rowAccent({ kind: "digest", cause: "prosperity", ownLoss: false, crossCiv: true }), green);
+  assert.equal(rowAccent({ kind: "digest", cause: "war", ownLoss: true, crossCiv: true }), red);
+  // The direction colour overrides cause: an INTERNAL war relocation is still green, not war-red.
+  assert.equal(rowAccent({ kind: "digest", cause: "war", ownLoss: true, crossCiv: false }), green);
+}
+
 testDiversitySectionIsFlagGated();
+testSplitSummarySeparatesSituationFromGuidance();
+testStripScopeTagRemovesTrailingMoveTag();
+testChipLabelNamesTheDirection();
+testRowAccentColoursByDirection();
 
 console.log("views harness passed");

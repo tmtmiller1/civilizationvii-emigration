@@ -276,9 +276,12 @@
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="fr_FR"><Text>{1_Civ}: {2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="fr_FR"><Text>{1_Civ} contre une civilisation inconnue</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="fr_FR"><Text>{1_People} ont quitté {2_City}, mécontents chez eux.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS_TO" Language="fr_FR"><Text>{1_People} left {2_City} for {3_Dest}, unhappy at home.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="fr_FR"><Text>{1_People} ont quitté {2_City} pour des voisins plus prospères.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="fr_FR"><Text>{1_People} ont fui les combats autour de {2_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_WAR_TO" Language="fr_FR"><Text>{1_People} fled the fighting around {2_City} for the safety of {3_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="fr_FR"><Text>{1_People} ont été emmenés de {2_City} lorsqu'elle a changé de mains.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_CONQUEST_BY" Language="fr_FR"><Text>{1_People} were captured when {2_City} was conquered by {3_Civ}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="fr_FR"><Text>Unités :</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_CIV_TIP" Language="fr_FR"><Text>Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city actually grows, so this figure looks steady. Shares and percentages are always measured on this base.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_SCALED_TIP" Language="fr_FR"><Text>Scaled Pop: a historically-scaled "people" headcount for flavour. It drifts upward as an age progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.</Text></Replace>
@@ -286,6 +289,7 @@
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="fr_FR"><Text>La frise de lecture apparaît après quelques tours, une fois qu'il y a un historique de population à parcourir.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="fr_FR"><Text>{1_People} ont fui {2_City} après une catastrophe.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER_TO" Language="fr_FR"><Text>{1_People} fled {2_City} after disaster struck, and are bound for {3_Dest}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY_TO" Language="fr_FR"><Text>{1_People} left {2_City} for its more prosperous neighbor, {3_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="fr_FR"><Text>{1_People} ont été perdus à {2_City}, sans refuge.</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_INTERNAL" Language="fr_FR"><Text>(Déplacement interne)</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="fr_FR"><Text>(Déplacement externe)</Text></Replace>
@@ -328,12 +332,9 @@
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_CRISIS" Language="fr_FR"><Text>Crise</Text></Replace>
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_CHRONICLE" Language="fr_FR"><Text>Chronique</Text></Replace>
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_OTHER" Language="fr_FR"><Text>Autre</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_EXODUS" Language="fr_FR"><Text>Exode</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_DIASPORA" Language="fr_FR"><Text>Diaspora</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_RETURN" Language="fr_FR"><Text>Retour</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TITLE_FALLBACK" Language="fr_FR"><Text>Un mouvement de peuples</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TURN" Language="fr_FR"><Text>Tour {1_Turn}</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_EMPTY" Language="fr_FR"><Text>La chronique est vide. À mesure que de grandes vagues humaines parcourent le monde, leurs histoires s'écrivent ici : les villes qui se vidèrent et les communautés qui prirent racine loin de chez elles.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_INTERNAL" Language="fr_FR"><Text>Internal Migration</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_EXTERNAL" Language="fr_FR"><Text>Emigration (Leaving)</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_INBOUND" Language="fr_FR"><Text>Immigration (Arriving)</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="fr_FR"><Text>La pression est temporaire.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="fr_FR"><Text>Elle persiste jusqu'à ce que vous en traitiez la cause.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="fr_FR"><Text>Ces gens sont perdus à jamais.</Text></Replace>
@@ -425,7 +426,7 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="fr_FR"><Text>Chaque point ≈ {1_People} personnes. Le cercle d'une civilisation contient ses villes et bourgs sous forme de sous-groupes internes : les points de la couleur propre de la civilisation sont des résidents locaux, les points d'une teinte PLUS CLAIRE sont des personnes ayant migré entre ses propres villes (migration interne), et les points d'une autre couleur sont des immigrants de cette origine. La vue « Colorer par » les recolore par origine, type de migrant (guerre / catastrophe / attraction …) ou mouvement (résidents / interne / immigrants).</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="fr_FR"><Text>Afficher :</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="fr_FR"><Text>pas encore de population</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_UNMET" Language="fr_FR"><Text>Non rencontrée</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNMET" Language="fr_FR"><Text>Unmet</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="fr_FR"><Text>Migrant flows</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="fr_FR"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="fr_FR"><Text>Migration - {1_City}</Text></Replace>

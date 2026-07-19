@@ -276,9 +276,12 @@
         <Replace Tag="LOC_EMIG_NEWS_WHO" Language="ru_RU"><Text>{1_Civ}: {2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="ru_RU"><Text>{1_Civ} против неизвестной цивилизации</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="ru_RU"><Text>{1_People} покинули {2_City}, недовольные жизнью дома.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS_TO" Language="ru_RU"><Text>{1_People} left {2_City} for {3_Dest}, unhappy at home.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="ru_RU"><Text>{1_People} покинули {2_City} в поисках более процветающих соседей.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="ru_RU"><Text>{1_People} бежали от боёв вокруг {2_City}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_WAR_TO" Language="ru_RU"><Text>{1_People} fled the fighting around {2_City} for the safety of {3_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="ru_RU"><Text>{1_People} были уведены из {2_City}, когда он сменил владельца.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_CONQUEST_BY" Language="ru_RU"><Text>{1_People} were captured when {2_City} was conquered by {3_Civ}.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="ru_RU"><Text>Единицы:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_CIV_TIP" Language="ru_RU"><Text>Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city actually grows, so this figure looks steady. Shares and percentages are always measured on this base.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS_SCALED_TIP" Language="ru_RU"><Text>Scaled Pop: a historically-scaled "people" headcount for flavour. It drifts upward as an age progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.</Text></Replace>
@@ -286,6 +289,7 @@
         <Replace Tag="LOC_EMIG_NETC_TIMELINE_PENDING" Language="ru_RU"><Text>Хронология воспроизведения появится через пару ходов, как только накопится история населения для прокрутки.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER" Language="ru_RU"><Text>{1_People} бежали из {2_City} после бедствия.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_DISASTER_TO" Language="ru_RU"><Text>{1_People} fled {2_City} after disaster struck, and are bound for {3_Dest}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY_TO" Language="ru_RU"><Text>{1_People} left {2_City} for its more prosperous neighbor, {3_Dest}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_ATTRITION" Language="ru_RU"><Text>{1_People} погибли в {2_City}, не имея пути к бегству.</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_INTERNAL" Language="ru_RU"><Text>(Внутреннее перемещение)</Text></Replace>
         <Replace Tag="LOC_EMIG_SCOPE_EXTERNAL" Language="ru_RU"><Text>(Внешнее перемещение)</Text></Replace>
@@ -328,12 +332,9 @@
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_CRISIS" Language="ru_RU"><Text>Кризис</Text></Replace>
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_CHRONICLE" Language="ru_RU"><Text>Хроника</Text></Replace>
         <Replace Tag="LOC_EMIG_CAUSE_LABEL_OTHER" Language="ru_RU"><Text>Прочее</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_EXODUS" Language="ru_RU"><Text>Исход</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_DIASPORA" Language="ru_RU"><Text>Диаспора</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_KIND_RETURN" Language="ru_RU"><Text>Возвращение</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TITLE_FALLBACK" Language="ru_RU"><Text>Движение народов</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_TURN" Language="ru_RU"><Text>Ход {1_Turn}</Text></Replace>
-        <Replace Tag="LOC_EMIG_CHRONICLE_EMPTY" Language="ru_RU"><Text>Хроника пуста. Пока великие волны людей движутся по миру, здесь записываются их истории: города, что опустели, и общины, что пустили корни вдали от дома.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_INTERNAL" Language="ru_RU"><Text>Internal Migration</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_EXTERNAL" Language="ru_RU"><Text>Emigration (Leaving)</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_KIND_INBOUND" Language="ru_RU"><Text>Immigration (Arriving)</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_TEMPORARY" Language="ru_RU"><Text>Это давление временно.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERSISTENT" Language="ru_RU"><Text>Оно сохраняется, пока вы не устраните причину.</Text></Replace>
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ru_RU"><Text>Эти люди потеряны навсегда.</Text></Replace>
@@ -425,7 +426,7 @@
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="ru_RU"><Text>Каждая точка ≈ {1_People} человек. Круг цивилизации содержит её города и посёлки в виде внутренних подгрупп: точки собственного цвета цивилизации, местные жители, точки более СВЕТЛОГО оттенка, люди, переселившиеся между её городами (внутренняя миграция), а точки другого цвета, иммигранты из этого источника. Линза «Цвет по» перекрашивает их по происхождению, типу миграции (война / бедствие / притяжение …) или перемещению (жители / внутренние / иммигранты).</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="ru_RU"><Text>Показать:</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="ru_RU"><Text>населения пока нет</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_UNMET" Language="ru_RU"><Text>Незнакомая</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_UNMET" Language="ru_RU"><Text>Unmet</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="ru_RU"><Text>Migrant flows</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="ru_RU"><Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="ru_RU"><Text>Миграция - {1_City}</Text></Replace>
