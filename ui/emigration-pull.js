@@ -38,8 +38,8 @@ export function setNeutralBorders(on) {
 
 /**
  * Classify why a source is shedding population, in precedence order: disaster distress, then
- * in-border violence (both gated on their flee thresholds), then, for an ordinary peacetime
- * departure, `unhappiness` if the city's net happiness is below `unhappyCauseThreshold` (a push)
+ * in-border violence (gated on its flee threshold) OR active razing (`siege`) → `war`, then, for an
+ * ordinary peacetime departure, `unhappiness` if the city's net happiness is below `unhappyCauseThreshold` (a push)
  * vs `prosperity` if it's content but a neighbour out-prospers it (a pull). This is a reporting
  * split only; it never changes whether or where people move. `conquest` is reserved (a later phase
  * emits it on capture-driven displacement).
@@ -48,7 +48,10 @@ export function setNeutralBorders(on) {
  */
 export function migrationCause(src) {
   if ((src.disaster || 0) >= CONFIG.disasterFleeThreshold) return "disaster";
-  if ((src.violence || 0) >= CONFIG.violenceFleeThreshold) return "war";
+  // Razing (`siege`) is a war crisis even before accumulated violence crosses the flee threshold,
+  // so a razing city reports/prices as a war refugee (asylum tilt + crisis reason tags), matching
+  // the engine's crisis-track cause. Disaster still wins above (a razing-by-disaster city is rare).
+  if ((src.violence || 0) >= CONFIG.violenceFleeThreshold || !!src.siege) return "war";
   if ((src.happiness || 0) < CONFIG.unhappyCauseThreshold) return "unhappiness";
   return "prosperity";
 }
@@ -127,13 +130,16 @@ function crossCivBlock(src) {
 }
 
 /**
- * Whether a source is in ACUTE crisis (war or disaster distress over its flee threshold), i.e. its
- * people are refugees fleeing, not economic migrants.
+ * Whether a source is in ACUTE crisis (being razed, or war/disaster distress over its flee
+ * threshold), i.e. its people are refugees fleeing, not economic migrants. Kept in lockstep with the
+ * engine's `inCrisis` (which sizes the shed track): a razing city sheds on the crisis cadence there,
+ * so it must ALSO price as a fleeing refugee here or its people are penned inside the collapsing civ.
  * @param {*} src Source signal.
  * @returns {boolean} True when fleeing a crisis.
  */
 function srcInCrisis(src) {
-  return (src.violence || 0) >= CONFIG.violenceFleeThreshold
+  return !!src.siege // a razing city is an acute crisis (high deaths + fleeing); matches engine inCrisis
+    || (src.violence || 0) >= CONFIG.violenceFleeThreshold
     || (src.disaster || 0) >= CONFIG.disasterFleeThreshold;
 }
 
@@ -436,13 +442,17 @@ export function crisisTypeReasons(src) {
 
 /**
  * The "why did they die" tags for an attrition death (P0.2): the crisis type(s) plus whether the
- * settlement was trapped (no refuge) or lost people while the rest fled.
+ * settlement was trapped (no refuge) or lost people while the rest fled. `crisisTypeReasons` covers the
+ * immediate crises (siege/violence/disaster/famine); sustained unrest is tagged separately because it
+ * only becomes lethal after a tenure the engine tracks - the caller passes `unrestLethal` once earned.
  * @param {*} src Source signal.
  * @param {boolean} hasRefuge Whether a viable destination existed this pass.
+ * @param {boolean} [unrestLethal] Whether sustained unrest was a lethal contributor this pass.
  * @returns {string[]} Up to three death-reason tags.
  */
-export function deriveDeathReasons(src, hasRefuge) {
+export function deriveDeathReasons(src, hasRefuge, unrestLethal) {
   const out = crisisTypeReasons(src);
+  if (unrestLethal) out.push(DEATH_REASON.UNREST);
   out.push(hasRefuge ? DEATH_REASON.CRISIS_LOSSES : DEATH_REASON.NO_REFUGE);
   return out.slice(0, 3);
 }

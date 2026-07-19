@@ -32,6 +32,7 @@ import {
   getTunable, setTunable, resetTunable, resetAllTunables, isTunableModified, markPresetCustom
 } from "/emigration/ui/emigration-settings.js";
 import { TUNABLES } from "/emigration/ui/emigration-tunables.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 
 const TAG = "emigration-advanced-editor";
 
@@ -265,7 +266,7 @@ class EmigrationAdvancedEditor extends Panel {
   buildToolbar(host) {
     const search = document.createElement("fxs-textbox");
     search.className = "flex-auto mr-4";
-    search.setAttribute("placeholder", "Search settings…");
+    search.setAttribute("placeholder", loc("LOC_EMIG_ADV_SEARCH_PLACEHOLDER", "Search settings…"));
     const onQuery = (/** @type {string} */ s) => this.onSearch(s);
     search.addEventListener("text-changed", (/** @type {*} */ e) => onQuery(e.detail?.newStr ?? ""));
     search.addEventListener("component-value-changed", (/** @type {*} */ e) => onQuery(e.detail?.value ?? ""));
@@ -273,7 +274,7 @@ class EmigrationAdvancedEditor extends Panel {
     host.appendChild(search);
 
     const reset = document.createElement("fxs-button");
-    reset.setAttribute("caption", "Reset all to defaults");
+    reset.setAttribute("caption", loc("LOC_EMIG_ADV_RESET_ALL", "Reset all to defaults"));
     reset.setAttribute("data-audio-group-ref", "options");
     reset.addEventListener("action-activate", () => this.onResetAll());
     host.appendChild(reset);
@@ -341,7 +342,7 @@ class EmigrationAdvancedEditor extends Panel {
   makeResetButton(meta) {
     const btn = document.createElement("fxs-activatable");
     btn.className = "ml-3 cursor-pointer";
-    btn.setAttribute("data-tooltip-content", "Reset to default");
+    btn.setAttribute("data-tooltip-content", loc("LOC_EMIG_ADV_RESET_ONE", "Reset to default"));
     btn.setAttribute("data-audio-group-ref", "options");
     const glyph = el("span", "font-title text-lg text-accent-2");
     glyph.textContent = "↺";
@@ -367,8 +368,12 @@ class EmigrationAdvancedEditor extends Panel {
     }
     const values = t.values || [];
     const labels = t.choiceLabels || null;
-    const items = values.map((/** @type {*} */ x, /** @type {number} */ i) =>
-      ({ label: labels ? labels[i] : String(x) }));
+    const items = values.map((/** @type {*} */ x, /** @type {number} */ i) => {
+      const lbl = labels ? labels[i] : String(x);
+      // choiceLabels may carry LOC_ keys (enum-style knobs) or bare literals ("30%"); the fxs-dropdown
+      // renders dropdown-items verbatim, so compose the keys here (literals pass through untouched).
+      return { label: (typeof lbl === "string" && lbl.startsWith("LOC_")) ? loc(lbl, lbl) : lbl };
+    });
     const dd = document.createElement("fxs-dropdown");
     dd.setAttribute("data-audio-group-ref", "options");
     dd.classList.add("w-64");

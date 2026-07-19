@@ -16,6 +16,10 @@ import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { telemetryCounters } from "/emigration/ui/emigration-telemetry.js";
 import { refugeePoolTotalForOwner } from "/emigration/ui/emigration-refugee-pool.js";
 import { chronicleLog } from "/emigration/ui/emigration-chronicle.js";
+import { migrationCause } from "/emigration/ui/emigration-pull.js";
+import { contestedBenefitScale } from "/emigration/ui/emigration-quarter.js";
+import { quartersForOwner } from "/emigration/ui/emigration-quarter-state.js";
+import { immigrationOpenness, borderStance } from "/emigration/ui/emigration-borders.js";
 
 /** A number, coerced (NaN/undefined → 0). @param {*} x @returns {number} */
 function num(x) {
@@ -263,6 +267,92 @@ function checkForce() {
         "offer the decision, if you have any foreign community.");
 }
 
+// ── balance-fix probes (2026-07: refugee throttle, contested-enclave yield, razing → refugee) ────────
+
+/**
+ * Issue 3 — a razing settlement flees as a war refugee. Behavioural: runs the live classifier on a
+ * synthetic "being razed, no battle damage yet" source and asserts it reads as "war" (so its people
+ * flee abroad with the crisis-escape pull), not an economic cause. Proves the fix is in this build.
+ */
+function checkRazingRefugees() {
+  try {
+    const cause = migrationCause({ siege: true, violence: 0, disaster: 0, happiness: 0 });
+    if (cause === "war") {
+      return row("Razing → refugee flight", "PASS",
+        "A settlement being razed is treated as a war crisis: its people flee abroad as refugees (crisis-escape " +
+        "pull, reduced cross-civ friction) even before battle damage crosses the flee threshold — matching how the " +
+        "engine sheds them. Synthetic razing source classified as “war”.");
+    }
+    return row("Razing → refugee flight", "FAIL",
+      "A razing settlement classified as “" + cause + "”, not “war”: its refugees would pay full " +
+      "cross-civ friction and stay penned inside the collapsing civ. The siege/crisis alignment fix is NOT active here.");
+  } catch (e) {
+    return row("Razing → refugee flight", "INFO", "Migration classifier unavailable: " + errMsg(e));
+  }
+}
+
+/**
+ * Issue 2 — a contested enclave contributes a reduced yield. Behavioural: reads the same scale the grant
+ * path uses (contestedBenefitScale) and asserts it drops below 1 while contested; also lists any of the
+ * player's enclaves currently contested and the share they now pay.
+ */
+function checkContestedEnclaveYield() {
+  try {
+    const scale = contestedBenefitScale({ contested: true });
+    const pct = Math.round(scale * 100);
+    const contested = quartersForOwner(localPid())
+      .filter((e) => e.rec && e.rec.contested)
+      .map((e) => quarterName(e.rec.civ));
+    if (!(scale < 1)) {
+      return row("Contested enclave yield", "WARN",
+        "Contested enclaves currently pay their FULL benefit (contestedQuarterYieldFactor = " + scale + "), so war " +
+        "with a homeland only adds a happiness strain in this profile. Set the factor below 1 to dim the enclave's output.");
+    }
+    const base = "While at war with an enclave's homeland it turns “contested” and pays only " + pct +
+      "% of its benefit yield (plus a happiness strain).";
+    if (contested.length) {
+      return row("Contested enclave yield", "PASS",
+        base + " You have " + contested.length + " contested now: " + contested.join(", ") + " — each contributing " +
+        pct + "% until peace returns.");
+    }
+    return row("Contested enclave yield", "PASS",
+      base + " None of your enclaves are contested right now; declare war on an enclave's homeland and its City " +
+      "Details yield line drops to " + pct + "%.");
+  } catch (e) {
+    return row("Contested enclave yield", "INFO", "Enclave-yield check unavailable: " + errMsg(e));
+  }
+}
+
+/**
+ * Issue 1 — under Anti-Immigration, admitted refugees settle more slowly (the settlement budget is
+ * throttled on the SAME openness floor as the border turn-away, not the old hard-coded 25%). Live
+ * observation of the local player's stance + staged pool.
+ */
+function checkClosedBorderThrottle() {
+  const floorPct = Math.round((num(CONFIG.opennessFloor) || 0) * 100);
+  try {
+    if (!CONFIG.bordersEnabled) {
+      return row("Anti-Immigration refugee throttle", "INFO",
+        "Border policies are off in this profile, so immigration openness has no effect on refugee settlement.");
+    }
+    const me = localPid();
+    const openness = immigrationOpenness(me);
+    const pool = Math.round(refugeePoolTotalForOwner(me) || 0);
+    if (borderStance(me) === "anti" || openness < 1) {
+      return row("Anti-Immigration refugee throttle", "PASS",
+        "You hold an Anti-Immigration stance (openness " + Math.round(openness * 100) + "%). Refugees are turned away " +
+        "at your border AND the ones you admit settle more slowly — the same openness throttles pool settlement, " +
+        "floored at " + floorPct + "% (the shared openness floor, not the old 25% staging floor). " +
+        (pool ? pool + " refugee point(s) staged now, draining at the reduced rate." : "No refugees staged right now."));
+    }
+    return row("Anti-Immigration refugee throttle", "INFO",
+      "No Anti-Immigration stance active — refugee settlement runs at full speed. Under Anti-Immigration, admitted " +
+      "refugees also settle more slowly (throttle floored at " + floorPct + "%, shared with the border turn-away).");
+  } catch (e) {
+    return row("Anti-Immigration refugee throttle", "INFO", "Border-throttle check unavailable: " + errMsg(e));
+  }
+}
+
 /**
  * Pick a foreign origin + place to headline a FORCED enclave preview: a real foreign minority in one of
  * your cities if any exists (even below the enclave bar), else a placeholder so the preview still fires.
@@ -283,7 +373,8 @@ export function pickPreviewOrigin() {
 /** Run the whole battery; each check self-guards to an INFO row on failure. @returns {*[]} */
 export function runChecks() {
   const checks = [checkSettlements, checkEnclaves, checkPopulationMeasures, checkMigrationActivity,
-    checkRefugeePool, checkChronicle, checkNotifications, checkPersistence, checkDemographics, checkForce];
+    checkRefugeePool, checkClosedBorderThrottle, checkContestedEnclaveYield, checkRazingRefugees,
+    checkChronicle, checkNotifications, checkPersistence, checkDemographics, checkForce];
   return checks.map((fn) => {
     try {
       return fn();

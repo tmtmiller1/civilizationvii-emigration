@@ -14,6 +14,7 @@
 import { dashboardModel, renderDashboardSubtab } from "/emigration/ui/emigration-views.js";
 import { gatherDashboard } from "/emigration/ui/emigration-window.js";
 import { setNumberMode, NumberMode, getMinimizeAnalytics } from "/emigration/ui/emigration-settings.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 // The Migration page's sub-tabs, one per dashboard section, so the embedded page shows the SAME
@@ -22,21 +23,38 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 // emigration tab bar. `id` is the section kind (handed back to render); `label` is the short sub-tab
 // label; `title` is the descriptive chart title. Mirrors emigration-views.js dashboardModel() order
 // + TAB_LABELS.
+// `labelKey`/`titleKey` are the LOC keys (composed at registration by locTab); `label`/`title` are the
+// English fallbacks. Labels/titles reuse the standalone dashboard's already-translated keys
+// (emigration-views.js) where the text is identical, so translators touch each string once; the few
+// migration-page-only strings carry their own LOC_EMIG_PAGE_* keys.
 const SUBTABS = [
-  { id: "flow", label: "Network", title: "Migration network & flows" },
+  { id: "flow", labelKey: "LOC_EMIG_VIEW_TAB_NETWORK", label: "Network", titleKey: "LOC_EMIG_PAGE_FLOW_TITLE", title: "Migration network & flows" },
   // Kept declared so its panel sub-tab synthetic registers (the host needs it for metricExists), but
   // it no longer appears as a standalone sub-tab: emigration-demographics.js's "Data" group claims
   // this id as the "Net Migration (Table)" pill, and the host's group-merge drops it from the tab row.
-  { id: "ledger", label: "Net Migration (Table)", title: "Net migration by civilization" },
-  { id: "pies", label: "Causes", title: "Why people move" },
-  { id: "cityflows", label: "Settlements", title: "Settlements" },
-  { id: "diversity", label: "Diversity", title: "Most diverse cities" },
-  { id: "stances", label: "Immigration Policies", title: "Immigration policies" },
-  { id: "notifications", label: "Notifications", title: "Migration notifications" },
+  { id: "ledger", labelKey: "LOC_EMIG_VIEW_TAB_NET_TABLE", label: "Net Migration (Table)", titleKey: "LOC_EMIG_PAGE_LEDGER_TITLE", title: "Net migration by civilization" },
+  { id: "pies", labelKey: "LOC_EMIG_VIEW_TAB_CAUSES", label: "Causes", titleKey: "LOC_EMIG_VIEW_SEC_WHY", title: "Why people move" },
+  { id: "cityflows", labelKey: "LOC_EMIG_VIEW_SEC_SETTLEMENTS", label: "Settlements", titleKey: "LOC_EMIG_VIEW_SEC_SETTLEMENTS", title: "Settlements" },
+  { id: "diversity", labelKey: "LOC_EMIG_VIEW_TAB_DIVERSITY", label: "Diversity", titleKey: "LOC_EMIG_PAGE_DIVERSITY_TITLE", title: "Most diverse cities" },
+  { id: "stances", labelKey: "LOC_EMIG_PAGE_STANCES_TAB", label: "Immigration Policies", titleKey: "LOC_EMIG_VIEW_SEC_POLICIES", title: "Immigration policies" },
+  { id: "notifications", labelKey: "LOC_EMIG_VIEW_TAB_NOTIFICATIONS", label: "Notifications", titleKey: "LOC_EMIG_VIEW_SEC_NOTIFICATIONS", title: "Migration notifications" },
   // The Guide is a static reference matrix with no per-civ data, so the host's analytics-visibility
   // policy banner is meaningless there, opt it out (the host reads `hidePolicyBanner`).
-  { id: "guide", label: "Guide", title: "What counts", hidePolicyBanner: true }
+  { id: "guide", labelKey: "LOC_EMIG_VIEW_TAB_GUIDE", label: "Guide", titleKey: "LOC_EMIG_GUIDE_VIEW_REF", title: "What counts", hidePolicyBanner: true }
 ];
+
+/**
+ * A registration-time copy of a sub-tab / hub-page with its label (and title, when present) composed.
+ * The host renders panel tab + hub-page labels verbatim, so the LOC keys are resolved here (at runtime,
+ * where Locale is ready); the helper `*Key` props are stripped from the object handed to the host.
+ * @param {*} t A SUBTABS or HUB_PAGES entry. @returns {*} The localized copy.
+ */
+function locTab(t) {
+  const { labelKey, titleKey, ...rest } = t;
+  rest.label = loc(labelKey, t.label);
+  if (titleKey) rest.title = loc(titleKey, t.title);
+  return rest;
+}
 
 const PANEL_ID = "emig_migration_panel";
 const REGISTERED_FLAG = "__emigMigrationPageRegistered";
@@ -62,13 +80,15 @@ function tabGatedOff(kind) {
 /** The sub-tabs to show, dropping the Network + Causes analytics tabs when "simplify dashboard" is on. */
 function visibleSubtabs() {
   const shown = SUBTABS.filter((t) => !tabGatedOff(t.id));
-  return getMinimizeAnalytics() ? shown.filter((t) => !HIDDEN_SUBTAB_IDS.has(t.id)) : shown;
+  const list = getMinimizeAnalytics() ? shown.filter((t) => !HIDDEN_SUBTAB_IDS.has(t.id)) : shown;
+  return list.map(locTab);
 }
 
 /** The hub pages to contribute, dropping the Network + Causes pages when "simplify dashboard" is on. */
 function visibleHubPages() {
   const shown = HUB_PAGES.filter((p) => !(p.id === "emig_diversity" && tabGatedOff("diversity")));
-  return getMinimizeAnalytics() ? shown.filter((p) => !HIDDEN_HUB_IDS.has(p.id)) : shown;
+  const list = getMinimizeAnalytics() ? shown.filter((p) => !HIDDEN_HUB_IDS.has(p.id)) : shown;
+  return list.map(locTab);
 }
 const QUEUED_FLAG = "__emigMigrationPageQueued";
 
@@ -167,14 +187,14 @@ const MIGRATION_ANCHOR = "population"; // host Migration-hub anchor page (Popula
 const NET_MIGRATION_PAGE_ID = "emig_net_migration"; // must match emigration-demographics.js group pageId
 
 const HUB_PAGES = [
-  { id: NET_MIGRATION_PAGE_ID, label: "Population & Migration", tier: "basic", metrics: [] },
-  { id: "emig_network", label: "Network", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "flow", c) },
-  { id: "emig_causes", label: "Causes", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "pies", c) },
-  { id: "emig_cities", label: "My Cities", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "cityflows", c) },
-  { id: "emig_diversity", label: "Diversity", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "diversity", c) },
-  { id: "emig_policies", label: "Policies", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "stances", c) },
-  { id: "emig_notifications", label: "Notifications", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "notifications", c) },
-  { id: "emig_guide", label: "Guide", tier: "standard", hidePolicyBanner: true, render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "guide", c) }
+  { id: NET_MIGRATION_PAGE_ID, labelKey: "LOC_EMIG_HUB_POP_MIGRATION", label: "Population & Migration", tier: "basic", metrics: [] },
+  { id: "emig_network", labelKey: "LOC_EMIG_VIEW_TAB_NETWORK", label: "Network", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "flow", c) },
+  { id: "emig_causes", labelKey: "LOC_EMIG_VIEW_TAB_CAUSES", label: "Causes", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "pies", c) },
+  { id: "emig_cities", labelKey: "LOC_EMIG_VIEW_TAB_MY_CITIES", label: "My Cities", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "cityflows", c) },
+  { id: "emig_diversity", labelKey: "LOC_EMIG_VIEW_TAB_DIVERSITY", label: "Diversity", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "diversity", c) },
+  { id: "emig_policies", labelKey: "LOC_EMIG_VIEW_TAB_POLICIES", label: "Policies", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "stances", c) },
+  { id: "emig_notifications", labelKey: "LOC_EMIG_VIEW_TAB_NOTIFICATIONS", label: "Notifications", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "notifications", c) },
+  { id: "emig_guide", labelKey: "LOC_EMIG_VIEW_TAB_GUIDE", label: "Guide", tier: "standard", hidePolicyBanner: true, render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "guide", c) }
 ];
 
 /**
@@ -188,6 +208,17 @@ function hostSupportsHubs(api) {
 }
 
 /**
+ * A registration-time copy of PANEL_SPEC with its verbatim-rendered `pageLabel` + `title` composed.
+ * @param {*} extra Per-host overrides merged last (tabs, topLevel). @returns {*} The localized panel.
+ */
+function locPanel(extra) {
+  return Object.assign({}, PANEL_SPEC, {
+    pageLabel: loc("LOC_EMIG_PAGE_LABEL", PANEL_SPEC.pageLabel),
+    title: loc("LOC_EMIG_PAGE_TITLE", PANEL_SPEC.title)
+  }, extra);
+}
+
+/**
  * Register the page against a ready Demographics API. Prefers hub mode (flat pages in the Migration
  * hub); falls back to the legacy sibling-tab panel on an older host. Returns false if the API lacks
  * even registerPanel, so the caller can leave it queued / no-op.
@@ -198,13 +229,13 @@ function doRegister(api) {
   if (api && api[REGISTERED_FLAG]) return true;
   if (hostSupportsHubs(api)) {
     // Keep the panel (NON top-level) for the ledger group-member routing; contribute the flat pages.
-    api.registerPanel(Object.assign({}, PANEL_SPEC, { tabs: visibleSubtabs(), topLevel: false }));
+    api.registerPanel(locPanel({ tabs: visibleSubtabs(), topLevel: false }));
     api.registerHubPages("migration", visibleHubPages(), { after: MIGRATION_ANCHOR });
     api[REGISTERED_FLAG] = true;
     return true;
   }
   if (typeof api.registerPanel === "function") {
-    api.registerPanel(Object.assign({}, PANEL_SPEC, { tabs: visibleSubtabs() }));
+    api.registerPanel(locPanel({ tabs: visibleSubtabs() }));
     api[REGISTERED_FLAG] = true;
     return true;
   }

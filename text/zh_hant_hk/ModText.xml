@@ -3,7 +3,7 @@
     <LocalizedText>
         <Replace Tag="LOC_MOD_EMIGRATION_NAME" Language="zh_Hant_HK"><Text>移民</Text></Replace>
         <Replace Tag="LOC_MOD_EMIGRATION_DESCRIPTION" Language="zh_Hant_HK"><Text>市民會從不滿、艱困的城市遷往更幸福、更繁榮的城市，無論在文明內部還是文明之間，皆由繁榮模型（食物、生產、幸福度、戰爭、圍城、饑荒）驅動。遷徙數字以具歷史代表性的人口呈現，與 Demographics 模組的比例一致。</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS" Language="zh_Hant_HK"><Text>移民 • 遷徙數量顯示</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS" Language="zh_Hant_HK"><Text>移民：遷徙數量顯示</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_DESCRIPTION" Language="zh_Hant_HK"><Text>移民如何顯示遷徙的人數。「兩者」同時顯示 Civ 人口數值與按歷史比例縮放的人數（與 Demographics 模組一致）；其餘僅顯示其一。</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_BOTH" Language="zh_Hant_HK"><Text>兩者（Civ 數值 + 歷史數值）</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIGRATION_NUMBERS_CIV" Language="zh_Hant_HK"><Text>僅 Civ 人口數值</Text></Replace>
@@ -27,12 +27,12 @@
         <Replace Tag="LOC_EMIG_T_TLPINS_D" Language="zh_Hant_HK"><Text>Pin the wars and disasters that drove migration onto the migration network's playback timeline, so a spike can be traced back to what caused it. Hover a pin to name the event; click it to scrub there. Display only — it never changes who moves. Only events recorded from now on can be pinned: wars and disasters from earlier in an existing save were never stamped with the turn they happened.</Text></Replace>
         <Replace Tag="LOC_EMIG_TL_PIN_DISASTER" Language="zh_Hant_HK"><Text>Disaster</Text></Replace>
         <Replace Tag="LOC_EMIG_ADVGRP_READOUT" Language="zh_Hant_HK"><Text>面板與排行</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DIVERSITY" Language="zh_Hant_HK"><Text>最多元城市排行</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIVERSITY" Language="zh_Hant_HK"><Text>最多元聚落排行</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DIVERSITY_D" Language="zh_Hant_HK"><Text>在遷徙面板中新增「多元性」分頁，按居民來源——他們最初來自哪個文明——的混合程度為你的聚落排名，並為每個聚落顯示一條彩色長條，將該構成與其人口對照呈現。僅作顯示：它讀取模組本就記錄的居民來源，不會改變誰遷徙，也不提供任何產出。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_COSMO" Language="zh_Hant_HK"><Text>世界性標籤</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_COSMO" Language="zh_Hant_HK"><Text>多元性排行：世界性欄</Text></Replace>
         <Replace Tag="LOC_EMIG_T_COSMO_D" Language="zh_Hant_HK"><Text>在多元性排行中新增「特徵」欄，將每個聚落歸納為同質、本地多數、混合城市、世界性中心或世界城市，依據其來源構成、邊境開放度以及流入人數綜合得出。純粹為描述性：不提供產出，也不影響遷徙。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DIVERSITYROWS" Language="zh_Hant_HK"><Text>多元性排行：顯示列數</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DIVERSITYROWS_D" Language="zh_Hant_HK"><Text>分頁頂部「最多元城市」排行列出的聚落數量。其下方的「所有聚落」完整列表始終顯示全部聚落，與此設定無關。僅在排行開啟時使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DIVERSITYROWS_D" Language="zh_Hant_HK"><Text>分頁頂部「最多元聚落」排行列出的聚落數量。其下方的「所有聚落」完整列表始終顯示全部聚落，與此設定無關。僅在排行開啟時使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_EXPLAINER" Language="zh_Hant_HK"><Text>遷徙原因解讀</Text></Replace>
         <Replace Tag="LOC_EMIG_T_EXPLAINER_D" Language="zh_Hant_HK"><Text>在聚落報告和繁榮透鏡提示中顯示「為什麼?」的細分：哪些壓力在把人們推走，以及目的地的什麼在吸引他們，各自以佔總體的比例呈現。僅為顯示：它呈現本模組移動人口時本就使用的推算依據，不改變誰會遷徙，也不提供任何產出。</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_LEAVING" Language="zh_Hant_HK"><Text>人們離開的原因</Text></Replace>
@@ -63,9 +63,9 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_STARVATION" Language="zh_Hant_HK"><Text>饑荒</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_UNREST" Language="zh_Hant_HK"><Text>動亂</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_WAR_WEARINESS" Language="zh_Hant_HK"><Text>厭戰</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_SEC_DIVERSITY" Language="zh_Hant_HK"><Text>最多元城市</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_DIVERSITY" Language="zh_Hant_HK"><Text>最多元聚落</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_DIVERSITY" Language="zh_Hant_HK"><Text>多元性</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_TITLE" Language="zh_Hant_HK"><Text>最多元城市</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_TITLE" Language="zh_Hant_HK"><Text>最多元聚落</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_SUBTITLE" Language="zh_Hant_HK"><Text>各聚落的居民，按其最初所屬文明著色。長條寬度表示人口多少。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_COL_CITY" Language="zh_Hant_HK"><Text>聚落</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_COL_ORIGINS" Language="zh_Hant_HK"><Text>居民來自何處</Text></Replace>
@@ -86,7 +86,7 @@
         <Replace Tag="LOC_EMIG_COSMO_MIXED" Language="zh_Hant_HK"><Text>混合城市</Text></Replace>
         <Replace Tag="LOC_EMIG_COSMO_CENTER" Language="zh_Hant_HK"><Text>世界性中心</Text></Replace>
         <Replace Tag="LOC_EMIG_COSMO_WORLD" Language="zh_Hant_HK"><Text>世界城市</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_DESC" Language="zh_Hant_HK"><Text>描述各聚落的居民來自何處——而非其文化街區。不附帶任何產出。</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_DESC" Language="zh_Hant_HK"><Text>描述各聚落的居民來自何處——而非其文化聚居區。不附帶任何產出。</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET" Language="zh_Hant_HK"><Text>移民強度</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_D" Language="zh_Hant_HK"><Text>移民的整體強度——既決定人們遷移的頻繁程度，也決定戰爭將人們驅離家園的猛烈程度：每回合上限、戰爭難民的湧出規模，以及每座城市的損失上限。低 = 溫和；高 = 劇烈。改動會在一回合內生效。「自訂」會保留你在進階設定中的數值。若需更精細的控制，請在下方的進階設定中調整各項參數。</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_CUSTOM" Language="zh_Hant_HK"><Text>自訂（使用進階）</Text></Replace>
@@ -100,9 +100,9 @@
         <Replace Tag="LOC_EMIG_T_MAXMOVES" Language="zh_Hant_HK"><Text>節奏：每回合最大移民數</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXMOVES_D" Language="zh_Hant_HK"><Text>每次處理中全世界可移動的人口點數量上限。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXLOSS" Language="zh_Hant_HK"><Text>節奏：每座城市每回合最大遷出數</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_MAXLOSS_D" Language="zh_Hant_HK"><Text>單個聚落在一回合內因遷徙（戰爭難民加上普通移動）所能損失的最大人口點數——直接限制圍城期間城市人口的急劇流失。死亡屬於另一獨立通道，不計入其中。強度預設會設定此值（低 1 / 中 2 / 高 4）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXLOSS_D" Language="zh_Hant_HK"><Text>單個聚落在一回合內因遷徙所能損失的最大人口點數——直接遏止圍城期間城市人口流失殆盡。死亡屬於另一獨立通道，此處不計入。強度預設會設定此值（低 1 / 中 2 / 高 4）。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAXGAIN" Language="zh_Hant_HK"><Text>節奏：每座城市每回合最大遷入數</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_MAXGAIN_D" Language="zh_Hant_HK"><Text>單個聚落在一回合內因遷徙（新來者加上已完成旅途者）所能獲得的最大人口點數——這是對稱的上限，防止單座繁榮新城一次吸納數十名移民。強度預設會設定此值（低 2 / 中 4 / 高 8）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MAXGAIN_D" Language="zh_Hant_HK"><Text>單個聚落在一回合內因遷徙所能獲得的最大人口點數——這是對稱的上限，防止單座繁榮新城一次吸納數十名移民。強度預設會設定此值（低 2 / 中 4 / 高 8）。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL" Language="zh_Hant_HK"><Text>節奏：處理間隔（回合）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTERVAL_D" Language="zh_Hant_HK"><Text>每 N 個你的回合執行一次移民處理。在大型存檔上調高以減輕每回合的開銷；若已安裝 Demographics 模組，請先調低其取樣頻率。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CROSSCIV" Language="zh_Hant_HK"><Text>範圍：允許文明之間遷徙</Text></Replace>
@@ -116,13 +116,13 @@
         <Replace Tag="LOC_EMIG_T_CTSTRENGTH" Language="zh_Hant_HK"><Text>範圍：文明微調強度</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CTSTRENGTH_D" Language="zh_Hant_HK"><Text>各領袖/文明的調整可在多大程度上偏離全域模型。1.0 = 完整保留各自的鮮明特性；較低的數值會把各文明之間的差異拉平向同一模型以抑制滾雪球；0 = 完全拉平（等同於關閉此表）。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_BORDERS" Language="zh_Hant_HK"><Text>範圍：邊境政策</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_BORDERS_D" Language="zh_Hant_HK"><Text>啟用「開放/封閉邊境」政策對移民的影響（政策卡會加入政策選單，並消耗或給予影響力）。關閉 = 政策不影響遷徙。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CLOSEDOPEN" Language="zh_Hant_HK"><Text>邊境：封閉邊境開放度</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CLOSEDOPEN_D" Language="zh_Hant_HK"><Text>封閉邊境政策放行的移民量（0.4 = 約 60% 被拒）。越低越封閉。僅在邊境政策開啟時使用。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN" Language="zh_Hant_HK"><Text>邊境：封閉邊境的外流抑制</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN_D" Language="zh_Hant_HK"><Text>封閉邊境政策在多大程度上阻止你本國人民流向對手文明（0.6 = 他們對其他文明的吸引力降至 60%；1 = 關閉）。越低，外流抑制越強。僅在邊境政策開啟時使用。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_OPENOPEN" Language="zh_Hant_HK"><Text>邊境：開放邊境加成</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_OPENOPEN_D" Language="zh_Hant_HK"><Text>開放邊境政策將移民提高多少（1.5 = +50%）。越高越開放。僅在邊境政策開啟時使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_BORDERS_D" Language="zh_Hant_HK"><Text>啟用「親移民/反移民立場」卡對移民的影響（政策卡會加入政策選單，並消耗或給予影響力）。關閉 = 立場不影響遷徙。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDOPEN" Language="zh_Hant_HK"><Text>邊境：反移民開放度</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDOPEN_D" Language="zh_Hant_HK"><Text>反移民立場放行的移民量（0.4 = 約 60% 被拒，且你確實接納的難民安頓得更慢）。越低越封閉。僅在邊境政策開啟時使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN" Language="zh_Hant_HK"><Text>邊境：反移民的外流抑制</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CLOSEDRETAIN_D" Language="zh_Hant_HK"><Text>反移民立場在多大程度上阻止你本國人民流向對手文明（0.6 = 他們對其他文明的吸引力降至 60%；1 = 關閉）。越低，外流抑制越強。僅在邊境政策開啟時使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENOPEN" Language="zh_Hant_HK"><Text>邊境：親移民加成</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_OPENOPEN_D" Language="zh_Hant_HK"><Text>親移民立場將移民提高多少（1.5 = +50%）。越高越開放。僅在邊境政策開啟時使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_FOOD" Language="zh_Hant_HK"><Text>繁榮權重：食物（人均）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_FOOD_D" Language="zh_Hant_HK"><Text>人均食物對移民吸引城市的程度。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_PROD" Language="zh_Hant_HK"><Text>繁榮權重：生產（人均）</Text></Replace>
@@ -132,7 +132,7 @@
         <Replace Tag="LOC_EMIG_T_POP" Language="zh_Hant_HK"><Text>繁榮權重：人口懲罰</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POP_D" Language="zh_Hant_HK"><Text>城市規模在多大程度上對其不利（讓繁榮的小城市仍具吸引力）。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_HSHAPED" Language="zh_Hant_HK"><Text>幸福度：使用非線性模型</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HSHAPED_D" Language="zh_Hant_HK"><Text>以更細膩的模型取代平直的幸福度權重：幸福度以世界平均為基準衡量，其吸引力會逐漸飽和（極幸福的城市不會成為主導性磁石），而困苦仍會強烈排斥，且幸福度會放大城市的經濟而非掩蓋它。關閉 = 舊的線性權重。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HSHAPED_D" Language="zh_Hant_HK"><Text>以更細膩的模型取代平直的幸福度權重：幸福度以世界平均為基準衡量，幸福城市的吸引力會趨於平緩（不會出現失控磁石），而困苦仍會強烈排斥，且幸福度會放大城市的經濟而非掩蓋它。關閉 = 較簡單的平直幸福度權重。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_HSCALE" Language="zh_Hant_HK"><Text>幸福度（非線性）：飽和尺度</Text></Replace>
         <Replace Tag="LOC_EMIG_T_HSCALE_D" Language="zh_Hant_HK"><Text>在吸引力飽和之前，高於世界平均幸福度多少點算作「非常幸福」。越高，幸福度起作用的時間越長。僅非線性模型使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_HAMP" Language="zh_Hant_HK"><Text>幸福度（非線性）：經濟放大</Text></Replace>
@@ -156,7 +156,7 @@
         <Replace Tag="LOC_EMIG_T_VPILLAGE" Language="zh_Hant_HK"><Text>戰爭：每個被劫掠地塊的權重（0 = 關閉）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_VPILLAGE_D" Language="zh_Hant_HK"><Text>城市邊境內每個被劫掠的設施、每回合的強度。0 跳過掃描。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_WARSIEGE" Language="zh_Hant_HK"><Text>戰爭：使用圍城模型（封頂 + 遞增）</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_WARSIEGE_D" Language="zh_Hant_HK"><Text>讓戰爭驅動的移民隨城市被圍困的時間越長而遞增，但對城市因戰爭所能損失的總量設上限，使其不經占領就無法被徹底清空（殘餘者堅守）。關閉 = 舊的平直暴力懲罰。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_WARSIEGE_D" Language="zh_Hant_HK"><Text>讓戰爭驅動的移民隨城市被圍困的時間越長而遞增，但對城市因戰爭所能損失的總量設上限，使其不經占領就無法被徹底清空（殘餘者堅守）。關閉 = 較簡單的平直暴力懲罰。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SRAMP" Language="zh_Hant_HK"><Text>戰爭（圍城）：達到滿強度的回合</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SRAMP_D" Language="zh_Hant_HK"><Text>圍城需持續多少回合才能達到其完整的移民壓力（突襲起步輕、逐步增強）。僅圍城模型使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP" Language="zh_Hant_HK"><Text>戰爭（圍城）：戰爭損失的最大比例</Text></Replace>
@@ -173,7 +173,7 @@
         <Replace Tag="LOC_EMIG_T_FLEE_D" Language="zh_Hant_HK"><Text>難民多大程度上偏好遠離最近入侵者的目的地。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH" Language="zh_Hant_HK"><Text>地理：文明間摩擦</Text></Replace>
         <Replace Tag="LOC_EMIG_T_POACH_D" Language="zh_Hant_HK"><Text>跨越文明邊境遷徙的額外阻力。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="zh_Hant_HK"><Text>危機逃亡（逃往國外）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ESCAPE" Language="zh_Hant_HK"><Text>地理：危機逃亡（逃往國外）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ESCAPE_D" Language="zh_Hant_HK"><Text>陷入嚴重危機（戰爭/災害）的文明在多大程度上促使其難民跨越邊境逃往另一個帝國，而非遷往自己（同樣受創的）城市並死在那裡。越高 = 越多跨文明逃亡。0 = 關閉。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL" Language="zh_Hant_HK"><Text>地理：開放邊境的遷徙加成</Text></Replace>
         <Replace Tag="LOC_EMIG_T_OPENDEAL_D" Language="zh_Hant_HK"><Text>兩個文明之間的基礎遊戲開放邊境協定在多大程度上促進彼此之間雙向的遷徙。0 = 關閉。</Text></Replace>
@@ -186,13 +186,13 @@
         <Replace Tag="LOC_EMIG_T_ASDECAY" Language="zh_Hant_HK"><Text>融入：每回合衰減（時長）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ASDECAY_D" Language="zh_Hant_HK"><Text>融入負荷每回合消退的速度，這決定了成本的時長。越低越短（移民更快融入）；越高，成本持續越久。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ASHAP" Language="zh_Hant_HK"><Text>融入：每回合每單位負荷的幸福度</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASHAP_D" Language="zh_Hant_HK"><Text>每單位融入負荷每回合扣除的幸福度。0 = 關閉。（推測性槓桿，若在你的版本中無效，請使用金幣成本。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASHAP_D" Language="zh_Hant_HK"><Text>每單位融入負荷每回合扣除的幸福度。0 = 關閉。（若在你的遊戲中沒有效果，請改用金幣成本。）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ASGOLD" Language="zh_Hant_HK"><Text>融入：每回合每單位負荷的金幣</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_ASGOLD_D" Language="zh_Hant_HK"><Text>每單位融入負荷每回合扣除的金幣。0 = 關閉。（經探針確認的扣除槓桿，包括跨文明。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_ASGOLD_D" Language="zh_Hant_HK"><Text>每單位融入負荷每回合扣除的金幣，包括跨文明。0 = 關閉。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MHHAP" Language="zh_Hant_HK"><Text>成本：每個滯留移民單位的幸福度</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_MHHAP_D" Language="zh_Hant_HK"><Text>文明每滯留（未安置）一個 UNIT_MIGRANT，每回合扣除的幸福度，隨數量增長，以促使多餘移民被安置而非囤積。0 = 關閉。（推測性槓桿，見金幣成本說明。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MHHAP_D" Language="zh_Hant_HK"><Text>文明每滯留一個尚未安置的移民，每回合扣除的幸福度，隨數量增長，以促使多餘移民被安置而非囤積。0 = 關閉。（若在你的遊戲中沒有效果，請改用金幣成本。）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MHGOLD" Language="zh_Hant_HK"><Text>成本：每個滯留移民單位的金幣</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_MHGOLD_D" Language="zh_Hant_HK"><Text>文明每滯留一個 UNIT_MIGRANT，每回合扣除的金幣，隨數量增長。0 = 關閉。（經探針確認的扣除槓桿。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_MHGOLD_D" Language="zh_Hant_HK"><Text>文明每滯留一個移民，每回合扣除的金幣，隨數量增長。0 = 關閉。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST" Language="zh_Hant_HK"><Text>成本：壅塞逆風（0 = 關閉）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="zh_Hant_HK"><Text>讓吸收大量移民的文明對進一步的遷徙而言成為吸引力較低的目的地（它正忙於整合新來者），隨其消化量增長。是對失控磁石的結構性制動。0 = 關閉。</Text></Replace>
         <Replace Tag="LOC_EMIG_EVENT_FAMINE" Language="zh_Hant_HK"><Text>饑荒</Text></Replace>
@@ -201,7 +201,7 @@
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="zh_Hant_HK"><Text>成本：反滾雪球觸發（公平份額 ×）</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH_D" Language="zh_Hant_HK"><Text>一個文明的人口可領先於世界平均文明多遠，反滾雪球逆風才開始起作用，以公平份額的倍數計。越低 = 制動越早介入（越平等）；越高 = 只有極端失控的領跑者才會被減速。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QUARTERS" Language="zh_Hant_HK"><Text>成本：文化街區</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_QUARTERS_D" Language="zh_Hant_HK"><Text>當外來族裔在你的某座城市中發展為穩固的社區時，會提供一次性選擇（接納、徵稅或放任），帶來小幅產出獎勵與懲罰，並按城市記錄一處持久的街區；當你與其母國交戰時，該街區會變為「爭議」狀態（小幅幸福度負擔）。關閉＝沒有街區決策，也沒有爭議負擔。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QUARTERS_D" Language="zh_Hant_HK"><Text>當外來族裔在你的某座城市中發展為穩固的社區時，會提供一次性選擇（接納、徵稅或放任），帶來小幅產出獎勵與懲罰，並按城市記錄一處持久的街區；當你與其母國交戰時，該街區會變為「爭議」狀態（其產出效益會降低，並帶來小幅幸福度負擔）。關閉＝沒有街區決策，也沒有爭議負擔。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSHARE" Language="zh_Hant_HK"><Text>Enclaves: share to form</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSHARE_D" Language="zh_Hant_HK"><Text>How much of a city a single foreign origin must make up before it can become a Cultural Enclave. Higher = rarer enclaves, as fewer cities ever qualify.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QMINSTOCK" Language="zh_Hant_HK"><Text>Enclaves: minimum population</Text></Replace>
@@ -244,9 +244,9 @@
         <Replace Tag="LOC_EMIG_T_NOTIFYWORLD_D" Language="zh_Hant_HK"><Text>一個文明（累計）須使多少人流離失所才觸發難民危機標題，每越過一個倍數觸發一次，因此長期戰爭只產生幾則標題，而非每回合一則。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="zh_Hant_HK"><Text>各城市遷徙概覽</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="zh_Hant_HK"><Text>按需顯示一個面板，說明所選聚落為何增減人口：主要原因、居民被吸引的去向、融入成本，以及你能採取的對策。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_SPARKLINE" Language="zh_Hant_HK"><Text>讀出面板：近期趨勢迷你圖</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SPARKLINE" Language="zh_Hant_HK"><Text>每座城市讀出面板：近期趨勢迷你圖</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE_D" Language="zh_Hant_HK"><Text>在城市讀出面板中加入一小條柱狀圖，顯示最近幾輪的淨遷徙（綠色代表增加，紅色代表減少），讓你一眼看出情況是變好還是變壞。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_SELFTEST" Language="zh_Hant_HK"><Text>On-screen self-test panel</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SELFTEST" Language="zh_Hant_HK"><Text>診斷：畫面上的自我測試面板</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SELFTEST_D" Language="zh_Hant_HK"><Text>Show a floating "Self-Test" button in-game that runs live diagnostics for the reported issues (settlement coverage, cultural enclaves, the two population measures, notifications, persistence) and can force the enclave pop-up and a test toast on demand — no developer console needed. For troubleshooting; leave off for normal play. Takes effect after reloading the save.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION" Language="zh_Hant_HK"><Text>出口：無處可逃時的損耗</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRITION_D" Language="zh_Hant_HK"><Text>防止遷徙成為封閉系統：被困、嚴重受難的城市（圍城、饑荒、激烈暴力或災害）若無可行去處便會失去人口，人們會死亡或四散，而非永遠滯留。</Text></Replace>
@@ -254,12 +254,6 @@
         <Replace Tag="LOC_EMIG_T_ATTRDISTRESS_D" Language="zh_Hant_HK"><Text>在被困人口開始死亡之前，城市的處境（圍城/饑荒/暴力/災害，按百分比懲罰）須有多絕望。越高 = 僅最絕望的城市。僅在出口開啟時使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRTHRESH" Language="zh_Hant_HK"><Text>出口：損耗率閾值</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ATTRTHRESH_D" Language="zh_Hant_HK"><Text>被困受難城市在失去一個人口點之前須累積的壓力。越低 = 死亡越快。僅在出口開啟時使用。</Text></Replace>
-        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION" Language="zh_Hant_HK"><Text>淨遷徙</Text></Replace>
-        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION_SUBTITLE" Language="zh_Hant_HK"><Text>（每回合遷入減去遷出）</Text></Replace>
-        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT" Language="zh_Hant_HK"><Text>遷出</Text></Replace>
-        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_SUBTITLE" Language="zh_Hant_HK"><Text>（離開這個文明前往他處的人）</Text></Replace>
-        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN" Language="zh_Hant_HK"><Text>遷入</Text></Replace>
-        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_SUBTITLE" Language="zh_Hant_HK"><Text>（從他處來到這個文明的人）</Text></Replace>
         <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES" Language="zh_Hant_HK"><Text>難民</Text></Replace>
         <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_SUBTITLE" Language="zh_Hant_HK"><Text>（因戰爭、災害或征服而流離失所的人）</Text></Replace>
         <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_TOOLTIP" Language="zh_Hant_HK"><Text>因戰爭、災害和征服而流離失所的人口。</Text></Replace>
@@ -311,13 +305,14 @@
         <Replace Tag="LOC_EMIG_REASON_UNDER_ATTACK" Language="zh_Hant_HK"><Text>遭受攻擊</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_DISASTER" Language="zh_Hant_HK"><Text>災難</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_FAMINE" Language="zh_Hant_HK"><Text>饑荒</Text></Replace>
+        <Replace Tag="LOC_EMIG_REASON_UNREST" Language="zh_Hant_HK"><Text>持續動盪</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_NO_REFUGE" Language="zh_Hant_HK"><Text>無安全避難所</Text></Replace>
         <Replace Tag="LOC_EMIG_REASON_CRISIS_LOSSES" Language="zh_Hant_HK"><Text>逃亡中失散</Text></Replace>
         <Replace Tag="LOC_EMIG_DEATH_WHY_CLAUSE" Language="zh_Hant_HK"><Text>原因：{1_Why}。</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESSURE_CUE" Language="zh_Hant_HK"><Text>移民壓力上升：{1_City}的市民越來越嚮往{2_Dest}。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_UNHAPPINESS" Language="zh_Hant_HK"><Text>提升這座城市的幸福度，或採取反移民立場以留住他們。</Text></Replace>
-        <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="zh_Hant_HK"><Text>鄰邦正在繁榮上超越這座城市；提升其產出以留住人口。</Text></Replace>
-        <Replace Tag="LOC_EMIG_HINT_WAR" Language="zh_Hant_HK"><Text>難民正逃離戰火；解除圍城或締結和平以遏制外流。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_PROSPERITY" Language="zh_Hant_HK"><Text>提升{1_City}的產出，使更少居民受誘而離去。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HINT_WAR" Language="zh_Hant_HK"><Text>解除圍城或締結和平以遏制外流。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_DISASTER" Language="zh_Hant_HK"><Text>災害導致的遷徙——隨苦難消退會自行緩解。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_ATTRITION" Language="zh_Hant_HK"><Text>走投無路——開闢一條出路或緩解苦難。</Text></Replace>
         <Replace Tag="LOC_EMIG_HINT_CONQUEST" Language="zh_Hant_HK"><Text>因城市被攻佔而流離失所；隨着城市重歸安定，動盪漸漸平息。</Text></Replace>
@@ -344,9 +339,9 @@
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION] Immigration to your cities rises by 50%, and you earn +2 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION] Immigration to your cities rises by 50%, and you earn +3 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="zh_Hant_HK"><Text>反移民立場</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="zh_Hant_HK"><Text>向世界關閉你的邊境。來自境外的[icon:YIELD_POPULATION]新移民降至 40%（約減少 60%），你本國公民流向對手文明的也大幅減少。動員起來的國內經濟為每座城市增加[icon:YIELD_PRODUCTION]生產：隨時代為 +2、+3、然後 +4。孤立自有其代價，每回合損失[icon:YIELD_DIPLOMACY]影響力：隨時代為 -2、-3、然後 -4。</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION] Immigration falls to 40%, and 40% fewer of your own citizens leave for rival civilizations. Each city gains +3 [icon:YIELD_PRODUCTION] Production, at the cost of -3 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION] Immigration falls to 40%, and 40% fewer of your own citizens leave for rival civilizations. Each city gains +4 [icon:YIELD_PRODUCTION] Production, at the cost of -4 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="zh_Hant_HK"><Text>向世界關閉你的邊境。來自境外的[icon:YIELD_POPULATION]新移民降至 40%（約減少 60%），你本國公民流向對手文明的也大幅減少。你仍接納的難民安頓得更慢。動員起來的國內經濟為每座城市增加[icon:YIELD_PRODUCTION]生產：隨時代為 +2、+3、然後 +4。孤立自有其代價，每回合損失[icon:YIELD_DIPLOMACY]影響力：隨時代為 -2、-3、然後 -4。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION]移民減少 60%，你本國公民流向對手文明的也減少 40%。你仍接納的難民安頓得更慢。每座城市增加 +3 [icon:YIELD_PRODUCTION]生產，代價是每回合 -3 [icon:YIELD_DIPLOMACY]影響力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION]移民減少 60%，你本國公民流向對手文明的也減少 40%。你仍接納的難民安頓得更慢。每座城市增加 +4 [icon:YIELD_PRODUCTION]生產，代價是每回合 -4 [icon:YIELD_DIPLOMACY]影響力。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="zh_Hant_HK"><Text>人才吸引</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION]新移民增強你的研究。獲得 +1 [icon:YIELD_SCIENCE]科技，於現代時代升至 +2，外加隨你吸引的每位移民約 +1.5 增長的科技加成，每回合最多 +12。若移民停止流入，此加成會逐漸消退。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION] Gain +2 [icon:YIELD_SCIENCE] Science each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Replace>
@@ -357,9 +352,9 @@
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION]新移民壯大你的市場。獲得 +1 [icon:YIELD_GOLD]金幣，於現代時代升至 +2，外加隨你吸引的每位移民約 +1.5 增長的金幣加成，每回合最多 +12。若移民停止流入，此加成會逐漸消退。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC_MO" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION] Gain +2 [icon:YIELD_GOLD] Gold each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="zh_Hant_HK"><Text>選擇性庇護</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="zh_Hant_HK"><Text>向逃離戰爭與災難者敞開大門。難民會被強烈吸引向你（最絕望者優先），你的人道主義聲譽令你每回合獲得 +1 [icon:YIELD_DIPLOMACY]影響力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION]向逃離戰爭與災難者敞開大門。難民會被強烈吸引向你（最絕望者優先），你的人道主義聲譽令你每回合獲得 +1 [icon:YIELD_DIPLOMACY]影響力。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="zh_Hant_HK"><Text>難民契約</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="zh_Hant_HK"><Text>對流離失所者的長期承諾。難民會強烈湧向你（最絕望者優先），豐富你的文化，並令你每回合獲得 +2 [icon:YIELD_DIPLOMACY]影響力和 +1 [icon:YIELD_CULTURE]文化。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION]對流離失所者的長期承諾。逃離戰爭與災難的難民會被強烈吸引向你（最絕望者優先），豐富你的文化，並令你每回合獲得 +2 [icon:YIELD_DIPLOMACY]影響力和 +1 [icon:YIELD_CULTURE]文化。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="zh_Hant_HK"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="zh_Hant_HK"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="zh_Hant_HK"><Text>移民</Text></Replace>
@@ -387,7 +382,7 @@
         <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_TITLE" Language="zh_Hant_HK"><Text>範圍與可見性</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_BODY" Language="zh_Hant_HK"><Text>移民從第一回合起就模擬整個世界：所有存活的主要文明，而不僅是你已相遇的文明。這讓遷徙保持真實：人們依據世界的實際狀態移動，而你之後占領的城市會保留其居民真實的來源歷史。[n][n]為避免劇透，儀表板、圖表和地圖鏡頭只顯示你已相遇的文明。未相遇的文明仍在後台計算，但預設隱藏，使你無法得知尚未遇到的對手。你可以透過共享的分析可見性設定（與 Demographics 模組相同）擴大顯示範圍：僅自己的文明、已相遇的文明或全部。[n][n]簡而言之：一切都會被模擬，而看到什麼由你決定。模擬範圍（整個世界或僅已相遇）與螢幕顯示是相互獨立的設定。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_TITLE" Language="zh_Hant_HK"><Text>解讀儀表板</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="zh_Hant_HK"><Text>可從遊戲內工具列的按鈕，或從 Demographics 模組的「移民」頁面開啟移民儀表板。它分為多個標籤頁：[n][n]• 遷徙網絡：一個動畫視圖，各文明的大小按通過它們的人口量決定，圓點沿著路線流動。[n]• 流向圖：將同樣的流動繪製為箭頭，可一直追溯到具體城市。[n]• 文明清單：流入、流出、淨變化、難民與損失。[n]• 人口遷移原因的分類細目。[n]• 你的聚落，按各自距離失去人口的遠近排序。[n]• 移民政策：顯示誰採取了親移民或反移民立場。[n]• 移民編年史：世界大遷徙的書面歷史：被戰爭或災害清空的城市、在遠離故鄉之地扎根的離散族群，以及在故土復甦後歸來的人們。[n]• 指南：關於哪些因素會引發遷徙、哪些不會的快速參考。[n][n]在地圖上，族群構成鏡頭（Shift+E）按居民來源將每個聚落繪成逐格馬賽克，人口密集的都市核心為主導來源的顏色，較小的社群散布於其各地塊，將鼠標懸停在已定居的地塊上即可在提示中看到確切的構成。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="zh_Hant_HK"><Text>可從遊戲內工具列的按鈕，或從 Demographics 模組的「移民」頁面開啟移民儀表板。它分為多個標籤頁：[n][n]• 遷徙網絡：一個動畫視圖，各文明的大小按通過它們的人口量決定，圓點沿著路線流動。[n]• 流向圖：將同樣的流動繪製為箭頭，可一直追溯到具體城市。[n]• 文明清單：流入、流出、淨變化、難民與損失。[n]• 人口遷移原因的分類細目。[n]• 聚落列表，按各自距離失去人口的遠近排序。[n]• 政策視圖：顯示誰採取了親移民或反移民立場。[n]• 移民編年史：世界大遷徙的書面歷史：被戰爭或災害清空的城市、在遠離故鄉之地扎根的離散族群，以及在故土復甦後歸來的人們。[n]• 指南：關於哪些因素會引發遷徙、哪些不會的快速參考。[n][n]在地圖上，族群構成鏡頭（Shift+E）按居民來源將每個聚落繪成逐格馬賽克，人口密集的都市核心為主導來源的顏色，較小的社群散布於其各地塊，將鼠標懸停在已定居的地塊上即可在提示中看到確切的構成。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_TITLE" Language="zh_Hant_HK"><Text>族群與融入</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_BODY" Language="zh_Hant_HK"><Text>每個聚落都記錄其居民的來歷，按每個人所屬的文明來源，並在征服之後依然保留這份記錄。族群構成鏡頭（Shift+E）以逐格馬賽克呈現：人口密集的都市核心為主導來源的顏色，較小的社群散布於其各地塊，已定居地塊的提示框中會顯示確切構成。[n][n]隨著時間推移，新來者會融入接納他們的文明，除非與其故土的戰爭或城市中的動亂使某個社群保持獨立。而一旦故土與接納方和平相處並重新繁榮，回歸遷徙便會逐漸將其部分人口帶回故鄉，移動真實人口。以上皆為預設開啟，可在「選項」中關閉。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_TITLE" Language="zh_Hant_HK"><Text>文化聚居區</Text></Replace>
@@ -423,7 +418,7 @@
         <Replace Tag="LOC_EMIG_NETC_NOW" Language="zh_Hant_HK"><Text>現在</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TURN_N" Language="zh_Hant_HK"><Text>第 {1_Turn} 回合</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_START" Language="zh_Hant_HK"><Text>開始</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="zh_Hant_HK"><Text>每個圓點 ≈ {1_People} 人。一個圓圈是一個文明，包含其城市與城鎮；其圓點為本地居民（文明本色）、在其城市之間遷移的人（較淺色調）以及移民（其來源的顏色）。以「著色依據」重新著色，以「顯示/來源」開關篩選，點按色塊或圓圈以將其單獨顯示，並按 ▶ 或拖曳時間線以重播歷史。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="zh_Hant_HK"><Text>每個圓點 ≈ {1_People} 人。一個圓圈是一個文明：其圓點為本地居民（文明本色）、在其城市之間遷移的人（較淺色調）以及移民（其來源的顏色）。開啟「遷徙流向」以疊加箭頭——紅色表示人們離開之處，綠色表示他們抵達之處，流量越大箭頭越粗。以「著色依據」重新著色，以「顯示/遷徙流向」開關篩選，點按色塊或圓圈以將其單獨顯示，並按 ▶ 或拖曳時間線以重播歷史。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="zh_Hant_HK"><Text>顯示：</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOPOP" Language="zh_Hant_HK"><Text>尚無人口</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNMET" Language="zh_Hant_HK"><Text>Unmet</Text></Replace>
@@ -447,7 +442,7 @@
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_GRANTS" Language="zh_Hant_HK"><Text>為城市提供{1_Amount}點{2_Yield}。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_COSTS" Language="zh_Hant_HK"><Text>每回合消耗{1_Amount}點{2_Yield}。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_INVESTED" Language="zh_Hant_HK"><Text>Its enclave is built: the enclave's own yield now applies instead of this dividend.</Text></Replace>
-        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_CONTESTED" Language="zh_Hant_HK"><Text>爭議：你正與其母國交戰，令該街區承受壓力。</Text></Replace>
+        <Replace Tag="LOC_EMIGRATION_PANEL_QUARTER_CONTESTED" Language="zh_Hant_HK"><Text>爭議：你正與其母國交戰——該街區的貢獻減少（其上述效益會降低），且城市的士氣受損。</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_STANCE_PRO" Language="zh_Hant_HK"><Text>親移民</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_STANCE_ANTI" Language="zh_Hant_HK"><Text>反移民</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_STANCE_NEUTRAL" Language="zh_Hant_HK"><Text>中立</Text></Replace>
@@ -669,7 +664,7 @@
         <Replace Tag="LOC_EMIG_QTR_Q_MAJAPAHIT_A" Language="zh_Hant_HK"><Text>"milwang balyadi nusantara sahana saha prabhrti (All the vassals of Nusantara come, every one, bringing tribute.)" — Mpu Prapanca, Nagarakretagama (Old Javanese, 1365)</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_MAJAPAHIT_B" Language="zh_Hant_HK"><Text>"民甚殷富，其各處番船多到此地買賣 (The people are very rich, and foreign ships from every place come here to trade.)" — Ma Huan, Yingya Shenglan (1433, trans.)</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_MING_A" Language="zh_Hant_HK"><Text>"涉滄溟十萬餘里。 (We have traversed more than one hundred thousand li of vast water-spaces.)" — Zheng He, Changle stele (1431, trans.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_Q_MING_B" Language="zh_Hant_HK"><Text>"In the late Ming, the appreciation of fine things became the mark of the cultivated gentleman." — Craig Clunas, Superfluous Things (1991) (re-verify before ship)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_MING_B" Language="zh_Hant_HK"><Text>"In the late Ming, the appreciation of fine things became the mark of the cultivated gentleman." — Craig Clunas, Superfluous Things (1991)</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_MONGOLIA_A" Language="zh_Hant_HK"><Text>"One can conquer the world on horseback, but one cannot govern it from there." — attributed to Genghis Khan / Yelü Chucai (attr. debated)</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_MONGOLIA_B" Language="zh_Hant_HK"><Text>"di capo de le 25 miglie egli truovano una posta, ove albergano li messaggi del Grande Sire (Every twenty-five miles the messengers find a post-house, where the Great Khan's couriers lodge.)" — Marco Polo, The Travels (Il Milione, trans.)</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_NORMAN_A" Language="zh_Hant_HK"><Text>"and fylden þe land ful of castles (And they filled the land full of castles.)" — Anglo-Saxon Chronicle, 1137 (Peterborough Chronicle, trans.)</Text></Replace>
@@ -706,7 +701,7 @@
         <Replace Tag="LOC_EMIG_QTR_Q_SIAM_B" Language="zh_Hant_HK"><Text>"ในน้ำมีปลา ในนามีข้าว (In the water there are fish, in the fields there is rice.)" — Ramkhamhaeng Inscription (1292, trans.)</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_SILLA_A" Language="zh_Hant_HK"><Text>"心生則種種法生，心滅則種種法滅 (When the mind arises, all things arise; when the mind ceases, all things cease.)" — Wonhyo, after the Awakening of Faith (7th c., trans.)</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_SILLA_B" Language="zh_Hant_HK"><Text>"新羅全盛之時，歌吹滿路，晝夜不絕 (In Silla's golden age, song and music filled the streets, unceasing day and night.)" — Samguk Yusa, Iryeon (13th c., trans.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_Q_NEPAL_A" Language="zh_Hant_HK"><Text>"The whole valley is a highly cultivated garden, terraced and watered with singular industry." — William Kirkpatrick, An Account of the Kingdom of Nepaul (1811) (re-verify before ship)</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_Q_NEPAL_A" Language="zh_Hant_HK"><Text>"The whole valley is a highly cultivated garden, terraced and watered with singular industry." — William Kirkpatrick, An Account of the Kingdom of Nepaul (1811)</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_NEPAL_B" Language="zh_Hant_HK"><Text>"यो राजे दुई ढुङ्गाको तरुल जस्तो रहेछ (This realm is like a yam between two stones.)" — Prithvi Narayan Shah, Divya Upadesh (18th c., trans.)</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_OTTOMAN_A" Language="zh_Hant_HK"><Text>"Halk içinde mu'teber bir nesne yok devlet gibi, olmaya devlet cihanda bir nefes sıhhat gibi. (Among people nothing is prized like the state — yet no fortune on earth is like one breath of health.)" — Süleyman the Magnificent (Muhibbî), Dîvân-ı Muhibbî (16th c.)</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_OTTOMAN_B" Language="zh_Hant_HK"><Text>"Bir safâ bahşedelim gel şu dil-i nâ-şâda, gidelim serv-i revânım yürü Sa'd-âbâd'a. (Let us grant some joy to this joyless heart; come, my graceful cypress, let us away to Sa'dabad.)" — Nedîm, Dîvân (Tulip Era, 18th c.)</Text></Replace>
@@ -896,18 +891,18 @@
         <Replace Tag="LOC_EMIG_GUIDE_3_R1_N" Language="zh_Hant_HK"><Text>不受戰爭迷霧影響：戰爭壓力會讀取實際的遊戲狀態，因此一場遙遠的 AI 對 AI 戰爭，會如同你眼前所見的戰爭一樣使人口流離失所。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_3_R2_Q" Language="zh_Hant_HK"><Text>反移民立場能留住你的人口</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_3_R2_N" Language="zh_Hant_HK"><Text>提高人口留存（更少人離開）並提升生產力，代價是影響力。</Text></Replace>
-        <Replace Tag="LOC_EMIG_GUIDE_3_R3_Q" Language="zh_Hant_HK"><Text>封閉邊界會減少跨文明流動</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R3_Q" Language="zh_Hant_HK"><Text>反移民立場會減少跨文明流動</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_3_R3_N" Language="zh_Hant_HK"><Text>沒有開放邊界協議，跨文明往來的人口便會大幅減少；封閉邊界則會進一步收緊。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_3_R4_Q" Language="zh_Hant_HK"><Text>人口與產出會實際改變（而非僅是顯示）</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_3_R4_N" Language="zh_Hant_HK"><Text>這是真實的逐回合遊戲寫入：城市人口及其產出會實際變動；並非僅是裝飾性的疊層顯示。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_3_R5_Q" Language="zh_Hant_HK"><Text>任何一層皆可調校或關閉</Text></Replace>
-        <Replace Tag="LOC_EMIG_GUIDE_3_R5_N" Language="zh_Hant_HK"><Text>在「選項 ▸ 模組 ▸ Emigration」下設有預設組合以及約 57 個獨立調節項；每一層皆預設開啟，並可關閉。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R5_N" Language="zh_Hant_HK"><Text>在「選項 ▸ 模組 ▸ Emigration」下設有預設組合以及約 85 個獨立調節項；每一層皆預設開啟，並可關閉。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_3_R6_Q" Language="zh_Hant_HK"><Text>移民會即時抵達</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_3_R6_N" Language="zh_Hant_HK"><Text>並非如此。他們需要旅行，因此抵達會隨距離而延遲，最多在離開後數個回合才會到達。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_3_R7_Q" Language="zh_Hant_HK"><Text>吸納移民是免費的</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_3_R7_N" Language="zh_Hant_HK"><Text>並非如此。接收移民會增添一項暫時性、會逐漸消退的融合成本，體現於幸福度與金幣上。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_3_R8_Q" Language="zh_Hant_HK"><Text>單憑戰爭就能將城市清空至零</Text></Replace>
-        <Replace Tag="LOC_EMIG_GUIDE_3_R8_N" Language="zh_Hant_HK"><Text>並非如此。戰爭造成的「流離失所」（人們逃離）設有上限（siegeLossCapPct），且絕不會使城市人口跌破其鄉郊下限。危機造成的「死亡」則屬另一獨立管道，不受此下限約束：漫長的危機（戰爭、圍攻、饑荒）會持續奪去部分無法逃離者的性命，因此足夠長久的災難能將城市的鄉郊人口徹底消磨殆盡。死亡起初和緩，隨危機持續愈久而加劇，且只會移除鄉郊人口，因此在真正被佔領之前，市區核心與聚落本身仍得以存續。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_3_R8_N" Language="zh_Hant_HK"><Text>並非如此。戰爭造成的「流離失所」（人們逃離）設有上限，且絕不會使城市人口跌破其鄉郊下限。危機造成的「死亡」則屬另一獨立管道，不受此下限約束：漫長的危機（戰爭、圍攻、饑荒）會持續奪去部分無法逃離者的性命，因此足夠長久的災難能將城市的鄉郊人口徹底消磨殆盡。死亡起初和緩，隨危機持續愈久而加劇，且只會移除鄉郊人口，因此在真正被佔領之前，市區核心與聚落本身仍得以存續。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_3_R9_Q" Language="zh_Hant_HK"><Text>致命危機會奪命，而不僅是使人流離失所</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_3_R9_N" Language="zh_Hant_HK"><Text>戰爭、圍攻、災害與饑荒會奪去部分來不及逃離者的性命，即使尚有可逃之處亦然；這些屬死亡（另計於獨立的「損失」統計），而非遷徙。一般由繁榮／不滿驅動的移民絕不會致命；人們只是離開前往更好的城市。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_4_TITLE" Language="zh_Hant_HK"><Text>身分認同、融合與回歸</Text></Replace>
@@ -943,7 +938,7 @@
         <Replace Tag="LOC_EMIG_GUIDE_6_F3_A" Language="zh_Hant_HK"><Text>兩者皆有，視乎成因。一般（繁榮／不滿）遷徙絕不會致命；人們只是離開前往更好的城市。但致命危機（戰爭、圍攻、災害或饑荒）也會奪去部分來不及逃離者的性命：這些死亡會徹底離開這個世界（顯示於「損失／死亡」統計中，與難民分開計算），即使其餘的人成功逃離亦然。因此陷入危機的城市會同時以兩種方式流失人口：多數逃離，少數死亡。死亡人數是逐漸累積，而非一次性襲來，隨危機拖延愈久而增長，並在危機解除時緩和，因此短暫的驚嚇尚可復原，而持續磨耗的圍攻或饑荒則無法挽回。此外，若難民逃往的城市在他們抵達之前被佔領或夷平，或始終過於擁擠而無法接納他們，難民亦可能在途中喪生。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_7_TITLE" Language="zh_Hant_HK"><Text>常見問題：戰爭、征服與復原</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_7_F0_Q" Language="zh_Hant_HK"><Text>當我佔領或失去一座城市時會發生甚麼？</Text></Replace>
-        <Replace Tag="LOC_EMIG_GUIDE_7_F0_A" Language="zh_Hant_HK"><Text>其現有居民仍會被標記為他們的來源文明（前任擁有者），而非你。族裔透鏡會以該來源的顏色描繪城市的地塊（逐地塊的鑲嵌圖），在網絡圖上，他們的圓點會保留舊文明的顏色與名稱；只有佔領後出生的新人口才算作你的。因此被征服的城市承載着真實的來源歷史，唯有隨其重新增長、新來者逐漸融合，這段歷史才會淡去。戰爭能使其縮小，但唯有真正的佔領才能使其易主。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F0_A" Language="zh_Hant_HK"><Text>其現有居民仍會被標記為他們的來源文明（前任擁有者），而非你。族群構成鏡頭會以該來源的顏色描繪城市的地塊（逐地塊的鑲嵌圖），在網絡圖上，他們的圓點會保留舊文明的顏色與名稱；只有佔領後出生的新人口才算作你的。因此被征服的城市承載着真實的來源歷史，唯有隨其重新增長、新來者逐漸融合，這段歷史才會淡去。戰爭能使其縮小，但唯有真正的佔領才能使其易主。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_7_F1_Q" Language="zh_Hant_HK"><Text>我的城市在一場戰爭中從規模 12 縮減到 5，它會重新成長嗎？</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_7_F1_A" Language="zh_Hant_HK"><Text>會。戰爭造成的流離失所只會遷移人口點數；它絕不會夷平區域或刪除建築（只有基礎遊戲本身的征服才會如此）。你會保有這座較大城市的基礎設施，只是人口較少，而它會以兩種方式重新成長，兩者皆為附加性質：基礎遊戲的正常食物增長（不受影響），以及移民：一旦戰事停止、其繁榮復原，倖存的高產出建築／區域便會使它成為吸引人的目的地，於是移民遷入，人口得以補回。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_7_F2_Q" Language="zh_Hant_HK"><Text>當初逃離的那批難民會回來嗎？</Text></Replace>
@@ -951,7 +946,7 @@
         <Replace Tag="LOC_EMIG_GUIDE_7_F3_Q" Language="zh_Hant_HK"><Text>修復被劫掠的地塊能恢復失去的人口嗎？</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_7_F3_A" Language="zh_Hant_HK"><Text>不能。被劫掠的地塊只會施加壓力（一種將人口推離的繁榮懲罰）。修復它們會消除該壓力，因此城市會停止流失人口並更快恢復繁榮，但修復絕不會補回任何一個人口點數。它是復原的加速器，而非還原的按鈕。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_7_F4_Q" Language="zh_Hant_HK"><Text>戰爭最多能使一座城市縮減到甚麼程度？</Text></Replace>
-        <Replace Tag="LOC_EMIG_GUIDE_7_F4_A" Language="zh_Hant_HK"><Text>戰爭造成的「流離失所」（人們逃離）上限為圍攻開始時城市人口的 60%（siegeLossCapPct）；殘留者會「堅守下來」，無法被進一步驅離。持續的圍攻亦會奪去部分無法逃離者的性命。這些死亡不受流離失所上限或鄉郊下限約束，因此足夠長久的圍攻能將城市的鄉郊人口徹底消磨殆盡，不過在真正被佔領之前，其市區核心與聚落仍屹立不倒。死亡是逐漸累積，而非一次性發生，並會在圍攻解除時緩和。唯有真正的佔領才能奪取城市。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_7_F4_A" Language="zh_Hant_HK"><Text>戰爭造成的「流離失所」（人們逃離）上限為圍攻開始時城市人口的 60%；殘留者會「堅守下來」，無法被進一步驅離。持續的圍攻亦會奪去部分無法逃離者的性命。這些死亡不受流離失所上限或鄉郊下限約束，因此足夠長久的圍攻能將城市的鄉郊人口徹底消磨殆盡，不過在真正被佔領之前，其市區核心與聚落仍屹立不倒。死亡是逐漸累積，而非一次性發生，並會在圍攻解除時緩和。唯有真正的佔領才能奪取城市。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_7_F5_Q" Language="zh_Hant_HK"><Text>復原一座飽受戰火摧殘城市的最快方法？</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_7_F5_A" Language="zh_Hant_HK"><Text>消除成因，使它從人口淨輸出方翻轉回吸引人口的磁極：締結和平（暴力會在約 2-3 回合內消退，解除戰爭懲罰）、修復被劫掠的地塊（消除揮之不去的壓力），以及提升幸福度（最大的繁榮因素：它既能遏止不滿造成的移民外流，又能吸引移民遷入）。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_8_TITLE" Language="zh_Hant_HK"><Text>常見問題：途中的移民</Text></Replace>
@@ -996,7 +991,7 @@
         <Replace Tag="LOC_EMIG_GUIDE_12_F3_Q" Language="zh_Hant_HK"><Text>單一文明能擁有多少處聚居區？</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F3_A" Language="zh_Hant_HK"><Text>在你整個帝國中最多兩處——但這是「每個文明」計算，而非總數。你可同時擁有兩處羅馬、兩處諾曼和兩處漢的聚居區；某一來源達到上限絕不會阻礙另一個來源。若有不同民族取代了某現有聚居區的地塊，那屬易主（編年史會記下，而你需重新抉擇），而非第三處疊加的聚居區。</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_12_F4_Q" Language="zh_Hant_HK"><Text>如果我與某聚居區的故土開戰會怎樣？</Text></Replace>
-        <Replace Tag="LOC_EMIG_GUIDE_12_F4_A" Language="zh_Hant_HK"><Text>聚居區會轉為「爭議」狀態：在戰爭持續期間帶來一份微小、設有上限的幸福度壓力，其構想是城市在戰時的不安落在了那些並未選擇這場戰爭的家族身上——而非聚居區不忠。一旦和平重臨，它便會再度安定下來。</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_12_F4_A" Language="zh_Hant_HK"><Text>聚居區會轉為「爭議」狀態：其產出效益會降低，並在戰爭持續期間帶來一份微小、設有上限的幸福度壓力，其構想是城市在戰時的不安落在了那些並未選擇這場戰爭的家族身上——而非聚居區不忠。一旦和平重臨，它便會再度充分貢獻。</Text></Replace>
         <Replace Tag="LOC_EMIG_PROS_TIER_MAGNET" Language="zh_Hant_HK"><Text>Strong magnet</Text></Replace>
         <Replace Tag="LOC_EMIG_PROS_TIER_ABOVE" Language="zh_Hant_HK"><Text>Above average</Text></Replace>
         <Replace Tag="LOC_EMIG_PROS_TIER_AVG" Language="zh_Hant_HK"><Text>About average</Text></Replace>
@@ -1017,5 +1012,155 @@
         <Replace Tag="LOC_EMIG_ENCLAVE_IMPROVEMENT_NAME" Language="zh_Hant_HK"><Text>Cultural Enclave</Text></Replace>
         <Replace Tag="LOC_EMIG_ENCLAVE_IMPROVEMENT_DESCRIPTION" Language="zh_Hant_HK"><Text>A quarter settled by a foreign diaspora that has put down roots and works the surrounding land. Yields +2 Gold.</Text></Replace>
         <Replace Tag="LOC_EMIG_ENCLAVE_IMPROVEMENT_TOOLTIP" Language="zh_Hant_HK"><Text>A tile improvement marking an established migrant community. Provides +2 Gold to the city.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SNAP_1" Language="zh_Hant_HK"><Text>每回合（最精細）</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SNAP_2" Language="zh_Hant_HK"><Text>每 2 回合</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SNAP_3" Language="zh_Hant_HK"><Text>每 3 回合</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SNAP_4" Language="zh_Hant_HK"><Text>每 4 回合</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SNAP_5" Language="zh_Hant_HK"><Text>每 5 回合</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_VISIBILITY_FOLLOW" Language="zh_Hant_HK"><Text>跟隨 Demographics 設定</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_VISIBILITY_HIDE" Language="zh_Hant_HK"><Text>隱藏我尚未會面的文明</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_VISIBILITY_SHOWALL" Language="zh_Hant_HK"><Text>顯示所有文明</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_MINIMIZE" Language="zh_Hant_HK"><Text>移民 • 簡化儀表板</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_MINIMIZE_DESCRIPTION" Language="zh_Hant_HK"><Text>隱藏繁重的遷徙分析、動畫網絡圖與「原因」圓餅圖，只保留簡潔、以數字為主的標籤頁：淨遷徙、我的城市（含各城市的遷徙計量條）、政策、通知與指南，以及 Demographics 圖表。下次開啟儀表板時生效。</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_NOTIFICATIONS" Language="zh_Hant_HK"><Text>移民 • 通知</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_NOTIFICATIONS_DESCRIPTION" Language="zh_Hant_HK"><Text>顯示移民的遊戲內通知（遷徙提示與世界快訊記錄）。關閉此項可靜音所有移民彈出訊息。通知的詳細度可在進階設定中進一步調整。</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_VISIBILITY" Language="zh_Hant_HK"><Text>移民 • 分析可見性</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_VISIBILITY_DESCRIPTION" Language="zh_Hant_HK"><Text>移民標籤頁是否顯示你尚未會面的文明。「跟隨 Demographics 設定」會沿用 Demographics 的劇透選項；其餘兩項為獨立覆寫，始終套用於移民標籤頁。</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DILEMMAS" Language="zh_Hant_HK"><Text>移民 • 難民抉擇</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_DILEMMAS_DESCRIPTION" Language="zh_Hant_HK"><Text>偶爾，當一大波難民湧入你的疆土時（鄰邦的征服、一場瘟疫），會暫停片刻，讓你就如何接納他們作出簡短抉擇。按設計十分罕見。關閉後將永不再見到這些彈出訊息；模擬不受影響。</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_ETHNIC" Language="zh_Hant_HK"><Text>移民 • 族群融合</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_ETHNIC_DESCRIPTION" Language="zh_Hant_HK"><Text>移民會隨時間逐漸採納接納方文明的身份認同，除非與其故土的戰爭或動亂使他們保持疏離。這會影響族群構成鏡頭。預設開啟；關閉則凍結各聚落的來源構成。</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_RETURN" Language="zh_Hant_HK"><Text>移民 • 回歸遷徙</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_RETURN_DESCRIPTION" Language="zh_Hant_HK"><Text>當故土重歸和平並再度繁榮時，僑居海外的部分人民會隨時間動身返鄉。預設開啟；關閉則讓離散族群留在其定居之處。</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHOICE_OFF" Language="zh_Hant_HK"><Text>關閉</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHOICE_WEAK" Language="zh_Hant_HK"><Text>弱</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHOICE_STANDARD" Language="zh_Hant_HK"><Text>標準</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHOICE_STRONG" Language="zh_Hant_HK"><Text>強</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHOICE_IMPORTANT" Language="zh_Hant_HK"><Text>重要</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHOICE_VERBOSE" Language="zh_Hant_HK"><Text>詳細</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHOICE_ANY" Language="zh_Hant_HK"><Text>任何</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHOICE_MINOR" Language="zh_Hant_HK"><Text>輕微以上</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHOICE_MODERATE" Language="zh_Hant_HK"><Text>中等以上</Text></Replace>
+        <Replace Tag="LOC_EMIG_CHOICE_MAJOR" Language="zh_Hant_HK"><Text>僅重大</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADV_SEARCH_PLACEHOLDER" Language="zh_Hant_HK"><Text>搜尋設定…</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADV_RESET_ALL" Language="zh_Hant_HK"><Text>全部重設為預設值</Text></Replace>
+        <Replace Tag="LOC_EMIG_ADV_RESET_ONE" Language="zh_Hant_HK"><Text>重設為預設值</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_VIEW_REF" Language="zh_Hant_HK"><Text>何者計入</Text></Replace>
+        <Replace Tag="LOC_EMIG_GUIDE_VIEW_FAQ" Language="zh_Hant_HK"><Text>常見問題</Text></Replace>
+        <Replace Tag="LOC_EMIG_FALLBACK_UNMET_CIV" Language="zh_Hant_HK"><Text>一個尚未會面的文明</Text></Replace>
+        <Replace Tag="LOC_EMIG_FALLBACK_A_PEOPLE" Language="zh_Hant_HK"><Text>一個民族</Text></Replace>
+        <Replace Tag="LOC_EMIG_FALLBACK_PEOPLE" Language="zh_Hant_HK"><Text>人們</Text></Replace>
+        <Replace Tag="LOC_EMIG_FALLBACK_A_SETTLEMENT" Language="zh_Hant_HK"><Text>一個聚落</Text></Replace>
+        <Replace Tag="LOC_EMIG_FALLBACK_A_NATION" Language="zh_Hant_HK"><Text>一個國家</Text></Replace>
+        <Replace Tag="LOC_EMIG_FALLBACK_A_DISASTER" Language="zh_Hant_HK"><Text>一場災害</Text></Replace>
+        <Replace Tag="LOC_EMIG_FALLBACK_A_DISASTER_START" Language="zh_Hant_HK"><Text>一場災害</Text></Replace>
+        <Replace Tag="LOC_EMIG_FALLBACK_WAR" Language="zh_Hant_HK"><Text>戰爭</Text></Replace>
+        <Replace Tag="LOC_EMIG_QUARTER_ENCLAVE" Language="zh_Hant_HK"><Text>{1_Demonym}聚居區</Text></Replace>
+        <Replace Tag="LOC_EMIG_QUARTER_ENCLAVE_FOREIGN" Language="zh_Hant_HK"><Text>外來聚居區</Text></Replace>
+        <Replace Tag="LOC_EMIG_EVENT_CRISIS_SUFFIX" Language="zh_Hant_HK"><Text>{1_Name}危機</Text></Replace>
+        <Replace Tag="LOC_EMIG_EVENT_CRISIS" Language="zh_Hant_HK"><Text>危機</Text></Replace>
+        <Replace Tag="LOC_EMIG_WARNAME_TWO" Language="zh_Hant_HK"><Text>{1_Victim}–{2_Aggressor}戰爭</Text></Replace>
+        <Replace Tag="LOC_EMIG_WARNAME_ONE" Language="zh_Hant_HK"><Text>{1_Victim}戰爭</Text></Replace>
+        <Replace Tag="LOC_EMIG_DISASTER_STRIKES_AT" Language="zh_Hant_HK"><Text>{1_Name}襲擊了{2_Place}！ </Text></Replace>
+        <Replace Tag="LOC_EMIG_DISASTER_STRIKES" Language="zh_Hant_HK"><Text>{1_Name}來襲！ </Text></Replace>
+        <Replace Tag="LOC_EMIG_PERCENT" Language="zh_Hant_HK"><Text>{1_N}％</Text></Replace>
+        <Replace Tag="LOC_EMIG_RETURN_REASON_PEACE" Language="zh_Hant_HK"><Text>重歸和平</Text></Replace>
+        <Replace Tag="LOC_EMIG_CAUSES_MORE" Language="zh_Hant_HK"><Text>+{1_N} 更多</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_COAST_1" Language="zh_Hant_HK"><Text>港口一帶</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_COAST_2" Language="zh_Hant_HK"><Text>濱水一帶</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_COAST_3" Language="zh_Hant_HK"><Text>碼頭街區</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_RIVER_1" Language="zh_Hant_HK"><Text>河畔一帶</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_RIVER_2" Language="zh_Hant_HK"><Text>河埠一帶</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_MOUNTAIN_1" Language="zh_Hant_HK"><Text>山腳下</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_MOUNTAIN_2" Language="zh_Hant_HK"><Text>高地上</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_GRANARY_1" Language="zh_Hant_HK"><Text>糧倉之外</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_GRANARY_2" Language="zh_Hant_HK"><Text>糧倉那頭</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_TEMPLE_1" Language="zh_Hant_HK"><Text>神廟區外</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_TEMPLE_2" Language="zh_Hant_HK"><Text>神廟一帶</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_MARKET_1" Language="zh_Hant_HK"><Text>市集周邊</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_MARKET_2" Language="zh_Hant_HK"><Text>市集攤販旁</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WALLS_1" Language="zh_Hant_HK"><Text>舊城牆邊</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WALLS_2" Language="zh_Hant_HK"><Text>城門旁</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_POPULATION" Language="zh_Hant_HK"><Text>人口</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_POPULATION_TITLE" Language="zh_Hant_HK"><Text>人口隨時間變化</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_POPULATION_SUBTITLE" Language="zh_Hant_HK"><Text>當前人口，按歷史比例縮放為人數（與流動圖採用相同的縮放）。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_POPULATION_DESC" Language="zh_Hant_HK"><Text>各文明的當前人口，依共享模型縮放為歷史人數。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM" Language="zh_Hant_HK"><Text>淨遷徙</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM_TITLE" Language="zh_Hant_HK"><Text>淨遷徙隨時間變化</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM_SUBTITLE" Language="zh_Hant_HK"><Text>迄今淨增減人數（獲得減去失去）；正值代表遷入多於遷出。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM_DESC" Language="zh_Hant_HK"><Text>迄今淨增減人數的累計（正值 = 淨流入）。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM_PTS" Language="zh_Hant_HK"><Text>淨遷徙</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM_PTS_TITLE" Language="zh_Hant_HK"><Text>淨遷徙隨時間變化</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM_PTS_SUBTITLE" Language="zh_Hant_HK"><Text>迄今淨增減人數（獲得減去失去）；正值代表遷入多於遷出。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM_PTS_DESC" Language="zh_Hant_HK"><Text>淨增減人口點數的累計：精確的 Civ 數值。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM" Language="zh_Hant_HK"><Text>遷出</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM_TITLE" Language="zh_Hant_HK"><Text>遷出隨時間變化</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM_SUBTITLE" Language="zh_Hant_HK"><Text>迄今離開此文明城市的總人數。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM_DESC" Language="zh_Hant_HK"><Text>離開此文明城市人數的累計。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM_PTS" Language="zh_Hant_HK"><Text>遷出</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM_PTS_TITLE" Language="zh_Hant_HK"><Text>遷出隨時間變化</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM_PTS_SUBTITLE" Language="zh_Hant_HK"><Text>迄今離開此文明城市的總人數。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_OUT_CUM_PTS_DESC" Language="zh_Hant_HK"><Text>離開此文明城市人口點數的累計。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM" Language="zh_Hant_HK"><Text>遷入</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM_TITLE" Language="zh_Hant_HK"><Text>遷入隨時間變化</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM_SUBTITLE" Language="zh_Hant_HK"><Text>迄今抵達此文明城市的總人數。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM_DESC" Language="zh_Hant_HK"><Text>抵達此文明城市人數的累計。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM_PTS" Language="zh_Hant_HK"><Text>遷入</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM_PTS_TITLE" Language="zh_Hant_HK"><Text>遷入隨時間變化</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM_PTS_SUBTITLE" Language="zh_Hant_HK"><Text>迄今抵達此文明城市的總人數。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_IN_CUM_PTS_DESC" Language="zh_Hant_HK"><Text>抵達此文明城市人口點數的累計。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_TITLE" Language="zh_Hant_HK"><Text>隨時間離去的難民</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_DESC" Language="zh_Hant_HK"><Text>因戰爭、災害或征服而自此文明流離失所人數的累計。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_PTS" Language="zh_Hant_HK"><Text>難民流出</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_PTS_TITLE" Language="zh_Hant_HK"><Text>隨時間離去的難民</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_PTS_SUBTITLE" Language="zh_Hant_HK"><Text>迄今因戰爭、災害或征服而自此文明流離失所的人。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_PTS_DESC" Language="zh_Hant_HK"><Text>因戰爭、災害或征服而自此文明流離失所人口點數的累計。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN" Language="zh_Hant_HK"><Text>難民流入</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN_TITLE" Language="zh_Hant_HK"><Text>隨時間抵達的難民</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN_SUBTITLE" Language="zh_Hant_HK"><Text>迄今為逃離他處的戰爭、災害或征服而在此重新安置的人。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN_DESC" Language="zh_Hant_HK"><Text>逃離戰爭、災害或征服並在此重新安置人數的累計。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN_PTS" Language="zh_Hant_HK"><Text>難民流入</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN_PTS_TITLE" Language="zh_Hant_HK"><Text>隨時間抵達的難民</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN_PTS_SUBTITLE" Language="zh_Hant_HK"><Text>迄今為逃離他處的戰爭、災害或征服而在此重新安置的人。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_REFUGEES_IN_PTS_DESC" Language="zh_Hant_HK"><Text>逃離戰爭、災害或征服並在此重新安置人口點數的累計。</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_GRAPHS" Language="zh_Hant_HK"><Text>數據</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SCALED_POP" Language="zh_Hant_HK"><Text>縮放人口</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_CIV_POP" Language="zh_Hant_HK"><Text>Civ 人口</Text></Replace>
+        <Replace Tag="LOC_EMIG_MEMBER_POPULATION" Language="zh_Hant_HK"><Text>人口</Text></Replace>
+        <Replace Tag="LOC_EMIG_MEMBER_POP_SHARE" Language="zh_Hant_HK"><Text>人口佔比</Text></Replace>
+        <Replace Tag="LOC_EMIG_MEMBER_NET_GRAPH" Language="zh_Hant_HK"><Text>淨遷徙（圖表）</Text></Replace>
+        <Replace Tag="LOC_EMIG_MEMBER_NET_TABLE" Language="zh_Hant_HK"><Text>淨遷徙（表格）</Text></Replace>
+        <Replace Tag="LOC_EMIG_MEMBER_EMIGRATION" Language="zh_Hant_HK"><Text>遷出</Text></Replace>
+        <Replace Tag="LOC_EMIG_MEMBER_IMMIGRATION" Language="zh_Hant_HK"><Text>遷入</Text></Replace>
+        <Replace Tag="LOC_EMIG_MEMBER_REF_LEFT" Language="zh_Hant_HK"><Text>難民（離去）</Text></Replace>
+        <Replace Tag="LOC_EMIG_MEMBER_REF_ARRIVED" Language="zh_Hant_HK"><Text>難民（抵達）</Text></Replace>
+        <Replace Tag="LOC_EMIG_SOURCES" Language="zh_Hant_HK"><Text>來源：{1_List}</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_WAR_EMIGRATION" Language="zh_Hant_HK"><Text>戰爭遷出</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_WAR_EMIGRATION_TITLE" Language="zh_Hant_HK"><Text>每回合戰爭難民</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_DISASTER_EMIGRATION" Language="zh_Hant_HK"><Text>災害遷出</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_DISASTER_EMIGRATION_TITLE" Language="zh_Hant_HK"><Text>每回合災害難民</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_PROSPERITY_EMIGRATION" Language="zh_Hant_HK"><Text>繁榮遷出</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_PROSPERITY_EMIGRATION_TITLE" Language="zh_Hant_HK"><Text>每回合受吸引的遷出</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_UNHAPPINESS_EMIGRATION" Language="zh_Hant_HK"><Text>不滿遷出</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_UNHAPPINESS_EMIGRATION_TITLE" Language="zh_Hant_HK"><Text>每回合由不滿驅動的遷出</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_WAR_IMMIGRATION" Language="zh_Hant_HK"><Text>戰爭遷入</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_WAR_IMMIGRATION_TITLE" Language="zh_Hant_HK"><Text>每回合接收的戰爭難民</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_DISASTER_IMMIGRATION" Language="zh_Hant_HK"><Text>災害遷入</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_DISASTER_IMMIGRATION_TITLE" Language="zh_Hant_HK"><Text>每回合接收的災害難民</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_PROSPERITY_IMMIGRATION" Language="zh_Hant_HK"><Text>繁榮遷入</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_PROSPERITY_IMMIGRATION_TITLE" Language="zh_Hant_HK"><Text>每回合受吸引的遷入</Text></Replace>
+        <Replace Tag="LOC_DEMOGRAPHICS_UNIT_PEOPLE_PER_TURN" Language="zh_Hant_HK"><Text>人 / 回合</Text></Replace>
+        <Replace Tag="LOC_EMIG_PAGE_LABEL" Language="zh_Hant_HK"><Text>移民</Text></Replace>
+        <Replace Tag="LOC_EMIG_PAGE_TITLE" Language="zh_Hant_HK"><Text>遷徙</Text></Replace>
+        <Replace Tag="LOC_EMIG_PAGE_FLOW_TITLE" Language="zh_Hant_HK"><Text>遷徙網絡與流向</Text></Replace>
+        <Replace Tag="LOC_EMIG_PAGE_LEDGER_TITLE" Language="zh_Hant_HK"><Text>各文明淨遷徙</Text></Replace>
+        <Replace Tag="LOC_EMIG_PAGE_DIVERSITY_TITLE" Language="zh_Hant_HK"><Text>最多元城市</Text></Replace>
+        <Replace Tag="LOC_EMIG_PAGE_STANCES_TAB" Language="zh_Hant_HK"><Text>移民政策</Text></Replace>
+        <Replace Tag="LOC_EMIG_HUB_POP_MIGRATION" Language="zh_Hant_HK"><Text>人口與遷徙</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_FX_GOLD" Language="zh_Hant_HK"><Text>金幣</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_FX_HAPPINESS" Language="zh_Hant_HK"><Text>幸福度</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_FX_INFLUENCE" Language="zh_Hant_HK"><Text>影響力</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_FX_POP" Language="zh_Hant_HK"><Text>人口</Text></Replace>
+        <Replace Tag="LOC_EMIG_DILV_DISMISS" Language="zh_Hant_HK"><Text>暫不</Text></Replace>
     </LocalizedText>
 </Database>

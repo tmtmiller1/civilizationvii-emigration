@@ -406,7 +406,8 @@ function chronicleDecision(choiceId, d, hostSig, turn) {
  * effect it applies (so the trade-off is visible before choosing, not just in prose), and the choices.
  * @param {{kind:string, instigator?:number, origin:number, points:number}} d The descriptor.
  * @param {number} turn Now.
- * @returns {{title:string, body:string, choices:{id:string,label:string,note:string,effect?:string}[]}} The view model.
+ * @returns {{title:string, body:string, dismissId:string,
+ *   choices:{id:string,label:string,note:string,effect?:string}[]}} The view model.
  */
 function dilemmaView(d, turn) {
   const origin = narrativeCiv(d.origin);
@@ -419,7 +420,10 @@ function dilemmaView(d, turn) {
     .map((c) => c.label + ": " + c.effect)
     .join("[N]");
   const body = effectsList ? (prompt.body + "[N][N]" + effectsList) : prompt.body;
-  return { title: prompt.title, body, choices: cs };
+  // Dismissing (Escape / ✕ / cancel / click-outside) is "Turn them away": closing without choosing is
+  // itself the refusal, and pays its Influence cost — there is no free dismissal. Set explicitly here so
+  // the intent lives at the source rather than relying on showDilemma's fallback default.
+  return { title: prompt.title, body, dismissId: "away", choices: cs };
 }
 
 /**

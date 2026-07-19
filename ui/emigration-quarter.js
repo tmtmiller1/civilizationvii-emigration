@@ -416,19 +416,43 @@ function accrueContestedStrain(owner, turn) {
  * native Constructible_YieldChanges row is then the reward, and granting the stance yield on top would
  * pay twice for one enclave (roadmap §22a). The stance grant is the "recognized but unbuilt" reward and
  * steps aside once the enclave actually stands. The index is read once per turn, not once per quarter.
+ *
+ * A CONTESTED quarter (host at war with its homeland) pays only `contestedQuarterYieldFactor` of its
+ * benefit — the war really does dim what the enclave contributes, not just the host's mood. Requires
+ * `rec.contested` to be fresh, so the caller updates contested status BEFORE this runs.
  * @param {number} owner Local player id.
  */
 function applyOwnerQuarterYields(owner) {
   for (const { rec } of quartersForOwner(owner)) {
-    applyQuarterYields(owner, rec.applied);
+    applyQuarterYields(owner, rec.applied, contestedBenefitScale(rec));
   }
 }
 
 /**
- * Per-pass entry point (2): apply each of the local player's quarters' ongoing stance yields, then
- * react to war strain — mark quarters contested while the host is at war with their homeland and charge
- * a bounded happiness strain (capped across all of the host's quarters). Never throws into the pass;
- * never assumes a callable native-revolt trigger.
+ * Clamp a configured yield factor into [0, 1], defaulting to 1 (full) when unset/invalid.
+ * @param {*} v The raw config value. @returns {number} A factor in [0, 1].
+ */
+function clampFactor(v) {
+  const n = Number(v);
+  if (!Number.isFinite(n)) return 1;
+  return Math.max(0, Math.min(1, n));
+}
+
+/**
+ * The share of its benefit yield a quarter pays THIS pass: a contested enclave (host at war with its
+ * homeland) pays only the clamped `contestedQuarterYieldFactor`; a settled one pays full. The single
+ * source of the contested-yield reduction, so the grant path and any diagnostic read agree.
+ * @param {*} rec A quarter record. @returns {number} The benefit factor in [0, 1].
+ */
+export function contestedBenefitScale(rec) {
+  return rec && rec.contested ? clampFactor(CONFIG.contestedQuarterYieldFactor) : 1;
+}
+
+/**
+ * Per-pass entry point (2): first mark quarters contested while the host is at war with their homeland
+ * (charging a bounded, capped happiness strain), THEN apply each quarter's ongoing stance yields so a
+ * contested enclave's benefit is already dimmed this pass. Never throws into the pass; never assumes a
+ * callable native-revolt trigger.
  * @param {*[]} _signals The pass's city signals (unused; state-driven).
  */
 export function tickContestedQuarters(_signals) {
@@ -437,8 +461,10 @@ export function tickContestedQuarters(_signals) {
   if (me == null) return;
   try {
     const turn = monoTurn();
-    applyOwnerQuarterYields(me);
+    // Refresh contested status FIRST so this pass's yield grant already reflects any new war: a
+    // contested enclave pays a reduced benefit (applyOwnerQuarterYields reads the fresh rec.contested).
     const strain = accrueContestedStrain(me, turn);
+    applyOwnerQuarterYields(me);
     if (strain > 0) {
       const cap = Math.max(0, Number(CONFIG.diasporaWarStrainCap) || 0);
       const charged = cap > 0 ? Math.min(strain, cap) : strain;

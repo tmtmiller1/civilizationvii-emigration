@@ -19,6 +19,7 @@
 // no-op rather than throwing.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 import { speedTurns, speedBar } from "/emigration/ui/emigration-game-speed.js";
 import {
@@ -465,7 +466,7 @@ function crisisMilestone(pid, cum, pass) {
   const points = pass ? pass.points : 0;
   // WHO the crisis hit, spoiler-guarded: an unmet civ is never named in world news
   // (mirrors the dashboard's "Unmet" mask), it's reported as "an unmet civilization".
-  const who = civHidden(pid) ? UNMET_CIV_LABEL : civAdjective(pid);
+  const who = civHidden(pid) ? UNMET_CIV_LABEL() : civAdjective(pid);
   const ev = { cause, civ: who, people: formatBothExact(people, points),
     warName: event || undefined, eventName: event || undefined };
   const head = refugeeHeadline(ev); // leads with WHO (spoiler-guarded) for event-named causes
@@ -637,8 +638,14 @@ function groupLocalEvents(migs, me) {
 }
 
 // Anonymized destination for a civ the analytics-visibility policy withholds (unmet). Mirrors the
-// dashboard's "Unmet" masking so a notification never names a civ the player hasn't met.
-const UNMET_CIV_LABEL = "an unmet civilization";
+// dashboard's "Unmet" masking so a notification never names a civ the player hasn't met. Localized
+// lazily and cached at first RUNTIME use (never at module load, where Locale may not be ready).
+/** @type {string|null} */
+let _unmetCivLabel = null;
+function UNMET_CIV_LABEL() {
+  if (_unmetCivLabel == null) _unmetCivLabel = loc("LOC_EMIG_FALLBACK_UNMET_CIV", "an unmet civilization");
+  return _unmetCivLabel;
+}
 
 /**
  * The destination as shown to the player, with the analytics-visibility mask applied. A death
@@ -651,7 +658,7 @@ const UNMET_CIV_LABEL = "an unmet civilization";
 function destView(ev) {
   if (ev.cause === "attrition") return {}; // a death, they did not arrive anywhere
   if (ev.crossCiv && typeof ev.destOwner === "number") {
-    if (civHidden(ev.destOwner)) return { toCiv: UNMET_CIV_LABEL };
+    if (civHidden(ev.destOwner)) return { toCiv: UNMET_CIV_LABEL() };
     return { toCiv: civAdjective(ev.destOwner), toCity: ev.destName || undefined };
   }
   return { toCity: ev.destName || undefined }; // internal move
@@ -682,7 +689,7 @@ function eventMessage(ev) {
  */
 function conquerorName(ev) {
   if (ev.cause !== "conquest" || typeof ev.destOwner !== "number") return undefined;
-  return civHidden(ev.destOwner) ? UNMET_CIV_LABEL : civName(ev.destOwner);
+  return civHidden(ev.destOwner) ? UNMET_CIV_LABEL() : civName(ev.destOwner);
 }
 
 /**
@@ -775,7 +782,7 @@ function groupInboundEvents(migs, me) {
  */
 function inboundOriginView(ev) {
   if (typeof ev.originCiv !== "number") return {};
-  if (civHidden(ev.originCiv)) return { fromCiv: UNMET_CIV_LABEL };
+  if (civHidden(ev.originCiv)) return { fromCiv: UNMET_CIV_LABEL() };
   return { fromCiv: civAdjective(ev.originCiv) };
 }
 

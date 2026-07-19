@@ -108,7 +108,7 @@ export const TUNABLES = [
   // cultural enclaves - how often the decision fires (share bar + stock floor + stickiness + dwell + throttle)
   { key: "quarterEstablishedShare", group: "cost", type: "choice", values: [0.3, 0.35, 0.4, 0.45, 0.5], choiceLabels: ["30%", "35%", "40%", "45%", "50%"], label: "LOC_EMIG_T_QSHARE", desc: "LOC_EMIG_T_QSHARE_D" },
   { key: "quarterMinStock", group: "cost", type: "choice", values: [2, 3, 5, 8], label: "LOC_EMIG_T_QMINSTOCK", desc: "LOC_EMIG_T_QMINSTOCK_D" },
-  { key: "quarterEnclaveStickiness", group: "cost", type: "choice", values: [1, 0.5, 0.25, 0.1], choiceLabels: ["Off", "Weak", "Standard", "Strong"], label: "LOC_EMIG_T_QSTICKY", desc: "LOC_EMIG_T_QSTICKY_D" },
+  { key: "quarterEnclaveStickiness", group: "cost", type: "choice", values: [1, 0.5, 0.25, 0.1], choiceLabels: ["LOC_EMIG_CHOICE_OFF", "LOC_EMIG_CHOICE_WEAK", "LOC_EMIG_CHOICE_STANDARD", "LOC_EMIG_CHOICE_STRONG"], label: "LOC_EMIG_T_QSTICKY", desc: "LOC_EMIG_T_QSTICKY_D" },
   { key: "quarterDwellTurns", group: "cost", type: "choice", values: [0, 4, 8, 12, 18], label: "LOC_EMIG_T_QDWELL", desc: "LOC_EMIG_T_QDWELL_D" },
   { key: "quarterCooldownTurns", group: "cost", type: "choice", values: [8, 12, 18, 24, 36], label: "LOC_EMIG_T_QCOOLDOWN", desc: "LOC_EMIG_T_QCOOLDOWN_D" },
   { key: "quarterCapPerAge", group: "cost", type: "choice", values: [1, 2, 3, 5], label: "LOC_EMIG_T_QCAP", desc: "LOC_EMIG_T_QCAP_D" },
@@ -122,9 +122,9 @@ export const TUNABLES = [
   { key: "disasterSpeedShockEnabled", group: "disaster", type: "bool", label: "LOC_EMIG_T_DSHOCK", desc: "LOC_EMIG_T_DSHOCK_D" },
   { key: "plagueCarryEnabled", group: "disaster", type: "bool", label: "LOC_EMIG_T_PLAGUECARRY", desc: "LOC_EMIG_T_PLAGUECARRY_D" },
   // notifications (anti-spam controls)
-  { key: "notifyMode", group: "notify", type: "choice", values: [0, 1, 2], choiceLabels: ["Off", "Important", "Verbose"], label: "LOC_EMIG_T_NOTIFYMODE", desc: "LOC_EMIG_T_NOTIFYMODE_D" },
-  { key: "disasterNotifyMinSeverity", group: "notify", type: "choice", values: [0, 1, 2, 3], choiceLabels: ["Any", "Minor+", "Moderate+", "Major only"], label: "LOC_EMIG_T_NOTIFYDISASTER", desc: "LOC_EMIG_T_NOTIFYDISASTER_D" },
-  { key: "disasterNotifyMode", group: "notify", type: "choice", values: [0, 1, 2], choiceLabels: ["Off", "Important", "Verbose"], label: "LOC_EMIG_T_DNOTIFYMODE", desc: "LOC_EMIG_T_DNOTIFYMODE_D" },
+  { key: "notifyMode", group: "notify", type: "choice", values: [0, 1, 2], choiceLabels: ["LOC_EMIG_CHOICE_OFF", "LOC_EMIG_CHOICE_IMPORTANT", "LOC_EMIG_CHOICE_VERBOSE"], label: "LOC_EMIG_T_NOTIFYMODE", desc: "LOC_EMIG_T_NOTIFYMODE_D" },
+  { key: "disasterNotifyMinSeverity", group: "notify", type: "choice", values: [0, 1, 2, 3], choiceLabels: ["LOC_EMIG_CHOICE_ANY", "LOC_EMIG_CHOICE_MINOR", "LOC_EMIG_CHOICE_MODERATE", "LOC_EMIG_CHOICE_MAJOR"], label: "LOC_EMIG_T_NOTIFYDISASTER", desc: "LOC_EMIG_T_NOTIFYDISASTER_D" },
+  { key: "disasterNotifyMode", group: "notify", type: "choice", values: [0, 1, 2], choiceLabels: ["LOC_EMIG_CHOICE_OFF", "LOC_EMIG_CHOICE_IMPORTANT", "LOC_EMIG_CHOICE_VERBOSE"], label: "LOC_EMIG_T_DNOTIFYMODE", desc: "LOC_EMIG_T_DNOTIFYMODE_D" },
   { key: "notifyCooldownTurns", group: "notify", type: "choice", values: [0, 3, 6, 10, 20], label: "LOC_EMIG_T_NOTIFYCD", desc: "LOC_EMIG_T_NOTIFYCD_D" },
   { key: "notifyWorldNews", group: "notify", type: "bool", label: "LOC_EMIG_T_NOTIFYWORLDNEWS", desc: "LOC_EMIG_T_NOTIFYWORLDNEWS_D" },
   { key: "worldRefugeeThreshold", group: "notify", type: "choice", values: [20000, 40000, 80000, 150000], label: "LOC_EMIG_T_NOTIFYWORLD", desc: "LOC_EMIG_T_NOTIFYWORLD_D" },

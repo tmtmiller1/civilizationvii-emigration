@@ -13,6 +13,20 @@ import {
   sampleOutByCause,
   sampleInByCause
 } from "/emigration/ui/emigration-migration-stats.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
+
+/**
+ * A registration-time copy of a per-cause spec with its `unit` localized. The host's UNIT_LOC table
+ * covers "people"/"points" but NOT "people / turn", which it would otherwise render verbatim — so we
+ * pre-compose it (at runtime, where Locale is ready). Name/title are id-derived by the host
+ * (LOC_DEMOGRAPHICS_METRIC_<ID>[/_TITLE]) and need no JS change.
+ * @param {*} spec A per-cause spec. @returns {*} The localized copy.
+ */
+function localizeCauseSpec(spec) {
+  return Object.assign({}, spec, {
+    unit: loc("LOC_DEMOGRAPHICS_UNIT_PEOPLE_PER_TURN", spec.unit)
+  });
+}
 
 /**
  * Format a signed people count for per-cause metrics.
@@ -115,7 +129,7 @@ export function registerPerCauseMetrics(api) {
     const metricsApi = api || (/** @type {*} */ (globalThis).DemographicsMetricsAPI);
     if (!metricsApi || typeof metricsApi.registerMetric !== "function") return;
     
-    for (const spec of ALL_SPECS) metricsApi.registerMetric(spec);
+    for (const spec of ALL_SPECS) metricsApi.registerMetric(localizeCauseSpec(spec));
     
     // Group the per-cause breakdown graphs onto Emigration's own (permanent) Migration page in
     // Demographics too - the same single home as the main migration graphs (emigration-demographics.js)

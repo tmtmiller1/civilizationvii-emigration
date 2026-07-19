@@ -149,7 +149,7 @@ Default settings (most tunable, §10). Also on the dashboard's **Guide** tab.
 |---|:---:|---|
 | Higher prosperity (food, production, gold, science, culture) | ✓ | Per-capita weighted yields above nearby cities |
 | Higher happiness | ✓ | Weighted most; in the shaped model it saturates, so no runaway magnet |
-| Pro-Immigration stance | ✓ | Raises inbound pull, earns Influence |
+| Pro-Immigration Stance | ✓ | Raises inbound pull, earns Influence |
 | Open Borders agreement | ✓ | Cross-civ pull bonus |
 | Being nearby | ✓ | Distance-penalized |
 
@@ -171,11 +171,11 @@ Default settings (most tunable, §10). Also on the dashboard's **Guide** tab.
 | Migration between civilizations | ✓ | Throttled by borders, distance, and stance |
 | Distant AI-vs-AI wars | ✓ | Only when they damage, besiege, or pillage a city's own territory |
 | Fighting outside a city's borders | ✗ | Never drives its emigration; war pressure is territory-scoped (§3) |
-| Anti-Immigration stance retains people | ✓ | More retention + Production, less Influence |
+| Anti-Immigration Stance retains people | ✓ | More retention + Production, less Influence |
 | Closed Borders reduces cross-civ flow | ✓ | Far fewer cross without an Open Borders agreement |
 | Population & yields actually change | ✓ | Real per-turn gameplay writes |
 | Pacing adapts to game speed | ✓ | Cooldowns, ramps, transit, thresholds scale (§2) |
-| Any layer tunable or off | ✓ | Presets + ~57 knobs, Options ▸ Mods ▸ Emigration |
+| Any layer tunable or off | ✓ | Presets + 85 knobs, Options ▸ Mods ▸ Emigration |
 | Migrants arrive instantly | ✗ | They travel; arrival lags with distance |
 | Absorbing migrants is free | ✗ | A temporary, decaying happiness + gold cost |
 | War can empty a city to zero | ✗ | Displacement is capped (`siegeLossCapPct`) above the rural floor; only a capture empties/transfers. Crisis deaths (separate, unfloored) can wear rural pop down, but the urban core survives |
@@ -213,7 +213,9 @@ Default settings (most tunable, §10). Also on the dashboard's **Guide** tab.
 
 - **Will a war-shrunk city grow back?** Yes. Displacement moves population points, never razes districts
   or buildings (only conquest does). It regrows via food growth and immigration once fighting stops.
-- **Do the same refugees return?** No repatriation; it regrows from new residents.
+- **Do the same refugees return?** Some do. Once the homeland is at peace and prospering, Return
+  Migration (§6g) moves a fraction back, attributed to their true origin; the rest regrows from new
+  residents. Toggle: Options ▸ return migration (on by default).
 - **Does repairing pillaged tiles restore population?** No. Repair removes the pressure (faster recovery)
   but adds no population back.
 - **How far can war shrink a city?** Displacement is capped at `siegeLossCapPct` (60% by default) of
@@ -684,7 +686,7 @@ When a foreign diaspora grows into a lasting, established community in one of yo
 presence, not a lifetime-arrivals total), it forms a Cultural Enclave on a specific edge tile, named for
 the origin people (e.g. *the Roman Enclave*). You're offered a one-time choice: two identity-grounded
 options, each a small benefit paired with a matching drawback grounded in that civilization's character
-(a Roman enclave offers Production/Gold, a Persian one Gold/Culture; 44 civs in
+(a Roman enclave offers Production/Gold, a Persian one Gold/Culture; 47 civs in
 `emigration-quarter-bonuses.js`), plus a passive "let them be." The chosen stance applies its yields every
 turn (bounded, ±1–2), so it reads in the city; an unknown/DLC origin falls back to a neutral pair.
 
@@ -700,8 +702,10 @@ Bounds:
 - **At most two enclaves per origin civilization** across your empire (per civilization, not overall).
   Identity is fixed by CivilizationType when the enclave forms (persisted), so the cap stays correct even
   if the origin player changes civ across an age.
-- **Contested in war.** While you're at war with an enclave's homeland it turns contested: a bounded
-  happiness strain (capped across all your enclaves), framed as wartime suspicion, not disloyalty.
+- **Contested in war.** While you're at war with an enclave's homeland it turns contested: its yield
+  benefit is reduced (`contestedQuarterYieldFactor`, default half) **and** a bounded happiness strain
+  applies (capped across all your enclaves), framed as wartime suspicion, not disloyalty. It contributes
+  fully again once peace returns.
 - Throttled with a per-age cap and cooldown, ranked below the refugee decision so two modals never race.
   Toggle: Options ▸ Mods ▸ Emigration ▸ cultural enclaves (on by default). (Internally the code, config
   keys, and save data still use "quarter"; only the player-facing name changed.)

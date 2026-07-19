@@ -147,6 +147,14 @@ assert.deepEqual(grants.slice(-2), [
   { pid: 42, yt: 2, amt: 3 }
 ]);
 
+// a benefitScale < 1 (contested enclave) shrinks ONLY the benefit; the drawback is charged in full
+grants.length = 0;
+applyQuarterYields(42, quarterApplied, 0.5);
+assert.deepEqual(grants.slice(-2), [
+  { pid: 42, yt: 3, amt: 3.5 }, // 7 x 0.5
+  { pid: 42, yt: 2, amt: -3 }   // drawback unscaled
+]);
+
 // falsey / non-positive branch guards: none of these should emit yields
 const beforeGuards = grants.length;
 applyQuarterYields(42, {

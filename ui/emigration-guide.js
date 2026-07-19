@@ -45,7 +45,7 @@ const GUIDE = [
       { q: "Higher happiness", yes: true, note: "The biggest pull; judged against the world average and (in the shaped model) saturating, so no runaway. Feeds 1.4.1's five stages." },
       { q: "A civilization in a Celebration (Golden Age)", yes: true, note: "A civ in a Celebration is a stronger draw for the few turns it lasts." },
       { q: "A happiness-friendly government", yes: true, note: "A small nudge; most of a government's effect already reaches the model through happiness and yields." },
-      { q: "A Pro-Immigration stance policy", yes: true, note: "Raises inbound pull and earns Influence (trading some retention)." },
+      { q: "A Pro-Immigration Stance policy", yes: true, note: "Raises inbound pull and earns Influence (trading some retention)." },
       { q: "An Open Borders agreement", yes: true, note: "Adds a cross-civ pull bonus." },
       { q: "Being nearby", yes: true, note: "Distance-penalized; people move to nearby better settlements." }
     ]
@@ -66,10 +66,10 @@ const GUIDE = [
     rows: [
       { q: "Migration between different civilizations", yes: true, note: "Crosses borders, throttled by borders, distance, and each side's stance." },
       { q: "Migration driven by distant AI-vs-AI wars", yes: true, note: "Fog-independent: reads game state, so a far-off war displaces people like one you can see." },
-      { q: "An Anti-Immigration stance retains your people", yes: true, note: "More retention and Production, at the cost of Influence." },
+      { q: "An Anti-Immigration Stance retains your people", yes: true, note: "More retention and Production, at the cost of Influence." },
       { q: "Closed Borders reduces cross-civ flow", yes: true, note: "Far fewer cross without an Open Borders agreement." },
       { q: "Population & yields actually change (not just a display)", yes: true, note: "Real per-turn gameplay writes, not a cosmetic overlay." },
-      { q: "Any layer can be tuned or switched off", yes: true, note: "Presets + ~57 knobs under Options ▸ Mods ▸ Emigration; all on by default." },
+      { q: "Any layer can be tuned or switched off", yes: true, note: "Presets + 85 knobs under Options ▸ Mods ▸ Emigration; all on by default." },
       { q: "Migrants arrive instantly", yes: false, note: "No; they travel, arriving up to a few turns later." },
       { q: "Absorbing migrants is free", yes: false, note: "No; a temporary, decaying happiness + gold cost." },
       { q: "War alone can empty a city to zero", yes: false, note: "No. Displacement is capped (siegeLossCapPct) above the rural floor. Crisis deaths are separate and unfloored: a long crisis can wear rural population down (gently at first, building over time), but only rural, so the urban core and settlement survive until a capture." },
@@ -110,7 +110,7 @@ const GUIDE = [
     faq: [
       { q: "What happens when I capture or lose a city?", a: "Its residents stay coded to the civ they came from; the lens and network dots keep that origin's colour, and only new post-capture population counts as yours. So a conquered city carries real origin history that fades as it regrows. War can shrink it, but only a capture transfers it." },
       { q: "My city shrank from size 12 to 5 in a war, will it grow back?", a: "Yes. Displacement only moves population points, never razes districts or deletes buildings (only base-game conquest does). You keep the infrastructure with fewer people, and it regrows via normal food growth and immigration once fighting stops and prosperity recovers." },
-      { q: "Do the same refugees who fled come back?", a: "Some do, via Return Migration: once a diaspora's homeland is at peace with the host and faring well, a fraction set out for home over time, moving real population back. A slow ebb, never a snap-back, only while relations stay peaceful. Off in Options." },
+      { q: "Do the same refugees who fled come back?", a: "Some do, via Return Migration: once a diaspora's homeland is at peace with the host and faring well, a fraction set out for home over time, moving real population back. A slow ebb, never a snap-back, only while relations stay peaceful. On by default; switch it off in Options." },
       { q: "Does repairing pillaged tiles restore the lost population?", a: "No. Pillaged tiles apply pressure; repairing them removes it (the city stops bleeding and recovers faster) but never adds a population point back." },
       { q: "How far can a war shrink a city?", a: "Displacement is capped at 60% (siegeLossCapPct) of the population when the siege began; the remnant digs in. Crisis deaths are separate and uncapped and can wear rural population past that (building gradually, easing if the siege lifts), but the urban core stands until a capture." },
       { q: "Fastest way to recover a war-torn city?", a: "Flip it from net exporter back to magnet: make peace (violence decays in ~2-3 turns), repair pillaged tiles, and raise happiness (the biggest prosperity factor)." }
@@ -157,7 +157,7 @@ const GUIDE = [
       { q: "What are the choices?", a: "Two options grounded in the origin's character, each a small benefit with a matching drawback (a Roman enclave leans Production; a Persian one brings Gold but stirs resentment), plus a passive 'let them be.' No strictly best option. The chosen stance applies its small yields every turn, so it reads in the city; dismissing (Escape or click outside) settles into 'let them be.'" },
       { q: "What's the quote below the prose?", a: "A real, attributed historical quote for the enclave, in the origin people's own language with an English translation (Greek, Chinese, Persian, Latin, Old Norse, and more), each verified against a primary source. First enclave shows one quote, second shows the other." },
       { q: "How many enclaves can one civilization have?", a: "At most two, per civilization, not overall, so you can hold two Roman and two Norman and two Han at once; reaching the cap for one origin never blocks another. A different people overtaking the tile is a change of hands (the Chronicle notes it, you choose again), not a third stacked enclave." },
-      { q: "What happens if I go to war with an enclave's homeland?", a: "The enclave turns contested: a small, capped happiness strain while the war lasts, framed as wartime unease falling on families who did not choose the fighting, not as the enclave being disloyal. It settles once peace returns." }
+      { q: "What happens if I go to war with an enclave's homeland?", a: "The enclave turns contested: its yield benefit is reduced and a small, capped happiness strain applies while the war lasts, framed as wartime unease falling on families who did not choose the fighting, not as the enclave being disloyal. It contributes fully once peace returns." }
     ]
   }
 ];
@@ -308,8 +308,8 @@ export function renderGuide(container) {
     injectGuideStyle();
     const wrap = ce("div", "emig-guide");
     const views = [
-      { id: "ref", label: "What counts", sections: GUIDE.filter((g) => Array.isArray(g.rows)) },
-      { id: "faq", label: "FAQ", sections: GUIDE.filter((g) => Array.isArray(g.faq)) }
+      { id: "ref", key: "LOC_EMIG_GUIDE_VIEW_REF", label: "What counts", sections: GUIDE.filter((g) => Array.isArray(g.rows)) },
+      { id: "faq", key: "LOC_EMIG_GUIDE_VIEW_FAQ", label: "FAQ", sections: GUIDE.filter((g) => Array.isArray(g.faq)) }
     ];
     const pills = ce("div", "emig-guide-pills");
     const body = ce("div", "emig-guide-body");
@@ -321,7 +321,7 @@ export function renderGuide(container) {
       renderGuideView(body, v.sections);
     };
     for (const v of views) {
-      const pill = ce("div", "emig-guide-pill", v.label);
+      const pill = ce("div", "emig-guide-pill", loc(v.key, v.label));
       pill.addEventListener("click", () => select(v.id));
       pillEls.push({ el: pill, id: v.id });
       pills.appendChild(pill);

@@ -5,61 +5,23 @@ with the reasoning that closed it. These look like obvious improvements but turn
 behavior-changing, or net-negative — so they're documented here to prevent anyone (including future
 sessions) from re-discovering and re-attempting them.
 
+This file is for judgments **not to change working behaviour**. Features abandoned because they **cannot
+be built** (a hard engine limit, a native crash, or an unproven-and-untestable hook) live in a sibling
+doc, [wont-implement-with-justifications.md](wont-implement-with-justifications.md) — the enclave
+lifecycle work (buildable improvement, stance-yield attribution, 3D model, the three unbuilt stages) and
+the vacated-tile marker moved there.
+
 > **Standing convention — keep this list current.** Whenever a proposed change to the Emigration mod is
 > rejected on its merits (it would change behavior, break a supported config, defend an impossible
 > state, or cost more than it's worth), **add it here** as a new `###` entry with: what was proposed,
-> why it's tempting, the concrete reason it's wrong, and a one-line **verdict**. Distinguish won't-fix
-> (closed by decision) from *deferred / conditional* items, which live in
+> why it's tempting, the concrete reason it's wrong, and a one-line **verdict**. If instead a feature is
+> abandoned because it *can't be built*, it goes in
+> [wont-implement-with-justifications.md](wont-implement-with-justifications.md), not here. Distinguish
+> both from *deferred / conditional* items, which live in
 > [emigration-roadmap-and-backlog.md](emigration-roadmap-and-backlog.md) — those have a "revisit if X" trigger; entries
 > here do not.
 
 ---
-
-## CANTFIX-1 (CLOSED 2026-07-16) — Enclave *stance* yields in the GPT banner / global yields breakdown
-
-> **Status (closed 2026-07-16):** both runtime routes are confirmed dead, so the **stance** yield can
-> never reach the banner/breakdown — that is the can't-fix. Separately, the *feature goal* ("the player
-> should see the enclave's yield attributed natively") **was achieved by another means**: the enclave
-> also ships as a **player-built improvement** whose `Constructible_YieldChanges` the engine attributes
-> natively. See "What shipped instead" below before re-opening this.
-
-**Proposed:** make the "Tax them"-style enclave stance yields show as a real per-turn source in the top
-banner (gold-per-turn) and the game's global yields breakdown, instead of the current invisible per-turn
-`Players.grantYield` treasury injection ([emigration-effects.js `applyQuarterYields`](../ui/emigration-effects.js),
-driven by [emigration-quarter.js `tickContestedQuarters`](../ui/emigration-quarter.js)).
-
-**Why it's tempting:** the player sees no GPT change when they tax an enclave, and the border-policy
-cards already surface a real per-turn yield via an `EFFECT_PLAYER_ADJUST_YIELD` modifier — so it *looks*
-like the enclave should be able to as well.
-
-**Why it can't be done (from a UI-script mod):** the banner and breakdown read ONLY the engine's
-Modifier/building yield sources. A UI-script mod cannot create or attach such a source at runtime:
-1. **No runtime modifier-attach API exists** — searched all 1,110 JS files across 231 community mods;
-   the only runtime yield writes are `grantYield` and `changeGoldBalance`, both of which move the
-   balance/stat without a breakdown source row.
-2. **Auto-placing a real yield-bearing entity at runtime — CONFIRMED FAILED.** `Game.PlayerOperations`
-   `CREATE_ELEMENT {Kind:"CONSTRUCTIBLE"}` for a tile IMPROVEMENT. The first probe was invalid (it never
-   sent the op — gated behind a `CityOperations.canStart("BUILD")` check improvements don't use). The
-   corrected Self-Test probe ([ui/emigration-enclave-probe.js](../ui/emigration-enclave-probe.js)) sends
-   it directly; placement does not take. Route disproven.
-
-The border policies only work because they ride the game's native Tradition/policy slot, which the
-engine attaches; an emergent, per-city, player-chosen enclave stance has no equivalent slot.
-
-**What shipped instead (why this closed rather than just failing).** The engine won't let a mod *place*
-an improvement, but it will let the player *build* one. Per-civ `IMPROVEMENT_EMIG_ENCLAVE_<CIV>`
-constructibles are generated from the registry into
-[emigration-enclave-improvements.xml](../data/emigration-enclave-improvements.xml) with real
-`Constructible_YieldChanges` rows — natively attributed, breakdown-visible — and the production chooser
-is filtered to the one enclave the city earned ([emigration-enclave-gate.js](../ui/emigration-enclave-gate.js)).
-So the *player-visible goal* is met by the built improvement; only the **stance** half remains invisible.
-
-**Verdict:** **Closed can't-fix** for the stance yield specifically — both runtime routes are disproven,
-and the stance stays a treasury/stat effect permanently. Do not re-attempt either route. The two
-*actionable* leftovers are real features and live in
-[emigration-roadmap-and-backlog.md](emigration-roadmap-and-backlog.md) §22, not here: (a) surface the
-stance's per-turn yield in the mod's **own** city readout / enclave panel, and (b) reconcile the stance
-grant with the built improvement's yield, which currently both pay out.
 
 ## P3 — Caching `situationalPercent` / `distress` is UNSAFE under the default `warSiege` model
 
@@ -162,80 +124,12 @@ moves when the toggle flips.
 **Verdict:** by design — the two measures are legitimately different (exact discrete size vs scaled
 historical headcount); fix the *labeling*, never make raw points drift.
 
-## cultural-enclaves — a distinct 3D model for the per-civ enclave constructibles
+## Enclave & vacated-tile features — moved to won't-implement
 
-**Proposed:** give each of the 45 per-civ Cultural Enclave constructibles
-([data/emigration-enclave-improvements.xml](../data/emigration-enclave-improvements.xml), generated by
-[scripts/gen-enclave-improvements.mjs](../scripts/gen-enclave-improvements.mjs)) its own on-map 3D model
-by reusing an existing building/improvement's art via `VisualRemap`.
-
-**Why it's tempting:** the enclave is a real constructible on a tile, so it *should* have a model like
-every shipped building; an invisible tile reads as unfinished.
-
-**Why it can't be done — CONFIRMED engine limitation (2026-07-15):** Civ VII exposes **no moddable way to
-bind a 3D model to a custom constructible.** `VisualRemap` — the only art hook — works **only for UNITS**;
-for buildings/improvements it does nothing (and the community "Buildings visual remap fix" addon is
-*deprecated* because it makes the AI's copies of a remapped building invisible — a non-resolvable engine
-bug). There is no modder asset SDK to author a new model. Verified every way: improvement donors
-(SOUQ, FARM) and building donors (MONUMENT, GRANARY) all rendered invisible even when built + completed on
-a proper tile; `ArtDef.log` never even references the remap. The only community workaround — hijack an
-existing shipped building's identity (override its DB values so the game draws its real model) — cannot
-scale to 45 distinct types and can't be a unique/quarter building, so it's unusable here. Sources:
-CivFanatics threads *empty-visuals-for-custom-civ-uniques* (697154), *visualremaps-visuals-for-custom-units*
-(697233), and the deprecated *addon-buildings-visual-remap-fix* (32160).
-
-**What we did instead:** the enclave stays a plain tile IMPROVEMENT — already identified in-game by the
-tile **tooltip** and its native **yield in the breakdown** — and its on-map presence is painted by the
-mod itself: [ui/emigration-enclave-markers.js](../ui/emigration-enclave-markers.js) draws the civ symbol
-icon + a "<Civ> Enclave" label over each enclave tile from the mod's own `WorldUI` overlay group,
-bypassing the art pipeline entirely.
-
-**Verdict:** a real 3D model is impossible via data mods (hard engine limit, not our bug); the WorldUI
-overlay marker is the shipped substitute. Do not re-attempt `VisualRemap` for constructibles.
-
-## vacated-tile — an on-map marker for the tile left unworked when rural population emigrates
-
-**The ask (workshop feedback, JNR):** when rural population emigrates the mod calls
-`city.addRuralPopulation(-1)`; the engine then unassigns a worker from some tile, leaving the
-improvement intact but **unworked**. Mark that vacated tile on the map (icon/label, or "mark it as
-pillaged and block repair") the way the destination enclave is marked, so the loss reads visually.
-
-**Why it's tempting:** we already paint on-map markers for enclaves
-([ui/emigration-enclave-markers.js](../ui/emigration-enclave-markers.js)), so "do the same for the
-origin tile" looks like a small reuse.
-
-**Why it can't be done — CONFIRMED (2026-07-15), the tile can't even be IDENTIFIED:** unlike an enclave
-(a real Constructible that persists in game state and is re-scannable any time via
-`MapConstructibles.getConstructibles`), a vacated tile leaves **no readable trace**. The mod doesn't
-choose the tile — the engine does — so the only way to identify it is to diff the city's worked-plot
-set around the removal. Three probe variants, all ✗ (shipped in the Self-Test screen as the evidence
-trail — `runVacatedSurfaceProbe` / `runVacatedDiffProbe` / `runVacatedTurnArm` + `runVacatedTurnRead`
-in [ui/emigration-enclave-probe.js](../ui/emigration-enclave-probe.js)):
-
-1. **Worked-set surface** — `city.Workers.GetTilePlacementInfo` / `GetAllPlacementInfo` is the
-   **specialist** subsystem (`NumWorkers`/`MaxWorkers`/`CurrentYields`), NOT rural tile-working: only
-   1 plot read `NumWorkers>0` on a rural-5 city, and `workerPopulation` was `undefined`. No
-   `IsWorked`/`Assigned` field exists.
-2. **Inline −1 diff** — removing a rural pop (rural 5→4) changed **nothing** in any per-plot signal.
-3. **Across-end-turn diff** — armed, removed 1 rural, ended a full turn, re-read all **41** owned plots
-   on three signals (`getYieldsWithCity`, constructible signature, specialist `NumWorkers`): **not one
-   plot changed.** So it wasn't a timing artifact. The engine reassigns rural tiles internally with no
-   per-tile "now unworked" flag exposed to UI script, the rural improvement stays intact, and
-   `getYieldsWithCity` is a *hypothetical if-worked* value that never drops.
-
-JNR's "mark as pillaged + block repair" is separately rejected regardless: it's a real game-state
-mutation with a real yield penalty (double-punishes the player), breaks the read-only-overlay design
-that keeps this mod co-load-safe, and no-ops on unimproved worked tiles.
-
-**What we did instead:** nothing on the tile — the event is communicated at the **city** level (toasts /
-notifications / city readout), and the workshop page explains that the destination enclave is marked
-but the origin tile isn't, because the game gives modders no per-tile unworked signal.
-
-**Verdict:** marking (or pillaging) the vacated tile is impossible — the tile is **unidentifiable** from
-a UI-script mod, not merely unpaintable. Do NOT re-open this: do not re-probe `city.Workers`,
-`getYieldsWithCity`, or constructible scans for a "which tile went unworked" read. Revisit only if a
-future game patch adds a rural-tile-worked accessor. Full trail:
-[vacated-tile-marker-plan.md](vacated-tile-marker-plan.md).
+The "distinct 3D model for enclave constructibles" and "vacated-tile on-map marker" entries that used to
+live here were **abandoned because they can't be built** (hard engine limits), so they now live in
+[wont-implement-with-justifications.md](wont-implement-with-justifications.md) alongside the rest of the
+enclave lifecycle work, per this file's standing convention.
 
 ## README — relocate the LaTeX `$$…$$` formula blocks out of the marketing README
 
@@ -255,3 +149,25 @@ overview/manual note).
 **Verdict:** premise no longer holds; the formulas render fine on GitHub and read better inline next to
 their explanations. Signpost shipped; relocation is churn, not a fix. Revisit only if GitHub drops math
 rendering.
+
+## Localization — leave `emigration-demo-data.js` sample-preview text hardcoded in English
+
+The v2.1.0 full-localization pass converted every live player-facing string to `LOC_` keys with real
+translations in all 11 languages. The one deliberately-skipped surface is the **Sample data preview**:
+[emigration-demo-data.js](../ui/emigration-demo-data.js) hardcodes fixture event names — `"Nile flood"`,
+`"Roman–Greek War"`, `"Yellow River flood"`, `"Aegean quake"` ([L175-204](../ui/emigration-demo-data.js#L175))
+— plus fabricated civ/city names and ` BC` / ` AD` era suffixes on its synthetic timeline.
+
+Tempting to localize for consistency with the rest of the dashboard. It's wrong because this text is
+**developer/preview-only fixture data**, not live gameplay: it renders solely when a user opts into
+"Sample" via the Options data-source dropdown to preview the dashboard's shape with no real game running.
+The strings are invented scenarios (not engine events), so there is no in-game context in which a
+non-English player encounters them during normal play. Authoring + translating ~30 throwaway fixture
+labels across 11 locales — and keeping them parity-green forever — is pure overhead for a diagnostic
+preview. The opt-in nature makes the English perfectly acceptable (it reads as sample/placeholder data,
+which is exactly what it is).
+
+**Verdict:** left hardcoded in English intentionally; preview-only fixture data is out of scope for
+interface localization. The UI-key CI guard (`tests/i18n-ui-keys.mjs`) does not flag these because they
+are plain string literals, not `LOC_` references. Revisit only if the Sample preview ever becomes a
+shipped, discoverable feature rather than a dev/diagnostic mode.
