@@ -162,6 +162,20 @@ export function causeAccent(cause) {
   return (cause && ACCENTS[cause]) || ACCENTS.other;
 }
 
+/**
+ * The DIRECTION-based accent for a per-move migration digest, shared by the HUD toast AND the log row so
+ * the two always match: green when people stay within the empire or arrive from abroad (a neutral
+ * shuffle or a gain), red when the player's OWN people leave for another civ (a real loss). Independent
+ * of the migration cause — a prosperity-driven departure to a rival is still a red loss, not a green
+ * gain. Deaths and world-news use {@link notificationAccent} (cause colour) instead.
+ * @param {boolean} [ownLoss] Whether it's the player's own settlement shedding population.
+ * @param {boolean} [crossCiv] Whether the move crossed a civilization border.
+ * @returns {string} A CSS colour.
+ */
+export function digestAccent(ownLoss, crossCiv) {
+  return (!ownLoss || !crossCiv) ? causeAccent("prosperity") : causeAccent("war");
+}
+
 /** The red-toned causes; the alarming red is reserved for the local player's OWN population losses. */
 const RED_CAUSES = new Set(["war", "conquest", "crisis"]);
 /** A muted slate for world-news / other-civ notifications (informational, not the player's crisis). */
