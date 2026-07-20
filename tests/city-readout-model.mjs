@@ -33,7 +33,7 @@ function testReadoutModelBuildsExpectedLines() {
   assert.equal(model.title, "Rome - Migration");
   assert.ok(model.lines.some((l) => l.includes("Pressure: War 60%") && l.includes("42% to next move")));
   assert.ok(model.lines.some((l) => l.includes("Pulled toward Memphis (rival civ)")));
-  assert.ok(model.lines.some((l) => l.includes("Why there: nearby, open borders")),
+  assert.ok(model.lines.some((l) => l.includes("Why there: proximity and open borders")),
     "the readout explains why the pull target was chosen (P0.1)");
   assert.ok(model.lines.some((l) => l.includes("Assimilation cost: ~3 gold/turn")));
   assert.ok(model.lines.some((l) => l.includes("Origins: Roman 62%, Egyptian 23%, Greek 10% (+1 more)")));

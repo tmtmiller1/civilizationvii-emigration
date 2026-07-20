@@ -1162,5 +1162,6 @@
         <Replace Tag="LOC_EMIG_DIL_FX_INFLUENCE" Language="zh_Hant_HK"><Text>影響力</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_FX_POP" Language="zh_Hant_HK"><Text>人口</Text></Replace>
         <Replace Tag="LOC_EMIG_DILV_DISMISS" Language="zh_Hant_HK"><Text>暫不</Text></Replace>
+        <Replace Tag="LOC_EMIG_LIST_AND" Language="zh_Hant_HK"><Text>, </Text></Replace>
     </LocalizedText>
 </Database>

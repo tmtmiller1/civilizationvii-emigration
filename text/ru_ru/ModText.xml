@@ -1162,5 +1162,6 @@
         <Replace Tag="LOC_EMIG_DIL_FX_INFLUENCE" Language="ru_RU"><Text>Влияние</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_FX_POP" Language="ru_RU"><Text>население</Text></Replace>
         <Replace Tag="LOC_EMIG_DILV_DISMISS" Language="ru_RU"><Text>Не сейчас</Text></Replace>
+        <Replace Tag="LOC_EMIG_LIST_AND" Language="ru_RU"><Text> и </Text></Replace>
     </LocalizedText>
 </Database>
