@@ -38,7 +38,7 @@ import { worstDisasterTypeForOwner } from "/emigration/ui/emigration-disasters.j
 import { formatBothExact } from "/emigration/ui/emigration-population.js";
 import { causeLabel, notificationAccent } from "/emigration/ui/emigration-causes.js";
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
-import { reasonsPhrase } from "/emigration/ui/emigration-move-reasons.js";
+import { pullReasonsPhrase } from "/emigration/ui/emigration-move-reasons.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 
@@ -675,7 +675,7 @@ function eventMessage(ev) {
     ? assimilationCostFor(ev.destOwner).gold : 0;
   return localDigestMessage({
     cause: ev.cause, people: formatBothExact(ev.people, ev.points), city: ev.srcName || "a settlement",
-    crossCiv: ev.crossCiv, destName: dv.toCity || dv.toCiv, destGold, why: reasonsPhrase(ev.reasons),
+    crossCiv: ev.crossCiv, destName: dv.toCity || dv.toCiv, destGold, why: pullReasonsPhrase(ev.reasons),
     byCiv: conquerorName(ev) // the (unmet-masked) conquering civ NAME; only the conquest headline reads it
   });
 }
@@ -705,7 +705,7 @@ function logEvent(ev, msg) {
     kind: "digest", cause: ev.cause, event: eventNameFor(ev.cause, ev.srcOwner) || undefined,
     summary: msg, people: ev.people, points: ev.points,
     fromCity: ev.srcName, fromCiv, toCity: dv.toCity, toCiv: dv.toCiv, crossCiv: ev.crossCiv,
-    reasons: reasonsPhrase(ev.reasons) || undefined, // "why here" tags for the log detail (P0.1)
+    reasons: pullReasonsPhrase(ev.reasons) || undefined, // "why here" pull tags for the log detail (P0.1)
     ownLoss: true // the local player's own settlement shedding population
   });
 }

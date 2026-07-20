@@ -38,8 +38,8 @@ function testActionHintFallsBackToSharedHint() {
 }
 
 function testPermanenceCueSelection() {
-  assert.equal(permanenceCue("war"), "The pressure is temporary."); // temporary
-  assert.equal(permanenceCue("disaster"), "The pressure is temporary.");
+  assert.equal(permanenceCue("war"), ""); // temporary cue dropped (the action hint already implies it)
+  assert.equal(permanenceCue("disaster"), "");
   assert.equal(permanenceCue("unhappiness"), "Migrants will continue to leave until you address the cause."); // persistent
   assert.equal(permanenceCue("attrition"), "Those people are gone for good."); // permanent
 }

@@ -19,7 +19,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { citySnapshot } from "/emigration/ui/emigration-city-readout-data.js";
 import { actionHint, permanenceCue } from "/emigration/ui/emigration-naming.js";
 import { formatPeople, localeNumber } from "/emigration/ui/emigration-population.js";
-import { reasonsPhrase } from "/emigration/ui/emigration-move-reasons.js";
+import { reasonsPhrase, pullReasonsPhrase } from "/emigration/ui/emigration-move-reasons.js";
 import { mountExplain } from "/emigration/ui/emigration-explain-view.js";
 import { toast } from "/emigration/ui/emigration-feedback.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
@@ -153,7 +153,7 @@ function refugeeBurdenLine(s) {
  * @returns {string} Line text or empty.
  */
 function whyThereLine(destReasons) {
-  const why = reasonsPhrase(destReasons);
+  const why = pullReasonsPhrase(destReasons);
   return why ? loc("LOC_EMIG_RO_WHY_THERE", "Why there: {1_Why}", why) : "";
 }
 

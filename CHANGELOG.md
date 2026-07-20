@@ -27,6 +27,13 @@ section below by `release.sh`.
     phrases, "at peace again", "+N more", unmet-civilization fallbacks) are now single localized
     templates with placeholders, so they read naturally in every language.
   - **Guide** — the "What counts" / "FAQ" navigation pills now localize.
+- **Clearer migration notifications.** Each move now reads in a natural order: what happened and where
+  the people went, then why that destination, then what you can do. The "why there" names only what
+  actually drew them — the destination's greater prosperity, proximity, safety, open borders, an
+  alliance, or an offer of asylum — as a clean phrase ("Drawn there by its greater prosperity", "…by its
+  greater prosperity and proximity"), instead of splicing in flight reasons like "escaping the crisis"
+  that belong to why they left. Dropped the redundant "The pressure is temporary." line, since the
+  action hint already says the pressure passes.
 
 ### Fixed
 - **Removed six dead Demographics metric keys** (`…_EMIG_NET_MIGRATION` / `_IN` / `_OUT` and their
