@@ -521,6 +521,10 @@ export function actionHint(cause, city) {
  */
 export function permanenceCue(cause) {
   const p = causePermanence(cause);
+  // A "temporary" cue ("The pressure is temporary.") only restated what the action hint already implies
+  // ("displacement subsides on its own…"), so it's dropped; the meaningful persistent / permanent cues
+  // (keep-leaving / gone-for-good) stay.
+  if (p === "temporary") return "";
   return loc("LOC_EMIG_PERMANENCE_" + p.toUpperCase()) || PERMANENCE_FALLBACK[p] || "";
 }
 
@@ -662,11 +666,11 @@ function headlineWithDest(o) {
 
 /**
  * Compose the local player's per-pass migration digest as two blocks separated by {@link DIGEST_GAP}:
- * the SITUATION (cause-named loss headline + "where they went") and the GUIDANCE (action hint, a
- * cross-civ assimilation cost note when material, the "why here" clause, and a trailing
- * internal-vs-external movement-scope tag). The action hint already conveys how durable the loss is and
- * whether acting helps, so a separate permanence cue is not repeated here. Pure; the caller resolves
- * the inputs.
+ * the SITUATION (cause-named loss headline + "where they went") and the GUIDANCE — the "why here"
+ * clause first (why that destination), then the action hint, a cross-civ assimilation cost note when
+ * material, and a trailing internal-vs-external movement-scope tag. The action hint already conveys how
+ * durable the loss is and whether acting helps, so a separate permanence cue is not repeated here.
+ * Pure; the caller resolves the inputs.
  * @param {{cause?:string, people:string, city:string, crossCiv?:boolean, destName?:string,
  *          destGold?:number, why?:string, byCiv?:string}} o The resolved digest inputs. `why` is the
  *   pre-localized "why here" phrase (P0.1), appended as a short clause when present; `byCiv` is the
@@ -676,15 +680,15 @@ function headlineWithDest(o) {
 export function localDigestMessage(o) {
   const situation = headlineWithDest(o);
   let guidance = "";
-  const hint = actionHint(o.cause, o.city);
+  // The "why here" clause leads the guidance (why that destination), right after the situation. Causes
+  // whose flowing headline already states the pull ("…for its more prosperous neighbor, X" / "…for the
+  // safety of X") don't repeat it — that would just be noise; every other cause keeps it.
+  if (!(o.cause && HEADLINE_STATES_WHY.has(o.cause))) guidance += whyClause(o.cause, o.why);
+  const hint = actionHint(o.cause, o.city); // then the action hint (what you can do / how durable it is)
   if (hint) guidance += " " + hint;
   if (o.crossCiv && o.destName && (o.destGold || 0) >= 1) {
     guidance += " " + costNote(o.destName, Math.round(o.destGold || 0));
   }
-  // Causes whose flowing headline already states the pull ("…for its more prosperous neighbor, X" /
-  // "…for the safety of X") don't repeat it as a "Drawn there: …" clause — that would just be noise.
-  // Every other cause keeps the clause (a death names its fatal cause, etc.).
-  if (!(o.cause && HEADLINE_STATES_WHY.has(o.cause))) guidance += whyClause(o.cause, o.why);
   guidance += scopeClause(o.cause, o.crossCiv); // trailing (Internal Move) / (External Move) tag
   guidance = guidance.trim();
   return guidance ? situation + DIGEST_GAP + guidance : situation;
@@ -719,7 +723,7 @@ function whyClause(cause, why) {
   if (!why) return "";
   const isDeath = cause === "attrition";
   const key = isDeath ? "LOC_EMIG_DEATH_WHY_CLAUSE" : "LOC_EMIG_WHY_CLAUSE";
-  const fb = isDeath ? `The cause: ${why}.` : `Drawn there: ${why}.`;
+  const fb = isDeath ? `The cause: ${why}.` : `Drawn there by its ${why}.`;
   return " " + (loc(key, why) || fb);
 }
 

@@ -1162,5 +1162,6 @@
         <Replace Tag="LOC_EMIG_DIL_FX_INFLUENCE" Language="it_IT"><Text>Influenza</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_FX_POP" Language="it_IT"><Text>popolazione</Text></Replace>
         <Replace Tag="LOC_EMIG_DILV_DISMISS" Language="it_IT"><Text>Non ora</Text></Replace>
+        <Replace Tag="LOC_EMIG_LIST_AND" Language="it_IT"><Text> e </Text></Replace>
     </LocalizedText>
 </Database>

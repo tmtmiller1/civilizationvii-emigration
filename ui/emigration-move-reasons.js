@@ -35,15 +35,15 @@ export const DEATH_REASON = Object.freeze({
 // after a name, e.g. "Pulled toward Thebes (nearby, open borders)".
 /** @type {Record<string, string>} */
 const FALLBACK = {
-  "richer": "more prosperous",
-  "nearby": "nearby",
+  "richer": "greater prosperity",
+  "nearby": "proximity",
   "safer-dir": "away from the fighting",
-  "own-civ": "safer interior",
+  "own-civ": "greater safety",
   "crisis-escape": "escaping the crisis",
   "aggressor-avoided": "avoiding the aggressor",
   "open-borders": "open borders",
-  "allied": "an ally",
-  "asylum": "offered asylum",
+  "allied": "alliance",
+  "asylum": "offer of asylum",
   "raid": "drawn by a raid",
   "siege": "under siege",
   "under-attack": "under attack",
@@ -124,4 +124,37 @@ export function reasonsPhrase(reasons, max = 3) {
     if (parts.length >= max) break;
   }
   return parts.join(", ");
+}
+
+// Reason tags that describe the DESTINATION's own pull — they read as attributes of where the people
+// went ("more prosperous", "nearby", "open borders"). The remaining tags — crisis-escape /
+// aggressor-avoided / safer-dir / raid — describe the FLIGHT (why/how they left), which the situation
+// sentence already conveys and which reads oddly under a "Drawn there:" / "Why there:" heading (mixing a
+// gerund fragment like "escaping the crisis" with an adjective like "more prosperous"). So the
+// destination-why clause shows only these.
+const PULL_TAGS = new Set(["richer", "nearby", "own-civ", "open-borders", "allied", "asylum"]);
+
+/**
+ * Like {@link reasonsPhrase} but only the destination-PULL tags — for the "Drawn there:" / "Why there:"
+ * clause, so it names why the destination was chosen without splicing in a flight fragment. Empty when
+ * the move had no pull reason (its situation sentence already tells the whole story).
+ * @param {string[]|undefined} reasons The reason-tag keys.
+ * @param {number} [max] Max tags to show (default 3).
+ * @returns {string} The joined pull phrase, or "".
+ */
+export function pullReasonsPhrase(reasons, max = 3) {
+  if (!Array.isArray(reasons)) return "";
+  const seen = new Set();
+  const parts = [];
+  for (const t of reasons) {
+    if (!PULL_TAGS.has(t) || seen.has(t)) continue;
+    seen.add(t);
+    parts.push(reasonLabel(t));
+    if (parts.length >= max) break;
+  }
+  if (parts.length <= 1) return parts[0] || "";
+  // Read as prose ("A and B", "A, B and C"): the final connector is localized (English " and ", other
+  // languages their own word, or a comma where a conjunction isn't wanted), the rest comma-joined.
+  const and = loc("LOC_EMIG_LIST_AND", " and ");
+  return parts.slice(0, -1).join(", ") + and + parts[parts.length - 1];
 }

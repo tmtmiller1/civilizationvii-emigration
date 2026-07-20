@@ -1162,5 +1162,6 @@
         <Replace Tag="LOC_EMIG_DIL_FX_INFLUENCE" Language="ja_JP"><Text>影響力</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_FX_POP" Language="ja_JP"><Text>人口</Text></Replace>
         <Replace Tag="LOC_EMIG_DILV_DISMISS" Language="ja_JP"><Text>今はやめておく</Text></Replace>
+        <Replace Tag="LOC_EMIG_LIST_AND" Language="ja_JP"><Text>, </Text></Replace>
     </LocalizedText>
 </Database>

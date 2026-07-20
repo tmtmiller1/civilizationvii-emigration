@@ -27,10 +27,10 @@ const sig = (o) => ({ key: o.key, owner: o.owner, pros: o.pros, population: o.po
   violence: o.violence || 0, disaster: o.disaster || 0, happiness: o.happiness || 5, city: city(o.x || 0) });
 
 // ── Display helpers ─────────────────────────────────────────────────────────
-assert.equal(reasonLabel(REASON.NEARBY), "nearby", "known tag maps to its phrase");
+assert.equal(reasonLabel(REASON.NEARBY), "proximity", "known tag maps to its phrase");
 assert.equal(reasonLabel("mystery-tag"), "mystery-tag", "unknown tag passes through");
-assert.equal(reasonsPhrase(["nearby", "open-borders"]), "nearby, open borders", "joins localized phrases");
-assert.equal(reasonsPhrase(["nearby", "nearby", "richer"]), "nearby, more prosperous", "dedupes");
+assert.equal(reasonsPhrase(["nearby", "open-borders"]), "proximity, open borders", "joins localized phrases");
+assert.equal(reasonsPhrase(["nearby", "nearby", "richer"]), "proximity, greater prosperity", "dedupes");
 assert.equal(reasonsPhrase(["a", "b", "c", "d"], 2).split(", ").length, 2, "caps to max");
 assert.equal(reasonsPhrase([]), "", "empty for no reasons");
 assert.equal(reasonsPhrase(undefined), "", "empty for missing reasons");

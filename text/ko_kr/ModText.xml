@@ -1162,5 +1162,6 @@
         <Replace Tag="LOC_EMIG_DIL_FX_INFLUENCE" Language="ko_KR"><Text>영향력</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_FX_POP" Language="ko_KR"><Text>인구</Text></Replace>
         <Replace Tag="LOC_EMIG_DILV_DISMISS" Language="ko_KR"><Text>나중에</Text></Replace>
+        <Replace Tag="LOC_EMIG_LIST_AND" Language="ko_KR"><Text>, </Text></Replace>
     </LocalizedText>
 </Database>
