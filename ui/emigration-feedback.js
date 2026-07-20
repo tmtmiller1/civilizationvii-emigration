@@ -36,7 +36,7 @@ import {
 import { warAggressors } from "/emigration/ui/emigration-war.js";
 import { worstDisasterTypeForOwner } from "/emigration/ui/emigration-disasters.js";
 import { formatBothExact } from "/emigration/ui/emigration-population.js";
-import { causeLabel, notificationAccent } from "/emigration/ui/emigration-causes.js";
+import { causeLabel, notificationAccent, digestAccent } from "/emigration/ui/emigration-causes.js";
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
 import { pullReasonsPhrase } from "/emigration/ui/emigration-move-reasons.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
@@ -271,14 +271,16 @@ function buildToastEl(msg, cause, accent) {
  * @param {string} msg The message body.
  * @param {string} [cause] The migration cause (or "crisis"), for the eyebrow + accent theme.
  * @param {boolean} [ownLoss] Whether this is the local player's own loss (reserves the red accent).
+ * @param {string} [accentOverride] An explicit accent colour that wins over the cause colour — used by
+ *   the per-move digests so the toast matches the log row's DIRECTION-based colour (see {@link digestAccent}).
  */
-export function toast(msg, cause, ownLoss) {
+export function toast(msg, cause, ownLoss, accentOverride) {
   if (CONFIG.notifyMode < 1 || !CONFIG.notifyToasts) return;
   try {
     const root = document.body || document.documentElement;
     if (!root) return;
     injectToastStyle();
-    const accent = notificationAccent(cause, ownLoss);
+    const accent = accentOverride || notificationAccent(cause, ownLoss);
     const el = buildToastEl(msg, cause, accent);
     root.appendChild(el);
     _toasts.push(el);
@@ -333,11 +335,12 @@ function cooldownOk() {
  * @param {string} msg The message.
  * @param {string} [cause] The migration cause (or "crisis"), for the toast's theme.
  * @param {boolean} [ownLoss] Whether this is the local player's own loss (reserves the red accent).
+ * @param {string} [accentOverride] Explicit accent colour (per-move digests pass the direction accent).
  */
-export function announceImportant(msg, cause, ownLoss) {
+export function announceImportant(msg, cause, ownLoss, accentOverride) {
   if (CONFIG.notifyMode < 1) return;
   if (!cooldownOk()) return;
-  toast(msg, cause, ownLoss);
+  toast(msg, cause, ownLoss, accentOverride);
 }
 
 /** Causes that name a specific in-world event (war/disaster/conquest), vs economic migration. */
@@ -725,7 +728,10 @@ function localDigest(migs) {
   if (!events.length) return;
   for (const ev of events) logEvent(ev, eventMessage(ev));
   const lead = events[0];
-  announceImportant(eventMessage(lead), lead.cause, true); // the local player's own loss → red
+  // Colour the toast by DIRECTION (red for own people leaving for a rival, green for an internal
+  // shuffle), matching the log row's accent — not by cause, which mismatched (a prosperity departure
+  // toasted green while the log row was correctly red).
+  announceImportant(eventMessage(lead), lead.cause, true, digestAccent(true, lead.crossCiv));
 }
 
 /**
@@ -827,7 +833,8 @@ function inboundDigest(migs) {
   if (!events.length) return;
   for (const ev of events) logInbound(ev, inboundMessage(ev));
   const lead = events[0];
-  announceImportant(inboundMessage(lead), lead.cause, false); // a gain → neutral accent
+  // A gain → green (direction accent), matching the log row.
+  announceImportant(inboundMessage(lead), lead.cause, false, digestAccent(false, true));
 }
 
 // P0.3 per-source cue cooldown (session-only; a reload resetting a low-key cue is harmless).

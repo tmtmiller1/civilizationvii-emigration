@@ -33,7 +33,10 @@ section below by `release.sh`.
   alliance, or an offer of asylum — as a clean phrase ("Drawn there by its greater prosperity", "…by its
   greater prosperity and proximity"), instead of splicing in flight reasons like "escaping the crisis"
   that belong to why they left. Dropped the redundant "The pressure is temporary." line, since the
-  action hint already says the pressure passes.
+  action hint already says the pressure passes. The pop-up toast is now tinted by the same rule as the
+  log row — red when your own people leave for a rival, green for an internal move or an arrival — so a
+  toast and its log entry no longer disagree (a departure to a more prosperous rival was showing a green
+  toast over a red log row).
 
 ### Fixed
 - **Removed six dead Demographics metric keys** (`…_EMIG_NET_MIGRATION` / `_IN` / `_OUT` and their

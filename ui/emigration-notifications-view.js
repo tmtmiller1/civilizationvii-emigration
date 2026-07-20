@@ -8,7 +8,7 @@
 // so it renders correctly in the Demographics page or the standalone window.
 
 import { notificationLog } from "/emigration/ui/emigration-notifications.js";
-import { causeLabel, causeAccent, notificationAccent } from "/emigration/ui/emigration-causes.js";
+import { causeLabel, causeAccent, notificationAccent, digestAccent } from "/emigration/ui/emigration-causes.js";
 import { formatBothExact } from "/emigration/ui/emigration-population.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
 
@@ -242,9 +242,7 @@ export function chipLabel(e) {
  */
 export function rowAccent(e) {
   if (e.kind === "chronicle") return causeAccent("chronicle");
-  if (e.kind === "digest" && !isDeath(e)) {
-    return (!e.ownLoss || !e.crossCiv) ? causeAccent("prosperity") : causeAccent("war"); // green vs red
-  }
+  if (e.kind === "digest" && !isDeath(e)) return digestAccent(e.ownLoss, e.crossCiv); // green vs red by direction
   return notificationAccent(e.cause, e.ownLoss); // deaths + world-news keep the cause colour
 }
 
