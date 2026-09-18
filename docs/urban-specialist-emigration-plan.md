@@ -14,7 +14,7 @@ The **Emigration** mod (`civilization_vii_mods/tower_mods/emigration/`, v2.1.0) 
 - **The write surface is a wall.** `addRuralPopulation(±1)` is the *only* population write that exists (cross-civ capable). There is **no** `addUrbanPopulation`, no specialist setter — confirmed-absent in `mod_ideas_tested/civ7-modding-docs/13-probe-findings-runtime-writes.md`. Urban districts and specialists are **engine-derived** from total/rural pop + worker assignment (`DISTRICT_POPULATION_REQUIRED_PER=3`). A UI mod can *read* them but not directly *write* them.
 - Roadmap **§17.3** ([docs/emigration-roadmap-and-backlog.md:1459-1492](emigration-roadmap-and-backlog.md#L1459)) already specs "Emigration of urban population" and flags it **probe-gated**: no urban write has been confirmed reachable, and the prior settled dump came from a fresh pop-1 boot.
 
-Because of this, the request cannot be assumed buildable as literal physical relocation. Per the repo's **disproof gate** (root CLAUDE.md), the plan is **probe-first**: a cheap in-game measurement decides what the feature can be, *before* any population-write code is written. Two parts are separable:
+Because of this, the request cannot be assumed buildable as literal physical relocation. Per the project's **disproof gate** (test a hypothesis cheaply before building on it), the plan is **probe-first**: a cheap in-game measurement decides what the feature can be, *before* any population-write code is written. Two parts are separable:
 
 - **Urban emigration** (needs a write) → gated on the probe.
 - **Specialist treatment** (needs only reads, all confirmed present) → shippable unconditionally.
