@@ -1,0 +1,16 @@
+[2026-09-18 07:55:23]	[EmigProbe] shell attached 
+[2026-09-18 07:55:24]	[EmigProbe] shell query complete 
+[2026-09-18 07:55:25]	[EmigProbe] shell found AutoSave_01_0106.Civ7Save turn 106 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-18 07:55:25]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-18 07:55:43]	[EmigTest] modtest142 attached 
+[2026-09-18 07:55:58]	[EmigTest] modtest142 run local=0 turn=106 
+[2026-09-18 07:55:58]	[EmigTest] SNAP START turn=106 crossCiv=100 top=["Kumbi Saleh idx=1.09 origins=4 n=5","Duisburg idx=1.03 origins=2 n=7","Katsina idx=1.02 origins=3 n=3"] 
+[2026-09-18 07:55:58]	[EmigTest] SNAP BEFORE SHOTS (lens only) turn=106 crossCiv=100 top=["Kumbi Saleh idx=1.09 origins=4 n=5","Duisburg idx=1.03 origins=2 n=7","Katsina idx=1.02 origins=3 n=3"] 
+[2026-09-18 07:56:08]	[EmigTest] LENS diversity ranking ["Kumbi Saleh:1.09:4","Duisburg:1.03:2","Katsina:1.02:3","Frankfurt am Main:0.66:3","Königsberg:0.63:2","Rostov on Don:0.52:2","Risila:0.5:2","Agadez:0.5:2"] 
+[2026-09-18 07:56:08]	[EmigTest] LENS framing Kumbi Saleh at {"x":43,"y":15} 
+[2026-09-18 07:56:27]	[EmigTest] LENS active=emig-ethnicity-lens 
+[2026-09-18 07:56:27]	[EmigTest] SHOT lens-ethnic-close 
+[2026-09-18 07:56:37]	[EmigTest] SHOT lens-prosperity 
+[2026-09-18 07:56:58]	[EmigTest] SHOT lens-ethnic-wide 
+[2026-09-18 07:57:04]	[EmigTest] VERDICT turnsRun=0 fallbacks=0 reason=lens only 
+[2026-09-18 07:57:07]	[EmigTest] DONE modtest142 finished 

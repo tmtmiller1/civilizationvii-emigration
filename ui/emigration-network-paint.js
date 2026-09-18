@@ -71,7 +71,21 @@ function causeFiltered(d, state) {
 }
 
 /**
- * Whether a dot passes the current filters (cause / origin / destination cluster / movement scope).
+ * Whether a dot belongs to the selected city: it lives in (or arrived at) that city, or it LEFT that
+ * city, an internal mover now in a sibling city, or an emigrant now abroad.
+ * @param {Dot} d Dot.
+ * @param {{civId:number, idx:number}} fc The selected city.
+ * @returns {boolean} True if the dot is part of that city's story.
+ */
+export function dotInCity(d, fc) {
+  if (d.destId === fc.civId && d.cityIdx === fc.idx) return true;
+  if (d.scope === "internal") return d.destId === fc.civId && d.fromCityIdx === fc.idx;
+  return d.scope === "immigrant" && d.originId === fc.civId && d.fromCivCityIdx === fc.idx;
+}
+
+/**
+ * Whether a dot passes the current filters (cause / origin / destination cluster / selected city /
+ * movement scope).
  * @param {Dot} d Dot.
  * @param {VizState} state Interaction state.
  * @returns {boolean} Visible.
@@ -81,6 +95,7 @@ function dotActive(d, state) {
   if (causeFiltered(d, state)) return false;
   if (state.origin != null && d.originId !== state.origin) return false;
   if (state.focusDest != null && d.destId !== state.focusDest) return false;
+  if (state.focusCity && !dotInCity(d, state.focusCity)) return false;
   if (state.scope && d.scope !== state.scope) return false;
   return true;
 }
@@ -142,6 +157,27 @@ function drawClusterDiscs(ctx, scene) {
     drawCivCircle(ctx, c);
     drawCityDiscs(ctx, c, now);
   }
+  drawCityFocusRing(ctx, scene);
+}
+
+/**
+ * Ring the selected city's disc in gold so the selection reads at a glance.
+ * @param {CanvasRenderingContext2D} ctx Context.
+ * @param {Scene} scene Scene.
+ */
+function drawCityFocusRing(ctx, scene) {
+  const fc = scene.state.focusCity;
+  if (!fc) return;
+  const ci = scene.byId.get(fc.civId);
+  const c = ci != null ? scene.centers[ci] : null;
+  const city = c && c.cities ? c.cities[fc.idx] : null;
+  if (!c || !city) return;
+  ctx.setLineDash([]);
+  ctx.strokeStyle = "#f3c34c";
+  ctx.lineWidth = 1.8;
+  ctx.beginPath();
+  ctx.arc(c.x + (city.sx || 0), c.y + (city.sy || 0), (city.subR || 0) + 5, 0, Math.PI * 2);
+  ctx.stroke();
 }
 
 // Event-cause colours (also used by the timeline badges below).
@@ -473,7 +509,7 @@ function layoutStamp(centers) {
 
 /**
  * The memoized flow-arrow overlay: build the red/green migrant-flow segments for the current frame
- * (filtered by the Dots view's origin-isolate / focus-destination / scope state) and draw them over the
+ * (filtered by the Dots view's origin-isolate / focus-destination / city / scope state) and draw them over the
  * dots. Segments are static for a given frame AND layout, so they're cached by (frame + filter +
  * layout) and only rebuilt when one of those changes — the paint loop runs every rAF while
  * animating/playing.
@@ -484,7 +520,9 @@ function drawFlowOverlay(ctx, scene) {
   const sc = /** @type {*} */ (scene);
   const state = sc.state;
   const show = state.show || {};
+  const fc = state.focusCity;
   const key = state.frameIdx + "|" + state.origin + "|" + state.focusDest + "|" +
+    (fc ? fc.civId + ":" + fc.name : "") + "|" +
     (show.immigrant ? 1 : 0) + (show.internal ? 1 : 0) + "|" + (state.expanded ? state.expanded.size : 0) +
     "|" + layoutStamp(sc.centers);
   if (!sc._flowCache || sc._flowCache.key !== key) {
@@ -503,7 +541,8 @@ export function paint(ctx, scene) {
   ctx.clearRect(0, 0, scene.WX, scene.WY);
   drawClusterDiscs(ctx, scene);
   drawDots(ctx, scene);
-  if (scene.state.showFlows) drawFlowOverlay(ctx, scene);
+  // A selected city always shows its own flows: highlighting them is the point of selecting it.
+  if (scene.state.showFlows || scene.state.focusCity) drawFlowOverlay(ctx, scene);
   drawLabels(ctx, scene.centers);
   drawEvents(ctx, scene);
 }

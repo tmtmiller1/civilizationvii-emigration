@@ -1,0 +1,19 @@
+[2026-09-18 10:17:12]	[EmigProbe] shell attached 
+[2026-09-18 10:17:13]	[EmigProbe] shell query complete 
+[2026-09-18 10:17:14]	[EmigProbe] shell found EmigPromo106.Civ7Save turn 106 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-18 10:17:14]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-18 10:17:32]	[EmigTest] modtest147 attached 
+[2026-09-18 10:17:47]	[EmigTest] modtest147 run local=0 turn=106 
+[2026-09-18 10:17:53]	[EmigTest] ENCLAVE host=Rostov on Don at={"x":78,"y":52} origin=2 
+[2026-09-18 10:17:53]	[EmigTest] ENCLAVE host=Duisburg at={"x":16,"y":2} origin=0 
+[2026-09-18 10:17:53]	[EmigTest] ENCLAVE host=Kumbi Saleh at={"x":41,"y":13} origin=4 
+[2026-09-18 10:17:53]	[EmigTest] ENCLAVE host=Agadez at={"x":38,"y":28} origin=9 
+[2026-09-18 10:17:53]	[EmigTest] SCENE city={"x":78,"y":53} enclave={"x":78,"y":52} 
+[2026-09-18 10:17:53]	[EmigTest] POPUP dismissing screen-tech-civic-complete 
+[2026-09-18 10:18:20]	[EmigTest] SHOT enclave-1 
+[2026-09-18 10:18:20]	[EmigTest] TIP enclave-1 cursor={"x":78,"y":52} want={"x":78,"y":52} overrides=0 box={"left":1476,"top":936,"w":210,"h":88} text="Rostov on Don · this tileBulgarian92%Norman8%" 
+[2026-09-18 10:18:29]	[EmigTest] SHOT enclave-2 
+[2026-09-18 10:18:29]	[EmigTest] TIP enclave-2 cursor={"x":78,"y":52} want={"x":78,"y":52} overrides=0 box={"left":1476,"top":936,"w":210,"h":88} text="Rostov on Don · this tileBulgarian92%Norman8%" 
+[2026-09-18 10:18:38]	[EmigTest] SHOT enclave-3 
+[2026-09-18 10:18:38]	[EmigTest] TIP enclave-3 cursor={"x":78,"y":52} want={"x":78,"y":52} overrides=0 box={"left":1476,"top":936,"w":210,"h":88} text="Rostov on Don · this tileBulgarian92%Norman8%" 
+[2026-09-18 10:18:47]	[EmigTest] DONE modtest147 finished 

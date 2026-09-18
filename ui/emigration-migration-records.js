@@ -19,6 +19,12 @@
  *   departure record so the cross-civ edge can be built at depart; NOT the tally-driving destOwner).
  * @property {number} [originCiv] The migrant's TRUE origin civ, overriding srcName-based attribution in
  *   the composition ledger (a returnee's homeland, or a lagged arrival's depart-time source owner).
+ * @property {Record<string, number>} [originMix] Who the migrant is, as origin civ → fraction (sums to 1):
+ *   the source settlement's mix at departure, so a diaspora that moves on keeps its identity. The ledger's
+ *   source side removes these fractions and the destination side adds the same ones. `originCiv` wins over it.
+ * @property {string} [srcLoc] The source settlement's centre plot "x,y" (the ledger's key). Matched before
+ *   `srcName`, which two cities can share.
+ * @property {string} [destLoc] The destination settlement's centre plot "x,y".
  * @property {boolean} crossCiv Whether it crossed civilizations.
  * @property {number} points Raw Civ population points moved (1 per migration).
  * @property {number} people Historically-scaled people who moved.
@@ -55,19 +61,33 @@ export function cityName(city) {
 }
 
 /**
+ * A settlement's centre plot "x,y", the composition ledger's key, or undefined when unreadable. Carried on the
+ * records so the ledger matches a city by where it stands, not by its display name.
+ * @param {*} city City object. @returns {string|undefined} The key.
+ */
+export function settlementLoc(city) {
+  try {
+    const loc = city && city.location;
+    return loc && typeof loc.x === "number" && typeof loc.y === "number" ? loc.x + "," + loc.y : undefined;
+  } catch (_) {
+    return undefined;
+  }
+}
+
+/**
  * Build the record for an instantaneous move (transit lag off / 0): both the source loss and the
  * destination gain land this turn, so it carries both owners.
  * @param {*} src Source signal.
  * @param {*} dest Destination signal.
  * @param {number} people Historically-scaled people who moved.
  * @param {MigrationCause} cause Why this move happened.
- * @param {{destPaidCost:number, eventKey?:string, reasons?:string[]}} meta Assimilation load the
- *   destination took on, the specific event behind the cause (war/disaster/crisis) or "", and the
- *   "why here" reason tags.
+ * @param {{destPaidCost:number, eventKey?:string, reasons?:string[], originMix?:Record<string, number>}} meta
+ *   Assimilation load the destination took on, the specific event behind the cause (war/disaster/crisis) or "",
+ *   the "why here" reason tags, and who the migrant is (see Migration.originMix).
  * @returns {Migration} The record.
  */
 export function moveRecord(src, dest, people, cause, meta) {
-  return {
+  return withDefined({
     srcName: cityName(src.city),
     destName: cityName(dest.city),
     srcOwner: src.owner,
@@ -80,7 +100,7 @@ export function moveRecord(src, dest, people, cause, meta) {
     destPaidCost: meta && meta.destPaidCost,
     reasons: (meta && meta.reasons) || [],
     phase: "move"
-  };
+  }, { srcLoc: settlementLoc(src.city), destLoc: settlementLoc(dest.city), originMix: meta && meta.originMix });
 }
 
 /**
@@ -95,11 +115,12 @@ export function moveRecord(src, dest, people, cause, meta) {
  * @param {MigrationCause} cause Why they left.
  * @param {string} [eventKey] The specific event behind the cause (war/disaster/crisis), or "".
  * @param {string[]} [reasons] The "why here" reason-tag keys for the chosen destination.
+ * @param {Record<string, number>} [originMix] Who the migrant is (see Migration.originMix).
  * @returns {Migration} The record.
  */
 // eslint-disable-next-line max-params
-export function departRecord(src, dest, people, cause, eventKey, reasons) {
-  return {
+export function departRecord(src, dest, people, cause, eventKey, reasons, originMix) {
+  return withDefined({
     srcName: cityName(src.city),
     destName: cityName(dest.city),
     srcOwner: src.owner,
@@ -111,7 +132,7 @@ export function departRecord(src, dest, people, cause, eventKey, reasons) {
     eventKey: eventKey || "",
     reasons: reasons || [],
     phase: "depart"
-  };
+  }, { srcLoc: settlementLoc(src.city), destLoc: settlementLoc(dest.city), originMix });
 }
 
 /**
@@ -125,17 +146,10 @@ export function departRecord(src, dest, people, cause, eventKey, reasons) {
  */
 export function arriveRecord(e, ok, destPaidCost) {
   if (ok) {
-    return {
+    return withDefined({
       srcName: e.srcName,
       destName: e.destName,
       destOwner: e.destOwner,
-      // The migrant's TRUE origin, captured at departure. Composition attributes the arrival to this
-      // directly instead of re-deriving it from srcName at arrival time, which fails for the most
-      // visible diaspora of all, war refugees, whose home city is often razed or captured during the
-      // multi-turn transit (so a name→owner lookup would miss it or credit the conqueror). NOT the
-      // tally-driving srcOwner field (that would double-count immigration, already credited here via
-      // destOwner); originCiv is read only by the composition ledger's destination side.
-      originCiv: e.srcOwner,
       crossCiv: e.crossCiv,
       points: 1,
       people: e.people,
@@ -144,9 +158,21 @@ export function arriveRecord(e, ok, destPaidCost) {
       destPaidCost,
       reasons: e.reasons || [], // "why here" tags captured at departure, forwarded to the arrival
       phase: "arrive"
-    };
+    }, {
+      destLoc: e.destLoc,
+      // Who the migrant is, captured at departure (see Migration.originMix): a mixed city's emigrants arrive
+      // as the same mix that left. An entry queued before the mix existed falls back to originCiv below.
+      originMix: e.originMix,
+      // The migrant's TRUE origin, captured at departure. Composition attributes the arrival to this
+      // directly instead of re-deriving it from srcName at arrival time, which fails for the most
+      // visible diaspora of all, war refugees, whose home city is often razed or captured during the
+      // multi-turn transit (so a name→owner lookup would miss it or credit the conqueror). NOT the
+      // tally-driving srcOwner field (that would double-count immigration, already credited here via
+      // destOwner); originCiv is read only by the composition ledger's destination side.
+      originCiv: e.originMix ? undefined : e.srcOwner
+    });
   }
-  return {
+  return withDefined({
     srcName: e.srcName,
     destName: e.destName,
     srcOwner: e.srcOwner,
@@ -155,5 +181,16 @@ export function arriveRecord(e, ok, destPaidCost) {
     people: e.people,
     cause: "attrition",
     phase: "arrive"
-  };
+  }, { srcLoc: e.srcLoc });
+}
+
+/**
+ * Add the optional identity fields (srcLoc / destLoc / originMix) that have a value, leaving the record's
+ * shape unchanged when a caller has none (an unreadable plot, or a transit entry queued before they existed).
+ * @param {Migration} rec The record (mutated). @param {Record<string, *>} extra Candidate fields.
+ * @returns {Migration} The record.
+ */
+function withDefined(rec, extra) {
+  for (const k of Object.keys(extra)) if (extra[k] !== undefined) /** @type {*} */ (rec)[k] = extra[k];
+  return rec;
 }

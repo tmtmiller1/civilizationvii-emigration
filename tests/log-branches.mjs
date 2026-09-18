@@ -1,66 +1,56 @@
 import assert from "node:assert/strict";
 
-const cssLog = [];
-globalThis.document = {
-  createElement: (tag) => ({
-    style: {
-      cssText: "",
-      set cssText(v) { cssLog.push(v); }
-    }
-  })
-};
+// dlog writes one console.warn line per message, prefixed "[Emigration] " and otherwise unchanged (that is the line
+// UI.log records), never touches the DOM (the old CSS-parse channel is gone), and never throws, even when
+// console.warn itself does.
+
+const warned = [];
+const realWarn = console.warn;
+console.warn = (m) => { warned.push(m); };
+let domTouched = 0;
+globalThis.document = { createElement: () => { domTouched++; return { style: {} }; } };
 
 const { dlog } = await import("/emigration/ui/emigration-log.js");
 
-function testDlogShortMessage() {
-  cssLog.length = 0;
-  dlog("hello");
-  // Short message should be emitted once
-  assert.ok(cssLog.length > 0, "should emit CSS for short message");
-  assert.ok(cssLog[0].includes("EMIG_"), "should include tag");
+function testMessagePassesThrough() {
+  warned.length = 0;
+  dlog("boot start (turnInterval 1, crossCiv true)");
+  assert.deepEqual(warned, ["[Emigration] boot start (turnInterval 1, crossCiv true)"], "one line, punctuation intact");
 }
 
-function testDlogEmptyMessage() {
-  cssLog.length = 0;
-  dlog("");
-  assert.ok(cssLog.length > 0, "should emit CSS for empty message");
+function testLongMessageIsOneLine() {
+  warned.length = 0;
+  dlog("a".repeat(500));
+  assert.equal(warned.length, 1, "no chunking");
+  assert.equal(warned[0], "[Emigration] " + "a".repeat(500));
 }
 
-function testDlogLongMessageChunking() {
-  cssLog.length = 0;
-  const longMsg = "a".repeat(500);
-  dlog(longMsg);
-  // Long messages are chunked at 170 chars
-  assert.ok(cssLog.length >= 2, "long message should be chunked into multiple parts");
-}
-
-function testDlogNonStringInput() {
-  cssLog.length = 0;
+function testNonStringInput() {
+  warned.length = 0;
   dlog(123);
-  assert.ok(cssLog.length > 0, "should handle non-string input");
-  
-  cssLog.length = 0;
-  dlog({ obj: "data" });
-  assert.ok(cssLog.length > 0, "should handle object input");
-  
-  cssLog.length = 0;
   dlog(null);
-  assert.ok(cssLog.length > 0, "should handle null");
+  dlog("");
+  assert.deepEqual(warned, ["[Emigration] 123", "[Emigration] null", "[Emigration] "]);
 }
 
-function testDlogSpecialCharactersEscaped() {
-  cssLog.length = 0;
-  dlog("test@#$%^&*()");
-  assert.ok(cssLog.length > 0, "should escape special characters");
-  assert.ok(cssLog[0].includes("EMIG_"), "should keep tag even with special chars");
+function testNoDomWrites() {
+  dlog("anything");
+  assert.equal(domTouched, 0, "the CSS-parse channel is gone: no elements created");
 }
 
-testDlogShortMessage();
-testDlogEmptyMessage();
-testDlogLongMessageChunking();
-testDlogNonStringInput();
-testDlogSpecialCharactersEscaped();
+function testThrowingConsoleIsSwallowed() {
+  console.warn = () => { throw new Error("console unavailable"); };
+  assert.doesNotThrow(() => dlog("still safe"));
+  console.warn = (m) => { warned.push(m); };
+}
 
+testMessagePassesThrough();
+testLongMessageIsOneLine();
+testNonStringInput();
+testNoDomWrites();
+testThrowingConsoleIsSwallowed();
+
+console.warn = realWarn;
 delete globalThis.document;
 
 console.log("log-branches harness passed");

@@ -1,0 +1,14 @@
+[11:32:26] 10 autosaves backed up
+[11:32:26] registry: 126|emigration|1 626|emigration|0  ; modinfo flag: 1
+[11:32:26] probe installed: eep-modtest148.js on EmigShots072.Civ7Save
+[11:32:29] game pid 22114
+[11:33:43] shot o1-a-lens (window 6445) -> 10742676 bytes
+[11:33:51] shot o1-a-cleared (window 6445) -> 10737665 bytes
+[11:34:02] shot o1-a-magenta (window 6445) -> 10534390 bytes
+[11:34:18] shot o1-a-restored (window 6445) -> 9772360 bytes
+[11:35:06] shot o1-b-turn (window 6445) -> 10382673 bytes
+[11:35:17] result=done after 132s
+[11:35:26] restored: 126|emigration|1 628|emigration|0  ; modinfo flag: 0 ; probe present: no
+[11:35:26] FINISHED result=done
+[11:35:26] autosaves changed during the run; putting the player's back
+[11:35:26] done

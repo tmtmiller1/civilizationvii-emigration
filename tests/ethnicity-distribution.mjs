@@ -231,6 +231,53 @@ assert.deepEqual(distributeTiles(null, null, 0), [], "null inputs → []");
   }
 }
 
+// ── 8. The enclave tile is the MOST enclave tile in the city, whatever the enclave's citywide share ─
+// Watched in game 2026-09-18: Rostov on Don, Norman-held and 60% Bulgarian, painted its Bulgar Enclave tile
+// "Norman 92%, Bulgarian 8%" while the rest of the city read Bulgarian. A majority enclave people was taken as
+// the base fill (never seated on its own tile), and the enclave tile's full MINORITY_CAP went to the owner's
+// people instead. Every enclave position in a synthetic 4x4 city, at four enclave shares, must seat the enclave
+// people most heavily on its own tile, and still conserve both origins.
+{
+  const BAR = 0.30;
+  const OWNER = 1, ENCLAVE = 2;
+  const plots = [];
+  for (let i = 0; i < 16; i++) {
+    plots.push({ x: i % 4, y: Math.floor(i / 4), weight: i === 5 ? 3.6 : (i === 6 || i === 9 ? 2.4 : 1) });
+  }
+  for (const share of [0.1, 0.35, 0.6, 0.8]) {
+    const civs = [{ civ: OWNER, share: 1 - share }, { civ: ENCLAVE, share }].sort((a, b) => b.share - a.share);
+    const comp = { civs, dominant: { civ: civs[0].civ } };
+    for (const p of plots) {
+      const tiles = distributeTiles(plots, comp, 500000, { plainCap: BAR, anchors: new Map([[ENCLAVE, { x: p.x, y: p.y }]]) });
+      const home = localShareOf(tiles.find((t) => t.x === p.x && t.y === p.y), ENCLAVE);
+      const best = Math.max(...tiles.map((t) => localShareOf(t, ENCLAVE)));
+      assert.ok(home >= best - 1e-9,
+        `a ${share * 100}% enclave at ${p.x},${p.y} reads ${home.toFixed(2)} on its tile, below the city's best ${best.toFixed(2)}`);
+      const by = peopleByCiv(tiles);
+      assert.ok(Math.abs(by[ENCLAVE] - share * 500000) < 1, `a ${share * 100}% enclave conserves at ${p.x},${p.y}`);
+      assert.ok(Math.abs(by[OWNER] - (1 - share) * 500000) < 1, `the owner conserves at ${p.x},${p.y}`);
+    }
+  }
+
+  // A tiny owner: the enclave people are 95% of the city. The plain ceiling must lift past MINORITY_CAP to
+  // place them all, and the owner keeps only the sliver its share allows.
+  const tiny = { civs: [{ civ: ENCLAVE, share: 0.95 }, { civ: OWNER, share: 0.05 }], dominant: { civ: ENCLAVE } };
+  const tinyTiles = distributeTiles(plots, tiny, 500000, { plainCap: BAR, anchors: new Map([[ENCLAVE, { x: 0, y: 0 }]]) });
+  const tinyBy = peopleByCiv(tinyTiles);
+  assert.ok(Math.abs(tinyBy[ENCLAVE] - 0.95 * 500000) < 1, "a 95% enclave people is fully placed");
+  assert.ok(Math.abs(tinyBy[OWNER] - 0.05 * 500000) < 1, "and the 5% owner keeps its share");
+
+  // A third origin on the enclave tile gets only the plain ceiling there: the enclave's headroom is its own.
+  const three = { civs: [{ civ: OWNER, share: 0.7 }, { civ: 3, share: 0.2 }, { civ: ENCLAVE, share: 0.1 }], dominant: { civ: OWNER } };
+  for (const p of plots) {
+    const t3 = distributeTiles(plots, three, 500000, { plainCap: BAR, anchors: new Map([[ENCLAVE, { x: p.x, y: p.y }]]) });
+    const home = t3.find((t) => t.x === p.x && t.y === p.y);
+    assert.ok(localShareOf(home, 3) <= BAR + 1e-9, `another diaspora stays under the bar on the enclave tile at ${p.x},${p.y}`);
+    assert.ok(localShareOf(home, ENCLAVE) >= Math.max(...t3.map((t) => localShareOf(t, ENCLAVE))) - 1e-9,
+      `the enclave tile still leads for its people at ${p.x},${p.y}`);
+  }
+}
+
 // ── helpers ─────────────────────────────────────────────────────────────────
 assert.equal(tileDensity(0), 0, "no people → 0 density");
 assert.ok(tileDensity(60000) > 0.5 && tileDensity(60000) < 0.7, "~ref people → ~0.63 density");

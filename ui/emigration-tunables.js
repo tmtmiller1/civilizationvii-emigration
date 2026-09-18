@@ -199,10 +199,10 @@ export const TUNABLES = [
   // Calling people home
   { key: "callHomeEnabled", group: "callhome", type: "bool", label: "LOC_EMIG_T_CALLHOME", desc: "LOC_EMIG_T_CALLHOME_D" },
   { key: "callHomeOfferWhenCalm", group: "callhome", type: "bool", label: "LOC_EMIG_T_CALLHOME_PEACE", desc: "LOC_EMIG_T_CALLHOME_PEACE_D" },
-  { key: "callHomeChanceInternal", group: "callhome", type: "choice", values: [0.35, 0.5, 0.65, 0.8, 0.95], format: "frac", label: "LOC_EMIG_T_CALLHOME_IN", desc: "LOC_EMIG_T_CALLHOME_IN_D" },
   { key: "callHomeChanceExternal", group: "callhome", type: "choice", values: [0.05, 0.12, 0.18, 0.3, 0.45], format: "frac", label: "LOC_EMIG_T_CALLHOME_EX", desc: "LOC_EMIG_T_CALLHOME_EX_D" },
   { key: "callHomeGoldPerPoint", group: "callhome", type: "choice", values: [0, 30, 60, 100, 160], label: "LOC_EMIG_T_CALLHOME_GOLD", desc: "LOC_EMIG_T_CALLHOME_GOLD_D" },
   { key: "callHomeInfluencePerPoint", group: "callhome", type: "choice", values: [0, 6, 12, 20, 32], label: "LOC_EMIG_T_CALLHOME_INFL", desc: "LOC_EMIG_T_CALLHOME_INFL_D" },
+  { key: "callHomeAgeCostStep", group: "callhome", type: "choice", values: [1, 2, 3, 4, 6], format: "mult", label: "LOC_EMIG_T_CALLHOME_AGE", desc: "LOC_EMIG_T_CALLHOME_AGE_D" },
   { key: "callHomeMaxPointsPerAttempt", group: "callhome", type: "choice", values: [1, 2, 3, 5, 8], label: "LOC_EMIG_T_CALLHOME_MAX", desc: "LOC_EMIG_T_CALLHOME_MAX_D" },
   // Attrition
   // outlet - attrition when there's nowhere to flee (the pressure-release valve)

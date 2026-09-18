@@ -5,68 +5,29 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
-## [Unreleased]
-
-### Changed
-- **The Prosperity lens scores each tile in points, and the readout says why.** A tile's prosperity used to be the
-  raw yield sitting on the hex, ranked against the rest of its settlement - so the Hanging Gardens, which produces
-  no yield at all (its effect is +10% growth), read as London's "worst land" at -100%, and a farm out-scored the
-  palace. A tile is now the sum of named terms: a wonder on the hex (+6, the largest term), the city centre (+3),
-  each building (+2, plus +1 for a completed quarter), a worked improvement (+1), the hex's own yield (+1 per 3), a
-  river (+1), a natural wonder on the hex (+3) or next door (+2 each), a wonder next door (+1 each), and anything
-  pillaged on the hex (-3 each) or next door (-1 each). The score is absolute and banded - Flourishing (8+),
-  Thriving (5-7), Ordinary (2-4), Meagre (0-1), Blighted (below 0) - so a wonder tile reads the same in every
-  settlement. Hover a tile and the panel lists the band, the score, and every term behind it, then the
-  settlement's standing as before. Wonders and natural wonders are recognised from the game's database, so ones
-  added by an age or another mod count too.
-- **Calling people home is now two different offers, and the dialog says which one you are looking at.** Both
-  offer a ladder of sizes for each currency (one person, about half of what is callable, everyone), priced with the
-  game's own Gold and Influence icons, and only the sizes your treasury covers. The price climbs faster than the
-  head count (two people cost nearly three times one, three about five times), so a big call is a decision rather
-  than a bulk order. From your own settlements it is a purchase: the pop-up names the settlement people are pulled
-  back from and the one they return to, and exactly the number you paid for come. From abroad it is a gamble: the
-  pop-up names the foreign city and its ruler and states the odds for each person; the call is paid for at the size
-  you choose whether or not anyone answers, every person asked is rolled, and it may bring nobody. An unanswered
-  call is recorded in the Chronicle and still starts the cooldown, so it cannot simply be repeated next turn. The
-  "chance each point returns from your own lands" setting is gone, since that call is no longer a roll.
-
-### Fixed
-- **Calling people home never actually charged anything.** The Gold fee was handed to the charging helper with the
-  wrong sign, which it treats as "nothing to charge", and the Influence fee was charged against a yield the game
-  does not have. Both currencies were free. They are charged now.
-- **The map tooltip stays hidden under a lens, even alongside other tooltip mods.** While an Emigration lens is
-  up (or the cursor is on an enclave) the mod hides the game's own tile tooltip so it doesn't collide with the
-  mod's readout. That was a single switch, and several things could flip it back without the mod noticing - a
-  combat preview or a pantheon screen closing, or a tooltip mod replacing the tile tooltip with its own. The
-  tooltip would then reappear underneath the readout and stay for the rest of the session. The mod now holds the
-  setting rather than setting it once, so it stays hidden until the lens is turned off.
-- **Lens readouts and the enclave tooltip are no longer painted over by other tooltips.** The little panel that
-  follows the cursor under the Ethnicity and Prosperity lenses, and the enclave tooltip, sat one layer below the
-  game's tooltip layer — so any tooltip that appeared at the same spot, the game's own or one added by a tooltip
-  mod, covered them completely. They now sit above that layer, and the mod's own notification toast still sits
-  above them, so a notification is never hidden by a readout.
-- **On the ethnicity lens, a tile that burns with a foreign colour now means an enclave.** The lens gathers each
-  foreign community around a home tile, and it used to pour any community into that tile until it was nearly full —
-  so a town that was only 12% Norman, far short of the 30% an enclave needs, still showed a tile reading "Norman
-  92%", while the real Norman enclave stood several tiles away with nothing to mark it. Two things changed. A
-  community that has a standing enclave now lives *on the enclave's tile*: its people are seated there first, so
-  that tile reads as their quarter and the colour thins out around it. And where no enclave stands, no tile may
-  read past the share an enclave requires, so a community still short of one shows as a real but clearly lighter
-  tint. The enclave's tile is also drawn as the built-up quarter it is; it sits on what the map still counts as
-  empty land, and was being shaded as the faintest tile in the settlement. None of this changes a settlement's
-  overall percentages, or anything about enclaves themselves — how they form, how many can form, or the land rule
-  that chooses their tile.
-- **The ethnicity lens is a true gradient.** Each tile was painted in the single colour of whichever people led it,
-  so a settlement read as flat slabs of one banner colour with a hard flip at the halfway mark, and a community
-  under half of a tile did not show at all. A tile's colour is now a blend of everyone living on it, in proportion:
-  a tile that is a third Norman sits about a third of the way from the host's colour to the Normans', and the map
-  shades smoothly from one into the other. How solid a tile looks still follows how many people live on it.
-- **Enclave labels no longer pile up on the map.** Each time the map markers were redrawn, the old icon and label
-  were left in place and a new pair drawn over them, so an enclave's name could appear doubled or smeared and the
-  copies kept accumulating for as long as the game ran. Markers are now cleared properly before each redraw, and a
-  burst of map events is answered with one redraw instead of dozens.
+## [3.0.0] - 2026-09-18
 
 ### Added
+- **Select a single city in the network diagram.** Click a city to highlight just its migrant flows: arrows are
+  drawn only for moves into or out of that city (even with "Migrant flows" off), a gold ring marks it, and its dots
+  stay lit (its residents and arrivals, plus the people who left it for a sibling city or another civilization)
+  while everything else dims. Click the city again, or empty space, to clear. Clicking a civilization's outer ring
+  still isolates the whole civilization.
+- **The Civilopedia now covers the whole mod, quotations included.** The Emigration section is organised into
+  groups like the game's own Game Concepts: How People Move, Policy & Diplomacy, Interface & Options, and Voices of
+  the Displaced. New chaptered pages describe departures and arrivals (what a departure removes, time on the road,
+  the Newcomers and Refugees pop-ups and their placement modes, the waiting pool, the integration cost), calling
+  your people home, every immigration policy card by age, the two map lenses and the enclave markers, toasts, the
+  notifications log, the city readout and the City Details sections, the options and intensity presets, the
+  Demographics mod, and an About page with credits. Voices of the Displaced adds one page per origin
+  civilization, fifty in all plus the general pools, listing every quotation the mod can show for that people,
+  the pop-up it appears in, the two enclave stances, and a short note on who each speaker was. Those pages are
+  generated from the quote registries (`scripts/gen-pedia-voices.mjs`), so they cannot drift from the pop-ups, and
+  the generator refuses to run when a quoted speaker has no note. Four existing pages were corrected: the
+  dashboard page lists the tabs that exist today, the Chronicle page no longer claims a tab of its own and states
+  the decision cadence, the enclave page says that the recognition pop-up appears only in Ask me mode, and the
+  Talent Raids page names the Diplomacy Extended mod the actions come from. The new pages are English in every
+  locale for now, like the enclave text.
 - **An enclave's tile now explains itself.** An enclave is drawn with a real improvement borrowed for its looks, so
   the game's tooltip described that improvement — a Norman enclave read as "Hidden Fortress" — and nothing said what
   the tile was, what stage it had reached, or why it yields what it does. Hovering an enclave's tile now shows the
@@ -80,8 +41,63 @@ section below by `release.sh`.
   the tile's yield icons cannot change when an enclave is recognized. The marker now carries a second line —
   *Established*, then *Recognized* with what the stance pays, *Contested*, *Fading* — so recognition is visible on
   the map.
+- **Settlements can be dragged out of their civilization's circle.** On the network diagram, press a city or town
+  circle and drag it: it takes its people with it and the civilization's circle grows to keep it inside, so an
+  internal migrant flow that was buried under the neighbouring settlements can be pulled into the open and read.
+  Dragging anywhere else in a civilization's circle still moves the whole group, settlements and all, and a click
+  without a drag still isolates that civilization.
+
+- **The Net Migration table separates internal from external movement.** Its In and Out columns counted every move a
+  civilization saw, so a civilization shuffling people between its own settlements looked as busy as one gaining and
+  losing them across borders, and neither pair of numbers explained the Net figure beside them. The counts are now
+  grouped into three pairs of **Left** and **Arrived** columns: **Internal**, for moves between a civilization's own
+  settlements; **External**, for moves that crossed a border — the flow Net actually measures, so External Arrived
+  minus External Left is the Net — and **Total**, Internal plus External, the old gross pair, kept for the whole
+  picture. The Totals row splits the same way. Saves from before this release keep their history: the internal share is reconstructed from the recorded
+  city-to-city flows the first time the save is loaded.
 
 ### Changed
+- **The ethnicity lens shades by saturation, like the Prosperity lens.** Each tile still takes the colours of the
+  peoples who live there, but how crowded it is now sets how strong that colour is: a packed city core shows the
+  full civ colour, and the thinly settled edge fades toward grey. Before, every tile showed the colour at full
+  strength and only faded in opacity. The dense end is drawn in a more vivid version of the civ's colour, so pale
+  colours such as pink or light purple still show a clear range, and a grey or white civ shades from dark at the
+  edge to its own colour at the core instead of fading grey into grey.
+- **Every decision pop-up can be switched on or off from the Mods tab.** Next to Refugee decisions there are now
+  switches for Newcomer placement decisions, Call-home offers and Enclave stance decisions. Each one sets the
+  same value as its Advanced setting, and the two stay in step. With a switch off, the city handles that choice
+  itself; with Call-home offers off, the call to bring people home is not offered.
+- **Every Emigration option on the Mods tab has a full hover tooltip.** Hovering an option, in the main menu or in
+  a game, now explains in plain terms what it does, what each choice or slider position means (with the concrete
+  limits behind Low, Medium and High), when a change takes effect, and whether it touches the simulation or only
+  the display. Other languages keep their previous, shorter text for now.
+- **The Prosperity lens scores each tile in points, and the readout says why.** A tile's prosperity used to be the
+  raw yield sitting on the hex, ranked against the rest of its settlement - so the Hanging Gardens, which produces
+  no yield at all (its effect is +10% growth), read as London's "worst land" at -100%, and a farm out-scored the
+  palace. A tile is now the sum of named terms: a wonder on the hex (+6, the largest term), the city centre (+3),
+  each building (+2, plus +1 for a completed quarter), a worked improvement (+1), the hex's own yield (+1 per 3), a
+  river (+1), a natural wonder on the hex (+3) or next door (+2 each), a wonder next door (+1 each), and anything
+  pillaged on the hex (-3 each) or next door (-1 each). The score is absolute and banded - Flourishing (8+),
+  Thriving (5-7), Ordinary (2-4), Meagre (0-1), Blighted (below 0) - so a wonder tile reads the same in every
+  settlement. Hover a tile and the panel lists the band, the score, and every term behind it, then the
+  settlement's standing as before. Wonders and natural wonders are recognised from the game's database, so ones
+  added by an age or another mod count too.
+- **Calling people home is now two different offers, and the dialog says which one you are looking at.** Both
+  offer a ladder of sizes for each currency (one person, about half of what is callable, everyone), priced with the
+  game's own Gold and Influence icons. A size your treasury cannot cover stays in the list greyed out, with a
+  tooltip saying how much it needs and how much you have. The price climbs faster than the
+  head count (two people cost nearly three times one, three about five times), so a big call is a decision rather
+  than a bulk order. From your own settlements it is a purchase: the pop-up names the settlement people are pulled
+  back from and the one they return to, and exactly the number you paid for come. From abroad it is a gamble: the
+  pop-up names the foreign city and its ruler and states the odds for each person; the call is paid for at the size
+  you choose whether or not anyone answers, every person asked is rolled, and it may bring nobody. An unanswered
+  call is recorded in the Chronicle and still starts the cooldown, so it cannot simply be repeated next turn. Prices
+  also climb with the age (three times the Antiquity price in Exploration, nine times in the Modern age, adjustable
+  under "Price climb per age"), so a call keeps its weight as treasuries grow. Each dialog closes on a homecoming
+  epigraph in your own civilization's voice, from Sinuhe's recall to Egypt and the Ten Thousand's "The sea! The
+  sea!" to Tao Yuanming's "why not return?", with a general pool for civilizations without their own; every line
+  was read in its source and every translation is public domain or the mod's own. The "chance each point returns
+  from your own lands" setting is gone, since that call is no longer a roll.
 - **What a settlement has built is now a reason to stay.** Buildings and wonders always reached the prosperity
   score through the yields they produce, but only that way, and those yields are averaged per citizen — so a wonder
   worth +4 culture counted for three times as much in a town of 4 as in a city of 13, and the half of a building that
@@ -121,24 +137,6 @@ section below by `release.sh`.
   permanent grievances that used to reach the bar eventually no longer do, so ordinary economic migration is much
   rarer and means more when it happens. Displacement is untouched — war and disaster refugees never consulted this
   pressure and still flee every turn. Set the option to 1 for the old behaviour.
-
-### Added
-- **Settlements can be dragged out of their civilization's circle.** On the network diagram, press a city or town
-  circle and drag it: it takes its people with it and the civilization's circle grows to keep it inside, so an
-  internal migrant flow that was buried under the neighbouring settlements can be pulled into the open and read.
-  Dragging anywhere else in a civilization's circle still moves the whole group, settlements and all, and a click
-  without a drag still isolates that civilization.
-
-- **The Net Migration table separates internal from external movement.** Its In and Out columns counted every move a
-  civilization saw, so a civilization shuffling people between its own settlements looked as busy as one gaining and
-  losing them across borders, and neither pair of numbers explained the Net figure beside them. The counts are now
-  grouped into three pairs of **Left** and **Arrived** columns: **Internal**, for moves between a civilization's own
-  settlements; **External**, for moves that crossed a border — the flow Net actually measures, so External Arrived
-  minus External Left is the Net — and **Total**, Internal plus External, the old gross pair, kept for the whole
-  picture. The Totals row splits the same way. Saves from before this release keep their history: the internal share is reconstructed from the recorded
-  city-to-city flows the first time the save is loaded.
-
-### Changed
 - **An enclave now exists from the moment it is announced.** The Chronicle entry "The {Civ} Enclave of {City}" used to
   be written from a community's share of a settlement alone, so it could name an enclave in a town that had none, and
   write it again each time the share crossed another step, including on the way down. The enclave is now created when
@@ -161,6 +159,55 @@ section below by `release.sh`.
   languages, which also brings the casualty line in the other 11 languages back in step with the English.
 
 ### Fixed
+- **An enclave whose people are the city's majority no longer paints in the ruler's colour.** Under the Ethnic
+  Composition lens, a conquered city whose own people formed the enclave (a Norman-held Rostov that is 60%
+  Bulgarian) drew the enclave tile in the Norman colour. The enclave tile now always reads as its own people's
+  quarter.
+- **Migrants keep who they are when they move on.** A city that was a third Carthaginian sent out a third
+  Carthaginians, but they all arrived as Romans. Migrants now carry the mix of the city they left, including on
+  journeys that take several turns, and migrations are matched to the right city even when two share a name.
+- **Razed settlements leave the diversity list at once.** A settlement that was razed stayed in "All settlements"
+  and the empire mix for up to 50 turns. It now goes on the next turn. A settlement taken over by a city-state or an
+  independent drops out of the list but keeps its population mix, so a later recapture picks it up again.
+- **The Ethnic Composition lens updates as soon as the turn starts.** It could show the previous turn's mix for a
+  whole turn, and a lens left open across End Turn kept the old colours until it was toggled.
+- **A conquered city the mod first sees after the conquest keeps its original people.** When the mod is added
+  mid-game, or loads a save made before it tracked population origins, a city taken from another major civilization
+  now counts as that civilization's people instead of 100% the conqueror.
+- **Calling people home never actually charged anything.** The Gold fee was handed to the charging helper with the
+  wrong sign, which it treats as "nothing to charge", and the Influence fee was charged against a yield the game
+  does not have. Both currencies were free. They are charged now.
+- **The map tooltip stays hidden under a lens, even alongside other tooltip mods.** While an Emigration lens is
+  up (or the cursor is on an enclave) the mod hides the game's own tile tooltip so it doesn't collide with the
+  mod's readout. That was a single switch, and several things could flip it back without the mod noticing - a
+  combat preview or a pantheon screen closing, or a tooltip mod replacing the tile tooltip with its own. The
+  tooltip would then reappear underneath the readout and stay for the rest of the session. The mod now holds the
+  setting rather than setting it once, so it stays hidden until the lens is turned off.
+- **Lens readouts and the enclave tooltip are no longer painted over by other tooltips.** The little panel that
+  follows the cursor under the Ethnicity and Prosperity lenses, and the enclave tooltip, sat one layer below the
+  game's tooltip layer — so any tooltip that appeared at the same spot, the game's own or one added by a tooltip
+  mod, covered them completely. They now sit above that layer, and the mod's own notification toast still sits
+  above them, so a notification is never hidden by a readout.
+- **On the ethnicity lens, a tile that burns with a foreign colour now means an enclave.** The lens gathers each
+  foreign community around a home tile, and it used to pour any community into that tile until it was nearly full —
+  so a town that was only 12% Norman, far short of the 30% an enclave needs, still showed a tile reading "Norman
+  92%", while the real Norman enclave stood several tiles away with nothing to mark it. Two things changed. A
+  community that has a standing enclave now lives *on the enclave's tile*: its people are seated there first, so
+  that tile reads as their quarter and the colour thins out around it. And where no enclave stands, no tile may
+  read past the share an enclave requires, so a community still short of one shows as a real but clearly lighter
+  tint. The enclave's tile is also drawn as the built-up quarter it is; it sits on what the map still counts as
+  empty land, and was being shaded as the faintest tile in the settlement. None of this changes a settlement's
+  overall percentages, or anything about enclaves themselves — how they form, how many can form, or the land rule
+  that chooses their tile.
+- **The ethnicity lens is a true gradient.** Each tile was painted in the single colour of whichever people led it,
+  so a settlement read as flat slabs of one banner colour with a hard flip at the halfway mark, and a community
+  under half of a tile did not show at all. A tile's colour is now a blend of everyone living on it, in proportion:
+  a tile that is a third Norman sits about a third of the way from the host's colour to the Normans', and the map
+  shades smoothly from one into the other. How solid a tile looks still follows how many people live on it.
+- **Enclave labels no longer pile up on the map.** Each time the map markers were redrawn, the old icon and label
+  were left in place and a new pair drawn over them, so an enclave's name could appear doubled or smeared and the
+  copies kept accumulating for as long as the game ran. Markers are now cleared properly before each redraw, and a
+  burst of map events is answered with one redraw instead of dozens.
 - **Migrant-flow arrows stayed behind when a circle moved.** Dragging a civilization's circle moved the circle and its
   people but left every flow arrow at its old position, so the arrows pointed at empty canvas until something else
   redrew them. They now follow whatever they are attached to, including the settling movement when the diagram first

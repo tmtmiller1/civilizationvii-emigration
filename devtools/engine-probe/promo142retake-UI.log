@@ -1,0 +1,20 @@
+[2026-09-18 07:58:31]	[EmigProbe] shell attached 
+[2026-09-18 07:58:32]	[EmigProbe] shell query complete 
+[2026-09-18 07:58:32]	[EmigProbe] shell found AutoSave_01_0106.Civ7Save turn 106 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-18 07:58:32]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-18 07:58:51]	[EmigTest] modtest142 attached 
+[2026-09-18 07:59:06]	[EmigTest] modtest142 run local=0 turn=106 
+[2026-09-18 07:59:06]	[EmigTest] SNAP START turn=106 crossCiv=100 top=["Kumbi Saleh idx=1.09 origins=4 n=5","Duisburg idx=1.03 origins=2 n=7","Katsina idx=1.02 origins=3 n=3"] 
+[2026-09-18 07:59:06]	[EmigTest] SNAP BEFORE SHOTS (retake) turn=106 crossCiv=100 top=["Kumbi Saleh idx=1.09 origins=4 n=5","Duisburg idx=1.03 origins=2 n=7","Katsina idx=1.02 origins=3 n=3"] 
+[2026-09-18 07:59:16]	[EmigTest] POPUP dismissing screen-tech-civic-complete 
+[2026-09-18 07:59:16]	[EmigTest] POPUP dismissing screen-tech-civic-complete 
+[2026-09-18 07:59:19]	[EmigTest] DASH tabs=["Network","Net Migration (Table)","Causes","My Cities","Diversity","Policies","Notifications","Guide"] 
+[2026-09-18 07:59:24]	[EmigTest] SHOT dash-net 
+[2026-09-18 07:59:42]	[EmigTest] LENS diversity ranking ["Kumbi Saleh:1.09:4","Duisburg:1.03:2","Katsina:1.02:3","Frankfurt am Main:0.66:3","Königsberg:0.63:2","Rostov on Don:0.52:2","Risila:0.5:2","Agadez:0.5:2","Azuchi:0.48:2","Osaka:0.45:2","Charlottenburg:0.32:2","Kerma:0.28:2","Bordeaux:0.27:2","Yingtian:0.26:1","Toulouse:0.22:2","Himeji:0.19:1","Dortmund:0.15:1","Acmonia:0:1","Alexandria Spártā:0:1","Athênai:0:1","Badin:0:1","Baghdād:0:1","Baltimore:0:1","Beiping:0:1","Berlin:0:1","Birmingham:0:1","Brest:0:1","Chicago:0:1","Cincinnati:0:1","Drastar:0:1"] 
+[2026-09-18 07:59:42]	[EmigTest] LENS framing Rostov on Don at {"x":78,"y":53} 
+[2026-09-18 08:00:01]	[EmigTest] LENS active=emig-ethnicity-lens 
+[2026-09-18 08:00:01]	[EmigTest] SHOT lens-ethnic-close 
+[2026-09-18 08:00:20]	[EmigTest] SHOT lens-prosperity 
+[2026-09-18 08:00:50]	[EmigTest] SHOT lens-ethnic-wide 
+[2026-09-18 08:01:05]	[EmigTest] VERDICT turnsRun=0 fallbacks=0 reason=retake 
+[2026-09-18 08:01:08]	[EmigTest] DONE modtest142 finished 

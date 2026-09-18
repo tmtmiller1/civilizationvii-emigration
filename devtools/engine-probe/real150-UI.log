@@ -1,0 +1,19 @@
+[2026-09-18 11:47:54]	[EmigProbe] shell attached 
+[2026-09-18 11:47:55]	[EmigProbe] shell query complete 
+[2026-09-18 11:47:55]	[EmigProbe] shell found AugustusAnt99.Civ7Save turn 99 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-18 11:47:55]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-18 11:48:13]	[EmigTest] modtest150 attached 
+[2026-09-18 11:48:28]	[EmigTest] modtest150 run local=0 turn=99 emigrationBooted=object 
+[2026-09-18 11:48:34]	[EmigTest] ITEM3R at load {"key":"60,21","name":"Rouen","entry":true,"seenTurn":60,"inAll":true,"inRanking":true,"plotCity":null,"centredHere":false} 
+[2026-09-18 11:48:34]	[EmigTest] ITEM3R at load {"key":"82,21","name":"Butoolo","entry":true,"seenTurn":97,"inAll":true,"inRanking":true,"plotCity":"Butoolo owner 14(indep)","centredHere":true} 
+[2026-09-18 11:48:34]	[EmigTest] ITEM3R at load passTurn=undefined live=44 ranking=44 
+[2026-09-18 11:48:34]	[EmigTest] O1 layer wrapped 
+[2026-09-18 11:48:50]	[EmigTest] ENDTURN blocked (442844772), one Autoplay turn 
+[2026-09-18 11:49:05]	[EmigTest] ITEM3R after one pass {"key":"60,21","name":null,"entry":false,"seenTurn":null,"inAll":false,"inRanking":false,"plotCity":null,"centredHere":false} 
+[2026-09-18 11:49:05]	[EmigTest] ITEM3R after one pass {"key":"82,21","name":"Butoolo","entry":true,"seenTurn":97,"inAll":false,"inRanking":false,"plotCity":"Butoolo owner 14(indep)","centredHere":true} 
+[2026-09-18 11:49:05]	[EmigTest] ITEM3R after one pass passTurn=100 live=42 ranking=42 
+[2026-09-18 11:49:05]	[EmigTest] O1 apply turn=99 stack=EthnicityLensLayer.L.applyLayer (eep-game.js:115:23) <- LensManagerSingleton.enableLayer (lenses/lens-manager.js:208:11) <- LensManagerSingleton.enableLayers (lenses/lens-manager.js:189:12) <- LensManagerSingleton.setActiveLens (lenses/lens-manager.js:153:10) 
+[2026-09-18 11:49:05]	[EmigTest] O1 apply turn=100 stack=EthnicityLensLayer.L.applyLayer (eep-game.js:115:23) <- repaintIfStale (emigration-ethnicity-lens.js:279:11) <- fs://game/emigration/ui/emigration-ethnicity-lens.js:296:24 
+[2026-09-18 11:49:05]	[EmigTest] VERDICT O1-attribution PASS after-turn repaints from repaintIfStale=1 other after-turn repaints=0 
+[2026-09-18 11:49:05]	[EmigTest] VERDICT item3-real PASS ["60,21 razed entry=false listed=false","82,21 standing entry=true listed=false"] 
+[2026-09-18 11:49:05]	[EmigTest] DONE modtest150 finished 

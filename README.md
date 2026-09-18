@@ -1,8 +1,51 @@
-# Emigration
+<p align="center">
+  <img src="docs/workshop-preview.png" width="148" alt="Emigration logo">
+</p>
+
+<h1 align="center">Emigration</h1>
+
+<p align="center">
+  <em>People leave the places that fail them and move toward the places that thrive.</em><br>
+  A population-migration and refugee mod for Sid Meier's Civilization VII.
+</p>
+
+<p align="center">
+  <a href="https://github.com/tmtmiller1/civilizationvii-emigration/releases/latest"><img src="https://img.shields.io/github/v/release/tmtmiller1/civilizationvii-emigration?label=release&amp;color=c9a24a" alt="Latest release"></a>
+  <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3750554030"><img src="https://img.shields.io/badge/Steam%20Workshop-subscribe-1b2838?logo=steam" alt="Steam Workshop"></a>
+  <img src="https://img.shields.io/badge/Civilization%20VII-1.5.0-1f2a44" alt="Civilization VII 1.5.0">
+  <img src="https://img.shields.io/badge/languages-12-2e7d32" alt="12 languages">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-555555" alt="MIT license"></a>
+</p>
+
+<p align="center">
+  <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3750554030"><strong>Subscribe on Steam</strong></a> ·
+  <a href="https://github.com/tmtmiller1/civilizationvii-emigration/releases/latest"><strong>Download</strong></a> ·
+  <a href="CHANGELOG.md">Changelog</a> ·
+  <a href="README.pdf">Typeset PDF</a> ·
+  <a href="#system-guide-and-feature-reference">Technical reference</a>
+</p>
+
+<p align="center">
+  <a href="docs/steam-screenshots/01-dashboard-network.jpg"><img src="docs/steam-screenshots/01-dashboard-network.jpg" width="880" alt="The migration network: each civilization's people, the moves between its cities, and the flows across borders"></a>
+</p>
 
 When a settlement is starving, unhappy, or under siege, people leave. When one is thriving, people move there instead. *Emigration* adds migration and refugee systems to Civilization VII, moving population within and between civilizations and changing yields, growth, and Influence. Every move is logged with its cause.
 
 Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.md) · [typeset PDF](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.pdf), with every formula rendered.
+
+## What's new in 3.0.0
+
+- **Calling your people home** is two offers: a purchase from your own settlements, and a gamble on your people abroad, each in three sizes with Gold and Influence prices.
+- **Reasons to stay:** wonders and civic buildings hold people in a settlement, and emigration pressure fades once a settlement's troubles pass.
+- **The Ethnic Composition lens** blends every people living on a tile, shades by how crowded it is, seats each enclave's people on its own tile, and repaints as soon as the turn starts.
+- **Migrants keep who they are:** a mixed city sends out a mixed crowd, and razed settlements leave the lists at once.
+- **Enclaves explain themselves:** hover an enclave's tile for its stage and the source of every yield; the map marker shows the stage.
+- **The Prosperity lens** scores each tile in points and lists every term behind the score.
+- **The network diagram:** click a city to see just its flows, or drag a settlement out of its civilization's circle.
+- **The Civilopedia** covers the whole mod, with a page of quotations for every people.
+- **The Mods tab** has a switch for each decision pop-up and full hover help on every option.
+
+Full notes: [CHANGELOG.md](CHANGELOG.md).
 
 ## A note on the human reality behind this mod
 
@@ -31,6 +74,8 @@ Compatible with Civilization VII 1.5.0.
 - **Cross-civilization migration:** shaped by borders, alliances, war, and asylum
 - **Distance-weighted destinations:** nearby settlements are favored
 - **Overcrowding pressure:** tall cities push population outward
+- **Reasons to stay:** wonders and civic buildings (a granary, a market, walls, a school) hold people in a settlement, however large it is
+- **Pressure that fades:** a settlement's urge to lose people follows its current situation, so a city that recovers from a siege or a bad stretch settles down again
 - **Concurrent causes:** war refugees and economic migrants can leave the same city in the same turn
 - **Migrant transit:** travel time scales with distance and game speed
 
@@ -60,33 +105,47 @@ Compatible with Civilization VII 1.5.0.
 
 ### Identity and culture
 
-- **Ethnic composition:** population tracked by civilization of origin and preserved through capture
-- **Ethnic Composition lens (Shift+E):** tile-by-tile map of population origins
+- **Ethnic composition:** population tracked by civilization of origin, preserved through capture, and carried by migrants who move on, so a mixed city sends out a mixed crowd
+- **Ethnic Composition lens (Shift+E):** tile-by-tile map of population origins, each tile a blend of the peoples living on it and shaded by how crowded it is; an enclave's tile reads as its people's own quarter
 - **Integration:** newcomers assimilate over time; war with the homeland stops it and unrest slows it
 - **Return migration:** diasporas can return to peaceful, prosperous homelands
 - **Call our people home:** pay Gold or Influence for a call, in a size you choose, to bring displaced people back to the settlement they fled; from your own settlements that many come, from abroad the call is paid for either way and each person asked may or may not answer
-- **Cultural Enclaves:** lasting foreign communities can become real improvements with the origin civilization's identity and yields
+- **Cultural Enclaves:** lasting foreign communities can become real improvements with the origin civilization's identity and yields; hover an enclave's tile to see its stage and where each of its yields comes from
 - **Put down roots:** enclave communities are less likely to return home
 - **Migration Chronicle:** major movements become history entries
-- **Quotes from the displaced:** refugee and newcomer pop-ups use words from that people's refugees, exiles, and migrants
+- **Quotes from the displaced:** refugee and newcomer pop-ups use words from that people's refugees, exiles, and migrants; the call-home pop-ups use words of those who longed for home and came back
 
 ### Interface
 
-- **Migration dashboard:** flows by civilization, cause, and settlement
+- **Migration dashboard:** flows by civilization, cause, and settlement; on the network diagram, click a city to highlight just its migrant flows, or drag a settlement out of its civilization's circle to read its flows
 - **Cause-coded notifications:** color-coded toasts plus a persistent log
 - **Move attribution:** records the factor that decided each move
-- **City readout:** pressure mix and enclave progress by settlement
+- **City readout:** pressure mix, reasons to leave and reasons to stay, and enclave progress by settlement
 - **Prosperity lens:** tile-by-tile prosperity map, each tile scored in points from what stands on it and around it, with a hover readout that lists every term
-- **Demographics integration:** Net Migration, Emigration, and Immigration graphs and tables
+- **Demographics integration:** Net Migration, Emigration, and Immigration graphs and tables, with movement split into internal and external
+- **Civilopedia section:** every system, every policy card, and every quotation with a note on its speaker
 
 ### Customization
 
 - **Intensity presets:** Low, Medium, and High
 - **Arrival behavior by type:** refugees, migrants, and returnees can ask where to settle or settle automatically; refugees ask by default
-- **106 advanced options:** Options ▸ Mods ▸ Emigration
+- **Decision pop-ups on or off:** refugee decisions, newcomer placement, call-home offers, and enclave stances each have their own switch on the Mods tab
+- **Hover help on every option:** each Mods-tab option explains what it does, what each choice means, and when a change takes effect
+- **121 advanced options:** Options ▸ Mods ▸ Emigration
 - **Per-leader and per-civilization tuning:** all 38 leaders and 50 civilizations, including alternate personas
 - **Game-speed scaling:** Online through Marathon
 - **12 languages:** English, German, Spanish, French, Italian, Japanese, Korean, Polish, Portuguese (Brazil), Russian, Simplified Chinese, and Traditional Chinese
+
+<h2 id="screenshots">Screenshots</h2>
+
+<table>
+  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/02-dashboard-net-migration.jpg"><img src="docs/steam-screenshots/02-dashboard-net-migration.jpg" alt="Net Migration: internal and external movement for every civilization"></a><br><sub>Net Migration: internal and external movement for every civilization</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/03-dashboard-causes.jpg"><img src="docs/steam-screenshots/03-dashboard-causes.jpg" alt="Why people move: causes broken down by named war, disaster, and crisis"></a><br><sub>Why people move: causes broken down by named war, disaster, and crisis</sub></td></tr>
+  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/04-dashboard-diversity.jpg"><img src="docs/steam-screenshots/04-dashboard-diversity.jpg" alt="Diversity: the most mixed settlements and every settlement's origins"></a><br><sub>Diversity: the most mixed settlements and every settlement's origins</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/05-refugee-decision.jpg"><img src="docs/steam-screenshots/05-refugee-decision.jpg" alt="A refugee decision after an upheaval, in the words of that people's own refugees"></a><br><sub>A refugee decision after an upheaval, in the words of that people's own refugees</sub></td></tr>
+  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/06-newcomer-placement.jpg"><img src="docs/steam-screenshots/06-newcomer-placement.jpg" alt="Newcomers: choose where arrivals settle"></a><br><sub>Newcomers: choose where arrivals settle</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/07-call-home-offer.jpg"><img src="docs/steam-screenshots/07-call-home-offer.jpg" alt="Calling your people home: three sizes, priced in Gold or Influence"></a><br><sub>Calling your people home: three sizes, priced in Gold or Influence</sub></td></tr>
+  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/08-enclave-stance.jpg"><img src="docs/steam-screenshots/08-enclave-stance.jpg" alt="A Cultural Enclave asks for your stance"></a><br><sub>A Cultural Enclave asks for your stance</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/09-enclave-on-map.jpg"><img src="docs/steam-screenshots/09-enclave-on-map.jpg" alt="An enclave on the map, with its own tooltip and the city's migration readout"></a><br><sub>An enclave on the map, with its own tooltip and the city's migration readout</sub></td></tr>
+  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/10-ethnic-composition-lens.jpg"><img src="docs/steam-screenshots/10-ethnic-composition-lens.jpg" alt="The Ethnic Composition lens: Rostov on Don and its Bulgar Enclave"></a><br><sub>The Ethnic Composition lens: Rostov on Don and its Bulgar Enclave</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/11-prosperity-lens.jpg"><img src="docs/steam-screenshots/11-prosperity-lens.jpg" alt="The Prosperity lens: every tile scored in points"></a><br><sub>The Prosperity lens: every tile scored in points</sub></td></tr>
+  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/12-civilopedia-voices-rome.jpg"><img src="docs/steam-screenshots/12-civilopedia-voices-rome.jpg" alt="Civilopedia: Voices of the Displaced, one page for every people"></a><br><sub>Civilopedia: Voices of the Displaced, one page for every people</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/13-civilopedia-departures-arrivals.jpg"><img src="docs/steam-screenshots/13-civilopedia-departures-arrivals.jpg" alt="Civilopedia: how departures and arrivals work"></a><br><sub>Civilopedia: how departures and arrivals work</sub></td></tr>
+</table>
 
 ## FAQ
 
@@ -96,6 +155,8 @@ Compatible with Civilization VII 1.5.0.
 - War damage, sieges, and pillaged tiles create refugees.
 - Starvation, unrest, plague, disasters, and overcrowding also push people out.
 - Causes run independently, so a city can lose war refugees and economic migrants in the same turn.
+- What a settlement has built (wonders, and each kind of civic building) is a reason to stay, and it is not divided by population, so building well lets a large city hold its people.
+- The pressure behind ordinary departures fades when a settlement's troubles pass, so only a strong, lasting reason to leave empties a city over time.
 
 ### Where do they go?
 
@@ -115,8 +176,9 @@ Compatible with Civilization VII 1.5.0.
 
 ### How are identity and history tracked?
 
-- Settlements track population by civilization of origin, including after capture.
-- The Ethnic Composition lens (Shift+E) maps that composition by tile.
+- Settlements track population by civilization of origin, including after capture. Migrants carry the mix of the city they left, so a diaspora that moves on keeps its identity.
+- A conquered city the mod first sees after the conquest (added mid-game, or a save from before the ledger) counts as its original civilization's people.
+- The Ethnic Composition lens (Shift+E) maps that composition by tile and repaints at the start of each turn, even while it is open.
 - Newcomers integrate over time; war with the homeland stops integration and unrest slows it.
 - Diasporas can return home when the homeland is peaceful and prosperous.
 - Lasting foreign communities can form Cultural Enclaves. Enclaves persist while the community does and can be built over.
@@ -126,7 +188,9 @@ Compatible with Civilization VII 1.5.0.
 
 - Toasts and the Notifications log record each move and its cause.
 - The dashboard shows flows by civilization, cause, and settlement.
-- City readouts show local pressure and enclave progress, and the dashboard shows both across every settlement.
+- City readouts show local pressure, reasons to leave and to stay, and enclave progress, and the dashboard shows them across every settlement.
+- Hovering an enclave's tile shows its stage and the source of every yield it brings in.
+- The Civilopedia's Emigration section describes every system, policy card, and option, and lists every quotation with a note on its speaker.
 - The Prosperity lens maps prosperity by tile: wonders, the centre, buildings and quarters, worked land, rivers and natural wonders score up; ruin scores down. Hover a tile to see the terms.
 - With Demographics installed, migration also appears in graphs and tables.
 
@@ -246,6 +310,7 @@ Defaults are shown below; most are tunable in §10 and on the dashboard's **Guid
 | Pro-Immigration Stance | ✓ | Raises inbound pull and Influence |
 | Open Borders | ✓ | Cross-civ pull bonus |
 | Being nearby | ✓ | Distance-penalized |
+| What a settlement has built | ✓ | Wonders and each kind of civic building count as a reason to stay, not divided by population |
 
 **Who participates**
 
@@ -268,7 +333,7 @@ Defaults are shown below; most are tunable in §10 and on the dashboard's **Guid
 | No Open Borders reduces cross-civ flow | ✓ | Movement remains possible but is harder |
 | Population and yields change | ✓ | Real gameplay writes |
 | Pacing adapts to game speed | ✓ | Cooldowns, ramps, transit, and thresholds scale (§2) |
-| Systems can be tuned or disabled | ✓ | Presets + 106 options |
+| Systems can be tuned or disabled | ✓ | Presets + 121 options |
 | Fighting outside a city's borders | ✗ | Does not drive that city's emigration |
 | Migrants arrive instantly | ✗ | Travel takes time |
 | Absorbing migrants is free | ✗ | Temporary happiness/celebration and gold costs apply |
@@ -279,6 +344,7 @@ Defaults are shown below; most are tunable in §10 and on the dashboard's **Guid
 | | | |
 |---|:---:|---|
 | Settlements remember origins | ✓ | Composition by origin civ, preserved through capture |
+| Migrants keep their identity | ✓ | A migrant carries the mix of the city they left |
 | Newcomers integrate | ✓ | Non-owner origins drift toward the owner over time |
 | War / unrest slows integration | ✓ | War with the homeland stops it; unrest slows it |
 | Diasporas return home | ✓ | Possible when the homeland is peaceful and prosperous |
@@ -334,7 +400,7 @@ On each `PlayerTurnActivated`:
 Each source runs two independent tracks, so both can fire in the same turn:
 
 - **Crisis** (war / disaster): can flee every turn, with no pressure bar or cooldown, bounded by `warSurgeMax` and `siegeLossCapPct`. Cause is *disaster* when disaster distress dominates; otherwise *war*.
-- **Voluntary** (prosperity / unhappiness): builds pressure toward `emigrationBar`, moves one point when the bar is crossed, then waits `cooldownTurns`. Cause is *unhappiness* when happiness is low; otherwise *prosperity*.
+- **Voluntary** (prosperity / unhappiness): builds pressure toward `emigrationBar`, moves one point when the bar is crossed, then waits `cooldownTurns`. Cause is *unhappiness* when happiness is low; otherwise *prosperity*. Pressure carries over each turn at `pressureRetention` (0.9, re-based for game speed; "Pressure kept each turn", Advanced ▸ Pacing), so it tracks the settlement's current situation in both directions, with a half-life of about 7 turns. A departure clears it outright, and settlements on a cooldown or with nowhere to go cool down too. At the default only a steady pull above about a third of the bar per turn reaches the bar; `pressureRetention = 1` keeps pressure indefinitely.
 
 Each track has its own per-civ budget (`splitBudgetsEnabled`). Records still carry one cause each, so cause-level telemetry stays clean. The city readout can show the live mix, such as `"War 60% · Prosperity 40%"` (`splitUiReadoutEnabled`). All three flags default on.
 
@@ -367,13 +433,15 @@ The active speed is read from `Configuration.getGame().gameSpeedType` and `GameI
 
 $$
 \begin{aligned}
-P &= \left(Q + h\,\lambda_h - n\,\lambda_n\right)\left(1 + \frac{s}{100}\right), \\
-Q &= \frac{f\,w_F + p\,w_P + g\,w_G + sc\,w_S + c\,w_C}{n}, \\
+P &= \left(Q + h\,\lambda_h - n\,\lambda_n\right)\left(1 + \frac{s}{100}\right) + B, \\
+Q &= \frac{f\,w_F + p\,w_P + g\,w_G + sc\,w_S + c\,w_C}{n^{\epsilon}}, \\
 s &= v + d + \sigma + \tau + u.
 \end{aligned}
 $$
 
-$P$ is prosperity, $Q$ per-capita productiveness, $h$ net happiness, $n$ population, and $s$ the combined situational percentage from violence, disaster, siege, starvation, and unrest.
+$P$ is prosperity, $Q$ per-capita productiveness, $h$ net happiness, $n$ population, and $s$ the combined situational percentage from violence, disaster, siege, starvation, and unrest. $\epsilon$ is `popExponent` (0.85, "Size dilutes prosperity"): below 1 it softens the per-head average, so a settlement's size divides away less of what it produces; 1 is a straight average.
+
+$B$ is the built environment (`emigration-built.js`, `builtEnabled`, "Buildings are a reason to stay"): each wonder (1.5, up to `builtWonderCap` = 3) plus each *kind* of civic building present, counted once however many there are: amenity 1.0; safety, sustenance, learning and trade 0.8; shelter, culture and work 0.6; any other building 0.3. The total is capped at `builtCap` (6). It is neither divided by population nor scaled by happiness. Kinds are read from the compiled database by what a building grants, so buildings added by an age, DLC or another mod count; pillaged buildings do not. The scan refreshes every `builtRefreshTurns` (5). The city panel lists these as **Reasons to stay**, and the explainer adds a **Wonders & buildings** row.
 
 Higher scores are more attractive. Happiness carries the largest default weight (`localHappinessFactor = 6`). Negative situational pressure drives both emigration and `distress(s)`, which feeds crisis death (§6d) and the city readout. §5 replaces the linear happiness and violence behavior with the shaped model when enabled.
 
@@ -425,10 +493,13 @@ Friction is:
 $$
 \begin{aligned}
 \mathrm{Friction}(s,d) ={}& \mathrm{baseReluctance} + \mathrm{perExtraPop}\cdot\max\big(0,\mathrm{pop}(d)-\mathrm{pop}(s)\big) \\
+&{}+ \mathrm{perFewerPop}\cdot\max\big(0,\mathrm{pop}(s)-\mathrm{pop}(d)\big) \\
 &{}+ \mathrm{cityStateBarrier} + \mathrm{poachBlock} - \mathrm{geoAdjust}(s,d) \\
 &{}+ \mathrm{congestionFor}(d) + \mathrm{dominanceFor}(d) + \mathrm{drainFor}(s) - \mathrm{internalRefuge}(s,d).
 \end{aligned}
 $$
+
+`perFewerPop` (0.5, "Reluctance to move somewhere smaller", Advanced ▸ Brakes) mirrors `perExtraPop`: the score's per-citizen term favours a smaller destination simply for being smaller, so moving down in size costs the same per citizen as crowding into a bigger place.
 
 `internalRefuge(s,d)` gives crisis refugees a bonus toward destinations inside their own civilization; `crisisEscapeBonus` provides the corresponding escape incentive when no good homeland option exists. Both move with the "Movement between civilizations" slider. `drainFor(s)` reduces cross-civ outflow from civilizations below their fair population share.
 
@@ -442,9 +513,9 @@ War is not a hard routing gate. A besieged city simply becomes less prosperous, 
 
 ### The Prosperity map lens (`emigration-prosperity-lens.js`, `emigration-prosperity-tooltip.js`)
 
-The lens scores each plot from its own yields (`GameplayMap.getYields(plotIndex, playerID)`) and normalizes it within its settlement. Values above and below the settlement mean are scaled separately against that settlement's best and worst tiles, preventing one outlier from flattening the map. Empty sea is excluded; worked coast counts normally.
+The lens scores each tile in points, as the sum of named terms: a wonder on the tile (+6), the city centre (+3), each building (+2, and +1 for a completed quarter), a worked improvement (+1), the tile's own yield (+1 per 3), a river (+1), a natural wonder on the tile (+3) or next to it (+2 each), a wonder next to it (+1 each), and anything pillaged on the tile (−3 each) or next to it (−1 each). The score is absolute and banded, so a wonder tile reads the same in every settlement: **Flourishing** (8+), **Thriving** (5–7), **Ordinary** (2–4), **Meagre** (0–1), **Blighted** (below 0). Wonders and natural wonders are recognised from the game's database, so ones added by an age or another mod count. Empty sea is excluded; worked coast counts normally.
 
-Hovering a plot shows its standing within the settlement, its yield relative to the settlement average, and the settlement's world standing. Both the lens and tooltip read the same scale from `emigration-tile-score.js`.
+Hovering a tile shows its band, its score, and every term behind it, then the settlement's world standing. Both the lens and the readout read the same scores from `emigration-tile-score.js`.
 
 ---
 
@@ -600,9 +671,13 @@ Crisis deaths do not count against the siege displacement cap or emigration rura
 
 ### 6f. Ethnic composition, integration & the per-tile lens (`emigration-composition.js`, `emigration-ethnicity-lens.js`)
 
-Each settlement keeps a population ledger by civilization of origin. Arrivals add the source origin, births add the current owner, losses are proportional, and conquest changes the owner without rewriting origins.
+Each settlement keeps a population ledger by civilization of origin, keyed by its centre plot. A departure takes a slice of the source's mix and stamps it on the migrant (`originMix`), including across the turns in transit; the destination adds that same mix, so origins are conserved and a diaspora that moves on keeps its identity. Returnees carry their own origin home. Births add the current owner, other losses are proportional, and conquest changes the owner without rewriting origins. Migrations are matched to cities by plot, then by name for older records.
 
-The Ethnic Composition lens (Shift+E) renders that ledger as a tile mosaic. Tile assignment follows density: city center > urban > rural > wilderness. Each origin receives a share-proportional number of tiles, with opacity reflecting density.
+A settlement the ledger first meets already conquered from another major civilization (a mid-game install, a save from before the ledger) is seeded as its original owner's people; a captured city-state's people count as the conqueror's. A razed settlement leaves the ledger on the next pass. One held by a city-state or Independent Power keeps its entry but drops out of the settlement lists, the diversity ranking and the empire mix; a later recapture by a major civilization resumes its mix. `STALE_TURNS` (50) prunes anything unreadable.
+
+The Ethnic Composition lens (Shift+E) renders that ledger tile by tile (`emigration-ethnicity-distribution.js`, `-tiles.js`, `-colour.js`). Each settlement's people are spread over its tiles by density (city centre > urban > rural > wilderness, plus a bonus per constructible), and each foreign community gathers around a home tile and thins out with distance. Every tile carries its own mix, and its colour is a blend of everyone living on it in proportion; how crowded the tile is sets how strong that colour is, from a vivid civ colour at a packed core to grey at the thinly settled edge. Every origin's tiles add up to its exact citywide share.
+
+The lens is tied to the enclave rule. A community with a standing enclave lives on the enclave's tile first, which reads as its quarter whatever the community's citywide share, and the rest of the settlement fills around it. Where no enclave stands, no tile reads past `quarterEstablishedShare`, so a community short of an enclave shows as a real but lighter tint. The enclave tile is weighted as a built-up quarter. The border of every tile takes the settlement's majority origin. The lens and its hover readout repaint as soon as the turn's pass has recorded a new mix, including a lens left open across End Turn; the hover readout sits above the game's tooltip layer.
 
 Integration moves a small share of each non-owner origin toward the current owner each turn (`integrationRate`). War with the homeland uses `integrationWarRate`; unrest uses `integrationUnrestRate`. Toggle: Options ▸ ethnic integration.
 
@@ -667,6 +742,8 @@ Placement prefers a nearby empty flat/hill plot, creating a rural district first
 
 **Tile yield plus stance yield.** The tile carries its native yield from the day the enclave is established. Once the enclave is recognized, the stance's benefit and drawback are granted each turn on top of the tile. An established enclave has no stance, so it grants and costs nothing beyond its tile. If replacement changes the plot's effective yield, the shortfall is stored as `placed.compensation` and granted while the tile remains.
 
+**Enclave tooltip and marker (`emigration-enclave-tooltip.js`, `-enclave-tooltip-data.js`, `-enclave-yields.js`).** Hovering an enclave's tile replaces the game's tooltip for the borrowed improvement with the enclave's own: its name and settlement; its stage (established, with the turns left to recognition; recognized, with the stance; contested; or fading, with the turns left); and where the yields come from, source by source with a reason: the land and any improvement that stood there before (repaid every turn), the enclave's own works, and the stance, including its wartime cut. A total gives what the tile brings in each turn. The map marker carries a second line with the stage (*Established*, *Recognized* with what the stance pays, *Contested*, *Fading*), since a stance's yields go to the city rather than the tile. Markers are cleared before each redraw, and a burst of map events triggers a single redraw.
+
 **Built over.** After a two-turn grace period, an enclave whose tile has been replaced is retired and recorded in the Chronicle. A failed placement is also written off. Departures never choose an enclave tile. Pillage damages but does not remove it; razing the city does.
 
 **Fade (`quarterFadeShare`, `quarterFadeTurns`).** The fade clock runs while both origin share and stock remain below their thresholds. After `quarterFadeTurns` (12), the tile and record are removed. Crossing either bar resets the clock. `quarterFadeShare = 0` makes enclaves permanent. With normal integration and no new inflow, a community typically fades in roughly 35–45 turns.
@@ -674,6 +751,17 @@ Placement prefers a nearby empty flat/hill plot, creating a rural district first
 **Contested in war.** If host and homeland are at war, enclave benefit is multiplied by `contestedQuarterYieldFactor` (default 0.5) and the host takes `contestedQuarterPenalty` (4) happiness strain per enclave, capped by `diasporaWarStrainCap` (12). Both end at peace.
 
 **Measured pace (2026-09-13, `devtools/engine-probe/`, mod test 31).** In a 40-turn, seven-civ Exploration test, 19 of 84 settlements had a foreign minority, three or four were near foothold at a time, and three enclaves formed, all in AI cities: roughly one enclave every 13 world turns. The synthetic `tile-transfer-stress.mjs` harness is a calibration floor, not a forecast.
+
+### 6j. Calling people home (`emigration-call-home.js`, `-call-home-action.js`, `-call-home-view.js`, `callHomeEnabled`)
+
+A civilization can pay Gold or Influence to bring its displaced people back to the settlement they fled. The dialog offers a ladder of sizes for each currency (one person, about half of what is callable, everyone, up to `callHomeMaxPointsPerAttempt` = 3), priced with the game's own Gold and Influence icons. A size the treasury cannot cover stays in the list, greyed out, with a tooltip giving the price and the balance.
+
+- **From your own settlements** it is a purchase: the pop-up names the settlement people are pulled back from and the one they return to, and exactly the number paid for come.
+- **From abroad** it is a gamble: the pop-up names the foreign city and its ruler and gives the odds per person (`callHomeChanceExternal`, 18%). The call is paid for at the chosen size whether or not anyone answers; each person asked is rolled, and the call may bring nobody. An unanswered call is recorded in the Chronicle and still starts the cooldown.
+- **Price:** `callHomeGoldPerPoint` (60) or `callHomeInfluencePerPoint` (12) for one person, climbing as n^1.5 (two people cost nearly three times one, three about five times), ×`callHomeExternalCostScale` (1.5) abroad, and ×`callHomeAgeCostStep` (3) per age past Antiquity ("Price climb per age": ×3 in Exploration, ×9 in Modern).
+- **Cadence:** `callHomeCooldownTurns` (8) per civilization. With `callHomeOfferWhenCalm` ("Call-home offers" on the Mods tab) the call is offered once no settlement is in distress and people are still away.
+
+Each dialog closes on a homecoming epigraph in the caller's own civilization's voice (`emigration-return-quotes.js`), from Sinuhe's recall to Egypt to the Ten Thousand's "The sea! The sea!", with a general pool for civilizations without their own; every line was read in its source.
 
 ---
 
@@ -731,6 +819,8 @@ When Demographics is installed, Emigration registers through `globalThis.Demogra
 `EmigrationData` exposes per-civ net, gross in/out, the internal (within-civ) share of that movement, refugees, deaths,
 and cause breakdowns. Without Demographics, registration is a silent no-op.
 
+On the network diagram, clicking a city highlights just its migrant flows: arrows are drawn only for moves into or out of that city (even with "Migrant flows" off), a gold ring marks it, and its residents, arrivals and leavers stay lit while everything else dims; clicking it again or empty space clears the selection, and clicking a civilization's outer ring isolates the whole civilization. Pressing and dragging a settlement's circle pulls it out of its civilization's circle, which grows to keep it inside; dragging elsewhere in the circle moves the whole group. Flow arrows follow whatever they are attached to, and an arrow between two adjacent city circles shortens and bows to fit the gap.
+
 The network visualization animates only movers. Cross-civ migrants travel from their origin civ or origin sub-cluster to the destination; intra-civ migrants travel between settlements. Home-grown population appears in place. Origin lookup uses nullish coalescing so node index `0` remains valid.
 
 ---
@@ -745,6 +835,9 @@ Counts are shown in both raw population points and scaled people, for example *"
 - **Per-event explanation (`emigration-feedback.js`, `emigration-causes.js`):** losses are split into specific source/cause events with accurate counts. Only the largest event may toast during a pass, but all are logged.
 - **City readout (`emigration-city-readout.js`):** shows pressure mix, current status, likely destination, integration cost, enclave progress, civ net migration, guidance, and trapped/at-risk warnings. It is built from the recomputed `citySnapshot` and works without Demographics.
 - **Dashboard window (`emigration-window.js`):** standalone view of the migration network, cross-civ flows, per-civ ledger, cause breakdown, policy stances, and city pressure. The same render core backs the Demographics integration.
+- **Enclaves:** when an enclave in one of your cities is established, is recognized, fades, or is built over, a notification gives the yields it adds or takes away, for example "(+3 Culture)". Enclaves in other civilizations' cities go to the Notifications log only.
+- **Advice:** each loss pop-up ends with one plain sentence in the game's terms ("Raise Roma's Happiness to stop its people leaving"). The Anti-Immigration Stance is suggested only where it helps: people chose to leave for another civilization and the card is not slotted.
+- **Layering:** the lens hover readouts and the enclave tooltip sit above the game's tooltip layer, and the mod's own toast sits above them. While a lens is up, the game's tile tooltip stays hidden until the lens is turned off.
 - **Anti-spam:** disaster severity threshold, refugee milestones, and global `notifyCooldownTurns`. `notifyMode`: `0` off, `1` important-only (default), `2` verbose.
 
 ---
@@ -753,8 +846,8 @@ Counts are shown in both raw population points and scaled people, for example *"
 
 All settings live under **Options → Add-ons** (the game's tab for mods) in both the main menu and in-game Options. `emigration.modinfo` loads the options layer in both shell and game scope. Settings use the shared `modSettings` localStorage store and apply at boot and immediately where supported.
 
-- **Emigration:** population unit of measurement, intensity preset, the grouped sliders (movement between civilizations; refugees from conflict overall, from major-power wars and from minor-power raids), dashboard data source, timeline detail, dashboard dock button, the on/off switches for notifications, ethnic integration, return migration and refugee decisions, and last, an **Advanced settings** button.
-- **Advanced settings window:** every individual setting from `emigration-tunables.js`, in collapsible sections: Pacing, Scope, Border policies, Prosperity model, War & violence, Disasters, Geography & movement, Integration costs, Balance brakes, Arrivals & departures, Cultural enclaves, Calling people home, Attrition, Notifications, Readouts & rankings, and Visuals. Sections start collapsed and the ones you open stay open. Values show their units (55%, ×1.5, 3 turns) or a word (Off, Instant); a value set between the choices by a slider is listed exactly. The window also has search, a changed-setting marker, per-setting reset and Reset all.
+- **Emigration:** population unit of measurement, intensity preset, the grouped sliders (movement between civilizations; refugees from conflict overall, from major-power wars and from minor-power raids), dashboard data source, timeline detail, dashboard dock button, the on/off switches for notifications, ethnic integration and return migration, the four decision pop-ups (Refugee decisions, Newcomer placement decisions, Call-home offers, Enclave stance decisions), and last, an **Advanced settings** button. Each decision switch sets the same value as its Advanced setting (`arrivalPlacement` ask/automatic, `callHomeOfferWhenCalm`, `quarterRecognition` 0/2), and the two stay in step; with a switch off the city makes that choice itself, and with Call-home offers off the call is not offered. Hovering any option shows a full explanation: what it does, what each choice or slider position means (with the limits behind Low, Medium and High), when a change takes effect, and whether it changes the simulation or only the display. The full text is English; other languages show their shorter text.
+- **Advanced settings window:** every individual setting from `emigration-tunables.js` (121), in collapsible sections: Pacing, Scope, Border policies, Prosperity model, War & violence, Disasters, Geography & movement, Integration costs, Balance brakes, Arrivals & departures, Cultural enclaves, Calling people home, Attrition, Notifications, Readouts & rankings, and Visuals. Sections start collapsed and the ones you open stay open. Values show their units (55%, ×1.5, 3 turns) or a word (Off, Instant); a value set between the choices by a slider is listed exactly. The window also has search, a changed-setting marker, per-setting reset and Reset all.
 
 Game-speed scaling is automatic. Internal flags (`gameSpeedTuningEnabled` on; `gameSpeedScalePopulation` off) exist for rollback and QA rather than player tuning.
 
@@ -802,8 +895,14 @@ Modules are kept small and single-purpose (≤500-line gate). `emigration.modinf
 - `ui/emigration-views.js` / `-ledger-view.js` / `-window.js`: shared dashboard renderer and standalone window.
 - `ui/emigration-network-viz.js`: animated network; movers animate from origin, residents appear in place.
 - `ui/emigration-migration-page.js` / `-demographics.js`: Demographics registration and graph definitions.
-- `ui/emigration-prosperity-lens.js` / `-prosperity-tooltip.js`: Prosperity lens and tooltip.
+- `ui/emigration-prosperity-lens.js` / `-prosperity-tooltip.js` / `-tile-score.js`: Prosperity lens, tooltip, and the per-tile point scores.
+- `ui/emigration-built.js`: the built environment (wonders and civic building kinds) as a reason to stay.
 - `ui/emigration-ethnicity-lens.js` / `-ethnicity-tooltip.js` / `-composition.js`: origin ledger, Ethnic Composition lens, and tooltip.
+- `ui/emigration-ethnicity-distribution.js` / `-ethnicity-tiles.js` / `-ethnicity-colour.js`: the lens's per-tile distribution, engine reads, and blended colour.
+- `ui/emigration-lens-hover-panel.js` / `-plot-tooltip-suppress.js`: the shared cursor readout for both lenses and the base tooltip suppression.
+- `ui/emigration-enclave-tooltip.js` / `-enclave-tooltip-data.js` / `-enclave-yields.js`: the enclave's own tooltip and its per-source yields.
+- `ui/emigration-call-home.js` / `-call-home-action.js` / `-call-home-view.js` / `-return-quotes.js`: calling people home (rules and odds, the paid action, the dialog, the epigraphs).
+- `ui/emigration-internal-tally.js`: the internal (within-civ) tallies behind the Net Migration table's Internal / External columns.
 - `ui/emigration-naming.js` / `-feedback.js` / `-events.js` / `-report.js` / `-log.js`: event naming, notifications, event handling, reporting, and dev logs.
 - `ui/emigration-notifications.js` / `-notifications-view.js`: persistent notification log.
 - `ui/emigration-settings.js` / `-options.js` / `ui/options/*`: settings, presets, options UI, and shared `modSettings` store.
@@ -815,7 +914,7 @@ Modules are kept small and single-purpose (≤500-line gate). `emigration.modinf
 
 `emigration.modinfo` loads options in shell and game scope, the UI modules through `ImportFiles`, Civilopedia and native policy effects through `<UpdateDatabase>`, icons through `<UpdateIcons>`, and age-specific policy databases through three `AgeInUse` groups. Age-specific loading is required because Civ VII rebuilds the gameplay database each age.
 
-The Civilopedia adds an Emigration section covering Prosperity, War & Refugees, Integration, Borders & Influence, Disasters & Plague, Attrition, and leader/civilization behavior. Text uses the localization pipeline in §14.
+The Civilopedia adds an Emigration section, grouped like the game's Game Concepts: the overview, FAQ and About pages; How People Move (Prosperity, departures and arrivals, war and refugees, disasters, crisis deaths, integration, ethnicity, enclaves, calling people home, the Chronicle and decisions, leader and civilization tuning); Policy & Diplomacy (stances, attraction and asylum, talent raids, and a list of every card by age); Interface & Options (dashboard, lenses, notifications and readouts, visibility, options, Demographics); and Voices of the Displaced, one page per origin civilization listing every quotation the mod can show for that people and who the speaker was. The single-body pages live in `ModText.xml` and its translations (§14). The chaptered pages are en_us-only in `text/en_us/PediaText.xml`, and the Voices pages are generated into `data/emigration-civilopedia-voices.xml` + `text/en_us/PediaVoicesText.xml` by `node --loader ./tests/loader.mjs scripts/gen-pedia-voices.mjs` from the quote registries and `scripts/pedia-voices-people.json` (one note per speaker; the generator fails when a speaker has none).
 
 ---
 
@@ -853,7 +952,8 @@ Per-game state is stored in `GameConfiguration` and survives save/reload:
 - `EmigrationAssim_v1`: assimilation load and tick turn
 - `EmigrationDividend_v1`: carried-dividend pools
 - `EmigrationWar_v1`: victim → aggressors map
-- `EmigrationEthnos_v1`: settlement origin-composition ledger
+- `EmigrationEthnos_v1`: settlement origin-composition ledger, with the turn of its latest pass (`passTurn`)
+- `EmigrationEthnosStamp_v1`: a counter bumped on every ledger save, which the lens and readouts use to notice a new pass without re-reading the ledger
 - `EmigrationMigStats_v1`: net/gross migration, refugees, deaths, cause breakdowns, sample watermarks, and capped city-pair flow matrices
 - `EmigrationNews_v1`: world-news milestones and last-toast turn
 - `EmigrationNotif_v1`: capped persistent notification log with cause, turn, summary, count, source, and destination
@@ -887,7 +987,17 @@ npm install
 npm run verify
 ```
 
-`verify` runs TypeScript checking, ESLint, modularization gates, and the Node test harnesses. Coverage includes game-speed scaling, notifications, network animation, end-to-end engine passes, pull/routing, causes, city readout, views, Demographics integration, population scaling, prosperity, geography, violence/siege caps, tunables, migration statistics, flow history, composition, visibility masking, world scope, effects, civ tuning, war, disasters, borders, naming, feedback, dividends, raid handling, modinfo/import closure, localization parity, and empty-catch checks.
+`verify` runs TypeScript checking, ESLint, modularization gates, and the Node test harnesses. Coverage includes game-speed scaling, notifications, network animation, end-to-end engine passes, pull/routing, causes, city readout, views, Demographics integration, population scaling, prosperity, geography, violence/siege caps, tunables, migration statistics, flow history, composition, visibility masking, world scope, effects, civ tuning, war, disasters, borders, naming, feedback, dividends, raid handling, modinfo/import closure, localization parity, Civilopedia page resolution, and empty-catch checks.
+
+Generated content is regenerated, never hand-edited:
+
+```sh
+node scripts/gen-enclave-improvements.mjs                            # enclave improvements + icons + EnclaveText.xml
+node --loader ./tests/loader.mjs scripts/sync-quote-rows.mjs         # the quote LOC rows in en_us
+node --loader ./tests/loader.mjs scripts/gen-pedia-voices.mjs        # the Voices of the Displaced Civilopedia pages
+```
+
+All three read the quote and bonus registries, so adding a quotation is a registry edit plus a regeneration. `gen-pedia-voices.mjs` also needs a one-line note on the speaker in [scripts/pedia-voices-people.json](scripts/pedia-voices-people.json) and refuses to run without one. `tests/pedia-pages.mjs` then walks every Civilopedia page the way the engine does and fails on one that would render as a bare title.
 
 `./release.sh` creates the debug-muted, allow-listed Workshop zip with readable, unminified JavaScript.
 

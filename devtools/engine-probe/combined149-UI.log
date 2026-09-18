@@ -1,0 +1,51 @@
+[2026-09-18 11:42:39]	[EmigProbe] shell attached 
+[2026-09-18 11:42:40]	[EmigProbe] shell query complete 
+[2026-09-18 11:42:40]	[EmigProbe] shell found EmigShots072.Civ7Save turn 72 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-18 11:42:40]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-18 11:42:58]	[EmigTest] modtest149 attached 
+[2026-09-18 11:43:13]	[EmigTest] modtest149 run local=0 turn=72 emigrationBooted=object version=72|1 
+[2026-09-18 11:43:19]	[EmigTest] POPUP dismissing screen-tech-civic-complete 
+[2026-09-18 11:43:22]	[EmigTest] SETUP rostov=78,53 unowned={"x":2,"y":2} cityState=Kannauj@29,52 owner 11 madrid=64,45 orig 5 monte=75,14 orig 19 marker kind=major MapCities@enclave={"owner":4,"id":655368,"type":1} 
+[2026-09-18 11:43:22]	[EmigTest] SETUP sources=37 detectors=36 detectorsWithMarkerBefore=0 
+[2026-09-18 11:43:22]	[EmigTest] LEDGER edited; stamp "1" -> 2 
+[2026-09-18 11:43:22]	[EmigTest] ITEM2 before any turn detectorsWithMarker=0 [] transit=14 transitWithMix=4 transitCarryingMarker=0 sample=[] 
+[2026-09-18 11:43:37]	[EmigTest] O1 layer wrapped 
+[2026-09-18 11:43:45]	[EmigTest] ITEM1 turn 72 comp=["2:60","4:40"] enclaveTile=["2:92","4:8"] bestBulgarian=0.920 tiles=18 
+[2026-09-18 11:43:45]	[EmigTest] VERDICT item1 PASS (turn 72) enclave tile Bulgarian 0.920 vs city best 0.920 
+[2026-09-18 11:43:47]	[EmigTest] HOVER i1-enclave "Rostov on Don · this tileBulgarian92%Norman8%" 
+[2026-09-18 11:43:50]	[EmigTest] HOVER i1-centre "Rostov on Don · this tileBulgarian90%Norman10%" 
+[2026-09-18 11:43:50]	[EmigTest] SHOT i1-rostov 
+[2026-09-18 11:43:59]	[EmigTest] O1 before End Turn applyCalls=1 version=72|2 
+[2026-09-18 11:44:07]	[EmigTest] ENDTURN blocked (442844772), one Autoplay turn 
+[2026-09-18 11:44:16]	[EmigTest] TURN activated n=1 turn=73 activeLens=emig-ethnicity-lens 
+[2026-09-18 11:44:24]	[EmigTest] O1 applyCalls=2 afterTurn=1 log=[{"t":1789746217062,"turn":72,"version":"72|2"},{"t":1789746257952,"turn":73,"version":"73|3"}] versionBefore=72|2 versionNow=73|3 activeLens=emig-ethnicity-lens 
+[2026-09-18 11:44:24]	[EmigTest] VERDICT O1 PASS lens repainted 1 time(s) after the turn without a toggle 
+[2026-09-18 11:44:42]	[EmigTest] HOVER i1-after-turn "Rostov on Don · this tileBulgarian92%Norman8%" 
+[2026-09-18 11:44:42]	[EmigTest] SHOT o1-after-turn 
+[2026-09-18 11:44:51]	[EmigTest] ITEM1 after turn comp=["2:60","4:40"] enclaveTile=["2:92","4:8"] bestBulgarian=0.920 tiles=18 
+[2026-09-18 11:44:51]	[EmigTest] VERDICT item1 PASS (after turn) enclave tile Bulgarian 0.920 vs city best 0.920 
+[2026-09-18 11:44:51]	[EmigTest] ITEM3 razedEntry=false unownedEntry=false cityStateEntry=true cityStateInAll=false cityStateInRanking=false live=76 ranking=76 passTurn=73 
+[2026-09-18 11:44:51]	[EmigTest] VERDICT item3 PASS razedGone=true unownedGone=true cityStateKept=true cityStateHidden=true 
+[2026-09-18 11:44:51]	[EmigTest] O4 madrid={"0":0.18,"5":23.82} monte={"0":7} 
+[2026-09-18 11:44:51]	[EmigTest] VERDICT O4 PASS madridAsOrigin5=0.9925 monteAsOwner=1 
+[2026-09-18 11:44:51]	[EmigTest] ITEM2 after turn 1 detectorsWithMarker=0 [] transit=18 transitWithMix=12 transitCarryingMarker=3 sample=[{"mix":{"1":0.5,"7":0.5},"src":"17,27","dest":"14,4"},{"mix":{"1":0.5,"7":0.5},"src":"30,10","dest":"14,4"}] 
+[2026-09-18 11:44:59]	[EmigTest] ENDTURN blocked (442844772), one Autoplay turn 
+[2026-09-18 11:45:07]	[EmigTest] TURN activated n=2 turn=74 activeLens=emig-ethnicity-lens 
+[2026-09-18 11:45:15]	[EmigTest] ITEM2 after turn 2 detectorsWithMarker=0 [] transit=18 transitWithMix=14 transitCarryingMarker=4 sample=[{"mix":{"1":0.5,"7":0.5},"src":"17,27","dest":"14,4"},{"mix":{"1":0.5,"7":0.5},"src":"30,10","dest":"14,4"}] 
+[2026-09-18 11:45:23]	[EmigTest] ENDTURN blocked (-2084516792), one Autoplay turn 
+[2026-09-18 11:45:30]	[EmigTest] TURN activated n=3 turn=75 activeLens=emig-ethnicity-lens 
+[2026-09-18 11:45:38]	[EmigTest] ITEM2 after turn 3 detectorsWithMarker=0 [] transit=12 transitWithMix=12 transitCarryingMarker=4 sample=[{"mix":{"1":0.5,"7":0.5},"src":"17,27","dest":"14,4"},{"mix":{"1":0.5,"7":0.5},"src":"30,10","dest":"14,4"}] 
+[2026-09-18 11:45:38]	[EmigTest] POPUP dismissing screen-tech-civic-complete 
+[2026-09-18 11:45:49]	[EmigTest] ENDTURN blocked (442844772), one Autoplay turn 
+[2026-09-18 11:45:58]	[EmigTest] TURN activated n=4 turn=76 activeLens=emig-ethnicity-lens 
+[2026-09-18 11:46:06]	[EmigTest] ITEM2 after turn 4 detectorsWithMarker=0 [] transit=14 transitWithMix=14 transitCarryingMarker=5 sample=[{"mix":{"1":0.5,"7":0.5},"src":"17,27","dest":"14,4"},{"mix":{"1":0.5,"7":0.5},"src":"30,10","dest":"14,4"}] 
+[2026-09-18 11:46:06]	[EmigTest] POPUP dismissing screen-natural-disaster-placard 
+[2026-09-18 11:46:17]	[EmigTest] ENDTURN blocked (442844772), one Autoplay turn 
+[2026-09-18 11:46:25]	[EmigTest] TURN activated n=5 turn=77 activeLens=fxs-default-lens 
+[2026-09-18 11:46:33]	[EmigTest] ITEM2 after turn 5 detectorsWithMarker=1 ["Tula:4.0%"] transit=12 transitWithMix=12 transitCarryingMarker=3 sample=[{"mix":{"1":0.49624999999999997,"8":0.50375},"src":"26,42","dest":"13,24"},{"mix":{"0":0.5299671499399039,"1":0.47003285006009615},"src":"93,26","dest":"13,24"}] 
+[2026-09-18 11:46:33]	[EmigTest] ITEM2 final detectorsWithMarker=1 ["Tula:4.0%"] transit=12 transitWithMix=12 transitCarryingMarker=3 sample=[{"mix":{"1":0.49624999999999997,"8":0.50375},"src":"26,42","dest":"13,24"},{"mix":{"0":0.5299671499399039,"1":0.47003285006009615},"src":"93,26","dest":"13,24"}] 
+[2026-09-18 11:46:33]	[EmigTest] VERDICT item2 PASS 1 detector(s) now hold the marker people 
+[2026-09-18 11:46:33]	[EmigTest] ITEM2 detector Tula comp=["2:96.0","1:4.0"] 
+[2026-09-18 11:46:50]	[EmigTest] HOVER item2 Tula tile=59,49 "(no panel)" 
+[2026-09-18 11:46:50]	[EmigTest] SHOT item2-detector 
+[2026-09-18 11:46:59]	[EmigTest] DONE modtest149 finished 

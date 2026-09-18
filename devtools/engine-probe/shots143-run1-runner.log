@@ -1,0 +1,17 @@
+[08:50:40] backed up settings store and 11 autosave entries to /Users/tylermiller/Library/Application Support/Civilization VII/emigration-probe-backup
+[08:50:40] registry: 126|emigration|1 608|emigration|0  ; modinfo flag: 1
+[08:50:40] probe installed: eep-modtest143.js on AutoSave_00_0100.Civ7Save
+[08:50:42] game pid 70868
+[08:51:45] shot pedia-voices (window 5111) -> 11695877 bytes
+[08:52:00] shot pedia-arrivals (window 5111) -> 11682846 bytes
+[08:52:20] shot pedia-callhome (window 5111) -> 11703704 bytes
+[08:52:40] shot pedia-policies (window 5111) -> 11691039 bytes
+[08:52:59] shot pedia-voices-rome (window 5111) -> 11656003 bytes
+[08:53:18] shot pedia-voices-pool (window 5111) -> 11652771 bytes
+[08:53:38] shot pedia-overview (window 5111) -> 11693599 bytes
+[08:53:57] shot pedia-dashboard (window 5111) -> 11679671 bytes
+[08:54:20] result=done after 180s
+[08:54:28] restored: 126|emigration|1 610|emigration|0  ; modinfo flag: 0 ; probe present: no
+[08:54:28] FINISHED result=done
+[08:54:29] Emigration settings unchanged by the run
+[08:54:29] autosaves from before the run are kept in /Users/tylermiller/Library/Application Support/Civilization VII/emigration-probe-backup/auto

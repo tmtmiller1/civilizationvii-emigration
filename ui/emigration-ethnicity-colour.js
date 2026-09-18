@@ -16,12 +16,27 @@
 
 /** @typedef {{r:number, g:number, b:number}} RGB Channels in [0,1]. */
 
-// Opacity ramps with a tile's POPULATION DENSITY within its own settlement: the built-up core reads
-// vivid, the rural fringe faint. Ethnicity is carried by HUE, density by OPACITY, so neither hides the other.
+// SATURATION ramps with a tile's POPULATION DENSITY within its own settlement, the same way the Prosperity lens
+// ramps with its score (emigration-tile-score.js): one strength value pulls the colour from neutral grey toward
+// the banner blend AND raises the opacity with it, so the built-up core reads as the vivid banner colour and the
+// rural fringe as a greyed, faint wash of it. WHO lives there is the hue; HOW MANY is the saturation.
 const MIN_ALPHA = 0.45; // the sparsest tile still reads as a claim on the terrain
 const MAX_ALPHA = 0.85; // the densest tile is unmistakable but never fully hides the map
-// How much of the opacity range density modulates; the floor keeps a settlement's fringe from vanishing.
-const DENSITY_FLOOR = 0.45;
+// Neutral end of the saturation ramp (0-1): the Prosperity lens's grey, so both lenses share a baseline.
+const GREY = { r: 150 / 255, g: 150 / 255, b: 150 / 255 };
+// Neutral end for a colourless banner (a grey or white civ). Ramping grey toward grey draws nothing, so a colour
+// with no hue ramps up from charcoal instead, and reads as dark fringe → light core. The neutral slides between
+// the two by the colour's HSL saturation (full grey at ACHROMATIC_S and above), so there is no flip at a threshold.
+const DARK = { r: 56 / 255, g: 56 / 255, b: 56 / 255 };
+const ACHROMATIC_S = 0.35;
+// Chroma gain on the ramp's vivid end. Prosperity's green and red sit ~0.7 from grey; lifted banner colours run
+// from 0.35 (pink, light purple) to 0.9 (red), so the muted ones had half the ramp to work with and a rural tile
+// barely left grey. Multiplying HSL saturation (capped at 1) keeps each hue and lightness, pushes pastels toward
+// their pure hue, and leaves a near-grey near grey (0.05 × gain is still colourless).
+const CHROMA_GAIN = 1.6;
+// Saturation of the sparsest tile. Prosperity lets its middle go fully grey (ordinary land carries no signal);
+// here the hue IS the signal, so the fringe keeps a quarter of its colour and a rural diaspora stays legible.
+const SAT_FLOOR = 0.25;
 // Contrast curve on an origin's share before mixing (< 1 lifts small shares). Linear mixing is honest but
 // hard to read: a 12% community shifts the hue by an amount the eye barely registers against terrain.
 // 0.7 lifts it to about 20% while keeping the mix strictly monotone — more people is always more colour —
@@ -95,7 +110,64 @@ function clampRGB(c) {
 }
 
 /**
- * The float4 fill for one tile: hue from the blend of who lives there, opacity from how many.
+ * RGB (0-1) to HSL (hue in degrees, s/l in 0-1).
+ * @param {RGB} c A colour. @returns {{h:number, s:number, l:number}} HSL.
+ */
+function toHsl(c) {
+  const max = Math.max(c.r, c.g, c.b);
+  const min = Math.min(c.r, c.g, c.b);
+  const l = (max + min) / 2;
+  const d = max - min;
+  if (d < 1e-9) return { h: 0, s: 0, l };
+  const s = d / (1 - Math.abs(2 * l - 1));
+  let h;
+  if (max === c.r) h = ((c.g - c.b) / d + 6) % 6;
+  else if (max === c.g) h = (c.b - c.r) / d + 2;
+  else h = (c.r - c.g) / d + 4;
+  return { h: h * 60, s: unit(s), l };
+}
+
+/**
+ * HSL back to RGB (0-1).
+ * @param {{h:number, s:number, l:number}} hsl HSL. @returns {RGB} The colour.
+ */
+function fromHsl({ h, s, l }) {
+  const f = (/** @type {number} */ n) => {
+    const k = (n + h / 30) % 12;
+    const a = s * Math.min(l, 1 - l);
+    return unit(l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1)));
+  };
+  return { r: f(0), g: f(8), b: f(4) };
+}
+
+/**
+ * The ramp's two ends for a blended colour: its vivid end (the blend with HSL saturation multiplied by
+ * CHROMA_GAIN, hue and lightness kept) and its neutral end (grey for a coloured blend, sliding to charcoal as
+ * the blend loses its hue).
+ * @param {RGB} c The share-weighted blend. @returns {{vivid:RGB, neutral:RGB}} Ramp ends.
+ */
+export function rampEnds(c) {
+  const hsl = toHsl(c);
+  const vivid = fromHsl({ h: hsl.h, s: unit(hsl.s * CHROMA_GAIN), l: hsl.l });
+  const k = unit(hsl.s / ACHROMATIC_S);
+  const neutral = {
+    r: DARK.r + (GREY.r - DARK.r) * k, g: DARK.g + (GREY.g - DARK.g) * k, b: DARK.b + (GREY.b - DARK.b) * k
+  };
+  return { vivid, neutral };
+}
+
+/**
+ * The 0-1 saturation of a tile from its density within its settlement: the sparsest tile sits at the floor,
+ * the densest at full strength. (The lens already puts density on a contrast curve, densityNorms.)
+ * @param {number} densityNorm 0 sparsest … 1 densest. @returns {number} Saturation in [SAT_FLOOR, 1].
+ */
+export function saturation(densityNorm) {
+  return SAT_FLOOR + (1 - SAT_FLOOR) * unit(densityNorm);
+}
+
+/**
+ * The float4 fill for one tile: hue from the blend of who lives there, saturation (neutral → that hue, made
+ * vivid) and opacity together from how many.
  * @param {{shares:{civ:number, share:number}[]}} tile A tile paint.
  * @param {(civ:number) => RGB} colourOf Resolves an origin's banner colour.
  * @param {{hostCiv:number, densityNorm:number}} ctx The settlement's main origin, and the tile's density
@@ -103,10 +175,15 @@ function clampRGB(c) {
  * @returns {{x:number, y:number, z:number, w:number}} Float4 RGBA, every channel in [0,1].
  */
 export function tileFill(tile, colourOf, ctx) {
-  const c = blendColour(tile && tile.shares, colourOf, ctx.hostCiv);
-  const k = DENSITY_FLOOR + (1 - DENSITY_FLOOR) * unit(ctx.densityNorm);
-  return { x: c.r, y: c.g, z: c.b, w: unit(MIN_ALPHA + (MAX_ALPHA - MIN_ALPHA) * k) };
+  const { vivid, neutral } = rampEnds(blendColour(tile && tile.shares, colourOf, ctx.hostCiv));
+  const k = saturation(ctx.densityNorm);
+  return {
+    x: unit(neutral.r + (vivid.r - neutral.r) * k),
+    y: unit(neutral.g + (vivid.g - neutral.g) * k),
+    z: unit(neutral.b + (vivid.b - neutral.b) * k),
+    w: unit(MIN_ALPHA + (MAX_ALPHA - MIN_ALPHA) * k)
+  };
 }
 
 // Test-only re-exports.
-export const __test = { MIN_ALPHA, MAX_ALPHA, MIX_GAMMA };
+export const __test = { MIN_ALPHA, MAX_ALPHA, MIX_GAMMA, GREY, DARK, SAT_FLOOR, CHROMA_GAIN, toHsl };
