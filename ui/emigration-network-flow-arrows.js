@@ -5,7 +5,7 @@
 // flows. Each arrow runs red where people LEAVE (outflow) → green where they ARRIVE (inflow), thickness
 // scaled to volume. It reads the SAME scene coordinates the dots use (centers + city sub-clusters from
 // buildCenters/buildChronoDots), so arrows land on the same nodes with no reconciliation. It respects
-// the Dots view's origin-isolate / focus-destination / scope filters.
+// the Dots view's origin-isolate / focus-destination / selected-city / scope filters.
 
 const OUTFLOW = "#e0786b"; // red, people leaving (the arrow's tail end)
 const INFLOW = "#7fd08a"; // green, people arriving (the arrow's head end)
@@ -108,12 +108,22 @@ function sumCollapsed(map, e, fi, ti) {
   a.people += e.people;
 }
 
+/**
+ * Whether a flow leaves or enters the selected city (always true when no city is selected).
+ * @param {*} state @param {number} fromCiv @param {string} fromCity @param {number} toCiv @param {string} toCity
+ */
+function touchesFocusCity(state, fromCiv, fromCity, toCiv, toCity) {
+  const fc = state.focusCity;
+  if (!fc) return true;
+  return (fromCiv === fc.civId && fromCity === fc.name) || (toCiv === fc.civId && toCity === fc.name);
+}
+
 /** Whether the Dots filters exclude a cross-civ edge from `from` to `to`. @param {*} state @param {*} e */
 function interFiltered(state, e) {
   if (state.show && state.show.immigrant === false) return true; // scope: immigrants hidden
   if (state.origin != null && e.from !== state.origin) return true; // isolate origin
   if (state.focusDest != null && e.to !== state.focusDest) return true; // focus a destination
-  return false;
+  return !touchesFocusCity(state, e.from, e.fromCity, e.to, e.toCity); // select a city
 }
 
 /**
@@ -155,6 +165,7 @@ function intraSeg(m, holder) {
   const { state, centers, byId } = holder;
   if (!expandedHas(state, m.civId) || !(m.people > 0)) return null;
   if (state.origin != null && m.civId !== state.origin) return null; // isolate: only that civ's internal moves
+  if (!touchesFocusCity(state, m.civId, m.fromCity, m.civId, m.toCity)) return null; // select a city
   const ci = byId.get(m.civId);
   if (ci == null) return null;
   const a = cityPoint(centers[ci], m.fromCity);
@@ -177,8 +188,9 @@ function intraSegments(fr, holder, segs) {
 
 /**
  * All flow segments to draw for the current frame (cross-civ everywhere, plus city→city inside any
- * expanded civ), filtered by the Dots view's origin-isolate / focus-destination / scope state.
- * @param {*} holder {state:{frameIdx, expanded, origin, focusDest, show}, centers, byId, frames}
+ * expanded civ), filtered by the Dots view's origin-isolate / focus-destination / selected-city / scope
+ * state. @param {*} holder {state:{frameIdx, expanded, origin, focusDest, focusCity, show}, centers, byId,
+ * frames}
  * @returns {*[]} Segments.
  */
 export function buildFlowSegments(holder) {

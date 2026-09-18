@@ -124,4 +124,35 @@ assert.equal(CONFIG.minorViolenceScale, 0.4);
   applyPresetIndex(0);
 }
 
+// The decision pop-up checkboxes: each mirrors one Advanced setting, starts from its default, writes the ticked or
+// unticked value into the live CONFIG, and redraws when the Advanced window (which edits the same value) closes.
+{
+  const { setTunable } = await import("/emigration/ui/emigration-settings.js");
+  const { ADVANCED_CLOSED_EVENT } = await import("/emigration/ui/options/emigration-advanced-editor.js");
+  const cases = [
+    { id: "emigration-ask-arrivals", key: "arrivalPlacement", ticked: true, on: 2, off: 1 },
+    { id: "emigration-callhome-offer", key: "callHomeOfferWhenCalm", ticked: true, on: true, off: false },
+    { id: "emigration-ask-enclaves", key: "quarterRecognition", ticked: false, on: 0, off: 2 }
+  ];
+  for (const c of cases) {
+    const box = byId.get(c.id);
+    assert.ok(box, c.id + " is registered");
+    assert.equal(box.group, "emigration", c.id + " is in the Emigration group");
+    assert.equal(box.currentValue, c.ticked, c.id + " starts at its setting's default");
+    box.updateListener(box, !c.ticked);
+    assert.equal(CONFIG[c.key], c.ticked ? c.off : c.on, c.id + " writes " + c.key);
+    box.updateListener(box, c.ticked);
+    assert.equal(CONFIG[c.key], c.ticked ? c.on : c.off, c.id + " writes it back");
+
+    // A change made in the Advanced window shows on the checkbox once the window closes.
+    let redraws = 0;
+    box.forceRender = () => redraws++;
+    setTunable(c.key, c.ticked ? c.off : c.on);
+    /** @type {*} */ (globalThis).window.dispatchEvent(new CustomEvent(ADVANCED_CLOSED_EVENT));
+    assert.equal(box.currentValue, !c.ticked, c.id + " follows an Advanced edit");
+    assert.ok(redraws > 0, c.id + " redraws after the window closes");
+    setTunable(c.key, c.ticked ? c.on : c.off);
+  }
+}
+
 console.log("options conflict-sliders harness passed");

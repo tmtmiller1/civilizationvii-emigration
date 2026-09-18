@@ -16,6 +16,7 @@ const ENGINE_GLOBALS = {
   Database: "readonly",
   Controls: "readonly",
   Cities: "readonly",
+  MapCities: "readonly",
   Districts: "readonly",
   ConstructibleClasses: "readonly",
   RevealedStates: "readonly",

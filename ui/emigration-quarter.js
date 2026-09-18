@@ -41,7 +41,7 @@ import {
   placeEnclave, enclaveTypeFor, enclaveStanding, placedPlotOccupied, plotYieldsAt, nativeYieldsOf,
   takeoverCompensation, destroyPlacedTile
 } from "/emigration/ui/emigration-enclave-place.js";
-import { allCityCompositions } from "/emigration/ui/emigration-composition.js";
+import { cityCompositionByKey } from "/emigration/ui/emigration-composition.js";
 import { enclaveYields, stanceYields, yieldsText, withYields } from "/emigration/ui/emigration-enclave-yields.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
 import { toast } from "/emigration/ui/emigration-feedback.js";
@@ -618,7 +618,7 @@ function fadeStep(rec, community, turn, cfg) {
  */
 function originCommunityOf(tileKey, rec) {
   try {
-    const entry = allCityCompositions().find((c) => c.key === tileKey);
+    const entry = cityCompositionByKey(tileKey);
     if (!entry || !entry.comp) return null;
     const mine = (entry.comp.civs || []).find((x) => x.civ === rec.civ);
     return mine ? { share: mine.share, pts: mine.pts } : { share: 0, pts: 0 };
@@ -699,7 +699,7 @@ function dissolveEnclave(tileKey, rec, turn) {
  */
 function hostCityName(tileKey) {
   try {
-    const entry = allCityCompositions().find((c) => c.key === tileKey);
+    const entry = cityCompositionByKey(tileKey);
     return entry && entry.name ? String(entry.name) : "the city";
   } catch (_) {
     return "the city";

@@ -15,7 +15,7 @@ say() { echo "[$(date +%H:%M:%S)] $*"; }
 PRE_STATE=$(sqlite3 "$DB" "select ModRowId||'='||Disabled from Mods where ModId='emigration'")
 sqlite3 "$DB" "update Mods set Disabled=0 where ModId='emigration' and ScannedFileRowId in (select ScannedFileRowId from ScannedFiles where Path like '%/Civilization VII/Mods/emigration/%')"
 cp "$MI" "$MI.bak"
-grep -q AffectsSavedGames "$MI" || sed -i '' 's#<Version>2.2.0</Version>#<Version>2.2.0</Version>\n        <AffectsSavedGames>0</AffectsSavedGames>#' "$MI"
+grep -q AffectsSavedGames "$MI" || sed -i '' -E 's#(<Version>[^<]+</Version>)#\1\n        <AffectsSavedGames>0</AffectsSavedGames>#' "$MI"
 say "registry: $(sqlite3 "$DB" "select ModRowId,ModId,Disabled from Mods where ModId='emigration'" | tr '\n' ' ') ; modinfo flag: $(grep -c AffectsSavedGames "$MI")"
 
 rm -rf "$MODS/emig-engine-probe"; mkdir -p "$MODS/emig-engine-probe/ui" "$MODS/emig-engine-probe/data" "$PROBE_SRC/shots"

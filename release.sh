@@ -93,6 +93,7 @@ rsync -a --exclude='.git' --exclude='.gitignore' --exclude='.DS_Store' --exclude
     --exclude='migration-probe.modinfo*' --exclude='devtools' \
     --exclude='coverage*' --exclude='reports' --exclude='.stryker-tmp' \
     --exclude='.c8rc.json' --exclude='stryker*.json' \
+    --exclude='/Screenshot *' --exclude='/.codegpt*' \
     "$SRC_DIR"/ "$TARGET_DIR"/
 
 echo "==> Disabling debug logging in dist JS files"
@@ -118,7 +119,7 @@ echo "==> Verifying zip contents against allow-list"
 ALLOW='^emigration/(emigration\.modinfo|README\.md|LICENSE|CHANGELOG\.md)$'
 ALLOW="$ALLOW"'|^emigration/ui/.+\.(js|html|css)$'
 ALLOW="$ALLOW"'|^emigration/images/.+\.(svg|png)$'
-ALLOW="$ALLOW"'|^emigration/text/[a-z_]+/(ModText|EnclaveText)\.xml$'
+ALLOW="$ALLOW"'|^emigration/text/[a-z_]+/(ModText|EnclaveText|PediaText|PediaVoicesText)\.xml$'
 ALLOW="$ALLOW"'|^emigration/data/.+\.(xml|sql)$'
 UNEXPECTED="$(unzip -Z1 "$ZIP_PATH" | grep -vE '/$' | grep -vE "$ALLOW" || true)"
 if [ -n "$UNEXPECTED" ]; then
@@ -230,7 +231,9 @@ fi
     echo '    "appid"          "1295660"'
     [ -n "$PUBLISHED_FILE_ID" ] && echo "    \"publishedfileid\" \"$PUBLISHED_FILE_ID\""
     echo "    \"contentfolder\"  \"$ABS_CONTENT\""
-    [ -n "$ABS_PREVIEW" ] && echo "    \"previewfile\"    \"$ABS_PREVIEW\""
+    # NOTE: "previewfile" is intentionally omitted. Steam rejects a preview image sent through
+    # steamcmd's workshop_build_item every time, and the failed preview fails the whole upload.
+    # preview.png is still rendered into dist/ so it can be set by hand on the Workshop page.
     echo '    "visibility"     "0"'
     echo '    "title"          "Emigration"'
     # NOTE: "description" is intentionally omitted so steamcmd preserves the

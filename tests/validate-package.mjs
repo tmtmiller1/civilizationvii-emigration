@@ -91,26 +91,35 @@ const missing = refs.filter((r) => !fs.existsSync(r));
 if (missing.length) fail(`modinfo references missing file(s): ${missing.join(", ")}`);
 else ok("modinfo file references", `${refs.length} refs all present`);
 
-// ── 3) Civilopedia duplicate primary keys (per table) ────────────────────────
-const pedia = fs.existsSync("data/emigration-civilopedia.xml") ? read("data/emigration-civilopedia.xml") : "";
+// ── 3) Civilopedia duplicate primary keys (per table, across every data file) ──
+// Primary keys as 01_GameplaySchema.sql declares them. Note that CivilopediaPageChapterParagraphs is keyed
+// by (Section, Page, Chapter) WITHOUT the paragraph, so a chapter can carry only one explicit paragraph
+// row; multi-paragraph chapters use the pedia's text-key convention instead (see data/emigration-civilopedia.xml).
+// The Voices pages are generated into a second data file, so the check runs over all of them together.
+const pediaFiles = dataXmlFiles().filter((f) => /Civilopedia/.test(read(f)));
+const pedia = pediaFiles.map(read).join("\n");
 const PEDIA_PK = {
   CivilopediaSections: ["SectionID"],
   CivilopediaPageGroups: ["SectionID", "PageGroupID"],
+  CivilopediaPageLayouts: ["PageLayoutID"],
+  CivilopediaPageLayoutChapters: ["PageLayoutID", "ChapterID"],
   CivilopediaPages: ["SectionID", "PageID"],
-  CivilopediaPageChapterParagraphs: ["SectionID", "PageID", "ChapterID", "Paragraph"]
+  CivilopediaPageChapterParagraphs: ["SectionID", "PageID", "ChapterID"]
 };
 for (const [table, keyAttrs] of Object.entries(PEDIA_PK)) {
-  const block = blockOf(pedia, table);
-  if (!block) continue;
   const seen = new Map();
-  for (const r of rowsOf(block, "Row")) {
-    const k = keyAttrs.map((a) => r[a]).join("|");
-    seen.set(k, (seen.get(k) || 0) + 1);
+  for (const f of pediaFiles) {
+    for (const block of read(f).matchAll(new RegExp(`<${table}(?:\\s[^>]*)?>([\\s\\S]*?)</${table}>`, "g"))) {
+      for (const r of rowsOf(block[1], "Row")) {
+        const k = keyAttrs.map((a) => r[a]).join("|");
+        seen.set(k, (seen.get(k) || 0) + 1);
+      }
+    }
   }
   const dups = [...seen].filter(([, c]) => c > 1).map(([k]) => k);
   if (dups.length) fail(`${table}: duplicate primary key(s): ${dups.join(", ")}`);
 }
-if (pedia) ok("Civilopedia primary keys", "no duplicates per table");
+if (pedia) ok("Civilopedia primary keys", `no duplicates per table across ${pediaFiles.length} file(s)`);
 
 // ── 4) Locale parity + Language attr + no duplicate tags ─────────────────────
 const enXml = read("text/en_us/ModText.xml");

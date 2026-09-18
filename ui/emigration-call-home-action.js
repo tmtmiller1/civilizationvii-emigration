@@ -1,8 +1,9 @@
 // emigration-call-home-action.js
 //
-// The playable end of "call our people home" (emigration-call-home.js holds the rules and the odds). This binds
-// them to the game: reads what the treasury can afford, charges Gold or Influence, moves the point home, keeps
-// the per-civilization cooldown, writes the outcome to the Chronicle, and offers the whole thing as a dialog.
+// The playable end of "call our people home" (emigration-call-home.js holds the rules and the odds,
+// emigration-call-home-view.js the dialog). This binds them to the game: reads what the treasury can
+// afford, charges Gold or Influence, moves the point home, keeps the per-civilization cooldown, writes the
+// outcome to the Chronicle, and offers the whole thing as a dialog.
 //
 // The two currencies are offered side by side at the moment of the call rather than set once in Options: which
 // one you can spare is a turn-by-turn question, and the choice is more interesting when it is asked then.
@@ -14,9 +15,8 @@ import { showDilemma } from "/emigration/ui/emigration-dilemma-view.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
 import { moveReturnees } from "/emigration/ui/emigration-return.js";
 import { narrativeCiv } from "/emigration/ui/emigration-naming.js";
-import {
-  CALL_HOME_CURRENCY, CALL_HOME_SCOPE, callHomeCost, callHomeQuote, resolveCallHome
-} from "/emigration/ui/emigration-call-home.js";
+import { CALL_HOME_CURRENCY, resolveCallHome } from "/emigration/ui/emigration-call-home.js";
+import { callHomeView, parseChoice } from "/emigration/ui/emigration-call-home-view.js";
 
 /** @type {Map<string, number>} Last turn a civilization called, by "pid|scope". */
 const _lastCall = new Map();
@@ -54,7 +54,7 @@ export function _resetCallHomeCooldowns() {
  * mid age-transition) so a failed read never silently blocks the call.
  * @param {number} pid Player id. @param {number} currency A CALL_HOME_CURRENCY. @returns {number} The balance.
  */
-function affordFor(pid, currency) {
+export function callHomeBalance(pid, currency) {
   try {
     const p = typeof Players !== "undefined" ? Players.get?.(pid) : null;
     return currency === CALL_HOME_CURRENCY.INFLUENCE
@@ -79,24 +79,29 @@ function balanceOf(treasury, field, getter) {
 }
 
 /**
- * Run one call for a civilization, charging the chosen currency and moving whoever comes.
+ * Run one call for a civilization, charging the chosen currency and moving whoever comes. Any resolved call,
+ * answered or not, starts the cooldown: an external call the dice refused cannot be repeated next turn.
  * @param {number} pid Player id. @param {string} scope A CALL_HOME_SCOPE.
  * @param {number} currency A CALL_HOME_CURRENCY.
- * @param {{move?:(pair:*)=>boolean}} [deps] Test seam for the mover.
+ * @param {{want?:number, move?:(pair:*)=>boolean}} [deps] How many the player asked for (default: the
+ *   per-call cap), and a test seam for the mover.
  * @returns {{ok:boolean, reason:string, scope:string, paid:number, attempted:number, returned:number}} Result.
  */
 export function callHomeNow(pid, scope, currency, deps) {
   const left = callHomeCooldownLeft(pid, scope);
   if (left > 0) return { ok: false, reason: "cooldown", scope, paid: 0, attempted: 0, returned: 0 };
-  const yieldKey = currency === CALL_HOME_CURRENCY.INFLUENCE ? "YIELD_INFLUENCE" : "YIELD_GOLD";
+  // Influence is YIELD_DIPLOMACY in the game's yield table; there is no YIELD_INFLUENCE, and charging that
+  // key was a silent no-op (the Influence option used to be free).
+  const yieldKey = currency === CALL_HOME_CURRENCY.INFLUENCE ? "YIELD_DIPLOMACY" : "YIELD_GOLD";
   const result = resolveCallHome(pid, scope, currency, {
     turn: turnNow(),
     gameId: safeGameId(),
-    afford: (c) => affordFor(pid, c),
+    want: deps && deps.want,
+    afford: (c) => callHomeBalance(pid, c),
     pay: (amount) => {
       if (amount <= 0) return true;
       try {
-        deduct(pid, yieldKey, amount);
+        deduct(pid, yieldKey, -amount);
         return true;
       } catch (e) {
         dlog("call home: charge threw " + e);
@@ -105,7 +110,7 @@ export function callHomeNow(pid, scope, currency, deps) {
     },
     move: (deps && deps.move) || ((pair) => movePointHome(pid, pair))
   });
-  if (result.ok) {
+  if (result.ok || result.reason === "nobody-came") {
     _lastCall.set(cdKey(pid, scope), turnNow());
     reportCall(pid, result);
   }
@@ -158,22 +163,27 @@ function safeGameId() {
 
 /**
  * Write what the call achieved to the Chronicle, so the outcome is a recorded event and not just a number
- * that flickered past.
+ * that flickered past. An external call nobody answered is recorded too: the player asked, and the answer
+ * was no.
  * @param {number} pid Player id. @param {*} result The call result.
  */
 function reportCall(pid, result) {
   try {
-    const many = result.returned > 1;
-    const body = loc(
-      many ? "LOC_EMIG_CALLHOME_CHRON" : "LOC_EMIG_CALLHOME_CHRON_ONE",
-      many
-        ? "{1_Count} population points answered the call and came home."
-        : "One population point answered the call and came home.",
-      result.returned);
     const nc = narrativeCiv(pid);
+    const answered = result.returned > 0;
+    const many = result.returned > 1;
+    const body = answered
+      ? loc(many ? "LOC_EMIG_CALLHOME_CHRON" : "LOC_EMIG_CALLHOME_CHRON_ONE",
+        many
+          ? "{1_Count} population points answered the call and came home."
+          : "One population point answered the call and came home.",
+        result.returned)
+      : loc("LOC_EMIG_CALLHOME_CHRON_NONE", "The call went out to our people abroad, and none of them came.");
     chronicle({
       kind: "return", civ: nc.adj, people: result.returned, body,
-      title: loc("LOC_EMIG_CALLHOME_CHRON_TITLE", "They Answer The Call"),
+      title: answered
+        ? loc("LOC_EMIG_CALLHOME_CHRON_TITLE", "They Answer The Call")
+        : loc("LOC_EMIG_CALLHOME_CHRON_NONE_TITLE", "The Call Goes Unanswered"),
       dedupeKey: "callhome:" + pid + "|" + result.scope + "|" + turnNow()
     });
   } catch (e) {
@@ -182,50 +192,22 @@ function reportCall(pid, result) {
 }
 
 /**
- * The dialog offering the call: both currencies priced side by side, with the odds stated plainly so the
- * player knows a call brings at least one person and how many more to expect.
- * @param {number} pid Player id. @param {string} scope A CALL_HOME_SCOPE.
- * @returns {{eyebrow:string, title:string, body:string, dismissId:string, choices:*[]}|null} The view, or null.
- */
-export function callHomeView(pid, scope) {
-  const gold = callHomeQuote(pid, scope, CALL_HOME_CURRENCY.GOLD);
-  if (gold.points <= 0) return null;
-  const inflCost = callHomeCost(gold.points, scope, CALL_HOME_CURRENCY.INFLUENCE);
-  const pct = Math.round(gold.chance * 100);
-  const internal = scope === CALL_HOME_SCOPE.INTERNAL;
-  return {
-    eyebrow: loc("LOC_EMIG_CALLHOME_EYEBROW", "Call them home"),
-    title: internal
-      ? loc("LOC_EMIG_CALLHOME_TITLE_IN", "Call our people home")
-      : loc("LOC_EMIG_CALLHOME_TITLE_EX", "Call our people back from abroad"),
-    body: loc("LOC_EMIG_CALLHOME_BODY",
-      "{1_Away} population points were driven out and have not come back. A call reaches up to {2_Points}: "
-      + "about {3_Pct}% of them agree, and at least one always does. You pay only for those who come.",
-      gold.available, gold.points, pct),
-    dismissId: "no",
-    choices: [
-      { id: "gold", label: loc("LOC_EMIG_CALLHOME_PAY_GOLD", "Pay {1_Cost} Gold", gold.cost),
-        note: loc("LOC_EMIG_CALLHOME_PAY_N", "Charged per point that comes home, not per attempt.") },
-      { id: "influence", label: loc("LOC_EMIG_CALLHOME_PAY_INFL", "Spend {1_Cost} Influence", inflCost),
-        note: loc("LOC_EMIG_CALLHOME_PAY_N", "Charged per point that comes home, not per attempt.") },
-      { id: "no", label: loc("LOC_EMIG_CALLHOME_NO", "Leave them where they are"),
-        note: loc("LOC_EMIG_CALLHOME_NO_N", "They may still drift home on their own in time.") }
-    ]
-  };
-}
-
-/**
- * Offer the call to the local player as a dialog.
+ * Offer the call to the local player as a dialog. Internal: a ladder of sizes per currency, each a purchase.
+ * External: one roll per currency.
  * @param {number} pid Player id. @param {string} scope A CALL_HOME_SCOPE. @returns {boolean} Whether it opened.
  */
 export function offerCallHome(pid, scope) {
   if (!CONFIG.callHomeEnabled) return false;
   if (callHomeCooldownLeft(pid, scope) > 0) return false;
-  const view = callHomeView(pid, scope);
+  const view = callHomeView(pid, scope, {
+    afford: (c) => callHomeBalance(pid, c), seed: "callhome|" + scope + "|" + turnNow()
+  });
   if (!view) return false;
   showDilemma(view, (id) => {
-    if (id === "gold") callHomeNow(pid, scope, CALL_HOME_CURRENCY.GOLD);
-    else if (id === "influence") callHomeNow(pid, scope, CALL_HOME_CURRENCY.INFLUENCE);
+    // A greyed-out size can never be bought, even if an input path slipped past the dialog's own guard.
+    if (view.choices.some((c) => c.id === id && c.disabled)) return;
+    const pick = parseChoice(id);
+    if (pick) callHomeNow(pid, scope, pick.currency, { want: pick.want });
   });
   return true;
 }

@@ -35,6 +35,9 @@ const requiredScripts = [
   // Feature L (the explainer surface): the honesty rule made testable - weights are shares, and
   // permeability/community stay OUT of them.
   "test:explain-view",
+  // The Civilopedia pages: the chaptered ones resolve their text by key convention with no database row, so a
+  // mistyped or regenerated key renders a bare title with no error anywhere. This gate walks them as the engine does.
+  "test:pedia-pages",
   "release:gate"
 ];
 
@@ -54,7 +57,8 @@ const requiredVerifyRuns = [
   "test:network-timeline-pins",
   "test:diversity",
   "test:explain",
-  "test:explain-view"
+  "test:explain-view",
+  "test:pedia-pages"
 ];
 
 const missing = requiredScripts.filter((name) => !Object.prototype.hasOwnProperty.call(scripts, name));

@@ -3,6 +3,7 @@
 // Shared refugee staging helpers: source-side re-shed behavior and destination-side pool settlement.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { originMixForCity } from "/emigration/ui/emigration-composition.js";
 import { addRural, removeRural } from "/emigration/ui/emigration-population.js";
 import { departureWouldAbandonTile } from "/emigration/ui/emigration-departure-tile.js";
 import { arriveRural } from "/emigration/ui/emigration-arrival-placement.js";
@@ -79,6 +80,23 @@ export function consumeSourcePoint(src, cause) {
   src.rural -= 1;
   src.population -= 1;
   return { ok: true, fromPool: false };
+}
+
+/**
+ * Who is leaving, as origin civ → fraction: a held refugee is their own recorded origin; anyone else is a
+ * slice of the source settlement's mix (ethnicity audit item 2). Undefined when the mix is unreadable, and
+ * the ledger then counts the migrant as the source owner's people, as it always did.
+ * @param {*} src Source signal.
+ * @param {{fromPool:boolean, originCiv?:number}} consumed Where the point came from.
+ * @returns {Record<string, number>|undefined} The mix.
+ */
+export function departingMix(src, consumed) {
+  if (consumed.fromPool && typeof consumed.originCiv === "number") return { [consumed.originCiv]: 1 };
+  try {
+    return originMixForCity(src.city);
+  } catch (_) {
+    return undefined;
+  }
 }
 
 /**

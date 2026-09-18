@@ -16,7 +16,7 @@
 import assert from "node:assert/strict";
 
 const { buildChronoDots } = await import("/emigration/ui/emigration-network-dots.js");
-const { paint } = await import("/emigration/ui/emigration-network-paint.js");
+const { paint, dotInCity } = await import("/emigration/ui/emigration-network-paint.js");
 const { wireEvents } = await import("/emigration/ui/emigration-network-interact.js");
 const { buildFlowSegments } = await import("/emigration/ui/emigration-network-flow-arrows.js");
 
@@ -68,7 +68,7 @@ function makeScene() {
     turn: 1, age: "AGE_ANTIQUITY", year: "",
     network: {
       nodes: [{ id: 1, name: "Alpha" }, { id: 2, name: "Beta" }],
-      edges: [{ from: 1, to: 2, people: 5000, fromCity: "C0", toCity: "C0" }],
+      edges: [{ from: 1, to: 2, people: 5000, fromCity: "C0", toCity: "C0", byCause: { other: 5000 } }],
       cityEdges: [], maxEdge: 0, maxNode: 0
     },
     pops: { 1: { cities: cities() }, 2: { cities: cities() } },
@@ -181,16 +181,74 @@ function testDraggingACivCarriesItsCitiesAlong() {
     "a civ drag must leave the city offsets untouched (they ride along with the centre)");
 }
 
-function testClickWithoutMovingStillIsolates() {
+function testClickingACivRingStillIsolates() {
+  const scene = makeScene();
+  const canvas = wire(scene);
+  const at = civGrabPoint(scene.centers[0]);
+  drag(canvas, at, at); // press + release, no movement
+  assert.equal(scene.state.focusDest, 1, "clicking a civ's ring should isolate the civ");
+  drag(canvas, at, at);
+  assert.equal(scene.state.focusDest, null, "clicking it again should clear the isolate");
+}
+
+/** Arrows as "from>to" civ-city labels, recovered by matching segment endpoints to city centres. */
+function arrowLabels(scene) {
+  const pts = [];
+  for (const c of scene.centers) {
+    for (const ct of c.cities) {
+      pts.push({ label: c.name + "/" + ct.name, x: c.x + ct.sx, y: c.y + ct.sy, r: (ct.subR || 4) + 3 });
+    }
+  }
+  // Nearest RELATIVE to each disc's trim radius: a tight arrow's end can sit inside the neighbouring
+  // disc too, but always at a smaller fraction of its own city's radius.
+  const rel = (/** @type {*} */ p, /** @type {number} */ x, /** @type {number} */ y) => Math.hypot(p.x - x, p.y - y) / p.r;
+  const near = (/** @type {number} */ x, /** @type {number} */ y) =>
+    pts.reduce((b, p) => (rel(p, x, y) < rel(b, x, y) ? p : b)).label;
+  return buildFlowSegments({ state: scene.state, centers: scene.centers, byId: scene.byId, frames: scene.frames })
+    .map((/** @type {*} */ s) => near(s.x0, s.y0) + ">" + near(s.x1, s.y1)).sort();
+}
+
+function testClickingACitySelectsJustItsFlows() {
+  const scene = makeScene();
+  scene.state.showFlows = false; // selecting a city must show its arrows even with the overlay off
+  const canvas = wire(scene);
+  const civ = scene.centers[0];
+  const at = (/** @type {number} */ k) => ({ x: civ.x + civ.cities[k].sx, y: civ.y + civ.cities[k].sy });
+
+  assert.equal(snapshot(scene).curves.length, 0, "no arrows before anything is selected");
+  drag(canvas, at(1), at(1));
+  assert.deepEqual(scene.state.focusCity, { civId: 1, idx: 1, name: "C1" }, "clicking a city should select it");
+  assert.equal(scene.state.focusDest, null, "selecting a city is not a civ isolate");
+  // C1 only receives the internal C0 -> C1 move; the cross-civ Alpha/C0 -> Beta/C0 flow is not its own.
+  assert.deepEqual(arrowLabels(scene), ["Alpha/C0>Alpha/C1"], "only the selected city's flows");
+  assert.equal(snapshot(scene).curves.length, 1, "the painter should draw exactly that one arrow");
+
+  drag(canvas, at(0), at(0)); // C0: the source of both the internal move and the emigration
+  assert.deepEqual(arrowLabels(scene), ["Alpha/C0>Alpha/C1", "Alpha/C0>Beta/C0"].sort(),
+    "selecting another city should swap to its flows, outbound as well as inbound");
+
+  drag(canvas, at(0), at(0));
+  assert.equal(scene.state.focusCity, null, "clicking the selected city again should clear it");
+  drag(canvas, at(0), at(0));
+  drag(canvas, { x: 20, y: 20 }, { x: 20, y: 20 }); // empty canvas
+  assert.equal(scene.state.focusCity, null, "clicking empty space should clear the selection");
+}
+
+function testSelectedCityKeepsItsEmigrantsLit() {
+  // The dots of Alpha/C0's story: its residents, plus the people who left it (internal movers now in
+  // C1, emigrants now in Beta). Everything else dims.
   const scene = makeScene();
   const canvas = wire(scene);
   const civ = scene.centers[0];
-  const city = civ.cities[0];
-  const at = { x: civ.x + city.sx, y: civ.y + city.sy };
-  drag(canvas, at, at); // press + release, no movement
-  assert.equal(scene.state.focusDest, 1, "clicking a city should isolate its civ, as it did before");
+  const at = { x: civ.x + civ.cities[0].sx, y: civ.y + civ.cities[0].sy };
   drag(canvas, at, at);
-  assert.equal(scene.state.focusDest, null, "clicking it again should clear the isolate");
+  const lit = scene.dots.filter((/** @type {*} */ d) => dotInCity(d, scene.state.focusCity));
+  const scopes = new Set(lit.map((/** @type {*} */ d) => d.scope + "@" + d.destId + "/" + d.cityIdx));
+  assert.ok(scopes.has("resident@1/0"), "C0's own residents stay lit");
+  assert.ok([...scopes].some((k) => k.startsWith("internal@1/") && !k.endsWith("/0")),
+    "people who moved from C0 to a sibling city stay lit");
+  assert.ok([...scopes].some((k) => k.startsWith("immigrant@2/")), "people who emigrated from C0 to Beta stay lit");
+  assert.ok(!scopes.has("resident@2/0") && !scopes.has("resident@1/1"), "other cities' residents dim");
 }
 
 function testDraggingACityOutOpensUpItsInternalFlow() {
@@ -222,5 +280,7 @@ testFlowArrowsFollowACivDrag();
 testDraggingACityOutOpensUpItsInternalFlow();
 testCityDragMovesItsDotsAndGrowsTheCivCircle();
 testDraggingACivCarriesItsCitiesAlong();
-testClickWithoutMovingStillIsolates();
+testClickingACivRingStillIsolates();
+testClickingACitySelectsJustItsFlows();
+testSelectedCityKeepsItsEmigrantsLit();
 console.log("network-drag: ok");

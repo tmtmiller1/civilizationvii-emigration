@@ -12,7 +12,7 @@
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
-import { cityName } from "/emigration/ui/emigration-migration-records.js";
+import { cityName, settlementLoc } from "/emigration/ui/emigration-migration-records.js";
 import { removeRural, addRural, marginalPeople } from "/emigration/ui/emigration-population.js";
 import { departureWouldAbandonTile, commitSourcePoint } from "/emigration/ui/emigration-departure-tile.js";
 import { arriveRural } from "/emigration/ui/emigration-arrival-placement.js";
@@ -371,6 +371,8 @@ function planOneReturn(host, ctx) {
   chronicleReturn(dia.civ, hostKey, people, ctx.turn);
   return {
     srcOwner: host.owner, srcName: hostKey, destOwner: dia.civ, destName: cityName(homeCity.city),
+    // Located by plot, so a host that shares its display name with another city still loses its own returnees.
+    srcLoc: settlementLoc(host.city), destLoc: settlementLoc(homeCity.city),
     originCiv: dia.civ, points: 1, people, cause: "return", crossCiv: true
   };
 }

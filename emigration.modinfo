@@ -7,7 +7,7 @@
         <SpecialThanks>Tomahawk, Mk Z, and Tim_The_Texan's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>2.2.0</Version>
+        <Version>3.0.0</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -70,6 +70,8 @@
                 <UpdateText>
                     <Item>text/en_us/ModText.xml</Item>
                     <Item>text/en_us/EnclaveText.xml</Item>
+                    <Item>text/en_us/PediaText.xml</Item>
+                    <Item>text/en_us/PediaVoicesText.xml</Item>
                     <Item locale="de_DE">text/de_de/ModText.xml</Item>
                     <Item locale="es_ES">text/es_es/ModText.xml</Item>
                     <Item locale="fr_FR">text/fr_fr/ModText.xml</Item>
@@ -220,6 +222,7 @@
                     <Item>ui/emigration-return.js</Item>
                     <Item>ui/emigration-call-home.js</Item>
                     <Item>ui/emigration-call-home-action.js</Item>
+                    <Item>ui/emigration-call-home-view.js</Item>
                     <!-- Refugee dilemmas: rare narrative decision + its trigger logic. The decision
                          renders in the game's own native dialog (DialogBoxManager), so there is no
                          mod-owned html/css panel. -->
@@ -228,6 +231,7 @@
                     <!-- Refugee and migrant epigraphs by origin civilization, in the displaced people's
                          own voice (pure registry + pick; used by the dilemma and arrivals). -->
                     <Item>ui/emigration-displaced-quotes.js</Item>
+                    <Item>ui/emigration-return-quotes.js</Item>
                     <!-- Cultural Quarters: an established diaspora becomes a persistent, player-shaped
                          district. Per-civ bonus registry (origin-specific trade-off options) + option
                          catalogue + per-tile persistent store + the decision/change-of-hands/contested
@@ -250,6 +254,7 @@
             <Actions>
                 <UpdateDatabase>
                     <Item>data/emigration-civilopedia.xml</Item>
+                    <Item>data/emigration-civilopedia-voices.xml</Item>
                     <Item>data/emigration-policies-gameeffects.xml</Item>
                     <Item>data/emigration-enclave-improvements.xml</Item>
                     <Item>data/emigration-enclave-village.xml</Item>

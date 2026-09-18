@@ -27,7 +27,7 @@ import { recordStanceImpact } from "/emigration/ui/emigration-migration-stats.js
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
 import {
   loadState, saveState, prepareState, ownerPopulations, transitAtCapacity, tickPressure } from "/emigration/ui/emigration-state.js";
-import { cityName, moveRecord, departRecord } from "/emigration/ui/emigration-migration-records.js";
+import { cityName, moveRecord, departRecord, settlementLoc } from "/emigration/ui/emigration-migration-records.js";
 import { pollCrisis, eventKeyForMove, eventKeyForDeath } from "/emigration/ui/emigration-event-attribution.js";
 import { warAggressors } from "/emigration/ui/emigration-war.js";
 import { combatLossFor } from "/emigration/ui/emigration-combat.js";
@@ -40,6 +40,7 @@ import { queueRefugees, saveRefugeePools } from "/emigration/ui/emigration-refug
 import {
   consumeSourcePoint,
   undoSourceConsume,
+  departingMix,
   immediateRefugeeSettlement,
   settleRefugeePools
 } from "/emigration/ui/emigration-refugee-staging.js";
@@ -241,10 +242,11 @@ function applyOneMove(src, dest, popBefore, state, cause, inboundCtx, reasons) {
   const consumed = consumeSourcePoint(src, cause);
   if (!consumed.ok) return null;
   if (!consumed.fromPool) applyDepartureConsequences(src, cause);
+  const originMix = departingMix(src, consumed);
   const lag = transitLag(src, dest, cause);
   const rec = lag <= 0
-    ? commitImmediateArrival({ src, dest, state, cause, inboundCtx, consumed, people, eventKey, reasons })
-    : enqueueLaggedDeparture({ src, dest, state, lag, cause, consumed, people, eventKey, reasons });
+    ? commitImmediateArrival({ src, dest, state, cause, inboundCtx, consumed, people, eventKey, reasons, originMix })
+    : enqueueLaggedDeparture({ src, dest, state, lag, cause, consumed, people, eventKey, reasons, originMix });
   if (rec) rec.subject = commitSourcePoint(src, consumed).mode; // dest has the point: make the loss real
   return rec;
 }
@@ -260,12 +262,13 @@ function applyOneMove(src, dest, popBefore, state, cause, inboundCtx, reasons) {
  *   consumed:{ok:boolean, fromPool:boolean, originCiv?:number, since?:number},
  *   people:number,
  *   eventKey:string,
- *   reasons?:string[]
+ *   reasons?:string[],
+ *   originMix?:Record<string, number>
  * }} a Function args.
  * @returns {Migration|null} Applied record or null.
  */
 function commitImmediateArrival(a) {
-  const { src, dest, state, cause, inboundCtx, consumed, people, eventKey, reasons } = a;
+  const { src, dest, state, cause, inboundCtx, consumed, people, eventKey, reasons, originMix } = a;
   if (!canReceiveInbound(dest.key, inboundCtx)) {
     undoSourceConsume(src, consumed);
     return null;
@@ -282,7 +285,7 @@ function commitImmediateArrival(a) {
   }
   noteInbound(dest.key, inboundCtx);
   const cost = applyArrivalConsequences(dest.city, dest.owner, dest.population, src.infected, src.owner);
-  return moveRecord(src, dest, people, cause, { destPaidCost: cost, eventKey, reasons });
+  return moveRecord(src, dest, people, cause, { destPaidCost: cost, eventKey, reasons, originMix });
 }
 
 /**
@@ -296,12 +299,13 @@ function commitImmediateArrival(a) {
  *   consumed:{ok:boolean, fromPool:boolean, originCiv?:number, since?:number},
  *   people:number,
  *   eventKey:string,
- *   reasons?:string[]
+ *   reasons?:string[],
+ *   originMix?:Record<string, number>
  * }} a Function args.
  * @returns {Migration|null} Applied record or null.
  */
 function enqueueLaggedDeparture(a) {
-  const { src, dest, state, lag, cause, consumed, people, eventKey, reasons } = a;
+  const { src, dest, state, lag, cause, consumed, people, eventKey, reasons, originMix } = a;
   if (transitAtCapacity(state)) {
     undoSourceConsume(src, consumed);
     return null;
@@ -318,9 +322,10 @@ function enqueueLaggedDeparture(a) {
     reasons: reasons || [],
     infected: !!src.infected,
     srcName: cityName(src.city),
-    destName: cityName(dest.city)
+    destName: cityName(dest.city),
+    srcLoc: settlementLoc(src.city), destLoc: settlementLoc(dest.city), originMix
   });
-  return departRecord(src, dest, people, cause, eventKey, reasons);
+  return departRecord(src, dest, people, cause, eventKey, reasons, originMix);
 }
 
 /**
@@ -681,6 +686,7 @@ function processOutletDeath(src, st, state, hasRefuge) {
   return {
     srcName: cityName(src.city),
     destName: "",
+    srcLoc: settlementLoc(src.city),
     srcOwner: src.owner,
     crossCiv: false,
     points: 1,

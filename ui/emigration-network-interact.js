@@ -2,8 +2,8 @@
 //
 // Pointer interaction for the migration view: the cursor-following tooltip, the hover ETHNICITY
 // breakdown (a city or civ's make-up by origin civ), drag-to-rearrange the civ circles, and
-// click-to-isolate a cluster. Kept apart from the orchestrator (emigration-network-viz.js) so that
-// file stays focused on layout + chrome + playback.
+// click-to-select a single city or isolate a civ cluster. Kept apart from the orchestrator
+// (emigration-network-viz.js) so that file stays focused on layout + chrome + playback.
 
 import { civAdjective } from "/emigration/ui/emigration-naming.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
@@ -322,8 +322,12 @@ function onDown(ev, canvas, holder, drag) {
   const pt = toLogical(canvas, ev, holder.scene.WX, holder.scene.WY);
   const hit = nearestCity(holder.scene, pt.x, pt.y);
   const c = hit ? hit.center : nearestCluster(holder.scene, pt.x, pt.y);
-  if (!c) return;
+  if (!c) {
+    drag.bg = true; // a press on empty canvas; its release clears any selection
+    return;
+  }
   drag.node = c;
+  drag.cityIdx = hit ? hit.cityIdx : -1;
   drag.city = hit ? hit.city : null;
   // Grab offset: for a city, from its absolute position (centre + offset), so it doesn't jump to the
   // cursor on the first move.
@@ -337,18 +341,43 @@ function onDown(ev, canvas, holder, drag) {
 }
 
 /**
- * Pointer up: end a drag. A press that didn't move is a click, toggle isolating that cluster (a click
- * on a city isolates its civ, as it did when cities weren't grabbable).
+ * A click (press + release without moving) on a node: a CITY toggles selecting that one settlement
+ * (its dots stay lit and only its own migrant flows are drawn); anywhere else in a civ circle toggles
+ * isolating the whole civ. The two are exclusive, choosing one clears the other.
+ * @param {*} state Interaction state.
+ * @param {*} drag Drag state (the pressed `node`, plus `city` + `cityIdx` for a city press).
+ */
+function clickNode(state, drag) {
+  const id = drag.node.id;
+  if (drag.city) {
+    const fc = state.focusCity;
+    const same = fc && fc.civId === id && fc.idx === drag.cityIdx;
+    state.focusCity = same ? null : { civId: id, idx: drag.cityIdx, name: drag.city.name };
+    state.focusDest = null;
+    return;
+  }
+  state.focusDest = state.focusDest !== id ? id : null;
+  state.focusCity = null;
+}
+
+/**
+ * Pointer up: end a drag. A press that didn't move is a click (see clickNode); a click on empty canvas
+ * clears the city selection and the civ isolate.
  * @param {HTMLCanvasElement} canvas Canvas.
  * @param {*} holder Render holder.
  * @param {*} state Interaction state.
  * @param {*} drag Drag state.
  */
 function onUp(canvas, holder, state, drag) {
-  if (!drag.node) return;
-  if (!drag.moved) {
-    state.focusDest = state.focusDest !== drag.node.id ? drag.node.id : null;
+  if (drag.bg) {
+    drag.bg = false;
+    state.focusCity = null;
+    state.focusDest = null;
+    holder.dirty = true;
+    return;
   }
+  if (!drag.node) return;
+  if (!drag.moved) clickNode(state, drag);
   drag.node.pinned = false;
   drag.node = null;
   drag.city = null;
@@ -357,7 +386,7 @@ function onUp(canvas, holder, state, drag) {
 }
 
 /**
- * Wire canvas pointer events: hover breakdown + drag-to-rearrange + click-to-isolate.
+ * Wire canvas pointer events: hover breakdown + drag-to-rearrange + click-to-select a city / isolate a civ.
  * @param {HTMLCanvasElement} canvas Canvas.
  * @param {*} holder Render holder.
  * @param {*} state Interaction state.
@@ -365,13 +394,14 @@ function onUp(canvas, holder, state, drag) {
  */
 export function wireEvents(canvas, holder, state, tip) {
   /** @type {*} */
-  const drag = { node: null, city: null, dx: 0, dy: 0, downX: 0, downY: 0, moved: false };
+  const drag = { node: null, city: null, cityIdx: -1, bg: false, dx: 0, dy: 0, downX: 0, downY: 0, moved: false };
   canvas.style.cursor = "grab";
   canvas.addEventListener("mousedown", (/** @type {*} */ ev) => onDown(ev, canvas, holder, drag));
   canvas.addEventListener("mousemove", (/** @type {*} */ ev) => onMove(ev, canvas, holder, tip, drag));
   canvas.addEventListener("mouseup", () => onUp(canvas, holder, state, drag));
   canvas.addEventListener("mouseleave", () => {
     tip.hide();
+    drag.bg = false; // leaving mid-press is not a click on the background
     onUp(canvas, holder, state, drag);
   });
 }
