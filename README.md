@@ -64,6 +64,7 @@ Compatible with Civilization VII 1.5.0.
 - **Ethnic Composition lens (Shift+E):** tile-by-tile map of population origins
 - **Integration:** newcomers assimilate over time; war with the homeland stops it and unrest slows it
 - **Return migration:** diasporas can return to peaceful, prosperous homelands
+- **Call our people home:** pay Gold or Influence for a call, in a size you choose, to bring displaced people back to the settlement they fled; from your own settlements that many come, from abroad the call is paid for either way and each person asked may or may not answer
 - **Cultural Enclaves:** lasting foreign communities can become real improvements with the origin civilization's identity and yields
 - **Put down roots:** enclave communities are less likely to return home
 - **Migration Chronicle:** major movements become history entries
@@ -75,7 +76,7 @@ Compatible with Civilization VII 1.5.0.
 - **Cause-coded notifications:** color-coded toasts plus a persistent log
 - **Move attribution:** records the factor that decided each move
 - **City readout:** pressure mix and enclave progress by settlement
-- **Prosperity lens:** tile-by-tile prosperity map
+- **Prosperity lens:** tile-by-tile prosperity map, each tile scored in points from what stands on it and around it, with a hover readout that lists every term
 - **Demographics integration:** Net Migration, Emigration, and Immigration graphs and tables
 
 ### Customization
@@ -126,7 +127,7 @@ Compatible with Civilization VII 1.5.0.
 - Toasts and the Notifications log record each move and its cause.
 - The dashboard shows flows by civilization, cause, and settlement.
 - City readouts show local pressure and enclave progress, and the dashboard shows both across every settlement.
-- The Prosperity lens maps prosperity by tile.
+- The Prosperity lens maps prosperity by tile: wonders, the centre, buildings and quarters, worked land, rivers and natural wonders score up; ruin scores down. Hover a tile to see the terms.
 - With Demographics installed, migration also appears in graphs and tables.
 
 ### What can I tune?

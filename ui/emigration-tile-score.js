@@ -1,30 +1,77 @@
 // emigration-tile-score.js
 //
-// The per-TILE prosperity scale shared by the Prosperity lens (emigration-prosperity-lens.js) and its cursor panel
-// (emigration-prosperity-tooltip.js): one place that decides what a tile is worth, which tiles count, how a tile is
-// normalized against its OWN settlement, and what colour that deviation paints. Kept as a leaf module (engine globals
-// only, no mod imports) so both surfaces can import it without an import cycle, and so the number the panel prints is
-// by construction the number the colour came from.
+// The per-TILE prosperity score shared by the Prosperity lens (emigration-prosperity-lens.js) and its cursor panel
+// (emigration-prosperity-tooltip.js): one place that decides what a tile is worth, which tiles are painted, and
+// what colour a score paints. Kept as a leaf module (engine globals only, no mod imports) so both surfaces can
+// import it without an import cycle, and so the number the panel prints is by construction the number the colour
+// came from.
 //
-// Why per settlement: scaling every tile against the world's most extreme tile left 94% of tiles within 15% of the
-// mean and painted 1120 of 1775 plots in one shade (mod test 77). Why built water counts but empty sea does not: an
-// unworked ocean plot scores 0 and dragged a coastal city's scale (mod test 79 found London's "worst tile" was open
-// water), while a pier or fishing boat is part of what the settlement works. Why a wonder is not land: a wonder's
-// worth is its modifier, not what the hex under it produces. The Hanging Gardens has NO yield rows in the compiled
-// database (it is +10% growth; 6 of 63 wonders yield nothing at all, and most others 2-3), so on the yield scale
-// it read as London's worst tile at -100% with a 0 next to a 7 (in-game, 2026-09-17). A wonder plot is a LANDMARK:
-// kept out of its settlement's scale (like empty sea), painted its own colour off the red/green axis, and credited
-// where the model actually counts it, the settlement's built-environment term (emigration-built.js).
+// A tile's prosperity is a sum of named POINTS, and the panel lists every non-zero term, so the number is its own
+// explanation. It replaced a raw yield sum (2026-09-17): on that scale the Hanging Gardens, which has no yield rows
+// in the compiled database (its worth is +10% growth), read as London's "worst land" at -100%, and a farm out-scored
+// the palace. What a settlement has BUILT on a hex is the evidence of its prosperity - it takes a prosperous
+// settlement to raise a wonder - so the built terms dominate, the hex's own yield is one modest term, and ruin and
+// its neighbourhood pull the score down. The scale is ABSOLUTE (a wonder tile reads the same in every settlement),
+// banded like a rating, and coloured on the same grey→green / grey→red gradient the lens always used.
+//
+// Every classification comes from the compiled database through the instance on the map (ConstructibleClass,
+// Feature_NaturalWonders), never from a list of names, so a wonder or natural wonder added by an age, a DLC or
+// another mod is scored like the shipped ones. Water the settlement has not built on is not painted at all: an
+// empty ocean hex is nobody's prosperity (it dragged a coastal city's scale in the yield model, mod test 79).
+
+/** The points each term is worth. Exported so the panel and tests read the same table. */
+export const WEIGHTS = Object.freeze({
+  wonder: 6, // the most expensive thing a settlement ever builds
+  cityCenter: 3,
+  building: 2, // each undamaged building on the hex
+  quarter: 1, // two or more buildings on one hex: a completed quarter
+  improvement: 1, // a worked rural hex
+  yieldPer: 3, // +1 per this many yield on the hex
+  river: 1,
+  naturalWonder: 3, // the hex IS a natural wonder
+  adjacentNaturalWonder: 2, // per neighbouring hex that is one
+  adjacentWonder: 1, // per neighbouring hex holding a wonder
+  pillaged: -3, // each pillaged constructible on the hex (which then earns no build points)
+  adjacentPillaged: -1 // per neighbouring hex with anything pillaged on it
+});
+
+/**
+ * Band floors, in points, highest first. The band is the panel's headline word for the tile.
+ * @type {ReadonlyArray<readonly [string, number]>}
+ */
+export const BANDS = Object.freeze([
+  Object.freeze(/** @type {readonly [string, number]} */ (["flourishing", 8])),
+  Object.freeze(/** @type {readonly [string, number]} */ (["thriving", 5])),
+  Object.freeze(/** @type {readonly [string, number]} */ (["ordinary", 2])),
+  Object.freeze(/** @type {readonly [string, number]} */ (["meagre", 0]))
+]);
+const BLIGHTED = "blighted"; // below every floor
+
+// Colour: `ordinary` is centred on grey, and the gradient saturates at the flourishing floor above and at blighted
+// (-2, a pillaged hex) below, so the whole band scale is visible on the map rather than clipped at the ends.
+const T_CENTER = 3;
+const T_SPAN = 5;
 
 const FILL_ALPHA_MIN = 0.45; // a middling tile stays readable as terrain
 const FILL_ALPHA_MAX = 0.85; // a settlement's best and worst land is unmistakable
-const CONTRAST_GAMMA = 0.55; // < 1 saturates the middle: most tiles sit close to their settlement's mean
-// Gradient endpoints (0-255): grey (neutral) → green (above its settlement's mean) / red (below).
+const CONTRAST_GAMMA = 0.55; // < 1 saturates the middle: most tiles sit close to ordinary
+// Gradient endpoints (0-255): grey (neutral) → green (above ordinary) / red (below).
 const GREY = [150, 150, 150];
 const GREEN = [24, 224, 72];
 const RED = [238, 40, 32];
-const LANDMARK = [232, 178, 52]; // amber: a wonder, off the red/grey/green yield axis
-const LANDMARK_ALPHA = 0.7;
+
+/** The six hex neighbours, named rather than counted so an enum reorder cannot silently skip a direction. */
+const ADJACENT_DIRECTIONS = Object.freeze([
+  "DIRECTION_EAST", "DIRECTION_WEST", "DIRECTION_NORTHEAST",
+  "DIRECTION_NORTHWEST", "DIRECTION_SOUTHEAST", "DIRECTION_SOUTHWEST"
+]);
+
+/**
+ * One scored term of a tile: which rule fired, what it was worth, and (for a constructible or feature) the display
+ * name LOC key so the panel can name it. `count` is the number of neighbours for the adjacency terms, and `amount`
+ * the raw yield for the yield term.
+ * @typedef {{kind:string, points:number, name?:string, count?:number, amount?:number}} TileTerm
+ */
 
 /**
  * Clamp v into [lo, hi].
@@ -35,9 +82,40 @@ export function clamp(v, lo, hi) {
   return v < lo ? lo : v > hi ? hi : v;
 }
 
+/** @param {() => *} fn A read. @param {*} fb Fallback on throw. @returns {*} The read or the fallback. */
+function safe(fn, fb) {
+  try {
+    return fn();
+  } catch (_) {
+    return fb;
+  }
+}
+
+// ── colour ───────────────────────────────────────────────────────────────────────────────────────────────────────
+
 /**
- * The 0-1 saturation for a normalized deviation: a curve, so the crowded middle of the range still reads.
- * @param {number} t Normalized deviation in [-1, 1].
+ * The [-1, 1] colour position of a score: 0 at the centre of `ordinary`, +1 at the flourishing floor and beyond,
+ * -1 at a pillaged hex and below.
+ * @param {number} points A tile score.
+ * @returns {number} Normalized position.
+ */
+export function tierOf(points) {
+  return clamp((points - T_CENTER) / T_SPAN, -1, 1);
+}
+
+/**
+ * The band a score falls in.
+ * @param {number} points A tile score.
+ * @returns {string} "flourishing" | "thriving" | "ordinary" | "meagre" | "blighted".
+ */
+export function bandOf(points) {
+  for (const [band, floor] of BANDS) if (points >= floor) return band;
+  return BLIGHTED;
+}
+
+/**
+ * The 0-1 saturation for a colour position: a curve, so the crowded middle of the range still reads.
+ * @param {number} t Position in [-1, 1].
  * @returns {number} Saturation in [0, 1].
  */
 function saturation(t) {
@@ -45,8 +123,8 @@ function saturation(t) {
 }
 
 /**
- * The 0-255 channel value for one colour component at deviation t.
- * @param {number} t Normalized deviation. @param {number} i Channel index (0-2).
+ * The 0-255 channel value for one colour component at position t.
+ * @param {number} t Position. @param {number} i Channel index (0-2).
  * @returns {number} Channel value 0-255.
  */
 function channel(t, i) {
@@ -55,9 +133,9 @@ function channel(t, i) {
 }
 
 /**
- * The lens fill colour (the engine's float4 {x,y,z,w}) for a deviation t: grey→green above, grey→red below,
- * with opacity rising with strength.
- * @param {number} t Normalized deviation in [-1, 1].
+ * The lens fill colour (the engine's float4 {x,y,z,w}) for a position t: grey→green above ordinary, grey→red
+ * below, with opacity rising with strength.
+ * @param {number} t Position in [-1, 1].
  * @returns {{x:number, y:number, z:number, w:number}} Float4 RGBA (0-1).
  */
 export function tierFill(t) {
@@ -71,7 +149,7 @@ export function tierFill(t) {
 
 /**
  * The same colour as `#RRGGBB`, for the cursor panel's swatch.
- * @param {number} t Normalized deviation in [-1, 1].
+ * @param {number} t Position in [-1, 1].
  * @returns {string} Hex colour.
  */
 export function tierHex(t) {
@@ -82,16 +160,7 @@ export function tierHex(t) {
   return "#" + hex(0) + hex(1) + hex(2);
 }
 
-/**
- * The lens fill for a landmark plot (a wonder): one fixed amber, so a wonder never reads as a verdict on yield.
- * @returns {{x:number, y:number, z:number, w:number}} Float4 RGBA (0-1).
- */
-export function landmarkFill() {
-  return { x: LANDMARK[0] / 255, y: LANDMARK[1] / 255, z: LANDMARK[2] / 255, w: LANDMARK_ALPHA };
-}
-
-/** The same amber as `#RRGGBB`, for the cursor panel's swatch. */
-export const LANDMARK_HEX = "#" + LANDMARK.map((v) => (v < 16 ? "0" : "") + v.toString(16)).join("");
+// ── reading a hex ────────────────────────────────────────────────────────────────────────────────────────────────
 
 /**
  * A settlement's owned plots as {x, y, idx}: `idx` reads the per-plot yields, `{x, y}` is what the overlay paints.
@@ -114,8 +183,8 @@ export function plotsOf(city) {
 }
 
 /**
- * Whether a plot belongs in a settlement's own scale: all land, and water it has built on (a pier, fishing boats,
- * a coastal wonder). A failed read counts the tile in, so the scale degrades to including everything.
+ * Whether a plot is painted and scored: all land, and water the settlement has built on (a pier, fishing boats, a
+ * coastal wonder). A failed read counts the tile in, so the lens degrades to painting everything.
  * @param {number} x Plot x. @param {number} y Plot y.
  * @returns {boolean} True when the tile counts.
  */
@@ -127,30 +196,6 @@ export function scorable(x, y) {
     return !!(built && built.length);
   } catch (_) {
     return true;
-  }
-}
-
-/**
- * The wonder standing on a plot, or null. A wonder makes the plot a LANDMARK: its worth is its modifier, not the
- * hex's yield, so the yield scale must not measure it. Read from the compiled database's ConstructibleClass via
- * the instance on the map (the same lookup emigration-built.js uses), never from a list of wonder names, so a
- * wonder added by an age, a DLC or another mod is a landmark too. A pillaged wonder is still not land. An
- * unreadable plot is not a landmark, so the scale degrades to the old behaviour (every plot is land).
- * @param {number} x Plot x. @param {number} y Plot y.
- * @returns {{name:string}|null} The wonder's display-name LOC key ("" when unnamed), or null when no wonder stands here.
- */
-export function landmarkAt(x, y) {
-  try {
-    if (typeof MapConstructibles === "undefined" || typeof Constructibles === "undefined"
-      || typeof GameInfo === "undefined" || !GameInfo.Constructibles) return null;
-    for (const cid of MapConstructibles.getConstructibles(x, y) || []) {
-      const inst = Constructibles.getByComponentID(cid);
-      const def = inst ? GameInfo.Constructibles.lookup(inst.type) : null;
-      if (def && def.ConstructibleClass === "WONDER") return { name: typeof def.Name === "string" ? def.Name : "" };
-    }
-    return null;
-  } catch (_) {
-    return null;
   }
 }
 
@@ -168,12 +213,11 @@ function yieldAmount(e) {
 }
 
 /**
- * A TILE's worth: the total yield output on that plot, read for the local player. Null when per-plot yields
- * aren't available (callers fall back to a per-settlement score).
+ * The total yield on a plot, read for the local player. Null when per-plot yields aren't available.
  * @param {number} idx Plot index.
- * @returns {number|null} The tile score, or null.
+ * @returns {number|null} The yield total, or null.
  */
-export function plotScore(idx) {
+export function plotYield(idx) {
   try {
     if (typeof GameplayMap === "undefined" || typeof GameplayMap.getYields !== "function") return null;
     const ys = GameplayMap.getYields(idx, GameContext.localPlayerID);
@@ -186,83 +230,235 @@ export function plotScore(idx) {
   }
 }
 
+/** @type {Set<string>|null} Natural-wonder feature types, from the compiled database. */
+let _naturalWonders = null;
+
 /**
- * {@link plotScore} by plot coordinates, for the cursor panel's landmark row (which has no plot index in hand).
- * @param {number} x Plot x. @param {number} y Plot y.
- * @returns {number|null} The tile score, or null when the index or the yields can't be read.
+ * The natural-wonder feature types (`GameInfo.Feature_NaturalWonders`), read once. Empty off-engine, which makes
+ * the natural-wonder terms 0 rather than wrong.
+ * @returns {Set<string>} FeatureType strings.
  */
-export function plotScoreAt(x, y) {
-  try {
-    if (typeof GameplayMap === "undefined" || typeof GameplayMap.getIndexFromLocation !== "function") return null;
-    const idx = GameplayMap.getIndexFromLocation({ x, y });
-    return typeof idx === "number" && idx >= 0 ? plotScore(idx) : null;
-  } catch (_) {
-    return null;
+function naturalWonders() {
+  if (_naturalWonders) return _naturalWonders;
+  const set = new Set();
+  for (const r of safe(() => (GameInfo.Feature_NaturalWonders ? [...GameInfo.Feature_NaturalWonders] : []), [])) {
+    if (r && typeof r.FeatureType === "string") set.add(r.FeatureType);
   }
+  _naturalWonders = set;
+  return set;
+}
+
+/** Test seam: forget the cached natural-wonder table. */
+export function resetTileScoreCaches() {
+  _naturalWonders = null;
 }
 
 /**
- * A settlement's landmark plots (its wonders), for the lens to paint in the landmark colour. Disjoint from
- * {@link cityTileTiers}: a plot is scored land or a landmark, never both.
- * @param {*} city City object.
- * @returns {{x:number, y:number}[]} Landmark plot coordinates.
+ * The constructibles standing on a plot, classified: class, display-name LOC key, and whether pillaged. Unreadable
+ * instances are skipped.
+ * @param {number} x Plot x. @param {number} y Plot y.
+ * @returns {{cls:string, name:string, damaged:boolean}[]} What stands here.
  */
-export function cityLandmarks(city) {
-  /** @type {{x:number, y:number}[]} */
+function constructiblesOn(x, y) {
+  /** @type {{cls:string, name:string, damaged:boolean}[]} */
   const out = [];
-  for (const p of plotsOf(city)) if (landmarkAt(p.x, p.y)) out.push({ x: p.x, y: p.y });
+  if (typeof MapConstructibles === "undefined" || typeof Constructibles === "undefined"
+    || typeof GameInfo === "undefined" || !GameInfo.Constructibles) return out;
+  for (const cid of safe(() => MapConstructibles.getConstructibles(x, y) || [], [])) {
+    const inst = safe(() => Constructibles.getByComponentID(cid), null);
+    const def = inst ? safe(() => GameInfo.Constructibles.lookup(inst.type), null) : null;
+    if (!def || typeof def.ConstructibleClass !== "string") continue;
+    out.push({ cls: def.ConstructibleClass, name: typeof def.Name === "string" ? def.Name : "", damaged: !!inst.damaged });
+  }
   return out;
 }
 
 /**
- * One settlement's counting plots (its land: not empty sea, not a wonder), each normalized to a [-1, 1] deviation
- * from THAT settlement's own mean, so the gradient saturates at its own best and worst tile.
- * @param {*} city City object.
- * @returns {{x:number, y:number, score:number, t:number, mean:number}[]} Per-plot rows (empty when nothing counts).
+ * Whether the plot's district is the city centre (`DistrictTypes.CITY_CENTER`, the enum the base UI compares on).
+ * @param {number} x Plot x. @param {number} y Plot y.
+ * @returns {boolean} True for the centre.
  */
-export function cityTileTiers(city) {
-  /** @type {{x:number, y:number, score:number}[]} */
-  const tiles = [];
-  for (const p of plotsOf(city)) {
-    if (!scorable(p.x, p.y) || landmarkAt(p.x, p.y)) continue; // empty sea and wonders are not this settlement's land
-    const score = plotScore(p.idx);
-    if (score !== null) tiles.push({ x: p.x, y: p.y, score });
-  }
-  if (!tiles.length) return [];
-  const mean = tiles.reduce((a, r) => a + r.score, 0) / tiles.length;
-  // Scale the two sides SEPARATELY: above the mean against the settlement's best tile, below it against its worst.
-  // One outstanding tile otherwise swallows the range from inside the settlement too - London's 62-yield tile left
-  // its 0-yield tile reading -26% and everything else within a few percent of the mean (mod test 83).
-  let up = 0;
-  let down = 0;
-  for (const r of tiles) {
-    if (r.score > mean) up = Math.max(up, r.score - mean);
-    else down = Math.max(down, mean - r.score);
-  }
-  return tiles.map((r) => {
-    const d = r.score - mean;
-    const scale = d >= 0 ? up : down;
-    return { ...r, mean, t: scale > 0 ? clamp(d / scale, -1, 1) : 0 };
-  });
+function isCityCenter(x, y) {
+  return safe(() => {
+    if (typeof Districts === "undefined" || typeof DistrictTypes === "undefined") return false;
+    const d = Districts.getAtLocation({ x, y });
+    return !!d && d.type != null && d.type === DistrictTypes.CITY_CENTER;
+  }, false);
 }
 
 /**
- * The hovered tile's standing inside its own settlement: the very row the lens coloured it from, plus the
- * settlement's mean and its best/worst tile score for context. Null when the tile doesn't count (empty sea, or a
- * landmark, see {@link landmarkAt}) or the settlement has no readable plots.
- * @param {*} city City object. @param {number} x Plot x. @param {number} y Plot y.
- * @returns {{t:number, score:number, mean:number, best:number, worst:number}|null} The tile's standing.
+ * The natural wonder this plot is, or null: the feature's display-name LOC key.
+ * @param {number} x Plot x. @param {number} y Plot y.
+ * @returns {{name:string}|null} The natural wonder, or null.
  */
-export function tileTierAt(city, x, y) {
-  const tiles = cityTileTiers(city);
-  if (!tiles.length) return null;
-  const hit = tiles.find((r) => r.x === x && r.y === y);
-  if (!hit) return null;
-  let best = tiles[0].score;
-  let worst = tiles[0].score;
-  for (const r of tiles) {
-    if (r.score > best) best = r.score;
-    if (r.score < worst) worst = r.score;
+function naturalWonderAt(x, y) {
+  return safe(() => {
+    if (typeof GameplayMap === "undefined" || typeof GameInfo === "undefined" || !GameInfo.Features) return null;
+    const def = GameInfo.Features.lookup(GameplayMap.getFeatureType(x, y));
+    if (!def || !naturalWonders().has(def.FeatureType)) return null;
+    return { name: typeof def.Name === "string" ? def.Name : "" };
+  }, null);
+}
+
+/**
+ * What a NEIGHBOURING hex contributes to this one: does it hold a wonder, is it a natural wonder, is anything on
+ * it pillaged. Cached per pass, since a hex is a neighbour of six others.
+ * @param {number} x Plot x. @param {number} y Plot y. @param {Map<string, *>} cache The per-pass cache.
+ * @returns {{wonder:boolean, natural:boolean, pillaged:boolean}} The neighbour facts.
+ */
+function neighbourFacts(x, y, cache) {
+  const key = x + "," + y;
+  let f = cache.get(key);
+  if (f) return f;
+  const built = constructiblesOn(x, y);
+  f = {
+    wonder: built.some((c) => c.cls === "WONDER" && !c.damaged),
+    natural: !!naturalWonderAt(x, y),
+    pillaged: built.some((c) => c.damaged)
+  };
+  cache.set(key, f);
+  return f;
+}
+
+/**
+ * The six neighbours of a plot that exist on the map.
+ * @param {number} x Plot x. @param {number} y Plot y.
+ * @returns {{x:number, y:number}[]} Neighbour coordinates.
+ */
+function neighbours(x, y) {
+  /** @type {{x:number, y:number}[]} */
+  const out = [];
+  if (typeof GameplayMap === "undefined" || typeof DirectionTypes === "undefined"
+    || typeof GameplayMap.getAdjacentPlotLocation !== "function") return out;
+  for (const dir of ADJACENT_DIRECTIONS) {
+    const l = safe(() => GameplayMap.getAdjacentPlotLocation({ x, y }, DirectionTypes[dir]), null);
+    if (l && typeof l.x === "number" && typeof l.y === "number" && l.x >= 0 && l.y >= 0) out.push({ x: l.x, y: l.y });
   }
-  return { t: hit.t, score: hit.score, mean: hit.mean, best, worst };
+  return out;
+}
+
+// ── scoring ──────────────────────────────────────────────────────────────────────────────────────────────────────
+
+/** @param {TileTerm[]} terms The list. @param {TileTerm} t A term; appended only when it is worth something. */
+function add(terms, t) {
+  if (t.points !== 0) terms.push(t);
+}
+
+/**
+ * The terms for what STANDS on a hex: the centre district, and each constructible by class. A pillaged
+ * constructible earns its penalty and not its build points; two or more standing buildings make a quarter.
+ * @param {number} x Plot x. @param {number} y Plot y.
+ * @returns {TileTerm[]} The built terms, in map order.
+ */
+function builtTerms(x, y) {
+  /** @type {TileTerm[]} */
+  const terms = [];
+  let buildings = 0;
+  if (isCityCenter(x, y)) add(terms, { kind: "cityCenter", points: WEIGHTS.cityCenter });
+  for (const c of constructiblesOn(x, y)) {
+    if (c.damaged) {
+      add(terms, { kind: "pillaged", points: WEIGHTS.pillaged, name: c.name });
+    } else if (c.cls === "WONDER") {
+      add(terms, { kind: "wonder", points: WEIGHTS.wonder, name: c.name });
+    } else if (c.cls === "BUILDING") {
+      buildings++;
+      add(terms, { kind: "building", points: WEIGHTS.building, name: c.name });
+    } else if (c.cls === "IMPROVEMENT") {
+      add(terms, { kind: "improvement", points: WEIGHTS.improvement, name: c.name });
+    }
+  }
+  if (buildings >= 2) add(terms, { kind: "quarter", points: WEIGHTS.quarter });
+  return terms;
+}
+
+/**
+ * The terms for the hex ITSELF: its yield (one point per `yieldPer`), a river, being a natural wonder.
+ * @param {number} x Plot x. @param {number} y Plot y.
+ * @param {number|null} idx Plot index for the yield read (null: the yield term is skipped).
+ * @returns {TileTerm[]} The ground terms.
+ */
+function groundTerms(x, y, idx) {
+  /** @type {TileTerm[]} */
+  const terms = [];
+  const y0 = idx == null ? null : plotYield(idx);
+  if (y0 !== null && y0 > 0) add(terms, { kind: "yield", points: Math.floor(y0 / WEIGHTS.yieldPer), amount: y0 });
+  if (safe(() => typeof GameplayMap !== "undefined" && GameplayMap.isRiver(x, y), false)) {
+    add(terms, { kind: "river", points: WEIGHTS.river });
+  }
+  const natural = naturalWonderAt(x, y);
+  if (natural) add(terms, { kind: "naturalWonder", points: WEIGHTS.naturalWonder, name: natural.name });
+  return terms;
+}
+
+/**
+ * The terms for the NEIGHBOURHOOD: wonders, natural wonders and ruin on the six adjacent hexes, one term per kind
+ * with the count.
+ * @param {number} x Plot x. @param {number} y Plot y. @param {Map<string, *>} cache Per-pass neighbour cache.
+ * @returns {TileTerm[]} The adjacency terms.
+ */
+function neighbourTerms(x, y, cache) {
+  let wonder = 0;
+  let natural = 0;
+  let pillaged = 0;
+  for (const n of neighbours(x, y)) {
+    const f = neighbourFacts(n.x, n.y, cache);
+    if (f.wonder) wonder++;
+    if (f.natural) natural++;
+    if (f.pillaged) pillaged++;
+  }
+  /** @type {TileTerm[]} */
+  const terms = [];
+  add(terms, { kind: "adjacentWonder", points: wonder * WEIGHTS.adjacentWonder, count: wonder });
+  add(terms, { kind: "adjacentNaturalWonder", points: natural * WEIGHTS.adjacentNaturalWonder, count: natural });
+  add(terms, { kind: "adjacentPillaged", points: pillaged * WEIGHTS.adjacentPillaged, count: pillaged });
+  return terms;
+}
+
+/**
+ * Score one hex: the sum of every term that fires, with the terms. On-hex terms first (what stands here, in
+ * map order), then the hex's own yield and geography, then the neighbourhood.
+ * @param {number} x Plot x. @param {number} y Plot y.
+ * @param {number|null} idx Plot index for the yield read (null when unknown: the yield term is skipped).
+ * @param {Map<string, *>} [cache] Per-pass neighbour cache (one per lens paint; a fresh one otherwise).
+ * @returns {{points:number, terms:TileTerm[]}} The score and its explanation.
+ */
+export function tileScore(x, y, idx, cache) {
+  const terms = [...builtTerms(x, y), ...groundTerms(x, y, idx), ...neighbourTerms(x, y, cache || new Map())];
+  let points = 0;
+  for (const t of terms) points += t.points;
+  return { points, terms };
+}
+
+/**
+ * One settlement's painted plots, scored, with the colour position of each.
+ * @param {*} city City object.
+ * @param {Map<string, *>} [cache] Per-pass neighbour cache, shared across the settlements of one paint.
+ * @returns {{x:number, y:number, score:number, t:number, terms:TileTerm[]}[]} Per-plot rows (empty with no plots).
+ */
+export function cityTileTiers(city, cache) {
+  const nc = cache || new Map();
+  /** @type {{x:number, y:number, score:number, t:number, terms:TileTerm[]}[]} */
+  const out = [];
+  for (const p of plotsOf(city)) {
+    if (!scorable(p.x, p.y)) continue;
+    const s = tileScore(p.x, p.y, p.idx, nc);
+    out.push({ x: p.x, y: p.y, score: s.points, t: tierOf(s.points), terms: s.terms });
+  }
+  return out;
+}
+
+/**
+ * The hovered tile's score, band, colour position and terms: the very number the lens coloured it from. Null when
+ * the tile isn't painted (empty sea).
+ * @param {number} x Plot x. @param {number} y Plot y.
+ * @returns {{t:number, score:number, band:string, terms:TileTerm[]}|null} The tile's reading.
+ */
+export function tileTierAt(x, y) {
+  if (!scorable(x, y)) return null;
+  const idx = safe(() => {
+    const i = GameplayMap.getIndexFromLocation({ x, y });
+    return typeof i === "number" && i >= 0 ? i : null;
+  }, null);
+  const s = tileScore(x, y, idx);
+  return { t: tierOf(s.points), score: s.points, band: bandOf(s.points), terms: s.terms };
 }
