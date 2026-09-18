@@ -13,7 +13,7 @@ A standalone visual reference for how the mod actually works, drawn from the imp
 Every threshold shown is a `CONFIG` default from [../ui/emigration-config.js](../ui/emigration-config.js)
 (all are player-tunable in Options ▸ Mods ▸ Emigration). Companion docs:
 [emigration-roadmap-and-backlog.md](emigration-roadmap-and-backlog.md),
-[cultural-enclaves.md](cultural-enclaves.md). Note there are two distinct "quarter" systems:
+[cultural-enclaves.md](../../_archived-emigration-enclave-feature/docs/cultural-enclaves.md) (archived). Note there are two distinct "quarter" systems:
 the narrative quarter *phrasing* for Chronicle lines (§A10), and the cultural-quarter *district* feature
 (§A13, a per-city-tile decision with yields and contested war-strain).
 

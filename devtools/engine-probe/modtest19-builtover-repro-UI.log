@@ -1,0 +1,9 @@
+[2026-09-13 07:02:01]	[EmigProbe] shell attached 
+[2026-09-13 07:02:02]	[EmigProbe] shell query complete 
+[2026-09-13 07:02:03]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-13 07:02:03]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 07:02:22]	[EmigTest] modtest12 attached 
+[2026-09-13 07:02:35]	[EmigTest] START turn=66 L=London turnActive=true 
+[2026-09-13 07:02:42]	[EmigTest] PLACED {"type":"IMPROVEMENT_GAMA","plot":2874,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_GORYEO_A","replaced":"IMPROVEMENT_MINE"} plot=["IMPROVEMENT_GAMA"] record={"placed":{"type":"IMPROVEMENT_GAMA","plot":2874,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_GORYEO_A"}} standing=true builtOverChronicle=0 records=1 
+[2026-09-13 07:02:42]	[EmigTest] ACTIONS done; ending 3 turns 
+[2026-09-13 07:03:07]	[EmigTest] TURN activated n=2 turn=67 ALIVE 

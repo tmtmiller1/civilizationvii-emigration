@@ -8,8 +8,13 @@ to stop anyone (including future sessions) from re-discovering and re-attempting
 Almost everything here is **enclave** work — the enclave lifecycle repeatedly ran into the same wall:
 Civ VII gives a UI-script mod no way to place a yield-bearing entity, bind art to a custom
 constructible, attribute a runtime yield to the player's UI, or safely make a custom improvement
-buildable by every civ. The vacated-tile marker sits at the end for the same underlying reason — the
-engine exposes no per-tile "unworked" signal.
+buildable by every civ. The vacated-tile marker follows for the same underlying reason — the
+engine exposes no per-tile "unworked" signal. The last two entries belong to the crisis urban leg:
+damaging a constructible instead of destroying it, and the urban leg itself, removed because no script
+operation removes a specialist.
+
+The short form of every engine limit found by probe, across this file, the probe ledger, and the session
+notes, is [engine-limits-from-probes.md](engine-limits-from-probes.md).
 
 > **How this differs from the neighbouring docs.**
 > - [emigration-roadmap-and-backlog.md](emigration-roadmap-and-backlog.md) — work we intend to do, each
@@ -35,6 +40,17 @@ engine exposes no per-tile "unworked" signal.
 ---
 
 ## Buildable per-civ enclave IMPROVEMENT — REMOVED (caused a native AI-turn crash)
+
+> **Reopened in a different form (2026-09-12).** The crash was specific to a custom improvement the AI
+> could BUILD. A custom improvement that is never buildable (`RequiresUnlock` with no unlock row,
+> `CityBuildable`/`TownBuildable` false) and is PLACED by the mod through the tuner's
+> `CREATE_ELEMENT {Kind:"CONSTRUCTIBLE", Type: def.$index, Location, Parent: city.id, Owner}` placed on a
+> human city and on an AI city, carried its `Constructible_YieldChanges` natively, and survived seven AI
+> turns after each placement with no dump (`devtools/engine-probe/`, runs 7 and 8, data in
+> `eep-test-constructible.xml`). The enclave as a real, natively attributed constructible is therefore
+> buildable again, as a placed (not built) improvement. The verdict below stands only for the BUILDABLE
+> variant. **Shipped 2026-09-12** as `ui/emigration-enclave-place.js` + `scripts/gen-enclave-improvements.mjs`
+> (never-buildable, one improvement per civ per stance, placed on recognition).
 
 **Proposed / shipped, then removed:** generate per-civ `IMPROVEMENT_EMIG_ENCLAVE_<CIV>` constructibles
 (`CityBuildable=true`, civic-tree unlock) so the player could *build* the enclave they earned and have
@@ -80,6 +96,13 @@ visibility goal (CANTFIX-1) is that its "shipped instead" route is now gone too 
 ---
 
 ## Enclave STANCE yields in the GPT banner / global yields breakdown (CANTFIX-1)
+
+> **Route 2 below ("auto-placing a real yield-bearing entity at runtime — CONFIRMED FAILED") is
+> withdrawn (2026-09-12).** With the tuner's argument shape (`Parent` = the city id, `Type` = the
+> constructible's `$index`) `CREATE_ELEMENT` places standard improvements, standard buildings (urban +1,
+> yields live) and a never-buildable custom improvement, on any owner's city. A placed constructible's
+> yields are engine-attributed, so the stance yield CAN reach the breakdown by placing one. Route 1 (no
+> runtime modifier attach) still holds.
 
 > **Status (closed 2026-07-16; updated 2026-07-17):** both runtime routes are confirmed dead, so the
 > **stance** yield can never reach the banner/breakdown — that is the can't-do. The workaround that once
@@ -236,6 +259,10 @@ capitalised edge phrase; `{Adj}` = origin civ adjective; `{City}` = host city na
 ---
 
 ## Petition / secession / uprising (designed, depends on an unproven engine hook)
+
+> **Still closed after the 2026-09-12 tuner survey:** the tuner can create and destroy cities
+> (`CREATE_ELEMENT {Kind:"CITY"}` founded a town for an AI owner and for the local player) but exposes no
+> transfer of an existing city between owners. Destroy-then-refound is not a secession.
 
 **Status:** abandoned **as specced** (was "paused — recommend against building as specced"). The full
 drafted design is preserved below. The good version ends in a real `BY_REVOLT` city transfer through the
@@ -465,6 +492,14 @@ of enclaves even when no single turn produced a dramatic wave. Think of it as th
 
 ## Vacated-tile on-map marker (the tile can't even be identified)
 
+> **Superseded in part (2026-09-11).** The premise below — that the engine unassigns a worker from some
+> tile when rural population is removed — turned out to be false: `addRuralPopulation(-1)` removes no
+> tile at all (it parks a -1 in `pendingPopulation` and every improvement keeps working; watched via
+> `devtools/engine-probe/`). Departures now abandon a tile the mod CHOOSES, through `DESTROY_ELEMENT`
+> (`ui/emigration-departure-tile.js`), so the vacated tile is known — it is the one the mod destroyed,
+> and it reads visually because the improvement is gone. The per-tile "unworked" read below is still
+> impossible, but no longer needed.
+
 **The ask (workshop feedback, JNR):** when rural population emigrates the mod calls
 `city.addRuralPopulation(-1)`; the engine then unassigns a worker from some tile, leaving the
 improvement intact but **unworked**. Mark that vacated tile on the map (icon/label, or "mark it as
@@ -506,3 +541,109 @@ a UI-script mod, not merely unpaintable. Do NOT re-open this: do not re-probe `c
 `getYieldsWithCity`, or constructible scans for a "which tile went unworked" read. The probe buttons +
 `runVacated*` code stay in the Self-Test module as the evidence trail. Revisit only if a future game
 patch adds a rural-tile-worked accessor.
+
+## Damaging (pillaging) a constructible from script, instead of destroying it
+
+**Wanted for:** the crisis urban leg (since removed, see the next entry) and the tile departures (§7a): a
+building or tile that reads as pillaged and comes back with a repair, rather than one that is gone.
+
+**Attempted 2026-09-14** (`devtools/engine-probe/`, mod tests 36 to 38, AugustusExp66, human control):
+
+- All operation enums read live: 67 player operations, 4 city operations, 13 city commands, 75 unit
+  operations, 33 unit commands. Only `CREATE_ELEMENT` and `DESTROY_ELEMENT` touch elements. Nothing is
+  damage-, pillage-, or repair-shaped on the player or city side.
+- The constructible instance's `setProperty("damaged" | "Damaged" | "DAMAGED" | "pillaged", true)`
+  returned null and left `damaged` false. It is script metadata, not engine state.
+- `UNITOPERATION_PILLAGE` answers `canStart` false on the owner's own plots, including for a unit
+  created directly on the tile and against the city-centre building plot.
+- `CREATE_ELEMENT` with the tuner's `Progress` argument yields an incomplete instance the build system
+  does not own: `canStart(BUILD)` reports Success without `InProgress`, and sending the build queues a
+  fresh copy at progress 0 while a second incomplete instance appears on the plot. An obsolete-age
+  building cannot be queued at all in the current age.
+
+**Verdict:** no script path damages a constructible. With no gentler form available, the building loss
+was removed with the rest of the urban leg on 2026-09-14 (next entry); tile departures stay a
+`DESTROY_ELEMENT`. Do not re-probe unless a new engine build adds a damage operation.
+
+## Crisis urban leg: specialist and building loss — REMOVED (the specialist removal never worked)
+
+**What was proposed:** once a settlement in crisis (war, disaster, famine, conquest flight) had no rural
+tile above `minRuralToEmigrate`, the next departing point left from its urban core: a specialist in the
+local player's cities, otherwise a building in any civilization's city (cheapest non-defensive,
+earlier-age first). Crisis deaths took a building. Capped by `urbanFloor`, `maxUrbanLossPerCityPerTurn`,
+and `urbanLossCapPct` per crisis. Built 2026-09-12 from roadmap §17.3 and
+`urban-specialist-emigration-plan.md`; never released.
+
+**Why it was tempting:** §17.3 had been closed as "no urban write exists". Probe run 6 (2026-09-12) read
+`ASSIGN_WORKER {Location, Amount: -1}` as removing a specialist and saw `DESTROY_ELEMENT` on a building
+remove it with one urban point, which appeared to reopen the whole feature.
+
+**Why it won't ship:**
+
+1. **No script operation removes a specialist.** Mod test 55 (2026-09-14, `devtools/engine-probe/`,
+   AugustusAnt136, London at 24 population / 9 rural / 13 urban / 2 specialists, read at 4 s, 8 s, and
+   after one ended turn):
+   - `canStart` for `Amount: -1` refused both plots holding a specialist and accepted only plots with a
+     free slot. It ignores the sign and answers as a placement check.
+   - Sent on a real specialist plot: nothing changed.
+   - Sent on an accepted empty plot, as the shipped code did: `getNumWorkers(false)` fell 2 to 1, but both
+     slots in `GetAllPlacementInfo` still read 1 of 1, population stayed 24, and rural + urban +
+     specialists summed to 23. Turns to grow moved 8 to 7. The gap survived the turn.
+   - `Growth.isReadyToPlacePopulation` stayed false and `canStart(EXPAND)` offered no plot, so no point
+     was freed. Swapping the specialist for a destroyed-and-re-placed rural tile is impossible too.
+2. **The first verdict read one counter, and the broken state shipped.** Run 6 read only
+   `getNumWorkers`. Mod test 2 (2026-09-12) then drove the shipped path on London and logged population
+   24 to 23, rural 9 to 8 with all 9 improvements standing, and pending population 0 to -1: 23 people
+   against 22 placed. It went into the changelog as a "known wart" instead of stopping the feature.
+3. **The building loss works, and was ruled out.** A crisis deleting a building the player spent
+   production on reads as unfair (`player-experience-risks.md` 2.2), and damage or a half-built
+   re-creation cannot be done from script (previous entry). Removed by decision on 2026-09-14.
+
+**What we did instead:** only rural tiles leave. Crisis flight and crisis deaths stop at the rural floor
+(`canShedPoint`, `canShedAny`, `abandonForDeath` in `emigration-departure-tile.js`; tests in section 10 of
+`tests/departure-tile.mjs`). The three urban options and their text in all 11 locales are gone. The removed
+code, tests, and text are archived verbatim, with the full account, in
+`tower_mods/_archived-emigration-urban-leg/`.
+
+**Verdict:** a specialist cannot be removed from any city by script. Do not rebuild an urban or specialist
+loss on `ASSIGN_WORKER -1`. Revisit only if a game patch adds a specialist-removal operation, and accept
+it only from a probe that reads population = rural + urban + specialists, every slot, pending population,
+and `isReadyToPlacePopulation`, before and after, across a turn. Building loss stays off by decision.
+Short form: [engine-limits-from-probes.md](engine-limits-from-probes.md) 1.4.
+
+---
+
+## Refugee host limit (a cap on how many refugees one foreign civilization takes) — REMOVED (measured, it did not work)
+
+**Proposed:** a per-civilization sibling of the per-city inbound cap. A foreign civilization would stop accepting
+refugees once the refugees bound for it reached a share of its population, so the rest would go to another
+civilization or stay home that turn.
+
+**Why it was tempting:** the at-scale runs showed one neighbour absorbing a whole refugee wave. In the 80-turn
+measurement (mod test 69) a volcano in one civilization sent nearly every cross-civilization refugee into a single
+host for ten turns, and that host ran 36% above its no-mod population while the stricken civilization ran 15% below.
+Destinations are chosen when a move is decided, while the congestion headwind is only booked on arrival, so nothing
+pushed the tail of a wave elsewhere.
+
+**Why it won't ship:** three measured variants moved almost nothing.
+
+- Counting refugees in transit or held in the host (mod test 71): the count almost never reached the limit, because
+  holding drains as fast as a wave arrives (2 to 3 held against a limit of 11).
+- Counting a decaying intake booked when a move is decided, at 10% of the host's population (mod test 72): identical
+  to no limit within a few points at every checkpoint; the host still took 57 of 84 cross-civilization arrivals.
+- The same at 5% (mod test 74b): the limit engaged (intake peaked 6.9 instead of 8.4, the host took 44 arrivals
+  instead of 49, a second civilization took 9 instead of 3) and the outcome barely moved: 1.36 of the control
+  population at turn 86, 1.38 at turn 96, against 1.35 and 1.42 without it.
+
+The reason is geography, not the threshold: the host is the only refuge within reach of that wave, so a closed host
+makes refugees wait a turn and arrive anyway. A limit tight enough to redirect them would mostly strand people at
+home, which the crisis tracks already model through the rural floor and the loss caps.
+
+**What we did instead:** removed the option, its two knobs, the persisted per-host intake, the slider member, and the
+text in all 11 locales. The concentration itself is still open: about 80% of the host's excess is arriving refugee
+points, so the lever is how many refugees cross a border at all (the "Movement between civilizations" slider's
+crisis escape pull), not a cap on the receiving side.
+
+**Verdict:** `Paused — not engine-blocked`. A receiving-side cap cannot spread a regional refugee wave when only one
+host is in reach. Revisit only with a measurement that shows an alternative destination exists and is refused.
+Evidence: mod tests 69, 71, 72, 74, 74b in `devtools/engine-probe/README.md`.

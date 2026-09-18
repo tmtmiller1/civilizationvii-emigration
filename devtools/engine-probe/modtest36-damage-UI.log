@@ -1,0 +1,25 @@
+[2026-09-14 06:22:28]	[EmigProbe] shell attached 
+[2026-09-14 06:22:29]	[EmigProbe] shell query complete 
+[2026-09-14 06:22:30]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-14 06:22:30]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-14 06:22:49]	[EmigTest] modtest20 attached 
+[2026-09-14 06:23:06]	[EmigTest] START turn=66 local=0 city=London urban=22 
+[2026-09-14 06:23:06]	[EmigTest] D1 PlayerOperationTypes: 67 keys; shaped=["ADVANCED_START_MODIFY_DECK","CREATE_ELEMENT","DESTROY_ELEMENT","SET_AGE_TRANSITION_DATA","SET_CULTURE_TREE_NODE","SET_CULTURE_TREE_TARGET_NODE","SET_ESCAPE_ROUTE","SET_TECH_TREE_NODE","SET_TECH_TREE_TARGET_NODE"] 
+[2026-09-14 06:23:06]	[EmigTest] D1 CityOperationTypes: 4 keys; shaped=[] 
+[2026-09-14 06:23:06]	[EmigTest] D1 CityCommandTypes: 13 keys; shaped=["DESTROY","SET_FOCUS"] 
+[2026-09-14 06:23:06]	[EmigTest] D1 UnitOperationTypes: 75 keys; shaped=["EMBED_HEAL_ADJACENT","PILLAGE","PILLAGE_ROUTE","RELIGIOUS_HEAL","REPAIR","REPAIR_ROUTE","REST_UNTIL_HEALED"] 
+[2026-09-14 06:23:06]	[EmigTest] D1 UnitCommandTypes: 33 keys; shaped=[] 
+[2026-09-14 06:23:06]	[EmigTest] D1 PlayerCommandTypes: absent 
+[2026-09-14 06:23:06]	[EmigTest] D1 building={"type":"BUILDING_BRICKYARD","plot":3067,"cost":55} farm={"type":"IMPROVEMENT_MINE","plot":2874,"damaged":false} 
+[2026-09-14 06:23:06]	[EmigTest] D1 constructible instance surface=["uniqueQuarterType","ageControlled","turnControlled","damaged","complete","location","cityId","owner","originalOwner","typeName","typeHash","type","localId","id","isValid","setProperty","constructor"] 
+[2026-09-14 06:23:06]	[EmigTest] D1 instance damaged=false complete=true keys=["uniqueQuarterType","ageControlled","turnControlled","damaged","complete","location","cityId","owner","originalOwner","typeName","typeHash","type","localId","id","isValid"] 
+[2026-09-14 06:23:06]	[EmigTest] D1 Game.PlayerOperations surface=["canStart","sendRequest","constructor"] CityOperations=["canStart","sendRequest","canStartQuery","constructor"] UnitOperations=["canStart","canStartAny","sendRequest","constructor"] 
+[2026-09-14 06:23:06]	[EmigTest] D2 done (no damage-shaped ops = nothing tried) 
+[2026-09-14 06:23:06]	[EmigTest] D3 unit=UNIT_TREBUCHET at {"x":-9999,"y":-9999} farm={"x":90,"y":29} farmBefore=[{"type":"IMPROVEMENT_MINE","complete":true,"damaged":false,"id":10420242}] 
+[2026-09-14 06:23:06]	[EmigTest] D3 canStart PILLAGE (from afar)={"Success":false} 
+[2026-09-14 06:23:06]	[EmigTest] D3 canStart TELEPORT_TO={"Success":false} 
+[2026-09-14 06:23:06]	[EmigTest] D3 canStart PILLAGE (after teleport)={"Success":false} 
+[2026-09-14 06:23:10]	[EmigTest] D3 farmAfter=[{"type":"IMPROVEMENT_MINE","complete":true,"damaged":false,"id":10420242}] 
+[2026-09-14 06:23:17]	[EmigTest] D4 BUILDING_BRICKYARD before={"plot":[{"type":"BUILDING_BRICKYARD","complete":true,"damaged":false,"id":786443},{"type":"BUILDING_SAW_PIT","complete":true,"damaged":false,"id":851980}],"urban":22,"pop":36} afterDestroy={"plot":[{"type":"BUILDING_SAW_PIT","complete":true,"damaged":false,"id":851980}],"urban":21,"pop":35} afterRecreateProgress50={"plot":[{"type":"BUILDING_SAW_PIT","complete":true,"damaged":false,"id":851980},{"type":"BUILDING_BRICKYARD","complete":false,"damaged":false,"id":35192843}],"urban":21,"pop":35} queue={"keys":["currentBuildProgressRequired","currentBuildProgress","currentTurnsLeft","currentProductionKind","currentProductionTypeHash","previousProductionTypeHash","isEmpty"],"current":-1,"len":0} 
+[2026-09-14 06:23:21]	[EmigTest] SHOT damage-probe 
+[2026-09-14 06:23:31]	[EmigTest] DONE modtest20 finished 

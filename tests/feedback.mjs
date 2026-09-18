@@ -209,6 +209,42 @@ function testMixedScopeSplitsIntoInternalAndExternalRows() {
   delete globalThis.GameContext;
 }
 
+function testStanceTipOnlyOnVoluntaryCrossCivLosses() {
+  // The Anti-Immigration Stance retains CROSS-CIV moves only, so the tip belongs on a voluntary loss to
+  // another civ and nowhere else: not an internal move (the stance does nothing there), not a forced
+  // flight, and not when border policies are switched off.
+  globalThis.GameContext = { localPlayerID: 0 };
+  CONFIG.notifyMode = 1;
+  CONFIG.notifyWorldNews = false;
+  CONFIG.notifyCooldownTurns = 0;
+  const pass = [
+    { srcOwner: 0, destOwner: 0, people: 6000, points: 1, cause: "unhappiness", crossCiv: false,
+      srcName: "Rome", destName: "Ostia" },
+    { srcOwner: 0, destOwner: 1, people: 2000, points: 1, cause: "unhappiness", crossCiv: true,
+      srcName: "Rome", destName: "Carthage" },
+    { srcOwner: 0, destOwner: 1, people: 3000, points: 1, cause: "war", crossCiv: true,
+      srcName: "Veii", destName: "Carthage" }
+  ];
+  const was = CONFIG.bordersEnabled;
+  CONFIG.bordersEnabled = true;
+  clearNotifications();
+  TURN = 230;
+  reportPassFeedback(pass);
+  const rows = notificationLog();
+  const tipped = rows.filter((e) => /Anti-Immigration/.test(e.summary));
+  assert.equal(tipped.length, 1, "exactly one row carries the stance tip");
+  assert.equal(tipped[0].crossCiv, true);
+  assert.equal(tipped[0].cause, "unhappiness");
+  CONFIG.bordersEnabled = false;
+  clearNotifications();
+  TURN = 231;
+  reportPassFeedback(pass);
+  assert.equal(notificationLog().filter((e) => /Anti-Immigration/.test(e.summary)).length, 0,
+    "no tip when border policies are off");
+  CONFIG.bordersEnabled = was;
+  delete globalThis.GameContext;
+}
+
 function testLocalDigestRespectsCooldown() {
   globalThis.GameContext = { localPlayerID: 0 };
   CONFIG.notifyMode = 1;
@@ -240,5 +276,6 @@ testLocalDigestIsPerEvent();
 // assert on the cooldown-independent notification log rather than toast counts.
 testLaggedCrossCivDepartureNotifiesAsExternal();
 testMixedScopeSplitsIntoInternalAndExternalRows();
+testStanceTipOnlyOnVoluntaryCrossCivLosses();
 
 console.log("feedback harness passed");

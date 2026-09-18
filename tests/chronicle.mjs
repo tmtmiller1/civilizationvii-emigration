@@ -106,11 +106,30 @@ import { __test as dia } from "/emigration/ui/emigration-diaspora.js";
     "none",
     "a big share with too little standing stock is not a quarter"
   );
+  const { CONFIG: cfg } = await import("/emigration/ui/emigration-config.js");
+  const wasStock = cfg.quarterEstablishedStock;
+  cfg.quarterEstablishedStock = 0;
   assert.equal(
     dia.quarterStage(dia.QUARTER_FOOTHOLD_SHARE - 0.01, dia.QUARTER_MIN_STOCK + 50),
     "none",
-    "lots of standing stock below the foothold share is not a quarter"
+    "share only (stock qualifier off): lots of standing stock below the foothold share is not a quarter"
   );
+  cfg.quarterEstablishedStock = 6;
+  assert.equal(
+    dia.quarterStage(0.05, 6),
+    "established",
+    "the absolute stock qualifier: six foreign points establish an enclave in a big city whatever the share (empty ledger: unscaled)"
+  );
+  assert.equal(dia.quarterStage(0.05, 5), "none", "five points at a small share: not yet");
+  // The bar scales with how big settlements are: half to double the configured value around the reference mean.
+  assert.equal(dia.stockBarFor(6, 18, 18), 6, "at the reference mean the bar is the configured value");
+  assert.equal(dia.stockBarFor(6, 9, 18), 3, "Antiquity-sized towns (mean 9): half");
+  assert.equal(dia.stockBarFor(6, 36, 18), 12, "Modern-sized cities (mean 36): double");
+  assert.equal(dia.stockBarFor(6, 90, 18), 12, "clamped at double");
+  assert.equal(dia.stockBarFor(6, 2, 18), 3, "clamped at half");
+  assert.equal(dia.stockBarFor(6, 0, 18), 6, "no ledger yet: unscaled");
+  assert.equal(dia.stockBarFor(0, 18, 18), 0, "0 = off");
+  cfg.quarterEstablishedStock = wasStock;
 }
 
 console.log("chronicle harness passed");

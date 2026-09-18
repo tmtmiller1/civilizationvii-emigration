@@ -1,0 +1,26 @@
+[2026-09-13 17:25:01]	[EmigProbe] shell attached 
+[2026-09-13 17:25:02]	[EmigProbe] shell query complete 
+[2026-09-13 17:25:02]	[EmigProbe] shell found AugustusAnt136.Civ7Save turn 136 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-13 17:25:02]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 17:25:21]	[EmigTest] modtest16 attached 
+[2026-09-13 17:25:34]	[EmigTest] START turn=136 cities=66 share=0.3 stock=3 dwell=8 integration=0.03 recognition=2 
+[2026-09-13 17:25:34]	[EmigTest] T0 turn=136 age=AGE_ANTIQUITY tracked=0 withForeign=0 foothold=0 established=0 best={"share":0,"pts":0,"name":""} flowTotal=0 candidacies=0 enclaves=0 [] 
+[2026-09-13 17:25:34]	[EmigTest] AUTOPLAY 80 turns 
+[2026-09-13 17:26:11]	[EmigTest] T140 turn=140 age=AGE_ANTIQUITY tracked=0 withForeign=0 foothold=0 established=0 best={"share":0,"pts":0,"name":""} flowTotal=0 candidacies=0 enclaves=0 [] 
+[2026-09-13 17:27:44]	[EmigTest] T150 turn=150 age=AGE_ANTIQUITY tracked=0 withForeign=0 foothold=0 established=0 best={"share":0,"pts":0,"name":""} flowTotal=0 candidacies=0 enclaves=0 [] 
+[2026-09-13 17:29:10]	[EmigTest] T160 turn=160 age=AGE_ANTIQUITY tracked=0 withForeign=0 foothold=0 established=0 best={"share":0,"pts":0,"name":""} flowTotal=0 candidacies=0 enclaves=0 [] 
+[2026-09-13 17:29:10]	[EmigTest] EVENT GameAgeEnded turn=160 
+[2026-09-13 17:29:36]	[EmigTest] modtest16 attached 
+[2026-09-13 17:29:49]	[EmigTest] START turn=2 cities=75 share=0.3 stock=3 dwell=8 integration=0.03 recognition=2 
+[2026-09-13 17:29:49]	[EmigTest] T0 turn=2 age=AGE_EXPLORATION tracked=75 withForeign=0 foothold=0 established=0 best={"share":0,"pts":0,"name":""} flowTotal=0 candidacies=0 enclaves=0 [] 
+[2026-09-13 17:29:49]	[EmigTest] AUTOPLAY 80 turns 
+[2026-09-13 17:30:58]	[EmigTest] T10 turn=10 age=AGE_EXPLORATION tracked=75 withForeign=0 foothold=0 established=0 best={"share":0,"pts":0,"name":""} flowTotal=0 candidacies=0 enclaves=0 [] 
+[2026-09-13 17:32:40]	[EmigTest] T20 turn=20 age=AGE_EXPLORATION tracked=75 withForeign=0 foothold=0 established=0 best={"share":0,"pts":0,"name":""} flowTotal=0 candidacies=0 enclaves=0 [] 
+[2026-09-13 17:34:27]	[EmigTest] T30 turn=30 age=AGE_EXPLORATION tracked=75 withForeign=0 foothold=0 established=0 best={"share":0,"pts":0,"name":""} flowTotal=0 candidacies=0 enclaves=0 [] 
+[2026-09-13 17:36:13]	[EmigTest] T40 turn=40 age=AGE_EXPLORATION tracked=75 withForeign=0 foothold=0 established=0 best={"share":0,"pts":0,"name":""} flowTotal=0 candidacies=0 enclaves=0 [] 
+[2026-09-13 17:40:11]	[EmigTest] T50 turn=50 age=AGE_EXPLORATION tracked=75 withForeign=0 foothold=0 established=0 best={"share":0,"pts":0,"name":""} flowTotal=0 candidacies=0 enclaves=0 [] 
+[2026-09-13 17:41:37]	[EmigTest] T60 turn=60 age=AGE_EXPLORATION tracked=75 withForeign=0 foothold=0 established=0 best={"share":0,"pts":0,"name":""} flowTotal=0 candidacies=0 enclaves=0 [] 
+[2026-09-13 17:43:56]	[EmigTest] T70 turn=70 age=AGE_EXPLORATION tracked=75 withForeign=0 foothold=0 established=0 best={"share":0,"pts":0,"name":""} flowTotal=0 candidacies=0 enclaves=0 [] 
+[2026-09-13 17:46:06]	[EmigTest] T80 turn=80 age=AGE_EXPLORATION tracked=75 withForeign=0 foothold=0 established=0 best={"share":0,"pts":0,"name":""} flowTotal=0 candidacies=0 enclaves=0 [] 
+[2026-09-13 17:46:06]	[EmigTest] FINAL turn=80 age=AGE_EXPLORATION tracked=75 withForeign=0 foothold=0 established=0 best={"share":0,"pts":0,"name":""} flowTotal=0 candidacies=0 enclaves=0 [] 
+[2026-09-13 17:46:06]	[EmigTest] DONE modtest16 finished 

@@ -1,0 +1,14 @@
+[2026-09-14 10:08:25]	[EmigProbe] shell attached 
+[2026-09-14 10:08:26]	[EmigProbe] shell query complete 
+[2026-09-14 10:08:26]	[EmigProbe] shell found AugustusAnt43.Civ7Save turn 43 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-14 10:08:26]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-14 10:08:43]	[EmigTest] modtest25 attached 
+[2026-09-14 10:09:00]	[EmigTest] START turn=43 delay=2000 settlements=19 
+[2026-09-14 10:09:00]	[EmigTest] F0 empty rural districts now={"n":11,"where":{"Birmingham":1,"Paris":1,"Chang'an":4,"Thăng Long":5}} (10 before the fix in this save) 
+[2026-09-14 10:09:01]	[EmigTest] F1 London town=false departure={"ok":true,"mode":"tile","type":"IMPROVEMENT_MINE","plot":1274} immediately={"plot":1274,"xy":"26,13","district":"DISTRICT_RURAL","cons":[],"inExpand":false,"pop":11} 
+[2026-09-14 10:09:06]	[EmigTest] F1 afterCleanupDelay={"plot":1274,"xy":"26,13","district":null,"cons":[],"inExpand":false,"pop":11} 
+[2026-09-14 10:09:06]	[EmigTest] F2 destroyPlacedTile(IMPROVEMENT_MINE at 1466)=true immediately={"plot":1466,"xy":"26,15","district":"DISTRICT_RURAL","cons":[],"inExpand":false,"pop":10} 
+[2026-09-14 10:09:11]	[EmigTest] F2 afterCleanupDelay={"plot":1466,"xy":"26,15","district":null,"cons":[],"inExpand":false,"pop":10} 
+[2026-09-14 10:09:16]	[EmigTest] F3 re-place canStart={"Success":true} after={"plot":1274,"xy":"26,13","district":"DISTRICT_RURAL","cons":["IMPROVEMENT_MINE"],"inExpand":false,"pop":11} 
+[2026-09-14 10:09:21]	[EmigTest] SHOT shipped-fix-replaced 
+[2026-09-14 10:09:31]	[EmigTest] DONE modtest25 finished 

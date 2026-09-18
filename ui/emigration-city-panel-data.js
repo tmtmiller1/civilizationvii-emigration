@@ -63,9 +63,10 @@ const YIELD_LABELS = {
  * @property {string} originName The quarter's display name (e.g. "Roman Quarter").
  * @property {string} stanceLabel The label of the stance the player chose.
  * @property {boolean} contested Whether the host is at war with the origin's homeland.
- * @property {boolean} [invested] Whether this origin's enclave IMPROVEMENT is built in the city. When it
- *   is, the stance grant has stepped aside (roadmap §22a) and the benefit/penalty below are NOT being
- *   paid — the improvement's own native yield is. Absent/false on a legacy input means "not built".
+ * @property {boolean} [invested] Whether this origin's enclave TILE stands in the city. The tile carries
+ *   its own native yield from the day the enclave is established; the stance benefit/penalty below are
+ *   paid ON TOP of it once the enclave is recognized. Absent/false on a legacy input means "no tile".
+ * @property {boolean} [rooted] Whether the community has put down roots (return migration from it is reduced).
  * @property {string|null} benefitYield The yield the quarter grants while UNBUILT (or null).
  * @property {number} benefitAmount The amount granted while unbuilt.
  * @property {string|null} penaltyYield The yield the quarter costs while UNBUILT (or null).
@@ -219,24 +220,25 @@ function costsLine(compose, amount, yieldKey) {
 }
 
 /**
- * What the enclave pays THIS turn — the two-tier reward made legible (roadmap §22b).
+ * What the enclave pays THIS turn — the two parts of its worth made legible (roadmap §22b).
  *
- * RECOGNIZED (enclave not built): the stance's per-turn dividend. The engine cannot attribute a runtime
- * `grantYield` to anything the player can see (won't-implement CANTFIX-1), so these lines are the ONLY place that
- * dividend is readable — which is the whole reason §22b exists.
- * INVESTED (enclave built): the stance grant has stepped aside (§22a), so claiming it here would be a lie.
- * Say the improvement has taken over instead; ITS yield is natively attributed, so the game shows the
- * number itself and this module must not restate (and drift from) a constant that lives in the XML.
+ * TILE (from establishment): the enclave stands as a tile whose yield is natively attributed, so the game
+ * shows that number itself and this module must not restate (and drift from) a constant that lives in the
+ * XML. It only says the tile is there.
+ * STANCE (from recognition): the stance's per-turn dividend, paid on top of the tile. The engine cannot
+ * attribute a runtime `grantYield` to anything the player can see (won't-implement CANTFIX-1), so these
+ * lines are the ONLY place that dividend is readable. An established enclave that is not yet recognized has
+ * no stance amounts, so nothing is claimed for it.
  * @param {Compose} compose The resolver.
  * @param {CityPanelQuarter} q The resolved quarter.
  * @returns {string[]} The yield lines.
  */
 function stanceYieldLines(compose, q) {
-  if (q.invested) {
-    const en = "Its enclave is built: the enclave's own yield now applies instead of this dividend.";
-    return [pick(compose, "LOC_EMIGRATION_PANEL_QUARTER_INVESTED", [], en)];
-  }
   const lines = [];
+  if (q.invested) {
+    const en = "Its enclave stands as a tile of the city, and the tile carries its own yield.";
+    lines.push(pick(compose, "LOC_EMIGRATION_PANEL_QUARTER_INVESTED", [], en));
+  }
   if (q.benefitYield && q.benefitAmount > 0) lines.push(grantsLine(compose, q.benefitAmount, q.benefitYield));
   if (q.penaltyYield && q.penaltyAmount > 0) lines.push(costsLine(compose, q.penaltyAmount, q.penaltyYield));
   return lines;
@@ -251,6 +253,10 @@ function stanceYieldLines(compose, q) {
 function quarterLines(compose, q) {
   const rootEn = "A " + q.originName + " has taken root in this settlement.";
   const lines = [pick(compose, "LOC_EMIGRATION_PANEL_QUARTER_ROOT", [q.originName], rootEn)];
+  if (q.rooted) {
+    const en = "Put down roots: fewer of its people return home.";
+    lines.push(pick(compose, "LOC_EMIGRATION_PANEL_QUARTER_ROOTS", [], en));
+  }
   if (q.stanceLabel) {
     const en = "Your stance: " + q.stanceLabel + ".";
     lines.push(pick(compose, "LOC_EMIGRATION_PANEL_QUARTER_STANCE", [q.stanceLabel], en));

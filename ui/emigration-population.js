@@ -268,7 +268,7 @@ function readAgeProgressPercent(mgr) {
  * Resolve current age progress percent from the engine.
  * @returns {number | undefined} Progress in [0,100], if available.
  */
-function currentAgeProgressPct() {
+export function currentAgeProgressPct() {
   try {
     const mgr = Game?.AgeProgressManager;
     if (!mgr) return undefined;

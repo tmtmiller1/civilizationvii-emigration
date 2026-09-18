@@ -1,0 +1,17 @@
+[2026-09-16 06:35:16]	[EmigProbe] shell attached 
+[2026-09-16 06:35:17]	[EmigProbe] shell query complete 
+[2026-09-16 06:35:18]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-16 06:35:18]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-16 06:35:35]	[EmigTest] modtest96 attached 
+[2026-09-16 06:35:50]	[EmigTest] modtest96 start 
+[2026-09-16 06:35:50]	[EmigTest] CRISIS manager present=yes 
+[2026-09-16 06:35:50]	[EmigTest] CRISIS keys=["getCrisisStageTriggerPercent","getCrisisStageTurnsElapsed","getMinimumTurnsRemainingInCurrentCrisis","getMaximumTurnsRemainingInCurrentCrisis","getCurrentCrisisStage","getNumCrisisStages","isCrisisEnabled","proto:getCrisisStageTriggerPercent","proto:getCrisisStageTurnsElapsed","proto:getMinimumTurnsRemainingInCurrentCrisis","proto:getMaximumTurnsRemainingInCurrentCrisis","proto:getCurrentCrisisStage","proto:getNumCrisisStages","proto:isCrisisEnabled","proto:constructor"] 
+[2026-09-16 06:35:50]	[EmigTest] CRISIS enabled=true stage=-1 triggerPct=undefined minTurnsLeft=undefined maxTurnsLeft=undefined 
+[2026-09-16 06:35:50]	[EmigTest] CRISIS events in DB=["EXPLORATION_CRISIS_RELIGION","EXPLORATION_CRISIS_PLAGUE"] 
+[2026-09-16 06:35:50]	[EmigTest] CRISIS stages rows=["EXPLORATION_CRISIS_RELIGION#1@70","EXPLORATION_CRISIS_RELIGION#2@80","EXPLORATION_CRISIS_RELIGION#3@90","EXPLORATION_CRISIS_RELIGION#4@100"] 
+[2026-09-16 06:35:50]	[EmigTest] AGE turn=66 age=-610349106 ageProgress="no getter" isFinalAge=false 
+[2026-09-16 06:35:50]	[EmigTest] AGE manager keys=["isExtendedGame","ageCountdownStarted","isAgeOver","isFinalAge","isSingleAge","getAgeCountdownLength","getCurrentAgeProgressionPoints","getMaxAgeProgressionPoints","getAgeProgressionPointsForEventType","getPrimaryAgeProgression","updateAgeProgressionPoints","isMilestoneComplete","canTransitionToNextAge","getHistoricalLegacyPointCountForTeam","getMilestoneProgressionPoints","proto:getCurrentAgeProgressionPoints","proto:getMaxAgeProgressionPoints","proto:getAgeProgressionPointsForEventType","proto:getPrimaryAgeProgression","proto:updateAgeProgressionPoints","proto:isMilestoneComplete","proto:canTransitionToNextAge","proto:getHistoricalLegacyPointCountForTeam","proto:getMilestoneProgressionPoints","proto:constructor"] 
+[2026-09-16 06:35:50]	[EmigTest] INFECT cities=81 exposing isInfected=81 infectedNow=0 
+[2026-09-16 06:35:50]	[EmigTest] INFECT sample=[{"p":0,"city":"LOC_CITY_NAME_GREAT_BRITAIN1","infected":false,"pop":36},{"p":0,"city":"LOC_CITY_NAME_HAWAII1","infected":false,"pop":29},{"p":0,"city":"LOC_CITY_NAME_HAWAII12","infected":false,"pop":10},{"p":0,"city":"LOC_CITY_NAME_HAWAII5","infected":false,"pop":13},{"p":0,"city":"LOC_CITY_NAME_GREAT_BRITAIN5","infected":false,"pop":26}] 
+[2026-09-16 06:35:50]	[EmigTest] SUMMARY modtest96 crisis reconnaissance done 
+[2026-09-16 06:35:50]	[EmigTest] DONE modtest96 finished 

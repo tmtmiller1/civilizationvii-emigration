@@ -53,9 +53,12 @@ const FALLBACK = {
   tilt: "Targeted attraction",
   reluctance: "Reluctance to move",
   crowding: "Overcrowding",
+  downsizing: "Leaving a larger settlement",
   cityState: "City-state barrier",
   crossCiv: "Foreign border",
   dominance: "Dominant power",
+  drain: "Small civilization brake",
+  internal: "Shelter at home",
   distance: "Distance",
   aggressor: "Aggressor avoidance",
   flight: "Away from the fighting",
@@ -67,6 +70,7 @@ const FALLBACK = {
   population: "Population size",
   civBias: "Local character",
   polity: "Government & celebrations",
+  built: "Wonders & buildings",
   violence: "Fighting",
   disaster: "Disaster",
   siege: "Siege",
@@ -186,7 +190,7 @@ function scaleRow(gross, scale) {
  * The base terms of a settlement's prosperity, in their declared order.
  * @type {(keyof import("/emigration/ui/emigration-prosperity.js").BaseTerms)[]}
  */
-const BASE_KEYS = ["economy", "happiness", "population", "civBias", "polity"];
+const BASE_KEYS = ["economy", "happiness", "population", "civBias", "polity", "built"];
 /**
  * The situational percent terms, in their declared order.
  * @type {(keyof import("/emigration/ui/emigration-prosperity.js").SituationalTerms)[]}

@@ -1,0 +1,15 @@
+[2026-09-15 10:05:04]	JS Error: fs://game/base-standard/ui/unit-flags/army-commander-flags.js:32: TypeError: unitFlag.updateArmy is not a function
+[2026-09-15 10:05:04]	JS Error (Line):         unitFlag.updateArmy();
+[2026-09-15 10:05:04]	JS Error (Stack): TypeError: unitFlag.updateArmy is not a function
+[2026-09-15 10:05:22]	JS Error: fs://game/base-standard/ui/unit-flags/army-commander-flags.js:32: TypeError: unitFlag.updateArmy is not a function
+[2026-09-15 10:05:22]	JS Error (Line):         unitFlag.updateArmy();
+[2026-09-15 10:05:22]	JS Error (Stack): TypeError: unitFlag.updateArmy is not a function
+[2026-09-15 10:05:37]	JS Error: fs://game/base-standard/ui/unit-flags/army-commander-flags.js:32: TypeError: unitFlag.updateArmy is not a function
+[2026-09-15 10:05:37]	JS Error (Line):         unitFlag.updateArmy();
+[2026-09-15 10:05:37]	JS Error (Stack): TypeError: unitFlag.updateArmy is not a function
+[2026-09-15 10:05:57]	JS Error: fs://game/base-standard/ui/unit-flags/army-commander-flags.js:32: TypeError: unitFlag.updateArmy is not a function
+[2026-09-15 10:05:57]	JS Error (Line):         unitFlag.updateArmy();
+[2026-09-15 10:05:57]	JS Error (Stack): TypeError: unitFlag.updateArmy is not a function
+[2026-09-15 10:08:28]	JS Error: fs://game/base-standard/ui/unit-flags/army-commander-flags.js:32: TypeError: unitFlag.updateArmy is not a function
+[2026-09-15 10:08:28]	JS Error (Line):         unitFlag.updateArmy();
+[2026-09-15 10:08:28]	JS Error (Stack): TypeError: unitFlag.updateArmy is not a function

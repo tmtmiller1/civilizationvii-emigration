@@ -5,12 +5,11 @@
 // once (emigration-ethnicity-tiles.js + emigration-ethnicity-distribution.js supply the per-tile mix):
 //   • BORDER — the settlement's MAIN (dominant) origin's banner colour at full strength, so you always
 //     read whose city it is regardless of the fill.
-//   • FILL — a DIVERGING colour scale on how non-host the tile is: all-host reads the host's colour, a
-//     50/50 tile reads GREY (clearly "mixed", never a muddy host tint), and a tile dominated by an
-//     incomer reads that origin's colour. A diaspora concentrates into a cluster (distribution model), so
-//     its neighbourhood reads grey→other while the rest of the city reads host.
-// Tile OPACITY ramps with population density (built-up core vivid, rural fringe faint), normalized per
-// city and jittered per tile so a district reads as a textured mosaic. The hover panel gives the numbers.
+//   • FILL — the BLEND of every origin living on the tile, weighted by its share (emigration-ethnicity-
+//     colour.js), so the map is a continuous gradient between banner colours rather than one colour or
+//     another. A diaspora concentrates into a cluster (distribution model), strongest where an enclave
+//     stands, so its neighbourhood shades toward its own colour and fades into the host's.
+// The hover panel gives the numbers.
 //
 // Same self-registering UIScript pattern as emigration-prosperity-lens.js (LensManager layer +
 // lens-panel decorate for the radio button, Shift+E hotkey). Loaded as its OWN <UIScripts> entry so
@@ -22,40 +21,19 @@ import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { setBasePlotTooltipHidden } from "/emigration/ui/emigration-plot-tooltip-suppress.js";
 import { tilesForCity } from "/emigration/ui/emigration-ethnicity-tiles.js";
+import { tileFill, unit } from "/emigration/ui/emigration-ethnicity-colour.js";
 
 const LENS = "emig-ethnicity-lens";
 const LAYER = "emig-ethnicity-layer";
 const HEX_GRID = 1; // OVERLAY_PRIORITY.HEX_GRID, inlined
 const FALLBACK_HEX = "#888888"; // neutral grey when a civ colour can't be resolved
-// Per-tile opacity ramps with POPULATION DENSITY (emigration-ethnicity-tiles): the built-up urban core
-// reads vivid, the sparse rural fringe faint, so a city reads as a textured population mosaic. Opacity
-// is normalized PER CITY (each settlement's sparsest tile → MIN_ALPHA, its densest → MAX_ALPHA), so the
-// contrast reads dramatically whether the city is a hamlet or a megacity instead of squeezing every
-// tile's small absolute density into a narrow band. The ETHNIC information is carried by the tile's
-// blended HUE (not opacity), so a diaspora reads by colour at any density.
-const MIN_ALPHA = 0.5;
-const MAX_ALPHA = 1.0;
-// Contrast curve on the per-city normalized density (< 1 lifts the bunched mid/low tiles toward the core
-// so the whole city reads BOLD while the densest core still pops to full opacity; > 1 does the reverse).
-const OPACITY_CONTRAST = 0.75;
-// A deterministic per-tile opacity wobble so a district of identical-density tiles (e.g. a rural belt)
-// still reads as a TEXTURED mosaic instead of one flat slab — the mod's "textured population mosaic".
-const OPACITY_JITTER = 0.14;
-// Each tile's FILL is a diverging colour scale on how non-host the tile is: 0% other → the host's colour,
-// 50/50 → grey (a "mixed" tile), 100% other → the other origin's colour. Grey at the midpoint keeps a
-// mixed tile from reading as a muddy host-tinted blend. GREY_LEVEL is the midpoint's brightness.
-const GREY_LEVEL = 0.5;
+// Contrast curve on a tile's density within its settlement (< 1 lifts the middle, so the many mid-density
+// tiles still read instead of washing out). Same shape the Prosperity lens uses. The fill's own colour and
+// opacity constants live with the blend, in emigration-ethnicity-colour.js.
+const CONTRAST_GAMMA = 0.55;
 // Each tile's BORDER is the settlement's main (dominant) origin colour at full strength, so you always
 // read whose city it is regardless of the fill; EDGE_ALPHA is that border's opacity.
 const EDGE_ALPHA = 1.0;
-
-/**
- * Clamp a number to a finite [0,1] (NaN / non-finite → 0), for overlay-safe colour channels.
- * @param {number} n A value. @returns {number} The clamped value.
- */
-function unit(n) {
-  return typeof n === "number" && isFinite(n) ? Math.max(0, Math.min(1, n)) : 0;
-}
 
 /**
  * Parse a `#RRGGBB` colour into 0-1 RGB channels (neutral grey on failure).
@@ -80,89 +58,20 @@ function civRGB(civ) {
 }
 
 /**
- * Linear interpolate between two RGB colours.
- * @param {{r:number,g:number,b:number}} a From. @param {{r:number,g:number,b:number}} b To.
- * @param {number} k Fraction 0..1. @returns {{r:number,g:number,b:number}} The blend.
+ * Each tile's density normalized ACROSS ITS OWN settlement (sparsest 0, densest 1, on a curve), so the core-to-
+ * fringe ramp reads the same in a hamlet and a megacity.
+ * @param {{density:number}[]} tiles The settlement's tiles.
+ * @returns {number[]} One normalized density per tile, in order.
  */
-function lerpRGB(a, b, k) {
-  return { r: a.r + (b.r - a.r) * k, g: a.g + (b.g - a.g) * k, b: a.b + (b.b - a.b) * k };
-}
-
-/** A tile origin's local share of the tile, or 0. @param {*[]} shares @param {number} civ @returns {number} */
-function shareOf(shares, civ) {
-  for (const s of shares || []) if (s.civ === civ) return s.share;
-  return 0;
-}
-
-/**
- * The tile's largest NON-host origin (its "other" colour), or the host when there is none.
- * @param {{civ:number, share:number}[]} shares The tile's local shares. @param {number} hostCiv The host origin.
- * @returns {number} The other origin's civ id.
- */
-function topOther(shares, hostCiv) {
-  let best = hostCiv;
-  let bestShare = -1;
-  for (const s of shares || []) {
-    if (s.civ !== hostCiv && s.share > bestShare) {
-      bestShare = s.share;
-      best = s.civ;
-    }
+function densityNorms(tiles) {
+  let minD = Infinity;
+  let maxD = -Infinity;
+  for (const t of tiles) {
+    if (t.density < minD) minD = t.density;
+    if (t.density > maxD) maxD = t.density;
   }
-  return best;
-}
-
-/**
- * A tile's DIVERGING fill colour: host colour when the tile is all-host, fading to grey at 50% non-host,
- * then to the tile's other origin's colour toward all-other. So a mixed tile reads as a desaturated
- * "grey-ish" tile (clearly not the host), not a muddy host tint.
- * @param {*[]} shares The tile's local shares. @param {number} hostCiv The settlement's main origin.
- * @returns {{r:number, g:number, b:number}} The fill channels in [0,1].
- */
-function divergingFill(shares, hostCiv) {
-  const t = Math.max(0, Math.min(1, 1 - shareOf(shares, hostCiv)));
-  const host = civRGB(hostCiv);
-  if (t <= 0) return host;
-  const grey = { r: GREY_LEVEL, g: GREY_LEVEL, b: GREY_LEVEL };
-  if (t <= 0.5) return lerpRGB(host, grey, t / 0.5);
-  return lerpRGB(grey, civRGB(topOther(shares, hostCiv)), (t - 0.5) / 0.5);
-}
-
-/**
- * The per-city normalized opacity for a tile's density: the settlement's sparsest tile reads MIN_ALPHA,
- * its densest MAX_ALPHA, with a contrast curve between, so the density gradient reads dramatically at any
- * city size. `minD`/`maxD` are the density range across the settlement's tiles.
- * @param {number} density The tile's density. @param {number} minD City min density. @param {number} maxD City max.
- * @returns {number} The alpha in [MIN_ALPHA, MAX_ALPHA].
- */
-function cityAlpha(density, minD, maxD) {
   const span = maxD - minD;
-  const norm = span > 1e-6 ? (density - minD) / span : 1;
-  const curved = Math.pow(unit(norm), OPACITY_CONTRAST);
-  return MIN_ALPHA + (MAX_ALPHA - MIN_ALPHA) * curved;
-}
-
-/**
- * A deterministic per-tile opacity wobble in [-OPACITY_JITTER, +OPACITY_JITTER], so identical-density
- * tiles don't render as one flat slab. Stable per coordinate (no RNG), so the texture never flickers.
- * @param {number} x Plot x. @param {number} y Plot y. @returns {number} The alpha offset.
- */
-function tileJitter(x, y) {
-  const h = (Math.imul(x | 0, 374761393) ^ Math.imul(y | 0, 668265263)) >>> 0;
-  return ((h % 1024) / 1023 - 0.5) * 2 * OPACITY_JITTER;
-}
-
-/**
- * The float4 fill for one tile: its diverging host↔grey↔other colour at a (pre-computed, per-city
- * normalized) opacity. Every channel is finite-clamped, a NaN reaching the Metal plot overlay is a known
- * Mac crash vector.
- * @param {import("/emigration/ui/emigration-ethnicity-distribution.js").TilePaint} tile A tile.
- * @param {number} hostCiv The settlement's main origin (the fill's host anchor).
- * @param {number} alpha The tile's opacity (from cityAlpha).
- * @returns {{x:number, y:number, z:number, w:number}} Float4 RGBA.
- */
-function tileFill(tile, hostCiv, alpha) {
-  const c = divergingFill(tile.shares, hostCiv);
-  return { x: unit(c.r), y: unit(c.g), z: unit(c.b), w: unit(alpha) };
+  return tiles.map((t) => (span > 1e-6 ? Math.pow(unit((t.density - minD) / span), CONTRAST_GAMMA) : 1));
 }
 
 /**
@@ -191,35 +100,28 @@ function tilePaints() {
   /** @type {{x:number, y:number, fill:*, edge:*}[]} */
   const out = [];
   for (const s of signals) {
-    if (civHidden(s.owner)) continue; // don't reveal a policy-hidden civ's settlements on the map
-    const data = tilesForCity(s.city);
-    if (!data || !data.tiles.length) continue;
-    const hostCiv = data.comp && data.comp.dominant ? data.comp.dominant.civ : s.owner;
-    const edge = edgeFill(hostCiv);
-    // Normalize opacity ACROSS this settlement's tiles so the densest reads full and the sparsest faint,
-    // plus a per-tile jitter so a uniform-density district still reads as a textured mosaic.
-    const { minD, maxD } = densityRange(data.tiles);
-    for (const t of data.tiles) {
-      const alpha = cityAlpha(t.density, minD, maxD) + tileJitter(t.x, t.y);
-      out.push({ x: t.x, y: t.y, fill: tileFill(t, hostCiv, alpha), edge });
-    }
+    // Never reveal a policy-hidden civ's settlements on the map.
+    if (!civHidden(s.owner)) out.push(...settlementPaints(s));
   }
   return out;
 }
 
 /**
- * The min/max tile density across a settlement's tiles, for per-city opacity normalization.
- * @param {{density:number}[]} tiles The settlement's tiles.
- * @returns {{minD:number, maxD:number}} The density range.
+ * One settlement's per-tile paints: each tile in the blend of the origins living on it, at an opacity carrying the
+ * tile's density within this settlement. Empty only when the settlement is unreadable, since the mosaic itself is
+ * always built (an unrecorded settlement counts as all-host).
+ * @param {*} s A city signal.
+ * @returns {{x:number, y:number, fill:*, edge:*}[]} Per-tile paints.
  */
-function densityRange(tiles) {
-  let minD = Infinity;
-  let maxD = -Infinity;
-  for (const t of tiles) {
-    if (t.density < minD) minD = t.density;
-    if (t.density > maxD) maxD = t.density;
-  }
-  return { minD, maxD };
+function settlementPaints(s) {
+  const data = tilesForCity(s.city);
+  if (!data || !data.tiles.length) return [];
+  const hostCiv = data.comp && data.comp.dominant ? data.comp.dominant.civ : s.owner;
+  const edge = edgeFill(hostCiv);
+  const norms = densityNorms(data.tiles);
+  return data.tiles.map((t, i) => ({
+    x: t.x, y: t.y, fill: tileFill(t, civRGB, { hostCiv, densityNorm: norms[i] }), edge
+  }));
 }
 
 /** Quantize a float4 colour into a short key so near-identical colours share a batch. @param {*} f @returns {string} */

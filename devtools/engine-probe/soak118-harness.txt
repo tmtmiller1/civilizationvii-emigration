@@ -1,0 +1,6 @@
+[11:03:02] registry: 126|emigration|1 516|emigration|0  ; modinfo flag: 1
+[11:03:02] probe installed: eep-modtest118.js on AugustusAnt65.Civ7Save
+[11:03:04] game pid 71256
+[11:29:15] result=done after 1464s
+[11:29:24] restored: 126|emigration|1 518|emigration|0  ; modinfo flag: 0 ; probe present: no
+[11:29:24] FINISHED result=done

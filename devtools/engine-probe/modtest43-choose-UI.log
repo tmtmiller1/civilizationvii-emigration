@@ -1,0 +1,20 @@
+[2026-09-14 10:50:54]	[EmigProbe] shell attached 
+[2026-09-14 10:50:56]	[EmigProbe] shell query complete 
+[2026-09-14 10:50:56]	[EmigProbe] shell found AugustusAnt49.Civ7Save turn 49 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-14 10:50:56]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-14 10:51:10]	[EmigTest] modtest27 attached 
+[2026-09-14 10:51:27]	[EmigTest] START turn=49 mode=INTERFACEMODE_DEFAULT local settlements=3 
+[2026-09-14 10:51:27]	[EmigTest] C0 London town=false {"mode":"INTERFACEMODE_DEFAULT","pop":13,"pending":0,"ready":false,"expand":0} 
+[2026-09-14 10:51:27]	[EmigTest] C0 Birmingham town=true {"mode":"INTERFACEMODE_DEFAULT","pop":4,"pending":0,"ready":false,"expand":0} 
+[2026-09-14 10:51:27]	[EmigTest] C0 Bristol town=true {"mode":"INTERFACEMODE_DEFAULT","pop":4,"pending":0,"ready":false,"expand":0} 
+[2026-09-14 10:51:27]	[EmigTest] TOWN Bristol town=true before={"mode":"INTERFACEMODE_DEFAULT","pop":4,"pending":0,"ready":false,"expand":0} 
+[2026-09-14 10:51:28]	[EmigTest] TOWN arriveRural=true dialogs=1 chooseButton=true afterArrival={"mode":"INTERFACEMODE_DEFAULT","pop":5,"pending":1,"ready":true,"expand":10} 
+[2026-09-14 10:51:31]	[EmigTest] TOWN afterClick 0:{"mode":"INTERFACEMODE_ACQUIRE_TILE","pop":5,"pending":1,"ready":true,"expand":10} | 100:{"mode":"INTERFACEMODE_ACQUIRE_TILE","pop":5,"pending":1,"ready":true,"expand":10} | 300:{"mode":"INTERFACEMODE_ACQUIRE_TILE","pop":5,"pending":1,"ready":true,"expand":10} | 1000:{"mode":"INTERFACEMODE_ACQUIRE_TILE","pop":5,"pending":1,"ready":true,"expand":10} | 2500:{"mode":"INTERFACEMODE_ACQUIRE_TILE","pop":5,"pending":1,"ready":true,"expand":10} 
+[2026-09-14 10:51:31]	[EmigTest] TOWN dialogsAfterClick=0 modeStayed=true 
+[2026-09-14 10:51:31]	[EmigTest] SHOT choose-open-TOWN 
+[2026-09-14 10:51:41]	[EmigTest] CITY London town=false before={"mode":"INTERFACEMODE_DEFAULT","pop":13,"pending":0,"ready":false,"expand":0} 
+[2026-09-14 10:51:42]	[EmigTest] CITY arriveRural=true dialogs=1 chooseButton=true afterArrival={"mode":"INTERFACEMODE_DEFAULT","pop":14,"pending":1,"ready":true,"expand":12} 
+[2026-09-14 10:51:45]	[EmigTest] CITY afterClick 0:{"mode":"INTERFACEMODE_ACQUIRE_TILE","pop":14,"pending":1,"ready":true,"expand":12} | 100:{"mode":"INTERFACEMODE_ACQUIRE_TILE","pop":14,"pending":1,"ready":true,"expand":12} | 300:{"mode":"INTERFACEMODE_ACQUIRE_TILE","pop":14,"pending":1,"ready":true,"expand":12} | 1000:{"mode":"INTERFACEMODE_ACQUIRE_TILE","pop":14,"pending":1,"ready":true,"expand":12} | 2500:{"mode":"INTERFACEMODE_ACQUIRE_TILE","pop":14,"pending":1,"ready":true,"expand":12} 
+[2026-09-14 10:51:45]	[EmigTest] CITY dialogsAfterClick=0 modeStayed=true 
+[2026-09-14 10:51:45]	[EmigTest] SHOT choose-open-CITY 
+[2026-09-14 10:51:55]	[EmigTest] DONE modtest27 finished 

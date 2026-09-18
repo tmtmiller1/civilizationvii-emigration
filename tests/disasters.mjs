@@ -20,9 +20,8 @@ globalThis.Configuration = {
   editGame: () => ({ setValue: (k, v) => (KV[k] = v) })
 };
 
-const { observeDisaster, tickDisasters, recordDisaster, disasterSpike, disasterKey } = await import(
-  "/emigration/ui/emigration-disasters.js"
-);
+const disastersMod = await import("/emigration/ui/emigration-disasters.js");
+const { observeDisaster, tickDisasters, recordDisaster, disasterSpike, disasterKey, addDistress } = disastersMod;
 const { resetGameSpeedCache } = await import("/emigration/ui/emigration-game-speed.js");
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
 
@@ -238,6 +237,35 @@ testAccumCapAndRecovery();
 testFlagsOffIsLegacy();
 testStrikeFloorClearsFleeThreshold();
 testPersistWritesSchemaEnvelope();
+
+// The disaster loss cap, the mirror of the siege cap: the first disaster-caused departure pins the onset
+// population; once floor(pct × onset) points have left, the remnant digs in; the tally clears with the
+// distress; pct >= 1 or the model off means no cap.
+function testDisasterLossCap() {
+  const { recordDisasterLoss, disasterLossCapReached } = disastersMod;
+  CONFIG.disastersEnabled = true;
+  CONFIG.disasterLossCapPct = 0.5;
+  const city = { id: { owner: 2, id: 44 }, owner: 2, isInfected: false };
+  assert.equal(disasterLossCapReached(city), false, "nothing booked yet");
+  recordDisasterLoss(city, 11); // onset 11 → cap floor(5.5) = 5
+  for (let i = 0; i < 3; i++) recordDisasterLoss(city, 99); // later calls never move the onset
+  assert.equal(disasterLossCapReached(city), false, "4 of 5 lost");
+  recordDisasterLoss(city, 99);
+  assert.equal(disasterLossCapReached(city), true, "5 of 5: the remnant digs in");
+  CONFIG.disasterLossCapPct = 1;
+  assert.equal(disasterLossCapReached(city), false, "1 = uncapped");
+  CONFIG.disasterLossCapPct = 0.5;
+  // The tally rides the distress: once the city's distress decays away, the next disaster is a new crisis.
+  addDistress(disasterKey(city), 0.06);
+  TURN += 60; // long enough for 0.06 to decay below the drop threshold
+  tickDisasters();
+  assert.equal(disasterLossCapReached(city), false, "cleared with the distress");
+  CONFIG.disastersEnabled = false;
+  recordDisasterLoss(city, 4);
+  assert.equal(disasterLossCapReached(city), false, "model off: never booked, never capped");
+  CONFIG.disastersEnabled = true;
+}
+testDisasterLossCap();
 
 CONFIG.disastersEnabled = false; // restore default
 console.log("disasters harness passed");

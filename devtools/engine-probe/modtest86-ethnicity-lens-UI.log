@@ -1,0 +1,11 @@
+[2026-09-15 20:23:37]	[EmigProbe] shell attached 
+[2026-09-15 20:23:38]	[EmigProbe] shell query complete 
+[2026-09-15 20:23:39]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-15 20:23:39]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-15 20:23:56]	[EmigTest] modtest86 attached 
+[2026-09-15 20:24:11]	[EmigTest] R lensRegistered=true layerRegistered=true layerHasOverlay=true active="fxs-default-lens" 
+[2026-09-15 20:24:11]	[EmigTest] D settlements=76 [{"city":"London","owner":0,"comp":null,"tiles":null},{"city":"Lāhainā","owner":0,"comp":null,"tiles":null},{"city":"Waikolu","owner":0,"comp":null,"tiles":null},{"city":"Lihu'e","owner":0,"comp":null,"tiles":null},{"city":"Leeds","owner":0,"comp":null,"tiles":null},{"city":"‘Ewa","owner":0,"comp":null,"tiles":null},{"city":"Birmingham","owner":0,"comp":null,"tiles":null},{"city":"Megiddo","owner":0,"comp":null,"tiles":null}] 
+[2026-09-15 20:24:21]	[EmigTest] L active="emig-ethnicity-lens" addPlotsCalls=0 plotsPainted=0 colours=[] 
+[2026-09-15 20:24:21]	[EmigTest] SHOT ethnicity-lens-on 
+[2026-09-15 20:24:38]	[EmigTest] SHOT ethnicity-lens-off 
+[2026-09-15 20:24:50]	[EmigTest] DONE modtest86 finished 

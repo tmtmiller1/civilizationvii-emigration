@@ -1,0 +1,58 @@
+[2026-09-13 17:47:21]	[EmigProbe] shell attached 
+[2026-09-13 17:47:22]	[EmigProbe] shell query complete 
+[2026-09-13 17:47:22]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-13 17:47:22]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 17:47:41]	[EmigTest] modtest17 attached 
+[2026-09-13 17:47:54]	[EmigTest] START turn=66 cities=76 share=0.3 stock=3 dwell=8 integration=0.03 recognition=2 
+[2026-09-13 17:47:54]	[EmigTest] T0 turn=66 age=AGE_EXPLORATION tracked=0 withForeign=0 foothold=0 established=0 best={"share":0,"pts":0,"name":""} flowTotal=0 candidacies=0 enclaves=0 [] 
+[2026-09-13 17:47:54]	[EmigTest] ENDING 40 turns by hand 
+[2026-09-13 17:48:04]	[EmigTest] BLOCKED -513644209: one Autoplay turn (fallback #1) 
+[2026-09-13 17:48:34]	[EmigTest] BLOCKED -2084516792: one Autoplay turn (fallback #2) 
+[2026-09-13 17:49:03]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #3) 
+[2026-09-13 17:49:30]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #4) 
+[2026-09-13 17:49:56]	[EmigTest] BLOCKED -286188551: one Autoplay turn (fallback #5) 
+[2026-09-13 17:50:08]	[EmigTest] T71 (n=5, autoplayFallbacks=5) turn=71 age=AGE_EXPLORATION tracked=76 withForeign=3 foothold=1 established=1 best={"share":1,"pts":2,"name":"Rostov on Don","owner":4,"origin":2,"total":2} flowTotal=0 candidacies=2 enclaves=0 [] 
+[2026-09-13 17:50:18]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #6) 
+[2026-09-13 17:50:40]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #7) 
+[2026-09-13 17:51:05]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #8) 
+[2026-09-13 17:51:27]	[EmigTest] BLOCKED -2084516792: one Autoplay turn (fallback #9) 
+[2026-09-13 17:51:51]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #10) 
+[2026-09-13 17:52:03]	[EmigTest] T76 (n=10, autoplayFallbacks=10) turn=76 age=AGE_EXPLORATION tracked=77 withForeign=5 foothold=1 established=1 best={"share":1,"pts":2,"name":"Rostov on Don","owner":4,"origin":2,"total":2} flowTotal=0 candidacies=1 enclaves=0 [] 
+[2026-09-13 17:52:13]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #11) 
+[2026-09-13 17:52:39]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #12) 
+[2026-09-13 17:53:09]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #13) 
+[2026-09-13 17:53:34]	[EmigTest] BLOCKED -2084516792: one Autoplay turn (fallback #14) 
+[2026-09-13 17:53:58]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #15) 
+[2026-09-13 17:54:14]	[EmigTest] T81 (n=15, autoplayFallbacks=15) turn=81 age=AGE_EXPLORATION tracked=77 withForeign=11 foothold=2 established=2 best={"share":0.41,"pts":13.1,"name":"Duisburg","owner":7,"origin":0,"total":32} flowTotal=0 candidacies=2 enclaves=0 [] 
+[2026-09-13 17:54:24]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #16) 
+[2026-09-13 17:54:50]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #17) 
+[2026-09-13 17:55:26]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #18) 
+[2026-09-13 17:55:48]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #19) 
+[2026-09-13 17:56:14]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #20) 
+[2026-09-13 17:56:28]	[EmigTest] T86 (n=20, autoplayFallbacks=20) turn=86 age=AGE_EXPLORATION tracked=78 withForeign=14 foothold=3 established=3 best={"share":0.45,"pts":4,"name":"Risila","owner":7,"origin":8,"total":9} flowTotal=0 candidacies=3 enclaves=2 [{"o":7,"civ":"CIVILIZATION_MONGOLIA","type":"IMPROVEMENT_ORTOO"},{"o":8,"civ":"CIVILIZATION_MONGOLIA","type":"IMPROVEMENT_ORTOO"}] 
+[2026-09-13 17:56:38]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #21) 
+[2026-09-13 17:57:12]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #22) 
+[2026-09-13 17:57:40]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #23) 
+[2026-09-13 17:58:07]	[EmigTest] BLOCKED -2084516792: one Autoplay turn (fallback #24) 
+[2026-09-13 17:58:33]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #25) 
+[2026-09-13 17:58:58]	[EmigTest] T91 (n=25, autoplayFallbacks=25) turn=91 age=AGE_EXPLORATION tracked=80 withForeign=15 foothold=3 established=2 best={"share":0.37,"pts":4.4,"name":"Risila","owner":7,"origin":8,"total":12} flowTotal=0 candidacies=3 enclaves=2 [{"o":7,"civ":"CIVILIZATION_MONGOLIA","type":"IMPROVEMENT_ORTOO"},{"o":8,"civ":"CIVILIZATION_MONGOLIA","type":"IMPROVEMENT_ORTOO"}] 
+[2026-09-13 17:59:08]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #26) 
+[2026-09-13 17:59:38]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #27) 
+[2026-09-13 18:00:04]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #28) 
+[2026-09-13 18:00:28]	[EmigTest] BLOCKED -409354463: one Autoplay turn (fallback #29) 
+[2026-09-13 18:00:54]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #30) 
+[2026-09-13 18:01:07]	[EmigTest] T96 (n=30, autoplayFallbacks=30) turn=96 age=AGE_EXPLORATION tracked=81 withForeign=17 foothold=3 established=1 best={"share":0.32,"pts":3.6,"name":"Risila","owner":7,"origin":8,"total":11} flowTotal=0 candidacies=1 enclaves=3 [{"o":7,"civ":"CIVILIZATION_MONGOLIA","type":"IMPROVEMENT_ORTOO"},{"o":8,"civ":"CIVILIZATION_MONGOLIA","type":"IMPROVEMENT_ORTOO"},{"o":7,"civ":"CIVILIZATION_CHOLA","type":"IMPROVEMENT_CARAVANSERAI"}] 
+[2026-09-13 18:01:18]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #31) 
+[2026-09-13 18:01:47]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #32) 
+[2026-09-13 18:02:10]	[EmigTest] BLOCKED -2084516792: one Autoplay turn (fallback #33) 
+[2026-09-13 18:02:36]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #34) 
+[2026-09-13 18:03:06]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #35) 
+[2026-09-13 18:03:21]	[EmigTest] T101 (n=35, autoplayFallbacks=35) turn=101 age=AGE_EXPLORATION tracked=82 withForeign=17 foothold=4 established=2 best={"share":0.38,"pts":4.9,"name":"Osaka","owner":9,"origin":2,"total":13} flowTotal=0 candidacies=3 enclaves=3 [{"o":7,"civ":"CIVILIZATION_MONGOLIA","type":"IMPROVEMENT_ORTOO"},{"o":8,"civ":"CIVILIZATION_MONGOLIA","type":"IMPROVEMENT_ORTOO"},{"o":7,"civ":"CIVILIZATION_CHOLA","type":"IMPROVEMENT_CARAVANSERAI"}] 
+[2026-09-13 18:03:31]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #36) 
+[2026-09-13 18:03:57]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #37) 
+[2026-09-13 18:04:31]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #38) 
+[2026-09-13 18:04:57]	[EmigTest] BLOCKED 442844772: one Autoplay turn (fallback #39) 
+[2026-09-13 18:05:25]	[EmigTest] BLOCKED -2084516792: one Autoplay turn (fallback #40) 
+[2026-09-13 18:05:38]	[EmigTest] T106 (n=40, autoplayFallbacks=40) turn=106 age=AGE_EXPLORATION tracked=84 withForeign=19 foothold=3 established=1 best={"share":0.31,"pts":4.9,"name":"Kumbi Saleh","owner":6,"origin":0,"total":16} flowTotal=0 candidacies=2 enclaves=3 [{"o":7,"civ":"CIVILIZATION_MONGOLIA","type":"IMPROVEMENT_ORTOO"},{"o":8,"civ":"CIVILIZATION_MONGOLIA","type":"IMPROVEMENT_ORTOO"},{"o":7,"civ":"CIVILIZATION_CHOLA","type":"IMPROVEMENT_CARAVANSERAI"}] 
+[2026-09-13 18:05:39]	[EmigTest] FINAL turn=106 age=AGE_EXPLORATION tracked=84 withForeign=19 foothold=3 established=1 best={"share":0.31,"pts":4.9,"name":"Kumbi Saleh","owner":6,"origin":0,"total":16} flowTotal=0 candidacies=2 enclaves=3 [{"o":7,"civ":"CIVILIZATION_MONGOLIA","type":"IMPROVEMENT_ORTOO"},{"o":8,"civ":"CIVILIZATION_MONGOLIA","type":"IMPROVEMENT_ORTOO"},{"o":7,"civ":"CIVILIZATION_CHOLA","type":"IMPROVEMENT_CARAVANSERAI"}] 
+[2026-09-13 18:05:39]	[EmigTest] DONE modtest17 finished 

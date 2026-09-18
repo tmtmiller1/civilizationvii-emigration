@@ -1,0 +1,17 @@
+[2026-09-14 18:02:27]	[EmigProbe] shell attached 
+[2026-09-14 18:02:28]	[EmigProbe] shell query complete 
+[2026-09-14 18:02:28]	[EmigProbe] shell found AugustusAnt136.Civ7Save turn 136 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-14 18:02:28]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-14 18:02:46]	[EmigTest] modtest55 attached 
+[2026-09-14 18:03:03]	[EmigTest] START turn=136 candidates=["London","Leeds"] 
+[2026-09-14 18:03:03]	[EmigTest] A0 London {"pop":24,"rural":9,"urban":13,"spec":2,"pending":0,"ready":false,"expand":0,"improvements":9,"workers":[{"plot":3258,"n":1,"max":1},{"plot":3261,"n":1,"max":1}],"turnsToGrow":8,"block":"23669119","placed":24,"gap":0} readyType=boolean 
+[2026-09-14 18:03:03]	[EmigTest] A accepted plots (7) [{"plot":3164,"types":["BUILDING_PALACE"],"workers":0,"max":1,"blocked":false},{"plot":3068,"types":["BUILDING_MONUMENT"],"workers":0,"max":1,"blocked":false},{"plot":3067,"types":["BUILDING_BRICKYARD","BUILDING_SAW_PIT"],"workers":0,"max":1,"blocked":false},{"plot":3165,"types":["BUILDING_LIBRARY","BUILDING_ALTAR"],"workers":0,"max":1,"blocked":false},{"plot":3356,"types":["BUILDING_ACADEMY"],"workers":0,"max":1,"blocked":false},{"plot":3166,"types":["BUILDING_HARBOR"],"workers":0,"max":1,"blocked":false},{"plot":3453,"types":["BUILDING_LIGHTHOUSE"],"workers":0,"max":1,"blocked":false}] workerPlots=[{"plot":3258,"n":1,"max":1,"types":["BUILDING_BASILICA","BUILDING_TEMPLE_OF_JUPITER"]},{"plot":3261,"n":1,"max":1,"types":["BUILDING_BARRACKS","BUILDING_MARKET"]}] 
+[2026-09-14 18:03:03]	[EmigTest] A send ASSIGN_WORKER -1 plot=3164 canStart={"Success":true} sent=true 
+[2026-09-14 18:03:07]	[EmigTest] A1 +4s {"pop":24,"rural":9,"urban":13,"spec":1,"pending":0,"ready":false,"expand":0,"improvements":9,"workers":[{"plot":3258,"n":1,"max":1},{"plot":3261,"n":1,"max":1}],"turnsToGrow":7,"block":"23669119","placed":23,"gap":1} 
+[2026-09-14 18:03:12]	[EmigTest] A2 +8s {"pop":24,"rural":9,"urban":13,"spec":1,"pending":0,"ready":false,"expand":0,"improvements":9,"workers":[{"plot":3258,"n":1,"max":1},{"plot":3261,"n":1,"max":1}],"turnsToGrow":7,"block":"23669119","placed":23,"gap":1} 
+[2026-09-14 18:03:12]	[EmigTest] A VERDICT held=false delta={"pop":0,"rural":0,"urban":0,"spec":-1,"pending":0,"improvements":0,"ready":false,"gap":1} 
+[2026-09-14 18:03:12]	[EmigTest] B skipped: no waiting point after un-assign 
+[2026-09-14 18:03:12]	[EmigTest] ENDTURN sent (block=23669119) 
+[2026-09-14 18:03:26]	[EmigTest] C next turn=137 {"pop":24,"rural":9,"urban":13,"spec":1,"pending":0,"ready":false,"expand":0,"improvements":9,"workers":[{"plot":3258,"n":1,"max":1},{"plot":3261,"n":1,"max":1}],"turnsToGrow":6,"block":"442844772","placed":23,"gap":1} 
+[2026-09-14 18:03:26]	[EmigTest] C VERDICT net vs A0={"pop":0,"rural":0,"urban":0,"spec":-1,"pending":0,"improvements":0,"ready":false,"gap":1} 
+[2026-09-14 18:03:26]	[EmigTest] DONE modtest55 finished (turn) 

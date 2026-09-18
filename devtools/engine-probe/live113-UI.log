@@ -1,0 +1,43 @@
+[2026-09-16 14:42:29]	[EmigProbe] shell attached 
+[2026-09-16 14:42:30]	[EmigProbe] shell query complete 
+[2026-09-16 14:42:31]	[EmigProbe] shell found AugustusAnt65.Civ7Save turn 65 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-16 14:42:31]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-16 14:42:47]	[EmigTest] modtest113 attached 
+[2026-09-16 14:43:04]	[EmigTest] modtest113 run local=0 
+[2026-09-16 14:43:04]	[EmigTest] WATCHING Combat 
+[2026-09-16 14:43:04]	[EmigTest] WATCHING UnitKilledInCombat 
+[2026-09-16 14:43:04]	[EmigTest] WATCHING DistrictDamageChanged 
+[2026-09-16 14:43:04]	[EmigTest] STATS "NO-GLOBAL" 
+[2026-09-16 14:43:04]	[EmigTest] LEDGER citiesScanned=40 withEvidence=0 foreign=0 
+[2026-09-16 14:43:16]	[EmigTest] EVENT Combat keys=["antiAir","attacker","defender","interceptor"] data={"antiAir":{"owner":-1,"id":-1,"type":0},"attacker":{"owner":5,"id":1638411,"type":26},"defender":{"owner":29,"id":131073,"type":26},"interceptor":{"owner":-1,"id":-1,"type":0}} 
+[2026-09-16 14:43:16]	[EmigTest] EVENT Combat #2 {"antiAir":{"owner":-1,"id":-1,"type":0},"attacker":{"owner":5,"id":1376264,"type":26},"defender":{"owner":11,"id":589824,"type":26},"interceptor":{"owner":-1,"id":-1,"type":0}} 
+[2026-09-16 14:43:16]	[EmigTest] EVENT UnitKilledInCombat keys=["unitKilled","unitKiller"] data={"unitKilled":{"owner":11,"id":589824,"type":26},"unitKiller":{"owner":5,"id":1376264,"type":26}} 
+[2026-09-16 14:43:17]	[EmigTest] EVENT Combat #3 {"antiAir":{"owner":-1,"id":-1,"type":0},"attacker":{"owner":6,"id":983046,"type":26},"defender":{"owner":10,"id":262147,"type":26},"interceptor":{"owner":-1,"id":-1,"type":0}} 
+[2026-09-16 14:43:17]	[EmigTest] EVENT Combat #4 {"antiAir":{"owner":-1,"id":-1,"type":0},"attacker":{"owner":6,"id":917512,"type":26},"defender":{"owner":10,"id":196610,"type":26},"interceptor":{"owner":-1,"id":-1,"type":0}} 
+[2026-09-16 14:43:17]	[EmigTest] EVENT UnitKilledInCombat #2 {"unitKilled":{"owner":10,"id":196610,"type":26},"unitKiller":{"owner":6,"id":917512,"type":26}} 
+[2026-09-16 14:43:17]	[EmigTest] EVENT DistrictDamageChanged keys=["damageType","districtType","maxDamage","newDamage","prevDamage","cityID","id","location"] data={"damageType":-615349454,"districtType":-1976434563,"maxDamage":100,"newDamage":-19,"prevDamage":1,"cityID":{"owner":9,"id":262147,"type":1},"id":{"owner":9,"id":1310739,"type":4},"location":{"x":83,"y":27}} 
+[2026-09-16 14:43:17]	[EmigTest] EVENT DistrictDamageChanged #2 {"damageType":-615349454,"districtType":-1976434563,"maxDamage":100,"newDamage":-5,"prevDamage":15,"cityID":{"owner":9,"id":327684,"type":1},"id":{"owner":9,"id":1966109,"type":4},"location":{"x":89,"y":30}} 
+[2026-09-16 14:43:19]	[EmigTest] EVENT DistrictDamageChanged #3 {"damageType":-615349454,"districtType":-1976434563,"maxDamage":100,"newDamage":78,"prevDamage":65,"cityID":{"owner":5,"id":196610,"type":1},"id":{"owner":5,"id":851980,"type":4},"location":{"x":24,"y":38}} 
+[2026-09-16 14:43:20]	[EmigTest] EVENT UnitKilledInCombat #3 {"unitKilled":{"owner":8,"id":1572878,"type":26},"unitKiller":{"owner":38,"id":589829,"type":26}} 
+[2026-09-16 14:43:26]	[EmigTest] T n=1 tally={"Combat":11,"UnitKilledInCombat":3,"DistrictDamageChanged":3} 
+[2026-09-16 14:43:37]	[EmigTest] EVENT UnitKilledInCombat #4 {"unitKilled":{"owner":11,"id":524289,"type":26},"unitKiller":{"owner":0,"id":262144,"type":26}} 
+[2026-09-16 14:43:41]	[EmigTest] EVENT DistrictDamageChanged #4 {"damageType":-615349454,"districtType":-1976434563,"maxDamage":100,"newDamage":89,"prevDamage":78,"cityID":{"owner":5,"id":196610,"type":1},"id":{"owner":5,"id":851980,"type":4},"location":{"x":24,"y":38}} 
+[2026-09-16 14:43:48]	[EmigTest] T n=2 tally={"Combat":27,"UnitKilledInCombat":9,"DistrictDamageChanged":4} 
+[2026-09-16 14:44:08]	[EmigTest] T n=3 tally={"Combat":41,"UnitKilledInCombat":10,"DistrictDamageChanged":6} 
+[2026-09-16 14:44:08]	[EmigTest] STATS "NO-GLOBAL" 
+[2026-09-16 14:44:08]	[EmigTest] LEDGER citiesScanned=42 withEvidence=0 foreign=0 
+[2026-09-16 14:44:29]	[EmigTest] T n=4 tally={"Combat":55,"UnitKilledInCombat":12,"DistrictDamageChanged":8} 
+[2026-09-16 14:44:50]	[EmigTest] T n=5 tally={"Combat":69,"UnitKilledInCombat":17,"DistrictDamageChanged":11} 
+[2026-09-16 14:44:57]	[EmigTest] T n=6 tally={"Combat":69,"UnitKilledInCombat":17,"DistrictDamageChanged":11} 
+[2026-09-16 14:44:57]	[EmigTest] STATS "NO-GLOBAL" 
+[2026-09-16 14:44:57]	[EmigTest] LEDGER citiesScanned=42 withEvidence=0 foreign=0 
+[2026-09-16 14:45:18]	[EmigTest] T n=7 tally={"Combat":77,"UnitKilledInCombat":22,"DistrictDamageChanged":14} 
+[2026-09-16 14:45:42]	[EmigTest] T n=8 tally={"Combat":85,"UnitKilledInCombat":24,"DistrictDamageChanged":17} 
+[2026-09-16 14:46:04]	[EmigTest] T n=9 tally={"Combat":96,"UnitKilledInCombat":26,"DistrictDamageChanged":23} 
+[2026-09-16 14:46:04]	[EmigTest] STATS "NO-GLOBAL" 
+[2026-09-16 14:46:04]	[EmigTest] LEDGER citiesScanned=44 withEvidence=0 foreign=0 
+[2026-09-16 14:46:24]	[EmigTest] T n=10 tally={"Combat":106,"UnitKilledInCombat":28,"DistrictDamageChanged":25} 
+[2026-09-16 14:46:24]	[EmigTest] STATS "NO-GLOBAL" 
+[2026-09-16 14:46:24]	[EmigTest] LEDGER citiesScanned=44 withEvidence=0 foreign=0 
+[2026-09-16 14:46:24]	[EmigTest] TALLY {"Combat":106,"UnitKilledInCombat":28,"DistrictDamageChanged":25} 
+[2026-09-16 14:46:28]	[EmigTest] DONE modtest113 finished 

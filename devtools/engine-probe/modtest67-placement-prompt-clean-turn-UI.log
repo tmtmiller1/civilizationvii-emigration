@@ -1,0 +1,25 @@
+[2026-09-15 15:17:07]	[EmigProbe] shell attached 
+[2026-09-15 15:17:08]	[EmigProbe] shell query complete 
+[2026-09-15 15:17:09]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-15 15:17:09]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-15 15:17:27]	[EmigTest] modtest67 attached 
+[2026-09-15 15:17:42]	[EmigTest] SEARCH turn=66 ready=[] growingNext=["Philadelphia"] growCity=0 
+[2026-09-15 15:18:02]	[EmigTest] SEARCH turn=67 ready=["London","Philadelphia"] growingNext=["Megiddo","Glasgow","Phókaia","Kórinthos"] growCity=1 
+[2026-09-15 15:18:22]	[EmigTest] SEARCH turn=68 ready=["Megiddo","Glasgow","Phókaia","Kórinthos"] growingNext=["Washington, D.C.","Alexandria Spártā","Baltimore"] growCity=1 
+[2026-09-15 15:18:42]	[EmigTest] SEARCH turn=69 ready=["Washington, D.C.","Alexandria Spártā","Baltimore"] growingNext=[] growCity=1 
+[2026-09-15 15:19:07]	[EmigTest] SEARCH turn=70 ready=[] growingNext=["Tollan-Xicocotitlan","Hilo"] growCity=0 
+[2026-09-15 15:19:27]	[EmigTest] SEARCH turn=71 ready=["Tollan-Xicocotitlan","Hilo"] growingNext=["‘Ewa"] growCity=1 
+[2026-09-15 15:19:42]	[EmigTest] SEARCH turn=72 ready=["‘Ewa"] growingNext=["Waikolu","New York"] growCity=1 
+[2026-09-15 15:19:57]	[EmigTest] SEARCH turn=73 ready=["Waikolu","New York"] growingNext=["Washington, D.C."] growCity=1 
+[2026-09-15 15:20:12]	[EmigTest] SEARCH turn=74 ready=["Washington, D.C."] growingNext=["Cincinnati"] growCity=1 
+[2026-09-15 15:20:27]	[EmigTest] SEARCH turn=75 ready=["Cincinnati"] growingNext=["Monte Albán","Mykenē","Baghdād","Valladolid"] growCity=1 
+[2026-09-15 15:20:42]	[EmigTest] SEARCH turn=76 ready=["Monte Albán","Mykenē","Baghdād","Valladolid"] growingNext=["Lāhainā"] growCity=1 
+[2026-09-15 15:20:57]	[EmigTest] SEARCH turn=77 ready=["Lāhainā"] growingNext=["Glasgow"] growCity=1 
+[2026-09-15 15:21:12]	[EmigTest] SEARCH turn=78 ready=["Glasgow"] growingNext=["London","St. Louis","Washington, D.C."] growCity=1 
+[2026-09-15 15:21:27]	[EmigTest] SEARCH turn=79 ready=["London","St. Louis","Washington, D.C."] growingNext=[] growCity=1 
+[2026-09-15 15:21:43]	[EmigTest] SEARCH turn=80 ready=[] growingNext=[] growCity=0 
+[2026-09-15 15:21:47]	[EmigTest] WRITTEN turn=80 ready=["London","Leeds"] growCity=[] blocker=NOTIFICATION_CHOOSE_CITY_PRODUCTION 
+[2026-09-15 15:22:27]	[EmigTest] ENDTURN attempt=1 still turn 80 blocker=NOTIFICATION_NEW_POPULATION 
+[2026-09-15 15:22:48]	[EmigTest] NEXT turn=81 advanced=true growCity=[{"message":"Grow City","blocks":true}] ready=["London","Leeds"] grewNaturally=[] blocker=NOTIFICATION_NEW_POPULATION londonLeeds={"london":39,"leeds":27} 
+[2026-09-15 15:22:48]	[EmigTest] VERDICT cleanTurnFound=true cleanTurn=80 advanced=true growCityCreated=true blocks=true ready=["London","Leeds"] grewNaturally=[] 
+[2026-09-15 15:22:48]	[EmigTest] DONE modtest67 finished 

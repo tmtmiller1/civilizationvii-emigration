@@ -1,0 +1,19 @@
+[2026-09-15 15:41:54]	[EmigProbe] shell attached 
+[2026-09-15 15:41:55]	[EmigProbe] shell query complete 
+[2026-09-15 15:41:55]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-15 15:41:55]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-15 15:42:13]	[EmigTest] modtest68 attached 
+[2026-09-15 15:42:28]	[EmigTest] START turn=66 placement=2 ask={"refugees":true,"migrants":false,"returnees":false} foreign=2:CIVILIZATION_BULGARIA london={"pop":36,"pending":0,"ready":false,"improvements":9} 
+[2026-09-15 15:42:33]	[EmigTest] A migrant dialogs=0 before={"pop":36,"pending":0,"ready":false,"improvements":9} after={"pop":37,"pending":0,"ready":false,"improvements":10} placedWithoutDialog=true 
+[2026-09-15 15:42:38]	[EmigTest] A returnee dialogs=0 before={"pop":37,"pending":0,"ready":false,"improvements":10} after={"pop":38,"pending":0,"ready":false,"improvements":11} placedWithoutDialog=true 
+[2026-09-15 15:42:42]	[EmigTest] A refugee dialogs=1 info={"title":"Newcomers in London","buttons":["Choose where they settle","Let the city settle them","Later"],"text":"Newcomers in London NEWCOMERS A population point of migrants has arrived in London and iswaiting to be settled. Where should they live?\"…that drove us out, still young, into this hard foreign land,to wander about unloved, wretched, unwanted!\"— Hristo Botev, On Parting in 1868 (trans.)Choose where they settleLet the city settle themLater"} laterNoteShown=false state={"pop":39,"pending":1,"ready":true,"improvements":11} 
+[2026-09-15 15:42:42]	[EmigTest] SHOT arrival-refugee 
+[2026-09-15 15:42:56]	[EmigTest] A refugee after answer: {"pop":39,"pending":0,"ready":false,"improvements":12} placed=true 
+[2026-09-15 15:42:56]	[EmigTest] B hasRoots=true rate=0.015 base=0.06 otherOrigin=0.06 
+[2026-09-15 15:43:04]	[EmigTest] B panel quartersSection=true rootsLine=true excerpt="Cultural EnclaveA Bulgar Enclave has taken root in this settlement.Put down roots: fewer of its people return home.Your stance: Harden their riders." 
+[2026-09-15 15:43:04]	[EmigTest] SHOT roots-panel 
+[2026-09-15 15:43:13]	[EmigTest] C gameSeed=-942756747 rolls(rate 0.5, turns 1-10)=1111111111 
+[2026-09-15 15:43:13]	[EmigTest] D pool=3 readoutShownBySelection=false 
+[2026-09-15 15:43:16]	[EmigTest] D readout=false resettlingText=false excerpt="" 
+[2026-09-15 15:43:16]	[EmigTest] SHOT readout-resettling 
+[2026-09-15 15:43:25]	[EmigTest] DONE modtest68 finished 

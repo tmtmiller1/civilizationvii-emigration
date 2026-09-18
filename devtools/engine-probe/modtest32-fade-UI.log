@@ -1,0 +1,36 @@
+[2026-09-13 18:31:39]	[EmigProbe] shell attached 
+[2026-09-13 18:31:40]	[EmigProbe] shell query complete 
+[2026-09-13 18:31:41]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-13 18:31:41]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 18:31:59]	[EmigTest] modtest18 attached 
+[2026-09-13 18:32:12]	[EmigTest] START turn=66 mode=2 force=true majors=["0:CIVILIZATION_MONGOLIA","2:CIVILIZATION_BULGARIA","4:CIVILIZATION_NORMAN","6:CIVILIZATION_SONGHAI","7:CIVILIZATION_MING","8:CIVILIZATION_CHOLA","9:CIVILIZATION_SENGOKU"] turnActive=true 
+[2026-09-13 18:32:12]	[EmigTest] BEFORE records=0 
+[2026-09-13 18:32:12]	[EmigTest] BEFORE autoChronicle=0 
+[2026-09-13 18:32:12]	[EmigTest] SEED from Pataliputra (owner 8) -> Paris (owner 4) comp=["4:29.016000000000002/81%","8:6.984/19%"] ; -> Washington, D.C. comp=["0:21.427888888888887/69%","8:9.572111111111111/31%"] 
+[2026-09-13 18:32:20]	[EmigTest] PASS1 records=2 
+[2026-09-13 18:32:20]	[EmigTest] PASS1 67,41 host=0(CIVILIZATION_MONGOLIA) origin=CIVILIZATION_CHOLA stance=a placed={"type":"IMPROVEMENT_CARAVANSERAI","plot":4293,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A"} standing=true enclave=IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A plotNow=["IMPROVEMENT_CARAVANSERAI"] 
+[2026-09-13 18:32:20]	[EmigTest] PASS1 82,51 host=4(CIVILIZATION_NORMAN) origin=CIVILIZATION_CHOLA stance=a placed={"type":"IMPROVEMENT_CARAVANSERAI","plot":4885,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A","replaced":"IMPROVEMENT_WOODCUTTER","before":{"YIELD_FOOD":2,"YIELD_PRODUCTION":2,"YIELD_HAPPINESS":1}} standing=true enclave=IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A plotNow=["IMPROVEMENT_CARAVANSERAI"] 
+[2026-09-13 18:32:20]	[EmigTest] PASS1 autoChronicle=2 
+[2026-09-13 18:32:21]	[EmigTest] REMOVED comp Paris=["4:36/100%"] Washington, D.C.=["0:32/100%"] fadeTurns=2 fadeShare=0.125 stockBar=6 
+[2026-09-13 18:32:29]	[EmigTest] PASS2 records=2 
+[2026-09-13 18:32:29]	[EmigTest] PASS2 67,41 host=0(CIVILIZATION_MONGOLIA) origin=CIVILIZATION_CHOLA stance=a placed={"type":"IMPROVEMENT_CARAVANSERAI","plot":4293,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A"} standing=true enclave=IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A plotNow=["IMPROVEMENT_CARAVANSERAI"] 
+[2026-09-13 18:32:29]	[EmigTest] PASS2 82,51 host=4(CIVILIZATION_NORMAN) origin=CIVILIZATION_CHOLA stance=a placed={"type":"IMPROVEMENT_CARAVANSERAI","plot":4885,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A","replaced":"IMPROVEMENT_WOODCUTTER","before":{"YIELD_FOOD":2,"YIELD_PRODUCTION":2,"YIELD_HAPPINESS":1}} standing=true enclave=IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A plotNow=["IMPROVEMENT_CARAVANSERAI"] 
+[2026-09-13 18:32:29]	[EmigTest] PASS2 autoChronicle=2 
+[2026-09-13 18:32:29]	[EmigTest] ACTIONS done; ending 3 turns (fade after 2 below the bar) 
+[2026-09-13 18:32:53]	[EmigTest] TURN activated n=2 turn=67 ALIVE 
+[2026-09-13 18:32:59]	[EmigTest] TURN+1 records=2 
+[2026-09-13 18:32:59]	[EmigTest] TURN+1 67,41 host=0(CIVILIZATION_MONGOLIA) origin=CIVILIZATION_CHOLA stance=a placed={"type":"IMPROVEMENT_CARAVANSERAI","plot":4293,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A","stood":true} standing=true enclave=IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A plotNow=["IMPROVEMENT_CARAVANSERAI"] 
+[2026-09-13 18:32:59]	[EmigTest] TURN+1 82,51 host=4(CIVILIZATION_NORMAN) origin=CIVILIZATION_CHOLA stance=a placed={"type":"IMPROVEMENT_CARAVANSERAI","plot":4885,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A","replaced":"IMPROVEMENT_WOODCUTTER","before":{"YIELD_FOOD":2,"YIELD_PRODUCTION":2,"YIELD_HAPPINESS":1},"stood":true} standing=true enclave=IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A plotNow=["IMPROVEMENT_CARAVANSERAI"] 
+[2026-09-13 18:32:59]	[EmigTest] TURN+1 autoChronicle=2 
+[2026-09-13 18:33:22]	[EmigTest] TURN activated n=3 turn=68 ALIVE 
+[2026-09-13 18:33:28]	[EmigTest] TURN+2 GONE 67,41 plot 4293 now=[] (record dropped) 
+[2026-09-13 18:33:28]	[EmigTest] TURN+2 GONE 82,51 plot 4885 now=[] (record dropped) 
+[2026-09-13 18:33:28]	[EmigTest] TURN+2 records=0 
+[2026-09-13 18:33:28]	[EmigTest] TURN+2 autoChronicle=2 
+[2026-09-13 18:33:47]	[EmigTest] TURN activated n=4 turn=69 ALIVE 
+[2026-09-13 18:33:53]	[EmigTest] TURN+3 GONE 67,41 plot 4293 now=[] (record dropped) 
+[2026-09-13 18:33:53]	[EmigTest] TURN+3 GONE 82,51 plot 4885 now=[] (record dropped) 
+[2026-09-13 18:33:53]	[EmigTest] TURN+3 records=0 
+[2026-09-13 18:33:53]	[EmigTest] TURN+3 autoChronicle=2 
+[2026-09-13 18:33:53]	[EmigTest] FADE-CHRONICLE 2 
+[2026-09-13 18:33:53]	[EmigTest] DONE modtest18 finished 

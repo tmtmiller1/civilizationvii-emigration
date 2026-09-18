@@ -14,6 +14,8 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { removeRural, addRural, marginalPeople } from "/emigration/ui/emigration-population.js";
+import { departureWouldAbandonTile, commitSourcePoint } from "/emigration/ui/emigration-departure-tile.js";
+import { arriveRural } from "/emigration/ui/emigration-arrival-placement.js";
 import { atWarBetween } from "/emigration/ui/emigration-geography.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 import { narrativeCiv } from "/emigration/ui/emigration-naming.js";
@@ -21,7 +23,8 @@ import { formatPeopleExact } from "/emigration/ui/emigration-population.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
 import { returnLine, chronicleTitle } from "/emigration/ui/emigration-narrative.js";
 import { getReturnEnabled } from "/emigration/ui/emigration-settings.js";
-import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
+import { registerCacheReset, resetCachesOnNewGame, currentGameId } from "/emigration/ui/emigration-cache-reset.js";
+import { quarterAt } from "/emigration/ui/emigration-quarter-state.js";
 import { consumeOneForReturn, queueRefugees } from "/emigration/ui/emigration-refugee-pool.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
 
@@ -221,22 +224,34 @@ function returnAllowed(host, origin, hostKey, ctx) {
  * @returns {{ok:boolean, fromPool:boolean}} ok=true when the population actually moved; fromPool
  *   tells the caller whether it came from the virtual holding pool (not settled host rural).
  */
-function moveReturnees(hostCity, homeCity, hostKey, originCiv) {
+export function moveReturnees(hostCity, homeCity, hostKey, originCiv) {
   const pooled =
     hostKey && typeof originCiv === "number" ? consumeOneForReturn(hostKey, originCiv) : null;
   const fromPool = !!pooled;
-  if (!fromPool && !removeRural(hostCity)) return { ok: false, fromPool: false };
-  if (!addRural(homeCity)) {
-    if (fromPool) {
-      // R1: homeland couldn't receive them — restore the consumed pool refugee
-      // (preserving its original `since`) instead of destroying the population.
-      queueRefugees(hostKey, originCiv, pooled.since, 1);
-    } else {
-      addRural(hostCity); // undo the rural removal, keep them where they were
-    }
+  // A tile abandonment on the host cannot be undone, so it is deferred until the homeland has them.
+  const deferredTile = !fromPool && departureWouldAbandonTile(hostCity);
+  if (!fromPool && !deferredTile && !removeRural(hostCity)) return { ok: false, fromPool: false };
+  if (!arriveRural(homeCity)) {
+    restoreFailedReturn(hostCity, hostKey, originCiv, pooled, deferredTile);
     return { ok: false, fromPool };
   }
+  if (!fromPool) {
+    commitSourcePoint({ city: hostCity, owner: hostCity.owner }, { ok: true, fromPool: false, deferredTile });
+  }
   return { ok: true, fromPool };
+}
+
+/**
+ * The homeland couldn't receive the returnees: put them back where they were. A pool refugee is
+ * re-queued with its original `since` (R1); a settled point that was already removed is re-added; a
+ * deferred tile abandonment was never written, so nothing is needed.
+ * @param {*} hostCity The host city object. @param {string} hostKey Host city signal key.
+ * @param {number} originCiv Origin civ. @param {*} pooled The consumed pool refugee, or null.
+ * @param {boolean} deferredTile Whether the host write was deferred (nothing to undo).
+ */
+function restoreFailedReturn(hostCity, hostKey, originCiv, pooled, deferredTile) {
+  if (pooled) queueRefugees(hostKey, originCiv, pooled.since, 1);
+  else if (!deferredTile) addRural(hostCity); // undo the rural removal, keep them where they were
 }
 
 /**
@@ -258,20 +273,56 @@ function chronicleReturn(origin, hostName, people, turn) {
 }
 
 /**
- * A deterministic per-(host, turn) roll honouring CONFIG.returnRate, so a return is an occasional
- * ebb rather than firing on every eligible host the moment it's off cooldown. Hash-based (no RNG), so
- * it's stable across save-reload and identical on every client.
+ * Whether an origin has put down roots in a host settlement: its enclave stands there (quarter records are
+ * keyed by the host city's centre tile and carry the origin's player id).
+ * @param {*} city The host city object. @param {number} civ The diaspora's origin player id.
+ * @returns {boolean} True when that origin's enclave stands in the city.
+ */
+function hasRoots(city, civ) {
+  const loc = city && city.location;
+  if (!loc || typeof loc.x !== "number" || typeof loc.y !== "number") return false;
+  const rec = quarterAt(loc.x + "," + loc.y);
+  return !!rec && rec.civ === civ;
+}
+
+/**
+ * The return rate for one diaspora in one host: CONFIG.returnRate, multiplied by quarterRootsReturnScale
+ * (clamped to [0, 1]) when that origin has put down roots there.
+ * @param {*} city The host city object. @param {number} civ The diaspora's origin player id.
+ * @returns {number} The rate.
+ */
+function returnRateFor(city, civ) {
+  const rate = Number(CONFIG.returnRate) || 0;
+  if (!hasRoots(city, civ)) return rate;
+  const s = Number(CONFIG.quarterRootsReturnScale);
+  return rate * (Number.isFinite(s) ? Math.max(0, Math.min(1, s)) : 1);
+}
+
+/**
+ * A deterministic per-(game, host, turn) roll against a rate, so a return is an occasional ebb rather
+ * than firing on every eligible host the moment it's off cooldown. Hash-based (no RNG): the game's seed
+ * makes each game play out differently, while a save reloads identically and every client agrees. With
+ * no readable seed (off-engine) the host and turn alone seed it.
  * @param {string} hostKey The host settlement key. @param {number} turn The current turn.
+ * @param {number} rate The chance in [0, 1] (returnRateFor).
  * @returns {boolean} True when a return may proceed this pass.
  */
-function returnRoll(hostKey, turn) {
+function returnRoll(hostKey, turn, rate) {
+  const gameId = currentGameId();
   let h = 2166136261 >>> 0;
-  const s = hostKey + "|" + turn;
+  const s = (gameId != null ? gameId + "|" : "") + hostKey + "|" + turn;
   for (let i = 0; i < s.length; i++) {
     h ^= s.charCodeAt(i);
     h = Math.imul(h, 16777619) >>> 0;
   }
-  return (h >>> 0) / 0xffffffff < CONFIG.returnRate;
+  // Final avalanche (murmur3 fmix32). Without it a seed that differs only in its last characters (the turn) gave
+  // nearly the same roll every turn: watched in game 2026-09-15 (mod test 68), some hosts could never return.
+  h ^= h >>> 16;
+  h = Math.imul(h, 0x85ebca6b);
+  h ^= h >>> 13;
+  h = Math.imul(h, 0xc2b2ae35);
+  h ^= h >>> 16;
+  return (h >>> 0) / 0x100000000 < rate;
 }
 
 /**
@@ -307,7 +358,7 @@ function planOneReturn(host, ctx) {
   if (!dia) return null;
   const hostKey = cityName(host.city);
   if (!returnAllowed(host.owner, dia.civ, hostKey, ctx)) return null;
-  if (!returnRoll(hostKey, ctx.turn)) return null; // returnRate: occasional, deterministic
+  if (!returnRoll(hostKey, ctx.turn, returnRateFor(host.city, dia.civ))) return null; // occasional; roots slow it
   const homeCity = ctx.homelands.get(dia.civ);
   const mv = moveReturnees(host.city, homeCity.city, host.key, dia.civ);
   if (!mv.ok) return null;
@@ -366,4 +417,6 @@ export function planReturns(signals) {
 }
 
 // Test hook: the pure decision pieces (the engine-mutating planOneReturn is exercised in-game).
-export const __test = { eligibleDiaspora, prosperingOwners, homelandCitiesByOwner, returnAllowed };
+export const __test = {
+  eligibleDiaspora, prosperingOwners, homelandCitiesByOwner, returnAllowed, returnRoll, hasRoots, returnRateFor
+};

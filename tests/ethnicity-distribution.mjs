@@ -9,7 +9,11 @@
 //   3. denser (higher-weight, urban) tiles carry more people → higher opacity than sparse tiles;
 //   4. each origin's people total its citywide share (CONSERVATION); the minority's local share VARIES
 //      tile to tile (a gradient, not a flat smear); every tile stays a BLEND (the host is always present,
-//      so no tile fully switches colour), all deterministically.
+//      so no tile fully switches colour), all deterministically;
+//   5. an enclave ANCHOR PIN moves a diaspora's cluster onto the pinned tile while leaving every citywide
+//      share and the settlement's people untouched, and an absent/unusable pin falls back to the hash anchor;
+//   6. only an ENCLAVE tile may read past the enclave formation bar: plain tiles are capped at it, the
+//      enclave tile fills first, and every case still conserves.
 
 import assert from "node:assert/strict";
 import { distributeTiles, __test } from "/emigration/ui/emigration-ethnicity-distribution.js";
@@ -123,6 +127,108 @@ assert.deepEqual(distributeTiles(null, null, 0), [], "null inputs → []");
   const tiles = distributeTiles(plots, comp, 0);
   assert.ok(tiles.every((t) => t.primary === 2 && t.shares.length === 1),
     "no people scaled → all host (no spurious split)");
+}
+
+// ── 6. An enclave pin MOVES the cluster without changing any share ───────────
+// The enclave tile is chosen by a land/adjacency rule that knows nothing about the hash anchor, so the
+// pin is what makes the colour patch and the on-map enclave marker name the same tile.
+{
+  // A row of tiles far enough apart that the anchor's identity is unmistakable in the result.
+  const plots = [
+    { x: 0, y: 0, weight: 1 }, { x: 1, y: 0, weight: 1 }, { x: 2, y: 0, weight: 1 },
+    { x: 3, y: 0, weight: 1 }, { x: 4, y: 0, weight: 1 }, { x: 5, y: 0, weight: 1 }
+  ];
+  const comp = { civs: [{ civ: 1, share: 0.8 }, { civ: 2, share: 0.2 }], dominant: { civ: 1 } };
+  const peak = (tiles) => tiles.reduce((a, t) => (localShareOf(t, 2) > localShareOf(a, 2) ? t : a));
+
+  const unpinned = distributeTiles(plots, comp, 500000);
+  const hashPeak = peak(unpinned);
+
+  // Pin civ 2 to a tile that is NOT where the hash put it, so the assertion can't pass by luck.
+  const pinTo = plots.find((p) => p.x !== hashPeak.x);
+  const pinned = distributeTiles(plots, comp, 500000, { anchors: new Map([[2, { x: pinTo.x, y: pinTo.y }]]) });
+  const pinnedPeak = peak(pinned);
+
+  assert.equal(pinnedPeak.x, pinTo.x, "the diaspora's densest tile is the PINNED (enclave) tile");
+  assert.notEqual(pinnedPeak.x, hashPeak.x, "and the pin genuinely moved it off the hash anchor");
+
+  // The pin is POSITIONAL only: the citywide split is untouched, which is what keeps the lens honest
+  // about the formation/fade bars read elsewhere in the mod.
+  const by = peopleByCiv(pinned);
+  assert.ok(Math.abs(by[2] - 0.2 * 500000) < 1, "the pinned diaspora still totals its 20% citywide share");
+  assert.ok(Math.abs(sum(pinned, (t) => t.people) - sum(unpinned, (t) => t.people)) < 1,
+    "and the settlement's people are unchanged");
+  assert.ok(pinned.every((t) => localShareOf(t, 1) > 0), "every tile still blends the host (no full switch)");
+
+  // Degenerate pins fall back to the hash anchor rather than throwing or blanking the lens.
+  for (const bad of [undefined, null, new Map(), new Map([[2, { x: NaN, y: 0 }]]), new Map([[99, { x: 5, y: 0 }]])]) {
+    const out = distributeTiles(plots, comp, 500000, { anchors: bad });
+    assert.equal(peak(out).x, hashPeak.x, "an absent/unusable pin falls back to the hash anchor");
+  }
+  assert.equal(peak(distributeTiles(plots, comp, 500000, { anchors: { get: 3, forEach: 4 } })).x, hashPeak.x,
+    "a non-Map 'anchors' argument is ignored, not called");
+  assert.equal(peak(distributeTiles(plots, comp, 500000, null)).x, hashPeak.x, "null opts paints as before");
+}
+
+// ── 7. Only an ENCLAVE tile may blaze: plain tiles stop at the enclave formation bar ─
+// Watched in game 2026-09-17: Lahaina was 88% Mongolian / 12% Norman with NO enclave (12% of the 30% it
+// needs), yet one tile read "Norman 92%" — the water-fill ran any minority up to MINORITY_CAP — while the
+// real Norman enclave, another settlement's, sat hexes away. A blazing tile has to MEAN an enclave.
+{
+  const BAR = 0.30;
+  const plots = [];
+  for (let i = 0; i < 14; i++) plots.push({ x: i % 5, y: Math.floor(i / 5), weight: i === 0 ? 3.6 : (i < 4 ? 2.4 : 1) });
+  const lahaina = { civs: [{ civ: 1, share: 0.88 }, { civ: 2, share: 0.12 }], dominant: { civ: 1 } };
+  const top = (tiles) => Math.max(...tiles.map((t) => localShareOf(t, 2)));
+  const at = (tiles, x, y) => tiles.find((t) => t.x === x && t.y === y);
+
+  // The defect, pinned: with no bar the 12% diaspora still runs a tile far past enclave strength.
+  assert.ok(top(distributeTiles(plots, lahaina, 500000)) > 0.8, "unbarred, a 12% diaspora paints an 80%+ tile");
+
+  const plain = distributeTiles(plots, lahaina, 500000, { plainCap: BAR });
+  assert.ok(top(plain) <= BAR + 1e-9, "with no enclave, no tile reads above the enclave formation bar");
+  assert.ok(top(plain) > 0.12 + 0.05, "but the diaspora still CONCENTRATES (a gradient, not a flat 12%)");
+  assert.ok(Math.abs(peopleByCiv(plain)[2] - 0.12 * 500000) < 1, "and still totals its 12% citywide share");
+
+  // With an enclave, its tile — and only its tile — goes past the bar, because it fills FIRST.
+  const enclave = distributeTiles(plots, lahaina, 500000, { plainCap: BAR, anchors: new Map([[2, { x: 2, y: 0 }]]) });
+  assert.ok(localShareOf(at(enclave, 2, 0), 2) > 0.9, "the enclave tile reads as the diaspora's own quarter");
+  assert.ok(enclave.every((t) => (t.x === 2 && t.y === 0) || localShareOf(t, 2) <= BAR + 1e-9),
+    "every other tile stays at or under the bar");
+  assert.ok(localShareOf(at(enclave, 2, 0), 2) <= MINORITY_CAP + 1e-9 && localShareOf(at(enclave, 2, 0), 1) > 0,
+    "even the enclave tile keeps a sliver of the host (a blend, never a full switch)");
+  assert.ok(Math.abs(peopleByCiv(enclave)[2] - 0.12 * 500000) < 1, "filling the enclave first still conserves");
+
+  // A settlement already past the bar: the cap lifts with it so everyone can still be placed, and keeps
+  // headroom so the result is a gradient. (A cap equal to the citywide share painted one dead-flat value.)
+  const big = { civs: [{ civ: 1, share: 0.55 }, { civ: 2, share: 0.45 }], dominant: { civ: 1 } };
+  const bigPlain = distributeTiles(plots, big, 500000, { plainCap: BAR });
+  assert.ok(Math.abs(peopleByCiv(bigPlain)[2] - 0.45 * 500000) < 1, "a 45% diaspora is still fully placed");
+  const bigShares = bigPlain.map((t) => localShareOf(t, 2));
+  assert.ok(Math.max(...bigShares) - Math.min(...bigShares) > 0.2, "and still reads as a gradient, not a slab");
+  assert.ok(Math.max(...bigShares) < MINORITY_CAP - 0.05, "while staying short of enclave strength");
+
+  // Two diasporas share the bar on a tile; both conserve.
+  const two = { civs: [{ civ: 1, share: 0.75 }, { civ: 2, share: 0.15 }, { civ: 3, share: 0.1 }], dominant: { civ: 1 } };
+  const twoTiles = distributeTiles(plots, two, 500000, { plainCap: BAR });
+  assert.ok(twoTiles.every((t) => localShareOf(t, 2) + localShareOf(t, 3) <= BAR + 1e-9),
+    "the bar bounds a tile's COMBINED minorities");
+  const by = peopleByCiv(twoTiles);
+  assert.ok(Math.abs(by[2] - 0.15 * 500000) < 1 && Math.abs(by[3] - 0.1 * 500000) < 1, "both diasporas conserve");
+
+  // The bar holds all the way up to it (an earlier rule lifted the ceiling from a 19% community up), and
+  // the knife-edge — a foreign population of exactly the bar, so capacity equals demand — still conserves.
+  for (const share of [0.2, 0.25, 0.29, 0.3]) {
+    const c = { civs: [{ civ: 1, share: 1 - share }, { civ: 2, share }], dominant: { civ: 1 } };
+    const t = distributeTiles(plots, c, 500000, { plainCap: BAR });
+    assert.ok(top(t) <= BAR + 1e-9, `a ${share * 100}% community with no enclave never paints past the bar`);
+    assert.ok(Math.abs(peopleByCiv(t)[2] - share * 500000) < 1, `and a ${share * 100}% community conserves`);
+  }
+
+  // A bad bar is ignored rather than zeroing the lens.
+  for (const bad of [0, -1, NaN, "x"]) {
+    assert.ok(top(distributeTiles(plots, lahaina, 500000, { plainCap: bad })) > 0.8, "an unusable bar means no bar");
+  }
 }
 
 // ── helpers ─────────────────────────────────────────────────────────────────

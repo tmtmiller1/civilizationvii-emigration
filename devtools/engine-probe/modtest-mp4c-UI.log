@@ -1,0 +1,67 @@
+[2026-09-17 16:27:24]	[EmigProbe] shell attached (hotseat2) 
+[2026-09-17 16:27:39]	[EmigProbe] shell reset to hotseat: isHotseat=true isAnyMultiplayer=true humans=[] count=0 
+[2026-09-17 16:27:42]	[EmigProbe] shell slot 0 taken (was AI) 
+[2026-09-17 16:27:42]	[EmigProbe] shell slot 1 taken (was AI) 
+[2026-09-17 16:27:42]	[EmigProbe] shell after slots: isHotseat=true isAnyMultiplayer=true humans=[0,1] count=2 setupRevision=2 
+[2026-09-17 16:27:46]	[EmigProbe] shell hostGame(SERVER_TYPE_HOTSEAT) called 
+[2026-09-17 16:27:54]	[EmigProbe] shell after hostGame: isHotseat=true isAnyMultiplayer=true humans=[0,1] count=2 
+[2026-09-17 16:27:54]	[EmigProbe] shell startMultiplayerGame called 
+[2026-09-17 16:28:06]	[EmigTest] modtest-mp4 attached 
+[2026-09-17 16:28:19]	[EmigTest] modtest-mp4 start (probe 4: hotseat, two humans), startTurn=1 
+[2026-09-17 16:28:19]	[EmigTest] A1 isHotseat=true isAnyMultiplayer=true isNetworkMultiplayer=false isLocalMultiplayer=true 
+[2026-09-17 16:28:19]	[EmigTest] A2 humanPlayerIDs=[0,1] humanPlayerCount=2 localPlayerID=0 
+[2026-09-17 16:28:19]	[EmigTest] A3 Network.getHostPlayerId=0 Network.isHost=absent config.isHost=undefined 
+[2026-09-17 16:28:19]	[EmigTest] B0 activation who=0 local=0 turn=1 isTurnActive=true 
+[2026-09-17 16:28:23]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:28:28]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:28:28]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 0 
+[2026-09-17 16:28:28]	[EmigTest] B1 activation who=1 local=1 turn=1 isTurnActive=true 
+[2026-09-17 16:28:32]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:28:37]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:28:37]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 1 
+[2026-09-17 16:28:53]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:28:58]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:28:58]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 1 
+[2026-09-17 16:29:02]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:29:07]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:29:07]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 1 
+[2026-09-17 16:29:23]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:29:28]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:29:28]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 1 
+[2026-09-17 16:29:32]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:29:37]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:29:37]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 1 
+[2026-09-17 16:29:53]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:29:58]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:29:58]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 1 
+[2026-09-17 16:30:02]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:30:07]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:30:07]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 1 
+[2026-09-17 16:30:23]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:30:28]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:30:28]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 1 
+[2026-09-17 16:30:32]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:30:37]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:30:37]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 1 
+[2026-09-17 16:30:53]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:30:58]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:30:58]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 1 
+[2026-09-17 16:31:02]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:31:07]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:31:07]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 1 
+[2026-09-17 16:31:23]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:31:28]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:31:28]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 1 
+[2026-09-17 16:31:32]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:31:37]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:31:37]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 1 
+[2026-09-17 16:31:53]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:31:58]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:31:58]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 1 
+[2026-09-17 16:32:02]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:32:07]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:32:07]	[EmigTest] endTurn: using one-turn Autoplay to pass the turn as player 1 
+[2026-09-17 16:32:19]	[EmigTest] C1 activations=[{"turn":1,"who":0,"local":0},{"turn":1,"who":1,"local":1}] 
+[2026-09-17 16:32:19]	[EmigTest] C2 activationsPerGameTurn={"1":2} distinctLocalIds=[0,1] 
+[2026-09-17 16:32:19]	[EmigTest] VERDICT HUMANS=1 ACTIVATIONS_PER_TURN_MAX=2 INCONCLUSIVE (needed two humans) 
+[2026-09-17 16:32:19]	[EmigTest] DONE modtest4 finished 

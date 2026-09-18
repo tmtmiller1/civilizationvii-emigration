@@ -1,0 +1,16 @@
+[2026-09-13 05:08:48]	[EmigProbe] shell attached 
+[2026-09-13 05:08:49]	[EmigProbe] shell query complete 
+[2026-09-13 05:08:50]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-13 05:08:50]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 05:09:08]	[EmigTest] modtest8 attached 
+[2026-09-13 05:09:21]	[EmigTest] START turn=66 L=London turnActive=true culture=114.4 
+[2026-09-13 05:09:21]	[EmigTest] V1 villages/encampments inside major cities: [] (of 76 met cities) 
+[2026-09-13 05:09:30]	[EmigTest] Y1 placed={"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","plot":2874} standing=true before={"plot":[{"type":"IMPROVEMENT_MINE","complete":true,"damaged":false}],"yields":[["YIELD_FOOD",1],["YIELD_PRODUCTION",3],["YIELD_SCIENCE",1],["YIELD_HAPPINESS",1]],"culture":114.4} after={"plot":[{"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","complete":true,"damaged":false}],"yields":[["YIELD_FOOD",1],["YIELD_PRODUCTION",5],["YIELD_SCIENCE",1],["YIELD_HAPPINESS",1]],"culture":114.4} (expect culture +2 on the plot and the city) 
+[2026-09-13 05:09:35]	[EmigTest] Y2 yields layer=already on camera on plot 2874 
+[2026-09-13 05:09:35]	[EmigTest] SHOT enclave-yields 
+[2026-09-13 05:09:54]	[EmigTest] V2 village on plot 3161 before={"plot":[{"type":"IMPROVEMENT_MINE","complete":true,"damaged":false}],"yields":[["YIELD_FOOD",1],["YIELD_PRODUCTION",3],["YIELD_SCIENCE",1],["YIELD_HAPPINESS",1]]} after={"plot":[{"type":"IMPROVEMENT_VILLAGE","complete":true,"damaged":false}],"yields":[["YIELD_FOOD",1],["YIELD_PRODUCTION",3],["YIELD_SCIENCE",1],["YIELD_HAPPINESS",1]]} 
+[2026-09-13 05:09:58]	[EmigTest] SHOT village-skin 
+[2026-09-13 05:10:08]	[EmigTest] ACTIONS done; ending the turn 
+[2026-09-13 05:10:33]	[EmigTest] TURN activated n=2 turn=67 ALIVE 
+[2026-09-13 05:10:37]	[EmigTest] Y3 next turn: plot=[{"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","complete":true,"damaged":false}] yields=[["YIELD_FOOD",1],["YIELD_PRODUCTION",5],["YIELD_SCIENCE",1],["YIELD_HAPPINESS",1]] culture=130 
+[2026-09-13 05:10:37]	[EmigTest] DONE modtest8 finished 

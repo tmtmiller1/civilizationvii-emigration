@@ -51,14 +51,20 @@ export const QUARTER_BONUSES = Object.freeze({
     opt("a", G, C, "Red-Sea traders enrich the docks, but coin flows to the quays, not the old rites"),
     opt("b", F, H, "their stelae-churches draw pilgrims, and the crowds throng the ward")] },
   CIVILIZATION_ASSYRIA: { demonym: "Assyrian", options: [
-    opt("a", P, H, "their siege-engineers arm your foundries — rams and towers roll out — though their martial bearing sours the ward", "Arm your siege-works"),
+    opt("a", P, H, "their siege-engineers arm your foundries and rams and towers roll out, though their martial bearing sours the ward", "Arm your siege-works"),
     opt("b", S, G, "captured codices fill the archives, but curating spoils costs coin")] },
+  CIVILIZATION_BABYLON: { demonym: "Babylonian", options: [
+    opt("a", S, G, "tablet-house scribes keep the star-tables, and their stipends tell on the treasury"),
+    opt("b", FO, P, "terraced canal-gardens green the ward, but the waterworks tie up hands")] },
   CIVILIZATION_CARTHAGE: { demonym: "Punic", options: [
     opt("a", G, FO, "Punic merchants fill the wharves, drawing hands off the fields"),
     opt("b", P, C, "shipwrights raise busy yards, and the city prizes tonnage over temples")] },
   CIVILIZATION_EGYPT: { demonym: "Egyptian", options: [
     opt("a", C, G, "monument-masons adorn the district, but upkeep of their works is dear"),
     opt("b", FO, P, "Nile-style flood-farming feeds the ward, but pulls labour off the works")] },
+  CIVILIZATION_GAUL: { demonym: "Gallic", options: [
+    opt("a", P, C, "their hill-fort smiths forge iron and harness, and care little for temple fashion", "Set their smiths to work"),
+    opt("b", H, G, "grove-rites at the nemeton settle the ward, sustained by offerings")] },
   CIVILIZATION_GREECE: { demonym: "Greek", options: [
     opt("a", S, H, "an agora of philosophers, and their factional politics"),
     opt("b", C, P, "theatres and porticoes flourish while the workshops idle")] },
@@ -81,12 +87,12 @@ export const QUARTER_BONUSES = Object.freeze({
     opt("a", G, H, "satrapal tribute flows in, and resentment with it"),
     opt("b", C, FO, "walled pleasure-gardens delight, but eat good farmland")] },
   CIVILIZATION_ROME: { demonym: "Roman", options: [
-    opt("a", P, H, "Roman engineers and veterans raise your works and drill your legions — but the eagle's shadow chafes", "Drill your legions"),
+    opt("a", P, H, "Roman engineers and veterans raise your works and drill your legions, but the eagle's shadow chafes", "Drill your legions"),
     opt("b", G, C, "their roads pull trade to the city, and coin sets the fashion")] },
 
   // ── Exploration origins ──
   CIVILIZATION_BULGARIA: { demonym: "Bulgar", options: [
-    opt("a", P, H, "their horse-and-forge veterans harden your cavalry — and brawl as hard as they fight", "Harden their riders"),
+    opt("a", P, H, "their horse-and-forge veterans harden your cavalry, and brawl as hard as they fight", "Harden their riders"),
     opt("b", G, C, "frontier markets thrive, and the city keeps fuller ledgers than calendars")] },
   CIVILIZATION_CHOLA: { demonym: "Chola", options: [
     opt("a", G, FO, "Tamil maritime traders fill the harbours, drawing hands off the soil"),
@@ -94,6 +100,12 @@ export const QUARTER_BONUSES = Object.freeze({
   CIVILIZATION_DAI_VIET: { demonym: "Dai Viet", options: [
     opt("a", C, G, "wall-scholars keep learning alive, at public cost"),
     opt("b", P, FO, "fort-works employ many hands off the fields")] },
+  CIVILIZATION_ENGLAND: { demonym: "English", options: [
+    opt("a", C, G, "chapter-house scriptoria and stage-players enrich the ward, at the abbey's cost"),
+    opt("b", G, F, "their chartered merchants work any harbour, and the old rites go unendowed")] },
+  CIVILIZATION_GORYEO: { demonym: "Goryeo", options: [
+    opt("a", C, P, "celadon kilns and woodblock carvers raise the ward's craft above its yards"),
+    opt("b", F, G, "their temple orders keep the canon, sustained by endowments")] },
   CIVILIZATION_HAWAII: { demonym: "Hawaiian", options: [
     opt("a", FO, P, "fish-ponds and reefs feed the ward, drawing hands off the yards"),
     opt("b", C, G, "heiau rites enrich island custom, funded by the city")] },
@@ -107,7 +119,7 @@ export const QUARTER_BONUSES = Object.freeze({
     opt("a", G, P, "porcelain and silk factors fill the ledgers while the kilns run cool"),
     opt("b", C, H, "imperial arts refine the ward, and its finery outshines humbler streets")] },
   CIVILIZATION_MONGOLIA: { demonym: "Mongol", options: [
-    opt("a", P, H, "their horse-lines and smiths keep your cavalry shod, remounted and armed — but the swagger grates", "Muster their horsemen"),
+    opt("a", P, H, "their horse-lines and smiths keep your cavalry shod, remounted and armed, but the swagger grates", "Muster their horsemen"),
     opt("b", G, C, "steppe tribute-routes pay well, and the city counts coin where it once kept ceremony")] },
   CIVILIZATION_NORMAN: { demonym: "Norman", options: [
     opt("a", P, H, "their castle-masons and knights raise strong works and temper your men-at-arms", "Raise their knights"),
@@ -138,6 +150,9 @@ export const QUARTER_BONUSES = Object.freeze({
   CIVILIZATION_ICELAND: { demonym: "Icelandic", options: [
     opt("a", P, FO, "their shipwrights and crews build fast longships, drawing hands off the farms", "Launch their longships"),
     opt("b", C, G, "saga-singers keep the ward's memory, funded by the city")] },
+  CIVILIZATION_JOSEON: { demonym: "Joseon", options: [
+    opt("a", S, G, "movable-type printers and academicians publish freely, and the stipends tell on the treasury"),
+    opt("b", C, P, "seowon scholars keep rites and letters while the workshops idle")] },
   CIVILIZATION_MEIJI: { demonym: "Meiji", options: [
     opt("a", P, H, "their arsenals and conscript drill build a modern army at a hard human pace", "Modernise your army"),
     opt("b", S, C, "headlong modernisation, and old custom set aside")] },
@@ -167,7 +182,7 @@ export const QUARTER_BONUSES = Object.freeze({
   CIVILIZATION_NEPAL: { demonym: "Nepali", options: [
     opt("a", FO, G, "mountain terraces feed the ward, tended at cost"),
     opt("b", P, H, "their hill-fort masons and drillmasters raise strong works and hardy soldiers", "Train their hillmen")] },
-  CIVILIZATION_OTTOMAN: { demonym: "Ottoman", options: [
+  CIVILIZATION_OTTOMANS: { demonym: "Ottoman", options: [
     opt("a", S, G, "külliye specialists teach and heal, at public cost"),
     opt("b", C, P, "grand celebrations enrich custom while the workshops idle")] },
   CIVILIZATION_PIRATE_REPUBLIC: { demonym: "Buccaneer", options: [
@@ -216,10 +231,10 @@ export function quarterBonus(civType) {
 // a menu. Curation rules (enforced by tests/quarter-bonuses.mjs): every entry names a speaker (`who`)
 // and a source work (`source`); the culture's OWN voice is preferred (primary source of that people
 // first, a named historian of that people only as fallback); conquest/colonial civs deliberately quote
-// a critical or plain primary voice (Spain → Las Casas, Qing → Lin Zexu, Mongolia → a governance line),
-// and no genocidaires/hate figures. Where wording is a translation or an attribution is contested it is
-// marked (trans.) / (attr. debated) in `source` and must be re-verified against the cited work before
-// shipping (the citation is the source of truth, the wording a draft).
+// a plain primary voice, never a stereotype of a people, a rival's contempt, or a perpetrator of atrocities.
+// Every line was located in a readable copy of its source (audited 2026-09-14; a modern historian's summary in
+// quotation marks does not count); translations and contested attributions are marked (trans.) / (attr.) in
+// `source`. Citations, links, and the reason for each fix or replacement are in docs/quote-sources.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** @typedef {{text:string, who:string, source:string}} QQuote */
@@ -241,65 +256,74 @@ function q(text, who, source) {
  */
 export const QUARTER_QUOTES = Object.freeze({
   // ── Antiquity origins ──
-  CIVILIZATION_ABBASID: { a: q("طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ. (Seeking knowledge is an obligation upon every Muslim.)", "the Prophet Muhammad", "Sunan Ibn Mājah 224"), b: q("Baghdad became the intellectual capital of the medieval world.", "Philip K. Hitti", "History of the Arabs (1937)") },
-  CIVILIZATION_AKSUM: { a: q("ΤΟΥΤΟ ΑΡΕΣΗ ΤΗ ΧΩΡΑ (Toûto arésē tê chôra — may this please the country.)", "Aksumite coinage", "coin legend, reign of Ezana (4th c.)"), b: q("ፍሥሓ ፡ ለይኲን ፡ ለአሕዛብ (Fǝśśǝḥā läyǝkʷǝn läʾaḥzāb — let the people be glad.)", "Emperor Armah", "Aksumite coin legend (7th c.)") },
-  CIVILIZATION_ASSYRIA: { a: q("BÀD šalḫû ušēpišma uzaqqir ḫuršāniš (I had a wall built and raised it as high as mountains.)", "Sennacherib", "Taylor Prism / RINAP 3 (trans.)"), b: q("aḫuz nēmeqī Nabû, kullat ṭupšarrūti (I grasped the wisdom of Nabû, the whole art of the scribe.)", "Ashurbanipal", "royal inscription (RINAP 5, trans.)") },
-  CIVILIZATION_CARTHAGE: { a: q("Ἔδοξε Καρχηδονίοις Ἅννωνα πλεῖν ἔξω Στηλῶν Ἡρακλείων (It was resolved by the Carthaginians that Hanno should sail beyond the Pillars of Heracles.)", "Hanno the Navigator", "Periplus of Hanno (5th c. BCE, trans.)"), b: q("νεωρίων αἱ κρηπῖδες ἐς ναῦς διακοσίας καὶ εἴκοσι πεποιημένων (The dockyard quays were built for two hundred and twenty ships.)", "Appian", "Roman History (Punica) (2nd c., trans.)") },
+  CIVILIZATION_ABBASID: { a: q("طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ. (Seeking knowledge is an obligation upon every Muslim.)", "the Prophet Muhammad", "Sunan Ibn Mājah 224"), b: q("وينبغى لنا ألا نستحي من استحسان الحق، واقتناء الحق من أين أتى… (We ought not to be ashamed to admire the truth and to acquire it, wherever it comes from…)", "al-Kindi", "On First Philosophy (9th c., trans.)") },
+  CIVILIZATION_AKSUM: { a: q("ΤΟΥΤΟ ΑΡΕΣΗ ΤΗ ΧΩΡΑ (Toûto arésē tê chôra: may this please the country.)", "Aksumite coinage", "bronze coin legend (4th c.)"), b: q("ፍሥሓ ፡ ለይኲን ፡ ለአሕዛብ (Let the people be glad.)", "Emperor Armah", "Aksumite coin legend (7th c.)") },
+  CIVILIZATION_ASSYRIA: { a: q("BÀD ù šal-ḫu-u šá NINA.KI eš-šiš ú-še-piš-ma ú-zaq-qir ḫur-šá-niš (I had the inner wall and outer wall of Nineveh built anew and raised them as high as mountains.)", "Sennacherib", "wall-slab inscription, Nineveh (RINAP 3/2, Sennacherib 82, trans.)"), b: q("aḫuz nēmeqi Nabû kullat ṭupšarrūti (I learned the wisdom of the god Nabû, all of the scribal arts.)", "Ashurbanipal", "Prism F (RINAP 5/1, Ashurbanipal 9, trans.)") },
+  CIVILIZATION_BABYLON: { a: q("dannum enšam ana lā ḫabālim (That the strong might not oppress the weak.)", "Hammurabi", "Laws of Hammurabi, prologue i 37-39 (c. 1750 BCE, trans.)"), b: q("ἔστι δὲ χωρέων αὕτη πασέων μακρῷ ἀρίστη τῶν ἡμεῖς ἴδμεν Δήμητρος καρπὸν ἐκφέρειν (This land is by far the most fertile in grain which we know.)", "Herodotus", "Histories 1.193.2 (5th c. BCE, trans. Godley)") },
+  CIVILIZATION_CARTHAGE: { a: q("Ἔδοξε Καρχηδονίοις Ἅννωνα πλεῖν ἔξω Στηλῶν Ἡρακλείων (It was resolved by the Carthaginians that Hanno should sail beyond the Pillars of Heracles.)", "Periplus of Hanno", "opening decree (5th c. BCE, trans.)"), b: q("νεωρίων τε ἔγεμον αἱ κρηπῖδες αἵδε ἐς ναῦς διακοσίας καὶ εἴκοσι πεποιημένων (These quays were lined with ship-sheds built for two hundred and twenty ships.)", "Appian", "Roman History, Punic Wars 96 (2nd c., trans.)") },
   CIVILIZATION_EGYPT: { a: q("πλεῖστα θωμάσια ἔχει ἢ ἡ ἄλλη πᾶσα χώρη καὶ ἔργα λόγου μέζω παρέχεται (It has more marvels than any other land, and works too great for words.)", "Herodotus", "Histories, Bk. II (trans.)"), b: q("Αἴγυπτος… δῶρον τοῦ ποταμοῦ (Egypt… is the gift of the river.)", "Herodotus (after Hecataeus)", "Histories, Bk. II (trans.)") },
+  CIVILIZATION_GAUL: { a: q("Gallia est omnis divisa in partes tres. (Gaul as a whole is divided into three parts.)", "Julius Caesar", "Commentarii de Bello Gallico I.1 (c. 50 BCE)"), b: q("Disciplina in Britannia reperta atque inde in Galliam translata esse existimatur. (Their discipline is thought to have been discovered in Britain and carried thence into Gaul.)", "Julius Caesar", "Commentarii de Bello Gallico VI.13 (c. 50 BCE)") },
   CIVILIZATION_GREECE: { a: q("ὁ ἀνεξέταστος βίος οὐ βιωτὸς ἀνθρώπῳ. (The unexamined life is not worth living.)", "Socrates", "in Plato, Apology (trans.)"), b: q("φιλοκαλοῦμέν τε μετ' εὐτελείας καὶ φιλοσοφοῦμεν ἄνευ μαλακίας (We love the beautiful with economy, and wisdom without softness.)", "Pericles", "in Thucydides, History of the Peloponnesian War, Bk. II (trans.)") },
   CIVILIZATION_HAN: { a: q("農，天下之大本也 (Agriculture is the great foundation of all under heaven.)", "Emperor Wen of Han", "edict, Book of Han (2nd c. BCE, trans.)"), b: q("倉廩實而知禮節。 (When the granaries are full, the people know propriety.)", "Guanzi", "quoted in Sima Qian, Records of the Grand Historian (trans.)") },
   CIVILIZATION_KHMER: { a: q("大抵一歲中，可三四番收種。 (In general, three or four harvests a year can be had.)", "Zhou Daguan", "The Customs of Cambodia (1296, trans.)"), b: q("當國之中有金塔一座 (At the centre of the kingdom stands a tower of gold.)", "Zhou Daguan", "The Customs of Cambodia (1296, trans.)") },
-  CIVILIZATION_MAURYA: { a: q("sabe munise paja mama (All men are my children.)", "Ashoka", "Kalinga Edict (Prakrit, 3rd c. BCE)"), b: q("magesu pi me nigohani lopapitani… amba-vadikya lopapita (On the roads banyan trees were planted by me… and mango-groves.)", "Ashoka", "Pillar Edict VII (Prakrit, Hultzsch)") },
-  CIVILIZATION_MAYA: { a: q("Xa q'ana jal, saqi jal u tio'jil (Merely yellow maize and white maize made their flesh.)", "Popol Vuh", "K'iche' original (Christenson ed.)"), b: q("The Maya were the most brilliant civilization of the New World.", "Michael D. Coe", "The Maya (1966)") },
-  CIVILIZATION_MISSISSIPPIAN: { a: q("Cahokia was the first city in what would become the United States.", "Timothy Pauketat", "Cahokia (2009)"), b: q("Maize agriculture underpinned the rise of the Mississippian towns.", "George Milner", "The Moundbuilders (2004)") },
-  CIVILIZATION_PERSIA: { a: q("ἀρχὰς κατεστήσατο εἴκοσι, τὰς αὐτοὶ καλέουσι σατραπηίας (He set up twenty provinces, which they themselves call satrapies.)", "Herodotus", "Histories, Bk. III (trans.)"), b: q("ἔστι δ' αὐτῶν ἃ καὶ ἐφύτευσα αὐτός (There are some of these that I planted myself.)", "Cyrus the Younger", "in Xenophon, Oeconomicus, Bk. IV (trans.)") },
+  CIVILIZATION_MAURYA: { a: q("save munise pajā mamā (All men are my children.)", "Ashoka", "Separate Rock Edict I, Dhauli (3rd c. BCE)"), b: q("magesu pi me nigohani lopapitani… amba-vadikya lopapita (On the roads banyan trees were planted by me… and mango-groves.)", "Ashoka", "Pillar Edict VII (Prakrit, Hultzsch)") },
+  CIVILIZATION_MAYA: { a: q("Xa q'ana jal, saqi jal u tio'jil (Merely yellow ears of ripe maize, white ears of ripe maize their flesh.)", "Popol Vuh", "K'iche' text (trans. Christenson)"), b: q("Are u xe' ojer tzij, waral K'iche' u b'i'. Waral xchiqatz'ib'aj wi (This is the beginning of the ancient traditions of this place called Quiché. Here we shall write.)", "Popol Vuh", "preamble (16th c., trans. Christenson)") },
+  CIVILIZATION_MISSISSIPPIAN: { a: q("What a stupendous pile of earth! To heap up such a mass must have required years, and the labors of thousands.", "Henry M. Brackenridge, at Cahokia", "Views of Louisiana (1814)"), b: q("I am glad to have this occasion of observing that those people respect the rights of hospitality, and that those rights always prevail…", "Le Page du Pratz, among the Natchez", "The History of Louisiana (1758, English 1774)") },
+  CIVILIZATION_PERSIA: { a: q("ἀρχὰς κατεστήσατο εἴκοσι, τὰς αὐτοὶ καλέουσι σατραπηίας (He set up twenty provinces, which they themselves call satrapies.)", "Herodotus", "Histories, Bk. III (trans.)"), b: q("ἔστι δ' αὐτῶν ἃ καὶ ἐφύτευσα αὐτός (There are some of these that I planted myself.)", "Cyrus the Younger", "in Xenophon, Oeconomicus 4.24 (trans.)") },
   CIVILIZATION_ROME: { a: q("Tot aquarum tam multis necessariis molibus pyramidas videlicet otiosas compares… (Would you set the idle Pyramids beside these many indispensable works of water?)", "Frontinus", "On the Aqueducts of Rome (1st c., trans.)"), b: q("ἄγεται ἐκ πάσης γῆς καὶ θαλάττης ὅσα ὧραι φύουσι καὶ χῶραι ἕκασται φέρουσι (From every land and sea is brought whatever the seasons grow and each country bears.)", "Aelius Aristides", "Roman Oration (2nd c., trans.)") },
 
   // ── Exploration origins ──
-  CIVILIZATION_BULGARIA: { a: q("The Bulgar state was built for war, its horsemen disciplined and its frontier strong.", "Steven Runciman", "A History of the First Bulgarian Empire (1930)"), b: q("The Bulgarians commanded the great roads of trade between the empires.", "Steven Runciman", "A History of the First Bulgarian Empire (1930)") },
-  CIVILIZATION_CHOLA: { a: q("The Chola navy was the most powerful in the Indian Ocean of its day.", "K. A. Nilakanta Sastri", "The Cōḷas (1955)"), b: q("Rajaraja raised the great temple at Tanjore, a wonder of the age.", "K. A. Nilakanta Sastri", "The Cōḷas (1955)") },
-  CIVILIZATION_DAI_VIET: { a: q("賢才國家之元氣 (Hiền tài là nguyên khí của quốc gia — the virtuous and talented are the vital force of the state.)", "Thân Nhân Trung", "Temple of Literature stele (1442, trans.)"), b: q("訓練士卒，習爾弓矢 (Drill the soldiers, and practise the bow and arrow.)", "Trần Hưng Đạo", "Proclamation to the Officers (1284, trans.)") },
-  CIVILIZATION_HAWAII: { a: q("He aliʻi ka ʻāina; he kauwā ke kanaka. (The land is chief; man is its servant.)", "ʻŌlelo Noʻeau", "coll. Mary Kawena Pukui (1983)"), b: q("I ka ʻōlelo nō ke ola, i ka ʻōlelo nō ka make. (In the word there is life; in the word there is death.)", "ʻŌlelo Noʻeau", "coll. Mary Kawena Pukui (1983)") },
-  CIVILIZATION_INCA: { a: q("desde que hay memoria de gentes no se ha leído de tanta grandeza como tuvo este camino hecho por valles hondos y por sierras altas (Since men have memory, none has read of so great a road as this, made through deep valleys and high sierras.)", "Pedro Cieza de León", "El Señorío de los Incas (1554, trans.)"), b: q("En los cerros y laderas hazían andenes para allanarlas, como hoy se veen en el Cozco y en todo el Perú (On the hills and slopes they made terraces to level them, as are seen today in Cuzco and all Peru.)", "Garcilaso de la Vega", "Comentarios Reales de los Incas (1609, Bk. V, trans.)") },
-  CIVILIZATION_MAJAPAHIT: { a: q("milwang balyadi nusantara sahana saha prabhrti (All the vassals of Nusantara come, every one, bringing tribute.)", "Mpu Prapanca", "Nagarakretagama (Old Javanese, 1365)"), b: q("民甚殷富，其各處番船多到此地買賣 (The people are very rich, and foreign ships from every place come here to trade.)", "Ma Huan", "Yingya Shenglan (1433, trans.)") },
-  CIVILIZATION_MING: { a: q("涉滄溟十萬餘里。 (We have traversed more than one hundred thousand li of vast water-spaces.)", "Zheng He", "Changle stele (1431, trans.)"), b: q("In the late Ming, the appreciation of fine things became the mark of the cultivated gentleman.", "Craig Clunas", "Superfluous Things (1991) (re-verify before ship)") },
-  CIVILIZATION_MONGOLIA: { a: q("One can conquer the world on horseback, but one cannot govern it from there.", "attributed to Genghis Khan / Yelü Chucai", "(attr. debated)"), b: q("di capo de le 25 miglie egli truovano una posta, ove albergano li messaggi del Grande Sire (Every twenty-five miles the messengers find a post-house, where the Great Khan's couriers lodge.)", "Marco Polo", "The Travels (Il Milione, trans.)") },
-  CIVILIZATION_NORMAN: { a: q("and fylden þe land ful of castles (And they filled the land full of castles.)", "Anglo-Saxon Chronicle", "1137 (Peterborough Chronicle, trans.)"), b: q("þæt næs an ælpig hide… þæt næs gesæt on his gewrite (Not one single hide… was left unset in his record.)", "Anglo-Saxon Chronicle", "on Domesday, 1085 (trans.)") },
+  CIVILIZATION_BULGARIA: { a: q("Even if a man lives well, he dies, and another is born; let the one born last, seeing this, remember the one who made it.", "Khan Omurtag", "Tarnovo column inscription, in Greek (c. 822, trans.)"), b: q("Език свещен на моите деди (Sacred tongue of my forefathers.)", "Ivan Vazov", "The Bulgarian Language (1883, trans.)") },
+  CIVILIZATION_CHOLA: { a: q("யாதானும் நாடாமால் ஊராமால் என்னொருவன் சாந்துணையுங் கல்லாத வாறு (The learned make each land their own, in every city find a home.)", "Tiruvalluvar", "Tirukkural 397 (trans. Pope)"), b: q("தொட்டனைத் தூறும் மணற்கேணி மாந்தர்க்குக் கற்றனைத் தூறும் அறிவு (In sandy soil, when deep you delve, you reach the springs below; the more you learn, the freer streams of wisdom flow.)", "Tiruvalluvar", "Tirukkural 396 (trans. Pope)") },
+  CIVILIZATION_DAI_VIET: { a: q("賢才國家之元氣 (Hiền tài là nguyên khí của quốc gia: the virtuous and talented are the vital force of the state.)", "Thân Nhân Trung", "stele for the 1442 examination, Temple of Literature (1484, trans.)"), b: q("訓練士卒，習爾弓矢 (Drill the soldiers, and practise the bow and arrow.)", "Trần Hưng Đạo", "Proclamation to the Officers (1284, trans.)") },
+  CIVILIZATION_ENGLAND: { a: q("Nullus liber homo capiatur vel imprisonetur… nisi per legale judicium parium suorum vel per legem terre. (No free man shall be seized or imprisoned… save by the lawful judgment of his peers or by the law of the land.)", "Magna Carta", "clause 39 (1215)"), b: q("This royal throne of kings, this sceptred isle… this precious stone set in the silver sea.", "William Shakespeare", "Richard II, II.i (c. 1595)") },
+  CIVILIZATION_GORYEO: { a: q("陶器色之青者，麗人謂之翡色 (The green of their pottery the people of Goryeo call kingfisher-colour.)", "Xu Jing", "Xuanhe fengshi Gaoli tujing, juan 32 (1124, trans.)"), b: q("我國家大業，必資諸佛護衛之力 (The great work of our state must rest upon the protecting power of the Buddhas.)", "Wang Geon (Taejo)", "Hunyo Sipjo, first injunction, in the Goryeosa (943, trans.)") },
+  CIVILIZATION_HAWAII: { a: q("He aliʻi ka ʻāina; he kauwā ke kanaka. (The land is a chief; man is its servant.)", "ʻŌlelo Noʻeau", "coll. Mary Kawena Pukui (1983)"), b: q("I ka ʻōlelo nō ke ola, i ka ʻōlelo nō ka make. (Life is in speech; death is in speech.)", "ʻŌlelo Noʻeau", "coll. Mary Kawena Pukui (1983)") },
+  CIVILIZATION_INCA: { a: q("desde que hay memoria de gente, no se ha leído de tanta grandeza como tuvo este camino, hecho por valles hondos y por sierras altas (Since men have memory, none has read of so great a road as this, made through deep valleys and high sierras.)", "Pedro Cieza de León", "El Señorío de los Incas, ch. 63 (c. 1550, trans.)"), b: q("En los cerros y laderas que eran de buena tierra hacían andenes para allanarlas, como hoy se ven en el Cozco y en todo el Perú (On the hills and slopes that were good land they made terraces to level them, as are seen today in Cuzco and all Peru.)", "Garcilaso de la Vega", "Comentarios Reales de los Incas, Bk. V (1609, trans.)") },
+  CIVILIZATION_MAJAPAHIT: { a: q("hetunyanantara sarwwajana tka saken anyadeça prakirnna (That is why, without ceasing, people of every kind come from other lands.)", "Mpu Prapanca", "Nagarakretagama 83.4 (1365, trans.)"), b: q("其各處番船多到此地買賣……民甚殷富 (Foreign ships from every place come here to trade… the people are very rich.)", "Ma Huan", "Yingya Shenglan, on Gresik (1433, trans.)") },
+  CIVILIZATION_MING: { a: q("涉滄溟十萬餘里。 (We have traversed more than one hundred thousand li of vast water-spaces.)", "Zheng He", "Changle stele (1431, trans.)"), b: q("知是行之始，行是知之成 (Knowledge is the beginning of practice; doing is the completion of knowing.)", "Wang Yangming", "Instructions for Practical Living (1518, trans. Henke)") },
+  CIVILIZATION_MONGOLIA: { a: q("If, like the bound arrow-shafts, you remain together and of one mind, how can anyone deal with you so easily?", "Alan Qo'a, in the Secret History of the Mongols", "§22 (13th c., trans. de Rachewiltz)"), b: q("di capo de le 25 miglie egli truovano una posta, … ove albergano li messaggi del Grande Sire (Every twenty-five miles the messengers find a post-house, … where the Great Khan's couriers lodge.)", "Marco Polo", "Il Milione, ch. 97 (trans.)") },
+  CIVILIZATION_NORMAN: { a: q("ISTE JUSSIT UT FODERETUR CASTELLUM AT HESTENGA (He ordered that a castle be dug at Hastings.)", "Bayeux Tapestry", "(c. 1070s, trans.)"), b: q("HIC WILLELM[US] DUX JUSSIT NAVES [A]EDIFICARE (Here Duke William ordered ships to be built.)", "Bayeux Tapestry", "(c. 1070s, trans.)") },
   CIVILIZATION_SONGHAI: { a: q("sono molte botteghe di artigiani e mercatanti, e massimamente di tessitori di tele di bambagio (There are many shops of craftsmen and merchants, above all weavers of cotton cloth.)", "Leo Africanus", "Description of Africa (1550, trans.)"), b: q("Vendonsi molti libri scritti a mano, che vengono di Barberia; e di questi si fa più guadagno che del rimanente delle mercatanzie (Many handwritten books are sold, brought from Barbary; and more profit is made on these than on all other goods.)", "Leo Africanus", "Description of Africa (1550, trans.)") },
-  CIVILIZATION_SPAIN: { a: q("Soy el rico Potosí, del mundo soy el tesoro, el rey de los montes y la envidia de los reyes (I am rich Potosí, treasure of the world, king of the mountains and envy of kings.)", "Villa Imperial de Potosí", "royal coat-of-arms motto (1547, trans.)"), b: q("Han muerto y destruido tan infinito número de ánimas los cristianos… por la insaciable codicia de oro. (The Christians have destroyed such infinite numbers of souls… out of insatiable greed for gold.)", "Bartolomé de las Casas", "A Short Account of the Destruction of the Indies (1552, trans.)") },
+  CIVILIZATION_SPAIN: { a: q("el que lee mucho y anda mucho, vee mucho y sabe mucho (He who reads much and travels much sees and knows a great deal.)", "Miguel de Cervantes", "Don Quixote II.25 (1615, trans. Ormsby)"), b: q("Nada te turbe; / nada te espante; / todo se pasa… (Let nothing disturb thee, / Nothing affright thee; / All things are passing…)", "Teresa of Ávila", "Nada te turbe (16th c., trans. Longfellow)") },
 
   // ── Modern origins ──
-  CIVILIZATION_AMERICA: { a: q("The chief business of the American people is business.", "Calvin Coolidge", "address to newspaper editors (1925)"), b: q("America will be remembered for the Constitution, jazz music, and baseball.", "Gerald Early", "in Ken Burns, Jazz (2001)") },
-  CIVILIZATION_BUGANDA: { a: q("The banana was the staple food of the country; plantations surrounded every house.", "John Roscoe", "The Baganda (1911)"), b: q("Agali awamu ge galuma ennyama. (Teeth set together are the ones that chew the meat — unity gives strength.)", "Ganda proverb", "coll. F. Walser, Luganda Proverbs") },
-  CIVILIZATION_FRENCH_EMPIRE: { a: q("If you are lucky enough to have lived in Paris as a young man, it stays with you.", "Ernest Hemingway", "A Moveable Feast (1964)"), b: q("L’art de l’imposition consiste à plumer l’oie pour obtenir le plus possible de plumes avec le moins possible de cris. (The art of taxation is to pluck the goose so as to get the most feathers with the least hissing.)", "Jean-Baptiste Colbert", "(attr.)") },
-  CIVILIZATION_GREAT_BRITAIN: { a: q("A project fit only for a nation of shopkeepers.", "Adam Smith", "The Wealth of Nations (1776)"), b: q("And was Jerusalem builded here, among these dark Satanic Mills?", "William Blake", "Milton (1804)") },
-  CIVILIZATION_HEIAN: { a: q("春はあけぼの、やうやう白くなりゆく山ぎは… (In spring, the dawn — when the slowly paling mountain rim grows faintly light.)", "Sei Shōnagon", "The Pillow Book (c. 1002, trans.)"), b: q("一条の大路、所なく、むくつけきまで騒ぎたり (The great avenue, with no room to spare, was astir with the festival throng.)", "Murasaki Shikibu", "The Tale of Genji, 'Aoi' (11th c., trans.)") },
-  CIVILIZATION_ICELAND: { a: q("En ef þú vill vera kaupmaðr… hygg þú vandliga at, hvárt skip þitt sé vel tjǫrgat (If you would be a merchant… look carefully whether your ship is well tarred.)", "Konungs skuggsjá (The King's Mirror)", "(13th c., trans.)"), b: q("Deyr fé, deyja frændr, deyr sjalfr it sama; ek veit einn, at aldri deyr: dómr um dauðan hvern. (Cattle die, kinsmen die, but the fame of a dead man never dies.)", "Hávamál", "Poetic Edda (trans.)") },
-  CIVILIZATION_MEIJI: { a: q("富国強兵 (Fukoku kyōhei — enrich the country, strengthen the army.)", "Meiji national slogan", "(trans.)"), b: q("天は人の上に人を造らず人の下に人を造らず。 (Heaven does not create one man above or below another.)", "Fukuzawa Yukichi", "An Encouragement of Learning (1872, trans.)") },
-  CIVILIZATION_MEXICO: { a: q("El solitario mexicano ama las fiestas y las reuniones públicas. (The solitary Mexican loves fiestas and public gatherings.)", "Octavio Paz", "The Labyrinth of Solitude (1950, trans.)"), b: q("El respeto al derecho ajeno es la paz. (Respect for the rights of others is peace.)", "Benito Juárez", "(1867)") },
-  CIVILIZATION_MUGHAL: { a: q("اگر فردوس بر روی زمین است، همین است و همین است و همین است (If there is a paradise on earth, it is this, it is this, it is this.)", "attributed to Amir Khusrow", "Red Fort inscription (attr. debated)"), b: q("L’or et l’argent, après avoir circulé dans le monde, passent dans l’Hindoustan, d’où ils ne reviennent plus. (Gold and silver, after circling the world, pass into Hindustan, from which they never return.)", "François Bernier", "Travels in the Mogul Empire (1670s, trans.)") },
-  CIVILIZATION_PRUSSIA: { a: q("La Prusse n’est pas un État qui possède une armée, mais une armée qui possède un État. (Prussia is not a state that has an army, but an army that has a state.)", "attributed to Mirabeau", "(attr. debated)"), b: q("Der Krieg ist eine bloße Fortsetzung der Politik mit anderen Mitteln. (War is the continuation of policy by other means.)", "Carl von Clausewitz", "On War (1832, trans.)") },
-  CIVILIZATION_QING: { a: q("天朝物產豐盈，無所不有，原不藉外夷貨物以通有無。 (The Celestial Empire possesses all things in abundance and lacks nothing; it has never relied on foreign goods.)", "the Qianlong Emperor", "letter to King George III (1793, trans.)"), b: q("貴國王累世相傳，皆稱恭順；唯通商已久，遂有夾帶鴉片 (Your kings for generations have professed obedience; yet trade being long established, opium has been smuggled in.)", "Lin Zexu", "letter to Queen Victoria (1839, trans.)") },
-  CIVILIZATION_RUSSIA: { a: q("Здесь будет город заложён на зло надменному соседу. (Here a city shall be founded, to spite our arrogant neighbour.)", "Alexander Pushkin", "The Bronze Horseman (1833, trans.)"), b: q("Красота спасёт мир. (Beauty will save the world.)", "Fyodor Dostoevsky", "The Idiot (1869, trans.)") },
-  CIVILIZATION_SIAM: { a: q("เมื่อออกพรรษากรานกฐิน… เสียงพาทย์ เสียงพิณ เสียงเลื่อน เสียงขับ (When the rains end they hold the Kathin… with sounds of pipes, lute, chant, and song.)", "Ramkhamhaeng Inscription", "(1292, trans.)"), b: q("ในน้ำมีปลา ในนามีข้าว (In the water there are fish, in the fields there is rice.)", "Ramkhamhaeng Inscription", "(1292, trans.)") },
-  CIVILIZATION_SILLA: { a: q("心生則種種法生，心滅則種種法滅 (When the mind arises, all things arise; when the mind ceases, all things cease.)", "Wonhyo", "after the Awakening of Faith (7th c., trans.)"), b: q("新羅全盛之時，歌吹滿路，晝夜不絕 (In Silla's golden age, song and music filled the streets, unceasing day and night.)", "Samguk Yusa", "Iryeon (13th c., trans.)") },
+  CIVILIZATION_AMERICA: { a: q("After all, the chief business of the American people is business.", "Calvin Coolidge", "address to the American Society of Newspaper Editors (1925)"), b: q("I hear America singing, the varied carols I hear.", "Walt Whitman", "I Hear America Singing (1860)") },
+  CIVILIZATION_BUGANDA: { a: q("The plantains cover large areas of land; sometimes a garden (so-called) extends for several miles…", "John Roscoe", "The Baganda (1911)"), b: q("Agali awamu ge galuma ennyama. (Teeth set together are the ones that chew the meat; unity gives strength.)", "Ganda proverb", "coll. F. Walser, Luganda Proverbs") },
+  CIVILIZATION_FRENCH_EMPIRE: { a: q("…le but d’une Encyclopédie est de rassembler les connoissances éparses sur la surface de la terre (…the aim of an encyclopedia is to assemble the knowledge scattered over the face of the earth.)", "Denis Diderot", "Encyclopédie, vol. V (1755, trans.)"), b: q("Le commerce guérit des préjugés destructeurs : & c’est presque une regle générale que, par-tout où il y a des mœurs douces, il y a du commerce. (Commerce cures destructive prejudices; and it is almost a general rule that wherever manners are gentle, there is commerce.)", "Montesquieu", "The Spirit of the Laws XX.1 (1748, trans.)") },
+  CIVILIZATION_GREAT_BRITAIN: { a: q("Every man thus lives by exchanging, or becomes, in some measure, a merchant, and the society itself grows to be what is properly a commercial society.", "Adam Smith", "The Wealth of Nations I.4 (1776)"), b: q("And was Jerusalem builded here, among these dark Satanic Mills?", "William Blake", "Milton (1804)") },
+  CIVILIZATION_HEIAN: { a: q("春はあけぼの、やうやう白くなりゆく山ぎは… (In spring, the dawn, when the slowly paling mountain rim grows faintly light.)", "Sei Shōnagon", "The Pillow Book (c. 1002, trans.)"), b: q("一条の大路、所なく、むくつけきまで騒ぎたり (The great avenue, with no room to spare, was astir with the festival throng.)", "Murasaki Shikibu", "The Tale of Genji, 'Aoi' (11th c., trans.)") },
+  CIVILIZATION_ICELAND: { a: q("með lögum skal land vort byggja en eigi með ólögum eyða (With law shall our land be built up and settled, and with lawlessness wasted and spoiled.)", "Njáll Þorgeirsson", "Njáls saga, ch. 70 (trans. Dasent)"), b: q("Deyr fé, deyja frændr, deyr sjalfr it sama; ek veit einn, at aldrei deyr: dómr um dauðan hvern. (Cattle die, and kinsmen die, and so one dies one's self; one thing I know that never dies, the fame of a dead man's deeds.)", "Hávamál", "Poetic Edda, st. 77 (trans. Bellows)") },
+  CIVILIZATION_JOSEON: { a: q("國之語音，異乎中國 (The speech of our country differs from that of China.)", "King Sejong", "Hunminjeongeum, preface (1446)"), b: q("初學先須立志 (One who begins to learn must first set his will.)", "Yi I (Yulgok)", "Gyeokmong yogyeol (1577)") },
+  CIVILIZATION_MEIJI: { a: q("智識ヲ世界ニ求メ… (Knowledge shall be sought throughout the world…)", "the Charter Oath", "article 5 (1868, trans.)"), b: q("「天は人の上に人を造らず人の下に人を造らず」と言えり。 (Heaven, it is said, does not create one man above or below another.)", "Fukuzawa Yukichi", "An Encouragement of Learning (1872, trans.)") },
+  CIVILIZATION_MEXICO: { a: q("Yo no estudio para escribir, ni menos para enseñar […], sino sólo por ver si con estudiar ignoro menos. (I do not study in order to write, still less to teach, but only to see whether by studying I may be less ignorant.)", "Sor Juana Inés de la Cruz", "Reply to Sor Filotea (1691, trans.)"), b: q("Entre los individuos, como entre las naciones, el respeto al derecho ajeno es la paz. (Among individuals, as among nations, respect for the rights of others is peace.)", "Benito Juárez", "Manifesto to the Nation (15 July 1867)") },
+  CIVILIZATION_MUGHAL: { a: q("اگر فردوس بر روی زمین است، همین است و همین است و همین است (If there is a paradise on earth, it is this, it is this, it is this.)", "Diwan-i-Khas inscription, Red Fort", "(c. 1648, trans.)"), b: q("It should not escape notice that gold and silver, after circulating in every other quarter of the globe, come at length to be swallowed up… in Hindoustan.", "François Bernier", "Travels in the Mogul Empire (1670, trans. Constable)") },
+  CIVILIZATION_PRUSSIA: { a: q("Die Religionen Müsen alle Tolleriret werden … den hier mus ein jeder nach Seiner Fasson Selich werden. (All religions must be tolerated… for here everyone must find salvation in his own fashion.)", "Frederick II", "marginal note (1740, trans.)"), b: q("Der Krieg ist eine bloße Fortsetzung der Politik mit anderen Mitteln. (War is the continuation of policy by other means.)", "Carl von Clausewitz", "On War (1832, trans.)") },
+  CIVILIZATION_QING: { a: q("見藐小微物，必細察其紋理，故時有物外之趣。 (Whenever I saw some tiny thing, I had to study its grain closely, and so I often found a delight beyond the thing itself.)", "Shen Fu", "Six Records of a Floating Life (1809, trans.)"), b: q("世事洞明皆學問，人情練達即文章。 (To see clearly into the world's affairs is true learning; to be versed in human feeling is true letters.)", "Cao Xueqin", "Dream of the Red Chamber, ch. 5 (18th c., trans.)") },
+  CIVILIZATION_RUSSIA: { a: q("Здесь будет город заложён на зло надменному соседу. (Here a city shall be founded, to spite our arrogant neighbour.)", "Alexander Pushkin", "The Bronze Horseman (1833, trans.)"), b: q("Мир спасет красота. (The world will be saved by beauty.)", "Prince Myshkin, as Ippolit reports", "in Dostoevsky, The Idiot (1869, trans.)") },
+  CIVILIZATION_SIAM: { a: q("ด้วยเสียงพาทย์เสียงพิณ เสียงเลื่อนเสียงขับ ใครจักมักเล่นเล่น ใครจักมักหัวหัว ใครจักมักเลื่อนเลื่อน (With drums and lutes, chanting and song: whoever wishes to play, plays; whoever wishes to laugh, laughs; whoever wishes to sing, sings.)", "Ramkhamhaeng Inscription", "side 2 (1292, trans.)"), b: q("ในน้ำมีปลา ในนามีข้าว (In the water there are fish, in the fields there is rice.)", "Ramkhamhaeng Inscription", "(1292, trans.)") },
+  CIVILIZATION_SILLA: { a: q("國有玄妙之道，曰風流 (The country has a profound and mysterious Way, called Pungnyu.)", "Choe Chiwon", "preface to the Nallang stele, in Samguk sagi (9th c., trans.)"), b: q("城中無一草屋。接角連牆。歌吹滿路。晝夜不絕。 (Not one thatched house stood in the city; roofs touched and walls adjoined, and song and piping filled the streets day and night.)", "Samguk Yusa", "Iryeon, on King Heongang's reign (13th c., trans.)") },
 
   // ── Age-flex origins ──
-  CIVILIZATION_NEPAL: { a: q("The whole valley is a highly cultivated garden, terraced and watered with singular industry.", "William Kirkpatrick", "An Account of the Kingdom of Nepaul (1811) (re-verify before ship)"), b: q("यो राजे दुई ढुङ्गाको तरुल जस्तो रहेछ (This realm is like a yam between two stones.)", "Prithvi Narayan Shah", "Divya Upadesh (18th c., trans.)") },
-  CIVILIZATION_OTTOMAN: { a: q("Halk içinde mu'teber bir nesne yok devlet gibi, olmaya devlet cihanda bir nefes sıhhat gibi. (Among people nothing is prized like the state — yet no fortune on earth is like one breath of health.)", "Süleyman the Magnificent (Muhibbî)", "Dîvân-ı Muhibbî (16th c.)"), b: q("Bir safâ bahşedelim gel şu dil-i nâ-şâda, gidelim serv-i revânım yürü Sa'd-âbâd'a. (Let us grant some joy to this joyless heart; come, my graceful cypress, let us away to Sa'dabad.)", "Nedîm", "Dîvân (Tulip Era, 18th c.)") },
-  CIVILIZATION_PIRATE_REPUBLIC: { a: q("A merry life and a short one shall be my motto.", "Bartholomew Roberts", "in A General History of the Pyrates (1724)"), b: q("The pirates careened their ships at New Providence, which they made their republic.", "Charles Johnson", "A General History of the Pyrates (1724)") },
+  CIVILIZATION_NEPAL: { a: q("The terraces or steps… are constructed with no small labour (often extending to the tops of the highest hills).", "William Kirkpatrick", "An Account of the Kingdom of Nepaul (1811)"), b: q("यो राजे दुई ढुङ्गाको तरुल जस्तो रहेछ (This realm is like a yam between two stones.)", "Prithvi Narayan Shah", "Divya Upadesh (18th c., trans.)") },
+  CIVILIZATION_OTTOMANS: { a: q("Halk içinde mu'teber bir nesne yok devlet gibi, olmaya devlet cihanda bir nefes sıhhat gibi. (Among people nothing is prized like the state, yet no fortune on earth is like one breath of health.)", "Süleyman the Magnificent (Muhibbî)", "Dîvân-ı Muhibbî (16th c.)"), b: q("Bir safâ bahşedelim gel şu dil-i nâ-şâda, gidelim serv-i revânım yürü Sa'd-âbâd'a. (Let us grant some joy to this joyless heart; come, my graceful cypress, let us away to Sa'dabad.)", "Nedîm", "Dîvân (Tulip Era, 18th c.)") },
+  CIVILIZATION_PIRATE_REPUBLIC: { a: q("A merry life and a short one shall be my motto.", "Bartholomew Roberts", "in A General History of the Pyrates (1724)"), b: q("Every Man has a Vote in Affairs of Moment; has equal Title to the fresh Provisions…", "Articles of Bartholomew Roberts's crew", "in A General History of the Pyrates (1724)") },
   CIVILIZATION_QAJAR: { a: q("درخت دوستی بنشان که کام دل به بار آرد (Plant the tree of friendship, that it bring the heart's desire to fruit.)", "Hafez", "Divan, Ghazal 115 (14th c., trans.)"), b: q("گر دست دهد ز مغز گندم نانی… عیشی بود آن نه حد هر سلطانی (Given but a loaf of wheaten bread… that were a joy beyond any sultan.)", "Omar Khayyám", "Rubáiyát (rubāʿī 175, trans.)") },
-  CIVILIZATION_SENGOKU: { a: q("疾如風、徐如林、侵掠如火、不動如山 (Swift as the wind, silent as the forest, fierce as fire, immovable as the mountain.)", "Takeda Shingen", "Fūrinkazan banner (after Sun Tzu, trans.)"), b: q("楽市楽座 (Rakuichi rakuza — free markets, open guilds.)", "Oda Nobunaga", "Azuchi market edicts (trans.)") },
-  CIVILIZATION_SHAWNEE: { a: q("Sell a country! Why not sell the air, the clouds, and the great sea?", "Tecumseh", "(1810)"), b: q("A single twig breaks, but the bundle of twigs is strong.", "attributed to Tecumseh", "(attr. debated)") },
-  CIVILIZATION_TONGA: { a: q("Fonua ko e tangata, tangata ko e fonua. (The land is the people, the people are the land.)", "Tongan proverb", ""), b: q("The Tuʻi Tonga held a maritime empire across the central Pacific.", "I. C. Campbell", "Island Kingdom: Tonga Ancient and Modern (1992)") }
+  CIVILIZATION_SENGOKU: { a: q("疾如風、徐如林、侵掠如火、不動如山 (Swift as the wind, silent as the forest, fierce as fire, immovable as the mountain.)", "Takeda Shingen", "Fūrinkazan banner (after Sun Tzu, trans.)"), b: q("楽市楽座之上、諸商売すへき事 (Under free markets and open guilds, let all trade be carried on.)", "Oda Nobunaga", "edict to the Kanō market, Gifu (1568, trans.)") },
+  CIVILIZATION_SHAWNEE: { a: q("Sell a country! Why not sell the air, the clouds and the great sea, as well as the earth?", "Tecumseh", "at Vincennes (1810), as given in Gurd (1912)"), b: q("Our lives are in the hands of the Great Spirit. We are determined to defend our lands, and if it be his will, we wish to leave our bones upon them.", "Tecumseh", "speech to Procter (1813), in Drake (1841)") },
+  CIVILIZATION_TONGA: { a: q("Ko e ʻOtua mo Tonga ko hoku Tofiʻa (God and Tonga are my inheritance.)", "motto of the Kingdom of Tonga", "(1875)"), b: q("…therefore shall the people of Tonga and all who sojourn or may sojourn in this Kingdom be free for ever.", "King George Tupou I", "Constitution of Tonga, clause 1 (1875)") }
 });
 
-// Unicode blocks the game's UI font renders as tofu (□) — RTL and CJK/Greek/Cyrillic/Ethiopic/Hebrew
-// scripts. Latin-extended DIACRITICS (ā, ê, š, ḫ, ǝ, …) are NOT here: they render fine, so transliterations
-// are preserved. Every registry quote in one of these scripts is written "<original> (<Latin translation>)",
-// so when the original won't render we fall back to the parenthetical translation.
+// Unicode blocks the game's UI fonts cannot draw, so they render as tofu (□) — RTL and CJK/Greek/Cyrillic/Ethiopic/
+// Hebrew scripts, plus Armenian, Syriac, the Indic scripts (Devanagari to Sinhala), Thai, Lao, Tibetan, Myanmar,
+// Georgian, Khmer, and Mongolian. The added blocks are in none of the fonts the game ships (a cmap check of
+// Base/modules/core/fonts, 2026-09-14): the Siam and Nepal quotes were drawing boxes. Latin-extended DIACRITICS
+// (ā, ê, š, ḫ, …) are NOT here: they render fine, so transliterations are preserved (the schwa ǝ does not:
+// watched as a box, mod test 55). Every registry quote in one
+// of these scripts is written "<original> (<Latin translation>)", so when the original won't render we fall back to
+// the parenthetical translation.
 const UNRENDERABLE_SCRIPT =
-  /[Ͱ-ϿЀ-ӿ֐-׿؀-ۿሀ-፿぀-ヿ一-鿿가-힯]/;
+  /[Ͱ-ϿЀ-ӿ԰-֏֐-׿؀-ۿ܀-ݏऀ-෿฀-࿿က-ჿሀ-፿ក-៿᠀-᢯぀-ヿ一-鿿가-힯]/;
 
 /**
  * A display-safe quote line. When the quoted text is in a script the game font cannot draw (Arabic, Greek,
@@ -321,7 +345,7 @@ function renderableQuote(text) {
 const UNRENDERABLE_RUN = new RegExp('[^"()]*' + UNRENDERABLE_SCRIPT.source + '[^"()]*\\(([^()]*)\\)', "g");
 
 /**
- * A display-safe version of an ALREADY-COMPOSED quote line (`"<text>" — <who>[, <source>]`), for the
+ * A display-safe version of an ALREADY-COMPOSED quote line (`"<text>" <who>[, <source>]`), for the
  * in-game path where the line comes back whole from Locale.compose and so never passed through
  * {@link renderableQuote}. Collapses each "<unrenderable original> (Latin translation)" span to just the
  * translation, then drops any residual unrenderable characters that had no paired translation. A no-op for
@@ -338,15 +362,33 @@ export function renderableLine(line) {
 }
 
 /**
- * Compose a quote for display: `"<text>" — <who>[, <source>]`. A parenthetical source (e.g. "(trans.)")
+ * Compose a quote for display: `"<text>" <who>[, <source>]`. The attribution follows the closing quote
+ * with no dash: the dilemma view splits there and prints it on its own line. A parenthetical source (e.g. "(trans.)")
  * is joined with a space, not a comma, so it reads naturally; an empty source is omitted entirely.
  * Unrenderable original scripts fall back to their paired Latin translation (see {@link renderableQuote}).
  * @param {QQuote|null|undefined} quote @returns {string} The one-line display string ("" when no quote).
  */
 export function quoteDisplay(quote) {
   if (!quote || !quote.text) return "";
-  const src = quote.source ? (quote.source.charAt(0) === "(" ? " " : ", ") + quote.source : "";
-  return '"' + renderableQuote(quote.text) + '" — ' + quote.who + src;
+  return '"' + renderableQuote(quote.text) + '" ' + quote.who + sourceSuffix(quote.source);
+}
+
+/**
+ * The source part of a quote line: a parenthetical source joins with a space, a worded one with a comma.
+ * @param {string} source The source ("" for none). @returns {string} The suffix.
+ */
+function sourceSuffix(source) {
+  return source ? (source.charAt(0) === "(" ? " " : ", ") + source : "";
+}
+
+/**
+ * The LOC row text for a quote: the same line as {@link quoteDisplay} but with the original script kept, as
+ * the text rows ship it ({@link renderableLine} reduces it at display time). Pure.
+ * @param {QQuote|null|undefined} quote @returns {string} The row text ("" when no quote).
+ */
+export function quoteRowText(quote) {
+  if (!quote || !quote.text) return "";
+  return '"' + quote.text + '" ' + quote.who + sourceSuffix(quote.source);
 }
 
 /**

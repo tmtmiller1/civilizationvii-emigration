@@ -7,6 +7,7 @@
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { ruralPop, totalPop } from "/emigration/ui/emigration-population.js";
 import { observeCity } from "/emigration/ui/emigration-violence.js";
+import { builtFor } from "/emigration/ui/emigration-built.js";
 import { observeDisaster } from "/emigration/ui/emigration-disasters.js";
 import { cityHappinessStage, readPolity, resetPolityCache } from "/emigration/ui/emigration-polity.js";
 import { resetBorderCache } from "/emigration/ui/emigration-borders.js";
@@ -23,6 +24,7 @@ import { resetDistanceCache, resetDiplomacyCache } from "/emigration/ui/emigrati
  * @property {number} population Total population.
  * @property {number} rural Rural population (the mobile pool).
  * @property {number} urban Urban population (drives overcrowding - Algorithm B).
+ * @property {number} specialists Seated specialists (the crisis urban leg takes these first in local cities).
  * @property {number} food Net food yield.
  * @property {number} production Net production yield.
  * @property {number} gold Net gold yield.
@@ -36,6 +38,8 @@ import { resetDistanceCache, resetDiplomacyCache } from "/emigration/ui/emigrati
  * @property {boolean} starving Whether net food is negative.
  * @property {boolean} siege Whether the city is being razed / besieged.
  * @property {boolean} atWar Whether the owner is at war (used for flee direction).
+ * @property {number} built Built-environment score: wonders + civic infrastructure held (not per-capita).
+ * @property {string[]} builtNames LOC name tags of the wonders/buildings that earned `built`.
  * @property {number} violence Accumulated combat intensity in the city's borders.
  * @property {number} disaster Accumulated environmental-disaster distress (§11).
  * @property {boolean} infected Whether the city is suffering a plague outbreak.
@@ -147,6 +151,20 @@ function safeSignal(fn) {
 }
 
 /**
+ * The array form of {@link safeSignal}: an unreadable or non-array result becomes [], so a signal
+ * consumer never has to guard the shape.
+ * @param {() => *} fn The read. @returns {string[]} The strings read, or [].
+ */
+function safeList(fn) {
+  try {
+    const v = fn();
+    return Array.isArray(v) ? v.filter((x) => typeof x === "string") : [];
+  } catch (_) {
+    return [];
+  }
+}
+
+/**
  * Build a CitySignal for one city, or null when it should be skipped.
  * @param {*} city City object.
  * @param {*} player Owner player.
@@ -178,6 +196,7 @@ function buildSignal(city, player, isCityState) {
       urban: typeof city.urbanPopulation === "number" && isFinite(city.urbanPopulation)
         ? city.urbanPopulation
         : Math.max(0, population - rural),
+      specialists: safeSignal(() => { const n = city.Workers.getNumWorkers(false); return typeof n === "number" ? n : 0; }),
       food,
       production: readYield(city, "YIELD_PRODUCTION"),
       gold: readYield(city, "YIELD_GOLD"),
@@ -190,6 +209,10 @@ function buildSignal(city, player, isCityState) {
       starving: food < 0,
       siege: !!city.isBeingRazed,
       atWar: ownerAtWar(player),
+      built: safeSignal(() => builtFor(city).score),
+      // The LOC name tags of what earned that score, so the readout can name the granary and the
+      // market rather than only showing a number.
+      builtNames: safeList(() => builtFor(city).names),
       violence: safeSignal(() => observeCity(city)),
       disaster: safeSignal(() => observeDisaster(city)),
       infected: !!city.isInfected

@@ -1,0 +1,23 @@
+[2026-09-17 12:53:17]	[EmigProbe] shell attached 
+[2026-09-17 12:53:18]	[EmigProbe] shell query complete 
+[2026-09-17 12:53:19]	[EmigProbe] shell found AugustusAnt65.Civ7Save turn 65 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-17 12:53:19]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 12:53:36]	[EmigTest] modtest125 attached 
+[2026-09-17 12:53:56]	[EmigTest] COMPOSE LOC_EMIG_VAL_TURNS(1) = 1 turn 
+[2026-09-17 12:53:56]	[EmigTest] COMPOSE LOC_EMIG_VAL_TURNS(3) = 3 turns 
+[2026-09-17 12:53:56]	[EmigTest] COMPOSE LOC_EMIG_VAL_EVERY(2) = Every 2 turns 
+[2026-09-17 12:53:56]	[EmigTest] COMPOSE LOC_EMIG_VAL_COUNT(40000) = 40,000 
+[2026-09-17 12:53:56]	[EmigTest] COMPOSE LOC_EMIG_VAL_COUNT(150000) = 150,000 
+[2026-09-17 12:53:56]	[EmigTest] COMPOSE LOC_EMIG_CHOICE_INSTANT = Instant 
+[2026-09-17 12:53:56]	[EmigTest] COMPOSE LOC_EMIG_CHOICE_EVERY_TURN = Every turn 
+[2026-09-17 12:53:56]	[EmigTest] COMPOSE LOC_EMIG_ADVGRP_BRAKES = Balance brakes 
+[2026-09-17 12:53:56]	[EmigTest] COMPOSE LOC_EMIG_T_VDECAY = Violence kept each turn 
+[2026-09-17 12:53:56]	[EmigTest] COMPOSE LOC_OPTIONS_EMIG_DOCK = Dashboard dock button 
+[2026-09-17 12:53:56]	[EmigTest] COMPOSE bad=0 
+[2026-09-17 12:54:02]	[EmigTest] SCROLL main found=true 
+[2026-09-17 12:54:05]	[EmigTest] SHOT relabel_main 
+[2026-09-17 12:54:24]	[EmigTest] SCROLL pacing found=true 
+[2026-09-17 12:54:27]	[EmigTest] SHOT relabel_pacing 
+[2026-09-17 12:54:46]	[EmigTest] SCROLL violence found=true 
+[2026-09-17 12:54:49]	[EmigTest] SHOT relabel_violence 
+[2026-09-17 12:55:05]	[EmigTest] DONE modtest125 finished 

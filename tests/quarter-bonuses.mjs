@@ -109,9 +109,12 @@ function checkEntry(key, entry) {
   assert.equal(quarterQuote(null, "a"), null, "null civ → no quote");
 
   const disp = quoteDisplay(QUARTER_QUOTES.CIVILIZATION_ROME.a);
-  assert.ok(disp.startsWith('"') && disp.includes(" — Frontinus"), "display wraps the text in quotes and em-dashes the speaker");
+  // The attribution follows the closing quote with NO dash: the dilemma view splits there and prints it
+  // on its own line, and the em dash was being printed at the head of that line.
+  assert.ok(disp.startsWith('"') && disp.includes('" Frontinus'), "display wraps the text in quotes and names the speaker after it");
+  assert.ok(!disp.includes("\u2014"), "and uses no em dash");
   // A parenthetical source joins with a space (no stray comma); a normal source with a comma.
-  assert.ok(quoteDisplay(QUARTER_QUOTES.CIVILIZATION_SHAWNEE.a).includes("Tecumseh (1810)"), "parenthetical source joins with a space");
+  assert.ok(quoteDisplay(QUARTER_QUOTES.CIVILIZATION_TONGA.a).includes("motto of the Kingdom of Tonga (1875)"), "parenthetical source joins with a space");
   assert.ok(quoteDisplay(QUARTER_QUOTES.CIVILIZATION_ROME.b).includes("Aelius Aristides, Roman Oration"), "worded source joins with a comma");
   assert.equal(quoteDisplay(null), "", "no quote → empty display");
 }

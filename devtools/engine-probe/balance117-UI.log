@@ -1,0 +1,18 @@
+[2026-09-17 10:58:27]	[EmigProbe] shell attached 
+[2026-09-17 10:58:28]	[EmigProbe] shell query complete 
+[2026-09-17 10:58:29]	[EmigProbe] shell found AugustusAnt65.Civ7Save turn 65 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-17 10:58:29]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 10:58:46]	[EmigTest] modtest117 attached 
+[2026-09-17 10:59:03]	[EmigTest] modtest117 run local=0 bootstrap=object audit=object ledger=object 
+[2026-09-17 10:59:28]	[EmigTest] T n=1 minorObs=10 majorObs=0 oldAtThr=5 prevented=3 ptsAvoided=7 bad=0 
+[2026-09-17 10:59:28]	[EmigTest] --- VERDICT --- 
+[2026-09-17 10:59:28]	[EmigTest] bootstrap: emigration=object audit=object ledger={"tracking":true,"turn":66,"cities":5,"seen":11} 
+[2026-09-17 10:59:28]	[EmigTest] config:    {"minorViolenceScale":0.4,"minorSiegeBesiegedFloor":0.08,"siegeBesiegedFloor":0.3,"warSurgeMax":3} threshold=2 
+[2026-09-17 10:59:28]	[EmigTest] turns=1 observations: minorOnly=10 withMajor=0 minorCities=10 
+[2026-09-17 10:59:28]	[EmigTest] checks:    misclassified=0 amplified=0 majorAltered=0 invariantBreaks=0 
+[2026-09-17 10:59:28]	[EmigTest] refugees:  oldRulesAtThreshold=5 prevented=3 pointsAvoided~7 actualWarRefugees minorCities=1 otherCities=0 
+[2026-09-17 10:59:28]	[EmigTest] naming:    fights=3 named=3 selfNamed=0 (each event read once) 
+[2026-09-17 10:59:28]	[EmigTest] RESULT MECHANISM PASS: 10 minor-only raids downgraded correctly; 0 raids with a major left untouched 
+[2026-09-17 10:59:28]	[EmigTest] RESULT OUTCOME PASS: 3 of 5 at-threshold turns under the old rules were below it now; ~7 refugee points avoided 
+[2026-09-17 10:59:28]	[EmigTest] --- END VERDICT --- 
+[2026-09-17 10:59:32]	[EmigTest] DONE modtest117 finished 

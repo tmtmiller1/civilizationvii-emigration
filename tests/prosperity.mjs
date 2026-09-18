@@ -10,6 +10,11 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 // tests toggle happinessShaped on and restore it to this legacy baseline.
 CONFIG.happinessShaped = false;
 CONFIG.overcrowdDiscount = 0;
+// The per-capita divisor and the built-environment term are pinned to their legacy/neutral values
+// for the same reason: these fixtures hand-compute `yields / population`, so a divisor exponent or
+// an added term would invalidate every expectation here. Both get their own tests below.
+CONFIG.popExponent = 1;
+CONFIG.builtEnabled = false;
 CONFIG.foodFactor = 1.0;
 CONFIG.productionFactor = 1.0;
 CONFIG.goldFactor = 1.0;
@@ -330,5 +335,63 @@ testStageTermScales();
 testGovernmentLeanClamped();
 testWarWearinessIsSituationalPush();
 testPolityModelOffRestoresBaseline();
+
+
+// ── popExponent: a large settlement keeps more of what it has built ──────────
+// A straight per-head average divides everything a settlement builds by its own size, so a big city
+// could never out-build the flat populationFactor penalty. An exponent below 1 softens that.
+function testPopExponentSoftensTheDivisor() {
+  const big = signal({ food: 40, production: 40, population: 16, happiness: 0 });
+  CONFIG.popExponent = 1;
+  const linear = prosperity(big); // 80/16 = 5, minus pop 16 → -11
+  CONFIG.popExponent = 0.5;
+  const softened = prosperity(big); // 80/4 = 20, minus pop 16 → 4
+  assert.equal(linear, 80 / 16 - 16, "at 1 the divisor is a straight per-head average");
+  assert.equal(softened, 80 / Math.sqrt(16) - 16, "below 1 the divisor grows more slowly than population");
+  assert.ok(softened > linear, "so a large settlement keeps more of what it produces");
+  // A size-1 settlement is unaffected either way: 1^k === 1, so this cannot secretly re-tune towns.
+  const tiny = signal({ food: 10, population: 1 });
+  CONFIG.popExponent = 1;
+  const t1 = prosperity(tiny);
+  CONFIG.popExponent = 0.5;
+  assert.equal(prosperity(tiny), t1, "a settlement of 1 is identical at any exponent");
+  // An unusable exponent falls back to the linear divisor rather than producing nonsense.
+  for (const bad of [0, 1, 1.5, -1, NaN, undefined]) {
+    CONFIG.popExponent = bad;
+    assert.equal(prosperity(big), linear, `popExponent ${String(bad)} falls back to the per-head average`);
+  }
+  CONFIG.popExponent = 1;
+}
+
+// ── the built-environment term: what a settlement HOLDS, not what it makes ───
+function testBuiltTermIsFlatAndBounded() {
+  CONFIG.builtEnabled = true;
+  const base = signal({ food: 10, production: 10, population: 2, happiness: 5 }); // base 38
+  assert.equal(prosperity({ ...base, built: 0 }), 38, "nothing built changes nothing");
+  assert.equal(prosperity({ ...base, built: 3 }), 41, "the term is added straight to the score");
+  // NOT per-capita: the same built score is worth the same in a settlement eight times the size. This
+  // is the whole point of the term, and a per-capita mutant dies here.
+  const small = { ...signal({ food: 10, production: 10, population: 2, happiness: 5 }), built: 3 };
+  const large = { ...signal({ food: 80, production: 80, population: 16, happiness: 5 }), built: 3 };
+  const smallGain = prosperity(small) - prosperity({ ...small, built: 0 });
+  const largeGain = prosperity(large) - prosperity({ ...large, built: 0 });
+  assert.ok(Math.abs(smallGain - largeGain) < 1e-9,
+    "a wonder is worth the same in a big settlement as in a small one");
+  // Bounded: a corrupted or runaway signal cannot swamp the score.
+  const prevCap = CONFIG.builtCap;
+  CONFIG.builtCap = 6;
+  assert.equal(prosperity({ ...base, built: 1000 }), 44, "the term is clamped to builtCap");
+  CONFIG.builtCap = prevCap;
+  // Off is total, and a signal predating the term (or a negative one) contributes nothing.
+  CONFIG.builtEnabled = false;
+  assert.equal(prosperity({ ...base, built: 5 }), 38, "disabled, the term contributes nothing");
+  CONFIG.builtEnabled = true;
+  assert.equal(prosperity(base), 38, "a signal with no `built` field at all is unchanged");
+  assert.equal(prosperity({ ...base, built: -5 }), 38, "a negative built score never becomes a penalty");
+  CONFIG.builtEnabled = false;
+}
+
+testPopExponentSoftensTheDivisor();
+testBuiltTermIsFlatAndBounded();
 
 console.log("prosperity harness passed");

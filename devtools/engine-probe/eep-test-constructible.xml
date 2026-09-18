@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Probe-only: ONE custom improvement that is never buildable (RequiresUnlock with no unlock row,
+     CityBuildable/TownBuildable false). Placed only by CREATE_ELEMENT from the probe. Tests whether a
+     non-buildable custom constructible (a) can be placed at runtime and (b) survives AI turns without
+     the ConstructibleBroker crash that killed the universally-buildable enclave improvement. -->
+<Database>
+    <Types>
+        <Row Type="IMPROVEMENT_EMIG_TEST_ENCLAVE" Kind="KIND_CONSTRUCTIBLE"/>
+    </Types>
+    <Constructibles>
+        <Row ConstructibleType="IMPROVEMENT_EMIG_TEST_ENCLAVE" Name="LOC_IMPROVEMENT_EMIG_TEST_ENCLAVE_NAME" Description="LOC_IMPROVEMENT_EMIG_TEST_ENCLAVE_DESCRIPTION" Tooltip="LOC_IMPROVEMENT_EMIG_TEST_ENCLAVE_TOOLTIP" ConstructibleClass="IMPROVEMENT" Cost="40" Population="1" Age="AGE_ANTIQUITY" CostProgressionModel="NO_COST_PROGRESSION" CostProgressionParam1="0" RequiresUnlock="true"/>
+    </Constructibles>
+    <Improvements>
+        <Row ConstructibleType="IMPROVEMENT_EMIG_TEST_ENCLAVE" Domain="DOMAIN_LAND" CanBuildOnNonDistrict="true" CanBuildOutsideTerritory="false" ResourceTier="0" CityBuildable="false" TownBuildable="false" Workable="true"/>
+    </Improvements>
+    <Constructible_ValidDistricts>
+        <Row ConstructibleType="IMPROVEMENT_EMIG_TEST_ENCLAVE" DistrictType="DISTRICT_RURAL"/>
+    </Constructible_ValidDistricts>
+    <Constructible_ValidTerrains>
+        <Row ConstructibleType="IMPROVEMENT_EMIG_TEST_ENCLAVE" TerrainType="TERRAIN_FLAT"/>
+        <Row ConstructibleType="IMPROVEMENT_EMIG_TEST_ENCLAVE" TerrainType="TERRAIN_HILL"/>
+    </Constructible_ValidTerrains>
+    <Constructible_YieldChanges>
+        <Row ConstructibleType="IMPROVEMENT_EMIG_TEST_ENCLAVE" YieldType="YIELD_CULTURE" YieldChange="3"/>
+        <Row ConstructibleType="IMPROVEMENT_EMIG_TEST_ENCLAVE" YieldType="YIELD_GOLD" YieldChange="2"/>
+    </Constructible_YieldChanges>
+</Database>

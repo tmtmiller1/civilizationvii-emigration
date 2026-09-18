@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PROBE-ONLY. Never shipped: this lives in devtools/engine-probe and is loaded only by the throwaway
+     emig-engine-probe mod, via EXTRA_DATA=eep-crisis-plague.xml.
+
+     The plague crisis is the one engine surface the mod reads that had never been watched true
+     (city.isInfected). Reaching it honestly costs most of an age: stage 1 fires at 70% age progression and
+     AugustusExp66 sits at 41.3% (66/160 points, about one point a turn), so ~46 turns, and only if THIS game
+     had picked plague rather than the religion crisis.
+
+     So this override does two things, both only in the probe's database:
+       1. Removes the religion crisis entirely, so plague is the only crisis left to select. Its stage rows go
+          first: they carry the foreign key to the event row, and deleting the parent first would dangle them.
+       2. Drops plague stage 1 from 70% to 42%, just above the save's current 41.3%, so it triggers within a
+          couple of turns instead of forty-odd. Later stages are pulled down to match so the sequence stays
+          ordered (a stage that triggers before the previous one ends would be nonsense).
+
+     If the engine picks the crisis at trigger time from what the database offers, this forces plague. If the
+     choice was already fixed when the save was made, nothing here can change it -- and that is exactly the
+     hypothesis the probe run is testing. -->
+<Database>
+    <AgeCrisisStages>
+        <Delete AgeCrisisEventType="EXPLORATION_CRISIS_RELIGION"/>
+        <Update>
+            <Where AgeCrisisEventType="EXPLORATION_CRISIS_PLAGUE" Stage="1"/>
+            <Set AgeProgressTriggerPercent="42" AgeProgressEndPercent="50"/>
+        </Update>
+        <Update>
+            <Where AgeCrisisEventType="EXPLORATION_CRISIS_PLAGUE" Stage="2"/>
+            <Set AgeProgressTriggerPercent="50" AgeProgressEndPercent="60"/>
+        </Update>
+        <Update>
+            <Where AgeCrisisEventType="EXPLORATION_CRISIS_PLAGUE" Stage="3"/>
+            <Set AgeProgressTriggerPercent="60" AgeProgressEndPercent="70"/>
+        </Update>
+        <Update>
+            <Where AgeCrisisEventType="EXPLORATION_CRISIS_PLAGUE" Stage="4"/>
+            <Set AgeProgressTriggerPercent="70" AgeProgressEndPercent="80"/>
+        </Update>
+    </AgeCrisisStages>
+    <AgeCrisisEvents>
+        <Delete AgeCrisisEventType="EXPLORATION_CRISIS_RELIGION"/>
+    </AgeCrisisEvents>
+</Database>

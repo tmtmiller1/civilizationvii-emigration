@@ -1,0 +1,41 @@
+[2026-09-12 22:07:13]	[EmigProbe] shell attached 
+[2026-09-12 22:07:14]	[EmigProbe] shell query complete 
+[2026-09-12 22:07:14]	[EmigProbe] shell found AutoSave_00_0158.Civ7Save turn 158 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-12 22:07:14]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-12 22:07:33]	[EmigTest] modtest4 attached 
+[2026-09-12 22:07:36]	[EmigTest] EVENT AgeProgressionChanged turn=158 
+[2026-09-12 22:07:36]	[EmigTest] TURN activated n=1 turn=158 age=AGE_ANTIQUITY ALIVE 
+[2026-09-12 22:07:46]	[EmigTest] START turn=158 age=AGE_ANTIQUITY place=true dataLoaded=true 
+[2026-09-12 22:07:46]	[EmigTest] PLACE London owner=0 -> {"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","plot":3161} 
+[2026-09-12 22:07:46]	[EmigTest] PLACE Paris owner=4 -> {"type":"IMPROVEMENT_EMIG_ENCLAVE_GREECE_B","plot":4689,"replaced":"IMPROVEMENT_MINE"} 
+[2026-09-12 22:07:52]	[EmigTest] PLACED London IMPROVEMENT_EMIG_ENCLAVE_ROME_A plot 3161 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_ROME_A"] 
+[2026-09-12 22:07:52]	[EmigTest] PLACED Paris IMPROVEMENT_EMIG_ENCLAVE_GREECE_B plot 4689 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] 
+[2026-09-12 22:07:52]	[EmigTest] AUTOPLAY through the transition (8 turns) 
+[2026-09-12 22:08:04]	[EmigTest] EVENT AgeProgressionChanged turn=159 
+[2026-09-12 22:08:16]	[EmigTest] EVENT AgeProgressionChanged turn=160 
+[2026-09-12 22:08:16]	[EmigTest] EVENT GameAgeEnded turn=160 
+[2026-09-12 22:08:42]	[EmigTest] modtest4 attached 
+[2026-09-12 22:08:47]	[EmigTest] EVENT AgeProgressionChanged turn=1 
+[2026-09-12 22:08:48]	[EmigTest] TURN activated n=1 turn=1 age=AGE_EXPLORATION ALIVE 
+[2026-09-12 22:08:55]	[EmigTest] START turn=1 age=AGE_EXPLORATION place=true dataLoaded=true 
+[2026-09-12 22:08:55]	[EmigTest] PLACE London owner=0 -> {"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","plot":2873} 
+[2026-09-12 22:08:55]	[EmigTest] PLACE Paris owner=4 -> {"type":"IMPROVEMENT_EMIG_ENCLAVE_GREECE_B","plot":4689,"replaced":"IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"} 
+[2026-09-12 22:08:56]	[EmigTest] EVENT AgeProgressionChanged turn=2 
+[2026-09-12 22:08:56]	[EmigTest] TURN activated n=2 turn=2 age=AGE_EXPLORATION ALIVE 
+[2026-09-12 22:08:56]	[EmigTest] CHECK London IMPROVEMENT_EMIG_ENCLAVE_ROME_A plot 2873 standing=false plotNow=[] 
+[2026-09-12 22:08:56]	[EmigTest] CHECK Paris IMPROVEMENT_EMIG_ENCLAVE_GREECE_B plot 4689 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] 
+[2026-09-12 22:09:01]	[EmigTest] PLACED London IMPROVEMENT_EMIG_ENCLAVE_ROME_A plot 2873 standing=false plotNow=[] 
+[2026-09-12 22:09:01]	[EmigTest] PLACED Paris IMPROVEMENT_EMIG_ENCLAVE_GREECE_B plot 4689 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] 
+[2026-09-12 22:09:01]	[EmigTest] AUTOPLAY through the transition (8 turns) 
+[2026-09-12 22:09:04]	[EmigTest] EVENT AgeProgressionChanged turn=3 
+[2026-09-12 22:09:11]	[EmigTest] EVENT AgeProgressionChanged turn=4 
+[2026-09-12 22:09:23]	[EmigTest] EVENT AgeProgressionChanged turn=5 
+[2026-09-12 22:09:35]	[EmigTest] EVENT AgeProgressionChanged turn=6 
+[2026-09-12 22:09:51]	[EmigTest] EVENT AgeProgressionChanged turn=7 
+[2026-09-12 22:10:02]	[EmigTest] EVENT AgeProgressionChanged turn=8 
+[2026-09-12 22:10:13]	[EmigTest] EVENT AgeProgressionChanged turn=9 
+[2026-09-12 22:10:24]	[EmigTest] EVENT AgeProgressionChanged turn=10 
+[2026-09-12 22:10:31]	[EmigTest] EVENT AgeProgressionChanged turn=11 
+[2026-09-12 22:10:31]	[EmigTest] TURN activated n=3 turn=11 age=AGE_EXPLORATION ALIVE 
+[2026-09-12 22:10:31]	[EmigTest] CHECK London IMPROVEMENT_EMIG_ENCLAVE_ROME_A plot 2873 standing=false plotNow=[] 
+[2026-09-12 22:10:31]	[EmigTest] CHECK Paris IMPROVEMENT_EMIG_ENCLAVE_GREECE_B plot 4689 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] 

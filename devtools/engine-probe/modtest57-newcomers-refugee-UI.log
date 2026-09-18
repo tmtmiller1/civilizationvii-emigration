@@ -1,0 +1,14 @@
+[2026-09-17 13:34:42]	[EmigProbe] shell attached 
+[2026-09-17 13:34:43]	[EmigProbe] shell query complete 
+[2026-09-17 13:34:44]	[EmigProbe] shell found AugustusAnt49.Civ7Save turn 49 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-17 13:34:44]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 13:35:00]	[EmigTest] modtest34 attached 
+[2026-09-17 13:35:17]	[EmigTest] START turn=49 home=Bristol foreignOwner=1 foreignCiv=CIVILIZATION_MEXICO 
+[2026-09-17 13:35:17]	[EmigTest] knownOwner=2 knownCiv=CIVILIZATION_SPAIN 
+[2026-09-17 13:35:17]	[EmigTest] ARRIVAL-UNMET arriveRural=true mode=2 flushedAgain=0 
+[2026-09-17 13:35:18]	[EmigTest] ARRIVAL-UNMET title="Refugees in Bristol" quoteRows=["\"Litwo! Ojczyzno moja! ty jesteś jak zdrowie; / Ile cię trzeba","cenić, ten tylko się dowie / Kto cię stracił.","(Lithuania, my country, thou art like health; how much thou","shouldst be prized only he can learn who has lost thee.)\"","— Adam Mickiewicz, Pan Tadeusz (1834, trans. Noyes)"] rowSizes=[[497,23],[353,23],[494,23],[477,23],[406,21]] 
+[2026-09-17 13:35:18]	[EmigTest] SHOT quote-ARRIVAL-UNMET 
+[2026-09-17 13:35:40]	[EmigTest] ARRIVAL-MET arriveRural=true mode=2 flushedAgain=0 
+[2026-09-17 13:35:41]	[EmigTest] ARRIVAL-MET title="Refugees in Bristol" quoteRows=["\"Doquiera que estamos lloramos por España, que, en fin, nacimos","en ella y es nuestra patria natural","(Wherever we are we weep for Spain; for after all we were born","there and it is our natural fatherland.)\"","— Ricote the Morisco, in Cervantes, Don Quixote II.54 (1615,","trans. Ormsby)"] rowSizes=[[552,23],[281,23],[534,23],[324,23],[450,21],[109,21]] 
+[2026-09-17 13:35:41]	[EmigTest] SHOT quote-ARRIVAL-MET 
+[2026-09-17 13:36:03]	[EmigTest] DONE modtest34 finished 

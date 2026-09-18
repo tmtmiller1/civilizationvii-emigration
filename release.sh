@@ -118,7 +118,7 @@ echo "==> Verifying zip contents against allow-list"
 ALLOW='^emigration/(emigration\.modinfo|README\.md|LICENSE|CHANGELOG\.md)$'
 ALLOW="$ALLOW"'|^emigration/ui/.+\.(js|html|css)$'
 ALLOW="$ALLOW"'|^emigration/images/.+\.(svg|png)$'
-ALLOW="$ALLOW"'|^emigration/text/[a-z_]+/ModText\.xml$'
+ALLOW="$ALLOW"'|^emigration/text/[a-z_]+/(ModText|EnclaveText)\.xml$'
 ALLOW="$ALLOW"'|^emigration/data/.+\.(xml|sql)$'
 UNEXPECTED="$(unzip -Z1 "$ZIP_PATH" | grep -vE '/$' | grep -vE "$ALLOW" || true)"
 if [ -n "$UNEXPECTED" ]; then
@@ -191,13 +191,36 @@ if [ -n "$PUBLISHED_FILE_ID" ] && [ -f "$CHANGELOG_FILE" ]; then
         }
         END { flush() }
     ' "$CHANGELOG_FILE" \
+        | awk '{
+            # The Workshop note is a summary: take the bold headline of each bullet and
+            # skip the entries written without one (module lists and other internal
+            # notes). The full text of every entry is in the linked changelog.
+            if (match($0, /^\*\*[^*]+\*\*/)) { print substr($0, RSTART + 2, RLENGTH - 4) }
+          }' \
         | sed -E 's/^/[*]/; s/\*\*//g; s/`//g' \
         | tr '\n' ' ')"
     if [ -n "$BULLETS" ]; then
+        # Keep the note short. steamcmd's KeyValues parser has choked on long
+        # change notes before (`key name too long (1563 chars)` -> `got } in key`
+        # -> "Failed to parse build config file"), and the longest note that has
+        # ever uploaded from this repo is ~1.8k chars. A release with fifty
+        # detailed bullets is reduced to its bold headlines above; if even those
+        # run long, the list is cut at a bullet boundary and the reader is sent to
+        # the full changelog on GitHub.
+        NOTE_BUDGET=1800
+        CHANGELOG_URL="https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/CHANGELOG.md"
+        if [ "${#BULLETS}" -gt "$NOTE_BUDGET" ]; then
+            BULLETS="$(printf '%s' "$BULLETS" | cut -c1-"$NOTE_BUDGET")"
+            # Cut back to the last whole bullet so the note never ends mid-sentence.
+            BULLETS="${BULLETS%'[*]'*}"
+            BULLETS="$BULLETS[*]Full changelog: $CHANGELOG_URL"
+        fi
         # Lead with a bold version header so the Workshop change note names the
-        # release, then the BBCode list. Escape backslashes/quotes for the VDF string.
+        # release, then the BBCode list. Double quotes become single quotes: the
+        # VDF is a quoted KeyValues string, and not embedding quotes at all is
+        # cheaper than relying on escaping. Backslashes are still escaped.
         CHANGENOTE="$(printf '[b]v%s[/b] [list]%s[/list]' "$VERSION" "$BULLETS" \
-            | sed -E 's/\\/\\\\/g; s/"/\\"/g')"
+            | sed -E "s/\\\\/\\\\\\\\/g; s/\"/'/g")"
     fi
 fi
 

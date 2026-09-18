@@ -143,6 +143,41 @@ function pressureBand(bar) {
 }
 
 /**
+ * The settlement's named reasons to STAY, as one comma-separated line: its wonders and civic buildings
+ * (a granary, a market, a school), resolved from the database name tags the built-environment model
+ * collected. The panel only ever showed reasons to LEAVE, which made a well-built city read as a
+ * problem with no answer.
+ *
+ * A tag that the engine cannot compose is DROPPED rather than printed raw: off-engine, and for a
+ * building from a module whose text is missing, "LOC_BUILDING_GRANARY_NAME" in the middle of a
+ * sentence is worse than saying nothing.
+ * @param {*} tags The LOC name tags, or anything else.
+ * @returns {string} The joined list, or "" when there is nothing nameable.
+ */
+function stayLine(tags) {
+  if (!Array.isArray(tags) || !tags.length) return "";
+  /** @type {string[]} */
+  const names = [];
+  for (const tag of tags) {
+    if (typeof tag !== "string" || !tag) continue;
+    const composed = loc(tag, "");
+    if (composed && !composed.startsWith("LOC_")) names.push(composed);
+  }
+  return names.join(", ");
+}
+
+/**
+ * Append the "Reasons to stay" row to a pressure column, when there is anything nameable to say.
+ * @param {HTMLElement} col The column. @param {*} tags The LOC name tags.
+ */
+function appendStayRow(col, tags) {
+  const stay = stayLine(tags);
+  if (!stay) return;
+  col.appendChild(el("div", "emig-city-stay",
+    loc("LOC_EMIG_CF_REASONS_TO_STAY", "Reasons to stay: {1_List}", stay)));
+}
+
+/**
  * The pressure bar (track + coloured fill scaled to the level).
  * @param {number} pct Percentage 0..100.
  * @param {string} color Band colour.
@@ -173,13 +208,15 @@ function pressureCol(p) {
   const pct = Math.round((p.bar || 0) * 100);
   const band = pressureBand(p.bar || 0);
   col.appendChild(pressureBar(pct, band.color));
-  const flag = p.flag ? loc("LOC_EMIG_CF_FLAG_PAREN", " ({1_Flag})", p.flag) : "";
+  // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces (mod test 88).
+  const flag = p.flag ? " " + loc("LOC_EMIG_CF_FLAG_PAREN", "({1_Flag})", p.flag).trim() : "";
   const val = el("div", "emig-pr-value", pct + "% · " + band.label + flag);
   val.style.color = band.color;
   col.appendChild(val);
   // The per-city driver meter: the weighted breakdown of WHAT is pushing people out, as proportional
   // bars, so "exactly what drives migration" reads at a glance. Falls back to a single line otherwise.
   if (Array.isArray(p.mix) && p.mix.length) col.appendChild(driverMeter(p.mix));
+  appendStayRow(col, p.stay);
   const sub = (p.cause || "") + (p.dest ? " → " + p.dest : "");
   if (sub.trim()) col.appendChild(el("div", "emig-city-why", loc("LOC_EMIG_CF_HEADING_TO", "Heading to: {1_Sub}", sub)));
   return col;
@@ -278,7 +315,7 @@ function eventSubRow(ev) {
   const row = el("div", "emig-event-row");
   row.appendChild(el("span", "emig-event-name", loc("LOC_EMIG_CF_EVENT_NAME", "↳ {1_Name}", ev.name)));
   let num = formatPeople(ev.people);
-  if (ev.people > 0 && ev.deaths > 0) num += loc("LOC_EMIG_CF_EVENT_BOTH", " · {1_Deaths} died", formatPeople(ev.deaths));
+  if (ev.people > 0 && ev.deaths > 0) num += " " + loc("LOC_EMIG_CF_EVENT_BOTH", "· {1_Deaths} died", formatPeople(ev.deaths)).trim();
   else if (ev.deaths > 0) num = loc("LOC_EMIG_CF_EVENT_DIED", "{1_Deaths} died", formatPeople(ev.deaths));
   row.appendChild(el("span", "emig-event-num", num));
   return row;

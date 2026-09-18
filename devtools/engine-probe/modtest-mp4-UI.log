@@ -1,0 +1,24 @@
+[2026-09-17 16:23:17]	[EmigProbe] shell attached (hotseat) 
+[2026-09-17 16:23:32]	[EmigProbe] shell config reset to hotseat; isHotseat=true isAnyMultiplayer=true 
+[2026-09-17 16:23:35]	[EmigProbe] shell before: humans=[] count=0 ai=[0,1,2,3,4,5] 
+[2026-09-17 16:23:35]	[EmigProbe] shell slot 0 taken (was AI) 
+[2026-09-17 16:23:35]	[EmigProbe] shell slot 1 taken (was AI) 
+[2026-09-17 16:23:35]	[EmigProbe] shell after: humans=[0,1] count=2 
+[2026-09-17 16:23:37]	[EmigProbe] shell startGame called (Play Now, hotseat) 
+[2026-09-17 16:23:49]	[EmigTest] modtest-mp4 attached 
+[2026-09-17 16:24:04]	[EmigTest] modtest-mp4 start (probe 4: hotseat, two humans), startTurn=1 
+[2026-09-17 16:24:04]	[EmigTest] A1 isHotseat=false isAnyMultiplayer=false isNetworkMultiplayer=false isLocalMultiplayer=false 
+[2026-09-17 16:24:04]	[EmigTest] A2 humanPlayerIDs=[0] humanPlayerCount=1 localPlayerID=0 
+[2026-09-17 16:24:04]	[EmigTest] A3 Network.getHostPlayerId=0 Network.isHost=absent config.isHost=undefined 
+[2026-09-17 16:24:04]	[EmigTest] B0 activation who=0 local=0 turn=1 isTurnActive=true 
+[2026-09-17 16:24:08]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:24:13]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:24:18]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=3 
+[2026-09-17 16:24:23]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=4 
+[2026-09-17 16:24:28]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=5 
+[2026-09-17 16:24:33]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=6 
+[2026-09-17 16:24:33]	[EmigTest] endTurn giving up on blockers; reporting what was seen 
+[2026-09-17 16:24:33]	[EmigTest] C1 activations=[{"turn":1,"who":0,"local":0}] 
+[2026-09-17 16:24:33]	[EmigTest] C2 activationsPerGameTurn={"1":1} distinctLocalIds=[0] 
+[2026-09-17 16:24:33]	[EmigTest] VERDICT HUMANS=1 ACTIVATIONS_PER_TURN_MAX=1 INCONCLUSIVE (needed two humans) 
+[2026-09-17 16:24:33]	[EmigTest] DONE modtest4 finished 

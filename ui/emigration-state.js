@@ -278,6 +278,37 @@ export function prepareState(state, ranked) {
   }
 }
 
+/** Below this a decayed pressure snaps to 0, so a drained source reads as genuinely idle. */
+const PRESSURE_FLOOR = 0.01;
+
+/**
+ * Bleed every source's accumulated emigration pressure toward zero, once per pass, BEFORE the turn's
+ * pull is added to it.
+ *
+ * The accumulator used to be a one-way ratchet: it rose while a settlement had somewhere better to be
+ * and only ever came back down by firing a migrant. A city charged up by a siege therefore kept that
+ * charge long after the fighting stopped and eventually discharged it as an ordinary "prosperity"
+ * move — the war laundered into a peacetime cause, many turns late. Decaying here makes the charge a
+ * reading of CURRENT conditions in both directions: it falls when a settlement's reasons to leave
+ * fade, without waiting for anyone to leave. A move still zeroes it, exactly as before.
+ *
+ * Runs over the whole persisted map rather than the live ranking, so a source that is resting on
+ * cooldown, has no viable destination, or is skipped this pass drains too instead of freezing at its
+ * old value — freezing is the bug this exists to remove.
+ * @param {*} state Loaded state (its `sources` map is mutated in place).
+ * @param {number} retention Per-turn retention in [0, 1). 1, or anything unusable, leaves the
+ *   accumulator alone (the legacy ratchet). Speed re-basing is the caller's job.
+ */
+export function tickPressure(state, retention) {
+  if (!(retention >= 0) || retention >= 1) return;
+  const sources = state && state.sources;
+  if (!sources) return;
+  for (const k of Object.keys(sources)) {
+    const v = finiteNumberOr(sources[k].pressure, 0) * retention;
+    sources[k].pressure = v < PRESSURE_FLOOR ? 0 : v;
+  }
+}
+
 /**
  * Sum total population per owner across the ranking (for the congestion headwind).
  * @param {*[]} ranked Ranked signals.

@@ -315,9 +315,11 @@ function maybeNotifyDisaster(data, sev, struck, where) {
 function disasterAlert(name, where) {
   const place = where ? (where.city ? where.city + " (" + where.civ + ")" : where.civ) : null;
   const head = place
-    ? tr("LOC_EMIG_DISASTER_STRIKES_AT", "{1_Name} strikes {2_Place}! ", name, place)
-    : tr("LOC_EMIG_DISASTER_STRIKES", "{1_Name} strikes! ", name);
-  return head + actionHint("disaster");
+    ? tr("LOC_EMIG_DISASTER_STRIKES_AT", "{1_Name} strikes {2_Place}!", name, place)
+    : tr("LOC_EMIG_DISASTER_STRIKES", "{1_Name} strikes!", name);
+  // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces (mod test 88),
+  // so a trailing space in the row never survives to separate this from the hint.
+  return head.trim() + " " + actionHint("disaster");
 }
 
 /**

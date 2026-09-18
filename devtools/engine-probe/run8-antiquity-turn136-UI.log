@@ -1,0 +1,29 @@
+[2026-09-12 19:59:03]	[EmigProbe] shell attached 
+[2026-09-12 19:59:04]	[EmigProbe] shell query complete 
+[2026-09-12 19:59:04]	[EmigProbe] shell found AugustusAnt136.Civ7Save turn 136 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-12 19:59:04]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-12 19:59:22]	[EmigProbe] game attached (run 8) 
+[2026-09-12 19:59:27]	[EmigProbe] LOAD GameStarted 
+[2026-09-12 19:59:35]	[EmigProbe] TARGETS F=St. Petersburg owner 2 totalsBefore={"cities":5,"pop":57,"rural":31,"urban":24,"specialists":2,"improvements":31,"pending":0} units=16 migrantsBefore=0 
+[2026-09-12 19:59:38]	[EmigProbe] E3 migrant ring 1 at {"x":69,"y":53} -> {"id":2686989,"type":"UNIT_MIGRANT","x":69,"y":53} 
+[2026-09-12 19:59:41]	[EmigProbe] E3 migrant ring 2 at {"x":68,"y":53} -> {"id":2752522,"type":"UNIT_MIGRANT","x":68,"y":53} 
+[2026-09-12 19:59:41]	[EmigProbe] E3 totalsAfterSpawn={"cities":5,"pop":57,"rural":31,"urban":24,"specialists":2,"improvements":31,"pending":0} migrants=2 
+[2026-09-12 19:59:41]	[EmigProbe] G3 St. Petersburg owner 2 specialists=2 canStart ok on plot 5350 sent -> false placementInfo={"PlotIndex":5350,"CityID":{"owner":2,"id":65536,"type":1},"NumWorkers":0,"MaxWorkers":1,"IsBlocked":false,"CurrentYields":[0,0,0,0,0,0,0],"CurrentMaintenance":[0,0,0,0,0,0,0],"NextYields":[0,0,0,4,0,0,0],"NextMaintenance":[2,0,0,0,0,2,0]} 
+[2026-09-12 19:59:45]	[EmigProbe] G3 after 4s specialists=2 
+[2026-09-12 19:59:53]	[EmigProbe] H2 custom improvement in St. Petersburg replacing IMPROVEMENT_CAMP -> true plotNow=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] pop 24->25 culture 96.8->100.1 
+[2026-09-12 19:59:53]	[EmigProbe] TURN1 actions done; ending turns 
+[2026-09-12 20:00:13]	[EmigProbe] TURN activated n=2 turn=137 ALIVE 
+[2026-09-12 20:00:16]	[EmigProbe] WATCH n=2 turn=137 totals={"cities":5,"pop":57,"rural":31,"urban":24,"specialists":2,"improvements":31,"pending":0} migrantsAlive=[true,true] migrantsNow=2 testPlot=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] specCitySpecialists=2 
+[2026-09-12 20:00:36]	[EmigProbe] TURN activated n=3 turn=138 ALIVE 
+[2026-09-12 20:00:39]	[EmigProbe] WATCH n=3 turn=138 totals={"cities":5,"pop":57,"rural":31,"urban":24,"specialists":2,"improvements":31,"pending":0} migrantsAlive=[false,true] migrantsNow=1 testPlot=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] specCitySpecialists=2 
+[2026-09-12 20:00:57]	[EmigProbe] TURN activated n=4 turn=139 ALIVE 
+[2026-09-12 20:01:00]	[EmigProbe] WATCH n=4 turn=139 totals={"cities":5,"pop":57,"rural":31,"urban":24,"specialists":2,"improvements":31,"pending":0} migrantsAlive=[false,false] migrantsNow=0 testPlot=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] specCitySpecialists=2 
+[2026-09-12 20:01:22]	[EmigProbe] TURN activated n=5 turn=140 ALIVE 
+[2026-09-12 20:01:25]	[EmigProbe] WATCH n=5 turn=140 totals={"cities":5,"pop":57,"rural":30,"urban":25,"specialists":2,"improvements":31,"pending":0} migrantsAlive=[false,false] migrantsNow=0 testPlot=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] specCitySpecialists=2 
+[2026-09-12 20:01:42]	[EmigProbe] TURN activated n=6 turn=141 ALIVE 
+[2026-09-12 20:01:45]	[EmigProbe] WATCH n=6 turn=141 totals={"cities":5,"pop":59,"rural":32,"urban":25,"specialists":2,"improvements":32,"pending":0} migrantsAlive=[false,false] migrantsNow=0 testPlot=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] specCitySpecialists=2 
+[2026-09-12 20:02:03]	[EmigProbe] TURN activated n=7 turn=142 ALIVE 
+[2026-09-12 20:02:06]	[EmigProbe] WATCH n=7 turn=142 totals={"cities":5,"pop":59,"rural":32,"urban":25,"specialists":2,"improvements":32,"pending":0} migrantsAlive=[false,false] migrantsNow=0 testPlot=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] specCitySpecialists=2 
+[2026-09-12 20:02:25]	[EmigProbe] TURN activated n=8 turn=143 ALIVE 
+[2026-09-12 20:02:28]	[EmigProbe] WATCH n=8 turn=143 totals={"cities":5,"pop":59,"rural":32,"urban":25,"specialists":2,"improvements":32,"pending":0} migrantsAlive=[false,false] migrantsNow=0 testPlot=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] specCitySpecialists=2 
+[2026-09-12 20:02:28]	[EmigProbe] DONE run 8 finished 

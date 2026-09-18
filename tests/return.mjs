@@ -18,7 +18,7 @@ globalThis.Configuration = {
 
 const { __test } = await import("/emigration/ui/emigration-return.js");
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
-const { eligibleDiaspora, prosperingOwners, homelandCitiesByOwner, returnAllowed } = __test;
+const { eligibleDiaspora, prosperingOwners, homelandCitiesByOwner, returnAllowed, returnRoll, hasRoots, returnRateFor } = __test;
 
 const sig = (owner, population, happiness, starving) => ({ owner, population, happiness, starving: !!starving });
 
@@ -65,6 +65,52 @@ const sig = (owner, population, happiness, starving) => ({ owner, population, ha
   assert.ok(!returnAllowed(1, 9, "HostFromSave", ctx), "legacy persisted cooldown should be honored");
   // A used config value should be present (sanity that the module is wired to CONFIG).
   assert.equal(typeof CONFIG.returnCooldownTurns, "number", "cooldown config is present");
+}
+
+// ── put down roots: an origin whose enclave stands in the host returns at a reduced rate ──
+{
+  const { putQuarter, dropQuarter } = await import("/emigration/ui/emigration-quarter-state.js");
+  const city = { location: { x: 7, y: 3 } };
+  const base = CONFIG.returnRate;
+  assert.equal(returnRateFor(city, 9), base, "no enclave → the full rate");
+  putQuarter("7,3", { civ: 9, originCiv: "CIVILIZATION_CARTHAGE", owner: 1, optionId: "a", turn: 1,
+    applied: { benefitYield: null, benefitAmount: 0, penaltyYield: null, penaltyAmount: 0 }, contested: false, contestedTurn: -999,
+    placed: { type: "IMPROVEMENT_CARAVANSERAI", plot: 102, enclave: "IMPROVEMENT_EMIG_ENCLAVE_CARTHAGE_A" } });
+  assert.ok(hasRoots(city, 9), "the enclave's own origin has put down roots");
+  assert.ok(!hasRoots(city, 4), "another origin in the same city has not");
+  assert.ok(!hasRoots({ location: { x: 1, y: 1 } }, 9), "the same origin elsewhere has not");
+  assert.equal(returnRateFor(city, 9), base * CONFIG.quarterRootsReturnScale, "rooted → the scaled rate");
+  assert.equal(returnRateFor(city, 4), base, "a different origin keeps the full rate");
+  const was = CONFIG.quarterRootsReturnScale;
+  CONFIG.quarterRootsReturnScale = 0;
+  assert.equal(returnRateFor(city, 9), 0, "Strong: none return");
+  CONFIG.quarterRootsReturnScale = 1;
+  assert.equal(returnRateFor(city, 9), base, "Off: the normal rate");
+  CONFIG.quarterRootsReturnScale = was;
+  dropQuarter("7,3");
+}
+
+// ── the return roll: reload-stable, near its rate, and varied per game by the seed ──
+{
+  const hosts = Array.from({ length: 2000 }, (_, i) => "Host" + i);
+  const hitsA = hosts.filter((h) => returnRoll(h, 50, 0.06));
+  assert.deepEqual(hosts.filter((h) => returnRoll(h, 50, 0.06)), hitsA, "same inputs → same outcome");
+  assert.ok(hitsA.length > 60 && hitsA.length < 180, "about 6% of hosts roll a return: " + hitsA.length);
+  assert.equal(hosts.filter((h) => returnRoll(h, 50, 0)).length, 0, "rate 0 never returns");
+  const game = globalThis.Configuration.getGame;
+  globalThis.Configuration.getGame = () => ({ ...game(), gameSeed: 424242 });
+  const hitsB = hosts.filter((h) => returnRoll(h, 50, 0.06));
+  assert.notDeepEqual(hitsB, hitsA, "a different game seed changes which hosts return");
+  assert.ok(hitsB.length > 60 && hitsB.length < 180, "the seeded roll keeps its rate: " + hitsB.length);
+  assert.deepEqual(hosts.filter((h) => returnRoll(h, 50, 0.06)), hitsB, "the same game stays reload-stable");
+  // Consecutive turns for ONE host must also roll near the rate (mod test 68: without a final avalanche the
+  // turn-suffixed seed rolled almost the same value every turn, so London could never return).
+  for (const host of ["London", "Kumbi Saleh", "Leeds"]) {
+    let n = 0;
+    for (let t = 1; t <= 2000; t++) if (returnRoll(host, t, 0.06)) n++;
+    assert.ok(n > 80 && n < 160, host + " rolls near 6% across consecutive turns: " + n + "/2000");
+  }
+  globalThis.Configuration.getGame = game;
 }
 
 delete globalThis.Configuration;

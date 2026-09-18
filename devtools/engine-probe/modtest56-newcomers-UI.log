@@ -1,0 +1,12 @@
+[2026-09-17 13:33:17]	[EmigProbe] shell attached 
+[2026-09-17 13:33:18]	[EmigProbe] shell query complete 
+[2026-09-17 13:33:19]	[EmigProbe] shell found AugustusAnt49.Civ7Save turn 49 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-17 13:33:19]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 13:33:35]	[EmigTest] modtest34 attached 
+[2026-09-17 13:33:52]	[EmigTest] START turn=49 home=Bristol foreignOwner=1 foreignCiv=CIVILIZATION_MEXICO 
+[2026-09-17 13:33:52]	[EmigTest] knownOwner=2 knownCiv=CIVILIZATION_SPAIN 
+[2026-09-17 13:33:52]	[EmigTest] ARRIVAL-UNMET arriveRural=true mode=2 flushedAgain=0 
+[2026-09-17 13:33:57]	[EmigTest] ARRIVAL-UNMET no dialog appeared 
+[2026-09-17 13:33:57]	[EmigTest] ARRIVAL-MET arriveRural=true mode=2 flushedAgain=0 
+[2026-09-17 13:34:01]	[EmigTest] ARRIVAL-MET no dialog appeared 
+[2026-09-17 13:34:01]	[EmigTest] DONE modtest34 finished 

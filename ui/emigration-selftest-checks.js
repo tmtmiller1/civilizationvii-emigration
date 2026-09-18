@@ -20,6 +20,11 @@ import { migrationCause } from "/emigration/ui/emigration-pull.js";
 import { contestedBenefitScale } from "/emigration/ui/emigration-quarter.js";
 import { quartersForOwner } from "/emigration/ui/emigration-quarter-state.js";
 import { immigrationOpenness, borderStance } from "/emigration/ui/emigration-borders.js";
+import { departureTileApiAvailable, findDepartureTile } from "/emigration/ui/emigration-departure-tile.js";
+import { enclaveIndex, enclaveTypeFor } from "/emigration/ui/emigration-enclave-place.js";
+import { placementMode, PLACEMENT } from "/emigration/ui/emigration-arrival-placement.js";
+import { pullReasonsPhrase, reasonLabel } from "/emigration/ui/emigration-move-reasons.js";
+import { digestAccent } from "/emigration/ui/emigration-causes.js";
 
 /** A number, coerced (NaN/undefined → 0). @param {*} x @returns {number} */
 function num(x) {
@@ -353,6 +358,157 @@ function checkClosedBorderThrottle() {
   }
 }
 
+// ── departures and arrivals made real (2026-09) ─────────────────────────────────────────────────────
+
+/**
+ * Departure tile abandonment: is the engine surface (Districts / Constructibles / DESTROY_ELEMENT)
+ * present, is the option on, and does your largest settlement have a rural tile to give? Read-only.
+ */
+function checkDepartureTile() {
+  try {
+    if (!CONFIG.departureRemovesTile) {
+      return row("Departures abandon a tile", "INFO",
+        "Off: a departing point only lowers the population count and every tile keeps working. Turn on “Departures: abandon a rural tile” for the real loss.");
+    }
+    if (!departureTileApiAvailable()) {
+      return row("Departures abandon a tile", "WARN",
+        "The engine surface this needs (Districts, Constructibles, DESTROY_ELEMENT) is not reachable here, so departures fall back to the population-count decrement.");
+    }
+    const sigs = localSignals();
+    const top = sigs.slice().sort((a, b) => (b.population || 0) - (a.population || 0))[0];
+    const tile = top && top.city ? findDepartureTile(top.city) : null;
+    if (tile) {
+      return row("Departures abandon a tile", "PASS",
+        "Ready: a departure from " + cityName(top.city) + " would abandon its outlying " +
+        String(tile.type).replace("IMPROVEMENT_", "").toLowerCase() + " (plot " + tile.plot + "), removing that tile's yields with the person (pillaged tiles go first; a starving settlement keeps its food tiles).");
+    }
+    return row("Departures abandon a tile", "INFO",
+      "Ready, but your largest settlement has no rural improvement to abandon yet (all-urban); such departures use the count decrement.");
+  } catch (e) {
+    return row("Departures abandon a tile", "INFO", "Departure check unavailable: " + errMsg(e));
+  }
+}
+
+/** Enclave tiles: is the generated improvement data loaded, and is placement on? */
+function checkEnclaveTiles() {
+  try {
+    const sample = enclaveIndex(enclaveTypeFor("CIVILIZATION_ROME", "a") || "");
+    if (sample == null) {
+      return row("Enclave tiles", "WARN",
+        "The enclave improvement data is not loaded in this game (a save started without it, or the data file failed to apply); recognized enclaves pay from the treasury instead.");
+    }
+    if (!CONFIG.quarterPlaceImprovement) {
+      return row("Enclave tiles", "INFO", "Data loaded, but “Enclaves: the enclave becomes a real tile” is off; recognized enclaves pay from the treasury.");
+    }
+    return row("Enclave tiles", "PASS",
+      "Data loaded: recognizing an enclave places its improvement on one of the city's tiles (nearest empty flat or hill plot, else the outlying farmstead), with its benefit in the city's own yields and its symbol on the map.");
+  } catch (e) {
+    return row("Enclave tiles", "INFO", "Enclave check unavailable: " + errMsg(e));
+  }
+}
+
+/** Arrival placement: which mode is active and whether the EXPAND command surface is present. */
+function checkArrivalPlacement() {
+  const mode = placementMode();
+  const names = { [PLACEMENT.OFF]: "Off", [PLACEMENT.AUTO]: "Automatic", [PLACEMENT.ASK]: "Ask me", [PLACEMENT.UNIT]: "Migrant unit" };
+  const api = typeof Game !== "undefined" && Game && Game.CityCommands && typeof Game.CityCommands.sendRequest === "function";
+  if (mode === PLACEMENT.OFF) {
+    return row("Arrivals settle in your cities", "INFO",
+      "Off: the game's own Grow City prompt asks you to place each point arriving in your cities.");
+  }
+  if (!api) {
+    return row("Arrivals settle in your cities", "WARN",
+      "Mode “" + names[mode] + "” is set but the city-command surface is not reachable here; arrivals will wait unplaced.");
+  }
+  return row("Arrivals settle in your cities", "PASS",
+    "Mode “" + names[mode] + "”: " + (mode === PLACEMENT.AUTO
+      ? "each point arriving in your cities is placed at once on a rural tile (a real improvement with real yields)."
+      : mode === PLACEMENT.ASK
+        ? "each arrival raises a pop-up to choose the tile, let the city decide, or wait."
+        : "newcomers arrive as a Migrant unit you resettle yourself."));
+}
+
+// ── v2.1.0 probes (notification clarity + interface localization) ────────────────────────────────────
+
+/**
+ * v2.1.0 “clearer migration notifications” — behavioural. Confirms (a) the “why there” clause names only
+ * destination-PULL reasons and drops flight fragments like “escaping the crisis”, and (b) the toast/log
+ * tint agrees by DIRECTION: own people leaving for a rival read red, internal moves and arrivals green.
+ */
+function checkNotificationClarity() {
+  try {
+    const whyThere = pullReasonsPhrase(["crisis-escape", "richer", "nearby"]); // flight tag must be dropped
+    const pureFlight = pullReasonsPhrase(["crisis-escape", "safer-dir", "aggressor-avoided"]); // no pull → empty
+    const flightPhrase = reasonLabel("crisis-escape");
+    const pullOK = !!whyThere && !whyThere.includes(flightPhrase) && pureFlight === "";
+    const rival = digestAccent(true, true);   // own people leaving for a rival → red
+    const internal = digestAccent(true, false); // internal shuffle → green
+    const arrival = digestAccent(false, true);  // arrival from abroad → green
+    const tintOK = rival !== internal && internal === arrival;
+    if (pullOK && tintOK) {
+      return row("Notification clarity", "PASS",
+        "The “why there” clause names only what drew people (“" + whyThere + "”) and drops flight reasons like “" +
+        flightPhrase + "”. Toast and log-row share one direction rule: own people leaving for a rival read red, " +
+        "internal moves and arrivals read green — so a toast never disagrees with its log entry.");
+    }
+    return row("Notification clarity", "FAIL",
+      "Notification wording/tint is off (why-there “" + whyThere + "”, pure-flight “" + pureFlight + "”, tints " +
+      "rival/internal/arrival " + rival + "/" + internal + "/" + arrival + "). The v2.1.0 clarity change is not active here.");
+  } catch (e) {
+    return row("Notification clarity", "INFO", "Notification helpers unavailable: " + errMsg(e));
+  }
+}
+
+// Representative newly-localized surface (v2.1.0), one key each, to spot-check that translations resolve
+// in the PLAYER's current locale — a runtime companion to the build-time i18n parity + ui-keys gates.
+const L10N_SAMPLE = [
+  ["LOC_EMIG_DIL_FX_GOLD", "refugee-dilemma effect labels"],
+  ["LOC_EMIG_GUIDE_VIEW_REF", "Guide navigation pills"],
+  ["LOC_DEMOGRAPHICS_METRIC_EMIG_GRAPHS", "Demographics charts"],
+  ["LOC_EMIG_CHOICE_OFF", "Advanced-editor enum labels"],
+  ["LOC_EMIG_ADV_RESET_ALL", "Advanced-editor buttons"],
+  ["LOC_OPTIONS_EMIG_MINIMIZE", "Settings checkboxes"],
+  ["LOC_EMIG_REASON_RICHER", "notification reason phrases"]
+];
+
+/**
+ * Whether a LOC key resolves in the current locale (not the raw "LOC_…" tag echoed back on a miss).
+ * @param {string} key The LOC key. @returns {boolean} True when it composes to real text.
+ */
+function resolvesLoc(key) {
+  try {
+    const v = Locale.compose(key);
+    return typeof v === "string" && v.length > 0 && !v.startsWith("LOC_");
+  } catch (_) {
+    return false;
+  }
+}
+
+/**
+ * v2.1.0 “full interface localization” — runtime spot-check. Samples one key per newly-localized surface
+ * and reports how many resolve in the player's language (a raw "LOC_…" tag = a missing translation).
+ */
+function checkLocalization() {
+  if (typeof Locale === "undefined" || !Locale || typeof Locale.compose !== "function") {
+    return row("Interface localization", "INFO",
+      "Locale surface unavailable — run this in-game to spot-check that translations resolve in your language.");
+  }
+  try {
+    const missing = L10N_SAMPLE.filter(([k]) => !resolvesLoc(k)).map(([, surface]) => surface);
+    const total = L10N_SAMPLE.length;
+    if (!missing.length) {
+      return row("Interface localization", "PASS",
+        "All " + total + " sampled surfaces resolve in your language — refugee-dilemma effect labels, Guide pills, " +
+        "Demographics charts, Settings, the Advanced editor, and notification reasons — with no raw LOC tags leaking.");
+    }
+    return row("Interface localization", "WARN",
+      missing.length + " of " + total + " sampled surfaces show raw keys in your language (missing translation): " +
+      missing.join(", ") + ". Report the language so the strings can be filled in.");
+  } catch (e) {
+    return row("Interface localization", "INFO", "Localization spot-check unavailable: " + errMsg(e));
+  }
+}
+
 /**
  * Pick a foreign origin + place to headline a FORCED enclave preview: a real foreign minority in one of
  * your cities if any exists (even below the enclave bar), else a placeholder so the preview still fires.
@@ -374,7 +530,8 @@ export function pickPreviewOrigin() {
 export function runChecks() {
   const checks = [checkSettlements, checkEnclaves, checkPopulationMeasures, checkMigrationActivity,
     checkRefugeePool, checkClosedBorderThrottle, checkContestedEnclaveYield, checkRazingRefugees,
-    checkChronicle, checkNotifications, checkPersistence, checkDemographics, checkForce];
+    checkChronicle, checkNotifications, checkNotificationClarity, checkLocalization, checkPersistence,
+    checkDemographics, checkForce, checkDepartureTile, checkArrivalPlacement, checkEnclaveTiles];
   return checks.map((fn) => {
     try {
       return fn();

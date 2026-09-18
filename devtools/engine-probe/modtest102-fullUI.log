@@ -1,0 +1,475 @@
+[2026-09-16 09:28:54]	Unable to parse declaration: width - max-content
+[2026-09-16 09:28:54]	VM: Unable to find harness.  The ViewManager should not be loaded in the shell. 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	Attempting to read using a null/empty key, ignoring.
+[2026-09-16 09:28:54]	Attempting to read using a null/empty key, ignoring.
+[2026-09-16 09:28:54]	Attempting to read using a null/empty key, ignoring.
+[2026-09-16 09:28:54]	Attempting to read using a null/empty key, ignoring.
+[2026-09-16 09:28:54]	Attempting to read using a null/empty key, ignoring.
+[2026-09-16 09:28:54]	Attempting to read using a null/empty key, ignoring.
+[2026-09-16 09:28:54]	[Demographics.settings] Persisted settings slice missing while other mods' settings are present (a sibling mod may have overwritten the shared modSettings key); falling back to defaults / in-memory values for this session. 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	[EmigProbe] shell attached 
+ While executing JS :15:23
+[2026-09-16 09:28:54]	Assert failure: Object size mismatch 
+ While executing JS fs://game/core/ui/options/model-options.js:26:37
+[2026-09-16 09:28:54]	Assert failure: Object size mismatch 
+ While executing JS fs://game/core/ui/options/model-options.js:27:38
+[2026-09-16 09:28:54]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	SiBr3's Celebratory Celebrations  --  Options Module Loaded 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.masterEnable=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.playMusic=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.persistentVfx=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.showFireworks=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.showArrows=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.showConfetti=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.showBirds=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.showSmoke=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.showPetals=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.fireworksAlwaysUnlocked=undefined (persistent) 
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.verboseLogging=undefined (persistent) 
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.densityPreset=undefined (persistent) 
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.fadeOutSpeed=undefined (persistent) 
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.sfxDuckVolume=undefined (persistent) 
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.flavourOverride=undefined (persistent) 
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.fanfareEndsAt=undefined (persistent) 
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.showAdvancedOptions=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.centreConcentration=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.scatterRadius=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.lanternCount=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.cityBurstDuration=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	LOAD sib-celebratory-celebrations.updateTickRate=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:28:54]	Assert failure: Object size mismatch 
+ While executing JS fs://game/core/ui/shell/oob-experience/oob-experience-mgr.js:331:46
+[2026-09-16 09:28:54]	Attempting to remove mousemove event listener from a target  that did not have the event listener registered.
+ While executing JS fs://game/core/ui/components/fxs-slider.js:81:12
+[2026-09-16 09:28:54]	Attempting to remove mousemove event listener from a target  that did not have the event listener registered.
+ While executing JS fs://game/core/ui/components/fxs-slider.js:81:12
+[2026-09-16 09:28:54]	Attempting to remove engine-input event listener from a target  that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:266:16
+[2026-09-16 09:28:54]	Attempting to remove engine-input event listener from a target  that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:266:16
+[2026-09-16 09:28:54]	Failed to open file - lp_circ_alexander_256
+[2026-09-16 09:28:54]	ResourceRequestJob | Failed loading resource: blp:lp_circ_alexander_256
+[2026-09-16 09:28:54]	Failed to open file - lp_hex_alexander_256
+[2026-09-16 09:28:54]	ResourceRequestJob | Failed loading resource: blp:lp_hex_alexander_256
+[2026-09-16 09:28:54]	Failed to open file - bg-panel-random
+[2026-09-16 09:28:54]	ResourceRequestJob | Failed loading resource: blp:bg-panel-random
+[2026-09-16 09:28:54]	Failed to open file - civ_sym_random
+[2026-09-16 09:28:54]	ResourceRequestJob | Failed loading resource: blp:civ_sym_random
+[2026-09-16 09:28:55]	[EmigProbe] shell query complete 
+ While executing JS :15:23
+[2026-09-16 09:28:55]	Trying to run an already playing flipbook. Restarting instead. 
+ While executing JS :30:23
+[2026-09-16 09:28:55]	Argument conversion failed: Wrong type - expected String, got Undefined while converting argument 0 for getMOTD
+ While executing JS fs://game/core/ui/shell/main-menu/main-menu.js:1214:29
+[2026-09-16 09:28:55]	model-dialog-box: closeDialogBox(): The given dialog box ID (7) is neither the currently displayed one nor one of the pending dialog boxes! 
+ While executing JS :30:23
+[2026-09-16 09:28:55]	Attempting to remove resize event listener from a target  that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:266:16
+[2026-09-16 09:28:55]	Attempting to remove active-device-type-changed event listener from a target  that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:266:16
+[2026-09-16 09:28:55]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+ While executing JS :15:23
+[2026-09-16 09:28:55]	[EmigProbe] shell handleLoadSave returned true 
+ While executing JS :15:23
+[2026-09-16 09:28:55]	The font fallback with weight Bold (700) hasn't been loaded yet when view with id 0 unloaded its document.
+[2026-09-16 09:28:55]	The font fallback with weight Normal (400) hasn't been loaded yet when view with id 0 unloaded its document.
+[2026-09-16 09:28:55]	Unable to parse declaration: width - max-content
+[2026-09-16 09:28:57]	The font fallback with weight Normal (400) hasn't been loaded yet when view with id 0 unloaded its document.
+[2026-09-16 09:28:58]	Unable to parse declaration: width - max-content
+[2026-09-16 09:28:58]	HTML Parser Error@:fs://game/root-game.html@1:1146: Premature end of file  Currently open tags: html, div..
+ While executing JS fs://game/core/vendor/solid-js/web/dist/web.js:819:34
+[2026-09-16 09:28:58]	Failed to open file - /icon_left_bumper
+[2026-09-16 09:28:58]	ResourceRequestJob | Failed loading resource: fs://game/icon_left_bumper
+[2026-09-16 09:28:58]	Failed to open file - /icon_right_bumper
+[2026-09-16 09:28:58]	ResourceRequestJob | Failed loading resource: fs://game/icon_right_bumper
+[2026-09-16 09:28:58]	Failed to open file - /icon_button_bottom
+[2026-09-16 09:28:58]	ResourceRequestJob | Failed loading resource: fs://game/icon_button_bottom
+[2026-09-16 09:29:13]	[EmigTest] modtest103 attached 
+ While executing JS :15:23
+[2026-09-16 09:29:13]	Assert failure: Object size mismatch 
+ While executing JS fs://game/core/ui/options/model-options.js:26:37
+[2026-09-16 09:29:13]	Assert failure: Object size mismatch 
+ While executing JS fs://game/core/ui/options/model-options.js:27:38
+[2026-09-16 09:29:13]	Attempting to read using a null/empty key, ignoring.
+[2026-09-16 09:29:13]	Attempting to read using a null/empty key, ignoring.
+[2026-09-16 09:29:13]	Attempting to read using a null/empty key, ignoring.
+[2026-09-16 09:29:13]	Attempting to read using a null/empty key, ignoring.
+[2026-09-16 09:29:13]	Attempting to read using a null/empty key, ignoring.
+[2026-09-16 09:29:13]	Attempting to read using a null/empty key, ignoring.
+[2026-09-16 09:29:13]	[Demographics.settings] Persisted settings slice missing while other mods' settings are present (a sibling mod may have overwritten the shared modSettings key); falling back to defaults / in-memory values for this session. 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	[Emigration] enclave markers: enclave markers wired 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_enclave_markers_wired
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-16 09:29:13]	LFYieldsPreview: Policy Chooser Item Decorator (1.4.0) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LFYieldsPreview: Tech/Civic Tooltip Decorator (1.4.0) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	[Emigration] boot start (turnInterval 1, crossCiv true) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	Unable to parse declaration: border-top-color - EMIG_boot_start_turnInterval_1_crossCiv_true_
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-16 09:29:13]	[Emigration] PlayerTurnActivated hooked 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	Unable to parse declaration: border-top-color - EMIG_PlayerTurnActivated_hooked
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-16 09:29:13]	[Emigration] events: RandomEventOccurred hooked 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	Unable to parse declaration: border-top-color - EMIG_events_RandomEventOccurred_hooked
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-16 09:29:13]	[Emigration] banner pressure bar registered 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	Unable to parse declaration: border-top-color - EMIG_banner_pressure_bar_registered
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-16 09:29:13]	[Emigration] Demographics graph registered 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	Unable to parse declaration: border-top-color - EMIG_Demographics_graph_registered
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-16 09:29:13]	[Emigration] Demographics page registered 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	Unable to parse declaration: border-top-color - EMIG_Demographics_page_registered
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-16 09:29:13]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	SiBr3's Celebratory Celebrations  --  Options Module Loaded 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.masterEnable=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.playMusic=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.persistentVfx=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.showFireworks=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.showArrows=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.showConfetti=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.showBirds=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.showSmoke=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.showPetals=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.fireworksAlwaysUnlocked=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.verboseLogging=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.densityPreset=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.fadeOutSpeed=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.sfxDuckVolume=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.flavourOverride=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.fanfareEndsAt=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.showAdvancedOptions=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.centreConcentration=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.scatterRadius=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.lanternCount=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.cityBurstDuration=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.updateTickRate=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD bz-city-hall.compact=undefined (stored) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD bz-city-hall.compact=1 (default) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	SiBr3's Celebratory Celebrations  --  Options Module Loaded 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.masterEnable=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.playMusic=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.persistentVfx=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.showFireworks=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.showArrows=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.showConfetti=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.showBirds=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.showSmoke=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.showPetals=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.fireworksAlwaysUnlocked=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.verboseLogging=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.densityPreset=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.fadeOutSpeed=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.sfxDuckVolume=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.flavourOverride=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.fanfareEndsAt=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.showAdvancedOptions=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.centreConcentration=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.scatterRadius=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.lanternCount=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.cityBurstDuration=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	LOAD sib-celebratory-celebrations.updateTickRate=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	SiBr3's Celebratory Celebrations  --  Fanfare Script Loaded 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-16 09:29:13]	continent-layer: nextColorIndex greater than number of colors in CONTINENT_COLORS 
+ While executing JS :15:23
+[2026-09-16 09:29:13]	Unable to parse declaration: display - inline-flex
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: background - var(--ia-frame-bg)
+[2026-09-16 09:29:13]	Unable to parse shorthand declaration: background - currentColor
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-color - var(--ia-frame-border-hot)
+[2026-09-16 09:29:13]	Unable to parse declaration: color - inherit
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-top - 0.18rem solid var(--ia-fxs-header)
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border - 1px solid var(--ia-frame-border)
+[2026-09-16 09:29:13]	Unable to parse declaration: display - inline-block
+[2026-09-16 09:29:13]	Unsupported CSS pseudo class selector encountered: empty
+[2026-09-16 09:29:13]	Unable to parse shorthand declaration: background - currentColor
+[2026-09-16 09:29:13]	Unable to parse declaration: background-image - repeating-linear-gradient(90deg,currentColor 0,currentColor 0.18rem,transparent 0.18rem,transparent 0.32rem)
+[2026-09-16 09:29:13]	Unable to parse declaration: display - inline-block
+[2026-09-16 09:29:13]	dashed is not supported for border-style
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border - 1px solid var(--ia-divider)
+[2026-09-16 09:29:13]	Unable to parse declaration: position - sticky
+[2026-09-16 09:29:13]	Unable to parse declaration: display - inline-block
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: background - var(--ia-accent-gold)
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-bottom - 1px solid var(--ia-divider)
+[2026-09-16 09:29:13]	Unable to parse declaration: display - inline-flex
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-bottom - 2px solid var(--ia-divider)
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border - 2px solid var(--ia-frame-border-hot)
+[2026-09-16 09:29:13]	Unable to parse declaration: display - -webkit-box
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-top - 1px solid var(--ia-divider)
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: background - var(--ia-frame-bg)
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border - 1px solid var(--ia-divider)
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-right - 1px solid var(--ia-divider)
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-color - var(--ia-accent-gold-soft)
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-left - 3px solid var(--ia-frame-border)
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border - 1px solid var(--ia-frame-border)
+[2026-09-16 09:29:13]	Unable to parse declaration: display - inline-block
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: background - var(--ia-text-accent)
+[2026-09-16 09:29:13]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border - 2px solid var(--ia-frame-border)
+[2026-09-16 09:29:13]	Unable to parse shorthand declaration: gap - clamp(0.3rem,1vh,0.6rem)
+[2026-09-16 09:29:13]	Unable to parse shorthand declaration: padding - clamp(0.08rem,0.17vh,0.1rem) 0.55rem
+[2026-09-16 09:29:13]	Unable to parse shorthand declaration: padding - clamp(0.2rem,0.67vh,0.4rem) 0.6rem 0
+[2026-09-16 09:29:13]	Unable to parse shorthand declaration: gap - clamp(0.4rem,1.17vh,0.7rem)
+[2026-09-16 09:29:13]	Unable to parse declaration: padding-bottom - clamp(0.2rem,0.67vh,0.4rem)
+[2026-09-16 09:29:13]	Unable to parse declaration: min-height - clamp(1.95rem,4.33vh,2.6rem)
+[2026-09-16 09:29:13]	Unable to parse shorthand declaration: padding - clamp(0.16rem,0.5vh,0.3rem) 1.1rem
+[2026-09-16 09:29:13]	Unable to parse declaration: width - clamp(2.5rem,6vh,3.6rem)
+[2026-09-16 09:29:13]	Unable to parse shorthand declaration: padding - clamp(0.3rem,0.92vh,0.55rem) 0.8rem clamp(0.4rem,1.17vh,0.7rem)
+[2026-09-16 09:29:13]	Unable to parse declaration: height - clamp(2.5rem,6vh,3.6rem)
+[2026-09-16 09:29:13]	Unable to parse declaration: margin-bottom - clamp(0.2rem,0.75vh,0.45rem)
+[2026-09-16 09:29:13]	Unable to parse declaration: padding-bottom - clamp(0.5rem,1.67vh,1rem)
+[2026-09-16 09:29:13]	Unable to parse declaration: height - clamp(5.7rem,12.5vh,7.5rem)
+[2026-09-16 09:29:13]	Unable to parse declaration: max-height - none
+[2026-09-16 09:29:13]	HTML Parser Error@:fs://game/root-game.html@49:43: Tokenizer error with an unimplemented error message.
+ While executing JS fs://game/core/ui/component-support.js:943:30
+[2026-09-16 09:29:14]	model-culture-tree: No available trees to generate 
+ While executing JS :30:23
+[2026-09-16 09:29:14]	model-tech-tree: No available trees to generate 
+ While executing JS :30:23
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-16 09:29:14]	Failed to open file - mask_unitflag_army.png
+[2026-09-16 09:29:14]	ResourceRequestJob | Failed loading resource: blp:mask_unitflag_army.png
+[2026-09-16 09:29:14]	Failed to open file - mask_unitflag_combat.png
+[2026-09-16 09:29:14]	ResourceRequestJob | Failed loading resource: blp:mask_unitflag_combat.png
+[2026-09-16 09:29:14]	Failed to open file - mask_unitflag_civilian.png
+[2026-09-16 09:29:14]	ResourceRequestJob | Failed loading resource: blp:mask_unitflag_civilian.png
+[2026-09-16 09:29:14]	[Demographics.settings] read of 'modSettings' returned a value that is not a settings root (Coherent's getItem returns the first key in the store, not the key requested); skipping persistence this session rather than copying it back. Using in-memory values. 
+ While executing JS :15:23
+[2026-09-16 09:29:14]	[Emigration] enclave markers: repaint(init) painted=0 
+ While executing JS :30:23
+[2026-09-16 09:29:14]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_init_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-16 09:29:30]	[EmigTest] modtest103 start (corrected 1.5.0 UI checks) 
+ While executing JS :15:23
+[2026-09-16 09:29:30]	[EmigTest] FAIL lens manager reachable :: "LensManager undefined in this context" 
+ While executing JS :15:23
+[2026-09-16 09:29:36]	[EmigTest] FAIL city banners present :: {"banners":0} 
+ While executing JS :15:23
+[2026-09-16 09:29:36]	[EmigTest] FAIL banner decorator ran :: {"styleInstalled":false,"bannersWithBar":0} 
+ While executing JS :15:23
+[2026-09-16 09:29:36]	[EmigTest] SUMMARY modtest103 0/3 checks OK 
+ While executing JS :15:23
+[2026-09-16 09:29:36]	[EmigTest] FAILED: ["lens manager reachable","city banners present","banner decorator ran"] 
+ While executing JS :15:23
+[2026-09-16 09:29:36]	[EmigTest] SHOT lens150 
+ While executing JS :15:23
+[2026-09-16 09:29:37]	model-culture-tree: No available trees to generate 
+ While executing JS :30:23
+[2026-09-16 09:29:37]	model-tech-tree: No available trees to generate 
+ While executing JS :30:23
+[2026-09-16 09:29:54]	[EmigTest] DONE modtest103 finished 
+ While executing JS :15:23
