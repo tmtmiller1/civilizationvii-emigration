@@ -1,9 +1,10 @@
 // emigration-prosperity-lens.js
 //
-// A map LENS that paints every city's tiles by its PROSPERITY relative to the world average, the
-// same score that drives migration (emigration-prosperity.js). Red = below average (a city shedding
-// people), grey = about average, green = above average (a magnet). Towns and cities alike; unowned
-// tiles are left uncoloured.
+// A map LENS that paints every settlement's tiles by TILE PROSPERITY: an absolute points score built from what
+// stands on the hex and around it (emigration-tile-score.js; a wonder is the biggest term, ruin the most negative).
+// Green = thriving/flourishing, grey = ordinary, red = meagre/blighted. Towns and cities alike; unowned tiles and
+// unbuilt water are left uncoloured. Falls back to one colour per settlement (its PROSPERITY score relative to the
+// world, the score that drives migration) only when the per-tile read is unavailable.
 //
 // Follows the base-game + community lens pattern (see general-appeal-layer.js and the "More Lenses"
 // mod): a self-registering UIScript that builds an overlay group of plot fills, registers a lens
@@ -20,7 +21,7 @@ import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { setBasePlotTooltipHidden } from "/emigration/ui/emigration-plot-tooltip-suppress.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { refugeePoolTotal } from "/emigration/ui/emigration-refugee-pool.js";
-import { clamp, plotsOf, cityTileTiers, cityLandmarks, tierFill, landmarkFill } from "/emigration/ui/emigration-tile-score.js";
+import { clamp, plotsOf, cityTileTiers, tierFill } from "/emigration/ui/emigration-tile-score.js";
 
 const LENS = "emig-prosperity-lens";
 const LAYER = "emig-prosperity-layer";
@@ -57,12 +58,10 @@ function cityTiers() {
 }
 
 /**
- * Per-PLOT prosperity tiers: every visible city's plots scored by tile yield output and normalized
- * WITHIN THEIR OWN CITY, so a tile reads against its city's own best and worst rather than against the
- * whole map. Scaling every tile to the world's most extreme plot left 94% of tiles inside 15% of the
- * mean and 1120 of 1775 in one grey bucket (mod test 77). Empty (→ per-city fallback) with no per-plot
- * yields.
- * @returns {{x:number, y:number, t:number}[]} Per-plot {x, y, deviation}.
+ * Per-PLOT prosperity: every visible settlement's painted plots scored on the absolute tile scale, with the colour
+ * position of each. One neighbour cache is shared across the whole paint (a hex is a neighbour of six others).
+ * Empty (→ per-settlement fallback) when no plot can be read.
+ * @returns {{x:number, y:number, t:number}[]} Per-plot {x, y, colour position}.
  */
 function plotTiers() {
   let signals = [];
@@ -73,28 +72,9 @@ function plotTiers() {
   }
   /** @type {{x:number, y:number, t:number}[]} */
   const out = [];
+  const cache = new Map();
   for (const s of signals) {
-    if (!civHidden(s.owner)) out.push(...cityTileTiers(s.city));
-  }
-  return out;
-}
-
-/**
- * Every visible settlement's landmark plots (its wonders): painted in one amber, over whatever the yield scale
- * painted, because a wonder's worth is not its tile yield (emigration-tile-score.js, `landmarkAt`).
- * @returns {{x:number, y:number}[]} Landmark plots.
- */
-function plotLandmarks() {
-  let signals = [];
-  try {
-    signals = collectCitySignals() || [];
-  } catch (_) {
-    return [];
-  }
-  /** @type {{x:number, y:number}[]} */
-  const out = [];
-  for (const s of signals) {
-    if (!civHidden(s.owner)) out.push(...cityLandmarks(s.city));
+    if (!civHidden(s.owner)) out.push(...cityTileTiers(s.city, cache));
   }
   return out;
 }
@@ -170,7 +150,7 @@ function paintTileBuckets(overlay, tiles) {
   for (const [q, plots] of buckets) overlay.addPlots(plots, { fillColor: tierFill(q) });
 }
 
-/** The lens layer: an overlay of plot fills coloured by TILE-level prosperity vs the world mean. */
+/** The lens layer: an overlay of plot fills coloured by TILE prosperity. */
 class ProsperityLensLayer {
   constructor() {
     this.group = WorldUI.createOverlayGroup("EmigProsperityOverlay", HEX_GRID);
@@ -186,8 +166,8 @@ class ProsperityLensLayer {
   /** Lens-layer lifecycle: init (no-op; built in the constructor). */
   initLayer() {}
 
-  /** Lens-layer lifecycle: paint plots by TILE-LEVEL prosperity (per-plot yield output), falling back
-   *  to one colour per city when per-plot yields aren't available; wonders in the landmark colour over both. */
+  /** Lens-layer lifecycle: paint plots by TILE prosperity (the points score), falling back to one colour per
+   *  settlement when no plot can be read. */
   applyLayer() {
     this.clear();
     const tiles = plotTiers();
@@ -199,9 +179,6 @@ class ProsperityLensLayer {
         if (plots.length) this.overlay.addPlots(plots, { fillColor: tierFill(c.t) });
       }
     }
-    // Landmarks after the land, so a wonder plot the per-city fallback painted is re-covered in amber.
-    const landmarks = plotLandmarks();
-    if (landmarks.length) this.overlay.addPlots(landmarks, { fillColor: landmarkFill() });
     paintRefugeeMarkers(this.overlay);
     // Hide the base plot tooltip while this lens is active so it doesn't clash with the mod's own
     // prosperity panel (emigration-prosperity-tooltip.js).

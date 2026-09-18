@@ -1,163 +1,227 @@
 // tile-score.mjs
 //
-// The per-tile prosperity scale shared by the Prosperity lens and its cursor panel
-// (emigration-tile-score.js): which plots count, how a tile is normalized against its OWN settlement,
-// and the colour that deviation paints. Pure functions over engine globals, so they are stubbed here.
-// The lens and the panel both read this module, which is what keeps the printed % and the fill colour
-// the same number (mod tests 77 to 81).
+// The per-tile prosperity POINTS scale shared by the Prosperity lens and its cursor panel (emigration-tile-score.js):
+// what each thing on and around a hex is worth, the band and colour a score paints, and which plots are painted at
+// all. Pure functions over engine globals, so they are stubbed here. The lens and the panel both read this module,
+// which is what keeps the printed score and the fill colour the same number.
 
 import assert from "node:assert/strict";
 
-// Plot index → location; 0,0 / 1,0 land, 2,0 empty sea, 3,0 sea with a pier, 4,0 land.
-const LOC = { 0: { x: 0, y: 0 }, 1: { x: 1, y: 0 }, 2: { x: 2, y: 0 }, 3: { x: 3, y: 0 }, 4: { x: 4, y: 0 } };
-const WATER = new Set(["2,0", "3,0"]);
-const BUILT = new Set(["3,0"]);
-const YIELDS = { 0: [["F", 10]], 1: [["F", 2]], 2: [["F", 0]], 3: [["F", 6]], 4: "not-an-array" };
+// A 5×3 map. Row y=1 is London: centre at (1,1), a two-building quarter at (2,1), the Hanging Gardens at (3,1), a
+// river farm at (4,1). Row y=0 has a pillaged granary at (1,0), a natural wonder at (2,0), bare land at (3,0), empty
+// sea at (4,0) and a pier at (0,0). Row y=2 is bare land except a wonder at (2,2). Plot index = y*5 + x.
+const W = 5;
+const idxOf = (x, y) => y * W + x;
+const LOC = {};
+for (let y = 0; y < 3; y++) for (let x = 0; x < W; x++) LOC[idxOf(x, y)] = { x, y };
+const WATER = new Set(["4,0", "0,0"]);
+const RIVER = new Set(["4,1"]);
+const NATURAL = new Set(["2,0"]);
+// What stands where: [type, damaged]
+const BUILT = {
+  "1,1": [["BUILDING_PALACE", false]],
+  "2,1": [["BUILDING_GRANARY", false], ["BUILDING_MONUMENT", false]],
+  "3,1": [["WONDER_HANGING_GARDENS", false]],
+  "4,1": [["IMPROVEMENT_FARM", false]],
+  "1,0": [["BUILDING_GRANARY", true]],
+  "0,0": [["IMPROVEMENT_FISHING_BOAT", false]],
+  "2,2": [["WONDER_COLOSSUS", false]]
+};
+const DEFS = {
+  BUILDING_PALACE: { ConstructibleClass: "BUILDING", Name: "LOC_BUILDING_PALACE_NAME" },
+  BUILDING_GRANARY: { ConstructibleClass: "BUILDING", Name: "LOC_BUILDING_GRANARY_NAME" },
+  BUILDING_MONUMENT: { ConstructibleClass: "BUILDING", Name: "LOC_BUILDING_MONUMENT_NAME" },
+  WONDER_HANGING_GARDENS: { ConstructibleClass: "WONDER", Name: "LOC_WONDER_HANGING_GARDENS_NAME" },
+  WONDER_COLOSSUS: { ConstructibleClass: "WONDER" },
+  IMPROVEMENT_FARM: { ConstructibleClass: "IMPROVEMENT", Name: "LOC_IMPROVEMENT_FARM_NAME" },
+  IMPROVEMENT_FISHING_BOAT: { ConstructibleClass: "IMPROVEMENT", Name: "LOC_IMPROVEMENT_FISHING_BOAT_NAME" }
+};
+const YIELDS = {}; // idx → yields list
+YIELDS[idxOf(1, 1)] = [["F", 4], ["P", 3]]; // 7 → +2
+YIELDS[idxOf(2, 1)] = [["C", 2]]; // 2 → +0
+YIELDS[idxOf(3, 1)] = []; // the Gardens: no yield at all
+YIELDS[idxOf(4, 1)] = [["F", 5]]; // 5 → +1
+YIELDS[idxOf(3, 0)] = [["F", 1]];
+YIELDS[idxOf(4, 0)] = [["F", 1]];
+YIELDS[idxOf(0, 0)] = [["F", 3]];
+YIELDS[idxOf(1, 0)] = "not-an-array";
+// Odd-r hex neighbours (the engine does this; the stub only needs to be a consistent hex grid).
+const DIRS = ["DIRECTION_EAST", "DIRECTION_WEST", "DIRECTION_NORTHEAST", "DIRECTION_NORTHWEST", "DIRECTION_SOUTHEAST", "DIRECTION_SOUTHWEST"];
+function adjacent(l, d) {
+  const odd = l.y % 2 === 1;
+  const dx = { DIRECTION_EAST: 1, DIRECTION_WEST: -1, DIRECTION_NORTHEAST: odd ? 1 : 0, DIRECTION_NORTHWEST: odd ? 0 : -1,
+    DIRECTION_SOUTHEAST: odd ? 1 : 0, DIRECTION_SOUTHWEST: odd ? 0 : -1 }[d];
+  const dy = { DIRECTION_EAST: 0, DIRECTION_WEST: 0, DIRECTION_NORTHEAST: -1, DIRECTION_NORTHWEST: -1, DIRECTION_SOUTHEAST: 1, DIRECTION_SOUTHWEST: 1 }[d];
+  const x = l.x + dx;
+  const y = l.y + dy;
+  return x < 0 || y < 0 || x >= W || y >= 3 ? { x: -1, y: -1 } : { x, y };
+}
 
 globalThis.GameContext = { localPlayerID: 0 };
+globalThis.DirectionTypes = Object.fromEntries(DIRS.map((d, i) => [d, i]));
+globalThis.DistrictTypes = { CITY_CENTER: 11, URBAN: 12, RURAL: 13 };
+globalThis.Districts = { getAtLocation: (l) => (l.x === 1 && l.y === 1 ? { type: 11 } : { type: 13 }) };
 globalThis.GameplayMap = {
   getLocationFromIndex: (i) => LOC[i] || null,
+  getIndexFromLocation: (l) => (LOC[idxOf(l.x, l.y)] ? idxOf(l.x, l.y) : -1),
   isWater: (x, y) => WATER.has(x + "," + y),
+  isRiver: (x, y) => RIVER.has(x + "," + y),
+  getFeatureType: (x, y) => (NATURAL.has(x + "," + y) ? 7 : 0),
+  getAdjacentPlotLocation: (l, d) => adjacent(l, DIRS[d]),
   getYields: (idx) => YIELDS[idx]
 };
-globalThis.MapConstructibles = { getConstructibles: (x, y) => (BUILT.has(x + "," + y) ? [{}] : []) };
+globalThis.MapConstructibles = { getConstructibles: (x, y) => (BUILT[x + "," + y] || []).map(([type, damaged]) => ({ type, damaged })) };
+globalThis.Constructibles = { getByComponentID: (cid) => ({ type: cid.type, damaged: cid.damaged }) };
+globalThis.GameInfo = {
+  Constructibles: { lookup: (t) => DEFS[t] || null },
+  Features: { lookup: (f) => (f === 7 ? { FeatureType: "FEATURE_GULLFOSS", Name: "LOC_FEATURE_GULLFOSS_NAME" } : { FeatureType: "NO_FEATURE" }) },
+  Feature_NaturalWonders: [{ FeatureType: "FEATURE_GULLFOSS" }, { FeatureType: "FEATURE_ULURU" }]
+};
 
-const { scorable, plotScore, plotScoreAt, cityTileTiers, cityLandmarks, landmarkAt, tileTierAt, tierFill, tierHex,
-  landmarkFill, LANDMARK_HEX } = await import("/emigration/ui/emigration-tile-score.js");
+const { WEIGHTS, BANDS, scorable, plotYield, tileScore, tierOf, bandOf, cityTileTiers, tileTierAt, tierFill, tierHex,
+  resetTileScoreCaches } = await import("/emigration/ui/emigration-tile-score.js");
 
-const city = { getPurchasedPlots: () => [0, 1, 2, 3] };
+const kinds = (r) => r.terms.map((t) => t.kind + ":" + t.points);
 
-// ── which plots count ────────────────────────────────────────────────────────
+// ── which plots are painted ──────────────────────────────────────────────────
 {
-  assert.equal(scorable(0, 0), true, "land counts");
-  assert.equal(scorable(2, 0), false, "empty sea does not count: it reads 0 and would drag the settlement's scale");
-  assert.equal(scorable(3, 0), true, "water the settlement has built on counts");
+  assert.equal(scorable(3, 0), true, "land is painted");
+  assert.equal(scorable(4, 0), false, "empty sea is not: it is nobody's prosperity");
+  assert.equal(scorable(0, 0), true, "water the settlement has built on is");
   const was = globalThis.GameplayMap.isWater;
   globalThis.GameplayMap.isWater = () => { throw new Error("no map"); };
-  assert.equal(scorable(9, 9), true, "a failed read counts the tile in, so the scale degrades to including everything");
+  assert.equal(scorable(9, 9), true, "a failed read paints the tile, so the lens degrades to painting everything");
   globalThis.GameplayMap.isWater = was;
 }
 
-// ── the tile score ───────────────────────────────────────────────────────────
+// ── the yield read ───────────────────────────────────────────────────────────
 {
-  assert.equal(plotScore(0), 10, "a tile scores the sum of its yields");
-  assert.equal(plotScore(4), null, "an unreadable yields list scores null (caller falls back per settlement)");
+  assert.equal(plotYield(idxOf(1, 1)), 7, "a plot's yield is the sum of its yields");
+  assert.equal(plotYield(idxOf(1, 0)), null, "an unreadable yields list is null (the yield term is then skipped)");
 }
 
-// ── normalized against its OWN settlement ────────────────────────────────────
+// ── what each hex is worth, and why ──────────────────────────────────────────
 {
-  // Counting plots are 10, 2 and 6 (the empty sea at 2,0 is out): mean 6, spread 4.
-  const tiers = cityTileTiers(city);
-  assert.equal(tiers.length, 3, "the empty sea plot is excluded from the settlement's tiles");
-  const by = new Map(tiers.map((r) => [r.x + "," + r.y, r]));
-  assert.equal(by.get("0,0").t, 1, "the settlement's best tile saturates at +1");
-  assert.equal(by.get("1,0").t, -1, "its worst tile saturates at -1");
-  assert.equal(by.get("3,0").t, 0, "a tile at the settlement's mean is neutral");
-  assert.equal(by.get("0,0").mean, 6, "the mean is the settlement's own, not the world's");
-  assert.deepEqual(cityTileTiers({ getPurchasedPlots: () => [] }), [], "a settlement with no plots has no tiers");
+  // The Hanging Gardens: no yield at all, yet the best hex in London. Next to the quarter (no term) and the farm
+  // (no term); its odd-row NE/SE neighbours are (4,0) sea and (4,2) bare, NW/SW (3,0) bare and (3,2) bare.
+  const g = tileScore(3, 1, idxOf(3, 1));
+  assert.deepEqual(kinds(g), ["wonder:6"], "a wonder is worth its flat term, whatever the hex yields");
+  assert.equal(g.terms[0].name, "LOC_WONDER_HANGING_GARDENS_NAME", "and the term carries the wonder's name for the panel");
+  assert.equal(bandOf(g.points), "thriving", "6 points: thriving");
+
+  // The centre: district + palace + 7 yield. Neighbours (odd row): E (2,1) quarter, W (0,1) bare, NE (2,0) NATURAL
+  // wonder, NW (1,0) PILLAGED granary, SE (2,2) Colosseus WONDER, SW (1,2) bare.
+  const c = tileScore(1, 1, idxOf(1, 1));
+  assert.deepEqual(kinds(c), ["cityCenter:3", "building:2", "yield:2", "adjacentWonder:1", "adjacentNaturalWonder:2", "adjacentPillaged:-1"],
+    "the centre: its district, its palace, its yield, and everything around it, each a named term");
+  assert.equal(c.points, 9, "the terms sum to the score");
+  assert.equal(bandOf(c.points), "flourishing", "9 points: flourishing");
+  assert.equal(c.terms.find((t) => t.kind === "yield").amount, 7, "the yield term remembers the raw yield for the panel");
+  assert.equal(c.terms.find((t) => t.kind === "adjacentNaturalWonder").count, 1, "adjacency terms remember the count");
+
+  // The quarter: two buildings plus the completed-quarter bonus; its 2 yield is below one yield step, so no term.
+  const q = tileScore(2, 1, idxOf(2, 1));
+  assert.deepEqual(kinds(q), ["building:2", "building:2", "quarter:1", "adjacentWonder:2", "adjacentNaturalWonder:2"],
+    "two buildings make a quarter; yield under the step is not a term; the Gardens (E), the Colosseus (SW) and Gullfoss (NW) are next door");
+  assert.equal(q.points, 9);
+
+  // The river farm.
+  const f = tileScore(4, 1, idxOf(4, 1));
+  assert.deepEqual(kinds(f), ["improvement:1", "yield:1", "river:1", "adjacentWonder:1"], "a worked rural hex on a river next to the Gardens");
+  assert.equal(bandOf(f.points), "ordinary", "4 points: ordinary");
+
+  // Ruin: the pillaged granary earns its penalty and NOT its building points; Gullfoss (E) is next door.
+  const r = tileScore(1, 0, idxOf(1, 0));
+  assert.deepEqual(kinds(r), ["pillaged:-3", "adjacentNaturalWonder:2"], "a pillaged building is a penalty, not a building");
+  assert.equal(r.terms[0].name, "LOC_BUILDING_GRANARY_NAME", "named, so the panel can say which building");
+  assert.equal(bandOf(r.points), "blighted", "-1: blighted");
+
+  // The natural wonder hex itself.
+  const n = tileScore(2, 0, idxOf(2, 0));
+  assert.deepEqual(kinds(n), ["naturalWonder:3", "adjacentPillaged:-1"], "a natural wonder is a term in its own right; the ruin next door pulls it down");
+  assert.equal(n.terms[0].name, "LOC_FEATURE_GULLFOSS_NAME");
+
+  // Bare land in the corner (0,2): its only neighbours are bare land and the map edge.
+  const b = tileScore(0, 2, idxOf(0, 2));
+  assert.deepEqual(kinds(b), [], "bare land far from anything: no terms");
+  assert.equal(bandOf(b.points), "meagre", "0: meagre");
+  assert.deepEqual(kinds(tileScore(0, 2, null)), [], "no plot index: the yield term is skipped, nothing else changes");
+  assert.deepEqual(kinds(tileScore(3, 2, idxOf(3, 2))), ["adjacentWonder:2"], "bare land between the Colosseus (W) and the Gardens (NE, even row) picks up both");
 }
 
-// ── one outstanding tile must not flatten the rest (the two-sided scale) ─────
+// ── bands and colour ─────────────────────────────────────────────────────────
 {
-  // A wonder tile at 100 with ordinary land at 10, 8 and 6: mean 31. Scaled against the single widest deviation
-  // (69), the worst tile would read only -36% and the whole settlement would look uniform (mod test 83). Scaled
-  // per side, the best tile is +100% and the worst -100%, and the ordinary tiles spread across the red half.
-  Object.assign(LOC, { 10: { x: 0, y: 5 }, 11: { x: 1, y: 5 }, 12: { x: 2, y: 5 }, 13: { x: 3, y: 5 } });
-  Object.assign(YIELDS, { 10: [["F", 100]], 11: [["F", 10]], 12: [["F", 8]], 13: [["F", 6]] });
-  const tiers = cityTileTiers({ getPurchasedPlots: () => [10, 11, 12, 13] });
-  const by = new Map(tiers.map((r) => [r.x + "," + r.y, r]));
-  assert.equal(by.get("0,5").t, 1, "the best tile is +100%");
-  assert.equal(by.get("3,5").t, -1, "the worst tile is -100%, not a fraction of the wonder's lead");
-  assert.ok(by.get("1,5").t < -0.7 && by.get("1,5").t > -0.9,
-    "ordinary land spreads across the lower half instead of hugging the mean: " + by.get("1,5").t);
-}
-
-// ── the hovered tile's standing (what the cursor panel prints) ───────────────
-{
-  const hit = tileTierAt(city, 0, 0);
-  assert.deepEqual([hit.t, hit.score, hit.mean, hit.best, hit.worst], [1, 10, 6, 10, 2],
-    "the panel reads the same deviation the lens coloured the tile from, plus its settlement's context");
-  assert.equal(tileTierAt(city, 2, 0), null, "an excluded sea tile has no standing");
-  assert.equal(tileTierAt(city, 9, 9), null, "a plot outside the settlement has no standing");
-  assert.equal(tileTierAt({ getPurchasedPlots: () => [] }, 0, 0), null, "no plots, no standing");
-}
-
-// ── a wonder is a landmark, not land (the Hanging Gardens, 2026-09-17) ────────
-{
-  // London-shaped: land at 10, 8 and 6, and the Hanging Gardens on a plot that yields 0 (it has no yield rows in
-  // the compiled database; its worth is +10% growth). On the yield scale the wonder was the settlement's worst
-  // tile at -100%. A 12th-plot Colossus at 3 gold is a landmark too: one rule, by ConstructibleClass, not by yield.
-  Object.assign(LOC, { 20: { x: 0, y: 7 }, 21: { x: 1, y: 7 }, 22: { x: 2, y: 7 }, 23: { x: 3, y: 7 }, 24: { x: 4, y: 7 } });
-  Object.assign(YIELDS, { 20: [["F", 10]], 21: [["F", 8]], 22: [["F", 6]], 23: [], 24: [["G", 3]] });
-  const WONDERS = { "3,7": "WONDER_HANGING_GARDENS", "4,7": "WONDER_COLOSSUS" };
-  const DEFS = {
-    WONDER_HANGING_GARDENS: { ConstructibleType: "WONDER_HANGING_GARDENS", ConstructibleClass: "WONDER", Name: "LOC_WONDER_HANGING_GARDENS_NAME" },
-    WONDER_COLOSSUS: { ConstructibleType: "WONDER_COLOSSUS", ConstructibleClass: "WONDER" },
-    BUILDING_GRANARY: { ConstructibleType: "BUILDING_GRANARY", ConstructibleClass: "BUILDING", Name: "LOC_BUILDING_GRANARY_NAME" }
-  };
-  const wasGet = globalThis.MapConstructibles.getConstructibles;
-  globalThis.MapConstructibles.getConstructibles = (x, y) => {
-    const k = x + "," + y;
-    if (WONDERS[k]) return [{ id: WONDERS[k] }];
-    if (k === "0,7") return [{ id: "BUILDING_GRANARY" }]; // a building on land: still land
-    return wasGet(x, y);
-  };
-  globalThis.Constructibles = { getByComponentID: (cid) => ({ type: cid.id, damaged: cid.id === "WONDER_COLOSSUS" }) };
-  globalThis.GameInfo = { Constructibles: { lookup: (t) => DEFS[t] || null } };
-  globalThis.GameplayMap.getIndexFromLocation = (l) => Object.keys(LOC).map(Number).find((i) => LOC[i].x === l.x && LOC[i].y === l.y) ?? -1;
-
-  assert.deepEqual(landmarkAt(3, 7), { name: "LOC_WONDER_HANGING_GARDENS_NAME" }, "a wonder plot is a landmark, named by its LOC key");
-  assert.deepEqual(landmarkAt(4, 7), { name: "" }, "a pillaged, unnamed wonder is still a landmark (it is still not land)");
-  assert.equal(landmarkAt(0, 7), null, "a building is not a landmark: its yields are the tile's worth");
-  assert.equal(landmarkAt(1, 7), null, "bare land is not a landmark");
-  assert.equal(landmarkAt(3, 0), null, "a pier on water is not a landmark");
-
-  const london = { getPurchasedPlots: () => [20, 21, 22, 23, 24] };
-  const tiers = cityTileTiers(london);
-  const by = new Map(tiers.map((r) => [r.x + "," + r.y, r]));
-  assert.equal(tiers.length, 3, "the two wonder plots are out of the settlement's land scale");
-  assert.equal(by.get("0,7").mean, 8, "the mean is the land's own (10, 8, 6), not dragged to 6.75 by the wonders");
-  assert.equal(by.get("2,7").t, -1, "the settlement's worst LAND is its -100% anchor, not the wonder");
-  assert.equal(by.get("0,7").t, 1, "and its best land is +100%");
-  assert.equal(tileTierAt(london, 3, 7), null, "a landmark has no land standing (the panel prints its own rows)");
-  assert.deepEqual(cityLandmarks(london), [{ x: 3, y: 7 }, { x: 4, y: 7 }], "the lens paints exactly the wonder plots as landmarks");
-  assert.equal(plotScoreAt(3, 7), 0, "the panel can still print the honest yield figure for the plot");
-  assert.equal(plotScoreAt(4, 7), 3, "including a wonder that does carry yield rows");
-  assert.equal(plotScoreAt(9, 9), null, "an unknown plot has no score");
-
-  // The landmark colour is off the red/grey/green axis, so it can't be mistaken for a yield verdict.
-  const lf = landmarkFill();
-  assert.ok(lf.x > lf.z && lf.y > lf.z, "amber: red and green both high, blue low");
-  assert.ok(lf.x > 0.85 && lf.y > 0.6 && lf.y < 0.75, "not the pure red or pure green of the yield axis: " + JSON.stringify(lf));
-  assert.equal(LANDMARK_HEX, "#e8b234", "the panel swatch is the same amber");
-
-  // Degradation: with the constructible API unreadable, a wonder plot is land again (the pre-landmark behaviour).
-  const wasCon = globalThis.Constructibles;
-  globalThis.Constructibles = { getByComponentID: () => { throw new Error("no engine"); } };
-  assert.equal(landmarkAt(3, 7), null, "an unreadable plot is not a landmark");
-  assert.equal(cityTileTiers(london).length, 5, "so the scale includes every plot again");
-  delete globalThis.Constructibles;
-  assert.equal(landmarkAt(3, 7), null, "no Constructibles global: not a landmark");
-  globalThis.Constructibles = wasCon;
-  globalThis.MapConstructibles.getConstructibles = wasGet;
-}
-
-// ── the colour that deviation paints ─────────────────────────────────────────
-{
+  assert.deepEqual(BANDS.map((b) => b[0]), ["flourishing", "thriving", "ordinary", "meagre"], "the bands, best first");
+  assert.equal(bandOf(8), "flourishing");
+  assert.equal(bandOf(7), "thriving");
+  assert.equal(bandOf(5), "thriving");
+  assert.equal(bandOf(4), "ordinary");
+  assert.equal(bandOf(2), "ordinary");
+  assert.equal(bandOf(1), "meagre");
+  assert.equal(bandOf(0), "meagre");
+  assert.equal(bandOf(-1), "blighted");
+  assert.equal(tierOf(3), 0, "the middle of ordinary is neutral grey");
+  assert.equal(tierOf(8), 1, "the flourishing floor saturates green");
+  assert.equal(tierOf(20), 1, "and beyond it is clamped");
+  assert.equal(tierOf(-2), -1, "a pillaged hex saturates red");
+  assert.ok(tierOf(6) > 0.5 && tierOf(6) < 0.7, "a wonder alone is clearly green but not saturated: " + tierOf(6));
   const neutral = tierFill(0);
   const best = tierFill(1);
   const worst = tierFill(-1);
-  assert.equal(Math.round(neutral.w * 100), 45, "a middling tile is the most transparent");
+  assert.equal(Math.round(neutral.w * 100), 45, "an ordinary tile is the most transparent");
   assert.equal(Math.round(best.w * 100), 85, "an extreme tile is the most opaque");
-  assert.ok(best.y > best.x && best.y > best.z, "above its settlement's mean paints green");
+  assert.ok(best.y > best.x && best.y > best.z, "above ordinary paints green");
   assert.ok(worst.x > worst.y && worst.x > worst.z, "below it paints red");
-  // The curve: a quarter of the way out is already nearly half-saturated, so the crowded middle still reads.
-  const quarter = tierFill(0.25);
-  assert.ok(quarter.w > 0.6 && quarter.w < 0.68, "the saturation curve lifts the middle of the range: " + quarter.w);
   assert.equal(tierHex(0), "#969696", "neutral grey");
-  assert.equal(tierHex(1), "#18e048", "the settlement's best tile");
-  assert.equal(tierHex(-1), "#ee2820", "the settlement's worst tile");
-  assert.equal(tierFill(5).w, tierFill(1).w, "a deviation beyond the range is clamped");
+  assert.equal(tierHex(1), "#18e048", "flourishing");
+  assert.equal(tierHex(-1), "#ee2820", "blighted");
+}
+
+// ── a settlement's painted plots (what the lens draws) ───────────────────────
+{
+  const london = { getPurchasedPlots: () => [idxOf(1, 1), idxOf(2, 1), idxOf(3, 1), idxOf(4, 1), idxOf(4, 0), idxOf(0, 0)] };
+  const tiers = cityTileTiers(london);
+  assert.equal(tiers.length, 5, "the empty sea plot is not painted; the pier is");
+  const by = new Map(tiers.map((r) => [r.x + "," + r.y, r]));
+  assert.equal(by.get("1,1").score, 9);
+  assert.equal(by.get("1,1").t, tierOf(9), "the colour position is the score's, so the lens and the panel agree by construction");
+  assert.equal(by.get("3,1").score, 6, "the Gardens are the second-best hex in London, not the worst");
+  assert.ok(by.get("3,1").score > by.get("4,1").score, "and out-score the farm");
+  assert.deepEqual(cityTileTiers({ getPurchasedPlots: () => [] }), [], "a settlement with no plots has no tiers");
+  // The per-pass neighbour cache is shared: a second city sees the same facts and reads nothing twice.
+  const cache = new Map();
+  cityTileTiers(london, cache);
+  const before = cache.size;
+  cityTileTiers({ getPurchasedPlots: () => [idxOf(2, 2)] }, cache);
+  assert.ok(cache.size >= before, "the cache only grows across settlements in one paint");
+}
+
+// ── the hovered tile (what the panel prints) ─────────────────────────────────
+{
+  const hit = tileTierAt(3, 1);
+  assert.deepEqual([hit.score, hit.band, hit.t], [6, "thriving", tierOf(6)], "the panel reads the same score, band and colour the lens painted");
+  assert.deepEqual(hit.terms.map((t) => t.kind), ["wonder"], "with the terms behind it");
+  assert.equal(tileTierAt(4, 0), null, "an unpainted sea tile has no reading");
+}
+
+// ── degradation without the engine tables ────────────────────────────────────
+{
+  resetTileScoreCaches();
+  const wasGI = globalThis.GameInfo;
+  globalThis.GameInfo = { Constructibles: wasGI.Constructibles, Features: wasGI.Features }; // no natural-wonder table
+  assert.deepEqual(kinds(tileScore(2, 0, idxOf(2, 0))), ["adjacentPillaged:-1"], "no natural-wonder table: that term is 0, the rest still scores");
+  globalThis.GameInfo = wasGI;
+  resetTileScoreCaches();
+  const wasC = globalThis.Constructibles;
+  delete globalThis.Constructibles;
+  assert.deepEqual(kinds(tileScore(3, 1, idxOf(3, 1))), [], "no Constructibles global: nothing built can be read anywhere, the hex scores its land");
+  globalThis.Constructibles = wasC;
+  const wasD = globalThis.Districts;
+  globalThis.Districts = { getAtLocation: () => { throw new Error("no districts"); } };
+  assert.equal(tileScore(1, 1, idxOf(1, 1)).terms[0].kind, "building", "an unreadable district is simply not the centre");
+  globalThis.Districts = wasD;
+  assert.equal(WEIGHTS.wonder, 6, "the wonder is the largest single term");
+  assert.ok(WEIGHTS.wonder > WEIGHTS.cityCenter && WEIGHTS.cityCenter > WEIGHTS.building, "wonder > centre > building");
 }
 
 console.log("tile-score harness passed");
