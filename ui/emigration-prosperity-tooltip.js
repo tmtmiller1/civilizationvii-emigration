@@ -142,21 +142,33 @@ const TERM_TEXT = Object.freeze({
 });
 
 /**
+ * The placeholder value for a term's text: the named thing, the neighbour count, or the raw yield.
+ * @param {import("/emigration/ui/emigration-tile-score.js").TileTerm} t The term.
+ * @param {"name"|"count"|"amount"|null} mode Which value the text takes. @param {string} thing The named thing.
+ * @returns {string} The argument ("" when the text has no placeholder).
+ */
+function termArg(t, mode, thing) {
+  if (mode === "name") return thing;
+  if (mode === "count") return String(t.count || 0);
+  if (mode === "amount") return String(Math.round(t.amount || 0));
+  return "";
+}
+
+/**
  * The panel text for one scored term: what fired, named where a thing on the map is what fired.
  * @param {import("/emigration/ui/emigration-tile-score.js").TileTerm} t The term.
  * @returns {string} Row label.
  */
 export function termLabel(t) {
   const g = GENERIC[t.kind];
+  const generic = g ? loc(g[0], g[1]) : "";
   const thing = g ? named(t.name, g[0], g[1]) : "";
   const text = TERM_TEXT[t.kind];
   if (!text) return thing || t.kind; // a bare building/improvement is just its name
   // "{Name}, a wonder" with the generic word for the name would read "Wonder, a wonder": the word alone says it.
-  if (text[2] === "name" && g && thing === loc(g[0], g[1]) && t.kind !== "pillaged") return thing;
-  const arg = text[2] === "name" ? thing
-    : text[2] === "count" ? String(t.count || 0)
-      : text[2] === "amount" ? String(Math.round(t.amount || 0)) : "";
-  return loc(text[0], text[1], arg);
+  // (A pillaged thing keeps its suffix: "Building, pillaged" is the information.)
+  if (text[2] === "name" && thing === generic && t.kind !== "pillaged") return thing;
+  return loc(text[0], text[1], termArg(t, text[2], thing));
 }
 
 /**
