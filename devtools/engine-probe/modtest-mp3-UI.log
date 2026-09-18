@@ -1,0 +1,26 @@
+[2026-09-17 16:19:32]	[EmigProbe] shell attached 
+[2026-09-17 16:19:33]	[EmigProbe] shell query complete 
+[2026-09-17 16:19:33]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-17 16:19:34]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 16:19:51]	[EmigTest] modtest-mp3 attached 
+[2026-09-17 16:20:06]	[EmigTest] modtest-mp3 start (probe 3: a placed constructible as a yield carrier), local=0 
+[2026-09-17 16:20:06]	[EmigTest] A1 row={"index":281,"cls":"BUILDING","pop":0,"cost":55} 
+[2026-09-17 16:20:06]	[EmigTest] A2 yieldChanges=["YIELD_GOLD=-2"] 
+[2026-09-17 16:20:06]	[EmigTest] B0 capital={"name":"London","owner":0,"pop":36,"urban":22,"rural":9,"gold":88.54,"centre":["BUILDING_PALACE","BUILDING_ANCIENT_WALLS","BUILDING_TAVERN"]} aiCity={"name":"St. Petersburg","owner":2,"pop":30,"urban":18,"rural":8,"gold":-0.04,"centre":["BUILDING_GRANARY","BUILDING_CITY_HALL","BUILDING_MEDIEVAL_WALLS"]} 
+[2026-09-17 16:20:06]	[EmigTest] B1 local before={"name":"London","owner":0,"pop":36,"urban":22,"rural":9,"gold":88.54,"centre":["BUILDING_PALACE","BUILDING_ANCIENT_WALLS","BUILDING_TAVERN"]} treasury=804.06 
+[2026-09-17 16:20:11]	[EmigTest] B1 local CREATE string -> true placed=true after={"name":"London","owner":0,"pop":36,"urban":22,"rural":9,"gold":85.63,"centre":["BUILDING_PALACE","BUILDING_ANCIENT_WALLS","BUILDING_TAVERN","BUILDING_EMIG_TEST_BURDEN"]} treasury=804.06 
+[2026-09-17 16:20:11]	[EmigTest] B2 ai before={"name":"St. Petersburg","owner":2,"pop":30,"urban":18,"rural":8,"gold":-0.04,"centre":["BUILDING_GRANARY","BUILDING_CITY_HALL","BUILDING_MEDIEVAL_WALLS"]} treasury=361.56 
+[2026-09-17 16:20:16]	[EmigTest] B2 ai CREATE string -> true placed=true after={"name":"St. Petersburg","owner":2,"pop":29,"urban":17,"rural":8,"gold":-1.35,"centre":["BUILDING_CITY_HALL","BUILDING_MEDIEVAL_WALLS","BUILDING_EMIG_TEST_BURDEN"]} treasury=361.56 
+[2026-09-17 16:20:16]	[EmigTest] C1 urbanPopulation before=22 after=22 -> SAME 
+[2026-09-17 16:20:16]	[EmigTest] C2 treasury before=804.06 after=804.06 
+[2026-09-17 16:20:41]	[EmigTest] D1 turn=67 treasury=1936.86 cityGold=85.63 centre=["BUILDING_PALACE","BUILDING_TAVERN","BUILDING_EMIG_TEST_BURDEN","BUILDING_MEDIEVAL_WALLS"] urban=22 
+[2026-09-17 16:21:06]	[EmigTest] D2 turn=68 treasury=2668.48 cityGold=94.34 centre=["BUILDING_PALACE","BUILDING_TAVERN","BUILDING_EMIG_TEST_BURDEN","BUILDING_MEDIEVAL_WALLS"] urban=22 
+[2026-09-17 16:21:23]	[EmigTest] D3 turn=69 treasury=1572.79 cityGold=94.34 centre=["BUILDING_PALACE","BUILDING_TAVERN","BUILDING_EMIG_TEST_BURDEN","BUILDING_MEDIEVAL_WALLS"] urban=22 
+[2026-09-17 16:21:47]	[EmigTest] D4 turn=70 treasury=2987.43 cityGold=111.73 centre=["BUILDING_PALACE","BUILDING_TAVERN","BUILDING_EMIG_TEST_BURDEN","BUILDING_MEDIEVAL_WALLS"] urban=22 
+[2026-09-17 16:21:47]	[EmigTest] D5 turn=70 treasury=2987.43 cityGold=111.73 centre=["BUILDING_PALACE","BUILDING_TAVERN","BUILDING_EMIG_TEST_BURDEN","BUILDING_MEDIEVAL_WALLS"] urban=22 
+[2026-09-17 16:22:01]	[EmigTest] D6 turn=71 treasury=3589.69 cityGold=111.73 centre=["BUILDING_PALACE","BUILDING_TAVERN","BUILDING_EMIG_TEST_BURDEN","BUILDING_MEDIEVAL_WALLS"] urban=22 
+[2026-09-17 16:22:01]	[EmigTest] E1 goldTrack=[{"turn":66,"gold":804.06,"cityGold":85.63},{"turn":67,"gold":1936.86,"cityGold":85.63},{"turn":68,"gold":2668.48,"cityGold":94.34},{"turn":69,"gold":1572.79,"cityGold":94.34},{"turn":70,"gold":2987.43,"cityGold":111.73},{"turn":70,"gold":2987.43,"cityGold":111.73},{"turn":71,"gold":3589.69,"cityGold":111.73}] 
+[2026-09-17 16:22:01]	[EmigTest] E2 cityGold first=85.63 last=111.73 
+[2026-09-17 16:22:07]	[EmigTest] E3 after destroy centre=["BUILDING_PALACE","BUILDING_TAVERN","BUILDING_MEDIEVAL_WALLS"] cityGold=124.04 urban=22 
+[2026-09-17 16:22:07]	[EmigTest] VERDICT ROW=YES PLACED_LOCAL=YES PLACED_AI=YES POP=SAME SURVIVED=YES DESTROYED=YES 
+[2026-09-17 16:22:07]	[EmigTest] DONE modtest3 finished 

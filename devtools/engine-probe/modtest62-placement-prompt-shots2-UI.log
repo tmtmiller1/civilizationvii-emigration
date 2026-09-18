@@ -1,0 +1,32 @@
+[2026-09-15 10:11:04]	[EmigProbe] shell attached 
+[2026-09-15 10:11:05]	[EmigProbe] shell query complete 
+[2026-09-15 10:11:06]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-15 10:11:06]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-15 10:11:24]	[EmigTest] modtest62 attached 
+[2026-09-15 10:11:39]	[EmigTest] START turn=66 control(one turn from growth)=[{"name":"Philadelphia","pop":16,"rural":10,"pending":0,"ready":false,"expand":0,"turnsToGrow":1}] blocker={"b":"-513644209","id":{"owner":0,"id":1697,"type":20},"name":"NOTIFICATION_ASSIGN_NEW_RESOURCES"} 
+[2026-09-15 10:11:44]	[EmigTest] SHOT prewrite 
+[2026-09-15 10:11:58]	[EmigTest] SHOT prewrite-control 
+[2026-09-15 10:12:15]	[EmigTest] SHOT postwrite 
+[2026-09-15 10:12:29]	[EmigTest] SHOT postwrite-control 
+[2026-09-15 10:12:38]	[EmigTest] WRITTEN [{"name":"London","pop":37,"rural":10,"pending":1,"ready":true,"expand":4,"turnsToGrow":32},{"name":"Leeds","pop":27,"rural":10,"pending":1,"ready":true,"expand":6,"turnsToGrow":39}] newPopNotes=[] 
+[2026-09-15 10:12:41]	[EmigTest] CLEAR attempt=1 {"unassigned":44,"assigned":0,"refused":44,"consider":true,"dismissed":7} blockerNow={"b":"442844772","name":"NOTIFICATION_ASSIGN_NEW_RESOURCES"} 
+[2026-09-15 10:13:41]	[EmigTest] ENDTURN attempt=1 turn=66 advanced=false 
+[2026-09-15 10:13:44]	[EmigTest] CLEAR attempt=2 {"unassigned":44,"assigned":0,"refused":44,"consider":true,"dismissed":3} blockerNow={"b":"442844772","name":"NOTIFICATION_ASSIGN_NEW_RESOURCES"} 
+[2026-09-15 10:13:59]	[EmigTest] ENDTURN attempt=2 turn=67 advanced=true 
+[2026-09-15 10:14:07]	[EmigTest] AFTER turn=67 advanced=true NEW_POPULATION=[] targets=[{"name":"London","pop":37,"rural":10,"pending":1,"ready":true,"expand":4,"turnsToGrow":31,"notes":0},{"name":"Leeds","pop":27,"rural":10,"pending":1,"ready":true,"expand":6,"turnsToGrow":38,"notes":0}] control=[{"name":"Philadelphia","pop":17,"rural":11,"pending":1,"ready":true,"expand":12,"turnsToGrow":30,"notes":0}] addedSinceStart=["66:NOTIFICATION_ASSIGN_NEW_RESOURCES","66:NOTIFICATION_ASSIGN_NEW_RESOURCES","66:NOTIFICATION_ASSIGN_NEW_RESOURCES","66:NOTIFICATION_ASSIGN_NEW_RESOURCES","66:NOTIFICATION_ASSIGN_NEW_RESOURCES","66:NOTIFICATION_ASSIGN_NEW_RESOURCES","66:NOTIFICATION_ASSIGN_NEW_RESOURCES","67:NOTIFICATION_ASSIGN_NEW_RESOURCES","67:NOTIFICATION_ASSIGN_NEW_RESOURCES","67:NOTIFICATION_ASSIGN_NEW_RESOURCES"] 
+[2026-09-15 10:14:17]	[EmigTest] CLOSED a screen through its close button (1 visible) 
+[2026-09-15 10:14:19]	[EmigTest] CLOSED a screen through its close button (1 visible) 
+[2026-09-15 10:14:21]	[EmigTest] CLOSED a screen through its close button (1 visible) 
+[2026-09-15 10:14:23]	[EmigTest] CLOSED a screen through its close button (1 visible) 
+[2026-09-15 10:14:25]	[EmigTest] CLOSED a screen through its close button (1 visible) 
+[2026-09-15 10:14:27]	[EmigTest] CLOSED a screen through its close button (1 visible) 
+[2026-09-15 10:14:34]	[EmigTest] SHOT afterturn-london 
+[2026-09-15 10:14:43]	[EmigTest] CLOSED a screen through its close button (1 visible) 
+[2026-09-15 10:14:45]	[EmigTest] CLOSED a screen through its close button (1 visible) 
+[2026-09-15 10:14:47]	[EmigTest] CLOSED a screen through its close button (1 visible) 
+[2026-09-15 10:14:49]	[EmigTest] CLOSED a screen through its close button (1 visible) 
+[2026-09-15 10:14:51]	[EmigTest] CLOSED a screen through its close button (1 visible) 
+[2026-09-15 10:14:53]	[EmigTest] CLOSED a screen through its close button (1 visible) 
+[2026-09-15 10:15:00]	[EmigTest] SHOT afterturn-philadelphia 
+[2026-09-15 10:15:09]	[EmigTest] VERDICT advanced=true newPopulationNotes=0 writtenStillReady=[true,true] controlGrew=[true] 
+[2026-09-15 10:15:09]	[EmigTest] DONE modtest62 finished 

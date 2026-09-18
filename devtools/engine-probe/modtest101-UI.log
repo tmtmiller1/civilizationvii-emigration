@@ -1,0 +1,46 @@
+[2026-09-16 07:35:06]	[EmigProbe] shell attached crisis=EXPLORATION_CRISIS_PLAGUE age=AGE_EXPLORATION 
+[2026-09-16 07:35:21]	[EmigProbe] shell config reset to single player 
+[2026-09-16 07:35:24]	[EmigProbe] shell Age: set "AGE_EXPLORATION" -> 0 now="AGE_EXPLORATION" 
+[2026-09-16 07:35:26]	[EmigProbe] shell Crises options=["ANTIQUITY_CRISIS_INVASION","ANTIQUITY_CRISIS_PLAGUE","ANTIQUITY_CRISIS_LOYALTY","EXPLORATION_CRISIS_PLAGUE","EXPLORATION_CRISIS_RELIGION"] current=null 
+[2026-09-16 07:35:26]	[EmigProbe] shell Crises excluding=["ANTIQUITY_CRISIS_INVASION","ANTIQUITY_CRISIS_PLAGUE","ANTIQUITY_CRISIS_LOYALTY","EXPLORATION_CRISIS_RELIGION"] keeping="EXPLORATION_CRISIS_PLAGUE" 
+[2026-09-16 07:35:26]	[EmigProbe] shell Crises set -> 0 readback=null 
+[2026-09-16 07:35:26]	[EmigProbe] shell ExcludeCrises direct write -> "ok" readback=["ANTIQUITY_CRISIS_INVASION","ANTIQUITY_CRISIS_PLAGUE","ANTIQUITY_CRISIS_LOYALTY","EXPLORATION_CRISIS_RELIGION"] 
+[2026-09-16 07:35:29]	[EmigProbe] shell startGame called (Play Now) 
+[2026-09-16 07:35:41]	[EmigTest] modtest100 attached 
+[2026-09-16 07:35:56]	[EmigTest] modtest100 run local=0 
+[2026-09-16 07:35:56]	[EmigTest] DB crises now=["EXPLORATION_CRISIS_RELIGION","EXPLORATION_CRISIS_PLAGUE"] 
+[2026-09-16 07:35:56]	[EmigTest] DB plague stages=["EXPLORATION_CRISIS_RELIGION#1@70","EXPLORATION_CRISIS_RELIGION#2@80","EXPLORATION_CRISIS_RELIGION#3@90","EXPLORATION_CRISIS_RELIGION#4@100","EXPLORATION_CRISIS_PLAGUE#1@5","EXPLORATION_CRISIS_PLAGUE#2@15","EXPLORATION_CRISIS_PLAGUE#3@25","EXPLORATION_CRISIS_PLAGUE#4@35"] 
+[2026-09-16 07:35:56]	[EmigTest] START turn=1 age=0.7% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:35:59]	[EmigTest] ENDTURN blocked by 1335628486 tries=1 
+[2026-09-16 07:36:03]	[EmigTest] ENDTURN blocked by 1335628486 tries=2 
+[2026-09-16 07:36:17]	[EmigTest] T n=1 turn=2 age=1.4% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:36:19]	[EmigTest] ENDTURN blocked by -2084516792 tries=1 
+[2026-09-16 07:36:23]	[EmigTest] ENDTURN blocked by -2084516792 tries=2 
+[2026-09-16 07:36:34]	[EmigTest] T n=2 turn=3 age=2.1% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:36:36]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:36:40]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:36:52]	[EmigTest] T n=3 turn=4 age=2.9% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:36:54]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:36:58]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:37:10]	[EmigTest] T n=4 turn=5 age=3.6% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:37:12]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:37:16]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:37:29]	[EmigTest] T n=5 turn=6 age=4.3% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:37:31]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:37:35]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:37:49]	[EmigTest] T n=6 turn=7 age=5.0% crisisStage=0 enabled=true nStages=4 elapsed=1 infected=0 
+[2026-09-16 07:37:51]	[EmigTest] ENDTURN blocked by -2084516792 tries=1 
+[2026-09-16 07:37:55]	[EmigTest] ENDTURN blocked by -2084516792 tries=2 
+[2026-09-16 07:38:06]	[EmigTest] T n=7 turn=8 age=5.7% crisisStage=0 enabled=true nStages=4 elapsed=2 infected=0 
+[2026-09-16 07:38:08]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:38:12]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:38:25]	[EmigTest] T n=8 turn=9 age=6.4% crisisStage=0 enabled=true nStages=4 elapsed=3 infected=1 [{"p":4,"city":"Road Town","pop":12}] 
+[2026-09-16 07:38:27]	[EmigTest] ENDTURN blocked by -513644209 tries=1 
+[2026-09-16 07:38:31]	[EmigTest] ENDTURN blocked by -513644209 tries=2 
+[2026-09-16 07:38:44]	[EmigTest] T n=9 turn=10 age=7.1% crisisStage=0 enabled=true nStages=4 elapsed=4 infected=2 [{"p":4,"city":"Tortuga","pop":8},{"p":4,"city":"Road Town","pop":11}] 
+[2026-09-16 07:38:46]	[EmigTest] ENDTURN blocked by -513644209 tries=1 
+[2026-09-16 07:38:50]	[EmigTest] ENDTURN blocked by -513644209 tries=2 
+[2026-09-16 07:39:02]	[EmigTest] T n=10 turn=11 age=7.9% crisisStage=0 enabled=true nStages=4 elapsed=5 infected=2 [{"p":4,"city":"Tortuga","pop":8},{"p":4,"city":"Road Town","pop":11}] 
+[2026-09-16 07:39:02]	[EmigTest] FINAL turn=11 age=7.9% crisisStage=0 enabled=true nStages=4 elapsed=5 infected=2 [{"p":4,"city":"Tortuga","pop":8},{"p":4,"city":"Road Town","pop":11}] 
+[2026-09-16 07:39:02]	[EmigTest] VERDICT isInfected observed true: YES | firstInfectedTurn=9 peakInfectedCities=2 | firstCrisisStageTurn=7 | turnsRun=10 reason=infection observed 
+[2026-09-16 07:39:02]	[EmigTest] DONE modtest100 finished 

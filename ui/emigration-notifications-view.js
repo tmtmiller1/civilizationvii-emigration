@@ -233,16 +233,17 @@ export function chipLabel(e) {
 }
 
 /**
- * The row accent colour, keyed by DIRECTION rather than cause: people staying within your empire or
- * arriving from abroad read GREEN (a gain or neutral shuffle), while your own people leaving for a rival
- * read RED (a real loss). Deaths and world-news (crisis / per-cause) rows keep their cause colour; a
- * chronicle entry keeps the chronicle accent.
+ * The row accent colour, keyed by DIRECTION rather than cause: newcomers arriving from abroad read GREEN
+ * (the player's gain, the only green), your own people leaving for a rival read RED (a real loss), and
+ * people moving between your own cities read neutral (the source settlement still loses its tile).
+ * Deaths and world-news (crisis / per-cause) rows keep their cause colour, never green for another civ's
+ * gain; a chronicle entry keeps the chronicle accent.
  * @param {*} e A NotifEntry.
  * @returns {string} A CSS colour.
  */
 export function rowAccent(e) {
   if (e.kind === "chronicle") return causeAccent("chronicle");
-  if (e.kind === "digest" && !isDeath(e)) return digestAccent(e.ownLoss, e.crossCiv); // green vs red by direction
+  if (e.kind === "digest" && !isDeath(e)) return digestAccent(e.ownLoss, e.crossCiv); // green (own gain) / red / neutral
   return notificationAccent(e.cause, e.ownLoss); // deaths + world-news keep the cause colour
 }
 

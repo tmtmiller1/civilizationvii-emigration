@@ -1,0 +1,948 @@
+[2026-09-15 21:14:26]	Unable to parse declaration: width - max-content
+[2026-09-15 21:14:26]	VM: Unable to find harness.  The ViewManager should not be loaded in the shell. 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	Attempting to read using a null/empty key, ignoring.
+[2026-09-15 21:14:26]	Attempting to read using a null/empty key, ignoring.
+[2026-09-15 21:14:26]	Attempting to read using a null/empty key, ignoring.
+[2026-09-15 21:14:26]	Attempting to read using a null/empty key, ignoring.
+[2026-09-15 21:14:26]	Attempting to read using a null/empty key, ignoring.
+[2026-09-15 21:14:26]	Attempting to read using a null/empty key, ignoring.
+[2026-09-15 21:14:26]	[Demographics.settings] Persisted settings slice missing while other mods' settings are present (a sibling mod may have overwritten the shared modSettings key); falling back to defaults / in-memory values for this session. 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	[EmigProbe] shell attached 
+ While executing JS :15:23
+[2026-09-15 21:14:26]	Assert failure: Object size mismatch 
+ While executing JS fs://game/core/ui/options/model-options.js:26:37
+[2026-09-15 21:14:26]	Assert failure: Object size mismatch 
+ While executing JS fs://game/core/ui/options/model-options.js:27:38
+[2026-09-15 21:14:26]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	SiBr3's Celebratory Celebrations  --  Options Module Loaded 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.masterEnable=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.playMusic=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.persistentVfx=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.showFireworks=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.showArrows=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.showConfetti=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.showBirds=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.showSmoke=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.showPetals=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.fireworksAlwaysUnlocked=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.verboseLogging=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.densityPreset=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.fadeOutSpeed=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.sfxDuckVolume=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.flavourOverride=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.fanfareEndsAt=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.showAdvancedOptions=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.centreConcentration=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.scatterRadius=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.lanternCount=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.cityBurstDuration=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	LOAD sib-celebratory-celebrations.updateTickRate=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:26]	Assert failure: Object size mismatch 
+ While executing JS fs://game/core/ui/shell/oob-experience/oob-experience-mgr.js:331:46
+[2026-09-15 21:14:26]	Attempting to remove mousemove event listener from a target  that did not have the event listener registered.
+ While executing JS fs://game/core/ui/components/fxs-slider.js:81:12
+[2026-09-15 21:14:27]	Attempting to remove mousemove event listener from a target  that did not have the event listener registered.
+ While executing JS fs://game/core/ui/components/fxs-slider.js:81:12
+[2026-09-15 21:14:27]	Attempting to remove engine-input event listener from a target  that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:266:16
+[2026-09-15 21:14:27]	Attempting to remove engine-input event listener from a target  that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:266:16
+[2026-09-15 21:14:27]	Failed to open file - lp_circ_alexander_256
+[2026-09-15 21:14:27]	ResourceRequestJob | Failed loading resource: blp:lp_circ_alexander_256
+[2026-09-15 21:14:27]	Failed to open file - lp_hex_alexander_256
+[2026-09-15 21:14:27]	ResourceRequestJob | Failed loading resource: blp:lp_hex_alexander_256
+[2026-09-15 21:14:27]	Failed to open file - bg-panel-random
+[2026-09-15 21:14:27]	ResourceRequestJob | Failed loading resource: blp:bg-panel-random
+[2026-09-15 21:14:27]	Failed to open file - civ_sym_random
+[2026-09-15 21:14:27]	ResourceRequestJob | Failed loading resource: blp:civ_sym_random
+[2026-09-15 21:14:27]	[EmigProbe] shell query complete 
+ While executing JS :15:23
+[2026-09-15 21:14:28]	Trying to run an already playing flipbook. Restarting instead. 
+ While executing JS :30:23
+[2026-09-15 21:14:28]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+ While executing JS :15:23
+[2026-09-15 21:14:28]	[EmigProbe] shell handleLoadSave returned true 
+ While executing JS :15:23
+[2026-09-15 21:14:28]	The font fallback with weight Bold (700) hasn't been loaded yet when view with id 0 unloaded its document.
+[2026-09-15 21:14:28]	The font fallback with weight Normal (400) hasn't been loaded yet when view with id 0 unloaded its document.
+[2026-09-15 21:14:28]	Unable to parse declaration: width - max-content
+[2026-09-15 21:14:30]	The font fallback with weight Normal (400) hasn't been loaded yet when view with id 0 unloaded its document.
+[2026-09-15 21:14:30]	Unable to parse declaration: width - max-content
+[2026-09-15 21:14:31]	HTML Parser Error@:fs://game/root-game.html@1:1146: Premature end of file  Currently open tags: html, div..
+ While executing JS fs://game/core/vendor/solid-js/web/dist/web.js:819:34
+[2026-09-15 21:14:31]	Failed to open file - /icon_left_bumper
+[2026-09-15 21:14:31]	ResourceRequestJob | Failed loading resource: fs://game/icon_left_bumper
+[2026-09-15 21:14:31]	Failed to open file - /icon_right_bumper
+[2026-09-15 21:14:31]	ResourceRequestJob | Failed loading resource: fs://game/icon_right_bumper
+[2026-09-15 21:14:31]	Failed to open file - /icon_button_bottom
+[2026-09-15 21:14:31]	ResourceRequestJob | Failed loading resource: fs://game/icon_button_bottom
+[2026-09-15 21:14:51]	Assert failure: Object size mismatch 
+ While executing JS fs://game/core/ui/options/model-options.js:26:37
+[2026-09-15 21:14:51]	Assert failure: Object size mismatch 
+ While executing JS fs://game/core/ui/options/model-options.js:27:38
+[2026-09-15 21:14:51]	Attempting to read using a null/empty key, ignoring.
+[2026-09-15 21:14:51]	Attempting to read using a null/empty key, ignoring.
+[2026-09-15 21:14:51]	Attempting to read using a null/empty key, ignoring.
+[2026-09-15 21:14:51]	Attempting to read using a null/empty key, ignoring.
+[2026-09-15 21:14:51]	Attempting to read using a null/empty key, ignoring.
+[2026-09-15 21:14:51]	Attempting to read using a null/empty key, ignoring.
+[2026-09-15 21:14:51]	[Demographics.settings] Persisted settings slice missing while other mods' settings are present (a sibling mod may have overwritten the shared modSettings key); falling back to defaults / in-memory values for this session. 
+ While executing JS :30:23
+[2026-09-15 21:14:51]	Circular import detected - fs://game/demographics/ui/screen-demographics/views/history/view-history.js
+[2026-09-15 21:14:51]	[Emigration] enclave markers: enclave markers wired 
+ While executing JS :30:23
+[2026-09-15 21:14:51]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_enclave_markers_wired
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:14:51]	Circular import detected - fs://game/demographics/ui/sampler/demographics-sampler.js
+[2026-09-15 21:14:51]	Circular import detected - fs://game/demographics/ui/sampler/demographics-sampler.js
+[2026-09-15 21:14:52]	[EmigTest] modtest91 attached control=false 
+ While executing JS :15:23
+[2026-09-15 21:14:52]	Circular import detected - fs://game/demographics/ui/sampler/sampler-collectors-core.js
+[2026-09-15 21:14:52]	Circular import detected - fs://game/demographics/ui/sampler/sampler-collectors-core.js
+[2026-09-15 21:14:52]	Circular import detected - fs://game/demographics/ui/sampler/sampler-collectors-core.js
+[2026-09-15 21:14:52]	LFYieldsPreview: Policy Chooser Item Decorator (1.4.0) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LFYieldsPreview: Tech/Civic Tooltip Decorator (1.4.0) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	[Emigration] boot start (turnInterval 1, crossCiv true) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	Unable to parse declaration: border-top-color - EMIG_boot_start_turnInterval_1_crossCiv_true_
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:14:52]	[Emigration] PlayerTurnActivated hooked 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	Unable to parse declaration: border-top-color - EMIG_PlayerTurnActivated_hooked
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:14:52]	[Emigration] events: RandomEventOccurred hooked 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	Unable to parse declaration: border-top-color - EMIG_events_RandomEventOccurred_hooked
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:14:52]	[Emigration] banner pressure bar registered 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	Unable to parse declaration: border-top-color - EMIG_banner_pressure_bar_registered
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:14:52]	[Emigration] Demographics graph registered 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	Unable to parse declaration: border-top-color - EMIG_Demographics_graph_registered
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:14:52]	[Emigration] Demographics page registered 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	Unable to parse declaration: border-top-color - EMIG_Demographics_page_registered
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:14:52]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	SiBr3's Celebratory Celebrations  --  Options Module Loaded 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.masterEnable=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.playMusic=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.persistentVfx=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.showFireworks=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.showArrows=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.showConfetti=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.showBirds=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.showSmoke=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.showPetals=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.fireworksAlwaysUnlocked=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.verboseLogging=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.densityPreset=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.fadeOutSpeed=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.sfxDuckVolume=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.flavourOverride=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.fanfareEndsAt=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.showAdvancedOptions=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.centreConcentration=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.scatterRadius=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.lanternCount=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.cityBurstDuration=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.updateTickRate=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD bz-city-hall.compact=undefined (stored) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD bz-city-hall.compact=1 (default) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	SiBr3's Celebratory Celebrations  --  Options Module Loaded 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.masterEnable=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.playMusic=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.persistentVfx=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.showFireworks=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.showArrows=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.showConfetti=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.showBirds=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.showSmoke=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.showPetals=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.fireworksAlwaysUnlocked=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.verboseLogging=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.densityPreset=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.fadeOutSpeed=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.sfxDuckVolume=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.flavourOverride=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.fanfareEndsAt=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.showAdvancedOptions=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.centreConcentration=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.scatterRadius=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.lanternCount=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.cityBurstDuration=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	LOAD sib-celebratory-celebrations.updateTickRate=undefined (persistent) 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	SiBr3's Celebratory Celebrations  --  Fanfare Script Loaded 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	----------------------------------------------------------- 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	continent-layer: nextColorIndex greater than number of colors in CONTINENT_COLORS 
+ While executing JS :15:23
+[2026-09-15 21:14:52]	Unable to parse declaration: display - inline-flex
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: background - var(--ia-frame-bg)
+[2026-09-15 21:14:52]	Unable to parse shorthand declaration: background - currentColor
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-color - var(--ia-frame-border-hot)
+[2026-09-15 21:14:52]	Unable to parse declaration: color - inherit
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-top - 0.18rem solid var(--ia-fxs-header)
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border - 1px solid var(--ia-frame-border)
+[2026-09-15 21:14:52]	Unable to parse declaration: display - inline-block
+[2026-09-15 21:14:52]	dashed is not supported for border-style
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border - 1px solid var(--ia-divider)
+[2026-09-15 21:14:52]	Unable to parse declaration: position - sticky
+[2026-09-15 21:14:52]	Unsupported CSS pseudo class selector encountered: empty
+[2026-09-15 21:14:52]	Unable to parse shorthand declaration: background - currentColor
+[2026-09-15 21:14:52]	Unable to parse declaration: background-image - repeating-linear-gradient(90deg,currentColor 0,currentColor 0.18rem,transparent 0.18rem,transparent 0.32rem)
+[2026-09-15 21:14:52]	Unable to parse declaration: display - inline-block
+[2026-09-15 21:14:52]	Unable to parse declaration: display - inline-block
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: background - var(--ia-accent-gold)
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-bottom - 1px solid var(--ia-divider)
+[2026-09-15 21:14:52]	Unable to parse declaration: display - inline-flex
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-bottom - 2px solid var(--ia-divider)
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border - 2px solid var(--ia-frame-border-hot)
+[2026-09-15 21:14:52]	Unable to parse declaration: display - -webkit-box
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-top - 1px solid var(--ia-divider)
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: background - var(--ia-frame-bg)
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border - 1px solid var(--ia-divider)
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-right - 1px solid var(--ia-divider)
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-color - var(--ia-accent-gold-soft)
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border-left - 3px solid var(--ia-frame-border)
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border - 1px solid var(--ia-frame-border)
+[2026-09-15 21:14:52]	Unable to parse declaration: display - inline-block
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: background - var(--ia-text-accent)
+[2026-09-15 21:14:52]	Custom CSS expressions are not supported in shorthand declaration, please use the long versions of the CSS property: border - 2px solid var(--ia-frame-border)
+[2026-09-15 21:14:52]	Unable to parse shorthand declaration: gap - clamp(0.3rem,1vh,0.6rem)
+[2026-09-15 21:14:52]	Unable to parse shorthand declaration: padding - clamp(0.08rem,0.17vh,0.1rem) 0.55rem
+[2026-09-15 21:14:52]	Unable to parse shorthand declaration: padding - clamp(0.2rem,0.67vh,0.4rem) 0.6rem 0
+[2026-09-15 21:14:52]	Unable to parse shorthand declaration: gap - clamp(0.4rem,1.17vh,0.7rem)
+[2026-09-15 21:14:52]	Unable to parse declaration: padding-bottom - clamp(0.2rem,0.67vh,0.4rem)
+[2026-09-15 21:14:52]	Unable to parse declaration: min-height - clamp(1.95rem,4.33vh,2.6rem)
+[2026-09-15 21:14:52]	Unable to parse shorthand declaration: padding - clamp(0.16rem,0.5vh,0.3rem) 1.1rem
+[2026-09-15 21:14:52]	Unable to parse declaration: width - clamp(2.5rem,6vh,3.6rem)
+[2026-09-15 21:14:52]	Unable to parse shorthand declaration: padding - clamp(0.3rem,0.92vh,0.55rem) 0.8rem clamp(0.4rem,1.17vh,0.7rem)
+[2026-09-15 21:14:52]	Unable to parse declaration: height - clamp(2.5rem,6vh,3.6rem)
+[2026-09-15 21:14:52]	Unable to parse declaration: margin-bottom - clamp(0.2rem,0.75vh,0.45rem)
+[2026-09-15 21:14:52]	Unable to parse declaration: padding-bottom - clamp(0.5rem,1.67vh,1rem)
+[2026-09-15 21:14:52]	Unable to parse declaration: height - clamp(5.7rem,12.5vh,7.5rem)
+[2026-09-15 21:14:52]	Unable to parse declaration: max-height - none
+[2026-09-15 21:14:52]	HTML Parser Error@:fs://game/root-game.html@49:43: Tokenizer error with an unimplemented error message.
+ While executing JS fs://game/core/ui/component-support.js:943:30
+[2026-09-15 21:14:52]	model-culture-tree: No available trees to generate 
+ While executing JS :30:23
+[2026-09-15 21:14:52]	model-tech-tree: No available trees to generate 
+ While executing JS :30:23
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:14:53]	Failed to open file - mask_unitflag_army.png
+[2026-09-15 21:14:53]	ResourceRequestJob | Failed loading resource: blp:mask_unitflag_army.png
+[2026-09-15 21:14:53]	Failed to open file - mask_unitflag_combat.png
+[2026-09-15 21:14:53]	ResourceRequestJob | Failed loading resource: blp:mask_unitflag_combat.png
+[2026-09-15 21:14:53]	Failed to open file - mask_unitflag_civilian.png
+[2026-09-15 21:14:53]	ResourceRequestJob | Failed loading resource: blp:mask_unitflag_civilian.png
+[2026-09-15 21:14:53]	[Emigration] enclave markers: repaint(init) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:14:53]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_init_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:04]	Trying to merge URLs that are not valid!
+ While executing JS :3:13
+[2026-09-15 21:15:07]	[EmigTest] SLIDER poach=24 escape=3.5 drain=18 internal=18 
+ While executing JS :15:23
+[2026-09-15 21:15:07]	[EmigTest] START control=false {"turn":66,"world":1056,"settlements":76,"topShare":41.2,"minPop":4,"minCity":"Jenne","negGold":0,"resettling":0,"enclaves":0,"candidacies":0,"counters":{"passes":0,"zeroMovePasses":0,"voluntaryMoves":0,"crisisMoves":0,"crisisInternal":0,"crisisCrossCiv":0,"crossCivMoves":0,"returnMoves":0,"attritionTrapped":0,"attritionFleeing":0,"transitRazed":0,"transitCapped":0,"arrivedIntoCrisis":0,"refugeesQueued":0,"refugeesSettled":0},"civs":{"0":{"pop":435,"settlements":29,"gold":804,"resettling":0},"2":{"pop":85,"settlements":6,"gold":362,"resettling":0},"4":{"pop":141,"settlements":8,"gold":500,"resettling":0},"6":{"pop":100,"settlements":8,"gold":2656,"resettling":0},"7":{"pop":91,"settlements":10,"gold":849,"resettling":0},"8":{"pop":119,"settlements":8,"gold":119,"resettling":0},"9":{"pop":85,"settlements":7,"gold":1763,"resettling":0}},"cfg":{"poachBlock":24,"crisisEscapeBonus":3.5,"antiDrainWeight":18,"internalBonus":18,"askRefugees":true,"askMigrants":fal
+[2026-09-15 21:15:12]	Trying to merge URLs that are not valid!
+ While executing JS :3:13
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:17]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:17]	Tutorial: Autoplay started, auto-marking complete any active items. 
+ While executing JS :30:23
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+[2026-09-15 21:15:20]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:20]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:21]	[Emigration] enclave markers: repaint(PlayerTurnActivated) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:21]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_PlayerTurnActivated_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:21]	Trying to set "left" property to invalid value: -24
+ While executing JS fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:150:35
+[2026-09-15 21:15:22]	Failed to open file - mask_unitflag_army.png
+[2026-09-15 21:15:22]	ResourceRequestJob | Failed loading resource: blp:mask_unitflag_army.png
+[2026-09-15 21:15:22]	Failed to open file - mask_unitflag_combat.png
+[2026-09-15 21:15:22]	ResourceRequestJob | Failed loading resource: blp:mask_unitflag_combat.png
+[2026-09-15 21:15:22]	Failed to open file - mask_unitflag_civilian.png
+[2026-09-15 21:15:22]	ResourceRequestJob | Failed loading resource: blp:mask_unitflag_civilian.png
+[2026-09-15 21:15:22]	model-great-works: update() - no local player found! 
+ While executing JS :15:23
+[2026-09-15 21:15:22]	model-great-works: update() - no local player found! 
+ While executing JS :15:23
+[2026-09-15 21:15:22]	[Emigration] enclave markers: repaint(PlayerTurnActivated) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:22]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_PlayerTurnActivated_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:22]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:560:15
+[2026-09-15 21:15:22]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:561:15
+[2026-09-15 21:15:22]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:562:15
+[2026-09-15 21:15:22]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:22]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:23]	[Emigration] enclave markers: repaint(PlayerTurnActivated) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:23]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_PlayerTurnActivated_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:23]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:560:15
+[2026-09-15 21:15:23]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:561:15
+[2026-09-15 21:15:23]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:562:15
+[2026-09-15 21:15:23]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:560:15
+[2026-09-15 21:15:23]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:561:15
+[2026-09-15 21:15:23]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:562:15
+[2026-09-15 21:15:23]	[Emigration] enclave markers: repaint(PlayerTurnActivated) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:23]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_PlayerTurnActivated_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:23]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:560:15
+[2026-09-15 21:15:23]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:561:15
+[2026-09-15 21:15:23]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:562:15
+[2026-09-15 21:15:23]	[Emigration] enclave markers: repaint(PlayerTurnActivated) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:23]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_PlayerTurnActivated_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:23]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:560:15
+[2026-09-15 21:15:23]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:561:15
+[2026-09-15 21:15:23]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:562:15
+[2026-09-15 21:15:23]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:560:15
+[2026-09-15 21:15:23]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:561:15
+[2026-09-15 21:15:23]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:562:15
+[2026-09-15 21:15:24]	model-great-works: update() - no local player found! 
+ While executing JS :15:23
+[2026-09-15 21:15:24]	[Emigration] enclave markers: repaint(PlayerTurnActivated) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:24]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_PlayerTurnActivated_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:24]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:24]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:24]	[Emigration] enclave markers: repaint(ConstructibleAddedToMap) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:24]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_ConstructibleAddedToMap_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:24]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:560:15
+[2026-09-15 21:15:24]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:561:15
+[2026-09-15 21:15:24]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:562:15
+[2026-09-15 21:15:24]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:560:15
+[2026-09-15 21:15:24]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:561:15
+[2026-09-15 21:15:24]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:562:15
+[2026-09-15 21:15:24]	Attempting to remove event-mgr-receive-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:560:15
+[2026-09-15 21:15:24]	Attempting to remove event-mgr-lose-focus event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:561:15
+[2026-09-15 21:15:24]	Attempting to remove event-mgr-pop event listener from a target UNIT-FLAG that did not have the event listener registered.
+ While executing JS fs://game/core/ui/component-support.js:562:15
+[2026-09-15 21:15:24]	[Emigration] enclave markers: repaint(PlayerTurnActivated) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:24]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_PlayerTurnActivated_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:24]	[Emigration] enclave markers: repaint(PlayerTurnActivated) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:24]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_PlayerTurnActivated_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:24]	[Emigration] enclave markers: repaint(PlayerTurnActivated) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:24]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_PlayerTurnActivated_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:24]	[Emigration] enclave markers: repaint(PlayerTurnActivated) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:24]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_PlayerTurnActivated_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:24]	[Emigration] enclave markers: repaint(PlayerTurnActivated) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:24]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_PlayerTurnActivated_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:24]	[Emigration] enclave markers: repaint(PlayerTurnActivated) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:24]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_PlayerTurnActivated_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:25]	[Emigration] enclave markers: repaint(PlayerTurnActivated) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:25]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_PlayerTurnActivated_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:25]	[Emigration] enclave markers: repaint(PlayerTurnActivated) painted=0 
+ While executing JS :30:23
+[2026-09-15 21:15:25]	Unable to parse declaration: border-top-color - EMIG_enclave_markers_repaint_PlayerTurnActivated_painted_0
+ While executing JS fs://game/emigration/ui/emigration-log.js:18:20
+[2026-09-15 21:15:26]	Trying to merge URLs that are not valid!
+ While executing JS :3:13
+[2026-09-15 21:15:27]	The font fallback with weight Bold (700) hasn't been loaded yet when view with id 0 unloaded its document.
+[2026-09-15 21:15:27]	The font TitleFont-KR with weight Medium (500) hasn't been loaded yet when view with id 0 unloaded its document.
+[2026-09-15 21:15:27]	The font TitleFont with weight Medium (500) hasn't been loaded yet when view with id 0 unloaded its document.
+[2026-09-15 21:15:27]	The font TitleFont-JP with weight Medium (500) hasn't been loaded yet when view with id 0 unloaded its document.
+[2026-09-15 21:15:27]	The font fallback with weight Medium (500) hasn't been loaded yet when view with id 0 unloaded its document.
+[2026-09-15 21:15:27]	The font TitleFont-TC with weight Medium (500) hasn't been loaded yet when view with id 0 unloaded its document.
+[2026-09-15 21:15:27]	The font TitleFont-SC with weight Medium (500) hasn't been loaded yet when view with id 0 unloaded its document.
+[2026-09-15 21:15:27]	The font fallback with weight Normal (400) hasn't been loaded yet when view with id 0 unloaded its document.

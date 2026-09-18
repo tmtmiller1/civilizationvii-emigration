@@ -1,0 +1,19 @@
+[2026-09-14 07:21:25]	[EmigProbe] shell attached 
+[2026-09-14 07:21:26]	[EmigProbe] shell query complete 
+[2026-09-14 07:21:26]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-14 07:21:26]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-14 07:21:45]	[EmigTest] modtest23 attached 
+[2026-09-14 07:22:02]	[EmigTest] K0 realProgress=0.412 overrode=true progressNow=0.700 relax=0.400 shareBar plain=0.3 relaxed=0.180 stockBar plain=4.60 relaxed=2.76 formed=0 localCities=["Lāhainā:29","Washington, D.C.:31","London:36"] 
+[2026-09-14 07:22:02]	[EmigTest] K1 seeded Lāhainā (pop 29) target share 0.240 comp=["0:24.9/86%","4:4.1/14%"] progress={"share":0.143,"stock":4.1,"stage":"established","bar":0.18,"stockBar":2.76,"relax":0.4} 
+[2026-09-14 07:22:10]	[EmigTest] K1 after pass: records=["86,20:CIVILIZATION_NORMAN"] formed=1 relaxNow=0.000 
+[2026-09-14 07:22:10]	[EmigTest] K2 seeded Washington, D.C. comp=["0:26.8/87%","4:4.2/13%"] progress={"share":0.135,"stage":"none","bar":0.3,"relax":0} 
+[2026-09-14 07:22:18]	[EmigTest] K2 after pass: records=["86,20:CIVILIZATION_NORMAN"] formed=1 
+[2026-09-14 07:22:18]	[EmigTest] K3 formed=3 seeded London comp=["0:22.8/63%","4:13.2/37%"] 
+[2026-09-14 07:22:26]	[EmigTest] K3 capped pass: records=["86,20:CIVILIZATION_NORMAN"] (expect no London record) 
+[2026-09-14 07:22:34]	[EmigTest] K3 uncapped pass: records=["86,20:CIVILIZATION_NORMAN","92,32:CIVILIZATION_NORMAN"] (expect a record for London) 
+[2026-09-14 07:22:34]	[EmigTest] K4 snapshot Lāhainā enclave={"civ":"Norman","share":0.12974273039215686,"bar":0.3,"stock":3.8922819117647056,"stockBar":4.6,"stage":"none","dwell":null} 
+[2026-09-14 07:22:34]	[EmigTest] K4 snapshot Washington, D.C. enclave={"civ":"Norman","share":0.13068055555555555,"bar":0.3,"stock":4.051097222222222,"stockBar":4.6,"stage":"none","dwell":null} 
+[2026-09-14 07:22:34]	[EmigTest] K4 snapshot London enclave={"civ":"Norman","share":0.36565789473684207,"bar":0.3,"stock":13.163684210526315,"stockBar":4.6,"stage":"established","dwell":null} 
+[2026-09-14 07:22:34]	[EmigTest] K4 diversity cells=["London -> \"Norman enclave\"","Washington, D.C. -> \"\"","Lāhainā -> \"Norman enclave\""] 
+[2026-09-14 07:22:38]	[EmigTest] SHOT readout-enclave 
+[2026-09-14 07:22:48]	[EmigTest] DONE modtest23 finished 

@@ -18,6 +18,7 @@ globalThis.Culture = { isTraditionActive: () => false };
 Object.assign(CONFIG, {
   baseReluctance: 4,
   perExtraPop: 0.5,
+  perFewerPop: 0, // pinned OFF: the characterization cases below predate it; it has its own cases at the end
   cityStateBarrier: 5,
   poachBlock: 12,
   distanceFactor: 0.6,
@@ -73,7 +74,8 @@ CONFIG.opennessFloor = 0.25;
 globalThis.Database = { makeHash: (t) => t }; // so policy hashes resolve
 globalThis.Players = { get: () => ({ Culture: { isTraditionActive: () => true } }) }; // dest "holds" asylum
 resetBorderCache(); // new game-state stub → fresh policy reads (mirrors the per-pass reset in production)
-Object.assign(CONFIG, { asylumPushWeight: 3, violenceFleeThreshold: 2, disasterFleeThreshold: 2 });
+// crisisInternalBonus 0: the cases below pin the pre-homeland-bonus arithmetic (C18 exercises that term on its own).
+Object.assign(CONFIG, { asylumPushWeight: 3, violenceFleeThreshold: 2, disasterFleeThreshold: 2, crisisInternalBonus: 0 });
 const refugeeSrc = { ...sig(1, 10, 5, false, 0, 0), violence: 2, disaster: 0 };
 close(adjustedPull(refugeeSrc, sig(1, 20, 5, false, 0, 0), null, null, null), 12, "C8 asylum tilt");
 
@@ -93,7 +95,8 @@ resetBorderCache(); // policy stubs cleared → fresh reads
 resetDiplomacyCache(); // diplomacy stubs cleared → fresh reads (no stale open-borders/war from C9)
 Object.assign(CONFIG, {
   antiSnowballWeight: 15, antiSnowballThreshold: 1.25, antiSnowballExponent: 1,
-  congestWeight: 0, bordersEnabled: false, civTuningEnabled: false
+  congestWeight: 0, bordersEnabled: false, civTuningEnabled: false,
+  antiDrainWeight: 0, poachBlock: 12, crisisEscapeBonus: 14 // the cases below pin the pre-slider arithmetic
 });
 // Field where civ 2 is the runaway leader (avg = 30): civ2 ratio 2.0, civ1/3 ratio 0.667.
 const fieldA = { 1: 20, 2: 60, 3: 20, 4: 20 };
@@ -105,6 +108,13 @@ close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(2, 40, 5, false, 0, 0), null,
 // C11, cross-civ into a BELOW-fair-share civ (civ3, ratio 0.667 < threshold) → no penalty.
 //   pull = 30 −4 −12 = 14.
 close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(3, 40, 5, false, 0, 0), null, fieldA, null), 14, "C11 no penalty below fair share");
+
+// C11b, the small-civilization brake: civ1 sits at ratio 0.667 of the field average, below the 0.8 threshold, so a
+// cross-civ move OUT of it pays 12 × (0.8 − 0.667) = 1.6; an internal move pays nothing.
+Object.assign(CONFIG, { antiDrainWeight: 12, antiDrainThreshold: 0.8, antiDrainExponent: 1 });
+close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(3, 40, 5, false, 0, 0), null, fieldA, null), 14 - 1.6, "C11b small civ outflow braked");
+close(adjustedPull(sig(2, 10, 5, false, 0, 0), sig(3, 40, 5, false, 0, 0), null, fieldA, null), 14, "C11b a leader's outflow is not braked");
+CONFIG.antiDrainWeight = 0;
 
 // C12, an overwhelming leader's headwind can fully block the move (pull ≤ 0 → null).
 //   field {1:10,2:150,3:10,4:10}: avg 45, civ2 ratio 3.333, excess 2.083 → penalty 31.25;
@@ -141,4 +151,48 @@ close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(2, 30, 5, false, 0, 0), null,
 const razingSrc = { ...sig(1, 10, 5, false, 0, 0), siege: true, violence: 0, disaster: 0 };
 close(adjustedPull(razingSrc, sig(2, 30, 5, false, 0, 0), null, null, null), 30, "C17 razing source escapes abroad");
 
-console.log("engine-pull characterization harness passed (17 cases)");
+// C18, the homeland bonus: the same war refugee moving INSIDE its own civilization adds crisisInternalBonus, so
+// shelter at home competes with flight abroad. pull = (30−10) −4 reluctance +12 = 28; with the knob off it is 16.
+// Mod test 82 measured the choice this balances: of 63 crisis sources whose best destination was foreign, 45 had a
+// homeland option worth a median 36% of it (absolute gap p50 12.3), so 12 flips about half of those moves.
+Object.assign(CONFIG, { crisisInternalBonus: 12 });
+close(adjustedPull(crisisSrc, sig(1, 30, 5, false, 0, 0), null, null, null), 28, "C18 crisis refugee prefers a refuge at home");
+close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(1, 30, 5, false, 0, 0), null, null, null), 16, "C18 a calm mover gets no homeland bonus");
+CONFIG.crisisInternalBonus = 0;
+close(adjustedPull(crisisSrc, sig(1, 30, 5, false, 0, 0), null, null, null), 16, "C18 knob off: no homeland bonus");
+CONFIG.crisisInternalBonus = 12;
+
+// ── perFewerPop: the mirror friction, so the size comparison brakes BOTH ways ──
+// Without it nothing at all resisted big → small, while the base score was simultaneously rewarding
+// the destination for being small (populationFactor). That one-way push is what drained a capital
+// into its lesser neighbours however well it was built.
+CONFIG.perFewerPop = 0.5;
+{
+  // dest 4 pop SMALLER than src: (20-10) - 4 - 0.5×4 = 4.
+  close(adjustedPull(sig(1, 10, 9, false, 0, 0), sig(1, 20, 5, false, 0, 0), null, null, null), 4,
+    "C19 leaving a larger settlement for a smaller one now pays the same per point as crowding in");
+  // and the mirror is EXACT: the same gap in the other direction costs the same.
+  close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(1, 20, 9, false, 0, 0), null, null, null), 4,
+    "C19b the friction is symmetric, big → small costs what small → big costs");
+}
+{
+  // Equal populations pay neither friction, so the mirror cannot leak into the equal case.
+  close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(1, 20, 5, false, 0, 0), null, null, null), 6,
+    "C20 equal-size settlements pay no size friction in either direction");
+}
+{
+  // Off restores the one-way push exactly (kills an always-on mutant).
+  CONFIG.perFewerPop = 0;
+  close(adjustedPull(sig(1, 10, 9, false, 0, 0), sig(1, 20, 5, false, 0, 0), null, null, null), 6,
+    "C21 perFewerPop 0 restores the legacy one-way behaviour");
+  CONFIG.perFewerPop = 0.5;
+}
+{
+  // Big enough a size gap sinks the move entirely, which is the point: a capital is not drained into a
+  // hamlet by a modest prosperity edge.
+  assert.equal(adjustedPull(sig(1, 10, 30, false, 0, 0), sig(1, 16, 2, false, 0, 0), null, null, null), null,
+    "C22 a large settlement is not drained into a tiny one by a small prosperity edge");
+}
+CONFIG.perFewerPop = 0;
+
+console.log("engine-pull characterization harness passed (18 cases)");

@@ -1,0 +1,15 @@
+[2026-09-13 05:04:57]	[EmigProbe] shell attached 
+[2026-09-13 05:04:58]	[EmigProbe] shell query complete 
+[2026-09-13 05:04:58]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-13 05:04:58]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 05:05:17]	[EmigTest] modtest8 attached 
+[2026-09-13 05:05:30]	[EmigTest] START turn=66 L=London turnActive=true culture=114.4 
+[2026-09-13 05:05:30]	[EmigTest] V1 villages/encampments inside major cities: [] (of 76 met cities) 
+[2026-09-13 05:05:36]	[EmigTest] Y1 placed={"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","plot":2874,"replaced":"IMPROVEMENT_MINE"} standing=true before={"plot":[{"type":"IMPROVEMENT_MINE","complete":true,"damaged":false}],"culture":114.4} after={"plot":[{"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","complete":true,"damaged":false}],"culture":114.4} (expect culture +2 on the plot and the city) 
+[2026-09-13 05:05:40]	[EmigTest] Y2 yields layer=ERR:ReferenceError: LensManager is not defined camera on plot 2874 
+[2026-09-13 05:05:40]	[EmigTest] SHOT enclave-yields 
+[2026-09-13 05:06:00]	[EmigTest] V2 village on plot 2877 before={"plot":[{"type":"IMPROVEMENT_FISHING_BOAT","complete":true,"damaged":false}]} after={"plot":[{"type":"IMPROVEMENT_VILLAGE","complete":true,"damaged":false}]} 
+[2026-09-13 05:06:04]	[EmigTest] SHOT village-skin 
+[2026-09-13 05:06:14]	[EmigTest] ACTIONS done; ending the turn 
+[2026-09-13 05:06:39]	[EmigTest] TURN activated n=2 turn=67 ALIVE 
+[2026-09-13 05:06:42]	[EmigTest] DONE modtest8 finished 

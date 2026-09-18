@@ -7,6 +7,331 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+### Fixed
+- **The map tooltip stays hidden under a lens, even alongside other tooltip mods.** While an Emigration lens is
+  up (or the cursor is on an enclave) the mod hides the game's own tile tooltip so it doesn't collide with the
+  mod's readout. That was a single switch, and several things could flip it back without the mod noticing - a
+  combat preview or a pantheon screen closing, or a tooltip mod replacing the tile tooltip with its own. The
+  tooltip would then reappear underneath the readout and stay for the rest of the session. The mod now holds the
+  setting rather than setting it once, so it stays hidden until the lens is turned off.
+- **Lens readouts and the enclave tooltip are no longer painted over by other tooltips.** The little panel that
+  follows the cursor under the Ethnicity and Prosperity lenses, and the enclave tooltip, sat one layer below the
+  game's tooltip layer — so any tooltip that appeared at the same spot, the game's own or one added by a tooltip
+  mod, covered them completely. They now sit above that layer, and the mod's own notification toast still sits
+  above them, so a notification is never hidden by a readout.
+- **On the ethnicity lens, a tile that burns with a foreign colour now means an enclave.** The lens gathers each
+  foreign community around a home tile, and it used to pour any community into that tile until it was nearly full —
+  so a town that was only 12% Norman, far short of the 30% an enclave needs, still showed a tile reading "Norman
+  92%", while the real Norman enclave stood several tiles away with nothing to mark it. Two things changed. A
+  community that has a standing enclave now lives *on the enclave's tile*: its people are seated there first, so
+  that tile reads as their quarter and the colour thins out around it. And where no enclave stands, no tile may
+  read past the share an enclave requires, so a community still short of one shows as a real but clearly lighter
+  tint. The enclave's tile is also drawn as the built-up quarter it is; it sits on what the map still counts as
+  empty land, and was being shaded as the faintest tile in the settlement. None of this changes a settlement's
+  overall percentages, or anything about enclaves themselves — how they form, how many can form, or the land rule
+  that chooses their tile.
+- **The ethnicity lens is a true gradient.** Each tile was painted in the single colour of whichever people led it,
+  so a settlement read as flat slabs of one banner colour with a hard flip at the halfway mark, and a community
+  under half of a tile did not show at all. A tile's colour is now a blend of everyone living on it, in proportion:
+  a tile that is a third Norman sits about a third of the way from the host's colour to the Normans', and the map
+  shades smoothly from one into the other. How solid a tile looks still follows how many people live on it.
+- **Enclave labels no longer pile up on the map.** Each time the map markers were redrawn, the old icon and label
+  were left in place and a new pair drawn over them, so an enclave's name could appear doubled or smeared and the
+  copies kept accumulating for as long as the game ran. Markers are now cleared properly before each redraw, and a
+  burst of map events is answered with one redraw instead of dozens.
+
+### Added
+- **An enclave's tile now explains itself.** An enclave is drawn with a real improvement borrowed for its looks, so
+  the game's tooltip described that improvement — a Norman enclave read as "Hidden Fortress" — and nothing said what
+  the tile was, what stage it had reached, or why it yields what it does. Hovering an enclave's tile now shows the
+  enclave's own tooltip in place of the game's: its name and settlement; its stage (established, with the turns left
+  to recognition; recognized, with your stance; contested; or fading, with the turns left); and **where the yields
+  come from**, source by source, each with its reason — the land and any improvement that stood there before (which
+  the enclave repays every turn, so it is still yours), the enclave's own works, and your stance, including the cut
+  it takes while you are at war with its homeland. The borrowed improvement is mentioned only as what the enclave's
+  people built. A total shows what the tile really brings in each turn.
+- **The map marker shows an enclave's stage.** A stance's yields are paid to the city, not written to the tile, so
+  the tile's yield icons cannot change when an enclave is recognized. The marker now carries a second line —
+  *Established*, then *Recognized* with what the stance pays, *Contested*, *Fading* — so recognition is visible on
+  the map.
+
+### Changed
+- **What a settlement has built is now a reason to stay.** Buildings and wonders always reached the prosperity
+  score through the yields they produce, but only that way, and those yields are averaged per citizen — so a wonder
+  worth +4 culture counted for three times as much in a town of 4 as in a city of 13, and the half of a building that
+  is not a yield (walls, housing, the standing of a wonder) counted for nothing at all. A settlement is now also
+  credited for what it *holds*: each wonder, and each kind of civic building present — safety, amenities, food
+  security, housing, learning, culture, trade, work. Each kind counts once however many there are, wonders are
+  capped, and the total is bounded, so a long build order strengthens a place without putting it out of reach. This
+  term is not divided by population, which makes building well a way for a large settlement to hold its people.
+  The kinds are read from the game's own database rather than a list of names, so buildings added by an age, a DLC
+  or another mod are recognized without an update. Pillaged buildings do not count.
+
+  The city panel names them: under a settlement's emigration pressure, **Reasons to stay** lists its wonders and
+  buildings — a granary, a market, an academy — beside the reasons to leave it has always shown. The explainer gains
+  a **Wonders & buildings** row. Advanced, Prosperity: **Buildings are a reason to stay** and its ceiling.
+
+- **A large settlement is no longer pushed toward every smaller neighbour.** Two things stacked against size. The
+  score subtracts a point per citizen, which made any smaller settlement look better simply for being smaller; and
+  the friction for a size mismatch applied only when moving somewhere *bigger*, so nothing resisted the move the
+  other way. A capital two citizens larger than its neighbour carried a standing pull toward it worth half the base
+  reluctance to move, whatever it built. Leaving for a smaller settlement now costs the same per citizen as crowding
+  into a bigger one (**Reluctance to move somewhere smaller**, Advanced, Brakes), and the per-citizen average is
+  softened so a settlement's size divides away less of what it produces (**Size dilutes prosperity**, Advanced,
+  Prosperity; 0.85). The second of these re-scales every settlement's economy at once.
+
+- **Emigration pressure now falls again when a settlement recovers.** A settlement's pressure toward its next
+  departure only ever went up: it climbed while there was somewhere better to be and came back down solely by
+  someone leaving. A city stirred up by a siege therefore kept that charge for the rest of the game and eventually
+  spent it on an ordinary economic departure, long after the fighting had stopped and under a cause that had
+  nothing to do with the war. Pressure now carries over at **Pressure kept each turn** (Advanced, Pacing; 0.9 by
+  default) instead of in full, so it reads the settlement's *current* situation in both directions — a place whose
+  troubles pass forgets them, with a half-life of about 7 turns. A departure still clears the pressure outright,
+  as before, and settlements on a rest or with nowhere to go now cool down too rather than holding their charge.
+
+  This is a real balance change, not only a tidy-up. Because pressure can now fall, a settlement leaks people only
+  while its reasons to leave are both strong and *sustained*: at the default it takes a steady pull above a third
+  of the bar per turn, which is the worst settlement or two on the map rather than most of them. The faint,
+  permanent grievances that used to reach the bar eventually no longer do, so ordinary economic migration is much
+  rarer and means more when it happens. Displacement is untouched — war and disaster refugees never consulted this
+  pressure and still flee every turn. Set the option to 1 for the old behaviour.
+
+### Added
+- **Settlements can be dragged out of their civilization's circle.** On the network diagram, press a city or town
+  circle and drag it: it takes its people with it and the civilization's circle grows to keep it inside, so an
+  internal migrant flow that was buried under the neighbouring settlements can be pulled into the open and read.
+  Dragging anywhere else in a civilization's circle still moves the whole group, settlements and all, and a click
+  without a drag still isolates that civilization.
+
+- **The Net Migration table separates internal from external movement.** Its In and Out columns counted every move a
+  civilization saw, so a civilization shuffling people between its own settlements looked as busy as one gaining and
+  losing them across borders, and neither pair of numbers explained the Net figure beside them. The counts are now
+  grouped into three pairs of **Left** and **Arrived** columns: **Internal**, for moves between a civilization's own
+  settlements; **External**, for moves that crossed a border — the flow Net actually measures, so External Arrived
+  minus External Left is the Net — and **Total**, Internal plus External, the old gross pair, kept for the whole
+  picture. The Totals row splits the same way. Saves from before this release keep their history: the internal share is reconstructed from the recorded
+  city-to-city flows the first time the save is loaded.
+
+### Changed
+- **An enclave now exists from the moment it is announced.** The Chronicle entry "The {Civ} Enclave of {City}" used to
+  be written from a community's share of a settlement alone, so it could name an enclave in a town that had none, and
+  write it again each time the share crossed another step, including on the way down. The enclave is now created when
+  its community becomes established: the tile is placed and its yield starts that turn, and that is when the entry is
+  written. After the settling time (8 turns) the enclave is recognized: the stance is chosen and its benefit and
+  drawback apply each turn on top of the tile's yield. Later entries for the same enclave are written only when its
+  community grows to a share it has not reached before.
+- **Your own enclaves raise a notification.** When an enclave in one of your cities is established, is recognized, fades,
+  or is built over, the same line appears on screen with the yields it adds or takes away. Enclaves in other
+  civilizations' cities are written to the Notifications log only.
+- **Enclave entries state their yields.** The entries for an enclave being established, recognized, changing hands,
+  fading, and being built over state what the host gains or loses per turn, for example "(+3 Culture)" or
+  "(−5 Culture, +1 Happiness)".
+- **Plainer advice in migration pop-ups.** The line that tells you what to do about a loss is rewritten in the game's
+  own terms, one sentence per cause: "Raise Roma's Happiness to stop its people leaving", "Improve Roma's yields and
+  Happiness to keep more of its people", "They will keep fleeing until the fighting inside the city's borders ends and
+  its pillaged tiles are repaired", "People stop fleeing after the disaster ends". The Anti-Immigration Stance is
+  suggested only where it helps: when people chose to leave for another civilization and you have not slotted it. It
+  used to be offered for moves between your own cities, which it does not affect. Applied across all 12 supported
+  languages, which also brings the casualty line in the other 11 languages back in step with the English.
+
+### Fixed
+- **Migrant-flow arrows stayed behind when a circle moved.** Dragging a civilization's circle moved the circle and its
+  people but left every flow arrow at its old position, so the arrows pointed at empty canvas until something else
+  redrew them. They now follow whatever they are attached to, including the settling movement when the diagram first
+  opens.
+- **Migrant flows between neighbouring cities drew no arrow.** On the network diagram, turning on "Migrant flows"
+  skipped any move between two city circles that sit side by side — which is most moves within a civilization,
+  including every move in a two-city civilization and most moves in and out of the largest city. The people were
+  there as dots, with nothing to show where they came from. The arrow now shortens to fit the gap between the two
+  circles, and bows out so it stays readable; longer flows are drawn exactly as before.
+- **Verbose per-cause pop-ups could show a raw `{1_City}` placeholder.** That pop-up totals a cause across all your
+  cities, so it has no single city to name; it now uses wording that names none.
+
+## [2.2.0] - 2026-09-17
+
+### Added
+- **A recognized Cultural Enclave is now a real tile.** Choosing a stance places that origin's, that
+  stance's enclave improvement on one of the city's tiles (the nearest empty flat or hill plot, which
+  gets its rural district first, else the outlying farmstead it takes over). Its benefit yield is the tile's own, shown in the city's yields like
+  any improvement; it settles one population point; its civilization symbol and name mark the map. The
+  stance's benefit is no longer paid from the treasury while the tile stands (the drawback still is). The
+  improvements can never be built, only formed, which is why they are safe: the July crash came from the
+  AI evaluating a buildable custom improvement. New option "The enclave becomes a real tile"
+  (on). If the tile is lost (pillaged, razed), the treasury benefit resumes.
+- **Displacement stays close to home.** People fleeing a war or disaster now prefer another settlement of their own
+  civilization, and only cross a border when their homeland has nothing to offer, which is how displacement mostly
+  works. Measured against the same save with the mod off, this brings the civilization that gains most from a
+  refugee wave from 34% above its no-mod population to 18%, and returns the stricken civilization to 96% of its
+  own. New advanced option "In a crisis: shelter at home", and a member of the "Movement between
+  civilizations" slider, which now spans from that settled behaviour up to free movement (+37%) at 100.
+- **Refugee and newcomer pop-ups quote the displaced themselves.** The refugee decision and the newcomers pop-up now show a quote chosen by the civilization the people come from, in the words of that people's own refugees, exiles, or migrants: Ovid from exile, the Zoroastrian refugees at Sanjan, Sugawara no Michizane leaving for Dazaifu, a Galician emigrant bound for Havana, Heine in Paris. There are 109 quotes; 40 civilizations have their own refugee quotes and 34 their own migrant quotes, and the rest draw from general pools of refugee and migrant voices. People from a civilization you have not met get a pool quote, so the quote never names who is coming. Every quote and its source is listed in `docs/quote-sources.md`.
+- **Choose which newcomers ask where to settle.** In Ask me mode the Newcomers pop-up appears only for refugees by default; migrants and returnees are placed automatically. With every arrival asking, a 131-turn test game raised 72 pop-ups. New options "Ask about refugees" (on), "Ask about migrants" (off), and "Ask about returnees" (off).
+- **Every leader and civilization in the game is covered.** The roster is read from the installed game rather than a
+  pinned copy of it, so it carries all 38 leaders and 50 civilizations, Elizabeth, George Washington, Yi Sun-sin,
+  Babylon, England, Gaul, Goryeo and Joseon among them. Washington's Constitutional Convention is the strongest
+  happiness magnet in the roster and is damped hardest; Babylon, held to few settlements while it grows fast, is
+  shielded from the density penalty; Joseon's specialist capital is shielded the way Qajar's is; Gaul, which can buy
+  its fortifications, holds its people under siege; Elizabeth, whose land units weaken each age, loses them faster.
+- **Alternate leader personas are judged on their own abilities.** A leader's alternate persona is a different leader
+  for migration and is read as one: Ashoka the World Conqueror takes a war-fed celebration magnet and absorbs captured
+  settlements cheaply, Himiko of Amaterasu a deeper happiness engine than her base persona, Napoleon the Emperor and
+  Friedrich of the Hohenfriedberger Marsch the retention their free standing armies buy them.
+- **Cultural quarters for the civilizations added since the last roster.** Babylon, England, Gaul, Goryeo and Joseon
+  each offer their own two quarter options with their own historical quotes, translated into all 12 languages: the
+  tablet-house scribes and canal-gardens of Babylon, the chapter-house scriptoria of an English abbey, the hill-fort
+  smiths and nemeton groves of Gaul, Goryeo's celadon kilns and woodblock carvers, Joseon's seowon and movable type.
+- **Enclaves put down roots.** A community whose enclave stands in a settlement sends fewer of its people home through return migration (a quarter of the normal rate by default), so returns do not drain the communities enclaves are made of. The city panel's enclave section shows it. New option "Put down roots" (Off, Weak, Standard, Strong).
+- **Enclave progress where the player looks.** The city readout shows the leading foreign community against the live bars and its settling clock; the dashboard's Diversity table has an Enclave column.
+- **Per-age pacing of enclave formation.** While a civilization has formed no enclave this age, its formation bars (share, size, settling time) fall with the age's progress, down to 60% late in the age, and return to full once one forms; the per-age cap now counts automatic recognitions too. At least one an age is likely, more than the cap is impossible (`quarterPacingEnabled`, `quarterTargetPerAge`, `quarterPacingMax`, `quarterPacingBy`).
+- **Return migration varies between games.** The return roll mixes in the game's seed, so the same situation plays out differently from game to game while a save still reloads identically.
+- **Arrival text matches the game.** The Newcomers pop-up's "Later" note and the "Off" arrival option now say that the game's own Grow City prompt asks you to place newcomers before your turn ends, as watched in game; they no longer say the point waits unplaced.
+- `data/emigration-enclave-improvements.xml`, `data/emigration-enclave-icons.xml`,
+  `text/en_us/EnclaveText.xml` (generated by `npm run gen:enclaves` from the stance registry: 50 civs x 2
+  stances), `ui/emigration-enclave-place.js`, the restored `ui/emigration-enclave-markers.js`, and the
+  `enclave-place` test harness; the Self-Test row "Enclave tiles".
+- Two Self-Test rows: "Departures abandon a tile" (names the tile your largest settlement would give up)
+  and "Arrivals settle in your cities" (the active mode).
+- Under the hood: `emigration-departure-tile.js` and `emigration-arrival-placement.js`, their test
+  harnesses, and the hands-free in-game probe in `devtools/engine-probe/` whose logs are the evidence
+  for every claim above.
+
+### Changed
+- **Departures are real.** When people leave a settlement, one of its outlying rural improvements is
+  abandoned with them, so the settlement really loses that tile's yields. This applies to every
+  civilization, not just yours. Previously a departure only lowered the population number and every
+  tile kept working. New option "Departures abandon a rural tile" (on by default). Deaths from siege,
+  famine, and disaster abandon a tile the same way. A settlement with no rural improvement left simply
+  loses the population point as before.
+- **Enclaves now form on their own, in every civilization's cities.** New option "How enclaves are recognized" (default: automatic, everywhere). When a foreign community has held the share
+  bar through the dwell period, the enclave forms with its people's first stance and the chronicle
+  records where it took root; AI hosts get the tile and its yield and pay the stance's drawback, and
+  their enclaves get the same per-turn upkeep (built-over retirement, contested status). Markers on
+  other civilizations' cities show only on plots you have revealed. "Automatic, your cities" keeps it to
+  your settlements; "Ask me" is the previous decision pop-up.
+- **Enclave tiles are now themed by their people.** A recognized enclave is placed as the origin
+  civilization's own unique improvement where it has one (a Goryeo enclave is a Gama, a Mongol enclave an
+  Ortoo, a Songhai enclave a caravanserai: 22 civilizations), otherwise as another civilization's
+  improvement whose yield matches the stance's benefit (a Roman enclave, production, is a hill fortress; a
+  Carthaginian one, gold, a caravanserai), otherwise as a village with +2 Culture. The tile carries that
+  improvement's own yields (+2 to +5), real buildings appear on the map, and the civilization symbol and
+  "<Civ> Enclave" label sit above and below it. While the tile stands it is the enclave's benefit, so
+  only the stance's drawback is charged; if it is lost, the treasury benefit resumes. New option
+  "Enclave tile appearance" (Themed, default; Village; or the previous native-yield
+  improvement). Terrain-bound improvements take a matching plot; an improvement from an age not yet
+  reached falls back; only land plots are used. Departures never abandon an enclave tile of any kind
+  (tracked by record). When an enclave takes over a worked tile, the tile keeps what it gave: the host
+  receives, each turn while the enclave stands, whatever the replaced improvement yielded that the
+  enclave tile does not (base + replaced improvement + enclave), measured once the tile first stands.
+  An enclave tile may be built over like any improvement (a wonder, building, or new improvement on that
+  plot); that destroys the enclave, its record is retired, and the chronicle records it. A placement the
+  engine never carried out is written off after two turns and that stance keeps paying from the treasury.
+- **Enclaves fade when their community does.** Once an origin's share of the host settlement has sat
+  below the fade bar (12.5%, half the foothold) for 12 consecutive turns, and the community is also
+  under the absolute-stock bar, the enclave dissolves: its tile is removed, its record retired, and the
+  chronicle records it ("The Enclave Fades"). Enclaves therefore persist where migration keeps flowing
+  and dissolve where it stops; integration alone fades an unrenewed community in roughly 35 to 45 turns.
+  Options "Share below which an enclave fades" (Never = permanent, as before) and
+  "Time below that share before it fades".
+- **Big cosmopolitan cities can host enclaves.** A foreign community of six or more population points is
+  established whatever share of the settlement it holds (option "Community large enough in any city"; Off = share only, as before). A thirty-population capital no longer needs ten foreign
+  points for the 30% bar. The number scales with how large settlements actually are in that game: six
+  when they average eighteen people, half to double that as cities grow through the ages, so it is half
+  an Antiquity town but a modest quarter of a Modern capital. The same scaled number is the size below
+  which an enclave may fade.
+- **Newcomers to your cities are settled, not left in limbo.** When migrants arrive in one of your
+  settlements you now get the game's own decision pop-up: choose where they settle (opens the normal
+  place-population view), let the city settle them, or later. Other civilizations always settle their
+  own arrivals. New option "How newcomers settle": Ask me (default), Automatic
+  (the city picks a tile at once, resource tiles first, optionally a specialist slot first), Migrant
+  unit (newcomers arrive as a Migrant unit you resettle yourself), or Off.
+- **Every string is translated in all eleven languages.** 276 strings that fell back to English (settings,
+  enclave text, the Guide's FAQ, Demographics metrics, option labels, the Civilopedia bodies whose English
+  had grown) are now in French, Spanish, German, Italian, Portuguese (Brazil), Polish, Russian, Korean,
+  Japanese, Simplified Chinese, and Traditional Chinese, using the base game's own terms where it has them.
+  Historical quotes stay in English in every language by design.
+- **The Prosperity lens shades each settlement's own land, with a stronger gradient.** A tile's colour reads against
+  its own city's best and worst tiles instead of the whole map's, so the good and poor ground inside a city stands
+  out. Empty sea is skipped (it scores nothing and flattened the scale); coast the city has built on, and river
+  tiles, count like any other tile. The colours saturate on a curve and deepen with strength, instead of fading to
+  grey: scaling every tile to the single most productive tile in the world left 94% of tiles within 15% of the mean,
+  which showed as a flat wash (1120 of 1775 tiles in one shade).
+- **The three decision pop-ups are easy to tell apart and lay out cleanly.** Each opens with a bold category line and icon (Newcomers, Refugees, Cultural Enclave); the refugee costs sit on their own lines with yield icons; the buttons use the dialog's vertical layout, so they are equal width, evenly spaced, and no longer jump as the pop-up opens. Paragraphs are separated by a visible blank line. The enclave's historical quote sits below the base game's filigree divider in its own framed panel, the quote slanted and wrapped to the body's width, the attribution on its own line beneath.
+- **The real losses are held to the same brakes as before, plus the ceilings they needed.** Every
+  existing pace and cap (emigration bar, cooldown, per-settlement and per-civilization limits, the war
+  surge and siege-loss caps, the anti-snowball term) applies unchanged, because the tile is abandoned only
+  after the engine has decided the move. New on top: a pillaged tile is always the one abandoned first (a
+  raid and the flight it causes cost one tile, not two); a starving settlement keeps its food tiles; a
+  death never takes a settlement's last rural tiles (at the rural floor it is the plain count); and a
+  disaster can drive out at most 50% of a settlement's population per crisis, the twin of the siege cap.
+  New option "Most of a settlement one disaster can drive out". The Self-Test rows name these
+  limits.
+  `scripts/tile-transfer-stress.mjs` (read-only) compares the old count-only model with the tile model
+  over 200 peacetime turns and two disaster shapes.
+- **Every enclave quote was checked against its source.** 32 were kept, 28 corrected, and 30 replaced. The replaced lines include modern historians' summaries presented as quotes, sayings with no source, Octavio Paz's "the solitary Mexican loves fiestas" (a national-character line that read as a stereotype), Adam Smith's "nation of shopkeepers" (the cut reversed his meaning), an opium letter beside a Chinese community, and a Norman chronicle excerpt whose next lines describe torture.
+- **Honest labels for the happiness costs.** The integration and migrant-holding happiness costs delay
+  your next Celebration; they never make a settlement unhappy, because the game gives mods no way to do
+  that. The options and the Guide now say "celebration delay", and the description no longer claims a
+  city happiness cost or that population moves alone change yields.
+- **In-game Guide updated.** The Behavior, Identity, Post-war, Transit, and Cultural Enclaves entries describe the current rules: real tile departures, automatic recognition, themed tiles, build-over, fade, and the size bar.
+- **Short text fragments keep their spaces.** Pieces joined onto other text (" and ", " (rival
+  civilization)", " · this tile", "{1_Name} strikes! ") lost their edge spaces in every translation, so a
+  list could read "RomeetCarthage". They keep the English spacing now; Japanese and Chinese keep none next
+  to their own characters. The i18n test fails if a translation drops one again.
+- **Documentation and option text in plain technical prose.** The README, the PDF, and the new enclave option descriptions use short direct sentences. Behaviour, formulas, and knob names are unchanged.
+- **README.pdf renders every formula.** The Friction block no longer breaks into a bullet list, and the Options-path triangle prints instead of a blank.
+- **Player experience risks documented.** `docs/player-experience-risks.md` names what is likely to upset or disappoint a player, the mechanism behind each, and structural mitigations that avoid re-tuning.
+
+### Fixed
+- **Abandoned tiles could never be improved again.** A departure destroyed the improvement but left its rural district, which the game never offers for new population, so the plot was dead for good and there was nothing to repair. The empty district is now removed right after each departure and each enclave removal, and a sweep when a game loads and at the start of every turn heals existing saves. Watched in the reporting player's own game (mod test 40).
+- **The Ethnic Composition lens paints again, in each people's own colour.** It drew nothing at all in a game where
+  no migration had been recorded yet, because it had no composition to read; a settlement nobody has moved into is
+  simply all its owner's people, and now paints that way. Each tile takes the colour of the people who hold it,
+  deepening with how strongly they hold it and how built-up the tile is, so a diaspora reads as its own colour
+  against the host and every settlement shows a gradient instead of a flat block.
+- **The Ottomans get their own cultural quarter, quotes and enclave again.** Their quarter options, demonym, quarter
+  quotes, exile quote and enclave improvement were filed under a civilization type the game does not use, so an
+  Ottoman community silently fell back to the neutral quarter and a pooled quote.
+- **England is tuned as England.** It had been carrying the Normans' defensive retention; Magna Carta trades Gold and
+  Culture across buildings and has no defensive mechanic, so England's people now leave and stay like anyone else's.
+- **Text no longer runs together.** The game strips the leading and trailing spaces from a text row, so phrases the
+  mod joins onto other text ran into their neighbours: "RomeetCarthage" in a reason list, "London· this tile" in the
+  lens panel, a settlement's status and its origins list. Every such phrase now carries its own separator.
+- **Quotes in scripts the game cannot draw fall back to their English translation.** Tamil, Thai, Devanagari, and the other scripts that no font in the game contains were missing from the fallback list, so the Siam and Nepal enclave quotes drew boxes. Checked against the game's font files. Watched in game: the Hawaiian okina renders, while the schwa draws a box, so the Aksum quote now shows only its English translation.
+- **War and disaster flags on the migration network no longer print on top of each other.** Every flag was drawn at
+  a fixed spot under its cluster, so two events on one civilization (a war and its name, or two wars at once)
+  overlapped into unreadable text. They are now laid out like the settlement labels: one flag per event, nudged clear
+  of any other.
+- **Readout "why there" reasons ran together** ("prosperityandproximity"): the localized connector loses its spaces in the text pipeline; the phrase now pads it.
+- Green is now reserved for your own gains. Your own people moving between your own cities (the source
+  settlement still loses its tile) and other civilizations' prosperity or return migrations no longer
+  toast or log in green; your own people leaving for prosperity or returning home read amber. Only
+  newcomers settling in your cities are green.
+- A player id the engine does not know can no longer reach the engine's independent-power name lookup
+  (that call crashed the game natively in a probe with a synthetic record); the naming path now checks
+  the player exists first.
+- A placed Cultural Enclave could be chosen as the outlying tile a departure abandons; enclave tiles are
+  now excluded from departures.
+- The enclave marker module logged through an invalid-CSS trick that wrote an "Unable to parse
+  declaration" line on every repaint (about 1,400 lines a session); it now uses the mod's gated debug log.
+- The enclave map marker sat on the plot centre and hid the tile's own yield icons; it now sits above
+  and below the icon row, smaller (symbol at 60%, label at 3.5), so a placed enclave shows its native
+  yield like any improvement. A civilization outside the stance registry now gets "<Civ> Enclave" and its
+  civilization symbol instead of a raw type name. Watched in game 2026-09-13.
+- Food tiles were classified from the game's yield table, which has no food row for farms, fishing
+  boats, pastures, or plantations, so the famine rule spared nothing; classification is now by name.
+
+### Removed
+- **The banner pressure bar.** The thin bar under a city banner's name never drew, in any game: its
+  decorator registered without error but the engine never attached it to a single city banner, so the
+  mounted set stayed empty every turn while the underlying pressure ran up to 99% of the move bar. Each
+  settlement's pressure mix is still on the city readout and the dashboard. The evidence, everything ruled
+  out, and the three fixes that were tried and failed are archived in
+  `_archived-emigration-banner-pressure/docs/why-it-was-removed.md`.
+
+### Verified
+- **Engine limits consolidated.** `docs/engine-limits-from-probes.md` lists everything found impossible from script, with the mechanism, the date, and the evidence.
+- **Damage instead of delete is not possible from script** (mod tests 36 to 38); see `docs/wont-implement-with-justifications.md`.
+
 ## [2.1.0] - 2026-07-19
 
 ### Changed

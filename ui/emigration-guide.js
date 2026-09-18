@@ -57,8 +57,8 @@ const GUIDE = [
       { q: "Towns, not just cities", yes: true, note: "Participate the same as cities." },
       { q: "Your own cities trade people (internal migration)", yes: true, note: "People also move within a civ; the dashboard colours internal moves separately." },
       { q: "Other major civilizations", yes: true, note: "All simulated from turn one, met or not, so the map isn't exploration-biased." },
-      { q: "City-states / minor civs / Independent Powers", yes: false, note: "Don't send or receive, though attacking a major civ's city still drives that city's people out." },
-      { q: "Unmet civilizations", yes: true, note: "Simulated, masked in the UI by default until you widen the visibility policy." }
+      { q: "Unmet civilizations", yes: true, note: "Simulated, masked in the UI by default until you widen the visibility policy." },
+      { q: "City-states / minor civs / Independent Powers", yes: false, note: "Don't send or receive, though attacking a major civ's city still drives that city's people out." }
     ]
   },
   {
@@ -70,10 +70,11 @@ const GUIDE = [
       { q: "Closed Borders reduces cross-civ flow", yes: true, note: "Far fewer cross without an Open Borders agreement." },
       { q: "Population & yields actually change (not just a display)", yes: true, note: "Real per-turn gameplay writes, not a cosmetic overlay." },
       { q: "Any layer can be tuned or switched off", yes: true, note: "Presets + 85 knobs under Options ▸ Mods ▸ Emigration; all on by default." },
+      { q: "Lethal crises kill, not just displace", yes: true, note: "War, siege, disaster, and famine kill some who can't escape (a separate Losses tally); ordinary prosperity/unhappiness migration never kills." },
+      { q: "Departures cost a real tile", yes: true, note: "Each point that leaves abandons one outlying rural improvement. A pillaged tile goes first. A starving settlement keeps its food tiles. The civilization that receives the migrant pays the assimilation cost; the one that lost them pays nothing beyond the tile." },
       { q: "Migrants arrive instantly", yes: false, note: "No; they travel, arriving up to a few turns later." },
       { q: "Absorbing migrants is free", yes: false, note: "No; a temporary, decaying happiness + gold cost." },
-      { q: "War alone can empty a city to zero", yes: false, note: "No. Displacement is capped (siegeLossCapPct) above the rural floor. Crisis deaths are separate and unfloored: a long crisis can wear rural population down (gently at first, building over time), but only rural, so the urban core and settlement survive until a capture." },
-      { q: "Lethal crises kill, not just displace", yes: true, note: "War, siege, disaster, and famine kill some who can't escape (a separate Losses tally); ordinary prosperity/unhappiness migration never kills." }
+      { q: "War alone can empty a city to zero", yes: false, note: "No. Displacement is capped (siegeLossCapPct) above the rural floor. Crisis deaths are separate and unfloored. The settlement itself stands until a capture." }
     ]
   },
   {
@@ -83,7 +84,8 @@ const GUIDE = [
       { q: "Newcomers integrate into their host over time", yes: true, note: "Migrants drift toward the host identity over many turns; the lens blends toward the owner. On by default." },
       { q: "War or unrest keeps a community distinct", yes: true, note: "Integration stalls at war with a diaspora's homeland and slows in unrest, holding a distinct community." },
       { q: "Diasporas return home when the homeland recovers", yes: true, note: "Once a homeland is at peace with the host and prospering, a fraction return over time, moving real population. A slow ebb, never a snap-back. On by default." },
-      { q: "Refugee waves can prompt a player decision", yes: true, note: "A rare modal on a conquest spree or plague crisis: welcome them, settle the frontier, or turn away. Light effects, a few times an age. On by default (Options ▸ refugee decisions)." }
+      { q: "Refugee waves can prompt a player decision", yes: true, note: "A rare modal on a conquest spree or plague crisis: welcome them, settle the frontier, or turn away. Light effects, a few times an age. On by default (Options ▸ refugee decisions)." },
+      { q: "Foreign communities form Cultural Enclaves", yes: true, note: "A community that reaches the share bar or the size bar forms an enclave on its own, in any civilization's city. The enclave is a real themed tile. After the dwell period it is recognized and takes a stance. It fades when its community shrinks. See the FAQ." }
     ]
   },
   {
@@ -109,17 +111,17 @@ const GUIDE = [
     title: "FAQ: War, conquest & recovery",
     faq: [
       { q: "What happens when I capture or lose a city?", a: "Its residents stay coded to the civ they came from; the lens and network dots keep that origin's colour, and only new post-capture population counts as yours. So a conquered city carries real origin history that fades as it regrows. War can shrink it, but only a capture transfers it." },
-      { q: "My city shrank from size 12 to 5 in a war, will it grow back?", a: "Yes. Displacement only moves population points, never razes districts or deletes buildings (only base-game conquest does). You keep the infrastructure with fewer people, and it regrows via normal food growth and immigration once fighting stops and prosperity recovers." },
+      { q: "My city shrank from size 12 to 5 in a war, will it grow back?", a: "Yes. Displacement moves population points and abandons one rural improvement per point. A crisis can also remove buildings from the urban core, earlier-age buildings first and never walls, at most a third of the urban population per crisis. Districts and the city stand until a capture. The city regrows through normal food growth and immigration once fighting stops and prosperity recovers. Each new rural point places a new tile." },
       { q: "Do the same refugees who fled come back?", a: "Some do, via Return Migration: once a diaspora's homeland is at peace with the host and faring well, a fraction set out for home over time, moving real population back. A slow ebb, never a snap-back, only while relations stay peaceful. On by default; switch it off in Options." },
-      { q: "Does repairing pillaged tiles restore the lost population?", a: "No. Pillaged tiles apply pressure; repairing them removes it (the city stops bleeding and recovers faster) but never adds a population point back." },
-      { q: "How far can a war shrink a city?", a: "Displacement is capped at 60% (siegeLossCapPct) of the population when the siege began; the remnant digs in. Crisis deaths are separate and uncapped and can wear rural population past that (building gradually, easing if the siege lifts), but the urban core stands until a capture." },
+      { q: "Does repairing pillaged tiles restore the lost population?", a: "No. Pillaged tiles apply pressure. Repairing them removes it, so the city stops bleeding people and recovers faster, but a repair never adds a population point back. A pillaged tile is also the first one a departure abandons, so a raid and the flight it causes cost one tile, not two." },
+      { q: "How far can a war shrink a city?", a: "Displacement is capped at 60% (siegeLossCapPct) of the population when the siege began. Crisis deaths are separate and uncapped and can wear rural population down. The city itself stands until a capture." },
       { q: "Fastest way to recover a war-torn city?", a: "Flip it from net exporter back to magnet: make peace (violence decays in ~2-3 turns), repair pillaged tiles, and raise happiness (the biggest prosperity factor)." }
     ]
   },
   {
     title: "FAQ: Migrants in transit",
     faq: [
-      { q: "What happens to a migrant while they're traveling between cities?", a: "Departure removes the source's rural point (and that tile's yields) immediately. In transit the migrant belongs to no city (no yields, no upkeep). The destination gains them and pays the one-time integration cost only on arrival. Transit is 1-4 turns (~5 hexes/turn, capped at 4); refugees take at least 1. If the destination is full that turn they wait and retry; if it's captured/razed or still full after several turns, they perish in transit (a loss, not an arrival)." },
+      { q: "What happens to a migrant while they're traveling between cities?", a: "Departure removes the source's rural point and abandons one rural improvement immediately. In transit the migrant belongs to no city (no yields, no upkeep). The destination gains them and pays the one-time integration cost only on arrival. Transit is 1-4 turns (~5 hexes/turn, capped at 4); refugees take at least 1. If the destination is full that turn they wait and retry; if it's captured/razed or still full after several turns, they perish in transit (a loss, not an arrival)." },
       { q: "How big is the economic impact of migrants in transit?", a: "Small and self-correcting: roughly (migrants traveling) x their per-pop yields, a rounding error in peacetime, a larger idle pool during a big war, draining to zero within a few turns of migration slowing. It's why Emigration can tick up before Immigration catches up, but it doesn't distort Net Migration (settled cross-civ moves only)." },
       { q: "Is there a limit on how many people one city gains or loses per turn?", a: "Yes, both ways: at most a few points lost (so a besieged city bleeds steadily) and a few gained (so no boomtown swallows dozens at once); overflow waits in transit. Both caps scale with the intensity preset (Low/Medium/High) and are individually tunable. Deaths are a separate channel, not counted against either." }
     ]
@@ -153,11 +155,14 @@ const GUIDE = [
   {
     title: "FAQ: Cultural Enclaves",
     faq: [
-      { q: "What is a Cultural Enclave?", a: "When a foreign community becomes a lasting part of one of your cities (a standing presence, not a lifetime-arrivals total), it takes root as a Cultural Enclave on an edge tile, named for the origin people (the Roman Enclave, the Punic Enclave). You make a one-time choice of how the city makes room for it. On by default (Options ▸ Mods ▸ Emigration ▸ cultural enclaves)." },
-      { q: "What are the choices?", a: "Two options grounded in the origin's character, each a small benefit with a matching drawback (a Roman enclave leans Production; a Persian one brings Gold but stirs resentment), plus a passive 'let them be.' No strictly best option. The chosen stance applies its small yields every turn, so it reads in the city; dismissing (Escape or click outside) settles into 'let them be.'" },
-      { q: "What's the quote below the prose?", a: "A real, attributed historical quote for the enclave, in the origin people's own language with an English translation (Greek, Chinese, Persian, Latin, Old Norse, and more), each verified against a primary source. First enclave shows one quote, second shows the other." },
-      { q: "How many enclaves can one civilization have?", a: "At most two, per civilization, not overall, so you can hold two Roman and two Norman and two Han at once; reaching the cap for one origin never blocks another. A different people overtaking the tile is a change of hands (the Chronicle notes it, you choose again), not a third stacked enclave." },
-      { q: "What happens if I go to war with an enclave's homeland?", a: "The enclave turns contested: its yield benefit is reduced and a small, capped happiness strain applies while the war lasts, framed as wartime unease falling on families who did not choose the fighting, not as the enclave being disloyal. It contributes fully once peace returns." }
+      { q: "What is a Cultural Enclave?", a: "A foreign community that stays established in a city long enough forms a Cultural Enclave. The enclave is a real improvement on one of the city's tiles, named for the origin people (the Roman Enclave) and marked on the map with their symbol. It forms in every civilization's cities, yours and the AI's. On by default (Options ▸ Mods ▸ Emigration ▸ cultural enclaves)." },
+      { q: "When does one form?", a: "The community must hold at least 3 population points and either 30% of the settlement or the size bar. The size bar is 6 points when settlements average 18 people and scales with average settlement size, from half to double. The enclave forms, with its tile, as soon as the community holds that. Formation is also paced per age: while a civilization has formed no enclave this age, its bars fall in step with the age's progress, down to 60% of these values late in the age, and return to full once one forms. At most 3 form per civilization per age. Once the community has held for 8 turns, with 3 turns of grace, the enclave is recognized: it takes the origin's first stance on its own, and the chronicle records it. Set recognition to Ask for the decision pop-up in your cities." },
+      { q: "What does the tile look like, and what does it yield?", a: "The origin people's own unique improvement where they have one: a Goryeo enclave is a Gama, a Mongol enclave an Ortoo. Otherwise another civilization's improvement with the same yield as the stance benefit. Otherwise a village with +2 Culture. The tile carries that improvement's yields. The tile's yields come with the enclave from the day it forms. Once the enclave is recognized, its stance's benefit and drawback apply on top. If it replaced a farmstead, the host is paid each turn any yield the old tile gave that the new one does not." },
+      { q: "Can I build over an enclave?", a: "Yes. A building or wonder completed on the plot replaces the tile and destroys the enclave. The chronicle records it. Departures never abandon an enclave tile." },
+      { q: "Why did an enclave disappear?", a: "Its community shrank. When the origin's share of the settlement stays below 12.5% and its points stay below the size bar for 12 consecutive turns, the enclave dissolves and its tile is removed. Set the fade share to Never to make enclaves permanent." },
+      { q: "How many enclaves can one civilization have?", a: "At most two per origin civilization in each host, and one per tile. A host can hold two Roman and two Han enclaves at once. A different people overtaking the tile is a change of hands, not a third enclave." },
+      { q: "What happens if I go to war with an enclave's homeland?", a: "The enclave is contested. Its benefit is halved and a small, capped happiness strain applies while the war lasts. Both end at peace." },
+      { q: "What's the quote below the prose?", a: "In Ask mode the decision shows one attributed historical quote for the enclave, in the origin people's own language with an English translation. The first enclave shows one quote, the second the other." }
     ]
   }
 ];

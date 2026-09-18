@@ -1,0 +1,25 @@
+[2026-09-17 16:25:14]	[EmigProbe] shell attached (hotseat2) 
+[2026-09-17 16:25:29]	[EmigProbe] shell reset to hotseat: isHotseat=true isAnyMultiplayer=true humans=[] count=0 
+[2026-09-17 16:25:32]	[EmigProbe] shell slot 0 taken (was AI) 
+[2026-09-17 16:25:32]	[EmigProbe] shell slot 1 taken (was AI) 
+[2026-09-17 16:25:32]	[EmigProbe] shell after slots: isHotseat=true isAnyMultiplayer=true humans=[0,1] count=2 setupRevision=2 
+[2026-09-17 16:25:36]	[EmigProbe] shell hostGame(SERVER_TYPE_HOTSEAT) called 
+[2026-09-17 16:25:44]	[EmigProbe] shell after hostGame: isHotseat=true isAnyMultiplayer=true humans=[0,1] count=2 
+[2026-09-17 16:25:44]	[EmigProbe] shell startMultiplayerGame called 
+[2026-09-17 16:25:56]	[EmigTest] modtest-mp4 attached 
+[2026-09-17 16:26:09]	[EmigTest] modtest-mp4 start (probe 4: hotseat, two humans), startTurn=1 
+[2026-09-17 16:26:09]	[EmigTest] A1 isHotseat=true isAnyMultiplayer=true isNetworkMultiplayer=false isLocalMultiplayer=true 
+[2026-09-17 16:26:09]	[EmigTest] A2 humanPlayerIDs=[0,1] humanPlayerCount=2 localPlayerID=0 
+[2026-09-17 16:26:09]	[EmigTest] A3 Network.getHostPlayerId=0 Network.isHost=absent config.isHost=undefined 
+[2026-09-17 16:26:09]	[EmigTest] B0 activation who=0 local=0 turn=1 isTurnActive=true 
+[2026-09-17 16:26:13]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=1 
+[2026-09-17 16:26:18]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=2 
+[2026-09-17 16:26:23]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=3 
+[2026-09-17 16:26:28]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=4 
+[2026-09-17 16:26:33]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=5 
+[2026-09-17 16:26:38]	[EmigTest] endTurn blocked by NOTIFICATION_ASSIGN_NEW_RESOURCES tries=6 
+[2026-09-17 16:26:38]	[EmigTest] endTurn giving up on blockers; reporting what was seen 
+[2026-09-17 16:26:38]	[EmigTest] C1 activations=[{"turn":1,"who":0,"local":0}] 
+[2026-09-17 16:26:38]	[EmigTest] C2 activationsPerGameTurn={"1":1} distinctLocalIds=[0] 
+[2026-09-17 16:26:38]	[EmigTest] VERDICT HUMANS=2 ACTIVATIONS_PER_TURN_MAX=1 single run 
+[2026-09-17 16:26:38]	[EmigTest] DONE modtest4 finished 

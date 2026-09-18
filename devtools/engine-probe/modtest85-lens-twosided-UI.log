@@ -1,0 +1,10 @@
+[2026-09-15 20:21:08]	[EmigProbe] shell attached 
+[2026-09-15 20:21:09]	[EmigProbe] shell query complete 
+[2026-09-15 20:21:09]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-15 20:21:09]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-15 20:21:27]	[EmigTest] modtest83 attached 
+[2026-09-15 20:21:42]	[EmigTest] TILES London n=33 mean=12.7 [{"at":"92,32","score":62,"pct":100,"hex":"#18e048"},{"at":"92,33","score":12,"pct":-5,"hex":"#a8807e"},{"at":"91,32","score":7,"pct":-45,"hex":"#cf4f4a"},{"at":"93,34","score":6,"pct":-53,"hex":"#d44943"},{"at":"91,35","score":0,"pct":-100,"hex":"#ee2820"}] 
+[2026-09-15 20:21:42]	[EmigTest] PANEL would show {"t":1,"score":62,"mean":12.696969696969697,"best":62,"worst":0} on the best tile 
+[2026-09-15 20:22:05]	[EmigTest] PANEL cursor=threw element=true display=block rows=["Poor land here-45%","This tile yields 7, the settlement averages 13","Settlement: About average-9%"] title="London· this tile" 
+[2026-09-15 20:22:05]	[EmigTest] SHOT panel-on-best-tile 
+[2026-09-15 20:22:17]	[EmigTest] DONE modtest83 finished 

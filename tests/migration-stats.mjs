@@ -420,6 +420,43 @@ function testSampleInIncrement() {
   assert.equal(sampleIn(124), 0, "watermark advanced");
 }
 
+function testInternalTallySplitsGrossMovement() {
+  // An intra-civ move is gross movement for that civ (out AND in) but INTERNAL, so it shows up in
+  // the internal tallies and leaves the external share (gross - internal) at zero.
+  recordMigrations([{ srcOwner: 140, destOwner: 140, people: 3000, points: 2 }]);
+  const D = /** @type {*} */ (globalThis).EmigrationData;
+  assert.equal(D.internalOutCumFor(140), 3000, "internal departures tallied");
+  assert.equal(D.internalInCumFor(140), 3000, "internal arrivals tallied");
+  assert.equal(D.internalOutPtsFor(140), 2, "internal departures in pop points");
+  assert.equal(D.grossOutCumFor(140), 3000, "gross counts the internal move too");
+  assert.equal(D.grossOutCumFor(140) - D.internalOutCumFor(140), 0, "nothing external yet");
+  // A cross-civ move is external only: gross grows, the internal tallies do not.
+  recordMigrations([{ srcOwner: 140, destOwner: 141, people: 5000, points: 1 }]);
+  assert.equal(D.internalOutCumFor(140), 3000, "cross-civ move left the internal tally alone");
+  assert.equal(D.grossOutCumFor(140), 8000, "cross-civ move counted in gross");
+  assert.equal(D.internalInCumFor(141), 0, "receiver's arrival was external");
+  assert.equal(D.grossInCumFor(141), 5000, "receiver's gross immigration");
+}
+
+function testLaggedInternalMoveTalliesBothHalves() {
+  // A lagged move banks its departure now and its arrival later; each half carries one owner plus
+  // the crossCiv flag, so the internal tallies must follow the flag, not the missing owner.
+  recordMigrations([{ srcOwner: 142, crossCiv: false, people: 900, points: 1, destName: "Rome" }]);
+  const D = /** @type {*} */ (globalThis).EmigrationData;
+  assert.equal(D.internalOutCumFor(142), 900, "departure half tallied as internal");
+  assert.equal(D.internalInCumFor(142), 0, "arrival has not landed yet");
+  recordMigrations([{ destOwner: 142, crossCiv: false, people: 900, points: 1 }]);
+  assert.equal(D.internalInCumFor(142), 900, "arrival half tallied on completion");
+}
+
+function testAttritionIsNotInternalMigration() {
+  // A death is not a move: it must not appear in the internal tallies (nor the gross ones).
+  recordMigrations([{ srcOwner: 143, crossCiv: false, people: 700, points: 1, cause: "attrition" }]);
+  const D = /** @type {*} */ (globalThis).EmigrationData;
+  assert.equal(D.internalOutCumFor(143), 0, "attrition is not an internal departure");
+  assert.equal(D.grossOutCumFor(143), 0, "attrition is not emigration");
+}
+
 function testDisasterEventStamping() {
   // recordDisasterEvent should log events with turn, age, year, name, severity.
   globalThis.Game = { turn: 250 };
@@ -446,6 +483,9 @@ testFlowHistoryFrameCreation();
 testEventKeyAggregation();
 testSampleOutIndependence();
 testSampleInIncrement();
+testInternalTallySplitsGrossMovement();
+testLaggedInternalMoveTalliesBothHalves();
+testAttritionIsNotInternalMigration();
 testDisasterEventStamping();
 
 console.log("migration-stats harness passed");

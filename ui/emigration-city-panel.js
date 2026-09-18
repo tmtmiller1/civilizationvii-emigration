@@ -16,6 +16,7 @@ import { compositionForCity } from "/emigration/ui/emigration-composition.js";
 import { enclaveProgressForCity } from "/emigration/ui/emigration-diaspora.js";
 import { migrationFlows } from "/emigration/ui/emigration-migration-stats.js";
 import { quarterAt } from "/emigration/ui/emigration-quarter-state.js";
+import { enclaveStanding } from "/emigration/ui/emigration-enclave-place.js";
 import { quarterOptionFor } from "/emigration/ui/emigration-quarter-registry.js";
 import { refugeePoolTotal } from "/emigration/ui/emigration-refugee-pool.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
@@ -151,11 +152,11 @@ function gatherQuarter(city) {
     const benefitFactor = quarterBenefitFactor(rec);
     return {
       originName: quarterName(rec.civ),
-      stanceLabel: quarterOptionFor(civType(rec.civ), rec.optionId).label,
+      // An ESTABLISHED enclave has no stance until it is recognized, so none is claimed for it.
+      stanceLabel: rec.recognized === false ? "" : quarterOptionFor(civType(rec.civ), rec.optionId).label,
       contested,
-      // Once the enclave is BUILT the stance grant steps aside (roadmap §22a), so the panel must not keep
-      // claiming the dividend. Resolve a legacy record's origin from its player id, as the grant path does.
-      invested: false, // cultural-enclave BUILD feature removed; nothing is ever built/invested
+      invested: enclaveStanding(rec), // the enclave tile stands: it carries its own yield, the stance pays on top
+      rooted: Number(CONFIG.quarterRootsReturnScale) < 1, // put down roots: fewer of its people return home
       benefitYield: applied.benefitYield || null,
       benefitAmount: (applied.benefitAmount || 0) * benefitFactor,
       penaltyYield: applied.penaltyYield || null,

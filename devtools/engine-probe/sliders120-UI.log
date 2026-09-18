@@ -1,0 +1,17 @@
+[2026-09-17 12:10:48]	[EmigProbe] shell attached 
+[2026-09-17 12:10:49]	[EmigProbe] shell query complete 
+[2026-09-17 12:10:49]	[EmigProbe] shell found AugustusAnt65.Civ7Save turn 65 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-17 12:10:49]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 12:11:06]	[EmigTest] modtest120 attached 
+[2026-09-17 12:11:23]	[EmigTest] TEXT LOC_OPTIONS_EMIG_CONFLICTREF = Refugees from conflict (overall) 
+[2026-09-17 12:11:23]	[EmigTest] TEXT LOC_OPTIONS_EMIG_MAJORWAR = Refugees from major-power wars 
+[2026-09-17 12:11:23]	[EmigTest] TEXT LOC_OPTIONS_EMIG_MINORRAID = Refugees from minor-power raids 
+[2026-09-17 12:11:23]	[EmigTest] TEXT LOC_OPTIONS_EMIG_MINORRAID_D = How hard raids by city-states and Independent Powers drive people from their homes. 0% mea 
+[2026-09-17 12:11:23]	[EmigTest] TEXT LOC_EMIG_T_MAJORVIOL = War pressure from major civilizations 
+[2026-09-17 12:11:23]	[EmigTest] TEXT LOC_EMIG_T_SIEGEFLOOR = Siege floor 
+[2026-09-17 12:11:23]	[EmigTest] TEXT LOC_EMIG_ADVGRP_VIOLENCE = War & violence 
+[2026-09-17 12:11:23]	[EmigTest] TEXT LOC_OPTIONS_EMIG_CROSSCIV = Movement between civilizations 
+[2026-09-17 12:11:23]	[EmigTest] BOOT emigration=object audit=object 
+[2026-09-17 12:11:23]	[EmigTest] CONFIG {"minorViolenceScale":0.4,"majorViolenceScale":1,"minorSiegeBesiegedFloor":0.08,"siegeBesiegedFloor":0.3,"warSurgeMax":3} 
+[2026-09-17 12:11:23]	[EmigTest] RESULT rawKeys=0 of 8 
+[2026-09-17 12:11:26]	[EmigTest] DONE modtest120 finished 

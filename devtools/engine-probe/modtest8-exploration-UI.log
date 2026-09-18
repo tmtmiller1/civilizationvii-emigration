@@ -1,0 +1,31 @@
+[2026-09-13 04:40:24]	[EmigProbe] shell attached 
+[2026-09-13 04:40:25]	[EmigProbe] shell query complete 
+[2026-09-13 04:40:26]	[EmigProbe] shell found AutoSave_01_0005.Civ7Save turn 5 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-13 04:40:26]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 04:40:43]	[EmigTest] modtest7 attached 
+[2026-09-13 04:40:46]	[EmigTest] TURN activated n=1 turn=5 age=AGE_EXPLORATION ALIVE 
+[2026-09-13 04:40:57]	[EmigTest] TURN activated n=2 turn=6 age=AGE_EXPLORATION ALIVE 
+[2026-09-13 04:41:05]	[EmigTest] TURN activated n=3 turn=7 age=AGE_EXPLORATION ALIVE 
+[2026-09-13 04:41:13]	[EmigTest] TURN activated n=4 turn=8 age=AGE_EXPLORATION ALIVE 
+[2026-09-13 04:41:21]	[EmigTest] TURN activated n=5 turn=9 age=AGE_EXPLORATION ALIVE 
+[2026-09-13 04:41:33]	[EmigTest] TURN activated n=6 turn=10 age=AGE_EXPLORATION ALIVE 
+[2026-09-13 04:41:40]	[EmigTest] TURN activated n=7 turn=11 age=AGE_EXPLORATION ALIVE 
+[2026-09-13 04:41:42]	[EmigTest] AUTOPLAY off; turnActive=true turn 9->11 activations=2 autoplayActive=false 
+[2026-09-13 04:41:42]	[EmigTest] START turn=11 age=AGE_EXPLORATION L=London turnActive=true enclaveIdx=205 londonPending=0 pop=31 
+[2026-09-13 04:41:42]	[EmigTest] D5 def={"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_B","age":null,"cls":"IMPROVEMENT","unlock":true,"idx":205} farmDef={"age":null,"idx":4} 
+[2026-09-13 04:41:42]	[EmigTest] D1 London emptyPlots=[{"plot":3161,"loc":{"x":89,"y":32},"d":3,"terrain":"TERRAIN_HILL","feature":-1,"river":true,"owner":0}] 
+[2026-09-13 04:41:42]	[EmigTest] D1 canStart district={"Success":true,"keys":["Success"]} 
+[2026-09-13 04:41:47]	[EmigTest] D1 after district request: districtAt=DISTRICT_RURAL plot=["IMPROVEMENT_MINE"] 
+[2026-09-13 04:41:47]	[EmigTest] D2a canStart enclave={"Success":true,"keys":["Success"]} 
+[2026-09-13 04:41:52]	[EmigTest] D2a after enclave request: plot=["IMPROVEMENT_MINE"] enclaveAt=null 
+[2026-09-13 04:41:52]	[EmigTest] D2b tile=IMPROVEMENT_EMIG_ENCLAVE_ROME_A plot=2875 canStart destroy={"Success":true,"keys":["Success"]} 
+[2026-09-13 04:41:53]	[EmigTest] TURN activated n=8 turn=12 age=AGE_EXPLORATION ALIVE 
+[2026-09-13 04:41:56]	[EmigTest] D2b after destroy: plot=["IMPROVEMENT_EMIG_ENCLAVE_ROME_A"] districtAt=DISTRICT_RURAL 
+[2026-09-13 04:41:56]	[EmigTest] D2b canStart enclave={"Success":true,"keys":["Success"]} 
+[2026-09-13 04:42:01]	[EmigTest] D2b after enclave request: plot=["IMPROVEMENT_EMIG_ENCLAVE_ROME_A"] londonPending=0 
+[2026-09-13 04:42:01]	[EmigTest] D3 Paris tile=IMPROVEMENT_MINE canStart destroy={"Success":true,"keys":["Success"]} canStart enclave={"Success":true,"keys":["Success"]} 
+[2026-09-13 04:42:07]	[EmigTest] TURN activated n=9 turn=13 age=AGE_EXPLORATION ALIVE 
+[2026-09-13 04:42:08]	[EmigTest] D3 placeEnclave={"type":"IMPROVEMENT_EMIG_ENCLAVE_GREECE_A","plot":4689,"replaced":"IMPROVEMENT_MINE"} plotNow=["IMPROVEMENT_MINE"] 
+[2026-09-13 04:42:08]	[EmigTest] ACTIONS done; ending the turn 
+[2026-09-13 04:42:15]	[EmigTest] TURN activated n=10 turn=14 age=AGE_EXPLORATION ALIVE 
+[2026-09-13 04:42:18]	[EmigTest] DONE modtest7 finished 

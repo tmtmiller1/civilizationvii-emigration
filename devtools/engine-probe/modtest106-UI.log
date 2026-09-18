@@ -1,0 +1,14 @@
+[2026-09-16 09:39:45]	[EmigProbe] shell attached 
+[2026-09-16 09:39:46]	[EmigProbe] shell query complete 
+[2026-09-16 09:39:46]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-16 09:39:46]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-16 09:40:04]	[EmigTest] modtest106 attached 
+[2026-09-16 09:40:21]	[EmigTest] modtest106 start 
+[2026-09-16 09:40:21]	[EmigTest] CONFIG bannerPressureBar=1 SHOW_FROM=0.05 attritionMinDistress=40 
+[2026-09-16 09:40:21]	[EmigTest] SNAPSHOTS pid=0 count=29 
+[2026-09-16 09:40:21]	[EmigTest] KEYS cities=29 bannerKeysOk=29 snapKeys=29 matched=29 
+[2026-09-16 09:40:21]	[EmigTest] KEYS sample banner=["0:65536","0:131073","0:196610"] snap=["0:1835035","0:1441813","0:1572887"] 
+[2026-09-16 09:40:21]	[EmigTest] PRESSURE highest 6: [{"key":"0:1835035","p":0,"cause":"prosperity","atRisk":false,"vis":false,"tier":"none"},{"key":"0:1441813","p":0,"cause":"prosperity","atRisk":false,"vis":false,"tier":"none"},{"key":"0:1572887","p":0,"cause":"prosperity","atRisk":true,"vis":false,"tier":"none"},{"key":"0:1179665","p":0,"cause":"prosperity","atRisk":false,"vis":false,"tier":"none"},{"key":"0:1245202","p":0,"cause":"unhappiness","atRisk":true,"vis":false,"tier":"none"},{"key":"0:1769498","p":0,"cause":"prosperity","atRisk":true,"vis":false,"tier":"none"}] 
+[2026-09-16 09:40:21]	[EmigTest] COUNTS cities=29 atRisk=8 visibleShippedMode=0 visibleAlwaysMode=29 overSHOW_FROM=0 
+[2026-09-16 09:40:21]	[EmigTest] VERDICT data is fine; no city reaches SHOW_FROM (0.05). The bar is working as designed and simply has nothing to draw in the shipped mode. ALWAYS mode would draw an empty track on all 29 cities. 
+[2026-09-16 09:40:21]	[EmigTest] DONE modtest106 finished 

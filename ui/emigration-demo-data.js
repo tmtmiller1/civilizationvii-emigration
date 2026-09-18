@@ -373,27 +373,51 @@ function finalizeCiv(r) {
   r.deaths = Math.round(r.refugees * 0.2);
   r.inPts = pts(r.in);
   r.outPts = pts(r.out);
+  r.intInPts = pts(r.intIn);
+  r.intOutPts = pts(r.intOut);
   r.netPts = r.inPts - r.outPts;
   r.refugeesPts = pts(r.refugees);
   r.deathsPts = pts(r.deaths);
 }
 
 /**
- * Derive per-civ ledger rows from the flow list (internally consistent in/out/net + refugees).
+ * Fold the intra-civ moves into a civ's internal tallies AND its gross in/out (a move within a civ
+ * is both a departure and an arrival for it, so it leaves net untouched, as in the live accounting).
+ * @param {{civId:number, people:number}[]|undefined} intra Intra-civ moves.
+ * @param {(id:number, name:string) => *} get Civ-row accessor.
+ */
+function foldIntra(intra, get) {
+  for (const e of intra || []) {
+    const r = get(e.civId, NAMES[e.civId]);
+    r.intIn += e.people;
+    r.intOut += e.people;
+    r.in += e.people;
+    r.out += e.people;
+  }
+}
+
+/**
+ * Derive per-civ ledger rows from the flow list (internally consistent in/out/net + refugees), with
+ * the intra-civ moves folded into BOTH the internal tallies and the gross in/out, mirroring the live
+ * accounting (gross counts every move; net counts only the cross-border ones, and an intra move adds
+ * equally to in and out so it leaves net untouched).
  * @param {*[]} flows Named flows.
+ * @param {{civId:number, people:number}[]} [intra] Intra-civ moves.
  * @returns {*[]} Ledger civ rows.
  */
-function deriveCivs(flows) {
+function deriveCivs(flows, intra) {
   /** @type {Map<number, *>} */
   const m = new Map();
   const get = (/** @type {number} */ id, /** @type {string} */ name) => {
     let r = m.get(id);
     if (!r) {
-      r = { pid: id, name, in: 0, out: 0, net: 0, refugees: 0, deaths: 0, byCause: {}, stance: "none" };
+      r = { pid: id, name, in: 0, out: 0, intIn: 0, intOut: 0, net: 0, refugees: 0, deaths: 0,
+        byCause: {}, stance: "none" };
       m.set(id, r);
     }
     return r;
   };
+  foldIntra(intra, get);
   for (const e of flows) {
     get(e.to, e.toName).in += e.people;
     const src = get(e.from, e.fromName);
@@ -497,13 +521,14 @@ function resolveEvents(n) {
  */
 export function sampleDashboard(step) {
   const flows = buildFlowsAt(1);
+  const intra = buildIntraAt(1);
   const history = buildHistory(typeof step === "number" && step >= 1 && step <= 5 ? Math.round(step) : 3);
   return {
-    civs: deriveCivs(flows),
+    civs: deriveCivs(flows, intra),
     byCause: aggregateByCause(flows),
     flows,
     pops: nativePopsAt(1),
-    intra: buildIntraAt(1),
+    intra,
     history,
     events: resolveEvents(history.length),
     cities: CITYDEFS,

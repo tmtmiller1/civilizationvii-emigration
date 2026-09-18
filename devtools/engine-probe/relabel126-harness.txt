@@ -1,0 +1,6 @@
+[12:55:42] registry: 126|emigration|1 537|emigration|0  ; modinfo flag: 1
+[12:55:42] probe installed: eep-modtest126.js on AugustusAnt65.Civ7Save
+[12:55:44] game pid 30605
+[12:56:34] result=crashed after 48s
+[12:56:42] restored: 126|emigration|1 539|emigration|0  ; modinfo flag: 0 ; probe present: no
+[12:56:42] FINISHED result=crashed

@@ -130,6 +130,39 @@ function crossCivBlock(src) {
 }
 
 /**
+ * The bonus a source in acute crisis adds to a destination in its OWN civilization (`crisisInternalBonus`), the
+ * mirror of the escape bonus abroad: people who can shelter inside their own lands do. Zero for an ordinary
+ * economic migrant, who is not fleeing anything, and zero when the knob is off.
+ * @param {*} src Source signal.
+ * @returns {number} A non-negative bonus.
+ */
+function internalRefugeBonus(src) {
+  if (!(CONFIG.crisisInternalBonus > 0) || !srcInCrisis(src)) return 0;
+  return CONFIG.crisisInternalBonus;
+}
+
+/**
+ * The friction a size difference charges, in BOTH directions.
+ *
+ * `perExtraPop` has always braked the move into an already-bigger settlement. The mirror
+ * (`perFewerPop`) has to exist because the base score simultaneously rewards a destination for being
+ * SMALL — `populationFactor` is subtracted per population point — so with a brake on only one side a
+ * capital was permanently pushed toward its lesser neighbours whatever it built (watched: a size-13
+ * capital carried a flat 2.0 points of pull toward a size-11 neighbour from the population term
+ * alone, half the base reluctance). Leaving an established settlement for a smaller one now costs the
+ * same per point as crowding into a bigger one.
+ * @param {*} src Source signal. @param {*} dest Destination signal.
+ * @returns {number} The friction to subtract (>= 0).
+ */
+function sizeFriction(src, dest) {
+  if (dest.population > src.population) return CONFIG.perExtraPop * (dest.population - src.population);
+  if (dest.population < src.population) {
+    return (Number(CONFIG.perFewerPop) || 0) * (src.population - dest.population);
+  }
+  return 0;
+}
+
+/**
  * Whether a source is in ACUTE crisis (being razed, or war/disaster distress over its flee
  * threshold), i.e. its people are refugees fleeing, not economic migrants. Kept in lockstep with the
  * engine's `inCrisis` (which sizes the shed track): a razing city sheds on the crisis cadence there,
@@ -169,14 +202,15 @@ export function adjustedPull(src, dest, flee, ownerPop, aggressors) {
 
   // FRICTION: reluctance, overcrowding, city-state + cross-civ barriers, distance, congestion.
   pull -= CONFIG.baseReluctance;
-  if (dest.population > src.population) {
-    pull -= CONFIG.perExtraPop * (dest.population - src.population);
-  }
+  pull -= sizeFriction(src, dest);
   if (dest.isCityState || src.isCityState) pull -= CONFIG.cityStateBarrier;
   if (dest.owner !== src.owner) {
     if (!CONFIG.crossCivEnabled) return null;
     pull -= crossCivBlock(src); // friction for the move, minus the crisis ESCAPE bonus for refugees
     pull -= dominanceFor(dest, ownerPop); // anti-snowball: cross-civ inflow to a runaway leader only
+    pull -= drainFor(src, ownerPop); // small-civilization brake: cross-civ outflow from a shrinking civ only
+  } else {
+    pull += internalRefugeBonus(src); // displacement stays internal first: shelter at home over fleeing abroad
   }
   pull += geoAdjust(src, dest, flee, aggressors);
   pull -= congestionFor(dest, ownerPop);
@@ -216,14 +250,18 @@ export function pullBreakdown(src, dest, flee, ownerPop, aggressors) {
   const crossCiv = dest.owner !== src.owner;
   const geo = geoBreakdown(src, dest, flee, aggressors);
   const extra = dest.population > src.population ? dest.population - src.population : 0;
+  const fewer = dest.population < src.population ? src.population - dest.population : 0;
   const terms = [
     { key: "gradient", raw: dest.pros - src.pros },
     { key: "tilt", raw: clamp(tiltFor(src, dest), -CONFIG.tiltCap, CONFIG.tiltCap) },
     { key: "reluctance", raw: -CONFIG.baseReluctance },
     { key: "crowding", raw: -(CONFIG.perExtraPop * extra) },
+    { key: "downsizing", raw: -((Number(CONFIG.perFewerPop) || 0) * fewer) },
     { key: "cityState", raw: dest.isCityState || src.isCityState ? -CONFIG.cityStateBarrier : 0 },
     { key: "crossCiv", raw: crossCiv ? -crossCivBlock(src) : 0 },
+    { key: "internal", raw: crossCiv ? 0 : internalRefugeBonus(src) },
     { key: "dominance", raw: crossCiv ? -dominanceFor(dest, ownerPop) : 0 },
+    { key: "drain", raw: crossCiv ? -drainFor(src, ownerPop) : 0 },
     { key: "distance", raw: geo.distance },
     { key: "aggressor", raw: geo.aggressor },
     { key: "flight", raw: geo.flight },
@@ -325,6 +363,24 @@ function dominanceFor(dest, ownerPop) {
   const excess = ratio - CONFIG.antiSnowballThreshold;
   if (!(excess > 0)) return 0;
   return CONFIG.antiSnowballWeight * Math.pow(excess, CONFIG.antiSnowballExponent);
+}
+
+/**
+ * The small-civilization brake for a source civ, the mirror of {@link dominanceFor}: a pull penalty on
+ * cross-civ moves OUT of a civ whose population has fallen below antiDrainThreshold × the world-average
+ * civ, growing with the shortfall, so a shrinking civ is not drained further. Zero at or above the
+ * threshold, and zero when the brake is off or population data is missing.
+ * @param {*} src Source signal.
+ * @param {Record<number, number>|null} ownerPop Per-owner total population.
+ * @returns {number} A non-negative penalty.
+ */
+function drainFor(src, ownerPop) {
+  if (!(CONFIG.antiDrainWeight > 0) || !ownerPop) return 0;
+  const avg = fieldAverage(ownerPop);
+  if (!(avg > 0)) return 0;
+  const shortfall = CONFIG.antiDrainThreshold - (ownerPop[src.owner] || 0) / avg;
+  if (!(shortfall > 0)) return 0;
+  return CONFIG.antiDrainWeight * Math.pow(shortfall, CONFIG.antiDrainExponent);
 }
 
 // "Nearby" cutoff for the reason tag: a move within this many hexes reads as a short hop.

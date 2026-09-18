@@ -197,3 +197,115 @@ export function pillagedCount(city) {
   }
   return n;
 }
+
+/**
+ * The players currently holding any of a city's overrun districts, i.e. who is actually attacking it. This is
+ * the only place the ENGINE names the attacker: the besieged flag says a city is under attack but not by whom,
+ * and an Independent Power harassing a city may never appear as a formal war opponent at all.
+ * @param {*} city A live city object.
+ * @returns {Set<number>} Attacking player ids (empty when none can be read).
+ */
+export function besiegingPlayers(city) {
+  /** @type {Set<number>} */
+  const out = new Set();
+  try {
+    for (const d of cityDistrictObjs(city)) {
+      if (districtIsContested(d) && typeof d.controllingPlayer === "number") out.add(d.controllingPlayer);
+    }
+  } catch (_) {
+    /* unreadable mid age-transition: an empty set means "we do not know" */
+  }
+  return out;
+}
+
+/**
+ * Hostile units standing on or beside a city's districts, and who owns them. This is the DIRECT reading of
+ * who is attacking a city: an army on the walls is the attack, where the diplomacy layer only ever offers a
+ * proxy for it. That proxy turned out to be unusable on its own -- `Diplomacy.isAtWarWith` reports true for
+ * EVERY Independent Power permanently, whether or not one has ever moved a unit at you (watched, mod test 109,
+ * 18-19 simultaneous "wars" with nothing besieged), so an at-war scan cannot tell a raid from the weather.
+ *
+ * This is fog-INDEPENDENT, like district health and unlike anything in the diplomacy layer: watched returning
+ * hostile units at 8-12 foreign cities per scan whose plots were never revealed (`getRevealedState` 0), in a
+ * war between two AI players (mod test 111). So it reads the whole map, and a distant AI-vs-AI siege registers
+ * exactly as a visible one does -- which is what the migration model requires, since it scores every met
+ * civilization's cities, not just ours.
+ * @param {*} city A live city object.
+ * @returns {Set<number>} Owner ids of hostile units in contact (empty when none are visible or readable).
+ */
+export function attackersNear(city) {
+  /** @type {Set<number>} */
+  const out = new Set();
+  const owner = typeof city?.owner === "number" ? city.owner : -1;
+  if (owner < 0 || typeof MapUnits === "undefined" || typeof Units === "undefined") return out;
+  try {
+    for (const loc of contactPlots(city)) addHostileOwnersAt(loc, owner, out);
+  } catch (_) {
+    /* unreadable mid age-transition: an empty set means "we do not know" */
+  }
+  return out;
+}
+
+/**
+ * Add the owners of any hostile ARMED units standing on one plot. Civilians are skipped deliberately: a
+ * settler or trader passing a city is not a siege, and mistaking one for an army is how a quiet border
+ * turns into a refugee wave.
+ * @param {{x:number,y:number}} loc The plot. @param {number} owner The city's owner.
+ * @param {Set<number>} out Collected owner ids.
+ */
+function addHostileOwnersAt(loc, owner, out) {
+  for (const cid of MapUnits.getUnits(loc.x, loc.y) || []) {
+    const u = Units.get?.(cid);
+    const uo = typeof u?.owner === "number" ? u.owner : -1;
+    if (uo >= 0 && uo !== owner && u.Combat && hostileTo(owner, uo)) out.add(uo);
+  }
+}
+
+/**
+ * The plots where an attacker would have to be standing to be attacking this city: its districts, plus every
+ * tile adjacent to one. Scanning the whole city radius would be both slower and wrong -- a unit three tiles
+ * out in your territory is passing through, not besieging you.
+ * @param {*} city A live city object.
+ * @returns {Array<{x:number,y:number}>} Plots to search, deduped.
+ */
+function contactPlots(city) {
+  /** @type {Map<string, {x:number,y:number}>} */
+  const seen = new Map();
+  const put = (/** @type {*} */ l) => {
+    if (l && typeof l.x === "number" && typeof l.y === "number") seen.set(l.x + ":" + l.y, l);
+  };
+  for (const loc of districtLocations(city)) {
+    put(loc);
+    if (typeof GameplayMap === "undefined" || typeof DirectionTypes === "undefined") continue;
+    for (const dir of ADJACENT_DIRECTIONS) {
+      try {
+        put(GameplayMap.getAdjacentPlotLocation(loc, DirectionTypes[dir]));
+      } catch (_) {
+        /* off-map edge */
+      }
+    }
+  }
+  return [...seen.values()];
+}
+
+/** The six hex neighbours, named rather than counted so an enum reorder cannot silently skip a direction. */
+const ADJACENT_DIRECTIONS = Object.freeze([
+  "DIRECTION_EAST", "DIRECTION_WEST", "DIRECTION_NORTHEAST",
+  "DIRECTION_NORTHWEST", "DIRECTION_SOUTHEAST", "DIRECTION_SOUTHWEST"
+]);
+
+/**
+ * Whether a unit's owner is hostile to the city's owner. Independent Powers read as permanently at war, so
+ * this is only ever used to EXCLUDE friendly units standing in allied territory -- the unit's presence in
+ * contact is what carries the weight, not the diplomatic state.
+ * @param {number} owner The city's owner. @param {number} other The unit's owner. @returns {boolean} Hostile.
+ */
+function hostileTo(owner, other) {
+  try {
+    const d = Players?.get?.(owner)?.Diplomacy;
+    if (!d || typeof d.isAtWarWith !== "function") return true;
+    return !!d.isAtWarWith(other);
+  } catch (_) {
+    return true;
+  }
+}

@@ -1,0 +1,7 @@
+[2026-09-15 21:14:26]	[EmigProbe] shell attached 
+[2026-09-15 21:14:27]	[EmigProbe] shell query complete 
+[2026-09-15 21:14:28]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-15 21:14:28]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-15 21:14:52]	[EmigTest] modtest91 attached control=false 
+[2026-09-15 21:15:07]	[EmigTest] SLIDER poach=24 escape=3.5 drain=18 internal=18 
+[2026-09-15 21:15:07]	[EmigTest] START control=false {"turn":66,"world":1056,"settlements":76,"topShare":41.2,"minPop":4,"minCity":"Jenne","negGold":0,"resettling":0,"enclaves":0,"candidacies":0,"counters":{"passes":0,"zeroMovePasses":0,"voluntaryMoves":0,"crisisMoves":0,"crisisInternal":0,"crisisCrossCiv":0,"crossCivMoves":0,"returnMoves":0,"attritionTrapped":0,"attritionFleeing":0,"transitRazed":0,"transitCapped":0,"arrivedIntoCrisis":0,"refugeesQueued":0,"refugeesSettled":0},"civs":{"0":{"pop":435,"settlements":29,"gold":804,"resettling":0},"2":{"pop":85,"settlements":6,"gold":362,"resettling":0},"4":{"pop":141,"settlements":8,"gold":500,"resettling":0},"6":{"pop":100,"settlements":8,"gold":2656,"resettling":0},"7":{"pop":91,"settlements":10,"gold":849,"resettling":0},"8":{"pop":119,"settlements":8,"gold":119,"resettling":0},"9":{"pop":85,"settlements":7,"gold":1763,"resettling":0}},"cfg":{"poachBlock":24,"crisisEscapeBonus":3.5,"antiDrainWeight":18,"internalBonus":18,"askRefugees":true,"askMigrants":fal

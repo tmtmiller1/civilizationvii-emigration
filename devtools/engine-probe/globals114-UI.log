@@ -1,0 +1,8 @@
+[2026-09-16 14:47:33]	[EmigProbe] shell attached 
+[2026-09-16 14:47:34]	[EmigProbe] shell query complete 
+[2026-09-16 14:47:35]	[EmigProbe] shell found AugustusAnt65.Civ7Save turn 65 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-16 14:47:35]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-16 14:47:52]	[EmigTest] modtest114 attached 
+[2026-09-16 14:48:09]	[EmigTest] START emigration=undefined EmigrationCombat=undefined DemographicsData=object 
+[2026-09-16 14:48:39]	[EmigTest] LATE emigration=undefined EmigrationCombat=undefined DemographicsData=object 
+[2026-09-16 14:48:39]	[EmigTest] DONE modtest114 finished 

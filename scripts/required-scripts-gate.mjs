@@ -7,6 +7,12 @@ const pkg = JSON.parse(raw);
 const scripts = pkg && pkg.scripts ? pkg.scripts : {};
 
 const requiredScripts = [
+  // The built-environment term: roles derived from the compiled DB, and the bound on the term.
+  "test:built",
+  // The on-map enclave marker: a repaint replaces the marker (it used to stack one per repaint).
+  "test:enclave-markers",
+  // The enclave tooltip model: sources, reasoning, the displaced improvement, contested dimming.
+  "test:enclave-tooltip-data",
   "test:chronicle",
   "test:return",
   "test:dilemma",

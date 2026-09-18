@@ -17,7 +17,7 @@
 // record defers (or, past its retry window, perishes) instead of dropping the rest of the due queue
 // and corrupting population state into a save-file ghost.
 
-import { addRural } from "/emigration/ui/emigration-population.js";
+import { arriveRural, arrivalFrom } from "/emigration/ui/emigration-arrival-placement.js";
 import { arriveRecord } from "/emigration/ui/emigration-migration-records.js";
 import { applyArrivalConsequences } from "/emigration/ui/emigration-consequences.js";
 import { canReceiveInbound, noteInbound } from "/emigration/ui/emigration-inbound.js";
@@ -50,7 +50,13 @@ function roll01(seed) {
     h ^= seed.charCodeAt(i);
     h = Math.imul(h, 16777619) >>> 0;
   }
-  return (h >>> 0) / 0xffffffff;
+  // Final avalanche (murmur3 fmix32): FNV alone barely changes its high bits when only the tail of the seed changes.
+  h ^= h >>> 16;
+  h = Math.imul(h, 0x85ebca6b);
+  h ^= h >>> 13;
+  h = Math.imul(h, 0xc2b2ae35);
+  h ^= h >>> 16;
+  return (h >>> 0) / 0x100000000;
 }
 
 /**
@@ -110,7 +116,7 @@ function resolveArrival(e, byKey, ctx, expired, now) {
   if (!canReceiveInbound(e.destKey, ctx)) return { action: expired ? "die" : "defer", dieKind: "capped" };
   const settleNow = immediateSettle(e, now);
   if (settleNow) {
-    if (!addRural(destSig.city)) return { action: expired ? "die" : "defer", dieKind: "capped" };
+    if (!arriveRural(destSig.city, arrivalFrom(e.srcOwner, e.cause))) return { action: expired ? "die" : "defer", dieKind: "capped" };
     destSig.rural += 1;
     destSig.population += 1;
   } else {

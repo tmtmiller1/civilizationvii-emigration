@@ -1,0 +1,17 @@
+[2026-09-17 10:46:49]	[EmigProbe] shell attached 
+[2026-09-17 10:46:50]	[EmigProbe] shell query complete 
+[2026-09-17 10:46:51]	[EmigProbe] shell found AugustusAnt65.Civ7Save turn 65 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-17 10:46:51]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 10:47:08]	[EmigTest] modtest116 attached 
+[2026-09-17 10:47:25]	[EmigTest] modtest116 run local=0 bootstrap=object ledger={"tracking":true,"turn":-1,"cities":0,"seen":0} 
+[2026-09-17 10:47:47]	[EmigTest] T n=1 fightRows=2 named=2 unnamed=0 seen=11 
+[2026-09-17 10:48:09]	[EmigTest] T n=2 fightRows=6 named=6 unnamed=0 seen=29 
+[2026-09-17 10:48:30]	[EmigTest] T n=3 fightRows=11 named=11 unnamed=0 seen=44 
+[2026-09-17 10:48:30]	[EmigTest] --- VERDICT --- 
+[2026-09-17 10:48:30]	[EmigTest] bootstrap: globalThis.emigration=object  ledger=present 
+[2026-09-17 10:48:30]	[EmigTest] tracker:   {"tracking":true,"turn":68,"cities":0,"seen":44} 
+[2026-09-17 10:48:30]	[EmigTest] observed:  turnsSampled=4 citiesTouched=8 foreignRows=17 battles=16 kills=4 
+[2026-09-17 10:48:30]	[EmigTest] naming:    fightRows=16 named=16 unnamed=0 damageOnlyRows=2 distinctAttackers=[11,10,34,23,22,2,20,38] selfNamed=0 
+[2026-09-17 10:48:30]	[EmigTest] RESULT PASS: fights were recorded and attackers were named 
+[2026-09-17 10:48:30]	[EmigTest] --- END VERDICT --- 
+[2026-09-17 10:48:34]	[EmigTest] DONE modtest116 finished 

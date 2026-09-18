@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 
+const causes = await import("/emigration/ui/emigration-causes.js");
 const { isRefugeeCause, causeLabel, causePermanence, causeHint, causeAccent, notificationAccent, topCause } =
   await import("/emigration/ui/emigration-causes.js");
 
@@ -26,11 +27,26 @@ function testNotificationAccentReservesRedForOwnLoss() {
     assert.notEqual(notificationAccent(c, false), causeAccent(c), `${c} world-news is NOT red`);
     assert.equal(notificationAccent(c, false), notificationAccent("war", false), "shared neutral tone");
   }
-  // Non-red causes are unaffected by ownLoss.
-  for (const c of ["disaster", "prosperity", "unhappiness", "attrition"]) {
+  // Warning tones (disaster, unhappiness, attrition) are unaffected by ownLoss.
+  for (const c of ["disaster", "unhappiness", "attrition"]) {
     assert.equal(notificationAccent(c, false), causeAccent(c), `${c} unchanged`);
     assert.equal(notificationAccent(c, true), causeAccent(c), `${c} unchanged`);
   }
+  // Green is reserved for the player's OWN gains: another civ's prosperity/return news is neutral, and the
+  // player's own people leaving for prosperity or returning home is a soft loss (amber), never green.
+  for (const c of ["prosperity", "return"]) {
+    assert.equal(notificationAccent(c, false), notificationAccent("war", false), `${c} world-news is neutral, not green`);
+    assert.equal(notificationAccent(c, true), causeAccent("unhappiness"), `${c} own loss is amber, not green`);
+    assert.notEqual(notificationAccent(c, true), causeAccent("prosperity"), `${c} own loss is never green`);
+  }
+}
+
+function testDigestAccentGreenOnlyForOwnGains() {
+  const { digestAccent } = causes;
+  assert.equal(digestAccent(false, true), causeAccent("prosperity"), "newcomers from abroad: the one green");
+  assert.equal(digestAccent(true, true), causeAccent("war"), "own people leaving for a rival: red");
+  assert.equal(digestAccent(true, false), notificationAccent("war", false), "own people moving between own cities: neutral, not green");
+  assert.equal(digestAccent(false, false), notificationAccent("war", false), "an internal move that is not a loss: neutral");
 }
 
 function testRefugeeCausesAreForcedDisplacementOnly() {
@@ -87,6 +103,7 @@ testPermanenceClassifier();
 testHintsExistForEmittedCauses();
 
 testNotificationAccentReservesRedForOwnLoss();
+testDigestAccentGreenOnlyForOwnGains();
 testTopCausePicksTheDominantDriver();
 
 console.log("causes harness passed");

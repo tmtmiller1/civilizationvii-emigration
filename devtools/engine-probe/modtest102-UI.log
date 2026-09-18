@@ -1,0 +1,21 @@
+[2026-09-16 09:26:19]	[EmigProbe] shell attached 
+[2026-09-16 09:26:20]	[EmigProbe] shell query complete 
+[2026-09-16 09:26:20]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-16 09:26:20]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-16 09:26:38]	[EmigTest] modtest102 attached 
+[2026-09-16 09:26:55]	[EmigTest] modtest102 start (1.5.0 UI surfaces) 
+[2026-09-16 09:26:55]	[EmigTest] BUILD "?" 
+[2026-09-16 09:26:55]	[EmigTest] PASS console API present :: "runNow,rank,metrics,origins,openBorders,raids,city,hideCity,window,closeWindow" 
+[2026-09-16 09:26:56]	[EmigTest] PASS runNow() executes :: "turn 66" 
+[2026-09-16 09:26:56]	[EmigTest] PASS city readout snapshot :: "console city() absent (module path used by UI)" 
+[2026-09-16 09:26:56]	[EmigTest] FAIL dashboard window renders :: "STYLE children=0" 
+[2026-09-16 09:26:56]	[EmigTest] FAIL lenses registered :: "" 
+[2026-09-16 09:26:56]	[EmigTest] FAIL banner pressure decorator :: "banners=0 withEmigBar=0" 
+[2026-09-16 09:26:56]	[EmigTest] PASS sub-system dock present :: "present" 
+[2026-09-16 09:26:56]	[EmigTest] PASS localized text composes :: "külliye specialists teach and heal, at public cost" 
+[2026-09-16 09:26:56]	[EmigTest] PASS policy traditions in DB :: "6 EMIG traditions" 
+[2026-09-16 09:26:56]	[EmigTest] PASS enclave improvements in DB :: "100 enclave types" 
+[2026-09-16 09:26:56]	[EmigTest] SUMMARY modtest102 7/10 UI surfaces OK on 1.5.0 
+[2026-09-16 09:26:56]	[EmigTest] FAILED: ["dashboard window renders","lenses registered","banner pressure decorator"] 
+[2026-09-16 09:26:56]	[EmigTest] SHOT ui150 
+[2026-09-16 09:27:16]	[EmigTest] DONE modtest102 finished 

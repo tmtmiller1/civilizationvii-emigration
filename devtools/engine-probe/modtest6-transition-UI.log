@@ -1,0 +1,103 @@
+[2026-09-13 04:24:55]	[EmigProbe] shell attached 
+[2026-09-13 04:24:56]	[EmigProbe] shell query complete 
+[2026-09-13 04:24:56]	[EmigProbe] shell found AugustusAnt136.Civ7Save turn 136 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-13 04:24:56]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 04:25:14]	[EmigTest] modtest6 attached 
+[2026-09-13 04:25:27]	[EmigTest] START turn=136 age=AGE_ANTIQUITY stored=null dataLoaded=true 
+[2026-09-13 04:25:33]	[EmigTest] P1 place London owner=0 emptyPlots=3 -> {"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","plot":2875} standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_ROME_A"] 
+[2026-09-13 04:25:39]	[EmigTest] P1 place St. Petersburg owner=2 emptyPlots=0 -> {"type":"IMPROVEMENT_EMIG_ENCLAVE_GREECE_B","plot":5064,"replaced":"IMPROVEMENT_FARM"} standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] 
+[2026-09-13 04:25:39]	[EmigTest] P1 stored=true readback=[{"city":"London","placed":{"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","plot":2875}},{"city":"St. Petersburg","placed":{"type":"IMPROVEMENT_EMIG_ENCLAVE_GREECE_B","plot":5064,"replaced":"IMPROVEMENT_FARM"}}] 
+[2026-09-13 04:25:42]	[EmigTest] SHOT enclave-marker 
+[2026-09-13 04:25:52]	[EmigTest] P1 cap Paris budget=1 kind=building took={"ok":true,"mode":"building","type":"BUILDING_HARBOR"} kindNow=null 
+[2026-09-13 04:25:52]	[EmigTest] P1 AUTOPLAY 30 turns toward the age end 
+[2026-09-13 04:26:05]	[EmigTest] EVENT AgeProgressionChanged turn=137 age=AGE_ANTIQUITY 
+[2026-09-13 04:26:05]	[EmigTest] P1 cap turn 137 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:26:19]	[EmigTest] EVENT AgeProgressionChanged turn=138 age=AGE_ANTIQUITY 
+[2026-09-13 04:26:19]	[EmigTest] P1 cap turn 138 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:26:30]	[EmigTest] EVENT AgeProgressionChanged turn=139 age=AGE_ANTIQUITY 
+[2026-09-13 04:26:30]	[EmigTest] P1 cap turn 139 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:26:42]	[EmigTest] EVENT AgeProgressionChanged turn=140 age=AGE_ANTIQUITY 
+[2026-09-13 04:26:42]	[EmigTest] P1 cap turn 140 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:26:53]	[EmigTest] EVENT AgeProgressionChanged turn=141 age=AGE_ANTIQUITY 
+[2026-09-13 04:26:53]	[EmigTest] P1 cap turn 141 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:27:05]	[EmigTest] EVENT AgeProgressionChanged turn=142 age=AGE_ANTIQUITY 
+[2026-09-13 04:27:05]	[EmigTest] P1 cap turn 142 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:27:17]	[EmigTest] EVENT AgeProgressionChanged turn=143 age=AGE_ANTIQUITY 
+[2026-09-13 04:27:17]	[EmigTest] P1 cap turn 143 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:27:31]	[EmigTest] EVENT AgeProgressionChanged turn=144 age=AGE_ANTIQUITY 
+[2026-09-13 04:27:31]	[EmigTest] P1 cap turn 144 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:27:47]	[EmigTest] EVENT AgeProgressionChanged turn=145 age=AGE_ANTIQUITY 
+[2026-09-13 04:27:47]	[EmigTest] P1 cap turn 145 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:28:03]	[EmigTest] EVENT AgeProgressionChanged turn=146 age=AGE_ANTIQUITY 
+[2026-09-13 04:28:03]	[EmigTest] P1 cap turn 146 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:28:18]	[EmigTest] EVENT AgeProgressionChanged turn=147 age=AGE_ANTIQUITY 
+[2026-09-13 04:28:18]	[EmigTest] P1 cap turn 147 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:28:34]	[EmigTest] EVENT AgeProgressionChanged turn=148 age=AGE_ANTIQUITY 
+[2026-09-13 04:28:34]	[EmigTest] P1 cap turn 148 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:28:50]	[EmigTest] EVENT AgeProgressionChanged turn=149 age=AGE_ANTIQUITY 
+[2026-09-13 04:28:50]	[EmigTest] P1 cap turn 149 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:29:05]	[EmigTest] EVENT AgeProgressionChanged turn=150 age=AGE_ANTIQUITY 
+[2026-09-13 04:29:05]	[EmigTest] P1 cap turn 150 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:29:22]	[EmigTest] EVENT AgeProgressionChanged turn=151 age=AGE_ANTIQUITY 
+[2026-09-13 04:29:22]	[EmigTest] P1 cap turn 151 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:29:37]	[EmigTest] EVENT AgeProgressionChanged turn=152 age=AGE_ANTIQUITY 
+[2026-09-13 04:29:37]	[EmigTest] P1 cap turn 152 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:29:54]	[EmigTest] EVENT AgeProgressionChanged turn=153 age=AGE_ANTIQUITY 
+[2026-09-13 04:29:54]	[EmigTest] P1 cap turn 153 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:30:09]	[EmigTest] EVENT AgeProgressionChanged turn=154 age=AGE_ANTIQUITY 
+[2026-09-13 04:30:09]	[EmigTest] P1 cap turn 154 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:30:32]	[EmigTest] EVENT AgeProgressionChanged turn=155 age=AGE_ANTIQUITY 
+[2026-09-13 04:30:32]	[EmigTest] P1 cap turn 155 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:30:47]	[EmigTest] EVENT AgeProgressionChanged turn=156 age=AGE_ANTIQUITY 
+[2026-09-13 04:30:47]	[EmigTest] P1 cap turn 156 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:31:08]	[EmigTest] EVENT AgeProgressionChanged turn=157 age=AGE_ANTIQUITY 
+[2026-09-13 04:31:08]	[EmigTest] P1 cap turn 157 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:31:22]	[EmigTest] EVENT AgeProgressionChanged turn=158 age=AGE_ANTIQUITY 
+[2026-09-13 04:31:22]	[EmigTest] P1 cap turn 158 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:31:37]	[EmigTest] EVENT AgeProgressionChanged turn=159 age=AGE_ANTIQUITY 
+[2026-09-13 04:31:37]	[EmigTest] P1 cap turn 159 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:31:52]	[EmigTest] EVENT AgeProgressionChanged turn=160 age=AGE_ANTIQUITY 
+[2026-09-13 04:31:52]	[EmigTest] P1 cap turn 160 urbanLossCapPct=0.01 maxPerTurn=5 budget=0 kind=null 
+[2026-09-13 04:31:52]	[EmigTest] EVENT GameAgeEnded turn=160 
+[2026-09-13 04:32:18]	[EmigTest] modtest6 attached 
+[2026-09-13 04:32:23]	[EmigTest] EVENT AgeProgressionChanged turn=1 age=AGE_EXPLORATION 
+[2026-09-13 04:32:25]	[EmigTest] TURN activated n=1 turn=1 age=AGE_EXPLORATION ALIVE 
+[2026-09-13 04:32:31]	[EmigTest] START turn=1 age=AGE_EXPLORATION stored=[{"city":"London","placed":{"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","plot":2875}},{"city":"St. Petersburg","placed":{"type":"IMPROVEMENT_EMIG_ENCLAVE_GREECE_B","plot":5064,"replaced":"IMPROVEMENT_FARM"}}] dataLoaded=true 
+[2026-09-13 04:32:31]	[EmigTest] P2 after transition London IMPROVEMENT_EMIG_ENCLAVE_ROME_A plot 2875 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_ROME_A"] 
+[2026-09-13 04:32:31]	[EmigTest] P2 after transition St. Petersburg IMPROVEMENT_EMIG_ENCLAVE_GREECE_B plot 5064 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] 
+[2026-09-13 04:32:35]	[EmigTest] EVENT AgeProgressionChanged turn=2 age=AGE_EXPLORATION 
+[2026-09-13 04:32:35]	[EmigTest] P2 turn 2 London IMPROVEMENT_EMIG_ENCLAVE_ROME_A plot 2875 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_ROME_A"] 
+[2026-09-13 04:32:35]	[EmigTest] P2 turn 2 St. Petersburg IMPROVEMENT_EMIG_ENCLAVE_GREECE_B plot 5064 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] 
+[2026-09-13 04:32:35]	[EmigTest] TURN activated n=2 turn=2 age=AGE_EXPLORATION ALIVE 
+[2026-09-13 04:32:37]	[EmigTest] P2 turn1 place London owner=0 emptyPlots=1 -> {"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_B","plot":3161} standing=false plotNow=[] 
+[2026-09-13 04:32:37]	[EmigTest] P2 waiting for turn >= 2 to try again 
+[2026-09-13 04:32:44]	[EmigTest] P2 late place London owner=0 emptyPlots=1 -> {"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_B","plot":3161} standing=false plotNow=[] 
+[2026-09-13 04:32:48]	[EmigTest] EVENT AgeProgressionChanged turn=3 age=AGE_EXPLORATION 
+[2026-09-13 04:32:48]	[EmigTest] P2 turn 3 London IMPROVEMENT_EMIG_ENCLAVE_ROME_A plot 2875 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_ROME_A"] 
+[2026-09-13 04:32:48]	[EmigTest] P2 turn 3 St. Petersburg IMPROVEMENT_EMIG_ENCLAVE_GREECE_B plot 5064 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] 
+[2026-09-13 04:32:50]	[EmigTest] P2 late place St. Petersburg owner=2 emptyPlots=0 -> {"type":"IMPROVEMENT_EMIG_ENCLAVE_GREECE_A","plot":5444,"replaced":"IMPROVEMENT_WOODCUTTER"} standing=false plotNow=["IMPROVEMENT_WOODCUTTER"] 
+[2026-09-13 04:32:50]	[EmigTest] P2 check London IMPROVEMENT_EMIG_ENCLAVE_ROME_A plot 2875 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_ROME_A"] 
+[2026-09-13 04:32:50]	[EmigTest] P2 check St. Petersburg IMPROVEMENT_EMIG_ENCLAVE_GREECE_B plot 5064 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] 
+[2026-09-13 04:32:50]	[EmigTest] P2 AUTOPLAY 6 more turns 
+[2026-09-13 04:32:59]	[EmigTest] EVENT AgeProgressionChanged turn=4 age=AGE_EXPLORATION 
+[2026-09-13 04:32:59]	[EmigTest] P2 turn 4 London IMPROVEMENT_EMIG_ENCLAVE_ROME_A plot 2875 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_ROME_A"] 
+[2026-09-13 04:32:59]	[EmigTest] P2 turn 4 St. Petersburg IMPROVEMENT_EMIG_ENCLAVE_GREECE_B plot 5064 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] 
+[2026-09-13 04:33:06]	[EmigTest] EVENT AgeProgressionChanged turn=5 age=AGE_EXPLORATION 
+[2026-09-13 04:33:06]	[EmigTest] P2 turn 5 London IMPROVEMENT_EMIG_ENCLAVE_ROME_A plot 2875 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_ROME_A"] 
+[2026-09-13 04:33:06]	[EmigTest] P2 turn 5 St. Petersburg IMPROVEMENT_EMIG_ENCLAVE_GREECE_B plot 5064 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] 
+[2026-09-13 04:33:19]	[EmigTest] EVENT AgeProgressionChanged turn=6 age=AGE_EXPLORATION 
+[2026-09-13 04:33:19]	[EmigTest] P2 turn 6 London IMPROVEMENT_EMIG_ENCLAVE_ROME_A plot 2875 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_ROME_A"] 
+[2026-09-13 04:33:19]	[EmigTest] P2 turn 6 St. Petersburg IMPROVEMENT_EMIG_ENCLAVE_GREECE_B plot 5064 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] 
+[2026-09-13 04:33:35]	[EmigTest] EVENT AgeProgressionChanged turn=7 age=AGE_EXPLORATION 
+[2026-09-13 04:33:35]	[EmigTest] P2 turn 7 London IMPROVEMENT_EMIG_ENCLAVE_ROME_A plot 2875 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_ROME_A"] 
+[2026-09-13 04:33:35]	[EmigTest] P2 turn 7 St. Petersburg IMPROVEMENT_EMIG_ENCLAVE_GREECE_B plot 5064 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] 
+[2026-09-13 04:33:46]	[EmigTest] EVENT AgeProgressionChanged turn=8 age=AGE_EXPLORATION 
+[2026-09-13 04:33:46]	[EmigTest] P2 turn 8 London IMPROVEMENT_EMIG_ENCLAVE_ROME_A plot 2875 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_ROME_A"] 
+[2026-09-13 04:33:46]	[EmigTest] P2 turn 8 St. Petersburg IMPROVEMENT_EMIG_ENCLAVE_GREECE_B plot 5064 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] 
+[2026-09-13 04:33:53]	[EmigTest] EVENT AgeProgressionChanged turn=9 age=AGE_EXPLORATION 
+[2026-09-13 04:33:53]	[EmigTest] P2 turn 9 London IMPROVEMENT_EMIG_ENCLAVE_ROME_A plot 2875 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_ROME_A"] 
+[2026-09-13 04:33:53]	[EmigTest] P2 turn 9 St. Petersburg IMPROVEMENT_EMIG_ENCLAVE_GREECE_B plot 5064 standing=true plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] 
+[2026-09-13 04:33:53]	[EmigTest] TURN activated n=3 turn=9 age=AGE_EXPLORATION ALIVE 
+[2026-09-13 04:33:56]	[EmigTest] P2 arrival London arriveRural=true pending=1 
+[2026-09-13 04:33:58]	[EmigTest] SHOT arrival-prompt 
+[2026-09-13 04:34:08]	[EmigTest] DONE modtest6 finished 

@@ -1,0 +1,15 @@
+[2026-09-14 05:24:19]	[EmigProbe] shell attached 
+[2026-09-14 05:24:20]	[EmigProbe] shell query complete 
+[2026-09-14 05:24:20]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-14 05:24:20]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-14 05:24:39]	[EmigTest] modtest19 attached 
+[2026-09-14 05:24:56]	[EmigTest] START turn=66 local=0 option=true cueFraction=0.66 bar=30 
+[2026-09-14 05:24:56]	[EmigTest] B1 decorated banners=89 visible=0 
+[2026-09-14 05:24:56]	[EmigTest] B2 set London key=0:65536 pressure=27.0 (0.9 of bar) 
+[2026-09-14 05:24:56]	[EmigTest] B2 set Washington, D.C. key=0:1376276 pressure=21.6 (0.72 of bar) 
+[2026-09-14 05:24:56]	[EmigTest] B2 set Lāhainā key=0:131073 pressure=9.0 (0.3 of bar) 
+[2026-09-14 05:24:58]	[EmigTest] B2 refresh visible=10 bars=[{"city":"0;65536;1","hidden":false,"width":"90%","color":"rgba(95, 174, 107, 1)"},{"city":"0;851980;1","hidden":false,"width":"100%","color":"rgba(201, 162, 75, 1)"},{"city":"0;1114128;1","hidden":false,"width":"100%","color":"rgba(201, 162, 75, 1)"},{"city":"0;1245202;1","hidden":false,"width":"100%","color":"rgba(201, 162, 75, 1)"},{"city":"0;1310739;1","hidden":false,"width":"100%","color":"rgba(95, 174, 107, 1)"},{"city":"0;1376276;1","hidden":false,"width":"72%","color":"rgba(95, 174, 107, 1)"},{"city":"0;1572887;1","hidden":false,"width":"100%","color":"rgba(95, 174, 107, 1)"},{"city":"0;1638424;1","hidden":false,"width":"100%","color":"rgba(201, 162, 75, 1)"},{"city":"0;1769498;1","hidden":false,"width":"100%","color":"rgba(95, 174, 107, 1)"},{"city":"0;1900572;1","hidden":false,"width":"100%","color":"rgba(201, 162, 75, 1)"}] hiddenCount=79 
+[2026-09-14 05:25:02]	[EmigTest] B3 camera on London {"x":92,"y":32} 
+[2026-09-14 05:25:02]	[EmigTest] SHOT banner-bar-near 
+[2026-09-14 05:25:16]	[EmigTest] SHOT banner-bar-mid 
+[2026-09-14 05:25:26]	[EmigTest] DONE modtest19 finished 

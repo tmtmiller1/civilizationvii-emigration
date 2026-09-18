@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PROBE-ONLY. Never shipped.
+
+     Run 3 (modtest98c) pulled plague stage 1 down to 42% and deleted the religion crisis, then played
+     AugustusExp66 from 41.3% to 56.3% age progression. The crisis stage never left -1 and no city was ever
+     infected. Two explanations survive that result and they need separating:
+
+       (a) The save had already settled on the religion crisis, and deleting it left the manager with nothing
+           to start, so no stage ever began.
+       (b) The crisis schedule is read when the game is created, so editing AgeCrisisStages cannot move the
+           trigger for a save that already exists, whichever crisis it holds.
+
+     So this override deletes NOTHING and lowers stage 1 for BOTH crises to 42%. Now the outcomes are
+     distinguishable:
+       - a stage starts  => the trigger override does reach a loaded save, and (a) was the story. Whether any
+         city is infected then tells us which crisis this save is running.
+       - the stage stays -1 => (b): an existing save cannot be pushed into a crisis from data at all, and the
+         plague must be reached from a NEW game instead of this one.
+     Either way the run answers the question rather than leaving it open. -->
+<Database>
+    <AgeCrisisStages>
+        <Update>
+            <Where AgeCrisisEventType="EXPLORATION_CRISIS_PLAGUE" Stage="1"/>
+            <Set AgeProgressTriggerPercent="42" AgeProgressEndPercent="50"/>
+        </Update>
+        <Update>
+            <Where AgeCrisisEventType="EXPLORATION_CRISIS_RELIGION" Stage="1"/>
+            <Set AgeProgressTriggerPercent="42" AgeProgressEndPercent="50"/>
+        </Update>
+        <Update>
+            <Where AgeCrisisEventType="EXPLORATION_CRISIS_PLAGUE" Stage="2"/>
+            <Set AgeProgressTriggerPercent="50" AgeProgressEndPercent="60"/>
+        </Update>
+        <Update>
+            <Where AgeCrisisEventType="EXPLORATION_CRISIS_RELIGION" Stage="2"/>
+            <Set AgeProgressTriggerPercent="50" AgeProgressEndPercent="60"/>
+        </Update>
+    </AgeCrisisStages>
+</Database>

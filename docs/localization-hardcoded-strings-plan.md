@@ -89,9 +89,13 @@ currently empty; the localization work lands there under `## [2.1.0]`.
   Every new key = **1 `<Row>` in en_us + 11 `<Replace>` rows** (one per locale, correct `Language=`).
 - **Namespace invariant (enforced):** every en_us tag must contain `EMIG`/`EMIGRATION` or `DEMOGRAPHICS`
   (`tests/validate-package.mjs:182`).
-- **Do NOT run the `i18n/` pipeline.** `scripts/i18n_apply.mjs` regenerates `text/**` from the
-  **stale** `i18n/*.json` (936 keys / pl_pl 804) and would clobber hand-authored translations. Edit
-  `text/**/ModText.xml` by hand only. `release.sh` already excludes `i18n/` and never regenerates.
+- **Pipeline order (2026-09-17):** `ingest` → `extract` → `apply`. The maps had drifted far behind the shipped
+  text again: one `i18n_extract && i18n_apply` would have replaced **6,018** translations across the eleven
+  locales with their English fallbacks, about a third of every file. `scripts/i18n_ingest.mjs` folds
+  hand-edited locale XML back into `i18n/<locale>.json` first, `scripts/i18n_apply.mjs` now REFUSES to run
+  when a translation exists only in the XML (`--force` overrides), and `npm run test:i18n-pipeline` fails
+  when the maps and the shipped text disagree. Editing `text/**/ModText.xml` by hand is fine again as long as
+  ingest runs afterwards. `release.sh` still excludes `i18n/` and never regenerates.
 - **Parity gate:** `tests/i18n.mjs` (`npm run test:i18n`) asserts every en_us key exists in all 11
   locale files — this catches any locale you forget. `tests/validate-package.mjs` checks XML
   well-formedness + namespace + data-XML key references.

@@ -1,0 +1,32 @@
+[2026-09-12 19:53:45]	[EmigProbe] shell attached 
+[2026-09-12 19:53:46]	[EmigProbe] shell query complete 
+[2026-09-12 19:53:46]	[EmigProbe] shell found AugustusAnt136.Civ7Save turn 136 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-12 19:53:46]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-12 19:54:04]	[EmigProbe] game attached (run 7) 
+[2026-09-12 19:54:09]	[EmigProbe] LOAD GameStarted 
+[2026-09-12 19:54:17]	[EmigProbe] TARGETS L=London F=St. Petersburg owner 2 testType idx=109 
+[2026-09-12 19:54:21]	[EmigProbe] E2 spawned migrant for owner 2 at {"x":69,"y":53} units 16 -> 17 migrant={"id":{"owner":2,"id":2686989,"type":26},"type":"UNIT_MIGRANT","x":69,"y":53} city={"name":"St. Petersburg","owner":2,"pop":25,"rural":8,"urban":15,"specialists":2,"pending":0,"net":{"FOOD":27.5,"PRODUCTION":66,"GOLD":12.4,"SCIENCE":109.2,"CULTURE":96.8,"HAPPINESS":16},"improvements":8,"buildings":19} 
+[2026-09-12 19:54:25]	[EmigProbe] D2 destroyed foreign BUILDING_LIBRARY: pop 25->24 urban 15->14 buildings 19->18 plotNow=["BUILDING_BRICKYARD","BUILDING_ANCIENT_WALLS"] 
+[2026-09-12 19:54:29]	[EmigProbe] G2 foreign specialist St. Petersburg sender=2 plot=5350 specialists 2 -> 2 pop 24 -> 24 
+[2026-09-12 19:54:29]	[EmigProbe] F2 candidate spots [{"x":71,"y":50,"r":4},{"x":73,"y":56,"r":4},{"x":70,"y":49,"r":5},{"x":71,"y":49,"r":5}] 
+[2026-09-12 19:54:34]	[EmigProbe] F2 town attempt at {"x":71,"y":50,"r":4} cities 5 -> 5 cityAtSpot=null 
+[2026-09-12 19:54:39]	[EmigProbe] F2 town attempt at {"x":73,"y":56,"r":4} cities 5 -> 6 cityAtSpot={"owner":2} 
+[2026-09-12 19:54:44]	[EmigProbe] F2 control: local town at {"x":89,"y":29,"r":4} cities 6 -> 7 
+[2026-09-12 19:54:52]	[EmigProbe] H CREATE custom index+Parent -> true plotNow=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] pop 24->24 culture 38.5->41.8 gold 25->27 
+[2026-09-12 19:54:52]	[EmigProbe] H VERDICT custom non-buildable improvement PLACED via 'index+Parent' 
+[2026-09-12 19:54:52]	[EmigProbe] TURN1 actions done; ending turns 
+[2026-09-12 19:55:12]	[EmigProbe] TURN activated n=2 turn=137 ALIVE 
+[2026-09-12 19:55:15]	[EmigProbe] WATCH n=2 turn=137 F={"pop":24,"rural":8,"improvements":8} foreignMigrantAlive=true migrantAt={"x":69,"y":53} foreignMigrants=1 testPlot=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] L={"pop":24,"culture":42.9,"gold":31} 
+[2026-09-12 19:55:33]	[EmigProbe] TURN activated n=3 turn=138 ALIVE 
+[2026-09-12 19:55:36]	[EmigProbe] WATCH n=3 turn=138 F={"pop":24,"rural":8,"improvements":8} foreignMigrantAlive=false migrantAt=undefined foreignMigrants=0 testPlot=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] L={"pop":24,"culture":42.9,"gold":31} 
+[2026-09-12 19:55:55]	[EmigProbe] TURN activated n=4 turn=139 ALIVE 
+[2026-09-12 19:55:58]	[EmigProbe] WATCH n=4 turn=139 F={"pop":24,"rural":8,"improvements":8} foreignMigrantAlive=false migrantAt=undefined foreignMigrants=0 testPlot=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] L={"pop":24,"culture":45.1,"gold":29} 
+[2026-09-12 19:56:15]	[EmigProbe] TURN activated n=5 turn=140 ALIVE 
+[2026-09-12 19:56:18]	[EmigProbe] WATCH n=5 turn=140 F={"pop":25,"rural":8,"improvements":8} foreignMigrantAlive=false migrantAt=undefined foreignMigrants=0 testPlot=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] L={"pop":25,"culture":45.1,"gold":27} 
+[2026-09-12 19:56:36]	[EmigProbe] TURN activated n=6 turn=141 ALIVE 
+[2026-09-12 19:56:39]	[EmigProbe] WATCH n=6 turn=141 F={"pop":25,"rural":8,"improvements":8} foreignMigrantAlive=false migrantAt=undefined foreignMigrants=0 testPlot=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] L={"pop":25,"culture":45.1,"gold":27} 
+[2026-09-12 19:56:57]	[EmigProbe] TURN activated n=7 turn=142 ALIVE 
+[2026-09-12 19:57:00]	[EmigProbe] WATCH n=7 turn=142 F={"pop":25,"rural":8,"improvements":8} foreignMigrantAlive=false migrantAt=undefined foreignMigrants=0 testPlot=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] L={"pop":26,"culture":55,"gold":25} 
+[2026-09-12 19:57:18]	[EmigProbe] TURN activated n=8 turn=143 ALIVE 
+[2026-09-12 19:57:21]	[EmigProbe] WATCH n=8 turn=143 F={"pop":26,"rural":8,"improvements":8} foreignMigrantAlive=false migrantAt=undefined foreignMigrants=0 testPlot=["IMPROVEMENT_EMIG_TEST_ENCLAVE"] L={"pop":27,"culture":55,"gold":25} 
+[2026-09-12 19:57:21]	[EmigProbe] DONE run 7 finished after 7 AI turns with the custom improvement in play 

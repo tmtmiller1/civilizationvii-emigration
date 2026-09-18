@@ -133,4 +133,39 @@ const rec = (civ, optionId) => ({
   assert.ok(!normalized.candidacy.bad, "an invalid candidacy is dropped on normalization");
 }
 
+// ── reader snapshot: reloads per turn, never clobbers the writer's copy ──────
+// The ethnicity lens is its own V8 isolate and never writes quarters. `quarterAt` holds the writer's
+// live copy and is loaded exactly once, so a reader that used it would freeze whatever the store held on
+// its first paint — in a fresh session, nothing — and no enclave would ever reach the lens.
+{
+  const { quarterSnapshotAt } = state;
+  globalThis.Game.turn = 100;
+
+  // Whatever the writer has already put is also in the store once saved, so snapshot and live agree.
+  putQuarter("7,7", rec(4, "embrace"));
+  saveQuarters();
+  assert.equal(quarterSnapshotAt("7,7").civ, 4, "the snapshot sees a persisted record");
+  assert.equal(quarterSnapshotAt("nope"), null, "an absent tile snapshots as null");
+  assert.equal(quarterSnapshotAt(""), null, "an empty key snapshots as null");
+
+  // A record that appears in the STORE from another isolate mid-session.
+  const blob = JSON.parse(KV.EmigrationQuarters_v1);
+  blob.data.tiles["8,8"] = { civ: 5, owner: 0, optionId: "ignore", turn: 100, recognized: true,
+    placed: { type: "IMPROVEMENT_EMIG_ENCLAVE_HAN", plot: 42 } };
+  KV.EmigrationQuarters_v1 = JSON.stringify(blob);
+
+  assert.equal(quarterSnapshotAt("8,8"), null, "within a turn the snapshot is cached (no re-parse churn)");
+  globalThis.Game.turn = 101;
+  const seen = quarterSnapshotAt("8,8");
+  assert.ok(seen && seen.civ === 5, "a NEW turn re-reads the store, so a freshly formed enclave appears");
+  assert.equal(seen.placed.plot, 42, "and its placed plot survives the snapshot's normalization");
+
+  // The reader's reload must not disturb the writer's uncommitted in-pass mutations.
+  putQuarter("6,6", rec(9, "tax")); // not saved
+  globalThis.Game.turn = 102;
+  quarterSnapshotAt("8,8"); // forces a snapshot reload
+  assert.ok(quarterAt("6,6"), "the writer's unsaved in-pass write survives a reader reload");
+  assert.equal(quarterAt("8,8"), null, "and the reader's reload does not leak into the writer's copy");
+}
+
 console.log("quarter-state harness passed");

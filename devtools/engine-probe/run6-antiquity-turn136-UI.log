@@ -1,0 +1,26 @@
+[2026-09-12 19:46:06]	[EmigProbe] shell attached 
+[2026-09-12 19:46:07]	[EmigProbe] shell query complete 
+[2026-09-12 19:46:08]	[EmigProbe] shell found AugustusAnt136.Civ7Save turn 136 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-12 19:46:08]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-12 19:46:26]	[EmigProbe] game attached (run 6) 
+[2026-09-12 19:46:31]	[EmigProbe] LOAD GameStarted 
+[2026-09-12 19:46:39]	[EmigProbe] TARGETS L=London F=St. Petersburg owner 2 
+[2026-09-12 19:46:39]	[EmigProbe] A target {"plot":2970,"type":"IMPROVEMENT_FISHING_BOAT_RESOURCE","dist":3} 
+[2026-09-12 19:46:43]	[EmigProbe] A after destroy pop=23 improvements=8 plotNow=[] 
+[2026-09-12 19:46:47]	[EmigProbe] A CREATE index+Parent -> true plotNow=["IMPROVEMENT_FISHING_BOAT_RESOURCE"] pop=24 rural=9 improvements=9 food=29 prod=53 
+[2026-09-12 19:46:47]	[EmigProbe] A VERDICT improvement re-created with variant 'index+Parent'; before={"FOOD":29,"PRODUCTION":53,"GOLD":25,"SCIENCE":45.1,"CULTURE":38.5,"HAPPINESS":37} after={"FOOD":29,"PRODUCTION":53,"GOLD":25,"SCIENCE":45.1,"CULTURE":38.5,"HAPPINESS":37} 
+[2026-09-12 19:46:47]	[EmigProbe] B target {"plot":5448,"type":"IMPROVEMENT_CAMP"} 
+[2026-09-12 19:46:51]	[EmigProbe] B after destroy pop=24 plotNow=[] 
+[2026-09-12 19:46:55]	[EmigProbe] B CREATE index+Parent -> true plotNow=["IMPROVEMENT_CAMP"] pop=25 rural=8 improvements=8 
+[2026-09-12 19:46:55]	[EmigProbe] C target district {"plot":3068,"loc":{"x":92,"y":31},"types":["BUILDING_MONUMENT"]} type=BUILDING_GRANARY idx=42 
+[2026-09-12 19:46:59]	[EmigProbe] C CREATE string+Parent -> true plotNow=["BUILDING_MONUMENT","BUILDING_GRANARY"] pop=25 urban=14 buildings=14 net={"FOOD":35,"PRODUCTION":54,"GOLD":25,"SCIENCE":47.3,"CULTURE":40.7,"HAPPINESS":38} 
+[2026-09-12 19:46:59]	[EmigProbe] C VERDICT building created with 'string+Parent'; urban 13 -> 14 before={"FOOD":29,"PRODUCTION":53,"GOLD":25,"SCIENCE":45.1,"CULTURE":38.5,"HAPPINESS":37} 
+[2026-09-12 19:46:59]	[EmigProbe] D target {"type":"BUILDING_GRANARY","loc":{"x":92,"y":31}} 
+[2026-09-12 19:47:03]	[EmigProbe] D VERDICT destroyed BUILDING_GRANARY: pop 25->24 urban 14->13 rural 9->9 specialists 2->2 buildings 14->13 plotNow=["BUILDING_MONUMENT"] net={"FOOD":30,"PRODUCTION":54,"GOLD":25,"SCIENCE":45.1,"CULTURE":39.6,"HAPPINESS":38} 
+[2026-09-12 19:47:07]	[EmigProbe] E foreign unit at {"x":69,"y":53} -> true units 16 -> 17 plotUnits=[{"owner":2,"type":"UNIT_MIGRANT"}] 
+[2026-09-12 19:47:07]	[EmigProbe] F foreign spot {"x":71,"y":50} 
+[2026-09-12 19:47:12]	[EmigProbe] F foreign town -> true cities 5 -> 5 cityAtSpot=null 
+[2026-09-12 19:47:12]	[EmigProbe] F local spot {"x":89,"y":29} 
+[2026-09-12 19:47:17]	[EmigProbe] F local town -> true cities 6 -> 7 cityAtSpot={"owner":0} 
+[2026-09-12 19:47:21]	[EmigProbe] G ASSIGN_WORKER -1 on London plot=3164 specialists 2 -> 1 pop 24 -> 24 urban 13 -> 13 pending 0 
+[2026-09-12 19:47:21]	[EmigProbe] DONE run 6 finished; leaving the game running 

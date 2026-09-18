@@ -1,0 +1,66 @@
+[2026-09-12 20:49:14]	[EmigTest] modtest2 attached 
+[2026-09-12 20:49:27]	[EmigTest] CONFIG urban=true floor=1 place=true enclaveDataLoaded=true 
+[2026-09-12 20:49:27]	[EmigTest] TARGETS L=London specialists=2 urban=13 F=St. Petersburg urban=15 
+[2026-09-12 20:49:27]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_1
+[2026-09-12 20:49:27]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_1
+[2026-09-12 20:49:33]	[EmigTest] E1 placed={"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","plot":2875} plotNow=["IMPROVEMENT_EMIG_ENCLAVE_ROME_A"] standing=true before={"name":"London","pop":24,"rural":9,"urban":13,"specialists":2,"pending":0,"buildings":13,"improvements":9,"culture":38.5,"gold":25} after={"name":"London","pop":25,"rural":10,"urban":13,"specialists":2,"pending":0,"buildings":13,"improvements":10,"culture":38.5,"gold":25} 
+[2026-09-12 20:49:33]	[EmigTest] E1 tooltip name=Roman Enclave icon="civ_sym_rome" 
+[2026-09-12 20:49:33]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_2
+[2026-09-12 20:49:33]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_2
+[2026-09-12 20:49:38]	[EmigTest] E1b Leeds placed={"type":"IMPROVEMENT_EMIG_ENCLAVE_GREECE_B","plot":2396} plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"] standing=true plots=28 before={"name":"Leeds","pop":17,"rural":5,"urban":10,"specialists":2,"pending":0,"buildings":11,"improvements":5,"culture":9,"gold":23} after={"name":"Leeds","pop":18,"rural":6,"urban":10,"specialists":2,"pending":0,"buildings":11,"improvements":6,"culture":11,"gold":23} 
+[2026-09-12 20:49:38]	[EmigTest] SELFTEST Departures abandon a tile [PASS] Ready: a departure from London would abandon its outlying emig_enclave_rome_a (plot 2875), removing that tile's yields with the person, and the losing civilization pays 10 gold. 
+[2026-09-12 20:49:38]	[EmigTest] SELFTEST Crisis takes the urban core [PASS] On (crisis causes only, after the rural tiles): London would give up a specialist first, then its harbor (plot 3166). Urban floor 1, at most 1 urban point per settlement per turn. 
+[2026-09-12 20:49:38]	[EmigTest] SELFTEST Enclave tiles [PASS] Data loaded: recognizing an enclave places its improvement on one of the city's tiles (nearest empty flat or hill plot, else the outlying farmstead), with its benefit in the city's own yields and its symbol on the map. 
+[2026-09-12 20:49:38]	[EmigTest] ACTIONS done; ending turns (5 Autoplay turns for the crash watch) 
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:49]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:51]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:51]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:52]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:52]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:52]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:53]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:49:57]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:01]	[EmigTest] TURN activated n=2 turn=137 ALIVE 
+[2026-09-12 20:50:12]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:13]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:13]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:13]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:14]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:14]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:17]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:17]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:17]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:17]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:17]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:27]	[EmigTest] TURN activated n=3 turn=138 ALIVE 
+[2026-09-12 20:50:39]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:39]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:39]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:39]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:39]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:40]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:40]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:40]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:41]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:43]	Unable to parse declaration: border-top-color - ENCLAVEMARK_repaint_ConstructibleAddedToMap_painted_0
+[2026-09-12 20:50:49]	[EmigTest] TURN activated n=4 turn=139 ALIVE 
+[2026-09-12 20:50:52]	[EmigTest] DONE modtest2 finished 

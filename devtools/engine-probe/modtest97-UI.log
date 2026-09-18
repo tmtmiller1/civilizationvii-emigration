@@ -1,0 +1,19 @@
+[2026-09-16 06:37:46]	[EmigProbe] shell attached 
+[2026-09-16 06:37:46]	[EmigProbe] shell query complete 
+[2026-09-16 06:37:47]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-16 06:37:47]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-16 06:38:05]	[EmigTest] modtest97 attached 
+[2026-09-16 06:38:20]	[EmigTest] modtest97 start 
+[2026-09-16 06:38:20]	[EmigTest] AGE points=66/160 => 41.3% turn=66 countdownStarted=false isAgeOver=false 
+[2026-09-16 06:38:20]	[EmigTest] AGE stage-1 trigger is 70%; remaining to trigger = 28.8 percentage points 
+[2026-09-16 06:38:20]	[EmigTest] CRISIS numStages=4 stage=-1 elapsed=-1 
+[2026-09-16 06:38:20]	[EmigTest] CRISIS triggerPct(0)=undefined 
+[2026-09-16 06:38:20]	[EmigTest] CRISIS triggerPct(1)=undefined 
+[2026-09-16 06:38:20]	[EmigTest] CRISIS triggerPct(2)=undefined 
+[2026-09-16 06:38:20]	[EmigTest] CRISIS triggerPct(3)=undefined 
+[2026-09-16 06:38:20]	[EmigTest] CONFIG game keys=["gameGUIDHexString","observerIDs","possibleParticipatingPlayerIDs","participatingPlayerIDs","multiplayerPlayerIDs","hiddenPlayerIDs","inUsePlayerIDs","availablePlayerIDs","aiPlayerIDs","humanPlayerIDs","campaignSetupGUID","skipStartButton","enabledGameModesMetaString","requiredModsMetaString","requiredModCount","enableModsMetaString","enabledModCount","isSavingDisabled","firstAvailablePlayer","observerCount","hiddenPlayerCount","aiPlayerCount","humanPlayerCount","inUsePlayerCount","maxJoinablePlayerCount","availablePlayerCount","maxPlayers","ruleSetName","ruleSetHash","ruleSet","isWorldBuilderEditor","cloudTurnPlayer","gameState","isNoCivilizationUnlocks","isNoExtendedGame","isMementosEnabled","isLiveEventAccessEnabled","isNoTeams","victoryPlayerName","victoryName","victoryType","victoryTeam","isGameStarted","isGameReady","isPaused","pausePlayer","playersWantPause","gameMode","isMatchMaking","isPlayByCloud","isHotseat","isLocalMultiplayer","isInternetMultip
+[2026-09-16 06:38:20]	[EmigTest] CONFIG getValue(Crisis)=null (AgeCrisis)=null (CrisisType)=null 
+[2026-09-16 06:38:20]	[EmigTest] CRISIS event rows=[{"t":"EXPLORATION_CRISIS_RELIGION"},{"t":"EXPLORATION_CRISIS_PLAGUE"}] 
+[2026-09-16 06:38:20]	[EmigTest] CRISIS plague stages=["EXPLORATION_CRISIS_PLAGUE#1 trigger@70 end@80 minDur=5","EXPLORATION_CRISIS_PLAGUE#2 trigger@80 end@90 minDur=5","EXPLORATION_CRISIS_PLAGUE#3 trigger@90 end@100 minDur=5","EXPLORATION_CRISIS_PLAGUE#4 trigger@100 end@100 minDur=5"] 
+[2026-09-16 06:38:20]	[EmigTest] SUMMARY modtest97 done 
+[2026-09-16 06:38:20]	[EmigTest] DONE modtest97 finished 

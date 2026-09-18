@@ -22,7 +22,9 @@ import { bestDestination, migrationCause, crisisTypeReasons } from "/emigration/
 import { loadState, ownerPopulations } from "/emigration/ui/emigration-state.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
-import { civAdjective } from "/emigration/ui/emigration-naming.js";
+import { civAdjective, civType } from "/emigration/ui/emigration-naming.js";
+import { enclaveProgressForCity } from "/emigration/ui/emigration-diaspora.js";
+import { dwellProgress } from "/emigration/ui/emigration-quarter-state.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { refugeePoolTotal } from "/emigration/ui/emigration-refugee-pool.js";
 import { refugeeBurdenFor } from "/emigration/ui/emigration-refugee-burden.js";
@@ -37,6 +39,8 @@ import { refugeeBurdenFor } from "/emigration/ui/emigration-refugee-burden.js";
  * @property {number} rural Rural (mobile) population.
  * @property {string} [cause] Current migration cause (a MigrationCause value).
  * @property {string} causeLabel Display label for the cause.
+ * @property {string[]} stayReasons LOC name tags of wonders/buildings arguing for staying (top 5).
+ * @property {number} builtScore The settlement's built-environment score.
  * @property {{cause:string, label:string, share:number}[]|null} [causeMix] Concurrent-cause breakdown
  *   (top pressures by share) for the multi-cause readout, or null when off / single-cause.
  * @property {import("/emigration/ui/emigration-causes.js").Permanence} permanence Durability cue.
@@ -62,6 +66,7 @@ import { refugeeBurdenFor } from "/emigration/ui/emigration-refugee-burden.js";
  * @property {number} ownerOut Owner cumulative emigration (people).
  * @property {{total:number, parts:{name:string, share:number}[]}|null} [composition] Ethnic
  *   composition: per-origin display name + share, largest first (null when untracked).
+ * @property {EnclaveReadout|null} enclave The leading foreign community's progress toward an enclave, or null.
  * @property {number[]} netSeries Recent per-pass net migration for this city (oldest first), for the
  *   readout sparkline (Feature E). Empty when the option is off or there is no history.
  * @property {number} refugeePool Held refugee points currently assigned to this city.
@@ -182,6 +187,7 @@ function pickRefugee(o) {
  *          assim?:{load?:number,gold?:number,happiness?:number}|null,
  *          owner?:{net?:number,in?:number,out?:number}|null,
  *          composition?:{total:number, parts:{name:string, share:number}[]}|null,
+ *          enclave?:EnclaveReadout|null,
  *          netSeries?:number[], refugeePool?:number,
  *          refugeeBurden?:{gold?:number,happiness?:number}|null}} o Inputs.
  * @returns {CitySnapshot} The snapshot.
@@ -205,14 +211,62 @@ export function buildCitySnapshot(o) {
     atRisk: dist > 0,
     attritionRisk: attritionRisk(dist, !!o.bestDest),
     riskReasons: riskReasonsFor(dist, sig),
+    // What the settlement HOLDS that argues for staying, named. LOC tags straight from the database
+    // (emigration-built.js), resolved by the renderer, so the readout can say "Granary, Market,
+    // Academy" instead of only showing a number that went up.
+    stayReasons: Array.isArray(sig.builtNames) ? sig.builtNames.slice(0, 5) : [],
+    builtScore: num(sig.built),
     ...pickSource(o.source || null),
     ...pickDest(o.bestDest || null),
     ...pickAssim(o.assim || null),
     ...pickOwner(o.owner || null),
     ...pickRefugee(o),
+    ...pickCommunity(o)
+  };
+}
+
+/**
+ * The community fields: composition, enclave progress, and the net series.
+ * @param {{composition?:*, enclave?:*, netSeries?:number[]}} o Inputs.
+ * @returns {{composition:*, enclave:*, netSeries:number[]}} Fields.
+ */
+function pickCommunity(o) {
+  return {
     composition: o.composition || null,
+    enclave: o.enclave || null,
     netSeries: Array.isArray(o.netSeries) ? o.netSeries : []
   };
+}
+
+/**
+ * @typedef {Object} EnclaveReadout
+ * @property {string} civ The leading foreign community's adjective. @property {number} share Its share.
+ * @property {number} bar The live share bar. @property {number} stock Its standing points.
+ * @property {number} stockBar The live size bar (0 = off). @property {"none"|"foothold"|"established"} stage
+ * @property {{elapsed:number, needed:number}|null} dwell Settling progress once a candidacy exists.
+ */
+
+/**
+ * The leading foreign community's progress toward an enclave in a city, against the same live bars the
+ * mechanic uses (pacing-relaxed), or null when the city has no foreign minority. The dwell clock is read
+ * from the quarter candidacy on the city's plot; its turns are the monotonic turn the stats module keeps,
+ * read through the shared facade (no static import: that module imports this one).
+ * @param {*} city A live city object. @returns {EnclaveReadout|null} The progress.
+ */
+function resolveEnclave(city) {
+  try {
+    const p = enclaveProgressForCity(city);
+    if (!p) return null;
+    const D = /** @type {*} */ (globalThis).EmigrationData;
+    const turn = D && typeof D.monoTurn === "function" ? D.monoTurn() : 0;
+    const loc = city && city.location;
+    const key = loc && typeof loc.x === "number" ? loc.x + "," + loc.y : "";
+    const dwell = key ? dwellProgress(key, civType(p.civ), p.civ, turn, p.relax) : null;
+    return { civ: civAdjective(p.civ), share: p.share, bar: p.establishedShare, stock: p.stock,
+      stockBar: p.stockBar, stage: p.stage, dwell };
+  } catch (_) {
+    return null;
+  }
 }
 
 /**
@@ -303,12 +357,36 @@ function resolveCityName(city) {
  * @returns {*} The signal, or null.
  */
 function findSignal(ranked, cityId) {
-  for (const s of ranked) {
-    if (s.key === cityId || s.city === cityId) return s;
-    const lid = s.city && (s.city.localId ?? s.city.id);
-    if (lid != null && lid === cityId) return s;
-  }
+  for (const s of ranked) if (signalMatches(s, cityId)) return s;
   return null;
+}
+
+/**
+ * Whether a signal is the city `cityId` names: its stable key, its city object, its numeric localId/id, or the
+ * game's ComponentID ({owner, id, type}) that CitySelectionChanged carries (watched 2026-09-15, mod test 68).
+ * @param {*} s A city signal. @param {*} cityId The city identifier.
+ * @returns {boolean} True when they match.
+ */
+function signalMatches(s, cityId) {
+  if (s.key === cityId || s.city === cityId) return true;
+  if (!s.city) return false;
+  return isComponentId(cityId) ? componentIdMatches(s.city.id, cityId) : localIdMatches(s.city, cityId);
+}
+
+/** @param {*} v A value. @returns {boolean} True when it is an object carrying numeric owner and id. */
+function isComponentId(v) {
+  return !!v && typeof v === "object" && typeof v.owner === "number" && typeof v.id === "number";
+}
+
+/** @param {*} own The city's own id. @param {*} cid A ComponentID. @returns {boolean} True when they match. */
+function componentIdMatches(own, cid) {
+  return !!own && typeof own === "object" && own.owner === cid.owner && own.id === cid.id;
+}
+
+/** @param {*} city A city object. @param {*} cityId A numeric id. @returns {boolean} True when they match. */
+function localIdMatches(city, cityId) {
+  const lid = city.localId ?? city.id;
+  return lid != null && lid === cityId;
 }
 
 /**
@@ -363,6 +441,7 @@ function snapshotFromRanked(sig, ranked, ownerPop, sources) {
     assim: assimilationCostFor(sig.owner),
     owner: ownerStats(sig.owner),
     composition: resolveComposition(sig.city),
+    enclave: resolveEnclave(sig.city),
     netSeries: netSeriesFor(sig),
     refugeePool: refugeePoolTotal(sig.key),
     refugeeBurden: refugeeBurdenFor(sig.owner)

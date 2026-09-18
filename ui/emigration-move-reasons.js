@@ -135,6 +135,18 @@ export function reasonsPhrase(reasons, max = 3) {
 const PULL_TAGS = new Set(["richer", "nearby", "own-civ", "open-borders", "allied", "asylum"]);
 
 /**
+ * The localized " and " connector, padded: its surrounding spaces do not survive the text pipeline
+ * (watched 2026-09-14: the readout read "prosperityandproximity").
+ * @returns {string} The connector with one space either side.
+ */
+function listAnd() {
+  // The separators live in the CODE: the game's text loader strips a localized string's edge spaces (mod test 88),
+  // so " and " arrived as "and" and joined two names into "RomeetCarthage".
+  const raw = " " + loc("LOC_EMIG_LIST_AND", "and").trim() + " ";
+  return /^\s/.test(raw) && /\s$/.test(raw) ? raw : " " + raw.trim() + " ";
+}
+
+/**
  * Like {@link reasonsPhrase} but only the destination-PULL tags — for the "Drawn there:" / "Why there:"
  * clause, so it names why the destination was chosen without splicing in a flight fragment. Empty when
  * the move had no pull reason (its situation sentence already tells the whole story).
@@ -155,6 +167,5 @@ export function pullReasonsPhrase(reasons, max = 3) {
   if (parts.length <= 1) return parts[0] || "";
   // Read as prose ("A and B", "A, B and C"): the final connector is localized (English " and ", other
   // languages their own word, or a comma where a conjunction isn't wanted), the rest comma-joined.
-  const and = loc("LOC_EMIG_LIST_AND", " and ");
-  return parts.slice(0, -1).join(", ") + and + parts[parts.length - 1];
+  return parts.slice(0, -1).join(", ") + listAnd() + parts[parts.length - 1];
 }

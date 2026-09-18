@@ -1,0 +1,9 @@
+[2026-09-16 06:41:16]	[EmigProbe] shell attached 
+[2026-09-16 06:41:17]	[EmigProbe] shell query complete 
+[2026-09-16 06:41:17]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-16 06:41:17]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-16 06:41:35]	[EmigTest] modtest98 attached 
+[2026-09-16 06:41:50]	[EmigTest] modtest98 run local=0 
+[2026-09-16 06:41:50]	[EmigTest] DB crises now=["EXPLORATION_CRISIS_PLAGUE"] 
+[2026-09-16 06:41:50]	[EmigTest] DB plague stages=["EXPLORATION_CRISIS_PLAGUE#1@42","EXPLORATION_CRISIS_PLAGUE#2@50","EXPLORATION_CRISIS_PLAGUE#3@60","EXPLORATION_CRISIS_PLAGUE#4@70"] 
+[2026-09-16 06:41:50]	[EmigTest] START turn=66 age=41.3% crisisStage=-1 elapsed=-1 infected=0 

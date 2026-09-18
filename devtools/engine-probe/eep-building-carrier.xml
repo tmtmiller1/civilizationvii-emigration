@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Probe-only (multiplayer plan 8.9h, probe 3): ONE custom BUILDING that is never buildable
+     (RequiresUnlock with no unlock row), carries Population 0, and has a NEGATIVE gold yield.
+     It is the carrier shape the multiplayer floor needs: a per-turn cost expressed as a placed
+     constructible's database yield, so every client computes the same number without a script write.
+     Questions: does the row load with a negative yield, can CREATE_ELEMENT place it in a city centre,
+     does the cost actually reach the treasury, does Population 0 keep urban population unchanged,
+     and does it survive AI turns (2.4)? Age is Antiquity so it exists in an Exploration game (2.7). -->
+<Database>
+    <Types>
+        <Row Type="BUILDING_EMIG_TEST_BURDEN" Kind="KIND_CONSTRUCTIBLE"/>
+    </Types>
+    <Constructibles>
+        <Row ConstructibleType="BUILDING_EMIG_TEST_BURDEN" Name="LOC_BUILDING_EMIG_TEST_BURDEN_NAME" Description="LOC_BUILDING_EMIG_TEST_BURDEN_DESCRIPTION" Tooltip="LOC_BUILDING_EMIG_TEST_BURDEN_TOOLTIP" ConstructibleClass="BUILDING" Cost="55" Population="0" Age="AGE_ANTIQUITY" CostProgressionModel="NO_COST_PROGRESSION" CostProgressionParam1="0" RequiresUnlock="true"/>
+    </Constructibles>
+    <Buildings>
+        <Row ConstructibleType="BUILDING_EMIG_TEST_BURDEN" Movable="false" Town="True"/>
+    </Buildings>
+    <Constructible_ValidDistricts>
+        <Row ConstructibleType="BUILDING_EMIG_TEST_BURDEN" DistrictType="DISTRICT_CITY_CENTER"/>
+        <Row ConstructibleType="BUILDING_EMIG_TEST_BURDEN" DistrictType="DISTRICT_URBAN"/>
+    </Constructible_ValidDistricts>
+    <Constructible_YieldChanges>
+        <Row ConstructibleType="BUILDING_EMIG_TEST_BURDEN" YieldType="YIELD_GOLD" YieldChange="-2"/>
+    </Constructible_YieldChanges>
+</Database>

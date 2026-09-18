@@ -133,9 +133,9 @@ enclave lifecycle work, per this file's standing convention.
 
 ## README — relocate the LaTeX `$$…$$` formula blocks out of the marketing README
 
-Tier 4 item 27 of [text-polish-plan.md](text-polish-plan.md) proposed moving the three `$$…$$` math
-blocks in `README.md` (the §3 Prosperity-score model, the §5/§6b pull + friction equations, and the
-§6b dividend pool) into the linked `../emigration-docs/` files, on the premise that GitHub renders them
+Tier 4 item 27 of the former text-polish plan (the file is no longer in the repo) proposed moving the
+three `$$…$$` math blocks in `README.md` (the §3 Prosperity-score model, the §5/§6b pull + friction equations, and the
+§6b dividend pool) into the linked emigration-docs research files, on the premise that GitHub renders them
 as raw text on the repo page.
 
 **Why it's a won't-fix:** the premise is stale. GitHub has rendered `$$…$$` math natively (MathJax)

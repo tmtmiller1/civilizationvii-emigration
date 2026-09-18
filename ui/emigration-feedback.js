@@ -39,6 +39,7 @@ import { formatBothExact } from "/emigration/ui/emigration-population.js";
 import { causeLabel, notificationAccent, digestAccent } from "/emigration/ui/emigration-causes.js";
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
 import { pullReasonsPhrase } from "/emigration/ui/emigration-move-reasons.js";
+import { emigrationRetention } from "/emigration/ui/emigration-borders.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 
@@ -164,13 +165,15 @@ function persistNews() {
 // glance tells war from disaster from prosperity.
 // z-index sits ABOVE the game's top HUD layers: root-game.html mounts #uinext-tooltips and
 // #uinext-dropdowns at z-index 10000 and #tooltip-root at 99, so the old z-index:99 let tooltips and
-// dropdowns paint OVER a top-center toast (a prime cause of "notifications never show"). 10001 clears
-// them. The font sizes are hard values (not the dashboard's --dg-fs-* custom properties): the toast
+// dropdowns paint OVER a top-center toast (a prime cause of "notifications never show"). 10002 clears
+// them, and stays one above the mod's own cursor panels (PANEL_Z = 10001) so a notification still wins
+// over a hover readout if the cursor happens to be up near the top-center strip. The font sizes are
+// hard values (not the dashboard's --dg-fs-* custom properties): the toast
 // renders in the HUD document, where those dashboard-scoped vars are UNDEFINED, so a bare var() left the
 // text at an inherited size. Fallbacks keep the intended 0.72/0.95rem there while still honouring the
 // dashboard vars if ever present.
 const TOAST_CSS =
-  ".emig-toast{position:fixed;left:50%;transform:translateX(-50%);z-index:10001;" +
+  ".emig-toast{position:fixed;left:50%;transform:translateX(-50%);z-index:10002;" +
   "min-width:15rem;max-width:38rem;padding:0.5rem 1.3rem 0.6rem;text-align:center;pointer-events:none;" +
   'font-family:"BodyFont","BodyFont-JP","BodyFont-KR","BodyFont-SC","BodyFont-TC";color:#e8d8b4;' +
   "background:linear-gradient(180deg,rgba(28,32,44,0.97) 0%,rgba(9,12,19,0.97) 100%);" +
@@ -674,13 +677,30 @@ function destView(ev) {
  */
 function eventMessage(ev) {
   const dv = destView(ev);
+  const stanceTip = wantsStanceTip(ev);
   const destGold = ev.crossCiv && typeof ev.destOwner === "number"
     ? assimilationCostFor(ev.destOwner).gold : 0;
   return localDigestMessage({
     cause: ev.cause, people: formatBothExact(ev.people, ev.points), city: ev.srcName || "a settlement",
     crossCiv: ev.crossCiv, destName: dv.toCity || dv.toCiv, destGold, why: pullReasonsPhrase(ev.reasons),
-    byCiv: conquerorName(ev) // the (unmet-masked) conquering civ NAME; only the conquest headline reads it
+    byCiv: conquerorName(ev), // the (unmet-masked) conquering civ NAME; only the conquest headline reads it
+    stanceTip
   });
+}
+
+/** Causes where people CHOSE to go, so a retention policy is a real lever (a forced flight ignores it). */
+const VOLUNTARY_CAUSES = new Set(["unhappiness", "prosperity"]);
+
+/**
+ * Whether to suggest the Anti-Immigration Stance: only for a voluntary loss to ANOTHER civ (the stance
+ * retains cross-civ moves only), only while border policies are on, and only when the player is not
+ * already retaining (a slotted stance makes the tip stale advice).
+ * @param {*} ev A per-event bucket.
+ * @returns {boolean} True to append the tip.
+ */
+function wantsStanceTip(ev) {
+  if (!ev.crossCiv || !VOLUNTARY_CAUSES.has(ev.cause) || !CONFIG.bordersEnabled) return false;
+  return typeof ev.srcOwner === "number" && emigrationRetention(ev.srcOwner) >= 1;
 }
 
 /**
@@ -728,9 +748,9 @@ function localDigest(migs) {
   if (!events.length) return;
   for (const ev of events) logEvent(ev, eventMessage(ev));
   const lead = events[0];
-  // Colour the toast by DIRECTION (red for own people leaving for a rival, green for an internal
-  // shuffle), matching the log row's accent — not by cause, which mismatched (a prosperity departure
-  // toasted green while the log row was correctly red).
+  // Colour the toast by DIRECTION (red for own people leaving for a rival, neutral for an internal
+  // shuffle: the source settlement still loses its tile, so never green), matching the log row's accent
+  // rather than the cause (a prosperity departure once toasted green while the log row was red).
   announceImportant(eventMessage(lead), lead.cause, true, digestAccent(true, lead.crossCiv));
 }
 

@@ -14,7 +14,11 @@
 // under their group sub-headers. Each control writes immediately through the shared
 // settings store (getTunable/setTunable) (no separate Apply/Cancel) and:
 //   • an fxs-textbox SEARCH box filters the long list by (localized) label/description;
-//   • each group HEADER collapses/expands its section;
+//   • the groups are gathered into a few broad SECTIONS (ADVANCED_SECTIONS); a section's title row collapses/expands
+//     it, and its groups show inside as plain sub-headings. Sections start collapsed and the ones a player opens
+//     stay open the next time (stored per player);
+//   • a dropdown whose setting holds a value between its choices (set by a grouped slider on the Add-ons tab)
+//     lists that exact value rather than silently showing the nearest choice;
 //   • a "modified" dot marks any knob that differs from its default;
 //   • a per-row fxs-activatable "↺" resets that knob, and an fxs-button resets everything (both
 //     controller-navigable, like the close button);
@@ -22,16 +26,21 @@
 //     longer on Low/Medium/High), and the controls re-sync on focus so a preset
 //     applied elsewhere while this is open is reflected;
 //   • enum knobs (notify modes) show human labels instead of raw numbers;
-//   • the rows flow into two columns on a wide window.
+//   • the rows flow into two columns.
 
 import Panel from "/core/ui/panel-support.js";
 import { InputEngineEventName } from "/core/ui/input/input-support.js";
 import { FocusManager } from "/core/ui-next/services/focus-manager.js";
 import NavTray from "/core/ui/navigation-tray/model-navigation-tray.js";
+import "/core/ui/components/fxs-minus-plus.js"; // defines <fxs-minus-plus>, the section toggle icon
 import {
-  getTunable, setTunable, resetTunable, resetAllTunables, isTunableModified, markPresetCustom
+  getTunable, setTunable, resetTunable, resetAllTunables, isTunableModified, markPresetCustom,
+  getAdvancedSectionOpen, setAdvancedSectionOpen
 } from "/emigration/ui/emigration-settings.js";
-import { TUNABLES } from "/emigration/ui/emigration-tunables.js";
+import { TUNABLES, ADVANCED_GROUPS, ADVANCED_SECTIONS, tunableDropdown } from "/emigration/ui/emigration-tunables.js";
+
+/** Fired on window when this window closes, so the Add-ons tab can redraw what an edit here changed. */
+export const ADVANCED_CLOSED_EVENT = "emigration-advanced-closed";
 import { loc } from "/emigration/ui/emigration-loc.js";
 
 const TAG = "emigration-advanced-editor";
@@ -43,50 +52,46 @@ const DROPDOWN_CHANGE = "dropdown-selection-change"; // fxs-dropdown → detail.
 // GameFace (Coherent) CSS — Civ7's UI engine — does NOT support `display:grid` or `1fr` units. Setting a
 // grid style logs "Unable to parse declaration: display - grid" / "syntax error near text: 1fr" and the
 // body never lays out, so every tunable row (incl. the self-test toggle) renders into a broken container.
-// Flexbox is fully supported (the rest of this screen uses it); the rows are w-full, so stack them.
-const BODY_GRID_STYLE = "display:flex;flex-direction:column;";
+// Flexbox is fully supported (the rest of this screen uses it): the rows wrap two to a line (ROW_STYLE), and a
+// group sub-heading takes a whole line (SUBHEAD_STYLE).
+const BODY_GRID_STYLE = "display:flex;flex-direction:row;flex-wrap:wrap;align-items:flex-start;";
+const ROW_STYLE = "width:50%;padding-right:2rem;";
+const SUBHEAD_STYLE = "width:100%;margin-top:0.9rem;";
 
-// Group render order + human title. Any tunable group not listed still renders, after
-// these, under its raw key (so a new group never silently disappears).
-const GROUPS = [
-  { key: "pacing", title: "LOC_EMIG_ADVGRP_PACING" },
-  { key: "scope", title: "LOC_EMIG_ADVGRP_SCOPE" },
-  { key: "prosperity", title: "LOC_EMIG_ADVGRP_PROSPERITY" },
-  { key: "violence", title: "LOC_EMIG_ADVGRP_VIOLENCE" },
-  { key: "geography", title: "LOC_EMIG_ADVGRP_GEOGRAPHY" },
-  { key: "cost", title: "LOC_EMIG_ADVGRP_COST" },
-  { key: "outlet", title: "LOC_EMIG_ADVGRP_OUTLET" },
-  { key: "disaster", title: "LOC_EMIG_ADVGRP_DISASTER" },
-  { key: "notify", title: "LOC_EMIG_ADVGRP_NOTIFY" },
-  { key: "visuals", title: "LOC_EMIG_ADVGRP_VISUALS" },
-  { key: "readout", title: "LOC_EMIG_ADVGRP_READOUT" }
-];
+// Group render order + human title (shared with the diagnostics that open a section). Any tunable group not
+// listed still renders, after these, under its raw key (so a new group never silently disappears).
+const GROUPS = ADVANCED_GROUPS;
 
 /**
- * The index of `v` in `values`, or the nearest by magnitude (robust to a saved value
- * that's no longer an exact choice).
- * @param {number[]} values Choices.
- * @param {number} v Current value.
- * @returns {number} An index.
+ * Fill a dropdown with a choice tunable's entries at its current value, and remember the value behind each entry
+ * on the element (the list can carry an extra exact value, so indexes do not map straight to `t.values`).
+ * @param {*} dd The fxs-dropdown element. @param {*} t The tunable.
  */
-function nearestIndex(values, v) {
-  let best = 0;
-  let bestD = Infinity;
-  values.forEach((x, i) => {
-    const d = Math.abs(x - v);
-    if (d < bestD) {
-      bestD = d;
-      best = i;
-    }
-  });
-  return best;
+function loadDropdown(dd, t) {
+  const d = tunableDropdown(t, getTunable(t.key));
+  dd.emigValues = d.values;
+  dd.setAttribute("dropdown-items", JSON.stringify(d.items));
+  dd.setAttribute("selected-item-index", String(d.index));
 }
 
-/** The tunable groups in render order: the known ones first, then any stragglers. */
-function orderedGroups() {
-  const known = GROUPS.map((g) => g.key);
-  const extras = [...new Set(TUNABLES.map((t) => t.group))].filter((k) => !known.includes(k));
-  return [...GROUPS, ...extras.map((k) => ({ key: k, title: "LOC_OPTIONS_GROUP_" + k.toUpperCase() }))];
+/**
+ * The sections in render order, each with its groups resolved to specs. Any group no section lists (and any tunable
+ * group not in ADVANCED_GROUPS) still renders, in a final section of its own, so a new group never disappears.
+ * @returns {{key:string, title:string, groups:{key:string, title:string}[]}[]} The sections.
+ */
+function orderedSections() {
+  const known = new Map(GROUPS.map((g) => [g.key, g]));
+  for (const k of new Set(TUNABLES.map((t) => t.group))) {
+    if (!known.has(k)) known.set(k, { key: k, title: "LOC_OPTIONS_GROUP_" + k.toUpperCase() });
+  }
+  const placed = new Set(ADVANCED_SECTIONS.flatMap((sec) => sec.groups));
+  const sections = ADVANCED_SECTIONS.map((sec) => ({
+    ...sec,
+    groups: sec.groups.map((k) => known.get(k)).filter((g) => g !== undefined)
+  }));
+  const rest = [...known.values()].filter((g) => !placed.has(g.key));
+  if (rest.length) sections.push({ key: "other", title: rest[0].title, groups: rest });
+  return sections;
 }
 
 /**
@@ -135,49 +140,34 @@ function makeRowText(t) {
 }
 
 /**
- * The dedicated +/- collapse toggle button for a group header.
- * @returns {{toggleBtn:*, toggleGlyph:*}} The toggle button (and its glyph alias).
+ * A section's title row: the game's +/- disclosure icon and a plain title, over a thin rule. No decorative
+ * fxs-header, which drew a filigree flourish under every one of the many titles. Both the icon and the title
+ * toggle the section.
+ * @param {string} titleKey Section title LOC key.
+ * @returns {{header:*, toggleBtn:*, title:*}} Header pieces.
  */
-function makeGroupToggleButton() {
-  const toggleBtn = document.createElement("fxs-minus-plus");
-  toggleBtn.className = "ml-4";
-  toggleBtn.setAttribute("data-audio-group-ref", "options");
-  toggleBtn.setAttribute("type", "minus");
-  const toggleGlyph = toggleBtn; // type attribute is set on the button itself
-  return { toggleBtn, toggleGlyph };
-}
-
-/**
- * Header title row (chevron + localized group title).
- * @param {string} titleKey Group title LOC key.
- * @returns {{row:*, chev:*}} Title row and chevron.
- */
-function makeGroupTitleRow(titleKey) {
-  const row = document.createElement("div");
-  row.className = "flex flex-row items-center";
-  const chev = document.createElement("span");
-  chev.className = "font-body text-base mr-2 text-accent-2";
-  chev.textContent = "▾";
-  const title = document.createElement("fxs-header");
-  title.setAttribute("title", titleKey);
-  row.appendChild(chev);
-  row.appendChild(title);
-  return { row, chev };
-}
-
-/**
- * One group header row: the chevron + localized title on the left, a +/- collapse toggle on the right.
- * @param {string} titleKey Group title LOC key.
- * @returns {{header:*, chev:*, toggleBtn:*, toggleGlyph:*}} Header pieces.
- */
-function makeGroupHeader(titleKey) {
+function makeSectionHeader(titleKey) {
   const header = document.createElement("div");
-  header.className = "flex flex-row items-center justify-between mt-4 mb-1";
-  const { row, chev } = makeGroupTitleRow(titleKey);
-  const { toggleBtn, toggleGlyph } = makeGroupToggleButton();
-  header.appendChild(row);
+  header.className = "flex flex-row items-center mt-5 pb-1";
+  header.setAttribute("style", "border-bottom:1px solid rgba(197,176,128,0.35);");
+  const toggleBtn = document.createElement("fxs-minus-plus");
+  toggleBtn.className = "mr-3";
+  toggleBtn.setAttribute("data-audio-group-ref", "options");
+  toggleBtn.setAttribute("type", "plus");
+  const title = el("div", "font-title text-lg text-secondary uppercase cursor-pointer pointer-events-auto", titleKey);
   header.appendChild(toggleBtn);
-  return { header, chev, toggleBtn, toggleGlyph };
+  header.appendChild(title);
+  return { header, toggleBtn, title };
+}
+
+/**
+ * A group's sub-heading inside a section: small accent text on its own line.
+ * @param {string} titleKey Group title LOC key. @returns {*} The element.
+ */
+function makeGroupSubheading(titleKey) {
+  const sub = el("div", "font-title text-sm text-accent-2 uppercase", titleKey);
+  sub.setAttribute("style", SUBHEAD_STYLE);
+  return sub;
 }
 
 class EmigrationAdvancedEditor extends Panel {
@@ -189,8 +179,10 @@ class EmigrationAdvancedEditor extends Panel {
   /** @type {string} */ query = "";
   /** @type {{row:*, group:string, key:string, type:string, control:*, mark:*, search:string}[]} */
   rows = [];
-  /** @type {{key:string, header:*, body:*, chev:*, toggleGlyph:*, collapsed:boolean}[]} */
-  groups = [];
+  /** @type {{key:string, groupKeys:string[], header:*, body:*, toggleBtn:*, collapsed:boolean}[]} */
+  sections = [];
+  /** @type {{key:string, sub:*}[]} */
+  subheads = [];
   engineInputListener = this.onEngineInput.bind(this);
   closeListener = () => this.close();
 
@@ -209,6 +201,12 @@ class EmigrationAdvancedEditor extends Panel {
   }
 
   onDetach() {
+    // Edits here can take the intensity preset off Low/Medium/High; let the Add-ons tab redraw it.
+    try {
+      window.dispatchEvent(new CustomEvent(ADVANCED_CLOSED_EVENT));
+    } catch (_) {
+      /* no window (off-engine) */
+    }
     this.closeBtn?.removeEventListener("action-activate", this.closeListener);
     this.confirmBtn?.removeEventListener("action-activate", this.closeListener);
     this.Root.removeEventListener(InputEngineEventName, this.engineInputListener);
@@ -239,7 +237,7 @@ class EmigrationAdvancedEditor extends Panel {
   render() {
     this.Root.innerHTML = `
       <fxs-frame title="LOC_OPTIONS_GROUP_EMIGRATION_ADVANCED" subtitle="LOC_OPTIONS_GROUP_EMIGRATION"
-                 class="w-11/12 max-w-5xl h-11/12">
+                 class="w-11/12 h-11/12">
         <div data-emig-toolbar class="flex flex-row items-center px-6 pt-2"></div>
         <fxs-scrollable class="flex-auto overflow-y-auto" style="max-height: 72vh;">
           <fxs-vslot class="px-6 py-2 pb-8" data-emig-list></fxs-vslot>
@@ -252,10 +250,7 @@ class EmigrationAdvancedEditor extends Panel {
     this.closeBtn = this.Root.querySelector("fxs-close-button");
     this.buildToolbar(this.Root.querySelector("[data-emig-toolbar]"));
     this.buildFooter(this.Root.querySelector("[data-emig-footer]"));
-    for (const g of orderedGroups()) {
-      const items = TUNABLES.filter((t) => t.group === g.key);
-      if (items.length) this.buildGroupSection(g, items);
-    }
+    for (const sec of orderedSections()) this.buildSection(sec);
   }
 
   /**
@@ -299,20 +294,37 @@ class EmigrationAdvancedEditor extends Panel {
   }
 
   /**
-   * Build one collapsible group: a clickable header (chevron + title) and a two-column body of rows.
-   * @param {*} g The group spec. @param {*[]} items The group's tunables.
+   * Build one collapsible section: a title row, then each of its groups as a sub-heading over its rows.
+   * @param {{key:string, title:string, groups:{key:string, title:string}[]}} sec The section spec.
    */
-  buildGroupSection(g, items) {
-    const { header, chev, toggleBtn, toggleGlyph } = makeGroupHeader(g.title);
+  buildSection(sec) {
+    const groups = sec.groups.filter((g) => TUNABLES.some((t) => t.group === g.key));
+    if (!groups.length) return;
+    const { header, toggleBtn, title } = makeSectionHeader(sec.title);
     const body = document.createElement("div");
-    body.setAttribute("style", BODY_GRID_STYLE);
-    const entry = { key: g.key, header, body, chev, toggleGlyph, collapsed: false };
-    const onToggle = () => this.toggleGroup(entry);
+    const groupKeys = groups.map((g) => g.key);
+    // Open if the player left it open, or a diagnostic asked for one of its groups (advancedSettings(group)).
+    const open = getAdvancedSectionOpen("sec_" + sec.key) || groupKeys.some((k) => getAdvancedSectionOpen(k));
+    const entry = { key: sec.key, groupKeys, header, body, toggleBtn, collapsed: !open };
+    this.showCollapse(entry);
+    const onToggle = () => this.toggleSection(entry);
     toggleBtn.addEventListener("action-activate", onToggle);
-    this.groups.push(entry);
+    title.addEventListener("click", onToggle);
+    this.sections.push(entry);
     this.listEl.appendChild(header);
     this.listEl.appendChild(body);
-    for (const t of items) body.appendChild(this.makeRow(t, g.key));
+    for (const g of groups) this.buildGroup(body, g);
+  }
+
+  /**
+   * One group inside a section body: its sub-heading, then its rows.
+   * @param {*} body The section body. @param {{key:string, title:string}} g The group spec.
+   */
+  buildGroup(body, g) {
+    const sub = makeGroupSubheading(g.title);
+    this.subheads.push({ key: g.key, sub });
+    body.appendChild(sub);
+    for (const t of TUNABLES.filter((x) => x.group === g.key)) body.appendChild(this.makeRow(t, g.key));
   }
 
   /**
@@ -323,7 +335,8 @@ class EmigrationAdvancedEditor extends Panel {
    */
   makeRow(t, groupKey) {
     const row = document.createElement("div");
-    row.className = "flex flex-row items-center justify-between w-full my-2";
+    row.className = "flex flex-row items-center justify-between my-2";
+    row.setAttribute("style", ROW_STYLE);
     const { text, mark } = makeRowText(t);
     row.appendChild(text);
     const control = this.makeControl(t);
@@ -366,19 +379,10 @@ class EmigrationAdvancedEditor extends Panel {
       cb.setAttribute("data-emig-type", "bool");
       return cb;
     }
-    const values = t.values || [];
-    const labels = t.choiceLabels || null;
-    const items = values.map((/** @type {*} */ x, /** @type {number} */ i) => {
-      const lbl = labels ? labels[i] : String(x);
-      // choiceLabels may carry LOC_ keys (enum-style knobs) or bare literals ("30%"); the fxs-dropdown
-      // renders dropdown-items verbatim, so compose the keys here (literals pass through untouched).
-      return { label: (typeof lbl === "string" && lbl.startsWith("LOC_")) ? loc(lbl, lbl) : lbl };
-    });
     const dd = document.createElement("fxs-dropdown");
     dd.setAttribute("data-audio-group-ref", "options");
     dd.classList.add("w-64");
-    dd.setAttribute("dropdown-items", JSON.stringify(items));
-    dd.setAttribute("selected-item-index", String(nearestIndex(values, getTunable(t.key))));
+    loadDropdown(dd, t);
     dd.setAttribute("data-emig-key", t.key);
     dd.setAttribute("data-emig-type", "choice");
     return dd;
@@ -391,10 +395,9 @@ class EmigrationAdvancedEditor extends Panel {
         meta.control.addEventListener(CHECKBOX_CHANGE, (/** @type {*} */ e) =>
           this.onEdit(meta, !!e.detail?.value));
       } else {
-        const t = TUNABLES.find((x) => x.key === meta.key);
-        const values = (t && t.values) || [];
         meta.control.addEventListener(DROPDOWN_CHANGE, (/** @type {*} */ e) => {
-          const v = values[e.detail.selectedIndex];
+          // The entry list can hold an extra exact value, so map the index through the list the control shows.
+          const v = (meta.control.emigValues || [])[e.detail.selectedIndex];
           if (v !== undefined) this.onEdit(meta, v);
         });
       }
@@ -410,6 +413,12 @@ class EmigrationAdvancedEditor extends Panel {
     setTunable(meta.key, value);
     markPresetCustom();
     this.updateMark(meta);
+    // Picking a real choice drops any extra in-between entry the list was showing. Only redraw when there is such
+    // an entry: redrawing a dropdown from inside its own change event would otherwise re-fire the event.
+    const t = TUNABLES.find((x) => x.key === meta.key);
+    if (meta.type !== "bool" && t && (meta.control.emigValues || []).length !== (t.values || []).length) {
+      this.syncControl(meta);
+    }
   }
 
   /**
@@ -425,31 +434,43 @@ class EmigrationAdvancedEditor extends Panel {
       return;
     }
     for (const m of this.rows) m.row.style.display = m.search.includes(q) ? "" : "none";
-    for (const g of this.groups) {
-      const any = this.rows.some((m) => m.group === g.key && m.row.style.display !== "none");
-      g.body.setAttribute("style", any ? BODY_GRID_STYLE : BODY_GRID_STYLE + "display:none;");
-      g.header.style.display = any ? "" : "none";
+    const matches = (/** @type {string} */ group) => this.rows.some((m) => m.group === group && m.row.style.display !== "none");
+    for (const h of this.subheads) h.sub.style.display = matches(h.key) ? "" : "none";
+    for (const sec of this.sections) {
+      const any = sec.groupKeys.some(matches);
+      sec.body.setAttribute("style", any ? BODY_GRID_STYLE : BODY_GRID_STYLE + "display:none;");
+      sec.header.style.display = any ? "" : "none";
     }
   }
 
-  /** Restore all rows + each group's collapse state (search cleared). */
+  /** Restore all rows + each section's collapse state (search cleared). */
   clearSearch() {
     for (const m of this.rows) m.row.style.display = "";
-    for (const g of this.groups) {
-      g.header.style.display = "";
-      g.body.setAttribute("style", g.collapsed ? BODY_GRID_STYLE + "display:none;" : BODY_GRID_STYLE);
+    for (const h of this.subheads) h.sub.style.display = "";
+    for (const sec of this.sections) {
+      sec.header.style.display = "";
+      this.showCollapse(sec);
     }
   }
 
   /**
-   * Collapse/expand one group (no-op while a search is active, so it doesn't fight the filter).
-   * @param {*} g The group entry.
+   * Collapse/expand one section. Closing also clears any per-group "open" a diagnostic set, so it stays closed.
+   * @param {*} sec The section entry.
    */
-  toggleGroup(g) {
-    g.collapsed = !g.collapsed;
-    g.body.setAttribute("style", g.collapsed ? BODY_GRID_STYLE + "display:none;" : BODY_GRID_STYLE);
-    g.chev.textContent = g.collapsed ? "▸" : "▾";
-    g.toggleGlyph.setAttribute("type", g.collapsed ? "plus" : "minus");
+  toggleSection(sec) {
+    sec.collapsed = !sec.collapsed;
+    setAdvancedSectionOpen("sec_" + sec.key, !sec.collapsed);
+    if (sec.collapsed) for (const k of sec.groupKeys) setAdvancedSectionOpen(k, false);
+    this.showCollapse(sec);
+  }
+
+  /**
+   * Draw a section's current collapse state: body shown or hidden, +/- icon to match.
+   * @param {*} sec The section entry.
+   */
+  showCollapse(sec) {
+    sec.body.setAttribute("style", sec.collapsed ? BODY_GRID_STYLE + "display:none;" : BODY_GRID_STYLE);
+    sec.toggleBtn.setAttribute("type", sec.collapsed ? "plus" : "minus");
   }
 
   /**
@@ -472,7 +493,7 @@ class EmigrationAdvancedEditor extends Panel {
       return;
     }
     const t = TUNABLES.find((x) => x.key === meta.key);
-    meta.control.setAttribute("selected-item-index", String(nearestIndex((t && t.values) || [], v)));
+    if (t) loadDropdown(meta.control, t);
   }
 
   /** Re-sync every control + mark to the current store values. */

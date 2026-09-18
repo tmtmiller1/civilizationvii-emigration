@@ -7,7 +7,7 @@
 // Pure logic; reads GameInfo/Locale/Players defensively and degrades to a plain English
 // fallback when a localized string can't be composed.
 
-import { causeHint, causePermanence } from "/emigration/ui/emigration-causes.js";
+import { causeHint, causePermanence, stanceTip } from "/emigration/ui/emigration-causes.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { warOpponents } from "/emigration/ui/emigration-war.js";
 import { quarterBonus } from "/emigration/ui/emigration-quarter-bonuses.js";
@@ -104,6 +104,19 @@ function isMinorPlayer(pid) {
 }
 
 /**
+ * Whether the engine knows a player id. Never hand the engine an id it does not know:
+ * Game.IndependentPowers.independentName(99) segfaulted the game (watched twice on 2026-09-13).
+ * @param {number} pid Player id. @returns {boolean} True when Players.get returns a player.
+ */
+function knownPlayer(pid) {
+  try {
+    return !!Players?.get?.(pid);
+  } catch (_) {
+    return false;
+  }
+}
+
+/**
  * The specific name of a city-state / Independent Power ("Carthage", "Mississippian"), via
  * Game.IndependentPowers.independentName, or null when unavailable. Minor players don't carry a
  * useful civilization adjective, so this is how they get named.
@@ -111,6 +124,7 @@ function isMinorPlayer(pid) {
  * @returns {string|null} The independent's name, or null.
  */
 function independentName(pid) {
+  if (!knownPlayer(pid)) return null;
   try {
     const ip = typeof Game !== "undefined" ? Game.IndependentPowers : null;
     const nm = ip && typeof ip.independentName === "function" ? ip.independentName(pid) : null;
@@ -510,8 +524,9 @@ const PERMANENCE_FALLBACK = {
  * @returns {string} The hint.
  */
 export function actionHint(cause, city) {
-  const part = typeof cause === "string" ? cause.toUpperCase() : "";
-  return (part && loc("LOC_EMIG_HINT_" + part, city)) || causeHint(cause, city);
+  // causeHint owns the key choice (the city-named hint, or its city-less variant when no name is given)
+  // and the English fallback, so every surface resolves a hint the same way.
+  return causeHint(cause, city);
 }
 
 /**
@@ -571,7 +586,7 @@ export function lossHeadline(cause, people, city) {
 export function costNote(destName, gold) {
   return (
     loc("LOC_EMIG_COST_NOTE", destName, String(gold)) ||
-    `${destName} pays about ${gold} gold/turn to assimilate them.`
+    `${destName} pays about ${gold} gold/turn to integrate them.`
   );
 }
 
@@ -665,6 +680,21 @@ function headlineWithDest(o) {
 }
 
 /**
+ * The cross-civ extras that follow the action hint (each with a leading space): the Anti-Immigration
+ * Stance tip when the caller asks for it (a voluntary loss to another civ with no retention policy
+ * slotted), then the destination's integration cost when it is material (>= 1 gold/turn).
+ * @param {{crossCiv?:boolean, destName?:string, destGold?:number, stanceTip?:boolean}} o Digest inputs.
+ * @returns {string} The notes, or "".
+ */
+function crossCivNotes(o) {
+  let notes = o.stanceTip ? " " + stanceTip() : "";
+  if (o.crossCiv && o.destName && (o.destGold || 0) >= 1) {
+    notes += " " + costNote(o.destName, Math.round(o.destGold || 0));
+  }
+  return notes;
+}
+
+/**
  * Compose the local player's per-pass migration digest as two blocks separated by {@link DIGEST_GAP}:
  * the SITUATION (cause-named loss headline + "where they went") and the GUIDANCE — the "why here"
  * clause first (why that destination), then the action hint, a cross-civ assimilation cost note when
@@ -672,7 +702,8 @@ function headlineWithDest(o) {
  * durable the loss is and whether acting helps, so a separate permanence cue is not repeated here.
  * Pure; the caller resolves the inputs.
  * @param {{cause?:string, people:string, city:string, crossCiv?:boolean, destName?:string,
- *          destGold?:number, why?:string, byCiv?:string}} o The resolved digest inputs. `why` is the
+ *          destGold?:number, why?:string, byCiv?:string, stanceTip?:boolean}} o The resolved digest
+ *   inputs. `stanceTip` adds the Anti-Immigration Stance tip (the caller decides when it applies). `why` is the
  *   pre-localized "why here" phrase (P0.1), appended as a short clause when present; `byCiv` is the
  *   (already unmet-masked) conquering civ, used only by the conquest headline.
  * @returns {string} The composed message.
@@ -686,9 +717,7 @@ export function localDigestMessage(o) {
   if (!(o.cause && HEADLINE_STATES_WHY.has(o.cause))) guidance += whyClause(o.cause, o.why);
   const hint = actionHint(o.cause, o.city); // then the action hint (what you can do / how durable it is)
   if (hint) guidance += " " + hint;
-  if (o.crossCiv && o.destName && (o.destGold || 0) >= 1) {
-    guidance += " " + costNote(o.destName, Math.round(o.destGold || 0));
-  }
+  guidance += crossCivNotes(o);
   guidance += scopeClause(o.cause, o.crossCiv); // trailing (Internal Move) / (External Move) tag
   guidance = guidance.trim();
   return guidance ? situation + DIGEST_GAP + guidance : situation;

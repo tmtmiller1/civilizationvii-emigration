@@ -135,8 +135,8 @@ function testRecognizedQuarterStatesItsDividend() {
   ]);
 }
 
-// §22a: once the enclave is BUILT the stance grant steps aside, so the panel must NOT keep claiming the
-// dividend — it would be stating a yield the player is no longer paid.
+// A recognized enclave whose tile stands is paid BOTH ways (the tile's own yield, natively shown by the
+// game, and the stance dividend on top), so the panel says the tile is there AND states the dividend.
 function testInvestedQuarterDoesNotClaimTheDividend() {
   const q = {
     originName: "Roman Enclave",
@@ -152,13 +152,16 @@ function testInvestedQuarterDoesNotClaimTheDividend() {
   assert.deepEqual(lines, [
     "A Roman Enclave has taken root in this settlement.",
     "Your stance: Embrace them.",
-    "Its enclave is built: the enclave's own yield now applies instead of this dividend."
+    "Its enclave stands as a tile of the city, and the tile carries its own yield.",
+    "Grants 2 Culture to the city each turn.",
+    "Costs 1 Happiness each turn."
   ]);
-  assert.ok(!lines.some((l) => /Grants|Costs/.test(l)),
-    "a built enclave's panel never restates the stance dividend it no longer pays");
+  // An ESTABLISHED enclave (tile standing, not yet recognized) has no stance: only the tile is stated.
+  const est = __test.quarterLines(__test.noCompose, { ...q, stanceLabel: "", benefitAmount: 0, penaltyAmount: 0 });
+  assert.ok(!est.some((l) => /Grants|Costs|stance/.test(l)), "no stance or dividend is claimed before recognition");
 }
 
-// A contested BUILT enclave still reports the war strain (that charge is unaffected by §22a).
+// A contested enclave whose tile stands still states its (reduced) dividend and reports the war strain.
 function testInvestedQuarterStillReportsContest() {
   const lines = __test.quarterLines(__test.noCompose, {
     originName: "Roman Enclave", stanceLabel: "", contested: true, invested: true,
@@ -166,8 +169,22 @@ function testInvestedQuarterStillReportsContest() {
   });
   assert.deepEqual(lines, [
     "A Roman Enclave has taken root in this settlement.",
-    "Its enclave is built: the enclave's own yield now applies instead of this dividend.",
+    "Its enclave stands as a tile of the city, and the tile carries its own yield.",
+    "Grants 2 Culture to the city each turn.",
     "Contested: at war with their homeland - the enclave contributes less (its benefit above is reduced) and the city's morale suffers."
+  ]);
+}
+
+// Put down roots: an enclave's community returns home less often, and the panel says so.
+function testRootedQuarterSaysSo() {
+  const lines = __test.quarterLines(__test.noCompose, {
+    originName: "Roman Enclave", stanceLabel: "", contested: false, invested: true, rooted: true,
+    benefitYield: null, benefitAmount: 0, penaltyYield: null, penaltyAmount: 0
+  });
+  assert.deepEqual(lines, [
+    "A Roman Enclave has taken root in this settlement.",
+    "Put down roots: fewer of its people return home.",
+    "Its enclave stands as a tile of the city, and the tile carries its own yield."
   ]);
 }
 
@@ -339,6 +356,7 @@ testPassiveQuarterHasNoYieldLines();
 testRecognizedQuarterStatesItsDividend();
 testInvestedQuarterDoesNotClaimTheDividend();
 testInvestedQuarterStillReportsContest();
+testRootedQuarterSaysSo();
 testFlowRowsSortCapAndTail();
 testYieldAndRefugeeHelpers();
 testComposeLocalizesLabels();

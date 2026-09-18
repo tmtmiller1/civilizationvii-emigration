@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PROBE-ONLY. Never shipped.
+
+     For a NEW game, started with the plague crisis chosen at setup (eep-shell-crisis.js).
+
+     Runs 3 and 4 settled that an existing save cannot be pushed into a crisis from data: with both crises
+     present and stage 1 lowered to 42%, AugustusExp66 went from 41.3% to 48.1% age progression and the stage
+     never left -1. The crisis schedule is fixed when a game is created, so the plague has to be reached from a
+     fresh game -- which is where this override applies.
+
+     A new Exploration game starts at 0% age progression and stage 1 normally waits for 70%, which is most of
+     an age of autoplay. Dropping stage 1 to 5% puts it a handful of turns in. Later stages follow so the
+     sequence stays ordered. Religion is left alone: the crisis is chosen at setup now, so there is nothing to
+     suppress, and run 3 showed that deleting it buys nothing. -->
+<Database>
+    <AgeCrisisStages>
+        <Update>
+            <Where AgeCrisisEventType="EXPLORATION_CRISIS_PLAGUE" Stage="1"/>
+            <Set AgeProgressTriggerPercent="5" AgeProgressEndPercent="15"/>
+        </Update>
+        <Update>
+            <Where AgeCrisisEventType="EXPLORATION_CRISIS_PLAGUE" Stage="2"/>
+            <Set AgeProgressTriggerPercent="15" AgeProgressEndPercent="25"/>
+        </Update>
+        <Update>
+            <Where AgeCrisisEventType="EXPLORATION_CRISIS_PLAGUE" Stage="3"/>
+            <Set AgeProgressTriggerPercent="25" AgeProgressEndPercent="35"/>
+        </Update>
+        <Update>
+            <Where AgeCrisisEventType="EXPLORATION_CRISIS_PLAGUE" Stage="4"/>
+            <Set AgeProgressTriggerPercent="35" AgeProgressEndPercent="45"/>
+        </Update>
+    </AgeCrisisStages>
+</Database>

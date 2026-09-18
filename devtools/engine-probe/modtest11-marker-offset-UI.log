@@ -1,0 +1,17 @@
+[2026-09-13 05:15:43]	[EmigProbe] shell attached 
+[2026-09-13 05:15:45]	[EmigProbe] shell query complete 
+[2026-09-13 05:15:45]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-13 05:15:45]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 05:16:04]	[EmigTest] modtest8 attached 
+[2026-09-13 05:16:17]	[EmigTest] EMPTY-PLOT city=Washington, D.C. emptyPlots=1 
+[2026-09-13 05:16:17]	[EmigTest] START turn=66 L=Washington, D.C. turnActive=true culture=16.5 
+[2026-09-13 05:16:17]	[EmigTest] V1 villages/encampments inside major cities: [] (of 76 met cities) 
+[2026-09-13 05:16:23]	[EmigTest] Y1 placed={"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","plot":4293} standing=true before={"plot":[],"yields":[["YIELD_FOOD",2],["YIELD_PRODUCTION",1],["YIELD_GOLD",1]],"culture":16.5,"production":60} after={"plot":[{"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","complete":true,"damaged":false}],"yields":[["YIELD_FOOD",2],["YIELD_PRODUCTION",3],["YIELD_GOLD",1]],"culture":16.5,"production":63,"district":true} (ROME a = +2 PRODUCTION natively) 
+[2026-09-13 05:16:27]	[EmigTest] Y2 yields layer=already on camera on plot 4293 
+[2026-09-13 05:16:27]	[EmigTest] SHOT enclave-yields 
+[2026-09-13 05:16:46]	[EmigTest] V2 village on plot 3907 before={"plot":[{"type":"IMPROVEMENT_MINE","complete":true,"damaged":false}],"yields":[["YIELD_PRODUCTION",3],["YIELD_HAPPINESS",1]]} after={"plot":[{"type":"IMPROVEMENT_VILLAGE","complete":true,"damaged":false}],"yields":[["YIELD_PRODUCTION",3],["YIELD_HAPPINESS",1]]} 
+[2026-09-13 05:16:50]	[EmigTest] SHOT village-skin 
+[2026-09-13 05:17:00]	[EmigTest] ACTIONS done; ending the turn 
+[2026-09-13 05:17:25]	[EmigTest] TURN activated n=2 turn=67 ALIVE 
+[2026-09-13 05:17:29]	[EmigTest] Y3 next turn: plot=[{"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","complete":true,"damaged":false}] yields=[["YIELD_FOOD",2],["YIELD_PRODUCTION",3],["YIELD_GOLD",1]] production=72 
+[2026-09-13 05:17:29]	[EmigTest] DONE modtest8 finished 

@@ -1,0 +1,20 @@
+[2026-09-13 07:12:09]	[EmigProbe] shell attached 
+[2026-09-13 07:12:10]	[EmigProbe] shell query complete 
+[2026-09-13 07:12:11]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-13 07:12:11]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 07:12:30]	[EmigTest] modtest13 attached 
+[2026-09-13 07:12:43]	[EmigTest] START turn=66 mode=2 force=true majors=["0:CIVILIZATION_MONGOLIA","2:CIVILIZATION_BULGARIA","4:CIVILIZATION_NORMAN","6:CIVILIZATION_SONGHAI","7:CIVILIZATION_MING","8:CIVILIZATION_CHOLA","9:CIVILIZATION_SENGOKU"] turnActive=true 
+[2026-09-13 07:12:43]	[EmigTest] BEFORE records=0 
+[2026-09-13 07:12:43]	[EmigTest] BEFORE autoChronicle=0 
+[2026-09-13 07:12:51]	[EmigTest] PASS1 records=0 
+[2026-09-13 07:12:51]	[EmigTest] PASS1 autoChronicle=0 
+[2026-09-13 07:12:59]	[EmigTest] PASS2 records=0 
+[2026-09-13 07:12:59]	[EmigTest] PASS2 autoChronicle=0 
+[2026-09-13 07:12:59]	[EmigTest] ACTIONS done; ending 2 turns 
+[2026-09-13 07:13:24]	[EmigTest] TURN activated n=2 turn=67 ALIVE 
+[2026-09-13 07:13:30]	[EmigTest] TURN+1 records=0 
+[2026-09-13 07:13:30]	[EmigTest] TURN+1 autoChronicle=0 
+[2026-09-13 07:13:53]	[EmigTest] TURN activated n=3 turn=68 ALIVE 
+[2026-09-13 07:13:59]	[EmigTest] TURN+2 records=0 
+[2026-09-13 07:13:59]	[EmigTest] TURN+2 autoChronicle=0 
+[2026-09-13 07:13:59]	[EmigTest] DONE modtest13 finished 

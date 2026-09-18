@@ -29,8 +29,13 @@ function productiveness(s) {
     s.gold * CONFIG.goldFactor +
     s.science * CONFIG.scienceFactor +
     s.culture * CONFIG.cultureFactor;
+  // population^popExponent, not population. A straight per-head average divides away everything a
+  // settlement has built in proportion to its own size, so a big city could never out-build the flat
+  // populationFactor penalty; an exponent below 1 lets it keep more of what it has. See CONFIG.
   const pop = Math.max(1, s.population);
-  return weighted / pop;
+  const e = Number(CONFIG.popExponent);
+  const divisor = Number.isFinite(e) && e > 0 && e < 1 ? Math.pow(pop, e) : pop;
+  return weighted / divisor;
 }
 
 /**
@@ -114,11 +119,27 @@ function polityBonus(s, tune) {
 }
 
 /**
+ * The built-environment bonus: the settlement's wonders and civic infrastructure as a reason to stay,
+ * read off the signal (emigration-built.js scores and caches it). Clamped defensively so a corrupted
+ * or hand-edited signal cannot swamp the score, and 0 when the term is off or the signal predates it.
+ * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
+ * @returns {number} The bonus (>= 0).
+ */
+function builtBonus(s) {
+  if (!CONFIG.builtEnabled) return 0;
+  const v = Number(s && s.built);
+  if (!Number.isFinite(v) || v <= 0) return 0;
+  const cap = Number(CONFIG.builtCap);
+  return Number.isFinite(cap) && cap > 0 ? Math.min(v, cap) : v;
+}
+
+/**
  * The signed terms of {@link baseScore}, in score points, summing to it exactly. `economy` carries
  * the shaped model's happiness AMPLIFICATION (it is `productiveness × mult`, kept as one term so the
  * sum reproduces `baseScore` bit-for-bit rather than re-associating the multiply); `happiness` is
  * then only the standalone happiness term. `population` is already negated.
- * @typedef {{economy:number, happiness:number, population:number, civBias:number, polity:number}} BaseTerms
+ * @typedef {{economy:number, happiness:number, population:number, civBias:number, polity:number,
+ *   built:number}} BaseTerms
  */
 
 /**
@@ -141,7 +162,10 @@ export function baseBreakdown(s, ctx) {
   const common = {
     population: -(s.population * CONFIG.populationFactor),
     civBias: tune.sourceBias,
-    polity: polityBonus(s, tune)
+    polity: polityBonus(s, tune),
+    // NOT divided by population and NOT scaled by happiness: what a settlement has built is a reason to
+    // stay in its own right, and the yields those buildings produce are already counted in `economy`.
+    built: builtBonus(s)
   };
   if (!CONFIG.happinessShaped) {
     const happy = h * CONFIG.localHappinessFactor * tune.happinessPull;
@@ -163,7 +187,7 @@ export function baseBreakdown(s, ctx) {
  */
 function baseScore(s, ctx) {
   const b = baseBreakdown(s, ctx);
-  return b.economy + b.happiness + b.population + b.civBias + b.polity;
+  return b.economy + b.happiness + b.population + b.civBias + b.polity + b.built;
 }
 
 /**

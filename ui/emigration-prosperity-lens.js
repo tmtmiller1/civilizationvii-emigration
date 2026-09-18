@@ -20,40 +20,14 @@ import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { setBasePlotTooltipHidden } from "/emigration/ui/emigration-plot-tooltip-suppress.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { refugeePoolTotal } from "/emigration/ui/emigration-refugee-pool.js";
+import { clamp, plotsOf, cityTileTiers, cityLandmarks, tierFill, landmarkFill } from "/emigration/ui/emigration-tile-score.js";
 
 const LENS = "emig-prosperity-lens";
 const LAYER = "emig-prosperity-layer";
-const FILL_ALPHA = 0.6;
 const HEX_GRID = 1; // OVERLAY_PRIORITY.HEX_GRID, inlined
-// Gradient endpoints (0-255): grey (neutral) → green (above average) / red (below average).
-const GREY = [140, 140, 140];
-const GREEN = [60, 200, 90];
-const RED = [212, 72, 60];
 const HOLD_MARKER_LOW = { x: 0.39, y: 0.78, z: 0.85, w: 0.88 };
 const HOLD_MARKER_MED = { x: 0.96, y: 0.71, z: 0.26, w: 0.9 };
 const HOLD_MARKER_HIGH = { x: 0.92, y: 0.35, z: 0.35, w: 0.92 };
-
-/**
- * Clamp v into [lo, hi].
- * @param {number} v Value. @param {number} lo Min. @param {number} hi Max.
- * @returns {number} Clamped.
- */
-function clamp(v, lo, hi) {
-  return v < lo ? lo : v > hi ? hi : v;
-}
-
-/**
- * A plot fill colour (the engine's float4 {x,y,z,w}) for a normalized prosperity deviation
- * t ∈ [-1, 1]: grey→green for t ≥ 0, grey→red for t < 0.
- * @param {number} t Normalized deviation.
- * @returns {{x:number, y:number, z:number, w:number}} Float4 RGBA (0-1).
- */
-function colorFor(t) {
-  const to = t >= 0 ? GREEN : RED;
-  const k = Math.abs(t);
-  const mix = (/** @type {number} */ i) => (GREY[i] + (to[i] - GREY[i]) * k) / 255;
-  return { x: mix(0), y: mix(1), z: mix(2), w: FILL_ALPHA };
-}
 
 /**
  * Each city's prosperity normalized to a [-1, 1] deviation from the world mean (so the gradient
@@ -83,62 +57,11 @@ function cityTiers() {
 }
 
 /**
- * A city's owned plots as {x, y, idx} (from its purchased plot indices). `idx` lets the tile-level
- * scoring read per-plot yields; `{x, y}` is what the overlay paints.
- * @param {*} city City object.
- * @returns {{x:number, y:number, idx:number}[]} Plot coordinates + index.
- */
-function plotsOf(city) {
-  /** @type {{x:number, y:number, idx:number}[]} */
-  const out = [];
-  try {
-    const idx = city && typeof city.getPurchasedPlots === "function" ? city.getPurchasedPlots() : [];
-    for (const i of idx || []) {
-      const loc = GameplayMap.getLocationFromIndex(i);
-      if (loc) out.push({ x: loc.x, y: loc.y, idx: i });
-    }
-  } catch (_) {
-    /* ignore unreadable city */
-  }
-  return out;
-}
-
-/**
- * The amount from one `GameplayMap.getYields` entry, defensive across the engine's possible shapes:
- * a [yieldType, amount] tuple (the base UI's shape), a {amount}/{value} object, or a bare number.
- * @param {*} e A yields entry.
- * @returns {number} The numeric amount (0 if unreadable).
- */
-function yieldAmount(e) {
-  if (typeof e === "number") return isFinite(e) ? e : 0;
-  if (Array.isArray(e)) return Number(e[1]) || 0;
-  if (e && typeof e === "object") return Number(e.amount ?? e.value ?? 0) || 0;
-  return 0;
-}
-
-/**
- * A TILE's desirability: the total yield output on that plot (read for the local player), so the lens
- * can shade tile-by-tile instead of one colour per city. Returns null when per-plot yields aren't
- * available (caller falls back to the per-city score).
- * @param {number} idx Plot index.
- * @returns {number|null} The tile score, or null.
- */
-function plotScore(idx) {
-  try {
-    if (typeof GameplayMap === "undefined" || typeof GameplayMap.getYields !== "function") return null;
-    const ys = GameplayMap.getYields(idx, GameContext.localPlayerID);
-    if (!Array.isArray(ys)) return null;
-    let s = 0;
-    for (const y of ys) s += yieldAmount(y);
-    return s;
-  } catch (_) {
-    return null;
-  }
-}
-
-/**
- * Per-PLOT prosperity tiers: every visible city's plots scored by tile yield output and normalized to
- * a [-1, 1] deviation from the world PLOT field. Empty (→ per-city fallback) when no per-plot yields.
+ * Per-PLOT prosperity tiers: every visible city's plots scored by tile yield output and normalized
+ * WITHIN THEIR OWN CITY, so a tile reads against its city's own best and worst rather than against the
+ * whole map. Scaling every tile to the world's most extreme plot left 94% of tiles inside 15% of the
+ * mean and 1120 of 1775 in one grey bucket (mod test 77). Empty (→ per-city fallback) with no per-plot
+ * yields.
  * @returns {{x:number, y:number, t:number}[]} Per-plot {x, y, deviation}.
  */
 function plotTiers() {
@@ -148,21 +71,32 @@ function plotTiers() {
   } catch (_) {
     return [];
   }
-  /** @type {{owner:number, x:number, y:number, score:number}[]} */
-  const all = [];
+  /** @type {{x:number, y:number, t:number}[]} */
+  const out = [];
   for (const s of signals) {
-    for (const p of plotsOf(s.city)) {
-      const score = plotScore(p.idx);
-      if (score !== null) all.push({ owner: s.owner, x: p.x, y: p.y, score });
-    }
+    if (!civHidden(s.owner)) out.push(...cityTileTiers(s.city));
   }
-  if (!all.length) return [];
-  const mean = all.reduce((a, r) => a + r.score, 0) / all.length;
-  let spread = 0;
-  for (const r of all) spread = Math.max(spread, Math.abs(r.score - mean));
-  return all
-    .filter((r) => !civHidden(r.owner))
-    .map((r) => ({ x: r.x, y: r.y, t: spread > 0 ? clamp((r.score - mean) / spread, -1, 1) : 0 }));
+  return out;
+}
+
+/**
+ * Every visible settlement's landmark plots (its wonders): painted in one amber, over whatever the yield scale
+ * painted, because a wonder's worth is not its tile yield (emigration-tile-score.js, `landmarkAt`).
+ * @returns {{x:number, y:number}[]} Landmark plots.
+ */
+function plotLandmarks() {
+  let signals = [];
+  try {
+    signals = collectCitySignals() || [];
+  } catch (_) {
+    return [];
+  }
+  /** @type {{x:number, y:number}[]} */
+  const out = [];
+  for (const s of signals) {
+    if (!civHidden(s.owner)) out.push(...cityLandmarks(s.city));
+  }
+  return out;
 }
 
 /** @param {*} s @returns {{x:number,y:number,pool:number}|null} */
@@ -233,7 +167,7 @@ function paintTileBuckets(overlay, tiles) {
     }
     arr.push({ x: t.x, y: t.y });
   }
-  for (const [q, plots] of buckets) overlay.addPlots(plots, { fillColor: colorFor(q) });
+  for (const [q, plots] of buckets) overlay.addPlots(plots, { fillColor: tierFill(q) });
 }
 
 /** The lens layer: an overlay of plot fills coloured by TILE-level prosperity vs the world mean. */
@@ -253,7 +187,7 @@ class ProsperityLensLayer {
   initLayer() {}
 
   /** Lens-layer lifecycle: paint plots by TILE-LEVEL prosperity (per-plot yield output), falling back
-   *  to one colour per city when per-plot yields aren't available. */
+   *  to one colour per city when per-plot yields aren't available; wonders in the landmark colour over both. */
   applyLayer() {
     this.clear();
     const tiles = plotTiers();
@@ -262,9 +196,12 @@ class ProsperityLensLayer {
     } else {
       for (const c of cityTiers()) { // fallback: one colour per city
         const plots = plotsOf(c.city);
-        if (plots.length) this.overlay.addPlots(plots, { fillColor: colorFor(c.t) });
+        if (plots.length) this.overlay.addPlots(plots, { fillColor: tierFill(c.t) });
       }
     }
+    // Landmarks after the land, so a wonder plot the per-city fallback painted is re-covered in amber.
+    const landmarks = plotLandmarks();
+    if (landmarks.length) this.overlay.addPlots(landmarks, { fillColor: landmarkFill() });
     paintRefugeeMarkers(this.overlay);
     // Hide the base plot tooltip while this lens is active so it doesn't clash with the mod's own
     // prosperity panel (emigration-prosperity-tooltip.js).

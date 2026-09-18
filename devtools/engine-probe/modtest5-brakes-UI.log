@@ -1,0 +1,20 @@
+[2026-09-13 04:15:53]	[EmigProbe] shell attached 
+[2026-09-13 04:15:54]	[EmigProbe] shell query complete 
+[2026-09-13 04:15:55]	[EmigProbe] shell found AugustusAnt136.Civ7Save turn 136 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-13 04:15:55]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 04:16:13]	[EmigTest] modtest5 attached 
+[2026-09-13 04:16:26]	[EmigTest] START turn=136 L=London F=St. Petersburg F2=Paris met cities=66 
+[2026-09-13 04:16:26]	[EmigTest] A1 London pick=IMPROVEMENT_FISHING_BOAT pickUnderFamine=IMPROVEMENT_MINE tiles=["IMPROVEMENT_CAMP","IMPROVEMENT_MINE","IMPROVEMENT_WOODCUTTER","IMPROVEMENT_FISHING_BOAT_RESOURCE*","IMPROVEMENT_WOODCUTTER_RESOURCE","IMPROVEMENT_FISHING_BOAT_RESOURCE*","IMPROVEMENT_PLANTATION*","IMPROVEMENT_FISHING_BOAT*","IMPROVEMENT_MINE"] (* = feeds) 
+[2026-09-13 04:16:26]	[EmigTest] A2 Mīlētos owner=1 pillaged=[{"type":"IMPROVEMENT_FARM","plot":1211,"dmg":true,"feeds":true,"res":false,"d":2}] rural=3 
+[2026-09-13 04:16:31]	[EmigTest] A2 depart Mīlētos owner=1 pick={"type":"IMPROVEMENT_FARM","plot":1211,"dmg":true,"feeds":true,"res":false,"d":2} consumed={"ok":true,"fromPool":false,"deferredTile":true} commit={"mode":"tile","gold":10} plotNow=[] gold 416.52 -> 406.52 
+[2026-09-13 04:16:36]	[EmigTest] A3 depart St. Petersburg owner=2 pick={"type":"IMPROVEMENT_FARM","plot":5064,"dmg":false,"feeds":true,"res":false,"d":3} consumed={"ok":true,"fromPool":false,"deferredTile":true} commit={"mode":"tile","gold":10} plotNow=[] gold 221.32 -> 211.32 
+[2026-09-13 04:16:42]	[EmigTest] A4 treasury 538.96 drained to 5.96 charged=[5.9609375,5.9609375] after=-4.04 (expect 5,0 and 0) restored 
+[2026-09-13 04:16:46]	[EmigTest] A5 Paris urban=12 budget=1 kind=building took={"ok":true,"mode":"building","type":"BUILDING_HARBOR"} budgetNow=0 kindNow=null nextBuilding="BUILDING_FISHING_QUAY" (expect 1, building, taken, 0, null, a building still available) 
+[2026-09-13 04:16:51]	[EmigTest] A6 enclave {"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","plot":2875} standing=true camera=ok 
+[2026-09-13 04:16:55]	[EmigTest] SHOT enclave-marker 
+[2026-09-13 04:17:03]	[EmigTest] ACTIONS done; ending the turn 
+[2026-09-13 04:17:26]	[EmigTest] TURN activated n=2 turn=137 ALIVE 
+[2026-09-13 04:17:30]	[EmigTest] A5 next turn Paris kindWithCap=building kindCapLifted=building (expect null, building) 
+[2026-09-13 04:17:33]	[EmigTest] A7 arrival London arriveRural=true dialogOpen=n/a pending=1 
+[2026-09-13 04:17:35]	[EmigTest] SHOT arrival-prompt 
+[2026-09-13 04:17:43]	[EmigTest] DONE modtest5 finished 

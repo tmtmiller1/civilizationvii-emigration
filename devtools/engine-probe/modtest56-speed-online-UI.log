@@ -1,0 +1,10 @@
+[2026-09-15 06:46:15]	[EmigProbe] shell attached speed=ONLINE 
+[2026-09-15 06:46:30]	[EmigProbe] shell config reset to single player 
+[2026-09-15 06:46:33]	[EmigProbe] shell speed options [["GAMESPEED_ONLINE","LOC_GAMESPEED_ONLINE_NAME"],["GAMESPEED_QUICK","LOC_GAMESPEED_QUICK_NAME"],["GAMESPEED_STANDARD","LOC_GAMESPEED_STANDARD_NAME"],["GAMESPEED_EPIC","LOC_GAMESPEED_EPIC_NAME"],["GAMESPEED_MARATHON","LOC_GAMESPEED_MARATHON_NAME"]] current="GAMESPEED_STANDARD" 
+[2026-09-15 06:46:33]	[EmigProbe] shell set GameSpeeds="GAMESPEED_ONLINE" returned 0 now="GAMESPEED_ONLINE" 
+[2026-09-15 06:46:35]	[EmigProbe] shell startGame called (Play Now) 
+[2026-09-15 06:46:48]	[EmigTest] modtest56 attached 
+[2026-09-15 06:47:03]	[EmigTest] SPEED type=-1649545904 row={"GameSpeedType":"GAMESPEED_ONLINE","CostMultiplier":50} S=0.5 modS=0.5 tuningEnabled=true engineAdjust100=50 turnInterval=1 checks={"scalar":true,"turns":true,"bar":true,"decay":true,"shock":true} applied={"cooldownTurns":"8->4","transitLagTurns":"4->2","deathRampTurns":"6->3","quarterDwellTurns":"8->4","quarterFadeTurns":"12->6","returnCooldownTurns":"6->3","dilemmaCooldownTurns":"18->9"} 
+[2026-09-15 06:47:03]	[EmigTest] START turn=1 passes0=1 ending 6 turns 
+[2026-09-15 06:48:36]	[EmigTest] VERDICT speed=GAMESPEED_ONLINE S=0.5 static=true passes=6/6 turn=7 autoplayFallbacks=6 result=PASS 
+[2026-09-15 06:48:36]	[EmigTest] DONE modtest56 finished 

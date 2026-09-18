@@ -1,0 +1,11 @@
+[2026-09-15 20:31:26]	[EmigProbe] shell attached 
+[2026-09-15 20:31:27]	[EmigProbe] shell query complete 
+[2026-09-15 20:31:27]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-15 20:31:27]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-15 20:31:45]	[EmigTest] modtest86 attached 
+[2026-09-15 20:32:00]	[EmigTest] R lensRegistered=true layerRegistered=true layerHasOverlay=true active="fxs-default-lens" 
+[2026-09-15 20:32:00]	[EmigTest] D settlements=76 [{"city":"London","owner":0,"comp":null,"tiles":36},{"city":"Lāhainā","owner":0,"comp":null,"tiles":34},{"city":"Waikolu","owner":0,"comp":null,"tiles":18},{"city":"Lihu'e","owner":0,"comp":null,"tiles":24},{"city":"Leeds","owner":0,"comp":null,"tiles":28},{"city":"‘Ewa","owner":0,"comp":null,"tiles":28},{"city":"Birmingham","owner":0,"comp":null,"tiles":29},{"city":"Megiddo","owner":0,"comp":null,"tiles":23}] 
+[2026-09-15 20:32:10]	[EmigTest] L active="emig-ethnicity-lens" addPlotsCalls=51 plotsPainted=1623 colours=[{"fill":{"x":0.5214166666666666,"y":0.17874999999999996,"z":0.82125,"w":0.63},"edge":{"x":0.5333333333333333,"y":0,"z":1,"w":1}},{"fill":{"x":0.5249304299054209,"y":0.12604355141868528,"z":0.8739564485813147,"w":0.6948694751770028},"edge":{"x":0.5333333333333333,"y":0,"z":1,"w":1}},{"fill":{"x":0.5319011807775823,"y":0.021482288336266087,"z":0.9785177116637339,"w":0.8235602605092109},"edge":{"x":0.5333333333333333,"y":0,"z":1,"w":1}}] 
+[2026-09-15 20:32:10]	[EmigTest] SHOT ethnicity-lens-on 
+[2026-09-15 20:32:27]	[EmigTest] SHOT ethnicity-lens-off 
+[2026-09-15 20:32:39]	[EmigTest] DONE modtest86 finished 

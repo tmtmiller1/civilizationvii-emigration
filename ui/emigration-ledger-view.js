@@ -1,13 +1,52 @@
 // emigration-ledger-view.js
 //
-// The "Net Migration Table": the per-civ ledger (net, gross in/out, refugees, losses, border-stance
-// impact) plus a per-cause "drivers" sub-line that explains each civ's net. Split out of
-// emigration-views.js (which renders the rest of the dashboard) so each stays within its line budget.
-// Pure rendering; the row data is gathered in emigration-window.js and shaped by civLedgerRows.
+// The "Net Migration Table": the per-civ ledger (net, the movement counts, refugees, losses,
+// border-stance impact) plus a per-cause "drivers" sub-line that explains each civ's net. Split out
+// of emigration-views.js (which renders the rest of the dashboard) so each stays within its line
+// budget. Pure rendering; the row data is gathered in emigration-window.js and shaped by
+// civLedgerRows.
+//
+// The counts come in three groups, under a spanning group header. Each group uses the SAME pair of
+// headings (Left / Arrived), so a column is read by the group it sits under, not by its own wording:
+//   Internal  - moves between the civ's OWN settlements (they cancel in Net)
+//   External  - moves that crossed a civ border (these are what Net measures)
+//   Total     - Internal + External, the gross movement the civ saw
+// Splitting them answers the question the single gross pair could not: whether a civ is churning
+// internally or actually gaining/losing people to its neighbours.
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { getNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
+
+// The table's stylesheet fragment, concatenated into the dashboard's injected CSS (DASH_CSS in
+// emigration-views.js). Flexbox rows, because GameFace lays out neither <table> nor CSS grid: every
+// row uses the same per-column flex ratios, so the columns line up, full width with no dead gap.
+export const LEDGER_CSS =
+  ".emig-led{display:flex;flex-direction:column;width:100%;}" +
+  ".emig-led-row{display:flex;align-items:center;width:100%;}" +
+  ".emig-led-c{flex:1 1 0;text-align:right;padding:0.62rem 0.6rem;font-size:var(--dg-fs-120);" +
+  "overflow:hidden;white-space:nowrap;border-top:0.0277rem solid rgba(229,210,172,0.12);}" +
+  // Column weights. ledgerGroupRow spans these in pairs, so its spans are sized from the SAME
+  // numbers: name+net+bar = 2.2+1+1.3 = 4.5, each count pair = 2, and the trailing
+  // stance+refugees+losses = 1.6+1+1 = 3.6. Change a weight here and change that span with it.
+  ".emig-led-c.name{flex:2.2 1 0;text-align:left;color:#f0dca8;font-weight:bold;}" +
+  ".emig-led-c.net{flex:1 1 0;}" +
+  ".emig-led-c.net-bar{flex:1.3 1 0;}" +
+  ".emig-led-c.stance{flex:1.6 1 0;}" +
+  ".emig-led-head .emig-led-c{border-top:none;opacity:0.6;text-transform:uppercase;letter-spacing:0.03rem;font-size:var(--dg-fs-95);}" +
+  // Group banding: a hairline before each count group (Internal / External / Total) so the paired
+  // columns read as one block, plus the centred group labels above them.
+  ".emig-led-c.grp-a,.emig-led-c.grp-b,.emig-led-c.grp-c{border-left:0.0277rem solid rgba(229,210,172,0.16);}" +
+  ".emig-led-grp .emig-led-c{border-top:none;padding:0.3rem 0.6rem 0.05rem 0.6rem;text-align:center;" +
+  "opacity:0.55;text-transform:uppercase;letter-spacing:0.04rem;font-size:var(--dg-fs-85);}" +
+  ".emig-led-grp .emig-led-c.lbl{color:#e5d2ac;border-bottom:0.0277rem solid rgba(229,210,172,0.22);}" +
+  ".emig-led-net{display:flex;align-items:center;justify-content:flex-end;gap:0.4rem;}" +
+  ".emig-led-bar{height:0.7rem;border-radius:0.35rem;flex:0 0 auto;min-width:0.16rem;}" +
+  // The divider sits on the ROW (one continuous full-width line) rather than each cell: the row is
+  // align-items:center, so the empty net-bar cell is shorter than the text cells and a per-cell
+  // border-top would land at a different height there, breaking the line at the graph column.
+  ".emig-led-tot{border-top:0.0833rem solid rgba(201,162,76,0.45);}" +
+  ".emig-led-tot .emig-led-c{border-top:none;font-weight:bold;}";
 
 /**
  * Create an element with an optional class + text.
@@ -36,6 +75,24 @@ export function formatCount(people, points, mode) {
   if (mode === NumberMode.CIV) return String(Math.round(points || 0));
   if (mode === NumberMode.HISTORICAL) return formatPeople(people);
   return Math.round(points || 0) + " (" + formatPeople(people) + ")";
+}
+
+/**
+ * Split one civ's gross movement into its internal (within-civ) and external (cross-border) halves,
+ * as the table's Internal / External / Total groups read them. The tallies record gross and
+ * internal; external is the remainder, floored at 0 so a backfilled pre-split save (whose internal
+ * share is reconstructed from the flow edges, not recorded) can never read negative.
+ * @param {*} c Civ tallies.
+ * @returns {*} {intInP, intOutP, intInPts, intOutPts, extInP, extOutP, extInPts, extOutPts}.
+ */
+export function splitInternalExternal(c) {
+  const n = (/** @type {*} */ v) => v || 0;
+  const ext = (/** @type {*} */ gross, /** @type {*} */ internal) => Math.max(0, n(gross) - n(internal));
+  return {
+    intInP: n(c.intIn), intOutP: n(c.intOut), intInPts: n(c.intInPts), intOutPts: n(c.intOutPts),
+    extInP: ext(c.in, c.intIn), extOutP: ext(c.out, c.intOut),
+    extInPts: ext(c.inPts, c.intInPts), extOutPts: ext(c.outPts, c.intOutPts)
+  };
 }
 
 /**
@@ -145,7 +202,26 @@ function ledgerStanceCell(r, mode) {
 }
 
 /**
- * Build one ledger data row (flex), name, net, In / Out / Stance impact / Refugees / Losses.
+ * The count columns right of the Net bar, in render order. `people`/`points` name the row fields the
+ * cell formats (the same pair drives the header, the data cell and the Total row, so the three can
+ * never drift apart); `cls` carries the group tint / separator. The Stance-impact column is flagged
+ * rather than field-driven because it renders a signed impact plus a percentage.
+ * @type {{people:string, points:string, key:string, en:string, cls:string, stance?:boolean}[]}
+ */
+const COUNT_COLS = [
+  { people: "intOutP", points: "intOutPts", key: "LOC_EMIG_LG_COL_INT_LEFT", en: "Left", cls: "grp-a" },
+  { people: "intInP", points: "intInPts", key: "LOC_EMIG_LG_COL_INT_ARRIVED", en: "Arrived", cls: "grp-a-end" },
+  { people: "extOutP", points: "extOutPts", key: "LOC_EMIG_LG_COL_EXT_OUT", en: "Left", cls: "grp-b" },
+  { people: "extInP", points: "extInPts", key: "LOC_EMIG_LG_COL_EXT_IN", en: "Arrived", cls: "grp-b-end" },
+  { people: "outP", points: "outPts", key: "LOC_EMIG_LG_COL_TOT_OUT", en: "Left", cls: "grp-c" },
+  { people: "inP", points: "inPts", key: "LOC_EMIG_LG_COL_TOT_IN", en: "Arrived", cls: "grp-c-end" },
+  { people: "", points: "", key: "LOC_EMIG_LG_COL_STANCE", en: "Stance impact", cls: "stance", stance: true },
+  { people: "refP", points: "refPts", key: "LOC_EMIG_LG_COL_REFUGEES", en: "Refugees", cls: "" },
+  { people: "lossP", points: "lossPts", key: "LOC_EMIG_LG_COL_LOSSES", en: "Losses", cls: "" }
+];
+
+/**
+ * Build one ledger data row (flex): name, net, the net bar, then every count column.
  * @param {*} r Ledger row.
  * @param {number} maxNet Largest absolute net (people).
  * @param {number} mode A NumberMode value.
@@ -156,11 +232,11 @@ function ledgerDataRow(r, maxNet, mode) {
   row.appendChild(ledgerCell(r.name, "name"));
   row.appendChild(ledgerNetCell(r, mode));
   row.appendChild(ledgerNetBarCell(r, maxNet));
-  row.appendChild(ledgerCell(formatCount(r.inP, r.inPts, mode)));
-  row.appendChild(ledgerCell(formatCount(r.outP, r.outPts, mode)));
-  row.appendChild(ledgerStanceCell(r, mode));
-  row.appendChild(ledgerCell(formatCount(r.refP, r.refPts, mode)));
-  row.appendChild(ledgerCell(formatCount(r.lossP, r.lossPts, mode)));
+  for (const c of COUNT_COLS) {
+    row.appendChild(c.stance
+      ? ledgerStanceCell(r, mode)
+      : ledgerCell(formatCount(r[c.people], r[c.points], mode), c.cls));
+  }
   return row;
 }
 
@@ -178,22 +254,60 @@ function ledgerDriversRow(r) {
 }
 
 /**
- * The header or totals row (plain text cells). cells: name, net, in, out, stance, refugees, losses.
- * @param {string[]} cells Cell strings.
+ * The header or totals row: the leading name/net/net-bar cells plus one cell per count column.
+ * Every cell carries the SAME class its data-row counterpart gets (so each column's flex basis
+ * matches), or the header/total row's widths drift from the data rows' and the numbers stop lining
+ * up under their headings.
+ * @param {string} name The first (Civilization / Total) cell.
+ * @param {string} net The Net cell.
+ * @param {string[]} counts One string per COUNT_COLS entry, in order.
  * @param {string} cls Row class.
  * @returns {HTMLElement} The row.
  */
-function ledgerTextRow(cells, cls) {
+function ledgerTextRow(name, net, counts, cls) {
   const row = el("div", "emig-led-row " + cls);
-  row.appendChild(ledgerCell(cells[0], "name"));
-  row.appendChild(ledgerCell(cells[1], "net"));
+  row.appendChild(ledgerCell(name, "name"));
+  row.appendChild(ledgerCell(net, "net"));
   row.appendChild(ledgerCell("", "net-bar")); // align with the data rows' diverging-bar column
-  // cells[4] is the Stance-impact column; it must carry the same ".stance" (flex:1.8) class the data
-  // rows give it (ledgerStanceCell), or the header/total row's total flex-basis differs from the data
-  // rows and EVERY column (In/Out included) renders at a slightly different width, so the numbers no
-  // longer line up vertically under their headers.
-  for (let i = 2; i < cells.length; i++) row.appendChild(ledgerCell(cells[i], i === 4 ? "stance" : undefined));
+  COUNT_COLS.forEach((c, i) => row.appendChild(ledgerCell(counts[i] || "", c.cls)));
   return row;
+}
+
+/**
+ * The spanning group header above the column headings: blank over name/net/bar, then one centred
+ * label per count group (Internal / External / Total), then blank over the trailing columns. The
+ * spans are sized by summing the flex weights of the columns they cover (see LEDGER_CSS), so a
+ * group label sits over its own pair.
+ * @returns {HTMLElement} The row.
+ */
+function ledgerGroupRow() {
+  const row = el("div", "emig-led-row emig-led-grp");
+  const span = (/** @type {number} */ flex, /** @type {string} */ text) => {
+    const c = el("div", "emig-led-c" + (text ? " lbl" : ""), text);
+    c.style.flex = flex + " 1 0";
+    row.appendChild(c);
+  };
+  span(4.5, ""); // Civilization + Net + the net bar
+  span(2, loc("LOC_EMIG_LG_GRP_INTERNAL", "Internal"));
+  span(2, loc("LOC_EMIG_LG_GRP_EXTERNAL", "External"));
+  span(2, loc("LOC_EMIG_LG_GRP_TOTAL", "Total"));
+  span(3.6, ""); // Stance impact + Refugees + Losses
+  return row;
+}
+
+/**
+ * The Total row's cells: each count column summed across the rows (the Stance column keeps its own
+ * signed/"—" treatment).
+ * @param {*[]} rows Ledger rows.
+ * @param {number} mode A NumberMode value.
+ * @returns {string[]} One string per COUNT_COLS entry.
+ */
+function ledgerTotalCounts(rows, mode) {
+  const sum = (/** @type {string} */ k) => rows.reduce((a, r) => a + (r[k] || 0), 0);
+  return COUNT_COLS.map((c) => {
+    if (!c.stance) return formatCount(sum(c.people), sum(c.points), mode);
+    return sum("stInP") || sum("stOutP") ? signedCount(sum("stInP"), sum("stInPts"), mode) : "—";
+  });
 }
 
 /**
@@ -207,24 +321,19 @@ export function renderLedger(body, rows) {
   const mode = getNumberMode();
   body.appendChild(el("div", "emig-section-title", loc("LOC_EMIG_LG_TITLE", "Net Migration (Detail)")));
   const wrap = el("div", "emig-led");
+  wrap.appendChild(ledgerGroupRow());
   wrap.appendChild(ledgerTextRow(
-    [loc("LOC_EMIG_LG_COL_CIV", "Civilization"), loc("LOC_EMIG_LG_COL_NET", "Net"),
-      loc("LOC_EMIG_LG_COL_IN", "In"), loc("LOC_EMIG_LG_COL_OUT", "Out"),
-      loc("LOC_EMIG_LG_COL_STANCE", "Stance impact"), loc("LOC_EMIG_LG_COL_REFUGEES", "Refugees"),
-      loc("LOC_EMIG_LG_COL_LOSSES", "Losses")], "emig-led-head"));
+    loc("LOC_EMIG_LG_COL_CIV", "Civilization"), loc("LOC_EMIG_LG_COL_NET", "Net"),
+    COUNT_COLS.map((c) => loc(c.key, c.en)), "emig-led-head"));
   const maxNet = rows.reduce((m, r) => Math.max(m, Math.abs(r.netP || 0)), 0) || 1;
   for (const r of rows) {
     wrap.appendChild(ledgerDataRow(r, maxNet, mode));
     const drivers = ledgerDriversRow(r);
     if (drivers) wrap.appendChild(drivers);
   }
-  const sum = (/** @type {string} */ k) => rows.reduce((a, r) => a + (r[k] || 0), 0);
-  const stTot = sum("stInP") || sum("stOutP")
-    ? signedCount(sum("stInP"), sum("stInPts"), mode) : "—";
-  wrap.appendChild(ledgerTextRow([
-    loc("LOC_EMIG_LG_TOTAL", "Total"), signedCount(sum("netP"), sum("netPts"), mode),
-    formatCount(sum("inP"), sum("inPts"), mode), formatCount(sum("outP"), sum("outPts"), mode),
-    stTot, formatCount(sum("refP"), sum("refPts"), mode), formatCount(sum("lossP"), sum("lossPts"), mode)
-  ], "emig-led-tot"));
+  const netTot = rows.reduce((a, r) => a + (r.netP || 0), 0);
+  const netTotPts = rows.reduce((a, r) => a + (r.netPts || 0), 0);
+  wrap.appendChild(ledgerTextRow(loc("LOC_EMIG_LG_TOTAL", "Total"),
+    signedCount(netTot, netTotPts, mode), ledgerTotalCounts(rows, mode), "emig-led-tot"));
   body.appendChild(wrap);
 }

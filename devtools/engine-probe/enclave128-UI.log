@@ -1,0 +1,65 @@
+[2026-09-17 16:42:45]	[EmigProbe] shell attached 
+[2026-09-17 16:42:46]	[EmigProbe] shell query complete 
+[2026-09-17 16:42:47]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-17 16:42:47]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 16:43:05]	[EmigTest] modtest128 attached 
+[2026-09-17 16:43:22]	[EmigTest] S0 turn=66 host=Lāhainā pop=29 originA=4(Paris) originB=8(Pataliputra) shareBar=0.3 stockBar=4.60 minStock=3 
+[2026-09-17 16:43:22]	[EmigTest] S0 records=0 candidacies=0 comp(Lāhainā)=["0:29/100%"] 
+[2026-09-17 16:43:22]	[EmigTest] S0 progress=null 
+[2026-09-17 16:43:29]	[EmigTest] S1 records=1 candidacies=1 comp(Lāhainā)=["0:24.2/83%","4:4.8/17%"] 
+[2026-09-17 16:43:29]	[EmigTest] S1   86,20 origin=4 stance=ignore contested=false placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A"} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 16:43:29]	[EmigTest] S1 progress={"civ":4,"share":0.166,"bar":0.3,"stock":4.8,"stockBar":4.6,"stage":"established"} 
+[2026-09-17 16:43:29]	[EmigTest] S1 verdict formed=true (expect false: below the bar) 
+[2026-09-17 16:43:33]	[EmigTest] SHOT 1-foothold 
+[2026-09-17 16:43:49]	[EmigTest] S2 records=1 candidacies=1 comp(Lāhainā)=["0:15.9/53%","4:14.1/47%"] 
+[2026-09-17 16:43:49]	[EmigTest] S2   86,20 origin=4 stance=ignore contested=false placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A"} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 16:43:49]	[EmigTest] S2 progress={"civ":4,"share":0.471,"bar":0.3,"stock":14.1,"stockBar":4.6,"stage":"established"} 
+[2026-09-17 16:43:49]	[EmigTest] S2 verdict formed=true tilePlaced=true stance=ignore takesRoot=["The Norman Enclave of Lāhainā"] 
+[2026-09-17 16:43:52]	[EmigTest] SHOT 2-established-tile 
+[2026-09-17 16:44:04]	[EmigTest] S3 same-turn pass raised a modal=false (expect false: dwell 2 turns) 
+[2026-09-17 16:44:33]	[EmigTest] TURN activated n=2 turn=67 
+[2026-09-17 16:44:42]	[EmigTest] S3 turn+1 records=1 candidacies=1 comp(Lāhainā)=["0:16/53%","4:14/47%"] 
+[2026-09-17 16:44:42]	[EmigTest] S3 turn+1   86,20 origin=4 stance=ignore contested=false placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A","stood":true} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 16:44:42]	[EmigTest] S3 turn+1 progress={"civ":4,"share":0.467,"bar":0.3,"stock":14,"stockBar":4.6,"stage":"established"} 
+[2026-09-17 16:45:07]	[EmigTest] TURN activated n=3 turn=68 
+[2026-09-17 16:45:16]	[EmigTest] S3 turn+2 records=1 candidacies=0 comp(Lāhainā)=["0:16.1/54%","4:13.9/46%"] 
+[2026-09-17 16:45:16]	[EmigTest] S3 turn+2   86,20 origin=4 stance=a contested=false placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"stood":true,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A"} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 16:45:16]	[EmigTest] S3 turn+2 progress={"civ":4,"share":0.464,"bar":0.3,"stock":13.9,"stockBar":4.6,"stage":"established"} 
+[2026-09-17 16:45:25]	[EmigTest] S4 modal appeared=false title=null 
+[2026-09-17 16:45:25]	[EmigTest] S4 records=1 candidacies=1 comp(Lāhainā)=["0:16.1/54%","4:13.9/46%"] 
+[2026-09-17 16:45:25]	[EmigTest] S4   86,20 origin=4 stance=a contested=false placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"stood":true,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A"} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 16:45:25]	[EmigTest] S4 progress={"civ":4,"share":0.464,"bar":0.3,"stock":13.9,"stockBar":4.6,"stage":"established"} 
+[2026-09-17 16:45:25]	[EmigTest] S4 verdict stance=["a"] 
+[2026-09-17 16:45:57]	[EmigTest] TURN activated n=4 turn=69 
+[2026-09-17 16:46:06]	[EmigTest] S5 host yields before={"GOLD":734.5,"CULTURE":245.5,"SCIENCE":252.5,"HAPPINESS":150.2,"DIPLOMACY":-15.5} after={"GOLD":768.1,"CULTURE":271.8,"SCIENCE":258.2,"HAPPINESS":160.6,"DIPLOMACY":-8.6} (the stance pays each turn on top of the tile) 
+[2026-09-17 16:46:06]	[EmigTest] S5 records=1 candidacies=1 comp(Lāhainā)=["0:16.2/54%","4:13.8/46%"] 
+[2026-09-17 16:46:06]	[EmigTest] S5   86,20 origin=4 stance=a contested=false placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"stood":true,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A"} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 16:46:06]	[EmigTest] S5 progress={"civ":4,"share":0.46,"bar":0.3,"stock":13.8,"stockBar":4.7,"stage":"established"} 
+[2026-09-17 16:46:06]	[EmigTest] S6 opponents before=[10,12,14,17,20,21,22,24,27,28,29] 
+[2026-09-17 16:46:09]	[EmigTest] S6 at war: opponents=[4] contested=true benefitScale=0.5 chronicle=["War Tests the Norman Enclave"] 
+[2026-09-17 16:46:12]	[EmigTest] S6 peace: contested=false benefitScale=1 (expect false / 1) 
+[2026-09-17 16:46:19]	[EmigTest] S7 records=1 candidacies=1 comp(Lāhainā)=["8:15.6/52%","0:8/27%","4:6.4/21%"] 
+[2026-09-17 16:46:19]	[EmigTest] S7   86,20 origin=4 stance=a contested=false placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"stood":true,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A"} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 16:46:19]	[EmigTest] S7 progress={"civ":8,"share":0.52,"bar":0.3,"stock":15.6,"stockBar":4.7,"stage":"established"} 
+[2026-09-17 16:46:19]	[EmigTest] S7 verdict originNow=4 (was 4, expect 8) chronicle=["An Enclave Takes Root"] 
+[2026-09-17 16:46:22]	[EmigTest] SHOT 4-changed-hands 
+[2026-09-17 16:46:31]	[EmigTest] S8 community left: comp=["0:30/100%"] fadeTurns=12 fadeShare=0.125 
+[2026-09-17 16:46:57]	[EmigTest] TURN activated n=5 turn=70 
+[2026-09-17 16:47:06]	[EmigTest] S8 turn+1 records=1 candidacies=2 comp(Lāhainā)=["0:31/100%"] 
+[2026-09-17 16:47:06]	[EmigTest] S8 turn+1   86,20 origin=4 stance=a contested=false placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"stood":true,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A"} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 16:47:06]	[EmigTest] S8 turn+1 progress=null 
+[2026-09-17 16:47:30]	[EmigTest] TURN activated n=6 turn=71 
+[2026-09-17 16:47:39]	[EmigTest] S8 turn+2 records=1 candidacies=0 comp(Lāhainā)=["0:31/100%"] 
+[2026-09-17 16:47:39]	[EmigTest] S8 turn+2   86,20 origin=4 stance=a contested=false placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"stood":true,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A"} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 16:47:39]	[EmigTest] S8 turn+2 progress=null 
+[2026-09-17 16:47:57]	[EmigTest] TURN activated n=7 turn=72 
+[2026-09-17 16:48:06]	[EmigTest] S8 turn+3 records=1 candidacies=0 comp(Lāhainā)=["0:31/100%"] 
+[2026-09-17 16:48:06]	[EmigTest] S8 turn+3   86,20 origin=4 stance=a contested=false placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"stood":true,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A"} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 16:48:06]	[EmigTest] S8 turn+3 progress=null 
+[2026-09-17 16:48:31]	[EmigTest] TURN activated n=8 turn=73 
+[2026-09-17 16:48:40]	[EmigTest] S8 turn+4 records=1 candidacies=0 comp(Lāhainā)=["0:31/100%"] 
+[2026-09-17 16:48:40]	[EmigTest] S8 turn+4   86,20 origin=4 stance=a contested=false placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"stood":true,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A"} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 16:48:40]	[EmigTest] S8 turn+4 progress=null 
+[2026-09-17 16:48:40]	[EmigTest] S8 verdict recordsLeft=1 plotNow=["IMPROVEMENT_HIDDEN_FORTRESS"] fades=[] 
+[2026-09-17 16:48:43]	[EmigTest] SHOT 5-faded-plot 
+[2026-09-17 16:48:52]	[EmigTest] S9 chronicle titles=["The Emptying of Leeds","War Tests the Bulgar Enclave","The Bulgarian Enclave of Rostov on Don","The Flight from Lyon","War Tests the Norman Enclave","An Enclave Takes Root","A Norman Enclave","The Norman Enclave of Lāhainā","The Emptying of Preslav","The Flight from Kyoto","The Norman Enclave of Lāhainā"] 

@@ -1,0 +1,14 @@
+[2026-09-15 18:53:56]	[EmigProbe] shell attached 
+[2026-09-15 18:53:57]	[EmigProbe] shell query complete 
+[2026-09-15 18:53:58]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-15 18:53:58]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-15 18:54:15]	[EmigTest] modtest75 attached 
+[2026-09-15 18:54:30]	[EmigTest] R lensRegistered=true layerRegistered=true layerHasOverlay=true lensCount=15 active="fxs-default-lens" 
+[2026-09-15 18:54:30]	[EmigTest] S signals=76 localSignals=29 londonPlots=36 sampleYields=[[619730924,18],[-1155936758,11],[-1218354358,2],[981596331,4],[-348170776,9],[281460349,18]] 
+[2026-09-15 18:54:33]	[EmigTest] O group=true overlay=true addPlots=null 
+[2026-09-15 18:54:36]	[EmigTest] SHOT probe-magenta 
+[2026-09-15 18:54:53]	[EmigTest] L viaLens active="emig-prosperity-lens" addPlotsCalls=12 plotsPainted=1623 colours=[{"x":0.26666666666666666,"y":0.7607843137254902,"z":0.37254901960784315,"w":0.6},{"x":0.5490196078431373,"y":0.5490196078431373,"z":0.5490196078431373,"w":0.6},{"x":0.5176470588235295,"y":0.5725490196078431,"z":0.5294117647058824,"w":0.6}] 
+[2026-09-15 18:54:53]	[EmigTest] SHOT lens-prosperity-counted 
+[2026-09-15 18:55:06]	[EmigTest] L direct applyLayer="ok" addPlotsCalls=12 plotsPainted=1623 
+[2026-09-15 18:55:06]	[EmigTest] SHOT lens-prosperity-direct 
+[2026-09-15 18:55:17]	[EmigTest] DONE modtest75 finished 

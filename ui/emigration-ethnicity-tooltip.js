@@ -105,7 +105,8 @@ function resolve(sig, _snap, plot) {
   if (!parts || !parts.length) return null;
   const base = cityTitle(city, loc("LOC_EMIG_ETH_TITLE", "Ethnic Composition"));
   return {
-    title: local ? base + loc("LOC_EMIG_ETH_TILE_SUFFIX", " · this tile") : base,
+    // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces (mod test 88).
+    title: local ? base + " " + loc("LOC_EMIG_ETH_TILE_SUFFIX", "· this tile").trim() : base,
     rows: parts.map((p) => ({ color: p.color, name: p.name, value: loc("LOC_EMIG_PCT", "{1_Pct}%", Math.round(p.share * 100)) }))
   };
 }

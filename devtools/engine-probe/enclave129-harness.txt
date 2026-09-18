@@ -1,0 +1,15 @@
+[17:31:19] registry: 126|emigration|1 564|emigration|0  ; modinfo flag: 1
+[17:31:19] probe installed: eep-modtest129.js on AugustusExp66.Civ7Save
+[17:31:21] game pid 53270
+[17:32:15] shot 1-foothold (window 3488) -> 11954654 bytes
+[17:32:31] shot 2-established (window 3488) -> 11911710 bytes
+[17:32:47] shot 3-tip-established (window 3488) -> 11818727 bytes
+[17:33:03] shot 4-label-check (window 3488) -> 11794114 bytes
+[17:34:48] shot 6-marker-recognized (window 3488) -> 10668507 bytes
+[17:34:57] shot 7-tip-recognized (window 3488) -> 10708287 bytes
+[17:35:48] shot 8-tip-contested (window 3488) -> 11491943 bytes
+[17:37:06] shot 9-changed-hands (window 3488) -> 11420529 bytes
+[17:38:47] shot 10-faded (window 3488) -> 11402365 bytes
+[17:39:01] result=done after 408s
+[17:39:09] restored: 126|emigration|1 566|emigration|0  ; modinfo flag: 0 ; probe present: no
+[17:39:09] FINISHED result=done

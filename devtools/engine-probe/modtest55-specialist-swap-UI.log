@@ -1,0 +1,16 @@
+[2026-09-14 18:00:24]	[EmigProbe] shell attached 
+[2026-09-14 18:00:25]	[EmigProbe] shell query complete 
+[2026-09-14 18:00:25]	[EmigProbe] shell found AugustusAnt136.Civ7Save turn 136 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-14 18:00:25]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-14 18:00:44]	[EmigTest] modtest55 attached 
+[2026-09-14 18:01:01]	[EmigTest] START turn=136 candidates=["London","Leeds"] 
+[2026-09-14 18:01:01]	[EmigTest] A0 London {"pop":24,"rural":9,"urban":13,"spec":2,"pending":0,"ready":false,"expand":0,"improvements":9,"workers":[{"plot":3258,"n":1,"max":1},{"plot":3261,"n":1,"max":1}],"turnsToGrow":8,"block":"23669119","placed":24,"gap":0} readyType=boolean 
+[2026-09-14 18:01:01]	[EmigTest] A send ASSIGN_WORKER -1 plot=3258 canStart={"Success":false} sent=true 
+[2026-09-14 18:01:05]	[EmigTest] A1 +4s {"pop":24,"rural":9,"urban":13,"spec":2,"pending":0,"ready":false,"expand":0,"improvements":9,"workers":[{"plot":3258,"n":1,"max":1},{"plot":3261,"n":1,"max":1}],"turnsToGrow":8,"block":"23669119","placed":24,"gap":0} 
+[2026-09-14 18:01:09]	[EmigTest] A2 +8s {"pop":24,"rural":9,"urban":13,"spec":2,"pending":0,"ready":false,"expand":0,"improvements":9,"workers":[{"plot":3258,"n":1,"max":1},{"plot":3261,"n":1,"max":1}],"turnsToGrow":8,"block":"23669119","placed":24,"gap":0} 
+[2026-09-14 18:01:09]	[EmigTest] A VERDICT held=false delta={"pop":0,"rural":0,"urban":0,"spec":0,"pending":0,"improvements":0,"ready":false,"gap":0} 
+[2026-09-14 18:01:09]	[EmigTest] B skipped: no waiting point after un-assign 
+[2026-09-14 18:01:09]	[EmigTest] ENDTURN sent (block=23669119) 
+[2026-09-14 18:01:23]	[EmigTest] C next turn=137 {"pop":24,"rural":9,"urban":13,"spec":2,"pending":0,"ready":false,"expand":0,"improvements":9,"workers":[{"plot":3258,"n":1,"max":1},{"plot":3261,"n":1,"max":1}],"turnsToGrow":7,"block":"442844772","placed":24,"gap":0} 
+[2026-09-14 18:01:23]	[EmigTest] C VERDICT net vs A0={"pop":0,"rural":0,"urban":0,"spec":0,"pending":0,"improvements":0,"ready":false,"gap":0} 
+[2026-09-14 18:01:23]	[EmigTest] DONE modtest55 finished (turn) 

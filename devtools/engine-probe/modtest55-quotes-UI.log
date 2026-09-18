@@ -1,0 +1,15 @@
+[2026-09-17 13:29:28]	[EmigProbe] shell attached 
+[2026-09-17 13:29:29]	[EmigProbe] shell query complete 
+[2026-09-17 13:29:30]	[EmigProbe] shell found AugustusAnt49.Civ7Save turn 49 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-17 13:29:30]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 13:29:46]	[EmigTest] modtest33 attached 
+[2026-09-17 13:30:03]	[EmigTest] START turn=49 home=Bristol foreignOwner=1 foreignCiv=CIVILIZATION_MEXICO 
+[2026-09-17 13:30:07]	[EmigTest] ARRIVAL no dialog appeared 
+[2026-09-17 13:30:09]	[EmigTest] REFUGEE title="Refugees at the Border" quoteRows=["\"Litwo! Ojczyzno moja! ty jesteś jak zdrowie; / Ile cię trzeba","cenić, ten tylko się dowie / Kto cię stracił.","(Lithuania, my country, thou art like health; how much thou","shouldst be prized only he can learn who has lost thee.)\"","— Adam Mickiewicz, Pan Tadeusz (1834, trans. Noyes)"] rowSizes=[[497,23],[353,23],[494,23],[477,23],[406,21]] 
+[2026-09-17 13:30:09]	[EmigTest] SHOT quote-REFUGEE 
+[2026-09-17 13:30:30]	[EmigTest] GLYPH quote="\"He aliʻi ka ʻāina; he kauwā ke kanaka. (The land is a chief; man is its servant.)\" — ʻŌlelo Noʻeau, coll. Mary Kawena Pukui (1983)" sample="\"Liliʻuokalani · Fǝśśǝḥā · Ngụ · Thai ก\" — glyph check" 
+[2026-09-17 13:30:32]	[EmigTest] GLYPHS-HAWAII title="Glyph check" quoteRows=["\"He aliʻi ka ʻāina; he kauwā ke kanaka.","(The land is a chief; man is its servant.)\"","— ʻŌlelo Noʻeau, coll. Mary Kawena Pukui (1983)"] rowSizes=[[322,27],[338,23],[363,24]] 
+[2026-09-17 13:30:32]	[EmigTest] SHOT quote-GLYPHS-HAWAII 
+[2026-09-17 13:30:55]	[EmigTest] GLYPHS-RAW title="Glyph check 2" quoteRows=["\"Liliʻuokalani · Fǝśśǝḥā · Ngụ · Thai ก\"","— glyph check"] rowSizes=[[315,27],[110,21]] 
+[2026-09-17 13:30:55]	[EmigTest] SHOT quote-GLYPHS-RAW 
+[2026-09-17 13:31:16]	[EmigTest] DONE modtest33 finished 

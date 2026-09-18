@@ -1,0 +1,10 @@
+[2026-09-13 17:17:41]	[EmigProbe] shell attached 
+[2026-09-13 17:17:42]	[EmigProbe] shell query complete 
+[2026-09-13 17:17:42]	[EmigProbe] shell found AugustusAnt136.Civ7Save turn 136 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-13 17:17:42]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 17:18:01]	[EmigTest] modtest15 attached 
+[2026-09-13 17:18:14]	[EmigTest] START turn=136 mono=0 cities=66 share=0.3 stock=3 dwell=8 integration=0.03 
+[2026-09-13 17:18:14]	[EmigTest] COMPOSITION tracked=0 withForeign=0 foothold=0 established=0 
+[2026-09-13 17:18:14]	[EmigTest] FOREIGN-PTS distribution (top 15): [] median=0 
+[2026-09-13 17:18:14]	[EmigTest] FLOWS {"keys":0,"sample":[]} 
+[2026-09-13 17:18:14]	[EmigTest] run threw TypeError: Cannot read properties of undefined (reading 'slice') TypeError: Cannot read properties of undefined (reading 'slice')

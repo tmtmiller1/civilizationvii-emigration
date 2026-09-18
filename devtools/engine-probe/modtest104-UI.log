@@ -1,0 +1,18 @@
+[2026-09-16 09:31:52]	[EmigProbe] shell attached 
+[2026-09-16 09:31:52]	[EmigProbe] shell query complete 
+[2026-09-16 09:31:53]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-16 09:31:53]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-16 09:32:11]	[EmigTest] modtest104 attached 
+[2026-09-16 09:32:28]	[EmigTest] modtest104 start 
+[2026-09-16 09:32:28]	[EmigTest] PASS LensManager imported :: {"type":"object"} 
+[2026-09-16 09:32:28]	[EmigTest] PASS activate prosperity lens :: {"active":"emig-prosperity-lens","wanted":"emig-prosperity-lens"} 
+[2026-09-16 09:32:28]	[EmigTest] PASS activate ethnicity lens :: {"active":"emig-ethnicity-lens","wanted":"emig-ethnicity-lens"} 
+[2026-09-16 09:32:28]	[EmigTest] FAIL lens panel decorated :: {"panelFound":false,"emigElements":0} 
+[2026-09-16 09:32:28]	[EmigTest] SHOT lens_prosperity 
+[2026-09-16 09:32:28]	[EmigTest] PASS local cities exist :: {"count":29,"first":"London","loc":{"x":92,"y":32}} 
+[2026-09-16 09:32:44]	[EmigTest] FAIL city banners in view :: {"banners":0} 
+[2026-09-16 09:32:44]	[EmigTest] FAIL banner decorator ran :: {"styleInstalled":false,"bannersWithBar":0} 
+[2026-09-16 09:32:44]	[EmigTest] SUMMARY modtest104 4/7 checks OK 
+[2026-09-16 09:32:44]	[EmigTest] FAILED: ["lens panel decorated","city banners in view","banner decorator ran"] 
+[2026-09-16 09:32:44]	[EmigTest] SHOT banner_city 
+[2026-09-16 09:33:02]	[EmigTest] DONE modtest104 finished 

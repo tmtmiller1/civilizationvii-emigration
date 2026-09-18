@@ -164,6 +164,39 @@ function testCivLedgerSortingStabilityOnTie() {
   assert.equal(rows[0].name + rows[1].name + rows[2].name, "ZuluAthensBabylon");
 }
 
+function testCivLedgerSplitsInternalFromExternal() {
+  // The gross tallies COUNT the internal moves, so the table's External columns are the remainder:
+  // Rome's 9k arrivals include 4k from its own settlements, leaving 5k that crossed a border.
+  const rows = civLedgerRows([
+    { name: "Rome", in: 9000, out: 7000, intIn: 4000, intOut: 4000, net: 2000, refugees: 0, deaths: 0,
+      inPts: 9, outPts: 7, intInPts: 4, intOutPts: 4, netPts: 2, refugeesPts: 0, deathsPts: 0,
+      stanceImpact: { in: 0, out: 0, inPts: 0, outPts: 0 } }
+  ]);
+  assert.equal(rows[0].intInP, 4000);
+  assert.equal(rows[0].intOutP, 4000);
+  assert.equal(rows[0].extInP, 5000, "external arrivals are gross minus internal");
+  assert.equal(rows[0].extOutP, 3000, "external departures are gross minus internal");
+  assert.equal(rows[0].extInPts, 5, "and the same split in pop points");
+  assert.equal(rows[0].inP, 9000, "the Total column still shows the gross count");
+  // Internal moves cancel, so the external difference is the net: 5000 - 3000 = 2000.
+  assert.equal(rows[0].extInP - rows[0].extOutP, rows[0].netP);
+}
+
+function testCivLedgerInternalDefaultsAndNeverGoesNegative() {
+  // A civ with no internal tally at all (a save from before the split, whose backfill found nothing)
+  // reads as all-external; an internal figure larger than the gross one floors external at 0 rather
+  // than rendering a negative count.
+  const rows = civLedgerRows([
+    { name: "Athens", in: 3000, out: 1000, net: 2000, refugees: 0, deaths: 0 },
+    { name: "Sparta", in: 1000, out: 1000, intIn: 4000, intOut: 4000, net: 0, refugees: 0, deaths: 0 }
+  ]);
+  const byName = Object.fromEntries(rows.map((r) => [r.name, r]));
+  assert.equal(byName.Athens.intInP, 0, "no internal tally reads as zero");
+  assert.equal(byName.Athens.extInP, 3000, "so all of it is external");
+  assert.equal(byName.Sparta.extInP, 0, "external never goes negative");
+  assert.equal(byName.Sparta.extOutP, 0);
+}
+
 function testCauseBreakdownAllZeroDropped() {
   // When all causes have zero value, the breakdown should return empty (all dropped).
   const rows = causeBreakdownRows({ war: 0, unhappiness: 0, disaster: 0, other: 0 });
@@ -309,6 +342,8 @@ function testFlowNetworkRespectsCityEdgeCap() {
 testFlowNetworkWithIsolatedCivs();
 testDashboardModelEmptySections();
 testCivLedgerSortingStabilityOnTie();
+testCivLedgerSplitsInternalFromExternal();
+testCivLedgerInternalDefaultsAndNeverGoesNegative();
 testCauseBreakdownAllZeroDropped();
 testCauseBreakdownSingleCauseFull100();
 testStanceRowsAllNeutral();
@@ -362,12 +397,15 @@ function testChipLabelNamesTheDirection() {
 function testRowAccentColoursByDirection() {
   const green = causeAccent("prosperity");
   const red = causeAccent("war");
-  // Internal + inbound read green (a gain / neutral shuffle); own cross-civ loss reads red.
-  assert.equal(rowAccent({ kind: "digest", cause: "prosperity", ownLoss: true, crossCiv: false }), green);
+  const neutral = rowAccent({ kind: "crisis", cause: "war", ownLoss: false }); // the world-news slate
+  // Only the player's own GAIN (newcomers from abroad) reads green; an own cross-civ loss reads red; an
+  // internal shuffle reads neutral (the source settlement still loses its tile, so never green).
   assert.equal(rowAccent({ kind: "digest", cause: "prosperity", ownLoss: false, crossCiv: true }), green);
   assert.equal(rowAccent({ kind: "digest", cause: "war", ownLoss: true, crossCiv: true }), red);
-  // The direction colour overrides cause: an INTERNAL war relocation is still green, not war-red.
-  assert.equal(rowAccent({ kind: "digest", cause: "war", ownLoss: true, crossCiv: false }), green);
+  assert.equal(rowAccent({ kind: "digest", cause: "prosperity", ownLoss: true, crossCiv: false }), neutral);
+  // The direction colour overrides cause: an INTERNAL war relocation is neutral, not war-red and not green.
+  assert.equal(rowAccent({ kind: "digest", cause: "war", ownLoss: true, crossCiv: false }), neutral);
+  assert.notEqual(neutral, green);
 }
 
 testDiversitySectionIsFlagGated();

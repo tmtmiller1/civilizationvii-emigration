@@ -1,0 +1,19 @@
+[2026-09-13 04:43:09]	[EmigProbe] shell attached 
+[2026-09-13 04:43:10]	[EmigProbe] shell query complete 
+[2026-09-13 04:43:10]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-13 04:43:10]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 04:43:29]	[EmigTest] modtest7 attached 
+[2026-09-13 04:44:02]	[EmigTest] AUTOPLAY off; turnActive=true turn 66->66 activations=0 autoplayActive=false 
+[2026-09-13 04:44:02]	[EmigTest] START turn=66 age=AGE_EXPLORATION L=London turnActive=true enclaveIdx=205 londonPending=0 pop=36 
+[2026-09-13 04:44:02]	[EmigTest] D5 def={"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_B","age":null,"cls":"IMPROVEMENT","unlock":true,"idx":205} farmDef={"age":null,"idx":4} 
+[2026-09-13 04:44:02]	[EmigTest] D1 London emptyPlots=[] 
+[2026-09-13 04:44:02]	[EmigTest] D1 no empty plot in London 
+[2026-09-13 04:44:02]	[EmigTest] D2b tile=IMPROVEMENT_MINE plot=2874 canStart destroy={"Success":true,"keys":["Success"]} 
+[2026-09-13 04:44:06]	[EmigTest] D2b after destroy: plot=[] districtAt=DISTRICT_RURAL 
+[2026-09-13 04:44:06]	[EmigTest] D2b canStart enclave={"Success":true,"keys":["Success"]} 
+[2026-09-13 04:44:11]	[EmigTest] D2b after enclave request: plot=["IMPROVEMENT_EMIG_ENCLAVE_ROME_B"] londonPending=0 
+[2026-09-13 04:44:11]	[EmigTest] D3 Paris tile=IMPROVEMENT_WOODCUTTER canStart destroy={"Success":true,"keys":["Success"]} canStart enclave={"Success":true,"keys":["Success"]} 
+[2026-09-13 04:44:17]	[EmigTest] D3 placeEnclave={"type":"IMPROVEMENT_EMIG_ENCLAVE_GREECE_A","plot":4885,"replaced":"IMPROVEMENT_WOODCUTTER"} plotNow=["IMPROVEMENT_EMIG_ENCLAVE_GREECE_A"] 
+[2026-09-13 04:44:17]	[EmigTest] ACTIONS done; ending the turn 
+[2026-09-13 04:44:42]	[EmigTest] TURN activated n=2 turn=67 age=AGE_EXPLORATION ALIVE 
+[2026-09-13 04:44:45]	[EmigTest] DONE modtest7 finished 

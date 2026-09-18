@@ -270,8 +270,12 @@ testOwnerAggregateConsistency();
  * option relaxes the bar to foothold). A diaspora past the established bar is offerable either way.
  * enclaveProgressForCity reports the same stage regardless, so a readout built from it always agrees.
  */
-function testEnclaveProgressAndForce() {
-  // Defaults: established 0.30, min stock 3, foothold 0.25.
+async function testEnclaveProgressAndForce() {
+  // Defaults: established 0.30, min stock 3, foothold 0.25. The absolute-stock qualifier (6 points establish
+  // whatever the share) is switched OFF here so the share stages are what is under test.
+  const { CONFIG: cfg } = await import("/emigration/ui/emigration-config.js");
+  const wasStock = cfg.quarterEstablishedStock;
+  cfg.quarterEstablishedStock = 0;
   __test.reset();
   // Seed Nova as 100% owner 0, then draw a civ-2 diaspora to 28% (foothold: ≥25% but <30%), stock 7.
   __test.recordCompositionPass([city(7, 7, "Nova", 0, 18)], []);
@@ -296,11 +300,12 @@ function testEnclaveProgressAndForce() {
   const est = { location: { x: 8, y: 8 }, name: "Ecbatana" };
   assert.equal(enclaveProgressForCity(est).stage, "established", "40% clears the established bar");
   assert.ok(establishedQuarterForCity(est), "an established enclave is offered without forcing");
+  cfg.quarterEstablishedStock = wasStock;
 }
 
 testIntegrationDrift();
 testEnclaveStickiness();
-testEnclaveProgressAndForce();
+await testEnclaveProgressAndForce();
 testReturnAttribution();
 
 console.log("composition harness passed");

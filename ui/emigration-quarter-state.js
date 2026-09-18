@@ -39,6 +39,23 @@ const MAX_TILES = 4096;
  * @property {QuarterApplied} applied The small yields this stance grants each turn.
  * @property {boolean} contested Whether the host is at war with the origin's homeland.
  * @property {number} contestedTurn Turn the quarter last became contested (-999 if never).
+ * @property {number|null} [fadeSince] The turn the origin's share first sat below the fade bar (null = above).
+ * @property {boolean} recognized False from ESTABLISHMENT (the enclave exists: record + tile, no stance yet)
+ *   until RECOGNITION after the dwell period (the stance is chosen and its yields begin). Records saved
+ *   before this field existed were all created at recognition, so an absent value reads as true.
+ * @property {PlacedRecord|null} [placed] The constructible placed for this stance, or null when none was placed
+ *   (no valid tile / data not loaded); see emigration-enclave-place.js.
+ */
+/**
+ * @typedef {Object} PlacedRecord
+ * @property {string} type The type on the map (a unique or fallback improvement, the Village, or the native enclave).
+ * @property {number} plot Plot index.
+ * @property {string} [enclave] The enclave improvement the record stands for (icon, label).
+ * @property {string} [replaced] The improvement the enclave took over, when any.
+ * @property {boolean} [stood] Set once the tile has been seen standing (a later disappearance = built over).
+ * @property {Record<string, number>} [before] The plot's yields before a takeover.
+ * @property {Record<string, number>} [compensation] The replaced improvement's lost yields, paid each turn
+ *   while the tile stands (computed once the tile is first seen standing).
  */
 /**
  * A pending-enclave dwell clock: an established diaspora that has NOT yet been offered its decision. Kept
@@ -56,11 +73,28 @@ const MAX_TILES = 4096;
  * @property {number} age The age ordinal the per-age throttle count belongs to.
  * @property {number} count Decisions made this age (per-age cap).
  * @property {number} lastTurn The last decision turn (cooldown clock).
+ * @property {{age:number, byOwner:Record<string,number>}} formed Enclaves formed per host this age (pacing).
  */
 
 /** @type {QuartersState | null} */
 let _state = null;
 registerCacheReset(() => { _state = null; });
+
+/** @type {{turn:number, state:QuartersState} | null} Reader-side snapshot; see {@link quarterSnapshotAt}. */
+let _snapshot = null;
+registerCacheReset(() => { _snapshot = null; });
+
+/**
+ * The current turn (the reader snapshot's refresh key), or 0.
+ * @returns {number} Game.turn or 0.
+ */
+function gameTurn() {
+  try {
+    return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
+  } catch (_) {
+    return 0;
+  }
+}
 
 /**
  * The current age ordinal (for the per-age cap), or 0.
@@ -78,7 +112,8 @@ function currentAge() {
  * @returns {QuartersState} An empty persisted quarters state.
  */
 function emptyState() {
-  return { tiles: {}, candidacy: {}, age: currentAge(), count: 0, lastTurn: -999 };
+  const age = currentAge();
+  return { tiles: {}, candidacy: {}, age, count: 0, lastTurn: -999, formed: { age, byOwner: {} } };
 }
 
 /**
@@ -156,8 +191,64 @@ function normalizeRecord(rec) {
     applied: normalizeApplied(rec.applied),
     contested: !!rec.contested,
     contestedTurn: typeof rec.contestedTurn === "number" && isFinite(rec.contestedTurn)
-      ? Math.floor(rec.contestedTurn) : -999
+      ? Math.floor(rec.contestedTurn) : -999,
+    placed: normalizePlaced(rec.placed),
+    fadeSince: finiteTurnOrNull(rec.fadeSince),
+    recognized: rec.recognized !== false
   };
+}
+
+/** A finite turn number floored, else null. @param {*} v Any value. @returns {number|null} The turn or null. */
+function finiteTurnOrNull(v) {
+  return typeof v === "number" && isFinite(v) ? Math.floor(v) : null;
+}
+
+/**
+ * @param {*} p A candidate placed-improvement descriptor.
+ * @returns {PlacedRecord|null} The descriptor, or null when malformed.
+ */
+function normalizePlaced(p) {
+  if (!p || typeof p !== "object") return null;
+  if (typeof p.type !== "string" || !p.type.length) return null;
+  if (typeof p.plot !== "number" || !isFinite(p.plot)) return null;
+  /** @type {PlacedRecord} */
+  const out = { type: p.type, plot: Math.floor(p.plot) };
+  if (p.stood === true) out.stood = true;
+  return withOptionalFields(out, p);
+}
+
+/**
+ * Copy the optional placed-record fields that are well-formed.
+ * @param {PlacedRecord} out The record being built. @param {*} p The candidate descriptor.
+ * @returns {PlacedRecord} `out`.
+ */
+function withOptionalFields(out, p) {
+  const enclave = nonEmptyString(p.enclave);
+  if (enclave) out.enclave = enclave;
+  const replaced = nonEmptyString(p.replaced);
+  if (replaced) out.replaced = replaced;
+  const before = yieldMap(p.before);
+  if (before) out.before = before;
+  const comp = yieldMap(p.compensation);
+  if (comp) out.compensation = comp;
+  return out;
+}
+
+/** A non-empty string, or null. @param {*} v Any value. @returns {string|null} The string, or null. */
+function nonEmptyString(v) {
+  return typeof v === "string" && v.length ? v : null;
+}
+
+/**
+ * A sanitized {YIELD_X: n} map (finite numbers, non-empty), or null.
+ * @param {*} m A candidate map. @returns {Record<string, number>|null} The map, or null.
+ */
+function yieldMap(m) {
+  if (!m || typeof m !== "object") return null;
+  /** @type {Record<string, number>} */
+  const out = {};
+  for (const [k, v] of Object.entries(m)) if (typeof k === "string" && k.length && typeof v === "number" && isFinite(v)) out[k] = v;
+  return Object.keys(out).length ? out : null;
 }
 
 /**
@@ -228,8 +319,54 @@ function normalizeState(parsed) {
     age: nonNegInt(payload.age, 0),
     count: nonNegInt(payload.count, 0),
     lastTurn: typeof payload.lastTurn === "number" && isFinite(payload.lastTurn)
-      ? Math.floor(payload.lastTurn) : -999
+      ? Math.floor(payload.lastTurn) : -999,
+    formed: normalizeFormed(payload.formed)
   };
+}
+
+/**
+ * The per-age "enclaves formed per host" counters: {age, byOwner: {pid: n}}. Malformed rows dropped.
+ * @param {*} f Candidate value. @returns {{age:number, byOwner:Record<string,number>}} Sanitized.
+ */
+function normalizeFormed(f) {
+  const src = f && typeof f === "object" ? f : {};
+  /** @type {Record<string,number>} */
+  const byOwner = {};
+  const raw = src.byOwner && typeof src.byOwner === "object" ? src.byOwner : {};
+  for (const k of Object.keys(raw)) {
+    const n = nonNegInt(raw[k], 0);
+    if (/^\d+$/.test(k) && n > 0) byOwner[k] = n;
+  }
+  return { age: nonNegInt(src.age, 0), byOwner };
+}
+
+/**
+ * The formed counters for the CURRENT age (reset when the age hash changes). Does NOT persist.
+ * @returns {{age:number, byOwner:Record<string,number>}} The live counters.
+ */
+function formedNow() {
+  const s = state();
+  const age = currentAge();
+  if (!s.formed || s.formed.age !== age) s.formed = { age, byOwner: {} };
+  return s.formed;
+}
+
+/**
+ * Enclaves a host civilization has formed this age (recognized, automatic or by decision).
+ * @param {number} owner Host player id. @returns {number} The count.
+ */
+export function formedThisAge(owner) {
+  return nonNegInt(formedNow().byOwner[String(owner)], 0);
+}
+
+/**
+ * Count one more enclave formed by a host this age. Does NOT persist (the caller saves).
+ * @param {number} owner Host player id.
+ */
+export function noteFormed(owner) {
+  if (typeof owner !== "number") return;
+  const f = formedNow();
+  f.byOwner[String(owner)] = formedThisAge(owner) + 1;
 }
 
 /**
@@ -286,6 +423,29 @@ export function saveQuarters() {
 export function quarterAt(tileKey) {
   if (typeof tileKey !== "string" || !tileKey.length) return null;
   return state().tiles[tileKey] || null;
+}
+
+/**
+ * A tile's quarter record as a READER in another isolate sees it, re-read from the store once per turn.
+ *
+ * Use this, not {@link quarterAt}, from any isolate that does not itself write quarters. `_state` is
+ * loaded once and then held as the writer's live working copy (it carries in-pass mutations that are
+ * persisted at the end of the pass), so a reader isolate that touched it before any enclave existed
+ * would cache an EMPTY store and never see one form — the lens would silently stop pinning for the whole
+ * session. Each `<Item>` in the modinfo is its own V8 isolate with no shared memory, so this is the same
+ * reload-from-persistence discipline emigration-composition.js uses for its own cross-isolate readers.
+ *
+ * Deliberately a SEPARATE cache from `_state`: refreshing `_state` here would discard a writer's
+ * uncommitted mid-pass changes.
+ * @param {string} tileKey The "x,y" settlement-centre key.
+ * @returns {QuarterRecord|null} The record, or null.
+ */
+export function quarterSnapshotAt(tileKey) {
+  if (typeof tileKey !== "string" || !tileKey.length) return null;
+  resetCachesOnNewGame();
+  const turn = gameTurn();
+  if (!_snapshot || _snapshot.turn !== turn) _snapshot = { turn, state: loadState() || emptyState() };
+  return _snapshot.state.tiles[tileKey] || null;
 }
 
 /**
@@ -359,15 +519,32 @@ export function allCandidacyEntries() {
  * quarterDwellTurns = 0 this is satisfied as soon as a candidacy exists (legacy "offer on cross").
  * @param {string} tileKey The plot key. @param {string|null} originCiv The origin's resolved CivilizationType.
  * @param {number} civ The origin player id (legacy fallback). @param {number} turn Now (monotonic).
+ * @param {number} [relax] Per-age pacing relaxation in [0, 1): the dwell reads turns x (1 - relax), min 2.
  * @returns {boolean} True when the enclave has dwelt long enough.
  */
-export function dwellSatisfied(tileKey, originCiv, civ, turn) {
+export function dwellSatisfied(tileKey, originCiv, civ, turn, relax) {
+  const p = dwellProgress(tileKey, originCiv, civ, turn, relax);
+  return !!p && p.elapsed >= p.needed;
+}
+
+/**
+ * How far a tile's candidacy has dwelt toward recognition: elapsed monotonic turns and the turns needed
+ * (the configured dwell, reduced by the pacing relaxation, never below 2 unless the dwell is 0). Null
+ * when no candidacy names this origin.
+ * @param {string} tileKey The plot key. @param {string|null} originCiv The origin's CivilizationType.
+ * @param {number} civ The origin player id (legacy fallback). @param {number} turn Now (monotonic).
+ * @param {number} [relax] Pacing relaxation. @returns {{elapsed:number, needed:number}|null} The progress.
+ */
+export function dwellProgress(tileKey, originCiv, civ, turn, relax) {
   const rec = candidacyAt(tileKey);
-  if (!rec) return false;
+  if (!rec) return null;
   const same = originCiv && rec.originCiv ? rec.originCiv === originCiv : rec.civ === civ;
-  if (!same) return false;
+  if (!same) return null;
   const dwell = Math.max(0, Number(CONFIG.quarterDwellTurns) || 0);
-  return typeof turn === "number" && isFinite(turn) && turn - rec.since >= dwell;
+  const r = Math.min(1, Math.max(0, Number(relax) || 0));
+  const needed = dwell === 0 ? 0 : Math.max(2, Math.round(dwell * (1 - r)));
+  const elapsed = typeof turn === "number" && isFinite(turn) ? Math.max(0, turn - rec.since) : 0;
+  return { elapsed, needed };
 }
 
 /**

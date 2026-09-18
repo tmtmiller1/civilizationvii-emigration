@@ -1,0 +1,15 @@
+[2026-09-15 07:28:22]	HTML Parser Error@:fs://game/root-game.html@49:43: Tokenizer error with an unimplemented error message.
+[2026-09-15 07:34:42]	JS Error: fs://game/base-standard/ui/unit-flags/army-commander-flags.js:32: TypeError: unitFlag.updateArmy is not a function
+[2026-09-15 07:34:42]	JS Error (Line):         unitFlag.updateArmy();
+[2026-09-15 07:34:42]	JS Error (Stack): TypeError: unitFlag.updateArmy is not a function
+[2026-09-15 07:35:14]	JS Error: fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:449: TypeError: Cannot read properties of null (reading 'type')
+[2026-09-15 07:35:14]	JS Error (Line):     const unitDefinition = GameInfo.Units.lookup(this.unit.type);
+[2026-09-15 07:35:14]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'type')
+[2026-09-15 07:36:46]	JS Error: fs://game/base-standard/ui/unit-flags/army-commander-flags.js:32: TypeError: unitFlag.updateArmy is not a function
+[2026-09-15 07:36:46]	JS Error (Line):         unitFlag.updateArmy();
+[2026-09-15 07:36:46]	JS Error (Stack): TypeError: unitFlag.updateArmy is not a function
+[2026-09-15 07:37:11]	JS Error: fs://game/base-standard/ui/unit-flags/army-commander-flags.js:32: TypeError: unitFlag.updateArmy is not a function
+[2026-09-15 07:37:11]	JS Error (Line):         unitFlag.updateArmy();
+[2026-09-15 07:37:11]	JS Error (Stack): TypeError: unitFlag.updateArmy is not a function
+[2026-09-15 07:46:17]	HTML Parser Error@:fs://game/root-game.html@1:49: That tag isn't allowed here  Currently open tags: html, p, span..
+[2026-09-15 07:46:17]	HTML Parser Error@:fs://game/root-game.html@1:87: That tag isn't allowed here  Currently open tags: html, p..

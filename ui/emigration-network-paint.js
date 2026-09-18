@@ -191,8 +191,11 @@ function drawEventRing(ctx, d, p, now) {
  * @returns {{x:number, y:number}} Canvas position.
  */
 function dotXY(d, c) {
-  let x = c.x + d.ox;
-  let y = c.y + d.oy;
+  // Resolve through the dot's CITY when it has one, so a dragged settlement carries its dots with it
+  // (`ox/oy` are the settled civ-relative offsets, which would leave them behind).
+  const cm = /** @type {*} */ (d).cm;
+  let x = c.x + (cm ? cm.sx + /** @type {*} */ (d).cox : d.ox);
+  let y = c.y + (cm ? cm.sy + /** @type {*} */ (d).coy : d.oy);
   if (d.anim && d.anim.p < 1) {
     const e = d.anim.p * d.anim.p; // ease-in
     x = d.anim.fromX + (x - d.anim.fromX) * e;
@@ -347,48 +350,133 @@ function drawLabels(ctx, centers) {
   drawLabelsNoOverlap(ctx, labels);
 }
 
-/**
- * Draw a small event badge (coloured dot + label) just below a cluster.
- * @param {CanvasRenderingContext2D} ctx Context.
- * @param {*} c Cluster centre.
- * @param {*} ev Resolved event.
- */
-function drawEventBadge(ctx, c, ev) {
-  const color = EVENT_COLOR[ev.kind] || EVENT_COLOR.disaster;
-  const y = c.y + (c.clusterR || 6) + 13;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.lineJoin = "round";
+/** The event badge's font, set before measuring so layout and drawing agree. @param {CanvasRenderingContext2D} ctx */
+function setBadgeFont(ctx) {
   ctx.font = "600 10px BodyFont, sans-serif";
-  const text = "⚑ " + ev.label;
-  ctx.lineWidth = 3;
-  ctx.strokeStyle = "#10131b";
-  ctx.strokeText(text, c.x, y);
-  ctx.fillStyle = color;
-  ctx.fillText(text, c.x, y);
 }
 
 /**
- * Draw the event labels active at the current time, near each affected cluster.
+ * Draw one small event badge (flag + label) at a resolved position.
+ * @param {CanvasRenderingContext2D} ctx Context.
+ * @param {{text:string, x:number, color:string}} req The badge.
+ * @param {number} y Resolved centre y.
+ */
+function drawEventBadge(ctx, req, y) {
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.lineJoin = "round";
+  setBadgeFont(ctx);
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = "#10131b";
+  ctx.strokeText(req.text, req.x, y);
+  ctx.fillStyle = req.color;
+  ctx.fillText(req.text, req.x, y);
+}
+
+/**
+ * The event badges to draw at the current time: one per (cluster, event), deduplicated, anchored just below
+ * their cluster.
+ * @param {*} scene Scene.
+ * @returns {{text:string, x:number, y:number, color:string}[]} Badge requests.
+ */
+export function eventBadgeRequests(scene) {
+  const centers = (scene && scene.centers) || [];
+  /** @type {{text:string, x:number, y:number, color:string}[]} */
+  const out = [];
+  const seen = new Set();
+  for (const ev of activeEvents(scene)) {
+    for (const ci of ev.cis || []) {
+      const key = ci + "|" + ev.label; // the same event pinned twice on one cluster is one badge
+      if (centers[ci] && !seen.has(key)) {
+        seen.add(key);
+        out.push(badgeFor(centers[ci], ev));
+      }
+    }
+  }
+  return out;
+}
+
+/**
+ * The events whose window covers the frame the scrubber is on. With no frame index the clock reads as past every
+ * window, so nothing is active (unchanged behaviour, pinned in tests/network-events.mjs).
+ * @param {*} scene Scene.
+ * @returns {*[]} Active events.
+ */
+function activeEvents(scene) {
+  const f = scene && scene.state ? scene.state.frameIdx : null;
+  const now = typeof f === "number" ? f : Infinity;
+  return ((scene && scene.events) || []).filter((/** @type {*} */ ev) => now >= ev.from && now <= ev.to);
+}
+
+/**
+ * One badge anchored just below its cluster.
+ * @param {*} c Cluster centre. @param {*} ev Resolved event.
+ * @returns {{text:string, x:number, y:number, color:string}} The badge.
+ */
+function badgeFor(c, ev) {
+  return {
+    text: "⚑ " + ev.label, x: c.x, y: c.y + (c.clusterR || 6) + 13,
+    color: EVENT_COLOR[ev.kind] || EVENT_COLOR.disaster
+  };
+}
+
+/**
+ * Draw the event labels active at the current time below each affected cluster, nudged so they never print on
+ * top of each other. Every badge used to be drawn at its cluster's fixed y, so two events on one cluster (a war
+ * and its own name, or two wars) overlapped into unreadable text, and neighbouring clusters could collide too.
  * @param {CanvasRenderingContext2D} ctx Context.
  * @param {*} scene Scene.
  */
 function drawEvents(ctx, scene) {
-  const now = typeof scene.state.frameIdx === "number" ? scene.state.frameIdx : Infinity;
-  for (const ev of scene.events || []) {
-    if (now < ev.from || now > ev.to) continue;
-    for (const ci of ev.cis) {
-      const c = scene.centers[ci];
-      if (c) drawEventBadge(ctx, c, ev);
+  const reqs = eventBadgeRequests(scene);
+  if (!reqs.length) return;
+  setBadgeFont(ctx);
+  /** @type {*[]} */
+  const placed = [];
+  reqs.sort((a, b) => a.y - b.y || a.x - b.x); // deterministic: topmost cluster keeps its anchor
+  for (const r of reqs) {
+    const halfW = ctx.measureText(r.text).width / 2 + 1;
+    const makeBox = (/** @type {number} */ yy) => ({ x0: r.x - halfW, y0: yy - 6, x1: r.x + halfW, y1: yy + 6 });
+    const y = resolveY(makeBox, r.y, placed);
+    placed.push(makeBox(y));
+    drawEventBadge(ctx, r, y);
+  }
+}
+
+/**
+ * A cheap hash of every coordinate the flow arrows are struck from: each civ centre and each city
+ * sub-centre, to a quarter-pixel. Allocation-free (no string building) since this runs per rAF.
+ *
+ * The arrows are cached, and the cache key USED to cover only the frame + filters — so anything that
+ * moved a circle without changing those left the arrows behind at the old coordinates: dragging a
+ * cluster, dragging a city, and the force sim's initial settle all did it. Position is part of the
+ * cached result, so it has to be part of the key.
+ * @param {*[]} centers Civ centres.
+ * @returns {number} The stamp.
+ */
+function layoutStamp(centers) {
+  let h = 2166136261;
+  /** @param {number} n */
+  const mix = (n) => {
+    h = Math.imul(h ^ (n | 0), 16777619) >>> 0;
+  };
+  for (const c of centers) {
+    mix(c.x * 4);
+    mix(c.y * 4);
+    for (const ct of c.cities || []) {
+      mix((ct.sx || 0) * 4);
+      mix((ct.sy || 0) * 4);
     }
   }
+  return h;
 }
 
 /**
  * The memoized flow-arrow overlay: build the red/green migrant-flow segments for the current frame
  * (filtered by the Dots view's origin-isolate / focus-destination / scope state) and draw them over the
- * dots. Segments are per-frame static, so they're cached by (frame + filter) and only rebuilt when that
- * changes — the paint loop runs every rAF while animating/playing.
+ * dots. Segments are static for a given frame AND layout, so they're cached by (frame + filter +
+ * layout) and only rebuilt when one of those changes — the paint loop runs every rAF while
+ * animating/playing.
  * @param {CanvasRenderingContext2D} ctx Context.
  * @param {Scene} scene Scene.
  */
@@ -397,7 +485,8 @@ function drawFlowOverlay(ctx, scene) {
   const state = sc.state;
   const show = state.show || {};
   const key = state.frameIdx + "|" + state.origin + "|" + state.focusDest + "|" +
-    (show.immigrant ? 1 : 0) + (show.internal ? 1 : 0) + "|" + (state.expanded ? state.expanded.size : 0);
+    (show.immigrant ? 1 : 0) + (show.internal ? 1 : 0) + "|" + (state.expanded ? state.expanded.size : 0) +
+    "|" + layoutStamp(sc.centers);
   if (!sc._flowCache || sc._flowCache.key !== key) {
     const segs = buildFlowSegments({ state, centers: sc.centers, byId: sc.byId, frames: sc.frames });
     sc._flowCache = { key, segs };

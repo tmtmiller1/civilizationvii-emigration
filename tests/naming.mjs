@@ -32,9 +32,38 @@ function testCivAdjectiveFallback() {
 
 function testActionHintFallsBackToSharedHint() {
   // No Locale → the LOC lookup fails and we fall back to the shared English causeHint.
-  assert.match(actionHint("war"), /peace|siege/i);
+  assert.match(actionHint("war"), /fighting/i);
+  assert.match(actionHint("war"), /pillaged/i); // names the lever the violence model actually reads
   assert.match(actionHint("unhappiness"), /happiness/i);
   assert.equal(actionHint(undefined), ""); // no cause → no hint
+}
+
+function testActionHintNeverLeaksAnUnfilledPlaceholder() {
+  // A hint that names the settlement must fill it; with no name to give (the verbose per-cause toast
+  // aggregates across cities) it switches to the city-less variant instead of printing "{1_City}".
+  for (const cause of ["unhappiness", "prosperity", "war", "disaster", "conquest", "attrition", "return"]) {
+    assert.doesNotMatch(actionHint(cause), /\{\d+_/, cause + " (no city)");
+    assert.doesNotMatch(actionHint(cause, "Rome"), /\{\d+_/, cause + " (city)");
+  }
+  assert.match(actionHint("prosperity", "Rome"), /Rome/);
+  assert.match(actionHint("unhappiness", "Rome"), /Rome/);
+  assert.doesNotMatch(actionHint("prosperity"), /Rome/);
+}
+
+function testHintsCarryNoModelJargon() {
+  // The hints are player text: no internal-model vocabulary (the old disaster hint read "subsides on its
+  // own as the distress decays").
+  for (const cause of ["unhappiness", "prosperity", "war", "disaster", "conquest", "attrition", "return"]) {
+    assert.doesNotMatch(actionHint(cause, "Rome"), /distress|decay|outflow|displacement|pressure/i, cause);
+  }
+}
+
+function testStanceTipOnlyWhenTheCallerAsks() {
+  const base = { cause: "unhappiness", people: "12,000 people", city: "Rome", crossCiv: true, destName: "Carthage" };
+  assert.doesNotMatch(localDigestMessage(base), /Anti-Immigration/);
+  const tipped = localDigestMessage({ ...base, stanceTip: true });
+  assert.match(tipped, /Anti-Immigration Stance/);
+  assert.match(tipped, /\(External Move\)$/); // the scope tag still closes the message
 }
 
 function testPermanenceCueSelection() {
@@ -113,6 +142,9 @@ testHeadlineFallbacks();
 testDisasterNameFallback();
 testCivAdjectiveFallback();
 testActionHintFallsBackToSharedHint();
+testActionHintNeverLeaksAnUnfilledPlaceholder();
+testHintsCarryNoModelJargon();
+testStanceTipOnlyWhenTheCallerAsks();
 testPermanenceCueSelection();
 testLossHeadlineNamesCauseAndCity();
 testCostNote();
@@ -120,3 +152,17 @@ testLocalDigestComposesAndGatesCostNote();
 testLocalDigestNamesDestinationAndTagsScope();
 testConquestNamesTheConqueror();
 console.log("naming harness passed");
+
+// ── an unknown player id never reaches the engine's independent-power lookup (a native crash, 2026-09-13) ──
+{
+  const oldGame = globalThis.Game, oldPlayers = globalThis.Players;
+  let asked = 0;
+  globalThis.Game = { ...(oldGame || {}), IndependentPowers: { independentName: () => { asked++; return "LOC_X"; } } };
+  globalThis.Players = { get: (pid) => (pid === 1 ? { isMajor: false, isMinor: true } : null) };
+  const { civAdjective } = await import("/emigration/ui/emigration-naming.js");
+  civAdjective(99);
+  assert.equal(asked, 0, "no engine lookup for a player that does not exist");
+  civAdjective(1);
+  assert.ok(asked >= 1, "a real minor player is still named through the engine");
+  globalThis.Game = oldGame; globalThis.Players = oldPlayers;
+}

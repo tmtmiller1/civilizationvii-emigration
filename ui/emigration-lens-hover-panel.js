@@ -17,6 +17,14 @@ import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 
 const CURSOR_OFFSET = 36; // px gap from the cursor so the panel sits clear of the tile being read
+// The panel has to out-stack the game's tooltip layers, not just the HUD: root-shell.html mounts
+// #uinext-tooltips and #uinext-dropdowns at z-index 10000 (and #tooltip-root at 99), and every
+// ui-next tooltip - the game's own and the ones tooltip mods portal in there (Better Nested
+// Tooltips, Aventura's resource tooltips, Enhanced Town Focus Info) - renders inside that container.
+// At the old 9999 any of those painted straight over a cursor panel anchored to the same point, the
+// same way they once buried the emigration toast. 10001 clears them; the toast sits one above that
+// so a notification still wins over a hover readout. Exported so every panel shares one value.
+export const PANEL_Z = 10001;
 const INDEX_TTL = 3000; // ms a plot->settlement index is cached before a rebuild
 
 /**
@@ -28,7 +36,15 @@ const INDEX_TTL = 3000; // ms a plot->settlement index is cached before a rebuil
 
 /**
  * @typedef {Object} HoverPanelSpec
- * @property {string} lens     The lens id this panel shows for.
+ * @property {string} lens     The lens id this panel shows for (also the panel's key).
+ * @property {()=>boolean} [active] Optional: replaces the lens gate. A panel that is not tied to a lens
+ *   (the enclave tooltip shows on the ordinary map) says for itself when it may show.
+ * @property {(id:string)=>string} [css] Optional: the panel's own stylesheet, replacing the shared one.
+ *   A panel whose body is more than swatch rows (the enclave tooltip) styles itself rather than fighting
+ *   the shared rules with inline styles.
+ * @property {()=>void} [onShow] Optional: called when the panel goes from hidden to shown.
+ * @property {()=>void} [onHide] Optional: called when the panel goes from shown to hidden (a transition
+ *   only, never on every idle mouse move, so it is safe to restore shared state from it).
  * @property {string} panelId  The panel element id.
  * @property {string} styleId  The injected <style> id.
  * @property {(signals:*[])=>*} [buildSnapshot] Optional per-pass context from all signals.
@@ -68,7 +84,7 @@ function esc(s) {
  */
 function cssFor(id) {
   return (
-    "#" + id + "{position:fixed;pointer-events:none;z-index:9999;display:none;max-width:20rem;" +
+    "#" + id + "{position:fixed;pointer-events:none;z-index:" + PANEL_Z + ";display:none;max-width:20rem;" +
     "background:rgba(8,10,16,0.96);border:0.0555rem solid rgba(201,162,76,0.5);border-radius:0.3rem;" +
     "padding:0.4rem 0.6rem;color:#e5d2ac;font-size:var(--dg-fs-85);" +
     'font-family:"BodyFont","BodyFont-JP","BodyFont-KR","BodyFont-SC","BodyFont-TC";}' +
@@ -176,7 +192,7 @@ function ensurePanel(e) {
   if (!document.getElementById(e.spec.styleId)) {
     const st = document.createElement("style");
     st.id = e.spec.styleId;
-    st.textContent = cssFor(e.spec.panelId);
+    st.textContent = typeof e.spec.css === "function" ? e.spec.css(e.spec.panelId) : cssFor(e.spec.panelId);
     (document.head || document.documentElement).appendChild(st);
   }
   e.panel = document.createElement("div");
@@ -205,7 +221,35 @@ function place(panel) {
 /** Hide a panel. @param {*} e Panel entry. */
 function hidePanel(e) {
   if (e.panel) e.panel.style.display = "none";
+  const wasShown = e.curKey !== null;
   e.curKey = null;
+  if (wasShown) notify(e, "onHide");
+}
+
+/**
+ * Call one of a panel's optional transition hooks, isolated like `decorate`.
+ * @param {*} e Panel entry. @param {"onShow"|"onHide"} hook The hook name.
+ */
+function notify(e, hook) {
+  if (typeof e.spec[hook] !== "function") return;
+  try {
+    e.spec[hook]();
+  } catch (err) {
+    console.error("[Emigration.hoverpanel] " + hook + " failed", err);
+  }
+}
+
+/**
+ * Whether a panel may show right now: its own `active` predicate when it has one, else its lens.
+ * @param {*} e Panel entry. @returns {boolean} True when the panel is allowed to show.
+ */
+function panelActive(e) {
+  if (typeof e.spec.active !== "function") return lensActive(e.spec.lens);
+  try {
+    return !!e.spec.active();
+  } catch (_) {
+    return false;
+  }
 }
 
 /**
@@ -224,9 +268,22 @@ function decorate(e, panel, sig) {
   }
 }
 
+/**
+ * Rebuild a panel for a NEW tile, and report the hidden-to-shown transition.
+ * @param {*} e Panel entry. @param {HTMLElement} panel The panel. @param {*} sig The settlement's signal.
+ * @param {string} key The new tile key. @param {{title:string, rows:HoverRow[]}} out The display.
+ */
+function rebuild(e, panel, sig, key, out) {
+  const wasHidden = e.curKey === null;
+  panel.innerHTML = buildHTML(out.title, out.rows);
+  decorate(e, panel, sig);
+  e.curKey = key;
+  if (wasHidden) notify(e, "onShow");
+}
+
 /** Recompute + show/hide one panel for the currently hovered tile (lens-gated). @param {*} e Entry. */
 function renderPanel(e) {
-  if (!lensActive(e.spec.lens)) {
+  if (!panelActive(e)) {
     hidePanel(e);
     return;
   }
@@ -242,11 +299,7 @@ function renderPanel(e) {
   const panel = ensurePanel(e);
   if (!panel) return;
   const key = e.spec.lens + ":" + plot.x + "," + plot.y;
-  if (key !== e.curKey) {
-    panel.innerHTML = buildHTML(out.title, out.rows);
-    decorate(e, panel, sig);
-    e.curKey = key;
-  }
+  if (key !== e.curKey) rebuild(e, panel, sig, key, out);
   panel.style.display = "block";
   place(panel);
 }

@@ -1,0 +1,8 @@
+[12:32:45] registry: 126|emigration|1 526|emigration|0  ; modinfo flag: 1
+[12:32:45] probe installed: eep-modtest123.js on AugustusAnt65.Civ7Save
+[12:32:47] game pid 14993
+[12:33:42] shot options_sliders (window 1424) -> 4609398 bytes
+[12:33:53] shot options_violence (window 1424) -> 4594682 bytes
+[12:34:12] result=done after 68s
+[12:34:20] restored: 126|emigration|1 528|emigration|0  ; modinfo flag: 0 ; probe present: no
+[12:34:20] FINISHED result=done

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mod id="emig-scen-probe" version="1" xmlns="ModInfo">
+    <Properties>
+        <Name>Emigration Scenario-Script Probe (dev)</Name>
+        <Description>Throwaway dev probe for the multiplayer plan (8.9h probe 1): registers a gameplay-context script with the ScenarioScripts action so the UI probe can test whether it loads and whether EXECUTE_SCRIPT reaches it. Kept in its own mod so a rejected action cannot stop the UI probe from running. Not for release.</Description>
+        <Authors>Tower</Authors>
+        <Package>EmigScenProbe</Package>
+        <PackageSortIndex>9999</PackageSortIndex>
+        <Version>0.0.1</Version>
+        <AffectsSavedGames>0</AffectsSavedGames>
+    </Properties>
+    <Dependencies>
+        <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
+    </Dependencies>
+    <ActionCriteria>
+        <Criteria id="always"><AlwaysMet></AlwaysMet></Criteria>
+    </ActionCriteria>
+    <ActionGroups>
+        <ActionGroup id="scen-import" scope="game" criteria="always">
+            <Properties><LoadOrder>8500</LoadOrder></Properties>
+            <Actions><ImportFiles><Item>scripts/eep-scenario.js</Item></ImportFiles></Actions>
+        </ActionGroup>
+        <ActionGroup id="scen-scripts" scope="game" criteria="always">
+            <Properties><LoadOrder>8600</LoadOrder></Properties>
+            <Actions><ScenarioScripts><Item>scripts/eep-scenario.js</Item></ScenarioScripts></Actions>
+        </ActionGroup>
+    </ActionGroups>
+</Mod>

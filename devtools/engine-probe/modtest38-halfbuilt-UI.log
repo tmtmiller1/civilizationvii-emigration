@@ -1,0 +1,12 @@
+[2026-09-14 06:28:23]	[EmigProbe] shell attached 
+[2026-09-14 06:28:24]	[EmigProbe] shell query complete 
+[2026-09-14 06:28:25]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-14 06:28:25]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-14 06:28:43]	[EmigTest] modtest22 attached 
+[2026-09-14 06:29:00]	[EmigTest] START turn=66 age=AGE_EXPLORATION city=London urban=22 prod=172 
+[2026-09-14 06:29:00]	[EmigTest] H1 current-age buildings=["BUILDING_GRISTMILL:175","BUILDING_STONECUTTER:175","BUILDING_SAWMILL:175","BUILDING_TAVERN:200","BUILDING_WHARF:200","BUILDING_KILN:200","BUILDING_TEMPLE:200","BUILDING_DUNGEON:200","BUILDING_BAZAAR:200","BUILDING_OBSERVATORY:200","BUILDING_GUILDHALL:380","BUILDING_ARMORER:380","BUILDING_SHIPYARD:380"] 
+[2026-09-14 06:29:00]	[EmigTest] H3 control canBUILD={"type":"BUILDING_MEDIEVAL_WALLS","Success":true,"plots":8} 
+[2026-09-14 06:29:07]	[EmigTest] H1 BUILDING_GRISTMILL before={"plot":[{"type":"BUILDING_ANCIENT_BRIDGE","complete":true,"damaged":false,"id":2293794},{"type":"BUILDING_GRISTMILL","complete":true,"damaged":false,"id":13303997}],"urban":22,"prod":172,"can":{"AlreadyExists":true,"Success":false,"NeededUnlock":-1}} destroyed={"plot":[{"type":"BUILDING_ANCIENT_BRIDGE","complete":true,"damaged":false,"id":2293794}],"urban":21,"prod":172,"can":{"MountainPlots":[3451],"ExpandUrbanPlots":[2971,3065,3161],"Success":true,"NeededUnlock":-1,"Plots":[3067,2972]}} half={"plot":[{"type":"BUILDING_ANCIENT_BRIDGE","complete":true,"damaged":false,"id":2293794},{"type":"BUILDING_GRISTMILL","complete":false,"damaged":false,"id":35193021}],"urban":21,"prod":172,"can":{"MountainPlots":[3451],"ExpandUrbanPlots":[2971,3065,3161],"Success":true,"NeededUnlock":-1,"Plots":[3067,2972]}} 
+[2026-09-14 06:29:10]	[EmigTest] H2 after BUILD request: queue={"current":-414857833,"progress":0,"required":175,"turns":1,"empty":false} turnsLeft(type)=1 plot=[{"type":"BUILDING_ANCIENT_BRIDGE","complete":true,"damaged":false,"id":2293794},{"type":"BUILDING_GRISTMILL","complete":false,"damaged":false,"id":35193021},{"type":"BUILDING_GRISTMILL","complete":false,"damaged":false,"id":35258858}] 
+[2026-09-14 06:29:14]	[EmigTest] SHOT half-built 
+[2026-09-14 06:29:24]	[EmigTest] DONE modtest22 finished 

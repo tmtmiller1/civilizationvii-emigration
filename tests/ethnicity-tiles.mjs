@@ -181,4 +181,86 @@ const tileAt = (res, x, y) => res.byKey.get(x + "," + y);
   assert.equal(nulls, 4200, "every untracked settlement returns null; the bounded cache never throws");
 }
 
+// ── 8. A standing enclave pins its diaspora's cluster onto the enclave tile ───
+// The enclave tile is picked by a land rule in emigration-enclave-place.js that knows nothing about the
+// lens's hash anchor, so without the pin the colour patch and the enclave's on-map marker could name
+// different tiles. Drives the REAL bridge: a persisted quarter record → enclaveStanding → the anchor.
+{
+  const ENCLAVE = "IMPROVEMENT_EMIG_ENCLAVE_CARTHAGE";
+  const PIN_PLOT = 4; // → (2,2); the hash anchor for civ 2 lands elsewhere (asserted below)
+
+  // A quarter record for Rome (keyed by the settlement CENTRE) whose placed tile stands on PIN_PLOT.
+  const quarters = (placed) => JSON.stringify({
+    v: 1,
+    data: {
+      tiles: { "0,0": { civ: 2, owner: 0, optionId: "ignore", turn: 1, recognized: true, placed } },
+      candidacy: {}, age: 0, count: 0, lastTurn: -1, formed: { age: 0, byOwner: {} }
+    }
+  });
+  let stored = quarters({ type: ENCLAVE, plot: PIN_PLOT });
+
+  const saved = {
+    Configuration: globalThis.Configuration, Constructibles: globalThis.Constructibles,
+    GameInfo: globalThis.GameInfo, MapConstructibles: globalThis.MapConstructibles
+  };
+  globalThis.Configuration = {
+    getGame: () => ({ gameSeed: 4242, getValue: (k) => (k === "EmigrationQuarters_v1" ? stored : null) })
+  };
+  // Make the enclave improvement readable ON the pinned plot only, so enclaveStanding is a real check.
+  globalThis.MapConstructibles = { getConstructibles: (x, y) => (x === 2 && y === 2 ? [ENCLAVE] : []) };
+  globalThis.Constructibles = { getByComponentID: (id) => ({ type: id }) };
+  globalThis.GameInfo = { Constructibles: { lookup: (t) => ({ ConstructibleType: t }) } };
+
+  const shareOf = (tile, civ) => (tile.shares.find((s) => s.civ === civ) || { share: 0 }).share;
+  const peakTile = (res) => res.tiles.reduce((a, t) => (shareOf(t, 2) > shareOf(a, 2) ? t : a));
+  /** Rome with a Carthaginian minority; `turn` busts the per-settlement cache between reads. */
+  const romeAt = (turn) => {
+    comp.reset();
+    globalThis.Game.turn = turn;
+    comp.recordCompositionPass([signal(0, 0, "Rome", 0, 20), signal(9, 9, "Carthage", 2, 10)], []);
+    comp.recordCompositionPass(
+      [signal(0, 0, "Rome", 0, 24), signal(9, 9, "Carthage", 2, 6)],
+      [move(2, "Carthage", 0, "Rome", 4)]
+    );
+    return tilesForCity(cityWithPlots(0, 0, "Rome", [1, 2, 3, 4]));
+  };
+
+  try {
+    const withEnclave = romeAt(40);
+    const pinned = peakTile(withEnclave);
+    assert.equal(pinned.x + "," + pinned.y, "2,2",
+      "the diaspora's densest tile is the tile its enclave stands on");
+    // The bar comes from the LIVE enclave rule, so retuning enclaves retunes the lens with them.
+    const bar = CONFIG.quarterEstablishedShare;
+    assert.ok(shareOf(pinned, 2) > bar, "the enclave tile reads PAST the enclave formation bar");
+    assert.ok(withEnclave.tiles.every((t) => t === pinned || shareOf(t, 2) <= bar + 1e-9),
+      "and it is the only tile that does");
+    // SHADING: (2,2) is WILDERNESS on this map (weight 0.4) — the sparsest, faintest tile. An enclave is a
+    // packed quarter, so standing on it lifts the tile to urban weight instead of near-transparent.
+    const sparsest = withEnclave.tiles.reduce((a, t) => (t.density < a.density ? t : a));
+    assert.notEqual(sparsest, pinned, "the enclave tile is no longer the faintest tile in the settlement");
+    assert.ok(pinned.people > tileAt(withEnclave, 0, 1).people, "it out-weighs an ordinary rural tile");
+
+    // Same state, but the enclave no longer stands (pillaged / built over): the record is stale, so the
+    // lens must stop steering and fall back to the hash anchor rather than pointing at an empty plot.
+    globalThis.MapConstructibles = { getConstructibles: () => [] };
+    const gone = romeAt(41);
+    const unpinned = peakTile(gone);
+    assert.notEqual(unpinned.x + "," + unpinned.y, "2,2",
+      "a record whose tile no longer stands stops pinning the cluster");
+    assert.ok(gone.tiles.every((t) => shareOf(t, 2) <= bar + 1e-9),
+      "and with no standing enclave NO tile reads past the bar");
+    const wild = tileAt(gone, 2, 2);
+    assert.ok(wild.people < tileAt(gone, 0, 1).people, "and the plot is weighted as plain wilderness again");
+
+    // An unreadable quarters store must never blank the lens.
+    stored = "{ not json";
+    globalThis.MapConstructibles = { getConstructibles: (x, y) => (x === 2 && y === 2 ? [ENCLAVE] : []) };
+    const res = romeAt(42);
+    assert.ok(res && res.tiles.length === 4, "a corrupt quarters store still paints every tile");
+  } finally {
+    Object.assign(globalThis, saved);
+  }
+}
+
 console.log("ethnicity-tiles harness passed");

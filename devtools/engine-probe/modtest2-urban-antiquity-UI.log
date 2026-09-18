@@ -1,0 +1,27 @@
+[2026-09-12 20:44:37]	[EmigTest] modtest2 attached 
+[2026-09-12 20:44:50]	[EmigTest] CONFIG urban=true floor=1 place=true enclaveDataLoaded=true 
+[2026-09-12 20:44:50]	[EmigTest] TARGETS L=London specialists=2 urban=13 F=St. Petersburg urban=15 
+[2026-09-12 20:44:50]	[EmigTest] U1 reserveKind=specialist 
+[2026-09-12 20:44:50]	[EmigTest] U1 consumed={"ok":true,"fromPool":false,"deferredUrban":"specialist"} signalNow pop=23 specialists=1 
+[2026-09-12 20:44:50]	[EmigTest] U1 commit={"mode":"specialist","gold":10} 
+[2026-09-12 20:44:54]	[EmigTest] U1 RESULT before={"name":"London","pop":24,"rural":9,"urban":13,"specialists":2,"pending":0,"buildings":13,"improvements":9,"culture":38.5,"gold":25} after={"name":"London","pop":23,"rural":8,"urban":13,"specialists":1,"pending":-1,"buildings":13,"improvements":9,"culture":36.3,"gold":25} 
+[2026-09-12 20:44:54]	[EmigTest] U3 voluntary consumed={"ok":false,"fromPool":false} 
+[2026-09-12 20:44:54]	[EmigTest] U2 reserveKind=building 
+[2026-09-12 20:44:54]	[EmigTest] U2 consumed={"ok":true,"fromPool":false,"deferredUrban":"building"} 
+[2026-09-12 20:44:54]	[EmigTest] U2 commit={"mode":"building","gold":10} 
+[2026-09-12 20:44:58]	[EmigTest] U2 RESULT before={"name":"St. Petersburg","pop":25,"rural":8,"urban":15,"specialists":2,"pending":0,"buildings":19,"improvements":8,"culture":96.8,"gold":12.4} after={"name":"St. Petersburg","pop":24,"rural":8,"urban":14,"specialists":2,"pending":0,"buildings":18,"improvements":8,"culture":91.3,"gold":12.4} 
+[2026-09-12 20:44:58]	[EmigTest] U2 second reservation this turn={"ok":false,"fromPool":false} 
+[2026-09-12 20:44:58]	[EmigTest] U2 undo: pop restored=true 
+[2026-09-12 20:45:02]	[EmigTest] U4 death Paris -> {"ok":true,"mode":"building","type":"BUILDING_HARBOR"} before={"name":"Paris","pop":25,"rural":12,"urban":13,"specialists":0,"pending":0,"buildings":14,"improvements":12,"culture":62.7,"gold":20} after={"name":"Paris","pop":24,"rural":12,"urban":12,"specialists":0,"pending":0,"buildings":13,"improvements":12,"culture":58.3,"gold":19} 
+[2026-09-12 20:45:06]	[EmigTest] E1 placed={"type":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A","plot":2875} plotNow=[] standing=false before={"name":"London","pop":23,"rural":8,"urban":13,"specialists":1,"pending":-1,"buildings":13,"improvements":9,"culture":36.3,"gold":25} after={"name":"London","pop":23,"rural":8,"urban":13,"specialists":1,"pending":-1,"buildings":13,"improvements":9,"culture":36.3,"gold":25} 
+[2026-09-12 20:45:06]	[EmigTest] E1 tooltip name=Roman Enclave icon="civ_sym_rome" 
+[2026-09-12 20:45:06]	[EmigTest] SELFTEST Departures abandon a tile [PASS] Ready: a departure from London would abandon its outlying fishing_boat (plot 2974), removing that tile's yields with the person, and the losing civilization pays 10 gold. 
+[2026-09-12 20:45:06]	[EmigTest] SELFTEST Crisis takes the urban core [PASS] On (crisis causes only, after the rural tiles): London would give up a specialist first, then its harbor (plot 3166). Urban floor 1, at most 1 urban point per settlement per turn. 
+[2026-09-12 20:45:06]	[EmigTest] SELFTEST Enclave tiles [PASS] Data loaded: recognizing an enclave places its improvement on one of the city's tiles (nearest empty flat or hill plot, else the outlying farmstead), with its benefit in the city's own yields and its symbol on the map. 
+[2026-09-12 20:45:06]	[EmigTest] ACTIONS done; ending turns (5 Autoplay turns for the crash watch) 
+[2026-09-12 20:45:30]	[EmigTest] TURN activated n=2 turn=137 ALIVE 
+[2026-09-12 20:45:55]	[EmigTest] TURN activated n=3 turn=138 ALIVE 
+[2026-09-12 20:46:18]	[EmigTest] TURN activated n=4 turn=139 ALIVE 
+[2026-09-12 20:46:44]	[EmigTest] TURN activated n=5 turn=140 ALIVE 
+[2026-09-12 20:47:07]	[EmigTest] TURN activated n=6 turn=141 ALIVE 
+[2026-09-12 20:47:10]	[EmigTest] DONE modtest2 finished 

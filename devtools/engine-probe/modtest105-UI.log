@@ -1,0 +1,16 @@
+[2026-09-16 09:34:15]	[EmigProbe] shell attached 
+[2026-09-16 09:34:16]	[EmigProbe] shell query complete 
+[2026-09-16 09:34:17]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-16 09:34:17]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-16 09:34:34]	[EmigTest] modtest105 attached 
+[2026-09-16 09:34:51]	[EmigTest] modtest105 start 
+[2026-09-16 09:34:51]	[EmigTest] PASS LensManager imported :: {"type":"object"} 
+[2026-09-16 09:34:52]	[EmigTest] PASS prosperity lens active for the shot :: {"active":"emig-prosperity-lens"} 
+[2026-09-16 09:34:52]	[EmigTest] SHOT lens_prosperity 
+[2026-09-16 09:34:52]	[EmigTest] PASS local cities exist :: {"count":29,"first":"London","loc":{"x":92,"y":32}} 
+[2026-09-16 09:35:08]	[EmigTest] FAIL city banners in view :: {"banners":0} 
+[2026-09-16 09:35:08]	[EmigTest] FAIL banner decorator ran :: {"styleInstalled":false,"bannersWithBar":0} 
+[2026-09-16 09:35:08]	[EmigTest] SUMMARY modtest105 3/5 checks OK 
+[2026-09-16 09:35:08]	[EmigTest] FAILED: ["city banners in view","banner decorator ran"] 
+[2026-09-16 09:35:08]	[EmigTest] SHOT banner_city 
+[2026-09-16 09:35:26]	[EmigTest] DONE modtest105 finished 

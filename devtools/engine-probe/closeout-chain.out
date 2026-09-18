@@ -1,0 +1,20 @@
+[06:27:04] registry: 126|emigration|1 319|emigration|0  ; modinfo flag: 1
+[06:27:04] probe installed: eep-modtest59.js on AugustusExp66.Civ7Save
+[06:27:06] game pid 29517
+[06:28:28] result=done after 72s
+[06:28:36] restored: 126|emigration|1 321|emigration|0  ; modinfo flag: 0 ; probe present: no
+[06:28:36] FINISHED result=done
+[06:28:36] modtest59-placement-prompt: 0 pass lines, 0 emigration error lines
+[06:29:02] registry: 126|emigration|1 321|emigration|0  ; modinfo flag: 1
+[06:29:02] probe installed: eep-modtest56.js on none
+[06:29:04] game pid 30038
+[06:29:25] result=loadfail after 20s
+[06:29:33] restored: 126|emigration|1 323|emigration|0  ; modinfo flag: 0 ; probe present: no
+[06:29:33] FINISHED result=loadfail
+[06:29:33] modtest56-speed-online quick standard epic: 0 pass lines, 0 emigration error lines
+[06:29:58] registry: 126|emigration|1 323|emigration|0  ; modinfo flag: 1
+[06:29:58] probe installed: eep-modtest57.js on AugustusExp66.Civ7Save
+[06:30:00] game pid 30287
+[06:44:40] result=crashed after 812s
+[06:44:48] restored: 126|emigration|1 325|emigration|0  ; modinfo flag: 0 ; probe present: no
+[06:44:48] FINISHED result=crashed

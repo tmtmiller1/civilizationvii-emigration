@@ -1,0 +1,18 @@
+[2026-09-13 05:33:46]	[EmigProbe] shell attached 
+[2026-09-13 05:33:47]	[EmigProbe] shell query complete 
+[2026-09-13 05:33:47]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-13 05:33:47]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 05:34:06]	[EmigTest] modtest9 attached 
+[2026-09-13 05:34:19]	[EmigTest] START turn=66 skin=1 villageSkin=true villageIdx=2 modifierLoaded=true turnActive=true 
+[2026-09-13 05:34:19]	[EmigTest] RECORD put=true readback={"type":"IMPROVEMENT_VILLAGE","plot":4293,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A"} enclaveTypeOf=IMPROVEMENT_EMIG_ENCLAVE_ROME_A standing=false 
+[2026-09-13 05:34:26]	[EmigTest] S1 empty-plot Washington, D.C. placed={"type":"IMPROVEMENT_VILLAGE","plot":4293,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_ROME_A"} standing=true before={"plot":[],"yields":[["YIELD_FOOD",2],["YIELD_PRODUCTION",1],["YIELD_GOLD",1]]} after={"plot":["IMPROVEMENT_VILLAGE"],"yields":[["YIELD_FOOD",2],["YIELD_PRODUCTION",1],["YIELD_GOLD",1],["YIELD_CULTURE",2]]} (expect a Village and +2 Culture) 
+[2026-09-13 05:34:26]	[EmigTest] RECORD put=true readback={"type":"IMPROVEMENT_VILLAGE","plot":2874,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_GREECE_B"} enclaveTypeOf=IMPROVEMENT_EMIG_ENCLAVE_GREECE_B standing=false 
+[2026-09-13 05:34:33]	[EmigTest] S2 takeover London placed={"type":"IMPROVEMENT_VILLAGE","plot":2874,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_GREECE_B","replaced":"IMPROVEMENT_MINE"} standing=true before={"plot":["IMPROVEMENT_MINE"],"yields":[["YIELD_FOOD",1],["YIELD_PRODUCTION",3],["YIELD_SCIENCE",1],["YIELD_HAPPINESS",1]]} after={"plot":["IMPROVEMENT_VILLAGE"],"yields":[["YIELD_FOOD",1],["YIELD_PRODUCTION",3],["YIELD_SCIENCE",1],["YIELD_CULTURE",2],["YIELD_HAPPINESS",1]]} (expect a Village and +2 Culture) 
+[2026-09-13 05:34:37]	[EmigTest] SHOT village-enclave-empty 
+[2026-09-13 05:34:51]	[EmigTest] SHOT village-enclave-takeover 
+[2026-09-13 05:35:01]	[EmigTest] DEPARTURE-EXCLUSION London tiles=["IMPROVEMENT_FISHING_BOAT","IMPROVEMENT_FISHING_BOAT_RESOURCE","IMPROVEMENT_FISHING_BOAT","IMPROVEMENT_FISHING_BOAT","IMPROVEMENT_MINE","IMPROVEMENT_CAMP","IMPROVEMENT_FISHING_BOAT_RESOURCE","IMPROVEMENT_PLANTATION"] (no IMPROVEMENT_VILLAGE expected) 
+[2026-09-13 05:35:01]	[EmigTest] ACTIONS done; ending the turn 
+[2026-09-13 05:35:29]	[EmigTest] TURN activated n=2 turn=67 ALIVE 
+[2026-09-13 05:35:33]	[EmigTest] NEXT TURN S1 empty-plot plot=["IMPROVEMENT_VILLAGE"] yields=[["YIELD_FOOD",2],["YIELD_PRODUCTION",1],["YIELD_GOLD",1],["YIELD_CULTURE",2]] 
+[2026-09-13 05:35:33]	[EmigTest] NEXT TURN S2 takeover plot=["WONDER_EL_ESCORIAL"] yields=[] 
+[2026-09-13 05:35:33]	[EmigTest] DONE modtest9 finished 

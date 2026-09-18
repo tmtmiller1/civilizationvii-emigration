@@ -59,11 +59,15 @@ context object over disabling the rule.
 - **Localization.** User-facing strings are LOC keys, fully translated into all 10
   locales under `text/<locale>/ModText.xml` (en_us is the base/fallback) - including
   the **Advanced** tunable labels (`LOC_EMIG_T_*`). The non-English files are
-  **generated**, not hand-edited: author English in `text/en_us/ModText.xml`, then run
-  `node scripts/i18n_extract.mjs` (en_us → `../emigration-docs/i18n-source.json`) and
-  `node scripts/i18n_apply.mjs` (`../emigration-docs/i18n/<locale>.json` → `text/<locale>/ModText.xml`).
-  Translations live in `../emigration-docs/i18n/<locale>.json` (key → string); a missing key falls
-  back to English. `npm run verify` includes a **parity gate** (`tests/i18n.mjs`) that
+  **generated**, not hand-edited: author English in `text/en_us/ModText.xml`, then run the
+  three steps **in this order**:
+  `node scripts/i18n_ingest.mjs` (locale XML → `i18n/<locale>.json`, so nothing hand-written is lost),
+  `node scripts/i18n_extract.mjs` (en_us → `i18n/i18n-source.json`) and
+  `node scripts/i18n_apply.mjs` (`i18n/<locale>.json` → `text/<locale>/ModText.xml`).
+  Translations live in `i18n/<locale>.json` (key → string); a missing key falls
+  back to English. If you do edit a locale file directly, run **ingest** before apply: apply cannot see
+  those edits and would replace them with English. It refuses to run when that would happen
+  (`npm run test:i18n-pipeline` guards the same thing). `npm run verify` includes a **parity gate** (`tests/i18n.mjs`) that
   fails if any en_us key is absent from a locale. Preserve `{1_…}` placeholders and code
   tokens (`UNIT_MIGRANT`, `Demographics`) verbatim.
 - **Debug logging.** Modules gate verbose traces behind a module-level

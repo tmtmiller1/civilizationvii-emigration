@@ -1,0 +1,20 @@
+[2026-09-16 10:09:57]	[EmigProbe] shell attached 
+[2026-09-16 10:09:58]	[EmigProbe] shell query complete 
+[2026-09-16 10:09:58]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-16 10:09:58]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-16 10:10:16]	[EmigTest] modtest108 attached 
+[2026-09-16 10:10:33]	[EmigTest] modtest108 run local=0 mode=1 
+[2026-09-16 10:11:05]	[EmigTest] T n=1 hottestOwn=19.4% 
+[2026-09-16 10:11:36]	[EmigTest] T n=2 hottestOwn=37.9% 
+[2026-09-16 10:12:02]	[EmigTest] T n=3 hottestOwn=60.9% 
+[2026-09-16 10:12:30]	[EmigTest] T n=4 hottestOwn=83.9% 
+[2026-09-16 10:12:57]	[EmigTest] T n=5 hottestOwn=92.4% 
+[2026-09-16 10:13:23]	[EmigTest] T n=6 hottestOwn=97.8% 
+[2026-09-16 10:13:50]	[EmigTest] T n=7 hottestOwn=99.4% 
+[2026-09-16 10:14:15]	[EmigTest] T n=8 hottestOwn=99.0% 
+[2026-09-16 10:14:39]	[EmigTest] T n=9 hottestOwn=99.7% 
+[2026-09-16 10:15:05]	[EmigTest] T n=10 hottestOwn=95.3% 
+[2026-09-16 10:15:05]	[EmigTest] HOTTEST own city {"key":"0:655369","p":28.59411152415491,"pct":0.9531370508051638} 
+[2026-09-16 10:15:05]	[EmigTest] CAMERA to {"x":77,"y":36} (Tollan-Xicocotitlan) 
+[2026-09-16 10:15:21]	[EmigTest] SHOT banner_bar 
+[2026-09-16 10:15:41]	[EmigTest] DONE modtest108 finished 

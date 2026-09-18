@@ -1,0 +1,9 @@
+[12:53:13] registry: 126|emigration|1 530|emigration|0  ; modinfo flag: 1
+[12:53:13] probe installed: eep-modtest125.js on AugustusAnt65.Civ7Save
+[12:53:15] game pid 29846
+[12:54:11] shot relabel_main (window 1761) -> 4601363 bytes
+[12:54:31] shot relabel_pacing (window 1761) -> 4640331 bytes
+[12:54:56] shot relabel_violence (window 1761) -> 4640771 bytes
+[12:55:11] result=done after 88s
+[12:55:20] restored: 126|emigration|1 537|emigration|0  ; modinfo flag: 0 ; probe present: no
+[12:55:20] FINISHED result=done

@@ -1,0 +1,31 @@
+[2026-09-13 18:28:35]	[EmigProbe] shell attached 
+[2026-09-13 18:28:36]	[EmigProbe] shell query complete 
+[2026-09-13 18:28:37]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-13 18:28:37]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 18:28:56]	[EmigTest] modtest18 attached 
+[2026-09-13 18:29:09]	[EmigTest] START turn=66 mode=2 force=true majors=["0:CIVILIZATION_MONGOLIA","2:CIVILIZATION_BULGARIA","4:CIVILIZATION_NORMAN","6:CIVILIZATION_SONGHAI","7:CIVILIZATION_MING","8:CIVILIZATION_CHOLA","9:CIVILIZATION_SENGOKU"] turnActive=true 
+[2026-09-13 18:29:09]	[EmigTest] BEFORE records=0 
+[2026-09-13 18:29:09]	[EmigTest] BEFORE autoChronicle=0 
+[2026-09-13 18:29:09]	[EmigTest] SEED from Pataliputra (owner 8) -> Paris (owner 4) comp=["4:30.315348837209303/84%","8:5.684651162790698/16%"] ; -> London comp=["0:24.539433962264148/68%","8:11.46056603773585/32%"] 
+[2026-09-13 18:29:17]	[EmigTest] PASS1 records=1 
+[2026-09-13 18:29:17]	[EmigTest] PASS1 92,32 host=0(CIVILIZATION_MONGOLIA) origin=CIVILIZATION_CHOLA stance=a placed={"type":"IMPROVEMENT_CARAVANSERAI","plot":2874,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A","replaced":"IMPROVEMENT_MINE","before":{"YIELD_FOOD":1,"YIELD_PRODUCTION":3,"YIELD_SCIENCE":1,"YIELD_HAPPINESS":1}} standing=true enclave=IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A plotNow=["IMPROVEMENT_CARAVANSERAI"] 
+[2026-09-13 18:29:17]	[EmigTest] PASS1 autoChronicle=1 
+[2026-09-13 18:29:17]	[EmigTest] REMOVED comp Paris=["4:36/100%"] London=["0:36/100%"] fadeTurns=2 fadeShare=0.125 stockBar=6 
+[2026-09-13 18:29:25]	[EmigTest] PASS2 records=1 
+[2026-09-13 18:29:25]	[EmigTest] PASS2 92,32 host=0(CIVILIZATION_MONGOLIA) origin=CIVILIZATION_CHOLA stance=a placed={"type":"IMPROVEMENT_CARAVANSERAI","plot":2874,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A","replaced":"IMPROVEMENT_MINE","before":{"YIELD_FOOD":1,"YIELD_PRODUCTION":3,"YIELD_SCIENCE":1,"YIELD_HAPPINESS":1}} standing=true enclave=IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A plotNow=["IMPROVEMENT_CARAVANSERAI"] 
+[2026-09-13 18:29:25]	[EmigTest] PASS2 autoChronicle=1 
+[2026-09-13 18:29:25]	[EmigTest] ACTIONS done; ending 3 turns (fade after 2 below the bar) 
+[2026-09-13 18:29:50]	[EmigTest] TURN activated n=2 turn=67 ALIVE 
+[2026-09-13 18:29:56]	[EmigTest] TURN+1 records=1 
+[2026-09-13 18:29:56]	[EmigTest] TURN+1 92,32 host=0(CIVILIZATION_MONGOLIA) origin=CIVILIZATION_CHOLA stance=a placed={"type":"IMPROVEMENT_CARAVANSERAI","plot":2874,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A","replaced":"IMPROVEMENT_MINE","before":{"YIELD_FOOD":1,"YIELD_PRODUCTION":3,"YIELD_SCIENCE":1,"YIELD_HAPPINESS":1}} standing=false enclave=IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A plotNow=["WONDER_EL_ESCORIAL"] 
+[2026-09-13 18:29:56]	[EmigTest] TURN+1 autoChronicle=1 
+[2026-09-13 18:30:18]	[EmigTest] TURN activated n=3 turn=68 ALIVE 
+[2026-09-13 18:30:24]	[EmigTest] TURN+2 GONE 92,32 plot 2874 now=["WONDER_EL_ESCORIAL"] (record dropped) 
+[2026-09-13 18:30:24]	[EmigTest] TURN+2 records=0 
+[2026-09-13 18:30:24]	[EmigTest] TURN+2 autoChronicle=1 
+[2026-09-13 18:30:43]	[EmigTest] TURN activated n=4 turn=69 ALIVE 
+[2026-09-13 18:30:49]	[EmigTest] TURN+3 GONE 92,32 plot 2874 now=["WONDER_EL_ESCORIAL"] (record dropped) 
+[2026-09-13 18:30:49]	[EmigTest] TURN+3 records=0 
+[2026-09-13 18:30:49]	[EmigTest] TURN+3 autoChronicle=1 
+[2026-09-13 18:30:49]	[EmigTest] FADE-CHRONICLE 1 
+[2026-09-13 18:30:49]	[EmigTest] DONE modtest18 finished 

@@ -1,0 +1,15 @@
+[2026-09-13 06:56:17]	[EmigProbe] shell attached 
+[2026-09-13 06:56:17]	[EmigProbe] shell query complete 
+[2026-09-13 06:56:18]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-13 06:56:18]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 06:56:37]	[EmigTest] modtest12 attached 
+[2026-09-13 06:56:50]	[EmigTest] START turn=66 L=London turnActive=true 
+[2026-09-13 06:56:57]	[EmigTest] PLACED {"type":"IMPROVEMENT_GAMA","plot":2874,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_GORYEO_A","replaced":"IMPROVEMENT_MINE"} plot=["IMPROVEMENT_GAMA"] record={"placed":{"type":"IMPROVEMENT_GAMA","plot":2874,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_GORYEO_A"}} standing=true builtOverChronicle=0 records=1 
+[2026-09-13 06:56:57]	[EmigTest] ACTIONS done; ending 3 turns 
+[2026-09-13 06:57:22]	[EmigTest] TURN activated n=2 turn=67 ALIVE 
+[2026-09-13 06:57:28]	[EmigTest] TURN+1 plot=["WONDER_EL_ESCORIAL"] record={"placed":{"type":"IMPROVEMENT_GAMA","plot":2874,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_GORYEO_A"}} standing=false builtOverChronicle=0 records=1 
+[2026-09-13 06:57:50]	[EmigTest] TURN activated n=3 turn=68 ALIVE 
+[2026-09-13 06:57:56]	[EmigTest] TURN+2 plot=["WONDER_EL_ESCORIAL"] record={"placed":{"type":"IMPROVEMENT_GAMA","plot":2874,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_GORYEO_A"}} standing=false builtOverChronicle=0 records=1 
+[2026-09-13 06:58:17]	[EmigTest] TURN activated n=4 turn=69 ALIVE 
+[2026-09-13 06:58:23]	[EmigTest] TURN+3 plot=["WONDER_EL_ESCORIAL"] record={"placed":null} standing=false builtOverChronicle=0 records=1 
+[2026-09-13 06:58:23]	[EmigTest] DONE modtest12 finished 
