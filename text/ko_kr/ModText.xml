@@ -277,18 +277,35 @@
         <Replace Tag="LOC_EMIG_ARRIVAL_EYEBROW" Language="ko_KR"><Text>새 이주민</Text></Replace>
         <Replace Tag="LOC_EMIG_ARRIVAL_BODY_ONE" Language="ko_KR"><Text>이주민 인구 포인트 1개가 {1_City}에 도착하여 정착을 기다리고 있습니다. 어디에 살게 할까요?</Text></Replace>
         <Replace Tag="LOC_EMIG_ARRIVAL_BODY" Language="ko_KR"><Text>이주민 인구 포인트 {1_Count}개가 {2_City}에 도착하여 정착을 기다리고 있습니다. 어디에 살게 할까요?</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_EYEBROW" Language="ko_KR"><Text>Call them home</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_EYEBROW_IN" Language="ko_KR"><Text>From our own settlements</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_EYEBROW_EX" Language="ko_KR"><Text>From foreign cities</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_TITLE_IN" Language="ko_KR"><Text>Call our people home</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_TITLE_EX" Language="ko_KR"><Text>Call our people back from abroad</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_BODY" Language="ko_KR"><Text>{1_Away} population points were driven out and have not come back. A call reaches up to {2_Points}: about {3_Pct}% of them agree, and at least one always does. You pay only for those who come.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_PAY_GOLD" Language="ko_KR"><Text>Pay {1_Cost} Gold</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_PAY_INFL" Language="ko_KR"><Text>Spend {1_Cost} Influence</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_PAY_N" Language="ko_KR"><Text>Charged per point that comes home, not per attempt.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_BODY_IN_ONE" Language="ko_KR"><Text>{1_Away} population points were driven out of {2_Home} and now live in {3_From}, another of our settlements. They are inside our borders and under our own rule, so every one we call will come. Choose how many to bring home.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_BODY_IN" Language="ko_KR"><Text>{1_Away} population points were driven out of their homes and now live in other settlements of ours. They are inside our borders and under our own rule, so every one we call will come. Choose how many to bring home.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_BODY_EX_ONE" Language="ko_KR"><Text>{1_Away} population points were driven out of {2_Home} and now live in {3_From}, a city of {4_Civ}. They have a life there, and a foreign ruler has no reason to help us empty their streets. Choose how many to call: each has about a {5_Pct}% chance of answering, the call may bring nobody, and it is paid for either way.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_BODY_EX" Language="ko_KR"><Text>{1_Away} population points were driven out of their homes and now live under other rulers. They have a life there, and a foreign ruler has no reason to help us empty their streets. Choose how many to call: each has about a {2_Pct}% chance of answering, the call may bring nobody, and it is paid for either way.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_PAIR_IN" Language="ko_KR"><Text>{3_Count} from {1_From} back to {2_Home}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_PAIR_EX" Language="ko_KR"><Text>{4_Count} from {1_From} ({2_Civ}) back to {3_Home}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_MORE" Language="ko_KR"><Text>and {1_Count} more</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_TIER_GOLD_ONE" Language="ko_KR"><Text>Bring one home for [icon:YIELD_GOLD] {1_Cost}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_TIER_GOLD" Language="ko_KR"><Text>Bring {1_Count} home for [icon:YIELD_GOLD] {2_Cost}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_TIER_INFL_ONE" Language="ko_KR"><Text>Bring one home for [icon:YIELD_DIPLOMACY] {1_Cost}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_TIER_INFL" Language="ko_KR"><Text>Bring {1_Count} home for [icon:YIELD_DIPLOMACY] {2_Cost}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_TIER_N" Language="ko_KR"><Text>Exactly this many come home, from the largest group first.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_TOO_POOR" Language="ko_KR"><Text>Not enough to call even one home: [icon:YIELD_GOLD] {1_Gold} or [icon:YIELD_DIPLOMACY] {2_Infl}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_CALL_GOLD_ONE" Language="ko_KR"><Text>Call one home for [icon:YIELD_GOLD] {1_Cost}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_CALL_GOLD" Language="ko_KR"><Text>Call {1_Count} home for [icon:YIELD_GOLD] {2_Cost}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_CALL_INFL_ONE" Language="ko_KR"><Text>Call one home for [icon:YIELD_DIPLOMACY] {1_Cost}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_CALL_INFL" Language="ko_KR"><Text>Call {1_Count} home for [icon:YIELD_DIPLOMACY] {2_Cost}</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_CALL_N" Language="ko_KR"><Text>Each has about a {1_Pct}% chance of answering. The call is paid for either way.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_NO" Language="ko_KR"><Text>Leave them where they are</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_NO_N" Language="ko_KR"><Text>They may still drift home on their own in time.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON" Language="ko_KR"><Text>{1_Count} population points answered the call and came home.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_ONE" Language="ko_KR"><Text>One population point answered the call and came home.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_TITLE" Language="ko_KR"><Text>They Answer The Call</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE" Language="ko_KR"><Text>The call went out to our people abroad, and none of them came.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE_TITLE" Language="ko_KR"><Text>The Call Goes Unanswered</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL" Language="ko_KR"><Text>주요 문명과의 전쟁 압력</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL_D" Language="ko_KR"><Text>공격자 중에 주요 문명이 있을 때 공격이 얼마나 큰 분쟁 압력을 만드는지. 기본값은 1이며, 낮을수록 전쟁으로 쫓겨나는 사람이 적고 높을수록 많아집니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SIEGEFLOOR" Language="ko_KR"><Text>포위 하한: 주요 문명</Text></Replace>
@@ -298,19 +315,17 @@
         <Replace Tag="LOC_EMIG_T_MINORFLOOR" Language="ko_KR"><Text>포위 하한: 소국</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MINORFLOOR_D" Language="ko_KR"><Text>소국에게 포위만 당한 도시가 실제 피해를 입기 전에 느끼는 압력. 실제 피해는 항상 온전히 반영됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME" Language="ko_KR"><Text>사람들을 고향으로 부르기</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_D" Language="ko_KR"><Text>Offers a paid call to bring displaced people back to the settlement they fled. You pay only for those who come, and at least one always does.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_D" Language="ko_KR"><Text>Offers a paid call to bring displaced people back to the settlement they fled, in a size you choose. From your own settlements it is a purchase: that many come. From abroad the call is paid for either way and each person asked may or may not answer.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="ko_KR"><Text>평온할 때 제안</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="ko_KR"><Text>Raises the call automatically once no settlement of yours is under war, siege, disaster or famine and your people are still displaced. Off leaves it to the console.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_IN" Language="ko_KR"><Text>자국 내 포인트별 귀환 확률</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_IN_D" Language="ko_KR"><Text>How likely each point is to come when it fled one of your own settlements for another. Higher means more of them return per call.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="ko_KR"><Text>해외 포인트별 귀환 확률</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_EX_D" Language="ko_KR"><Text>How likely each point is to come when it lives under another civilization. Far lower: they have a life there now.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_EX_D" Language="ko_KR"><Text>How likely each point living under another civilization is to answer a call. Low: they have a life there now, and a call may bring nobody.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_GOLD" Language="ko_KR"><Text>귀환 인구 포인트당 금</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_GOLD_D" Language="ko_KR"><Text>Gold charged for each population point that comes home.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_GOLD_D" Language="ko_KR"><Text>The Gold price of a call for one person. Bigger calls climb faster than the head count (two cost about 2.8 times this, three about 5.2 times), and calls abroad are scaled up on top.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_INFL" Language="ko_KR"><Text>귀환 인구 포인트당 영향력</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_INFL_D" Language="ko_KR"><Text>Influence charged for each population point that comes home.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_INFL_D" Language="ko_KR"><Text>The Influence price of a call for one person, on the same curve as Gold.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_MAX" Language="ko_KR"><Text>호출당 최대 인구 포인트</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_MAX_D" Language="ko_KR"><Text>The most population points one call may bring back.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_MAX_D" Language="ko_KR"><Text>The most people one call may be for; the sizes offered are one, about half of this, and this.</Text></Replace>
         <Replace Tag="LOC_EMIG_ARRIVAL_EYEBROW_REFUGEE" Language="ko_KR"><Text>Refugees</Text></Replace>
         <Replace Tag="LOC_EMIG_ARRIVAL_TITLE_REFUGEE" Language="ko_KR"><Text>Refugees in {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIG_ARRIVAL_BODY_REFUGEE_ONE" Language="ko_KR"><Text>A population point of {1_Who} refugees has reached {2_City}, fleeing {3_Fled}. Where should they live?</Text></Replace>
@@ -1330,17 +1345,26 @@
         <Replace Tag="LOC_EMIG_PROS_TIER_AVG" Language="ko_KR"><Text>평균 수준</Text></Replace>
         <Replace Tag="LOC_EMIG_PROS_TIER_BELOW" Language="ko_KR"><Text>평균 이하</Text></Replace>
         <Replace Tag="LOC_EMIG_PROS_TIER_SHEDDING" Language="ko_KR"><Text>인구 유출 중</Text></Replace>
-        <Replace Tag="LOC_EMIG_PROS_TILE_BEST" Language="ko_KR"><Text>이곳 최고의 땅</Text></Replace>
-        <Replace Tag="LOC_EMIG_PROS_TILE_GOOD" Language="ko_KR"><Text>이곳의 좋은 땅</Text></Replace>
-        <Replace Tag="LOC_EMIG_PROS_TILE_AVG" Language="ko_KR"><Text>이곳의 평범한 땅</Text></Replace>
-        <Replace Tag="LOC_EMIG_PROS_TILE_POOR" Language="ko_KR"><Text>이곳의 척박한 땅</Text></Replace>
-        <Replace Tag="LOC_EMIG_PROS_TILE_WORST" Language="ko_KR"><Text>이곳 최악의 땅</Text></Replace>
-        <Replace Tag="LOC_EMIG_PROS_TILE_YIELD" Language="ko_KR"><Text>이 타일의 산출은 {1_Score}, 정착지 평균은 {2_Mean}입니다</Text></Replace>
         <Replace Tag="LOC_EMIG_PROS_TILE_SUFFIX" Language="ko_KR"><Text>· 이 타일</Text></Replace>
-        <Replace Tag="LOC_EMIG_PROS_LANDMARK" Language="ko_KR"><Text>명소: {1_Name}</Text></Replace>
-        <Replace Tag="LOC_EMIG_PROS_LANDMARK_UNNAMED" Language="ko_KR"><Text>불가사의</Text></Replace>
-        <Replace Tag="LOC_EMIG_PROS_LANDMARK_NOTE" Language="ko_KR"><Text>불가사의의 가치는 땅이 아니라 정착지에 계산됩니다</Text></Replace>
-        <Replace Tag="LOC_EMIG_PROS_LANDMARK_YIELD" Language="ko_KR"><Text>이 타일의 산출은 {1_Score}. 불가사의의 가치는 땅이 아니라 정착지에 계산됩니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_BAND_FLOURISHING" Language="ko_KR"><Text>번영</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_BAND_THRIVING" Language="ko_KR"><Text>호조</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_BAND_ORDINARY" Language="ko_KR"><Text>평범</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_BAND_MEAGRE" Language="ko_KR"><Text>빈약</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_BAND_BLIGHTED" Language="ko_KR"><Text>황폐</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_T_WONDER" Language="ko_KR"><Text>{1_Name}, 불가사의</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_T_WONDER_UNNAMED" Language="ko_KR"><Text>불가사의</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_T_CENTER" Language="ko_KR"><Text>도심</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_T_BUILDING_UNNAMED" Language="ko_KR"><Text>건물</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_T_QUARTER" Language="ko_KR"><Text>완성된 구역</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_T_IMPROVEMENT_UNNAMED" Language="ko_KR"><Text>시설</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_T_YIELD" Language="ko_KR"><Text>이 타일의 산출 ({1_Yield})</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_T_RIVER" Language="ko_KR"><Text>강</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_T_NATURAL" Language="ko_KR"><Text>{1_Name}, 자연 불가사의</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_T_NATURAL_UNNAMED" Language="ko_KR"><Text>자연 불가사의</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_T_ADJ_WONDER" Language="ko_KR"><Text>인접한 불가사의 × {1_Count}</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_T_ADJ_NATURAL" Language="ko_KR"><Text>인접한 자연 불가사의 × {1_Count}</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_T_PILLAGED" Language="ko_KR"><Text>{1_Name}, 약탈됨</Text></Replace>
+        <Replace Tag="LOC_EMIG_PROS_T_ADJ_PILLAGED" Language="ko_KR"><Text>약탈된 인접 타일 × {1_Count}</Text></Replace>
         <Replace Tag="LOC_EMIG_PROS_SETTLEMENT" Language="ko_KR"><Text>정착지: {1_Tier}</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESSURE_ATTACK" Language="ko_KR"><Text>공격받는 중</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESSURE_SIEGE" Language="ko_KR"><Text>포위됨</Text></Replace>

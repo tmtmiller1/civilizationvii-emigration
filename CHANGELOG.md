@@ -7,7 +7,33 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+### Changed
+- **The Prosperity lens scores each tile in points, and the readout says why.** A tile's prosperity used to be the
+  raw yield sitting on the hex, ranked against the rest of its settlement - so the Hanging Gardens, which produces
+  no yield at all (its effect is +10% growth), read as London's "worst land" at -100%, and a farm out-scored the
+  palace. A tile is now the sum of named terms: a wonder on the hex (+6, the largest term), the city centre (+3),
+  each building (+2, plus +1 for a completed quarter), a worked improvement (+1), the hex's own yield (+1 per 3), a
+  river (+1), a natural wonder on the hex (+3) or next door (+2 each), a wonder next door (+1 each), and anything
+  pillaged on the hex (-3 each) or next door (-1 each). The score is absolute and banded - Flourishing (8+),
+  Thriving (5-7), Ordinary (2-4), Meagre (0-1), Blighted (below 0) - so a wonder tile reads the same in every
+  settlement. Hover a tile and the panel lists the band, the score, and every term behind it, then the
+  settlement's standing as before. Wonders and natural wonders are recognised from the game's database, so ones
+  added by an age or another mod count too.
+- **Calling people home is now two different offers, and the dialog says which one you are looking at.** Both
+  offer a ladder of sizes for each currency (one person, about half of what is callable, everyone), priced with the
+  game's own Gold and Influence icons, and only the sizes your treasury covers. The price climbs faster than the
+  head count (two people cost nearly three times one, three about five times), so a big call is a decision rather
+  than a bulk order. From your own settlements it is a purchase: the pop-up names the settlement people are pulled
+  back from and the one they return to, and exactly the number you paid for come. From abroad it is a gamble: the
+  pop-up names the foreign city and its ruler and states the odds for each person; the call is paid for at the size
+  you choose whether or not anyone answers, every person asked is rolled, and it may bring nobody. An unanswered
+  call is recorded in the Chronicle and still starts the cooldown, so it cannot simply be repeated next turn. The
+  "chance each point returns from your own lands" setting is gone, since that call is no longer a roll.
+
 ### Fixed
+- **Calling people home never actually charged anything.** The Gold fee was handed to the charging helper with the
+  wrong sign, which it treats as "nothing to charge", and the Influence fee was charged against a yield the game
+  does not have. Both currencies were free. They are charged now.
 - **The map tooltip stays hidden under a lens, even alongside other tooltip mods.** While an Emigration lens is
   up (or the cursor is on an enclave) the mod hides the game's own tile tooltip so it doesn't collide with the
   mod's readout. That was a single switch, and several things could flip it back without the mod noticing - a
