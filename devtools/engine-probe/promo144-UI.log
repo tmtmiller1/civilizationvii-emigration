@@ -1,0 +1,20 @@
+[2026-09-18 09:48:56]	[EmigProbe] shell attached 
+[2026-09-18 09:48:57]	[EmigProbe] shell query complete 
+[2026-09-18 09:48:58]	[EmigProbe] shell found EmigPromo106.Civ7Save turn 106 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-18 09:48:58]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-18 09:49:16]	[EmigTest] modtest144 attached 
+[2026-09-18 09:49:31]	[EmigTest] modtest144 run local=0 turn=106 
+[2026-09-18 09:49:37]	[EmigTest] POPUP dismissing screen-tech-civic-complete 
+[2026-09-18 09:49:44]	[EmigTest] NET flows chip found=true chips=["Origin","Type","Movement","Migrant flows","0.5×","1×","2×","4×"] 
+[2026-09-18 09:49:51]	[EmigTest] NET flows active=false 
+[2026-09-18 09:49:51]	[EmigTest] SHOT net-flows-origin 
+[2026-09-18 09:50:12]	[EmigTest] NET movement active=false flows still active=false 
+[2026-09-18 09:50:12]	[EmigTest] SHOT net-flows-movement 
+[2026-09-18 09:50:30]	[EmigTest] LENS picks ["Rostov on Don idx=0.52 n=2 mix=4:79%,2:21%","Bordeaux idx=0.27 n=2 mix=4:92%,0:8%","Toulouse idx=0.22 n=2 mix=4:94%,0:6%"] 
+[2026-09-18 09:50:45]	[EmigTest] LENS 1 Rostov on Don active=emig-ethnicity-lens 
+[2026-09-18 09:50:45]	[EmigTest] SHOT ethnic-1 
+[2026-09-18 09:51:15]	[EmigTest] LENS 2 Bordeaux active=emig-ethnicity-lens 
+[2026-09-18 09:51:15]	[EmigTest] SHOT ethnic-2 
+[2026-09-18 09:51:45]	[EmigTest] LENS 3 Toulouse active=emig-ethnicity-lens 
+[2026-09-18 09:51:45]	[EmigTest] SHOT ethnic-3 
+[2026-09-18 09:52:00]	[EmigTest] DONE modtest144 finished 

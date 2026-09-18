@@ -1,0 +1,8 @@
+[2026-09-18 11:42:43]	HTML Parser Error@:fs://game/root-game.html@1:1146: Premature end of file  Currently open tags: html, div..
+[2026-09-18 11:42:59]	HTML Parser Error@:fs://game/root-game.html@49:43: Tokenizer error with an unimplemented error message.
+[2026-09-18 11:44:12]	JS Error: fs://game/base-standard/ui/unit-flags/privateer-flags.js:38: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-18 11:44:12]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-18 11:44:12]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-18 11:45:54]	JS Error: fs://game/base-standard/ui/unit-flags/privateer-flags.js:38: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-18 11:45:54]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-18 11:45:54]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')

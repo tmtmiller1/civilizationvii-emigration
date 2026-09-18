@@ -7,13 +7,17 @@
 // ethnicity lens (tile colouring) and the per-city readout breakdown.
 //
 // Identity = the city-CENTRE plot (x,y), which is stable across conquest (a settlement stays on the
-// same tile when it changes hands). Migrations are keyed by city NAME in the records, so a
-// name→location map (built from the current city signals each pass) bridges the two.
+// same tile when it changes hands). Migration records carry that key (srcLoc / destLoc); records made
+// before they did carry only the city NAME, so a name→location map (built from the current city
+// signals each pass) bridges those.
 //
 // Update model (per pass, from data the mod already collects in emigration-main's doPass):
-//   • First sighting / founding → 100% the current owner.
-//   • Migration IN  → arrivals add to the migrant's ORIGIN civ bucket (source owner).
-//   • Migration OUT / attrition → removed PROPORTIONALLY from the city's existing mix.
+//   • First sighting / founding → 100% the current owner, or the original owner when the settlement is
+//     first seen already conquered from another major civ.
+//   • Migration OUT → the record's originMix (the source's mix at departure) is removed from the source.
+//   • Migration IN  → the same originMix is added at the destination, so a diaspora that moves on keeps its
+//     identity. A returnee's originCiv wins over the mix; a record with neither counts as the source owner's.
+//   • Attrition / a record with no mix → removed PROPORTIONALLY from the city's existing mix.
 //   • Conquest (owner change at the same tile) → buckets unchanged; only the owner field flips.
 //   • Natural growth (residual increase) → counts as the CURRENT OWNER's ethnicity.
 //   • External loss (residual decrease) → removed proportionally.
@@ -23,6 +27,7 @@
 // State persists in GameConfiguration under its own key (additive; older saves simply start empty).
 
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
+import { normalizeOriginMix } from "/emigration/ui/emigration-state.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { atWarBetween } from "/emigration/ui/emigration-geography.js";
 import { getIntegrationEnabled } from "/emigration/ui/emigration-settings.js";
@@ -31,6 +36,9 @@ import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigrat
 import { QUARTER_FOOTHOLD_SHARE } from "/emigration/ui/emigration-tunables.js";
 
 const STATE_KEY = "EmigrationEthnos_v1";
+// A counter the recorder bumps on every save, under its own key, so a reader can tell the ledger changed by
+// reading one short value instead of re-parsing the blob (ethnicity audit item O1).
+const STAMP_KEY = "EmigrationEthnosStamp_v1";
 
 /**
  * @typedef {Object} CityComposition
@@ -41,20 +49,28 @@ const STATE_KEY = "EmigrationEthnos_v1";
  * @property {number} seenTurn Last turn this settlement was observed.
  */
 
-/** @typedef {{ cities: Record<string, CityComposition> }} CompositionState */
+/**
+ * @typedef {Object} CompositionState
+ * @property {Record<string, CityComposition>} cities Entries keyed by the settlement's centre "x,y".
+ * @property {number} [passTurn] The turn of the latest recorder pass. An entry whose `seenTurn` differs was not
+ *   in that pass's city list (held by a city-state or independent, or unreadable), so the live readers skip it.
+ *   Absent on saves from before the stamp, where every entry counts as live.
+ */
 
 /** @type {CompositionState | null} */
 let _s = null;
-// The turn `_s` was last (re)read from persistence. The recorder (gameplay context) and the readers
-// (the ethnicity lens, its hover tooltip, the city readout) run in SEPARATE V8 contexts, each with
-// its own module instance, sharing this state ONLY through the persisted GameConfiguration blob. So a
+// The version (turn + pass stamp, see compositionVersion) `_s` was last (re)read at. The recorder
+// (gameplay context) and the readers (the ethnicity lens, its hover tooltip, the city readout) run in
+// SEPARATE V8 contexts, each with its own module instance, sharing this state ONLY through the persisted
+// GameConfiguration blob. So a
 // reader that loaded `_s` once and cached it forever would freeze on whatever the city mix was at its
 // first paint/hover (typically near-mono early game) and never see the diaspora the recorder banks
-// turn after turn. Re-reading whenever the turn advances lets every reader pick up the recorder's
-// latest save (at most one turn stale), so immigration actually shows on the lens. Harmless for the
-// recorder itself: it always save()s before the turn ticks, so a reload just re-reads its own write.
-let _loadedTurn = -1;
-registerCacheReset(() => { _s = null; _loadedTurn = -1; });
+// turn after turn. Re-reading whenever the turn advances OR the recorder saves again (the stamp moves) lets
+// every reader pick up the recorder's latest save, including one that read in turn N before the recorder's
+// pass for turn N had saved (which a turn-only key left a whole turn behind). Harmless for the recorder
+// itself: its own save records the new version, so it does not re-read its own write.
+let _loadedVersion = "";
+registerCacheReset(() => { _s = null; _loadedVersion = ""; });
 
 /**
  * The current age-local game turn, or 0.
@@ -66,6 +82,30 @@ function gameTurn() {
   } catch (_) {
     return 0;
   }
+}
+
+/**
+ * The recorder's pass stamp, or "" when none has been written (a save from before the stamp, or no engine).
+ * @returns {string} The stamp.
+ */
+function readStamp() {
+  try {
+    const g = Configuration?.getGame?.();
+    const v = g && typeof g.getValue === "function" ? g.getValue(STAMP_KEY) : null;
+    return v == null ? "" : String(v);
+  } catch (_) {
+    return "";
+  }
+}
+
+/**
+ * The ledger's version for cache keys: the turn plus the recorder's pass stamp. It changes when the turn
+ * advances and whenever the recorder saves, so the lens, its hover panel and the readout can key their caches
+ * on it and never keep a mix older than the latest pass. Cheap: one configuration read, no JSON parse.
+ * @returns {string} The version.
+ */
+export function compositionVersion() {
+  return gameTurn() + "|" + readStamp();
 }
 
 /**
@@ -153,15 +193,15 @@ function normalizeCities(rawCities) {
  */
 function load() {
   resetCachesOnNewGame();
-  const turn = gameTurn();
-  if (_s && _loadedTurn === turn) return _s; // same turn → reuse (no churn within a pass)
-  _loadedTurn = turn;
+  const version = compositionVersion();
+  if (_s && _loadedVersion === version) return _s; // nothing saved since → reuse (no churn within a pass)
+  _loadedVersion = version;
   try {
     const raw = readStored();
     if (raw) {
       const o = JSON.parse(raw);
       if (o && o.cities && typeof o.cities === "object") {
-        _s = { cities: normalizeCities(o.cities) };
+        _s = withPassTurn({ cities: normalizeCities(o.cities) }, o.passTurn);
         return _s;
       }
     }
@@ -174,10 +214,22 @@ function load() {
   return _s;
 }
 
+/**
+ * Carry a persisted pass stamp onto freshly loaded state, when it is a finite number.
+ * @param {CompositionState} st State. @param {*} raw The stored stamp. @returns {CompositionState} The state.
+ */
+function withPassTurn(st, raw) {
+  if (typeof raw === "number" && isFinite(raw)) st.passTurn = raw;
+  return st;
+}
+
 /** Persist the composition to GameConfiguration. */
 function save() {
   try {
-    Configuration?.editGame?.()?.setValue?.(STATE_KEY, JSON.stringify(_s));
+    const cfg = Configuration?.editGame?.();
+    cfg?.setValue?.(STATE_KEY, JSON.stringify(_s));
+    cfg?.setValue?.(STAMP_KEY, String((Number(readStamp()) || 0) + 1));
+    _loadedVersion = compositionVersion(); // this context already holds what it just wrote
   } catch (_) {
     /* ignore */
   }
@@ -285,7 +337,7 @@ function seedCities(s, signals) {
     const name = cityName(sig.city);
     const e = s.cities[key];
     if (!e) {
-      s.cities[key] = { owner: sig.owner, byCiv: { [sig.owner]: total }, total, name, seenTurn: 0 };
+      s.cities[key] = { owner: sig.owner, byCiv: { [seedOrigin(sig)]: total }, total, name, seenTurn: 0 };
     } else {
       const cap = captureOf(e, sig.owner, name, total); // flips e.owner; returns the capture or null
       if (cap) conquests.push(cap);
@@ -293,6 +345,26 @@ function seedCities(s, signals) {
     work.push({ key, owner: sig.owner, total, name });
   }
   return { work, conquests };
+}
+
+/**
+ * Whose people a settlement is on first sighting: its original owner's when that is a different MAJOR civ (the
+ * ledger first meets it already conquered: a capture it had not seen, a mid-game install, a save from before the
+ * ledger), else its current owner's. A captured city-state stays the conqueror's: its own people would be a
+ * minor-player origin, and the lens gives every minor player one identical colour (mod test 148). An original
+ * owner the engine cannot resolve is never used, so no unknown player id reaches a render path.
+ * @param {*} sig A city signal ({city, owner}). @returns {number} The origin to seed.
+ */
+function seedOrigin(sig) {
+  try {
+    const orig = sig.city && sig.city.originalOwner;
+    if (typeof orig !== "number" || orig === sig.owner || orig < 0) return sig.owner;
+    if (typeof Players === "undefined" || typeof Players.get !== "function") return sig.owner;
+    const p = Players.get(orig);
+    return p && p.isMajor === true ? orig : sig.owner;
+  } catch (_) {
+    return sig.owner;
+  }
 }
 
 /**
@@ -321,14 +393,30 @@ function captureOf(e, newOwner, name, total) {
  * @param {number} pts Points moved.
  */
 function applyMigrationSource(s, m, nameToLoc, pts) {
-  if (typeof m.srcOwner !== "number" || !m.srcName) return;
-  const srcKey = nameToLoc.get(m.srcName);
-  const srcE = srcKey ? s.cities[srcKey] : null;
+  if (typeof m.srcOwner !== "number") return;
+  const srcE = entryFor(s, m.srcLoc, m.srcName, nameToLoc);
   if (!srcE) return;
   // A return move takes a SPECIFIC origin's people (the returnees), so remove them from that origin's
-  // bucket; everything else (ordinary departure / death) removes proportionally across the mix.
+  // bucket; a move carrying the mix it left with removes exactly that mix, so the destination can add the
+  // same people back; anything else (a death, an older record) removes proportionally across the mix.
+  const mix = typeof m.originCiv === "number" ? null : normalizeOriginMix(m.originMix);
   if (typeof m.originCiv === "number") removeFromOrigin(srcE, m.originCiv, pts);
+  else if (mix) for (const k of Object.keys(mix)) removeFromOrigin(srcE, Number(k), mix[k] * pts);
   else removeProportional(srcE, pts);
+}
+
+/**
+ * The ledger entry a record names: by the settlement's centre plot when the record carries it and the ledger
+ * holds it, else by display name (records made before the location keys, or an unreadable plot). Two cities
+ * with one name share a single name-map slot, so the location is the only reliable match.
+ * @param {CompositionState} s State. @param {*} loc The record's "x,y", if any.
+ * @param {*} name The record's city name. @param {Map<string,string>} nameToLoc city name → loc key.
+ * @returns {CityComposition|null} The entry, or null.
+ */
+function entryFor(s, loc, name, nameToLoc) {
+  if (typeof loc === "string" && s.cities[loc]) return s.cities[loc];
+  const key = name ? nameToLoc.get(name) : undefined;
+  return key ? s.cities[key] || null : null;
 }
 
 /**
@@ -358,12 +446,16 @@ function removeFromOrigin(e, civ, pts) {
  * @param {number} pts Points moved.
  */
 function applyMigrationDest(s, m, nameToLoc, nameToOwner, pts) {
-  if (typeof m.destOwner !== "number" || !m.destName || m.cause === "attrition") return;
-  const destKey = nameToLoc.get(m.destName);
-  const destE = destKey ? s.cities[destKey] : null;
+  if (typeof m.destOwner !== "number" || m.cause === "attrition") return;
+  const destE = entryFor(s, m.destLoc, m.destName, nameToLoc);
   if (!destE) return;
-  // Returnees carry their TRUE origin (m.originCiv) home; an ordinary arrival is attributed to the
-  // source owner (the migrant's origin civ).
+  // Returnees carry their TRUE origin (m.originCiv) home; a migrant carrying the mix they left with arrives
+  // as that mix; anything else is attributed to the source owner (the migrant's origin civ).
+  const mix = typeof m.originCiv === "number" ? null : normalizeOriginMix(m.originMix);
+  if (mix) {
+    for (const k of Object.keys(mix)) addCiv(destE, Number(k), mix[k] * pts);
+    return;
+  }
   const origin = typeof m.originCiv === "number" ? m.originCiv
     : typeof m.srcOwner === "number" ? m.srcOwner : nameToOwner.get(m.srcName);
   if (typeof origin === "number") addCiv(destE, origin, pts);
@@ -480,9 +572,10 @@ function integratePass(s, work, signals) {
   }
 }
 
-// A settlement not observed for this many turns is treated as gone (razed) and dropped, so the
-// composition map stays bounded over a long game. The mod reads ALL cities each pass (fog-independent),
-// so absence means the settlement no longer exists. Math.abs handles the age-local turn reset.
+// A settlement not observed for this many turns is dropped, so the composition map stays bounded over a
+// long game. The backstop only: a razed settlement is dropped on the next pass (dropRazed), so this catches
+// entries whose plot could not be read, and settlements held that long by a city-state or independent
+// (the pass does not scan those). Math.abs handles the age-local turn reset.
 const STALE_TURNS = 50;
 
 /**
@@ -495,6 +588,46 @@ function pruneStale(s, turn) {
   for (const k of Object.keys(s.cities)) {
     const seen = s.cities[k].seenTurn || 0;
     if (Math.abs(turn - seen) > STALE_TURNS) delete s.cities[k];
+  }
+}
+
+/**
+ * Whether a settlement that dropped out of this pass's city list is GONE (razed): no city stands centred on its
+ * plot. The plot's owning city is read with MapCities.getCity and Cities.get, as the base game's map utilities
+ * do; a city whose centre is elsewhere means a neighbour's territory has since covered the plot. False when the
+ * lookup is unavailable or throws, so an unreadable plot is kept and left to pruneStale.
+ * @param {string} key The settlement's centre "x,y". @returns {boolean} True when no city stands there.
+ */
+function settlementGone(key) {
+  try {
+    if (!cityLookupAvailable()) return false;
+    const [x, y] = key.split(",").map(Number);
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return false;
+    const id = MapCities.getCity(x, y);
+    const city = id != null ? Cities.get(id) : null;
+    const loc = city && city.location;
+    return !(loc && loc.x === x && loc.y === y);
+  } catch (_) {
+    return false;
+  }
+}
+
+/** @returns {boolean} Whether the engine's plot→city lookup (MapCities.getCity + Cities.get) is present. */
+function cityLookupAvailable() {
+  return typeof MapCities !== "undefined" && typeof MapCities.getCity === "function"
+    && typeof Cities !== "undefined" && typeof Cities.get === "function";
+}
+
+/**
+ * Settle every ledger entry this pass did not see. A razed settlement is deleted now. One still standing but not
+ * scanned (a city-state or independent holds it) keeps its origins, so a recapture by a major civ resumes the old
+ * mix rather than seeding a fresh 100% conqueror; the live readers skip it until then (see passTurn).
+ * @param {CompositionState} s State. @param {{key:string}[]} work This pass's settlements.
+ */
+function dropRazed(s, work) {
+  const seen = new Set(work.map((w) => w.key));
+  for (const k of Object.keys(s.cities)) {
+    if (!seen.has(k) && settlementGone(k)) delete s.cities[k];
   }
 }
 
@@ -522,7 +655,9 @@ export function recordCompositionPass(signals, migs) {
     for (const m of migs || []) applyMigration(s, m, nameToLoc, nameToOwner);
     for (const w of work) reconcileCity(s, w, turn);
     integratePass(s, work, signals);
+    dropRazed(s, work);
     pruneStale(s, turn);
+    s.passTurn = turn;
     save();
     return conquests;
   } catch (_) {
@@ -559,6 +694,22 @@ export function compositionForCity(city) {
 }
 
 /**
+ * Who leaves a settlement right now, as origin civ → fraction of its people (sums to 1): the mix stamped on a
+ * move or departure record so the migrant keeps that identity at the destination. Undefined when the
+ * settlement is untracked or unreadable; the record then falls back to the source owner.
+ * @param {*} city City object.
+ * @returns {Record<string, number>|undefined} The mix, or undefined.
+ */
+export function originMixForCity(city) {
+  const comp = compositionForCity(city);
+  if (!comp || !comp.civs.length) return undefined;
+  /** @type {Record<string, number>} */
+  const mix = {};
+  for (const c of comp.civs) if (c.share > 0) mix[c.civ] = c.share;
+  return normalizeOriginMix(mix);
+}
+
+/**
  * The aggregate ethnic composition across all of a player's settlements, the empire-wide origin
  * mix. Its total is the sum of that player's city populations, so it stays consistent with the
  * per-city figures (and with the population the rest of the mod reports). Null when the player has
@@ -569,13 +720,14 @@ export function compositionForCity(city) {
  *   The aggregate composition, or null.
  */
 export function compositionForOwner(owner) {
-  const cities = load().cities;
+  const s = load();
+  const cities = s.cities;
   /** @type {Record<string, number>} */
   const byCiv = {};
   let total = 0;
   for (const k of Object.keys(cities)) {
     const e = cities[k];
-    if (e.owner !== owner) continue;
+    if (e.owner !== owner || !liveOnPass(s, e)) continue;
     total += e.total;
     for (const c of Object.keys(e.byCiv)) byCiv[c] = (byCiv[c] || 0) + e.byCiv[c];
   }
@@ -594,11 +746,13 @@ export function compositionForOwner(owner) {
  */
 export function allCityCompositions() {
   try {
-    const cities = load().cities;
+    const s = load();
+    const cities = s.cities;
     /** @type {*[]} */
     const out = [];
     for (const key of Object.keys(cities)) {
       const e = cities[key];
+      if (!liveOnPass(s, e)) continue;
       const comp = summarize(e.byCiv, e.total, e.owner);
       if (comp) out.push({ key, name: e.name, owner: e.owner, comp });
     }
@@ -606,6 +760,34 @@ export function allCityCompositions() {
   } catch (_) {
     // Cosmetic reader (the diversity ranking): a bad ledger degrades to an empty ranking, never a throw.
     return [];
+  }
+}
+
+/**
+ * Whether an entry was in the latest pass's city list. Compared against the ledger's own pass stamp, not
+ * Game.turn, so a reader in another context between passes, or across the age-local turn reset, still agrees
+ * with the recorder. Entries from a save without the stamp all count as live.
+ * @param {CompositionState} s State. @param {CityComposition} e Entry. @returns {boolean} True when live.
+ */
+function liveOnPass(s, e) {
+  return typeof s.passTurn !== "number" || e.seenTurn === s.passTurn;
+}
+
+/**
+ * The ledger entry for one settlement key, live or not, as the per-key readers (the enclave records, which are
+ * keyed by their host's centre) need it: a host held for a while by a city-state keeps its name and mix.
+ * @param {string} key The settlement's centre "x,y".
+ * @returns {{key:string, name:string, owner:number, comp:{total:number, owner:number,
+ *   civs:{civ:number, pts:number, share:number}[], dominant:{civ:number, share:number}|null}}|null}
+ *   The entry, or null when untracked or empty.
+ */
+export function cityCompositionByKey(key) {
+  try {
+    const e = load().cities[key];
+    const comp = e ? summarize(e.byCiv, e.total, e.owner) : null;
+    return comp ? { key, name: e.name, owner: e.owner, comp } : null;
+  } catch (_) {
+    return null;
   }
 }
 
@@ -641,7 +823,7 @@ export const __test = {
   integrateCity,
   reset: () => {
     _s = { cities: {} };
-    _loadedTurn = -1;
+    _loadedVersion = "";
   },
   state: () => load(),
   /**

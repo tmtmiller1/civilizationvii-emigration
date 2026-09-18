@@ -30,6 +30,7 @@ declare const GameplayMap: any;
 declare const GameInfo: any;
 declare const DiplomacyPlayerRelationships: any;
 declare const Cities: any;
+declare const MapCities: any;
 declare const WorldUI: any;
 declare const InputActionStatuses: any;
 

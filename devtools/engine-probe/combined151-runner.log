@@ -1,0 +1,12 @@
+[11:49:58] 10 autosaves backed up
+[11:49:58] registry: 126|emigration|1 632|emigration|0  ; modinfo flag: 1
+[11:49:58] probe installed: eep-modtest151.js on EmigShots072.Civ7Save
+[11:50:00] game pid 31694
+[11:51:19] shot i1-rostov (window 6591) -> 9700554 bytes
+[11:52:08] shot o1-after-turn (window 6591) -> 9581912 bytes
+[11:54:31] shot item2-detector (window 6591) -> 8974084 bytes
+[11:54:41] result=done after 252s
+[11:54:51] restored: 126|emigration|1 634|emigration|0  ; modinfo flag: 0 ; probe present: no
+[11:54:51] FINISHED result=done
+[11:54:51] autosaves changed during the run; putting the player's back
+[11:54:51] done

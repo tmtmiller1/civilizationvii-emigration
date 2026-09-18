@@ -326,11 +326,11 @@ export const CONFIG = {
   // apart: people already inside your borders mostly agree to go back; people who have built a life under
   // another ruler mostly do not.
   callHomeEnabled: true,
-  callHomeChanceInternal: 0.65, // per point, for moves between your OWN settlements
   callHomeChanceExternal: 0.18, // per point, for your people living under another civilization
-  callHomeGoldPerPoint: 60, // fee per attempted point when paying in Gold
-  callHomeInfluencePerPoint: 12, // fee per attempted point when paying in Influence
+  callHomeGoldPerPoint: 60, // Gold for a call of ONE; bigger calls climb as n^1.5 (see emigration-call-home.js)
+  callHomeInfluencePerPoint: 12, // Influence for a call of ONE (same curve as Gold)
   callHomeExternalCostScale: 1.5, // asking another ruler's cities to empty costs more
+  callHomeAgeCostStep: 3, // each age past Antiquity multiplies the fee by this (Exploration ×3, Modern ×9)
   callHomeMaxPointsPerAttempt: 3, // points attempted per call
   callHomeCooldownTurns: 8, // turns before the same civilization may call again
   callHomeOfferWhenCalm: true, // offer the call once no settlement is under distress and people are still away

@@ -1,0 +1,34 @@
+[2026-09-18 08:50:43]	[EmigProbe] shell attached 
+[2026-09-18 08:50:45]	[EmigProbe] shell query complete 
+[2026-09-18 08:50:45]	[EmigProbe] shell found AutoSave_00_0100.Civ7Save turn 100 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-18 08:50:45]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-18 08:51:03]	[EmigTest] modtest143 attached 
+[2026-09-18 08:51:18]	[EmigTest] modtest143 run local=0 turn=100 
+[2026-09-18 08:51:18]	[EmigTest] SETTINGS visibility before=0 now=2 
+[2026-09-18 08:51:26]	[EmigTest] POPUP dismissing screen-dialog-box 
+[2026-09-18 08:51:26]	[EmigTest] POPUP dismissing screen-dialog-box 
+[2026-09-18 08:51:28]	[EmigTest] ENCLAVES 0 [] 
+[2026-09-18 08:51:28]	[EmigTest] LENS no revealed enclave to frame 
+[2026-09-18 08:51:33]	[EmigTest] PEDIA open=false sections=CONCEPTS,LEADERS,AGES,CIVILIZATIONS,GOVERNMENT,CULTURE,TECHNOLOGIES,MAP,BUILDINGS,IMPROVEMENTS,WONDERS,RELIGION,UNITS,EMIGRATION 
+[2026-09-18 08:51:33]	[EmigTest] PEDIA model ARRIVALS layout=EMIG_ARRIVALS chapters=["CONTENT:1","LEAVING:2","TRANSIT:2","ARRIVING:2","RESETTLE:1","COST:1"] 
+[2026-09-18 08:51:33]	[EmigTest] PEDIA model VOICES_ROME layout=EMIG_VOICES chapters=["CONTENT:1","ENCLAVE:6","REFUGEE:5","MIGRANT:3","RETURN:3"] 
+[2026-09-18 08:51:37]	[EmigTest] PEDIA FAIL VOICES navigate=true {"open":false} 
+[2026-09-18 08:51:37]	[EmigTest] SHOT pedia-voices 
+[2026-09-18 08:51:56]	[EmigTest] PEDIA FAIL ARRIVALS navigate=true {"open":false} 
+[2026-09-18 08:51:56]	[EmigTest] SHOT pedia-arrivals 
+[2026-09-18 08:52:15]	[EmigTest] PEDIA FAIL CALLHOME navigate=true {"open":false} 
+[2026-09-18 08:52:15]	[EmigTest] SHOT pedia-callhome 
+[2026-09-18 08:52:34]	[EmigTest] PEDIA FAIL POLICIES navigate=true {"open":false} 
+[2026-09-18 08:52:34]	[EmigTest] SHOT pedia-policies 
+[2026-09-18 08:52:53]	[EmigTest] PEDIA FAIL VOICES_ROME navigate=true {"open":false} 
+[2026-09-18 08:52:53]	[EmigTest] SHOT pedia-voices-rome 
+[2026-09-18 08:53:12]	[EmigTest] PEDIA FAIL VOICES_POOL navigate=true {"open":false} 
+[2026-09-18 08:53:12]	[EmigTest] SHOT pedia-voices-pool 
+[2026-09-18 08:53:31]	[EmigTest] PEDIA FAIL OVERVIEW navigate=true {"open":false} 
+[2026-09-18 08:53:31]	[EmigTest] SHOT pedia-overview 
+[2026-09-18 08:53:51]	[EmigTest] PEDIA FAIL DASHBOARD navigate=true {"open":false} 
+[2026-09-18 08:53:51]	[EmigTest] SHOT pedia-dashboard 
+[2026-09-18 08:54:06]	[EmigTest] PEDIA VERDICT pass=0 fail=8 of 8 
+[2026-09-18 08:54:08]	[EmigTest] SETTINGS visibility restored=0 matches=true 
+[2026-09-18 08:54:08]	[EmigTest] VERDICT reason=done 
+[2026-09-18 08:54:11]	[EmigTest] DONE modtest143 finished 

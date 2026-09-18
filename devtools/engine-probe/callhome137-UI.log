@@ -1,0 +1,23 @@
+[2026-09-17 22:24:42]	[EmigProbe] shell attached 
+[2026-09-17 22:24:43]	[EmigProbe] shell query complete 
+[2026-09-17 22:24:43]	[EmigProbe] shell found AutoSave_00_0099.Civ7Save turn 99 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-17 22:24:43]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 22:24:45]	[EmigProbe] shell attached 
+[2026-09-17 22:24:45]	[EmigProbe] shell query complete 
+[2026-09-17 22:24:46]	[EmigProbe] shell found AutoSave_00_0099.Civ7Save turn 99 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-17 22:24:46]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 22:25:04]	[EmigTest] modtest137 attached 
+[2026-09-17 22:25:21]	[EmigTest] S0 clearing queued dialog "Call our people home" 
+[2026-09-17 22:25:23]	[EmigTest] S0 turn=99 local=0 placementMode=2 askReturnees=false preferSpecialists=false gold=254.671875 
+[2026-09-17 22:25:23]	[EmigTest] S1 quote available=11 points=3 chance=1 cost=312 pairs=["7 from Liverpool back to London","2 from Liverpool back to Leeds","2 from Leeds back to Liverpool"] 
+[2026-09-17 22:25:23]	[EmigTest] S2 before: host={"name":"Liverpool","pop":10,"urban":1,"pending":1} home={"name":"London","pop":20,"urban":11,"pending":0} 
+[2026-09-17 22:25:23]	[EmigTest] S3 move#1 Liverpool->London result={"ok":true,"fromPool":false} host={"name":"Liverpool","pop":10,"urban":1,"pending":1} home={"name":"London","pop":20,"urban":11,"pending":0} 
+[2026-09-17 22:25:23]	[EmigTest] S3 move#2 Liverpool->London result={"ok":true,"fromPool":false} host={"name":"Liverpool","pop":10,"urban":1,"pending":1} home={"name":"London","pop":20,"urban":11,"pending":0} 
+[2026-09-17 22:25:23]	[EmigTest] S4 result={"ok":true,"reason":"returned","scope":"internal","paid":170,"attempted":2,"returned":2} asked=3 goldBefore=254.671875 goldAfter=254.671875 goldSpent=0 
+[2026-09-17 22:25:23]	[EmigTest] S4 immediately after (flush not yet run): home={"name":"London","pop":20,"urban":11,"pending":0} 
+[2026-09-17 22:25:27]	[EmigTest] S5 after the arrival flush: host={"name":"Liverpool","pop":8,"urban":1,"pending":1} home={"name":"London","pop":22,"urban":11,"pending":1} 
+[2026-09-17 22:25:27]	[EmigTest] S5 a dialog is up=false title=null 
+[2026-09-17 22:25:27]	[EmigTest] SHOT after-call 
+[2026-09-17 22:25:41]	[EmigTest] S6 later: home={"name":"London","pop":22,"urban":11,"pending":1} dialogUp=false 
+[2026-09-17 22:25:41]	[EmigTest] S6 VERDICT asked=3 returned=2 paid=170 pendingLeft=1 
+[2026-09-17 22:25:41]	[EmigTest] DONE modtest137 finished 

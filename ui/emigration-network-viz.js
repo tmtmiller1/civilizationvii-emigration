@@ -4,7 +4,7 @@
 // (emigration-network-sim.js) spreads the destination clusters apart; each cluster is a swarm of
 // origin-coloured dots (emigration-network-paint.js) where one dot is a SCALED chunk of migrants;
 // plus the chrome, an origin colour key, cause-filter chips, a timeline scrubber, click-to-isolate
-// a destination, and hover tooltips.
+// a destination or select a single city, and hover tooltips.
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { causeLabel } from "/emigration/ui/emigration-causes.js";
@@ -49,6 +49,7 @@ const SCALED_DOT_CAP = 2000;
  * @property {Set<string>} causes Isolated migrant causes (multi-select; empty = all).
  * @property {number|null} origin Isolated origin civ id, or null.
  * @property {number|null} focusDest Isolated destination civ id, or null.
+ * @property {{civId:number, idx:number, name:string}|null} focusCity Selected single city, or null.
  * @property {string|null} scope Isolated movement scope, or null.
  * @property {{resident:boolean, internal:boolean, immigrant:boolean}} show Per-scope visibility.
  * @property {boolean} showFlows Whether origin→destination flow lines are drawn.
@@ -547,8 +548,9 @@ function mountChrome(parts) {
     "dots are home-grown residents (its own colour), people who moved between its cities (a lighter " +
     "tint), and immigrants (their origin's colour). Turn on \"Migrant flows\" to overlay the movement " +
     "as arrows — red where people leave, green where they arrive, thicker for bigger flows. Recolour " +
-    "with \"Color by\", filter with the Show / Migrant-flows toggles, click a swatch or circle to " +
-    "isolate it (the arrows follow your filter), and press play or scrub the timeline to replay history.";
+    "with \"Color by\", filter with the Show / Migrant-flows toggles, click a swatch or a civ's outer " +
+    "ring to isolate it (the arrows follow your filter), click a city to highlight just its migrant " +
+    "flows (click empty space to clear), and press play or scrub the timeline to replay history.";
   // The help pill is the last group in the filter-pills row, under its own "Info:" heading (like
   // "Color by:" / "Show:" / "Units:"); its explanation opens on hover.
   parts.lensTabs.appendChild(el("span", "emig-lens-lbl", loc("LOC_EMIG_NETC_INFO", "Info:")));
@@ -718,7 +720,7 @@ function buildScene(frames, colorMap, events) {
   const total = totalPeople(lastNet, lastFrame.pops || {});
   /** @type {*} */
   const state = {
-    causes: new Set(), origin: null, focusDest: null, scope: null,
+    causes: new Set(), origin: null, focusDest: null, focusCity: null, scope: null,
     show: { resident: true, internal: true, immigrant: true }, showFlows: false,
     lens: "origin", frameIdx: frames.length - 1, expanded: new Set()
   };

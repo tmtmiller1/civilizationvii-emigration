@@ -1,5 +1,5 @@
 // sync-quote-rows.mjs, write the en_us text rows for every historical quote from the two registries:
-// the enclave quotes (QUARTER_QUOTES, LOC_EMIG_QTR_Q_*) and the refugee and migrant quotes
+// the enclave quotes (QUARTER_QUOTES, LOC_EMIG_QTR_Q_*) and the refugee, migrant and return quotes
 // (DISPLACED_QUOTES + DISPLACED_POOLS, LOC_EMIG_DQ_*). Quotes are epigraphs, identical in every locale, so
 // the script also drops those keys from every per-locale translation map; the locale files then fall back
 // to the English row. Idempotent.
@@ -37,7 +37,7 @@ for (const [civ, r] of Object.entries(DISPLACED_QUOTES)) {
     r[kind].forEach((q, i) => { if (DRAFT.test(quoteRowText(q))) drafts.push(displacedQuoteKey(civ, kind, i)); });
   }
 }
-for (const kind of ["refugee", "migrant"]) {
+for (const kind of ["refugee", "migrant", "return"]) {
   DISPLACED_POOLS[kind].forEach((q, i) => { if (DRAFT.test(quoteRowText(q))) drafts.push(displacedQuoteKey(null, kind, i)); });
 }
 if (drafts.length) throw new Error("quotes still carry a draft marker, resolve them first: " + drafts.join(", "));
@@ -62,12 +62,13 @@ if (addedRows) {
   xml = xml.replace(QTR_ANCHOR, (m) => m + addedRows);
 }
 
-// Refugee and migrant quotes: drop every existing row, then write the registry's rows after the enclave block.
+// Refugee, migrant and return quotes: drop every existing row, then write the registry's rows after the enclave block.
 xml = xml.replace(/ {8}<Row Tag="LOC_EMIG_DQ_[A-Z0-9_]+">\s*<Text>[^<]*<\/Text>\s*<\/Row>\n/g, "");
 /** @type {[string|null, string, *[]][]} */
 const lists = [];
 for (const [civ, r] of Object.entries(DISPLACED_QUOTES)) for (const kind of Object.keys(r)) lists.push([civ, kind, r[kind]]);
-lists.push([null, "refugee", DISPLACED_POOLS.refugee], [null, "migrant", DISPLACED_POOLS.migrant]);
+lists.push([null, "refugee", DISPLACED_POOLS.refugee], [null, "migrant", DISPLACED_POOLS.migrant],
+  [null, "return", DISPLACED_POOLS.return]);
 let rows = "";
 let displaced = 0;
 for (const [civ, kind, list] of lists) {

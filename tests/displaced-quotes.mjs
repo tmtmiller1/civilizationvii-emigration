@@ -37,6 +37,18 @@ assert.equal(displacedQuoteKey(null, "migrant", 2), "LOC_EMIG_DQ_POOL_MIGRANT_3"
   assert.equal(seen.size, 2, "different events spread across the list");
 }
 
+// ── the homecoming kind: a civilization's own row, else the pool, never empty ───────────────────
+{
+  assert.ok(DISPLACED_POOLS.return.length >= 5, "the return pool has a spread of voices");
+  const own = pickDisplacedQuote("CIVILIZATION_GREECE", "return", "s");
+  assert.ok(own && own.key.startsWith("LOC_EMIG_DQ_GREECE_RETURN_"), "Greece has its own homecoming lines");
+  const pool = pickDisplacedQuote("CIVILIZATION_TONGA", "return", "s");
+  assert.ok(pool && pool.key.startsWith("LOC_EMIG_DQ_POOL_RETURN_"), "a civilization without a row uses the pool");
+  assert.ok(pickDisplacedQuote(null, "return", "s"), "an unknown origin still gets a pool line");
+  const greece = DISPLACED_QUOTES.CIVILIZATION_GREECE;
+  assert.ok(greece.refugee && greece.migrant && greece.return, "merging the return list keeps the other kinds");
+}
+
 // ── unmet or unknown origins never name a civilization ───────────────────────────────────────────
 {
   globalThis.Players = { get: () => ({ civilizationType: 7 }) };
@@ -59,11 +71,12 @@ assert.equal(displacedQuoteKey(null, "migrant", 2), "LOC_EMIG_DQ_POOL_MIGRANT_3"
   for (const [civ, row] of Object.entries(DISPLACED_QUOTES)) {
     assert.match(civ, /^CIVILIZATION_[A-Z_]+$/, civ + " is a CivilizationType");
     for (const kind of Object.keys(row)) {
-      assert.ok(kind === "refugee" || kind === "migrant", civ + " has only refugee/migrant lists");
+      assert.ok(kind === "refugee" || kind === "migrant" || kind === "return", civ + " has only refugee/migrant/return lists");
       lists.push([civ, kind, row[kind]]);
     }
   }
-  lists.push([null, "refugee", DISPLACED_POOLS.refugee], [null, "migrant", DISPLACED_POOLS.migrant]);
+  lists.push([null, "refugee", DISPLACED_POOLS.refugee], [null, "migrant", DISPLACED_POOLS.migrant],
+    [null, "return", DISPLACED_POOLS.return]);
   let rows = 0;
   for (const [civ, kind, list] of lists) {
     list.forEach((q, i) => {

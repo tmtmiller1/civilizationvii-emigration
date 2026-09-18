@@ -10,4 +10,11 @@ export const Options = {
 // Named imports used by the Options sub-window (emigration-advanced-editor.js), so the options modules link.
 export const InputEngineEventName = "engine-input";
 export const FocusManager = { setFocus() {}, clearFocus() {} };
+// The native dialog manager (emigration-dilemma-view.js): records each definition for a test that sets
+// globalThis.__emigDialogStub, and is otherwise a silent no-op.
+export const DialogBoxManager = {
+  createDialog_MultiOption(def) {
+    if (typeof globalThis.__emigDialogStub === "function") globalThis.__emigDialogStub(def);
+  }
+};
 export default {};

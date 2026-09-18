@@ -1,0 +1,6 @@
+[2026-09-18 10:10:21]	[EmigProbe] shell attached 
+[2026-09-18 10:10:22]	[EmigProbe] shell query complete 
+[2026-09-18 10:10:22]	[EmigProbe] shell found EmigPromo106.Civ7Save turn 106 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-18 10:10:22]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-18 10:10:41]	[EmigTest] modtest146 attached 
+[2026-09-18 10:11:06]	[EmigTest] DONE modtest146 finished 

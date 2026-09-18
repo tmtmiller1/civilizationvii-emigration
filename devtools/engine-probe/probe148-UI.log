@@ -1,0 +1,123 @@
+[2026-09-18 11:32:31]	[EmigProbe] shell attached 
+[2026-09-18 11:32:32]	[EmigProbe] shell query complete 
+[2026-09-18 11:32:33]	[EmigProbe] shell found EmigShots072.Civ7Save turn 72 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-18 11:32:33]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-18 11:32:51]	[EmigTest] modtest148 attached 
+[2026-09-18 11:33:06]	[EmigTest] modtest148 run local=0 turn=72 emigrationBooted=object 
+[2026-09-18 11:33:12]	[EmigTest] OWNER London at=92,32 owner=0(major) originalOwner=0(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Lāhainā at=86,20 owner=0(major) originalOwner=0(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Waikolu at=77,21 owner=0(major) originalOwner=0(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Lihu'e at=82,23 owner=0(major) originalOwner=0(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Leeds at=93,26 owner=0(major) originalOwner=0(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER ‘Ewa at=80,31 owner=0(major) originalOwner=0(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Birmingham at=87,32 owner=0(major) originalOwner=0(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Megiddo at=84,35 owner=0(major) originalOwner=0(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Glasgow at=90,37 owner=0(major) originalOwner=0(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Tollan-Xicocotitlan at=77,36 owner=0(major) originalOwner=2(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Hilo at=81,18 owner=0(major) originalOwner=3(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER St. Louis at=79,39 owner=0(major) originalOwner=5(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Phókaia at=78,13 owner=0(major) originalOwner=1(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER New Orleans at=75,41 owner=0(major) originalOwner=5(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Monte Albán at=75,14 owner=0(major) originalOwner=19(minor) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Chicago at=71,44 owner=0(major) originalOwner=5(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Philadelphia at=71,39 owner=0(major) originalOwner=5(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Mykenē at=71,15 owner=0(major) originalOwner=1(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Kórinthos at=72,10 owner=0(major) originalOwner=1(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Baghdād at=68,19 owner=0(major) originalOwner=1(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Washington, D.C. at=67,41 owner=0(major) originalOwner=5(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Pittsburgh at=67,35 owner=0(major) originalOwner=5(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER New York at=71,33 owner=0(major) originalOwner=5(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Cincinnati at=68,30 owner=0(major) originalOwner=5(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Alexandria Spártā at=64,19 owner=0(major) originalOwner=1(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Madrid at=64,45 owner=0(major) originalOwner=5(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Baltimore at=64,26 owner=0(major) originalOwner=5(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Valladolid at=62,32 owner=0(major) originalOwner=5(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Athênai at=64,14 owner=0(major) originalOwner=1(major) transfer=null ledger=0:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER St. Petersburg at=70,54 owner=2(major) originalOwner=2(major) transfer=null ledger=2:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Tula at=60,50 owner=2(major) originalOwner=2(major) transfer=null ledger=2:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Kazan at=67,50 owner=2(major) originalOwner=2(major) transfer=null ledger=2:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Preslav at=74,52 owner=2(major) originalOwner=2(major) transfer=null ledger=2:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Saratov at=65,55 owner=2(major) originalOwner=2(major) transfer=null ledger=2:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Paris at=82,51 owner=4(major) originalOwner=4(major) transfer=null ledger=4:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Bordeaux at=83,44 owner=4(major) originalOwner=4(major) transfer=null ledger=4:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Le Havre at=79,47 owner=4(major) originalOwner=4(major) transfer=null ledger=4:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Toulouse at=86,47 owner=4(major) originalOwner=4(major) transfer=null ledger=4:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Acmonia at=75,48 owner=4(major) originalOwner=4(major) transfer=null ledger=4:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Brest at=90,49 owner=4(major) originalOwner=4(major) transfer=null ledger=4:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Rouen at=87,52 owner=4(major) originalOwner=4(major) transfer=null ledger=4:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Lyon at=83,56 owner=4(major) originalOwner=4(major) transfer=null ledger=4:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Rostov on Don at=78,53 owner=4(major) originalOwner=2(major) transfer=null ledger=2:60 4:40 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Gao at=43,20 owner=6(major) originalOwner=6(major) transfer=null ledger=6:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Kabara at=44,10 owner=6(major) originalOwner=6(major) transfer=null ledger=6:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Kumbi Saleh at=43,15 owner=6(major) originalOwner=6(major) transfer=null ledger=6:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Katsina at=35,18 owner=6(major) originalOwner=6(major) transfer=null ledger=6:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Gobir at=44,25 owner=6(major) originalOwner=6(major) transfer=null ledger=6:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Kerma at=34,27 owner=6(major) originalOwner=6(major) transfer=null ledger=6:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Agadez at=38,30 owner=6(major) originalOwner=6(major) transfer=null ledger=6:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Jenne at=50,11 owner=6(major) originalOwner=6(major) transfer=null ledger=6:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Berlin at=12,17 owner=7(major) originalOwner=7(major) transfer=null ledger=7:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Duisburg at=14,4 owner=7(major) originalOwner=7(major) transfer=null ledger=7:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Magdeburg at=11,8 owner=7(major) originalOwner=7(major) transfer=null ledger=7:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Königsberg at=26,8 owner=7(major) originalOwner=7(major) transfer=null ledger=7:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Charlottenburg at=30,10 owner=7(major) originalOwner=7(major) transfer=null ledger=7:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Dortmund at=25,13 owner=7(major) originalOwner=7(major) transfer=null ledger=7:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Yingtian at=17,14 owner=7(major) originalOwner=7(major) transfer=null ledger=7:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Su Nuraxi at=21,23 owner=7(major) originalOwner=7(major) transfer=null ledger=7:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Frankfurt am Main at=13,24 owner=7(major) originalOwner=7(major) transfer=null ledger=7:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Risila at=17,27 owner=7(major) originalOwner=8(major) transfer=null ledger=7:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Pataliputra at=21,44 owner=8(major) originalOwner=8(major) transfer=null ledger=8:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Suvarnagiri at=21,29 owner=8(major) originalOwner=8(major) transfer=null ledger=8:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Virata at=18,32 owner=8(major) originalOwner=8(major) transfer=null ledger=8:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Girinagara at=11,36 owner=8(major) originalOwner=8(major) transfer=null ledger=8:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Gangaikonda Cholapuram at=17,42 owner=8(major) originalOwner=8(major) transfer=null ledger=8:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Pudanagala at=26,42 owner=8(major) originalOwner=8(major) transfer=null ledger=8:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Tosali at=21,50 owner=8(major) originalOwner=8(major) transfer=null ledger=8:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Madurai at=17,47 owner=8(major) originalOwner=8(major) transfer=null ledger=8:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Kyoto at=35,48 owner=9(major) originalOwner=9(major) transfer=null ledger=9:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Edo at=34,43 owner=9(major) originalOwner=9(major) transfer=null ledger=9:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Sunpu at=38,45 owner=9(major) originalOwner=9(major) transfer=null ledger=9:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Hakata at=43,47 owner=9(major) originalOwner=9(major) transfer=null ledger=9:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Azuchi at=30,48 owner=9(major) originalOwner=9(major) transfer=null ledger=9:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Himeji at=25,51 owner=9(major) originalOwner=9(major) transfer=null ledger=9:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Osaka at=38,52 owner=9(major) originalOwner=9(major) transfer=null ledger=9:100 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Kannauj at=29,52 owner=11(minor) originalOwner=11(minor) transfer=null ledger=none 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Tabriz at=18,36 owner=13(minor) originalOwner=13(minor) transfer=null ledger=none 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Roskilde at=22,2 owner=16(minor) originalOwner=16(minor) transfer=null ledger=none 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Usan-guk at=64,3 owner=23(minor) originalOwner=23(minor) transfer=null ledger=none 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Camagüey at=31,34 owner=25(minor) originalOwner=25(minor) transfer=null ledger=none 
+[2026-09-18 11:33:12]	[EmigTest] OWNER Samarkand at=41,38 owner=26(minor) originalOwner=26(minor) transfer=null ledger=none 
+[2026-09-18 11:33:12]	[EmigTest] OWNERS summary differ=22 same=60 missing=0 
+[2026-09-18 11:33:12]	[EmigTest] O1 rostov at={"x":78,"y":53} plots=18 
+[2026-09-18 11:33:32]	[EmigTest] O1 layer=true hasOverlay=true activeLens=emig-ethnicity-lens 
+[2026-09-18 11:33:32]	[EmigTest] SHOT o1-a-lens 
+[2026-09-18 11:33:41]	[EmigTest] O1 timer clear=ok 
+[2026-09-18 11:33:45]	[EmigTest] SHOT o1-a-cleared 
+[2026-09-18 11:33:54]	[EmigTest] O1 timer clear=ok addPlots=ok plots=18 activeLens=emig-ethnicity-lens 
+[2026-09-18 11:33:58]	[EmigTest] SHOT o1-a-magenta 
+[2026-09-18 11:34:07]	[EmigTest] O1 timer reapply=ok 
+[2026-09-18 11:34:11]	[EmigTest] SHOT o1-a-restored 
+[2026-09-18 11:34:20]	[EmigTest] O1 ending turn with the lens open 
+[2026-09-18 11:34:28]	[EmigTest] ENDTURN blocked (442844772), one Autoplay turn 
+[2026-09-18 11:34:38]	[EmigTest] TURN activated turn=73 activeLens=emig-ethnicity-lens 
+[2026-09-18 11:34:38]	[EmigTest] O1 PlayerTurnActivated clear=ok addPlots=ok plots=18 activeLens=emig-ethnicity-lens 
+[2026-09-18 11:35:00]	[EmigTest] SHOT o1-b-turn 
+[2026-09-18 11:35:09]	[EmigTest] O4 minors=[11,13,16] indeps=[10,12,14] 
+[2026-09-18 11:35:09]	[EmigTest] O4 CALL civDisplayColor 11 
+[2026-09-18 11:35:09]	[EmigTest] O4 CALL civAdjective 11 
+[2026-09-18 11:35:09]	[EmigTest] O4 NAME pid=11 kind=minor colour="#f9f9f9" adjective="Kannauj" 
+[2026-09-18 11:35:09]	[EmigTest] O4 CALL civDisplayColor 13 
+[2026-09-18 11:35:09]	[EmigTest] O4 CALL civAdjective 13 
+[2026-09-18 11:35:09]	[EmigTest] O4 NAME pid=13 kind=minor colour="#f9f9f9" adjective="Tabriz" 
+[2026-09-18 11:35:09]	[EmigTest] O4 CALL civDisplayColor 16 
+[2026-09-18 11:35:09]	[EmigTest] O4 CALL civAdjective 16 
+[2026-09-18 11:35:09]	[EmigTest] O4 NAME pid=16 kind=minor colour="#f9f9f9" adjective="Roskilde" 
+[2026-09-18 11:35:09]	[EmigTest] O4 CALL civDisplayColor 10 
+[2026-09-18 11:35:09]	[EmigTest] O4 CALL civAdjective 10 
+[2026-09-18 11:35:09]	[EmigTest] O4 NAME pid=10 kind=indep colour="#f9f9f9" adjective="Vilnius" 
+[2026-09-18 11:35:09]	[EmigTest] O4 CALL civDisplayColor 12 
+[2026-09-18 11:35:09]	[EmigTest] O4 CALL civAdjective 12 
+[2026-09-18 11:35:09]	[EmigTest] O4 NAME pid=12 kind=indep colour="#f9f9f9" adjective="Dzungaria" 
+[2026-09-18 11:35:09]	[EmigTest] O4 CALL civDisplayColor 14 
+[2026-09-18 11:35:09]	[EmigTest] O4 CALL civAdjective 14 
+[2026-09-18 11:35:09]	[EmigTest] O4 NAME pid=14 kind=indep colour="#f9f9f9" adjective="Tidore" 
+[2026-09-18 11:35:09]	[EmigTest] DONE modtest148 finished 

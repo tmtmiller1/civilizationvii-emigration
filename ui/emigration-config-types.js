@@ -156,11 +156,11 @@
  * @property {number} returnCooldownTurns Min turns between returns out of the same host settlement.
  * @property {number} quarterRootsReturnScale Share of returnRate kept by a community with a standing enclave (1 = off).
  * @property {boolean} callHomeEnabled Whether the paid call-our-people-home action is offered.
- * @property {number} callHomeChanceInternal Per-point chance for moves between your own settlements.
  * @property {number} callHomeChanceExternal Per-point chance for your people under another civilization.
- * @property {number} callHomeGoldPerPoint Fee per attempted point when paying in Gold.
- * @property {number} callHomeInfluencePerPoint Fee per attempted point when paying in Influence.
+ * @property {number} callHomeGoldPerPoint Gold for a call of one person; bigger calls climb as n^1.5.
+ * @property {number} callHomeInfluencePerPoint Influence for a call of one person (same curve as Gold).
  * @property {number} callHomeExternalCostScale Fee multiplier for the external variant.
+ * @property {number} callHomeAgeCostStep Fee multiplier per age past Antiquity (Exploration ×step, Modern ×step²).
  * @property {number} callHomeMaxPointsPerAttempt Points attempted per call.
  * @property {number} callHomeCooldownTurns Turns before the same civilization may call again.
  * @property {boolean} callHomeOfferWhenCalm Offer the call once nowhere is distressed and people are away.

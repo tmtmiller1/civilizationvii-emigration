@@ -1,0 +1,17 @@
+[2026-09-18 09:52:51]	[EmigProbe] shell attached 
+[2026-09-18 09:52:52]	[EmigProbe] shell query complete 
+[2026-09-18 09:52:53]	[EmigProbe] shell found EmigPromo106.Civ7Save turn 106 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-18 09:52:53]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-18 09:53:11]	[EmigTest] modtest144 attached 
+[2026-09-18 09:53:26]	[EmigTest] modtest144 run local=0 turn=106 
+[2026-09-18 09:53:32]	[EmigTest] POPUP dismissing screen-tech-civic-complete 
+[2026-09-18 09:53:39]	[EmigTest] NET flows chip found=true chips=["Origin","Type","Movement","Migrant flows","0.5×","1×","2×","4×"] 
+[2026-09-18 09:53:39]	[EmigTest] PRESS Migrant flows via MouseEvent 
+[2026-09-18 09:53:45]	[EmigTest] NET flows active=true 
+[2026-09-18 09:53:45]	[EmigTest] SHOT net-flows-origin 
+[2026-09-18 09:54:00]	[EmigTest] PRESS Movement via MouseEvent 
+[2026-09-18 09:54:06]	[EmigTest] NET movement active=true flows still active=true 
+[2026-09-18 09:54:06]	[EmigTest] SHOT net-flows-movement 
+[2026-09-18 09:54:21]	[EmigTest] PRESS Origin via MouseEvent 
+[2026-09-18 09:54:21]	[EmigTest] PRESS Migrant flows via MouseEvent 
+[2026-09-18 09:54:24]	[EmigTest] DONE modtest144 finished 

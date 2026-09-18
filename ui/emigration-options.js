@@ -284,6 +284,44 @@ function registerReturn() {
   });
 }
 
+/** @type {Array<{info: *, read: () => boolean}>} Checkboxes that mirror an Advanced setting, redrawn when it closes. */
+const _mirrors = [];
+
+/**
+ * Register a checkbox that mirrors one Advanced tunable: ticked when it holds `on`, and ticking or unticking
+ * writes `on` or `off`. The Advanced window edits the same value, so these are redrawn when it closes.
+ * @param {{id:string, key:string, on:*, off:*, label:string, description:string}} spec The option id, the
+ *   tunable, the values for ticked and unticked, and the LOC keys.
+ */
+function registerTunableToggle(spec) {
+  const { id, key, on, off, label, description } = spec;
+  const read = () => getTunable(key) === on;
+  const info = {
+    category: CategoryType.Mods,
+    group: MAIN_GROUP,
+    type: OptionType.Checkbox,
+    id,
+    initListener: (/** @type {*} */ i) => (i.currentValue = read()),
+    updateListener: (/** @type {*} */ _i, /** @type {*} */ v) => setTunable(key, v ? on : off),
+    label,
+    description
+  };
+  _mirrors.push({ info, read });
+  Options.addOption(info);
+}
+
+/** Redraw the mirroring checkboxes after the Advanced window closes, in case it changed their settings. */
+function refreshMirrors() {
+  for (const { info, read } of _mirrors) {
+    info.currentValue = read();
+    try {
+      info.forceRender?.();
+    } catch (_) {
+      /* the screen is not open */
+    }
+  }
+}
+
 /** @type {Map<string, *>} Registered slider option infos by grouped/composite setting name, for cross-refresh. */
 const _sliders = new Map();
 /** True while one slider is pushing values into others, so their change events do not echo back. */
@@ -385,12 +423,27 @@ function registerCompositeSlider(name, id, label, description) {
   });
 }
 
+/**
+ * Register the decision pop-up checkboxes besides Refugee decisions, each switching the Advanced setting that
+ * raises its pop-up. Unticked is the automatic choice: the city places newcomers itself (1), and enclaves are
+ * recognized on their own everywhere (2).
+ */
+function registerDecisionToggles() {
+  registerTunableToggle({ id: "emigration-ask-arrivals", key: "arrivalPlacement", on: 2, off: 1,
+    label: "LOC_OPTIONS_EMIG_ASK_ARRIVALS", description: "LOC_OPTIONS_EMIG_ASK_ARRIVALS_DESCRIPTION" });
+  registerTunableToggle({ id: "emigration-callhome-offer", key: "callHomeOfferWhenCalm", on: true, off: false,
+    label: "LOC_OPTIONS_EMIG_CALLHOME_OFFER", description: "LOC_OPTIONS_EMIG_CALLHOME_OFFER_DESCRIPTION" });
+  registerTunableToggle({ id: "emigration-ask-enclaves", key: "quarterRecognition", on: 0, off: 2,
+    label: "LOC_OPTIONS_EMIG_ASK_ENCLAVES", description: "LOC_OPTIONS_EMIG_ASK_ENCLAVES_DESCRIPTION" });
+}
+
 /** Redraw the preset dropdown whenever the Advanced settings window closes (registered once). */
 let _watching = false;
 function watchAdvancedWindow() {
   if (_watching || typeof window === "undefined") return;
   _watching = true;
   window.addEventListener(ADVANCED_CLOSED_EVENT, presetBecameCustom);
+  window.addEventListener(ADVANCED_CLOSED_EVENT, refreshMirrors);
 }
 
 Options.addInitCallback(() => {
@@ -413,6 +466,7 @@ Options.addInitCallback(() => {
   registerIntegration();
   registerReturn();
   registerDilemmas();
+  registerDecisionToggles();
   // Every individual setting, in its own window: the last row of the Emigration group.
   registerAdvancedEditor();
   watchAdvancedWindow();

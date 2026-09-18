@@ -11,7 +11,7 @@
 // scaling, and a standing enclave's plot); the distribution math itself stays pure in
 // emigration-ethnicity-distribution.js.
 
-import { compositionForCity } from "/emigration/ui/emigration-composition.js";
+import { compositionForCity, compositionVersion } from "/emigration/ui/emigration-composition.js";
 import { distributeTiles } from "/emigration/ui/emigration-ethnicity-distribution.js";
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
@@ -125,12 +125,17 @@ function locKey(city) {
   return loc && typeof loc.x === "number" && typeof loc.y === "number" ? loc.x + "," + loc.y : null;
 }
 
-/** The current game turn (cache key), or -1. @returns {number} The turn. */
-function gameTurn() {
+/**
+ * The cache key: the ledger's version (the turn plus the recorder's pass stamp). The turn covers the map reads
+ * (plots, districts, enclaves), which change between turns; the stamp covers a pass that saved after this turn's
+ * first paint, which a turn-only key left a whole turn behind (ethnicity audit item O1).
+ * @returns {string} The key.
+ */
+function cacheKey() {
   try {
-    return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : -1;
+    return compositionVersion();
   } catch (_) {
-    return -1;
+    return "";
   }
 }
 
@@ -141,23 +146,23 @@ function gameTurn() {
  * @property {*} comp The settlement's composition (origins, dominant, total).
  */
 
-// Per-settlement cache, refreshed when the turn advances: the expensive Districts / MapConstructibles
-// walk runs once per settlement per turn, shared by every repaint and every hover within the turn.
-/** @type {Map<string, {turn:number, value:CityTiles|null}>} */
+// Per-settlement cache, refreshed when the turn advances or the ledger is saved again: the expensive Districts /
+// MapConstructibles walk runs once per settlement per version, shared by every repaint and every hover.
+/** @type {Map<string, {turn:string, value:CityTiles|null}>} */
 const _cache = new Map();
 const MAX_CACHE = 4096; // bound the cache over a long game
 
 /**
  * The per-tile ethnic mosaic for a settlement: each owned tile's local origin shares + density, plus a
  * key→tile map and the composition. Null when the settlement is untracked or has no readable plots.
- * Memoized per settlement for the current turn (both the lens and the tooltip hit this each frame).
+ * Memoized per settlement for the ledger's current version (both the lens and the tooltip hit this each frame).
  * @param {*} city City object.
  * @returns {CityTiles|null} The settlement's tiles, or null.
  */
 export function tilesForCity(city) {
   const key = locKey(city);
   if (key == null) return null;
-  const turn = gameTurn();
+  const turn = cacheKey();
   const hit = _cache.get(key);
   if (hit && hit.turn === turn) return hit.value;
   const value = computeTiles(city, key);
@@ -167,10 +172,12 @@ export function tilesForCity(city) {
 }
 
 /**
- * The composition of a settlement the pass has not recorded yet: everyone in it is the owner's own people. Mod
- * test 86 found a freshly loaded save carries no stored composition at all (mod state is not saved into the save
- * file), so the lens and the hover panel had no tiles to work with and drew nothing. That state is not unknown, it
- * is 100% host, and the mosaic (and its density gradient) is still worth drawing.
+ * The composition of a settlement the pass has not recorded yet: everyone in it is the owner's own people. The
+ * ledger IS saved into the save file (it sits in plaintext in the GameConfiguration block), but a save made before
+ * the ledger existed holds none, and a lens painted before the first pass of a session has nothing to read yet. Mod
+ * test 86 hit both (it ran on AugustusExp66, which predates the ledger), and the lens and the hover panel drew
+ * nothing. That state is not unknown, it is 100% host, and the mosaic (and its density gradient) is still worth
+ * drawing.
  * @param {*} city City object.
  * @returns {*} A composition in the stored shape, or null when the settlement is unreadable.
  */

@@ -89,7 +89,43 @@ function normalizeTransitEntry(v) {
   // (and the longest-waiting-first arrival sort) could never fire. Kept optional (only when > 0).
   const defers = Math.max(0, Math.floor(finiteNumberOr(v.defers, 0)));
   if (defers > 0) row.defers = defers;
+  return withIdentity(row, v);
+}
+
+/**
+ * Copy who the migrant is and where they left from / are going (ethnicity audit items 2 and O3) onto a
+ * normalized transit row. Optional: an entry queued before these existed has none, and its arrival keeps the
+ * single-origin attribution.
+ * @param {Transit} row The normalized row (mutated). @param {*} v The raw entry. @returns {Transit} The row.
+ */
+function withIdentity(row, v) {
+  const originMix = normalizeOriginMix(v.originMix);
+  if (originMix) row.originMix = originMix;
+  if (typeof v.srcLoc === "string" && v.srcLoc) row.srcLoc = v.srcLoc;
+  if (typeof v.destLoc === "string" && v.destLoc) row.destLoc = v.destLoc;
   return row;
+}
+
+/**
+ * A persisted origin mix as origin civ → fraction, summing to 1, or undefined when unusable. Drops any
+ * non-finite or non-positive fraction and renormalizes the rest.
+ * @param {*} raw A raw mix. @returns {Record<string, number>|undefined} The clean mix.
+ */
+export function normalizeOriginMix(raw) {
+  if (!raw || typeof raw !== "object") return undefined;
+  /** @type {Record<string, number>} */
+  const out = {};
+  let sum = 0;
+  for (const k of Object.keys(raw)) {
+    const v = raw[k];
+    if (typeof v === "number" && isFinite(v) && v > 0 && isFinite(Number(k))) {
+      out[k] = v;
+      sum += v;
+    }
+  }
+  if (!(sum > 0)) return undefined;
+  for (const k of Object.keys(out)) out[k] /= sum;
+  return out;
 }
 
 /**
@@ -163,6 +199,10 @@ function normalizeTransitList(transit) {
  * @property {string} destName Destination city name (arrival flavour).
  * @property {number} [defers] Times this arrival has been deferred (destination at its inbound cap);
  *   perishes once it exceeds MAX_DEFERS so it's never stuck in transit forever.
+ * @property {Record<string, number>} [originMix] Who the migrant is, origin civ → fraction, captured at
+ *   departure and forwarded to the arrival record (see Migration.originMix).
+ * @property {string} [srcLoc] The source settlement's centre plot "x,y".
+ * @property {string} [destLoc] The destination settlement's centre plot "x,y".
  */
 
 /**
@@ -320,3 +360,6 @@ export function ownerPopulations(ranked) {
   for (const s of ranked) m[s.owner] = (m[s.owner] || 0) + (s.population || 0);
   return m;
 }
+
+// Test-only access to the transit-row normalizer (the persistence round trip the engine relies on).
+export const __test = { normalizeTransitEntry };
