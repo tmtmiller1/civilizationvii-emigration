@@ -109,14 +109,28 @@ const PERMANENCE = {
  * @type {Record<string,string>}
  */
 const HINTS = {
-  unhappiness: "Raise this city's happiness, or slot an Anti-Immigration Stance to retain them.",
-  prosperity: "Grow {1_City}'s yields so fewer of its people are tempted away.",
-  war: "Relieve the siege or make peace to stem the outflow.",
-  disaster: "Disaster displacement subsides on its own as the distress decays.",
-  conquest: "Displaced by the city's capture; the upheaval eases as the city settles.",
-  attrition: "Trapped with nowhere to go, these people have perished and are gone for good.",
-  return: "A people drawn home as their recovered homeland finds peace and plenty again."
+  unhappiness: "Raise {1_City}'s Happiness to stop its people leaving.",
+  prosperity: "Improve {1_City}'s yields and Happiness to keep more of its people.",
+  war: "They will keep fleeing until the fighting inside the city's borders ends and its pillaged tiles are repaired.",
+  disaster: "People stop fleeing after the disaster ends.",
+  conquest: "The conqueror took these people along with the city. Retake it to win them back.",
+  attrition: "These people died and are lost for good.",
+  return: "They are going home now that their homeland is peaceful and prosperous again."
 };
+
+/**
+ * City-less variants of the hints that name a settlement, for callers that aggregate across cities and
+ * so have no single name to give (the verbose per-cause toast). Without these an unfilled `{1_City}`
+ * placeholder would reach the screen.
+ * @type {Record<string,string>}
+ */
+const HINTS_ANY = {
+  unhappiness: "Raise Happiness in your unhappy cities to stop their people leaving.",
+  prosperity: "Improve the yields and Happiness of the cities people leave to keep more of them."
+};
+
+/** The English fallback for {@link stanceTip}. */
+const STANCE_TIP = "An Anti-Immigration Stance policy would also keep more of them in your empire.";
 
 /** @type {Record<string,string>} The LOC key per hint, paired with the English fallback in `HINTS`. */
 const HINT_KEYS = {
@@ -173,26 +187,37 @@ export function causeAccent(cause) {
  * @returns {string} A CSS colour.
  */
 export function digestAccent(ownLoss, crossCiv) {
-  return (!ownLoss || !crossCiv) ? causeAccent("prosperity") : causeAccent("war");
+  if (ownLoss) return crossCiv ? causeAccent("war") : NEUTRAL_NEWS_ACCENT;
+  return crossCiv ? GAIN_ACCENT : NEUTRAL_NEWS_ACCENT;
 }
 
 /** The red-toned causes; the alarming red is reserved for the local player's OWN population losses. */
 const RED_CAUSES = new Set(["war", "conquest", "crisis"]);
+/** The good-news causes; their green is reserved for the local player's OWN gains (see GAIN_ACCENT). */
+const GAIN_CAUSES = new Set(["prosperity", "return"]);
 /** A muted slate for world-news / other-civ notifications (informational, not the player's crisis). */
 const NEUTRAL_NEWS_ACCENT = "#7d8aa0";
+/** The one green: a gain to the player's own empire. Nothing that costs the player is ever painted with it. */
+const GAIN_ACCENT = ACCENTS.prosperity;
+/** The player's own people leaving for a "good" reason (prosperity, a return home) is still a loss: amber. */
+const OWN_SOFT_LOSS_ACCENT = ACCENTS.unhappiness;
 
 /**
- * The accent colour for a NOTIFICATION (toast or log row), where red is reserved for the local
- * player's own losses. When `ownLoss` is false (world news, or another civ's event) the red causes
- * (war / conquest / crisis) render in a neutral informational tone instead, so the player can tell at
- * a glance whether a red notification is about THEIR civilization. Non-red causes are unaffected.
+ * The accent colour for a NOTIFICATION (toast or log row). Two rules: red is reserved for the local
+ * player's OWN population losses (another civ's war or crisis renders in a neutral informational tone,
+ * so a red notification is always about THEIR civilization), and green is reserved for the local player's
+ * OWN gains (another civ's prosperity or return migration is neutral news, and the player's own people
+ * leaving for prosperity or returning home is a soft loss, amber, never green). Warning tones (disaster
+ * orange, unhappiness amber, attrition grey) are unaffected.
  * @param {string} [cause] The migration cause (or "crisis").
  * @param {boolean} [ownLoss] Whether this notification is the local player's own population loss.
  * @returns {string} A CSS colour.
  */
 export function notificationAccent(cause, ownLoss) {
-  if (!ownLoss && cause && RED_CAUSES.has(cause)) return NEUTRAL_NEWS_ACCENT;
-  return causeAccent(cause);
+  const c = cause || "";
+  if (ownLoss) return GAIN_CAUSES.has(c) ? OWN_SOFT_LOSS_ACCENT : causeAccent(c);
+  if (RED_CAUSES.has(c) || GAIN_CAUSES.has(c)) return NEUTRAL_NEWS_ACCENT;
+  return causeAccent(c);
 }
 
 /**
@@ -215,7 +240,18 @@ export function causePermanence(cause) {
  */
 export function causeHint(cause, city) {
   if (!cause || !HINTS[cause]) return "";
+  if (!city && HINTS_ANY[cause]) return loc(HINT_KEYS[cause] + "_ANY", HINTS_ANY[cause]);
   return loc(HINT_KEYS[cause], HINTS[cause], city);
+}
+
+/**
+ * The extra tip shown when people leave for ANOTHER civilization by choice: the Anti-Immigration Stance
+ * is the one lever that retains them, and it only acts on cross-civ moves, so it is never offered for an
+ * internal move (where it does nothing) or a forced flight.
+ * @returns {string} The tip.
+ */
+export function stanceTip() {
+  return loc("LOC_EMIG_HINT_STANCE", STANCE_TIP);
 }
 
 /**

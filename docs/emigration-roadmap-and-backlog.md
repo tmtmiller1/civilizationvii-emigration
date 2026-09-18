@@ -187,7 +187,7 @@ invariants that must never be violated:
 The full scenario graphics are maintained in
 [migration-scenarios-diagrams.md](migration-scenarios-diagrams.md) so they can evolve independently from
 the implementation plan. They map directly to the hooks in §0.1–§0.6 and the quarter rules in
-[cultural-enclaves.md](cultural-enclaves.md).
+[cultural-enclaves.md](../../_archived-emigration-enclave-feature/docs/cultural-enclaves.md) (archived).
 
 ---
 
@@ -1456,7 +1456,18 @@ clamp; off flag → byte-identical to the current civ-scoped behavior (character
 **Risk.** Gameplay/balance + a persisted-state migration — ship off by default, validate with the
 balance scripts, and document.
 
-### 17.3 Feature AC — Emigration of urban population *(higher — gameplay; unspecced, probe-gated)*
+### 17.3 Feature AC — Emigration of urban population *(built 2026-09-12 as the crisis urban leg, REMOVED 2026-09-14)*
+
+> Removed 2026-09-14, before release: no script operation removes a specialist (`ASSIGN_WORKER -1` only
+> desyncs the worker counter; `engine-limits-from-probes.md` 1.4), and building loss was ruled out for
+> players. Only rural tiles leave. The notes below record what was built and the original spec.
+
+> Shipped: `urbanEmigrationEnabled` / `urbanFloor` / `maxUrbanLossPerCityPerTurn` / `urbanLossCapPct` /
+> `urbanRecoveryTurns` in
+> `emigration-departure-tile.js` (`urbanReserveKind`, `takeUrbanPoint`, `abandonForDeath`), reserved in
+> `consumeSourcePoint`, gated in the engine by `canShedPoint` / `canShedAny`. Crisis only, rural first,
+> specialists (local) then buildings. The notes below are the original spec.
+
 
 **Goal.** Extend the migration model beyond rural population so a city's **urban** population can also
 leave under sufficient pressure — a besieged/collapsing city today only ever bleeds its rural workers,
@@ -1486,6 +1497,14 @@ the first). Reuse the deterministic pressure math and the transit queue; do **no
 **Config / tunables.** New flag, **off by default** (`urbanEmigrationEnabled: false`) — it changes the
 core invariant that cities survive migration. **Tests.** Characterization test proving off → byte-identical
 to today; a rural-exhausted-then-urban ordering test.
+
+**Q1 answered (2026-09-12, `devtools/engine-probe/` runs 6–8):** the urban write is a BUILDING.
+`DESTROY_ELEMENT {Kind:"CONSTRUCTIBLE", Owner, LocalID}` on a building removed it and took one urban
+population point with it (London granary: urban 14→13; a foreign library: urban 15→14), and
+`CREATE_ELEMENT {Kind:"CONSTRUCTIBLE", Type:"BUILDING_X", Location: district plot, Parent, Owner}` added
+a building and one urban point. `ASSIGN_WORKER {Location, Amount:-1}` removes a specialist for the local
+player only (the op is refused under a foreign player id). Q2 answered: the building goes with the
+point. The feature is buildable: crisis-only, rural tiles first, then specialists (local) / buildings.
 
 **Revisit when** the Q1 probe confirms an urban-population write is reachable. **Risk.** High — touches
 the mod's central "cities don't die from migration" invariant and depends on an unverified engine API;
@@ -1543,6 +1562,14 @@ is why most of these are YAGNI today.
 ---
 
 ## 20. Pending in-game verification (manual QA — not runnable off-engine)
+
+- **Departures and arrivals made real (2026-09-11) — watched hands-free, wants a human pass.** The
+  engine writes were watched through `devtools/engine-probe/` (tile abandoned and yields dropped on a
+  local and a foreign city; automatic placement produced a real improvement; the Migrant unit spawned;
+  the mod's own pass abandoned tiles over two Autoplay turns). Still unwatched by a human: the "Ask me"
+  pop-up's look and its "Choose where they settle" button opening the place-population view with a
+  mouse (the harness drove it from script), and `arrivalPreferSpecialists` seating a specialist in a
+  real district. Both are off the default path or cosmetic; verify on the next play session.
 
 The test suite covers the pure logic, but several shipped systems carry an explicit "needs an in-game
 visual pass" note (from `SHIP_PLAN.md` and the disaster plan). These are verification TODOs, not code:
@@ -1663,6 +1690,13 @@ player-built enclave improvement briefly solved the *visibility* goal by another
 `Constructible_YieldChanges` were natively attributed — but that improvement was **removed 2026-07-17**
 (it crashed the AI turn; see the won't-implement doc), so the **stance** yield is once again the only
 route and stays a still-invisible per-turn `grantYield`.
+
+> **Superseded 2026-09-17 (establish, then recognize).** The "grant steps aside while the tile stands" rule below no
+> longer applies. An enclave is now CREATED (record + tile, tile yield) when its community is established, and
+> RECOGNIZED after the dwell, when the stance's benefit and drawback are granted ON TOP of the tile. Reason: the
+> Chronicle announced "The {Civ} Enclave of {City}" from share alone, up to a dwell period before any enclave existed
+> (turn-85 save: three such entries for Mérida, registry empty). Status: code + tests done, not yet watched in game.
+> See `establishEnclaves` / `recordForChoice` in `ui/emigration-quarter.js` and `tests/quarter-dwell.mjs`.
 
 **22a. Reconcile the two reward paths — DONE (2026-07-16).** Resolved as *"both, deliberately: the
 improvement REPLACES the grant — and pays strictly more, framed as an optional government investment in

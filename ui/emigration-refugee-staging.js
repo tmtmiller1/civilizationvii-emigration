@@ -4,6 +4,8 @@
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { addRural, removeRural } from "/emigration/ui/emigration-population.js";
+import { departureWouldAbandonTile } from "/emigration/ui/emigration-departure-tile.js";
+import { arriveRural } from "/emigration/ui/emigration-arrival-placement.js";
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
 import { immigrationOpenness } from "/emigration/ui/emigration-borders.js";
 import { bumpRefugeesSettled } from "/emigration/ui/emigration-telemetry.js";
@@ -26,7 +28,13 @@ function roll01(seed) {
     h ^= seed.charCodeAt(i);
     h = Math.imul(h, 16777619) >>> 0;
   }
-  return (h >>> 0) / 0xffffffff;
+  // Final avalanche (murmur3 fmix32): FNV alone barely changes its high bits when only the tail of the seed changes.
+  h ^= h >>> 16;
+  h = Math.imul(h, 0x85ebca6b);
+  h ^= h >>> 13;
+  h = Math.imul(h, 0xc2b2ae35);
+  h ^= h >>> 16;
+  return (h >>> 0) / 0x100000000;
 }
 
 /**
@@ -50,12 +58,22 @@ export function immediateRefugeeSettlement(src, dest, state, cause) {
  * settled rural population.
  * @param {*} src Source signal.
  * @param {string} cause Move cause.
- * @returns {{ok:boolean, fromPool:boolean, originCiv?:number, since?:number}}
+ * @returns {{ok:boolean, fromPool:boolean, originCiv?:number, since?:number,
+ *   deferredTile?:boolean}} The consume result.
  */
 export function consumeSourcePoint(src, cause) {
   if (CONFIG.refugeePoolEnabled && isRefugeeCause(cause) && refugeePoolTotal(src.key) > 0) {
     const one = consumeOneForReshed(src.key);
     if (one) return { ok: true, fromPool: true, originCiv: one.originCiv, since: one.since };
+  }
+  // Rural exhausted: nothing leaves (the urban core is never taken; see emigration-departure-tile.js).
+  if ((src.rural || 0) <= CONFIG.minRuralToEmigrate) return { ok: false, fromPool: false };
+  // Tile abandonment (departure-tile.js) cannot be undone, so the engine write is DEFERRED: reserve the
+  // point in the signal now; commitSourcePoint destroys the tile once the destination has accepted it.
+  if (departureWouldAbandonTile(src.city)) {
+    src.rural -= 1;
+    src.population -= 1;
+    return { ok: true, fromPool: false, deferredTile: true };
   }
   if (!removeRural(src.city)) return { ok: false, fromPool: false };
   src.rural -= 1;
@@ -64,12 +82,26 @@ export function consumeSourcePoint(src, cause) {
 }
 
 /**
+ * Release a deferred tile reservation (nothing was written to the engine yet).
+ * @param {*} src Source signal.
+ */
+function releaseReservation(src) {
+  src.population += 1;
+  src.rural += 1;
+}
+
+/**
  * Undo a source-point consume when destination-side commit fails.
  * @param {*} src Source signal.
- * @param {{ok:boolean, fromPool:boolean, originCiv?:number, since?:number}} consumed Consume result.
+ * @param {{ok:boolean, fromPool:boolean, originCiv?:number, since?:number,
+ *   deferredTile?:boolean}} consumed Consume result.
  */
 export function undoSourceConsume(src, consumed) {
   if (!consumed.ok) return;
+  if (consumed.deferredTile) {
+    releaseReservation(src);
+    return;
+  }
   if (consumed.fromPool) {
     queueRefugees(
       src.key,
@@ -119,7 +151,7 @@ export function settleRefugeePools(ranked, state) {
     if (budget <= 0) continue;
     while (budget > 0) {
       if (!refugeePoolEligible(sig.key, state.monoTurn, CONFIG.refugeePoolMinHoldTurns)) break;
-      if (!addRural(sig.city)) break;
+      if (!arriveRural(sig.city, { kind: "refugee" })) break;
       if (!consumeEligibleForSettlement(sig.key, state.monoTurn, CONFIG.refugeePoolMinHoldTurns)) {
         removeRural(sig.city);
         break;

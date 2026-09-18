@@ -94,6 +94,9 @@ import { civAdjective } from "/emigration/ui/emigration-naming.js";
  * @property {string} originName @property {string} destName
  * @property {number} appearFrame @property {number|null} [disappearFrame]
  * @property {number} ox @property {number} oy @property {number} ci
+ * @property {number} [cox] X offset from its CITY's sub-centre (the painter adds the city's live sx).
+ * @property {number} [coy] Y offset from its CITY's sub-centre.
+ * @property {CityMeta} [cm] The city sub-cluster it sits in (so a dragged city carries its dots).
  * @property {{fromX:number, fromY:number, p:number}|null} [anim]
  * @property {string} [evKind] @property {number} [evFrom] @property {number} [evTo]
  */
@@ -576,6 +579,11 @@ function appendFrameNatives(b, pops, i) {
 
 /**
  * Phyllotaxis-pack a city's chronological dot list into slots offset from its sub-centre.
+ *
+ * Each dot keeps its slot BOTH ways: `cox/coy` relative to the city sub-centre, and `cm` the city it
+ * belongs to. The painter adds them live (`c.x + cm.sx + d.cox`), so when a city is dragged its dots
+ * travel with it. `ox/oy` stay as the flattened civ-relative offset for anything that wants the
+ * settled position without a city lookup.
  * @param {*} cm City meta {sx, sy, subR, bornFrame}.
  * @param {*[]} list The city's dots.
  * @param {*[]} dots Flat output list.
@@ -586,8 +594,11 @@ function layoutCityDots(cm, list, dots) {
     const rr = cr * Math.sqrt((i + 0.5) / list.length);
     const aa = i * GOLDEN;
     const d = list[i];
-    d.ox = cm.sx + Math.cos(aa) * rr;
-    d.oy = cm.sy + Math.sin(aa) * rr;
+    d.cox = Math.cos(aa) * rr;
+    d.coy = Math.sin(aa) * rr;
+    d.cm = cm;
+    d.ox = cm.sx + d.cox;
+    d.oy = cm.sy + d.coy;
     cm.bornFrame = Math.min(cm.bornFrame, d.appearFrame);
     dots.push(d);
   }
@@ -726,7 +737,6 @@ function layoutCiv(center, byCity, dots) {
     Math.max(MIN_CITY_SUB_R, clusterRadius((byCity.get(idx) || []).length)));
   const pos = packCityDiscs(subRs);
   const { cx, cy } = enclosingCentre(pos);
-  let reach = 8;
   for (let idx = 0; idx < cities.length; idx++) {
     const cm = cities[idx];
     cm.sx = pos[idx].x - cx; // re-centre the arrangement on the enclosing-circle centre
@@ -737,9 +747,23 @@ function layoutCiv(center, byCity, dots) {
     // A dotless settlement keeps bornFrame = Infinity (layoutCityDots never lowered it), which the paint
     // guard reads as "never born" → disc hidden. Show it from the start of the timeline instead.
     if (!Number.isFinite(cm.bornFrame)) cm.bornFrame = 0;
-    reach = Math.max(reach, Math.hypot(cm.sx, cm.sy) + Math.max(subRs[idx], 5));
   }
-  center.clusterR = reach;
+  center.clusterR = civReach(center);
+}
+
+/**
+ * The radius a civ circle needs to contain its city discs. Shared by the initial packing and by the
+ * city-drag handler, so pulling a settlement out of the cluster grows the civ circle around it (and
+ * pushing it back shrinks it again) by the same rule that sized it in the first place.
+ * @param {*} center Civ centre (reads `.cities`).
+ * @returns {number} The cluster radius.
+ */
+export function civReach(center) {
+  let reach = 8;
+  for (const cm of center.cities || []) {
+    reach = Math.max(reach, Math.hypot(cm.sx || 0, cm.sy || 0) + Math.max(cm.subR || 0, 5));
+  }
+  return reach;
 }
 
 /**

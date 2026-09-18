@@ -3,6 +3,13 @@
 // en_us directly so it doesn't depend on this file.)
 //
 //   node scripts/i18n_extract.mjs
+//
+// This is the middle step of three. The full order is ingest, extract, apply:
+//   node scripts/i18n_ingest.mjs    fold hand-edited locale XML back into i18n/<locale>.json
+//   node scripts/i18n_extract.mjs   refresh the English key set from en_us (this script)
+//   node scripts/i18n_apply.mjs     regenerate every locale's ModText.xml
+// Skipping extract makes apply ship a stale English fallback to all eleven locales; skipping ingest
+// makes it replace hand-written translations with English, which apply now refuses to do.
 
 import fs from "node:fs";
 
@@ -18,7 +25,8 @@ while ((m = re.exec(xml))) {
     .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
-    .trim();
+    // Keep edge spaces: fragments like " and " or " ({1_Flag})" are concatenated onto other text.
+    .replace(/^\s*\n\s*|\s*\n\s*$/g, "");
 }
 fs.writeFileSync(`${I18N_ROOT}/i18n-source.json`, JSON.stringify(out, null, 1) + "\n");
 console.log("keys extracted:", Object.keys(out).length);

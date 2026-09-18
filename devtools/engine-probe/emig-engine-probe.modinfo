@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mod id="emig-engine-probe" version="1" xmlns="ModInfo">
+    <Properties>
+        <Name>Emigration Engine Probe (dev)</Name>
+        <Description>Throwaway dev probe. Auto-loads a save, then measures what addRuralPopulation and grantYield(YIELD_HAPPINESS) actually change across three turns. Logs to UI.log as [EmigProbe]. Not for release.</Description>
+        <Authors>Tower</Authors>
+        <Package>EmigEngineProbe</Package>
+        <PackageSortIndex>9999</PackageSortIndex>
+        <Version>0.0.1</Version>
+        <AffectsSavedGames>0</AffectsSavedGames>
+    </Properties>
+    <Dependencies>
+        <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
+    </Dependencies>
+    <ActionCriteria>
+        <Criteria id="always"><AlwaysMet></AlwaysMet></Criteria>
+    </ActionCriteria>
+    <ActionGroups>
+        <ActionGroup id="eep-shell" scope="shell" criteria="always">
+            <Properties><LoadOrder>9000</LoadOrder></Properties>
+            <Actions><UIScripts><Item>ui/eep-shell.js</Item></UIScripts></Actions>
+        </ActionGroup>
+        <ActionGroup id="eep-data" scope="game" criteria="always">
+            <Properties><LoadOrder>8000</LoadOrder></Properties>
+            <Actions><UpdateDatabase><Item>data/eep-test-constructible.xml</Item><Item>data/eep-extra.xml</Item></UpdateDatabase></Actions>
+        </ActionGroup>
+        <ActionGroup id="eep-game" scope="game" criteria="always">
+            <Properties><LoadOrder>9000</LoadOrder></Properties>
+            <Actions><UIScripts><Item>ui/eep-game.js</Item></UIScripts></Actions>
+        </ActionGroup>
+    </ActionGroups>
+</Mod>

@@ -28,6 +28,10 @@ globalThis.Configuration = { getGame: () => ({ getValue: (k) => kv[k] }), editGa
 function pin() {
   Object.assign(CONFIG, {
     gameSpeedTuningEnabled: false, // speed* helpers become identity
+    // The size/scale knobs are pinned to their legacy values so every figure below stays an exact
+    // integer; each has its own dedicated coverage (popExponent + builtEnabled in prosperity.mjs,
+    // perFewerPop in engine-pull.mjs, pressureRetention in Part 7 here).
+    popExponent: 1, perFewerPop: 0, builtEnabled: false, pressureRetention: 1,
     warSiege: false, // siegeEscalation() => 1
     minRuralToEmigrate: 1, emigrationBar: 10, deltaExponent: 1, cooldownTurns: 4,
     maxMovesPerTurn: 5, movesPerCity: 2, movesPerSiege: 3, maxLossPerCityPerTurn: 0,
@@ -279,7 +283,7 @@ console.log("engine-rigor (part 1) wired; continuing in part 2 below");
 // ════════════════════════════════════════════════════════════════════════════
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { rankByProsperity, distress } from "/emigration/ui/emigration-prosperity.js";
-import { loadState, prepareState, ownerPopulations } from "/emigration/ui/emigration-state.js";
+import { loadState, prepareState, ownerPopulations, tickPressure } from "/emigration/ui/emigration-state.js";
 import { stanceImpactFor } from "/emigration/ui/emigration-migration-stats.js";
 import { makeInboundCtx, noteInbound } from "/emigration/ui/emigration-inbound.js";
 
@@ -1089,6 +1093,128 @@ function laggedWorld(sameCiv) {
   const recs = runPass();
   assert.ok(recs.every((m) => m && typeof m === "object" && typeof m.cause === "string"),
     "every migration from a pass is a real record, a floored/guarded source emits no sentinel array element");
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// Part 7, pressure retention: the accumulator bleeds off instead of ratcheting
+// ════════════════════════════════════════════════════════════════════════════
+
+// ── tickPressure decays EVERY persisted source, not just the ones the pass will evaluate ──
+{
+  pin();
+  // `onCooldown` and `noDestination` are exactly the sources the pass skips. Freezing their charge at
+  // the old value is the bug this exists to remove, so they must drain like everyone else.
+  const state = { sources: {
+    active: { pressure: 10, cooldown: 0 },
+    onCooldown: { pressure: 10, cooldown: 5 },
+    noDestination: { pressure: 7, cooldown: 0 }
+  } };
+  tickPressure(state, 0.5);
+  assert.equal(state.sources.active.pressure, 5, "an evaluated source's pressure decays by the retention");
+  assert.equal(state.sources.onCooldown.pressure, 5, "a resting source drains too, it does not freeze");
+  assert.equal(state.sources.noDestination.pressure, 3.5, "a source with nowhere to go drains too");
+}
+
+// ── retention 1 leaves the legacy ratchet exactly as it was ───────────────────
+{
+  pin();
+  const state = { sources: { a: { pressure: 12.5, cooldown: 0 } } };
+  tickPressure(state, 1);
+  assert.equal(state.sources.a.pressure, 12.5, "retention 1 is off: pressure is untouched (kills the always-decay mutant)");
+}
+
+// ── an unusable retention is off, never a silent wipe ─────────────────────────
+for (const bad of [undefined, NaN, -0.5, 2]) {
+  pin();
+  const state = { sources: { a: { pressure: 9 } } };
+  tickPressure(state, bad);
+  assert.equal(state.sources.a.pressure, 9, `retention ${String(bad)} is ignored, pressure is not wiped`);
+}
+
+// ── retention 0 drains immediately; a residue below the floor snaps to a clean 0 ──
+{
+  pin();
+  const state = { sources: { a: { pressure: 40 } } };
+  tickPressure(state, 0);
+  assert.equal(state.sources.a.pressure, 0, "retention 0 drains the charge in one turn");
+}
+{
+  pin();
+  const state = { sources: { a: { pressure: 0.019 }, b: { pressure: 0.021 } } };
+  tickPressure(state, 0.5);
+  assert.equal(state.sources.a.pressure, 0, "a residue under the floor snaps to exactly 0, not a lingering crumb");
+  assert.equal(state.sources.b.pressure, 0.0105, "a residue above the floor keeps its exact value");
+}
+
+// ── a missing / non-numeric pressure is read as 0, never NaN ──────────────────
+{
+  pin();
+  const state = { sources: { a: { cooldown: 0 }, b: { pressure: null } } };
+  tickPressure(state, 0.5);
+  assert.equal(state.sources.a.pressure, 0, "a source row with no pressure yet reads as 0");
+  assert.equal(state.sources.b.pressure, 0, "a null pressure reads as 0, it does not propagate NaN");
+}
+
+// ── a state with no sources map is survivable (a pass before any source exists) ──
+{
+  pin();
+  assert.doesNotThrow(() => tickPressure({}, 0.5), "a state with no sources map does not throw");
+  assert.doesNotThrow(() => tickPressure(null, 0.5), "a null state does not throw");
+}
+
+// ── THE BALANCE PROPERTY: a constant pull converges to pull/(1-retention) and stops there ──
+// This is the whole behavioural difference. Under the old ratchet ANY positive pull crossed ANY bar
+// eventually; now a source only ever migrates if its pull is both large and sustained, so the ceiling
+// is the real test and it must be exact.
+{
+  pin();
+  const retention = 0.95;
+  const pull = 1.5;
+  const ceiling = pull / (1 - retention); // 30
+  const state = { sources: { a: { pressure: 0 } } };
+  for (let turn = 0; turn < 500; turn++) {
+    tickPressure(state, retention);
+    state.sources.a.pressure += pull;
+  }
+  assert.ok(Math.abs(state.sources.a.pressure - ceiling) < 1e-6,
+    `a steady pull of ${pull} settles at ${ceiling}, the retention ceiling`);
+  assert.ok(state.sources.a.pressure <= ceiling + 1e-9,
+    "and never climbs past it, so a bar above the ceiling is genuinely never crossed");
+}
+
+// ── a pull that stops is FORGOTTEN: the charge falls back to zero on its own ──
+// The London case: a city charged up by a siege must not still be holding that charge, and must not
+// discharge it as a peacetime move many turns later.
+{
+  pin();
+  const state = { sources: { a: { pressure: 25.6 } } }; // a real reading, 85% of the default bar of 30
+  for (let turn = 0; turn < 200; turn++) tickPressure(state, 0.95); // no pull added: the war is over
+  assert.equal(state.sources.a.pressure, 0,
+    "a charge with nothing sustaining it decays to zero instead of waiting to fire (kills the ratchet)");
+}
+
+// ── runPass, end to end: a steady pull no longer ratchets without bound ──────
+// Under the old accumulator a constant pull grew pressure linearly forever, so ANY positive pull
+// crossed ANY bar given enough turns. With retention it settles at a ceiling and stays there.
+{
+  pin();
+  Object.assign(CONFIG, { pressureRetention: 0.5, emigrationBar: 1e9, cooldownTurns: 0, transitLagTurns: 0, attritionEnabled: false, minRuralToEmigrate: 1 });
+  freshConfigStore(); globalThis.Game = { turn: 1 };
+  installWorld({
+    1: major([makeCity(1, 1, { population: 4, rural: 4, yields: { YIELD_FOOD: 1 }, x: 0, y: 0 })]),
+    2: major([makeCity(2, 1, { population: 4, rural: 4, yields: { YIELD_FOOD: 500 }, x: 1, y: 0 })])
+  });
+  const poorest = () => {
+    const src = loadState().sources;
+    return Math.max(0, ...Object.keys(src).map((k) => src[k].pressure || 0));
+  };
+  for (let i = 0; i < 2; i++) runPass();
+  const early = poorest();
+  for (let i = 0; i < 40; i++) runPass();
+  const late = poorest();
+  assert.ok(early > 0, "the poor city really is building pressure toward the rich one");
+  assert.ok(late < early * 3,
+    `a steady pull settles instead of ratcheting (early ${early}, after 40 more passes ${late})`);
 }
 
 console.log("engine-rigor harness passed");

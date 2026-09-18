@@ -16,12 +16,13 @@ import { getSnapshotInterval } from "/emigration/ui/emigration-settings.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { modPointsByCity, recordCityNet, cityNetSeriesFrom } from "/emigration/ui/emigration-city-net.js";
+import { foldInternal } from "/emigration/ui/emigration-internal-tally.js";
+import { normalize, freshState, migrateState } from "/emigration/ui/emigration-stats-schema.js";
 import {
   addFlows,
   sumDeltas,
   subtractFlows,
   mergeAdjacentDeltas,
-  migrateCumulativeToDeltas,
   capFlows,
   capByEvent
 } from "/emigration/ui/emigration-flow-history.js";
@@ -45,6 +46,14 @@ let _recent = [];
  *   war/disaster/conquest arrivals RECEIVED (the inflow counterpart of `refugees`).
  * @property {Record<string, number>} deaths Cumulative population lost to attrition (the outlet).
  * @property {Record<string, number>} cumPts Net per player, in raw pop points.
+ * @property {Record<string, number>} intOut INTERNAL emigration: people who left one of the civ's
+ *   own settlements for another (a subset of `out`; `out - intOut` is the cross-civ share).
+ * @property {Record<string, number>} intIn INTERNAL immigration: arrivals from the civ's own
+ *   settlements (a subset of `in`).
+ * @property {Record<string, number>} intOutPts Internal emigration, in pop points.
+ * @property {Record<string, number>} intInPts Internal immigration, in pop points.
+ * @property {number} intSchema Internal-tally schema stamp (1 = present); a save without it is
+ *   backfilled once from the intra-civ flow edges.
  * @property {Record<string, number>} outPts Gross emigration per player, in pop points.
  * @property {Record<string, number>} inPts Gross immigration per player, in pop points.
  * @property {Record<string, number>} refugeesPts Refugee emigration per player, in pop points.
@@ -140,76 +149,6 @@ function readStored() {
 }
 
 /**
- * `v` if it's an object, else a fresh empty map. Keeps `normalize` flat (no per-field `||`).
- * @param {*} v Value.
- * @returns {*} An object.
- */
-function mapOr(v) {
-  return v && typeof v === "object" ? v : {};
-}
-
-/**
- * Coerce a parsed object into the canonical state shape (filling missing maps). Existing saves keep
- * their tallies untouched: the v2 net-accounting change (settled cross-civ only) takes effect on new
- * moves going forward; a pre-v2 save's accumulated net carries a fixed offset rather than being wiped.
- * @param {*} o Parsed object.
- * @returns {MigStatsState} The normalized state.
- */
-function normalize(o) {
-  return {
-    cum: mapOr(o.cum),
-    cumPts: mapOr(o.cumPts),
-    lastSampled: mapOr(o.lastSampled),
-    out: mapOr(o.out),
-    in: mapOr(o.in),
-    refugees: mapOr(o.refugees),
-    refugeesIn: mapOr(o.refugeesIn),
-    deaths: mapOr(o.deaths),
-    losses: mapOr(o.losses),
-    // Parallel raw-pop-point tallies (1 point per migration) so the UI can show exact Civ
-    // population numbers, not just the historically-scaled "people" totals. (cumPts is set above.)
-    outPts: mapOr(o.outPts),
-    inPts: mapOr(o.inPts),
-    refugeesPts: mapOr(o.refugeesPts),
-    refugeesInPts: mapOr(o.refugeesInPts),
-    deathsPts: mapOr(o.deathsPts),
-    lossesPts: mapOr(o.lossesPts),
-    flowsPts: mapOr(o.flowsPts),
-    cityPts: mapOr(o.cityPts),
-    cityNames: mapOr(o.cityNames),
-    wmOut: mapOr(o.wmOut),
-    wmIn: mapOr(o.wmIn),
-    wmRefugees: mapOr(o.wmRefugees),
-    wmRefugeesIn: mapOr(o.wmRefugeesIn),
-    outByCause: mapOr(o.outByCause),
-    inByCause: mapOr(o.inByCause),
-    outByEvent: mapOr(o.outByEvent),
-    inByEvent: mapOr(o.inByEvent),
-    deathsByEvent: mapOr(o.deathsByEvent),
-    wmOutByCause: mapOr(o.wmOutByCause),
-    wmInByCause: mapOr(o.wmInByCause),
-    flows: mapOr(o.flows),
-    // Per-city rolling net pop-point series ("owner|cityName" -> recent net values), for the
-    // city-readout sparkline (Feature E). Bounded per city and in city count.
-    cityNet: mapOr(o.cityNet),
-    // Stance-impact counterfactual (people + pop-points): how much each civ's border policy raised
-    // (Pro) or cut (Anti / Closed-retention) its cross-civ immigration in/out vs a neutral-borders
-    // world, accumulated per turn. Signed: +in = allowed beyond, -in = prevented, -out = retained.
-    stanceIn: mapOr(o.stanceIn),
-    stanceOut: mapOr(o.stanceOut),
-    stanceInPts: mapOr(o.stanceInPts),
-    stanceOutPts: mapOr(o.stanceOutPts),
-    flowHistory: Array.isArray(o.flowHistory) ? o.flowHistory : [],
-    disasterEvents: Array.isArray(o.disasterEvents) ? o.disasterEvents : [],
-    chartTurn: typeof o.chartTurn === "number" ? o.chartTurn : 0,
-    chartAge: typeof o.chartAge === "string" ? o.chartAge : "",
-    chartLocal: typeof o.chartLocal === "number" ? o.chartLocal : 0,
-    lossAge: typeof o.lossAge === "string" ? o.lossAge : "",
-    flowSchema: typeof o.flowSchema === "number" ? o.flowSchema : 1
-  };
-}
-
-/**
  * Load the persisted tallies, re-reading once per turn so a reader context picks up the recorder's
  * newer saves (see `_loadedTurn`). Within a turn the cached state is reused, so a pass never churns.
  * @returns {MigStatsState} State.
@@ -225,10 +164,10 @@ function load() {
     if (raw) {
       const o = JSON.parse(raw);
       if (o && typeof o === "object") {
-        _s = normalize(o);
-        migrateFlowSchema(_s);
-        carryWatermarks(_s, prev);
-        return _s;
+        const next = /** @type {MigStatsState} */ (normalize(o));
+        migrateState(next); // delta-encode legacy flow history + seed the internal/external split
+        carryWatermarks(next, prev);
+        return (_s = next);
       }
     }
   } catch (_) {
@@ -237,21 +176,7 @@ function load() {
   // Nothing readable (off-engine, or before the first save): keep the state we already have rather
   // than wiping live tallies on a turn tick.
   if (prev) return (_s = prev);
-  _s = normalize({});
-  _s.flowSchema = 2; // fresh state is already delta-encoded
-  return _s;
-}
-
-/**
- * Upgrade legacy cumulative-clone flow history to delta encoding once on load (P0.3), then stamp
- * the schema. Idempotent: a no-op for already-delta-encoded saves.
- * @param {MigStatsState} s State.
- */
-function migrateFlowSchema(s) {
-  if (s.flowSchema !== 2) {
-    s.flowHistory = migrateCumulativeToDeltas(s.flowHistory);
-    s.flowSchema = 2;
-  }
+  return (_s = freshState());
 }
 
 /** Persist the tallies to GameConfiguration. */
@@ -270,19 +195,6 @@ function save() {
  */
 function numOr0(v) {
   return typeof v === "number" && isFinite(v) ? v : 0;
-}
-
-/**
- * Whether a migration record crosses a civ border. Prefers the record's own `crossCiv` flag (the
- * only reliable signal for a lagged depart/arrive half, which carries just one owner); falls back to
- * comparing owners when both are present (e.g. an instantaneous move or a synthetic test record).
- * @param {*} m Migration record.
- * @returns {boolean} True when the move is between two different civs.
- */
-function isCrossCiv(m) {
-  if (m.crossCiv === true) return true;
-  if (m.crossCiv === false) return false;
-  return typeof m.srcOwner === "number" && typeof m.destOwner === "number" && m.srcOwner !== m.destOwner;
 }
 
 /**
@@ -322,7 +234,9 @@ function foldMigration(s, m) {
   // civ's total, so it must not touch the net tally, otherwise transit lag (depart debits now,
   // arrive credits later) leaves every actively-shedding civ with a permanent in-flight deficit, so
   // the Net chart shows everyone negative and no one positive. Gross in/out still count every move.
-  const cross = isCrossCiv(m);
+  // Banks the internal (same-civ) share of the gross tallies below, so the ledger can show Internal
+  // left/arrived beside External out/in, and hands back the cross-border verdict the net tally needs.
+  const cross = foldInternal(s, m);
   if (typeof m.destOwner === "number") {
     if (cross) addBoth(s.cum, s.cumPts, m.destOwner, p, pts);
     addBoth(s.in, s.inPts, m.destOwner, p, pts);
@@ -1002,13 +916,18 @@ export function sampleInByCause(pid) {
   const s = load();
   return sampleByCause(s.inByCause, s.wmInByCause, pid);
 }
-
 // Expose per-civ cumulative tallies for the Demographics war tooltip + the feedback layer
 // (read-only; cumulative so reads don't disturb the graph sample watermarks).
 try {
-  /** @type {*} */ (globalThis).EmigrationData = {
+  /** @type {*} */ (globalThis).EmigrationData = { monoTurn: () => monoTurn(), // the monotonic cross-age turn
     grossOutCumFor: (/** @type {number} */ pid) => load().out[pid] || 0,
     grossInCumFor: (/** @type {number} */ pid) => load().in[pid] || 0,
+    // The INTERNAL (within-this-civ) share of the gross tallies: people who left one of its own
+    // settlements for another, and the arrivals that came from one. External = gross - internal.
+    internalOutCumFor: (/** @type {number} */ pid) => load().intOut[pid] || 0,
+    internalInCumFor: (/** @type {number} */ pid) => load().intIn[pid] || 0,
+    internalOutPtsFor: (/** @type {number} */ pid) => load().intOutPts[pid] || 0,
+    internalInPtsFor: (/** @type {number} */ pid) => load().intInPts[pid] || 0,
     refugeesCumFor: (/** @type {number} */ pid) => load().refugees[pid] || 0,
     refugeesInCumFor: (/** @type {number} */ pid) => load().refugeesIn[pid] || 0,
     deathsCumFor: (/** @type {number} */ pid) => load().deaths[pid] || 0,

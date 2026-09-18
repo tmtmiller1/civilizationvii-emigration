@@ -1,0 +1,6 @@
+[2026-09-15 20:21:12]	HTML Parser Error@:fs://game/root-game.html@1:1146: Premature end of file  Currently open tags: html, div..
+[2026-09-15 20:21:28]	HTML Parser Error@:fs://game/root-game.html@49:43: Tokenizer error with an unimplemented error message.
+[2026-09-15 20:21:36]	Error loading image - icon_left_bumper.  [object Object] 
+[2026-09-15 20:21:36]	Error loading image - icon_right_bumper.  [object Object] 
+[2026-09-15 20:21:40]	Error loading image - icon_left_bumper.  [object Object] 
+[2026-09-15 20:21:40]	Error loading image - icon_right_bumper.  [object Object] 

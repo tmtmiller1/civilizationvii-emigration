@@ -8,6 +8,7 @@
 import { civAdjective } from "/emigration/ui/emigration-naming.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
+import { civReach } from "/emigration/ui/emigration-network-dots.js";
 
 /**
  * @typedef {import("/emigration/ui/emigration-network-dots.js").Dot} Dot
@@ -258,7 +259,31 @@ function showHoverTip(ev, canvas, holder, tip) {
 }
 
 /**
- * Pointer move: drag the grabbed cluster, else show the hover breakdown.
+ * Move the dragged CITY sub-cluster to the pointer and re-grow its civ circle around it.
+ *
+ * The city's position is an offset from its civ centre, so dragging it re-aims that offset; the civ's
+ * clusterR is then recomputed by the same rule that sized it during packing (civReach), which is what
+ * makes the civ boundary expand to enclose a settlement pulled out of the pile — the point of dragging
+ * one out being to see its internal migrant flows without the other cities on top of them.
+ * @param {*} drag Drag state (carries `city` + the civ `node`).
+ * @param {{x:number,y:number}} pt Pointer in logical coords.
+ * @param {*} scene Scene (for the canvas bounds).
+ */
+function dragCityTo(drag, pt, scene) {
+  const c = drag.node;
+  const cm = drag.city;
+  const r = (cm.subR || 0) + 6;
+  // Clamp in ABSOLUTE canvas space so a settlement can't be dragged off the edge, then store the
+  // result back as a civ-relative offset.
+  const ax = Math.max(r, Math.min(scene.WX - r, pt.x - drag.dx));
+  const ay = Math.max(r, Math.min(scene.WY - r, pt.y - drag.dy));
+  cm.sx = ax - c.x;
+  cm.sy = ay - c.y;
+  c.clusterR = civReach(c);
+}
+
+/**
+ * Pointer move: drag the grabbed city or cluster, else show the hover breakdown.
  * @param {*} ev Event.
  * @param {HTMLCanvasElement} canvas Canvas.
  * @param {*} holder Render holder.
@@ -267,10 +292,15 @@ function showHoverTip(ev, canvas, holder, tip) {
  */
 function onMove(ev, canvas, holder, tip, drag) {
   if (drag.node) {
-    const pt = toLogical(canvas, ev, holder.scene.WX, holder.scene.WY);
-    const r = drag.node.clusterR || 8;
-    drag.node.x = Math.max(r, Math.min(holder.scene.WX - r, pt.x - drag.dx));
-    drag.node.y = Math.max(r, Math.min(holder.scene.WY - r, pt.y - drag.dy));
+    const scene = holder.scene;
+    const pt = toLogical(canvas, ev, scene.WX, scene.WY);
+    if (drag.city) {
+      dragCityTo(drag, pt, scene);
+    } else {
+      const r = drag.node.clusterR || 8;
+      drag.node.x = Math.max(r, Math.min(scene.WX - r, pt.x - drag.dx));
+      drag.node.y = Math.max(r, Math.min(scene.WY - r, pt.y - drag.dy));
+    }
     if (Math.abs(pt.x - drag.downX) + Math.abs(pt.y - drag.downY) > 3) drag.moved = true;
     holder.dirty = true;
     tip.hide();
@@ -280,7 +310,9 @@ function onMove(ev, canvas, holder, tip, drag) {
 }
 
 /**
- * Pointer down: grab the cluster under the cursor to drag it (pinned so the sim won't fight it).
+ * Pointer down: grab whatever is under the cursor to drag it (pinned so the sim won't fight it). A
+ * CITY sub-circle wins over its civ, so a settlement can be pulled out of the cluster; pressing
+ * anywhere else in the civ circle still drags the whole civ and its cities together.
  * @param {*} ev Event.
  * @param {HTMLCanvasElement} canvas Canvas.
  * @param {*} holder Render holder.
@@ -288,11 +320,15 @@ function onMove(ev, canvas, holder, tip, drag) {
  */
 function onDown(ev, canvas, holder, drag) {
   const pt = toLogical(canvas, ev, holder.scene.WX, holder.scene.WY);
-  const c = nearestCluster(holder.scene, pt.x, pt.y);
+  const hit = nearestCity(holder.scene, pt.x, pt.y);
+  const c = hit ? hit.center : nearestCluster(holder.scene, pt.x, pt.y);
   if (!c) return;
   drag.node = c;
-  drag.dx = pt.x - c.x;
-  drag.dy = pt.y - c.y;
+  drag.city = hit ? hit.city : null;
+  // Grab offset: for a city, from its absolute position (centre + offset), so it doesn't jump to the
+  // cursor on the first move.
+  drag.dx = pt.x - (drag.city ? c.x + (drag.city.sx || 0) : c.x);
+  drag.dy = pt.y - (drag.city ? c.y + (drag.city.sy || 0) : c.y);
   drag.downX = pt.x;
   drag.downY = pt.y;
   drag.moved = false;
@@ -301,7 +337,8 @@ function onDown(ev, canvas, holder, drag) {
 }
 
 /**
- * Pointer up: end a drag. A press that didn't move is a click, toggle isolating that cluster.
+ * Pointer up: end a drag. A press that didn't move is a click, toggle isolating that cluster (a click
+ * on a city isolates its civ, as it did when cities weren't grabbable).
  * @param {HTMLCanvasElement} canvas Canvas.
  * @param {*} holder Render holder.
  * @param {*} state Interaction state.
@@ -314,6 +351,7 @@ function onUp(canvas, holder, state, drag) {
   }
   drag.node.pinned = false;
   drag.node = null;
+  drag.city = null;
   holder.dirty = true;
   canvas.style.cursor = "grab";
 }
@@ -327,7 +365,7 @@ function onUp(canvas, holder, state, drag) {
  */
 export function wireEvents(canvas, holder, state, tip) {
   /** @type {*} */
-  const drag = { node: null, dx: 0, dy: 0, downX: 0, downY: 0, moved: false };
+  const drag = { node: null, city: null, dx: 0, dy: 0, downX: 0, downY: 0, moved: false };
   canvas.style.cursor = "grab";
   canvas.addEventListener("mousedown", (/** @type {*} */ ev) => onDown(ev, canvas, holder, drag));
   canvas.addEventListener("mousemove", (/** @type {*} */ ev) => onMove(ev, canvas, holder, tip, drag));

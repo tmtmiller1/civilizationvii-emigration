@@ -1,0 +1,4 @@
+[2026-09-16 14:42:34]	HTML Parser Error@:fs://game/root-game.html@1:2043: Premature end of file  Currently open tags: html, div, div..
+[2026-09-16 14:42:34]	HTML Parser Error@:fs://game/root-game.html@1:2043: Premature end of file  Currently open tags: html, div, div..
+[2026-09-16 14:42:47]	SOURCE ERROR - /emigration/ui/emigration-main.js 
+[2026-09-16 14:42:48]	HTML Parser Error@:fs://game/root-game.html@49:43: Tokenizer error with an unimplemented error message.

@@ -1,0 +1,7 @@
+[12:31:00] registry: 126|emigration|1 524|emigration|0  ; modinfo flag: 1
+[12:31:00] probe installed: eep-modtest122.js on AugustusAnt65.Civ7Save
+[12:31:02] game pid 14431
+[12:31:53] shot options_tab0 (window 1386) -> 4640520 bytes
+[12:32:12] result=done after 56s
+[12:32:20] restored: 126|emigration|1 526|emigration|0  ; modinfo flag: 0 ; probe present: no
+[12:32:20] FINISHED result=done

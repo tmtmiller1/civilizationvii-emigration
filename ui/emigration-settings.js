@@ -7,7 +7,9 @@
 // (emigration-options.js) is the writer; emigration-main.js is the reader.
 
 import { CONFIG, CONFIG_DEFAULTS } from "/emigration/ui/emigration-config.js";
-import { TUNABLES, PRESETS, PRESET_NAMES } from "/emigration/ui/emigration-tunables.js";
+import {
+  TUNABLES, PRESETS, PRESET_NAMES, groupedValues, COMPOSITE_SETTINGS, compositePosition, compositeShift
+} from "/emigration/ui/emigration-tunables.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
 // Cascade-safe per-mod / per-option settings store, dual-backed for reliability:
@@ -56,6 +58,21 @@ class ModOptionsStore {
       return { root: {}, safe: false }; // unparseable siblings, do not overwrite
     }
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return { root: {}, safe: false };
+    }
+    // Coherent's getItem() in this UI context IGNORES the key it is given and returns the value of
+    // the FIRST key in the store (watched 2026-09-16), so this read routinely hands back some other
+    // mod's blob. Such a blob parses fine and is an object, so the checks above pass it through -
+    // and writing it back copies that blob into the shared settings key and grows it without bound
+    // (three ~370KB copies of one history archive were found spread across "!chronicle", "htlData"
+    // and "modSettings" from exactly this). A real settings root is { "<modId>": {...}, ... } so
+    // every top-level value is an object; the foreign blobs carry scalars (v: 2, updated: 178...).
+    // On a mismatch just decline to persist - never delete or rewrite anything.
+    const looksLikeSettingsRoot = Object.keys(parsed).every((k) => {
+      const v = parsed[k];
+      return !!v && typeof v === "object" && !Array.isArray(v);
+    });
+    if (!looksLikeSettingsRoot) {
       return { root: {}, safe: false };
     }
     return { root: parsed, safe: true };
@@ -541,4 +558,68 @@ export function applyPresetIndex(index) {
  */
 export function markPresetCustom() {
   ModOptions.save(MOD_ID, OPT_PRESET, 0);
+}
+
+/**
+ * A grouped setting's slider position (0-100): the saved value, else its CONFIG default.
+ * @param {string} name The grouped setting (a GROUPED_SETTINGS key and CONFIG key).
+ * @returns {number} The position.
+ */
+export function getGroupedSetting(name) {
+  const v = ModOptions.load(MOD_ID, "g_" + name);
+  return typeof v === "number" ? v : Number(CFG_DEF[name]) || 0;
+}
+
+/**
+ * Set a grouped setting: save the position and write every member tunable along the group's curve.
+ * @param {string} name The grouped setting.
+ * @param {number} position The slider position, 0-100.
+ */
+export function setGroupedSetting(name, position) {
+  const p = Math.max(0, Math.min(100, Math.round(Number(position) || 0)));
+  ModOptions.save(MOD_ID, "g_" + name, p);
+  CFG[name] = p;
+  const values = groupedValues(name, p);
+  for (const k of Object.keys(values)) setTunable(k, values[k]);
+}
+
+/**
+ * A composite slider's position: the average of its child grouped settings.
+ * @param {string} name A COMPOSITE_SETTINGS key. @returns {number} The position, 0-100.
+ */
+export function getCompositeSetting(name) {
+  return compositePosition((COMPOSITE_SETTINGS[name] || []).map((c) => getGroupedSetting(c)));
+}
+
+/**
+ * Move a composite slider: shift every child grouped setting by the same amount and write their tunables.
+ * @param {string} name A COMPOSITE_SETTINGS key. @param {number} position The new overall position, 0-100.
+ * @returns {Record<string, number>} The new position of each child.
+ */
+export function setCompositeSetting(name, position) {
+  const kids = COMPOSITE_SETTINGS[name] || [];
+  const next = compositeShift(kids.map((c) => getGroupedSetting(c)), position);
+  /** @type {Record<string, number>} */
+  const out = {};
+  kids.forEach((c, i) => {
+    setGroupedSetting(c, next[i]);
+    out[c] = next[i];
+  });
+  return out;
+}
+
+/**
+ * Whether an advanced-settings section is expanded on the Options tab (collapsed until the player opens it).
+ * @param {string} group An ADVANCED_GROUPS key. @returns {boolean} True when open.
+ */
+export function getAdvancedSectionOpen(group) {
+  return ModOptions.load(MOD_ID, "adv_open_" + group) === true;
+}
+
+/**
+ * Remember whether an advanced-settings section is expanded.
+ * @param {string} group An ADVANCED_GROUPS key. @param {boolean} open Expanded or not.
+ */
+export function setAdvancedSectionOpen(group, open) {
+  ModOptions.save(MOD_ID, "adv_open_" + group, !!open);
 }

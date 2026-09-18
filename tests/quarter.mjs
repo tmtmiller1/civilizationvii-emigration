@@ -25,7 +25,7 @@ globalThis.Players = {
 const quarter = await import("/emigration/ui/emigration-quarter.js");
 const stateMod = await import("/emigration/ui/emigration-quarter-state.js");
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
-const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCountForCiv, MAX_ENCLAVES_PER_CIV, applyOwnerQuarterYields } = quarter.__test;
+const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCountForCiv, MAX_ENCLAVES_PER_CIV, applyOwnerQuarterYields, retireDisplacedEnclaves, hostOwners, recordOwners, RECOGNITION, settleTakeover, payTakeoverCompensation, fadeStep } = quarter.__test;
 
 // ── resolveApplied: CONFIG amounts, null yields contribute nothing ──────────
 {
@@ -49,6 +49,7 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
 {
   const view = quarterView({ civ: 2, name: "Rome", share: 0.4, where: "by the harbour" }, 0);
   assert.equal(view.eyebrow, "Cultural Enclave", "the modal eyebrow marks a cultural-enclave decision");
+  assert.equal(view.eyebrowIcon, "CITY_UNIQUE_QUARTER");
   assert.equal(view.dismissId, "ignore", "dismissing resolves as the passive stance");
   assert.equal(view.choices.length, 3, "the three stances are offered");
   assert.ok(typeof view.title === "string" && view.title.length, "the view has a title");
@@ -145,3 +146,96 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
 }
 
 console.log("quarter harness passed");
+
+// ── built over: a placed enclave that stood and then vanished is DESTROYED (record dropped, chronicled);
+//    one that never landed is written off after a short grace and keeps paying from the treasury ──
+{
+  const applied = { benefitYield: "YIELD_CULTURE", benefitAmount: 2, penaltyYield: null, penaltyAmount: 0 };
+  // A minimal map: plot 500 holds a Gama at (50,50); plot 501 at (51,50) is empty.
+  const oldMap = globalThis.GameplayMap, oldMC = globalThis.MapConstructibles, oldCons = globalThis.Constructibles, oldInfo = globalThis.GameInfo;
+  const onMap = { "50,50": ["gama"] };
+  globalThis.GameplayMap = { ...(oldMap || {}), getLocationFromIndex: (i) => (i === 500 ? { x: 50, y: 50 } : i === 501 ? { x: 51, y: 50 } : null) };
+  globalThis.MapConstructibles = { getConstructibles: (x, y) => onMap[x + "," + y] || [] };
+  globalThis.Constructibles = { getByComponentID: (id) => ({ type: id }) };
+  globalThis.GameInfo = { ...(oldInfo || {}), Constructibles: { lookup: (t) => (t === "gama" ? { ConstructibleType: "IMPROVEMENT_GAMA" } : null) } };
+  stateMod.putQuarter("90,90", { civ: 2, originCiv: "CIVILIZATION_GORYEO", owner: 12, optionId: "a", turn: 10, applied, contested: false, contestedTurn: -999,
+    placed: { type: "IMPROVEMENT_GAMA", plot: 500, enclave: "IMPROVEMENT_EMIG_ENCLAVE_GORYEO_A" } });
+  stateMod.putQuarter("91,91", { civ: 3, originCiv: "CIVILIZATION_ROME", owner: 12, optionId: "a", turn: 10, applied, contested: false, contestedTurn: -999,
+    placed: { type: "IMPROVEMENT_HIDDEN_FORTRESS", plot: 501, enclave: "IMPROVEMENT_EMIG_ENCLAVE_ROME_A" } });
+  retireDisplacedEnclaves(12, 10);
+  assert.equal(stateMod.quarterAt("90,90").placed.stood, true, "a standing tile is marked as having stood");
+  assert.ok(stateMod.quarterAt("91,91") && stateMod.quarterAt("91,91").placed, "a fresh placement gets its grace");
+  retireDisplacedEnclaves(12, 12);
+  assert.equal(stateMod.quarterAt("91,91").placed, null, "never landed (empty plot) after the grace: cleared, the stance keeps its treasury grant");
+  onMap["50,50"] = ["wonder"]; // the city built a wonder over the Gama
+  retireDisplacedEnclaves(12, 13);
+  assert.equal(stateMod.quarterAt("90,90"), null, "built over: the enclave is destroyed and its record dropped");
+  // A wonder can complete over the tile before any pass saw it standing: an OCCUPIED plot is built over, not
+  // "never landed", but only AFTER the placement grace (a brand-new record's plot still shows the tile it replaces).
+  onMap["51,50"] = ["wonder"];
+  stateMod.putQuarter("92,92", { civ: 3, originCiv: "CIVILIZATION_ROME", owner: 12, optionId: "a", turn: 20, applied, contested: false, contestedTurn: -999,
+    placed: { type: "IMPROVEMENT_HIDDEN_FORTRESS", plot: 501, enclave: "IMPROVEMENT_EMIG_ENCLAVE_ROME_A" } });
+  retireDisplacedEnclaves(12, 20);
+  assert.ok(stateMod.quarterAt("92,92"), "same pass as the placement: untouched (the replaced tile may still show)");
+  retireDisplacedEnclaves(12, 22);
+  assert.equal(stateMod.quarterAt("92,92"), null, "displaced before it was ever seen standing: destroyed after the grace");
+  delete onMap["51,50"];
+  stateMod.dropQuarter("91,91");
+  globalThis.GameplayMap = oldMap; globalThis.MapConstructibles = oldMC; globalThis.Constructibles = oldCons; globalThis.GameInfo = oldInfo;
+}
+
+// ── recognition mode: who may host an enclave this pass, and whose records get per-turn upkeep ──
+{
+  const signals = [{ owner: 0, isCityState: false }, { owner: 3, isCityState: false }, { owner: 7, isCityState: true }, { owner: 3, isCityState: false }];
+  CONFIG.quarterRecognition = RECOGNITION.ASK;
+  assert.deepEqual(hostOwners(signals, 0), [0], "ask: the local player only");
+  CONFIG.quarterRecognition = RECOGNITION.AUTO_ME;
+  assert.deepEqual(hostOwners(signals, 0), [0], "automatic in your cities: the local player only");
+  CONFIG.quarterRecognition = RECOGNITION.AUTO_ALL;
+  assert.deepEqual(hostOwners(signals, 0), [0, 3], "automatic everywhere: every major with a city signal, city-states excluded, no duplicates");
+  const applied = { benefitYield: "YIELD_CULTURE", benefitAmount: 2, penaltyYield: null, penaltyAmount: 0 };
+  stateMod.putQuarter("95,95", { civ: 2, originCiv: "CIVILIZATION_ROME", owner: 3, optionId: "a", turn: 30, applied, contested: false, contestedTurn: -999 });
+  const owners = recordOwners(0);
+  assert.ok(owners[0] === 0 && owners.includes(3), "the local player first, and an AI host with a record is ticked like the player");
+  stateMod.dropQuarter("95,95");
+  CONFIG.quarterRecognition = 2;
+}
+
+// ── takeover compensation is settled once the tile stands and paid every tick while it stands ──
+{
+  const applied = { benefitYield: null, benefitAmount: 0, penaltyYield: null, penaltyAmount: 0 };
+  const oldMap = globalThis.GameplayMap, oldMC = globalThis.MapConstructibles, oldCons = globalThis.Constructibles, oldInfo = globalThis.GameInfo, oldPlayers = globalThis.Players;
+  globalThis.GameplayMap = { ...(oldMap || {}), getLocationFromIndex: (i) => (i === 700 ? { x: 70, y: 70 } : null), getYields: () => [["YIELD_FOOD", 2], ["YIELD_CULTURE", 3]] };
+  globalThis.MapConstructibles = { getConstructibles: (x, y) => (x === 70 && y === 70 ? ["gama"] : []) };
+  globalThis.Constructibles = { getByComponentID: (id) => ({ type: id }) };
+  globalThis.GameInfo = { ...(oldInfo || {}), Constructibles: { lookup: (t) => (t === "gama" ? { ConstructibleType: "IMPROVEMENT_GAMA" } : null) }, Yields: { lookup: (t) => ({ YieldType: t }) },
+    Constructible_YieldChanges: { filter: (f) => [{ ConstructibleType: "IMPROVEMENT_GAMA", YieldType: "YIELD_CULTURE", YieldChange: 3 }].filter(f) } };
+  const granted = [];
+  globalThis.YieldTypes = { ...(globalThis.YieldTypes || {}), YIELD_FOOD: "FOOD", YIELD_CULTURE: "CULTURE" };
+  globalThis.Players = { grantYield: (pid, y, amount) => granted.push([pid, y, amount]) };
+  stateMod.putQuarter("97,97", { civ: 2, originCiv: "CIVILIZATION_GORYEO", owner: 13, optionId: "a", turn: 40, applied, contested: false, contestedTurn: -999,
+    placed: { type: "IMPROVEMENT_GAMA", plot: 700, enclave: "IMPROVEMENT_EMIG_ENCLAVE_GORYEO_A", replaced: "IMPROVEMENT_FARM", before: { YIELD_FOOD: 3, YIELD_PRODUCTION: 1 } } });
+  retireDisplacedEnclaves(13, 40); // first seen standing → settled
+  const rec = stateMod.quarterAt("97,97");
+  assert.equal(rec.placed.stood, true);
+  assert.deepEqual(rec.placed.compensation, { YIELD_FOOD: 1, YIELD_PRODUCTION: 1 }, "the farm's food and production the Gama tile lacks");
+  payTakeoverCompensation(13);
+  assert.deepEqual(granted, [[13, "FOOD", 1], [13, "PRODUCTION", 1]].filter((g) => g[1] !== "PRODUCTION"), "paid to the host each tick (production has no YieldTypes stub here)");
+  settleTakeover(rec);
+  assert.deepEqual(rec.placed.compensation, { YIELD_FOOD: 1, YIELD_PRODUCTION: 1 }, "settled once, not recomputed");
+  stateMod.dropQuarter("97,97");
+  globalThis.GameplayMap = oldMap; globalThis.MapConstructibles = oldMC; globalThis.Constructibles = oldCons; globalThis.GameInfo = oldInfo; globalThis.Players = oldPlayers;
+}
+
+// ── fade: below the share bar (and the stock bar) for the period → dissolve; either bar keeps it ──
+{
+  const cfg = { fadeShare: 0.125, fadeTurns: 12, stockBar: 6 };
+  assert.equal(fadeStep({ fadeSince: null }, { share: 0.2, pts: 2 }, 50, cfg), "above", "share over the bar keeps it");
+  assert.equal(fadeStep({ fadeSince: null }, { share: 0.05, pts: 7 }, 50, cfg), "above", "a big community in a big city keeps it whatever its share");
+  assert.equal(fadeStep({ fadeSince: null }, { share: 0.05, pts: 2 }, 50, cfg), "counting", "below both bars: the clock starts");
+  assert.equal(fadeStep({ fadeSince: 40 }, { share: 0.05, pts: 2 }, 51, cfg), "counting", "11 turns below: not yet");
+  assert.equal(fadeStep({ fadeSince: 40 }, { share: 0.05, pts: 2 }, 52, cfg), "fade", "12 turns below: dissolve");
+  assert.equal(fadeStep({ fadeSince: 40 }, { share: 0.3, pts: 2 }, 60, cfg), "above", "recovered: the clock resets");
+  assert.equal(fadeStep({ fadeSince: 40 }, null, 60, cfg), "unknown", "an untracked settlement is left alone");
+  assert.equal(fadeStep({ fadeSince: 40 }, { share: 0, pts: 0 }, 99, { ...cfg, fadeShare: 0 }), "unknown", "0 = never fade");
+}

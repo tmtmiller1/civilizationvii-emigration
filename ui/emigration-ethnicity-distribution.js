@@ -8,14 +8,28 @@
 // deterministic per-civ anchor tile and fades with hex distance, so the map shows a gradient — strongest
 // where the diaspora concentrates, tapering to the host colour at the edges — not a hard on/off switch.
 //
+// The lens is tied to the CULTURAL ENCLAVE rule in two ways, so that a tile burning with a diaspora's
+// colour MEANS an enclave stands there:
+//   • A diaspora with a standing enclave anchors on the enclave's own tile (the `anchors` pin) and seats
+//     its people there FIRST, up to MINORITY_CAP, before anything spills outward. The enclave tile is
+//     chosen by an unrelated rule — the nearest empty LAND plot to the city centre (emigration-enclave-
+//     place.js) — so without the pin the colour patch and the enclave's on-map marker were picked
+//     independently and sat hexes apart, each naming a different tile as that community's home.
+//   • Every OTHER tile is capped at `plainCap`, the share an origin must hold for an enclave to form.
+//     Uncapped, the water-fill ran ANY minority up to 0.92 on its best tile: a settlement that was 12%
+//     Norman, well short of an enclave, painted a "Norman 92%" tile (watched in game 2026-09-17).
+// Both only move people BETWEEN tiles. Every citywide share is conserved exactly, and nothing here feeds
+// back into how enclaves form, how many may form, or where they are placed.
+//
 // Two things vary per tile, deterministically (no RNG, stable across redraws):
 //   • DENSITY — each owned tile carries a share of the city's scaled population weighted by how built-up
 //     it is (city centre ≫ urban > rural > wilderness). The lens maps a tile's people to OPACITY.
 //   • LOCAL MIX — each tile's per-origin SHARES (sum to 1). A minority's PEOPLE are laid down by affinity
 //     (exp(-anchorDist/SCALE)) via water-filling: it pours into the highest-affinity tiles first, capped
-//     at MINORITY_CAP of each tile so the host always keeps a sliver (every tile stays a BLEND, never a
-//     full colour switch), and any capped overflow spills to the next tiles. The result CONSERVES: each
-//     origin's people across all tiles total its citywide share exactly.
+//     per tile (the enclave bar on a plain tile, MINORITY_CAP on an enclave tile) so the host always
+//     keeps a sliver (every tile stays a BLEND, never a full colour switch), and any capped overflow
+//     spills to the next tiles. The result CONSERVES: each origin's people across all tiles total its
+//     citywide share exactly.
 //
 // Pure: no engine reads. The shared tiles module (emigration-ethnicity-tiles.js) supplies the classified
 // plots + scaled population; the lens blends each tile's colour from its shares and the hover tooltip
@@ -26,6 +40,16 @@
  * @property {number} x Plot x.
  * @property {number} y Plot y.
  * @property {number} weight Relative population density weight (city centre high … wilderness low).
+ */
+
+/**
+ * @typedef {Object} DistributeOpts
+ * @property {Map<number, {x:number, y:number}>} [anchors] Origins whose cluster is TIED to a known tile
+ *   (a standing Cultural Enclave), civ → plot. Overrides the hash anchor for those origins only; every
+ *   other origin still anchors deterministically by hash. Purely positional: it moves WHERE a cluster
+ *   centres, not how many people it holds, so the citywide shares are untouched.
+ * @property {number} [plainCap] The most of a tile any diaspora may hold where NO enclave stands — the
+ *   enclave formation share. Omitted, tiles keep the historical MINORITY_CAP everywhere.
  */
 
 /**
@@ -55,6 +79,11 @@ const CLUSTER_SCALE = 1.1;
 // BLEND of host + diaspora colour rather than a full switch — but high enough that the cluster centre
 // reads STRONGLY as the diaspora's colour.
 const MINORITY_CAP = 0.92;
+// How fast the plain-tile (non-enclave) ceiling rises once a settlement's combined foreign share is PAST
+// the enclave bar: ceiling = bar + (share - bar) x this. It must exceed 1 — at exactly 1 the ceiling
+// equals the share, every tile has to fill to the brim, and the settlement paints dead flat (see
+// capacities()). It applies only to the excess over the bar, so below the bar the ceiling IS the bar.
+const CAP_HEADROOM = 2;
 // Local shares below this are dropped as float dust before a tile's shares are reported.
 const SHARE_EPS = 1e-3;
 
@@ -115,9 +144,10 @@ function originsSmallestFirst(civs) {
  * @param {PlotWeight[]} plots The settlement's owned tiles with density weights.
  * @param {{civs:{civ:number, share:number}[], dominant:{civ:number}|null}} comp The composition.
  * @param {number} scaledPeople The settlement's scaled population (people).
+ * @param {DistributeOpts} [opts] Enclave anchors + the plain-tile concentration bar (see the typedef).
  * @returns {TilePaint[]} Per-tile paints (local shares + density), one per plot.
  */
-export function distributeTiles(plots, comp, scaledPeople) {
+export function distributeTiles(plots, comp, scaledPeople, opts) {
   if (!hasDistributableInputs(plots, comp)) return [];
   const people = typeof scaledPeople === "number" && scaledPeople > 0 ? scaledPeople : 0;
   const tiles = weightedTiles(plots, people);
@@ -130,13 +160,60 @@ export function distributeTiles(plots, comp, scaledPeople) {
   const minorities = comp.civs
     .filter((c) => c.civ !== dominantCiv && c.share > 0)
     .sort((a, b) => b.share - a.share || a.civ - b.civ);
+  const anchors = opts && opts.anchors;
   /** @type {Map<number, number>[]} Per-tile {minority civ → placed people}. */
   const placed = tiles.map(() => new Map());
-  // Remaining minority-people capacity per tile (shared across all minorities so a tile's total minority
-  // never exceeds MINORITY_CAP of its people → the host always keeps ≥ (1 - CAP)).
-  const capLeft = tiles.map((t) => MINORITY_CAP * t.people);
-  for (const m of minorities) waterFill(tiles, placed, capLeft, m, people);
+  const capLeft = capacities(tiles, minorities, anchors, opts && opts.plainCap);
+  for (const m of minorities) {
+    // A standing enclave fixes where this diaspora lives; everyone else anchors by hash as before.
+    const pin = pinnedAnchor(m.civ, anchors);
+    waterFill(tiles, placed, capLeft, {
+      civ: m.civ, demand: m.share * people, anchor: pin || anchorFor(tiles, m.civ), pinned: !!pin
+    });
+  }
   return tiles.map((t, i) => finalizeTile(t, placed[i], dominantCiv));
+}
+
+/**
+ * Each tile's minority-people capacity — the ceiling that decides how DARK a diaspora's colour can get
+ * anywhere in this settlement, and the one place the lens is tied to the enclave rule.
+ *
+ * An ENCLAVE tile (a pinned anchor) gets the full MINORITY_CAP: its quarter really is that community's,
+ * so it may read almost entirely their colour. Every other tile is capped at `plainCap` — the share an
+ * origin must hold for an enclave to form at all. Without that ceiling the water-fill poured ANY
+ * minority into its best tile until it hit 0.92, so a settlement that was 12% Norman painted a 92%
+ * Norman tile, indistinguishable from a real enclave and nowhere near the actual one (watched in game
+ * 2026-09-17). With it, a tile burning with a diaspora's colour means an enclave stands there, and a
+ * community still below the bar reads as a genuine but unmistakably lighter tint.
+ *
+ * While the minorities' COMBINED citywide share is under the bar, the plain cap is exactly the bar. Past
+ * it the cap rises with the excess (x CAP_HEADROOM), continuously, for two reasons. It must stay at or
+ * above the combined share or there is not room to place everyone, and the distribution stops conserving
+ * (each origin's people must still total its citywide share). And it must stay strictly above it to keep
+ * a GRADIENT: with the cap equal to the share every tile fills to the brim, and a 45% diaspora painted
+ * one dead-flat 45% across the whole settlement. A first attempt scaled the whole share instead of the
+ * excess, which lifted the ceiling from 19% up — a 25% community with no enclave could paint a 40% tile.
+ * @param {{people:number, x:number, y:number}[]} tiles The settlement's tiles.
+ * @param {{civ:number, share:number}[]} minorities The non-host origins.
+ * @param {Map<number, {x:number, y:number}>} [anchors] Enclave anchor pins.
+ * @param {number} [plainCap] The non-enclave ceiling (the enclave formation share). Defaults to no extra
+ *   ceiling, i.e. the historical MINORITY_CAP everywhere.
+ * @returns {number[]} Per-tile minority capacity in people.
+ */
+function capacities(tiles, minorities, anchors, plainCap) {
+  const totalMinority = minorities.reduce((a, m) => a + m.share, 0);
+  const bar = Number(plainCap);
+  const plain = Number.isFinite(bar) && bar > 0
+    ? Math.min(MINORITY_CAP, bar + Math.max(0, totalMinority - bar) * CAP_HEADROOM)
+    : MINORITY_CAP;
+  /** @type {Set<string>} The pinned (enclave) tiles, which keep the full cap. */
+  const pinned = new Set();
+  if (anchors && typeof anchors.forEach === "function") {
+    anchors.forEach((a) => {
+      if (a && Number.isFinite(a.x) && Number.isFinite(a.y)) pinned.add(a.x + "," + a.y);
+    });
+  }
+  return tiles.map((t) => (pinned.has(t.x + "," + t.y) ? MINORITY_CAP : plain) * t.people);
 }
 
 /**
@@ -148,20 +225,53 @@ export function distributeTiles(plots, comp, scaledPeople) {
  * @param {{x:number, y:number, people:number}[]} tiles Per-tile people.
  * @param {Map<number,number>[]} placed Per-tile {civ → people} (mutated).
  * @param {number[]} capLeft Per-tile remaining minority capacity (mutated).
- * @param {{civ:number, share:number}} m The minority origin + its citywide share.
- * @param {number} totalPeople The settlement's scaled people.
+ * @param {Minority} m The minority origin, the people it is owed here, and where its cluster centres.
  */
-function waterFill(tiles, placed, capLeft, m, totalPeople) {
-  const anchor = anchorFor(tiles, m.civ);
-  const aff = tiles.map((t) => Math.exp(-hexDistance(t.x, t.y, anchor.x, anchor.y) / CLUSTER_SCALE));
+function waterFill(tiles, placed, capLeft, m) {
+  const aff = tiles.map((t) => Math.exp(-hexDistance(t.x, t.y, m.anchor.x, m.anchor.y) / CLUSTER_SCALE));
   const ctx = { tiles, aff, placed, capLeft, civ: m.civ };
+  const inEnclave = m.pinned ? fillEnclaveFirst(tiles, placed, capLeft, m) : 0;
   let state = {
-    remaining: m.share * totalPeople,
+    remaining: m.demand - inEnclave,
     active: tiles.map((_, i) => i).filter((i) => capLeft[i] > 1e-9 && aff[i] > 0)
   };
   for (let round = 0; round < 64 && state.remaining > 1e-6 && state.active.length; round++) {
     state = pourRound(ctx, state);
   }
+}
+
+/**
+ * @typedef {Object} Minority
+ * @property {number} civ The origin civ.
+ * @property {number} demand The people it is owed here (its citywide share × the settlement's people).
+ * @property {{x:number, y:number}} anchor The tile its cluster centres on.
+ * @property {boolean} pinned Whether that anchor is a standing enclave (vs the hash anchor).
+ */
+
+/**
+ * Seat a diaspora in its ENCLAVE tile before anything spills outward: the tile takes as many of the
+ * community's people as it has room for (its full MINORITY_CAP capacity), and only the remainder is
+ * water-filled around it. The enclave is by definition where that community lives, so it fills first.
+ *
+ * Proportional pouring alone could not do this. The enclave tile is one hex among many, so even at
+ * affinity 1 it drew only its proportional slice and read about 37% for a 12% diaspora — above its
+ * neighbours, but not the unmistakable quarter the marker on the map is announcing. Filled first, the
+ * same settlement's enclave tile reads at the cap. Conserving: what is seated here is subtracted from
+ * what the water-fill then places, so the origin still totals its citywide share exactly.
+ * @param {{x:number, y:number, people:number}[]} tiles Per-tile people.
+ * @param {Map<number,number>[]} placed Per-tile {civ → people} (mutated).
+ * @param {number[]} capLeft Per-tile remaining minority capacity (mutated).
+ * @param {Minority} m The pinned minority.
+ * @returns {number} The people seated in the enclave tile (0 when the pin is not one of these tiles).
+ */
+function fillEnclaveFirst(tiles, placed, capLeft, m) {
+  const i = tiles.findIndex((t) => t.x === m.anchor.x && t.y === m.anchor.y);
+  if (i < 0) return 0;
+  const take = Math.min(capLeft[i], m.demand);
+  if (!(take > 0)) return 0;
+  placed[i].set(m.civ, (placed[i].get(m.civ) || 0) + take);
+  capLeft[i] -= take;
+  return take;
 }
 
 /**
@@ -196,6 +306,22 @@ function pourRound(ctx, state) {
     if (want < capLeft[i] + take) stillActive.push(i); // tile still has room next round
   }
   return { remaining: remaining - placedThisRound, active: stillActive };
+}
+
+/**
+ * A diaspora's PINNED anchor, when one was supplied: the tile its Cultural Enclave stands on. Without
+ * this the cluster anchors on a civ-salted hash tile picked with no knowledge of the enclave, so the
+ * colour patch and the enclave's own on-map marker could sit hexes apart and disagree about where that
+ * community lives. The pin only has to carry finite coordinates; it does NOT have to be one of the
+ * settlement's own plots (an enclave on a since-transferred tile still pulls its gradient the right way).
+ * Null when this origin has no pin, so the caller falls back to the hash anchor.
+ * @param {number} civ The origin civ. @param {Map<number, {x:number, y:number}>} [anchors] The pins.
+ * @returns {{x:number, y:number}|null} The pinned anchor, or null.
+ */
+function pinnedAnchor(civ, anchors) {
+  if (!anchors || typeof anchors.get !== "function") return null;
+  const a = anchors.get(civ);
+  return a && Number.isFinite(a.x) && Number.isFinite(a.y) ? { x: a.x, y: a.y } : null;
 }
 
 /**
@@ -282,4 +408,6 @@ function weightedTiles(plots, people) {
 }
 
 // Test-only re-exports.
-export const __test = { tileDensity, originsSmallestFirst, hexDistance, REF_TILE_PEOPLE, MINORITY_CAP };
+export const __test = {
+  tileDensity, originsSmallestFirst, hexDistance, pinnedAnchor, anchorFor, REF_TILE_PEOPLE, MINORITY_CAP
+};

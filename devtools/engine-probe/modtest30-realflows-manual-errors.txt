@@ -1,0 +1,15 @@
+[2026-09-13 17:57:17]	JS Error: fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:530: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-13 17:57:17]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-13 17:57:17]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-13 17:57:49]	JS Error: fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:530: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-13 17:57:49]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-13 17:57:49]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-13 18:03:10]	JS Error: fs://game/base-standard/ui/unit-flags/army-commander-flags.js:32: TypeError: unitFlag.updateArmy is not a function
+[2026-09-13 18:03:10]	JS Error (Line):         unitFlag.updateArmy();
+[2026-09-13 18:03:10]	JS Error (Stack): TypeError: unitFlag.updateArmy is not a function
+[2026-09-13 18:03:59]	JS Error: fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:530: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-13 18:03:59]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-13 18:03:59]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-13 18:05:00]	JS Error: fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:530: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-13 18:05:00]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-13 18:05:00]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')

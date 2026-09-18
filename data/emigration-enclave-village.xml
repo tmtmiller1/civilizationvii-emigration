@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The Village-skinned Cultural Enclave (CONFIG.enclaveTileSkin = 1, the default). A recognized enclave is
+  placed as the base game's IMPROVEMENT_VILLAGE (which has art, unlike a custom improvement, whose model
+  cannot be bound from data) and carries a flat +2 Culture on its plot through this modifier. Gated to
+  major civilizations so independent powers' own villages are untouched; watched 2026-09-13: no major
+  civilization owned a Village in 76 met cities, so inside a major's city a Village IS an enclave.
+  Pattern: the base game's MOD_MONASTERY_YIELD (COLLECTION_SINGLE_PLOT_YIELDS / EFFECT_PLOT_ADJUST_YIELD
+  with REQUIREMENT_PLOT_HAS_CONSTRUCTIBLE). The stance's own benefit and drawback stay on the per-turn
+  treasury path in this mode (ui/emigration-quarter.js).
+-->
+<GameEffects xmlns="GameEffects">
+    <Modifier id="MOD_EMIG_VILLAGE_ENCLAVE_CULTURE" collection="COLLECTION_SINGLE_PLOT_YIELDS" effect="EFFECT_PLOT_ADJUST_YIELD">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_PLOT_HAS_CONSTRUCTIBLE">
+                <Argument name="ConstructibleType">IMPROVEMENT_VILLAGE</Argument>
+            </Requirement>
+            <Requirement type="REQUIREMENT_PLAYER_IS_MAJOR"/>
+        </SubjectRequirements>
+        <Argument name="YieldType">YIELD_CULTURE</Argument>
+        <Argument name="Amount">2</Argument>
+        <Argument name="Tooltip">LOC_EMIG_VILLAGE_ENCLAVE_NAME</Argument>
+    </Modifier>
+</GameEffects>

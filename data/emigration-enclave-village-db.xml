@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Attaches the Village-enclave culture modifier (data/emigration-enclave-village.xml) to the base Village. -->
+<Database>
+    <ConstructibleModifiers>
+        <Row ConstructibleType="IMPROVEMENT_VILLAGE" ModifierId="MOD_EMIG_VILLAGE_ENCLAVE_CULTURE"/>
+    </ConstructibleModifiers>
+</Database>

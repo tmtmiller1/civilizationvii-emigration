@@ -6,6 +6,7 @@ export default _default;
 
 // Options-screen surface (model-options.js / options-helpers.js) used by the
 // settings/options pages.
+export const InterfaceMode: any;
 export const CategoryType: any;
 export const OptionType: any;
 export const Options: any;

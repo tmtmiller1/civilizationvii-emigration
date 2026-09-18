@@ -33,8 +33,13 @@ import { speedTurns, speedDecay } from "/emigration/ui/emigration-game-speed.js"
 import { civTuning } from "/emigration/ui/emigration-civ-tuning.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 import {
-  districtDamageFrac, districtBesieged, pillagedCount
+  districtDamageFrac, districtBesieged, pillagedCount, besiegingPlayers, attackersNear
 } from "/emigration/ui/emigration-violence-signals.js";
+import { warOpponents } from "/emigration/ui/emigration-war.js";
+import { takeCombatEvidence } from "/emigration/ui/emigration-combat-events.js";
+import {
+  auditObservation, auditDecay, auditRefugee, auditSnapshot
+} from "/emigration/ui/emigration-violence-audit.js";
 
 const STATE_KEY = "EmigrationViolence_v2";
 
@@ -176,6 +181,74 @@ function keyFromCID(cid) {
   return null;
 }
 
+
+/** @returns {number} The minor-violence multiplier, clamped to 0..1. */
+function minorScale() {
+  const n = Number(CONFIG.minorViolenceScale);
+  return Number.isFinite(n) ? Math.max(0, Math.min(1, n)) : 1;
+}
+
+/** @returns {number} The major-war violence multiplier, clamped to 0..2 (1 = the measured war balance). */
+function majorScale() {
+  const n = Number(CONFIG.majorViolenceScale);
+  return Number.isFinite(n) ? Math.max(0, Math.min(2, n)) : 1;
+}
+
+/**
+ * Who is attacking this city, where that answer came from, and whether every one of them is a minor power
+ * (city-state or Independent Power). Minor-only requires POSITIVE evidence: the attackers must be nameable
+ * and all minor. An empty or unreadable set counts as a major war, because the alternative is quietly
+ * downgrading a real invasion whenever the read fails.
+ *
+ * Sources, best first -- each is used only when the one above it names nobody:
+ *   struck    whoever fought in this city's territory, from the combat event stream. Not a proxy: the
+ *             engine reporting who was involved. Blind only to fighting before the mod loaded.
+ *   units     armed hostile units standing on or beside the city's districts. Catches an army massing
+ *             before the first blow. Fog-independent (watched: it reads never-revealed foreign cities).
+ *   district  whoever holds an overrun district. Map truth, but only once ground has been lost.
+ *   atwar     the at-war list, a poor proxy used last: `isAtWarWith` is true for EVERY Independent Power at
+ *             all times (mod test 109: 18-19 of them with nothing besieged), so on its own it only says
+ *             whether any MAJOR is at war with the owner anywhere.
+ * @param {*} city A live city object. @param {number[]} struck Attackers from this observation's events.
+ * @returns {{minorsOnly:boolean, source:string, named:number[]}} The decision and its basis.
+ */
+function attackerVerdict(city, struck) {
+  const owner = city && typeof city.owner === "number" ? city.owner : -1;
+  /** @type {Array<[string, () => Iterable<number>]>} */
+  const sources = [
+    ["struck", () => struck || []],
+    ["units", () => attackersNear(city)],
+    ["district", () => besiegingPlayers(city)],
+    ["atwar", () => (owner >= 0 ? warOpponents(owner) || [] : [])]
+  ];
+  for (const [source, read] of sources) {
+    /** @type {number[]} */
+    let named = [];
+    try {
+      named = [...read()];
+    } catch (_) {
+      named = [];
+    }
+    if (named.length) return { minorsOnly: named.every((pid) => isMinor(pid)), source, named };
+  }
+  return { minorsOnly: false, source: "none", named: [] };
+}
+
+/**
+ * Whether a player id is a minor power. Unknown ids count as MAJOR, so an unreadable attacker never
+ * downgrades the pressure.
+ * @param {number} pid Player id. @returns {boolean} True when minor.
+ */
+function isMinor(pid) {
+  try {
+    const p = typeof Players !== "undefined" ? Players.get?.(pid) : null;
+    if (!p) return false;
+    return p.isMajor === false || p.isMinor === true;
+  } catch (_) {
+    return false;
+  }
+}
+
 /**
  * Fold this turn's polled signals into a city's intensity: a spike for fresh
  * district damage, a standing term while the city center stays hurt, and a
@@ -196,11 +269,61 @@ function applyObservation(s, key, city) {
   // harassment that besieges without wrecking the district builds pressure gradually instead of
   // instantly crossing the flee threshold and flooding "war" refugees (real assault damage still
   // counts at full `frac`).
-  const siegeFrac = Math.max(frac, districtBesieged(city) ? CONFIG.siegeBesiegedFloor : 0);
-  let add = CONFIG.vwAssault * fresh + CONFIG.vwSiege * siegeFrac;
-  add += CONFIG.vwPillage * pillagedCount(city);
-  if (add > 0) s.byCity[key] = (s.byCity[key] || 0) + add;
+  // A city-state or Independent Power raiding party is not an invasion. Facing only minor powers, the
+  // besieged floor drops and the whole observation is scaled down, so early-game harassment no longer
+  // pushes the same refugee wave a major civilization's army does. Real damage still counts at full `frac`:
+  // the bar is raised for BEING BESIEGED, not for actually being wrecked.
+  const besieged = districtBesieged(city);
+  const pillaged = pillagedCount(city);
+  // Taken, not peeked: every combat event reaches this model exactly once, whenever in the turn it landed.
+  const ev = takeCombatEvidence(key);
+  if (isQuiet(frac, besieged, pillaged, ev)) {
+    s.lastFrac[key] = frac;
+    return;
+  }
+  const verdict = attackerVerdict(city, ev.attackers);
+  // The STRONGER of the two damage readings, never their sum. Both describe the same wounds, so adding them
+  // would double-count; taking the max lets each cover the other's blind spot. Polling misses damage that
+  // was inflicted and repaired between two samples and any harm predating the mod's load; the event stream
+  // misses whatever arrived while a handler was detached or before it subscribed.
+  const obs = { harm: Math.max(fresh, ev.dmg), frac, besieged, pillaged, ev };
+  const addFull = scoreObservation(obs, false);
+  const add = verdict.minorsOnly ? scoreObservation(obs, true) : addFull;
+  const before = s.byCity[key] || 0;
+  if (add > 0) s.byCity[key] = before + add;
   s.lastFrac[key] = frac;
+  auditObservation(key, before, { turn: gameTurn(), owner: city.owner, add, addFull, ...verdict });
+}
+
+/**
+ * How much one observation adds to a city's intensity.
+ * @param {{harm:number, frac:number, besieged:boolean, pillaged:number, ev:*}} o The observation.
+ * @param {boolean} minor Score it as a minor-power raid (its own besieged floor and scale) rather than a war with a
+ *   major civilization (the ordinary floor and majorViolenceScale). Unknown attackers are scored as a major war.
+ * @returns {number} The intensity to add.
+ */
+function scoreObservation(o, minor) {
+  const floor = minor ? CONFIG.minorSiegeBesiegedFloor : CONFIG.siegeBesiegedFloor;
+  const siegeFrac = Math.max(o.frac, o.besieged ? floor : 0);
+  let add = CONFIG.vwAssault * o.harm + CONFIG.vwSiege * siegeFrac + CONFIG.vwPillage * o.pillaged;
+  // Fighting and dying are separate evidence from structural damage, and nothing polled can see either: a
+  // field battle that routs a defending army terrifies a city without scratching a single district.
+  add += (Number(CONFIG.vwBattle) || 0) * o.ev.battles + (Number(CONFIG.vwCasualty) || 0) * o.ev.kills;
+  return add * (minor ? minorScale() : majorScale());
+}
+
+/**
+ * Whether nothing worth weighing happened to a city this turn. This early exit is what keeps the attacker
+ * scan affordable: naming an attacker means reading the units on ~20-40 plots, and the mod observes every
+ * city of every met civilization every turn. Almost all of them are at peace, and those must not pay for a
+ * lookup whose answer could not change a zero. The event evidence is part of the test because a battle
+ * fought in a city's fields leaves the walls -- and therefore every polled signal -- completely clean.
+ * @param {number} frac Polled district damage. @param {boolean} besieged The besieged flag.
+ * @param {number} pillaged Pillaged tiles. @param {*} ev This turn's combat-event evidence.
+ * @returns {boolean} True when there is nothing to score.
+ */
+function isQuiet(frac, besieged, pillaged, ev) {
+  return frac <= 0 && !besieged && pillaged <= 0 && ev.dmg <= 0 && ev.battles <= 0 && ev.kills <= 0;
 }
 
 /**
@@ -295,9 +418,10 @@ export function siegeEscalation(city) {
  * @param {*} city A live city object.
  */
 export function recordWarLoss(city) {
-  if (!CONFIG.warSiege) return;
   const key = keyFromCID(city?.id);
   if (!key) return;
+  auditRefugee(key);
+  if (!CONFIG.warSiege) return;
   const s = state();
   if ((s.tenure[key] || 0) > 0) {
     s.warLoss[key] = (s.warLoss[key] || 0) + 1;
@@ -323,6 +447,7 @@ export function tickViolence() {
   const elapsed = Math.max(0, turn - s.decayTurn);
   if (elapsed > 0) {
     const factor = Math.pow(speedDecay(CONFIG.violenceDecay), elapsed);
+    auditDecay(factor);
     for (const k of Object.keys(s.byCity)) {
       const v = s.byCity[k] * factor;
       if (v < 0.05) {
@@ -337,4 +462,30 @@ export function tickViolence() {
     s.decayTurn = turn;
   }
   persist();
+}
+
+/**
+ * Publish the balance audit on `globalThis.EmigrationViolence`, so a probe can compare each city's real
+ * intensity with what the pre-change rules would have given it. Read-only; nothing here affects gameplay.
+ */
+export function exposeViolenceAudit() {
+  try {
+    const g = /** @type {*} */ (globalThis);
+    g.EmigrationViolence = Object.assign(g.EmigrationViolence || {}, {
+      snapshot: () => auditSnapshot((key) => {
+        const v = state().byCity[key];
+        return typeof v === "number" && isFinite(v) ? v : 0;
+      }),
+      threshold: () => CONFIG.violenceFleeThreshold,
+      config: () => ({
+        minorViolenceScale: CONFIG.minorViolenceScale,
+        majorViolenceScale: CONFIG.majorViolenceScale,
+        minorSiegeBesiegedFloor: CONFIG.minorSiegeBesiegedFloor,
+        siegeBesiegedFloor: CONFIG.siegeBesiegedFloor,
+        warSurgeMax: CONFIG.warSurgeMax
+      })
+    });
+  } catch (_) {
+    /* publishing the audit must never affect the model */
+  }
 }

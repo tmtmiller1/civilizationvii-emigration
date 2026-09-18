@@ -16,8 +16,9 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { getDilemmasEnabled } from "/emigration/ui/emigration-settings.js";
 import { narrativeCiv } from "/emigration/ui/emigration-naming.js";
 import { dilemmaPrompt } from "/emigration/ui/emigration-narrative.js";
+import { arriveRural } from "/emigration/ui/emigration-arrival-placement.js";
 import {
-  addRural, scaleCityPopulation, formatPeopleExact
+  scaleCityPopulation, formatPeopleExact
 } from "/emigration/ui/emigration-population.js";
 import { deduct } from "/emigration/ui/emigration-effects.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
@@ -25,6 +26,7 @@ import { activeCrisis } from "/emigration/ui/emigration-event-attribution.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
 import { showDilemma } from "/emigration/ui/emigration-dilemma-view.js";
+import { displacedQuoteFor } from "/emigration/ui/emigration-displaced-quotes.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
@@ -46,10 +48,10 @@ function choices() {
   const hw = n(CONFIG.dilemmaHappinessWelcome);
   const gf = n(CONFIG.dilemmaGoldFrontier);
   const ia = n(CONFIG.dilemmaInfluenceAway);
-  const gold = loc("LOC_EMIG_DIL_FX_GOLD", "Gold");
-  const happy = loc("LOC_EMIG_DIL_FX_HAPPINESS", "Happiness");
-  const infl = loc("LOC_EMIG_DIL_FX_INFLUENCE", "Influence");
-  const pop = loc("LOC_EMIG_DIL_FX_POP", "population");
+  const gold = "[icon:YIELD_GOLD] " + loc("LOC_EMIG_DIL_FX_GOLD", "Gold");
+  const happy = "[icon:YIELD_HAPPINESS] " + loc("LOC_EMIG_DIL_FX_HAPPINESS", "Happiness");
+  const infl = "[icon:YIELD_DIPLOMACY] " + loc("LOC_EMIG_DIL_FX_INFLUENCE", "Influence");
+  const pop = "[icon:YIELD_POPULATION] " + loc("LOC_EMIG_DIL_FX_POP", "population");
   const join = (/** @type {string[]} */ parts) => parts.filter(Boolean).join(", ");
   return [
     { id: "welcome", label: loc("LOC_EMIG_DIL_WELCOME_LABEL", "Welcome them in"),
@@ -353,10 +355,10 @@ function applyChoice(choiceId, d, localCities, me, turn) {
     if (choiceId === "welcome") {
       deduct(me, "YIELD_GOLD", -welcomeGold);
       deduct(me, "YIELD_HAPPINESS", -welcomeHappiness);
-      settleInto(localCities[0]);
+      settleInto(localCities[0], d.origin);
     } else if (choiceId === "frontier") {
       deduct(me, "YIELD_GOLD", -frontierGold);
-      settleInto(localCities[localCities.length - 1]);
+      settleInto(localCities[localCities.length - 1], d.origin);
     } else if (choiceId === "away") {
       deduct(me, "YIELD_DIPLOMACY", -awayInfluence);
     }
@@ -368,10 +370,10 @@ function applyChoice(choiceId, d, localCities, me, turn) {
 
 /**
  * Settle one population point into a city signal's settlement (the refugees who stayed).
- * @param {*} citySig A city signal, or undefined.
+ * @param {*} citySig A city signal, or undefined. @param {number} origin The refugees' origin player.
  */
-function settleInto(citySig) {
-  if (citySig && citySig.city) addRural(citySig.city);
+function settleInto(citySig, origin) {
+  if (citySig && citySig.city) arriveRural(citySig.city, { civ: origin, kind: "refugee" });
 }
 
 /**
@@ -406,8 +408,8 @@ function chronicleDecision(choiceId, d, hostSig, turn) {
  * effect it applies (so the trade-off is visible before choosing, not just in prose), and the choices.
  * @param {{kind:string, instigator?:number, origin:number, points:number}} d The descriptor.
  * @param {number} turn Now.
- * @returns {{title:string, body:string, dismissId:string,
- *   choices:{id:string,label:string,note:string,effect?:string}[]}} The view model.
+ * @returns {{eyebrow:string, eyebrowIcon:string, details:string[], title:string, body:string, dismissId:string,
+ *   quote:string, choices:{id:string,label:string,note:string,effect?:string}[]}} The view model.
  */
 function dilemmaView(d, turn) {
   const origin = narrativeCiv(d.origin);
@@ -415,15 +417,17 @@ function dilemmaView(d, turn) {
   const people = formatPeopleExact(scaleCityPopulation(d.points, turn, "dilemma" + d.origin));
   const prompt = dilemmaPrompt({ kind: d.kind, instigator, origin, people, seed: "d" + d.origin + turn });
   const cs = choices();
-  const effectsList = cs
-    .filter((c) => c.effect)
-    .map((c) => c.label + ": " + c.effect)
-    .join("[N]");
-  const body = effectsList ? (prompt.body + "[N][N]" + effectsList) : prompt.body;
+  // The costs sit in their own paragraph after the story, one line per choice, the choice name in bold.
+  const details = cs.filter((c) => c.effect).map((c) => "[B]" + c.label + "[/B]: " + c.effect);
   // Dismissing (Escape / ✕ / cancel / click-outside) is "Turn them away": closing without choosing is
   // itself the refusal, and pays its Influence cost — there is no free dismissal. Set explicitly here so
   // the intent lives at the source rather than relying on showDilemma's fallback default.
-  return { title: prompt.title, body, dismissId: "away", choices: cs };
+  return {
+    eyebrow: loc("LOC_EMIG_DILV_EYEBROW_DEFAULT", "Refugees"), eyebrowIcon: "YIELD_DIPLOMACY",
+    title: prompt.title, body: prompt.body, details, dismissId: "away", choices: cs,
+    // An epigraph in the voice of that people's own refugees (a pool quote for an unmet civilization).
+    quote: displacedQuoteFor(d.origin, "refugee", "dilemma|" + d.origin + "|" + turn)
+  };
 }
 
 /**

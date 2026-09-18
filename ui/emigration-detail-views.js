@@ -140,6 +140,7 @@ export function diverseCityRows(ranking, opts) {
         ? loc("LOC_EMIG_DIVERSE_ORIGIN_ONE", "1 origin")
         : loc("LOC_EMIG_DIVERSE_ORIGINS", "{1_N} origins", shown),
       mix: mixPhrase(r),
+      enclave: typeof r.enclave === "string" ? r.enclave : "",
       character: cosmo ? (COSMO_LABEL[r.cosmo && r.cosmo.tierKey] || COSMO_LABEL.homogeneous) : null
     };
   });
@@ -239,8 +240,9 @@ function diversityCtx(rows) {
   // The Cosmopolitanism column is Feature T, flagged separately: the builder nulls `character` when
   // it's off, and the column (header included) drops out rather than showing an empty strip.
   const showChar = rows.some((r) => r.character != null);
+  // Cells arrive as [city, origins, pop, mix, character, enclave]; the Enclave column always shows.
   return {
-    cells: (/** @type {*[]} */ c) => (showChar ? c : c.slice(0, 4)),
+    cells: (/** @type {*[]} */ c) => (showChar ? c : c.slice(0, 4).concat(c.slice(5))),
     mode: getNumberMode(),
     // Normalized across EVERY row, not per table, so a bar means the same population in both lists.
     maxPeople: rows.reduce((m, r) => Math.max(m, r.people || 0), 0) || 1
@@ -258,7 +260,8 @@ function diversityHead(ctx) {
     loc("LOC_EMIG_DIVERSE_COL_ORIGINS", "Where its people came from"),
     loc("LOC_EMIG_DIVERSE_COL_POP", "Population"),
     loc("LOC_EMIG_DIVERSE_COL_MIX", "Mix"),
-    loc("LOC_EMIG_DIVERSE_COL_CHARACTER", "Character")
+    loc("LOC_EMIG_DIVERSE_COL_CHARACTER", "Character"),
+    loc("LOC_EMIG_DIVERSE_COL_ENCLAVE", "Enclave")
   ]), "emig-pr-head");
 }
 
@@ -271,7 +274,7 @@ function diversityHead(ctx) {
 function diversityDataRow(r, ctx) {
   return diversityRow(ctx.cells([
     r.city, compositionBar(r, ctx.maxPeople),
-    formatCount(r.people, r.pts, ctx.mode) + " · " + r.origins, r.mix, r.character
+    formatCount(r.people, r.pts, ctx.mode) + " · " + r.origins, r.mix, r.character, r.enclave || ""
   ]));
 }
 

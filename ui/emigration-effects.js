@@ -275,7 +275,7 @@ export function congestionPenalty(pid, civPopulation) {
  * a missing grantYield API; never throws.
  * @param {number} pid Player id. @param {string} yieldKey e.g. "YIELD_CULTURE". @param {number} amount Signed amount.
  */
-function grantSigned(pid, yieldKey, amount) {
+export function grantSigned(pid, yieldKey, amount) {
   if (typeof pid !== "number" || !(Math.abs(amount) > 0)) return;
   try {
     const yt = typeof YieldTypes !== "undefined" ? YieldTypes[yieldKey] : undefined;

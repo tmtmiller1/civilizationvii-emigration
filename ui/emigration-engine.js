@@ -15,9 +15,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { speedTurns, speedBar, speedDecay, speedShock } from "/emigration/ui/emigration-game-speed.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { rankByProsperity, lethalDistress } from "/emigration/ui/emigration-prosperity.js";
-import {
-  removeRural, addRural, marginalPeople, settlementSignal
-} from "/emigration/ui/emigration-population.js";
+import { marginalPeople, settlementSignal } from "/emigration/ui/emigration-population.js";
 import { hexDistance } from "/emigration/ui/emigration-geography.js";
 import { tickViolence, siegeEscalation } from "/emigration/ui/emigration-violence.js";
 import { tickDisasters } from "/emigration/ui/emigration-disasters.js";
@@ -28,24 +26,17 @@ import { borderStance } from "/emigration/ui/emigration-borders.js";
 import { recordStanceImpact } from "/emigration/ui/emigration-migration-stats.js";
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
 import {
-  loadState, saveState, prepareState, ownerPopulations, transitAtCapacity
-} from "/emigration/ui/emigration-state.js";
+  loadState, saveState, prepareState, ownerPopulations, transitAtCapacity, tickPressure } from "/emigration/ui/emigration-state.js";
 import { cityName, moveRecord, departRecord } from "/emigration/ui/emigration-migration-records.js";
 import { pollCrisis, eventKeyForMove, eventKeyForDeath } from "/emigration/ui/emigration-event-attribution.js";
 import { warAggressors } from "/emigration/ui/emigration-war.js";
 import { combatLossFor } from "/emigration/ui/emigration-combat.js";
-import {
-  applyDepartureConsequences,
-  applyArrivalConsequences
-} from "/emigration/ui/emigration-consequences.js";
+import { applyDepartureConsequences, applyArrivalConsequences } from "/emigration/ui/emigration-consequences.js";
 import { processArrivals } from "/emigration/ui/emigration-arrivals.js";
-import {
-  makeInboundCtx, canReceiveInbound, noteInbound
-} from "/emigration/ui/emigration-inbound.js";
-import {
-  queueRefugees,
-  saveRefugeePools
-} from "/emigration/ui/emigration-refugee-pool.js";
+import { commitSourcePoint, abandonForDeath, canShedPoint, canShedAny } from "/emigration/ui/emigration-departure-tile.js";
+import { arriveRural, arrivalFrom } from "/emigration/ui/emigration-arrival-placement.js";
+import { makeInboundCtx, canReceiveInbound, noteInbound } from "/emigration/ui/emigration-inbound.js";
+import { queueRefugees, saveRefugeePools } from "/emigration/ui/emigration-refugee-pool.js";
 import {
   consumeSourcePoint,
   undoSourceConsume,
@@ -251,10 +242,11 @@ function applyOneMove(src, dest, popBefore, state, cause, inboundCtx, reasons) {
   if (!consumed.ok) return null;
   if (!consumed.fromPool) applyDepartureConsequences(src, cause);
   const lag = transitLag(src, dest, cause);
-  if (lag <= 0) {
-    return commitImmediateArrival({ src, dest, state, cause, inboundCtx, consumed, people, eventKey, reasons });
-  }
-  return enqueueLaggedDeparture({ src, dest, state, lag, cause, consumed, people, eventKey, reasons });
+  const rec = lag <= 0
+    ? commitImmediateArrival({ src, dest, state, cause, inboundCtx, consumed, people, eventKey, reasons })
+    : enqueueLaggedDeparture({ src, dest, state, lag, cause, consumed, people, eventKey, reasons });
+  if (rec) rec.subject = commitSourcePoint(src, consumed).mode; // dest has the point: make the loss real
+  return rec;
 }
 
 /**
@@ -279,7 +271,7 @@ function commitImmediateArrival(a) {
     return null;
   }
   if (immediateRefugeeSettlement(src, dest, state, cause)) {
-    if (!addRural(dest.city)) {
+    if (!arriveRural(dest.city, arrivalFrom(src.owner, cause))) {
       undoSourceConsume(src, consumed);
       return null;
     }
@@ -350,7 +342,7 @@ function shedBurst(src, dest, state, cause, budget, inboundCtx, reasons) {
   /** @type {Migration[]} */
   const out = [];
   for (let i = 0; i < budget; i++) {
-    if (src.rural <= CONFIG.minRuralToEmigrate) break;
+    if (!canShedPoint(src, cause)) break; // rural above the floor
     const rec = applyOneMove(src, dest, src.population, state, cause, inboundCtx, reasons);
     if (!rec) break;
     out.push(rec);
@@ -426,7 +418,7 @@ function legacyEmigrate(src, st, state, best, maxThisSource, inboundCtx) {
  */
 // eslint-disable-next-line max-params
 function processSourceLegacy(src, ranked, state, ownerPop, maxThisSource, inboundCtx) {
-  if (src.rural <= CONFIG.minRuralToEmigrate || maxThisSource <= 0) return [];
+  if (!canShedAny(src) || maxThisSource <= 0) return [];
   const st = sourceState(state, src.key);
   const best = bestOpenDestination(src, ranked, ownerPop, inboundCtx);
   /** @type {Migration[]} */
@@ -569,7 +561,7 @@ function processSourceSplit(src, ranked, state, ownerPop, budgets, inboundCtx) {
  */
 // eslint-disable-next-line max-params
 function processSource(src, ranked, state, ownerPop, budgets, inboundCtx) {
-  if (src.rural <= CONFIG.minRuralToEmigrate) return [];
+  if (!canShedAny(src)) return [];
   if (budgets.voluntary <= 0 && budgets.crisis <= 0) return [];
   if (CONFIG.splitTracksEnabled) {
     return processSourceSplit(src, ranked, state, ownerPop, budgets, inboundCtx);
@@ -681,7 +673,8 @@ function processOutletDeath(src, st, state, hasRefuge) {
   st.deathPressure += speedShock(Math.pow(Math.max(d, 1), CONFIG.deltaExponent) * rate * deathRamp(st.crisisTenure));
   if (st.deathPressure < speedBar(CONFIG.attritionThreshold)) return null;
   const popBefore = src.population;
-  if (!removeRural(src.city)) return null;
+  const taken = abandonForDeath(src); // the dead leave their farmstead, or (at the rural floor) the count
+  if (!taken.ok) return null;
   st.deathPressure = 0;
   src.rural -= 1;
   src.population -= 1;
@@ -693,6 +686,7 @@ function processOutletDeath(src, st, state, hasRefuge) {
     points: 1,
     people: marginalPeople(popBefore, state.monoTurn, cityName(src.city), settlementSignal(src)),
     cause: "attrition",
+    subject: taken.mode,
     eventKey: eventKeyForDeath(src), // specific war/disaster/crisis/famine that killed them
     reasons: deriveDeathReasons(src, hasRefuge, unrestLethal) // P0.2 "why": crisis/unrest + trapped/fleeing
   };
@@ -880,6 +874,7 @@ export function runPass() {
 
   const state = loadState();
   prepareState(state, ranked);
+  tickPressure(state, speedDecay(CONFIG.pressureRetention)); // pressure tracks CURRENT conditions, both ways
 
   // Measure how border stance shaped this turn's flows (counterfactual vs neutral borders), on the
   // pre-pass world and before any mutation below.

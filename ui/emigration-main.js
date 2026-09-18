@@ -9,6 +9,8 @@
 //   ~/Library/Application Support/Civilization VII/Logs/UI.log
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { startCombatEvents } from "/emigration/ui/emigration-combat-events.js";
+import { exposeViolenceAudit } from "/emigration/ui/emigration-violence.js";
 import { runPass, takePressureCues } from "/emigration/ui/emigration-engine.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { rankByProsperity } from "/emigration/ui/emigration-prosperity.js";
@@ -37,7 +39,11 @@ import { installEmigrationEvents } from "/emigration/ui/emigration-events.js";
 import { installCityReadout } from "/emigration/ui/emigration-city-readout.js";
 import { installEmigrationConsole } from "/emigration/ui/emigration-screen.js";
 import { installEmigrationDock } from "/emigration/ui/emigration-dock-decorator.js";
+import { offerCallHome, callHomeNow, callHomeCooldownLeft } from "/emigration/ui/emigration-call-home-action.js";
+import { ownerCitySnapshots } from "/emigration/ui/emigration-city-readout-data.js";
+import { CALL_HOME_SCOPE, CALL_HOME_CURRENCY, callHomeQuote } from "/emigration/ui/emigration-call-home.js";
 import { installEmigrationCityPanel } from "/emigration/ui/emigration-city-panel.js";
+import { sweepEmptyRuralDistricts, sweepOnceGameStarts } from "/emigration/ui/emigration-plot-cleanup.js";
 import { registerMigrationPage } from "/emigration/ui/emigration-migration-page.js";
 
 let lastLocalTurnRun = -999;
@@ -293,6 +299,9 @@ function onTurnActivated(data) {
     // load decay + migrant-holding). grantYield works cross-civ.
     chargePerTurnCosts(who, local);
     if (who !== local) return;
+    // Every local turn, whatever the pass interval: clear empty rural districts left by destroyed
+    // improvements, so no abandoned plot stays unusable (also heals saves from before the fix).
+    sweepEmptyRuralDistricts();
     const turn = typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
     // F1: Game.turn resets to a low value at each age boundary. Without this rebase the
     // gate `turn - lastLocalTurnRun` would stay below the interval for most of the new age
@@ -301,6 +310,7 @@ function onTurnActivated(data) {
     if (turn - lastLocalTurnRun < CONFIG.turnInterval) return;
     lastLocalTurnRun = turn;
     doPass("turn " + turn);
+    offerCallHomeWhenCalm(local);
   } catch (e) {
     dlog("onTurnActivated threw " + e);
   }
@@ -353,6 +363,131 @@ function installUi() {
 }
 
 /** Boot. */
+
+/**
+ * Console entry for "call our people home" (§6g):
+ *   emigration.callHome()                         offer the internal call for the local player
+ *   emigration.callHome("external")               offer the call for people living abroad
+ *   emigration.callHome("internal", "influence")  skip the dialog and pay in Influence
+ * @param {string} [scope] "internal" (default) or "external".
+ * @param {string} [currency] "gold" (default) or "influence"; omit to open the dialog instead.
+ * @returns {*} What happened, also logged.
+ */
+
+
+
+/**
+ * Offer to call our people home once the danger that displaced them has passed.
+ *
+ * This deliberately does NOT key off a war ending. Refugees are not only made by wars: a volcano or a plague
+ * makes them with no diplomacy involved at all, and an Independent Power or city-state raid registers as
+ * violence against a settlement without ever raising a formal war (see emigration-violence.js). Keying the
+ * offer to DiplomacyMakePeace therefore never reached most of the people who had actually been driven out.
+ *
+ * What matters is the same in every case: nobody is under threat any more, and somebody is still away. The
+ * action keeps its own cooldown, so a calm empire is asked once, not every turn.
+ * @param {number} pid The local player id.
+ */
+function offerCallHomeWhenCalm(pid) {
+  try {
+    if (!CONFIG.callHomeEnabled || !CONFIG.callHomeOfferWhenCalm) return;
+    if (typeof pid !== "number" || pid < 0) return;
+    if (!isCalm(pid)) return;
+    for (const scope of [CALL_HOME_SCOPE.INTERNAL, CALL_HOME_SCOPE.EXTERNAL]) {
+      if (callHomeQuote(pid, scope, CALL_HOME_CURRENCY.GOLD).points > 0 && offerCallHome(pid, scope)) return;
+    }
+  } catch (e) {
+    dlog("call home when calm threw " + e);
+  }
+}
+
+/**
+ * Whether none of a civilization's settlements is still under situational distress — war, siege, disaster,
+ * famine or unrest alike. Unreadable state counts as NOT calm, so the offer stays quiet rather than
+ * interrupting a crisis it could not see.
+ * @param {number} pid The player id. @returns {boolean} True when everywhere is quiet.
+ */
+function isCalm(pid) {
+  try {
+    const snaps = ownerCitySnapshots(pid);
+    if (!Array.isArray(snaps) || !snaps.length) return false;
+    return snaps.every((s) => !(Number(s && s.distress) > 0));
+  } catch (_) {
+    return false;
+  }
+}
+
+/**
+ * Console entry for "call our people home" (§6g):
+ *   emigration.callHome()                         offer the internal call for the local player
+ *   emigration.callHome("external")               offer the call for people living abroad
+ *   emigration.callHome("internal", "influence")  skip the dialog and pay in Influence
+ * @param {string} [scope] "internal" (default) or "external".
+ * @param {string} [currency] "gold" (default) or "influence"; omit to open the dialog instead.
+ * @returns {*} What happened, also logged.
+ */
+
+
+
+
+
+
+/**
+ * Subscribe the war and combat trackers. Every one of these is fog-independent, so a war between two AI
+ * players on the far side of the map feeds the migration model exactly as the player's own war does.
+ */
+function hookWarTracking() {
+  // Who-declared-on-whom, for aggressor-aware refugee flight (Feature 1). Recorders guard their own access.
+  try {
+    engine.on("DiplomacyDeclareWar", (/** @type {*} */ d) => recordWarDeclared(d));
+    engine.on("DiplomacyMakePeace", (/** @type {*} */ d) => recordPeace(d));
+    // Razing (distinct from conquest's CityTransfered): credit the razed city's residual as a loss.
+    engine.on("CityRemovedFromMap", (/** @type {*} */ d) => markCityRemoved(d && d.cityID));
+  } catch (_) {
+    /* ignore */
+  }
+  // Per-city combat evidence (Combat / UnitKilledInCombat / DistrictDamageChanged): what lets the violence
+  // model say WHO struck a given settlement, and see a field battle that never touched its walls. The polled
+  // signals in emigration-violence-signals.js stay in place as the backstop.
+  try {
+    dlog("combat events " + (startCombatEvents() ? "tracking" : "not started"));
+    exposeViolenceAudit();
+  } catch (e) {
+    dlog("combat events threw " + e);
+  }
+}
+
+/**
+ * Console entry for "call our people home" (§6g):
+ *   emigration.callHome()                         offer the internal call for the local player
+ *   emigration.callHome("external")               offer the call for people living abroad
+ *   emigration.callHome("internal", "influence")  skip the dialog and pay in Influence
+ * @param {string} [scope] "internal" (default) or "external".
+ * @param {string} [currency] "gold" (default) or "influence"; omit to open the dialog instead.
+ * @returns {*} What happened, also logged.
+ */
+function consoleCallHome(scope, currency) {
+  const pid = GameContext.localPlayerID;
+  const sc = scope === "external" ? CALL_HOME_SCOPE.EXTERNAL : CALL_HOME_SCOPE.INTERNAL;
+  const left = callHomeCooldownLeft(pid, sc);
+  if (left > 0) {
+    dlog("call home: " + left + " turn(s) of cooldown left for " + sc);
+    return { ok: false, reason: "cooldown", turnsLeft: left };
+  }
+  if (currency) {
+    const cur = currency === "influence" ? CALL_HOME_CURRENCY.INFLUENCE : CALL_HOME_CURRENCY.GOLD;
+    const r = callHomeNow(pid, sc, cur);
+    dlog("call home " + sc + ": " + JSON.stringify(r));
+    return r;
+  }
+  const quote = callHomeQuote(pid, sc, CALL_HOME_CURRENCY.GOLD);
+  if (!offerCallHome(pid, sc)) {
+    dlog("call home: nobody to call for " + sc + " (" + quote.available + " away)");
+    return { ok: false, reason: "nobody-to-call", away: quote.available };
+  }
+  return { ok: true, offered: sc, points: quote.points, away: quote.available };
+}
+
 function boot() {
   applyTunableOverrides(); // push saved option values into CONFIG before any pass
   dlog("boot start (turnInterval " + CONFIG.turnInterval + ", crossCiv " + CONFIG.crossCivEnabled + ")");
@@ -369,6 +504,8 @@ function boot() {
       origins: (/** @type {string=} */ name) => dumpOrigins(name),
       // Diagnostic for the Open Borders bonus: logs the joint diplomatic-event action
       // names between two players and whether an Open Borders agreement is detected.
+      callHome: (/** @type {string=} */ scope, /** @type {string=} */ currency) =>
+        consoleCallHome(scope, currency),
       openBorders: (/** @type {number} */ a, /** @type {number} */ b) => {
         const names = [];
         try {
@@ -399,17 +536,9 @@ function boot() {
   } catch (e) {
     dlog("engine.on threw " + e);
   }
-  // Track who-declared-on-whom (public, fog-independent) for aggressor-aware refugee
-  // flight (Feature 1). Recorders guard their own engine access.
-  try {
-    engine.on("DiplomacyDeclareWar", (/** @type {*} */ d) => recordWarDeclared(d));
-    engine.on("DiplomacyMakePeace", (/** @type {*} */ d) => recordPeace(d));
-    // Razing (distinct from conquest's CityTransfered): credit the razed city's residual as a loss.
-    engine.on("CityRemovedFromMap", (/** @type {*} */ d) => markCityRemoved(d && d.cityID));
-  } catch (_) {
-    /* ignore */
-  }
+  hookWarTracking();
   installUi();
+  sweepOnceGameStarts(); // heal empty rural districts in a loaded save as soon as the game starts
   // Raid actions (§4b) are native diplomacy actions (Diplomacy Extended mod); they appear in the
   // diplomacy screen on their own. Emigration reads their active state; no UI hook needed here.
   // No on-screen dev controls: run-pass / dump-ranking are available via the

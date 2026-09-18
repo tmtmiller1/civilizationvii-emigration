@@ -42,18 +42,38 @@ function cityPoint(center, name) {
   return null;
 }
 
+// The shortest arrow worth drawing. Also the trim budget: a pair with at least this much daylight
+// between its discs keeps the full trim, so long flows draw exactly as they always did.
+const MIN_ARROW_LEN = 6;
+
 /**
- * Trim a straight segment back to each endpoint's disc edge, or null when the discs are too close.
+ * Trim a straight segment back toward each endpoint's disc edge, or null when the two points are
+ * effectively the same.
+ *
+ * The trim SHRINKS to fit when the discs are close, instead of dropping the flow. It used to demand
+ * `len > a.r + b.r + 6` and return null otherwise — which silently ate most INTERNAL (city→city)
+ * flows: the city packing (emigration-network-dots.packCityDiscs) seats each disc exactly CITY_GAP
+ * (6) clear of the disc that constrains it, while the endpoints here are struck at `subR + 3` apiece,
+ * so a tangent pair sits exactly 6px short of the threshold at every scale. Every adjacent-city flow
+ * lost its arrow — including the largest city's, since packing anchors it at the origin with the
+ * others tangent to it — and a two-city civ drew no internal arrow at all.
  * @param {*} a Source {x,y,r}. @param {*} b Dest {x,y,r}. @param {{people:number}} meta @returns {*}
  */
 function trimmed(a, b, meta) {
   const dx = b.x - a.x;
   const dy = b.y - a.y;
   const len = Math.sqrt(dx * dx + dy * dy);
-  if (len <= a.r + b.r + 6) return null;
+  if (len <= MIN_ARROW_LEN) return null;
   const ux = dx / len;
   const uy = dy / len;
-  return { x0: a.x + ux * a.r, y0: a.y + uy * a.r, x1: b.x - ux * b.r, y1: b.y - uy * b.r, people: meta.people };
+  // k = 1 whenever the old guard passed (len > a.r + b.r + MIN_ARROW_LEN), so far-apart flows are
+  // untouched; below that it scales both trims down so what's left still spans MIN_ARROW_LEN.
+  const k = Math.min(1, (len - MIN_ARROW_LEN) / ((a.r + b.r) || 1));
+  return {
+    x0: a.x + ux * a.r * k, y0: a.y + uy * a.r * k,
+    x1: b.x - ux * b.r * k, y1: b.y - uy * b.r * k,
+    people: meta.people, tight: k < 1
+  };
 }
 
 /** The city-level flow edges for a frame (fall back to civ-level for pre-city-tracking saves). @param {*} fr */
@@ -178,7 +198,9 @@ export function buildFlowSegments(holder) {
  */
 function drawArrowhead(ctx, p, w) {
   const ang = Math.atan2(p.y1 - p.cy, p.x1 - p.cx);
-  const size = 4.5 + w * 1.1;
+  // Cap the head to the arc it sits on, so a short between-neighbours arrow reads as an arrow rather
+  // than a blob with a stub behind it.
+  const size = Math.min(4.5 + w * 1.1, Math.max(3, (p.len || Infinity) * 0.8));
   ctx.fillStyle = INFLOW;
   ctx.globalAlpha = 0.95;
   ctx.beginPath();
@@ -194,7 +216,10 @@ function curveControl(s) {
   const dx = s.x1 - s.x0;
   const dy = s.y1 - s.y0;
   const len = Math.sqrt(dx * dx + dy * dy) || 1;
-  const off = Math.min(40, len * 0.16);
+  // A `tight` flow spans only the daylight between two touching city discs, so a proportional bow
+  // would be a few pixels of nearly-straight line buried in the dots. Bow it out far enough to read
+  // as an arc arriving from outside the cluster.
+  const off = s.tight ? Math.min(40, Math.max(14, len * 0.16)) : Math.min(40, len * 0.16);
   return { cx: (s.x0 + s.x1) / 2 - (dy / len) * off, cy: (s.y0 + s.y1) / 2 + (dx / len) * off };
 }
 
@@ -222,7 +247,7 @@ function drawArrow(ctx, s, maxP) {
   ctx.moveTo(s.x0, s.y0);
   ctx.quadraticCurveTo(cx, cy, s.x1, s.y1);
   ctx.stroke();
-  drawArrowhead(ctx, { cx, cy, x1: s.x1, y1: s.y1 }, w);
+  drawArrowhead(ctx, { cx, cy, x1: s.x1, y1: s.y1, len: Math.hypot(s.x1 - s.x0, s.y1 - s.y0) }, w);
   ctx.globalAlpha = 1;
 }
 

@@ -23,7 +23,9 @@ import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 import { warEvents } from "/emigration/ui/emigration-war.js";
 import { civHidden, effectivePolicy } from "/emigration/ui/emigration-governance.js";
-import { compositionForCity } from "/emigration/ui/emigration-composition.js";
+import { compositionForCity, allCityCompositions } from "/emigration/ui/emigration-composition.js";
+import { enclaveProgressForComposition } from "/emigration/ui/emigration-diaspora.js";
+import { quarterAt } from "/emigration/ui/emigration-quarter-state.js";
 
 /**
  * The local player id, or null.
@@ -76,6 +78,12 @@ function civRow(pid) {
     // "Losses" = the mod's own attrition deaths PLUS detected external population loss
     // (starvation / plague / razing / disasters). Each tally also carries an exact pop-point count.
     deaths: read("deathsCumFor") + read("externalLossesCumFor"),
+    // Internal (within-civ) moves, tallied separately; the ledger subtracts them from the gross
+    // in/out above to show the external, cross-civ flow beside them.
+    intIn: read("internalInCumFor"),
+    intOut: read("internalOutCumFor"),
+    intInPts: read("internalInPtsFor"),
+    intOutPts: read("internalOutPtsFor"),
     inPts: read("grossInPtsFor"),
     outPts: read("grossOutPtsFor"),
     netPts: read("netPtsFor"),
@@ -558,6 +566,9 @@ function pressureMap(me) {
       bar: s.pressureToBar || 0, cause: s.causeLabel || "", dest: s.topDestinationName || "",
       flag: s.attritionRisk ? "at risk" : s.onCooldown ? "resting" : "",
       mix: s.causeMix || null // the weighted "what drives migration" breakdown, for the per-city meter
+      , // What argues for STAYING: the settlement's wonders and civic buildings, named. The panel had
+      // only ever shown reasons to leave, so a well-built city looked like a problem with no answer.
+      stay: Array.isArray(s.stayReasons) ? s.stayReasons : []
     };
   }
   return map;
@@ -643,8 +654,10 @@ function gatherDiversity() {
     inbound: (pid) => (typeof D.grossInCumFor === "function" ? D.grossInCumFor(pid) || 0 : 0),
     visible: (pid) => !civHidden(pid)
   }, 0);
+  const comps = new Map(allCityCompositions().map((e) => [e.key, e.comp]));
   return rows.map((r) => ({
     ...r,
+    enclave: enclaveCell(r.key, comps.get(r.key)),
     parts: diversityParts(r.civs),
     pts: Math.round(r.total || 0),
     people: scaleCityPopulation(r.total || 0, t),
@@ -653,6 +666,25 @@ function gatherDiversity() {
     own: me != null && r.owner === me,
     dominantName: r.dominantCiv != null && !civHidden(r.dominantCiv) ? civAdjective(r.dominantCiv) : null
   }));
+}
+
+/**
+ * The Diversity table's Enclave cell for one settlement: a standing enclave's origin, else the leading
+ * foreign community's share against the live share bar (from the foothold stage up), else "".
+ * @param {string} key The settlement's plot key. @param {*} comp Its composition, or undefined.
+ * @returns {string} The cell text.
+ */
+function enclaveCell(key, comp) {
+  try {
+    const rec = key ? quarterAt(key) : null;
+    if (rec && !civHidden(rec.civ)) return loc("LOC_EMIG_DIVERSE_ENCLAVE_STANDING", "{1_Civ} enclave", civAdjective(rec.civ));
+    const p = enclaveProgressForComposition(comp);
+    if (!p || p.stage === "none" || civHidden(p.civ)) return "";
+    return loc("LOC_EMIG_DIVERSE_ENCLAVE_CELL", "{1_Civ} {2_Share}%/{3_Bar}%", civAdjective(p.civ),
+      Math.round(p.share * 100), Math.round(p.establishedShare * 100));
+  } catch (_) {
+    return "";
+  }
 }
 
 function gatherFresh() {

@@ -1,0 +1,11 @@
+[2026-09-13 07:19:39]	Unhandled Promise Rejection: ReferenceError: WorldUI is not defined.  Re-run with inspector attached for callstack. 
+[2026-09-13 07:19:39]	Unhandled rejection error value: ReferenceError: WorldUI is not defined
+[2026-09-13 07:19:40]	HTML Parser Error@:fs://game/root-game.html@1:1146: Premature end of file  Currently open tags: html, div..
+[2026-09-13 07:19:56]	HTML Parser Error@:fs://game/root-game.html@67:24: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-13 07:19:56]	HTML Parser Error@:fs://game/root-game.html@71:16: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-13 07:19:56]	HTML Parser Error@:fs://game/root-game.html@75:24: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-13 07:19:56]	HTML Parser Error@:fs://game/root-game.html@79:16: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-13 07:19:56]	HTML Parser Error@:fs://game/root-game.html@49:43: Tokenizer error with an unimplemented error message.
+[2026-09-13 07:21:30]	JS Error: fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:530: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-13 07:21:30]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-13 07:21:30]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')

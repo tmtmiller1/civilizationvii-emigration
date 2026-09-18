@@ -7,7 +7,7 @@
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { recordWarLoss } from "/emigration/ui/emigration-violence.js";
-import { addDistress, disasterKey } from "/emigration/ui/emigration-disasters.js";
+import { addDistress, disasterKey, recordDisasterLoss } from "/emigration/ui/emigration-disasters.js";
 import { addAssimilationLoad } from "/emigration/ui/emigration-effects.js";
 import { addAttractionDividend } from "/emigration/ui/emigration-dividend.js";
 import { activeAttractions } from "/emigration/ui/emigration-borders.js";
@@ -33,12 +33,17 @@ function carryPlague(infected, destCity) {
  * toward the cap - the siegeLossCapPct ceiling governs the flee-the-violence channel alone. Without
  * the cause gate, economic movers (prosperity/unhappiness) shed by a city that happens to also be
  * under siege would drain the cap, collapsing siegeEscalation and shutting off the war exodus early.
- * @param {*} src Source signal.
+ * Disaster-caused departures feed the parallel disaster loss cap (`disasterLossCapPct`) the same way,
+ * so a long-burning disaster can no longer strip a settlement's tiles down to the rural floor.
+ * @param {*} src Source signal (its population has already been decremented for this point).
  * @param {import("/emigration/ui/emigration-causes.js").MigrationCause} cause Why they're leaving
- *   (only "war" feeds the siege loss cap).
+ *   (only "war" feeds the siege loss cap; only "disaster" feeds the disaster loss cap).
  */
 export function applyDepartureConsequences(src, cause) {
   if (cause === "war" && src.violence >= CONFIG.violenceFleeThreshold) recordWarLoss(src.city);
+  if (cause === "disaster" && (src.disaster || 0) >= CONFIG.disasterFleeThreshold) {
+    recordDisasterLoss(src.city, (Number(src.population) || 0) + 1);
+  }
 }
 
 /**

@@ -37,7 +37,9 @@ assert.equal(uncoveredCivs.length, 0, `Missing civ decisions: ${uncoveredCivs.jo
 assert.equal(uncoveredMementos.length, 0, `Missing memento decisions: ${uncoveredMementos.join(", ")}`);
 
 const allowedLeaderAliases = new Set(["LEADER_RIZAL"]);
-const allowedCivAliases = new Set(["CIVILIZATION_ENGLAND"]);
+// England ships as a real civilization now, so it is matched from the roster like any other and is
+// no longer an alias. Aliases are only keys the engine never reports.
+const allowedCivAliases = new Set();
 const unknownTunedLeaders = tunedLeaders.filter(
   (id) => !matrixLeaders.has(id) && !allowedLeaderAliases.has(id)
 );

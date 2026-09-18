@@ -18,15 +18,16 @@ import { appendSnapshotReminder } from "/emigration/ui/emigration-snapshot-remin
 import { renderGuide } from "/emigration/ui/emigration-guide.js";
 import { renderCityFlows, buildCivFlows } from "/emigration/ui/emigration-city-flows.js";
 import { renderStances, renderDiversity, diversitySections } from "/emigration/ui/emigration-detail-views.js";
-import { renderLedger } from "/emigration/ui/emigration-ledger-view.js";
+import { renderLedger, splitInternalExternal, LEDGER_CSS } from "/emigration/ui/emigration-ledger-view.js";
 import { renderNotifications } from "/emigration/ui/emigration-notifications-view.js";
 import { DENSITY_CSS } from "/emigration/ui/emigration-density.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
 
 
 /**
- * Per-civ ledger rows (gross in/out, net, refugees, deaths), formatted as people.
- * @param {*[]} civs Per-civ tallies: {name, in, out, net, refugees, deaths}.
+ * Per-civ ledger rows (internal left/arrived, external out/in, the gross totals, net, refugees,
+ * deaths), formatted as people.
+ * @param {*[]} civs Per-civ tallies: {name, in, out, intIn, intOut, net, refugees, deaths}.
  * @returns {*[]} Formatted ledger rows.
  */
 export function civLedgerRows(civs) {
@@ -40,6 +41,8 @@ export function civLedgerRows(civs) {
         inP: n(c.in), outP: n(c.out), netP: n(c.net), refP: n(c.refugees), lossP: n(c.deaths),
         inPts: n(c.inPts), outPts: n(c.outPts), netPts: n(c.netPts),
         refPts: n(c.refugeesPts), lossPts: n(c.deathsPts),
+        // Internal (own settlements) vs external (cross-border) shares of the gross in/out above.
+        ...splitInternalExternal(c),
         // The signed per-cause net (arrivals − departures), the "why" behind this civ's net.
         drivers: netDrivers(c.byCause, c.inByCause),
         // Border-stance impact on immigration IN (signed people/points; proportion vs neutral).
@@ -313,24 +316,9 @@ const DASH_CSS =
   ".emig-pr-c.name{flex:1.5 1 0;color:#f0dca8;font-weight:bold;}" +
   ".emig-pr-c.pres{flex:2 1 0;}" +
   ".emig-pr-head .emig-pr-c{border-top:none;opacity:0.6;text-transform:uppercase;letter-spacing:0.03rem;font-size:var(--dg-fs-95);}" +
-  // Civilizations ledger: flexbox rows (GameFace lays out neither <table> nor CSS grid). Every row
-  // uses the same per-column flex ratios, so the columns line up; full width with no dead gap.
-  ".emig-led{display:flex;flex-direction:column;width:100%;}" +
-  ".emig-led-row{display:flex;align-items:center;width:100%;}" +
-  ".emig-led-c{flex:1 1 0;text-align:right;padding:0.62rem 0.6rem;font-size:var(--dg-fs-120);" +
-  "overflow:hidden;white-space:nowrap;border-top:0.0277rem solid rgba(229,210,172,0.12);}" +
-  ".emig-led-c.name{flex:2.4 1 0;text-align:left;color:#f0dca8;font-weight:bold;}" +
-  ".emig-led-c.net{flex:1 1 0;}" +
-  ".emig-led-c.net-bar{flex:1.7 1 0;}" +
-  ".emig-led-c.stance{flex:1.8 1 0;}" +
-  ".emig-led-head .emig-led-c{border-top:none;opacity:0.6;text-transform:uppercase;letter-spacing:0.03rem;font-size:var(--dg-fs-95);}" +
-  ".emig-led-net{display:flex;align-items:center;justify-content:flex-end;gap:0.4rem;}" +
-  ".emig-led-bar{height:0.7rem;border-radius:0.35rem;flex:0 0 auto;min-width:0.16rem;}" +
-  // The divider sits on the ROW (one continuous full-width line) rather than each cell: the row is
-  // align-items:center, so the empty net-bar cell is shorter than the text cells and a per-cell
-  // border-top would land at a different height there, breaking the line at the graph column.
-  ".emig-led-tot{border-top:0.0833rem solid rgba(201,162,76,0.45);}" +
-  ".emig-led-tot .emig-led-c{border-top:none;font-weight:bold;}" +
+  // The Net Migration Table's own rules live beside its renderer (its column weights and the group
+  // header's spans have to be read together), so they are concatenated in from there.
+  LEDGER_CSS +
   // Causes pies.
   // Cap the legend to the pie's width so it WRAPS under the pie instead of widening the (content-sized)
   // column, otherwise a card with long "civ count (pct%)" labels makes its column wider and pushes the

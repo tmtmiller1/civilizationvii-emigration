@@ -120,7 +120,7 @@ function testPullRowsReconstructAdjustedPull() {
 
 /** Every additive term pullBreakdown itemizes. If a term is added, this list must grow with it. */
 const PULL_TERMS = ["gradient", "tilt", "reluctance", "crowding", "cityState", "crossCiv",
-  "dominance", "distance", "aggressor", "flight", "congestion"];
+  "dominance", "drain", "distance", "aggressor", "flight", "congestion"];
 
 function testPullReconstructionCoversEveryTermAtOnce() {
   // The case above leaves congestion, dominance, tilt, flight and aggressor at ZERO, and a term that
@@ -155,6 +155,23 @@ function testPullReconstructionCoversEveryTermAtOnce() {
   Object.assign(CONFIG, { congestWeight: 0, antiSnowballWeight: 0, aggressorPenalty: 0 });
   delete globalThis.Game;
 }
+
+function testInternalRefugeTermIsMirrored() {
+  // The homeland bonus and the cross-civ block are mutually exclusive by construction, so the all-terms fixture
+  // above can never exercise this term: it fires only for a source in crisis moving INSIDE its own civilization.
+  Object.assign(CONFIG, { crisisInternalBonus: 12, violenceFleeThreshold: 2 });
+  const src = sig(1, 10, 5, 0, 0, { violence: 6 });
+  const dest = sig(1, 30, 5, 2, 0);
+  const rows = explainPull(src, dest, {});
+  const real = adjustedPull(src, dest, null, null, null);
+  assert.ok(real !== null, "fixture should be a viable move");
+  assert.ok(Math.abs(sum(rows) - real) < 1e-9, `rows sum ${sum(rows)} should reconstruct ${real}`);
+  const row = find(rows, "internal");
+  assert.ok(row && row.delta > 0, `a crisis source moving at home should show the homeland bonus, got ${keys(rows)}`);
+  assert.ok(!find(explainPull(sig(1, 10, 5, 0, 0), dest, {}), "internal"),
+    "a calm mover gets no homeland bonus row");
+}
+testInternalRefugeTermIsMirrored();
 
 function testPullReconstructionHoldsUnderAPermeabilityMultiplier() {
   // With borders on, every additive row is scaled by the clamped permeability. The sum must still

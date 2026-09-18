@@ -1,0 +1,15 @@
+[2026-09-15 20:09:23]	Error loading image - icon_right_bumper.  [object Object] 
+[2026-09-15 20:11:29]	JS Error: fs://game/base-standard/ui/unit-flags/privateer-flags.js:38: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-15 20:11:29]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-15 20:11:29]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-15 20:11:55]	Error loading image - icon_left_bumper.  [object Object] 
+[2026-09-15 20:11:55]	Error loading image - icon_right_bumper.  [object Object] 
+[2026-09-15 20:14:55]	Error loading image - icon_left_bumper.  [object Object] 
+[2026-09-15 20:14:55]	Error loading image - icon_right_bumper.  [object Object] 
+[2026-09-15 20:15:12]	Error loading image - icon_left_bumper.  [object Object] 
+[2026-09-15 20:15:12]	Error loading image - icon_right_bumper.  [object Object] 
+[2026-09-15 20:15:47]	JS Error: fs://game/base-standard/ui/unit-flags/privateer-flags.js:38: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-15 20:15:47]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-15 20:15:47]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-15 20:19:10]	Error loading image - icon_left_bumper.  [object Object] 
+[2026-09-15 20:19:10]	Error loading image - icon_right_bumper.  [object Object] 

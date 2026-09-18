@@ -18,6 +18,19 @@
  *   (including same-turn departures + due transit arrivals; 0 = off).
  * @property {number} emigrationBar Accumulated pressure to move one citizen.
  * @property {number} deltaExponent Diminishing scaling on the prosperity delta.
+ * @property {number} pressureRetention Per-turn retention of a source's accumulated pressure, so the
+ *   charge tracks current conditions and falls when they improve (1 = off, the legacy ratchet).
+ * @property {number} popExponent Exponent on population in the per-citizen productiveness divisor
+ *   (1 = a straight per-head average; below 1 a large settlement keeps more of what it built).
+ * @property {number} perFewerPop Friction per population point when the destination is SMALLER than
+ *   the source, the mirror of perExtraPop (0 = off, restoring the one-way push toward small towns).
+ * @property {boolean} enclaveTooltipEnabled Show the mod's own tooltip on an enclave's tile (name, stage,
+ *   every yield source and its reasoning) in place of the game's.
+ * @property {boolean} builtEnabled Score a settlement's wonders and civic buildings as a reason to stay.
+ * @property {Record<string, number>} builtRoleWeights Score per built ROLE present (prestige is per wonder).
+ * @property {number} builtWonderCap Most wonders one settlement may be credited for.
+ * @property {number} builtCap Ceiling on the whole built-environment term.
+ * @property {number} builtRefreshTurns Turns between per-settlement built-environment re-scans.
  * @property {boolean} splitTracksEnabled Evaluate crisis + voluntary as two concurrent per-source tracks.
  * @property {boolean} splitBudgetsEnabled Give crisis and voluntary their own per-civ move ceilings.
  * @property {boolean} splitUiReadoutEnabled Show a multi-cause pressure breakdown in the city readout.
@@ -76,6 +89,9 @@
  * @property {number} vwAssault Intensity per unit of fresh city damage taken (polled).
  * @property {number} vwSiege Intensity per turn while the city stays damaged (polled).
  * @property {number} vwPillage Intensity per turn per pillaged tile in the borders (polled).
+ * @property {boolean} combatEventsEnabled Read the engine combat event stream (off = polled signals only).
+ * @property {number} vwBattle Intensity per fight in a city's territory (event-only; polling cannot see it).
+ * @property {number} vwCasualty Intensity per unit killed in a city's territory (event-only).
  * @property {number} violenceDecay Per-turn multiplicative decay of intensity.
  * @property {number} violencePerPoint Percent score penalty per intensity point.
  * @property {number} violenceCapPct Max percent penalty from violence.
@@ -108,6 +124,10 @@
  * @property {number} dilemmaHappinessWelcome One-time happiness cost for absorbing refugees into your city.
  * @property {boolean} quartersEnabled Whether established diasporas become player-shaped Cultural Quarters.
  * @property {number} quarterEstablishedShare Share of a city a lead foreign origin must hold to be "established".
+ * @property {boolean} quarterPacingEnabled Per-age pacing of enclave formation (emigration-enclave-pacing.js).
+ * @property {number} quarterTargetPerAge Enclaves per host per age the pacing catch-up aims for (0 = none).
+ * @property {number} quarterPacingMax Maximum fraction the formation bars are lowered by the catch-up.
+ * @property {number} quarterPacingBy Age fraction at which the full relaxation is reached.
  * @property {number} quarterMinStock Minimum current standing pop points of the lead origin for an established enclave.
  * @property {number} quarterEnclaveStickiness Integration multiplier (0..1) for an at/above-foothold origin (1 = off).
  * @property {boolean} quarterForce Testing flag: offer the best qualifying enclave now, bypassing the soft gates.
@@ -118,7 +138,8 @@
  * @property {boolean} migrationExplainer Show the push/pull cause stack in the readout + hover panels
  *   (Feature L). READ-ONLY: it explains the scores the sim already computed; it moves no one.
  * @property {boolean} selftestEnabled Install the on-screen self-test launcher (live diagnostics + forced pop-up).
- * @property {number} quarterDwellTurns Turns an enclave must persist before its one-time decision is offered.
+ * @property {number} quarterDwellTurns Turns an established enclave must persist before it is recognized
+ *   (its stance is chosen and the stance yields begin).
  * @property {number} quarterDwellGrace Turns a diaspora may dip below the bar without resetting the dwell clock.
  * @property {number} quarterCapPerAge Hard cap on Cultural Quarter decisions per age.
  * @property {number} quarterCooldownTurns Minimum turns between Cultural Quarter decisions.
@@ -133,6 +154,23 @@
  * @property {number} returnMinShare Min diaspora share of the host city to draw returnees.
  * @property {number} returnMinPoints Min origin points the host must hold to send one back.
  * @property {number} returnCooldownTurns Min turns between returns out of the same host settlement.
+ * @property {number} quarterRootsReturnScale Share of returnRate kept by a community with a standing enclave (1 = off).
+ * @property {boolean} callHomeEnabled Whether the paid call-our-people-home action is offered.
+ * @property {number} callHomeChanceInternal Per-point chance for moves between your own settlements.
+ * @property {number} callHomeChanceExternal Per-point chance for your people under another civilization.
+ * @property {number} callHomeGoldPerPoint Fee per attempted point when paying in Gold.
+ * @property {number} callHomeInfluencePerPoint Fee per attempted point when paying in Influence.
+ * @property {number} callHomeExternalCostScale Fee multiplier for the external variant.
+ * @property {number} callHomeMaxPointsPerAttempt Points attempted per call.
+ * @property {number} callHomeCooldownTurns Turns before the same civilization may call again.
+ * @property {boolean} callHomeOfferWhenCalm Offer the call once nowhere is distressed and people are away.
+ * @property {number} antiDrainWeight Penalty on cross-civ outflow from a civ below the drain threshold (0 = off).
+ * @property {number} antiDrainThreshold Share of the world-average civ population below which outflow is braked.
+ * @property {number} antiDrainExponent Steepness of the drain brake below the threshold.
+ * @property {number} crisisInternalBonus Pull added to a crisis source's OWN-civilization destinations (0 = off).
+ * @property {number} crossCivMovement Grouped "Movement between civilizations" position, 0 to 100.
+ * @property {number} minorRaidRefugees Grouped "Refugees from minor-power raids" position, 0 to 100.
+ * @property {number} majorWarRefugees Grouped "Refugees from major-power wars" position, 0 to 100.
  * @property {boolean} integrationEnabled Whether newcomers drift toward the host identity over time.
  * @property {number} integrationRate Base per-turn fraction of a minority that integrates.
  * @property {number} integrationWarRate Integration rate while the host is at war with the origin civ.
@@ -142,6 +180,20 @@
  * @property {number} assimilationDecay Per-turn decay of the load (= the assimilation duration).
  * @property {number} assimilationHappiness Happiness/turn drained per unit of load.
  * @property {number} assimilationGold Gold/turn drained per unit of load.
+ * @property {boolean} departureRemovesTile Departures abandon a rural improvement (DESTROY_ELEMENT), not a bare
+ *   counter decrement.
+ * @property {number} arrivalPlacement Local-player arrival placement: 0 off, 1 automatic, 2 ask, 3 migrant unit.
+ * @property {boolean} arrivalPreferSpecialists Automatic placement tries a specialist slot before a rural tile.
+ * @property {boolean} arrivalAskRefugees Ask me mode raises the pop-up for arriving refugees.
+ * @property {boolean} arrivalAskMigrants Ask me mode raises the pop-up for arriving migrants.
+ * @property {boolean} arrivalAskReturnees Ask me mode raises the pop-up for arriving returnees.
+ * @property {boolean} quarterPlaceImprovement Place the enclave improvement tile when an enclave is recognized.
+ * @property {number} quarterEstablishedStock Foreign points that establish an enclave whatever the share (0 = off).
+ * @property {number} quarterStockRefPop Mean settlement population at which quarterEstablishedStock applies as is.
+ * @property {number} quarterFadeShare Origin share of the host below which an enclave starts to fade (0 = never).
+ * @property {number} quarterFadeTurns Consecutive turns below the fade bar before the enclave dissolves.
+ * @property {number} quarterRecognition 0 = ask (pop-up, your cities), 1 = automatic (yours), 2 = automatic everywhere.
+ * @property {number} enclaveTileSkin 1 = themed (unique, else by yield, else Village), 2 = Village, 0 = native.
  * @property {number} assimilationWealthWeight Treasury-aware bend on the gold cost (0 = off).
  * @property {number} assimilationWealthRef Gold balance at which the wealth multiplier is ×1.
  * @property {number} assimilationWealthMin Floor multiplier for poor civs.
@@ -158,6 +210,9 @@
  * @property {number} happyMultMax Max economy multiplier from happiness (shaped model).
  * @property {boolean} warSiege Use the time-gated, capped war-displacement model.
  * @property {number} siegeBesiegedFloor Fraction of full siege pressure a besieged-but-undamaged city registers.
+ * @property {number} minorSiegeBesiegedFloor Besieged floor when only minor powers are attacking.
+ * @property {number} minorViolenceScale Multiplier on violence while only minor powers are attacking.
+ * @property {number} majorViolenceScale Multiplier on violence when a major civilization is attacking.
  * @property {number} siegeFloor Escalation at siege tenure 1 (fraction of full).
  * @property {number} siegeRampTurns Turns of sustained siege to reach full escalation.
  * @property {number} siegeLossCapPct Max fraction of onset population lost to war.
@@ -227,6 +282,7 @@
  * @property {number} disasterImpactGamma Concavity of shape(m)=m^gamma (1.0 linear, <1 lifts small impacts).
  * @property {number} disasterStrikeFloor Floor on m for a confirmed-but-unmeasurable city strike (0 ⇒ legacy).
  * @property {boolean} disasterSpeedShockEnabled Divide the disaster spike by S (speed-invariant total bite).
+ * @property {number} disasterLossCapPct Max share of onset population lost to disaster emigration per crisis (1 = off).
  * @property {number} disasterAccumCap Hard ceiling on a city's accumulated disaster distress.
  * @property {boolean} disasterStackFalloff Diminishing-returns stacking of repeated disaster spikes.
  * @property {boolean} resetCachesOnGameBoot Reset per-module persisted caches when a new game id (gameSeed) is seen.

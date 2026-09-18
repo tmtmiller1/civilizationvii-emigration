@@ -1,0 +1,15 @@
+[2026-09-15 17:01:37]	DOMException: Can't insert a node that is the ancestor of this one.
+[2026-09-15 17:01:37]	DOMException: Can't insert a node that is the ancestor of this one.
+[2026-09-15 17:01:37]	DOMException: Can't insert a node that is the ancestor of this one.
+[2026-09-15 17:01:37]	DOMException: Can't insert a node that is the ancestor of this one.
+[2026-09-15 17:01:37]	DOMException: Can't insert a node that is the ancestor of this one.
+[2026-09-15 17:01:37]	DOMException: Can't insert a node that is the ancestor of this one.
+[2026-09-15 17:01:37]	DOMException: Can't insert a node that is the ancestor of this one.
+[2026-09-15 17:01:37]	DOMException: Can't insert a node that is the ancestor of this one.
+[2026-09-15 17:01:37]	DOMException: Can't insert a node that is the ancestor of this one.
+[2026-09-15 17:01:37]	DOMException: Can't insert a node that is the ancestor of this one.
+[2026-09-15 17:01:37]	DOMException: Can't insert a node that is the ancestor of this one.
+[2026-09-15 17:01:37]	DOMException: Can't insert a node that is the ancestor of this one.
+[2026-09-15 17:01:37]	DOMException: Can't insert a node that is the ancestor of this one.
+[2026-09-15 17:01:37]	DOMException: Can't insert a node that is the ancestor of this one.
+[2026-09-15 17:01:37]	DOMException: Can't insert a node that is the ancestor of this one.

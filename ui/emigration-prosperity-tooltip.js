@@ -10,36 +10,36 @@
 // dashboard always agree. Loaded as its own <UIScripts> entry so it runs in the HUD context.
 
 import { registerLensHoverPanel, cityTitle } from "/emigration/ui/emigration-lens-hover-panel.js";
+import { clamp, tierHex, tileTierAt, landmarkAt, plotScoreAt, LANDMARK_HEX } from "/emigration/ui/emigration-tile-score.js";
 import { fieldContext, prosperity } from "/emigration/ui/emigration-prosperity.js";
 import { mountExplain } from "/emigration/ui/emigration-explain-view.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
 
 const LENS = "emig-prosperity-lens"; // must match emigration-prosperity-lens.js
 const PRESSURE_HEX = "#d4483c"; // red dot for active migration pressures (matches the lens "below" red)
-// Gradient endpoints (0-255), identical to the lens: grey (neutral) → green (above) / red (below).
-const GREY = [140, 140, 140];
-const GREEN = [60, 200, 90];
-const RED = [212, 72, 60];
+const YIELD_HEX = "#6b6b6b"; // muted swatch for the plain "what this tile yields" row
 
-/** Clamp v into [lo, hi]. @param {number} v @param {number} lo @param {number} hi */
-function clamp(v, lo, hi) {
-  return v < lo ? lo : v > hi ? hi : v;
+/**
+ * A human standing label for a TILE's deviation inside its own settlement (the number the lens colours it from).
+ * @param {number} t Normalized deviation in [-1, 1].
+ * @returns {string} Label.
+ */
+function tileLabel(t) {
+  if (t >= 0.6) return loc("LOC_EMIG_PROS_TILE_BEST", "Best land here");
+  if (t >= 0.2) return loc("LOC_EMIG_PROS_TILE_GOOD", "Good land here");
+  if (t > -0.2) return loc("LOC_EMIG_PROS_TILE_AVG", "Ordinary land here");
+  if (t > -0.6) return loc("LOC_EMIG_PROS_TILE_POOR", "Poor land here");
+  return loc("LOC_EMIG_PROS_TILE_WORST", "Worst land here");
 }
 
 /**
- * The lens fill colour as a `#RRGGBB` hex for a normalized deviation t ∈ [-1, 1]: grey→green for
- * t ≥ 0, grey→red for t < 0 (same blend as the lens overlay).
- * @param {number} t Normalized deviation.
- * @returns {string} Hex colour.
+ * A deviation as a signed percentage, the same figure the fill colour is mixed from.
+ * @param {number} t Normalized deviation in [-1, 1].
+ * @returns {string} e.g. "+62%".
  */
-function tierColor(t) {
-  const to = t >= 0 ? GREEN : RED;
-  const k = Math.abs(t);
-  const hex = (/** @type {number} */ i) => {
-    const v = Math.round(GREY[i] + (to[i] - GREY[i]) * k);
-    return (v < 16 ? "0" : "") + v.toString(16);
-  };
-  return "#" + hex(0) + hex(1) + hex(2);
+function signedPct(t) {
+  const pct = Math.round(t * 100);
+  return loc("LOC_EMIG_PCT_SIGNED", "{1_Pct}%", (pct >= 0 ? "+" : "") + pct);
 }
 
 /** A human standing label for a normalized deviation t ∈ [-1, 1]. @param {number} t Deviation. */
@@ -85,22 +85,86 @@ function buildSnapshot(signals) {
 }
 
 /**
- * Turn the hovered settlement into the panel's title + standing row + any pressure rows.
+ * The wonder on a landmark plot, by its localized name; a generic "Wonder" when the name can't be composed.
+ * @param {string} key The wonder's display-name LOC key (may be "").
+ * @returns {string} A human name.
+ */
+function wonderName(key) {
+  if (key) {
+    try {
+      if (typeof Locale !== "undefined" && typeof Locale.compose === "function") {
+        const n = Locale.compose(key);
+        if (typeof n === "string" && n && !n.startsWith("LOC_")) return n;
+      }
+    } catch (_) {
+      /* fall through */
+    }
+  }
+  return loc("LOC_EMIG_PROS_LANDMARK_UNNAMED", "Wonder");
+}
+
+/**
+ * The two rows for a LANDMARK plot (a wonder), in place of the land standing: which wonder, in the amber the lens
+ * painted it, then the honest yield figure with where the wonder IS counted. The yield scale never measured this
+ * plot, so there is no percentage to print - printing one would be the "Worst land here -100%" this replaces.
+ * @param {{name:string}} lm The landmark. @param {{x:number, y:number}} plot The hovered plot.
+ * @returns {{color:string, name:string, value:string}[]} The rows.
+ */
+function landmarkRows(lm, plot) {
+  const score = plotScoreAt(plot.x, plot.y);
+  return [
+    { color: LANDMARK_HEX, name: loc("LOC_EMIG_PROS_LANDMARK", "Landmark: {1_Name}", wonderName(lm.name)), value: "" },
+    {
+      color: YIELD_HEX,
+      name: score === null
+        ? loc("LOC_EMIG_PROS_LANDMARK_NOTE", "A wonder's worth counts toward the settlement, not the land")
+        : loc("LOC_EMIG_PROS_LANDMARK_YIELD",
+          "This tile yields {1_Score}; a wonder's worth counts toward the settlement, not the land",
+          String(Math.round(score))),
+      value: ""
+    }
+  ];
+}
+
+/**
+ * Turn the hovered TILE into the panel: the tile's own standing inside its settlement first (the very number the
+ * lens coloured it from, so the panel and the colour can never disagree), what it yields against the settlement's
+ * average, then the settlement's standing in the world and any pressure rows. A landmark plot (a wonder) gets its
+ * own two rows instead of a standing, see {@link landmarkRows}.
  * @param {*} sig The hovered settlement's CitySignal.
  * @param {{ctx:*, mean:number, spread:number}|null} snap The per-pass field snapshot.
+ * @param {{x:number, y:number}} [plot] The hovered plot.
  * @returns {{title:string, rows:{color:string, name:string, value:string}[]}|null} Display, or null.
  */
-function resolve(sig, snap) {
+function resolve(sig, snap, plot) {
   if (!snap) return null;
+  /** @type {{color:string, name:string, value:string}[]} */
+  const rows = [];
+  const lm = plot ? landmarkAt(plot.x, plot.y) : null;
+  const tile = plot && !lm ? tileTierAt(sig.city, plot.x, plot.y) : null;
+  if (lm && plot) rows.push(...landmarkRows(lm, plot));
+  if (tile) {
+    rows.push({ color: tierHex(tile.t), name: tileLabel(tile.t), value: signedPct(tile.t) });
+    rows.push({
+      color: YIELD_HEX,
+      name: loc("LOC_EMIG_PROS_TILE_YIELD", "This tile yields {1_Score}, the settlement averages {2_Mean}",
+        String(Math.round(tile.score)), String(Math.round(tile.mean))),
+      value: ""
+    });
+  }
   const p = prosperity(sig, snap.ctx);
   const t = snap.spread > 0 ? clamp((p - snap.mean) / snap.spread, -1, 1) : 0;
-  const color = tierColor(t);
-  const pct = Math.round(t * 100);
-  const pctText = loc("LOC_EMIG_PCT_SIGNED", "{1_Pct}%", (pct >= 0 ? "+" : "") + pct);
-  /** @type {{color:string, name:string, value:string}[]} */
-  const rows = [{ color, name: tierLabel(t), value: pctText }];
+  rows.push({
+    color: tierHex(t),
+    name: loc("LOC_EMIG_PROS_SETTLEMENT", "Settlement: {1_Tier}", tierLabel(t)),
+    value: signedPct(t)
+  });
   for (const pr of pressures(sig)) rows.push({ color: PRESSURE_HEX, name: pr, value: "" });
-  return { title: cityTitle(sig.city, "Prosperity"), rows };
+  // Join with an explicit space and a trimmed suffix: the game's text loader strips a localized string's leading
+  // whitespace, so " · this tile" arrived as "· this tile" and the title read "London· this tile" (mod test 85).
+  const suffix = tile || lm ? loc("LOC_EMIG_PROS_TILE_SUFFIX", " · this tile").trim() : "";
+  const title = cityTitle(sig.city, "Prosperity") + (suffix ? " " + suffix : "");
+  return { title, rows };
 }
 
 // ── Self-registration (runs on UIScript load, in the HUD context) ───────────────────────

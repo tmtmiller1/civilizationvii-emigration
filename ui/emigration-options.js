@@ -14,7 +14,7 @@
 
 import { CategoryType, OptionType, Options } from "/core/ui/options/model-options.js";
 import { CategoryData } from "/core/ui/options/options-helpers.js";
-import "/emigration/ui/options/emigration-advanced-editor.js"; // register the Advanced sub-window
+import { ADVANCED_CLOSED_EVENT } from "/emigration/ui/options/emigration-advanced-editor.js"; // registers the window
 
 // Create the community-convention shared "Mods" Options-screen category (idempotent: the first mod
 // to load this creates it, later mods reuse it). Lives HERE, in the Options-context module, NOT in
@@ -49,9 +49,13 @@ import {
   getReturnEnabled,
   setReturnEnabled,
   getTunable,
-  setTunable
+  setTunable,
+  getGroupedSetting,
+  setGroupedSetting,
+  getCompositeSetting,
+  setCompositeSetting
 } from "/emigration/ui/emigration-settings.js";
-import { PRESET_NAMES } from "/emigration/ui/emigration-tunables.js";
+import { PRESET_NAMES, COMPOSITE_SETTINGS } from "/emigration/ui/emigration-tunables.js";
 
 const MAIN_GROUP = "emigration";
 
@@ -96,9 +100,12 @@ function registerNumberMode() {
   });
 }
 
+/** @type {*} The preset dropdown's option info, so an inline edit can show it switching to Custom. */
+let _presetInfo = null;
+
 /** Register the intensity preset dropdown. */
 function registerPreset() {
-  Options.addOption({
+  _presetInfo = {
     category: CategoryType.Mods,
     group: MAIN_GROUP,
     type: OptionType.Dropdown,
@@ -108,7 +115,19 @@ function registerPreset() {
     label: "LOC_EMIG_PRESET",
     description: "LOC_EMIG_PRESET_D",
     dropdownItems: PRESET_ITEMS
-  });
+  };
+  Options.addOption(_presetInfo);
+}
+
+/** After edits in the Advanced settings window, show the preset as Custom if they took the player off it. */
+function presetBecameCustom() {
+  if (!_presetInfo) return;
+  _presetInfo.selectedItemIndex = getPresetIndex();
+  try {
+    _presetInfo.forceRender?.();
+  } catch (_) {
+    /* the screen is not open */
+  }
 }
 
 /**
@@ -265,9 +284,126 @@ function registerReturn() {
   });
 }
 
+/** @type {Map<string, *>} Registered slider option infos by grouped/composite setting name, for cross-refresh. */
+const _sliders = new Map();
+/** True while one slider is pushing values into others, so their change events do not echo back. */
+let _syncing = false;
+
+/**
+ * Show a new value on an already-registered slider without treating it as a player edit. Setting the element's
+ * value makes the slider fire its own change event, which would run that slider's listener again; the _syncing
+ * guard makes that echo a no-op.
+ * @param {string} name The setting the slider shows. @param {number} value The position to display.
+ */
+function showSlider(name, value) {
+  const info = _sliders.get(name);
+  if (!info) return;
+  info.currentValue = value;
+  info.formattedValue = value + "%";
+  try {
+    info.forceRender?.();
+    if (info.sliderValue) info.sliderValue.textContent = info.formattedValue;
+  } catch (_) {
+    /* the Options screen is not open: the new value is picked up when it next renders */
+  }
+}
+
+/**
+ * After a child slider moves, redraw every composite slider it belongs to.
+ * @param {string} child The grouped setting that moved.
+ */
+function refreshComposites(child) {
+  for (const [composite, kids] of Object.entries(COMPOSITE_SETTINGS)) {
+    if (kids.includes(child)) showSlider(composite, getCompositeSetting(composite));
+  }
+}
+
+/**
+ * Register a 0-100% slider on the Mods tab.
+ * @param {{name:string, id:string, label:string, description:string}} spec The setting it shows (for
+ *   cross-refresh), the option id, and its LOC keys.
+ * @param {() => number} read Current position. @param {(n:number) => void} write Apply a new position.
+ */
+function registerSlider(spec, read, write) {
+  const { name, id, label, description } = spec;
+  const info = {
+    category: CategoryType.Mods,
+    group: MAIN_GROUP,
+    type: OptionType.Slider,
+    id,
+    min: 0,
+    max: 100,
+    steps: 10,
+    initListener: (/** @type {*} */ i) => {
+      i.currentValue = read();
+      i.formattedValue = i.currentValue + "%";
+    },
+    updateListener: (/** @type {*} */ i, /** @type {*} */ v) => {
+      if (_syncing) return;
+      const n = Math.round(Number(v));
+      i.currentValue = n;
+      i.formattedValue = n + "%";
+      _syncing = true;
+      try {
+        write(n);
+      } finally {
+        _syncing = false;
+      }
+    },
+    label,
+    description
+  };
+  _sliders.set(name, info);
+  Options.addOption(info);
+}
+
+/**
+ * Register a grouped-setting slider: moving it writes every member tunable along the group's curve, then redraws
+ * any overall slider it is part of.
+ * @param {string} name The grouped setting (GROUPED_SETTINGS key). @param {string} id The option id.
+ * @param {string} label LOC key. @param {string} description LOC key.
+ */
+function registerGroupedSlider(name, id, label, description) {
+  registerSlider({ name, id, label, description }, () => getGroupedSetting(name), (n) => {
+    setGroupedSetting(name, n);
+    refreshComposites(name);
+  });
+}
+
+/**
+ * Register an overall slider made of several grouped sliders: it shows their average and moving it shifts each of
+ * them by the same amount, redrawing them in place.
+ * @param {string} name The composite (COMPOSITE_SETTINGS key). @param {string} id The option id.
+ * @param {string} label LOC key. @param {string} description LOC key.
+ */
+function registerCompositeSlider(name, id, label, description) {
+  registerSlider({ name, id, label, description }, () => getCompositeSetting(name), (n) => {
+    const kids = setCompositeSetting(name, n);
+    for (const [child, pos] of Object.entries(kids)) showSlider(child, pos);
+    // The children may have clamped at an edge, so the overall value is re-read rather than assumed.
+    showSlider(name, getCompositeSetting(name));
+  });
+}
+
+/** Redraw the preset dropdown whenever the Advanced settings window closes (registered once). */
+let _watching = false;
+function watchAdvancedWindow() {
+  if (_watching || typeof window === "undefined") return;
+  _watching = true;
+  window.addEventListener(ADVANCED_CLOSED_EVENT, presetBecameCustom);
+}
+
 Options.addInitCallback(() => {
   registerNumberMode();
   registerPreset();
+  registerGroupedSlider("crossCivMovement", "emigration-crossciv-movement", "LOC_OPTIONS_EMIG_CROSSCIV", "LOC_OPTIONS_EMIG_CROSSCIV_D");
+  // Refugees from conflict: one overall slider, then the two it is made of.
+  registerCompositeSlider("conflictRefugees", "emigration-conflict-refugees", "LOC_OPTIONS_EMIG_CONFLICTREF",
+    "LOC_OPTIONS_EMIG_CONFLICTREF_D");
+  registerGroupedSlider("majorWarRefugees", "emigration-major-war-refugees", "LOC_OPTIONS_EMIG_MAJORWAR",
+    "LOC_OPTIONS_EMIG_MAJORWAR_D");
+  registerGroupedSlider("minorRaidRefugees", "emigration-minor-raid-refugees", "LOC_OPTIONS_EMIG_MINORRAID",
+    "LOC_OPTIONS_EMIG_MINORRAID_D");
   registerDataMode();
   registerSnapshotInterval();
   registerDockButton();
@@ -277,5 +413,7 @@ Options.addInitCallback(() => {
   registerIntegration();
   registerReturn();
   registerDilemmas();
+  // Every individual setting, in its own window: the last row of the Emigration group.
   registerAdvancedEditor();
+  watchAdvancedWindow();
 });

@@ -70,9 +70,37 @@ export const BY_LEADER = {
   LEADER_HIMIKO: { happinessPull: 0.85 }, // happiness-building + celebration yields = magnet
   // Toyotomi takes double damage defending → a conqueror whose cities fall FASTER under siege.
   LEADER_TOYOTOMI_HIDEYOSHI: { assimilationEase: 1.2, warRetention: 0.85 }, // <1 = sheds pop fast
-  LEADER_SAYYIDA_AL_HURRA: { warRetention: 1.2 } // naval-on-district yields reward garrisons
+  LEADER_SAYYIDA_AL_HURRA: { warRetention: 1.2 }, // naval-on-district yields reward garrisons
+
+  // --- Leaders added after the roster was regenerated from the installed game ---
+  // An alternate persona is its OWN leader here: the engine reports the _ALT type, and the two
+  // personas play differently enough that sharing a profile would be wrong (Xerxes trades in one
+  // and conquers in the other). Each is judged on its own ability text.
+  //
+  // "Constitutional Convention": +2 Happiness per Age in Cities for EVERY slotted Policy, and a free
+  // Migrant on every Celebration. The happiness stacks with policy count, so this is the strongest
+  // happiness magnet in the roster — damped hardest, like Franklin.
+  LEADER_WASHINGTON: { happinessPull: 0.75 },
+  // "Miko of Amaterasu": +2 Happiness per Age on Happiness AND Diplomacy buildings (doubled when a
+  // building is both) plus +50% production toward them — a deeper happiness engine than base Himiko.
+  LEADER_HIMIKO_ALT: { happinessPull: 0.8 },
+  // "Devaraja": declaring a Formal War grants a Celebration (a war-fed happiness magnet, as base
+  // Ashoka's celebration pulse), and +10% Production in settlements he did NOT found means he puts
+  // captured people to work rather than wasting them — cheaper to absorb, like Bolivar.
+  LEADER_ASHOKA_ALT: { happinessPull: 0.9, assimilationEase: 0.85 },
+  // "Royal Monopoly": -2 Combat Strength to Land Combat Units per Age. Her cities are defended by
+  // weaker land units, so they shed population faster under siege (a lighter Toyotomi).
+  LEADER_ELIZABETH: { warRetention: 0.9 },
+  // "Enemy of the Coalitions": the first war declared on him each Age hands him a full Army
+  // Commander in the capital, so his settlements hold when attacked.
+  LEADER_NAPOLEON_ALT: { warRetention: 1.2 },
+  // "Hohenfriedberger Marsch": a free Infantry Unit on every Culture Building and Civic Mastery is a
+  // standing garrison stream, so cities hold better under siege.
+  LEADER_FRIEDRICH_ALT: { warRetention: 1.15 }
   // NEUTRAL (no migration outlier): ADA_LOVELACE (science), GILGAMESH (diplomacy), LAKSHMIBAI
-  // (city-state incorporation + influence, no defense mechanic), FRIEDRICH (culture/Great Works).
+  // (city-state incorporation + influence, no defense mechanic), FRIEDRICH (culture/Great Works),
+  // YI_SUN_SIN (naval science and gold), XERXES_ALT (trade range and route yields — a trade leader,
+  // unlike the war-profiteering base Xerxes above).
   // TRUNG_TRAC ships no leader trait data in this DLC set, so it is left untuned (cf. RIZAL above).
 };
 
@@ -83,8 +111,7 @@ export const BY_LEADER = {
 export const BY_CIV = {
   CIVILIZATION_KHMER: { sourceBias: 1.5 }, // offset the −5-happiness non-capital bleed
   CIVILIZATION_ABBASID: { overcrowdDiscount: 0.7 }, // lean specialist civ → fully shielded
-  CIVILIZATION_NORMAN: { warRetention: 1.4 }, // free walls = deliberate population retention
-  CIVILIZATION_ENGLAND: { warRetention: 1.4 },
+  CIVILIZATION_NORMAN: { warRetention: 1.4 }, // wall health + coastal district combat = retention
   CIVILIZATION_HAN: { sourceBias: 0.5 }, // +pop growth, per-capita diluted
   CIVILIZATION_QING: { sourceBias: 0.5 },
 
@@ -109,10 +136,25 @@ export const BY_CIV = {
   CIVILIZATION_HEIAN: { happinessPull: 0.85 }, // Insei happiness/celebration engine + appeal theme
   CIVILIZATION_SILLA: { happinessPull: 0.9 }, // Pagoda +Happiness + resource-happiness traditions
   // High unconditional growth: per-capita diluted, so cushion it so the civ doesn't bleed pop.
-  CIVILIZATION_SHAWNEE: { sourceBias: 0.75 } // navigable-river Food + Bread Dance town Food
+  CIVILIZATION_SHAWNEE: { sourceBias: 0.75 }, // navigable-river Food + Bread Dance town Food
+
+  // --- Civilizations added after the roster was regenerated from the installed game ---
+  // "City at the Center of the World": an extra growth event on every Food/Culture building and
+  // Wonder, against a -2/-4/-6 Settlement Limit. Forced tall with runaway growth: shield the density
+  // it cannot spread out of, and cushion the per-capita dilution (Carthage/Han shapes combined).
+  CIVILIZATION_BABYLON: { overcrowdDiscount: 0.5, sourceBias: 0.5 },
+  // "Munchi": +2 Specialist Limit in the CAPITAL while non-capital cities lose worker cap — a
+  // capital-concentrated specialist civ, so its dense capital is shielded (Qajar shape).
+  CIVILIZATION_JOSEON: { overcrowdDiscount: 0.6 },
+  // "Favor of Cernunnos": Fortification Buildings purchasable with any Town Focus, and its unique
+  // quarter fortifies its own districts (+25 HP, +100 HP per building) — bought walls, Norman-lite.
+  CIVILIZATION_GAUL: { warRetention: 1.2 }
   // NEUTRAL (no migration outlier): ICELAND (offensive-naval raiding, no defense/growth/happiness),
   // TONGA (wide coastal-trade; width already handled by the growth model), GREAT_BRITAIN (its only
-  // outlier is a town→city conversion-cost penalty; gold/prod already reach the model via yields).
+  // outlier is a town→city conversion-cost penalty; gold/prod already reach the model via yields),
+  // ENGLAND (Magna Carta trades Gold and Culture yields across buildings — no defensive, growth or
+  // happiness mechanic, and its yields already reach the model), GORYEO (Culture for diplomatic
+  // Endeavors plus unique-improvement yields).
 };
 
 /**

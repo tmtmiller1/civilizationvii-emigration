@@ -25,6 +25,8 @@ const MAX_CITY_KEYS = 8192;
  * @property {Record<string, number>} byCity Accumulated distress per city key.
  * @property {Record<string, string>} typeByCity Most-recent disaster RandomEventType per city key.
  * @property {Record<string, number>} observedTurn Turn each city was last polled.
+ * @property {Record<string, number>} onsetPop Population when the current disaster crisis first cost a point.
+ * @property {Record<string, number>} disasterLoss Points lost to disaster-driven emigration in that crisis.
  * @property {number} decayTurn Turn distress was last decayed.
  */
 
@@ -36,7 +38,7 @@ registerCacheReset(() => { _state = null; });
  * @returns {DisasterState} Empty disaster state.
  */
 function emptyState() {
-  return { byCity: {}, typeByCity: {}, observedTurn: {}, decayTurn: gameTurn() };
+  return { byCity: {}, typeByCity: {}, observedTurn: {}, onsetPop: {}, disasterLoss: {}, decayTurn: gameTurn() };
 }
 
 /**
@@ -113,6 +115,8 @@ function normalizeState(parsed) {
     byCity: normalizeNumericMap(payload.byCity, true),
     typeByCity: normalizeTypeMap(payload.typeByCity),
     observedTurn: normalizeNumericMap(payload.observedTurn, true),
+    onsetPop: normalizeNumericMap(payload.onsetPop, true),
+    disasterLoss: normalizeNumericMap(payload.disasterLoss, true),
     decayTurn: typeof payload.decayTurn === "number" && isFinite(payload.decayTurn)
       ? Math.max(0, Math.floor(payload.decayTurn))
       : gameTurn()
@@ -403,11 +407,44 @@ export function tickDisasters() {
       if (v < 0.05) {
         delete s.byCity[k];
         delete s.typeByCity[k]; // the disaster has faded; drop its stale type stamp
+        delete s.onsetPop[k]; // and its crisis loss tally: the next disaster is a new crisis
+        delete s.disasterLoss[k];
       } else s.byCity[k] = v;
     }
     s.decayTurn = turn;
   }
   persist();
+}
+
+/**
+ * Record that a city lost one population point to disaster-driven emigration (the mirror of the
+ * violence model's recordWarLoss). The first loss of a crisis pins the onset population the cap is
+ * measured against; the tally clears when the city's distress decays away.
+ * @param {*} city A live city object. @param {number} popBefore The city's population before the loss.
+ */
+export function recordDisasterLoss(city, popBefore) {
+  const key = keyFromCID(city?.id);
+  if (!key || !CONFIG.disastersEnabled) return;
+  const s = state();
+  if (!(s.onsetPop[key] > 0)) s.onsetPop[key] = Math.max(1, Math.floor(Number(popBefore) || 0));
+  s.disasterLoss[key] = (s.disasterLoss[key] || 0) + 1;
+  persist();
+}
+
+/**
+ * Whether a city has already lost its capped share (`disasterLossCapPct` of the population it had when
+ * the crisis first cost a point) to disaster-driven emigration, so the remnant digs in. False when the
+ * cap is off (>= 1), the model is off, or no loss has been booked for this crisis.
+ * @param {*} city A live city object. @returns {boolean} True when the cap is reached.
+ */
+export function disasterLossCapReached(city) {
+  const pct = Number(CONFIG.disasterLossCapPct);
+  if (!(pct > 0) || pct >= 1 || !CONFIG.disastersEnabled) return false;
+  const key = keyFromCID(city?.id);
+  if (!key) return false;
+  const s = state();
+  const onset = s.onsetPop[key] || 0;
+  return onset > 0 && (s.disasterLoss[key] || 0) >= Math.max(1, Math.floor(pct * onset));
 }
 
 /**
