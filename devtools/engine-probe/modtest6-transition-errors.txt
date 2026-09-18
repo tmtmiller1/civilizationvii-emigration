@@ -1,0 +1,15 @@
+[2026-09-13 04:30:09]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'type')
+[2026-09-13 04:30:23]	JS Error: fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:449: TypeError: Cannot read properties of null (reading 'type')
+[2026-09-13 04:30:23]	JS Error (Line):     const unitDefinition = GameInfo.Units.lookup(this.unit.type);
+[2026-09-13 04:30:23]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'type')
+[2026-09-13 04:31:19]	JS Error: fs://game/base-standard/ui/unit-flags/unit-flags-independent-powers.js:449: TypeError: Cannot read properties of null (reading 'type')
+[2026-09-13 04:31:19]	JS Error (Line):     const unitDefinition = GameInfo.Units.lookup(this.unit.type);
+[2026-09-13 04:31:19]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'type')
+[2026-09-13 04:31:58]	Unhandled Promise Rejection: ReferenceError: WorldUI is not defined.  Re-run with inspector attached for callstack. 
+[2026-09-13 04:31:58]	Unhandled rejection error value: ReferenceError: WorldUI is not defined
+[2026-09-13 04:32:19]	HTML Parser Error@:fs://game/root-game.html@67:24: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-13 04:32:19]	HTML Parser Error@:fs://game/root-game.html@71:16: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-13 04:32:19]	HTML Parser Error@:fs://game/root-game.html@75:24: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-13 04:32:19]	HTML Parser Error@:fs://game/root-game.html@79:16: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-13 04:32:19]	HTML Parser Error@:fs://game/root-game.html@49:43: Tokenizer error with an unimplemented error message.
+[2026-09-13 04:33:15]	Unhandled rejection error value: Timeout 5000ms exceeded for waitUntilValue on .

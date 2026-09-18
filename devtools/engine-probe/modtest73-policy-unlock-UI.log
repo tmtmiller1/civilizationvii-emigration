@@ -1,0 +1,35 @@
+[2026-09-15 17:41:29]	[EmigProbe] shell attached 
+[2026-09-15 17:41:30]	[EmigProbe] shell query complete 
+[2026-09-15 17:41:31]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-15 17:41:31]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-15 17:41:49]	[EmigTest] modtest73 attached 
+[2026-09-15 17:42:08]	[EmigTest] SHOT lens-default 
+[2026-09-15 17:42:23]	[EmigTest] LENS active="emig-prosperity-lens" 
+[2026-09-15 17:42:23]	[EmigTest] SHOT lens-prosperity 
+[2026-09-15 17:42:35]	[EmigTest] START turn=66 unlockedPolicies=["TRADITION_ORATORY","TRADITION_CASTES","TRADITION_RITES_AND_RITUALS","TRADITION_COMMUNE","TRADITION_MARITIME_LAW","TRADITION_EVANGELISM","TRADITION_TRADE_WINDS","TRADITION_VASSALAGE","TRADITION_LEVIES","TRADITION_RENAISSANCE","TRADITION_CHARTERS","TRADITION_COLONIAL_SURPLUS"] 
+[2026-09-15 17:42:35]	[EmigTest] NODES {"NODE_CIVIC_EX_MAIN_ECONOMICS":true,"NODE_CIVIC_EX_MAIN_INSPIRATION":true,"NODE_CIVIC_EX_MAIN_SOCIETY":false,"NODE_CIVIC_EX_MAIN_MERCANTILISM":true,"NODE_CIVIC_EX_MAIN_PIETY":true} emigUnlocked=[] 
+[2026-09-15 17:42:35]	[EmigTest] TARGET NODE_CIVIC_EX_MAIN_SOCIETY for ["TRADITION_EMIG_CULTPULL_EXPLORATION"] sent=true influence=-15.63671875 stance={"stance":"none","openness":1} 
+[2026-09-15 17:45:11]	[EmigTest] T turns=5 turn=71 endedBy=manual node=false infected=0 
+[2026-09-15 17:46:20]	[EmigTest] UNLOCK node=NODE_CIVIC_EX_MAIN_SOCIETY researched=true after 6 turns; emigUnlocked=["TRADITION_EMIG_CULTPULL_EXPLORATION"] newPolicies=["TRADITION_PATRONAGE","TRADITION_UPOSATHA","TRADITION_EMIG_CULTPULL_EXPLORATION"] 
+[2026-09-15 17:46:24]	[EmigTest] SLOT TRADITION_EMIG_CULTPULL_EXPLORATION canStart={"Success":false} sent=true active=false stance={"stance":"none","openness":1} influence=-13.5859375->-13.5859375 
+[2026-09-15 17:46:50]	[EmigTest] VERDICT unlocked=true slotted=false activeNextTurn=false endedBy=manual stance={"stance":"none","openness":1} influenceBeforeAfter=[-13.5859375,-13.5859375] autoplayTurns=0 
+[2026-09-15 17:51:28]	[EmigTest] PLAGUE watch turns=10 turn=83 endedBy=manual 
+[2026-09-15 17:56:11]	[EmigTest] PLAGUE watch turns=20 turn=93 endedBy=manual 
+[2026-09-15 18:03:37]	[EmigTest] PLAGUE watch turns=30 turn=103 endedBy=manual 
+[2026-09-15 18:09:10]	[EmigTest] PLAGUE watch turns=40 turn=113 endedBy=manual 
+[2026-09-15 18:12:52]	[EmigTest] PLAGUE watch turns=50 turn=123 endedBy=manual 
+[2026-09-15 18:16:05]	[EmigTest] PLAGUE watch turns=60 turn=133 endedBy=manual 
+[2026-09-15 18:19:56]	[EmigTest] PLAGUE watch turns=70 turn=143 endedBy=manual 
+[2026-09-15 18:24:44]	[EmigTest] PLAGUE watch turns=80 turn=153 endedBy=manual 
+[2026-09-15 18:27:59]	[EmigTest] EVENT GameAgeEnded turn=160 
+[2026-09-15 18:28:27]	[EmigTest] modtest73 attached 
+[2026-09-15 18:28:46]	[EmigTest] SHOT lens-default 
+[2026-09-15 18:29:01]	[EmigTest] LENS active="emig-prosperity-lens" 
+[2026-09-15 18:29:01]	[EmigTest] SHOT lens-prosperity 
+[2026-09-15 18:29:13]	[EmigTest] START turn=1 unlockedPolicies=["TRADITION_BOURGEOISIE","TRADITION_COMMUNE","TRADITION_CONSTITUTION","TRADITION_LEVIES","TRADITION_YEOMANRY","TRADITION_DIVINE_RIGHT","TRADITION_METROPOLE"] 
+[2026-09-15 18:29:13]	[EmigTest] NODES {"NODE_CIVIC_EX_MAIN_ECONOMICS":false,"NODE_CIVIC_EX_MAIN_INSPIRATION":false,"NODE_CIVIC_EX_MAIN_SOCIETY":false,"NODE_CIVIC_EX_MAIN_MERCANTILISM":false,"NODE_CIVIC_EX_MAIN_PIETY":false} emigUnlocked=[] 
+[2026-09-15 18:29:13]	[EmigTest] TARGET NODE_CIVIC_EX_MAIN_ECONOMICS for ["TRADITION_EMIG_OPEN_BORDERS_EXPLORATION","TRADITION_EMIG_CLOSED_BORDERS_EXPLORATION"] sent="no node row" influence=73 stance={"stance":"none","openness":1} 
+[2026-09-15 18:30:41]	[EmigTest] T turns=5 turn=6 endedBy=manual node=false infected=0 
+[2026-09-15 18:32:15]	[EmigTest] T turns=10 turn=11 endedBy=manual node=false infected=0 
+[2026-09-15 18:33:37]	[EmigTest] T turns=15 turn=16 endedBy=manual node=false infected=0 
+[2026-09-15 18:36:17]	[EmigTest] T turns=20 turn=21 endedBy=manual node=false infected=0 

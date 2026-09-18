@@ -1,0 +1,105 @@
+[2026-09-16 07:22:42]	[EmigProbe] shell attached crisis=EXPLORATION_CRISIS_PLAGUE age=AGE_EXPLORATION 
+[2026-09-16 07:22:57]	[EmigProbe] shell config reset to single player 
+[2026-09-16 07:23:00]	[EmigProbe] shell Age: set "AGE_EXPLORATION" -> 0 now="AGE_EXPLORATION" 
+[2026-09-16 07:23:02]	[EmigProbe] shell parameter count=39 
+[2026-09-16 07:23:02]	[EmigProbe] shell CRISIS PARAM candidate id="26" values=["ANTIQUITY_CRISIS_INVASION","ANTIQUITY_CRISIS_PLAGUE","ANTIQUITY_CRISIS_LOYALTY","EXPLORATION_CRISIS_PLAGUE","EXPLORATION_CRISIS_RELIGION"] 
+[2026-09-16 07:23:02]	[EmigProbe] shell 26: no such parameter 
+[2026-09-16 07:23:05]	[EmigProbe] shell startGame called (Play Now) 
+[2026-09-16 07:23:17]	[EmigTest] modtest100 attached 
+[2026-09-16 07:23:32]	[EmigTest] modtest100 run local=0 
+[2026-09-16 07:23:32]	[EmigTest] DB crises now=["EXPLORATION_CRISIS_RELIGION","EXPLORATION_CRISIS_PLAGUE"] 
+[2026-09-16 07:23:32]	[EmigTest] DB plague stages=["EXPLORATION_CRISIS_RELIGION#1@70","EXPLORATION_CRISIS_RELIGION#2@80","EXPLORATION_CRISIS_RELIGION#3@90","EXPLORATION_CRISIS_RELIGION#4@100","EXPLORATION_CRISIS_PLAGUE#1@5","EXPLORATION_CRISIS_PLAGUE#2@15","EXPLORATION_CRISIS_PLAGUE#3@25","EXPLORATION_CRISIS_PLAGUE#4@35"] 
+[2026-09-16 07:23:32]	[EmigTest] START turn=1 age=0.7% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:23:35]	[EmigTest] ENDTURN blocked by 1335628486 tries=1 
+[2026-09-16 07:23:39]	[EmigTest] ENDTURN blocked by 1335628486 tries=2 
+[2026-09-16 07:23:54]	[EmigTest] T n=1 turn=2 age=1.4% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:23:56]	[EmigTest] ENDTURN blocked by 442844772 tries=1 
+[2026-09-16 07:24:00]	[EmigTest] ENDTURN blocked by 442844772 tries=2 
+[2026-09-16 07:24:11]	[EmigTest] T n=2 turn=3 age=2.1% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:24:13]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:24:17]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:24:29]	[EmigTest] T n=3 turn=4 age=2.9% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:24:31]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:24:35]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:24:47]	[EmigTest] T n=4 turn=5 age=3.6% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:24:49]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:24:53]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:25:05]	[EmigTest] T n=5 turn=6 age=4.3% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:25:07]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:25:11]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:25:23]	[EmigTest] T n=6 turn=7 age=5.0% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:25:25]	[EmigTest] ENDTURN blocked by -513644209 tries=1 
+[2026-09-16 07:25:29]	[EmigTest] ENDTURN blocked by -513644209 tries=2 
+[2026-09-16 07:25:41]	[EmigTest] T n=7 turn=8 age=5.7% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:25:43]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:25:47]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:25:59]	[EmigTest] T n=8 turn=9 age=6.4% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:26:01]	[EmigTest] ENDTURN blocked by -286188551 tries=1 
+[2026-09-16 07:26:05]	[EmigTest] ENDTURN blocked by -286188551 tries=2 
+[2026-09-16 07:26:19]	[EmigTest] T n=9 turn=10 age=7.1% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:26:21]	[EmigTest] ENDTURN blocked by -513644209 tries=1 
+[2026-09-16 07:26:25]	[EmigTest] ENDTURN blocked by -513644209 tries=2 
+[2026-09-16 07:26:39]	[EmigTest] T n=10 turn=11 age=7.9% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:26:41]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:26:45]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:27:00]	[EmigTest] T n=11 turn=12 age=8.6% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:27:02]	[EmigTest] ENDTURN blocked by -513644209 tries=1 
+[2026-09-16 07:27:06]	[EmigTest] ENDTURN blocked by -513644209 tries=2 
+[2026-09-16 07:27:18]	[EmigTest] T n=12 turn=13 age=9.3% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:27:20]	[EmigTest] ENDTURN blocked by -983769445 tries=1 
+[2026-09-16 07:27:24]	[EmigTest] ENDTURN blocked by -983769445 tries=2 
+[2026-09-16 07:27:36]	[EmigTest] T n=13 turn=14 age=10.0% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:27:38]	[EmigTest] ENDTURN blocked by -513644209 tries=1 
+[2026-09-16 07:27:42]	[EmigTest] ENDTURN blocked by -513644209 tries=2 
+[2026-09-16 07:27:56]	[EmigTest] T n=14 turn=15 age=10.7% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:27:58]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:28:02]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:28:17]	[EmigTest] T n=15 turn=16 age=11.4% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:28:19]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:28:23]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:28:35]	[EmigTest] T n=16 turn=17 age=12.1% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:28:37]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:28:41]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:28:53]	[EmigTest] T n=17 turn=18 age=12.9% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:28:55]	[EmigTest] ENDTURN blocked by -513644209 tries=1 
+[2026-09-16 07:28:59]	[EmigTest] ENDTURN blocked by -513644209 tries=2 
+[2026-09-16 07:29:11]	[EmigTest] T n=18 turn=19 age=13.6% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:29:13]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:29:17]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:29:32]	[EmigTest] T n=19 turn=20 age=14.3% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:29:34]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:29:38]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:29:50]	[EmigTest] T n=20 turn=21 age=15.0% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:29:52]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:29:56]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:30:09]	[EmigTest] T n=21 turn=22 age=15.7% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:30:11]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:30:15]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:30:27]	[EmigTest] T n=22 turn=23 age=16.4% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:30:29]	[EmigTest] ENDTURN blocked by 531375811 tries=1 
+[2026-09-16 07:30:33]	[EmigTest] ENDTURN blocked by 531375811 tries=2 
+[2026-09-16 07:30:45]	[EmigTest] T n=23 turn=24 age=17.1% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:30:47]	[EmigTest] ENDTURN blocked by 531375811 tries=1 
+[2026-09-16 07:30:51]	[EmigTest] ENDTURN blocked by 531375811 tries=2 
+[2026-09-16 07:31:04]	[EmigTest] T n=24 turn=25 age=17.9% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:31:06]	[EmigTest] ENDTURN blocked by 531375811 tries=1 
+[2026-09-16 07:31:10]	[EmigTest] ENDTURN blocked by 531375811 tries=2 
+[2026-09-16 07:31:22]	[EmigTest] T n=25 turn=26 age=18.6% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:31:24]	[EmigTest] ENDTURN blocked by 531375811 tries=1 
+[2026-09-16 07:31:28]	[EmigTest] ENDTURN blocked by 531375811 tries=2 
+[2026-09-16 07:31:41]	[EmigTest] T n=26 turn=27 age=19.3% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:31:43]	[EmigTest] ENDTURN blocked by -1943470250 tries=1 
+[2026-09-16 07:31:47]	[EmigTest] ENDTURN blocked by -1943470250 tries=2 
+[2026-09-16 07:32:02]	[EmigTest] T n=27 turn=28 age=20.0% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:32:04]	[EmigTest] ENDTURN blocked by 531375811 tries=1 
+[2026-09-16 07:32:08]	[EmigTest] ENDTURN blocked by 531375811 tries=2 
+[2026-09-16 07:32:22]	[EmigTest] T n=28 turn=29 age=20.7% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:32:24]	[EmigTest] ENDTURN blocked by 531375811 tries=1 
+[2026-09-16 07:32:28]	[EmigTest] ENDTURN blocked by 531375811 tries=2 
+[2026-09-16 07:32:43]	[EmigTest] T n=29 turn=30 age=21.4% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:32:45]	[EmigTest] ENDTURN blocked by 531375811 tries=1 
+[2026-09-16 07:32:49]	[EmigTest] ENDTURN blocked by 531375811 tries=2 
+[2026-09-16 07:33:03]	[EmigTest] T n=30 turn=31 age=22.1% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:33:03]	[EmigTest] FINAL turn=31 age=22.1% crisisStage=-1 enabled=true nStages=4 elapsed=-1 infected=0 
+[2026-09-16 07:33:03]	[EmigTest] VERDICT isInfected observed true: NO | firstInfectedTurn=-1 peakInfectedCities=0 | firstCrisisStageTurn=-1 | turnsRun=30 reason=turns 
+[2026-09-16 07:33:03]	[EmigTest] DONE modtest100 finished 

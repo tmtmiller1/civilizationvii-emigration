@@ -1,0 +1,103 @@
+[2026-09-16 07:40:42]	[EmigProbe] shell attached 
+[2026-09-16 07:40:43]	[EmigProbe] shell query complete 
+[2026-09-16 07:40:44]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-16 07:40:44]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-16 07:41:02]	[EmigTest] modtest95 attached 
+[2026-09-16 07:41:17]	[EmigTest] modtest95 start 
+[2026-09-16 07:41:17]	[EmigTest] A engine loaded civs=50 leaders=45 
+[2026-09-16 07:41:17]	[EmigTest] A ROSTER civs engine=47 missingFromMod=[] inModNotEngine=["CIVILIZATION_BABYLON","CIVILIZATION_ENGLAND","CIVILIZATION_GAUL"] 
+[2026-09-16 07:41:17]	[EmigTest] A ROSTER leaders engine=36 missingFromMod=[] inModNotEngine=["LEADER_ELIZABETH","LEADER_WASHINGTON"] 
+[2026-09-16 07:41:17]	[EmigTest] A engine has CIVILIZATION_OTTOMANS=true modRoster=true 
+[2026-09-16 07:41:17]	[EmigTest] A engine has CIVILIZATION_ENGLAND=false modRoster=true 
+[2026-09-16 07:41:17]	[EmigTest] A engine has CIVILIZATION_BABYLON=false modRoster=true 
+[2026-09-16 07:41:17]	[EmigTest] A engine has LEADER_WASHINGTON=false modRoster=true 
+[2026-09-16 07:41:17]	[EmigTest] A engine has LEADER_ELIZABETH=false modRoster=true 
+[2026-09-16 07:41:17]	[EmigTest] A engine has LEADER_GILGAMESH=true modRoster=true 
+[2026-09-16 07:41:17]	[EmigTest] A engine has LEADER_XERXES_ALT=true modRoster=true 
+[2026-09-16 07:41:17]	[EmigTest] B OTTOMANS_A loaded=true OTTOMANS_B=true old singular OTTOMAN_A=false 
+[2026-09-16 07:41:17]	[EmigTest] B enclaveTypeFor(OTTOMANS,a)="IMPROVEMENT_EMIG_ENCLAVE_OTTOMANS_A" 
+[2026-09-16 07:41:17]	[EmigTest] C CIVILIZATION_BABYLON enclave=IMPROVEMENT_EMIG_ENCLAVE_BABYLON_A loaded=true quarterRow=yes 
+[2026-09-16 07:41:17]	[EmigTest] C CIVILIZATION_ENGLAND enclave=IMPROVEMENT_EMIG_ENCLAVE_ENGLAND_A loaded=true quarterRow=yes 
+[2026-09-16 07:41:17]	[EmigTest] C CIVILIZATION_GAUL enclave=IMPROVEMENT_EMIG_ENCLAVE_GAUL_A loaded=true quarterRow=yes 
+[2026-09-16 07:41:17]	[EmigTest] C CIVILIZATION_GORYEO enclave=IMPROVEMENT_EMIG_ENCLAVE_GORYEO_A loaded=true quarterRow=yes 
+[2026-09-16 07:41:17]	[EmigTest] C CIVILIZATION_JOSEON enclave=IMPROVEMENT_EMIG_ENCLAVE_JOSEON_A loaded=true quarterRow=yes 
+[2026-09-16 07:41:17]	[EmigTest] D new quarter rows: all composed 
+[2026-09-16 07:41:17]	[EmigTest] D LOC_EMIG_QTR_WHY_OTTOMANS_A -> "külliye specialists teach and heal, at public cost" 
+[2026-09-16 07:41:17]	[EmigTest] D LOC_EMIG_QTR_Q_OTTOMANS_A -> "\"Halk içinde mu'teber bir nesne yok devlet gibi, olmaya devlet cihanda bir nefes sıhhat gi" 
+[2026-09-16 07:41:17]	[EmigTest] D LOC_EMIG_QTR_LABEL_GAUL_A -> "Set their smiths to work" 
+[2026-09-16 07:41:17]	[EmigTest] D CIVILIZATION_BABYLON/refugee composed "\"Woe is me, I have been exiled from the city, I can find no rest… I am sitting as if a str" 
+[2026-09-16 07:41:17]	[EmigTest] D CIVILIZATION_GORYEO/refugee composed "\"故國荒凉忍可思。不如忘却故憨癡。 (The old country lies desolate — how can I bear to think of it? Better t" 
+[2026-09-16 07:41:17]	[EmigTest] D CIVILIZATION_GORYEO/migrant composed "\"扁舟漂泊若爲情。四海誰云盡弟兄。 (Adrift in a little boat — how am I to bear it? Who was it said that wit" 
+[2026-09-16 07:41:17]	[EmigTest] D CIVILIZATION_JOSEON/refugee composed "\"有人在田間。望之痛哭曰。國家棄我去。我輩何恃而生也。 (A man out in the fields watched them go, and wept bitterly: t" 
+[2026-09-16 07:41:17]	[EmigTest] D CIVILIZATION_ENGLAND/refugee composed "\"…hrēran mid hondum hrīmcealde sǣ, wadan wræclāstas. Wyrd bið ful ārǣd. (…to stir with his" 
+[2026-09-16 07:41:17]	[EmigTest] D CIVILIZATION_ENGLAND/migrant composed "\"monað modes lust mæla gehwylce ferð to feran, þæt ic feor heonan elþeodigra eard gesece. " 
+[2026-09-16 07:41:17]	[EmigTest] D CIVILIZATION_GAUL/refugee composed "\"…omnibus Gallis idem esse faciendum quod Helvetii fecerint, ut domo emigrent, aliud domic" 
+[2026-09-16 07:41:17]	[EmigTest] D CIVILIZATION_GAUL/migrant composed "\"Bellovesum ac Segovesum sororis filios impigros iuvenes missurum se esse in quas di dedis" 
+[2026-09-16 07:41:17]	[EmigTest] D CIVILIZATION_NEPAL/migrant composed "\"हातका मैला सुनका थैला, के गर्नु धनले ? साग र सिस्नु खाएको बेस आनन्दी मनले ! (Bags of gold" 
+[2026-09-16 07:41:17]	[EmigTest] D CIVILIZATION_OTTOMANS/refugee composed "\"Bu gurbet câna gâyet kâr kıldı / Ki âlemden beni bîzâr kıldı (This exile has wrought so d" 
+[2026-09-16 07:41:17]	[EmigTest] D RENDER NEPAL/refugee "\"Tu proverai sì come sa di sale / lo pane altrui, e come è duro calle / lo scendere e 'l salir per l'altrui scale. (Thou" 
+[2026-09-16 07:41:17]	[EmigTest] D RENDER NEPAL/migrant "\"Bags of gold are but dirt on the hands — what is wealth for? Better to eat greens and nettles, with a contented heart!\"" 
+[2026-09-16 07:41:17]	[EmigTest] D RENDER GORYEO/refugee "\"The old country lies desolate — how can I bear to think of it? Better to forget it, and play the fool on purpose.\" — Yi" 
+[2026-09-16 07:41:17]	[EmigTest] D RENDER GORYEO/migrant "\"Adrift in a little boat — how am I to bear it? Who was it said that within the four seas all men are brothers?\" — Yi Je" 
+[2026-09-16 07:41:17]	[EmigTest] D RENDER JOSEON/refugee "\"The north wind blows me along like driven snow, south as far as Gangjin, to a house that sells meals.\" — Jeong Yak-yong" 
+[2026-09-16 07:41:17]	[EmigTest] D RENDER JOSEON/migrant "\"exul in Normanniam veni, cunctis ignotus neminem cognovi … inter exteros omnem mansuetudinem et familiaritatem reperi (" 
+[2026-09-16 07:41:17]	[EmigTest] D RENDER BABYLON/refugee "\"Woe is me, I have been exiled from the city, I can find no rest… I am sitting as if a stranger with head high in a stra" 
+[2026-09-16 07:41:17]	[EmigTest] D RENDER BABYLON/migrant "\"exul in Normanniam veni, cunctis ignotus neminem cognovi … inter exteros omnem mansuetudinem et familiaritatem reperi (" 
+[2026-09-16 07:41:17]	[EmigTest] D RENDER ENGLAND/refugee "\"…hrēran mid hondum hrīmcealde sǣ, wadan wræclāstas. Wyrd bið ful ārǣd. (…to stir with his hands the rime-cold sea, to t" 
+[2026-09-16 07:41:17]	[EmigTest] D RENDER ENGLAND/migrant "\"monað modes lust mæla gehwylce ferð to feran, þæt ic feor heonan elþeodigra eard gesece. (The mind's desire urges my sp" 
+[2026-09-16 07:41:17]	[EmigTest] D RENDER GAUL/refugee "\"…omnibus Gallis idem esse faciendum quod Helvetii fecerint, ut domo emigrent, aliud domicilium, alias sedes, remotas a " 
+[2026-09-16 07:41:17]	[EmigTest] D RENDER GAUL/migrant "\"Bellovesum ac Segovesum sororis filios impigros iuvenes missurum se esse in quas di dedissent auguriis sedes. (He signi" 
+[2026-09-16 07:41:17]	[EmigTest] D RENDER MAURYA/refugee "\"Tu proverai sì come sa di sale / lo pane altrui, e come è duro calle / lo scendere e 'l salir per l'altrui scale. (Thou" 
+[2026-09-16 07:41:17]	[EmigTest] D RENDER MAURYA/migrant "\"bhūtapūrvam abhūtapūrvaṃ vā janapadaṃ paradeśāpavāhanena svadeśābhiṣyandavamanena vā niveśayet (He should settle the co" 
+[2026-09-16 07:41:17]	[EmigTest] C QUARTER BABYLON demonym="Babylonian" opts=2 quote="\"dannum enšam ana lā ḫabālim (That the strong might not oppress the weak.)\" — Hammurabi, Laws of Ham" 
+[2026-09-16 07:41:17]	[EmigTest] C QUARTER ENGLAND demonym="English" opts=2 quote="\"Nullus liber homo capiatur vel imprisonetur… nisi per legale judicium parium suorum vel per legem t" 
+[2026-09-16 07:41:17]	[EmigTest] C QUARTER GAUL demonym="Gallic" opts=2 quote="\"Gallia est omnis divisa in partes tres. (Gaul as a whole is divided into three parts.)\" — Julius Ca" 
+[2026-09-16 07:41:17]	[EmigTest] C QUARTER GORYEO demonym="Goryeo" opts=2 quote="\"The green of their pottery the people of Goryeo call kingfisher-colour.\" — Xu Jing, Xuanhe fengshi " 
+[2026-09-16 07:41:17]	[EmigTest] C QUARTER JOSEON demonym="Joseon" opts=2 quote="\"The speech of our country differs from that of China.\" — King Sejong, Hunminjeongeum, preface (1446" 
+[2026-09-16 07:41:17]	[EmigTest] E LEADER WASHINGTON = {"happinessPull":0.75} 
+[2026-09-16 07:41:17]	[EmigTest] E LEADER ELIZABETH = {"warRetention":0.9} 
+[2026-09-16 07:41:17]	[EmigTest] E LEADER YI_SUN_SIN = "neutral" 
+[2026-09-16 07:41:17]	[EmigTest] E LEADER ASHOKA_ALT = {"happinessPull":0.9,"assimilationEase":0.85} 
+[2026-09-16 07:41:17]	[EmigTest] E LEADER XERXES_ALT = "neutral" 
+[2026-09-16 07:41:17]	[EmigTest] E LEADER NAPOLEON_ALT = {"warRetention":1.2} 
+[2026-09-16 07:41:17]	[EmigTest] E LEADER HIMIKO_ALT = {"happinessPull":0.8} 
+[2026-09-16 07:41:17]	[EmigTest] E LEADER FRIEDRICH_ALT = {"warRetention":1.15} 
+[2026-09-16 07:41:17]	[EmigTest] E CIV BABYLON = {"overcrowdDiscount":0.5,"sourceBias":0.5} 
+[2026-09-16 07:41:17]	[EmigTest] E CIV ENGLAND = "neutral" 
+[2026-09-16 07:41:17]	[EmigTest] E CIV GAUL = {"warRetention":1.2} 
+[2026-09-16 07:41:17]	[EmigTest] E CIV GORYEO = "neutral" 
+[2026-09-16 07:41:17]	[EmigTest] E CIV JOSEON = {"overcrowdDiscount":0.6} 
+[2026-09-16 07:41:17]	[EmigTest] E ENGLAND no longer Norman-tuned: "neutral" | NORMAN still = {"warRetention":1.4} 
+[2026-09-16 07:41:17]	[EmigTest] E PERSONA ASHOKA={"happinessPull":0.9} vs ALT={"happinessPull":0.9,"assimilationEase":0.85} 
+[2026-09-16 07:41:17]	[EmigTest] E PERSONA HIMIKO={"happinessPull":0.85} vs ALT={"happinessPull":0.8} 
+[2026-09-16 07:41:17]	[EmigTest] E PERSONA XERXES={"assimilationEase":1.25} vs ALT="neutral" 
+[2026-09-16 07:41:17]	[EmigTest] E PERSONA NAPOLEON={"sourceBias":0.5} vs ALT={"warRetention":1.2} 
+[2026-09-16 07:41:17]	[EmigTest] F live players=25 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":0,"civ":"CIVILIZATION_MONGOLIA","lead":"LEADER_AUGUSTUS","inCiv":true,"inLead":true} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":2,"civ":"CIVILIZATION_BULGARIA","lead":"LEADER_CATHERINE","inCiv":true,"inLead":true} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":4,"civ":"CIVILIZATION_NORMAN","lead":"LEADER_LAFAYETTE","inCiv":true,"inLead":true} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":6,"civ":"CIVILIZATION_SONGHAI","lead":"LEADER_HARRIET_TUBMAN","inCiv":true,"inLead":true} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":7,"civ":"CIVILIZATION_MING","lead":"LEADER_FRIEDRICH","inCiv":true,"inLead":true} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":8,"civ":"CIVILIZATION_CHOLA","lead":"LEADER_ASHOKA_ALT","inCiv":true,"inLead":true} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":9,"civ":"CIVILIZATION_SENGOKU","lead":"LEADER_TOYOTOMI_HIDEYOSHI","inCiv":true,"inLead":true} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":10,"civ":"CIVILIZATION_INDEPENDENT","lead":"-1","inCiv":false,"inLead":false} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":11,"civ":"CIVILIZATION_INDEPENDENT","lead":"LEADER_MINOR_CIV_DEFAULT","inCiv":false,"inLead":true} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":12,"civ":"CIVILIZATION_INDEPENDENT","lead":"-1","inCiv":false,"inLead":false} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":13,"civ":"CIVILIZATION_INDEPENDENT","lead":"LEADER_MINOR_CIV_DEFAULT","inCiv":false,"inLead":true} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":14,"civ":"CIVILIZATION_INDEPENDENT","lead":"-1","inCiv":false,"inLead":false} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":15,"civ":"CIVILIZATION_INDEPENDENT","lead":"-1","inCiv":false,"inLead":false} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":16,"civ":"CIVILIZATION_INDEPENDENT","lead":"LEADER_MINOR_CIV_DEFAULT","inCiv":false,"inLead":true} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":17,"civ":"CIVILIZATION_INDEPENDENT","lead":"-1","inCiv":false,"inLead":false} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":20,"civ":"CIVILIZATION_INDEPENDENT","lead":"-1","inCiv":false,"inLead":false} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":21,"civ":"CIVILIZATION_INDEPENDENT","lead":"-1","inCiv":false,"inLead":false} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":22,"civ":"CIVILIZATION_INDEPENDENT","lead":"-1","inCiv":false,"inLead":false} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":23,"civ":"CIVILIZATION_INDEPENDENT","lead":"LEADER_MINOR_CIV_DEFAULT","inCiv":false,"inLead":true} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":24,"civ":"CIVILIZATION_INDEPENDENT","lead":"-1","inCiv":false,"inLead":false} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":25,"civ":"CIVILIZATION_INDEPENDENT","lead":"LEADER_MINOR_CIV_DEFAULT","inCiv":false,"inLead":true} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":26,"civ":"CIVILIZATION_INDEPENDENT","lead":"-1","inCiv":false,"inLead":false} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":27,"civ":"CIVILIZATION_INDEPENDENT","lead":"-1","inCiv":false,"inLead":false} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":28,"civ":"CIVILIZATION_INDEPENDENT","lead":"-1","inCiv":false,"inLead":false} 
+[2026-09-16 07:41:17]	[EmigTest] F  {"id":29,"civ":"CIVILIZATION_INDEPENDENT","lead":"-1","inCiv":false,"inLead":false} 
+[2026-09-16 07:41:17]	[EmigTest] F players whose engine type is NOT a roster key: 18 ["CIVILIZATION_INDEPENDENT/-1","CIVILIZATION_INDEPENDENT/LEADER_MINOR_CIV_DEFAULT","CIVILIZATION_INDEPENDENT/-1","CIVILIZATION_INDEPENDENT/LEADER_MINOR_CIV_DEFAULT","CIVILIZATION_INDEPENDENT/-1","CIVILIZATION_INDEPENDENT/-1","CIVILIZATION_INDEPENDENT/LEADER_MINOR_CIV_DEFAULT","CIVILIZATION_INDEPENDENT/-1","CIVILIZATION_INDEPENDENT/-1","CIVILIZATION_INDEPENDENT/-1","CIVILIZATION_INDEPENDENT/-1","CIVILIZATION_INDEPENDENT/LEADER_MINOR_CIV_DEFAULT","CIVILIZATION_INDEPENDENT/-1","CIVILIZATION_INDEPENDENT/LEADER_MINOR_CIV_DEFAULT","CIVILIZATION_INDEPENDENT/-1","CIVILIZATION_INDEPENDENT/-1","CIVILIZATION_INDEPENDENT/-1","CIVILIZATION_INDEPENDENT/-1"] 
+[2026-09-16 07:41:17]	[EmigTest] SUMMARY modtest95 roster+ottoman+newcivs+text+tuning checked in engine 
+[2026-09-16 07:41:17]	[EmigTest] DONE modtest95 finished 

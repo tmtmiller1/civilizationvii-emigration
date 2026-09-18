@@ -1,0 +1,8 @@
+[2026-09-17 12:31:04]	[EmigProbe] shell attached 
+[2026-09-17 12:31:05]	[EmigProbe] shell query complete 
+[2026-09-17 12:31:05]	[EmigProbe] shell found AugustusAnt65.Civ7Save turn 65 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-17 12:31:05]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 12:31:22]	[EmigTest] modtest122 attached 
+[2026-09-17 12:31:42]	[EmigTest] OPEN tab 0 
+[2026-09-17 12:31:48]	[EmigTest] SHOT options_tab0 
+[2026-09-17 12:32:04]	[EmigTest] DONE modtest122 finished 

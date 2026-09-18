@@ -1,0 +1,10 @@
+[2026-09-15 19:58:41]	[EmigProbe] shell attached 
+[2026-09-15 19:58:42]	[EmigProbe] shell query complete 
+[2026-09-15 19:58:43]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-15 19:58:43]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-15 19:59:00]	[EmigTest] modtest83 attached 
+[2026-09-15 19:59:15]	[EmigTest] TILES London n=33 mean=12.7 [{"at":"92,32","score":62,"pct":100,"hex":"#18e048"},{"at":"92,33","score":12,"pct":-1,"hex":"#9e8b8b"},{"at":"91,32","score":7,"pct":-12,"hex":"#b17472"},{"at":"93,34","score":6,"pct":-14,"hex":"#b3716f"},{"at":"91,35","score":0,"pct":-26,"hex":"#c0625e"}] 
+[2026-09-15 19:59:15]	[EmigTest] PANEL would show {"t":1,"score":62,"mean":12.696969696969697,"best":62,"worst":0} on the best tile 
+[2026-09-15 19:59:38]	[EmigTest] PANEL cursor=threw element=false display=null rows=null title=null 
+[2026-09-15 19:59:38]	[EmigTest] SHOT panel-on-best-tile 
+[2026-09-15 19:59:50]	[EmigTest] DONE modtest83 finished 

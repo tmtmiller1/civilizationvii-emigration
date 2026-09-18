@@ -1,0 +1,10 @@
+[2026-09-15 19:33:01]	[EmigProbe] shell attached 
+[2026-09-15 19:33:02]	[EmigProbe] shell query complete 
+[2026-09-15 19:33:03]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-15 19:33:03]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-15 19:33:20]	[EmigTest] modtest79 attached 
+[2026-09-15 19:33:35]	[EmigTest] CITY {"name":"London","hi":{"x":92,"y":32,"score":62,"mean":11.9,"t":1},"lo":{"x":95,"y":32,"score":0,"mean":11.9,"t":-0.23725055432372505},"range":62,"n":36} 
+[2026-09-15 19:33:44]	[EmigTest] SHOT percity-best-tile 
+[2026-09-15 19:33:58]	[EmigTest] SHOT percity-worst-tile 
+[2026-09-15 19:34:12]	[EmigTest] SHOT percity-default-same-camera 
+[2026-09-15 19:34:22]	[EmigTest] DONE modtest79 finished 

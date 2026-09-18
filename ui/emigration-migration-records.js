@@ -33,6 +33,8 @@
  * @property {"move"|"depart"|"arrive"} [phase] Transit phase: an instantaneous move, the
  *   departure half of a lagged move (out-tally now), or the arrival half (in-tally later).
  *   Only `arrive` records are suppressed from notifications; metrics fold all three.
+ * @property {string} [subject] What left the source: "tile" | "counter"
+ *   (see emigration-departure-tile.js).
  */
 
 /**

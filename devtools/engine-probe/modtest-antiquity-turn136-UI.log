@@ -1,0 +1,51 @@
+[2026-09-11 21:28:39]	[EmigTest] modtest attached 
+[2026-09-11 21:28:39]	[Emigration] boot start (turnInterval 1, crossCiv true) 
+[2026-09-11 21:28:44]	[EmigTest] LOAD GameStarted 
+[2026-09-11 21:28:52]	[EmigTest] CONFIG departureRemovesTile=true departureGold=10 arrivalPlacement=2 preferSpecialists=false apiAvailable=true 
+[2026-09-11 21:28:52]	[EmigTest] TARGETS A(depart local)=London B(arrive auto)=Leeds C(arrive ask)=London D(arrive unit)=Birmingham F(depart foreign)=St. Petersburg 
+[2026-09-11 21:28:52]	[Emigration] abandoned IMPROVEMENT_FISHING_BOAT at plot 2974 
+[2026-09-11 21:28:52]	[EmigTest] S1 depart London chosen={"plot":2974,"type":"IMPROVEMENT_FISHING_BOAT","onResource":false,"distance":3} consumed={"ok":true,"fromPool":false,"deferredTile":true} commit={"mode":"tile","gold":10} 
+[2026-09-11 21:28:56]	[EmigTest] S1 RESULT before={"name":"London","owner":0,"pop":24,"rural":9,"pending":0,"improvements":9,"food":29,"prod":53} after={"name":"London","owner":0,"pop":23,"rural":8,"pending":0,"improvements":8,"food":29,"prod":53} goldBefore=538.96 goldAfter=528.96 
+[2026-09-11 21:28:56]	[Emigration] abandoned IMPROVEMENT_FARM at plot 5064 
+[2026-09-11 21:28:56]	[EmigTest] S2 depart foreign St. Petersburg consumed={"ok":true,"fromPool":false,"deferredTile":true} commit={"mode":"tile","gold":10} 
+[2026-09-11 21:29:00]	[EmigTest] S2 RESULT before={"name":"St. Petersburg","owner":2,"pop":25,"rural":8,"pending":0,"improvements":8,"food":27.5,"prod":66} after={"name":"St. Petersburg","owner":2,"pop":24,"rural":7,"pending":0,"improvements":7,"food":27.5,"prod":66} ownerGoldBefore=221.32 ownerGoldAfter=211.32 
+[2026-09-11 21:29:00]	[EmigTest] S3 arrive auto Leeds ok=true 
+[2026-09-11 21:29:00]	[Emigration] auto-placed 1 newcomer point(s) in Leeds 
+[2026-09-11 21:29:04]	[EmigTest] S3 RESULT before={"name":"Leeds","owner":0,"pop":17,"rural":5,"pending":0,"improvements":5,"food":19,"prod":24} after={"name":"Leeds","owner":0,"pop":18,"rural":6,"pending":0,"improvements":6,"food":21,"prod":25} 
+[2026-09-11 21:29:04]	[EmigTest] S4 arrive ask London ok=true pendingAfterWrite=0 
+[2026-09-11 21:29:06]	[EmigTest] S4 DIALOG element=SCREEN-DIALOG-BOX.screen-dialog-box fullscreen animate-in-top trigger-nav-help text="Newcomers in LondonA population point of migrants has arrived in London and iswaiting to be settled. Where should they live?Choose where they settleLet the city settle themLater" 
+[2026-09-11 21:29:06]	[EmigTest] S4 DIALOG buttons=6 labels=["Choose where they settle","Let the city settle them","Later","Choose where they settle","Let the city settle them","Later"] 
+[2026-09-11 21:29:06]	[EmigTest] S4 clicked the Choose option 
+[2026-09-11 21:29:08]	[EmigTest] S4 after click: interfaceMode=INTERFACEMODE_ACQUIRE_TILE clicked=true dialogStill=false 
+[2026-09-11 21:29:10]	[EmigTest] S4 RESULT before={"name":"London","owner":0,"pop":23,"rural":8,"pending":0,"improvements":8,"food":29,"prod":53} now={"name":"London","owner":0,"pop":24,"rural":9,"pending":1,"improvements":8,"food":29,"prod":53} 
+[2026-09-11 21:29:13]	[EmigTest] S5 arrive unit Birmingham ok=true migrantsBefore=0 migrantsAfter=1 cityBefore={"name":"Birmingham","owner":0,"pop":16,"rural":10,"pending":0,"improvements":10,"food":26,"prod":28} cityAfter={"name":"Birmingham","owner":0,"pop":16,"rural":10,"pending":0,"improvements":10,"food":26,"prod":28} 
+[2026-09-11 21:29:13]	[EmigTest] S6 SELFTEST Departures abandon a tile [PASS] Ready: a departure from London would abandon its outlying mine (plot 3257), removing that tile's yields with the person, and the losing civilization pays 10 gold. 
+[2026-09-11 21:29:13]	[EmigTest] S6 SELFTEST Arrivals settle in your cities [PASS] Mode “Migrant unit”: newcomers arrive as a Migrant unit you resettle yourself. 
+[2026-09-11 21:29:13]	[EmigTest] S7 ending turns; watch for [Emigration] abandoned / auto-placed lines 
+[2026-09-11 21:29:24]	[EmigTest] ENDTURN blocked; Autoplay 1 turn 
+[2026-09-11 21:29:33]	[EmigTest] TURN activated n=2 turn=137 
+[2026-09-11 21:29:33]	[Emigration] abandoned IMPROVEMENT_FARM at plot 2721 
+[2026-09-11 21:29:33]	[Emigration] abandoned IMPROVEMENT_FARM at plot 2817 
+[2026-09-11 21:29:33]	[Emigration] abandoned IMPROVEMENT_WOODCUTTER at plot 2768 
+[2026-09-11 21:29:33]	[Emigration] abandoned IMPROVEMENT_FISHING_BOAT at plot 2478 
+[2026-09-11 21:29:33]	[Emigration] abandoned IMPROVEMENT_WOODCUTTER at plot 1762 
+[2026-09-11 21:29:33]	[Emigration] abandoned IMPROVEMENT_EXPEDITION_BASE at plot 1764 
+[2026-09-11 21:29:33]	[Emigration] abandoned IMPROVEMENT_FISHING_BOAT at plot 3971 
+[2026-09-11 21:29:33]	[Emigration] abandoned IMPROVEMENT_WOODCUTTER at plot 2752 
+[2026-09-11 21:29:33]	[Emigration] abandoned IMPROVEMENT_WOODCUTTER at plot 2655 
+[2026-09-11 21:29:34]	[Emigration] abandoned IMPROVEMENT_FARM at plot 1791 
+[2026-09-11 21:29:34]	[Emigration] abandoned IMPROVEMENT_FARM at plot 1211 
+[2026-09-11 21:29:34]	[Emigration] abandoned IMPROVEMENT_FISHING_BOAT at plot 1066 
+[2026-09-11 21:29:34]	[Emigration] abandoned IMPROVEMENT_FARM at plot 780 
+[2026-09-11 21:29:34]	[Emigration] abandoned IMPROVEMENT_POTKOP at plot 1717 
+[2026-09-11 21:29:34]	[Emigration] abandoned IMPROVEMENT_HAWAII_FISHING_BOAT at plot 1816 
+[2026-09-11 21:29:34]	[Emigration] MIGRATION 11,000 people moved from Kerma to Tendirma 
+[2026-09-11 21:29:34]	[Emigration] MIGRATION 8,000 people moved from Kerma to Tendirma 
+[2026-09-11 21:29:47]	[EmigTest] ENDTURN blocked; Autoplay 1 turn 
+[2026-09-11 21:29:58]	[EmigTest] TURN activated n=3 turn=138 
+[2026-09-11 21:29:58]	[EmigTest] DONE modtest finished 
+[2026-09-11 21:29:58]	[Emigration] abandoned IMPROVEMENT_CLAY_PIT at plot 2576 
+[2026-09-11 21:29:58]	[Emigration] abandoned IMPROVEMENT_CAMP at plot 2863 
+[2026-09-11 21:29:58]	[Emigration] abandoned IMPROVEMENT_MINE_RESOURCE at plot 2816 
+[2026-09-11 21:29:58]	[Emigration] abandoned IMPROVEMENT_FARM at plot 2656 
+[2026-09-11 21:29:58]	[Emigration] abandoned IMPROVEMENT_QUARRY at plot 2847 

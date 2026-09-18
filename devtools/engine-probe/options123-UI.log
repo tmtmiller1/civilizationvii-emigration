@@ -1,0 +1,11 @@
+[2026-09-17 12:32:48]	[EmigProbe] shell attached 
+[2026-09-17 12:32:49]	[EmigProbe] shell query complete 
+[2026-09-17 12:32:50]	[EmigProbe] shell found AugustusAnt65.Civ7Save turn 65 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-17 12:32:50]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 12:33:07]	[EmigTest] modtest123 attached 
+[2026-09-17 12:33:27]	[EmigTest] OPEN tab 0 
+[2026-09-17 12:33:33]	[EmigTest] SCROLL sliders found=true 
+[2026-09-17 12:33:36]	[EmigTest] SHOT options_sliders 
+[2026-09-17 12:33:45]	[EmigTest] SCROLL violence found=true 
+[2026-09-17 12:33:48]	[EmigTest] SHOT options_violence 
+[2026-09-17 12:34:04]	[EmigTest] DONE modtest123 finished 

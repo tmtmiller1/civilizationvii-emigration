@@ -1,0 +1,13 @@
+[2026-09-16 09:28:54]	[EmigProbe] shell attached 
+[2026-09-16 09:28:55]	[EmigProbe] shell query complete 
+[2026-09-16 09:28:55]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-16 09:28:55]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-16 09:29:13]	[EmigTest] modtest103 attached 
+[2026-09-16 09:29:30]	[EmigTest] modtest103 start (corrected 1.5.0 UI checks) 
+[2026-09-16 09:29:30]	[EmigTest] FAIL lens manager reachable :: "LensManager undefined in this context" 
+[2026-09-16 09:29:36]	[EmigTest] FAIL city banners present :: {"banners":0} 
+[2026-09-16 09:29:36]	[EmigTest] FAIL banner decorator ran :: {"styleInstalled":false,"bannersWithBar":0} 
+[2026-09-16 09:29:36]	[EmigTest] SUMMARY modtest103 0/3 checks OK 
+[2026-09-16 09:29:36]	[EmigTest] FAILED: ["lens manager reachable","city banners present","banner decorator ran"] 
+[2026-09-16 09:29:36]	[EmigTest] SHOT lens150 
+[2026-09-16 09:29:54]	[EmigTest] DONE modtest103 finished 

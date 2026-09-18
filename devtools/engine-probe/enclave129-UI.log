@@ -1,0 +1,77 @@
+[2026-09-17 17:31:23]	[EmigProbe] shell attached 
+[2026-09-17 17:31:24]	[EmigProbe] shell query complete 
+[2026-09-17 17:31:25]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-17 17:31:25]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 17:31:43]	[EmigTest] modtest129 attached 
+[2026-09-17 17:32:00]	[EmigTest] KNOBS set={"quartersEnabled":true,"quarterForce":false,"quarterPlaceImprovement":true,"quarterRecognition":0,"quarterDwellTurns":2,"quarterFadeTurns":2,"quarterPacingEnabled":false,"quarterCapPerAge":0,"quarterCooldownTurns":0} saved={"quartersEnabled":true,"quarterForce":false,"quarterPlaceImprovement":true,"quarterRecognition":2,"quarterDwellTurns":8,"quarterFadeTurns":12,"quarterPacingEnabled":true,"quarterCapPerAge":3,"quarterCooldownTurns":12} 
+[2026-09-17 17:32:00]	[EmigTest] S0 turn=66 host=Lāhainā pop=29 originA=4(Paris) originB=8(Pataliputra) shareBar=0.3 stockBar=4.60 minStock=3 
+[2026-09-17 17:32:00]	[EmigTest] S0 records=0 candidacies=0 comp=["0:29/100%"] 
+[2026-09-17 17:32:00]	[EmigTest] S0 progress=null 
+[2026-09-17 17:32:06]	[EmigTest] S1 records=0 candidacies=0 comp=["0:25.6/88%","4:3.4/12%"] 
+[2026-09-17 17:32:06]	[EmigTest] S1 progress={"civ":4,"share":0.118,"bar":0.3,"stock":3.4,"stockBar":4.6,"stage":"none"} 
+[2026-09-17 17:32:06]	[EmigTest] S1 verdict formed=false (expect FALSE: under both bars) 
+[2026-09-17 17:32:10]	[EmigTest] SHOT 1-foothold 
+[2026-09-17 17:32:25]	[EmigTest] S2 records=1 candidacies=1 comp=["0:16.2/56%","4:12.8/44%"] 
+[2026-09-17 17:32:25]	[EmigTest] S2   86,20 origin=4 recognized=false stance=ignore contested=false fadeSince=null placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A"} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 17:32:25]	[EmigTest] S2 progress={"civ":4,"share":0.44,"bar":0.3,"stock":12.8,"stockBar":4.6,"stage":"established"} 
+[2026-09-17 17:32:25]	[EmigTest] S2 verdict formed=true tile={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A"} recognized=false (expect formed, NOT yet recognized) chronicle=["The Norman Enclave of Lāhainā"] 
+[2026-09-17 17:32:28]	[EmigTest] SHOT 2-established 
+[2026-09-17 17:32:41]	[EmigTest] S2 tooltip shown=true at 1440,863 text="NORMAN ENCLAVELāhainā · Desert RoughEstablished. If the community holds, it is recognized in 2 turns, and you choose a stance toward it.Where the yields come fromThe land itself+1 Happiness, +4 ProductionThe enclave's own works (a Hidden Fortress, built as at home)+4 ProductionNorman families settled here and build what they knew at home. It works from the day the enclave is established.In all, ea" 
+[2026-09-17 17:32:41]	[EmigTest] SHOT 3-tip-established 
+[2026-09-17 17:32:58]	[EmigTest] S3 label check: 6 camera moves + repaints; the tile must carry ONE label 
+[2026-09-17 17:32:58]	[EmigTest] SHOT 4-label-check 
+[2026-09-17 17:33:11]	[EmigTest] S4 same-turn pass raised a modal=false (expect false: dwell 2) 
+[2026-09-17 17:33:45]	[EmigTest] TURN activated n=2 turn=67 
+[2026-09-17 17:33:54]	[EmigTest] S4 turn+1 records=1 candidacies=1 comp=["0:17.3/58%","4:12.7/42%"] 
+[2026-09-17 17:33:54]	[EmigTest] S4 turn+1   86,20 origin=4 recognized=false stance=ignore contested=false fadeSince=null placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A","stood":true} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 17:33:54]	[EmigTest] S4 turn+1 progress={"civ":4,"share":0.422,"bar":0.3,"stock":12.7,"stockBar":4.6,"stage":"established"} 
+[2026-09-17 17:34:20]	[EmigTest] TURN activated n=3 turn=68 
+[2026-09-17 17:34:29]	[EmigTest] S4 turn+2 records=1 candidacies=1 comp=["0:17.4/58%","4:12.6/42%"] 
+[2026-09-17 17:34:29]	[EmigTest] S4 turn+2   86,20 origin=4 recognized=false stance=ignore contested=false fadeSince=null placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A","stood":true} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 17:34:29]	[EmigTest] S4 turn+2 progress={"civ":4,"share":0.419,"bar":0.3,"stock":12.6,"stockBar":4.6,"stage":"established"} 
+[2026-09-17 17:34:41]	[EmigTest] S5 modal appeared=false title=null recognizedAlready=[false] 
+[2026-09-17 17:34:41]	[EmigTest] S5 records=1 candidacies=1 comp=["0:17.4/58%","4:12.6/42%"] 
+[2026-09-17 17:34:41]	[EmigTest] S5   86,20 origin=4 recognized=false stance=ignore contested=false fadeSince=null placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A","stood":true} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 17:34:41]	[EmigTest] S5 progress={"civ":4,"share":0.419,"bar":0.3,"stock":12.6,"stockBar":4.6,"stage":"established"} 
+[2026-09-17 17:34:41]	[EmigTest] S5 verdict stance=["ignore"] 
+[2026-09-17 17:34:43]	[EmigTest] SHOT 6-marker-recognized 
+[2026-09-17 17:34:56]	[EmigTest] S5 tooltip shown=false at 1440,863 text="NORMAN ENCLAVELāhainā · Desert RoughEstablished. If the community holds, it is recognized in 2 turns, and you choose a stance toward it.Where the yields come fromThe land itself+1 Happiness, +4 ProductionThe enclave's own works (a Hidden Fortress, built as at home)+4 ProductionNorman families settled here and build what they knew at home. It works from the day the enclave is established.In all, ea" 
+[2026-09-17 17:34:56]	[EmigTest] SHOT 7-tip-recognized 
+[2026-09-17 17:35:29]	[EmigTest] TURN activated n=4 turn=69 
+[2026-09-17 17:35:38]	[EmigTest] S6 Lāhainā yields before={"FOOD":89.5,"PRODUCTION":69,"GOLD":55.5,"SCIENCE":29,"CULTURE":12,"HAPPINESS":2.7} after={"FOOD":86.7,"PRODUCTION":81.7,"GOLD":51.3,"SCIENCE":27.1,"CULTURE":11.2,"HAPPINESS":-1.3} 
+[2026-09-17 17:35:38]	[EmigTest] S6 records=1 candidacies=1 comp=["0:17.5/58%","4:12.5/42%"] 
+[2026-09-17 17:35:38]	[EmigTest] S6   86,20 origin=4 recognized=false stance=ignore contested=false fadeSince=null placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A","stood":true} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 17:35:38]	[EmigTest] S6 progress={"civ":4,"share":0.416,"bar":0.3,"stock":12.5,"stockBar":4.7,"stage":"established"} 
+[2026-09-17 17:35:41]	[EmigTest] S7 contested=[true] chronicle=["War Tests the Norman Enclave"] 
+[2026-09-17 17:35:45]	[EmigTest] S7 tooltip shown=true at 1440,863 text="NORMAN ENCLAVELāhainā · Desert RoughEstablished, and due for recognition: a stance toward it comes next.Where the yields come fromThe land itself+1 Happiness, +4 ProductionThe enclave's own works (a Hidden Fortress, built as at home)+4 ProductionNorman families settled here and build what they knew at home. It works from the day the enclave is established.In all, each turn+1 Happiness, +8 Producti" 
+[2026-09-17 17:35:45]	[EmigTest] SHOT 8-tip-contested 
+[2026-09-17 17:35:58]	[EmigTest] S7 after peace contested=[false] 
+[2026-09-17 17:36:04]	[EmigTest] S8 seeded records=1 candidacies=1 comp=["8:15.6/52%","0:8.6/29%","4:5.8/19%"] 
+[2026-09-17 17:36:04]	[EmigTest] S8 seeded   86,20 origin=4 recognized=false stance=ignore contested=false fadeSince=null placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A","stood":true} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 17:36:04]	[EmigTest] S8 seeded progress={"civ":8,"share":0.52,"bar":0.3,"stock":15.6,"stockBar":4.7,"stage":"established"} 
+[2026-09-17 17:36:31]	[EmigTest] TURN activated n=5 turn=70 
+[2026-09-17 17:36:43]	[EmigTest] TURN activated n=6 turn=70 
+[2026-09-17 17:36:58]	[EmigTest] S8 after dwell records=1 candidacies=1 comp=["8:15.5/50%","0:9.9/32%","4:5.6/18%"] 
+[2026-09-17 17:36:58]	[EmigTest] S8 after dwell   86,20 origin=4 recognized=false stance=ignore contested=false fadeSince=null placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A","stood":true} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 17:36:58]	[EmigTest] S8 after dwell progress={"civ":8,"share":0.499,"bar":0.3,"stock":15.5,"stockBar":4.6,"stage":"established"} 
+[2026-09-17 17:36:58]	[EmigTest] S8 verdict originNow=4 (was 4, expect 8) chronicle=[] 
+[2026-09-17 17:37:00]	[EmigTest] TURN activated n=7 turn=71 
+[2026-09-17 17:37:01]	[EmigTest] SHOT 9-changed-hands 
+[2026-09-17 17:37:03]	[EmigTest] TURN activated n=8 turn=71 
+[2026-09-17 17:37:10]	[EmigTest] S9 community left: comp=["0:31/100%"] fadeTurns=2 
+[2026-09-17 17:37:34]	[EmigTest] TURN activated n=9 turn=72 
+[2026-09-17 17:37:43]	[EmigTest] S9 turn+1 records=1 candidacies=0 comp=["0:31/100%"] 
+[2026-09-17 17:37:43]	[EmigTest] S9 turn+1   86,20 origin=4 recognized=false stance=ignore contested=false fadeSince=71 placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A","stood":true} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 17:37:43]	[EmigTest] S9 turn+1 progress=null 
+[2026-09-17 17:38:00]	[EmigTest] TURN activated n=10 turn=73 
+[2026-09-17 17:38:09]	[EmigTest] S9 turn+2 records=1 candidacies=0 comp=["0:31/100%"] 
+[2026-09-17 17:38:09]	[EmigTest] S9 turn+2   86,20 origin=4 recognized=false stance=ignore contested=false fadeSince=71 placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":1812,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_NORMAN_A","stood":true} standing=true plot=["IMPROVEMENT_HIDDEN_FORTRESS"] 
+[2026-09-17 17:38:09]	[EmigTest] S9 turn+2 progress=null 
+[2026-09-17 17:38:31]	[EmigTest] TURN activated n=11 turn=74 
+[2026-09-17 17:38:40]	[EmigTest] S9 turn+3 records=0 candidacies=0 comp=["0:31/100%"] 
+[2026-09-17 17:38:40]	[EmigTest] S9 turn+3 progress=null 
+[2026-09-17 17:38:40]	[EmigTest] S9 verdict recordsLeft=0 plotNow=[] fades=["The Enclave Fades"] 
+[2026-09-17 17:38:42]	[EmigTest] SHOT 10-faded 
+[2026-09-17 17:38:51]	[EmigTest] S9 chronicle=["The Enclave Fades","The Emptying of Chicago","The Emptying of Lāhainā","The Emptying of Leeds","The Flight from Lyon","War Tests the Norman Enclave","The Emptying of Preslav","The Flight from Kyoto","The Norman Enclave of Lāhainā"] 
+[2026-09-17 17:38:51]	[EmigTest] KNOBS restored={"quartersEnabled":true,"quarterForce":false,"quarterPlaceImprovement":true,"quarterRecognition":2,"quarterDwellTurns":8,"quarterFadeTurns":12,"quarterPacingEnabled":true,"quarterCapPerAge":3,"quarterCooldownTurns":12} 
+[2026-09-17 17:38:54]	[EmigTest] DONE modtest129 finished 

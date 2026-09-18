@@ -1,0 +1,12 @@
+[2026-09-14 11:47:58]	[EmigProbe] shell attached 
+[2026-09-14 11:47:59]	[EmigProbe] shell query complete 
+[2026-09-14 11:47:59]	[EmigProbe] shell found AugustusAnt49.Civ7Save turn 49 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-14 11:47:59]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-14 11:48:16]	[EmigTest] modtest32 attached 
+[2026-09-14 11:48:34]	[EmigTest] block children=["DIV.filigree-divider-h3 self-center","FXS-INNER-FRAME.mx-4 mb-3 px-4 py-3 self-stretch flex flex-col items-center fxs-inner-frame inner-frame relative"] frameChildren=["DIV.absolute inset-0 pointer-events-none","DIV.absolute -top-1\\.5 img-popup-middle-decor","DIV.font-body text-accent-3 text-center text-base","DIV.font-body text-accent-3 text-center text-sm mt-2"] lines=2 
+[2026-09-14 11:48:34]	[EmigTest] ATTRIBUTION quoteLine rect=[1236,961,407,21] fontStyle=normal family="\"BodyFont\", \"BodyFont-SC\", \"BodyFont-TC\", \"BodyFont-JP\", \"BodyFont-KR\"" size=1rem color=rgba(157, 160, 166, 1) textLen=55 frame=[1176,943,529,50] 
+[2026-09-14 11:48:34]	[EmigTest] ITALIC quoteLine rect=[1440,954,0,0] fontStyle=italic family="\"BodyFont\", \"BodyFont-SC\", \"BodyFont-TC\", \"BodyFont-JP\", \"BodyFont-KR\"" size=1.11111rem color=rgba(157, 160, 166, 1) textLen=125 frame=[1176,943,529,50] 
+[2026-09-14 11:48:34]	[EmigTest] NORMAL quoteLine rect=[934,943,1012,23] fontStyle=normal family="\"BodyFont\", \"BodyFont-SC\", \"BodyFont-TC\", \"BodyFont-JP\", \"BodyFont-KR\"" size=1.11111rem color=rgba(157, 160, 166, 1) textLen=125 frame=[919,932,1041,73] 
+[2026-09-14 11:48:35]	[EmigTest] SKEW quoteLine rect=[932,943,1016,23] fontStyle=normal family="\"BodyFont\", \"BodyFont-SC\", \"BodyFont-TC\", \"BodyFont-JP\", \"BodyFont-KR\"" size=1.11111rem color=rgba(157, 160, 166, 1) textLen=125 frame=[919,932,1041,73] 
+[2026-09-14 11:48:35]	[EmigTest] SHOT quote-skew 
+[2026-09-14 11:48:55]	[EmigTest] DONE modtest32 finished 

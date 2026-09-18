@@ -10,6 +10,7 @@
 // with its template + stylesheet, opened with ContextManager.push.
 
 import Panel from "/core/ui/panel-support.js";
+import { setAdvancedSectionOpen } from "/emigration/ui/emigration-settings.js";
 import { gatherDashboard } from "/emigration/ui/emigration-window.js";
 import { dashboardModel, renderDashboardTabbed } from "/emigration/ui/emigration-views.js";
 
@@ -319,7 +320,49 @@ export function installEmigrationConsole() {
     const api = /** @type {*} */ (globalThis).emigration || ((globalThis).emigration = {});
     api.window = () => openEmigrationScreen();
     api.closeWindow = () => closeEmigrationScreen();
+    // Diagnostics: open the game's Options screen on a given tab (optionally with one Emigration advanced section
+    // expanded), and close it. Probes run in a separate script context and cannot draw the game's interface
+    // themselves; this lets one open the real screen from the mod's own context and screenshot it.
+    api.options = (/** @type {number} */ tab, /** @type {string=} */ openSection) => {
+      if (openSection) setAdvancedSectionOpen(openSection, true);
+      withContextManager((cm) => cm.push("screen-options", {
+        singleton: true, createMouseGuard: true, attributes: { "selected-tab": String(Number(tab) || 0) }
+      }));
+    };
+    api.closeOptions = () => withContextManager((cm) => cm.pop("screen-options"));
+    // Open / close the Advanced settings window on its own (optionally with one section expanded), for screenshots.
+    api.advancedSettings = (/** @type {string=} */ openSection) => {
+      if (openSection) setAdvancedSectionOpen(openSection, true);
+      withContextManager((cm) => cm.push("emigration-advanced-editor", { singleton: true, createMouseGuard: true }));
+    };
+    api.closeAdvancedSettings = () => withContextManager((cm) => cm.pop("emigration-advanced-editor"));
+    // Scroll the open Options screen so a given option row is in view (for screenshots of long tabs).
+    api.optionsScrollTo = (/** @type {string} */ optionId) => {
+      try {
+        const target = document.querySelector(`[optionID="${optionId}"]`);
+        const scroller = /** @type {*} */ (document.querySelector("screen-options fxs-scrollable"));
+        const comp = scroller && (scroller.component || scroller.maybeComponent);
+        if (target && comp && typeof comp.scrollIntoView === "function") comp.scrollIntoView(target);
+        return !!target;
+      } catch (_) {
+        return false;
+      }
+    };
   } catch (_) {
     /* ignore */
   }
+}
+
+/**
+ * Run something with the game's context manager, if it can be loaded.
+ * @param {(cm:*) => void} fn What to do with it.
+ */
+function withContextManager(fn) {
+  import("/core/ui/context-manager/context-manager.js")
+    .then((m) => {
+      const mod = /** @type {*} */ (m);
+      const cm = mod.default || mod.ContextManager || mod;
+      if (cm && typeof cm.push === "function") fn(cm);
+    })
+    .catch((e) => derr("context-manager import failed:", e));
 }

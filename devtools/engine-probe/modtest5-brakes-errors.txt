@@ -1,0 +1,14 @@
+[2026-09-13 04:15:57]	Unhandled Promise Rejection: ReferenceError: WorldUI is not defined.  Re-run with inspector attached for callstack. 
+[2026-09-13 04:15:57]	Unhandled rejection error value: ReferenceError: WorldUI is not defined
+[2026-09-13 04:15:58]	HTML Parser Error@:fs://game/root-game.html@1:2043: Premature end of file  Currently open tags: html, div, div..
+[2026-09-13 04:15:58]	HTML Parser Error@:fs://game/root-game.html@1:2043: Premature end of file  Currently open tags: html, div, div..
+[2026-09-13 04:16:14]	HTML Parser Error@:fs://game/root-game.html@67:24: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-13 04:16:14]	HTML Parser Error@:fs://game/root-game.html@71:16: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-13 04:16:14]	HTML Parser Error@:fs://game/root-game.html@75:24: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-13 04:16:14]	HTML Parser Error@:fs://game/root-game.html@79:16: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-13 04:16:14]	HTML Parser Error@:fs://game/root-game.html@49:43: Tokenizer error with an unimplemented error message.
+[2026-09-13 04:17:18]	Unhandled rejection error value: Timeout 5000ms exceeded for waitUntilValue on .
+[2026-09-13 04:17:18]	Unhandled rejection error value: Timeout 5000ms exceeded for waitUntilValue on .
+[2026-09-13 04:17:23]	JS Error: fs://game/base-standard/ui/unit-flags/army-commander-flags.js:32: TypeError: unitFlag.updateArmy is not a function
+[2026-09-13 04:17:23]	JS Error (Line):         unitFlag.updateArmy();
+[2026-09-13 04:17:23]	JS Error (Stack): TypeError: unitFlag.updateArmy is not a function

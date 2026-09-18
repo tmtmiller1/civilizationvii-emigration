@@ -85,6 +85,14 @@ const model = {
         inPts: 2,
         outP: 2,
         outPts: 1,
+        intInP: 1,
+        intInPts: 1,
+        intOutP: 1,
+        intOutPts: 1,
+        extInP: 3,
+        extInPts: 1,
+        extOutP: 1,
+        extOutPts: 0,
         refP: 0,
         refPts: 0,
         lossP: 0,
@@ -120,6 +128,25 @@ assert.doesNotThrow(() =>
   })
 );
 assert.ok(subTarget.children.length > 0, "subtab render should append content");
+
+// The Net Migration Table renders its Internal / External / Total groups: the spanning group header
+// above the column headings, and one cell per count column on the data row.
+function collect(node, out = []) {
+  out.push(node);
+  for (const c of node.children || []) collect(c, out);
+  return out;
+}
+const nodes = collect(subTarget);
+const text = nodes.map((n) => n.textContent).filter((t) => typeof t === "string");
+for (const label of ["Internal", "External", "Total", "Left", "Arrived"]) {
+  assert.ok(text.includes(label), `ledger renders the "${label}" heading`);
+}
+const groupRow = nodes.find((n) => (n.className || "").includes("emig-led-grp"));
+assert.ok(groupRow, "group header row rendered");
+assert.equal(groupRow.children.length, 5, "one span per group, plus the two blank spans");
+const dataRow = nodes.find((n) => (n.children || []).some((c) => c.textContent === "Rome"));
+// name + net + net-bar + the nine count columns (6 grouped counts, stance, refugees, losses).
+assert.equal(dataRow.children.length, 12, "data row carries every column");
 
 // Subtab render guide branch where control-row is skipped
 const guideTarget = new FakeElement("div");

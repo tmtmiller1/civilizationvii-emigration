@@ -1,0 +1,15 @@
+[2026-09-13 17:01:12]	[EmigProbe] shell attached 
+[2026-09-13 17:01:13]	[EmigProbe] shell query complete 
+[2026-09-13 17:01:14]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-13 17:01:14]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 17:01:33]	[EmigTest] modtest14 attached 
+[2026-09-13 17:01:46]	[EmigTest] CITY Washington, D.C. emptyPlots=1 landTiles=true 
+[2026-09-13 17:01:46]	[EmigTest] START turn=66 city=Washington, D.C. origin=4 nativeCaravanserai={"YIELD_GOLD":5} 
+[2026-09-13 17:01:46]	[EmigTest] PLACED {"type":"IMPROVEMENT_CARAVANSERAI","plot":3716,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A","replaced":"IMPROVEMENT_WOODCUTTER","before":{"YIELD_FOOD":1,"YIELD_PRODUCTION":4,"YIELD_HAPPINESS":1}} (before = the farmstead's plot yields) 
+[2026-09-13 17:01:53]	[EmigTest] AFTER-CREATE plotYields={"YIELD_FOOD":1,"YIELD_PRODUCTION":4,"YIELD_GOLD":9,"YIELD_HAPPINESS":1} placed={"type":"IMPROVEMENT_CARAVANSERAI","plot":3716,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A","replaced":"IMPROVEMENT_WOODCUTTER","before":{"YIELD_FOOD":1,"YIELD_PRODUCTION":4,"YIELD_HAPPINESS":1}} standing=true treasury=804.06 
+[2026-09-13 17:01:53]	[EmigTest] ACTIONS done; ending 2 turns 
+[2026-09-13 17:02:18]	[EmigTest] TURN activated n=2 turn=67 ALIVE 
+[2026-09-13 17:02:24]	[EmigTest] TURN+1 (settled by the mod's pass) plotYields={"YIELD_FOOD":1,"YIELD_PRODUCTION":4,"YIELD_GOLD":9,"YIELD_HAPPINESS":1} placed={"type":"IMPROVEMENT_CARAVANSERAI","plot":3716,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A","replaced":"IMPROVEMENT_WOODCUTTER","before":{"YIELD_FOOD":1,"YIELD_PRODUCTION":4,"YIELD_HAPPINESS":1},"stood":true} standing=true treasury=1938.76 
+[2026-09-13 17:02:46]	[EmigTest] TURN activated n=3 turn=68 ALIVE 
+[2026-09-13 17:02:52]	[EmigTest] TURN+2 (paid again) plotYields={"YIELD_FOOD":1,"YIELD_PRODUCTION":4,"YIELD_GOLD":9,"YIELD_HAPPINESS":1} placed={"type":"IMPROVEMENT_CARAVANSERAI","plot":3716,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A","replaced":"IMPROVEMENT_WOODCUTTER","before":{"YIELD_FOOD":1,"YIELD_PRODUCTION":4,"YIELD_HAPPINESS":1},"stood":true} standing=true treasury=2652.28 
+[2026-09-13 17:02:52]	[EmigTest] DONE modtest14 finished 

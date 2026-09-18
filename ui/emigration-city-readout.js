@@ -44,9 +44,11 @@ function signedPeople(n) {
  * @returns {string} The suffix (may be "").
  */
 function statusSuffix(s) {
-  if (s.onCooldown) return loc("LOC_EMIG_RO_STATUS_RESTING", " (resting {1_Cooldown})", s.cooldown);
+  // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces (mod test 88),
+  // so a fragment that carries its own leading space arrives without one and jams against the text before it.
+  if (s.onCooldown) return " " + loc("LOC_EMIG_RO_STATUS_RESTING", "(resting {1_Cooldown})", s.cooldown).trim();
   if (s.pressureToBar > 0) {
-    return loc("LOC_EMIG_RO_STATUS_TO_MOVE", " ({1_Pct}% to next move)", Math.round(s.pressureToBar * 100));
+    return " " + loc("LOC_EMIG_RO_STATUS_TO_MOVE", "({1_Pct}% to next move)", Math.round(s.pressureToBar * 100)).trim();
   }
   return "";
 }
@@ -57,7 +59,7 @@ function statusSuffix(s) {
  * @returns {string|null} The warning, or null.
  */
 function warnText(s) {
-  if (s.refugeePool > 0) return loc("LOC_EMIG_RO_WARN_HOLDING", "Refugee holding active in this settlement");
+  if (s.refugeePool > 0) return loc("LOC_EMIG_RO_WARN_HOLDING", "Refugees resettling in this settlement");
   const why = reasonsPhrase(s.riskReasons); // crisis-type "why" for the at-risk line (P0.2)
   const suffix = why ? " (" + why + ")" : "";
   if (s.attritionRisk) return loc("LOC_EMIG_RO_WARN_TRAPPED", "At risk: trapped with nowhere to flee{1_Why}", suffix);
@@ -83,9 +85,9 @@ function poolSeverity(pool) {
  * @returns {string} Badge label (or empty when none).
  */
 function poolBadgeLabel(severity) {
-  if (severity === "high") return loc("LOC_EMIG_RO_BADGE_HIGH", "Holding: High");
-  if (severity === "medium") return loc("LOC_EMIG_RO_BADGE_MEDIUM", "Holding: Medium");
-  if (severity === "low") return loc("LOC_EMIG_RO_BADGE_LOW", "Holding: Low");
+  if (severity === "high") return loc("LOC_EMIG_RO_BADGE_HIGH", "Resettlement: High");
+  if (severity === "medium") return loc("LOC_EMIG_RO_BADGE_MEDIUM", "Resettlement: Medium");
+  if (severity === "low") return loc("LOC_EMIG_RO_BADGE_LOW", "Resettlement: Low");
   return "";
 }
 
@@ -100,7 +102,7 @@ function originsLine(comp) {
   if (!parts.length) return null;
   const top = parts.slice(0, 3).map((p) => p.name + " " + Math.round(p.share * 100) + "%");
   const extra = parts.length - 3;
-  const tail = extra > 0 ? loc("LOC_EMIG_RO_ORIGINS_MORE", " (+{1_Count} more)", extra) : "";
+  const tail = extra > 0 ? " " + loc("LOC_EMIG_RO_ORIGINS_MORE", "(+{1_Count} more)", extra).trim() : "";
   return loc("LOC_EMIG_RO_ORIGINS", "Origins: {1_List}{2_Tail}", top.join(", "), tail);
 }
 
@@ -120,6 +122,27 @@ function pressureText(s) {
 }
 
 /**
+ * The enclave-progress line: the leading foreign community against the live share and size bars, and
+ * its settling clock once one is running. Empty when the city has no foreign minority.
+ * @param {*} e The snapshot's `enclave` field. @returns {string} Line text or empty.
+ */
+function enclaveLine(e) {
+  if (!e || !e.civ) return "";
+  const pct = (/** @type {number} */ v) => Math.round((Number(v) || 0) * 100);
+  const one = (/** @type {number} */ v) => Math.round((Number(v) || 0) * 10) / 10;
+  const stockBar = e.stockBar > 0 ? one(e.stockBar) : "-";
+  if (e.dwell && e.dwell.needed > 0) {
+    return loc("LOC_EMIG_RO_ENCLAVE",
+      "Enclave: {1_Civ} at {2_Share}% of {3_Bar}% share, {4_Stock} of {5_StockBar} people, " +
+      "settled {6_Dwell} of {7_Need} turns",
+      e.civ, pct(e.share), pct(e.bar), one(e.stock), stockBar,
+      Math.min(e.dwell.elapsed, e.dwell.needed), e.dwell.needed);
+  }
+  return loc("LOC_EMIG_RO_ENCLAVE_NODWELL", "Enclave: {1_Civ} at {2_Share}% of {3_Bar}% share, {4_Stock} of {5_StockBar} people",
+    e.civ, pct(e.share), pct(e.bar), one(e.stock), stockBar);
+}
+
+/**
  * Refugee holding-pool display line, or empty when none.
  * @param {*} s Readout snapshot.
  * @returns {string} Line text or empty.
@@ -127,8 +150,8 @@ function pressureText(s) {
 function refugeePoolLine(s) {
   if (!(s.refugeePool > 0)) return "";
   return s.refugeePool === 1
-    ? loc("LOC_EMIG_RO_POOL_ONE", "Refugee holding pool: {1_Count} point", s.refugeePool)
-    : loc("LOC_EMIG_RO_POOL_MANY", "Refugee holding pool: {1_Count} points", s.refugeePool);
+    ? loc("LOC_EMIG_RO_POOL_ONE", "Refugees resettling: {1_Count} point", s.refugeePool)
+    : loc("LOC_EMIG_RO_POOL_MANY", "Refugees resettling: {1_Count} points", s.refugeePool);
 }
 
 /**
@@ -179,7 +202,7 @@ export function readoutModel(s) {
   lines.push(loc("LOC_EMIG_RO_PRESSURE", "Pressure: {1_Val}{2_Status}", pressureText(s), statusSuffix(s)));
   pushLineIf(lines, s.topDestinationName
     ? loc("LOC_EMIG_RO_PULLED_TOWARD", "Pulled toward {1_Name}{2_Rival}", s.topDestinationName,
-      s.crossCiv ? loc("LOC_EMIG_RO_RIVAL_CIV", " (rival civ)") : "")
+      s.crossCiv ? " " + loc("LOC_EMIG_RO_RIVAL_CIV", "(rival civ)").trim() : "")
     : "");
   pushLineIf(lines, s.topDestinationName ? whyThereLine(s.destReasons) : "");
   pushLineIf(lines, refugeePoolLine(s));
@@ -188,6 +211,7 @@ export function readoutModel(s) {
     ? loc("LOC_EMIG_RO_ASSIM_COST", "Assimilation cost: ~{1_Gold} gold/turn", Math.round(s.assimCostGold))
     : "");
   pushLineIf(lines, originsLine(s.composition));
+  pushLineIf(lines, enclaveLine(s.enclave));
   lines.push(loc("LOC_EMIG_RO_CIV_NET", "Civ net migration: {1_People} people", signedPeople(s.ownerNet)));
   // Pass the settlement name so the prosperity hint's {1_City} placeholder resolves (it names the
   // settlement being out-prospered); other hints ignore the arg.
@@ -386,14 +410,14 @@ function maybeToastHoldingTransition(snap) {
   if (typeof prev !== "boolean" || prev === nowActive) return;
   if (nowActive) {
     toast(
-      loc("LOC_EMIG_RO_TOAST_ESTABLISHED", "{1_City} established refugee holding ({2_Pts} pts)",
+      loc("LOC_EMIG_RO_TOAST_ESTABLISHED", "{1_City} took in refugees to resettle ({2_Pts} pts)",
         snap.cityName || loc("LOC_EMIG_RO_A_SETTLEMENT", "A settlement"), snap.refugeePool),
       "crisis"
     );
     return;
   }
   toast(
-    loc("LOC_EMIG_RO_TOAST_CLEARED", "{1_City} cleared its refugee holding pool",
+    loc("LOC_EMIG_RO_TOAST_CLEARED", "{1_City} finished resettling its refugees",
       snap.cityName || loc("LOC_EMIG_RO_A_SETTLEMENT", "A settlement")),
     "crisis"
   );
@@ -444,7 +468,7 @@ function selectedCityId(d) {
  */
 function onSelection(d) {
   const id = selectedCityId(d);
-  if (id == null) {
+  if (id == null || (d && d.selected === false)) {
     hideCityReadout();
     return;
   }

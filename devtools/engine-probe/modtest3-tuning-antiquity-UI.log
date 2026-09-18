@@ -1,0 +1,23 @@
+[2026-09-12 21:37:48]	[EmigProbe] shell attached 
+[2026-09-12 21:37:49]	[EmigProbe] shell query complete 
+[2026-09-12 21:37:50]	[EmigProbe] shell found AugustusAnt136.Civ7Save turn 136 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-12 21:37:50]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-12 21:38:08]	[EmigTest] modtest3 attached 
+[2026-09-12 21:38:21]	[EmigTest] T0 CONFIG goldCap=30 urbanCap=0.34 recovery=30 disasterCap=0.5 gold=10 
+[2026-09-12 21:38:21]	[EmigTest] TARGETS L=London urban=13 rural=9 starving=false F=St. Petersburg pop=25 
+[2026-09-12 21:38:21]	[EmigTest] T1 tiles=9 instKeys=["uniqueQuarterType","ageControlled","turnControlled","damaged","complete","location","cityId","owner","originalOwner","typeName","typeHash","type","localId","id","isValid"] damagedProp=boolean:false 
+[2026-09-12 21:38:21]	[EmigTest] T1 yieldTable filter=function len=172 
+[2026-09-12 21:38:21]	[EmigTest] T1 tiles=[{"type":"IMPROVEMENT_CAMP","dmg":false,"feeds":false,"res":true,"d":1},{"type":"IMPROVEMENT_MINE","dmg":false,"feeds":false,"res":false,"d":2},{"type":"IMPROVEMENT_WOODCUTTER","dmg":false,"feeds":false,"res":false,"d":2},{"type":"IMPROVEMENT_FISHING_BOAT_RESOURCE","dmg":false,"feeds":false,"res":true,"d":3},{"type":"IMPROVEMENT_WOODCUTTER_RESOURCE","dmg":false,"feeds":false,"res":true,"d":3},{"type":"IMPROVEMENT_FISHING_BOAT_RESOURCE","dmg":false,"feeds":false,"res":true,"d":3},{"type":"IMPROVEMENT_PLANTATION","dmg":false,"feeds":false,"res":true,"d":3},{"type":"IMPROVEMENT_FISHING_BOAT","dmg":false,"feeds":false,"res":false,"d":3},{"type":"IMPROVEMENT_MINE","dmg":false,"feeds":false,"res":false,"d":3}] 
+[2026-09-12 21:38:21]	[EmigTest] T1 pick=IMPROVEMENT_FISHING_BOAT pickUnderFamine=IMPROVEMENT_FISHING_BOAT ranked=["IMPROVEMENT_FISHING_BOAT","IMPROVEMENT_MINE","IMPROVEMENT_MINE","IMPROVEMENT_WOODCUTTER","IMPROVEMENT_WOODCUTTER_RESOURCE","IMPROVEMENT_FISHING_BOAT_RESOURCE","IMPROVEMENT_FISHING_BOAT_RESOURCE","IMPROVEMENT_PLANTATION","IMPROVEMENT_CAMP"] 
+[2026-09-12 21:38:21]	[EmigTest] T1 pillagedTilesInMyCities=[] 
+[2026-09-12 21:38:24]	[EmigTest] T2 charged=[10,10,10,0] treasuryBefore=538.9609375 after=508.9609375 (expect 10,10,10,0 and -30) 
+[2026-09-12 21:38:24]	[EmigTest] T3 building={"type":"BUILDING_HARBOR","cost":55,"obsolete":false,"d":2} age=2077444219 ageType=AGE_ANTIQUITY 
+[2026-09-12 21:38:24]	[EmigTest] T4 London urban=13 crisisBudget=4 (expect floor(urban x 0.34)) 
+[2026-09-12 21:38:24]	[EmigTest] T5 St. Petersburg pop=25 capPoints=12 shedBefore=true capReached=true shedDisasterNow=false shedWarNow=true (expect true,true,false,true) 
+[2026-09-12 21:38:24]	[EmigTest] SELFTEST Departures abandon a tile [PASS] Ready: a departure from London would abandon its outlying fishing_boat (plot 2974), removing that tile's yields with the person (pillaged tiles go first; a starving settlement keeps its food tiles), and the losing civilization pays 10 gold (at most 30 a turn, never below zero). 
+[2026-09-12 21:38:24]	[EmigTest] SELFTEST Crisis takes the urban core [PASS] On (crisis causes only, after the rural tiles): London would give up a specialist first, then its harbor (plot 3166). Urban floor 1, at most 1 urban point per settlement per turn and 34% of the core per crisis (obsolete-age buildings first, walls never). 
+[2026-09-12 21:38:24]	[EmigTest] ACTIONS done; ending turns (3 turns for the crash watch) 
+[2026-09-12 21:38:48]	[EmigTest] TURN activated n=2 turn=137 ALIVE 
+[2026-09-12 21:39:13]	[EmigTest] TURN activated n=3 turn=138 ALIVE 
+[2026-09-12 21:39:36]	[EmigTest] TURN activated n=4 turn=139 ALIVE 
+[2026-09-12 21:39:39]	[EmigTest] DONE modtest3 finished 

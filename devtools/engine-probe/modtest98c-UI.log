@@ -1,0 +1,84 @@
+[2026-09-16 07:03:25]	[EmigProbe] shell attached 
+[2026-09-16 07:03:26]	[EmigProbe] shell query complete 
+[2026-09-16 07:03:27]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-16 07:03:27]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-16 07:03:45]	[EmigTest] modtest98 attached 
+[2026-09-16 07:04:00]	[EmigTest] modtest98 run local=0 
+[2026-09-16 07:04:00]	[EmigTest] DB crises now=["EXPLORATION_CRISIS_PLAGUE"] 
+[2026-09-16 07:04:00]	[EmigTest] DB plague stages=["EXPLORATION_CRISIS_PLAGUE#1@42","EXPLORATION_CRISIS_PLAGUE#2@50","EXPLORATION_CRISIS_PLAGUE#3@60","EXPLORATION_CRISIS_PLAGUE#4@70"] 
+[2026-09-16 07:04:00]	[EmigTest] START turn=66 age=41.3% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:04:03]	[EmigTest] ENDTURN blocked by -513644209 tries=1 
+[2026-09-16 07:04:07]	[EmigTest] ENDTURN blocked by -513644209 tries=2 
+[2026-09-16 07:04:31]	[EmigTest] T n=1 turn=67 age=41.9% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:04:33]	[EmigTest] ENDTURN blocked by -2084516792 tries=1 
+[2026-09-16 07:04:37]	[EmigTest] ENDTURN blocked by -2084516792 tries=2 
+[2026-09-16 07:05:00]	[EmigTest] T n=2 turn=68 age=42.5% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:05:02]	[EmigTest] ENDTURN blocked by 442844772 tries=1 
+[2026-09-16 07:05:06]	[EmigTest] ENDTURN blocked by 442844772 tries=2 
+[2026-09-16 07:05:26]	[EmigTest] T n=3 turn=69 age=43.1% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:05:28]	[EmigTest] ENDTURN blocked by 442844772 tries=1 
+[2026-09-16 07:05:32]	[EmigTest] ENDTURN blocked by 442844772 tries=2 
+[2026-09-16 07:06:02]	[EmigTest] T n=4 turn=70 age=43.8% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:06:04]	[EmigTest] ENDTURN blocked by -286188551 tries=1 
+[2026-09-16 07:06:08]	[EmigTest] ENDTURN blocked by -286188551 tries=2 
+[2026-09-16 07:06:29]	[EmigTest] T n=5 turn=71 age=44.4% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:06:31]	[EmigTest] ENDTURN blocked by 442844772 tries=1 
+[2026-09-16 07:06:35]	[EmigTest] ENDTURN blocked by 442844772 tries=2 
+[2026-09-16 07:06:52]	[EmigTest] T n=6 turn=72 age=45.0% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:06:54]	[EmigTest] ENDTURN blocked by 442844772 tries=1 
+[2026-09-16 07:06:58]	[EmigTest] ENDTURN blocked by 442844772 tries=2 
+[2026-09-16 07:07:15]	[EmigTest] T n=7 turn=73 age=45.6% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:07:17]	[EmigTest] ENDTURN blocked by 442844772 tries=1 
+[2026-09-16 07:07:21]	[EmigTest] ENDTURN blocked by 442844772 tries=2 
+[2026-09-16 07:07:37]	[EmigTest] T n=8 turn=74 age=46.3% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:07:39]	[EmigTest] ENDTURN blocked by 442844772 tries=1 
+[2026-09-16 07:07:43]	[EmigTest] ENDTURN blocked by 442844772 tries=2 
+[2026-09-16 07:08:00]	[EmigTest] T n=9 turn=75 age=46.9% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:08:02]	[EmigTest] ENDTURN blocked by -983769445 tries=1 
+[2026-09-16 07:08:06]	[EmigTest] ENDTURN blocked by -983769445 tries=2 
+[2026-09-16 07:08:22]	[EmigTest] T n=10 turn=76 age=47.5% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:08:24]	[EmigTest] ENDTURN blocked by 442844772 tries=1 
+[2026-09-16 07:08:28]	[EmigTest] ENDTURN blocked by 442844772 tries=2 
+[2026-09-16 07:08:47]	[EmigTest] T n=11 turn=77 age=48.1% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:08:49]	[EmigTest] ENDTURN blocked by -2084516792 tries=1 
+[2026-09-16 07:08:53]	[EmigTest] ENDTURN blocked by -2084516792 tries=2 
+[2026-09-16 07:09:12]	[EmigTest] T n=12 turn=78 age=48.8% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:09:14]	[EmigTest] ENDTURN blocked by -2084516792 tries=1 
+[2026-09-16 07:09:18]	[EmigTest] ENDTURN blocked by -2084516792 tries=2 
+[2026-09-16 07:09:41]	[EmigTest] T n=13 turn=79 age=49.4% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:09:43]	[EmigTest] ENDTURN blocked by 442844772 tries=1 
+[2026-09-16 07:09:47]	[EmigTest] ENDTURN blocked by 442844772 tries=2 
+[2026-09-16 07:10:03]	[EmigTest] T n=14 turn=80 age=50.0% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:10:05]	[EmigTest] ENDTURN blocked by 442844772 tries=1 
+[2026-09-16 07:10:09]	[EmigTest] ENDTURN blocked by 442844772 tries=2 
+[2026-09-16 07:10:29]	[EmigTest] T n=15 turn=81 age=50.6% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:10:31]	[EmigTest] ENDTURN blocked by -2084516792 tries=1 
+[2026-09-16 07:10:35]	[EmigTest] ENDTURN blocked by -2084516792 tries=2 
+[2026-09-16 07:10:51]	[EmigTest] T n=16 turn=82 age=51.3% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:10:53]	[EmigTest] ENDTURN blocked by 23669119 tries=1 
+[2026-09-16 07:10:57]	[EmigTest] ENDTURN blocked by 23669119 tries=2 
+[2026-09-16 07:11:16]	[EmigTest] T n=17 turn=83 age=51.9% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:11:18]	[EmigTest] ENDTURN blocked by 442844772 tries=1 
+[2026-09-16 07:11:22]	[EmigTest] ENDTURN blocked by 442844772 tries=2 
+[2026-09-16 07:11:44]	[EmigTest] T n=18 turn=84 age=52.5% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:11:46]	[EmigTest] ENDTURN blocked by -513644209 tries=1 
+[2026-09-16 07:11:50]	[EmigTest] ENDTURN blocked by -513644209 tries=2 
+[2026-09-16 07:12:12]	[EmigTest] T n=19 turn=85 age=53.1% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:12:14]	[EmigTest] ENDTURN blocked by 442844772 tries=1 
+[2026-09-16 07:12:18]	[EmigTest] ENDTURN blocked by 442844772 tries=2 
+[2026-09-16 07:12:36]	[EmigTest] T n=20 turn=86 age=53.8% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:12:38]	[EmigTest] ENDTURN blocked by 531375811 tries=1 
+[2026-09-16 07:12:42]	[EmigTest] ENDTURN blocked by 531375811 tries=2 
+[2026-09-16 07:13:01]	[EmigTest] T n=21 turn=87 age=54.4% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:13:03]	[EmigTest] ENDTURN blocked by 531375811 tries=1 
+[2026-09-16 07:13:07]	[EmigTest] ENDTURN blocked by 531375811 tries=2 
+[2026-09-16 07:13:35]	[EmigTest] T n=22 turn=88 age=55.0% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:13:37]	[EmigTest] ENDTURN blocked by -2084516792 tries=1 
+[2026-09-16 07:13:41]	[EmigTest] ENDTURN blocked by -2084516792 tries=2 
+[2026-09-16 07:14:00]	[EmigTest] T n=23 turn=89 age=55.6% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:14:02]	[EmigTest] ENDTURN blocked by 442844772 tries=1 
+[2026-09-16 07:14:06]	[EmigTest] ENDTURN blocked by 442844772 tries=2 
+[2026-09-16 07:14:25]	[EmigTest] T n=24 turn=90 age=56.3% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:14:25]	[EmigTest] FINAL turn=90 age=56.3% crisisStage=-1 elapsed=-1 infected=0 
+[2026-09-16 07:14:25]	[EmigTest] VERDICT isInfected observed true: NO | firstInfectedTurn=-1 peakInfectedCities=0 | firstCrisisStageTurn=-1 | turnsRun=24 reason=turns 
+[2026-09-16 07:14:25]	[EmigTest] DONE modtest98 finished 

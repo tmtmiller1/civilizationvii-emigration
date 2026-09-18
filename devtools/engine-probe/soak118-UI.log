@@ -1,0 +1,34 @@
+[2026-09-17 11:03:06]	[EmigProbe] shell attached 
+[2026-09-17 11:03:07]	[EmigProbe] shell query complete 
+[2026-09-17 11:03:07]	[EmigProbe] shell found AugustusAnt65.Civ7Save turn 65 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-17 11:03:07]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 11:03:24]	[EmigTest] modtest118 attached 
+[2026-09-17 11:03:41]	[EmigTest] modtest118 run local=0 bootstrap=object audit=object ledger=object 
+[2026-09-17 11:05:42]	[EmigTest] CHECKPOINT n=5 {"minorObs":57,"majorObs":7,"cfAtThr":18,"prevented":12,"pts":25,"bad":0,"fights":24,"named":24,"majorFights":5,"sources":{"struck":18,"units":41,"district":0,"atwar":5,"none":0},"health":[0,0,0,0]} 
+[2026-09-17 11:07:29]	[EmigTest] CHECKPOINT n=10 {"minorObs":106,"majorObs":11,"cfAtThr":46,"prevented":37,"pts":75,"bad":0,"fights":42,"named":42,"majorFights":5,"sources":{"struck":31,"units":77,"district":0,"atwar":9,"none":0},"health":[0,0,0,0]} 
+[2026-09-17 11:09:23]	[EmigTest] CHECKPOINT n=15 {"minorObs":144,"majorObs":13,"cfAtThr":74,"prevented":63,"pts":138,"bad":0,"fights":73,"named":73,"majorFights":5,"sources":{"struck":54,"units":92,"district":0,"atwar":11,"none":0},"health":[0,0,0,0]} 
+[2026-09-17 11:11:27]	[EmigTest] CHECKPOINT n=20 {"minorObs":210,"majorObs":18,"cfAtThr":111,"prevented":93,"pts":224,"bad":0,"fights":110,"named":110,"majorFights":6,"sources":{"struck":81,"units":130,"district":0,"atwar":17,"none":0},"health":[0,0,0,0]} 
+[2026-09-17 11:13:35]	[EmigTest] CHECKPOINT n=25 {"minorObs":272,"majorObs":19,"cfAtThr":154,"prevented":129,"pts":304,"bad":0,"fights":149,"named":149,"majorFights":6,"sources":{"struck":112,"units":157,"district":0,"atwar":22,"none":0},"health":[0,0,0,0]} 
+[2026-09-17 11:15:40]	[EmigTest] CHECKPOINT n=30 {"minorObs":326,"majorObs":21,"cfAtThr":190,"prevented":161,"pts":371,"bad":0,"fights":193,"named":193,"majorFights":7,"sources":{"struck":142,"units":175,"district":0,"atwar":30,"none":0},"health":[0,0,0,0]} 
+[2026-09-17 11:17:53]	[EmigTest] CHECKPOINT n=35 {"minorObs":372,"majorObs":21,"cfAtThr":212,"prevented":180,"pts":420,"bad":0,"fights":222,"named":222,"majorFights":7,"sources":{"struck":158,"units":198,"district":0,"atwar":37,"none":0},"health":[0,0,0,0]} 
+[2026-09-17 11:19:58]	[EmigTest] CHECKPOINT n=40 {"minorObs":423,"majorObs":21,"cfAtThr":235,"prevented":200,"pts":471,"bad":0,"fights":248,"named":248,"majorFights":7,"sources":{"struck":177,"units":227,"district":0,"atwar":40,"none":0},"health":[0,0,0,0]} 
+[2026-09-17 11:22:11]	[EmigTest] CHECKPOINT n=45 {"minorObs":482,"majorObs":21,"cfAtThr":256,"prevented":220,"pts":518,"bad":0,"fights":274,"named":274,"majorFights":7,"sources":{"struck":199,"units":261,"district":0,"atwar":43,"none":0},"health":[0,0,0,0]} 
+[2026-09-17 11:24:25]	[EmigTest] CHECKPOINT n=50 {"minorObs":550,"majorObs":21,"cfAtThr":290,"prevented":248,"pts":585,"bad":0,"fights":328,"named":328,"majorFights":8,"sources":{"struck":226,"units":299,"district":0,"atwar":46,"none":0},"health":[0,0,0,0]} 
+[2026-09-17 11:26:50]	[EmigTest] CHECKPOINT n=55 {"minorObs":620,"majorObs":21,"cfAtThr":333,"prevented":287,"pts":682,"bad":0,"fights":372,"named":372,"majorFights":8,"sources":{"struck":255,"units":328,"district":0,"atwar":58,"none":0},"health":[0,0,0,0]} 
+[2026-09-17 11:29:05]	[EmigTest] CHECKPOINT n=60 {"minorObs":691,"majorObs":21,"cfAtThr":371,"prevented":323,"pts":768,"bad":0,"fights":412,"named":412,"majorFights":8,"sources":{"struck":283,"units":365,"district":0,"atwar":64,"none":0},"health":[0,0,0,0]} 
+[2026-09-17 11:29:05]	[EmigTest] --- VERDICT --- 
+[2026-09-17 11:29:05]	[EmigTest] run:        turns=60 ages=["2077444219"] medianTurnMs=455392 maxTurnMs=1181417 
+[2026-09-17 11:29:05]	[EmigTest] config:     {"minorViolenceScale":0.4,"minorSiegeBesiegedFloor":0.08,"siegeBesiegedFloor":0.3,"warSurgeMax":3} threshold=2 
+[2026-09-17 11:29:05]	[EmigTest] observed:   minorOnly=691 withMajor=21 minorCities=41 majorCities=7 
+[2026-09-17 11:29:05]	[EmigTest] sources:    {"struck":283,"units":365,"district":0,"atwar":64,"none":0}  (atwar = the weak at-war proxy was the only basis) 
+[2026-09-17 11:29:05]	[EmigTest] checks:     misclassifiedAsMinor=0 misclassifiedAsMajor=0 amplified=0 nonMinorAltered=0 invariantBreaks=0 
+[2026-09-17 11:29:05]	[EmigTest] refugees:   oldRulesAtThreshold=371 prevented=323 pointsAvoided~768 actualWarRefugees minor=15 major=9 other=0 
+[2026-09-17 11:29:05]	[EmigTest] windows:    [{"cfAtThr":46,"prevented":37,"points":75,"minorObs":106,"majorObs":11},{"cfAtThr":65,"prevented":56,"points":149,"minorObs":104,"majorObs":7},{"cfAtThr":79,"prevented":68,"points":147,"minorObs":116,"majorObs":3},{"cfAtThr":45,"prevented":39,"points":100,"minorObs":97,"majorObs":0},{"cfAtThr":55,"prevented":48,"points":114,"minorObs":127,"majorObs":0},{"cfAtThr":81,"prevented":75,"points":183,"minorObs":141,"majorObs":0}] preventedRate=["0.80","0.86","0.86","0.87","0.87","0.93"] 
+[2026-09-17 11:29:05]	[EmigTest] naming:     fights=412 named=412 withMajorAttacker=8 selfNamed=0 
+[2026-09-17 11:29:05]	[EmigTest] RESULT A MINOR-MECHANISM PASS: 691 minor-only raid observations, all downgraded correctly 
+[2026-09-17 11:29:05]	[EmigTest] RESULT B MAJOR-MECHANISM PASS: 21 raid observations with a major attacker, all scored at full strength 
+[2026-09-17 11:29:05]	[EmigTest] RESULT C OUTCOME PASS: 323/371 old-rules threshold turns kept below it (87.1%), ~768 refugee points avoided 
+[2026-09-17 11:29:05]	[EmigTest] RESULT D CONVERGENCE CONVERGED: the last two windows agree with the whole-run rate (whole-run rate 0.871) 
+[2026-09-17 11:29:05]	[EmigTest] RESULT E HEALTH PASS: mod booted every turn; ledger tracked throughout; no self-named attackers 
+[2026-09-17 11:29:05]	[EmigTest] --- END VERDICT --- 
+[2026-09-17 11:29:09]	[EmigTest] DONE modtest118 finished 

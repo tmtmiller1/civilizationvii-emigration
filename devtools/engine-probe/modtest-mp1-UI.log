@@ -1,0 +1,27 @@
+[2026-09-17 16:11:53]	[EmigProbe] shell attached 
+[2026-09-17 16:11:54]	[EmigProbe] shell query complete 
+[2026-09-17 16:11:55]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-17 16:11:55]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-17 16:12:13]	[EmigTest] modtest-mp1 attached 
+[2026-09-17 16:12:28]	[EmigTest] modtest-mp1 start (probe 1: gameplay-context script + EXECUTE_SCRIPT) 
+[2026-09-17 16:12:28]	[EmigTest] A1 receipt EepScenLoaded=null 
+[2026-09-17 16:12:28]	[EmigTest] A2 cross-context global EepScenarioLoaded=undefined 
+[2026-09-17 16:12:28]	[EmigTest] A3 InitialScriptType keys=["Default","Sandbox"] 
+[2026-09-17 16:12:28]	[EmigTest] A4 scripts[Default=0] count=98 eep=["/emig-engine-probe/ui/eep-game.js"] 
+[2026-09-17 16:12:28]	[EmigTest] A4 scripts[Sandbox=1] count=0 eep=[] 
+[2026-09-17 16:12:28]	[EmigTest] A5 probe mod row=[{"handle":553,"id":"emig-engine-probe","enabled":true,"name":"Emigration Engine Probe (dev)","description":"Throwaway dev probe. Auto-loads a save, then measures what addRuralPopulation and grantYield(YIELD_HAPPINESS) actually change across three turns. Logs to UI.log as [EmigProbe]. Not for releas 
+[2026-09-17 16:12:28]	[EmigTest] B1 PlayerOperationTypes.EXECUTE_SCRIPT=-966415096 
+[2026-09-17 16:12:28]	[EmigTest] B2 shape=OnStart canStart={"Success":true} sendRequest=true 
+[2026-09-17 16:12:28]	[EmigTest] B2 shape=Function canStart={"Success":true} sendRequest=true 
+[2026-09-17 16:12:28]	[EmigTest] B2 shape=FunctionName canStart={"Success":true} sendRequest=true 
+[2026-09-17 16:12:28]	[EmigTest] B2 shape=ScriptName canStart={"Success":true} sendRequest=true 
+[2026-09-17 16:12:28]	[EmigTest] B2 shape=Script canStart={"Success":true} sendRequest=true 
+[2026-09-17 16:12:28]	[EmigTest] B2 shape=ScriptPath canStart={"Success":true} sendRequest=true 
+[2026-09-17 16:12:28]	[EmigTest] B2 shape=File canStart={"Success":true} sendRequest=true 
+[2026-09-17 16:12:28]	[EmigTest] B2 shape=Name+Args canStart={"Success":true} sendRequest=true 
+[2026-09-17 16:12:28]	[EmigTest] B2 shape=empty canStart={"Success":true} sendRequest=true 
+[2026-09-17 16:12:36]	[EmigTest] C1 receipt EepScenCalls=null 
+[2026-09-17 16:12:36]	[EmigTest] C2 receipt EepScenLoaded=null 
+[2026-09-17 16:12:36]	[EmigTest] D1 tileScoreByViewer compared=72 differing=0 examples=[] 
+[2026-09-17 16:12:36]	[EmigTest] VERDICT LOADS=NO REACHED=NO 
+[2026-09-17 16:12:36]	[EmigTest] DONE modtest1 finished 

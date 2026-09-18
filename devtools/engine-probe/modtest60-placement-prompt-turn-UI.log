@@ -1,0 +1,14 @@
+[2026-09-15 08:41:50]	[EmigProbe] shell attached 
+[2026-09-15 08:41:52]	[EmigProbe] shell query complete 
+[2026-09-15 08:41:52]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-15 08:41:52]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-15 08:42:11]	[EmigTest] modtest60 attached 
+[2026-09-15 08:42:26]	[EmigTest] START turn=66 control(one turn from growth)=[{"name":"Philadelphia","pop":16,"rural":10,"pending":0,"ready":false,"expand":0,"turnsToGrow":1}] blocker={"b":"-513644209","id":{"owner":0,"id":1697,"type":20},"name":"NOTIFICATION_ASSIGN_NEW_RESOURCES"} 
+[2026-09-15 08:42:29]	[EmigTest] WRITTEN [{"name":"London","pop":37,"rural":10,"pending":1,"ready":true,"expand":4,"turnsToGrow":32},{"name":"Leeds","pop":27,"rural":10,"pending":1,"ready":true,"expand":6,"turnsToGrow":39}] newPopNotes=[] 
+[2026-09-15 08:42:32]	[EmigTest] CLEAR attempt=1 {"unassigned":44,"assigned":0,"refused":44,"consider":true,"dismissed":7} blockerNow={"b":"442844772","name":"NOTIFICATION_ASSIGN_NEW_RESOURCES"} 
+[2026-09-15 08:43:32]	[EmigTest] ENDTURN attempt=1 turn=66 advanced=false 
+[2026-09-15 08:43:35]	[EmigTest] CLEAR attempt=2 {"unassigned":44,"assigned":0,"refused":44,"consider":true,"dismissed":3} blockerNow={"b":"442844772","name":"NOTIFICATION_ASSIGN_NEW_RESOURCES"} 
+[2026-09-15 08:43:50]	[EmigTest] ENDTURN attempt=2 turn=67 advanced=true 
+[2026-09-15 08:43:58]	[EmigTest] AFTER turn=67 advanced=true NEW_POPULATION=[] targets=[{"name":"London","pop":37,"rural":10,"pending":1,"ready":true,"expand":4,"turnsToGrow":31,"notes":0},{"name":"Leeds","pop":27,"rural":10,"pending":1,"ready":true,"expand":6,"turnsToGrow":38,"notes":0}] control=[{"name":"Philadelphia","pop":17,"rural":11,"pending":1,"ready":true,"expand":12,"turnsToGrow":30,"notes":0}] addedSinceStart=["66:NOTIFICATION_ASSIGN_NEW_RESOURCES","66:NOTIFICATION_ASSIGN_NEW_RESOURCES","66:NOTIFICATION_ASSIGN_NEW_RESOURCES","66:NOTIFICATION_ASSIGN_NEW_RESOURCES","66:NOTIFICATION_ASSIGN_NEW_RESOURCES","66:NOTIFICATION_ASSIGN_NEW_RESOURCES","66:NOTIFICATION_ASSIGN_NEW_RESOURCES","67:NOTIFICATION_ASSIGN_NEW_RESOURCES","67:NOTIFICATION_ASSIGN_NEW_RESOURCES","67:NOTIFICATION_ASSIGN_NEW_RESOURCES"] 
+[2026-09-15 08:43:58]	[EmigTest] VERDICT advanced=true newPopulationNotes=0 writtenStillReady=[true,true] controlGrew=[true] 
+[2026-09-15 08:43:58]	[EmigTest] DONE modtest60 finished 

@@ -35,6 +35,50 @@ export const CONFIG = {
   maxGainPerCityPerTurn: 4,
   emigrationBar: 30, // accumulated pressure (per source) to move one citizen
   deltaExponent: 0.5, // diminishing scaling on the prosperity delta
+  // Per-turn RETENTION of a source's accumulated pressure, applied once per pass before the turn's
+  // pull is added. Without it the accumulator only ever ratchets up: a settlement charged by a war kept
+  // that charge for the rest of the game and eventually discharged it as a "prosperity" move many turns
+  // after the war ended (watched in a live save: a besieged capital held 85% of the bar for 13 quiet
+  // turns with its violence long since decayed to zero). With it the charge tracks CURRENT conditions
+  // and falls when they improve, while a move still resets it to 0 as before.
+  //   half-life = ln(0.5) / ln(retention) turns      (0.9 -> ~6.6)
+  //   ceiling   = perTurnPull / (1 - retention)      (0.9 -> 10x the per-turn pull)
+  // That ceiling is a real bar-crossing test, not a formality: a settlement migrates only if its pull is
+  // both large and SUSTAINED. At 0.9 and the default bar of 30 it takes a steady per-turn pull above 3
+  // (an adjusted delta above 9) to reach the bar at all, which in a measured live game is the worst one
+  // or two settlements on the map rather than most of them. Below that, people stay and the drip stops.
+  //
+  // This gates the VOLUNTARY track only. War and disaster displacement never consults pressure at all
+  // (shedCrisis, and `forced` bypasses the bar everywhere else), so however low this goes, a besieged or
+  // stricken settlement still sheds refugees every turn. What it throttles is the slow economic bleed.
+  // 1 = off (the legacy ratchet, which can only rise).
+  pressureRetention: 0.9,
+
+  // ── BUILT ENVIRONMENT (emigration-built.js) ──
+  // What a settlement HAS, as a reason to stay, on top of what it produces. Yields already carry every
+  // building and wonder into the economy term; this scores the half of a building that is not a yield
+  // (walls, housing, a school, a granary, the prestige of a wonder) and, unlike the economy term, is NOT
+  // divided by population — so building well is a way for a large settlement to hold its people, which
+  // it previously had no way to do.
+  builtEnabled: true,
+  // Each ROLE counts ONCE per settlement: three markets are one reason to stay, not three, so a tall
+  // build order cannot run away with the term. "prestige" is the exception and is charged per wonder,
+  // up to builtWonderCap. Roles are derived from the compiled database at runtime, never a name list.
+  builtRoleWeights: {
+    prestige: 1.5, // per wonder (the only per-instance role)
+    amenity: 1.0, // anything granting happiness
+    safety: 0.8, // walls / fortification / defence
+    sustenance: 0.8, // anything granting food (a granary)
+    learning: 0.8, // anything granting science (a school)
+    trade: 0.8, // anything granting gold (a market, a grocer)
+    shelter: 0.6, // housing
+    culture: 0.6, // anything granting culture
+    work: 0.6, // production or citizen slots
+    civic: 0.3 // a building the database cannot otherwise explain still counts for something
+  },
+  builtWonderCap: 3, // most wonders one settlement may be credited for
+  builtCap: 6, // ceiling on the whole term, so it stays a counterweight and never the whole score
+  builtRefreshTurns: 5, // turns between re-scans (buildings change slowly; the scan is per-plot)
 
   // ── Voluntary / Crisis SPLIT (rollout flags) ──
   // A source is evaluated as TWO independent systems each pass: crisis displacement (war/disaster,
@@ -70,7 +114,7 @@ export const CONFIG = {
   permWar: 0.6, // Permeability factor when two civs are at war (< 1 dampens)
   raidTilt: 10, // pull tilt from an active raid's target toward the raider (pre-clamp by tiltCap)
 
-  poachBlock: 12, // extra delta needed for a CROSS-CIV destination (friction)
+  poachBlock: 30, // extra delta needed for a CROSS-CIV destination (friction); crossCivMovement 50
   refugeePoachBlock: 0, // ...but a war/disaster REFUGEE isn't being poached, they flee, so they pay
   //                       NO cross-civ friction. With ownCivRefugeeBonus also lowered, a collapsing
   //                       civ's refugees spill to neutral neighbours (populating the cross-civ
@@ -79,7 +123,14 @@ export const CONFIG = {
   // foreign one on distance alone, so crisis refugees relocated WITHIN their own (equally-stricken) civ
   // and died there. This is a positive pull ADDED toward a cross-civ destination for a source in acute
   // crisis (war/disaster), so its people actually flee the dying region to ANOTHER empire. 0 = off.
-  crisisEscapeBonus: 14,
+  crisisEscapeBonus: 0, // crossCivMovement 50; raising the slider restores it (14 at 100)
+  // Displacement stays internal first: a source in acute crisis adds this to destinations in its OWN civilization,
+  // so people who can shelter at home do. Most displacement in history is internal, and the at-scale runs showed the
+  // opposite: one neighbour took nearly every cross-civ refugee and ran 35-42% above its no-mod population (mod tests
+  // 69, 72). Mod test 82 measured the choice: of 63 crisis sources whose best destination was foreign, 45 had a
+  // homeland option, worth a median 36% of the foreign pull (gap p10/p50/p90 = 2 / 12.3 / 23.3 points), so 12 flips
+  // about half of those moves and 24 about nine in ten. 0 = a crisis sends people wherever the pull is highest.
+  crisisInternalBonus: 24,
   cooldownTurns: 8, // turns a source rests after emigrating
   minRuralToEmigrate: 1, // a source keeps at least this much rural pop
   refugeesPercent: 50, // % of rural pop that flees a conquered/razed city
@@ -116,6 +167,14 @@ export const CONFIG = {
   // ── prosperity: happiness + population terms ──────────────────────
   localHappinessFactor: 6.0, // city net happiness weight
   populationFactor: 1.0, // subtracted (small thriving towns still attract)
+  // Productiveness is per-citizen: weighted yields / population^popExponent. At 1 that is a straight
+  // per-head average, which punishes a large settlement twice — its own size divides away everything it
+  // builds (a wonder worth +4 culture is 0.38 points in a city of 13 and 1.25 in a town of 4) on top of
+  // the flat `populationFactor` penalty. Below 1 the divisor grows more slowly than the population, so a
+  // big settlement keeps more of what it has built and can hold its people against a small neighbour.
+  // This re-scales every settlement's economy term at once, so it is the knob to re-run
+  // scripts/calibration-sweep.mjs against if the economy/happiness balance needs checking. 1 = legacy.
+  popExponent: 0.85,
   // Cause classification: a peacetime departure from a city whose net happiness is below this is
   // attributed to `unhappiness` (push); at/above it the move is `prosperity` (a neighbour's pull).
   // Purely a reporting/attribution split, it never changes whether or where people move.
@@ -170,7 +229,19 @@ export const CONFIG = {
   // flood "war" refugees; it now takes a few sustained turns or real district damage. Tune lower for
   // gentler raids, up to 1.0 to restore the old "any siege = full war pressure" behavior.
   siegeBesiegedFloor: 0.3,
+  // A city-state or Independent Power raid is harassment, not an invasion. Facing only minor powers, the
+  // besieged floor drops to this and the whole violence observation is scaled by minorViolenceScale, so
+  // early-age raiding stops pushing a major-war refugee wave out of a small Antiquity city. Actual damage
+  // still counts at full weight: this raises the bar for BEING BESIEGED, not for being wrecked.
+  minorSiegeBesiegedFloor: 0.08,
+  minorViolenceScale: 0.4,
+  // Multiplier on violence when a MAJOR civilization is among the attackers (or the attackers are unknown). 1 = the
+  // measured war balance; moved by the majorWarRefugees Options slider.
+  majorViolenceScale: 1,
   vwPillage: 0.6, // per turn per pillaged tile in the borders (0 disables the scan)
+  combatEventsEnabled: true, // read the engine's combat event stream (off = polled signals only)
+  vwBattle: 1.2, // per fight in a city's territory - violence polling cannot see at all
+  vwCasualty: 2.5, // per unit killed in a city's territory (a battle lost is worse than one merely fought)
   violenceDecay: 0.55, // per-turn decay (a one-off skirmish fades in 2–3 turns)
   violencePerPoint: 12, // percent score penalty per intensity point
   violenceCapPct: 220, // max percent penalty from violence
@@ -179,6 +250,14 @@ export const CONFIG = {
   // ── emigration barriers (added to a source's reluctance) ──────────
   baseReluctance: 4,
   perExtraPop: 0.5, // destination already bigger than the source
+  // The mirror of perExtraPop, and the reason it needs one: the size comparison used to brake only the
+  // move INTO a bigger settlement, while `populationFactor` was simultaneously making every smaller
+  // settlement look better simply for being smaller. Nothing braked big → small, so a capital was
+  // permanently pushed toward its lesser neighbours whatever it built (watched: a size-13 capital
+  // carried a flat 2.0 points of pull toward a size-11 neighbour, half the base reluctance, from the
+  // population term alone). This charges the same friction for abandoning an established settlement for
+  // a smaller one. 0 = off, restoring the one-way push.
+  perFewerPop: 0.5,
   cityStateBarrier: 5,
 
   // ── geography ─────────────────────────────────────────────────────
@@ -235,6 +314,26 @@ export const CONFIG = {
   returnMinShare: 0.08, // a diaspora must be at least this share of the host city to draw returnees
   returnMinPoints: 3, // and the host must hold at least this many of that origin's points to give one
   returnCooldownTurns: 6, // min turns between returns out of the same host settlement
+  // Put down roots: a community whose enclave stands in its host settlement returns home at this share of
+  // returnRate (1 = no effect, 0 = none return), so return migration does not drain the communities
+  // enclaves are made of.
+  quarterRootsReturnScale: 0.25,
+
+  // ── Call our people home (§6g): a paid, player-initiated push on return migration ──
+  // You pay for the people who actually come, and for nobody else; a call with anyone callable always brings
+  // at least one home, so it is never money for nothing. The odds decide HOW MANY return. Each point is rolled
+  // separately from a seeded roll, so reloading cannot re-roll it. Internal and external are deliberately far
+  // apart: people already inside your borders mostly agree to go back; people who have built a life under
+  // another ruler mostly do not.
+  callHomeEnabled: true,
+  callHomeChanceInternal: 0.65, // per point, for moves between your OWN settlements
+  callHomeChanceExternal: 0.18, // per point, for your people living under another civilization
+  callHomeGoldPerPoint: 60, // fee per attempted point when paying in Gold
+  callHomeInfluencePerPoint: 12, // fee per attempted point when paying in Influence
+  callHomeExternalCostScale: 1.5, // asking another ruler's cities to empty costs more
+  callHomeMaxPointsPerAttempt: 3, // points attempted per call
+  callHomeCooldownTurns: 8, // turns before the same civilization may call again
+  callHomeOfferWhenCalm: true, // offer the call once no settlement is under distress and people are still away
 
   // ── refugee dilemmas (rare narrative decisions) ──
   // Once in a while a great wave of refugees reaches your lands and you pause for a short decision
@@ -278,6 +377,30 @@ export const CONFIG = {
   // ranking), and the established-share bar is relaxed to the foothold share. Lets a player deliberately
   // trigger an enclave to see the decision. Off by default; the min-stock floor still applies.
   quarterForce: false,
+  // How an established diaspora becomes an enclave: 0 = ASK (the decision pop-up, your cities only);
+  // 1 = AUTOMATIC in your cities (no pop-up: once the share bar has held through the dwell period the
+  // enclave forms with the origin's first stance); 2 = AUTOMATIC EVERYWHERE, AI cities included, so
+  // foreign communities in AI cities become enclave tiles too (the AI hosts get the tile's yield and pay
+  // the stance drawback). The per-civilization cap and the dwell period pace every mode.
+  quarterRecognition: 2,
+  // An enclave FADES when its community does: once the origin's share of the host settlement has stayed
+  // below quarterFadeShare for quarterFadeTurns consecutive turns, the enclave dissolves (its tile is
+  // removed, its record retired, the chronicle records it). The fade bar sits at half the 0.25 foothold,
+  // so a community that shrinks but persists keeps its enclave; integration (3% a turn) alone dissolves an
+  // unrenewed one in roughly 35 to 45 turns. 0 = never fade.
+  quarterFadeShare: 0.125,
+  quarterFadeTurns: 12,
+  // ABSOLUTE qualifier: a lead foreign origin with at least this many standing population points is
+  // "established" whatever its share, so a big cosmopolitan city can host an enclave (a thirty-pop
+  // capital would otherwise need ten foreign points for the 30% bar). Also the stock below which the
+  // fade rule may apply: an enclave fades only while its community is under BOTH the fade share and this
+  // stock. 0 = share only.
+  quarterEstablishedStock: 6,
+  // The stock bar SCALES with how big cities actually are in this game (cities grow across the ages, and
+  // with speed and map size): the bar above is the value when the mean tracked settlement holds
+  // quarterStockRefPop people, and it moves in proportion (clamped to 0.5x to 2x), so six points is half
+  // an Antiquity town but a modest quarter of a Modern capital. Measured Exploration mean was ~18.
+  quarterStockRefPop: 18,
   // On-screen self-test: when true, installs a floating "Self-Test" launcher on the HUD (see
   // emigration-selftest.js) that runs live diagnostics and can force the enclave pop-up / a toast, so a
   // player can verify the reported issues in-game without a dev console. Off by default.
@@ -286,9 +409,14 @@ export const CONFIG = {
   // is OFFERED, so a transient spike (a war-refugee wave that later integrates or goes home) never
   // triggers a permanent enclave. 0 = offer as soon as the bar is crossed (legacy behaviour). The dwell
   // clock tolerates brief dips below the bar (see quarterDwellGrace) so a one-pass wobble doesn't reset it.
-  quarterDwellTurns: 8, // turns an enclave must persist before the decision is offered
+  quarterDwellTurns: 8, // turns an ESTABLISHED enclave must persist before it is RECOGNIZED (stance decision)
   quarterDwellGrace: 3, // turns the diaspora may dip below the bar without resetting the dwell clock (grace/sticky)
-  quarterCapPerAge: 3, // hard cap on quarter decisions per age
+  quarterCapPerAge: 3, // hard cap on enclaves per host per age (decisions and automatic recognition)
+  // ── per-age pacing (emigration-enclave-pacing.js): at least one an age likely, never more than the cap ──
+  quarterPacingEnabled: true, // false = the plain bars all age long
+  quarterTargetPerAge: 1, // enclaves per host per age the catch-up aims for (0 = no catch-up)
+  quarterPacingMax: 0.4, // the most the formation bars are lowered (0.4 = bars read 60% of configured)
+  quarterPacingBy: 0.6, // the age fraction at which the full relaxation is reached (linear from 0)
   quarterCooldownTurns: 12, // minimum turns between quarter decisions
   quarterRewardAmount: 2, // per-turn benefit a chosen stance grants (its benefit yield); small (design §7: ±1-2)
   quarterDrawbackAmount: 1, // per-turn drawback a chosen stance charges (its drawback yield)
@@ -310,6 +438,36 @@ export const CONFIG = {
   assimilationDecay: 0.7, // per-turn load decay (≈ 6–8 turn assimilation duration)
   assimilationHappiness: 0.5, // happiness/turn drained per unit of load
   assimilationGold: 1.5, // gold/turn drained per unit of load (confirmed lever)
+  // ── departures made real (watched 2026-09-11, devtools/engine-probe) ──
+  // A departure abandons one of the source's rural improvements via the engine's DESTROY_ELEMENT
+  // (removes the tile AND the population point together, so the city's yields really drop; works on
+  // AI cities too). Off = the old counter-only decrement that left every tile working.
+  departureRemovesTile: true,
+  // ── arrivals made real for the human player ──
+  // 0 off (the raw write; the game's own Grow City prompt asks you to place it) · 1 automatic (the city
+  // places it at once with the game's EXPAND command) · 2 ask (native pop-up: choose the tile / let the
+  // city decide / later) · 3 migrant unit (newcomers arrive as a Migrant unit you resettle). AI cities
+  // always resolve their own pending points, so this only shapes YOUR experience.
+  arrivalPlacement: 2,
+  arrivalPreferSpecialists: false, // automatic placement seats newcomers as specialists when a slot exists
+  // In Ask me mode, which newcomers raise the pop-up; the rest are placed automatically. Refugees only by
+  // default: with every kind asked, a 131-turn test game raised 72 pop-ups (mod test 57).
+  arrivalAskRefugees: true,
+  arrivalAskMigrants: false,
+  arrivalAskReturnees: false,
+  // ── the recognized enclave becomes a real tile ──
+  // The enclave's own tooltip on the ordinary map: hovering an enclave's tile shows the mod's panel (name,
+  // stage, what stood there before, every yield source and its reasoning) in place of the game's tooltip,
+  // which can only describe the borrowed improvement the enclave is drawn with.
+  enclaveTooltipEnabled: true,
+  quarterPlaceImprovement: true, // place the never-buildable enclave tile on recognition (emigration-enclave-place.js)
+  // What the placed enclave tile IS (emigration-enclave-skins.js): 1 = THEMED, the origin's own unique
+  // improvement where it has one (a Goryeo enclave is a Gama), else another civilization's improvement of
+  // the stance's yield family, else the Village; 2 = the Village for every enclave (+2 Culture via
+  // data/emigration-enclave-village.xml); 0 = the per-civilization enclave improvement (no model, carries
+  // the stance yield natively). While any skin tile stands it IS the benefit: the stance's benefit grant
+  // steps aside and only its drawback is paid.
+  enclaveTileSkin: 1,
   // ── wealth-aware assimilation cost (P1.4) ──
   // The gold cost above scales with intake (load) but not with the civ's ABILITY
   // to pay. These knobs add a bounded treasury-aware multiplier on the GOLD cost
@@ -408,6 +566,22 @@ export const CONFIG = {
   antiSnowballWeight: 15, // 0 = off; 8 gentle / 15 standard / 28 strong (matches the Options knob)
   antiSnowballThreshold: 1.25, // fair-share multiple a civ may reach before the headwind bites
   antiSnowballExponent: 1.5, // escalation steepness past the threshold (super-linear)
+  // Small-civilization brake, the mirror of the anti-snowball headwind: a cross-civ move OUT of a civ below
+  // antiDrainThreshold × the world-average civ population pays weight × (threshold − ratio) ^ exponent, so a
+  // shrinking civ is not drained further (mod tests 57 and 58 measured the smallest civ 26% below its no-mod
+  // population). 0 = off.
+  antiDrainWeight: 24,
+  antiDrainThreshold: 0.8,
+  antiDrainExponent: 1,
+  // "Movement between civilizations" (Options slider, 0-100): a grouped setting. Moving it writes poachBlock,
+  // crisisEscapeBonus, and antiDrainWeight along GROUPED_SETTINGS.crossCivMovement (emigration-tunables.js).
+  crossCivMovement: 50,
+  // Grouped Options slider (0 to 100) for refugees from minor-power raids: moves minorViolenceScale and
+  // minorSiegeBesiegedFloor along GROUPED_SETTINGS.minorRaidRefugees (emigration-tunables.js). 50 = those defaults.
+  minorRaidRefugees: 50,
+  // Grouped Options slider for refugees from wars with major civilizations: moves majorViolenceScale and
+  // siegeBesiegedFloor along GROUPED_SETTINGS.majorWarRefugees. 50 = those defaults.
+  majorWarRefugees: 50,
 
   // ── Outlet: attrition when there's nowhere to flee (ON by default) ──
   // Keeps the model from being a closed system: a trapped, distressed population
@@ -538,6 +712,10 @@ export const CONFIG = {
   disasterStrikeFloor: 0.15,
   disasterSpeedShockEnabled: true, // divide the spike by S so slow speeds pay the same TOTAL bite
   disasterAccumCap: 18, // hard ceiling on a city's accumulated disaster distress (guarantees recovery)
+  // Mirror of siegeLossCapPct for the disaster channel: across one disaster crisis (until its distress
+  // decays away) a settlement loses at most this share of the population it had when the crisis first
+  // cost a point; the remnant digs in. Needed now that departures abandon real tiles. 1 = uncapped.
+  disasterLossCapPct: 0.5,
   disasterStackFalloff: true, // a new spike adds with diminishing returns the fuller the city already is
 
   // ── readout: composition-diversity ranking (Features S + T) ──────────────────

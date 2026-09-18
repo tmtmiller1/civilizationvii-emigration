@@ -111,3 +111,14 @@ assert.equal(reasonsPhrase(undefined), "", "empty for missing reasons");
 }
 
 console.log("move-reasons harness passed");
+
+// The localized connector arrives without its spaces from the text pipeline; the phrase pads it.
+{
+  const saved = globalThis.Locale;
+  globalThis.Locale = { compose: (k) => (k === "LOC_EMIG_LIST_AND" ? "and" : k) };
+  const { pullReasonsPhrase: phrase } = await import("/emigration/ui/emigration-move-reasons.js");
+  const two = phrase(["richer", "nearby"]);
+  assert.ok(/ and /.test(two), "trimmed connector is padded: " + two);
+  assert.ok(!/[a-z]and[a-z]/.test(two), "no glued words: " + two);
+  globalThis.Locale = saved;
+}

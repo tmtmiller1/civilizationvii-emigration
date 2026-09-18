@@ -1,0 +1,13 @@
+[2026-09-14 10:50:59]	Unhandled Promise Rejection: ReferenceError: WorldUI is not defined.  Re-run with inspector attached for callstack. 
+[2026-09-14 10:50:59]	Unhandled rejection error value: ReferenceError: WorldUI is not defined
+[2026-09-14 10:50:59]	HTML Parser Error@:fs://game/root-game.html@1:2043: Premature end of file  Currently open tags: html, div, div..
+[2026-09-14 10:50:59]	HTML Parser Error@:fs://game/root-game.html@1:2043: Premature end of file  Currently open tags: html, div, div..
+[2026-09-14 10:51:11]	HTML Parser Error@:fs://game/root-game.html@67:24: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-14 10:51:11]	HTML Parser Error@:fs://game/root-game.html@71:16: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-14 10:51:11]	HTML Parser Error@:fs://game/root-game.html@75:24: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-14 10:51:11]	HTML Parser Error@:fs://game/root-game.html@79:16: That tag isn't allowed here  Currently open tags: html, div, div, div, ..
+[2026-09-14 10:51:11]	HTML Parser Error@:fs://game/root-game.html@49:43: Tokenizer error with an unimplemented error message.
+[2026-09-14 10:51:59]	HTML Parser Error@:fs://game/root-game.html@1:512: Premature end of file  Currently open tags: html, div..
+[2026-09-14 10:52:01]	HTML Parser Error@:fs://game/root-game.html@1:512: Premature end of file  Currently open tags: html, div..
+[2026-09-14 10:52:04]	Error loading image - icon_left_bumper.  [object Object] 
+[2026-09-14 10:52:04]	Error loading image - icon_right_bumper.  [object Object] 

@@ -8,12 +8,16 @@
 // the tooltip reads the hovered tile's shares, so colour and percentages always agree.
 //
 // This is the one place that does the engine reads (owned plots, district class, build-up, population
-// scaling); the distribution math itself stays pure in emigration-ethnicity-distribution.js.
+// scaling, and a standing enclave's plot); the distribution math itself stays pure in
+// emigration-ethnicity-distribution.js.
 
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
 import { distributeTiles } from "/emigration/ui/emigration-ethnicity-distribution.js";
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
+import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { quarterSnapshotAt } from "/emigration/ui/emigration-quarter-state.js";
+import { enclaveStanding } from "/emigration/ui/emigration-enclave-place.js";
 
 // Per-tile density weights by district class, "urban districts have higher populations". A tile's
 // final weight is its class weight times a build-up bonus (constructibles on the tile).
@@ -69,10 +73,21 @@ function districtWeight(x, y) {
 /**
  * A settlement's owned tiles with their population-density weights (district class × build-up bonus).
  * Empty when the city has no readable plots.
+ *
+ * An ENCLAVE tile is floored at the urban weight. The enclave is placed on the nearest EMPTY land plot
+ * (emigration-enclave-place.js), which the map still classifies as bare rural or wilderness — so the one
+ * tile that is meant to read as a packed foreign quarter was coming out as the sparsest thing in the
+ * settlement, and the lens maps sparse to near-transparent. Watched in game 2026-09-17: the enclave tile
+ * was the faintest hex on screen. A quarter full of people is not wilderness, so it is weighted as the
+ * built-up district it represents.
  * @param {*} city City object.
+ * @param {Map<number, {x:number, y:number}>} anchors Enclave plots (civ → location), floored to urban.
  * @returns {{x:number, y:number, weight:number}[]} Weighted plots.
  */
-function classifyPlots(city) {
+function classifyPlots(city, anchors) {
+  /** @type {Set<string>} */
+  const enclaves = new Set();
+  anchors.forEach((a) => enclaves.add(a.x + "," + a.y));
   /** @type {{x:number, y:number, weight:number}[]} */
   const out = [];
   try {
@@ -81,7 +96,9 @@ function classifyPlots(city) {
       const loc = GameplayMap.getLocationFromIndex(i);
       if (!loc) continue;
       const buildUp = 1 + BUILDUP_PER * Math.min(constructibleCount(loc.x, loc.y), BUILDUP_CAP);
-      out.push({ x: loc.x, y: loc.y, weight: districtWeight(loc.x, loc.y) * buildUp });
+      const base = districtWeight(loc.x, loc.y);
+      const weight = enclaves.has(loc.x + "," + loc.y) ? Math.max(base, W_URBAN) * buildUp : base * buildUp;
+      out.push({ x: loc.x, y: loc.y, weight });
     }
   } catch (_) {
     /* ignore unreadable city */
@@ -143,22 +160,89 @@ export function tilesForCity(city) {
   const turn = gameTurn();
   const hit = _cache.get(key);
   if (hit && hit.turn === turn) return hit.value;
-  const value = computeTiles(city);
+  const value = computeTiles(city, key);
   if (_cache.size >= MAX_CACHE && !hit) _cache.clear();
   _cache.set(key, { turn, value });
   return value;
 }
 
 /**
- * Compute (uncached) a settlement's per-tile mosaic from its composition + classified plots.
- * @param {*} city City object. @returns {CityTiles|null} The tiles, or null.
+ * The composition of a settlement the pass has not recorded yet: everyone in it is the owner's own people. Mod
+ * test 86 found a freshly loaded save carries no stored composition at all (mod state is not saved into the save
+ * file), so the lens and the hover panel had no tiles to work with and drew nothing. That state is not unknown, it
+ * is 100% host, and the mosaic (and its density gradient) is still worth drawing.
+ * @param {*} city City object.
+ * @returns {*} A composition in the stored shape, or null when the settlement is unreadable.
  */
-function computeTiles(city) {
-  const comp = compositionForCity(city);
+function hostOnlyComposition(city) {
+  try {
+    const owner = city && typeof city.owner === "number" ? city.owner : null;
+    const total = city ? Number(city.population) : 0;
+    if (owner == null || !(total > 0)) return null;
+    const civs = [{ civ: owner, pts: total, share: 1 }];
+    return { total, owner, civs, dominant: { civ: owner, share: 1 } };
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * The settlement's ENCLAVE anchor pins: origin civ → the plot its standing Cultural Enclave occupies, so
+ * that diaspora's colour cluster centres on the tile the enclave marker actually sits on rather than on
+ * an unrelated hash tile. The quarters store is keyed by the host settlement's CENTRE, so a settlement
+ * holds at most one enclave record and this yields at most one pin.
+ *
+ * Gated on the tile STANDING (`enclaveStanding`, which also recognizes a Village-skinned enclave — on the
+ * map that is a plain Village, so a constructible-type check here would miss it): a record whose tile was
+ * pillaged or built over stops steering the lens, and the cluster reverts to its hash anchor. Never
+ * throws — an unreadable store or plot yields no pins and the lens paints exactly as it did before.
+ *
+ * Reads the per-turn SNAPSHOT, not `quarterAt`: the lens is its own isolate and does not write quarters,
+ * and the writer's copy is loaded once, so `quarterAt` here would freeze whatever the store held on the
+ * lens's first paint (an empty one in a fresh session) and no enclave would ever pin.
+ * @param {string} key The settlement's "x,y" centre key.
+ * @returns {Map<number, {x:number, y:number}>} Origin civ → enclave plot (empty when none).
+ */
+function enclaveAnchors(key) {
+  /** @type {Map<number, {x:number, y:number}>} */
+  const out = new Map();
+  try {
+    const rec = quarterSnapshotAt(key);
+    if (!rec || typeof rec.civ !== "number" || !rec.placed) return out;
+    if (typeof rec.placed.plot !== "number" || !enclaveStanding(rec)) return out;
+    const loc = GameplayMap.getLocationFromIndex(rec.placed.plot);
+    if (loc && typeof loc.x === "number" && typeof loc.y === "number") {
+      out.set(rec.civ, { x: loc.x, y: loc.y });
+    }
+  } catch (_) {
+    /* no pin — fall back to the hash anchor */
+  }
+  return out;
+}
+
+/**
+ * The share an origin must hold for an enclave to form (`quarterEstablishedShare`) — the ceiling on how
+ * much of a plain tile any diaspora may colour. Reading it from CONFIG keeps the lens honest against the
+ * live rule: retune the enclave bar and the lens moves with it. 0 when unreadable (no extra ceiling).
+ * @returns {number} The bar in [0, 1].
+ */
+function enclaveBar() {
+  const n = Number(CONFIG.quarterEstablishedShare);
+  return Number.isFinite(n) && n > 0 ? Math.min(1, n) : 0;
+}
+
+/**
+ * Compute (uncached) a settlement's per-tile mosaic from its composition + classified plots.
+ * @param {*} city City object. @param {string} key The settlement's "x,y" centre key.
+ * @returns {CityTiles|null} The tiles, or null.
+ */
+function computeTiles(city, key) {
+  const comp = compositionForCity(city) || hostOnlyComposition(city);
   if (!comp || !comp.dominant) return null;
-  const plots = classifyPlots(city);
+  const anchors = enclaveAnchors(key);
+  const plots = classifyPlots(city, anchors);
   if (!plots.length) return null;
-  const tiles = distributeTiles(plots, comp, scaledPeopleFor(comp.total));
+  const tiles = distributeTiles(plots, comp, scaledPeopleFor(comp.total), { anchors, plainCap: enclaveBar() });
   /** @type {Map<string, TilePaint>} */
   const byKey = new Map();
   for (const t of tiles) byKey.set(t.x + "," + t.y, t);

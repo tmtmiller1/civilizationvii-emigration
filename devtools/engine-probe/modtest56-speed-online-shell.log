@@ -1,0 +1,5 @@
+[2026-09-15 06:46:15]	[EmigProbe] shell attached speed=ONLINE 
+[2026-09-15 06:46:30]	[EmigProbe] shell config reset to single player 
+[2026-09-15 06:46:33]	[EmigProbe] shell speed options [["GAMESPEED_ONLINE","LOC_GAMESPEED_ONLINE_NAME"],["GAMESPEED_QUICK","LOC_GAMESPEED_QUICK_NAME"],["GAMESPEED_STANDARD","LOC_GAMESPEED_STANDARD_NAME"],["GAMESPEED_EPIC","LOC_GAMESPEED_EPIC_NAME"],["GAMESPEED_MARATHON","LOC_GAMESPEED_MARATHON_NAME"]] current="GAMESPEED_STANDARD" 
+[2026-09-15 06:46:33]	[EmigProbe] shell set GameSpeeds="GAMESPEED_ONLINE" returned 0 now="GAMESPEED_ONLINE" 
+[2026-09-15 06:46:35]	[EmigProbe] shell startGame called (Play Now) 

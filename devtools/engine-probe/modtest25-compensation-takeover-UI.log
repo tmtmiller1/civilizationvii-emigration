@@ -1,0 +1,15 @@
+[2026-09-13 16:58:49]	[EmigProbe] shell attached 
+[2026-09-13 16:58:50]	[EmigProbe] shell query complete 
+[2026-09-13 16:58:51]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-13 16:58:51]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-13 16:59:09]	[EmigTest] modtest14 attached 
+[2026-09-13 16:59:23]	[EmigTest] CITY Washington, D.C. emptyPlots=1 landTiles=true 
+[2026-09-13 16:59:23]	[EmigTest] START turn=66 city=Washington, D.C. origin=4 nativeCaravanserai={"YIELD_GOLD":5} 
+[2026-09-13 16:59:23]	[EmigTest] PLACED {"type":"IMPROVEMENT_CARAVANSERAI","plot":4293,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A"} (before = the farmstead's plot yields) 
+[2026-09-13 16:59:30]	[EmigTest] AFTER-CREATE plotYields={"YIELD_FOOD":2,"YIELD_PRODUCTION":1,"YIELD_GOLD":7} placed={"type":"IMPROVEMENT_CARAVANSERAI","plot":4293,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A"} standing=true treasury=804.06 
+[2026-09-13 16:59:30]	[EmigTest] ACTIONS done; ending 2 turns 
+[2026-09-13 16:59:55]	[EmigTest] TURN activated n=2 turn=67 ALIVE 
+[2026-09-13 17:00:01]	[EmigTest] TURN+1 (settled by the mod's pass) plotYields={"YIELD_FOOD":2,"YIELD_PRODUCTION":1,"YIELD_GOLD":7} placed={"type":"IMPROVEMENT_CARAVANSERAI","plot":4293,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A","stood":true} standing=true treasury=1936.76 
+[2026-09-13 17:00:23]	[EmigTest] TURN activated n=3 turn=68 ALIVE 
+[2026-09-13 17:00:29]	[EmigTest] TURN+2 (paid again) plotYields={"YIELD_FOOD":2,"YIELD_PRODUCTION":1,"YIELD_GOLD":7} placed={"type":"IMPROVEMENT_CARAVANSERAI","plot":4293,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_CHOLA_A","stood":true} standing=true treasury=2648.28 
+[2026-09-13 17:00:29]	[EmigTest] DONE modtest14 finished 

@@ -1,0 +1,8 @@
+[2026-09-14 10:12:10]	[EmigProbe] shell attached 
+[2026-09-14 10:12:11]	[EmigProbe] shell query complete 
+[2026-09-14 10:12:12]	[EmigProbe] shell found AugustusAnt43.Civ7Save turn 43 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-14 10:12:12]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-14 10:12:29]	[EmigTest] modtest26 attached 
+[2026-09-14 10:12:35]	[EmigTest] L1 at start (the sweep fires 2-4 s after polling sees GameStarted): empty=11 {"Birmingham":1,"Paris":1,"Chang'an":4,"Thăng Long":5} 
+[2026-09-14 10:12:43]	[EmigTest] L2 eight seconds later: empty=0 {} (11 in the saved state) 
+[2026-09-14 10:12:43]	[EmigTest] DONE modtest26 finished 

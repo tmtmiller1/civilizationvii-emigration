@@ -1,0 +1,15 @@
+[2026-09-15 20:36:37]	JS Error: fs://game/base-standard/ui/unit-flags/privateer-flags.js:38: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-15 20:36:37]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-15 20:36:37]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-15 20:37:45]	JS Error: fs://game/base-standard/ui/unit-flags/privateer-flags.js:38: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-15 20:37:45]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-15 20:37:45]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-15 20:37:45]	JS Error: fs://game/base-standard/ui/unit-flags/privateer-flags.js:38: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-15 20:37:45]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-15 20:37:45]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-15 20:40:44]	JS Error: fs://game/base-standard/ui/unit-flags/privateer-flags.js:38: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-15 20:40:44]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-15 20:40:44]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-15 20:41:42]	JS Error: fs://game/base-standard/ui/unit-flags/privateer-flags.js:38: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-15 20:41:42]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-15 20:41:42]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')

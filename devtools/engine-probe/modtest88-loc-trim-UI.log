@@ -1,0 +1,9 @@
+[2026-09-15 20:48:17]	[EmigProbe] shell attached 
+[2026-09-15 20:48:18]	[EmigProbe] shell query complete 
+[2026-09-15 20:48:19]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-15 20:48:19]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-15 20:48:37]	[EmigTest] modtest88 attached 
+[2026-09-15 20:48:54]	[EmigTest] TRIM [{"key":"PROS_TILE_SUFFIX","got":"· this tile","lead":false,"trail":false},{"key":"LIST_AND","got":"and","lead":false,"trail":false},{"key":"CF_FLAG_PAREN","got":"","lead":false,"trail":false},{"key":"CF_EVENT_BOTH","got":"","lead":false,"trail":false},{"key":"RO_ORIGINS_MORE","got":"","lead":false,"trail":false},{"key":"RO_STATUS_RESTING","got":"","lead":false,"trail":false},{"key":"RO_STATUS_TO_MOVE","got":"","lead":false,"trail":false},{"key":"RO_RIVAL_CIV","got":"(rival civilization)","lead":false,"trail":false},{"key":"ETH_TILE_SUFFIX","got":"· this tile","lead":false,"trail":false},{"key":"DISASTER_STRIKES","got":"","lead":false,"trail":false},{"key":"DISASTER_STRIKES_AT","got":"","lead":false,"trail":false},{"key":"PROS_TIER_AVG","got":"About average","lead":false,"trail":false},{"key":"PROS_TILE_BEST","got":"Best land here","lead":false,"trail":false}] 
+[2026-09-15 20:48:54]	[EmigTest] VERDICT rows with an edge space surviving: 0 of 11 (0 = the loader trims and code must add its own separators) 
+[2026-09-15 20:48:54]	[EmigTest] ARG "(+3 more)" 
+[2026-09-15 20:48:54]	[EmigTest] DONE modtest88 finished 

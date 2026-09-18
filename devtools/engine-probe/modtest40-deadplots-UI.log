@@ -1,0 +1,31 @@
+[2026-09-14 10:02:01]	[EmigProbe] shell attached 
+[2026-09-14 10:02:02]	[EmigProbe] shell query complete 
+[2026-09-14 10:02:03]	[EmigProbe] shell found AugustusAnt43.Civ7Save turn 43 age AGE_ANTIQUITY missingMods=0 unowned=0 
+[2026-09-14 10:02:03]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-14 10:02:19]	[EmigTest] modtest24 attached 
+[2026-09-14 10:02:36]	[EmigTest] START turn=43 local=0 width=96 settlements=19 
+[2026-09-14 10:02:36]	[EmigTest] D0 {"plot":2568,"xy":"72,26","owner":8,"city":"Thăng Long","town":false,"pop":5,"district":{"type":"DISTRICT_RURAL","owner":8,"id":196610},"cons":[],"inExpand":false} 
+[2026-09-14 10:02:36]	[EmigTest] D0 {"plot":4568,"xy":"56,47","owner":5,"city":"Chang'an","town":false,"pop":7,"district":{"type":"DISTRICT_RURAL","owner":5,"id":196610},"cons":[],"inExpand":false} 
+[2026-09-14 10:02:36]	[EmigTest] D0 {"plot":3773,"xy":"29,39","owner":4,"city":"Paris","town":false,"pop":9,"district":{"type":"DISTRICT_RURAL","owner":4,"id":262147},"cons":[],"inExpand":false} 
+[2026-09-14 10:02:36]	[EmigTest] D0 {"plot":3870,"xy":"30,40","owner":4,"city":"Paris","town":false,"pop":9,"district":{"type":"DISTRICT_WONDER","owner":4,"id":131073},"cons":["WONDER_DUR_SHARRUKIN"],"inExpand":false} 
+[2026-09-14 10:02:36]	[EmigTest] D0 {"plot":2953,"xy":"73,30","owner":8,"city":"Thăng Long","town":false,"pop":5,"district":{"type":"DISTRICT_RURAL","owner":8,"id":524295},"cons":[],"inExpand":false} 
+[2026-09-14 10:02:36]	[EmigTest] D0 {"plot":2855,"xy":"71,29","owner":8,"city":"Thăng Long","town":false,"pop":5,"district":{"type":"DISTRICT_RURAL","owner":8,"id":458758},"cons":[],"inExpand":false} 
+[2026-09-14 10:02:36]	[EmigTest] D0 {"plot":2856,"xy":"72,29","owner":8,"city":"Thăng Long","town":false,"pop":5,"district":{"type":"DISTRICT_RURAL","owner":8,"id":327684},"cons":[],"inExpand":false} 
+[2026-09-14 10:02:36]	[EmigTest] D0 {"plot":4567,"xy":"55,47","owner":5,"city":"Chang'an","town":false,"pop":7,"district":{"type":"DISTRICT_RURAL","owner":5,"id":262147},"cons":[],"inExpand":false} 
+[2026-09-14 10:02:36]	[EmigTest] D0 {"plot":4667,"xy":"59,48","owner":5,"city":"Chang'an","town":false,"pop":7,"district":{"type":"DISTRICT_RURAL","owner":5,"id":655369},"cons":[],"inExpand":false} 
+[2026-09-14 10:02:36]	[EmigTest] D0 {"plot":4759,"xy":"55,49","owner":5,"city":"Chang'an","town":false,"pop":7,"district":{"type":"DISTRICT_RURAL","owner":5,"id":524295},"cons":[],"inExpand":false} 
+[2026-09-14 10:02:36]	[EmigTest] D0 {"plot":1756,"xy":"28,18","owner":0,"city":"Birmingham","town":true,"pop":3,"district":{"type":"DISTRICT_RURAL","owner":0,"id":786443},"cons":[],"inExpand":false} 
+[2026-09-14 10:02:36]	[EmigTest] D0 {"plot":2761,"xy":"73,28","owner":8,"city":"Thăng Long","town":false,"pop":5,"district":{"type":"DISTRICT_RURAL","owner":8,"id":262147},"cons":[],"inExpand":false} 
+[2026-09-14 10:02:36]	[EmigTest] D1 London owner=0(local) town=false pop=12 emptyRuralDistricts=0 offeredByExpand=0 | bareOwnedPlots=11 offered=0 expandTotal=0 
+[2026-09-14 10:02:36]	[EmigTest] D1 Birmingham owner=0(local) town=true pop=3 emptyRuralDistricts=1 offeredByExpand=0 | bareOwnedPlots=7 offered=4 expandTotal=7 
+[2026-09-14 10:02:36]	[EmigTest] D1 Paris owner=4 town=false pop=9 emptyRuralDistricts=1 offeredByExpand=0 | bareOwnedPlots=11 offered=0 expandTotal=0 
+[2026-09-14 10:02:36]	[EmigTest] D1 Chang'an owner=5 town=false pop=7 emptyRuralDistricts=3 offeredByExpand=0 | bareOwnedPlots=12 offered=0 expandTotal=0 
+[2026-09-14 10:02:36]	[EmigTest] D1 Thăng Long owner=8 town=false pop=5 emptyRuralDistricts=5 offeredByExpand=0 | bareOwnedPlots=16 offered=0 expandTotal=0 
+[2026-09-14 10:02:36]	[EmigTest] D1 total empty rural districts=10 (local 1, in towns 1) 
+[2026-09-14 10:02:39]	[EmigTest] D2 Birmingham town=true before={"plot":1756,"xy":"28,18","owner":0,"city":"Birmingham","town":true,"pop":3,"district":{"type":"DISTRICT_RURAL","owner":0,"id":786443},"cons":[],"inExpand":false} afterDistrictDestroy={"plot":1756,"xy":"28,18","owner":0,"city":"Birmingham","town":true,"pop":3,"district":null,"cons":[],"inExpand":true} 
+[2026-09-14 10:02:42]	[EmigTest] D2 Paris town=false before={"plot":3773,"xy":"29,39","owner":4,"city":"Paris","town":false,"pop":9,"district":{"type":"DISTRICT_RURAL","owner":4,"id":262147},"cons":[],"inExpand":false} afterDistrictDestroy={"plot":3773,"xy":"29,39","owner":4,"city":"Paris","town":false,"pop":9,"district":null,"cons":[],"inExpand":false} 
+[2026-09-14 10:02:46]	[EmigTest] D3 Birmingham town=true departure={"ok":true,"mode":"tile","type":"IMPROVEMENT_CAMP","plot":1754} pop 3->2 plotAfterDeparture={"plot":1754,"xy":"26,18","owner":0,"city":"Birmingham","town":true,"pop":2,"district":{"type":"DISTRICT_RURAL","owner":0,"id":524295},"cons":[],"inExpand":false} 
+[2026-09-14 10:02:49]	[EmigTest] D3 plotAfterDistrictDestroy={"plot":1754,"xy":"26,18","owner":0,"city":"Birmingham","town":true,"pop":2,"district":null,"cons":[],"inExpand":true} pop=2 
+[2026-09-14 10:02:54]	[EmigTest] D3 re-place canStart={"Success":true} plotAfterRePlace={"plot":1754,"xy":"26,18","owner":0,"city":"Birmingham","town":true,"pop":3,"district":{"type":"DISTRICT_RURAL","owner":0,"id":983047},"cons":["IMPROVEMENT_CAMP"],"inExpand":false} pop=3 pending=1 
+[2026-09-14 10:02:58]	[EmigTest] SHOT dead-plot-fixed 
+[2026-09-14 10:03:08]	[EmigTest] DONE modtest24 finished 

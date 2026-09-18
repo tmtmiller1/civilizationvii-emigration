@@ -108,6 +108,10 @@ function seedForeignMajority(x, y, name, hostPts, foreign, foreignPts) {
 // ── a lapsed enclave is pruned once it stays below the bar past the grace window ──
 {
   clearState();
+  // Share stages only: the absolute-stock qualifier (6 points establish whatever the share) is off here,
+  // since this diaspora keeps its 10 points while the host balloons.
+  const wasStock = CONFIG.quarterEstablishedStock;
+  CONFIG.quarterEstablishedStock = 0;
   seedForeignMajority(1, 1, "Athens", 10, 2, 10);
   const athens = sig(1, 1, "Athens", 0, 20);
   observeQuarterDwell([athens], 0, 108); // clock present, lastSeen 108
@@ -119,6 +123,105 @@ function seedForeignMajority(x, y, name, hostPts, foreign, foreignPts) {
   assert.ok(candidacyAt("1,1"), "a dip within the grace window does not drop the clock");
   observeQuarterDwell([athens], 0, 111); // 111 - 108 = 3 > grace → pruned
   assert.equal(candidacyAt("1,1"), null, "past the grace window the lapsed clock is pruned");
+  CONFIG.quarterEstablishedStock = wasStock;
+}
+
+// ── the two-step lifecycle, end to end: ESTABLISHED creates the enclave at once (no dwell), the
+//    Chronicle announces it exactly once, and RECOGNITION waits out the dwell on the SAME record ──
+{
+  clearState();
+  const { chronicleLog, clearChronicle } = await import("/emigration/ui/emigration-chronicle.js");
+  clearChronicle();
+  const { establishEnclaves, applyQuarterChoice } = quarter.__test;
+  seedForeignMajority(1, 1, "Athens", 10, 2, 10);
+  const athens = sig(1, 1, "Athens", 0, 20);
+
+  observeQuarterDwell([athens], 0, 100);
+  establishEnclaves([athens], 0, 100, false);
+  const est = stateMod.quarterAt("1,1");
+  assert.ok(est && est.civ === 2, "the enclave EXISTS the turn its community is established");
+  assert.equal(est.recognized, false, "established, not yet recognized");
+  assert.equal(est.applied.benefitAmount + est.applied.penaltyAmount, 0, "no stance yields before recognition");
+  const founded = chronicleLog().filter((e) => /Athens/.test(e.title));
+  assert.equal(founded.length, 1, "the 'Enclave of Athens' entry fires once, WITH a real enclave behind it");
+
+  establishEnclaves([athens], 0, 101, false);
+  assert.equal(chronicleLog().filter((e) => /Athens/.test(e.title)).length, 1, "a later pass does not re-announce it");
+  assert.equal(stateMod.quarterAt("1,1").turn, 100, "nor re-create it");
+
+  assert.equal(candidateFromSignal(athens, 0, 104), null, "recognition is NOT offered before the dwell is met");
+  const cand = candidateFromSignal(athens, 0, 108);
+  assert.ok(cand && cand.tileKey === "1,1", "after 8 established turns the enclave is up for recognition");
+
+  applyQuarterChoice("a", "1,1", { ...cand.quarter, city: athens.city }, 0, 108);
+  const rec = stateMod.quarterAt("1,1");
+  assert.equal(rec.recognized, true, "recognized");
+  assert.equal(rec.turn, 100, "the same enclave: its formation turn is unchanged");
+  assert.equal(candidateFromSignal(athens, 0, 120), null, "a recognized enclave is never offered again");
+  clearChronicle();
+}
+
+// ── the per-origin cap binds ESTABLISHMENT: a third same-origin enclave is never created ──
+{
+  clearState();
+  const { establishEnclaves } = quarter.__test;
+  const none = { benefitYield: null, benefitAmount: 0, penaltyYield: null, penaltyAmount: 0 };
+  for (const key of ["40,40", "41,41"]) {
+    stateMod.putQuarter(key, { civ: 2, owner: 0, optionId: "ignore", turn: 90, applied: none, contested: false, contestedTurn: -999 });
+  }
+  seedForeignMajority(1, 1, "Athens", 10, 2, 10);
+  establishEnclaves([sig(1, 1, "Athens", 0, 20)], 0, 100, false);
+  assert.equal(stateMod.quarterAt("1,1"), null, "two enclaves of one origin is the cap: no third is created");
+}
+
+// ── on-screen notices: the LOCAL player's enclave being established, recognized, and fading each raise
+//    a notice that states the yields; another host's enclave reaches the log only ──
+{
+  clearState();
+  const { clearChronicle } = await import("/emigration/ui/emigration-chronicle.js");
+  clearChronicle();
+  const { recognizeAutomatically, establishEnclaves, dissolveEnclave } = quarter.__test;
+  // A minimal DOM so the HUD toast can be observed (its text is the second child of each toast element).
+  const shown = [];
+  const el = () => ({ style: {}, children: [], appendChild(c) { this.children.push(c); }, remove() {} });
+  const realDoc = globalThis.document, realTimeout = globalThis.setTimeout;
+  globalThis.document = { body: { appendChild: (t) => shown.push(t.children[1].textContent) }, head: el(),
+    getElementById: () => null, createElement: el };
+  globalThis.setTimeout = () => 0; // the dismiss timer must not hold the test process open
+  CONFIG.notifyMode = 1;
+  CONFIG.notifyToasts = true;
+  CONFIG.quarterRewardAmount = 2;
+  CONFIG.quarterDrawbackAmount = 1;
+
+  seedForeignMajority(1, 1, "Athens", 10, 2, 10);
+  const athens = sig(1, 1, "Athens", 0, 20);
+  observeQuarterDwell([athens], 0, 100);
+  establishEnclaves([athens], 0, 100, false);
+  assert.equal(shown.length, 1, "establishing the player's enclave raises a notice");
+  assert.ok(/Athens/.test(shown[0]), "it names the city");
+
+  observeQuarterDwell([athens], 0, 108);
+  recognizeAutomatically([athens], 0, 108, false);
+  assert.equal(stateMod.quarterAt("1,1").recognized, true, "recognition needs no pop-up: it is automatic");
+  assert.equal(shown.length, 2, "recognition raises a notice");
+  assert.ok(/\(\+2 .*−1 .*\)$/.test(shown[1]), "the notice states the stance yields it adds: " + shown[1]);
+
+  dissolveEnclave("1,1", stateMod.quarterAt("1,1"), 130);
+  assert.equal(shown.length, 3, "the enclave fading raises a notice");
+  assert.ok(/\(−2 .*\+1 .*\)$/.test(shown[2]), "stated as what the host loses: " + shown[2]);
+
+  // Another host's enclave: logged, never raised on the player's HUD.
+  clearState();
+  comp.__test.recordCompositionPass([sig(5, 5, "Sparta", 7, 10), sig(90, 90, "Home", 2, 60)], []);
+  comp.__test.recordCompositionPass([sig(5, 5, "Sparta", 7, 20), sig(90, 90, "Home", 2, 50)],
+    [{ srcOwner: 2, srcName: "Home", destOwner: 7, destName: "Sparta", points: 10, cause: "opportunity" }]);
+  establishEnclaves([sig(5, 5, "Sparta", 7, 20)], 7, 100, false);
+  assert.ok(stateMod.quarterAt("5,5"), "the other host's enclave is created all the same");
+  assert.equal(shown.length, 3, "but it raises no notice for the local player");
+
+  globalThis.document = realDoc;
+  globalThis.setTimeout = realTimeout;
+  clearChronicle();
 }
 
 console.log("quarter-dwell harness passed");
