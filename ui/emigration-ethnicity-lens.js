@@ -7,8 +7,10 @@
 //     read whose city it is regardless of the fill.
 //   • FILL — the BLEND of every origin living on the tile, weighted by its share (emigration-ethnicity-
 //     colour.js), so the map is a continuous gradient between banner colours rather than one colour or
-//     another. A diaspora concentrates into a cluster (distribution model), strongest where an enclave
-//     stands, so its neighbourhood shades toward its own colour and fades into the host's.
+//     another. The tile's population density sets its SATURATION (grey → that blend) and opacity together,
+//     the same ramp the Prosperity lens uses, so a dense core is vivid and a sparse fringe is washed out.
+//     A diaspora concentrates into a cluster (distribution model), strongest where an enclave stands, so
+//     its neighbourhood shades toward its own colour and fades into the host's.
 // The hover panel gives the numbers.
 //
 // Same self-registering UIScript pattern as emigration-prosperity-lens.js (LensManager layer +
@@ -21,6 +23,7 @@ import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { setBasePlotTooltipHidden } from "/emigration/ui/emigration-plot-tooltip-suppress.js";
 import { tilesForCity } from "/emigration/ui/emigration-ethnicity-tiles.js";
+import { compositionVersion } from "/emigration/ui/emigration-composition.js";
 import { tileFill, unit } from "/emigration/ui/emigration-ethnicity-colour.js";
 
 const LENS = "emig-ethnicity-lens";
@@ -28,7 +31,7 @@ const LAYER = "emig-ethnicity-layer";
 const HEX_GRID = 1; // OVERLAY_PRIORITY.HEX_GRID, inlined
 const FALLBACK_HEX = "#888888"; // neutral grey when a civ colour can't be resolved
 // Contrast curve on a tile's density within its settlement (< 1 lifts the middle, so the many mid-density
-// tiles still read instead of washing out). Same shape the Prosperity lens uses. The fill's own colour and
+// tiles still read instead of washing out). Same shape the Prosperity lens uses. The fill's saturation and
 // opacity constants live with the blend, in emigration-ethnicity-colour.js.
 const CONTRAST_GAMMA = 0.55;
 // Each tile's BORDER is the settlement's main (dominant) origin colour at full strength, so you always
@@ -107,9 +110,9 @@ function tilePaints() {
 }
 
 /**
- * One settlement's per-tile paints: each tile in the blend of the origins living on it, at an opacity carrying the
- * tile's density within this settlement. Empty only when the settlement is unreadable, since the mosaic itself is
- * always built (an unrecorded settlement counts as all-host).
+ * One settlement's per-tile paints: each tile in the blend of the origins living on it, at a saturation and opacity
+ * carrying the tile's density within this settlement. Empty only when the settlement is unreadable, since the
+ * mosaic itself is always built (an unrecorded settlement counts as all-host).
  * @param {*} s A city signal.
  * @returns {{x:number, y:number, fill:*, edge:*}[]} Per-tile paints.
  */
@@ -150,21 +153,25 @@ function batchByFill(paints) {
   return [...groups.values()];
 }
 
-/** @type {{turn:number, batches:*[]}|null} Per-turn cache of the batched paints. */
+/** @type {{turn:string, batches:*[]}|null} Cache of the batched paints, per ledger version. */
 let _paintCache = null;
 
-/** The current game turn for the lens cache key, or -1. @returns {number} The turn. */
+/**
+ * The lens cache key: the ledger's version (turn plus the recorder's pass stamp), so a pass that saved after the
+ * lens first painted this turn is picked up instead of waiting a turn. "" when unreadable.
+ * @returns {string} The key.
+ */
 function lensTurn() {
   try {
-    return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : -1;
+    return compositionVersion();
   } catch (_) {
-    return -1;
+    return "";
   }
 }
 
 /**
- * The batched per-tile paints, memoized for the current turn, so toggling the lens off and back on
- * within the same turn reuses the result instead of re-scanning every owned tile.
+ * The batched per-tile paints, memoized for the ledger's current version, so toggling the lens off and back on
+ * with nothing new recorded reuses the result instead of re-scanning every owned tile.
  * @returns {*[]} The fill batches.
  */
 function cachedBatches() {
@@ -258,9 +265,47 @@ function toggleLens() {
   }
 }
 
+/**
+ * Repaint the open lens when the ledger has changed since it last painted. The lens otherwise paints only when
+ * LensManager applies it, so one left open across End Turn kept last turn's colours until it was toggled
+ * (ethnicity audit item O1). Painting the layer from outside LensManager's apply call does show on the map, from
+ * a timer and from inside a PlayerTurnActivated handler (mod test 148).
+ * @param {EthnicityLensLayer} layer The registered layer.
+ */
+function repaintIfStale(layer) {
+  try {
+    if (LensManager.activeLens !== LENS) return;
+    if (_paintCache && _paintCache.turn === lensTurn()) return;
+    layer.applyLayer();
+  } catch (e) {
+    console.error("[Emigration.lens] repaint failed", e);
+  }
+}
+
+/**
+ * Check for a new ledger after the local player's turn starts. The mod's pass runs inside its own handler for
+ * the same event, and handler order is not guaranteed, so the check runs after the event's handlers have
+ * finished and once more a little later.
+ * @param {EthnicityLensLayer} layer The registered layer.
+ */
+function repaintAfterPasses(layer) {
+  try {
+    engine.on("PlayerTurnActivated", (/** @type {*} */ d) => {
+      const who = d && (d.player ?? d.Player);
+      if (who !== GameContext.localPlayerID) return;
+      setTimeout(() => repaintIfStale(layer), 0);
+      setTimeout(() => repaintIfStale(layer), 3000);
+    });
+  } catch (e) {
+    console.error("[Emigration.lens] turn hook failed", e);
+  }
+}
+
 // ── Self-registration (runs on UIScript load, in the HUD context) ──────────────────────
 try {
-  LensManager.registerLensLayer(LAYER, new EthnicityLensLayer());
+  const layer = new EthnicityLensLayer();
+  LensManager.registerLensLayer(LAYER, layer);
+  repaintAfterPasses(layer);
   LensManager.registerLens(LENS, new EthnicityLens());
 } catch (e) {
   console.error("[Emigration.lens] ethnicity registration failed", e);

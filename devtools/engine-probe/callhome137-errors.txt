@@ -1,0 +1,4 @@
+[2026-09-17 22:24:45]	HTML Parser Error@:fs://game/core/ui/shell/root-shell.html@1:453: Premature end of file  Currently open tags: html, div..
+[2026-09-17 22:24:49]	HTML Parser Error@:fs://game/root-game.html@1:2043: Premature end of file  Currently open tags: html, div, div..
+[2026-09-17 22:24:49]	HTML Parser Error@:fs://game/root-game.html@1:2043: Premature end of file  Currently open tags: html, div, div..
+[2026-09-17 22:25:04]	HTML Parser Error@:fs://game/root-game.html@49:43: Tokenizer error with an unimplemented error message.

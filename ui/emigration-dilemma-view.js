@@ -29,7 +29,10 @@
 //   quote     → the optional attributed quote, presented like the base game's tech/civic quotes: a filigree
 //               divider, then an inner frame holding the quote in italics and its attribution on its own line
 //               (a decorator on screen-dialog-box adds these elements; the plain body line is the fallback)
-//   choices[] → one stacked option button each (label + the consequence cue as its hover tooltip)
+//   choices[] → one stacked option button each (label + the consequence cue as its hover tooltip); a label
+//               may carry an [icon:] tag (the call-home costs), which the decorator makes sure is drawn
+//               as an icon (see stylizeCaptions). A choice with `disabled: true` is drawn greyed out by the
+//               game's own button and cannot be picked (the call-home sizes the treasury cannot cover)
 //   dismissId → the button ALSO wired to Escape / the ✕ / cancel (default "away")
 
 import { loc } from "/emigration/ui/emigration-loc.js";
@@ -109,6 +112,10 @@ function softWrap(s, maxLen) {
 
 /** @type {Map<string, string>} Quotes waiting for their dialog to attach, by dialog title. */
 const pendingQuotes = new Map();
+/** @type {Set<string>} Titles of dialogs whose buttons carry [icon:] tags, waiting for their dialog to attach. */
+const pendingIconTitles = new Set();
+/** When to check the buttons after attach, twice: the engine's own caption pass may land a frame late. */
+const CAPTION_CHECK_MS = [150, 900];
 /** Whether the screen-dialog-box decorator that draws quotes is registered. */
 let quoteDecoratorReady = false;
 
@@ -211,11 +218,20 @@ function quoteBlock(quote) {
 }
 
 /**
+ * A dialog's title attribute, or "" when unreadable.
+ * @param {*} root The dialog element. @returns {string} The title.
+ */
+function dialogTitle(root) {
+  const title = root && typeof root.getAttribute === "function" ? root.getAttribute("title") : null;
+  return typeof title === "string" ? title : "";
+}
+
+/**
  * The pending quote for a dialog root, removed from the queue, or "" when the dialog is not one of ours.
  * @param {*} root The dialog element. @returns {string} The quote.
  */
 function takePendingQuote(root) {
-  const title = root && typeof root.getAttribute === "function" ? root.getAttribute("title") : null;
+  const title = dialogTitle(root);
   if (!title || !pendingQuotes.has(title)) return "";
   const quote = pendingQuotes.get(title) || "";
   pendingQuotes.delete(title);
@@ -232,7 +248,70 @@ function insertQuote(root, quote) {
   if (host) host.insertBefore(quoteBlock(quote), body ? body.nextSibling : null);
 }
 
-/** Decorates every screen-dialog-box; acts only on a dialog whose title has a pending quote. */
+/**
+ * Make sure every [icon:] tag in a button caption is drawn as an icon. A caption reaches the button as a raw
+ * `data-l10n-id`, and the base game never puts an icon tag in one, so this checks rather than assumes: a label
+ * still showing the literal tag is re-rendered through Locale.stylize, the same call the dialog body goes
+ * through. Watched 2026-09-17 (mod test 130): the engine's own pass does stylize captions (an fxs-font-icon
+ * per tag within 150ms), so on the shipped game this finds nothing to do; it stays as insurance.
+ * @param {*} root The dialog element. @returns {{fixed:number, sample:string}} How many labels were re-rendered,
+ *   and what the first icon-bearing label reads now.
+ */
+function stylizeCaptions(root) {
+  let fixed = 0;
+  let sample = "";
+  if (typeof Locale === "undefined" || typeof Locale.stylize !== "function") return { fixed, sample };
+  for (const button of root.querySelectorAll("fxs-button")) {
+    const caption = button.getAttribute("caption-nol10n") || button.getAttribute("caption") || "";
+    if (!caption.includes("[icon:")) continue;
+    const label = button.querySelector("[data-l10n-id]");
+    if (!label) continue;
+    if (String(label.textContent).includes("[icon:")) {
+      label.innerHTML = Locale.stylize(caption);
+      fixed++;
+    }
+    if (!sample) sample = String(label.innerHTML).slice(0, 80);
+  }
+  return { fixed, sample };
+}
+
+/**
+ * Check a dialog's captions on each CAPTION_CHECK_MS tick, logging what was found so an in-game probe can
+ * tell whether the engine drew the icons itself or this fallback had to.
+ * @param {*} root The dialog element.
+ */
+function scheduleCaptionCheck(root) {
+  if (typeof setTimeout !== "function") return;
+  for (const ms of CAPTION_CHECK_MS) {
+    setTimeout(() => {
+      try {
+        const r = stylizeCaptions(root);
+        // Watched 2026-09-17 (mod test 130): the engine draws the icons itself (fxs-font-icon in every label,
+        // nothing re-rendered), so this only speaks up when the fallback actually had to act.
+        if (r.fixed > 0) {
+          console.warn("[Emigration.dilemma] caption icons at " + ms + "ms: re-rendered " + r.fixed
+            + " label(s); first reads: " + r.sample);
+        }
+      } catch (e) {
+        derr("caption stylize failed:", e);
+      }
+    }, ms);
+  }
+}
+
+/**
+ * Remember that a dialog's buttons carry [icon:] tags, so the decorator checks them once it attaches.
+ * @param {string} title The dialog title. @param {{label:string}[]} options The option buttons.
+ */
+function noteIconCaptions(title, options) {
+  if (!quoteDecoratorReady) return;
+  if (options.some((o) => typeof o.label === "string" && o.label.includes("[icon:"))) pendingIconTitles.add(title);
+}
+
+/**
+ * Decorates every screen-dialog-box; acts only on a dialog whose title has a pending quote or pending
+ * icon-bearing captions.
+ */
 class QuoteDialogDecorator {
   /** @param {*} val The dialog component (its `.Root` is the element). */
   constructor(val) {
@@ -242,12 +321,16 @@ class QuoteDialogDecorator {
   /** Lifecycle hook fired before the dialog attaches. */
   beforeAttach() {}
 
-  /** After the dialog built its frame and body: insert the quote block between the body and the buttons. */
+  /**
+   * After the dialog built its frame and body: insert the quote block between the body and the buttons, and
+   * arrange for icon tags in the buttons to be checked.
+   */
   afterAttach() {
     try {
       const root = this.dialog && this.dialog.Root;
       const quote = takePendingQuote(root);
       if (quote) insertQuote(root, quote);
+      if (pendingIconTitles.delete(dialogTitle(root))) scheduleCaptionCheck(root);
     } catch (e) {
       derr("quote block failed:", e);
     }
@@ -259,6 +342,35 @@ class QuoteDialogDecorator {
   /** Lifecycle hook fired after the dialog detaches. */
   afterDetach() {}
 }
+
+/** The id of the off-screen divider that keeps the filigree texture resident. */
+const WARM_ID = "emig-filigree-warm";
+
+/**
+ * Pre-load the filigree divider's texture. The engine decodes a background image asynchronously and does not
+ * repaint the element when the decode lands, so the FIRST dialog of a session to draw the divider showed a blank
+ * gap where it belonged (watched 2026-09-17, mod test 135: the element measured 230×43 with its background-image
+ * set, and nothing painted; the next dialog drew it). A hidden divider parked off-screen at load, faintly opaque
+ * so it is actually painted, makes the texture resident before any dialog needs it. Idempotent; a no-op off-engine.
+ */
+function warmFiligree() {
+  try {
+    if (typeof document === "undefined" || !document.body || document.getElementById(WARM_ID)) return;
+    const el = document.createElement("div");
+    el.id = WARM_ID;
+    el.classList.add("filigree-divider-h3");
+    el.style.position = "absolute";
+    el.style.left = "-4000px";
+    el.style.top = "0";
+    el.style.opacity = "0.01";
+    el.style.pointerEvents = "none";
+    document.body.appendChild(el);
+  } catch (e) {
+    derr("filigree warm-up failed:", e);
+  }
+}
+// Long before the first dialog: the game-scope scripts load well ahead of the first turn pass.
+if (typeof setTimeout === "function") setTimeout(warmFiligree, 1500);
 
 /** Register the quote decorator once. A silent no-op where the Controls API is unavailable (node tests). */
 function installQuoteDecorator() {
@@ -309,9 +421,10 @@ function composeBody(view) {
  * tooltip), each wired to resolve the decision once. The dismiss choice is also bound to Escape / cancel /
  * the ✕. A safety-net cancel option is appended only if no choice carries the dismiss id (real callers
  * always include it, so it normally adds no visible button).
- * @param {{choices?:{id:string,label:string,note?:string}[]}} view The view model.
+ * @param {{choices?:{id:string,label:string,note?:string,disabled?:boolean}[]}} view The view model.
  * @param {string} dismissId The dismiss option id. @param {(id:string)=>void} resolve One-shot resolver.
- * @returns {{actions:string[], label:string, tooltip?:string, callback:()=>void}[]} The option buttons.
+ * @returns {{actions:string[], label:string, tooltip?:string, disabled?:boolean, callback:()=>void}[]} The
+ *   option buttons.
  */
 function buildOptions(view, dismissId, resolve) {
   const choices = Array.isArray(view.choices) ? view.choices : [];
@@ -319,13 +432,18 @@ function buildOptions(view, dismissId, resolve) {
     actions: c.id === dismissId ? ["cancel", "keyboard-escape"] : [],
     label: c.label,
     tooltip: c.note || void 0,
-    callback: () => resolve(c.id)
+    // The game greys a disabled option out and ignores it; the guard below is the mod's own belt and braces.
+    disabled: c.disabled === true && c.id !== dismissId ? true : void 0,
+    callback: () => {
+      if (c.disabled !== true || c.id === dismissId) resolve(c.id);
+    }
   }));
   if (!choices.some((c) => c.id === dismissId)) {
     options.push({
       actions: ["cancel", "keyboard-escape"],
       label: loc("LOC_EMIG_DILV_DISMISS", "Not now"),
       tooltip: void 0,
+      disabled: void 0,
       callback: () => resolve(dismissId)
     });
   }
@@ -344,6 +462,7 @@ export function showDilemma(view, onChoice) {
   try {
     if (!view) return;
     installQuoteDecorator();
+    warmFiligree();
     const dismissId = (typeof view.dismissId === "string" && view.dismissId.length) ? view.dismissId : "away";
     let resolved = false;
     const resolve = (/** @type {string} */ id) => {
@@ -357,6 +476,7 @@ export function showDilemma(view, onChoice) {
     const body = composeBody(view);
     if (view.quote && quoteDecoratorReady) pendingQuotes.set(title, bidiIsolate(view.quote));
     const options = buildOptions(view, dismissId, resolve);
+    noteIconCaptions(title, options);
     const present = () => {
       import("/core/ui/dialog-box/manager-dialog-box.js")
         .then((m) => {

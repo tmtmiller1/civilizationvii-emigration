@@ -8,3 +8,9 @@ reports/
 
 # generated i18n index (regenerate with scripts/i18n_extract.mjs)
 i18n/i18n-source.json
+
+# local desktop captures and editor/harness files
+/Screenshot *
+/.codegpt*
+# raw in-game probe captures (~10 MB each); curated images live in docs/steam-screenshots/
+devtools/engine-probe/shots/

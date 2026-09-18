@@ -1,7 +1,9 @@
 // emigration-displaced-quotes.js
 //
-// Epigraphs for the refugee decision and the newcomers pop-up, chosen by the civilization the people come
-// from. Curation rule, in order: the words of an actual refugee, exile, deportee, or migrant of that people;
+// Epigraphs for the refugee decision, the newcomers pop-up and the call-our-people-home dialogs, chosen by
+// the civilization the people come from (for a call home, that is the player's own). The homecoming lines
+// themselves live in emigration-return-quotes.js and are merged in here as the "return" kind.
+// Curation rule, in order: the words of an actual refugee, exile, deportee, or migrant of that people;
 // else a contemporary witness who writes about them with dignity; else the civilization has no row and a
 // general pool quote, also in the voice of the displaced, is used. Every line was located in a readable
 // copy of its source before shipping; the citations are in docs/quote-sources.md. Nothing here may
@@ -15,10 +17,12 @@ import { quoteDisplay, renderableLine } from "/emigration/ui/emigration-quarter-
 import { loc } from "/emigration/ui/emigration-loc.js";
 import { civType } from "/emigration/ui/emigration-naming.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
+import { RETURN_QUOTES, RETURN_POOL } from "/emigration/ui/emigration-return-quotes.js";
 
 /** @typedef {import("/emigration/ui/emigration-quarter-bonuses.js").QQuote} QQuote */
-/** @typedef {"refugee"|"migrant"} DisplacedKind */
-/** @typedef {{refugee?: QQuote[], migrant?: QQuote[]}} DisplacedRow */
+/** @typedef {"refugee"|"migrant"|"return"} DisplacedKind */
+/** @typedef {{refugee?: QQuote[], migrant?: QQuote[], return?: readonly QQuote[]}} DisplacedRow */
+/** @typedef {Readonly<{refugee: QQuote[], migrant: QQuote[], return: readonly QQuote[]}>} DisplacedPools */
 
 /**
  * One quote: the quoted line, the speaker, and the source work (with a (trans.) / (attr.) marker where it applies).
@@ -33,7 +37,7 @@ function q(text, who, source) {
  * both; a missing kind falls back to the pool.
  * @type {Readonly<Record<string, DisplacedRow>>}
  */
-export const DISPLACED_QUOTES = Object.freeze({
+const DISPLACED_BASE = Object.freeze({
   CIVILIZATION_ABBASID: {
     refugee: [
       q("أيا جارتا ما أنصف الدهر بيننا / تعالي أقاسمك الهموم تعالي (O neighbour, fate has not dealt fairly between us: come, let me share my sorrows with you, come!)", "Abu Firas al-Hamdani", "poems from captivity (10th c., trans.)")
@@ -378,8 +382,21 @@ export const DISPLACED_QUOTES = Object.freeze({
 });
 
 /**
- * General quotes from refugees and migrants of many times and places, for origins without their own.
- * @type {Readonly<{refugee: QQuote[], migrant: QQuote[]}>}
+ * The refugee and migrant rows with each civilization's homecoming quotes merged in as its "return" list, so
+ * one registry answers every kind.
+ * @type {Readonly<Record<string, DisplacedRow>>}
+ */
+export const DISPLACED_QUOTES = Object.freeze(Object.fromEntries(
+  [...new Set([...Object.keys(DISPLACED_BASE), ...Object.keys(RETURN_QUOTES)])].sort().map((civ) => [civ,
+    Object.freeze({
+      ...(DISPLACED_BASE[civ] || {}),
+      ...(RETURN_QUOTES[civ] ? { return: RETURN_QUOTES[civ] } : {})
+    })])
+));
+
+/**
+ * General quotes from refugees, migrants and returners of many times and places, for origins without their own.
+ * @type {DisplacedPools}
  */
 export const DISPLACED_POOLS = Object.freeze({
   refugee: [
@@ -399,7 +416,8 @@ export const DISPLACED_POOLS = Object.freeze({
     q("I should have been here 20 years ago. I just begin to feel like a man.", "a migrant writing from Chicago", "letter home (1917)"),
     q("Here I am, a youth, a young tree whose roots were plucked from the hills of Lebanon, yet I am deeply rooted here, and I would be fruitful.", "Kahlil Gibran", "To Young Americans of Syrian Origin (1926)"),
     q("少小離家老大回，鄉音無改鬢毛衰。兒童相見不相識，笑問客從何處來。 (I left home young and came back old; my accent unchanged, my temples grown thin. The children see me and do not know me; laughing, they ask where the stranger is from.)", "He Zhizhang", "Written on Returning Home (8th c., trans.)")
-  ]
+  ],
+  return: RETURN_POOL
 });
 
 /**
@@ -441,13 +459,13 @@ function ownList(registry, civ, kind) {
 /**
  * Pick the quote for an origin and kind: the civilization's own list when it has one, else the pool. Pure.
  * @param {string|null} civ The origin CivilizationType, or null (unknown or not met).
- * @param {string} kind "refugee" or "migrant". @param {string} seed Stable per-event seed.
+ * @param {string} kind "refugee", "migrant" or "return". @param {string} seed Stable per-event seed.
  * @param {Readonly<Record<string, DisplacedRow>>} [registry] The per-civ quotes.
- * @param {Readonly<{refugee: QQuote[], migrant: QQuote[]}>} [pools] The pools.
+ * @param {DisplacedPools} [pools] The pools.
  * @returns {{key:string, quote:QQuote}|null} The pick, or null when there is nothing to show.
  */
 export function pickDisplacedQuote(civ, kind, seed, registry = DISPLACED_QUOTES, pools = DISPLACED_POOLS) {
-  if (kind !== "refugee" && kind !== "migrant") return null;
+  if (kind !== "refugee" && kind !== "migrant" && kind !== "return") return null;
   const own = ownList(registry, civ, kind);
   const list = own.length ? own : pools[kind] || [];
   if (!list.length) return null;
@@ -473,7 +491,7 @@ function quotableCiv(pid) {
  * The display line for a refugee or migrant epigraph from an origin player: localized through its LOC row,
  * with the English display as the fallback, and unrenderable scripts reduced to their translation.
  * @param {number|null|undefined} pid The origin player id (null: pool only).
- * @param {string} kind "refugee" or "migrant". @param {string} seed Stable per-event seed.
+ * @param {string} kind "refugee", "migrant" or "return". @param {string} seed Stable per-event seed.
  * @returns {string} The line, or "" when there is nothing to show.
  */
 export function displacedQuoteFor(pid, kind, seed) {

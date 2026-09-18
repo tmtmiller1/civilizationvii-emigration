@@ -1,0 +1,3 @@
+[2026-09-18 10:00:00]	HTML Parser Error@:fs://game/root-game.html@1:1146: Premature end of file  Currently open tags: html, div..
+[2026-09-18 10:00:15]	HTML Parser Error@:fs://game/root-game.html@49:43: Tokenizer error with an unimplemented error message.
+[2026-09-18 10:01:58]	HTML Parser Error@:fs://game/root-game.html@1:25: Premature end of file  Currently open tags: html, div..

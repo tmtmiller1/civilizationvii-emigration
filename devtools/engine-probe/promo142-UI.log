@@ -1,0 +1,29 @@
+[2026-09-18 07:34:39]	[EmigProbe] shell attached 
+[2026-09-18 07:34:40]	[EmigProbe] shell query complete 
+[2026-09-18 07:34:40]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-18 07:34:41]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-18 07:34:58]	[EmigTest] modtest142 attached 
+[2026-09-18 07:35:13]	[EmigTest] modtest142 run local=0 turn=66 
+[2026-09-18 07:35:13]	[EmigTest] SETTINGS before {"preset":0,"grouped":{"crossCivMovement":50,"majorWarRefugees":50,"minorRaidRefugees":50},"tunables":{"emigrationBar":30,"cooldownTurns":8,"maxMovesPerTurn":8,"maxLossPerCityPerTurn":2,"maxGainPerCityPerTurn":4,"violencePerPoint":12,"distanceFactor":0.6,"fleeFactor":6,"warSurgeMax":3,"movesPerSiege":2,"poachBlock":30,"crisisEscapeBonus":0,"antiDrainWeight":24,"crisisInternalBonus":24,"majorViolenceScale":1,"siegeBesiegedFloor":0.3,"minorViolenceScale":0.4,"minorSiegeBesiegedFloor":0.08,"arrivalPlacement":2},"visibility":0} 
+[2026-09-18 07:35:13]	[EmigTest] SETTINGS run preset=3 crossCiv=100 maxMoves=12 poachBlock=12 
+[2026-09-18 07:35:13]	[EmigTest] SNAP START turn=66 crossCiv=100 top=[] 
+[2026-09-18 07:37:44]	[EmigTest] SNAP T n=5 turn=71 crossCiv=100 top=["Duisburg idx=0.95 origins=3 n=3","Frankfurt am Main idx=0.88 origins=3 n=3","Rostov on Don idx=0.69 origins=2 n=2"] 
+[2026-09-18 07:39:38]	[EmigTest] SNAP T n=10 turn=76 crossCiv=100 top=["Duisburg idx=1.37 origins=5 n=7","Königsberg idx=1.06 origins=4 n=4","Frankfurt am Main idx=0.92 origins=2 n=4"] 
+[2026-09-18 07:41:36]	[EmigTest] SNAP T n=15 turn=81 crossCiv=100 top=["Duisburg idx=1.47 origins=4 n=7","Königsberg idx=1.37 origins=5 n=5","Frankfurt am Main idx=1.22 origins=5 n=5"] 
+[2026-09-18 07:43:50]	[EmigTest] SNAP T n=20 turn=86 crossCiv=100 top=["Duisburg idx=1.36 origins=4 n=7","Königsberg idx=1.12 origins=4 n=5","Frankfurt am Main idx=1.09 origins=5 n=5"] 
+[2026-09-18 07:45:57]	[EmigTest] SNAP T n=25 turn=91 crossCiv=100 top=["Duisburg idx=1.27 origins=4 n=7","Frankfurt am Main idx=0.98 origins=4 n=5","Königsberg idx=0.92 origins=4 n=5"] 
+[2026-09-18 07:48:10]	[EmigTest] SNAP T n=30 turn=96 crossCiv=100 top=["Duisburg idx=1.19 origins=3 n=7","Kumbi Saleh idx=1 origins=4 n=5","Katsina idx=0.97 origins=3 n=3"] 
+[2026-09-18 07:50:26]	[EmigTest] SNAP T n=35 turn=101 crossCiv=100 top=["Duisburg idx=1.1 origins=2 n=7","Kumbi Saleh idx=1.07 origins=3 n=5","Frankfurt am Main idx=0.76 origins=3 n=5"] 
+[2026-09-18 07:52:45]	[EmigTest] SNAP T n=40 turn=106 crossCiv=100 top=["Kumbi Saleh idx=1.09 origins=4 n=5","Duisburg idx=1.03 origins=2 n=7","Katsina idx=1.02 origins=3 n=3"] 
+[2026-09-18 07:52:45]	[EmigTest] SNAP BEFORE SHOTS (turns) turn=106 crossCiv=100 top=["Kumbi Saleh idx=1.09 origins=4 n=5","Duisburg idx=1.03 origins=2 n=7","Katsina idx=1.02 origins=3 n=3"] 
+[2026-09-18 07:52:55]	[EmigTest] DASH tabs=["Network","Net Migration (Table)","Causes","My Cities","Diversity","Policies","Notifications","Guide"] 
+[2026-09-18 07:53:04]	[EmigTest] SHOT dash-network 
+[2026-09-18 07:53:15]	[EmigTest] SHOT dash-net 
+[2026-09-18 07:53:26]	[EmigTest] SHOT dash-causes 
+[2026-09-18 07:53:37]	[EmigTest] SHOT dash-settlements 
+[2026-09-18 07:53:49]	[EmigTest] SHOT dash-diversity 
+[2026-09-18 07:53:58]	[EmigTest] LENS diversity ranking ["Kumbi Saleh:1.09:4","Duisburg:1.03:2","Katsina:1.02:3","Frankfurt am Main:0.66:3","Königsberg:0.63:2","Rostov on Don:0.52:2","Risila:0.5:2","Agadez:0.5:2"] 
+[2026-09-18 07:53:58]	[EmigTest] LENS no ranked city to frame 
+[2026-09-18 07:53:58]	[EmigTest] SETTINGS restored matches=true {"preset":0,"grouped":{"crossCivMovement":50,"majorWarRefugees":50,"minorRaidRefugees":50},"tunables":{"emigrationBar":30,"cooldownTurns":8,"maxMovesPerTurn":8,"maxLossPerCityPerTurn":2,"maxGainPerCityPerTurn":4,"violencePerPoint":12,"distanceFactor":0.6,"fleeFactor":6,"warSurgeMax":3,"movesPerSiege":2,"poachBlock":30,"crisisEscapeBonus":0,"antiDrainWeight":24,"crisisInternalBonus":24,"majorViolenceScale":1,"siegeBesiegedFloor":0.3,"minorViolenceScale":0.4,"minorSiegeBesiegedFloor":0.08,"arrivalPlacement":2},"visibility":0} 
+[2026-09-18 07:53:58]	[EmigTest] VERDICT turnsRun=40 fallbacks=40 reason=turns 
+[2026-09-18 07:54:01]	[EmigTest] DONE modtest142 finished 
