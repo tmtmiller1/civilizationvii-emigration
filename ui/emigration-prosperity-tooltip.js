@@ -151,6 +151,8 @@ export function termLabel(t) {
   const thing = g ? named(t.name, g[0], g[1]) : "";
   const text = TERM_TEXT[t.kind];
   if (!text) return thing || t.kind; // a bare building/improvement is just its name
+  // "{Name}, a wonder" with the generic word for the name would read "Wonder, a wonder": the word alone says it.
+  if (text[2] === "name" && g && thing === loc(g[0], g[1]) && t.kind !== "pillaged") return thing;
   const arg = text[2] === "name" ? thing
     : text[2] === "count" ? String(t.count || 0)
       : text[2] === "amount" ? String(Math.round(t.amount || 0)) : "";
