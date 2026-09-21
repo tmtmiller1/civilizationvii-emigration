@@ -143,8 +143,12 @@
  * @property {number} quarterDwellGrace Turns a diaspora may dip below the bar without resetting the dwell clock.
  * @property {number} quarterCapPerAge Hard cap on Cultural Quarter decisions per age.
  * @property {number} quarterCooldownTurns Minimum turns between Cultural Quarter decisions.
- * @property {number} quarterRewardAmount One-time benefit granted by a chosen quarter stance.
- * @property {number} quarterDrawbackAmount One-time drawback charged by a chosen quarter stance.
+ * @property {number} quarterStanceTurns Turns of the host's own income a Culture / Science / Influence
+ *   stance pays, once, at recognition.
+ * @property {number} quarterGoldStanceTurns Turns of the host's Gold income a Gold stance pays (it costs nothing).
+ * @property {number} quarterStanceCostTurns Turns of the host's Gold income a non-Gold stance costs.
+ * @property {number[]} quarterStanceFloor The least a stance payout is, by age index, before the speed scalar.
+ * @property {number} quarterStanceCostFloorScale The least a stance price is, as a multiple of the payout floor.
  * @property {number} contestedQuarterPenalty Per-pass happiness strain per contested quarter.
  * @property {number} diasporaWarStrainCap Hard cap on total per-pass contested-quarter strain per host.
  * @property {number} contestedQuarterYieldFactor Share of its benefit yield a contested quarter still

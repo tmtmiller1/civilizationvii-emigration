@@ -1,0 +1,28 @@
+[2026-09-19 04:33:54]	[EmigProbe] shell attached 
+[2026-09-19 04:33:55]	[EmigProbe] shell query complete 
+[2026-09-19 04:33:55]	[EmigProbe] shell found EmigPromo106.Civ7Save turn 106 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-19 04:33:55]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-19 04:34:13]	[EmigTest] modtest160 attached 
+[2026-09-19 04:34:28]	[EmigTest] booted=object turn=106 
+[2026-09-19 04:34:43]	[EmigTest] CENSUS turn=106 {"plots":2027,"damaged":3,"localDamaged":2} 
+[2026-09-19 04:34:55]	[EmigTest] ENDTURN blocked: ONE AUTOPLAY TURN 
+[2026-09-19 04:35:23]	[EmigTest] CENSUS turn=107 advanced=true {"plots":2014,"damaged":3,"localDamaged":2} autoplay=1 answered=0 
+[2026-09-19 04:35:35]	[EmigTest] ENDTURN blocked: ONE AUTOPLAY TURN 
+[2026-09-19 04:35:58]	[EmigTest] CENSUS turn=108 advanced=true {"plots":2017,"damaged":3,"localDamaged":2} autoplay=2 answered=0 
+[2026-09-19 04:36:10]	[EmigTest] ENDTURN blocked: ONE AUTOPLAY TURN 
+[2026-09-19 04:36:40]	[EmigTest] CENSUS turn=109 advanced=true {"plots":2019,"damaged":3,"localDamaged":2} autoplay=3 answered=0 
+[2026-09-19 04:36:52]	[EmigTest] ENDTURN blocked: ONE AUTOPLAY TURN 
+[2026-09-19 04:37:18]	[EmigTest] CENSUS turn=110 advanced=true {"plots":2027,"damaged":3,"localDamaged":2} autoplay=4 answered=0 
+[2026-09-19 04:37:30]	[EmigTest] ENDTURN blocked: ONE AUTOPLAY TURN 
+[2026-09-19 04:37:59]	[EmigTest] CENSUS turn=111 advanced=true {"plots":2029,"damaged":4,"localDamaged":2} autoplay=5 answered=0 
+[2026-09-19 04:38:11]	[EmigTest] ENDTURN blocked: ONE AUTOPLAY TURN 
+[2026-09-19 04:38:40]	[EmigTest] CENSUS turn=112 advanced=true {"plots":2034,"damaged":4,"localDamaged":2} autoplay=6 answered=0 
+[2026-09-19 04:38:52]	[EmigTest] ENDTURN blocked: ONE AUTOPLAY TURN 
+[2026-09-19 04:39:23]	[EmigTest] CENSUS turn=113 advanced=true {"plots":2051,"damaged":4,"localDamaged":3} autoplay=7 answered=0 
+[2026-09-19 04:39:35]	[EmigTest] ENDTURN blocked: ONE AUTOPLAY TURN 
+[2026-09-19 04:40:06]	[EmigTest] CENSUS turn=114 advanced=true {"plots":2055,"damaged":5,"localDamaged":4} autoplay=8 answered=0 
+[2026-09-19 04:40:18]	[EmigTest] ENDTURN blocked: ONE AUTOPLAY TURN 
+[2026-09-19 04:40:46]	[EmigTest] CENSUS turn=115 advanced=true {"plots":2062,"damaged":7,"localDamaged":5} autoplay=9 answered=0 
+[2026-09-19 04:40:58]	[EmigTest] ENDTURN blocked: ONE AUTOPLAY TURN 
+[2026-09-19 04:41:30]	[EmigTest] CENSUS turn=116 advanced=true {"plots":2067,"damaged":8,"localDamaged":6} autoplay=10 answered=0 
+[2026-09-19 04:41:30]	[EmigTest] DONE modtest160 finished 

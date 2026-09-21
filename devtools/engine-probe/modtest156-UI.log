@@ -1,0 +1,20 @@
+[2026-09-18 20:27:56]	[EmigProbe] shell attached 
+[2026-09-18 20:27:57]	[EmigProbe] shell query complete 
+[2026-09-18 20:27:58]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-18 20:27:58]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-18 20:28:16]	[EmigTest] modtest156 attached 
+[2026-09-18 20:28:33]	[EmigTest] SETUP host=London origin=2 CIVILIZATION_BULGARIA atWar=true pools={"gold":804.06,"influence":0,"tech":1033,"civic":996,"netGold":705.24,"netCulture":221.27,"netScience":251.02,"netInfluence":-15.64} 
+[2026-09-18 20:28:33]	[EmigTest] GRANT +2000 Gold so the priced stance is affordable 
+[2026-09-18 20:28:36]	[EmigTest] POOLS after grant {"gold":2804.06,"influence":0,"tech":1033,"civic":996,"netGold":705.24,"netCulture":221.27,"netScience":251.02,"netInfluence":-15.64} 
+[2026-09-18 20:28:36]	[EmigTest] CHOICE a label="Learn their horsemanship  +375 [icon:YIELD_SCIENCE] −1410 [icon:YIELD_GOLD]" disabled=false payout={"benefitYield":"YIELD_SCIENCE","benefitAmount":375,"penaltyYield":"YIELD_GOLD","penaltyAmount":1410,"once":true} 
+[2026-09-18 20:28:36]	[EmigTest] CHOICE b label="Tax their trade  +530 [icon:YIELD_GOLD]" disabled=false payout={"benefitYield":"YIELD_GOLD","benefitAmount":530,"penaltyYield":null,"penaltyAmount":0,"once":true} 
+[2026-09-18 20:28:36]	[EmigTest] CHOICE ignore label="Let them be" disabled=false payout={"benefitYield":null,"benefitAmount":0,"penaltyYield":null,"penaltyAmount":0,"once":true} 
+[2026-09-18 20:28:36]	[EmigTest] DETAIL Paid once, when you choose. 
+[2026-09-18 20:28:38]	[EmigTest] DIALOG text="The Bulgar Enclave CULTURAL ENCLAVE The Bulgarian families of London have become more than newarrivals. By the harbour, their shops, shrines, workshops,festivals, and habits now draw a life of their own, a districtwith a memory from elsewhere. Recognise the enclave, and decidewhat tradition the city will make room for. Paid once, when you choose.\"Even if a man lives well, he dies, and another is born; let theone born last, seeing this, remember the one who made it.\"Khan Omurtag, Tarnovo column inscription, in Greek (c. 822,trans.)Learn their horsemanship +375 −1410 Tax their trade +530 Let them be" 
+[2026-09-18 20:28:38]	[EmigTest] DIALOG icons=4 buttons=[{"caption":"Learn their horsemanship  +375 [icon:YIELD_SCIENCE] −1410 [icon:YIELD_GOLD]","disabled":null,"iconsInLabel":2,"rawTagVisible":false},{"caption":"Tax their trade  +530 [icon:YIELD_GOLD]","disabled":null,"iconsInLabel":1,"rawTagVisible":false},{"caption":"Let them be","disabled":null,"iconsInLabel":0,"rawTagVisible":false}] 
+[2026-09-18 20:28:38]	[EmigTest] SHOT enclave-stance-popup 
+[2026-09-18 20:28:50]	[EmigTest] PRESS "Learn their horsemanship  +375 [icon:YIELD_SCIENCE] −1410 [icon:YIELD_GOLD]" before={"gold":2804.06,"influence":0,"tech":1033,"civic":996,"netGold":705.24,"netCulture":221.27,"netScience":251.02,"netInfluence":-15.64} 
+[2026-09-18 20:28:50]	[EmigTest] CHOSEN a 
+[2026-09-18 20:28:54]	[EmigTest] PAID chosen=a after={"gold":1394.06,"influence":0,"tech":1408,"civic":996,"netGold":705.24,"netCulture":229.07,"netScience":251.02,"netInfluence":-15.64} record.applied={"benefitYield":"YIELD_SCIENCE","benefitAmount":375,"penaltyYield":"YIELD_GOLD","penaltyAmount":1410,"once":true} placed="IMPROVEMENT_HIDDEN_FORTRESS" 
+[2026-09-18 20:28:54]	[EmigTest] DELTA gold=-1410 influence=0 tech=375 civic=0 
+[2026-09-18 20:28:57]	[EmigTest] DONE modtest156 finished 

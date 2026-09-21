@@ -348,6 +348,8 @@ function arrivalQuote(city, tally) {
  */
 export function arrivalPromptView(city, count, quote = "", origin = null) {
   const name = cityName(city);
+  const pop = "[icon:YIELD_POPULATION] +" + count;
+  const auto = autoTileYields(city, count);
   const refugees = !!origin && origin.kind === "refugee";
   const who = refugeeOriginPhrase(origin);
   const fled = fledPhrase(origin);
@@ -362,12 +364,86 @@ export function arrivalPromptView(city, count, quote = "", origin = null) {
       : loc("LOC_EMIG_ARRIVAL_TITLE", "Newcomers in {1_City}", name),
     body: refugees ? refugeeBody(count, who, fled, name) : migrantBody(count, name),
     dismissId: "later",
+    // Each button states what it gives, in the refugee and call-home buttons' shape. Every choice seats the
+    // same people; only "Let the city settle them" knows its tiles in advance, so only it adds their yields.
     choices: [
-      { id: "choose", label: loc("LOC_EMIG_ARRIVAL_CHOOSE", "Choose where they settle"), note: loc("LOC_EMIG_ARRIVAL_CHOOSE_N", "Opens the settlement's placement view; each point becomes a new rural tile.") },
-      { id: "auto", label: loc("LOC_EMIG_ARRIVAL_AUTO", "Let the city settle them"), note: loc("LOC_EMIG_ARRIVAL_AUTO_N", "The city picks a tile for each point now.") },
-      { id: "later", label: loc("LOC_EMIG_ARRIVAL_LATER", "Later"), note: loc("LOC_EMIG_ARRIVAL_LATER_N", "The game's Grow City prompt asks you to place them before your turn ends.") }
+      { id: "choose", label: caption(loc("LOC_EMIG_ARRIVAL_CHOOSE", "Choose where they settle"), [pop]), note: loc("LOC_EMIG_ARRIVAL_CHOOSE_N", "Opens the settlement's placement view; each point becomes a new rural tile.") },
+      { id: "auto", label: caption(loc("LOC_EMIG_ARRIVAL_AUTO", "Let the city settle them"), [pop, ...auto]), note: loc("LOC_EMIG_ARRIVAL_AUTO_N", "The city picks a tile for each point now.") },
+      { id: "later", label: caption(loc("LOC_EMIG_ARRIVAL_LATER", "Later"), [pop]), note: loc("LOC_EMIG_ARRIVAL_LATER_N", "The game's Grow City prompt asks you to place them before your turn ends.") }
     ]
   };
+}
+
+/**
+ * A button caption: the label, then its figures ("Let the city settle them: [icon:YIELD_POPULATION] +1, ...").
+ * @param {string} label The label. @param {string[]} parts The figures. @returns {string} The caption.
+ */
+function caption(label, parts) {
+  return label + ": " + parts.filter(Boolean).join(", ");
+}
+
+/** Yields shown on the automatic-placement button, in display order. */
+const TILE_YIELDS = Object.freeze(["YIELD_FOOD", "YIELD_PRODUCTION", "YIELD_GOLD", "YIELD_SCIENCE", "YIELD_CULTURE",
+  "YIELD_HAPPINESS", "YIELD_DIPLOMACY"]);
+
+/**
+ * A plot's yields for its owner ({YIELD_X: n}), or null when unreadable. A local copy of the enclave module's
+ * reader: importing that module here would pull its whole dependency chain into this one.
+ * @param {number} plot Plot index. @param {number} owner Player id. @returns {Record<string, number>|null} Yields.
+ */
+function plotYields(plot, owner) {
+  try {
+    const pairs = GameplayMap.getYields(plot, owner);
+    if (!Array.isArray(pairs)) return null;
+    /** @type {Record<string, number>} */
+    const out = {};
+    for (const p of pairs) {
+      const def = GameInfo.Yields.lookup(p[0]);
+      const type = def && def.YieldType ? String(def.YieldType) : String(p[0]);
+      const n = Number(p[1]);
+      if (n) out[type] = (out[type] || 0) + n;
+    }
+    return out;
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * The tiles "Let the city settle them" will take for `count` points, picked the way {@link placeOnTile} picks
+ * (a resource tile first, else the first the game offers), each removed before the next pick. Empty when the
+ * city seats newcomers as specialists first, or when the game offers no tile.
+ * @param {*} city City. @param {number} count Points. @returns {number[]} Plot indices.
+ */
+function autoTiles(city, count) {
+  try {
+    if (CONFIG.arrivalPreferSpecialists) return [];
+    const can = Game.CityCommands.canStart(city.id, CityCommandTypes.EXPAND, {}, false);
+    const offered = can && Array.isArray(can.Plots) ? can.Plots.slice() : [];
+    const out = [];
+    for (let i = 0; i < count && offered.length; i++) {
+      const p = pickExpandPlot(offered);
+      out.push(p);
+      offered.splice(offered.indexOf(p), 1);
+    }
+    return out;
+  } catch (_) {
+    return [];
+  }
+}
+
+/**
+ * What the tiles automatic placement will take yield, as caption figures ("[icon:YIELD_FOOD] +2"), or none
+ * when they cannot be known in advance.
+ * @param {*} city City. @param {number} count Points. @returns {string[]} The figures.
+ */
+function autoTileYields(city, count) {
+  /** @type {Record<string, number>} */
+  const sum = {};
+  for (const plot of autoTiles(city, count)) {
+    for (const [k, v] of Object.entries(plotYields(plot, city.owner) || {})) sum[k] = (sum[k] || 0) + v;
+  }
+  return TILE_YIELDS.filter((k) => sum[k] > 0).map((k) => "[icon:" + k + "] +" + Math.round(sum[k] * 10) / 10);
 }
 
 /**

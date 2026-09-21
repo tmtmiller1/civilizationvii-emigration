@@ -252,4 +252,22 @@ globalThis.GameplayMap = {
   CONFIG.disastersEnabled = false;
 }
 
+// The abandon log line carries the damage flag and the age since the tile was first seen damaged; a plot
+// seen undamaged is forgotten so a later raid starts a fresh age.
+{
+  const { noteDamage, firstSeenDamaged, resetDamageAges } = await import("/emigration/ui/emigration-damage-age.js");
+  resetDamageAges();
+  noteDamage(900, true, 3);
+  noteDamage(900, true, 4);
+  assert.equal(firstSeenDamaged(900), 3, "the first sighting sticks");
+  Game.turn = 7;
+  assert.equal(mod.abandonLine("departure", { type: "IMPROVEMENT_FARM", plot: 900, damaged: true }),
+    "abandoned IMPROVEMENT_FARM at plot 900 (departure, turn 7) damaged=yes firstSeenDamaged=3 damagedTurns=4");
+  assert.equal(mod.abandonLine("death", { type: "IMPROVEMENT_MINE", plot: 901, damaged: false }),
+    "abandoned IMPROVEMENT_MINE at plot 901 (death, turn 7) damaged=no");
+  noteDamage(900, false, 8);
+  assert.equal(firstSeenDamaged(900), null, "a repaired plot is forgotten");
+  Game.turn = 5;
+}
+
 console.log("departure-tile harness passed");

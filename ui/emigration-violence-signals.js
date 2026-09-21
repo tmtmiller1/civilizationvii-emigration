@@ -8,6 +8,7 @@
 // these; it lives in emigration-violence.js.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { noteDamage } from "/emigration/ui/emigration-damage-age.js";
 
 /**
  * Whether a live District has been overrun, its controlling player differs from its owner (the
@@ -189,8 +190,11 @@ export function pillagedCount(city) {
   let n = 0;
   try {
     const plots = city?.getPurchasedPlots?.();
+    const turn = typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
     for (const idx of plots || []) {
-      if (plotIndexPillaged(idx)) n++;
+      const hit = plotIndexPillaged(idx);
+      noteDamage(idx, hit, turn); // damage age for the departure log (emigration-damage-age.js)
+      if (hit) n++;
     }
   } catch (_) {
     /* ignore */

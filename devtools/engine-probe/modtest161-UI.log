@@ -1,0 +1,5 @@
+[2026-09-19 04:54:51]	[EmigProbe] shell attached 
+[2026-09-19 04:54:52]	[EmigProbe] shell query complete 
+[2026-09-19 04:54:52]	[EmigProbe] shell found EmigPromo106.Civ7Save turn 106 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-19 04:54:52]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-19 04:55:17]	[EmigTest] EVENT RandomEventOccurred {"eventID":-1,"eventType":2057870405,"severity":0,"mitigationLevel":0,"location":{"x":37,"y":44}} 

@@ -129,6 +129,26 @@ function makeCity(owner, id) {
   assert.equal(arrivalPromptView(c, 1).eyebrow, "Newcomers", "the pop-up names its category so it is not mistaken for an enclave");
   assert.equal(arrivalPromptView(c, 1).eyebrowIcon, "YIELD_POPULATION");
   assert.equal(v.quote, "", "no quote is passed when none is given");
+  // Each button states what it gives. No plot yields are readable yet (no GameplayMap.getYields), so the
+  // automatic button carries the population alone.
+  assert.deepEqual(v.choices.map((x) => x.label), ["Choose where they settle: [icon:YIELD_POPULATION] +2",
+    "Let the city settle them: [icon:YIELD_POPULATION] +2", "Later: [icon:YIELD_POPULATION] +2"]);
+  // With plot yields: the automatic button adds the tiles the city's own picker takes, the resource tile (201)
+  // first, then the first other offer (200), summed.
+  const YIELDS = { 200: [[1, 2], [2, 1]], 201: [[1, 1], [3, 2]] };
+  globalThis.GameplayMap.getYields = (plot) => YIELDS[plot] || [];
+  globalThis.GameInfo = { Yields: { lookup: (h) => ({ YieldType: { 1: "YIELD_FOOD", 2: "YIELD_PRODUCTION", 3: "YIELD_GOLD" }[h] }) } };
+  assert.equal(arrivalPromptView(c, 1).choices[1].label,
+    "Let the city settle them: [icon:YIELD_POPULATION] +1, [icon:YIELD_FOOD] +1, [icon:YIELD_GOLD] +2", "one point: the resource tile");
+  assert.equal(arrivalPromptView(c, 2).choices[1].label,
+    "Let the city settle them: [icon:YIELD_POPULATION] +2, [icon:YIELD_FOOD] +3, [icon:YIELD_PRODUCTION] +1, [icon:YIELD_GOLD] +2",
+    "two points: both tiles, summed");
+  CONFIG.arrivalPreferSpecialists = true;
+  assert.equal(arrivalPromptView(c, 1).choices[1].label, "Let the city settle them: [icon:YIELD_POPULATION] +1",
+    "when newcomers become specialists first, no tile is promised");
+  CONFIG.arrivalPreferSpecialists = false;
+  delete globalThis.GameplayMap.getYields;
+  delete globalThis.GameInfo;
   assert.equal(arrivalPromptView(c, 1, "\"Q\" — W").quote, "\"Q\" — W", "the view carries the epigraph it is given");
   // Flushing off-engine: showDilemma is a silent no-op without the core dialog module.
   assert.equal(flushArrivalPlacements(), 1);

@@ -37,10 +37,13 @@ const MAX_SPREE_CIVS = 64;
 const MAX_SPREE_EVENTS_PER_CIV = 32;
 
 /**
- * The choices offered, each with a one-line flavour cue (`note`) and a concrete `effect` string built
- * from the live CONFIG costs (so the displayed trade-off tracks the player's tunables). Built at call
- * time (not module-eval) so loc() resolves after Locale is live (L2) — mirrors emigration-quarter-registry.js.
- * @returns {{id:string, label:string, note:string, effect:string}[]} The offered choices.
+ * The choices offered, each with a one-line flavour cue (`note`, the button's hover tooltip) and its concrete
+ * costs in the button caption itself, built from the live CONFIG costs (so the displayed trade-off tracks the
+ * player's tunables). Same caption shape as the call-home pop-up: the yield icon, then the amount; the
+ * gain first, then the costs. Built at
+ * call time (not module-eval) so loc() resolves after Locale is live (L2) — mirrors
+ * emigration-quarter-registry.js.
+ * @returns {{id:string, label:string, note:string}[]} The offered choices.
  */
 function choices() {
   const n = (/** @type {*} */ v) => Math.max(0, Math.round(Number(v) || 0));
@@ -48,20 +51,20 @@ function choices() {
   const hw = n(CONFIG.dilemmaHappinessWelcome);
   const gf = n(CONFIG.dilemmaGoldFrontier);
   const ia = n(CONFIG.dilemmaInfluenceAway);
-  const gold = "[icon:YIELD_GOLD] " + loc("LOC_EMIG_DIL_FX_GOLD", "Gold");
-  const happy = "[icon:YIELD_HAPPINESS] " + loc("LOC_EMIG_DIL_FX_HAPPINESS", "Happiness");
-  const infl = "[icon:YIELD_DIPLOMACY] " + loc("LOC_EMIG_DIL_FX_INFLUENCE", "Influence");
-  const pop = "[icon:YIELD_POPULATION] " + loc("LOC_EMIG_DIL_FX_POP", "population");
-  const join = (/** @type {string[]} */ parts) => parts.filter(Boolean).join(", ");
+  const fx = (/** @type {string} */ yieldType, /** @type {string} */ amount) => "[icon:" + yieldType + "] " + amount;
+  const caption = (/** @type {string} */ label, /** @type {string[]} */ parts) =>
+    label + ": " + parts.filter(Boolean).join(", ");
   return [
-    { id: "welcome", label: loc("LOC_EMIG_DIL_WELCOME_LABEL", "Welcome them in"),
-      effect: join(["-" + gw + " " + gold, hw ? ("-" + hw + " " + happy) : "", "+1 " + pop]),
+    { id: "welcome",
+      label: caption(loc("LOC_EMIG_DIL_WELCOME_LABEL", "Welcome them in"),
+        [fx("YIELD_POPULATION", "+1"), fx("YIELD_GOLD", "-" + gw), hw ? fx("YIELD_HAPPINESS", "-" + hw) : ""]),
       note: loc("LOC_EMIG_DIL_WELCOME_NOTE", "A cost in gold and some short-term strain on your people; they settle among you and, in time, become your people.") },
-    { id: "frontier", label: loc("LOC_EMIG_DIL_FRONTIER_LABEL", "Settle the frontier"),
-      effect: join(["-" + gf + " " + gold, "+1 " + pop]),
+    { id: "frontier",
+      label: caption(loc("LOC_EMIG_DIL_FRONTIER_LABEL", "Settle the frontier"),
+        [fx("YIELD_POPULATION", "+1"), fx("YIELD_GOLD", "-" + gf)]),
       note: loc("LOC_EMIG_DIL_FRONTIER_NOTE", "A smaller cost in gold; send them to a smaller town to make a new start.") },
-    { id: "away", label: loc("LOC_EMIG_DIL_AWAY_LABEL", "Turn them away"),
-      effect: join(["-" + ia + " " + infl]),
+    { id: "away",
+      label: caption(loc("LOC_EMIG_DIL_AWAY_LABEL", "Turn them away"), [fx("YIELD_DIPLOMACY", "-" + ia)]),
       note: loc("LOC_EMIG_DIL_AWAY_NOTE", "A cost in international standing now; they move on down the road, their burden not yours to carry.") }
   ];
 }
@@ -404,27 +407,24 @@ function chronicleDecision(choiceId, d, hostSig, turn) {
 }
 
 /**
- * The view model for the modal: the prompt prose, then a plain list of each choice and the concrete
- * effect it applies (so the trade-off is visible before choosing, not just in prose), and the choices.
+ * The view model for the modal: the prompt prose and the choices, each button caption carrying the
+ * concrete costs it applies (so the trade-off is visible before choosing, not just in prose).
  * @param {{kind:string, instigator?:number, origin:number, points:number}} d The descriptor.
  * @param {number} turn Now.
- * @returns {{eyebrow:string, eyebrowIcon:string, details:string[], title:string, body:string, dismissId:string,
- *   quote:string, choices:{id:string,label:string,note:string,effect?:string}[]}} The view model.
+ * @returns {{eyebrow:string, eyebrowIcon:string, title:string, body:string, dismissId:string,
+ *   quote:string, choices:{id:string,label:string,note:string}[]}} The view model.
  */
 function dilemmaView(d, turn) {
   const origin = narrativeCiv(d.origin);
   const instigator = typeof d.instigator === "number" ? narrativeCiv(d.instigator) : origin;
   const people = formatPeopleExact(scaleCityPopulation(d.points, turn, "dilemma" + d.origin));
   const prompt = dilemmaPrompt({ kind: d.kind, instigator, origin, people, seed: "d" + d.origin + turn });
-  const cs = choices();
-  // The costs sit in their own paragraph after the story, one line per choice, the choice name in bold.
-  const details = cs.filter((c) => c.effect).map((c) => "[B]" + c.label + "[/B]: " + c.effect);
   // Dismissing (Escape / ✕ / cancel / click-outside) is "Turn them away": closing without choosing is
   // itself the refusal, and pays its Influence cost — there is no free dismissal. Set explicitly here so
   // the intent lives at the source rather than relying on showDilemma's fallback default.
   return {
     eyebrow: loc("LOC_EMIG_DILV_EYEBROW_DEFAULT", "Refugees"), eyebrowIcon: "YIELD_DIPLOMACY",
-    title: prompt.title, body: prompt.body, details, dismissId: "away", choices: cs,
+    title: prompt.title, body: prompt.body, dismissId: "away", choices: choices(),
     // An epigraph in the voice of that people's own refugees (a pool quote for an unmet civilization).
     quote: displacedQuoteFor(d.origin, "refugee", "dilemma|" + d.origin + "|" + turn)
   };

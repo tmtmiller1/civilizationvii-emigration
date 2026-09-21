@@ -1,32 +1,37 @@
 // emigration-quarter-bonuses.js
 //
 // The PER-CIVILISATION Cultural Quarter registry (plan §7): each origin civilization offers TWO
-// identity-grounded trade-off options for its quarter, plus a demonym for naming. Every option is a
-// small benefit yield paired with a matching drawback yield, with a one-line historical justification
-// ("why") — a scaled-down, city-scoped echo of that civ's real Civ VII identity, never generic filler.
+// identity-grounded stances for its enclave, plus a demonym for naming. A stance is a ONE-TIME payout the
+// host receives when it recognizes the enclave: `pays` is Gold, Influence, Science or Culture (the only
+// yields a script can grant: engine-closed.md, mod tests 152-153), and every stance that does not pay in
+// Gold costs Gold (the only yield a script can take). Each stance carries a one-line historical
+// justification (`why`), a scaled-down, city-scoped echo of that civ's real Civ VII identity.
 //
-// This module is PURE DATA + a lookup: it names YIELD IDENTITIES and flavour only; the concrete
-// AMOUNTS live in CONFIG (so balance stays in one place, exactly as the civ-agnostic registry did).
+// Each option also keeps the enclave TILE's yield family (`benefit`, `penalty`) and the line written for it
+// (`tileWhy`): the tile skins (emigration-enclave-skins.js) and the never-buildable per-stance improvements
+// (scripts/gen-enclave-improvements.mjs) still pick their art and tile yield from those, unchanged.
+//
+// This module is PURE DATA + a lookup: it names yield identities and flavour only; the concrete AMOUNTS
+// are computed from the host's own income when the stance is chosen (emigration-stance-payout.js).
 // Keyed by the GameInfo CivilizationType string (e.g. "CIVILIZATION_ROME"), resolved from a player's
 // civilizationType via emigration-naming.js `civType()`. Any civ WITHOUT a row still forms a quarter
-// (NEUTRAL fallback: a neutral ±Culture/Happiness pair), so the feature never throws on an unknown or
+// (NEUTRAL fallback: a Culture stance and a Gold stance), so the feature never throws on an unknown or
 // DLC civ.
-//
-// The draft yields transcribe plan §7 (grounded in each civ's uniques); they are a balance STARTING
-// POINT and may be re-verified against the shipped civ data (emigration-civ-tuning.js cites the source).
 
-/** @typedef {{id:string, benefit:string, penalty:string, why:string, label?:string}} QBonusOption */
+/** @typedef {{id:string, benefit:string, penalty:string, tileWhy:string, pays:string, why:string, label?:string}}
+ *   QBonusOption */
 /** @typedef {{demonym:string, options:QBonusOption[]}} QBonus */
 
 /**
- * One option: benefit yield ▸ penalty yield ▸ why, with an optional button-label override (used to give
- * martial civs a military-flavoured action verb instead of the yield-derived default).
- * @param {string} id @param {string} benefit @param {string} penalty @param {string} why
- * @param {string} [label] Optional label override.
+ * One option: the tile's yield family and its line (benefit ▸ penalty ▸ tileWhy), then the stance: the
+ * yield it pays, its line, and an optional button-label override for a stance whose action the
+ * yield-derived default verb would misname.
+ * @param {string} id @param {string} benefit @param {string} penalty @param {string} tileWhy
+ * @param {{pays:string, why:string, label?:string}} stance The stance.
  * @returns {QBonusOption}
  */
-function opt(id, benefit, penalty, why, label) {
-  return label ? { id, benefit, penalty, why, label } : { id, benefit, penalty, why };
+function opt(id, benefit, penalty, tileWhy, stance) {
+  return { id, benefit, penalty, tileWhy, ...stance };
 }
 
 const C = "YIELD_CULTURE";
@@ -36,6 +41,7 @@ const S = "YIELD_SCIENCE";
 const F = "YIELD_FAITH";
 const FO = "YIELD_FOOD";
 const H = "YIELD_HAPPINESS";
+const D = "YIELD_DIPLOMACY";
 
 /**
  * The per-civilisation quarter registry. Each entry: a demonym (for "<Demonym> Quarter" naming, which
@@ -45,173 +51,173 @@ const H = "YIELD_HAPPINESS";
 export const QUARTER_BONUSES = Object.freeze({
   // ── Antiquity origins ──
   CIVILIZATION_ABBASID: { demonym: "Abbasid", options: [
-    opt("a", S, G, "House-of-Wisdom scholars translate, but their stipends drain the treasury"),
-    opt("b", H, P, "famed gardens and salons soothe the city, but few hands work the yards")] },
+    opt("a", S, G, "House-of-Wisdom scholars translate, but their stipends drain the treasury", { pays: S, why: "House-of-Wisdom scholars translate, but their stipends drain the treasury" }),
+    opt("b", H, P, "famed gardens and salons soothe the city, but few hands work the yards", { pays: D, why: "their salons and famed gardens receive envoys from across the known world, at the city's expense" })] },
   CIVILIZATION_AKSUM: { demonym: "Aksumite", options: [
-    opt("a", G, C, "Red-Sea traders enrich the docks, but coin flows to the quays, not the old rites"),
-    opt("b", F, H, "their stelae-churches draw pilgrims, and the crowds throng the ward")] },
+    opt("a", G, C, "Red-Sea traders enrich the docks, but coin flows to the quays, not the old rites", { pays: G, why: "Red-Sea traders enrich the docks and pay their harbour dues in coin" }),
+    opt("b", F, H, "their stelae-churches draw pilgrims, and the crowds throng the ward", { pays: C, why: "their stelae-churches draw pilgrims and scribes, and the city pays their upkeep" })] },
   CIVILIZATION_ASSYRIA: { demonym: "Assyrian", options: [
-    opt("a", P, H, "their siege-engineers arm your foundries and rams and towers roll out, though their martial bearing sours the ward", "Arm your siege-works"),
-    opt("b", S, G, "captured codices fill the archives, but curating spoils costs coin")] },
+    opt("a", P, H, "their siege-engineers arm your foundries and rams and towers roll out, though their martial bearing sours the ward", { pays: S, why: "their siege-engineers teach your foundries to build rams and towers, and their workshops are dear to keep", label: "Learn their siege-craft" }),
+    opt("b", S, G, "captured codices fill the archives, but curating spoils costs coin", { pays: C, why: "captured codices fill the archives, but curating spoils costs coin" })] },
   CIVILIZATION_BABYLON: { demonym: "Babylonian", options: [
-    opt("a", S, G, "tablet-house scribes keep the star-tables, and their stipends tell on the treasury"),
-    opt("b", FO, P, "terraced canal-gardens green the ward, but the waterworks tie up hands")] },
+    opt("a", S, G, "tablet-house scribes keep the star-tables, and their stipends tell on the treasury", { pays: S, why: "tablet-house scribes keep the star-tables, and their stipends tell on the treasury" }),
+    opt("b", FO, P, "terraced canal-gardens green the ward, but the waterworks tie up hands", { pays: G, why: "their terraced canal-gardens send dates and barley to market" })] },
   CIVILIZATION_CARTHAGE: { demonym: "Punic", options: [
-    opt("a", G, FO, "Punic merchants fill the wharves, drawing hands off the fields"),
-    opt("b", P, C, "shipwrights raise busy yards, and the city prizes tonnage over temples")] },
+    opt("a", G, FO, "Punic merchants fill the wharves, drawing hands off the fields", { pays: G, why: "Punic merchants fill the wharves and pay their harbour dues" }),
+    opt("b", P, C, "shipwrights raise busy yards, and the city prizes tonnage over temples", { pays: D, why: "their shipwrights and navigators carry your name to far harbours, and the fleet is paid from your treasury" })] },
   CIVILIZATION_EGYPT: { demonym: "Egyptian", options: [
-    opt("a", C, G, "monument-masons adorn the district, but upkeep of their works is dear"),
-    opt("b", FO, P, "Nile-style flood-farming feeds the ward, but pulls labour off the works")] },
+    opt("a", C, G, "monument-masons adorn the district, but upkeep of their works is dear", { pays: C, why: "monument-masons adorn the district, but upkeep of their works is dear" }),
+    opt("b", FO, P, "Nile-style flood-farming feeds the ward, but pulls labour off the works", { pays: S, why: "their Nile-surveyors bring geometry and the star-calendar, and the city pays their keep" })] },
   CIVILIZATION_GAUL: { demonym: "Gallic", options: [
-    opt("a", P, C, "their hill-fort smiths forge iron and harness, and care little for temple fashion", "Set their smiths to work"),
-    opt("b", H, G, "grove-rites at the nemeton settle the ward, sustained by offerings")] },
+    opt("a", P, C, "their hill-fort smiths forge iron and harness, and care little for temple fashion", { pays: S, why: "their hill-fort smiths teach iron and harness-making, and the forges cost coin", label: "Learn their smithing" }),
+    opt("b", H, G, "grove-rites at the nemeton settle the ward, sustained by offerings", { pays: C, why: "grove-rites at the nemeton settle the ward, sustained by offerings" })] },
   CIVILIZATION_GREECE: { demonym: "Greek", options: [
-    opt("a", S, H, "an agora of philosophers, and their factional politics"),
-    opt("b", C, P, "theatres and porticoes flourish while the workshops idle")] },
+    opt("a", S, H, "an agora of philosophers, and their factional politics", { pays: S, why: "an agora of philosophers debates in the ward, and the city pays their stipends" }),
+    opt("b", C, P, "theatres and porticoes flourish while the workshops idle", { pays: C, why: "theatres and porticoes rise in the ward, and the city pays for the stage" })] },
   CIVILIZATION_HAN: { demonym: "Han", options: [
-    opt("a", FO, H, "intensive farming feeds many, at the cost of crowding"),
-    opt("b", P, G, "public-works crews build fast, but the corvée is subsidised")] },
+    opt("a", FO, H, "intensive farming feeds many, at the cost of crowding", { pays: D, why: "their tributary envoys bring your city into the Middle Kingdom's circle, at a price in gifts" }),
+    opt("b", P, G, "public-works crews build fast, but the corvée is subsidised", { pays: S, why: "their public-works engineers survey canals and walls, and the corvée is paid from your treasury" })] },
   CIVILIZATION_KHMER: { demonym: "Khmer", options: [
-    opt("a", FO, G, "baray-style irrigation greens the fringe, but the waterworks cost coin"),
-    opt("b", F, H, "their temple-processions draw great crowds that throng the streets")] },
+    opt("a", FO, G, "baray-style irrigation greens the fringe, but the waterworks cost coin", { pays: S, why: "baray engineers bring their hydraulics to the fringe, and the waterworks cost coin" }),
+    opt("b", F, H, "their temple-processions draw great crowds that throng the streets", { pays: C, why: "their temple-processions fill the streets with dance and ritual, and the city pays for the festival" })] },
   CIVILIZATION_MAURYA: { demonym: "Mauryan", options: [
-    opt("a", F, G, "ascetic orders bless the ward, sustained by alms"),
-    opt("b", FO, P, "stepwell gardens yield well, but tie up hands")] },
+    opt("a", F, G, "ascetic orders bless the ward, sustained by alms", { pays: C, why: "ascetic orders bless the ward, sustained by alms" }),
+    opt("b", FO, P, "stepwell gardens yield well, but tie up hands", { pays: D, why: "their dhamma-envoys carry your name to distant courts, at the treasury's cost" })] },
   CIVILIZATION_MAYA: { demonym: "Maya", options: [
-    opt("a", S, P, "sky-watchers keep observatories, not workshops"),
-    opt("b", FO, H, "dense milpa plots feed many, but crowd the fringe")] },
+    opt("a", S, P, "sky-watchers keep observatories, not workshops", { pays: S, why: "sky-watchers keep observatories in the ward, and the city pays for them" }),
+    opt("b", FO, H, "dense milpa plots feed many, but crowd the fringe", { pays: G, why: "milpa harvests and cacao fill the ward's market" })] },
   CIVILIZATION_MISSISSIPPIAN: { demonym: "Mississippian", options: [
-    opt("a", C, G, "mound-rites enrich the ward's life, funded by tribute"),
-    opt("b", FO, P, "woodland gathering feeds the district, off the yards")] },
+    opt("a", C, G, "mound-rites enrich the ward's life, funded by tribute", { pays: C, why: "mound-rites enrich the ward's life, funded by tribute" }),
+    opt("b", FO, P, "woodland gathering feeds the district, off the yards", { pays: G, why: "trade-paths from the great mounds bring copper and shell to market" })] },
   CIVILIZATION_PERSIA: { demonym: "Persian", options: [
-    opt("a", G, H, "satrapal tribute flows in, and resentment with it"),
-    opt("b", C, FO, "walled pleasure-gardens delight, but eat good farmland")] },
+    opt("a", G, H, "satrapal tribute flows in, and resentment with it", { pays: G, why: "satrapal tribute flows into the treasury" }),
+    opt("b", C, FO, "walled pleasure-gardens delight, but eat good farmland", { pays: C, why: "walled pleasure-gardens delight the city, and the gardeners are paid from the treasury" })] },
   CIVILIZATION_ROME: { demonym: "Roman", options: [
-    opt("a", P, H, "Roman engineers and veterans raise your works and drill your legions, but the eagle's shadow chafes", "Drill your legions"),
-    opt("b", G, C, "their roads pull trade to the city, and coin sets the fashion")] },
+    opt("a", P, H, "Roman engineers and veterans raise your works and drill your legions, but the eagle's shadow chafes", { pays: S, why: "Roman engineers bring their surveying and concrete, and the city pays their wages", label: "Learn their engineering" }),
+    opt("b", G, C, "their roads pull trade to the city, and coin sets the fashion", { pays: G, why: "their roads pull trade to the city" })] },
 
   // ── Exploration origins ──
   CIVILIZATION_BULGARIA: { demonym: "Bulgar", options: [
-    opt("a", P, H, "their horse-and-forge veterans harden your cavalry, and brawl as hard as they fight", "Harden their riders"),
-    opt("b", G, C, "frontier markets thrive, and the city keeps fuller ledgers than calendars")] },
+    opt("a", P, H, "their horse-and-forge veterans harden your cavalry, and brawl as hard as they fight", { pays: S, why: "their horse-and-forge veterans teach your smiths and riders, at a price in coin", label: "Learn their horsemanship" }),
+    opt("b", G, C, "frontier markets thrive, and the city keeps fuller ledgers than calendars", { pays: G, why: "frontier markets thrive and pay their dues" })] },
   CIVILIZATION_CHOLA: { demonym: "Chola", options: [
-    opt("a", G, FO, "Tamil maritime traders fill the harbours, drawing hands off the soil"),
-    opt("b", F, H, "great temple-tanks draw pilgrims, and the festival crowds throng the ward")] },
+    opt("a", G, FO, "Tamil maritime traders fill the harbours, drawing hands off the soil", { pays: G, why: "Tamil maritime traders fill the harbours" }),
+    opt("b", F, H, "great temple-tanks draw pilgrims, and the festival crowds throng the ward", { pays: C, why: "great temple-tanks draw pilgrims and poets, and the festivals are paid from the treasury" })] },
   CIVILIZATION_DAI_VIET: { demonym: "Dai Viet", options: [
-    opt("a", C, G, "wall-scholars keep learning alive, at public cost"),
-    opt("b", P, FO, "fort-works employ many hands off the fields")] },
+    opt("a", C, G, "wall-scholars keep learning alive, at public cost", { pays: C, why: "wall-scholars keep learning alive, at public cost" }),
+    opt("b", P, FO, "fort-works employ many hands off the fields", { pays: D, why: "their envoys know how to keep a powerful neighbour at bay, and the embassies cost coin" })] },
   CIVILIZATION_ENGLAND: { demonym: "English", options: [
-    opt("a", C, G, "chapter-house scriptoria and stage-players enrich the ward, at the abbey's cost"),
-    opt("b", G, F, "their chartered merchants work any harbour, and the old rites go unendowed")] },
+    opt("a", C, G, "chapter-house scriptoria and stage-players enrich the ward, at the abbey's cost", { pays: C, why: "chapter-house scriptoria and stage-players enrich the ward, at the abbey's cost" }),
+    opt("b", G, F, "their chartered merchants work any harbour, and the old rites go unendowed", { pays: G, why: "their chartered merchants work any harbour" })] },
   CIVILIZATION_GORYEO: { demonym: "Goryeo", options: [
-    opt("a", C, P, "celadon kilns and woodblock carvers raise the ward's craft above its yards"),
-    opt("b", F, G, "their temple orders keep the canon, sustained by endowments")] },
+    opt("a", C, P, "celadon kilns and woodblock carvers raise the ward's craft above its yards", { pays: C, why: "celadon kilns raise the ward's craft, at a price in coin" }),
+    opt("b", F, G, "their temple orders keep the canon, sustained by endowments", { pays: S, why: "their temple orders print and keep the canon in woodblocks, sustained by endowments" })] },
   CIVILIZATION_HAWAII: { demonym: "Hawaiian", options: [
-    opt("a", FO, P, "fish-ponds and reefs feed the ward, drawing hands off the yards"),
-    opt("b", C, G, "heiau rites enrich island custom, funded by the city")] },
+    opt("a", FO, P, "fish-ponds and reefs feed the ward, drawing hands off the yards", { pays: G, why: "fish-ponds and reefs send their catch to market" }),
+    opt("b", C, G, "heiau rites enrich island custom, funded by the city", { pays: C, why: "heiau rites enrich island custom, funded by the city" })] },
   CIVILIZATION_INCA: { demonym: "Inca", options: [
-    opt("a", P, G, "terrace-masons and road-crews build superbly, at expense"),
-    opt("b", FO, H, "mountain terraces feed many in a crowded ward")] },
+    opt("a", P, G, "terrace-masons and road-crews build superbly, at expense", { pays: S, why: "terrace-masons and road-crews teach their building, at expense" }),
+    opt("b", FO, H, "mountain terraces feed many in a crowded ward", { pays: D, why: "their chasqui runners carry word along the roads, and the relay posts are paid from the treasury" })] },
   CIVILIZATION_MAJAPAHIT: { demonym: "Majapahit", options: [
-    opt("a", G, C, "spice-route factors enrich the docks, and the wharves talk profit over pageantry"),
-    opt("b", FO, P, "coastal fisheries feed the fringe off the yards")] },
+    opt("a", G, C, "spice-route factors enrich the docks, and the wharves talk profit over pageantry", { pays: G, why: "spice-route factors enrich the docks" }),
+    opt("b", FO, P, "coastal fisheries feed the fringe off the yards", { pays: D, why: "their seafaring envoys bind far-off islands to your city, at a price in gifts" })] },
   CIVILIZATION_MING: { demonym: "Ming", options: [
-    opt("a", G, P, "porcelain and silk factors fill the ledgers while the kilns run cool"),
-    opt("b", C, H, "imperial arts refine the ward, and its finery outshines humbler streets")] },
+    opt("a", G, P, "porcelain and silk factors fill the ledgers while the kilns run cool", { pays: G, why: "porcelain and silk factors fill the ledgers" }),
+    opt("b", C, H, "imperial arts refine the ward, and its finery outshines humbler streets", { pays: C, why: "imperial arts refine the ward, and the city pays for their finery" })] },
   CIVILIZATION_MONGOLIA: { demonym: "Mongol", options: [
-    opt("a", P, H, "their horse-lines and smiths keep your cavalry shod, remounted and armed, but the swagger grates", "Muster their horsemen"),
-    opt("b", G, C, "steppe tribute-routes pay well, and the city counts coin where it once kept ceremony")] },
+    opt("a", P, H, "their horse-lines and smiths keep your cavalry shod, remounted and armed, but the swagger grates", { pays: D, why: "their yam couriers and envoys carry your seal across the steppe, and the post-stations cost coin", label: "Ride with their couriers" }),
+    opt("b", G, C, "steppe tribute-routes pay well, and the city counts coin where it once kept ceremony", { pays: G, why: "steppe tribute-routes pay well" })] },
   CIVILIZATION_NORMAN: { demonym: "Norman", options: [
-    opt("a", P, H, "their castle-masons and knights raise strong works and temper your men-at-arms", "Raise their knights"),
-    opt("b", G, FO, "feudal rents fill the coffers, off the farms")] },
+    opt("a", P, H, "their castle-masons and knights raise strong works and temper your men-at-arms", { pays: S, why: "their castle-masons teach your builders, and their wages are dear", label: "Learn their castle-craft" }),
+    opt("b", G, FO, "feudal rents fill the coffers, off the farms", { pays: G, why: "feudal rents fill the coffers" })] },
   CIVILIZATION_SONGHAI: { demonym: "Songhai", options: [
-    opt("a", G, FO, "river-and-salt caravans fill the market, drawing hands off the soil"),
-    opt("b", S, H, "their scholars keep famed libraries, and famed feuds")] },
+    opt("a", G, FO, "river-and-salt caravans fill the market, drawing hands off the soil", { pays: G, why: "river-and-salt caravans fill the market" }),
+    opt("b", S, H, "their scholars keep famed libraries, and famed feuds", { pays: S, why: "their scholars keep famed libraries, and the copyists are paid from the treasury" })] },
   CIVILIZATION_SPAIN: { demonym: "Spanish", options: [
-    opt("a", G, H, "treasure-fleet factors enrich the port amid conversion strife"),
-    opt("b", F, C, "their missions win souls and overwrite old custom")] },
+    opt("a", G, H, "treasure-fleet factors enrich the port amid conversion strife", { pays: G, why: "treasure-fleet factors enrich the port" }),
+    opt("b", F, C, "their missions win souls and overwrite old custom", { pays: C, why: "their missions build churches and schools, at the treasury's cost" })] },
 
   // ── Modern origins ──
   CIVILIZATION_AMERICA: { demonym: "American", options: [
-    opt("a", P, H, "factory-hands drive output, but the shifts breed unrest"),
-    opt("b", C, G, "their cinema and jazz enliven the ward, at a subsidy")] },
+    opt("a", P, H, "factory-hands drive output, but the shifts breed unrest", { pays: S, why: "their inventors and factory engineers bring new methods, and the patents cost coin" }),
+    opt("b", C, G, "their cinema and jazz enliven the ward, at a subsidy", { pays: C, why: "their cinema and jazz enliven the ward, at a subsidy" })] },
   CIVILIZATION_BUGANDA: { demonym: "Bugandan", options: [
-    opt("a", FO, G, "lakeshore gardens feed the ward, tended at cost"),
-    opt("b", C, P, "bark-cloth artisans enrich custom, off the yards")] },
+    opt("a", FO, G, "lakeshore gardens feed the ward, tended at cost", { pays: G, why: "lakeshore gardens send plantains and bark-cloth to market" }),
+    opt("b", C, P, "bark-cloth artisans enrich custom, off the yards", { pays: C, why: "bark-cloth artisans enrich custom, and the city pays for their work" })] },
   CIVILIZATION_FRENCH_EMPIRE: { demonym: "French", options: [
-    opt("a", C, P, "salons and Great Works flourish while workshops idle"),
-    opt("b", G, H, "luxury trade enriches the ward, and its airs vex the poor")] },
+    opt("a", C, P, "salons and Great Works flourish while workshops idle", { pays: C, why: "salons and Great Works flourish, and the city pays their patrons" }),
+    opt("b", G, H, "luxury trade enriches the ward, and its airs vex the poor", { pays: G, why: "luxury trade enriches the ward" })] },
   CIVILIZATION_GREAT_BRITAIN: { demonym: "British", options: [
-    opt("a", G, H, "counting-houses and clerks profit; the mills breed grievance"),
-    opt("b", P, FO, "industrial works run hot, drawing hands off the farms")] },
+    opt("a", G, H, "counting-houses and clerks profit; the mills breed grievance", { pays: G, why: "counting-houses and clerks turn a profit" }),
+    opt("b", P, FO, "industrial works run hot, drawing hands off the farms", { pays: S, why: "their engineers bring the steam engine and the mill, and the patents cost coin" })] },
   CIVILIZATION_HEIAN: { demonym: "Heian", options: [
-    opt("a", C, P, "courtly refinement flowers while the workshops idle"),
-    opt("b", H, G, "their festivals lift the whole city, at the treasury's cost")] },
+    opt("a", C, P, "courtly refinement flowers while the workshops idle", { pays: C, why: "courtly refinement flowers, and the court's patronage is paid from your treasury" }),
+    opt("b", H, G, "their festivals lift the whole city, at the treasury's cost", { pays: D, why: "their festivals draw envoys and poets from every province, at the treasury's cost" })] },
   CIVILIZATION_ICELAND: { demonym: "Icelandic", options: [
-    opt("a", P, FO, "their shipwrights and crews build fast longships, drawing hands off the farms", "Launch their longships"),
-    opt("b", C, G, "saga-singers keep the ward's memory, funded by the city")] },
+    opt("a", P, FO, "their shipwrights and crews build fast longships, drawing hands off the farms", { pays: G, why: "their longships carry trade to far shores", label: "Launch their longships" }),
+    opt("b", C, G, "saga-singers keep the ward's memory, funded by the city", { pays: C, why: "saga-singers keep the ward's memory, funded by the city" })] },
   CIVILIZATION_JOSEON: { demonym: "Joseon", options: [
-    opt("a", S, G, "movable-type printers and academicians publish freely, and the stipends tell on the treasury"),
-    opt("b", C, P, "seowon scholars keep rites and letters while the workshops idle")] },
+    opt("a", S, G, "movable-type printers and academicians publish freely, and the stipends tell on the treasury", { pays: S, why: "movable-type printers and academicians publish freely, and the stipends tell on the treasury" }),
+    opt("b", C, P, "seowon scholars keep rites and letters while the workshops idle", { pays: C, why: "seowon scholars keep rites and letters, and the academies are endowed from the treasury" })] },
   CIVILIZATION_MEIJI: { demonym: "Meiji", options: [
-    opt("a", P, H, "their arsenals and conscript drill build a modern army at a hard human pace", "Modernise your army"),
-    opt("b", S, C, "headlong modernisation, and old custom set aside")] },
+    opt("a", P, H, "their arsenals and conscript drill build a modern army at a hard human pace", { pays: S, why: "their arsenals and military academies bring modern methods, at a hard price in coin", label: "Study their arsenals" }),
+    opt("b", S, C, "headlong modernisation, and old custom set aside", { pays: D, why: "their envoys study every nation and bring back treaties, and the missions cost coin" })] },
   CIVILIZATION_MEXICO: { demonym: "Mexican", options: [
-    opt("a", C, G, "murals and fiestas colour the ward, funded by the city"),
-    opt("b", H, P, "tight-knit community lifts spirits over output")] },
+    opt("a", C, G, "murals and fiestas colour the ward, funded by the city", { pays: C, why: "murals and fiestas colour the ward, funded by the city" }),
+    opt("b", H, P, "tight-knit community lifts spirits over output", { pays: G, why: "their markets and remittances fill the ward's purses" })] },
   CIVILIZATION_MUGHAL: { demonym: "Mughal", options: [
-    opt("a", C, G, "miniaturists and architects adorn the ward, at expense"),
-    opt("b", G, FO, "fine-textile trade fills the docks, drawing hands off the fields")] },
+    opt("a", C, G, "miniaturists and architects adorn the ward, at expense", { pays: C, why: "miniaturists and architects adorn the ward, at expense" }),
+    opt("b", G, FO, "fine-textile trade fills the docks, drawing hands off the fields", { pays: G, why: "fine-textile trade fills the docks" })] },
   CIVILIZATION_PRUSSIA: { demonym: "Prussian", options: [
-    opt("a", P, H, "their drill-masters and arsenals forge a disciplined army, stiffly", "Drill your regiments"),
-    opt("b", S, C, "their war-academies teach hard, and set old ways aside")] },
+    opt("a", P, H, "their drill-masters and arsenals forge a disciplined army, stiffly", { pays: D, why: "their general staff and diplomats make your city's word carry weight, and the staff college costs coin", label: "Consult their general staff" }),
+    opt("b", S, C, "their war-academies teach hard, and set old ways aside", { pays: S, why: "their war-academies teach hard, and the professors are paid from the treasury" })] },
   CIVILIZATION_QING: { demonym: "Qing", options: [
-    opt("a", FO, H, "dense growth feeds many in a crowded ward"),
-    opt("b", G, P, "treaty-port factors fill the ledgers, and the workshops slow")] },
+    opt("a", FO, H, "dense growth feeds many in a crowded ward", { pays: C, why: "their scholars compile great encyclopaedias, and the copyists are paid from the treasury" }),
+    opt("b", G, P, "treaty-port factors fill the ledgers, and the workshops slow", { pays: G, why: "treaty-port factors fill the ledgers" })] },
   CIVILIZATION_RUSSIA: { demonym: "Russian", options: [
-    opt("a", P, FO, "heavy-industry crews work hard in a hungry ward"),
-    opt("b", C, G, "their letters and theatre enrich the city, at a subsidy")] },
+    opt("a", P, FO, "heavy-industry crews work hard in a hungry ward", { pays: S, why: "their engineers bring railways and ironworks, at a heavy price in coin" }),
+    opt("b", C, G, "their letters and theatre enrich the city, at a subsidy", { pays: C, why: "their letters and theatre enrich the city, at a subsidy" })] },
   CIVILIZATION_SIAM: { demonym: "Siamese", options: [
-    opt("a", C, G, "temple-arts and dance enrich the ward, funded by the city"),
-    opt("b", G, H, "their bustling trade pays well and crowds the streets")] },
+    opt("a", C, G, "temple-arts and dance enrich the ward, funded by the city", { pays: C, why: "temple-arts and dance enrich the ward, funded by the city" }),
+    opt("b", G, H, "their bustling trade pays well and crowds the streets", { pays: G, why: "their bustling trade pays well" })] },
   CIVILIZATION_SILLA: { demonym: "Silla", options: [
-    opt("a", H, G, "pagoda-rites lift the ward, sustained by alms"),
-    opt("b", C, P, "their crafts refine custom while the workshops idle")] },
+    opt("a", H, G, "pagoda-rites lift the ward, sustained by alms", { pays: C, why: "pagoda-rites lift the ward, sustained by alms" }),
+    opt("b", C, P, "their crafts refine custom while the workshops idle", { pays: G, why: "their goldsmiths' crafts sell in every market" })] },
 
   // ── Age-flex origins ──
   CIVILIZATION_NEPAL: { demonym: "Nepali", options: [
-    opt("a", FO, G, "mountain terraces feed the ward, tended at cost"),
-    opt("b", P, H, "their hill-fort masons and drillmasters raise strong works and hardy soldiers", "Train their hillmen")] },
+    opt("a", FO, G, "mountain terraces feed the ward, tended at cost", { pays: G, why: "mountain terraces feed the ward and its market" }),
+    opt("b", P, H, "their hill-fort masons and drillmasters raise strong works and hardy soldiers", { pays: D, why: "their hillmen serve abroad and win your city renown, and their pay comes from the treasury", label: "Enlist their hillmen" })] },
   CIVILIZATION_OTTOMANS: { demonym: "Ottoman", options: [
-    opt("a", S, G, "külliye specialists teach and heal, at public cost"),
-    opt("b", C, P, "grand celebrations enrich custom while the workshops idle")] },
+    opt("a", S, G, "külliye specialists teach and heal, at public cost", { pays: S, why: "külliye specialists teach and heal, at public cost" }),
+    opt("b", C, P, "grand celebrations enrich custom while the workshops idle", { pays: C, why: "grand celebrations enrich custom, and the city pays for the feasts" })] },
   CIVILIZATION_PIRATE_REPUBLIC: { demonym: "Buccaneer", options: [
-    opt("a", G, H, "their privateers and prize-crews fill your coffers and man your decks, lawlessly", "Hire their privateers"),
-    opt("b", P, C, "busy careening-yards work fast, and the port prizes speed over ceremony")] },
+    opt("a", G, H, "their privateers and prize-crews fill your coffers and man your decks, lawlessly", { pays: G, why: "their privateers bring home prizes, lawlessly", label: "Hire their privateers" }),
+    opt("b", P, C, "busy careening-yards work fast, and the port prizes speed over ceremony", { pays: S, why: "their navigators sell charts of every reef and current, at a price in coin" })] },
   CIVILIZATION_QAJAR: { demonym: "Qajar", options: [
-    opt("a", FO, G, "walled garden-farms feed the ward, tended at cost"),
-    opt("b", C, P, "Bāgh celebrations enrich custom while the workshops idle")] },
+    opt("a", FO, G, "walled garden-farms feed the ward, tended at cost", { pays: G, why: "walled garden-farms send fruit to market" }),
+    opt("b", C, P, "Bāgh celebrations enrich custom while the workshops idle", { pays: C, why: "Bāgh celebrations enrich custom, and the city pays for them" })] },
   CIVILIZATION_SENGOKU: { demonym: "Sengoku", options: [
-    opt("a", P, H, "their castle-town armourers forge blades and temper your warriors, sternly", "Forge their blades"),
-    opt("b", G, FO, "daimyō markets pay well, off the fields")] },
+    opt("a", P, H, "their castle-town armourers forge blades and temper your warriors, sternly", { pays: S, why: "their castle-town armourers teach steelcraft, sternly and dearly", label: "Learn their steelcraft" }),
+    opt("b", G, FO, "daimyō markets pay well, off the fields", { pays: G, why: "daimyō markets pay well" })] },
   CIVILIZATION_SHAWNEE: { demonym: "Shawnee", options: [
-    opt("a", FO, G, "river-bottom gathering feeds the ward, at some cost"),
-    opt("b", C, P, "council-rites enrich custom while the workshops idle")] },
+    opt("a", FO, G, "river-bottom gathering feeds the ward, at some cost", { pays: D, why: "their council speakers build alliances among the nations, and the gifts come from your treasury" }),
+    opt("b", C, P, "council-rites enrich custom while the workshops idle", { pays: C, why: "council-rites enrich custom, and the city pays for the gatherings" })] },
   CIVILIZATION_TONGA: { demonym: "Tongan", options: [
-    opt("a", FO, P, "ocean fisheries feed the fringe, drawing hands off the yards"),
-    opt("b", G, C, "island trade-routes pay well, and the city keeps its accounts before its rites")] }
+    opt("a", FO, P, "ocean fisheries feed the fringe, drawing hands off the yards", { pays: D, why: "their navigators carry your name across the ocean, at a price in gifts" }),
+    opt("b", G, C, "island trade-routes pay well, and the city keeps its accounts before its rites", { pays: G, why: "island trade-routes pay well" })] }
 });
 
 /**
- * The neutral fallback for any origin civ without a registry row (unknown / new DLC civ): a single
- * gentle Culture/Happiness pair, so a quarter still forms and offers a real choice without throwing.
+ * The neutral fallback for any origin civ without a registry row (unknown / new DLC civ): a Culture
+ * stance and a Gold stance, so a quarter still forms and offers a real choice without throwing.
  * @type {Readonly<QBonus>}
  */
 export const NEUTRAL_QUARTER = Object.freeze({
   demonym: "",
   options: [
-    opt("a", C, H, "their customs enrich the city, as two ways of life settle side by side"),
-    opt("b", G, H, "their enclave pays into your treasury, and chafes at the levy")
+    opt("a", C, H, "their customs enrich the city, as two ways of life settle side by side", { pays: C, why: "their customs enrich the city, at a price in coin" }),
+    opt("b", G, H, "their enclave pays into your treasury, and chafes at the levy", { pays: G, why: "their enclave pays into your treasury" })
   ]
 });
 

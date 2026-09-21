@@ -1317,3 +1317,125 @@ Verdict-line artefact in the same run: the probe printed `HUMANS=1 ACTIVATIONS_P
 because it re-read `humanPlayerCount` at the END, after Autoplay had taken player 0 over; the game began with
 two humans (`A2 humanPlayerIDs=[0,1] humanPlayerCount=2`). The data the verdict was computed from is the
 finding: `activationsPerGameTurn={"1":2}` with `distinctLocalIds=[0,1]`. Read the counts, not that label.
+
+## Mod tests 152-153 - what every yield write actually changes (2026-09-18)
+
+Asked while reworking the enclave stance yields (the registry pays in Food, Production, Science, Culture, Faith,
+Gold and Happiness through `Players.grantYield`). Earlier probes had only ever granted Gold, Happiness and
+Influence. AugustusExp66 on 1.5.0, mod pass off (`turnInterval` 99999, logged in every snapshot). Mod test 152
+granted +100 then -100 of every `YieldTypes` entry and diffed player pools, lifetime and net yields, tech and civic
+progress, and London's and Leeds's growth, build queue and yields after each call and across a turn. Mod test 153
+closed its gaps: a Culture deduction while a civic was in progress, the Science deduction read at 0 / 3 / 8 s, and
+`city.FoodQueue.addProgress` / `city.BuildQueue.addProgress` (±50) on London and on French Paris. The idle diff
+before any write showed 0 changes, so every same-turn diff below is the write alone. The end turns used one
+Autoplay turn each (the resource blocker), so only stocks, not spending, are read across them.
+
+```
+A +100 GOLD        P.treasury.goldBalance 804.06 -> 904.06
+A +100 SCIENCE     P.tech.node.progress 1033 -> 1133
+A +100 CULTURE     P.civic.node.progress 996 -> 1096 (civic completed at the turn roll)
+A +100 HAPPINESS   P.life.HAPPINESS +100 only
+A +100 DIPLOMACY   diplomacyBalance 0 -> 100
+A +100 FOOD        changed=0          A +100 PRODUCTION   changed=0
+B -100 GOLD        goldBalance -100   B -100 DIPLOMACY    84.36 -> -15.64
+B -100 SCIENCE     turnsLeft 2 -> 3, progress unchanged
+B -100 CULTURE     changed=0 (no civic selected)   153: 996 -> 996 with a civic in progress
+153 SCI -100       progress 1033 at 0, 3 and 8 s; the +100 "restore" then left it at 1033
+153 FoodQueue ±50  London / Paris currentFood unchanged; turn: 10.83 + net 121.5 = 132.33 exactly
+153 BuildQueue +50 London 0 -> 107.64 (+3 s); -50 107.64 -> 50.14; +50 50.14 -> 107.64; turn -> 303.14
+153 BuildQueue +50 Paris 686.63/750 -> 0, turnsLeft 1 -> 10 (item finished); -50 at 0: no change
+```
+
+- **Gold and Influence: both ways, at once.** Influence goes negative.
+- **Science and Culture: gains only.** A gain lands on the researched node's progress at once and can finish
+  it. A Culture deduction does nothing. A Science deduction never lowers progress, but turns-left rose once and a
+  +100 sent straight after added nothing, so it may be held as a hidden debt; seen once, not isolated.
+- **Food and Production through grantYield: nothing.** No player or city number moved, either sign.
+- **`BuildQueue.addProgress` writes city production**, both signs, within 3 s, on any owner's city with no
+  operation, floored at 0, kept across the turn, and it completes the item when progress crosses the cost. The
+  amount is scaled by the city's production bonus (±50 moved about ±57.5; the first call landed 107.64 and is not
+  explained). **`FoodQueue.addProgress` does nothing** to stored food, and `city.Growth` has no write method.
+- **No write moved `Stats.getNetYield` in the same turn**, Gold included, which overturns the older
+  "grantYield spikes Gold Per Turn" reading (13-probe-findings:52) on 1.5.0.
+- **No Faith.** `YieldTypes` holds Culture, Diplomacy, Food, Gold, Happiness, Production, Science.
+
+Recorded in `docs/engine-limits-from-probes.md` 1.3a and the global `engine-closed.md`. Logs:
+`modtest152-UI.log`, `modtest153-UI.log`.
+
+## Mod tests 154-156 - the one-time enclave stance, watched (2026-09-18)
+
+The stance rework (`ui/emigration-stance-payout.js`: a stance pays Culture, Science, Influence or Gold once at
+recognition, sized from the host's income, and a non-Gold stance costs Gold), watched on AugustusExp66 with the
+mod pass off. The probes build the real decision view for a Bulgarian enclave in London, raise it with the
+shipped `showDilemma`, and press a button wired to the shipped `applyQuarterChoice`. London: 804 Gold banked,
+705 Gold, 251 Science and 221 Culture a turn; Bulgaria is at war with England, so the payout is halved.
+
+```
+154 CHOICE a Learn their horsemanship  Science 375, price 1410 Gold  disabled=true (804 banked)
+154 CHOICE b Tax their trade           Gold 530, free
+154 PRESS  the disabled button -> nothing chosen, nothing paid
+155 GRANT  +2000 Gold first; PRESS a -> CHOSEN a; gold 2804.06 -> 1394.06 (-1410); tech 1033 -> 1408 (+375);
+           record.applied {SCIENCE 375, GOLD 1410, once:true}; tile placed IMPROVEMENT_HIDDEN_FORTRESS
+156 figures moved onto the buttons: "Learn their horsemanship  +375 [icon:YIELD_SCIENCE] −1410 [icon:YIELD_GOLD]"
+           iconsInLabel 2 / 1 / 0, no raw [icon: tag visible; same payout as 155
+```
+
+- **The payout lands exactly as stated**, on the tech in progress, and the price leaves the treasury at once.
+- **An unaffordable stance is greyed out and its press does nothing.** At 804 Gold the Science stance's price
+  (two turns of a 705-Gold income) could not be paid, so only the free Gold stance was open. A treasury smaller
+  than two turns' income is common, so the price may often lock the Culture / Science / Influence stances;
+  `quarterStanceCostTurns` is the knob.
+- **Button captions draw the yield icons** (as in mod test 130). The longest caption nearly fills the button.
+
+Screenshots: `shots/modtest154-enclave-stance-popup.png` (figures in the body) and
+`shots/modtest156-enclave-stance-popup.png` (figures on the buttons). Logs: `modtest154-UI.log` to
+`modtest156-UI.log`.
+
+## Mod test 157 - Steam retakes of shots 08 and 09 (2026-09-18)
+
+After the stance rework, on the Steam set's own game (mod test 142's turn-106 save, `run-promo144.sh`): a Bulgar
+enclave in Washington, D.C., the real pop-up (buttons "Learn their horsemanship +1040 Science −1515 Gold", "Tax their
+trade +1135 Gold", "Let them be"), then the first stance pressed and the placed tile (a Hidden Fortress over a mine)
+framed with the enclave tooltip reading "Recognized: Learn their horsemanship". `docs/steam-screenshots/08` is a
+1572×982 crop of `shots/modtest157b-stance.png`; `09` is `shots/modtest157b-tooltip.png` at 1920 wide.
+
+- **Pinning the hover panel: hover ONCE.** The first run re-sent the plot-cursor event every 100 ms, and each one made
+  the panel re-place itself at the last real mouse position, so it drew in the top-left corner. Sending the hover
+  once and then only holding `left` / `top` kept it beside the tile (the mod test 145 recipe, corrected).
+
+## Mod test 158 - Steam retakes of shots 05 to 08 (2026-09-18)
+
+The four decision pop-ups on the current build, one run on the Steam set's game (turn-106 promo save,
+`run-promo144.sh`), camera on Washington, D.C., each dialog dismissed through its last button before the next.
+
+```
+05 refugee   fireRealDilemmaForTest -> "Welcome them in: [pop] +1, [gold] -30, [happy] -10" / "Settle the frontier: ..." /
+             "Turn them away: [influence] -20"   (costs on the buttons: another session's change, uncommitted today)
+06 newcomer  arrivalPromptView(Washington, 1 point of Bulgarian refugees) -> Choose where they settle / Let the city
+             settle them / Later
+07 callhome  callHomeView FOREIGN, live flows (13 points abroad) -> three Gold sizes, three Influence sizes, Leave
+08 stance    quarterView (Bulgar) -> "Learn their horsemanship: [science] +1040, [gold] -1515" / "Tax their trade:
+             [gold] +1135" / "Let them be"   (enclave captions now in the refugee / call-home shape)
+```
+
+Crops centred on each dialog's rect (viewport 2880x1800 CSS = 3024x1890 px, x1.05): 05 and 08 1572x982, 06
+1452x906, 07 1920x1200 (the call-home dialog is 1087 px tall, more than the old 1074 frame).
+
+## Mod test 159 - the newcomer pop-up's button figures, watched, and shot 06 (2026-09-18)
+
+The Newcomers / Refugees pop-up now states on each button what it gives: the population on all three, and on
+"Let the city settle them" the summed yields of the tiles `autoTiles` predicts (the same `pickExpandPlot` rule
+`placeOnTile` uses, each pick removed before the next; nothing when `arrivalPreferSpecialists` is on). Turn-106
+promo save, Washington, D.C. given one real pending point with `addRuralPopulation(+1)`.
+
+```
+offered EXPAND plots  4006 {F1 P3 H1}   3905 {F1 P4 H2}      (no resource tile: the first offer is taken)
+button                Let the city settle them: [pop] +1, [food] +1, [production] +3, [happiness] +1
+pressed (autoPlace)   placed=1, pending 1 -> 0, offered now []
+city net delta        FOOD +1, PRODUCTION +3.45, HAPPINESS +1, GOLD +1.15, SCIENCE +1.22, CULTURE +0.59, INFLUENCE +0.28
+```
+
+- **The predicted tile is the tile taken**, and its yields reach the city. The city also gains a little more than
+  the tile shows: its production bonus (x1.15) and small per-population yields. The button understates, never
+  overstates.
+- `docs/steam-screenshots/06-newcomer-placement.jpg` is a 1452x906 crop of `shots/modtest159-newcomer.png`.

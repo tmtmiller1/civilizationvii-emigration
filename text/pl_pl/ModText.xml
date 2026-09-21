@@ -574,7 +574,7 @@
         <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_TITLE" Language="pl_PL"><Text>Przyciąganie i azyl</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="pl_PL"><Text>Tam gdzie polityki stanowiska decydują, czy twoje granice są otwarte, drugi zestaw kart decyduje, co czynisz z ludźmi, którzy przez nie przechodzą. Polityki Przyciągania Talentów, Kulturowego i Handlowego zamieniają imigrację w silnik: każdy przybysz, którego przyciągniesz, odkłada rosnącą dywidendę Nauki, Kultury lub Złota, która kumuluje się, gdy ludzie wciąż przybywają, i zanika, gdy napływ ustaje, odpowiednik kosztu integracji, nagradzający cywilizacje podtrzymujące przyciąganie.[n][n]Polityki Azylu odpowiadają na inne wołanie. Otwarcie drzwi przed uciekającymi przed wojną i katastrofą przyciąga uchodźców ku tobie, najbardziej zdesperowanych jako pierwszych, a świat pamięta ten gest we Wpływie, przy czym późniejszy pakt dodatkowo wzbogaca twoją kulturę. Razem pozwalają gościnnemu ludowi czerpać korzyści z otwartości, zamiast jedynie ją znosić.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_RAIDS_TITLE" Language="pl_PL"><Text>Najazdy na talenty</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_RAIDS_BODY" Language="pl_PL"><Text>Attraction need not wait for migration to come to you. From the diplomacy screen you can aim a Talent Raid, Cultural Offensive, or Commercial Offensive at a rival, a sustained campaign to bend their people toward your cities. For as long as it runs you pay Influence each turn, and in return that rival's migration tilts your way, drawing off their brightest minds, cultural figures, or merchants; each one who arrives banks the matching Science, Culture, or Gold dividend, the same as a willing immigrant.[n][n]It is a strategic competition tool, not war: no city is attacked and no border is crossed by force, yet a stronger neighbour's talent can be quietly drained to your benefit for the price of sustained diplomatic effort.[n][n]The Talent Raid, Cultural Offensive and Commercial Offensive are diplomatic actions provided by the Diplomacy Extended mod. Without it they do not appear, and Emigration's part in them is silently skipped.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_RAIDS_BODY" Language="pl_PL"><Text>From the diplomacy screen you can aim a Talent Raid, Cultural Offensive or Commercial Offensive at a rival. While it runs you pay Influence each turn, and that rival's migration tilts toward your cities. Each person who arrives pays the matching Science, Culture or Gold bonus, as a willing immigrant does.[n][n]These diplomatic actions come from the Diplomacy Extended mod and appear when it is installed.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_TITLE" Language="pl_PL"><Text>Katastrofy i zaraza</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_BODY" Language="pl_PL"><Text>Katastrofy środowiskowe (powodzie, wulkany, zarazy i inne) wypędzają ludzi z dotkniętych miast jako uchodźców klimatycznych i katastroficznych, obok wojny i nieszczęścia. Im gorsze wydarzenie, tym mocniej wypycha; drobne wydarzenia tylko po cichu podszczypują migrację.[n][n]Zaraza jest podwójnie niebezpieczna: zarażone miasto zarówno traci populację i, jeśli migranci przenoszą zakażenie, może zasiać mniejszy wybuch wszędzie tam, gdzie osiedlą się jego uchodźcy, roznosząc chorobę po samych drogach ucieczki.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OUTLET_TITLE" Language="pl_PL"><Text>Gdy nie ma schronienia</Text></Replace>
@@ -584,13 +584,13 @@
         <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_TITLE" Language="pl_PL"><Text>Zakres i widoczność</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_BODY" Language="pl_PL"><Text>Emigracja symuluje cały świat od pierwszej tury: każdą żyjącą główną cywilizację, nie tylko te, które poznałeś. To utrzymuje migrację uczciwą: ludzie płyną zgodnie z rzeczywistym stanem świata, a miasto, które później podbijesz, niesie prawdziwą historię pochodzenia swoich ludzi.[n][n]Aby uniknąć spoilerów, kokpit, wykresy i soczewka mapy POKAZUJĄ tylko cywilizacje, które poznałeś. Niepoznane cywilizacje są wciąż obliczane w tle, ale domyślnie ukryte przed wzrokiem, więc nie dowiadujesz się o rywalach, których jeszcze nie spotkałeś. Możesz poszerzyć to, co jest pokazywane, przez wspólne ustawienie widoczności analityki (to samo, którego używa mod Demographics): tylko twoja własna cywilizacja, poznane cywilizacje lub wszystkie.[n][n]Krótko mówiąc: wszystko jest symulowane, a to, co widzisz, zależy od ciebie. Zakres symulacji (cały świat czy tylko poznane) i widoczność na ekranie to niezależne ustawienia.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_TITLE" Language="pl_PL"><Text>Odczytywanie kokpitu</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="pl_PL"><Text>Open the Migration dashboard from its button on the in-game dock, or from the Migration page in the Demographics mod. Its tabs:[n][n]• Network: an animated map of civilizations and their settlements, sized by how much population moves through them, with dots travelling the routes, flow arrows, and a timeline you can scrub.[n]• Net Migration (Table): arrivals, departures and net change by civilization, internal and external, beside refugees and losses.[n]• Causes: why people move, by cause, with the named wars, disasters and crises beneath each.[n]• Policies: who has adopted a Pro- or Anti-Immigration Stance.[n]• My Cities: your settlements ranked by how close each is to losing people, with each one's pressures.[n]• Diversity: the most diverse settlements and the make-up of their people.[n]• Notifications: the permanent log of every notification, with the Migration Chronicle's history entries among them.[n]• Guide: a quick reference of what does and does not drive migration.[n][n]On the map itself, the Prosperity lens (Shift+P) and the Ethnic Composition lens (Shift+E) paint each settlement tile by tile; see Map Lenses.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="pl_PL"><Text>Open the Migration dashboard from its button on the in-game dock, or from the Migration page in the Demographics mod. Its tabs:[n][n]• Network: an animated map of civilizations and their settlements, sized by how much population moves through them, with dots travelling the routes, flow arrows, and a timeline you can scrub.[n]• Net Migration (Table): arrivals, departures and net change by civilization, internal and external, beside refugees and losses.[n]• Causes: why people move, by cause, with the named wars, disasters and crises beneath each.[n]• Policies: who has adopted a Pro- or Anti-Immigration Stance.[n]• My Cities: your settlements ranked by how close each is to losing people, with each one's pressures.[n]• Diversity: the most diverse settlements and the make-up of their people.[n]• Notifications: the log of every notification, including the Migration Chronicle's entries.[n]• Guide: a quick reference of what drives migration.[n][n]On the map, the Prosperity lens (Shift+P) and the Ethnic Composition lens (Shift+E) paint each settlement tile by tile; see Map Lenses.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_TITLE" Language="pl_PL"><Text>Etniczność i integracja</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_BODY" Language="pl_PL"><Text>Każda osada zapisuje, skąd przybyli jej ludzie, według cywilizacji, z której każda osoba się wywodzi, i zachowuje ten zapis przez podbój. Soczewka Składu Etnicznego (Shift+E) pokazuje to jako mozaikę na pole: gęste miejskie jądro w kolorze dominującego pochodzenia, mniejsze społeczności rozsiane po jej polach, z dokładnym składem w podpowiedzi każdego osiadłego pola.[n][n]Z czasem przybysze integrują się ze swoją cywilizacją gospodarza, chyba że wojna z ich ojczyzną lub niepokoje w mieście utrzymują społeczność odrębną. A gdy ojczyzna jest w pokoju z gospodarzem i znów prosperuje, migracja powrotna z czasem ściąga część jej ludzi z powrotem do domu, przemieszczając realną populację. Wszystko to jest domyślnie włączone i można je wyłączyć w Opcjach.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_TITLE" Language="pl_PL"><Text>Enklawy Kulturowe</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_BODY" Language="pl_PL"><Text>When a foreign community grows into a lasting part of one of your cities, a real presence living there now rather than just a memory of past arrivals, it takes root as a Cultural Enclave: a district at the city's edge named for the origin people, placed as a tile that carries its own yield from the day it forms. Once the enclave has held for a while it is recognized. By default the city then takes the first of two stances drawn from that civilization's own character on its own, and the Chronicle records it; set enclave recognition to Ask me in Advanced settings and the recognition becomes your decision, offered in a pop-up with a quotation in that people's voice: two stances, each a small benefit paired with a matching drawback, or simply let them be. The stance the city holds is applied to your empire's yields each turn, on top of the tile.[n][n]A single origin civilization can hold at most two enclaves in your empire, counted per origin, so a Roman and a Norman enclave never crowd each other out, and at most three enclaves form in your empire in any one age. Enclaves persist while the community does, can change hands as a city's population shifts, fade once the community that sustained them is gone, and grow restless if you go to war with their homeland: their benefit halves and each contested enclave strains your happiness until peace. A community with an enclave is far less likely to return home on its own; see Calling Your People Home.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_BODY" Language="pl_PL"><Text>A foreign community of at least 3 population points that holds 30% of a settlement, or the size bar (6 points at average settlement size), forms a Cultural Enclave in that city, yours or an AI's: a tile at the city's edge named for the origin people, carrying its own yield from the day it forms. After a dwell period the enclave is recognized. Each people has two stances drawn from its character. By default the city takes the first it can afford, and the Chronicle records it. With enclave recognition set to Ask me in Advanced settings, a pop-up with a quotation in that people's voice lets you pick a stance or none. A stance pays once, when chosen: Culture toward your current civic, Science toward your current research, Influence, or Gold, worth three turns of your income of that yield. A stance that pays anything but Gold costs two turns of your Gold income.[n][n]Each origin civilization can hold at most two enclaves in your empire, and at most three enclaves form in your empire per age. An enclave can change hands as the city's population shifts, and dissolves when its community stays below 12.5% of the settlement and below the size bar for 12 turns. At war with its homeland, an enclave is contested: it strains your happiness until peace, and a stance chosen meanwhile pays half. A community with an enclave rarely returns home on its own; see Calling Your People Home.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="pl_PL"><Text>Kronika i decyzje uchodźcze</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="pl_PL"><Text>The Migration Chronicle writes the world's great migrations as short history: a city emptied by war or disaster, a diaspora taking root far from home, a people returning once their homeland recovered, an enclave recognized or faded, a call home answered or not. Its entries appear among the Notifications in the dashboard's Notifications tab, beside the per-event detail.[n][n]Once in a while, when a real upheaval (a neighbour conquering several cities in a short span, or a plague crisis) sends a wave of refugees toward your lands, you are asked how to receive them: welcome them in (a cost in Gold and a short strain on your people; they settle among you), settle them on the frontier (a smaller cost; they go to a smaller town), or turn them away (a cost in Influence). Each decision carries a quotation in the voice of the people at your gates. These decisions are rare by design, at most two per age and never less than eighteen turns apart, and can be switched off in Options. A civilization you have not met is named only as hearsay, never revealed.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="pl_PL"><Text>The Migration Chronicle records the world's great migrations as short history: a city emptied by war or disaster, a diaspora taking root far from home, a people returning once their homeland recovered, an enclave recognized or faded, a call home answered or unanswered. Its entries appear in the dashboard's Notifications tab.[n][n]When a real upheaval, a neighbour conquering several cities in a short span or a plague crisis, sends a wave of refugees toward your lands, you are asked how to receive them:[n]• Welcome them in: costs Gold and briefly strains your people; they settle among you.[n]• Settle them on the frontier: a smaller cost; they go to a smaller town.[n]• Turn them away: costs Influence.[n]Each decision carries a quotation in the voice of the people at your gates. At most two come per age, at least eighteen turns apart, and they can be switched off in Options. A civilization you have not met is named only as hearsay.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="pl_PL"><Text>Migracja</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_SELFTEST_OPEN" Language="pl_PL"><Text>Autotest migracji (diagnostyka)</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="pl_PL"><Text>Dobrobyt</Text></Replace>
@@ -1068,119 +1068,119 @@
         <Replace Tag="LOC_EMIG_DQ_POOL_RETURN_4" Language="pl_PL"><Text>"هر کسی کو دور ماند از اصل خویش / باز جوید روزگار وصل خویش (Every one who is left far from his source wishes back the time when he was united with it.)" Rumi, Masnavi I, proem (13th c., trans. Nicholson)</Text></Replace>
         <Replace Tag="LOC_EMIG_DQ_POOL_RETURN_5" Language="pl_PL"><Text>"con altra voce omai, con altro vello / ritornerò poeta, e in sul fonte / del mio battesmo prenderò 'l cappello (With other voice forthwith, with other fleece / Poet will I return, and at my font / Baptismal will I take the laurel crown.)" Dante Alighieri, in exile, Paradiso XXV (trans. Longfellow)</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_ABBASID_A" Language="pl_PL"><Text>uczeni z Domu Mądrości dokonują przekładów, lecz ich pensje drenują skarbiec</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_ABBASID_B" Language="pl_PL"><Text>słynne ogrody i salony koją miasto, lecz niewiele rąk pracuje na roli</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_AKSUM_A" Language="pl_PL"><Text>kupcy znad Morza Czerwonego wzbogacają nabrzeża, lecz monety płyną do portu, a nie ku dawnym obrzędom</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_AKSUM_B" Language="pl_PL"><Text>ich kościoły-stele przyciągają pielgrzymów, a tłumy zapełniają dzielnicę</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_ASSYRIA_A" Language="pl_PL"><Text>ich inżynierowie oblężniczy zbroją twoje odlewnie i wytaczają się tarany i wieże, choć ich wojownicza postawa psuje nastroje w dzielnicy</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_ASSYRIA_A" Language="pl_PL"><Text>Uzbrój machiny oblężnicze</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ABBASID_B" Language="pl_PL"><Text>ich salony i słynne ogrody przyjmują posłów z całego znanego świata, na koszt miasta</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_AKSUM_A" Language="pl_PL"><Text>kupcy znad Morza Czerwonego wzbogacają nabrzeża i płacą opłaty portowe w monecie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_AKSUM_B" Language="pl_PL"><Text>ich kościoły-stele przyciągają pielgrzymów i skrybów, a miasto płaci za ich utrzymanie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ASSYRIA_A" Language="pl_PL"><Text>ich inżynierowie oblężniczy uczą twoje odlewnie budować tarany i wieże, a utrzymanie ich warsztatów jest drogie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_ASSYRIA_A" Language="pl_PL"><Text>Poznaj ich sztukę oblężniczą</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_ASSYRIA_B" Language="pl_PL"><Text>zdobyczne kodeksy wypełniają archiwa, lecz opieka nad łupami kosztuje</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_BABYLON_A" Language="pl_PL"><Text>skrybowie z domu tabliczek strzegą tablic gwiezdnych, lecz ich pensje drenują skarbiec</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_BABYLON_B" Language="pl_PL"><Text>tarasowe ogrody przy kanałach zazieleniają dzielnicę, lecz wodociągi wiążą ręce do pracy</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_CARTHAGE_A" Language="pl_PL"><Text>punijscy kupcy zapełniają przystanie, odciągając ręce od pól</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_CARTHAGE_B" Language="pl_PL"><Text>szkutnicy zakładają ruchliwe stocznie, a miasto ceni tonaż wyżej niż świątynie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BABYLON_B" Language="pl_PL"><Text>ich tarasowe ogrody przy kanałach wysyłają daktyle i jęczmień na targ</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CARTHAGE_A" Language="pl_PL"><Text>punijscy kupcy zapełniają przystanie i płacą opłaty portowe</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CARTHAGE_B" Language="pl_PL"><Text>ich szkutnicy i nawigatorzy niosą twoje imię do dalekich portów, a flotę opłaca twój skarbiec</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_EGYPT_A" Language="pl_PL"><Text>budowniczowie monumentów zdobią dzielnicę, lecz utrzymanie ich dzieł jest kosztowne</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_EGYPT_B" Language="pl_PL"><Text>uprawa zalewowa w stylu nilowym żywi dzielnicę, lecz odciąga robotników od budowli</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_GAUL_A" Language="pl_PL"><Text>ich kowale z oppidum kują żelazo i uprząż, a mało dbają o świątynne mody</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_GAUL_A" Language="pl_PL"><Text>Zatrudnij ich kowali</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_EGYPT_B" Language="pl_PL"><Text>ich mierniczowie znad Nilu przynoszą geometrię i kalendarz gwiezdny, a miasto płaci za ich utrzymanie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GAUL_A" Language="pl_PL"><Text>ich kowale z oppidum uczą obróbki żelaza i wyrobu uprzęży, a kuźnie kosztują</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_GAUL_A" Language="pl_PL"><Text>Poznaj ich kowalstwo</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_GAUL_B" Language="pl_PL"><Text>obrzędy w gaju przy nemetonie uspokajają dzielnicę, utrzymywane z ofiar</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_GREECE_A" Language="pl_PL"><Text>agora filozofów i ich stronnicza polityka</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_GREECE_B" Language="pl_PL"><Text>teatry i portyki kwitną, podczas gdy warsztaty stoją bezczynnie</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_HAN_A" Language="pl_PL"><Text>intensywne rolnictwo żywi wielu kosztem przeludnienia</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_HAN_B" Language="pl_PL"><Text>ekipy robót publicznych budują szybko, lecz pańszczyzna jest dotowana</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_KHMER_A" Language="pl_PL"><Text>nawadnianie w stylu baraj zazielenia obrzeża, lecz wodociągi kosztują</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_KHMER_B" Language="pl_PL"><Text>ich procesje świątynne przyciągają wielkie tłumy zapełniające ulice</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREECE_A" Language="pl_PL"><Text>agora filozofów debatuje w dzielnicy, a miasto płaci im stypendia</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREECE_B" Language="pl_PL"><Text>w dzielnicy wyrastają teatry i portyki, a miasto płaci za scenę</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HAN_A" Language="pl_PL"><Text>ich trybutarni posłowie wciągają twoje miasto w krąg Państwa Środka, za cenę darów</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HAN_B" Language="pl_PL"><Text>ich inżynierowie robót publicznych wytyczają kanały i mury, a pańszczyznę opłaca twój skarbiec</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_KHMER_A" Language="pl_PL"><Text>inżynierowie od barajów przenoszą swoją hydraulikę na obrzeża, a wodociągi kosztują</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_KHMER_B" Language="pl_PL"><Text>ich procesje świątynne wypełniają ulice tańcem i obrzędem, a miasto płaci za święto</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_MAURYA_A" Language="pl_PL"><Text>ascetyczne zakony błogosławią dzielnicę, utrzymując się z jałmużny</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MAURYA_B" Language="pl_PL"><Text>ogrody przy studniach schodkowych plonują obficie, lecz wiążą ręce do pracy</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MAYA_A" Language="pl_PL"><Text>obserwatorzy nieba prowadzą obserwatoria, nie warsztaty</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MAYA_B" Language="pl_PL"><Text>gęste poletka milpa żywią wielu, lecz zatłaczają obrzeża</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAURYA_B" Language="pl_PL"><Text>ich posłowie dhammy niosą twoje imię do dalekich dworów, kosztem skarbca</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAYA_A" Language="pl_PL"><Text>obserwatorzy nieba prowadzą obserwatoria w dzielnicy, a miasto za nie płaci</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAYA_B" Language="pl_PL"><Text>plony z poletek milpa i kakao zapełniają targ dzielnicy</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_MISSISSIPPIAN_A" Language="pl_PL"><Text>obrzędy kurhanowe wzbogacają życie dzielnicy, finansowane z daniny</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MISSISSIPPIAN_B" Language="pl_PL"><Text>zbieractwo leśne żywi dzielnicę, z dala od pól</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_PERSIA_A" Language="pl_PL"><Text>danina satrapów napływa, a wraz z nią niechęć</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_PERSIA_B" Language="pl_PL"><Text>otoczone murami ogrody rozkoszy zachwycają, lecz zajmują dobrą ziemię uprawną</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_ROME_A" Language="pl_PL"><Text>rzymscy inżynierowie i weterani wznoszą twoje budowle i szkolą twoje legiony, lecz cień orła uwiera</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_ROME_A" Language="pl_PL"><Text>Wyszkol swoje legiony</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_ROME_B" Language="pl_PL"><Text>ich drogi ściągają handel do miasta, a moneta dyktuje modę</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_BULGARIA_A" Language="pl_PL"><Text>ich weterani od koni i kuźni hartują twoją kawalerię i awanturują się równie zaciekle, jak walczą</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_BULGARIA_A" Language="pl_PL"><Text>Zahartuj ich jeźdźców</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_BULGARIA_B" Language="pl_PL"><Text>przygraniczne targi kwitną, a miasto prowadzi pełniejsze księgi rachunkowe niż kalendarze</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_CHOLA_A" Language="pl_PL"><Text>tamilscy kupcy morscy zapełniają porty, odciągając ręce od ziemi</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_CHOLA_B" Language="pl_PL"><Text>wielkie zbiorniki świątynne przyciągają pielgrzymów, a świąteczne tłumy zapełniają dzielnicę</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MISSISSIPPIAN_B" Language="pl_PL"><Text>szlaki handlowe od wielkich kurhanów przynoszą na targ miedź i muszle</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PERSIA_A" Language="pl_PL"><Text>danina satrapów płynie do skarbca</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PERSIA_B" Language="pl_PL"><Text>otoczone murami ogrody rozkoszy zachwycają miasto, a ogrodników opłaca skarbiec</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ROME_A" Language="pl_PL"><Text>rzymscy inżynierowie przynoszą swoje miernictwo i beton, a miasto płaci im pensje</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_ROME_A" Language="pl_PL"><Text>Poznaj ich inżynierię</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ROME_B" Language="pl_PL"><Text>ich drogi ściągają handel do miasta</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BULGARIA_A" Language="pl_PL"><Text>ich weterani od koni i kuźni uczą twoich kowali i jeźdźców, za cenę w monecie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_BULGARIA_A" Language="pl_PL"><Text>Poznaj ich jeździectwo</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BULGARIA_B" Language="pl_PL"><Text>przygraniczne targi kwitną i płacą należne opłaty</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CHOLA_A" Language="pl_PL"><Text>tamilscy kupcy morscy zapełniają porty</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CHOLA_B" Language="pl_PL"><Text>wielkie zbiorniki świątynne przyciągają pielgrzymów i poetów, a święta opłaca skarbiec</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_DAI_VIET_A" Language="pl_PL"><Text>uczeni z murów podtrzymują naukę przy życiu, na koszt publiczny</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_DAI_VIET_B" Language="pl_PL"><Text>prace fortyfikacyjne zatrudniają wiele rąk z dala od pól</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_DAI_VIET_B" Language="pl_PL"><Text>ich posłowie wiedzą, jak trzymać potężnego sąsiada na dystans, a poselstwa kosztują</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_ENGLAND_A" Language="pl_PL"><Text>skryptoria kapitularza i komedianci wzbogacają dzielnicę, kosztem opactwa</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_ENGLAND_B" Language="pl_PL"><Text>ich kupcy z przywilejem handlują w każdym porcie, a dawne obrzędy zostają bez uposażenia</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_GORYEO_A" Language="pl_PL"><Text>piece celadonowe i snycerze klocków drzeworytniczych wynoszą rzemiosło dzielnicy ponad jej warsztaty</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_GORYEO_B" Language="pl_PL"><Text>ich zakony świątynne strzegą kanonu, utrzymywane z nadań</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_HAWAII_A" Language="pl_PL"><Text>stawy rybne i rafy żywią dzielnicę, odciągając ręce od pól</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ENGLAND_B" Language="pl_PL"><Text>ich kupcy z przywilejem handlują w każdym porcie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GORYEO_A" Language="pl_PL"><Text>piece celadonowe podnoszą rzemiosło dzielnicy, za cenę w monecie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GORYEO_B" Language="pl_PL"><Text>ich zakony świątynne drukują i przechowują kanon w klockach drzeworytniczych, utrzymywane z nadań</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HAWAII_A" Language="pl_PL"><Text>stawy rybne i rafy wysyłają swój połów na targ</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_HAWAII_B" Language="pl_PL"><Text>obrzędy heiau wzbogacają wyspiarskie obyczaje, finansowane przez miasto</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_INCA_A" Language="pl_PL"><Text>budowniczowie tarasów i ekipy drogowe wznoszą znakomite dzieła, lecz kosztownie</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_INCA_B" Language="pl_PL"><Text>górskie tarasy żywią wielu w zatłoczonej dzielnicy</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MAJAPAHIT_A" Language="pl_PL"><Text>faktorzy szlaku korzennego wzbogacają nabrzeża, a w przystaniach mówi się o zysku, nie o przepychu</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MAJAPAHIT_B" Language="pl_PL"><Text>przybrzeżne łowiska żywią obrzeża, z dala od pól</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MING_A" Language="pl_PL"><Text>faktorzy porcelany i jedwabiu zapełniają księgi, podczas gdy piece stygną</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MING_B" Language="pl_PL"><Text>cesarska sztuka uszlachetnia dzielnicę, a jej przepych przyćmiewa skromniejsze ulice</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MONGOLIA_A" Language="pl_PL"><Text>ich stada koni i kowale utrzymują twoją kawalerię podkutą, dosiadaną i uzbrojoną, lecz ich buta drażni</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_MONGOLIA_A" Language="pl_PL"><Text>Zbierz ich jeźdźców</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MONGOLIA_B" Language="pl_PL"><Text>stepowe szlaki daniny dobrze płacą, a miasto liczy monety tam, gdzie niegdyś dbało o ceremonie</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_NORMAN_A" Language="pl_PL"><Text>ich budowniczowie zamków i rycerze wznoszą potężne umocnienia i hartują twoich zbrojnych</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_NORMAN_A" Language="pl_PL"><Text>Wystaw ich rycerzy</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_NORMAN_B" Language="pl_PL"><Text>feudalne czynsze napełniają skarbiec, z dala od pól</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SONGHAI_A" Language="pl_PL"><Text>karawany rzeczne i solne zapełniają targ, odciągając ręce od ziemi</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SONGHAI_B" Language="pl_PL"><Text>ich uczeni prowadzą słynne biblioteki i słyną z zatargów</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SPAIN_A" Language="pl_PL"><Text>faktorzy floty skarbów wzbogacają port pośród sporów o nawrócenia</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SPAIN_B" Language="pl_PL"><Text>ich misje zjednują dusze i wypierają dawne obyczaje</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_AMERICA_A" Language="pl_PL"><Text>robotnicy fabryczni napędzają produkcję, lecz zmiany rodzą niepokój</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_INCA_A" Language="pl_PL"><Text>budowniczowie tarasów i ekipy drogowe uczą swojej sztuki budowania, kosztownie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_INCA_B" Language="pl_PL"><Text>ich biegacze chasqui niosą wieści wzdłuż dróg, a stacje sztafetowe opłaca skarbiec</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAJAPAHIT_A" Language="pl_PL"><Text>faktorzy szlaku korzennego wzbogacają nabrzeża</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAJAPAHIT_B" Language="pl_PL"><Text>ich żeglarscy posłowie wiążą z twoim miastem dalekie wyspy, za cenę darów</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MING_A" Language="pl_PL"><Text>faktorzy porcelany i jedwabiu zapełniają księgi</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MING_B" Language="pl_PL"><Text>cesarska sztuka uszlachetnia dzielnicę, a miasto płaci za jej przepych</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MONGOLIA_A" Language="pl_PL"><Text>ich kurierzy jam i posłowie niosą twoją pieczęć przez step, a stacje pocztowe kosztują</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_MONGOLIA_A" Language="pl_PL"><Text>Jedź z ich kurierami</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MONGOLIA_B" Language="pl_PL"><Text>stepowe szlaki daniny dobrze płacą</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NORMAN_A" Language="pl_PL"><Text>ich budowniczowie zamków uczą twoich budowniczych, a ich pensje są wysokie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_NORMAN_A" Language="pl_PL"><Text>Poznaj ich sztukę budowy zamków</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NORMAN_B" Language="pl_PL"><Text>feudalne czynsze napełniają skarbiec</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SONGHAI_A" Language="pl_PL"><Text>karawany rzeczne i solne zapełniają targ</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SONGHAI_B" Language="pl_PL"><Text>ich uczeni prowadzą słynne biblioteki, a kopistów opłaca skarbiec</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SPAIN_A" Language="pl_PL"><Text>faktorzy floty skarbów wzbogacają port</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SPAIN_B" Language="pl_PL"><Text>ich misje budują kościoły i szkoły, kosztem skarbca</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_AMERICA_A" Language="pl_PL"><Text>ich wynalazcy i inżynierowie fabryczni przynoszą nowe metody, a patenty kosztują</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_AMERICA_B" Language="pl_PL"><Text>ich kino i jazz ożywiają dzielnicę, choć wymagają dotacji</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_BUGANDA_A" Language="pl_PL"><Text>ogrody nad jeziorem żywią dzielnicę, uprawiane kosztem środków</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_BUGANDA_B" Language="pl_PL"><Text>rzemieślnicy tkanin z kory wzbogacają obyczaje, z dala od pól</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_FRENCH_EMPIRE_A" Language="pl_PL"><Text>salony i Wielkie Dzieła kwitną, podczas gdy warsztaty stoją bezczynnie</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_FRENCH_EMPIRE_B" Language="pl_PL"><Text>handel luksusem wzbogaca dzielnicę, a jej maniery drażnią biedotę</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_GREAT_BRITAIN_A" Language="pl_PL"><Text>kantory i urzędnicy przynoszą zysk; fabryki rodzą urazę</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_GREAT_BRITAIN_B" Language="pl_PL"><Text>zakłady przemysłowe pracują pełną parą, odciągając ręce od pól</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_HEIAN_A" Language="pl_PL"><Text>dworska wytworność rozkwita, podczas gdy warsztaty stoją bezczynnie</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_HEIAN_B" Language="pl_PL"><Text>ich święta podnoszą na duchu całe miasto, kosztem skarbca</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_ICELAND_A" Language="pl_PL"><Text>ich szkutnicy i załogi budują szybkie długie łodzie, odciągając ręce od pól</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BUGANDA_A" Language="pl_PL"><Text>ogrody nad jeziorem wysyłają na targ plantany i tkaninę z kory</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BUGANDA_B" Language="pl_PL"><Text>rzemieślnicy tkanin z kory wzbogacają obyczaje, a miasto płaci za ich pracę</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_FRENCH_EMPIRE_A" Language="pl_PL"><Text>salony i Wielkie Dzieła kwitną, a miasto opłaca ich mecenasów</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_FRENCH_EMPIRE_B" Language="pl_PL"><Text>handel luksusem wzbogaca dzielnicę</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREAT_BRITAIN_A" Language="pl_PL"><Text>kantory i urzędnicy przynoszą zysk</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREAT_BRITAIN_B" Language="pl_PL"><Text>ich inżynierowie przynoszą maszynę parową i młyn, a patenty kosztują</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HEIAN_A" Language="pl_PL"><Text>dworska wytworność rozkwita, a mecenat dworu opłaca twój skarbiec</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HEIAN_B" Language="pl_PL"><Text>ich święta przyciągają posłów i poetów z każdej prowincji, kosztem skarbca</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ICELAND_A" Language="pl_PL"><Text>ich długie łodzie wiozą handel do dalekich brzegów</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_LABEL_ICELAND_A" Language="pl_PL"><Text>Woduj ich długie łodzie</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_ICELAND_B" Language="pl_PL"><Text>śpiewacy sag przechowują pamięć dzielnicy, finansowani przez miasto</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_JOSEON_A" Language="pl_PL"><Text>drukarze ruchomej czcionki i akademicy wydają swobodnie, a pensje drenują skarbiec</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_JOSEON_B" Language="pl_PL"><Text>uczeni z seowon strzegą obrzędów i pism, podczas gdy warsztaty stoją bezczynnie</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MEIJI_A" Language="pl_PL"><Text>ich arsenały i musztra poborowych budują nowoczesną armię w wyczerpującym ludzkim tempie</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_MEIJI_A" Language="pl_PL"><Text>Zmodernizuj swoją armię</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MEIJI_B" Language="pl_PL"><Text>pospieszna modernizacja i dawne obyczaje odłożone na bok</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_JOSEON_B" Language="pl_PL"><Text>uczeni z seowon strzegą obrzędów i pism, a akademie uposaża skarbiec</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MEIJI_A" Language="pl_PL"><Text>ich arsenały i akademie wojskowe przynoszą nowoczesne metody, za wysoką cenę w monecie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_MEIJI_A" Language="pl_PL"><Text>Zbadaj ich arsenały</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MEIJI_B" Language="pl_PL"><Text>ich posłowie badają każdy naród i przywożą traktaty, a misje kosztują</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_MEXICO_A" Language="pl_PL"><Text>murale i fiesty rozświetlają dzielnicę, finansowane przez miasto</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MEXICO_B" Language="pl_PL"><Text>zżyta społeczność przedkłada dobre nastroje nad produkcję</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MEXICO_B" Language="pl_PL"><Text>ich targi i przekazy pieniężne napełniają sakiewki dzielnicy</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_MUGHAL_A" Language="pl_PL"><Text>miniaturzyści i architekci zdobią dzielnicę, lecz kosztownie</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MUGHAL_B" Language="pl_PL"><Text>handel wykwintnymi tkaninami zapełnia nabrzeża, odciągając ręce od pól</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_PRUSSIA_A" Language="pl_PL"><Text>ich instruktorzy musztry i arsenały kują zdyscyplinowaną armię, lecz sztywno</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_PRUSSIA_A" Language="pl_PL"><Text>Wymusztruj swoje pułki</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_PRUSSIA_B" Language="pl_PL"><Text>ich akademie wojskowe uczą twardo i odkładają dawne zwyczaje na bok</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_QING_A" Language="pl_PL"><Text>gęste uprawy żywią wielu w zatłoczonej dzielnicy</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_QING_B" Language="pl_PL"><Text>faktorzy portów traktatowych zapełniają księgi, a warsztaty zwalniają</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_RUSSIA_A" Language="pl_PL"><Text>ekipy ciężkiego przemysłu ciężko pracują w głodnej dzielnicy</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MUGHAL_B" Language="pl_PL"><Text>handel wykwintnymi tkaninami zapełnia nabrzeża</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PRUSSIA_A" Language="pl_PL"><Text>ich sztab generalny i dyplomaci nadają wagę słowu twojego miasta, a akademia sztabu kosztuje</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_PRUSSIA_A" Language="pl_PL"><Text>Zasięgnij rady ich sztabu generalnego</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PRUSSIA_B" Language="pl_PL"><Text>ich akademie wojskowe uczą twardo, a profesorów opłaca skarbiec</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QING_A" Language="pl_PL"><Text>ich uczeni kompilują wielkie encyklopedie, a kopistów opłaca skarbiec</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QING_B" Language="pl_PL"><Text>faktorzy portów traktatowych zapełniają księgi</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_RUSSIA_A" Language="pl_PL"><Text>ich inżynierowie przynoszą koleje i huty żelaza, za słoną cenę w monecie</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_RUSSIA_B" Language="pl_PL"><Text>ich literatura i teatr wzbogacają miasto, choć wymagają dotacji</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_SIAM_A" Language="pl_PL"><Text>sztuka świątynna i taniec wzbogacają dzielnicę, finansowane przez miasto</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SIAM_B" Language="pl_PL"><Text>ich tętniący handel dobrze płaci i zatłacza ulice</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SIAM_B" Language="pl_PL"><Text>ich tętniący handel dobrze płaci</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_SILLA_A" Language="pl_PL"><Text>obrzędy przy pagodach podnoszą dzielnicę na duchu, utrzymywane z jałmużny</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SILLA_B" Language="pl_PL"><Text>ich rzemiosło uszlachetnia obyczaje, podczas gdy warsztaty stoją bezczynnie</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_NEPAL_A" Language="pl_PL"><Text>górskie tarasy żywią dzielnicę, uprawiane kosztem środków</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_NEPAL_B" Language="pl_PL"><Text>ich budowniczowie górskich fortów i instruktorzy musztry wznoszą potężne umocnienia i hartują wytrzymałych żołnierzy</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_NEPAL_B" Language="pl_PL"><Text>Wyszkol ich górali</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SILLA_B" Language="pl_PL"><Text>wyroby ich złotników sprzedają się na każdym targu</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEPAL_A" Language="pl_PL"><Text>górskie tarasy żywią dzielnicę i jej targ</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEPAL_B" Language="pl_PL"><Text>ich górale służą za granicą i przynoszą twojemu miastu sławę, a ich żołd pochodzi ze skarbca</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_NEPAL_B" Language="pl_PL"><Text>Zaciągnij ich górali</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_OTTOMANS_A" Language="pl_PL"><Text>specjaliści z külliye nauczają i leczą, kosztem publicznym</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_OTTOMANS_B" Language="pl_PL"><Text>wystawne uroczystości wzbogacają obyczaje, podczas gdy warsztaty stoją bezczynnie</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_PIRATE_REPUBLIC_A" Language="pl_PL"><Text>ich korsarze i załogi zdobycznych statków napełniają twój skarbiec i obsadzają twoje pokłady, bezprawnie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_OTTOMANS_B" Language="pl_PL"><Text>wystawne uroczystości wzbogacają obyczaje, a miasto płaci za uczty</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PIRATE_REPUBLIC_A" Language="pl_PL"><Text>ich korsarze przywożą łupy, bezprawnie</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_LABEL_PIRATE_REPUBLIC_A" Language="pl_PL"><Text>Najmij ich korsarzy</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_PIRATE_REPUBLIC_B" Language="pl_PL"><Text>ruchliwe stocznie remontowe pracują szybko, a port ceni szybkość wyżej niż ceremonie</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_QAJAR_A" Language="pl_PL"><Text>otoczone murami ogrody-gospodarstwa żywią dzielnicę, uprawiane kosztem środków</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_QAJAR_B" Language="pl_PL"><Text>uroczystości Bāgh wzbogacają obyczaje, podczas gdy warsztaty stoją bezczynnie</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SENGOKU_A" Language="pl_PL"><Text>ich płatnerze z miast zamkowych kują ostrza i hartują twoich wojowników, surowo</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_SENGOKU_A" Language="pl_PL"><Text>Wykuj ich ostrza</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SENGOKU_B" Language="pl_PL"><Text>targi daimyō dobrze płacą, z dala od pól</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SHAWNEE_A" Language="pl_PL"><Text>zbieractwo w dolinach rzek żywi dzielnicę, pewnym kosztem</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SHAWNEE_B" Language="pl_PL"><Text>obrzędy rady wzbogacają obyczaje, podczas gdy warsztaty stoją bezczynnie</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_TONGA_A" Language="pl_PL"><Text>oceaniczne łowiska żywią obrzeża, odciągając ręce od pól</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_TONGA_B" Language="pl_PL"><Text>wyspiarskie szlaki handlowe dobrze płacą, a miasto przedkłada rachunki nad obrzędy</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_NEUTRAL_A" Language="pl_PL"><Text>ich obyczaje wzbogacają miasto, gdy dwa style życia współistnieją obok siebie</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_NEUTRAL_B" Language="pl_PL"><Text>ich enklawa wpłaca do twojego skarbca i burzy się przeciw daninie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PIRATE_REPUBLIC_B" Language="pl_PL"><Text>ich nawigatorzy sprzedają mapy każdej rafy i prądu, za cenę w monecie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QAJAR_A" Language="pl_PL"><Text>otoczone murami ogrody-gospodarstwa wysyłają owoce na targ</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QAJAR_B" Language="pl_PL"><Text>uroczystości Bāgh wzbogacają obyczaje, a miasto za nie płaci</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SENGOKU_A" Language="pl_PL"><Text>ich płatnerze z miast zamkowych uczą obróbki stali, surowo i kosztownie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_SENGOKU_A" Language="pl_PL"><Text>Poznaj ich płatnerstwo</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SENGOKU_B" Language="pl_PL"><Text>targi daimyō dobrze płacą</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SHAWNEE_A" Language="pl_PL"><Text>mówcy ich rady zawierają sojusze między narodami, a dary pochodzą z twojego skarbca</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SHAWNEE_B" Language="pl_PL"><Text>obrzędy rady wzbogacają obyczaje, a miasto płaci za zgromadzenia</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_TONGA_A" Language="pl_PL"><Text>ich nawigatorzy niosą twoje imię przez ocean, za cenę darów</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_TONGA_B" Language="pl_PL"><Text>wyspiarskie szlaki handlowe dobrze płacą</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEUTRAL_A" Language="pl_PL"><Text>ich obyczaje wzbogacają miasto, za cenę w monecie</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEUTRAL_B" Language="pl_PL"><Text>ich enklawa wpłaca do twojego skarbca</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_ACT_CULTURE" Language="pl_PL"><Text>Przygarnij ich kulturę</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_ACT_GOLD" Language="pl_PL"><Text>Opodatkuj ich handel</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_ACT_PRODUCTION" Language="pl_PL"><Text>Zatrudnij ich rzemieślników</Text></Replace>
@@ -1198,6 +1198,10 @@
         <Replace Tag="LOC_EMIG_QTR_YIELD_HAPPINESS" Language="pl_PL"><Text>Zadowolenie</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_LABEL_IGNORE" Language="pl_PL"><Text>Pozostaw ich w spokoju</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_NOTE_IGNORE" Language="pl_PL"><Text>Ani o nie nie zabiegasz, ani ich nie opodatkowujesz; enklawa trzyma się na uboczu i niczego od ciebie nie żąda.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_DIPLOMACY" Language="pl_PL"><Text>Przyjmij ich posłów</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_DIPLOMACY" Language="pl_PL"><Text>Wpływy</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_FX_NOTE" Language="pl_PL"><Text>Wypłacane jednorazowo, w chwili wyboru.</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_FX_SHORT" Language="pl_PL"><Text>(za mało Złota)</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_0_TITLE" Language="pl_PL"><Text>Co sprawia, że ludzie OPUSZCZAJĄ miasto</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_0_R0_Q" Language="pl_PL"><Text>Niezadowolenie / niskie plony</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_0_R0_N" Language="pl_PL"><Text>Główny czynnik w czasie pokoju. Zadowolenie wciąż pozostaje najważniejszym pojedynczym czynnikiem, lecz po przebalansowaniu w 1.4.1 plony miasta w przeliczeniu na mieszkańca również mają realny udział w decyzji, więc zarówno miasto niezadowolone, JAK i miasto o niskich plonach traci ludzi, a miasto, które jest jednym i drugim, pustoszeje najszybciej. Niezadowolone osady są dotknięte podwójnie: 1.4.1 dodatkowo obniża ich plony, co wynik dobrobytu odczytuje wprost.</Text></Replace>
