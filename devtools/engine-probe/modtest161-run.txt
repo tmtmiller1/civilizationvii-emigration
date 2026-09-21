@@ -1,0 +1,9 @@
+[04:54:47] save staged as EmigPromo106.Civ7Save; 10 autosaves backed up
+[04:54:47] registry: 635|emigration|1 661|emigration|0  ; modinfo flag: 1
+[04:54:47] probe installed: eep-modtest161.js on EmigPromo106.Civ7Save
+[04:54:49] game pid 65651
+[05:21:25] result=crashed after 1508s
+[05:21:33] restored: 635|emigration|1 663|emigration|0  ; modinfo flag: 0 ; probe present: no
+[05:21:33] FINISHED result=crashed
+[05:21:33] autosaves changed during the run; putting the player's back
+[05:21:34] done; staged save removed: yes

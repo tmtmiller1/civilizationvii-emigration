@@ -1,11 +1,12 @@
 // emigration-quarter-registry.js
 //
 // Assembles the CHOICES a player is offered when a foreign diaspora grows into an established Cultural
-// Quarter, for a SPECIFIC origin civilization. Each origin offers two identity-grounded trade-off
-// options (its benefit/penalty yields + a one-line "why", from emigration-quarter-bonuses.js) plus a
-// universal passive "let them be" stance. The concrete AMOUNTS live in CONFIG (balance in one place);
-// this module only names the identities and composes the button label + consequence note, so it stays
-// deterministic, engine-free, unit-testable, and never throws.
+// Quarter, for a SPECIFIC origin civilization. Each origin offers two identity-grounded stances (the yield
+// each pays + a one-line "why", from emigration-quarter-bonuses.js) plus a universal passive "let them be".
+// A stance pays Gold, Influence, Science or Culture once, and one that does not pay Gold costs Gold. The
+// AMOUNTS are sized from the host's income when the stance is offered (emigration-stance-payout.js); this
+// module only names the identities and composes the button label + note, so it stays deterministic,
+// engine-free, unit-testable, and never throws.
 //
 // The origin's NAME ("the Roman Quarter") is resolved separately by emigration-naming.js. Here the
 // origin shapes the option YIELDS and flavour: a Roman Quarter offers Production/Gold, a Persian one
@@ -33,7 +34,8 @@ const ACT_LABEL = {
   YIELD_SCIENCE: "Fund their learning",
   YIELD_FAITH: "Honour their faith",
   YIELD_FOOD: "Take up their farming",
-  YIELD_HAPPINESS: "Join their festivals"
+  YIELD_HAPPINESS: "Join their festivals",
+  YIELD_DIPLOMACY: "Welcome their envoys"
 };
 
 /** Yield type → short display name, for the note's "(+X, −Y)" cue.
@@ -45,8 +47,12 @@ const YIELD_SHORT = {
   YIELD_SCIENCE: "Science",
   YIELD_FAITH: "Faith",
   YIELD_FOOD: "Food",
-  YIELD_HAPPINESS: "Happiness"
+  YIELD_HAPPINESS: "Happiness",
+  YIELD_DIPLOMACY: "Influence"
 };
+
+/** The only yield a stance can cost (engine-closed.md: the only yield a script can take). */
+const GOLD = "YIELD_GOLD";
 
 /** The universal passive stance (localized fresh each build, since loc() is a runtime call). */
 function ignoreOption() {
@@ -88,26 +94,27 @@ function actLabel(benefit) {
 }
 
 /**
- * Turn one per-civ bonus option ({id, benefit, penalty, why}) into a full offered QuarterOption: an
- * action-verb label from the benefit yield, and a consequence note = the "why" flavour + a compact
- * "(+Benefit, −Penalty)" cue. Every player-facing string is localized through its own LOC key with the
- * English (registry) text as the fallback: `LOC_EMIG_QTR_WHY_<civ>_<id>`, `..._LABEL_<civ>_<id>` for a
- * martial override, `..._ACT_<yield>` for the default verb, `..._YIELD_<yield>` for the cue. The
- * enclave's single attributed quote is shown once at the modal level (emigration-quarter.js), not here.
- * @param {{id:string, benefit:string, penalty:string, why:string, label?:string}} b The bonus option.
+ * Turn one per-civ bonus option ({id, pays, why, label?}) into a full offered QuarterOption: an
+ * action-verb label from the yield it pays, and a note = the "why" flavour + a compact "(+Pays, −Gold)"
+ * cue (a Gold stance costs nothing, so its cue is "(+Gold)"). Every player-facing string is localized
+ * through its own LOC key with the English (registry) text as the fallback: `LOC_EMIG_QTR_WHY_<civ>_<id>`,
+ * `..._LABEL_<civ>_<id>` for an override, `..._ACT_<yield>` for the default verb, `..._YIELD_<yield>` for
+ * the cue. The enclave's single attributed quote is shown once at the modal level (emigration-quarter.js).
+ * @param {{id:string, pays:string, why:string, label?:string}} b The bonus option.
  * @param {string} civKey The origin's short key ("ROME"), or "NEUTRAL" for the fallback pair.
  * @returns {QuarterOption} The offered option.
  */
 function toOption(b, civKey) {
   const suffix = civKey + "_" + b.id.toUpperCase();
   const why = loc("LOC_EMIG_QTR_WHY_" + suffix, b.why);
-  const label = b.label ? loc("LOC_EMIG_QTR_LABEL_" + suffix, b.label) : actLabel(b.benefit);
+  const label = b.label ? loc("LOC_EMIG_QTR_LABEL_" + suffix, b.label) : actLabel(b.pays);
+  const cost = b.pays === GOLD ? null : GOLD;
   return {
     id: b.id,
     label,
-    note: cap(why) + " (+" + yieldShort(b.benefit) + ", −" + yieldShort(b.penalty) + ").",
-    benefitYield: b.benefit,
-    penaltyYield: b.penalty
+    note: cap(why) + " (+" + yieldShort(b.pays) + (cost ? ", −" + yieldShort(cost) : "") + ").",
+    benefitYield: b.pays,
+    penaltyYield: cost
   };
 }
 

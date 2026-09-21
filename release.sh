@@ -83,7 +83,7 @@ rm -rf "$DIST_DIR"
 mkdir -p "$TARGET_DIR"
 
 echo "==> Mirroring $SRC_DIR/ → $TARGET_DIR/ (excluding dev cruft + dev probe)"
-rsync -a --exclude='.git' --exclude='.gitignore' --exclude='.DS_Store' --exclude='dist' \
+rsync -a --exclude='CHANGELOG.steam.txt' --exclude='.git' --exclude='.gitignore' --exclude='.DS_Store' --exclude='dist' \
     --exclude='release.sh' --exclude='*.bak' --exclude='node_modules' \
     --exclude='tsconfig.json' --exclude='jsconfig.json' --exclude='types' --exclude='docs' \
     --exclude='eslint.config.js' --exclude='package.json' --exclude='package-lock.json' \
@@ -157,72 +157,13 @@ fi
 VDF_PATH="$DIST_DIR/workshop_item.vdf"
 ABS_CONTENT="$(cd "$TARGET_DIR" && pwd)"
 
-# Change note. For the FIRST publish (no publishedfileid yet) the CHANGELOG is just
-# internal dev history, not a public "what changed", so the note is simply
-# "Initial release." For an UPDATE to an existing item, pull the current version's
-# section out of CHANGELOG.md and render its bullet lines as a Steam BBCode list.
-CHANGELOG_FILE="$SRC_DIR/CHANGELOG.md"
+# Change note: this release's block from CHANGELOG.steam.txt, which scripts/steam-changelog.mjs keeps in step with
+# CHANGELOG.md (that script documents Steam's change-note formatting rules). The block is VDF-safe: no straight
+# double quotes, no backslashes. Edit CHANGELOG.steam.txt to reword a note; a hand-edited block is kept.
 CHANGENOTE="Initial release."
-# Escape regex metachars (notably '.') so "1.2.0" can't match "1X2X0" in the awk pattern.
-VERSION_RE="$(printf '%s' "$VERSION" | sed -E 's/[][(){}.^$*+?|\\]/\\&/g')"
-if [ -n "$PUBLISHED_FILE_ID" ] && [ -f "$CHANGELOG_FILE" ]; then
-    CHANGENOTE="v${VERSION} release."
-    # Collect the "## [VERSION]" section's bullets, JOINING each bullet's wrapped
-    # continuation lines into one logical bullet (Keep a Changelog bullets span
-    # multiple lines; we must not drop the continuations). "### Fixed"-style
-    # subheaders and blank lines are skipped.
-    BULLETS="$(awk -v verre="$VERSION_RE" '
-        function flush() { if (cur != "") { print cur; cur = "" } }
-        $0 ~ ("^## \\[" verre "\\]") { grab = 1; next }
-        grab && /^## / { flush(); exit }
-        !grab { next }
-        /^###/ { next }
-        /^[[:space:]]*[-*][[:space:]]+/ {
-            flush()
-            line = $0
-            sub(/^[[:space:]]*[-*][[:space:]]+/, "", line)
-            cur = line
-            next
-        }
-        /^[[:space:]]*$/ { next }
-        cur != "" {
-            line = $0
-            sub(/^[[:space:]]+/, "", line)
-            cur = cur " " line
-        }
-        END { flush() }
-    ' "$CHANGELOG_FILE" \
-        | awk '{
-            # The Workshop note is a summary: take the bold headline of each bullet and
-            # skip the entries written without one (module lists and other internal
-            # notes). The full text of every entry is in the linked changelog.
-            if (match($0, /^\*\*[^*]+\*\*/)) { print substr($0, RSTART + 2, RLENGTH - 4) }
-          }' \
-        | sed -E 's/^/[*]/; s/\*\*//g; s/`//g' \
-        | tr '\n' ' ')"
-    if [ -n "$BULLETS" ]; then
-        # Keep the note short. steamcmd's KeyValues parser has choked on long
-        # change notes before (`key name too long (1563 chars)` -> `got } in key`
-        # -> "Failed to parse build config file"), and the longest note that has
-        # ever uploaded from this repo is ~1.8k chars. A release with fifty
-        # detailed bullets is reduced to its bold headlines above; if even those
-        # run long, the list is cut at a bullet boundary and the reader is sent to
-        # the full changelog on GitHub.
-        NOTE_BUDGET=1800
-        CHANGELOG_URL="https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/CHANGELOG.md"
-        if [ "${#BULLETS}" -gt "$NOTE_BUDGET" ]; then
-            BULLETS="$(printf '%s' "$BULLETS" | cut -c1-"$NOTE_BUDGET")"
-            # Cut back to the last whole bullet so the note never ends mid-sentence.
-            BULLETS="${BULLETS%'[*]'*}"
-            BULLETS="$BULLETS[*]Full changelog: $CHANGELOG_URL"
-        fi
-        # Lead with a bold version header so the Workshop change note names the
-        # release, then the BBCode list. Double quotes become single quotes: the
-        # VDF is a quoted KeyValues string, and not embedding quotes at all is
-        # cheaper than relying on escaping. Backslashes are still escaped.
-        CHANGENOTE="$(printf '[b]v%s[/b] [list]%s[/list]' "$VERSION" "$BULLETS" \
-            | sed -E "s/\\\\/\\\\\\\\/g; s/\"/'/g")"
-    fi
+if [ -n "$PUBLISHED_FILE_ID" ]; then
+    CHANGENOTE="$(node scripts/steam-changelog.mjs note "$VERSION")" \
+        || { echo "error: could not build the Steam change note (see above)"; exit 1; }
 fi
 
 {

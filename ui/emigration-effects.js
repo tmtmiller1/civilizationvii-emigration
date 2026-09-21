@@ -289,7 +289,7 @@ export function grantSigned(pid, yieldKey, amount) {
 
 /**
  * @typedef {{benefitYield:(string|null), benefitAmount:number,
- *   penaltyYield:(string|null), penaltyAmount:number}} QuarterApplied
+ *   penaltyYield:(string|null), penaltyAmount:number, once?:boolean}} QuarterApplied
  */
 
 /**

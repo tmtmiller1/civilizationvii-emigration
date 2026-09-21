@@ -418,8 +418,12 @@ export const CONFIG = {
   quarterPacingMax: 0.4, // the most the formation bars are lowered (0.4 = bars read 60% of configured)
   quarterPacingBy: 0.6, // the age fraction at which the full relaxation is reached (linear from 0)
   quarterCooldownTurns: 12, // minimum turns between quarter decisions
-  quarterRewardAmount: 2, // per-turn benefit a chosen stance grants (its benefit yield); small (design §7: ±1-2)
-  quarterDrawbackAmount: 1, // per-turn drawback a chosen stance charges (its drawback yield)
+  // ── enclave stance payout (emigration-stance-payout.js): paid ONCE when a stance is chosen ──
+  quarterStanceTurns: 3, // a Culture / Science / Influence stance pays this many turns of the host's own income of it
+  quarterGoldStanceTurns: 1.5, // a Gold stance pays this many turns of the host's Gold income, and costs nothing
+  quarterStanceCostTurns: 2, // the Gold price of a non-Gold stance, in turns of the host's Gold income
+  quarterStanceFloor: [60, 150, 300], // the least a payout is, by age (Antiquity, Exploration, Modern), × game speed
+  quarterStanceCostFloorScale: 1.5, // the least a price is, as a multiple of that age's payout floor
   contestedQuarterPenalty: 4, // per-pass happiness strain per contested quarter (host at war with its homeland)
   diasporaWarStrainCap: 12, // hard cap on total per-pass contested-quarter happiness strain per host
   contestedQuarterYieldFactor: 0.5, // share of its stance BENEFIT a contested enclave still pays while at

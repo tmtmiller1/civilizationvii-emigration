@@ -66,6 +66,44 @@ one-line index.
   effect surfaced in the mod's own readout.
 - **Recorded in.** `wont-implement-with-justifications.md`, "Enclave STANCE yields" (CANTFIX-1).
 
+### 1.3a `grantYield` reaches only player pools; Food and Production cannot be granted, most yields cannot be taken
+
+- **Wanted for.** Enclave stance yields, whose registry pays in Food, Production, Science, Culture, Faith,
+  Gold and Happiness.
+- **Tried.** `Players.grantYield(local, yield, +100)` then `-100` for every `YieldTypes` entry, each read
+  within 3 s and across a turn: player pools, lifetime and net yields, tech and civic progress, and the
+  capital's and a town's growth, build queue and yields. Mod test 152, 2026-09-18, save AugustusExp66.
+  Then the gaps: a Culture deduction with a civic in progress, the Science deduction read three times, and
+  `city.FoodQueue.addProgress` / `city.BuildQueue.addProgress` (±50) on London and on French Paris, mod
+  test 153 the same day.
+- **Observed.**
+
+  | Yield | + | − |
+  |---|---|---|
+  | Gold | treasury +100 at once | treasury −100 at once |
+  | Influence | balance +100 at once | balance −100 at once; goes negative |
+  | Science | tech progress +100 at once, kept across the turn | progress never drops; turns left rose once; a +100 right after added nothing (possible hidden debt, seen once) |
+  | Culture | civic progress +100 at once; can finish the civic | nothing, with or without a civic in progress |
+  | Happiness | celebration stockpile only (1.2) | celebration stockpile only |
+  | Food | nothing anywhere | nothing anywhere |
+  | Production | nothing anywhere | nothing anywhere |
+  | Faith | no such yield type | no such yield type |
+
+  No grant moved `Stats.getNetYield` in the same turn, Gold included. `city.BuildQueue.addProgress(n)`
+  does write production: progress moved about ±57.5 per ±50 within 3 s (the city's production bonus
+  applies), floors at 0, survived the turn, worked on Paris with no operation, and finished Paris's item
+  when it crossed the cost. `city.FoodQueue.addProgress(n)` changed nothing (London's stored food rose by
+  exactly its net food over the turn, no more).
+- **Why it is closed.** Food and Production are city stocks with no player pool for `grantYield` to add to;
+  `city.Growth` has no write method. The Culture and Science pools accept additions only.
+- **Instead.** Enclave stances pay once, at recognition, in Gold, Influence, Science or Culture, and
+  cost only Gold (`ui/emigration-stance-payout.js`, 2026-09-18). What a script can pay: Gold and
+  Influence both ways, Science and Culture as gains only, Production per city through
+  `BuildQueue.addProgress` (nothing lands while the queue is empty), Happiness only as celebration
+  progress, Food not at all.
+- **Recorded in.** Ledger, mod tests 152 and 153; `devtools/engine-probe/modtest152-UI.log`,
+  `modtest153-UI.log`.
+
 ### 1.4 A specialist cannot be removed from any city
 
 - **Wanted for.** The crisis urban leg taking a specialist once a settlement has no rural tile left, for
@@ -403,6 +441,8 @@ Not limits on what can be done, but reads that lie for a moment and have caused 
 | Remove a rural point through the counter | removes no tile, no yields | 2026-09-11 | ledger run 4 |
 | Grant or take city happiness | only the celebration stockpile | 2026-09-11 | ledger runs 1 to 5 |
 | Attach a runtime yield source | no API; banner never shows mod yields | 2026-07-16 | won't-implement, CANTFIX-1 |
+| grantYield per yield | Gold, Influence ±; Science, Culture + only; Food, Production nothing; no Faith | 2026-09-18 | ledger, mod tests 152 and 153 |
+| Write city production / food | BuildQueue.addProgress works, any owner; FoodQueue.addProgress does nothing | 2026-09-18 | ledger, mod test 153 |
 | Remove a specialist from any city | ASSIGN_WORKER -1 desyncs the worker count; empties no slot, frees no point | 2026-09-14 | ledger, mod test 55 |
 | Damage a constructible from script | no operation; setProperty is metadata; own-tile pillage refused | 2026-09-14 | ledger, mod tests 36 to 38 |
 | Create a half-built constructible the city finishes | orphan; the queue makes a second copy | 2026-09-14 | ledger, mod test 38 |

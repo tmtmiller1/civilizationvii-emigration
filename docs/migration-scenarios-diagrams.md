@@ -343,9 +343,9 @@ flowchart TD
    QG -->|yes| QE{"a host city has an established foreign quarter?<br/>(diaspora mass over the founding threshold)"}
    QE -->|no| QSKIP
    QE -->|yes| QM["offer the 'Cultural Quarter' modal: embrace / tax / let be"]
-   QM --> QY["apply one-time yields: +quarterRewardAmount(40) benefit, −quarterDrawbackAmount(20) drawback<br/>('let be' applies neither); record the quarter on the city-centre tile"]
+   QM --> QY["pay the stance once: 3 turns of the host's income of Culture / Science / Influence for 2 turns of its Gold,<br/>or 1.5 turns of Gold for free; per-age floors ('let be' pays nothing); record the quarter on the city-centre tile"]
    QY --> QH{"later: a DIFFERENT origin overtakes the tile?"}
-   QH -->|yes| QR["reverse the prior stance's yields exactly, replace the record<br/>(Chronicle: 'The Quarter Changes Hands') — one quarter per tile, no stacking"]
+   QH -->|yes| QR["replace the record; the new stance pays once, the old one's payout stands<br/>(Chronicle: 'The Quarter Changes Hands') — one quarter per tile, no stacking"]
    QH -->|no| QHOLD["quarter persists"]
 ```
 

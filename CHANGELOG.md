@@ -5,6 +5,43 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [3.1.1] - 2026-09-21
+
+### Changed
+- **Civilopedia pages rewritten to say plainly what each system does and when.** The Cultural Enclaves page
+  gives the formation rule (3 population points holding 30% of the settlement or the size bar) and describes the
+  one-time stance payment.
+
+## [3.1.0] - 2026-09-18
+
+### Changed
+- **Every decision pop-up shows its yields on its buttons.** The refugee, newcomer, call-home and Cultural
+  Enclave pop-ups all put each choice's gains and costs on the choice's own button, with the game's yield icons
+  and in one shape ("Welcome them in: +1 population, −30 Gold, −10 Happiness"), so you no longer match a list in
+  the text to the button below it.
+- **Refugee decision buttons show their costs.** "Welcome them in", "Settle the frontier" and "Turn them away"
+  each carry the population, Gold, Happiness or Influence they change; the separate list of costs is gone from
+  the pop-up's text.
+- **Newcomer and refugee placement buttons show what you gain.** Every choice shows the population it adds, and
+  "Let the city settle them" also shows the yields of the tile the city will take, for example "+1 population,
+  +1 Food, +3 Production, +1 Happiness". The city's own bonuses can add a little on top.
+- **Enclave stance buttons show what each stance pays and costs.** For example "Learn their horsemanship: +375
+  Science, −1410 Gold". A stance you cannot afford is greyed out and says "(not enough Gold)", and the pop-up
+  says the stance is paid once, when you choose.
+- **Enclave stances pay a real, one-time sum.** Recognizing a Cultural Enclave pays once, when you choose:
+  Culture toward your current civic, Science toward your current research, Influence, or Gold. Stances that do
+  not pay Gold cost Gold; Gold stances are free. The sums are sized to your own economy: a stance pays three
+  turns of your income of that yield and costs two turns of your Gold income, never less than a per-age
+  minimum (60, 150 or 300 by age, scaled by game speed). An Exploration empire earning 221 Culture and 705 Gold
+  a turn is offered, for example, +665 Culture for −1,410 Gold. Before, stances paid a small +2/−1 each turn,
+  and most of those yields (Food, Production, Faith, Happiness, and every cost but Gold) never reached the game.
+- **Other civilizations take the first stance they can afford.**
+- **Enclave tooltips and city readouts no longer list stance yields each turn.** A stance is paid once, so the
+  enclave's tooltip names the stance it took, and its tile's own yields are listed as before.
+- **Every civilization's stances were rewritten around what they now pay, in all 12 languages.** The enclave's
+  tile keeps its art and its own yield.
+- **Enclaves recognized before this version keep their old per-turn stance yields.**
+
 ## [3.0.0] - 2026-09-18
 
 ### Added

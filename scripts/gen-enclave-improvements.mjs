@@ -65,7 +65,7 @@ for (const civ of civs) {
     terrains.push(`        <Row ConstructibleType="${t}" TerrainType="TERRAIN_HILL"/>`);
     yields.push(`        <Row ConstructibleType="${t}" YieldType="${benefit}" YieldChange="${ENCLAVE_BENEFIT}"/>`);
     icons.push(`        <Row>\n            <ID>${t}</ID>\n            <Path>${iconPathOf(civ)}</Path>\n        </Row>`);
-    const why = option.why.charAt(0).toUpperCase() + option.why.slice(1);
+    const why = option.tileWhy.charAt(0).toUpperCase() + option.tileWhy.slice(1);
     text.push(`        <Row Tag="LOC_${t}_NAME"><Text>${esc(entry.demonym)} Enclave</Text></Row>`);
     text.push(`        <Row Tag="LOC_${t}_DESCRIPTION"><Text>${esc("A quarter settled by " + entry.demonym + " migrants who have put down roots in the city. " +
       why + ". The enclave itself works this tile: +" + ENCLAVE_BENEFIT + " " + yieldWord(benefit) + " (its " + yieldWord(penalty).toLowerCase() +

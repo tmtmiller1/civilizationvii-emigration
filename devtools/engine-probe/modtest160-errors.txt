@@ -1,0 +1,14 @@
+[2026-09-19 04:33:58]	HTML Parser Error@:fs://game/root-game.html@1:1146: Premature end of file  Currently open tags: html, div..
+[2026-09-19 04:34:14]	HTML Parser Error@:fs://game/root-game.html@49:43: Tokenizer error with an unimplemented error message.
+[2026-09-19 04:36:17]	JS Error: fs://game/base-standard/ui/unit-flags/privateer-flags.js:38: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-19 04:36:17]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-19 04:36:17]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-19 04:39:00]	JS Error: fs://game/base-standard/ui/unit-flags/privateer-flags.js:38: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-19 04:39:00]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-19 04:39:00]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-19 04:39:41]	JS Error: fs://game/base-standard/ui/unit-flags/privateer-flags.js:38: TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-19 04:39:41]	JS Error (Line):     if (this.privateerContainer != void 0 && this.unit.Health) {
+[2026-09-19 04:39:41]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'Health')
+[2026-09-19 04:41:00]	JS Error: fs://game/base-standard/ui-next/tooltips/plot-tooltip/helpers.js:297: TypeError: Cannot read properties of null (reading 'owner')
+[2026-09-19 04:41:00]	JS Error (Line):   const owningPlayer = Players.get(unit.owner);
+[2026-09-19 04:41:00]	JS Error (Stack): TypeError: Cannot read properties of null (reading 'owner')

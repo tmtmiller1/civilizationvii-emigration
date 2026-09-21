@@ -25,17 +25,27 @@ globalThis.Players = {
 const quarter = await import("/emigration/ui/emigration-quarter.js");
 const stateMod = await import("/emigration/ui/emigration-quarter-state.js");
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
-const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCountForCiv, MAX_ENCLAVES_PER_CIV, applyOwnerQuarterYields, retireDisplacedEnclaves, hostOwners, recordOwners, RECOGNITION, settleTakeover, payTakeoverCompensation, fadeStep } = quarter.__test;
+const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCountForCiv, MAX_ENCLAVES_PER_CIV, applyOwnerQuarterYields, retireDisplacedEnclaves, hostOwners, recordOwners, RECOGNITION, settleTakeover, payTakeoverCompensation, fadeStep, stanceButton } = quarter.__test;
 
-// ── resolveApplied: CONFIG amounts, null yields contribute nothing ──────────
+// ── resolveApplied: a one-time payout sized from the host's income, with per-age floors ──────────
 {
-  const embrace = resolveApplied({ benefitYield: "YIELD_CULTURE", penaltyYield: "YIELD_HAPPINESS" });
+  // Game.age 1 has no GameInfo here, so the age reads as Antiquity: floor 60, price floor 90.
+  const embrace = resolveApplied({ benefitYield: "YIELD_CULTURE" }, 0, 3);
+  assert.equal(embrace.once, true, "a stance is paid once, never per turn");
   assert.equal(embrace.benefitYield, "YIELD_CULTURE");
-  assert.equal(embrace.benefitAmount, CONFIG.quarterRewardAmount, "benefit uses the CONFIG reward");
-  assert.equal(embrace.penaltyAmount, CONFIG.quarterDrawbackAmount, "drawback uses the CONFIG amount");
-  const passive = resolveApplied({ benefitYield: null, penaltyYield: null });
-  assert.equal(passive.benefitAmount, 0, "a null benefit yield grants nothing");
-  assert.equal(passive.penaltyAmount, 0, "a null penalty yield costs nothing");
+  assert.equal(embrace.benefitAmount, 60, "with no income to read, the payout is the age floor");
+  assert.equal(embrace.penaltyYield, "YIELD_GOLD", "a non-Gold stance costs Gold");
+  assert.equal(embrace.penaltyAmount, 90, "the price floor is 1.5x the payout floor");
+  const atWar = resolveApplied({ benefitYield: "YIELD_CULTURE" }, 0, 2);
+  assert.equal(atWar.benefitAmount, 30, "an enclave whose homeland is at war with the host pays half");
+  assert.equal(atWar.penaltyAmount, 90, "its price is unchanged");
+  const tax = resolveApplied({ benefitYield: "YIELD_GOLD" }, 0, 3);
+  assert.equal(tax.penaltyYield, null, "a Gold stance costs nothing");
+  const passive = resolveApplied({ benefitYield: null }, 0, 3);
+  assert.equal(passive.benefitAmount, 0, "the passive stance pays nothing");
+  assert.equal(passive.penaltyAmount, 0, "and costs nothing");
+  const food = resolveApplied({ benefitYield: "YIELD_FOOD" }, 0, 3);
+  assert.equal(food.benefitAmount, 0, "a yield a script cannot grant is never promised");
 }
 
 // ── tileKeyOf: city-centre plot key, defensive ──────────────────────────────
@@ -58,6 +68,30 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
   // Exactly ONE quote, at the view level — the options themselves carry none.
   assert.equal(typeof view.quote, "string", "the view exposes a single enclave-level quote string");
   assert.ok(view.choices.every((c) => c.quote === undefined), "individual options no longer carry quotes");
+  // Each button states what its stance pays; the body only says it is paid once.
+  assert.deepEqual(view.details, ["Paid once, when you choose."], "one note in the body, no per-stance lines");
+  const [c0, , letBe] = view.choices;
+  const paid = resolveApplied(c0, 0, 2); // host 0 is at war with civ 2: the payout is halved
+  assert.ok(c0.label.includes(": [icon:" + paid.benefitYield + "] +" + paid.benefitAmount),
+    "the button carries its payout and the yield's icon: " + c0.label);
+  if (paid.penaltyAmount) {
+    assert.ok(c0.label.includes("[icon:YIELD_GOLD] -" + paid.penaltyAmount), "and its Gold price");
+    assert.ok(c0.label.indexOf(" +") < c0.label.indexOf(" -"), "the gain reads before the cost");
+  }
+  assert.equal(letBe.label, "Let them be", "the passive stance keeps its bare label");
+  assert.ok(view.choices.every((c) => !c.disabled), "with an unreadable treasury nothing is greyed out");
+}
+
+// ── quarterView: a stance the host cannot pay for is greyed out and says why ──
+{
+  const realGet = globalThis.Players.get;
+  globalThis.Players.get = (id) => ({ ...realGet(id), Treasury: { goldBalance: 10 } });
+  const view = quarterView({ civ: 3, name: "Rome", share: 0.4, where: "by the harbour" }, 0);
+  const costly = view.choices.filter((c) => c.penaltyYield === "YIELD_GOLD");
+  assert.ok(costly.length && costly.every((c) => c.disabled), "every Gold-costing stance is greyed out at 10 Gold");
+  assert.ok(view.choices.find((c) => c.id === "ignore").disabled !== true, "letting them be is always open");
+  assert.ok(costly.every((c) => c.label.endsWith("(not enough Gold)")), "its button says why");
+  globalThis.Players.get = realGet;
 }
 
 // ── accrueContestedStrain: war with a homeland turns its quarter contested ──

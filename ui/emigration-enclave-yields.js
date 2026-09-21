@@ -35,13 +35,32 @@ function add(out, key, amount) {
 
 /**
  * The per-turn yields of an enclave's STANCE alone ({YIELD_X: signed n}): its benefit minus its drawback.
- * Empty until the enclave is recognized (an established enclave has no stance yet) and for "let be".
+ * Empty until the enclave is recognized (an established enclave has no stance yet), for "let be", and for
+ * a stance paid once at recognition (`applied.once`): only a record from an older save pays per turn.
  * @param {*} rec A quarter record. @returns {Record<string, number>} Signed yields by type (may be empty).
  */
 export function stanceYields(rec) {
+  const applied = rec && typeof rec === "object" && rec.applied ? rec.applied : {};
+  return applied.once ? {} : signedOf(applied);
+}
+
+/**
+ * What a stance paid ONCE, at recognition ({YIELD_X: signed n}): its payout minus its Gold price. Empty for
+ * "let be", before recognition, and for an older per-turn record.
+ * @param {*} rec A quarter record (or `{applied}`). @returns {Record<string, number>} Signed yields by type.
+ */
+export function paidYields(rec) {
+  const applied = rec && typeof rec === "object" && rec.applied ? rec.applied : {};
+  return applied.once ? signedOf(applied) : {};
+}
+
+/**
+ * An applied record's benefit minus its drawback as a signed map.
+ * @param {*} applied The record's applied block. @returns {Record<string, number>} Signed yields by type.
+ */
+function signedOf(applied) {
   /** @type {Record<string, number>} */
   const out = {};
-  const applied = rec && typeof rec === "object" && rec.applied ? rec.applied : {};
   add(out, applied.benefitYield, Math.max(0, num(applied.benefitAmount)));
   add(out, applied.penaltyYield, -Math.max(0, num(applied.penaltyAmount)));
   return out;
@@ -76,14 +95,38 @@ function yieldNoun(key) {
  * @returns {string} The text.
  */
 export function yieldsText(yields, sign) {
-  const s = sign === -1 ? -1 : 1;
+  return yieldParts(yields, sign === -1 ? -1 : 1).join(", ");
+}
+
+/**
+ * The figure for a button caption, in the shape the refugee and call-home buttons use: each yield's own game
+ * icon, then its signed amount, no noun, gains before costs ("[icon:YIELD_SCIENCE] +375, [icon:YIELD_GOLD]
+ * -1410"); the icon names the yield and keeps the button short.
+ * @param {Record<string, number>} yields Signed yields by type. @returns {string} The text ("" when empty).
+ */
+export function yieldsButtonText(yields) {
+  const keys = Object.keys(yields || {}).sort().sort((a, b) => Number(num(yields[b]) > 0) - Number(num(yields[a]) > 0));
+  const parts = [];
+  for (const key of keys) {
+    const n = num(yields[key]);
+    if (n) parts.push("[icon:" + key + "] " + (n > 0 ? "+" : "-") + Math.abs(n));
+  }
+  return parts.join(", ");
+}
+
+/**
+ * One "+n Noun" part per non-zero yield, in type order.
+ * @param {Record<string, number>} yields Signed yields by type. @param {number} s 1 or −1.
+ * @returns {string[]} The parts.
+ */
+function yieldParts(yields, s) {
   const parts = [];
   for (const key of Object.keys(yields || {}).sort()) {
     const n = num(yields[key]) * s;
     if (!n) continue;
     parts.push((n > 0 ? "+" : "−") + Math.abs(n) + " " + yieldNoun(key));
   }
-  return parts.join(", ");
+  return parts;
 }
 
 /**

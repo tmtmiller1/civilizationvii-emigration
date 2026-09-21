@@ -26,6 +26,7 @@ import { dlog } from "/emigration/ui/emigration-log.js";
 import { disasterLossCapReached } from "/emigration/ui/emigration-disasters.js";
 import { allQuarterEntries } from "/emigration/ui/emigration-quarter-state.js";
 import { scheduleDistrictCleanup } from "/emigration/ui/emigration-plot-cleanup.js";
+import { noteDamage, firstSeenDamaged } from "/emigration/ui/emigration-damage-age.js";
 
 /**
  * A candidate rural improvement on one of the city's plots.
@@ -170,12 +171,15 @@ function tilesOnPlot(plot, centre) {
     if (!district) return out;
     const onResource = plotHasResource(loc.x, loc.y);
     const distance = plotDistance(loc, centre);
+    let anyDamaged = false;
     for (const elem of district.getConstructibleIdsOfClass(ConstructibleClasses.IMPROVEMENT) || []) {
       const type = constructibleTypeOf(elem);
       if (type.startsWith(ENCLAVE_TYPE_PREFIX) || type === VILLAGE_TYPE) continue; // an enclave never leaves
       const damaged = !!safeDamaged(elem);
+      anyDamaged = anyDamaged || damaged;
       out.push({ plot, loc, elem, type, onResource, distance, damaged, feeds: improvementFeeds(type) });
     }
+    if (out.length) noteDamage(plot, anyDamaged, gameTurn());
   } catch (_) {
     /* an unreadable plot is skipped, never fatal */
   }
@@ -267,6 +271,20 @@ export function findDepartureTile(city, opts) {
 }
 
 /**
+ * The log line for an abandoned tile: what it was, whether it was damaged (still repairable), and since when.
+ * Damage age counts from the first turn this session saw the tile damaged (emigration-damage-age.js).
+ * @param {string} why "departure" or "death". @param {DepartureTile} tile The abandoned tile.
+ * @returns {string} The line.
+ */
+export function abandonLine(why, tile) {
+  const turn = gameTurn();
+  const seen = tile.damaged ? firstSeenDamaged(tile.plot) : null;
+  const age = seen == null ? "" : " firstSeenDamaged=" + seen + " damagedTurns=" + (turn - seen);
+  return "abandoned " + tile.type + " at plot " + tile.plot + " (" + why + ", turn " + turn + ") damaged=" +
+    (tile.damaged ? "yes" : "no") + age;
+}
+
+/**
  * Send the engine's DESTROY_ELEMENT for one constructible. Fire-and-forget like every gameplay write.
  * @param {DepartureTile} tile The tile to remove.
  * @returns {boolean} True when the request was issued without throwing.
@@ -300,7 +318,7 @@ export function abandonTileOrDecrement(city, opts) {
   if (CONFIG.departureRemovesTile) {
     const tile = findDepartureTile(city, opts);
     if (tile && destroyTile(tile)) {
-      dlog("abandoned " + tile.type + " at plot " + tile.plot);
+      dlog(abandonLine("departure", tile));
       return { ok: true, mode: "tile", type: tile.type, plot: tile.plot };
     }
   }
@@ -385,7 +403,10 @@ export function abandonForDeath(src) {
   // still counts (the counter), but the last tiles stay worked so a crisis cannot strip a city bare.
   if (CONFIG.departureRemovesTile && (Number(src.rural) || 0) > CONFIG.minRuralToEmigrate) {
     const tile = findDepartureTile(city, tileHints(src));
-    if (tile && destroyTile(tile)) return { ok: true, mode: "tile", type: tile.type };
+    if (tile && destroyTile(tile)) {
+      dlog(abandonLine("death", tile));
+      return { ok: true, mode: "tile", type: tile.type };
+    }
   }
   return { ok: removeRural(city), mode: "counter" };
 }

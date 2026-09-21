@@ -7,7 +7,7 @@
         <SpecialThanks>Tomahawk, Mk Z, and Tim_The_Texan's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>3.0.0</Version>
+        <Version>3.1.1</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -114,6 +114,7 @@
                     <Item>ui/emigration-civ-tuning.js</Item>
                     <Item>ui/emigration-civ-roster.js</Item>
                     <Item>ui/emigration-effects.js</Item>
+                    <Item>ui/emigration-damage-age.js</Item>
                     <Item>ui/emigration-departure-tile.js</Item>
                     <Item>ui/emigration-plot-cleanup.js</Item>
                     <Item>ui/emigration-arrival-placement.js</Item>
@@ -239,6 +240,8 @@
                     <Item>ui/emigration-quarter-bonuses.js</Item>
                     <Item>ui/emigration-quarter-registry.js</Item>
                     <Item>ui/emigration-quarter-state.js</Item>
+                    <!-- What a recognized enclave's stance pays once, sized from the host's income. -->
+                    <Item>ui/emigration-stance-payout.js</Item>
                     <Item>ui/emigration-quarter.js</Item>
                     <!-- Advanced tunables sub-window, imported by emigration-options.js. -->
                     <Item>ui/options/emigration-advanced-editor.js</Item>

@@ -574,7 +574,7 @@
         <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_TITLE" Language="zh_Hans_CN"><Text>吸引与庇护</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="zh_Hans_CN"><Text>立场政策决定你的边境是否敞开，而另一组政策卡则决定你如何对待经由边境而来的人。人才吸引、文化魅力与商业吸引政策把移民化为引擎：你所吸引的每一位新来者都会积攒一份不断增长的科技、文化或金币红利，只要人潮持续涌入便会累积，一旦流入停止便逐渐消退，这是融入代价的对应物，奖励持续保持吸引力的文明。[n][n]庇护政策回应的是另一种召唤。向逃离战争与灾难者敞开大门，会把难民引向你，最绝望者优先，而世界以影响力铭记这一姿态，其后的契约更会丰富你的文化。二者相辅，使一个好客的民族得以从开放中获益，而非仅仅承受开放。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_RAIDS_TITLE" Language="zh_Hans_CN"><Text>人才掠夺</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_RAIDS_BODY" Language="zh_Hans_CN"><Text>Attraction need not wait for migration to come to you. From the diplomacy screen you can aim a Talent Raid, Cultural Offensive, or Commercial Offensive at a rival, a sustained campaign to bend their people toward your cities. For as long as it runs you pay Influence each turn, and in return that rival's migration tilts your way, drawing off their brightest minds, cultural figures, or merchants; each one who arrives banks the matching Science, Culture, or Gold dividend, the same as a willing immigrant.[n][n]It is a strategic competition tool, not war: no city is attacked and no border is crossed by force, yet a stronger neighbour's talent can be quietly drained to your benefit for the price of sustained diplomatic effort.[n][n]The Talent Raid, Cultural Offensive and Commercial Offensive are diplomatic actions provided by the Diplomacy Extended mod. Without it they do not appear, and Emigration's part in them is silently skipped.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_RAIDS_BODY" Language="zh_Hans_CN"><Text>From the diplomacy screen you can aim a Talent Raid, Cultural Offensive or Commercial Offensive at a rival. While it runs you pay Influence each turn, and that rival's migration tilts toward your cities. Each person who arrives pays the matching Science, Culture or Gold bonus, as a willing immigrant does.[n][n]These diplomatic actions come from the Diplomacy Extended mod and appear when it is installed.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_TITLE" Language="zh_Hans_CN"><Text>灾害与瘟疫</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_BODY" Language="zh_Hans_CN"><Text>洪水、火山、瘟疫等环境灾害，会与战争和不幸一道，将人们作为气候与灾害难民赶出受灾城市。事件越严重，推力越强；轻微事件只会悄然促动迁徙。[n][n]瘟疫尤为凶险：受感染的城市不仅会损失人口，倘若移民携带疫病，还可能在其难民落脚之处播下规模较小的疫情，沿着逃亡之路散布病患。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OUTLET_TITLE" Language="zh_Hans_CN"><Text>无处可逃之时</Text></Replace>
@@ -584,13 +584,13 @@
         <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_TITLE" Language="zh_Hans_CN"><Text>范围与可见性</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_BODY" Language="zh_Hans_CN"><Text>迁徙从第一回合起就模拟整个世界：所有存活的主要文明，而不仅是你已相遇的文明。这让迁徙保持真实：人们依据世界的实际状态移动，而你之后占领的城市会保留其居民真实的来源历史。[n][n]为避免剧透，仪表板、图表和地图镜头只显示你已相遇的文明。未相遇的文明仍在后台计算，但默认隐藏，使你无法得知尚未遇到的对手。你可以通过共享的分析可见性设置（与 Demographics 模组相同）扩大显示范围：仅自己的文明、已相遇的文明或全部。[n][n]简而言之：一切都会被模拟，而看到什么由你决定。模拟范围（整个世界或仅已相遇）与屏幕显示是相互独立的设置。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_TITLE" Language="zh_Hans_CN"><Text>解读仪表板</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="zh_Hans_CN"><Text>Open the Migration dashboard from its button on the in-game dock, or from the Migration page in the Demographics mod. Its tabs:[n][n]• Network: an animated map of civilizations and their settlements, sized by how much population moves through them, with dots travelling the routes, flow arrows, and a timeline you can scrub.[n]• Net Migration (Table): arrivals, departures and net change by civilization, internal and external, beside refugees and losses.[n]• Causes: why people move, by cause, with the named wars, disasters and crises beneath each.[n]• Policies: who has adopted a Pro- or Anti-Immigration Stance.[n]• My Cities: your settlements ranked by how close each is to losing people, with each one's pressures.[n]• Diversity: the most diverse settlements and the make-up of their people.[n]• Notifications: the permanent log of every notification, with the Migration Chronicle's history entries among them.[n]• Guide: a quick reference of what does and does not drive migration.[n][n]On the map itself, the Prosperity lens (Shift+P) and the Ethnic Composition lens (Shift+E) paint each settlement tile by tile; see Map Lenses.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="zh_Hans_CN"><Text>Open the Migration dashboard from its button on the in-game dock, or from the Migration page in the Demographics mod. Its tabs:[n][n]• Network: an animated map of civilizations and their settlements, sized by how much population moves through them, with dots travelling the routes, flow arrows, and a timeline you can scrub.[n]• Net Migration (Table): arrivals, departures and net change by civilization, internal and external, beside refugees and losses.[n]• Causes: why people move, by cause, with the named wars, disasters and crises beneath each.[n]• Policies: who has adopted a Pro- or Anti-Immigration Stance.[n]• My Cities: your settlements ranked by how close each is to losing people, with each one's pressures.[n]• Diversity: the most diverse settlements and the make-up of their people.[n]• Notifications: the log of every notification, including the Migration Chronicle's entries.[n]• Guide: a quick reference of what drives migration.[n][n]On the map, the Prosperity lens (Shift+P) and the Ethnic Composition lens (Shift+E) paint each settlement tile by tile; see Map Lenses.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_TITLE" Language="zh_Hans_CN"><Text>族群构成与融合</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_BODY" Language="zh_Hans_CN"><Text>每个聚落都记录其居民的来历，按每个人所属的文明来源，并在征服之后依然保留这份记录。族群构成镜头（Shift+E）以逐格马赛克呈现：人口密集的城市核心为主导来源的颜色，较小的社群散布于其各地块，已定居地块的提示框中会显示确切构成。[n][n]随着时间推移，新来者会融入接纳他们的文明，除非与其故土的战争或城市中的动荡使某个社群保持独立。而一旦故土与接纳方和平相处并重新繁荣，回归移民便会逐渐将其部分人口带回故乡，移动真实人口。以上皆为默认开启，可在选项中关闭。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_TITLE" Language="zh_Hans_CN"><Text>文化飞地</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_BODY" Language="zh_Hans_CN"><Text>When a foreign community grows into a lasting part of one of your cities, a real presence living there now rather than just a memory of past arrivals, it takes root as a Cultural Enclave: a district at the city's edge named for the origin people, placed as a tile that carries its own yield from the day it forms. Once the enclave has held for a while it is recognized. By default the city then takes the first of two stances drawn from that civilization's own character on its own, and the Chronicle records it; set enclave recognition to Ask me in Advanced settings and the recognition becomes your decision, offered in a pop-up with a quotation in that people's voice: two stances, each a small benefit paired with a matching drawback, or simply let them be. The stance the city holds is applied to your empire's yields each turn, on top of the tile.[n][n]A single origin civilization can hold at most two enclaves in your empire, counted per origin, so a Roman and a Norman enclave never crowd each other out, and at most three enclaves form in your empire in any one age. Enclaves persist while the community does, can change hands as a city's population shifts, fade once the community that sustained them is gone, and grow restless if you go to war with their homeland: their benefit halves and each contested enclave strains your happiness until peace. A community with an enclave is far less likely to return home on its own; see Calling Your People Home.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_BODY" Language="zh_Hans_CN"><Text>A foreign community of at least 3 population points that holds 30% of a settlement, or the size bar (6 points at average settlement size), forms a Cultural Enclave in that city, yours or an AI's: a tile at the city's edge named for the origin people, carrying its own yield from the day it forms. After a dwell period the enclave is recognized. Each people has two stances drawn from its character. By default the city takes the first it can afford, and the Chronicle records it. With enclave recognition set to Ask me in Advanced settings, a pop-up with a quotation in that people's voice lets you pick a stance or none. A stance pays once, when chosen: Culture toward your current civic, Science toward your current research, Influence, or Gold, worth three turns of your income of that yield. A stance that pays anything but Gold costs two turns of your Gold income.[n][n]Each origin civilization can hold at most two enclaves in your empire, and at most three enclaves form in your empire per age. An enclave can change hands as the city's population shifts, and dissolves when its community stays below 12.5% of the settlement and below the size bar for 12 turns. At war with its homeland, an enclave is contested: it strains your happiness until peace, and a stance chosen meanwhile pays half. A community with an enclave rarely returns home on its own; see Calling Your People Home.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="zh_Hans_CN"><Text>移民编年史与难民抉择</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="zh_Hans_CN"><Text>The Migration Chronicle writes the world's great migrations as short history: a city emptied by war or disaster, a diaspora taking root far from home, a people returning once their homeland recovered, an enclave recognized or faded, a call home answered or not. Its entries appear among the Notifications in the dashboard's Notifications tab, beside the per-event detail.[n][n]Once in a while, when a real upheaval (a neighbour conquering several cities in a short span, or a plague crisis) sends a wave of refugees toward your lands, you are asked how to receive them: welcome them in (a cost in Gold and a short strain on your people; they settle among you), settle them on the frontier (a smaller cost; they go to a smaller town), or turn them away (a cost in Influence). Each decision carries a quotation in the voice of the people at your gates. These decisions are rare by design, at most two per age and never less than eighteen turns apart, and can be switched off in Options. A civilization you have not met is named only as hearsay, never revealed.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="zh_Hans_CN"><Text>The Migration Chronicle records the world's great migrations as short history: a city emptied by war or disaster, a diaspora taking root far from home, a people returning once their homeland recovered, an enclave recognized or faded, a call home answered or unanswered. Its entries appear in the dashboard's Notifications tab.[n][n]When a real upheaval, a neighbour conquering several cities in a short span or a plague crisis, sends a wave of refugees toward your lands, you are asked how to receive them:[n]• Welcome them in: costs Gold and briefly strains your people; they settle among you.[n]• Settle them on the frontier: a smaller cost; they go to a smaller town.[n]• Turn them away: costs Influence.[n]Each decision carries a quotation in the voice of the people at your gates. At most two come per age, at least eighteen turns apart, and they can be switched off in Options. A civilization you have not met is named only as hearsay.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="zh_Hans_CN"><Text>迁徙</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_SELFTEST_OPEN" Language="zh_Hans_CN"><Text>迁徙自检（诊断）</Text></Replace>
         <Replace Tag="LOC_EMIG_LENS_PROSPERITY" Language="zh_Hans_CN"><Text>繁荣</Text></Replace>
@@ -1068,119 +1068,119 @@
         <Replace Tag="LOC_EMIG_DQ_POOL_RETURN_4" Language="zh_Hans_CN"><Text>"هر کسی کو دور ماند از اصل خویش / باز جوید روزگار وصل خویش (Every one who is left far from his source wishes back the time when he was united with it.)" Rumi, Masnavi I, proem (13th c., trans. Nicholson)</Text></Replace>
         <Replace Tag="LOC_EMIG_DQ_POOL_RETURN_5" Language="zh_Hans_CN"><Text>"con altra voce omai, con altro vello / ritornerò poeta, e in sul fonte / del mio battesmo prenderò 'l cappello (With other voice forthwith, with other fleece / Poet will I return, and at my font / Baptismal will I take the laurel crown.)" Dante Alighieri, in exile, Paradiso XXV (trans. Longfellow)</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_ABBASID_A" Language="zh_Hans_CN"><Text>智慧宫的学者从事翻译，但他们的津贴耗竭国库</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_ABBASID_B" Language="zh_Hans_CN"><Text>闻名的园林与沙龙抚慰着城市，但少有人手劳作田园</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_AKSUM_A" Language="zh_Hans_CN"><Text>红海商人使码头繁荣，但钱财流向了埠头，而非古老的祭仪</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_AKSUM_B" Language="zh_Hans_CN"><Text>他们的方尖碑教堂吸引朝圣者，人群拥塞了街区</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_ASSYRIA_A" Language="zh_Hans_CN"><Text>他们的攻城工程师武装你的铸造厂，攻城槌与攻城塔源源而出，尽管其尚武之气令街区不悦</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_ASSYRIA_A" Language="zh_Hans_CN"><Text>武装你的攻城器械</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ABBASID_B" Language="zh_Hans_CN"><Text>他们的沙龙与闻名的园林接待来自已知世界各地的使节，费用由城市承担</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_AKSUM_A" Language="zh_Hans_CN"><Text>红海商人使码头繁荣，并以钱币缴纳港口税</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_AKSUM_B" Language="zh_Hans_CN"><Text>他们的方尖碑教堂吸引朝圣者与书吏，由城市负担其维护</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ASSYRIA_A" Language="zh_Hans_CN"><Text>他们的攻城工程师教你的铸造厂打造攻城槌与攻城塔，而他们的作坊维持起来所费不赀</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_ASSYRIA_A" Language="zh_Hans_CN"><Text>学习他们的攻城术</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_ASSYRIA_B" Language="zh_Hans_CN"><Text>缴获的典籍充实了档案馆，但整理战利品耗费钱财</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_BABYLON_A" Language="zh_Hans_CN"><Text>泥板学舍的书吏守护星表，但他们的津贴耗竭国库</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_BABYLON_B" Language="zh_Hans_CN"><Text>层叠的运河园圃使街区绿意盎然，但水利工程占用了人手</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_CARTHAGE_A" Language="zh_Hans_CN"><Text>布匿商人挤满了码头，抽走了田间的人手</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_CARTHAGE_B" Language="zh_Hans_CN"><Text>造船匠支起繁忙的船坞，城市重吨位胜于重神庙</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BABYLON_B" Language="zh_Hans_CN"><Text>他们层叠的运河园圃将椰枣与大麦送往市集</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CARTHAGE_A" Language="zh_Hans_CN"><Text>布匿商人挤满码头，并缴纳港口税</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CARTHAGE_B" Language="zh_Hans_CN"><Text>他们的造船匠与航海家将你的威名传至远方港口，船队开销由你的国库支付</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_EGYPT_A" Language="zh_Hans_CN"><Text>纪念碑石匠装点着街区，但维护其作品所费不赀</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_EGYPT_B" Language="zh_Hans_CN"><Text>尼罗河式的洪泛耕作供养街区，但抽走了工程的劳力</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_GAUL_A" Language="zh_Hans_CN"><Text>他们山丘堡垒的铁匠锻造铁器与马具，却不在意神庙的体面</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_GAUL_A" Language="zh_Hans_CN"><Text>让他们的铁匠开工</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_EGYPT_B" Language="zh_Hans_CN"><Text>他们的尼罗河丈量师带来几何学与星历，由城市负担其生计</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GAUL_A" Language="zh_Hans_CN"><Text>他们山丘堡垒的铁匠传授冶铁与马具制作，而熔炉耗费钱财</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_GAUL_A" Language="zh_Hans_CN"><Text>学习他们的锻造术</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_GAUL_B" Language="zh_Hans_CN"><Text>内梅顿圣林的祭仪安定街区，靠供奉维系</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_GREECE_A" Language="zh_Hans_CN"><Text>一座哲人云集的集市，以及他们的派系政治</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_GREECE_B" Language="zh_Hans_CN"><Text>剧场与柱廊兴盛，作坊却闲置荒废</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_HAN_A" Language="zh_Hans_CN"><Text>精耕细作养活众多人口，代价是拥挤</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_HAN_B" Language="zh_Hans_CN"><Text>公共工程队伍营建迅速，但徭役需要补贴</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_KHMER_A" Language="zh_Hans_CN"><Text>巴莱式灌溉使边缘地带绿意盎然，但水利工程耗费钱财</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_KHMER_B" Language="zh_Hans_CN"><Text>他们的神庙巡游吸引大批人群，挤满了街道</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREECE_A" Language="zh_Hans_CN"><Text>一群哲人在街区的集会广场上论辩，由城市支付其津贴</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREECE_B" Language="zh_Hans_CN"><Text>剧场与柱廊在街区中拔地而起，由城市为舞台出资</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HAN_A" Language="zh_Hans_CN"><Text>他们的朝贡使节将你的城市纳入天朝的朝贡体系，代价是一份份礼物</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HAN_B" Language="zh_Hans_CN"><Text>他们的公共工程师勘测运河与城墙，徭役由你的国库支付</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_KHMER_A" Language="zh_Hans_CN"><Text>巴莱工程师将水利技术带到边缘地带，而水利工程耗费钱财</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_KHMER_B" Language="zh_Hans_CN"><Text>他们的神庙巡游以舞蹈与仪式充满街道，节庆由城市出资</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_MAURYA_A" Language="zh_Hans_CN"><Text>苦行教团为街区祈福，靠布施维系</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MAURYA_B" Language="zh_Hans_CN"><Text>阶梯井园圃产出丰厚，却占用了人手</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MAYA_A" Language="zh_Hans_CN"><Text>观星者经营天文台，而非作坊</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MAYA_B" Language="zh_Hans_CN"><Text>密集的米尔帕田地养活众多人口，却使边缘拥挤</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAURYA_B" Language="zh_Hans_CN"><Text>他们的正法使节将你的威名传至远方宫廷，费用由国库承担</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAYA_A" Language="zh_Hans_CN"><Text>观星者在街区中经营天文台，由城市出资</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAYA_B" Language="zh_Hans_CN"><Text>米尔帕田地的收成与可可充实了街区的市集</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_MISSISSIPPIAN_A" Language="zh_Hans_CN"><Text>土墩祭仪丰富了街区的生活，由贡赋供养</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MISSISSIPPIAN_B" Language="zh_Hans_CN"><Text>林地采集供养着街区，却疏于田园</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_PERSIA_A" Language="zh_Hans_CN"><Text>总督辖地的贡赋滚滚流入，怨愤亦随之而来</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_PERSIA_B" Language="zh_Hans_CN"><Text>围墙内的游乐园林令人愉悦，却占用了良田</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_ROME_A" Language="zh_Hans_CN"><Text>罗马工程师与老兵营建你的工程、操练你的军团，但雄鹰的阴影令人不安</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_ROME_A" Language="zh_Hans_CN"><Text>操练你的军团</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_ROME_B" Language="zh_Hans_CN"><Text>他们的道路把贸易引向城市，金钱主导了风尚</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_BULGARIA_A" Language="zh_Hans_CN"><Text>他们精于骑术与锻造的老兵磨砺你的骑兵，斗殴起来也如作战般凶狠</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_BULGARIA_A" Language="zh_Hans_CN"><Text>磨砺他们的骑手</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_BULGARIA_B" Language="zh_Hans_CN"><Text>边疆市集兴旺，城市的账簿比历书记得更满</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_CHOLA_A" Language="zh_Hans_CN"><Text>泰米尔海商挤满港口，抽走了土地上的人手</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_CHOLA_B" Language="zh_Hans_CN"><Text>宏大的神庙水池吸引朝圣者，节庆人群拥塞街区</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MISSISSIPPIAN_B" Language="zh_Hans_CN"><Text>来自大土墩的商路将铜与贝壳送往市集</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PERSIA_A" Language="zh_Hans_CN"><Text>总督辖地的贡赋流入国库</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PERSIA_B" Language="zh_Hans_CN"><Text>围墙内的游乐园林令城市愉悦，园丁的薪酬由国库支付</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ROME_A" Language="zh_Hans_CN"><Text>罗马工程师带来测量术与混凝土，由城市支付他们的工钱</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_ROME_A" Language="zh_Hans_CN"><Text>学习他们的工程技术</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ROME_B" Language="zh_Hans_CN"><Text>他们的道路把贸易引向城市</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BULGARIA_A" Language="zh_Hans_CN"><Text>他们精于骑术与锻造的老兵教导你的铁匠与骑手，代价是钱财</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_BULGARIA_A" Language="zh_Hans_CN"><Text>学习他们的骑术</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BULGARIA_B" Language="zh_Hans_CN"><Text>边疆市集兴旺，并缴纳应付的税款</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CHOLA_A" Language="zh_Hans_CN"><Text>泰米尔海商挤满港口</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_CHOLA_B" Language="zh_Hans_CN"><Text>宏大的神庙水池吸引朝圣者与诗人，节庆开销由国库支付</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_DAI_VIET_A" Language="zh_Hans_CN"><Text>城墙学者延续着学问，由公帑负担</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_DAI_VIET_B" Language="zh_Hans_CN"><Text>堡垒工程雇用大量人手，使其离开田地</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_DAI_VIET_B" Language="zh_Hans_CN"><Text>他们的使节深谙如何让强邻不敢进犯，而出使耗费钱财</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_ENGLAND_A" Language="zh_Hans_CN"><Text>牧师会礼堂的缮写室与戏班艺人丰富了街区，代价由修道院承担</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_ENGLAND_B" Language="zh_Hans_CN"><Text>他们的特许商人在任何港口都做得成生意，旧日祭仪却无人捐输</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_GORYEO_A" Language="zh_Hans_CN"><Text>青瓷窑与雕版刻工使街区重工艺胜于重田园</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_GORYEO_B" Language="zh_Hans_CN"><Text>他们的寺院教团守护大藏经，靠捐输维系</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_HAWAII_A" Language="zh_Hans_CN"><Text>鱼塘与礁湖供养街区，抽走了田园的人手</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ENGLAND_B" Language="zh_Hans_CN"><Text>他们的特许商人在任何港口都做得成生意</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GORYEO_A" Language="zh_Hans_CN"><Text>青瓷窑提升了街区的工艺，代价是钱财</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GORYEO_B" Language="zh_Hans_CN"><Text>他们的寺院教团以雕版刊印并守护大藏经，靠捐输维系</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HAWAII_A" Language="zh_Hans_CN"><Text>鱼塘与礁湖将渔获送往市集</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_HAWAII_B" Language="zh_Hans_CN"><Text>海奥神庙祭仪丰富了岛屿习俗，由城市出资</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_INCA_A" Language="zh_Hans_CN"><Text>梯田石匠与筑路队伍营建精湛，代价高昂</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_INCA_B" Language="zh_Hans_CN"><Text>山地梯田在拥挤的街区养活众多人口</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MAJAPAHIT_A" Language="zh_Hans_CN"><Text>香料之路的商栈使码头繁荣，埠头谈利多于谈盛典</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MAJAPAHIT_B" Language="zh_Hans_CN"><Text>沿海渔场供养边缘地带，却疏于田园</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MING_A" Language="zh_Hans_CN"><Text>瓷器与丝绸的商栈充实了账簿，窑炉却冷清下来</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MING_B" Language="zh_Hans_CN"><Text>宫廷艺术雅化了街区，其华美令朴素的街道相形见绌</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MONGOLIA_A" Language="zh_Hans_CN"><Text>他们的马群与铁匠为你的骑兵钉蹄、更换坐骑并配备武装，但那份趾高气扬令人生厌</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_MONGOLIA_A" Language="zh_Hans_CN"><Text>召集他们的骑手</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MONGOLIA_B" Language="zh_Hans_CN"><Text>草原贡道收益丰厚，城市在昔日守礼之处如今数起了钱财</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_NORMAN_A" Language="zh_Hans_CN"><Text>他们的城堡石匠与骑士营建坚固工事，磨砺你的武士</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_NORMAN_A" Language="zh_Hans_CN"><Text>培养他们的骑士</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_NORMAN_B" Language="zh_Hans_CN"><Text>封建租赋充实了金库，却疏于农田</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SONGHAI_A" Language="zh_Hans_CN"><Text>河运与盐运的商队挤满市集，抽走了土地上的人手</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SONGHAI_B" Language="zh_Hans_CN"><Text>他们的学者拥有闻名的图书馆，也有闻名的争斗</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SPAIN_A" Language="zh_Hans_CN"><Text>珍宝船队的商栈使港口繁荣，其间夹杂着改宗的纷争</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SPAIN_B" Language="zh_Hans_CN"><Text>他们的传教团赢得灵魂，覆盖了旧有习俗</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_AMERICA_A" Language="zh_Hans_CN"><Text>工厂工人推动产出，但轮班催生了动荡</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_INCA_A" Language="zh_Hans_CN"><Text>梯田石匠与筑路队伍传授他们的营建之术，所费不赀</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_INCA_B" Language="zh_Hans_CN"><Text>他们的查斯基信使沿道路传递消息，驿站开销由国库支付</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAJAPAHIT_A" Language="zh_Hans_CN"><Text>香料之路的商栈使码头繁荣</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MAJAPAHIT_B" Language="zh_Hans_CN"><Text>他们的航海使节将遥远的岛屿与你的城市相连，代价是礼物</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MING_A" Language="zh_Hans_CN"><Text>瓷器与丝绸的商栈充实了账簿</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MING_B" Language="zh_Hans_CN"><Text>宫廷艺术雅化了街区，由城市为其华美出资</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MONGOLIA_A" Language="zh_Hans_CN"><Text>他们的站赤信使与使节携你的印玺横越草原，而驿站耗费钱财</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_MONGOLIA_A" Language="zh_Hans_CN"><Text>与他们的信使同行</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MONGOLIA_B" Language="zh_Hans_CN"><Text>草原贡道收益丰厚</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NORMAN_A" Language="zh_Hans_CN"><Text>他们的城堡石匠教导你的工匠，而他们的工钱高昂</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_NORMAN_A" Language="zh_Hans_CN"><Text>学习他们的筑城术</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NORMAN_B" Language="zh_Hans_CN"><Text>封建租赋充实了金库</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SONGHAI_A" Language="zh_Hans_CN"><Text>河运与盐运的商队挤满市集</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SONGHAI_B" Language="zh_Hans_CN"><Text>他们的学者拥有闻名的图书馆，抄写员的薪酬由国库支付</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SPAIN_A" Language="zh_Hans_CN"><Text>珍宝船队的商栈使港口繁荣</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SPAIN_B" Language="zh_Hans_CN"><Text>他们的传教团兴建教堂与学校，费用由国库承担</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_AMERICA_A" Language="zh_Hans_CN"><Text>他们的发明家与工厂工程师带来新方法，而专利耗费钱财</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_AMERICA_B" Language="zh_Hans_CN"><Text>他们的电影与爵士乐活跃了街区，需要补贴</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_BUGANDA_A" Language="zh_Hans_CN"><Text>湖畔园圃供养街区，打理需要成本</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_BUGANDA_B" Language="zh_Hans_CN"><Text>树皮布工匠丰富了习俗，却疏于田园</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_FRENCH_EMPIRE_A" Language="zh_Hans_CN"><Text>沙龙与伟大艺术品兴盛，作坊却闲置荒废</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_FRENCH_EMPIRE_B" Language="zh_Hans_CN"><Text>奢侈品贸易使街区富足，其做派却惹恼了贫者</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_GREAT_BRITAIN_A" Language="zh_Hans_CN"><Text>账房与文书获利丰厚；工厂却滋生怨怼</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_GREAT_BRITAIN_B" Language="zh_Hans_CN"><Text>工业作坊热火朝天，抽走了农田的人手</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_HEIAN_A" Language="zh_Hans_CN"><Text>宫廷的雅致绽放，作坊却闲置荒废</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_HEIAN_B" Language="zh_Hans_CN"><Text>他们的节庆提振了整座城市，代价由国库承担</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_ICELAND_A" Language="zh_Hans_CN"><Text>他们的造船匠与船员打造迅捷的长船，抽走了农田的人手</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BUGANDA_A" Language="zh_Hans_CN"><Text>湖畔园圃将大蕉与树皮布送往市集</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_BUGANDA_B" Language="zh_Hans_CN"><Text>树皮布工匠丰富了习俗，由城市为他们的作品出资</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_FRENCH_EMPIRE_A" Language="zh_Hans_CN"><Text>沙龙与伟大艺术品兴盛，由城市出资供养其赞助人</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_FRENCH_EMPIRE_B" Language="zh_Hans_CN"><Text>奢侈品贸易使街区富足</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREAT_BRITAIN_A" Language="zh_Hans_CN"><Text>账房与文书获利丰厚</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_GREAT_BRITAIN_B" Language="zh_Hans_CN"><Text>他们的工程师带来蒸汽机与工厂，而专利耗费钱财</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HEIAN_A" Language="zh_Hans_CN"><Text>宫廷的雅致绽放，宫廷的赞助开销由你的国库支付</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_HEIAN_B" Language="zh_Hans_CN"><Text>他们的节庆吸引各地的使节与诗人，费用由国库承担</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_ICELAND_A" Language="zh_Hans_CN"><Text>他们的长船将贸易带往遥远的海岸</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_LABEL_ICELAND_A" Language="zh_Hans_CN"><Text>启航他们的长船</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_ICELAND_B" Language="zh_Hans_CN"><Text>萨迦吟唱者守护着街区的记忆，由城市出资</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_JOSEON_A" Language="zh_Hans_CN"><Text>金属活字印工与学士们刊书无碍，但那些俸禄耗竭国库</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_JOSEON_B" Language="zh_Hans_CN"><Text>书院学者守持礼仪与文章，作坊却闲置荒废</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MEIJI_A" Language="zh_Hans_CN"><Text>他们的兵工厂与征兵操练以严酷的人力节奏建起一支现代军队</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_MEIJI_A" Language="zh_Hans_CN"><Text>现代化你的军队</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MEIJI_B" Language="zh_Hans_CN"><Text>一往无前的现代化，旧习俗被搁置一旁</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_JOSEON_B" Language="zh_Hans_CN"><Text>书院学者守持礼仪与文章，书院经费由国库拨给</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MEIJI_A" Language="zh_Hans_CN"><Text>他们的兵工厂与军事学院带来现代方法，代价是高昂的钱财</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_MEIJI_A" Language="zh_Hans_CN"><Text>研习他们的兵工厂</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MEIJI_B" Language="zh_Hans_CN"><Text>他们的使节考察各国并带回条约，而出使耗费钱财</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_MEXICO_A" Language="zh_Hans_CN"><Text>壁画与庆典为街区增色，由城市出资</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MEXICO_B" Language="zh_Hans_CN"><Text>紧密团结的社群提振了士气，胜过产出</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MEXICO_B" Language="zh_Hans_CN"><Text>他们的市集与侨汇充实了街区的钱袋</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_MUGHAL_A" Language="zh_Hans_CN"><Text>细密画家与建筑师装点街区，所费不赀</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_MUGHAL_B" Language="zh_Hans_CN"><Text>精细纺织品贸易挤满码头，抽走了田间的人手</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_PRUSSIA_A" Language="zh_Hans_CN"><Text>他们的操练教官与兵工厂锻造出一支纪律严明的军队，作风刻板</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_PRUSSIA_A" Language="zh_Hans_CN"><Text>操练你的团级部队</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_PRUSSIA_B" Language="zh_Hans_CN"><Text>他们的军事学院严格施教，将旧习撇在一旁</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_QING_A" Language="zh_Hans_CN"><Text>稠密的增长在拥挤的街区养活众多人口</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_QING_B" Language="zh_Hans_CN"><Text>通商口岸的商栈充实了账簿，作坊却放缓下来</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_RUSSIA_A" Language="zh_Hans_CN"><Text>重工业队伍在饥馑的街区辛勤劳作</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_MUGHAL_B" Language="zh_Hans_CN"><Text>精细纺织品贸易挤满码头</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PRUSSIA_A" Language="zh_Hans_CN"><Text>他们的总参谋部与外交官让你城市的话语举足轻重，而参谋学院耗费钱财</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_PRUSSIA_A" Language="zh_Hans_CN"><Text>请教他们的总参谋部</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PRUSSIA_B" Language="zh_Hans_CN"><Text>他们的军事学院严格施教，教授的薪酬由国库支付</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QING_A" Language="zh_Hans_CN"><Text>他们的学者编纂大型类书，抄写员的薪酬由国库支付</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QING_B" Language="zh_Hans_CN"><Text>通商口岸的商栈充实了账簿</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_RUSSIA_A" Language="zh_Hans_CN"><Text>他们的工程师带来铁路与钢铁厂，代价是巨额钱财</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_RUSSIA_B" Language="zh_Hans_CN"><Text>他们的文学与戏剧丰富了城市，需要补贴</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_SIAM_A" Language="zh_Hans_CN"><Text>神庙艺术与舞蹈丰富了街区，由城市出资</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SIAM_B" Language="zh_Hans_CN"><Text>他们繁忙的贸易收益丰厚，也挤满了街道</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SIAM_B" Language="zh_Hans_CN"><Text>他们繁忙的贸易收益丰厚</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_SILLA_A" Language="zh_Hans_CN"><Text>佛塔祭仪提振街区，靠布施维系</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SILLA_B" Language="zh_Hans_CN"><Text>他们的工艺雅化了习俗，作坊却闲置荒废</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_NEPAL_A" Language="zh_Hans_CN"><Text>山地梯田供养街区，打理需要成本</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_NEPAL_B" Language="zh_Hans_CN"><Text>他们的山堡石匠与操练教官营建坚固工事，锤炼坚韧的士兵</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_NEPAL_B" Language="zh_Hans_CN"><Text>训练他们的山地兵</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SILLA_B" Language="zh_Hans_CN"><Text>他们金匠的工艺品畅销各地市集</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEPAL_A" Language="zh_Hans_CN"><Text>山地梯田供养街区及其市集</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEPAL_B" Language="zh_Hans_CN"><Text>他们的山民在海外服役，为你的城市赢得声望，其薪饷出自国库</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_NEPAL_B" Language="zh_Hans_CN"><Text>招募他们的山民</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_WHY_OTTOMANS_A" Language="zh_Hans_CN"><Text>库里耶建筑群的专家施教与疗愈，由公帑负担</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_OTTOMANS_B" Language="zh_Hans_CN"><Text>盛大的庆典丰富了习俗，作坊却闲置荒废</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_PIRATE_REPUBLIC_A" Language="zh_Hans_CN"><Text>他们的私掠者与捕获船员充实你的金库、充实你的甲板，全然无法无天</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_OTTOMANS_B" Language="zh_Hans_CN"><Text>盛大的庆典丰富了习俗，由城市为宴席出资</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PIRATE_REPUBLIC_A" Language="zh_Hans_CN"><Text>他们的私掠者满载战利品而归，全然无法无天</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_LABEL_PIRATE_REPUBLIC_A" Language="zh_Hans_CN"><Text>雇用他们的私掠者</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_PIRATE_REPUBLIC_B" Language="zh_Hans_CN"><Text>繁忙的修船坞干得飞快，港口重速度胜于重礼节</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_QAJAR_A" Language="zh_Hans_CN"><Text>围墙内的园圃农场供养街区，打理需要成本</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_QAJAR_B" Language="zh_Hans_CN"><Text>Bāgh庆典丰富了习俗，作坊却闲置荒废</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SENGOKU_A" Language="zh_Hans_CN"><Text>他们城下町的甲胄匠锻造刀刃、磨砺你的武士，作风严苛</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_LABEL_SENGOKU_A" Language="zh_Hans_CN"><Text>锻造他们的刀刃</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SENGOKU_B" Language="zh_Hans_CN"><Text>大名的市集收益丰厚，却疏于田地</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SHAWNEE_A" Language="zh_Hans_CN"><Text>河谷低地的采集供养街区，需付出一定代价</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_SHAWNEE_B" Language="zh_Hans_CN"><Text>议事祭仪丰富了习俗，作坊却闲置荒废</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_TONGA_A" Language="zh_Hans_CN"><Text>海洋渔场供养边缘地带，抽走了田园的人手</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_TONGA_B" Language="zh_Hans_CN"><Text>岛屿贸易路线收益丰厚，城市重账目胜于重祭仪</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_NEUTRAL_A" Language="zh_Hans_CN"><Text>他们的习俗丰富了城市，两种生活方式比邻而居</Text></Replace>
-        <Replace Tag="LOC_EMIG_QTR_WHY_NEUTRAL_B" Language="zh_Hans_CN"><Text>他们的飞地向你的国库纳贡，却对税赋心怀不满</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_PIRATE_REPUBLIC_B" Language="zh_Hans_CN"><Text>他们的航海家出售标注每处暗礁与洋流的海图，代价是钱财</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QAJAR_A" Language="zh_Hans_CN"><Text>围墙内的园圃农场将水果送往市集</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_QAJAR_B" Language="zh_Hans_CN"><Text>巴格园林的庆典丰富了习俗，由城市出资</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SENGOKU_A" Language="zh_Hans_CN"><Text>他们城下町的甲胄匠传授炼钢之术，严厉而昂贵</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_LABEL_SENGOKU_A" Language="zh_Hans_CN"><Text>学习他们的炼钢术</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SENGOKU_B" Language="zh_Hans_CN"><Text>大名的市集收益丰厚</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SHAWNEE_A" Language="zh_Hans_CN"><Text>他们的议事发言人在诸部族间缔结同盟，礼物出自你的国库</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_SHAWNEE_B" Language="zh_Hans_CN"><Text>议事祭仪丰富了习俗，由城市为集会出资</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_TONGA_A" Language="zh_Hans_CN"><Text>他们的航海家将你的威名传遍大洋，代价是礼物</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_TONGA_B" Language="zh_Hans_CN"><Text>岛屿贸易路线收益丰厚</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEUTRAL_A" Language="zh_Hans_CN"><Text>他们的习俗丰富了城市，代价是钱财</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_WHY_NEUTRAL_B" Language="zh_Hans_CN"><Text>他们的飞地向你的国库缴纳钱财</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_ACT_CULTURE" Language="zh_Hans_CN"><Text>接纳他们的文化</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_ACT_GOLD" Language="zh_Hans_CN"><Text>对他们的贸易征税</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_ACT_PRODUCTION" Language="zh_Hans_CN"><Text>雇用他们的工艺</Text></Replace>
@@ -1198,6 +1198,10 @@
         <Replace Tag="LOC_EMIG_QTR_YIELD_HAPPINESS" Language="zh_Hans_CN"><Text>幸福度</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_LABEL_IGNORE" Language="zh_Hans_CN"><Text>任其自便</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_NOTE_IGNORE" Language="zh_Hans_CN"><Text>你既不笼络也不征税；这处飞地自处一隅，对你别无所求。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_ACT_DIPLOMACY" Language="zh_Hans_CN"><Text>欢迎他们的使节</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_YIELD_DIPLOMACY" Language="zh_Hans_CN"><Text>影响力</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_FX_NOTE" Language="zh_Hans_CN"><Text>选择时一次性支付。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_FX_SHORT" Language="zh_Hans_CN"><Text>（金币不足）</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_0_TITLE" Language="zh_Hans_CN"><Text>是什么让人们离开一座城市</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_0_R0_Q" Language="zh_Hans_CN"><Text>不满／低产出</Text></Replace>
         <Replace Tag="LOC_EMIG_GUIDE_0_R0_N" Language="zh_Hans_CN"><Text>和平时期的主要驱动因素。幸福度依然是单一的最大要素，但在 1.4.1 的再平衡之后，城市的人均产出也在这一决定中占据了实实在在的分量，因此不满的城市和低产出的城市都会流失人口，而两者兼具的城市则空得最快。不满的定居地遭受双重打击：1.4.1 还会压低其产出，而繁荣度评分会直接读取这一点。</Text></Replace>

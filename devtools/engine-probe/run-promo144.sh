@@ -14,7 +14,7 @@ say() { echo "[$(date +%H:%M:%S)] $*"; }
 rm -rf "$BAK"; mkdir -p "$BAK"; cp -p "$AUTO"/*.Civ7Save "$BAK"/ 2>/dev/null
 cp "$SRC" "$S/Saves/Single/$NAME"
 say "save staged as $NAME; $(ls "$BAK" | wc -l | tr -d ' ') autosaves backed up"
-zsh "$HERE/run-probe.sh" "${SCRIPT:-eep-modtest144.js}" "$NAME" "${LABEL:-promo144}" 900
+zsh "$HERE/run-probe.sh" "${SCRIPT:-eep-modtest144.js}" "$NAME" "${LABEL:-promo144}" "${TIMEOUT:-900}"
 rm -f "$S/Saves/Single/$NAME"
 if [ "$(ls "$AUTO"/*.Civ7Save 2>/dev/null | xargs -n1 basename | sort)" != "$(ls "$BAK" | sort)" ]; then
   say "autosaves changed during the run; putting the player's back"
