@@ -1,0 +1,16 @@
+[2026-09-18 21:03:19]	[EmigProbe] shell attached 
+[2026-09-18 21:03:20]	[EmigProbe] shell query complete 
+[2026-09-18 21:03:20]	[EmigProbe] shell found EmigPromo106.Civ7Save turn 106 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-18 21:03:20]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-18 21:03:39]	[EmigTest] modtest159 attached 
+[2026-09-18 21:04:02]	[EmigTest] SCENE Washington, D.C. origin=2 CIVILIZATION_BULGARIA before={"pop":45,"rural":17,"pending":0,"net":{"FOOD":342,"PRODUCTION":41.4,"GOLD":-6.59,"SCIENCE":14.2,"CULTURE":6.8,"HAPPINESS":-16.66,"DIPLOMACY":3.2}} 
+[2026-09-18 21:04:17]	[EmigTest] CALL addRuralPopulation(+1) 
+[2026-09-18 21:04:20]	[EmigTest] PENDING after={"pop":46,"rural":18,"pending":1,"net":{"FOOD":342,"PRODUCTION":41.4,"GOLD":-6.59,"SCIENCE":14.2,"CULTURE":6.8,"HAPPINESS":-16.66,"DIPLOMACY":3.2}} offered=[4006,3905] offeredYields=[[4006,{"YIELD_FOOD":1,"YIELD_PRODUCTION":3,"YIELD_HAPPINESS":1}],[3905,{"YIELD_FOOD":1,"YIELD_PRODUCTION":4,"YIELD_HAPPINESS":2}]] 
+[2026-09-18 21:04:20]	[EmigTest] VIEW buttons=["Choose where they settle: [icon:YIELD_POPULATION] +1","Let the city settle them: [icon:YIELD_POPULATION] +1, [icon:YIELD_FOOD] +1, [icon:YIELD_PRODUCTION] +3, [icon:YIELD_HAPPINESS] +1","Later: [icon:YIELD_POPULATION] +1"] 
+[2026-09-18 21:04:23]	[EmigTest] newcomer rect=[1106,633,669,534] viewport=2880x1800 captions=["Choose where they settle: [icon:YIELD_POPULATION] +1","Let the city settle them: [icon:YIELD_POPULATION] +1, [icon:YIELD_FOOD] +1, [icon:YIELD_PRODUCTION] +3, [icon:YIELD_HAPPINESS] +1","Later: [icon:YIELD_POPULATION] +1"] 
+[2026-09-18 21:04:23]	[EmigTest] SHOT newcomer 
+[2026-09-18 21:04:32]	[EmigTest] PRESS "Let the city settle them: [icon:YIELD_POPULATION] +1, [icon:YIELD_FOOD] +1, [icon:YIELD_PRODUCTION] +3, [icon:YIELD_HAPPINESS] +1" 
+[2026-09-18 21:04:32]	[EmigTest] CHOSEN auto 
+[2026-09-18 21:04:32]	[EmigTest] autoPlace placed=1 
+[2026-09-18 21:04:38]	[EmigTest] RESULT before={"pop":46,"rural":18,"pending":1,"net":{"FOOD":342,"PRODUCTION":41.4,"GOLD":-6.59,"SCIENCE":14.2,"CULTURE":6.8,"HAPPINESS":-16.66,"DIPLOMACY":3.2}} after={"pop":46,"rural":18,"pending":0,"net":{"FOOD":343,"PRODUCTION":44.85,"GOLD":-5.44,"SCIENCE":15.42,"CULTURE":7.39,"HAPPINESS":-15.66,"DIPLOMACY":3.48}} netDelta={"FOOD":1,"PRODUCTION":3.45,"GOLD":1.15,"SCIENCE":1.22,"CULTURE":0.59,"HAPPINESS":1,"DIPLOMACY":0.28} offeredNow=[] 
+[2026-09-18 21:04:38]	[EmigTest] DONE modtest159 finished 

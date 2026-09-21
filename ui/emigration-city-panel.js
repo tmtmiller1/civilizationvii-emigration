@@ -136,6 +136,15 @@ function quarterBenefitFactor(rec) {
 }
 
 /**
+ * The stance yields a record pays EACH TURN: none for a stance paid once at recognition, so only an older
+ * save's per-turn record shows grant and cost lines.
+ * @param {*} rec A quarter record. @returns {*} Its applied block, or an empty one.
+ */
+function perTurnStance(rec) {
+  return rec.applied && !rec.applied.once ? rec.applied : {};
+}
+
+/**
  * The resolved quarter record for a city (civ ids turned into display strings), or null.
  * @param {*} city A live city object.
  * @returns {*} The resolved quarter, or null.
@@ -145,7 +154,7 @@ function gatherQuarter(city) {
     const key = tileKeyOf(city);
     const rec = key ? quarterAt(key) : null;
     if (!rec) return null;
-    const applied = rec.applied || {};
+    const applied = perTurnStance(rec);
     // A contested enclave pays only a share of its benefit (see quarterBenefitFactor), so the panel
     // shows the reduced number the sim actually grants — not a full figure the yields never reflect.
     const contested = !!rec.contested;

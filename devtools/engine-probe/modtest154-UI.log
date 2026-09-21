@@ -1,0 +1,19 @@
+[2026-09-18 20:22:45]	[EmigProbe] shell attached 
+[2026-09-18 20:22:46]	[EmigProbe] shell query complete 
+[2026-09-18 20:22:46]	[EmigProbe] shell found AugustusExp66.Civ7Save turn 66 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-18 20:22:46]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-18 20:23:04]	[EmigTest] modtest154 attached 
+[2026-09-18 20:23:21]	[EmigTest] SETUP host=London origin=2 CIVILIZATION_BULGARIA atWar=true pools={"gold":804.06,"influence":0,"tech":1033,"civic":996,"netGold":705.24,"netCulture":221.27,"netScience":251.02,"netInfluence":-15.64} 
+[2026-09-18 20:23:21]	[EmigTest] CHOICE a label="Learn their horsemanship" disabled=true payout={"benefitYield":"YIELD_SCIENCE","benefitAmount":375,"penaltyYield":"YIELD_GOLD","penaltyAmount":1410,"once":true} 
+[2026-09-18 20:23:21]	[EmigTest] CHOICE b label="Tax their trade" disabled=false payout={"benefitYield":"YIELD_GOLD","benefitAmount":530,"penaltyYield":null,"penaltyAmount":0,"once":true} 
+[2026-09-18 20:23:21]	[EmigTest] CHOICE ignore label="Let them be" disabled=false payout={"benefitYield":null,"benefitAmount":0,"penaltyYield":null,"penaltyAmount":0,"once":true} 
+[2026-09-18 20:23:21]	[EmigTest] DETAIL [B]Learn their horsemanship[/B]: +375 [icon:YIELD_SCIENCE] Science, −1410 [icon:YIELD_GOLD] Gold, once (not enough Gold) 
+[2026-09-18 20:23:21]	[EmigTest] DETAIL [B]Tax their trade[/B]: +530 [icon:YIELD_GOLD] Gold, once 
+[2026-09-18 20:23:21]	[EmigTest] DETAIL [B]Let them be[/B]: No change to your yields 
+[2026-09-18 20:23:23]	[EmigTest] DIALOG text="The Bulgar Enclave CULTURAL ENCLAVE The Bulgarian families of London have become more than newarrivals. By the harbour, their shops, shrines, workshops,festivals, and habits now draw a life of their own, a districtwith a memory from elsewhere. Recognise the enclave, and decidewhat tradition the city will make room for. Learn their horsemanship: +375 Science, −1410 Gold, once (not enough Gold)Tax their trade: +530 Gold, onceLet them be: No change to your yields\"Even if a man lives well, he dies, and another is born; let theone born last, seeing this, remember the one who made it.\"Khan Omurtag, Tarnovo column inscription, in Greek (c. 822,trans.)Learn their horsemanshipTax their tradeLet them be" 
+[2026-09-18 20:23:23]	[EmigTest] DIALOG icons=4 buttons=[{"caption":"Learn their horsemanship","disabled":"true"},{"caption":"Tax their trade","disabled":null},{"caption":"Let them be","disabled":null}] 
+[2026-09-18 20:23:23]	[EmigTest] SHOT enclave-stance-popup 
+[2026-09-18 20:23:35]	[EmigTest] PRESS "Learn their horsemanship" before={"gold":804.06,"influence":0,"tech":1033,"civic":996,"netGold":705.24,"netCulture":221.27,"netScience":251.02,"netInfluence":-15.64} 
+[2026-09-18 20:23:39]	[EmigTest] PAID chosen=null after={"gold":804.06,"influence":0,"tech":1033,"civic":996,"netGold":705.24,"netCulture":221.27,"netScience":251.02,"netInfluence":-15.64} record.applied=null placed=null 
+[2026-09-18 20:23:39]	[EmigTest] DELTA gold=0 influence=0 tech=0 civic=0 
+[2026-09-18 20:23:42]	[EmigTest] DONE modtest154 finished 

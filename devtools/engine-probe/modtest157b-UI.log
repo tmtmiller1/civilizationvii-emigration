@@ -1,0 +1,16 @@
+[2026-09-18 20:44:07]	[EmigProbe] shell attached 
+[2026-09-18 20:44:08]	[EmigProbe] shell query complete 
+[2026-09-18 20:44:09]	[EmigProbe] shell found EmigPromo106.Civ7Save turn 106 age AGE_EXPLORATION missingMods=0 unowned=0 
+[2026-09-18 20:44:09]	[EmigProbe] shell handleLoadSave returned true 
+[2026-09-18 20:44:27]	[EmigTest] modtest157 attached 
+[2026-09-18 20:44:48]	[EmigTest] POPUP dismissing screen-tech-civic-complete "Tech UnlockedEducation IIUnlocked by this Tech (2):\"The best investment for one " 
+[2026-09-18 20:44:51]	[EmigTest] SCENE hosts=["Washington, D.C.:45","London:40","Lāhainā:28","Glasgow:18"] majors=["2:CIVILIZATION_BULGARIA:YIELD_SCIENCE","4:CIVILIZATION_NORMAN:YIELD_SCIENCE","6:CIVILIZATION_SONGHAI:YIELD_GOLD","7:CIVILIZATION_MING:YIELD_GOLD","8:CIVILIZATION_CHOLA:YIELD_GOLD","9:CIVILIZATION_SENGOKU:YIELD_SCIENCE"] origin=2 
+[2026-09-18 20:45:06]	[EmigTest] VIEW title="The Bulgar Enclave" buttons=["Learn their horsemanship  +1040 [icon:YIELD_SCIENCE] −1515 [icon:YIELD_GOLD]","Tax their trade  +1135 [icon:YIELD_GOLD]","Let them be"] 
+[2026-09-18 20:45:09]	[EmigTest] SHOT stance 
+[2026-09-18 20:45:18]	[EmigTest] PRESS "Learn their horsemanship  +1040 [icon:YIELD_SCIENCE] −1515 [icon:YIELD_GOLD]" 
+[2026-09-18 20:45:18]	[EmigTest] CHOSEN a 
+[2026-09-18 20:45:24]	[EmigTest] PLACED applied={"benefitYield":"YIELD_SCIENCE","benefitAmount":1040,"penaltyYield":"YIELD_GOLD","penaltyAmount":1515,"once":true} placed={"type":"IMPROVEMENT_HIDDEN_FORTRESS","plot":4290,"enclave":"IMPROVEMENT_EMIG_ENCLAVE_BULGARIA_A","replaced":"IMPROVEMENT_MINE","before":{"YIELD_FOOD":1,"YIELD_PRODUCTION":3,"YIELD_HAPPINESS":1}} at={"x":66,"y":44} 
+[2026-09-18 20:45:41]	[EmigTest] TIP panel=true text="Bulgar EnclaveWashington, D.C. · Grassland RoughRecognized: Learn their horsemanshipWhere the yields come fromThe land+1+1+3Used to be a MineThe enclave built over it, but you still get what it gave.What the enclave built+4Shows on the map as a Hidden FortressBulgarian settlers built it. It pays from the day the enclave forms.Total per turn+1+1+7" 
+[2026-09-18 20:45:45]	[EmigTest] SHOT tooltip 
+[2026-09-18 20:45:55]	[EmigTest] TIP held=true 
+[2026-09-18 20:45:55]	[EmigTest] DONE modtest157 finished 

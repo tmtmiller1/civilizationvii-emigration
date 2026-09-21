@@ -9,8 +9,8 @@
 //      yield starts at once), and the Chronicle announces "The X Enclave of Y". Nothing is announced that
 //      does not exist. After the community has stayed established for the dwell period (quarterDwellTurns)
 //      the enclave is RECOGNIZED: the host takes a stance (embrace / tax / let be: the local player by a
-//      short choice, other hosts automatically) and that stance's small bounded yields are applied every
-//      turn ON TOP of the tile's yield (see tickContestedQuarters). The choice is throttled with a per-age
+//      short choice, other hosts automatically) and that stance pays ONCE, sized from the host's own
+//      income (emigration-stance-payout.js), ON TOP of the tile's yield. The choice is throttled with a per-age
 //      cap + a cooldown and RANKED BELOW the refugee dilemma, so two modals never race in one pass. An
 //      enclave whose community shrinks before recognition simply fades like any other.
 //   2. NO STACKING / CHANGE OF HANDS. One quarter per host tile (the city-centre plot). If a different
@@ -33,6 +33,7 @@ import {
 import { quarterOptionsFor, quarterOptionFor } from "/emigration/ui/emigration-quarter-registry.js";
 import { quarterQuote, quarterQuoteKey, quoteDisplay, renderableLine } from "/emigration/ui/emigration-quarter-bonuses.js";
 import { applyQuarterYields, deduct, grantSigned } from "/emigration/ui/emigration-effects.js";
+import { stancePayout, affordable, payStance } from "/emigration/ui/emigration-stance-payout.js";
 import { quarterName, narrativeCiv, civType } from "/emigration/ui/emigration-naming.js";
 import { warOpponents } from "/emigration/ui/emigration-war.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
@@ -42,7 +43,7 @@ import {
   takeoverCompensation, destroyPlacedTile
 } from "/emigration/ui/emigration-enclave-place.js";
 import { cityCompositionByKey } from "/emigration/ui/emigration-composition.js";
-import { enclaveYields, stanceYields, yieldsText, withYields } from "/emigration/ui/emigration-enclave-yields.js";
+import { enclaveYields, paidYields, yieldsText, yieldsButtonText, withYields } from "/emigration/ui/emigration-enclave-yields.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
 import { toast } from "/emigration/ui/emigration-feedback.js";
 import { loc as tr } from "/emigration/ui/emigration-loc.js";
@@ -108,20 +109,30 @@ function tileKeyOf(city) {
 }
 
 /**
- * Resolve the one-time yields a chosen stance applies, from the option's yield identities and the
- * CONFIG amounts. A null yield contributes nothing (the passive "let be" stance).
- * @param {{benefitYield:(string|null), penaltyYield:(string|null)}} option The chosen option.
- * @returns {*} The resolved yields (benefit/penalty yield + amount).
+ * Resolve what a stance pays its host, once, at recognition (emigration-stance-payout.js): sized from the
+ * host's own income, with the payout reduced while the host is at war with the enclave's homeland. The
+ * passive "let be" stance pays and costs nothing.
+ * @param {{benefitYield:(string|null)}|null} option The chosen option (null: no stance yet).
+ * @param {number} [owner] Host player id. @param {number} [originPid] The enclave's origin player id.
+ * @returns {*} The payout ({benefitYield, benefitAmount, penaltyYield, penaltyAmount, once}).
  */
-function resolveApplied(option) {
-  const reward = Math.max(0, Number(CONFIG.quarterRewardAmount) || 0);
-  const drawback = Math.max(0, Number(CONFIG.quarterDrawbackAmount) || 0);
-  return {
-    benefitYield: option.benefitYield || null,
-    benefitAmount: option.benefitYield ? reward : 0,
-    penaltyYield: option.penaltyYield || null,
-    penaltyAmount: option.penaltyYield ? drawback : 0
-  };
+function resolveApplied(option, owner, originPid) {
+  const atWar = typeof owner === "number" && typeof originPid === "number"
+    && safeHas(() => warOpponents(owner), originPid);
+  return stancePayout(option || { benefitYield: null }, typeof owner === "number" ? owner : -1,
+    atWar ? clampFactor(CONFIG.contestedQuarterYieldFactor) : 1);
+}
+
+/**
+ * Whether a set read from the engine holds a value, false when the read throws.
+ * @param {() => Set<number>} read The set reader. @param {number} v The value. @returns {boolean} True when held.
+ */
+function safeHas(read, v) {
+  try {
+    return read().has(v);
+  } catch (_) {
+    return false;
+  }
 }
 
 /** Most enclaves ONE origin civilisation may hold across a host's cities (a different origin overtaking
@@ -317,7 +328,7 @@ function establishEnclave(city, base, originCiv, owner, turn) {
   const { tileKey, quarter } = base;
   putQuarter(tileKey, {
     civ: quarter.civ, originCiv: originCiv || null, owner, optionId: "ignore", turn, recognized: false,
-    applied: resolveApplied({ benefitYield: null, penaltyYield: null }), contested: false, contestedTurn: -999,
+    applied: resolveApplied(null), contested: false, contestedTurn: -999,
     placed: placeEnclave(city, originCiv, ESTABLISH_SKIN_STANCE)
   });
   const rec = quarterAt(tileKey);
@@ -361,7 +372,7 @@ function establishEnclaves(signals, owner, turn, force) {
  * @returns {{rec:*, formed:boolean}} The record to store, and whether it is a NEW enclave.
  */
 function recordForChoice(prior, option, quarter, ctx) {
-  const applied = resolveApplied(option);
+  const applied = resolveApplied(option, ctx.me, quarter.civ);
   if (prior && prior.civ === quarter.civ && !prior.recognized) {
     const label = enclaveTypeFor(ctx.ct, option.id);
     const placed = prior.placed && label ? { ...prior.placed, enclave: label } : prior.placed;
@@ -395,12 +406,14 @@ function applyQuarterChoice(optionId, tileKey, quarter, me, turn) {
     const prior = quarterAt(tileKey);
     const { rec, formed } = recordForChoice(prior, option, quarter, { ct, me, turn });
     putQuarter(tileKey, rec);
+    const stored = quarterAt(tileKey);
+    if (stored) payStance(me, stored.applied); // the stance pays ONCE, now (never per turn)
     dropCandidacy(tileKey); // the enclave is recognized: its dwell clock has done its job
     noteDecision(turn);
     if (formed) noteFormed(me); // an established enclave was already counted when it was created
-    const stance = yieldsText(stanceYields(quarterAt(tileKey)));
+    const stance = yieldsText(paidYields(stored));
     dlog("enclave RECOGNIZED " + quarterName(quarter.civ) + " in " + quarter.name + " at " + tileKey
-      + " (host " + me + ", stance " + option.id + ")" + (stance ? "; stance adds " + stance : ""));
+      + " (host " + me + ", stance " + option.id + ")" + (stance ? "; stance paid once " + stance : ""));
     chronicleDecision(option, quarter, prior, turn, { gave: stance, lost: "" });
     saveQuarters();
   } catch (_) {
@@ -425,19 +438,48 @@ function enclaveQuote(ct, ordinal) {
 }
 
 /**
- * The modal view model for a quarter decision (the "Cultural Enclave" eyebrow, a titled prompt, ONE
- * attributed quote, and the three stances). Dismissing (click-outside / Escape) resolves as the passive
- * "ignore" stance. Only a single quote is shown — the origin's first enclave uses quote "a", its second
- * uses quote "b".
+ * A stance's button caption: its label followed by what it pays and costs, once, with each yield's own game
+ * icon, in the refugee and call-home buttons' shape ("Learn their engineering: [icon:YIELD_SCIENCE] +375,
+ * [icon:YIELD_GOLD] -1410"). Built by the same
+ * {@link resolveApplied} the choice pays from, so the button states exactly what the stance will pay. A
+ * stance the host cannot afford adds "(not enough Gold)"; the passive stance, which pays nothing, keeps its
+ * bare label. The dialog draws [icon:] tags in captions (emigration-dilemma-view.js, watched mod test 130).
+ * @param {{label:string, benefitYield:(string|null)}} option The offered option. @param {number} owner Host.
+ * @param {number} originPid The enclave's origin player id.
+ * @returns {{caption:string, affordable:boolean}} The caption, and whether the host can pay it.
+ */
+function stanceButton(option, owner, originPid) {
+  const payout = resolveApplied(option, owner, originPid);
+  const figure = yieldsButtonText(paidYields({ applied: payout }));
+  if (!figure) return { caption: option.label, affordable: true };
+  const caption = option.label + ": " + figure;
+  if (affordable(payout, owner)) return { caption, affordable: true };
+  return { caption: caption + " " + tr("LOC_EMIG_QTR_FX_SHORT", "(not enough Gold)"), affordable: false };
+}
+
+/**
+ * The modal view model for a quarter decision (the "Cultural Enclave" eyebrow, a titled prompt, a note that
+ * a stance pays once, ONE attributed quote, and the three stances, each button stating what it pays). Dismissing
+ * (click-outside / Escape) resolves as the passive "ignore" stance. Only a single quote is shown —
+ * the origin's first enclave uses quote "a", its second uses quote "b".
  * @param {{civ:number,name:string,share:number,where:string}} quarter The quarter.
  * @param {number} [ordinal] Count of the origin's existing enclaves (0 = first, 1 = second).
- * @returns {{title:string, body:string, eyebrow:string, eyebrowIcon:string, dismissId:string, quote:string,
- *   choices:*[]}} The view.
+ * @param {number} [owner] Host player id (default: the local player), whose income sizes the payouts.
+ * @returns {{title:string, body:string, eyebrow:string, eyebrowIcon:string, details:string[], dismissId:string,
+ *   quote:string, choices:*[]}} The view.
  */
-function quarterView(quarter, ordinal) {
+function quarterView(quarter, ordinal, owner) {
   const name = quarterName(quarter.civ);
   const ct = civType(quarter.civ);
+  const host = typeof owner === "number" ? owner : localPid() ?? -1;
+  // Each button states what its stance pays; one the host cannot pay for is greyed out (the dialog ignores a
+  // disabled choice).
+  const choices = quarterOptionsFor(ct).map((c) => {
+    const button = stanceButton(c, host, quarter.civ);
+    return button.affordable ? { ...c, label: button.caption } : { ...c, label: button.caption, disabled: true };
+  });
   return {
+    details: [tr("LOC_EMIG_QTR_FX_NOTE", "Paid once, when you choose.")],
     eyebrow: tr("LOC_EMIG_QTR_EYEBROW", "Cultural Enclave"),
     eyebrowIcon: "CITY_UNIQUE_QUARTER",
     dismissId: "ignore",
@@ -446,7 +488,7 @@ function quarterView(quarter, ordinal) {
       "The {1_Adj} families of {2_Place} have become more than new arrivals. {3_Where}, their shops, shrines, workshops, festivals, and habits now draw a life of their own — a district with a memory from elsewhere. Recognize the enclave, and decide what tradition the city will make room for.",
       narrativeCiv(quarter.civ).adj, quarter.name, capFirst(quarter.where)),
     quote: enclaveQuote(ct, ordinal || 0),
-    choices: quarterOptionsFor(ct)
+    choices
   };
 }
 
@@ -513,14 +555,14 @@ function offerToPlayer(signals, me, turn, force, dilemmaFired) {
   if (!force && !canDecide(turn, currentAge())) return;
   const cand = pickCandidate(signals, me, turn, force);
   if (!cand) return;
-  showDilemma(quarterView(cand.quarter, cand.ordinal), (/** @type {string} */ id) =>
+  showDilemma(quarterView(cand.quarter, cand.ordinal, me), (/** @type {string} */ id) =>
     applyQuarterChoice(id, cand.tileKey, { ...cand.quarter, city: cand.city }, me, turn));
 }
 
 /**
  * The AUTOMATIC path for one host: the best candidate whose dwell period is complete forms an enclave
- * with its people's first stance (the registry's option "a"), no modal, one per host per pass. The
- * chronicle records where it took root.
+ * with its people's first stance the host can afford (option "a", else "b", else it lets them be), no
+ * modal, one per host per pass. The chronicle records where it took root and what the stance paid.
  * @param {*[]} signals The pass's city signals. @param {number} owner Host player id. @param {number} turn Now.
  * @param {boolean} force The force option (relaxes the bar and skips the dwell gate).
  */
@@ -530,9 +572,10 @@ function recognizeAutomatically(signals, owner, turn, force) {
   // The per-age cap binds CREATING an enclave; one already established was counted then and is only
   // being recognized now.
   if (!force && !quarterAt(cand.tileKey) && capReached(owner)) return;
-  const option = quarterOptionsFor(cand.originCiv)[0];
-  applyQuarterChoice(option ? option.id : "a", cand.tileKey, { ...cand.quarter, city: cand.city }, owner, turn);
-  const gave = yieldsText(stanceYields(quarterAt(cand.tileKey)));
+  const option = quarterOptionsFor(cand.originCiv)
+    .find((o) => o.id !== "ignore" && affordable(resolveApplied(o, owner, cand.quarter.civ), owner));
+  applyQuarterChoice(option ? option.id : "ignore", cand.tileKey, { ...cand.quarter, city: cand.city }, owner, turn);
+  const gave = yieldsText(paidYields(quarterAt(cand.tileKey)));
   announce(owner, {
     kind: "founding", title: tr("LOC_EMIG_QTR_CHRON_AUTO_TITLE", "An Enclave Takes Root"),
     body: withYields(tr("LOC_EMIG_QTR_CHRON_AUTO_BODY",
@@ -587,7 +630,11 @@ function accrueContestedStrain(owner, turn) {
  * @param {number} owner Host player id.
  */
 function applyOwnerQuarterYields(owner) {
-  for (const { rec } of quartersForOwner(owner)) applyQuarterYields(owner, rec.applied, contestedBenefitScale(rec));
+  for (const { rec } of quartersForOwner(owner)) {
+    // A stance chosen since the one-time payout was introduced was paid at recognition; only a record
+    // from an older save (no `once`) keeps its small per-turn stance yields.
+    if (rec.applied && !rec.applied.once) applyQuarterYields(owner, rec.applied, contestedBenefitScale(rec));
+  }
 }
 
 /** Turns a placement may take to appear before it is written off as never landed. */
@@ -858,5 +905,6 @@ export const __test = {
   resolveApplied, pickCandidate, candidateFromSignal, observeQuarterDwell, quarterView, accrueContestedStrain,
   tileKeyOf, enclaveCountForCiv, MAX_ENCLAVES_PER_CIV, applyOwnerQuarterYields, retireDisplacedEnclaves,
   hostOwners, recordOwners, recognizeAutomatically, RECOGNITION, settleTakeover, payTakeoverCompensation,
-  fadeStep, fadeLapsedEnclaves, establishEnclaves, applyQuarterChoice, recordForChoice, dissolveEnclave
+  fadeStep, fadeLapsedEnclaves, establishEnclaves, applyQuarterChoice, recordForChoice, dissolveEnclave,
+  stanceButton
 };

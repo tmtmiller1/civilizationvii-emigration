@@ -190,8 +190,6 @@ function seedForeignMajority(x, y, name, hostPts, foreign, foreignPts) {
   globalThis.setTimeout = () => 0; // the dismiss timer must not hold the test process open
   CONFIG.notifyMode = 1;
   CONFIG.notifyToasts = true;
-  CONFIG.quarterRewardAmount = 2;
-  CONFIG.quarterDrawbackAmount = 1;
 
   seedForeignMajority(1, 1, "Athens", 10, 2, 10);
   const athens = sig(1, 1, "Athens", 0, 20);
@@ -204,11 +202,13 @@ function seedForeignMajority(x, y, name, hostPts, foreign, foreignPts) {
   recognizeAutomatically([athens], 0, 108, false);
   assert.equal(stateMod.quarterAt("1,1").recognized, true, "recognition needs no pop-up: it is automatic");
   assert.equal(shown.length, 2, "recognition raises a notice");
-  assert.ok(/\(\+2 .*−1 .*\)$/.test(shown[1]), "the notice states the stance yields it adds: " + shown[1]);
+  // Off-engine every income reads 0 and the age reads as Antiquity, so the floors decide: +60 paid, 90 Gold charged.
+  assert.ok(/\(\+60 .*−90 Gold\)$/.test(shown[1]), "the notice states what the stance paid once: " + shown[1]);
 
   dissolveEnclave("1,1", stateMod.quarterAt("1,1"), 130);
   assert.equal(shown.length, 3, "the enclave fading raises a notice");
-  assert.ok(/\(−2 .*\+1 .*\)$/.test(shown[2]), "stated as what the host loses: " + shown[2]);
+  // The stance was paid once at recognition, so its fading takes no stance yield away with it.
+  assert.ok(!/Gold/.test(shown[2]), "a one-time stance is not stated as a loss when the enclave fades: " + shown[2]);
 
   // Another host's enclave: logged, never raised on the player's HUD.
   clearState();

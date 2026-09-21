@@ -1,0 +1,4 @@
+[2026-09-19 04:54:55]	HTML Parser Error@:fs://game/root-game.html@1:1146: Premature end of file  Currently open tags: html, div..
+[2026-09-19 04:55:10]	Unhandled Promise Rejection: ReferenceError: beginPoll is not defined.  Re-run with inspector attached for callstack. 
+[2026-09-19 04:55:10]	Unhandled rejection error value: ReferenceError: beginPoll is not defined
+[2026-09-19 04:55:11]	HTML Parser Error@:fs://game/root-game.html@49:43: Tokenizer error with an unimplemented error message.

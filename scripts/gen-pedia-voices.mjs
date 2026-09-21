@@ -135,7 +135,7 @@ class Page {
 function stanceList(civ) {
   const opts = quarterOptionsFor(civ).filter((o) => o.id !== "ignore");
   if (!opts.length) return "";
-  return "The decision offers two stances drawn from their character, or you can simply let them be:[BLIST]"
+  return "The decision offers two stances drawn from their character, each paid once when you choose it and sized to your own income, or you can simply let them be:[BLIST]"
     + opts.map((o) => "[LI][B]" + o.label + "[/B]: " + o.note).join("")
     + "[/LIST]";
 }
@@ -152,7 +152,7 @@ function coverageLine(civ, name) {
   const list = (a) => (a.length <= 1 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]);
   let s = "When people of " + name + " appear in a pop-up, the words are theirs: " + name + " has a voice of its own for " + list(own) + ".";
   if (pool.length) s += " For " + list(pool) + " the game speaks with the Voices of Many Lands instead.";
-  s += " A quote is chosen by the event, so the same event always shows the same line, and a civilization you have not yet met is never named by its quote.";
+  s += " The event fixes the quote, so the same event always shows the same line. Arrivals from a civilization you have not met use the Voices of Many Lands.";
   return s;
 }
 
@@ -167,7 +167,7 @@ function civPage(civ) {
   if (pair) {
     page.add("ENCLAVE",
       "When a lasting " + dem + " community in one of your cities is recognized as a Cultural Enclave, the recognition pop-up carries one of these lines: the first "
-      + dem + " enclave in your empire shows the first quote, the second shows the second. The pop-up appears when enclave recognition is set to Ask me (Options, Add-ons, Emigration, Advanced settings, Cultural enclaves); under the default automatic recognition the first stance is taken for you and only the Chronicle records it.");
+      + dem + " enclave in your empire shows the first quote, the second shows the second. The pop-up appears when enclave recognition is set to Ask me (Options, Add-ons, Emigration, Advanced settings, Cultural enclaves); under the default automatic recognition the city takes the first stance you can afford and the Chronicle records it.");
     const stances = stanceList(civ);
     if (stances) page.add("ENCLAVE", stances);
     if (pair.a) page.quote("ENCLAVE", pair.a, "First enclave.");
@@ -191,7 +191,7 @@ function civPage(civ) {
 function poolPage() {
   const page = new Page("VOICES_POOL", "Voices of Many Lands");
   page.add("CONTENT",
-    "Not every people has left words in a refugee's, a migrant's or a returning exile's own voice that the mod could verify, and a civilization you have not met must not be named by its quote. In both cases the pop-up draws on these general pools: the words of the displaced from many times and places, chosen so that no line names who is coming.");
+    "The pop-up draws on these general pools when a people has no verified refugee, migrant or homecoming voice of its own, and for every arrival from a civilization you have not met. The lines come from the displaced of many times and places, and none names who is coming.");
   const leads = {
     refugee: "Shown on the refugee decision and the Refugees pop-up for a people without a refugee voice of its own, and for every refugee from a civilization you have not yet met.",
     migrant: "Shown on the Newcomers pop-up for a people without a migrant voice of its own, and for every newcomer from a civilization you have not yet met.",

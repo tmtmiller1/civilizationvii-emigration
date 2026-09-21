@@ -26,6 +26,7 @@ const MAX_TILES = 4096;
  * @property {number} benefitAmount The granted amount (>= 0).
  * @property {string|null} penaltyYield The cost yield (null = none).
  * @property {number} penaltyAmount The cost amount (>= 0).
+ * @property {boolean} once True when the stance paid once at recognition (older records paid per turn).
  */
 /**
  * @typedef {Object} QuarterRecord
@@ -36,7 +37,7 @@ const MAX_TILES = 4096;
  * @property {number} owner Host player id.
  * @property {string} optionId The stance chosen.
  * @property {number} turn Formation turn (monotonic).
- * @property {QuarterApplied} applied The small yields this stance grants each turn.
+ * @property {QuarterApplied} applied What this stance paid once at recognition (per turn in older saves).
  * @property {boolean} contested Whether the host is at war with the origin's homeland.
  * @property {number} contestedTurn Turn the quarter last became contested (-999 if never).
  * @property {number|null} [fadeSince] The turn the origin's share first sat below the fade bar (null = above).
@@ -164,7 +165,8 @@ function normalizeApplied(a) {
     benefitYield: yieldKeyOrNull(src.benefitYield),
     benefitAmount: nonNegNum(src.benefitAmount),
     penaltyYield: yieldKeyOrNull(src.penaltyYield),
-    penaltyAmount: nonNegNum(src.penaltyAmount)
+    penaltyAmount: nonNegNum(src.penaltyAmount),
+    once: src.once === true // paid at recognition; an older record (per-turn stance yields) has none
   };
 }
 

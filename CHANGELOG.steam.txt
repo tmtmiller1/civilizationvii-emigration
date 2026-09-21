@@ -1,0 +1,604 @@
+Steam Workshop change notes, one block per release, newest first.
+Generated from CHANGELOG.md by scripts/steam-changelog.mjs; release.sh uploads the block for the version it builds.
+To fix an old Workshop entry, paste the text under its ==== line into that entry's Edit box on the change-notes page.
+A block edited by hand is kept as-is. Delete a block to regenerate it from CHANGELOG.md.
+
+==== 3.1.1 | 2026-09-21 | src 576fbdc644a8 | gen 378962c40547 ====
+[b]Version 3.1.1 · 21 September 2026[/b]
+
+[b]Changed[/b]
+• [b]Civilopedia pages rewritten to say plainly what each system does and when.[/b] The Cultural Enclaves page gives the formation rule (3 population points holding 30% of the settlement or the size bar) and describes the one-time stance payment.
+
+==== 3.1.0 | 2026-09-18 | src 087b246f013b | gen abeef5538492 ====
+[b]Version 3.1.0 · 18 September 2026[/b]
+
+[b]Changed[/b]
+• [b]Every decision pop-up shows its yields on its buttons.[/b] The refugee, newcomer, call-home and Cultural Enclave pop-ups all put each choice's gains and costs on the choice's own button, with the game's yield icons and in one shape (“Welcome them in: +1 population, −30 Gold, −10 Happiness”), so you no longer match a list in the text to the button below it.
+• [b]Refugee decision buttons show their costs.[/b] “Welcome them in”, “Settle the frontier” and “Turn them away” each carry the population, Gold, Happiness or Influence they change; the separate list of costs is gone from the pop-up's text.
+• [b]Newcomer and refugee placement buttons show what you gain.[/b] Every choice shows the population it adds, and “Let the city settle them” also shows the yields of the tile the city will take, for example “+1 population, +1 Food, +3 Production, +1 Happiness”. The city's own bonuses can add a little on top.
+• [b]Enclave stance buttons show what each stance pays and costs.[/b] For example “Learn their horsemanship: +375 Science, −1410 Gold”. A stance you cannot afford is greyed out and says “(not enough Gold)”, and the pop-up says the stance is paid once, when you choose.
+• [b]Enclave stances pay a real, one-time sum.[/b] Recognizing a Cultural Enclave pays once, when you choose: Culture toward your current civic, Science toward your current research, Influence, or Gold. Stances that do not pay Gold cost Gold; Gold stances are free. The sums are sized to your own economy: a stance pays three turns of your income of that yield and costs two turns of your Gold income, never less than a per-age minimum (60, 150 or 300 by age, scaled by game speed). An Exploration empire earning 221 Culture and 705 Gold a turn is offered, for example, +665 Culture for −1,410 Gold. Before, stances paid a small +2/−1 each turn, and most of those yields (Food, Production, Faith, Happiness, and every cost but Gold) never reached the game.
+• [b]Other civilizations take the first stance they can afford.[/b]
+• [b]Enclave tooltips and city readouts no longer list stance yields each turn.[/b] A stance is paid once, so the enclave's tooltip names the stance it took, and its tile's own yields are listed as before.
+• [b]Every civilization's stances were rewritten around what they now pay, in all 12 languages.[/b] The enclave's tile keeps its art and its own yield.
+• [b]Enclaves recognized before this version keep their old per-turn stance yields.[/b]
+
+==== 3.0.0 | 2026-09-18 | src 4c9347b1de52 | gen 195c9f2a1e3a ====
+[b]Version 3.0.0 · 18 September 2026[/b]
+
+[b]Added[/b]
+• Select a single city in the network diagram
+• The Civilopedia now covers the whole mod, quotations included
+• An enclave's tile now explains itself
+• The map marker shows an enclave's stage
+• Settlements can be dragged out of their civilization's circle
+• The Net Migration table separates internal from external movement
+
+[b]Changed[/b]
+• The ethnicity lens shades by saturation, like the Prosperity lens
+• Every decision pop-up can be switched on or off from the Mods tab
+• Every Emigration option on the Mods tab has a full hover tooltip
+• The Prosperity lens scores each tile in points, and the readout says why
+• Calling people home is now two different offers, and the dialog says which one you are looking at
+• What a settlement has built is now a reason to stay
+• A large settlement is no longer pushed toward every smaller neighbour
+• Emigration pressure now falls again when a settlement recovers
+• An enclave now exists from the moment it is announced
+• Your own enclaves raise a notification
+• Enclave entries state their yields
+• Plainer advice in migration pop-ups
+
+[b]Fixed[/b]
+• An enclave whose people are the city's majority no longer paints in the ruler's colour
+• Migrants keep who they are when they move on
+• Razed settlements leave the diversity list at once
+• The Ethnic Composition lens updates as soon as the turn starts
+• A conquered city the mod first sees after the conquest keeps its original people
+• Calling people home never actually charged anything
+• The map tooltip stays hidden under a lens, even alongside other tooltip mods
+• Lens readouts and the enclave tooltip are no longer painted over by other tooltips
+• On the ethnicity lens, a tile that burns with a foreign colour now means an enclave
+• The ethnicity lens is a true gradient
+• Enclave labels no longer pile up on the map
+• Migrant-flow arrows stayed behind when a circle moved
+• Migrant flows between neighbouring cities drew no arrow
+• Verbose per-cause pop-ups could show a raw {1_City} placeholder
+
+Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/CHANGELOG.md]full changelog[/url].
+
+==== 2.2.0 | 2026-09-17 | src b25b7981df20 | gen 633cc5bdcdf4 ====
+[b]Version 2.2.0 · 17 September 2026[/b]
+
+[b]Added[/b]
+• A recognized Cultural Enclave is now a real tile
+• Displacement stays close to home
+• Refugee and newcomer pop-ups quote the displaced themselves
+• Choose which newcomers ask where to settle
+• Every leader and civilization in the game is covered
+• Alternate leader personas are judged on their own abilities
+• Cultural quarters for the civilizations added since the last roster
+• Enclaves put down roots
+• Enclave progress where the player looks
+• Per-age pacing of enclave formation
+• Return migration varies between games
+• Arrival text matches the game
+• data/emigration-enclave-improvements.xml, data/emigration-enclave-icons.xml, text/en_us/EnclaveText.xml (generated by npm run gen:...
+• Two Self-Test rows: “Departures abandon a tile” (names the tile your largest settlement would give up) and ”Arrivals settle in your citie...
+• Under the hood: emigration-departure-tile.js and emigration-arrival-placement.js, their test harnesses, and the hands-free in-game pr...
+
+[b]Changed[/b]
+• Departures are real
+• Enclaves now form on their own, in every civilization's cities
+• Enclave tiles are now themed by their people
+• Enclaves fade when their community does
+• Big cosmopolitan cities can host enclaves
+• Newcomers to your cities are settled, not left in limbo
+• Every string is translated in all eleven languages
+• The Prosperity lens shades each settlement's own land, with a stronger gradient
+• The three decision pop-ups are easy to tell apart and lay out cleanly
+• The real losses are held to the same brakes as before, plus the ceilings they needed
+• Every enclave quote was checked against its source
+• Honest labels for the happiness costs
+• In-game Guide updated
+• Short text fragments keep their spaces
+• Documentation and option text in plain technical prose
+• README.pdf renders every formula
+• Player experience risks documented
+
+[b]Fixed[/b]
+• Abandoned tiles could never be improved again
+• The Ethnic Composition lens paints again, in each people's own colour
+• The Ottomans get their own cultural quarter, quotes and enclave again
+• England is tuned as England
+• Text no longer runs together
+• Quotes in scripts the game cannot draw fall back to their English translation
+• War and disaster flags on the migration network no longer print on top of each other
+• Readout “why there” reasons ran together
+• Green is now reserved for your own gains
+• A player id the engine does not know can no longer reach the engine's independent-power name lookup (that call crashed the game natively...
+• A placed Cultural Enclave could be chosen as the outlying tile a departure abandons; enclave tiles are now excluded from departures
+• The enclave marker module logged through an invalid-CSS trick that wrote an “Unable to parse declaration” line on every repaint (about 1,...
+• The enclave map marker sat on the plot centre and hid the tile's own yield icons; it now sits above and below the icon row, smaller (symb...
+• Food tiles were classified from the game's yield table, which has no food row for farms, fishing boats, pastures, or plantations, so the...
+
+[b]Removed[/b]
+• The banner pressure bar
+
+[b]Verified[/b]
+• Engine limits consolidated
+• Damage instead of delete is not possible from script
+
+Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/CHANGELOG.md]full changelog[/url].
+
+==== 2.1.0 | 2026-07-19 | src 47cc68ac842d | gen 5d82db541fab ====
+[b]Version 2.1.0 · 19 July 2026[/b]
+
+[b]Changed[/b]
+• [b]Full interface localization — every player-facing string now translates.[/b] The mod already routed the vast majority of its text through the localization database; this release closes the remaining leaks so that in a non-English game there is no English left in the Emigration UI. 150 new keys were authored and translated across all 11 supported languages (German, Spanish, French, Italian, Japanese, Korean, Polish, Portuguese, Russian, Simplified Chinese, Traditional Chinese):
+ ◦ [b]Settings & Advanced editor[/b] — the timeline-detail and analytics-visibility dropdowns, the six Emigration checkboxes and their descriptions, the Advanced-editor search box / reset buttons, and the enum knob labels (Off / Weak / Standard / Strong, Important / Verbose, severity bands) now render in your language instead of English.
+ ◦ [b]Demographics charts[/b] — every Emigration metric name, chart title, subtitle, description and unit, the “Data” group with its Scaled / Civ Population toggle and member pills, and the per-cause breakdown metrics now localize; the embedded Migration page's tab bar does too.
+ ◦ [b]Notifications, world-news & Chronicle[/b] — sentences that were glued together from English fragments (war names, “{Disaster} strikes {place}!”, enclave and crisis names, diaspora “quarter” phrases, “at peace again”, “+N more”, unmet-civilization fallbacks) are now single localized templates with placeholders, so they read naturally in every language.
+ ◦ [b]Guide[/b] — the “What counts” / “FAQ” navigation pills now localize.
+• [b]Clearer migration notifications.[/b] Each move now reads in a natural order: what happened and where the people went, then why that destination, then what you can do. The “why there” names only what actually drew them — the destination's greater prosperity, proximity, safety, open borders, an alliance, or an offer of asylum — as a clean phrase (“Drawn there by its greater prosperity”, “…by its greater prosperity and proximity”), instead of splicing in flight reasons like “escaping the crisis” that belong to why they left. Dropped the redundant “The pressure is temporary.” line, since the action hint already says the pressure passes. The pop-up toast is now tinted by the same rule as the log row — red when your own people leave for a rival, green for an internal move or an arrival — so a toast and its log entry no longer disagree (a departure to a more prosperous rival was showing a green toast over a red log row).
+
+[b]Fixed[/b]
+• [b]Removed six dead Demographics metric keys[/b] (…_EMIG_NET_MIGRATION / _IN / _OUT and their subtitles) that matched no metric id and were referenced nowhere — 72 stale rows across all 12 text files.
+• [b]Refugee-dilemma effect labels[/b] (Gold / Happiness / Influence / population / “Not now”) were referenced from the UI but never defined in the text database, so they only ever showed in English; they now have keys and translations.
+
+[b]Internal[/b]
+• Added a CI guard (tests/i18n-ui-keys.mjs, wired into npm run verify) that fails the build if any LOC_ key referenced from ui/**/*.js is missing from text/en_us/ModText.xml, catching this class of drift going forward.
+
+==== 2.0.10 | 2026-07-19 | src 2a05b331b9ed | gen 00b2332a8a02 ====
+[b]Version 2.0.10 · 19 July 2026[/b]
+
+[b]Changed[/b]
+• [b]Migration notifications read as clean sentences instead of repeated fragments.[/b] Each row now leads with one flowing line that names where its people went — “…left London for its more prosperous neighbor, Leeds”, “…fled the fighting around Akrotiri for the safety of Thebes”, “…were captured when Veii was conquered by Rome” — instead of a generic headline followed by a separate “Bound for X.” clause. Expanding a row no longer repeats that same sentence back as a “Note”, drops the “Why there” line that only echoed it, and no longer stacks a permanence reminder on top of the action hint that already implied it. Prosperity moves in particular stop saying “prosperous” three times over. Every header still carries the dual population count (civ points and scaled people). Applied across all 12 supported languages.
+• [b]Notification rows now name the direction of each move and colour it to match.[/b] The row tag reads “Internal Migration”, “Emigration (Leaving)”, or “Immigration (Arriving)” — telling the two kinds of cross-border movement apart — and is tinted by what it means for you: green when people stay within your empire or arrive from abroad, red when your own people leave for a rival. A captured city names the conquering civilization outright.
+
+[b]Fixed[/b]
+• [b]The Net Migration table's totals row lines up with the columns above it.[/b] The Stance-impact column was sized differently in the header and totals rows than in the per-civilization rows, which nudged every figure — In and Out included — out of vertical alignment. All rows now share one column grid.
+
+==== 2.0.9 | 2026-07-18 | src dbdb4f7cdd1b | gen 4d3693a39d22 ====
+[b]Version 2.0.9 · 18 July 2026[/b]
+
+[b]Added[/b]
+• **The settlement readout now tells you [i]why[/i] people are leaving — and why they're going where they're going.** The mod has always weighed...
+• A new “Diversity” tab ranks your settlements by who actually lives in them
+
+[b]Changed[/b]
+• The City Details migration lists now say what they actually are — and why people left
+• Policy (Tradition) card descriptions now spell out every effect with its exact number, and each age shows only its own value
+
+[b]Fixed[/b]
+• The City Details migration lists no longer freeze on an old snapshot
+• A Cultural Enclave no longer pays you twice — and building one is now worth it
+• The City Details panel now tells you which tier an enclave is on
+
+[b]Internal[/b]
+• The migration model can now explain itself: a new push/pull decomposition substrate
+• The scoring formulas now itemize themselves rather than being re-derived
+• Two spec corrections worth recording
+• A negative-prosperity edge case is handled explicitly
+• tests/explain.mjs
+
+Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/CHANGELOG.md]full changelog[/url].
+
+==== 2.0.8 | 2026-07-13 | src 8cb11e5b6e34 | gen 149087d64e93 ====
+[b]Version 2.0.8 · 13 July 2026[/b]
+
+[b]Changed[/b]
+• [b]Policy (Tradition) cards are more compact and no longer take up excess vertical space.[/b] The Open/Closed Borders and attraction cards spelled out full per-age value tables (e.g. “+1, +2, then +3 across the ages”) and flat yield numbers that the game already prints on the card from the Tradition's own modifiers. That duplicated text made the cards noticeably taller than base-game policy cards. Each description now keeps only the numbers unique to the text — the immigration percentage and the per-immigrant scaling bonus — and lets the card's native modifier lines show the rest. Applied across all 12 supported languages.
+
+==== 2.0.7 | 2026-07-10 | src 8957ec7d7db8 | gen 139d289687e6 ====
+[b]Version 2.0.7 · 10 July 2026[/b]
+
+[b]Fixed[/b]
+• [b]The refugee and Cultural-Enclave decision pop-ups are now clickable in an actual game.[/b] Two problems compounded: the decisions were drawn in a custom panel whose buttons could come up dead, and — the reason the in-game pop-up failed even when a self-test showed it working — the decision was raised [i]synchronously from inside the turn-start engine event[/i], which Civ VII will not surface a working, input-receiving modal from. The decision now (1) renders through the engine's own native decision dialog (the same multi-option pop-up the base game uses for its own choices — a framed box with the prompt and one button per choice), and (2) is presented on a deferred tick so it appears cleanly after the turn event settles. The buttons, Escape, and the ✕ all respond, and the prompt is wrapped to a tidy width. The obsolete custom-panel markup was removed.
+
+[b]Added[/b]
+• [b]The refugee dilemma now lists each choice's effect.[/b] Under the prompt, each option shows its concrete trade-off — gold/happiness/influence cost and the population it settles — read from your live settings, so the outcome is clear before you choose instead of only hinted at in prose.
+• [b]“Confirm Changes” button in the Advanced options window.[/b] A labelled way back to the main Options window, matching the base Options screen, so you no longer have to hunt for the corner ✕. (Settings still apply live as you edit; the button simply closes.)
+• [b]“Arm real dilemma” self-test.[/b] A new Advanced-options self-test action registers a one-shot on the real turn event and fires the decision pop-up from inside it on your next turn — with its real applied effects — so the exact in-game path can be confirmed in a single turn instead of waiting for the rare natural trigger.
+
+==== 2.0.6 | 2026-07-10 | src 8b6e107dde9a | gen 67a5091b8873 ====
+[b]Version 2.0.6 · 10 July 2026[/b]
+
+[b]Fixed[/b]
+• [b]Migration no longer stalls after an age change.[/b] The per-turn migration pass and the war/disaster/assimilation/combat decay clocks were keyed on the age-local game turn, which resets at each age boundary — so the simulation went dormant and distress stopped decaying for a large stretch of every post-Antiquity age. The clocks now rebase across the reset.
+• [b]A besieged, ruined city is no longer treated as an attractive destination.[/b] A scoring sign-flip could rank a devastated city as a magnet and route refugees into a war zone.
+• [b]Returnees are no longer lost.[/b] A returning migrant drawn from the holding pool that the homeland couldn't receive was dropped instead of restored; it is now re-queued. A related host-population miscount for pool-sourced returns is fixed.
+• [b]Localization + robustness:[/b] the Prosperity/Ethnicity lens tooltips and an empty-column label are now translatable (they showed English regardless of language); migrant-borne plague distress respects its cap; a network hover no longer mislabels an unknown origin; and corrupted violence-save numbers are sanitized on load.
+
+==== 2.0.5 | 2026-07-10 | src 862b348cf671 | gen 39bfc4753418 ====
+[b]Version 2.0.5 · 10 July 2026[/b]
+Everything since the last Workshop release (2.0.4), shipped together: migration-network display and population-percentage fixes, cultural-enclave reachability, clickable decision modals, an on-screen self-test harness, notification-delivery fixes with full volume control, the consolidated one-diagram Network tab, and a rebuilt playback timeline.
+
+[b]Added[/b]
+• On-screen self-test harness (no dev console needed)
+• Every settlement now draws on the migration network, and carries its population
+• Cultural-enclave progress in the City Details panel
+• Enclave tunables + a Force option
+• Immigration notifications
+
+[b]Fixed[/b]
+• Decision modals were unclickable (refugee dilemma + Cultural-Enclave decision)
+• Flow-pie percentages shifted with the Scaled/Civ Pop toggle
+• Human enclaves effectively never fired in normal play
+• Toast rendered below the HUD
+• First notifyCooldownTurns turns suppressed all important notifications
+• Decision pop-up choice note didn't wrap
+• Dashboard could show a stale “Unmet” origin for one frame
+
+[b]Changed[/b]
+• Network tab consolidated into one diagram
+• Timeline/playback controls rebuilt
+• Units toggle now explains itself
+• Notification volume is fully controllable
+• Enclave flavour quote 0.85rem → 0.8rem
+
+Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/CHANGELOG.md]full changelog[/url].
+
+==== 2.0.4 | 2026-07-08 | src bfb4835fe14e | gen ae3c6c77b858 ====
+[b]Version 2.0.4 · 8 July 2026[/b]
+This release fixes mod options — presets, display toggles, and every Advanced tunable — silently reverting to their defaults when you reopened the Options screen mid-game.
+
+[b]Fixed[/b]
+• [b]Options (including the Advanced editor) no longer reset to their defaults when you reopen the screen.[/b] Changes made in-game — a preset, a display toggle, or any of the Advanced tunables — could revert to default the next time the Options screen was opened. The settings were persisted only in the shared modSettings localStorage, which Coherent's in-game UI can wipe between UIScript isolates: the reopened screen re-read an empty store and every value fell back to its default. Options are now [b]dual-backed[/b] — mirrored, in-game, into the same durable, save-persistent GameConfiguration store the rest of the mod already uses for its state, and read back from there first — so a mid-game change sticks across the screen being reopened and across a save/reload. The shared localStorage remains the main-menu / cross-game fallback, and an in-game save now lands durably even when another mod has left the shared blob unparseable (which previously made the mod silently refuse to save). The in-game store is per-save; the mod's cache-reset convention was extended to the settings caches so a different save loaded in a live isolate can't read a prior game's values.
+
+==== 2.0.3 | 2026-07-07 | src 9873721bbebc | gen cd972d647b30 ====
+[b]Version 2.0.3 · 7 July 2026[/b]
+This release fixes migration notifications mislabeling where people went. The technical details are in the commit history; the player-facing summary is below.
+
+[b]Fixed[/b]
+• [b]Migration notifications and toasts mislabeled moves as “Internal” vs “External” (and named the wrong destination).[/b] A move to another civilization could show up tagged as an internal move within your own empire, and a mix of people leaving one city for both your own settlements and a foreign power could be lumped into a single row with the wrong label. Notifications now classify each move correctly and split a mixed departure into a properly labeled internal row and external row. Only the notifications and pop-ups were affected — the Demographics graphs, migration totals, and flow map were always correct.
+
+==== 2.0.2 | 2026-07-06 | src 8cc8bcbc4111 | gen 1412ed668823 ====
+[b]Version 2.0.2 · 6 July 2026[/b]
+Primarily an internal code-quality and repository-hygiene release — it removes the last special-case carve-outs from the quality gate so the entire shipped ui/ tree is held to one uniform standard, moves the dev-only diagnostic out of the shipped-source tree, and hardens a test to exercise real code instead of stubs. It also carried one gameplay fix (the disaster strike-floor, below).
+> [b]Changelog correction (2026-07-07):[/b] the disaster strike-floor shipped in the > v2.0.2 Workshop build but its source and this entry were only committed later, > during the 2.0.3 prep. Documented here, under the version players actually > received it in, rather than back-dated silently.
+
+[b]Fixed[/b]
+• [b]Disasters that struck a city but couldn't be measured did nothing.[/b] When the engine confirmed a disaster hit a settlement but the mod had no way to gauge its size (the effect tables were absent, or a lava-scorched tile that never counts as “pillage”), the distress spike collapsed to zero and the disaster silently had no effect. A confirmed strike now floors its impact factor to disasterStrikeFloor (0.15) so it always lands [i]some[/i] distress. The floor scales by disaster class, so a floored volcano clears the flee threshold (a struck city sheds refugees as it should) while a floored thunderstorm stays ambient. Set disasterStrikeFloor: 0 to restore the legacy behavior.
+
+[b]Internal[/b]
+• [b]The dev-only API probe moved out of the shipped-source tree[/b] from ui/migration-probe.js to a dedicated devtools/migration-probe.js. It was always excluded from the release zip, but living under ui/ meant every tool that scans ui/ had to special-case it. With the probe in its own devtools/ directory, those carve-outs are simply deleted: the ESLint ignores entry, the scripts/hotspot-score.mjs skip line, and the ad-hoc path checks all go away; tsconfig.json, scripts/inventory.mjs, its own migration-probe.modinfo, and the docs now reference the new path; and release.sh excludes the whole dev-only devtools/ directory (like tests/ and scripts/) so not even an empty folder leaks into the shipped zip. The probe file itself is unchanged (a pure move).
+• [b]Removed the last per-file exemption from the ESLint modularization gate.[/b] ui/emigration-config.js (the tunable-settings catalog) was exempted from the max-lines / max-lines-per-function length rules on the grounds that it is “data, not logic”. That exemption is gone — the whole ui/ tree now passes the same complexity and length gate with [b]no[/b] per-file carve-outs, so nothing quietly grows outside the limits.
+• [b]Hardened the violence-signals branch test to drive the real modules.[/b] tests/violence-signals-branches.mjs previously fabricated globalThis.CONFIG and hand-rolled globals; it now imports the actual emigration-config.js and emigration-violence-signals.js and exercises them through realistic district-health / besieged / pillage mocks, resetting globals between cases. The branch coverage now reflects production code paths rather than stubs.
+
+==== 2.0.1 | 2026-07-06 | src 15857f4f1cf7 | gen 11ec95cdb8f1 ====
+[b]Version 2.0.1 · 6 July 2026[/b]
+Localization plus a persistence-and-tuning pass for the Cultural Enclaves feature (2.0.0). Every enclave string is now translated in all eleven non-English languages, and enclaves gained a persistence requirement plus exposed frequency knobs, so the one-time decision fires only for a diaspora that has genuinely settled in — not a transient spike. Existing saves are unaffected.
+
+[b]Added[/b]
+• [b]Cultural Enclaves now require a diaspora to persist before they offer their decision.[/b] An established enclave must hold the bar for a configurable number of turns (default 8) before its one-time choice is presented, so a transient spike — a war-refugee wave that later integrates or goes home — no longer triggers a permanent enclave. The dwell clock is sticky: a brief dip below the bar (within a small grace window) doesn't reset it, but a genuine collapse does, and a different origin overtaking the tile restarts it from scratch.
+• [b]Four enclave-frequency knobs are now exposed in Options → Advanced (Integration & migrant costs).[/b] “Enclaves: share to form” (how much of a city one foreign origin must make up, default 35%), “Enclaves: persistence before offer” (the new dwell requirement, 0 = legacy “offer as soon as it forms”), “Enclaves: turns between decisions” (the cooldown), and “Enclaves: decisions per age” (the per-age cap). Raising the share or the persistence, or lowering the per-age cap, makes enclave decisions rarer. Existing saves are unaffected; the new pending dwell clocks are tracked per host tile in the enclave state and default to empty.
+• [b]Cultural Enclaves are now fully translated in all eleven non-English locales[/b] (German, Spanish, French, Italian, Japanese, Korean, Polish, Portuguese, Russian, Simplified Chinese, Traditional Chinese). The full 2.0.0 string set — the enclave decision prose, each civilization's two option labels and “why” lines, the passive “let them be” stance, the enclave dashboard/guide and FAQ, and the Civilopedia enclave page — is localized, using each language's standard Civilization yield names (Culture/Gold/Production/Science/Faith/Food/ Happiness and their equivalents). Every {name}-style placeholder and line break was preserved and verified against the English source.
+
+[b]Changed[/b]
+• [b]The attributed historical quotes stay in their native-language original followed by an English gloss in every locale, by design[/b] — they are epigraphs, not UI copy, and are not re-translated per language. The surrounding text that describes them now correctly says the quote appears beside its [b]English[/b] translation in every language (a few locales had localized that phrase to their own language, which would have misdescribed what the player actually sees).
+
+==== 2.0.0 | 2026-07-05 | src 0f35bd10ff70 | gen 7940233e8d6f ====
+[b]Version 2.0.0 · 5 July 2026[/b]
+The Cultural Enclaves release. When a foreign community grows into a lasting part of one of your cities, it now forms a named [b]Cultural Enclave[/b] (renamed from Cultural Quarter) with a one-time, identity-grounded choice — and each enclave reads as a page of history, carrying a real, primary-source-verified quote in the origin people's own language beside its English translation. This is also the release where the feature's decision actually bites: the yield effect persists turn to turn, enclaves form only where a diaspora genuinely lives right now, and a full sensitivity pass reworked the flavour throughout. Existing saves are unaffected — only the player-facing name and the strings changed.
+
+[b]Added[/b]
+• [b]Cultural Enclaves show a real, attributed historical quote — in the origin people's own language, with an English translation.[/b] When you're offered the enclave decision, a short epigraph now sits between the prose and the choices, e.g. “倉廩實而知禮節 (When the granaries are full, the people know propriety.)” — Guanzi. Every translated quote carries its [b]native-language original followed by an English gloss[/b] (Greek, Latin, Classical Chinese, Japanese, Russian, German, French, Spanish, Persian, Arabic, Thai, Old Norse, Old English, Prakrit, K'iche', Ge'ez, and more). Each original was [b]verified against a primary source[/b] (Perseus, ctext, Oracc/RINAP, ganjoor, and the like) rather than reconstructed. Right-to-left originals (Arabic, Persian) are bidi-isolated so they render correctly beside the English attribution.
+
+[b]Changed[/b]
+• [b]“Cultural Quarters” are now “Cultural Enclaves”[/b] in all player-facing in-game text (the other locales follow in 2.0.1). The internal systems, save data, and code identifiers are unchanged, so existing saves are unaffected.
+• [b]One quote per enclave, not one per option.[/b] The decision modal now shows a single quote for the enclave as a whole, instead of a separate quote under each of the two choices. Which one appears is set by ordinal: an origin's [b]first[/b] enclave shows quote A, its [b]second[/b] shows quote B.
+• [b]A single civilization can hold at most two enclaves in your empire — per civilization, not overall.[/b] You can still have two Roman, two Norman, and two Han enclaves at once; reaching the cap for one origin never blocks another. Once an origin has two, no third same-origin enclave is offered. Identity is by civilization (captured and persisted when the enclave forms), so the cap stays correct even if the origin player later changes civilization across an age, and two players sharing a civilization count together.
+• [b]Enclave and quote text passed a full sensitivity review.[/b] Removed trope-adjacent flavour (e.g. a Semitic “greed” slur, a “barbarian” atrocity quote, “great-replacement”-style cultural-erosion phrasing, and a fifth-column/loyalty framing on the wartime “contested” line), and replaced a misattributed hadith and a handful of misattributed or unsourceable quotes with correctly sourced, own-voice alternatives.
+
+[b]Fixed[/b]
+• [b]Cultural Enclaves now gate on the diaspora's CURRENT size, not lifetime arrivals.[/b] A quarter's second gate (beyond the share threshold) required 250,000 cumulative arrivals from an origin into a city — a lifetime inflow total that only ever grew and was never reduced by integration, return-home, or attrition. So a city that had merely [b]processed[/b] many migrants over the ages could clear it even after that diaspora had largely gone. The gate is now a true first-over-the-line on [b]current standing stock[/b]: the lead foreign origin must be at least 5 population points [b]right now[/b] (read from the netted composition ledger) as well as ≥25% (foothold) / ≥35% (established) of the city. If the diaspora later integrates or leaves, the city drops back below the line. The foothold Chronicle line now reads a standing community size rather than “arrivals over time”.
+
+==== 1.9.1 | 2026-07-04 | src 0af7faa95ef1 | gen 7b019047a709 ====
+[b]Version 1.9.1 · 4 July 2026[/b]
+
+[b]Fixed[/b]
+• [b]No more duplicate migration rows in Demographics' All Civilizations view.[/b] Each migration figure (Emigration, Immigration, Net Migration, Refugees In/Out, Population) is registered twice — a scaled-“people” series and a raw Civ-numbers twin — for the graph's Scaled/Civ toggle. In Demographics' new metrics-as-rows comparison both twins showed up as separate, identically-labelled rows (two “Emigration”, two “Immigration”, …). The Civ-numbers twins are now hidden from that comparison, so each flow shows once; Demographics' own Scaled/Civ toggle swaps the whole table between the two unit systems. The migration graphs are unchanged.
+
+==== 1.9.0 | 2026-07-04 | src 409a5875bb53 | gen f4b5fe1e57f6 ====
+[b]Version 1.9.0 · 4 July 2026[/b]
+A localization release. Numbers now read in the player's own language, and the last hardcoded interface strings — the cause labels and hints, and the Migration Chronicle's own chrome — move behind translation tags so they localize with the rest of the UI.
+
+[b]Fixed[/b]
+• [b]Numbers now format for the player's language.[/b] Grouped figures (people and population-point counts, the refugee-support burden) previously always used English separators (12,400) regardless of language. They now route through the game's own Locale.toNumber — the same API the base game uses for scores and yields — so a German player sees 12.400, a French player 12 400, and the burden's decimal reads 3,4 rather than 3.4. This replaces the earlier Intl.NumberFormat path, whose no-locale default never actually tracked the chosen Civ language in the game's UI runtime. Off-engine (and if the API is ever unavailable) every formatter falls back to the previous grouping, so nothing regresses.
+
+[b]Added[/b]
+• [b]Cause labels and hints now localize.[/b] The migration-cause names shown in the city readout, flow bars, and attribution (“War”, “Attraction”, “Conquest”, …) and their one-line “what can I do” hints were still emitted as raw English. They now resolve through LOC_EMIG_CAUSE_LABEL_* / LOC_EMIG_HINT_* tags (the two hints that lacked a tag — Conquest and Return — gained one), so they translate with the rest of the interface. The English text is kept in code as the off-engine fallback, so behaviour is unchanged where the engine Locale API is absent.
+• [b]The Migration Chronicle's own labels now localize.[/b] The view's chrome — the kind labels ([i]Exodus / Diaspora / Return[/i]), the “Turn N” stamp, the untitled- entry fallback, and the empty-state prose — was hardcoded English drawn around each entry's own (already-localized) title and body. It now composes through translation tags too. Entry titles and bodies are unchanged and still stored as written, so existing saves' Chronicles are unaffected.
+• [b]Restored three drifted translations.[/b] The internal/external move labels and the “Bound for …” destination clause had been hand-translated in every language file but were missing from the translation source, so they would have silently reverted to English on the next regeneration. They are now back in the source in all eleven languages.
+
+==== 1.8.1 | 2026-07-04 | src fed0b334b83e | gen 170afe337dec ====
+[b]Version 1.8.1 · 4 July 2026[/b]
+This is a bug-fix release for the Cultural Quarters feature: the choice pop-up is clickable again, and the stance you pick now actually changes the city's yields.
+
+[b]Fixed[/b]
+• [b]Cultural Quarter pop-up could not be clicked.[/b] The choice modal is a DOM overlay, but Civ VII still routes clicks, selection, and camera to the map behind it unless a screen explicitly takes world input. The modal now turns off world input while it is open (the same lever the game's own screens use) and restores it exactly as it found it on close, so the three options are selectable with the mouse again instead of only being dismissable with Escape. Applies to the refugee dilemma modal too, since both share the same surface.
+• [b]Cultural Quarter stance had no effect on yields.[/b] The chosen stance's benefit/drawback was applied as a one-time grantYield, which the engine's per-turn recompute wiped for Happiness and which never showed for the other yields — so nothing changed. The stance's yields are now applied [b]every turn[/b] from the tile's current quarter record (matching the city panel, which already read “each turn”, and the design's small ±1–2 intent). Default amounts were re-scaled from the old one-time 40/20 lump to a small per-turn +2 benefit / −1 drawback. Because yields now follow whichever origin holds the tile, a change-of-hands self-corrects with no separate reversal. “Grants … each turn” wording updated in all 12 locales.
+
+==== 1.8.0 | 2026-07-02 | src b9066a5d86e8 | gen f08024b0a023 ====
+[b]Version 1.8.0 · 2 July 2026[/b]
+This release makes migration explain itself: every move and death now says why it happened, cities warn you before people start leaving, and refugees from war and disaster wait in holding pools instead of instantly becoming workers. The Ethnic Composition map lens was also redrawn to read clearly — host colour, a grey “mixed” midpoint, and the incomer's colour, with each city framed in its main civ's colour. Population counts also read as plain numbers now.
+
+[b]Added[/b]
+• Refugee holding pools
+• Migration explanations
+• Rising-pressure cue
+• City readout trend sparkline
+• Cultural quarters
+• Emigration data in the City Details panel
+
+[b]Changed[/b]
+• Ethnic Composition lens redraw
+• The whole in-game UI is now localized
+• Population counts read as plain numbers
+
+[b]Fixed[/b]
+• The Network tab remembers Dots vs Flow
+• The network diagram no longer collides with the filter row
+
+[b]Maintainability[/b]
+• Balance telemetry counters
+• Docs + tests
+
+Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/CHANGELOG.md]full changelog[/url].
+
+==== 1.7.1 | 2026-07-01 | src 19263c9e280a | gen 13a852e01d2e ====
+[b]Version 1.7.1 · 1 July 2026[/b]
+Crisis deaths now ease in over a few turns instead of striking all at once, with matching guide and Civilopedia updates and wider engine test coverage.
+
+[b]Changed[/b]
+• [b]Crisis deaths ramp up instead of hitting all at once.[/b] A city under lethal distress (war/disaster/siege/famine) no longer takes its full casualty rate the instant the crisis turns lethal. Attrition death-pressure builds gently at first and deepens over a few turns of [i]sustained[/i] crisis (deathRamp: from deathRampFloor on turn 1 to full after deathRampTurns), and relaxes again if the crisis eases, so a sudden catastrophe is no longer immediately devastating and a brief scare is recoverable. It is [b]not[/b] capped: a prolonged catastrophe still takes its full toll over time (rural population only, never the settlement itself). The death-channel state now persists across save/reload.
+• [b]Guide and Civilopedia match the mechanic.[/b] The in-game guide and Civilopedia (English plus all 11 translations) now describe crisis deaths accurately: they build over a sustained crisis and are uncapped. Earlier text wrongly implied deaths stop at the rural floor.
+• [b]Maintainability: mutation-tested the migration engine.[/b] Raised emigration-engine.js mutation score from 41% to 88% (474 of 539 mutants killed). Added two harnesses, tests/engine-rigor.mjs and tests/engine-rigor-fixtures.mjs (~110 exact-boundary, arithmetic, and branch assertions, plus seeded war/combat/siege fixtures), a __test surface exposing the engine's internal decision and sizing helpers, and a fast engine-only mutation loop (npm run mutation:engine via stryker.engine.config.json). Every kill is a real assertion; no mutants were suppressed to inflate the score, and the surviving ones are genuine equivalent mutants. Also tightened the harness itself so a fixture that fails to set up now fails loudly instead of passing silently.
+
+==== 1.7.0 | 2026-06-30 | src f0aa1801df49 | gen 546c0a552c82 ====
+[b]Version 1.7.0 · 30 June 2026[/b]
+Two more languages, a controller-friendly route into the advanced editor, a faster late-game pull pass, and a round of correctness + robustness hardening, including a shared safeguard so starting a new game without relaunching can never inherit the previous game's migration data.
+
+[b]Added[/b]
+• [b]Two new localizations: Polish and Traditional Chinese (Hong Kong).[/b] Adds full pl_PL and zh_Hant_HK ModText, bringing the mod to 11 localized languages.
+• [b]“Options: Advanced” entry on the standalone dashboard.[/b] A control row that pushes the advanced-settings editor via the context manager, so the full tuning editor is reachable directly from the dashboard.
+
+[b]Changed[/b]
+• [b]Simplified Chinese locale renamed to the canonical zh_hans_cn.[/b] The folder was zh_cn; the manifest now points the zh_Hans_CN locale at text/zh_hans_cn/.
+• [b]Advanced tuning editor is fully controller-navigable.[/b] Group headers use native fxs-minus-plus toggle buttons (gamepad-focusable) instead of a click-anywhere header, and collapsing now works while a search filter is active.
+• [b]Faster late-game migration pass.[/b] The heavy pull pass memoizes the per-pass hex-distance matrix and the per-civ-pair open-borders / alliance / war reads, and reuses the chosen destination across the split tracks when the crisis track shed nothing, cutting the late-game O(N²) cost.
+• [b]Cross-game cache safety (internal robustness).[/b] A shared “reset persisted caches on game boot” convention: every module that lazy-loads its state from the save now drops that cache when a new game id is detected, so a new game started inside a still-running UI can't read or persist the prior game's data. Gated by the resetCachesOnGameBoot flag.
+• [b]Maintainability:[/b] removed redundant module exports, consolidated the developer docs, and hardened the test gate so no test file can be added without being wired into the suite.
+
+[b]Fixed[/b]
+• [b]Lagged migrants keep their deferral count across save/reload.[/b] It was reset every turn, so the “force-land or perish after too many defers” guard and the longest-waiting-first arrival order never actually fired; both work now.
+• [b]A migrant at the in-flight transit cap is no longer lost.[/b] The cap is enforced at enqueue, so a capped migrant stays home (population conserved) rather than being removed from its source and then dropped.
+• [b]A genuine one-point migration never reads as “0 people”[/b] in the era-ceiling underflow regime, a real move's reported people are floored at 1.
+
+==== 1.6.7 | 2026-06-28 | src fdb138179b96 | gen eed60564a254 ====
+[b]Version 1.6.7 · 28 June 2026[/b]
+Migration plumbing hardened and the advanced tuning editor rebuilt for controller support. Border policy now resolves consistently, slotting both Open and Closed Borders cancels out, lagged arrivals wait their turn fairly and perish only as a last resort, and per-civ border reads are cached for the heavy pull pass. Plus runtime memento tuning and new regression harnesses carried over from the balance-audit work.
+
+[b]Added[/b]
+• [b]Full leader/civ ability matrix generation now includes mementos.[/b] The matrix generator (scripts/generate-leader-civ-matrix.mjs) now parses base + DLC memento data, links mementos to leaders (including legend-path specific entries), and emits memento channel/risk overlays into the generated JSON/Markdown artifacts. This extends the balance audit surface beyond leader/civ traits to include memento effects.
+• [b]Regression harness for complete tuning decision coverage.[/b] Added tests/civ-tuning-coverage.mjs (+ npm run test:civ-tuning-coverage) to enforce that every rostered leader/civ from game data has an explicit tuning decision (outlier or neutral), with known alias allowances guarded in one place.
+• [b]Runtime memento tuning now composes into leader/civ tuning.[/b] ui/emigration-civ-tuning.js now reads equipped mementos via Online.Metaprogression.getEquippedMementos(pid), applies bounded memento deltas to the tuning profile, and keeps explicit outlier/neutral memento decisions under coverage.
+• [b]Hypotheticals sweep harness for hidden anomalies.[/b] Added tests/hypotheticals.mjs (+ npm run test:hypotheticals) with Ulema-like specialist/science stress cases, memento-stack pressure cases, and invariants for no NaN migration records and strict per-city loss/gain cap adherence.
+
+[b]Changed[/b]
+• [b]Advanced tuning editor rebuilt for full controller support.[/b] ui/options/emigration-advanced-editor.js now uses a native fxs-textbox search box, fxs-button / fxs-activatable controls for reset-all and per-row reset, collapsible groups, a modified-value dot, and a two-column grid. Editing any value switches the active preset to Custom, and the panel re-syncs its displayed values on focus.
+• [b]Open and Closed Borders now cancel out instead of stacking.[/b] ui/emigration-borders.js resolves a civ that has BOTH an Open and a Closed Borders card slotted to a neutral stance (openness ×1, no retention, stance “none”) rather than multiplying the two opposing effects together. Border/attraction policy reads are now memoized per pass (resetBorderCache() runs alongside resetPolityCache()), so each civ's slotted cards are read once per pass instead of once per candidate on the O(cities²) pull hot path; the tradition families and attraction yields are a single data-driven registry.
+
+[b]Fixed[/b]
+• [b]Lagged arrivals now wait their turn fairly and perish only as a last resort.[/b] ui/emigration-arrivals.js defers an arrival whose destination is at its inbound cap (or momentarily can't accept it) and retries for up to MAX_DEFERS turns, with the longest-waiting arrivals landing first so a saturated destination never starves old arrivals behind fresh ones. A refugee that still can't find room then perishes (a death) rather than force-landing past the cap or lingering in transit forever; a destination razed or captured en route still charges a death immediately. This keeps Feature 1b transit queues stable during destination spikes and the maxGainPerCityPerTurn bound strict.
+
+==== 1.6.6 | 2026-06-28 | src f1367df92bf8 | gen bfb77a90f086 ====
+[b]Version 1.6.6 · 28 June 2026[/b]
+Migration balance you can actually steer: settings now apply mid-game, the intensity presets govern war bursts, and a per-city cap stops sudden mass exodus. Plus a simpler dashboard option, a per-city “what drives migration” meter, a fully per-tile Ethnic Composition lens, and continuous low-resolution scaling.
+
+[b]Fixed[/b]
+• [b]Changing the intensity preset (or any setting) now takes effect mid-game.[/b] Switching the Emigration intensity to Low, or changing any Advanced tunable, used to do nothing until you reloaded the game, because the Options screen and the running simulation are separate parts of the UI that only share saved settings. The simulation now re-reads your settings every turn, so a change applies on the next pass. (If you switch to Low and a city is mid-siege, the gentler limits take hold right away.)
+• [b]Migrations no longer come in huge bursts; the intensity presets now actually govern them.[/b] Early-era cities could shed ~5 population in a single turn during a siege, and the Low/Medium/High presets didn't touch any of the war-driven knobs, so picking “Low” couldn't calm it. Now there's a hard [b]per-city cap[/b] on how many people one settlement can lose to migration in a turn (Low 1 / Medium 2 / High 4, also a new Advanced tunable), the war-burst defaults are lower, and the presets set all of it, so Low is genuinely gentle and High stays intense. The preset selector sits in the main Options panel with a note that finer control lives in Advanced settings.
+• [b]Every screen now renders properly on lower resolutions.[/b] On sub-1080p displays (1366×768, 1600×900 and similar) the game pins the UI font at its smallest size, so all the fixed elements, the title, tab bar, control pills and card headers, plus each tab's own displays (the Causes pies, the Net Migration and pressure tables, the Policy stances, the Network timeline and legend, the Notifications log and the Guide), kept their full size and squeezed the content into a sliver. The fixed-size content now scales [i]continuously[/i] with the available height, easing smoothly from full size down to a readable floor as the window gets shorter, with no abrupt jumps between resolutions, so every tab fills the frame consistently. At the standard resolutions (1080p / 1440p / 4K) nothing changes.
+
+[b]Changed[/b]
+• [b]The Ethnic Composition lens now gives every tile its own ethnic mix, and the tooltip matches the colour.[/b] Before, each tile was painted a single origin's flat colour and hovering any tile showed the same citywide percentages. Now each tile carries its own local blend, a diaspora concentrates into a few “neighbourhood” tiles where its share runs high and fades at the edges, while most tiles stay all the founder's, and the tile's colour is blended from its origins in proportion to those shares. Hovering a tile shows that tile's exact percentages, so the colour you see and the numbers you read are the same data. The per-tile shares still add up to the city's real composition (some tiles more, some less, the total conserved).
+
+[b]Added[/b]
+• [b]A “simplify dashboard” option.[/b] Turning it on (main Options panel) hides the heavy migration analytics (the animated Network diagram and the Causes pie charts) and keeps the simple, numbers-first tabs: Net Migration, My Cities, Policies, Notifications and the Guide, plus the Demographics line graphs. For players who want the population and net-migration numbers without the charts.
+• [b]A per-city migration meter on the My Cities / Settlements tab.[/b] Each settlement now shows, beside its emigration-pressure bar, a “What's driving it” breakdown, the active causes (war, prosperity, unhappiness, disaster) as proportional bars with percentages, so you can see at a glance exactly what is pushing people out and by how much.
+
+==== 1.6.5 | 2026-06-28 | src 6bf49ae67295 | gen 9dd3eac59318 ====
+[b]Version 1.6.5 · 28 June 2026[/b]
+The Ethnic Composition lens now shows immigrated population across the whole city, gentler wording throughout, and a Migration-window sizing fix.
+
+[b]Fixed[/b]
+• [b]The Migration window's Dots and Flow diagrams now size to the window identically.[/b] Both views use the same fit math, but they measured the panel at different moments, Dots when it first opened, before the flex layout had settled, and Flow a beat later, so one could come up oversized and clipped while the other rendered small with an empty band below it. Both now re-fit after the window settles (a couple of short delayed passes on top of the existing frame-aligned one), so they converge on the same height-bound size that fills the window without oversizing the diagram. Display sizing only, no simulation or layout changes.
+• [b]The Ethnic Composition lens now actually shows immigrated population.[/b] The lens and its hover panel were frozen on each city's mix as it stood the first time you opened them (typically all-one-civilization early on) and never reflected the immigration that arrived afterward, so every city read as 100% its founder and the map showed no variation. The lens, its tooltip, and the city readout now refresh the composition each turn, so diasporas that settle, grow, or return appear as they happen. (Cause: the recorder and the map readouts run in separate UI contexts that share this data only through the save; the readers were caching it indefinitely.)
+• [b]War-refugee diasporas are attributed to their true homeland.[/b] A refugee whose home city was razed or captured during the multi-turn journey could lose its origin on arrival (or be miscredited to the conqueror); the migrant now carries its origin with it, so even displaced peoples colour the lens correctly.
+
+[b]Changed[/b]
+• [b]Immigrant communities are now spread across the whole city on the lens, not banished to the barren outskirts.[/b] Each diaspora claims a share-proportional set of tiles (always at least one, so a small community is never invisible) placed evenly from the dense core out to the rural fringe, a downtown block here, a rural hamlet there, so the mix reads at a glance. The dominant civilization still holds the majority of tiles.
+• [b]Gentler, clearer wording throughout.[/b] The per-turn cost of receiving migrants is now called the [b]integration cost[/b] (formerly “assimilation”), matching the mod's existing “ethnic integration”; the relevant options group, settings, Civilopedia page, and tooltips are renamed to suit. Descriptions of immigrant communities now read as “communities” and “diasporas” rather than “minorities”/“foreigners”, and a couple of incidental metaphors were softened. The same wording changes are applied across all 10 supported languages. Wording only, no mechanics change.
+
+==== 1.6.4 | 2026-06-27 | src df0f8af8c2dc | gen d53a4c62f5bb ====
+[b]Version 1.6.4 · 27 June 2026[/b]
+The Flow view now fits the window like the Dots view.
+
+[b]Fixed[/b]
+• [b]The Flow (arrows) view now sizes to the window like the Dots view.[/b] The 1.6.2/1.6.3 fit work sized the Dots diagram's 2:1 stage to the available panel height, but the Flow view built the same stage and never applied that sizing, so its diagram stayed pinned at the CSS height cap and didn't fit/fill the window across resolutions. The Flow view now runs the identical stage-fit pass, so Dots and Flow render at the same size. Display sizing only, no layout, simulation, or canvas-buffer changes.
+
+==== 1.6.3 | 2026-06-27 | src 15691065b831 | gen 139e5e9a9e89 ====
+[b]Version 1.6.3 · 27 June 2026[/b]
+Network and Flow diagram now fills the standalone window.
+
+[b]Fixed[/b]
+• [b]The Network and Flow diagrams now fill the standalone Migration window at every resolution.[/b] The 1.6.2 fit fix bounded the 2:1 diagram to the dashboard tab body, which is capped at 74% of the screen height so it fits the embedded Demographics page. Inside the dedicated standalone window (which owns a 94% tall frame) that cap left a tall empty band below the diagram. The standalone window's tab body now grows to fill its frame, so the diagram uses the full available height while the embedded page keeps its shared-screen cap. Display sizing only, no layout, simulation, or canvas-buffer changes.
+
+==== 1.6.2 | 2026-06-27 | src 8c851a7a1bfe | gen 0ff007b0789a ====
+[b]Version 1.6.2 · 27 June 2026[/b]
+Network and Flow diagram scaling fix.
+
+[b]Fixed[/b]
+• [b]The Network and Flow diagrams now fit at every resolution without clipping.[/b] On smaller or shorter windows (e.g. a laptop at a moderate resolution) the lowest civilization clusters were cut off by the panel edge. The diagram stage is now sized against the actual scroll container it lives in, the dashboard's tab body, rather than the full viewport, so the 2:1 canvas always fits inside the panel. No layout, simulation, or canvas-buffer changes; only the display size is adjusted. The fix is also flicker-free on resize: repeated size writes are suppressed when the value has not changed.
+
+==== 1.6.1 | 2026-06-27 | src 80a40d93cc82 | gen 20a48bd29674 ====
+[b]Version 1.6.1 · 27 June 2026[/b]
+Two truthfulness fixes for the identity systems.
+
+[b]Fixed[/b]
+• [b]The Chronicle no longer invents details a city doesn't have.[/b] Its narrative lines used to drop in flavor like “beyond the granaries” or “by the harbour” by chance, whether or not the place actually had a granary or a coast. Now each founding line reads the city's real surroundings, its terrain (mountains, water, coast, rivers) and the buildings it has actually constructed (granary, temple, market, walls), and only mentions what's genuinely there, falling back to always-true phrasing otherwise. The phrasing is framed at the city's edge, which is exactly where the Ethnic Composition lens paints a diaspora, so the story and the map agree.
+• [b]Diasporas are now clearly visible on the Ethnic Composition lens.[/b] Minority tiles (any origin that isn't the city's dominant civilization) were fading almost to invisibility; they now keep a clear color so even a small foreign community reads on the map. (A genuinely mono-ethnic early-game city still correctly shows a single color, that “100%” reading was real data, not a rendering glitch.)
+
+==== 1.6.0 | 2026-06-27 | src b961641a7651 | gen 706bcbb792a4 ====
+[b]Version 1.6.0 · 27 June 2026[/b]
+A small interface consolidation: the Migration Chronicle now lives in Notifications instead of its own tab.
+
+[b]Changed[/b]
+• [b]The Chronicle tab is gone; chronicle moments now appear in the Notifications tab as their own type.[/b] The world's great migrations (a city emptied by war, a diaspora taking root, a people returning home) still read as short prose, now as distinct, purple-accented “Chronicle” entries in the unified Notifications list, where each row expands to its title and story (and the underlying cause, when it had one). Removing the separate tab keeps everything that actually happened in one place. The guide's FAQ now points to Notifications accordingly.
+
+==== 1.5.1 | 2026-06-27 | src 1896c93f489e | gen 4b143bd59915 ====
+[b]Version 1.5.1 · 27 June 2026[/b]
+A small refinement to the refugee-decision dilemma.
+
+[b]Changed[/b]
+• [b]Welcoming refugees now carries a short-term happiness cost[/b] in addition to the gold, reflecting the strain of absorbing a wave of newcomers (settling them on the frontier stays cheaper, turning them away still costs international standing). The choice cues now spell out each cost, and the cost reads are hardened against a missing/invalid tuning value.
+
+==== 1.5.0 | 2026-06-27 | src d319bc394691 | gen 51496299e414 ====
+[b]Version 1.5.0 · 27 June 2026[/b]
+A disaster-rebalance and game-speed-fairness release. Disasters now hurt in proportion to what they actually did (a harmless thunderstorm is nearly free; a catastrophic volcano still bites), they no longer over-punish slow speeds, and a city always recovers. A sweep of other per-turn effects that quietly drifted with the game-speed slider, immigration cost/reward, crisis lethality, alert pacing, now keep a constant game-time feel. Gameplay rules are unchanged; this is balance and presentation, all adjustable under Options ▸ Mods ▸ Emigration.
+
+[b]Changed[/b]
+• [b]Disasters now hurt in proportion to what they actually did.[/b] A disaster's population pressure is scaled by its measured impact (tiles pillaged, yields cut, buildings damaged), bounded by its type, so a thunderstorm that pillages nothing is nearly free, while a catastrophic volcano still bites. Type sets the ceiling; the measured impact picks where in that band the event lands.
+• [b]Disasters no longer over-punish slow game speeds.[/b] A one-shot disaster shock is divided by the speed scalar so its [i]total[/i] cost over the (longer) fade is about the same on Marathon as on Standard, instead of paying the full per-turn hit on ~3× as many turns. Repeated disasters now stack with diminishing returns under a hard cap, so a city always recovers (no “dead for the rest of the game”). All of the above is on by default and fully adjustable under Options ▸ Mods ▸ Emigration.
+
+[b]Fixed[/b]
+• [b]Several per-turn effects now keep the same game-time feel across speeds.[/b] The immigrant-integration cost, the attraction-yield dividend, crisis death-pressure, and the world-news notification spacing were all paced in raw turns; they are now speed-scaled like the rest of the model, so immigration's cost/reward and crisis lethality no longer drift with the speed slider, and alerts no longer go silent on Marathon / spammy on Online.
+• [b]A city no longer panics off a cliff.[/b] Directional war-flight now ramps in smoothly past the flee threshold instead of snapping to full strength on a single bad turn.
+• [b]Hardened the people-scaling soft ceiling[/b] against a divide-by-zero in the (today impossible) case of a zero ceiling.
+• [b]Migration readout now localizes its unit words.[/b] The “population point(s)” / “people” labels in the migration log line are now pulled from localized strings (with the English phrasing as a fail-safe) instead of being hardcoded English.
+• [b]Exact population numbers now group digits the player's way.[/b] Grouped integers (e.g. 12,400) use the locale's separators where the runtime exposes them (12.400, 12 400, …), falling back to the previous grouping otherwise.
+
+==== 1.4.0 | 2026-06-27 | src 0110f13938c4 | gen 77f77638b866 ====
+[b]Version 1.4.0 · 27 June 2026[/b]
+A population-realism release, in lockstep with the [b]Demographics[/b] mod's 2.1.0. The “people” counts behind every migration figure are reworked so they read at a believable historical scale in [b]every age[/b] instead of ballooning in the late game. Gameplay rules are unchanged, this is how the numbers are [i]displayed[/i].
+
+[b]Changed[/b]
+• [b]Migration people-counts are now grounded in Civilization VII's own per-era growth formula.[/b] The old raw^1.11 × 12,000 × 1.009^turn curve is gone. Each settlement's “people” figure is derived from the game's real growth cost for the age it's in, so a point leaving a town in Antiquity reads as a few thousand while the same point in a Modern metropolis reads far larger, with a smooth, continuous hand-off across age boundaries and no dependence on the raw turn count (so it no longer drifts with game speed). Still pinned bit-for-bit to Demographics by a shared parity test, so the two mods always agree on a given settlement.
+• [b]Per-event variation now leans on real game signals.[/b] A migration's reported people-count still varies so two events never read identically, but the lean is now drawn from the source settlement's actual happiness and urban/rural mix (its identity only as a tie-breaker) rather than a bare name hash.
+
+[b]Added[/b]
+• [b]Modern megacities & “one more turn”.[/b] The largest Modern settlements now scale into the real 10–38 million range, and if you keep playing past the natural end of the game the figures keep growing instead of flat-lining (bounded so they can never run away).
+
+[b]Internal[/b]
+• Cross-mod parity reference extended to the new growth-formula, megacity, ceiling, and overtime constants; new scaling, anchor, and continuity tests.
+
+==== 1.3.1 | 2026-06-27 | src 0819fbe58708 | gen ee9004d50027 ====
+[b]Version 1.3.1 · 27 June 2026[/b]
+A polish, stability, and quality-assurance release. No gameplay rules changed. Two visible fixes (chart sizing and a stray toggle), a round of crash-hardening against corrupt or old saves, and a new install-integrity gate that makes a broken release effectively impossible to ship.
+
+[b]Fixed[/b]
+• Migration charts now fill the window at every resolution
+• The “Scaled Pop / Civ Pop” number toggle no longer appears on the Guide tab
+
+[b]Changed[/b]
+• Confirmed and documented that migration-event population counts use the exact same age-scaled formula as the Demographics settlements boa...
+
+[b]Hardening (crash safety)[/b]
+• Resize-listener leak fixed
+• Ethnic-composition state is validated on load
+• Chronicle and Notification logs are validated on load
+
+[b]Tests and quality gates[/b]
+• New [b]validate-package[/b] install-integrity gate, run on every verify and every release
+• Verified [b]zero[/b] database / text / id / UI collisions against 230 other published mods, confirming Emigration is safe to install alongsi...
+• New [b]scaling-demographics-parity[/b] test pins migration-event scaling to the Demographics formula across the full Antiquity -> Modern r...
+• New [b]composition-malformed[/b] and [b]persistence-normalization[/b] tests prove the hardened loaders drop or repair corrupt saves without...
+• Major automated test-coverage expansion
+
+[b]Internal[/b]
+• Extracted the chart viewport-fit logic into ui/emigration-network-fit.js
+• max-len and no-unused-vars remain error-level; all new code passes ESLint, tsc, and the full test suite, which now runs the four ne...
+
+Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/CHANGELOG.md]full changelog[/url].
+
+==== 1.3.0 | 2026-06-26 | src ac77d513d690 | gen 91884fcea2cc ====
+[b]Version 1.3.0 · 26 June 2026[/b]
+
+[b]Added[/b]
+• [b]Migration Chronicle.[/b] A new “Chronicle” tab in the Demographics Migration screen writes the world's great migrations as short history: cities that emptied in war or disaster, diasporas that took root far from home, and peoples who returned once their homeland recovered.
+• [b]Per-tile ethnicity lens.[/b] The Ethnic Composition lens now paints each settlement as a density mosaic instead of one flat colour: urban tiles read denser, minorities cluster on the rural fringe, and each origin's share of the population is preserved across the tiles.
+• [b]Ethnic integration over time.[/b] Newcomers gradually take on their host's identity, held apart while their homeland is at war with the host or the city is in unrest, so a contested city keeps its colours on the lens.
+• [b]Return migration.[/b] When a homeland is at peace and prospering again, some of its people abroad set out for home, moving real population back over time.
+• [b]Refugee decisions.[/b] Once in a while, when a neighbour's conquest spree or a plague crisis sends a wave of refugees toward your lands, a short decision appears: welcome them, settle them on the frontier, or turn them away. Rare by design, and toggleable under Options (Emigration, refugee decisions).
+
+[b]Changed[/b]
+• [b]War refugee events name both sides.[/b] A war was reported as “British vs. the enemy” whenever the other side wasn't tracked. It now names both belligerents when you have met them, and reads “British vs. an unmet civilization” when you have not, so a war is always named without revealing a civ you haven't met.
+• [b]Exact, varied people counts.[/b] Notification figures are now precise numbers (for example 35,670) rather than rounded prose, and vary per settlement so two same-size places never report the identical count.
+• [b]Immediate disaster popups name the settlement struck[/b], and a refugee crisis now names the disaster that hit that civilization rather than the most recent one anywhere in the world.
+
+[b]Fixed[/b]
+• [b]Return migration no longer inflates world population.[/b] It now draws only from settlements that have rural population to give, and is paced as an occasional ebb rather than a constant stream.
+
+==== 1.2.0 | 2026-06-25 | src e1dc11a4210c | gen dd619530b2fa ====
+[b]Version 1.2.0 · 25 June 2026[/b]
+
+[b]Changed[/b]
+• [b]World-news notifications now name WHO was affected, with spoiler protection.[/b] Refugee-crisis headlines for wars, disasters, and conquests led with the event but not the civ; they now lead with the affected civilization. Unmet civs are never revealed, they're reported as “an unmet civilization” (the same mask the dashboard uses), and the notification log is masked the same way.
+• [b]Disaster popups now default to migration-affecting events.[/b] The on-screen disaster toast was driven by severity alone, which felt invasive at high disaster frequencies. By default it now pops only for disasters that strike a settlement (so they actually drive migration) and meet the minimum severity. The notifications log still records every severe disaster regardless, so the quieter popups never lose the record.
+
+[b]Added[/b]
+• [b]“Disaster popups” knob[/b] (Notifications group): 0 = off (log only), 1 = migration-affecting only (default), 2 = any disaster at/above the minimum severity (the previous behavior). Pairs with the existing “min disaster severity” knob for full control.
+
+==== 1.1.0 | 2026-06-25 | src ded591afd166 | gen ef3e52983f87 ====
+[b]Version 1.1.0 · 25 June 2026[/b]
+
+[b]Fixed[/b]
+• [b]Critical mod-compatibility fix.[/b] Emigration could wipe other mods' settings out of the shared options store. Mods share one modSettings blob (one slice each); when the game's UI layer handed back a momentarily-empty or unreadable copy of it, Emigration wrote back only its own slice, and, worse, reset the whole blob to empty whenever it couldn't parse it, deleting every other mod's saved options. Emigration now re-reads on an empty result, refuses to write when the shared store can't be safely read, only ever touches its own slice, and never resets the blob.
+
+[b]Added[/b]
+• [b]Brush & Blade civ/leader tuning pass.[/b] Extended the per-leader/civ variance table (ui/emigration-civ-tuning.js, Algorithm C) to cover the expansion's new civilizations and leaders, with abilities verified against Contents_1.4.1/resources/DLC. All nudges are bounded and only applied to genuine migration [i]outliers[/i], the goal is to prevent snowballing, not flatten civ identity. 8 leaders: conquerors who profit from taking cities pay more gold to absorb the spoils (Alexander, Genghis Khan, Edward Teach assimilationEase 1.2–1.25); Bolívar instead [i]integrates[/i] conquests cheaply (0.85); Toyotomi takes double damage defending so his cities also shed population faster under siege (warRetention 0.85); Himiko is a happiness/celebration magnet (happinessPull 0.85); Napoleon's FOOD_BANE base persona gets a small growth cushion (sourceBias 0.5); Sayyida al-Hurra's naval-garrison cities resist depopulation (warRetention 1.2). 12 civilizations: conquest economies (Assyria, Bulgaria, Ottomans, Pirate Republic) pay more to absorb spoils, Pirate Republic's inland-unhappiness also makes it a net [i]source[/i] (sourceBias −0.5); tall/few-settlement shapes are shielded from the density penalty (Carthage, Nepal, Qajar); fortification-defensive civs retain population under siege (Dai Viet, Sengoku warRetention 1.4); happiness/celebration magnets are damped (Heian, Silla, Ottomans, Qajar); and high-growth Shawnee gets a cushion so per-capita dilution doesn't bleed pop (sourceBias 0.75). Iceland, Tonga, Great Britain, and four leaders (Ada Lovelace, Gilgamesh, Lakshmibai, Friedrich) were reviewed and left neutral, no migration-relevant outlier. The whole layer remains gated by civTuningEnabled.
+• [b]Civ-tuning strength knob (civTuningStrength, default 0.7).[/b] A single global “flatten between civilizations” control that compresses every per-leader/civ profile toward neutral: 1.0 = the full table as written, 0 = fully flat (equivalent to the table off). It interpolates each field toward its own neutral, so relative ordering is preserved (the most defensive civ stays the most defensive) while the absolute spread (the gap that feeds a snowball) shrinks uniformly across base and expansion entries. The default 0.7 keeps each civ's character but trims the divergence ~30% as an extra anti-snowball margin; exposed as a Scope tunable (0 / 0.4 / 0.7 / 1) for dialing.
+
+==== 1.0.0 | 2026-06-23 | src 77e12dddcb43 | gen 0882201b3a87 ====
+[b]Version 1.0.0 · 23 June 2026[/b]
+
+[b]Changed[/b]
+• 1.4.1 happiness/economy rebalance
+
+[b]Added[/b]
+• Civ VII 1.4.1 polity model
+• Population scaling alignment refresh
+• Migration legibility, Demographics page (Phase 4)
+• Migration legibility, dashboard window (Phase 3)
+• Migration legibility, per-city readout (Phase 2)
+• Migration legibility, explanatory toasts (Phase 1)
+• Migration legibility, data core (in-game readout, Phase 0)
+• Migrant-holding penalty
+
+[b]Removed[/b]
+• The dead “unemployed workers over the city's cap” prosperity term - Civ VII has no such mechanic (the specialist cap is a hard placement...
+
+[b]Added (earlier this cycle)[/b]
+• Migration now has a real, in-game cost - duration-based (assimilation load)
+• Demographics integration
+• The tunables are now exposed in the [b]Options → Mods[/b] screen, in both the main-menu (pregame) and in-game Options
+
+[b]Changed[/b]
+• War-driven emigration is now gated on [b]actual violence inside a city's borders[/b], not on the empire merely being at war
+• Emigration is now geographically influenced
+• War no longer blocks cross-civ migration, and a besieged city's refugees flee [i]away[/i] from the nearest invading civilization (fleeFactor...
+
+Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/CHANGELOG.md]full changelog[/url].
+
+==== 0.1.0 | 2026-06-10 | src 0b122f9b0560 | gen b1c46282071c ====
+[b]Version 0.1.0 · 10 June 2026[/b]
+
+[b]Added[/b]
+• Citizens emigrate from unhappy, struggling settlements to happier, more prosperous ones - within and between civilizations - each local-player turn, driven by a Civ V-style Prosperity model (per-capita food/production/gold/ science/culture, happiness, war/siege/starvation/unrest/unemployment).
+• Migration reporting aligned with the Demographics mod's population scaling (raw^1.11 · 3000 · 1.009^turn), so a moved population point is reported as a historically representative people count.
+• Options screen setting (Options → Mods → “Emigration • migration counts”): show both the Civ population number and the historical people count (default), or either one alone. Persisted via the shared modSettings localStorage slice.
+• Dev dock controls: run a migration pass now, dump the current city prosperity ranking.
+
+[b]Internal[/b]
+• Brought the project to the Demographics repo standard: typed JavaScript with JSDoc checked by tsc --noEmit, ESLint modularization gate, a node test harness, 10-locale ModText.xml localization, and a release.sh that ships readable, debug-muted JS behind an allow-list audit.

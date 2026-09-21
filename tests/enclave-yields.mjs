@@ -20,7 +20,7 @@ globalThis.GameInfo = {
   }
 };
 
-const { enclaveYields, stanceYields, yieldsText, withYields } = await import("/emigration/ui/emigration-enclave-yields.js");
+const { enclaveYields, stanceYields, yieldsText, yieldsButtonText, withYields } = await import("/emigration/ui/emigration-enclave-yields.js");
 const { chronicle, chronicled, clearChronicle } = await import("/emigration/ui/emigration-chronicle.js");
 const { __test: dia } = await import("/emigration/ui/emigration-diaspora.js");
 
@@ -54,6 +54,9 @@ const { __test: dia } = await import("/emigration/ui/emigration-diaspora.js");
   assert.deepEqual(enclaveYields(null), {}, "no record, no yields");
   assert.deepEqual(enclaveYields({ applied: { benefitYield: null, penaltyYield: null } }), {}, "a passive stance is worth nothing");
   assert.equal(yieldsText({}), "", "an empty map has no text");
+  assert.equal(yieldsButtonText({ YIELD_GOLD: -1410, YIELD_SCIENCE: 375 }), "[icon:YIELD_SCIENCE] +375, [icon:YIELD_GOLD] -1410",
+    "a button figure: icon then amount (the refugee / call-home shape), the gain first although Gold sorts first");
+  assert.equal(yieldsButtonText({}), "", "an empty map has no button figure either");
   assert.equal(withYields("The enclave fades.", ""), "The enclave fades.", "no figure, no parenthetical");
   assert.equal(withYields("The enclave fades.", "−2 Culture"), "The enclave fades. (−2 Culture)", "the figure is appended");
 }
