@@ -73,7 +73,7 @@ async function run() {
       safe(() => Game.UnitOperations.sendRequest(probeUnit.id, "UNITOPERATION_PILLAGE", args));
       await later(4000);
       emit("P2 farmAfter=" + J(plotInfo(farm.loc)));
-      // also the pillage of the city-centre building plot from the unit's position
+      // also the pillage of the city-center building plot from the unit's position
       if (building) {
         const canB = safe(() => Game.UnitOperations.canStart(probeUnit.id, "UNITOPERATION_PILLAGE", { X: building.loc.x, Y: building.loc.y }, false));
         emit("P2 canStart PILLAGE on the building plot=" + J(canB));

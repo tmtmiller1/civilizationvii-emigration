@@ -1,7 +1,6 @@
 // emigration-prosperity.js
 //
-// The per-city Prosperity score that drives emigration, adapted from the Civ V
-// Emigration (v6) model:
+// The per-city Prosperity score that drives emigration:
 //
 //   Prosperity = ( Productiveness + LocalHappiness - PopulationPenalty )
 //                × (1 + Σ situationalModifiers/100)
@@ -51,8 +50,8 @@ function clamp(v, lo, hi) {
 
 /**
  * Shared per-pass context for prosperity (e.g. the field-relative mean happiness
- * the shaped happiness model centres on). Computed once per ranking.
- * @param {import("/emigration/ui/emigration-cities.js").CitySignal[]} signals Signals.
+ * the shaped happiness model centers on). Computed once per ranking.
+ * @param {import("/emigration/ui/emigration-cities.js").CitySignal[]} signals
  * @returns {{meanHappiness:number}} The context.
  */
 export function fieldContext(signals) {
@@ -68,10 +67,9 @@ export function fieldContext(signals) {
 }
 
 /**
- * The happiness value used for scoring: net happiness plus the overcrowding
- * discount (Algorithm B) - a credit-back for unhappiness that's actually the
- * deliberate cost of urban density (which already suppresses the city's yields),
- * so tall play isn't double-punished. The per-civ table can override the discount.
+ * The happiness value used for scoring: net happiness plus the overcrowding discount, a credit-back
+ * for unhappiness that is the cost of urban density (which already suppresses yields), so tall play
+ * isn't double-punished. The per-civ table can override the discount.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
  * @param {import("/emigration/ui/emigration-civ-tuning.js").CivTuning} tune Civ tuning.
  * @returns {number} Happiness for scoring.
@@ -84,26 +82,18 @@ function happinessForScore(s, tune) {
 }
 
 /**
- * The 1.4.1 POLITY bonus added to a city's base attractiveness (0 when polityModelEnabled is off, or
- * when the signal predates the polity fields). Three bounded, additive terms, all scaled by the
- * per-civ happinessPull so the civ-tuning table still modulates them:
- *  • happinessStageWeight × stage - a magnitude-insensitive ordinal happiness response (1.4.1
- *    formalized happiness into 5 stages); complements the field-relative term so the patch's sharper
- *    happiness swings get a bounded voice without re-tuning the raw-magnitude knobs.
- *  • celebrationPull while the civ is in a Golden Age - now a scarcer, tourism-feeding attractor.
- *  • the clamped government flavor lean - a tie-breaker (most government effect already reaches the
- *    model through happiness/yields, so this is deliberately small).
+ * The POLITY bonus added to a city's base attractiveness (0 when polityModelEnabled is off, or when
+ * the signal lacks the polity fields): happinessStageWeight × stage, celebrationPull while the civ
+ * celebrates, and a clamped government lean, all scaled by the per-civ happinessPull.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
  * @param {import("/emigration/ui/emigration-civ-tuning.js").CivTuning} tune Civ tuning.
  * @returns {number} The polity bonus (signed).
  */
 function polityBonus(s, tune) {
   if (!CONFIG.polityModelEnabled) return 0;
-  // The stage term is PULL-BIASED. On the misery side an unhappy city is already strongly repelled by
-  // the happiness term AND by its now-harsher (−5%/point, 1.4.1) suppressed yields, so a full-weight
-  // negative stage would triple-count; it's scaled down by happinessStageMiseryScale. On the happy
-  // side positive happiness does NOT boost yields in 1.4.1 (it feeds celebrations), so the attraction
-  // of happy/joyous/ecstatic settlements is genuinely under-modeled and gets full weight.
+  // The stage term is PULL-BIASED: an unhappy city is already repelled by the happiness term and its
+  // suppressed yields, so a negative stage is scaled down by happinessStageMiseryScale, while positive
+  // happiness does not boost yields and so gets full weight.
   const stage = s.stage || 0;
   const stageW = stage >= 0
     ? CONFIG.happinessStageWeight
@@ -134,23 +124,18 @@ function builtBonus(s) {
 }
 
 /**
- * The signed terms of {@link baseScore}, in score points, summing to it exactly. `economy` carries
- * the shaped model's happiness AMPLIFICATION (it is `productiveness × mult`, kept as one term so the
- * sum reproduces `baseScore` bit-for-bit rather than re-associating the multiply); `happiness` is
- * then only the standalone happiness term. `population` is already negated.
+ * The signed terms of {@link baseScore}, in score points, summing to it exactly. `economy` is
+ * `productiveness × mult` (the shaped model's happiness amplification); `happiness` is the
+ * standalone happiness term; `population` is already negated.
  * @typedef {{economy:number, happiness:number, population:number, civBias:number, polity:number,
  *   built:number}} BaseTerms
  */
 
 /**
- * The base (pre-situational) attractiveness of a city, decomposed. THE source of truth for the base
- * score: {@link baseScore} is just its sum, so the explainer (emigration-explain.js) and the score
- * can never disagree. Two models:
- *  • legacy linear (default): productiveness + happiness·w − pop·w
- *  • shaped (Algorithm A): happiness is field-relative and saturating, and it
- *    AMPLIFIES the economy (bounded multiplier) plus a bounded standalone term,
- *    so a happy-but-poor city can't run away and misery still steeply repels.
- * Both apply the per-civ overcrowding discount, happiness-pull, and source bias.
+ * The base (pre-situational) attractiveness of a city, decomposed; {@link baseScore} is just its sum,
+ * so the explainer (emigration-explain.js) and the score can never disagree. Linear model:
+ * productiveness + happiness·w − pop·w; shaped model: happiness is field-relative and saturating and
+ * AMPLIFIES the economy (bounded multiplier) plus a bounded standalone term.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
  * @param {{meanHappiness:number}|null} ctx Per-pass context (for the shaped model).
  * @returns {BaseTerms} The base terms.
@@ -180,7 +165,7 @@ export function baseBreakdown(s, ctx) {
 
 /**
  * The base (pre-situational) attractiveness of a city: the sum of {@link baseBreakdown}'s terms, in
- * their declared order so the arithmetic is identical to the pre-decomposition implementation.
+ * their declared order.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
  * @param {{meanHappiness:number}|null} ctx Per-pass context (for the shaped model).
  * @returns {number} Base score.
@@ -191,13 +176,9 @@ function baseScore(s, ctx) {
 }
 
 /**
- * The percent score penalty from violence inside the city's borders - a sliding
- * scale that grows with accumulated combat intensity up to a cap. This (not the
- * empire being at war) is what makes refugees flee: a city with no fighting in
- * its territory has zero violence penalty even if its civ is at war elsewhere.
- * Under the warSiege model (Algorithm D) the penalty is additionally scaled by a
- * siege-duration escalation that drops to 0 once the city has lost its capped
- * share of population to war (the remnant digs in).
+ * The percent score penalty from violence inside the city's borders: a sliding scale that grows with
+ * accumulated combat intensity up to a cap (a city with no fighting in its territory has zero penalty
+ * even if its civ is at war elsewhere). Under warSiege it is scaled by the siege-duration escalation.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
  * @returns {number} A non-positive percent (0 when there's no violence).
  */
@@ -210,7 +191,7 @@ function violencePercent(s) {
 }
 
 /**
- * The percent penalty from environmental-disaster distress (§11): a sliding scale up
+ * The percent penalty from environmental-disaster distress: a sliding scale up
  * to a cap, like violence. 0 when there's no distress.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
  * @returns {number} A non-positive percent.
@@ -242,17 +223,15 @@ export function situationalBreakdown(s) {
     siege: s.siege ? CONFIG.siegeModifier : 0,
     starvation: s.starving ? CONFIG.starvationModifier : 0,
     unrest: s.unrest ? CONFIG.unrestModifier : 0,
-    // 1.4.1 war weariness: an empire-wide unhappiness from prolonged war, distinct from the in-border
-    // violence terms above. A modest push that composes with (and is dominated by) violence, so a city
-    // already under siege isn't double-punished.
+    // War weariness: an empire-wide unhappiness from prolonged war, distinct from the in-border
+    // violence terms above; a modest push dominated by violence, so a besieged city isn't double-punished.
     warWeariness: CONFIG.polityModelEnabled && s.polity && s.polity.warWeary ? CONFIG.warWearinessModifier : 0
   };
 }
 
 /**
- * Sum of situational percent modifiers for a city (violence, disaster, siege,
- * starvation, unrest), summed in the terms' declared order so the arithmetic is identical to the
- * pre-decomposition implementation.
+ * Sum of situational percent modifiers for a city (violence, disaster, siege, starvation, unrest,
+ * war weariness), in the terms' declared order.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
  * @returns {number} Total percent (e.g. -210 means -210%).
  */
@@ -262,11 +241,9 @@ function situationalPercent(s) {
 }
 
 /**
- * A city's distress: the magnitude of its negative situational percent (violence,
- * disaster, siege, starvation, unrest, war weariness). 0 when the city is content. This is the FULL
- * push measure - it drives prosperity/attractiveness and the per-city readout, so unrest lowers a
- * city's standing and pushes economic emigration the moment it appears. The DEATH gate uses the
- * narrower `lethalDistress` instead (unrest only kills after sustained neglect).
+ * A city's distress: the magnitude of its negative situational percent (violence, disaster, siege,
+ * starvation, unrest, war weariness); 0 when content. The FULL push measure, driving attractiveness
+ * and the per-city readout; the DEATH gate uses the narrower `lethalDistress` instead.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
  * @returns {number} Distress (>= 0).
  */
@@ -276,12 +253,9 @@ export function distress(s) {
 }
 
 /**
- * A city's LETHAL distress: the magnitude of the negative situational terms that can KILL. The
- * immediate crises - violence, disaster, siege, famine - plus war weariness always count. Unrest is
- * lethal TOO, but only after sustained neglect, so the caller (the engine, which alone tracks the
- * unrest tenure) passes `unrestCounts` once the city has been in unrest long enough. Below that gate
- * unrest still shows up in `distress`/prosperity (it pushes economic emigration) but not here, so a
- * peaceful unrest city bleeds migrants immediately yet only starts dying after prolonged neglect.
+ * A city's LETHAL distress: the magnitude of the negative situational terms that can KILL. Violence,
+ * disaster, siege, famine and war weariness always count; unrest counts only once the caller (which
+ * tracks unrest tenure) passes `unrestCounts`, so a peaceful unrest city only starts dying after prolonged neglect.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
  * @param {boolean} unrestCounts Whether sustained unrest has earned lethal status this pass.
  * @returns {number} Lethal distress (>= 0).
@@ -303,12 +277,9 @@ export function prosperity(s, ctx) {
   const base = baseScore(s, ctx || null);
   const factor = 1 + situationalPercent(s) / 100;
   let p = base * factor;
-  // F2: situationalPercent can drop below −100 (siege+starvation+unrest stack), making
-  // factor negative. For a positive base that correctly slides the score negative (a
-  // routed city is unattractive). But a NEGATIVE base (poor, unhappy, high-pop) × a
-  // negative factor flips the product POSITIVE, ranking a devastated city as an
-  // attractive destination. Force the magnitude negative in exactly that case so
-  // distress can never make a poor city read as a magnet.
+  // situationalPercent can drop below −100 (siege+starvation+unrest stack), making factor negative;
+  // a NEGATIVE base × a negative factor would flip the product POSITIVE, so force it negative there
+  // so distress can never make a poor city read as a magnet.
   if (base < 0 && factor < 0) p = -Math.abs(p);
   return isFinite(p) ? p : 0;
 }
@@ -317,7 +288,7 @@ export function prosperity(s, ctx) {
  * Attach a `pros` field to each signal and return them sorted by prosperity
  * descending (best destinations first). The field context (e.g. mean happiness)
  * is computed once and shared across the scoring.
- * @param {import("/emigration/ui/emigration-cities.js").CitySignal[]} signals Signals.
+ * @param {import("/emigration/ui/emigration-cities.js").CitySignal[]} signals
  * @returns {(import("/emigration/ui/emigration-cities.js").CitySignal & {pros:number})[]} Ranked.
  */
 export function rankByProsperity(signals) {

@@ -103,7 +103,7 @@ testResetAll();
 testMarkPresetCustom();
 testGainCapTunableExposed();
 
-// Grouped settings: one slider moves several tunables along a curve; 50 is the shipped defaults (the behaviour
+// Grouped settings: one slider moves several tunables along a curve; 50 is the shipped defaults (the behavior
 // measured at scale in mod tests 90 to 93), 100 is free movement between civilizations, positions between anchors
 // interpolate, and setting a position writes every member tunable.
 {

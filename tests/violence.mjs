@@ -102,7 +102,7 @@ function testPillagedTilesAddPressureFogIndependently() {
 // ── Algorithm D: siege escalation (time-gated) + cumulative war-loss cap ──
 
 function testSiegeOffIsNeutral() {
-  // With warSiege off, escalation is a no-op multiplier (1) - legacy behaviour.
+  // With warSiege off, escalation is a no-op multiplier (1) - legacy behavior.
   // (Ship default is now on, so set it explicitly for the off-case.)
   CONFIG.warSiege = false;
   assert.equal(siegeEscalation(cityA), 1);
@@ -153,7 +153,7 @@ console.log("violence harness passed");
     "a minor power besieging a city registers less than a major one");
   assert.ok(CONFIG.minorViolenceScale > 0 && CONFIG.minorViolenceScale < 1,
     "minor raids still register, but scaled down");
-  // The knobs must be able to restore the old behaviour exactly, so the change is reversible in Options.
+  // The knobs must be able to restore the old behavior exactly, so the change is reversible in Options.
   assert.ok(CONFIG.minorViolenceScale <= 1, "scale never amplifies");
 }
 

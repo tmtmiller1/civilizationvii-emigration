@@ -73,7 +73,7 @@ function makeCity(owner, rural) {
   assert.equal(rankDepartureTiles(null).length, 0);
 }
 
-// ── 3. Stubbed engine surface: finds improvements, skips the centre, destroys the outlying one ─────
+// ── 3. Stubbed engine surface: finds improvements, skips the center, destroys the outlying one ─────
 const PLOT_LOC = { 100: { x: 10, y: 10 }, 101: { x: 11, y: 10 }, 102: { x: 13, y: 10 }, 103: { x: 12, y: 10 } };
 const IMPROVEMENTS = { 100: "IMPROVEMENT_PALACE_FARM", 101: "IMPROVEMENT_FARM", 102: "IMPROVEMENT_MINE", 103: "IMPROVEMENT_CAMP" };
 const RESOURCE_AT = { 102: 7 }; // the far mine sits on a resource → deprioritised
@@ -98,7 +98,7 @@ globalThis.GameplayMap = {
   assert.equal(departureTileApiAvailable(), true);
   const c = makeCity(4, 3);
   const tiles = listDepartureTiles(c);
-  assert.deepEqual(tiles.map((t) => t.plot).sort(), [101, 102, 103], "centre plot (100) is never a candidate");
+  assert.deepEqual(tiles.map((t) => t.plot).sort(), [101, 102, 103], "center plot (100) is never a candidate");
   const best = findDepartureTile(c);
   assert.equal(best.plot, 103, "farthest resource-free improvement wins (the mine at 102 sits on a resource)");
   assert.equal(best.type, "IMPROVEMENT_CAMP");
@@ -174,7 +174,7 @@ globalThis.GameplayMap = {
   requests.length = 0;
   Game.turn = 7;
   const c = makeCity(4, 3);
-  c.getPurchasedPlots = () => [100]; // only the centre
+  c.getPurchasedPlots = () => [100]; // only the center
   const r = commitSourcePoint({ city: c, owner: 4 }, { ok: true, fromPool: false, deferredTile: true });
   assert.equal(r.mode, "counter");
   assert.deepEqual(c.writes, [-1]);

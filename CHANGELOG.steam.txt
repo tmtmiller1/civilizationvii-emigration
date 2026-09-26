@@ -16,7 +16,7 @@ A block edited by hand is kept as-is. Delete a block to regenerate it from CHANG
 • [b]Every decision pop-up shows its yields on its buttons.[/b] The refugee, newcomer, call-home and Cultural Enclave pop-ups all put each choice's gains and costs on the choice's own button, with the game's yield icons and in one shape (“Welcome them in: +1 population, −30 Gold, −10 Happiness”), so you no longer match a list in the text to the button below it.
 • [b]Refugee decision buttons show their costs.[/b] “Welcome them in”, “Settle the frontier” and “Turn them away” each carry the population, Gold, Happiness or Influence they change; the separate list of costs is gone from the pop-up's text.
 • [b]Newcomer and refugee placement buttons show what you gain.[/b] Every choice shows the population it adds, and “Let the city settle them” also shows the yields of the tile the city will take, for example “+1 population, +1 Food, +3 Production, +1 Happiness”. The city's own bonuses can add a little on top.
-• [b]Enclave stance buttons show what each stance pays and costs.[/b] For example “Learn their horsemanship: +375 Science, −1410 Gold”. A stance you cannot afford is greyed out and says “(not enough Gold)”, and the pop-up says the stance is paid once, when you choose.
+• [b]Enclave stance buttons show what each stance pays and costs.[/b] For example “Learn their horsemanship: +375 Science, −1410 Gold”. A stance you cannot afford is grayed out and says “(not enough Gold)”, and the pop-up says the stance is paid once, when you choose.
 • [b]Enclave stances pay a real, one-time sum.[/b] Recognizing a Cultural Enclave pays once, when you choose: Culture toward your current civic, Science toward your current research, Influence, or Gold. Stances that do not pay Gold cost Gold; Gold stances are free. The sums are sized to your own economy: a stance pays three turns of your income of that yield and costs two turns of your Gold income, never less than a per-age minimum (60, 150 or 300 by age, scaled by game speed). An Exploration empire earning 221 Culture and 705 Gold a turn is offered, for example, +665 Culture for −1,410 Gold. Before, stances paid a small +2/−1 each turn, and most of those yields (Food, Production, Faith, Happiness, and every cost but Gold) never reached the game.
 • [b]Other civilizations take the first stance they can afford.[/b]
 • [b]Enclave tooltips and city readouts no longer list stance yields each turn.[/b] A stance is paid once, so the enclave's tooltip names the stance it took, and its tile's own yields are listed as before.
@@ -41,7 +41,7 @@ A block edited by hand is kept as-is. Delete a block to regenerate it from CHANG
 • The Prosperity lens scores each tile in points, and the readout says why
 • Calling people home is now two different offers, and the dialog says which one you are looking at
 • What a settlement has built is now a reason to stay
-• A large settlement is no longer pushed toward every smaller neighbour
+• A large settlement is no longer pushed toward every smaller neighbor
 • Emigration pressure now falls again when a settlement recovers
 • An enclave now exists from the moment it is announced
 • Your own enclaves raise a notification
@@ -49,7 +49,7 @@ A block edited by hand is kept as-is. Delete a block to regenerate it from CHANG
 • Plainer advice in migration pop-ups
 
 [b]Fixed[/b]
-• An enclave whose people are the city's majority no longer paints in the ruler's colour
+• An enclave whose people are the city's majority no longer paints in the ruler's color
 • Migrants keep who they are when they move on
 • Razed settlements leave the diversity list at once
 • The Ethnic Composition lens updates as soon as the turn starts
@@ -57,11 +57,11 @@ A block edited by hand is kept as-is. Delete a block to regenerate it from CHANG
 • Calling people home never actually charged anything
 • The map tooltip stays hidden under a lens, even alongside other tooltip mods
 • Lens readouts and the enclave tooltip are no longer painted over by other tooltips
-• On the ethnicity lens, a tile that burns with a foreign colour now means an enclave
+• On the ethnicity lens, a tile that burns with a foreign color now means an enclave
 • The ethnicity lens is a true gradient
 • Enclave labels no longer pile up on the map
 • Migrant-flow arrows stayed behind when a circle moved
-• Migrant flows between neighbouring cities drew no arrow
+• Migrant flows between neighboring cities drew no arrow
 • Verbose per-cause pop-ups could show a raw {1_City} placeholder
 
 Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/CHANGELOG.md]full changelog[/url].
@@ -107,7 +107,7 @@ Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blo
 
 [b]Fixed[/b]
 • Abandoned tiles could never be improved again
-• The Ethnic Composition lens paints again, in each people's own colour
+• The Ethnic Composition lens paints again, in each people's own color
 • The Ottomans get their own cultural quarter, quotes and enclave again
 • England is tuned as England
 • Text no longer runs together
@@ -118,7 +118,7 @@ Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blo
 • A player id the engine does not know can no longer reach the engine's independent-power name lookup (that call crashed the game natively...
 • A placed Cultural Enclave could be chosen as the outlying tile a departure abandons; enclave tiles are now excluded from departures
 • The enclave marker module logged through an invalid-CSS trick that wrote an “Unable to parse declaration” line on every repaint (about 1,...
-• The enclave map marker sat on the plot centre and hid the tile's own yield icons; it now sits above and below the icon row, smaller (symb...
+• The enclave map marker sat on the plot center and hid the tile's own yield icons; it now sits above and below the icon row, smaller (symb...
 • Food tiles were classified from the game's yield table, which has no food row for farms, fishing boats, pastures, or plantations, so the...
 
 [b]Removed[/b]
@@ -153,7 +153,7 @@ Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blo
 
 [b]Changed[/b]
 • [b]Migration notifications read as clean sentences instead of repeated fragments.[/b] Each row now leads with one flowing line that names where its people went — “…left London for its more prosperous neighbor, Leeds”, “…fled the fighting around Akrotiri for the safety of Thebes”, “…were captured when Veii was conquered by Rome” — instead of a generic headline followed by a separate “Bound for X.” clause. Expanding a row no longer repeats that same sentence back as a “Note”, drops the “Why there” line that only echoed it, and no longer stacks a permanence reminder on top of the action hint that already implied it. Prosperity moves in particular stop saying “prosperous” three times over. Every header still carries the dual population count (civ points and scaled people). Applied across all 12 supported languages.
-• [b]Notification rows now name the direction of each move and colour it to match.[/b] The row tag reads “Internal Migration”, “Emigration (Leaving)”, or “Immigration (Arriving)” — telling the two kinds of cross-border movement apart — and is tinted by what it means for you: green when people stay within your empire or arrive from abroad, red when your own people leave for a rival. A captured city names the conquering civilization outright.
+• [b]Notification rows now name the direction of each move and color it to match.[/b] The row tag reads “Internal Migration”, “Emigration (Leaving)”, or “Immigration (Arriving)” — telling the two kinds of cross-border movement apart — and is tinted by what it means for you: green when people stay within your empire or arrive from abroad, red when your own people leave for a rival. A captured city names the conquering civilization outright.
 
 [b]Fixed[/b]
 • [b]The Net Migration table's totals row lines up with the columns above it.[/b] The Stance-impact column was sized differently in the header and totals rows than in the per-civilization rows, which nudged every figure — In and Out included — out of vertical alignment. All rows now share one column grid.
@@ -197,7 +197,7 @@ Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blo
 
 [b]Added[/b]
 • [b]The refugee dilemma now lists each choice's effect.[/b] Under the prompt, each option shows its concrete trade-off — gold/happiness/influence cost and the population it settles — read from your live settings, so the outcome is clear before you choose instead of only hinted at in prose.
-• [b]“Confirm Changes” button in the Advanced options window.[/b] A labelled way back to the main Options window, matching the base Options screen, so you no longer have to hunt for the corner ✕. (Settings still apply live as you edit; the button simply closes.)
+• [b]“Confirm Changes” button in the Advanced options window.[/b] A labeled way back to the main Options window, matching the base Options screen, so you no longer have to hunt for the corner ✕. (Settings still apply live as you edit; the button simply closes.)
 • [b]“Arm real dilemma” self-test.[/b] A new Advanced-options self-test action registers a one-shot on the real turn event and fires the decision pop-up from inside it on your next turn — with its real applied effects — so the exact in-game path can be confirmed in a single turn instead of waiting for the rare natural trigger.
 
 ==== 2.0.6 | 2026-07-10 | src 8b6e107dde9a | gen 67a5091b8873 ====
@@ -234,7 +234,7 @@ Everything since the last Workshop release (2.0.4), shipped together: migration-
 • Timeline/playback controls rebuilt
 • Units toggle now explains itself
 • Notification volume is fully controllable
-• Enclave flavour quote 0.85rem → 0.8rem
+• Enclave flavor quote 0.85rem → 0.8rem
 
 Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/CHANGELOG.md]full changelog[/url].
 
@@ -279,7 +279,7 @@ Localization plus a persistence-and-tuning pass for the Cultural Enclaves featur
 
 ==== 2.0.0 | 2026-07-05 | src 0f35bd10ff70 | gen 7940233e8d6f ====
 [b]Version 2.0.0 · 5 July 2026[/b]
-The Cultural Enclaves release. When a foreign community grows into a lasting part of one of your cities, it now forms a named [b]Cultural Enclave[/b] (renamed from Cultural Quarter) with a one-time, identity-grounded choice — and each enclave reads as a page of history, carrying a real, primary-source-verified quote in the origin people's own language beside its English translation. This is also the release where the feature's decision actually bites: the yield effect persists turn to turn, enclaves form only where a diaspora genuinely lives right now, and a full sensitivity pass reworked the flavour throughout. Existing saves are unaffected — only the player-facing name and the strings changed.
+The Cultural Enclaves release. When a foreign community grows into a lasting part of one of your cities, it now forms a named [b]Cultural Enclave[/b] (renamed from Cultural Quarter) with a one-time, identity-grounded choice — and each enclave reads as a page of history, carrying a real, primary-source-verified quote in the origin people's own language beside its English translation. This is also the release where the feature's decision actually bites: the yield effect persists turn to turn, enclaves form only where a diaspora genuinely lives right now, and a full sensitivity pass reworked the flavor throughout. Existing saves are unaffected — only the player-facing name and the strings changed.
 
 [b]Added[/b]
 • [b]Cultural Enclaves show a real, attributed historical quote — in the origin people's own language, with an English translation.[/b] When you're offered the enclave decision, a short epigraph now sits between the prose and the choices, e.g. “倉廩實而知禮節 (When the granaries are full, the people know propriety.)” — Guanzi. Every translated quote carries its [b]native-language original followed by an English gloss[/b] (Greek, Latin, Classical Chinese, Japanese, Russian, German, French, Spanish, Persian, Arabic, Thai, Old Norse, Old English, Prakrit, K'iche', Ge'ez, and more). Each original was [b]verified against a primary source[/b] (Perseus, ctext, Oracc/RINAP, ganjoor, and the like) rather than reconstructed. Right-to-left originals (Arabic, Persian) are bidi-isolated so they render correctly beside the English attribution.
@@ -288,7 +288,7 @@ The Cultural Enclaves release. When a foreign community grows into a lasting par
 • [b]“Cultural Quarters” are now “Cultural Enclaves”[/b] in all player-facing in-game text (the other locales follow in 2.0.1). The internal systems, save data, and code identifiers are unchanged, so existing saves are unaffected.
 • [b]One quote per enclave, not one per option.[/b] The decision modal now shows a single quote for the enclave as a whole, instead of a separate quote under each of the two choices. Which one appears is set by ordinal: an origin's [b]first[/b] enclave shows quote A, its [b]second[/b] shows quote B.
 • [b]A single civilization can hold at most two enclaves in your empire — per civilization, not overall.[/b] You can still have two Roman, two Norman, and two Han enclaves at once; reaching the cap for one origin never blocks another. Once an origin has two, no third same-origin enclave is offered. Identity is by civilization (captured and persisted when the enclave forms), so the cap stays correct even if the origin player later changes civilization across an age, and two players sharing a civilization count together.
-• [b]Enclave and quote text passed a full sensitivity review.[/b] Removed trope-adjacent flavour (e.g. a Semitic “greed” slur, a “barbarian” atrocity quote, “great-replacement”-style cultural-erosion phrasing, and a fifth-column/loyalty framing on the wartime “contested” line), and replaced a misattributed hadith and a handful of misattributed or unsourceable quotes with correctly sourced, own-voice alternatives.
+• [b]Enclave and quote text passed a full sensitivity review.[/b] Removed trope-adjacent flavor (e.g. a Semitic “greed” slur, a “barbarian” atrocity quote, “great-replacement”-style cultural-erosion phrasing, and a fifth-column/loyalty framing on the wartime “contested” line), and replaced a misattributed hadith and a handful of misattributed or unsourceable quotes with correctly sourced, own-voice alternatives.
 
 [b]Fixed[/b]
 • [b]Cultural Enclaves now gate on the diaspora's CURRENT size, not lifetime arrivals.[/b] A quarter's second gate (beyond the share threshold) required 250,000 cumulative arrivals from an origin into a city — a lifetime inflow total that only ever grew and was never reduced by integration, return-home, or attrition. So a city that had merely [b]processed[/b] many migrants over the ages could clear it even after that diaspora had largely gone. The gate is now a true first-over-the-line on [b]current standing stock[/b]: the lead foreign origin must be at least 5 population points [b]right now[/b] (read from the netted composition ledger) as well as ≥25% (foothold) / ≥35% (established) of the city. If the diaspora later integrates or leaves, the city drops back below the line. The foothold Chronicle line now reads a standing community size rather than “arrivals over time”.
@@ -297,7 +297,7 @@ The Cultural Enclaves release. When a foreign community grows into a lasting par
 [b]Version 1.9.1 · 4 July 2026[/b]
 
 [b]Fixed[/b]
-• [b]No more duplicate migration rows in Demographics' All Civilizations view.[/b] Each migration figure (Emigration, Immigration, Net Migration, Refugees In/Out, Population) is registered twice — a scaled-“people” series and a raw Civ-numbers twin — for the graph's Scaled/Civ toggle. In Demographics' new metrics-as-rows comparison both twins showed up as separate, identically-labelled rows (two “Emigration”, two “Immigration”, …). The Civ-numbers twins are now hidden from that comparison, so each flow shows once; Demographics' own Scaled/Civ toggle swaps the whole table between the two unit systems. The migration graphs are unchanged.
+• [b]No more duplicate migration rows in Demographics' All Civilizations view.[/b] Each migration figure (Emigration, Immigration, Net Migration, Refugees In/Out, Population) is registered twice — a scaled-“people” series and a raw Civ-numbers twin — for the graph's Scaled/Civ toggle. In Demographics' new metrics-as-rows comparison both twins showed up as separate, identically-labeled rows (two “Emigration”, two “Immigration”, …). The Civ-numbers twins are now hidden from that comparison, so each flow shows once; Demographics' own Scaled/Civ toggle swaps the whole table between the two unit systems. The migration graphs are unchanged.
 
 ==== 1.9.0 | 2026-07-04 | src 409a5875bb53 | gen f4b5fe1e57f6 ====
 [b]Version 1.9.0 · 4 July 2026[/b]
@@ -307,7 +307,7 @@ A localization release. Numbers now read in the player's own language, and the l
 • [b]Numbers now format for the player's language.[/b] Grouped figures (people and population-point counts, the refugee-support burden) previously always used English separators (12,400) regardless of language. They now route through the game's own Locale.toNumber — the same API the base game uses for scores and yields — so a German player sees 12.400, a French player 12 400, and the burden's decimal reads 3,4 rather than 3.4. This replaces the earlier Intl.NumberFormat path, whose no-locale default never actually tracked the chosen Civ language in the game's UI runtime. Off-engine (and if the API is ever unavailable) every formatter falls back to the previous grouping, so nothing regresses.
 
 [b]Added[/b]
-• [b]Cause labels and hints now localize.[/b] The migration-cause names shown in the city readout, flow bars, and attribution (“War”, “Attraction”, “Conquest”, …) and their one-line “what can I do” hints were still emitted as raw English. They now resolve through LOC_EMIG_CAUSE_LABEL_* / LOC_EMIG_HINT_* tags (the two hints that lacked a tag — Conquest and Return — gained one), so they translate with the rest of the interface. The English text is kept in code as the off-engine fallback, so behaviour is unchanged where the engine Locale API is absent.
+• [b]Cause labels and hints now localize.[/b] The migration-cause names shown in the city readout, flow bars, and attribution (“War”, “Attraction”, “Conquest”, …) and their one-line “what can I do” hints were still emitted as raw English. They now resolve through LOC_EMIG_CAUSE_LABEL_* / LOC_EMIG_HINT_* tags (the two hints that lacked a tag — Conquest and Return — gained one), so they translate with the rest of the interface. The English text is kept in code as the off-engine fallback, so behavior is unchanged where the engine Locale API is absent.
 • [b]The Migration Chronicle's own labels now localize.[/b] The view's chrome — the kind labels ([i]Exodus / Diaspora / Return[/i]), the “Turn N” stamp, the untitled- entry fallback, and the empty-state prose — was hardcoded English drawn around each entry's own (already-localized) title and body. It now composes through translation tags too. Entry titles and bodies are unchanged and still stored as written, so existing saves' Chronicles are unaffected.
 • [b]Restored three drifted translations.[/b] The internal/external move labels and the “Bound for …” destination clause had been hand-translated in every language file but were missing from the translation source, so they would have silently reverted to English on the next regeneration. They are now back in the source in all eleven languages.
 
@@ -321,7 +321,7 @@ This is a bug-fix release for the Cultural Quarters feature: the choice pop-up i
 
 ==== 1.8.0 | 2026-07-02 | src b9066a5d86e8 | gen f08024b0a023 ====
 [b]Version 1.8.0 · 2 July 2026[/b]
-This release makes migration explain itself: every move and death now says why it happened, cities warn you before people start leaving, and refugees from war and disaster wait in holding pools instead of instantly becoming workers. The Ethnic Composition map lens was also redrawn to read clearly — host colour, a grey “mixed” midpoint, and the incomer's colour, with each city framed in its main civ's colour. Population counts also read as plain numbers now.
+This release makes migration explain itself: every move and death now says why it happened, cities warn you before people start leaving, and refugees from war and disaster wait in holding pools instead of instantly becoming workers. The Ethnic Composition map lens was also redrawn to read clearly — host color, a gray “mixed” midpoint, and the incomer's color, with each city framed in its main civ's color. Population counts also read as plain numbers now.
 
 [b]Added[/b]
 • Refugee holding pools
@@ -402,7 +402,7 @@ Migration balance you can actually steer: settings now apply mid-game, the inten
 • [b]Every screen now renders properly on lower resolutions.[/b] On sub-1080p displays (1366×768, 1600×900 and similar) the game pins the UI font at its smallest size, so all the fixed elements, the title, tab bar, control pills and card headers, plus each tab's own displays (the Causes pies, the Net Migration and pressure tables, the Policy stances, the Network timeline and legend, the Notifications log and the Guide), kept their full size and squeezed the content into a sliver. The fixed-size content now scales [i]continuously[/i] with the available height, easing smoothly from full size down to a readable floor as the window gets shorter, with no abrupt jumps between resolutions, so every tab fills the frame consistently. At the standard resolutions (1080p / 1440p / 4K) nothing changes.
 
 [b]Changed[/b]
-• [b]The Ethnic Composition lens now gives every tile its own ethnic mix, and the tooltip matches the colour.[/b] Before, each tile was painted a single origin's flat colour and hovering any tile showed the same citywide percentages. Now each tile carries its own local blend, a diaspora concentrates into a few “neighbourhood” tiles where its share runs high and fades at the edges, while most tiles stay all the founder's, and the tile's colour is blended from its origins in proportion to those shares. Hovering a tile shows that tile's exact percentages, so the colour you see and the numbers you read are the same data. The per-tile shares still add up to the city's real composition (some tiles more, some less, the total conserved).
+• [b]The Ethnic Composition lens now gives every tile its own ethnic mix, and the tooltip matches the color.[/b] Before, each tile was painted a single origin's flat color and hovering any tile showed the same citywide percentages. Now each tile carries its own local blend, a diaspora concentrates into a few “neighborhood” tiles where its share runs high and fades at the edges, while most tiles stay all the founder's, and the tile's color is blended from its origins in proportion to those shares. Hovering a tile shows that tile's exact percentages, so the color you see and the numbers you read are the same data. The per-tile shares still add up to the city's real composition (some tiles more, some less, the total conserved).
 
 [b]Added[/b]
 • [b]A “simplify dashboard” option.[/b] Turning it on (main Options panel) hides the heavy migration analytics (the animated Network diagram and the Causes pie charts) and keeps the simple, numbers-first tabs: Net Migration, My Cities, Policies, Notifications and the Guide, plus the Demographics line graphs. For players who want the population and net-migration numbers without the charts.
@@ -415,7 +415,7 @@ The Ethnic Composition lens now shows immigrated population across the whole cit
 [b]Fixed[/b]
 • [b]The Migration window's Dots and Flow diagrams now size to the window identically.[/b] Both views use the same fit math, but they measured the panel at different moments, Dots when it first opened, before the flex layout had settled, and Flow a beat later, so one could come up oversized and clipped while the other rendered small with an empty band below it. Both now re-fit after the window settles (a couple of short delayed passes on top of the existing frame-aligned one), so they converge on the same height-bound size that fills the window without oversizing the diagram. Display sizing only, no simulation or layout changes.
 • [b]The Ethnic Composition lens now actually shows immigrated population.[/b] The lens and its hover panel were frozen on each city's mix as it stood the first time you opened them (typically all-one-civilization early on) and never reflected the immigration that arrived afterward, so every city read as 100% its founder and the map showed no variation. The lens, its tooltip, and the city readout now refresh the composition each turn, so diasporas that settle, grow, or return appear as they happen. (Cause: the recorder and the map readouts run in separate UI contexts that share this data only through the save; the readers were caching it indefinitely.)
-• [b]War-refugee diasporas are attributed to their true homeland.[/b] A refugee whose home city was razed or captured during the multi-turn journey could lose its origin on arrival (or be miscredited to the conqueror); the migrant now carries its origin with it, so even displaced peoples colour the lens correctly.
+• [b]War-refugee diasporas are attributed to their true homeland.[/b] A refugee whose home city was razed or captured during the multi-turn journey could lose its origin on arrival (or be miscredited to the conqueror); the migrant now carries its origin with it, so even displaced peoples color the lens correctly.
 
 [b]Changed[/b]
 • [b]Immigrant communities are now spread across the whole city on the lens, not banished to the barren outskirts.[/b] Each diaspora claims a share-proportional set of tiles (always at least one, so a small community is never invisible) placed evenly from the dense core out to the rural fringe, a downtown block here, a rural hamlet there, so the mix reads at a glance. The dominant civilization still holds the majority of tiles.
@@ -447,7 +447,7 @@ Network and Flow diagram scaling fix.
 Two truthfulness fixes for the identity systems.
 
 [b]Fixed[/b]
-• [b]The Chronicle no longer invents details a city doesn't have.[/b] Its narrative lines used to drop in flavor like “beyond the granaries” or “by the harbour” by chance, whether or not the place actually had a granary or a coast. Now each founding line reads the city's real surroundings, its terrain (mountains, water, coast, rivers) and the buildings it has actually constructed (granary, temple, market, walls), and only mentions what's genuinely there, falling back to always-true phrasing otherwise. The phrasing is framed at the city's edge, which is exactly where the Ethnic Composition lens paints a diaspora, so the story and the map agree.
+• [b]The Chronicle no longer invents details a city doesn't have.[/b] Its narrative lines used to drop in flavor like “beyond the granaries” or “by the harbor” by chance, whether or not the place actually had a granary or a coast. Now each founding line reads the city's real surroundings, its terrain (mountains, water, coast, rivers) and the buildings it has actually constructed (granary, temple, market, walls), and only mentions what's genuinely there, falling back to always-true phrasing otherwise. The phrasing is framed at the city's edge, which is exactly where the Ethnic Composition lens paints a diaspora, so the story and the map agree.
 • [b]Diasporas are now clearly visible on the Ethnic Composition lens.[/b] Minority tiles (any origin that isn't the city's dominant civilization) were fading almost to invisibility; they now keep a clear color so even a small foreign community reads on the map. (A genuinely mono-ethnic early-game city still correctly shows a single color, that “100%” reading was real data, not a rendering glitch.)
 
 ==== 1.6.0 | 2026-06-27 | src b961641a7651 | gen 706bcbb792a4 ====
@@ -527,10 +527,10 @@ Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blo
 
 [b]Added[/b]
 • [b]Migration Chronicle.[/b] A new “Chronicle” tab in the Demographics Migration screen writes the world's great migrations as short history: cities that emptied in war or disaster, diasporas that took root far from home, and peoples who returned once their homeland recovered.
-• [b]Per-tile ethnicity lens.[/b] The Ethnic Composition lens now paints each settlement as a density mosaic instead of one flat colour: urban tiles read denser, minorities cluster on the rural fringe, and each origin's share of the population is preserved across the tiles.
-• [b]Ethnic integration over time.[/b] Newcomers gradually take on their host's identity, held apart while their homeland is at war with the host or the city is in unrest, so a contested city keeps its colours on the lens.
+• [b]Per-tile ethnicity lens.[/b] The Ethnic Composition lens now paints each settlement as a density mosaic instead of one flat color: urban tiles read denser, minorities cluster on the rural fringe, and each origin's share of the population is preserved across the tiles.
+• [b]Ethnic integration over time.[/b] Newcomers gradually take on their host's identity, held apart while their homeland is at war with the host or the city is in unrest, so a contested city keeps its colors on the lens.
 • [b]Return migration.[/b] When a homeland is at peace and prospering again, some of its people abroad set out for home, moving real population back over time.
-• [b]Refugee decisions.[/b] Once in a while, when a neighbour's conquest spree or a plague crisis sends a wave of refugees toward your lands, a short decision appears: welcome them, settle them on the frontier, or turn them away. Rare by design, and toggleable under Options (Emigration, refugee decisions).
+• [b]Refugee decisions.[/b] Once in a while, when a neighbor's conquest spree or a plague crisis sends a wave of refugees toward your lands, a short decision appears: welcome them, settle them on the frontier, or turn them away. Rare by design, and toggleable under Options (Emigration, refugee decisions).
 
 [b]Changed[/b]
 • [b]War refugee events name both sides.[/b] A war was reported as “British vs. the enemy” whenever the other side wasn't tracked. It now names both belligerents when you have met them, and reads “British vs. an unmet civilization” when you have not, so a war is always named without revealing a civ you haven't met.

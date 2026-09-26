@@ -64,7 +64,7 @@ assert.equal(enclaveTypeFor(null, "a"), null);
 assert.equal(enclaveIndex("IMPROVEMENT_EMIG_ENCLAVE_ROME_A"), 300);
 assert.equal(enclaveIndex("IMPROVEMENT_EMIG_ENCLAVE_NOPE_A"), null, "unloaded data reads as null");
 
-// ── empty plots: not the centre, not a district plot, not a mountain, nearest first ──
+// ── empty plots: not the center, not a district plot, not a mountain, nearest first ──
 {
   const empty = emptyPlotsOf(city);
   assert.deepEqual(empty.map((e) => e.plot), [11, 12], "6,5 (flat, d1) then 7,5 (hill, d2); 5,7 is mountain, 8,5 has a farm");

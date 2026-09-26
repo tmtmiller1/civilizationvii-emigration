@@ -46,9 +46,8 @@ function loc(key, ...args) {
 
 /**
  * Format a migration's size honoring the player's number-display preference: the Civ population
- * number, the Demographics-scaled people count, or both (default). Both reads e.g. "1 population
- * point (12 thousand people)". The unit words are localized (LOC_EMIG_COUNT_*), with the English
- * phrasing kept as a fail-safe so the line is never blank when Locale is unavailable.
+ * number, the Demographics-scaled people count, or both (default, e.g. "1 population point (12 thousand
+ * people)"). The unit words are localized (LOC_EMIG_COUNT_*) with English as the fail-safe.
  * @param {import("/emigration/ui/emigration-engine.js").Migration} m Migration.
  * @returns {string} The formatted count phrase.
  */

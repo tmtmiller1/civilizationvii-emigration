@@ -12,8 +12,8 @@
 //
 // Why the panel is pinned by hand: the panel follows the last window mousemove, and mod test 143 showed a synthetic
 // mousemove's coordinates do not reach it (the panel drew at 0,0, the top-left corner). The probe sets the hovered
-// plot through PlotCursor (which the panel does read), frames that plot at the centre of the screen, and places the
-// panel where its own place() would put it for a cursor on that tile: 36 px right of and below the centre.
+// plot through PlotCursor (which the panel does read), frames that plot at the center of the screen, and places the
+// panel where its own place() would put it for a cursor on that tile: 36 px right of and below the center.
 import LensManager from "/core/ui/lenses/lens-manager.js";
 import PlotCursor from "/core/ui/input/plot-cursor.js";
 import { allQuarterEntries } from "/emigration/ui/emigration-quarter-state.js";
@@ -83,8 +83,8 @@ function hover(at) {
  * real mousemove (0,0, the top-left corner) AFTER the tick had moved it, so every capture showed it in the corner.
  * Now the plot is only re-set when something moved it, and the panel is placed after the frame renders as well. */
 function pin(at, ms) {
-  // Anchor as if the cursor rested a little below the tile's centre (still on the tile): run 2's panel, anchored at the
-  // exact centre, covered the end of the enclave's name label.
+  // Anchor as if the cursor rested a little below the tile's center (still on the tile): run 2's panel, anchored at the
+  // exact center, covered the end of the enclave's name label.
   const CURSOR_BELOW_CENTRE = 60;
   const cx = Math.round(window.innerWidth / 2), cy = Math.round(window.innerHeight / 2) + CURSOR_BELOW_CENTRE;
   const until = Date.now() + ms;

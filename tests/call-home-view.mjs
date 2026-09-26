@@ -59,14 +59,14 @@ function testInternalGreysOutWhatTheTreasuryCannotCover() {
   assert.deepEqual(v.choices.map((c) => c.id), ["0:1", "0:2", "0:3", "1:1", "1:2", "1:3", "no"],
     "every size stays in the list whatever the balance");
   assert.deepEqual(v.choices.map((c) => !!c.disabled), [false, false, true, true, true, true, false],
-    "the sizes the treasury cannot cover are greyed out; leaving never is");
+    "the sizes the treasury cannot cover are grayed out; leaving never is");
   const gold3 = v.choices[2];
   assert.equal(gold3.note, `Not enough Gold: this needs ${callHomeCost(3, CALL_HOME_SCOPE.INTERNAL, G)} and we have ${goldHave}.`,
-    "the greyed size says how short the treasury is");
+    "the grayed size says how short the treasury is");
   assert.equal(v.choices[3].note, `Not enough Influence: this needs ${perInfl} and we have ${perInfl - 1}.`);
   assert.ok(/Exactly this many/.test(v.choices[0].note), "an affordable size keeps its promise");
   const poor = callHomeView(ME, CALL_HOME_SCOPE.INTERNAL, { flows: FLOWS, afford: () => 0, civ });
-  assert.ok(poor.choices.slice(0, 6).every((c) => c.disabled), "nothing affordable greys every size");
+  assert.ok(poor.choices.slice(0, 6).every((c) => c.disabled), "nothing affordable grays every size");
   assert.ok(!poor.choices[6].disabled, "leaving them is always possible");
   assert.equal(poor.details[poor.details.length - 1],
     `Not enough to call even one home: ${GOLD_ICON} ${perGold} or ${INFLUENCE_ICON} ${perInfl}.`);
@@ -108,7 +108,7 @@ function testExternalGreysOutWhatTheTreasuryCannotCover() {
   const one = callHomeCost(1, CALL_HOME_SCOPE.EXTERNAL, G);
   const v = callHomeView(ME, CALL_HOME_SCOPE.EXTERNAL, { flows: FLOWS, afford: (c) => (c === G ? one + 1 : 0), civ });
   assert.deepEqual(v.choices.map((c) => !!c.disabled), [false, true, true, true, true, true, false],
-    "gold covers a call for one; every other size is greyed");
+    "gold covers a call for one; every other size is grayed");
   assert.equal(v.choices[0].label, `Call one home for ${GOLD_ICON} ${one}`);
   assert.ok(/^Not enough Gold/.test(v.choices[1].note));
 }

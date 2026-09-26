@@ -24,7 +24,7 @@ globalThis.Configuration = {
 
 const { __test } = await import("/emigration/ui/emigration-composition.js");
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
-CONFIG.integrationEnabled = false; // isolate the reload behaviour from drift
+CONFIG.integrationEnabled = false; // isolate the reload behavior from drift
 
 const city = (x, y, name, owner, pop) => ({ city: { location: { x, y }, name }, owner, population: pop });
 const shareOf = (comp, civ) => { const e = comp.civs.find((c) => c.civ === civ); return e ? e.share : 0; };

@@ -1,20 +1,14 @@
 // emigration-polity.js
 //
-// 1.4.1 POLITY signals: the parts of the patch's happiness/government/celebration rework that the
-// migration model reads. Three live signals, all fully defensive (any unreadable read degrades to a
-// neutral value, never throws):
+// POLITY signals: the happiness/government/celebration reads the migration model uses. Three live
+// signals, all fully defensive (any unreadable read degrades to a neutral value, never throws):
 //
-//   • cityHappinessStage(city)  - the per-settlement 5-stage ordinal (1.4.1 formalized happiness into
-//     named stages with Age-scaled thresholds in GameInfo.HappinessStages). Buckets the city's
-//     netHappinessPerTurn exactly the way the base-game city banner does.
+//   • cityHappinessStage(city)  - the per-settlement 5-stage ordinal, bucketing the city's
+//     netHappinessPerTurn against GameInfo.HappinessStages the way the base-game city banner does.
 //   • readPolity(owner)         - per-CIV government type, celebration (Golden Age) state, and war
-//     weariness. Memoized per pass (resetPolityCache() at the top of collectCitySignals) so the same
-//     owner isn't re-read once per city.
-//   • governmentLean(type)      - a small, bounded flavor lean per known government. Deliberately
-//     small: a government's real weight already reaches the model through the happiness and yields it
-//     produces (which the city signal already reads), so this is a tie-breaker, not a primary driver.
-//
-// None of these existed pre-1.4.1; nothing here removes or renames an existing read.
+//     weariness. Memoized per pass (resetPolityCache()) so the same owner isn't re-read per city.
+//   • governmentLean(type)      - a small, bounded flavor lean per known government: a tie-breaker,
+//     since a government's real weight already reaches the model through happiness and yields.
 
 /**
  * Per-pass memo of readPolity results, keyed by owner id. Cleared by resetPolityCache() at the start
@@ -57,11 +51,9 @@ const STAGE_ORDINAL = {
 };
 
 /**
- * A small, bounded attractiveness lean per known 1.4.1 government. Happiness/celebration-leaning
- * governments tilt slightly positive; militaristic/conquest ones slightly negative. Kept small on
- * purpose - the dominant part of a government's effect already flows through the happiness and yields
- * the city signal reads, so this only breaks ties between otherwise-similar destinations. Unknown
- * (modded / future) governments lean 0. The caller scales by governmentWeight and clamps the result.
+ * A small, bounded attractiveness lean per known government: happiness-leaning governments tilt
+ * slightly positive, militaristic ones slightly negative, unknown ones 0. Kept small since a
+ * government's effect already flows through happiness and yields; the caller scales and clamps it.
  * @type {Record<string, number>}
  */
 const GOVERNMENT_LEAN = {
@@ -180,8 +172,8 @@ export function readPolity(owner) {
 }
 
 /**
- * The government type id for a player (e.g. "GOVERNMENT_DESPOTISM"), or "" when unreadable. Uses the
- * probe-confirmed path Culture.getGovernmentType() → GameInfo.Governments.lookup().GovernmentType.
+ * The government type id for a player (e.g. "GOVERNMENT_DESPOTISM"), or "" when unreadable. Uses
+ * Culture.getGovernmentType() → GameInfo.Governments.lookup().GovernmentType.
  * @param {*} player Player object.
  * @returns {string} Government type id, or "".
  */

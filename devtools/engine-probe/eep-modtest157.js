@@ -90,7 +90,7 @@ async function run() {
   await dismissPopups();
   const { host, origin } = pickScene(local);
   if (!host || origin == null) { emit("no scene"); emit("DONE modtest157 finished"); return; }
-  const quarter = { civ: origin, owner: local, name: cityName(host.city), share: 0.4, where: "by the harbour" };
+  const quarter = { civ: origin, owner: local, name: cityName(host.city), share: 0.4, where: "by the harbor" };
   const first = quarterOptionsFor(civType(origin))[0];
   const price = Q.resolveApplied(first, local, origin).penaltyAmount;
   const gold = safe(() => Players.get(local).Treasury.goldBalance, 0);

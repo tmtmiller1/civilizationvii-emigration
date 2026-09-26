@@ -2,7 +2,7 @@
 //
 // The merged "Network" tab: the Dots view + a toggleable green/red migrant-flow ARROW overlay
 // (emigration-network-flow-arrows.js), which replaced the separate Flows sub-view. Covers the
-// pure segment builder — one arrow per civ→civ flow, and that it honours the Dots view's
+// pure segment builder — one arrow per civ→civ flow, and that it honors the Dots view's
 // origin-isolate / focus-destination / scope filters — plus that the drawer never throws.
 
 import assert from "node:assert/strict";
@@ -10,7 +10,7 @@ import assert from "node:assert/strict";
 const { buildFlowSegments, drawFlowArrows } =
   await import("/emigration/ui/emigration-network-flow-arrows.js");
 
-// Two civ centres far enough apart for an arrow to be drawn (trimmed drops too-close pairs).
+// Two civ centers far enough apart for an arrow to be drawn (trimmed drops too-close pairs).
 const centers = [
   { id: 1, x: 0, y: 0, clusterR: 8, cities: [{ name: "Aa", sx: 0, sy: 0, subR: 4 }, { name: "Ab", sx: 40, sy: 0, subR: 4 }] },
   { id: 2, x: 200, y: 0, clusterR: 8, cities: [] }

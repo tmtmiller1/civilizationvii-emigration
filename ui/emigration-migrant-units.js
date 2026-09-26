@@ -2,8 +2,8 @@
 //
 // The migrant-holding penalty: discourage hoarding unsettled UNIT_MIGRANT units by charging a civ
 // per migrant it holds, scaling with the count (via grantYield, like the assimilation cost in
-// effects.js). Counting another civ's units may be fog-limited; reliable for the local
-// player. Probe-confirmed: foreign unit enumeration works, so it applies to AI civs on their turn.
+// effects.js). Foreign unit enumeration works, so it applies to AI civs on their turn as well as the
+// local player.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { deduct } from "/emigration/ui/emigration-effects.js";

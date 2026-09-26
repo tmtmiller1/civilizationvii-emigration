@@ -1,15 +1,14 @@
 // emigration-pies.js
 //
 // Canvas pie-chart building blocks for the migration dashboard: a pie "card" from explicit slices
-// (`pieCardSlices`) and a colour-key legend (`legendChips`), both consumed by emigration-city-flows.js.
-// Pure canvas pies (GameFace draws 2D canvas fine); styling lives in the dashboard's injected
-// stylesheet (emigration-views.js). Split out to keep that render core under its size cap.
+// (`pieCardSlices`) and a color-key legend (`legendChips`). Styling lives in the dashboard's
+// injected stylesheet (emigration-views.js).
 
 /**
  * Make an element with an optional class + text.
- * @param {string} tag Tag.
+ * @param {string} tag
  * @param {string} [cls] Class.
- * @param {string} [text] Text.
+ * @param {string} [text]
  * @returns {HTMLElement} Element.
  */
 function el(tag, cls, text) {
@@ -40,8 +39,8 @@ function drawSlice(ctx, g, e, a0, total) {
 }
 
 /**
- * Draw a pie onto a canvas (slice per cause, coloured by CAUSE_PALETTE); a faint ring when empty.
- * @param {HTMLCanvasElement} canvas The canvas.
+ * Draw a pie onto a canvas (slice per cause, colored by CAUSE_PALETTE); a faint ring when empty.
+ * @param {HTMLCanvasElement} canvas
  * @param {{value:number, color:string}[]} slices Slices.
  */
 function drawPie(canvas, slices) {
@@ -142,7 +141,7 @@ export function pieCardSlices(title, slices, big) {
 }
 
 /**
- * A colour key from {label, color} items. When an item carries `countText` (and optionally `pct`),
+ * A color key from {label, color} items. When an item carries `countText` (and optionally `pct`),
  * the chip reads "Label  count (pct%)" so each slice's magnitude and share show beside its swatch.
  * @param {{label:string, color:string, countText?:string, pct?:number}[]} items Items.
  * @returns {HTMLElement} The legend.

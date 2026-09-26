@@ -5,17 +5,10 @@
 // sub-cluster, which sits inside its civ circle. The orchestrator (emigration-network-viz.js) owns
 // the canvas, chrome, playback, and interaction; the painter (emigration-network-paint.js) draws.
 //
-// SEMANTICS (so the chart is an honest accounting, not "residents + migrants double-counted"):
-//   • A `pops` entry is NATIVE (home-grown) population only, upstream already nets out arrivals
-//     (gatherPops subtracts grossIn; the sample's nativePopsAt is independent of flows). So
-//     native dots + immigrant dots = the civ's whole population, with no overlap.
-//   • Counts can GROW *and* SHRINK over time: each cohort tracks how many dots are live per frame;
-//     when a count drops (war/disaster/decline) the surplus dots get a `disappearFrame` and the
-//     painter hides them after it. So the view shows population AT each frame, not just the peak.
-//   • Cross-civ arrivals land in the REAL destination city the move recorded (and fly in from the
-//     REAL origin city), so a civ's circle shows who arrived where. Only when a flow carries no
-//     city (older saves) do we fall back to spreading arrivals by population. A nonzero flow
-//     always shows at least one dot.
+// A `pops` entry is NATIVE (home-grown) population only (upstream nets out arrivals), so native dots +
+// immigrant dots = the civ's whole population with no overlap. Cohorts grow AND shrink per frame
+// (surplus dots get a `disappearFrame`), and cross-civ arrivals land in the real destination city when
+// the flow records one, else spread by population; a nonzero flow always shows at least one dot.
 
 import { civColorByIndex, CAUSE_PALETTE, MOVE_PALETTE, lighten } from "/emigration/ui/emigration-network-paint.js";
 import { civAdjective } from "/emigration/ui/emigration-naming.js";
@@ -52,11 +45,11 @@ import { civAdjective } from "/emigration/ui/emigration-naming.js";
  * @property {Record<string,number>} [byCause] People per migration cause.
  */
 /**
- * @typedef {Object} CityMeta A city sub-cluster's layout (attached to a centre's `.cities`).
+ * @typedef {Object} CityMeta A city sub-cluster's layout (attached to a center's `.cities`).
  * @property {string} name City name.
  * @property {boolean} [town] Town flag.
- * @property {number} [sx] X offset from the civ centre.
- * @property {number} [sy] Y offset from the civ centre.
+ * @property {number} [sx] X offset from the civ center.
+ * @property {number} [sy] Y offset from the civ center.
  * @property {number} [subR] Sub-cluster radius.
  * @property {number} [bornFrame] First frame any of its dots appears.
  */
@@ -94,8 +87,8 @@ import { civAdjective } from "/emigration/ui/emigration-naming.js";
  * @property {string} originName @property {string} destName
  * @property {number} appearFrame @property {number|null} [disappearFrame]
  * @property {number} ox @property {number} oy @property {number} ci
- * @property {number} [cox] X offset from its CITY's sub-centre (the painter adds the city's live sx).
- * @property {number} [coy] Y offset from its CITY's sub-centre.
+ * @property {number} [cox] X offset from its CITY's sub-center (the painter adds the city's live sx).
+ * @property {number} [coy] Y offset from its CITY's sub-center.
  * @property {CityMeta} [cm] The city sub-cluster it sits in (so a dragged city carries its dots).
  * @property {{fromX:number, fromY:number, p:number}|null} [anim]
  * @property {string} [evKind] @property {number} [evFrom] @property {number} [evTo]
@@ -170,10 +163,8 @@ export function totalPoints(lastNet, lastPops) {
   return mig + pop;
 }
 
-// Smallest disc a settlement is ever drawn at. A settlement whose native population falls below one
-// `unit` earns 0 dots (clusterRadius 0) and would otherwise vanish from the canvas even though it
-// exists — the "only 4 of my 12 settlements show" bug. Flooring the radius here draws every settlement
-// as a (dotless) disc without faking dots, so the "1 dot = N people" density semantics stay intact.
+// Smallest disc a settlement is ever drawn at: a settlement below one `unit` earns 0 dots and would
+// otherwise vanish from the canvas. Flooring the radius draws it as a dotless disc without faking dots.
 const MIN_CITY_SUB_R = 3;
 
 /**
@@ -189,7 +180,7 @@ function clusterRadius(n) {
  * The chronological dot bucket for one (civ, city), creating it on demand. Dots for a civ are
  * grouped per city so each city becomes its own sub-cluster inside the civ circle.
  * @param {*} b Build context.
- * @param {number} civId Civ id.
+ * @param {number} civId
  * @param {number} cityIdx City index within the civ.
  * @returns {*[]} The bucket.
  */
@@ -285,9 +276,9 @@ function allocate(total, weights) {
 }
 
 /**
- * The civ's display name from its centre.
+ * The civ's display name from its center.
  * @param {*} b Build context.
- * @param {number} civId Civ id.
+ * @param {number} civId
  * @returns {string} Name.
  */
 function civNameOf(b, civId) {
@@ -296,11 +287,11 @@ function civNameOf(b, civId) {
 }
 
 /**
- * The colour set for an immigrant cohort: origin-civ colour, cause colour, immigrant-move colour.
+ * The color set for an immigrant cohort: origin-civ color, cause color, immigrant-move color.
  * @param {*} b Build context.
  * @param {*} e Flow edge.
  * @param {string} cause Cause key.
- * @returns {Record<string,string>} Colours by lens.
+ * @returns {Record<string,string>} Colors by lens.
  */
 function immigrantColors(b, e, cause) {
   return {
@@ -312,7 +303,7 @@ function immigrantColors(b, e, cause) {
 /**
  * The index of a named city within a civ's final city list (capital/0 fallback when unknown).
  * @param {*} b Build context.
- * @param {number} civId Civ id.
+ * @param {number} civId
  * @param {string} name City name.
  * @returns {number} City index.
  */
@@ -438,8 +429,8 @@ function allocNative(total, civs, present) {
 }
 
 /**
- * The dot template for one origin civ's residents in a city: coloured by ORIGIN (so a captured
- * city's prior-owner residents read in that civ's colour), but living in the OWNER's sub-cluster.
+ * The dot template for one origin civ's residents in a city: colored by ORIGIN (so a captured
+ * city's prior-owner residents read in that civ's color), but living in the OWNER's sub-cluster.
  * @param {*} b Build context.
  * @param {{ownerId:number, cityIdx:number, cityName:string}} loc City location.
  * @param {number} originCiv Origin civ id.
@@ -504,10 +495,10 @@ function appendNativeDots(b, ownerId, cityIdx, city, i) {
 /**
  * The shared template for one internal-move dot (colour/scope/names); copied per dot with its
  * frame. Internal movers relocated between this civ's OWN cities, so they live in the destination
- * city's sub-cluster, coloured a LIGHTER tint of the civ's colour (origin lens), distinct from
+ * city's sub-cluster, colored a LIGHTER tint of the civ's color (origin lens), distinct from
  * home-grown residents and foreign immigrants.
  * @param {*} b Build context.
- * @param {number} civId Civ id.
+ * @param {number} civId
  * @param {number} toIdx Destination city index.
  * @param {number|undefined} fromIdx Source city index (for the fly-from animation).
  * @param {*} entry Move {fromCity, toCity, people}.
@@ -529,7 +520,7 @@ function intraDotTemplate(b, civId, toIdx, fromIdx, entry) {
 /**
  * Append the newly-moved internal (intra-civ) dots for one city→city move at frame i.
  * @param {*} b Build context.
- * @param {number} civId Civ id.
+ * @param {number} civId
  * @param {*} entry Move {fromCity, toCity, people}.
  * @param {number} i Frame index (appear frame).
  */
@@ -578,9 +569,9 @@ function appendFrameNatives(b, pops, i) {
 }
 
 /**
- * Phyllotaxis-pack a city's chronological dot list into slots offset from its sub-centre.
+ * Phyllotaxis-pack a city's chronological dot list into slots offset from its sub-center.
  *
- * Each dot keeps its slot BOTH ways: `cox/coy` relative to the city sub-centre, and `cm` the city it
+ * Each dot keeps its slot BOTH ways: `cox/coy` relative to the city sub-center, and `cm` the city it
  * belongs to. The painter adds them live (`c.x + cm.sx + d.cox`), so when a city is dragged its dots
  * travel with it. `ox/oy` stay as the flattened civ-relative offset for anything that wants the
  * settled position without a city lookup.
@@ -610,14 +601,8 @@ const CITY_GAP = 6;
 
 /**
  * The smallest radius along the unit ray `(ux, uy)` at which a disc of radius `r` clears every disc
- * already placed.
- *
- * Closed form, not a search: a disc travelling out along the ray must satisfy
- * `|rad·u − Cp| ≥ r + p.r + CITY_GAP` for each placed disc `p`. Squaring gives a quadratic in `rad`
- * whose forbidden interval is `(t − half, t + half)`, where `t = Cp·u` is p's projection on the ray
- * and `half = √(need² − h²)` with `h²` p's squared perpendicular distance from it. When `h² ≥ need²`
- * the ray never passes close enough to matter. Taking the far root for every constraining disc
- * yields a radius that clears them all.
+ * already placed. Closed form: each placed disc forbids the interval `(t − half, t + half)` along the
+ * ray (t = its projection, half = √(need² − h²)); the far root over every constraining disc clears them all.
  * @param {number} ux Ray x. @param {number} uy Ray y. @param {number} r The disc's radius.
  * @param {{x:number, y:number, r:number}[]} placed Discs already positioned.
  * @returns {number} The clearing radius (0 when nothing blocks the ray).
@@ -663,21 +648,15 @@ function packCityDiscs(subRs) {
   return pos;
 }
 
-const RECENTER_ITERS = 64; // converges to <0.2% of the settled 1-centre (measured), for any real n
+const RECENTER_ITERS = 64; // converges to <0.2% of the settled 1-center (measured), for any real n
 
 /**
- * The centre of the (approximately) smallest circle enclosing the packed discs — the point that
- * minimises the farthest `distance + radius`. Packing anchors the biggest disc at the origin and
- * fans the rest to ONE side, so measuring the civ circle from the origin leaves a large empty half
- * (two equal cities filled only ~20% of the circle). Re-centring on this point removes that
- * asymmetry (~46% for the same case) and never enlarges the circle — the origin is just one
- * candidate centre, so the minimiser is always ≤ it.
- *
- * Solved by the standard shrinking-step 1-centre iteration: from the centroid, step toward the
- * current farthest disc by a step that decays each round. Cheap (a few dozen iterations over a
- * handful of discs, once per civ per render) and deterministic.
+ * The center of the (approximately) smallest circle enclosing the packed discs — the point that
+ * minimises the farthest `distance + radius`. Packing fans the discs to one side of the origin, so
+ * re-centering here removes the empty half and never enlarges the circle. Solved by the shrinking-step
+ * 1-center iteration (step from the centroid toward the farthest disc with a decaying step).
  * @param {{x:number, y:number, r:number}[]} discs The packed discs.
- * @returns {{cx:number, cy:number}} The enclosing-circle centre.
+ * @returns {{cx:number, cy:number}} The enclosing-circle center.
  */
 function enclosingCentre(discs) {
   const c = { x: 0, y: 0 };
@@ -697,7 +676,7 @@ function enclosingCentre(discs) {
 
 /**
  * The disc whose `distance-to-`c` + radius` is largest (the one the enclosing circle must reach).
- * @param {{x:number, y:number, r:number}[]} discs Discs. @param {{x:number, y:number}} c Centre.
+ * @param {{x:number, y:number, r:number}[]} discs Discs. @param {{x:number, y:number}} c Center.
  * @returns {{x:number, y:number, r:number}} The farthest disc.
  */
 function farthestDisc(discs, c) {
@@ -712,20 +691,10 @@ function farthestDisc(discs, c) {
 
 /**
  * Lay out one civ's city sub-clusters (each a small phyllotaxis-packed disc) within the civ circle,
- * and set the civ centre's clusterR to the radius that contains them.
- *
- * Cities are packed biggest-first (packCityDiscs), then the whole arrangement is re-centred on its
- * enclosing-circle centre (enclosingCentre) so the civ circle hugs the discs evenly instead of
- * leaving an empty half. Two properties this layout gives that the old one lacked:
- *
- *  • **Size reflects content.** The old rule spread every city onto a ring of radius
- *    `1.75·√(Σ subR²)` regardless of size, so one dominant city flung its 1-dot hamlets out to
- *    ~1.75× its own radius and the circle grew to contain them (a single hamlet took a lone 400-dot
- *    city from r=54 to r=102). Packing against the actual discs removes that halo.
- *  • **Determinism.** `rad` used to come from the city's INDEX, and `center.cities` arrives in the
- *    engine's (founding) order — so the same civ drew a ~47% bigger circle if its largest city
- *    happened to be founded last. Ordering by size makes every permutation agree.
- * @param {*} center Civ centre (gets clusterR; its `.cities` get sx/sy/subR/bornFrame).
+ * and set the civ center's clusterR to the radius that contains them. Cities are packed biggest-first
+ * (packCityDiscs), then re-centered on the enclosing-circle center (enclosingCentre) so the civ circle
+ * hugs the discs evenly; ordering by size keeps the layout independent of the engine's city order.
+ * @param {*} center Civ center (gets clusterR; its `.cities` get sx/sy/subR/bornFrame).
  * @param {Map<number,*[]>} byCity cityIdx → dot list.
  * @param {*[]} dots Flat output list.
  */
@@ -739,7 +708,7 @@ function layoutCiv(center, byCity, dots) {
   const { cx, cy } = enclosingCentre(pos);
   for (let idx = 0; idx < cities.length; idx++) {
     const cm = cities[idx];
-    cm.sx = pos[idx].x - cx; // re-centre the arrangement on the enclosing-circle centre
+    cm.sx = pos[idx].x - cx; // re-center the arrangement on the enclosing-circle center
     cm.sy = pos[idx].y - cy;
     cm.subR = subRs[idx];
     cm.bornFrame = Infinity;
@@ -755,7 +724,7 @@ function layoutCiv(center, byCity, dots) {
  * The radius a civ circle needs to contain its city discs. Shared by the initial packing and by the
  * city-drag handler, so pulling a settlement out of the cluster grows the civ circle around it (and
  * pushing it back shrinks it again) by the same rule that sized it in the first place.
- * @param {*} center Civ centre (reads `.cities`).
+ * @param {*} center Civ center (reads `.cities`).
  * @returns {number} The cluster radius.
  */
 export function civReach(center) {
@@ -768,10 +737,10 @@ export function civReach(center) {
 
 /**
  * Assign each civ's per-city dot lists to fixed slots (so dots never move as clusters grow) and
- * flatten. Each civ centre keeps `d.ci`; offsets in `d.ox/d.oy` are relative to the civ centre.
+ * flatten. Each civ center keeps `d.ci`; offsets in `d.ox/d.oy` are relative to the civ center.
  * @param {Map<number,Map<number,*[]>>} perDest civId → (cityIdx → dot list).
- * @param {*[]} centers Civ centres.
- * @param {Map<number,number>} byId id → centre index.
+ * @param {*[]} centers Civ centers.
+ * @param {Map<number,number>} byId id → center index.
  * @returns {*[]} The flattened dot list.
  */
 function placeDots(perDest, centers, byId) {
@@ -788,9 +757,9 @@ function placeDots(perDest, centers, byId) {
 
 /**
  * Each civ's final city list (names + town flags), from the last frame's populations; civs with no
- * pop entry fall back to a single city named after the civ. Also attaches `.cities` to each centre.
+ * pop entry fall back to a single city named after the civ. Also attaches `.cities` to each center.
  * @param {*} lastPops Final-frame pops.
- * @param {*[]} centers Civ centres.
+ * @param {*[]} centers Civ centers.
  * @returns {{cityList:Map<number,*[]>, cityIdx:Map<number,Map<string,number>>,
  *   cityWeights:Map<number,number[]>}} City metadata + per-civ city population weights.
  */
@@ -834,9 +803,9 @@ function cityPopWeights(src) {
  * native population plus the cross-civ arrivals, tagged with the frame it first appears (so
  * playback reveals them in time order) and a fixed sub-cluster slot.
  * @param {Frame[]} frames Timeline frames.
- * @param {NetworkNode[]} centers Civ centres.
- * @param {Map<number,number>} byId id → centre index.
- * @param {Map<number,number>} colorMap Colour-index map.
+ * @param {NetworkNode[]} centers Civ centers.
+ * @param {Map<number,number>} byId id → center index.
+ * @param {Map<number,number>} colorMap Color-index map.
  * @param {number} unit People per dot.
  * @returns {Dot[]} The dot list.
  */

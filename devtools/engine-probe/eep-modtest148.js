@@ -166,7 +166,7 @@ function probeO4Names() {
     const col = safe(() => civDisplayColor(pid, "#888888"));
     emit("O4 CALL civAdjective " + pid);
     const adj = safe(() => civAdjective(pid));
-    emit("O4 NAME pid=" + pid + " kind=" + kind(pid) + " colour=" + J(col) + " adjective=" + J(adj));
+    emit("O4 NAME pid=" + pid + " kind=" + kind(pid) + " color=" + J(col) + " adjective=" + J(adj));
   }
 }
 

@@ -13,7 +13,7 @@
 //     so the circle had to reach the farthest satellite while the opposite half sat empty (two equal
 //     cities filled only ~20% of the circle).
 //
-// Now: packed biggest-first with no overlap, then re-centred on the enclosing circle. These assert
+// Now: packed biggest-first with no overlap, then re-centered on the enclosing circle. These assert
 // the properties that must hold, NOT the exact radii (which are free to be tuned).
 
 import assert from "node:assert/strict";
@@ -24,10 +24,10 @@ const { buildChronoDots } = await import("/emigration/ui/emigration-network-dots
 const UNIT = 1;
 
 /**
- * Lay out ONE civ whose cities have the given populations, and return its centre.
+ * Lay out ONE civ whose cities have the given populations, and return its center.
  * Drives the real buildChronoDots so the packing under test is the shipped path.
  * @param {number[]} pops Population per city (dot count at UNIT 1).
- * @returns {*} The civ centre ({clusterR, cities:[{sx,sy,subR}]}).
+ * @returns {*} The civ center ({clusterR, cities:[{sx,sy,subR}]}).
  */
 function layout(pops) {
   const cities = pops.map((pop, i) => ({ name: "C" + i, town: false, pop, pts: pop }));
@@ -93,7 +93,7 @@ function testSizeIsIndependentOfCityOrder() {
 
 function testArrangementIsCentredOnTheCircle() {
   // Packing anchors the biggest disc at the origin then fans the rest to one side; the layout then
-  // re-centres on the enclosing circle so the civ circle hugs the discs EVENLY (no empty half). The
+  // re-centers on the enclosing circle so the civ circle hugs the discs EVENLY (no empty half). The
   // check: the farthest-reaching disc on each axis is balanced — the arrangement isn't shoved to one
   // side of its own circle the way the origin-anchored packing was.
   for (const pops of [[200, 200], [1, 1, 400, 1, 1], [120, 100, 80, 5, 5], [300, 4, 3, 2, 1]]) {
@@ -105,7 +105,7 @@ function testArrangementIsCentredOnTheCircle() {
       down = Math.max(down, ct.sy + ct.subR);
       up = Math.max(up, -(ct.sy - ct.subR));
     }
-    // The circle's radius is `max extent`; a well-centred arrangement reaches comparably far on both
+    // The circle's radius is `max extent`; a well-centered arrangement reaches comparably far on both
     // sides of each axis. The old origin-anchored packing failed this hard (one side ~0).
     const spanX = right + left, spanY = up + down;
     assert.ok(Math.min(left, right) >= 0.30 * spanX,
@@ -117,7 +117,7 @@ function testArrangementIsCentredOnTheCircle() {
 
 function testCircleIsNotMostlyEmpty() {
   // The reported symptom: a huge circle with a small knot of dots in it. That was the origin-anchored
-  // packing leaving an empty half (two equal cities filled only ~20% of the circle). Re-centring must
+  // packing leaving an empty half (two equal cities filled only ~20% of the circle). Re-centering must
   // keep a reasonable share of the circle covered by the actual discs.
   for (const pops of [[200, 200], [2, 2], [100, 100, 100, 100]]) {
     const c = layout(pops);
@@ -150,7 +150,7 @@ function testCircleStillGrowsForACivThatEarnsIt() {
 
 function testSingleCityCivIsUnchanged() {
   const c = layout([400]);
-  assert.ok(Math.abs(c.cities[0].sx) < 1e-6, "a lone city sits dead centre");
+  assert.ok(Math.abs(c.cities[0].sx) < 1e-6, "a lone city sits dead center");
   assert.ok(Math.abs(c.cities[0].sy) < 1e-6);
   assert.ok(Math.abs(c.clusterR - c.cities[0].subR) < 1e-6, "and the circle hugs it exactly");
 }

@@ -1,11 +1,8 @@
 // emigration-violence-signals.js
 //
-// The POLLED, fog-independent combat signals that drive the violence model (in emigration-
-// violence.js): city-center district damage and pillaged tiles, read from the gameplay model.
-// Pure reads, no state, no mutation, so a war the player can watch and a distant AI-vs-AI war in
-// the dark register identically (the base game only gates the on-screen HEALTH BAR by visibility,
-// not the underlying values). The stateful intensity accumulation / decay / siege model consumes
-// these; it lives in emigration-violence.js.
+// The POLLED, fog-independent combat signals that drive the violence model (emigration-violence.js):
+// district damage, besieged flags, pillaged tiles and hostile units, read from the gameplay model.
+// Pure reads, no state, so a distant AI-vs-AI war registers exactly as a visible one does.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { noteDamage } from "/emigration/ui/emigration-damage-age.js";
@@ -62,14 +59,10 @@ function ownerDistrictIds(city) {
 }
 
 /**
- * Every district that belongs to THIS city, the city center PLUS every other urban/rural quarter,
- * as live District objects, read the way the base game's own district-health UI does it
- * (`getDistrictIds()` spans all the player's districts → `Districts.get` → filter by `cityId`).
- * Empty when enumeration is unavailable (callers fall back to the city-center plot).
- *
- * This is what lets damage to / sieges of a city's OUTER districts register as violence: an attacker
- * who "kills districts" on the urban edge can leave the city CENTER pristine and un-besieged, which a
- * center-only poll reads as zero conflict even though the city is plainly under assault.
+ * Every district that belongs to THIS city, the city center PLUS every other urban/rural quarter, as
+ * live District objects (`getDistrictIds()` → `Districts.get` → filter by `cityId`). Empty when
+ * enumeration is unavailable (callers fall back to the city-center plot). This is what lets damage to
+ * a city's OUTER districts register as violence while the center stays pristine.
  * @param {*} city A live city object.
  * @returns {*[]} The city's live District objects (empty only if reads fail / API absent).
  */
@@ -87,7 +80,7 @@ function cityDistrictObjs(city) {
 
 /**
  * The district plot locations to poll for this city, every district when enumerable, else just the
- * city-center plot (so behaviour never regresses below the old center-only read).
+ * city-center plot (so behavior never regresses below the old center-only read).
  * @param {*} city A live city object.
  * @returns {Array<{x:number,y:number}>} District plot locations.
  */
@@ -123,12 +116,9 @@ export function districtDamageFrac(city) {
 }
 
 /**
- * Whether the city is currently BESIEGED at ANY of its districts, the engine besieged flag on any
- * district, OR a district that's been overrun (its `controllingPlayer` differs from its `owner`, the
- * same captured/contested test the base game's district-health UI uses). Victim-side and attacker-
- * agnostic, so it fires for an Independent Power / city-state raid just as for a major-civ siege,
- * even before a district's HEALTH drops, the case the health/pillage polls miss for lighter raids.
- * Scans all of the city's districts (not just the center). False when unreadable.
+ * Whether the city is currently BESIEGED at ANY of its districts: the engine besieged flag on any
+ * district, OR a district that's been overrun (its `controllingPlayer` differs from its `owner`).
+ * Attacker-agnostic, so it fires for a minor-power raid before any district's HEALTH drops. False when unreadable.
  * @param {*} city A live city object.
  * @returns {boolean} True when the city is under siege at any district.
  */
@@ -223,17 +213,10 @@ export function besiegingPlayers(city) {
 }
 
 /**
- * Hostile units standing on or beside a city's districts, and who owns them. This is the DIRECT reading of
- * who is attacking a city: an army on the walls is the attack, where the diplomacy layer only ever offers a
- * proxy for it. That proxy turned out to be unusable on its own -- `Diplomacy.isAtWarWith` reports true for
- * EVERY Independent Power permanently, whether or not one has ever moved a unit at you (watched, mod test 109,
- * 18-19 simultaneous "wars" with nothing besieged), so an at-war scan cannot tell a raid from the weather.
- *
- * This is fog-INDEPENDENT, like district health and unlike anything in the diplomacy layer: watched returning
- * hostile units at 8-12 foreign cities per scan whose plots were never revealed (`getRevealedState` 0), in a
- * war between two AI players (mod test 111). So it reads the whole map, and a distant AI-vs-AI siege registers
- * exactly as a visible one does -- which is what the migration model requires, since it scores every met
- * civilization's cities, not just ours.
+ * Hostile units standing on or beside a city's districts, and who owns them: the DIRECT reading of who
+ * is attacking a city, where `Diplomacy.isAtWarWith` is only a proxy (it reports true for EVERY
+ * Independent Power permanently). Fog-INDEPENDENT, so a distant AI-vs-AI siege registers exactly as a
+ * visible one does.
  * @param {*} city A live city object.
  * @returns {Set<number>} Owner ids of hostile units in contact (empty when none are visible or readable).
  */
@@ -292,7 +275,7 @@ function contactPlots(city) {
   return [...seen.values()];
 }
 
-/** The six hex neighbours, named rather than counted so an enum reorder cannot silently skip a direction. */
+/** The six hex neighbors, named rather than counted so an enum reorder cannot silently skip a direction. */
 const ADJACENT_DIRECTIONS = Object.freeze([
   "DIRECTION_EAST", "DIRECTION_WEST", "DIRECTION_NORTHEAST",
   "DIRECTION_NORTHWEST", "DIRECTION_SOUTHEAST", "DIRECTION_SOUTHWEST"

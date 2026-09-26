@@ -1,21 +1,13 @@
 // emigration-arrivals.js
 //
-// Arrival processing for lagged migrations (Feature 1b), split out of emigration-engine.js. Each
-// turn, land every in-flight migration whose transit completed: re-resolve it against the live
-// ranking by destination key, credit the destination if it still exists (immigration tally +
-// arrival consequences), or charge a death to the source if it was razed/captured en route.
+// Arrival processing for lagged migrations. Each turn, land every in-flight migration whose transit
+// completed: re-resolve it against the live ranking by destination key, credit the destination if it
+// still exists, or charge a death to the source if it was razed/captured en route.
 //
-// The per-city INBOUND cap (emigration-inbound.js) can defer an arrival when its destination already
-// filled its quota this turn (shared with the departure side, so one boomtown can't absorb dozens).
-// Deferrals are FAIR (longest-waiting lands first) and BOUNDED: a refugee that can't find room for
-// MAX_DEFERS turns PERISHES (the cap stays strict, never force-landed past it). A transient inability
-// to accept a point retries first (so a read glitch doesn't kill anyone instantly), but a genuinely
-// gone destination (razed/captured en route) charges a death immediately.
-//
-// Turn-processing is a hostile-runtime queue: due entries are removed from state.transit BEFORE they
-// are processed, so each arrival is handled under a defensive guard (safeApplyArrival) — one bad
-// record defers (or, past its retry window, perishes) instead of dropping the rest of the due queue
-// and corrupting population state into a save-file ghost.
+// The per-city INBOUND cap (emigration-inbound.js) can defer an arrival; deferrals are FAIR
+// (longest-waiting lands first) and BOUNDED (MAX_DEFERS turns, then the refugee perishes; the cap is
+// never force-landed past). Due entries leave state.transit BEFORE processing, so each arrival runs
+// under a defensive guard (safeApplyArrival) and one bad record cannot drop the rest of the queue.
 
 import { arriveRural, arrivalFrom } from "/emigration/ui/emigration-arrival-placement.js";
 import { arriveRecord } from "/emigration/ui/emigration-migration-records.js";
@@ -86,7 +78,7 @@ function deferArrival(e, state, now) {
 
 /**
  * Whether a landing destination has itself turned unsafe (siege / violence / disaster over the flee
- * thresholds), i.e. the refugee is arriving into a fresh crisis (P1.2 measurement).
+ * thresholds), i.e. the refugee is arriving into a fresh crisis.
  * @param {*} destSig The live destination signal.
  * @returns {boolean} True when the destination is in crisis.
  */
@@ -98,10 +90,9 @@ function destInCrisis(destSig) {
 
 /**
  * Resolve one completed transit into an outcome: "land" (with its arrival record), "defer" (the
- * destination is at its inbound cap, or exists but can't accept a point right now), or "die" (the
- * destination is gone (razed/captured en route), or its retry window has expired and it still can't
- * accept). The die outcome carries `dieKind` ("razed" vs "capped") for the balance counters
- * (P0.4/P1.1), and a successful land into a now-unsafe city bumps the arrived-into-crisis counter (P1.2).
+ * destination is at its inbound cap or can't accept a point right now), or "die" (the destination is
+ * gone, or its retry window has expired). The die outcome carries `dieKind` ("razed" vs "capped") for
+ * the balance counters; a land into a now-unsafe city bumps the arrived-into-crisis counter.
  * @param {Transit} e The completed transit entry. @param {Map<string, *>} byKey Live ranking by key.
  * @param {InboundCtx|undefined} ctx The per-turn inbound cap context.
  * @param {boolean} expired Whether the bounded retry window is exhausted (past MAX_DEFERS).
@@ -125,7 +116,7 @@ function resolveArrival(e, byKey, ctx, expired, now) {
     // returns a landed record and applyArrival's noteInbound consumes a slot. (Cap = physical arrivals.)
     queueRefugees(e.destKey, e.srcOwner, now, 1);
   }
-  if (destInCrisis(destSig)) bumpArrivedIntoCrisis(); // landed into a city that turned unsafe (P1.2)
+  if (destInCrisis(destSig)) bumpArrivedIntoCrisis(); // landed into a city that turned unsafe
   const cost = applyArrivalConsequences(destSig.city, e.destOwner, destSig.population, e.infected, e.srcOwner);
   return { action: "land", rec: arriveRecord(e, true, cost) };
 }
@@ -145,7 +136,7 @@ function applyArrival(e, byKey, ctx, state) {
     return null;
   }
   if (r.action === "die") {
-    bumpTransitDeath(r.dieKind === "razed" ? "razed" : "capped"); // P0.4/P1.1 split
+    bumpTransitDeath(r.dieKind === "razed" ? "razed" : "capped");
     return arriveRecord(e, false);
   }
   if (r.rec && r.rec.destOwner != null) noteInbound(e.destKey, ctx);
@@ -153,10 +144,8 @@ function applyArrival(e, byKey, ctx, state) {
 }
 
 /**
- * Salvage a due arrival whose processing THREW, so a single bad record can never drop the rest of the
- * due queue (the entry is already removed from state.transit by the time we loop). An entry that has
- * exhausted its retry window records a death rather than deferring forever (no permanent limbo from a
- * deterministically-throwing record); a younger one gets one more bounded retry.
+ * Salvage a due arrival whose processing THREW, so a single bad record never drops the rest of the due
+ * queue. An entry past its retry window records a death; a younger one gets one more bounded retry.
  * @param {Transit} e The arrival that threw. @param {EmigState} state Loaded state.
  * @returns {Migration|null} A death record for an expired entry, else null (deferred/dropped).
  */
@@ -227,9 +216,8 @@ function buildRanking(ranked) {
 }
 
 /**
- * Hold due arrivals (without a deferral penalty) when the ranking is momentarily empty — a transient
- * read failure must never wrongly kill arrivals — and log it, since a persistently empty ranking is a
- * read-path failure worth seeing rather than a silent freeze.
+ * Hold due arrivals (without a deferral penalty) when the ranking is momentarily empty, so a transient
+ * read failure never wrongly kills arrivals, and log it.
  * @param {EmigState} state Loaded state. @param {number} now Current monotonic turn.
  * @returns {Migration[]} Always empty (nothing landed this turn).
  */
@@ -259,12 +247,10 @@ function landDueArrivals(due, byKey, ctx, state, out) {
 }
 
 /**
- * Land every in-flight migration whose transit completed this turn (Feature 1b). Due arrivals are
- * processed LONGEST-WAITING FIRST (so a saturated destination never starves old arrivals behind fresh
- * ones), each is re-resolved against the live ranking by its destination key, and an arrival whose
- * destination is at its inbound cap is deferred a turn (bounded by MAX_DEFERS). Deferred wholesale when
- * the ranking is momentarily empty, so a transient read failure never wrongly kills arrivals. Each
- * arrival runs under a defensive guard so one bad record can't drop the rest of the due queue.
+ * Land every in-flight migration whose transit completed this turn. Due arrivals are processed
+ * LONGEST-WAITING FIRST, each re-resolved against the live ranking by its destination key; one at
+ * its inbound cap is deferred a turn (bounded by MAX_DEFERS). Held wholesale when the ranking is
+ * momentarily empty, and each arrival runs under a defensive guard.
  * @param {EmigState} state Loaded state (transit queue + monoTurn).
  * @param {*[]} ranked Ranked signals (the live cities this turn).
  * @param {InboundCtx} [inboundCtx] The per-turn inbound cap context (shared with the departure side).

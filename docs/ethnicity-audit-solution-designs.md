@@ -6,14 +6,14 @@ Date: 2026-09-18. Scope: the ethnic-composition ledger (`ui/emigration-compositi
 
 Each item states what was actually observed, the design, whether it is possible, the cheapest test that could prove the
 design wrong, and what counts as done. Per the repo rules, an item is done only when the fix has been watched changing
-the behaviour in game.
+the behavior in game.
 
 Build status (2026-09-18): items 1, 2, 3, O1, O2, O3 and O4 are done. Each Node disproof test was watched failing
 before its change and passing after it, and each in-game criterion was watched in mod tests 148 to 151
 (`devtools/engine-probe/eep-modtest148.js` to `151.js`, logs `probe148-*`, `combined149-*`, `real150-*`,
 `combined151-*`). O4 is done in part: step 3 took the fallback the plan names. O5 stays parked.
 
-Out of scope by decision: newborns counting as the owner's ethnicity (audit item 4) is correct behaviour, read as
+Out of scope by decision: newborns counting as the owner's ethnicity (audit item 4) is correct behavior, read as
 assimilation.
 
 | # | Issue | Evidence | Feasible | Size | Status |
@@ -32,7 +32,7 @@ assimilation.
 ## 1. The lens inverts a majority enclave
 
 **Observed.** Rostov on Don (Norman-held, 60% Bulgarian, Bulgar Enclave at 78,52) paints the enclave tile in the
-Norman colour, "Norman 92%, Bulgarian 8%", while the rest of the city is Bulgarian. Reproduced with a synthetic 4x4
+Norman color, "Norman 92%, Bulgarian 8%", while the rest of the city is Bulgarian. Reproduced with a synthetic 4x4
 city whose enclave people are 80% of the city: depending on where the enclave sits, its tile holds anywhere from 34% to
 95% of the enclave people, and at one position it is the least-enclave tile in the city (34% against 65% everywhere
 else).
@@ -55,11 +55,11 @@ else).
    `MINORITY_CAP`. The plain cap must stay at least equal to the water-filled total, so the ceiling becomes
    `min(max(MINORITY_CAP, totalWaterFilled + ε), 1)`. The owner then keeps only the sliver its share allows.
 
-The border colour (the dominant origin) and the hover numbers need no change. They already read the same tile data.
+The border color (the dominant origin) and the hover numbers need no change. They already read the same tile data.
 
 **Open design question (parked with enclave creation, see O5).** Should an enclave form at all for an origin that
 is already the city's majority? Rostov's Bulgarians are not a quarter of a Norman city; they are the city, conquered. Option B is to add an upper bar
-to formation (the origin must be under 50%), so a conquered majority shows as the whole city's colour instead of an
+to formation (the origin must be under 50%), so a conquered majority shows as the whole city's color instead of an
 enclave. The recommendation is the lens fix above either way, because an existing save (EmigShots072) already holds
 such an enclave.
 
@@ -76,7 +76,7 @@ the composition's dominant origin unless that origin is itself pinned, and only 
 origin. The narrower rule keeps every existing case identical. The enclave cap is `max(MINORITY_CAP, plain)`, so a
 lifted plain ceiling never overtakes the enclave tile.
 
-**Watched (2026-09-18).** Mod test 148, on the old code, showed the enclave tile in the Norman colour inside a Bulgarian
+**Watched (2026-09-18).** Mod test 148, on the old code, showed the enclave tile in the Norman color inside a Bulgarian
 Rostov. Mod tests 149 and 151, on the fix, at turn 72 and again after End Turn: the enclave tile reads Bulgarian 92%,
 the highest Bulgarian share of Rostov's 18 tiles, and the hover panel says "Bulgarian 92%, Norman 8%"; the tile is
 painted Bulgarian (`shots/combined149-i1-rostov.png`). Status: done. The Steam lens retake is unblocked.
@@ -107,7 +107,7 @@ arrival several turns later from the transit entry, so the two sides never see e
    several.
 4. Precedence: `originCiv` (returnees, a specific people going home) wins over `originMix`, which wins over the
    current `srcOwner` attribution. Old saves' in-flight transit entries have no `originMix` and keep today's
-   behaviour, so no migration is needed.
+   behavior, so no migration is needed.
 
 Fractional people are fine: the ledger is already floating point and reconciles to the real population every pass. A
 deterministic single-origin draw (largest remainder) is the alternative if whole people matter. The recommendation is
@@ -178,8 +178,8 @@ diversity window's "All settlements" list must stop showing a razed city on the 
 
 **Built (2026-09-18).** `tests/composition-gone.mjs` failed before the change (Rouen still listed) and passes after it.
 What differed from the design: the razed check uses `MapCities.getCity(x, y)` then `Cities.get(id)`, and requires the
-found city to be centred on the plot, because `getCity` returns the plot's owning city and a neighbour's territory can
-cover a razed centre. No separate `tracked` flag was needed: the ledger stamps `passTurn`, and the live readers skip
+found city to be centered on the plot, because `getCity` returns the plot's owning city and a neighbor's territory can
+cover a razed center. No separate `tracked` flag was needed: the ledger stamps `passTurn`, and the live readers skip
 entries whose `seenTurn` differs. The enclave records' two per-key lookups in `emigration-quarter.js` moved to a new
 `cityCompositionByKey`, which still sees an entry held by a city-state, so the quarter logic is unchanged.
 
@@ -187,7 +187,7 @@ entries whose `seenTurn` differs. The enclave records' two per-key lookups in `e
 turn 60) and Butoolo (last seen turn 97, now held by an Independent Power), and both were in the diversity list. After
 one pass Rouen's entry was gone, and Butoolo's entry was kept but absent from `allCityCompositions` and the diversity
 list (44 listed → 42). Mod tests 149 and 151 injected entries on a plot inside Rostov's territory, on an unowned plot
-and on a city-state's centre: the first two were deleted after one pass, the third kept and hidden. Status: done.
+and on a city-state's center: the first two were deleted after one pass, the third kept and hidden. Status: done.
 
 ---
 
@@ -239,7 +239,7 @@ AugustusExp saves hold one), and because the lens painted before any pass had ru
 **Design.** Rewrite the comment to say that: a save made before the ledger existed, or a lens painted before the first
 pass, has no stored composition, so the lens treats the settlement as 100% owner. The fallback is correct and stays.
 
-**Done when.** The comment is corrected. No behaviour changes, so there is nothing to watch.
+**Done when.** The comment is corrected. No behavior changes, so there is nothing to watch.
 
 **Done (2026-09-18).** Comment rewritten.
 
@@ -282,7 +282,7 @@ the ledger first meets already conquered: a mid-game install, or a city that was
 2. **Keep the entry through city-state ownership.** The `tracked: false` entries from item 3 keep a major civ's
    settlement's mix while a city-state or independent holds it.
 3. **Native city-state people.** A city-state's own population has a minor player as its origin. The lens and panel
-   resolve an origin's colour and name through `civDisplayColor` and `civAdjective`, which have not been checked on
+   resolve an origin's color and name through `civDisplayColor` and `civAdjective`, which have not been checked on
    minor or independent player ids.
 
 **Feasibility.** Steps 1 and 2 are possible. Step 3 is **not confirmed**: it needs a probe of `civDisplayColor` /
@@ -417,6 +417,6 @@ All five steps below are done (2026-09-18); the order is kept as the record of h
 3. Item 2 and O3 together: both change the record and transit shapes, so one pass through the migration records
    covers both.
 4. O1 (lens repaint): after its one probe.
-5. O4: after its probe on city-state colours and names.
+5. O4: after its probe on city-state colors and names.
 
 Parked: O5 (enclave frequency), including its measurement run and the formation-bar question from item 1.

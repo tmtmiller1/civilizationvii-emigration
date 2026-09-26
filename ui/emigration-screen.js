@@ -1,13 +1,9 @@
 // emigration-screen.js
 //
-// The standalone Emigration screen: a real base-UI panel (fxs-frame + header + close button,
-// pushed through the ContextManager) that mounts the migration dashboard render core
-// (emigration-views.js), the same content the Demographics "Migration" page shows. This
-// replaces the old console-only HUD overlay so any player can open the dashboard from the
-// subsystem-dock button (emigration-dock-decorator.js) without the developer console.
-//
-// Follows the Demographics screen's pattern: a Panel subclass registered via Controls.define
-// with its template + stylesheet, opened with ContextManager.push.
+// The standalone Emigration screen: a real base-UI panel (fxs-frame + header + close button, pushed
+// through the ContextManager) that mounts the migration dashboard render core (emigration-views.js),
+// opened from the subsystem-dock button (emigration-dock-decorator.js). Follows the Demographics
+// screen's pattern: a Panel subclass registered via Controls.define, opened with ContextManager.push.
 
 import Panel from "/core/ui/panel-support.js";
 import { setAdvancedSectionOpen } from "/emigration/ui/emigration-settings.js";
@@ -30,12 +26,9 @@ function derr(...a) {
   console.error("[Emigration.screen]", ...a);
 }
 
-// Shared 10-step type scale (rem). The dashboard's CSS strings size text with
-// `var(--dg-fs-<n>)`; this bridge publishes each as a fully-computed rem value
-// scaled by the in-game font-size setting (Coherent applies that setting by
-// regenerating its own text-* classes, which don't reach our fixed-rem content).
-// MUST match the Demographics mod's ladder so emig content rendered inside the
-// Demographics screen (Migration hub) resolves the same vars.
+// Shared 10-step type scale (rem), published as `--dg-fs-<n>` values scaled by the in-game font-size
+// setting (which Coherent otherwise applies only to its own text-* classes). MUST match the
+// Demographics mod's ladder so emig content inside the Demographics screen resolves the same vars.
 const FONT_SIZE_LADDER = [0.65, 0.72, 0.85, 0.95, 1.05, 1.2, 1.4, 1.6, 1.85, 2.4];
 
 /**
@@ -160,12 +153,10 @@ class ScreenEmigration extends Panel {
     } catch (e) {
       derr("font-scale subscribe failed:", e);
     }
-    // Resolution response is pure CSS: emigration-density.js's DENSITY_CSS (injected with the
-    // dashboard sheet) scales fixed content fluidly with clamp() and steps the chrome at
-    // @media (max-height) breakpoints, no measurement/re-render to wire. The network diagram
-    // re-fits on its own resize listener (emigration-network-fit.js).
-    // Hold background popups (research/civic/event …) in the queue while the window is open so they
-    // don't surface over the screen and shove its layout around; they re-surface on detach.
+    // Resolution response is pure CSS (emigration-density.js's DENSITY_CSS, injected with the dashboard
+    // sheet); the network diagram re-fits on its own resize listener (emigration-network-fit.js).
+    // Hold background popups in the queue while the window is open so they don't surface over the
+    // screen and shove its layout around; they re-surface on detach.
     suspendPopups(this);
   }
 
@@ -312,8 +303,8 @@ export function closeEmigrationScreen() {
 }
 
 /**
- * Expose the screen on the globalThis.emigration console API (kept for parity with the old
- * window commands): `emigration.window()` opens it, `emigration.closeWindow()` closes it.
+ * Expose the screen on the globalThis.emigration console API: `emigration.window()` opens it,
+ * `emigration.closeWindow()` closes it.
  */
 export function installEmigrationConsole() {
   try {

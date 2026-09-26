@@ -492,7 +492,7 @@ Add JSDoc types to the `apm`/`method` params at line ~590.
 - `network-flow.js:684` — `mountFlowChrome(wrap, canvas, timeline, rebuildAll)` JSDoc omits the 4th
   param. Add `@param {()=>void} [rebuildAll] ...`.
 - `network-viz.js:713` — `makeLensTabs`'s JSDoc (line 381) types `rebuildAll` as required `()=>void`,
-  but `buildViz` forwards an optional `(()=>void)|undefined`. Make it optional: `@param {()=>void}
+  but `buildViz` forward an optional `(()=>void)|undefined`. Make it optional: `@param {()=>void}
   [rebuildAll]`. (The call site already guards with `typeof rebuildAll === "function"`.)
 Verify: `cd emigration && npx tsc --noEmit` → both errors clear.
 

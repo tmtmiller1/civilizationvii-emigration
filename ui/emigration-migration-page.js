@@ -1,15 +1,10 @@
 // emigration-migration-page.js
 //
-// Phase 4 (the in-game-legibility plan, L3): contribute a dedicated "Migration" PAGE to the
-// Demographics screen when that mod supports it. The page mounts the SAME shared render core
-// (emigration-views.js) as the standalone window (L4), so there's one source of dashboard content.
-//
-// Cross-mod handshake (mirrors emigration-demographics.js): Demographics exposes
-// globalThis.DemographicsMetricsAPI; the new hook is `registerPanel(spec)`, where spec.render is an
-// Emigration-owned callback the screen invokes with a container element. We register now if the
-// hook is up, else queue on the shared `pending` array for Demographics to drain when it loads.
-// If the installed Demographics predates `registerPanel`, registration is a silent no-op, the
-// standalone window still covers the same content, so nothing is lost.
+// Contribute a dedicated "Migration" PAGE to the Demographics screen when that mod supports it. The
+// page mounts the SAME shared render core (emigration-views.js) as the standalone window. Cross-mod
+// handshake (mirrors emigration-demographics.js): `registerPanel(spec)` on globalThis.DemographicsMetricsAPI,
+// registered now if the hook is up, else queued on the shared `pending` array; a silent no-op on a
+// Demographics that lacks `registerPanel`.
 
 import { dashboardModel, renderDashboardSubtab } from "/emigration/ui/emigration-views.js";
 import { gatherDashboard } from "/emigration/ui/emigration-window.js";
@@ -17,21 +12,15 @@ import { setNumberMode, NumberMode, getMinimizeAnalytics } from "/emigration/ui/
 import { loc } from "/emigration/ui/emigration-loc.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
-// The Migration page's sub-tabs, one per dashboard section, so the embedded page shows the SAME
-// content as the standalone window but presented as NATIVE Demographics sub-tabs (the same metric
-// sub-tab row the Crises / Conflicts pages use), instead of a single "Overview" tab wrapping the
-// emigration tab bar. `id` is the section kind (handed back to render); `label` is the short sub-tab
-// label; `title` is the descriptive chart title. Mirrors emigration-views.js dashboardModel() order
-// + TAB_LABELS.
-// `labelKey`/`titleKey` are the LOC keys (composed at registration by locTab); `label`/`title` are the
-// English fallbacks. Labels/titles reuse the standalone dashboard's already-translated keys
-// (emigration-views.js) where the text is identical, so translators touch each string once; the few
-// migration-page-only strings carry their own LOC_EMIG_PAGE_* keys.
+// The Migration page's sub-tabs, one per dashboard section, presented as NATIVE Demographics sub-tabs.
+// `id` is the section kind (handed back to render); `labelKey`/`titleKey` are the LOC keys (composed
+// at registration by locTab) and `label`/`title` the English fallbacks. Mirrors emigration-views.js
+// dashboardModel() order + TAB_LABELS and reuses its keys where the text is identical.
 const SUBTABS = [
   { id: "flow", labelKey: "LOC_EMIG_VIEW_TAB_NETWORK", label: "Network", titleKey: "LOC_EMIG_PAGE_FLOW_TITLE", title: "Migration network & flows" },
   // Kept declared so its panel sub-tab synthetic registers (the host needs it for metricExists), but
-  // it no longer appears as a standalone sub-tab: emigration-demographics.js's "Data" group claims
-  // this id as the "Net Migration (Table)" pill, and the host's group-merge drops it from the tab row.
+  // not shown as a standalone sub-tab: emigration-demographics.js's "Data" group claims this id as
+  // the "Net Migration (Table)" pill, and the host's group-merge drops it from the tab row.
   { id: "ledger", labelKey: "LOC_EMIG_VIEW_TAB_NET_TABLE", label: "Net Migration (Table)", titleKey: "LOC_EMIG_PAGE_LEDGER_TITLE", title: "Net migration by civilization" },
   { id: "pies", labelKey: "LOC_EMIG_VIEW_TAB_CAUSES", label: "Causes", titleKey: "LOC_EMIG_VIEW_SEC_WHY", title: "Why people move" },
   { id: "cityflows", labelKey: "LOC_EMIG_VIEW_SEC_SETTLEMENTS", label: "Settlements", titleKey: "LOC_EMIG_VIEW_SEC_SETTLEMENTS", title: "Settlements" },
@@ -68,8 +57,7 @@ const HIDDEN_HUB_IDS = new Set(["emig_network", "emig_causes"]);
 /**
  * Whether a tab must be dropped for a reason other than "simplify dashboard": the Diversity tab is
  * flag-gated (CONFIG.diversityRanking), and dashboardModel omits its section entirely when the flag
- * is off. Registering the tab anyway would be worse than useless — renderDashboardSubtab falls back
- * to sections[0] for an unknown kind, so a "Diversity" tab would render the Network.
+ * is off (renderDashboardSubtab would otherwise fall back to sections[0] and render the Network).
  * @param {string} kind The section kind the tab renders.
  * @returns {boolean} True to drop it.
  */
@@ -99,19 +87,10 @@ function isValidContainer(container) {
     && typeof container.innerHTML === "string";
 }
 
-// Host-fill rules for the EMBEDDED page only (the standalone window has its own host and is left
-// alone). Lives here rather than in the shared sheet because it is purely about how the dashboard
-// meets THIS host — which is exactly what this module owns.
-//
-// Demographics' render-page host now stretches to its view-host column (screen-demographics-base.css)
-// instead of sizing to content; these make our boxes fill it in turn. That matters because the
-// network diagram sizes itself by MEASURING `.emig-tabbody`: while that box was content-sized, the
-// measurement was circular — it reported the space the diagram already occupied, never the space
-// left over — so the diagram sat at its CSS ceiling with a large empty band beneath it. (Probe,
-// 2026-07-17 @2880x1800: budget 915 vs a stage of 900; ~297px below it unused.)
-//
-// `max-height` has to go with the flex: 74vh (1332px at that height) would otherwise re-cap the box
-// below the ~1399px actually available.
+// Host-fill rules for the EMBEDDED page only (the standalone window has its own host). Demographics'
+// render-page host stretches to its view-host column; these make our boxes fill it in turn, because the
+// network diagram sizes itself by MEASURING `.emig-tabbody` and a content-sized box makes that
+// measurement circular. `max-height` is unset with the flex so a vh cap cannot re-cap the box.
 const HOST_FILL_CSS =
   ".demographics-history-render-page > .emig-dash{height:100%;}" +
   ".demographics-history-render-page .emig-tabbody{flex:1 1 auto;min-height:0;max-height:none;}";
@@ -133,8 +112,7 @@ function injectHostFillStyle() {
 /**
  * Render one migration dashboard section into a Demographics-provided container. When the host renders
  * this panel as a member of the "Data" metric-group, `ctx.groupView` carries the group's Scaled / Civ
- * toggle, so the Net Migration (Table) follows those pills (mapping the view to the units NumberMode)
- * and its own redundant units chip is suppressed. On the standalone sub-tabs (no group), the chip stays.
+ * toggle, so the Net Migration (Table) follows those pills and its own units chip is suppressed.
  * @param {*} container The page's content element.
  * @param {string} [kind] The section kind (sub-tab id); defaults to the first sub-tab.
  * @param {*} [ctx] The Demographics render context (may carry `groupView`).
@@ -157,9 +135,8 @@ function renderInto(container, kind, ctx) {
 
 /**
  * The panel spec handed to Demographics: a permanent "Migration" page whose sub-tabs Emigration
- * renders per section. This is the single home for all emigration content in Demographics - the
- * dashboard views (network / flows / ledger / causes / settlements / policies / guide) plus the
- * per-civ migration line graphs registered onto this same page by emigration-demographics.js.
+ * renders per section, the single home for all emigration content in Demographics (the dashboard
+ * views plus the line graphs emigration-demographics.js registers onto this same page).
  */
 const PANEL_SPEC = {
   id: PANEL_ID,
@@ -174,15 +151,11 @@ const PANEL_SPEC = {
     renderInto(container, subId, ctx)
 };
 
-// ── Hub mode (Phase 3) ───────────────────────────────────────────────────────
-// A hub-capable Demographics exposes registerHubPages + HUB_IDS. We then contribute FLAT pages into
-// the host's "Migration" hub (after its Population anchor) instead of a sibling top-level tab:
-//   • Net Migration, an empty metrics page the host fills with the relocated `emig_graphs` group
-//     (registered in emigration-demographics.js with pageId === NET_MIGRATION_PAGE_ID). Its line charts
-//     stay HOST-rendered via their metric accessors; this page just hosts the member/units toggles.
-//   • the rest, render pages reusing the dashboard section renderer (renderInto).
-// The panel is still registered (NON top-level) so the "Net Migration (Table)" group member can route
-// to its ledger sub-tab; with no `topLevel` it shows nowhere as a tab.
+// ── Hub mode ─────────────────────────────────────────────────────────────────
+// A hub-capable Demographics exposes registerHubPages + HUB_IDS; we then contribute FLAT pages into the
+// host's "Migration" hub instead of a sibling top-level tab: Net Migration (an empty metrics page the
+// host fills with the `emig_graphs` group) and render pages reusing renderInto. The panel is still
+// registered (NON top-level) so the "Net Migration (Table)" group member can route to its ledger sub-tab.
 const MIGRATION_ANCHOR = "population"; // host Migration-hub anchor page (Population)
 const NET_MIGRATION_PAGE_ID = "emig_net_migration"; // must match emigration-demographics.js group pageId
 
@@ -198,7 +171,7 @@ const HUB_PAGES = [
 ];
 
 /**
- * Whether the host supports hub-targeted contribution (Phase 3).
+ * Whether the host supports hub-targeted contribution.
  * @param {*} api The DemographicsMetricsAPI.
  * @returns {boolean} True when hub mode is available.
  */

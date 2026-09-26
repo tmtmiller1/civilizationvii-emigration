@@ -1,19 +1,16 @@
 // emigration-city-readout.js
 //
-// Phase 2 (the in-game-legibility plan): the per-city "why is THIS settlement gaining/losing
-// population?" readout. A small HUD-anchored panel (the same fixed-position DOM-injection
-// technique as the feedback toast, so it ships without Demographics and without a native
-// city-banner hook), populated from the Phase-0 `citySnapshot` recompute-on-read data core.
+// The per-city "why is THIS settlement gaining/losing population?" readout: a small HUD-anchored panel
+// (the same fixed-position DOM injection as the feedback toast), populated from the `citySnapshot`
+// recompute-on-read data core.
 //
-// Two layers, mirroring the rest of the legibility work:
+// Two layers:
 //   • readoutModel(snapshot), PURE: turns a CitySnapshot into a title + display lines + an
 //     optional warning. DOM-free, unit-tested.
 //   • the DOM host, show/hide a styled panel, thin and untested like toast().
 //
-// Trigger: the guaranteed path is the console command (emigration.city(id) / .hideCity()).
-// A best-effort `CitySelectionChanged` listener auto-shows it on selection; the exact UI-VM
-// selection event is a probe-verification item (docs/in-game-legibility-plan.md, Phase 2), so the
-// listener is defensive and the console command stands in until it's confirmed in-engine.
+// Trigger: the console command (emigration.city(id) / .hideCity()), plus a best-effort
+// `CitySelectionChanged` listener that auto-shows it on selection.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { citySnapshot } from "/emigration/ui/emigration-city-readout-data.js";
@@ -44,7 +41,7 @@ function signedPeople(n) {
  * @returns {string} The suffix (may be "").
  */
 function statusSuffix(s) {
-  // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces (mod test 88),
+  // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces,
   // so a fragment that carries its own leading space arrives without one and jams against the text before it.
   if (s.onCooldown) return " " + loc("LOC_EMIG_RO_STATUS_RESTING", "(resting {1_Cooldown})", s.cooldown).trim();
   if (s.pressureToBar > 0) {
@@ -60,7 +57,7 @@ function statusSuffix(s) {
  */
 function warnText(s) {
   if (s.refugeePool > 0) return loc("LOC_EMIG_RO_WARN_HOLDING", "Refugees resettling in this settlement");
-  const why = reasonsPhrase(s.riskReasons); // crisis-type "why" for the at-risk line (P0.2)
+  const why = reasonsPhrase(s.riskReasons); // crisis-type "why" for the at-risk line
   const suffix = why ? " (" + why + ")" : "";
   if (s.attritionRisk) return loc("LOC_EMIG_RO_WARN_TRAPPED", "At risk: trapped with nowhere to flee{1_Why}", suffix);
   if (s.atRisk) return loc("LOC_EMIG_RO_WARN_DISTRESS", "Under distress - people are looking to leave{1_Why}", suffix);
@@ -170,7 +167,7 @@ function refugeeBurdenLine(s) {
 }
 
 /**
- * The "Why there:" explanation line for the current pull target (P0.1), or empty when there are no
+ * The "Why there:" explanation line for the current pull target, or empty when there are no
  * reason tags.
  * @param {string[]|undefined} destReasons The pull target's reason-tag keys.
  * @returns {string} Line text or empty.
@@ -229,7 +226,7 @@ export function readoutModel(s) {
 
 /**
  * The recent net-migration series to draw, or null when the sparkline is off or the city has no
- * history yet (Feature E). Kept out of readoutModel to hold its branch complexity down.
+ * history yet. Kept out of readoutModel to hold its branch complexity down.
  * @param {*} s The city snapshot.
  * @returns {number[]|null} A copy of the series, or null.
  */
@@ -258,14 +255,14 @@ const PANEL_CSS =
   ".emig-readout .emig-rt-spark{display:flex;align-items:flex-end;gap:0.06rem;height:1.1rem;margin-top:0.1rem;}" +
   ".emig-readout .emig-rt-bar{width:0.16rem;min-height:0.05rem;border-radius:0.02rem;}";
 
-// Sparkline bar colours: green = a net-gaining pass, red = net-losing, faint = no net change.
+// Sparkline bar colors: green = a net-gaining pass, red = net-losing, faint = no net change.
 const SPARK_UP = "#7fd08a";
 const SPARK_DOWN = "#e0786b";
 const SPARK_ZERO = "rgba(229,210,172,0.35)";
 
 /**
  * Build a tiny bottom-aligned bar strip from a net-migration series: one bar per pass, height by
- * magnitude (relative to the largest swing) and colour by direction. GameFace-safe (plain divs).
+ * magnitude (relative to the largest swing) and color by direction. GameFace-safe (plain divs).
  * @param {number[]} values Recent net pop-point changes, oldest first.
  * @returns {*} A `<div>` bar strip element.
  */
@@ -350,7 +347,7 @@ function appendTitle(parent, title, badge, badgeTone) {
 
 /**
  * Append the panel's own content: title, lines, warning, sparkline. Split out of renderPanel so both
- * stay within the complexity cap now that the panel also hosts the Feature L explainer.
+ * stay within the complexity cap, since the panel also hosts the explainer.
  * @param {*} el The panel element.
  * @param {{title:string, titleBadge?:string, titleBadgeTone?:string,
  *   lines:string[], warn:(string|null), spark:(number[]|null)}} model The view-model.
@@ -369,7 +366,7 @@ function appendBody(el, model) {
  * Render the model into the (created-on-demand) panel element.
  * @param {{title:string, titleBadge?:string, titleBadgeTone?:string,
  *   lines:string[], warn:(string|null), spark:(number[]|null)}} model The view-model.
- * @param {string} [cityKey] The rendered settlement's stable key, for the Feature L explainer (the
+ * @param {string} [cityKey] The rendered settlement's stable key, for the explainer (the
  *   readout's own model can't carry its rows: they are decomposed from the live signal, not the
  *   snapshot).
  */
@@ -449,7 +446,7 @@ function hideCityReadout() {
   }
 }
 
-/** Candidate UI-VM city-selection events (probe-verification item; subscribed defensively). */
+/** Candidate UI-VM city-selection events (subscribed defensively). */
 const SELECTION_EVENTS = ["CitySelectionChanged", "CitySelected"];
 
 /**

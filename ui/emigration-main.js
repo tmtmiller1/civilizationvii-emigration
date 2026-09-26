@@ -1,11 +1,8 @@
 // emigration-main.js
 //
-// Bootstrap: run the emigration pass once per local-player turn, report each
-// migration with a historically-scaled people count (aligned with the
-// Demographics mod), and expose dev controls (run-now + prosperity ranking).
-//
-// Output reaches UI.log via the GameFace CSS-parse channel (mod console.log does
-// not): grep EMIG in
+// Bootstrap: run the emigration pass once per local-player turn, report each migration with a
+// historically-scaled people count (aligned with the Demographics mod), and expose dev controls.
+// Output reaches UI.log via the GameFace CSS-parse channel (mod console.log does not): grep EMIG in
 //   ~/Library/Application Support/Civilization VII/Logs/UI.log
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
@@ -67,7 +64,7 @@ function logRefugeeBurden(rb, who, local) {
 }
 
 /**
- * A monotonic millisecond clock for debug timing (Perf plan P2 #6); 0 if unavailable.
+ * A monotonic millisecond clock for debug timing; 0 if unavailable.
  * @returns {number} Milliseconds.
  */
 function nowMs() {
@@ -127,21 +124,19 @@ function accountAndReport(migrations, signals) {
   // plague crisis) sends a wave toward the local player. Throttled + Options-gated inside; never throws.
   const dilemmaFired = maybeDilemma(conquests, migrations, signals);
   // Cultural Quarters: an established foreign diaspora becomes a persistent, player-shaped district.
-  // Ranked BELOW the refugee dilemma (stands down if one fired this pass) so two modals never race;
-  // then the war-strain tick marks quarters contested while the host is at war with their homeland.
-  // Both are flag-gated + throttled inside and never throw into the pass.
+  // Ranked BELOW the refugee dilemma so two modals never race; then the war-strain tick marks quarters
+  // contested while the host is at war with their homeland. Both never throw into the pass.
   maybeQuarter(signals, dilemmaFired);
   tickContestedQuarters(signals);
-  // Balance telemetry (P2.7): throttled net-flow / war-displacement outlier alerts (debug-gated).
+  // Balance telemetry: throttled net-flow / war-displacement outlier alerts (debug-gated).
   reportBalanceSignals(ownerIdsOf(signals), gameTurnNow());
   return conquests || [];
 }
 
 /**
  * Build the accounting record for a captured city: the population the conqueror absorbed moves from
- * the prior owner's civ to the new owner's (a cross-civ "conquest" migration). Tally-only, the base
- * game already transferred the city, so this never mutates population or composition (the composition
- * tracker handles the origin buckets via the owner flip).
+ * the prior owner's civ to the new owner's (a cross-civ "conquest" migration). Tally-only; the base
+ * game already transferred the city, so this never mutates population or composition.
  * @param {{prevOwner:number, newOwner:number, name:string, points:number}} c A capture event.
  * @returns {*} A conquest migration record.
  */
@@ -155,11 +150,9 @@ function conquestRecord(c) {
 }
 
 /**
- * Fold this pass's return migrations into `migrations`. Return migration MOVES real population (a
- * recovered, peaceful homeland draws its diaspora back), so it's added before accounting so the flow
- * tally + composition follow the returnees home. planReturns updates the shared `signals` in place for
- * any city it moves population out of / into, so the single per-pass collection stays accurate for the
- * accounting that follows. Self-throttled and gated by CONFIG.returnEnabled.
+ * Fold this pass's return migrations into `migrations`. Return migration MOVES real population, so it
+ * is added before accounting and planReturns updates the shared `signals` in place, keeping the single
+ * per-pass collection accurate for the accounting that follows. Gated by CONFIG.returnEnabled.
  * @param {*[]} migrations The pass's migrations so far. @param {*[]} signals The pass's city signals.
  * @returns {*[]} The migrations, plus any returns.
  */
@@ -186,9 +179,8 @@ function appendConquests(migrations, conquests) {
 
 /**
  * Re-read the player's saved settings into CONFIG. The Options screen runs in a SEPARATE V8 isolate and
- * can only persist changes (it can't reach this isolate's CONFIG), so without re-reading each pass a
- * preset or tunable changed mid-game (e.g. switching the intensity to Low) wouldn't take effect until
- * the next game load. Cheap + idempotent (copies persisted values / defaults into CONFIG).
+ * can only persist changes, so re-reading each pass lets a mid-game tunable change take effect without
+ * a game load. Cheap + idempotent.
  */
 function refreshSettings() {
   try {
@@ -199,11 +191,9 @@ function refreshSettings() {
 }
 
 /**
- * Post-runPass accounting + reporting for one pass, on a single fresh city-signal read (threaded
- * through return migration, which mutates it in place, and the accounting below, so yields aren't
- * re-scanned twice): fold returns, account losses/composition, append conquests, snapshot the
- * timeline, fold the balance counters (P0.4), and surface any rising-pressure cues (P0.3, even on a
- * 0-move pass). Returns the final migration list.
+ * Post-runPass accounting + reporting for one pass, on a single fresh city-signal read (so yields
+ * aren't re-scanned twice): fold returns, account losses/composition, append conquests, snapshot the
+ * timeline, fold the balance counters, and surface any rising-pressure cues. Returns the final migration list.
  * @param {*[]} migrations This pass's migrations from runPass.
  * @returns {*[]} The migrations after returns/conquests are folded in.
  */
@@ -244,16 +234,15 @@ function doPass(why) {
 }
 
 /**
- * Fire feedback for the newsworthy half of a pass: the move + the departure. A lagged ARRIVAL is the
- * same event landing later (metrics-only); conquest is tally-only (the base game announces captures);
- * returns are narrated by the Chronicle, not the alarm toasts. All three are excluded here but stay
- * counted in the flow/stats via recordMigrations.
+ * Fire feedback for the newsworthy half of a pass: the move + the departure. Lagged arrivals,
+ * conquests (the base game announces captures) and returns (narrated by the Chronicle) are excluded
+ * here but stay counted in the flow/stats via recordMigrations.
  * @param {*[]} migrations This pass's migrations.
  */
 function reportNewsworthy(migrations) {
   const newsworthy = migrations.filter(
     (m) => m.phase !== "arrive" && m.cause !== "conquest" && m.cause !== "return");
-  reportPassFeedback(newsworthy); // in-game toasts / world-news (§10): own losses + world crises
+  reportPassFeedback(newsworthy); // in-game toasts / world-news: own losses + world crises
   // Inbound immigration is announced on the ARRIVAL (when the player's city actually gains people), so
   // it needs the FULL pass (arrivals are filtered out of `newsworthy` above). Run AFTER the loss/crisis
   // toasts so those claim the shared cooldown first when several things happen in one pass.
@@ -275,9 +264,9 @@ function chargePerTurnCosts(who, local) {
   logMigrantHold(mh, who, local);
   const rb = tickRefugeeBurden(who);
   logRefugeeBurden(rb, who, local);
-  // Raid (§4b): the op's cost/duration/grievance are native (Diplomacy Extended); Emigration just
+  // Raid: the op's cost/duration/grievance are native (Diplomacy Extended); Emigration just
   // reads the active action each turn during the pass (raidTilt), nothing to charge here.
-  // Carried dividend (§1b): grant the per-turn attraction bonus (the assimilation mirror).
+  // Carried dividend: grant the per-turn attraction bonus (the assimilation mirror).
   const d = tickAttractionDividend(who);
   if (who === local) {
     for (const yk of Object.keys(d)) {
@@ -300,10 +289,10 @@ function onTurnActivated(data) {
     chargePerTurnCosts(who, local);
     if (who !== local) return;
     // Every local turn, whatever the pass interval: clear empty rural districts left by destroyed
-    // improvements, so no abandoned plot stays unusable (also heals saves from before the fix).
+    // improvements, so no abandoned plot stays unusable.
     sweepEmptyRuralDistricts();
     const turn = typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
-    // F1: Game.turn resets to a low value at each age boundary. Without this rebase the
+    // Game.turn resets to a low value at each age boundary. Without this rebase the
     // gate `turn - lastLocalTurnRun` would stay below the interval for most of the new age
     // (the pass going dormant) until the turn climbs back past the prior age's last run.
     if (turn < lastLocalTurnRun) lastLocalTurnRun = turn;
@@ -351,21 +340,20 @@ function dumpRanking() {
 
 /** Install the in-game UI hooks (readout, console, dock button, prosperity lens). */
 function installUi() {
-  installEmigrationEvents(); // disaster event hook (§10/§11)
+  installEmigrationEvents(); // disaster event hook
   installCityReadout(); // per-city migration readout: console commands + best-effort selection
   installEmigrationConsole(); // console: emigration.window() opens the standalone screen
   installEmigrationDock(); // in-game dock button that opens that screen (no console needed)
   installEmigrationCityPanel(); // inject population + quarter data into the base City Details panel
-  // (the on-screen self-test button rides the subsystem dock — see emigration-dock-decorator.js — so it
-  // renders in the proven HUD context; installEmigrationDock() below wires it when selftestEnabled)
-  // The prosperity map lens self-registers as its own <UIScripts> entry (emigration-prosperity-lens
-  // .js), in the HUD context where LensManager lives, it is intentionally NOT wired through here.
+  // The on-screen self-test button rides the subsystem dock (emigration-dock-decorator.js); installEmigrationDock()
+  // below wires it when selftestEnabled. The prosperity map lens self-registers as its own <UIScripts>
+  // entry (emigration-prosperity-lens.js) in the HUD context where LensManager lives, not through here.
 }
 
 /** Boot. */
 
 /**
- * Console entry for "call our people home" (§6g):
+ * Console entry for "call our people home":
  *   emigration.callHome()                         offer the internal call for the local player
  *   emigration.callHome("external")               offer the call for people living abroad
  *   emigration.callHome("internal", "influence")  skip the dialog and pay in Influence
@@ -377,15 +365,9 @@ function installUi() {
 
 
 /**
- * Offer to call our people home once the danger that displaced them has passed.
- *
- * This deliberately does NOT key off a war ending. Refugees are not only made by wars: a volcano or a plague
- * makes them with no diplomacy involved at all, and an Independent Power or city-state raid registers as
- * violence against a settlement without ever raising a formal war (see emigration-violence.js). Keying the
- * offer to DiplomacyMakePeace therefore never reached most of the people who had actually been driven out.
- *
- * What matters is the same in every case: nobody is under threat any more, and somebody is still away. The
- * action keeps its own cooldown, so a calm empire is asked once, not every turn.
+ * Offer to call our people home once the danger that displaced them has passed. Keyed on calm (nobody
+ * under threat, somebody still away) rather than a war ending, because disasters and minor-power raids
+ * make refugees without any formal war. The action keeps its own cooldown, so a calm empire is asked once.
  * @param {number} pid The local player id.
  */
 function offerCallHomeWhenCalm(pid) {
@@ -418,7 +400,7 @@ function isCalm(pid) {
 }
 
 /**
- * Console entry for "call our people home" (§6g):
+ * Console entry for "call our people home":
  *   emigration.callHome()                         offer the internal call for the local player
  *   emigration.callHome("external")               offer the call for people living abroad
  *   emigration.callHome("internal", "influence")  skip the dialog and pay in Influence
@@ -437,7 +419,7 @@ function isCalm(pid) {
  * players on the far side of the map feeds the migration model exactly as the player's own war does.
  */
 function hookWarTracking() {
-  // Who-declared-on-whom, for aggressor-aware refugee flight (Feature 1). Recorders guard their own access.
+  // Who-declared-on-whom, for aggressor-aware refugee flight. Recorders guard their own access.
   try {
     engine.on("DiplomacyDeclareWar", (/** @type {*} */ d) => recordWarDeclared(d));
     engine.on("DiplomacyMakePeace", (/** @type {*} */ d) => recordPeace(d));
@@ -458,7 +440,7 @@ function hookWarTracking() {
 }
 
 /**
- * Console entry for "call our people home" (§6g):
+ * Console entry for "call our people home":
  *   emigration.callHome()                         offer the internal call for the local player
  *   emigration.callHome("external")               offer the call for people living abroad
  *   emigration.callHome("internal", "influence")  skip the dialog and pay in Influence
@@ -495,8 +477,8 @@ function boot() {
     globalThis.emigration = {
       runNow: () => doPass("global"),
       rank: () => dumpRanking(),
-      // Balance telemetry dump (P0.4): raw counters + reason histogram + derived shares, for tuning
-      // and the measure-before-build decisions. Logs and returns the snapshot.
+      // Balance telemetry dump: raw counters + reason histogram + derived shares, for tuning.
+      // Logs and returns the snapshot.
       metrics: () => dumpCounters(),
       // Ethnic-ledger diagnostic: for settlements matching a name substring (omit for all), dump the
       // recorded per-origin mix + the all-game inbound corridors (with causes) that produced it, so a
@@ -517,7 +499,7 @@ function boot() {
         dlog("joint events " + a + "<->" + b + ": [" + names.join(", ") + "]");
         return { hasOpenBordersDeal: hasOpenBordersDeal(a, b), actionTypeNames: names };
       },
-      // Diagnostic for the Talent Raid integration (§4b): does Emigration see a native raid
+      // Diagnostic for the Talent Raid integration: does Emigration see a native raid
       // action this civ is running? Pass a player id, or omit for the local player. If this
       // returns null while a raid IS active in the diplomacy screen, the event read needs fixing.
       raids: (/** @type {number=} */ pid) => {
@@ -539,7 +521,7 @@ function boot() {
   hookWarTracking();
   installUi();
   sweepOnceGameStarts(); // heal empty rural districts in a loaded save as soon as the game starts
-  // Raid actions (§4b) are native diplomacy actions (Diplomacy Extended mod); they appear in the
+  // Raid actions are native diplomacy actions (Diplomacy Extended mod); they appear in the
   // diplomacy screen on their own. Emigration reads their active state; no UI hook needed here.
   // No on-screen dev controls: run-pass / dump-ranking are available via the
   // globalThis.emigration console API (runNow / rank), so the mod adds no buttons
@@ -548,10 +530,9 @@ function boot() {
   // Order-independent: registers now if its API is up, else queues for it to
   // drain when it loads (Demographics imports its metrics module lazily).
   dlog(registerMigrationMetric() ? "Demographics graph registered" : "Demographics graph deferred/absent");
-  // Contribute the dedicated Migration page to Demographics (L3). Always registered; the page carries
-  // a live `enabled` predicate (= "Demographics tab" access mode) that the Demographics screen checks
-  // each render, so the dock-button-vs-tab choice applies without a game reload. Same order-independent
-  // handshake; a no-op on an older Demographics that lacks the registerPanel hook.
+  // Contribute the dedicated Migration page to Demographics. Always registered; the page carries a live
+  // `enabled` predicate that the Demographics screen checks each render, so the dock-button-vs-tab
+  // choice applies without a game reload. A no-op on a Demographics that lacks the registerPanel hook.
   dlog(registerMigrationPage() ? "Demographics page registered" : "Demographics page deferred/absent");
 }
 

@@ -3,7 +3,7 @@
      (RequiresUnlock with no unlock row), carries Population 0, and has a NEGATIVE gold yield.
      It is the carrier shape the multiplayer floor needs: a per-turn cost expressed as a placed
      constructible's database yield, so every client computes the same number without a script write.
-     Questions: does the row load with a negative yield, can CREATE_ELEMENT place it in a city centre,
+     Questions: does the row load with a negative yield, can CREATE_ELEMENT place it in a city center,
      does the cost actually reach the treasury, does Population 0 keep urban population unchanged,
      and does it survive AI turns (2.4)? Age is Antiquity so it exists in an Exploration game (2.7). -->
 <Database>

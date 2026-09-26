@@ -1,18 +1,11 @@
 // emigration-population.js
 //
-// Population read/write + the Demographics-aligned scaling that turns Civ's
-// abstract population points (1, 2, 3, …) into historically representative
-// people counts (thousands … hundreds of millions).
-//
-// The scaling formula is IDENTICAL to the Demographics mod's
-// scaleCityPopulationAt(raw, turn, ageType, ageProgressPct), so a town's
-// population reads the same in both mods, and a migration of one population
-// point reports the marginal people that one point represents.
+// Population read/write + the Demographics-aligned scaling that turns Civ's abstract population
+// points into representative people counts. The formula is IDENTICAL to the Demographics mod's
+// scaleCityPopulationAt, so a town's population reads the same in both mods.
 
 // ── Population scaling, grounded in Civ VII's REAL per-era growth formula ──────────────────────────
-// IDENTICAL to Demographics' demographics-metrics-helpers.js (eraGrowthParams / growthEffort /
-// scaleCityPopulationAt), pinned by scaling-demographics-parity.mjs, so a town reads the same in both
-// mods. Civ VII charges food per size step, cost(x)=Flat+Scalar·x+Exponent·x², with per-AGE params;
+// Civ VII charges food per size step, cost(x)=Flat+Scalar·x+Exponent·x², with per-AGE params;
 // W(N)=Σcost(1..N) is a settlement's demographic weight and POP_K turns it into people. Per-age by
 // construction, continuous across age boundaries (params blend), no turn-based multiplier.
 /** @type {Record<string, {flat:number,scalar:number,exp:number}>} */
@@ -52,7 +45,7 @@ function smoothstep(x) {
 /**
  * Effective per-era growth params for an age, blended from the previous era's over the opening
  * BLEND_PCT so the people curve is continuous across age boundaries.
- * @param {string | undefined} ageType Age type.
+ * @param {string | undefined} ageType
  * @param {number | undefined} ageProgressPct Age progress percent [0,100].
  * @returns {{flat:number,scalar:number,exp:number}} Effective params.
  */
@@ -148,15 +141,10 @@ function softCeil(x, ceiling) {
 }
 
 /**
- * Scale a raw settlement population into a representative people count, matching
- * Demographics' scaleCityPopulationAt.
- *
- * `turn` should be a MONOTONIC turn (see monotonicTurn) so the figure doesn't
- * reset at age boundaries.
- * When `seedKey` is given (a settlement's stable identity, e.g. its name), the result carries a
- * deterministic narrow per-settlement variation ({@link variedPeople}) so two same-size settlements
- * never report the identical figure. Both mods seed this the same way, so they agree on a given
- * settlement's number. Omit `seedKey` for a bare aggregate that isn't tied to one settlement.
+ * Scale a raw settlement population into a representative people count, matching Demographics'
+ * scaleCityPopulationAt. `turn` should be a MONOTONIC turn. When `seedKey` is given, the result
+ * carries a deterministic narrow per-settlement variation ({@link variedPeople}); omit it for a bare
+ * aggregate.
  * @param {number} raw Raw population points.
  * @param {number} turn Monotonic turn.
  * @param {string | undefined} [ageType] Optional age type (e.g. AGE_MODERN).
@@ -212,10 +200,8 @@ export function marginalPeople(pop, turn, seedKey, signal) {
     - scaleCityPopulation(pop - 1, turn, undefined, undefined, seedKey, signal);
   if (delta >= 1) return delta;
   // At the era ceiling the saturated curve flattens, so consecutive totals can differ by less than a
-  // whole person and a real one-point move would read as "0 people" (C4). A population point that
-  // actually emigrated represents at least one person, so floor a real point at 1. (pop < 1 has no
-  // point to move → 0.) This only engages in the sub-1 underflow regime, which the Demographics
-  // parity matrix never reaches, so the pinned marginal values (all >> 1) are unchanged.
+  // whole person; a population point that actually emigrated represents at least one person, so
+  // floor a real point at 1 (pop < 1 has no point to move → 0).
   return pop >= 1 ? 1 : 0;
 }
 
@@ -243,12 +229,9 @@ function fractionToPct(v) {
 }
 
 /**
- * Read current age-progress percent from the AgeProgressManager. The REAL engine API is the
- * current/max progression-points pair (the same recipe the base game and the Demographics mod use),
- * `getCurrentAgeProgressionPoints()` / `getMaxAgeProgressionPoints()`. The old `getAgeProgressPercent`
- * / `getAgeProgress` / `getProgress` names DO NOT EXIST on the manager, so the percent was always
- * undefined and the Modern megacity ramp silently never fired (diverging from Demographics' people
- * figure). Those names are kept only as last-ditch fallbacks.
+ * Read current age-progress percent from the AgeProgressManager via the current/max
+ * progression-points pair (the recipe the base game uses). The `getAgeProgressPercent` /
+ * `getAgeProgress` names are last-ditch fallbacks only.
  * @param {*} mgr The Game.AgeProgressManager.
  * @returns {number | undefined} The raw percent, or undefined.
  */
@@ -281,10 +264,8 @@ export function currentAgeProgressPct() {
 }
 
 /**
- * Format a people count as comma-grouped Arabic numerals ("12,000", "1,300,000", "240,000,000",
- * "1,100,000,000"). Rounded by magnitude so large figures stay legible without carrying false
- * precision (nearest thousand under a million, then coarser tiers up), matching what the old
- * "12 thousand" / "1.3 million" phrasing conveyed, just written in digits.
+ * Format a people count as comma-grouped Arabic numerals ("12,000", "1,300,000"). Rounded by
+ * magnitude so large figures stay legible without carrying false precision.
  * @param {number} n People count.
  * @returns {string} Human-readable grouped number.
  */
@@ -292,10 +273,10 @@ export function formatPeople(n) {
   if (typeof n !== "number" || !isFinite(n) || n <= 0) return "0";
   let step = 1;
   if (n >= 1e10) step = 1e9; // >= 10 billion: nearest billion
-  else if (n >= 1e9) step = 1e8; // billions: nearest hundred-million (was "1.1 billion")
-  else if (n >= 1e7) step = 1e6; // >= 10 million: nearest million (was "240 million")
-  else if (n >= 1e6) step = 1e5; // millions: nearest hundred-thousand (was "1.3 million")
-  else if (n >= 1e3) step = 1e3; // thousands: nearest thousand (was "12 thousand")
+  else if (n >= 1e9) step = 1e8; // billions: nearest hundred-million
+  else if (n >= 1e7) step = 1e6; // >= 10 million: nearest million
+  else if (n >= 1e6) step = 1e5; // millions: nearest hundred-thousand
+  else if (n >= 1e3) step = 1e3; // thousands: nearest thousand
   return groupThousands(Math.round(n / step) * step);
 }
 
@@ -314,12 +295,9 @@ export function formatBoth(people, points) {
 }
 
 /**
- * Format a number through the engine's locale-aware `Locale.toNumber`, so grouping and the decimal
- * mark follow the player's language (German "1.234", French "1 234"), or return `fallback` — the
- * manual English formatting — when that API is unavailable (Node tests, early load) or throws. This is
- * the same API the base game uses for scores/yields, which likewise concatenates any suffix afterwards.
- * The engine does NOT abbreviate magnitudes, so the mod's own tiering stays in the callers; only the
- * mantissa localizes. Mirrors the Demographics mod's helper of the same name (metrics-format.js).
+ * Format a number through the engine's locale-aware `Locale.toNumber` (German "1.234", French
+ * "1 234"), or return `fallback` when that API is unavailable or throws. The engine does NOT
+ * abbreviate magnitudes, so the mod's own tiering stays in the callers; only the mantissa localizes.
  * @param {number} n The value to format.
  * @param {string} spec A .NET-style numeric format ("0.0", "0.00"); "" for a plain grouped integer.
  * @param {string} fallback The off-engine result (must match the prior English output).
@@ -338,9 +316,7 @@ export function localeNumber(n, spec, fallback) {
 
 /**
  * Group an integer with the player's locale digit separators ("35670" → en "35,670", de "35.670",
- * fr "35 670") via {@link localeNumber}. Off-engine (the GameFace runtime's toLocaleString was never
- * reliable, and tests run in Node) it falls back to plain US-style grouping, so it reads the same as
- * before wherever the engine Locale API is absent.
+ * fr "35 670") via {@link localeNumber}. Off-engine it falls back to plain US-style grouping.
  * @param {number} n An integer.
  * @returns {string} The grouped string.
  */
@@ -373,11 +349,8 @@ export function formatBothExact(people, points) {
 }
 
 // The variation band for displayed event people figures: ±this fraction. Narrow enough to stay
-// believable, wide enough that two same-size events never read identically (the immersion break we
-// fix). At event scale (~20–40k) this ±10% is comparable to the Demographics settlements board's own
-// per-settlement variance floor (±2,500), so the two mods feel like one system. Standing TOTAL
-// population displays are NOT varied here, they stay on the shared base curve, matching the
-// Demographics base before its board applies its own variance + uniqueness pass.
+// believable, wide enough that two same-size events never read identically. Standing TOTAL population
+// displays are NOT varied; they stay on the shared base curve.
 const PEOPLE_VARIANCE = 0.1;
 
 /**
@@ -409,9 +382,7 @@ function clampUnit(x) {
 /**
  * A directional bias in [-1,1] derived from a settlement's REAL game metrics, net happiness and the
  * urban:rural mix (denser, happier settlements lean a touch larger). Pass the result as the `signal`
- * arg to {@link scaleCityPopulation} / {@link marginalPeople} / {@link variedPeople} so the per-event
- * people figure is grounded in game state, not just the settlement's name. `urban` defaults to
- * `population − rural` when not supplied.
+ * arg to {@link variedPeople} and friends. `urban` defaults to `population − rural` when not supplied.
  * @param {{happiness?:number, urban?:number, rural?:number, population?:number}|null|undefined} m Metrics.
  * @returns {number} Bias in [-1,1] (0 when no metrics).
  */
@@ -427,12 +398,9 @@ export function settlementSignal(m) {
 }
 
 /**
- * Apply a deterministic, narrow ±{@link PEOPLE_VARIANCE} variation to a scaled people figure. The
- * variation is GROUNDED in real game metrics when a `signal` ({@link settlementSignal}) is supplied,
- * a thriving settlement reads a touch larger than a stagnant one, with the stable `seedKey` hash
- * folded in for entropy/uniqueness (and used alone when no signal is given, preserving prior behaviour).
- * Same inputs → same factor, so a given settlement's figure is consistent across redraws and across
- * both mods. Presentation only: the underlying scaling is untouched, so analytics/aggregates stay exact.
+ * Apply a deterministic, narrow ±{@link PEOPLE_VARIANCE} variation to a scaled people figure, grounded
+ * in real metrics when a `signal` is supplied and hashed from `seedKey` for uniqueness. Same inputs →
+ * same factor. Presentation only: analytics/aggregates stay exact.
  * @param {number} base The scaled people figure.
  * @param {string} seedKey A stable per-settlement (or per-event) seed.
  * @param {number} [signal] Optional grounded [-1,1] bias from real metrics.
@@ -444,7 +412,7 @@ export function variedPeople(base, seedKey, signal) {
   const noise = (h / 0xffffffff) * 2 - 1; // hash → [-1, 1)
   const u = typeof signal === "number" && isFinite(signal)
     ? clampUnit(0.6 * signal + 0.4 * noise) // grounded: lean on real metrics, hash for entropy
-    : noise; // no signal → prior name-hash behaviour
+    : noise; // no signal → name-hash only
   return base * (1 + PEOPLE_VARIANCE * u);
 }
 
@@ -477,9 +445,8 @@ export function totalPop(city) {
 }
 
 /**
- * Move one rural population point from `source` to `dest`. Confirmed reachable
- * from the UI VM, including across civilizations (probe Q2). Returns whether the
- * move was applied.
+ * Move one rural population point from `source` to `dest`, including across civilizations. Returns
+ * whether the move was applied.
  * @param {*} source Losing city.
  * @param {*} dest Gaining city.
  * @returns {boolean} True if both writes were attempted without throwing.
@@ -497,10 +464,8 @@ export function moveRural(source, dest) {
 }
 
 /**
- * Remove one rural population point from a city WITHOUT moving it anywhere - the outlet
- * for a trapped, distressed population with no refuge (attrition / death). Uses the same
- * rural-population accounting the game's own starvation shrinkage uses, so the world's
- * population genuinely drops. Returns whether the write was applied.
+ * Remove one rural population point from a city WITHOUT moving it anywhere - the outlet for a
+ * trapped population with no refuge (attrition / death). Returns whether the write was applied.
  * @param {*} city The city losing a point.
  * @returns {boolean} True if applied.
  */
@@ -515,10 +480,8 @@ export function removeRural(city) {
 }
 
 /**
- * Add one rural population point to a city WITHOUT taking it from anywhere - the
- * arrival half of a lagged migration (the departure used {@link removeRural} some
- * turns earlier; see the transit queue in emigration-engine.js). Returns whether the
- * write was applied.
+ * Add one rural population point to a city WITHOUT taking it from anywhere - the arrival half of a
+ * lagged migration (see the transit queue in emigration-engine.js). Returns whether the write was applied.
  * @param {*} city The city gaining a point.
  * @returns {boolean} True if applied.
  */

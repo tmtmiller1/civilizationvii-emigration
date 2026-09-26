@@ -3,41 +3,23 @@
 // The BUILT ENVIRONMENT of a settlement as a reason to stay: its wonders, and the kinds of civic
 // infrastructure it actually holds (a granary, a market, a school, walls).
 //
-// The prosperity model already counts every building through the city's NET YIELDS
-// (emigration-cities.js reads `Yields.getNetYield`, which aggregates buildings, wonders, quarters and
-// specialists). What it could not see is everything a building does that is not a yield, and the
-// per-citizen divisor made what it could see shrink as a settlement grew: a wonder worth +4 culture is
-// 0.38 score points in a city of 13 and 1.25 in a town of 4, which is backwards from how a wonder
-// feels to own. A large, well-built city therefore had no way to hold its people against a small
-// neighbour with better yields per head.
+// The prosperity model counts every building through the city's per-capita NET YIELDS, which cannot
+// see what a building does beyond its yield and shrinks as a settlement grows. So this term is NOT
+// per-capita: it scores what the settlement HAS, once per KIND (each wonder on its own, capped, as
+// prestige; each ROLE present once: safety, amenity, sustenance, shelter, learning, culture, trade,
+// work, civic), so three markets are one reason to stay and the term stays bounded.
 //
-// So this term is deliberately NOT per-capita and NOT proportional to the yields the yield term
-// already counts. It scores what the settlement HAS, once per KIND:
-//
-//   • Each wonder counts on its own (capped), as prestige.
-//   • Each ROLE present counts once: safety, amenity, sustenance, shelter, learning, culture, trade,
-//     work, civic. Three markets are one reason to stay, not three, so the term is naturally bounded
-//     and a tall build order cannot run away with it.
-//
-// Roles are DERIVED from the compiled database at runtime (`GameInfo.Constructibles` for the class and
-// display name, `GameInfo.Buildings` for housing/defense/slots, `GameInfo.Constructible_YieldChanges`
-// for what it produces), never from a hand-written list of building names: the list would silently
-// miss every building added by an age, a DLC or another mod. A type the database cannot explain still
-// counts, as the generic "civic" role, so an unrecognized building is never worth nothing.
-//
-// Pillaged constructibles are skipped. A burnt granary is not a reason to stay, and it is already
-// applying violence pressure elsewhere.
-//
-// COST: this is a per-plot scan, and the mod scores every settlement of every met civilization every
-// turn. Buildings change over dozens of turns, not every turn, so a settlement's reading is cached and
-// refreshed only every `builtRefreshTurns` turns.
+// Roles are DERIVED from the compiled database at runtime (GameInfo.Constructibles / Buildings /
+// Constructible_YieldChanges), never from a hand-written list, so buildings from any age, DLC or mod
+// count; an unexplained type still counts as the generic "civic" role. Pillaged constructibles are
+// skipped. The per-plot scan is cached and refreshed only every `builtRefreshTurns` turns.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
 /**
  * Ordered role tests: the FIRST match names the building, so each one is credited for its most
- * characteristic job rather than for everything it happens to touch. Defence outranks yields
+ * characteristic job rather than for everything it happens to touch. Defense outranks yields
  * deliberately — walls are a reason to stay that has nothing to do with output.
  * @type {ReadonlyArray<[string, (d: {def:*, bld:*, ys:Set<string>}) => boolean]>}
  */
@@ -152,7 +134,7 @@ function truthy(v) {
 
 /**
  * The ROLE a constructible fills: the first of {@link ROLE_ORDER} it satisfies, so each building is
- * named by its most characteristic job rather than by everything it happens to touch. Defence outranks
+ * named by its most characteristic job rather than by everything it happens to touch. Defense outranks
  * yields deliberately — walls are a reason to stay that has nothing to do with output.
  * @param {*} def The Constructibles row. @param {*} bld Its Buildings row, or undefined.
  * @param {Set<string>} ys The yield types it grants.

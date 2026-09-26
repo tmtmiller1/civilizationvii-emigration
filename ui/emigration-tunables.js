@@ -1,17 +1,9 @@
 // emigration-tunables.js
 //
-// The single declarative source for which CONFIG values are exposed in the
-// Options screen and how. Both the option UI (emigration-options.js) and the
-// CONFIG-override wiring (emigration-settings.js) are generated from this list,
-// so adding a knob is a one-line change here.
-//
-// Each entry maps to a CONFIG key. `bool` renders as a checkbox; `choice` renders
-// as a dropdown over `values` (discrete values keep the control robust and exact,
-// avoiding slider/float display quirks). Every CONFIG default must appear in its
-// `values` list. `group` drives the Options section header ("Advanced -" groups).
-//
-// Scaling constants (scaleBase/scaleExp/scaleGrowth) are intentionally absent:
-// they must match the Demographics mod and are not gameplay tunables.
+// The single declarative source for which CONFIG values are exposed in the Options screen and how;
+// emigration-options.js and emigration-settings.js are both generated from this list. Each entry maps
+// to a CONFIG key: `bool` renders as a checkbox, `choice` as a dropdown over `values` (every CONFIG
+// default must appear in it), and `group` drives the Options section header.
 
 /**
  * One exposed tunable.
@@ -35,10 +27,7 @@
 /**
  * The diaspora "foothold" share milestone — a FIXED chronicle-only threshold (not a player option).
  * It lives in this leaf module (which imports nothing) so that BOTH emigration-diaspora.js and
- * emigration-composition.js can read it without importing each other. Those two previously formed a
- * composition↔diaspora import cycle for this one constant; harmless until a new early-registered
- * UIScript (emigration-enclave-gate.js) forced the cycle to resolve first and fatally, which took down
- * the whole emigration panel at load. Keeping the shared constant in a leaf breaks the cycle for good.
+ * emigration-composition.js can read it without importing each other (an import cycle can be fatal at load).
  */
 export const QUARTER_FOOTHOLD_SHARE = 0.25;
 
@@ -130,11 +119,11 @@ export const TUNABLES = [
   { key: "siegeRampTurns", group: "violence", type: "choice", values: [4, 6, 8, 12, 16], format: "turns", label: "LOC_EMIG_T_SRAMP", desc: "LOC_EMIG_T_SRAMP_D" },
   { key: "siegeLossCapPct", group: "violence", type: "choice", values: [0.4, 0.5, 0.6, 0.75, 0.9], format: "frac", label: "LOC_EMIG_T_SCAP", desc: "LOC_EMIG_T_SCAP_D" },
   { key: "warSurgeMax", group: "violence", type: "choice", values: [1, 2, 3, 5, 8], special: {"1": "LOC_EMIG_CHOICE_OFF"}, label: "LOC_EMIG_T_WARSURGE", desc: "LOC_EMIG_T_WARSURGE_D" },
-  // war - aggressor-aware refugee flight (Feature 1; aggressorPenalty 0 = off)
+  // war - aggressor-aware refugee flight (aggressorPenalty 0 = off)
   { key: "aggressorPenalty", group: "violence", type: "choice", values: [0, 6, 12, 18, 25], special: {"0": "LOC_EMIG_CHOICE_OFF"}, label: "LOC_EMIG_T_AGGRESSOR", desc: "LOC_EMIG_T_AGGRESSOR_D" },
   { key: "ownCivRefugeeBonus", group: "violence", type: "choice", values: [0, 2, 4, 8], special: {"0": "LOC_EMIG_CHOICE_OFF"}, label: "LOC_EMIG_T_OWNCIV", desc: "LOC_EMIG_T_OWNCIV_D" },
   // Disasters
-  // environmental disasters as a migration driver (§11; off by default)
+  // environmental disasters as a migration driver (off by default)
   { key: "disastersEnabled", group: "disaster", type: "bool", label: "LOC_EMIG_T_DISASTERS", desc: "LOC_EMIG_T_DISASTERS_D" },
   { key: "disasterPerPoint", group: "disaster", type: "choice", values: [6, 8, 10, 14, 20], format: "pct", label: "LOC_EMIG_T_DPP", desc: "LOC_EMIG_T_DPP_D" },
   { key: "disasterDecay", group: "disaster", type: "choice", values: [0.4, 0.55, 0.7, 0.85], format: "frac", label: "LOC_EMIG_T_DDECAY", desc: "LOC_EMIG_T_DDECAY_D" },
@@ -218,14 +207,14 @@ export const TUNABLES = [
   { key: "notifyWorldNews", group: "notify", type: "bool", label: "LOC_EMIG_T_NOTIFYWORLDNEWS", desc: "LOC_EMIG_T_NOTIFYWORLDNEWS_D" },
   { key: "worldRefugeeThreshold", group: "notify", type: "choice", values: [20000, 40000, 80000, 150000], format: "count", label: "LOC_EMIG_T_NOTIFYWORLD", desc: "LOC_EMIG_T_NOTIFYWORLD_D" },
   // Readouts & rankings
-  // readout — the migration-intelligence panels (roadmap §15/§16.6). This group is created here by
-  // the diversity ranking (Features S/T); later readout features JOIN it rather than making their own.
+  // readout — the migration-intelligence panels. Every readout feature JOINS this group rather than
+  // making its own.
   { key: "diversityRanking", group: "readout", type: "bool", label: "LOC_EMIG_T_DIVERSITY", desc: "LOC_EMIG_T_DIVERSITY_D" },
   { key: "cosmopolitanismScore", group: "readout", type: "bool", label: "LOC_EMIG_T_COSMO", desc: "LOC_EMIG_T_COSMO_D" },
   { key: "diversityRows", group: "readout", type: "choice", values: [3, 5, 8, 12], label: "LOC_EMIG_T_DIVERSITYROWS", desc: "LOC_EMIG_T_DIVERSITYROWS_D" },
   { key: "migrationExplainer", group: "readout", type: "bool", label: "LOC_EMIG_T_EXPLAINER", desc: "LOC_EMIG_T_EXPLAINER_D" },
-  // the per-city readout panel + its sparkline are readout features, so they JOIN this group (per the
-  // note above) rather than the notify group where they were originally, mistakenly, filed.
+  // the per-city readout panel + its sparkline are readout features, so they JOIN this group rather
+  // than the notify group.
   { key: "cityReadoutEnabled", group: "readout", type: "bool", label: "LOC_EMIG_T_CITYREADOUT", desc: "LOC_EMIG_T_CITYREADOUT_D" },
   { key: "cityReadoutSparkline", group: "readout", type: "bool", label: "LOC_EMIG_T_SPARKLINE", desc: "LOC_EMIG_T_SPARKLINE_D" },
   // Visuals
@@ -273,11 +262,8 @@ export const PRESET_NAMES = ["custom", "low", "medium", "high"];
  */
 export const GROUPED_SETTINGS = {
   // Movement between civilizations: the voluntary cross-civ friction, the refugee escape pull abroad, the
-  // small-civilization brake, and the homeland preference in a crisis. The scale is measured, over a 30-turn window
-  // against the same save with the mod off (mod tests 84, 87, 90 to 93): the MIDDLE is the settled default, where
-  // the most-gaining civilization ends 18% above its no-mod population and the stricken one recovers to 0.96;
-  // 100 is free movement, where they run +37% and 0.84. Below 50 the preference to stay home keeps hardening
-  // (extrapolated past the measured point, in the same direction).
+  // small-civilization brake, and the homeland preference in a crisis. The MIDDLE is the settled default,
+  // 100 is free movement, and below 50 the preference to stay home keeps hardening.
   crossCivMovement: {
     anchors: [
       { at: 0, values: { poachBlock: 36, crisisEscapeBonus: 0, antiDrainWeight: 30, crisisInternalBonus: 32 } },
@@ -286,8 +272,8 @@ export const GROUPED_SETTINGS = {
     ]
   },
   // Refugees from wars with major civilizations: the whole-observation scale and the ordinary besieged floor, used
-  // whenever a major civilization is among a city's attackers (or they cannot be named). The middle is the war
-  // balance the mod has always shipped; 100 doubles it; 0 means wars add no violence pressure.
+  // whenever a major civilization is among a city's attackers (or they cannot be named). The middle is the
+  // shipped war balance; 100 doubles it; 0 means wars add no violence pressure.
   majorWarRefugees: {
     decimals: 2,
     anchors: [
@@ -298,10 +284,7 @@ export const GROUPED_SETTINGS = {
   },
   // Refugees from raids by minor powers (city-states and Independent Powers). Moves the whole-observation scale and
   // the besieged floor used when every attacker of a city is minor. 100 scores a raid like a war at the default
-  // war setting (floor 0.3, no scaling); 0 means raids add no violence pressure. The middle is the shipped default,
-  // measured over a 60-turn unattended run (mod test 118): 87% of the turns a minor-raided city would have spent at
-  // or over the flee threshold under war scoring stayed below it, with no raid involving a major civilization
-  // affected.
+  // war setting (floor 0.3, no scaling); 0 means raids add no violence pressure; the middle is the shipped default.
   minorRaidRefugees: {
     decimals: 2,
     anchors: [
@@ -371,7 +354,7 @@ export function groupedValues(name, position) {
 
 /**
  * Compose a LOC key, or return it unchanged off-engine.
- * @param {string} key The key. @param {...*} args Arguments. @returns {string} The text.
+ * @param {string} key @param {...*} args Arguments. @returns {string} The text.
  */
 function composeText(key, ...args) {
   try {

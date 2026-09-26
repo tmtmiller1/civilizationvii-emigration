@@ -48,7 +48,7 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
   assert.equal(food.benefitAmount, 0, "a yield a script cannot grant is never promised");
 }
 
-// ── tileKeyOf: city-centre plot key, defensive ──────────────────────────────
+// ── tileKeyOf: city-center plot key, defensive ──────────────────────────────
 {
   assert.equal(tileKeyOf({ location: { x: 3, y: 4 } }), "3,4", "plot key is x,y");
   assert.equal(tileKeyOf(null), null, "no city yields no key");
@@ -57,14 +57,14 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
 
 // ── quarterView: the decision modal model ───────────────────────────────────
 {
-  const view = quarterView({ civ: 2, name: "Rome", share: 0.4, where: "by the harbour" }, 0);
+  const view = quarterView({ civ: 2, name: "Rome", share: 0.4, where: "by the harbor" }, 0);
   assert.equal(view.eyebrow, "Cultural Enclave", "the modal eyebrow marks a cultural-enclave decision");
   assert.equal(view.eyebrowIcon, "CITY_UNIQUE_QUARTER");
   assert.equal(view.dismissId, "ignore", "dismissing resolves as the passive stance");
   assert.equal(view.choices.length, 3, "the three stances are offered");
   assert.ok(typeof view.title === "string" && view.title.length, "the view has a title");
   assert.ok(typeof view.body === "string" && view.body.length, "the view has body prose");
-  assert.ok(view.body.includes("By the harbour"), "the body weaves in the capitalised edge phrase");
+  assert.ok(view.body.includes("By the harbor"), "the body weaves in the capitalized edge phrase");
   // Exactly ONE quote, at the view level — the options themselves carry none.
   assert.equal(typeof view.quote, "string", "the view exposes a single enclave-level quote string");
   assert.ok(view.choices.every((c) => c.quote === undefined), "individual options no longer carry quotes");
@@ -79,16 +79,16 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
     assert.ok(c0.label.indexOf(" +") < c0.label.indexOf(" -"), "the gain reads before the cost");
   }
   assert.equal(letBe.label, "Let them be", "the passive stance keeps its bare label");
-  assert.ok(view.choices.every((c) => !c.disabled), "with an unreadable treasury nothing is greyed out");
+  assert.ok(view.choices.every((c) => !c.disabled), "with an unreadable treasury nothing is grayed out");
 }
 
-// ── quarterView: a stance the host cannot pay for is greyed out and says why ──
+// ── quarterView: a stance the host cannot pay for is grayed out and says why ──
 {
   const realGet = globalThis.Players.get;
   globalThis.Players.get = (id) => ({ ...realGet(id), Treasury: { goldBalance: 10 } });
-  const view = quarterView({ civ: 3, name: "Rome", share: 0.4, where: "by the harbour" }, 0);
+  const view = quarterView({ civ: 3, name: "Rome", share: 0.4, where: "by the harbor" }, 0);
   const costly = view.choices.filter((c) => c.penaltyYield === "YIELD_GOLD");
-  assert.ok(costly.length && costly.every((c) => c.disabled), "every Gold-costing stance is greyed out at 10 Gold");
+  assert.ok(costly.length && costly.every((c) => c.disabled), "every Gold-costing stance is grayed out at 10 Gold");
   assert.ok(view.choices.find((c) => c.id === "ignore").disabled !== true, "letting them be is always open");
   assert.ok(costly.every((c) => c.label.endsWith("(not enough Gold)")), "its button says why");
   globalThis.Players.get = realGet;
@@ -110,7 +110,7 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
   assert.equal(stateMod.quarterAt("5,5").contested, false, "peace clears the contested flag");
 }
 
-// ── enclaveCountForCiv + per-civ cap: 2 PER origin civilisation, NOT a global cap ──
+// ── enclaveCountForCiv + per-civ cap: 2 PER origin civilization, NOT a global cap ──
 {
   const ap = { benefitYield: "YIELD_CULTURE", benefitAmount: 40, penaltyYield: "YIELD_HAPPINESS", penaltyAmount: 20 };
   const put = (key, civ, originCiv) =>

@@ -6,9 +6,6 @@
 // the dashboard mount the SAME gathered data:
 //   • the standalone Emigration screen (emigration-screen.js), opened from the dock button
 //   • the Demographics "Migration" page (emigration-migration-page.js), when that mod is installed
-//
-// (Historically this module also rendered a console-only HUD overlay; that was replaced by the
-// real fxs screen in emigration-screen.js, so only the data gatherer lives here now.)
 
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { ownerCitySnapshots } from "/emigration/ui/emigration-city-readout-data.js";
@@ -229,7 +226,7 @@ function splitFlows(raw) {
 }
 
 // Anonymous aggregate for civs the visibility policy hides (unmet / out-of-scope). Their migration is
-// still surfaced, so a civ whose people fled to an unmet neighbour shows them "left for Unmet" rather
+// still surfaced, so a civ whose people fled to an unmet neighbor shows them "left for Unmet" rather
 // than nothing, but it's anonymized to one bucket so no unmet civ's identity (or city) is revealed.
 const UNMET_ID = -2;
 const UNMET_NAME = "Unmet";
@@ -301,9 +298,7 @@ function cityName(s, ord) {
 
 /**
  * Group the live city signals by owner into raw {name, town, pop, comp} city lists. `comp` is the
- * settlement's origin composition (compositionForCity), captured cities carry the ORIGINS of the
- * people already living there, so the network can colour residents by where they came from rather
- * than by the current owner.
+ * settlement's origin composition (compositionForCity), so the network can color residents by origin.
  * @returns {Map<number, {name:string, town:boolean, pop:number, comp:*}[]>} owner → cities.
  */
 function citiesByOwner() {
@@ -333,11 +328,9 @@ function citiesByOwner() {
 }
 
 /**
- * Split a city's NATIVE (resident) population points across the ORIGIN civs its people trace to,
- * from the composition ledger. The modeled cross-civ immigrant portion (already drawn as fly-in
- * dots) is removed from the FOREIGN buckets only, so a conquered city's prior-owner residents keep
- * their origin while immigrants aren't double-counted; the owner bucket is home-grown population.
- * Falls back to 100% owner when there's no composition. The result sums to `ptsN`.
+ * Split a city's NATIVE (resident) population points across the ORIGIN civs its people trace to. The
+ * modeled immigrant portion (already drawn as fly-in dots) is removed from the FOREIGN buckets only, so
+ * immigrants aren't double-counted. Falls back to 100% owner without a composition; sums to `ptsN`.
  * @param {*} comp compositionForCity result ({total, owner, civs:[{civ,pts}]}) or null.
  * @param {number} owner Current owner id.
  * @param {number} ptsN Native population points to distribute.
@@ -421,7 +414,7 @@ function gatherPops() {
         const ptsN = c.pop * frac; // native pop points (excludes immigrants)
         return {
           name: c.name, town: c.town, pts: Math.round(ptsN), pop: scaleCityPopulation(ptsN, t),
-          origins: residentOrigins(c.comp, id, ptsN) // resident colour-by-origin (captured cities)
+          origins: residentOrigins(c.comp, id, ptsN) // resident color-by-origin (captured cities)
         };
       })
       .sort((a, b) => b.pts - a.pts); // capital (largest) first, arrivals land here
@@ -455,13 +448,10 @@ function nativePtsOf(entry) {
 }
 
 /**
- * The decimated cumulative-flow history as named-edge frames, for the timeline scrubber. Each frame
- * now carries a REAL per-civ native-population snapshot (`f.pop`, civId → points), so a civ's circle
- * reflects its ACTUAL population at that point in time. We scale the civ's CURRENT per-city breakdown
- * by (snapshot ÷ current native points), the per-civ TOTAL is exact; only the within-civ split across
- * cities is approximated by today's ratio (true per-city history would be prohibitively large, and
- * a civ's historical cities may differ). Frames from a pre-population-history save (no `f.pop`, or a
- * civ missing from it) fall back to the old linear scale so old timelines still animate.
+ * The decimated cumulative-flow history as named-edge frames, for the timeline scrubber. Each frame's
+ * per-civ native-population snapshot (`f.pop`) scales the civ's CURRENT per-city breakdown, so the
+ * per-civ total is exact and only the within-civ split is approximated. Frames without `f.pop` fall
+ * back to a linear scale.
  * @param {Record<number, *>} nativeNow Current per-civ city populations.
  * @returns {{turn:number, age:string, flows:*[], intra:*[], pops:Record<number,*>}[]} Frames (old→new).
  */
@@ -566,8 +556,7 @@ function pressureMap(me) {
       bar: s.pressureToBar || 0, cause: s.causeLabel || "", dest: s.topDestinationName || "",
       flag: s.attritionRisk ? "at risk" : s.onCooldown ? "resting" : "",
       mix: s.causeMix || null // the weighted "what drives migration" breakdown, for the per-city meter
-      , // What argues for STAYING: the settlement's wonders and civic buildings, named. The panel had
-      // only ever shown reasons to leave, so a well-built city looked like a problem with no answer.
+      , // What argues for STAYING: the settlement's wonders and civic buildings, named.
       stay: Array.isArray(s.stayReasons) ? s.stayReasons : []
     };
   }
@@ -576,9 +565,8 @@ function pressureMap(me) {
 
 /**
  * The local player's settlements (cities AND towns), each with its recent immigration / emigration
- * by origin/destination + cause and its emigration pressure. Driven by the full settlement list (so
- * every settlement shows, not only those with recent moves). (Lifetime per-city flow isn't
- * persisted; the flows are recent activity.)
+ * by origin/destination + cause and its emigration pressure. Driven by the full settlement list so
+ * every settlement shows; the flows are recent activity, not lifetime totals.
  * @param {number|null} me Local player id.
  * @param {Record<number, *>} pops Per-civ native populations (carries each settlement's town flag).
  * @returns {*[]} Per-settlement rows {name, town, in, out, pressure}.
@@ -608,11 +596,11 @@ function gatherSettlements(me, pops) {
  * the cross-civ flow network, the local player's per-city pressure snapshots, and per-city flows.
  * @returns {*} Gathered inputs.
  */
-/** Colour for the merged "Unknown" (spoiler-masked) slice of a composition bar: a neutral grey. */
+/** Color for the merged "Unknown" (spoiler-masked) slice of a composition bar: a neutral gray. */
 const UNKNOWN_ORIGIN_COLOR = "#6d6a63";
 
 /**
- * One settlement's origin breakdown, resolved for display: each origin's civ NAME and banner COLOUR,
+ * One settlement's origin breakdown, resolved for display: each origin's civ NAME and banner COLOR,
  * share-sorted. Mirrors the city readout's `resolveComposition` masking exactly — origins from
  * policy-hidden (unmet) civs merge into ONE "Unknown" slice rather than being named, so a visible
  * settlement's bar never reveals a civ the player hasn't met.
@@ -635,12 +623,9 @@ function diversityParts(civs) {
 }
 
 /**
- * The "most diverse cities" ranking (Features S/T) over the composition ledger, with the dashboard's
- * spoiler mask applied: a settlement owned by a civ the visibility policy hides never appears, and a
- * hidden origin is never NAMED as a city's plurality/majority (the row falls back to "no majority").
- * The local player's own cities are never hidden, so the ranking is populated from turn one.
- * Also resolves each row's population both ways (raw points + scaled people), so the table can honour
- * the shared Numbers (Scaled / Civ) mode like every other count-bearing view.
+ * The "most diverse cities" ranking over the composition ledger, with the dashboard's spoiler mask
+ * applied: a settlement owned by a hidden civ never appears, and a hidden origin is never NAMED as a
+ * plurality/majority. Each row's population is resolved both ways (raw points + scaled people).
  * @returns {*[]} Ranked rows, each carrying resolved `parts`, `pts`/`people` and a masked `dominantName`.
  */
 function gatherDiversity() {
@@ -701,10 +686,8 @@ function gatherFresh() {
     pops,
     intra, // intra-civ (city→city) moves, split from the same flow matrix as the cross-civ network
     history: gatherHistory(pops),
-    // Pre-positioned event specs are the SAMPLE path only (demo data defines them as fractions of a
-    // synthetic timeline). Live events are turn-stamped records instead: they carry an age-local turn
-    // and must be positioned against the viz's FINAL frame list, which the network view filters after
-    // this model is built — so the raw records travel through and the view places them.
+    // Pre-positioned event specs are the SAMPLE path only. Live events are turn-stamped records the
+    // network view positions itself against its final frame list.
     events: [],
     eventRecords: { disasters: gatherDisasterEvents(), wars: warEvents() },
     cities: me != null ? ownerCitySnapshots(me) : [],
@@ -745,12 +728,8 @@ function countsAsMet(pid, me, hasMet) {
 
 /**
  * A compact signature of WHICH alive major civs the local player has met (self included), as two
- * 32-bit hex chunks over player slots 0-63. Cheap: a player scan with a diplomacy check, no city
- * enumeration. Folded into the live memo key because meeting a civ is a diplomacy event, NOT an
- * emigration pass, so monoTurn() alone wouldn't refresh the dashboard when the met-set changes, and a
- * just-met civ would stay masked until the next pass. Keying on the SET (not just the count) also
- * invalidates correctly in the rare same-pass case where one civ is met while a previously-met civ
- * dies (a met-count would net unchanged and could serve one stale, still-masked render).
+ * 32-bit hex chunks over player slots 0-63. Folded into the live memo key because meeting a civ is a
+ * diplomacy event, not an emigration pass; keying on the set (not a count) also catches a met/died swap.
  * @returns {string} Hex signature of the met-major set (local included).
  */
 function metMajorSig() {
@@ -772,9 +751,7 @@ function metMajorSig() {
 }
 
 /**
- * Cheap, obvious invalidation key for the gathered data. The live tallies change when an emigration
- * pass advances the monotonic turn, AND the set of VISIBLE civs changes when the local player meets
- * someone new (a diplomacy event between passes), so the key folds in the met-civ count too, so a
+ * Cheap invalidation key for the gathered data: the monotonic pass turn plus the met-civ set, so a
  * newly met civ shows on the "live" dashboard without waiting for the next pass.
  * @returns {string} The memo key.
  */
@@ -787,10 +764,8 @@ function gatherKey() {
 }
 
 /**
- * Gather the dashboard inputs, memoized per turn (Perf plan P1 #4): the standalone screen and the
- * embedded Demographics Migration page both call this, and an embedded re-render within the same
- * turn should not re-scan the world. The memo is module-level so reopening within a turn reuses it;
- * it invalidates when a pass advances the turn (or the sample/detail setting changes).
+ * Gather the dashboard inputs, memoized per turn: the standalone screen and the embedded Demographics
+ * page both call this, and a re-render within the same turn should not re-scan the world.
  * @returns {*} Gathered inputs.
  */
 export function gatherDashboard() {

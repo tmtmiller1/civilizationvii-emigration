@@ -1,13 +1,13 @@
 // emigration-prosperity-tooltip.js
 //
 // The Prosperity lens's cursor panel: the hovered TILE's prosperity band, score and every term behind it (the
-// points scale of emigration-tile-score.js, the number the lens coloured the hex from), then the settlement's
+// points scale of emigration-tile-score.js, the number the lens colored the hex from), then the settlement's
 // PROSPERITY standing (the score that drives migration, normalized against the world) plus any active migration
 // pressures, shown while the Prosperity lens is active. Matches the Ethnicity lens panel exactly -
 // same styling, cursor offset, and spoiler rules - via the shared emigration-lens-hover-panel.js.
 //
 // Spoiler-safe: a policy-hidden owner is never indexed (so no panel shows). Reads only; the score is
-// recomputed from the same field context the lens uses, so the panel, the lens colours, and the
+// recomputed from the same field context the lens uses, so the panel, the lens colors, and the
 // dashboard always agree. Loaded as its own <UIScripts> entry so it runs in the HUD context.
 
 import { registerLensHoverPanel, cityTitle } from "/emigration/ui/emigration-lens-hover-panel.js";
@@ -25,7 +25,7 @@ const BAND_LABELS = Object.freeze({
   flourishing: ["LOC_EMIG_PROS_BAND_FLOURISHING", "Flourishing"],
   thriving: ["LOC_EMIG_PROS_BAND_THRIVING", "Thriving"],
   ordinary: ["LOC_EMIG_PROS_BAND_ORDINARY", "Ordinary"],
-  meagre: ["LOC_EMIG_PROS_BAND_MEAGRE", "Meagre"],
+  meagre: ["LOC_EMIG_PROS_BAND_MEAGRE", "Meager"],
   blighted: ["LOC_EMIG_PROS_BAND_BLIGHTED", "Blighted"]
 });
 
@@ -49,7 +49,7 @@ function tierLabel(t) {
 }
 
 /**
- * A deviation as a signed percentage, the same figure the settlement's fill colour is mixed from.
+ * A deviation as a signed percentage, the same figure the settlement's fill color is mixed from.
  * @param {number} t Normalized deviation in [-1, 1].
  * @returns {string} e.g. "+62%".
  */
@@ -77,7 +77,7 @@ function pressures(s) {
 
 /**
  * Per-pass field context: the prosperity mean + max spread over EVERY observable settlement, so the
- * hovered city's standing is measured against the same field the lens colours against.
+ * hovered city's standing is measured against the same field the lens colors against.
  * @param {*[]} signals All collected CitySignals.
  * @returns {{ctx:*, mean:number, spread:number}} The snapshot.
  */
@@ -125,12 +125,12 @@ const GENERIC = Object.freeze({
 
 /**
  * The panel text per term kind: the LOC key, its English, and how the term fills the placeholder (a thing's name,
- * a neighbour count, or the raw yield). A kind with no entry falls back to the thing's name alone.
+ * a neighbor count, or the raw yield). A kind with no entry falls back to the thing's name alone.
  * @type {Record<string, [string, string, "name"|"count"|"amount"|null]>}
  */
 const TERM_TEXT = Object.freeze({
   wonder: ["LOC_EMIG_PROS_T_WONDER", "{1_Name}, a wonder", "name"],
-  cityCenter: ["LOC_EMIG_PROS_T_CENTER", "City centre", null],
+  cityCenter: ["LOC_EMIG_PROS_T_CENTER", "City center", null],
   quarter: ["LOC_EMIG_PROS_T_QUARTER", "A completed quarter", null],
   yield: ["LOC_EMIG_PROS_T_YIELD", "Yield on this tile ({1_Yield})", "amount"],
   river: ["LOC_EMIG_PROS_T_RIVER", "River", null],
@@ -138,11 +138,11 @@ const TERM_TEXT = Object.freeze({
   adjacentWonder: ["LOC_EMIG_PROS_T_ADJ_WONDER", "Wonder next door × {1_Count}", "count"],
   adjacentNaturalWonder: ["LOC_EMIG_PROS_T_ADJ_NATURAL", "Natural wonder next door × {1_Count}", "count"],
   pillaged: ["LOC_EMIG_PROS_T_PILLAGED", "{1_Name}, pillaged", "name"],
-  adjacentPillaged: ["LOC_EMIG_PROS_T_ADJ_PILLAGED", "Pillaged neighbour × {1_Count}", "count"]
+  adjacentPillaged: ["LOC_EMIG_PROS_T_ADJ_PILLAGED", "Pillaged neighbor × {1_Count}", "count"]
 });
 
 /**
- * The placeholder value for a term's text: the named thing, the neighbour count, or the raw yield.
+ * The placeholder value for a term's text: the named thing, the neighbor count, or the raw yield.
  * @param {import("/emigration/ui/emigration-tile-score.js").TileTerm} t The term.
  * @param {"name"|"count"|"amount"|null} mode Which value the text takes. @param {string} thing The named thing.
  * @returns {string} The argument ("" when the text has no placeholder).
@@ -172,7 +172,7 @@ export function termLabel(t) {
 }
 
 /**
- * The rows for the hovered TILE: its band and score in the colour the lens painted it, then one row per term that
+ * The rows for the hovered TILE: its band and score in the color the lens painted it, then one row per term that
  * fired, so the number explains itself. Empty for a tile the lens doesn't paint (empty sea).
  * @param {{x:number, y:number}} plot The hovered plot.
  * @returns {{color:string, name:string, value:string}[]} The rows.
@@ -189,7 +189,7 @@ export function tileRows(plot) {
 
 /**
  * Turn the hovered TILE into the panel: the tile's band, score and every term behind it (the very number the lens
- * coloured it from, so the panel and the colour can never disagree), then the settlement's standing in the world
+ * colored it from, so the panel and the color can never disagree), then the settlement's standing in the world
  * and any pressure rows.
  * @param {*} sig The hovered settlement's CitySignal.
  * @param {{ctx:*, mean:number, spread:number}|null} snap The per-pass field snapshot.
@@ -209,7 +209,7 @@ function resolve(sig, snap, plot) {
   });
   for (const pr of pressures(sig)) rows.push({ color: PRESSURE_HEX, name: pr, value: "" });
   // Join with an explicit space and a trimmed suffix: the game's text loader strips a localized string's leading
-  // whitespace, so " · this tile" arrived as "· this tile" and the title read "London· this tile" (mod test 85).
+  // whitespace, so " · this tile" arrives as "· this tile".
   const suffix = hasTile ? loc("LOC_EMIG_PROS_TILE_SUFFIX", " · this tile").trim() : "";
   const title = cityTitle(sig.city, "Prosperity") + (suffix ? " " + suffix : "");
   return { title, rows };
@@ -219,9 +219,8 @@ function resolve(sig, snap, plot) {
 try {
   registerLensHoverPanel({
     lens: LENS, panelId: "emig-prospanel", styleId: "emig-prospanel-style", buildSnapshot, resolve,
-    // Feature L: the prosperity lens is the "who is doing well / badly?" surface, so the push/pull
-    // cause stack belongs under it - it answers the follow-up question the colour raises. No-op when
-    // the explainer option is off.
+    // The prosperity lens is the "who is doing well / badly?" surface, so the push/pull cause stack
+    // belongs under it. No-op when the explainer option is off.
     decorate: (panel, sig) => mountExplain(panel, sig.city)
   });
 } catch (e) {

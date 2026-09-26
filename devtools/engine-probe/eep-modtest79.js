@@ -1,7 +1,7 @@
 // eep-modtest79.js - watch the per-city Prosperity lens up close. Mod test 78 measured the fix at the data level
-// (largest colour bucket 28% of plots, down from 63%; 70 tiles at full green), but the wide camera over London could
+// (largest color bucket 28% of plots, down from 63%; 70 tiles at full green), but the wide camera over London could
 // not show a 0.6-alpha tint on textured terrain. This points the camera at the local civ's best and worst tile (scored
-// the way the lens scores them, per settlement) with the lens on, so the colour is legible, and logs both tiles.
+// the way the lens scores them, per settlement) with the lens on, so the color is legible, and logs both tiles.
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 const TAG = "[EmigTest]";

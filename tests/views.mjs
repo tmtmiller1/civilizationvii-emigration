@@ -388,7 +388,7 @@ function testChipLabelNamesTheDirection() {
   // An arrival (not the player's own loss) is immigration.
   assert.equal(chipLabel({ kind: "digest", cause: "prosperity", ownLoss: false, crossCiv: true }),
     "Immigration (Arriving)");
-  // A death is "Casualties"; a chronicle entry is "Chronicle"; world-news kinds keep the flavour label.
+  // A death is "Casualties"; a chronicle entry is "Chronicle"; world-news kinds keep the flavor label.
   assert.equal(chipLabel({ kind: "digest", cause: "attrition", ownLoss: true }), "Casualties");
   assert.equal(chipLabel({ kind: "chronicle", cause: "chronicle" }), "Chronicle");
   assert.equal(chipLabel({ kind: "crisis", cause: "war" }), "War");
@@ -403,7 +403,7 @@ function testRowAccentColoursByDirection() {
   assert.equal(rowAccent({ kind: "digest", cause: "prosperity", ownLoss: false, crossCiv: true }), green);
   assert.equal(rowAccent({ kind: "digest", cause: "war", ownLoss: true, crossCiv: true }), red);
   assert.equal(rowAccent({ kind: "digest", cause: "prosperity", ownLoss: true, crossCiv: false }), neutral);
-  // The direction colour overrides cause: an INTERNAL war relocation is neutral, not war-red and not green.
+  // The direction color overrides cause: an INTERNAL war relocation is neutral, not war-red and not green.
   assert.equal(rowAccent({ kind: "digest", cause: "war", ownLoss: true, crossCiv: false }), neutral);
   assert.notEqual(neutral, green);
 }

@@ -7,7 +7,7 @@
 // (GameplayMap / Districts / MapConstructibles / Game) and seed the composition ledger, then assert:
 //   1. degenerate settlements (no location / untracked / no plots) → null, no throw;
 //   2. the happy path yields one tile per readable plot, a key→tile map, and the composition;
-//   3. density tracks district class (city-centre ≫ wilderness) and the build-up bonus;
+//   3. density tracks district class (city-center ≫ wilderness) and the build-up bonus;
 //   4. a minority still reads on at least one tile end-to-end (lens ↔ tooltip agree);
 //   5. unreadable map globals degrade to the rural default instead of throwing;
 //   6. the per-settlement cache memoizes within a turn and recomputes when the turn advances;
@@ -90,7 +90,7 @@ const tileAt = (res, x, y) => res.byKey.get(x + "," + y);
   assert.ok(res.byKey.has("0,0") && res.byKey.has("4,4"), "byKey is keyed by 'x,y'");
   assert.equal(res.comp.dominant.civ, 0, "the composition rides along for the tooltip");
   assert.ok(res.tiles.every((t) => t.primary === 0 && t.shares.length === 1),
-    "a single-origin city paints every tile its one colour");
+    "a single-origin city paints every tile its one color");
 
   const center = tileAt(res, 0, 0); // CITY_CENTER, no build-up
   const urban = tileAt(res, 1, 0); // URBAN + 3 constructibles
@@ -99,10 +99,10 @@ const tileAt = (res, x, y) => res.byKey.get(x + "," + y);
   const thrown = tileAt(res, 4, 4); // both reads threw → rural default, 0 build-up
 
   // CITY_CENTER (3.6) ≫ WILDERNESS (0.4): the urban core holds far more people and reads more vivid.
-  assert.ok(center.people > wild.people * 5, "the city centre carries far more people than wilderness");
+  assert.ok(center.people > wild.people * 5, "the city center carries far more people than wilderness");
   assert.ok(center.density > wild.density, "denser tile → higher opacity");
   // Build-up bonus: URBAN(2.4)×(1+0.18·3)=3.70 edges out even the bare CITY_CENTER(3.6).
-  assert.ok(urban.people > center.people, "a built-up urban tile out-weighs the bare centre (build-up bonus)");
+  assert.ok(urban.people > center.people, "a built-up urban tile out-weighs the bare center (build-up bonus)");
   // Unknown-district and read-error tiles both fall back to the rural weight (1.0), above wilderness.
   // (rural here also carries a small build-up bonus, so: wilderness 0.4 < thrown 1.0 < rural 1.36.)
   assert.ok(rural.people > wild.people, "an unknown district class falls back to rural (> wilderness)");
@@ -183,13 +183,13 @@ const tileAt = (res, x, y) => res.byKey.get(x + "," + y);
 
 // ── 8. A standing enclave pins its diaspora's cluster onto the enclave tile ───
 // The enclave tile is picked by a land rule in emigration-enclave-place.js that knows nothing about the
-// lens's hash anchor, so without the pin the colour patch and the enclave's on-map marker could name
+// lens's hash anchor, so without the pin the color patch and the enclave's on-map marker could name
 // different tiles. Drives the REAL bridge: a persisted quarter record → enclaveStanding → the anchor.
 {
   const ENCLAVE = "IMPROVEMENT_EMIG_ENCLAVE_CARTHAGE";
   const PIN_PLOT = 4; // → (2,2); the hash anchor for civ 2 lands elsewhere (asserted below)
 
-  // A quarter record for Rome (keyed by the settlement CENTRE) whose placed tile stands on PIN_PLOT.
+  // A quarter record for Rome (keyed by the settlement CENTER) whose placed tile stands on PIN_PLOT.
   const quarters = (placed) => JSON.stringify({
     v: 1,
     data: {

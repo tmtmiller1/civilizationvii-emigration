@@ -84,8 +84,8 @@ export function consumeSourcePoint(src, cause) {
 
 /**
  * Who is leaving, as origin civ → fraction: a held refugee is their own recorded origin; anyone else is a
- * slice of the source settlement's mix (ethnicity audit item 2). Undefined when the mix is unreadable, and
- * the ledger then counts the migrant as the source owner's people, as it always did.
+ * slice of the source settlement's mix. Undefined when the mix is unreadable, and the ledger then
+ * counts the migrant as the source owner's people.
  * @param {*} src Source signal.
  * @param {{fromPool:boolean, originCiv?:number}} consumed Where the point came from.
  * @returns {Record<string, number>|undefined} The mix.
@@ -176,7 +176,7 @@ export function settleRefugeePools(ranked, state) {
       }
       sig.rural += 1;
       sig.population += 1;
-      bumpRefugeesSettled(1); // P0.4 pool-outflow telemetry
+      bumpRefugeesSettled(1); // pool-outflow telemetry
       budget--;
     }
   }

@@ -1,16 +1,9 @@
 // emigration-disasters.js
 //
-// Per-city "disaster distress" - environmental events (flood, volcano, plague, …) as a
-// migration driver (climate / disaster refugees), parallel to the violence model. The
-// distress accumulates and decays each turn, and feeds a situational prosperity penalty
-// so a struck city sheds population.
-//
-// Fog-independence (matching the rest of the mod): the canonical, always-readable signal
-// is `city.isInfected` (the base game's outbreak flag - an infected city already stops
-// growing and emits migrants), polled for every met city. Event-driven disasters
-// (RandomEventOccurred) front-run this with a severity-scaled spike via `recordDisaster`,
-// used mainly for the local player's feedback/notification; the poll is the source of
-// truth. State persists in GameConfiguration.
+// Per-city "disaster distress" - environmental events (flood, volcano, plague, …) as a migration
+// driver, parallel to the violence model. Distress accumulates and decays each turn and feeds a
+// situational prosperity penalty. The polled `city.isInfected` flag is the fog-independent source of
+// truth; RandomEventOccurred front-runs it with a spike via `recordDisaster`. Persists in GameConfiguration.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { speedDecay, speedShock } from "/emigration/ui/emigration-game-speed.js";
@@ -125,9 +118,8 @@ function normalizeState(parsed) {
 
 /**
  * Per-event-class distress CEILING, the spike a FULL-IMPACT (m=1) event of this class lands. The
- * measured impact factor m ∈ [0,1] picks where inside that band the actual event sits (see
- * {@link disasterSpike}), so a harmless storm lands near 0 and a class can never out-punish a heavier
- * one. (Legacy fail-safe path reads this as the old severity-1 weight that severity multiplies.)
+ * measured impact factor m picks where inside that band the event sits (see {@link disasterSpike}).
+ * The legacy fail-safe path reads this as a severity-1 weight that severity multiplies.
  * @type {Record<string, number>}
  */
 const CLASS_WEIGHT = {
@@ -205,10 +197,8 @@ function persist() {
 function keyFromCID(cid) {
   try {
     if (!cid) return null;
-    // Prefer the owner:id pair directly off the component id (the fields the rest of the mod keys
-    // on). ComponentID.toBitfield does NOT reliably yield a number/string for a CITY component id,
-    // it returned a non-primitive here, so this returned null and the disaster model silently
-    // recorded distress for NO city (affectedCities=0). Fall back to the bitfield if owner:id absent.
+    // Prefer the owner:id pair directly off the component id. ComponentID.toBitfield does NOT
+    // reliably yield a number/string for a CITY component id, so it is only the fallback.
     if (typeof cid.owner === "number" && cid.id != null) return cid.owner + ":" + cid.id;
     if (typeof ComponentID !== "undefined") {
       const bf = ComponentID.toBitfield(cid);
@@ -269,9 +259,8 @@ function shape(m) {
 
 /**
  * The per-event distress SPIKE for one struck city: type-ceiling × shaped measured impact, then the
- * one-shot speed-shock (÷S) so slow speeds pay the same TOTAL bite. Either transform is independently
- * flag-gated; with both master flags off this is exactly the legacy `CLASS_WEIGHT × severity`. Exposed
- * so the spike (separate from accumulation/cap) is directly testable.
+ * one-shot speed-shock (÷S). Either transform is independently flag-gated; with both off this is
+ * `CLASS_WEIGHT × severity`.
  * @param {string} eventClass The event's CLASS_* string.
  * @param {number} m Measured impact factor in [0,1] (used when impact-scaling is on).
  * @param {number} [severity] Coarse severity (>= 1), used only on the legacy fall-back path.
@@ -328,7 +317,7 @@ function stampDisaster(s, key, w, type) {
 /**
  * The RandomEventType of the most recent disaster that struck a city (for cause attribution), or
  * null. Cleared when the city's distress decays away (see tickDisasters).
- * @param {string} cityKey The city key.
+ * @param {string} cityKey
  * @returns {string|null} The event type, or null.
  */
 export function disasterTypeFor(cityKey) {
@@ -348,10 +337,8 @@ function ownerOfKey(key) {
 }
 
 /**
- * The RandomEventType of the WORST disaster currently afflicting any of `owner`'s cities, the one
- * carrying the most distress right now, for naming that civ's refugee crisis. Returns the disaster
- * actually striking THAT civ, not the globally most-recent event (which could be a flood on another
- * continent), so a "Greek refugee crisis" names the Greek disaster. Null when none is active.
+ * The RandomEventType of the WORST disaster currently afflicting any of `owner`'s cities (the most
+ * distress right now), for naming that civ's refugee crisis. Null when none is active.
  * @param {number} owner Owner player id.
  * @returns {string|null} The event type, or null.
  */
@@ -379,8 +366,8 @@ export function worstDisasterTypeForOwner(owner) {
 export function addDistress(cityKey, amount) {
   if (!CONFIG.disastersEnabled || !cityKey || !(amount > 0)) return;
   const s = state();
-  // F3: clamp to disasterAccumCap like stampDisaster, so repeated migrant-borne
-  // plague can't push stored distress above the cap (and decay back slower).
+  // Clamp to disasterAccumCap like stampDisaster, so repeated migrant-borne plague can't push
+  // stored distress above the cap.
   const cap = CONFIG.disasterAccumCap;
   const cur = s.byCity[cityKey] || 0;
   s.byCity[cityKey] = cap > 0 ? Math.min(cap, cur + amount) : cur + amount;
@@ -396,8 +383,8 @@ export function tickDisasters() {
   if (!CONFIG.disastersEnabled) return;
   const s = state();
   const turn = gameTurn();
-  // F1: rebase the decay clock down when Game.turn resets at an age boundary, so distress
-  // decay resumes in the new age instead of freezing until the turn climbs back.
+  // Rebase the decay clock down when Game.turn resets at an age boundary, so distress decay
+  // resumes in the new age instead of freezing until the turn climbs back.
   if (turn < s.decayTurn) s.decayTurn = turn;
   const elapsed = Math.max(0, turn - s.decayTurn);
   if (elapsed > 0) {

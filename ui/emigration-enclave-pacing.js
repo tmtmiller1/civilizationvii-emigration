@@ -1,22 +1,14 @@
 // emigration-enclave-pacing.js
 //
-// PER-AGE PACING of Cultural Enclave formation, so a host civilization sees an enclave a reasonable number
-// of times an age: at least one is made likely, more than the cap is impossible. The controller works on
-// the OUTCOME, not on one input (integration, share, dwell) tuned blind:
+// PER-AGE PACING of Cultural Enclave formation: at least one per host per age is made likely, more
+// than the cap is impossible.
 //
 //   relax = quarterPacingMax x clamp(ageProgress / quarterPacingBy, 0, 1)   while formedThisAge < target
 //   relax = 0                                                                 once the target is met
 //   blocked                                                                   once formedThisAge >= cap
 //
-// `relax` lowers every formation bar in proportion: the established share, the scaled size bar, and the
-// dwell period all become bar x (1 - relax). With the defaults (max 0.4, by 0.6), a host that has formed
-// nothing by 60% of the age is measured against 60% bars for the rest of it (0.30 share reads 0.18, a
-// six-point size bar reads 3.6, eight dwell turns read five). The moment an enclave forms, the bars are
-// back to full. The cap (`quarterCapPerAge`) closes the age for that host. Age progress is the engine's
-// own progression points (the same read the Demographics scaler uses), so the pacing follows the real
-// length of the age at any speed; when unreadable, relax is 0 and the plain bars apply.
-//
-// Pure over its inputs where it matters (`pacingRelax`); the live readers are thin and self-guarding.
+// `relax` lowers every formation bar (established share, size bar, dwell period) to bar x (1 - relax).
+// Age progress is the engine's own progression points; when unreadable, relax is 0.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { formedThisAge } from "/emigration/ui/emigration-quarter-state.js";
@@ -49,7 +41,7 @@ export function pacingRelax(formed, target, progress, cfg) {
 }
 
 /**
- * A bar reduced by the relaxation. Pure. @param {number} bar The bar. @param {number} relax The relaxation.
+ * A bar reduced by the relaxation. Pure. @param {number} bar @param {number} relax The relaxation.
  * @returns {number} bar x (1 - relax), never below 0.
  */
 export function relaxedBar(bar, relax) {

@@ -105,7 +105,7 @@ const { __test: dia } = await import("/emigration/ui/emigration-diaspora.js");
   const { __test: q } = await import("/emigration/ui/emigration-quarter.js");
   globalThis.Game = { age: 1, turn: 40 };
   const option = { id: "a", label: "Embrace", benefitYield: "YIELD_CULTURE", penaltyYield: "YIELD_HAPPINESS" };
-  const quarter = { civ: 4, owner: 9, name: "Ostia", where: "by the harbour" };
+  const quarter = { civ: 4, owner: 9, name: "Ostia", where: "by the harbor" };
 
   // A legacy record (saved before the flag existed) was created at recognition: it reads as recognized.
   state.putQuarter("1,1", { civ: 4, owner: 9, optionId: "a", turn: 3, applied: {}, contested: false, contestedTurn: -999 });

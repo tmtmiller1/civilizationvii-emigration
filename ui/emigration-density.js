@@ -1,72 +1,24 @@
 // emigration-density.js
 //
-// Resolution-aware "density" stylesheet for the Emigration dashboard.
-//
-// WHY THIS EXISTS
-// ---------------
-// Civilization VII's UI scales rem with resolution via core/ui/themes/default/
-// global-scaling.js: `html { font-size: basis * 18px }`, where the basis FLOORS
-// at 1.0 for any window height <= ~1333px. So at the canonical resolutions
-// (1080p / 1440p / 2160p) the viewport is always ~60rem tall, the size this
-// dashboard was designed against, but on a sub-1080p laptop (1366x768,
-// 1600x900) the font stays pinned at 18px and the viewport is only ~40-50rem
-// tall.
-//
-// Every fixed-rem piece of chrome (the screen title, the tab bar, the control
-// pill rows, the card headers and paddings) keeps its rem size, so at a short
-// viewport that chrome eats a far larger share of the column and squeezes the
-// flex-grow content (most visibly the 2:1 network / flow diagram, which then
-// auto-fits into a sliver). The flex chain itself is sound; the problem is
-// purely that the chrome doesn't get out of the way when vertical space is
-// scarce.
-//
-// THE RESPONSE IS PURE CSS, no JavaScript controller, no re-render. The
-// stylesheet below combines two layers (see the comment on DENSITY_CSS): the
-// fixed-rem CONTENT scales continuously with clamp(), and the small surrounding
-// CHROME steps at two `@media (max-height: …rem)` breakpoints. The rem unit in
-// the media query tracks the engine's scaled root font, so the breakpoints
-// respond to BOTH resolution and the Interface Size accessibility setting,
-// exactly as the base game's own screens do (advisor-screen, pause-menu and
-// load-screen all adapt with @media (max-height: …rem)). The same stylesheet is
-// injected for the standalone screen and the Demographics-embedded Migration
-// page, so both inherit the right spacing with no wiring.
+// Resolution-aware "density" stylesheet for the Emigration dashboard. The engine's root font floors
+// at 18px below ~1333px window height, so on a sub-1080p viewport (~40-50rem tall) the fixed-rem
+// chrome squeezes the flex-grow content. Pure CSS response, in two layers: per-tab CONTENT scales
+// continuously with clamp(), and the shared CHROME steps at two `@media (max-height: …rem)`
+// breakpoints (rem tracks the scaled root font, so they respond to Interface Size too).
 
 // ────────────────────────────────────────────────────────────────────────────
 // DENSITY STYLESHEET
 //
-// The compaction rules. They live here (rather than inline in
-// emigration-views.js) so the dashboard view module stays under its line budget,
-// and so all resolution logic sits in one place. Appended to DASH_CSS in
-// emigration-views.js, so these rules come AFTER the base sheet and win ties.
-//
-// Two layers:
-//   1. PER-TAB CONTENT, each tab's fixed-rem displays (ledger/pressure tables,
-//      the explicit-rem Cause pies, Policy stance type, the Guide). These scale
-//      CONTINUOUSLY with viewport height via clamp(floor, K·vh, canonical) so
-//      they never "jump" at a threshold; the network diagram auto-fits itself.
-//      Unconditional, keyed under `.emig-dash`, recomputed live on every resize.
-//   2. SHARED CHROME, the dashboard's own frame (tabs, control rows, cards,
-//      section titles, tabbody max-height) plus a few per-tab spacing nudges.
-//      These STEP at two `@media (max-height: …rem)` breakpoints, small
-//      inter-block nudges the eye can't resolve. rem in the query tracks the
-//      engine's scaled root font, so the steps fire on a short viewport OR a
-//      larger Interface Size, matching the base game's own screens. The micro
-//      block (≤44rem) cascades on top of the compact block (≤54rem); both apply
-//      below 44rem and micro wins by source order.
-//
-// Every selector is scoped under `.emig-dash` (present on the dashboard root in
-// BOTH the standalone screen and the Demographics-embedded page) so it covers
-// both contexts and keeps the specificity that out-specifies the base sheet.
-// Only spacing / font-size is touched, never structure or data.
+// Appended to DASH_CSS in emigration-views.js, so these rules come AFTER the base sheet and win ties.
+// Every selector is scoped under `.emig-dash` (present on the dashboard root in both the standalone
+// screen and the Demographics-embedded page). Only spacing / font-size is touched, never structure.
+// The micro block (≤44rem) cascades on top of the compact block (≤54rem); micro wins by source order.
 // ────────────────────────────────────────────────────────────────────────────
 export const DENSITY_CSS =
   // ── Per-tab CONTENT, FLUID (continuous) sizing ───────────────────────────
-  // Each tab's FIXED-size content scales fluidly with available viewport height
-  // via clamp(floor, K·vh, canonical): canonical at 1080p+ (K = canonical / 0.6,
-  // and the engine keeps every design resolution ~60rem tall) easing to a
-  // readable floor as the window shortens, no buckets, recomputed live on every
-  // resize. The canvas pies draw at a fixed 320px bitmap and are only DISPLAYED
-  // at this size, so CSS rescales them with no redraw.
+  // Fixed-size content scales with viewport height via clamp(floor, K·vh, canonical), K = canonical /
+  // 0.6 since every design resolution is ~60rem tall. The canvas pies draw at a fixed 320px bitmap and
+  // are only DISPLAYED at this size, so CSS rescales them with no redraw.
   ".emig-dash .emig-led-c{font-size:var(--dg-fs-120);}" +
   ".emig-dash .emig-pr-c{font-size:var(--dg-fs-105);}" +
   ".emig-dash .emig-led-bar{height:clamp(0.6rem,1.17vh,0.7rem);}" +

@@ -51,7 +51,7 @@ const cities = __test.state().cities;
 assert.equal(cities["2,2"], undefined, "a razed settlement leaves the ledger on the next pass");
 assert.ok(cities["3,3"], "a standing but unscanned settlement keeps its entry");
 
-// A razed plot later covered by a NEIGHBOUR's territory: the lookup finds a city, but not one centred there.
+// A razed plot later covered by a NEIGHBOR's territory: the lookup finds a city, but not one centered there.
 standing.set("1,1", { id: 1, location: { x: 1, y: 1 }, owner: 0 });
 _turn = 12;
 __test.recordCompositionPass([sig(1, 1, "Rome", 0, 10), sig(3, 3, "Taksasila", 0, 4)], []);

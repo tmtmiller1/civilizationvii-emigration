@@ -1,16 +1,10 @@
 // emigration-dilemma.js
 //
 // Refugee DILEMMAS: the rare moment when a great wave of refugees reaches your lands and you pause for
-// a short decision. Deliberately uncommon (a hard per-age cap plus a long cooldown) and triggered only
-// by genuine upheavals the rest of the mod already detects:
-//   • a neighbour's CONQUEST SPREE (one civ taking several cities in a short span), whose victims flee
-//     toward you;
-//   • a PLAGUE crisis emptying a neighbour's cities, the survivors arriving at your gates.
-//
-// The choices use only the effects a UI mod can actually apply: a small one-time gold cost (grantYield)
-// and settling a population point into one of your cities (addRural). Effects are light and
-// flavour-first. The whole feature is gated by the Options toggle (getDilemmasEnabled) and never
-// affects the simulation. State (the spree tracker + the throttle) persists in GameConfiguration.
+// a short decision, triggered by a neighbor's CONQUEST SPREE or a PLAGUE crisis and throttled by a
+// per-age cap plus a long cooldown. The choices apply light effects (a one-time gold cost via
+// grantYield, a settled population point via addRural); the feature is gated by getDilemmasEnabled
+// and never affects the simulation. State persists in GameConfiguration.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { getDilemmasEnabled } from "/emigration/ui/emigration-settings.js";
@@ -37,12 +31,9 @@ const MAX_SPREE_CIVS = 64;
 const MAX_SPREE_EVENTS_PER_CIV = 32;
 
 /**
- * The choices offered, each with a one-line flavour cue (`note`, the button's hover tooltip) and its concrete
- * costs in the button caption itself, built from the live CONFIG costs (so the displayed trade-off tracks the
- * player's tunables). Same caption shape as the call-home pop-up: the yield icon, then the amount; the
- * gain first, then the costs. Built at
- * call time (not module-eval) so loc() resolves after Locale is live (L2) — mirrors
- * emigration-quarter-registry.js.
+ * The choices offered, each with a one-line flavor cue (`note`, the button's hover tooltip) and its
+ * concrete costs in the button caption, built from the live CONFIG costs. Same caption shape as the
+ * call-home pop-up. Built at call time (not module-eval) so loc() resolves after Locale is live.
  * @returns {{id:string, label:string, note:string}[]} The offered choices.
  */
 function choices() {
@@ -276,7 +267,7 @@ function recordCaptures(s, conquests, turn) {
 /**
  * Whether a fresh dilemma may fire now: under the per-age cap and past the cooldown. Resets the cap
  * count when the age has advanced.
- * @param {{age:number, count:number, lastTurn:number}} s State. @param {number} turn Now. @param {number} age Age.
+ * @param {{age:number, count:number, lastTurn:number}} s State. @param {number} turn Now. @param {number} age
  * @returns {boolean} True when a dilemma may fire.
  */
 function canFire(s, turn, age) {
@@ -310,7 +301,7 @@ function detectConquestDilemma(s, me) {
 
 /**
  * Sum this pass's disaster-cause migration points per NON-local civ (the survivors fleeing each
- * stricken neighbour).
+ * stricken neighbor).
  * @param {*[]} migrations The pass's migrations. @param {number} me Local player id.
  * @returns {Map<number, number>} Disaster points by source civ.
  */
@@ -493,11 +484,9 @@ function forcedDescriptor(signals, me) {
 }
 
 /**
- * TEST HOOK — fire a REAL refugee dilemma now, with its REAL applied effects (gold/happiness/influence
- * cost + settling a population point), spoofing only the trigger. Reads live city signals + the local
- * player and runs the exact production path (fireDilemma → showDilemma → applyChoice), so a self-test can
- * confirm end-to-end that a choice actually moves yields. Gated by the Options toggle like the real
- * trigger; never throws.
+ * TEST HOOK — fire a REAL refugee dilemma now, with its REAL applied effects, spoofing only the
+ * trigger. Runs the exact production path (fireDilemma → showDilemma → applyChoice) on live city
+ * signals. Gated by the Options toggle like the real trigger; never throws.
  * @returns {boolean} Whether it fired.
  */
 export function fireRealDilemmaForTest() {

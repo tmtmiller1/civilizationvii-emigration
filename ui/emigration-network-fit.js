@@ -1,11 +1,8 @@
 // emigration-network-fit.js
 //
-// Viewport-fit sizing for the network / flow diagram's 2:1 stage. The stage holds its 2:1 aspect
-// (height = width / 2) via padding-bottom, so its height is driven by setting maxWidth = 2 × budget;
-// `width:100%` still caps it to the panel width, so on a narrow panel it stays width-bound. This lets
-// the diagram fill a tall, high-resolution window instead of leaving an empty band beneath it, while
-// still shrinking to fit small resolutions. Shared by the dot (network) and flow views, both of which
-// build their chrome through emigration-network-viz.js.
+// Viewport-fit sizing for the network / flow diagram's 2:1 stage. The stage holds its aspect via
+// padding-bottom, so its height is driven by setting maxWidth = 2 × budget (`width:100%` still caps
+// it on a narrow panel). Shared by the dot (network) and flow views.
 
 const STAGE_BOTTOM_PAD = 14; // px kept clear below the diagram + its legend/timeline
 const STAGE_MIN_W = 360;     // px floor so a very short viewport still shows a usable chart
@@ -54,11 +51,8 @@ function nearestClipBox(stage, getStyle) {
 
 /**
  * The bottom edge (viewport CSS px) that actually BOUNDS the stage: the nearest scrollable / clipped
- * ancestor (the dashboard's `.emig-tabbody`, capped at max-height:74vh, or the screen body), less its
- * bottom padding, clamped to the viewport. The diagram lives inside that box, so it must fit above
- * this line or it spills past the panel, measuring the viewport bottom instead (the old behaviour)
- * over-budgets the stage on a near-fullscreen modal and clips the lowest clusters. Falls back to the
- * viewport bottom when no bounding ancestor is found.
+ * ancestor (the dashboard's `.emig-tabbody` or the screen body), less its bottom padding, clamped to
+ * the viewport. Falls back to the viewport bottom when no bounding ancestor is found.
  * @param {HTMLElement} stage The 2:1 stage. @returns {number} The bounding bottom in CSS px.
  */
 function boundingBottom(stage) {
@@ -80,7 +74,7 @@ function boundingBottom(stage) {
 /**
  * Total px height of the wrapper children that sit BELOW the stage (legend, timeline, caption).
  * @param {HTMLElement} wrap The viz wrapper.
- * @param {HTMLElement} stage The stage.
+ * @param {HTMLElement} stage
  * @returns {number} The summed height in px.
  */
 function heightBelowStage(wrap, stage) {
@@ -117,11 +111,8 @@ function fitStageToViewport(wrap, stage) {
 }
 
 // The single live stage to keep fitted on resize, and whether the one shared resize listener is bound.
-// Only one network/flow diagram is on screen at a time, and the view is torn down + rebuilt on every
-// tab switch / Dots⟷Flow toggle / Units rebuild. A per-call listener would accumulate on globalThis
-// (it can only self-remove when a resize later fires), leaking handlers + detached DOM for the whole
-// session and causing a reflow burst on the next resize. Instead we bind ONE listener for the module's
-// lifetime and just repoint it at the newest stage; a superseded stage is simply forgotten.
+// Only one diagram is on screen at a time and the view is rebuilt on every tab switch, so ONE listener
+// for the module's lifetime is repointed at the newest stage rather than accumulating per render.
 /** @type {{wrap:HTMLElement, stage:HTMLElement}|null} */
 let _activeFit = null;
 let _resizeBound = false;
@@ -135,12 +126,8 @@ function onViewportResize() {
 
 /**
  * Schedule the fit to run once layout settles, then again after the standalone window's open
- * animation + flex layout have finished resolving. The FIRST view rendered (Dots, on open) measures
- * the `.emig-tabbody` while the 94vh frame is still growing in, so a single rAF-time fit reads a
- * not-yet-clipped (too tall → oversized, clips) box; the Flow view, mounted a moment later on the
- * toggle, catches the box mid-grow and reads it too short (undersized → empty band). Re-measuring the
- * settled, window-filling box on later passes makes BOTH views size identically. The no-op write guard
- * in fitStageToViewport makes the repeat passes free whenever nothing actually changed.
+ * animation + flex layout have finished resolving, since a single rAF-time fit measures the tabbody
+ * while the frame is still growing in. The no-op write guard makes the repeat passes free.
  * @param {*} g The global (timer/rAF host). @param {()=>void} run The guarded fit call.
  */
 function scheduleFit(g, run) {
@@ -153,10 +140,8 @@ function scheduleFit(g, run) {
 }
 
 /**
- * Fit the stage once layout settles (double rAF so the legend/timeline below it are measurable) and
- * again after the window finishes resolving, and keep it fitted across viewport resizes. Binds exactly
- * ONE shared resize listener for the module's lifetime (no per-render accumulation); each call just
- * makes `stage` the one tracked stage.
+ * Fit the stage once layout settles and again after the window finishes resolving, and keep it fitted
+ * across viewport resizes via the one shared resize listener (each call makes `stage` the tracked one).
  * @param {HTMLElement} wrap The viz wrapper.
  * @param {HTMLElement} stage The 2:1 stage holding the canvas.
  */

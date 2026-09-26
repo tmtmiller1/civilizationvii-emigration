@@ -54,7 +54,7 @@ async function run() {
   await later(4000);
   safe(() => LM.setActiveLens("emig-ethnicity-lens"));
   await later(6000);
-  emit("L active=" + J(safe(() => LM.getActiveLens(), null)) + " addPlotsCalls=" + calls + " plotsPainted=" + painted + " colours=" + J(colours));
+  emit("L active=" + J(safe(() => LM.getActiveLens(), null)) + " addPlotsCalls=" + calls + " plotsPainted=" + painted + " colors=" + J(colours));
   emit("SHOT ethnicity-lens-on");
   await later(12000);
   safe(() => LM.setActiveLens("fxs-default-lens"));

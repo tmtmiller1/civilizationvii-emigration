@@ -2,13 +2,8 @@
 //
 // A console-only diagnostic: `emigration.origins("Carthage")` dumps, for each matching settlement,
 // the RAW recorded ethnic ledger (compositionForCity's per-origin points/shares) alongside the
-// all-game inbound migration corridors that fed it (migrationFlows, with the per-cause breakdown that
-// now rides each edge). It exists to answer "why does the City Details Population-origins block show
-// origin X% for a settlement the base game shows as wholly civ Y?" — the base game has no ethnicity
-// concept, so this shows what the MOD modeled, and where it came from (immigration vs a conquest
-// baseline vs a possible mis-attribution), plus whether integration is on and who the owner is at war
-// with (a war with an origin's homeland stalls that origin's integration).
-//
+// all-game inbound migration corridors that fed it (migrationFlows, with per-cause breakdowns), plus
+// the integration context, so a surprising "Population origins" figure can be traced to its source.
 // Read-only and self-guarding; never throws into the console object that wires it.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";

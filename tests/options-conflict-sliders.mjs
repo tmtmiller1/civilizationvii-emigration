@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
 // The conflict-refugee sliders on the Options Mods tab: an overall slider made of two detail sliders. Drives the
-// real registration code through the core stub and checks the three behaviours that matter on screen: moving the
+// real registration code through the core stub and checks the three behaviors that matter on screen: moving the
 // overall slider moves and redraws both details, moving a detail redraws the overall, and the redraw -- which in
 // game makes each slider fire its own change event -- never loops back or applies a change twice.
 

@@ -1,11 +1,9 @@
 // emigration-network-paint.js
 //
-// Destination-cluster dot rendering on a 2D canvas (clean, flat ; no glow/sparks). Each
-// civilization is a CLUSTER; the migrants who arrived there are drawn as a swarm of small dots
-// packed (phyllotaxis) around the cluster centre, each dot coloured by its ORIGIN civ. So a
-// cluster shows where people went (its position/size) and where they came from (the dot colours).
-// One dot represents a scaled chunk of people (see the unit in the caption), not one person.
-// Pure drawing; the orchestrator owns layout, the dot set, state, and interaction.
+// Destination-cluster dot rendering on a 2D canvas. Each civilization is a CLUSTER; the migrants who
+// arrived there are a swarm of small dots packed (phyllotaxis) around its center, each colored by
+// its ORIGIN civ and representing a scaled chunk of people. Pure drawing; the orchestrator owns
+// layout, the dot set, state, and interaction.
 
 import { withAlpha } from "/emigration/ui/emigration-civ-colors.js";
 import { buildFlowSegments, drawFlowArrows } from "/emigration/ui/emigration-network-flow-arrows.js";
@@ -21,37 +19,34 @@ const CIV_PALETTE = [
   "#5aa9e6", "#f4a259", "#76c893", "#e5616b", "#b39ddb",
   "#c9a66b", "#7fb0d6", "#e29bbd", "#7fccc0", "#cbb994"
 ];
-// Migrant-type (cause) colours for the "Type" lens. "native" is the resident (home-grown)
-// population, drawn in each civ's own colour, shown muted-grey under the Type lens.
-// These are canvas DOT FILLS, tuned to harmonize with `CIV_PALETTE` above (brighter, e.g. war
-// #e5616b). They deliberately DIVERGE from `ACCENTS` in emigration-causes.js, which are the darker,
-// more saturated tones used for text-adjacent toast/log accents (war #d24b3e). Keep them separate; a
-// NEW cause needs a colour in BOTH maps.
+// Migrant-type (cause) colors for the "Type" lens ("native" is the home-grown population, muted
+// gray). Canvas DOT FILLS tuned to `CIV_PALETTE`; they deliberately differ from the darker text
+// `ACCENTS` in emigration-causes.js, so a NEW cause needs a color in BOTH maps.
 /** @type {Record<string,string>} */
 export const CAUSE_PALETTE = {
   war: "#e5616b", disaster: "#f4a259", unhappiness: "#b39ddb",
   prosperity: "#76c893", conquest: "#e29bbd", native: "#8a96a3", other: "#9fb6c6"
 };
 
-// Movement-scope colours for the "Movement" lens: home-grown residents vs people who moved BETWEEN
+// Movement-scope colors for the "Movement" lens: home-grown residents vs people who moved BETWEEN
 // this civ's own cities (internal) vs people who arrived from ANOTHER civ (immigrants).
 /** @type {Record<string,string>} */
 export const MOVE_PALETTE = { resident: "#6b7686", internal: "#7fb0d6", immigrant: "#f4a259" };
 
 /**
- * Civ colour by index (cycled).
+ * Civ color by index (cycled).
  * @param {number} i Index.
- * @returns {string} Hex colour.
+ * @returns {string} Hex color.
  */
 export function civColorByIndex(i) {
   return CIV_PALETTE[((i % CIV_PALETTE.length) + CIV_PALETTE.length) % CIV_PALETTE.length];
 }
 
 /**
- * Lighten a #rrggbb colour by mixing it toward white (used for the lighter intra-civ tint).
- * @param {string} hex A #rrggbb colour.
+ * Lighten a #rrggbb color by mixing it toward white (used for the lighter intra-civ tint).
+ * @param {string} hex A #rrggbb color.
  * @param {number} amt 0 (unchanged) .. 1 (white).
- * @returns {string} The lightened colour.
+ * @returns {string} The lightened color.
  */
 export function lighten(hex, amt) {
   const h = hex.replace("#", "");
@@ -104,11 +99,11 @@ function dotActive(d, state) {
  * Draw the faint per-city sub-cluster discs inside a civ circle (only once each city has been
  * founded at the current time).
  * @param {CanvasRenderingContext2D} ctx Context.
- * @param {*} c Civ centre.
+ * @param {*} c Civ center.
  * @param {number} now Current frame index.
  */
 export function drawCityDiscs(ctx, c, now) {
-  // City/town discs are a BRIGHTER shade of the civ's colour than the civ-circle fill, so they read
+  // City/town discs are a BRIGHTER shade of the civ's color than the civ-circle fill, so they read
   // as distinct patches inside it (towns dotted, cities solid).
   const fill = withAlpha(lighten(c.fillColor || "#e5d2ac", 0.18), 0.34);
   for (const city of c.cities || []) {
@@ -126,10 +121,10 @@ export function drawCityDiscs(ctx, c, now) {
 }
 
 /**
- * Draw a civ's boundary circle: a translucent fill in the civ's own (readable) colour, then a solid
+ * Draw a civ's boundary circle: a translucent fill in the civ's own (readable) color, then a solid
  * gold stroke a little thicker than the city/town lines.
  * @param {CanvasRenderingContext2D} ctx Context.
- * @param {*} c Civ centre.
+ * @param {*} c Civ center.
  */
 export function drawCivCircle(ctx, c) {
   if (!(c.clusterR > 0)) return;
@@ -148,7 +143,7 @@ export function drawCivCircle(ctx, c) {
 /**
  * Draw the civ boundary discs plus their city sub-discs behind the dots.
  * @param {CanvasRenderingContext2D} ctx Context.
- * @param {*} scene Scene.
+ * @param {*} scene
  */
 function drawClusterDiscs(ctx, scene) {
   const now = typeof scene.state.frameIdx === "number" ? scene.state.frameIdx : Infinity;
@@ -163,7 +158,7 @@ function drawClusterDiscs(ctx, scene) {
 /**
  * Ring the selected city's disc in gold so the selection reads at a glance.
  * @param {CanvasRenderingContext2D} ctx Context.
- * @param {Scene} scene Scene.
+ * @param {Scene} scene
  */
 function drawCityFocusRing(ctx, scene) {
   const fc = scene.state.focusCity;
@@ -180,7 +175,7 @@ function drawCityFocusRing(ctx, scene) {
   ctx.stroke();
 }
 
-// Event-cause colours (also used by the timeline badges below).
+// Event-cause colors (also used by the timeline badges below).
 /** @type {Record<string,string>} */
 const EVENT_COLOR = { disaster: "#e0913c", war: "#e5616b" };
 const EVENT_FADE = 8; // frames the cohort highlight lingers + fades after an event ends
@@ -200,7 +195,7 @@ function eventGlow(now, d) {
 }
 
 /**
- * Ring a dot in its event's colour while that event is active (and briefly after, fading), so the
+ * Ring a dot in its event's color while that event is active (and briefly after, fading), so the
  * migrants a disaster/war drove are visually tied to its timeline popup.
  * @param {CanvasRenderingContext2D} ctx Context.
  * @param {*} d Dot (carries evKind/evFrom/evTo).
@@ -223,7 +218,7 @@ function drawEventRing(ctx, d, p, now) {
  * while a new arrival is animating in (anim.p < 1) it travels from its origin toward that slot,
  * ease-in (starts slow, accelerates into the destination) so playback shows people move.
  * @param {Dot} d Dot.
- * @param {NetworkNode} c The dot's destination centre.
+ * @param {NetworkNode} c The dot's destination center.
  * @returns {{x:number, y:number}} Canvas position.
  */
 function dotXY(d, c) {
@@ -255,9 +250,9 @@ function dotHidden(d, state, now) {
 }
 
 /**
- * Draw the migrant dots (origin-coloured) packed around their destination clusters.
+ * Draw the migrant dots (origin-colored) packed around their destination clusters.
  * @param {CanvasRenderingContext2D} ctx Context.
- * @param {Scene} scene Scene.
+ * @param {Scene} scene
  */
 function drawDots(ctx, scene) {
   const { centers, dots, state } = scene;
@@ -277,16 +272,12 @@ function drawDots(ctx, scene) {
 }
 
 /**
- * Draw one civ/place name label to match the Demographics global-relations node labels
- * (.demographics-relations-node-label): the UI BODY font (BodyFont, the same family the
- * historical-data chart labels use), weight 600, the secondary parchment colour
- * (--ia-text-secondary = #e5d2ac), and NOTHING else, no glow, no outline, no double-draw. The
- * relations labels are crisp plain text on a dark backdrop; the old soft glow + doubled fill is
- * exactly what made these read fuzzy by comparison. Crispness now comes from the Hi-DPI canvas
- * backing (makeCanvas) rendering the text at device resolution, like the DOM labels.
+ * Draw one civ/place name label to match the Demographics global-relations node labels: BodyFont,
+ * weight 600, the secondary parchment color (#e5d2ac), and nothing else (no glow, outline or
+ * double-draw); crispness comes from the Hi-DPI canvas backing (makeCanvas).
  * @param {CanvasRenderingContext2D} ctx Context.
  * @param {string} name Label text.
- * @param {number} x Centre x. @param {number} y Centre y.
+ * @param {number} x Center x. @param {number} y Center y.
  * @param {number} [size] Font px (default 15).
  */
 function drawCivLabel(ctx, name, x, y, size) {
@@ -313,8 +304,8 @@ function labelFont(size) {
 /**
  * @typedef {Object} LabelReq A label placement request.
  * @property {string} text  Label text.
- * @property {number} x     Centre x (fixed; only the y is nudged to avoid overlap).
- * @property {number} y     Preferred centre y.
+ * @property {number} x     Center x (fixed; only the y is nudged to avoid overlap).
+ * @property {number} y     Preferred center y.
  * @property {number} [size] Font px.
  * @property {number} priority Higher = placed first (anchors); lower nudges around it.
  */
@@ -331,12 +322,12 @@ function overlapsAny(b, placed) {
 }
 
 /**
- * A non-overlapping centre-y for a label: its preferred y if free, else nudged outward in 2px rings
+ * A non-overlapping center-y for a label: its preferred y if free, else nudged outward in 2px rings
  * (up first, then down) until clear. Gives up at the preferred y after a bounded search.
  * @param {(y:number)=>*} makeBox Builds the label box at a candidate y.
- * @param {number} y0 Preferred centre y.
+ * @param {number} y0 Preferred center y.
  * @param {*[]} placed Already-placed boxes.
- * @returns {number} The chosen centre y.
+ * @returns {number} The chosen center y.
  */
 function resolveY(makeBox, y0, placed) {
   if (!overlapsAny(makeBox(y0), placed)) return y0;
@@ -375,7 +366,7 @@ export function drawLabelsNoOverlap(ctx, labels) {
 /**
  * Draw destination name labels above each cluster.
  * @param {CanvasRenderingContext2D} ctx Context.
- * @param {*[]} centers Cluster centres.
+ * @param {*[]} centers Cluster centers.
  */
 function drawLabels(ctx, centers) {
   /** @type {*[]} */
@@ -395,7 +386,7 @@ function setBadgeFont(ctx) {
  * Draw one small event badge (flag + label) at a resolved position.
  * @param {CanvasRenderingContext2D} ctx Context.
  * @param {{text:string, x:number, color:string}} req The badge.
- * @param {number} y Resolved centre y.
+ * @param {number} y Resolved center y.
  */
 function drawEventBadge(ctx, req, y) {
   ctx.textAlign = "center";
@@ -412,7 +403,7 @@ function drawEventBadge(ctx, req, y) {
 /**
  * The event badges to draw at the current time: one per (cluster, event), deduplicated, anchored just below
  * their cluster.
- * @param {*} scene Scene.
+ * @param {*} scene
  * @returns {{text:string, x:number, y:number, color:string}[]} Badge requests.
  */
 export function eventBadgeRequests(scene) {
@@ -434,8 +425,8 @@ export function eventBadgeRequests(scene) {
 
 /**
  * The events whose window covers the frame the scrubber is on. With no frame index the clock reads as past every
- * window, so nothing is active (unchanged behaviour, pinned in tests/network-events.mjs).
- * @param {*} scene Scene.
+ * window, so nothing is active.
+ * @param {*} scene
  * @returns {*[]} Active events.
  */
 function activeEvents(scene) {
@@ -446,7 +437,7 @@ function activeEvents(scene) {
 
 /**
  * One badge anchored just below its cluster.
- * @param {*} c Cluster centre. @param {*} ev Resolved event.
+ * @param {*} c Cluster center. @param {*} ev Resolved event.
  * @returns {{text:string, x:number, y:number, color:string}} The badge.
  */
 function badgeFor(c, ev) {
@@ -457,11 +448,10 @@ function badgeFor(c, ev) {
 }
 
 /**
- * Draw the event labels active at the current time below each affected cluster, nudged so they never print on
- * top of each other. Every badge used to be drawn at its cluster's fixed y, so two events on one cluster (a war
- * and its own name, or two wars) overlapped into unreadable text, and neighbouring clusters could collide too.
+ * Draw the event labels active at the current time below each affected cluster, nudged so two events
+ * on one cluster (or on neighboring clusters) never print on top of each other.
  * @param {CanvasRenderingContext2D} ctx Context.
- * @param {*} scene Scene.
+ * @param {*} scene
  */
 function drawEvents(ctx, scene) {
   const reqs = eventBadgeRequests(scene);
@@ -480,14 +470,10 @@ function drawEvents(ctx, scene) {
 }
 
 /**
- * A cheap hash of every coordinate the flow arrows are struck from: each civ centre and each city
- * sub-centre, to a quarter-pixel. Allocation-free (no string building) since this runs per rAF.
- *
- * The arrows are cached, and the cache key USED to cover only the frame + filters — so anything that
- * moved a circle without changing those left the arrows behind at the old coordinates: dragging a
- * cluster, dragging a city, and the force sim's initial settle all did it. Position is part of the
- * cached result, so it has to be part of the key.
- * @param {*[]} centers Civ centres.
+ * A cheap hash of every coordinate the flow arrows are struck from: each civ center and each city
+ * sub-center, to a quarter-pixel. Allocation-free since this runs per rAF. Position is part of the
+ * cached arrow result, so it has to be part of the cache key.
+ * @param {*[]} centers Civ centers.
  * @returns {number} The stamp.
  */
 function layoutStamp(centers) {
@@ -509,12 +495,10 @@ function layoutStamp(centers) {
 
 /**
  * The memoized flow-arrow overlay: build the red/green migrant-flow segments for the current frame
- * (filtered by the Dots view's origin-isolate / focus-destination / city / scope state) and draw them over the
- * dots. Segments are static for a given frame AND layout, so they're cached by (frame + filter +
- * layout) and only rebuilt when one of those changes — the paint loop runs every rAF while
- * animating/playing.
+ * (filtered by the view's isolate / focus / scope state) and draw them over the dots. Segments are
+ * cached by (frame + filter + layout) since the paint loop runs every rAF.
  * @param {CanvasRenderingContext2D} ctx Context.
- * @param {Scene} scene Scene.
+ * @param {Scene} scene
  */
 function drawFlowOverlay(ctx, scene) {
   const sc = /** @type {*} */ (scene);
@@ -535,7 +519,7 @@ function drawFlowOverlay(ctx, scene) {
 /**
  * Paint one frame: cluster discs, dots, optional origin-flow lines, labels, then events.
  * @param {CanvasRenderingContext2D} ctx Context.
- * @param {Scene} scene Scene.
+ * @param {Scene} scene
  */
 export function paint(ctx, scene) {
   ctx.clearRect(0, 0, scene.WX, scene.WY);

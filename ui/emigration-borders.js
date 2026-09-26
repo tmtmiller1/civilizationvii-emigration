@@ -1,16 +1,10 @@
 // emigration-borders.js
 //
-// Feature 2 (UI-VM half): reads which Open/Closed Borders policy a civ has slotted
-// (Culture.isTraditionActive) and turns it into the immigration-openness multiplier the
-// engine applies to a destination's pull.
-//
-// The cards' per-turn Influence (+1 Open / -2 Closed, YIELD_DIPLOMACY) is a NATIVE modifier
-// (data/emigration-policies-*.xml + the gameeffects file), so it shows on the card and in the
-// yields; this module only enforces the immigration %. Neutral when the feature is off.
-//
-// Every policy read goes through a per-pass cache (resetBorderCache() at the top of
-// collectCitySignals, alongside resetPolityCache) so each civ's slotted cards are read at most
-// once per pass instead of once per (city × candidate) on the O(cities²) pull hot path.
+// Reads which Open/Closed Borders policy a civ has slotted (Culture.isTraditionActive) and turns it
+// into the immigration-openness multiplier the engine applies to a destination's pull. The cards'
+// Influence is a NATIVE modifier in the data files; this module only enforces the immigration %.
+// Every policy read goes through a per-pass cache (resetBorderCache()) so each civ's slotted cards
+// are read at most once per pass on the O(cities²) pull hot path.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
@@ -35,9 +29,8 @@ const POLICY_TYPES = Object.freeze({
   asylum: ["TRADITION_EMIG_ASYLUM_EXPLORATION", "TRADITION_EMIG_ASYLUM_MODERN"]
 });
 
-// Attraction cards (§1b): each turns the civ's immigration into a carried dividend in one yield
-// (debut Exploration, strengthen Modern). Data-driven so activeAttractions is just a filter, a new
-// attraction card is one row here (the policy family + the yield it accrues), no new branch.
+// Attraction cards: each turns the civ's immigration into a carried dividend in one yield. Data-driven
+// so activeAttractions is just a filter; a new attraction card is one row here.
 /** @type {ReadonlyArray<{family:keyof typeof POLICY_TYPES, yield:string}>} */
 const ATTRACTIONS = Object.freeze([
   { family: "talent", yield: "YIELD_SCIENCE" },
@@ -154,17 +147,15 @@ function policyState(pid) {
 }
 
 /**
- * A civ's immigration openness from its slotted border policy. 1 = neutral; < 1 throttles
- * inflow (floored so it never hard-zeros), > 1 boosts it. Slotting BOTH Open and Closed cancels
- * out to neutral (the two stances negate each other). Influence is not handled here: the
- * Open/Closed Borders cards carry their +1 / -2 Influence as native TraditionModifiers
- * (data/emigration-policies-gameeffects.xml), visible on the card and in the yields.
+ * A civ's immigration openness from its slotted border policy. 1 = neutral; < 1 throttles inflow
+ * (floored so it never hard-zeros), > 1 boosts it. Slotting BOTH Open and Closed cancels out to
+ * neutral. Influence is not handled here (native TraditionModifiers).
  * @param {number} pid Destination player id.
  * @returns {number} A positive multiplier.
  */
 export function immigrationOpenness(pid) {
   if (!CONFIG.bordersEnabled) return 1;
-  const neutral = Math.max(CONFIG.opennessFloor, 1); // floored neutral (matches the pre-cancel formula)
+  const neutral = Math.max(CONFIG.opennessFloor, 1); // floored neutral
   const { open, closed } = policyState(pid);
   if (open && closed) return neutral; // both slotted → cancel out → neutral
   if (closed) return Math.max(CONFIG.opennessFloor, CONFIG.closedBordersOpenness);
@@ -175,10 +166,7 @@ export function immigrationOpenness(pid) {
 /**
  * A civ's emigration RETENTION from its slotted border policy: the multiplier applied to its own
  * citizens' cross-civ outbound pull. 1 = neutral; Closed Borders returns `closedBordersRetention`
- * (< 1) so fewer of your people are lured away to rival civs - the "keep them home" half of closing
- * your borders, the mirror of the inbound throttle. Open Borders does not retain (an open civ lets
- * people come and go freely); slotting BOTH cancels out, so only a Closed-without-Open card retains.
- * Neutral when the feature is off.
+ * (< 1). Only a Closed-without-Open card retains. Neutral when the feature is off.
  * @param {number} pid Source player id (the civ losing population).
  * @returns {number} A positive multiplier (<= 1).
  */
@@ -190,7 +178,7 @@ export function emigrationRetention(pid) {
 }
 
 /**
- * The yields a civ's slotted Attraction cards grant per immigrant (§1b). Talent → YIELD_SCIENCE,
+ * The yields a civ's slotted Attraction cards grant per immigrant. Talent → YIELD_SCIENCE,
  * Cultural → YIELD_CULTURE, Commercial → YIELD_GOLD; a civ may hold more than one. Empty when none
  * are slotted, so the carried dividend is a no-op (fail-safe) until the cards exist + are chosen.
  * @param {number} pid Player id.
@@ -201,7 +189,7 @@ export function activeAttractions(pid) {
 }
 
 /**
- * Whether a civ holds an Asylum card (§4a), which eases refugee-caused pull toward it.
+ * Whether a civ holds an Asylum card, which eases refugee-caused pull toward it.
  * @param {number} pid Player id.
  * @returns {boolean} True if an asylum tradition is active.
  */

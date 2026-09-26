@@ -1,7 +1,7 @@
 // eep-modtest117.js - Do minor-power raids now cause fewer refugees? Unattended, with a fixed verdict.
 //
 // Plays turns on its own until it can decide, then prints two verdicts. The criteria are fixed below, before
-// the run, so the answer cannot be argued into shape afterwards.
+// the run, so the answer cannot be argued into shape afterward.
 //
 // WHAT IS BEING TESTED. When every attacker of a city is a minor power (city-state or Independent Power), the
 // violence model scores the attack lower: a smaller besieged floor and the whole observation scaled by

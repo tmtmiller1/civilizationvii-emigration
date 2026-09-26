@@ -1,21 +1,10 @@
 // emigration-civ-tuning.js
 //
-// The per-leader / per-civilization VARIANCE layer (Algorithm C / the civ table).
-// A small, auditable registry of BOUNDED nudges that let individual leaders and
-// civilizations diverge from the global model - magnet damping, integration
-// speed, war-time population retention, a flat source bias - WITHOUT any of them
-// being able to cause a runaway (the structural guarantees live in the global
-// algorithms; this only shifts within bounds).
-//
-// Keys are the GameInfo string types (probe API3-1): leaderType resolves via
-// GameInfo.Leaders.lookup(...).LeaderType, civilizationType via
-// GameInfo.Civilizations.lookup(...).CivilizationType. Leader persona variants
-// (e.g. LEADER_ASHOKA_ALT) are normalized to their base so both personas share an
-// entry. Leader entries override civ entries on conflict.
-//
-// The whole layer is GATED by CONFIG.civTuningEnabled: when off, civTuning()
-// returns the neutral profile and never touches the gameplay globals, so the mod
-// behaves exactly as if the table were empty.
+// The per-leader / per-civilization VARIANCE layer: a small registry of BOUNDED nudges (magnet
+// damping, integration speed, war-time retention, a flat source bias) that let leaders and civs
+// diverge from the global model without causing a runaway. Keys are the GameInfo string types
+// (LeaderType / CivilizationType); leader entries override civ entries on conflict. Gated by
+// CONFIG.civTuningEnabled: when off, civTuning() returns the neutral profile.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { CIV_ROSTER, LEADER_ROSTER, MEMENTO_ROSTER } from "/emigration/ui/emigration-civ-roster.js";
@@ -52,13 +41,12 @@ export const BY_LEADER = {
   LEADER_PACHACUTI: { overcrowdDiscount: 0.5 }, // extra specialist relief, above the 0.3 global
   LEADER_CONFUCIUS: { sourceBias: 0.5 }, // growth-heavy, per-capita diluted → small cushion
   LEADER_ASHOKA: { happinessPull: 0.9 }, // trim celebration-pulse magnetism
-  // The engine reports this leader's type as LEADER_JOSE_RIZAL (LEADER_RIZAL never matched a leader
-  // Type, so the tuning silently never applied). Keep both keys: JOSE_RIZAL is canonical, RIZAL a
-  // defensive alias (both strings appear in base data).
+  // The engine reports this leader's type as LEADER_JOSE_RIZAL; LEADER_RIZAL is a defensive alias
+  // (both strings appear in base data).
   LEADER_JOSE_RIZAL: { happinessPull: 0.9 }, // longer golden ages → longer magnet windows
   LEADER_RIZAL: { happinessPull: 0.9 },
 
-  // --- Brush & Blade expansion leaders (types verified against Contents_1.4.1/resources/DLC) ---
+  // --- Brush & Blade expansion leaders ---
   // Conquerors profit from taking cities → pay MORE gold to digest the spoils (Xerxes class).
   LEADER_ALEXANDER: { assimilationEase: 1.2 }, // wonder-conquest; renames towns he converts
   LEADER_GENGHIS_KHAN: { assimilationEase: 1.2 }, // archetypal conqueror; sacks, not holds
@@ -72,7 +60,7 @@ export const BY_LEADER = {
   LEADER_TOYOTOMI_HIDEYOSHI: { assimilationEase: 1.2, warRetention: 0.85 }, // <1 = sheds pop fast
   LEADER_SAYYIDA_AL_HURRA: { warRetention: 1.2 }, // naval-on-district yields reward garrisons
 
-  // --- Leaders added after the roster was regenerated from the installed game ---
+  // --- Further leaders ---
   // An alternate persona is its OWN leader here: the engine reports the _ALT type, and the two
   // personas play differently enough that sharing a profile would be wrong (Xerxes trades in one
   // and conquers in the other). Each is judged on its own ability text.
@@ -97,11 +85,8 @@ export const BY_LEADER = {
   // "Hohenfriedberger Marsch": a free Infantry Unit on every Culture Building and Civic Mastery is a
   // standing garrison stream, so cities hold better under siege.
   LEADER_FRIEDRICH_ALT: { warRetention: 1.15 }
-  // NEUTRAL (no migration outlier): ADA_LOVELACE (science), GILGAMESH (diplomacy), LAKSHMIBAI
-  // (city-state incorporation + influence, no defense mechanic), FRIEDRICH (culture/Great Works),
-  // YI_SUN_SIN (naval science and gold), XERXES_ALT (trade range and route yields — a trade leader,
-  // unlike the war-profiteering base Xerxes above).
-  // TRUNG_TRAC ships no leader trait data in this DLC set, so it is left untuned (cf. RIZAL above).
+  // NEUTRAL (no migration outlier): ADA_LOVELACE, GILGAMESH, LAKSHMIBAI, FRIEDRICH, YI_SUN_SIN,
+  // XERXES_ALT (a trade leader, unlike the war-profiteering base Xerxes), TRUNG_TRAC (no trait data).
 };
 
 /**
@@ -115,7 +100,7 @@ export const BY_CIV = {
   CIVILIZATION_HAN: { sourceBias: 0.5 }, // +pop growth, per-capita diluted
   CIVILIZATION_QING: { sourceBias: 0.5 },
 
-  // --- Brush & Blade expansion civilizations (types verified against Contents_1.4.1/DLC) ---
+  // --- Brush & Blade expansion civilizations ---
   // Conquest economies: yields/rewards from CAPTURING settlements → pay more gold for the spoils.
   CIVILIZATION_ASSYRIA: { assimilationEase: 1.25 }, // tech/codex + yields in captured settlements
   CIVILIZATION_BULGARIA: { assimilationEase: 1.2 }, // Krum's Dynasty pillage/production spoils
@@ -138,7 +123,7 @@ export const BY_CIV = {
   // High unconditional growth: per-capita diluted, so cushion it so the civ doesn't bleed pop.
   CIVILIZATION_SHAWNEE: { sourceBias: 0.75 }, // navigable-river Food + Bread Dance town Food
 
-  // --- Civilizations added after the roster was regenerated from the installed game ---
+  // --- Further civilizations ---
   // "City at the Center of the World": an extra growth event on every Food/Culture building and
   // Wonder, against a -2/-4/-6 Settlement Limit. Forced tall with runaway growth: shield the density
   // it cannot spread out of, and cushion the per-capita dilution (Carthage/Han shapes combined).
@@ -149,21 +134,13 @@ export const BY_CIV = {
   // "Favor of Cernunnos": Fortification Buildings purchasable with any Town Focus, and its unique
   // quarter fortifies its own districts (+25 HP, +100 HP per building) — bought walls, Norman-lite.
   CIVILIZATION_GAUL: { warRetention: 1.2 }
-  // NEUTRAL (no migration outlier): ICELAND (offensive-naval raiding, no defense/growth/happiness),
-  // TONGA (wide coastal-trade; width already handled by the growth model), GREAT_BRITAIN (its only
-  // outlier is a town→city conversion-cost penalty; gold/prod already reach the model via yields),
-  // ENGLAND (Magna Carta trades Gold and Culture yields across buildings — no defensive, growth or
-  // happiness mechanic, and its yields already reach the model), GORYEO (Culture for diplomatic
-  // Endeavors plus unique-improvement yields).
+  // NEUTRAL (no migration outlier): ICELAND, TONGA, GREAT_BRITAIN, ENGLAND, GORYEO - no defensive,
+  // growth or happiness mechanic, and their yields already reach the model.
 };
 
 /**
- * Per-memento nudges.
- *
- * Most mementos are neutral for migration because their effects are military /
- * situational / age-scoped and already read via yields or conflict signals. This
- * table only lists mementos with direct migration-facing pressure (happiness/gold
- * magnetism) and leaves the rest explicitly neutral.
+ * Per-memento nudges: only mementos with direct migration-facing pressure (happiness/gold magnetism);
+ * the rest are explicitly neutral because their effects already reach the model via yields or conflict signals.
  * @type {Record<string, Partial<CivTuning>>}
  */
 export const BY_MEMENTO = {
@@ -349,13 +326,9 @@ function clampMementoProfile(a) {
 }
 
 /**
- * Compress a resolved profile toward neutral by CONFIG.civTuningStrength - the global
- * "flatten between civilizations" knob. 1 = the table as written (full identity); 0 = fully
- * flat (every civ neutral). Each field is interpolated toward its own neutral, so relative
- * ordering is preserved (the most defensive civ stays the most defensive) while the absolute
- * spread - the gap that feeds a snowball - shrinks uniformly across base AND new entries.
- * The overcrowd discount lerps toward CONFIG.overcrowdDiscount (the value a null entry uses),
- * and a null entry stays null. An unset/invalid strength is treated as 1 (no compression).
+ * Compress a resolved profile toward neutral by CONFIG.civTuningStrength (1 = the table as written,
+ * 0 = every civ neutral): each field lerps toward its own neutral, so relative ordering is preserved
+ * while the spread shrinks. The overcrowd discount lerps toward CONFIG.overcrowdDiscount (null stays null).
  * @param {CivTuning} t The merged profile.
  * @returns {CivTuning} The compressed profile.
  */
@@ -375,10 +348,9 @@ function flatten(t) {
 }
 
 /**
- * The tuning profile for a player: the neutral profile merged with its civ entry
- * then its leader entry (leader wins on conflict), then compressed toward neutral by
- * CONFIG.civTuningStrength. Returns the shared neutral profile (and touches no globals)
- * when the table is disabled or nothing matches.
+ * The tuning profile for a player: the neutral profile merged with its civ entry then its leader
+ * entry (leader wins), then mementos, then compressed toward neutral by CONFIG.civTuningStrength.
+ * Returns the shared neutral profile when the table is disabled or nothing matches.
  * @param {number} pid Player id.
  * @returns {CivTuning} The resolved tuning.
  */

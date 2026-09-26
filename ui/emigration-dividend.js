@@ -1,11 +1,9 @@
 // emigration-dividend.js
 //
-// The carried dividend, the positive MIRROR of the
-// assimilation load (emigration-effects.js): when a civ holds an attraction card (or runs a raid),
-// each migrant it receives accrues a decaying per-turn BENEFIT in a chosen yield (+Science/Culture/
-// Gold). This is the "raise yours" mechanism, it decouples the gain from migration throughput (the
-// G1 finding), because each migrant is worth a tunable chunk regardless of how few move. State
-// persists separately in GameConfiguration.
+// The carried dividend, the positive MIRROR of the assimilation load (emigration-effects.js): when a
+// civ holds an attraction card (or runs a raid), each migrant it receives accrues a decaying per-turn
+// BENEFIT in a chosen yield (+Science/Culture/Gold), so the gain is worth a tunable chunk per migrant
+// regardless of how few move. State persists separately in GameConfiguration.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { speedDecay } from "/emigration/ui/emigration-game-speed.js";
@@ -199,7 +197,7 @@ function tickOneDividend(s, pid, yk, elapsed) {
   const cur = s.pool[key] || 0;
   if (cur <= 0) return 0;
   // speedDecay re-bases the per-turn fade so the attraction dividend fades over the same GAME-TIME at
-  // any speed (mirrors the assimilation-load fix; else the reward decayed too fast on Marathon).
+  // any speed (mirrors the assimilation load).
   const pool = cur * Math.pow(speedDecay(CONFIG.dividendDecay), elapsed);
   if (pool < 0.05) {
     delete s.pool[key];
@@ -238,7 +236,7 @@ export function tickAttractionDividend(pid) {
 /**
  * The current dividend pool a civ carries for a yield (read-only; does not tick).
  * @param {number} pid Player id.
- * @param {string} yieldKey The yield key.
+ * @param {string} yieldKey
  * @returns {number} Current pool (>= 0).
  */
 export function dividendFor(pid, yieldKey) {

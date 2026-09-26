@@ -1,18 +1,11 @@
 // emigration-cache-reset.js
 //
-// One SHARED "reset persisted caches on game boot" convention. Many sibling modules lazy-load their
-// state from GameConfiguration into a module-level `let _x = null` cache and otherwise rely on the
-// UIScript ISOLATE being torn down on game boot to clear it. That teardown is the normal reset, but it
-// is not guaranteed: if a NEW game ever starts inside a still-live isolate, a module would keep the
-// prior game's cached data and could then PERSIST it into the new game's store.
-//
-// This module closes that gap as a shared hook rather than a per-module one-off: every persisted-state
-// module registers a resetter here (typically `() => { _x = null; }`) and calls resetCachesOnNewGame()
-// at the top of its lazy loader. The first such call after a game-id change nulls EVERY registered
-// cache in that isolate, so each one reloads from the new game's store on next access. The game
-// identity is `Configuration.getGame().gameSeed` (unique per game; startPosition is NOT). This is a
-// distinct failure mode from the recorder-vs-reader isolate gotcha (two isolates within the SAME
-// game), that one is handled by each reader reloading from persistence.
+// One SHARED "reset persisted caches on game boot" convention. Sibling modules lazy-load their state
+// from GameConfiguration into a module-level cache that isolate teardown normally clears, but a NEW
+// game inside a still-live isolate would keep the prior game's data and could persist it into the new
+// store. So every persisted-state module registers a resetter here and calls resetCachesOnNewGame() at
+// the top of its lazy loader; the first call after a game-id change (`Configuration.getGame().gameSeed`)
+// nulls EVERY registered cache in that isolate.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
@@ -56,10 +49,8 @@ export function registerCacheReset(fn) {
 
 /**
  * Reset every registered persisted-state cache when a NEW game is detected (the game id changed since
- * the last call in this isolate). No-op when the feature is off, the id is unreadable, the id is
- * unchanged, or this is the first id seen (the caches are already fresh, adopt the id, don't reset).
- * Cheap and idempotent in the steady state (one property read + a compare). Call at the top of each
- * persisted-state lazy loader so the first access after a boot clears all sibling caches too.
+ * the last call in this isolate). No-op when the feature is off, the id is unreadable or unchanged, or
+ * this is the first id seen. Cheap and idempotent; call at the top of each persisted-state lazy loader.
  * @returns {boolean} True when a reset was performed.
  */
 export function resetCachesOnNewGame() {
