@@ -1,24 +1,13 @@
 // emigration-departure-tile.js
 //
-// The SOURCE side of a departure made real. In Civ VII a rural population point is the count of placed
-// improvements, and `city.addRuralPopulation(-1)` (the only population write) changes nothing but that
-// count: it parks a -1 in `pendingPopulation` and leaves every improvement working, so the city that
-// lost people kept every yield. Watched in-game 2026-09-11 (devtools/engine-probe, runs 4 and 5).
-//
-// What DOES work, watched the same day: the `DESTROY_ELEMENT` player operation with
-// `{Kind:"CONSTRUCTIBLE", Owner, LocalID}` on a rural improvement removes the tile AND one population
-// point together (pop -1, rural -1, pending 0, the tile's yields gone), on the local player's cities
-// and on foreign cities alike (it is not owner-gated). So a departure now destroys the chosen tile and
-// the engine takes the point and its improvement away as one. Because a destroyed tile cannot be
-// undone, the source write is DEFERRED: the engine reserves the point, lands it at the destination,
-// and only then calls `commitSourcePoint`. If no improvement can be found (an all-urban city, or
-// off-engine in tests) the plain counter decrement is used, exactly as before.
-//
-// Which tile: the outlying farmstead empties first. Improvements NOT sitting on a resource are
-// preferred, then the farthest from the city centre, then the lowest plot index (deterministic).
-//
-// The tile is the whole felt loss on the source side: the losing civilization pays nothing else, while
-// the receiving one carries the assimilation cost (emigration-effects.js).
+// The SOURCE side of a departure made real. `city.addRuralPopulation(-1)` only parks a -1 in
+// `pendingPopulation` and leaves every improvement working, so a departure instead issues the
+// `DESTROY_ELEMENT` player operation on a rural improvement, which removes the tile AND one population
+// point together (not owner-gated, so it works on foreign cities too). A destroyed tile cannot be undone,
+// so the source write is DEFERRED until the point has landed (`commitSourcePoint`); with no improvement
+// to abandon, the plain counter decrement is used. Which tile: non-resource improvements first, then the
+// farthest from the center, then the lowest plot index. The tile is the whole felt loss on the source
+// side; the receiving civilization carries the assimilation cost (emigration-effects.js).
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { removeRural } from "/emigration/ui/emigration-population.js";
@@ -36,7 +25,7 @@ import { noteDamage, firstSeenDamaged } from "/emigration/ui/emigration-damage-a
  * @property {*} elem The constructible ComponentID ({owner,id,type}).
  * @property {string} type The ConstructibleType (e.g. IMPROVEMENT_FARM).
  * @property {boolean} onResource Whether the plot carries a resource.
- * @property {number} distance Hex distance from the city centre.
+ * @property {number} distance Hex distance from the city center.
  * @property {boolean} [damaged] Whether the improvement is pillaged (abandoned first).
  * @property {boolean} [feeds] Whether the improvement yields food (spared under famine).
  */
@@ -112,10 +101,9 @@ function abandonedRecently(plot) {
 }
 
 /**
- * Whether an improvement type feeds the city. The name hint is primary: in the compiled gameplay DB
- * (Debug/gameplay-copy.sqlite, checked 2026-09-12) farms, fishing boats, pastures and plantations have NO
- * Constructible_YieldChanges food row (their food comes from the terrain and resource), so a table-only
- * read called every food tile "not food" in game. The table still catches oddities like the Baray.
+ * Whether an improvement type feeds the city. The name hint is primary: farms, fishing boats, pastures
+ * and plantations have NO Constructible_YieldChanges food row (their food comes from the terrain and
+ * resource). The table still catches oddities like the Baray.
  * @param {string} type The ConstructibleType. @returns {boolean} True for food improvements.
  */
 function improvementFeeds(type) {
@@ -144,10 +132,10 @@ function constructibleTypeOf(elem) {
 }
 
 /**
- * The district on a plot that can be asked for its improvements, or null (the centre, an unreadable
+ * The district on a plot that can be asked for its improvements, or null (the center, an unreadable
  * plot, a plot whose DESTROY is still in flight from earlier this turn, or no district).
  * @param {number} plot Plot index. @param {{x:number,y:number}} loc Its location.
- * @param {{x:number,y:number}} centre The city-centre location.
+ * @param {{x:number,y:number}} centre The city-center location.
  * @returns {*} The district, or null.
  */
 function candidateDistrict(plot, loc, centre) {
@@ -159,7 +147,7 @@ function candidateDistrict(plot, loc, centre) {
 /**
  * The rural improvements on ONE plot of a city (empty when the plot is not a candidate).
  * @param {number} plot Plot index.
- * @param {{x:number,y:number}} centre The city-centre location.
+ * @param {{x:number,y:number}} centre The city-center location.
  * @returns {DepartureTile[]} Candidates on that plot.
  */
 function tilesOnPlot(plot, centre) {
@@ -243,7 +231,7 @@ function safeDamaged(elem) {
  * Rank candidates: PILLAGED tiles first (the burnt farmstead is the one abandoned, which is how this
  * meets the war and pillage systems instead of stacking on them), then, under famine, non-food tiles
  * before food tiles (people leaving must not deepen the starvation that drove them out), then plain
- * tiles before resource tiles, farther from the centre first, then by plot index. Pure.
+ * tiles before resource tiles, farther from the center first, then by plot index. Pure.
  * @param {DepartureTile[]} tiles Candidates.
  * @param {{avoidFood?:boolean}} [opts] `avoidFood`: the source is starving.
  * @returns {DepartureTile[]} A new sorted array (best first).
@@ -345,9 +333,8 @@ function tileHints(src) {
 
 /**
  * Commit a deferred source-side removal once the destination has the point: destroy the tile (or, if
- * none is left by now, decrement the counter). The losing civilization pays nothing beyond the tile;
- * the receiving one carries the assimilation cost. No-op for points that came from a holding pool or
- * were already written the plain way.
+ * none is left by now, decrement the counter). No-op for points that came from a holding pool or were
+ * already written the plain way.
  * @param {*} src The source city signal ({city, owner}).
  * @param {{ok:boolean, fromPool:boolean, deferredTile?:boolean}} consumed The consume result.
  * @returns {{mode:"tile"|"counter"|"none"}} What happened.
@@ -362,12 +349,10 @@ export function commitSourcePoint(src, consumed) {
 
 // ── shedding gates and deaths ────────────────────────────────────────────────────────────────────
 //
-// Only rural tiles ever leave; the urban core is never taken. Building loss was ruled out for players, and no
-// script operation removes a specialist: ASSIGN_WORKER {Amount:-1} only lowers the city's worker counter and
-// leaves the slot filled (watched 2026-09-14, mod test 55; docs/engine-limits-from-probes.md 1.4).
+// Only rural tiles ever leave; the urban core is never taken. No script operation removes a specialist:
+// ASSIGN_WORKER {Amount:-1} only lowers the city's worker counter and leaves the slot filled.
 
-/** The placed Cultural Enclave improvements (emigration-enclave-place.js); excluded from departures (watched
- * 2026-09-13: without this, London's own enclave was the outlying tile a departure would have abandoned). */
+/** The placed Cultural Enclave improvements (emigration-enclave-place.js); excluded from departures. */
 const ENCLAVE_TYPE_PREFIX = "IMPROVEMENT_EMIG_ENCLAVE_";
 /** The Village-skinned enclave (emigration-enclave-place.js); a major civilization's Village is always one. */
 const VILLAGE_TYPE = "IMPROVEMENT_VILLAGE";

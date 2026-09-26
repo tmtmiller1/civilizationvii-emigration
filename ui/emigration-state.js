@@ -2,8 +2,7 @@
 //
 // Persistence + per-pass bookkeeping for the emigration engine. The state (per-source pressure +
 // cooldown, the monotonic scaling turn, and the in-flight transit queue) lives in GameConfiguration
-// so it survives save/reload. Kept apart from emigration-engine.js so the algorithm reads as the
-// algorithm, not the plumbing.
+// so it survives save/reload.
 
 const STATE_KEY = "EmigrationState_v1";
 const STATE_SCHEMA_VERSION = 2;
@@ -93,9 +92,8 @@ function normalizeTransitEntry(v) {
 }
 
 /**
- * Copy who the migrant is and where they left from / are going (ethnicity audit items 2 and O3) onto a
- * normalized transit row. Optional: an entry queued before these existed has none, and its arrival keeps the
- * single-origin attribution.
+ * Copy who the migrant is and where they left from / are going onto a normalized transit row.
+ * Optional: an entry without them keeps the single-origin attribution on arrival.
  * @param {Transit} row The normalized row (mutated). @param {*} v The raw entry. @returns {Transit} The row.
  */
 function withIdentity(row, v) {
@@ -189,20 +187,20 @@ function normalizeTransitList(transit) {
  * @property {number} srcOwner Source owner (charged the death if the destination is gone).
  * @property {number} destOwner Destination owner (credited the immigration on arrival).
  * @property {boolean} crossCiv Whether it crossed civilizations.
- * @property {string} cause Why they left (for the arrival record's flavour).
+ * @property {string} cause Why they left (for the arrival record's flavor).
  * @property {string} [eventKey] The specific event behind the cause (war/disaster/crisis), carried
  *   to the arrival so immigration can be attributed to it.
- * @property {string[]} [reasons] The "why here" reason tags captured at departure (P0.1), forwarded
+ * @property {string[]} [reasons] The "why here" reason tags captured at departure, forwarded
  *   to the arrival record.
  * @property {boolean} infected Whether the source was infected (plague carried on arrival).
- * @property {string} srcName Source city name (arrival flavour).
- * @property {string} destName Destination city name (arrival flavour).
+ * @property {string} srcName Source city name (arrival flavor).
+ * @property {string} destName Destination city name (arrival flavor).
  * @property {number} [defers] Times this arrival has been deferred (destination at its inbound cap);
  *   perishes once it exceeds MAX_DEFERS so it's never stuck in transit forever.
  * @property {Record<string, number>} [originMix] Who the migrant is, origin civ → fraction, captured at
  *   departure and forwarded to the arrival record (see Migration.originMix).
- * @property {string} [srcLoc] The source settlement's centre plot "x,y".
- * @property {string} [destLoc] The destination settlement's centre plot "x,y".
+ * @property {string} [srcLoc] The source settlement's center plot "x,y".
+ * @property {string} [destLoc] The destination settlement's center plot "x,y".
  */
 
 /**
@@ -287,10 +285,8 @@ export function saveState(state) {
 
 /**
  * Whether the in-flight transit queue is at its hard cap (`MAX_TRANSIT_ENTRIES`). Checked at ENQUEUE
- * time so a lagged departure is never started when it couldn't be persisted: the load-time
- * `normalizeTransitList` truncation would otherwise drop the overflow rows AFTER the source already
- * shed the point, silently destroying in-flight population. At capacity the migrant simply stays home
- * this turn (population conserved) and may depart once the queue drains.
+ * time so a lagged departure is never started when it couldn't be persisted (the load-time truncation
+ * would silently destroy in-flight population); at capacity the migrant simply stays home this turn.
  * @param {*} state Loaded state (transit queue).
  * @returns {boolean} True when no further transit rows may be enqueued this turn.
  */
@@ -323,18 +319,9 @@ const PRESSURE_FLOOR = 0.01;
 
 /**
  * Bleed every source's accumulated emigration pressure toward zero, once per pass, BEFORE the turn's
- * pull is added to it.
- *
- * The accumulator used to be a one-way ratchet: it rose while a settlement had somewhere better to be
- * and only ever came back down by firing a migrant. A city charged up by a siege therefore kept that
- * charge long after the fighting stopped and eventually discharged it as an ordinary "prosperity"
- * move — the war laundered into a peacetime cause, many turns late. Decaying here makes the charge a
- * reading of CURRENT conditions in both directions: it falls when a settlement's reasons to leave
- * fade, without waiting for anyone to leave. A move still zeroes it, exactly as before.
- *
- * Runs over the whole persisted map rather than the live ranking, so a source that is resting on
- * cooldown, has no viable destination, or is skipped this pass drains too instead of freezing at its
- * old value — freezing is the bug this exists to remove.
+ * pull is added, so the charge reads CURRENT conditions in both directions (a city charged up by a
+ * siege does not discharge it as a peacetime move many turns later). Runs over the whole persisted
+ * map, so a source resting on cooldown or skipped this pass drains too.
  * @param {*} state Loaded state (its `sources` map is mutated in place).
  * @param {number} retention Per-turn retention in [0, 1). 1, or anything unusable, leaves the
  *   accumulator alone (the legacy ratchet). Speed re-basing is the caller's job.

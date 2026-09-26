@@ -1,9 +1,8 @@
 // emigration-config-types.js
 //
-// The SHAPE of the mod's tunable settings, the documented contract for the CONFIG object whose
-// concrete default VALUES live in emigration-config.js. Kept apart so the ~100-property schema (the
-// canonical reference for what every knob means) doesn't bury the values registry, and so the
-// settings/options layer can type against the contract without importing the defaults.
+// The SHAPE of the mod's tunable settings: the documented contract for the CONFIG object whose default
+// VALUES live in emigration-config.js. Kept apart so the settings/options layer can type against the
+// contract without importing the defaults.
 
 /**
  * The mod's tunable settings. Numeric weights/thresholds drive the Prosperity
@@ -34,7 +33,7 @@
  * @property {boolean} splitTracksEnabled Evaluate crisis + voluntary as two concurrent per-source tracks.
  * @property {boolean} splitBudgetsEnabled Give crisis and voluntary their own per-civ move ceilings.
  * @property {boolean} splitUiReadoutEnabled Show a multi-cause pressure breakdown in the city readout.
- * @property {boolean} voluntaryCueEnabled Emit a low-key "rising emigration pressure" cue (P0.3).
+ * @property {boolean} voluntaryCueEnabled Emit a low-key "rising emigration pressure" cue.
  * @property {number} voluntaryCueFraction Fraction of the emigration bar a source crosses to cue.
  * @property {number} voluntaryCueCooldownTurns Minimum turns between cues from the same settlement.
  * @property {boolean} gameSpeedTuningEnabled Scale turn-based pacing by the game-speed scalar S
@@ -76,7 +75,7 @@
  * @property {number} starvationModifier Percent score modifier while starving.
  * @property {number} unrestModifier Percent score modifier during unrest.
  * @property {boolean} polityModelEnabled 1.4.1 polity model (happiness stages + government +
- *   celebration + war weariness). false → exact pre-1.4.1 scoring.
+ *   celebration + war weariness). false → legacy scoring.
  * @property {number} happinessStageWeight Bounded pull per happiness-stage step (ANGRY −2 … ECSTATIC +2).
  * @property {number} happinessStageMiseryScale Scale on the negative (unhappy/angry) side of the stage
  *   term (pull-bias; misery is already covered by happiness + suppressed yields). 1 = symmetric.
@@ -136,7 +135,7 @@
  *   COSMETIC: grants no yields.
  * @property {number} diversityRows Rows shown in the diversity ranking table.
  * @property {boolean} migrationExplainer Show the push/pull cause stack in the readout + hover panels
- *   (Feature L). READ-ONLY: it explains the scores the sim already computed; it moves no one.
+ *   READ-ONLY: it explains the scores the sim already computed; it moves no one.
  * @property {boolean} selftestEnabled Install the on-screen self-test launcher (live diagnostics + forced pop-up).
  * @property {number} quarterDwellTurns Turns an established enclave must persist before it is recognized
  *   (its stance is chosen and the stance yields begin).
@@ -248,9 +247,9 @@
  * @property {boolean} deathRampEnabled Smooth the death-channel ONSET over sustained-crisis turns (no cap).
  * @property {number} deathRampFloor Death-pressure accrual multiplier on turn 1 of a lethal crisis (0..1).
  * @property {number} deathRampTurns Turns of sustained lethal distress to reach the full death rate.
- * @property {number} ownCivRefugeeBonus War-refugee pull toward own civ (Feature 1).
+ * @property {number} ownCivRefugeeBonus War-refugee pull toward own civ.
  * @property {number} aggressorPenalty War-refugee penalty for the aggressor (F1; 0 = off).
- * @property {boolean} bordersEnabled Apply Open/Closed Borders policy effects (F2).
+ * @property {boolean} bordersEnabled Apply Open/Closed Borders policy effects.
  * @property {number} closedBordersOpenness Immigration × while Closed Borders slotted.
  * @property {number} closedBordersRetention Cross-civ emigration × from your cities while Closed.
  * @property {number} openBordersOpenness Immigration × while Open Borders slotted.
@@ -266,7 +265,7 @@
  * @property {number} disasterNotifyMode Disaster popup scope: 0 off (log only), 1 migration-affecting
  *   only (struck a city + ≥ min severity, default), 2 any disaster ≥ min severity.
  * @property {number} notifyCooldownTurns Min turns between "important" toasts (anti-spam).
- * @property {boolean} cityReadoutEnabled Show the per-city migration readout panel (Phase 2).
+ * @property {boolean} cityReadoutEnabled Show the per-city migration readout panel.
  * @property {string} cityReadoutCorner HUD corner for the readout (top/bottom × left/right).
  * @property {boolean} cityReadoutSparkline Show a recent net-migration trend strip in the readout.
  * @property {boolean} timelineEventPins Pin the causal wars/disasters onto the network timeline.

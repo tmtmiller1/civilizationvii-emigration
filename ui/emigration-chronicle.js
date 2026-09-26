@@ -1,9 +1,8 @@
 // emigration-chronicle.js
 //
-// The Migration CHRONICLE: a curated, written history of the world's significant population movements,
-// distinct from the per-event Notifications log. Where Notifications records every wave as it happens,
-// the Chronicle keeps only the moments that read as history (a great exodus, a diaspora taking root,
-// a people returning home) and renders each as a line of prose (emigration-narrative.js).
+// The Migration CHRONICLE: a curated, written history of the world's significant population movements
+// (a great exodus, a diaspora taking root, a people returning home), each rendered as a line of prose
+// (emigration-narrative.js); distinct from the per-event Notifications log.
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
@@ -20,7 +19,7 @@ const MAX_ENTRIES = 80; // a readable history, not an exhaustive ledger (Notific
  * @property {string} kind "exodus" | "founding" | "return".
  * @property {string} title A short episode title.
  * @property {string} body The written line.
- * @property {string} [civ] The civ at the centre of it (adjective).
+ * @property {string} [civ] The civ at the center of it (adjective).
  * @property {number} [people] Scaled people involved.
  * @property {string} [cause] The migration cause, when one applies.
  * @property {string} [dedupeKey] A stable key so the same milestone isn't chronicled twice.
@@ -126,10 +125,9 @@ export function chronicled(key) {
 }
 
 /**
- * Mirror a chronicled moment into the notifications log as a distinct "chronicle"-kind entry, so the
- * Notifications tab is the single home for every migration event (the story prose included).
- * Best-effort: a failure here must never throw into the engine pass or undo the chronicle insert that
- * already succeeded, so it's swallowed (the chronicle's own state is persisted before this runs).
+ * Mirror a chronicled moment into the notifications log as a "chronicle"-kind entry, so the
+ * Notifications tab holds every migration event. Best-effort: a failure is swallowed, since the
+ * chronicle's own state is persisted before this runs.
  * @param {ChronicleEntry} e The normalized chronicle entry.
  */
 function mirrorToNotifications(e) {

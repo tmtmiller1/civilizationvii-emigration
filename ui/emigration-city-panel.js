@@ -1,15 +1,9 @@
 // emigration-city-panel.js
 //
-// Surfaces the mod's per-city emigration data inside the base game's City Details panel, so it is
-// legible without opening the standalone dashboard. Uses the same Controls.decorate hook as the
-// dock button (emigration-dock-decorator.js): on the vanilla panel-city-details we append two
-// sections, split by the panel's own tabs -
-//   • population (Citizen Growth tab): origin mix, emigration OUT with destinations, immigration IN
-//     with origins, and refugees held awaiting settlement.
-//   • quarters (Building Breakdown tab): the established Cultural Quarter record, if any.
-// All numbers are LIVE engine reads gathered at panel-open (and on each city switch, via the panel's
-// own "update-city-details" event). The pure formatting lives in emigration-city-panel-data.js; this
-// module only reads the engine and paints the DOM, and never throws into the game.
+// Surfaces the mod's per-city emigration data inside the base game's City Details panel via
+// Controls.decorate: a population section (Citizen Growth tab) and a quarters section (Building
+// Breakdown tab), refreshed on the panel's "update-city-details" event. The pure formatting lives in
+// emigration-city-panel-data.js; this module only reads the engine and paints the DOM.
 
 import { cityPanelModel } from "/emigration/ui/emigration-city-panel-data.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
@@ -41,10 +35,8 @@ function derr(...a) {
 }
 
 /**
- * Resolve a LOC key to its localized string, or null when unavailable. Mirrors the private `loc`
- * wrapper in emigration-naming.js: guards a missing Locale surface, rejects an unresolved key (the
- * engine echoes back the raw "LOC_..." tag), and never throws. Injected into the pure view-model so
- * all panel text is localized while the model stays testable off-engine.
+ * Resolve a LOC key to its localized string, or null when unavailable or unresolved (the engine echoes
+ * back the raw "LOC_..." tag). Injected into the pure view-model so it stays testable off-engine.
  * @param {string} key The LOC key.
  * @param {...*} args Substitution args.
  * @returns {string|null} The localized string, or null.
@@ -67,7 +59,7 @@ const GROWTH_SECTION_ID = "emigration-city-growth";
 const BUILDINGS_SECTION_ID = "emigration-city-quarters";
 
 /**
- * The tile key ("x,y") for a city's centre plot, or null when unreadable. Mirrors locKey/tileKeyOf
+ * The tile key ("x,y") for a city's center plot, or null when unreadable. Mirrors locKey/tileKeyOf
  * in the composition/quarter modules (kept local so this module owns its engine boundary).
  * @param {*} city A live city object.
  * @returns {string|null} The key, or null.
@@ -178,11 +170,8 @@ function gatherQuarter(city) {
 }
 
 /**
- * The pending/forming cultural-enclave readout for a city that has NO settled quarter yet, or null.
- * Surfaces the lead foreign origin's progress toward the enclave bar (the same numbers the decision
- * mechanic uses) so the player can see a qualifying-but-unoffered enclave ("awaits your decision") or
- * one still forming, instead of the bare "no enclave has taken root" when one actually has. Only shown
- * from the foothold stage up, so a small foreign sprinkle doesn't clutter the panel.
+ * The pending/forming cultural-enclave readout for a city that has NO settled quarter yet, or null:
+ * the lead foreign origin's progress toward the enclave bar. Only shown from the foothold stage up.
  * @param {*} city A live city object.
  * @returns {*} The resolved enclave-progress readout, or null.
  */
@@ -216,9 +205,7 @@ function resolveParts(comp) {
 
 /**
  * The display label of the cause that moved most of an edge's people, or "" when the edge carries no
- * per-cause detail (a legacy flat-number flow value, from a save written before per-cause flows).
- * Resolved HERE rather than in the pure view-model because localizing a cause is an engine read, the
- * same reason civ ids are turned into names on this side of the boundary.
+ * per-cause detail. Resolved HERE because localizing a cause is an engine read.
  * @param {*} f A flow edge from migrationFlows() ({byCause}).
  * @returns {string} The resolved cause label, or "".
  */
@@ -319,7 +306,7 @@ function addRow(sec, text) {
  * Append a titled sub-block (a small heading plus its rows), or nothing when there are no rows.
  * @param {*} sec The section element.
  * @param {string} title The sub-heading text.
- * @param {string[]} rows The rows.
+ * @param {string[]} rows
  */
 function addBlock(sec, title, rows) {
   if (!rows || !rows.length) return;

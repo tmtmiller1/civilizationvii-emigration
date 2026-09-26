@@ -109,15 +109,15 @@ async function show(label, local, scope) {
   emit("SHOT " + label);
   await later(10000);
   emit(label + " buttons(late)=" + J(describeButtons(d)));
-  // A greyed-out size must not be buyable: activate the first disabled button and confirm nothing resolved.
+  // A grayed-out size must not be buyable: activate the first disabled button and confirm nothing resolved.
   const greyed = Array.from(d.querySelectorAll("fxs-button")).find((b) => b.getAttribute("disabled") === "true");
   if (greyed) {
     safe(() => greyed.dispatchEvent(new CustomEvent("action-activate", { bubbles: true })));
     await later(1500);
-    emit(label + " clicked greyed " + J(safe(() => greyed.getAttribute("caption"))) + ": resolved=" + J(chosen)
+    emit(label + " clicked grayed " + J(safe(() => greyed.getAttribute("caption"))) + ": resolved=" + J(chosen)
       + " dialogStillUp=" + !!dialog() + " (expect resolved=null, still up)");
   } else {
-    emit(label + " no greyed button in this dialog");
+    emit(label + " no grayed button in this dialog");
   }
   emit(label + " body=" + J(safe(() => (d.querySelector(".font-body.text-base") || {}).textContent, "").slice(0, 600)));
   const btns = Array.from(d.querySelectorAll("fxs-button"));
@@ -130,8 +130,8 @@ async function show(label, local, scope) {
 }
 
 // Influence is spent down to INFLUENCE_TARGET through the game's own treasury write before the dialogs are shown,
-// so the dialogs read a real, lowered balance: internal Influence 12 stays open, 34 and 62 grey out; external 18
-// stays open, 51 and 94 grey out. Gold is left at 254 so its greying (312, 255, 468) is checked in the same run.
+// so the dialogs read a real, lowered balance: internal Influence 12 stays open, 34 and 62 gray out; external 18
+// stays open, 51 and 94 gray out. Gold is left at 254 so its graying (312, 255, 468) is checked in the same run.
 const INFLUENCE_TARGET = 30;
 async function lowerInfluence(local) {
   const have = callHomeBalance(local, CALL_HOME_CURRENCY.INFLUENCE);
@@ -147,7 +147,7 @@ function cityState(local) {
 }
 
 // The REAL offer (the one the game raises, whose callback buys through callHomeNow), not the probe's recording
-// view. Click the first greyed INFLUENCE size and confirm nothing was bought: Influence, Gold, every city's
+// view. Click the first grayed INFLUENCE size and confirm nothing was bought: Influence, Gold, every city's
 // population and unplaced points, and the cooldown all unchanged. The external variant needs callable people
 // abroad, which this save lacks, so it is skipped with a note when the offer does not open.
 /**
@@ -182,14 +182,14 @@ async function clickGreyedInfluence(local, scope, label) {
   await later(1500);
   const greyed = Array.from(d.querySelectorAll("fxs-button")).find((b) => b.getAttribute("disabled") === "true"
     && String(b.getAttribute("caption")).includes("YIELD_DIPLOMACY"));
-  if (!greyed) { emit(label + " no greyed Influence button to click"); return; }
+  if (!greyed) { emit(label + " no grayed Influence button to click"); return; }
   const cap = safe(() => greyed.getAttribute("caption"));
   safe(() => greyed.dispatchEvent(new CustomEvent("action-activate", { bubbles: true })));
   await later(4000);
   const infl1 = callHomeBalance(local, CALL_HOME_CURRENCY.INFLUENCE);
   const gold1 = callHomeBalance(local, CALL_HOME_CURRENCY.GOLD);
   const cities1 = cityState(local);
-  emit(label + " clicked greyed " + J(cap) + " influence " + infl0 + " -> " + infl1 + " gold " + gold0 + " -> " + gold1
+  emit(label + " clicked grayed " + J(cap) + " influence " + infl0 + " -> " + infl1 + " gold " + gold0 + " -> " + gold1
     + " cooldownLeft=" + callHomeCooldownLeft(local, scope) + " citiesUnchanged=" + (cities0 === cities1));
   emit(label + " cities before=" + cities0);
   emit(label + " cities after =" + cities1);

@@ -1,10 +1,8 @@
 // emigration-move-reasons.js
 //
-// The "why did people move HERE" reason tags (P0.1): a small, stable vocabulary shared by the
-// decision layer (emigration-pull.js emits the keys for a chosen move) and every surface that shows
-// a move (notifications + the per-city readout). Keys are stable strings stored on the migration
-// record; the short phrases are localized only at display time, so a saved notification is never
-// baked to one language and the tags stay comparable across surfaces.
+// The "why did people move HERE" reason tags: a small, stable vocabulary shared by the decision layer
+// (emigration-pull.js emits the keys) and every surface that shows a move. Keys are stored on the
+// migration record; the phrases are localized only at display time.
 
 /** Stable reason-tag keys. Emitted by emigration-pull.js `deriveMoveReasons`. */
 export const REASON = Object.freeze({
@@ -20,7 +18,7 @@ export const REASON = Object.freeze({
   RAID: "raid" // pulled toward an active raider
 });
 
-/** Stable death-reason keys (P0.2): why an attrition death happened. */
+/** Stable death-reason keys: why an attrition death happened. */
 export const DEATH_REASON = Object.freeze({
   SIEGE: "siege", // the settlement is being besieged / razed
   UNDER_ATTACK: "under-attack", // in-border violence over the flee threshold (no active siege flag)
@@ -126,22 +124,16 @@ export function reasonsPhrase(reasons, max = 3) {
   return parts.join(", ");
 }
 
-// Reason tags that describe the DESTINATION's own pull — they read as attributes of where the people
-// went ("more prosperous", "nearby", "open borders"). The remaining tags — crisis-escape /
-// aggressor-avoided / safer-dir / raid — describe the FLIGHT (why/how they left), which the situation
-// sentence already conveys and which reads oddly under a "Drawn there:" / "Why there:" heading (mixing a
-// gerund fragment like "escaping the crisis" with an adjective like "more prosperous"). So the
-// destination-why clause shows only these.
+// Reason tags that describe the DESTINATION's own pull. The remaining tags describe the FLIGHT, which
+// the situation sentence already conveys, so the "Why there:" clause shows only these.
 const PULL_TAGS = new Set(["richer", "nearby", "own-civ", "open-borders", "allied", "asylum"]);
 
 /**
- * The localized " and " connector, padded: its surrounding spaces do not survive the text pipeline
- * (watched 2026-09-14: the readout read "prosperityandproximity").
+ * The localized " and " connector, padded: its surrounding spaces do not survive the text pipeline.
  * @returns {string} The connector with one space either side.
  */
 function listAnd() {
-  // The separators live in the CODE: the game's text loader strips a localized string's edge spaces (mod test 88),
-  // so " and " arrived as "and" and joined two names into "RomeetCarthage".
+  // The separators live in the CODE: the game's text loader strips a localized string's edge spaces.
   const raw = " " + loc("LOC_EMIG_LIST_AND", "and").trim() + " ";
   return /^\s/.test(raw) && /\s$/.test(raw) ? raw : " " + raw.trim() + " ";
 }

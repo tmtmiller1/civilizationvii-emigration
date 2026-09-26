@@ -10,7 +10,7 @@
 //   • Host ceiling: read the SAME `GameConfiguration` key Demographics' host writes, so a host's
 //     choice governs both mods at once.
 //   • Local preference: read Demographics' own setting from the shared `localStorage.modSettings`
-//     slice when present; otherwise default to met-civs-only (today's behaviour).
+//     slice when present; otherwise default to met-civs-only (today's behavior).
 // Emigration only READS the policy, Demographics owns the control UI. Reads fail safe to HIDING
 // (never leak) on error.
 //
@@ -63,8 +63,22 @@ function hostPolicy() {
   return gameConfigPolicy(HOST_POLICY_KEY);
 }
 
-/** The effective policy Demographics published to GameConfiguration, or null when it hasn't. */
+/**
+ * The effective policy Demographics published to GameConfiguration, or null when it hasn't. The
+ * per-seat key (Demographics 2.7.3 and later) is read first: GameConfiguration is one shared
+ * document in a networked game, so the single key holds whichever seat wrote it last.
+ * @returns {string|null} A policy id, or null.
+ */
 function publishedPolicy() {
+  try {
+    const pid = typeof GameContext !== "undefined" ? GameContext.localPlayerID : -1;
+    if (typeof pid === "number" && pid >= 0) {
+      const mine = gameConfigPolicy(EFFECTIVE_POLICY_KEY + "_P" + pid);
+      if (mine) return mine;
+    }
+  } catch (_) {
+    /* GameContext absent off-engine; fall through to the shared key */
+  }
   return gameConfigPolicy(EFFECTIVE_POLICY_KEY);
 }
 

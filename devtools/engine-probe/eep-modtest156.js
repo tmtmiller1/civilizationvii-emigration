@@ -2,10 +2,10 @@
 // button's caption and the icons drawn inside the button labels. Mod test 155 header:
 // mod test 154 again, but the host is first given 2000 Gold so the Gold-costing stance is
 // affordable, and that stance is the one pressed: does its payout land and its price leave, by the stated amounts?
-// (154 watched the pop-up render and the unaffordable stance greyed out; its press correctly did nothing.)
+// (154 watched the pop-up render and the unaffordable stance grayed out; its press correctly did nothing.)
 // Save: AugustusExp66 (Exploration turn 66, a rich empire). Mod pass off (CONFIG.turnInterval), no turn ended.
 // 1. VIEW   the decision model for a foreign major's enclave in one of our cities: each stance's effect line, its
-//           resolved payout, and whether it is greyed out, against the host's live income and treasury.
+//           resolved payout, and whether it is grayed out, against the host's live income and treasury.
 // 2. DIALOG raise the real pop-up with the mod's own showDilemma, log its body text and buttons, SHOT it.
 // 3. PAY    press the first stance's button through the dialog, wired to the shipped applyQuarterChoice, and
 //           read the treasury and tech/civic/influence pools before and 4 s after: did the payout land and the
@@ -53,7 +53,7 @@ async function run() {
   const foreignSig = sigs.find((s) => s.owner !== local && !s.isCityState && safe(() => Players.get(s.owner).isMajor, false));
   if (!host || !foreignSig) { emit("no host or foreign major: host=" + !!host + " foreign=" + !!foreignSig); emit("DONE modtest156 finished"); return; }
   const origin = foreignSig.owner;
-  const quarter = { civ: origin, owner: local, name: cityName(host.city), share: 0.4, where: "by the harbour" };
+  const quarter = { civ: origin, owner: local, name: cityName(host.city), share: 0.4, where: "by the harbor" };
   emit("SETUP host=" + quarter.name + " origin=" + origin + " " + civType(origin) + " atWar=" + safe(() => Players.get(local).Diplomacy.isAtWarWith(origin), "?")
     + " pools=" + J(pools(local)));
 

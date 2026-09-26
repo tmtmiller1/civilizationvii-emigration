@@ -1,37 +1,16 @@
 // emigration-explain-view.js
 //
-// Feature L (roadmap §15.1): the "why did they leave / why there?" explainer. The first SURFACE over
-// the §15.0a explain substrate - two labeled groups ("Why people are leaving" / "Where they're
-// drawn"), each a row per factor with a relative-weight bar.
+// The "why did they leave / why there?" explainer: two labeled groups ("Why people are leaving" /
+// "Where they're drawn"), each a row per factor with a relative-weight bar. Deliberately thin:
+// emigration-explain.js decomposes the scores, this only formats the rows. Two layers, mirroring
+// emigration-city-readout-data.js: buildExplainModel(o) is PURE (resolved inputs → view-model) and
+// explainModel(cityId) gathers those inputs live and degrades to null on any read failure.
 //
-// This module is deliberately thin. It does NO reasoning: emigration-explain.js decomposes the
-// scores, this formats the rows. If you find yourself computing a contribution here, it belongs
-// there instead (that is the whole point of the substrate, and every later consumer - the forecast,
-// the advisor, the policy preview - inherits the same split).
-//
-// Two layers, mirroring emigration-city-readout-data.js:
-//   • buildExplainModel(o), PURE: resolved inputs → the view-model. Unit-tested.
-//   • explainModel(cityId), IMPURE: gathers those inputs live (recompute-on-read, no new persisted
-//     state) and calls the pure builder. Degrades to null on any read failure.
-//
-// THREE THINGS THIS RENDERS, AND WHY THEY ARE NOT THE SAME THING. The honesty rule in
-// emigration-explain.js says a contribution may only reach a player as a RELATIVE WEIGHT among the
-// other contributions. That forces a shape the roadmap's sketch did not anticipate: it listed
-// "Prosperity, Open borders, Existing Roman community" as peer rows, but only the first is an
-// addend, so they are separated here.
-//
-//   1. FACTORS (`leaving` / `drawnTo`) - the additive terms, as weights. These are the only rows
-//      with a weight bar, because a weight is only meaningful against the other addends.
-//   2. PERMEABILITY (`permeability`) - the multiplicative border channel. Reported as its literal
-//      multiplier ("x1.5"), which the substrate documents as the honest number for it, and NOT as a
-//      weight: it is not an addend, and `weigh()` already excludes it from the denominator.
-//   3. COMMUNITY (`community`) - context, deliberately NOT a factor. A diaspora at the destination
-//      does not move anyone today: chain migration is Feature K (roadmap §11), unbuilt and
-//      off-by-default when it lands. Synthesizing a weighted row for it would be the exact failure
-//      the honesty rule exists to prevent - and worse than a cosmetic lie, since a fabricated delta
-//      enters `weigh()`'s denominator and silently falsifies every OTHER row's weight too. So it
-//      renders as a plain note ("Roman community there: 24%"). When K ships it will fold into
-//      `tiltFor`, and the `tilt` row will then carry it as a real, earned weight with no change here.
+// Three things render, and they are not the same thing: FACTORS (`leaving` / `drawnTo`) are the
+// additive terms, the only rows with a weight bar; PERMEABILITY is the multiplicative border channel,
+// reported as its literal multiplier ("x1.5") and never as a weight; COMMUNITY is context, not a factor,
+// because a diaspora at the destination does not move anyone, so a fabricated weight for it would
+// falsify every other row's share. It renders as a plain note ("Roman community there: 24%").
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { explainPull, explainPush, weigh } from "/emigration/ui/emigration-explain.js";
@@ -106,10 +85,8 @@ function permeabilityOf(rows) {
 
 /**
  * Build the explainer view-model from already-resolved inputs. Pure over its inputs: it scores with
- * the sim's own pure functions and does no engine reads of its own. The one impure thing it needs -
- * resolving the destination's diaspora, which reads composition state - is injected as
- * `communityOf`, so the destination is only chosen once (`bestDestination` walks every candidate;
- * calling it again just to look up a community would double the cost of every hover).
+ * the sim's own pure functions and does no engine reads. Resolving the destination's diaspora is
+ * injected as `communityOf`, so `bestDestination` is only walked once per hover.
  * @param {{signal:*, ranked:*[], cityName?:string, ownerPop?:Record<number,number>|null,
  *   field?:{meanHappiness:number}|null,
  *   communityOf?:((dest:*, signal:*) => {name:string, share:number, color:string}|null)|null}} o Inputs.
@@ -207,12 +184,9 @@ function findSignal(ranked, cityId) {
   return null;
 }
 
-// Per-turn memo. Unlike the readout (one snapshot per city SELECTION), this feature is mounted on
-// hover panels: a cursor crossing a civ's tiles asks for a model dozens of times a turn, and the
-// gather below ranks EVERY settlement in the world. The inputs are per-pass constants, so they are
-// computed once a turn and shared, the same `_loadedTurn` idiom emigration-composition.js uses.
-// Registered with the cache-reset convention so a new game in a still-live isolate cannot be
-// explained with the previous game's field.
+// Per-turn memo: hover panels ask for a model dozens of times a turn and the gather below ranks
+// EVERY settlement, so the per-pass constant inputs are computed once a turn and shared. Registered
+// with the cache-reset convention so a new game in a still-live isolate never sees the previous field.
 let _passTurn = -1;
 /** @type {{ranked:*[], ownerPop:Record<number,number>, field:{meanHappiness:number}}|null} */
 let _pass = null;
@@ -283,9 +257,9 @@ export function explainModel(cityId) {
   }
 }
 
-// Weight-bar colours, matching the flow view's convention: red = driving people out, green = drawing
+// Weight-bar colors, matching the flow view's convention: red = driving people out, green = drawing
 // them in. A push row and a pull row can appear in the SAME group (the terms that retain people are
-// pulls on the leaving side), so the colour reads the row's own kind, never its group.
+// pulls on the leaving side), so the color reads the row's own kind, never its group.
 const PUSH_COLOR = "#e0786b";
 const PULL_COLOR = "#7fd08a";
 
@@ -342,7 +316,7 @@ function div(cls, text) {
 }
 
 /**
- * The weight bar for one row: a track with a proportional fill, coloured by the row's direction.
+ * The weight bar for one row: a track with a proportional fill, colored by the row's direction.
  * @param {ExplainRow} r The row.
  * @returns {*} The track element.
  */
@@ -370,9 +344,9 @@ function appendRow(parent, r) {
 }
 
 /**
- * Append a plain context note (optionally with a civ colour swatch).
+ * Append a plain context note (optionally with a civ color swatch).
  * @param {*} parent The container. @param {string} text The note.
- * @param {string} [swatch] A hex colour for a leading swatch.
+ * @param {string} [swatch] A hex color for a leading swatch.
  */
 function appendNote(parent, text, swatch) {
   const d = div("emig-ex-note");
@@ -421,7 +395,7 @@ function appendDrawn(root, m) {
  * Render an explainer model into `parent`, replacing any previous render. No-op for a null model, an
  * absent parent, or a model with nothing to say - so a host can call this unconditionally.
  * @param {*} parent The host element.
- * @param {ExplainModel|null} model The model.
+ * @param {ExplainModel|null} model
  * @returns {*} The rendered container, or null when nothing was rendered.
  */
 export function renderExplain(parent, model) {

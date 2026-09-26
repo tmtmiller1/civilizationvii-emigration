@@ -2,11 +2,7 @@
 //
 // The PERSISTED SHAPE of the migration tallies: coercing a parsed save blob into the canonical state
 // (normalize), stamping a brand-new one (freshState), and the once-on-load migrations that bring an
-// older blob up to the current schema (migrateState). Split out of emigration-migration-stats.js,
-// which was at its line budget; that file owns the tallying and the reads, this one owns the shape.
-//
-// Backward compatibility is the whole point here: an older save simply lacks the newer maps, which
-// default to {} (or, where a tally can be reconstructed, are backfilled once, see backfillInternal).
+// older blob up to the current schema (migrateState). Missing maps default to {} or are backfilled once.
 
 import { migrateCumulativeToDeltas } from "/emigration/ui/emigration-flow-history.js";
 import { normalizeInternal, backfillInternal, INTERNAL_SCHEMA } from "/emigration/ui/emigration-internal-tally.js";
@@ -21,9 +17,8 @@ function mapOr(v) {
 }
 
 /**
- * Coerce a parsed object into the canonical state shape (filling missing maps). Existing saves keep
- * their tallies untouched: the v2 net-accounting change (settled cross-civ only) takes effect on new
- * moves going forward; a pre-v2 save's accumulated net carries a fixed offset rather than being wiped.
+ * Coerce a parsed object into the canonical state shape (filling missing maps). Existing tallies are
+ * kept untouched.
  * @param {*} o Parsed object.
  * @returns {*} The normalized state (a MigStatsState).
  */
@@ -66,7 +61,7 @@ export function normalize(o) {
     wmInByCause: mapOr(o.wmInByCause),
     flows: mapOr(o.flows),
     // Per-city rolling net pop-point series ("owner|cityName" -> recent net values), for the
-    // city-readout sparkline (Feature E). Bounded per city and in city count.
+    // city-readout sparkline. Bounded per city and in city count.
     cityNet: mapOr(o.cityNet),
     // Stance-impact counterfactual (people + pop-points): how much each civ's border policy raised
     // (Pro) or cut (Anti / Closed-retention) its cross-civ immigration in/out vs a neutral-borders
@@ -99,7 +94,7 @@ export function freshState() {
 
 /**
  * Bring a just-loaded state up to the current schemas: delta-encode a legacy cumulative-clone flow
- * history (P0.3), then seed the internal/external split on a save made before it existed. Both are
+ * history, then seed the internal/external split on a save made before it existed. Both are
  * idempotent and stamp their own schema, so a current blob passes through untouched.
  * @param {*} s State (mutated).
  */

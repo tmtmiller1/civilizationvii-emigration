@@ -1,17 +1,10 @@
 // emigration-quarter-registry.js
 //
-// Assembles the CHOICES a player is offered when a foreign diaspora grows into an established Cultural
-// Quarter, for a SPECIFIC origin civilization. Each origin offers two identity-grounded stances (the yield
-// each pays + a one-line "why", from emigration-quarter-bonuses.js) plus a universal passive "let them be".
-// A stance pays Gold, Influence, Science or Culture once, and one that does not pay Gold costs Gold. The
-// AMOUNTS are sized from the host's income when the stance is offered (emigration-stance-payout.js); this
-// module only names the identities and composes the button label + note, so it stays deterministic,
-// engine-free, unit-testable, and never throws.
-//
-// The origin's NAME ("the Roman Quarter") is resolved separately by emigration-naming.js. Here the
-// origin shapes the option YIELDS and flavour: a Roman Quarter offers Production/Gold, a Persian one
-// Gold/Culture, and so on (emigration-quarter-bonuses.js, plan §7). Unknown/DLC civs fall back to a
-// neutral pair so the feature never breaks on a civ with no row.
+// Assembles the CHOICES a player is offered for an established Cultural Quarter of a specific origin:
+// two identity-grounded stances (the yield each pays + a one-line "why", from
+// emigration-quarter-bonuses.js) plus a universal passive "let them be". A stance that does not pay
+// Gold costs Gold; the amounts are sized elsewhere (emigration-stance-payout.js), so this module is
+// deterministic, engine-free and never throws. Unknown civs fall back to a neutral pair.
 
 import { quarterBonus } from "/emigration/ui/emigration-quarter-bonuses.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
@@ -25,14 +18,14 @@ import { loc } from "/emigration/ui/emigration-loc.js";
  * @property {string|null} penaltyYield The yield the quarter costs (null = no drawback).
  */
 
-/** Benefit yield → the action-verb button label (civ-agnostic; the flavour is in the note).
+/** Benefit yield → the action-verb button label (civ-agnostic; the flavor is in the note).
  * @type {Record<string,string>} */
 const ACT_LABEL = {
   YIELD_CULTURE: "Embrace their culture",
   YIELD_GOLD: "Tax their trade",
   YIELD_PRODUCTION: "Employ their crafts",
   YIELD_SCIENCE: "Fund their learning",
-  YIELD_FAITH: "Honour their faith",
+  YIELD_FAITH: "Honor their faith",
   YIELD_FOOD: "Take up their farming",
   YIELD_HAPPINESS: "Join their festivals",
   YIELD_DIPLOMACY: "Welcome their envoys"
@@ -76,7 +69,7 @@ function yieldTag(y) {
   return String(y || "").replace(/^YIELD_/, "");
 }
 
-/** @param {string} s @returns {string} s with its first letter capitalised. */
+/** @param {string} s @returns {string} s with its first letter capitalized. */
 function cap(s) {
   return s && s.length ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 }
@@ -95,11 +88,9 @@ function actLabel(benefit) {
 
 /**
  * Turn one per-civ bonus option ({id, pays, why, label?}) into a full offered QuarterOption: an
- * action-verb label from the yield it pays, and a note = the "why" flavour + a compact "(+Pays, −Gold)"
- * cue (a Gold stance costs nothing, so its cue is "(+Gold)"). Every player-facing string is localized
- * through its own LOC key with the English (registry) text as the fallback: `LOC_EMIG_QTR_WHY_<civ>_<id>`,
- * `..._LABEL_<civ>_<id>` for an override, `..._ACT_<yield>` for the default verb, `..._YIELD_<yield>` for
- * the cue. The enclave's single attributed quote is shown once at the modal level (emigration-quarter.js).
+ * action-verb label from the yield it pays, and a note = the "why" flavor + a compact "(+Pays, −Gold)"
+ * cue. Every player-facing string is localized through its own LOC key (`LOC_EMIG_QTR_WHY_<civ>_<id>`,
+ * `..._LABEL_<civ>_<id>`, `..._ACT_<yield>`, `..._YIELD_<yield>`) with the registry text as the fallback.
  * @param {{id:string, pays:string, why:string, label?:string}} b The bonus option.
  * @param {string} civKey The origin's short key ("ROME"), or "NEUTRAL" for the fallback pair.
  * @returns {QuarterOption} The offered option.

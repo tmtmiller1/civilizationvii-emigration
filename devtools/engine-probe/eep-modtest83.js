@@ -1,7 +1,7 @@
 // eep-modtest83.js - the Prosperity lens's cursor panel after the per-tile rewrite. The panel used to print only a
 // settlement's standing against the world, which sat near "About average" for almost every city and had nothing to do
-// with the colour the lens painted a tile. It now leads with the hovered TILE's standing inside its own settlement,
-// the number the fill colour is mixed from (emigration-tile-score.js, shared by both surfaces).
+// with the color the lens painted a tile. It now leads with the hovered TILE's standing inside its own settlement,
+// the number the fill color is mixed from (emigration-tile-score.js, shared by both surfaces).
 // A probe cannot move the mouse, so this reads the panel two ways: it logs tileTierAt for a spread of the settlement's
 // tiles (what the panel would print on each), then tries to drive the panel by setting the plot cursor and dispatching
 // a mousemove, and dumps the panel element's rendered rows plus a screenshot.
@@ -28,7 +28,7 @@ async function run() {
   }
   if (!best) { emit("no settlement with enough tiles"); emit("DONE modtest83 finished"); return; }
 
-  // What the panel would print on a spread of this settlement's tiles: the same deviation the lens coloured each from.
+  // What the panel would print on a spread of this settlement's tiles: the same deviation the lens colored each from.
   const sorted = best.tiers.slice().sort((a, b) => b.score - a.score);
   const sample = [sorted[0], sorted[Math.floor(sorted.length * 0.25)], sorted[Math.floor(sorted.length / 2)],
     sorted[Math.floor(sorted.length * 0.75)], sorted[sorted.length - 1]].filter(Boolean);

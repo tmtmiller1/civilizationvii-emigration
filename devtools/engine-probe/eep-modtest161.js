@@ -5,7 +5,7 @@
 // R3  write the storm/flood/eruption percent chances to 100: do they read back, and do events fire over the turns?
 // U   an INDEPENDENT unit created on one of the local player's farms: canStart/sendRequest PILLAGE from script
 //     (two argument shapes); the farm's damaged flag at +3 s and +8 s
-// U2  end 2 turns: does the independent's own AI pillage the farm or a neighbour? (independents are always hostile)
+// U2  end 2 turns: does the independent's own AI pillage the farm or a neighbor? (independents are always hostile)
 // R2  LAST (could crash): CREATE_ELEMENT with event-shaped Kinds and a RandomEvents type on the farm
 // Every native call is logged BEFORE it is made, so a crash names its call.
 const TAG = "[EmigTest]";

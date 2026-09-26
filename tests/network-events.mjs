@@ -44,7 +44,7 @@ const scene = (events, frameIdx) => ({ centers, events, state: { frameIdx } });
   ];
   assert.deepEqual(eventBadgeRequests(scene(events, 5)).map((r) => r.text), ["⚑ Now"], "the window is inclusive of now only");
   assert.equal(eventBadgeRequests(scene(events, 20)).length, 0, "past the last event, nothing is badged");
-  // Pre-existing behaviour, pinned so it can't drift silently: with no scrubber frame the clock reads as past
+  // Pre-existing behavior, pinned so it can't drift silently: with no scrubber frame the clock reads as past
   // every window, so nothing is badged.
   assert.equal(eventBadgeRequests({ centers, events, state: {} }).length, 0, "no frame index: no badges");
 }
@@ -53,7 +53,7 @@ const scene = (events, frameIdx) => ({ centers, events, state: { frameIdx } });
 {
   const reqs = eventBadgeRequests(scene([{ kind: "war", label: "W", from: 0, to: 9, cis: [1] }], 1));
   assert.equal(reqs[0].y, 260 + 50 + 13, "sits below the cluster disc");
-  assert.equal(reqs[0].color.length > 0, true, "carries its kind's colour");
+  assert.equal(reqs[0].color.length > 0, true, "carries its kind's color");
   assert.equal(eventBadgeRequests(scene([{ kind: "war", label: "W", from: 0, to: 9, cis: [7] }], 1)).length, 0,
     "an event pinned to a cluster that isn't drawn is skipped");
   assert.deepEqual(eventBadgeRequests({}), [], "no scene, no badges");

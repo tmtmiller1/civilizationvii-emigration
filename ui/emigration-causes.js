@@ -2,12 +2,7 @@
 //
 // The SINGLE SOURCE OF TRUTH for migration CAUSES, the taxonomy shared by the engine (which emits
 // them), the per-civ tallies + Demographics attribution (which key on them), the naming/feedback
-// layer (which flavours them), and the city readout (which explains them).
-//
-// Before this module the taxonomy was duplicated and inconsistent: the `MigrationCause` typedef
-// lived in two files, `migrationCause()` could only ever emit three of the five declared values,
-// and `prosperity`/`conquest` were CONSUMED (Demographics labels, naming headlines) but never
-// PRODUCED. Centralizing here keeps the type, the producer, and every consumer in agreement.
+// layer (which flavors them), and the city readout (which explains them).
 //
 // The string VALUES are PERSISTED routing keys (the per-cause maps in EmigrationMigStats_v1), so
 // the set is ADDITIVE-ONLY: never rename a value without a load-time alias, or existing saves lose
@@ -18,9 +13,8 @@ import { loc } from "/emigration/ui/emigration-loc.js";
 
 /**
  * Why population left a settlement. `attrition` is the outlet (a death, population lost with no
- * destination), tracked apart from the migration/refugee tallies. `conquest` is reserved: a later
- * phase emits it on capture-driven displacement (it is consumed by the naming layer today but not
- * yet produced).
+ * destination), tracked apart from the migration/refugee tallies. `conquest` is capture-driven
+ * displacement.
  * @typedef {"unhappiness"|"prosperity"|"war"|"disaster"|"conquest"|"attrition"|"return"} MigrationCause
  */
 
@@ -72,12 +66,9 @@ const LABEL_KEYS = {
   other: "LOC_EMIG_CAUSE_LABEL_OTHER"
 };
 
-// Theme accent colour per cause, for TEXT-ADJACENT chrome: the toast accent bar and notifications-log
-// rows. Deliberately DISTINCT from `CAUSE_PALETTE` in emigration-network-paint.js, that map fills the
-// network-canvas migrant dots and is tuned to harmonize with `CIV_PALETTE` (brighter, e.g. war
-// #e5616b), whereas these are darker, more saturated tones that read as accents beside text (war
-// #d24b3e). The divergence is intentional; do NOT consolidate the two. A NEW cause needs a colour in
-// BOTH maps.
+// Theme accent color per cause, for TEXT-ADJACENT chrome (the toast accent bar and notifications-log
+// rows). Deliberately DISTINCT from `CAUSE_PALETTE` in emigration-network-paint.js, which fills the
+// network-canvas dots in brighter tones; do NOT consolidate the two. A NEW cause needs a color in BOTH maps.
 /** @type {Record<string,string>} */
 const ACCENTS = {
   war: "#d24b3e",
@@ -146,7 +137,7 @@ const HINT_KEYS = {
 /**
  * Whether a cause is forced displacement (counts toward the refugees tally + refugee headline, and
  * takes the minimum "camp" transit lag).
- * @param {string} [cause] The cause.
+ * @param {string} [cause]
  * @returns {boolean} True for war/disaster/conquest.
  */
 export function isRefugeeCause(cause) {
@@ -157,7 +148,7 @@ export function isRefugeeCause(cause) {
  * The short, localized display label for a cause ("War", "Attraction", …), composed from its
  * `LOC_EMIG_CAUSE_LABEL_*` key with the English `LABELS` entry as the fallback. Unknown causes fall
  * back to the "Other" label.
- * @param {string} [cause] The cause.
+ * @param {string} [cause]
  * @returns {string} The label.
  */
 export function causeLabel(cause) {
@@ -167,24 +158,22 @@ export function causeLabel(cause) {
 }
 
 /**
- * The theme accent colour for a cause (war red, disaster amber, prosperity green, …), for the toast
+ * The theme accent color for a cause (war red, disaster amber, prosperity green, …), for the toast
  * accent bar and the notifications-log rows. Falls back to the gold mod accent for unknown causes.
  * @param {string} [cause] The migration cause (or "crisis").
- * @returns {string} A CSS colour.
+ * @returns {string} A CSS color.
  */
 export function causeAccent(cause) {
   return (cause && ACCENTS[cause]) || ACCENTS.other;
 }
 
 /**
- * The DIRECTION-based accent for a per-move migration digest, shared by the HUD toast AND the log row so
- * the two always match: green when people stay within the empire or arrive from abroad (a neutral
- * shuffle or a gain), red when the player's OWN people leave for another civ (a real loss). Independent
- * of the migration cause — a prosperity-driven departure to a rival is still a red loss, not a green
- * gain. Deaths and world-news use {@link notificationAccent} (cause colour) instead.
+ * The DIRECTION-based accent for a per-move migration digest, shared by the HUD toast AND the log row:
+ * green when people stay within the empire or arrive from abroad, red when the player's OWN people
+ * leave for another civ, independent of the cause. Deaths and world-news use {@link notificationAccent} instead.
  * @param {boolean} [ownLoss] Whether it's the player's own settlement shedding population.
  * @param {boolean} [crossCiv] Whether the move crossed a civilization border.
- * @returns {string} A CSS colour.
+ * @returns {string} A CSS color.
  */
 export function digestAccent(ownLoss, crossCiv) {
   if (ownLoss) return crossCiv ? causeAccent("war") : NEUTRAL_NEWS_ACCENT;
@@ -203,15 +192,12 @@ const GAIN_ACCENT = ACCENTS.prosperity;
 const OWN_SOFT_LOSS_ACCENT = ACCENTS.unhappiness;
 
 /**
- * The accent colour for a NOTIFICATION (toast or log row). Two rules: red is reserved for the local
- * player's OWN population losses (another civ's war or crisis renders in a neutral informational tone,
- * so a red notification is always about THEIR civilization), and green is reserved for the local player's
- * OWN gains (another civ's prosperity or return migration is neutral news, and the player's own people
- * leaving for prosperity or returning home is a soft loss, amber, never green). Warning tones (disaster
- * orange, unhappiness amber, attrition grey) are unaffected.
+ * The accent color for a NOTIFICATION (toast or log row). Two rules: red is reserved for the local
+ * player's OWN population losses and green for the local player's OWN gains; another civ's news is a
+ * neutral tone, and the player's own people leaving for prosperity or returning home is amber.
  * @param {string} [cause] The migration cause (or "crisis").
  * @param {boolean} [ownLoss] Whether this notification is the local player's own population loss.
- * @returns {string} A CSS colour.
+ * @returns {string} A CSS color.
  */
 export function notificationAccent(cause, ownLoss) {
   const c = cause || "";
@@ -222,7 +208,7 @@ export function notificationAccent(cause, ownLoss) {
 
 /**
  * How durable a loss from this cause is (the "temporary / persistent / permanent" cue).
- * @param {string} [cause] The cause.
+ * @param {string} [cause]
  * @returns {Permanence} The permanence class.
  */
 export function causePermanence(cause) {
@@ -234,7 +220,7 @@ export function causePermanence(cause) {
  * the English `HINTS` entry as fallback), or "" when the cause has no hint. `city` fills the `{1_City}`
  * placeholder some hints carry (the prosperity hint names the settlement being out-prospered); it is
  * ignored by hints without a placeholder, so passing it is always safe.
- * @param {string} [cause] The cause.
+ * @param {string} [cause]
  * @param {string} [city] The settlement name, for hints that name it.
  * @returns {string} The hint.
  */
@@ -263,7 +249,7 @@ const CAUSE_ORDER = ["war", "conquest", "disaster", "attrition", "unhappiness", 
 
 /**
  * A cause's tie-break rank (unknown causes sort after all known ones).
- * @param {string} cause The cause.
+ * @param {string} cause
  * @returns {number} The rank.
  */
 function causeOrder(cause) {
@@ -283,10 +269,8 @@ function finite(n) {
 
 /**
  * The cause that moved the most people in a per-cause map — the one to name where there is room for
- * only one (the City Details flow rows). Ties break on CAUSE_ORDER, the same rank `netDrivers` uses,
- * so a given corridor always names the same driver. "" when the map is absent, empty, or all-zero
- * (a legacy flat-number flow value carries no per-cause detail, and must read as "unknown", not
- * "Other" — the caller decides what to show).
+ * only one (the City Details flow rows). Ties break on CAUSE_ORDER, the same rank `netDrivers` uses.
+ * "" when the map is absent, empty, or all-zero (a flat-number flow value reads as "unknown", not "Other").
  * @param {Record<string,number>} [byCause] People per cause.
  * @returns {string} The dominant cause key, or "".
  */

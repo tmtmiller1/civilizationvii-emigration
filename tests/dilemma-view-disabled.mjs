@@ -1,6 +1,6 @@
 // dilemma-view-disabled.mjs
 //
-// A greyed-out choice reaches the game's dialog as a disabled option, and can never resolve even if an input
+// A grayed-out choice reaches the game's dialog as a disabled option, and can never resolve even if an input
 // path calls its callback; the dismiss choice can never be disabled.
 import assert from "node:assert/strict";
 

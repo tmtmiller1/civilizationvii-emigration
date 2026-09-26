@@ -1,24 +1,19 @@
 // emigration-civ-colors.js
 //
-// Readable per-civ display colours for the migration views, derived from the game's banner colours
-// the same way the Demographics mod colours its graph lines: prefer a civ's PRIMARY banner colour,
-// fall back to its SECONDARY when the primary is a dark grey/black (which would just become a dull
-// grey), then lift any still-dark colour to a minimum lightness so it never vanishes on the dark
-// canvas. Off-engine / unresolved players fall back to the caller's synthetic-palette colour.
-//
-// Readability is gauged by HSL lightness (not raw luminance): a saturated pure red reads fine on a
-// dark background while a desaturated dark grey of the same luminance does not.
+// Readable per-civ display colors for the migration views, from the game's banner colors: prefer
+// the PRIMARY, fall back to the SECONDARY when the primary is a dark gray, then lift any still-dark
+// color to a minimum HSL lightness so it never vanishes on the dark canvas.
 
-// Minimum HSL lightness a colour needs on the dark canvas, higher for greys (no hue to aid it).
+// Minimum HSL lightness a color needs on the dark canvas, higher for grays (no hue to aid it).
 const MIN_L_GREY = 0.65;
 const MIN_L_SAT = 0.5;
-// A primary banner colour worth replacing with the secondary: dark AND nearly colourless.
+// A primary banner color worth replacing with the secondary: dark AND nearly colorless.
 const DARK_GREY_MAX_L = 0.42;
 const DARK_GREY_MAX_S = 0.3;
 
 /**
- * Parse a `#RRGGBB`/`#AARRGGBB` or `rgb()/rgba()` colour into channels, or null.
- * @param {*} input Colour string.
+ * Parse a `#RRGGBB`/`#AARRGGBB` or `rgb()/rgba()` color into channels, or null.
+ * @param {*} input Color string.
  * @returns {{r:number, g:number, b:number}|null} Channels or null.
  */
 function parse(input) {
@@ -38,7 +33,7 @@ function parse(input) {
 /**
  * Format RGB channels as `#RRGGBB`.
  * @param {number} r Red. @param {number} g Green. @param {number} b Blue.
- * @returns {string} Hex colour.
+ * @returns {string} Hex color.
  */
 function toHex(r, g, b) {
   const h2 = (/** @type {number} */ n) => Math.max(0, Math.min(255, n)).toString(16).padStart(2, "0");
@@ -86,7 +81,7 @@ function hslBase(hp, c, x) {
 /**
  * Convert HSL to a `#RRGGBB` string.
  * @param {number} h Hue. @param {number} s Saturation. @param {number} l Lightness.
- * @returns {string} Hex colour.
+ * @returns {string} Hex color.
  */
 function hslToHex(h, s, l) {
   const c = (1 - Math.abs(2 * l - 1)) * s;
@@ -99,9 +94,9 @@ function hslToHex(h, s, l) {
 }
 
 /**
- * Whether a colour is a dark, nearly-colourless grey/black (lifting it yields a dull grey).
+ * Whether a color is a dark, nearly-colorless grey/black (lifting it yields a dull gray).
  * @param {{r:number, g:number, b:number}} c Channels.
- * @returns {boolean} True for dark greys.
+ * @returns {boolean} True for dark grays.
  */
 function isDarkGrey(c) {
   const { s, l } = rgbToHsl(c.r, c.g, c.b);
@@ -109,8 +104,8 @@ function isDarkGrey(c) {
 }
 
 /**
- * Lift a colour to the minimum readable lightness for the dark canvas, preserving hue + saturation.
- * @param {string} color Colour string.
+ * Lift a color to the minimum readable lightness for the dark canvas, preserving hue + saturation.
+ * @param {string} color Color string.
  * @returns {string} A readable `#RRGGBB` (or the input unchanged when unparseable).
  */
 function safeColor(color) {
@@ -123,10 +118,10 @@ function safeColor(color) {
 }
 
 /**
- * Choose the more readable of a civ's two banner colours: the primary, unless it's a dark grey
+ * Choose the more readable of a civ's two banner colors: the primary, unless it's a dark gray
  * (then the secondary, when it carries a real hue).
- * @param {*} primary Primary banner colour. @param {*} secondary Secondary banner colour.
- * @returns {*} The chosen colour.
+ * @param {*} primary Primary banner color. @param {*} secondary Secondary banner color.
+ * @returns {*} The chosen color.
  */
 function preferReadable(primary, secondary) {
   const p = parse(primary);
@@ -137,9 +132,9 @@ function preferReadable(primary, secondary) {
 }
 
 /**
- * A live player's banner colour string via UI.Player, or undefined.
+ * A live player's banner color string via UI.Player, or undefined.
  * @param {number} pid Player id. @param {string} fn Getter name.
- * @returns {string|undefined} Colour string.
+ * @returns {string|undefined} Color string.
  */
 function bannerColor(pid, fn) {
   try {
@@ -154,9 +149,9 @@ function bannerColor(pid, fn) {
 }
 
 /**
- * A civ's readable display colour for the dark canvas: its real banner colour (primary, or the
- * secondary when the primary is a dark grey), lifted to a readable lightness. Falls back to
- * `fallbackHex` (a synthetic-palette colour) off-engine or when no banner colour is available.
+ * A civ's readable display color for the dark canvas: its real banner color (primary, or the
+ * secondary when the primary is a dark gray), lifted to a readable lightness. Falls back to
+ * `fallbackHex` (a synthetic-palette color) off-engine or when no banner color is available.
  * @param {number} pid Civ/player id.
  * @param {string} fallbackHex Fallback `#RRGGBB`.
  * @returns {string} A readable `#RRGGBB`.
@@ -171,8 +166,8 @@ export function civDisplayColor(pid, fallbackHex) {
 }
 
 /**
- * A colour string at a given alpha (for translucent fills); passes through when unparseable.
- * @param {string} color A `#RRGGBB` (or rgb) colour.
+ * A color string at a given alpha (for translucent fills); passes through when unparseable.
+ * @param {string} color A `#RRGGBB` (or rgb) color.
  * @param {number} a Alpha 0..1.
  * @returns {string} An `rgba(...)` string.
  */

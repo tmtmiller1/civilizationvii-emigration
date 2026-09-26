@@ -1,12 +1,7 @@
 // emigration-demographics-per-cause-metrics.js
 //
-// OPTIONAL: Register per-cause emigration and immigration metrics for granular tracking.
-// This module is NOT loaded by default - it's provided as an example for mods that want
-// detailed per-cause line charts in addition to the tooltip-based source attribution.
-//
-// Usage: Add this to emigration-main.js if granular cause tracking is desired, import
-// registerPerCauseMetrics from this module and call it once at startup, after the
-// Demographics API is available.
+// OPTIONAL: per-cause emigration and immigration metrics as Demographics line charts. Not loaded by
+// default; import registerPerCauseMetrics and call it once at startup, after the Demographics API is available.
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import {
@@ -16,10 +11,8 @@ import {
 import { loc } from "/emigration/ui/emigration-loc.js";
 
 /**
- * A registration-time copy of a per-cause spec with its `unit` localized. The host's UNIT_LOC table
- * covers "people"/"points" but NOT "people / turn", which it would otherwise render verbatim — so we
- * pre-compose it (at runtime, where Locale is ready). Name/title are id-derived by the host
- * (LOC_DEMOGRAPHICS_METRIC_<ID>[/_TITLE]) and need no JS change.
+ * A registration-time copy of a per-cause spec with its `unit` localized (the host's UNIT_LOC table
+ * does not cover "people / turn"). Name/title are id-derived by the host (LOC_DEMOGRAPHICS_METRIC_<ID>).
  * @param {*} spec A per-cause spec. @returns {*} The localized copy.
  */
 function localizeCauseSpec(spec) {
@@ -131,11 +124,8 @@ export function registerPerCauseMetrics(api) {
     
     for (const spec of ALL_SPECS) metricsApi.registerMetric(localizeCauseSpec(spec));
     
-    // Group the per-cause breakdown graphs onto Emigration's own (permanent) Migration page in
-    // Demographics too - the same single home as the main migration graphs (emigration-demographics.js)
-    // and the dashboard sub-tabs - rather than scattering them on the Population page. Chained after
-    // "emig_refugees" (the last main migration graph), each anchored to the previous so they stay in
-    // order. Falls back to append on an older Demographics that ignores the anchor arg.
+    // Group the per-cause graphs onto Emigration's own Migration page in Demographics, chained after
+    // "emig_refugees" (the last main migration graph), each anchored to the previous so they stay in order.
     if (typeof metricsApi.registerMetricToPage === "function") {
       const PAGE = "emig_migration_panel"; // must match emigration-migration-page.js PANEL_SPEC.id
       metricsApi.registerMetricToPage(PAGE, WAR_EMIGRATION_SPEC.id, "emig_refugees");

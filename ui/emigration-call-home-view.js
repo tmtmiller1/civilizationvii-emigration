@@ -1,20 +1,9 @@
 // emigration-call-home-view.js
 //
-// The dialog that offers a call (emigration-call-home.js holds the rules; emigration-call-home-action.js
-// binds them to the game). Pure: balances, flows and civilization names are injected, so the exact prose
-// and buttons a player sees are testable off-engine.
-//
-// Both variants offer a ladder of sizes per currency ("Bring 2 home for 170 Gold" / "Call 2 home for 255
-// Gold") and name the settlement people are pulled back from and the one they return to. Every size is always
-// listed; one the treasury cannot cover is greyed out and cannot be picked, with a tooltip saying how short
-// the treasury is, so the ladder never changes shape with the balance. They must still read as different offers:
-//   • INTERNAL is a purchase: the body promises that every one called will come.
-//   • EXTERNAL is a gamble: the body names the foreign ruler, states the odds for each person and that the
-//     call is paid for either way, and the verb on the buttons is "call", not "bring".
-// Costs carry the game's own Gold and Influence icons ([icon:YIELD_GOLD], [icon:YIELD_DIPLOMACY]) in the
-// buttons; the engine draws them (watched 2026-09-17), and emigration-dilemma-view.js keeps a fallback.
-// Each dialog closes on a homecoming epigraph in the player's own civilization's voice (the "return" kind
-// in emigration-displaced-quotes.js), drawn in the framed quote block the other decision pop-ups use.
+// The dialog that offers a call (emigration-call-home.js holds the rules). Pure: balances, flows and
+// civilization names are injected, so the prose and buttons are testable off-engine. Both variants
+// offer a ladder of sizes per currency (unaffordable sizes grayed out, never removed); INTERNAL is a
+// purchase ("bring"), EXTERNAL a gamble ("call") that states the odds and is paid for either way.
 import { loc } from "/emigration/ui/emigration-loc.js";
 import { civName } from "/emigration/ui/emigration-naming.js";
 import { displacedQuoteFor } from "/emigration/ui/emigration-displaced-quotes.js";
@@ -28,7 +17,7 @@ export const INFLUENCE_ICON = "[icon:YIELD_DIPLOMACY]";
 
 /** The dismiss choice id. */
 const NO = "no";
-/** How many origin/destination lines the dialog lists before summarising the rest. */
+/** How many origin/destination lines the dialog lists before summarizing the rest. */
 const MAX_PAIR_LINES = 4;
 
 /**
@@ -132,9 +121,9 @@ function externalBody(quote, civ) {
 }
 
 /**
- * The full size ladder for one currency. A size the treasury cannot cover stays in the list, greyed out and
+ * The full size ladder for one currency. A size the treasury cannot cover stays in the list, grayed out and
  * unpickable, with a tooltip saying what it needs and what the treasury holds.
- * @param {*} quote The quote. @param {number} currency A CALL_HOME_CURRENCY. @param {*} d Injected reads.
+ * @param {*} quote @param {number} currency A CALL_HOME_CURRENCY. @param {*} d Injected reads.
  * @returns {{id:string, label:string, note:string, disabled?:boolean}[]} The choices, cheapest first.
  */
 function tierChoices(quote, currency, d) {
@@ -154,7 +143,7 @@ function tierChoices(quote, currency, d) {
 }
 
 /**
- * The tooltip on a greyed-out size: what it needs and what the treasury holds.
+ * The tooltip on a grayed-out size: what it needs and what the treasury holds.
  * @param {number} currency A CALL_HOME_CURRENCY. @param {number} cost The fee. @param {number} balance The
  *   treasury. @returns {string} The note.
  */
@@ -200,7 +189,7 @@ function leaveChoice() {
 
 /**
  * One line per origin/destination pair ("4 from Ostia back to Rome"), the foreign ruler named for external
- * pairs, the tail summarised past MAX_PAIR_LINES.
+ * pairs, the tail summarized past MAX_PAIR_LINES.
  * @param {*[]} pairs The candidate pairs, richest first. @param {((pid:number)=>string)|null} civ Names a
  *   host civ, or null for internal pairs. @returns {string[]} The detail lines.
  */

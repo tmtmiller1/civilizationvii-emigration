@@ -1,18 +1,9 @@
 // emigration-prosperity-lens.js
 //
-// A map LENS that paints every settlement's tiles by TILE PROSPERITY: an absolute points score built from what
-// stands on the hex and around it (emigration-tile-score.js; a wonder is the biggest term, ruin the most negative).
-// Green = thriving/flourishing, grey = ordinary, red = meagre/blighted. Towns and cities alike; unowned tiles and
-// unbuilt water are left uncoloured. Falls back to one colour per settlement (its PROSPERITY score relative to the
-// world, the score that drives migration) only when the per-tile read is unavailable.
-//
-// Follows the base-game + community lens pattern (see general-appeal-layer.js and the "More Lenses"
-// mod): a self-registering UIScript that builds an overlay group of plot fills, registers a lens
-// layer + lens with LensManager, and decorates the `lens-panel` to add a "Prosperity" radio button
-// next to the built-in lenses. Loaded as its OWN <UIScripts> entry (NOT imported by the gameplay
-// bootstrap), so it runs in the HUD context where LensManager/WorldUI live and a failure here can
-// never break the rest of the mod. The HexToFloat4 colour + HEX_GRID priority are inlined so the
-// only base-game import is LensManager.
+// A map LENS that paints every settlement's tiles by TILE PROSPERITY (emigration-tile-score.js): green
+// = thriving, gray = ordinary, red = blighted; falls back to one color per settlement when the
+// per-tile read is unavailable. A self-registering UIScript in the HUD context: it registers a lens
+// layer + lens with LensManager and decorates the `lens-panel` to add a "Prosperity" button.
 
 import LensManager from "/core/ui/lenses/lens-manager.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
@@ -44,9 +35,7 @@ function cityTiers() {
   }
   if (!signals.length) return [];
   // The field (mean/spread) is computed over EVERY civ so a visible city is colored by its true
-  // global standing, but only civs the visibility policy permits are PAINTED, otherwise toggling
-  // this lens would reveal unmet civs' settlement locations + prosperity. Mirrors the ethnicity lens
-  // (emigration-ethnicity-lens.js), which skips hidden owners for the same spoiler-protection reason.
+  // global standing, but only civs the visibility policy permits are PAINTED (spoiler protection).
   const ctx = fieldContext(signals);
   const rows = signals.map((s) => ({ owner: s.owner, city: s.city, p: prosperity(s, ctx) }));
   const mean = rows.reduce((a, r) => a + r.p, 0) / rows.length;
@@ -58,10 +47,10 @@ function cityTiers() {
 }
 
 /**
- * Per-PLOT prosperity: every visible settlement's painted plots scored on the absolute tile scale, with the colour
- * position of each. One neighbour cache is shared across the whole paint (a hex is a neighbour of six others).
+ * Per-PLOT prosperity: every visible settlement's painted plots scored on the absolute tile scale, with the color
+ * position of each. One neighbor cache is shared across the whole paint (a hex is a neighbor of six others).
  * Empty (→ per-settlement fallback) when no plot can be read.
- * @returns {{x:number, y:number, t:number}[]} Per-plot {x, y, colour position}.
+ * @returns {{x:number, y:number, t:number}[]} Per-plot {x, y, color position}.
  */
 function plotTiers() {
   let signals = [];
@@ -130,7 +119,7 @@ function paintRefugeeMarkers(overlay) {
 }
 
 /**
- * Paint per-plot tiles, grouping them into a few quantized colour buckets so the overlay takes a
+ * Paint per-plot tiles, grouping them into a few quantized color buckets so the overlay takes a
  * handful of addPlots calls instead of one per tile.
  * @param {*} overlay The plot overlay.
  * @param {{x:number, y:number, t:number}[]} tiles Per-plot tiers.
@@ -150,7 +139,7 @@ function paintTileBuckets(overlay, tiles) {
   for (const [q, plots] of buckets) overlay.addPlots(plots, { fillColor: tierFill(q) });
 }
 
-/** The lens layer: an overlay of plot fills coloured by TILE prosperity. */
+/** The lens layer: an overlay of plot fills colored by TILE prosperity. */
 class ProsperityLensLayer {
   constructor() {
     this.group = WorldUI.createOverlayGroup("EmigProsperityOverlay", HEX_GRID);
@@ -166,7 +155,7 @@ class ProsperityLensLayer {
   /** Lens-layer lifecycle: init (no-op; built in the constructor). */
   initLayer() {}
 
-  /** Lens-layer lifecycle: paint plots by TILE prosperity (the points score), falling back to one colour per
+  /** Lens-layer lifecycle: paint plots by TILE prosperity (the points score), falling back to one color per
    *  settlement when no plot can be read. */
   applyLayer() {
     this.clear();
@@ -174,7 +163,7 @@ class ProsperityLensLayer {
     if (tiles.length) {
       paintTileBuckets(this.overlay, tiles); // tile-by-tile (bucketed to bound overlay calls)
     } else {
-      for (const c of cityTiers()) { // fallback: one colour per city
+      for (const c of cityTiers()) { // fallback: one color per city
         const plots = plotsOf(c.city);
         if (plots.length) this.overlay.addPlots(plots, { fillColor: tierFill(c.t) });
       }

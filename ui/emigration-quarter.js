@@ -1,27 +1,10 @@
 // emigration-quarter.js
 //
-// The Cultural Quarter DECISION system: the runtime that turns an established foreign diaspora (one
-// that already reads as a "quarter" in the Migration Chronicle) into a persistent, player-shaped
-// district. Three responsibilities, all defensive and flag-gated:
-//
-//   1. ESTABLISH, THEN RECOGNIZE. The moment a host city's foreign community reaches the ESTABLISHED
-//      stage, the enclave is CREATED: its record is written, its tile is placed on the map (the tile's own
-//      yield starts at once), and the Chronicle announces "The X Enclave of Y". Nothing is announced that
-//      does not exist. After the community has stayed established for the dwell period (quarterDwellTurns)
-//      the enclave is RECOGNIZED: the host takes a stance (embrace / tax / let be: the local player by a
-//      short choice, other hosts automatically) and that stance pays ONCE, sized from the host's own
-//      income (emigration-stance-payout.js), ON TOP of the tile's yield. The choice is throttled with a per-age
-//      cap + a cooldown and RANKED BELOW the refugee dilemma, so two modals never race in one pass. An
-//      enclave whose community shrinks before recognition simply fades like any other.
-//   2. NO STACKING / CHANGE OF HANDS. One quarter per host tile (the city-centre plot). If a different
-//      origin overtakes the tile, the record is simply replaced; because yields are applied per-turn
-//      from the current record, nothing needs reversing (the Chronicle notes the quarter changing hands).
-//   3. CONTESTED WAR-STRAIN. While the host is at war with a quarter's homeland, the quarter turns
-//      "contested": a bounded per-pass happiness strain on the host, capped across all its quarters.
-//      This reacts to war WITHOUT assuming any callable native-revolt trigger (the engine owns revolts).
-//
-// The player-facing decision reuses the refugee-dilemma modal (emigration-dilemma-view.js) with a
-// "Cultural Enclave" eyebrow. State persists via emigration-quarter-state.js. Never throws into a pass.
+// The Cultural Quarter DECISION system: an ESTABLISHED foreign community creates an enclave (record +
+// map tile + Chronicle line); after the dwell period it is RECOGNIZED with a host stance that pays once
+// (the local player chooses via the refugee-dilemma modal, other hosts automatically). One quarter per
+// host tile (a new origin replaces the record); a quarter whose homeland is at war with the host is
+// "contested" and strains happiness. State persists via emigration-quarter-state.js. Never throws into a pass.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
@@ -62,9 +45,9 @@ function localPid() {
 }
 
 /**
- * Capitalise the first letter of an edge phrase for sentence-initial use ("by the harbour" →
- * "By the harbour"), with a safe fallback when the phrase is missing.
- * @param {string|null|undefined} s The edge phrase. @returns {string} The capitalised phrase.
+ * Capitalize the first letter of an edge phrase for sentence-initial use ("by the harbor" →
+ * "By the harbor"), with a safe fallback when the phrase is missing.
+ * @param {string|null|undefined} s The edge phrase. @returns {string} The capitalized phrase.
  */
 function capFirst(s) {
   const t = typeof s === "string" && s.length ? s : "at the city's edge";
@@ -94,7 +77,7 @@ function currentAge() {
 }
 
 /**
- * The city-centre plot key "x,y", or null when the location is unreadable.
+ * The city-center plot key "x,y", or null when the location is unreadable.
  * @param {*} city A live city object.
  * @returns {string|null} The plot key.
  */
@@ -135,20 +118,14 @@ function safeHas(read, v) {
   }
 }
 
-/** Most enclaves ONE origin civilisation may hold across a host's cities (a different origin overtaking
+/** Most enclaves ONE origin civilization may hold across a host's cities (a different origin overtaking
  * a tile is a change-of-hands, not a new one). Beyond this, a fresh same-origin enclave is not offered. */
 const MAX_ENCLAVES_PER_CIV = 2;
 
 /**
- * How many enclaves the owner already holds from the SAME origin CIVILISATION, excluding `exceptTileKey`
- * (the candidate's own tile). This is a **per-civ** count, not a global one — it only sees enclaves whose
- * origin matches, so a host can hold up to the cap from EACH distinct origin civ independently.
- *
- * Identity is by **CivilizationType**, not player: two players sharing a civ count together, and an
- * origin player that later changes civ across an age does not merge its old and new enclaves. Each record
- * carries its `originCiv` (the CivilizationType captured when it formed); the target civ (`originCiv`) is
- * resolved once by the caller. When either side's CivilizationType is unavailable (a legacy record or an
- * unreadable player), the comparison falls back deterministically to the raw origin player id.
+ * How many enclaves the owner already holds from the SAME origin civilization, excluding `exceptTileKey`
+ * (the candidate's own tile). Identity is by CivilizationType (each record carries its `originCiv`),
+ * falling back to the raw origin player id when either side's type is unavailable.
  * @param {number} owner Host player id. @param {number} originPid Origin player id.
  * @param {string|null} originCiv The origin's resolved CivilizationType, or null.
  * @param {string|null} exceptTileKey A tile to exclude, or null.
@@ -188,9 +165,8 @@ function offerableQuarter(s, me, force) {
 
 /**
  * The candidate-quarter record for one city signal, or null when it isn't offerable (see
- * {@link offerableQuarter}), the enclave hasn't dwelt long enough yet, or the origin civ is already at
- * its per-civ enclave cap. `ordinal` is the count of the origin's existing enclaves (0 for the first, 1
- * for the second) — it selects which single quote the modal shows.
+ * {@link offerableQuarter}), hasn't dwelt long enough, or the origin civ is at its per-civ enclave cap.
+ * `ordinal` (the count of the origin's existing enclaves) selects which quote the modal shows.
  * @param {*} s A city signal. @param {number} me Local player id. @param {number} turn Now (monotonic).
  * @param {boolean} [force] Bypass the dwell gate and relax the share bar to foothold (the "Force enclave"
  *   option); the per-civ enclave cap and "already settled this origin" checks still apply.
@@ -207,7 +183,7 @@ function candidateFromSignal(s, me, turn, force) {
   // Forcing skips this so a tester can trigger the decision without waiting out the dwell clock.
   if (!force && !dwellSatisfied(tileKey, originCiv, quarter.civ, turn, relaxFor(me))) return null;
   const ordinal = enclaveCountForCiv(me, quarter.civ, originCiv, tileKey);
-  if (ordinal >= MAX_ENCLAVES_PER_CIV) return null; // §3: cap enclaves PER origin civilisation (not global)
+  if (ordinal >= MAX_ENCLAVES_PER_CIV) return null; // cap enclaves PER origin civilization (not global)
   return { city: s.city, tileKey, quarter, pop: s.population || 0, ordinal, originCiv };
 }
 
@@ -239,13 +215,9 @@ function touchDwellClock(s, me, turn) {
 }
 
 /**
- * Update the per-tile dwell clocks for the local player's established enclaves. Called EVERY pass (before
- * the offer gate, even on passes where nothing is offered) so the clocks stay current. For each of the
- * owner's cities currently hosting an established foreign enclave: start a clock the first time the origin
- * is seen, keep the existing clock's start while the SAME origin persists (only refreshing lastSeen), and
- * restart it when a DIFFERENT origin has overtaken the tile. A candidacy whose enclave has lapsed for
- * longer than quarterDwellGrace turns is pruned, so a diaspora that shrinks below the bar (integrated,
- * returned home, fled) loses its accrued dwell — but a brief dip within the grace window does not.
+ * Update the per-tile dwell clocks for the local player's established enclaves, every pass. A clock
+ * starts when an origin is first seen, keeps its start while the same origin persists, restarts when a
+ * different origin overtakes the tile, and is pruned once the enclave has lapsed for more than quarterDwellGrace turns.
  * @param {*[]} signals The pass's city signals. @param {number} me Local player id. @param {number} turn Now.
  */
 function observeQuarterDwell(signals, me, turn) {
@@ -279,8 +251,7 @@ function pickCandidate(signals, me, turn, force) {
 /**
  * Record the player's stance in the Migration Chronicle, and (on a change-of-hands) that the quarter
  * changed hands to a new origin. The active-stance line is drawn from the chosen origin-specific
- * option (its action + one-line flavour "why"), so the record reads uniquely per civilization; the
- * passive stance keeps its own line.
+ * option; the passive stance keeps its own line.
  * @param {{id:string,label:string,note:string,benefitYield:(string|null)}} option The chosen option.
  * @param {{civ:number,name:string,where:string}} quarter The quarter.
  * @param {{civ:number}|null} prior The prior record on the tile, or null. @param {number} turn Now.
@@ -344,9 +315,8 @@ function establishEnclave(city, base, originCiv, owner, turn) {
 
 /**
  * ESTABLISH every enclave one host's cities have earned this pass: an established foreign community on
- * a tile that holds no enclave yet, within the host's per-age cap and the per-origin cap. There is no
- * dwell gate here (that gates RECOGNITION); a community that then shrinks loses its enclave to the fade
- * rule. A tile already held by ANOTHER origin is left to the recognition path (a change of hands).
+ * a tile that holds no enclave yet, within the host's per-age cap and the per-origin cap. No dwell gate
+ * here (that gates RECOGNITION); a tile held by ANOTHER origin is left to the recognition path.
  * @param {*[]} signals The pass's city signals. @param {number} owner Host player id. @param {number} turn Now.
  * @param {boolean} force The force option (relaxes the share bar to foothold and ignores the per-age cap).
  */
@@ -363,9 +333,8 @@ function establishEnclaves(signals, owner, turn, force) {
 
 /**
  * The record to write when a stance is chosen. RECOGNIZING an established enclave of the same origin
- * keeps everything it already is (its formation turn, its standing tile, its fade clock, its war state)
- * and adds the stance; the tile's label follows an active stance. Any other case (a change of hands, or a
- * tile with no enclave yet) FORMS the enclave outright with a fresh placement, as a recognized record.
+ * keeps the existing record and adds the stance (the tile's label follows an active stance); any other
+ * case (a change of hands, or an empty tile) FORMS the enclave outright with a fresh placement.
  * @param {*} prior The record on the tile, or null. @param {*} option The chosen option.
  * @param {{civ:number, city?:*}} quarter The quarter. @param {{ct:(string|null), me:number, turn:number}} ctx
  *   The origin CivilizationType, host player id, and turn.
@@ -389,11 +358,8 @@ function recordForChoice(prior, option, quarter, ctx) {
 
 /**
  * Apply the chosen stance (RECOGNITION): write the tile record (one quarter per tile, so a different
- * origin simply REPLACES it), stamp the throttle, chronicle it, and persist. The stance's yields are not
- * granted here as a one-time lump (a one-time Happiness/Culture grant is wiped by the engine's per-turn
- * recompute, so it never showed up); instead they are applied every turn by {@link tickContestedQuarters}
- * from whatever record currently holds the tile, which also makes a change-of-hands self-correct with no
- * reversal. Fully guarded.
+ * origin simply REPLACES it), pay the stance once, stamp the throttle, chronicle it, and persist.
+ * Fully guarded.
  * @param {string} optionId The chosen option id. @param {string} tileKey The plot key.
  * @param {{civ:number,owner:number,name:string,where:string,city?:*}} quarter The quarter.
  * @param {number} me Host player id. @param {number} turn Now. The quarter may carry `city` (the host
@@ -422,7 +388,7 @@ function applyQuarterChoice(optionId, tileKey, quarter, me, turn) {
 }
 
 /**
- * The single flavour quote shown for an enclave: the origin's FIRST enclave shows quote "a", its SECOND
+ * The single flavor quote shown for an enclave: the origin's FIRST enclave shows quote "a", its SECOND
  * shows quote "b" (`ordinal` is the count of the origin's existing enclaves). Localized through its LOC
  * key with the English display as the fallback; "" when the civ has no quote.
  * @param {string|null} ct The origin CivilizationType. @param {number} ordinal 0 = first, 1 = second.
@@ -438,12 +404,10 @@ function enclaveQuote(ct, ordinal) {
 }
 
 /**
- * A stance's button caption: its label followed by what it pays and costs, once, with each yield's own game
- * icon, in the refugee and call-home buttons' shape ("Learn their engineering: [icon:YIELD_SCIENCE] +375,
- * [icon:YIELD_GOLD] -1410"). Built by the same
- * {@link resolveApplied} the choice pays from, so the button states exactly what the stance will pay. A
- * stance the host cannot afford adds "(not enough Gold)"; the passive stance, which pays nothing, keeps its
- * bare label. The dialog draws [icon:] tags in captions (emigration-dilemma-view.js, watched mod test 130).
+ * A stance's button caption: its label followed by what it pays and costs, once, with each yield's game
+ * icon ("Learn their engineering: [icon:YIELD_SCIENCE] +375, [icon:YIELD_GOLD] -1410"), built by the same
+ * {@link resolveApplied} the choice pays from. An unaffordable stance adds "(not enough Gold)"; the
+ * passive stance keeps its bare label.
  * @param {{label:string, benefitYield:(string|null)}} option The offered option. @param {number} owner Host.
  * @param {number} originPid The enclave's origin player id.
  * @returns {{caption:string, affordable:boolean}} The caption, and whether the host can pay it.
@@ -458,10 +422,9 @@ function stanceButton(option, owner, originPid) {
 }
 
 /**
- * The modal view model for a quarter decision (the "Cultural Enclave" eyebrow, a titled prompt, a note that
- * a stance pays once, ONE attributed quote, and the three stances, each button stating what it pays). Dismissing
- * (click-outside / Escape) resolves as the passive "ignore" stance. Only a single quote is shown —
- * the origin's first enclave uses quote "a", its second uses quote "b".
+ * The modal view model for a quarter decision (the "Cultural Enclave" eyebrow, a titled prompt, a note
+ * that a stance pays once, ONE attributed quote, and the three stances, each button stating what it
+ * pays). Dismissing (click-outside / Escape) resolves as the passive "ignore" stance.
  * @param {{civ:number,name:string,share:number,where:string}} quarter The quarter.
  * @param {number} [ordinal] Count of the origin's existing enclaves (0 = first, 1 = second).
  * @param {number} [owner] Host player id (default: the local player), whose income sizes the payouts.
@@ -472,7 +435,7 @@ function quarterView(quarter, ordinal, owner) {
   const name = quarterName(quarter.civ);
   const ct = civType(quarter.civ);
   const host = typeof owner === "number" ? owner : localPid() ?? -1;
-  // Each button states what its stance pays; one the host cannot pay for is greyed out (the dialog ignores a
+  // Each button states what its stance pays; one the host cannot pay for is grayed out (the dialog ignores a
   // disabled choice).
   const choices = quarterOptionsFor(ct).map((c) => {
     const button = stanceButton(c, host, quarter.civ);
@@ -544,9 +507,8 @@ function hostOwners(signals, me) {
 
 /**
  * The ASK path: the decision modal for the local player, ranked below the refugee dilemma and throttled
- * per age. Force mode (a testing option) offers the best qualifying diaspora regardless of the soft
- * gates: it ignores the dilemma ranking and the throttle, and relaxes the share bar to foothold. The
- * min-stock floor and per-civ cap still apply, so it can't manufacture an enclave from nothing.
+ * per age. Force mode (a testing option) ignores the dilemma ranking and the throttle and relaxes the
+ * share bar to foothold; the min-stock floor and per-civ cap still apply.
  * @param {*[]} signals The pass's city signals. @param {number} me Local player id. @param {number} turn Now.
  * @param {boolean} force The force option. @param {boolean} dilemmaFired Whether a refugee dilemma fired.
  */
@@ -604,7 +566,7 @@ function accrueContestedStrain(owner, turn) {
       chronicle({
         kind: "founding", title: tr("LOC_EMIG_QTR_CHRON_RESTLESS_TITLE", "War Tests the {1_Name}", quarterName(rec.civ)),
         body: tr("LOC_EMIG_QTR_CHRON_RESTLESS_BODY",
-          "War with {1_Adj} falls hard on the {2_Name}: its families are cut off from kin in the fighting, and some neighbours meet them with cold looks, forgetting they did not choose this war. Until peace returns, that strain keeps the enclave from settling fully into the city's life.",
+          "War with {1_Adj} falls hard on the {2_Name}: its families are cut off from kin in the fighting, and some neighbors meet them with cold looks, forgetting they did not choose this war. Until peace returns, that strain keeps the enclave from settling fully into the city's life.",
           narrativeCiv(rec.civ).adj, quarterName(rec.civ)),
         civ: narrativeCiv(rec.civ).adj, dedupeKey: "quarter:contested:" + tileKey + "|" + rec.civ + "|" + turn
       });
@@ -615,24 +577,16 @@ function accrueContestedStrain(owner, turn) {
 }
 
 /**
- * Apply every one of a host's enclaves' recorded STANCE yields for THIS turn: the small benefit (+) and
- * drawback (−) each recognized enclave grants ongoing. Applied fresh each turn (mirroring the
- * assimilation cost loop) so the effect actually persists and reads in the city's yields, and so a
- * change-of-hands needs no reversal — the current tile record is the single source of truth.
- *
- * The stance pays ON TOP of the enclave tile's own native yield: the tile is what the enclave gives from
- * the day it is ESTABLISHED, the stance what RECOGNITION adds. An established enclave has no stance yet
- * (zero amounts), so it costs and grants nothing here.
- *
- * A CONTESTED quarter (host at war with its homeland) pays only `contestedQuarterYieldFactor` of its
- * benefit — the war really does dim what the enclave contributes, not just the host's mood. Requires
- * `rec.contested` to be fresh, so the caller updates contested status BEFORE this runs.
+ * Apply a host's per-turn STANCE yields (only records without a one-time `once` payout carry any),
+ * fresh each turn from the current tile record, on top of the enclave tile's own native yield. A
+ * CONTESTED quarter pays only `contestedQuarterYieldFactor` of its benefit, so the caller updates
+ * contested status BEFORE this runs.
  * @param {number} owner Host player id.
  */
 function applyOwnerQuarterYields(owner) {
   for (const { rec } of quartersForOwner(owner)) {
-    // A stance chosen since the one-time payout was introduced was paid at recognition; only a record
-    // from an older save (no `once`) keeps its small per-turn stance yields.
+    // A stance with `once` was paid at recognition; only a record from an older save (no `once`)
+    // keeps its small per-turn stance yields.
     if (rec.applied && !rec.applied.once) applyQuarterYields(owner, rec.applied, contestedBenefitScale(rec));
   }
 }
@@ -677,8 +631,7 @@ function originCommunityOf(tileKey, rec) {
 /**
  * Enclaves FADE when their community does: an origin whose share of the host has stayed below
  * `quarterFadeShare` for `quarterFadeTurns` consecutive turns loses its enclave (tile removed, record
- * dropped, chronicled). The mirror of recognition, so enclaves persist where migration keeps flowing
- * and dissolve where it stops; integration alone (3% a turn) fades an unrenewed community in ~35-45 turns.
+ * dropped, chronicled), so enclaves persist where migration keeps flowing and dissolve where it stops.
  * @param {number} owner Host player id. @param {number} turn Now (monotonic).
  */
 function fadeLapsedEnclaves(owner, turn) {
@@ -783,10 +736,8 @@ function payTakeoverCompensation(owner) {
 
 /**
  * Enclave tiles may be built over: a wonder, building, or improvement the host places on that plot
- * replaces the enclave improvement (watched 2026-09-13: London's wonder in progress completed over a
- * placed enclave). The enclave is then DESTROYED, not quietly moved back to the treasury: its record is
- * dropped and the chronicle says so. A placement that never appeared (the engine refused it) is instead
- * cleared after a short grace, and that stance keeps paying from the treasury as before.
+ * replaces the enclave improvement, and the enclave is then DESTROYED (record dropped, chronicled). A
+ * placement that never appeared is instead cleared after a short grace, and its stance keeps paying from the treasury.
  * @param {number} owner Local player id. @param {number} turn Now (monotonic).
  */
 function retireDisplacedEnclaves(owner, turn) {
@@ -801,9 +752,8 @@ function retireDisplacedEnclaves(owner, turn) {
       continue;
     }
     // A fresh placement gets a grace: its destroy + create land asynchronously, so for a moment the plot
-    // still shows the tile it replaces (watched 2026-09-13: the same pass's upkeep dropped a brand-new
-    // record as "built over"). After the grace: a plot holding something else was built over (a wonder
-    // can complete over the tile before any pass saw it standing); an EMPTY plot never landed.
+    // still shows the tile it replaces. After the grace: a plot holding something else was built over;
+    // an EMPTY plot never landed.
     if (!p.stood && turn - (Number(rec.turn) || 0) < PLACEMENT_GRACE_TURNS) continue;
     if (p.stood || placedPlotOccupied(rec)) retireBuiltOver(key, rec, turn);
     else rec.placed = null; // never landed: the stance pays from the treasury
@@ -852,8 +802,7 @@ export function contestedBenefitScale(rec) {
 /**
  * Per-pass entry point (2): first mark quarters contested while the host is at war with their homeland
  * (charging a bounded, capped happiness strain), THEN apply each quarter's ongoing stance yields so a
- * contested enclave's benefit is already dimmed this pass. Never throws into the pass; never assumes a
- * callable native-revolt trigger.
+ * contested enclave's benefit is already dimmed this pass. Never throws into the pass.
  * @param {*[]} _signals The pass's city signals (unused; state-driven).
  */
 export function tickContestedQuarters(_signals) {

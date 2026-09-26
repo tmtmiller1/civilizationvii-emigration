@@ -42,7 +42,7 @@ function flush() { while (timers.length) timers.shift()(); }
 M.repaint("test");
 assert.equal(grid.texts.length, 1, "one enclave tile paints one label");
 assert.equal(grid.sprites.length, 1, "and one icon");
-assert.equal(grid.texts[0].label, "NORMAN ENCLAVE", "labelled with the enclave's name, upper-cased");
+assert.equal(grid.texts[0].label, "NORMAN ENCLAVE", "labeled with the enclave's name, upper-cased");
 assert.equal(grid.texts[0].idx, 7, "on the enclave's own plot");
 
 // ── THE BUG: repainting must REPLACE the marker, never stack a second copy ──

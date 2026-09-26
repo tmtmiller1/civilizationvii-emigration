@@ -45,7 +45,7 @@ resetBorderCache();
 assert.equal(
   __test.refugeeSettlementBudget(closedSig),
   4,
-  "an openness between 0.15 and 0.25 is honoured, not lifted to 0.25"
+  "an openness between 0.15 and 0.25 is honored, not lifted to 0.25"
 );
 
 // A3: at the default openness (0.4, above both floors) the floor is inert — 20 × 0.4 = 8.

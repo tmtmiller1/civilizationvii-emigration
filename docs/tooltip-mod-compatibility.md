@@ -75,9 +75,9 @@ suppression only works if the tooltip actually in front of the player still read
 
 | Mechanism | Who | `SetIsPlotTooltipVisible` gate | `ui-hide-plot-tooltips` gate |
 | --- | --- | --- | --- |
-| Nothing (vanilla) | base game | honoured | honoured |
-| `ImportFiles` override of `ui-next/tooltips/plot-tooltip/plot-tooltip.js` | **bz-map-trix 4.1.0** | honoured | honoured |
-| `ComponentRegistry` override of the `PlotTooltip` component | **QD Improved Plot Tooltip** (`3799304989`) | honoured | **DROPPED** |
+| Nothing (vanilla) | base game | honored | honored |
+| `ImportFiles` override of `ui-next/tooltips/plot-tooltip/plot-tooltip.js` | **bz-map-trix 4.1.0** | honored | honored |
+| `ComponentRegistry` override of the `PlotTooltip` component | **QD Improved Plot Tooltip** (`3799304989`) | honored | **DROPPED** |
 
 **bz-map-trix 4.1.0 is safe.** It replaces the whole base file, but its replacement is a fork of the 1.5.0
 original and keeps the contract exactly: the same export list

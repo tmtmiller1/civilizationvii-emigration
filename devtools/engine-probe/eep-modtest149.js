@@ -6,8 +6,8 @@
 // through to the saved blob and the pass stamp is bumped, exactly as the recorder does, so the next pass reads them):
 //   Item 1: Rostov on Don (Norman-held, 60% Bulgarian, Bulgar Enclave at 78,52). The enclave tile must hold the
 //     highest Bulgarian share of any Rostov tile. Hover panel read on the enclave tile; SHOT i1-rostov.
-//   Item 3: inject two ledger entries with no city centred on their plot (Rostov's enclave tile, covered by Rostov's
-//     own territory, and an unowned plot) and one at a standing city-state's centre. After one pass: the first two
+//   Item 3: inject two ledger entries with no city centered on their plot (Rostov's enclave tile, covered by Rostov's
+//     own territory, and an unowned plot) and one at a standing city-state's center. After one pass: the first two
 //     are deleted, the city-state one is kept in the ledger but absent from allCityCompositions and the diversity list.
 //   O4: delete Madrid (owner 0, originalOwner 5, a major) and Monte Albán (originalOwner 19, a city-state) from the
 //     ledger. After one pass: Madrid is re-seeded as origin 5, Monte Albán as the owner 0.
@@ -304,7 +304,7 @@ async function run() {
   await later(8000);
   await item1("turn 72");
   emit("HOVER i1-enclave " + J(await hoverText(ctx.enclave)));
-  emit("HOVER i1-centre " + J(await hoverText({ x: 78, y: 53 })));
+  emit("HOVER i1-center " + J(await hoverText({ x: 78, y: 53 })));
   emit("SHOT i1-rostov");
   await later(9000);
   ctx.versionBefore = safe(() => compositionVersion());

@@ -2,10 +2,7 @@
 //
 // Reads a settlement's REAL geography and buildings into a small set of "feature keys" (coast, river,
 // mountain, granary, temple, market, walls), so the Migration Chronicle can say where a diaspora
-// settled WITHOUT inventing a feature the city doesn't have. Every engine read is fully guarded: a
-// missing API or an unreadable plot simply contributes no key, and the caller falls back to a generic,
-// always-true phrase. Used in the gameplay pass (emigration-diaspora.js), polling the same map and
-// constructible APIs the rest of the mod already uses.
+// settled without inventing a feature. Every engine read is guarded; an unreadable plot adds no key.
 
 // Substring tests against a constructible's ConstructibleType string (e.g. "BUILDING_GRANARY"). A
 // city is credited with a building key only when it actually holds a matching constructible.

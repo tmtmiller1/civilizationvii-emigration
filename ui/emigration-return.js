@@ -1,14 +1,9 @@
 // emigration-return.js
 //
-// Return migration (homeland recovery). A diaspora remembers where it came from. When an origin civ's
-// homeland is at peace with the host and faring well, a small share of its people abroad set out for
-// home: REAL population moves from the host settlement back to one of the homeland's cities, the move
-// is attributed to the returnees' true origin (so the composition ledger follows them home), and the
-// moment is written into the Migration Chronicle as a return.
-//
-// Heavily throttled (a per-host cooldown plus a small per-turn rate), so it reads as a slow ebb rather
-// than a snap-back, and gated by CONFIG.returnEnabled. Defensive throughout: it never throws into the
-// pass, and a half-applied move is undone rather than leaking population.
+// Return migration (homeland recovery): when an origin civ's homeland is at peace with the host and
+// faring well, real population moves from the host settlement back to a homeland city, attributed to
+// its true origin and chronicled as a return. Throttled by a per-host cooldown plus a small per-turn
+// rate, gated by CONFIG.returnEnabled; a half-applied move is undone rather than leaking population.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
@@ -243,10 +238,10 @@ export function moveReturnees(hostCity, homeCity, hostKey, originCiv) {
 
 /**
  * The homeland couldn't receive the returnees: put them back where they were. A pool refugee is
- * re-queued with its original `since` (R1); a settled point that was already removed is re-added; a
+ * re-queued with its original `since`; a settled point that was already removed is re-added; a
  * deferred tile abandonment was never written, so nothing is needed.
  * @param {*} hostCity The host city object. @param {string} hostKey Host city signal key.
- * @param {number} originCiv Origin civ. @param {*} pooled The consumed pool refugee, or null.
+ * @param {number} originCiv @param {*} pooled The consumed pool refugee, or null.
  * @param {boolean} deferredTile Whether the host write was deferred (nothing to undo).
  */
 function restoreFailedReturn(hostCity, hostKey, originCiv, pooled, deferredTile) {
@@ -274,7 +269,7 @@ function chronicleReturn(origin, hostName, people, turn) {
 
 /**
  * Whether an origin has put down roots in a host settlement: its enclave stands there (quarter records are
- * keyed by the host city's centre tile and carry the origin's player id).
+ * keyed by the host city's center tile and carry the origin's player id).
  * @param {*} city The host city object. @param {number} civ The diaspora's origin player id.
  * @returns {boolean} True when that origin's enclave stands in the city.
  */
@@ -300,9 +295,8 @@ function returnRateFor(city, civ) {
 
 /**
  * A deterministic per-(game, host, turn) roll against a rate, so a return is an occasional ebb rather
- * than firing on every eligible host the moment it's off cooldown. Hash-based (no RNG): the game's seed
- * makes each game play out differently, while a save reloads identically and every client agrees. With
- * no readable seed (off-engine) the host and turn alone seed it.
+ * than firing on every eligible host. Hash-based (no RNG), so a save reloads identically and every
+ * client agrees; with no readable seed (off-engine) the host and turn alone seed it.
  * @param {string} hostKey The host settlement key. @param {number} turn The current turn.
  * @param {number} rate The chance in [0, 1] (returnRateFor).
  * @returns {boolean} True when a return may proceed this pass.
@@ -315,8 +309,8 @@ function returnRoll(hostKey, turn, rate) {
     h ^= s.charCodeAt(i);
     h = Math.imul(h, 16777619) >>> 0;
   }
-  // Final avalanche (murmur3 fmix32). Without it a seed that differs only in its last characters (the turn) gave
-  // nearly the same roll every turn: watched in game 2026-09-15 (mod test 68), some hosts could never return.
+  // Final avalanche (murmur3 fmix32), so a seed that differs only in its last characters (the turn)
+  // does not give nearly the same roll every turn.
   h ^= h >>> 16;
   h = Math.imul(h, 0x85ebca6b);
   h ^= h >>> 13;
@@ -330,7 +324,7 @@ function returnRoll(hostKey, turn, rate) {
  * one rural point leaves the host for the homeland, so the single per-pass collection stays accurate.
  * @param {*} host The host city signal. @param {*} homeCity The homeland city signal.
  * @param {boolean} fromPool When the returnee came from the virtual holding pool (not settled host
- *   rural), the host's counted population was never touched — so don't decrement it (R2).
+ *   rural), the host's counted population was never touched — so don't decrement it.
  */
 function syncSignalsForMove(host, homeCity, fromPool) {
   if (!fromPool) {
@@ -349,10 +343,8 @@ function syncSignalsForMove(host, homeCity, fromPool) {
  * @returns {*} A return migration record, or null.
  */
 function planOneReturn(host, ctx) {
-  // The host must have RURAL population to give. Eligibility above checks the composition ledger,
-  // whose points include URBAN people; without this floor an urban-only diaspora would be "removed"
-  // from a city that has no rural to lose while still being added at the homeland, inventing
-  // population. Mirrors the engine's own emigration floor.
+  // The host must have RURAL population to give (the composition ledger's points include URBAN
+  // people), or an urban-only diaspora would be added at the homeland without leaving the host.
   if ((host.rural || 0) <= CONFIG.minRuralToEmigrate) return null;
   const dia = eligibleDiaspora(compositionForCity(host.city));
   if (!dia) return null;
@@ -364,7 +356,7 @@ function planOneReturn(host, ctx) {
   if (!mv.ok) return null;
   const popBefore = host.population || 0;
   // keep the shared pass signals accurate for the accounting below (host decrement
-  // skipped for pool-sourced returnees — they were never counted host rural; R2)
+  // skipped for pool-sourced returnees — they were never counted host rural)
   syncSignalsForMove(host, homeCity, mv.fromPool);
   state().lastByHost[hostKey] = ctx.turn;
   const people = marginalPeople(popBefore, ctx.turn, hostKey);

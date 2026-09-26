@@ -1,7 +1,7 @@
 // emigration-city-readout-data.js
 //
-// The DATA core for the per-city "why is this settlement gaining/losing population?" readout
-// (the in-game legibility plan, Phase 0). Two layers:
+// The DATA core for the per-city "why is this settlement gaining/losing population?" readout.
+// Two layers:
 //
 //   • buildCitySnapshot(opts), PURE: turns already-resolved inputs into the readout view-model
 //     (cause + label + permanence + hint, distress/at-risk flags, pressure-to-bar, where people are
@@ -49,7 +49,7 @@ import { refugeeBurdenFor } from "/emigration/ui/emigration-refugee-burden.js";
  * @property {boolean} atRisk Whether the city is under any situational distress.
  * @property {boolean} attritionRisk Distressed with no viable refuge (the outlet may fire).
  * @property {string[]} riskReasons The crisis-type tags behind any distress (siege/disaster/famine),
- *   for the readout warning's "why" (P0.2). Empty when the city is content.
+ *   for the readout warning's "why". Empty when the city is content.
  * @property {number} pressure Accumulated emigration pressure.
  * @property {number} pressureToBar Pressure as a fraction of the move bar (0–1).
  * @property {boolean} onCooldown Whether the source is resting after a recent move.
@@ -57,7 +57,7 @@ import { refugeeBurdenFor } from "/emigration/ui/emigration-refugee-burden.js";
  * @property {string} topDestinationName Where this city's people are currently pulled.
  * @property {number} [topDestinationOwner] That destination's owner id.
  * @property {boolean} crossCiv Whether the pull is to another civilization.
- * @property {string[]} destReasons The "why here" reason-tag keys for the current pull target (P0.1).
+ * @property {string[]} destReasons The "why here" reason-tag keys for the current pull target.
  * @property {number} assimLoad Destination-side assimilation load this owner carries.
  * @property {number} assimCostGold Per-turn gold the owner pays for that load.
  * @property {number} assimCostHappiness Per-turn happiness the owner pays for that load.
@@ -68,7 +68,7 @@ import { refugeeBurdenFor } from "/emigration/ui/emigration-refugee-burden.js";
  *   composition: per-origin display name + share, largest first (null when untracked).
  * @property {EnclaveReadout|null} enclave The leading foreign community's progress toward an enclave, or null.
  * @property {number[]} netSeries Recent per-pass net migration for this city (oldest first), for the
- *   readout sparkline (Feature E). Empty when the option is off or there is no history.
+ *   readout sparkline. Empty when the option is off or there is no history.
  * @property {number} refugeePool Held refugee points currently assigned to this city.
  * @property {number} refugeeBurdenGold Owner-level refugee holding burden (gold/turn).
  * @property {number} refugeeBurdenHappiness Owner-level refugee holding burden (happiness/turn).
@@ -104,7 +104,7 @@ function attritionRisk(dist, hasRefuge) {
 }
 
 /**
- * The crisis-type "why at risk" tags for the readout warning (P0.2): empty for a content city.
+ * The crisis-type "why at risk" tags for the readout warning: empty for a content city.
  * @param {number} dist Situational distress. @param {*} sig The city signal.
  * @returns {string[]} Crisis-type tags.
  */
@@ -270,7 +270,7 @@ function resolveEnclave(city) {
 }
 
 /**
- * The city's recent net-migration series (Feature E sparkline), read from the stats API at call time
+ * The city's recent net-migration series (the readout sparkline), read from the stats API at call time
  * (no static import; that would be a cycle). Empty when the sparkline is off or nothing is recorded yet.
  * @param {*} sig City signal.
  * @returns {number[]} Recent per-pass net pop-point values.
@@ -284,11 +284,9 @@ function netSeriesFor(sig) {
 }
 
 /**
- * The CONCURRENT pressures pushing people from a city, as display shares (top 3), so the readout can
- * show "War 60% · Prosperity 40%" instead of one dominant cause, mirroring the engine's voluntary/crisis
- * split. Each acute pressure weighs by its intensity above threshold; prosperity is the economic
- * baseline. Returns null when the multi-cause readout is off (CONFIG.splitUiReadoutEnabled) or a city
- * has no signal, so the single-cause `causeLabel` is used instead.
+ * The CONCURRENT pressures pushing people from a city, as display shares (top 3, "War 60% · Prosperity
+ * 40%"). Each acute pressure weighs by its intensity above threshold; prosperity is the economic baseline.
+ * Null when the multi-cause readout is off (CONFIG.splitUiReadoutEnabled) or a city has no signal.
  * @param {*} sig City signal (carries violence / disaster / happiness).
  * @returns {{cause:string, label:string, share:number}[]|null} Top causes by share, or null.
  */
@@ -363,7 +361,7 @@ function findSignal(ranked, cityId) {
 
 /**
  * Whether a signal is the city `cityId` names: its stable key, its city object, its numeric localId/id, or the
- * game's ComponentID ({owner, id, type}) that CitySelectionChanged carries (watched 2026-09-15, mod test 68).
+ * game's ComponentID ({owner, id, type}) that CitySelectionChanged carries.
  * @param {*} s A city signal. @param {*} cityId The city identifier.
  * @returns {boolean} True when they match.
  */
@@ -408,7 +406,7 @@ function ownerStats(pid) {
  * The best-destination descriptor for a source's current pull, or null.
  * @param {*} src Source signal.
  * @param {*} dest The chosen destination signal.
- * @param {string[]} [reasons] The "why here" reason tags for this pull (P0.1).
+ * @param {string[]} [reasons] The "why here" reason tags for this pull.
  * @returns {{name:string, owner:number, crossCiv:boolean, reasons:string[]}} The descriptor.
  */
 function destInfo(src, dest, reasons) {

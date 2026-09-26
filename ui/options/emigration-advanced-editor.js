@@ -1,32 +1,11 @@
 // emigration-advanced-editor.js
 //
-// A pop-up sub-window for the Emigration "Advanced" tunables, so the shared Mods
-// options tab stays uncluttered (it keeps only the intensity Preset + number
-// display; a single "Configure…" row opens this panel).
-//
-// Registered as the custom screen `emigration-advanced-editor` and launched from
-// the Mods tab via an OptionType.Editor row (editorTagName), exactly the way the
-// base game opens its keyboard/controller-remap and language editors. Pushed by
-// ContextManager into the .fxs-popups layer with a mouse guard, so it works the
-// same in the main-menu (shell) and in-game options screens.
-//
-// The tunables are read straight from the declarative TUNABLES spec and laid out
-// under their group sub-headers. Each control writes immediately through the shared
-// settings store (getTunable/setTunable) (no separate Apply/Cancel) and:
-//   • an fxs-textbox SEARCH box filters the long list by (localized) label/description;
-//   • the groups are gathered into a few broad SECTIONS (ADVANCED_SECTIONS); a section's title row collapses/expands
-//     it, and its groups show inside as plain sub-headings. Sections start collapsed and the ones a player opens
-//     stay open the next time (stored per player);
-//   • a dropdown whose setting holds a value between its choices (set by a grouped slider on the Add-ons tab)
-//     lists that exact value rather than silently showing the nearest choice;
-//   • a "modified" dot marks any knob that differs from its default;
-//   • a per-row fxs-activatable "↺" resets that knob, and an fxs-button resets everything (both
-//     controller-navigable, like the close button);
-//   • hand-editing any value flips the intensity preset to "Custom" (you're no
-//     longer on Low/Medium/High), and the controls re-sync on focus so a preset
-//     applied elsewhere while this is open is reflected;
-//   • enum knobs (notify modes) show human labels instead of raw numbers;
-//   • the rows flow into two columns.
+// A pop-up sub-window for the Emigration "Advanced" tunables, registered as the custom screen
+// `emigration-advanced-editor` and launched from the Mods tab via an OptionType.Editor row, the way
+// the base game opens its remap and language editors. The tunables come from the declarative
+// TUNABLES spec, grouped into collapsible ADVANCED_SECTIONS with a search box, per-row and
+// reset-all buttons and a "modified" dot; each control writes immediately through the settings
+// store (no Apply step), and any hand edit flips the intensity preset to "Custom".
 
 import Panel from "/core/ui/panel-support.js";
 import { InputEngineEventName } from "/core/ui/input/input-support.js";
@@ -49,11 +28,9 @@ const TAG = "emigration-advanced-editor";
 const CHECKBOX_CHANGE = "component-value-changed"; // fxs-checkbox → detail.value (bool)
 const DROPDOWN_CHANGE = "dropdown-selection-change"; // fxs-dropdown → detail.selectedIndex
 
-// GameFace (Coherent) CSS — Civ7's UI engine — does NOT support `display:grid` or `1fr` units. Setting a
-// grid style logs "Unable to parse declaration: display - grid" / "syntax error near text: 1fr" and the
-// body never lays out, so every tunable row (incl. the self-test toggle) renders into a broken container.
-// Flexbox is fully supported (the rest of this screen uses it): the rows wrap two to a line (ROW_STYLE), and a
-// group sub-heading takes a whole line (SUBHEAD_STYLE).
+// GameFace (Coherent) CSS does NOT support `display:grid` or `1fr` units (the body never lays out), so
+// this uses flexbox: the rows wrap two to a line (ROW_STYLE), and a group sub-heading takes a whole
+// line (SUBHEAD_STYLE).
 const BODY_GRID_STYLE = "display:flex;flex-direction:row;flex-wrap:wrap;align-items:flex-start;";
 const ROW_STYLE = "width:50%;padding-right:2rem;";
 const SUBHEAD_STYLE = "width:100%;margin-top:0.9rem;";
@@ -140,9 +117,8 @@ function makeRowText(t) {
 }
 
 /**
- * A section's title row: the game's +/- disclosure icon and a plain title, over a thin rule. No decorative
- * fxs-header, which drew a filigree flourish under every one of the many titles. Both the icon and the title
- * toggle the section.
+ * A section's title row: the game's +/- disclosure icon and a plain title, over a thin rule (no
+ * decorative fxs-header, whose filigree flourish would repeat under every title). Both toggle the section.
  * @param {string} titleKey Section title LOC key.
  * @returns {{header:*, toggleBtn:*, title:*}} Header pieces.
  */
@@ -277,9 +253,8 @@ class EmigrationAdvancedEditor extends Panel {
 
   /**
    * The footer: a "Confirm Changes" button that returns to the main Options window. Every setting is
-   * already written live as you edit it (there is no pending/Apply step), so this is purely the familiar
-   * confirm affordance from the base Options screen — a labelled way back that doesn't require hunting for
-   * the ✕. The listener is added/removed in onAttach/onDetach alongside the ✕.
+   * already written live, so this is purely the familiar confirm affordance from the base Options
+   * screen. The listener is added/removed in onAttach/onDetach alongside the close button.
    * @param {*} host The footer container.
    */
   buildFooter(host) {

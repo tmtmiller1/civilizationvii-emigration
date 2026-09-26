@@ -7,7 +7,7 @@
         <SpecialThanks>Tomahawk, Mk Z, and Tim_The_Texan's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>3.1.1</Version>
+        <Version>3.1.2</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -208,7 +208,7 @@
                          (engine reads + per-turn cache), imported by the ethnicity lens AND its tooltip. -->
                     <Item>ui/emigration-ethnicity-distribution.js</Item>
                     <Item>ui/emigration-ethnicity-tiles.js</Item>
-                    <!-- The lens's tile colour: the share-weighted blend of origin colours (pure, no imports). -->
+                    <!-- The lens's tile color: the share-weighted blend of origin colors (pure, no imports). -->
                     <Item>ui/emigration-ethnicity-colour.js</Item>
                     <!-- Migration Chronicle: prose engine + persistent store + diaspora detection.
                          Entries surface in the Notifications tab (v1.6.0 folded the Chronicle in). -->

@@ -99,7 +99,7 @@ const sig = (owner, pros, x, y, over) =>
     over
   );
 
-// A miserable source (besieged, starving, unhappy) next to a thriving neighbour: both groups have
+// A miserable source (besieged, starving, unhappy) next to a thriving neighbor: both groups have
 // something to say.
 const POOR = sig(1, 10, 0, 0, { happiness: -6, siege: true, starving: true, food: -2, production: 1 });
 const RICH = sig(2, 40, 3, 0, { happiness: 4, food: 6, production: 6, gold: 4 });
@@ -117,7 +117,7 @@ function testDistressedCityHasBothGroups() {
   const m = build();
   assert.ok(m, "a ranked distressed city yields a model");
   assert.ok(m.leaving.length > 0, "a besieged, starving, unhappy city has push factors to name");
-  assert.ok(m.drawnTo.length > 0, "a viable rich neighbour gives it pull factors to name");
+  assert.ok(m.drawnTo.length > 0, "a viable rich neighbor gives it pull factors to name");
   assert.equal(m.destName, "City30", "the model names the destination it explains");
   assert.equal(m.crossCiv, true, "a move to another owner is flagged cross-civ");
 }
@@ -240,7 +240,7 @@ function testRenderMountsRowsAndBars() {
   assert.equal(byClass(root, "emig-ex-group").length, 2, "both group headings render");
   for (const fill of byClass(root, "emig-ex-fill")) {
     assert.match(fill.style.width, /^\d+%$/, "each weight bar is sized as a percentage");
-    assert.ok(fill.style.background, "and coloured by its row's direction");
+    assert.ok(fill.style.background, "and colored by its row's direction");
   }
 }
 

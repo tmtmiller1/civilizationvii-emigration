@@ -1,25 +1,17 @@
 // emigration-options.js
 //
-// Registers the Emigration settings under the shared "Mods" tab of the Options
-// screen, in BOTH shell and game scopes (main-menu and in-game alike):
-//   • Number display dropdown (how migration counts are shown).
-//   • Intensity PRESET dropdown (Custom / Low / Medium / High) - the simple knob.
-//   • An "Advanced settings…" row that opens a dedicated sub-window
-//     (emigration-advanced-editor.js) holding the 85 individual tunables, so the
-//     Mods tab itself stays uncluttered. Applying a preset writes the relevant
-//     advanced values; advanced edits (made in the sub-window) layer on top.
-//
-// Kept separate from emigration-settings.js so the gameplay loop never depends on
-// the Options-screen chunk loading.
+// Registers the Emigration settings under the shared "Mods" tab of the Options screen, in both shell
+// and game scopes: the simple dropdowns, sliders and toggles, plus an "Advanced settings…" row that
+// opens the tunables sub-window (emigration-advanced-editor.js). Kept separate from
+// emigration-settings.js so the gameplay loop never depends on the Options-screen chunk loading.
 
 import { CategoryType, OptionType, Options } from "/core/ui/options/model-options.js";
 import { CategoryData } from "/core/ui/options/options-helpers.js";
 import { ADVANCED_CLOSED_EVENT } from "/emigration/ui/options/emigration-advanced-editor.js"; // registers the window
 
 // Create the community-convention shared "Mods" Options-screen category (idempotent: the first mod
-// to load this creates it, later mods reuse it). Lives HERE, in the Options-context module, NOT in
-// mod-options.js - that store is imported by the gameplay loop, which can't link the Options-screen
-// modules this needs.
+// to load this creates it, later mods reuse it). Lives here because the gameplay loop can't link the
+// Options-screen modules this needs.
 if (!CategoryType.Mods) CategoryType["Mods"] = "mods";
 if (!CategoryData[CategoryType.Mods]) {
   CategoryData[CategoryType.Mods] = {

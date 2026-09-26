@@ -70,7 +70,7 @@ async function run() {
   safe(() => fireRealDilemmaForTest());
   if (await measure("REFUGEE")) await dismiss(/away|turn them/i);
 
-  const view = safe(() => Q.quarterView({ civ: foreign.owner, name: cityName(bristol.city), where: "by the harbour", owner: local }, 0), null);
+  const view = safe(() => Q.quarterView({ civ: foreign.owner, name: cityName(bristol.city), where: "by the harbor", owner: local }, 0), null);
   if (view && typeof view === "object") {
     emit("ENCLAVE view title=" + J(view.title) + " eyebrow=" + J(view.eyebrow) + " choices=" + J((view.choices || []).map((c) => c.label)) + " quote=" + J(String(view.quote || "").slice(0, 120)));
     showDilemma(view, () => {});

@@ -80,7 +80,7 @@ function testSameKindClusterKeepsItsTypeColour() {
 function testMixedKindClusterUsesTheNeutralFallback() {
   const layer = makeEventPins(FRAMES, [ev("war", "A War", 2), ev("disaster", "A Quake", 2)]);
   assert.equal(layer.children[0].style.backgroundColor, causeAccent("other"),
-    "a mixed column has no honest single type colour, so it takes the taxonomy's fallback");
+    "a mixed column has no honest single type color, so it takes the taxonomy's fallback");
 }
 
 function testLabelBecomesTheTooltip() {

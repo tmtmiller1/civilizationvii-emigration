@@ -1,11 +1,8 @@
 // emigration-ethnicity-tooltip.js
 //
-// The Ethnicity lens's cursor panel: the ETHNIC COMPOSITION OF THE HOVERED TILE, its per-origin-civ
-// percentages, with the same banner-colour swatches the lens blends into that tile's colour, so the
-// panel and the map agree exactly. Each tile carries its own local mix (a diaspora's neighbourhood
-// reads high, an all-dominant tile reads 100% the owner), computed by the shared tiles module so the
-// numbers here are the very same data the lens paints. Falls back to the settlement-wide composition
-// when the hovered plot isn't one of the city's tracked tiles.
+// The Ethnicity lens's cursor panel: the ETHNIC COMPOSITION OF THE HOVERED TILE as per-origin-civ
+// percentages with the same banner-color swatches the lens blends, computed by the shared tiles module
+// so panel and map agree exactly. Falls back to the settlement-wide composition for an untracked plot.
 //
 // All the panel mechanics (styling, cursor positioning, plot->settlement index, spoiler gating) live
 // in emigration-lens-hover-panel.js; this file only turns a hovered tile into display rows. Spoiler-
@@ -21,7 +18,7 @@ import { civAdjective } from "/emigration/ui/emigration-naming.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 
 const LENS = "emig-ethnicity-lens"; // must match emigration-ethnicity-lens.js
-const FALLBACK_HEX = "#888888"; // neutral grey (matches the lens fallback / masked origins)
+const FALLBACK_HEX = "#888888"; // neutral gray (matches the lens fallback / masked origins)
 const MAX_ROWS = 6; // cap the breakdown so the panel stays compact
 
 /**
@@ -39,7 +36,7 @@ function capRows(parts) {
 }
 
 /**
- * Turn a list of {civ, share} into display rows: origin civ adjective + banner colour + share, largest
+ * Turn a list of {civ, share} into display rows: origin civ adjective + banner color + share, largest
  * first, with policy-hidden origins merged into a neutral "Unknown" bucket. Empty → null.
  * @param {{civ:number, share:number}[]} shares Origin shares (a tile's local mix, or a city's totals).
  * @returns {{name:string, color:string, share:number}[]|null} Rows (capped), or null.
@@ -59,7 +56,7 @@ function partsFromShares(shares) {
 }
 
 /**
- * The hovered TILE's local origin shares (the same mix the lens blended into its colour), or null when
+ * The hovered TILE's local origin shares (the same mix the lens blended into its color), or null when
  * the plot isn't one of the settlement's tracked tiles.
  * @param {*} city City object. @param {{x:number,y:number}|undefined} plot The hovered plot.
  * @returns {{civ:number, share:number}[]|null} The tile's shares, or null.
@@ -105,7 +102,7 @@ function resolve(sig, _snap, plot) {
   if (!parts || !parts.length) return null;
   const base = cityTitle(city, loc("LOC_EMIG_ETH_TITLE", "Ethnic Composition"));
   return {
-    // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces (mod test 88).
+    // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces.
     title: local ? base + " " + loc("LOC_EMIG_ETH_TILE_SUFFIX", "· this tile").trim() : base,
     rows: parts.map((p) => ({ color: p.color, name: p.name, value: loc("LOC_EMIG_PCT", "{1_Pct}%", Math.round(p.share * 100)) }))
   };

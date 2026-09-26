@@ -1,10 +1,9 @@
 // emigration-city-net.js
 //
-// The per-city net-migration series behind the city-readout sparkline (Feature E): a bounded rolling
-// record of each city's net pop-point change per pass, plus the shared "net points per city this pass"
-// reduction that the stats reconciliation also uses. Kept out of emigration-migration-stats.js so that
-// file stays cohesive and under the size gate. The series itself lives in the stats state; this module
-// only reads and writes the store it is handed.
+// The per-city net-migration series behind the city-readout sparkline: a bounded rolling record of
+// each city's net pop-point change per pass, plus the shared "net points per city this pass" reduction
+// the stats reconciliation also uses. The series lives in the stats state; this module only reads and
+// writes the store it is handed.
 
 const MAX_SERIES = 24;   // per-city rolling series length (readout sparkline window)
 const MAX_CITIES = 4000; // ceiling on tracked cities (drops the oldest when exceeded)

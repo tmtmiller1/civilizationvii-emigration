@@ -32,7 +32,7 @@ Completed work is removed from this document as it ships and recorded in the
 
 ## Conventions & invariants
 
-Every item honors the mod's standing rules: flag-gated behaviour with conservative defaults, and the
+Every item honors the mod's standing rules: flag-gated behavior with conservative defaults, and the
 full cross-cutting checklist in **§13** (config/tunables, modinfo registration, localization parity, the
 `visuals`/`readout` tunable groups, tests wired into the gate, lint, verify+release). The hard
 invariants that must never be violated:
@@ -187,7 +187,7 @@ invariants that must never be violated:
 The full scenario graphics are maintained in
 [migration-scenarios-diagrams.md](migration-scenarios-diagrams.md) so they can evolve independently from
 the implementation plan. They map directly to the hooks in §0.1–§0.6 and the quarter rules in
-[cultural-enclaves.md](../../_archived-emigration-enclave-feature/docs/cultural-enclaves.md) (archived).
+[cultural-enclaves.md](../../../mod_ideas_tested/_archived-emigration-enclave-feature/docs/cultural-enclaves.md) (archived).
 
 ---
 
@@ -253,7 +253,7 @@ per-civ in/out/net for the dashboard — reuse that rather than re-deriving.
    [emigration-flow-history.js](../ui/emigration-flow-history.js): fold `edges[]` to `out[from] += people`,
    `in[to] += people`, `net = in - out`.
 2. **Map net → color.** Add `brainDrainTint(net, maxAbs)` returning an rgba ramp
-   (red↔neutral↔green). Pass a per-civ `net` into the scene nodes (extend `NetworkNode` with a
+   (red → neutral → green). Pass a per-civ `net` into the scene nodes (extend `NetworkNode` with a
    transient `net` field set at build time in `buildCenters()` /
    [emigration-network-viz.js](../ui/emigration-network-viz.js#L189)).
 3. **Apply.** In `drawCivCircle()` (**L368**) use the tint for the stroke or a faint fill when
@@ -346,7 +346,7 @@ celebration/peace **trigger**.
 **Config / tunables.** `homelandPullback: true`, `pullbackTurns: 3`, `pullbackBoost` (choice).
 
 **Tests.** Extend `tests/return.mjs`: celebration edge-trigger arms the burst; burst decays after
-`pullbackTurns`; never drains below the rural floor; disabled flag → current trickle behaviour.
+`pullbackTurns`; never drains below the rural floor; disabled flag → current trickle behavior.
 
 **Risk.** Balance — bound the burst and keep the rural-floor guard so it can't depopulate a host.
 
@@ -414,7 +414,7 @@ Feature I is the remaining narrative-breadcrumb layer along the way, and should 
 status vocabulary and dedupe scheme.
 
 **Config / tunables.** `integrationMilestoneMinImmigrants` (conservative default; `0` preserves old
-share-only behaviour).
+share-only behavior).
 
 **Tests.** Folded into `tests/cultural-blend.mjs`: assert no follow-up when a tier crossing occurs below
 `integrationMilestoneMinImmigrants`, and assert follow-up fires once when the same crossing occurs above
@@ -475,7 +475,7 @@ capped and run through `scripts/snowball-stress.mjs` and the calibration sweep b
 **Tests.** `tests/chain-migration.mjs`: affinity scales with share, clamps at the cap, is zero when the
 feature is off, and never makes pull unbounded (assert TILT clamp still binds).
 
-**Risk.** Highest of the visualization/model set — model behaviour change. Ship off by default, validate
+**Risk.** Highest of the visualization/model set — model behavior change. Ship off by default, validate
 with the existing balance scripts, and document.
 
 ---
@@ -616,7 +616,7 @@ more than one dimension, with the mix depending on government/age.
   - a punished pairing charges the expected per-turn cost (mock `grantYield`/`deduct`);
   - selective closure: hostile source throttled, ally source relieved, product still within
     `[permeFloor, permeCeil]`;
-  - all flags off → byte-identical to current behaviour (characterization test, like the existing
+  - all flags off → byte-identical to current behavior (characterization test, like the existing
     `adjustedPull` test).
 
 ### 12.4 Localization / Civilopedia
@@ -735,7 +735,7 @@ building L/M/N/P — each is meant to be thin formatting over these rows, never 
   is unchanged — engine snapshots are byte-identical). Drift is structurally impossible here; a term
   changing value is caught by `tests/prosperity.mjs`, not by the reconstruction.
 
-**One modelling subtlety to preserve.** `prosperity = base × (1 + Σ situational%/100)`, so a situational
+**One modeling subtlety to preserve.** `prosperity = base × (1 + Σ situational%/100)`, so a situational
 penalty's contribution is `base × %/100`. On a city whose base has gone **negative** (poor, unhappy,
 crowded) a signed multiply flips a siege into a positive "attraction" — the same pathology the F2 guard
 exists for. `explainPush` scales situational terms by `|base|` so a penalty always reads as a push; for
@@ -1539,7 +1539,7 @@ renamed**, originates as raw returns in `migrationCause()`
 ([pull.js:47-50](../ui/emigration-pull.js#L47-L50)), and every getter falls back to `other` / `""` — which
 is why most of these are YAGNI today.
 
-> **Worked through 2026-06-30 (shipped v1.7.0).** The two-colour-map drift item was resolved by deciding intent (the
+> **Worked through 2026-06-30 (shipped v1.7.0).** The two-color-map drift item was resolved by deciding intent (the
 > `ACCENTS` toast/log accents and `CAUSE_PALETTE` network-dot fills are *deliberately* distinct — the
 > latter is tuned to harmonize with `CIV_PALETTE`) and adding cross-referencing comments in both files
 > rather than consolidating. Three cosmetic-only items with no "revisit if" trigger (split `LABELS`,
@@ -1711,13 +1711,13 @@ The grant is the "recognized but unbuilt" reward; building is a deliberate, opti
 clearly worth its cost. They never stack. Shipped as:
 - New [emigration-enclave-built.js](../ui/emigration-enclave-built.js) — the built-enclave read-back:
   `enclaveTypeForCiv(originCiv)` (the pure inverse of the generator's `typeOf`), `builtEnclaveIndex(owner)`
-  (city-centre plot key → the set of enclave types built in that city, read **once per turn**, not per
+  (city-center plot key → the set of enclave types built in that city, read **once per turn**, not per
   quarter), and `enclaveIsBuiltFor()`. Reuses the same read the on-map markers already prove in-game
   (`MapConstructibles.getConstructibles`).
 - `applyOwnerQuarterYields()` ([emigration-quarter.js](../ui/emigration-quarter.js)) now skips any quarter
   whose origin has its enclave built in that city. An unreadable map degrades to the prior grant-always
-  behaviour — never a throw into the pass.
-- Note the join: a quarter record's `tileKey` is its **city-centre** plot, while the improvement sits on
+  behavior — never a throw into the pass.
+- Note the join: a quarter record's `tileKey` is its **city-center** plot, while the improvement sits on
   any city tile — so the coupling is per-**city-and-origin**, not per-tile (the section's original
   "drop the grant for a tile that has the improvement" wording could not work as written).
 - `BENEFIT_AMOUNT` 2 → **4** in [gen-enclave-improvements.mjs](../scripts/gen-enclave-improvements.mjs),

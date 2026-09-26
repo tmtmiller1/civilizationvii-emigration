@@ -105,7 +105,7 @@ function refSoftCeil(x, ceiling) {
  * Reference copy of Demographics' scaleCityPopulationAt, the authoritative scaling contract
  * (growth curve · Modern megacity boost · soft era ceiling).
  * @param {number} raw Settlement size. @param {number} _turn Unused (signature compat).
- * @param {string} [ageType] Age type. @param {number} [ageProgressPct] Progress %.
+ * @param {string} [ageType] @param {number} [ageProgressPct] Progress %.
  * @returns {number} The scaled people figure (0 for non-positive input).
  */
 function refScale(raw, _turn, ageType, ageProgressPct) {

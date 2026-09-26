@@ -13,7 +13,7 @@ const { establishedQuarterForCity, enclaveProgressForCity } =
 // their assertions stay deterministic. The dedicated integration case re-enables it locally.
 CONFIG.integrationEnabled = false;
 
-/** A city signal with a stable centre location. */
+/** A city signal with a stable center location. */
 function city(x, y, name, owner, population) {
   return { city: { location: { x, y }, name }, owner, population };
 }

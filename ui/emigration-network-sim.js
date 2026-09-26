@@ -1,7 +1,7 @@
 // emigration-network-sim.js
 //
 // A tiny force-directed layout for the migration network (no external library). Nodes repel each
-// other, edges act as springs, and a gentle gravity keeps the graph centred; an annealing "alpha"
+// other, edges act as springs, and a gentle gravity keeps the graph centered; an annealing "alpha"
 // cools the motion so the graph SETTLES into an organic shape and then holds still. Seeded from a
 // deterministic ring (optionally reusing cached positions when scrubbing the timeline), so the
 // settled layout is reproducible rather than random.
@@ -9,7 +9,7 @@
 const REPULSE = 26000; // node-node repulsion strength (spreads destination clusters apart)
 const SPRING = 0.018; // edge spring stiffness (unused for clusters: no links)
 const SPRING_LEN = 150; // edge rest length
-const GRAVITY = 0.006; // gentle pull toward centre (low, so clusters fill the whole canvas)
+const GRAVITY = 0.006; // gentle pull toward center (low, so clusters fill the whole canvas)
 const DAMP = 0.85; // velocity damping per step
 const PAD = 16; // keep cluster EDGES this far from the canvas edges (radius added per node)
 // The civ NAME label is drawn ABOVE each circle (paint.js: c.y - clusterR - 10, ~15px text), so a
@@ -33,7 +33,7 @@ function clamp(v, lo, hi) {
 /**
  * Seed a simulation from a network model: nodes on a deterministic ring (or a cached position when
  * provided, for stable timeline scrubbing), with edge links indexed into the node array. The ring
- * is centred in the (wide) canvas and sized to its SHORTER side, so nodes start clustered in the
+ * is centered in the (wide) canvas and sized to its SHORTER side, so nodes start clustered in the
  * middle with room to be dragged out across the full width.
  * @param {{nodes:*[], edges:*[]}} net The network model.
  * @param {number} WX Canvas width (logical units).
@@ -45,11 +45,9 @@ export function seedSim(net, WX, WY, cache) {
   const cx = WX / 2;
   const cy = WY / 2;
   const n = net.nodes.length;
-  // Seed on an aspect-matched ELLIPSE (uses the full WIDE canvas, not just its short side) whose extent
-  // GROWS with the civ count: a few civs stay compact in the middle, while a max-civ large game spreads
-  // across the whole canvas from the start instead of piling into a cramped central disk for the sim to
-  // slowly pry apart. `fill` is the fraction of each half-axis used (≈0.42 at a typical count, capped so
-  // the outermost cluster still clears the edge).
+  // Seed on an aspect-matched ELLIPSE whose extent GROWS with the civ count, so a max-civ game spreads
+  // across the canvas from the start. `fill` is the fraction of each half-axis used, capped so the
+  // outermost cluster still clears the edge.
   const fill = clamp(0.30 + 0.045 * Math.sqrt(n), 0.34, 0.46);
   const rx = WX * fill;
   const ry = WY * fill;

@@ -1,16 +1,10 @@
 // emigration-quarter-state.js
 //
-// The persistent record of every Cultural Quarter that has formed in the world: ONE quarter per host
-// tile (the city-centre plot), keyed "x,y". A quarter is a foreign diaspora that grew large enough to
-// keep a district of its own, the stance the player took toward it, and the small yields that stance
-// grants each turn (applied per-turn from this record). No stacking: a second origin overtaking the
-// same tile REPLACES the record, so a tile always names a single quarter and the per-turn yields simply
-// follow whoever currently holds it. Also carries the per-age decision throttle (a cap + a cooldown,
-// shared in spirit with the refugee dilemmas) and a "contested" flag set while the host is at war with
-// the quarter's homeland.
-//
-// State persists in GameConfiguration under EmigrationQuarters_v1. Fully defensive: an unreadable or
-// malformed blob degrades to an empty store, and no path throws into the pass.
+// The persistent record of every Cultural Quarter in the world: ONE quarter per host tile (the
+// city-center plot), keyed "x,y", holding the origin, the stance taken, and the yields it granted. A
+// second origin overtaking the same tile REPLACES the record. Also carries the per-age decision
+// throttle (cap + cooldown) and a "contested" flag set while the host is at war with the homeland.
+// State persists in GameConfiguration under EmigrationQuarters_v1; a malformed blob degrades to empty.
 
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
@@ -33,7 +27,7 @@ const MAX_TILES = 4096;
  * @property {number} civ Origin PLAYER id (whose diaspora holds the quarter); used for naming/war reads.
  * @property {string|null} originCiv Origin CivilizationType captured at formation (e.g. "CIVILIZATION_ROME"),
  *   or null for legacy records. This is the STABLE identity used for the per-civ enclave cap — it does not
- *   drift if the origin player later changes civilisation across an age.
+ *   drift if the origin player later changes civilization across an age.
  * @property {number} owner Host player id.
  * @property {string} optionId The stance chosen.
  * @property {number} turn Formation turn (monotonic).
@@ -42,8 +36,8 @@ const MAX_TILES = 4096;
  * @property {number} contestedTurn Turn the quarter last became contested (-999 if never).
  * @property {number|null} [fadeSince] The turn the origin's share first sat below the fade bar (null = above).
  * @property {boolean} recognized False from ESTABLISHMENT (the enclave exists: record + tile, no stance yet)
- *   until RECOGNITION after the dwell period (the stance is chosen and its yields begin). Records saved
- *   before this field existed were all created at recognition, so an absent value reads as true.
+ *   until RECOGNITION after the dwell period (the stance is chosen and its yields begin). An absent
+ *   value reads as true.
  * @property {PlacedRecord|null} [placed] The constructible placed for this stance, or null when none was placed
  *   (no valid tile / data not loaded); see emigration-enclave-place.js.
  */
@@ -119,7 +113,7 @@ function emptyState() {
 
 /**
  * @param {*} v Candidate value.
- * @param {number} fallback Fallback.
+ * @param {number} fallback
  * @returns {number} Non-negative integer, or the fallback.
  */
 function nonNegInt(v, fallback) {
@@ -429,17 +423,10 @@ export function quarterAt(tileKey) {
 
 /**
  * A tile's quarter record as a READER in another isolate sees it, re-read from the store once per turn.
- *
- * Use this, not {@link quarterAt}, from any isolate that does not itself write quarters. `_state` is
- * loaded once and then held as the writer's live working copy (it carries in-pass mutations that are
- * persisted at the end of the pass), so a reader isolate that touched it before any enclave existed
- * would cache an EMPTY store and never see one form — the lens would silently stop pinning for the whole
- * session. Each `<Item>` in the modinfo is its own V8 isolate with no shared memory, so this is the same
- * reload-from-persistence discipline emigration-composition.js uses for its own cross-isolate readers.
- *
- * Deliberately a SEPARATE cache from `_state`: refreshing `_state` here would discard a writer's
- * uncommitted mid-pass changes.
- * @param {string} tileKey The "x,y" settlement-centre key.
+ * Use this, not {@link quarterAt}, from any isolate that does not itself write quarters: `_state` is
+ * the writer's live working copy, so a reader that cached it would never see later enclaves form.
+ * Deliberately a SEPARATE cache, since refreshing `_state` would discard uncommitted mid-pass changes.
+ * @param {string} tileKey The "x,y" settlement-center key.
  * @returns {QuarterRecord|null} The record, or null.
  */
 export function quarterSnapshotAt(tileKey) {

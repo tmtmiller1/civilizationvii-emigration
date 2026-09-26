@@ -1,21 +1,11 @@
 // emigration-plot-cleanup.js
 //
-// Keeps an abandoned tile USABLE. Destroying a rural improvement with DESTROY_ELEMENT {Kind:"CONSTRUCTIBLE"}
-// (a departure, a death, an enclave tile removed) leaves its DISTRICT_RURAL behind with nothing on it, and
-// the game never offers a plot that still carries a district for a new population point: the plot can then
-// never be improved again, and there is nothing damaged to repair. Watched 2026-09-14 in the user's own game
-// (devtools/engine-probe, mod test 40): every tile the mod had abandoned was such an empty district, none was
-// in its settlement's `canStart(EXPAND).Plots`, and removing the district with DESTROY_ELEMENT
-// {Kind:"DISTRICT"} put the plot straight back into that list, population and ownership unchanged; a new
-// population point was then placed on that exact plot.
-//
-// Two paths: `scheduleDistrictCleanup` removes the empty district a moment after an improvement is destroyed
-// (the destroy lands asynchronously, so the plot is re-checked before anything is removed), and
-// `sweepEmptyRuralDistricts` clears any empty rural district on any settlement's land once the loaded game has
-// started and again at the start of each local turn, which heals saves damaged before this fix the moment
-// they load (watched in mod test 41: loading a save mid-turn raises no turn event, so a turn-only sweep left
-// the old dead plots in place until the next turn). Only a RURAL district with NO constructible is ever
-// touched. Leaf module: imports only the logger.
+// Keeps an abandoned tile USABLE. Destroying a rural improvement with DESTROY_ELEMENT leaves its
+// DISTRICT_RURAL behind with nothing on it, and the game never offers such a plot for a new population
+// point; removing the district with DESTROY_ELEMENT {Kind:"DISTRICT"} makes it placeable again.
+// `scheduleDistrictCleanup` re-checks a plot a moment after a destroy (which lands asynchronously);
+// `sweepEmptyRuralDistricts` clears every empty rural district once the loaded game starts and at the
+// start of each local turn. Only a RURAL district with NO constructible is ever touched.
 
 import { dlog } from "/emigration/ui/emigration-log.js";
 

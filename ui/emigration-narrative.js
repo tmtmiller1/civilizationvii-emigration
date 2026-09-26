@@ -3,16 +3,12 @@
 // The PROSE engine behind the Migration Chronicle (emigration-chronicle.js): it turns a bare event
 // record (a civ, a cause, a settlement, a count) into a short written line of history.
 //
-// Voice: grounded and concrete, with a little of the weight that displacement carries. Two influences,
-// held in balance: the immersive, human-scale history of Paul Cooper's Fall of Civilizations (the road
-// out of a city, what people carried, what they left) and the terse, factual precision of Mark Felton
-// (plain sentences, real numbers, no flourish). Lines are assembled from authored fragments chosen
-// DETERMINISTICALLY from the event's own details, so a given event always reads the same and no two
-// neighbouring events read alike, without any text being generated at runtime.
+// Voice: grounded and concrete, human-scale and factual (plain sentences, real numbers, no flourish).
+// Lines are assembled from authored fragments chosen DETERMINISTICALLY from the event's own details, so
+// a given event always reads the same, without any text being generated at runtime.
 //
-// House style (enforced by tests/no-em-dash + review): no em dashes that aren't grammatically needed,
-// and none of the usual machine-written tells (no "tapestry", "testament", "vibrant", "rich history",
-// "not only ... but also", padded tricolons, or hollow intensifiers). Plain words, concrete nouns.
+// House style (enforced by tests/no-em-dash): no em dashes that aren't grammatically needed, and none
+// of the usual machine-written tells ("tapestry", "testament", "vibrant", padded tricolons).
 //
 // Pure: no engine reads. Callers pass already-resolved names/counts.
 
@@ -35,7 +31,7 @@ function hash(s) {
 
 /**
  * Pick one entry from a list deterministically by seed (stable per seed, spread across the list).
- * @template T @param {T[]} list The options. @param {string} seed The seed. @param {number} [salt] A
+ * @template T @param {T[]} list The options. @param {string} seed @param {number} [salt] A
  *   per-slot salt so several picks from one seed don't all land on the same index.
  * @returns {T} The chosen entry.
  */
@@ -45,9 +41,7 @@ function pick(list, seed, salt) {
 }
 
 // Always-true fallbacks for where a community keeps to inside a city, naming NO specific feature so a
-// line is never wrong. When the host city actually has a nameable feature, the caller
-// (emigration-diaspora.js, via emigration-quarter-phrases.js) supplies a truthful feature-based phrase as
-// `where`; this list is only the fallback. Chosen by seed, never at random.
+// line is never wrong; the caller supplies a feature-based `where` phrase when the host city has one.
 const GENERIC_QUARTERS = [
   "on the edge of the city", "in the outer streets", "past the last houses",
   "on the far side of town", "where the streets give out"
@@ -77,7 +71,7 @@ const CARRIED_KEYS = [
  * seeded fragment reads the same off-engine (fallback) as it does localized. The seed selection is
  * identical to {@link pick}, keeping output deterministic.
  * @param {string[]} list The English fragments. @param {string[]} keys The parallel LOC keys.
- * @param {string} seed The seed. @param {number} [salt] A per-slot salt.
+ * @param {string} seed @param {number} [salt] A per-slot salt.
  * @returns {string} The localized fragment.
  */
 function pickLoc(list, keys, seed, salt) {
@@ -88,7 +82,7 @@ function pickLoc(list, keys, seed, salt) {
 
 /**
  * A civ adjective for prose, falling back to a neutral "a people" when none was resolved. Civ
- * adjectives ("Roman", "Carthaginian") are proper and stay capitalised mid-sentence.
+ * adjectives ("Roman", "Carthaginian") are proper and stay capitalized mid-sentence.
  * @param {string} adjective The resolved adjective.
  * @returns {string} The adjective, or "a people".
  */
@@ -99,7 +93,7 @@ function adj(adjective) {
 /**
  * Strip a leading "the " from a name, so the templates can supply the article themselves and never
  * produce "the the Roman-Gallic War". e.g. "the Eruption of Thera" → "Eruption of Thera".
- * @param {string} [name] The name. @returns {string} The name without a leading article.
+ * @param {string} [name] @returns {string} The name without a leading article.
  */
 function bare(name) {
   return String(name || "").replace(/^the\s+/i, "");
@@ -190,7 +184,7 @@ function framedExodus(e) {
   ];
   const en = [
     "Far beyond the lands we knew, {1_City} emptied. {2_People} of a people we have heard called the {3_Civ} took to the roads.",
-    "{2_People} refugees fled {1_City}, a city of a distant people, the {3_Civ}, of whom we had only rumour.",
+    "{2_People} refugees fled {1_City}, a city of a distant people, the {3_Civ}, of whom we had only rumor.",
     "Word came of {1_City}, somewhere past the edge of the map: {2_People} of the {3_Civ}, a people we have only heard tell of, driven from their homes."
   ];
   const i = hash(e.seed + ":" + 0) % en.length;

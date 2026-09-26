@@ -1,12 +1,9 @@
 // emigration-snapshot-reminder.js
 //
 // A persistent reminder badge shown above every migration-dashboard tab when the timeline-detail
-// setting samples less often than every turn. At interval N (> 1) the mod snapshots migration flows
-// only every N turns, so a just-met civ or a recent move can lag up to N turns before it appears in
-// the dashboard ; without a cue, that gap reads as a bug ("I met them, why aren't they here?").
-// Self-contained (own style injection + DOM) so the views chunk that hosts the tabs stays under its
-// line budget, and so both dashboard surfaces (standalone window + Demographics-embedded page) get
-// the reminder from the single render path they share.
+// setting samples less often than every turn: at interval N (> 1) a just-met civ or a recent move can
+// lag up to N turns before it appears, and without a cue that gap reads as a bug. Self-contained (own
+// style injection + DOM) so both dashboard surfaces get the reminder from the render path they share.
 
 import { getSnapshotInterval } from "/emigration/ui/emigration-settings.js";
 
@@ -56,10 +53,8 @@ export function appendSnapshotReminder(wrap) {
 }
 
 // Expose the note text so the Demographics-embedded Migration page can render it next to its
-// "Analytics policy" banner (cross-mod read; absent → Demographics simply shows no timeline note).
-// `metricId` scopes the note to the Network sub-tab only, the migration-flow timeline the wording
-// refers to ("...can take up to N turns to appear here"). It's that sub-tab's synthetic metric id:
-// the Migration panel id + Demographics' "::" sub-tab separator + the "flow" (Network) sub-tab id.
+// "Analytics policy" banner (cross-mod read). `metricId` scopes the note to the Network sub-tab: the
+// Migration panel id + Demographics' "::" sub-tab separator + the "flow" sub-tab id.
 try {
   /** @type {*} */ (globalThis).EmigrationTimelineNote = {
     metricId: "emig_migration_panel::flow",

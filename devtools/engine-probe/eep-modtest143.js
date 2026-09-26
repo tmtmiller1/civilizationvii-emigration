@@ -139,7 +139,7 @@ async function shootLens() {
   emit("READOUT enclave tile: " + readoutText());
   emit("SHOT lens-ethnic-close"); await later(HOLD);
 
-  // A plain tile of the same settlement, for the record: without an enclave there, the community's colour is capped.
+  // A plain tile of the same settlement, for the record: without an enclave there, the community's color is capped.
   const t = safe(() => tilesForCity(pick.city), null);
   const other = t && t.tiles ? t.tiles.find((p) => !(p.x === pick.at.x && p.y === pick.at.y) && (p.shares || []).length > 1) : null;
   if (other) { hoverPlot(other); await later(3000); emit("READOUT other tile " + J({ x: other.x, y: other.y }) + ": " + readoutText()); }

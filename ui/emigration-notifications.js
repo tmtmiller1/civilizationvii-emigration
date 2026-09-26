@@ -1,13 +1,8 @@
 // emigration-notifications.js
 //
-// The PERSISTENT notification log behind the Demographics "Notifications" sub-tab. Every toast that
-// fires (emigration-feedback.js) is also appended here as a structured entry, so the on-screen toasts
-// can stay brief and non-spammy while the full history lives in a permanent, scrollable log the
-// player can revisit. Each entry keeps the detail of the event it announced, what caused it, which
-// settlement it left, and where the people went, so the list can drill down per notification.
-//
-// Persisted in GameConfiguration (survives save/reload), capped, newest-first. Everything is
-// defensive: with no GameConfiguration (headless / pre-boot) reads return [] and writes no-op.
+// The PERSISTENT notification log behind the "Notifications" sub-tab. Every toast that fires
+// (emigration-feedback.js) is also appended here as a structured entry carrying the event's detail.
+// Persisted in GameConfiguration, capped, newest-first; without GameConfiguration reads return [].
 
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
@@ -29,7 +24,7 @@ const MAX_ENTRIES = 120; // ring cap: plenty of history, bounded save size
  * @property {string} [fromCiv] Origin civilization name.
  * @property {string} [toCity] Destination settlement name.
  * @property {string} [toCiv] Destination civilization name.
- * @property {string} [reasons] The "why here" explanation phrase for the lead move (P0.1), already
+ * @property {string} [reasons] The "why here" explanation phrase for the lead move, already
  *   localized (e.g. "nearby, open borders").
  * @property {boolean} [crossCiv] Whether the lead move crossed civilizations.
  * @property {boolean} [ownLoss] Whether this is the local player's own population loss (drives the

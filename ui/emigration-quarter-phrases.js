@@ -1,21 +1,14 @@
 // emigration-quarter-phrases.js
 //
-// Truthful "quarter" phrases for the Migration Chronicle's diaspora lines, where a settled minority
-// "kept a district of their own". Every feature phrase names only a REAL feature of the host city (a
-// coast, a river, the mountains, or a building it has actually raised), so the Chronicle never claims
-// a granary the city never built. The present-feature keys are supplied by emigration-city-features.js
-// (the engine reads); this module is PURE (a deterministic, seeded choice with no engine reads), so it
-// is unit-testable and never throws.
-//
-// The phrases are framed at the EDGE of the city ("beyond the granaries", "by the harbour", "on the
-// far side of town"), which is also where the ethnicity lens paints a diaspora, its people fill the
-// sparse rural fringe, not the dense core, so the prose and the map agree.
+// Truthful "quarter" phrases for the Migration Chronicle's diaspora lines. Every feature phrase names
+// only a REAL feature of the host city (keys supplied by emigration-city-features.js), framed at the
+// EDGE of the city where the ethnicity lens paints a diaspora. Pure: a deterministic, seeded choice.
 
 import { loc } from "/emigration/ui/emigration-loc.js";
 
 /** @type {Record<string, string[]>} Truthful edge-of-city phrases, one list per real feature key. */
 const FEATURE_QUARTERS = {
-  coast: ["by the harbour", "along the waterfront", "in the dock quarter"],
+  coast: ["by the harbor", "along the waterfront", "in the dock quarter"],
   river: ["along the river", "by the river landings"],
   mountain: ["below the mountains", "on the high ground"],
   granary: ["beyond the granaries", "past the granaries"],
@@ -89,7 +82,7 @@ function presentFeatures(keys) {
  * @param {Iterable<string>|null|undefined} keys The city's real feature keys (coast/river/mountain/
  *   granary/temple/market/walls), from emigration-city-features.js.
  * @param {string} seed The event seed, so the choice is stable per diaspora.
- * @returns {string} A prepositional phrase, e.g. "by the harbour" or "on the edge of the city".
+ * @returns {string} A prepositional phrase, e.g. "by the harbor" or "on the edge of the city".
  */
 export function resolveQuarter(keys, seed) {
   const s = typeof seed === "string" ? seed : String(seed || "");

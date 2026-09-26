@@ -1,15 +1,10 @@
 // emigration-engine.js
 //
-// The emigration algorithm's EXECUTION + orchestration layer: each pass, rank the world's cities
-// by Prosperity, accumulate per-source "emigration pressure" toward the best destination (scored by
-// emigration-pull.js), and when a source crosses the bar, move rural citizens - instantaneously or
-// through the transit queue (lagged arrivals). The scoring/decision lives in emigration-pull.js and
-// the persistence in emigration-state.js; this module turns those decisions into applied moves.
-//
-// Three concerns were split out to keep this orchestrator focused: the Migration record shapes
-// (emigration-migration-records.js), the source/destination side effects
-// (emigration-consequences.js), and the lagged-arrival landing (emigration-arrivals.js). What stays
-// here is move-planning (how many points a source sheds and how they travel) and the per-turn pass.
+// The emigration algorithm's execution + orchestration layer: each pass, rank the world's cities by
+// Prosperity, accumulate per-source "emigration pressure" toward the best destination (scored by
+// emigration-pull.js), and when a source crosses the bar, move rural citizens - instantly or through
+// the transit queue. Scoring lives in emigration-pull.js and persistence in emigration-state.js; this
+// module owns move-planning (how many points a source sheds and how they travel) and the per-turn pass.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { speedTurns, speedBar, speedDecay, speedShock } from "/emigration/ui/emigration-game-speed.js";
@@ -52,13 +47,13 @@ import {
  * @typedef {import("/emigration/ui/emigration-migration-records.js").Migration} Migration
  */
 
-// P0.3 voluntary-pressure cues collected during a pass (transient; the reporter drains them each pass
+// Voluntary-pressure cues collected during a pass (transient; the reporter drains them each pass
 // via takePressureCues, so nothing is persisted and a reload can't replay stale cues).
 /** @type {{srcName:string, srcOwner:number, destName:string, cause:MigrationCause, frac:number}[]} */
 let _pressureCues = [];
 
 /**
- * Drain and return this pass's voluntary-pressure cues (P0.3): sources building toward the bar
+ * Drain and return this pass's voluntary-pressure cues: sources building toward the bar
  * without moving anyone yet. The caller (reportPressureCues) throttles + filters to the local player.
  * @returns {{srcName:string, srcOwner:number, destName:string, cause:MigrationCause, frac:number}[]} The cues.
  */
@@ -116,17 +111,16 @@ function transitLag(src, dest, cause) {
   const per = CONFIG.transitHexPerTurn > 0 ? CONFIG.transitHexPerTurn : 1;
   // The lag IS the journey: the hex distance from source to destination at ~`per` hexes per turn,
   // rounded to whole turns - so a far resettlement takes meaningfully longer to land than a
-  // neighbouring one. War/disaster refugees take at least a turn (camps); capped per config.
+  // neighboring one. War/disaster refugees take at least a turn (camps); capped per config.
   let lag = Math.round(hexDistance(src, dest) / per);
   if (isRefugeeCause(cause)) lag = Math.max(lag, 1); // refugees camp at least a turn
   return Math.max(0, Math.min(speedTurns(CONFIG.transitLagTurns), lag));
 }
 
 /**
- * The number of rural points a source may shed THIS turn (Feature 1a, war surge). 1 for ordinary
- * emigration. For a war source it scales with siege intensity - `siegeEscalation` times how far
- * violence exceeds the flee threshold - up to `warSurgeMax`, so a fresh heavy assault sheds a burst
- * while a mild or already-capped siege sheds ~1.
+ * The number of rural points a source may shed THIS turn: 1 for ordinary emigration. For a war
+ * source it scales with siege intensity (`siegeEscalation` times how far violence exceeds the flee
+ * threshold) up to `warSurgeMax`, so a fresh heavy assault sheds a burst.
  * @param {*} src Source signal.
  * @param {MigrationCause} cause Why they're leaving.
  * @returns {number} Points to shed this turn (>= 1).
@@ -142,8 +136,7 @@ function warSurgeBudget(src, cause) {
 }
 
 // FORCED displacement causes: refugees flee every turn, so these bypass the post-move cooldown that
-// paces voluntary (prosperity / unhappiness) migration. `conquest` is reserved for capture-driven
-// displacement (a later phase emits it).
+// paces voluntary (prosperity / unhappiness) migration. `conquest` is capture-driven displacement.
 const FORCED_CAUSES = new Set(["war", "disaster", "conquest"]);
 
 /** Whether a source is in an acute crisis (war / disaster), for sizing the per-civ move ceiling.
@@ -161,10 +154,9 @@ function restingOnCooldown(st, forced) {
 }
 
 /**
- * Per-civ move ceilings for the turn: a runaway/perf safety net (NOT the pacing mechanism), sized so
- * simultaneous wars on different civs never compete for one global budget. Each civ's ceiling grows
- * with its settlement count and how many of its cities are in crisis, so a besieged empire can shed
- * refugees from all fronts at once.
+ * Per-civ move ceilings for the turn: a runaway/perf safety net (NOT the pacing mechanism). Each
+ * civ's ceiling grows with its settlement count and how many of its cities are in crisis, so
+ * simultaneous wars on different civs never compete for one global budget.
  * @param {*[]} ranked Ranked source signals.
  * @returns {Map<number, {voluntary:number, crisis:number}>} owner id → per-track move ceilings.
  */
@@ -204,7 +196,7 @@ function sourceState(state, key) {
 
 /** Causes that draw from the CRISIS budget/track (vs voluntary prosperity/unhappiness). */
 const CRISIS_TRACK = new Set(["war", "disaster", "conquest", "attrition"]);
-/** @param {string} cause Cause. @returns {boolean} Whether it's a crisis-track cause. */
+/** @param {string} cause @returns {boolean} Whether it's a crisis-track cause. */
 function isCrisisTrack(cause) {
   return CRISIS_TRACK.has(cause);
 }
@@ -222,17 +214,16 @@ function voluntaryCause(src) {
 }
 
 /**
- * Apply one rural point's worth of migration from `src` to `dest`. When transit lag is 0 it's
- * instantaneous (move + both consequences this turn); otherwise the source loses the point now and
- * the arrival is queued on `state.transit` for `lag` turns later. Mutates the in-memory ranking's
- * source side (the destination side is bumped on arrival).
+ * Apply one rural point's worth of migration from `src` to `dest`: instantaneous when transit lag
+ * is 0, otherwise the source loses the point now and the arrival is queued on `state.transit` for
+ * `lag` turns later. Mutates the in-memory ranking's source side (the destination side is bumped on arrival).
  * @param {*} src Source signal.
  * @param {*} dest Destination signal.
  * @param {number} popBefore Source population before this point left (for people-scaling).
  * @param {*} state Loaded state (transit queue + monoTurn).
  * @param {MigrationCause} cause Why they're leaving.
  * @param {InboundCtx} inboundCtx Per-turn destination-inbound cap context.
- * @param {string[]} [reasons] The "why here" reason tags for the chosen destination (P0.1).
+ * @param {string[]} [reasons] The "why here" reason tags for the chosen destination.
  * @returns {Migration|null} The move/departure record, or null if the write failed.
  */
 // eslint-disable-next-line max-params
@@ -339,7 +330,7 @@ function enqueueLaggedDeparture(a) {
  * @param {MigrationCause} cause Why they're leaving.
  * @param {number} budget Max points to shed this turn.
  * @param {InboundCtx} inboundCtx Per-turn destination-inbound cap context.
- * @param {string[]} [reasons] The "why here" reason tags for the chosen destination (P0.1).
+ * @param {string[]} [reasons] The "why here" reason tags for the chosen destination.
  * @returns {Migration[]} The applied records.
  */
 // eslint-disable-next-line max-params
@@ -369,10 +360,8 @@ function bestOpenDestination(src, ranked, ownerPop, inboundCtx) {
 
 /**
  * Whether a source is still below the pressure bar and must keep accumulating. Forced displacement
- * (war / disaster / conquest) flees EVERY turn, it bypasses the bar that paces voluntary migration,
- * so a besieged city sheds refugees immediately once it has a refuge (still bounded by the war-surge
- * burst, the siege loss cap, the rural pool, and the per-civ move ceiling). Voluntary (prosperity /
- * unhappiness) migration must accumulate to `emigrationBar` before it moves anyone.
+ * (war / disaster / conquest) bypasses the bar and flees every turn; voluntary migration must
+ * accumulate to `emigrationBar` before it moves anyone.
  * @param {boolean} forced Whether the cause is forced displacement.
  * @param {number} pressure The source's accumulated pressure.
  * @returns {boolean} True when the source should wait (no move this turn).
@@ -399,7 +388,7 @@ function legacyEmigrate(src, st, state, best, maxThisSource, inboundCtx) {
   if (!best || restingOnCooldown(st, forced)) return [];
   st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
   if (belowEmigrationBar(forced, st.pressure)) {
-    if (!forced) noteVoluntaryCue(src, best, st.pressure); // building toward the bar → trend cue (P0.3)
+    if (!forced) noteVoluntaryCue(src, best, st.pressure); // building toward the bar → trend cue
     return [];
   }
   const budget = Math.min(maxThisSource, warSurgeBudget(src, cause));
@@ -475,7 +464,7 @@ function shedVoluntary(src, best, state, st, maxVol, inboundCtx) {
   if (st.cooldown > 0 || maxVol <= 0) return [];
   st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
   if (st.pressure < speedBar(CONFIG.emigrationBar)) {
-    noteVoluntaryCue(src, best, st.pressure); // building toward the bar → low-key trend cue (P0.3)
+    noteVoluntaryCue(src, best, st.pressure); // building toward the bar → low-key trend cue
     return [];
   }
   const out = shedBurst(
@@ -495,10 +484,9 @@ function shedVoluntary(src, best, state, st, maxVol, inboundCtx) {
 }
 
 /**
- * SPLIT source pass: evaluate the crisis and voluntary tracks INDEPENDENTLY for one source, so a
- * besieged-but-attractive city can shed war refugees AND economic migrants in the same pass. Each
- * draws from its own budget (or a shared pool when `budgets.shared`). No destination → the attrition
- * outlet (unchanged). Records keep a single cause; concurrency is the two records, not a multi-cause.
+ * SPLIT source pass: evaluate the crisis and voluntary tracks independently for one source, so a
+ * besieged-but-attractive city can shed war refugees AND economic migrants in the same pass, each
+ * from its own budget (or a shared pool when `budgets.shared`). Records keep a single cause.
  * @param {*} src Source signal.
  * @param {*[]} ranked Ranked signals.
  * @param {*} state Loaded state.
@@ -529,10 +517,8 @@ function processSourceSplit(src, ranked, state, ownerPop, budgets, inboundCtx) {
     // Shared pool: crisis already spent some of the common budget, so the voluntary track gets the rest.
     const volBudget = budgets.shared ? budgets.voluntary - out.length : budgets.voluntary;
     const volMax = Math.min(volBudget, cap - out.length); // cap minus crisis points already shed
-    // Reuse the crisis destination when the crisis track shed nothing (P4): bestDestination's inputs
-    // (ranking populations + the inbound-cap predicate) are unchanged only if no point moved, so a
-    // recompute would return the identical result. When crisis DID shed (out.length > 0), a move
-    // mutated the ranking and noted inbound, so re-query for the voluntary track.
+    // Reuse the crisis destination when the crisis track shed nothing (its inputs are unchanged);
+    // when it did shed, the ranking and inbound counts moved, so re-query for the voluntary track.
     const bestVoluntary = out.length === 0
       ? bestCrisis
       : bestOpenDestination(src, ranked, ownerPop, inboundCtx);
@@ -586,14 +572,9 @@ function processSource(src, ranked, state, ownerPop, budgets, inboundCtx) {
 
 /**
  * The CRISIS-SEVERITY multiplier (≥ 0) on the crisis-death rate: the worse the crisis, the larger the
- * share of a stricken city's people that die rather than escaping. Built from signals the mod can read:
- *   • overall lethal DISTRESS `d`, already aggregates a war's siege DURATION (vwSiege/turn), PILLAGED
- *     tiles (vwPillage) and ASSAULT damage (vwAssault, a casualties proxy), AND disaster/famine, so
- *     this works for every crisis type, not just war, normalized by the firing floor and capped; and
- *   • for a WAR specifically, the number of attacking civs (PARTICIPANTS): a multi-civ pile-on is
- *     deadlier than a duel.
- * (No engine hook exposes exact units-lost; cities-razed could be layered in later.) ≈ 1 at the firing
- * floor; rises steeply for a long, heavily-pillaged, or ganged-up war.
+ * share of a stricken city's people that die rather than escaping. Built from lethal distress `d`
+ * (siege duration, pillage, assault damage, disaster/famine; normalized by the firing floor and
+ * capped) times the number of attacking civs, plus unit casualties. ≈ 1 at the firing floor.
  * @param {*} src Source signal.
  * @param {number} d The source's lethal distress (already computed by the caller).
  * @returns {number} The severity multiplier.
@@ -611,9 +592,8 @@ function crisisSeverity(src, d) {
 
 /**
  * The death-ONSET ramp in [deathRampFloor, 1] (NOT a cap): a lethal crisis accrues death-pressure
- * gently at first (floor) and deepens over `deathRampTurns` of SUSTAINED lethal distress, then holds
- * at the full rate. Smooths the onset so a sudden catastrophe is never instantly devastating; it never
- * caps the eventual toll. 1 when disabled.
+ * gently at first and deepens over `deathRampTurns` of sustained lethal distress, then holds at the
+ * full rate, so a sudden catastrophe is never instantly devastating. 1 when disabled.
  * @param {number} tenure Consecutive turns the source has been under lethal distress (>= 1 here).
  * @returns {number} The per-turn death-pressure accrual multiplier.
  */
@@ -626,9 +606,8 @@ function deathRamp(tenure) {
 
 /**
  * Advance (or relax) the per-source sustained-unrest counter and report whether unrest has been
- * sustained long enough to count as LETHAL this pass. Called BEFORE the death gate's early-return so
- * the counter still climbs on pre-lethal unrest turns. Unrest pushes economic emigration immediately
- * (via distress()), but only joins the death gate after `unrestLethalDelayTurns` of continuous unrest.
+ * sustained for `unrestLethalDelayTurns` and so counts as LETHAL this pass. Called BEFORE the death
+ * gate's early-return so the counter still climbs on pre-lethal unrest turns.
  * @param {*} src Source signal.
  * @param {*} st Per-source state (mutates st.unrestTenure).
  * @returns {boolean} Whether sustained unrest is lethal this pass.
@@ -639,18 +618,11 @@ function tickUnrestLethality(src, st) {
 }
 
 /**
- * The outlet's DEATH channel, population that leaves the world (cause `attrition`), tracked as deaths,
- * not migration. Fires under LETHAL distress (`lethalDistress ≥ attritionMinDistress`), i.e. the
- * situational crises: war, disaster, siege, famine (all immediate), plus SUSTAINED civic unrest -
- * unrest is lethal too, but only after `unrestLethalDelayTurns` of continuous unrest (tracked in
- * `st.unrestTenure`), so a peaceful unrest city dies only under prolonged neglect, not on turn one.
- * Economic prosperity/happiness emigration carries no lethal distress, so it never kills. Runs
- * CONCURRENTLY with emigration on its own `deathPressure`:
- *   • TRAPPED (no refuge): the whole trapped population dies off (the original closed-system valve), at
- *     full rate, gated only by `attritionEnabled`.
- *   • CRISIS WHILE FLEEING (a refuge exists, `crisisDeathEnabled`): some die while the rest flee, at
- *     `crisisDeathShare` of the trapped rate. Without this the "no refuge" trap almost never fires
- *     (there's nearly always somewhere to flee), so a crisis only ever displaced and never killed.
+ * The outlet's DEATH channel: population that leaves the world (cause `attrition`), tracked as deaths.
+ * Fires under LETHAL distress (`lethalDistress ≥ attritionMinDistress`: war, disaster, siege, famine,
+ * plus unrest sustained for `unrestLethalDelayTurns`) on its own `deathPressure`, concurrently with
+ * emigration: a TRAPPED source (no refuge) dies at full rate; with a refuge (`crisisDeathEnabled`)
+ * some die at `crisisDeathShare` of that rate while the rest flee.
  * @param {*} src Source signal.
  * @param {*} st Per-source state (uses st.deathPressure).
  * @param {*} state Loaded state.
@@ -669,12 +641,8 @@ function processOutletDeath(src, st, state, hasRefuge) {
   st.crisisTenure = (st.crisisTenure || 0) + 1; // sustained lethal distress → the crisis deepens over time
   // DYNAMIC: the worse the crisis, the larger the share that dies rather than fleeing. Trapped → full.
   const rate = hasRefuge ? Math.min(1, CONFIG.crisisDeathShare * crisisSeverity(src, d)) : 1;
-  // ONSET SMOOTHING (deathRamp, [floor,1], NOT a cap): a fresh lethal crisis accrues death-pressure
-  // gently and deepens over deathRampTurns of sustained distress, so a sudden catastrophe is never
-  // instantly devastating; a prolonged one still reaches the full rate and can eventually drain the city.
-  // speedShock (÷S): the kill threshold below is ×S (speedBar), and the fade is re-based (speedDecay),
-  // so the per-turn accumulation must also shrink ÷S or a slow-speed city banks ~S× the crisis distress
-  // before the kill fires. This makes the TOTAL crisis pressure to a death speed-invariant.
+  // deathRamp smooths the onset (see above). speedShock (÷S) balances the ×S kill threshold below so
+  // the total crisis pressure to a death is speed-invariant.
   st.deathPressure += speedShock(Math.pow(Math.max(d, 1), CONFIG.deltaExponent) * rate * deathRamp(st.crisisTenure));
   if (st.deathPressure < speedBar(CONFIG.attritionThreshold)) return null;
   const popBefore = src.population;
@@ -694,17 +662,14 @@ function processOutletDeath(src, st, state, hasRefuge) {
     cause: "attrition",
     subject: taken.mode,
     eventKey: eventKeyForDeath(src), // specific war/disaster/crisis/famine that killed them
-    reasons: deriveDeathReasons(src, hasRefuge, unrestLethal) // P0.2 "why": crisis/unrest + trapped/fleeing
+    reasons: deriveDeathReasons(src, hasRefuge, unrestLethal) // "why": crisis/unrest + trapped/fleeing
   };
 }
 
 // ── Stance-impact counterfactual ──────────────────────────────────────────────
-// Each turn we PLAN the cross-civ departures twice on the SAME pre-pass world, once with the real
-// border stances, once with all borders forced neutral, and bank the per-civ difference. Planning
-// is side-effect-free (shallow-copied signals + a copied pressure map; it never moves real
-// population), so it runs alongside the real pass without disturbing it. The diff is the marginal
-// counterfactual: how much border policy raised (Pro) or cut (Anti / Closed-retention) each civ's
-// cross-civ immigration in/out vs a neutral-borders world.
+// Each turn we PLAN the cross-civ departures twice on the same pre-pass world, once with the real
+// border stances and once with all borders forced neutral, and bank the per-civ difference. Planning
+// works on shallow copies and never moves real population.
 
 const ZERO_PLAN = { inPts: 0, outPts: 0, inP: 0, outP: 0 };
 
@@ -871,7 +836,7 @@ export const __test = {
  * @returns {Migration[]} Applied migrations.
  */
 export function runPass() {
-  _pressureCues = []; // fresh cue buffer per pass (P0.3); drained by the reporter after the pass
+  _pressureCues = []; // fresh cue buffer per pass; drained by the reporter after the pass
   tickViolence(); // decay accumulated combat intensity before reading it
   tickDisasters(); // decay accumulated disaster distress before reading it
   pollCrisis(); // cache the active age crisis so moves/deaths can be attributed to it
@@ -888,7 +853,7 @@ export function runPass() {
 
   const inboundCtx = makeInboundCtx();
 
-  // Arrivals first: land anyone whose transit completed this turn (Feature 1b). These don't count
+  // Arrivals first: land anyone whose transit completed this turn. These don't count
   // against the per-turn move cap - they're completing earlier departures.
   const migrations = processArrivals(state, ranked, inboundCtx);
 

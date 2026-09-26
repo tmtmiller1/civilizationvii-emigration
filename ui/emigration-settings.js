@@ -1,10 +1,8 @@
 // emigration-settings.js
 //
-// Runtime bridge for the migration-count display preference. Reads/writes the
-// "numberMode" choice through the cascade-safe ModOptions store and exposes it
-// to the rest of the mod WITHOUT importing the Options-screen UI - so the core
-// gameplay loop never depends on the options chunk loading. The Options page
-// (emigration-options.js) is the writer; emigration-main.js is the reader.
+// Runtime bridge for the mod's preferences and tunables: reads/writes them through the
+// cascade-safe ModOptions store WITHOUT importing the Options-screen UI, so the core gameplay
+// loop never depends on the options chunk loading.
 
 import { CONFIG, CONFIG_DEFAULTS } from "/emigration/ui/emigration-config.js";
 import {
@@ -12,34 +10,17 @@ import {
 } from "/emigration/ui/emigration-tunables.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
-// Cascade-safe per-mod / per-option settings store, dual-backed for reliability:
-//   • localStorage "modSettings" (single shared, multi-tenant key) is the SHELL / main-menu / global
-//     store. It works before any game exists and carries a preference into new games. But Coherent's
-//     in-game UI can WIPE the shared localStorage between UIScript isolates, so a reopened Options
-//     screen re-reads an empty store and every value falls back to its default - the reported
-//     "Advanced Options don't stick" bug.
-//   • GameConfiguration (Configuration.editGame().setValue) is the durable, save-persistent, per-save
-//     store the rest of the mod already uses for its state (emigration-notifications.js, -dividend.js,
-//     -migration-stats.js, …). It survives isolate wipes AND save/reload. In-game we MIRROR every
-//     write here and PREFER it on read, so options set mid-game persist across the Options screen being
-//     reopened. In the shell (no game) there is no GameConfiguration, so localStorage is used alone.
-// Inlined here (rather than imported from a standalone mod-options.js) on purpose: GameFace's module
-// linker does not expose the exports of a UIScript that has no `import` statements - it treats such a
-// file as a classic script, so `import { ModOptions } from ".../mod-options.js"` failed with "does
-// not provide an export named 'ModOptions'". emigration-settings.js always has imports, so the store
-// lives here and links reliably in every context (shell, in-game, options).
+// Cascade-safe per-mod / per-option settings store, dual-backed: the shared multi-tenant localStorage
+// "modSettings" key works in the shell and carries a preference into new games, but Coherent can wipe
+// it between UIScript isolates, so in-game every write is mirrored to (and reads prefer) the durable
+// per-save GameConfiguration store. Inlined here because GameFace's linker does not expose exports
+// from a UIScript that has no `import` statements.
 class ModOptionsStore {
   /**
-   * Read the shared `modSettings` object in preparation for a WRITE, guaranteeing we never destroy
-   * another mod's slice. `modSettings` is multi-tenant (`{ "<modId>": {...}, ... }`); the danger is
-   * that Coherent's localStorage can return a transient empty/`null` read even when data exists, and
-   * another mod can leave a value that isn't valid JSON. Treating either as "empty" and writing back
-   * only our slice would wipe every sibling, the cross-mod "cannibalized settings" bug. So:
-   *   - re-read once on an empty first read (a populated re-read proves the first was flaky);
-   *   - REFUSE to write (`safe:false`) when the current value is present but unparseable / non-object,
-   *     since siblings exist that we can't round-trip;
-   *   - only a genuinely-absent value yields a fresh `{}`.
-   * NEVER reset `modSettings` to `{}`, that is itself a sibling-wiping write.
+   * Read the multi-tenant `modSettings` object in preparation for a WRITE without ever destroying
+   * another mod's slice: re-read once on an empty first read (Coherent returns transient empties),
+   * refuse to write (`safe:false`) when the value is present but not a round-trippable object, and
+   * only a genuinely-absent value yields a fresh `{}`.
    * @returns {{root: Record<string, *>, safe: boolean}}
    */
   _readForWrite() {
@@ -60,14 +41,9 @@ class ModOptionsStore {
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
       return { root: {}, safe: false };
     }
-    // Coherent's getItem() in this UI context IGNORES the key it is given and returns the value of
-    // the FIRST key in the store (watched 2026-09-16), so this read routinely hands back some other
-    // mod's blob. Such a blob parses fine and is an object, so the checks above pass it through -
-    // and writing it back copies that blob into the shared settings key and grows it without bound
-    // (three ~370KB copies of one history archive were found spread across "!chronicle", "htlData"
-    // and "modSettings" from exactly this). A real settings root is { "<modId>": {...}, ... } so
-    // every top-level value is an object; the foreign blobs carry scalars (v: 2, updated: 178...).
-    // On a mismatch just decline to persist - never delete or rewrite anything.
+    // Coherent's getItem() can return the value of the FIRST key in the store instead of the one asked
+    // for, i.e. some other mod's blob. A real settings root is { "<modId>": {...}, ... } (every
+    // top-level value an object); on a mismatch decline to persist rather than copy a foreign blob in.
     const looksLikeSettingsRoot = Object.keys(parsed).every((k) => {
       const v = parsed[k];
       return !!v && typeof v === "object" && !Array.isArray(v);
@@ -117,7 +93,7 @@ class ModOptionsStore {
    * Mirror one option into GameConfiguration (in-game only). No-op in the shell / off-engine. Merges
    * into the mod's existing object so sibling options are preserved. Independent of the localStorage
    * write, so an in-game save still lands durably even when the shared blob refused a localStorage write.
-   * @param {string} modID Owning mod id. @param {string} optionID Option id. @param {*} value Value.
+   * @param {string} modID Owning mod id. @param {string} optionID @param {*} value
    */
   _gcSave(modID, optionID, value) {
     let edit = null;
@@ -137,11 +113,10 @@ class ModOptionsStore {
   }
 
   /**
-   * Persist a value, only ever adding/updating our OWN slice and never dropping a sibling's. Writes to
-   * BOTH backends: the shared localStorage blob (shell / global) and, in-game, the durable per-save
-   * GameConfiguration mirror. The GC mirror runs even when the localStorage write is refused (an
-   * unparseable sibling blob) or throws, so an in-game save always lands somewhere reliable.
-   * @param {string} modID Owning mod id. @param {string} optionID Option id. @param {*} value Value.
+   * Persist a value, only ever adding/updating our OWN slice, to BOTH backends: the shared
+   * localStorage blob and, in-game, the GameConfiguration mirror. The mirror runs even when the
+   * localStorage write is refused or throws, so an in-game save always lands somewhere reliable.
+   * @param {string} modID Owning mod id. @param {string} optionID @param {*} value
    */
   save(modID, optionID, value) {
     try {
@@ -161,7 +136,7 @@ class ModOptionsStore {
    * Read a value. PREFERS the durable GameConfiguration store when a game is present (so a mid-game
    * change survives the Options screen being reopened in a fresh isolate); falls back to the shared
    * localStorage blob for the shell and for any option not yet written in-game.
-   * @param {string} modID Owning mod id. @param {string} optionID Option id.
+   * @param {string} modID Owning mod id. @param {string} optionID
    * @returns {*} The stored value, or null if absent.
    */
   load(modID, optionID) {
@@ -267,10 +242,9 @@ function clampSnap(n) {
 }
 
 /**
- * Timeline-detail setting: turns between migration-flow snapshots (1 = finest). Default 1 (every
- * turn), the per-pass compute is the same at any interval, and the saved frame count is hard-capped
- * (MAX_FLOW_SNAPSHOTS), so the finest setting stays bounded; a coarser interval only spans more turns
- * before the timeline decimates.
+ * Timeline-detail setting: turns between migration-flow snapshots (1 = finest). Default 1; the saved
+ * frame count is hard-capped (MAX_FLOW_SNAPSHOTS), so a coarser interval only spans more turns before
+ * the timeline decimates.
  * @returns {number} Interval in [1,5].
  */
 export function getSnapshotInterval() {
@@ -295,10 +269,9 @@ let _dock = null;
 let _minimize = null;
 
 /**
- * Whether the migration dashboard hides its heavy analytics tabs (the animated Network diagram and the
- * Causes pie charts), leaving the simple, numbers-first tabs, Net Migration table, My Cities, Policies,
- * Notifications, Guide, plus the Demographics line graphs. Default OFF (everything shown). Re-read each
- * time the dashboard rebuilds its tab list, so toggling it takes effect on the next open.
+ * Whether the migration dashboard hides its heavy analytics tabs (the animated Network diagram and
+ * the Causes pie charts). Default OFF (everything shown); re-read each time the dashboard rebuilds
+ * its tab list, so toggling it takes effect on the next open.
  * @returns {boolean} True when analytics tabs are hidden.
  */
 export function getMinimizeAnalytics() {
@@ -425,11 +398,9 @@ export function setReturnEnabled(on) {
 let _vis = null;
 
 /**
- * Emigration's OWN analytics-visibility override for its dashboard tabs (cached in-memory so it's
- * reliable even though the Coherent UI wipes the shared localStorage). 0 = follow the Demographics
- * "Analytics visibility" setting (default); 1 = always hide unmet civs; 2 = always show all civs.
- * Exists because the cross-mod read of the Demographics setting is unreliable, so this gives a
- * self-contained control that always works for the Emigration tabs.
+ * Emigration's OWN analytics-visibility override for its dashboard tabs (the cross-mod read of the
+ * Demographics setting is unreliable). 0 = follow the Demographics "Analytics visibility" setting
+ * (default); 1 = always hide unmet civs; 2 = always show all civs.
  * @returns {number} 0 (auto), 1 (hide unmet), or 2 (show all).
  */
 export function getVisibilityOverride() {
@@ -450,11 +421,9 @@ export function setVisibilityOverride(v) {
   ModOptions.save(MOD_ID, OPT_VISIBILITY, _vis);
 }
 
-// The lazy UI-preference caches above now read the per-save GameConfiguration store first (see
-// ModOptionsStore.load), so a NEW game started inside a still-live isolate must drop them - otherwise a
-// prior game's value could be returned for a save that set its own. Register with the shared cache-reset
-// hook; each getter above calls resetCachesOnNewGame() before its cache check. (The tunables below are
-// uncached - getTunable reads the store every call - so they are already correct per-save.)
+// The lazy UI-preference caches above read the per-save GameConfiguration store first, so a NEW game
+// started inside a still-live isolate must drop them (each getter calls resetCachesOnNewGame() before
+// its cache check). The tunables below are uncached, so they are already correct per-save.
 registerCacheReset(() => {
   _mode = null;
   _sample = null;
@@ -551,10 +520,8 @@ export function applyPresetIndex(index) {
 }
 
 /**
- * Mark the intensity preset as "Custom" (index 0). Called when the player hand-edits a value in the
- * Advanced editor: they're no longer on a named preset, so the main-panel selector should say Custom.
- * Does NOT touch any tunable value (unlike applyPresetIndex(0), which is identical here but reads as a
- * deliberate "the user customised" signal).
+ * Mark the intensity preset as "Custom" (index 0) when the player hand-edits a value in the Advanced
+ * editor. Does NOT touch any tunable value.
  */
 export function markPresetCustom() {
   ModOptions.save(MOD_ID, OPT_PRESET, 0);

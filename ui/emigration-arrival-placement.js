@@ -1,21 +1,18 @@
 // emigration-arrival-placement.js
 //
 // The DESTINATION side of a migration made real for the human player. `city.addRuralPopulation(+1)`
-// gives a city a genuine pending placement: an AI settlement resolves it on its own turn (a new
-// improvement or a specialist, watched in-game 2026-09-11). For the human the game raises its own
-// "Grow City" prompt: from the first end-turn attempt, NOTIFICATION_NEW_POPULATION blocks the end of the
-// turn until the point is placed, and it cannot be dismissed (watched 2026-09-15, mod tests 64 to 67,
-// with no natural growth anywhere that turn). This module offers faster paths for the local player's cities:
+// gives a city a genuine pending placement: an AI settlement resolves it on its own turn, while for the
+// human the game's own "Grow City" prompt (NOTIFICATION_NEW_POPULATION) blocks the end of the turn until
+// the point is placed. This module offers faster paths for the local player's cities:
 //
 //   arrivalPlacement 0  off       - the raw write; the game's Grow City prompt asks the player to place it
 //   arrivalPlacement 1  auto      - place it at once with the game's own EXPAND city command
-//                                   (watched: pending 1 -> 0 and a new improvement the same turn)
 //   arrivalPlacement 2  ask       - the game's native decision pop-up: choose the tile yourself (the
 //                                   engine's own place-population mode), let the city decide (auto),
 //                                   or later
 //   arrivalPlacement 3  unit      - hand the newcomers over as a Migrant unit next to the city
-//                                   (CREATE_ELEMENT is local-player-only, which is exactly this case);
-//                                   resettling it places a real improvement, watched twice
+//                                   (CREATE_ELEMENT is local-player-only); resettling it places a
+//                                   real improvement
 //
 // `arriveRural(city, from)` is the ONE entry point every arrival site uses (instant moves, lagged arrivals,
 // refugee-pool settlement, returns, the refugee dilemma). Foreign cities and mode 0 fall through to the
@@ -71,7 +68,7 @@ export function placementMode() {
 
 /**
  * A stable key for a city object.
- * @param {*} city City. @returns {string} Key.
+ * @param {*} city @returns {string} Key.
  */
 function keyOf(city) {
   try {
@@ -84,7 +81,7 @@ function keyOf(city) {
 
 /**
  * The city's display name.
- * @param {*} city City. @returns {string} Name.
+ * @param {*} city @returns {string} Name.
  */
 function cityName(city) {
   try {
@@ -155,7 +152,7 @@ export function arriveRural(city, from) {
 
 /**
  * Remember that a local city has a freshly landed point to place, and schedule one flush.
- * @param {*} city The city. @param {ArrivalFrom} [from] Where the point came from.
+ * @param {*} city @param {ArrivalFrom} [from] Where the point came from.
  */
 function notePending(city, from) {
   const k = keyOf(city);
@@ -185,7 +182,7 @@ function notePending(city, from) {
 
 /**
  * Whether the city still has an unplaced point.
- * @param {*} city City. @returns {boolean} True when pending population > 0.
+ * @param {*} city @returns {boolean} True when pending population > 0.
  */
 function hasPending(city) {
   try {
@@ -197,7 +194,7 @@ function hasPending(city) {
 
 /**
  * Try to seat one point as a SPECIALIST (the game's ASSIGN_WORKER op on a workable district plot).
- * @param {*} city City. @param {number} pid Local player id.
+ * @param {*} city @param {number} pid Local player id.
  * @returns {boolean} True when a request was issued.
  */
 function placeAsSpecialist(city, pid) {
@@ -242,7 +239,7 @@ export function pickExpandPlot(plots) {
 
 /**
  * Place one point with the game's own EXPAND city command (a new rural improvement).
- * @param {*} city City.
+ * @param {*} city
  * @returns {boolean} True when a request was issued.
  */
 function placeOnTile(city) {
@@ -263,7 +260,7 @@ function placeOnTile(city) {
 
 /**
  * Settle up to `count` pending points in a city automatically (specialist first when preferred).
- * @param {*} city City. @param {number} count Points to place.
+ * @param {*} city @param {number} count Points to place.
  * @returns {number} Points for which a placement request was issued.
  */
 export function autoPlace(city, count) {
@@ -281,7 +278,7 @@ export function autoPlace(city, count) {
 
 /**
  * Open the game's own place-population mode on the city so the player picks the tile.
- * @param {*} city City.
+ * @param {*} city
  */
 function openPlacementMode(city) {
   try {
@@ -328,7 +325,7 @@ export function dominantOrigin(tally) {
 
 /**
  * The epigraph for a city's newcomers, from their dominant origin, or "" when no origin was recorded.
- * @param {*} city City. @param {Map<string, number>|undefined} tally Points by origin tag.
+ * @param {*} city @param {Map<string, number>|undefined} tally Points by origin tag.
  * @returns {string} The quote line.
  */
 function arrivalQuote(city, tally) {
@@ -340,7 +337,7 @@ function arrivalQuote(city, tally) {
 
 /**
  * The decision pop-up view for one city's newcomers.
- * @param {*} city City. @param {number} count Points waiting. @param {string} [quote] The epigraph line.
+ * @param {*} city @param {number} count Points waiting. @param {string} [quote] The epigraph line.
  * @param {{civ:number|null, kind:"refugee"|"migrant", cause:string}|null} [origin] The dominant origin,
  *   used to say plainly that these are refugees, whose they are, and what they fled.
  * @returns {{eyebrow:string, eyebrowIcon:string, title:string, body:string, dismissId:string, quote:string,
@@ -376,7 +373,7 @@ export function arrivalPromptView(city, count, quote = "", origin = null) {
 
 /**
  * A button caption: the label, then its figures ("Let the city settle them: [icon:YIELD_POPULATION] +1, ...").
- * @param {string} label The label. @param {string[]} parts The figures. @returns {string} The caption.
+ * @param {string} label @param {string[]} parts The figures. @returns {string} The caption.
  */
 function caption(label, parts) {
   return label + ": " + parts.filter(Boolean).join(", ");
@@ -413,7 +410,7 @@ function plotYields(plot, owner) {
  * The tiles "Let the city settle them" will take for `count` points, picked the way {@link placeOnTile} picks
  * (a resource tile first, else the first the game offers), each removed before the next pick. Empty when the
  * city seats newcomers as specialists first, or when the game offers no tile.
- * @param {*} city City. @param {number} count Points. @returns {number[]} Plot indices.
+ * @param {*} city @param {number} count Points. @returns {number[]} Plot indices.
  */
 function autoTiles(city, count) {
   try {
@@ -435,7 +432,7 @@ function autoTiles(city, count) {
 /**
  * What the tiles automatic placement will take yield, as caption figures ("[icon:YIELD_FOOD] +2"), or none
  * when they cannot be known in advance.
- * @param {*} city City. @param {number} count Points. @returns {string[]} The figures.
+ * @param {*} city @param {number} count Points. @returns {string[]} The figures.
  */
 function autoTileYields(city, count) {
   /** @type {Record<string, number>} */
@@ -511,7 +508,7 @@ function migrantBody(count, name) {
 
 /**
  * Show the native pop-up for one city and act on the answer.
- * @param {*} city City. @param {number} count Points waiting. @param {Map<string, number>} [from] Origins.
+ * @param {*} city @param {number} count Points waiting. @param {Map<string, number>} [from] Origins.
  */
 function promptFor(city, count, from) {
   const origin = dominantOrigin(from);

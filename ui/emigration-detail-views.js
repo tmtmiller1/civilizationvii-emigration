@@ -1,17 +1,12 @@
 // emigration-detail-views.js
 //
 // The flexbox "detail table" renderers for the migration dashboard: Border stances, the per-city
-// pressure table, and the "most diverse cities" ranking (roadmap Features S + T). Split out of
-// emigration-views.js to keep that render core under its size cap. GameFace lays out neither <table>
-// nor CSS grid, so each is built from flexbox rows; styling lives in the dashboard's injected
-// stylesheet (emigration-views.js) — nothing here adds CSS of its own.
+// pressure table, and the "most diverse cities" ranking. GameFace lays out neither <table> nor CSS
+// grid, so each is built from flexbox rows; styling lives in the dashboard's injected stylesheet.
 //
 // WORDING RULE (the diversity ranking): every string describes where a settlement's people came
-// FROM — its ORIGINS, the same concept the city readout's "Origins:" line reports. Deliberately NOT
-// "communities": that word reads as the Cultural Quarter / enclave system, which is a different
-// thing entirely (a player-shaped district), and conflating them made the first cut unreadable. The
-// cosmopolitanism tier is descriptive and grants no yields. Nothing here ranks peoples against each
-// other — keep it that way.
+// FROM (its ORIGINS), never "communities", which reads as the Cultural Quarter / enclave system. The
+// cosmopolitanism tier is descriptive and grants no yields; nothing here ranks peoples against each other.
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { getNumberMode } from "/emigration/ui/emigration-settings.js";
@@ -21,9 +16,9 @@ import { loc } from "/emigration/ui/emigration-loc.js";
 
 /**
  * Make an element with an optional class + text.
- * @param {string} tag Tag.
+ * @param {string} tag
  * @param {string} [cls] Class.
- * @param {string} [text] Text.
+ * @param {string} [text]
  * @returns {HTMLElement} Element.
  */
 function el(tag, cls, text) {
@@ -42,7 +37,7 @@ function el(tag, cls, text) {
 function stanceDetailText(r) {
   if (r.key === "none") return loc("LOC_EMIG_DV_STANCE_NONE", "No border policy, migration unaffected.");
   const neutralIn = r.in - r.inImpact;
-  // F5: divide by the magnitude of the baseline; pct is a magnitude and the +/− is
+  // Divide by the magnitude of the baseline; pct is a magnitude and the +/− is
   // supplied by the branch below (a signed divisor could render "(+-NN%)").
   const pct = Math.abs(neutralIn) > 0 ? Math.round((Math.abs(r.inImpact) / Math.abs(neutralIn)) * 100) : 0;
   /** @type {string[]} */
@@ -60,7 +55,7 @@ function stanceDetailText(r) {
 }
 
 /**
- * Render border stances: per civ a name + coloured Pro/Anti/Neutral tag, then a sentence
+ * Render border stances: per civ a name + colored Pro/Anti/Neutral tag, then a sentence
  * quantifying how the stance changed that civ's migration (the stance-impact counterfactual).
  * @param {HTMLElement} body Card body.
  * @param {*[]} rows Stance rows.
@@ -77,9 +72,9 @@ export function renderStances(body, rows) {
   }
 }
 
-// ── "Most diverse cities" ranking (Features S + T) ──────────────────────────
+// ── "Most diverse cities" ranking ──────────────────────────
 
-/** Cosmopolitanism tier key → display label (Feature T). Keys match emigration-diversity's COSMO_TIERS. */
+/** Cosmopolitanism tier key → display label. Keys match emigration-diversity's COSMO_TIERS. */
 /** @type {Record<string,string>} */
 const COSMO_LABEL = {
   homogeneous: loc("LOC_EMIG_COSMO_HOMOGENEOUS", "Homogeneous"),
@@ -113,15 +108,12 @@ function mixPhrase(r) {
 const ORIGIN_MIN_SHARE = 0.05;
 
 /**
- * "Most diverse cities" rows: per settlement its resolved origin slices (for the composition bar),
- * its population, the shape of its mix, and its cosmopolitanism tier. Pure formatting over an
- * already-ranked, already-masked list (the ranking and the spoiler mask happen in window's gather).
- *
- * `origins` is counted from the DISPLAYED slices, not the raw metric, so the text can never disagree
- * with the bar beside it (masking merges hidden origins into one "Unknown" slice).
+ * "Most diverse cities" rows: per settlement its resolved origin slices, population, mix shape and
+ * cosmopolitanism tier. Pure formatting over an already-ranked, already-masked list; `origins` is
+ * counted from the DISPLAYED slices so the text never disagrees with the bar beside it.
  * @param {*[]} ranking Ranked rows from diverseCityRanking (each carrying resolved `parts`).
  * @param {{cosmo?:boolean}} [opts] `cosmo` includes the Cosmopolitanism (Character) column — the
- *   separately-flagged Feature T. Off → `character` is null and the renderer drops the column.
+ *   separately-flagged one. Off → `character` is null and the renderer drops the column.
  * @returns {*[]} Display rows ({city, parts, pts, people, origins, mix, character}).
  */
 export function diverseCityRows(ranking, opts) {
@@ -147,9 +139,9 @@ export function diverseCityRows(ranking, opts) {
 }
 
 /**
- * The dashboard's Diversity section, or none. Flag-gated (Feature S): off → no tab at all, rather
- * than a permanently empty one. The Character column is Feature T's separate flag, passed through to
- * the row builder. Returned as a spliceable list so dashboardModel stays a flat section literal.
+ * The dashboard's Diversity section, or none. Flag-gated: off → no tab at all, rather than a
+ * permanently empty one. The Character column has its own flag, passed through to the row builder.
+ * Returned as a spliceable list so dashboardModel stays a flat section literal.
  * @param {*} d The gathered dashboard data (reads `d.diversity`).
  * @returns {*[]} Zero or one section.
  */
@@ -182,13 +174,9 @@ function diversityRow(cells, cls) {
 }
 
 /**
- * A settlement's ORIGIN COMPOSITION BAR: one coloured slice per origin, each sized to its share of
- * that settlement's people, in the origin civ's own banner colour.
- *
- * The bar's WIDTH is scaled to the settlement's population against the largest in the table, so the
- * column reads as a population comparison at a glance (a big mixed capital vs a small mixed town)
- * while the slices inside read as the mix. Styling is inline because these are data-driven geometry
- * and per-civ colours — the same idiom the ledger's diverging net bar uses.
+ * A settlement's ORIGIN COMPOSITION BAR: one colored slice per origin, sized to its share, in the
+ * origin civ's banner color. The bar's WIDTH is scaled to the settlement's population against the
+ * largest in the table, so the column reads as a population comparison; styling is inline (data-driven geometry).
  * @param {*} r A display row ({parts, people}).
  * @param {number} maxPeople The largest population in the table (the width normalizer).
  * @returns {HTMLElement} The bar.
@@ -208,7 +196,7 @@ function compositionBar(r, maxPeople) {
 }
 
 /**
- * The colour key for the bars: every origin appearing in the table, once, with its swatch. Without
+ * The color key for the bars: every origin appearing in the table, once, with its swatch. Without
  * it the bars are pretty but undecodable — this is what says "blue = Roman".
  * @param {*[]} rows Display rows.
  * @returns {HTMLElement} The legend.
@@ -237,8 +225,8 @@ function originLegend(rows) {
  * @returns {{cells:(c:*[])=>*[], mode:number, maxPeople:number}} The context.
  */
 function diversityCtx(rows) {
-  // The Cosmopolitanism column is Feature T, flagged separately: the builder nulls `character` when
-  // it's off, and the column (header included) drops out rather than showing an empty strip.
+  // The Cosmopolitanism column is flagged separately: the builder nulls `character` when it's off,
+  // and the column (header included) drops out rather than showing an empty strip.
   const showChar = rows.some((r) => r.character != null);
   // Cells arrive as [city, origins, pop, mix, character, enclave]; the Enclave column always shows.
   return {
@@ -312,11 +300,9 @@ function groupByCiv(rows) {
 }
 
 /**
- * The "All settlements" list: EVERY visible settlement, grouped by civ, in the same row format as
- * the ranking above. The ranking is a top-N podium, so without this a settlement that is small or
- * homogeneous — most of your empire, early on — never appears anywhere on the tab.
- *
- * Skipped when the ranking already shows everything (nothing to add but a duplicate of it).
+ * The "All settlements" list: EVERY visible settlement, grouped by civ, in the same row format as the
+ * top-N ranking above, so small or homogeneous settlements still appear on the tab. Skipped when the
+ * ranking already shows everything.
  * @param {HTMLElement} body Card body.
  * @param {*[]} rows All display rows.
  * @param {*} ctx The render context.
@@ -338,7 +324,7 @@ function renderAllSettlements(body, rows, ctx) {
 
 /**
  * Render the diversity tab: the "most diverse cities" podium (each settlement a population-scaled
- * bar broken into its people's ORIGINS, then the mix's shape and its cosmopolitanism tier), a colour
+ * bar broken into its people's ORIGINS, then the mix's shape and its cosmopolitanism tier), a color
  * key naming every origin, and below it the full by-civ list of every settlement.
  * @param {HTMLElement} body Card body.
  * @param {*[]} rows Diversity rows (from diverseCityRows), diversity-sorted, uncapped.
@@ -368,7 +354,7 @@ export function renderDiversity(body, rows) {
  */
 function subtitle() {
   const s = el("div", "emig-dv-sub", loc("LOC_EMIG_DIVERSE_SUBTITLE",
-    "Each settlement's people, coloured by the civilization they originally came from. Bar width shows population."));
+    "Each settlement's people, colored by the civilization they originally came from. Bar width shows population."));
   s.style.cssText = "opacity:0.7;font-size:var(--dg-fs-85);padding:0 0.6rem 0.5rem 0.6rem;";
   return s;
 }

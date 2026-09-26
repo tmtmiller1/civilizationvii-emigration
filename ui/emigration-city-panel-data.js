@@ -1,22 +1,11 @@
 // emigration-city-panel-data.js
 //
-// The PURE view-model for the emigration sections injected into the base game's City Details panel.
-// Two blocks are surfaced there (emigration-city-panel.js does the engine reads + DOM; this module
-// is DOM-free and unit-tested, mirroring the readoutModel split in emigration-city-readout.js):
-//   • population (on the "Citizen Growth" tab): where the settlement's people came from, plus the
-//     emigration OUT (with destinations) and immigration IN (with origins) and any refugees still
-//     held awaiting settlement. The flow figures are CUMULATIVE over the whole game — a historical
-//     ledger of who ALREADY left/arrived, never a live "leaving now" count — so the headings are past
-//     tense and say "(all game)". They only ever grow: a settlement that stopped bleeding people 50
-//     turns ago still shows every departure it ever had, and must not read as an ongoing loss.
-//   • quarters (on the "Building Breakdown" tab): the established Cultural Quarter record, if any -
-//     its origin, the stance the player took, its one-time yields, and whether it is contested.
-//
-// The engine host resolves civ ids to display names BEFORE calling cityPanelModel(), so this module
-// only formats already-resolved data. Localization follows the mod's `loc(key, ...args) || English`
-// idiom, but injected: the host passes a `compose` resolver (the real Locale.compose wrapper); the
-// pure model calls it with an English fallback for every label, so it stays deterministic and testable
-// off-engine (no compose -> English) while rendering localized text in-game.
+// The PURE view-model for the emigration sections injected into the base game's City Details panel
+// (emigration-city-panel.js does the engine reads + DOM). Two blocks: population (origins, cumulative
+// emigration OUT / immigration IN, held refugees; the flow figures are all-game totals, hence the past
+// tense "(all game)" headings) and quarters (the established Cultural Quarter record, if any). The host
+// resolves civ ids to names before calling cityPanelModel() and passes a `compose` resolver; every label
+// falls back to English so the model is deterministic off-engine.
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 
@@ -148,9 +137,7 @@ function originLines(comp) {
 
 /**
  * One flow row ("Memphis (Egyptian): 12,000 - mostly Unhappiness"). The cause is the corridor's
- * DOMINANT one, not its only one, so it is worded "mostly": naming it flatly would overclaim on a
- * mixed corridor. Omitted entirely when the edge carries no per-cause detail (a legacy save), since a
- * guessed reason is worse than none on a panel whose whole job here is to explain WHY people left.
+ * DOMINANT one, so it is worded "mostly"; omitted when the edge carries no per-cause detail.
  * @param {Compose} compose The resolver.
  * @param {CityPanelFlow} f The flow.
  * @returns {string} The row text.
@@ -165,7 +152,7 @@ function flowRow(compose, f) {
  * The flow rows for one direction, largest first and capped at {@link MAX_FLOW_ROWS} with a
  * "(+N more)" tail. Ignores malformed or zero-people edges.
  * @param {Compose} compose The resolver.
- * @param {CityPanelFlow[]|null|undefined} flows The flows.
+ * @param {CityPanelFlow[]|null|undefined} flows
  * @returns {string[]} The rows.
  */
 function flowRows(compose, flows) {
@@ -197,7 +184,7 @@ function refugeeText(compose, pool) {
  * The "quarter grants a yield" line.
  * @param {Compose} compose The resolver.
  * @param {number} amount The amount granted.
- * @param {string} yieldKey The yield key.
+ * @param {string} yieldKey
  * @returns {string} The line.
  */
 function grantsLine(compose, amount, yieldKey) {
@@ -210,7 +197,7 @@ function grantsLine(compose, amount, yieldKey) {
  * The "quarter costs a yield" line.
  * @param {Compose} compose The resolver.
  * @param {number} amount The amount cost.
- * @param {string} yieldKey The yield key.
+ * @param {string} yieldKey
  * @returns {string} The line.
  */
 function costsLine(compose, amount, yieldKey) {
@@ -220,15 +207,9 @@ function costsLine(compose, amount, yieldKey) {
 }
 
 /**
- * What the enclave pays THIS turn — the two parts of its worth made legible (roadmap §22b).
- *
- * TILE (from establishment): the enclave stands as a tile whose yield is natively attributed, so the game
- * shows that number itself and this module must not restate (and drift from) a constant that lives in the
- * XML. It only says the tile is there.
- * STANCE (from recognition): the stance's per-turn dividend, paid on top of the tile. The engine cannot
- * attribute a runtime `grantYield` to anything the player can see (won't-implement CANTFIX-1), so these
- * lines are the ONLY place that dividend is readable. An established enclave that is not yet recognized has
- * no stance amounts, so nothing is claimed for it.
+ * What the enclave pays THIS turn. TILE: the enclave tile's yield is natively attributed, so the game
+ * shows that number itself and this only says the tile is there. STANCE: the per-turn dividend paid on
+ * top, which the engine cannot attribute to anything visible, so these lines are the only place it is readable.
  * @param {Compose} compose The resolver.
  * @param {CityPanelQuarter} q The resolved quarter.
  * @returns {string[]} The yield lines.

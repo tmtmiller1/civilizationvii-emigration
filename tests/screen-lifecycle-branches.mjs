@@ -58,6 +58,28 @@ function flushAsync() {
   return new Promise((resolve) => setTimeout(resolve, 20));
 }
 
+/**
+ * Wait until `done()` is true, polling every millisecond. The screen reaches the display queue
+ * through a dynamic import (withDisplayQueue in emigration-screen.js), so its effects land on a
+ * later turn of the loop whose timing depends on how loaded the machine is. Waiting on the effect
+ * keeps the assertion deterministic; a fixed sleep races the import and fails under load.
+ * @param {() => boolean} done Condition to wait for.
+ * @param {string} label What is being waited on, used in the timeout message.
+ * @param {number} [timeoutMs] Give-up deadline; generous, since it only matters when nothing lands.
+ * @returns {Promise<void>} Resolves once `done()` holds, rejects if the deadline passes first.
+ */
+function waitUntil(done, label, timeoutMs = 2000) {
+  const deadline = Date.now() + timeoutMs;
+  return new Promise((resolve, reject) => {
+    const tick = () => {
+      if (done()) return resolve();
+      if (Date.now() >= deadline) return reject(new Error(`timed out after ${timeoutMs}ms waiting for ${label}`));
+      return setTimeout(tick, 1);
+    };
+    tick();
+  });
+}
+
 function testControlsDefineCalledWithScreenEmigration() {
   const screenCall = controlsDefineCalls.find(c => c.name === "screen-emigration");
   assert.ok(screenCall, "should register screen-emigration with Controls");
@@ -72,7 +94,7 @@ function testOpenEmigrationScreenPushesContextManager() {
     }
   };
   openEmigrationScreen();
-  return flushAsync().then(() => {
+  return waitUntil(() => !!seen, "ContextManager.push").then(() => {
     assert.ok(seen, "open should call ContextManager.push");
     assert.strictEqual(seen.name, "screen-emigration");
     assert.ok(seen.opts.singleton);
@@ -132,7 +154,7 @@ function testCloseEmigrationScreenPopsContextManager() {
     }
   };
   closeEmigrationScreen();
-  return flushAsync().then(() => {
+  return waitUntil(() => popped !== null, "ContextManager.pop").then(() => {
     assert.strictEqual(popped, "screen-emigration");
   });
 }
@@ -266,7 +288,7 @@ function testOpenAndCloseSequence() {
     openEmigrationScreen();
     closeEmigrationScreen();
     openEmigrationScreen();
-    return flushAsync().then(() => {
+    return waitUntil(() => pushes >= 2 && pops >= 1, "two pushes and one pop").then(() => {
       assert.equal(pushes, 2);
       assert.equal(pops, 1);
     });
@@ -298,15 +320,17 @@ function testScreenCloseResumesPopupsWhenSuperCloseThrows() {
 
   instance.close();
 
-  return flushAsync().then(() => {
-    try {
+  // The stubs above are on shared prototypes, so they must be restored even if the wait times out;
+  // a leaked throwing close() would fail every test that runs after this one.
+  return waitUntil(() => resumed >= 1, "deferred popups to resume")
+    .then(() => {
       assert.ok(resumed >= 1, "close should resume deferred popups even if super.close throws");
-    } finally {
+    })
+    .finally(() => {
       PanelCtor.prototype.close = priorClose;
       dq.resume = priorResume;
       dq.isSuspended = priorIsSuspended;
-    }
-  });
+    });
 }
 
 function testScreenAttachDetachSurvivesSuperThrows() {

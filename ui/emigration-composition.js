@@ -4,27 +4,13 @@
 // the CIVILIZATION its people originate from. Unlike the cumulative flow matrix (who-moved-where),
 // this is the current makeup of each city, netted over time, and it follows the SETTLEMENT, not
 // the owner, so a conquered city keeps the origins of the people already living there. It feeds the
-// ethnicity lens (tile colouring) and the per-city readout breakdown.
+// ethnicity lens (tile coloring) and the per-city readout breakdown.
 //
-// Identity = the city-CENTRE plot (x,y), which is stable across conquest (a settlement stays on the
-// same tile when it changes hands). Migration records carry that key (srcLoc / destLoc); records made
-// before they did carry only the city NAME, so a name→location map (built from the current city
-// signals each pass) bridges those.
-//
-// Update model (per pass, from data the mod already collects in emigration-main's doPass):
-//   • First sighting / founding → 100% the current owner, or the original owner when the settlement is
-//     first seen already conquered from another major civ.
-//   • Migration OUT → the record's originMix (the source's mix at departure) is removed from the source.
-//   • Migration IN  → the same originMix is added at the destination, so a diaspora that moves on keeps its
-//     identity. A returnee's originCiv wins over the mix; a record with neither counts as the source owner's.
-//   • Attrition / a record with no mix → removed PROPORTIONALLY from the city's existing mix.
-//   • Conquest (owner change at the same tile) → buckets unchanged; only the owner field flips.
-//   • Natural growth (residual increase) → counts as the CURRENT OWNER's ethnicity.
-//   • External loss (residual decrease) → removed proportionally.
-// The total is always reconciled to the real city population, so counts never drift; only the rare
-// case of an arrival from an out-of-vision source can't name its origin (it falls to the owner).
-//
-// State persists in GameConfiguration under its own key (additive; older saves simply start empty).
+// Identity = the city-CENTER plot (x,y), which is stable across conquest; records that carry only a city
+// NAME are bridged by a name→location map built from the current city signals each pass. Each pass seeds
+// new cities, moves the record's originMix out of the source and into the destination, removes attrition
+// and losses proportionally, credits growth to the current owner, and reconciles the total to the real
+// city population. State persists in GameConfiguration under its own key.
 
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { normalizeOriginMix } from "/emigration/ui/emigration-state.js";
@@ -37,7 +23,7 @@ import { QUARTER_FOOTHOLD_SHARE } from "/emigration/ui/emigration-tunables.js";
 
 const STATE_KEY = "EmigrationEthnos_v1";
 // A counter the recorder bumps on every save, under its own key, so a reader can tell the ledger changed by
-// reading one short value instead of re-parsing the blob (ethnicity audit item O1).
+// reading one short value instead of re-parsing the blob.
 const STAMP_KEY = "EmigrationEthnosStamp_v1";
 
 /**
@@ -51,7 +37,7 @@ const STAMP_KEY = "EmigrationEthnosStamp_v1";
 
 /**
  * @typedef {Object} CompositionState
- * @property {Record<string, CityComposition>} cities Entries keyed by the settlement's centre "x,y".
+ * @property {Record<string, CityComposition>} cities Entries keyed by the settlement's center "x,y".
  * @property {number} [passTurn] The turn of the latest recorder pass. An entry whose `seenTurn` differs was not
  *   in that pass's city list (held by a city-state or independent, or unreadable), so the live readers skip it.
  *   Absent on saves from before the stamp, where every entry counts as live.
@@ -59,16 +45,9 @@ const STAMP_KEY = "EmigrationEthnosStamp_v1";
 
 /** @type {CompositionState | null} */
 let _s = null;
-// The version (turn + pass stamp, see compositionVersion) `_s` was last (re)read at. The recorder
-// (gameplay context) and the readers (the ethnicity lens, its hover tooltip, the city readout) run in
-// SEPARATE V8 contexts, each with its own module instance, sharing this state ONLY through the persisted
-// GameConfiguration blob. So a
-// reader that loaded `_s` once and cached it forever would freeze on whatever the city mix was at its
-// first paint/hover (typically near-mono early game) and never see the diaspora the recorder banks
-// turn after turn. Re-reading whenever the turn advances OR the recorder saves again (the stamp moves) lets
-// every reader pick up the recorder's latest save, including one that read in turn N before the recorder's
-// pass for turn N had saved (which a turn-only key left a whole turn behind). Harmless for the recorder
-// itself: its own save records the new version, so it does not re-read its own write.
+// The version (turn + pass stamp, see compositionVersion) `_s` was last (re)read at. The recorder and the
+// readers (lens, tooltip, readout) run in SEPARATE V8 contexts sharing state only through the persisted
+// blob, so re-reading whenever the turn advances or the stamp moves keeps every reader on the latest save.
 let _loadedVersion = "";
 registerCacheReset(() => { _s = null; _loadedVersion = ""; });
 
@@ -209,7 +188,7 @@ function load() {
     /* ignore */
   }
   // Nothing persisted yet: keep any existing in-memory state (the recorder mid-game before its first
-  // save, or a test's seeded state) rather than wiping it; only initialise when truly empty.
+  // save, or a test's seeded state) rather than wiping it; only initialize when truly empty.
   if (!_s) _s = { cities: {} };
   return _s;
 }
@@ -236,7 +215,7 @@ function save() {
 }
 
 /**
- * The city-centre plot key "x,y", or null when the location is unreadable.
+ * The city-center plot key "x,y", or null when the location is unreadable.
  * @param {*} city City object.
  * @returns {string|null} The stable settlement key.
  */
@@ -348,11 +327,9 @@ function seedCities(s, signals) {
 }
 
 /**
- * Whose people a settlement is on first sighting: its original owner's when that is a different MAJOR civ (the
- * ledger first meets it already conquered: a capture it had not seen, a mid-game install, a save from before the
- * ledger), else its current owner's. A captured city-state stays the conqueror's: its own people would be a
- * minor-player origin, and the lens gives every minor player one identical colour (mod test 148). An original
- * owner the engine cannot resolve is never used, so no unknown player id reaches a render path.
+ * Whose people a settlement is on first sighting: its original owner's when that is a different MAJOR civ
+ * (the ledger first meets it already conquered), else its current owner's. A captured city-state stays the
+ * conqueror's (the lens gives every minor player one color), and an unresolvable original owner is never used.
  * @param {*} sig A city signal ({city, owner}). @returns {number} The origin to seed.
  */
 function seedOrigin(sig) {
@@ -406,7 +383,7 @@ function applyMigrationSource(s, m, nameToLoc, pts) {
 }
 
 /**
- * The ledger entry a record names: by the settlement's centre plot when the record carries it and the ledger
+ * The ledger entry a record names: by the settlement's center plot when the record carries it and the ledger
  * holds it, else by display name (records made before the location keys, or an unreadable plot). Two cities
  * with one name share a single name-map slot, so the location is the only reliable match.
  * @param {CompositionState} s State. @param {*} loc The record's "x,y", if any.
@@ -519,12 +496,8 @@ function stickyRate(p, total, r, sticky) {
  * moves by the fraction `rateFor` returns for it. People shift BETWEEN buckets, so the total (and the
  * reconciled population) is unchanged; a bucket emptied below DUST is dropped. Newcomers thus take on
  * the host identity over time, except where `rateFor` returns ~0 (war with the homeland / unrest).
- *
- * Enclave stickiness: an origin that has already reached the cultural-enclave foothold share
- * (QUARTER_FOOTHOLD_SHARE) integrates more SLOWLY (its rate is scaled by CONFIG.quarterEnclaveStickiness),
- * so a real diaspora can climb from foothold to "established" instead of being drifted back below the
- * enclave bar before its dwell clock completes. This is what lets a HUMAN city's enclave actually form
- * in normal play. Stickiness = 1 restores the legacy uniform drift.
+ * An origin past the enclave foothold share integrates more slowly (rate scaled by
+ * CONFIG.quarterEnclaveStickiness) so a diaspora can reach "established" before drifting back below the bar.
  * @param {CityComposition} e The entry. @param {number} owner Current owner id.
  * @param {(originCiv:number)=>number} rateFor Per-origin integration fraction in [0,1].
  */
@@ -572,10 +545,8 @@ function integratePass(s, work, signals) {
   }
 }
 
-// A settlement not observed for this many turns is dropped, so the composition map stays bounded over a
-// long game. The backstop only: a razed settlement is dropped on the next pass (dropRazed), so this catches
-// entries whose plot could not be read, and settlements held that long by a city-state or independent
-// (the pass does not scan those). Math.abs handles the age-local turn reset.
+// A settlement not observed for this many turns is dropped, keeping the map bounded. Backstop only (a razed
+// settlement goes via dropRazed): catches unreadable plots and long city-state/independent holdings.
 const STALE_TURNS = 50;
 
 /**
@@ -592,11 +563,10 @@ function pruneStale(s, turn) {
 }
 
 /**
- * Whether a settlement that dropped out of this pass's city list is GONE (razed): no city stands centred on its
- * plot. The plot's owning city is read with MapCities.getCity and Cities.get, as the base game's map utilities
- * do; a city whose centre is elsewhere means a neighbour's territory has since covered the plot. False when the
- * lookup is unavailable or throws, so an unreadable plot is kept and left to pruneStale.
- * @param {string} key The settlement's centre "x,y". @returns {boolean} True when no city stands there.
+ * Whether a settlement that dropped out of this pass's city list is GONE (razed): no city stands centered on its
+ * plot (MapCities.getCity + Cities.get). False when the lookup is unavailable or throws, leaving the
+ * entry to pruneStale.
+ * @param {string} key The settlement's center "x,y". @returns {boolean} True when no city stands there.
  */
 function settlementGone(key) {
   try {
@@ -676,12 +646,8 @@ export function recordCompositionPass(signals, migs) {
  *   The composition, or null.
  */
 export function compositionForCity(city) {
-  // Self-guarding: returns null on ANY failure, never throws. Reached on the uncaught lens / hover-
-  // tooltip / city-readout / diaspora / return paths AND inside a broad per-city catch in the network
-  // window (citiesByOwner). load() is already try-guarded and summarize() is pure over normalized data,
-  // but locKey reads `city.location` off a LIVE engine object, a throwing accessor is the one residual
-  // throw vector load-normalization can't cover. Degrade to null here so a single bad city can't null a
-  // whole render, and so no caller's broad `catch{return null}` can silently mask it. (open-items §7)
+  // Returns null on ANY failure, never throws: locKey reads `city.location` off a LIVE engine object, and a
+  // throwing accessor must not null a whole lens / tooltip / readout render.
   try {
     const key = locKey(city);
     if (key == null) return null;
@@ -735,11 +701,9 @@ export function compositionForOwner(owner) {
 }
 
 /**
- * Every tracked settlement's composition, for the empire-wide readers that rank/aggregate across
- * cities (the diversity ranking) rather than asking about one city. Reads the same persisted ledger
- * as compositionForCity, but keyed by the ledger itself rather than by a live city object, so it
- * needs no engine access and works for settlements the caller doesn't hold a handle to.
- * Entries whose bucket total is empty are skipped (summarize returns null for them).
+ * Every tracked settlement's composition, for the empire-wide readers (the diversity ranking). Keyed by
+ * the ledger itself rather than a live city object, so it needs no engine access. Entries whose bucket
+ * total is empty are skipped.
  * @returns {{key:string, name:string, owner:number, comp:{total:number, owner:number,
  *   civs:{civ:number, pts:number, share:number}[], dominant:{civ:number, share:number}|null}}[]}
  *   One entry per tracked settlement with a non-empty composition.
@@ -775,8 +739,8 @@ function liveOnPass(s, e) {
 
 /**
  * The ledger entry for one settlement key, live or not, as the per-key readers (the enclave records, which are
- * keyed by their host's centre) need it: a host held for a while by a city-state keeps its name and mix.
- * @param {string} key The settlement's centre "x,y".
+ * keyed by their host's center) need it: a host held for a while by a city-state keeps its name and mix.
+ * @param {string} key The settlement's center "x,y".
  * @returns {{key:string, name:string, owner:number, comp:{total:number, owner:number,
  *   civs:{civ:number, pts:number, share:number}[], dominant:{civ:number, share:number}|null}}|null}
  *   The entry, or null when untracked or empty.
@@ -827,11 +791,9 @@ export const __test = {
   },
   state: () => load(),
   /**
-   * TEST-ONLY: seed a city's composition ledger with an ESTABLISHED foreign diaspora of `foreignPid`, and
-   * persist it (so a reader in another UI isolate — e.g. the production chooser — sees it). Used by the
-   * Self-Test "Seed diaspora + build" probe to exercise the real enclave flow without waiting for organic
-   * migration. EPHEMERAL: the next real recordCompositionPass rebuilds from actual city pops and overwrites
-   * this. foreign share 30/40 = 0.75, stock 30 — comfortably past the default 0.35/5 thresholds.
+   * TEST-ONLY: seed a city's composition ledger with an ESTABLISHED foreign diaspora of `foreignPid` and
+   * persist it, so a reader in another UI isolate sees it. Ephemeral: the next real recordCompositionPass
+   * overwrites it. Foreign share 30/40 = 0.75, stock 30, past the default 0.35/5 thresholds.
    * @param {*} city A live city. @param {number} foreignPid An origin (foreign) player id ≠ city.owner.
    * @returns {string|null} The ledger key seeded, or null on bad input.
    */

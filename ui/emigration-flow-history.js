@@ -1,15 +1,8 @@
 // emigration-flow-history.js
 //
-// Delta-encoded flow-history helpers (combined design plan P0.3).
-//
-// The migration-network timeline used to store, in every history frame, a full
-// CLONE of the cumulative city-pair flow matrix, so storage grew as
-// snapshots × cumulative-matrix and the whole blob was JSON-serialized to
-// GameConfiguration every turn. These helpers let the history store only each
-// interval's DELTA (the migration that occurred in that window). The cumulative
-// network at any frame is reconstructed on read by summing deltas, so no
-// information is lost while storage drops to roughly the irreducible set of
-// distinct city-pair / cause events (each recorded once).
+// Delta-encoded flow-history helpers. Each history frame stores only its interval's DELTA (the
+// migration that occurred in that window); the cumulative network at any frame is reconstructed on
+// read by summing deltas, so storage stays near the set of distinct city-pair / cause events.
 //
 // A flow matrix here is `key → { cause: people }`, where the key is
 // "srcCiv>destCiv>srcCity>destCity" (see emigration-migration-stats.js). All of
@@ -29,10 +22,8 @@ function flowTotal(byCause) {
 
 /**
  * Bound a cumulative flow matrix in place: when distinct city-pair edges exceed `maxKeys`, evict the
- * LOWEST-volume edges (smallest people totals, least informative) from both `flows` and its parallel
- * `flowsPts` together, down to ~90% of the cap (hysteresis, so it doesn't re-sort every call). Keeps
- * the persisted save blob bounded over a very long game; only the tiniest flows are lost, never the
- * whole tally (unlike the prior unbounded append-only matrices, which could silently truncate a save).
+ * LOWEST-volume edges from both `flows` and its parallel `flowsPts`, down to ~90% of the cap
+ * (hysteresis). Keeps the persisted save blob bounded; only the tiniest flows are lost.
  * @param {Record<string, Record<string, number>>} flows The cumulative people matrix (mutated).
  * @param {Record<string, Record<string, number>>|undefined} flowsPts The parallel points matrix (mutated).
  * @param {number} maxKeys The edge-count ceiling.
@@ -162,11 +153,9 @@ function mergeInto(into, from) {
 }
 
 /**
- * Decimate over-cap history by MERGING adjacent deltas (summing them) rather
- * than dropping frames: old time resolution coarsens but cumulative totals stay
- * exact. Age-boundary frames are never merged into their predecessor so the
- * timeline keeps its boundary markers; the most recent frame is always kept
- * standalone. Returns a fresh frame list.
+ * Decimate over-cap history by MERGING adjacent deltas rather than dropping frames, so cumulative
+ * totals stay exact. Age-boundary frames are never merged into their predecessor and the most recent
+ * frame is always kept standalone. Returns a fresh frame list.
  * @param {*[]} frames The current frames (oldest → newest).
  * @param {number} maxSnapshots The retention cap.
  * @returns {*[]} The decimated frames.

@@ -35,7 +35,7 @@
 //
 // E. HEALTH
 //   FAIL          the bootstrap global vanished on any turn, the ledger stopped tracking, its event count went
-//                 backwards, or a city was named as its own attacker
+//                 backward, or a city was named as its own attacker
 //   PASS          otherwise
 //
 // Refugee points use the engine's surge formula without the siege-duration multiplier (an estimate). Threshold

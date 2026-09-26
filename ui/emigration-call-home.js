@@ -1,24 +1,10 @@
 // emigration-call-home.js
 //
 // "Call our people home": a paid, player-initiated attempt to bring displaced population back to the
-// settlement it left. Return migration (emigration-return.js) already drifts a diaspora home on its own once
-// a homeland is at peace and prospering; this is the player leaning on that, deliberately and at a price,
-// which is what a war's end should let you do.
-//
-// Two variants, and they are deliberately NOT the same kind of offer. Both are sized by the player (a ladder of
-// sizes, see callHomeTiers) and paid for at that size, on a CONVEX price curve (see callHomeCost) so that a big
-// call is a real decision rather than three times the price of a small one:
-//   • INTERNAL — people who fled one of your settlements for another of your own. They are inside your
-//     borders and under your government, so a call is a PURCHASE: exactly the number you paid for come.
-//     Nothing is rolled.
-//   • EXTERNAL — your people living in another civilization's cities. They have a life there now, and a
-//     foreign ruler has no reason to help you empty their streets, so a call is a GAMBLE: the fee buys the
-//     CALL, not the people. Every person asked is rolled against callHomeChanceExternal, the fee is spent
-//     whether or not anyone answers, and a call can bring nobody at all.
-//
-// The external roll is seeded from the game id, the pair and the turn, exactly as return migration is:
-// reloading a save and trying again gives the same answer, so the outcome cannot be re-rolled by
-// save-scumming.
+// settlement it left, sized by the player (callHomeTiers) on a CONVEX price curve (callHomeCost). An
+// INTERNAL call (people in your own settlements) is a purchase: everyone paid for comes. An EXTERNAL
+// call (people under another civ) is a gamble: each person is rolled against callHomeChanceExternal
+// and the fee is spent regardless. The roll is seeded from game id, pair and turn, so it cannot be re-rolled.
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { migrationFlows } from "/emigration/ui/emigration-migration-stats.js";
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
@@ -51,9 +37,8 @@ const AGE_ORDER = ["AGE_ANTIQUITY", "AGE_EXPLORATION", "AGE_MODERN"];
 
 /**
  * How much dearer a call is in a given age: callHomeAgeCostStep raised to the age's index (Antiquity ×1,
- * Exploration ×step, Modern ×step²). Treasuries grow by a similar order across the ages, so a price that stings
- * in Antiquity would be pocket change in the Modern age without this. An unknown or missing age (off-engine,
- * mid-transition) counts as Antiquity.
+ * Exploration ×step, Modern ×step²), since treasuries grow by a similar order across the ages. An
+ * unknown or missing age counts as Antiquity.
  * @param {string} [ageType] An AgeType such as "AGE_EXPLORATION" (default: the live age).
  * @returns {number} The multiplier (at least 1).
  */
@@ -110,10 +95,9 @@ export function callHomeTiers(max) {
 }
 
 /**
- * Candidate pairs for one player: where their displaced people went, and where they came from. Internal pairs
- * are moves between the player's OWN settlements; external pairs are the player's people now living under
- * another civilization. Only refugee-shaped causes count -- this is about people driven out, not about
- * ordinary migrants who simply chose somewhere better.
+ * Candidate pairs for one player: where their displaced people went, and where they came from. Internal
+ * pairs are moves between the player's OWN settlements; external pairs are the player's people living
+ * under another civilization. Only refugee-shaped causes count.
  * @param {number} pid The player id. @param {*[]} [flows] Flow rows (defaults to the live matrix).
  * @returns {{internal:*[], external:*[]}} Candidate pairs, richest first.
  */
@@ -191,7 +175,7 @@ export function resolveCallHome(pid, scope, currency, deps) {
   // A treasury that covers a smaller call than was asked for makes that smaller call, not none.
   const size = affordableSize(quote.points, scope, currency, d);
   if (size <= 0) return fail("cannot-pay", scope);
-  // Pay first: the fee buys the call. Abroad, what it brings is decided afterwards, and the money is gone
+  // Pay first: the fee buys the call. Abroad, what it brings is decided afterward, and the money is gone
   // either way; that is the gamble.
   const bill = callHomeCost(size, scope, currency);
   if (typeof d.pay !== "function" || !d.pay(bill, currency)) return fail("cannot-pay", scope);
@@ -219,7 +203,7 @@ function affordableSize(asked, scope, currency, d) {
 
 /**
  * Move up to `n` points home across the quote's pairs, richest first.
- * @param {*} quote The quote. @param {number} n How many to move. @param {*} d The injected effects.
+ * @param {*} quote @param {number} n How many to move. @param {*} d The injected effects.
  * @returns {number} How many actually moved.
  */
 function moveHome(quote, n, d) {
@@ -236,7 +220,7 @@ function moveHome(quote, n, d) {
 /**
  * Roll each person the call is for: how many of them agree to come home. No move happens here.
  * @param {number} pid The player id. @param {string} scope A CALL_HOME_SCOPE.
- * @param {*} quote The quote. @param {*} d The injected effects.
+ * @param {*} quote @param {*} d The injected effects.
  * @returns {{attempted:number, returned:number}} What happened.
  */
 function rollPairs(pid, scope, quote, d) {

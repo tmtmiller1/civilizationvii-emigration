@@ -1,14 +1,14 @@
 // ethnicity-colour.mjs
 //
-// The ethnicity lens's tile colour (emigration-ethnicity-colour.js): a share-weighted BLEND of origin
-// colours, replacing a winner-takes-all fill that painted every tile one banner colour or another with a
+// The ethnicity lens's tile color (emigration-ethnicity-colour.js): a share-weighted BLEND of origin
+// colors, replacing a winner-takes-all fill that painted every tile one banner color or another with a
 // hard flip at 50%. Pure, so no engine stubs. Asserts the properties a gradient has and a flip does not:
-//   1. a single-origin tile is exactly that origin's colour;
+//   1. a single-origin tile is exactly that origin's color;
 //   2. the hue moves MONOTONICALLY toward an origin as its share rises, with no jump at the 50% line;
-//   3. a minority below half of a tile still shifts the colour (the old fill showed it not at all);
-//   4. density drives saturation (grey → the blend) and opacity together, like the Prosperity lens, and
+//   3. a minority below half of a tile still shifts the color (the old fill showed it not at all);
+//   4. density drives saturation (gray → the blend) and opacity together, like the Prosperity lens, and
 //      neither depends on who lives on the tile;
-//   5. unusable shares / colours degrade to a finite colour (a NaN in the Metal overlay is a crash vector).
+//   5. unusable shares / colors degrade to a finite color (a NaN in the Metal overlay is a crash vector).
 
 import assert from "node:assert/strict";
 import { tileFill, blendColour, mixWeights, unit, saturation, rampEnds, __test } from "/emigration/ui/emigration-ethnicity-colour.js";
@@ -22,12 +22,12 @@ const colourOf = (civ) => ({ 1: PURPLE, 2: PALE, 3: RED }[civ] || { r: 0.5, g: 0
 const mix = (share2) => blendColour([{ civ: 1, share: 1 - share2 }, { civ: 2, share: share2 }], colourOf, 1);
 const dist = (a, b) => Math.hypot(a.r - b.r, a.g - b.g, a.b - b.b);
 const close = (a, b) => dist(a, b) < 1e-9;
-// A hued colour (hue 0) at HSL saturation `sat`, lightness 0.5.
+// A hued color (hue 0) at HSL saturation `sat`, lightness 0.5.
 const fromHs = (sat) => ({ r: 0.5 + sat / 2, g: 0.5 - sat / 2, b: 0.5 - sat / 2 });
 
-// ── 1. A single origin is exactly its own colour ─────────────────────────────
-assert.ok(close(blendColour([{ civ: 1, share: 1 }], colourOf, 1), PURPLE), "100% host → the host's colour");
-assert.ok(close(blendColour([{ civ: 2, share: 1 }], colourOf, 1), PALE), "100% diaspora → the diaspora's colour");
+// ── 1. A single origin is exactly its own color ─────────────────────────────
+assert.ok(close(blendColour([{ civ: 1, share: 1 }], colourOf, 1), PURPLE), "100% host → the host's color");
+assert.ok(close(blendColour([{ civ: 2, share: 1 }], colourOf, 1), PALE), "100% diaspora → the diaspora's color");
 
 // ── 2. Monotone gradient, and NO jump across the 50% line ────────────────────
 {
@@ -35,11 +35,11 @@ assert.ok(close(blendColour([{ civ: 2, share: 1 }], colourOf, 1), PALE), "100% d
   for (let s = 0; s <= 1.0001; s += 0.02) steps.push(mix(Math.min(1, s)));
   for (let i = 1; i < steps.length; i++) {
     assert.ok(dist(steps[i], PALE) < dist(steps[i - 1], PALE) + 1e-12,
-      "every extra share moves the tile closer to that origin's colour");
+      "every extra share moves the tile closer to that origin's color");
   }
-  // The old fill flipped from one banner colour to the other between 49% and 51%.
+  // The old fill flipped from one banner color to the other between 49% and 51%.
   const whole = dist(PURPLE, PALE);
-  assert.ok(dist(mix(0.49), mix(0.51)) < whole * 0.06, "49% → 51% is a small step, not a flip of colour");
+  assert.ok(dist(mix(0.49), mix(0.51)) < whole * 0.06, "49% → 51% is a small step, not a flip of color");
   let biggest = 0;
   for (let i = 1; i < steps.length; i++) biggest = Math.max(biggest, dist(steps[i], steps[i - 1]));
   assert.ok(biggest < whole * 0.15, "no single 2% step is a jump anywhere along the gradient");
@@ -48,7 +48,7 @@ assert.ok(close(blendColour([{ civ: 2, share: 1 }], colourOf, 1), PALE), "100% d
 // ── 3. A sub-majority community is VISIBLE (the old fill ignored it entirely) ─
 {
   assert.ok(dist(mix(0.30), PURPLE) > dist(PURPLE, PALE) * 0.2,
-    "a community at the 30% enclave bar shifts the tile clearly off the host's colour");
+    "a community at the 30% enclave bar shifts the tile clearly off the host's color");
   assert.ok(dist(mix(0.12), PURPLE) > dist(mix(0.03), PURPLE), "12% reads stronger than 3%");
   // The curve is symmetric, so the host's remaining 8% is lifted exactly as an 8% minority would be.
   assert.ok(dist(mix(0.92), PALE) < dist(PURPLE, PALE) * 0.2, "an enclave tile at 92% reads as the diaspora's own");
@@ -74,32 +74,32 @@ assert.ok(close(blendColour([{ civ: 2, share: 1 }], colourOf, 1), PALE), "100% d
   const host = { shares: [{ civ: 1, share: 1 }] };
   const at = (d) => rgb(tileFill(host, colourOf, { hostCiv: 1, densityNorm: d }));
   const { vivid } = rampEnds(PURPLE);
-  assert.ok(close(at(1), vivid), "the densest tile is the banner colour at its vivid end");
-  assert.ok(dist(at(0), GREY) < dist(at(0), vivid), "the sparsest tile is closer to grey than to the banner");
+  assert.ok(close(at(1), vivid), "the densest tile is the banner color at its vivid end");
+  assert.ok(dist(at(0), GREY) < dist(at(0), vivid), "the sparsest tile is closer to gray than to the banner");
   assert.ok(Math.abs(dist(at(0), GREY) - SAT_FLOOR * dist(vivid, GREY)) < 1e-9,
-    "the sparsest tile keeps exactly the floor share of its colour, so a fringe still shows whose it is");
+    "the sparsest tile keeps exactly the floor share of its color, so a fringe still shows whose it is");
   for (let d = 0.1; d <= 1.0001; d += 0.1) {
     assert.ok(dist(at(d), vivid) < dist(at(d - 0.1), vivid), "every step of density saturates the tile further");
   }
 }
 
-// ── 4b. The vivid end widens the ramp without changing whose colour it is ────
+// ── 4b. The vivid end widens the ramp without changing whose color it is ────
 {
   const hue = (c) => toHsl(c).h;
   for (const c of [PURPLE, PALE, RED, { r: 0.9, g: 0.46, b: 0.45 }, { r: 0.72, g: 0.5, b: 0.9 }]) {
     const { vivid } = rampEnds(c);
     assert.ok(Math.abs(hue(vivid) - hue(c)) < 0.5, "the vivid end keeps the banner's hue");
     assert.ok(Math.abs(toHsl(vivid).l - toHsl(c).l) < 1e-6, "and its lightness");
-    assert.ok(dist(vivid, GREY) >= dist(c, GREY) - 1e-9, "and is never closer to grey than the banner itself");
+    assert.ok(dist(vivid, GREY) >= dist(c, GREY) - 1e-9, "and is never closer to gray than the banner itself");
   }
   const pink = { r: 229 / 255, g: 117 / 255, b: 116 / 255 };
   assert.ok(dist(rampEnds(pink).vivid, GREY) > dist(pink, GREY) * 1.3, "a pastel banner gets a clearly wider ramp");
-  // A colourless banner ramps from charcoal, not from grey (grey → grey would draw nothing).
+  // A colorless banner ramps from charcoal, not from gray (gray → gray would draw nothing).
   const silver = { r: 166 / 255, g: 166 / 255, b: 166 / 255 };
   const ends = rampEnds(silver);
-  assert.ok(close(ends.neutral, DARK) && close(ends.vivid, silver), "a grey civ ramps charcoal → its own grey");
-  assert.ok(dist(ends.vivid, ends.neutral) > 0.5, "and that ramp is as wide as a coloured civ's");
-  assert.ok(close(rampEnds(PURPLE).neutral, GREY), "a coloured banner keeps the Prosperity grey as its neutral");
+  assert.ok(close(ends.neutral, DARK) && close(ends.vivid, silver), "a gray civ ramps charcoal → its own gray");
+  assert.ok(dist(ends.vivid, ends.neutral) > 0.5, "and that ramp is as wide as a colored civ's");
+  assert.ok(close(rampEnds(PURPLE).neutral, GREY), "a colored banner keeps the Prosperity gray as its neutral");
   const ramp = [0, 0.1, 0.2, 0.3, 0.4].map((sat) => rampEnds(fromHs(sat)).neutral.r);
   for (let i = 1; i < ramp.length; i++) assert.ok(ramp[i] >= ramp[i - 1], "the neutral slides, it never flips");
 }
@@ -132,10 +132,10 @@ assert.ok(close(blendColour([{ civ: 2, share: 1 }], colourOf, 1), PALE), "100% d
   }
   assert.ok(finite(tileFill(null, colourOf, ctx)), "a null tile is finite");
   assert.ok(finite(tileFill({ shares: [{ civ: 1, share: 1 }] }, () => ({ r: NaN, g: undefined, b: 9 }), ctx)),
-    "a garbage colour resolver cannot leak NaN or out-of-range channels");
-  assert.ok(finite(tileFill({ shares: [{ civ: 1, share: 1 }] }, () => null, ctx)), "a null colour is finite");
+    "a garbage color resolver cannot leak NaN or out-of-range channels");
+  assert.ok(finite(tileFill({ shares: [{ civ: 1, share: 1 }] }, () => null, ctx)), "a null color is finite");
   assert.equal(unit(Infinity), 0, "non-finite clamps to 0");
   assert.equal(unit(3), 1, "over-range clamps to 1");
 }
 
-console.log("ethnicity-colour harness passed");
+console.log("ethnicity-color harness passed");

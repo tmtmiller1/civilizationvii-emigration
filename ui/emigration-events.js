@@ -1,6 +1,6 @@
 // emigration-events.js
 //
-// Event-driven hooks (§10): subscribe to the public, fog-independent disaster event and
+// Event-driven hooks: subscribe to the public, fog-independent disaster event and
 // turn it into a distress spike + a named feedback toast. The simulation's per-turn poll
 // (emigration-disasters / runPass) stays the source of truth; this just front-runs the
 // player's feedback and seeds the event-driven distress. War declaration/peace are
@@ -20,11 +20,8 @@ import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
 import { loc as tr } from "/emigration/ui/emigration-loc.js";
 
-// How far from an event's epicenter to look for affected cities. A disaster (a volcanic eruption,
-// a flood) damages a RING of tiles around its epicenter, and the epicenter itself, a volcano /
-// floodplain tile, is frequently impassable terrain on a border that NO city owns. Mapping only the
-// epicenter's owning city therefore misses the eruption entirely; scanning the surrounding ring
-// attributes the distress to every nearby city that owns a tile in the blast radius.
+// How far from an event's epicenter to look for affected cities: the epicenter (a volcano / floodplain
+// tile) is often unowned, so scanning the ring attributes the distress to every city in the blast radius.
 const EVENT_RADIUS = 1;
 
 /**
@@ -152,13 +149,8 @@ function worstEventPct(rows, type, damageType) {
 
 /**
  * The worst single impact percentage a RandomEvent TYPE inflicts, the larger of its biggest yield cut
- * (food/production drive displacement) and its constructible-damage cut, from the base RandomEventYields
- * / RandomEventDamages tables. 0 when unavailable.
- *
- * WHY this, not the `Severity` column: Civ7's RandomEventOccurred payload carries `phase`, not a usable
- * severity, and the `Severity` column is a compressed/weak proxy, a "GENTLE" volcano is Severity 0 and a
- * "CATASTROPHIC" one is only Severity 1, so the engine's own scale barely separates them. The real
- * magnitude lives in the effect tables (gentle volcano = 25% food / 20% constructibles; catastrophic 35% / 40%).
+ * and its constructible-damage cut, from the base RandomEventYields / RandomEventDamages tables. Used
+ * instead of the `Severity` column, which barely separates a gentle volcano (0) from a catastrophic one (1).
  * @param {*} info The GameInfo.RandomEvents row (carries RandomEventType).
  * @returns {number} The worst impact percent (0..100).
  */
@@ -176,11 +168,9 @@ function eventImpactPct(info) {
 }
 
 /**
- * The event's magnitude on a 1..4 scale (the distress multiplier + notify gate). Derived from the
- * engine's named tier (`Severity`: gentle 0 < catastrophic 1 < … < thera 3) BUMPED a step for
- * catastrophic-class impact (eventImpactPct), and floored at 1 so a city-striking disaster always
- * carries real weight AND gentle < catastrophic (the old code read raw `Severity`, where the distress
- * formula collapsed 0 and 1 to the same multiplier, every volcano displaced identically).
+ * The event's magnitude on a 1..4 scale (the distress multiplier + notify gate): the engine's named
+ * tier (`Severity`: gentle 0 < catastrophic 1 < … < thera 3) bumped a step for catastrophic-class
+ * impact (eventImpactPct), floored at 1 so a city-striking disaster always carries real weight.
  * @param {*} data The event payload.
  * @param {*} info The GameInfo RandomEvents row.
  * @returns {number} Magnitude (1..4).
@@ -230,12 +220,9 @@ function eventImpactFactor(info, location) {
 }
 
 /**
- * Floor the impact factor for a CONFIRMED city strike the mod couldn't MEASURE — the effect tables are
- * absent, or a lava-scorched tile that never counts as "pillage" — so a disaster the engine says hit a
- * city always lands SOME distress instead of collapsing to a zero spike and silently doing nothing.
- * The floor scales by disaster type downstream (shape() × CLASS_WEIGHT), so a floored volcano clears
- * the flee threshold while a floored thunderstorm stays ambient. Un-struck events (open terrain) and
- * genuinely bigger measured impacts pass through untouched.
+ * Floor the impact factor for a CONFIRMED city strike the mod couldn't MEASURE, so a disaster the engine
+ * says hit a city always lands SOME distress. The floor scales by disaster type downstream (shape() ×
+ * CLASS_WEIGHT); un-struck events and bigger measured impacts pass through untouched.
  * @param {number} measured The measured impact factor in [0,1].
  * @param {boolean} struck Whether the engine confirmed the blast hit at least one city.
  * @returns {number} The impact factor to drive the spike with.
@@ -266,9 +253,8 @@ function onRandomEvent(data) {
     logEvent(data, info, sev, keys.length, { m, w }); // DIAGNOSTIC: grep `EMIG_event` in UI.log
     // m drives the impact-scaled spike; sev is passed only for the legacy fail-safe path.
     recordDisaster(eventClass, m, keys, data.eventType, sev); // type → per-city cause attribution
-    // Record a refugees-chart MARKER whenever the disaster actually struck cities (so it drove
-    // displacement), independent of the toast threshold, otherwise sub-`disasterNotifyMinSeverity`
-    // disasters drive the sim but never annotate the chart, which is why none were appearing.
+    // Record a refugees-chart MARKER whenever the disaster actually struck cities, independent of the
+    // toast threshold, so sub-`disasterNotifyMinSeverity` disasters still annotate the chart.
     const struck = keys.length > 0;
     if (struck) recordDisasterEvent(disasterName(data.eventType), sev);
     maybeNotifyDisaster(data, sev, struck, struck ? primaryStruckCity(data.location) : null);
@@ -278,14 +264,9 @@ function onRandomEvent(data) {
 }
 
 /**
- * Log and (maybe) pop a disaster notification. The notifications LOG keeps every
- * severe disaster so the player can review them without a popup; the on-screen
- * POPUP is the invasive part, gated by the disasterNotifyMode user knob:
- *   0 = off, log only, never pop a disaster toast
- *   1 = migration, pop ONLY when the disaster struck a city (so it will drive
- *                   displacement) AND is ≥ min severity  [default]
- *   2 = any, pop for any disaster ≥ min severity (the old behavior)
- * disasterNotifyMinSeverity still tunes "how bad is bad enough" within each mode.
+ * Log and (maybe) pop a disaster notification. The notifications LOG keeps every severe disaster; the
+ * on-screen POPUP is gated by the disasterNotifyMode knob (0 = log only, 1 = only when the disaster
+ * struck a city, 2 = any), with disasterNotifyMinSeverity as the severity floor in each mode.
  * @param {*} data The event payload.
  * @param {number} sev The event severity.
  * @param {boolean} struck Whether the disaster struck any cities (drives migration).
@@ -317,7 +298,7 @@ function disasterAlert(name, where) {
   const head = place
     ? tr("LOC_EMIG_DISASTER_STRIKES_AT", "{1_Name} strikes {2_Place}!", name, place)
     : tr("LOC_EMIG_DISASTER_STRIKES", "{1_Name} strikes!", name);
-  // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces (mod test 88),
+  // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces,
   // so a trailing space in the row never survives to separate this from the hint.
   return head.trim() + " " + actionHint("disaster");
 }

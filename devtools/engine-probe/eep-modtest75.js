@@ -52,7 +52,7 @@ async function run() {
   }
   safe(() => LM.setActiveLens("emig-prosperity-lens"));
   await later(5000);
-  emit("L viaLens active=" + J(safe(() => LM.getActiveLens(), null)) + " addPlotsCalls=" + calls + " plotsPainted=" + painted + " colours=" + J(colours));
+  emit("L viaLens active=" + J(safe(() => LM.getActiveLens(), null)) + " addPlotsCalls=" + calls + " plotsPainted=" + painted + " colors=" + J(colours));
   emit("SHOT lens-prosperity-counted");
   await later(10000);
   const c0 = calls, p0 = painted;

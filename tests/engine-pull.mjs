@@ -1,6 +1,6 @@
 // Characterization test for adjustedPull (engine.js). Pins the pull math to the values the
 // pre-refactor flat-sum formula produced, so the §1 two-channel restructure (Tilt + Permeability)
-// is provably behaviour-neutral. Expected numbers are hand-derived from the original formula:
+// is provably behavior-neutral. Expected numbers are hand-derived from the original formula:
 //   pull = (dest.pros - src.pros) - baseReluctance - perExtraPop*max(0,Δpop) - cityStateBarrier?
 //          - poachBlock(cross-civ)? + openBordersBonus + geoAdjust - congestion, then × openness.
 import assert from "node:assert/strict";
@@ -165,7 +165,7 @@ CONFIG.crisisInternalBonus = 12;
 // ── perFewerPop: the mirror friction, so the size comparison brakes BOTH ways ──
 // Without it nothing at all resisted big → small, while the base score was simultaneously rewarding
 // the destination for being small (populationFactor). That one-way push is what drained a capital
-// into its lesser neighbours however well it was built.
+// into its lesser neighbors however well it was built.
 CONFIG.perFewerPop = 0.5;
 {
   // dest 4 pop SMALLER than src: (20-10) - 4 - 0.5×4 = 4.
@@ -184,7 +184,7 @@ CONFIG.perFewerPop = 0.5;
   // Off restores the one-way push exactly (kills an always-on mutant).
   CONFIG.perFewerPop = 0;
   close(adjustedPull(sig(1, 10, 9, false, 0, 0), sig(1, 20, 5, false, 0, 0), null, null, null), 6,
-    "C21 perFewerPop 0 restores the legacy one-way behaviour");
+    "C21 perFewerPop 0 restores the legacy one-way behavior");
   CONFIG.perFewerPop = 0.5;
 }
 {

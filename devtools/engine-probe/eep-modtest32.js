@@ -24,7 +24,7 @@ async function run() {
   const sigs = collectCitySignals();
   const host = sigs.find((s) => s.owner === local && /Bristol/.test(cityName(s.city))) || sigs.find((s) => s.owner === local);
   const foreign = sigs.find((s) => s.owner !== local && !s.isCityState);
-  const view = Q.quarterView({ civ: foreign.owner, name: cityName(host.city), where: "by the harbour", owner: local }, 0);
+  const view = Q.quarterView({ civ: foreign.owner, name: cityName(host.city), where: "by the harbor", owner: local }, 0);
   showDilemma(view, () => {});
   let block = null;
   for (let i = 0; i < 40 && !block; i++) { await later(100); block = document.querySelector(".emig-quote-block"); }

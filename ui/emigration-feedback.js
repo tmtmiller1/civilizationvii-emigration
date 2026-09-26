@@ -1,22 +1,9 @@
 // emigration-feedback.js
 //
-// In-game feedback for migration (§10): transient HUD toasts and "world refugee news"
-// for major events anywhere in the world. Gated by CONFIG.notifyMode (0 off / 1 important
-// / 2 verbose) and the per-channel flags, so it's silent by default at mode 0 and only
-// high-signal at mode 1.
-//
-// Channels and what the probe/file-analysis settled:
-//   • Toast - a styled DOM element on the HUD root (the engine has no toast API; corpus
-//     mods do the same). We inject the CSS so it actually renders.
-//   • World news - toast-delivered, threshold-gated, fired once per tier.
-//   • On-map floating indicator - NOT done here: WorldUI has no floating-text method
-//     (only overlay/marker/VFX builders - createOverlayGroup / createFixedMarker /
-//     triggerVFXAtPlot), so a proper indicator needs an overlay build (a follow-up).
-//   • Engine notifications (the clickable end-turn list) need a DB NotificationType
-//     (probe API4-5); a future addition alongside the policy data component.
-//
-// Everything is defensive: the GameFace DOM can be absent, so each channel degrades to a
-// no-op rather than throwing.
+// In-game feedback for migration: transient HUD toasts (a styled DOM element on the HUD root,
+// with injected CSS) and threshold-gated "world refugee news" fired once per tier. Gated by
+// CONFIG.notifyMode (0 off / 1 important / 2 verbose) and the per-channel flags. Everything is
+// defensive: the GameFace DOM can be absent, so each channel degrades to a no-op rather than throwing.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
@@ -158,20 +145,11 @@ function persistNews() {
   }
 }
 
-// The toast is styled to read as a NATIVE Civ VII HUD message, not a web element: the game's
-// TitleFont eyebrow + BodyFont body, its dark panel gradient, and its own gold/bronze trim palette
-// (#8c7e62 bronze frame, #f0bc78 gold highlight, parchment #e8d8b4 text), plus a slide-in animation
-// and a fade-out. A LEFT ACCENT BAR + eyebrow colour is themed PER CAUSE (set inline, below) so a
-// glance tells war from disaster from prosperity.
-// z-index sits ABOVE the game's top HUD layers: root-game.html mounts #uinext-tooltips and
-// #uinext-dropdowns at z-index 10000 and #tooltip-root at 99, so the old z-index:99 let tooltips and
-// dropdowns paint OVER a top-center toast (a prime cause of "notifications never show"). 10002 clears
-// them, and stays one above the mod's own cursor panels (PANEL_Z = 10001) so a notification still wins
-// over a hover readout if the cursor happens to be up near the top-center strip. The font sizes are
-// hard values (not the dashboard's --dg-fs-* custom properties): the toast
-// renders in the HUD document, where those dashboard-scoped vars are UNDEFINED, so a bare var() left the
-// text at an inherited size. Fallbacks keep the intended 0.72/0.95rem there while still honouring the
-// dashboard vars if ever present.
+// The toast is styled to read as a NATIVE Civ VII HUD message (the game's fonts, panel gradient and
+// gold/bronze trim), with a LEFT ACCENT BAR + eyebrow color themed PER CAUSE (set inline, below).
+// z-index 10002 clears the game's #uinext-tooltips / #uinext-dropdowns (10000) and the mod's own
+// cursor panels (PANEL_Z = 10001); font sizes carry hard fallbacks because the dashboard's --dg-fs-*
+// vars are undefined in the HUD document.
 const TOAST_CSS =
   ".emig-toast{position:fixed;left:50%;transform:translateX(-50%);z-index:10002;" +
   "min-width:15rem;max-width:38rem;padding:0.5rem 1.3rem 0.6rem;text-align:center;pointer-events:none;" +
@@ -183,7 +161,7 @@ const TOAST_CSS =
   "animation:emig-toast-in 0.26s ease-out;}" +
   '.emig-toast-eye{font-family:"TitleFont","TitleFont-JP","TitleFont-KR","TitleFont-SC","TitleFont-TC";' +
   "font-size:var(--dg-fs-72,0.72rem);letter-spacing:0.13em;text-transform:uppercase;margin-bottom:0.15rem;color:#f0bc78;}" +
-  // white-space:pre-line honours the blank line localDigestMessage puts between the situation and the
+  // white-space:pre-line honors the blank line localDigestMessage puts between the situation and the
   // guidance, so the toast shows them as two paragraphs; a message with no break renders unchanged.
   ".emig-toast-msg{font-size:var(--dg-fs-95,0.95rem);line-height:1.32;white-space:pre-line;}" +
   "@keyframes emig-toast-in{from{opacity:0;transform:translateX(-50%) translateY(-0.55rem);}" +
@@ -202,7 +180,7 @@ function injectToastStyle() {
   }
 }
 
-// Per-cause theming (the accent bar + eyebrow colour) comes from the shared causeAccent() taxonomy,
+// Per-cause theming (the accent bar + eyebrow color) comes from the shared causeAccent() taxonomy,
 // so the toast and the notifications log read identically; the eyebrow TEXT reuses causeLabel.
 const TOAST_MS = 11000; // how long a toast stays before its half-second fade-out
 const TOAST_TOP = 5; // rem, the top of the topmost toast
@@ -245,10 +223,10 @@ function dismissToast(el) {
 }
 
 /**
- * Build the toast element: a themed eyebrow (cause label, accent colour) over the message body.
+ * Build the toast element: a themed eyebrow (cause label, accent color) over the message body.
  * @param {string} msg The message body.
  * @param {string|undefined} cause The migration cause (or "crisis").
- * @param {string} accent The theme accent colour.
+ * @param {string} accent The theme accent color.
  * @returns {*} The toast element.
  */
 function buildToastEl(msg, cause, accent) {
@@ -274,8 +252,8 @@ function buildToastEl(msg, cause, accent) {
  * @param {string} msg The message body.
  * @param {string} [cause] The migration cause (or "crisis"), for the eyebrow + accent theme.
  * @param {boolean} [ownLoss] Whether this is the local player's own loss (reserves the red accent).
- * @param {string} [accentOverride] An explicit accent colour that wins over the cause colour — used by
- *   the per-move digests so the toast matches the log row's DIRECTION-based colour (see {@link digestAccent}).
+ * @param {string} [accentOverride] An explicit accent color that wins over the cause color — used by
+ *   the per-move digests so the toast matches the log row's DIRECTION-based color (see {@link digestAccent}).
  */
 export function toast(msg, cause, ownLoss, accentOverride) {
   if (CONFIG.notifyMode < 1 || !CONFIG.notifyToasts) return;
@@ -314,16 +292,13 @@ function gameTurn() {
 function cooldownOk() {
   const s = newsState();
   const turn = gameTurn();
-  // F1: rebase the cooldown clock down when Game.turn resets at an age boundary, so the
+  // Rebase the cooldown clock down when Game.turn resets at an age boundary, so the
   // comparison below can't be corrupted (a stale future lastToastTurn either spamming or
   // over-suppressing).
   if (s.lastToastTurn > turn) s.lastToastTurn = turn;
-  // speedTurns (×S): keep the REAL-TIME spacing of important toasts constant across speeds, else they
-  // sat ~3× further apart on Marathon (event over before you're told) and spammed on Online.
-  // Guard on lastToastTurn > 0, not just "is a number": the empty state seeds it to 0, so the plain
-  // number check silently suppressed EVERY important toast for the first notifyCooldownTurns of a fresh
-  // game (turn - 0 < 6). 0 means "never toasted yet" → always allow the first one; the cooldown then
-  // applies normally once a real turn is stamped.
+  // speedTurns (×S): keep the REAL-TIME spacing of important toasts constant across speeds.
+  // Guard on lastToastTurn > 0, not just "is a number": the empty state seeds it to 0, which means
+  // "never toasted yet" → always allow the first one; the cooldown applies once a real turn is stamped.
   if (s.lastToastTurn > 0 && turn - s.lastToastTurn < speedTurns(CONFIG.notifyCooldownTurns)) {
     return false;
   }
@@ -338,7 +313,7 @@ function cooldownOk() {
  * @param {string} msg The message.
  * @param {string} [cause] The migration cause (or "crisis"), for the toast's theme.
  * @param {boolean} [ownLoss] Whether this is the local player's own loss (reserves the red accent).
- * @param {string} [accentOverride] Explicit accent colour (per-move digests pass the direction accent).
+ * @param {string} [accentOverride] Explicit accent color (per-move digests pass the direction accent).
  */
 export function announceImportant(msg, cause, ownLoss, accentOverride) {
   if (CONFIG.notifyMode < 1) return;
@@ -493,19 +468,16 @@ export function reportPassFeedback(migrations) {
   if (CONFIG.notifyMode < 1 || !Array.isArray(migrations) || !migrations.length) return;
   if (CONFIG.notifyMode >= 2) toastPerCause(migrations);
   // Priority order for the SHARED toast cooldown (one important toast per pass): the player's own
-  // losses first, then world crises (the player's own INBOUND gains are reported separately via
-  // reportInboundFeedback, which the caller runs last so losses/crises claim the HUD first). Each
-  // channel still LOGS every event; only the on-screen toast is throttled.
+  // losses first, then world crises; inbound gains (reportInboundFeedback) run last. Each channel
+  // still LOGS every event; only the on-screen toast is throttled.
   localDigest(migrations); // the local player's own "why am I losing people?" explainer
   reportWorldCrises(migrations); // per-civ refugee-crisis milestones (world news)
 }
 
 /**
  * Report the local player's INBOUND immigration for the pass (people SETTLING in the player's cities).
- * Kept separate from {@link reportPassFeedback} because it must see the ARRIVAL records - the loss side
- * is announced at DEPARTURE and the caller filters arrivals out of reportPassFeedback's stream, but a
- * gain is only real when the migrant ARRIVES, so this runs on the full, unfiltered pass. Call it AFTER
- * reportPassFeedback so the more urgent loss/crisis toasts claim the shared cooldown first.
+ * Separate from {@link reportPassFeedback} because it must see the ARRIVAL records, so it runs on the
+ * full, unfiltered pass. Call it AFTER reportPassFeedback so loss/crisis toasts claim the cooldown first.
  * @param {*[]} migrations The pass's FULL migrations (arrivals included).
  */
 export function reportInboundFeedback(migrations) {
@@ -567,11 +539,9 @@ function localPlayerId() {
 }
 
 /**
- * The destination owner as the notification layer sees it: the tally-driving `destOwner` when present
- * (an instantaneous move or an arrival), else the non-tally `edgeDestOwner` a lagged DEPARTURE record
- * carries (it withholds `destOwner` so the immigration tally isn't double-credited on arrival). Reading
- * `edgeDestOwner` here is safe: this digest is separate from the migration/immigration tallies, so it
- * can't double-count - it only needs the destination civ to name it and apply unmet-masking.
+ * The destination owner as the notification layer sees it: the tally-driving `destOwner` when present,
+ * else the non-tally `edgeDestOwner` a lagged DEPARTURE record carries. Reading `edgeDestOwner` here
+ * is safe because this digest is separate from the migration/immigration tallies.
  * @param {*} m A migration record.
  * @returns {number|undefined} The destination player id, or undefined when neither owner is present.
  */
@@ -584,7 +554,7 @@ function moveDestOwner(m) {
 /**
  * Get (or create) the per-event bucket for a loss record, keyed by source settlement + cause + scope.
  * Scope (internal vs cross-civ) is part of the key so a source shedding the SAME cause to both its own
- * settlements AND a foreign civ splits into two correctly-labelled rows, never one row mislabelled by
+ * settlements AND a foreign civ splits into two correctly-labeled rows, never one row mislabelled by
  * whichever stream happened to be larger.
  * @param {Map<string,*>} map Bucket map.
  * @param {*} m A migration.
@@ -625,7 +595,7 @@ function foldEvent(map, m, me) {
     // ev.crossCiv is fixed per bucket (part of the key) - trust the record's flag, never gate it on
     // destOwner being present, or a lagged cross-civ departure (which withholds destOwner) mislabels
     // as internal.
-    ev.reasons = Array.isArray(m.reasons) ? m.reasons : []; // the lead move's "why here" tags (P0.1)
+    ev.reasons = Array.isArray(m.reasons) ? m.reasons : []; // the lead move's "why here" tags
   }
 }
 
@@ -654,10 +624,9 @@ function UNMET_CIV_LABEL() {
 }
 
 /**
- * The destination as shown to the player, with the analytics-visibility mask applied. A death
- * (attrition) has no destination. A cross-civ move to a policy-hidden (unmet) civ is anonymized to
- * "an unmet civilization" with its city name dropped, so the notification never leaks an unmet civ.
- * Internal moves and moves to met civs pass through unchanged.
+ * The destination as shown to the player, with the analytics-visibility mask applied: a death has no
+ * destination, and a cross-civ move to a policy-hidden (unmet) civ is anonymized to "an unmet
+ * civilization" with its city name dropped. Internal moves and moves to met civs pass through unchanged.
  * @param {*} ev A per-event bucket.
  * @returns {{toCiv?:string, toCity?:string}} The masked destination labels.
  */
@@ -728,17 +697,15 @@ function logEvent(ev, msg) {
     kind: "digest", cause: ev.cause, event: eventNameFor(ev.cause, ev.srcOwner) || undefined,
     summary: msg, people: ev.people, points: ev.points,
     fromCity: ev.srcName, fromCiv, toCity: dv.toCity, toCiv: dv.toCiv, crossCiv: ev.crossCiv,
-    reasons: pullReasonsPhrase(ev.reasons) || undefined, // "why here" pull tags for the log detail (P0.1)
+    reasons: pullReasonsPhrase(ev.reasons) || undefined, // "why here" pull tags for the log detail
     ownLoss: true // the local player's own settlement shedding population
   });
 }
 
 /**
  * Explain the local player's population losses this pass. Each distinct event (one source settlement +
- * cause) is logged as its OWN notification with an accurate count, so the Notifications log reads one
- * coherent event per row, never a confusing pass-wide "7 moved" lumped across cities and causes. On
- * screen, only the largest event toasts (subject to the cooldown), so the HUD isn't flooded when
- * several settlements shed people in one pass; the rest are in the log. No-op without a local loss.
+ * cause) is logged as its OWN notification with an accurate count; on screen only the largest event
+ * toasts (subject to the cooldown). No-op without a local loss.
  * @param {*[]} migs Applied migrations.
  */
 function localDigest(migs) {
@@ -748,18 +715,16 @@ function localDigest(migs) {
   if (!events.length) return;
   for (const ev of events) logEvent(ev, eventMessage(ev));
   const lead = events[0];
-  // Colour the toast by DIRECTION (red for own people leaving for a rival, neutral for an internal
+  // Color the toast by DIRECTION (red for own people leaving for a rival, neutral for an internal
   // shuffle: the source settlement still loses its tile, so never green), matching the log row's accent
-  // rather than the cause (a prosperity departure once toasted green while the log row was red).
+  // rather than the cause.
   announceImportant(eventMessage(lead), lead.cause, true, digestAccent(true, lead.crossCiv));
 }
 
 /**
  * Fold one INBOUND (immigration) record into its per-destination bucket, keyed by destination
- * settlement + cause + origin civ. Counts only CROSS-CIV arrivals credited to the local player (people
- * settling in the player's empire from another civ); internal relocations and the player's own
- * departures are excluded. Arrival records carry `destOwner` (the player) + `originCiv` (the true source
- * civ) but NOT the tally-driving `srcOwner`, so origin is read from `originCiv`.
+ * settlement + cause + origin civ. Counts only CROSS-CIV arrivals credited to the local player; arrival
+ * records carry `destOwner` + `originCiv` but NOT `srcOwner`, so origin is read from `originCiv`.
  * @param {Map<string,*>} map Bucket map. @param {*} m A migration. @param {number} me Local player id.
  */
 function foldInbound(map, m, me) {
@@ -840,9 +805,7 @@ function logInbound(ev, msg) {
 /**
  * Explain the local player's INBOUND immigration this pass: cross-civ newcomers settling in the
  * player's cities. Each event over the `inboundNotifyPoints` floor is logged, and the largest is toasted
- * (subject to the shared cooldown), so a prosperous, peaceful empire that is RECEIVING migrants also
- * gets "important" news, not only one that is losing people. A steady 1-point trickle (below the floor)
- * stays quiet. No-op without a qualifying inbound wave.
+ * (subject to the shared cooldown); a steady trickle below the floor stays quiet.
  * @param {*[]} migs Applied migrations.
  */
 function inboundDigest(migs) {
@@ -857,14 +820,14 @@ function inboundDigest(migs) {
   announceImportant(inboundMessage(lead), lead.cause, false, digestAccent(false, true));
 }
 
-// P0.3 per-source cue cooldown (session-only; a reload resetting a low-key cue is harmless).
+// Per-source cue cooldown (session-only; a reload resetting a low-key cue is harmless).
 /** @type {Map<string, number>} */
 const _cueTurn = new Map();
 registerCacheReset(() => _cueTurn.clear());
 
 /**
  * Surface low-key "rising emigration pressure" cues for the local player's settlements building toward
- * a voluntary move without anyone having left yet (P0.3). Logged to the Notifications list only (no HUD
+ * a voluntary move without anyone having left yet. Logged to the Notifications list only (no HUD
  * toast, so it never floods the screen), throttled per source to one per `voluntaryCueCooldownTurns`.
  * No-op without a local player.
  * @param {{srcName:string, srcOwner:number, destName:string, cause:string}[]} cues This pass's cues.
@@ -888,7 +851,7 @@ export function reportPressureCues(cues) {
 function emitPressureCue(c, me, turn, cd) {
   if (c.srcOwner !== me || !c.srcName || !c.destName) return;
   const last = _cueTurn.get(c.srcName);
-  // F1: a `last` above the current turn is stale from a prior age (Game.turn reset); ignore
+  // A `last` above the current turn is stale from a prior age (Game.turn reset); ignore
   // it (the `turn >= last` guard) so the cue isn't suppressed for the rest of the new age.
   if (typeof last === "number" && turn >= last && turn - last < cd) return;
   _cueTurn.set(c.srcName, turn);

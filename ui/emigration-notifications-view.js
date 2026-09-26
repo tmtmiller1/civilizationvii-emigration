@@ -1,11 +1,8 @@
 // emigration-notifications-view.js
 //
-// Renders the persistent notification LOG (emigration-notifications.js) into the Demographics
-// "Notifications" sub-tab: a scrollable, newest-first list of every migration event that has been
-// recorded, including narrative Chronicle entries. Clicking a row expands it to the full event detail,
-// what caused it, which settlement it left, where the people went, and how many, so the on-screen
-// toasts can stay brief while the complete record lives here. Pure DOM + a self-injected stylesheet,
-// so it renders correctly in the Demographics page or the standalone window.
+// Renders the persistent notification LOG (emigration-notifications.js) into the "Notifications"
+// sub-tab: a newest-first list of every recorded migration event, including Chronicle entries; a row
+// expands to the full detail. Pure DOM + a self-injected stylesheet.
 
 import { notificationLog } from "/emigration/ui/emigration-notifications.js";
 import { causeLabel, causeAccent, notificationAccent, digestAccent } from "/emigration/ui/emigration-causes.js";
@@ -13,12 +10,9 @@ import { formatBothExact } from "/emigration/ui/emigration-population.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
 
 /**
- * Split a composed digest summary into its two blocks: the SITUATION (what happened + where the people
- * went) and the GUIDANCE (the action hint, permanence cue, why-here pull, and move-scope tag).
- * `localDigestMessage` joins them with a blank line ("\n\n"); the row header shows only the situation
- * so it reads as one clean line, and the expanded detail shows the guidance once, instead of the whole
- * paragraph appearing twice (header + a verbatim "Note"). Summaries with no blank line (crisis / cause /
- * inbound / pressure headlines, chronicle titles) are all situation and carry no guidance.
+ * Split a composed digest summary into its SITUATION and GUIDANCE blocks, which `localDigestMessage`
+ * joins with a blank line ("\n\n"). The row header shows only the situation and the expanded detail
+ * the guidance. A summary with no blank line is all situation.
  * @param {string} [summary] The stored summary.
  * @returns {{situation: string, guidance: string}} The two blocks.
  */
@@ -31,9 +25,9 @@ export function splitSummary(summary) {
 
 /**
  * Make an element with an optional class + text.
- * @param {string} tag Tag.
+ * @param {string} tag
  * @param {string} [cls] Class.
- * @param {string} [text] Text.
+ * @param {string} [text]
  * @returns {HTMLElement} Element.
  */
 function el(tag, cls, text) {
@@ -53,13 +47,12 @@ const CSS =
   ".emig-ntf-head{display:flex;align-items:baseline;gap:0.55rem;padding:0.4rem 0.6rem;cursor:pointer;}" +
   ".emig-ntf-head:hover{background:rgba(240,188,120,0.06);}" +
   ".emig-ntf-turn{font-size:var(--dg-fs-72);opacity:0.6;white-space:nowrap;min-width:3.6rem;}" +
-  // Sentence case (no uppercase transform): the chip is now a descriptive phrase — "Internal migration
-  // (prosperity)" — not a one-word tag, so ALL-CAPS read as shouty and ran long.
+  // Sentence case (no uppercase transform): the chip is a descriptive phrase, not a one-word tag.
   '.emig-ntf-chip{font-family:"TitleFont";letter-spacing:0.04em;' +
   "font-size:var(--dg-fs-72);white-space:nowrap;}" +
   ".emig-ntf-sum{flex:1 1 auto;font-size:var(--dg-fs-85);color:#e8d8b4;overflow:hidden;text-overflow:ellipsis;" +
   "white-space:nowrap;}" +
-  // pre-line (not plain normal) so an expanded row honours the blank line the digest puts between its
+  // pre-line (not plain normal) so an expanded row honors the blank line the digest puts between its
   // situation and guidance; the collapsed row stays nowrap + ellipsis, so the compact list is unchanged.
   ".emig-ntf-row.open .emig-ntf-sum{white-space:pre-line;}" +
   ".emig-ntf-caret{opacity:0.5;font-size:var(--dg-fs-72);}" +
@@ -82,7 +75,7 @@ function injectStyle() {
 }
 
 /**
- * Append a labelled detail line to the panel (skips empty values).
+ * Append a labeled detail line to the panel (skips empty values).
  * @param {HTMLElement} panel The detail panel.
  * @param {string} label The field label.
  * @param {string} [value] The field value.
@@ -141,8 +134,6 @@ function migrationDetail(panel, e) {
     if (e.people || e.points) {
       addLine(panel, loc("LOC_EMIG_NV_PEOPLE", "People"), formatBothExact(e.people, e.points));
     }
-    // The "why here" pull (e.reasons) is no longer shown as its own field: the guidance Note already
-    // states it in prose ("Drawn there: …"), so a separate line just echoed it.
   }
 }
 
@@ -156,10 +147,8 @@ function detailEl(e) {
   const panel = el("div", "emig-ntf-detail");
   if (e.kind === "chronicle") chronicleDetail(panel, e);
   else migrationDetail(panel, e);
-  // The header already shows the situation; the Note carries only the GUIDANCE half of the digest
-  // (advice + why + scope), so the full sentence never appears twice. Entries with no guidance block
-  // (crisis/cause/inbound headlines, chronicle titles) add no Note. The trailing movement-scope tag is
-  // stripped because the row chip already names the scope ("Internal migration (…)").
+  // The header already shows the situation; the Note carries only the GUIDANCE half of the digest.
+  // The trailing movement-scope tag is stripped because the row chip already names the scope.
   if (e.kind !== "chronicle") {
     const guidance = stripScopeTag(splitSummary(e.summary).guidance);
     if (guidance) addLine(panel, loc("LOC_EMIG_NV_NOTE", "Note"), guidance);
@@ -196,8 +185,7 @@ function rowSummary(e) {
 
 /**
  * Remove a trailing movement-scope tag ("(Internal Move)" / "(External Move)") from a guidance block.
- * The row chip now names the scope ("Internal migration (…)"), so repeating it at the end of the Note
- * would just echo the chip. The HUD toast keeps the tag (it has no chip); only this log view drops it.
+ * The row chip names the scope, so the Note would only echo it. The HUD toast keeps the tag.
  * @param {string} [guidance] The guidance text.
  * @returns {string} The guidance without a trailing scope tag.
  */
@@ -212,11 +200,9 @@ export function stripScopeTag(guidance) {
 }
 
 /**
- * The row's chip text: which DIRECTION the migration ran, disambiguating the easily-confused Latin
- * terms with a plain-English gloss — "Internal Migration" (within the empire), "Emigration (Leaving)"
- * (the player's people leaving for another civ), "Immigration (Arriving)" (people arriving from another
- * civ). The cause itself is carried by the header sentence, so it isn't repeated here. A death is
- * "Casualties", a chronicle entry "Chronicle", and the world-news kinds keep the plain cause label.
+ * The row's chip text: which DIRECTION the migration ran ("Internal Migration", "Emigration (Leaving)",
+ * "Immigration (Arriving)"). A death is "Casualties", a chronicle entry "Chronicle", and the
+ * world-news kinds keep the plain cause label.
  * @param {*} e A NotifEntry.
  * @returns {string} The chip text.
  */
@@ -229,28 +215,26 @@ export function chipLabel(e) {
       ? loc("LOC_EMIG_NV_KIND_EXTERNAL", "Emigration (Leaving)") // own people leaving for another civ
       : loc("LOC_EMIG_NV_KIND_INTERNAL", "Internal Migration"); // within the player's empire
   }
-  return causeLabel(e.cause); // per-civ crisis / per-cause world-news kinds keep the flavour label
+  return causeLabel(e.cause); // per-civ crisis / per-cause world-news kinds keep the flavor label
 }
 
 /**
- * The row accent colour, keyed by DIRECTION rather than cause: newcomers arriving from abroad read GREEN
- * (the player's gain, the only green), your own people leaving for a rival read RED (a real loss), and
- * people moving between your own cities read neutral (the source settlement still loses its tile).
- * Deaths and world-news (crisis / per-cause) rows keep their cause colour, never green for another civ's
- * gain; a chronicle entry keeps the chronicle accent.
+ * The row accent color, keyed by DIRECTION rather than cause: arrivals from abroad read GREEN, own
+ * people leaving for a rival RED, internal moves neutral. Deaths and world-news rows keep their cause
+ * color; a chronicle entry keeps the chronicle accent.
  * @param {*} e A NotifEntry.
- * @returns {string} A CSS colour.
+ * @returns {string} A CSS color.
  */
 export function rowAccent(e) {
   if (e.kind === "chronicle") return causeAccent("chronicle");
   if (e.kind === "digest" && !isDeath(e)) return digestAccent(e.ownLoss, e.crossCiv); // green (own gain) / red / neutral
-  return notificationAccent(e.cause, e.ownLoss); // deaths + world-news keep the cause colour
+  return notificationAccent(e.cause, e.ownLoss); // deaths + world-news keep the cause color
 }
 
 /**
  * Build the clickable header (turn · cause chip · summary · caret).
  * @param {*} e A NotifEntry.
- * @param {string} accent The cause accent colour.
+ * @param {string} accent The cause accent color.
  * @param {HTMLElement} caret The caret element (kept by the caller to flip on toggle).
  * @returns {HTMLElement} The header.
  */

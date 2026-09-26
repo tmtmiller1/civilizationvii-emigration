@@ -1,19 +1,9 @@
 // emigration-enclave-tooltip.js
 //
-// The enclave's OWN tooltip, on the ordinary map. Hovering an enclave's tile shows the mod's panel in
-// place of the game's plot tooltip for that one tile, because the game's tooltip can only describe the
-// borrowed improvement the enclave is drawn with ("Hidden Fortress") and has no way to say that this is
-// the Norman Enclave, what stage it has reached, what stood here before, or why the tile yields what it
-// does (see emigration-enclave-tooltip-data.js for the model and the reasoning).
-//
-// Both mechanisms are ones the mod's lenses already use and that have been watched working in game: the
-// cursor-following panel (emigration-lens-hover-panel.js) and the plot-tooltip visibility signal
-// (emigration-plot-tooltip-suppress.js). Nothing is injected into the game's own tooltip DOM, which in
-// 1.5.0 is a SolidJS tree of utility classes with no stable hook to aim at.
-//
-// The base tooltip is hidden ONLY while the enclave panel is showing and restored the moment the cursor
-// leaves the tile. While one of the mod's lenses is active this panel stands down entirely (the lens owns
-// the cursor panel and the suppression flag), so the two can never fight over either.
+// The enclave's OWN tooltip, on the ordinary map: hovering an enclave's tile shows the mod's panel
+// (emigration-lens-hover-panel.js) in place of the game's plot tooltip, which can only describe the
+// borrowed improvement. The base tooltip is hidden only while the panel shows, and while one of the
+// mod's lenses is active this panel stands down entirely so the two never fight over the flag.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import LensManager from "/core/ui/lenses/lens-manager.js";
@@ -184,9 +174,8 @@ function resolve(sig, _snap, plot) {
   return { title: _model.title, rows: [{ color: "#000000", name: _model.stage.text }] };
 }
 
-/** The panel's own stylesheet: the shared one knows only swatch rows, and fighting it with inline styles
- * is what let a long source name wrap INTO the reasoning line beneath it (watched 2026-09-17). Shaped to
- * sit alongside the game's own plot tooltip: dark panel, gold title, dim detail, hairline rules.
+/** The panel's own stylesheet (the shared one knows only swatch rows), shaped to sit alongside the
+ * game's own plot tooltip: dark panel, gold title, dim detail, hairline rules.
  * @param {string} id The panel element id. @returns {string} The CSS.
  */
 function panelCss(id) {
@@ -201,7 +190,7 @@ function panelCss(id) {
     // The title and the settlement line.
     + P + " .t{color:#f3c34c;font-weight:bold;letter-spacing:0.02em;line-height:1.3;}"
     + P + " .sub{opacity:0.7;font-size:var(--dg-fs-75);margin-bottom:0.35rem;line-height:1.3;}"
-    // The stage: a coloured dot, a headline, and its explanation under it.
+    // The stage: a colored dot, a headline, and its explanation under it.
     + P + " .stage{display:flex;align-items:baseline;}"
     + P + " .dot{width:0.5rem;height:0.5rem;border-radius:50%;flex:0 0 auto;margin-right:0.4rem;}"
     + P + " .stage-t{font-weight:bold;line-height:1.35;}"

@@ -1,12 +1,8 @@
 // emigration-migration-stats.js
 //
-// The per-civ migration TALLIES: as each pass's migrations are recorded, accumulate per-player
-// cumulative net / gross-out / gross-in / refugees / deaths, and expose per-sample deltas (used by
-// the Demographics graphs, wired in emigration-demographics.js) plus cumulative reads
-// (globalThis.EmigrationData, used by the Demographics war tooltip + the feedback layer).
-//
-// Tallies persist in GameConfiguration. The schema extends the original net-only blob
-// backward-compatibly (older saves simply lack the new maps, which default to {}).
+// The per-civ migration TALLIES: per-player cumulative net / gross-out / gross-in / refugees / deaths,
+// with per-sample deltas (Demographics graphs) and cumulative reads (globalThis.EmigrationData).
+// Tallies persist in GameConfiguration; missing maps default to {}.
 
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
@@ -87,11 +83,10 @@ let _recent = [];
  *   - = citizens Closed Borders kept home).
  * @property {Record<string, number>} stanceInPts Stance impact on IN, in pop points.
  * @property {Record<string, number>} stanceOutPts Stance impact on OUT, in pop points.
- * @property {*[]} flowHistory Decimated DELTA-encoded flow snapshots over time (P0.3), for the
+ * @property {*[]} flowHistory Decimated DELTA-encoded flow snapshots over time, for the
  *   network viz timeline scrubber. Each is {turn, age, chartTurn, year, delta}: `delta` holds only
- *   the migration that occurred in that interval; the cumulative network per frame is reconstructed
- *   on read (migrationFlowHistory) by summing deltas. chartTurn is MONOTONIC across ages (so
- *   age-local turn resets never collide or reorder).
+ *   the migration that occurred in that interval; migrationFlowHistory reconstructs the cumulative
+ *   network per frame by summing deltas. chartTurn is MONOTONIC across ages.
  * @property {number} flowSchema Flow-history encoding version (2 = delta-encoded). Legacy saves
  *   (frames carrying a cumulative `flows` clone) are migrated to deltas once on load.
  * @property {{turn:number, age:string, year:string, name:string, severity:number}[]} disasterEvents
@@ -101,29 +96,23 @@ let _recent = [];
  * @property {string} chartAge Age of the latest snapshot (to detect boundary crossings).
  * @property {number} chartLocal Age-local turn of the latest snapshot.
  * @property {string} lossAge Age of the last external-loss accounting pass, tracked independently
- *   of chartAge so the age-transition re-baseline guard (P0.2) is immune to call ordering.
+ *   of chartAge so the age-transition re-baseline guard is immune to call ordering.
  * @property {Record<string, number[]>} cityNet Per-city rolling net pop-point change ("owner|cityName"
- *   -> recent nets), bounded, for the city-readout sparkline (Feature E).
+ *   -> recent nets), bounded, for the city-readout sparkline.
  */
 
 /** @type {MigStatsState | null} */
 let _s = null;
-// The turn `_s` was last (re)read from persistence. The recorder (gameplay context) and the readers
-// (City Details Departing/Arriving, the Demographics graphs, the feedback layer) run in SEPARATE V8
-// contexts, each with its own module instance, sharing these tallies ONLY through the persisted blob.
-// A reader that cached `_s` for the module lifetime would freeze on the tallies as of its first read
-// and never see what the recorder banks turn after turn — so City Details could show a frozen
-// Departing/Arriving list beside a Population-origins block that stays fresh (that one reloads per
-// turn; see emigration-composition.js). Re-reading on each turn advance keeps every reader at most one
-// turn stale. Harmless for the recorder: it save()s every pass, so a reload re-reads its own write.
+// The turn `_s` was last (re)read from persistence. The recorder and the readers run in SEPARATE V8
+// contexts that share these tallies only through the persisted blob, so re-reading on each turn
+// advance keeps every reader at most one turn stale.
 let _loadedTurn = -1;
 registerCacheReset(() => { _s = null; _loadedTurn = -1; _recent = []; });
 
 /**
- * Carry the outgoing state's per-sample watermarks onto a freshly reloaded one. The samplers
- * (netDeltaForPlayer, sampleOut/In, sampleRefugees*, sample*ByCause) advance a watermark in memory and
- * do NOT save, so in a reader context they live only in `_s`. Without this, each turn's reload would
- * rewind them to the recorder's persisted values and the graphs would replay flow already charted.
+ * Carry the outgoing state's per-sample watermarks onto a freshly reloaded one. The samplers advance
+ * a watermark in memory without saving, so a reload would otherwise rewind them and the graphs would
+ * replay flow already charted.
  * @param {MigStatsState} next The reloaded state (mutated).
  * @param {MigStatsState|null} prev The state being replaced.
  */
@@ -230,12 +219,9 @@ function foldMigration(s, m) {
     if (typeof m.srcOwner === "number") addBoth(s.deaths, s.deathsPts, m.srcOwner, p, pts);
     return;
   }
-  // NET migration is an INTER-CIV measure: an internal move (within one civ) doesn't change that
-  // civ's total, so it must not touch the net tally, otherwise transit lag (depart debits now,
-  // arrive credits later) leaves every actively-shedding civ with a permanent in-flight deficit, so
-  // the Net chart shows everyone negative and no one positive. Gross in/out still count every move.
-  // Banks the internal (same-civ) share of the gross tallies below, so the ledger can show Internal
-  // left/arrived beside External out/in, and hands back the cross-border verdict the net tally needs.
+  // NET migration is an INTER-CIV measure: an internal move must not touch the net tally, otherwise
+  // transit lag would leave every shedding civ with a permanent in-flight deficit. foldInternal banks
+  // the same-civ share of the gross tallies and returns the cross-border verdict the net tally needs.
   const cross = foldInternal(s, m);
   if (typeof m.destOwner === "number") {
     if (cross) addBoth(s.cum, s.cumPts, m.destOwner, p, pts);
@@ -253,17 +239,10 @@ function foldMigration(s, m) {
 }
 
 /**
- * Tally a migration flow into the matrix for the network viz. The key records the origin AND
- * destination SETTLEMENT (not just the civ): "srcCiv>destCiv>srcCity>destCity". Same-owner moves are
- * KEPT as intra-civ edges (srcCiv === destCiv) so the flow map can draw city→city movement WITHIN a
- * civ; consumers split intra (src===dest) from cross-civ (src!==dest) edges by owner.
- *
- * The edge is recorded ONCE, at the move's initiation. The instantaneous "move" record carries both
- * owners; the lagged "depart" record carries srcOwner + the non-tally `edgeDestOwner` (its real
- * destOwner is withheld so the immigration tally isn't double-credited). The lagged "arrive" half
- * carries no srcOwner, so the srcOwner guard skips it, no double count. (Previously this required
- * BOTH owners, so with transit lag on, the default, every lagged move was dropped and the network
- * stayed empty.)
+ * Tally a migration flow into the matrix for the network viz, keyed "srcCiv>destCiv>srcCity>destCity".
+ * Same-owner moves are kept as intra-civ edges; consumers split them from cross-civ edges by owner.
+ * The edge is recorded ONCE at initiation: a lagged "depart" carries srcOwner + `edgeDestOwner`, and
+ * the lagged "arrive" half carries no srcOwner, so the srcOwner guard skips it.
  * @param {MigStatsState} s State.
  * @param {*} m Migration ({srcOwner?, destOwner?, edgeDestOwner?, srcName?, destName?, cause?}).
  * @param {number} p People moved.
@@ -362,11 +341,9 @@ function flowEntry(key, v, vPts) {
 // setting (a snapshot every turn) stays bounded in the save; finer than ~96 is decimated.
 const MAX_FLOW_SNAPSHOTS = 96;
 
-// Cap on distinct city-pair edges in the CUMULATIVE flow matrices (s.flows / s.flowsPts). Unlike the
-// snapshot + disaster caps, these were append-only and unbounded, a very long game could grow the
-// persisted blob until a GameConfiguration setValue silently truncates/drops it (both load + save
-// swallow exceptions), losing the WHOLE tally. When exceeded, evict the LOWEST-volume edges (smallest
-// people totals, the least informative), with hysteresis so we don't re-sort every pass.
+// Cap on distinct city-pair edges in the CUMULATIVE flow matrices (s.flows / s.flowsPts), so a very
+// long game cannot grow the persisted blob until GameConfiguration setValue silently drops it. When
+// exceeded, the lowest-volume edges are evicted, with hysteresis so we don't re-sort every pass.
 const MAX_FLOW_KEYS = 4000; // ceiling; capFlows (emigration-flow-history.js) evicts the smallest edges
 const MAX_EVENT_KEYS = 64; // per civ, per by-event map; keeps the persisted blob bounded over a long game
 
@@ -426,11 +403,9 @@ function nextChartTurn(s, age, localTurn) {
 }
 
 /**
- * Per-civ NATIVE population in pop-points right now, for the timeline's real population history. Sums
- * each civ's current city populations (s.cityPts, refreshed by accountLosses earlier this pass, see
- * emigration-main.js, which runs it before recordMigrations) and subtracts cumulative immigrant points
- * (s.inPts), clamped ≥ 0, mirroring the live gatherPops native fraction so a frame's totals reconcile
- * with the current snapshot. City keys are "owner:localId", so the leading integer is the owner.
+ * Per-civ NATIVE population in pop-points right now, for the timeline's real population history: each
+ * civ's current city populations (s.cityPts) minus cumulative immigrant points (s.inPts), clamped >= 0,
+ * mirroring the live gatherPops native fraction. City keys are "owner:localId".
  * @param {MigStatsState} s State.
  * @returns {Record<number, number>} civId → native pop points.
  */
@@ -449,17 +424,15 @@ function nativePtsByCiv(s) {
 }
 
 /**
- * Snapshot the cumulative flows for the timeline as a per-interval DELTA (P0.3): within an interval the open
- * (last) frame is kept current in place; at an interval/age boundary a new open frame is appended. The open
- * frame's delta = live cumulative (`s.flows`) − the cumulative of all prior frozen frames; over the cap, adjacent
- * deltas merge (summed). Also stamps the open frame's per-civ native `pop` (nativePtsByCiv) for real pop history.
+ * Snapshot the cumulative flows for the timeline as a per-interval DELTA: within an interval the open
+ * frame is kept current in place; at an interval/age boundary a new open frame is appended. The open
+ * frame's delta = live cumulative minus all prior frozen frames; over the cap, adjacent deltas merge.
  * @param {MigStatsState} s State.
  */
 function snapshotFlows(s) {
   const turn = gameTurn();
-  // Minor/Polish #9: mid-transition `currentAge()` returns "", which nextChartTurn would treat as
-  // an age boundary (age !== chartAge) and stamp a spurious boundary marker in the timeline. Reuse
-  // the last valid age so the phantom boundary is deferred until the new age actually resolves.
+  // Mid-transition `currentAge()` returns "", which nextChartTurn would treat as an age boundary;
+  // reuse the last valid age so the boundary is deferred until the new age actually resolves.
   const age = currentAge() || s.chartAge;
   const ct = nextChartTurn(s, age, turn);
   const interval = getSnapshotInterval();
@@ -488,9 +461,7 @@ function snapshotFlows(s) {
 /**
  * The flow history as a list of {turn, age, year, chartTurn, edges} frames (oldest → newest),
  * spanning ages. Each frame's edges are the CUMULATIVE network at that point, reconstructed by
- * summing deltas up to and including the frame (P0.3), so the timeline-scrubber consumer is
- * unchanged. Each edge's per-cause map is cloned per frame so the running accumulator never aliases
- * an earlier frame's data.
+ * summing deltas; each edge's per-cause map is cloned per frame so frames never alias each other.
  * @returns {{turn:number, age:string, year:string, chartTurn:number, edges:*[]}[]} Timeline frames.
  */
 export function migrationFlowHistory() {
@@ -605,7 +576,7 @@ function foldRemovedLosses(s, mod, t, acc) {
 /**
  * Re-baseline one city into `acc` (current population + name) WITHOUT crediting any loss, used on
  * the first accounting after an age transition so an age-driven population drop on a kept
- * settlement isn't misread as an unexplained external loss (P0.2).
+ * settlement isn't misread as an unexplained external loss.
  * @param {*} sig City signal.
  * @param {{pts:Record<string,number>, names:Record<string,string>}} acc Baseline accumulator.
  */
@@ -616,17 +587,10 @@ function rebaselineCity(sig, acc) {
 }
 
 /**
- * Detect EXTERNAL population loss this turn and fold it into the per-civ `losses` tally. For each
- * visible city: any drop beyond what the mod itself moved/removed (starvation / plague / disasters)
- * is scaled the same way migration counts are and credited to its civ; razed cities credit their
- * residual via CityRemovedFromMap. Conservative, births can mask a loss (under-count), and a city
- * that merely left vision is re-baselined (never a loss). Runs every turn; never throws.
- *
- * Age-transition guard (P0.2): ages reduce/convert kept settlements, so the first accounting in a
- * new age (or any pass taken mid-transition while `currentAge()` is "") only RE-BASELINES the
- * per-city populations and credits no loss, otherwise the age-driven drop on every preserved city
- * would spike the Losses ledger column. `lossAge` tracks the age independently of `chartAge` so the
- * guard is immune to whether recordMigrations or accountLosses runs first on the boundary turn.
+ * Detect EXTERNAL population loss this turn and fold it into the per-civ `losses` tally: any drop
+ * beyond what the mod itself moved/removed is credited to the city's civ, and razed cities credit
+ * their residual via CityRemovedFromMap. The first accounting in a new age (or a mid-transition pass)
+ * only re-baselines and credits no loss, since ages reduce/convert kept settlements.
  * @param {*[]} signals Current city signals ({key, owner, city, population}).
  * @param {*[]} migs This turn's migrations (may be empty).
  */
@@ -707,7 +671,7 @@ export function recordMigrations(migs) {
 
 /**
  * The last `n` net pop-point changes for a city ("owner|cityName" key), oldest first. Empty when the
- * city has no recorded movement yet. Feeds the city-readout sparkline (Feature E).
+ * city has no recorded movement yet. Feeds the city-readout sparkline.
  * @param {string} cityKey "owner|cityName".
  * @param {number} [n] Max points to return.
  * @returns {number[]} Recent net values.
@@ -949,7 +913,7 @@ try {
     emigrationByEventFor: (/** @type {number} */ pid) => load().outByEvent[pid] || {},
     immigrationByEventFor: (/** @type {number} */ pid) => load().inByEvent[pid] || {},
     deathsByEventFor: (/** @type {number} */ pid) => load().deathsByEvent[pid] || {},
-    // The per-city readout view-model + the session-local recent-moves feed (Phase 0 data core).
+    // The per-city readout view-model + the session-local recent-moves feed.
     citySnapshot: (/** @type {*} */ cityId) => citySnapshot(cityId),
     recentEventsFor: (/** @type {number} */ pid, /** @type {number=} */ limit) =>
       recentEventsFor(pid, limit),

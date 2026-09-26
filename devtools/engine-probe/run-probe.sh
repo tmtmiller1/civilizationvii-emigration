@@ -11,7 +11,7 @@ PROBE_SRC="$(cd "$(dirname "$0")" && pwd)"
 say() { echo "[$(date +%H:%M:%S)] $*"; }
 
 # Remember every emigration row's Disabled flag so the restore puts the registry back exactly as the
-# player had it (forcing Disabled=1 afterwards left the mod switched off for the next real session).
+# player had it (forcing Disabled=1 afterward left the mod switched off for the next real session).
 PRE_STATE=$(sqlite3 "$DB" "select ModRowId||'='||Disabled from Mods where ModId='emigration'")
 sqlite3 "$DB" "update Mods set Disabled=0 where ModId='emigration' and ScannedFileRowId in (select ScannedFileRowId from ScannedFiles where Path like '%/Civilization VII/Mods/emigration/%')"
 cp "$MI" "$MI.bak"

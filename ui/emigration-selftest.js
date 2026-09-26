@@ -1,24 +1,12 @@
 /* eslint-disable max-lines -- dev-only, option-gated Self-Test screen; accumulates probe wiring. */
 // emigration-selftest.js
 //
-// An ON-SCREEN, no-console diagnostic for verifying the mod live, in-game, WITHOUT a developer console.
-// Gated behind the `selftestEnabled` option (off by default). When on, the dock decorator adds a
-// "Self-Test" button to the subsystem dock; clicking it opens THIS screen.
-//
-// IMPORTANT — why this is a real screen, not a HUD DOM overlay: a mod overlay appended to the HUD does
-// not receive clicks, because Civ VII routes input to a mouse guard owned by whatever screen the
-// ContextManager pushed. So the self-test is a proper base-UI Panel pushed with `createMouseGuard: true`
-// (exactly like the migration dashboard) — that guard is what makes its buttons clickable.
-//
-// The panel:
-//   • runs a battery of checks (emigration-selftest-checks.js) as PASS/WARN/FAIL/INFO rows;
-//   • ACTIONS: run a real migration pass; force the Cultural-Enclave decision; force a refugee dilemma;
-//     fire test toasts (one, or all four types); open the migration dashboard; and produce a
-//     screenshot-friendly bug-report snapshot (version + every check + key settings).
-//   • the enclave force offers the decision via the real showDilemma path (relaxed to a foothold) — the
-//     same interactive modal the game uses.
-//
-// Everything is defensive: a self-test failure can never disrupt a game.
+// An ON-SCREEN, no-console diagnostic for verifying the mod live, in-game. Gated behind the
+// `selftestEnabled` option; when on, the dock decorator adds a "Self-Test" button that opens THIS
+// screen. It is a real base-UI Panel pushed with `createMouseGuard: true` because a plain HUD overlay
+// never receives clicks. It runs the checks in emigration-selftest-checks.js as PASS/WARN/FAIL/INFO
+// rows and offers actions (run a pass, force the enclave decision or a dilemma, fire test toasts,
+// open the dashboard, produce a bug-report snapshot). A self-test failure can never disrupt a game.
 
 import Panel from "/core/ui/panel-support.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
@@ -33,7 +21,7 @@ import { loc } from "/emigration/ui/emigration-loc.js";
 import { runPass } from "/emigration/ui/emigration-engine.js";
 import { TUNABLES } from "/emigration/ui/emigration-tunables.js";
 import { runChecks, pickPreviewOrigin, errMsg } from "/emigration/ui/emigration-selftest-checks.js";
-// Cultural-enclave BUILD feature removed (archived). These dev self-test probes are now inert no-ops.
+// These dev self-test probes are inert no-ops.
 const noop = (/** @type {*} */ _render) => {};
 const runEnclavePlacementProbe = noop, reReadEnclaveProbe = noop, runCapabilityIntrospection = noop,
   runBuildableImprovementProbe = noop, runAutoBuildProbe = noop, runSeedBuildProbe = noop,
@@ -86,9 +74,8 @@ function deferSafe(fn) {
 
 /**
  * A SYNTHETIC Cultural-Enclave decision view — a spoofed preview that fires regardless of whether the
- * player has a qualifying diaspora. Names a REAL foreign origin when one exists; for the placeholder
- * (civ < 0, no foreign community) it uses pure fallback strings and NEVER calls the engine naming
- * lookups (which throw on an invalid id). Every naming call is wrapped so a bad id can't crash.
+ * player has a qualifying diaspora. Names a REAL foreign origin when one exists; the placeholder
+ * (civ < 0) uses pure fallback strings and never calls the engine naming lookups (they throw on an invalid id).
  * @param {{civ:number, place:string}} origin @returns {*} The dilemma view model.
  */
 function syntheticEnclaveView(origin) {
@@ -113,10 +100,9 @@ function syntheticEnclaveView(origin) {
  * clickable — so it always fires, even with no foreign community. Applies nothing.
  */
 function forceEnclavePopup() {
-  // Close THIS self-test screen first. The decision now renders through the engine's native dialog
-  // (DialogBoxManager); shown while this mouse-guard-backed screen is still up, that dialog can sit
-  // behind it / have its input eaten — which is exactly why the probe pop-up looked dead. Popping this
-  // screen first lets the dialog own the foreground and receive clicks, matching the in-game path.
+  // Close THIS self-test screen first: the decision renders through the engine's native dialog
+  // (DialogBoxManager), which can sit behind this mouse-guard-backed screen and have its input eaten.
+  // Popping this screen first lets the dialog own the foreground and receive clicks.
   closeSelfTestScreen();
   deferSafe(() => {
     const view = syntheticEnclaveView(pickPreviewOrigin());
@@ -127,9 +113,8 @@ function forceEnclavePopup() {
 
 /**
  * Run a real migration pass now, with the throttle temporarily relaxed (pressure bar → 1, no cooldown,
- * high move cap) so movement actually surfaces — a normal pass is gated on 30 accumulated pressure + an
- * 8-turn cooldown, so a single manual pass almost always moves nobody. Restores the settings after, and
- * refreshes the checks. 0 still means "no migration pressure anywhere right now" (all settlements content).
+ * high move cap) so movement actually surfaces. Restores the settings after, and refreshes the checks.
+ * 0 still means "no migration pressure anywhere right now" (all settlements content).
  */
 function runMigrationPass() {
   const saved = {
@@ -215,14 +200,10 @@ function disarmDilemma(h) {
 }
 
 /**
- * Arm the ACTUAL in-game trigger. Registers a one-shot on the real `PlayerTurnActivated` engine event and,
- * on the local player's next turn, fires a REAL refugee dilemma SYNCHRONOUSLY from inside that event — the
- * exact context that broke in a live game — WITH its real applied effects (gold/happiness/influence cost +
- * a settled population point), so a choice visibly moves your yields. The button-fired previews above are
- * DEFERRED (setTimeout) and apply no effect, so they can neither reproduce the engine-event bug nor prove
- * the outcome; that is why they always "passed" while real games failed. This is the faithful end-to-end
- * test: arm it, end one turn, and if the pop-up appears, its buttons respond, AND the chosen effect lands
- * on your yields, the in-game path is genuinely working.
+ * Arm the ACTUAL in-game trigger: a one-shot on the real `PlayerTurnActivated` engine event that, on
+ * the local player's next turn, fires a REAL refugee dilemma SYNCHRONOUSLY from inside that event WITH
+ * its real applied effects. The button-fired previews above are DEFERRED (setTimeout) and apply no
+ * effect, so only this path proves the in-game trigger end to end.
  */
 function armRealDilemma() {
   if (_armedDilemmaHandler) {
@@ -381,9 +362,8 @@ function renderEnclaveResult(lines) {
 
 /**
  * FEASIBILITY test: place a real tile IMPROVEMENT on your capital and read back whether it lands and its
- * yield enters the net-yield rate (the GPT banner + breakdown). This is the test behind converting the
- * enclave "Tax them" stance off the invisible Players.grantYield injection. Has a REAL effect (it places
- * an actual improvement on a tile); results render below.
+ * yield enters the net-yield rate (the GPT banner + breakdown). Has a REAL effect (it places an actual
+ * improvement on a tile); results render below.
  */
 function testEnclavePlacement() {
   banner("Enclave placement test running — see the result box below (reads back in ~1s).");

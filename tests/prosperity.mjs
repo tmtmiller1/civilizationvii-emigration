@@ -148,7 +148,7 @@ function testSituationalCompositionAddsLinearlyInPercentSpace() {
 
 // ── Algorithm A: shaped happiness (field-relative, saturating, asymmetric) ──
 
-// prosperity of the test city at happiness h, centred on a given field mean.
+// prosperity of the test city at happiness h, centered on a given field mean.
 function shaped(h, mean) {
   return prosperity(
     signal({ food: 10, production: 10, population: 2, happiness: h }),

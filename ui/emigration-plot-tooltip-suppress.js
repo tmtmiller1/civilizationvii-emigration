@@ -4,28 +4,12 @@
 // the enclave tooltip is up), so it doesn't clash with the mod's own cursor-following panel. Shared by
 // the Ethnicity and Prosperity lenses and the enclave tooltip so they all behave identically.
 //
-// On 1.5.0 the plot tooltip is the ui-next one, and it gates its show on TWO independent signals
-// (base-standard/ui-next/tooltips/plot-tooltip/plot-tooltip.js, the createEffect at ~1321):
-//
-//   1. `IsPlotTooltipVisible`, written by the exported SetIsPlotTooltipVisible().
-//   2. `isGlobalRuleVisible`, written by the `ui-hide-plot-tooltips` / `ui-show-plot-tooltips` window
-//      events the component listens for onMount (~1348).
-//
-// We drive BOTH, and the second one is the load-bearing one - the reverse of what this file used to
-// claim. The signal is shared, un-ref-counted state: tutorial-callout, screen-endgame,
-// panel-unit-combat-preview and panel-pantheon-complete all set it back to true when they close, which
-// would silently un-suppress the tooltip mid-lens (our `_hidden` latch would never re-apply it). The
-// event gate is ours alone - nothing in base-standard, nothing in core, and no installed mod dispatches
-// either event - so it is the one that actually holds the tooltip down. Do not "clean up" the dispatch
-// as a legacy backstop.
-//
-// The `display:none` on `.plot-tooltip` is the only genuinely legacy piece, and it is dead on 1.5.0: the
-// ui-next tooltip does not emit that class. It is kept because it costs nothing and still works on a
-// pre-ui-next build. There is nothing left to fight over there in any case - the legacy plot-tooltip
-// path the tooltip mods hooked is gone in 1.5.0 (`base-standard/ui/tooltips/plot-tooltip.js` no longer
-// exists, so TCS Improved Plot Tooltip's ImportFiles override lands on nothing, and
-// `/core/ui/tooltips/tooltip-manager.js` no longer exports `PlotTooltipPriority`, so bz-map-trix's
-// bz-plot-tooltip.js cannot even load). See docs/tooltip-mod-compatibility.md.
+// The ui-next plot tooltip gates its show on TWO independent signals: `IsPlotTooltipVisible` (written by
+// SetIsPlotTooltipVisible(), shared un-ref-counted state that several base panels reset to true when they
+// close) and `isGlobalRuleVisible` (written by the `ui-hide-plot-tooltips` / `ui-show-plot-tooltips`
+// window events, which nothing else dispatches). We drive BOTH; the event gate is the one that actually
+// holds the tooltip down, so do not "clean up" the dispatch. The `display:none` on `.plot-tooltip` is a
+// pre-ui-next backstop kept because it costs nothing. See docs/tooltip-mod-compatibility.md.
 
 import { SetIsPlotTooltipVisible } from "/base-standard/ui-next/tooltips/plot-tooltip/plot-tooltip.js";
 
@@ -69,22 +53,10 @@ function apply(hidden) {
 }
 
 /**
- * Hide or restore the plot tooltip.
- *
- * Suppression is not a one-shot write, because two other writers can undo it and neither is readable
- * from here:
- *
- *   - `SetIsPlotTooltipVisible` is shared, un-ref-counted state. tutorial-callout, screen-endgame,
- *     panel-unit-combat-preview and panel-pantheon-complete each set it back to `true` when they
- *     close. Against a tooltip mod that honours ONLY that signal - QD Improved Plot Tooltip replaces
- *     the whole PlotTooltip component via ComponentRegistry and drops the event gate - closing a
- *     combat preview under an active lens would un-suppress the tooltip for the rest of the session.
- *   - `isGlobalRuleVisible`, the event gate, is created INSIDE the plot-tooltip component, so it
- *     resets to `true` whenever that component remounts.
- *
- * So rather than try to detect a stomp, we hold the state down: while suppression is wanted a timer
- * re-asserts it every RE_ASSERT_MS, and the timer is cleared the moment it is not. That is one signal
- * write plus one event per interval, only while a lens (or the enclave tooltip) is actually up.
+ * Hide or restore the plot tooltip. Suppression is not a one-shot write: other writers can undo it
+ * (base panels reset `SetIsPlotTooltipVisible` to true when they close, and the event gate resets when
+ * the plot-tooltip component remounts) and neither is readable from here, so while suppression is
+ * wanted a timer re-asserts it every RE_ASSERT_MS, and the timer is cleared the moment it is not.
  * @param {boolean} hidden True to hide the plot tooltip, false to restore it.
  */
 export function setBasePlotTooltipHidden(hidden) {
