@@ -1,19 +1,16 @@
 // emigration-guide.js
 //
-// The "What counts" reference: a yes/no matrix of common questions about what does and doesn't
-// cause, attract, or participate in migration, kept in step with the mod's actual DEFAULT behavior.
-// Rendered as flexbox rows (GameFace lays out neither <table> nor CSS grid) for the dashboard's
-// Guide tab; the same matrix is mirrored in the README. Self-contained (own style + DOM) so the
-// line-capped render core (emigration-views.js) only has to wire it in. Every visible string is
-// localized at render through a stable, position-derived LOC key (LOC_EMIG_GUIDE_<section>_...), with
-// the English text below kept in code as the fallback.
+// The "What counts" reference: a yes/no matrix of common questions about what does and doesn't cause,
+// attract, or participate in migration, kept in step with the mod's DEFAULT behavior and rendered as
+// flexbox rows (GameFace lays out neither <table> nor CSS grid) for the dashboard's Guide tab. Every
+// visible string is localized at render through a position-derived LOC key (LOC_EMIG_GUIDE_<section>_...),
+// with the English text below as the fallback.
 
 import { loc } from "/emigration/ui/emigration-loc.js";
 
 const YES = "✓"; // U+2713 CHECK MARK (renders in the GameFace body/title fonts)
 // U+00D7 MULTIPLICATION SIGN, not U+2717 BALLOT X: the ballot-X glyph is absent from the GameFace
-// fonts (it rendered blank, so "not covered" rows showed nothing), while × is present everywhere.
-// Styled bold + larger via `.emig-guide-ic.n` so it reads as a clear red X.
+// fonts, while × is present everywhere. Styled bold + larger via `.emig-guide-ic.n` so it reads as a clear red X.
 const NO = "×";
 
 /**
@@ -55,7 +52,7 @@ const GUIDE = [
     rows: [
       { q: "Your civilization", yes: true, note: "Sends and receives like any major civ." },
       { q: "Towns, not just cities", yes: true, note: "Participate the same as cities." },
-      { q: "Your own cities trade people (internal migration)", yes: true, note: "People also move within a civ; the dashboard colours internal moves separately." },
+      { q: "Your own cities trade people (internal migration)", yes: true, note: "People also move within a civ; the dashboard colors internal moves separately." },
       { q: "Other major civilizations", yes: true, note: "All simulated from turn one, met or not, so the map isn't exploration-biased." },
       { q: "Unmet civilizations", yes: true, note: "Simulated, masked in the UI by default until you widen the visibility policy." },
       { q: "City-states / minor civs / Independent Powers", yes: false, note: "Don't send or receive, though attacking a major civ's city still drives that city's people out." }
@@ -110,7 +107,7 @@ const GUIDE = [
   {
     title: "FAQ: War, conquest & recovery",
     faq: [
-      { q: "What happens when I capture or lose a city?", a: "Its residents stay coded to the civ they came from; the lens and network dots keep that origin's colour, and only new post-capture population counts as yours. So a conquered city carries real origin history that fades as it regrows. War can shrink it, but only a capture transfers it." },
+      { q: "What happens when I capture or lose a city?", a: "Its residents stay coded to the civ they came from; the lens and network dots keep that origin's color, and only new post-capture population counts as yours. So a conquered city carries real origin history that fades as it regrows. War can shrink it, but only a capture transfers it." },
       { q: "My city shrank from size 12 to 5 in a war, will it grow back?", a: "Yes. Displacement moves population points and abandons one rural improvement per point. A crisis can also remove buildings from the urban core, earlier-age buildings first and never walls, at most a third of the urban population per crisis. Districts and the city stand until a capture. The city regrows through normal food growth and immigration once fighting stops and prosperity recovers. Each new rural point places a new tile." },
       { q: "Do the same refugees who fled come back?", a: "Some do, via Return Migration: once a diaspora's homeland is at peace with the host and faring well, a fraction set out for home over time, moving real population back. A slow ebb, never a snap-back, only while relations stay peaceful. On by default; switch it off in Options." },
       { q: "Does repairing pillaged tiles restore the lost population?", a: "No. Pillaged tiles apply pressure. Repairing them removes it, so the city stops bleeding people and recovers faster, but a repair never adds a population point back. A pillaged tile is also the first one a departure abandons, so a raid and the flight it causes cost one tile, not two." },
@@ -146,7 +143,7 @@ const GUIDE = [
   {
     title: "FAQ: Ethnicity, the Chronicle & decisions",
     faq: [
-      { q: "What is the Ethnic Composition lens showing?", a: "Each settlement painted by where its people came from: a per-tile mosaic weighted by density, the core vivid in the dominant origin's colour, diaspora tiles staying clearly coloured so even a small community reads (a single-origin city still shows one colour). It shows demographic shift over time, e.g. a captor's colour strengthening as a conquered city regrows. Shift+E to toggle." },
+      { q: "What is the Ethnic Composition lens showing?", a: "Each settlement painted by where its people came from: a per-tile mosaic weighted by density, the core vivid in the dominant origin's color, diaspora tiles staying clearly colored so even a small community reads (a single-origin city still shows one color). It shows demographic shift over time, e.g. a captor's color strengthening as a conquered city regrows. Shift+E to toggle." },
       { q: "What is the Migration Chronicle?", a: "A written history of the great migrations as they happen (a city emptied by war, a diaspora taking root, a people returning home), each a short line drawn from the city's real surroundings, so it never invents a feature the place lacks. Appears in the Notifications tab as Chronicle entries." },
       { q: "A pop-up asked me what to do about refugees, what is that?", a: "A refugee decision: when an upheaval (a conquest spree or plague crisis) sends a wave your way, you choose to welcome them (small gold cost, they settle and integrate), settle the frontier, or turn them away. Light effects, rare. Off under Options ▸ Mods ▸ Emigration ▸ refugee decisions." },
       { q: "How do I turn the new identity systems on or off?", a: "Each has its own switch under Options ▸ Mods ▸ Emigration (all on by default): ethnic integration, return migration, and refugee decisions. The lens is always available; Chronicle entries log to Notifications." }

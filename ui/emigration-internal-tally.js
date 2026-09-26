@@ -2,9 +2,7 @@
 //
 // The INTERNAL (within-one-civ) migration tallies behind the Net Migration Table's Internal / External
 // split: how many people LEFT a civ's settlements for another of its own, and how many ARRIVED from
-// one. The gross in/out tallies count every move, so External = gross - internal. Kept out of
-// emigration-migration-stats.js so that file stays under the size gate; this module only reads and
-// writes the state it is handed.
+// one. The gross in/out tallies count every move, so External = gross - internal.
 
 /** Schema stamp: 1 = the internal tallies exist (folded live, or backfilled once from the flows). */
 export const INTERNAL_SCHEMA = 1;
@@ -34,10 +32,8 @@ export function isCrossCiv(m) {
 
 /**
  * Bank one NON-attrition migration's INTERNAL share and report whether it crossed a border (the
- * caller needs that same verdict for the net tally, and deciding it twice risks the two disagreeing).
- * A cross-civ move only returns true; an internal one credits "arrived" on its destination half and
- * "left" on its source half, so a lagged move lands its departure now and its arrival when the
- * transit completes, exactly like the gross tallies.
+ * caller needs the same verdict for the net tally). An internal move credits "arrived" on its
+ * destination half and "left" on its source half, exactly like the gross tallies.
  * @param {*} s Stats state (carries intOut/intIn + the parallel *Pts maps).
  * @param {*} m Migration record.
  * @returns {boolean} Whether the move crossed a civ border.
@@ -120,11 +116,9 @@ function seed(intra, gross) {
 }
 
 /**
- * One-time backfill for a save made before the internal tallies existed: without it, every move
- * already banked would read as External. The flow matrix keeps intra-civ edges (recorded once, at
- * departure), so the internal share is recovered from it. Approximate by construction: migrants in
- * transit at the moment of the backfill are seeded as already arrived, and edges evicted by the flow
- * cap are lost. Idempotent; stamps the schema so it never runs twice on a saved state.
+ * One-time backfill for a save without internal tallies, recovering the internal share from the flow
+ * matrix's intra-civ edges. Approximate: in-transit migrants are seeded as arrived, and edges evicted
+ * by the flow cap are lost. Idempotent; stamps the schema so it never runs twice.
  * @param {*} s Stats state (mutated).
  */
 export function backfillInternal(s) {

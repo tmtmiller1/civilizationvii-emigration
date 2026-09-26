@@ -12,7 +12,7 @@
 //
 //  1. A two-city civ drew NO internal arrow, ever.
 //  2. Packing anchors the biggest city at the origin with the next discs tangent to it, so the
-//     LARGEST city's internal flows — the most-travelled corridors — were the likeliest to vanish.
+//     LARGEST city's internal flows — the most-traveled corridors — were the likeliest to vanish.
 //
 // The trim now shrinks to fit instead of dropping, and keeps the full trim wherever the old guard
 // would have passed (so long-haul arrows are unchanged).
@@ -28,7 +28,7 @@ const UNIT = 1; // one dot per person keeps the arithmetic readable
  * Lay out one civ with the given city populations and ask for the flow segments of a frame carrying
  * an internal move for EVERY ordered city pair.
  * @param {number[]} pops Population per city.
- * @returns {{segs:*[], pairs:number, center:*}} Segments, the pair count fed in, the civ centre.
+ * @returns {{segs:*[], pairs:number, center:*}} Segments, the pair count fed in, the civ center.
  */
 function internalSegments(pops) {
   const cities = pops.map((pop, i) => ({ name: "C" + i, town: false, pop, pts: pop }));
@@ -77,7 +77,7 @@ function testArrowsHaveVisibleLength() {
 
 function testTangentPairsAreTheTightOnes() {
   // Pin the MECHANISM, not just the symptom: the pairs that need the shrunk trim are exactly the
-  // ones the packing seated tangent (centre distance <= the full-trim span).
+  // ones the packing seated tangent (center distance <= the full-trim span).
   const { segs, center } = internalSegments([300, 120, 60, 30, 10]);
   const cs = center.cities;
   let tangent = 0;

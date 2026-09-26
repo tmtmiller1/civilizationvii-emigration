@@ -272,12 +272,11 @@ function checkForce() {
         "offer the decision, if you have any foreign community.");
 }
 
-// ── balance-fix probes (2026-07: refugee throttle, contested-enclave yield, razing → refugee) ────────
+// ── balance probes (refugee throttle, contested-enclave yield, razing → refugee) ────────────────────
 
 /**
- * Issue 3 — a razing settlement flees as a war refugee. Behavioural: runs the live classifier on a
- * synthetic "being razed, no battle damage yet" source and asserts it reads as "war" (so its people
- * flee abroad with the crisis-escape pull), not an economic cause. Proves the fix is in this build.
+ * A razing settlement flees as a war refugee. Behavioral: runs the live classifier on a synthetic
+ * "being razed, no battle damage yet" source and asserts it reads as "war", not an economic cause.
  */
 function checkRazingRefugees() {
   try {
@@ -297,7 +296,7 @@ function checkRazingRefugees() {
 }
 
 /**
- * Issue 2 — a contested enclave contributes a reduced yield. Behavioural: reads the same scale the grant
+ * A contested enclave contributes a reduced yield. Behavioral: reads the same scale the grant
  * path uses (contestedBenefitScale) and asserts it drops below 1 while contested; also lists any of the
  * player's enclaves currently contested and the share they now pay.
  */
@@ -329,9 +328,8 @@ function checkContestedEnclaveYield() {
 }
 
 /**
- * Issue 1 — under Anti-Immigration, admitted refugees settle more slowly (the settlement budget is
- * throttled on the SAME openness floor as the border turn-away, not the old hard-coded 25%). Live
- * observation of the local player's stance + staged pool.
+ * Under Anti-Immigration, admitted refugees settle more slowly (the settlement budget is throttled on
+ * the SAME openness floor as the border turn-away). Live observation of the local player's stance + staged pool.
  */
 function checkClosedBorderThrottle() {
   const floorPct = Math.round((num(CONFIG.opennessFloor) || 0) * 100);
@@ -358,7 +356,7 @@ function checkClosedBorderThrottle() {
   }
 }
 
-// ── departures and arrivals made real (2026-09) ─────────────────────────────────────────────────────
+// ── departures and arrivals made real ───────────────────────────────────────────────────────────────
 
 /**
  * Departure tile abandonment: is the engine surface (Districts / Constructibles / DESTROY_ELEMENT)
@@ -428,10 +426,10 @@ function checkArrivalPlacement() {
         : "newcomers arrive as a Migrant unit you resettle yourself."));
 }
 
-// ── v2.1.0 probes (notification clarity + interface localization) ────────────────────────────────────
+// ── notification clarity + interface localization probes ─────────────────────────────────────────────
 
 /**
- * v2.1.0 “clearer migration notifications” — behavioural. Confirms (a) the “why there” clause names only
+ * Clearer migration notifications — behavioral. Confirms (a) the “why there” clause names only
  * destination-PULL reasons and drops flight fragments like “escaping the crisis”, and (b) the toast/log
  * tint agrees by DIRECTION: own people leaving for a rival read red, internal moves and arrivals green.
  */
@@ -459,7 +457,7 @@ function checkNotificationClarity() {
   }
 }
 
-// Representative newly-localized surface (v2.1.0), one key each, to spot-check that translations resolve
+// Representative localized surfaces, one key each, to spot-check that translations resolve
 // in the PLAYER's current locale — a runtime companion to the build-time i18n parity + ui-keys gates.
 const L10N_SAMPLE = [
   ["LOC_EMIG_DIL_FX_GOLD", "refugee-dilemma effect labels"],
@@ -485,7 +483,7 @@ function resolvesLoc(key) {
 }
 
 /**
- * v2.1.0 “full interface localization” — runtime spot-check. Samples one key per newly-localized surface
+ * Interface localization — runtime spot-check. Samples one key per localized surface
  * and reports how many resolve in the player's language (a raw "LOC_…" tag = a missing translation).
  */
 function checkLocalization() {
@@ -512,8 +510,6 @@ function checkLocalization() {
 /**
  * Pick a foreign origin + place to headline a FORCED enclave preview: a real foreign minority in one of
  * your cities if any exists (even below the enclave bar), else a placeholder so the preview still fires.
- * Used by the self-test's "Force enclave pop-up", which spoofs the requirements rather than needing a
- * real qualifying diaspora.
  * @returns {{civ:number, place:string}}
  */
 export function pickPreviewOrigin() {

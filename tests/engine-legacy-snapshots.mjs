@@ -126,7 +126,7 @@ function pinBaseConfig() {
   const recs = runPass();
   assert.ok(Array.isArray(recs), "stance: the pass completes with the counterfactual planned");
   const crossCiv = recs.filter((m) => m.crossCiv);
-  assert.ok(crossCiv.length >= 1, "stance: an open-bordered rich neighbour pulls cross-civ migrants");
+  assert.ok(crossCiv.length >= 1, "stance: an open-bordered rich neighbor pulls cross-civ migrants");
 })();
 
 // ── 3. Snapshot readers over a live world ─────────────────────────────────────

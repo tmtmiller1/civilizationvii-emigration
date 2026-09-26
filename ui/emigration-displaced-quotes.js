@@ -1,17 +1,11 @@
 // emigration-displaced-quotes.js
 //
 // Epigraphs for the refugee decision, the newcomers pop-up and the call-our-people-home dialogs, chosen by
-// the civilization the people come from (for a call home, that is the player's own). The homecoming lines
-// themselves live in emigration-return-quotes.js and are merged in here as the "return" kind.
-// Curation rule, in order: the words of an actual refugee, exile, deportee, or migrant of that people;
-// else a contemporary witness who writes about them with dignity; else the civilization has no row and a
-// general pool quote, also in the voice of the displaced, is used. Every line was located in a readable
-// copy of its source before shipping; the citations are in docs/quote-sources.md. Nothing here may
-// stereotype a people or frame the displaced as a threat or a burden.
-//
-// A civilization the player has not met gets a pool quote, so the epigraph never names who is coming.
-// Display and localization reuse the enclave quote format: `"<original> (<English>)" — <who>, <source>`,
-// one LOC row per quote, identical in every locale.
+// the civilization the people come from; the homecoming lines live in emigration-return-quotes.js and are
+// merged in as the "return" kind. Curation rule, in order: an actual refugee, exile, deportee or migrant of
+// that people, else a contemporary witness who writes about them with dignity, else the general pool
+// (see docs/quote-sources.md). An unmet civilization gets a pool quote, so the epigraph never names who is
+// coming. Display reuses the enclave quote format, one LOC row per quote, identical in every locale.
 
 import { quoteDisplay, renderableLine } from "/emigration/ui/emigration-quarter-bonuses.js";
 import { loc } from "/emigration/ui/emigration-loc.js";

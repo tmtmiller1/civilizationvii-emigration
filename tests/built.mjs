@@ -8,7 +8,7 @@
 // every building an age, a DLC or another mod adds — so the tests feed database-shaped rows, not
 // building names. Second, that the term is BOUNDED: each role counts once however many markets a city
 // builds, wonders are capped, and the whole thing is clamped. An unbounded "reason to stay" term would
-// let a tall build order park a settlement permanently above every neighbour.
+// let a tall build order park a settlement permanently above every neighbor.
 
 import assert from "node:assert/strict";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
@@ -49,13 +49,13 @@ CONFIG.builtRoleWeights = {
   assert.equal(roleFor(def(), null, new Set(["YIELD_PRODUCTION"])), "work", "production is work");
 }
 
-// ── Defence outranks yields: walls are a reason to stay that is not output ────
+// ── Defense outranks yields: walls are a reason to stay that is not output ────
 {
   const rich = new Set(["YIELD_GOLD", "YIELD_FOOD", "YIELD_SCIENCE"]);
   assert.equal(roleFor(def({ Defense: 5 }), null, rich), "safety",
     "a defensive building is safety even when it also yields (kills a yields-first ordering)");
   for (const field of ["DefenseModifier", "OuterDefenseStrength", "GrantFortification"]) {
-    assert.equal(roleFor(def(), { [field]: 3 }, new Set()), "safety", `${field} counts as defence`);
+    assert.equal(roleFor(def(), { [field]: 3 }, new Set()), "safety", `${field} counts as defense`);
   }
 }
 

@@ -1,32 +1,11 @@
 // emigration-violence.js
 //
-// Per-city "violence intensity" - the actual fighting inside a settlement's
-// borders, which is what should drive war refugees (NOT the empire merely being
-// at war). A civilization at war but with no combat in a given city's territory
-// produces no violence there, so that city sees no war-driven emigration.
-//
-// Everything is POLLED from the gameplay model each turn, never event-driven, so
-// it is FOG-INDEPENDENT and symmetric: a war the player can watch and a distant
-// AI-vs-AI war in the dark register identically. (Event-based combat detection
-// only fires for what the local player can see, which would bias emigration
-// toward player-adjacent conflicts - so it is deliberately not used.)
-//
-//   • District damage - the city center district's health
-//     (Players.Districts.get(owner).getDistrictHealth / getDistrictMaxHealth at
-//     city.location). The base game reads this the same way for every alive
-//     player and only gates the on-screen HEALTH BAR by visibility, so the value
-//     is readable for foreign cities being sacked out of view. A turn-over-turn
-//     INCREASE = fresh assault (a spike); standing damage = an ongoing siege.
-//   • Pillage - damaged constructibles on the city's purchased plots
-//     (MapConstructibles.getConstructibles → Constructibles.getByComponentID
-//     .damaged). Each pillaged tile adds a small standing pressure until it is
-//     repaired. This applies PRESSURE only (it slides emigration up via the
-//     prosperity penalty); it never moves or destroys a pop point, so repairing
-//     a tile can't recycle population.
-//
-// Intensity ACCUMULATES and DECAYS each turn, so the score tracks recent, ongoing
-// violence: a sustained siege builds high; a lone raid fades in 2–3 turns (the
-// "duration" dimension). State persists in GameConfiguration.
+// Per-city "violence intensity" - the actual fighting inside a settlement's borders, which drives war
+// refugees (NOT the empire merely being at war). Signals are POLLED from the gameplay model each turn
+// (city-center district damage, pillaged constructibles, plus the combat-event evidence), so the model is
+// fog-independent and symmetric between player-visible and distant AI wars. Pillage applies pressure
+// only; it never moves or destroys a pop point. Intensity accumulates and decays each turn, so a
+// sustained siege builds high while a lone raid fades. State persists in GameConfiguration.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { speedTurns, speedDecay } from "/emigration/ui/emigration-game-speed.js";
@@ -118,7 +97,7 @@ function finiteMap(m) {
  * @returns {ViolenceState} The normalized state.
  */
 function normalizeViolence(s) {
-  // Sanitize every numeric map on load (F8) so a corrupted/hand-edited save
+  // Sanitize every numeric map on load so a corrupted/hand-edited save
   // can't seed NaN that propagates through the decay math for a cycle.
   return {
     byCity: finiteMap(s.byCity),
@@ -166,10 +145,8 @@ function persist() {
 function keyFromCID(cid) {
   try {
     if (!cid) return null;
-    // Prefer the owner:id pair directly off the component id, the same fields the district matching
-    // reads successfully. ComponentID.toBitfield does NOT reliably yield a number/string for a CITY
-    // component id (it returned a non-primitive here, so keyFromCID was returning null and the whole
-    // violence model silently no-op'd). Fall back to the bitfield only if owner:id is unavailable.
+    // Prefer the owner:id pair directly off the component id: ComponentID.toBitfield does NOT reliably
+    // yield a number/string for a CITY component id. Fall back to the bitfield only if owner:id is unavailable.
     if (typeof cid.owner === "number" && cid.id != null) return cid.owner + ":" + cid.id;
     if (typeof ComponentID !== "undefined") {
       const bf = ComponentID.toBitfield(cid);
@@ -196,19 +173,11 @@ function majorScale() {
 
 /**
  * Who is attacking this city, where that answer came from, and whether every one of them is a minor power
- * (city-state or Independent Power). Minor-only requires POSITIVE evidence: the attackers must be nameable
- * and all minor. An empty or unreadable set counts as a major war, because the alternative is quietly
- * downgrading a real invasion whenever the read fails.
- *
- * Sources, best first -- each is used only when the one above it names nobody:
- *   struck    whoever fought in this city's territory, from the combat event stream. Not a proxy: the
- *             engine reporting who was involved. Blind only to fighting before the mod loaded.
- *   units     armed hostile units standing on or beside the city's districts. Catches an army massing
- *             before the first blow. Fog-independent (watched: it reads never-revealed foreign cities).
- *   district  whoever holds an overrun district. Map truth, but only once ground has been lost.
- *   atwar     the at-war list, a poor proxy used last: `isAtWarWith` is true for EVERY Independent Power at
- *             all times (mod test 109: 18-19 of them with nothing besieged), so on its own it only says
- *             whether any MAJOR is at war with the owner anywhere.
+ * (city-state or Independent Power). Minor-only requires POSITIVE evidence; an empty or unreadable set
+ * counts as a major war so a failed read never downgrades a real invasion. Sources, best first, each used
+ * only when the one above names nobody: combat events (struck), hostile units beside the districts
+ * (units), an overrun district's holder (district), then the at-war list (atwar; `isAtWarWith` is true
+ * for EVERY Independent Power, so it only says whether any MAJOR is at war with the owner).
  * @param {*} city A live city object. @param {number[]} struck Attackers from this observation's events.
  * @returns {{minorsOnly:boolean, source:string, named:number[]}} The decision and its basis.
  */
@@ -250,12 +219,9 @@ function isMinor(pid) {
 }
 
 /**
- * Fold this turn's polled signals into a city's intensity: a spike for fresh
- * district damage, a standing term while the city center stays hurt, and a
- * per-pillaged-tile term while improvements in its borders sit pillaged. All
- * fog-independent and never touching population - pillaging applies pressure
- * (which slides emigration up), it does not move or destroy a pop point, so
- * repairing a tile can't be used to recycle population.
+ * Fold this turn's polled signals into a city's intensity: a spike for fresh district damage, a
+ * standing term while the city center stays hurt, and a per-pillaged-tile term. Never touches
+ * population: pillaging applies pressure only.
  * @param {ViolenceState} s State.
  * @param {string} key City key.
  * @param {*} city A live city object.
@@ -263,16 +229,9 @@ function isMinor(pid) {
 function applyObservation(s, key, city) {
   const frac = districtDamageFrac(city);
   const fresh = Math.max(0, frac - (s.lastFrac[key] || 0));
-  // Standing siege pressure while the city center is under attack: scaled by damage, with a FLOOR the
-  // moment it's besieged even at zero damage so an Independent Power / city-state raid still registers
-  // as conflict. That floor is `siegeBesiegedFloor` (< 1) rather than full strength, so early-game
-  // harassment that besieges without wrecking the district builds pressure gradually instead of
-  // instantly crossing the flee threshold and flooding "war" refugees (real assault damage still
-  // counts at full `frac`).
-  // A city-state or Independent Power raiding party is not an invasion. Facing only minor powers, the
-  // besieged floor drops and the whole observation is scaled down, so early-game harassment no longer
-  // pushes the same refugee wave a major civilization's army does. Real damage still counts at full `frac`:
-  // the bar is raised for BEING BESIEGED, not for actually being wrecked.
+  // Standing siege pressure while the city center is under attack: scaled by damage, with a FLOOR
+  // (`siegeBesiegedFloor` < 1) the moment it's besieged so a raid registers without instantly crossing
+  // the flee threshold. Facing only minor powers, the floor drops and the observation is scaled down.
   const besieged = districtBesieged(city);
   const pillaged = pillagedCount(city);
   // Taken, not peeked: every combat event reaches this model exactly once, whenever in the turn it landed.
@@ -282,10 +241,8 @@ function applyObservation(s, key, city) {
     return;
   }
   const verdict = attackerVerdict(city, ev.attackers);
-  // The STRONGER of the two damage readings, never their sum. Both describe the same wounds, so adding them
-  // would double-count; taking the max lets each cover the other's blind spot. Polling misses damage that
-  // was inflicted and repaired between two samples and any harm predating the mod's load; the event stream
-  // misses whatever arrived while a handler was detached or before it subscribed.
+  // The STRONGER of the two damage readings, never their sum: both describe the same wounds, and the max
+  // lets each cover the other's blind spot (repaired-between-samples vs detached-handler gaps).
   const obs = { harm: Math.max(fresh, ev.dmg), frac, besieged, pillaged, ev };
   const addFull = scoreObservation(obs, false);
   const add = verdict.minorsOnly ? scoreObservation(obs, true) : addFull;
@@ -313,11 +270,9 @@ function scoreObservation(o, minor) {
 }
 
 /**
- * Whether nothing worth weighing happened to a city this turn. This early exit is what keeps the attacker
- * scan affordable: naming an attacker means reading the units on ~20-40 plots, and the mod observes every
- * city of every met civilization every turn. Almost all of them are at peace, and those must not pay for a
- * lookup whose answer could not change a zero. The event evidence is part of the test because a battle
- * fought in a city's fields leaves the walls -- and therefore every polled signal -- completely clean.
+ * Whether nothing worth weighing happened to a city this turn. This early exit keeps the attacker scan
+ * (units on ~20-40 plots) off every city at peace. The event evidence is part of the test because a
+ * battle in a city's fields leaves every polled signal clean.
  * @param {number} frac Polled district damage. @param {boolean} besieged The besieged flag.
  * @param {number} pillaged Pillaged tiles. @param {*} ev This turn's combat-event evidence.
  * @returns {boolean} True when there is nothing to score.
@@ -327,11 +282,9 @@ function isQuiet(frac, besieged, pillaged, ev) {
 }
 
 /**
- * Update a city's siege tenure (Algorithm D) once per turn: if its intensity is
- * at/above the flee threshold it's "under siege" - increment the consecutive-turn
- * counter and, on the first such turn, capture the onset population (and reset the
- * war-loss tally). If it's below the threshold, the siege has lifted: clear the
- * tenure bookkeeping. Only runs under the warSiege model.
+ * Update a city's siege tenure once per turn: at/above the flee threshold, increment the consecutive-turn
+ * counter and capture the onset population on the first such turn; below it, the siege has lifted and
+ * the tenure bookkeeping is cleared. Only runs under the warSiege model.
  * @param {ViolenceState} s State.
  * @param {string} key City key.
  * @param {*} city A live city object.
@@ -387,12 +340,9 @@ function retentionFor(city) {
 }
 
 /**
- * The siege escalation multiplier for a city's violence penalty (Algorithm D):
- * ramps from `siegeFloor` at tenure 1 to 1.0 once a siege has lasted
- * `siegeRampTurns`, so a longer siege bites harder - but drops to 0 once the city
- * has lost its capped share (`siegeLossCapPct` of onset population) to war, so the
- * remnant "digs in" and can't be fully depopulated. Returns 1 (no-op) when the
- * warSiege model is off or the city key is unreadable.
+ * The siege escalation multiplier for a city's violence penalty: ramps from `siegeFloor` at tenure 1 to
+ * 1.0 after `siegeRampTurns`, and drops to 0 once the city has lost `siegeLossCapPct` of its onset
+ * population so the remnant digs in. Returns 1 when warSiege is off or the city key is unreadable.
  * @param {*} city A live city object.
  * @returns {number} Multiplier in [0, 1].
  */
@@ -439,10 +389,8 @@ export function recordWarLoss(city) {
 export function tickViolence() {
   const s = state();
   const turn = gameTurn();
-  // F1: Game.turn resets to a low value at each age boundary. Without this rebase the
-  // decay clock would sit above the current turn (elapsed pinned to 0 by the guard
-  // below) and never decay again for the rest of the age; rebasing lets decay resume
-  // from the new age's turns.
+  // Game.turn resets to a low value at each age boundary; rebase the decay clock so decay resumes
+  // instead of sitting pinned at elapsed 0 for the rest of the age.
   if (turn < s.decayTurn) s.decayTurn = turn;
   const elapsed = Math.max(0, turn - s.decayTurn);
   if (elapsed > 0) {
@@ -466,7 +414,7 @@ export function tickViolence() {
 
 /**
  * Publish the balance audit on `globalThis.EmigrationViolence`, so a probe can compare each city's real
- * intensity with what the pre-change rules would have given it. Read-only; nothing here affects gameplay.
+ * intensity with the audit's reference scoring. Read-only; nothing here affects gameplay.
  */
 export function exposeViolenceAudit() {
   try {

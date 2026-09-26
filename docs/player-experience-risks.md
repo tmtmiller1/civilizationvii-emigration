@@ -22,7 +22,7 @@ check them against `ui/emigration-config.js`; they are not proposals to change.
 ## 1. Summary
 
 The pattern across the risks is not that the numbers are wrong. It is that the player has no agency
-before a loss, no warning that it is coming, and no path back afterwards. The mitigations therefore
+before a loss, no warning that it is coming, and no path back afterward. The mitigations therefore
 follow three lines:
 
 1. **Warn and offer counterplay before a loss lands.** A pre-departure state, a per-city intake toggle,
@@ -69,7 +69,7 @@ recover.
   countdown. A loss the player was told about is fair. Status: proposed.
 - *Charge gold once per crisis, not per point.* Replace the per-point charge with a single relocation
   cost the first time a city starts bleeding in a crisis window, then nothing until the window resets.
-  Same flavour, no compounding. The per-turn cap already exists in `chargeDepartureGold`; the change is
+  Same flavor, no compounding. The per-turn cap already exists in `chargeDepartureGold`; the change is
   a per-city "charged this crisis" flag with a 30-turn quiet reset. Status:
   proposed.
 - *Disarm the punishments at the floor.* Skip the tile loss and the gold charge while the city's
@@ -429,7 +429,7 @@ once at the end.
 
 ### 7.2 The pre-departure state
 
-**Behaviour.** A voluntary departure does not fire the first time a source crosses the bar. The source
+**Behavior.** A voluntary departure does not fire the first time a source crosses the bar. The source
 enters a "preparing to leave" state for `departureNoticeTurns` (default 2) turns. While in it, the
 readout shows a countdown and the remedy, and one notification fires. When the notice expires, the
 point departs if pressure is still at or above the bar. If pressure fell below the bar during the
@@ -464,7 +464,7 @@ reporter each pass. `emigration-engine.js` is at the file-size gate, so the noti
 `speedTurns`), `departureNoticeCrisisCue` (true). Option rows and `LOC_EMIG_T_*` text in the eleven
 locales.
 
-**Feedback.** One notification on `start`, own-loss accent per the colour rule in §9 of the README,
+**Feedback.** One notification on `start`, own-loss accent per the color rule in §9 of the README,
 titled "People are preparing to leave {city}" with the cause and a remedy line from a small
 cause-to-remedy table in `emigration-causes.js`: unhappiness, "raise happiness"; prosperity, "raise
 yields per citizen or happiness"; starvation, "restore net food"; war, "relieve the siege or make
@@ -487,7 +487,7 @@ pressure signal, so the countdown attaches to it once the notice state exists.
 
 ### 7.3 The per-city intake toggle
 
-**Behaviour.** A city can be set to closed by its owner. A closed city is skipped as a destination for
+**Behavior.** A city can be set to closed by its owner. A closed city is skipped as a destination for
 every source, its in-transit arrivals are rerouted, and it pays no assimilation load for new arrivals
 because none land. The AI never closes a city. Crisis refugees with no other destination are not forced
 into a closed city; they take the next destination or the attrition outlet as today.
@@ -503,7 +503,7 @@ time, so a captured closed city reopens by itself).
 - `planSource` calls `bestDestination` without a predicate for the planning pass. Pass the same closed
   check so the plan and the shed agree.
 - `resolveArrival` in `emigration-arrivals.js`: an arrival due at a city that closed while the migrant
-  travelled goes through `recoverFailedArrival`, which already handles a captured or full destination.
+  traveled goes through `recoverFailedArrival`, which already handles a captured or full destination.
 - `readoutModel` in `emigration-city-readout.js`: a line "Closed to newcomers" when set.
 
 **UI.** A button on the readout panel, "Close to newcomers" / "Open to newcomers", shown only for the
@@ -526,7 +526,7 @@ touching the assimilation numbers.
 
 ### 7.4 The protect-this-city action
 
-**Behaviour.** From the readout of an own city in the preparing-to-leave state or under crisis, the
+**Behavior.** From the readout of an own city in the preparing-to-leave state or under crisis, the
 player can pay once to hold the city's people for `protectTurns` (default 5). While protected, the
 voluntary track does not fire for that city and pressure does not accumulate. The crisis track still
 fires, but crisis death for that city is suspended. Protection cannot be renewed until it lapses plus
@@ -563,7 +563,7 @@ now that nothing is charged when they leave.
 
 ### 7.5 The enclave preview
 
-**Behaviour.** In the local player's cities, an enclave that would form this pass is announced instead
+**Behavior.** In the local player's cities, an enclave that would form this pass is announced instead
 and placed on the next pass. The announcement names the origin, the city, the tile the placer chose, and
 the stance. During the one-turn window the player can decline (the community keeps its standing, the
 dwell clock restarts, no enclave forms this time) or move it (the placer takes the next candidate plot).
@@ -605,7 +605,7 @@ turns per game. It still removes the one case where the mod changes a player's t
 ### 7.6 Order, gates, and effort
 
 Order: 7.2, then 7.3, then 7.4, then 7.5. Each piece ships behind its own option, on by default, so a
-player who wants the old behaviour turns one switch.
+player who wants the old behavior turns one switch.
 
 Gates for every piece, in the order they are run: eslint (max-len 120, complexity 10, max-statements
 18, max-lines 500, which is why each piece gets its own module), tsc, the unit suite through
@@ -632,7 +632,7 @@ The pre-departure notice and the protect action are in 7.2 and 7.4. One piece re
 
 **8.1a Disarm the punishments at the floor.**
 
-- *Behaviour.* While a city is at the game's Unhappy stage or below, or its owner's treasury is under
+- *Behavior.* While a city is at the game's Unhappy stage or below, or its owner's treasury is under
   `departureFloorGold` (20), a departure takes the counter decrement, not a tile, and charges nothing.
   The population still moves. The mod stops adding to what the base game is already doing to that city.
 - *Hooks.* `cityHappinessStage(city)` in `emigration-polity.js` gives the stage. `treasuryOf(pid)` in
@@ -656,7 +656,7 @@ plots; the tuner's `Progress` argument creates an incomplete instance the build 
 
 **8.2b Discounted rebuild through a gold refund.**
 
-- *Behaviour.* When a building is removed, the owner is refunded `urbanLossRefundPct` (0.5) of the
+- *Behavior.* When a building is removed, the owner is refunded `urbanLossRefundPct` (0.5) of the
   building's production cost as gold. The record already knows the cost:
   `findDepartureBuilding` sorts by `cost`.
 - *Hook.* `takeUrbanPoint` returns the chosen building. Grant the refund in `commitSourcePoint` through
@@ -669,7 +669,7 @@ plots; the tuner's `Progress` argument creates an incomplete instance the build 
 
 **8.2c Name it and explain it.**
 
-- *Behaviour.* The loss notification says which building, that it was chosen as the oldest and cheapest,
+- *Behavior.* The loss notification says which building, that it was chosen as the oldest and cheapest,
   and that it was the last resort after the rural tiles.
 - *Hook.* The departure record carries `subject` and the building type. `toastPerCause` in
   `emigration-feedback.js` builds the message. Add the type name (`Locale.compose` of the constructible's
@@ -691,7 +691,7 @@ form of the building loss.)
 
 **8.3a Stalemate rule.**
 
-- *Behaviour.* A besieged city that has taken no fresh district damage for `siegeStallTurns` (10) is
+- *Behavior.* A besieged city that has taken no fresh district damage for `siegeStallTurns` (10) is
   stalled. While stalled, the besieged floor is not applied, siege-cause crisis death stops, and the
   readout says "Siege stalled". Fresh damage ends the stall and restarts the siege ramp from its current
   tenure.
@@ -711,7 +711,7 @@ form of the building loss.)
 
 **8.3b Per-siege death cap.**
 
-- *Behaviour.* Siege deaths count toward the same per-siege tally as siege displacement, and the tally
+- *Behavior.* Siege deaths count toward the same per-siege tally as siege displacement, and the tally
   is capped at `siegeTotalLossCapPct` (0.8) of onset population. Past the cap the city stops losing
   people to the siege until the siege ends.
 - *Hooks.* `recordWarLoss(city)` in `emigration-violence.js` counts war emigration into `warLoss`.
@@ -726,7 +726,7 @@ form of the building loss.)
 
 Status: moot 2026-09-14. The urban leg was removed (see 2.2).
 
-- *Behaviour.* For the war cause, the urban core is reached only when the city has fresh district damage
+- *Behavior.* For the war cause, the urban core is reached only when the city has fresh district damage
   in the current crisis window. A besieged but undamaged city never loses a building.
 - *Hook.* The consume path that sets `deferredUrban` checks `districtDamageFrac(city) > 0` for war
   causes. Disaster and famine are unchanged.
@@ -738,7 +738,7 @@ The per-city intake toggle is 7.3.
 
 **8.4a Prompt for large waves.**
 
-- *Behaviour.* When the transit queue holds `dilemmaWavePoints` (3) or more points due to land in the
+- *Behavior.* When the transit queue holds `dilemmaWavePoints` (3) or more points due to land in the
   player's cities next pass, a decision fires before they land: welcome them, or turn them away. Turning
   them away reroutes the wave at no Influence cost, because the player did not cause it.
 - *Hooks.* `partitionDue` in `emigration-arrivals.js` knows what lands next pass. A new
@@ -753,7 +753,7 @@ The per-city intake toggle is 7.3.
 
 **8.4b Show the gain beside the cost.**
 
-- *Behaviour.* The readout shows what the newcomers produce next to what they cost: "Newcomers this
+- *Behavior.* The readout shows what the newcomers produce next to what they cost: "Newcomers this
   age: {people}, about {yield} yields per turn".
 - *Hook.* `readoutModel` in `emigration-city-readout.js` already prints the assimilation cost from
   `assimLoad` and `assimCostGold`. Add `arrivedPoints` (from the migration records for the city this
@@ -765,7 +765,7 @@ The per-city intake toggle is 7.3.
 
 **8.5a Earn enclaves through play.**
 
-- *Behaviour.* Two player actions count double toward a community's enclave stock in the player's
+- *Behavior.* Two player actions count double toward a community's enclave stock in the player's
   cities: refugees the player welcomed through a decision, and arrivals under an Open Borders agreement.
 - *Hooks.* `applyMigrationDest` in `emigration-composition.js` adds points to the destination's origin
   bucket. Multiply by `quarterWelcomeWeight` (2) when the migration carries the decision flag, and by
@@ -779,7 +779,7 @@ The per-city intake toggle is 7.3.
   normalized.
 - *Verdict.* Build. It ties the rare feature to choices the player already makes.
 
-**8.5b Integration grace for a new community.** Withdrawn 2026-09-14 in favour of per-age pacing of the
+**8.5b Integration grace for a new community.** Withdrawn 2026-09-14 in favor of per-age pacing of the
 outcome (built; see the addressed ledger). Integration stays as it is.
 
 **8.5c Progress-to-bar in the readout.** Built 2026-09-14: the readout line, the dashboard's Diversity
@@ -789,7 +789,7 @@ column, and `enclaveProgressForComposition` in `emigration-diaspora.js` carrying
 
 **8.6a Village for mismatches.**
 
-- *Behaviour.* In THEMED mode, the origin's own unique improvement is used. If it is unavailable, only
+- *Behavior.* In THEMED mode, the origin's own unique improvement is used. If it is unavailable, only
   generic-looking fallbacks are tried (Caravanserai, Hillfort, Megalith, Baray), then the Village.
   Signature types with strong identities (both Great Walls, Terrace Farm, Thing, Jinja, Gama,
   Pairidaeza, Ortoo, Hidden Fortress, Mawaskawe Skote, Water Puppet Theater, Hawelt) are used only for
@@ -814,7 +814,7 @@ The preview is 7.5.
 
 **8.7a Prefer an empty plot by purchase.**
 
-- *Behaviour.* When a host city has no empty owned plot, the placer purchases an adjacent unowned land
+- *Behavior.* When a host city has no empty owned plot, the placer purchases an adjacent unowned land
   plot for the enclave before taking a farmstead, if the host can pay.
 - *What is known.* `purchasePlot` lands after the call and ownership blocks founding (watched, 1.4.2).
   Whether the purchase operation works for a non-local owner is not known.
@@ -832,7 +832,7 @@ The preview is 7.5.
 
 Status: moot 2026-09-14. The urban leg was removed (see 2.2), so no civilization loses buildings.
 
-- *Behaviour.* AI civilizations lose no buildings to the urban leg. They still
+- *Behavior.* AI civilizations lose no buildings to the urban leg. They still
   lose tiles and people, so the population model stays symmetric.
 - *Hooks.* The mod has no human-player check today. An AI owner is one whose player object has
   `isHuman` false, not any owner other than `GameContext.localPlayerID`, so the check stays right with
@@ -844,7 +844,7 @@ Status: moot 2026-09-14. The urban leg was removed (see 2.2), so no civilization
 
 **8.8b Difficulty bias on arrivals.**
 
-- *Behaviour.* At higher difficulty, AI cities get a small multiplier on inbound pull, mirroring the
+- *Behavior.* At higher difficulty, AI cities get a small multiplier on inbound pull, mirroring the
   base game's difficulty bonuses.
 - *What is known.* No difficulty read exists in the mod. The player difficulty is in the game
   configuration; the exact accessor needs a probe.
@@ -886,7 +886,7 @@ orders the work.
 | Enclave placement, takeover, fading | `CREATE_ELEMENT` district then constructible; `DESTROY_ELEMENT` | Authority, element operations |
 | Counter writes (`emigration-population.js`) | `addRuralPopulation` +1 (arrivals in settlements the local player does not own, refugee settlement, restored returns) and -1 (where no tile is left) | Counter carrier (8.9d) |
 | Arrival placement in the local player's settlements | 250 ms flush: Auto (`EXPAND`, or `ASSIGN_WORKER Amount: 1` for a specialist), Ask me (Newcomers pop-up for the kinds asked about), Unit (`CREATE_ELEMENT UNIT_MIGRANT`) | Owner's client (8.9f) |
-| The game's Grow City prompt | Raised for its owner from the turn after a mod arrival; blocks the end of turn (mod tests 59 to 67) | Unchanged; turn-timer behaviour probed (8.9h) |
+| The game's Grow City prompt | Raised for its owner from the turn after a mod arrival; blocks the end of turn (mod tests 59 to 67) | Unchanged; turn-timer behavior probed (8.9h) |
 | Refugee decision | Local pop-up; the choice charges gold, celebration, or Influence and settles into the local player's settlements | Owner decides, authority applies (8.9f) |
 | Enclave recognition pop-up (`quarterRecognition` 0) | Local settlements only | Owner decides, authority places (8.9f) |
 | Call home | Dialog or console call; offered after the local pass when the empire is calm; charges gold or Influence; moves points with `moveReturnees`; cooldown in module memory | Owner requests, authority executes; cooldown in the shared store (8.9f) |
@@ -938,7 +938,7 @@ test holds the plan identical when `localPlayerID` changes.
 
 - *Tile score.* `plotScore` passes the settlement owner's id to `getYields`. Watched free (mod test 119):
   reading as the viewer and as the owner returned identical values on all 72 foreign plots compared, revealed
-  and unrevealed, so this changes no single-player behaviour.
+  and unrevealed, so this changes no single-player behavior.
 - *`requireMet`.* With the option on, the model drops civilizations the local player has not met. It becomes
   "met by at least one human": identical in single player, the same on every client, and still true to the
   option's purpose of leaving out civilizations no player has encountered.
@@ -982,7 +982,7 @@ in this order:
   `Population="0"` and `YIELD_GOLD="-2"` loaded, placed by `CREATE_ELEMENT` in the player's capital and in an
   AI city, charged the city's gold at once, left urban population unchanged, survived six turns of AI play
   with no crash, and came off again with `DESTROY_ELEMENT`. The two rules the probe found:
-  - *Only where a slot is free.* The AI city's centre was full, so the carrier replaced its Granary and took
+  - *Only where a slot is free.* The AI city's center was full, so the carrier replaced its Granary and took
     a population point with it. The placer must read the district's free slots first; otherwise a "cost"
     silently destroys a real building.
   - *The data number is not the cost.* Removing a carrier whose data says -2 gold returned 12.31 gold a turn:
@@ -1108,7 +1108,7 @@ past a failed probe.
    A never-buildable custom building with `Population` 0 and -2 gold placed in the player's capital and in an
    AI city, charged the city at once, left urban population alone, survived six AI turns and came off again.
    It must only be placed where the district has a free slot (it evicted a Granary and a citizen from a full
-   centre), and its real cost is the data figure scaled by the city's own gold multipliers (-2 in the data
+   center), and its real cost is the data figure scaled by the city's own gold multipliers (-2 in the data
    returned 12.31 a turn when removed). See 8.9d.
 4. *Hotseat, this machine.* **Done 2026-09-17 (mod test 121).** The session reads all answer
    (`isHotseat`, `isAnyMultiplayer`, `isLocalMultiplayer`, `humanPlayerIDs`), `Network.isHost` does not exist
@@ -1163,7 +1163,7 @@ past a failed probe.
 
 ### 8.10 First-launch summary (issues 4.2 and 5.3)
 
-- *Behaviour.* The first time the mod runs in a game for this player, a single modal explains what it
+- *Behavior.* The first time the mod runs in a game for this player, a single modal explains what it
   does: people leave and take a tile, crises kill, migrants arrive and cost happiness for a few turns,
   enclaves are real tiles, the mod cannot be removed from the save, which parts of multiplayer have been
   watched (8.9i), where the presets and the per-city buttons are. Two choices: "Got it" and "Use the Gentle preset".
@@ -1179,7 +1179,7 @@ past a failed probe.
 
 ### 8.11 Gentle preset (issue 4.3)
 
-- *Behaviour.* A fourth preset beside Low, Medium, and High: `crisisDeathEnabled` false, `siegeLossCapPct` 0.4,
+- *Behavior.* A fourth preset beside Low, Medium, and High: `crisisDeathEnabled` false, `siegeLossCapPct` 0.4,
   `disasterLossCapPct` 0.3, `quarterRecognition` 1 (automatic in the player's cities only).
 - *Hooks.* `PRESETS` and `PRESET_NAMES` in `emigration-tunables.js`. The dropdown in
   `emigration-options.js` builds from `PRESET_NAMES`, so it appears without UI work. Add

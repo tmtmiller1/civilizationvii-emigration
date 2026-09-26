@@ -1,35 +1,17 @@
 // emigration-telemetry.js
 //
-// Balance telemetry + alert thresholds (combined design plan P2.7).
-//
-// Beyond the per-pass DURATION timing already logged from emigration-main, this
-// emits BALANCE-health signals so runaway dynamics surface during playtests:
-//   - net-flow outlier: one civ hoarding most of the world's net immigration
-//     (the snowball the structural brakes are meant to prevent), and
-//   - war-displacement concentration: one civ producing most of the refugees.
-//
-// All output goes through the debug-gated `dlog` channel (release.sh flips DBG
-// off, so shipped builds stay silent). Computed on a throttled cadence so the
-// log isn't spammed. Reads the cumulative tallies via the global EmigrationData
-// surface; never throws.
+// Balance telemetry + alert thresholds: net-flow outlier (one civ hoarding most net immigration) and
+// war-displacement concentration (one civ producing most refugees). All output goes through the
+// debug-gated `dlog` channel on a throttled cadence; reads EmigrationData; never throws.
 
 import { dlog } from "/emigration/ui/emigration-log.js";
 import { registerCacheReset } from "/emigration/ui/emigration-cache-reset.js";
 import { DEATH_REASON } from "/emigration/ui/emigration-move-reasons.js";
 
-// P0.4 balance counters (session-scoped; reset on a new game). A cheap, honest tally so the knob
-// tuning + measure-before-build calls in the enhancement plan are made from real numbers. Read via
-// telemetryCounters(); a summary is emitted to the debug log on the throttled report cadence below.
-// The splits map to specific plan decisions:
-//   • crisisInternal vs crisisCrossCiv  → P2.2 (do refugees internationalize too fast?)
-//   • attritionTrapped vs attritionFleeing → P2.1 (how often is the "no refuge" cliff the killer?)
-//   • transitRazed vs transitCapped → P1.1 (reroute only helps the capped case, not razings)
-//   • arrivedIntoCrisis → P1.2 (do refugees land in cities that turned unsafe mid-journey?)
-//   • passes / zeroMovePasses → is the system inert (bar too high)? the rate denominator
-//   • crossCivMoves → is the world interconnected (the diaspora/composition stack depends on it)
-//   • returnMoves → is homecoming inert (return thresholds too strict)?
-//   • refugeesQueued / refugeesSettled → is the holding pool draining or backing up?
-//   • reasonHits{tag} → which of the destination-scoring terms actually drive moves (tuning)
+// Balance counters (session-scoped; reset on a new game), read via telemetryCounters() and summarized
+// to the debug log on the throttled report cadence below. crisisInternal/crisisCrossCiv split refugees
+// by destination, attritionTrapped/attritionFleeing by whether a refuge existed, transitRazed/
+// transitCapped by why a lagged refugee never landed; reasonHits{tag} counts scoring terms per move.
 const FIELDS = [
   "passes", "zeroMovePasses",
   "voluntaryMoves", "crisisMoves", "crisisInternal", "crisisCrossCiv", "crossCivMoves", "returnMoves",
@@ -52,7 +34,7 @@ const CRISIS_CAUSES = new Set(["war", "disaster", "conquest"]);
 
 /**
  * Tally one outlet-attrition (non-transit) death by whether the settlement was trapped (no refuge) or
- * lost people while others fled, from the death record's reason tags (P2.1).
+ * lost people while others fled, from the death record's reason tags.
  * @param {*} m An attrition death record (phase !== "arrive").
  */
 function countAttrition(m) {
@@ -71,8 +53,8 @@ function addReasonHits(reasons) {
 }
 
 /**
- * Tally one non-arrival relocation record: voluntary or crisis (crisis split own-civ vs cross-civ,
- * P2.2), plus the overall cross-civ tally and the reason histogram. Ignores untracked causes.
+ * Tally one non-arrival relocation record: voluntary or crisis (crisis split own-civ vs cross-civ),
+ * plus the overall cross-civ tally and the reason histogram. Ignores untracked causes.
  * @param {*} m A move/depart record.
  */
 function countMove(m) {
@@ -102,7 +84,7 @@ function foldRecord(m) {
 }
 
 /**
- * Fold one pass's migrations into the balance counters (P0.4). Counts the record-derivable metrics;
+ * Fold one pass's migrations into the balance counters. Counts the record-derivable metrics;
  * TRANSIT deaths + arrived-into-crisis + pool flow are bumped at their source (arrivals / pool). Also
  * ticks the pass denominator and flags a pass that relocated nobody. Never throws.
  * @param {*[]} migs This pass's migrations.
@@ -122,8 +104,8 @@ export function recordPassCounters(migs) {
 
 /**
  * Tally a transit death (a lagged refugee that never landed) by cause: "razed" (destination gone en
- * route) or "capped" (destination stayed full past MAX_DEFERS). Only "capped" is what P1.1's reroute
- * could save. Called from emigration-arrivals.js. Never throws.
+ * route) or "capped" (destination stayed full past MAX_DEFERS). Called from emigration-arrivals.js.
+ * Never throws.
  * @param {"razed"|"capped"} kind The death cause.
  */
 export function bumpTransitDeath(kind) {
@@ -131,7 +113,7 @@ export function bumpTransitDeath(kind) {
   else if (kind === "capped") _counters.transitCapped++;
 }
 
-/** Tally a refugee that landed in a city which had turned unsafe mid-journey (P1.2 measurement). */
+/** Tally a refugee that landed in a city which had turned unsafe mid-journey. */
 export function bumpArrivedIntoCrisis() {
   _counters.arrivedIntoCrisis++;
 }
@@ -153,7 +135,7 @@ export function bumpRefugeesSettled(n) {
 }
 
 /**
- * A snapshot of the balance counters (P0.4).
+ * A snapshot of the balance counters.
  * @returns {Record<string, number>} The counts (see FIELDS).
  */
 export function telemetryCounters() {
@@ -316,7 +298,7 @@ export function logNetDistribution(s, migs) {
 }
 
 /**
- * Debug-log the running balance counters (P0.4): voluntary vs crisis move share and the two death
+ * Debug-log the running balance counters: voluntary vs crisis move share and the two death
  * channels, so a playtest can see whether voluntary migration is visible and whether deaths are rare.
  * @param {string} age Age label.
  */

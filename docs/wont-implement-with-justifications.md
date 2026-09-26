@@ -16,11 +16,11 @@ operation removes a specialist.
 The short form of every engine limit found by probe, across this file, the probe ledger, and the session
 notes, is [engine-limits-from-probes.md](engine-limits-from-probes.md).
 
-> **How this differs from the neighbouring docs.**
+> **How this differs from the neighboring docs.**
 > - [emigration-roadmap-and-backlog.md](emigration-roadmap-and-backlog.md) — work we intend to do, each
 >   with a *revisit-if* trigger.
 > - [wont-fix-with-justifications.md](wont-fix-with-justifications.md) — decisions **not to change**
->   existing, working behaviour (by-design mechanics, tidies not worth the churn). Closed by judgment,
+>   existing, working behavior (by-design mechanics, tidies not worth the churn). Closed by judgment,
 >   not by an engine wall.
 > - **This file** — features with **no path to shipping**: proven-impossible or removed because they
 >   broke the game. Every entry below is blocked by a hard limit (engine wall, native crash, unproven
@@ -34,7 +34,7 @@ notes, is [engine-limits-from-probes.md](engine-limits-from-probes.md).
 > built (engine limit, native crash, no exposed hook), or parked indefinitely for priority/unmeasured
 > value, **add it here** as a `##` entry with: what was proposed, why it was tempting, the concrete
 > reason it won't ship, what we did instead, and a **verdict** (mark priority-pauses
-> `Paused — not engine-blocked`). When a *judgment* not to change working behaviour is made instead, that
+> `Paused — not engine-blocked`). When a *judgment* not to change working behavior is made instead, that
 > goes in [wont-fix-with-justifications.md](wont-fix-with-justifications.md).
 
 ---
@@ -80,8 +80,8 @@ and segfaulted while committing a build (`MARKRUNNING`).
 
 **What we did instead (2026-07-17, at the author's direction):** removed the entire buildable-enclave
 feature and archived it (13 files) at
-[`tower_mods/_archived-emigration-enclave-feature/`](../../_archived-emigration-enclave-feature/) — full
-design preserved in its [`docs/cultural-enclaves.md`](../../_archived-emigration-enclave-feature/docs/cultural-enclaves.md).
+[`mod_ideas_tested/_archived-emigration-enclave-feature/`](../../../mod_ideas_tested/_archived-emigration-enclave-feature/) — full
+design preserved in its [`docs/cultural-enclaves.md`](../../../mod_ideas_tested/_archived-emigration-enclave-feature/docs/cultural-enclaves.md).
 Patched out the couplings (`emigration-quarter.js` built-enclave double-pay guard dropped,
 `emigration-city-panel.js` `invested:false`, `emigration-selftest.js` probe imports → inert no-ops,
 modinfo enclave ActionGroups/items, the `test:enclave-built` script). **The STANCE / decision-modal
@@ -243,17 +243,17 @@ enclave, softer penalty, stronger story" rather than "new major bonus unlocked."
 blended threshold is crossed, emit a follow-up chronicle and either auto-upgrade the active option to its
 blended form, or open a light follow-up branch:
 
-- `preserve`: keep more of the origin-flavoured benefit, keep more of the penalty
+- `preserve`: keep more of the origin-flavored benefit, keep more of the penalty
 - `blend`: slightly soften the penalty, gain the host-imprint tag, keep the benefit bounded
 
 **Player-facing prose (drafted, never rendered).** `{Name}` = enclave name; `{Where}` = truthful
-capitalised edge phrase; `{Adj}` = origin civ adjective; `{City}` = host city name.
+capitalized edge phrase; `{Adj}` = origin civ adjective; `{City}` = host city name.
 
 > **BLENDED ENCLAVE**
 > **The {Name} Becomes Part of {City}**
 >
 > Generations have passed {Where}. What began as a foreign enclave is now woven into the city's own life:
-> still marked by {Adj} memory, but no longer merely apart from its neighbours. The enclave's strain
+> still marked by {Adj} memory, but no longer merely apart from its neighbors. The enclave's strain
 > softens, but its identity remains visible.
 
 ---
@@ -267,7 +267,7 @@ capitalised edge phrase; `{Adj}` = origin civ adjective; `{City}` = host city na
 **Status:** abandoned **as specced** (was "paused — recommend against building as specced"). The full
 drafted design is preserved below. The good version ends in a real `BY_REVOLT` city transfer through the
 engine's revolt pipeline — a hook a UI-script mod has **never been shown able to invoke**, and the
-neighbouring probe for a far smaller ask (place one improvement) came back dead (CANTFIX-1).
+neighboring probe for a far smaller ask (place one improvement) came back dead (CANTFIX-1).
 
 **Why it can't be built as specced — four independent reasons, any one sufficient:**
 
@@ -555,7 +555,7 @@ building or tile that reads as pillaged and comes back with a repair, rather tha
 - The constructible instance's `setProperty("damaged" | "Damaged" | "DAMAGED" | "pillaged", true)`
   returned null and left `damaged` false. It is script metadata, not engine state.
 - `UNITOPERATION_PILLAGE` answers `canStart` false on the owner's own plots, including for a unit
-  created directly on the tile and against the city-centre building plot.
+  created directly on the tile and against the city-center building plot.
 - `CREATE_ELEMENT` with the tuner's `Progress` argument yields an incomplete instance the build system
   does not own: `canStart(BUILD)` reports Success without `InProgress`, and sending the build queues a
   fresh copy at progress 0 while a second incomplete instance appears on the plot. An obsolete-age
@@ -603,7 +603,7 @@ remove it with one urban point, which appeared to reopen the whole feature.
 (`canShedPoint`, `canShedAny`, `abandonForDeath` in `emigration-departure-tile.js`; tests in section 10 of
 `tests/departure-tile.mjs`). The three urban options and their text in all 11 locales are gone. The removed
 code, tests, and text are archived verbatim, with the full account, in
-`tower_mods/_archived-emigration-urban-leg/`.
+`mod_ideas_tested/_archived-emigration-urban-leg/`.
 
 **Verdict:** a specialist cannot be removed from any city by script. Do not rebuild an urban or specialist
 loss on `ASSIGN_WORKER -1`. Revisit only if a game patch adds a specialist-removal operation, and accept
@@ -619,7 +619,7 @@ Short form: [engine-limits-from-probes.md](engine-limits-from-probes.md) 1.4.
 refugees once the refugees bound for it reached a share of its population, so the rest would go to another
 civilization or stay home that turn.
 
-**Why it was tempting:** the at-scale runs showed one neighbour absorbing a whole refugee wave. In the 80-turn
+**Why it was tempting:** the at-scale runs showed one neighbor absorbing a whole refugee wave. In the 80-turn
 measurement (mod test 69) a volcano in one civilization sent nearly every cross-civilization refugee into a single
 host for ten turns, and that host ran 36% above its no-mod population while the stricken civilization ran 15% below.
 Destinations are chosen when a move is decided, while the congestion headwind is only booked on arrival, so nothing

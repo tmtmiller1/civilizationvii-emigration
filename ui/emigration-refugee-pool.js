@@ -232,7 +232,7 @@ export function queueRefugees(cityKey, originCiv, turn, pts = 1) {
     cur.pts += n;
     cur.since = Math.min(cur.since, since);
   }
-  bumpRefugeesQueued(n); // P0.4 pool-inflow telemetry
+  bumpRefugeesQueued(n); // pool-inflow telemetry
   markDirty();
 }
 

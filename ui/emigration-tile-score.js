@@ -1,23 +1,10 @@
 // emigration-tile-score.js
 //
-// The per-TILE prosperity score shared by the Prosperity lens (emigration-prosperity-lens.js) and its cursor panel
-// (emigration-prosperity-tooltip.js): one place that decides what a tile is worth, which tiles are painted, and
-// what colour a score paints. Kept as a leaf module (engine globals only, no mod imports) so both surfaces can
-// import it without an import cycle, and so the number the panel prints is by construction the number the colour
-// came from.
-//
-// A tile's prosperity is a sum of named POINTS, and the panel lists every non-zero term, so the number is its own
-// explanation. It replaced a raw yield sum (2026-09-17): on that scale the Hanging Gardens, which has no yield rows
-// in the compiled database (its worth is +10% growth), read as London's "worst land" at -100%, and a farm out-scored
-// the palace. What a settlement has BUILT on a hex is the evidence of its prosperity - it takes a prosperous
-// settlement to raise a wonder - so the built terms dominate, the hex's own yield is one modest term, and ruin and
-// its neighbourhood pull the score down. The scale is ABSOLUTE (a wonder tile reads the same in every settlement),
-// banded like a rating, and coloured on the same grey→green / grey→red gradient the lens always used.
-//
-// Every classification comes from the compiled database through the instance on the map (ConstructibleClass,
-// Feature_NaturalWonders), never from a list of names, so a wonder or natural wonder added by an age, a DLC or
-// another mod is scored like the shipped ones. Water the settlement has not built on is not painted at all: an
-// empty ocean hex is nobody's prosperity (it dragged a coastal city's scale in the yield model, mod test 79).
+// The per-TILE prosperity score shared by the Prosperity lens and its cursor panel: what a tile is worth,
+// which tiles are painted, and what color a score paints. A leaf module (engine globals only) so both
+// surfaces import it without a cycle. A tile's prosperity is an ABSOLUTE sum of named POINTS in which
+// built terms dominate; every classification comes from the compiled database (ConstructibleClass,
+// Feature_NaturalWonders), never a list of names, and unbuilt water is not painted.
 
 /** The points each term is worth. Exported so the panel and tests read the same table. */
 export const WEIGHTS = Object.freeze({
@@ -29,10 +16,10 @@ export const WEIGHTS = Object.freeze({
   yieldPer: 3, // +1 per this many yield on the hex
   river: 1,
   naturalWonder: 3, // the hex IS a natural wonder
-  adjacentNaturalWonder: 2, // per neighbouring hex that is one
-  adjacentWonder: 1, // per neighbouring hex holding a wonder
+  adjacentNaturalWonder: 2, // per neighboring hex that is one
+  adjacentWonder: 1, // per neighboring hex holding a wonder
   pillaged: -3, // each pillaged constructible on the hex (which then earns no build points)
-  adjacentPillaged: -1 // per neighbouring hex with anything pillaged on it
+  adjacentPillaged: -1 // per neighboring hex with anything pillaged on it
 });
 
 /**
@@ -43,11 +30,11 @@ export const BANDS = Object.freeze([
   Object.freeze(/** @type {readonly [string, number]} */ (["flourishing", 8])),
   Object.freeze(/** @type {readonly [string, number]} */ (["thriving", 5])),
   Object.freeze(/** @type {readonly [string, number]} */ (["ordinary", 2])),
-  Object.freeze(/** @type {readonly [string, number]} */ (["meagre", 0]))
+  Object.freeze(/** @type {readonly [string, number]} */ (["meager", 0]))
 ]);
 const BLIGHTED = "blighted"; // below every floor
 
-// Colour: `ordinary` is centred on grey, and the gradient saturates at the flourishing floor above and at blighted
+// Color: `ordinary` is centered on gray, and the gradient saturates at the flourishing floor above and at blighted
 // (-2, a pillaged hex) below, so the whole band scale is visible on the map rather than clipped at the ends.
 const T_CENTER = 3;
 const T_SPAN = 5;
@@ -55,12 +42,12 @@ const T_SPAN = 5;
 const FILL_ALPHA_MIN = 0.45; // a middling tile stays readable as terrain
 const FILL_ALPHA_MAX = 0.85; // a settlement's best and worst land is unmistakable
 const CONTRAST_GAMMA = 0.55; // < 1 saturates the middle: most tiles sit close to ordinary
-// Gradient endpoints (0-255): grey (neutral) → green (above ordinary) / red (below).
+// Gradient endpoints (0-255): gray (neutral) → green (above ordinary) / red (below).
 const GREY = [150, 150, 150];
 const GREEN = [24, 224, 72];
 const RED = [238, 40, 32];
 
-/** The six hex neighbours, named rather than counted so an enum reorder cannot silently skip a direction. */
+/** The six hex neighbors, named rather than counted so an enum reorder cannot silently skip a direction. */
 const ADJACENT_DIRECTIONS = Object.freeze([
   "DIRECTION_EAST", "DIRECTION_WEST", "DIRECTION_NORTHEAST",
   "DIRECTION_NORTHWEST", "DIRECTION_SOUTHEAST", "DIRECTION_SOUTHWEST"
@@ -68,7 +55,7 @@ const ADJACENT_DIRECTIONS = Object.freeze([
 
 /**
  * One scored term of a tile: which rule fired, what it was worth, and (for a constructible or feature) the display
- * name LOC key so the panel can name it. `count` is the number of neighbours for the adjacency terms, and `amount`
+ * name LOC key so the panel can name it. `count` is the number of neighbors for the adjacency terms, and `amount`
  * the raw yield for the yield term.
  * @typedef {{kind:string, points:number, name?:string, count?:number, amount?:number}} TileTerm
  */
@@ -91,10 +78,10 @@ function safe(fn, fb) {
   }
 }
 
-// ── colour ───────────────────────────────────────────────────────────────────────────────────────────────────────
+// ── color ───────────────────────────────────────────────────────────────────────────────────────────────────────
 
 /**
- * The [-1, 1] colour position of a score: 0 at the centre of `ordinary`, +1 at the flourishing floor and beyond,
+ * The [-1, 1] color position of a score: 0 at the center of `ordinary`, +1 at the flourishing floor and beyond,
  * -1 at a pillaged hex and below.
  * @param {number} points A tile score.
  * @returns {number} Normalized position.
@@ -106,7 +93,7 @@ export function tierOf(points) {
 /**
  * The band a score falls in.
  * @param {number} points A tile score.
- * @returns {string} "flourishing" | "thriving" | "ordinary" | "meagre" | "blighted".
+ * @returns {string} "flourishing" | "thriving" | "ordinary" | "meager" | "blighted".
  */
 export function bandOf(points) {
   for (const [band, floor] of BANDS) if (points >= floor) return band;
@@ -114,7 +101,7 @@ export function bandOf(points) {
 }
 
 /**
- * The 0-1 saturation for a colour position: a curve, so the crowded middle of the range still reads.
+ * The 0-1 saturation for a color position: a curve, so the crowded middle of the range still reads.
  * @param {number} t Position in [-1, 1].
  * @returns {number} Saturation in [0, 1].
  */
@@ -123,7 +110,7 @@ function saturation(t) {
 }
 
 /**
- * The 0-255 channel value for one colour component at position t.
+ * The 0-255 channel value for one color component at position t.
  * @param {number} t Position. @param {number} i Channel index (0-2).
  * @returns {number} Channel value 0-255.
  */
@@ -133,7 +120,7 @@ function channel(t, i) {
 }
 
 /**
- * The lens fill colour (the engine's float4 {x,y,z,w}) for a position t: grey→green above ordinary, grey→red
+ * The lens fill color (the engine's float4 {x,y,z,w}) for a position t: gray→green above ordinary, gray→red
  * below, with opacity rising with strength.
  * @param {number} t Position in [-1, 1].
  * @returns {{x:number, y:number, z:number, w:number}} Float4 RGBA (0-1).
@@ -148,9 +135,9 @@ export function tierFill(t) {
 }
 
 /**
- * The same colour as `#RRGGBB`, for the cursor panel's swatch.
+ * The same color as `#RRGGBB`, for the cursor panel's swatch.
  * @param {number} t Position in [-1, 1].
- * @returns {string} Hex colour.
+ * @returns {string} Hex color.
  */
 export function tierHex(t) {
   const hex = (/** @type {number} */ i) => {
@@ -274,9 +261,9 @@ function constructiblesOn(x, y) {
 }
 
 /**
- * Whether the plot's district is the city centre (`DistrictTypes.CITY_CENTER`, the enum the base UI compares on).
+ * Whether the plot's district is the city center (`DistrictTypes.CITY_CENTER`, the enum the base UI compares on).
  * @param {number} x Plot x. @param {number} y Plot y.
- * @returns {boolean} True for the centre.
+ * @returns {boolean} True for the center.
  */
 function isCityCenter(x, y) {
   return safe(() => {
@@ -301,10 +288,10 @@ function naturalWonderAt(x, y) {
 }
 
 /**
- * What a NEIGHBOURING hex contributes to this one: does it hold a wonder, is it a natural wonder, is anything on
- * it pillaged. Cached per pass, since a hex is a neighbour of six others.
+ * What a NEIGHBORING hex contributes to this one: does it hold a wonder, is it a natural wonder, is anything on
+ * it pillaged. Cached per pass, since a hex is a neighbor of six others.
  * @param {number} x Plot x. @param {number} y Plot y. @param {Map<string, *>} cache The per-pass cache.
- * @returns {{wonder:boolean, natural:boolean, pillaged:boolean}} The neighbour facts.
+ * @returns {{wonder:boolean, natural:boolean, pillaged:boolean}} The neighbor facts.
  */
 function neighbourFacts(x, y, cache) {
   const key = x + "," + y;
@@ -321,9 +308,9 @@ function neighbourFacts(x, y, cache) {
 }
 
 /**
- * The six neighbours of a plot that exist on the map.
+ * The six neighbors of a plot that exist on the map.
  * @param {number} x Plot x. @param {number} y Plot y.
- * @returns {{x:number, y:number}[]} Neighbour coordinates.
+ * @returns {{x:number, y:number}[]} Neighbor coordinates.
  */
 function neighbours(x, y) {
   /** @type {{x:number, y:number}[]} */
@@ -345,7 +332,7 @@ function add(terms, t) {
 }
 
 /**
- * The terms for what STANDS on a hex: the centre district, and each constructible by class. A pillaged
+ * The terms for what STANDS on a hex: the center district, and each constructible by class. A pillaged
  * constructible earns its penalty and not its build points; two or more standing buildings make a quarter.
  * @param {number} x Plot x. @param {number} y Plot y.
  * @returns {TileTerm[]} The built terms, in map order.
@@ -391,9 +378,9 @@ function groundTerms(x, y, idx) {
 }
 
 /**
- * The terms for the NEIGHBOURHOOD: wonders, natural wonders and ruin on the six adjacent hexes, one term per kind
+ * The terms for the NEIGHBORHOOD: wonders, natural wonders and ruin on the six adjacent hexes, one term per kind
  * with the count.
- * @param {number} x Plot x. @param {number} y Plot y. @param {Map<string, *>} cache Per-pass neighbour cache.
+ * @param {number} x Plot x. @param {number} y Plot y. @param {Map<string, *>} cache Per-pass neighbor cache.
  * @returns {TileTerm[]} The adjacency terms.
  */
 function neighbourTerms(x, y, cache) {
@@ -416,10 +403,10 @@ function neighbourTerms(x, y, cache) {
 
 /**
  * Score one hex: the sum of every term that fires, with the terms. On-hex terms first (what stands here, in
- * map order), then the hex's own yield and geography, then the neighbourhood.
+ * map order), then the hex's own yield and geography, then the neighborhood.
  * @param {number} x Plot x. @param {number} y Plot y.
  * @param {number|null} idx Plot index for the yield read (null when unknown: the yield term is skipped).
- * @param {Map<string, *>} [cache] Per-pass neighbour cache (one per lens paint; a fresh one otherwise).
+ * @param {Map<string, *>} [cache] Per-pass neighbor cache (one per lens paint; a fresh one otherwise).
  * @returns {{points:number, terms:TileTerm[]}} The score and its explanation.
  */
 export function tileScore(x, y, idx, cache) {
@@ -430,9 +417,9 @@ export function tileScore(x, y, idx, cache) {
 }
 
 /**
- * One settlement's painted plots, scored, with the colour position of each.
+ * One settlement's painted plots, scored, with the color position of each.
  * @param {*} city City object.
- * @param {Map<string, *>} [cache] Per-pass neighbour cache, shared across the settlements of one paint.
+ * @param {Map<string, *>} [cache] Per-pass neighbor cache, shared across the settlements of one paint.
  * @returns {{x:number, y:number, score:number, t:number, terms:TileTerm[]}[]} Per-plot rows (empty with no plots).
  */
 export function cityTileTiers(city, cache) {
@@ -448,7 +435,7 @@ export function cityTileTiers(city, cache) {
 }
 
 /**
- * The hovered tile's score, band, colour position and terms: the very number the lens coloured it from. Null when
+ * The hovered tile's score, band, color position and terms: the very number the lens colored it from. Null when
  * the tile isn't painted (empty sea).
  * @param {number} x Plot x. @param {number} y Plot y.
  * @returns {{t:number, score:number, band:string, terms:TileTerm[]}|null} The tile's reading.

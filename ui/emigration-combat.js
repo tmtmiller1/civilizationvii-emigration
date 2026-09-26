@@ -1,12 +1,8 @@
 // emigration-combat.js
 //
-// War-casualty input to the war-SEVERITY term (emigration-engine.crisisSeverity). The Demographics mod
-// OWNS the raw tracking, it already accumulates per-civ unit-kill STRENGTH from the engine's
-// `UnitKilledInCombat` event and exposes it on `globalThis.DemographicsData.casualtyCumFor(pid)`
-// (cumulative). This module just turns that cumulative figure into a decaying "recent casualty
-// intensity": each turn it folds in the new casualties since last turn and decays the rest, so a civ
-// that's currently bleeding its army scores high and an old, settled war fades. Returns 0 when
-// Demographics isn't providing data, so severity gracefully falls back to damage + participants only.
+// War-casualty input to the war-SEVERITY term. The Demographics mod owns the raw tracking
+// (`globalThis.DemographicsData.casualtyCumFor(pid)`, cumulative); this module turns that figure into
+// a decaying "recent casualty intensity". Returns 0 when Demographics isn't providing data.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { speedDecay } from "/emigration/ui/emigration-game-speed.js";
@@ -53,8 +49,8 @@ export function combatLossFor(pid) {
   const cum = casualtyCum(pid);
   const turn = gameTurn();
   const t = _track[pid];
-  // F1: rebase down on age-boundary Game.turn reset so `turn > t.turn` can fire again and
-  // the decay/delta fold resumes instead of stalling until the turn climbs back.
+  // Rebase down on an age-boundary Game.turn reset so `turn > t.turn` can fire again and the
+  // decay/delta fold resumes instead of stalling until the turn climbs back.
   if (t && turn < t.turn) t.turn = turn;
   if (!t) {
     _track[pid] = { turn, cum, intensity: 0 }; // first sighting → baseline only (no phantom spike)

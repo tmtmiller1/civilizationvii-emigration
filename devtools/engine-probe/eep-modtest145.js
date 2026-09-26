@@ -3,12 +3,12 @@
 // game), zoomed in further, with the lens's cursor panel showing the hovered tile's origin mix.
 //
 //   SHOT tooltip-enclave   camera on the enclave tile, panel reading that tile
-//   SHOT tooltip-city      camera on the city centre (a Norman/Bulgarian blend), panel reading that tile
+//   SHOT tooltip-city      camera on the city center (a Norman/Bulgarian blend), panel reading that tile
 //
 // Why the panel is pinned by hand: the panel follows the last window mousemove, and mod test 143 showed a synthetic
 // mousemove's coordinates do not reach it (the panel drew at 0,0, the top-left corner). The probe sets the hovered
-// plot through PlotCursor (which the panel does read), frames that plot at the centre of the screen, and places the
-// panel where its own place() would put it for a cursor on that tile: 36 px right of and below the centre.
+// plot through PlotCursor (which the panel does read), frames that plot at the center of the screen, and places the
+// panel where its own place() would put it for a cursor on that tile: 36 px right of and below the center.
 import LensManager from "/core/ui/lenses/lens-manager.js";
 import PlotCursor from "/core/ui/input/plot-cursor.js";
 import { allQuarterEntries } from "/emigration/ui/emigration-quarter-state.js";

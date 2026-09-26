@@ -9,7 +9,7 @@ import assert from "node:assert/strict";
 import { resolveQuarter, __test as q } from "/emigration/ui/emigration-quarter-phrases.js";
 import { foundingLine } from "/emigration/ui/emigration-narrative.js";
 
-const FEATURE_WORDS = ["harbour", "waterfront", "dock", "river", "mountain", "high ground",
+const FEATURE_WORDS = ["harbor", "waterfront", "dock", "river", "mountain", "high ground",
   "granar", "temple", "market", "stalls", "wall", "gate"];
 
 /** Words that only ever appear in a SPECIFIC feature's phrases (for the truthfulness assertions). */
@@ -34,14 +34,14 @@ function mentionsAnyFeature(text) {
 
 // ── A supplied feature is named, and ONLY supplied features are named ─────────
 {
-  // A coastal city never gets a granary phrase; a granary city never gets a harbour phrase.
+  // A coastal city never gets a granary phrase; a granary city never gets a harbor phrase.
   const coast = resolveQuarter(["coast"], "Athens|Greek|2");
   assert.ok(q.FEATURE_QUARTERS.coast.includes(coast), "coast city draws a coast phrase");
   assert.ok(!coast.toLowerCase().includes("granar"), "coast city never claims a granary");
 
   const granary = resolveQuarter(new Set(["granary"]), "Ur|Sumerian|3");
   assert.ok(q.FEATURE_QUARTERS.granary.includes(granary), "granary city draws a granary phrase");
-  assert.ok(!granary.toLowerCase().includes("harbour"), "granary city never claims a harbour");
+  assert.ok(!granary.toLowerCase().includes("harbor"), "granary city never claims a harbor");
 
   // With several features present, the phrase is always one of the PRESENT features' phrases.
   const keys = ["river", "market", "walls"];
@@ -65,11 +65,11 @@ function mentionsAnyFeature(text) {
   assert.ok(variants.size >= 3, "generic quarters spread across the list");
 }
 
-// ── Contract with the prose engine: foundingLine honours a truthful `where` ────
+// ── Contract with the prose engine: foundingLine honors a truthful `where` ────
 {
   const base = { origin: "Carthaginian", host: "Roman", city: "Ostia", pct: 31, seed: "Ostia|3|2" };
-  const withWhere = foundingLine({ ...base, where: "by the harbour" });
-  assert.ok(withWhere.includes("by the harbour"), "foundingLine uses the supplied truthful quarter");
+  const withWhere = foundingLine({ ...base, where: "by the harbor" });
+  assert.ok(withWhere.includes("by the harbor"), "foundingLine uses the supplied truthful quarter");
 
   // Without a `where`, the line falls back to a generic edge phrase and invents no feature.
   for (let i = 0; i < 40; i++) {

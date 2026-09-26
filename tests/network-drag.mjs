@@ -24,7 +24,7 @@ const WX = 1120;
 const WY = 560;
 const noop = () => {};
 
-/** A canvas ctx stub recording arc centres (discs + dots) and quadratic curves (flow arrows). */
+/** A canvas ctx stub recording arc centers (discs + dots) and quadratic curves (flow arrows). */
 function recorder() {
   const arcs = [];
   const curves = [];
@@ -156,9 +156,9 @@ function testCityDragMovesItsDotsAndGrowsTheCivCircle() {
 
   assert.ok(Math.abs((civ.y + city.sy) - to.y) < 1, "the city should sit under the cursor it was dropped at");
   assert.ok(civ.clusterR > r0 + 100, `the civ circle should expand around it (${r0} -> ${civ.clusterR})`);
-  assert.equal(civ.x, 300, "dragging a city must not move its civ centre");
+  assert.equal(civ.x, 300, "dragging a city must not move its civ center");
 
-  // Its dots came along: the painter must draw dot-sized arcs near the city's NEW sub-centre.
+  // Its dots came along: the painter must draw dot-sized arcs near the city's NEW sub-center.
   const cx = civ.x + city.sx;
   const cy = civ.y + city.sy;
   const near = snapshot(scene).arcs
@@ -178,7 +178,7 @@ function testDraggingACivCarriesItsCitiesAlong() {
 
   assert.ok(Math.abs(civ.x - 360) < 1, "the civ should have moved with the cursor");
   assert.deepEqual(civ.cities.map((/** @type {*} */ ct) => [ct.sx, ct.sy]), offsets,
-    "a civ drag must leave the city offsets untouched (they ride along with the centre)");
+    "a civ drag must leave the city offsets untouched (they ride along with the center)");
 }
 
 function testClickingACivRingStillIsolates() {
@@ -191,7 +191,7 @@ function testClickingACivRingStillIsolates() {
   assert.equal(scene.state.focusDest, null, "clicking it again should clear the isolate");
 }
 
-/** Arrows as "from>to" civ-city labels, recovered by matching segment endpoints to city centres. */
+/** Arrows as "from>to" civ-city labels, recovered by matching segment endpoints to city centers. */
 function arrowLabels(scene) {
   const pts = [];
   for (const c of scene.centers) {
@@ -199,7 +199,7 @@ function arrowLabels(scene) {
       pts.push({ label: c.name + "/" + ct.name, x: c.x + ct.sx, y: c.y + ct.sy, r: (ct.subR || 4) + 3 });
     }
   }
-  // Nearest RELATIVE to each disc's trim radius: a tight arrow's end can sit inside the neighbouring
+  // Nearest RELATIVE to each disc's trim radius: a tight arrow's end can sit inside the neighboring
   // disc too, but always at a smaller fraction of its own city's radius.
   const rel = (/** @type {*} */ p, /** @type {number} */ x, /** @type {number} */ y) => Math.hypot(p.x - x, p.y - y) / p.r;
   const near = (/** @type {number} */ x, /** @type {number} */ y) =>

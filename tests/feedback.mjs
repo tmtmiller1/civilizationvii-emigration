@@ -189,7 +189,7 @@ function testLaggedCrossCivDepartureNotifiesAsExternal() {
 
 function testMixedScopeSplitsIntoInternalAndExternalRows() {
   // One settlement shedding the SAME cause to both its own settlement and a foreign civ must split
-  // into two correctly-labelled rows, never one row mislabelled by the larger stream.
+  // into two correctly-labeled rows, never one row mislabelled by the larger stream.
   globalThis.GameContext = { localPlayerID: 0 };
   CONFIG.notifyMode = 1;
   CONFIG.notifyWorldNews = false;

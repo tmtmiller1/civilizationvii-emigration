@@ -1,9 +1,7 @@
 // emigration-network-interact.js
 //
 // Pointer interaction for the migration view: the cursor-following tooltip, the hover ETHNICITY
-// breakdown (a city or civ's make-up by origin civ), drag-to-rearrange the civ circles, and
-// click-to-select a single city or isolate a civ cluster. Kept apart from the orchestrator
-// (emigration-network-viz.js) so that file stays focused on layout + chrome + playback.
+// breakdown, drag-to-rearrange the civ circles, and click-to-select a city or isolate a civ cluster.
 
 import { civAdjective } from "/emigration/ui/emigration-naming.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
@@ -18,9 +16,9 @@ import { civReach } from "/emigration/ui/emigration-network-dots.js";
 
 /**
  * Make an element with an optional class + text.
- * @param {string} tag Tag.
+ * @param {string} tag
  * @param {string} [cls] Class.
- * @param {string} [text] Text.
+ * @param {string} [text]
  * @returns {HTMLElement} Element.
  */
 function el(tag, cls, text) {
@@ -86,7 +84,7 @@ export function makeTooltip(wrap) {
 
 /**
  * Map a pointer event to logical canvas coordinates (the wide rectangle the layout uses).
- * @param {HTMLCanvasElement} canvas Canvas.
+ * @param {HTMLCanvasElement} canvas
  * @param {*} ev Event.
  * @param {number} WX Logical canvas width.
  * @param {number} WY Logical canvas height.
@@ -99,10 +97,10 @@ function toLogical(canvas, ev, WX, WY) {
 
 /**
  * The civ cluster whose disc contains (x,y), nearest first, or null.
- * @param {Scene} scene Scene.
+ * @param {Scene} scene
  * @param {number} x Logical x.
  * @param {number} y Logical y.
- * @returns {NetworkNode|null} Centre or null.
+ * @returns {NetworkNode|null} Center or null.
  */
 function nearestCluster(scene, x, y) {
   let best = null;
@@ -119,9 +117,9 @@ function nearestCluster(scene, x, y) {
 }
 
 /**
- * Squared distance from (x,y) to a city sub-centre if the pointer is within its disc (and it's
+ * Squared distance from (x,y) to a city sub-center if the pointer is within its disc (and it's
  * founded at `now`), else Infinity.
- * @param {NetworkNode} c Civ centre.
+ * @param {NetworkNode} c Civ center.
  * @param {*} cm City meta.
  * @param {number} x Logical x.
  * @param {number} y Logical y.
@@ -139,7 +137,7 @@ function cityHitDist(c, cm, x, y, now) {
 
 /**
  * The (civ, city) sub-cluster under (x,y), or null.
- * @param {Scene} scene Scene.
+ * @param {Scene} scene
  * @param {number} x Logical x.
  * @param {number} y Logical y.
  * @returns {{ci:number, cityIdx:number, center:NetworkNode, city:*}|null} The city, or null.
@@ -165,7 +163,7 @@ function nearestCity(scene, x, y) {
 /**
  * Composition by ORIGIN civ ("ethnicity") of the visible dots matching a predicate, at the current
  * frame. Residents + internal movers count as the home civ; immigrants as their origin civ.
- * @param {Scene} scene Scene.
+ * @param {Scene} scene
  * @param {(d:Dot)=>boolean} keep Dot predicate.
  * @returns {{counts:Map<number,number>, total:number}} Per-origin counts + total.
  */
@@ -186,20 +184,15 @@ function composition(scene, keep) {
 const ORIGIN_FALLBACK_HEX = "#9fb6c6"; // neutral slate for an unresolvable / masked origin swatch
 
 /**
- * The display name + swatch colour for an origin civ id in the breakdown.
- *
- * Prefer the civ's DRAWN node (its name/colour are already resolved). Otherwise the origin has no
- * cluster in this view — an eliminated civ, a met civ with no current cities, or a policy-hidden one
- * — and the old code printed a raw "#<id>". Resolve it the way the ethnicity lens tooltip does
- * instead: mask a hidden/unmet origin to "Unmet" (never leaking a civ the player hasn't met), and
- * name a known-but-nodeless civ properly. A synthetic sentinel id (the negative "Unmet" bucket, when
- * it has no node) also reads "Unmet".
- * @param {Scene} scene Scene. @param {number} oid Origin civ id.
- * @returns {{name:string, color:string}} The label + swatch colour.
+ * The display name + swatch color for an origin civ id in the breakdown. Prefers the civ's DRAWN node;
+ * otherwise a hidden/unmet origin (or a negative sentinel id) is masked to "Unmet", and a
+ * known-but-nodeless civ is named properly.
+ * @param {Scene} scene @param {number} oid Origin civ id.
+ * @returns {{name:string, color:string}} The label + swatch color.
  */
 function originLabel(scene, oid) {
-  // F6: an oid that isn't a current node must NOT collapse to index 0 (that showed the first civ's
-  // name/colour). get() returns undefined for a missing id → the resolvers below apply.
+  // An oid that isn't a current node must NOT collapse to index 0; get() returns undefined for a
+  // missing id, so the resolvers below apply.
   const idx = scene.byId.get(oid);
   const node = typeof idx === "number" ? scene.centers[idx] : null;
   if (node) return { name: node.name, color: node.color || ORIGIN_FALLBACK_HEX };
@@ -208,8 +201,8 @@ function originLabel(scene, oid) {
 }
 
 /**
- * An ethnicity-breakdown tooltip (title + top origin civs by share, with colour swatches).
- * @param {Scene} scene Scene.
+ * An ethnicity-breakdown tooltip (title + top origin civs by share, with color swatches).
+ * @param {Scene} scene
  * @param {string} title Heading.
  * @param {(d:Dot)=>boolean} keep Dot predicate.
  * @returns {string} Tooltip HTML.
@@ -232,7 +225,7 @@ function breakdownTip(scene, title, keep) {
 /**
  * Show the ethnicity breakdown for whatever is under the pointer: a city, else a civ, else hide.
  * @param {*} ev Event.
- * @param {HTMLCanvasElement} canvas Canvas.
+ * @param {HTMLCanvasElement} canvas
  * @param {*} holder Render holder.
  * @param {*} tip Tooltip API.
  */
@@ -259,12 +252,9 @@ function showHoverTip(ev, canvas, holder, tip) {
 }
 
 /**
- * Move the dragged CITY sub-cluster to the pointer and re-grow its civ circle around it.
- *
- * The city's position is an offset from its civ centre, so dragging it re-aims that offset; the civ's
- * clusterR is then recomputed by the same rule that sized it during packing (civReach), which is what
- * makes the civ boundary expand to enclose a settlement pulled out of the pile — the point of dragging
- * one out being to see its internal migrant flows without the other cities on top of them.
+ * Move the dragged CITY sub-cluster to the pointer and re-grow its civ circle around it. The city's
+ * position is an offset from its civ center, so dragging re-aims that offset; clusterR is then
+ * recomputed by the packing rule (civReach) so the civ boundary expands to enclose the pulled-out city.
  * @param {*} drag Drag state (carries `city` + the civ `node`).
  * @param {{x:number,y:number}} pt Pointer in logical coords.
  * @param {*} scene Scene (for the canvas bounds).
@@ -285,7 +275,7 @@ function dragCityTo(drag, pt, scene) {
 /**
  * Pointer move: drag the grabbed city or cluster, else show the hover breakdown.
  * @param {*} ev Event.
- * @param {HTMLCanvasElement} canvas Canvas.
+ * @param {HTMLCanvasElement} canvas
  * @param {*} holder Render holder.
  * @param {*} tip Tooltip API.
  * @param {*} drag Drag state.
@@ -314,7 +304,7 @@ function onMove(ev, canvas, holder, tip, drag) {
  * CITY sub-circle wins over its civ, so a settlement can be pulled out of the cluster; pressing
  * anywhere else in the civ circle still drags the whole civ and its cities together.
  * @param {*} ev Event.
- * @param {HTMLCanvasElement} canvas Canvas.
+ * @param {HTMLCanvasElement} canvas
  * @param {*} holder Render holder.
  * @param {*} drag Drag state.
  */
@@ -329,7 +319,7 @@ function onDown(ev, canvas, holder, drag) {
   drag.node = c;
   drag.cityIdx = hit ? hit.cityIdx : -1;
   drag.city = hit ? hit.city : null;
-  // Grab offset: for a city, from its absolute position (centre + offset), so it doesn't jump to the
+  // Grab offset: for a city, from its absolute position (center + offset), so it doesn't jump to the
   // cursor on the first move.
   drag.dx = pt.x - (drag.city ? c.x + (drag.city.sx || 0) : c.x);
   drag.dy = pt.y - (drag.city ? c.y + (drag.city.sy || 0) : c.y);
@@ -363,7 +353,7 @@ function clickNode(state, drag) {
 /**
  * Pointer up: end a drag. A press that didn't move is a click (see clickNode); a click on empty canvas
  * clears the city selection and the civ isolate.
- * @param {HTMLCanvasElement} canvas Canvas.
+ * @param {HTMLCanvasElement} canvas
  * @param {*} holder Render holder.
  * @param {*} state Interaction state.
  * @param {*} drag Drag state.
@@ -387,7 +377,7 @@ function onUp(canvas, holder, state, drag) {
 
 /**
  * Wire canvas pointer events: hover breakdown + drag-to-rearrange + click-to-select a city / isolate a civ.
- * @param {HTMLCanvasElement} canvas Canvas.
+ * @param {HTMLCanvasElement} canvas
  * @param {*} holder Render holder.
  * @param {*} state Interaction state.
  * @param {*} tip Tooltip API.

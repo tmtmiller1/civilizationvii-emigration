@@ -1,15 +1,9 @@
 // emigration-enclave-markers.js
 //
-// Paints an ON-MAP marker for every built enclave (IMPROVEMENT_EMIG_ENCLAVE_<CIV>): the civ's symbol icon
-// (the same one the build menu uses) plus a "<Civ> Enclave" label, floating over the enclave's tile. This
-// is the mod's substitute for a 3D model — Civ VII gives modders NO way to bind a real model to a custom
-// constructible (VisualRemap works only for units; there's no asset SDK), so we render the presence
-// ourselves from our OWN WorldUI overlay group, exactly like the geographic-labels probe proved out.
-//
-// Reads only (scans the local player's cities for placed enclave constructibles); never mutates game
-// state. Repaints on the events that can change where enclaves are: a constructible added to the map, a
-// turn starting, and load complete. Fully self-contained + self-guarding: any failure degrades to "no
-// marker", never throws into the game.
+// Paints an ON-MAP marker for every built enclave (IMPROVEMENT_EMIG_ENCLAVE_<CIV>): the civ's symbol
+// icon plus a "<Civ> Enclave" label on a WorldUI overlay group, the mod's substitute for a 3D model
+// (Civ VII gives modders no way to bind a model to a custom constructible). Reads only; repaints on the
+// events that can change where enclaves are; any failure degrades to "no marker", never throws.
 
 import { dlog } from "/emigration/ui/emigration-log.js";
 import { allQuarterEntries } from "/emigration/ui/emigration-quarter-state.js";
@@ -28,8 +22,8 @@ const LABEL_ALPHA = 0xE0;
 /** Icon world height above the tile, and the label clearly BELOW it (lower z = lower on screen). */
 const ICON_Z = 13;
 const TEXT_Z = 1;
-/** World-space offsets so the marker leaves the plot CENTRE to the game's yield icons (the yields layer
- * draws its row at y 0, z 5; watched 2026-09-13: a centred marker hid the enclave tile's yields). */
+/** World-space offsets so the marker leaves the plot CENTER to the game's yield icons (the yields layer
+ * draws its row at y 0, z 5). */
 const ICON_Y = 11;
 const TEXT_Y = -9;
 const ICON_SCALE = 0.6;
@@ -43,9 +37,7 @@ const g = /** @type {*} */ (globalThis);
 /** @type {*} */ let _grid = null;
 
 /**
- * One diagnostic line through the mod's debug logger. (The earlier "invalid CSS value" trick wrote an
- * "Unable to parse declaration" line into UI.log on EVERY repaint, about 1,400 lines a session; watched
- * 2026-09-13. console.error does reach UI.log, and dlog is gated by the debug option.)
+ * One diagnostic line through the mod's debug logger (gated by the debug option).
  * @param {*} s The message.
  */
 function logEmit(s) {
@@ -83,10 +75,7 @@ function ensureOverlay() {
 
 /**
  * Remove all painted markers. The icons and labels live on the SPRITE GRID, so the grid is what has to
- * be cleared. This used to clear only the overlay group, which the grid was never attached to, so nothing
- * was ever removed: every repaint stacked another icon and another label on the tile (watched 2026-09-17:
- * a doubled "NORMAN ENCLAVE" label on screen, and 63 leaked marker pairs in a six-minute session). The
- * base game's layers and the geographic-labels mod both clear their grids this way.
+ * be cleared (clearing only the overlay group leaves every repaint stacking another marker on the tile).
  */
 function clearMarkers() {
   safe(() => {
@@ -98,11 +87,9 @@ function clearMarkers() {
 }
 
 /**
- * The constructible types on a plot, or NULL when the map could not be read.
- *
- * The difference matters: mid turn-transition these reads come back empty for a moment, and treating
- * that as "the enclave is gone" wipes every marker off the map until the next event (watched 2026-09-17,
- * the labels vanishing during the turn transition). An empty ARRAY means the plot really is bare.
+ * The constructible types on a plot, or NULL when the map could not be read. The difference matters:
+ * mid turn-transition these reads come back empty for a moment, and treating that as "the enclave is
+ * gone" would wipe every marker until the next event. An empty ARRAY means the plot really is bare.
  * @param {number} x Plot x. @param {number} y Plot y. @returns {string[]|null} The types, or null.
  */
 function plotTypes(x, y) {
@@ -140,9 +127,8 @@ function enclaveTypeAt(x, y) {
 
 /**
  * Every enclave tile in the local player's cities: {idx, type}, where `type` is the enclave improvement
- * the marker stands for (icon + label). Two sources, merged by plot: the player's quarter RECORDS whose
- * placed tile still stands (this is how a Village-skinned enclave is known, since on the map it is a
- * plain Village), and a scan of the player's plots for native-skin enclave improvements.
+ * the marker stands for. Two sources, merged by plot: quarter RECORDS whose placed tile still stands
+ * (how a Village-skinned enclave is known), and a scan of the player's plots for native-skin enclaves.
  * @returns {{idx:number, type:string}[]}
  */
 function localEnclaveTiles() {
@@ -177,12 +163,9 @@ function recordTiles(pid, byPlot, stageByPlot) {
 }
 
 /**
- * Whether a record's tile should still be marked.
- *
- * A RECORD is the authority on whether an enclave exists: it is dropped the moment one fades, which is
- * how the marker disappears. The map is only consulted to notice a tile that was built over — and when
- * that read fails (mid turn-transition), a tile already seen standing keeps its marker rather than
- * blinking out. Without this the markers vanish every turn transition and come back on the next event.
+ * Whether a record's tile should still be marked. A RECORD is the authority on whether an enclave
+ * exists; the map is only consulted to notice a tile that was built over, and when that read fails
+ * (mid turn-transition) a tile already seen standing keeps its marker rather than blinking out.
  * @param {*} rec A quarter record. @returns {boolean} True when the marker should be painted.
  */
 function recordTileStands(rec) {
@@ -317,10 +300,9 @@ const REPAINT_DEBOUNCE_MS = 200;
 let _pending = null;
 
 /**
- * Ask for a repaint, coalescing bursts. The events that move enclaves arrive in floods: one turn raises
- * `PlayerTurnActivated` once per player and a single placement raised `ConstructibleAddedToMap` 36 times
- * inside one second (watched 2026-09-17: 298 repaints in six minutes), and each repaint rescans every plot
- * of every local city. One paint shortly after the burst shows exactly the same thing.
+ * Ask for a repaint, coalescing bursts: the events that move enclaves arrive in floods (one turn raises
+ * `PlayerTurnActivated` once per player; a placement raises `ConstructibleAddedToMap` many times), and
+ * each repaint rescans every plot of every local city.
  * @param {string} reason What asked (logged with the paint).
  */
 function scheduleRepaint(reason) {

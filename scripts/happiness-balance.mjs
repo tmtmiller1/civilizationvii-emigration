@@ -16,7 +16,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 const GROSS = { food: 20, production: 18, gold: 12, science: 8, culture: 6 };
 const POP = 10;
 const URBAN = 5;
-const FIELD_MEAN = 5; // the field-relative shaped model centres on the world's mean happiness
+const FIELD_MEAN = 5; // the field-relative shaped model centers on the world's mean happiness
 
 // 1.4.1 Antiquity stage thresholds → ordinal, for the stage signal.
 function stageOf(h) {
@@ -86,7 +86,7 @@ function table(label, withPolity) {
 console.log("Representative city: gross yields", JSON.stringify(GROSS), "pop", POP, "urban", URBAN);
 console.log("Penalty: net = gross × (1 − min(0.80, rate × max(0,−happiness))); Food exempt.");
 console.log("'gap-vs-content' = prosperity(content h=+5) − prosperity(this city): the emigration pull");
-console.log("gradient. Bigger gap ⇒ this city is more strongly out-pulled by a content neighbour.");
+console.log("gradient. Bigger gap ⇒ this city is more strongly out-pulled by a content neighbor.");
 
 table("Pre-polity model (yields-only reaction to the −5% change)", false);
 table("With 1.4.1 polity model", true);

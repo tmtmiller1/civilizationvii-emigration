@@ -22,7 +22,7 @@ user judges it closed.
 - **Issue.** A player had no warning that a settlement was about to lose a point, short of a throttled
   toast and opening the readout.
 - **Done, 2026-09-14.** `ui/emigration-banner-pressure.js` decorates the base `city-banner` control with a
-  two-pixel bar under the name row on the player's own city banners. Three states, one colour each:
+  two-pixel bar under the name row on the player's own city banners. Three states, one color each:
   amber for progress toward losing one point, shown from 5% of the move bar up (or always, as an empty
   track, by option); red for a crisis (a refugee cause under distress, people fleeing every turn); deeper red for a
   heavy crisis (two or more points lost last pass, or distress at `attritionMinDistress`). The bar never
@@ -30,7 +30,7 @@ user judges it closed.
   (default), or always.
 - **Verification.** Mod test 35 (`devtools/engine-probe/README.md`): all 89 banners decorated, the 90%
   and 72% bars painted, the 30% bar stayed hidden, and the bar was watched legible and unobtrusive at two
-  zoom levels. The three-colour scheme and the refugee-cause crisis rule were applied after that run and
+  zoom levels. The three-color scheme and the refugee-cause crisis rule were applied after that run and
   are unit-tested (`tests/banner-pressure.mjs`) but not re-watched.
 - **Still open.** The pre-departure hold, the notice record, and the remedy notification (plan 7.2)
   are not built; the bar reads the existing pressure signal.

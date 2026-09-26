@@ -1,11 +1,9 @@
 // emigration-network-flow-arrows.js
 //
-// The green/red migrant-flow ARROW overlay. Lifted out of the former standalone "Flows" sub-view so it
-// can draw ON TOP of the Dots network (the "Migrant flows" toggle) — one diagram, dots + toggleable
-// flows. Each arrow runs red where people LEAVE (outflow) → green where they ARRIVE (inflow), thickness
-// scaled to volume. It reads the SAME scene coordinates the dots use (centers + city sub-clusters from
-// buildCenters/buildChronoDots), so arrows land on the same nodes with no reconciliation. It respects
-// the Dots view's origin-isolate / focus-destination / selected-city / scope filters.
+// The green/red migrant-flow ARROW overlay, drawn ON TOP of the Dots network (the "Migrant flows"
+// toggle). Each arrow runs red where people LEAVE → green where they ARRIVE, thickness scaled to
+// volume. It reads the SAME scene coordinates the dots use (centers + city sub-clusters), so arrows land
+// on the same nodes, and respects the Dots view's origin-isolate / focus / selected-city / scope filters.
 
 const OUTFLOW = "#e0786b"; // red, people leaving (the arrow's tail end)
 const INFLOW = "#7fd08a"; // green, people arriving (the arrow's head end)
@@ -20,7 +18,7 @@ function expandedHas(state, id) {
 // ── segment geometry ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * One endpoint for a flow at a civ: the civ centre (collapsed) or its capital's sub-centre (expanded),
+ * One endpoint for a flow at a civ: the civ center (collapsed) or its capital's sub-center (expanded),
  * plus the disc radius to trim the line back to. @param {*} center @param {boolean} expanded
  * @returns {{x:number, y:number, r:number}}
  */
@@ -32,7 +30,7 @@ function endpoint(center, expanded) {
   return { x: center.x, y: center.y, r: (center.clusterR || 8) + 6 };
 }
 
-/** A named city's sub-centre within an expanded civ, or null. @param {*} center @param {string} name */
+/** A named city's sub-center within an expanded civ, or null. @param {*} center @param {string} name */
 function cityPoint(center, name) {
   for (const ct of center.cities || []) {
     if (ct.name === name) {
@@ -43,20 +41,13 @@ function cityPoint(center, name) {
 }
 
 // The shortest arrow worth drawing. Also the trim budget: a pair with at least this much daylight
-// between its discs keeps the full trim, so long flows draw exactly as they always did.
+// between its discs keeps the full trim.
 const MIN_ARROW_LEN = 6;
 
 /**
  * Trim a straight segment back toward each endpoint's disc edge, or null when the two points are
- * effectively the same.
- *
- * The trim SHRINKS to fit when the discs are close, instead of dropping the flow. It used to demand
- * `len > a.r + b.r + 6` and return null otherwise — which silently ate most INTERNAL (city→city)
- * flows: the city packing (emigration-network-dots.packCityDiscs) seats each disc exactly CITY_GAP
- * (6) clear of the disc that constrains it, while the endpoints here are struck at `subR + 3` apiece,
- * so a tangent pair sits exactly 6px short of the threshold at every scale. Every adjacent-city flow
- * lost its arrow — including the largest city's, since packing anchors it at the origin with the
- * others tangent to it — and a two-city civ drew no internal arrow at all.
+ * effectively the same. The trim SHRINKS to fit when the discs are close instead of dropping the flow,
+ * since the city packing seats adjacent discs only CITY_GAP apart and their internal flows must still draw.
  * @param {*} a Source {x,y,r}. @param {*} b Dest {x,y,r}. @param {{people:number}} meta @returns {*}
  */
 function trimmed(a, b, meta) {
@@ -66,8 +57,8 @@ function trimmed(a, b, meta) {
   if (len <= MIN_ARROW_LEN) return null;
   const ux = dx / len;
   const uy = dy / len;
-  // k = 1 whenever the old guard passed (len > a.r + b.r + MIN_ARROW_LEN), so far-apart flows are
-  // untouched; below that it scales both trims down so what's left still spans MIN_ARROW_LEN.
+  // k = 1 when len > a.r + b.r + MIN_ARROW_LEN, so far-apart flows are untouched; below that it
+  // scales both trims down so what's left still spans MIN_ARROW_LEN.
   const k = Math.min(1, (len - MIN_ARROW_LEN) / ((a.r + b.r) || 1));
   return {
     x0: a.x + ux * a.r * k, y0: a.y + uy * a.r * k,
@@ -83,7 +74,7 @@ function flowEdges(fr) {
 }
 
 /**
- * One endpoint, routed to a city when the civ is expanded (else the civ centre / capital).
+ * One endpoint, routed to a city when the civ is expanded (else the civ center / capital).
  * @param {*} center @param {boolean} expanded @param {string} city @returns {{x:number,y:number,r:number}}
  */
 function endCity(center, expanded, city) {
@@ -210,7 +201,7 @@ export function buildFlowSegments(holder) {
  */
 function drawArrowhead(ctx, p, w) {
   const ang = Math.atan2(p.y1 - p.cy, p.x1 - p.cx);
-  // Cap the head to the arc it sits on, so a short between-neighbours arrow reads as an arrow rather
+  // Cap the head to the arc it sits on, so a short between-neighbors arrow reads as an arrow rather
   // than a blob with a stub behind it.
   const size = Math.min(4.5 + w * 1.1, Math.max(3, (p.len || Infinity) * 0.8));
   ctx.fillStyle = INFLOW;

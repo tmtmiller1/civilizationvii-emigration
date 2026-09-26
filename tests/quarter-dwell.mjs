@@ -34,7 +34,7 @@ CONFIG.quarterMinStock = 5;
 CONFIG.quarterDwellTurns = 8;
 CONFIG.quarterDwellGrace = 2;
 
-/** A city signal with a stable centre location. */
+/** A city signal with a stable center location. */
 const sig = (x, y, name, owner, population) => ({ city: { location: { x, y }, name }, owner, population });
 
 /** Reset both ledgers so each block starts clean. */

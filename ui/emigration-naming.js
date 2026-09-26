@@ -1,21 +1,17 @@
 // emigration-naming.js
 //
-// Localized, in-world names for refugee events - the war-naming model from the Demographics
-// mod (chart-wars-naming.js): civ adjectives, the game's own disaster names, and a
-// cause-dispatched headline. Also the Phase-1 explanatory-toast strings (per-cause loss
-// headline, action hint, permanence cue, cost note, and the composed local-player digest).
-// Pure logic; reads GameInfo/Locale/Players defensively and degrades to a plain English
-// fallback when a localized string can't be composed.
+// Localized, in-world names for refugee events (civ adjectives, the game's own disaster names, a
+// cause-dispatched headline) and the explanatory-toast strings (loss headline, action hint, cost
+// note, composed digests). Pure logic; degrades to a plain English fallback when Locale can't compose.
 
 import { causeHint, causePermanence, stanceTip } from "/emigration/ui/emigration-causes.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { warOpponents } from "/emigration/ui/emigration-war.js";
 import { quarterBonus } from "/emigration/ui/emigration-quarter-bonuses.js";
 
-// The spoiler mask for a belligerent the visibility policy hides (unmet). Matches the dashboard /
-// feedback "Unmet" convention so a war name never leaks a civ the player hasn't met. Localized lazily
-// and cached at first RUNTIME use (never at module load, where Locale may not be ready yet), so the
-// value is stable both as display text and for the identity comparisons in maskedWarName().
+// The spoiler mask for a belligerent the visibility policy hides (unmet). Localized lazily and cached
+// at first runtime use (Locale may not be ready at module load), so the value is stable both as
+// display text and for the identity comparisons in maskedWarName().
 /** @type {string|null} */
 let _unmetLabel = null;
 function unmetLabel() {
@@ -105,7 +101,7 @@ function isMinorPlayer(pid) {
 
 /**
  * Whether the engine knows a player id. Never hand the engine an id it does not know:
- * Game.IndependentPowers.independentName(99) segfaulted the game (watched twice on 2026-09-13).
+ * Game.IndependentPowers.independentName on an unknown id segfaults the game.
  * @param {number} pid Player id. @returns {boolean} True when Players.get returns a player.
  */
 function knownPlayer(pid) {
@@ -159,9 +155,8 @@ export function civAdjective(pid) {
 }
 
 /**
- * A civilization's NAME as a proper noun ("Rome", "Egypt"), from LOC_CIVILIZATION_<STEM>_NAME — the
- * counterpart to {@link civAdjective}, for sentences that read "…by <civ>" where an adjective ("Roman")
- * would be ungrammatical. City-states / Independent Powers use their specific name; falls back to the
+ * A civilization's NAME as a proper noun ("Rome"), from LOC_CIVILIZATION_<STEM>_NAME, for sentences
+ * that read "…by <civ>". City-states / Independent Powers use their specific name; falls back to the
  * civ display name, then the adjective.
  * @param {number} pid Player id.
  * @returns {string} The civ name.
@@ -183,11 +178,10 @@ export function civName(pid) {
 
 /**
  * A civ descriptor for NARRATIVE surfaces (the Chronicle, refugee events), where an unmet civ is
- * named but framed as hearsay rather than revealed outright. This deliberately relaxes the analytics
- * spoiler mask FOR NARRATIVE ONLY: the dashboard, lens, and notifications keep the strict "an unmet
- * civilization" mask; only the story surfaces get the real name, wrapped in "we have heard tell of".
+ * named but framed as hearsay. Only story surfaces relax the analytics spoiler mask this way; the
+ * dashboard, lens, and notifications keep the strict "an unmet civilization" mask.
  * @param {number} pid Player id.
- * @returns {{adj:string, framed:boolean}} The real adjective, and whether to frame it as rumour.
+ * @returns {{adj:string, framed:boolean}} The real adjective, and whether to frame it as rumor.
  */
 export function narrativeCiv(pid) {
   return { adj: civAdjective(pid), framed: civHidden(pid) };
@@ -195,9 +189,8 @@ export function narrativeCiv(pid) {
 
 /**
  * The name of a Cultural Quarter held by a civ's diaspora ("the Roman Quarter"). Prefers the per-civ
- * registry demonym (so Carthage reads "Punic Quarter", Pirate Republic "Buccaneer Quarter"), then the
- * origin's game adjective, then a generic "foreign quarter" — always well-formed. Narrative surface,
- * so it does not apply the analytics spoiler mask.
+ * registry demonym ("Punic Quarter"), then the origin's game adjective, then a generic "foreign
+ * quarter". Narrative surface, so it does not apply the analytics spoiler mask.
  * @param {number} originCiv The origin civ id.
  * @returns {string} The quarter name, e.g. "Roman Quarter".
  */
@@ -263,7 +256,7 @@ export function crisisName(type) {
 /**
  * The display name for an event KEY (see emigration-event-attribution): a specific war / disaster /
  * crisis / famine. Null for the empty key (no specific event).
- * @param {string} eventKey The event key.
+ * @param {string} eventKey
  * @returns {string|null} The display name, or null.
  */
 export function eventDisplayName(eventKey) {
@@ -315,8 +308,7 @@ function warIdBetween(a, b) {
 /**
  * The engine's NAME for the war between a victim and its aggressor, the base game's
  * `getWarData(uniqueID, localPlayerID).warName`, localized. Null when there's no such war or the API
- * is absent. (The old code called `getWarData()` with NO arguments, which always returned null: the
- * engine requires the war's uniqueID + a viewing player. That's why the war name never resolved.)
+ * is absent. The engine requires the war's uniqueID + a viewing player.
  * @param {number} victim Victim player id.
  * @param {number} aggressor Aggressor player id.
  * @returns {string|null} The localized war name, or null.
@@ -346,11 +338,9 @@ function belligerentName(pid) {
 }
 
 /**
- * The other belligerent to name for a war the `victim` is fleeing. Prefers an explicitly supplied
- * aggressor list (the event-tracked declarers); falls back to the engine's live at-war set
- * ({@link warOpponents}) so an untracked / pre-existing war still resolves an opponent. Among the
- * candidates a MET opponent wins, so the war reads with both sides named rather than masking a side
- * we could have shown.
+ * The other belligerent to name for a war the `victim` is fleeing: the supplied aggressor list, else
+ * the engine's live at-war set ({@link warOpponents}). Among the candidates a MET opponent wins, so
+ * the war reads with both sides named.
  * @param {number} victimPid Victim player id.
  * @param {number[]} arr Explicitly supplied aggressor ids (may be empty).
  * @returns {number|null} The chosen aggressor id, or null when none resolves.
@@ -400,12 +390,9 @@ function bothMetMajors(victimPid, aggressor) {
 }
 
 /**
- * A name for the war a victim is fleeing, naming BOTH sides whenever they're known and met:
- *   • both met majors → the engine's own war name when it resolves, else "{Victim}–{Aggressor} War".
- *   • opponent unmet  → "{Known} vs. an unmet civilization" (honours the spoiler mask, so the war is
- *                       still named without leaking a civ the player hasn't met).
- *   • no opponent at all (peace already, unreadable) → "{Victim} War" as a last resort.
- * Replaces the old "{Victim}–the enemy War", which fired whenever the aggressor wasn't event-tracked.
+ * A name for the war a victim is fleeing: both met majors get the engine's own war name, else
+ * "{Victim}–{Aggressor} War"; an unmet opponent reads "{Known} vs. an unmet civilization" (spoiler
+ * mask); no opponent at all falls back to "{Victim} War".
  * @param {number} victimPid Victim player id.
  * @param {Iterable<number>} aggressorPids Aggressor ids (may be empty → engine fallback).
  * @returns {string} A war name.
@@ -536,9 +523,8 @@ export function actionHint(cause, city) {
  */
 export function permanenceCue(cause) {
   const p = causePermanence(cause);
-  // A "temporary" cue ("The pressure is temporary.") only restated what the action hint already implies
-  // ("displacement subsides on its own…"), so it's dropped; the meaningful persistent / permanent cues
-  // (keep-leaving / gone-for-good) stay.
+  // A "temporary" cue only restates what the action hint already implies, so it is omitted; the
+  // persistent / permanent cues carry real information.
   if (p === "temporary") return "";
   return loc("LOC_EMIG_PERMANENCE_" + p.toUpperCase()) || PERMANENCE_FALLBACK[p] || "";
 }
@@ -591,12 +577,9 @@ export function costNote(destName, gold) {
 }
 
 /**
- * The trailing movement-scope tag that flags whether a move stayed WITHIN the player's empire (an
- * internal relocation to another of their own settlements) or LEFT it for another empire. The two
- * read very differently to a player — losing people to a rival is not the same as citizens shuffling
- * between your own cities — so the digest ends with a short "(Internal Move)" / "(External Move)"
- * label rather than letting every move read as a loss. A death (attrition) went nowhere, so it gets
- * no tag.
+ * The trailing "(Internal Move)" / "(External Move)" tag flagging whether a move stayed within the
+ * player's empire or left it, since losing people to a rival reads very differently from citizens
+ * shuffling between your own cities. A death (attrition) went nowhere, so it gets no tag.
  * @param {string|undefined} cause The migration cause.
  * @param {boolean|undefined} crossCiv True when the destination is a different empire.
  * @returns {string} The parenthetical tag (leading space), or "".
@@ -621,23 +604,17 @@ export function destClause(cause, destName) {
   return " " + (loc("LOC_EMIG_DEST_CLAUSE", destName) || `Bound for ${destName}.`);
 }
 
-// The blank line separating a digest's SITUATION (what happened + where the people went) from its
-// GUIDANCE (what you can do, why they moved). Surfaces that honour it — the HUD toast and the expanded
-// log row (white-space:pre-line) — render a paragraph break; the compact one-line log row and any other
-// consumer collapse it to a space, so it degrades cleanly.
+// The blank line separating a digest's SITUATION from its GUIDANCE. Surfaces with white-space:pre-line
+// render a paragraph break; any other consumer collapses it to a space.
 const DIGEST_GAP = "\n\n";
 
 // Causes whose flowing "…for <dest>" headline already conveys WHY the people moved, so the digest omits
-// the redundant "Drawn there: …" clause for them. Only the VOLUNTARY pull (prosperity) is fully stated
-// by its headline; the forced causes (war/disaster/conquest) keep their clause, which names the specific
-// refuge the people fled toward — information the "for the safety of <dest>" headline doesn't carry.
+// the redundant "Drawn there: …" clause. The forced causes keep their clause, which names the refuge.
 const HEADLINE_STATES_WHY = new Set(["prosperity"]);
 
 /**
-// Per-cause "flowing headline WITH a resolved destination": one sentence that folds where the people
-// went into the loss headline, instead of a headline + a separate "Bound for <dest>." clause. Each
-// entry is the LOC key plus an English fallback builder (people, city, dest). Causes absent here keep
-// the two-part "headline. Bound for <dest>." form (see {@link headlineWithDest}).
+// Per-cause "flowing headline WITH a resolved destination": LOC key plus an English fallback builder
+// (people, city, dest). Causes absent here keep the two-part "headline. Bound for <dest>." form.
 /** @type {Record<string, {key:string, fb:(p:string,c:string,d:string)=>string}>} */
 const DIGEST_TO = {
   disaster: { key: "LOC_EMIG_DIGEST_DISASTER_TO",
@@ -654,12 +631,8 @@ const DIGEST_TO = {
 
 /**
  * The digest's opening "situation" sentence: the cause-named loss headline plus where the people went.
- * Conquest is its own shape — the population was seized when the city fell, so it names the CONQUERING
- * civ ("… were captured when <city> was conquered by <civ>.") rather than a destination. A cause with a
- * {@link DIGEST_TO} entry AND a resolved destination reads as one flowing sentence naming that
- * destination ("… for its more prosperous neighbor, <dest>." / "… for the safety of <dest>."); any other
- * case keeps the headline and a separate "Bound for <dest>." clause. For an external move the destination
- * is whatever destView resolved — a met civ's city, or the masked "an unmet civilization".
+ * Conquest names the CONQUERING civ rather than a destination; a cause with a {@link DIGEST_TO} entry
+ * and a resolved destination reads as one flowing sentence; any other case appends "Bound for <dest>."
  * @param {{cause?:string, people:string, city:string, destName?:string, byCiv?:string}} o Inputs. `byCiv`
  *   is the (already unmet-masked) conquering civ, present only for conquest.
  * @returns {string} The situation sentence.
@@ -696,24 +669,20 @@ function crossCivNotes(o) {
 
 /**
  * Compose the local player's per-pass migration digest as two blocks separated by {@link DIGEST_GAP}:
- * the SITUATION (cause-named loss headline + "where they went") and the GUIDANCE — the "why here"
- * clause first (why that destination), then the action hint, a cross-civ assimilation cost note when
- * material, and a trailing internal-vs-external movement-scope tag. The action hint already conveys how
- * durable the loss is and whether acting helps, so a separate permanence cue is not repeated here.
- * Pure; the caller resolves the inputs.
+ * the SITUATION (loss headline + where they went) and the GUIDANCE ("why here" clause, action hint,
+ * cross-civ cost note when material, movement-scope tag). Pure; the caller resolves the inputs.
  * @param {{cause?:string, people:string, city:string, crossCiv?:boolean, destName?:string,
  *          destGold?:number, why?:string, byCiv?:string, stanceTip?:boolean}} o The resolved digest
  *   inputs. `stanceTip` adds the Anti-Immigration Stance tip (the caller decides when it applies). `why` is the
- *   pre-localized "why here" phrase (P0.1), appended as a short clause when present; `byCiv` is the
+ *   pre-localized "why here" phrase, appended as a short clause when present; `byCiv` is the
  *   (already unmet-masked) conquering civ, used only by the conquest headline.
  * @returns {string} The composed message.
  */
 export function localDigestMessage(o) {
   const situation = headlineWithDest(o);
   let guidance = "";
-  // The "why here" clause leads the guidance (why that destination), right after the situation. Causes
-  // whose flowing headline already states the pull ("…for its more prosperous neighbor, X" / "…for the
-  // safety of X") don't repeat it — that would just be noise; every other cause keeps it.
+  // The "why here" clause leads the guidance; causes whose flowing headline already states the pull
+  // don't repeat it.
   if (!(o.cause && HEADLINE_STATES_WHY.has(o.cause))) guidance += whyClause(o.cause, o.why);
   const hint = actionHint(o.cause, o.city); // then the action hint (what you can do / how durable it is)
   if (hint) guidance += " " + hint;
@@ -725,9 +694,8 @@ export function localDigestMessage(o) {
 
 /**
  * Compose the local player's per-pass INBOUND immigration digest: a "people settled in <city>"
- * headline plus, for a known (met) origin, a "drawn from <civ>" clause. The mirror of
- * {@link localDigestMessage} for people ARRIVING in the player's empire rather than leaving it, so a
- * prosperous, receiving empire also gets news. Pure; the caller resolves + unmet-masks the inputs.
+ * headline plus, for a met origin, a "drawn from <civ>" clause. The mirror of
+ * {@link localDigestMessage} for arrivals. Pure; the caller resolves + unmet-masks the inputs.
  * @param {{cause?:string, people:string, city:string, fromCiv?:string}} o The resolved inputs. `people`
  *   is the pre-formatted dual-count string; `fromCiv` is the (already unmet-masked) origin civ, omitted
  *   when unknown.
@@ -757,7 +725,7 @@ function whyClause(cause, why) {
 }
 
 /**
- * The low-key "rising emigration pressure" trend cue line (P0.3): a settlement is building toward a
+ * The low-key "rising emigration pressure" trend cue line: a settlement is building toward a
  * voluntary move without anyone having left yet.
  * @param {string} srcName Source settlement name.
  * @param {string} destName Where its people are drawn.

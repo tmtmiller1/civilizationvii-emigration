@@ -79,7 +79,7 @@ const { quarterOptionsFor, quarterOptionFor, isQuarterOption, __test } =
 {
   const opt = __test.toOption({ id: "a", pays: "YIELD_CULTURE", why: "traders enrich the docks" }, "ROME");
   assert.equal(opt.label, __test.ACT_LABEL.YIELD_CULTURE, "the label comes from the yield it pays (LOC fallback = English)");
-  assert.ok(opt.note.includes("Traders enrich the docks"), "the note leads with the capitalised 'why'");
+  assert.ok(opt.note.includes("Traders enrich the docks"), "the note leads with the capitalized 'why'");
   assert.ok(opt.note.endsWith("(+Culture, −Gold)."), "a non-Gold stance's cue names its Gold price: " + opt.note);
   const tax = __test.toOption({ id: "b", pays: "YIELD_GOLD", why: "the wharves pay" }, "ROME");
   assert.ok(tax.note.endsWith("(+Gold)."), "a Gold stance's cue names no price: " + tax.note);

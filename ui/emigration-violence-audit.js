@@ -1,19 +1,10 @@
 // emigration-violence-audit.js
 //
-// A running answer to "did the minor-power balance change actually reduce refugees?", kept alongside the
-// real violence model rather than argued from the code.
-//
-// For every city the model observes, this keeps a COUNTERFACTUAL intensity: what the city would hold if every
-// observation had been scored at full strength, with the ordinary besieged floor and no minor-power scaling --
-// the rules before the change. The real intensity and the counterfactual receive the same observations and
-// decay by the same factor, so the only thing that separates them is the downgrade itself. Where the
-// counterfactual crosses the flee threshold and the real value does not, refugees who would have fled under
-// the old rules did not.
-//
-// It also records, per city, what the most recent observation decided (who was named as attacking, from which
-// source, and whether that counted as minor-only) and how many war refugees actually left. None of this
-// changes gameplay. It is kept in memory only and published on `globalThis.EmigrationViolence` so a probe in
-// another mod can read the live instance (an import would give it a separate, empty copy).
+// A running audit of the minor-power downgrade in the violence model. For every observed city it keeps
+// a COUNTERFACTUAL intensity (every observation scored at full strength, no minor-power scaling) fed
+// the same observations and decay as the real one, so the only difference is the downgrade itself.
+// Also records each city's most recent observation and its war-refugee count. Changes no gameplay;
+// in-memory only, published on `globalThis.EmigrationViolence` so a probe can read the live instance.
 
 /**
  * @typedef {{turn:number, owner:number, minorsOnly:boolean, source:string, named:number[],

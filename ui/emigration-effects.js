@@ -1,20 +1,10 @@
 // emigration-effects.js
 //
-// The gameplay-WRITE layer for the ASSIMILATION cost of migration, applied from the UI VM via
-// `Players.grantYield`. This is what gives population growth a cost in Civ VII (where raw
-// population is otherwise "free" - see docs/civ7-mechanics-and-feasibility.md §4).
-//
-// Assimilation load (duration-based): each migrant adds "load" to the receiving civ; the load
-// DECAYS each turn (= the assimilation duration) and the civ pays a per-turn grantYield cost
-// proportional to its current load. Scoped to migrated population only - natural growth never adds
-// load. So a magnet civ that keeps pulling people in keeps paying, and the cost fades as newcomers
-// integrate. State persists in GameConfiguration. The congestion headwind (Algorithm C) reads the
-// per-capita load as a pull penalty.
-//
-// Sibling write-layers split out for cohesion: the carried dividend (the positive mirror) lives in
-// emigration-dividend.js; the migrant-holding penalty in emigration-migrant-units.js. Both reuse
-// the `deduct`/grant grantYield wrappers. Probe-confirmed: grantYield deducts cross-civ for gold. The
-// Cultural Quarter yields reuse the same per-turn grantYield path (grantSigned/applyQuarterYields).
+// The gameplay-WRITE layer for the ASSIMILATION cost of migration, applied via `Players.grantYield`.
+// Each migrant adds "load" to the receiving civ; the load DECAYS each turn and the civ pays a
+// per-turn cost proportional to it (natural growth never adds load). State persists in
+// GameConfiguration; the congestion headwind reads the per-capita load as a pull penalty. The
+// `deduct`/`grantSigned` wrappers are shared by the dividend, migrant-unit and Cultural Quarter write paths.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { civTuning } from "/emigration/ui/emigration-civ-tuning.js";
@@ -40,9 +30,8 @@ function gameTurn() {
 }
 
 /**
- * Turns elapsed since a per-key marker, rebasing an absent/stale-future marker down to the
- * current turn first (F1): Game.turn resets at age boundaries, so a marker left above `turn`
- * would pin elapsed to 0 forever and freeze decay; pulling it down lets decay resume.
+ * Turns elapsed since a per-key marker, rebasing an absent/stale-future marker down to the current
+ * turn first: Game.turn resets at age boundaries, so a marker left above `turn` would freeze decay.
  * @param {Record<string, number>} map Per-key turn markers.
  * @param {number} key The entry key.
  * @param {number} turn Current game turn.
@@ -147,7 +136,7 @@ export function tickAssimilation(pid) {
   const cur = s.load[pid] || 0;
   if (cur <= 0) return none;
   const turn = gameTurn();
-  const elapsed = elapsedSince(s.tickedTurn, pid, turn); // F1: rebases a stale age-reset marker
+  const elapsed = elapsedSince(s.tickedTurn, pid, turn); // rebases a stale age-reset marker
   if (elapsed <= 0) return { load: cur, happiness: 0, gold: 0 };
   s.tickedTurn[pid] = turn;
   // integrationSpeed (civ tuning): >1 clears the load faster, <1 slower. speedDecay re-bases the
@@ -166,8 +155,8 @@ export function tickAssimilation(pid) {
 }
 
 /**
- * A civ's current gold balance (treasury), or null when unreadable. Mirrors the probe's accessor
- * order (goldBalance field, then getGoldBalance()).
+ * A civ's current gold balance (treasury), or null when unreadable: the goldBalance field, then
+ * getGoldBalance().
  * @param {number} pid Player id.
  * @returns {number|null} Gold balance, or null off-engine / when absent.
  */
@@ -183,10 +172,9 @@ function goldBalanceFor(pid) {
 }
 
 /**
- * The bounded wealth-aware multiplier on the GOLD assimilation cost (P1.4): ×1 at the reference
- * treasury, scaling up for richer civs and down for poorer ones, clamped to [min, max]. Returns 1
- * (no effect) when the weight is 0 or the treasury can't be read, so a missing read never
- * over-charges a civ.
+ * The bounded wealth-aware multiplier on the GOLD assimilation cost: ×1 at the reference treasury,
+ * scaling up for richer civs and down for poorer ones, clamped to [min, max]. Returns 1 when the
+ * weight is 0 or the treasury can't be read.
  * @param {number} pid Player id.
  * @returns {number} A multiplier in [assimilationWealthMin, assimilationWealthMax].
  */
@@ -207,8 +195,8 @@ function wealthCostMultiplier(pid) {
  * @returns {number} Gold cost (>= 0).
  */
 function assimilationGoldCost(pid, load) {
-  // assimilationEase (civ tuning): scales the confirmed gold lever (variance, no runaway).
-  // wealthCostMultiplier (P1.4): bends the cost by the civ's treasury context.
+  // assimilationEase (civ tuning) scales the gold lever; wealthCostMultiplier bends the cost by the
+  // civ's treasury context.
   const base = CONFIG.assimilationGold * load * civTuning(pid).assimilationEase;
   return base * wealthCostMultiplier(pid);
 }
@@ -253,10 +241,9 @@ export function assimilationCostFor(pid) {
 }
 
 /**
- * The congestion headwind (Algorithm C): a pull penalty for migrating INTO a civ that's still
- * digesting lots of newcomers, scaling with its per-capita assimilation load. A structural
- * anti-runaway brake (a heavy magnet cools off) that can't be out-golded. Returns 0 when
- * congestWeight is 0 or the civ carries no load.
+ * The congestion headwind: a pull penalty for migrating INTO a civ that's still digesting lots of
+ * newcomers, scaling with its per-capita assimilation load (an anti-runaway brake that can't be
+ * out-golded). Returns 0 when congestWeight is 0 or the civ carries no load.
  * @param {number} pid Destination player id.
  * @param {number} civPopulation The destination civ's total population.
  * @returns {number} A non-negative pull penalty.
@@ -269,10 +256,8 @@ export function congestionPenalty(pid, civPopulation) {
 }
 
 /**
- * Grant a SIGNED amount of a yield to a player (the two-sided sibling of {@link deduct}, which only
- * ever applies costs). Used for the per-turn Cultural Quarter yields, where a benefit is granted and
- * a drawback deducted each turn from the tile's current record. No-ops for a zero amount, a bad id, or
- * a missing grantYield API; never throws.
+ * Grant a SIGNED amount of a yield to a player (the two-sided sibling of {@link deduct}), used for
+ * the Cultural Quarter yields. No-ops for a zero amount, a bad id, or a missing grantYield API; never throws.
  * @param {number} pid Player id. @param {string} yieldKey e.g. "YIELD_CULTURE". @param {number} amount Signed amount.
  */
 export function grantSigned(pid, yieldKey, amount) {
@@ -294,11 +279,8 @@ export function grantSigned(pid, yieldKey, amount) {
 
 /**
  * Apply a Cultural Quarter's yields to the host for ONE turn: grant its benefit and charge its
- * drawback. Called every turn from the quarter tick against whatever record currently holds the tile
- * (a one-time grant of Happiness/Culture was wiped by the engine's per-turn recompute and never
- * showed). The amounts are read from the record's `applied` block (resolved from CONFIG at formation).
- * A `benefitScale` < 1 shrinks only the BENEFIT (a contested enclave gives less good while at war with
- * its homeland); the drawback is always charged in full.
+ * drawback, from the record's `applied` block. A `benefitScale` < 1 shrinks only the BENEFIT (a
+ * contested enclave); the drawback is always charged in full.
  * @param {number} owner Host player id.
  * @param {QuarterApplied} applied The resolved yields.
  * @param {number} [benefitScale] Multiplier on the benefit amount (default 1 = full).
@@ -312,10 +294,8 @@ export function applyQuarterYields(owner, applied, benefitScale = 1) {
 }
 
 /**
- * Reverse one turn's worth of a Cultural Quarter's yields on a host (grant the exact inverse). Retained
- * as the exact mirror of {@link applyQuarterYields} for tests and for any caller that needs to undo a
- * single turn's application; the per-turn model itself needs no reversal (the tile's current record is
- * the single source of truth, so a change-of-hands self-corrects on the next tick).
+ * Reverse one turn's worth of a Cultural Quarter's yields on a host (grant the exact inverse): the
+ * exact mirror of {@link applyQuarterYields}, for tests and any caller that needs to undo a single turn.
  * @param {number} owner Host player id.
  * @param {QuarterApplied} applied The resolved yields.
  */

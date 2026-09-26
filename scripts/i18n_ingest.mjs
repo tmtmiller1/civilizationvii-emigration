@@ -7,7 +7,7 @@
 // the next apply silently replaces it with the English string. That is not hypothetical: on 2026-09-17
 // the XML files had drifted to the point where a single documented `i18n_extract && i18n_apply` wiped
 // 6,018 real translations across the eleven locales, about a third of every file, and it was only caught
-// because a spot check happened to look at a German row afterwards.
+// because a spot check happened to look at a German row afterward.
 //
 // Ingest closes that hole by treating the SHIPPED XML as the thing of record and copying anything the map
 // is missing or disagrees with back into the map. It only ever adds or updates; it never drops a key.

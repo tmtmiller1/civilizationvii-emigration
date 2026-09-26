@@ -1,9 +1,7 @@
 // emigration-migration-records.js
 //
-// DOM-free builders for the Migration records the engine emits: the shared city-name
-// helper plus the move / depart / arrive record shapes. Split out of emigration-engine.js
-// so the record vocabulary lives in one focused, testable place. No side effects - these
-// only construct the plain objects that notifications and metrics fold over.
+// DOM-free builders for the Migration records the engine emits: the shared city-name helper plus the
+// move / depart / arrive record shapes. No side effects.
 
 /** @typedef {import("/emigration/ui/emigration-causes.js").MigrationCause} MigrationCause */
 /** @typedef {import("/emigration/ui/emigration-state.js").Transit} Transit */
@@ -22,9 +20,9 @@
  * @property {Record<string, number>} [originMix] Who the migrant is, as origin civ → fraction (sums to 1):
  *   the source settlement's mix at departure, so a diaspora that moves on keeps its identity. The ledger's
  *   source side removes these fractions and the destination side adds the same ones. `originCiv` wins over it.
- * @property {string} [srcLoc] The source settlement's centre plot "x,y" (the ledger's key). Matched before
+ * @property {string} [srcLoc] The source settlement's center plot "x,y" (the ledger's key). Matched before
  *   `srcName`, which two cities can share.
- * @property {string} [destLoc] The destination settlement's centre plot "x,y".
+ * @property {string} [destLoc] The destination settlement's center plot "x,y".
  * @property {boolean} crossCiv Whether it crossed civilizations.
  * @property {number} points Raw Civ population points moved (1 per migration).
  * @property {number} people Historically-scaled people who moved.
@@ -34,7 +32,7 @@
  *   that drive the out tally (move/depart) and on crisis-death records.
  * @property {number} [destPaidCost] Assimilation load the destination civ took on for this arrival
  *   (the "did the destination pay a cost?" signal). Present on move/arrive records, not departures.
- * @property {string[]} [reasons] The "why here" reason-tag keys for the chosen destination (P0.1);
+ * @property {string[]} [reasons] The "why here" reason-tag keys for the chosen destination;
  *   see emigration-move-reasons.js. Carried on move/depart (and forwarded to arrive) records.
  * @property {"move"|"depart"|"arrive"} [phase] Transit phase: an instantaneous move, the
  *   departure half of a lagged move (out-tally now), or the arrival half (in-tally later).
@@ -61,7 +59,7 @@ export function cityName(city) {
 }
 
 /**
- * A settlement's centre plot "x,y", the composition ledger's key, or undefined when unreadable. Carried on the
+ * A settlement's center plot "x,y", the composition ledger's key, or undefined when unreadable. Carried on the
  * records so the ledger matches a city by where it stands, not by its display name.
  * @param {*} city City object. @returns {string|undefined} The key.
  */
@@ -104,11 +102,9 @@ export function moveRecord(src, dest, people, cause, meta) {
 }
 
 /**
- * Build the DEPARTURE half of a lagged move: the source loss + emigration tally land now, so it
- * carries `srcOwner` but NOT `destOwner` (the arrival credits the destination later). Keeps
- * `destName` for the notification ("left X for Y"), and `edgeDestOwner` (the destination civ) purely
- * so the migration-network flow edge can be recorded at depart, it must NOT be the tally-driving
- * `destOwner` field, or the immigration tally would double-count (credited again on arrival).
+ * Build the DEPARTURE half of a lagged move: it carries `srcOwner` but NOT `destOwner` (the arrival
+ * credits the destination later). `edgeDestOwner` exists only so the flow edge can be recorded at
+ * depart; it must not become `destOwner` or the immigration tally would double-count.
  * @param {*} src Source signal.
  * @param {*} dest Destination signal.
  * @param {number} people Historically-scaled people who left.
@@ -163,12 +159,9 @@ export function arriveRecord(e, ok, destPaidCost) {
       // Who the migrant is, captured at departure (see Migration.originMix): a mixed city's emigrants arrive
       // as the same mix that left. An entry queued before the mix existed falls back to originCiv below.
       originMix: e.originMix,
-      // The migrant's TRUE origin, captured at departure. Composition attributes the arrival to this
-      // directly instead of re-deriving it from srcName at arrival time, which fails for the most
-      // visible diaspora of all, war refugees, whose home city is often razed or captured during the
-      // multi-turn transit (so a name→owner lookup would miss it or credit the conqueror). NOT the
-      // tally-driving srcOwner field (that would double-count immigration, already credited here via
-      // destOwner); originCiv is read only by the composition ledger's destination side.
+      // The migrant's TRUE origin, captured at departure, since a name-to-owner lookup at arrival time
+      // fails for a home city razed or captured in transit. NOT the tally-driving srcOwner field;
+      // originCiv is read only by the composition ledger's destination side.
       originCiv: e.originMix ? undefined : e.srcOwner
     });
   }

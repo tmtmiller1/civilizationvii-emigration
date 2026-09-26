@@ -1,23 +1,9 @@
 // emigration-geography.js
 //
-// The geographic shaping of where emigrants go. Two effects, both added to a
-// destination's pull in the engine:
-//
-//   1. Distance decay - people prefer nearer settlements (own civ or foreign),
-//      so migration stays regional instead of teleporting across the map. A flat
-//      penalty proportional to the hex distance between source and destination.
-//
-//   2. Directional flight from an invader - when a city is under attack, its
-//      people are pushed AWAY from the threat. We locate the nearest settlement
-//      at war with the source's owner, take the unit vector pointing away from
-//      it, and reward destinations that lie in that direction (and penalize ones
-//      back toward the invader). This is the Mongol-invasion effect: an army
-//      pressing from the east drives refugees west.
-//
-// Reads engine globals defensively: GameplayMap.getPlotDistance for hex
-// distance, Players.get(...).Diplomacy.isAtWarWith for the per-pair war test,
-// and city.location ({x, y}) for positions. Any unreadable input degrades to a
-// neutral 0, never a throw.
+// The geographic shaping of where emigrants go, added to a destination's pull: distance decay (a
+// penalty proportional to hex distance, so migration stays regional) and directional flight from an
+// invader (destinations away from the nearest enemy settlement are rewarded, those toward it
+// penalized). Reads engine globals defensively; any unreadable input degrades to a neutral 0.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
@@ -31,12 +17,9 @@ function cityLoc(sig) {
   return l && typeof l.x === "number" && typeof l.y === "number" ? l : null;
 }
 
-// Per-pass hex-distance memo (P1). One runPass scans every (source, destination) pair up to ~4×
-// (crisis + voluntary tracks, plus the with-stance/neutral counterfactual), and each scan recomputes
-// `getPlotDistance` - an engine call - for the same fixed city pair. City locations never move within
-// a pass, so we cache by the symmetric pair of stable city keys and reset once per pass (in
-// collectCitySignals, alongside the polity/border caches). Signals without a `.key` (hand-built test
-// signals) bypass the cache and compute directly, so behaviour is unchanged off-engine.
+// Per-pass hex-distance memo. One runPass scans every (source, destination) pair several times, and
+// city locations never move within a pass, so `getPlotDistance` (an engine call) is cached by the
+// symmetric pair of city keys and reset once per pass in collectCitySignals.
 /** @type {Map<string, number>} */
 const _distCache = new Map();
 
@@ -45,9 +28,9 @@ export function resetDistanceCache() {
   _distCache.clear();
 }
 
-// Per-pass diplomacy memo (P2). Open-borders/alliance/war reads are per-(srcOwner,destOwner) engine
-// calls evaluated inside the O(N^2) pull loop; there are only O(civs^2) distinct owner pairs, and the
-// relationship state doesn't change mid-pass. Cache by the owner pair and reset once per pass.
+// Per-pass diplomacy memo. Open-borders/alliance/war reads are engine calls evaluated inside the
+// O(N^2) pull loop, and the relationship state doesn't change mid-pass, so they are cached by owner
+// pair and reset once per pass.
 /** @type {Map<string, boolean>} */
 const _openBordersCache = new Map();
 /** @type {Map<string, boolean>} */
@@ -81,9 +64,7 @@ function memoPair(cache, a, b, compute) {
 }
 
 /**
- * Hex distance between two signals' cities, or 0 if either is unreadable. Memoized per pass on the
- * symmetric city-key pair (see {@link resetDistanceCache}); distance is symmetric and locations are
- * fixed within a pass.
+ * Uncached hex distance between two signals' cities, or 0 if either is unreadable.
  * @param {*} a A CitySignal.
  * @param {*} b A CitySignal.
  * @returns {number} Hex distance (>= 0).
@@ -189,7 +170,7 @@ export function fleeVector(src, ranked) {
 }
 
 /**
- * Owner-preference for a war refugee (Feature 1): prefer the source's own civ, treat
+ * Owner-preference for a war refugee: prefer the source's own civ, treat
  * the aggressor that attacked it as a last resort, leave neutral third parties
  * unchanged - so refugees rank own civ > others > aggressor.
  * @param {*} src Source signal.
@@ -211,9 +192,7 @@ function smoothstep01(x) {
 
 /**
  * How hard a threatened city flees DIRECTIONALLY, ramped smoothly from the flee threshold up to ~2×
- * it, instead of snapping to full strength the instant the threshold is crossed. Removes the "one bad
- * turn suddenly empties my city" cliff: just over the bar the directional tilt eases in; a heavy
- * assault still reaches full intensity. 0 at/below the threshold, 1 at ≥ 2× it.
+ * it so the tilt eases in rather than snapping to full strength. 0 at/below the threshold, 1 at ≥ 2× it.
  * @param {number} value The accumulated violence. @param {number} threshold The flee threshold.
  * @returns {number} Intensity in [0,1].
  */
@@ -223,10 +202,8 @@ function fleeIntensity(value, threshold) {
 }
 
 /**
- * The directional flight bonus for a move under `flee`: cosine of the angle between
- * the move and the flee direction × fleeFactor (+1 directly away from the invader,
- * −1 straight back toward them), ramped by {@link fleeIntensity} so it builds smoothly past the
- * threshold rather than as a binary gate. 0 when positions are unreadable.
+ * The directional flight bonus for a move under `flee`: cosine of the angle between the move and the
+ * flee direction × fleeFactor, ramped by {@link fleeIntensity}. 0 when positions are unreadable.
  * @param {*} src Source signal.
  * @param {*} dest Destination signal.
  * @param {{x:number, y:number}} flee The flee unit vector.
@@ -246,9 +223,7 @@ function fleeBonus(src, dest, flee) {
 
 /**
  * The geographic pull terms for a (src, dest) pair, split so callers can both sum them (geoAdjust)
- * and read the individual contributions for the per-move reason tags: a distance-decay penalty
- * (always ≤ 0), an aggressor/own-civ owner preference for war refugees (when `aggressors` is given),
- * and a directional flight bonus when `flee` is set (positive away from the invader).
+ * and read the individual contributions for the per-move reason tags.
  * @param {*} src Source signal.
  * @param {*} dest Destination signal.
  * @param {{x:number, y:number}|null} flee The source's flee vector, or null.
@@ -324,11 +299,8 @@ export function openBordersBonus(srcOwner, destOwner) {
 }
 
 /**
- * Uncached alliance read between two players, via the engine's dedicated relationship-state method
- * `Players.get(a).Diplomacy.hasAllied(b)` (the base game detects a standing alliance this way, 15+
- * call sites). The OLD code scanned `getJointEvents` for `DIPLOMACY_ACTION_FORM_ALLIANCE`, which is an
- * action enum used to *initiate* an alliance, NOT a value that persists in the joint events, so it was
- * always false and the alliance permeability never applied.
+ * Uncached alliance read between two players, via the engine's relationship-state method
+ * `Players.get(a).Diplomacy.hasAllied(b)` (how the base game detects a standing alliance).
  * @param {number} a Player id.
  * @param {number} b Player id.
  * @returns {boolean} True if an alliance is active.
@@ -343,7 +315,7 @@ function rawAlliance(a, b) {
 
 /**
  * Whether two civs share an active base-game Alliance. Eases cross-civ migration as a Permeability
- * factor (§1 / Phase 4). Memoized per pass on the player pair.
+ * factor. Memoized per pass on the player pair.
  * @param {number} a A player id.
  * @param {number} b Another player id.
  * @returns {boolean} True if an alliance is active.
@@ -353,7 +325,7 @@ export function hasAlliance(a, b) {
 }
 
 /**
- * Whether two civs are at war (per-pair, best-effort). Dampens cross-civ migration (§1 / Phase 4).
+ * Whether two civs are at war (per-pair, best-effort). Dampens cross-civ migration.
  * @param {number} a A player id.
  * @param {number} b Another player id.
  * @returns {boolean} True if a is at war with b.

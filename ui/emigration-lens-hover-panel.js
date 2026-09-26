@@ -1,15 +1,10 @@
 // emigration-lens-hover-panel.js
 //
 // Shared cursor-following info panel for the mod's map lenses. A lens registers a panel with
-// registerLensHoverPanel({...}); while that lens is the active lens and the cursor is over an
-// observable, non-hidden settlement, the panel shows a small readout near (but offset from) the
-// cursor. The Ethnicity and Prosperity lenses both use this so they look and behave identically -
-// same styling, same cursor offset, same spoiler rules.
-//
-// Spoiler-safe: a policy-hidden owner is never indexed, so no panel appears for it. Reads only; the
-// plot->settlement index is rebuilt on a short TTL and shared across every registered panel. Each
-// lens supplies an optional per-pass snapshot builder (e.g. the prosperity field mean/spread) and a
-// resolve(signal, snapshot) -> {title, rows} that turns the hovered settlement into display rows.
+// registerLensHoverPanel({...}); while that lens is active and the cursor is over an observable,
+// non-hidden settlement, the panel shows a small readout offset from the cursor. Spoiler-safe (a
+// policy-hidden owner is never indexed); the plot->settlement index is rebuilt on a short TTL and
+// shared across every registered panel.
 
 import LensManager from "/core/ui/lenses/lens-manager.js";
 import PlotCursor from "/core/ui/input/plot-cursor.js";
@@ -17,19 +12,15 @@ import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 
 const CURSOR_OFFSET = 36; // px gap from the cursor so the panel sits clear of the tile being read
-// The panel has to out-stack the game's tooltip layers, not just the HUD: root-shell.html mounts
-// #uinext-tooltips and #uinext-dropdowns at z-index 10000 (and #tooltip-root at 99), and every
-// ui-next tooltip - the game's own and the ones tooltip mods portal in there (Better Nested
-// Tooltips, Aventura's resource tooltips, Enhanced Town Focus Info) - renders inside that container.
-// At the old 9999 any of those painted straight over a cursor panel anchored to the same point, the
-// same way they once buried the emigration toast. 10001 clears them; the toast sits one above that
-// so a notification still wins over a hover readout. Exported so every panel shares one value.
+// The panel has to out-stack the game's tooltip layers: root-shell.html mounts #uinext-tooltips and
+// #uinext-dropdowns at z-index 10000, and every ui-next tooltip renders inside that container. 10001
+// clears them; the toast sits one above that so a notification still wins over a hover readout.
 export const PANEL_Z = 10001;
 const INDEX_TTL = 3000; // ms a plot->settlement index is cached before a rebuild
 
 /**
- * @typedef {Object} HoverRow A single panel row: a colour swatch, a label, and an optional value.
- * @property {string} color  Swatch colour (`#RRGGBB`).
+ * @typedef {Object} HoverRow A single panel row: a color swatch, a label, and an optional value.
+ * @property {string} color  Swatch color (`#RRGGBB`).
  * @property {string} name   Row label.
  * @property {string} [value] Right-aligned value (e.g. "42%"); omitted/"" shows no value.
  */
@@ -52,9 +43,7 @@ const INDEX_TTL = 3000; // ms a plot->settlement index is cached before a rebuil
  *   resolve Hovered settlement (+ the hovered plot, for per-tile panels) -> display.
  * @property {(panel:HTMLElement, signal:*)=>void} [decorate] Optional: append richer DOM under the
  *   rows once the panel has been rebuilt for a NEW tile. The `rows` contract is title + flat strings,
- *   so anything with structure (the Feature L weight bars) mounts through here instead. Kept as a
- *   spec hook rather than a call in this module so the shared panel stays agnostic about which
- *   features exist - a lens opts in, this file does not import them.
+ *   so anything with structure (weight bars) mounts through here; the shared panel stays agnostic.
  */
 
 /** @type {{spec:HoverPanelSpec, panel:HTMLElement|null, snapshot:*, curKey:string|null}[]} */
@@ -270,7 +259,7 @@ function decorate(e, panel, sig) {
 
 /**
  * Rebuild a panel for a NEW tile, and report the hidden-to-shown transition.
- * @param {*} e Panel entry. @param {HTMLElement} panel The panel. @param {*} sig The settlement's signal.
+ * @param {*} e Panel entry. @param {HTMLElement} panel @param {*} sig The settlement's signal.
  * @param {string} key The new tile key. @param {{title:string, rows:HoverRow[]}} out The display.
  */
 function rebuild(e, panel, sig, key, out) {

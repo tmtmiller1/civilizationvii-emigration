@@ -1,15 +1,9 @@
 // emigration-ethnicity-tiles.js
 //
-// Shared per-tile ethnic-composition computation for the ethnicity LENS (emigration-ethnicity-lens.js)
-// and its hover TOOLTIP (emigration-ethnicity-tooltip.js). Those run as separate <UIScripts> entries,
-// hence separate V8 isolates with no shared memory, so each imports THIS module and computes the
-// per-tile mosaic independently. Because the model is pure + deterministic and both read the same
-// engine state, they arrive at the IDENTICAL result: the lens colours each tile by its local mix, and
-// the tooltip reads the hovered tile's shares, so colour and percentages always agree.
-//
-// This is the one place that does the engine reads (owned plots, district class, build-up, population
-// scaling, and a standing enclave's plot); the distribution math itself stays pure in
-// emigration-ethnicity-distribution.js.
+// Shared per-tile ethnic-composition computation for the ethnicity LENS and its hover TOOLTIP, which
+// run in separate UIScript isolates and each compute the mosaic independently; the model is pure and
+// deterministic, so color and percentages always agree. This is the one place that does the engine
+// reads; the distribution math stays pure in emigration-ethnicity-distribution.js.
 
 import { compositionForCity, compositionVersion } from "/emigration/ui/emigration-composition.js";
 import { distributeTiles } from "/emigration/ui/emigration-ethnicity-distribution.js";
@@ -49,7 +43,7 @@ function constructibleCount(x, y) {
 }
 
 /**
- * A tile's district-class base density weight (city centre ≫ urban > rural > wilderness). Defaults to
+ * A tile's district-class base density weight (city center ≫ urban > rural > wilderness). Defaults to
  * the rural weight when the district can't be read, so an unclassifiable tile still carries people.
  * @param {number} x Plot x. @param {number} y Plot y.
  * @returns {number} The base weight.
@@ -74,12 +68,9 @@ function districtWeight(x, y) {
  * A settlement's owned tiles with their population-density weights (district class × build-up bonus).
  * Empty when the city has no readable plots.
  *
- * An ENCLAVE tile is floored at the urban weight. The enclave is placed on the nearest EMPTY land plot
- * (emigration-enclave-place.js), which the map still classifies as bare rural or wilderness — so the one
- * tile that is meant to read as a packed foreign quarter was coming out as the sparsest thing in the
- * settlement, and the lens maps sparse to near-transparent. Watched in game 2026-09-17: the enclave tile
- * was the faintest hex on screen. A quarter full of people is not wilderness, so it is weighted as the
- * built-up district it represents.
+ * An ENCLAVE tile is floored at the urban weight: the enclave sits on an empty land plot the map still
+ * classifies as bare rural or wilderness, but a quarter full of people is weighted as the built-up
+ * district it represents.
  * @param {*} city City object.
  * @param {Map<number, {x:number, y:number}>} anchors Enclave plots (civ → location), floored to urban.
  * @returns {{x:number, y:number, weight:number}[]} Weighted plots.
@@ -119,16 +110,15 @@ function scaledPeopleFor(points) {
   }
 }
 
-/** The settlement's stable centre key "x,y", or null. @param {*} city City. @returns {string|null} */
+/** The settlement's stable center key "x,y", or null. @param {*} city @returns {string|null} */
 function locKey(city) {
   const loc = city && city.location;
   return loc && typeof loc.x === "number" && typeof loc.y === "number" ? loc.x + "," + loc.y : null;
 }
 
 /**
- * The cache key: the ledger's version (the turn plus the recorder's pass stamp). The turn covers the map reads
- * (plots, districts, enclaves), which change between turns; the stamp covers a pass that saved after this turn's
- * first paint, which a turn-only key left a whole turn behind (ethnicity audit item O1).
+ * The cache key: the ledger's version (the turn plus the recorder's pass stamp). The turn covers the
+ * map reads, which change between turns; the stamp covers a pass that saved after this turn's first paint.
  * @returns {string} The key.
  */
 function cacheKey() {
@@ -172,12 +162,9 @@ export function tilesForCity(city) {
 }
 
 /**
- * The composition of a settlement the pass has not recorded yet: everyone in it is the owner's own people. The
- * ledger IS saved into the save file (it sits in plaintext in the GameConfiguration block), but a save made before
- * the ledger existed holds none, and a lens painted before the first pass of a session has nothing to read yet. Mod
- * test 86 hit both (it ran on AugustusExp66, which predates the ledger), and the lens and the hover panel drew
- * nothing. That state is not unknown, it is 100% host, and the mosaic (and its density gradient) is still worth
- * drawing.
+ * The composition of a settlement the pass has not recorded yet (a save without the ledger, or a lens
+ * painted before the first pass of a session): everyone in it is the owner's own people, so the mosaic
+ * and its density gradient are still drawn.
  * @param {*} city City object.
  * @returns {*} A composition in the stored shape, or null when the settlement is unreadable.
  */
@@ -194,20 +181,12 @@ function hostOnlyComposition(city) {
 }
 
 /**
- * The settlement's ENCLAVE anchor pins: origin civ → the plot its standing Cultural Enclave occupies, so
- * that diaspora's colour cluster centres on the tile the enclave marker actually sits on rather than on
- * an unrelated hash tile. The quarters store is keyed by the host settlement's CENTRE, so a settlement
- * holds at most one enclave record and this yields at most one pin.
- *
- * Gated on the tile STANDING (`enclaveStanding`, which also recognizes a Village-skinned enclave — on the
- * map that is a plain Village, so a constructible-type check here would miss it): a record whose tile was
- * pillaged or built over stops steering the lens, and the cluster reverts to its hash anchor. Never
- * throws — an unreadable store or plot yields no pins and the lens paints exactly as it did before.
- *
- * Reads the per-turn SNAPSHOT, not `quarterAt`: the lens is its own isolate and does not write quarters,
- * and the writer's copy is loaded once, so `quarterAt` here would freeze whatever the store held on the
- * lens's first paint (an empty one in a fresh session) and no enclave would ever pin.
- * @param {string} key The settlement's "x,y" centre key.
+ * The settlement's ENCLAVE anchor pins: origin civ → the plot its standing Cultural Enclave occupies,
+ * so that diaspora's color cluster centers on the enclave tile (at most one per settlement). Gated
+ * on the tile STANDING (`enclaveStanding`, which also recognizes a Village-skinned enclave). Reads the
+ * per-turn SNAPSHOT, not `quarterAt`, because the lens is its own isolate and `quarterAt` would freeze
+ * whatever the store held on its first paint. Never throws.
+ * @param {string} key The settlement's "x,y" center key.
  * @returns {Map<number, {x:number, y:number}>} Origin civ → enclave plot (empty when none).
  */
 function enclaveAnchors(key) {
@@ -229,7 +208,7 @@ function enclaveAnchors(key) {
 
 /**
  * The share an origin must hold for an enclave to form (`quarterEstablishedShare`) — the ceiling on how
- * much of a plain tile any diaspora may colour. Reading it from CONFIG keeps the lens honest against the
+ * much of a plain tile any diaspora may color. Reading it from CONFIG keeps the lens honest against the
  * live rule: retune the enclave bar and the lens moves with it. 0 when unreadable (no extra ceiling).
  * @returns {number} The bar in [0, 1].
  */
@@ -240,7 +219,7 @@ function enclaveBar() {
 
 /**
  * Compute (uncached) a settlement's per-tile mosaic from its composition + classified plots.
- * @param {*} city City object. @param {string} key The settlement's "x,y" centre key.
+ * @param {*} city City object. @param {string} key The settlement's "x,y" center key.
  * @returns {CityTiles|null} The tiles, or null.
  */
 function computeTiles(city, key) {

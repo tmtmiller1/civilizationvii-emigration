@@ -38,7 +38,7 @@ function buildLegacyCumulativeFrames(n) {
     const cause = i % 2 === 0 ? "economy" : "war";
     if (!cum[key]) cum[key] = {};
     cum[key][cause] = (cum[key][cause] || 0) + (i + 1);
-    // clone the cumulative into this frame (legacy behaviour)
+    // clone the cumulative into this frame (legacy behavior)
     const flows = {};
     for (const k of Object.keys(cum)) flows[k] = { ...cum[k] };
     frames.push({ turn: i, age: i < 60 ? "AGE_ANTIQUITY" : "AGE_EXPLORATION", chartTurn: i, flows });

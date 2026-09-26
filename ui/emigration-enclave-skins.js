@@ -1,25 +1,11 @@
 // emigration-enclave-skins.js
 //
-// WHAT a recognized Cultural Enclave looks like on the map, and what its tile yields, themed by the origin
-// civilization. The engine binds improvement art by type name inside its art packs (no data table can
-// point a custom type at a model), so a themed tile must be an EXISTING improvement type. Two sources:
-//
-//   1. The origin's own UNIQUE IMPROVEMENT (22 civilizations have one): a Goryeo enclave is a Gama, a
-//      Mongol enclave an Ortoo. Its native yields are the civilization's signature yield already.
-//   2. For the rest, a FALLBACK by yield family, taken from the enclave's stance benefits in
-//      emigration-quarter-bonuses.js (option "a" first, then "b"): another civilization's improvement whose
-//      native yield matches (a Roman enclave, production, is a hill fortress; a Carthaginian one, gold, a
-//      caravanserai), else the base Village (+2 Culture from data/emigration-enclave-village.xml).
-//
-// Watched 2026-09-13 (devtools/engine-probe, mod test 16): another civilization's trait-locked unique
-// improvement placed with CREATE_ELEMENT in a human city and in an AI city, carried its native yields for
-// the foreign owner (Gama +3 Culture, Ortoo +5 Gold, Caravanserai +5 Gold, Hidden Fortress +4 Production,
-// Thing +4 Happiness, Mawaskawe Skote +4 Food) and stood through AI turns. Two constraints, handled here:
-// a type from an age not yet reached is not loaded (a Modern civ's improvement cannot be placed in
-// Exploration; enclaveIndex reads null), and some types are terrain-bound (Ortoo flat, Terrace Farm hill).
-// Candidates are therefore an ORDERED list; the placer takes the first that is loaded and has a plot.
-//
-// Pure module (no engine reads), so the tables are unit-testable off-engine.
+// WHAT a recognized Cultural Enclave looks like on the map, themed by the origin civilization. The
+// engine binds improvement art by type name, so a themed tile must be an EXISTING improvement type:
+// the origin's own unique improvement, else a fallback by yield family from its stance benefits, else
+// the base Village. A type from an age not yet reached is not loaded and some types are terrain-bound,
+// so candidates are an ORDERED list and the placer takes the first that is loaded and has a plot.
+// Pure module (no engine reads).
 
 import { QUARTER_BONUSES } from "/emigration/ui/emigration-quarter-bonuses.js";
 
@@ -27,8 +13,8 @@ import { QUARTER_BONUSES } from "/emigration/ui/emigration-quarter-bonuses.js";
 export const VILLAGE_TYPE = "IMPROVEMENT_VILLAGE";
 
 /**
- * Each civilization's unique IMPROVEMENT (from the game's progression-tree data, all ages and DLC,
- * 2026-09-13). Civilizations with unique quarters/buildings instead are absent.
+ * Each civilization's unique IMPROVEMENT (from the game's progression-tree data, all ages and DLC).
+ * Civilizations with unique quarters/buildings instead are absent.
  * @type {Record<string, string>}
  */
 export const UNIQUE_IMPROVEMENTS = Object.freeze({
@@ -58,10 +44,9 @@ export const UNIQUE_IMPROVEMENTS = Object.freeze({
 });
 
 /**
- * Fallback skins per yield family, best first: later-age types (richer, +3 to +5) before Antiquity ones
- * (+2 to +3), so the first LOADED type is the strongest the current age allows. Native yields in brackets.
- * Science has no improvement in the game that yields it, so a science stance falls through to the
- * enclave's other stance (see skinCandidates).
+ * Fallback skins per yield family, best first (later-age types before Antiquity ones, so the first
+ * LOADED type is the strongest the current age allows); native yields in brackets. Science has no
+ * improvement that yields it, so a science stance falls through to the enclave's other stance.
  * @type {Record<string, string[]>}
  */
 export const FAMILY_SKINS = Object.freeze({

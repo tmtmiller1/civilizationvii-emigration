@@ -1,44 +1,18 @@
 // emigration-combat-events.js
 //
-// PER-CITY combat evidence, taken from the engine's combat event stream rather than reconstructed by
-// polling. This is the "what actually happened, to whom, and who did it" layer under the violence model.
-//
-// Why events at all, when emigration-violence-signals.js already polls district health: polling samples
-// standing state once a turn, so it sees only the residue. It cannot say who caused the damage, it cannot
-// see a battle that left the walls untouched, and damage inflicted and repaired between two samples is
-// invisible to it. The engine emits the acts themselves -- watched over 10 turns on one save: 107 `Combat`,
-// 208 `UnitDamageChanged`, 28 `UnitKilledInCombat`, 25 `DistrictDamageChanged` (mod test 111).
-//
-// This does NOT replace the polled signals. Polling is the backstop that still works if an event is missed,
-// a handler throws, or the mod loads mid-war with a history it never saw; events sharpen it. The two are
-// combined in emigration-violence.js by taking the strongest reading rather than the sum, so evidence that
-// both sources can see is never counted twice.
-//
-// Fog does not apply. Watched: every `Combat` event received during mod test 111 was between two OTHER AI
-// players while the local player was 0, so a distant war registers exactly as a visible one does. That
-// matters because the migration model scores every met civilization's cities, not just the player's.
-//
-// Division of labour with the Demographics mod, which owns the raw per-PLAYER war tally (it accumulates
-// `UnitKilledInCombat` strength and exposes `DemographicsData.casualtyCumFor`, consumed by
-// emigration-combat.js for the civ-wide war-severity term): that tracker answers "how badly is this
-// civilization bleeding". It has no per-city or per-location dimension, which is exactly what the violence
-// model needs, so this module adds that rather than duplicating it. The one hard-won lesson is borrowed
-// deliberately: when `UnitKilledInCombat` fires the unit is ALREADY GONE from `Units.get`, so anything
-// needed about a unit must be cached while it is still alive.
+// PER-CITY combat evidence from the engine's combat event stream: who fought where, who did it, and
+// damage that polling (which samples standing state once a turn) cannot see. It sharpens rather than
+// replaces the polled signals; emigration-violence.js takes the strongest reading of the two, not the
+// sum. Fog does not apply, so a distant war registers like a visible one. When `UnitKilledInCombat`
+// fires the unit is ALREADY GONE from `Units.get`, so unit positions are cached while still alive.
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 /** @typedef {{dmg:number, battles:number, kills:number}} Totals */
 /** @typedef {{dmg:number, battles:number, kills:number, attackers:number[]}} Evidence */
 
-// HOW READS WORK. Every city keeps RUNNING totals that only ever grow, and each reader keeps a cursor: the
-// totals it had already taken, plus the event sequence number it had reached. A read returns what arrived
-// since that reader's last read and moves its cursor forward, so every event reaches every reader exactly
-// once, however reads and fighting interleave.
-//
-// This replaced a "current turn, else previous turn" window, which was wrong in both directions: once any
-// fighting landed before the violence model's once-a-turn read, the previous turn's fights were never read,
-// and the early part of the current turn was read again the following turn. Mod test 116 surfaced the
-// symptom as fights counted twice by a probe sampling every turn.
+// HOW READS WORK. Every city keeps RUNNING totals that only ever grow, and each reader keeps a cursor
+// (the totals it had already taken plus the event sequence number it had reached). A read returns what
+// arrived since that reader's last read, so every event reaches every reader exactly once.
 
 /** @type {Map<string, Totals>} Per-city running totals since load, keyed "owner:id". */
 const _totals = new Map();
@@ -154,10 +128,8 @@ function onCombat(data) {
 }
 
 /**
- * Record whichever combatants are NOT the city's own owner. Naming only the striking side misses the enemy
- * every time the defender wins: watched at Lille (mod test 115), where the owner killed an invader in its own
- * territory and the invader went unnamed because it appeared as the victim rather than the aggressor. Who
- * brought violence into this city's land is the question, and losing the fight does not answer it differently.
+ * Record whichever combatants are NOT the city's own owner. Naming only the striking side would miss
+ * the enemy every time the defender wins; who brought violence into this city's land is the question.
  * @param {string} key The city key. @param {*[]} parties Combatant ComponentIDs.
  */
 function nameOutsiders(key, parties) {
@@ -296,11 +268,8 @@ export function startCombatEvents() {
 }
 
 /**
- * Publish the ledger on `globalThis`, the way the Demographics mod publishes its war tally. A UI script in
- * another mod that imports this file does NOT share this module instance -- it gets a fresh one whose tracker
- * was never started and whose maps are therefore always empty -- so an import is not a way to read these
- * numbers from outside. This global is. It is also how any other mod, or a probe, can see per-city combat
- * without duplicating the subscription.
+ * Publish the ledger on `globalThis`. A UI script in another mod that imports this file gets a fresh
+ * module instance whose maps are always empty, so this global is the way to read these numbers from outside.
  */
 function exposeLedger() {
   try {

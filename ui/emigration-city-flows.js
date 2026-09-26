@@ -1,10 +1,8 @@
 // emigration-city-flows.js
 //
-// The per-entry "came from / left for" breakdown shared by two tabs: SETTLEMENTS (a card per the
-// local player's settlements, with city/town kind + pressure) and CAUSES (a card per civ,
-// with a centred title, a sorted cause-by-count list on the left, and the two pies tightened on the
-// right). Each direction is a pie (by the other civ) + a one-line cause summary. Styling lives in
-// the dashboard's injected stylesheet.
+// The per-entry "came from / left for" breakdown shared by the SETTLEMENTS tab (a card per local
+// settlement, with kind + pressure) and the CAUSES tab (a card per civ, with a cause-by-count list).
+// Each direction is a pie (by the other civ) + a one-line cause summary.
 
 import { pieCardSlices, legendChips } from "/emigration/ui/emigration-pies.js";
 import { civColorByIndex, CAUSE_PALETTE } from "/emigration/ui/emigration-network-paint.js";
@@ -17,9 +15,9 @@ import { loc } from "/emigration/ui/emigration-loc.js";
 
 /**
  * Make an element with an optional class + text.
- * @param {string} tag Tag.
+ * @param {string} tag
  * @param {string} [cls] Class.
- * @param {string} [text] Text.
+ * @param {string} [text]
  * @returns {HTMLElement} Element.
  */
 function el(tag, cls, text) {
@@ -49,12 +47,9 @@ function causeText(causes) {
 const DIED_ID = -3;
 
 /**
- * Pie slices for a direction's civ breakdown (coloured by the other civ; "Died" dark red, "Unmet"
- * grey). The slice SHARE (`value`, which drives the pie geometry and the legend/tooltip percentage) is
- * always the raw pop-POINTS base — the same base the cultural-enclave threshold uses — so a slice's %
- * does not shift when the player flips the Scaled/Civ Pop toggle. Only the displayed `countText` follows
- * the toggle (scaled people vs civ points). Points fall back to people if a slice carries no points, so
- * a people-only slice still renders rather than vanishing.
+ * Pie slices for a direction's civ breakdown (colored by the other civ; "Died" dark red, "Unmet"
+ * gray). The slice SHARE (`value`) is always the raw pop-POINTS base so a slice's % does not shift
+ * with the Scaled/Civ Pop toggle; only `countText` follows it. Points fall back to people.
  * @param {{id:number, name:string, people:number, points:number}[]} civs Civs.
  * @returns {{value:number, people:number, points:number, countText:string, color:string,
  *   label:string}[]} Slices.
@@ -89,8 +84,7 @@ function directionCol(title, whyPrefix, dir, isArrivals) {
     // A matching-size dashed placeholder, so a civ with only one active direction still reads as a
     // complete card (rather than a missing pie).
     const ph = el("div", "emig-pie-empty");
-    // F4: branch on an explicit direction flag, not a substring of the localized title
-    // (which failed in non-English locales).
+    // Branch on an explicit direction flag, not a substring of the localized title.
     ph.appendChild(el("span", "emig-pie-empty-t",
       isArrivals
         ? loc("LOC_EMIG_CF_NO_ARRIVALS", "No arrivals yet")
@@ -121,7 +115,7 @@ function cardTitle(c) {
   return c.name;
 }
 
-// Emigration-pressure bands (proximity to shedding population, 0..1): number + a colour-coded label
+// Emigration-pressure bands (proximity to shedding population, 0..1): number + a color-coded label
 // so you can read at a glance how high a settlement's pressure is.
 const PR_BANDS = [
   { min: 0.9, label: loc("LOC_EMIG_CF_BAND_CRITICAL", "Critical"), color: "#c25b54" },
@@ -131,7 +125,7 @@ const PR_BANDS = [
 ];
 
 /**
- * The band (label + colour) for an emigration-pressure level.
+ * The band (label + color) for an emigration-pressure level.
  * @param {number} bar Pressure 0..1.
  * @returns {{label:string, color:string}} The band.
  */
@@ -143,14 +137,9 @@ function pressureBand(bar) {
 }
 
 /**
- * The settlement's named reasons to STAY, as one comma-separated line: its wonders and civic buildings
- * (a granary, a market, a school), resolved from the database name tags the built-environment model
- * collected. The panel only ever showed reasons to LEAVE, which made a well-built city read as a
- * problem with no answer.
- *
- * A tag that the engine cannot compose is DROPPED rather than printed raw: off-engine, and for a
- * building from a module whose text is missing, "LOC_BUILDING_GRANARY_NAME" in the middle of a
- * sentence is worse than saying nothing.
+ * The settlement's named reasons to STAY, as one comma-separated line: its wonders and civic buildings,
+ * resolved from the name tags the built-environment model collected. A tag the engine cannot compose
+ * is DROPPED rather than printed raw.
  * @param {*} tags The LOC name tags, or anything else.
  * @returns {string} The joined list, or "" when there is nothing nameable.
  */
@@ -178,9 +167,9 @@ function appendStayRow(col, tags) {
 }
 
 /**
- * The pressure bar (track + coloured fill scaled to the level).
+ * The pressure bar (track + colored fill scaled to the level).
  * @param {number} pct Percentage 0..100.
- * @param {string} color Band colour.
+ * @param {string} color Band color.
  * @returns {HTMLElement} The bar.
  */
 function pressureBar(pct, color) {
@@ -193,7 +182,7 @@ function pressureBar(pct, color) {
 }
 
 /**
- * The Immigration-pressure column for a settlement: a labelled bar (aligned with the two pie
+ * The Immigration-pressure column for a settlement: a labeled bar (aligned with the two pie
  * columns) showing the level as a percentage + a High/Low band + where its people would head.
  * @param {*} p Pressure {bar, cause, dest, flag} or null.
  * @returns {HTMLElement} The column.
@@ -208,7 +197,7 @@ function pressureCol(p) {
   const pct = Math.round((p.bar || 0) * 100);
   const band = pressureBand(p.bar || 0);
   col.appendChild(pressureBar(pct, band.color));
-  // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces (mod test 88).
+  // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces.
   const flag = p.flag ? " " + loc("LOC_EMIG_CF_FLAG_PAREN", "({1_Flag})", p.flag).trim() : "";
   const val = el("div", "emig-pr-value", pct + "% · " + band.label + flag);
   val.style.color = band.color;
@@ -223,7 +212,7 @@ function pressureCol(p) {
 }
 
 /**
- * The per-city migration-driver meter: each active cause as a labelled bar whose width is its share of
+ * The per-city migration-driver meter: each active cause as a labeled bar whose width is its share of
  * the pressure (e.g. War 60% / Prosperity 40%), so a glance shows what's pushing people out and by how
  * much. Reuses the Causes-tab bar styling.
  * @param {{cause:string, label:string, share:number}[]} mix Weighted causes (shares 0–100, largest first).
@@ -252,7 +241,7 @@ function driverMeter(mix) {
 }
 
 /**
- * A centred civ title flanked by fading rule lines (the section-title embellishment).
+ * A centered civ title flanked by fading rule lines (the section-title embellishment).
  * @param {string} name Civ name.
  * @returns {HTMLElement} The header.
  */
@@ -369,7 +358,7 @@ function causeList(causes, events) {
 }
 
 /**
- * One card. CAUSES tab (civ entries, `causes` present): centred embellished title, a cause-by-count
+ * One card. CAUSES tab (civ entries, `causes` present): centered embellished title, a cause-by-count
  * list on the left, the two pies tightened on the right. SETTLEMENTS tab: name + (City)/(Town), the
  * two pies, then an emigration-pressure line.
  * @param {*} c Entry { name, town?, in, out, pressure?, causes? }.
@@ -455,10 +444,9 @@ function mergeCauses(a, b) {
 }
 
 /**
- * Per-civilization Causes-tab entries: a card for EVERY in-play civ that has migration/death activity
- * (not just cross-civ flow endpoints, so a civ at war you've met still appears). The cause list uses
- * the civ's real per-cause tallies (emigration + immigration, so RECEIVED refugees are attributed);
- * the pies come from the cross-civ flow edges (empty when a direction has no cross-civ flow).
+ * Per-civilization Causes-tab entries: a card for EVERY in-play civ with migration/death activity.
+ * The cause list uses the civ's real per-cause tallies (emigration + immigration); the pies come from
+ * the cross-civ flow edges.
  * @param {*[]} flows Named flow edges.
  * @param {*[]} civs Per-civ ledger rows ({pid, name, in, out, deaths, byCause, inByCause}).
  * @param {Record<number, Record<string, {people:number, deaths:number}>>} [eventsByOwner] Per-civ

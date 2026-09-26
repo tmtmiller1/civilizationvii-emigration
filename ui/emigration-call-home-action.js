@@ -91,7 +91,7 @@ export function callHomeNow(pid, scope, currency, deps) {
   const left = callHomeCooldownLeft(pid, scope);
   if (left > 0) return { ok: false, reason: "cooldown", scope, paid: 0, attempted: 0, returned: 0 };
   // Influence is YIELD_DIPLOMACY in the game's yield table; there is no YIELD_INFLUENCE, and charging that
-  // key was a silent no-op (the Influence option used to be free).
+  // key is a silent no-op.
   const yieldKey = currency === CALL_HOME_CURRENCY.INFLUENCE ? "YIELD_DIPLOMACY" : "YIELD_GOLD";
   const result = resolveCallHome(pid, scope, currency, {
     turn: turnNow(),
@@ -204,7 +204,7 @@ export function offerCallHome(pid, scope) {
   });
   if (!view) return false;
   showDilemma(view, (id) => {
-    // A greyed-out size can never be bought, even if an input path slipped past the dialog's own guard.
+    // A grayed-out size can never be bought, even if an input path slipped past the dialog's own guard.
     if (view.choices.some((c) => c.id === id && c.disabled)) return;
     const pick = parseChoice(id);
     if (pick) callHomeNow(pid, scope, pick.currency, { want: pick.want });

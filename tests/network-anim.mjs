@@ -30,7 +30,7 @@ function testEverySettlementLaidOutRegardlessOfDotCount() {
   assert.equal(dots.length, 3, "a populated sub-unit settlement contributes at least one dot");
 }
 
-// Two civ centres: index 0 is the ORIGIN, index 1 the DESTINATION. The origin sitting at node index 0
+// Two civ centers: index 0 is the ORIGIN, index 1 the DESTINATION. The origin sitting at node index 0
 // is the regression case, `byId.get(originId)` returns 0, and the old `0 || d.ci` collapsed to the
 // destination, so an immigrant flew out of the civ it was moving TO (reading as home-grown).
 function scene() {
@@ -63,8 +63,8 @@ function testImmigrantFromHigherIndexAlsoFromOrigin() {
 
 function testInternalMoverFliesFromItsOwnCiv() {
   const s = scene();
-  // An internal (intra-civ) mover lives in civ 20 (ci=1) and, with no source-city sub-centre, flies
-  // from its own civ's centre.
+  // An internal (intra-civ) mover lives in civ 20 (ci=1) and, with no source-city sub-center, flies
+  // from its own civ's center.
   const d = { scope: "internal", ci: 1, fromCityIdx: undefined };
   startAnim(d, s);
   assert.equal(d.anim.fromX, 100);

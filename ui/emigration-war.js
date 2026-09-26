@@ -1,15 +1,9 @@
 // emigration-war.js
 //
-// Who-attacked-whom tracking for Feature 1 (aggressor-aware war migration). The base
-// game fires a global, public DiplomacyDeclareWar event whose payload identifies the
-// aggressor and the target (corpus-confirmed: mods read data.aggressor / data.target,
-// with several candidate field names since the canonical one isn't documented). We
-// record victim → aggressors on declaration and clear it on peace, so refugees fleeing
-// a besieged city can prefer their own civ, then neutral third parties, then the
-// aggressor last (see emigration-geography.aggressorAdjust).
-//
-// The event is public (declaring war isn't fog-gated), so this stays consistent with
-// the mod's fog-independent design. State persists in GameConfiguration.
+// Who-attacked-whom tracking for aggressor-aware war migration. The base game's public
+// DiplomacyDeclareWar event identifies the aggressor and the target; we record victim → aggressors
+// on declaration and clear it on peace, so refugees fleeing a besieged city avoid the aggressor
+// (see emigration-geography.aggressorAdjust). Fog-independent; state persists in GameConfiguration.
 
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
@@ -135,7 +129,7 @@ function normalizeWars(rawWars) {
 
 /**
  * A finite number, or `fallback` when the value isn't one.
- * @param {*} v Candidate. @param {*} fallback Fallback.
+ * @param {*} v Candidate. @param {*} fallback
  * @returns {*} The number, or the fallback.
  */
 function numOr(v, fallback) {
@@ -162,8 +156,7 @@ function normalizeWarEvent(e) {
 
 /**
  * Normalize the persisted war-event log (drop unusable rows, keep the newest `MAX_WAR_EVENTS`).
- * Absent on a legacy (schema < 3) blob, which normalizes to an empty log — wars declared before the
- * upgrade were never stamped, so they simply have no timeline pin.
+ * Absent on a legacy (schema < 3) blob, which normalizes to an empty log (no timeline pins).
  * @param {*} raw Candidate log.
  * @returns {WarEvent[]} Sanitized events.
  */
@@ -254,11 +247,9 @@ function pickId(...vals) {
  */
 function parseWar(data) {
   if (!data || typeof data !== "object") return null;
-  // Probe-confirmed shape (API4-B): the declarer is `actingPlayer`, the target is `reactingPlayer`.
-  // `initialPlayer`/`targetPlayer` are added as primary fallbacks because they're the FAR more common
-  // player fields on the base game's diplomacy event data (target 112× / initial 85× vs acting 19× /
-  // reacting 14× in the base UI source), so the aggressor map still populates if this build's war
-  // event uses those. The rest are defensive. The migration-probe's passive DeclareWar dump confirms it.
+  // The declarer is `actingPlayer`, the target is `reactingPlayer`; `initialPlayer`/`targetPlayer` are
+  // the primary fallbacks (the more common player fields on the base game's diplomacy event data).
+  // The rest are defensive.
   const aggressor = pickId(data.actingPlayer, data.initialPlayer, data.aggressor, data.attacker, data.player1);
   const victim = pickId(data.reactingPlayer, data.targetPlayer, data.target, data.victim, data.player2);
   if (typeof aggressor !== "number" || typeof victim !== "number" || aggressor === victim) return null;
@@ -309,7 +300,7 @@ function stampDeclaration(s, w) {
 
 /**
  * Close the open logged war between these belligerents at the current turn (no-op when none is
- * open — e.g. a war that predates the v3 upgrade, or an unparsed declaration).
+ * open, e.g. an unparsed declaration).
  * @param {{ warEvents: WarEvent[] }} s State. @param {{aggressor:number, victim:number}} w The pairing.
  */
 function stampPeace(s, w) {
@@ -351,7 +342,7 @@ export function recordPeace(data) {
 /**
  * The turn-stamped war log (a copy): each declaration with its age-local turn, age, year label,
  * belligerents, and the turn peace was made (`endTurn: null` while the war is ongoing). Feeds the
- * network timeline's event pins; only wars declared since the v3 schema upgrade appear.
+ * network timeline's event pins.
  * @returns {WarEvent[]} The logged wars, oldest first.
  */
 export function warEvents() {
@@ -390,10 +381,8 @@ function alivePlayerIds() {
 
 /**
  * Every player `victim` is CURRENTLY at war with, asked directly of the engine
- * (`Players.get(victim).Diplomacy.isAtWarWith`). This is the fog-independent source of truth that
- * backstops the event-tracked aggressor map: a war already in progress when the mod loaded (an old
- * save, or a DeclareWar payload whose fields we couldn't parse) never populated `warAggressors`, so
- * the refugee event had no second belligerent to name and fell back to "the enemy". Empty when the
+ * (`Players.get(victim).Diplomacy.isAtWarWith`): the fog-independent backstop for the event-tracked
+ * aggressor map when a war was already in progress or its declaration was unparsed. Empty when the
  * Diplomacy API is unreadable. Includes BOTH aggressors and victims-of-`victim` (the war is mutual).
  * @param {number} victim The besieged player id.
  * @returns {Set<number>} Opponent ids at war with `victim`.
@@ -438,10 +427,9 @@ function atWar(d, other) {
 }
 
 /**
- * The opponents in a war the `victim` is fleeing: the event-tracked aggressors when known, else the
- * engine's live at-war set (so an untracked / pre-existing war still names the other side instead of
- * "the enemy"). Tracked aggressors are preferred because they distinguish who DECLARED; the engine
- * fallback only fills the gap when nothing was tracked.
+ * The opponents in a war the `victim` is fleeing: the event-tracked aggressors when known (they
+ * distinguish who DECLARED), else the engine's live at-war set, so an untracked war still names the
+ * other side instead of "the enemy".
  * @param {number} victim The besieged player id.
  * @returns {Set<number>} Opponent ids (tracked aggressors, or the live war set).
  */

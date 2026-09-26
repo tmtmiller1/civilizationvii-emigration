@@ -3,7 +3,7 @@
 //   B1 count the decorated banners (one .emig-bpbar per city banner) before any pressure is set.
 //   B2 raise the local player's two largest cities to 0.9 and 0.72 of the move bar and the third to 0.3
 //      (below the 0.66 cue fraction, so it must stay hidden); persist; refresh; log each bar's width,
-//      colour, and hidden state with its city.
+//      color, and hidden state with its city.
 //   B3 camera on the largest city: SHOT banner-bar-near (zoom 0) and SHOT banner-bar-mid (zoom 0.5).
 //   then DONE.
 

@@ -10,7 +10,7 @@
 //
 // CHEAPEST DISPROOF, in order. Each step alone can kill the carrier:
 //   A. Does the row even load with a negative yield? Read it out of the live database.
-//   B. Can CREATE_ELEMENT place it in a city centre, in the player's own city and in an AI city?
+//   B. Can CREATE_ELEMENT place it in a city center, in the player's own city and in an AI city?
 //   C. Does the cost reach the treasury, and does Population 0 leave urban population alone?
 //   D. Does it survive AI turns (the 2.4 broker crash), and can DESTROY_ELEMENT take it away again?
 //
@@ -91,7 +91,7 @@ function stepA() {
   results.row = row && yields.length ? "YES" : "NO";
 }
 
-/** @param {*} city City. @param {string} label Log label. @returns {Promise<boolean>} True when placed. */
+/** @param {*} city @param {string} label Log label. @returns {Promise<boolean>} True when placed. */
 async function place(city, label) {
   const before = snap(city);
   const beforeGold = gold(city.owner);
@@ -158,7 +158,7 @@ function onTurnStart() {
   const s = snap(capital);
   trackGold.push({ turn: safe(() => Game.turn, 0), gold: gold(local), cityGold: s ? s.gold : null });
   emit("D" + turnsRun + " turn=" + safe(() => Game.turn, 0) + " treasury=" + gold(local) + " cityGold=" + (s ? s.gold : null) +
-    " centre=" + J(s ? s.centre : []) + " urban=" + (s ? s.urban : null));
+    " center=" + J(s ? s.centre : []) + " urban=" + (s ? s.urban : null));
   if (turnsRun >= TURNS) {
     finishAfterTurns(capital);
     return;
@@ -188,7 +188,7 @@ function finishAfterTurns(capital) {
     setTimeout(() => {
       const after = snap(capital);
       results.destroyed = (after.centre || []).indexOf(TYPE) >= 0 ? "NO" : "YES";
-      emit("E3 after destroy centre=" + J(after.centre) + " cityGold=" + after.gold + " urban=" + after.urban);
+      emit("E3 after destroy center=" + J(after.centre) + " cityGold=" + after.gold + " urban=" + after.urban);
       finish();
     }, 6000);
   } else {

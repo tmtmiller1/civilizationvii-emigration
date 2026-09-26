@@ -21,7 +21,7 @@ function testTopCausePicksTheDominantDriver() {
 }
 
 function testNotificationAccentReservesRedForOwnLoss() {
-  // Red causes (war/conquest/crisis) keep their alarming colour only for the player's OWN loss.
+  // Red causes (war/conquest/crisis) keep their alarming color only for the player's OWN loss.
   for (const c of ["war", "conquest", "crisis"]) {
     assert.equal(notificationAccent(c, true), causeAccent(c), `${c} own-loss keeps its red accent`);
     assert.notEqual(notificationAccent(c, false), causeAccent(c), `${c} world-news is NOT red`);

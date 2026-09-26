@@ -36,7 +36,7 @@ Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationv
 ## What's new in 3.1.0
 
 - **Yields on the buttons:** the refugee, newcomer, call-home and Cultural Enclave pop-ups show each choice's gains and costs on its own button, with the game's yield icons.
-- **Enclave stances pay a real sum once:** Culture, Science, Influence or Gold, sized to your economy and the age, usually at a price in Gold; a stance you cannot afford is greyed out.
+- **Enclave stances pay a real sum once:** Culture, Science, Influence or Gold, sized to your economy and the age, usually at a price in Gold; a stance you cannot afford is grayed out.
 - **Newcomers settled by the city** show the yields of the tile they will work before you choose.
 
 ## What was new in 3.0.0
@@ -197,7 +197,7 @@ Compatible with Civilization VII 1.5.0.
 - City readouts show local pressure, reasons to leave and to stay, and enclave progress, and the dashboard shows them across every settlement.
 - Hovering an enclave's tile shows its stage and the source of every yield it brings in.
 - The Civilopedia's Emigration section describes every system, policy card, and option, and lists every quotation with a note on its speaker.
-- The Prosperity lens maps prosperity by tile: wonders, the centre, buildings and quarters, worked land, rivers and natural wonders score up; ruin scores down. Hover a tile to see the terms.
+- The Prosperity lens maps prosperity by tile: wonders, the center, buildings and quarters, worked land, rivers and natural wonders score up; ruin scores down. Hover a tile to see the terms.
 - With Demographics installed, migration also appears in graphs and tables.
 
 ### What can I tune?
@@ -229,21 +229,21 @@ The dashboard reflects saved gameplay state, not cosmetic estimates: population,
 ### Documentation
 - Player experience risks and mitigations: [docs/player-experience-risks.md](docs/player-experience-risks.md)
 - Player experience items addressed: [docs/player-experience-addressed.md](docs/player-experience-addressed.md)
-- UI-script engine limits: [docs/engine-limits-from-probes.md](docs/engine-limits-from-probes.md)
+- Engine behavior recorded by in-game probes: [docs/engine-limits-from-probes.md](docs/engine-limits-from-probes.md)
 - Tooltip compatibility with other tooltip mods: [docs/tooltip-mod-compatibility.md](docs/tooltip-mod-compatibility.md)
-- Migration mechanics: [DESIGN.md](../../mods_research_and_analysis/emigration-docs/DESIGN.md)
-- Engine checks and verification: [FINDINGS.md](../../mods_research_and_analysis/emigration-docs/FINDINGS.md)
-- In-game validation: [testing-requirements.md](../../mods_research_and_analysis/emigration-docs/testing-requirements.md)
-- Civ VII modding mechanics and limits: [civ7-mechanics-and-feasibility.md](../../mods_research_and_analysis/emigration-docs/civ7-mechanics-and-feasibility.md)
-- Leader/civ ability and memento interactions: [leader-civ-memento-interactions.md](../../mods_research_and_analysis/emigration-docs/leader-civ-memento-interactions.md)
-- Advanced migration formulas: [algorithmic-improvements.md](../../mods_research_and_analysis/emigration-docs/algorithmic-improvements.md)
-- Interactive systems: [interactive-extensions-design.md](../../mods_research_and_analysis/emigration-docs/interactive-extensions-design.md), [interactive-extensions-implementation.md](../../mods_research_and_analysis/emigration-docs/interactive-extensions-implementation.md)
+- Migration mechanics: [DESIGN.md](../../mod_ideas_tested/mods_research_and_analysis/emigration-docs/DESIGN.md)
+- Engine checks and verification: [FINDINGS.md](../../mod_ideas_tested/mods_research_and_analysis/emigration-docs/FINDINGS.md)
+- In-game validation: [testing-requirements.md](../../mod_ideas_tested/mods_research_and_analysis/emigration-docs/testing-requirements.md)
+- Civ VII modding mechanics and limits: [civ7-mechanics-and-feasibility.md](../../mod_ideas_tested/mods_research_and_analysis/emigration-docs/civ7-mechanics-and-feasibility.md)
+- Leader/civ ability and memento interactions: [leader-civ-memento-interactions.md](../../mod_ideas_tested/mods_research_and_analysis/emigration-docs/leader-civ-memento-interactions.md)
+- Advanced migration formulas: [algorithmic-improvements.md](../../mod_ideas_tested/mods_research_and_analysis/emigration-docs/algorithmic-improvements.md)
+- Interactive systems: [interactive-extensions-design.md](../../mod_ideas_tested/mods_research_and_analysis/emigration-docs/interactive-extensions-design.md), [interactive-extensions-implementation.md](../../mod_ideas_tested/mods_research_and_analysis/emigration-docs/interactive-extensions-implementation.md)
 
 ---
 
 ## System Guide and Feature Reference
 
-*The overview ends here. The rest is the technical reference: systems, formulas, modules, tuning, persistence, and engine limits.*
+*The overview ends here. The rest is the technical reference: systems, formulas, modules, tuning, and persistence.*
 
 ## Contents
 
@@ -267,7 +267,6 @@ The dashboard reflects saved gameplay state, not cosmetic estimates: population,
 15. [Development](#15-development)
 16. [Compatibility & mod coexistence](#16-compatibility--mod-coexistence)
 17. [Known open issues](#17-known-open-issues)
-18. [Engine limits](#18-engine-limits)
 
 ---
 
@@ -505,7 +504,7 @@ $$
 \end{aligned}
 $$
 
-`perFewerPop` (0.5, "Reluctance to move somewhere smaller", Advanced ▸ Brakes) mirrors `perExtraPop`: the score's per-citizen term favours a smaller destination simply for being smaller, so moving down in size costs the same per citizen as crowding into a bigger place.
+`perFewerPop` (0.5, "Reluctance to move somewhere smaller", Advanced ▸ Brakes) mirrors `perExtraPop`: the score's per-citizen term favors a smaller destination simply for being smaller, so moving down in size costs the same per citizen as crowding into a bigger place.
 
 `internalRefuge(s,d)` gives crisis refugees a bonus toward destinations inside their own civilization; `crisisEscapeBonus` provides the corresponding escape incentive when no good homeland option exists. Both move with the "Movement between civilizations" slider. `drainFor(s)` reduces cross-civ outflow from civilizations below their fair population share.
 
@@ -519,7 +518,7 @@ War is not a hard routing gate. A besieged city simply becomes less prosperous, 
 
 ### The Prosperity map lens (`emigration-prosperity-lens.js`, `emigration-prosperity-tooltip.js`)
 
-The lens scores each tile in points, as the sum of named terms: a wonder on the tile (+6), the city centre (+3), each building (+2, and +1 for a completed quarter), a worked improvement (+1), the tile's own yield (+1 per 3), a river (+1), a natural wonder on the tile (+3) or next to it (+2 each), a wonder next to it (+1 each), and anything pillaged on the tile (−3 each) or next to it (−1 each). The score is absolute and banded, so a wonder tile reads the same in every settlement: **Flourishing** (8+), **Thriving** (5–7), **Ordinary** (2–4), **Meagre** (0–1), **Blighted** (below 0). Wonders and natural wonders are recognised from the game's database, so ones added by an age or another mod count. Empty sea is excluded; worked coast counts normally.
+The lens scores each tile in points, as the sum of named terms: a wonder on the tile (+6), the city center (+3), each building (+2, and +1 for a completed quarter), a worked improvement (+1), the tile's own yield (+1 per 3), a river (+1), a natural wonder on the tile (+3) or next to it (+2 each), a wonder next to it (+1 each), and anything pillaged on the tile (−3 each) or next to it (−1 each). The score is absolute and banded, so a wonder tile reads the same in every settlement: **Flourishing** (8+), **Thriving** (5–7), **Ordinary** (2–4), **Meager** (0–1), **Blighted** (below 0). Wonders and natural wonders are recognized from the game's database, so ones added by an age or another mod count. Empty sea is excluded; worked coast counts normally.
 
 Hovering a tile shows its band, its score, and every term behind it, then the settlement's world standing. Both the lens and the readout read the same scores from `emigration-tile-score.js`.
 
@@ -545,7 +544,7 @@ Scaling is age-based, not turn-based, so game speed does not change the reported
 
 ## 5. The advanced model (algorithms & per-civ tuning)
 
-Four algorithms and a per-civ tuning table refine the baseline. All default on and can be disabled in Options. Full math and comparisons: [algorithmic-improvements.md](../../mods_research_and_analysis/emigration-docs/algorithmic-improvements.md).
+Four algorithms and a per-civ tuning table refine the baseline. All default on and can be disabled in Options. Full math and comparisons: [algorithmic-improvements.md](../../mod_ideas_tested/mods_research_and_analysis/emigration-docs/algorithmic-improvements.md).
 
 ### A. Shaped happiness (`happinessShaped`)
 
@@ -586,7 +585,7 @@ When civ A attacks civ B, B's refugees prefer B's own settlements, then neutral 
 
 Two separate mechanics shape cross-civ migration.
 
-**Immigration stance (`bordersEnabled`).** Each age adds **Pro-Immigration Stance** and **Anti-Immigration Stance** policy cards. They unlock at **Citizenship** (Antiquity), **Economics** (Exploration), and **Social Question** (Modern). Internal IDs retain `TRADITION_EMIG_OPEN/CLOSED_BORDERS_*`.
+**Immigration stance (`bordersEnabled`).** Each age adds **Pro-Immigration Stance** and **Anti-Immigration Stance** policy cards. They unlock at **Citizenship** (Antiquity), **Economics** (Exploration), and **Social Question** (Modern); a card whose civic is already complete when the mod is added mid-game is not granted. Internal IDs retain `TRADITION_EMIG_OPEN/CLOSED_BORDERS_*`.
 
 - **Pro-Immigration Stance:** inbound migration ×1.5 plus +1/+2/+3 Influence.
 - **Anti-Immigration Stance:** inbound migration ×0.4 (floor 0.15), own cross-civ outbound pull ×0.6, +2/+3/+4 Production per city, and −2/−3/−4 Influence.
@@ -594,8 +593,6 @@ Two separate mechanics shape cross-civ migration.
 Migration and retention are custom UI-VM mechanics. Influence and Production are native `TraditionModifier`s from `data/emigration-policies-gameeffects.xml`.
 
 **Diplomatic Open Borders (`openBordersBonus`).** An active base-game Open Borders agreement increases migration both ways. Checked in `emigration-geography.js`; console: `emigration.openBorders(aPid, bPid)`.
-
-Governments no longer directly modify emigration.
 
 #### Policy cards by age (shipped)
 
@@ -677,11 +674,11 @@ Crisis deaths do not count against the siege displacement cap or emigration rura
 
 ### 6f. Ethnic composition, integration & the per-tile lens (`emigration-composition.js`, `emigration-ethnicity-lens.js`)
 
-Each settlement keeps a population ledger by civilization of origin, keyed by its centre plot. A departure takes a slice of the source's mix and stamps it on the migrant (`originMix`), including across the turns in transit; the destination adds that same mix, so origins are conserved and a diaspora that moves on keeps its identity. Returnees carry their own origin home. Births add the current owner, other losses are proportional, and conquest changes the owner without rewriting origins. Migrations are matched to cities by plot, then by name for older records.
+Each settlement keeps a population ledger by civilization of origin, keyed by its center plot. A departure takes a slice of the source's mix and stamps it on the migrant (`originMix`), including across the turns in transit; the destination adds that same mix, so origins are conserved and a diaspora that moves on keeps its identity. Returnees carry their own origin home. Births add the current owner, other losses are proportional, and conquest changes the owner without rewriting origins. Migrations are matched to cities by plot, then by name for older records.
 
 A settlement the ledger first meets already conquered from another major civilization (a mid-game install, a save from before the ledger) is seeded as its original owner's people; a captured city-state's people count as the conqueror's. A razed settlement leaves the ledger on the next pass. One held by a city-state or Independent Power keeps its entry but drops out of the settlement lists, the diversity ranking and the empire mix; a later recapture by a major civilization resumes its mix. `STALE_TURNS` (50) prunes anything unreadable.
 
-The Ethnic Composition lens (Shift+E) renders that ledger tile by tile (`emigration-ethnicity-distribution.js`, `-tiles.js`, `-colour.js`). Each settlement's people are spread over its tiles by density (city centre > urban > rural > wilderness, plus a bonus per constructible), and each foreign community gathers around a home tile and thins out with distance. Every tile carries its own mix, and its colour is a blend of everyone living on it in proportion; how crowded the tile is sets how strong that colour is, from a vivid civ colour at a packed core to grey at the thinly settled edge. Every origin's tiles add up to its exact citywide share.
+The Ethnic Composition lens (Shift+E) renders that ledger tile by tile (`emigration-ethnicity-distribution.js`, `-tiles.js`, `-colour.js`). Each settlement's people are spread over its tiles by density (city center > urban > rural > wilderness, plus a bonus per constructible), and each foreign community gathers around a home tile and thins out with distance. Every tile carries its own mix, and its color is a blend of everyone living on it in proportion; how crowded the tile is sets how strong that color is, from a vivid civ color at a packed core to gray at the thinly settled edge. Every origin's tiles add up to its exact citywide share.
 
 The lens is tied to the enclave rule. A community with a standing enclave lives on the enclave's tile first, which reads as its quarter whatever the community's citywide share, and the rest of the settlement fills around it. Where no enclave stands, no tile reads past `quarterEstablishedShare`, so a community short of an enclave shows as a real but lighter tint. The enclave tile is weighted as a built-up quarter. The border of every tile takes the settlement's majority origin. The lens and its hover readout repaint as soon as the turn's pass has recorded a new mix, including a lens left open across End Turn; the hover readout sits above the game's tooltip layer.
 
@@ -746,19 +743,19 @@ Mode `2` always uses the Village. Mode `0` uses generated, never-buildable per-c
 
 Placement prefers a nearby empty flat/hill plot, creating a rural district first when needed. If none is available, it replaces an outlying farmstead, preferring plain tiles before resources and farther plots before nearer ones. Terrain and age restrictions still apply. The marker reads the enclave record, so even a generic Village remains attributed to its true origin.
 
-**Tile yield plus a one-time stance payout (`emigration-stance-payout.js`).** The tile carries its native yield from the day the enclave is established. When the enclave is recognized, its stance pays **once**: Culture (toward the civic being researched), Science (toward the tech being researched), Influence, or Gold. A stance that does not pay Gold costs Gold; a Gold stance costs nothing. These are the only yields a script can grant, and Gold the only one it can take (probe verdicts in `docs/engine-limits-from-probes.md` 1.3a). The amounts are sized to the host's own economy, so a stance is worth the same share of an empire in every age and at every speed:
+**Tile yield plus a one-time stance payout (`emigration-stance-payout.js`).** The tile carries its native yield from the day the enclave is established. When the enclave is recognized, its stance pays **once**: Culture (toward the civic being researched), Science (toward the tech being researched), Influence, or Gold. A stance that does not pay Gold costs Gold; a Gold stance costs nothing. The amounts are sized to the host's own economy, so a stance is worth the same share of an empire in every age and at every speed:
 
     payout = S × max(floor[age], quarterStanceTurns (3) × host's income of that yield per turn)
     Gold   = S × max(floor[age], quarterGoldStanceTurns (1.5) × host's Gold income)        (a Gold stance, free)
     price  = S × max(floor[age] × quarterStanceCostFloorScale (1.5), quarterStanceCostTurns (2) × host's Gold income)
 
-`floor` is `quarterStanceFloor` (60 / 150 / 300 for Antiquity / Exploration / Modern), `S` is the game-speed scalar, and every figure rounds to the nearest 5. For example, an Exploration empire earning 221 Culture and 705 Gold a turn is offered +665 Culture for −1,410 Gold. Each button in the decision pop-up shows its stance's payout and price with the yields' own icons; a stance the host cannot afford is greyed out and says so. An established enclave has no stance, so it grants and costs nothing beyond its tile. Enclaves recognized in an older version keep their small per-turn stance yields. If replacement changes the plot's effective yield, the shortfall is stored as `placed.compensation` and granted while the tile remains.
+`floor` is `quarterStanceFloor` (60 / 150 / 300 for Antiquity / Exploration / Modern), `S` is the game-speed scalar, and every figure rounds to the nearest 5. For example, an Exploration empire earning 221 Culture and 705 Gold a turn is offered +665 Culture for −1,410 Gold. Each button in the decision pop-up shows its stance's payout and price with the yields' own icons; a stance the host cannot afford is grayed out and says so. An established enclave has no stance, so it grants and costs nothing beyond its tile. Enclaves recognized in an older version keep their small per-turn stance yields. If replacement changes the plot's effective yield, the shortfall is stored as `placed.compensation` and granted while the tile remains.
 
 **Enclave tooltip and marker (`emigration-enclave-tooltip.js`, `-enclave-tooltip-data.js`, `-enclave-yields.js`).** Hovering an enclave's tile replaces the game's tooltip for the borrowed improvement with the enclave's own: its name and settlement; its stage (established, with the turns left to recognition; recognized, with the stance; contested; or fading, with the turns left); and where the yields come from, source by source with a reason: the land and any improvement that stood there before (repaid every turn), the enclave's own works, and the stance, including its wartime cut. A total gives what the tile brings in each turn. The map marker carries a second line with the stage (*Established*, *Recognized*, *Contested*, *Fading*). Markers are cleared before each redraw, and a burst of map events triggers a single redraw.
 
 **Built over.** After a two-turn grace period, an enclave whose tile has been replaced is retired and recorded in the Chronicle. A failed placement is also written off. Departures never choose an enclave tile. Pillage damages but does not remove it; razing the city does.
 
-**Fade (`quarterFadeShare`, `quarterFadeTurns`).** The fade clock runs while both origin share and stock remain below their thresholds. After `quarterFadeTurns` (12), the tile and record are removed. Crossing either bar resets the clock. `quarterFadeShare = 0` makes enclaves permanent. With normal integration and no new inflow, a community typically fades in roughly 35–45 turns.
+**Fade (`quarterFadeShare`, `quarterFadeTurns`).** The fade clock runs while both origin share and stock remain below their thresholds. After `quarterFadeTurns` (12), the tile and record are cleared. Crossing either bar resets the clock. `quarterFadeShare = 0` makes enclaves permanent. With normal integration and no new inflow, a community typically fades in roughly 35–45 turns.
 
 **Contested in war.** If host and homeland are at war when the enclave is recognized, the stance payout is multiplied by `contestedQuarterYieldFactor` (default 0.5; the price is unchanged). While they are at war, the host takes `contestedQuarterPenalty` (4) happiness strain per enclave, capped by `diasporaWarStrainCap` (12), which ends at peace.
 
@@ -766,7 +763,7 @@ Placement prefers a nearby empty flat/hill plot, creating a rural district first
 
 ### 6j. Calling people home (`emigration-call-home.js`, `-call-home-action.js`, `-call-home-view.js`, `callHomeEnabled`)
 
-A civilization can pay Gold or Influence to bring its displaced people back to the settlement they fled. The dialog offers a ladder of sizes for each currency (one person, about half of what is callable, everyone, up to `callHomeMaxPointsPerAttempt` = 3), priced with the game's own Gold and Influence icons. A size the treasury cannot cover stays in the list, greyed out, with a tooltip giving the price and the balance.
+A civilization can pay Gold or Influence to bring its displaced people back to the settlement they fled. The dialog offers a ladder of sizes for each currency (one person, about half of what is callable, everyone, up to `callHomeMaxPointsPerAttempt` = 3), priced with the game's own Gold and Influence icons. A size the treasury cannot cover stays in the list, grayed out, with a tooltip giving the price and the balance.
 
 - **From your own settlements** it is a purchase: the pop-up names the settlement people are pulled back from and the one they return to, and exactly the number paid for come.
 - **From abroad** it is a gamble: the pop-up names the foreign city and its ruler and gives the odds per person (`callHomeChanceExternal`, 18%). The call is paid for at the chosen size whether or not anyone answers; each person asked is rolled, and the call may bring nobody. An unanswered call is recorded in the Chronicle and still starts the cooldown.
@@ -871,7 +868,7 @@ Defaults live in `emigration-config.js`. Population-scaling constants are not ex
 
 ## Appendices
 
-*Reference material on architecture, persistence, localization, development, compatibility, and engine limits.*
+*Reference material on architecture, persistence, localization, development, and compatibility.*
 
 ---
 
@@ -910,7 +907,7 @@ Modules are kept small and single-purpose (≤500-line gate). `emigration.modinf
 - `ui/emigration-prosperity-lens.js` / `-prosperity-tooltip.js` / `-tile-score.js`: Prosperity lens, tooltip, and the per-tile point scores.
 - `ui/emigration-built.js`: the built environment (wonders and civic building kinds) as a reason to stay.
 - `ui/emigration-ethnicity-lens.js` / `-ethnicity-tooltip.js` / `-composition.js`: origin ledger, Ethnic Composition lens, and tooltip.
-- `ui/emigration-ethnicity-distribution.js` / `-ethnicity-tiles.js` / `-ethnicity-colour.js`: the lens's per-tile distribution, engine reads, and blended colour.
+- `ui/emigration-ethnicity-distribution.js` / `-ethnicity-tiles.js` / `-ethnicity-colour.js`: the lens's per-tile distribution, engine reads, and blended color.
 - `ui/emigration-lens-hover-panel.js` / `-plot-tooltip-suppress.js`: the shared cursor readout for both lenses and the base tooltip suppression.
 - `ui/emigration-enclave-tooltip.js` / `-enclave-tooltip-data.js` / `-enclave-yields.js`: the enclave's own tooltip and its per-source yields.
 - `ui/emigration-call-home.js` / `-call-home-action.js` / `-call-home-view.js` / `-return-quotes.js`: calling people home (rules and odds, the paid action, the dialog, the epigraphs).
@@ -1031,66 +1028,6 @@ The only dependency is `base-standard`. Shared surfaces are handled additively:
 ## 17. Known open issues
 
 - **Measured at scale:** on a seven-civ Exploration save, 30 turns with default settings produced a largest gainer 18% above the no-mod population, a volcano-hit settlement at 96% of its no-mod size, and the largest civilization's world share within 0.5 percentage points of baseline. At maximum cross-civ movement, those figures shifted to +37% and 84%. An 80-turn run through an age transition completed without crashes and kept world population within 1% of baseline.
-
----
-
-## 18. Engine limits
-
-These limits come from in-game probes rather than assumptions. Evidence, dates, and probe numbers are in [docs/engine-limits-from-probes.md](docs/engine-limits-from-probes.md); rejected feature designs are in [docs/wont-implement-with-justifications.md](docs/wont-implement-with-justifications.md).
-
-**Scope**
-
-- **Single-player:** UI-VM gameplay writes are client-side.
-
-**Population, specialists and yields**
-
-- **A population point cannot be moved by the counter alone.** Lowering rural population changes the count but leaves the tile and yields, so departures operate on the tile plus the migration ledger.
-- **Specialists cannot be removed safely.** `ASSIGN_WORKER` with −1 desynchronizes the count without freeing the slot, in both player and AI cities. Crisis loss therefore does not remove specialists.
-- **Runtime mod yields cannot appear as native banner/breakdown sources.** Costs and grants are reported through the mod's own UI and Chronicle.
-
-**Constructibles and tiles**
-
-- **Constructibles can be created or destroyed, not script-damaged.** No tested operation produces a normal pillaged state.
-- **Half-built scripted constructibles are orphaned.** The build queue creates another copy instead of finishing them.
-- **Enclave art must reuse existing improvement art.** Custom constructibles have no supported 3D-model remap, so enclaves use the origin's unique improvement when possible, another compatible improvement otherwise, plus an origin marker.
-- **Universally buildable custom improvements can crash AI turns.** This is why generated enclave types are never buildable.
-- **Improvements require rural districts; destroying the improvement leaves the district.** Cleanup must remove that empty district separately.
-- **Future-age constructibles are unavailable before their age.**
-- **The exact worked tile lost by a departing worker is not exposed.** Departures therefore choose a tile by rule rather than identifying the worker's former plot.
-
-**Ownership, cities and units**
-
-- **City-owned tiles cannot be released with `setOwnership`.**
-- **Existing cities cannot be transferred between owners through the available request surface.**
-- **Operations cannot be impersonated under another player's ID.**
-- **AI players disband Migrant units quickly, so AI and human arrival handling differ.**
-
-**The UI runtime**
-
-- **No floating map text:** `WorldUI` does not provide a usable path for text rising from a plot; toasts and world news carry that information instead.
-- **Clickable end-turn notifications require a database notification type.**
-- **A mod's UI script cannot count on reaching the component it decorates.** `Controls.decorate` accepts a registration for a component and then may never hand one over: the same call, written the same way, attaches to the sub-system dock and never once to a city banner. A script's own context can also be missing the HUD entirely (no city banners and no dock) while another mod's script sees the dock and a banner is plainly on screen, and load order does not settle it. The banner pressure bar was removed over this. Anything that must attach to base-game UI should watch the DOM for it instead, as the plot tooltips do, and should report how many of its target elements it can actually see.
-- **No CSS grid:** GameFace layout uses flexbox.
-- **Happiness deductions delay Celebrations rather than making a city unhappy.** There is no direct settlement-happiness mutator. Specialist upkeep can still create local integration strain when arrivals become specialists.
-
-**Reads that mislead**
-
-- **A successful registration is not proof of anything running.** `Controls.decorate` returning without throwing, and a module logging that it registered, say only that the call was accepted. Both were true of the banner pressure bar for its whole life while it drew nothing, in every game. Anything registered this way needs to log what it actually attached to.
-- **`canStart` is not a validity oracle.** Some operations report success even when the world state does not change, so writes must be verified afterward.
-- **Placement/ownership writes and treasury changes can be asynchronous within the turn.**
-- **`Game.age` is a hash, not an ordinal.**
-- **`Constructible_YieldChanges` does not carry farm-type food yields; terrain/resource data must also be considered.**
-- **Unknown player IDs can crash native calls; every player ID is validated first.**
-
-**Age crises**
-
-- **An existing save cannot be pushed into an age crisis.** The crisis a game will run is fixed when that game is created. Editing `AgeCrisisStages` does reach the database -- the new trigger percentages read back changed -- but a save already in progress ignores them: with both crises present and stage 1 lowered to 42%, a save carried from 41.3% to 48.8% age progression without the stage ever leaving -1. Only a new game, with the crisis chosen in setup, runs a chosen crisis.
-- **The crisis a game is running is not readable.** `Game.CrisisManager` reports the current stage, the stage count and whether crises are enabled, but never which crisis was selected.
-
-**Content unlocks**
-
-- **Policy cards unlock when their civic completes.** Adding the mod mid-game does not retroactively grant a card tied to an already-completed civic.
-- **War names use the engine value when resolvable,** falling back to `"{Victim}–{Aggressor} War"`.
 
 ---
 

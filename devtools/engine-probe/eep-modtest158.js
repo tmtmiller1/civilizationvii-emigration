@@ -7,7 +7,7 @@
 //   SHOT stance     08: the enclave decision (quarterView), figures on its buttons
 //
 // Each dialog is dismissed through its last button before the next is shown (the mod's own offers queue in the same
-// display queue, mod test 139). Each SHOT line logs the dialog's rect and the viewport so the crop can be centred.
+// display queue, mod test 139). Each SHOT line logs the dialog's rect and the viewport so the crop can be centered.
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { fireRealDilemmaForTest } from "/emigration/ui/emigration-dilemma.js";
 import { arrivalPromptView } from "/emigration/ui/emigration-arrival-placement.js";
@@ -112,7 +112,7 @@ async function run() {
   await clearDialogs("callhome");
 
   // 08 enclave stance (not pressed)
-  const quarter = { civ: origin, owner: local, name: cityName(host.city), share: 0.4, where: "by the harbour" };
+  const quarter = { civ: origin, owner: local, name: cityName(host.city), share: 0.4, where: "by the harbor" };
   const price = Q.resolveApplied(quarterOptionsFor(civType(origin))[0], local, origin).penaltyAmount;
   const gold = safe(() => Players.get(local).Treasury.goldBalance, 0);
   if (price > gold) { safe(() => Players.grantYield(local, YieldTypes.YIELD_GOLD, Math.ceil(price - gold + 200))); await later(2500); }

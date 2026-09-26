@@ -60,9 +60,8 @@ function yEnum(key) {
 
 /**
  * Read one NET yield off a city, defaulting to 0. Prefers `getNetYield` (income − maintenance/upkeep,
- * which is what the base game uses for per-city figures); falls back to `getYield` (GROSS) only when
- * getNetYield is unavailable. This matters: the old gross read made starvation (net food < 0)
- * impossible to ever observe, and inflated gold/Prosperity by hiding maintenance.
+ * which is what the base game uses for per-city figures, and what makes starvation observable); falls
+ * back to `getYield` (GROSS) only when getNetYield is unavailable.
  * @param {*} city City object.
  * @param {string} key Yield enum key.
  * @returns {number} The net yield value.
@@ -135,9 +134,8 @@ function localHasMet(owner) {
 
 /**
  * Read an optional numeric distress signal, degrading to 0 if its subsystem throws or returns a
- * non-finite value. Without this, one broken observer (violence / disaster) would nuke the WHOLE
- * city via buildSignal's outer catch, contradicting this module's "degrade to a neutral default
- * rather than throwing" contract.
+ * non-finite value, so one broken observer (violence / disaster) cannot drop the WHOLE city via
+ * buildSignal's outer catch.
  * @param {() => number} fn The observer call.
  * @returns {number} The signal, or 0.
  */
@@ -252,7 +250,7 @@ function collectPlayerCities(player, isCityState, out) {
   try {
     const cities = player.Cities?.getCities?.();
     if (!Array.isArray(cities)) return;
-    // F7: iterate inside the guard so a buildSignal throw can't abort the whole
+    // Iterate inside the guard so a buildSignal throw can't abort the whole
     // signal pass (contract is "degrade, don't throw").
     for (const c of cities) {
       const sig = buildSignal(c, player, isCityState);

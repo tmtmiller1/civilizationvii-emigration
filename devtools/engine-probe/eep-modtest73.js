@@ -29,7 +29,7 @@ let firstInfected = null;
 engine.on("GameAgeEnded", () => { ageEnded = true; emit("EVENT GameAgeEnded turn=" + safe(() => Game.turn)); });
 
 // Plague: every major's settlements each turn; the first infected ones are logged with the plague plot effect on
-// their centre plot, so a live `city.isInfected` true is observed (mod test 70 saw none in 15 turns).
+// their center plot, so a live `city.isInfected` true is observed (mod test 70 saw none in 15 turns).
 function majors() {
   return (safe(() => Players.getAliveMajorIds(), null) || []).filter((pid) => safe(() => Players.get(pid).isMajor, true));
 }

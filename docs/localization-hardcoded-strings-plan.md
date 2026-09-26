@@ -35,13 +35,13 @@ A read-only re-audit of the live `ui/**` tree against this plan. `text/en_us/Mod
 
 | Tier | Status | Notes |
 |------|--------|-------|
-| **L1 — Lens tooltips** | ✅ **DONE** | Both files now route through `loc()`; keys exist in ModText. See the L1 section for the one residual leak. |
-| **Tier 1 — Options / tunables / advanced editor** | ❌ Not started | All literals intact; none of the proposed `LOC_OPTIONS_EMIG_*` / `LOC_EMIG_CHOICE_*` / `LOC_EMIG_ADV_*` keys exist. Line numbers drifted — corrected inline below. |
-| **Tier 1b — Guide nav-pills** | ❌ Not started | `"What counts"` / `"FAQ"` still literal in `views[]`. Line refs still accurate. |
-| **Tier 2 — Demographics chart specs** | ❌ Not started | No `LOC_DEMOGRAPHICS_METRIC_EMIG_*` id-derived keys added; view labels / `"people / turn"` unit still literal. Dead `…_EMIG_NET_MIGRATION` keys still present (2 rows). |
-| **Tier 3 — Concatenated fragments** | ❌ Not started | Every literal still present. Line numbers drifted in `naming.js` / `causes.js` — corrected inline below. |
-| **Hardening — CI guard** | ❌ Not created | `tests/i18n-ui-keys.mjs` does not exist. |
-| **Follow-up — re-translate polished en_us** | ⏳ Pending | Still applies; batch with the new-key work as written. |
+| **L1 — Lens tooltips** | **Done** | Both files now route through `loc()`; keys exist in ModText. See the L1 section for the one residual leak. |
+| **Tier 1 — Options / tunables / advanced editor** | Not started | All literals intact; none of the proposed `LOC_OPTIONS_EMIG_*` / `LOC_EMIG_CHOICE_*` / `LOC_EMIG_ADV_*` keys exist. Line numbers drifted — corrected inline below. |
+| **Tier 1b — Guide nav-pills** | Not started | `"What counts"` / `"FAQ"` still literal in `views[]`. Line refs still accurate. |
+| **Tier 2 — Demographics chart specs** | Not started | No `LOC_DEMOGRAPHICS_METRIC_EMIG_*` id-derived keys added; view labels / `"people / turn"` unit still literal. Dead `…_EMIG_NET_MIGRATION` keys still present (2 rows). |
+| **Tier 3 — Concatenated fragments** | Not started | Every literal still present. Line numbers drifted in `naming.js` / `causes.js` — corrected inline below. |
+| **Hardening — CI guard** | Not created | `tests/i18n-ui-keys.mjs` does not exist. |
+| **Follow-up — re-translate polished en_us** | Pending | Still applies; batch with the new-key work as written. |
 
 Net: **L1 is the only completed piece.** Everything else remains exactly as scoped — the plan below
 holds, with the line-number corrections noted per section.
@@ -95,7 +95,7 @@ currently empty; the localization work lands there under `## [2.1.0]`.
   hand-edited locale XML back into `i18n/<locale>.json` first, `scripts/i18n_apply.mjs` now REFUSES to run
   when a translation exists only in the XML (`--force` overrides), and `npm run test:i18n-pipeline` fails
   when the maps and the shipped text disagree. Editing `text/**/ModText.xml` by hand is fine again as long as
-  ingest runs afterwards. `release.sh` still excludes `i18n/` and never regenerates.
+  ingest runs afterward. `release.sh` still excludes `i18n/` and never regenerates.
 - **Parity gate:** `tests/i18n.mjs` (`npm run test:i18n`) asserts every en_us key exists in all 11
   locale files — this catches any locale you forget. `tests/validate-package.mjs` checks XML
   well-formedness + namespace + data-XML key references.
@@ -161,7 +161,7 @@ Therefore:
      `…_EMIG_UNHAPPINESS_EMIGRATION`, `…_EMIG_WAR_IMMIGRATION`, `…_EMIG_DISASTER_IMMIGRATION`,
      `…_EMIG_PROSPERITY_IMMIGRATION`.
    Keep the raw English `label`/`title`/`subtitle` in the spec objects as the fallback.
-2. **Reconcile dead keys — ✅ confirmed dead (audited 2026-07-19):** `LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION`,
+2. **Reconcile dead keys — confirmed dead (audited 2026-07-19):** `LOC_DEMOGRAPHICS_METRIC_EMIG_NET_MIGRATION`,
    `_EMIG_IN`, `_EMIG_OUT` (+ their three `_SUBTITLE`s) exist but match **no** metric `id` and are
    **referenced nowhere** in `ui/` or `data/` (whole-word grep = 0 hits outside their own ModText rows).
    → **Remove all 6 keys, all 12 locale files = 72 `<Row>`/`<Replace>` rows.** `EMIG_REFUGEES` /
@@ -200,7 +200,7 @@ concatenation.
 
 ---
 
-## L1 — Lens tooltips — ✅ DONE (already tracked in docs/emigration-roadmap-and-backlog.md)
+## L1 — Lens tooltips — Done (already tracked in docs/emigration-roadmap-and-backlog.md)
 
 **Completed.** Both tooltip files now route every visible string through `loc()` and the keys are
 defined in ModText:
@@ -244,7 +244,7 @@ missing-key one:
   hand-authored translations). So the resolution is a **hand re-translation pass** of the affected
   `<Replace>` rows in `text/**/ModText.xml`, reusing each locale's established vocabulary — *not* a pipeline
   run. This retires the open decision `text-polish-plan.md` used to carry.
-- **Which keys:** every en_us `<Row>` whose text changed in Tiers 0–3 — the ✅ items in
+- **Which keys:** every en_us `<Row>` whose text changed in Tiers 0–3 — the Done items in
   `text-polish-plan.md` cite the exact tags/lines. Fastest precise set: `git diff` `text/en_us/ModText.xml`
   against the last pre-polish commit.
 - **Batch it** with the new-key work above so translators touch each locale file once.
@@ -275,7 +275,7 @@ There is currently **no test that a `loc()`/`tr()` key referenced in `ui/*.js` e
 ## Execution order
 
 1. **Draft en_us keys** for all tiers (real English), grouped by file, following naming conventions.
-2. **Wire the JS** — swap literals for `loc()`/keys per file; verify the Tier-2 id↔key match and the
+2. **Wire the JS** — swap literals for `loc()`/keys per file; verify the Tier-2 id-to-key match and the
    `registerMetricGroup`/view-label rendering path (read the host code once to confirm verbatim vs key).
 3. **Translate** — add all 11 `<Replace>` rows per key, reusing each locale's established vocabulary.
 4. **Reconcile** dead `LOC_DEMOGRAPHICS_METRIC_*` keys.

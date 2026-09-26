@@ -105,7 +105,7 @@ assert.equal(reasonsPhrase(undefined), "", "empty for missing reasons");
   assert.deepEqual(dp.reasons, reasons, "departRecord carries reasons");
   const ar = arriveRecord({ srcName: "Rome", destName: "Thebes", destOwner: 2, srcOwner: 1,
     crossCiv: true, people: 3000, cause: "war", reasons }, true, 1);
-  assert.deepEqual(ar.reasons, reasons, "arriveRecord forwards the departure-time reasons");
+  assert.deepEqual(ar.reasons, reasons, "arriveRecord forward the departure-time reasons");
   const mvNone = moveRecord(src, dest, 3000, "prosperity", { destPaidCost: 1 });
   assert.deepEqual(mvNone.reasons, [], "a record with no reasons defaults to an empty list");
 }

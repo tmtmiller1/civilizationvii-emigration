@@ -213,7 +213,7 @@ async function run() {
     safe(() => LM.setActiveLens("fxs-default-lens"));
   }
 
-  // D: sweep and force a plague on a foreign city's centre plot
+  // D: sweep and force a plague on a foreign city's center plot
   emit("D infected=" + J(infectedSweep()));
   let plagueCity = null, plaguePlot = null;
   const plague = safe(() => GameInfo.PlotEffects.lookup("PLOTEFFECT_PLAGUE"), null);

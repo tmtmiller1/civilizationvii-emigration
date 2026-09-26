@@ -2,7 +2,7 @@
 //
 // MUTATION-RIGOR harness for emigration-engine.js (see mods_quality_analyses/emigration-quality-
 // analysis/mutation-rigor-remediation-plan.md). engine-pass.mjs / engine-legacy-snapshots.mjs cover
-// that the pass *runs*; this pins the exact boundary/arithmetic/branch behaviour of the engine's
+// that the pass *runs*; this pins the exact boundary/arithmetic/branch behavior of the engine's
 // decision + sizing helpers via the `__test` surface, to kill the 302 survivors (97 conditional /
 // 45 equality / 33 arithmetic / …).
 //
@@ -221,7 +221,7 @@ function sig(o = {}) {
   assert.equal(E.deathRamp(100), 1, "the ramp holds at 1 (no cap beyond full) for a long crisis");
   assert.ok(E.deathRamp(3) > E.deathRamp(2) && E.deathRamp(2) > E.deathRamp(1), "the ramp is monotonically increasing");
   CONFIG.deathRampEnabled = false;
-  assert.equal(E.deathRamp(1), 1, "disabled → no smoothing (multiplier 1, legacy behaviour)");
+  assert.equal(E.deathRamp(1), 1, "disabled → no smoothing (multiplier 1, legacy behavior)");
 }
 
 console.log("engine-rigor (part 1) wired; continuing in part 2 below");
@@ -1070,7 +1070,7 @@ function laggedWorld(sameCiv) {
   pin();
   Object.assign(CONFIG, { splitTracksEnabled: false, splitBudgetsEnabled: false, emigrationBar: 0, cooldownTurns: 0, transitLagTurns: 0, warSurgeMax: 1, violenceFleeThreshold: 10, minRuralToEmigrate: 1, maxLossPerCityPerTurn: 0 });
   const w = crossCivWorld({ rural: 12 });
-  w.src.violence = 20; // war crisis + attractive neighbour
+  w.src.violence = 20; // war crisis + attractive neighbor
   const out = E.processSource(w.src, w.ranked, w.state, w.ownerPop, { voluntary: 5, crisis: 5 }, w.inbound);
   // Legacy = one merged single-cause step: it does NOT emit both a war AND a prosperity record in one pass.
   const hasWar = out.some((m) => m.cause === "war"); const hasPros = out.some((m) => m.cause === "prosperity");
@@ -1163,7 +1163,7 @@ for (const bad of [undefined, NaN, -0.5, 2]) {
 }
 
 // ── THE BALANCE PROPERTY: a constant pull converges to pull/(1-retention) and stops there ──
-// This is the whole behavioural difference. Under the old ratchet ANY positive pull crossed ANY bar
+// This is the whole behavioral difference. Under the old ratchet ANY positive pull crossed ANY bar
 // eventually; now a source only ever migrates if its pull is both large and sustained, so the ceiling
 // is the real test and it must be exact.
 {

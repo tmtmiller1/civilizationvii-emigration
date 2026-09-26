@@ -2,14 +2,14 @@
 //
 // The per-tile ethnicity-lens distribution model (emigration-ethnicity-distribution.js) — the SMOOTH
 // GRADIENT blend model: each tile carries its own local origin mix, a diaspora forming a spatial cluster
-// (high local share at its anchor, fading with hex distance) that the lens blends into a colour gradient.
+// (high local share at its anchor, fading with hex distance) that the lens blends into a color gradient.
 // Pure logic, so no engine stubs. Asserts the properties the lens + tooltip rely on:
 //   1. degenerate inputs → [] (no throw);
 //   2. a single origin gives every tile a 100% share of that origin;
 //   3. denser (higher-weight, urban) tiles carry more people → higher opacity than sparse tiles;
 //   4. each origin's people total its citywide share (CONSERVATION); the minority's local share VARIES
 //      tile to tile (a gradient, not a flat smear); every tile stays a BLEND (the host is always present,
-//      so no tile fully switches colour), all deterministically;
+//      so no tile fully switches color), all deterministically;
 //   5. an enclave ANCHOR PIN moves a diaspora's cluster onto the pinned tile while leaving every citywide
 //      share and the settlement's people untouched, and an absent/unusable pin falls back to the hash anchor;
 //   6. only an ENCLAVE tile may read past the enclave formation bar: plain tiles are capped at it, the
@@ -68,7 +68,7 @@ assert.deepEqual(distributeTiles(null, null, 0), [], "null inputs → []");
 
 // ── 4. Conservation + gradient variation + always-a-blend ───────────────────
 {
-  // 60% civ 1 (host) / 40% civ 2 (diaspora) across a dense centre, an urban ring, rurals + fringe.
+  // 60% civ 1 (host) / 40% civ 2 (diaspora) across a dense center, an urban ring, rurals + fringe.
   const plots = [
     { x: 3, y: 3, weight: 3.6 },
     { x: 4, y: 3, weight: 2.4 }, { x: 3, y: 4, weight: 2.4 },
@@ -90,13 +90,13 @@ assert.deepEqual(distributeTiles(null, null, 0), [], "null inputs → []");
   const minShares = tiles.map((t) => localShareOf(t, 2));
   assert.ok(Math.max(...minShares) - Math.min(...minShares) > 0.2,
     "the diaspora's local share varies tile to tile (a gradient)");
-  // The cluster centre reads strongly as the diaspora, the far fringe barely at all.
-  assert.ok(Math.max(...minShares) >= 0.5, "the cluster centre reads strongly as the diaspora");
+  // The cluster center reads strongly as the diaspora, the far fringe barely at all.
+  assert.ok(Math.max(...minShares) >= 0.5, "the cluster center reads strongly as the diaspora");
   assert.ok(Math.min(...minShares) < 0.3, "distant tiles fade toward the host");
 
   // ALWAYS A BLEND: no tile fully switches to the diaspora — the host keeps at least (1-CAP) everywhere.
   assert.ok(tiles.every((t) => localShareOf(t, 2) <= MINORITY_CAP + 1e-9),
-    "no tile exceeds the minority cap (the host is always present → colours blend, never switch)");
+    "no tile exceeds the minority cap (the host is always present → colors blend, never switch)");
   assert.ok(tiles.every((t) => localShareOf(t, 1) > 0), "every tile keeps some host share");
 
   // Per-tile shares each sum to ~1.
@@ -131,7 +131,7 @@ assert.deepEqual(distributeTiles(null, null, 0), [], "null inputs → []");
 
 // ── 6. An enclave pin MOVES the cluster without changing any share ───────────
 // The enclave tile is chosen by a land/adjacency rule that knows nothing about the hash anchor, so the
-// pin is what makes the colour patch and the on-map enclave marker name the same tile.
+// pin is what makes the color patch and the on-map enclave marker name the same tile.
 {
   // A row of tiles far enough apart that the anchor's identity is unmistakable in the result.
   const plots = [

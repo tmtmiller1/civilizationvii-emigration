@@ -16,7 +16,7 @@ const H = [-25, -15, -8, 0, 8, 20, 40]; // unhappy → ecstatic
 const E = [0.6, 1.0, 1.5]; // weak / average / strong economy
 const BASE = { food: 18, production: 16, gold: 11, science: 7, culture: 5 }; // gross, pop 10
 const POP = 10;
-const MEAN_H = H.reduce((a, b) => a + b, 0) / H.length; // field-relative centre
+const MEAN_H = H.reduce((a, b) => a + b, 0) / H.length; // field-relative center
 const ctx = { meanHappiness: MEAN_H };
 
 // Net yields after the 1.4.1 unhappiness penalty (rate r/point, cap 0.80, Food exempt), economy e.

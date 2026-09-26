@@ -108,15 +108,15 @@ async function show(label, local, scope) {
   emit("SHOT " + label);
   await later(10000);
   emit(label + " buttons(late)=" + J(describeButtons(d)));
-  // A greyed-out size must not be buyable: activate the first disabled button and confirm nothing resolved.
+  // A grayed-out size must not be buyable: activate the first disabled button and confirm nothing resolved.
   const greyed = Array.from(d.querySelectorAll("fxs-button")).find((b) => b.getAttribute("disabled") === "true");
   if (greyed) {
     safe(() => greyed.dispatchEvent(new CustomEvent("action-activate", { bubbles: true })));
     await later(1500);
-    emit(label + " clicked greyed " + J(safe(() => greyed.getAttribute("caption"))) + ": resolved=" + J(chosen)
+    emit(label + " clicked grayed " + J(safe(() => greyed.getAttribute("caption"))) + ": resolved=" + J(chosen)
       + " dialogStillUp=" + !!dialog() + " (expect resolved=null, still up)");
   } else {
-    emit(label + " no greyed button in this dialog");
+    emit(label + " no grayed button in this dialog");
   }
   emit(label + " body=" + J(safe(() => (d.querySelector(".font-body.text-base") || {}).textContent, "").slice(0, 600)));
   const btns = Array.from(d.querySelectorAll("fxs-button"));

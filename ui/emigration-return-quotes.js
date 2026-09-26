@@ -1,17 +1,11 @@
 // emigration-return-quotes.js
 //
-// Epigraphs for the "call our people home" dialogs, in the voice of someone coming home, longing for home, or
-// being called back after exile or years abroad. Keyed by the PLAYER's civilization (it is their people coming
-// home), with a general pool for civilizations without a row. Same curation rules as the refugee and migrant
-// quotes (emigration-displaced-quotes.js): every line was read in a readable copy of its source, every English
-// rendering is either public domain worldwide (translator dead over seventy years) or ours, and nothing here
-// generalizes a people, trivializes scripture, or takes a side in a live dispute. Citations and the URLs where
-// each line was read are in docs/quote-sources.md. Display and localization reuse the displaced-quote format:
-// one LOC row per quote (LOC_EMIG_DQ_<CIV>_RETURN_<n>), identical in every locale.
-//
-// Pieces are split between the certain internal call and the uncertain external one only by what the dialog
-// renderer draws around them; the pool is shared, so every line here reads as homecoming or longing for home,
-// never as the outcome of one call.
+// Epigraphs for the "call our people home" dialogs, in the voice of someone coming home or longing for home.
+// Keyed by the PLAYER's civilization, with a general pool for civilizations without a row. Same curation
+// rules as emigration-displaced-quotes.js (public-domain or own renderings, nothing that generalizes a
+// people or takes a side); citations are in docs/quote-sources.md. One LOC row per quote
+// (LOC_EMIG_DQ_<CIV>_RETURN_<n>), identical in every locale. The pool is shared between the internal and
+// external calls, so every line reads as homecoming, never as the outcome of one call.
 
 /** @typedef {import("/emigration/ui/emigration-quarter-bonuses.js").QQuote} QQuote */
 

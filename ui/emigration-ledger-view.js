@@ -1,18 +1,9 @@
 // emigration-ledger-view.js
 //
-// The "Net Migration Table": the per-civ ledger (net, the movement counts, refugees, losses,
-// border-stance impact) plus a per-cause "drivers" sub-line that explains each civ's net. Split out
-// of emigration-views.js (which renders the rest of the dashboard) so each stays within its line
-// budget. Pure rendering; the row data is gathered in emigration-window.js and shaped by
-// civLedgerRows.
-//
-// The counts come in three groups, under a spanning group header. Each group uses the SAME pair of
-// headings (Left / Arrived), so a column is read by the group it sits under, not by its own wording:
-//   Internal  - moves between the civ's OWN settlements (they cancel in Net)
-//   External  - moves that crossed a civ border (these are what Net measures)
-//   Total     - Internal + External, the gross movement the civ saw
-// Splitting them answers the question the single gross pair could not: whether a civ is churning
-// internally or actually gaining/losing people to its neighbours.
+// The "Net Migration Table": the per-civ ledger (net, movement counts, refugees, losses, border-stance
+// impact) plus a per-cause "drivers" sub-line. Pure rendering; rows come from civLedgerRows.
+// The counts come in three groups (Internal: own-settlement moves, which cancel in Net; External:
+// cross-border moves, which Net measures; Total: both), each with the same Left / Arrived pair.
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { getNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
@@ -35,7 +26,7 @@ export const LEDGER_CSS =
   ".emig-led-c.stance{flex:1.6 1 0;}" +
   ".emig-led-head .emig-led-c{border-top:none;opacity:0.6;text-transform:uppercase;letter-spacing:0.03rem;font-size:var(--dg-fs-95);}" +
   // Group banding: a hairline before each count group (Internal / External / Total) so the paired
-  // columns read as one block, plus the centred group labels above them.
+  // columns read as one block, plus the centered group labels above them.
   ".emig-led-c.grp-a,.emig-led-c.grp-b,.emig-led-c.grp-c{border-left:0.0277rem solid rgba(229,210,172,0.16);}" +
   ".emig-led-grp .emig-led-c{border-top:none;padding:0.3rem 0.6rem 0.05rem 0.6rem;text-align:center;" +
   "opacity:0.55;text-transform:uppercase;letter-spacing:0.04rem;font-size:var(--dg-fs-85);}" +
@@ -78,10 +69,9 @@ export function formatCount(people, points, mode) {
 }
 
 /**
- * Split one civ's gross movement into its internal (within-civ) and external (cross-border) halves,
- * as the table's Internal / External / Total groups read them. The tallies record gross and
- * internal; external is the remainder, floored at 0 so a backfilled pre-split save (whose internal
- * share is reconstructed from the flow edges, not recorded) can never read negative.
+ * Split one civ's gross movement into its internal (within-civ) and external (cross-border) halves.
+ * The tallies record gross and internal; external is the remainder, floored at 0 so a backfilled
+ * internal share can never read negative.
  * @param {*} c Civ tallies.
  * @returns {*} {intInP, intOutP, intInPts, intOutPts, extInP, extOutP, extInPts, extOutPts}.
  */
@@ -146,8 +136,8 @@ function ledgerNetCell(r, mode) {
 }
 
 /**
- * The diverging Net BAR cell: a shared zero-centred axis so rows read against each other, a RED bar
- * grows LEFT of centre for a net loss, a GREEN bar grows RIGHT for a net gain, scaled to the largest
+ * The diverging Net BAR cell: a shared zero-centered axis so rows read against each other, a RED bar
+ * grows LEFT of center for a net loss, a GREEN bar grows RIGHT for a net gain, scaled to the largest
  * mover. The signed number itself stays in the "Net" column.
  * @param {*} r Ledger row.
  * @param {number} maxNet Largest absolute net (people) across the rows.
@@ -181,9 +171,8 @@ function ledgerNetBarCell(r, maxNet) {
 function stancePct(r) {
   const neutral = r.inP - r.stInP; // estimated immigration with a neutral stance
   if (!(Math.abs(neutral) > 0)) return 0;
-  // F5: divide by the magnitude of the baseline and keep the sign from the impact
-  // (r.stInP). Dividing by a signed, possibly-negative baseline flipped the sign and
-  // could render "(+-NN%)".
+  // Divide by the magnitude of the baseline and keep the sign from the impact (r.stInP), so a
+  // negative baseline cannot flip the sign.
   return Math.round((r.stInP / Math.abs(neutral)) * 100);
 }
 
@@ -203,9 +192,8 @@ function ledgerStanceCell(r, mode) {
 
 /**
  * The count columns right of the Net bar, in render order. `people`/`points` name the row fields the
- * cell formats (the same pair drives the header, the data cell and the Total row, so the three can
- * never drift apart); `cls` carries the group tint / separator. The Stance-impact column is flagged
- * rather than field-driven because it renders a signed impact plus a percentage.
+ * cell formats (shared by header, data cell and Total row); `cls` carries the group separator. The
+ * Stance-impact column is flagged because it renders a signed impact plus a percentage.
  * @type {{people:string, points:string, key:string, en:string, cls:string, stance?:boolean}[]}
  */
 const COUNT_COLS = [
@@ -254,10 +242,8 @@ function ledgerDriversRow(r) {
 }
 
 /**
- * The header or totals row: the leading name/net/net-bar cells plus one cell per count column.
- * Every cell carries the SAME class its data-row counterpart gets (so each column's flex basis
- * matches), or the header/total row's widths drift from the data rows' and the numbers stop lining
- * up under their headings.
+ * The header or totals row: the leading name/net/net-bar cells plus one cell per count column. Every
+ * cell carries the SAME class its data-row counterpart gets, so each column's flex basis matches.
  * @param {string} name The first (Civilization / Total) cell.
  * @param {string} net The Net cell.
  * @param {string[]} counts One string per COUNT_COLS entry, in order.
@@ -274,10 +260,8 @@ function ledgerTextRow(name, net, counts, cls) {
 }
 
 /**
- * The spanning group header above the column headings: blank over name/net/bar, then one centred
- * label per count group (Internal / External / Total), then blank over the trailing columns. The
- * spans are sized by summing the flex weights of the columns they cover (see LEDGER_CSS), so a
- * group label sits over its own pair.
+ * The spanning group header above the column headings: one centered label per count group (Internal /
+ * External / Total), with spans sized by summing the flex weights of the columns they cover.
  * @returns {HTMLElement} The row.
  */
 function ledgerGroupRow() {

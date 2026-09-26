@@ -1,8 +1,8 @@
 // eep-modtest144.js - Steam page retakes from the mod test 142 game (turn 106, after 40 turns at High migration).
 // Loads that game's saved turn (copied into the save list as EmigPromo106 by run-promo144.sh); plays no turns.
 //
-//   SHOT net-flows-origin     Network tab with "Migrant flows" on, coloured by origin
-//   SHOT net-flows-movement   the same, coloured by movement
+//   SHOT net-flows-origin     Network tab with "Migrant flows" on, colored by origin
+//   SHOT net-flows-movement   the same, colored by movement
 //   SHOT ethnic-<n>           Ethnic Composition lens on each of the most diverse cities the player has explored
 //                             (run 142's retake found the most diverse ones unexplored, which draws black map)
 //
@@ -74,7 +74,7 @@ async function shootNetwork() {
     emit("NET movement active=" + movement.classList.contains("active") + " flows still active=" + !!(chip(/migrant flows/i) || {}).classList?.contains("active"));
     emit("SHOT net-flows-movement"); await later(HOLD);
     const origin = chip(/^origin$/i);
-    if (origin) press(origin); // leave the player's colour choice as it was
+    if (origin) press(origin); // leave the player's color choice as it was
   } else {
     emit("NET no Movement chip");
   }

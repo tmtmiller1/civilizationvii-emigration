@@ -130,7 +130,7 @@ one-line index.
 - **Instead.** The crisis urban leg was removed 2026-09-14, specialist and building steps both. Crisis
   flight and deaths stop at the rural floor, and no mod code sends `ASSIGN_WORKER -1`.
 - **Recorded in.** Ledger, mod test 55; the removed code and its justification in
-  `tower_mods/_archived-emigration-urban-leg/`.
+  `mod_ideas_tested/_archived-emigration-urban-leg/`.
 
 ---
 
@@ -144,7 +144,7 @@ one-line index.
   read live: 67 `PlayerOperationTypes`, 4 `CityOperationTypes`, 13 `CityCommandTypes`, 75
   `UnitOperationTypes`, 33 `UnitCommandTypes`. The constructible instance's `setProperty` was called
   with "damaged", "Damaged", "DAMAGED", and "pillaged". `UNITOPERATION_PILLAGE` was asked from a knight
-  created directly on London's own mine and against the city-centre building plot.
+  created directly on London's own mine and against the city-center building plot.
 - **Observed.** Only `CREATE_ELEMENT` and `DESTROY_ELEMENT` touch elements; nothing is damage-, pillage-,
   or repair-shaped. `setProperty` returned null and the `damaged` flag stayed false. Pillage answered
   `canStart` false in both cases.
@@ -199,7 +199,7 @@ one-line index.
   survived seven AI turns on human and AI cities.
 - **Instead.** Enclaves are placed, never built (2.3).
 - **Recorded in.** `wont-implement-with-justifications.md`, first entry; the archived feature at
-  `tower_mods/_archived-emigration-enclave-feature/`.
+  `mod_ideas_tested/_archived-emigration-enclave-feature/`.
 
 ### 2.5 The tile a departing worker leaves cannot be identified
 
@@ -333,7 +333,7 @@ one-line index.
 - **Tried.** Two `UNIT_MIGRANT` created beside an AI city. Runs 7 and 8, 2026-09-12.
 - **Observed.** Both vanished within two turns while the owner's population, rural, urban, and
   improvement counts stayed exactly the same.
-- **Why it is closed.** The AI has no behaviour for the migrant unit and disbands what it cannot use.
+- **Why it is closed.** The AI has no behavior for the migrant unit and disbands what it cannot use.
 - **Instead.** AI arrivals are placed directly (`arriveRural` with the automatic expand path); the migrant
   unit is a human-only option.
 - **Recorded in.** Ledger, runs 7 and 8.
@@ -361,6 +361,40 @@ See 2.1. `UNITOPERATION_PILLAGE` answers false on own plots even with the unit s
 - **Instead.** Every player-keyed engine call is guarded by `Players.get(pid)` first
   (`knownPlayer` in `ui/emigration-naming.js`), and probe records must use real ids.
 - **Recorded in.** Ledger, mod tests 19 to 21; README §12.
+
+### 5.3 A UI script cannot count on reaching the component it decorates
+
+- **Wanted for.** The city-banner pressure bar.
+- **Observed.** `Controls.decorate` accepts a registration and may then never hand a component over: the
+  same call, written the same way, attached to the sub-system dock and never once to a city banner. A
+  script's own context can also lack the HUD entirely (no banners, no dock) while another mod's script sees
+  both, and load order does not settle it. Registration returning without throwing, and the module logging
+  that it registered, were both true for the bar's whole life while it drew nothing.
+- **Instead.** Anything that must attach to base-game UI watches the DOM for it, as the plot tooltips do,
+  and logs how many target elements it can actually see. The bar was withdrawn.
+- **Recorded in.** `mod_ideas_tested/_archived-emigration-banner-pressure/docs/why-it-was-removed.md`.
+
+### 5.4 No floating map text, and no clickable notification without a database row
+
+- **Observed.** `WorldUI` has no usable path for text rising from a plot. A clickable end-turn notification
+  needs a notification type defined in the database; the UI runtime cannot raise a new one.
+- **Instead.** Toasts and world news carry the per-plot messages.
+
+### 5.5 Gameplay writes from the UI runtime are client-side
+
+- **Observed.** UI-VM gameplay writes apply on the machine that runs them.
+- **Instead.** The mod is single-player.
+
+### 5.6 An existing save cannot be pushed into an age crisis, and the running crisis is not readable
+
+- **Wanted for.** Crisis-driven displacement tests.
+- **Observed.** Editing `AgeCrisisStages` reaches the database (the lowered trigger percentages read back
+  changed) but a save in progress ignores it: with both crises present and stage 1 lowered to 42%, a save
+  carried from 41.3% to 48.8% age progression never left stage -1. `Game.CrisisManager` reports the current
+  stage, the stage count, and whether crises are enabled, but never which crisis was selected. Mod tests 96
+  to 98d, 2026-09-16.
+- **Instead.** Force a crisis with a new game and the crisis chosen in setup (mod test 100 onward).
+- **Recorded in.** Ledger, mod tests 96 to 100.
 
 ---
 
@@ -460,6 +494,9 @@ Not limits on what can be done, but reads that lie for a moment and have caused 
 | Migrant units for the AI | disbanded within two turns | 2026-09-12 | ledger, runs 7 and 8 |
 | CSS grid in the UI | silently breaks layout | earlier | memory, GameFace |
 | Engine call with an unknown player id | native crash | 2026-09-13 | ledger, mod tests 19 to 21 |
+| Decorate a city banner | registration accepted, component never delivered | earlier | archived banner pressure |
+| Floating map text; new clickable notification | no WorldUI path; needs a database type | earlier | runtime survey |
+| Push an existing save into a crisis; read the running crisis | ignored; not exposed | 2026-09-16 | ledger, mod tests 96 to 98d |
 | Multi-turn Autoplay running the pass | never raises the local turn | 2026-09-13 | ledger, mod tests 29 and 30 |
 | Autoplay autosaves for write probes | Autoplay resumes on load | 2026-09-13 | ledger, mod tests 8 to 10 |
 | `-autojson` automation | does not start | 2026-09-12 | memory, autojson |

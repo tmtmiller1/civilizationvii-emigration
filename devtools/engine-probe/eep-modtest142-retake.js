@@ -2,7 +2,7 @@
 // AugustusExp66 (Exploration, human-controlled, about 60 turns before the age ends).
 //
 // The existing shots were taken at default settings, where even the most mixed save holds 8 foreign-born points
-// across 5 cities, so the Ethnic Composition lens paints one colour and the dashboard tabs are sparse. Nothing is
+// across 5 cities, so the Ethnic Composition lens paints one color and the dashboard tabs are sparse. Nothing is
 // seeded here: the probe turns migration up through the player's own options (High preset, free movement between
 // civilizations, conflict refugees at 75%), plays TURNS turns hands-free, and photographs what the simulation made.
 //
@@ -185,7 +185,7 @@ async function shootLenses() {
   const top = diversity(30);
   emit("LENS diversity ranking " + J(top.map((r) => r.name + ":" + Math.round(r.index * 100) / 100 + ":" + r.originsAbove5)));
   // A city the player has never explored draws as black map, whatever the lens: take the most diverse one whose
-  // centre tile the player has at least seen.
+  // center tile the player has at least seen.
   const seen = (c) => safe(() => GameplayMap.getRevealedState(local, c.location.x, c.location.y) !== RevealedStates.HIDDEN, false);
   const city = top.map(cityOf).filter(Boolean).find(seen);
   if (!city) { emit("LENS no ranked city to frame"); return; }

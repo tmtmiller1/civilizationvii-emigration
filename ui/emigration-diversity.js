@@ -1,21 +1,9 @@
 // emigration-diversity.js
 //
-// The COMPOSITION-DIVERSITY metrics and the "most diverse cities" ranking (roadmap Features S + T).
-// Read-only over the composition ledger the sim already keeps — no model change, no balance risk.
-//
-//   • diversityScore(comp)      — Feature S's per-city metric (entropy, origins ≥ 5%, no-majority).
-//   • cosmopolitanism(comp,ctx) — Feature T's derived 0..1 score → one of five COSMO_TIERS.
-//   • rankDiversity(entries, …) — the ranking (sorted by entropy, capped).
-//   • diverseCityRanking(…)     — the ranking over the live ledger (allCityCompositions).
-//
-// FRAMING (carry into every consumer): these describe the MIX of origins living in a settlement.
-// They are not a quality judgment and grant no yields — T is explicitly cosmetic. All wording stays
-// about "communities" and "composition"; never rank peoples.
-//
-// Everything here is pure and deterministic over its inputs. The engine-touching seam is confined to
-// diverseCityRanking(), which reads the composition ledger and takes its per-owner lookups by
-// INJECTION (opts.openness / opts.inbound) rather than importing the borders/stats modules — that
-// keeps the metrics unit-testable off-engine and avoids an import cycle through emigration-borders.
+// The COMPOSITION-DIVERSITY metrics (entropy, origins >= 5%, no-majority, a derived cosmopolitanism
+// tier) and the "most diverse cities" ranking, read-only over the composition ledger. They describe
+// the MIX of origins in a settlement, never a quality judgment, and grant no yields. Pure; the engine
+// seam is diverseCityRanking(), which takes its per-owner lookups by injection.
 
 import { allCityCompositions } from "/emigration/ui/emigration-composition.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
@@ -93,7 +81,7 @@ function entropy(civs) {
 }
 
 /**
- * Feature S's per-settlement diversity metric.
+ * The per-settlement diversity metric.
  * @param {{civs:{civ:number, share:number}[], dominant:{civ:number, share:number}|null,
  *   owner:number}|null} comp A composition (compositionForCity / compositionForOwner shape).
  * @returns {{originsAbove5:number, index:number, largestNonOwner:number, noMajority:boolean}}
@@ -126,7 +114,7 @@ function largestNonOwnerShare(civs, owner) {
 
 /**
  * The tier key for a 0..1 cosmopolitanism score (the highest tier whose `min` it reaches).
- * @param {number} score The score.
+ * @param {number} score
  * @returns {string} A COSMO_TIERS key.
  */
 function tierFor(score) {
@@ -136,7 +124,7 @@ function tierFor(score) {
 }
 
 /**
- * Feature T's derived cosmopolitanism score: how mixed, open and inbound-fed a settlement is, blended
+ * The derived cosmopolitanism score: how mixed, open and inbound-fed a settlement is, blended
  * into [0,1] and bucketed into five descriptive tiers. COSMETIC — grants no yields.
  * @param {*} comp A composition.
  * @param {{openness?:number, inboundNorm?:number}} [ctx] `openness` is the owner's immigration

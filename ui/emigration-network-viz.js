@@ -1,10 +1,8 @@
 // emigration-network-viz.js
 //
 // Orchestrates the destination-cluster migration view on a 2D canvas: a light force layout
-// (emigration-network-sim.js) spreads the destination clusters apart; each cluster is a swarm of
-// origin-coloured dots (emigration-network-paint.js) where one dot is a SCALED chunk of migrants;
-// plus the chrome, an origin colour key, cause-filter chips, a timeline scrubber, click-to-isolate
-// a destination or select a single city, and hover tooltips.
+// (emigration-network-sim.js) spreads the clusters apart, each a swarm of origin-colored dots
+// (emigration-network-paint.js), plus the chrome (color key, filter chips, timeline, tooltips).
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { causeLabel } from "/emigration/ui/emigration-causes.js";
@@ -27,14 +25,12 @@ import { installStageFit } from "/emigration/ui/emigration-network-fit.js";
 import { makeTooltip, wireEvents } from "/emigration/ui/emigration-network-interact.js";
 
 // Logical canvas size, a WIDE 2:1 rectangle so the draggable area spans the full window width
-// (nodes seed clustered in the centre; the buffer is 2x these for crispness).
+// (nodes seed clustered in the center; the buffer is 2x these for crispness).
 export const WX = 1120;
 export const WY = 560;
 
-// Scaled Pop mode: a FIXED people-per-dot so the dot count tracks REAL population size (a bigger civ /
-// a bigger migration = more dots), rather than always squeezing the whole world into a fixed budget.
-// Capped at SCALED_DOT_CAP so a huge late-game world can't spawn an unrenderable number of dots, past
-// the cap the people-per-dot coarsens to hold the count. (Civ Pop mode stays 1 dot = 1 engine point.)
+// Scaled Pop mode: a FIXED people-per-dot so the dot count tracks real population size, capped at
+// SCALED_DOT_CAP (past the cap the people-per-dot coarsens). Civ Pop mode stays 1 dot = 1 engine point.
 const SCALED_PEOPLE_PER_DOT = 2000;
 const SCALED_DOT_CAP = 2000;
 
@@ -53,29 +49,29 @@ const SCALED_DOT_CAP = 2000;
  * @property {string|null} scope Isolated movement scope, or null.
  * @property {{resident:boolean, internal:boolean, immigrant:boolean}} show Per-scope visibility.
  * @property {boolean} showFlows Whether origin→destination flow lines are drawn.
- * @property {string} lens Active colour lens ("origin" | "cause" | "movement").
+ * @property {string} lens Active color lens ("origin" | "cause" | "movement").
  * @property {number} frameIdx Current timeline frame index.
  */
 /**
  * @typedef {Object} EventSpec A resolved timeline event (disaster/war).
  * @property {string} kind @property {string} label @property {number} from @property {number} to
- * @property {number[]} civs Affected civ ids. @property {number[]} cis Affected centre indices.
+ * @property {number[]} civs Affected civ ids. @property {number[]} cis Affected center indices.
  */
 /**
  * @typedef {Object} Scene The render scene the painter consumes.
  * @property {number} WX Logical canvas width. @property {number} WY Logical canvas height.
- * @property {NetworkNode[]} centers Civ centres.
+ * @property {NetworkNode[]} centers Civ centers.
  * @property {Dot[]} dots All dots (across the whole timeline).
  * @property {VizState} state Interaction state.
- * @property {Map<number,number>} byId Civ id → centre index.
+ * @property {Map<number,number>} byId Civ id → center index.
  * @property {EventSpec[]} events Resolved events.
  */
 
 /**
  * Make an element with an optional class + text.
- * @param {string} tag Tag.
+ * @param {string} tag
  * @param {string} [cls] Class.
- * @param {string} [text] Text.
+ * @param {string} [text]
  * @returns {HTMLElement} Element.
  */
 function el(tag, cls, text) {
@@ -113,13 +109,9 @@ const NETC_CSS =
     ".emig-netc-wrap{position:relative;display:flex;flex-direction:column;align-items:center;}" +
     ".emig-netc-time-note{align-self:center;margin:0.5rem 0;font-size:var(--dg-fs-85);opacity:0.6;" +
     "font-style:italic;color:#e5d2ac;text-align:center;max-width:34rem;}" +
-    // The canvas fills its stage, which is a full-width 2:1 box (padding-bottom gives it a real
-    // height so the canvas's height:100% resolves, GameFace won't derive height from the buffer).
-    // The stage is a 2:1 box (padding-bottom derives its height from its rendered WIDTH, preserving the
-    // canvas's 2:1 logical aspect so the dots never distort). Width is capped by viewport HEIGHT so the
-    // height (half the width) stays ~42vh: the diagram plus its controls/legend/timeline then fit the
-    // dashboard panel without a scrollbar. A single-unit cap (NOT a mixed-unit min(), which GameFace
-    // drops, leaving the stage full-width and overflowing). Shared by the dot (network) + flow views.
+    // The stage is a 2:1 box (padding-bottom derives its height from its width, so the canvas's
+    // height:100% resolves and the dots never distort), capped by viewport height so the whole view fits
+    // the panel without a scrollbar. A single-unit cap: GameFace drops a mixed-unit min().
     ".emig-netc-stage{position:relative;width:100%;max-width:100vh;margin:0 auto;}" +
     ".emig-netc-stage::before{content:'';display:block;padding-bottom:50%;}" +
     ".emig-netc{position:absolute;top:0;left:0;width:100%;height:100%;display:block;}" +
@@ -144,7 +136,7 @@ const NETC_CSS =
     "margin-right:0.3rem;vertical-align:middle;}" +
     ".emig-netc-cap{opacity:0.62;font-size:var(--dg-fs-95);text-align:center;margin-top:0.35rem;" +
     "max-width:66rem;line-height:1.35;}" +
-    // A labelled help pill sitting inline at the END of the filter-pills row (under its own "Info:"
+    // A labeled help pill sitting inline at the END of the filter-pills row (under its own "Info:"
     // heading, like the other pill groups); its explanation lives in a hover popover so it doesn't eat
     // vertical space. position:relative anchors that popover.
     ".emig-help{position:relative;display:inline-flex;align-items:center;z-index:30;}" +
@@ -179,7 +171,7 @@ function appendEmpty(container) {
 }
 
 /**
- * Stable civ-id → colour index map across all frames (first-seen order).
+ * Stable civ-id → color index map across all frames (first-seen order).
  * @param {Frame[]} frames Timeline frames.
  * @returns {Map<number, number>} id → palette index.
  */
@@ -190,14 +182,14 @@ export function buildColorMap(frames) {
     for (const nd of fr.network.nodes) if (!map.has(nd.id)) map.set(nd.id, map.size);
   }
   // Also register ORIGIN civs that appear only as a captured city's residents (not as a node), so
-  // their resident dots get a stable colour index rather than falling back to the owner's.
+  // their resident dots get a stable color index rather than falling back to the owner's.
   for (const fr of frames) registerOriginCivs(map, fr.pops || {});
   return map;
 }
 
 /**
  * Register every ORIGIN civ that appears in a frame's per-city resident composition.
- * @param {Map<number,number>} map Colour-index map (mutated).
+ * @param {Map<number,number>} map Color-index map (mutated).
  * @param {Record<number,*>} pops Frame pops (civId → {cities:[{origins:[{civ}]}]}).
  */
 function registerOriginCivs(map, pops) {
@@ -233,10 +225,8 @@ function causesPresent(frames) {
 function makeCanvas() {
   const cv = document.createElement("canvas");
   cv.className = "emig-netc";
-  // Supersample the backing store for crisp text + edges. A flat 2x is too soft on Hi-DPI / large
-  // panels (the canvas displays up to ~120rem wide), so scale the backing with devicePixelRatio,
-  // clamped to 2..3 to keep per-frame fill cost sane. setupCanvas() reads .width/.height back and
-  // applies the matching ctx.scale, so all drawing stays in logical WX/WY coords.
+  // Supersample the backing store with devicePixelRatio (clamped to 2..3) for crisp text + edges;
+  // setupCanvas() applies the matching ctx.scale, so all drawing stays in logical WX/WY coords.
   const dpr = typeof window !== "undefined" && typeof window.devicePixelRatio === "number"
     && window.devicePixelRatio > 0 ? window.devicePixelRatio : 2;
   const f = Math.min(3, Math.max(2, Math.ceil(dpr * 1.5)));
@@ -246,17 +236,17 @@ function makeCanvas() {
 }
 
 /**
- * Build the cluster centres (one per civ) from the final cumulative frame; the force sim settles
+ * Build the cluster centers (one per civ) from the final cumulative frame; the force sim settles
  * them once and then freezes (so they never drift → no jitter).
  * @param {*} lastNet Final (cumulative) network.
- * @param {Map<number,number>} colorMap Colour-index map.
+ * @param {Map<number,number>} colorMap Color-index map.
  * @returns {{sim:*, byId:Map<number,number>}} Sim + id→index.
  */
 export function buildCenters(lastNet, colorMap) {
   const sim = seedSim({ nodes: lastNet.nodes, edges: [] }, WX, WY);
   // In SAMPLE mode the civ ids are synthetic (1..N) and don't map to real players, so reading real
-  // banner colours by id gives a meaningless mix (some real civs, some grey). Use the distinct
-  // synthetic palette there. Live: each civ's real, readable banner colour.
+  // banner colors by id gives a meaningless mix (some real civs, some gray). Use the distinct
+  // synthetic palette there. Live: each civ's real, readable banner color.
   let sample = false;
   try {
     sample = getSampleData();
@@ -265,7 +255,7 @@ export function buildCenters(lastNet, colorMap) {
   }
   for (const nd of sim.nodes) {
     nd.color = civColorByIndex(colorMap.get(nd.id) || 0);
-    // The circle FILL uses the civ's real banner colour (readable on the dark canvas), falling back
+    // The circle FILL uses the civ's real banner color (readable on the dark canvas), falling back
     // to the synthetic palette. The dots keep `color` (the palette) for their own scheme.
     nd.fillColor = sample ? nd.color : civDisplayColor(nd.id, nd.color);
   }
@@ -274,8 +264,8 @@ export function buildCenters(lastNet, colorMap) {
 }
 
 /**
- * A fly-in starting at a civ's city sub-centre, or null when that city index is unknown.
- * @param {*} center Civ centre.
+ * A fly-in starting at a civ's city sub-center, or null when that city index is unknown.
+ * @param {*} center Civ center.
  * @param {number|undefined} idx City index within the civ.
  * @returns {*} Anim {fromX, fromY, p} or null.
  */
@@ -286,12 +276,11 @@ function cityAnimFrom(center, idx) {
 }
 
 /**
- * Start a dot's fly-in from where the people actually came from: internal movers travel from their
- * source CITY; immigrants travel from their ORIGIN civ's circle, their origin city sub-cluster when
- * known, else the origin civ's centre. (Residents never animate, the caller skips them so home-grown
- * population materializes in place; see `activate`.)
+ * Start a dot's fly-in from where the people came from: internal movers from their source city;
+ * immigrants from their origin city sub-cluster when known, else the origin civ's center. Residents
+ * never animate (the caller skips them; see `activate`).
  * @param {Dot} d Dot.
- * @param {Scene} scene Scene.
+ * @param {Scene} scene
  */
 export function startAnim(d, scene) {
   const civ = scene.centers[d.ci];
@@ -299,7 +288,7 @@ export function startAnim(d, scene) {
     d.anim = cityAnimFrom(civ, d.fromCityIdx) || { fromX: civ.x, fromY: civ.y, p: 0 };
     return;
   }
-  // The origin civ's centre. Use nullish-coalescing, NOT `||`: byId.get() returns 0 for the FIRST
+  // The origin civ's center. Use nullish-coalescing, NOT `||`: byId.get() returns 0 for the FIRST
   // node, and `0 || d.ci` would collapse to the DESTINATION, so an immigrant from that civ would fly
   // out of the civ it's moving TO and read as that civ's home-grown population. `??` keeps index 0.
   const oi = scene.byId.get(d.originId);
@@ -308,7 +297,7 @@ export function startAnim(d, scene) {
 }
 
 
-/** Lens definitions: which dimension drives the dot colour + the legend. */
+/** Lens definitions: which dimension drives the dot color + the legend. */
 // Lens: [stateKey, LOC key, English fallback].
 const LENSES = [
   ["origin", "LOC_EMIG_NETC_LENS_ORIGIN", "Origin"],
@@ -385,13 +374,13 @@ const UNITS_TIP = {
     "Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city " +
     "actually grows, so this figure looks steady. Shares/percentages are always measured on this base."),
   [NumberMode.HISTORICAL]: loc("LOC_EMIG_NETC_UNITS_SCALED_TIP",
-    "Scaled Pop: a historically-scaled 'people' headcount for flavour. It drifts upward as an age " +
+    "Scaled Pop: a historically-scaled 'people' headcount for flavor. It drifts upward as an age " +
     "progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.")
 };
 
 /**
- * Append a "Units:" toggle (a labelled chip cycling Civ Pop ↔ Scaled Pop) to a controls row, styled
- * like the network's other labelled toggles. Number mode is a persisted global, and it changes the
+ * Append a "Units:" toggle (a labeled chip cycling Civ Pop ↔ Scaled Pop) to a controls row, styled
+ * like the network's other labeled toggles. Number mode is a persisted global, and it changes the
  * scene's dot scaling, so a flip rebuilds the whole view via `rebuildAll`.
  * @param {HTMLElement} root The controls row.
  * @param {()=>void} [rebuildAll] Re-render the view after the mode changes.
@@ -447,7 +436,7 @@ function makeLensTabs(state, onChange, rebuildAll) {
 /**
  * Append one legend swatch+label that toggles a filter on click.
  * @param {HTMLElement} box Legend box.
- * @param {string} color Swatch colour.
+ * @param {string} color Swatch color.
  * @param {string} label Text.
  * @param {boolean} active Whether currently isolated.
  * @param {()=>void} onClick Toggle handler.
@@ -463,7 +452,7 @@ function addLeg(box, color, label, active, onClick) {
 }
 
 /**
- * Fill the legend for the active lens (a colour key whose items isolate that dimension on click;
+ * Fill the legend for the active lens (a color key whose items isolate that dimension on click;
  * isolations across lenses stack via the shared state).
  * @param {HTMLElement} box Legend box.
  * @param {{net:*, colorMap:Map<number,number>, causes:string[]}} ctx Legend data.
@@ -491,7 +480,7 @@ function fillLegend(box, ctx, state, rebuild) {
     }
     return;
   }
-  // Origin lens: every civ has its own-colour residents, so the key lists them all.
+  // Origin lens: every civ has its own-color residents, so the key lists them all.
   for (const o of ctx.net.nodes) {
     addLeg(box, civColorByIndex(ctx.colorMap.get(o.id) || 0), o.name, state.origin === o.id, () => {
       state.origin = state.origin === o.id ? null : o.id;
@@ -501,9 +490,9 @@ function fillLegend(box, ctx, state, rebuild) {
 }
 
 /**
- * Build the lens-aware colour key (rebuildable when the lens changes).
+ * Build the lens-aware color key (rebuildable when the lens changes).
  * @param {*} net Network model.
- * @param {Map<number,number>} colorMap Colour-index map.
+ * @param {Map<number,number>} colorMap Color-index map.
  * @param {*} state Interaction state.
  * @param {string[]} causes Causes present.
  * @param {()=>void} markDirty Request a canvas repaint (filters changed).
@@ -522,7 +511,7 @@ function makeLegendBox(net, colorMap, state, causes, markDirty) {
 }
 
 /**
- * A labelled "How to read this" help pill whose explanation appears on hover (so it doesn't take a
+ * A labeled "How to read this" help pill whose explanation appears on hover (so it doesn't take a
  * big caption's worth of vertical space). Appended inline at the end of the filter-pills row under
  * its own "Info:" heading.
  * @param {string} text The help text.
@@ -538,15 +527,15 @@ export function helpIcon(text) {
 }
 
 /**
- * Assemble the chrome (cause chips, canvas, origin key, timeline) into the wrapper. The old verbose
- * caption is now a hover-only "?" in the stage corner (helpIcon), reclaiming the vertical space.
+ * Assemble the chrome (cause chips, canvas, origin key, timeline) into the wrapper; the explanatory
+ * caption lives in a hover-only help pill (helpIcon).
  * @param {*} parts {wrap, chipsRoot, canvas, legend, slider, unit}.
  */
 function mountChrome(parts) {
   const capEn =
     "Each dot ≈ {1_People} people. A circle is one civilization, holding its cities and towns; its " +
-    "dots are home-grown residents (its own colour), people who moved between its cities (a lighter " +
-    "tint), and immigrants (their origin's colour). Turn on \"Migrant flows\" to overlay the movement " +
+    "dots are home-grown residents (its own color), people who moved between its cities (a lighter " +
+    "tint), and immigrants (their origin's color). Turn on \"Migrant flows\" to overlay the movement " +
     "as arrows — red where people leave, green where they arrive, thicker for bigger flows. Recolour " +
     "with \"Color by\", filter with the Show / Migrant-flows toggles, click a swatch or a civ's outer " +
     "ring to isolate it (the arrows follow your filter), click a city to highlight just its migrant " +
@@ -575,7 +564,7 @@ let _lastIntroTurn = -1;
 
 /**
  * Advance new-dot fly-in animations one frame (scaled by the playback speed multiplier).
- * @param {*} scene Scene.
+ * @param {*} scene
  * @param {number} mul Speed multiplier.
  * @returns {boolean} True if any dot is still animating.
  */
@@ -606,7 +595,7 @@ function needsPaint(holder, settling, animating) {
 /**
  * Run the animation loop: step layout, advance fly-ins, drive playback, repaint when needed.
  * Stops when detached.
- * @param {HTMLCanvasElement} canvas Canvas.
+ * @param {HTMLCanvasElement} canvas
  * @param {CanvasRenderingContext2D} ctx Context.
  * @param {*} holder {sim, scene, tickPlayback}.
  */
@@ -642,7 +631,7 @@ export function setupCanvas() {
 
 /**
  * Wire the playback driver: build the timeline and the per-tick frame-advance, stored on holder.
- * @param {*[]} frames Frames.
+ * @param {*[]} frames
  * @param {*} holder Render holder (gets `tickPlayback`).
  * @param {(i:number, noAnim?:boolean)=>void} activate Apply a frame (noAnim = place dots statically).
  * @param {*[]} [events] War/disaster specs to pin onto the scrubber.
@@ -673,9 +662,9 @@ function setupPlayback(frames, holder, activate, events) {
 }
 
 /**
- * Resolve event specs (civ ids) to scene events (centre indices), dropping civs with no cluster.
+ * Resolve event specs (civ ids) to scene events (center indices), dropping civs with no cluster.
  * @param {*[]} events Event specs.
- * @param {Map<number,number>} byId id → centre index.
+ * @param {Map<number,number>} byId id → center index.
  * @returns {EventSpec[]} Resolved events.
  */
 export function resolveEvents(events, byId) {
@@ -689,7 +678,7 @@ export function resolveEvents(events, byId) {
 /**
  * Tag each migrant dot with the disaster/war it fled (matching cause + an affected origin civ), so
  * the painter can ring that cohort while the event's label is on the timeline.
- * @param {Dot[]} dots Dots.
+ * @param {Dot[]} dots
  * @param {EventSpec[]} events Resolved events.
  */
 function tagEventDots(dots, events) {
@@ -710,7 +699,7 @@ function tagEventDots(dots, events) {
  * people-per-dot unit is derived from the final total (residents + arrivals); the unit reported to
  * the caption is recomputed from the dots ACTUALLY drawn, so it matches what's on screen.
  * @param {Frame[]} frames Usable timeline frames.
- * @param {Map<number,number>} colorMap Colour-index map.
+ * @param {Map<number,number>} colorMap Color-index map.
  * @param {*[]} events Event specs.
  * @returns {*} {sim, byId, state, scene, shownUnit, lastNet}.
  */
@@ -738,8 +727,7 @@ function buildScene(frames, colorMap, events) {
   const evs = resolveEvents(events, byId);
   tagEventDots(dots, evs);
   // Pre-expand every civ that has settlements so the "Migrant flows" arrow overlay routes to the city
-  // sub-nodes the dots already form (matches the former Flows view's default), and carry the frames so
-  // the overlay can read each frame's edges as the timeline scrubs.
+  // sub-nodes the dots already form, and carry the frames so the overlay can read each frame's edges.
   for (const c of sim.nodes) {
     if (c && c.cities && c.cities.length) state.expanded.add(c.id);
   }
@@ -760,10 +748,8 @@ export function timelineNote() {
 }
 
 /**
- * The war/disaster event specs for this render, in the frame-index space of `frames` (the FILTERED
- * list this view actually draws — positioning against the unfiltered history would shift every pin).
- * Sample data ships specs already positioned against its own synthetic timeline; live data ships raw
- * turn-stamped records, placed here.
+ * The war/disaster event specs for this render, in the frame-index space of the FILTERED `frames`
+ * this view draws. Sample data ships pre-positioned specs; live data ships raw turn-stamped records, placed here.
  * @param {*} section The network section. @param {*[]} frames The filtered frames.
  * @returns {*[]} Event specs `{kind, label, from, to, civs}`.
  */
@@ -799,13 +785,8 @@ function buildViz(container, frames, events, rebuildAll, controlsHost) {
     holder.dirty = true;
   };
   const activate = (/** @type {number} */ i, noAnim = false) => {
-    // Fly in the MOVERS that first appear at frame `i` (cross-civ immigrants travel from their ORIGIN
-    // civ/settlement; internal movers from their source city, see startAnim), on playback, a scrub
-    // that lands on a frame, AND a genuinely-new initial reveal. Without this, arrivals only animated on
-    // a +1 advance, so on load a cross-civ immigrant sat in the destination cluster and read as
-    // home-grown. RESIDENTS (home-grown population) are excluded (they MATERIALIZE in place). `noAnim`
-    // places dots statically, used when merely RE-rendering the same turn (a visibility toggle / tab
-    // switch) so the last migration doesn't replay every time.
+    // Fly in the MOVERS that first appear at frame `i` (see startAnim); RESIDENTS materialize in
+    // place. `noAnim` places dots statically when merely re-rendering the same turn.
     for (const d of dots) {
       if (!noAnim && d.appearFrame === i && d.scope !== "resident") startAnim(d, holder.scene);
       else d.anim = null;
@@ -841,8 +822,8 @@ export function renderNetworkViz(container, section, controlsHost, rebuildAll) {
   // on a re-render (e.g. the Units toggle) the old view would NOT clear and the chrome would double up.
   if (container) while (container.firstChild) container.removeChild(container.firstChild);
   const all = (section && section.frames) || [];
-  // Keep any frame with civs to show, a frame can have residents (native population) before any
-  // cross-civ migration has happened, so we no longer require edges.
+  // Keep any frame with civs to show: a frame can have residents (native population) before any
+  // cross-civ migration has happened, so edges are not required.
   const frames = all.filter((/** @type {*} */ f) => f.network && f.network.nodes.length);
   if (!frames.length) {
     appendEmpty(container);

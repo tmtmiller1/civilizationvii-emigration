@@ -1,6 +1,6 @@
 // eep-modtest82.js - do settlements in crisis even HAVE a homeland alternative? The at-scale runs (mod tests 69, 72)
-// showed one neighbour taking nearly every cross-civ refugee, and four variants of a receiving-side cap failed to
-// spread it (mod tests 71, 72, 74b) because that neighbour is the only refuge within reach. Before building an
+// showed one neighbor taking nearly every cross-civ refugee, and four variants of a receiving-side cap failed to
+// spread it (mod tests 71, 72, 74b) because that neighbor is the only refuge within reach. Before building an
 // "internal displacement first" rule (a crisis source prefers its own civ's settlements), measure how often a crisis
 // source has a viable destination inside its own civ and how much worse it scores than the best foreign one.
 // AugustusExp66, the mod's pass ON at shipped defaults, 25 script-ended turns. Each turn, for every settlement the

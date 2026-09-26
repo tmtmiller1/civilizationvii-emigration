@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 
-// buildChronoDots must colour a CAPTURED city's residents by the civ they ORIGINATED from (the
+// buildChronoDots must color a CAPTURED city's residents by the civ they ORIGINATED from (the
 // prior owner) (not the new owner) while any NEW home-grown population counts as the new owner.
 // The origin breakdown rides in on each city's `origins` (built by the composition ledger).
 const { buildChronoDots } = await import("/emigration/ui/emigration-network-dots.js");
 const { civColorByIndex } = await import("/emigration/ui/emigration-network-paint.js");
 
-// Civ 20 is the conqueror (colour index 0); civ 10 is the civ it took the city from (index 1).
+// Civ 20 is the conqueror (color index 0); civ 10 is the civ it took the city from (index 1).
 function centers() {
   return [
     { id: 20, name: "Conqueror", x: 0, y: 0 },
@@ -34,8 +34,8 @@ function testCapturedResidentsKeepOrigin() {
   const neu = residentDots(dots, 20);
   assert.equal(old.length, 8, "8 resident dots keep the prior owner (civ 10) as their origin");
   assert.equal(neu.length, 2, "2 home-grown resident dots are the new owner (civ 20)");
-  assert.equal(old[0].colors.origin, civColorByIndex(1), "prior-owner residents use civ 10's colour");
-  assert.equal(neu[0].colors.origin, civColorByIndex(0), "home-grown residents use civ 20's colour");
+  assert.equal(old[0].colors.origin, civColorByIndex(1), "prior-owner residents use civ 10's color");
+  assert.equal(neu[0].colors.origin, civColorByIndex(0), "home-grown residents use civ 20's color");
   assert.equal(old[0].originName, "Old Owner", "the dot names the civ the people came from");
   assert.ok(old.every((d) => d.destId === 20), "captured residents live in the new owner's cluster");
 }

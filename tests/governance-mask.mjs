@@ -34,7 +34,7 @@ function setHost(p) { _hostKV = {}; if (p) _hostKV[HOST] = p; }
 function reset() { _ls = {}; _hostKV = {}; }
 function setPublished(p) { reset(); if (p) _hostKV[PUBLISHED] = p; }
 
-// Default: no host, no local pref → met-civs-only (today's behaviour).
+// Default: no host, no local pref → met-civs-only (today's behavior).
 setLocal(null); setHost(null);
 assert.equal(G.effectivePolicy(), "met-civs-only");
 assert.equal(G.civHidden(1), false, "local civ never hidden");

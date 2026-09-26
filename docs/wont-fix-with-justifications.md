@@ -5,7 +5,7 @@ with the reasoning that closed it. These look like obvious improvements but turn
 behavior-changing, or net-negative — so they're documented here to prevent anyone (including future
 sessions) from re-discovering and re-attempting them.
 
-This file is for judgments **not to change working behaviour**. Features abandoned because they **cannot
+This file is for judgments **not to change working behavior**. Features abandoned because they **cannot
 be built** (a hard engine limit, a native crash, or an unproven-and-untestable hook) live in a sibling
 doc, [wont-implement-with-justifications.md](wont-implement-with-justifications.md) — the enclave
 lifecycle work (buildable improvement, stance-yield attribution, 3D model, the three unbuilt stages) and

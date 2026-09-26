@@ -1,39 +1,11 @@
 // emigration-dilemma-view.js
 //
-// The refugee-dilemma / Cultural-Enclave DECISION pop-up. Rendered with the GAME'S OWN native decision
-// dialog — DialogBoxManager.createDialog_MultiOption: a framed pop-up with a title, the flavour body, and
-// one stacked button per choice. Input is owned by the engine's dialog layer and each choice is a real
-// dialog option, so the buttons, Escape, and the ✕ ALWAYS respond.
-//
-// WHY THIS SHAPE: an earlier build hand-rolled a ContextManager Panel whose buttons could come up dead
-// (the "choices are unclickable, no way to X out" report). The engine's dialog removes that whole class of
-// failure — we no longer own the input path, the engine does. NOTE: the fancier createDialog_CustomOptions
-// "chooser card" path (icons + per-choice descriptions) was tried and rendered as a COLLAPSED horizontal
-// strip in-game (it needs layout wrappers the base UI supplies internally), so we use the plain, reliable
-// multi-option layout instead, in its VERTICAL form: the default >2-option layout sizes each button to its own
-// label, offsets all but the last with a side margin meant for a row, and then resizes them in a second layout
-// pass (watched 2026-09-14, mod test 45: staggered, touching buttons and a visible jump). The vertical layout is
-// a plain column: equal-width buttons, even gaps, no resize pass. Per-choice consequence cues live in each
-// button's hover tooltip.
-//
-// showDilemma(view, onChoice) keeps its signature; every caller (refugee dilemma, enclave decision,
-// self-test) is unchanged. Fully defensive: where the core dialog module is unavailable (shell / node
-// tests) it is a silent no-op.
-//
-// View → native dialog mapping:
-//   eyebrow   → the body's first line, bold and upper-cased with its `eyebrowIcon`, so the three decisions
-//               (Newcomers, Refugees, Cultural Enclave) cannot be mistaken for one another
-//   title     → dialog title
-//   body      → the prose, soft-wrapped
-//   details[] → short unwrapped lines after the prose (the refugee costs), a paragraph of their own
-//   quote     → the optional attributed quote, presented like the base game's tech/civic quotes: a filigree
-//               divider, then an inner frame holding the quote in italics and its attribution on its own line
-//               (a decorator on screen-dialog-box adds these elements; the plain body line is the fallback)
-//   choices[] → one stacked option button each (label + the consequence cue as its hover tooltip); a label
-//               may carry an [icon:] tag (the call-home costs), which the decorator makes sure is drawn
-//               as an icon (see stylizeCaptions). A choice with `disabled: true` is drawn greyed out by the
-//               game's own button and cannot be picked (the call-home sizes the treasury cannot cover)
-//   dismissId → the button ALSO wired to Escape / the ✕ / cancel (default "away")
+// The refugee-dilemma / Cultural-Enclave DECISION pop-up, rendered with the game's own native
+// DialogBoxManager.createDialog_MultiOption in its vertical layout, so the engine owns the input path
+// and the buttons, Escape and the close button always respond. The view's eyebrow opens the body,
+// details[] follow the prose, the quote is drawn as a framed block by a screen-dialog-box decorator,
+// each choice is one stacked button (note = hover tooltip), and dismissId is also wired to Escape /
+// cancel. Fully defensive: a silent no-op where the core dialog module is unavailable.
 
 import { loc } from "/emigration/ui/emigration-loc.js";
 
@@ -121,9 +93,7 @@ let quoteDecoratorReady = false;
 
 /**
  * Split a display quote (`"text" who, source`) into the quote and its attribution. The break is the closing
- * quotation mark, which is unambiguous because an attribution never contains one; it used to be an em dash,
- * which also got printed at the head of the attribution line. The attribution now stands on its own line
- * with no dash in front of it.
+ * quotation mark, which is unambiguous because an attribution never contains one.
  * @param {string} q The display string. @returns {{text:string, who:string}} The parts ("" who when unsplittable).
  */
 export function splitQuote(q) {
@@ -134,14 +104,14 @@ export function splitQuote(q) {
 }
 
 /**
- * Faux italics for the quote. GameFace has no italic face: `font-style: italic` collapses the line to 0x0 (mod
- * test 53), while a skew draws the same slant. Each wrapped row is its own element, so each skews about its centre.
+ * Faux italics for the quote. GameFace has no italic face: `font-style: italic` collapses the line to 0x0,
+ * while a skew draws the same slant. Each wrapped row is its own element, so each skews about its center.
  */
 const QUOTE_SLANT = "skewX(-8deg)";
 
 /**
  * The quote and its attribution as display rows, each wrapped at the body's width so the quote never widens the
- * dialog (a single 125-character row stretched the frame to twice the body's width, mod test 53). Pure.
+ * dialog. Pure.
  * @param {string} quote The display quote. @param {number} [maxLen] Row length.
  * @returns {{text:string[], who:string[]}} The wrapped rows.
  */
@@ -158,10 +128,9 @@ export function quoteRows(quote, maxLen = BODY_WRAP) {
 }
 
 /**
- * Split `<original> (<translation>)` so the translation can start its own row. Wrapping purely on width left
- * a stray word, or just the opening bracket, marooned on the end of the original's line. Only a trailing
- * parenthetical is cut, and only when there is real text on both sides, so an English quote that merely ends
- * in a short aside is left alone.
+ * Split `<original> (<translation>)` so the translation can start its own row. Only a trailing
+ * parenthetical is cut, and only when there is real text on both sides, so an English quote that merely
+ * ends in a short aside is left alone.
  * @param {string} text The quoted text, including its wrapping quotation marks.
  * @returns {[string, string]|null} The two pieces, or null when there is nothing worth splitting.
  */
@@ -176,7 +145,7 @@ export function splitTranslation(text) {
 }
 
 /**
- * A styled text row for the quote frame. @param {string} text The text. @param {string[]} classes Its classes.
+ * A styled text row for the quote frame. @param {string} text @param {string[]} classes Its classes.
  * @param {boolean} slanted Whether to slant it as italics. @returns {HTMLElement} The row.
  */
 function quoteLine(text, classes, slanted) {
@@ -249,11 +218,9 @@ function insertQuote(root, quote) {
 }
 
 /**
- * Make sure every [icon:] tag in a button caption is drawn as an icon. A caption reaches the button as a raw
- * `data-l10n-id`, and the base game never puts an icon tag in one, so this checks rather than assumes: a label
- * still showing the literal tag is re-rendered through Locale.stylize, the same call the dialog body goes
- * through. Watched 2026-09-17 (mod test 130): the engine's own pass does stylize captions (an fxs-font-icon
- * per tag within 150ms), so on the shipped game this finds nothing to do; it stays as insurance.
+ * Make sure every [icon:] tag in a button caption is drawn as an icon: a label still showing the literal
+ * tag is re-rendered through Locale.stylize, the same call the dialog body goes through. The engine's own
+ * pass normally stylizes captions itself, so this is insurance.
  * @param {*} root The dialog element. @returns {{fixed:number, sample:string}} How many labels were re-rendered,
  *   and what the first icon-bearing label reads now.
  */
@@ -286,8 +253,7 @@ function scheduleCaptionCheck(root) {
     setTimeout(() => {
       try {
         const r = stylizeCaptions(root);
-        // Watched 2026-09-17 (mod test 130): the engine draws the icons itself (fxs-font-icon in every label,
-        // nothing re-rendered), so this only speaks up when the fallback actually had to act.
+        // Only speaks up when the fallback actually had to act.
         if (r.fixed > 0) {
           console.warn("[Emigration.dilemma] caption icons at " + ms + "ms: re-rendered " + r.fixed
             + " label(s); first reads: " + r.sample);
@@ -347,11 +313,9 @@ class QuoteDialogDecorator {
 const WARM_ID = "emig-filigree-warm";
 
 /**
- * Pre-load the filigree divider's texture. The engine decodes a background image asynchronously and does not
- * repaint the element when the decode lands, so the FIRST dialog of a session to draw the divider showed a blank
- * gap where it belonged (watched 2026-09-17, mod test 135: the element measured 230×43 with its background-image
- * set, and nothing painted; the next dialog drew it). A hidden divider parked off-screen at load, faintly opaque
- * so it is actually painted, makes the texture resident before any dialog needs it. Idempotent; a no-op off-engine.
+ * Pre-load the filigree divider's texture: the engine decodes a background image asynchronously and does
+ * not repaint when the decode lands, so a hidden divider parked off-screen at load (faintly opaque so it
+ * is actually painted) makes the texture resident before any dialog needs it. Idempotent; a no-op off-engine.
  */
 function warmFiligree() {
   try {
@@ -410,17 +374,15 @@ function composeBody(view) {
   if (Array.isArray(view.details) && view.details.length) parts.push(view.details.join("[N]"));
   // With the decorator the quote is drawn as its own framed block (see quoteBlock); without it, a body line.
   if (view.quote && !quoteDecoratorReady) parts.push(softWrap(bidiIsolate(view.quote), BODY_WRAP));
-  // A paragraph break is a line holding a no-break space: the native dialog renders each [N] line as its own
-  // paragraph and collapses an EMPTY one to zero height (watched 2026-09-14, mod test 50: the category line,
-  // the costs and the quote ran straight into the prose). Existing [N][N] breaks in the prose get the same.
+  // A paragraph break is a line holding a no-break space: the native dialog collapses an EMPTY [N] line
+  // to zero height. Existing [N][N] breaks in the prose get the same.
   return parts.join(PARAGRAPH_BREAK).replace(/\[N\]\[N\]/g, PARAGRAPH_BREAK);
 }
 
 /**
- * Build the native dialog's option buttons — one per choice (label + the consequence cue as its hover
- * tooltip), each wired to resolve the decision once. The dismiss choice is also bound to Escape / cancel /
- * the ✕. A safety-net cancel option is appended only if no choice carries the dismiss id (real callers
- * always include it, so it normally adds no visible button).
+ * Build the native dialog's option buttons, one per choice (label + the consequence cue as its hover
+ * tooltip), each wired to resolve the decision once; the dismiss choice is also bound to Escape / cancel.
+ * A safety-net cancel option is appended only if no choice carries the dismiss id.
  * @param {{choices?:{id:string,label:string,note?:string,disabled?:boolean}[]}} view The view model.
  * @param {string} dismissId The dismiss option id. @param {(id:string)=>void} resolve One-shot resolver.
  * @returns {{actions:string[], label:string, tooltip?:string, disabled?:boolean, callback:()=>void}[]} The
@@ -432,7 +394,7 @@ function buildOptions(view, dismissId, resolve) {
     actions: c.id === dismissId ? ["cancel", "keyboard-escape"] : [],
     label: c.label,
     tooltip: c.note || void 0,
-    // The game greys a disabled option out and ignores it; the guard below is the mod's own belt and braces.
+    // The game grays a disabled option out and ignores it; the guard below is the mod's own belt and braces.
     disabled: c.disabled === true && c.id !== dismissId ? true : void 0,
     callback: () => {
       if (c.disabled !== true || c.id === dismissId) resolve(c.id);
@@ -485,9 +447,8 @@ export function showDilemma(view, onChoice) {
             const mgr = mod && (mod.DialogBoxManager || mod.default);
             if (mgr && typeof mgr.createDialog_MultiOption === "function") {
               // The plain multi-option dialog: a framed pop-up with the title, the prompt body, and one
-              // stacked button per choice. This is the layout shipped mods use; the fancier
-              // createDialog_CustomOptions "chooser card" path rendered as a collapsed strip here, so it
-              // is intentionally NOT used.
+              // stacked button per choice (the createDialog_CustomOptions "chooser card" renders as a
+              // collapsed strip here, so it is intentionally NOT used).
               mgr.createDialog_MultiOption({ title, body, canClose: true, displayQueue: DISPLAY_QUEUE, options, layout: "vertical" });
             } else {
               derr("DialogBoxManager.createDialog_MultiOption unavailable; decision not shown");
@@ -498,12 +459,9 @@ export function showDilemma(view, onChoice) {
         })
         .catch((e) => derr("dialog-box import failed:", e));
     };
-    // CRITICAL: present on a deferred tick, NOT synchronously. The real dilemma fires from inside the
-    // PlayerTurnActivated engine-event handler (emigration-main.onTurnActivated → runPass → maybeDilemma),
-    // and Civ VII will not surface a working, input-receiving modal raised from inside an engine event —
-    // the pop-up either doesn't appear or its buttons are dead. Deferring to a timer lets the event stack
-    // unwind first, which is exactly why the self-test path (which already wraps this in a timer) works in
-    // isolation while the in-game trigger did not. A short delay gives the turn transition room to settle.
+    // CRITICAL: present on a deferred tick, NOT synchronously. The dilemma fires from inside the
+    // PlayerTurnActivated engine-event handler, and Civ VII will not surface a working, input-receiving
+    // modal raised from inside an engine event; a short delay lets the event stack unwind first.
     if (typeof setTimeout === "function") setTimeout(present, 80);
     else present();
   } catch (_) {

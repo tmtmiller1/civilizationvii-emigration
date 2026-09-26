@@ -2,14 +2,12 @@
 //
 // What an enclave stance pays, ONCE, when its host recognizes the enclave. A stance pays Gold, Influence,
 // Science or Culture, and one that does not pay Gold costs Gold: those are the only yields a script can
-// grant, and Gold is the only one it can take (engine-closed.md; mod tests 152-153, 2026-09-18). Science
-// lands on the tech being researched, Culture on the civic being researched.
+// grant, and Gold is the only one it can take. Science lands on the tech being researched, Culture on
+// the civic being researched.
 //
-// The amounts are sized to the host's own economy, so a stance is worth the same share of an empire in
-// every age and at every speed: the payout is a number of turns of the host's own income of that yield,
-// and the price a number of turns of its Gold income. Each is held above a per-age floor (so a poor or
-// Influence-starved host still gets a meaningful sum), and the whole figure is multiplied by the game-speed
-// scalar (research costs scale with speed while income per turn does not). Amounts round to the nearest 5.
+// The amounts are sized to the host's own economy: the payout is a number of turns of the host's income
+// of that yield, the price a number of turns of its Gold income, each held above a per-age floor and
+// multiplied by the game-speed scalar. Amounts round to the nearest 5.
 //
 // Pure apart from the engine reads (income, treasury, age), each guarded; off-engine every rate reads 0,
 // so the floors decide and the tests see stable numbers.

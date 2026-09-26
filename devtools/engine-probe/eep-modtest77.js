@@ -1,7 +1,7 @@
-// eep-modtest77.js - why the Prosperity lens reads as a grey wash. Mod test 75 showed it paints 1623 plots in 12
-// addPlots calls, almost all near grey. Hypothesis: each tile's colour is scaled against the single most extreme tile
+// eep-modtest77.js - why the Prosperity lens reads as a gray wash. Mod test 75 showed it paints 1623 plots in 12
+// addPlots calls, almost all near gray. Hypothesis: each tile's color is scaled against the single most extreme tile
 // (spread = max |score - mean|), so one outlier pushes every other tile toward t = 0. AugustusExp66, mod pass off, no
-// turns. Records every addPlots call the lens makes (plot count and colour, so plots per bucket), and recomputes the
+// turns. Records every addPlots call the lens makes (plot count and color, so plots per bucket), and recomputes the
 // lens's per-plot scores the same way (sum of getYields amounts over every settlement's purchased plots) to log the
 // mean, the spread, the tiles that set it, and the 10th / 50th / 90th percentile deviations as a share of the spread.
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";

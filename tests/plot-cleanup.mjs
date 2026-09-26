@@ -62,7 +62,7 @@ const m = await import("/emigration/ui/emigration-plot-cleanup.js");
   PLOTS[11].cons = ["farm"];
 }
 
-// The sweep clears every empty rural district on settlement land, honours the skip set, and survives a
+// The sweep clears every empty rural district on settlement land, honors the skip set, and survives a
 // missing engine surface.
 {
   requests.length = 0;

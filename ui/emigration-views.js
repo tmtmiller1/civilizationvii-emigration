@@ -1,14 +1,9 @@
 // emigration-views.js
 //
-// The shared RENDER CORE for the migration dashboards (the in-game-legibility plan, Phases 3-4):
-// the standalone Emigration screen (emigration-screen.js) and the Demographics "Migration" page
-// (emigration-migration-page.js) both mount these same widgets, so the content is built once here.
-//
-//   • Pure view-model builders (civ ledger, per-cause breakdown, border stances, the per-city
-//     pressure table, the cross-civ flow network, and the top-level `dashboardModel`), DOM-free,
-//     unit-tested.
-//   • `renderDashboard(target, model)`, a themed, card-per-section DOM renderer. The headline
-//     "Migration network" card is delegated to emigration-network-viz.js (an animated spark graph).
+// The shared RENDER CORE for the migration dashboards: the standalone Emigration screen
+// (emigration-screen.js) and the Demographics "Migration" page (emigration-migration-page.js) both
+// mount these same widgets. Pure, DOM-free view-model builders plus `renderDashboard(target, model)`,
+// a themed card-per-section DOM renderer; the network card is delegated to emigration-network-viz.js.
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { causeLabel, netDrivers } from "/emigration/ui/emigration-causes.js";
@@ -356,12 +351,12 @@ const DASH_CSS =
   ".emig-city-sub{font-size:var(--dg-fs-85);text-transform:uppercase;letter-spacing:0.04rem;opacity:0.75;" +
   "color:#cbb994;margin-bottom:0.2rem;}" +
   ".emig-city-why{font-size:var(--dg-fs-72);opacity:0.8;text-align:center;margin-top:0.2rem;}" +
-  // Settlements: the Emigration-pressure column, a labelled bar aligned beside the pies.
+  // Settlements: the Emigration-pressure column, a labeled bar aligned beside the pies.
   ".emig-pr-track{width:100%;max-width:13rem;height:0.85rem;margin-top:1.2rem;" +
   "background:rgba(229,210,172,0.14);border-radius:0.4rem;overflow:hidden;}" +
   ".emig-pr-fill{height:100%;border-radius:0.4rem;}" +
   ".emig-pr-value{font-size:var(--dg-fs-105);font-weight:bold;margin-top:0.35rem;}" +
-  // Causes tab: centred civ title with fading flank lines (section-title embellishment).
+  // Causes tab: centered civ title with fading flank lines (section-title embellishment).
   ".emig-civ-head{display:flex;align-items:center;justify-content:center;gap:0.7rem;" +
   "margin:0.2rem 0 0.5rem;}" +
   ".emig-civ-head-name{flex:0 0 auto;font-family:\"TitleFont\";text-transform:uppercase;" +
@@ -433,12 +428,9 @@ const DASH_CSS =
   ".emig-tabbody{overflow-y:auto;overflow-x:hidden;max-height:74vh;}" +
   ".emig-sample-badge{align-self:center;margin-bottom:0.5rem;padding:0.1rem 0.7rem;border-radius:0.9rem;font-size:var(--dg-fs-72);letter-spacing:0.08rem;text-transform:uppercase;color:#1c1408;background:#e0913c;font-weight:bold;}" +
   // ── Resolution density (chrome + per-tab content) ─────────────────────────
-  // Short viewports (sub-1080p laptops) pin the engine font at 18px, so every
-  // fixed-rem display would otherwise stay full size and overflow a 40-50rem
-  // column. emigration-density.js exports the paired compaction sheet
-  // (DENSITY_CSS): fixed content scales fluidly with clamp() and the chrome steps
-  // at @media (max-height) breakpoints; appended here so it injects with the
-  // dashboard and covers both the standalone screen and the embedded page.
+  // Short viewports pin the engine font at 18px, so fixed-rem displays would overflow a 40-50rem
+  // column. emigration-density.js exports the compaction sheet (DENSITY_CSS); appended here so it
+  // injects with the dashboard and covers both the standalone screen and the embedded page.
   DENSITY_CSS;
 
 /** Inject the dashboard content stylesheet once (idempotent). */
@@ -546,7 +538,7 @@ function domTabBar(items, onSelect) {
 /**
  * Build the section tab bar. Prefers the base-UI `fxs-tab-bar` (matching the Demographics screen)
  * when the game UI VM is present; otherwise a styled DOM fallback.
- * @param {*[]} sections Sections.
+ * @param {*[]} sections
  * @param {(i:number)=>void} onSelect Selection handler.
  * @returns {HTMLElement} The tab bar.
  */
@@ -689,9 +681,8 @@ export function renderDashboardTabbed(target, model, rebuild) {
     }
     appendSnapshotReminder(wrap);
     // The Numbers (Scaled/Civ) control row is per-section, so it's rebuilt on every tab change into
-    // its own host: shown only where the section bears switchable counts, and hidden where the section
-    // owns its own units control (Network) or shows none to switch (stances/notifications/
-    // guide). Matches the embedded page (appendControlRow), so the Guide tab carries no stray toggle.
+    // its own host: shown only where the section bears switchable counts. Matches the embedded page
+    // (appendControlRow).
     const body = el("div", "emig-tabbody"), ctrlHost = el("div", "emig-ctrl-host");
     let active = 0;
     const show = (/** @type {number} */ i) => {
@@ -748,9 +739,8 @@ function subtabRebuild(opts, body, section) {
 
 /**
  * Append the consistent control row for the embedded page (every section but the static Guide).
- * Prefers the host-provided controls area (opts.controlsHost, shares the row with the Options button)
- * and falls back to the page wrap. Numbers is included only where the section doesn't own its own units
- * control (the Network lens row) and the host group pills don't drive it.
+ * Prefers the host-provided controls area (opts.controlsHost) and falls back to the page wrap;
+ * Numbers is included only where the section doesn't own its own units control.
  * @param {HTMLElement} wrap The dashboard wrapper (fallback target).
  * @param {*} opts The renderDashboardSubtab opts.
  * @param {HTMLElement} body The section body element.
@@ -773,9 +763,7 @@ function appendControlRow(wrap, opts, body, section) {
 /**
  * Render ONE dashboard section (chosen externally) plus the persistent chrome (sample badge,
  * timeline-detail reminder, number-mode toggle) into `target`. Used by the Demographics-embedded
- * Migration page: there the section tabs come from the Demographics sub-tab row, not the in-panel
- * tab bar, so the embedded page shows the SAME content as the standalone window but presented as
- * native Demographics sub-tabs (no redundant "Overview" tab / second tab row).
+ * Migration page, where the section tabs come from the Demographics sub-tab row.
  * @param {HTMLElement} target The container element.
  * @param {*} model The view-model ({sections, sample}).
  * @param {string} kind The section kind to show (network/flowmap/ledger/pies/cityflows/stances).

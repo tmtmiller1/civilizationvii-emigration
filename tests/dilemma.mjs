@@ -67,7 +67,7 @@ const capture = (prevOwner, newOwner, points) => ({ prevOwner, newOwner, name: "
   assert.ok(!canFire(s, 61, 1), "blocked while inside the cooldown");
 }
 
-// ── detectConquestDilemma: a neighbour's spree, victims fleeing toward you ──
+// ── detectConquestDilemma: a neighbor's spree, victims fleeing toward you ──
 {
   const me = 1;
   const s = { spree: { 2: [{ turn: 90, victim: 3, points: 2 }, { turn: 95, victim: 3, points: 1 }, { turn: 99, victim: 3, points: 2 }] } };
@@ -84,7 +84,7 @@ const capture = (prevOwner, newOwner, points) => ({ prevOwner, newOwner, name: "
     "your own spree does not prompt you");
 }
 
-// ── detectPlagueDilemma: needs an active plague crisis + a wave from a neighbour ──
+// ── detectPlagueDilemma: needs an active plague crisis + a wave from a neighbor ──
 {
   const me = 1;
   attribution.__test.setCrisis(null);
@@ -97,7 +97,7 @@ const capture = (prevOwner, newOwner, points) => ({ prevOwner, newOwner, name: "
     { cause: "war", srcOwner: 4, points: 9 } // non-disaster excluded
   ], me);
   assert.equal(d.kind, "plague");
-  assert.equal(d.origin, 3, "the stricken neighbour's survivors");
+  assert.equal(d.origin, 3, "the stricken neighbor's survivors");
   attribution.__test.setCrisis(null);
 }
 

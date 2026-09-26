@@ -1,21 +1,10 @@
 // emigration-ethnicity-lens.js
 //
-// A map LENS that paints every settlement's tiles by the ORIGIN civilization of its population,
-// the "ethnic composition" tracked in emigration-composition.js. Each owned tile is drawn two ways at
-// once (emigration-ethnicity-tiles.js + emigration-ethnicity-distribution.js supply the per-tile mix):
-//   • BORDER — the settlement's MAIN (dominant) origin's banner colour at full strength, so you always
-//     read whose city it is regardless of the fill.
-//   • FILL — the BLEND of every origin living on the tile, weighted by its share (emigration-ethnicity-
-//     colour.js), so the map is a continuous gradient between banner colours rather than one colour or
-//     another. The tile's population density sets its SATURATION (grey → that blend) and opacity together,
-//     the same ramp the Prosperity lens uses, so a dense core is vivid and a sparse fringe is washed out.
-//     A diaspora concentrates into a cluster (distribution model), strongest where an enclave stands, so
-//     its neighbourhood shades toward its own colour and fades into the host's.
-// The hover panel gives the numbers.
-//
-// Same self-registering UIScript pattern as emigration-prosperity-lens.js (LensManager layer +
-// lens-panel decorate for the radio button, Shift+E hotkey). Loaded as its OWN <UIScripts> entry so
-// it runs in the HUD context where LensManager/WorldUI live and can never break the gameplay pass.
+// A map LENS that paints every settlement's tiles by the ORIGIN civilization of its population (the
+// composition tracked in emigration-composition.js): the BORDER is the dominant origin's banner color,
+// the FILL is the share-weighted blend of every origin on the tile, with population density setting
+// saturation and opacity. Self-registering UIScript (LensManager layer + lens-panel radio button +
+// Shift+E hotkey), loaded as its own <UIScripts> entry in the HUD context.
 
 import LensManager from "/core/ui/lenses/lens-manager.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
@@ -29,18 +18,18 @@ import { tileFill, unit } from "/emigration/ui/emigration-ethnicity-colour.js";
 const LENS = "emig-ethnicity-lens";
 const LAYER = "emig-ethnicity-layer";
 const HEX_GRID = 1; // OVERLAY_PRIORITY.HEX_GRID, inlined
-const FALLBACK_HEX = "#888888"; // neutral grey when a civ colour can't be resolved
+const FALLBACK_HEX = "#888888"; // neutral gray when a civ color can't be resolved
 // Contrast curve on a tile's density within its settlement (< 1 lifts the middle, so the many mid-density
 // tiles still read instead of washing out). Same shape the Prosperity lens uses. The fill's saturation and
 // opacity constants live with the blend, in emigration-ethnicity-colour.js.
 const CONTRAST_GAMMA = 0.55;
-// Each tile's BORDER is the settlement's main (dominant) origin colour at full strength, so you always
+// Each tile's BORDER is the settlement's main (dominant) origin color at full strength, so you always
 // read whose city it is regardless of the fill; EDGE_ALPHA is that border's opacity.
 const EDGE_ALPHA = 1.0;
 
 /**
- * Parse a `#RRGGBB` colour into 0-1 RGB channels (neutral grey on failure).
- * @param {string} hex Colour string. @returns {{r:number, g:number, b:number}} Channels in [0,1].
+ * Parse a `#RRGGBB` color into 0-1 RGB channels (neutral gray on failure).
+ * @param {string} hex Color string. @returns {{r:number, g:number, b:number}} Channels in [0,1].
  */
 function parseRGB(hex) {
   const m = typeof hex === "string" ? hex.match(/^#?([0-9a-fA-F]{6})/) : null;
@@ -53,7 +42,7 @@ function parseRGB(hex) {
 }
 
 /**
- * A civ's banner RGB in 0-1 channels (policy-hidden → neutral grey fallback).
+ * A civ's banner RGB in 0-1 channels (policy-hidden → neutral gray fallback).
  * @param {number} civ Origin civ id. @returns {{r:number, g:number, b:number}} Channels in [0,1].
  */
 function civRGB(civ) {
@@ -78,8 +67,8 @@ function densityNorms(tiles) {
 }
 
 /**
- * The float4 BORDER colour for a settlement: its main origin's banner colour at full strength, so every
- * tile is framed in the owner's colour regardless of the (diverging) fill.
+ * The float4 BORDER color for a settlement: its main origin's banner color at full strength, so every
+ * tile is framed in the owner's color regardless of the (diverging) fill.
  * @param {number} hostCiv The settlement's main origin. @returns {{x:number,y:number,z:number,w:number}}
  */
 function edgeFill(hostCiv) {
@@ -88,8 +77,8 @@ function edgeFill(hostCiv) {
 }
 
 /**
- * Every observable settlement's PER-TILE paints: each owned tile filled by the diverging host↔grey↔other
- * scale at a population-density opacity, bordered in the settlement's main origin colour. A policy-hidden
+ * Every observable settlement's PER-TILE paints: each owned tile filled by the diverging host↔gray↔other
+ * scale at a population-density opacity, bordered in the settlement's main origin color. A policy-hidden
  * owner's settlements are skipped entirely.
  * @returns {{x:number, y:number, fill:*, edge:*}[]} Per-tile paints.
  */
@@ -127,13 +116,13 @@ function settlementPaints(s) {
   }));
 }
 
-/** Quantize a float4 colour into a short key so near-identical colours share a batch. @param {*} f @returns {string} */
+/** Quantize a float4 color into a short key so near-identical colors share a batch. @param {*} f @returns {string} */
 function fillKey(f) {
   return Math.round(f.x * 50) + "," + Math.round(f.y * 50) + "," + Math.round(f.z * 50) + ":" + Math.round(f.w * 50);
 }
 
 /**
- * Group per-tile paints by (fill, edge) colour, so the overlay is painted in a handful of addPlots
+ * Group per-tile paints by (fill, edge) color, so the overlay is painted in a handful of addPlots
  * batches (one per distinct fill+border) instead of one call per tile.
  * @param {{x:number, y:number, fill:*, edge:*}[]} paints Per-tile paints.
  * @returns {{fill:*, edge:*, plots:{x:number,y:number}[]}[]} Batches.
@@ -182,7 +171,7 @@ function cachedBatches() {
   return batches;
 }
 
-/** The lens layer: an overlay of per-settlement plot fills coloured by each tile's blended origin mix. */
+/** The lens layer: an overlay of per-settlement plot fills colored by each tile's blended origin mix. */
 class EthnicityLensLayer {
   constructor() {
     this.group = WorldUI.createOverlayGroup("EmigEthnicityOverlay", HEX_GRID);
@@ -266,10 +255,8 @@ function toggleLens() {
 }
 
 /**
- * Repaint the open lens when the ledger has changed since it last painted. The lens otherwise paints only when
- * LensManager applies it, so one left open across End Turn kept last turn's colours until it was toggled
- * (ethnicity audit item O1). Painting the layer from outside LensManager's apply call does show on the map, from
- * a timer and from inside a PlayerTurnActivated handler (mod test 148).
+ * Repaint the open lens when the ledger has changed since it last painted (the lens otherwise paints
+ * only when LensManager applies it, so one left open across End Turn would keep last turn's colors).
  * @param {EthnicityLensLayer} layer The registered layer.
  */
 function repaintIfStale(layer) {
@@ -283,9 +270,8 @@ function repaintIfStale(layer) {
 }
 
 /**
- * Check for a new ledger after the local player's turn starts. The mod's pass runs inside its own handler for
- * the same event, and handler order is not guaranteed, so the check runs after the event's handlers have
- * finished and once more a little later.
+ * Check for a new ledger after the local player's turn starts: handler order for the event is not
+ * guaranteed, so the check runs after the event's handlers have finished and once more a little later.
  * @param {EthnicityLensLayer} layer The registered layer.
  */
 function repaintAfterPasses(layer) {

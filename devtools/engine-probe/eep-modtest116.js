@@ -2,7 +2,7 @@
 //
 // Runs itself: advances turns until it has enough evidence to decide, then prints a VERDICT. It does not
 // dump numbers for a human to interpret -- the criteria are fixed below, BEFORE the run, so the answer
-// cannot be rationalised after the fact.
+// cannot be rationalized after the fact.
 //
 // WHAT IS BEING TESTED. emigration-combat-events.js records, per city, the fighting in its territory
 // (`Combat`, `UnitKilledInCombat`, `DistrictDamageChanged`) and names the players involved. Mod test 115
@@ -27,7 +27,7 @@
 //                its own attacker.
 //
 // Note a row with district damage but no battle or kill is NOT counted against naming: DistrictDamageChanged
-// carries no attacker at all, so an unnamed damage-only row is correct behaviour, not a miss.
+// carries no attacker at all, so an unnamed damage-only row is correct behavior, not a miss.
 const TAG = "[EmigTest]";
 const MAX_TURNS = 22;
 const ENOUGH_FIGHTS = 8; // stop early once the sample can support a verdict

@@ -207,7 +207,7 @@ function targetCity() {
 
 /**
  * Read one yield off a city defensively.
- * @param {*} city City.
+ * @param {*} city
  * @param {string} key Yield enum key.
  * @returns {*} The yield value.
  */
@@ -221,7 +221,7 @@ function cityYield(city, key) {
 
 /**
  * Log a city's population breakdown + key yields + owner.
- * @param {*} city City.
+ * @param {*} city
  * @param {string} label Log label.
  */
 function inspectCity(city, label) {
@@ -538,7 +538,7 @@ function enumValue(bag, key) {
 
 /**
  * Read common revolt-relevant fields off a city and its Happiness subobject.
- * @param {*} city City.
+ * @param {*} city
  * @returns {string[]} Key=value parts.
  */
 function revoltCityParts(city) {
@@ -679,7 +679,7 @@ function cityIdNum(city) {
 /**
  * Best-effort local-city resource clear to worsen happiness conditions.
  * Mirrors the commerce screen's ASSIGN_RESOURCE clear path.
- * @param {*} city City.
+ * @param {*} city
  */
 function clearCityResourcesProbe(city) {
   if (!localOwnedCity(city)) {
@@ -824,7 +824,7 @@ function probeIdentity() {
 /**
  * Probe a set of candidate specialist-count getters on the city's Workers
  * component, logging which exist and what each returns (arg-less call).
- * @param {*} city City.
+ * @param {*} city
  */
 function probeWorkerGetters(city) {
   const w = city?.Workers;

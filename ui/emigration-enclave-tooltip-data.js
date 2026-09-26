@@ -2,21 +2,9 @@
 //
 // WHAT the enclave tooltip says, as plain data. Pure: every engine read is done by the caller
 // (emigration-enclave-tooltip.js) and handed in, so the wording and the arithmetic are testable off-engine.
-//
-// Why the mod needs its own tooltip at all: an enclave has no art of its own (the engine binds models by
-// type name, so a themed enclave is a BORROWED real improvement, see emigration-enclave-skins.js). The
-// game's tooltip therefore described the borrowed tile — "Hidden Fortress" — and nothing on screen said
-// that this was the Norman Enclave, what stage it had reached, or why the tile yields what it does
-// (reported from a live game 2026-09-17). Three things were invisible:
-//
-//   1. The enclave's NAME and STAGE (established → recognized → contested → fading).
-//   2. The improvement that stood there BEFORE. A takeover removes it from the map, but the host keeps
-//      its yields (emigration-enclave-place.js repays them every turn), so it is still a real source.
-//   3. The STANCE yields, which are granted to the host each turn and never touch the tile, so the
-//      tile's yield icons cannot change when an enclave is recognized.
-//
-// So the model is a list of SOURCES, each with its yields and the reason for them. The borrowed
-// improvement's name appears only as what the enclave's people built, never as the tile's identity.
+// The game's own tooltip can only describe the BORROWED improvement an enclave is drawn with, so this
+// model lists the enclave's NAME and STAGE plus its SOURCES (the land or the displaced holding whose
+// yields the host keeps, the enclave's own works, and the per-turn stance grant), each with the reason for it.
 
 import { loc } from "/emigration/ui/emigration-loc.js";
 import { yieldsText } from "/emigration/ui/emigration-enclave-yields.js";
@@ -103,15 +91,13 @@ export function stageOf(rec) {
   if (rec && typeof rec.fadeSince === "number") return "fading";
   // Contested regardless of recognition: the mod marks EVERY one of a host's enclaves contested while it
   // is at war with the homeland and charges the happiness strain for them, recognized or not, so an
-  // established-but-unrecognized enclave can be costing the player happiness. Gating this on recognition
-  // hid exactly that (watched 2026-09-17: the record read contested and the panel still said established).
+  // established-but-unrecognized enclave can be costing the player happiness.
   if (rec && rec.contested) return "contested";
   return !rec || rec.recognized !== false ? "recognized" : "established";
 }
 
 /**
- * The stage: a short headline, and the explanation under it. Split in two because one long sentence read
- * as a wall of text in the panel, and the headline is what a player scans for.
+ * The stage: a short headline (what a player scans for), and the explanation under it.
  * @param {EnclaveTipInput} i The input. @returns {{key:string, text:string, detail:string}} The stage.
  */
 function stageLine(i) {
@@ -162,7 +148,7 @@ function landSource(i) {
 
 /**
  * The enclave's own tile as a source. The improvement it is DRAWN with is a detail under the name, never
- * part of it: in the label it pushed the row onto a second line and collided with the reasoning beneath.
+ * part of it.
  * @param {EnclaveTipInput} i The input. @returns {EnclaveTipSource|null} The row, or null.
  */
 function tileSource(i) {
@@ -251,7 +237,7 @@ function paidStance(i) {
 
 /**
  * Add yield maps together, to two decimals.
- * @param {Record<string, number>[]} maps The maps. @returns {Record<string, number>} Their sum.
+ * @param {Record<string, number>[]} maps @returns {Record<string, number>} Their sum.
  */
 function sumYields(maps) {
   /** @type {Record<string, number>} */

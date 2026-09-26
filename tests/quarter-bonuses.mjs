@@ -1,6 +1,6 @@
 // quarter-bonuses.mjs
 //
-// The per-civilisation Cultural Quarter registry (emigration-quarter-bonuses.js). Pure data: validates
+// The per-civilization Cultural Quarter registry (emigration-quarter-bonuses.js). Pure data: validates
 // that every civ row is well-formed (a demonym + two identity options, each a valid benefit/penalty
 // yield pair with a "why"), that lookup falls back cleanly for unknown/DLC civs, and that the roster is
 // broad (the point of the feature is per-origin uniqueness).
@@ -67,7 +67,7 @@ function checkEntry(key, entry) {
   assert.equal(QUARTER_BONUSES.CIVILIZATION_SPAIN.options[1].benefit, "YIELD_FAITH", "Spanish missions grant Faith");
 }
 
-// ── flavour quotes: every option carries a real, attributed quote (plan §8) ──
+// ── flavor quotes: every option carries a real, attributed quote (plan §8) ──
 {
   const bonusKeys = Object.keys(QUARTER_BONUSES).sort();
   const quoteKeys = Object.keys(QUARTER_QUOTES).sort();
@@ -134,7 +134,7 @@ function checkEntry(key, entry) {
 
 // ── renderableLine: the enclave pop-up must never show a script the dialog font can't draw ───
 // In-game the quote comes back WHOLE from Locale.compose (the raw-script LOC row), skipping quoteDisplay's
-// own guard, so renderableLine is the last line of defence. Every shipped quote row, once passed through
+// own guard, so renderableLine is the last line of defense. Every shipped quote row, once passed through
 // it, must be free of unrenderable script — this is what was showing as tofu boxes / scrambled RTL.
 {
   const UNRENDERABLE = /[Ͱ-ϿЀ-ӿ֐-׿؀-ۿሀ-፿぀-ヿ一-鿿가-힯]/;

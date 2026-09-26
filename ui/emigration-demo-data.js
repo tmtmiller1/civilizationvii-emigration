@@ -1,22 +1,14 @@
 // emigration-demo-data.js
 //
-// Synthetic SAMPLE migration data for previewing the dashboard before a real game has generated
-// cross-civ flows (toggled in Options → Mods → "Dashboard data: Sample"). Built in the exact shape
-// gatherDashboard() returns, marked `sample: true`, never written to the persisted tallies.
-// Deterministic (no randomness). Models a FULL game (3 ages × 75 turns) of 10 civilizations: each
-// starts with a single small capital and founds more cities/towns as the game goes on, its
-// population growing the whole time. The migration profile mirrors the real engine: war/disaster
-// are SHOCKS (large counts crammed into a few turns around their event, then they stop), prosperity
-// is a STEADY trickle that converges on a few magnet civs, and unhappiness is EPISODIC. Flows are
-// CONCENTRATED, not spread evenly, refugees flee to one regional neighbour, magnets pull the rest.
+// Synthetic SAMPLE migration data for previewing the dashboard (Options → Mods → "Dashboard data:
+// Sample"), in the exact shape gatherDashboard() returns, marked `sample: true`, never persisted.
+// Deterministic; models a full game (3 ages × 75 turns) of 10 civilizations whose cities found and grow.
 
 const NAMES = ["", "Rome", "Egypt", "Greece", "Persia", "Maurya",
   "Han", "Carthage", "Aksum", "Maya", "Norse"];
 
 // Each civ's cities, indexed by civ id. Entry: [name, finalPop, foundAt, isTown]. `foundAt` is the
-// global progress (0..1) when the city is founded (the capital is founded at 0); a city grows from
-// a small SEED at its founding to finalPop by the end. So every civ starts as one small city and
-// sprouts new ones over the game, the intra-civ structure you see inside each circle.
+// global progress (0..1) when the city is founded; a city grows from SEED at founding to finalPop.
 const CITY_TABLE = [
   [],
   [["Rome", 70000, 0, false], ["Ostia", 26000, 0.25, true], ["Capua", 22000, 0.5, false], ["Mediolanum", 16000, 0.72, true]],
@@ -30,30 +22,18 @@ const CITY_TABLE = [
   [["Tikal", 44000, 0, false], ["Calakmul", 20000, 0.38, false], ["Copan", 12000, 0.7, true]],
   [["Uppsala", 34000, 0, false], ["Hedeby", 16000, 0.5, true], ["Birka", 10000, 0.76, true]]
 ];
-// Cities that change hands mid-game. After `at` (global progress) the city transfers from civ
-// `from` to civ `to`, but its residents stay coded to the PRIOR owner, the network colours them in
-// `from`'s colour/name, frozen at the population it had when captured; only the growth the city adds
-// AFTER the capture counts as the conqueror (`to`). This is what `origins` carries in a live game
-// (from the composition ledger); here it's authored so the sample demonstrates the same behaviour.
-// Lixus is the Carthaginian (7) city Persia (4) storms at the height of the Punic–Persian War.
+// Cities that change hands mid-game. After `at` (global progress) the city transfers from civ `from`
+// to civ `to`; its residents stay coded to the PRIOR owner, frozen at the captured population, and
+// only post-capture growth counts as the conqueror, mirroring the live composition ledger.
 const CONQUESTS = [{ name: "Lixus", from: 7, to: 4, at: 0.74 }];
 const SEED = 600; // population of a city the moment it is founded (≈ one dot)
 // Sample data is authored in scaled "people"; this ratio derives a believable Civ pop-point figure
 // from it (a live game uses the engine's exact per-migration points instead).
 const SAMPLE_PPP = 3500; // people per pop point, for the preview's "Civ population" numbers
 
-// Migration corridors: [fromId, toId, cause, people, a, b]. `people` is the total who travel this
-// corridor over the game; [a,b] is the GLOBAL-PROGRESS window across which they leave (the corridor
-// fills via smoothstep, so the cumulative arrives steeply in a NARROW window and gently in a WIDE
-// one). This mirrors the real engine (see report): war/disaster are SHOCKS, large counts crammed
-// into the short window of their event, then they stop (siege cap / cooldown); prosperity is a
-// STEADY trickle over a long span; unhappiness is EPISODIC (a bump while a civ is net-unhappy).
-// Destinations are CONCENTRATED, not even: the engine picks the single best target, so prosperity
-// flows converge on a few magnets (Rome, Han, Persia) and war/disaster refugees flee to one
-// regional neighbour. The shock windows match EVENT_DEFS so the surge coincides with the popup.
-// Entry: [fromId, fromCity, toId, toCity, cause, people, a, b]. Cross-civ flows are tracked by the
-// ORIGIN and DESTINATION settlement (not just the civ), so the flow view can drill into cities. The
-// chosen origin/destination cities exist within the corridor's window (founded earlier).
+// Migration corridors: [fromId, fromCity, toId, toCity, cause, people, a, b]. `people` is the total
+// who travel the corridor over the game; [a,b] is the GLOBAL-PROGRESS window across which they leave
+// (smoothstep fill, so narrow windows are shocks and wide ones trickles). Shock windows match EVENT_DEFS.
 const CORRIDORS = [
   // War / disaster SHOCKS, big counts in a tight window, aligned to the events below.
   [2, "Thebes", 3, "Athens", "disaster", 20000, 0.08, 0.2], // Nile flood: Egypt → Greece
@@ -80,9 +60,7 @@ const CORRIDORS = [
 ];
 
 // Intra-civ moves: [civId, fromCity, toCity, people, a, b], people who relocate BETWEEN a civ's
-// OWN cities (mostly urbanisation toward the capital, or settling a new city). Real-engine
-// behaviour: same-civ moves are favoured (no cross-civ poach block, own-civ refugee bonus). Windows
-// start after the source city exists. Shown as a lighter tint of the civ's colour.
+// OWN cities. Windows start after the source city exists. Shown as a lighter tint of the civ's color.
 const INTRA_CORRIDORS = [
   [1, "Capua", "Rome", 7000, 0.5, 1.0],
   [1, "Ostia", "Mediolanum", 4000, 0.72, 1.0],
@@ -104,10 +82,8 @@ const CITYDEFS = [
   { cityName: "Capua", causeLabel: "Disaster", pressureToBar: 0.18, topDestinationName: "-", attritionRisk: true, onCooldown: false }
 ];
 
-// Per-settlement flow breakdown for the local player's (Rome's) settlements, who arrived from
-// where, who left for where, the cause mix, the city/town kind, and the emigration pressure shown
-// directly under each pie pair. Synthetic preview; a live game builds this from the recent feed +
-// the settlement list + the pressure snapshots.
+// Per-settlement flow breakdown for the local player's (Rome's) settlements: arrivals, departures,
+// cause mix, city/town kind, and emigration pressure. Synthetic preview.
 /**
  * Fill each sample settlement's per-direction civ entries with a `points` count derived from its
  * people (the preview has no engine to record exact points), so the pies' Civ Pop mode shows sane
@@ -165,12 +141,9 @@ const MY_CITIES = [
   }
 ];
 
-// Timeline events that drove migration, by GLOBAL-PROGRESS window (0..1) + affected civ ids. The
-// progress windows are resolved to frame indices in sampleDashboard, so they land correctly no
-// matter how many snapshots the timeline-detail setting produces.
-// Some windows deliberately OVERLAP so the network shows multiple concurrent causes at once: the
-// Aegean quake (disaster) runs during the Roman–Greek War (war + disaster together), and the
-// Maurya–Han War overlaps the Punic–Persian War (two simultaneous wars).
+// Timeline events that drove migration, by GLOBAL-PROGRESS window (0..1) + affected civ ids; resolved
+// to frame indices in sampleDashboard. Some windows deliberately OVERLAP so the network shows
+// multiple concurrent causes at once.
 const EVENT_DEFS = [
   { kind: "disaster", civs: [2], label: "Nile flood", from: 0.08, to: 0.2 },
   { kind: "war", civs: [1, 3], label: "Roman–Greek War", from: 0.25, to: 0.45 },
@@ -317,10 +290,9 @@ function ownerAt(c, tableOwner, p) {
 }
 
 /**
- * A city's resident population split by ORIGIN civ at progress `p`. An unconquered city is 100% its
- * owner; a captured city keeps its prior-owner residents frozen at the size it had when it fell, and
- * the growth since the capture counts as the conqueror, exactly what the live composition ledger
- * produces. The `pts` are origin-share weights (the dot builder normalizes them).
+ * A city's resident population split by ORIGIN civ at progress `p`: an unconquered city is 100% its
+ * owner; a captured city keeps its prior-owner residents frozen at capture size, and later growth
+ * counts as the conqueror. The `pts` are origin-share weights (the dot builder normalizes them).
  * @param {*[]} c City entry.
  * @param {number} owner Current owner civ id.
  * @param {number} p Global progress.
@@ -363,7 +335,7 @@ function nativePopsAt(p) {
 }
 
 /**
- * Finalize a civ row: net, modelled losses (attrition + external, a fraction of war/disaster
+ * Finalize a civ row: net, modeled losses (attrition + external, a fraction of war/disaster
  * pressure), and the parallel pop-point figures (derived from people via SAMPLE_PPP).
  * @param {*} r Civ row.
  */
@@ -397,10 +369,8 @@ function foldIntra(intra, get) {
 }
 
 /**
- * Derive per-civ ledger rows from the flow list (internally consistent in/out/net + refugees), with
- * the intra-civ moves folded into BOTH the internal tallies and the gross in/out, mirroring the live
- * accounting (gross counts every move; net counts only the cross-border ones, and an intra move adds
- * equally to in and out so it leaves net untouched).
+ * Derive per-civ ledger rows from the flow list (in/out/net + refugees), with the intra-civ moves
+ * folded into BOTH the internal tallies and the gross in/out, mirroring the live accounting.
  * @param {*[]} flows Named flows.
  * @param {{civId:number, people:number}[]} [intra] Intra-civ moves.
  * @returns {*[]} Ledger civ rows.
