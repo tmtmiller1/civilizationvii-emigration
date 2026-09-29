@@ -5,7 +5,7 @@
 // Pure reads, no state, so a distant AI-vs-AI war registers exactly as a visible one does.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
-import { noteDamage } from "/emigration/ui/emigration-damage-age.js";
+import { noteDamage, firstSeenDamaged } from "/emigration/ui/emigration-damage-age.js";
 
 /**
  * Whether a live District has been overrun, its controlling player differs from its owner (the
@@ -190,6 +190,40 @@ export function pillagedCount(city) {
     /* ignore */
   }
   return n;
+}
+
+/**
+ * Count this city's plots that are pillaged now but were not seen pillaged before this turn: the damage
+ * a disaster that just struck actually did here. Damage an earlier scan already saw (a raid last turn) is
+ * not counted. Plots damaged when a game loads, before any scan, count as fresh. Not gated by `vwPillage`.
+ * @param {*} city A live city object.
+ * @returns {{fresh: number, footprint: number}} Newly pillaged plots, and the city's plot count.
+ */
+export function freshPillage(city) {
+  let fresh = 0;
+  let footprint = 0;
+  try {
+    const turn = typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
+    for (const idx of city?.getPurchasedPlots?.() || []) {
+      footprint++;
+      if (plotFreshlyPillaged(idx, turn)) fresh++;
+    }
+  } catch (_) {
+    /* ignore */
+  }
+  return { fresh, footprint };
+}
+
+/**
+ * Whether a plot holds a pillaged improvement that no scan before `turn` had seen, recording the read.
+ * @param {number} idx A plot index. @param {number} turn The current game turn.
+ * @returns {boolean} True when newly pillaged.
+ */
+function plotFreshlyPillaged(idx, turn) {
+  const seen = firstSeenDamaged(idx);
+  const hit = plotIndexPillaged(idx);
+  noteDamage(idx, hit, turn);
+  return hit && (seen === null || seen >= turn);
 }
 
 /**

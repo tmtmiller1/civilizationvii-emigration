@@ -33,7 +33,13 @@ When a settlement is starving, unhappy, or under siege, people leave. When one i
 
 Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.md) · [typeset PDF](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.pdf), with every formula rendered.
 
-## What's new in 3.1.0
+## What's new in 3.2.0
+
+- **A disaster only displaces people where it did damage:** a settlement shielded from the event — a Dam or a Levee against a flood, the Khmer Baray — or one the event spared sends nobody, instead of every settlement in the radius taking the same distress.
+- **A flood reaches every settlement along its river,** not just the ring of tiles around the epicenter the event names.
+- **Flood-like events from other mods** are weighed as floods rather than as unknown events.
+
+## What was new in 3.1.0
 
 - **Yields on the buttons:** the refugee, newcomer, call-home and Cultural Enclave pop-ups show each choice's gains and costs on its own button, with the game's yield icons.
 - **Enclave stances pay a real sum once:** Culture, Science, Influence or Gold, sized to your economy and the age, usually at a price in Gold; a stance you cannot afford is grayed out.
@@ -303,7 +309,7 @@ Defaults are shown below; most are tunable in §10 and on the dashboard's **Guid
 | Pillaged tiles in the city's borders | ✓ | Damaged improvements on the city's own plots |
 | Starvation | ✓ | Most flee; some die until food recovers |
 | Plague / disease | ✓ | Infected cities lose people; plague carry is optional |
-| Natural disasters | ✓ | Capped per-city pressure around the event |
+| Natural disasters | ✓ | Capped per-city pressure, only where the event did damage |
 | Overcrowding | ✓ | Tall cities push population outward |
 
 **What attracts**
@@ -652,6 +658,8 @@ Defaults are `dividendPerMigrant = 1.5`, `dividendDecay = 0.7`, and `dividendCap
 ### 6c. Environmental disasters & plague (`disastersEnabled`)
 
 Floods, volcanoes, plague, hurricanes, blizzards, tornadoes, dust storms, and thunderstorms add per-city disaster distress in `emigration-disasters.js`. Distress decays with game-speed adjustment and lowers prosperity, producing disaster refugees. Signals come from `city.isInfected` and `RandomEventOccurred`, so they do not depend on visibility.
+
+An event strikes the settlements owning its epicenter and the tiles within `EVENT_RADIUS` (1) of it; a flood also strikes every settlement on the river the epicenter lies on (`MapRivers.getRiverPlots`), since the floodplain runs well past that ring. Each struck settlement is then sized independently: its impact factor `m` is the larger of the event type's worst effect-table percentage and the share of its own plots the event *newly* pillaged, floored by `disasterStrikeFloor` for a confirmed strike. With `disasterRequireDamage` on (the default), a settlement the event pillaged nothing in takes no distress at all, so a Dam, a Levee, or the Khmer Baray removing a flood's damage also removes its refugees. Damage an earlier scan had already seen (a raid last turn) does not count as this event's. The distress ceiling comes from the event's class (`CLASS_VOLCANO` 12, `CLASS_FLOOD` and `CLASS_PLAGUE` 8, down to `CLASS_THUNDERSTORM` 3); an unlisted class inherits the weight of the base class its name contains as a whole word, so a mod that splits `CLASS_FLOOD` into variants keeps flood weight, and anything else falls back to 4.
 
 Optional `plagueCarryEnabled` lets migrants from an infected city seed smaller outbreak distress at the destination.
 

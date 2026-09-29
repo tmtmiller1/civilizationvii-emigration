@@ -13,6 +13,7 @@ declare const YieldTypes: any;
 declare const Controls: any;
 declare const ComponentID: any;
 declare const MapConstructibles: any;
+declare const MapRivers: any;
 declare const MapUnits: any;
 declare const Units: any;
 declare const DirectionTypes: any;

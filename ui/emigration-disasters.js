@@ -134,6 +134,23 @@ const CLASS_WEIGHT = {
 };
 
 /**
+ * The distress ceiling for an event class. A class this table does not list takes the weight of the
+ * base class its name contains as a whole word, so a mod that splits floods into CLASS_<X>_FLOOD_MAJOR
+ * and the like keeps flood weight; anything else falls back to 4.
+ * @param {string} eventClass The event's CLASS_* string.
+ * @returns {number} The ceiling.
+ */
+function classWeight(eventClass) {
+  const direct = CLASS_WEIGHT[eventClass];
+  if (direct) return direct;
+  const words = String(eventClass || "").split("_");
+  for (const [base, w] of Object.entries(CLASS_WEIGHT)) {
+    if (words.includes(base.slice("CLASS_".length))) return w;
+  }
+  return 4;
+}
+
+/**
  * The current age-local game turn, or 0.
  * @returns {number} Game.turn or 0.
  */
@@ -267,7 +284,7 @@ function shape(m) {
  * @returns {number} The distress spike to add.
  */
 export function disasterSpike(eventClass, m, severity) {
-  const ceil = CLASS_WEIGHT[eventClass] || 4;
+  const ceil = classWeight(eventClass);
   const sev = typeof severity === "number" && severity > 0 ? severity : 1;
   const base = CONFIG.disasterImpactScalingEnabled
     ? ceil * shape(m) // type bounds the worst case; measured impact picks the point inside it

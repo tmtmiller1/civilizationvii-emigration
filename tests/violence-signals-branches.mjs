@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
 
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
-const { districtDamageFrac, districtBesieged, pillagedCount } =
+const { districtDamageFrac, districtBesieged, pillagedCount, freshPillage } =
   await import("/emigration/ui/emigration-violence-signals.js");
+const { resetDamageAges } = await import("/emigration/ui/emigration-damage-age.js");
 
 const originalVwPillage = CONFIG.vwPillage;
 
@@ -182,6 +183,27 @@ assert.equal(pillagedCount(city), 0, "disabled pillage weight should short-circu
 // Catch path: city plot accessor failure is swallowed.
 CONFIG.vwPillage = 1;
 assert.equal(pillagedCount({ getPurchasedPlots: () => { throw new Error("boom"); } }), 0);
+
+// freshPillage counts only damage no earlier turn's scan had seen: a raid seen on turn 3 is not a
+// disaster's doing on turn 5, a plot pillaged since is.
+resetDamageAges();
+const damagedIds = new Set(["pillaged"]);
+globalThis.MapConstructibles = {
+  getConstructibles: (x, y) => [{ id: x === 11 ? "pillaged" : x === 12 ? "flooded" : "ok" }]
+};
+globalThis.Constructibles = { getByComponentID: (cid) => ({ damaged: damagedIds.has(cid.id) }) };
+globalThis.Game = { turn: 3 };
+assert.equal(pillagedCount(city), 1, "the turn-3 scan sees the raid");
+globalThis.Game = { turn: 5 };
+assert.deepEqual(freshPillage(city), { fresh: 0, footprint: 4 }, "an old raid is not fresh damage");
+damagedIds.add("flooded");
+assert.deepEqual(freshPillage(city), { fresh: 1, footprint: 4 }, "a plot pillaged this turn is fresh");
+assert.deepEqual(freshPillage(city), { fresh: 1, footprint: 4 }, "a second event the same turn still sees it");
+CONFIG.vwPillage = 0;
+assert.equal(freshPillage(city).fresh, 1, "not gated by vwPillage");
+assert.deepEqual(freshPillage({ getPurchasedPlots: () => { throw new Error("boom"); } }), { fresh: 0, footprint: 0 });
+delete globalThis.Game;
+resetDamageAges();
 
 CONFIG.vwPillage = originalVwPillage;
 resetGlobals();
