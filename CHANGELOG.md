@@ -5,9 +5,22 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
-## [3.1.2] - 2026-09-23
+## [3.2.0] - 2026-09-29
 
 ### Changed
+- **A disaster only displaces people where it actually did damage.** Every settlement in a disaster's radius used
+  to take the full distress spike, whether or not the event touched it. Now a settlement sends refugees only when
+  the disaster newly pillaged tiles it owns, so a settlement that is shielded from the event — a Dam or a Levee
+  against a flood, the Khmer Baray — or one the event simply spared sends nobody. The disaster is still reported
+  where it struck; it just did no harm there. The gate is the `disasterRequireDamage` default in
+  `emigration-config.js` rather than an Options-screen setting; off, every settlement in the radius takes the
+  spike as before.
+- **A flood reaches every settlement along its river.** A flood damages its river's floodplain, which can run
+  several tiles from the epicenter the event names, so a settlement downstream that lost improvements is no longer
+  counted as untouched. Other disasters still strike the epicenter and the ring of tiles around it.
+- **Flood-like events added by other mods are weighed as floods.** An event class that carries FLOOD as a whole
+  word — a mod that splits floods into a major and a thousand-year kind, for instance — now takes flood distress
+  weight instead of the generic default for an unknown event.
 - **Reads the analytics policy for its own seat.** Demographics 2.7.3 publishes each seat's effective analytics
   policy under a per-seat key, because the shared game configuration is one document in a networked game and the
   single key held whichever seat wrote it last. Emigration now reads its own seat's key first and falls back to the

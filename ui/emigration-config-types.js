@@ -284,6 +284,7 @@
  * @property {boolean} disasterImpactScalingEnabled Spike = type-ceiling × shape(measured impact); off ⇒ legacy.
  * @property {number} disasterImpactGamma Concavity of shape(m)=m^gamma (1.0 linear, <1 lifts small impacts).
  * @property {number} disasterStrikeFloor Floor on m for a confirmed-but-unmeasurable city strike (0 ⇒ legacy).
+ * @property {boolean} disasterRequireDamage A struck city the disaster pillaged nothing in lands no distress.
  * @property {boolean} disasterSpeedShockEnabled Divide the disaster spike by S (speed-invariant total bite).
  * @property {number} disasterLossCapPct Max share of onset population lost to disaster emigration per crisis (1 = off).
  * @property {number} disasterAccumCap Hard ceiling on a city's accumulated disaster distress.

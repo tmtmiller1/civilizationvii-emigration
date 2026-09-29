@@ -195,6 +195,11 @@ function testFlagsOffIsLegacy() {
   CONFIG.disasterSpeedShockEnabled = false;
   assert.ok(close(disasterSpike("CLASS_VOLCANO", 0.99, 2), 24), "legacy: 12 × severity 2 = 24");
   assert.ok(close(disasterSpike("CLASS_THUNDERSTORM", 0.0, 1), 3), "legacy: 3 × severity 1 = 3");
+  // A mod's split flood classes keep flood weight; an unrelated unknown class takes 4.
+  assert.ok(close(disasterSpike("CLASS_DAMS_FLOOD_MAJOR", 0.0, 1), 8), "split flood class weighs as a flood");
+  assert.ok(close(disasterSpike("CLASS_DAMS_FLOOD_1000_YEAR", 0.0, 1), 8), "1000-year split class too");
+  assert.ok(close(disasterSpike("CLASS_METEOR", 0.0, 1), 4), "unknown class falls back to 4");
+  assert.ok(close(disasterSpike("CLASS_FLOODGATE", 0.0, 1), 4), "only a whole word matches");
   setImpactDefaults();
 }
 

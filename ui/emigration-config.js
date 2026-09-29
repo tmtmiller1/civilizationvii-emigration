@@ -577,6 +577,9 @@ export const CONFIG = {
   // a city always lands SOME distress, so it never scores as harmless. Scales by CLASS_WEIGHT via
   // shape(), so at 0.15 a volcano floor ≈3.3 while a thunderstorm stays ambient. 0 ⇒ no floor.
   disasterStrikeFloor: 0.15,
+  // A struck settlement the disaster pillaged nothing in lands no distress: it was shielded (a Dam or
+  // Levee against floods, the Khmer Baray) or spared. Off ⇒ every city in the blast radius takes the spike.
+  disasterRequireDamage: true,
   disasterSpeedShockEnabled: true, // divide the spike by S so slow speeds pay the same TOTAL bite
   disasterAccumCap: 18, // hard ceiling on a city's accumulated disaster distress (guarantees recovery)
   // Mirror of siegeLossCapPct for the disaster channel: across one disaster crisis (until its distress

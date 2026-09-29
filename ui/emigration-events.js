@@ -10,7 +10,7 @@
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { recordDisaster, disasterSpike, disasterKey } from "/emigration/ui/emigration-disasters.js";
-import { pillagedCount } from "/emigration/ui/emigration-violence-signals.js";
+import { freshPillage } from "/emigration/ui/emigration-violence-signals.js";
 import { disasterName, actionHint, civAdjective } from "/emigration/ui/emigration-naming.js";
 import { announceImportant } from "/emigration/ui/emigration-feedback.js";
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
@@ -25,53 +25,6 @@ import { loc as tr } from "/emigration/ui/emigration-loc.js";
 const EVENT_RADIUS = 1;
 
 /**
- * Resolve the owning city's disaster key for a single plot, or null.
- * @param {number} x Plot x.
- * @param {number} y Plot y.
- * @returns {string|null} The owning city's disaster key, or null.
- */
-function cityKeyAt(x, y) {
-  try {
-    const cid = GameplayMap.getOwningCityFromXY?.(x, y);
-    const city = cid && typeof Cities !== "undefined" ? Cities.get?.(cid) : null;
-    return city ? disasterKey(city) : null;
-  } catch (_) {
-    return null;
-  }
-}
-
-/**
- * The disaster-distress city keys for an event epicenter: every city owning a tile within
- * EVENT_RADIUS of the epicenter (deduped), not just the epicenter's own owner, so an eruption on an
- * unowned/border volcano tile still strikes the cities around it. Empty when none/unreadable.
- * @param {{x:number, y:number}} location The epicenter plot.
- * @returns {string[]} Affected city keys (unique).
- */
-function affectedCityKeys(location) {
-  /** @type {string[]} */
-  const keys = [];
-  try {
-    if (!location || typeof GameplayMap === "undefined") return keys;
-    const seen = new Set();
-    const push = (/** @type {string|null} */ k) => {
-      if (k && !seen.has(k)) {
-        seen.add(k);
-        keys.push(k);
-      }
-    };
-    push(cityKeyAt(location.x, location.y)); // epicenter first
-    const idxs = GameplayMap.getPlotIndicesInRadius?.(location.x, location.y, EVENT_RADIUS);
-    for (const idx of idxs || []) {
-      const loc = GameplayMap.getLocationFromIndex?.(idx);
-      if (loc) push(cityKeyAt(loc.x, loc.y));
-    }
-  } catch (_) {
-    /* ignore */
-  }
-  return keys;
-}
-
-/**
  * The owning city object for a plot, or null.
  * @param {number} x Plot x.
  * @param {number} y Plot y.
@@ -84,6 +37,76 @@ function cityAt(x, y) {
   } catch (_) {
     return null;
   }
+}
+
+/**
+ * Whether an event class is a flood: CLASS_FLOOD, or a class a mod splits off from it (a whole-word FLOOD,
+ * e.g. CLASS_DAMS_FLOOD_MAJOR).
+ * @param {string|undefined} eventClass The event's CLASS_* string.
+ * @returns {boolean} True for a flood.
+ */
+function isFloodClass(eventClass) {
+  return String(eventClass || "").split("_").includes("FLOOD");
+}
+
+/**
+ * Every plot of the river the epicenter lies on, or [] when it is on no river. A flood covers its river's
+ * floodplain, which can reach settlements several tiles from the epicenter the event names.
+ * @param {{x:number, y:number}} location The epicenter plot.
+ * @returns {number[]} Plot indices.
+ */
+function riverPlotsAt(location) {
+  const at = GameplayMap.getIndexFromXY?.(location.x, location.y);
+  const n = typeof MapRivers !== "undefined" ? Number(MapRivers.numRivers) || 0 : 0;
+  for (let i = 0; i < n; i++) {
+    const raw = MapRivers.getRiverPlots?.(MapRivers.getRiverIDByIndex?.(i)) || [];
+    const plots = raw.map((/** @type {*} */ p) => (typeof p === "number" ? p : GameplayMap.getIndexFromXY?.(p.x, p.y)));
+    if (plots.includes(at)) return plots;
+  }
+  return [];
+}
+
+/**
+ * The plots whose owning cities an event may have struck: the epicenter, the ring of EVENT_RADIUS around it
+ * and, for a flood, the whole river it lies on.
+ * @param {{x:number, y:number}} location The epicenter plot.
+ * @param {string|undefined} eventClass The event's CLASS_* string.
+ * @returns {number[]} Plot indices, epicenter first.
+ */
+function struckPlots(location, eventClass) {
+  const plots = [GameplayMap.getIndexFromXY?.(location.x, location.y)];
+  plots.push(...(GameplayMap.getPlotIndicesInRadius?.(location.x, location.y, EVENT_RADIUS) || []));
+  if (isFloodClass(eventClass)) plots.push(...riverPlotsAt(location));
+  return plots;
+}
+
+/**
+ * The cities an event struck: every city owning one of its struckPlots (deduped by disaster key), so an
+ * eruption on an unowned/border volcano tile still strikes the cities around it and a flood strikes the
+ * settlements along its river. Empty when none/unreadable.
+ * @param {{x:number, y:number}} location The epicenter plot.
+ * @param {string|undefined} eventClass The event's CLASS_* string.
+ * @returns {{key:string, city:*}[]} Struck cities with their disaster keys, epicenter first.
+ */
+function affectedCities(location, eventClass) {
+  /** @type {{key:string, city:*}[]} */
+  const out = [];
+  try {
+    if (!location || typeof GameplayMap === "undefined") return out;
+    const seen = new Set();
+    for (const idx of struckPlots(location, eventClass)) {
+      const loc = GameplayMap.getLocationFromIndex?.(idx);
+      const city = loc ? cityAt(loc.x, loc.y) : null;
+      const k = city ? disasterKey(city) : null;
+      if (k && !seen.has(k)) {
+        seen.add(k);
+        out.push({ key: k, city });
+      }
+    }
+  } catch (_) {
+    /* ignore */
+  }
+  return out;
 }
 
 /**
@@ -128,7 +151,6 @@ function primaryStruckCity(location) {
   }
 }
 
-/**
 /**
  * The largest `Percentage` across the rows of an effect table that match a RandomEvent type (and an
  * optional DamageType filter). 0 when the table is missing/empty.
@@ -187,36 +209,19 @@ function clamp01(x) {
 }
 
 /**
- * The directly-observable pillage fraction at the struck settlement: pillaged plots ÷ its footprint.
- * 0 when no city, no pillage, or the build/scan doesn't expose it (graceful degradation, never
- * invented; `impactPct` alone then drives the impact factor).
- * @param {*} location The event location.
- * @returns {number} Pillage fraction in [0,1].
- */
-function pillageFraction(location) {
-  try {
-    const city = firstStruckCity(location);
-    if (!city) return 0;
-    const plots = city.getPurchasedPlots?.();
-    const footprint = Array.isArray(plots) ? plots.length : 0;
-    if (!(footprint > 0)) return 0;
-    return clamp01(pillagedCount(city) / footprint);
-  } catch (_) {
-    return 0;
-  }
-}
-
-/**
- * The CONTINUOUS impact factor `m ∈ [0,1]` for a disaster, the larger of (a) the worst measured
- * yield-cut / constructible-damage fraction the effect tables report and (b) the observable tile
- * pillage. This is the magnitude the distress spike scales by (see `disasterSpike`), so a 0-impact
- * thunderstorm lands at ~0 while a catastrophic volcano lands high.
- * @param {*} info The GameInfo RandomEvents row.
- * @param {*} location The event location.
+ * The impact factor `m ∈ [0,1]` a disaster lands on ONE struck city, from the damage it did there: the
+ * larger of the event type's worst effect-table percentage and the share of the city's plots it newly
+ * pillaged, floored for a confirmed strike. 0 when the event pillaged nothing in the city (with
+ * `disasterRequireDamage` on): a settlement the engine shields from this class of event (a Dam or Levee
+ * against floods, the Khmer Baray) or one the event simply spared sends out no refugees.
+ * @param {number} typePct The event type's worst impact percent (eventImpactPct).
+ * @param {{fresh:number, footprint:number}} damage The city's freshPillage reading.
  * @returns {number} Impact factor in [0,1].
  */
-function eventImpactFactor(info, location) {
-  return clamp01(Math.max(eventImpactPct(info) / 100, pillageFraction(location)));
+function cityImpactFactor(typePct, damage) {
+  if (CONFIG.disasterRequireDamage && !(damage.fresh > 0)) return 0;
+  const share = damage.footprint > 0 ? damage.fresh / damage.footprint : 0;
+  return strikeFloored(clamp01(Math.max(typePct / 100, share)), true);
 }
 
 /**
@@ -232,8 +237,34 @@ function strikeFloored(measured, struck) {
 }
 
 /**
- * Handle a RandomEventOccurred payload: add a severity-scaled distress spike to the
- * struck city and toast the disaster by its own name. The resulting refugee outflow is
+ * Land each struck city's distress spike, sized by the damage the event did there (cityImpactFactor).
+ * @param {{key:string, city:*}[]} cities The struck cities.
+ * @param {*} info The GameInfo RandomEvents row.
+ * @param {string} eventClass The event's CLASS_* string.
+ * @param {string} eventType The RandomEventType, stamped per city for cause attribution.
+ * @param {number} sev The event severity (the legacy fail-safe path only).
+ * @returns {number} How many cities took a spike.
+ */
+function spikeStruckCities(cities, info, eventClass, eventType, sev) {
+  const typePct = eventImpactPct(info);
+  let damaged = 0;
+  for (const { key, city } of cities) {
+    const damage = freshPillage(city);
+    const m = cityImpactFactor(typePct, damage);
+    const w = m > 0 ? disasterSpike(eventClass, m, sev) : 0;
+    dlog("event city=" + key + " pillaged=" + damage.fresh + "/" + damage.footprint + " m=" + m.toFixed(2)
+      + " spike=" + w.toFixed(1)); // DIAGNOSTIC: grep `EMIG_event city=` in UI.log
+    if (!(m > 0)) continue;
+    damaged++;
+    // m drives the impact-scaled spike; sev is passed only for the legacy fail-safe path.
+    recordDisaster(eventClass, m, [key], eventType, sev); // type → per-city cause attribution
+  }
+  return damaged;
+}
+
+/**
+ * Handle a RandomEventOccurred payload: add a distress spike to each struck city sized by the damage
+ * the event did there (see cityImpactFactor), and toast the disaster by its own name. The resulting refugee outflow is
  * applied by the normal per-turn pass (the distress lowers the city's prosperity).
  * @param {*} data The event payload (eventType, severity, location).
  */
@@ -246,17 +277,14 @@ function onRandomEvent(data) {
     const info = GameInfo?.RandomEvents?.lookup?.(data.eventType);
     const eventClass = info?.EventClass;
     const sev = eventSeverity(data, info); // 1..4, kept for the notify gate + chart marker
-    const keys = affectedCityKeys(data.location);
-    // m is floored for a confirmed strike so it never collapses to a zero spike (see strikeFloored).
-    const m = strikeFloored(eventImpactFactor(info, data.location), keys.length > 0);
-    const w = disasterSpike(eventClass, m, sev); // the spike actually landed, for the diagnostic
-    logEvent(data, info, sev, keys.length, { m, w }); // DIAGNOSTIC: grep `EMIG_event` in UI.log
-    // m drives the impact-scaled spike; sev is passed only for the legacy fail-safe path.
-    recordDisaster(eventClass, m, keys, data.eventType, sev); // type → per-city cause attribution
-    // Record a refugees-chart MARKER whenever the disaster actually struck cities, independent of the
-    // toast threshold, so sub-`disasterNotifyMinSeverity` disasters still annotate the chart.
-    const struck = keys.length > 0;
-    if (struck) recordDisasterEvent(disasterName(data.eventType), sev);
+    const cities = affectedCities(data.location, eventClass);
+    const damaged = spikeStruckCities(cities, info, eventClass, data.eventType, sev);
+    logEvent(data, info, sev, cities.length, damaged); // DIAGNOSTIC: grep `EMIG_event` in UI.log
+    // Record a refugees-chart MARKER whenever the disaster damaged a city, independent of the toast
+    // threshold, so sub-`disasterNotifyMinSeverity` disasters still annotate the chart.
+    if (damaged > 0) recordDisasterEvent(disasterName(data.eventType), sev);
+    // The toast still reports a disaster that struck a shielded or spared city: it happened, it just did no harm.
+    const struck = cities.length > 0;
     maybeNotifyDisaster(data, sev, struck, struck ? primaryStruckCity(data.location) : null);
   } catch (e) {
     dlog("event threw " + e);
@@ -317,19 +345,18 @@ function shouldPopDisaster(mode, struck) {
 }
 
 /**
- * Debug-only: log a random event the mod received, class, severity, epicenter, and how many cities
- * the blast-radius scan matched.
+ * Debug-only: log a random event the mod received, class, severity, epicenter, how many cities the
+ * blast-radius scan matched and how many of those it damaged.
  * @param {*} data The event payload.
  * @param {*} info The GameInfo RandomEvents row.
  * @param {number} sev The event severity.
- * @param {number} nKeys The number of affected cities matched.
- * @param {{m:number, w:number}} [impact] The floored impact factor and the spike that actually landed.
+ * @param {number} nStruck The number of affected cities matched.
+ * @param {number} nDamaged The number of those cities that took a distress spike.
  */
-function logEvent(data, info, sev, nKeys, impact) {
+function logEvent(data, info, sev, nStruck, nDamaged) {
   const loc = data.location ? (data.location.x + "," + data.location.y) : "none";
-  const spike = impact ? " m=" + impact.m.toFixed(2) + " spike=" + (impact.w || 0).toFixed(1) : "";
   dlog("event type=" + data.eventType + " class=" + (info && info.EventClass) + " sev=" + sev
-    + " loc=" + loc + " affectedCities=" + nKeys + spike);
+    + " loc=" + loc + " affectedCities=" + nStruck + " damagedCities=" + nDamaged);
 }
 
 /** Subscribe the disaster event hook. Safe to call once at boot. */
