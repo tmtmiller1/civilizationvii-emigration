@@ -33,7 +33,11 @@ When a settlement is starving, unhappy, or under siege, people leave. When one i
 
 Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.md) · [typeset PDF](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.pdf), with every formula rendered.
 
-## What's new in 3.2.0
+## What's new in 3.2.1
+
+- **The city readout sits beside the City Details panel** instead of over it. When you open a settlement, the per-city migration readout moves out from under whichever city-screen panel holds its corner, and returns to the corner when City Details is closed.
+
+## What was new in 3.2.0
 
 - **A disaster only displaces people where it did damage:** a settlement shielded from the event — a Dam or a Levee against a flood, the Khmer Baray — or one the event spared sends nobody, instead of every settlement in the radius taking the same distress.
 - **A flood reaches every settlement along its river,** not just the ring of tiles around the epicenter the event names.
