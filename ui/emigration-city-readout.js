@@ -297,17 +297,129 @@ function injectStyle() {
 }
 
 /**
- * Inline-position the panel by configured corner (default top-right).
+ * Inline-position the panel by configured corner (default top-right), then move it beside any
+ * city-screen panel that holds that corner.
  * @param {*} el The panel element.
  */
 function positionPanel(el) {
   const corner = typeof CONFIG.cityReadoutCorner === "string" ? CONFIG.cityReadoutCorner : "top-right";
   const top = corner.indexOf("bottom") < 0;
   const left = corner.indexOf("left") >= 0;
-  el.style.top = top ? "9rem" : "";
-  el.style.bottom = top ? "" : "9rem";
-  el.style.left = left ? "1rem" : "";
-  el.style.right = left ? "" : "1rem";
+  setStyle(el, "top", top ? "9rem" : "");
+  setStyle(el, "bottom", top ? "" : "9rem");
+  setStyle(el, left ? "right" : "left", "");
+  dockBesideCityPanels(el, left);
+}
+
+/**
+ * Write one inline style only when it changes. The dock check runs on an interval, and rewriting an
+ * unchanged value can still restart layout in GameFace, which showed as the readout blinking.
+ * @param {*} el The element. @param {string} prop The style property. @param {string} value The value.
+ */
+function setStyle(el, prop, value) {
+  if (el.style[prop] !== value) el.style[prop] = value;
+}
+
+// The city screen's side panels. Selecting a city opens the city screen, so the readout's corner is
+// normally already taken by one of these (City Details on the right, the production list on the left).
+const CITY_PANEL_TAGS = ["panel-city-details", "panel-production-chooser"];
+const DOCK_GAP_PX = 8;
+const CORNER_INSET = "1rem";
+
+/**
+ * Where the readout goes when its corner box overlaps a city-screen panel: the inset from its own
+ * side of the viewport that puts it just beside the panel, or null when there is no room beside it.
+ * Returns `box`'s own inset unchanged when nothing overlaps. Pure, so it is unit-tested.
+ * @param {boolean} fromLeft True when the readout is anchored to the left edge.
+ * @param {number} viewportW The viewport width in px.
+ * @param {{left:number, right:number, top:number, bottom:number}} box The readout at its corner.
+ * @param {{left:number, right:number, top:number, bottom:number}[]} panels Visible panel boxes.
+ * @returns {number|null} The inset in px from the anchored edge, or null to hide the readout.
+ */
+export function dockInset(fromLeft, viewportW, box, panels) {
+  const width = box.right - box.left;
+  let inset = fromLeft ? box.left : viewportW - box.right;
+  for (const p of panels) {
+    const overlaps = p.left < box.right && box.left < p.right && p.top < box.bottom && box.top < p.bottom;
+    if (!overlaps) continue;
+    const beside = fromLeft ? p.right + DOCK_GAP_PX : viewportW - p.left + DOCK_GAP_PX;
+    inset = Math.max(inset, beside);
+  }
+  return inset + width > viewportW ? null : inset;
+}
+
+/**
+ * The boxes of the city-screen panels that are showing. The production list toggles City Details by
+ * class with no event, so this is read each time rather than tracked.
+ * @returns {{left:number, right:number, top:number, bottom:number}[]} The visible panel boxes.
+ */
+function visibleCityPanels() {
+  const out = [];
+  for (const tag of CITY_PANEL_TAGS) {
+    const host = document.querySelector(tag);
+    if (!host || host.classList.contains("hidden")) continue;
+    // The host can span far wider than what is drawn (the production list's host runs up to City
+    // Details), so measure the drawn frame inside it.
+    const frame = (typeof host.querySelector === "function" && host.querySelector("fxs-subsystem-frame")) || host;
+    const r = frame.getBoundingClientRect();
+    if (r.width > 0 && r.height > 0) out.push(r);
+  }
+  return out;
+}
+
+/** The px size of 1rem, the readout's corner inset. @returns {number} Pixels. */
+function remPx() {
+  try {
+    const px = parseFloat(window.getComputedStyle(document.documentElement).fontSize);
+    return px > 0 ? px : 16;
+  } catch (_) {
+    return 16;
+  }
+}
+
+/**
+ * Move the attached readout out from under any city-screen panel, or hide it when there is no room.
+ * @param {*} el The panel element (must be attached so it can be measured).
+ * @param {boolean} fromLeft True when the readout is anchored to the left edge.
+ */
+function dockBesideCityPanels(el, fromLeft) {
+  const side = fromLeft ? "left" : "right";
+  if (!el.parentNode || typeof el.getBoundingClientRect !== "function" || typeof document.querySelector !== "function") {
+    setStyle(el, side, CORNER_INSET);
+    return;
+  }
+  // The corner box is worked out from the width rather than by moving the readout back to its corner
+  // and measuring: that reset, repeated on every check, is what made it blink.
+  const vw = window.innerWidth;
+  const r = el.getBoundingClientRect();
+  const corner = remPx();
+  const x = fromLeft ? corner : vw - corner - r.width;
+  const box = { left: x, right: x + r.width, top: r.top, bottom: r.bottom };
+  const inset = dockInset(fromLeft, vw, box, visibleCityPanels());
+  setStyle(el, "visibility", inset === null ? "hidden" : "");
+  setStyle(el, side, inset === null || inset === corner ? CORNER_INSET : inset + "px");
+}
+
+/** @type {*} Interval that re-docks the readout while it is showing. */
+let _dockTimer = null;
+
+/** Re-dock on a short interval while the readout is up, so City Details opening or closing moves it. */
+function startDockWatch() {
+  if (_dockTimer !== null || typeof setInterval !== "function") return;
+  _dockTimer = setInterval(() => {
+    try {
+      if (_el && _el.parentNode) positionPanel(_el);
+    } catch (_) {
+      /* ignore */
+    }
+  }, 150);
+}
+
+/** Stop the re-dock interval. */
+function stopDockWatch() {
+  if (_dockTimer === null) return;
+  clearInterval(_dockTimer);
+  _dockTimer = null;
 }
 
 /**
@@ -383,8 +495,9 @@ function renderPanel(model, cityKey) {
     _el.innerHTML = "";
     appendBody(_el, model);
     if (cityKey) mountExplain(_el, cityKey); // no-op when the explainer is off
-    positionPanel(_el);
     if (!_el.parentNode) root.appendChild(_el);
+    positionPanel(_el); // after mounting: docking measures the panel
+    startDockWatch();
   } catch (_) {
     /* ignore */
   }
@@ -439,6 +552,7 @@ function showCityReadout(cityId) {
 
 /** Hide the readout panel. */
 function hideCityReadout() {
+  stopDockWatch();
   try {
     if (_el && _el.parentNode) _el.remove();
   } catch (_) {

@@ -5,6 +5,14 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [3.2.1] - 2026-09-29
+
+### Fixed
+- **The city readout no longer covers the City Details panel.** Selecting a settlement opens the city screen, and the
+  per-city migration readout sat in the same top-right corner as City Details, drawn over its tabs. It now sits just
+  beside whichever city-screen panel holds its corner, and returns to the corner when City Details is closed. Affects
+  3.0.0 and later.
+
 ## [3.2.0] - 2026-09-29
 
 ### Changed

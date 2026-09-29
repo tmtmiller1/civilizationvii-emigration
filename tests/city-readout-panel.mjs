@@ -122,4 +122,63 @@ CONFIG.cityReadoutEnabled = false;
 api.city(poor);
 assert.ok(!panelMounted(), "with the readout disabled, nothing renders");
 
+// ── dockInset: the readout moves beside a city-screen panel that holds its corner. ──
+const { dockInset } = await import("/emigration/ui/emigration-city-readout.js");
+const VW = 2880;
+const cornerBox = { left: 2481, right: 2864, top: 146, bottom: 431 }; // top-right, 16 px inset (watched in game)
+const cityDetails = { left: 2419, right: 2880, top: 29, bottom: 1800 };
+assert.equal(dockInset(false, VW, cornerBox, []), 16, "no panel: the corner inset stands");
+assert.equal(dockInset(false, VW, cornerBox, [cityDetails]), 2880 - 2419 + 8, "City Details open: docks just left of it");
+const chooser = { left: 0, right: 470, top: 29, bottom: 1800 };
+const leftBox = { left: 16, right: 399, top: 146, bottom: 431 };
+assert.equal(dockInset(true, VW, leftBox, [chooser]), 478, "left corner: docks just right of the production list");
+assert.equal(dockInset(false, VW, cornerBox, [chooser]), 16, "a panel on the other side does not move it");
+const below = { left: 2419, right: 2880, top: 500, bottom: 1800 };
+assert.equal(dockInset(false, VW, cornerBox, [below]), 16, "a panel that does not reach the readout's rows does not move it");
+const wide = { left: 200, right: 2880, top: 0, bottom: 1800 };
+assert.equal(dockInset(false, VW, cornerBox, [wide]), null, "no room beside the panel: hide");
+assert.equal(dockInset(false, VW, cornerBox, [cityDetails, { left: 2300, right: 2600, top: 100, bottom: 300 }]), 2880 - 2300 + 8,
+  "overlapping panels: clears the farthest one");
+
+// ── In the DOM: a visible City Details moves the mounted readout; a hidden one does not. ──
+CONFIG.cityReadoutEnabled = true;
+CONFIG.cityReadoutCorner = "top-right";
+globalThis.window = { innerWidth: VW };
+const detailsEl = { classList: { contains: (c) => c === "hidden" && detailsHidden }, getBoundingClientRect: () => ({ ...cityDetails, width: 461, height: 1771 }) };
+let detailsHidden = false;
+document.querySelector = (sel) => (sel === "panel-city-details" ? detailsEl : null);
+const readoutRect = () => ({ ...cornerBox, width: 383, height: 285 });
+api.city(poor);
+const shown = body.children.find((c) => c.id === "emig-readout");
+shown.getBoundingClientRect = readoutRect;
+api.city(poor); // re-render now that the stub element can be measured
+assert.equal(shown.style.right, 2880 - 2419 + 8 + "px", "City Details open: the readout sits beside it");
+assert.equal(shown.style.visibility, "", "and stays visible");
+// A repeat check with nothing changed writes no style at all (rewriting made it blink in game).
+let writes = 0;
+const plainStyle = shown.style;
+shown.style = new Proxy(plainStyle, { set(t, k, v) { writes++; t[k] = v; return true; } });
+api.city(poor);
+assert.equal(writes, 0, "an unchanged dock rewrites no inline style");
+detailsHidden = true;
+api.city(poor);
+assert.equal(shown.style.right, "1rem", "City Details closed: back in its corner");
+
+// The production list's host spans up to City Details; only its drawn frame counts.
+CONFIG.cityReadoutCorner = "top-left";
+const leftRect = { ...leftBox, width: 383, height: 285 };
+shown.getBoundingClientRect = () => leftRect;
+const chooserFrame = { getBoundingClientRect: () => ({ ...chooser, width: 470, height: 1771 }) };
+const chooserHost = {
+  classList: { contains: () => false },
+  getBoundingClientRect: () => ({ left: 0, right: 2419, top: 29, bottom: 1800, width: 2419, height: 1771 }),
+  querySelector: (sel) => (sel === "fxs-subsystem-frame" ? chooserFrame : null)
+};
+document.querySelector = (sel) => (sel === "panel-production-chooser" ? chooserHost : null);
+api.city(poor);
+assert.equal(shown.style.left, "478px", "docks beside the drawn production frame, not its wide host");
+assert.equal(shown.style.visibility, "", "and is not hidden for lack of room");
+api.hideCity();
+delete document.querySelector;
+
 console.log("city-readout-panel harness passed");
