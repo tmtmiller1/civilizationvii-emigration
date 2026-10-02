@@ -4,19 +4,17 @@
 // cause-dispatched headline) and the explanatory-toast strings (loss headline, action hint, cost
 // note, composed digests). Pure logic; degrades to a plain English fallback when Locale can't compose.
 
-import { causeHint, causePermanence, stanceTip } from "/emigration/ui/emigration-causes.js";
+import { causeHint, causeHintMsg, causePermanence, stanceTipMsg } from "/emigration/ui/emigration-causes.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { warOpponents } from "/emigration/ui/emigration-war.js";
 import { quarterBonus } from "/emigration/ui/emigration-quarter-bonuses.js";
+import { msg, msgKey, msgCap, msgJoin, msgJoinWith, msgText } from "/emigration/ui/emigration-loc.js";
 
-// The spoiler mask for a belligerent the visibility policy hides (unmet). Localized lazily and cached
-// at first runtime use (Locale may not be ready at module load), so the value is stable both as
-// display text and for the identity comparisons in maskedWarName().
-/** @type {string|null} */
-let _unmetLabel = null;
-function unmetLabel() {
-  if (_unmetLabel == null) _unmetLabel = loc("LOC_EMIG_FALLBACK_UNMET_CIV") || "an unmet civilization";
-  return _unmetLabel;
+/** @typedef {import("/emigration/ui/emigration-loc.js").MsgNode} MsgNode */
+
+/** @returns {MsgNode} The spoiler mask for a civ the visibility policy hides (unmet), as a message node. */
+export function unmetMsg() {
+  return msg("LOC_EMIG_FALLBACK_UNMET_CIV", "an unmet civilization");
 }
 
 /**
@@ -36,16 +34,6 @@ function loc(key, ...args) {
     /* ignore */
   }
   return null;
-}
-
-/**
- * {@link loc} with a guaranteed English fallback: composes the key, or returns `fallback` on a miss.
- * Keeps the `loc(key) || english` idiom in ONE place so callers stay under the complexity budget.
- * @param {string} key A LOC key. @param {string} fallback The English fallback.
- * @param {...*} args Substitution args. @returns {string} The composed string, or the fallback.
- */
-function locOr(key, fallback, ...args) {
-  return loc(key, ...args) || fallback;
 }
 
 /**
@@ -72,17 +60,17 @@ function civTypeName(pid) {
 /**
  * A composed fallback adjective from the civ display name, or a generic label.
  * @param {number} pid Player id.
- * @returns {string} The fallback.
+ * @returns {MsgNode} The fallback.
  */
 function civDisplayAdjective(pid) {
   try {
     const dn = Players?.get?.(pid)?.civilizationName;
     const composed = dn ? loc(dn) : null;
-    if (composed) return composed;
+    if (composed) return msgKey(dn, composed);
   } catch (_) {
     /* ignore */
   }
-  return loc("LOC_EMIG_FALLBACK_A_PEOPLE") || "a people";
+  return msg("LOC_EMIG_FALLBACK_A_PEOPLE", "a people");
 }
 
 /**
@@ -117,14 +105,14 @@ function knownPlayer(pid) {
  * Game.IndependentPowers.independentName, or null when unavailable. Minor players don't carry a
  * useful civilization adjective, so this is how they get named.
  * @param {number} pid Player id.
- * @returns {string|null} The independent's name, or null.
+ * @returns {MsgNode|null} The independent's name, or null.
  */
 function independentName(pid) {
   if (!knownPlayer(pid)) return null;
   try {
     const ip = typeof Game !== "undefined" ? Game.IndependentPowers : null;
     const nm = ip && typeof ip.independentName === "function" ? ip.independentName(pid) : null;
-    if (typeof nm === "string" && nm.length) return loc(nm) || nm;
+    if (typeof nm === "string" && nm.length) return msgKey(nm, loc(nm) || nm);
   } catch (_) {
     /* ignore */
   }
@@ -139,19 +127,35 @@ function independentName(pid) {
  * @returns {string} The adjective.
  */
 export function civAdjective(pid) {
-  // City-states / Independent Powers: name them specifically (their civ type is generic otherwise).
+  return msgText(civAdjectiveMsg(pid));
+}
+
+/**
+ * {@link civAdjective} as a message node (the civ's own LOC key), for lines composed again at display.
+ * @param {number} pid Player id. @returns {MsgNode} The adjective.
+ */
+export function civAdjectiveMsg(pid) {
+  return civWordMsg(pid, "_ADJECTIVE");
+}
+
+/**
+ * A civ's adjective or name node: the LOC_CIVILIZATION_<STEM><suffix> key, with city-states / Independent
+ * Powers named specifically (their civ type is generic otherwise), then the display-name fallback.
+ * @param {number} pid Player id. @param {string} suffix "_ADJECTIVE" or "_NAME".
+ * @returns {MsgNode} The node.
+ */
+function civWordMsg(pid, suffix) {
   if (isMinorPlayer(pid)) {
     const indep = independentName(pid);
     if (indep) return indep;
   }
   const name = civTypeName(pid);
   if (name) {
-    const adj = loc("LOC_CIVILIZATION_" + name.replace(/^CIVILIZATION_/, "") + "_ADJECTIVE");
-    if (adj) return adj;
+    const key = "LOC_CIVILIZATION_" + name.replace(/^CIVILIZATION_/, "") + suffix;
+    const word = loc(key);
+    if (word) return msgKey(key, word);
   }
-  const indep = independentName(pid);
-  if (indep) return indep;
-  return civDisplayAdjective(pid);
+  return independentName(pid) || civDisplayAdjective(pid);
 }
 
 /**
@@ -162,18 +166,12 @@ export function civAdjective(pid) {
  * @returns {string} The civ name.
  */
 export function civName(pid) {
-  if (isMinorPlayer(pid)) {
-    const indep = independentName(pid);
-    if (indep) return indep;
-  }
-  const name = civTypeName(pid);
-  if (name) {
-    const nm = loc("LOC_CIVILIZATION_" + name.replace(/^CIVILIZATION_/, "") + "_NAME");
-    if (nm) return nm;
-  }
-  const indep = independentName(pid);
-  if (indep) return indep;
-  return civDisplayAdjective(pid);
+  return msgText(civNameMsg(pid));
+}
+
+/** {@link civName} as a message node. @param {number} pid Player id. @returns {MsgNode} The name. */
+export function civNameMsg(pid) {
+  return civWordMsg(pid, "_NAME");
 }
 
 /**
@@ -181,10 +179,12 @@ export function civName(pid) {
  * named but framed as hearsay. Only story surfaces relax the analytics spoiler mask this way; the
  * dashboard, lens, and notifications keep the strict "an unmet civilization" mask.
  * @param {number} pid Player id.
- * @returns {{adj:string, framed:boolean}} The real adjective, and whether to frame it as rumor.
+ * @returns {{adj:string, adjMsg:MsgNode, framed:boolean}} The real adjective (also as a message node), and
+ *   whether to frame it as rumor.
  */
 export function narrativeCiv(pid) {
-  return { adj: civAdjective(pid), framed: civHidden(pid) };
+  const adjMsg = civAdjectiveMsg(pid);
+  return { adj: msgText(adjMsg), adjMsg, framed: civHidden(pid) };
 }
 
 /**
@@ -195,11 +195,15 @@ export function narrativeCiv(pid) {
  * @returns {string} The quarter name, e.g. "Roman Quarter".
  */
 export function quarterName(originCiv) {
+  return msgText(quarterNameMsg(originCiv));
+}
+
+/** {@link quarterName} as a message node. @param {number} originCiv @returns {MsgNode} The name. */
+export function quarterNameMsg(originCiv) {
   const demonym = quarterBonus(civType(originCiv)).demonym;
-  if (demonym) return loc("LOC_EMIG_QUARTER_ENCLAVE", demonym) || demonym + " Enclave";
-  const adj = civAdjective(originCiv);
-  if (adj) return loc("LOC_EMIG_QUARTER_ENCLAVE", adj) || adj + " Enclave";
-  return loc("LOC_EMIG_QUARTER_ENCLAVE_FOREIGN") || "foreign enclave";
+  const adj = demonym || civAdjectiveMsg(originCiv);
+  if (adj) return msg("LOC_EMIG_QUARTER_ENCLAVE", "{1_Adj} Enclave", adj);
+  return msg("LOC_EMIG_QUARTER_ENCLAVE_FOREIGN", "foreign enclave");
 }
 
 /**
@@ -209,14 +213,19 @@ export function quarterName(originCiv) {
  * @returns {string} The disaster name.
  */
 export function disasterName(eventType) {
+  return msgText(disasterNameMsg(eventType));
+}
+
+/** {@link disasterName} as a message node. @param {*} eventType @returns {MsgNode} The name. */
+export function disasterNameMsg(eventType) {
   try {
     const nameKey = GameInfo?.RandomEvents?.lookup?.(eventType)?.Name;
     const composed = nameKey ? loc(nameKey) : null;
-    if (composed) return composed;
+    if (composed) return msgKey(nameKey, composed);
   } catch (_) {
     /* ignore */
   }
-  return loc("LOC_EMIG_FALLBACK_A_DISASTER") || "a disaster";
+  return msg("LOC_EMIG_FALLBACK_A_DISASTER", "a disaster");
 }
 
 /**
@@ -240,17 +249,22 @@ function prettifyType(type) {
  * @returns {string} The crisis name.
  */
 export function crisisName(type) {
+  return msgText(crisisNameMsg(type));
+}
+
+/** {@link crisisName} as a message node. @param {string} type @returns {MsgNode} The name. */
+function crisisNameMsg(type) {
   try {
     const row = GameInfo?.AgeCrisisEventTypes?.lookup?.(type);
     const composed = row && row.Name ? loc(row.Name) : null;
-    if (composed) return composed;
+    if (composed) return msgKey(row.Name, composed);
   } catch (_) {
     /* ignore */
   }
   const pretty = prettifyType(type);
   return pretty
-    ? locOr("LOC_EMIG_EVENT_CRISIS_SUFFIX", pretty + " Crisis", pretty)
-    : locOr("LOC_EMIG_EVENT_CRISIS", "Crisis");
+    ? msg("LOC_EMIG_EVENT_CRISIS_SUFFIX", "{1_Name} Crisis", pretty)
+    : msg("LOC_EMIG_EVENT_CRISIS", "Crisis");
 }
 
 /**
@@ -260,15 +274,22 @@ export function crisisName(type) {
  * @returns {string|null} The display name, or null.
  */
 export function eventDisplayName(eventKey) {
+  const node = eventDisplayNameMsg(eventKey);
+  return node == null ? null : msgText(node);
+}
+
+/**
+ * {@link eventDisplayName} as a message node, or null for the empty key.
+ * @param {string} eventKey @returns {MsgNode|null} The name.
+ */
+export function eventDisplayNameMsg(eventKey) {
   if (!eventKey) return null;
-  if (eventKey === "famine") return loc("LOC_EMIG_EVENT_FAMINE") || "Famine";
-  if (eventKey.indexOf("crisis:") === 0) return crisisName(eventKey.slice(7));
-  if (eventKey.indexOf("disaster:") === 0) return disasterName(eventKey.slice(9));
+  if (eventKey === "famine") return msg("LOC_EMIG_EVENT_FAMINE", "Famine");
+  if (eventKey.indexOf("crisis:") === 0) return crisisNameMsg(eventKey.slice(7));
+  if (eventKey.indexOf("disaster:") === 0) return disasterNameMsg(eventKey.slice(9));
   if (eventKey.indexOf("war:") === 0) {
     const parts = eventKey.split(":");
-    const a = Number(parts[1]);
-    const b = Number(parts[2]);
-    return warRefugeeName(a, [b]);
+    return warRefugeeNameMsg(Number(parts[1]), [Number(parts[2])]);
   }
   return prettifyType(eventKey) || null;
 }
@@ -311,7 +332,7 @@ function warIdBetween(a, b) {
  * is absent. The engine requires the war's uniqueID + a viewing player.
  * @param {number} victim Victim player id.
  * @param {number} aggressor Aggressor player id.
- * @returns {string|null} The localized war name, or null.
+ * @returns {MsgNode|null} The localized war name, or null.
  */
 function engineWarName(victim, aggressor) {
   try {
@@ -320,7 +341,7 @@ function engineWarName(victim, aggressor) {
     const wd = Game && Game.Diplomacy && Game.Diplomacy.getWarData
       ? Game.Diplomacy.getWarData(id, localPid()) : null;
     const wn = wd && typeof wd.warName === "string" ? wd.warName : null;
-    return wn ? loc(wn) || wn : null;
+    return wn ? msgKey(wn, loc(wn) || wn) : null;
   } catch (_) {
     return null;
   }
@@ -330,11 +351,11 @@ function engineWarName(victim, aggressor) {
  * A belligerent's display name for a war label, SPOILER-MASKED: a civ the visibility policy hides
  * (unmet) is never named, it reads as "an unmet civilization" instead of a real adjective.
  * @param {number} pid Player id.
- * @returns {string|null} The masked name, or null when the id is unusable.
+ * @returns {MsgNode|null} The masked name, or null when the id is unusable.
  */
 function belligerentName(pid) {
   if (typeof pid !== "number") return null;
-  return civHidden(pid) ? unmetLabel() : civAdjective(pid);
+  return civHidden(pid) ? unmetMsg() : civAdjectiveMsg(pid);
 }
 
 /**
@@ -361,20 +382,27 @@ function pickAggressor(victimPid, arr) {
 }
 
 /**
+ * A belligerent's masked name and whether the mask applies.
+ * @param {number|null} pid Player id, or null when there is none.
+ * @returns {{name:MsgNode|null, hidden:boolean}} The name (null when the id is unusable) and mask flag.
+ */
+function belligerent(pid) {
+  return { name: pid == null ? null : belligerentName(pid), hidden: typeof pid === "number" && civHidden(pid) };
+}
+
+/**
  * The spoiler-masked war name when EITHER side is hidden (unmet): "{Known} vs. an unmet
  * civilization", naming the side we're allowed to show. Null when neither side is masked (a normal
  * name applies) or both are masked (nothing safe to name).
- * @param {string|null} victimName Victim's (already-masked) name.
- * @param {string|null} aggressorName Aggressor's (already-masked) name, or null.
- * @returns {string|null} The masked name, or null.
+ * @param {{name:MsgNode|null, hidden:boolean}} victim Victim's (already-masked) name, and whether masked.
+ * @param {{name:MsgNode|null, hidden:boolean}} aggressor Aggressor's name (null when none) and mask flag.
+ * @returns {MsgNode|null} The masked name, or null.
  */
-function maskedWarName(victimName, aggressorName) {
-  const unmet = unmetLabel();
-  if (aggressorName !== unmet && victimName !== unmet) return null;
-  const known = victimName !== unmet ? victimName
-    : aggressorName !== unmet ? aggressorName : null;
+function maskedWarName(victim, aggressor) {
+  if (!aggressor.hidden && !victim.hidden) return null;
+  const known = !victim.hidden ? victim.name : !aggressor.hidden ? aggressor.name : null;
   if (!known) return null;
-  return loc("LOC_EMIG_WAR_VS_UNMET", known) || known + " vs. an unmet civilization";
+  return msg("LOC_EMIG_WAR_VS_UNMET", "{1_Civ} vs. an unmet civilization", known);
 }
 
 /**
@@ -398,90 +426,87 @@ function bothMetMajors(victimPid, aggressor) {
  * @returns {string} A war name.
  */
 export function warRefugeeName(victimPid, aggressorPids) {
+  return msgText(warRefugeeNameMsg(victimPid, aggressorPids));
+}
+
+/**
+ * {@link warRefugeeName} as a message node.
+ * @param {number} victimPid Victim player id. @param {Iterable<number>} aggressorPids Aggressor ids.
+ * @returns {MsgNode} The war name.
+ */
+export function warRefugeeNameMsg(victimPid, aggressorPids) {
   const arr = aggressorPids ? [...aggressorPids].filter((x) => typeof x === "number") : [];
   const aggressor = pickAggressor(victimPid, arr);
-  const victimName = belligerentName(victimPid);
-  const aggressorName = aggressor != null ? belligerentName(aggressor) : null;
-  const masked = maskedWarName(victimName, aggressorName);
+  const victim = belligerent(victimPid);
+  const other = belligerent(aggressor);
+  const victimName = victim.name;
+  const aggressorName = other.name;
+  const masked = maskedWarName(victim, other);
   if (masked) return masked;
   if (aggressor != null && bothMetMajors(victimPid, aggressor)) {
     const wn = engineWarName(victimPid, aggressor);
     if (wn) return wn;
   }
   if (aggressorName && victimName) {
-    return locOr("LOC_EMIG_WARNAME_TWO", victimName + "–" + aggressorName + " War", victimName, aggressorName);
+    return msg("LOC_EMIG_WARNAME_TWO", "{1_Victim}–{2_Aggressor} War", victimName, aggressorName);
   }
   // opponent unresolved (peace already declared, etc.)
-  const vn = victimName || "the";
-  return locOr("LOC_EMIG_WARNAME_ONE", vn + " War", vn);
-}
-
-/**
- * A localized headline from a LOC key + two args, or a plain English `fallback`.
- * @param {string} key LOC key.
- * @param {string} a First arg.
- * @param {string} b Second arg.
- * @param {string} fallback Plain English fallback.
- * @returns {string} The headline.
- */
-function pick(key, a, b, fallback) {
-  return loc(key, a, b) || fallback;
+  return msg("LOC_EMIG_WARNAME_ONE", "{1_Victim} War", victimName || "the");
 }
 
 /**
  * The flavored headline for a refugee event, dispatched by cause. Localized via
  * LOC_EMIG_NEWS_* when available; otherwise a plain English fallback.
- * @param {{cause:string, people:string, cityName?:string, eventName?:string,
- *          warName?:string, civ?:string}} ev Event.
+ * @param {{cause:string, people:MsgNode, cityName?:MsgNode, eventName?:MsgNode,
+ *          warName?:MsgNode, civ?:MsgNode}} ev Event (each text field a string or message node).
  * @returns {string} The headline.
  */
 export function refugeeHeadline(ev) {
-  const people = ev.people || loc("LOC_EMIG_FALLBACK_PEOPLE") || "people";
-  const city = ev.cityName || loc("LOC_EMIG_FALLBACK_A_SETTLEMENT") || "a settlement";
+  return msgText(refugeeHeadlineMsg(ev));
+}
+
+/**
+ * {@link refugeeHeadline} as a message node.
+ * @param {{cause:string, people:MsgNode, cityName?:MsgNode, eventName?:MsgNode,
+ *          warName?:MsgNode, civ?:MsgNode}} ev Event.
+ * @returns {MsgNode} The headline.
+ */
+export function refugeeHeadlineMsg(ev) {
+  const people = ev.people || msg("LOC_EMIG_FALLBACK_PEOPLE", "people");
+  const city = ev.cityName || msg("LOC_EMIG_FALLBACK_A_SETTLEMENT", "a settlement");
   if (ev.cause === "crisis") {
-    const civ = ev.civ || loc("LOC_EMIG_FALLBACK_A_NATION") || "A nation";
-    return pick("LOC_EMIG_NEWS_CRISIS", civ, people, "Refugee crisis: " + civ + " ; " + people + " displaced.");
+    const civ = ev.civ || msg("LOC_EMIG_FALLBACK_A_NATION", "A nation");
+    return msg("LOC_EMIG_NEWS_CRISIS", "Refugee crisis: {1_Civ} ; {2_People} displaced.", civ, people);
   }
   const body = refugeeBody(ev, people, city);
   // The event-named templates above name the war/disaster/city but NOT the affected
   // civ. When the caller supplies a civ (already spoiler-guarded, an unmet civ is
-  // passed as "an unmet civilization"), lead with it so world news says WHO was hit.
-  return ev.civ ? whoLed(ev.civ, body) : body;
+  // passed as "an unmet civilization"), lead with it so world news says WHO was hit,
+  // capitalized for the leading position ("Carthaginians: 1,200 flee the war.").
+  return ev.civ ? msg("LOC_EMIG_NEWS_WHO", "{1_Civ}: {2_Headline}", msgCap(ev.civ), body) : body;
 }
 
 /**
  * The event-named refugee headline body (no civ): names the disaster / war / sacked
- * city / settlement. Split out so {@link refugeeHeadline} can optionally prefix WHO.
+ * city / settlement. Split out so {@link refugeeHeadlineMsg} can optionally prefix WHO.
  * @param {*} ev The world-news event descriptor.
- * @param {string} people The formatted people count.
- * @param {string} city The settlement name (fallback "a settlement").
- * @returns {string} The headline body.
+ * @param {MsgNode} people The formatted people count.
+ * @param {MsgNode} city The settlement name (fallback "a settlement").
+ * @returns {MsgNode} The headline body.
  */
 function refugeeBody(ev, people, city) {
   if (ev.cause === "disaster") {
-    const n = ev.eventName || loc("LOC_EMIG_FALLBACK_A_DISASTER_START") || "A disaster";
-    return pick("LOC_EMIG_NEWS_DISASTER", n, people, n + " displaces " + people + ".");
+    const n = ev.eventName || msg("LOC_EMIG_FALLBACK_A_DISASTER_START", "A disaster");
+    return msg("LOC_EMIG_NEWS_DISASTER", "{1_EventName} displaces {2_People}.", n, people);
   }
   if (ev.cause === "war") {
-    const w = ev.warName || loc("LOC_EMIG_FALLBACK_WAR") || "war";
-    return pick("LOC_EMIG_NEWS_WAR", w, people, people + " flee the " + w + ".");
+    const w = ev.warName || msg("LOC_EMIG_FALLBACK_WAR", "war");
+    return msg("LOC_EMIG_NEWS_WAR", "{2_People} flee the {1_WarName}.", w, people);
   }
   if (ev.cause === "conquest") {
-    return pick("LOC_EMIG_NEWS_CONQUEST", city, people, "The sack of " + city + " scatters " + people + ".");
+    return msg("LOC_EMIG_NEWS_CONQUEST", "The sack of {1_City} scatters {2_People}.", city, people);
   }
-  return pick("LOC_EMIG_NEWS_GENERIC", city, people, people + " leave " + city + ".");
-}
-
-/**
- * Prefix a headline body with the (already spoiler-guarded) affected civ, capitalized
- * for the leading position. e.g. "Carthaginians: 1,200 flee the war."
- * @param {string} civ The affected-civ label (real adjective, or the unmet mask).
- * @param {string} body The event headline body.
- * @returns {string} The civ-led headline.
- */
-function whoLed(civ, body) {
-  const lead = civ ? civ.charAt(0).toUpperCase() + civ.slice(1) : civ;
-  return loc("LOC_EMIG_NEWS_WHO", lead, body) || (lead + ": " + body);
+  return msg("LOC_EMIG_NEWS_GENERIC", "{2_People} leave {1_City}.", city, people);
 }
 
 /** Cause → its localized loss-headline LOC key (per-cause, so each sentence reads naturally). */
@@ -493,6 +518,16 @@ const DIGEST_KEY = {
   disaster: "LOC_EMIG_DIGEST_DISASTER",
   conquest: "LOC_EMIG_DIGEST_CONQUEST",
   attrition: "LOC_EMIG_DIGEST_ATTRITION"
+};
+
+/** Cause → its English loss-headline fallback template ({1_People}, {2_City}). */
+/** @type {Record<string,string>} */
+const DIGEST_FALLBACK = {
+  unhappiness: "{1_People} left {2_City}, unhappy at home.",
+  prosperity: "{1_People} left {2_City} for more prosperous neighbors.",
+  war: "{1_People} fled the fighting around {2_City}.",
+  disaster: "{1_People} fled {2_City} after disaster struck.",
+  attrition: "{2_City} suffered {1_People} casualties."
 };
 
 /** Permanence class → English fallback cue (used when the LOC string can't be composed). */
@@ -530,37 +565,25 @@ export function permanenceCue(cause) {
 }
 
 /**
- * The English fallback loss-headline for a cause.
- * @param {string|undefined} cause The migration cause.
- * @param {string} people People-count phrase.
- * @param {string} city Source city name.
- * @returns {string} The headline.
- */
-function digestFallback(cause, people, city) {
-  switch (cause) {
-    case "unhappiness": return `${people} left ${city}, unhappy at home.`;
-    case "prosperity": return `${people} left ${city} for more prosperous neighbors.`;
-    case "war": return `${people} fled the fighting around ${city}.`;
-    case "disaster": return `${people} fled ${city} after disaster struck.`;
-    case "attrition": return `${city} suffered ${people} casualties.`;
-    default: return `${people} left ${city}.`;
-  }
-}
-
-/**
  * A localized loss headline naming the cause, the people, and the city.
  * @param {string|undefined} cause The migration cause.
- * @param {string} people People-count phrase (e.g. "12 thousand people").
- * @param {string} city Source city name.
+ * @param {MsgNode} people People-count phrase (e.g. "12 thousand people").
+ * @param {MsgNode} city Source city name.
  * @returns {string} The headline.
  */
 export function lossHeadline(cause, people, city) {
+  return msgText(lossHeadlineMsg(cause, people, city));
+}
+
+/**
+ * {@link lossHeadline} as a message node. A cause without its own headline reads "<people> left <city>."
+ * @param {string|undefined} cause @param {MsgNode} people @param {MsgNode} city
+ * @returns {MsgNode} The headline.
+ */
+function lossHeadlineMsg(cause, people, city) {
   const key = cause ? DIGEST_KEY[cause] : null;
-  if (key) {
-    const v = loc(key, people, city);
-    if (v) return v;
-  }
-  return digestFallback(cause, people, city);
+  const fb = (cause && DIGEST_FALLBACK[cause]) || "{1_People} left {2_City}.";
+  return msg(key || "LOC_EMIG_DIGEST_GENERIC", fb, people, city);
 }
 
 /**
@@ -570,10 +593,12 @@ export function lossHeadline(cause, people, city) {
  * @returns {string} The note.
  */
 export function costNote(destName, gold) {
-  return (
-    loc("LOC_EMIG_COST_NOTE", destName, String(gold)) ||
-    `${destName} pays about ${gold} gold/turn to integrate them.`
-  );
+  return msgText(costNoteMsg(destName, gold));
+}
+
+/** {@link costNote} as a message node. @param {MsgNode} destName @param {number} gold @returns {MsgNode} */
+function costNoteMsg(destName, gold) {
+  return msg("LOC_EMIG_COST_NOTE", "{1_Dest} pays about {2_Gold} gold/turn to integrate them.", destName, String(gold));
 }
 
 /**
@@ -585,10 +610,19 @@ export function costNote(destName, gold) {
  * @returns {string} The parenthetical tag (leading space), or "".
  */
 export function scopeClause(cause, crossCiv) {
-  if (cause === "attrition") return ""; // a death went nowhere to label
-  const key = crossCiv ? "LOC_EMIG_SCOPE_EXTERNAL" : "LOC_EMIG_SCOPE_INTERNAL";
-  const fb = crossCiv ? "(External Move)" : "(Internal Move)";
-  return " " + (loc(key) || fb);
+  const node = scopeTagMsg(cause, crossCiv);
+  return node ? " " + msgText(node) : "";
+}
+
+/**
+ * The movement-scope tag as a message node (no leading space), or null for a death.
+ * @param {string|undefined} cause @param {boolean|undefined} crossCiv @returns {MsgNode|null} The tag.
+ */
+function scopeTagMsg(cause, crossCiv) {
+  if (cause === "attrition") return null; // a death went nowhere to label
+  return crossCiv
+    ? msg("LOC_EMIG_SCOPE_EXTERNAL", "(External Move)")
+    : msg("LOC_EMIG_SCOPE_INTERNAL", "(Internal Move)");
 }
 
 /**
@@ -601,7 +635,12 @@ export function scopeClause(cause, crossCiv) {
  */
 export function destClause(cause, destName) {
   if (cause === "attrition" || !destName) return ""; // a death, or an unresolved destination
-  return " " + (loc("LOC_EMIG_DEST_CLAUSE", destName) || `Bound for ${destName}.`);
+  return " " + msgText(destClauseMsg(destName));
+}
+
+/** The "Bound for <dest>." clause node. @param {MsgNode} destName @returns {MsgNode} The clause. */
+function destClauseMsg(destName) {
+  return msg("LOC_EMIG_DEST_CLAUSE", "Bound for {1_Dest}.", destName);
 }
 
 // The blank line separating a digest's SITUATION from its GUIDANCE. Surfaces with white-space:pre-line
@@ -612,19 +651,18 @@ const DIGEST_GAP = "\n\n";
 // the redundant "Drawn there: …" clause. The forced causes keep their clause, which names the refuge.
 const HEADLINE_STATES_WHY = new Set(["prosperity"]);
 
-/**
-// Per-cause "flowing headline WITH a resolved destination": LOC key plus an English fallback builder
-// (people, city, dest). Causes absent here keep the two-part "headline. Bound for <dest>." form.
-/** @type {Record<string, {key:string, fb:(p:string,c:string,d:string)=>string}>} */
+// Per-cause "flowing headline WITH a resolved destination": LOC key plus its English fallback template
+// ({1_People}, {2_City}, {3_Dest}). Causes absent here keep the two-part "headline. Bound for <dest>." form.
+/** @type {Record<string, {key:string, fb:string}>} */
 const DIGEST_TO = {
   disaster: { key: "LOC_EMIG_DIGEST_DISASTER_TO",
-    fb: (p, c, d) => `${p} fled ${c} after disaster struck, and are bound for ${d}.` },
+    fb: "{1_People} fled {2_City} after disaster struck, and are bound for {3_Dest}." },
   prosperity: { key: "LOC_EMIG_DIGEST_PROSPERITY_TO",
-    fb: (p, c, d) => `${p} left ${c} for its more prosperous neighbor, ${d}.` },
+    fb: "{1_People} left {2_City} for its more prosperous neighbor, {3_Dest}." },
   war: { key: "LOC_EMIG_DIGEST_WAR_TO",
-    fb: (p, c, d) => `${p} fled the fighting around ${c} for the safety of ${d}.` },
+    fb: "{1_People} fled the fighting around {2_City} for the safety of {3_Dest}." },
   unhappiness: { key: "LOC_EMIG_DIGEST_UNHAPPINESS_TO",
-    fb: (p, c, d) => `${p} left ${c} for ${d}, unhappy at home.` }
+    fb: "{1_People} left {2_City} for {3_Dest}, unhappy at home." }
   // Conquest is NOT here: its "destination" is the captured city itself (src === dest), so it names the
   // conquering civ instead — see the dedicated branch in headlineWithDest.
 };
@@ -633,36 +671,38 @@ const DIGEST_TO = {
  * The digest's opening "situation" sentence: the cause-named loss headline plus where the people went.
  * Conquest names the CONQUERING civ rather than a destination; a cause with a {@link DIGEST_TO} entry
  * and a resolved destination reads as one flowing sentence; any other case appends "Bound for <dest>."
- * @param {{cause?:string, people:string, city:string, destName?:string, byCiv?:string}} o Inputs. `byCiv`
- *   is the (already unmet-masked) conquering civ, present only for conquest.
- * @returns {string} The situation sentence.
+ * @param {{cause?:string, people:MsgNode, city:MsgNode, destName?:MsgNode, byCiv?:MsgNode}} o Inputs.
+ *   `byCiv` is the (already unmet-masked) conquering civ, present only for conquest.
+ * @returns {MsgNode} The situation sentence.
  */
 function headlineWithDest(o) {
   if (o.cause === "conquest") {
     // Conquest's destName is the captured city itself, so never a "… to <dest>" clause; name the conqueror.
     if (o.byCiv) {
-      return loc("LOC_EMIG_DIGEST_CONQUEST_BY", o.people, o.city, o.byCiv)
-        || `${o.people} were captured when ${o.city} was conquered by ${o.byCiv}.`;
+      return msg("LOC_EMIG_DIGEST_CONQUEST_BY", "{1_People} were captured when {2_City} was conquered by {3_Civ}.",
+        o.people, o.city, o.byCiv);
     }
-    return lossHeadline(o.cause, o.people, o.city); // no conqueror resolved → the plain capture headline
+    return lossHeadlineMsg(o.cause, o.people, o.city); // no conqueror resolved → the plain capture headline
   }
   const dest = o.destName;
   const spec = o.cause && dest ? DIGEST_TO[o.cause] : null;
-  if (spec && dest) return loc(spec.key, o.people, o.city, dest) || spec.fb(o.people, o.city, dest);
-  return lossHeadline(o.cause, o.people, o.city) + destClause(o.cause, o.destName);
+  if (spec && dest) return msg(spec.key, spec.fb, o.people, o.city, dest);
+  const head = lossHeadlineMsg(o.cause, o.people, o.city);
+  return o.cause === "attrition" || !dest ? head : msgJoin(head, " ", destClauseMsg(dest));
 }
 
 /**
- * The cross-civ extras that follow the action hint (each with a leading space): the Anti-Immigration
- * Stance tip when the caller asks for it (a voluntary loss to another civ with no retention policy
- * slotted), then the destination's integration cost when it is material (>= 1 gold/turn).
- * @param {{crossCiv?:boolean, destName?:string, destGold?:number, stanceTip?:boolean}} o Digest inputs.
- * @returns {string} The notes, or "".
+ * The cross-civ extras that follow the action hint: the Anti-Immigration Stance tip when the caller asks
+ * for it (a voluntary loss to another civ with no retention policy slotted), then the destination's
+ * integration cost when it is material (>= 1 gold/turn).
+ * @param {{crossCiv?:boolean, destName?:MsgNode, destGold?:number, stanceTip?:boolean}} o Digest inputs.
+ * @returns {MsgNode[]} The notes (possibly none).
  */
 function crossCivNotes(o) {
-  let notes = o.stanceTip ? " " + stanceTip() : "";
+  const notes = [];
+  if (o.stanceTip) notes.push(stanceTipMsg());
   if (o.crossCiv && o.destName && (o.destGold || 0) >= 1) {
-    notes += " " + costNote(o.destName, Math.round(o.destGold || 0));
+    notes.push(costNoteMsg(o.destName, Math.round(o.destGold || 0)));
   }
   return notes;
 }
@@ -671,57 +711,70 @@ function crossCivNotes(o) {
  * Compose the local player's per-pass migration digest as two blocks separated by {@link DIGEST_GAP}:
  * the SITUATION (loss headline + where they went) and the GUIDANCE ("why here" clause, action hint,
  * cross-civ cost note when material, movement-scope tag). Pure; the caller resolves the inputs.
- * @param {{cause?:string, people:string, city:string, crossCiv?:boolean, destName?:string,
- *          destGold?:number, why?:string, byCiv?:string, stanceTip?:boolean}} o The resolved digest
- *   inputs. `stanceTip` adds the Anti-Immigration Stance tip (the caller decides when it applies). `why` is the
- *   pre-localized "why here" phrase, appended as a short clause when present; `byCiv` is the
- *   (already unmet-masked) conquering civ, used only by the conquest headline.
+ * @param {{cause?:string, people:MsgNode, city:MsgNode, crossCiv?:boolean, destName?:MsgNode,
+ *          destGold?:number, why?:MsgNode, byCiv?:MsgNode, stanceTip?:boolean}} o The resolved digest
+ *   inputs (text fields as strings or message nodes). `stanceTip` adds the Anti-Immigration Stance tip
+ *   (the caller decides when it applies). `why` is the "why here" phrase, appended as a short clause
+ *   when present; `byCiv` is the (already unmet-masked) conquering civ, used only by the conquest headline.
  * @returns {string} The composed message.
  */
 export function localDigestMessage(o) {
+  return msgText(localDigestMsg(o));
+}
+
+/**
+ * {@link localDigestMessage} as a message node.
+ * @param {Parameters<typeof localDigestMessage>[0]} o The resolved digest inputs.
+ * @returns {MsgNode} The digest.
+ */
+export function localDigestMsg(o) {
   const situation = headlineWithDest(o);
-  let guidance = "";
-  // The "why here" clause leads the guidance; causes whose flowing headline already states the pull
-  // don't repeat it.
-  if (!(o.cause && HEADLINE_STATES_WHY.has(o.cause))) guidance += whyClause(o.cause, o.why);
-  const hint = actionHint(o.cause, o.city); // then the action hint (what you can do / how durable it is)
-  if (hint) guidance += " " + hint;
-  guidance += crossCivNotes(o);
-  guidance += scopeClause(o.cause, o.crossCiv); // trailing (Internal Move) / (External Move) tag
-  guidance = guidance.trim();
-  return guidance ? situation + DIGEST_GAP + guidance : situation;
+  const guidance = [
+    // The "why here" clause leads the guidance; causes whose flowing headline already states the pull
+    // don't repeat it.
+    o.cause && HEADLINE_STATES_WHY.has(o.cause) ? null : whyClause(o.cause, o.why),
+    causeHintMsg(o.cause, o.city), // what you can do / how durable it is
+    ...crossCivNotes(o),
+    scopeTagMsg(o.cause, o.crossCiv) // trailing (Internal Move) / (External Move) tag
+  ].filter((p) => p != null && p !== "");
+  return guidance.length ? msgJoin(situation, DIGEST_GAP, msgJoinWith(" ", guidance)) : situation;
 }
 
 /**
  * Compose the local player's per-pass INBOUND immigration digest: a "people settled in <city>"
  * headline plus, for a met origin, a "drawn from <civ>" clause. The mirror of
  * {@link localDigestMessage} for arrivals. Pure; the caller resolves + unmet-masks the inputs.
- * @param {{cause?:string, people:string, city:string, fromCiv?:string}} o The resolved inputs. `people`
- *   is the pre-formatted dual-count string; `fromCiv` is the (already unmet-masked) origin civ, omitted
- *   when unknown.
+ * @param {{cause?:string, people:MsgNode, city:MsgNode, fromCiv?:MsgNode}} o The resolved inputs.
+ *   `people` is the dual-count phrase; `fromCiv` is the (already unmet-masked) origin civ, omitted when
+ *   unknown.
  * @returns {string} The composed message.
  */
 export function inboundDigestMessage(o) {
-  let msg = loc("LOC_EMIG_INBOUND_HEADLINE", o.people, o.city) || `${o.people} settled in ${o.city}.`;
-  if (o.fromCiv) {
-    msg += " " + (loc("LOC_EMIG_INBOUND_FROM", o.fromCiv) || `Newcomers drawn from ${o.fromCiv}.`);
-  }
-  return msg;
+  return msgText(inboundDigestMsg(o));
+}
+
+/**
+ * {@link inboundDigestMessage} as a message node.
+ * @param {Parameters<typeof inboundDigestMessage>[0]} o The resolved inputs. @returns {MsgNode} The digest.
+ */
+export function inboundDigestMsg(o) {
+  const head = msg("LOC_EMIG_INBOUND_HEADLINE", "{1_People} settled in {2_City}.", o.people, o.city);
+  if (!o.fromCiv) return head;
+  return msgJoin(head, " ", msg("LOC_EMIG_INBOUND_FROM", "Newcomers drawn from {1_Civ}.", o.fromCiv));
 }
 
 /**
  * The trailing "why" clause for a digest: a death reads as a cause ("The cause: siege, no safe
- * refuge."); a move reads as a pull ("Drawn there: nearby, open borders."). Empty when no why.
+ * refuge."); a move reads as a pull ("Drawn there: nearby, open borders."). Null when no why.
  * @param {string|undefined} cause The migration cause.
- * @param {string|undefined} why The pre-localized reason phrase.
- * @returns {string} The clause (leading space), or "".
+ * @param {MsgNode|undefined} why The reason phrase.
+ * @returns {MsgNode|null} The clause, or null.
  */
 function whyClause(cause, why) {
-  if (!why) return "";
-  const isDeath = cause === "attrition";
-  const key = isDeath ? "LOC_EMIG_DEATH_WHY_CLAUSE" : "LOC_EMIG_WHY_CLAUSE";
-  const fb = isDeath ? `The cause: ${why}.` : `Drawn there by its ${why}.`;
-  return " " + (loc(key, why) || fb);
+  if (!why) return null;
+  return cause === "attrition"
+    ? msg("LOC_EMIG_DEATH_WHY_CLAUSE", "The cause: {1_Why}.", why)
+    : msg("LOC_EMIG_WHY_CLAUSE", "Drawn there by its {1_Why}.", why);
 }
 
 /**
@@ -732,8 +785,11 @@ function whyClause(cause, why) {
  * @returns {string} The cue line.
  */
 export function pressureCueMessage(srcName, destName) {
-  return (
-    loc("LOC_EMIG_PRESSURE_CUE", srcName, destName) ||
-    `Rising emigration pressure: citizens in ${srcName} are increasingly drawn to ${destName}.`
-  );
+  return msgText(pressureCueMsg(srcName, destName));
+}
+
+/** {@link pressureCueMessage} as a message node. @param {string} srcName @param {string} destName */
+export function pressureCueMsg(srcName, destName) {
+  return msg("LOC_EMIG_PRESSURE_CUE",
+    "Rising emigration pressure: citizens in {1_City} are increasingly drawn to {2_Dest}.", srcName, destName);
 }

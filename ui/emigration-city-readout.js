@@ -19,7 +19,7 @@ import { formatPeople, localeNumber } from "/emigration/ui/emigration-population
 import { reasonsPhrase, pullReasonsPhrase } from "/emigration/ui/emigration-move-reasons.js";
 import { mountExplain } from "/emigration/ui/emigration-explain-view.js";
 import { toast } from "/emigration/ui/emigration-feedback.js";
-import { loc } from "/emigration/ui/emigration-loc.js";
+import { loc, localeFontFamily } from "/emigration/ui/emigration-loc.js";
 
 const POOL_SEVERITY_MEDIUM = 4;
 const POOL_SEVERITY_HIGH = 8;
@@ -239,7 +239,7 @@ function sparkSeries(s) {
 const PANEL_CSS =
   ".emig-readout{position:fixed;z-index:98;min-width:16rem;max-width:24rem;" +
   "padding:0.5rem 0.8rem;pointer-events:none;" +
-  'font-family:"BodyFont","BodyFont-JP","BodyFont-KR","BodyFont-SC","BodyFont-TC";' +
+  "font-family:" + localeFontFamily("body") + ";" +
   "font-size:var(--dg-fs-85);color:#e5d2ac;" +
   "background:linear-gradient(180deg,rgba(18,21,31,0.94) 0%,rgba(5,7,13,0.94) 100%);" +
   "border:0.0555rem solid rgba(229,210,172,0.4);border-radius:0.333rem;" +

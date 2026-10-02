@@ -10,11 +10,10 @@ import { allQuarterEntries } from "/emigration/ui/emigration-quarter-state.js";
 import { enclaveTypeOf } from "/emigration/ui/emigration-enclave-place.js";
 import { stanceYields } from "/emigration/ui/emigration-enclave-yields.js";
 import { markerStageLine } from "/emigration/ui/emigration-enclave-tooltip-data.js";
+import { loc, localeFonts } from "/emigration/ui/emigration-loc.js";
 
 /** Matches our generated enclave improvement types. */
 const ENCLAVE_RE = /^IMPROVEMENT_EMIG_ENCLAVE_/;
-/** Title-font stack (matches core global-scaling TITLE_FONTS); avoids a fragile import. */
-const FONTS = ["TitleFont", "TitleFont-SC", "TitleFont-TC", "TitleFont-JP", "TitleFont-KR"];
 /** OVERLAY_PRIORITY.MAX_PRIORITY — paint above the lens layers. */
 const OVERLAY_MAX_PRIORITY = 10;
 /** Label opacity (ABGR high byte) + white body. */
@@ -220,7 +219,7 @@ function enclaveLabel(type) {
   const name = typeof civName === "string" && civName && !/^LOC_/.test(civName)
     ? civName
     : short.charAt(0) + short.slice(1).toLowerCase().replace(/_/g, " ");
-  return name + " Enclave";
+  return loc("LOC_EMIG_QUARTER_ENCLAVE", "{1_Demonym} Enclave", name);
 }
 
 /**
@@ -252,7 +251,7 @@ function paintOne(tile) {
   const icon = enclaveIcon(tile.type);
   if (icon) safe(() => _grid.addSprite(tile.idx, icon, { x: 0, y: ICON_Y, z: ICON_Z }, { scale: ICON_SCALE }));
   const label = enclaveLabel(tile.type).toUpperCase();
-  const params = { fonts: FONTS, fontSize: TEXT_FONT_SIZE, fill: labelFill(), faceCamera: true };
+  const params = { fonts: localeFonts("title"), fontSize: TEXT_FONT_SIZE, fill: labelFill(), faceCamera: true };
   safe(() => _grid.addText(tile.idx, label, { x: 0, y: TEXT_Y, z: TEXT_Z }, params));
   if (tile.stage) {
     const small = { ...params, fontSize: STAGE_FONT_SIZE };

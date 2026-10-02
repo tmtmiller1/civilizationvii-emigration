@@ -176,8 +176,8 @@ function nameEdges(raw) {
   return (raw || []).map((/** @type {*} */ e) => ({
     from: e.src,
     to: e.dest,
-    fromName: e.src === UNMET_ID ? UNMET_NAME : civAdjective(e.src),
-    toName: e.dest === UNMET_ID ? UNMET_NAME : civAdjective(e.dest),
+    fromName: e.src === UNMET_ID ? unmetName() : civAdjective(e.src),
+    toName: e.dest === UNMET_ID ? unmetName() : civAdjective(e.dest),
     fromCity: e.srcCity || "",
     toCity: e.destCity || "",
     people: e.people || 0,
@@ -229,7 +229,8 @@ function splitFlows(raw) {
 // still surfaced, so a civ whose people fled to an unmet neighbor shows them "left for Unmet" rather
 // than nothing, but it's anonymized to one bucket so no unmet civ's identity (or city) is revealed.
 const UNMET_ID = -2;
-const UNMET_NAME = "Unmet";
+/** @returns {string} The anonymous bucket's name in the current language. */
+const unmetName = () => loc("LOC_EMIG_NETC_UNMET", "Unmet");
 
 /**
  * Remap a flow edge's policy-hidden endpoint(s) to the anonymous "Unmet" bucket (blanking that side's
@@ -293,7 +294,8 @@ function composeCityName(raw) {
  * @returns {string} City name.
  */
 function cityName(s, ord) {
-  return composeCityName(s && s.city && s.city.name) || (s && s.isTown ? "Town " : "City ") + ord;
+  return composeCityName(s && s.city && s.city.name)
+    || (s && s.isTown ? loc("LOC_EMIG_FALLBACK_TOWN_N", "Town {1_N}", ord) : loc("LOC_EMIG_FALLBACK_CITY_N", "City {1_N}", ord));
 }
 
 /**

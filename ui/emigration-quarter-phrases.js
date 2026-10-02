@@ -4,7 +4,7 @@
 // only a REAL feature of the host city (keys supplied by emigration-city-features.js), framed at the
 // EDGE of the city where the ethnicity lens paints a diaspora. Pure: a deterministic, seeded choice.
 
-import { loc } from "/emigration/ui/emigration-loc.js";
+import { msg, msgText } from "/emigration/ui/emigration-loc.js";
 
 /** @type {Record<string, string[]>} Truthful edge-of-city phrases, one list per real feature key. */
 const FEATURE_QUARTERS = {
@@ -85,16 +85,25 @@ function presentFeatures(keys) {
  * @returns {string} A prepositional phrase, e.g. "by the harbor" or "on the edge of the city".
  */
 export function resolveQuarter(keys, seed) {
+  return msgText(resolveQuarterMsg(keys, seed));
+}
+
+/**
+ * {@link resolveQuarter} as a message node, for Chronicle lines composed again at display time.
+ * @param {*} keys The city's feature keys. @param {*} seed The deterministic seed.
+ * @returns {import("/emigration/ui/emigration-loc.js").MsgNode} The phrase.
+ */
+export function resolveQuarterMsg(keys, seed) {
   const s = typeof seed === "string" ? seed : String(seed || "");
   const present = presentFeatures(keys);
   if (present.length) {
     const feat = present[hash(s + ":qf") % present.length];
     const opts = FEATURE_QUARTERS[feat];
     const i = hash(s + ":qp") % opts.length;
-    return loc(FEATURE_QUARTERS_KEYS[feat][i], opts[i]);
+    return msg(FEATURE_QUARTERS_KEYS[feat][i], opts[i]);
   }
   const gi = hash(s + ":qg") % GENERIC_QUARTERS.length;
-  return loc(GENERIC_QUARTERS_KEYS[gi], GENERIC_QUARTERS[gi]);
+  return msg(GENERIC_QUARTERS_KEYS[gi], GENERIC_QUARTERS[gi]);
 }
 
 // Test hook.

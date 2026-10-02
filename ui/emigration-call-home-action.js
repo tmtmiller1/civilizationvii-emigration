@@ -9,7 +9,7 @@
 // one you can spare is a turn-by-turn question, and the choice is more interesting when it is asked then.
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { deduct } from "/emigration/ui/emigration-effects.js";
-import { loc } from "/emigration/ui/emigration-loc.js";
+import { msg } from "/emigration/ui/emigration-loc.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
 import { showDilemma } from "/emigration/ui/emigration-dilemma-view.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
@@ -173,17 +173,17 @@ function reportCall(pid, result) {
     const answered = result.returned > 0;
     const many = result.returned > 1;
     const body = answered
-      ? loc(many ? "LOC_EMIG_CALLHOME_CHRON" : "LOC_EMIG_CALLHOME_CHRON_ONE",
+      ? msg(many ? "LOC_EMIG_CALLHOME_CHRON" : "LOC_EMIG_CALLHOME_CHRON_ONE",
         many
           ? "{1_Count} population points answered the call and came home."
           : "One population point answered the call and came home.",
         result.returned)
-      : loc("LOC_EMIG_CALLHOME_CHRON_NONE", "The call went out to our people abroad, and none of them came.");
+      : msg("LOC_EMIG_CALLHOME_CHRON_NONE", "The call went out to our people abroad, and none of them came.");
     chronicle({
       kind: "return", civ: nc.adj, people: result.returned, body,
       title: answered
-        ? loc("LOC_EMIG_CALLHOME_CHRON_TITLE", "They Answer The Call")
-        : loc("LOC_EMIG_CALLHOME_CHRON_NONE_TITLE", "The Call Goes Unanswered"),
+        ? msg("LOC_EMIG_CALLHOME_CHRON_TITLE", "They Answer The Call")
+        : msg("LOC_EMIG_CALLHOME_CHRON_NONE_TITLE", "The Call Goes Unanswered"),
       dedupeKey: "callhome:" + pid + "|" + result.scope + "|" + turnNow()
     });
   } catch (e) {

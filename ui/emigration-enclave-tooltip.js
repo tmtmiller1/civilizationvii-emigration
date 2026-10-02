@@ -18,7 +18,7 @@ import { quarterBonus } from "/emigration/ui/emigration-quarter-bonuses.js";
 import { quarterName, narrativeCiv } from "/emigration/ui/emigration-naming.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 import { relaxFor } from "/emigration/ui/emigration-enclave-pacing.js";
-import { loc } from "/emigration/ui/emigration-loc.js";
+import { loc, localeFontFamily } from "/emigration/ui/emigration-loc.js";
 import { enclaveTipModel } from "/emigration/ui/emigration-enclave-tooltip-data.js";
 
 const PANEL_KEY = "emig-enclave-tip";
@@ -186,7 +186,7 @@ function panelCss(id) {
     P + "{position:fixed;pointer-events:none;z-index:" + PANEL_Z + ";display:none;width:23rem;max-width:23rem;"
       + "background:rgba(8,10,16,0.96);border:0.0555rem solid rgba(201,162,76,0.5);border-radius:0.3rem;"
       + "padding:0.5rem 0.6rem;color:#e5d2ac;font-size:var(--dg-fs-85);"
-      + 'font-family:"BodyFont","BodyFont-JP","BodyFont-KR","BodyFont-SC","BodyFont-TC";}'
+      + "font-family:" + localeFontFamily("body") + ";}"
     // The title and the settlement line.
     + P + " .t{color:#f3c34c;font-weight:bold;letter-spacing:0.02em;line-height:1.3;}"
     + P + " .sub{opacity:0.7;font-size:var(--dg-fs-75);margin-bottom:0.35rem;line-height:1.3;}"

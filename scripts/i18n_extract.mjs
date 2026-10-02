@@ -12,10 +12,9 @@
 // makes it replace hand-written translations with English, which apply now refuses to do.
 
 import fs from "node:fs";
+import { I18N_ROOT, readEnglishXml } from "./i18n_shared.mjs";
 
-const I18N_ROOT = "i18n";
-
-const xml = fs.readFileSync("text/en_us/ModText.xml", "utf8");
+const xml = readEnglishXml();
 const re = /Tag="(LOC_[A-Z0-9_]+)"\s*>\s*<Text>([\s\S]*?)<\/Text>/g;
 /** @type {Record<string,string>} */
 const out = {};

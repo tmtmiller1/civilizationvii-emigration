@@ -4,6 +4,8 @@
 // points into representative people counts. The formula is IDENTICAL to the Demographics mod's
 // scaleCityPopulationAt, so a town's population reads the same in both mods.
 
+import { msg, msgNum, msgText } from "/emigration/ui/emigration-loc.js";
+
 // ── Population scaling, grounded in Civ VII's REAL per-era growth formula ──────────────────────────
 // Civ VII charges food per size step, cost(x)=Flat+Scalar·x+Exponent·x², with per-AGE params;
 // W(N)=Σcost(1..N) is a settlement's demographic weight and POP_K turns it into people. Per-age by
@@ -343,9 +345,23 @@ export function formatPeopleExact(n) {
  * @returns {string} The dual-system phrase with an exact people count.
  */
 export function formatBothExact(people, points) {
+  return msgText(formatBothExactMsg(people, points));
+}
+
+/**
+ * {@link formatBothExact} as a message node, for lines stored and composed again at display time.
+ * @param {number} people Scaled people.
+ * @param {number} [points] Raw population points (defaults to 1).
+ * @returns {import("/emigration/ui/emigration-loc.js").MsgNode} The node.
+ */
+export function formatBothExactMsg(people, points) {
   const pts = Math.round(typeof points === "number" && isFinite(points) ? points : 1);
-  const civ = pts + (pts === 1 ? " population point" : " population points");
-  return civ + " (" + formatPeopleExact(people) + " people)";
+  const n = typeof people === "number" && isFinite(people) && people > 0 ? Math.round(people) : 0;
+  const civ = pts === 1
+    ? msg("LOC_EMIG_COUNT_POINT", "{1_Count} population point", pts)
+    : msg("LOC_EMIG_COUNT_POINTS", "{1_Count} population points", pts);
+  return msg("LOC_EMIG_COUNT_BOTH", "{1_Civ} ({2_People})", civ,
+    msg("LOC_EMIG_COUNT_PEOPLE", "{1_Count} people", msgNum(n)));
 }
 
 // The variation band for displayed event people figures: ±this fraction. Narrow enough to stay

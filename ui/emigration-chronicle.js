@@ -5,6 +5,7 @@
 // (emigration-narrative.js); distinct from the per-event Notifications log.
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
+import { isMsgNode, msgClean, msgPack, msgText } from "/emigration/ui/emigration-loc.js";
 
 //
 // Persisted in GameConfiguration (survives save/reload), capped, newest-first. Defensive throughout:
@@ -23,6 +24,16 @@ const MAX_ENTRIES = 80; // a readable history, not an exhaustive ledger (Notific
  * @property {number} [people] Scaled people involved.
  * @property {string} [cause] The migration cause, when one applies.
  * @property {string} [dedupeKey] A stable key so the same milestone isn't chronicled twice.
+ * @property {*} [ts] The title as a packed message (emigration-loc.js), so the Notifications view can
+ *   compose it in the language active when it is read; `bs` likewise for the body. Absent on entries
+ *   from older saves, which show their stored text.
+ * @property {*} [bs] The body as a packed message.
+ */
+
+/**
+ * What a caller hands {@link chronicle}: a ChronicleEntry whose title and body may be message nodes.
+ * @typedef {Omit<Partial<ChronicleEntry>, "title"|"body"> & {title?:import("/emigration/ui/emigration-loc.js").MsgNode,
+ *   body?:import("/emigration/ui/emigration-loc.js").MsgNode}} ChronicleInput
  */
 
 /** @type {ChronicleEntry[] | null} Newest-first cache. */
@@ -138,6 +149,8 @@ function mirrorToNotifications(e) {
       summary: e.title || e.body,
       title: e.title,
       body: e.body,
+      ts: e.ts,
+      bs: e.bs,
       people: typeof e.people === "number" ? e.people : 0,
       points: 0
     });
@@ -149,10 +162,12 @@ function mirrorToNotifications(e) {
 /**
  * Append a chronicle entry (newest-first), stamped with the current turn, and persist. Trims to
  * MAX_ENTRIES. No-op on a malformed entry, or when its dedupeKey was already chronicled.
- * @param {Partial<ChronicleEntry>} entry The entry (kind/title/body + optional civ/people/cause/key).
+ * @param {ChronicleInput} input The entry (kind/title/body + optional civ/people/cause/key).
  * @returns {boolean} True when an entry was added.
  */
-export function chronicle(entry) {
+export function chronicle(input) {
+  /** @type {Partial<ChronicleEntry>} */
+  const entry = input && typeof input === "object" ? splitMessages(input) : input;
   if (!entry || typeof entry !== "object" || typeof entry.body !== "string" || !entry.body) return false;
   if (entry.dedupeKey && chronicled(entry.dedupeKey)) return false;
   const list = log();
@@ -163,6 +178,24 @@ export function chronicle(entry) {
   persist(); // persist our own state first, so a notifications-mirror failure can't lose it
   mirrorToNotifications(e); // best-effort; never throws (see mirrorToNotifications)
   return true;
+}
+
+/**
+ * Render a message-node title or body into its text, keeping the packed message beside it (`ts` / `bs`).
+ * @param {*} entry The caller's entry (title and body may be strings or message nodes).
+ * @returns {*} A shallow copy with plain-text title and body.
+ */
+function splitMessages(entry) {
+  const out = { ...entry };
+  if (isMsgNode(entry.title)) {
+    out.title = msgText(entry.title);
+    out.ts = msgPack(entry.title);
+  }
+  if (isMsgNode(entry.body)) {
+    out.body = msgText(entry.body);
+    out.bs = msgPack(entry.body);
+  }
+  return out;
 }
 
 /**
@@ -197,7 +230,19 @@ function cleanEntry(entry, turn) {
   if (typeof entry.people === "number" && isFinite(entry.people)) e.people = entry.people;
   if (typeof entry.cause === "string") e.cause = entry.cause;
   if (typeof entry.dedupeKey === "string") e.dedupeKey = entry.dedupeKey;
+  copyMessages(entry, e);
   return e;
+}
+
+/**
+ * Copy the well-formed packed title / body messages of `entry` onto the clean entry `e`.
+ * @param {*} entry The source entry. @param {*} e The clean entry (mutated).
+ */
+function copyMessages(entry, e) {
+  for (const f of ["ts", "bs"]) {
+    const p = entry[f] == null ? undefined : msgClean(entry[f]);
+    if (p !== undefined && p !== "") e[f] = p;
+  }
 }
 
 /**

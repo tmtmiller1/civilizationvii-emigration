@@ -7,6 +7,7 @@
 
 import { withAlpha } from "/emigration/ui/emigration-civ-colors.js";
 import { buildFlowSegments, drawFlowArrows } from "/emigration/ui/emigration-network-flow-arrows.js";
+import { localeFontFamily } from "/emigration/ui/emigration-loc.js";
 
 /**
  * @typedef {import("/emigration/ui/emigration-network-dots.js").Dot} Dot
@@ -291,14 +292,14 @@ function drawCivLabel(ctx, name, x, y, size) {
 }
 
 /**
- * The label font string for a given size. BodyFont stack (with CJK + TitilliumWeb fallbacks),
- * matching chart-line.js / the relations labels, NOT TitleFont (the display face reads differently).
+ * The label font string for a given size: the body faces in locale order (a canvas draws with the
+ * first face only), matching chart-line.js / the relations labels, NOT TitleFont (the display face
+ * reads differently).
  * @param {number} [size] Font px (default 15).
  * @returns {string} A CSS font string.
  */
 function labelFont(size) {
-  return "600 " + (size || 15)
-    + "px BodyFont, BodyFont-SC, BodyFont-TC, BodyFont-JP, BodyFont-KR, TitilliumWeb, sans-serif";
+  return "600 " + (size || 15) + "px " + localeFontFamily("body");
 }
 
 /**
@@ -379,7 +380,31 @@ function drawLabels(ctx, centers) {
 
 /** The event badge's font, set before measuring so layout and drawing agree. @param {CanvasRenderingContext2D} ctx */
 function setBadgeFont(ctx) {
-  ctx.font = "600 10px BodyFont, sans-serif";
+  ctx.font = "600 10px " + localeFontFamily("body");
+}
+
+/**
+ * Width the badge's flag takes before the label, gap included. The flag is drawn as a path, not a glyph:
+ * a canvas draws with its first font only, and the Chinese, Japanese and Korean faces have no flag
+ * character, so a "⚑" printed as a missing-glyph box there.
+ */
+const BADGE_FLAG_W = 9;
+
+/**
+ * Draw the badge's small pennant flag with its left edge at x.
+ * @param {CanvasRenderingContext2D} ctx Context.
+ * @param {number} x Left edge.
+ * @param {number} y Center y.
+ */
+function drawBadgeFlag(ctx, x, y) {
+  ctx.beginPath();
+  ctx.moveTo(x + 1, y + 5);
+  ctx.lineTo(x + 1, y - 5);
+  ctx.lineTo(x + 7, y - 2.5);
+  ctx.lineTo(x + 1, y);
+  ctx.closePath();
+  ctx.stroke();
+  ctx.fill();
 }
 
 /**
@@ -389,15 +414,17 @@ function setBadgeFont(ctx) {
  * @param {number} y Resolved center y.
  */
 function drawEventBadge(ctx, req, y) {
-  ctx.textAlign = "center";
+  ctx.textAlign = "left";
   ctx.textBaseline = "middle";
   ctx.lineJoin = "round";
   setBadgeFont(ctx);
+  const left = req.x - (ctx.measureText(req.text).width + BADGE_FLAG_W) / 2;
   ctx.lineWidth = 3;
   ctx.strokeStyle = "#10131b";
-  ctx.strokeText(req.text, req.x, y);
   ctx.fillStyle = req.color;
-  ctx.fillText(req.text, req.x, y);
+  drawBadgeFlag(ctx, left, y);
+  ctx.strokeText(req.text, left + BADGE_FLAG_W, y);
+  ctx.fillText(req.text, left + BADGE_FLAG_W, y);
 }
 
 /**
@@ -442,7 +469,7 @@ function activeEvents(scene) {
  */
 function badgeFor(c, ev) {
   return {
-    text: "⚑ " + ev.label, x: c.x, y: c.y + (c.clusterR || 6) + 13,
+    text: ev.label, x: c.x, y: c.y + (c.clusterR || 6) + 13,
     color: EVENT_COLOR[ev.kind] || EVENT_COLOR.disaster
   };
 }
@@ -461,7 +488,7 @@ function drawEvents(ctx, scene) {
   const placed = [];
   reqs.sort((a, b) => a.y - b.y || a.x - b.x); // deterministic: topmost cluster keeps its anchor
   for (const r of reqs) {
-    const halfW = ctx.measureText(r.text).width / 2 + 1;
+    const halfW = (ctx.measureText(r.text).width + BADGE_FLAG_W) / 2 + 1;
     const makeBox = (/** @type {number} */ yy) => ({ x0: r.x - halfW, y0: yy - 6, x1: r.x + halfW, y1: yy + 6 });
     const y = resolveY(makeBox, r.y, placed);
     placed.push(makeBox(y));

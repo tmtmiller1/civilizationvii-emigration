@@ -16,7 +16,7 @@ import { renderStances, renderDiversity, diversitySections } from "/emigration/u
 import { renderLedger, splitInternalExternal, LEDGER_CSS } from "/emigration/ui/emigration-ledger-view.js";
 import { renderNotifications } from "/emigration/ui/emigration-notifications-view.js";
 import { DENSITY_CSS } from "/emigration/ui/emigration-density.js";
-import { loc } from "/emigration/ui/emigration-loc.js";
+import { loc, localeFontFamily } from "/emigration/ui/emigration-loc.js";
 
 
 /**
@@ -65,9 +65,15 @@ export function causeBreakdownRows(byCause) {
   }));
 }
 
-/** Stance code → display label. */
-/** @type {Record<string,string>} */
-const STANCE_LABEL = { pro: loc("LOC_EMIG_VIEW_STANCE_PRO", "Pro-Immigration"), anti: loc("LOC_EMIG_VIEW_STANCE_ANTI", "Anti-Immigration"), none: loc("LOC_EMIG_VIEW_STANCE_NEUTRAL", "Neutral") };
+/**
+ * Stance code → display label, composed at call time so it follows the current language.
+ * @param {string} key "pro" | "anti" | "none". @returns {string} The label.
+ */
+function stanceLabel(key) {
+  if (key === "pro") return loc("LOC_EMIG_VIEW_STANCE_PRO", "Pro-Immigration");
+  if (key === "anti") return loc("LOC_EMIG_VIEW_STANCE_ANTI", "Anti-Immigration");
+  return loc("LOC_EMIG_VIEW_STANCE_NEUTRAL", "Neutral");
+}
 /** @type {Record<string, number>} */
 const STANCE_ORDER = { pro: 0, anti: 1, none: 2 };
 
@@ -85,7 +91,7 @@ export function stanceRows(civs) {
       const key = c.stance === "pro" || c.stance === "anti" ? c.stance : "none";
       const si = c.stanceImpact || {};
       return {
-        name: c.name, stance: STANCE_LABEL[key], key,
+        name: c.name, stance: stanceLabel(key), key,
         in: n(c.in), inImpact: n(si.in), outImpact: n(si.out)
       };
     })
@@ -299,10 +305,10 @@ export function visibleSections(sections) {
 
 const DASH_CSS =
   ".emig-dash{display:flex;flex-direction:column;gap:0.85rem;" +
-  'font-family:"BodyFont","BodyFont-JP","BodyFont-KR","BodyFont-SC","BodyFont-TC";' +
+  "font-family:" + localeFontFamily("body") + ";" +
   "color:#e5d2ac;font-size:var(--dg-fs-95);}" +
   ".emig-card{background:linear-gradient(180deg,rgba(20,24,34,0.55),rgba(8,10,16,0.55));border:0.0555rem solid rgba(201,162,76,0.35);border-radius:0.35rem;padding:0.6rem 0.8rem;}" +
-  ".emig-card-h{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.06rem;font-size:var(--dg-fs-95);color:#f3c34c;margin-bottom:0.45rem;border-bottom:0.0555rem solid rgba(201,162,76,0.3);padding-bottom:0.25rem;}" +
+  ".emig-card-h{font-family:" + localeFontFamily("title") + ";text-transform:uppercase;letter-spacing:0.06rem;font-size:var(--dg-fs-95);color:#f3c34c;margin-bottom:0.45rem;border-bottom:0.0555rem solid rgba(201,162,76,0.3);padding-bottom:0.25rem;}" +
   ".emig-empty{opacity:0.5;font-style:italic;}" +
   // Per-city pressure: flexbox rows (GameFace lays out neither <table> nor grid).
   ".emig-pr{display:flex;flex-direction:column;width:100%;}" +
@@ -345,7 +351,7 @@ const DASH_CSS =
   "transform:translate(-50%,-130%);}" +
   // My-cities flow cards.
   ".emig-city-card{padding:0.5rem 0;border-top:0.0555rem solid rgba(201,162,76,0.25);}" +
-  ".emig-city-name{font-family:\"TitleFont\";color:#f0dca8;font-size:var(--dg-fs-95);margin-bottom:0.4rem;}" +
+  ".emig-city-name{font-family:" + localeFontFamily("title") + ";color:#f0dca8;font-size:var(--dg-fs-95);margin-bottom:0.4rem;}" +
   ".emig-city-cols{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;}" +
   ".emig-city-col{flex:1 1 16rem;display:flex;flex-direction:column;align-items:center;}" +
   ".emig-city-sub{font-size:var(--dg-fs-85);text-transform:uppercase;letter-spacing:0.04rem;opacity:0.75;" +
@@ -359,7 +365,7 @@ const DASH_CSS =
   // Causes tab: centered civ title with fading flank lines (section-title embellishment).
   ".emig-civ-head{display:flex;align-items:center;justify-content:center;gap:0.7rem;" +
   "margin:0.2rem 0 0.5rem;}" +
-  ".emig-civ-head-name{flex:0 0 auto;font-family:\"TitleFont\";text-transform:uppercase;" +
+  ".emig-civ-head-name{flex:0 0 auto;font-family:" + localeFontFamily("title") + ";text-transform:uppercase;" +
   "letter-spacing:0.08rem;color:#f3c34c;font-size:var(--dg-fs-105);}" +
   ".emig-civ-head-line{flex:1 1 auto;height:0.0833rem;" +
   "background:linear-gradient(90deg,transparent,rgba(201,162,76,0.55));}" +
@@ -396,13 +402,13 @@ const DASH_CSS =
   // age filters on the Data tab.
   ".emig-filter-btn{display:inline-block;padding:0.18rem 0.55rem;border-radius:0.2rem;" +
   "border:0.0555rem solid rgba(201,162,76,0.4);background:rgba(9,12,19,0.5);color:#cbb994;" +
-  "font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.06em;font-size:var(--dg-fs-72);" +
+  "font-family:" + localeFontFamily("title") + ";text-transform:uppercase;letter-spacing:0.06em;font-size:var(--dg-fs-72);" +
   "cursor:pointer;white-space:nowrap;line-height:1.2;}" +
   ".emig-filter-btn:hover{border-color:rgba(243,195,76,0.75);}" +
   ".emig-filter-btn.active{border-color:rgba(243,195,76,0.95);background:rgba(60,45,20,0.85);" +
   "color:#f3c34c;font-weight:bold;}" +
   // Descriptive title at the top of the Causes / Settlements tabs.
-  ".emig-section-title{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.05rem;" +
+  ".emig-section-title{font-family:" + localeFontFamily("title") + ";text-transform:uppercase;letter-spacing:0.05rem;" +
   "color:#f3c34c;font-size:var(--dg-fs-105);text-align:center;margin:0.1rem 0 0.6rem;}" +
   ".emig-civ{color:#f0dca8;font-weight:bold;}" +
   ".emig-pos{color:#7fd08a;}.emig-neg{color:#e08a7f;}" +
@@ -421,7 +427,7 @@ const DASH_CSS =
   ".emig-stance-detail{font-size:var(--dg-fs-105);opacity:0.82;margin-top:0.3rem;}" +
   ".emig-tabs{display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;" +
   "border-bottom:0.0555rem solid rgba(201,162,76,0.3);margin-bottom:0.8rem;}" +
-  ".emig-tab{cursor:pointer;padding:0.3rem 0.85rem;font-family:\"TitleFont\";text-transform:uppercase;" +
+  ".emig-tab{cursor:pointer;padding:0.3rem 0.85rem;font-family:" + localeFontFamily("title") + ";text-transform:uppercase;" +
   "font-size:var(--dg-fs-85);letter-spacing:0.04rem;color:#bfae86;border-bottom:0.14rem solid transparent;}" +
   ".emig-tab:hover{color:#e5d2ac;}" +
   ".emig-tab.active{color:#f3c34c;border-bottom-color:#f3c34c;}" +
@@ -560,8 +566,10 @@ function makeTabBar(sections, onSelect) {
 // The dashboard controls, shown as labeled pill GROUPS (a "Label:" + one selectable chip per option,
 // the current one gold), the same shape as the Network lens row and the Demographics "Data" pills, so
 // the control row reads identically on every Emigration tab.
-/** @type {Record<number,string>} */
-const NUM_LABEL = { [NumberMode.CIV]: loc("LOC_EMIG_VIEW_NUM_CIV", "Civ Pop"), [NumberMode.HISTORICAL]: loc("LOC_EMIG_VIEW_NUM_SCALED", "Scaled Pop") };
+/** @param {number} mode A NumberMode. @returns {string} Its chip label in the current language. */
+function numLabel(mode) {
+  return mode === NumberMode.CIV ? loc("LOC_EMIG_VIEW_NUM_CIV", "Civ Pop") : loc("LOC_EMIG_VIEW_NUM_SCALED", "Scaled Pop");
+}
 
 /**
  * A labeled pill group: a "Label:" span + one selectable chip per option (the current key `active`).
@@ -654,8 +662,8 @@ function buildControlRow(showNumbers, rebuild, includeOptionsButton = false) {
   }
   if (!showNumbers) return row;
   row.appendChild(filterGroup(loc("LOC_EMIG_VIEW_NUMBERS_LABEL", "Numbers:"), [
-    { key: NumberMode.HISTORICAL, label: NUM_LABEL[NumberMode.HISTORICAL] },
-    { key: NumberMode.CIV, label: NUM_LABEL[NumberMode.CIV] }
+    { key: NumberMode.HISTORICAL, label: numLabel(NumberMode.HISTORICAL) },
+    { key: NumberMode.CIV, label: numLabel(NumberMode.CIV) }
   ], getNumberMode(), (/** @type {number} */ k) => { setNumberMode(k); rebuild(); }));
   return row;
 }

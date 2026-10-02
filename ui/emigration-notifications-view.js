@@ -4,10 +4,10 @@
 // sub-tab: a newest-first list of every recorded migration event, including Chronicle entries; a row
 // expands to the full detail. Pure DOM + a self-injected stylesheet.
 
-import { notificationLog } from "/emigration/ui/emigration-notifications.js";
+import { notificationLog, entryText } from "/emigration/ui/emigration-notifications.js";
 import { causeLabel, causeAccent, notificationAccent, digestAccent } from "/emigration/ui/emigration-causes.js";
 import { formatBothExact } from "/emigration/ui/emigration-population.js";
-import { loc } from "/emigration/ui/emigration-loc.js";
+import { loc, localeFontFamily } from "/emigration/ui/emigration-loc.js";
 
 /**
  * Split a composed digest summary into its SITUATION and GUIDANCE blocks, which `localDigestMessage`
@@ -48,7 +48,7 @@ const CSS =
   ".emig-ntf-head:hover{background:rgba(240,188,120,0.06);}" +
   ".emig-ntf-turn{font-size:var(--dg-fs-72);opacity:0.6;white-space:nowrap;min-width:3.6rem;}" +
   // Sentence case (no uppercase transform): the chip is a descriptive phrase, not a one-word tag.
-  '.emig-ntf-chip{font-family:"TitleFont";letter-spacing:0.04em;' +
+  ".emig-ntf-chip{font-family:" + localeFontFamily("title") + ";letter-spacing:0.04em;" +
   "font-size:var(--dg-fs-72);white-space:nowrap;}" +
   ".emig-ntf-sum{flex:1 1 auto;font-size:var(--dg-fs-85);color:#e8d8b4;overflow:hidden;text-overflow:ellipsis;" +
   "white-space:nowrap;}" +
@@ -107,8 +107,8 @@ function place(city, civ) {
  * @param {*} e A NotifEntry.
  */
 function chronicleDetail(panel, e) {
-  addLine(panel, loc("LOC_EMIG_NV_TITLE", "Title"), e.title || e.summary);
-  addLine(panel, loc("LOC_EMIG_NV_STORY", "Story"), e.body);
+  addLine(panel, loc("LOC_EMIG_NV_TITLE", "Title"), entryText(e, "title") || entryText(e, "summary"));
+  addLine(panel, loc("LOC_EMIG_NV_STORY", "Story"), entryText(e, "body"));
   if (e.cause && e.cause !== "chronicle") addLine(panel, loc("LOC_EMIG_NV_CAUSE", "Cause"), causeLabel(e.cause));
 }
 
@@ -120,8 +120,9 @@ function chronicleDetail(panel, e) {
  */
 function migrationDetail(panel, e) {
   addLine(panel, loc("LOC_EMIG_NV_CAUSE", "Cause"), causeLabel(e.cause));
-  addLine(panel, loc("LOC_EMIG_NV_EVENT", "Event"), e.event); // the specific named war / disaster, when applicable
-  addLine(panel, loc("LOC_EMIG_NV_FROM", "From"), place(e.fromCity, e.fromCiv));
+  // the specific named war / disaster, when applicable
+  addLine(panel, loc("LOC_EMIG_NV_EVENT", "Event"), entryText(e, "event"));
+  addLine(panel, loc("LOC_EMIG_NV_FROM", "From"), place(e.fromCity, entryText(e, "fromCiv")));
   if (isDeath(e)) {
     // A death (the crisis-loss channel) has no destination, frame the count as casualties rather
     // than people who moved, in the game's own losses register.
@@ -130,7 +131,7 @@ function migrationDetail(panel, e) {
     }
   } else {
     addLine(panel, e.crossCiv ? loc("LOC_EMIG_NV_MOVED_TO", "Moved to") : loc("LOC_EMIG_NV_TO", "To"),
-      place(e.toCity, e.toCiv));
+      place(e.toCity, entryText(e, "toCiv")));
     if (e.people || e.points) {
       addLine(panel, loc("LOC_EMIG_NV_PEOPLE", "People"), formatBothExact(e.people, e.points));
     }
@@ -150,7 +151,7 @@ function detailEl(e) {
   // The header already shows the situation; the Note carries only the GUIDANCE half of the digest.
   // The trailing movement-scope tag is stripped because the row chip already names the scope.
   if (e.kind !== "chronicle") {
-    const guidance = stripScopeTag(splitSummary(e.summary).guidance);
+    const guidance = stripScopeTag(splitSummary(entryText(e, "summary")).guidance);
     if (guidance) addLine(panel, loc("LOC_EMIG_NV_NOTE", "Note"), guidance);
   }
   return panel;
@@ -173,13 +174,15 @@ function isDeath(e) {
  * @returns {string} The display summary.
  */
 function rowSummary(e) {
+  const summary = entryText(e, "summary");
   const base = e.kind === "chronicle"
-    ? (e.title || e.summary || loc("LOC_EMIG_NV_DEFAULT_SUMMARY", "A migration event"))
+    ? (entryText(e, "title") || summary || loc("LOC_EMIG_NV_DEFAULT_SUMMARY", "A migration event"))
     // Lead with just the situation (not the whole situation+guidance paragraph) so the row reads as one
     // clean line; the guidance half is shown in the expanded Note.
-    : (splitSummary(e.summary).situation || loc("LOC_EMIG_NV_CAUSE_EVENT", "{1_Cause} event", causeLabel(e.cause)));
-  return e.event && !base.includes(e.event)
-    ? loc("LOC_EMIG_NV_EVENT_PREFIX", "{1_Event}: {2_Summary}", e.event, base)
+    : (splitSummary(summary).situation || loc("LOC_EMIG_NV_CAUSE_EVENT", "{1_Cause} event", causeLabel(e.cause)));
+  const event = entryText(e, "event");
+  return event && !base.includes(event)
+    ? loc("LOC_EMIG_NV_EVENT_PREFIX", "{1_Event}: {2_Summary}", event, base)
     : base;
 }
 

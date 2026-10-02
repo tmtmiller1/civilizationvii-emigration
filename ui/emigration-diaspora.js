@@ -10,14 +10,14 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { compositionForCity, allCityCompositions } from "/emigration/ui/emigration-composition.js";
 import { registerCacheReset } from "/emigration/ui/emigration-cache-reset.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
-import { civAdjective, eventDisplayName, narrativeCiv, civType } from "/emigration/ui/emigration-naming.js";
+import { civAdjectiveMsg, eventDisplayNameMsg, narrativeCiv, civType } from "/emigration/ui/emigration-naming.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
-import { formatPeopleExact, scaleCityPopulation } from "/emigration/ui/emigration-population.js";
+import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { chronicle, chronicled } from "/emigration/ui/emigration-chronicle.js";
-import { exodusLine, foundingLine, chronicleTitle } from "/emigration/ui/emigration-narrative.js";
+import { exodusLineMsg, foundingLineMsg, chronicleTitleMsg } from "/emigration/ui/emigration-narrative.js";
 import { cityFeatureKeys } from "/emigration/ui/emigration-city-features.js";
-import { resolveQuarter } from "/emigration/ui/emigration-quarter-phrases.js";
-import { loc as tr } from "/emigration/ui/emigration-loc.js";
+import { resolveQuarterMsg } from "/emigration/ui/emigration-quarter-phrases.js";
+import { msg, msgJoin, msgNum, msgText } from "/emigration/ui/emigration-loc.js";
 import { QUARTER_FOOTHOLD_SHARE } from "/emigration/ui/emigration-tunables.js";
 import { relaxFor, relaxedBar } from "/emigration/ui/emigration-enclave-pacing.js";
 import { quarterAt } from "/emigration/ui/emigration-quarter-state.js";
@@ -172,14 +172,14 @@ function detectExoduses(migrations) {
     if (chronicled(dedupeKey)) continue;
     // Name the civ for the narrative, framed as hearsay when it's one the player hasn't met.
     const nc = narrativeCiv(g.owner);
-    const event = (g.eventKey ? eventDisplayName(g.eventKey) : null) || undefined;
+    const event = (g.eventKey ? eventDisplayNameMsg(g.eventKey) : null) || undefined;
     const seed = g.city + "|" + g.cause + "|" + turn;
-    const body = exodusLine({
-      cause: g.cause, civ: nc.adj, framed: nc.framed, city: g.city,
-      people: formatPeopleExact(g.people), event, seed
+    const body = exodusLineMsg({
+      cause: g.cause, civ: nc.adjMsg, framed: nc.framed, city: g.city,
+      people: msgNum(g.people), event, seed
     });
     chronicle({
-      kind: "exodus", title: chronicleTitle({ kind: "exodus", civ: nc.adj, city: g.city, event, seed }),
+      kind: "exodus", title: chronicleTitleMsg({ kind: "exodus", civ: nc.adjMsg, city: g.city, event, seed }),
       body, civ: nc.adj, people: g.people, cause: g.cause, dedupeKey
     });
   }
@@ -254,19 +254,19 @@ function standingPeople(comp, lead) {
  * Chronicle a diaspora's FOOTHOLD stage (a lasting community, not yet a full quarter).
  * @param {{civ:number, share:number}} lead The lead foreign origin. @param {string} name Host city name.
  * @param {number} standingPeople The diaspora's CURRENT standing size (scaled people).
- * @param {{adj:string}} nc Origin descriptor.
+ * @param {{adj:string, adjMsg:import("/emigration/ui/emigration-loc.js").MsgNode}} nc Origin descriptor.
  */
 function chronicleFoothold(lead, name, standingPeople, nc) {
   const dedupeKey = "quarter:foothold:" + name + "|" + lead.civ;
   if (chronicled(dedupeKey)) return;
   chronicle({
     kind: "founding",
-    title: tr("LOC_EMIG_CHR_FOOTHOLD_TITLE", "A {1_Civ} Foothold in {2_City}", nc.adj, name),
-    body: tr(
+    title: msg("LOC_EMIG_CHR_FOOTHOLD_TITLE", "A {1_Civ} Foothold in {2_City}", nc.adjMsg, name),
+    body: msg(
       "LOC_EMIG_CHR_FOOTHOLD_BODY",
       "A lasting {1_Civ} community has taken root in {2_City}, now {3_Pct} percent of the city, a "
         + "standing community of {4_People}.",
-      nc.adj, name, Math.round(lead.share * 100), formatPeopleExact(standingPeople)
+      nc.adjMsg, name, Math.round(lead.share * 100), msgNum(standingPeople)
     ),
     civ: nc.adj,
     dedupeKey
@@ -348,16 +348,17 @@ function chronicleShareStep(city, comp, origin, rec, yields) {
   // Name a quarter from the host city's REAL features (coast/river/mountain/granary/temple/market/
   // walls) so the line never claims a building the city never built; the edge framing also matches
   // where the ethnicity lens paints the diaspora (the sparse rural fringe).
-  const where = resolveQuarter(cityFeatureKeys(city), seed);
-  const body = foundingLine({
-    origin: nc.adj, framed: nc.framed, host: civAdjective(comp.owner), city: name, pct: origin.share * 100, seed, where
+  const where = resolveQuarterMsg(cityFeatureKeys(city), seed);
+  const body = foundingLineMsg({
+    origin: nc.adjMsg, framed: nc.framed, host: civAdjectiveMsg(comp.owner), city: name, pct: origin.share * 100,
+    seed, where
   });
-  const line = yields ? body + " (" + yields + ")" : body;
+  const line = yields ? msgJoin(body, " (", yields, ")") : body;
   const written = chronicle({
-    kind: "founding", title: chronicleTitle({ kind: "founding", civ: nc.adj, city: name, seed }),
+    kind: "founding", title: chronicleTitleMsg({ kind: "founding", civ: nc.adjMsg, city: name, seed }),
     body: line, civ: nc.adj, dedupeKey: shareStepKey(name, rec, tier)
   });
-  return written ? line : null;
+  return written ? msgText(line) : null;
 }
 
 /**
@@ -425,7 +426,7 @@ function detectQuarterProgress(signals) {
  * @param {boolean} [force] When true, a FOOTHOLD-stage diaspora also qualifies (the established-share
  *   bar is relaxed to the foothold share). The min-stock floor still applies. Used by the player-facing
  *   "Force enclave" testing option so a diaspora the player can already see actually offers its decision.
- * @returns {{civ:number, owner:number, share:number, stock:number, name:string, where:string}|null}
+ * @returns {{civ:number, owner:number, share:number, stock:number, name:string, where:string, whereMsg:*}|null}
  *   The quarter (with a truthful edge phrase), or null.
  */
 export function establishedQuarterForCity(city, force) {
@@ -440,8 +441,8 @@ export function establishedQuarterForCity(city, force) {
   const name = cityName(city);
   // A truthful, deterministic edge phrase for the enclave ("by the harbor", "in the outer streets"),
   // stable per (city, origin) so the decision modal and its chronicle name the same place each time.
-  const where = resolveQuarter(cityFeatureKeys(city), name + ":" + lead.civ);
-  return { civ: lead.civ, owner: comp.owner, share: lead.share, stock, name, where };
+  const whereMsg = resolveQuarterMsg(cityFeatureKeys(city), name + ":" + lead.civ);
+  return { civ: lead.civ, owner: comp.owner, share: lead.share, stock, name, where: msgText(whereMsg), whereMsg };
 }
 
 /**

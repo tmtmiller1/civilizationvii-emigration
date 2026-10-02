@@ -10,6 +10,7 @@ import LensManager from "/core/ui/lenses/lens-manager.js";
 import PlotCursor from "/core/ui/input/plot-cursor.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
+import { localeFontFamily } from "/emigration/ui/emigration-loc.js";
 
 const CURSOR_OFFSET = 36; // px gap from the cursor so the panel sits clear of the tile being read
 // The panel has to out-stack the game's tooltip layers: root-shell.html mounts #uinext-tooltips and
@@ -76,7 +77,7 @@ function cssFor(id) {
     "#" + id + "{position:fixed;pointer-events:none;z-index:" + PANEL_Z + ";display:none;max-width:20rem;" +
     "background:rgba(8,10,16,0.96);border:0.0555rem solid rgba(201,162,76,0.5);border-radius:0.3rem;" +
     "padding:0.4rem 0.6rem;color:#e5d2ac;font-size:var(--dg-fs-85);" +
-    'font-family:"BodyFont","BodyFont-JP","BodyFont-KR","BodyFont-SC","BodyFont-TC";}' +
+    "font-family:" + localeFontFamily("body") + ";}" +
     "#" + id + " .t{color:#f3c34c;font-weight:bold;margin-bottom:0.2rem;}" +
     "#" + id + " .r{display:flex;align-items:center;gap:0.35rem;line-height:1.55;}" +
     "#" + id + " .sw{width:0.62rem;height:0.62rem;border-radius:50%;flex:0 0 auto;}" +

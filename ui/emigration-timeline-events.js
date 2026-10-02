@@ -95,8 +95,10 @@ function disasterEventFor(d, frames, ranges) {
   const at = frameIndexAt(frames, ranges, d.age, d.turn);
   if (at == null) return null;
   // Onsets are stamped with an already-resolved display name (emigration-events records
-  // disasterName(eventType)); the generic only covers a record stamped before the name resolved.
-  const label = d.name || loc("LOC_EMIG_TL_PIN_DISASTER", "Disaster");
+  // disasterName(eventType)) and, since the name key was added, the game's LOC key for it, composed here
+  // in the current language; the generic only covers a record stamped before the name resolved.
+  const name = d.name || loc("LOC_EMIG_TL_PIN_DISASTER", "Disaster");
+  const label = typeof d.nk === "string" && d.nk ? loc(d.nk, name) : name;
   return { kind: "disaster", label, from: at, to: at, civs: [] };
 }
 

@@ -23,7 +23,7 @@ import { showDilemma } from "/emigration/ui/emigration-dilemma-view.js";
 import { displacedQuoteFor } from "/emigration/ui/emigration-displaced-quotes.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
-import { loc } from "/emigration/ui/emigration-loc.js";
+import { loc, msg } from "/emigration/ui/emigration-loc.js";
 
 const STATE_KEY = "EmigrationDilemma_v1";
 const STATE_SCHEMA_VERSION = 2;
@@ -379,21 +379,21 @@ function settleInto(citySig, origin) {
 function chronicleDecision(choiceId, d, hostSig, turn) {
   const nc = narrativeCiv(d.origin);
   const who = nc.framed
-    ? loc("LOC_EMIG_DIL_WHO_UNKNOWN", "a people we had only heard tell of")
-    : loc("LOC_EMIG_DIL_WHO_KNOWN", "the {1_Adj}", nc.adj);
+    ? msg("LOC_EMIG_DIL_WHO_UNKNOWN", "a people we had only heard tell of")
+    : msg("LOC_EMIG_DIL_WHO_KNOWN", "the {1_Adj}", nc.adjMsg);
   const place = hostSig && hostSig.city
     ? cityName(hostSig.city)
-    : loc("LOC_EMIG_DIL_YOUR_LANDS", "your lands");
+    : msg("LOC_EMIG_DIL_YOUR_LANDS", "your lands");
   const body = choiceId === "welcome"
-    ? loc("LOC_EMIG_DIL_BODY_WELCOME",
-      "You opened {1_Place} to the refugees of {2_Adj}. They are your people now, or will be.", place, nc.adj)
+    ? msg("LOC_EMIG_DIL_BODY_WELCOME",
+      "You opened {1_Place} to the refugees of {2_Adj}. They are your people now, or will be.", place, nc.adjMsg)
     : choiceId === "frontier"
-      ? loc("LOC_EMIG_DIL_BODY_FRONTIER",
-        "You sent the refugees of {1_Adj} to the frontier, to build something of their own.", nc.adj)
-      : loc("LOC_EMIG_DIL_BODY_AWAY",
+      ? msg("LOC_EMIG_DIL_BODY_FRONTIER",
+        "You sent the refugees of {1_Adj} to the frontier, to build something of their own.", nc.adjMsg)
+      : msg("LOC_EMIG_DIL_BODY_AWAY",
         "You turned the refugees of {1_Adj} away from {2_Place}. They went on down the road, {3_Who}.",
-        nc.adj, place, who);
-  chronicle({ kind: "founding", title: loc("LOC_EMIG_DIL_CHRON_TITLE", "A Decision at the Border"),
+        nc.adjMsg, place, who);
+  chronicle({ kind: "founding", title: msg("LOC_EMIG_DIL_CHRON_TITLE", "A Decision at the Border"),
     body, civ: nc.adj, dedupeKey: "dilemma:" + d.origin + "|" + turn });
 }
 

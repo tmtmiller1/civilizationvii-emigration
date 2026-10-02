@@ -7,6 +7,7 @@
 // builds the DOM and returns goTo/setPlaying so the orchestrator's playback driver can move it.
 
 import { causeAccent } from "/emigration/ui/emigration-causes.js";
+import { locYear } from "/emigration/ui/emigration-loc.js";
 
 // The timeline's stylesheet, concatenated into the network view's injected sheet (emigration-network-viz
 // injectStyle). Co-located with the component it styles. GameFace-safe: hex/rgba, flexbox, explicit
@@ -119,14 +120,23 @@ function loc(key, fallback, ...args) {
 }
 
 /**
- * Pretty age label from an age type ("AGE_ANTIQUITY" → "Antiquity"), or "" when absent.
+ * The age's own game name in the current language (GameInfo.Ages Name, LOC_AGE_<AGE>_NAME), falling back
+ * to a title-cased age type ("AGE_ANTIQUITY" → "Antiquity"); "" when absent.
  * @param {string} [age] Age type.
  * @returns {string} Display label.
  */
 function ageLabel(age) {
   if (!age) return "";
   const bare = String(age).replace(/^AGE_/, "").toLowerCase();
-  return bare ? bare.charAt(0).toUpperCase() + bare.slice(1) : "";
+  const pretty = bare ? bare.charAt(0).toUpperCase() + bare.slice(1) : "";
+  let key = "LOC_" + String(age) + "_NAME";
+  try {
+    const row = typeof GameInfo !== "undefined" ? GameInfo.Ages?.lookup?.(age) : null;
+    if (row && typeof row.Name === "string") key = row.Name;
+  } catch (_) {
+    // No Ages table (tests): the conventional key still resolves in game.
+  }
+  return loc(key, pretty);
 }
 
 /** Playback speed multipliers. */
@@ -208,8 +218,8 @@ function makeAgeBar(frames) {
  * @returns {string} Label.
  */
 function tickLabel(f) {
-  if (f.year) return f.year;
-  return f.turn == null ? "" : "T" + f.turn;
+  if (f.year) return locYear(f.year);
+  return f.turn == null ? "" : loc("LOC_EMIG_NETC_TURN_SHORT", "T{1_Turn}", f.turn);
 }
 
 /**
@@ -412,10 +422,10 @@ export function makeTimeline(frames, pb, onSet, events) {
   const input = makeRangeInput(last);
   const fill = el("div", "emig-netc-fill");
   const head = el("div", "emig-netc-head");
-  const lbl = el("div", "emig-netc-time-lbl", "now");
+  const lbl = el("div", "emig-netc-time-lbl", loc("LOC_EMIG_NETC_NOW", "now"));
   const setLabel = (/** @type {number} */ i) => {
     const f = frames[i];
-    const when = f.year || (f.turn == null ? "" : loc("LOC_EMIG_NETC_TURN_N", "turn {1_Turn}", f.turn));
+    const when = locYear(f.year) || (f.turn == null ? "" : loc("LOC_EMIG_NETC_TURN_N", "turn {1_Turn}", f.turn));
     const now = loc("LOC_EMIG_NETC_NOW", "now");
     const parts = [ageLabel(f.age), when].filter(Boolean).join(" · ");
     lbl.textContent = i === last ? (when ? now + " · " + when : now) : (parts || loc("LOC_EMIG_NETC_START", "start"));
@@ -432,8 +442,9 @@ export function makeTimeline(frames, pb, onSet, events) {
   const setPlaying = (/** @type {boolean} */ p) => {
     pb.playing = p;
     btn.classList.toggle("playing", !!p);
-    btn.setAttribute("aria-label", p ? "Pause" : "Play");
-    btn.title = p ? "Pause" : "Play";
+    const tip = p ? loc("LOC_EMIG_NETC_PAUSE", "Pause") : loc("LOC_EMIG_NETC_PLAY", "Play");
+    btn.setAttribute("aria-label", tip);
+    btn.title = tip;
   };
   // Pins scrub via `goTo` (defined above), so clicking a war/disaster jumps the timeline to it.
   root.appendChild(makeTimelineArea(frames, { input, fill, head, events, goTo }));

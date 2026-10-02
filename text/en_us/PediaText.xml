@@ -6,8 +6,9 @@
   order until the first missing number. A chapter with no PARA_1 is not drawn, and a chapter without a TITLE row
   draws its paragraphs with no header (used for each page's untitled opening).
 
-  en_us only, like EnclaveText.xml: the engine falls back to English for every other locale. The single-body
-  pages that predate this file (LOC_PEDIA_EMIG_*_BODY) stay in ModText.xml and its eleven translations.
+  English source only, like EnclaveText.xml: the i18n pipeline (scripts/i18n_*.mjs) carries its translations in
+  each locale's ModText.xml. The single-body pages that predate this file (LOC_PEDIA_EMIG_*_BODY) stay in
+  ModText.xml.
   Markup as the base game's Civilopedia_Concepts_Text.xml uses it: [NN] blank line, [B]..[/B] bold,
   [BLIST][LI]..[/LIST] bullet list, [icon:YIELD_X] yield icons.
 
@@ -115,7 +116,7 @@
         <!-- ── About Emigration ─────────────────────────────────────────────────────── -->
         <Row Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_TITLE"><Text>About Emigration</Text></Row>
         <Row Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_1"><Text>Emigration is a user-interface mod. Each turn it reads the state of the world and writes population, tiles, yields and Influence back through the game's own commands, adding only its own database rows; base-game rules, files and AI decisions are left as they are. It simulates every living major civilization from the first turn, met or unmet. The Guide tab of the Migration dashboard has a one-screen reference of what drives migration.</Text></Row>
-        <Row Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2"><Text>Version 3.2.1, for Civilization VII 1.5.0. The interface is available in twelve languages. The source, the full documentation with every formula, and the record of every quotation's source are on GitHub at github.com/tmtmiller1/civilizationvii-emigration.</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2"><Text>Version 3.3.0, for Civilization VII 1.5.0. The interface is available in twelve languages. The source, the full documentation with every formula, and the record of every quotation's source are on GitHub at github.com/tmtmiller1/civilizationvii-emigration.</Text></Row>
         <Row Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_TITLE"><Text>The People Behind the Numbers</Text></Row>
         <Row Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_PARA_1"><Text>This mod turns migration and displacement into game systems. In reality people most often leave home because of war, persecution, disaster or hardship. The mod presents refugees as people, lets the displaced speak in their own words wherever those words survive, and counts a stricken city's losses as deaths. The author has marked the mod's milestones with donations to refugee relief. If you are able, consider supporting UNHCR, the International Rescue Committee, Médecins Sans Frontières, the International Refugee Assistance Project, or local refugee and mutual-aid groups.</Text></Row>
         <Row Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_TITLE"><Text>Credits</Text></Row>

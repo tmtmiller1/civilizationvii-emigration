@@ -16,7 +16,8 @@
 // Emits:
 //   data/emigration-enclave-improvements.xml   (UpdateDatabase, all ages: no Constructibles.Age, like a farm)
 //   data/emigration-enclave-icons.xml          (UpdateIcons)
-//   text/en_us/EnclaveText.xml                 (UpdateText, en_us only; the engine falls back to English)
+//   text/en_us/EnclaveText.xml                 (UpdateText, English source; translations live in each locale's
+//                                              ModText.xml via the i18n pipeline)
 
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";

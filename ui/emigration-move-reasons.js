@@ -4,6 +4,8 @@
 // (emigration-pull.js emits the keys) and every surface that shows a move. Keys are stored on the
 // migration record; the phrases are localized only at display time.
 
+import { msg, msgJoin, msgJoinWith, msgText } from "/emigration/ui/emigration-loc.js";
+
 /** Stable reason-tag keys. Emitted by emigration-pull.js `deriveMoveReasons`. */
 export const REASON = Object.freeze({
   RICHER: "richer", // the destination out-prospers the source (the prosperity pull)
@@ -75,33 +77,20 @@ const LOC = {
 };
 
 /**
- * Localize a LOC key, falling back to `fallback` off-engine / when unresolved.
- * @param {string} key LOC key.
- * @param {string} fallback English fallback.
- * @returns {string} The localized (or fallback) string.
- */
-function loc(key, fallback) {
-  try {
-    if (typeof Locale !== "undefined" && Locale.compose) {
-      const v = Locale.compose(key);
-      if (typeof v === "string" && v && !v.startsWith("LOC_")) return v;
-    }
-  } catch (_) {
-    /* ignore */
-  }
-  return fallback;
-}
-
-/**
  * The short display phrase for one reason tag (localized). Unknown tags pass through as-is so a
  * future tag never renders blank.
  * @param {string} tag A reason-tag key.
  * @returns {string} The phrase.
  */
 export function reasonLabel(tag) {
+  return msgText(reasonMsg(tag));
+}
+
+/** {@link reasonLabel} as a message node. @param {string} tag @returns {*} The phrase node. */
+function reasonMsg(tag) {
   const fb = FALLBACK[tag];
   const key = LOC[tag];
-  return key ? loc(key, fb || tag) : (fb || tag);
+  return key ? msg(key, fb || tag) : (fb || tag);
 }
 
 /**
@@ -129,16 +118,6 @@ export function reasonsPhrase(reasons, max = 3) {
 const PULL_TAGS = new Set(["richer", "nearby", "own-civ", "open-borders", "allied", "asylum"]);
 
 /**
- * The localized " and " connector, padded: its surrounding spaces do not survive the text pipeline.
- * @returns {string} The connector with one space either side.
- */
-function listAnd() {
-  // The separators live in the CODE: the game's text loader strips a localized string's edge spaces.
-  const raw = " " + loc("LOC_EMIG_LIST_AND", "and").trim() + " ";
-  return /^\s/.test(raw) && /\s$/.test(raw) ? raw : " " + raw.trim() + " ";
-}
-
-/**
  * Like {@link reasonsPhrase} but only the destination-PULL tags — for the "Drawn there:" / "Why there:"
  * clause, so it names why the destination was chosen without splicing in a flight fragment. Empty when
  * the move had no pull reason (its situation sentence already tells the whole story).
@@ -147,17 +126,28 @@ function listAnd() {
  * @returns {string} The joined pull phrase, or "".
  */
 export function pullReasonsPhrase(reasons, max = 3) {
+  return msgText(pullReasonsMsg(reasons, max));
+}
+
+/**
+ * {@link pullReasonsPhrase} as a message node ("" when there is no pull reason).
+ * @param {string[]|undefined} reasons The reason-tag keys. @param {number} [max] Max tags to show.
+ * @returns {import("/emigration/ui/emigration-loc.js").MsgNode} The phrase.
+ */
+export function pullReasonsMsg(reasons, max = 3) {
   if (!Array.isArray(reasons)) return "";
   const seen = new Set();
   const parts = [];
   for (const t of reasons) {
     if (!PULL_TAGS.has(t) || seen.has(t)) continue;
     seen.add(t);
-    parts.push(reasonLabel(t));
+    parts.push(reasonMsg(t));
     if (parts.length >= max) break;
   }
   if (parts.length <= 1) return parts[0] || "";
   // Read as prose ("A and B", "A, B and C"): the final connector is localized (English " and ", other
-  // languages their own word, or a comma where a conjunction isn't wanted), the rest comma-joined.
-  return parts.slice(0, -1).join(", ") + listAnd() + parts[parts.length - 1];
+  // languages their own word, or a comma where a conjunction isn't wanted), the rest comma-joined. The
+  // spaces around it live in the CODE: the game's text loader strips a localized string's edge spaces.
+  const and = msg("LOC_EMIG_LIST_AND", "and");
+  return msgJoin(msgJoinWith(", ", parts.slice(0, -1)), " ", and, " ", parts[parts.length - 1]);
 }

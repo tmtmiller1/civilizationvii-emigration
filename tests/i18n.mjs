@@ -1,12 +1,14 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import { readEnglishXml } from "../scripts/i18n_shared.mjs";
 
-// Locale parity gate: every key in en_us must exist in all eleven non-English ModText.xml files
+// Locale parity gate: every key in the en_us source files (ModText, EnclaveText, PediaText,
+// PediaVoicesText; see EN_SOURCE_FILES) must exist in all eleven non-English ModText.xml files
 // (so no string silently falls back to English). Guards against drift as new keys are added,
 // run `node scripts/i18n_extract.mjs && node scripts/i18n_apply.mjs` to refresh after editing
 // en_us. Reads the key set straight from en_us so the gate needs no generated/ignored file.
 
-const enXml = fs.readFileSync("text/en_us/ModText.xml", "utf8");
+const enXml = readEnglishXml();
 const SRC = [...enXml.matchAll(/Tag="(LOC_[A-Z0-9_]+)"/g)].map((m) => m[1]);
 const EN_TEXT = [...enXml.matchAll(/Tag="(LOC_[A-Z0-9_]+)"\s*>\s*<Text>([^<]*)<\/Text>/g)].map((m) => [m[1], m[2]]);
 const WIDE = /[　-ヿ一-鿿＀-￯]/;

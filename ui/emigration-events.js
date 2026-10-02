@@ -11,14 +11,15 @@
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { recordDisaster, disasterSpike, disasterKey } from "/emigration/ui/emigration-disasters.js";
 import { freshPillage } from "/emigration/ui/emigration-violence-signals.js";
-import { disasterName, actionHint, civAdjective } from "/emigration/ui/emigration-naming.js";
+import { disasterName, disasterNameMsg, civAdjectiveMsg, unmetMsg } from "/emigration/ui/emigration-naming.js";
+import { causeHintMsg } from "/emigration/ui/emigration-causes.js";
 import { announceImportant } from "/emigration/ui/emigration-feedback.js";
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
 import { recordDisasterEvent } from "/emigration/ui/emigration-migration-stats.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
-import { loc as tr } from "/emigration/ui/emigration-loc.js";
+import { msg, msgJoin, msgText } from "/emigration/ui/emigration-loc.js";
 
 // How far from an event's epicenter to look for affected cities: the epicenter (a volcano / floodplain
 // tile) is often unowned, so scanning the ring attributes the distress to every city in the blast radius.
@@ -132,7 +133,8 @@ function firstStruckCity(location) {
  * A spoiler-masked descriptor of the primary struck settlement: see {@link firstStruckCity}. Null
  * when no owned city was struck or the map is unreadable.
  * @param {{x:number, y:number}} location The epicenter plot.
- * @returns {{owner:number, civ:string, city:string|null, hidden:boolean}|null} The struck-city label.
+ * @returns {{owner:number, civ:*, city:string|null, hidden:boolean}|null} The struck-city label (civ a
+ *   message node).
  */
 function primaryStruckCity(location) {
   try {
@@ -142,7 +144,7 @@ function primaryStruckCity(location) {
     const hidden = civHidden(city.owner);
     return {
       owner: city.owner,
-      civ: hidden ? "an unmet civilization" : civAdjective(city.owner),
+      civ: hidden ? unmetMsg() : civAdjectiveMsg(city.owner),
       city: hidden ? null : cityName(city),
       hidden
     };
@@ -282,13 +284,23 @@ function onRandomEvent(data) {
     logEvent(data, info, sev, cities.length, damaged); // DIAGNOSTIC: grep `EMIG_event` in UI.log
     // Record a refugees-chart MARKER whenever the disaster damaged a city, independent of the toast
     // threshold, so sub-`disasterNotifyMinSeverity` disasters still annotate the chart.
-    if (damaged > 0) recordDisasterEvent(disasterName(data.eventType), sev);
+    if (damaged > 0) recordDisasterOnset(data.eventType, info, sev);
     // The toast still reports a disaster that struck a shielded or spared city: it happened, it just did no harm.
     const struck = cities.length > 0;
     maybeNotifyDisaster(data, sev, struck, struck ? primaryStruckCity(data.location) : null);
   } catch (e) {
     dlog("event threw " + e);
   }
+}
+
+/**
+ * Record a refugees-chart / timeline marker for a disaster that damaged a city: its display name now,
+ * and its game LOC key so the timeline pin can name it in whatever language is active later.
+ * @param {*} eventType The RandomEventType. @param {*} info The GameInfo RandomEvents row (may be null).
+ * @param {number} sev The event severity.
+ */
+function recordDisasterOnset(eventType, info, sev) {
+  recordDisasterEvent(disasterName(eventType), sev, info ? info.Name : undefined);
 }
 
 /**
@@ -303,32 +315,32 @@ function onRandomEvent(data) {
  */
 function maybeNotifyDisaster(data, sev, struck, where) {
   if (sev < CONFIG.disasterNotifyMinSeverity) return; // below the severity floor
-  const name = disasterName(data.eventType);
+  const name = disasterNameMsg(data.eventType);
   const alert = disasterAlert(name, where);
   logNotification({
     kind: "disaster", cause: "disaster", event: name, summary: alert, people: 0, points: 0,
     fromCity: where && where.city ? where.city : undefined,
     fromCiv: where ? where.civ : undefined
   });
-  if (shouldPopDisaster(CONFIG.disasterNotifyMode, struck)) announceImportant(alert, "disaster");
+  if (shouldPopDisaster(CONFIG.disasterNotifyMode, struck)) announceImportant(msgText(alert), "disaster");
 }
 
 /**
  * The disaster alert line. Leads with WHO was hit ("<Disaster> strikes Athens (Greek)!", or the
  * unmet mask) when a struck settlement was resolved; otherwise the bare "<Disaster> strikes!" for an
  * event that hit no owned city. Always carries the disaster action hint.
- * @param {string} name The disaster's display name.
- * @param {{civ:string, city:string|null}|null} [where] The struck-settlement label, or null.
- * @returns {string} The alert line.
+ * @param {*} name The disaster's display name (a message node).
+ * @param {{civ:*, city:string|null}|null} [where] The struck-settlement label, or null.
+ * @returns {*} The alert line (a message node).
  */
 function disasterAlert(name, where) {
-  const place = where ? (where.city ? where.city + " (" + where.civ + ")" : where.civ) : null;
+  const place = where ? (where.city ? msgJoin(where.city, " (", where.civ, ")") : where.civ) : null;
   const head = place
-    ? tr("LOC_EMIG_DISASTER_STRIKES_AT", "{1_Name} strikes {2_Place}!", name, place)
-    : tr("LOC_EMIG_DISASTER_STRIKES", "{1_Name} strikes!", name);
+    ? msg("LOC_EMIG_DISASTER_STRIKES_AT", "{1_Name} strikes {2_Place}!", name, place)
+    : msg("LOC_EMIG_DISASTER_STRIKES", "{1_Name} strikes!", name);
   // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces,
   // so a trailing space in the row never survives to separate this from the hint.
-  return head.trim() + " " + actionHint("disaster");
+  return msgJoin(head, " ", causeHintMsg("disaster"));
 }
 
 /**

@@ -7,6 +7,19 @@ import fs from "node:fs";
 
 export const I18N_ROOT = "i18n";
 
+/**
+ * Every English text file the pipeline translates. ModText.xml is hand-written; EnclaveText.xml and
+ * PediaVoicesText.xml are generated (gen-enclave-improvements.mjs, gen-pedia-voices.mjs) and PediaText.xml
+ * holds the Civilopedia pages. Their translations all live in each locale's ModText.xml, so a regenerated
+ * English file never touches a translation.
+ */
+export const EN_SOURCE_FILES = ["ModText.xml", "EnclaveText.xml", "PediaText.xml", "PediaVoicesText.xml"];
+
+/** @returns {string} The English source files' XML, concatenated. */
+export function readEnglishXml() {
+  return EN_SOURCE_FILES.map((f) => fs.readFileSync(`text/en_us/${f}`, "utf8")).join("\n");
+}
+
 /** folder name → the engine Language attribute. */
 export const LOCALES = {
   de_de: "de_DE",
@@ -48,7 +61,7 @@ export function readSource() {
 export function readLocaleRows(folder) {
   const path = `text/${folder}/ModText.xml`;
   if (!fs.existsSync(path)) return {};
-  const xml = fs.readFileSync(path, "utf8");
+  const xml = folder === "en_us" ? readEnglishXml() : fs.readFileSync(path, "utf8");
   /** @type {Record<string,string>} */
   const out = {};
   const re = /<(Replace|Row)\s+Tag="([A-Z0-9_]+)"(?:\s+Language="[^"]*")?\s*>\s*<Text>([\s\S]*?)<\/Text>\s*<\/\1>/g;

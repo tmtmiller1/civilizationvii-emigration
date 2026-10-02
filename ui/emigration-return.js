@@ -14,14 +14,13 @@ import { arriveRural } from "/emigration/ui/emigration-arrival-placement.js";
 import { atWarBetween } from "/emigration/ui/emigration-geography.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 import { narrativeCiv } from "/emigration/ui/emigration-naming.js";
-import { formatPeopleExact } from "/emigration/ui/emigration-population.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
-import { returnLine, chronicleTitle } from "/emigration/ui/emigration-narrative.js";
+import { returnLineMsg, chronicleTitleMsg } from "/emigration/ui/emigration-narrative.js";
 import { getReturnEnabled } from "/emigration/ui/emigration-settings.js";
 import { registerCacheReset, resetCachesOnNewGame, currentGameId } from "/emigration/ui/emigration-cache-reset.js";
 import { quarterAt } from "/emigration/ui/emigration-quarter-state.js";
 import { consumeOneForReturn, queueRefugees } from "/emigration/ui/emigration-refugee-pool.js";
-import { loc } from "/emigration/ui/emigration-loc.js";
+import { msg, msgNum } from "/emigration/ui/emigration-loc.js";
 
 const STATE_KEY = "EmigrationReturn_v1";
 const STATE_SCHEMA_VERSION = 2;
@@ -257,12 +256,12 @@ function restoreFailedReturn(hostCity, hostKey, originCiv, pooled, deferredTile)
 function chronicleReturn(origin, hostName, people, turn) {
   const nc = narrativeCiv(origin);
   const seed = hostName + "|return|" + origin + "|" + Math.floor(turn / CONFIG.returnCooldownTurns);
-  const body = returnLine({
-    origin: nc.adj, framed: nc.framed, city: hostName, people: formatPeopleExact(people),
-    reason: loc("LOC_EMIG_RETURN_REASON_PEACE", "at peace again"), seed
+  const body = returnLineMsg({
+    origin: nc.adjMsg, framed: nc.framed, city: hostName, people: msgNum(people),
+    reason: msg("LOC_EMIG_RETURN_REASON_PEACE", "at peace again"), seed
   });
   chronicle({
-    kind: "return", title: chronicleTitle({ kind: "return", civ: nc.adj, city: hostName, seed }),
+    kind: "return", title: chronicleTitleMsg({ kind: "return", civ: nc.adjMsg, city: hostName, seed }),
     body, civ: nc.adj, people, dedupeKey: "return:" + hostName + "|" + origin + "|" + turn
   });
 }
