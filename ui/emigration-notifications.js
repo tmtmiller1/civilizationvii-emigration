@@ -5,6 +5,7 @@
 // Persisted in GameConfiguration, capped, newest-first; without GameConfiguration reads return [].
 
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
+import { isMsgNode, msgClean, msgCompose, msgPack, msgText } from "/emigration/ui/emigration-loc.js";
 
 const STATE_KEY = "EmigrationNotif_v1";
 const MAX_ENTRIES = 120; // ring cap: plenty of history, bounded save size
@@ -29,6 +30,22 @@ const MAX_ENTRIES = 120; // ring cap: plenty of history, bounded save size
  * @property {boolean} [crossCiv] Whether the lead move crossed civilizations.
  * @property {boolean} [ownLoss] Whether this is the local player's own population loss (drives the
  *   red accent; world-news / other-civ entries render in a neutral tone).
+ * @property {*} [s] The summary as a packed message (emigration-loc.js), composed again in the language
+ *   active when it is shown. `ts`, `bs`, `ev`, `fc` and `tc` do the same for title, body, event, fromCiv
+ *   and toCiv. Entries written before these existed carry only the stored text, which still renders.
+ * @property {*} [ts] The title as a packed message.
+ * @property {*} [bs] The body as a packed message.
+ * @property {*} [ev] The event as a packed message.
+ * @property {*} [fc] The origin civilization as a packed message.
+ * @property {*} [tc] The destination civilization as a packed message.
+ */
+
+/** @typedef {import("/emigration/ui/emigration-loc.js").MsgNode} MsgNode */
+
+/**
+ * What a caller hands {@link logNotification}: a NotifEntry whose text fields may be message nodes.
+ * @typedef {Omit<Partial<NotifEntry>, "summary"|"title"|"body"|"event"|"fromCiv"|"toCiv"> & {summary?:MsgNode,
+ *   title?:MsgNode, body?:MsgNode, event?:MsgNode, fromCiv?:MsgNode, toCiv?:MsgNode}} NotifInput
  */
 
 /** @type {NotifEntry[] | null} Newest-first cache (shared across the VM's modules). */
@@ -79,6 +96,37 @@ function finiteOr(v, d) {
 // blob across a reload.
 const OPT_STR_FIELDS = ["title", "body", "event", "fromCity", "fromCiv", "toCity", "toCiv", "reasons"];
 
+// Text field → the short field holding its packed message. A caller may pass a message node in the text
+// field itself (rendered once for the stored text, packed into the short field) or a packed value in the
+// short field directly (the Chronicle mirror).
+/** @type {Record<string, string>} */
+const MSG_FIELDS = { summary: "s", title: "ts", body: "bs", event: "ev", fromCiv: "fc", toCiv: "tc" };
+
+/**
+ * Split each message-node text field of an incoming entry into its rendered text and packed message.
+ * @param {*} entry The caller's entry. @returns {*} A shallow copy with plain-text fields and packed messages.
+ */
+function splitMessages(entry) {
+  const out = { ...entry };
+  for (const [field, short] of Object.entries(MSG_FIELDS)) {
+    if (!isMsgNode(entry[field])) continue;
+    out[field] = msgText(entry[field]);
+    out[short] = msgPack(entry[field]);
+  }
+  return out;
+}
+
+/**
+ * Copy the well-formed packed messages of `entry` onto the clean entry `e`.
+ * @param {*} entry The source entry. @param {*} e The clean entry (mutated).
+ */
+function copyMessages(entry, e) {
+  for (const short of Object.values(MSG_FIELDS)) {
+    const p = entry[short] == null ? undefined : msgClean(entry[short]);
+    if (p !== undefined && p !== "") e[short] = p;
+  }
+}
+
 /**
  * Build the canonical NotifEntry with coerced required fields and only the present optional strings.
  * @param {Partial<NotifEntry>} entry The source entry. @param {number} turn The turn to stamp.
@@ -99,6 +147,7 @@ function cleanEntry(entry, turn) {
   for (const f of OPT_STR_FIELDS) {
     if (typeof (/** @type {*} */ (entry)[f]) === "string") e[f] = (/** @type {*} */ (entry)[f]);
   }
+  copyMessages(entry, e);
   return e;
 }
 
@@ -140,12 +189,12 @@ function persist() {
 /**
  * Append a notification to the permanent log (newest-first), stamped with the current turn, and
  * persist. Trims to MAX_ENTRIES. No-op on a malformed entry.
- * @param {Partial<NotifEntry>} entry The notification detail (cause/kind/summary + people/points + where).
+ * @param {NotifInput} entry The notification detail (cause/kind/summary + people/points + where).
  */
 export function logNotification(entry) {
   if (!entry || typeof entry !== "object") return;
   const list = log();
-  list.unshift(cleanEntry(entry, gameTurn()));
+  list.unshift(cleanEntry(splitMessages(entry), gameTurn()));
   if (list.length > MAX_ENTRIES) list.length = MAX_ENTRIES;
   persist();
 }
@@ -159,6 +208,21 @@ export function notificationLog(limit) {
   const list = log();
   const n = typeof limit === "number" && limit > 0 ? Math.min(limit, list.length) : list.length;
   return list.slice(0, n);
+}
+
+/**
+ * One text field of an entry in the CURRENT language: its packed message composed now, or the stored
+ * text when the entry has no message (older saves) or it cannot be composed.
+ * @param {NotifEntry} e The entry.
+ * @param {"summary"|"title"|"body"|"event"|"fromCiv"|"toCiv"} field The text field.
+ * @returns {string} The text ("" when absent).
+ */
+export function entryText(e, field) {
+  const p = /** @type {*} */ (e)[MSG_FIELDS[field]];
+  const composed = p != null ? msgCompose(p) : null;
+  if (composed != null) return composed;
+  const v = /** @type {*} */ (e)[field];
+  return typeof v === "string" ? v : "";
 }
 
 /** Clear the notification log (console/debug helper). */

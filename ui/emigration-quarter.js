@@ -17,7 +17,7 @@ import { quarterOptionsFor, quarterOptionFor } from "/emigration/ui/emigration-q
 import { quarterQuote, quarterQuoteKey, quoteDisplay, renderableLine } from "/emigration/ui/emigration-quarter-bonuses.js";
 import { applyQuarterYields, deduct, grantSigned } from "/emigration/ui/emigration-effects.js";
 import { stancePayout, affordable, payStance } from "/emigration/ui/emigration-stance-payout.js";
-import { quarterName, narrativeCiv, civType } from "/emigration/ui/emigration-naming.js";
+import { quarterName, quarterNameMsg, narrativeCiv, civType } from "/emigration/ui/emigration-naming.js";
 import { warOpponents } from "/emigration/ui/emigration-war.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
 import { showDilemma } from "/emigration/ui/emigration-dilemma-view.js";
@@ -29,7 +29,7 @@ import { cityCompositionByKey } from "/emigration/ui/emigration-composition.js";
 import { enclaveYields, paidYields, yieldsText, yieldsButtonText, withYields } from "/emigration/ui/emigration-enclave-yields.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
 import { toast } from "/emigration/ui/emigration-feedback.js";
-import { loc as tr } from "/emigration/ui/emigration-loc.js";
+import { loc as tr, msg, msgCap, msgText } from "/emigration/ui/emigration-loc.js";
 
 /**
  * The local (viewing) player id, or null.
@@ -50,8 +50,19 @@ function localPid() {
  * @param {string|null|undefined} s The edge phrase. @returns {string} The capitalized phrase.
  */
 function capFirst(s) {
-  const t = typeof s === "string" && s.length ? s : "at the city's edge";
+  const t = typeof s === "string" && s.length ? s : tr("LOC_EMIG_QTR_WHERE_EDGE", "at the city's edge");
   return t.charAt(0).toUpperCase() + t.slice(1);
+}
+
+/**
+ * A quarter's edge phrase for a Chronicle line: its message node when it has one (so the line reads in
+ * the language active when it is shown), else the phrase text. `cap` capitalizes it for sentence start.
+ * @param {*} quarter The quarter ({where, whereMsg?}). @param {boolean} [cap] Capitalize.
+ * @returns {*} The phrase (a string or message node).
+ */
+function whereOf(quarter, cap) {
+  if (!quarter.whereMsg) return cap ? capFirst(quarter.where) : quarter.where;
+  return cap ? msgCap(quarter.whereMsg) : quarter.whereMsg;
 }
 
 /**
@@ -61,7 +72,7 @@ function capFirst(s) {
  * @param {number} owner Host player id. @param {*} entry The chronicle entry (kind/title/body/civ/dedupeKey).
  */
 function announce(owner, entry) {
-  if (chronicle(entry) && owner === localPid()) toast(entry.body, "chronicle");
+  if (chronicle(entry) && owner === localPid()) toast(msgText(entry.body), "chronicle");
 }
 
 /**
@@ -259,23 +270,23 @@ function pickCandidate(signals, me, turn, force) {
  *   change-of-hands) what the old one stopped giving.
  */
 function chronicleDecision(option, quarter, prior, turn, worth) {
-  const name = quarterName(quarter.civ);
+  const name = quarterNameMsg(quarter.civ);
   if (prior && prior.civ !== quarter.civ) {
     chronicle({
-      kind: "founding", title: tr("LOC_EMIG_QTR_CHRON_HANDS_TITLE", "The Enclave Changes Hands"),
-      body: withYields(tr("LOC_EMIG_QTR_CHRON_HANDS_BODY",
+      kind: "founding", title: msg("LOC_EMIG_QTR_CHRON_HANDS_TITLE", "The Enclave Changes Hands"),
+      body: withYields(msg("LOC_EMIG_QTR_CHRON_HANDS_BODY",
         "The old {1_Name} has faded as its families moved on, married in, or were overtaken by new arrivals. {2_Where}, {3_Adj} households now give the ward its name, its customs, and its bargains.",
-        quarterName(prior.civ), capFirst(quarter.where), narrativeCiv(quarter.civ).adj), worth.gave),
+        quarterNameMsg(prior.civ), whereOf(quarter, true), narrativeCiv(quarter.civ).adjMsg), worth.gave),
       civ: narrativeCiv(quarter.civ).adj, dedupeKey: "quarter:hands:" + quarter.name + "|" + quarter.civ + "|" + turn
     });
   }
   const stance = option.benefitYield
-    ? tr("LOC_EMIG_QTR_STANCE_ACTIVE_" + option.id,
+    ? msg("LOC_EMIG_QTR_STANCE_ACTIVE",
       "In {1_Place}, you chose to {2_Act} — the {3_Name} takes its place in the city's life.",
       quarter.name, String(option.label || "").toLowerCase(), name)
-    : tr("LOC_EMIG_QTR_STANCE_LETBE", "You let the {1_Name} keep to itself.", name);
+    : msg("LOC_EMIG_QTR_STANCE_LETBE", "You let the {1_Name} keep to itself.", name);
   chronicle({
-    kind: "founding", title: tr("LOC_EMIG_QTR_CHRON_DECISION_TITLE", "A {1_Name}", name),
+    kind: "founding", title: msg("LOC_EMIG_QTR_CHRON_DECISION_TITLE", "A {1_Name}", name),
     body: withYields(stance, worth.gave),
     civ: narrativeCiv(quarter.civ).adj, dedupeKey: "quarter:decision:" + quarter.name + "|" + quarter.civ + "|" + turn
   });
@@ -539,10 +550,10 @@ function recognizeAutomatically(signals, owner, turn, force) {
   applyQuarterChoice(option ? option.id : "ignore", cand.tileKey, { ...cand.quarter, city: cand.city }, owner, turn);
   const gave = yieldsText(paidYields(quarterAt(cand.tileKey)));
   announce(owner, {
-    kind: "founding", title: tr("LOC_EMIG_QTR_CHRON_AUTO_TITLE", "An Enclave Takes Root"),
-    body: withYields(tr("LOC_EMIG_QTR_CHRON_AUTO_BODY",
+    kind: "founding", title: msg("LOC_EMIG_QTR_CHRON_AUTO_TITLE", "An Enclave Takes Root"),
+    body: withYields(msg("LOC_EMIG_QTR_CHRON_AUTO_BODY",
       "The {1_Name} has taken root {2_Where} in {3_City}: its families have stayed long enough to make the ward their own.",
-      quarterName(cand.quarter.civ), cand.quarter.where, cand.quarter.name), gave),
+      quarterNameMsg(cand.quarter.civ), whereOf(cand.quarter), cand.quarter.name), gave),
     civ: narrativeCiv(cand.quarter.civ).adj, dedupeKey: "quarter:auto:" + cand.tileKey + "|" + turn
   });
 }
@@ -564,10 +575,10 @@ function accrueContestedStrain(owner, turn) {
     setContested(tileKey, nowContested, turn);
     if (nowContested && !wasContested) {
       chronicle({
-        kind: "founding", title: tr("LOC_EMIG_QTR_CHRON_RESTLESS_TITLE", "War Tests the {1_Name}", quarterName(rec.civ)),
-        body: tr("LOC_EMIG_QTR_CHRON_RESTLESS_BODY",
+        kind: "founding", title: msg("LOC_EMIG_QTR_CHRON_RESTLESS_TITLE", "War Tests the {1_Name}", quarterNameMsg(rec.civ)),
+        body: msg("LOC_EMIG_QTR_CHRON_RESTLESS_BODY",
           "War with {1_Adj} falls hard on the {2_Name}: its families are cut off from kin in the fighting, and some neighbors meet them with cold looks, forgetting they did not choose this war. Until peace returns, that strain keeps the enclave from settling fully into the city's life.",
-          narrativeCiv(rec.civ).adj, quarterName(rec.civ)),
+          narrativeCiv(rec.civ).adjMsg, quarterNameMsg(rec.civ)),
         civ: narrativeCiv(rec.civ).adj, dedupeKey: "quarter:contested:" + tileKey + "|" + rec.civ + "|" + turn
       });
     }
@@ -685,10 +696,10 @@ function dissolveEnclave(tileKey, rec, turn) {
     + " after " + (turn - (Number(rec.fadeSince) || turn)) + " turns below the fade bar"
     + (worth.lost ? "; host loses " + worth.lost : ""));
   announce(rec.owner, {
-    kind: "founding", title: tr("LOC_EMIG_QTR_CHRON_FADE_TITLE", "The Enclave Fades"),
-    body: withYields(tr("LOC_EMIG_QTR_CHRON_FADE_BODY",
+    kind: "founding", title: msg("LOC_EMIG_QTR_CHRON_FADE_TITLE", "The Enclave Fades"),
+    body: withYields(msg("LOC_EMIG_QTR_CHRON_FADE_BODY",
       "The {1_Name} in {2_City} is no more: its families married in, moved on, or simply became the city, and the ward has lost its name.",
-      quarterName(rec.civ), city), worth.lost),
+      quarterNameMsg(rec.civ), city), worth.lost),
     civ: narrativeCiv(rec.civ).adj, dedupeKey: "quarter:fade:" + tileKey + "|" + turn
   });
 }
@@ -771,10 +782,10 @@ function retireBuiltOver(key, rec, turn) {
   dlog("enclave BUILT OVER " + quarterName(rec.civ) + " in " + hostCityName(key) + " at " + key
     + (lost ? "; host loses " + lost : ""));
   announce(rec.owner, {
-    kind: "founding", title: tr("LOC_EMIG_QTR_CHRON_BUILT_OVER_TITLE", "The Enclave Is Built Over"),
-    body: withYields(tr("LOC_EMIG_QTR_CHRON_BUILT_OVER_BODY",
+    kind: "founding", title: msg("LOC_EMIG_QTR_CHRON_BUILT_OVER_TITLE", "The Enclave Is Built Over"),
+    body: withYields(msg("LOC_EMIG_QTR_CHRON_BUILT_OVER_BODY",
       "The {1_Name} is gone: the city built over its ward, and its families have scattered into the streets around it.",
-      quarterName(rec.civ)), lost),
+      quarterNameMsg(rec.civ)), lost),
     civ: narrativeCiv(rec.civ).adj, dedupeKey: "quarter:builtover:" + key + "|" + turn
   });
 }

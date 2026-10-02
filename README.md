@@ -33,7 +33,14 @@ When a settlement is starving, unhappy, or under siege, people leave. When one i
 
 Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.md) · [typeset PDF](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.pdf), with every formula rendered.
 
-## What's new in 3.2.1
+## What's new in 3.3.0
+
+- **Every language reads in full.** The Civilopedia pages and their quotations, the enclave names and descriptions on the map, the call-home and arrival pop-ups, the enclave and displaced-people quotes, and the options that were still in English are translated into all eleven languages.
+- **Chinese, Japanese and Korean draw every character.** Panel titles, city names, tabs, filter buttons, the guide and the network map's labels used the game's Latin-only faces and showed missing-glyph boxes; they now use the language's own font the way the game does. The network map's war badges draw their flag as a shape, not a glyph those fonts lack.
+- **Notifications and Chronicle entries read in your current language.** New entries are recorded as text keys and composed when shown, so switching the game's language translates them; entries recorded before this version keep the text they were written with.
+- **The network timeline's labels are translated:** the Scaled Pop and Civ Pop units, Play and Pause, the age name and the year labels.
+
+## What was new in 3.2.1
 
 - **The city readout sits beside the City Details panel** instead of over it. When you open a settlement, the per-city migration readout moves out from under whichever city-screen panel holds its corner, and returns to the corner when City Details is closed.
 

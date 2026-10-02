@@ -5,6 +5,39 @@ follows [Keep a Changelog](https://keepachangelog.com/) and Semantic Versioning.
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [3.3.0] - 2026-10-01
+
+Every language now reads in full, and Chinese, Japanese and Korean draw every character.
+
+### Added
+- **The rest of the mod is translated into all eleven languages.** That is the Civilopedia section (its pages and
+  the voices pages with every quotation and note), the enclave names, descriptions and tooltips on the map, the
+  call-home and arrival pop-ups, the enclave-recognition and displaced-people quotes, and the options that were
+  still in English: about 1,400 strings per language. A quotation keeps its original-language text and gains a
+  rendering in your language; a quotation first written in that language shows its original.
+
+### Fixed
+- **Missing-glyph boxes in Chinese, Japanese and Korean.** Panel and section titles, city names, civilization
+  headings, tabs, filter buttons, chips, the guide and the network map's name labels named the game's Latin-only
+  faces, so those characters drew as boxes. Every font list now follows the language the way the game orders its
+  own, with the language's face first. The network map's war badges draw their flag as a shape instead of a
+  character those fonts do not have.
+- **Notifications and Chronicle entries read in the current language.** An entry used to store its finished
+  sentence, so a game played in English kept English rows in every other language. New entries store the text
+  keys and their values and are composed when shown; entries recorded before 3.3.0 keep the text they were
+  written with.
+- **Network timeline labels in English:** the Scaled Pop and Civ Pop units, Play and Pause, the age name and the
+  year labels now follow the language.
+- **Two explanation labels showed English in every language** (leaving a larger settlement; wonders and buildings),
+  and an enclave stance sentence never resolved. Each now has its text.
+
+### Internal
+- The translation pipeline reads every English source file (ModText, EnclaveText, PediaText, PediaVoicesText), so
+  regenerating the enclave or voices text never touches a translation, and the parity gate covers all of them.
+- Tests for the stored-message compose path (old entries, new entries, malformed data), the year labels, every
+  derived key family, the language-ordered font lists, and a guard that no script or stylesheet names a game face
+  directly.
+
 ## [3.2.1] - 2026-09-29
 
 ### Fixed

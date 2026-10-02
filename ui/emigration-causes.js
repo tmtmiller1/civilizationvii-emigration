@@ -9,7 +9,7 @@
 // their per-cause history.
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
-import { loc } from "/emigration/ui/emigration-loc.js";
+import { loc, msg, msgText } from "/emigration/ui/emigration-loc.js";
 
 /**
  * Why population left a settlement. `attrition` is the outlet (a death, population lost with no
@@ -225,9 +225,19 @@ export function causePermanence(cause) {
  * @returns {string} The hint.
  */
 export function causeHint(cause, city) {
-  if (!cause || !HINTS[cause]) return "";
-  if (!city && HINTS_ANY[cause]) return loc(HINT_KEYS[cause] + "_ANY", HINTS_ANY[cause]);
-  return loc(HINT_KEYS[cause], HINTS[cause], city);
+  const node = causeHintMsg(cause, city);
+  return node ? msgText(node) : "";
+}
+
+/**
+ * {@link causeHint} as a message node, or null when the cause has no hint.
+ * @param {string} [cause] @param {import("/emigration/ui/emigration-loc.js").MsgNode} [city] The settlement.
+ * @returns {import("/emigration/ui/emigration-loc.js").MsgNode|null} The hint.
+ */
+export function causeHintMsg(cause, city) {
+  if (!cause || !HINTS[cause]) return null;
+  if (!city && HINTS_ANY[cause]) return msg(HINT_KEYS[cause] + "_ANY", HINTS_ANY[cause]);
+  return msg(HINT_KEYS[cause], HINTS[cause], city || "");
 }
 
 /**
@@ -237,7 +247,12 @@ export function causeHint(cause, city) {
  * @returns {string} The tip.
  */
 export function stanceTip() {
-  return loc("LOC_EMIG_HINT_STANCE", STANCE_TIP);
+  return msgText(stanceTipMsg());
+}
+
+/** {@link stanceTip} as a message node. @returns {import("/emigration/ui/emigration-loc.js").MsgNode} */
+export function stanceTipMsg() {
+  return msg("LOC_EMIG_HINT_STANCE", STANCE_TIP);
 }
 
 /**

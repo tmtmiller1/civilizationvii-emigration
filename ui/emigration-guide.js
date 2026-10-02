@@ -6,7 +6,7 @@
 // visible string is localized at render through a position-derived LOC key (LOC_EMIG_GUIDE_<section>_...),
 // with the English text below as the fallback.
 
-import { loc } from "/emigration/ui/emigration-loc.js";
+import { loc, localeFontFamily } from "/emigration/ui/emigration-loc.js";
 
 const YES = "✓"; // U+2713 CHECK MARK (renders in the GameFace body/title fonts)
 // U+00D7 MULTIPLICATION SIGN, not U+2717 BALLOT X: the ballot-X glyph is absent from the GameFace
@@ -180,7 +180,7 @@ const CSS =
   // single column when the window is too narrow to fit both.
   ".emig-guide-cols{display:flex;flex-wrap:wrap;gap:0 2.5rem;align-items:flex-start;width:100%;}" +
   ".emig-guide-col{flex:1 1 26rem;min-width:0;display:flex;flex-direction:column;}" +
-  ".emig-guide-h{font-family:\"TitleFont\";text-transform:uppercase;letter-spacing:0.05rem;color:#f3c34c;font-size:var(--dg-fs-120);margin:0.6rem 0 0.1rem;border-bottom:0.0555rem solid rgba(201,162,76,0.3);padding-bottom:0.2rem;}" +
+  ".emig-guide-h{font-family:" + localeFontFamily("title") + ";text-transform:uppercase;letter-spacing:0.05rem;color:#f3c34c;font-size:var(--dg-fs-120);margin:0.6rem 0 0.1rem;border-bottom:0.0555rem solid rgba(201,162,76,0.3);padding-bottom:0.2rem;}" +
   // A matrix row stacks vertically: the icon + bold question on the top line, the explanation wrapping
   // full-width beneath it (instead of a cramped second column), with a clearer divider between rows.
   ".emig-guide-row{display:flex;align-items:flex-start;gap:0.7rem;padding:0.55rem 0.1rem;border-top:0.0555rem solid rgba(201,162,76,0.22);}" +

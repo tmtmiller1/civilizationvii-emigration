@@ -14,6 +14,7 @@
 // expose citySnapshot on EmigrationData, and a static back-edge would be a cycle.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 import { speedBar } from "/emigration/ui/emigration-game-speed.js";
 import { causeLabel, causePermanence, causeHint } from "/emigration/ui/emigration-causes.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
@@ -326,7 +327,7 @@ function resolveComposition(city) {
     if (civHidden(c.civ)) unknown += c.share;
     else parts.push({ name: civAdjective(c.civ), share: c.share });
   }
-  if (unknown > 0) parts.push({ name: "Unknown", share: unknown });
+  if (unknown > 0) parts.push({ name: loc("LOC_EMIG_ETH_UNKNOWN", "Unknown"), share: unknown });
   parts.sort((a, b) => b.share - a.share);
   return { total: comp.total, parts };
 }

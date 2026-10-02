@@ -24,7 +24,7 @@ const scene = (events, frameIdx) => ({ centers, events, state: { frameIdx } });
     { kind: "war", label: "Songhai-Chola War", from: 0, to: 10, cis: [0] }
   ], 5));
   assert.equal(reqs.length, 2, "both events on the cluster are laid out");
-  assert.deepEqual(reqs.map((r) => r.text), ["⚑ Songhai vs Chola", "⚑ Songhai-Chola War"], "each keeps its own label");
+  assert.deepEqual(reqs.map((r) => r.text), ["Songhai vs Chola", "Songhai-Chola War"], "each keeps its own label");
   assert.equal(reqs[0].x, 100, "anchored on its cluster");
 }
 
@@ -42,7 +42,7 @@ const scene = (events, frameIdx) => ({ centers, events, state: { frameIdx } });
     { kind: "disaster", label: "Now", from: 4, to: 8, cis: [0] },
     { kind: "war", label: "Later", from: 9, to: 12, cis: [0] }
   ];
-  assert.deepEqual(eventBadgeRequests(scene(events, 5)).map((r) => r.text), ["⚑ Now"], "the window is inclusive of now only");
+  assert.deepEqual(eventBadgeRequests(scene(events, 5)).map((r) => r.text), ["Now"], "the window is inclusive of now only");
   assert.equal(eventBadgeRequests(scene(events, 20)).length, 0, "past the last event, nothing is badged");
   // Pre-existing behavior, pinned so it can't drift silently: with no scrubber frame the clock reads as past
   // every window, so nothing is badged.

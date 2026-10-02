@@ -23,6 +23,7 @@ import { buildTimelineEvents } from "/emigration/ui/emigration-timeline-events.j
 import { makeTimeline, TIMELINE_CSS } from "/emigration/ui/emigration-network-timeline.js";
 import { installStageFit } from "/emigration/ui/emigration-network-fit.js";
 import { makeTooltip, wireEvents } from "/emigration/ui/emigration-network-interact.js";
+import { localeFontFamily } from "/emigration/ui/emigration-loc.js";
 
 // Logical canvas size, a WIDE 2:1 rectangle so the draggable area spans the full window width
 // (nodes seed clustered in the center; the buffer is 2x these for crispness).
@@ -142,7 +143,7 @@ const NETC_CSS =
     ".emig-help{position:relative;display:inline-flex;align-items:center;z-index:30;}" +
     '.emig-help-q{display:flex;align-items:center;gap:0.3rem;padding:0.16rem 0.6rem;' +
     "border-radius:0.9rem;border:0.0555rem solid rgba(201,162,76,0.6);background:rgba(9,12,19,0.85);" +
-    'color:#f0bc78;font-family:"TitleFont";cursor:help;white-space:nowrap;}' +
+    "color:#f0bc78;font-family:" + localeFontFamily("title") + ";cursor:help;white-space:nowrap;}" +
     ".emig-help-q:hover{background:rgba(243,195,76,0.16);}" +
     ".emig-help-lbl{font-size:var(--dg-fs-85);text-transform:uppercase;letter-spacing:0.03rem;}" +
     ".emig-help-pop{display:none;position:absolute;top:1.7rem;right:0;width:24rem;max-width:80vw;" +
@@ -363,20 +364,33 @@ function addFlowsToggle(root, state, onChange) {
 }
 
 // Number-mode units control (Scaled Pop ↔ Civ Pop), shared with the flow-map view so both surfaces of
-// the combined Network tab carry the same "Units:" control.
-/** @type {Record<number,string>} */
-const UNITS_LABEL = { [NumberMode.CIV]: "Civ Pop", [NumberMode.HISTORICAL]: "Scaled Pop" };
-// Hover hints that explain WHY the two measures differ (and why Civ Pop looks frozen while Scaled Pop
-// drifts): Civ Pop is the game's exact, discrete city size; Scaled Pop is the historical "people"
-// headcount that grows through an age. Percentages read off the raw Civ-Pop base in either mode.
-const UNITS_TIP = {
-  [NumberMode.CIV]: loc("LOC_EMIG_NETC_UNITS_CIV_TIP",
-    "Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city " +
-    "actually grows, so this figure looks steady. Shares/percentages are always measured on this base."),
-  [NumberMode.HISTORICAL]: loc("LOC_EMIG_NETC_UNITS_SCALED_TIP",
-    "Scaled Pop: a historically-scaled 'people' headcount for flavor. It drifts upward as an age " +
-    "progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.")
-};
+// the combined Network tab carry the same "Units:" control. Composed when the control is built, so the
+// labels follow the current language.
+/**
+ * A number mode's chip label.
+ * @param {number} mode A NumberMode. @returns {string} The label.
+ */
+function unitsLabel(mode) {
+  return mode === NumberMode.CIV
+    ? loc("LOC_EMIG_VIEW_NUM_CIV", "Civ Pop")
+    : loc("LOC_EMIG_VIEW_NUM_SCALED", "Scaled Pop");
+}
+
+/**
+ * A number mode's hover hint, explaining WHY the two measures differ (and why Civ Pop looks frozen while
+ * Scaled Pop drifts): Civ Pop is the game's exact, discrete city size; Scaled Pop is the historical
+ * "people" headcount that grows through an age. Percentages read off the raw Civ-Pop base in either mode.
+ * @param {number} mode A NumberMode. @returns {string} The hint.
+ */
+function unitsTip(mode) {
+  return mode === NumberMode.CIV
+    ? loc("LOC_EMIG_NETC_UNITS_CIV_TIP",
+      "Civ Pop: the game's exact city size in population points. Whole numbers that change only when a city " +
+      "actually grows, so this figure looks steady. Shares/percentages are always measured on this base.")
+    : loc("LOC_EMIG_NETC_UNITS_SCALED_TIP",
+      "Scaled Pop: a historically-scaled 'people' headcount for flavor. It drifts upward as an age " +
+      "progresses even at a fixed city size, so unlike Civ Pop it keeps changing over time.");
+}
 
 /**
  * Append a "Units:" toggle (a labeled chip cycling Civ Pop ↔ Scaled Pop) to a controls row, styled
@@ -398,8 +412,8 @@ export function appendUnitsToggle(root, rebuildAll, withSep = true) {
   // year filters and the dashboard control row.
   for (const mode of [NumberMode.HISTORICAL, NumberMode.CIV]) {
     const b = el("div", "emig-filter-btn" + (getNumberMode() === mode ? " active" : ""),
-      UNITS_LABEL[mode]);
-    b.title = UNITS_TIP[mode];
+      unitsLabel(mode));
+    b.title = unitsTip(mode);
     b.addEventListener("click", () => set(mode));
     root.appendChild(b);
   }

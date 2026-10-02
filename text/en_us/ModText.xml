@@ -58,6 +58,7 @@
         <Row Tag="LOC_EMIG_T_TLPINS"><Text>Timeline event pins</Text></Row>
         <Row Tag="LOC_EMIG_T_TLPINS_D"><Text>Pin the wars and disasters that drove migration onto the migration network's playback timeline, so a spike can be traced back to what caused it. Hover a pin to name the event; click it to scrub there. Display only. It never changes who moves. Only events recorded from now on can be pinned: wars and disasters from earlier in an existing save were never stamped with the turn they happened.</Text></Row>
         <Row Tag="LOC_EMIG_TL_PIN_DISASTER"><Text>Disaster</Text></Row>
+        <Row Tag="LOC_EMIG_TIMELINE_DETAIL"><Text>Timeline detail: every {1_N} turns ; a newly met civ or a recent move can take up to {1_N} turns to appear here. Change in Options.</Text></Row>
 
         <Row Tag="LOC_EMIG_ADVGRP_READOUT"><Text>Readouts &amp; rankings</Text></Row>
         <Row Tag="LOC_EMIG_T_DIVERSITY"><Text>Most diverse settlements ranking</Text></Row>
@@ -97,6 +98,8 @@
         <Row Tag="LOC_EMIG_EXPLAIN_STARVATION"><Text>Famine</Text></Row>
         <Row Tag="LOC_EMIG_EXPLAIN_UNREST"><Text>Unrest</Text></Row>
         <Row Tag="LOC_EMIG_EXPLAIN_WAR_WEARINESS"><Text>War weariness</Text></Row>
+        <Row Tag="LOC_EMIG_EXPLAIN_DOWNSIZING"><Text>Leaving a larger settlement</Text></Row>
+        <Row Tag="LOC_EMIG_EXPLAIN_BUILT"><Text>Wonders &amp; buildings</Text></Row>
 
         <Row Tag="LOC_EMIG_VIEW_SEC_DIVERSITY"><Text>Most diverse settlements</Text></Row>
         <Row Tag="LOC_EMIG_VIEW_TAB_DIVERSITY"><Text>Diversity</Text></Row>
@@ -526,6 +529,7 @@
         <!-- Internal prosperity move WITH a resolved destination: one flowing sentence naming the neighbor -->
         <Row Tag="LOC_EMIG_DIGEST_PROSPERITY_TO"><Text>{1_People} left {2_City} for its more prosperous neighbor, {3_Dest}.</Text></Row>
         <Row Tag="LOC_EMIG_DIGEST_ATTRITION"><Text>{2_City} suffered {1_People} casualties.</Text></Row>
+        <Row Tag="LOC_EMIG_DIGEST_GENERIC"><Text>{1_People} left {2_City}.</Text></Row>
 
         <!-- Movement-scope tag: an internal relocation within the empire vs. a move that leaves it -->
         <Row Tag="LOC_EMIG_SCOPE_INTERNAL"><Text>(Internal Move)</Text></Row>
@@ -749,6 +753,11 @@
         <Row Tag="LOC_EMIG_NETC_TURN_N">
             <Text>turn {1_Turn}</Text>
         </Row>
+        <Row Tag="LOC_EMIG_NETC_TURN_SHORT"><Text>T{1_Turn}</Text></Row>
+        <Row Tag="LOC_EMIG_NETC_PLAY"><Text>Play</Text></Row>
+        <Row Tag="LOC_EMIG_NETC_PAUSE"><Text>Pause</Text></Row>
+        <Row Tag="LOC_EMIG_YEAR_BCE"><Text>{1_Year} BCE</Text></Row>
+        <Row Tag="LOC_EMIG_YEAR_CE"><Text>{1_Year} CE</Text></Row>
         <Row Tag="LOC_EMIG_NETC_START">
             <Text>start</Text>
         </Row>
@@ -1383,6 +1392,8 @@
         <Row Tag="LOC_EMIG_QTR_STANCE_LETBE">
             <Text>You let the {1_Name} keep to itself.</Text>
         </Row>
+        <Row Tag="LOC_EMIG_QTR_STANCE_ACTIVE"><Text>In {1_Place}, you chose to {2_Act} — the {3_Name} takes its place in the city's life.</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_WHERE_EDGE"><Text>at the city's edge</Text></Row>
         <Row Tag="LOC_EMIG_QTR_CHRON_DECISION_TITLE">
             <Text>A {1_Name}</Text>
         </Row>
@@ -2482,6 +2493,9 @@
         <Row Tag="LOC_EMIG_FALLBACK_A_DISASTER"><Text>a disaster</Text></Row>
         <Row Tag="LOC_EMIG_FALLBACK_A_DISASTER_START"><Text>A disaster</Text></Row>
         <Row Tag="LOC_EMIG_FALLBACK_WAR"><Text>war</Text></Row>
+        <Row Tag="LOC_EMIG_FALLBACK_TOWN_N"><Text>Town {1_N}</Text></Row>
+        <Row Tag="LOC_EMIG_FALLBACK_CITY_N"><Text>City {1_N}</Text></Row>
+        <Row Tag="LOC_EMIG_TOAST_EYEBROW"><Text>Emigration</Text></Row>
         <Row Tag="LOC_EMIG_QUARTER_ENCLAVE"><Text>{1_Demonym} Enclave</Text></Row>
         <Row Tag="LOC_EMIG_QUARTER_ENCLAVE_FOREIGN"><Text>foreign enclave</Text></Row>
         <Row Tag="LOC_EMIG_EVENT_CRISIS_SUFFIX"><Text>{1_Name} Crisis</Text></Row>

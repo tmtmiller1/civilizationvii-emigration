@@ -12,7 +12,7 @@ import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { getNumberMode } from "/emigration/ui/emigration-settings.js";
 import { formatCount } from "/emigration/ui/emigration-ledger-view.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
-import { loc } from "/emigration/ui/emigration-loc.js";
+import { loc, localeFontFamily } from "/emigration/ui/emigration-loc.js";
 
 /**
  * Make an element with an optional class + text.
@@ -274,7 +274,7 @@ function diversityDataRow(r, ctx) {
  */
 function civHeading(name, own) {
   const h = el("div", "emig-dv-civ", own ? loc("LOC_EMIG_DIVERSE_YOUR_CIV", "{1_Civ} (you)", name) : name);
-  h.style.cssText = "font-family:\"TitleFont\";color:#f0dca8;opacity:" + (own ? "1" : "0.8")
+  h.style.cssText = "font-family:" + localeFontFamily("title") + ";color:#f0dca8;opacity:" + (own ? "1" : "0.8")
     + ";font-size:var(--dg-fs-95);padding:0.5rem 0.6rem 0.15rem 0.6rem;";
   return h;
 }

@@ -89,7 +89,7 @@ let _recent = [];
  *   network per frame by summing deltas. chartTurn is MONOTONIC across ages.
  * @property {number} flowSchema Flow-history encoding version (2 = delta-encoded). Legacy saves
  *   (frames carrying a cumulative `flows` clone) are migrated to deltas once on load.
- * @property {{turn:number, age:string, year:string, name:string, severity:number}[]} disasterEvents
+ * @property {{turn:number, age:string, year:string, name:string, nk?:string, severity:number}[]} disasterEvents
  *   Notable disaster onsets (age-local turn + age + year-label + name + severity), capped. Stamped as
  *   each event fires so the Demographics refugees chart can mark when disasters struck.
  * @property {number} chartTurn Latest monotonic cross-age turn (never resets at an age boundary).
@@ -626,13 +626,18 @@ const MAX_DISASTER_EVENTS = 64;
  * (from emigration-events), so the year is the turn the disaster actually struck.
  * @param {string} name The disaster's display name (e.g. "Volcano").
  * @param {number} [severity] The event severity.
+ * @param {string} [nameKey] The disaster's LOC key (GameInfo.RandomEvents Name), when known.
  */
-export function recordDisasterEvent(name, severity) {
+export function recordDisasterEvent(name, severity, nameKey) {
   const s = load();
-  s.disasterEvents.push({
+  /** @type {{turn:number, age:string, year:string, name:string, nk?:string, severity:number}} */
+  const ev = {
     turn: gameTurn(), age: currentAge() || s.chartAge, year: gameTurnDate(),
     name: typeof name === "string" ? name : "", severity: typeof severity === "number" ? severity : 0
-  });
+  };
+  // The disaster's own LOC key, so the timeline pin can name it in the language active when it is read.
+  if (typeof nameKey === "string" && nameKey.startsWith("LOC_")) ev.nk = nameKey;
+  s.disasterEvents.push(ev);
   if (s.disasterEvents.length > MAX_DISASTER_EVENTS) {
     s.disasterEvents = s.disasterEvents.slice(s.disasterEvents.length - MAX_DISASTER_EVENTS);
   }

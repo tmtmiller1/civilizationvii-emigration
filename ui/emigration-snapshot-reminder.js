@@ -6,6 +6,7 @@
 // style injection + DOM) so both dashboard surfaces get the reminder from the render path they share.
 
 import { getSnapshotInterval } from "/emigration/ui/emigration-settings.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 
 const STYLE_ID = "emig-snap-badge-style";
 // Font size intentionally omitted, the badge carries the engine `text-sm` utility class (added in
@@ -31,8 +32,9 @@ function injectStyle() {
 export function timelineDetailText() {
   const n = getSnapshotInterval();
   if (n <= 1) return "";
-  return "Timeline detail: every " + n + " turns ; a newly met civ or a recent move "
-    + "can take up to " + n + " turns to appear here. Change in Options.";
+  return loc("LOC_EMIG_TIMELINE_DETAIL",
+    "Timeline detail: every {1_N} turns ; a newly met civ or a recent move can take up to {1_N} turns to appear here. Change in Options.",
+    n);
 }
 
 /**

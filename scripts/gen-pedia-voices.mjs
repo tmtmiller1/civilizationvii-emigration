@@ -14,8 +14,8 @@
 //
 // Emits (both generated, do not hand-edit):
 //   data/emigration-civilopedia-voices.xml   the EMIG_VOICES page layout + one CivilopediaPages row per page
-//   text/en_us/PediaVoicesText.xml           every paragraph, en_us only (quotes and their notes are English
-//                                            in every locale, like the quote rows themselves)
+//   text/en_us/PediaVoicesText.xml           every paragraph, English source (translations live in each
+//                                            locale's ModText.xml via the i18n pipeline)
 //
 // Paragraphs use the pedia's own key convention (LOC_PEDIA_<SECTION>_PAGE_<PAGE>_CHAPTER_<CHAPTER>_PARA_<n>,
 // model-civilopedia.js findChapterTextKey) rather than CivilopediaPageChapterParagraphs rows: that table's

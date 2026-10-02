@@ -8,7 +8,7 @@
 // carries no mod-owned words and reads correctly in every locale without new text rows.
 
 import { nativeYieldsOf } from "/emigration/ui/emigration-enclave-place.js";
-import { loc as tr } from "/emigration/ui/emigration-loc.js";
+import { loc as tr, isMsgNode, msgJoin } from "/emigration/ui/emigration-loc.js";
 
 /** English yield nouns, the fallback when the base-game name key does not resolve (tests, headless). */
 const YIELD_NOUNS = Object.freeze({
@@ -131,9 +131,12 @@ function yieldParts(yields, s) {
 
 /**
  * A chronicle body with a yield figure appended in parentheses, or the body unchanged when there is none.
- * @param {string} body The written line. @param {string} text The yields text (may be "").
- * @returns {string} The body to chronicle.
+ * A message-node body gives a message node (the yields text rides along as a literal).
+ * @template {import("/emigration/ui/emigration-loc.js").MsgNode} T
+ * @param {T} body The written line. @param {string} text The yields text (may be "").
+ * @returns {T} The body to chronicle.
  */
 export function withYields(body, text) {
-  return text ? body + " (" + text + ")" : body;
+  if (!text) return body;
+  return /** @type {T} */ (isMsgNode(body) ? msgJoin(body, " (", text, ")") : body + " (" + text + ")");
 }

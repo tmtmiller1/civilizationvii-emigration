@@ -211,7 +211,7 @@ function resolve(sig, snap, plot) {
   // Join with an explicit space and a trimmed suffix: the game's text loader strips a localized string's leading
   // whitespace, so " · this tile" arrives as "· this tile".
   const suffix = hasTile ? loc("LOC_EMIG_PROS_TILE_SUFFIX", " · this tile").trim() : "";
-  const title = cityTitle(sig.city, "Prosperity") + (suffix ? " " + suffix : "");
+  const title = cityTitle(sig.city, loc("LOC_EMIG_LENS_PROSPERITY", "Prosperity")) + (suffix ? " " + suffix : "");
   return { title, rows };
 }
 

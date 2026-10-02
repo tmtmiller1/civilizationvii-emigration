@@ -6,26 +6,27 @@
 // defensive: the GameFace DOM can be absent, so each channel degrades to a no-op rather than throwing.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
-import { loc } from "/emigration/ui/emigration-loc.js";
+import { loc, localeFontFamily, msg, msgKey, msgText } from "/emigration/ui/emigration-loc.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 import { speedTurns, speedBar } from "/emigration/ui/emigration-game-speed.js";
 import {
-  refugeeHeadline,
-  civAdjective,
-  civName,
+  refugeeHeadlineMsg,
+  civAdjectiveMsg,
+  civNameMsg,
   actionHint,
-  warRefugeeName,
-  localDigestMessage,
-  inboundDigestMessage,
-  pressureCueMessage,
-  disasterName
+  warRefugeeNameMsg,
+  localDigestMsg,
+  inboundDigestMsg,
+  pressureCueMsg,
+  disasterNameMsg,
+  unmetMsg
 } from "/emigration/ui/emigration-naming.js";
 import { warAggressors } from "/emigration/ui/emigration-war.js";
 import { worstDisasterTypeForOwner } from "/emigration/ui/emigration-disasters.js";
-import { formatBothExact } from "/emigration/ui/emigration-population.js";
+import { formatBothExactMsg } from "/emigration/ui/emigration-population.js";
 import { causeLabel, notificationAccent, digestAccent } from "/emigration/ui/emigration-causes.js";
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
-import { pullReasonsPhrase } from "/emigration/ui/emigration-move-reasons.js";
+import { pullReasonsMsg } from "/emigration/ui/emigration-move-reasons.js";
 import { emigrationRetention } from "/emigration/ui/emigration-borders.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
@@ -153,13 +154,13 @@ function persistNews() {
 const TOAST_CSS =
   ".emig-toast{position:fixed;left:50%;transform:translateX(-50%);z-index:10002;" +
   "min-width:15rem;max-width:38rem;padding:0.5rem 1.3rem 0.6rem;text-align:center;pointer-events:none;" +
-  'font-family:"BodyFont","BodyFont-JP","BodyFont-KR","BodyFont-SC","BodyFont-TC";color:#e8d8b4;' +
+  "font-family:" + localeFontFamily("body") + ";color:#e8d8b4;" +
   "background:linear-gradient(180deg,rgba(28,32,44,0.97) 0%,rgba(9,12,19,0.97) 100%);" +
   "border:0.0833rem solid #8c7e62;border-left-width:0.28rem;border-radius:0.18rem;" +
   "box-shadow:0 0 0 0.0555rem rgba(0,0,0,0.65),inset 0 0 0 0.0555rem rgba(240,188,120,0.22)," +
   "0 0.33rem 1rem rgba(0,0,0,0.7);opacity:1;transition:opacity 0.5s ease,top 0.25s ease;" +
   "animation:emig-toast-in 0.26s ease-out;}" +
-  '.emig-toast-eye{font-family:"TitleFont","TitleFont-JP","TitleFont-KR","TitleFont-SC","TitleFont-TC";' +
+  ".emig-toast-eye{font-family:" + localeFontFamily("title") + ";" +
   "font-size:var(--dg-fs-72,0.72rem);letter-spacing:0.13em;text-transform:uppercase;margin-bottom:0.15rem;color:#f0bc78;}" +
   // white-space:pre-line honors the blank line localDigestMessage puts between the situation and the
   // guidance, so the toast shows them as two paragraphs; a message with no break renders unchanged.
@@ -235,7 +236,7 @@ function buildToastEl(msg, cause, accent) {
   el.style.borderLeftColor = accent;
   const eye = document.createElement("div");
   eye.className = "emig-toast-eye";
-  eye.textContent = cause ? causeLabel(cause) : "Emigration";
+  eye.textContent = cause ? causeLabel(cause) : loc("LOC_EMIG_TOAST_EYEBROW", "Emigration");
   eye.style.color = accent;
   const body = document.createElement("div");
   body.className = "emig-toast-msg";
@@ -340,13 +341,13 @@ function refugeeCivs(migrations) {
 
 /**
  * The most recent disaster event's in-game name (for naming disaster refugees), or null.
- * @returns {string|null} The disaster name.
+ * @returns {import("/emigration/ui/emigration-loc.js").MsgNode|null} The disaster name.
  */
 function recentDisasterName() {
   const data = /** @type {*} */ (globalThis).EmigrationData;
   const evs = data && typeof data.disasterEvents === "function" ? data.disasterEvents() : null;
   const last = Array.isArray(evs) && evs.length ? evs[evs.length - 1] : null;
-  return last && typeof last.name === "string" && last.name ? last.name : null;
+  return last && typeof last.name === "string" && last.name ? msgKey(last.nk, last.name) : null;
 }
 
 /**
@@ -355,17 +356,17 @@ function recentDisasterName() {
  * "the Roman–Carthaginian War" / "Thera" rather than a generic cause. Null for economic migration.
  * @param {string} [cause] The migration cause.
  * @param {number} [srcOwner] The fleeing civ id (for the war pairing).
- * @returns {string|null} The event name, or null.
+ * @returns {import("/emigration/ui/emigration-loc.js").MsgNode|null} The event name, or null.
  */
 function eventNameFor(cause, srcOwner) {
   if ((cause === "war" || cause === "conquest") && typeof srcOwner === "number") {
-    return warRefugeeName(srcOwner, warAggressors(srcOwner));
+    return warRefugeeNameMsg(srcOwner, warAggressors(srcOwner));
   }
   if (cause === "disaster") {
     // Name the disaster striking THIS civ (its worst active event), not the globally most-recent one
     //, a "Greek refugee crisis" must read "the Greek volcano", never a flood on another continent.
     const type = typeof srcOwner === "number" ? worstDisasterTypeForOwner(srcOwner) : null;
-    return (type && disasterName(type)) || recentDisasterName();
+    return (type && disasterNameMsg(type)) || recentDisasterName();
   }
   return null;
 }
@@ -447,14 +448,14 @@ function crisisMilestone(pid, cum, pass) {
   const points = pass ? pass.points : 0;
   // WHO the crisis hit, spoiler-guarded: an unmet civ is never named in world news
   // (mirrors the dashboard's "Unmet" mask), it's reported as "an unmet civilization".
-  const who = civHidden(pid) ? UNMET_CIV_LABEL() : civAdjective(pid);
-  const ev = { cause, civ: who, people: formatBothExact(people, points),
+  const who = civHidden(pid) ? unmetMsg() : civAdjectiveMsg(pid);
+  const ev = { cause, civ: who, people: formatBothExactMsg(people, points),
     warName: event || undefined, eventName: event || undefined };
-  const head = refugeeHeadline(ev); // leads with WHO (spoiler-guarded) for event-named causes
+  const head = refugeeHeadlineMsg(ev); // leads with WHO (spoiler-guarded) for event-named causes
   const ownLoss = pid === localPlayerId(); // red only when it's the player's OWN civ in crisis
   logNotification({ kind: "crisis", cause, event: event || undefined, summary: head,
     people, points, fromCiv: who, ownLoss });
-  announceImportant(head, cause, ownLoss);
+  announceImportant(msgText(head), cause, ownLoss);
 }
 
 /**
@@ -516,11 +517,11 @@ function toastPerCause(migrations) {
     ptsByCause[m.cause] = (ptsByCause[m.cause] || 0) + (m.points || 0);
   }
   for (const cause of Object.keys(peopleByCause)) {
-    const head = refugeeHeadline({ cause, people: formatBothExact(peopleByCause[cause], ptsByCause[cause]) });
+    const head = refugeeHeadlineMsg({ cause, people: formatBothExactMsg(peopleByCause[cause], ptsByCause[cause]) });
     const hint = actionHint(cause);
     logNotification({ kind: "cause", cause, summary: head,
       people: peopleByCause[cause], points: ptsByCause[cause] });
-    toast(hint ? head + " " + hint : head, cause);
+    toast(hint ? msgText(head) + " " + hint : msgText(head), cause);
   }
 }
 
@@ -613,28 +614,21 @@ function groupLocalEvents(migs, me) {
   return [...map.values()].sort((a, b) => b.people - a.people);
 }
 
-// Anonymized destination for a civ the analytics-visibility policy withholds (unmet). Mirrors the
-// dashboard's "Unmet" masking so a notification never names a civ the player hasn't met. Localized
-// lazily and cached at first RUNTIME use (never at module load, where Locale may not be ready).
-/** @type {string|null} */
-let _unmetCivLabel = null;
-function UNMET_CIV_LABEL() {
-  if (_unmetCivLabel == null) _unmetCivLabel = loc("LOC_EMIG_FALLBACK_UNMET_CIV", "an unmet civilization");
-  return _unmetCivLabel;
-}
+// An unmet civ is anonymized as "an unmet civilization" (naming.js unmetMsg), mirroring the dashboard's
+// "Unmet" masking so a notification never names a civ the player hasn't met.
 
 /**
  * The destination as shown to the player, with the analytics-visibility mask applied: a death has no
  * destination, and a cross-civ move to a policy-hidden (unmet) civ is anonymized to "an unmet
  * civilization" with its city name dropped. Internal moves and moves to met civs pass through unchanged.
  * @param {*} ev A per-event bucket.
- * @returns {{toCiv?:string, toCity?:string}} The masked destination labels.
+ * @returns {{toCiv?:*, toCity?:string}} The masked destination labels (toCiv a message node).
  */
 function destView(ev) {
   if (ev.cause === "attrition") return {}; // a death, they did not arrive anywhere
   if (ev.crossCiv && typeof ev.destOwner === "number") {
-    if (civHidden(ev.destOwner)) return { toCiv: UNMET_CIV_LABEL() };
-    return { toCiv: civAdjective(ev.destOwner), toCity: ev.destName || undefined };
+    if (civHidden(ev.destOwner)) return { toCiv: unmetMsg() };
+    return { toCiv: civAdjectiveMsg(ev.destOwner), toCity: ev.destName || undefined };
   }
   return { toCity: ev.destName || undefined }; // internal move
 }
@@ -642,16 +636,17 @@ function destView(ev) {
 /**
  * Compose one event's explanatory message (cause-named headline + hint + permanence + cross-civ cost).
  * @param {*} ev A per-event bucket.
- * @returns {string} The message.
+ * @returns {*} The message node.
  */
 function eventMessage(ev) {
   const dv = destView(ev);
   const stanceTip = wantsStanceTip(ev);
   const destGold = ev.crossCiv && typeof ev.destOwner === "number"
     ? assimilationCostFor(ev.destOwner).gold : 0;
-  return localDigestMessage({
-    cause: ev.cause, people: formatBothExact(ev.people, ev.points), city: ev.srcName || "a settlement",
-    crossCiv: ev.crossCiv, destName: dv.toCity || dv.toCiv, destGold, why: pullReasonsPhrase(ev.reasons),
+  return localDigestMsg({
+    cause: ev.cause, people: formatBothExactMsg(ev.people, ev.points),
+    city: ev.srcName || msg("LOC_EMIG_FALLBACK_A_SETTLEMENT", "a settlement"),
+    crossCiv: ev.crossCiv, destName: dv.toCity || dv.toCiv, destGold, why: pullReasonsMsg(ev.reasons),
     byCiv: conquerorName(ev), // the (unmet-masked) conquering civ NAME; only the conquest headline reads it
     stanceTip
   });
@@ -677,27 +672,27 @@ function wantsStanceTip(ev) {
  * undefined for any other cause. Uses the civ NAME rather than its adjective so "conquered by <civ>"
  * reads correctly ("…by Rome", not "…by Roman"). destOwner is the new owner of the captured city.
  * @param {*} ev A per-event bucket.
- * @returns {string|undefined} The conqueror's name, or undefined.
+ * @returns {*} The conqueror's name (a message node), or undefined.
  */
 function conquerorName(ev) {
   if (ev.cause !== "conquest" || typeof ev.destOwner !== "number") return undefined;
-  return civHidden(ev.destOwner) ? UNMET_CIV_LABEL() : civName(ev.destOwner);
+  return civHidden(ev.destOwner) ? unmetMsg() : civNameMsg(ev.destOwner);
 }
 
 /**
  * Record one event to the notification log: its cause, specific named war/disaster, dual-system count,
  * and origin → destination.
  * @param {*} ev A per-event bucket.
- * @param {string} msg The composed event message (the row summary).
+ * @param {*} message The composed event message node (the row summary).
  */
-function logEvent(ev, msg) {
-  const fromCiv = ev.srcOwner != null ? civAdjective(ev.srcOwner) : undefined;
+function logEvent(ev, message) {
+  const fromCiv = ev.srcOwner != null ? civAdjectiveMsg(ev.srcOwner) : undefined;
   const dv = destView(ev);
   logNotification({
     kind: "digest", cause: ev.cause, event: eventNameFor(ev.cause, ev.srcOwner) || undefined,
-    summary: msg, people: ev.people, points: ev.points,
+    summary: message, people: ev.people, points: ev.points,
     fromCity: ev.srcName, fromCiv, toCity: dv.toCity, toCiv: dv.toCiv, crossCiv: ev.crossCiv,
-    reasons: pullReasonsPhrase(ev.reasons) || undefined, // "why here" pull tags for the log detail
+    reasons: msgText(pullReasonsMsg(ev.reasons)) || undefined, // "why here" pull tags for the log detail
     ownLoss: true // the local player's own settlement shedding population
   });
 }
@@ -718,7 +713,7 @@ function localDigest(migs) {
   // Color the toast by DIRECTION (red for own people leaving for a rival, neutral for an internal
   // shuffle: the source settlement still loses its tile, so never green), matching the log row's accent
   // rather than the cause.
-  announceImportant(eventMessage(lead), lead.cause, true, digestAccent(true, lead.crossCiv));
+  announceImportant(msgText(eventMessage(lead)), lead.cause, true, digestAccent(true, lead.crossCiv));
 }
 
 /**
@@ -769,35 +764,35 @@ function groupInboundEvents(migs, me) {
  * from a policy-hidden (unmet) civ is anonymized to "an unmet civilization" so a notification never
  * leaks an unmet civ (mirrors {@link destView}). Unknown origin → no clause.
  * @param {*} ev An inbound event bucket.
- * @returns {{fromCiv?:string}} The masked origin label.
+ * @returns {{fromCiv?:*}} The masked origin label (a message node).
  */
 function inboundOriginView(ev) {
   if (typeof ev.originCiv !== "number") return {};
-  if (civHidden(ev.originCiv)) return { fromCiv: UNMET_CIV_LABEL() };
-  return { fromCiv: civAdjective(ev.originCiv) };
+  if (civHidden(ev.originCiv)) return { fromCiv: unmetMsg() };
+  return { fromCiv: civAdjectiveMsg(ev.originCiv) };
 }
 
 /**
  * Compose one inbound event's message ("N settled in <city>, drawn from <origin>").
- * @param {*} ev An inbound event bucket. @returns {string} The message.
+ * @param {*} ev An inbound event bucket. @returns {*} The message node.
  */
 function inboundMessage(ev) {
   const ov = inboundOriginView(ev);
-  return inboundDigestMessage({
-    cause: ev.cause, people: formatBothExact(ev.people, ev.points),
-    city: ev.destName || "a settlement", fromCiv: ov.fromCiv
+  return inboundDigestMsg({
+    cause: ev.cause, people: formatBothExactMsg(ev.people, ev.points),
+    city: ev.destName || msg("LOC_EMIG_FALLBACK_A_SETTLEMENT", "a settlement"), fromCiv: ov.fromCiv
   });
 }
 
 /**
  * Record one inbound event to the notification log: its cause, dual-system count, and origin →
  * destination. `ownLoss:false` (a GAIN to the player's empire → neutral, not red).
- * @param {*} ev An inbound event bucket. @param {string} msg The composed message (the row summary).
+ * @param {*} ev An inbound event bucket. @param {*} message The composed message node (the row summary).
  */
-function logInbound(ev, msg) {
+function logInbound(ev, message) {
   const ov = inboundOriginView(ev);
   logNotification({
-    kind: "digest", cause: ev.cause, summary: msg, people: ev.people, points: ev.points,
+    kind: "digest", cause: ev.cause, summary: message, people: ev.people, points: ev.points,
     fromCiv: ov.fromCiv, toCity: ev.destName, crossCiv: true, ownLoss: false
   });
 }
@@ -817,7 +812,7 @@ function inboundDigest(migs) {
   for (const ev of events) logInbound(ev, inboundMessage(ev));
   const lead = events[0];
   // A gain → green (direction accent), matching the log row.
-  announceImportant(inboundMessage(lead), lead.cause, false, digestAccent(false, true));
+  announceImportant(msgText(inboundMessage(lead)), lead.cause, false, digestAccent(false, true));
 }
 
 // Per-source cue cooldown (session-only; a reload resetting a low-key cue is harmless).
@@ -858,7 +853,7 @@ function emitPressureCue(c, me, turn, cd) {
   logNotification({
     kind: "cue",
     cause: c.cause || "prosperity",
-    summary: pressureCueMessage(c.srcName, c.destName),
+    summary: pressureCueMsg(c.srcName, c.destName),
     fromCity: c.srcName,
     toCity: c.destName
   });
