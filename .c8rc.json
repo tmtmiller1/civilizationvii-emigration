@@ -5,6 +5,7 @@
   "exclude": [
     "tests/**",
     "**/*.d.ts",
+    "ui/settings-keeper.js",
     "ui/options/**",
     "ui/emigration-main.js",
     "ui/emigration-selftest.js",

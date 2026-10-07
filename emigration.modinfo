@@ -7,7 +7,7 @@
         <SpecialThanks>Tomahawk, Mk Z, and Tim_The_Texan's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>3.3.0</Version>
+        <Version>3.3.1</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -47,6 +47,8 @@
                     <Item locale="zh_Hant_HK">text/zh_hant_hk/ModText.xml</Item>
                 </UpdateText>
                 <UIScripts>
+                    <!-- Tower Settings Keeper: listed first, imports nothing, so it runs before anything reads storage. -->
+                    <Item>ui/settings-keeper.js</Item>
                     <Item>ui/emigration-config.js</Item>
                     <Item>ui/emigration-cache-reset.js</Item>
                     <Item>ui/emigration-tunables.js</Item>
@@ -85,6 +87,8 @@
                     <Item locale="zh_Hant_HK">text/zh_hant_hk/ModText.xml</Item>
                 </UpdateText>
                 <UIScripts>
+                    <!-- Tower Settings Keeper: listed first, imports nothing, so it runs before anything reads storage. -->
+                    <Item>ui/settings-keeper.js</Item>
                     <Item>ui/emigration-main.js</Item>
                     <Item>ui/emigration-origins-diag.js</Item>
                     <Item>ui/emigration-selftest.js</Item>
