@@ -205,7 +205,7 @@
                     <Item>ui/emigration-violence-signals.js</Item>
                     <Item>ui/emigration-violence-audit.js</Item>
                     <!-- Per-tile ethnic-mosaic: the pure distribution model + the shared tiles module
-                         (engine reads + per-turn cache), imported by the ethnicity lens AND its tooltip. -->
+                         (engine reads + per-turn cache), imported by the ethnicity lens and its tooltip. -->
                     <Item>ui/emigration-ethnicity-distribution.js</Item>
                     <Item>ui/emigration-ethnicity-tiles.js</Item>
                     <!-- The lens's tile color: the share-weighted blend of origin colors (pure, no imports). -->

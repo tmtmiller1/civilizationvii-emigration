@@ -1,8 +1,8 @@
 // emigration-quarter-phrases.js
 //
 // Truthful "quarter" phrases for the Migration Chronicle's diaspora lines. Every feature phrase names
-// only a REAL feature of the host city (keys supplied by emigration-city-features.js), framed at the
-// EDGE of the city where the ethnicity lens paints a diaspora. Pure: a deterministic, seeded choice.
+// only a real feature of the host city (keys supplied by emigration-city-features.js), framed at the
+// Edge of the city where the ethnicity lens paints a diaspora. Pure: a deterministic, seeded choice.
 
 import { msg, msgText } from "/emigration/ui/emigration-loc.js";
 

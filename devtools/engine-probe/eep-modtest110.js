@@ -1,6 +1,6 @@
 // eep-modtest110.js - Are minor-power attacks visible to the mod AS minor-power attacks?
 //
-// The balance change in emigration-violence.js downgrades siege pressure when EVERY attacker is a minor power
+// The balance change in emigration-violence.js downgrades siege pressure when every attacker is a minor power
 // (city-state / Independent Power), and requires POSITIVE evidence to do it: we must be able to name the
 // attackers. If a raiding Independent Power cannot be named, the set comes back empty, the city is scored as a
 // major invasion, and the downgrade never fires for the exact case it was written for.
@@ -10,7 +10,7 @@
 //
 //   Q1. Does Players.getAlive() even ENUMERATE Independent Powers? engineWarOpponents only tests ids that come
 //       out of that call, so an IP missing from it is never asked about, no matter what isAtWarWith would say.
-//   Q2. Does Diplomacy.isAtWarWith(ip) report true for a hostile Independent Power? Scanned over ALL guarded
+//   Q2. Does Diplomacy.isAtWarWith(ip) report true for a hostile Independent Power? Scanned over all guarded
 //       ids, not just the alive list, so Q1 and Q2 are separable rather than confounded.
 //   Q3. When a city is besieged, does a district actually go contested (d.owner !== d.controllingPlayer)?
 //       That is the only place the engine NAMES an attacker, and the new fallback depends on it.
@@ -58,7 +58,7 @@ function reportAliveRoster() {
 }
 
 /**
- * Q2: scan EVERY guarded id, not just the alive list, so "the IP is not enumerated" and "the IP is not at war"
+ * Q2: scan every guarded id, not just the alive list, so "the IP is not enumerated" and "the IP is not at war"
  * are told apart. Prints every id the local player is at war with, plus every minor that exists at all.
  */
 function reportWarScan() {

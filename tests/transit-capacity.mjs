@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 
-// Regression guard for C2 (improvement review): the transit queue cap is enforced at ENQUEUE via
+// Regression guard for C2 (improvement review): the transit queue cap is enforced at enqueue via
 // transitAtCapacity(state), so a lagged departure is never started when the row couldn't be persisted
-// (the load-time normalizeTransitList truncation would otherwise drop it AFTER the source shed the
+// (the load-time normalizeTransitList truncation would otherwise drop it after the source shed the
 // point, destroying in-flight population). This pins the boundary the engine guard relies on.
 
 const { transitAtCapacity } = await import("/emigration/ui/emigration-state.js");

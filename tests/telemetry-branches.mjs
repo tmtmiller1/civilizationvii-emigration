@@ -69,7 +69,7 @@ function testReportBalanceSignalsWithEmptyOwners() {
 
 function testReportBalanceSignalsWithNonNumberTurn() {
   const owners = [1, 2, 3];
-  // Should handle non-number turn gracefully
+  // A non-number turn must not throw
   try {
     reportBalanceSignals(owners, null);
     reportBalanceSignals(owners, "string");
@@ -127,7 +127,7 @@ function testLogNetDistributionWithComplexMigrations() {
 }
 
 function testLogNetDistributionErrorHandling() {
-  // Should handle null inputs gracefully without throwing
+  // Null inputs must not throw
   try {
     logNetDistribution(null, null);
     logNetDistribution(undefined, undefined);

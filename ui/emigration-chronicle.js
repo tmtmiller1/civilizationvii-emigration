@@ -1,6 +1,6 @@
 // emigration-chronicle.js
 //
-// The Migration CHRONICLE: a curated, written history of the world's significant population movements
+// The Migration Chronicle: a curated, written history of the world's significant population movements
 // (a great exodus, a diaspora taking root, a people returning home), each rendered as a line of prose
 // (emigration-narrative.js); distinct from the per-event Notifications log.
 import { logNotification } from "/emigration/ui/emigration-notifications.js";
@@ -50,7 +50,7 @@ registerCacheReset(() => { _log = null; _keys = null; });
  * @returns {Set<string>} The dedupe keys present in the log.
  */
 function keys() {
-  resetCachesOnNewGame(); // dedupe gate reads keys() BEFORE log(); guard here too so a new game resets it
+  resetCachesOnNewGame(); // dedupe gate reads keys() before log(); guard here too so a new game resets it
   if (!_keys) {
     _keys = new Set();
     for (const e of log()) {
@@ -62,7 +62,7 @@ function keys() {
 
 /**
  * The current game turn, or 0.
- * @returns {number} Game.turn or 0.
+ * @returns {number}
  */
 function gameTurn() {
   try {
@@ -91,9 +91,9 @@ function loadPersisted() {
 
 /**
  * Normalize a loaded array into clean, capped ChronicleEntries, dropping any element without a usable
- * body. Each entry keeps its OWN stored turn (not the current one).
+ * body. Each entry keeps its own stored turn (not the current one).
  * @param {*[]} arr The raw loaded array.
- * @returns {ChronicleEntry[]} The clean entries.
+ * @returns {ChronicleEntry[]}
  */
 function normalizeLoaded(arr) {
   /** @type {ChronicleEntry[]} */
@@ -129,7 +129,7 @@ function persist() {
 /**
  * Whether a dedupe key has already been chronicled (so a recurring milestone records once).
  * @param {string} key The dedupe key.
- * @returns {boolean} True when already present.
+ * @returns {boolean}
  */
 export function chronicled(key) {
   return key ? keys().has(key) : false;
@@ -211,12 +211,12 @@ function trimToCap(list) {
 }
 
 /**
- * Build the canonical ChronicleEntry, including ONLY the optional fields that are present and
+ * Build the canonical ChronicleEntry, including only the optional fields that are present and
  * well-typed. Omitting absent optionals (rather than writing `undefined`) keeps the in-memory cache
  * byte-identical to what JSON.stringify persists, so the two never diverge across a reload.
  * @param {Partial<ChronicleEntry>} entry The source entry (its `body` is already validated).
  * @param {number} turn The turn to stamp.
- * @returns {ChronicleEntry} The clean entry.
+ * @returns {ChronicleEntry}
  */
 function cleanEntry(entry, turn) {
   /** @type {ChronicleEntry} */
@@ -248,7 +248,7 @@ function copyMessages(entry, e) {
 /**
  * Normalize a partial entry into a stamped ChronicleEntry (current turn + cleaned fields).
  * @param {Partial<ChronicleEntry>} entry The entry (its `body` is already validated).
- * @returns {ChronicleEntry} The stamped entry.
+ * @returns {ChronicleEntry}
  */
 function normalizeEntry(entry) {
   return cleanEntry(entry, gameTurn());
@@ -257,7 +257,7 @@ function normalizeEntry(entry) {
 /**
  * The chronicle, newest-first (a copy, so callers can't mutate the cache).
  * @param {number} [limit] Max entries to return (default all).
- * @returns {ChronicleEntry[]} The entries.
+ * @returns {ChronicleEntry[]}
  */
 export function chronicleLog(limit) {
   const list = log();

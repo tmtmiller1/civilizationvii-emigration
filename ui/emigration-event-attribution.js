@@ -1,6 +1,6 @@
 // emigration-event-attribution.js
 //
-// SPECIFIC-EVENT attribution for migration/death causes: resolves, at the moment of the move/death,
+// Specific-event attribution for migration/death causes: resolves, at the moment of the move/death,
 // an `eventKey` naming the specific event behind the generic cause, so the Causes tab can break each
 // cause down by event. Keys are compact and stable (names resolve at view time):
 //   • "war:<lo>:<hi>"          a war between the two civ ids (sorted)
@@ -112,11 +112,11 @@ function disasterKeyFor(src) {
 }
 
 /**
- * The specific-event key for a MIGRATION of the given cause: the active crisis (if it matches), else
+ * The specific-event key for a migration of the given cause: the active crisis (if it matches), else
  * the specific war / disaster, else "" (ordinary unhappiness/prosperity have no named event).
- * @param {*} src Source signal.
+ * @param {*} src
  * @param {string} cause The migration cause.
- * @returns {string} The event key, or "".
+ * @returns {string}
  */
 export function eventKeyForMove(src, cause) {
   const ck = crisisKeyFor(cause);
@@ -128,7 +128,7 @@ export function eventKeyForMove(src, cause) {
 
 /**
  * The lethal-distress category for a death (which crisis is killing these people).
- * @param {*} src Source signal.
+ * @param {*} src
  * @returns {string} "disaster" | "war" | "famine" | "unhappiness".
  */
 function deathDistressCause(src) {
@@ -139,10 +139,10 @@ function deathDistressCause(src) {
 }
 
 /**
- * The specific-event key for a crisis DEATH: the active crisis (if it matches the lethal distress),
+ * The specific-event key for a crisis death: the active crisis (if it matches the lethal distress),
  * else the specific war / disaster, else "famine" for starvation, else "".
- * @param {*} src Source signal.
- * @returns {string} The event key, or "".
+ * @param {*} src
+ * @returns {string}
  */
 export function eventKeyForDeath(src) {
   const dc = deathDistressCause(src);
@@ -157,7 +157,7 @@ export function eventKeyForDeath(src) {
 }
 
 /**
- * The generic CAUSE an event key groups under, for the Causes-tab drill-down. Crisis keys group
+ * The generic cause an event key groups under, for the Causes-tab drill-down. Crisis keys group
  * under the mechanism the crisis manifests through; famine groups under disaster (subsistence).
  * @param {string} eventKey
  * @returns {string} The parent cause, or "".

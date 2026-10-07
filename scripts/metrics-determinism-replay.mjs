@@ -29,6 +29,6 @@ if (asJson) console.log(JSON.stringify(out, null, 2));
 else console.log(`value=${rate}`);
 
 if (asCheck && rate < 100) {
-  console.error(`determinism_replay_match_rate_percent=${rate} (expected 100) — ${runs - pass}/${runs} replay runs diverged.`);
+  console.error(`determinism_replay_match_rate_percent=${rate} (expected 100), ${runs - pass}/${runs} replay runs diverged.`);
   process.exit(1);
 }

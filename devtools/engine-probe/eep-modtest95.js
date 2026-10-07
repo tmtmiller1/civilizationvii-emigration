@@ -1,11 +1,11 @@
 // eep-modtest95.js - watch the roster/tuning/text work of 2026-09-16 in a real engine.
-// Everything here is checkable in ANY save, so it runs on AugustusExp66 and ends without advancing a turn:
+// Everything here is checkable in any save, so it runs on AugustusExp66 and ends without advancing a turn:
 //  A. The mod's CIV_ROSTER/LEADER_ROSTER against the types the ENGINE actually loaded (the whole point of
 //     regenerating from the install rather than a pinned snapshot).
-//  B. The Ottoman key fix: IMPROVEMENT_EMIG_ENCLAVE_OTTOMANS_A must exist and the old singular must NOT.
+//  B. The Ottoman key fix: IMPROVEMENT_EMIG_ENCLAVE_OTTOMANS_A must exist and the old singular must not.
 //  C. The five civilizations added with the roster: enclave improvements loaded, quarter data resolves.
 //  D. Text: every new LOC row composes to real text, not back to its own tag (the engine is the only place
-//     that proves the rows actually loaded).
+//     that shows the rows actually loaded).
 //  E. Tuning resolves for the new leaders and civilizations, and England is no longer carrying Norman retention.
 //  F. The live players in this save: their engine-reported types must be roster keys.
 import { CIV_ROSTER, LEADER_ROSTER } from "/emigration/ui/emigration-civ-roster.js";

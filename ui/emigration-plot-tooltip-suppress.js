@@ -4,10 +4,10 @@
 // the enclave tooltip is up), so it doesn't clash with the mod's own cursor-following panel. Shared by
 // the Ethnicity and Prosperity lenses and the enclave tooltip so they all behave identically.
 //
-// The ui-next plot tooltip gates its show on TWO independent signals: `IsPlotTooltipVisible` (written by
+// The ui-next plot tooltip gates its show on two independent signals: `IsPlotTooltipVisible` (written by
 // SetIsPlotTooltipVisible(), shared un-ref-counted state that several base panels reset to true when they
 // close) and `isGlobalRuleVisible` (written by the `ui-hide-plot-tooltips` / `ui-show-plot-tooltips`
-// window events, which nothing else dispatches). We drive BOTH; the event gate is the one that actually
+// window events, which nothing else dispatches). We drive both; the event gate is the one that actually
 // holds the tooltip down, so do not "clean up" the dispatch. The `display:none` on `.plot-tooltip` is a
 // pre-ui-next backstop kept because it costs nothing. See docs/tooltip-mod-compatibility.md.
 
@@ -16,7 +16,7 @@ import { SetIsPlotTooltipVisible } from "/base-standard/ui-next/tooltips/plot-to
 const HIDE_TIP_STYLE_ID = "emig-hide-plot-tip-style";
 const HIDE_TIP_CLASS = "emig-hide-plot-tip";
 
-/** The DESIRED suppression state (only one lens is ever active, so one shared flag is enough). */
+/** The desired suppression state (only one lens is ever active, so one shared flag is enough). */
 let _hidden = false;
 /** The pending re-assert timer id, or null when the game owns the tooltip. @type {*} */
 let _holdTimer = null;

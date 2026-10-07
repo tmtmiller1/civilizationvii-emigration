@@ -82,7 +82,7 @@ function happinessForScore(s, tune) {
 }
 
 /**
- * The POLITY bonus added to a city's base attractiveness (0 when polityModelEnabled is off, or when
+ * The polity bonus added to a city's base attractiveness (0 when polityModelEnabled is off, or when
  * the signal lacks the polity fields): happinessStageWeight × stage, celebrationPull while the civ
  * celebrates, and a clamped government lean, all scaled by the per-civ happinessPull.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
@@ -91,7 +91,7 @@ function happinessForScore(s, tune) {
  */
 function polityBonus(s, tune) {
   if (!CONFIG.polityModelEnabled) return 0;
-  // The stage term is PULL-BIASED: an unhappy city is already repelled by the happiness term and its
+  // The stage term is pull-biased: an unhappy city is already repelled by the happiness term and its
   // suppressed yields, so a negative stage is scaled down by happinessStageMiseryScale, while positive
   // happiness does not boost yields and so gets full weight.
   const stage = s.stage || 0;
@@ -135,7 +135,7 @@ function builtBonus(s) {
  * The base (pre-situational) attractiveness of a city, decomposed; {@link baseScore} is just its sum,
  * so the explainer (emigration-explain.js) and the score can never disagree. Linear model:
  * productiveness + happiness·w − pop·w; shaped model: happiness is field-relative and saturating and
- * AMPLIFIES the economy (bounded multiplier) plus a bounded standalone term.
+ * amplifies the economy (bounded multiplier) plus a bounded standalone term.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
  * @param {{meanHappiness:number}|null} ctx Per-pass context (for the shaped model).
  * @returns {BaseTerms} The base terms.
@@ -148,7 +148,7 @@ export function baseBreakdown(s, ctx) {
     population: -(s.population * CONFIG.populationFactor),
     civBias: tune.sourceBias,
     polity: polityBonus(s, tune),
-    // NOT divided by population and NOT scaled by happiness: what a settlement has built is a reason to
+    // Not divided by population and not scaled by happiness: what a settlement has built is a reason to
     // stay in its own right, and the yields those buildings produce are already counted in `economy`.
     built: builtBonus(s)
   };
@@ -210,7 +210,7 @@ function disasterPercent(s) {
  */
 
 /**
- * The situational percent modifiers for a city, decomposed by source. THE source of truth:
+ * The situational percent modifiers for a city, decomposed by source. The source of truth:
  * {@link situationalPercent} is just its sum, so the explainer (emigration-explain.js) reads the
  * same numbers the score does rather than re-deriving them.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
@@ -242,8 +242,8 @@ function situationalPercent(s) {
 
 /**
  * A city's distress: the magnitude of its negative situational percent (violence, disaster, siege,
- * starvation, unrest, war weariness); 0 when content. The FULL push measure, driving attractiveness
- * and the per-city readout; the DEATH gate uses the narrower `lethalDistress` instead.
+ * starvation, unrest, war weariness); 0 when content. The full push measure, driving attractiveness
+ * and the per-city readout; the death gate uses the narrower `lethalDistress` instead.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
  * @returns {number} Distress (>= 0).
  */
@@ -253,7 +253,7 @@ export function distress(s) {
 }
 
 /**
- * A city's LETHAL distress: the magnitude of the negative situational terms that can KILL. Violence,
+ * A city's lethal distress: the magnitude of the negative situational terms that can kill. Violence,
  * disaster, siege, famine and war weariness always count; unrest counts only once the caller (which
  * tracks unrest tenure) passes `unrestCounts`, so a peaceful unrest city only starts dying after prolonged neglect.
  * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
@@ -278,7 +278,7 @@ export function prosperity(s, ctx) {
   const factor = 1 + situationalPercent(s) / 100;
   let p = base * factor;
   // situationalPercent can drop below −100 (siege+starvation+unrest stack), making factor negative;
-  // a NEGATIVE base × a negative factor would flip the product POSITIVE, so force it negative there
+  // a negative base × a negative factor would flip the product positive, so force it negative there
   // so distress can never make a poor city read as a magnet.
   if (base < 0 && factor < 0) p = -Math.abs(p);
   return isFinite(p) ? p : 0;

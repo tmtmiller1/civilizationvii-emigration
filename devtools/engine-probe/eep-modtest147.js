@@ -4,7 +4,7 @@
 //
 //   SHOT enclave-1..3      camera on the enclave tile, panel reading that tile
 //
-// Mod test 145's enclave shot read the wrong tile: the game turns the REAL mouse (sitting over the game window) into
+// Mod test 145's enclave shot read the wrong tile: the game turns the real mouse (sitting over the game window) into
 // "cursor-updated" events that set the hovered plot, and one landed after the probe's last write before the capture.
 // Here, while a shot is held, a window listener registered after PlotCursor's own puts the hovered plot straight back
 // whenever such an event moves it. Three captures are taken, each logged with the hovered plot and the panel text at
@@ -80,7 +80,7 @@ function hover(at) {
 }
 /** Keep the hovered plot and the panel's position fixed while a shot is taken.
  * Run 1 re-sent the plot-cursor event every tick; each one made the panel re-render and re-place itself at the last
- * real mousemove (0,0, the top-left corner) AFTER the tick had moved it, so every capture showed it in the corner.
+ * real mousemove (0,0, the top-left corner) after the tick had moved it, so every capture showed it in the corner.
  * Now the plot is only re-set when something moved it, and the panel is placed after the frame renders as well. */
 function pin(at, ms) {
   // Anchor as if the cursor rested a little below the tile's center (still on the tile): run 2's panel, anchored at the

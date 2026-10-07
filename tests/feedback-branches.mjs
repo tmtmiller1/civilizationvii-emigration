@@ -68,8 +68,8 @@ globalThis.EmigrationData = {
 
 function testFirstImportantToastNotSuppressedEarlyGame() {
   // Regression: the empty news state seeds lastToastTurn:0, and the old cooldown check ("is a number")
-  // then suppressed EVERY important toast for the first notifyCooldownTurns of a fresh game (turn-0<6).
-  // Runs FIRST, while the news state is still pristine (KV unseeded → lastToastTurn 0). The first toast
+  // then suppressed every important toast for the first notifyCooldownTurns of a fresh game (turn-0<6).
+  // Runs first, while the news state is still pristine (KV unseeded → lastToastTurn 0). The first toast
   // must fire even at a low turn well inside the cooldown window.
   CONFIG.notifyMode = 1;
   CONFIG.notifyToasts = true;
@@ -81,9 +81,9 @@ function testFirstImportantToastNotSuppressedEarlyGame() {
 }
 
 function testInboundDigestAnnouncesImmigration() {
-  // A prosperous, peaceful empire RECEIVING migrants gets important news too: cross-civ arrivals
+  // A prosperous, peaceful empire receiving migrants gets important news too: cross-civ arrivals
   // credited to the local player (arrival records carry destOwner + originCiv, no srcOwner) group into
-  // one inbound event that, over the floor, toasts once and logs as a GAIN (ownLoss:false).
+  // one inbound event that, over the floor, toasts once and logs as a gain (ownLoss:false).
   clearNotifications();
   settings.setVisibilityOverride(2); // show all civs → name the origin
   CONFIG.notifyMode = 1;
@@ -106,7 +106,7 @@ function testInboundDigestAnnouncesImmigration() {
 }
 
 function testInboundBelowFloorStaysQuiet() {
-  // A single 1-point arrival (below inboundNotifyPoints) must not toast OR fill the log - a steady
+  // A single 1-point arrival (below inboundNotifyPoints) must not toast or fill the log; a steady
   // trickle stays quiet so it never buries war/disaster history.
   clearNotifications();
   CONFIG.notifyMode = 1;
@@ -123,7 +123,7 @@ function testInboundBelowFloorStaysQuiet() {
 }
 
 function testInboundExcludesInternalMoves() {
-  // An internal relocation within the player's own empire (crossCiv:false) is NOT immigration and must
+  // An internal relocation within the player's own empire (crossCiv:false) is not immigration and must
   // never produce an inbound (gain) notification, even at the lowest floor.
   clearNotifications();
   CONFIG.notifyMode = 1;
@@ -132,7 +132,7 @@ function testInboundExcludesInternalMoves() {
   CONFIG.inboundNotifyPoints = 1;
   toasts = 0;
   TURN = 44;
-  // Mirror the real pass: reportPassFeedback (loss side) THEN reportInboundFeedback (gain side).
+  // Mirror the real pass: reportPassFeedback (loss side) then reportInboundFeedback (gain side).
   const internal = [
     { srcOwner: 0, destOwner: 0, people: 9000, points: 3, cause: "prosperity", crossCiv: false, srcName: "Ostia", destName: "Rome" }
   ];
@@ -203,7 +203,7 @@ function testVerboseCauseToastsExcludeUnhappiness() {
   assert.ok(causeRows.some((r) => r.cause === "disaster"));
 }
 
-testFirstImportantToastNotSuppressedEarlyGame(); // FIRST: needs the pristine (lastToastTurn 0) news state
+testFirstImportantToastNotSuppressedEarlyGame(); // First: needs the pristine (lastToastTurn 0) news state
 testImportantToastRespectsNotifyToastsFlag();
 testLocalDigestMasksUnmetDestinations();
 testVerboseCauseToastsExcludeUnhappiness();

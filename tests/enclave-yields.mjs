@@ -1,9 +1,9 @@
 // enclave-yields.mjs
 //
 // What an enclave is worth to its host per turn (emigration-enclave-yields.js), as the lifecycle
-// notifications state it; the rule that an "Enclave of X" entry needs a REAL enclave and only fires on
+// notifications state it; the rule that an "Enclave of X" entry needs a real enclave and only fires on
 // growth (emigration-diaspora.js); and the two-step lifecycle itself (emigration-quarter.js): the enclave
-// is CREATED when its community is established, and RECOGNIZED (stance + stance yields) after the dwell.
+// is created when its community is established, and recognized (stance + stance yields) after the dwell.
 // Only GameInfo is stubbed, for the placed tile's native yields.
 
 import assert from "node:assert/strict";
@@ -24,7 +24,7 @@ const { enclaveYields, stanceYields, yieldsText, yieldsButtonText, withYields } 
 const { chronicle, chronicled, clearChronicle } = await import("/emigration/ui/emigration-chronicle.js");
 const { __test: dia } = await import("/emigration/ui/emigration-diaspora.js");
 
-// ── An UNBUILT enclave is worth its stance grant ────────────────────────────
+// An unbuilt enclave is worth its stance grant
 {
   const rec = { applied: { benefitYield: "YIELD_CULTURE", benefitAmount: 2, penaltyYield: "YIELD_HAPPINESS", penaltyAmount: 1 } };
   const y = enclaveYields(rec);
@@ -34,7 +34,7 @@ const { __test: dia } = await import("/emigration/ui/emigration-diaspora.js");
   assert.equal(yieldsText(y, -1), "−2 Culture, +1 Happiness", "stated as a loss, every sign flips");
 }
 
-// ── An ESTABLISHED enclave is worth its TILE; RECOGNITION adds the stance on top ──
+// An established enclave is worth its tile; recognition adds the stance on top
 {
   const none = { benefitYield: null, benefitAmount: 0, penaltyYield: null, penaltyAmount: 0 };
   const placed = { plot: 10, type: "IMPROVEMENT_EMIG_ENCLAVE_ROME_A" };
@@ -49,7 +49,7 @@ const { __test: dia } = await import("/emigration/ui/emigration-diaspora.js");
   assert.deepEqual(enclaveYields(recognized), { YIELD_CULTURE: 5, YIELD_HAPPINESS: -1 }, "tile + stance is the whole worth");
 }
 
-// ── Defensive: a malformed or empty record states nothing ───────────────────
+// Defensive: a malformed or empty record states nothing
 {
   assert.deepEqual(enclaveYields(null), {}, "no record, no yields");
   assert.deepEqual(enclaveYields({ applied: { benefitYield: null, penaltyYield: null } }), {}, "a passive stance is worth nothing");
@@ -61,30 +61,30 @@ const { __test: dia } = await import("/emigration/ui/emigration-diaspora.js");
   assert.equal(withYields("The enclave fades.", "−2 Culture"), "The enclave fades. (−2 Culture)", "the figure is appended");
 }
 
-// ── A yield that nets to zero is dropped, not printed as "+0" ───────────────
+// A yield that nets to zero is dropped, not printed as "+0"
 {
   const y = enclaveYields({ applied: { benefitYield: "YIELD_CULTURE", benefitAmount: 2, penaltyYield: "YIELD_CULTURE", penaltyAmount: 2 } });
   assert.deepEqual(y, {}, "a benefit cancelled by its own drawback is no yield at all");
 }
 
-// ── Share steps only fire UPWARD (the Mérida repeat, watched turn 72-80) ────
+// Share steps only fire upward (the Mérida repeat, turns 72-80)
 {
   clearChronicle();
   const rec = { civ: 1, turn: 70 };
   assert.equal(dia.tierAlreadyReached("Mérida", rec, 6), false, "nothing recorded yet");
   chronicle({ kind: "founding", title: "t", body: "b", dedupeKey: dia.shareStepKey("Mérida", rec, 6) });
   assert.equal(chronicled(dia.shareStepKey("Mérida", rec, 6)), true, "the peak step is recorded");
-  // The community then SHRANK: 99% (step 6) → 66% (step 4) → 47% (step 3).
+  // The community then shrank: 99% (step 6) → 66% (step 4) → 47% (step 3).
   assert.equal(dia.tierAlreadyReached("Mérida", rec, 4), true, "a smaller share does not re-announce the enclave");
   assert.equal(dia.tierAlreadyReached("Mérida", rec, 3), true, "nor does a smaller one still");
   assert.equal(dia.tierAlreadyReached("Mérida", rec, 7), false, "a share beyond the peak is new");
   assert.equal(dia.tierAlreadyReached("Mérida", { civ: 2, turn: 70 }, 3), false, "another origin is unaffected");
-  // An enclave that faded and FORMED AGAIN (a later formation turn) is a new series: it is announced again.
+  // An enclave that faded and formed again (a later formation turn) is a new series: it is announced again.
   assert.equal(dia.tierAlreadyReached("Mérida", { civ: 1, turn: 120 }, 3), false, "a re-formed enclave announces itself");
   clearChronicle();
 }
 
-// ── The "Enclave of X" story needs a REAL enclave of that origin on the city ──
+// The "Enclave of X" story needs a real enclave of that origin on the city
 {
   const { putQuarter, dropQuarter } = await import("/emigration/ui/emigration-quarter-state.js");
   const merida = { location: { x: 38, y: 50 } };
@@ -99,7 +99,7 @@ const { __test: dia } = await import("/emigration/ui/emigration-diaspora.js");
   assert.equal(dia.enclaveOf(merida, 1), null, "once the enclave is gone the story stops");
 }
 
-// ── Lifecycle: ESTABLISHED creates the enclave; RECOGNIZED adds the stance to the SAME record ──
+// Lifecycle: established creates the enclave; recognized adds the stance to the same record
 {
   const state = await import("/emigration/ui/emigration-quarter-state.js");
   const { __test: q } = await import("/emigration/ui/emigration-quarter.js");
@@ -128,7 +128,7 @@ const { __test: dia } = await import("/emigration/ui/emigration-diaspora.js");
   assert.equal(up.rec.placed.plot, 10, "its tile is the one that already stands (no second placement)");
   assert.equal(up.rec.applied.benefitYield, "YIELD_CULTURE", "the chosen stance is recorded");
 
-  // A different origin on the tile is a change of hands: a NEW, recognized enclave.
+  // A different origin on the tile is a change of hands: a new, recognized enclave.
   const hands = q.recordForChoice(est, option, { ...quarter, civ: 5 }, { ct: "CIVILIZATION_ROME", me: 9, turn: 48 });
   assert.equal(hands.formed, true, "another origin forms its own enclave");
   assert.equal(hands.rec.turn, 48, "with its own formation turn");

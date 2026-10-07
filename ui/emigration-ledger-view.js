@@ -17,7 +17,7 @@ export const LEDGER_CSS =
   ".emig-led-row{display:flex;align-items:center;width:100%;}" +
   ".emig-led-c{flex:1 1 0;text-align:right;padding:0.62rem 0.6rem;font-size:var(--dg-fs-120);" +
   "overflow:hidden;white-space:nowrap;border-top:0.0277rem solid rgba(229,210,172,0.12);}" +
-  // Column weights. ledgerGroupRow spans these in pairs, so its spans are sized from the SAME
+  // Column weights. ledgerGroupRow spans these in pairs, so its spans are sized from the same
   // numbers: name+net+bar = 2.2+1+1.3 = 4.5, each count pair = 2, and the trailing
   // stance+refugees+losses = 1.6+1+1 = 3.6. Change a weight here and change that span with it.
   ".emig-led-c.name{flex:2.2 1 0;text-align:left;color:#f0dca8;font-weight:bold;}" +
@@ -33,7 +33,7 @@ export const LEDGER_CSS =
   ".emig-led-grp .emig-led-c.lbl{color:#e5d2ac;border-bottom:0.0277rem solid rgba(229,210,172,0.22);}" +
   ".emig-led-net{display:flex;align-items:center;justify-content:flex-end;gap:0.4rem;}" +
   ".emig-led-bar{height:0.7rem;border-radius:0.35rem;flex:0 0 auto;min-width:0.16rem;}" +
-  // The divider sits on the ROW (one continuous full-width line) rather than each cell: the row is
+  // The divider sits on the row (one continuous full-width line) rather than each cell: the row is
   // align-items:center, so the empty net-bar cell is shorter than the text cells and a per-cell
   // border-top would land at a different height there, breaking the line at the graph column.
   ".emig-led-tot{border-top:0.0833rem solid rgba(201,162,76,0.45);}" +
@@ -136,8 +136,8 @@ function ledgerNetCell(r, mode) {
 }
 
 /**
- * The diverging Net BAR cell: a shared zero-centered axis so rows read against each other, a RED bar
- * grows LEFT of center for a net loss, a GREEN bar grows RIGHT for a net gain, scaled to the largest
+ * The diverging Net bar cell: a shared zero-centered axis so rows read against each other, a red bar
+ * grows left of center for a net loss, a green bar grows right for a net gain, scaled to the largest
  * mover. The signed number itself stays in the "Net" column.
  * @param {*} r Ledger row.
  * @param {number} maxNet Largest absolute net (people) across the rows.
@@ -177,7 +177,7 @@ function stancePct(r) {
 }
 
 /**
- * The "Stance impact" cell: how a civ's border policy changed its immigration IN, signed people
+ * The "Stance impact" cell: how a civ's border policy changed its immigration in, signed people
  * (allowed beyond / prevented) plus the proportion vs a neutral baseline. "-" when neutral.
  * @param {*} r Ledger row.
  * @param {number} mode A NumberMode value.
@@ -243,7 +243,7 @@ function ledgerDriversRow(r) {
 
 /**
  * The header or totals row: the leading name/net/net-bar cells plus one cell per count column. Every
- * cell carries the SAME class its data-row counterpart gets, so each column's flex basis matches.
+ * cell carries the same class its data-row counterpart gets, so each column's flex basis matches.
  * @param {string} name The first (Civilization / Total) cell.
  * @param {string} net The Net cell.
  * @param {string[]} counts One string per COUNT_COLS entry, in order.

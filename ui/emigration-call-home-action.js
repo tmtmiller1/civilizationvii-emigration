@@ -21,7 +21,7 @@ import { callHomeView, parseChoice } from "/emigration/ui/emigration-call-home-v
 /** @type {Map<string, number>} Last turn a civilization called, by "pid|scope". */
 const _lastCall = new Map();
 
-/** @param {number} pid @param {string} scope @returns {string} The cooldown key. */
+/** @param {number} pid @param {string} scope @returns {string} */
 const cdKey = (pid, scope) => pid + "|" + scope;
 
 /** @returns {number} The current turn, or 0. */
@@ -35,7 +35,7 @@ function turnNow() {
 
 /**
  * Turns still to wait before this civilization may call again for this variant.
- * @param {number} pid Player id. @param {string} scope A CALL_HOME_SCOPE. @returns {number} Turns remaining.
+ * @param {number} pid @param {string} scope A CALL_HOME_SCOPE. @returns {number} Turns remaining.
  */
 export function callHomeCooldownLeft(pid, scope) {
   const last = Number(_lastCall.get(cdKey(pid, scope)) || 0);
@@ -52,7 +52,7 @@ export function _resetCallHomeCooldowns() {
 /**
  * What a civilization can currently spend of a currency, or Infinity when it cannot be read (off-engine, or
  * mid age-transition) so a failed read never silently blocks the call.
- * @param {number} pid Player id. @param {number} currency A CALL_HOME_CURRENCY. @returns {number} The balance.
+ * @param {number} pid @param {number} currency A CALL_HOME_CURRENCY. @returns {number}
  */
 export function callHomeBalance(pid, currency) {
   try {
@@ -68,8 +68,8 @@ export function callHomeBalance(pid, currency) {
 
 /**
  * Read a treasury balance through whichever accessor it offers, or Infinity when neither is there.
- * @param {*} treasury The treasury object. @param {string} field The value field.
- * @param {string} getter The getter name. @returns {number} The balance.
+ * @param {*} treasury @param {string} field The value field.
+ * @param {string} getter The getter name. @returns {number}
  */
 function balanceOf(treasury, field, getter) {
   if (!treasury) return Infinity;
@@ -81,7 +81,7 @@ function balanceOf(treasury, field, getter) {
 /**
  * Run one call for a civilization, charging the chosen currency and moving whoever comes. Any resolved call,
  * answered or not, starts the cooldown: an external call the dice refused cannot be repeated next turn.
- * @param {number} pid Player id. @param {string} scope A CALL_HOME_SCOPE.
+ * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {number} currency A CALL_HOME_CURRENCY.
  * @param {{want?:number, move?:(pair:*)=>boolean}} [deps] How many the player asked for (default: the
  *   per-call cap), and a test seam for the mover.
@@ -119,7 +119,7 @@ export function callHomeNow(pid, scope, currency, deps) {
 
 /**
  * Move one point from where it fled back to the settlement it left.
- * @param {number} pid Player id. @param {*} pair The candidate pair. @returns {boolean} Whether it moved.
+ * @param {number} pid @param {*} pair The candidate pair. @returns {boolean} Whether it moved.
  */
 function movePointHome(pid, pair) {
   try {
@@ -137,7 +137,7 @@ function movePointHome(pid, pair) {
 
 /**
  * A player's settlement by name.
- * @param {number} owner Owner id. @param {string} name The settlement name. @returns {*} The city, or null.
+ * @param {number} owner @param {string} name @returns {*} The city, or null.
  */
 function cityByName(owner, name) {
   try {
@@ -165,7 +165,7 @@ function safeGameId() {
  * Write what the call achieved to the Chronicle, so the outcome is a recorded event and not just a number
  * that flickered past. An external call nobody answered is recorded too: the player asked, and the answer
  * was no.
- * @param {number} pid Player id. @param {*} result The call result.
+ * @param {number} pid @param {*} result The call result.
  */
 function reportCall(pid, result) {
   try {
@@ -194,7 +194,7 @@ function reportCall(pid, result) {
 /**
  * Offer the call to the local player as a dialog. Internal: a ladder of sizes per currency, each a purchase.
  * External: one roll per currency.
- * @param {number} pid Player id. @param {string} scope A CALL_HOME_SCOPE. @returns {boolean} Whether it opened.
+ * @param {number} pid @param {string} scope A CALL_HOME_SCOPE. @returns {boolean} Whether it opened.
  */
 export function offerCallHome(pid, scope) {
   if (!CONFIG.callHomeEnabled) return false;

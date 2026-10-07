@@ -1,8 +1,8 @@
 // emigration-tile-score.js
 //
-// The per-TILE prosperity score shared by the Prosperity lens and its cursor panel: what a tile is worth,
+// The per-tile prosperity score shared by the Prosperity lens and its cursor panel: what a tile is worth,
 // which tiles are painted, and what color a score paints. A leaf module (engine globals only) so both
-// surfaces import it without a cycle. A tile's prosperity is an ABSOLUTE sum of named POINTS in which
+// surfaces import it without a cycle. A tile's prosperity is an absolute sum of named points in which
 // built terms dominate; every classification comes from the compiled database (ConstructibleClass,
 // Feature_NaturalWonders), never a list of names, and unbuilt water is not painted.
 
@@ -15,7 +15,7 @@ export const WEIGHTS = Object.freeze({
   improvement: 1, // a worked rural hex
   yieldPer: 3, // +1 per this many yield on the hex
   river: 1,
-  naturalWonder: 3, // the hex IS a natural wonder
+  naturalWonder: 3, // the hex is a natural wonder
   adjacentNaturalWonder: 2, // per neighboring hex that is one
   adjacentWonder: 1, // per neighboring hex holding a wonder
   pillaged: -3, // each pillaged constructible on the hex (which then earns no build points)
@@ -78,7 +78,7 @@ function safe(fn, fb) {
   }
 }
 
-// ── color ───────────────────────────────────────────────────────────────────────────────────────────────────────
+// color
 
 /**
  * The [-1, 1] color position of a score: 0 at the center of `ordinary`, +1 at the flourishing floor and beyond,
@@ -147,7 +147,7 @@ export function tierHex(t) {
   return "#" + hex(0) + hex(1) + hex(2);
 }
 
-// ── reading a hex ────────────────────────────────────────────────────────────────────────────────────────────────
+// reading a hex
 
 /**
  * A settlement's owned plots as {x, y, idx}: `idx` reads the per-plot yields, `{x, y}` is what the overlay paints.
@@ -288,7 +288,7 @@ function naturalWonderAt(x, y) {
 }
 
 /**
- * What a NEIGHBORING hex contributes to this one: does it hold a wonder, is it a natural wonder, is anything on
+ * What a neighboring hex contributes to this one: does it hold a wonder, is it a natural wonder, is anything on
  * it pillaged. Cached per pass, since a hex is a neighbor of six others.
  * @param {number} x Plot x. @param {number} y Plot y. @param {Map<string, *>} cache The per-pass cache.
  * @returns {{wonder:boolean, natural:boolean, pillaged:boolean}} The neighbor facts.
@@ -324,7 +324,7 @@ function neighbours(x, y) {
   return out;
 }
 
-// ── scoring ──────────────────────────────────────────────────────────────────────────────────────────────────────
+// scoring
 
 /** @param {TileTerm[]} terms The list. @param {TileTerm} t A term; appended only when it is worth something. */
 function add(terms, t) {
@@ -332,7 +332,7 @@ function add(terms, t) {
 }
 
 /**
- * The terms for what STANDS on a hex: the center district, and each constructible by class. A pillaged
+ * The terms for what stands on a hex: the center district, and each constructible by class. A pillaged
  * constructible earns its penalty and not its build points; two or more standing buildings make a quarter.
  * @param {number} x Plot x. @param {number} y Plot y.
  * @returns {TileTerm[]} The built terms, in map order.
@@ -359,7 +359,7 @@ function builtTerms(x, y) {
 }
 
 /**
- * The terms for the hex ITSELF: its yield (one point per `yieldPer`), a river, being a natural wonder.
+ * The terms for the hex itself: its yield (one point per `yieldPer`), a river, being a natural wonder.
  * @param {number} x Plot x. @param {number} y Plot y.
  * @param {number|null} idx Plot index for the yield read (null: the yield term is skipped).
  * @returns {TileTerm[]} The ground terms.
@@ -378,7 +378,7 @@ function groundTerms(x, y, idx) {
 }
 
 /**
- * The terms for the NEIGHBORHOOD: wonders, natural wonders and ruin on the six adjacent hexes, one term per kind
+ * The terms for the neighborhood: wonders, natural wonders and ruin on the six adjacent hexes, one term per kind
  * with the count.
  * @param {number} x Plot x. @param {number} y Plot y. @param {Map<string, *>} cache Per-pass neighbor cache.
  * @returns {TileTerm[]} The adjacency terms.

@@ -1,15 +1,15 @@
 // gen-enclave-improvements.mjs
 //
-// Generates the per-civilization, per-stance "Cultural Enclave" IMPROVEMENT data from the QUARTER_BONUSES
+// Generates the per-civilization, per-stance "Cultural Enclave" improvement data from the QUARTER_BONUSES
 // registry (ui/emigration-quarter-bonuses.js): two improvements per origin civ (one per stance option),
-// each carrying that option's benefit yield as a NATIVE Constructible_YieldChanges row, the civ's symbol
+// each carrying that option's benefit yield as a native Constructible_YieldChanges row, the civ's symbol
 // as its icon, and en_us text. Run: `node scripts/gen-enclave-improvements.mjs`.
 //
-// NEVER BUILDABLE, ONLY PLACED. The 2026-07-17 buildable version crashed the AI turn (the AI's
+// Never buildable, only placed. The 2026-07-17 buildable version crashed the AI turn (the AI's
 // ConstructibleBroker evaluated a universally buildable custom improvement in every city and segfaulted).
-// These rows carry RequiresUnlock="true" with NO unlock row and CityBuildable/TownBuildable="false", so no
-// build query ever lists them. The mod PLACES one with the engine's CREATE_ELEMENT operation when the
-// player recognizes an enclave (ui/emigration-enclave-place.js); watched in-game 2026-09-12: a
+// These rows carry RequiresUnlock="true" with no unlock row and CityBuildable/TownBuildable="false", so no
+// build query ever lists them. The mod places one with the engine's CREATE_ELEMENT operation when the
+// player recognizes an enclave (ui/emigration-enclave-place.js). In game on 2026-09-12 a
 // never-buildable custom improvement placed this way carried its yields and survived seven AI turns on a
 // human city and on an AI city (devtools/engine-probe/, runs 7 and 8).
 //
@@ -26,11 +26,11 @@ import { QUARTER_BONUSES } from "../ui/emigration-quarter-bonuses.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-// The placed enclave's native tile yield: the SAME amount the stance grant paid (CONFIG.quarterRewardAmount,
-// 2), because the improvement REPLACES that grant (emigration-quarter.js drops the benefit leg once the
+// The placed enclave's native tile yield: the same amount the stance grant paid (CONFIG.quarterRewardAmount,
+// 2), because the improvement replaces that grant (emigration-quarter.js drops the benefit leg once the
 // tile stands). The tile also settles one population point (Population="1"), the enclave community itself.
 // The stance's drawback stays on the per-turn grant path (a negative native yield row was the other
-// suspect in the July crash and is deliberately not shipped).
+// suspect in the July crash and is not shipped).
 export const ENCLAVE_BENEFIT = 2;
 
 // Civ VII tile yields (Constructible_YieldChanges.YieldType FK → Yields). YIELD_FAITH does not exist, so

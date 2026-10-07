@@ -35,38 +35,38 @@ Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationv
 
 ## What's new in 3.3.0
 
-- **Every language reads in full.** The Civilopedia pages and their quotations, the enclave names and descriptions on the map, the call-home and arrival pop-ups, the enclave and displaced-people quotes, and the options that were still in English are translated into all eleven languages.
-- **Chinese, Japanese and Korean draw every character.** Panel titles, city names, tabs, filter buttons, the guide and the network map's labels used the game's Latin-only faces and showed missing-glyph boxes; they now use the language's own font the way the game does. The network map's war badges draw their flag as a shape, not a glyph those fonts lack.
-- **Notifications and Chronicle entries read in your current language.** New entries are recorded as text keys and composed when shown, so switching the game's language translates them; entries recorded before this version keep the text they were written with.
-- **The network timeline's labels are translated:** the Scaled Pop and Civ Pop units, Play and Pause, the age name and the year labels.
+- Every language reads in full. The Civilopedia pages and their quotations, the enclave names and descriptions on the map, the call-home and arrival pop-ups, the enclave and displaced-people quotes, and the options that were still in English are translated into all eleven languages.
+- Chinese, Japanese and Korean draw every character. Panel titles, city names, tabs, filter buttons, the guide and the network map's labels used the game's Latin-only faces and showed missing-glyph boxes; they now use the language's own font the way the game does. The network map's war badges draw their flag as a shape, not a glyph those fonts lack.
+- Notifications and Chronicle entries read in your current language. New entries are recorded as text keys and composed when shown, so switching the game's language translates them; entries recorded before this version keep the text they were written with.
+- The network timeline's labels are translated: the Scaled Pop and Civ Pop units, Play and Pause, the age name and the year labels.
 
 ## What was new in 3.2.1
 
-- **The city readout sits beside the City Details panel** instead of over it. When you open a settlement, the per-city migration readout moves out from under whichever city-screen panel holds its corner, and returns to the corner when City Details is closed.
+- The city readout sits beside the City Details panel instead of over it. When you open a settlement, the per-city migration readout moves out from under whichever city-screen panel holds its corner, and returns to the corner when City Details is closed.
 
 ## What was new in 3.2.0
 
-- **A disaster only displaces people where it did damage:** a settlement shielded from the event — a Dam or a Levee against a flood, the Khmer Baray — or one the event spared sends nobody, instead of every settlement in the radius taking the same distress.
-- **A flood reaches every settlement along its river,** not just the ring of tiles around the epicenter the event names.
-- **Flood-like events from other mods** are weighed as floods rather than as unknown events.
+- A disaster only displaces people where it did damage: a settlement shielded from the event (a Dam or a Levee against a flood, the Khmer Baray) or one the event spared sends nobody, instead of every settlement in the radius taking the same distress.
+- A flood reaches every settlement along its river, not just the ring of tiles around the epicenter the event names.
+- Flood-like events from other mods are weighed as floods rather than as unknown events.
 
 ## What was new in 3.1.0
 
-- **Yields on the buttons:** the refugee, newcomer, call-home and Cultural Enclave pop-ups show each choice's gains and costs on its own button, with the game's yield icons.
-- **Enclave stances pay a real sum once:** Culture, Science, Influence or Gold, sized to your economy and the age, usually at a price in Gold; a stance you cannot afford is grayed out.
-- **Newcomers settled by the city** show the yields of the tile they will work before you choose.
+- Yields on the buttons: the refugee, newcomer, call-home and Cultural Enclave pop-ups show each choice's gains and costs on its own button, with the game's yield icons.
+- Enclave stances pay a real sum once: Culture, Science, Influence or Gold, sized to your economy and the age, usually at a price in Gold; a stance you cannot afford is grayed out.
+- Newcomers settled by the city show the yields of the tile they will work before you choose.
 
 ## What was new in 3.0.0
 
-- **Calling your people home** is two offers: a purchase from your own settlements, and a gamble on your people abroad, each in three sizes with Gold and Influence prices.
-- **Reasons to stay:** wonders and civic buildings hold people in a settlement, and emigration pressure fades once a settlement's troubles pass.
-- **The Ethnic Composition lens** blends every people living on a tile, shades by how crowded it is, seats each enclave's people on its own tile, and repaints as soon as the turn starts.
-- **Migrants keep who they are:** a mixed city sends out a mixed crowd, and razed settlements leave the lists at once.
-- **Enclaves explain themselves:** hover an enclave's tile for its stage and the source of every yield; the map marker shows the stage.
-- **The Prosperity lens** scores each tile in points and lists every term behind the score.
-- **The network diagram:** click a city to see just its flows, or drag a settlement out of its civilization's circle.
-- **The Civilopedia** covers the whole mod, with a page of quotations for every people.
-- **The Mods tab** has a switch for each decision pop-up and full hover help on every option.
+- Calling your people home is two offers: a purchase from your own settlements, and a gamble on your people abroad, each in three sizes with Gold and Influence prices.
+- Reasons to stay: wonders and civic buildings hold people in a settlement, and emigration pressure fades once a settlement's troubles pass.
+- The Ethnic Composition lens blends every people living on a tile, shades by how crowded it is, seats each enclave's people on its own tile, and repaints as soon as the turn starts.
+- Migrants keep who they are: a mixed city sends out a mixed crowd, and razed settlements leave the lists at once.
+- Enclaves explain themselves: hover an enclave's tile for its stage and the source of every yield; the map marker shows the stage.
+- The Prosperity lens scores each tile in points and lists every term behind the score.
+- The network diagram: click a city to see just its flows, or drag a settlement out of its civilization's circle.
+- The Civilopedia covers the whole mod, with a page of quotations for every people.
+- The Mods tab has a switch for each decision pop-up and full hover help on every option.
 
 Full notes: [CHANGELOG.md](CHANGELOG.md).
 
@@ -293,13 +293,13 @@ The dashboard reflects saved gameplay state, not cosmetic estimates: population,
 
 Each turn, the mod scores settlements and moves population from weaker ones toward stronger nearby destinations.
 
-- **Peacetime:** unhappy or low-yield settlements lose people to happier, wealthier ones.
-- **War refugees:** district damage, siege, and pillaging cause rapid flight away from the nearest invader.
-- **Concurrent causes:** war, disaster, and economic pressure are evaluated independently, so several can act on the same city in one turn.
-- **Cross-civilization:** migration can stay within a civilization or cross borders.
-- **Regional:** distance reduces pull, so nearby destinations usually win.
-- **Consequential:** arrivals add integration costs and congestion, preventing unlimited growth.
-- **Speed-aware:** pacing scales with game speed (§2).
+- Peacetime: unhappy or low-yield settlements lose people to happier, wealthier ones.
+- War refugees: district damage, siege, and pillaging cause rapid flight away from the nearest invader.
+- Concurrent causes: war, disaster, and economic pressure are evaluated independently, so several can act on the same city in one turn.
+- Cross-civilization: migration can stay within a civilization or cross borders.
+- Regional: distance reduces pull, so nearby destinations usually win.
+- Consequential: arrivals add integration costs and congestion, preventing unlimited growth.
+- Speed-aware: pacing scales with game speed (§2).
 
 Moves appear in toasts, Demographics graphs, and the dev log, for example:
 `EMIGRATION 1 population point (≈30,000 people) left Rome (Romans) for Carthage (Carthaginians)`.
@@ -521,7 +521,7 @@ $$
 \end{aligned}
 $$
 
-`perFewerPop` (0.5, "Reluctance to move somewhere smaller", Advanced ▸ Brakes) mirrors `perExtraPop`: the score's per-citizen term favors a smaller destination simply for being smaller, so moving down in size costs the same per citizen as crowding into a bigger place.
+`perFewerPop` (0.5, "Reluctance to move somewhere smaller", Advanced ▸ Brakes) mirrors `perExtraPop`: the score's per-citizen term favors a smaller destination just for being smaller, so moving down in size costs the same per citizen as crowding into a bigger place.
 
 `internalRefuge(s,d)` gives crisis refugees a bonus toward destinations inside their own civilization; `crisisEscapeBonus` provides the corresponding escape incentive when no good homeland option exists. Both move with the "Movement between civilizations" slider. `drainFor(s)` reduces cross-civ outflow from civilizations below their fair population share.
 
@@ -531,7 +531,7 @@ $\mathrm{antiSnowballWeight}\cdot\max\!\left(0,\frac{\mathrm{pop}_\text{civ}(d)}
 
 It applies only to cross-civ inflow into an above-average civilization and is tunable by strength and threshold.
 
-War is not a hard routing gate. A besieged city simply becomes less prosperous, gains a flee vector, and then uses the same pull equation.
+War is not a hard routing gate. A besieged city becomes less prosperous, gains a flee vector, and then uses the same pull equation.
 
 ### The Prosperity map lens (`emigration-prosperity-lens.js`, `emigration-prosperity-tooltip.js`)
 

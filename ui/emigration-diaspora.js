@@ -1,8 +1,8 @@
 // emigration-diaspora.js
 //
 // Reads the world each pass and decides which population movements are worth writing into the
-// Migration Chronicle (emigration-chronicle.js): an EXODUS (a settlement sheds a large wave in one
-// pass under war/disaster/conquest, throttled per settlement+cause) or a FOUNDING (a people from one
+// Migration Chronicle (emigration-chronicle.js): an exodus (a settlement sheds a large wave in one
+// pass under war/disaster/conquest, throttled per settlement+cause) or a founding (a people from one
 // civ crosses a share threshold as a settled minority in another civ's city). Spoiler-safe: a civ the
 // visibility policy hides is never narrated. Pure detection + chronicle writes; never throws into the pass.
 
@@ -32,15 +32,15 @@ const EXODUS_COOLDOWN = 8;
 const DIASPORA_MIN = 0.15;
 const DIASPORA_STEP = 0.15;
 
-// Quarter progression is gated on the diaspora's CURRENT STANDING presence (its pop points right now,
-// netted by the composition ledger, NOT lifetime inflow) and deepens with share growth: the stage fires
+// Quarter progression is gated on the diaspora's current standing presence (its pop points right now,
+// netted by the composition ledger, not lifetime inflow) and deepens with share growth: the stage fires
 // the moment a lead foreign origin is both large enough in stock and share, and falls back if it
 // integrates or leaves. The established bar is player-tunable via CONFIG; QUARTER_FOOTHOLD_SHARE lives
 // in emigration-tunables.js (a leaf, avoiding an import cycle) and is re-exported below for callers.
 
 /**
  * The established-enclave share bar (falls back to 0.35), reduced by the host's per-age pacing relaxation.
- * @param {number} [relax] Pacing relaxation in [0, 1). @returns {number} The share bar.
+ * @param {number} [relax] Pacing relaxation in [0, 1). @returns {number}
  */
 function establishedShare(relax) {
   const v = Number(CONFIG.quarterEstablishedShare);
@@ -51,7 +51,7 @@ function establishedShare(relax) {
  * Whether a standing stock establishes an enclave on its own (the absolute qualifier, scaled to city size
  * and reduced by the pacing relaxation).
  * @param {number} stock Standing points of the lead origin. @param {number} [relax] Pacing relaxation.
- * @returns {boolean} True when it qualifies.
+ * @returns {boolean}
  */
 function stockQualifies(stock, relax) {
   const bar = relaxedBar(establishedStockBar(), relax || 0);
@@ -59,7 +59,7 @@ function stockQualifies(stock, relax) {
 }
 
 /**
- * The absolute-stock bar for THIS game right now: `quarterEstablishedStock` scaled by how large tracked
+ * The absolute-stock bar for this game right now: `quarterEstablishedStock` scaled by how large tracked
  * settlements are on average relative to `quarterStockRefPop`, clamped to half and double. Pure over its
  * inputs; the live version reads the composition ledger's mean population.
  * @param {number} base The configured bar. @param {number} meanPop Mean tracked settlement population.
@@ -82,7 +82,7 @@ export function establishedStockBar() {
 /**
  * The mean population of the settlements in the composition ledger this turn (0 when empty), cached per
  * turn since the stage read runs for every city every pass.
- * @returns {number} Mean population.
+ * @returns {number}
  */
 function meanTrackedPopulation() {
   const turn = safeTurn();
@@ -99,7 +99,7 @@ function meanTrackedPopulation() {
 let _meanCache = { turn: -1, value: 0 };
 registerCacheReset(() => { _meanCache = { turn: -1, value: 0 }; });
 
-/** The current turn (0 when unreadable). @returns {number} Game.turn or 0. */
+/** The current turn (0 when unreadable). @returns {number} */
 function safeTurn() {
   try {
     return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
@@ -116,7 +116,7 @@ function minStock() {
 
 /**
  * The current game turn, or 0.
- * @returns {number} Game.turn or 0.
+ * @returns {number}
  */
 function gameTurn() {
   try {
@@ -129,8 +129,8 @@ function gameTurn() {
 /**
  * Whether a migration counts toward an exodus: a real displacement (not economic "prosperity" drift)
  * with a known source settlement and owner.
- * @param {*} m A migration.
- * @returns {boolean} True when it counts.
+ * @param {*} m
+ * @returns {boolean}
  */
 function isExodusMigration(m) {
   return !!m && !!m.cause && m.cause !== "prosperity" && m.cause !== "return"
@@ -186,8 +186,8 @@ function detectExoduses(migrations) {
 }
 
 /**
- * The largest FOREIGN-origin minority in a city (an origin civ other than the owner), or null when
- * the city is effectively single-origin. Reads the composition ledger.
+ * The largest foreign-origin minority in a city (an origin civ other than the owner), or null when
+ * the city is single-origin for practical purposes. Reads the composition ledger.
  * @param {*} comp A city composition (from compositionForCity).
  * @returns {{civ:number, pts:number, share:number}|null} The lead foreign origin (with its current
  *   standing pop points), or null.
@@ -202,8 +202,8 @@ function leadForeignOrigin(comp) {
 }
 
 /**
- * The lead foreign origin for QUARTER purposes: a civilization never forms a Cultural Quarter for its
- * OWN people, so this compares the resolved CivilizationType of host and origin and rejects a same-civ
+ * The lead foreign origin for quarter purposes: a civilization never forms a Cultural Quarter for its
+ * own people, so this compares the resolved CivilizationType of host and origin and rejects a same-civ
  * lead from a different player. Falls back to the plain lead when either civ type is unresolved.
  * @param {*} comp A city composition (from compositionForCity).
  * @returns {{civ:number, pts:number, share:number}|null} The foreign-civ lead, or null.
@@ -220,13 +220,13 @@ function leadForeignCivOrigin(comp) {
 /**
  * Quarter progression stage from current standing share + stock.
  * @param {number} share Lead-origin share in the city.
- * @param {number} stock Lead-origin CURRENT standing pop points (netted, not lifetime inflow).
+ * @param {number} stock Lead-origin current standing pop points (netted, not lifetime inflow).
  * @param {number} [relax] The host's per-age pacing relaxation (emigration-enclave-pacing.js), 0 by default.
- * @returns {"none"|"foothold"|"established"} Stage.
+ * @returns {"none"|"foothold"|"established"}
  */
 function quarterStage(share, stock, relax) {
   const stockFloor = minStock();
-  // Established by SHARE (the origin holds a large part of a settlement) or by absolute STOCK (a large
+  // Established by share (the origin holds a large part of a settlement) or by absolute stock (a large
   // community in a big cosmopolitan city; CONFIG.quarterEstablishedStock, 0 = off). Both bars read
   // lower while the host's per-age pacing is catching up, so at least one an age is likely.
   if ((share >= establishedShare(relax) || stockQualifies(stock, relax)) && stock >= stockFloor) {
@@ -239,7 +239,7 @@ function quarterStage(share, stock, relax) {
 }
 
 /**
- * The lead diaspora's CURRENT standing size in scaled people: its share of the city's scaled
+ * The lead diaspora's current standing size in scaled people: its share of the city's scaled
  * population, using the same age-based scaler as the Demographics board so the figure reads
  * consistently with the rest of the mod. A standing figure (netted now), not lifetime inflow.
  * @param {{total:number}} comp The city composition. @param {{share:number}} lead The lead foreign origin.
@@ -251,9 +251,9 @@ function standingPeople(comp, lead) {
 }
 
 /**
- * Chronicle a diaspora's FOOTHOLD stage (a lasting community, not yet a full quarter).
+ * Chronicle a diaspora's foothold stage (a lasting community, not yet a full quarter).
  * @param {{civ:number, share:number}} lead The lead foreign origin. @param {string} name Host city name.
- * @param {number} standingPeople The diaspora's CURRENT standing size (scaled people).
+ * @param {number} standingPeople The diaspora's current standing size (scaled people).
  * @param {{adj:string, adjMsg:import("/emigration/ui/emigration-loc.js").MsgNode}} nc Origin descriptor.
  */
 function chronicleFoothold(lead, name, standingPeople, nc) {
@@ -274,8 +274,8 @@ function chronicleFoothold(lead, name, standingPeople, nc) {
 }
 
 /**
- * Chronicle quarter progression moments derived from the diaspora's CURRENT standing stock + share. Only
- * the FOOTHOLD is a story of its own: the established stage CREATES the enclave (emigration-quarter.js),
+ * Chronicle quarter progression moments derived from the diaspora's current standing stock + share. Only
+ * the foothold is a story of its own: the established stage creates the enclave (emigration-quarter.js),
  * which announces itself through {@link chronicleEnclaveFounding}.
  * @param {*} city Live city object.
  */
@@ -293,18 +293,18 @@ function detectQuarterForCity(city) {
 const MAX_DIASPORA_TIER = Math.ceil(1 / DIASPORA_STEP);
 
 /**
- * The dedupe key of one enclave's share-step entry. Keyed by the enclave's FORMATION turn, so an enclave
+ * The dedupe key of one enclave's share-step entry. Keyed by the enclave's formation turn, so an enclave
  * that fades and later forms again is announced again (each formation is its own series).
  * @param {string} name Host city name. @param {{civ:number, turn:number}} rec The enclave record.
- * @param {number} tier The share step. @returns {string} The key.
+ * @param {number} tier The share step. @returns {string}
  */
 function shareStepKey(name, rec, tier) {
   return "founding:" + name + "|" + rec.civ + "|f" + rec.turn + "|" + tier;
 }
 
 /**
- * Whether this enclave has ALREADY been chronicled at `tier` or any HIGHER one. The series is a growth
- * story, so it only fires on a share the enclave has never reached before (a SHRINKING community
+ * Whether this enclave has already been chronicled at `tier` or any higher one. The series is a growth
+ * story, so it only fires on a share the enclave has never reached before (a shrinking community
  * re-crosses tiers downward). Reads the chronicle's own dedupe keys, so it needs no extra persisted state.
  * @param {string} name Host city name. @param {{civ:number, turn:number}} rec The enclave record.
  * @param {number} tier @returns {boolean} True when this tier or a larger one is already recorded.
@@ -332,7 +332,7 @@ function enclaveOf(city, civ) {
 /**
  * Write one "The X Enclave of Y" entry for an enclave at its current share step, unless that step (or a
  * higher one) is already recorded for this formation. The prose speaks of "a district of their own",
- * so every caller passes the REAL enclave record, never share alone.
+ * so every caller passes the real enclave record, never share alone.
  * @param {*} city Live city object. @param {{owner:number}} comp The city composition.
  * @param {{civ:number, share:number}} origin The enclave origin's composition row.
  * @param {{civ:number, turn:number}} rec The enclave record. @param {string} [yields] What the enclave
@@ -345,7 +345,7 @@ function chronicleShareStep(city, comp, origin, rec, yields) {
   if (tierAlreadyReached(name, rec, tier)) return null;
   const nc = narrativeCiv(origin.civ);
   const seed = name + "|" + origin.civ + "|" + tier;
-  // Name a quarter from the host city's REAL features (coast/river/mountain/granary/temple/market/
+  // Name a quarter from the host city's real features (coast/river/mountain/granary/temple/market/
   // walls) so the line never claims a building the city never built; the edge framing also matches
   // where the ethnicity lens paints the diaspora (the sparse rural fringe).
   const where = resolveQuarterMsg(cityFeatureKeys(city), seed);
@@ -362,7 +362,7 @@ function chronicleShareStep(city, comp, origin, rec, yields) {
 }
 
 /**
- * Announce an enclave the moment it is ESTABLISHED (called by emigration-quarter.js right after it
+ * Announce an enclave the moment it is established (called by emigration-quarter.js right after it
  * writes the record and places the tile), with what the tile gives per turn. Skips an unmet host, like
  * every chronicle entry. Never throws into the pass.
  * @param {*} city The host city object. @param {number} civ Origin player id.
@@ -382,13 +382,13 @@ export function chronicleEnclaveFounding(city, civ, yields) {
 }
 
 /**
- * Continue an EXISTING enclave's story when its community crosses a fresh, higher share step. Skips an
+ * Continue an existing enclave's story when its community crosses a fresh, higher share step. Skips an
  * unmet host, a city whose lead foreign origin holds no enclave there, and a shrinking community.
  * @param {*} city A live city object.
  */
 function detectFoundingForCity(city) {
   const comp = compositionForCity(city);
-  // Skip an unmet HOST (we don't narrate an unmet civ's own city in detail); the diaspora ORIGIN may
+  // Skip an unmet host (we don't narrate an unmet civ's own city in detail); the diaspora origin may
   // still be unmet, in which case it's named as hearsay.
   if (!comp || typeof comp.owner !== "number" || civHidden(comp.owner)) return;
   const lead = leadForeignOrigin(comp);
@@ -419,11 +419,11 @@ function detectQuarterProgress(signals) {
 }
 
 /**
- * Assess whether a city currently hosts an ESTABLISHED foreign quarter (the lead foreign minority has
+ * Assess whether a city currently hosts an established foreign quarter (the lead foreign minority has
  * crossed both the established share and the current standing-stock threshold). Returns the origin,
  * host, share, and standing stock for the decision system, or null. Pure; reads the composition ledger.
  * @param {*} city A live city object.
- * @param {boolean} [force] When true, a FOOTHOLD-stage diaspora also qualifies (the established-share
+ * @param {boolean} [force] When true, a foothold-stage diaspora also qualifies (the established-share
  *   bar is relaxed to the foothold share). The min-stock floor still applies. Used by the player-facing
  *   "Force enclave" testing option so a diaspora the player can already see actually offers its decision.
  * @returns {{civ:number, owner:number, share:number, stock:number, name:string, where:string, whereMsg:*}|null}
@@ -446,12 +446,12 @@ export function establishedQuarterForCity(city, force) {
 }
 
 /**
- * The cultural-enclave PROGRESS for a city: the lead foreign origin's current share + standing stock,
+ * The cultural-enclave progress for a city: the lead foreign origin's current share + standing stock,
  * the stage it has reached, and the live thresholds it is measured against. Uses the same inputs the
  * decision mechanic uses, so a readout always agrees with whether an enclave will form. Null when the
  * city has no foreign minority. Pure; reads the composition ledger.
  * @param {*} city A live city object.
- * @returns {EnclaveProgress|null} The progress, or null.
+ * @returns {EnclaveProgress|null}
  */
 export function enclaveProgressForCity(city) {
   return enclaveProgressForComposition(compositionForCity(city));
@@ -461,7 +461,7 @@ export function enclaveProgressForCity(city) {
  * @typedef {Object} EnclaveProgress
  * @property {number} civ The lead foreign origin (player id). @property {number} owner The host player id.
  * @property {number} share Its share of the settlement. @property {number} stock Its standing points.
- * @property {"none"|"foothold"|"established"} stage The stage reached against the LIVE bars.
+ * @property {"none"|"foothold"|"established"} stage The stage reached against the live bars.
  * @property {number} establishedShare The live share bar (pacing-relaxed).
  * @property {number} stockBar The live size bar (scaled to city size, pacing-relaxed; 0 = off).
  * @property {number} minStock The standing-points floor. @property {number} relax The pacing relaxation.
@@ -470,7 +470,7 @@ export function enclaveProgressForCity(city) {
 /**
  * Enclave progress for one composition entry (see enclaveProgressForCity); the dashboard's per-settlement
  * rows carry the composition, not the city. Null when there is no foreign minority.
- * @param {*} comp A composition (owner + civs), or null. @returns {EnclaveProgress|null} The progress.
+ * @param {*} comp A composition (owner + civs), or null. @returns {EnclaveProgress|null}
  */
 export function enclaveProgressForComposition(comp) {
   if (!comp || typeof comp.owner !== "number") return null;

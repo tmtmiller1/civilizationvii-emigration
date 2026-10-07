@@ -8,7 +8,7 @@
 // Re-extract the source after editing en_us with:
 //   node scripts/i18n_extract.mjs
 //
-// SAFETY. The maps are this script's only source of translations, so a translation typed straight into a
+// Safety. The maps are this script's only source of translations, so a translation typed straight into a
 // locale's ModText.xml is invisible here and would be overwritten with English. That happened: on
 // 2026-09-17 the shipped XML had drifted far enough that one run of this script would have replaced 6,018
 // real translations across the eleven locales with their English fallbacks. So before writing anything,

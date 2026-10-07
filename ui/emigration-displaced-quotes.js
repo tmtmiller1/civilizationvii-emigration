@@ -20,7 +20,7 @@ import { RETURN_QUOTES, RETURN_POOL } from "/emigration/ui/emigration-return-quo
 
 /**
  * One quote: the quoted line, the speaker, and the source work (with a (trans.) / (attr.) marker where it applies).
- * @param {string} text @param {string} who @param {string} source @returns {QQuote} The quote.
+ * @param {string} text @param {string} who @param {string} source @returns {QQuote}
  */
 function q(text, who, source) {
   return { text, who, source };
@@ -417,8 +417,8 @@ export const DISPLACED_POOLS = Object.freeze({
 /**
  * The LOC key of one quote: the DQ prefix, then the civilization without CIVILIZATION_ (POOL for the pool),
  * the kind in capitals, and the one-based position.
- * @param {string|null} civ A CivilizationType, or null for the pool. @param {DisplacedKind} kind The kind.
- * @param {number} index Zero-based position in its list. @returns {string} The key.
+ * @param {string|null} civ A CivilizationType, or null for the pool. @param {DisplacedKind} kind
+ * @param {number} index Zero-based position in its list. @returns {string}
  */
 export function displacedQuoteKey(civ, kind, index) {
   const who = civ ? String(civ).replace(/^CIVILIZATION_/, "") : "POOL";
@@ -427,7 +427,7 @@ export function displacedQuoteKey(civ, kind, index) {
 
 /**
  * A stable index into a list of `n` from a seed string (FNV-1a), so one event always shows one quote.
- * @param {string} seed The seed. @param {number} n List length (> 0). @returns {number} The index.
+ * @param {string} seed @param {number} n List length (> 0). @returns {number}
  */
 function seedIndex(seed, n) {
   let h = 2166136261;
@@ -442,7 +442,7 @@ function seedIndex(seed, n) {
 /**
  * A civilization's own quotes of one kind, or [] when it has none.
  * @param {Readonly<Record<string, DisplacedRow>>} registry The per-civ quotes. @param {string|null} civ The type.
- * @param {DisplacedKind} kind The kind. @returns {QQuote[]} The list.
+ * @param {DisplacedKind} kind @returns {QQuote[]}
  */
 function ownList(registry, civ, kind) {
   const row = civ ? registry[civ] : undefined;

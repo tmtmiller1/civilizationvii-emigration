@@ -29,7 +29,7 @@ async function run() {
   const sigs = collectCitySignals();
   const mine = sigs.filter((s) => s.owner === local && !s.isTown).sort((a, b) => b.population - a.population);
   const originPid = sigs.filter((s) => s.owner !== local && !s.isCityState).sort((a, b) => b.population - a.population)[0].owner;
-  // A city with NO empty plot (so the takeover path runs) and a land farmstead to take over; not London
+  // A city with no empty plot (so the takeover path runs) and a land farmstead to take over; not London
   // (its outlying plot gets El Escorial next turn).
   const land = (s) => listDepartureTiles(s.city).some((t) => !safe(() => GameplayMap.isWater(t.loc.x, t.loc.y), true));
   const C = mine.find((s) => cityName(s.city) !== "London" && emptyPlotsOf(s.city).length === 0 && land(s)) || mine[1];

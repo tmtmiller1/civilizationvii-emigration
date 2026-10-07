@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 
-// modinfo manifest-completeness gate. NOTE: Civ VII resolves a mod's own `/emigration/…` imports
+// modinfo manifest-completeness gate. Civ VII resolves a mod's own `/emigration/…` imports
 // from its deployed file tree, so an import whose target isn't in <ImportFiles> still loads, this
-// is NOT a load-failure guard. It's hygiene: it keeps each scope's manifest a complete, accurate
+// is not a load-failure guard. It's hygiene: it keeps each scope's manifest a complete, accurate
 // inventory of the JS it pulls in, so the modinfo doesn't silently rot when a module is split into
 // helpers (e.g. engine→pull/state, effects→dividend/migrant-units, main→log/report). The invariant
 // is per-scope import-CLOSURE: within a scope, every same-mod module imported by any declared module
@@ -17,7 +17,7 @@ const PREFIX = `/${MOD}/`;
 const VFS = (p) => `/${MOD}/` + p.replace(/^\.?\//, "");
 const DISK = (id) => id.replace(PREFIX, "");
 
-// ── Import graph over ui/**.js (comments stripped → no JSDoc type imports) ─
+// Import graph over ui/**.js (comments stripped → no JSDoc type imports)
 function listJs(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((d) => {
     const p = `${dir}/${d.name}`;
@@ -37,7 +37,7 @@ for (const f of listJs("ui")) {
   graph.set(VFS(f), [...deps]);
 }
 
-// ── Per-scope declarations ────────────────────────────────────────────────
+// Per-scope declarations
 const modinfo = fs.readFileSync("emigration.modinfo", "utf8");
 const groupBlock = (id) =>
   (modinfo.match(new RegExp(`<ActionGroup id="${id}"[\\s\\S]*?</ActionGroup>`)) || [""])[0];
@@ -80,13 +80,13 @@ for (const [scope, groups] of Object.entries(SCOPES)) {
   assert.equal(
     missingList.length,
     0,
-    `${scope} scope: ${missingList.length} imported module(s) not declared , add to <ImportFiles> ` +
+    `${scope} scope: ${missingList.length} imported module(s) not declared; add to <ImportFiles> ` +
       `of the ${scope} ActionGroup so the manifest stays complete: ${missingList.join(", ")}`
   );
   totalDeclared += declared.size;
 }
 
-// ── Every declared/referenced .js Item must exist on disk ─────────────────
+// Every declared/referenced .js Item must exist on disk
 const allItems = [...modinfo.matchAll(/<Item(?:\s+locale="[^"]+")?>([^<]+\.js)<\/Item>/g)].map(
   (m) => m[1]
 );

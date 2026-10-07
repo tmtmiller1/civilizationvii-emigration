@@ -1,15 +1,15 @@
 // scripts/snowball-stress.mjs
 //
 // Does the 1.4.1 balance rebalance (economy weighted ×2.5, happiness de-saturated) let a rich, growing
-// civ SNOWBALL, accrete cross-civ migrants faster than the anti-snowball brake can counter? The brake
-// (emigration-pull.js dominanceFor) scales with POPULATION dominance, not economy, so making economy
+// civ snowball, accrete cross-civ migrants faster than the anti-snowball brake can counter? The brake
+// (emigration-pull.js dominanceFor) scales with population dominance, not economy, so making economy
 // matter more could open a window where a rich-but-not-yet-huge leader runs away.
 //
-// We compute the DOMINANCE CEILING: the population ratio (civPop / world-average civ pop) at which a
+// We compute the dominance ceiling: the population ratio (civPop / world-average civ pop) at which a
 // leader's cities stop out-pulling the field, i.e. where cross-civ inflow to the leader hits zero.
 //   net cross-civ pull ≈ (leaderPros − fieldPros) − poachBlock − antiSnowballWeight·(ratio−thr)^exp
 //   ceiling = thr + ((prosGap − poachBlock) / antiSnowballWeight)^(1/exp)   [if prosGap > poachBlock]
-// A HIGHER ceiling = the leader keeps vacuuming migrants until it's larger ⇒ worse snowball. We compare
+// A higher ceiling = the leader keeps vacuuming migrants until it's larger ⇒ worse snowball. We compare
 // the old defaults, the new calibration, and show what antiSnowballWeight holds a chosen safe ceiling.
 //
 // Run: node --loader ./tests/loader.mjs ./scripts/snowball-stress.mjs

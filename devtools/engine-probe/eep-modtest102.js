@@ -1,6 +1,6 @@
 // eep-modtest102.js - does the mod's UI still work on 1.5.0?
 //
-// The 1.5.0 turn test (mod test 98c) proved the SIMULATION runs: 24 turns, pass firing, no mod errors. It did
+// The 1.5.0 turn test (mod test 98c) showed the simulation runs: 24 turns, pass firing, no mod errors. It did
 // not touch a single UI surface. 1.5.0 moved screens to ui-next, so the surfaces that attach to base-game
 // components are the ones that can break silently. Static checks already passed: all 13 base-game imports
 // resolve, all named imports are still exported, and city-banner / lens-panel / screen-dialog-box /

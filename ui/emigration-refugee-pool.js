@@ -248,7 +248,7 @@ export function consumeOneForReshed(cityKey) {
 /**
  * Consume one held refugee of a specific origin for return migration, preserving
  * origin metadata for rollback (mirrors consumeOneForReshed). Lets a caller
- * re-queue the exact refugee — with its original `since` — if the move can't land.
+ * re-queue the exact refugee (with its original `since`) if the move can't land.
  * @param {string} cityKey City signal key.
  * @param {number} originCiv Origin civ to return.
  * @returns {{originCiv:number, since:number}|null} The consumed refugee metadata, or null.

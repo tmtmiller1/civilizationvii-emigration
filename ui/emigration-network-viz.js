@@ -25,12 +25,12 @@ import { installStageFit } from "/emigration/ui/emigration-network-fit.js";
 import { makeTooltip, wireEvents } from "/emigration/ui/emigration-network-interact.js";
 import { localeFontFamily } from "/emigration/ui/emigration-loc.js";
 
-// Logical canvas size, a WIDE 2:1 rectangle so the draggable area spans the full window width
+// Logical canvas size, a wide 2:1 rectangle so the draggable area spans the full window width
 // (nodes seed clustered in the center; the buffer is 2x these for crispness).
 export const WX = 1120;
 export const WY = 560;
 
-// Scaled Pop mode: a FIXED people-per-dot so the dot count tracks real population size, capped at
+// Scaled Pop mode: a fixed people-per-dot so the dot count tracks real population size, capped at
 // SCALED_DOT_CAP (past the cap the people-per-dot coarsens). Civ Pop mode stays 1 dot = 1 engine point.
 const SCALED_PEOPLE_PER_DOT = 2000;
 const SCALED_DOT_CAP = 2000;
@@ -137,7 +137,7 @@ const NETC_CSS =
     "margin-right:0.3rem;vertical-align:middle;}" +
     ".emig-netc-cap{opacity:0.62;font-size:var(--dg-fs-95);text-align:center;margin-top:0.35rem;" +
     "max-width:66rem;line-height:1.35;}" +
-    // A labeled help pill sitting inline at the END of the filter-pills row (under its own "Info:"
+    // A labeled help pill sitting inline at the end of the filter-pills row (under its own "Info:"
     // heading, like the other pill groups); its explanation lives in a hover popover so it doesn't eat
     // vertical space. position:relative anchors that popover.
     ".emig-help{position:relative;display:inline-flex;align-items:center;z-index:30;}" +
@@ -182,14 +182,14 @@ export function buildColorMap(frames) {
   for (const fr of frames) {
     for (const nd of fr.network.nodes) if (!map.has(nd.id)) map.set(nd.id, map.size);
   }
-  // Also register ORIGIN civs that appear only as a captured city's residents (not as a node), so
+  // Also register origin civs that appear only as a captured city's residents (not as a node), so
   // their resident dots get a stable color index rather than falling back to the owner's.
   for (const fr of frames) registerOriginCivs(map, fr.pops || {});
   return map;
 }
 
 /**
- * Register every ORIGIN civ that appears in a frame's per-city resident composition.
+ * Register every origin civ that appears in a frame's per-city resident composition.
  * @param {Map<number,number>} map Color-index map (mutated).
  * @param {Record<number,*>} pops Frame pops (civId → {cities:[{origins:[{civ}]}]}).
  */
@@ -245,7 +245,7 @@ function makeCanvas() {
  */
 export function buildCenters(lastNet, colorMap) {
   const sim = seedSim({ nodes: lastNet.nodes, edges: [] }, WX, WY);
-  // In SAMPLE mode the civ ids are synthetic (1..N) and don't map to real players, so reading real
+  // In sample mode the civ ids are synthetic (1..N) and don't map to real players, so reading real
   // banner colors by id gives a meaningless mix (some real civs, some gray). Use the distinct
   // synthetic palette there. Live: each civ's real, readable banner color.
   let sample = false;
@@ -256,7 +256,7 @@ export function buildCenters(lastNet, colorMap) {
   }
   for (const nd of sim.nodes) {
     nd.color = civColorByIndex(colorMap.get(nd.id) || 0);
-    // The circle FILL uses the civ's real banner color (readable on the dark canvas), falling back
+    // The circle fill uses the civ's real banner color (readable on the dark canvas), falling back
     // to the synthetic palette. The dots keep `color` (the palette) for their own scheme.
     nd.fillColor = sample ? nd.color : civDisplayColor(nd.id, nd.color);
   }
@@ -289,9 +289,9 @@ export function startAnim(d, scene) {
     d.anim = cityAnimFrom(civ, d.fromCityIdx) || { fromX: civ.x, fromY: civ.y, p: 0 };
     return;
   }
-  // The origin civ's center. Use nullish-coalescing, NOT `||`: byId.get() returns 0 for the FIRST
-  // node, and `0 || d.ci` would collapse to the DESTINATION, so an immigrant from that civ would fly
-  // out of the civ it's moving TO and read as that civ's home-grown population. `??` keeps index 0.
+  // The origin civ's center. Use nullish-coalescing, not `||`: byId.get() returns 0 for the first
+  // node, and `0 || d.ci` would collapse to the destination, so an immigrant from that civ would fly
+  // out of the civ it's moving to and read as that civ's home-grown population. `??` keeps index 0.
   const oi = scene.byId.get(d.originId);
   const oc = scene.centers[oi != null ? oi : d.ci] || civ;
   d.anim = cityAnimFrom(oc, d.fromCivCityIdx) || { fromX: oc.x, fromY: oc.y, p: 0 };
@@ -331,7 +331,7 @@ function addScopeToggles(root, state, onChange) {
   root.appendChild(el("span", "emig-lens-sep"));
   root.appendChild(el("span", "emig-lens-lbl", loc("LOC_EMIG_NETC_SHOW", "Show:")));
   for (const [scope, locKey, fallback] of SHOW_TOGGLES) {
-    // "Show:" FILTERS which dots appear → the flat boxed filter-button look (shared with the dashboard
+    // "Show:" filters which dots appear → the flat boxed filter-button look (shared with the dashboard
     // control row's Unmet-civs filter), distinct from the rounded "Color by:" / "Units:" view pills.
     const c = el("div", "emig-filter-btn active", loc(locKey, fallback));
     c.addEventListener("click", () => {
@@ -377,7 +377,7 @@ function unitsLabel(mode) {
 }
 
 /**
- * A number mode's hover hint, explaining WHY the two measures differ (and why Civ Pop looks frozen while
+ * A number mode's hover hint, explaining why the two measures differ (and why Civ Pop looks frozen while
  * Scaled Pop drifts): Civ Pop is the game's exact, discrete city size; Scaled Pop is the historical
  * "people" headcount that grows through an age. Percentages read off the raw Civ-Pop base in either mode.
  * @param {number} mode A NumberMode. @returns {string} The hint.
@@ -550,7 +550,7 @@ function mountChrome(parts) {
     "Each dot ≈ {1_People} people. A circle is one civilization, holding its cities and towns; its " +
     "dots are home-grown residents (its own color), people who moved between its cities (a lighter " +
     "tint), and immigrants (their origin's color). Turn on \"Migrant flows\" to overlay the movement " +
-    "as arrows — red where people leave, green where they arrive, thicker for bigger flows. Recolour " +
+    "as arrows: red where people leave, green where they arrive, thicker for bigger flows. Recolour " +
     "with \"Color by\", filter with the Show / Migrant-flows toggles, click a swatch or a civ's outer " +
     "ring to isolate it (the arrows follow your filter), click a city to highlight just its migrant " +
     "flows (click empty space to clear), and press play or scrub the timeline to replay history.";
@@ -572,7 +572,7 @@ function mountChrome(parts) {
 
 const ANIM_STEP = 0.045; // per-frame progress for a new dot flying into its cluster
 const PLAY_INTERVAL = 42; // rAF ticks between timeline frames while playing (~0.7s)
-// The latest frame turn we last played the on-open intro fly-in for. Re-rendering the SAME turn (a
+// The latest frame turn we last played the on-open intro fly-in for. Re-rendering the same turn (a
 // visibility toggle, a tab switch) won't replay the arrival animation; only a genuinely newer turn does.
 let _lastIntroTurn = -1;
 
@@ -664,7 +664,7 @@ function setupPlayback(frames, holder, activate, events) {
     if (pb.idx + 1 >= frames.length) timeline.setPlaying(false);
     else timeline.goTo(pb.idx + 1);
   };
-  // Initial reveal: fly in the latest frame's arrivals ONLY when this is genuinely-new migration (a
+  // Initial reveal: fly in the latest frame's arrivals only when this is genuinely-new migration (a
   // newer latest turn than we last animated). A re-render of the same turn, a visibility toggle or a
   // tab switch, places them statically so the last movement doesn't replay every time.
   const latest = frames.length ? frames[frames.length - 1] : null;
@@ -711,7 +711,7 @@ function tagEventDots(dots, events) {
 /**
  * Build the force layout, the chronological dot set, and the scene for a set of frames. One
  * people-per-dot unit is derived from the final total (residents + arrivals); the unit reported to
- * the caption is recomputed from the dots ACTUALLY drawn, so it matches what's on screen.
+ * the caption is recomputed from the dots actually drawn, so it matches what's on screen.
  * @param {Frame[]} frames Usable timeline frames.
  * @param {Map<number,number>} colorMap Color-index map.
  * @param {*[]} events Event specs.
@@ -762,7 +762,7 @@ export function timelineNote() {
 }
 
 /**
- * The war/disaster event specs for this render, in the frame-index space of the FILTERED `frames`
+ * The war/disaster event specs for this render, in the frame-index space of the filtered `frames`
  * this view draws. Sample data ships pre-positioned specs; live data ships raw turn-stamped records, placed here.
  * @param {*} section The network section. @param {*[]} frames The filtered frames.
  * @returns {*[]} Event specs `{kind, label, from, to, civs}`.
@@ -799,7 +799,7 @@ function buildViz(container, frames, events, rebuildAll, controlsHost) {
     holder.dirty = true;
   };
   const activate = (/** @type {number} */ i, noAnim = false) => {
-    // Fly in the MOVERS that first appear at frame `i` (see startAnim); RESIDENTS materialize in
+    // Fly in the movers that first appear at frame `i` (see startAnim); residents materialize in
     // place. `noAnim` places dots statically when merely re-rendering the same turn.
     for (const d of dots) {
       if (!noAnim && d.appearFrame === i && d.scope !== "resident") startAnim(d, holder.scene);
@@ -832,8 +832,8 @@ function buildViz(container, frames, events, rebuildAll, controlsHost) {
  */
 export function renderNetworkViz(container, section, controlsHost, rebuildAll) {
   // Drop any prior render (and let its detached-canvas rAF loop stop) before building a fresh one.
-  // NB: use removeChild, NOT replaceChildren, Coherent GameFace doesn't implement replaceChildren, so
-  // on a re-render (e.g. the Units toggle) the old view would NOT clear and the chrome would double up.
+  // NB: use removeChild, not replaceChildren, Coherent GameFace doesn't implement replaceChildren, so
+  // on a re-render (e.g. the Units toggle) the old view would not clear and the chrome would double up.
   if (container) while (container.firstChild) container.removeChild(container.firstChild);
   const all = (section && section.frames) || [];
   // Keep any frame with civs to show: a frame can have residents (native population) before any

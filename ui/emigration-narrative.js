@@ -1,14 +1,14 @@
 // emigration-narrative.js
 //
-// The PROSE engine behind the Migration Chronicle (emigration-chronicle.js): it turns a bare event
+// The prose engine behind the Migration Chronicle (emigration-chronicle.js): it turns a bare event
 // record (a civ, a cause, a settlement, a count) into a short written line of history.
 //
 // Voice: grounded and concrete, human-scale and factual (plain sentences, real numbers, no flourish).
-// Lines are assembled from authored fragments chosen DETERMINISTICALLY from the event's own details, so
+// Lines are assembled from authored fragments chosen deterministically from the event's own details, so
 // a given event always reads the same, without any text being generated at runtime.
 //
-// House style (enforced by tests/no-em-dash): no em dashes that aren't grammatically needed, and none
-// of the usual machine-written tells ("tapestry", "testament", "vibrant", padded tricolons).
+// House style (enforced by tests/no-em-dash): plain sentences, no em dashes unless the grammar needs
+// one, no stock flourishes ("tapestry", "testament", "vibrant", padded tricolons).
 //
 // Pure: no engine reads. Callers pass already-resolved names/counts.
 
@@ -42,7 +42,7 @@ function pick(list, seed, salt) {
   return list[hash(seed + ":" + (salt || 0)) % list.length];
 }
 
-// Always-true fallbacks for where a community keeps to inside a city, naming NO specific feature so a
+// Always-true fallbacks for where a community keeps to inside a city, naming no specific feature so a
 // line is never wrong; the caller supplies a feature-based `where` phrase when the host city has one.
 const GENERIC_QUARTERS = [
   "on the edge of the city", "in the outer streets", "past the last houses",
@@ -178,7 +178,7 @@ function plainExodus(e) {
 }
 
 /**
- * An exodus line for a civ the player has NOT met: named, but framed as something heard of at a
+ * An exodus line for a civ the player has not met: named, but framed as something heard of at a
  * distance rather than seen, so the Chronicle can record a far war without pretending to first-hand
  * knowledge of it.
  * @param {{civ:MsgNode, city:MsgNode, people:MsgNode, seed:string}} e The event.
@@ -336,7 +336,7 @@ function dilemmaName(nc) {
 }
 
 /**
- * The prompt (title + body) for a refugee DILEMMA: a short, human-scale framing of a decision the
+ * The prompt (title + body) for a refugee dilemma: a short, human-scale framing of a decision the
  * player is being asked to make, in the same restrained register as the Chronicle.
  * @param {{kind:string, instigator:{adj:string, framed:boolean},
  *          origin:{adj:string, framed:boolean}, people:string, seed:string}} e The dilemma.

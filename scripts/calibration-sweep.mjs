@@ -11,7 +11,7 @@
 import { prosperity } from "/emigration/ui/emigration-prosperity.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
-// ── world: cities spanning happiness (H) × economy multiplier (E) ───────────────────────────
+// world: cities spanning happiness (H) × economy multiplier (E)
 const H = [-25, -15, -8, 0, 8, 20, 40]; // unhappy → ecstatic
 const E = [0.6, 1.0, 1.5]; // weak / average / strong economy
 const BASE = { food: 18, production: 16, gold: 11, science: 7, culture: 5 }; // gross, pop 10
@@ -67,7 +67,7 @@ function P(h, e, r = 0.05) {
   return prosperity(sig(h, e, r), ctx);
 }
 
-// ── metrics for the applied calibration ─────────────────────────────────────────────────────
+// metrics for the applied calibration
 function metrics() {
   let monoH = 0;
   let monoE = 0;
@@ -113,7 +113,7 @@ function score(m) {
   return 0.40 * s1 + 0.25 * s2 + 0.20 * s3 + 0.15 * s4;
 }
 
-// ── sweep ────────────────────────────────────────────────────────────────────────────────────
+// sweep
 const GRID = [];
 for (const happyFloor of [2, 3, 4, 5, 6, 7, 8]) {
   for (const happyAmp of [0.2, 0.3, 0.4, 0.5, 0.6, 0.8]) {

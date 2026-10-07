@@ -29,7 +29,7 @@ function testLegacyStateLoadsAndSanitizes() {
 }
 
 function testRealPayloadShape() {
-  // The actual DiplomacyDeclareWar payload (probe-confirmed): actingPlayer declared
+  // The actual DiplomacyDeclareWar payload: actingPlayer declared
   // on reactingPlayer.
   recordWarDeclared({ actingPlayer: 10, reactingPlayer: 11, sessionId: 0 });
   assert.ok(warAggressors(11).has(10));
@@ -62,8 +62,8 @@ function testPersistWritesSchemaEnvelope() {
   assert.ok(Array.isArray(persisted.data.warEvents), "v3 adds the turn-stamped war log");
 }
 
-// ── Turn-stamped war log (Feature D: network-timeline event pins) ──────────────
-// The aggressor map answers "who is at war"; the log answers "WHEN did it start", which is what
+// Turn-stamped war log (Feature D: network-timeline event pins)
+// The aggressor map answers "who is at war"; the log answers "when did it start", which is what
 // positions a war on the timeline. It's additive: the map's hot path is untouched.
 
 /** The war log entry for a pairing, or undefined. */
@@ -91,7 +91,7 @@ function testPeaceStampsTheEndTurn() {
 function testPeaceInEitherDirectionClosesTheWar() {
   globalThis.Game = { turn: 60, getTurnDate: () => "900 BC" };
   recordWarDeclared({ aggressor: 30, target: 31 });
-  // The peace payload's acting/reacting roles are the REVERSE of the declaration — peace is mutual,
+  // The peace payload's acting/reacting roles are the reverse of the declaration; peace is mutual,
   // so it must still close the war rather than leave it open forever.
   globalThis.Game = { turn: 65, getTurnDate: () => "850 BC" };
   recordPeace({ aggressor: 31, target: 30 });
@@ -133,7 +133,7 @@ function testWarEventsReturnsACopy() {
 }
 
 function testLegacyBlobWithoutWarEventsLoadsEmpty() {
-  // A v2 save has no warEvents key at all — it must normalize to an empty log, not throw.
+  // A v2 save has no warEvents key at all; it must normalize to an empty log, not throw.
   const parsed = { v: 2, data: { wars: { "2": [1] } } };
   assert.ok(!("warEvents" in parsed.data));
   // (The load path is exercised by the module-level legacy prime at the top of this file, which

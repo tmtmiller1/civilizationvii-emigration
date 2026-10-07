@@ -91,7 +91,7 @@ export class EmigrationDockDecorator {
   afterAttach() {
     // Optional dashboard dock button: when disabled in the mod's options, the dashboard is reached via
     // the Demographics screen's Migration tab (or the console) instead. Read at attach time. The separate
-    // self-test button rides the SAME dock when selftestEnabled, independent of the dashboard button.
+    // self-test button rides the same dock when selftestEnabled, independent of the dashboard button.
     const showDock = getShowDockButton();
     const showSelfTest = selfTestEnabled();
     if (!showDock && !showSelfTest) {
@@ -136,7 +136,7 @@ export class EmigrationDockDecorator {
 
 /**
  * Register the dock decorator with the engine. Called once from boot(). Safe to call when
- * the Controls API is unavailable (older shells): it simply does nothing.
+ * the Controls API is unavailable (older shells): it does nothing.
  */
 export function installEmigrationDock() {
   try {

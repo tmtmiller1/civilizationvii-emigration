@@ -6,8 +6,8 @@
 //   K1 seed a local city with a foreign community BETWEEN the relaxed and the plain share bar, with a stock
 //      under the plain size bar; one recognition pass must form an enclave (pacing), the host's counter
 //      must read 1 and its relaxation 0.
-//   K2 seed a second local city the same way; a pass must NOT form one (plain bars are back).
-//   K3 push the counter to the cap and seed a third city well above the plain bars; a pass must NOT form
+//   K2 seed a second local city the same way; a pass must not form one (plain bars are back).
+//   K3 push the counter to the cap and seed a third city well above the plain bars; a pass must not form
 //      one; with the cap set to 0 it must.
 //   K4 the readout snapshot's `enclave` field for the seeded cities, the dashboard's Diversity enclave
 //      cells, then the readout panel on screen: SHOT readout-enclave.

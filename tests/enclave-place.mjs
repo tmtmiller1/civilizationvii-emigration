@@ -56,7 +56,7 @@ CONFIG.enclaveTileSkin = 0; // the native skin first; the Village skin has its o
 
 const city = { owner: 0, id: { owner: 0, id: 9, type: 1 }, location: { x: 5, y: 5 }, getPurchasedPlots: () => [10, 11, 12, 13, 14] };
 
-// ── naming mirrors the generator ──
+// naming mirrors the generator
 assert.equal(enclaveTypeFor("CIVILIZATION_ROME", "a"), "IMPROVEMENT_EMIG_ENCLAVE_ROME_A");
 assert.equal(enclaveTypeFor("CIVILIZATION_ROME", "b"), "IMPROVEMENT_EMIG_ENCLAVE_ROME_B");
 assert.equal(enclaveTypeFor("CIVILIZATION_ROME", "ignore"), null);
@@ -64,13 +64,13 @@ assert.equal(enclaveTypeFor(null, "a"), null);
 assert.equal(enclaveIndex("IMPROVEMENT_EMIG_ENCLAVE_ROME_A"), 300);
 assert.equal(enclaveIndex("IMPROVEMENT_EMIG_ENCLAVE_NOPE_A"), null, "unloaded data reads as null");
 
-// ── empty plots: not the center, not a district plot, not a mountain, nearest first ──
+// empty plots: not the center, not a district plot, not a mountain, nearest first
 {
   const empty = emptyPlotsOf(city);
   assert.deepEqual(empty.map((e) => e.plot), [11, 12], "6,5 (flat, d1) then 7,5 (hill, d2); 5,7 is mountain, 8,5 has a farm");
 }
 
-// ── placement: tuner argument shape, nearest empty plot ──
+// placement: tuner argument shape, nearest empty plot
 {
   CONFIG.quarterPlaceImprovement = true;
   requests.length = 0;
@@ -81,7 +81,7 @@ assert.equal(enclaveIndex("IMPROVEMENT_EMIG_ENCLAVE_NOPE_A"), null, "unloaded da
   assert.deepEqual(requests[1], [0, "CREATE_ELEMENT", { Kind: "CONSTRUCTIBLE", Type: 300, Location: { x: 6, y: 5 }, Parent: city.id, Owner: 0 }]);
 }
 
-// ── off switch, ignore stance, unloaded data → nothing placed ──
+// off switch, ignore stance, unloaded data → nothing placed
 {
   requests.length = 0;
   CONFIG.quarterPlaceImprovement = false;
@@ -92,7 +92,7 @@ assert.equal(enclaveIndex("IMPROVEMENT_EMIG_ENCLAVE_NOPE_A"), null, "unloaded da
   assert.equal(requests.length, 0);
 }
 
-// ── no empty plot: the outlying farmstead is replaced (destroy then create on the same plot) ──
+// no empty plot: the outlying farmstead is replaced (destroy then create on the same plot)
 {
   requests.length = 0;
   const cramped = { ...city, getPurchasedPlots: () => [10, 14] };
@@ -106,7 +106,7 @@ assert.equal(enclaveIndex("IMPROVEMENT_EMIG_ENCLAVE_NOPE_A"), null, "unloaded da
   assert.deepEqual(requests[1][2].Location, { x: 8, y: 5 });
 }
 
-// ── standing check: true only while that type is on that plot ──
+// standing check: true only while that type is on that plot
 {
   assert.equal(enclaveStanding({ placed: { type: "IMPROVEMENT_EMIG_ENCLAVE_ROME_A", plot: 11 } }), false, "not placed on the map yet");
   CONSTRUCTIBLES["6,5"] = ["c-enc"];
@@ -118,7 +118,7 @@ assert.equal(enclaveIndex("IMPROVEMENT_EMIG_ENCLAVE_NOPE_A"), null, "unloaded da
   assert.equal(enclaveCarriesBenefit({ placed: { type: "IMPROVEMENT_EMIG_ENCLAVE_ROME_A", plot: 11 } }), true, "a standing native tile pays the benefit itself");
 }
 
-// ── the Village skin: the base Village is placed, the record keeps the enclave identity ──
+// the Village skin: the base Village is placed, the record keeps the enclave identity
 {
   CONFIG.enclaveTileSkin = 2;
   assert.deepEqual(placedTypesFor("IMPROVEMENT_EMIG_ENCLAVE_ROME_A", "CIVILIZATION_ROME"), ["IMPROVEMENT_VILLAGE"]);
@@ -138,7 +138,7 @@ assert.equal(enclaveIndex("IMPROVEMENT_EMIG_ENCLAVE_NOPE_A"), null, "unloaded da
   CONFIG.enclaveTileSkin = 0;
 }
 
-// ── the THEMED skin: unique improvement first, then the stance-yield fallbacks, then the Village ──
+// the themed skin: unique improvement first, then the stance-yield fallbacks, then the Village
 {
   // Pure tables.
   assert.equal(UNIQUE_IMPROVEMENTS.CIVILIZATION_GORYEO, "IMPROVEMENT_GAMA");
@@ -160,7 +160,7 @@ assert.equal(enclaveIndex("IMPROVEMENT_EMIG_ENCLAVE_NOPE_A"), null, "unloaded da
   let r = placeEnclave(city, "CIVILIZATION_GORYEO", "a");
   assert.deepEqual(r, { type: "IMPROVEMENT_GAMA", plot: 11, enclave: "IMPROVEMENT_EMIG_ENCLAVE_GORYEO_A" });
   assert.equal(requests[1][2].Type, 40);
-  // Rome: the Hidden Fortress needs a HILL; the empty plots are 6,5 (flat) and 7,5 (hill) → 7,5.
+  // Rome: the Hidden Fortress needs a hill; the empty plots are 6,5 (flat) and 7,5 (hill) → 7,5.
   requests.length = 0;
   r = placeEnclave(city, "CIVILIZATION_ROME", "a");
   assert.deepEqual(r, { type: "IMPROVEMENT_HIDDEN_FORTRESS", plot: 12, enclave: "IMPROVEMENT_EMIG_ENCLAVE_ROME_A" }, "terrain-bound skins take a matching plot");
@@ -188,7 +188,7 @@ assert.equal(enclaveIndex("IMPROVEMENT_EMIG_ENCLAVE_NOPE_A"), null, "unloaded da
 
 console.log("enclave-place harness passed");
 
-// ── takeover compensation: base + the replaced improvement's yields + the enclave's own ──
+// takeover compensation: base + the replaced improvement's yields + the enclave's own
 {
   const { takeoverCompensation, nativeYieldsOf, plotYieldsAt } = await import("/emigration/ui/emigration-enclave-place.js");
   // A farm gave the plot 3 food, 1 production; the Gama tile reads 2 food, 1 production, 3 culture.

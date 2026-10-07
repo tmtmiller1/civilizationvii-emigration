@@ -1,7 +1,7 @@
 // emigration-origins-diag.js
 //
 // A console-only diagnostic: `emigration.origins("Carthage")` dumps, for each matching settlement,
-// the RAW recorded ethnic ledger (compositionForCity's per-origin points/shares) alongside the
+// the raw recorded ethnic ledger (compositionForCity's per-origin points/shares) alongside the
 // all-game inbound migration corridors that fed it (migrationFlows, with per-cause breakdowns), plus
 // the integration context, so a surprising "Population origins" figure can be traced to its source.
 // Read-only and self-guarding; never throws into the console object that wires it.
@@ -39,7 +39,7 @@ function causeSplit(byCause) {
 
 /**
  * The all-game inbound corridors feeding one settlement (arrivals recorded into `name`), each with its
- * origin civ, people moved, and per-cause split — the provenance of the settlement's foreign origins.
+ * origin civ, people moved, and per-cause split, the provenance of the settlement's foreign origins.
  * @param {*[]} flows migrationFlows() edges.
  * @param {string} name The settlement name.
  * @returns {{from:string, civ:string, people:number, causes:{cause:string, people:number}[]}[]} Corridors.
@@ -88,7 +88,7 @@ function cityReport(entry, flows) {
 
 /**
  * Dump the recorded ethnic ledger + inbound provenance for settlements whose name contains `filter`
- * (case-insensitive; omit for every tracked settlement). Logs a readable summary and RETURNS the
+ * (case-insensitive; omit for every tracked settlement). Logs a readable summary and returns the
  * structured reports (the reliable channel when debug logging is muted). Console API only.
  * @param {string} [filter] Case-insensitive settlement-name substring.
  * @returns {*[]} One report per matching settlement.

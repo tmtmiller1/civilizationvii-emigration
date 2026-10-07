@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
-// Guardrail: simulation eligibility must NOT depend on local-player contact. With requireMet=false
-// (global scope), an alive but UNMET foreign civ's cities must appear in collectCitySignals(); dead
+// Guardrail: simulation eligibility must not depend on local-player contact. With requireMet=false
+// (global scope), an alive but unmet foreign civ's cities must appear in collectCitySignals(); dead
 // civs stay excluded and the city-state policy is still obeyed. Fails if met-gating is reintroduced
 // at the simulation-input layer.
 
@@ -20,7 +20,7 @@ function makeCity(owner, localId) {
     Yields: { getYield: () => 1 }, Happiness: { netHappinessPerTurn: 1, hasUnrest: false }
   };
 }
-// The local player (1) has met itself and civ 2; civ 3 is UNMET.
+// The local player (1) has met itself and civ 2; civ 3 is unmet.
 const metByLocal = new Set([1, 2]);
 function major(pid, alive) {
   return {
@@ -48,7 +48,7 @@ function owners() {
   return new Set(collectCitySignals().map((s) => s.owner));
 }
 
-// Global scope: unmet alive civ 3 is INCLUDED; dead civ 4 excluded; city-state 5 excluded.
+// Global scope: unmet alive civ 3 is included; dead civ 4 excluded; city-state 5 excluded.
 CONFIG.requireMet = false;
 CONFIG.includeCityStates = false;
 let o = owners();

@@ -56,7 +56,7 @@ function testQueuesWhenApiNotReadyThenDrains() {
   assert.equal(registerMigrationPage(), false); // API absent → queued
   const api = globalThis.DemographicsMetricsAPI;
   assert.equal(api.pending.length, 1);
-  // Demographics loads later WITH the hook and drains the queue.
+  // Demographics loads later with the hook and drains the queue.
   const panels = [];
   api.registerPanel = (/** @type {*} */ s) => panels.push(s);
   for (const job of api.pending.splice(0)) job(api);

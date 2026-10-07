@@ -1,6 +1,6 @@
 // emigration-civ-tuning.js
 //
-// The per-leader / per-civilization VARIANCE layer: a small registry of BOUNDED nudges (magnet
+// The per-leader / per-civilization variance layer: a small registry of bounded nudges (magnet
 // damping, integration speed, war-time retention, a flat source bias) that let leaders and civs
 // diverge from the global model without causing a runaway. Keys are the GameInfo string types
 // (LeaderType / CivilizationType); leader entries override civ entries on conflict. Gated by
@@ -46,35 +46,35 @@ export const BY_LEADER = {
   LEADER_JOSE_RIZAL: { happinessPull: 0.9 }, // longer golden ages → longer magnet windows
   LEADER_RIZAL: { happinessPull: 0.9 },
 
-  // --- Brush & Blade expansion leaders ---
-  // Conquerors profit from taking cities → pay MORE gold to digest the spoils (Xerxes class).
+  // Brush & Blade expansion leaders
+  // Conquerors profit from taking cities → pay more gold to digest the spoils (Xerxes class).
   LEADER_ALEXANDER: { assimilationEase: 1.2 }, // wonder-conquest; renames towns he converts
   LEADER_GENGHIS_KHAN: { assimilationEase: 1.2 }, // archetypal conqueror; sacks, not holds
   LEADER_EDWARD_TEACH: { assimilationEase: 1.25 }, // naval war-profiteer: plunder + unit capture
-  // Bolivar INTEGRATES: free building + purchase-through-unrest in conquests → cheaper to absorb.
+  // Bolivar integrates: free building + purchase-through-unrest in conquests → cheaper to absorb.
   LEADER_BOLIVAR: { assimilationEase: 0.85 },
   // Napoleon's base persona carries a FOOD_BANE; cushion the slower growth (Confucius-shaped).
   LEADER_NAPOLEON: { sourceBias: 0.5 },
   LEADER_HIMIKO: { happinessPull: 0.85 }, // happiness-building + celebration yields = magnet
-  // Toyotomi takes double damage defending → a conqueror whose cities fall FASTER under siege.
+  // Toyotomi takes double damage defending → a conqueror whose cities fall faster under siege.
   LEADER_TOYOTOMI_HIDEYOSHI: { assimilationEase: 1.2, warRetention: 0.85 }, // <1 = sheds pop fast
   LEADER_SAYYIDA_AL_HURRA: { warRetention: 1.2 }, // naval-on-district yields reward garrisons
 
-  // --- Further leaders ---
-  // An alternate persona is its OWN leader here: the engine reports the _ALT type, and the two
+  // Further leaders
+  // An alternate persona is its own leader here: the engine reports the _ALT type, and the two
   // personas play differently enough that sharing a profile would be wrong (Xerxes trades in one
   // and conquers in the other). Each is judged on its own ability text.
   //
-  // "Constitutional Convention": +2 Happiness per Age in Cities for EVERY slotted Policy, and a free
+  // "Constitutional Convention": +2 Happiness per Age in Cities for every slotted Policy, and a free
   // Migrant on every Celebration. The happiness stacks with policy count, so this is the strongest
-  // happiness magnet in the roster — damped hardest, like Franklin.
+  // happiness magnet in the roster, damped hardest, like Franklin.
   LEADER_WASHINGTON: { happinessPull: 0.75 },
-  // "Miko of Amaterasu": +2 Happiness per Age on Happiness AND Diplomacy buildings (doubled when a
-  // building is both) plus +50% production toward them — a deeper happiness engine than base Himiko.
+  // "Miko of Amaterasu": +2 Happiness per Age on Happiness and Diplomacy buildings (doubled when a
+  // building is both) plus +50% production toward them, a deeper happiness engine than base Himiko.
   LEADER_HIMIKO_ALT: { happinessPull: 0.8 },
   // "Devaraja": declaring a Formal War grants a Celebration (a war-fed happiness magnet, as base
-  // Ashoka's celebration pulse), and +10% Production in settlements he did NOT found means he puts
-  // captured people to work rather than wasting them — cheaper to absorb, like Bolivar.
+  // Ashoka's celebration pulse), and +10% Production in settlements he did not found means he puts
+  // captured people to work rather than wasting them, so cheaper to absorb, like Bolivar.
   LEADER_ASHOKA_ALT: { happinessPull: 0.9, assimilationEase: 0.85 },
   // "Royal Monopoly": -2 Combat Strength to Land Combat Units per Age. Her cities are defended by
   // weaker land units, so they shed population faster under siege (a lighter Toyotomi).
@@ -85,7 +85,7 @@ export const BY_LEADER = {
   // "Hohenfriedberger Marsch": a free Infantry Unit on every Culture Building and Civic Mastery is a
   // standing garrison stream, so cities hold better under siege.
   LEADER_FRIEDRICH_ALT: { warRetention: 1.15 }
-  // NEUTRAL (no migration outlier): ADA_LOVELACE, GILGAMESH, LAKSHMIBAI, FRIEDRICH, YI_SUN_SIN,
+  // Neutral (no migration outlier): ADA_LOVELACE, GILGAMESH, LAKSHMIBAI, FRIEDRICH, YI_SUN_SIN,
   // XERXES_ALT (a trade leader, unlike the war-profiteering base Xerxes), TRUNG_TRAC (no trait data).
 };
 
@@ -100,13 +100,13 @@ export const BY_CIV = {
   CIVILIZATION_HAN: { sourceBias: 0.5 }, // +pop growth, per-capita diluted
   CIVILIZATION_QING: { sourceBias: 0.5 },
 
-  // --- Brush & Blade expansion civilizations ---
-  // Conquest economies: yields/rewards from CAPTURING settlements → pay more gold for the spoils.
+  // Brush & Blade expansion civilizations
+  // Conquest economies: yields/rewards from capturing settlements → pay more gold for the spoils.
   CIVILIZATION_ASSYRIA: { assimilationEase: 1.25 }, // tech/codex + yields in captured settlements
   CIVILIZATION_BULGARIA: { assimilationEase: 1.2 }, // Krum's Dynasty pillage/production spoils
   // war-funded Celebrations (magnet) + conquest + Kulliye specialists
   CIVILIZATION_OTTOMANS: { happinessPull: 0.85, assimilationEase: 1.25, overcrowdDiscount: 0.5 },
-  // settlers only by capture (conquest) + inland −Happiness makes cities a net SOURCE
+  // settlers only by capture (conquest) + inland −Happiness makes cities a net source
   CIVILIZATION_PIRATE_REPUBLIC: { assimilationEase: 1.25, sourceBias: -0.5 },
   // Tall / few-settlement shapes: shield dense play from the density penalty.
   CIVILIZATION_CARTHAGE: { overcrowdDiscount: 0.5, integrationSpeed: 1.15 }, // 1-City cap + colonists
@@ -123,18 +123,18 @@ export const BY_CIV = {
   // High unconditional growth: per-capita diluted, so cushion it so the civ doesn't bleed pop.
   CIVILIZATION_SHAWNEE: { sourceBias: 0.75 }, // navigable-river Food + Bread Dance town Food
 
-  // --- Further civilizations ---
+  // Further civilizations
   // "City at the Center of the World": an extra growth event on every Food/Culture building and
   // Wonder, against a -2/-4/-6 Settlement Limit. Forced tall with runaway growth: shield the density
   // it cannot spread out of, and cushion the per-capita dilution (Carthage/Han shapes combined).
   CIVILIZATION_BABYLON: { overcrowdDiscount: 0.5, sourceBias: 0.5 },
-  // "Munchi": +2 Specialist Limit in the CAPITAL while non-capital cities lose worker cap — a
-  // capital-concentrated specialist civ, so its dense capital is shielded (Qajar shape).
+  // "Munchi": +2 Specialist Limit in the capital while non-capital cities lose worker cap, so a
+  // capital-concentrated specialist civ whose dense capital is shielded (Qajar shape).
   CIVILIZATION_JOSEON: { overcrowdDiscount: 0.6 },
   // "Favor of Cernunnos": Fortification Buildings purchasable with any Town Focus, and its unique
-  // quarter fortifies its own districts (+25 HP, +100 HP per building) — bought walls, Norman-lite.
+  // quarter fortifies its own districts (+25 HP, +100 HP per building): bought walls, Norman-lite.
   CIVILIZATION_GAUL: { warRetention: 1.2 }
-  // NEUTRAL (no migration outlier): ICELAND, TONGA, GREAT_BRITAIN, ENGLAND, GORYEO - no defensive,
+  // Neutral (no migration outlier): ICELAND, TONGA, GREAT_BRITAIN, ENGLAND, GORYEO: no defensive,
   // growth or happiness mechanic, and their yields already reach the model.
 };
 
@@ -180,10 +180,10 @@ const MEMENTO_BOUNDS = Object.freeze({
 
 /**
  * Clamp a numeric value to [lo, hi].
- * @param {number} v Value.
- * @param {number} lo Lower bound.
- * @param {number} hi Upper bound.
- * @returns {number} Clamped value.
+ * @param {number} v
+ * @param {number} lo
+ * @param {number} hi
+ * @returns {number}
  */
 function clamp(v, lo, hi) {
   return v < lo ? lo : v > hi ? hi : v;
@@ -192,7 +192,7 @@ function clamp(v, lo, hi) {
 /**
  * The normalized leader type string for a player (base persona, `_ALT` stripped),
  * or null if unreadable.
- * @param {number} pid Player id.
+ * @param {number} pid
  * @returns {string|null} e.g. "LEADER_ASHOKA".
  */
 function leaderName(pid) {
@@ -207,7 +207,7 @@ function leaderName(pid) {
 
 /**
  * The civilization type string for a player, or null if unreadable.
- * @param {number} pid Player id.
+ * @param {number} pid
  * @returns {string|null} e.g. "CIVILIZATION_NORMAN".
  */
 function civName(pid) {
@@ -220,7 +220,7 @@ function civName(pid) {
   }
 }
 
-// The memento tuning fields that COMPOSE MULTIPLICATIVELY (a stack multiplies them); sourceBias adds
+// The memento tuning fields that compose multiplicatively (a stack multiplies them); sourceBias adds
 // and overcrowdDiscount averages, handled separately. Shared by the accumulate/clamp/merge helpers.
 const MULT_FIELDS = ["happinessPull", "integrationSpeed", "assimilationEase", "warRetention"];
 
@@ -241,7 +241,7 @@ function mementoIdOf(entry) {
 /**
  * Pull equipped memento type ids for a player from metaprogression runtime APIs.
  * Returns an empty list when unavailable/offline.
- * @param {number} pid Player id.
+ * @param {number} pid
  * @returns {string[]} Equipped memento type ids (MEMENTO_*), de-duplicated.
  */
 function equippedMementos(pid) {
@@ -265,8 +265,8 @@ function equippedMementos(pid) {
  * Merge all equipped memento tuning entries into one bounded profile.
  * Multipliers compose multiplicatively and sourceBias adds; the combined profile
  * is clamped to conservative bounds to prevent stack-driven runaway.
- * @param {number} pid Player id.
- * @returns {Partial<CivTuning>|null} Merged memento profile, or null when no tuned mementos are equipped.
+ * @param {number} pid
+ * @returns {Partial<CivTuning>|null} Null when no tuned mementos are equipped.
  */
 function mementoProfile(pid) {
   const acc = accumulateMementos(equippedMementos(pid));
@@ -278,7 +278,7 @@ function mementoProfile(pid) {
  * multiply, sourceBias adds, overcrowdDiscount averages. A field stays `undefined`/null until some
  * memento sets it (so it's omitted from the output). Null when no recognized memento is equipped.
  * @param {string[]} ids Equipped memento ids.
- * @returns {Record<string, number>|null} The raw accumulator, or null.
+ * @returns {Record<string, number>|null}
  */
 function accumulateMementos(ids) {
   /** @type {Record<string, number>} */
@@ -313,7 +313,7 @@ function accumulateFields(a, t) {
 /**
  * Clamp a raw memento accumulator to its conservative bounds, keeping only the fields that were set.
  * @param {Record<string, number>} a The raw accumulator.
- * @returns {Partial<CivTuning>} The bounded profile.
+ * @returns {Partial<CivTuning>}
  */
 function clampMementoProfile(a) {
   /** @type {Record<string, number>} */
@@ -330,7 +330,7 @@ function clampMementoProfile(a) {
  * 0 = every civ neutral): each field lerps toward its own neutral, so relative ordering is preserved
  * while the spread shrinks. The overcrowd discount lerps toward CONFIG.overcrowdDiscount (null stays null).
  * @param {CivTuning} t The merged profile.
- * @returns {CivTuning} The compressed profile.
+ * @returns {CivTuning}
  */
 function flatten(t) {
   const raw = CONFIG.civTuningStrength;
@@ -351,8 +351,8 @@ function flatten(t) {
  * The tuning profile for a player: the neutral profile merged with its civ entry then its leader
  * entry (leader wins), then mementos, then compressed toward neutral by CONFIG.civTuningStrength.
  * Returns the shared neutral profile when the table is disabled or nothing matches.
- * @param {number} pid Player id.
- * @returns {CivTuning} The resolved tuning.
+ * @param {number} pid
+ * @returns {CivTuning}
  */
 export function civTuning(pid) {
   if (!CONFIG.civTuningEnabled || typeof pid !== "number") return NEUTRAL;
@@ -367,15 +367,15 @@ export function civTuning(pid) {
 
 /**
  * A table entry for a (possibly null/empty) key, or null.
- * @param {Record<string, *>} map The lookup table. @param {*} key The key (falsy → null).
- * @returns {*} The entry, or null.
+ * @param {Record<string, *>} map @param {*} key Falsy → null.
+ * @returns {*}
  */
 function lookupEntry(map, key) {
   return (key && map[key]) || null;
 }
 
 /**
- * Fold a clamped memento profile into a player's merged tuning IN PLACE: multiplicative fields
+ * Fold a clamped memento profile into a player's merged tuning in place: multiplicative fields
  * multiply, sourceBias adds, overcrowdDiscount averages (or seeds a null entry).
  * @param {CivTuning} merged The civ+leader merged tuning (mutated).
  * @param {Partial<CivTuning>} mem The clamped memento profile.

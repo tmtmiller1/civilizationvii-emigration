@@ -1,6 +1,6 @@
 // emigration-network-timeline.js
 //
-// The migration-view TIMELINE control: an age-split band (one labeled segment per age), a
+// The migration-view timeline control: an age-split band (one labeled segment per age), a
 // full-width scrubber, a red vertical line at every age boundary, ~8 turn ticks (turns reset each
 // age, mirroring the in-game per-age turn counter), and a controls row (play/pause, current-time
 // label, playback speed). Styling lives in the orchestrator's injected stylesheet; this module just
@@ -11,7 +11,7 @@ import { locYear } from "/emigration/ui/emigration-loc.js";
 
 // The timeline's stylesheet, concatenated into the network view's injected sheet (emigration-network-viz
 // injectStyle). Co-located with the component it styles. GameFace-safe: hex/rgba, flexbox, explicit
-// properties, and CSS-DRAWN play/pause + playhead (no glyphs — ⏸ renders as invisible tofu in-game).
+// properties, and CSS-drawn play/pause + playhead (no glyphs: ⏸ renders as invisible tofu in-game).
 export const TIMELINE_CSS =
   ".emig-netc-time{display:flex;flex-direction:column;gap:0.4rem;margin:0.5rem 0;width:90%;}" +
   ".emig-netc-tl{position:relative;background:rgba(8,10,16,0.5);border-radius:0.4rem;" +
@@ -29,7 +29,7 @@ export const TIMELINE_CSS =
   "box-shadow:0 0 0.3rem rgba(243,195,76,0.45);}" +
   ".emig-netc-rail input{position:absolute;left:0;top:0;width:100%;height:100%;margin:0;padding:0;" +
   "background:transparent;-webkit-appearance:none;appearance:none;cursor:pointer;z-index:3;" +
-  // Hide any text the native range renders as a fallback (GameFace draws its value/min — a stray "0" —
+  // Hide any text the native range renders as a fallback (GameFace draws its value/min, a stray "0",
   // on the line once the slider track/thumb are transparent). Kept fully interactive.
   "color:transparent;font-size:0;text-indent:-999rem;overflow:hidden;}" +
   ".emig-netc-rail input::-webkit-slider-runnable-track{height:100%;background:transparent;border:none;}" +
@@ -51,8 +51,8 @@ export const TIMELINE_CSS =
   "color:#cbb98f;white-space:nowrap;}" +
   ".emig-netc-tick::before{content:'';position:absolute;left:50%;top:-0.42rem;width:0.07rem;" +
   "height:0.34rem;background:rgba(201,162,76,0.7);transform:translateX(-50%);}" +
-  // EVENT PINS: the wars/disasters that drove the migration, pinned at the frame they landed on. Each
-  // pin re-enables pointer events (the marks layer is pointer-events:none) and takes its FILL inline
+  // Event pins: the wars/disasters that drove the migration, pinned at the frame they landed on. Each
+  // pin re-enables pointer events (the marks layer is pointer-events:none) and takes its fill inline
   // from the shared causeAccent() taxonomy; never hard-code an event color here.
   ".emig-netc-pin{position:absolute;top:0.1rem;width:0.62rem;height:0.62rem;" +
   "transform:translateX(-50%);border-radius:50%;cursor:pointer;pointer-events:auto;" +
@@ -66,7 +66,7 @@ export const TIMELINE_CSS =
   ".emig-netc-pin:hover .emig-netc-pin-tip{display:block;}" +
   ".emig-netc-ctrl{display:flex;align-items:center;gap:0.5rem;}" +
   ".emig-netc-spacer{flex:1 1 auto;}" +
-  // CSS-DRAWN play/pause: a triangle by default, two bars when .playing.
+  // CSS-drawn play/pause: a triangle by default, two bars when .playing.
   ".emig-netc-play{position:relative;flex:0 0 auto;width:1.9rem;height:1.9rem;border-radius:50%;" +
   "cursor:pointer;user-select:none;background:linear-gradient(180deg,#f7cf5e,#c99a2e);" +
   "border:0.0833rem solid #7a5f1e;box-shadow:0 0.08rem 0.25rem rgba(0,0,0,0.5);}" +
@@ -293,9 +293,9 @@ export function clusterPinsByColumn(events, last) {
 }
 
 /**
- * The pin's class, color + tooltip text for one frame column. Color comes from the SHARED cause
+ * The pin's class, color + tooltip text for one frame column. Color comes from the shared cause
  * taxonomy (`causeAccent`), so a war pin matches a war notification; a column holding more than one
- * KIND takes the taxonomy's `other` fallback.
+ * kind takes the taxonomy's `other` fallback.
  * @param {*[]} at The column's events.
  * @returns {{cls:string, color:string, text:string}} Pin class suffix, fill color + tooltip text.
  */
@@ -315,7 +315,7 @@ function pinFor(at) {
  * all, so a busy turn can't stack unreadable pins on one pixel.
  * @param {*[]} frames Frames (in time order).
  * @param {*[]} events Event specs `{kind, label, from, to}` (frame indices).
- * @param {(i:number)=>void} [goTo] Scrub handler — clicking a pin jumps the timeline to its frame.
+ * @param {(i:number)=>void} [goTo] Scrub handler; clicking a pin jumps the timeline to its frame.
  * @returns {HTMLElement} The pin layer (empty when there are no placeable events).
  */
 export function makeEventPins(frames, events, goTo) {
@@ -352,7 +352,7 @@ function makeTimelineArea(frames, o) {
   const rail = el("div", "emig-netc-rail");
   rail.appendChild(el("div", "emig-netc-track")); // the unplayed rail
   rail.appendChild(o.fill); // the played portion (gold), width set by goTo
-  rail.appendChild(o.input); // transparent range on top — handles click/drag/keys
+  rail.appendChild(o.input); // transparent range on top, handles click/drag/keys
   rail.appendChild(o.head); // the bright playhead line + knob, left set by goTo
   tl.appendChild(rail);
   const marks = makeMarks(frames);
@@ -392,7 +392,7 @@ function wireAndSeed(o) {
     o.setPlaying(false);
     o.goTo(parseInt(o.input.value, 10));
   });
-  // Seed the visuals at the end (default frame) WITHOUT calling onSet (the driver owns the render).
+  // Seed the visuals at the end (default frame) without calling onSet (the driver owns the render).
   o.input.value = String(o.last);
   o.fill.style.width = "100%";
   o.head.style.left = "100%";
@@ -407,14 +407,14 @@ function wireAndSeed(o) {
  * @param {*} pb Playback state {playing, ticks, idx}.
  * @param {(i:number)=>void} onSet Apply a frame index.
  * @param {*[]} [events] War/disaster specs `{kind, label, from, to}` to pin onto the scrubber
- *   (default none — the signature stays backward-compatible with callers that pin nothing).
+ *   (default none; the signature stays backward-compatible with callers that pin nothing).
  * @returns {{root:HTMLElement, goTo:(i:number)=>void, setPlaying:(p:boolean)=>void}|null} Handle.
  */
 export function makeTimeline(frames, pb, onSet, events) {
   if (frames.length < 2) return null;
   const last = frames.length - 1;
   const root = el("div", "emig-netc-time");
-  // Play/pause is CSS-DRAWN (a triangle vs two bars via a `.playing` class), NOT a glyph — the ⏸
+  // Play/pause is CSS-drawn (a triangle vs two bars via a `.playing` class), not a glyph: the ⏸
   // pause character renders as an invisible tofu box in the game font, which read as the button
   // "disappearing" when pressed.
   const btn = el("div", "emig-netc-play");

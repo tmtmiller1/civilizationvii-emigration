@@ -3,9 +3,9 @@
 // buildTimelineEvents (emigration-timeline-events.js): positioning the turn-stamped war + disaster
 // logs onto the network timeline's frames.
 //
-// The thing that makes this non-trivial: both logs stamp an AGE-LOCAL turn (turns reset at every age
+// The thing that makes this non-trivial: both logs stamp an age-local turn (turns reset at every age
 // boundary), while frames are sparse snapshots. So an event is placed on the first frame at-or-after
-// it WITHIN ITS OWN AGE — never by turn number alone, which would collide across ages.
+// it within its own age, never by turn number alone, which would collide across ages.
 
 import assert from "node:assert/strict";
 
@@ -13,7 +13,7 @@ import assert from "node:assert/strict";
 // loc() to its English default, which is exactly the environment we want to assert against.
 const { buildTimelineEvents } = await import("/emigration/ui/emigration-timeline-events.js");
 
-// Two ages, snapshots every 5 turns. Age-local turns RESET at the boundary — note turn 10 appears in
+// Two ages, snapshots every 5 turns. Age-local turns reset at the boundary; turn 10 appears in
 // both ages, which is the collision the age-scoping has to survive.
 const FRAMES = [
   { turn: 0, age: "AGE_ANTIQUITY", year: "4000 BC" },   // 0
@@ -35,7 +35,7 @@ function testDisasterLandsOnFirstFrameAtOrAfter() {
   assert.equal(e.kind, "disaster");
   assert.equal(e.label, "Nile flood");
   assert.equal(e.from, 2);
-  assert.equal(e.to, 2, "a disaster is a point event — only the onset is stamped");
+  assert.equal(e.to, 2, "a disaster is a point event; only the onset is stamped");
   assert.deepEqual(e.civs, [], "onsets are not civ-stamped");
 }
 
@@ -45,7 +45,7 @@ function testExactTurnMatchLandsOnThatFrame() {
 }
 
 function testAgeScopingDoesNotCollideAcrossAges() {
-  // The SAME age-local turn in each age must resolve to different frames.
+  // The same age-local turn in each age must resolve to different frames.
   const [a] = buildTimelineEvents(FRAMES, [disaster(10, "AGE_ANTIQUITY", "A")], []);
   const [b] = buildTimelineEvents(FRAMES, [disaster(10, "AGE_EXPLORATION", "B")], []);
   assert.equal(a.from, 2);
@@ -54,7 +54,7 @@ function testAgeScopingDoesNotCollideAcrossAges() {
 
 function testEventAfterLastSnapshotOfItsAgeClampsToThatAge() {
   // Turn 99 of Antiquity fired after Antiquity's final snapshot: clamp to the age's last frame (2),
-  // NOT forward into Exploration, which would blame the wrong age for it.
+  // Not forward into Exploration, which would blame the wrong age for it.
   const [e] = buildTimelineEvents(FRAMES, [disaster(99, "AGE_ANTIQUITY", "Late flood")], []);
   assert.equal(e.from, 2);
 }
@@ -109,7 +109,7 @@ function testDegenerateInputsNeverThrow() {
   assert.deepEqual(buildTimelineEvents(FRAMES, [null], [null]), [], "null rows are skipped");
   // A single frame can't host a timeline (makeTimeline needs >= 2), so nothing is pinned.
   assert.deepEqual(buildTimelineEvents([FRAMES[0]], [disaster(0, "AGE_ANTIQUITY", "X")], []), []);
-  // The views' no-history fallback frame carries turn:null/age:null — must not throw.
+  // The views' no-history fallback frame carries turn:null/age:null and must not throw.
   const nullish = [{ turn: null, age: null, year: "" }, { turn: null, age: null, year: "" }];
   assert.doesNotThrow(() => buildTimelineEvents(nullish, [disaster(1, "AGE_ANTIQUITY", "X")], []));
 }

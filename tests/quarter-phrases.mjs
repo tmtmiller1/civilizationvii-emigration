@@ -2,7 +2,7 @@
 //
 // The truthful "quarter" phrase engine for diaspora chronicle lines (emigration-quarter-phrases.js) and
 // its contract with the prose engine (emigration-narrative.js). The core guarantee under test: a quarter
-// phrase NEVER names a city feature that wasn't supplied (no "granary" unless the city has one) while a
+// phrase never names a city feature that wasn't supplied (no "granary" unless the city has one) while a
 // supplied feature is named, and the choice is deterministic per seed.
 
 import assert from "node:assert/strict";
@@ -12,12 +12,12 @@ import { foundingLine } from "/emigration/ui/emigration-narrative.js";
 const FEATURE_WORDS = ["harbor", "waterfront", "dock", "river", "mountain", "high ground",
   "granar", "temple", "market", "stalls", "wall", "gate"];
 
-/** Words that only ever appear in a SPECIFIC feature's phrases (for the truthfulness assertions). */
+/** Words that only ever appear in a specific feature's phrases (for the truthfulness assertions). */
 function mentionsAnyFeature(text) {
   return FEATURE_WORDS.some((w) => text.toLowerCase().includes(w));
 }
 
-// ── Truthfulness: no feature is named unless its key was supplied ─────────────
+// Truthfulness: no feature is named unless its key was supplied
 {
   // No keys at all → a generic, always-true phrase that names no feature.
   for (let i = 0; i < 40; i++) {
@@ -32,7 +32,7 @@ function mentionsAnyFeature(text) {
   }
 }
 
-// ── A supplied feature is named, and ONLY supplied features are named ─────────
+// A supplied feature is named, and only supplied features are named
 {
   // A coastal city never gets a granary phrase; a granary city never gets a harbor phrase.
   const coast = resolveQuarter(["coast"], "Athens|Greek|2");
@@ -43,7 +43,7 @@ function mentionsAnyFeature(text) {
   assert.ok(q.FEATURE_QUARTERS.granary.includes(granary), "granary city draws a granary phrase");
   assert.ok(!granary.toLowerCase().includes("harbor"), "granary city never claims a harbor");
 
-  // With several features present, the phrase is always one of the PRESENT features' phrases.
+  // With several features present, the phrase is always one of the present features' phrases.
   const keys = ["river", "market", "walls"];
   for (let i = 0; i < 60; i++) {
     const phrase = resolveQuarter(keys, "Rome" + i + "|Gaul|2");
@@ -54,7 +54,7 @@ function mentionsAnyFeature(text) {
   }
 }
 
-// ── Determinism + spread ──────────────────────────────────────────────────────
+// Determinism + spread
 {
   const a = resolveQuarter(["coast", "river"], "Lutetia|Frankish|2");
   const b = resolveQuarter(["coast", "river"], "Lutetia|Frankish|2");
@@ -65,7 +65,7 @@ function mentionsAnyFeature(text) {
   assert.ok(variants.size >= 3, "generic quarters spread across the list");
 }
 
-// ── Contract with the prose engine: foundingLine honors a truthful `where` ────
+// Contract with the prose engine: foundingLine honors a truthful `where`
 {
   const base = { origin: "Carthaginian", host: "Roman", city: "Ostia", pct: 31, seed: "Ostia|3|2" };
   const withWhere = foundingLine({ ...base, where: "by the harbor" });

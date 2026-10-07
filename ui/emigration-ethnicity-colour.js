@@ -1,15 +1,15 @@
 // emigration-ethnicity-colour.js
 //
-// The ETHNICITY-LENS tile color: a tile's fill is the BLEND of every origin living on it, each weighted
+// The ethnicity lens's tile color: a tile's fill is the blend of every origin living on it, each weighted
 // by its share of the tile (on a gentle contrast curve), so the map reads as a continuous gradient between
-// banner colors and a diaspora below half of a tile still shows its color. Pure: no engine reads and no
+// banner colors and a diaspora below half of a tile still shows its color. No engine reads and no
 // imports, so the gradient is unit-testable; the lens supplies the civ → color resolver.
 
 /** @typedef {{r:number, g:number, b:number}} RGB Channels in [0,1]. */
 
-// SATURATION ramps with a tile's POPULATION DENSITY within its own settlement, the same way the Prosperity lens
+// Saturation ramps with a tile's population density within its own settlement, the same way the Prosperity lens
 // ramps with its score (emigration-tile-score.js): one strength value pulls the color from neutral gray toward
-// the banner blend AND raises the opacity with it. WHO lives there is the hue; HOW MANY is the saturation.
+// the banner blend and raises the opacity with it. Who lives there is the hue; how many is the saturation.
 const MIN_ALPHA = 0.45; // the sparsest tile still reads as a claim on the terrain
 const MAX_ALPHA = 0.85; // the densest tile is unmistakable but never fully hides the map
 // Neutral end of the saturation ramp (0-1): the Prosperity lens's gray, so both lenses share a baseline.
@@ -24,26 +24,26 @@ const ACHROMATIC_S = 0.35;
 // lightness, pushes pastels toward their pure hue, and leaves a near-gray near gray.
 const CHROMA_GAIN = 1.6;
 // Saturation of the sparsest tile. Prosperity lets its middle go fully gray (ordinary land carries no signal);
-// here the hue IS the signal, so the fringe keeps a quarter of its color and a rural diaspora stays legible.
+// here the hue is the signal, so the fringe keeps a quarter of its color and a rural diaspora stays legible.
 const SAT_FLOOR = 0.25;
 // Contrast curve on an origin's share before mixing (< 1 lifts small shares): a 12% community barely
 // registers against terrain when mixed linearly, and 0.7 lifts it to about 20% while keeping the mix
 // strictly monotone. The hover panel still reports the true percentages.
 const MIX_GAMMA = 0.7;
 // The mix itself is a plain weighted average of the banner colors, not a linear-light mix (which favors
-// whichever color is BRIGHTER and overstates a small pale-bannered community). One lift, applied to the share.
+// whichever color is brighter and overstates a small pale-bannered community). One lift, applied to the share.
 
 /**
  * Clamp a number to a finite [0,1] (NaN / non-finite → 0). Every channel that reaches the Metal plot
  * overlay goes through this: a NaN there is a known Mac crash vector.
- * @param {number} n A value. @returns {number} The clamped value.
+ * @param {number} n @returns {number}
  */
 export function unit(n) {
   return typeof n === "number" && isFinite(n) ? Math.max(0, Math.min(1, n)) : 0;
 }
 
 /**
- * Each origin's VISUAL weight on a tile: its share on the contrast curve, normalized to sum 1. Shares
+ * Each origin's visual weight on a tile: its share on the contrast curve, normalized to sum 1. Shares
  * that are not positive finite numbers carry no weight.
  * @param {{civ:number, share:number}[]} shares The tile's local shares.
  * @returns {{civ:number, weight:number}[]} Weights summing to 1 (empty when nothing is usable).
@@ -89,7 +89,7 @@ export function blendColour(shares, colourOf, fallbackCiv) {
 
 /**
  * A color with every channel finite-clamped (an unreadable color reads as black rather than NaN).
- * @param {*} c A candidate color. @returns {RGB} The safe color.
+ * @param {*} c @returns {RGB}
  */
 function clampRGB(c) {
   return { r: unit(c && c.r), g: unit(c && c.g), b: unit(c && c.b) };
@@ -97,7 +97,7 @@ function clampRGB(c) {
 
 /**
  * RGB (0-1) to HSL (hue in degrees, s/l in 0-1).
- * @param {RGB} c A color. @returns {{h:number, s:number, l:number}} HSL.
+ * @param {RGB} c @returns {{h:number, s:number, l:number}}
  */
 function toHsl(c) {
   const max = Math.max(c.r, c.g, c.b);
@@ -115,7 +115,7 @@ function toHsl(c) {
 
 /**
  * HSL back to RGB (0-1).
- * @param {{h:number, s:number, l:number}} hsl HSL. @returns {RGB} The color.
+ * @param {{h:number, s:number, l:number}} hsl @returns {RGB}
  */
 function fromHsl({ h, s, l }) {
   const f = (/** @type {number} */ n) => {
@@ -130,7 +130,7 @@ function fromHsl({ h, s, l }) {
  * The ramp's two ends for a blended color: its vivid end (the blend with HSL saturation multiplied by
  * CHROMA_GAIN, hue and lightness kept) and its neutral end (gray for a colored blend, sliding to charcoal as
  * the blend loses its hue).
- * @param {RGB} c The share-weighted blend. @returns {{vivid:RGB, neutral:RGB}} Ramp ends.
+ * @param {RGB} c The share-weighted blend. @returns {{vivid:RGB, neutral:RGB}}
  */
 export function rampEnds(c) {
   const hsl = toHsl(c);

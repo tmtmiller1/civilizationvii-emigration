@@ -1,19 +1,19 @@
 // emigration-timeline-events.js
 //
-// Positions the turn-stamped WAR and DISASTER records onto the network view's timeline frames, so
+// Positions the turn-stamped war and disaster records onto the network view's timeline frames, so
 // the scrubber can pin "why did everyone leave here?" against the migration it caused.
 //
-// The two record sources are stamped as the events fire, each with an AGE-LOCAL turn plus its age
+// The two record sources are stamped as the events fire, each with an age-local turn plus its age
 // (turns reset at every age boundary, so neither number positions an event on its own):
-//   • wars      — emigration-war.warEvents()               {turn, age, year, aggressor, victim, endTurn, endAge}
-//   • disasters — EmigrationData.disasterEvents()          {turn, age, year, name, severity}
+//   • wars: emigration-war.warEvents(), {turn, age, year, aggressor, victim, endTurn, endAge}
+//   • disasters: EmigrationData.disasterEvents(), {turn, age, year, name, severity}
 //
-// Timeline frames are SNAPSHOTS taken every N turns, so an event's exact turn usually has no frame of
-// its own. Each event is placed on the first frame at-or-after it WITHIN ITS OWN AGE, clamped to that
+// Timeline frames are snapshots taken every N turns, so an event's exact turn usually has no frame of
+// its own. Each event is placed on the first frame at-or-after it within its own age, clamped to that
 // age's last frame when it fired after the final snapshot of the age.
 //
 // Output is the shape the viz already consumes (emigration-network-viz.resolveEvents):
-// `{ kind, label, from, to, civs }` with `from`/`to` as FRAME INDICES.
+// `{ kind, label, from, to, civs }` with `from`/`to` as frame indices.
 
 import { warRefugeeName } from "/emigration/ui/emigration-naming.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
@@ -24,7 +24,7 @@ import { loc } from "/emigration/ui/emigration-loc.js";
  * @property {string} label Player-facing event name.
  * @property {number} from First frame index the event covers.
  * @property {number} to Last frame index the event covers.
- * @property {number[]} civs Civ ids involved (empty for disasters — onsets aren't civ-stamped).
+ * @property {number[]} civs Civ ids involved (empty for disasters; onsets aren't civ-stamped).
  */
 
 /**
@@ -48,7 +48,7 @@ function ageRanges(frames) {
 /**
  * The frame index an (age, age-local turn) stamp lands on: the first frame of that age at-or-after
  * the turn, else the age's last frame (the event fired after its final snapshot). Null when the age
- * has no frames at all — an event we cannot place honestly is dropped rather than guessed at.
+ * has no frames at all; an event we cannot place honestly is dropped rather than guessed at.
  * @param {*[]} frames @param {Map<string, {start:number, end:number}>} ranges Age ranges.
  * @param {string} age Age type. @param {number} turn Age-local turn.
  * @returns {number|null} Frame index, or null when unplaceable.
@@ -85,7 +85,7 @@ function warEventFor(w, frames, ranges) {
 }
 
 /**
- * Map one disaster onset to its frame window. A disaster is a POINT event (only the onset is
+ * Map one disaster onset to its frame window. A disaster is a point event (only the onset is
  * stamped, never an end), so it occupies the single frame it landed on. Null when unplaceable.
  * @param {*} d Disaster record. @param {*[]} frames
  * @param {Map<string, {start:number, end:number}>} ranges Age ranges.
@@ -106,7 +106,7 @@ function disasterEventFor(d, frames, ranges) {
  * Build the timeline's event specs from the turn-stamped war + disaster logs, positioned onto
  * `frames` and sorted by first frame (so same-column pins cluster in a stable order).
  *
- * Events without an age stamp, or whose age never made it into the frame window, are dropped — a pin
+ * Events without an age stamp, or whose age never made it into the frame window, are dropped; a pin
  * we cannot place honestly is worse than no pin.
  * @param {*[]} frames Timeline frames (in time order), each `{turn, age, ...}`.
  * @param {*[]} [disasters] Disaster onsets from EmigrationData.disasterEvents().

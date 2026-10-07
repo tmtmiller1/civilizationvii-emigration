@@ -1,8 +1,8 @@
 // emigration-call-home.js
 //
 // "Call our people home": a paid, player-initiated attempt to bring displaced population back to the
-// settlement it left, sized by the player (callHomeTiers) on a CONVEX price curve (callHomeCost). An
-// INTERNAL call (people in your own settlements) is a purchase: everyone paid for comes. An EXTERNAL
+// settlement it left, sized by the player (callHomeTiers) on a convex price curve (callHomeCost). An
+// internal call (people in your own settlements) is a purchase: everyone paid for comes. An external
 // call (people under another civ) is a gamble: each person is rolled against callHomeChanceExternal
 // and the fee is spent regardless. The roll is seeded from game id, pair and turn, so it cannot be re-rolled.
 import { CONFIG } from "/emigration/ui/emigration-config.js";
@@ -17,7 +17,7 @@ export const CALL_HOME_SCOPE = Object.freeze({ INTERNAL: "internal", EXTERNAL: "
 /**
  * The per-point chance that a called person comes. Internal calls are certain (a purchase, not a roll);
  * external calls use the tunable, clamped to 0..1.
- * @param {string} scope A CALL_HOME_SCOPE. @returns {number} The chance.
+ * @param {string} scope A CALL_HOME_SCOPE. @returns {number}
  */
 export function callHomeChance(scope) {
   if (scope !== CALL_HOME_SCOPE.EXTERNAL) return 1;
@@ -49,7 +49,7 @@ export function callHomeAgeScale(ageType) {
 }
 
 /**
- * The fee for a call of a given size, in the chosen currency: CONVEX in the size (see COST_EXPONENT), scaled
+ * The fee for a call of a given size, in the chosen currency: convex in the size (see COST_EXPONENT), scaled
  * up for the external variant because it asks people to leave another ruler's city, and scaled by the age
  * (see callHomeAgeScale). Internally the fee buys that many people; abroad it buys that many attempts.
  * @param {number} points How many people the call is for. @param {string} scope A CALL_HOME_SCOPE.
@@ -70,7 +70,7 @@ export function callHomeCost(points, scope, currency, ageType) {
 /**
  * The live AgeType, or "" off-engine or mid-transition. Game.age is a numeric hash (engine-closed.md), so it
  * has to go through the Ages table.
- * @returns {string} The AgeType.
+ * @returns {string}
  */
 function liveAgeType() {
   try {
@@ -96,9 +96,9 @@ export function callHomeTiers(max) {
 
 /**
  * Candidate pairs for one player: where their displaced people went, and where they came from. Internal
- * pairs are moves between the player's OWN settlements; external pairs are the player's people living
+ * pairs are moves between the player's own settlements; external pairs are the player's people living
  * under another civilization. Only refugee-shaped causes count.
- * @param {number} pid The player id. @param {*[]} [flows] Flow rows (defaults to the live matrix).
+ * @param {number} pid @param {*[]} [flows] Flow rows (defaults to the live matrix).
  * @returns {{internal:*[], external:*[]}} Candidate pairs, richest first.
  */
 export function callHomeCandidates(pid, flows) {
@@ -120,7 +120,7 @@ export function callHomeCandidates(pid, flows) {
 /**
  * What a call would look like: how many people it is for, what it costs, and the odds. `want` narrows the
  * call to the size the player picked; it can never exceed the per-call cap.
- * @param {number} pid The player id. @param {string} scope A CALL_HOME_SCOPE.
+ * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {number} currency A CALL_HOME_CURRENCY. @param {*[]} [flows] Flow rows (defaults to live).
  * @param {number} [want] How many the player asked for (default: as many as the cap allows).
  * @returns {{scope:string, available:number, points:number, cost:number, chance:number, pairs:*[]}} The quote.
@@ -160,7 +160,7 @@ export function callHomeRoll(seed, chance) {
  * Resolve one call: size it to what the treasury covers, pay for it, then find out who comes (everyone for
  * internal, a roll per person for external) and move them. Pure apart from the injected effects, so the odds
  * and the accounting are testable without the engine.
- * @param {number} pid The player id. @param {string} scope A CALL_HOME_SCOPE.
+ * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {number} currency A CALL_HOME_CURRENCY.
  * @param {{turn:number, gameId?:string|number, flows?:*[], want?:number, pay:(amount:number, currency:number)=>boolean,
  *   move:(pair:*)=>boolean, afford?:(currency:number)=>number}} deps Effects: how many were asked for, what
@@ -219,7 +219,7 @@ function moveHome(quote, n, d) {
 
 /**
  * Roll each person the call is for: how many of them agree to come home. No move happens here.
- * @param {number} pid The player id. @param {string} scope A CALL_HOME_SCOPE.
+ * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {*} quote @param {*} d The injected effects.
  * @returns {{attempted:number, returned:number}} What happened.
  */

@@ -2,8 +2,8 @@
 //
 // The on-map enclave marker (emigration-enclave-markers.js) had no test at all, which is how it shipped
 // clearing the wrong object: it cleared an overlay group the sprite grid was never attached to, so every
-// repaint stacked another icon and another label on the tile (watched in game 2026-09-17 as a doubled
-// "NORMAN ENCLAVE" label; 63 leaked marker pairs in six minutes). This fakes just enough of WorldUI to
+// repaint stacked another icon and another label on the tile (in game on 2026-09-17 a doubled
+// "NORMAN ENCLAVE" label and 63 leaked marker pairs in six minutes). This fakes just enough of WorldUI to
 // count what is actually on the grid after each repaint.
 
 import assert from "node:assert/strict";
@@ -38,19 +38,19 @@ globalThis.setTimeout = (fn) => { timers.push(fn); return timers.length; };
 const { __test: M } = await import("/emigration/ui/emigration-enclave-markers.js");
 function flush() { while (timers.length) timers.shift()(); }
 
-// ── one enclave, one marker ──
+// one enclave, one marker
 M.repaint("test");
 assert.equal(grid.texts.length, 1, "one enclave tile paints one label");
 assert.equal(grid.sprites.length, 1, "and one icon");
 assert.equal(grid.texts[0].label, "NORMAN ENCLAVE", "labeled with the enclave's name, upper-cased");
 assert.equal(grid.texts[0].idx, 7, "on the enclave's own plot");
 
-// ── THE BUG: repainting must REPLACE the marker, never stack a second copy ──
+// The bug: repainting must replace the marker, never stack a second copy
 for (let i = 0; i < 25; i++) M.repaint("again");
 assert.equal(grid.texts.length, 1, "after 26 repaints the tile still carries ONE label, not 26");
 assert.equal(grid.sprites.length, 1, "and ONE icon");
 
-// ── a vanished enclave takes its marker with it ──
+// a vanished enclave takes its marker with it
 const before = globalThis.MapConstructibles.getConstructibles;
 globalThis.MapConstructibles.getConstructibles = () => [];
 M.repaint("gone");
@@ -58,7 +58,7 @@ assert.equal(grid.texts.length, 0, "no enclave, no label left behind");
 assert.equal(grid.sprites.length, 0, "and no icon left behind");
 globalThis.MapConstructibles.getConstructibles = before;
 
-// ── a RECORDED enclave also carries its stage, and what its stance pays ──
+// a recorded enclave also carries its stage, and what its stance pays
 // The tile's yield icons cannot change on recognition (the stance is paid to the city), so the marker is
 // where the map says an enclave has moved on from "established".
 {
@@ -78,7 +78,7 @@ globalThis.MapConstructibles.getConstructibles = before;
   assert.deepEqual(grid.texts.map((t) => t.label), ["NORMAN ENCLAVE"], "a tile known only from the map scan has a name and no stage");
 }
 
-// ── THE TURN-TRANSITION BLANK: an unreadable map must not wipe the markers ──
+// The TURN-transition blank: an unreadable map must not wipe the markers
 // Clearing the grid properly (above) exposed this: mid turn-transition the map reads come back empty for
 // a moment, and a repaint then cleared every marker and painted nothing back, so the labels vanished
 // each turn and returned on the next event.
@@ -101,23 +101,23 @@ globalThis.MapConstructibles.getConstructibles = before;
   assert.equal(names(), 1, "an unreadable plot keeps a tile already seen standing");
   globalThis.MapConstructibles.getConstructibles = realCons;
 
-  // An unreadable PLAYER skips the repaint entirely rather than clearing to nothing.
+  // An unreadable player skips the repaint entirely rather than clearing to nothing.
   const realPlayers = globalThis.Players.get;
   globalThis.Players.get = () => null;
   M.repaint("no-player");
   assert.equal(names(), 1, "an unreadable player leaves the markers alone");
   globalThis.Players.get = realPlayers;
 
-  // But a plot that really IS bare drops the marker: this is how a built-over tile stops being marked.
+  // But a plot that really is bare drops the marker: this is how a built-over tile stops being marked.
   globalThis.MapConstructibles.getConstructibles = () => [];
   M.repaint("really-empty");
   assert.equal(names(), 0, "a readable, genuinely empty plot does drop the marker");
   globalThis.MapConstructibles.getConstructibles = realCons;
 
-  // And a dropped RECORD removes it, which is what a fade does.
+  // And a dropped record removes it, which is what a fade does.
   M.repaint("restored");
   assert.equal(names(), 1, "restored");
-  // A fade drops the record AND destroys the tile, so nothing is left for either source to find.
+  // A fade drops the record and destroys the tile, so nothing is left for either source to find.
   dropQuarter("7,0");
   globalThis.MapConstructibles.getConstructibles = () => [];
   M.repaint("faded");
@@ -125,7 +125,7 @@ globalThis.MapConstructibles.getConstructibles = before;
   globalThis.MapConstructibles.getConstructibles = realCons;
 }
 
-// ── a burst of map events is answered by ONE repaint ──
+// a burst of map events is answered by one repaint
 flush(); // drain the module's own initial paint
 grid.clear();
 let paints = 0;

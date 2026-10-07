@@ -2,7 +2,7 @@
 
 Date: 2026-07-16 (report file retained from 2026-07-13)
 Mod: emigration
-Status: RESOLVED — `npm run verify` passes end-to-end (exit 0).
+Status: RESOLVED: `npm run verify` passes end-to-end (exit 0).
 
 ## Verification Evidence
 
@@ -12,11 +12,11 @@ Status: RESOLVED — `npm run verify` passes end-to-end (exit 0).
 
 The TypeScript failure was masking the rest of the chain: fixing it unblocked verify and revealed
 two further pre-existing failures further down the pipeline. All three were remediated. None were
-confirmed player-facing runtime breakage — each was a typing gap, a stale test, or a stale validator.
+confirmed player-facing runtime breakage, each was a typing gap, a stale test, or a stale validator.
 
 ## What was fixed
 
-### 1) 18 TypeScript errors (release gate red) — type-only fixes
+### 1) 18 TypeScript errors (release gate red): type-only fixes
 
 All 18 errors were JSDoc/typing strictness gaps, fixed without touching runtime control flow:
 
@@ -27,26 +27,26 @@ All 18 errors were JSDoc/typing strictness gaps, fixed without touching runtime 
 - `ui/emigration-enclave-probe.js`: annotated `sendBuild`'s params and widened the nullable `plot`
   (and `locFromIndex`'s `idx`, `sendPurchase`'s `plot`) to `number|null`. The send helpers already
   resolve the plot via `locFromIndex` and early-return on failure, so this is a pure type widening.
-- `ui/emigration-composition.js`: added the required `name: cityName(city)` to the TEST-ONLY
+- `ui/emigration-composition.js`: added the required `name: cityName(city)` to the test-only
   `seedEstablishedForeign` ledger seed, matching how the real recorder populates `name`.
 
 ### 2) Corrected finding: enclave gate import is runtime-correct
 
 The `import { ProductionChooserScreen }` in `ui/emigration-enclave-gate.js` was reported by TS as
 "no exported member" with a default-import suggestion. This looked like a possible runtime module-shape
-mismatch but is NOT: the shipped game module
+mismatch but is not: the shipped game module
 (`base-standard/ui/production-chooser/panel-production-chooser.js`) exports the class as a NAMED export
 (`export { ProductionChooserScreen }`). The error came only from the mod's catch-all engine type stub
-not listing that member. Fix: declared it in the stub. The import was intentionally NOT changed to a
-default import — doing so would have broken the in-game decorator path.
+not listing that member. Fix: declared it in the stub. The import was intentionally not changed to a
+default import, doing so would have broken the in-game decorator path.
 
 ### 3) `tests/migration-stats.mjs` stale expectation (`Population Share`)
 
 After the TS fix, verify advanced and failed here: the graphs group's actual members include
-`Population Share`, the test's expected list did not. `Population Share` is a deliberately shipped
+`Population Share`, the test's expected list did not. `Population Share` is an intended
 member of the Graphs group (`ui/emigration-demographics.js`, added right after `Population` with a full
-explanatory comment). The test was simply stale. Fix: added `Population Share` to the expected label
-list in the test. No runtime change — the mod's behavior was already correct.
+explanatory comment). The test was stale. Fix: added `Population Share` to the expected label
+list in the test. No runtime change, the mod's behavior was already correct.
 
 ### 4) `tests/validate-package.mjs` false-positive on enclave LOC keys
 
@@ -57,7 +57,7 @@ modinfo. The validator's "defined keys" set was built only from `text/en_us/ModT
 saw the dedicated enclave file. Fix: the data-LOC-reference check (§5) now treats every `text/en_us/*.xml`
 file as a key-definition source; the per-locale parity check (§4) is unchanged and still governs only the
 ModText.xml translation surface. The enclave text is en_us-only by design (other locales fall back to
-en_us until translated), so the game does not crash — the warning was a false alarm.
+en_us until translated), so the game does not crash, the warning was a false alarm.
 
 ## Remaining (non-blocking) observations
 

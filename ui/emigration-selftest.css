@@ -1,7 +1,7 @@
 /* emigration-selftest.css
  *
  * Chrome + content styles for the standalone self-test screen (screen-emigration-selftest). This is a
- * real base-UI panel pushed through the ContextManager WITH a mouse guard, so its buttons receive input
+ * real base-UI panel pushed through the ContextManager with a mouse guard, so its buttons receive input
  * (a raw HUD DOM overlay does not). Kept self-contained: the check rows / tags / action buttons are
  * styled here rather than via an injected <style>, so the screen needs no runtime style injection. */
 

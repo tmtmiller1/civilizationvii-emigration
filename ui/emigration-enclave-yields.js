@@ -4,7 +4,7 @@
 // the enclave lifecycle notifications (formed / fades / built over / changes hands) and their debug log
 // lines, so a player reading the log sees what an enclave brought and what its loss cost.
 //
-// The string is built from signed amounts and the BASE GAME's yield names (LOC_YIELD_*_NAME), so it
+// The string is built from signed amounts and the base game's yield names (LOC_YIELD_*_NAME), so it
 // carries no mod-owned words and reads correctly in every locale without new text rows.
 
 import { nativeYieldsOf } from "/emigration/ui/emigration-enclave-place.js";
@@ -16,7 +16,7 @@ const YIELD_NOUNS = Object.freeze({
   YIELD_CULTURE: "Culture", YIELD_HAPPINESS: "Happiness", YIELD_DIPLOMACY: "Influence"
 });
 
-/** A finite number or 0. @param {*} v Any value. @returns {number} The number. */
+/** A finite number or 0. @param {*} v @returns {number} */
 function num(v) {
   const n = Number(v);
   return isFinite(n) ? n : 0;
@@ -34,7 +34,7 @@ function add(out, key, amount) {
 }
 
 /**
- * The per-turn yields of an enclave's STANCE alone ({YIELD_X: signed n}): its benefit minus its drawback.
+ * The per-turn yields of an enclave's stance alone ({YIELD_X: signed n}): its benefit minus its drawback.
  * Empty until the enclave is recognized (an established enclave has no stance yet), for "let be", and for
  * a stance paid once at recognition (`applied.once`): only a record from an older save pays per turn.
  * @param {*} rec A quarter record. @returns {Record<string, number>} Signed yields by type (may be empty).
@@ -45,7 +45,7 @@ export function stanceYields(rec) {
 }
 
 /**
- * What a stance paid ONCE, at recognition ({YIELD_X: signed n}): its payout minus its Gold price. Empty for
+ * What a stance paid once, at recognition ({YIELD_X: signed n}): its payout minus its Gold price. Empty for
  * "let be", before recognition, and for an older per-turn record.
  * @param {*} rec A quarter record (or `{applied}`). @returns {Record<string, number>} Signed yields by type.
  */
@@ -67,8 +67,8 @@ function signedOf(applied) {
 }
 
 /**
- * Everything one enclave gives its host per turn ({YIELD_X: signed n}): its TILE's native yields (from
- * establishment, while a tile was placed) plus its STANCE yields (from recognition). Takeover
+ * Everything one enclave gives its host per turn ({YIELD_X: signed n}): its tile's native yields (from
+ * establishment, while a tile was placed) plus its stance yields (from recognition). Takeover
  * compensation is left out: it repays the improvement the tile replaced, so the enclave does not add it.
  * @param {*} rec A quarter record. @returns {Record<string, number>} Signed yields by type (may be empty).
  */
@@ -81,7 +81,7 @@ export function enclaveYields(rec) {
 
 /**
  * The display noun for a yield type, from the base game's name key, else English.
- * @param {string} key A YieldType. @returns {string} The noun.
+ * @param {string} key A YieldType. @returns {string}
  */
 function yieldNoun(key) {
   const english = /** @type {Record<string, string>} */ (YIELD_NOUNS)[key] || key.replace(/^YIELD_/, "");
@@ -90,9 +90,9 @@ function yieldNoun(key) {
 
 /**
  * A signed yield map as text ("+2 Culture, −1 Happiness"), or "" when it is empty. Pass `sign` −1 to
- * state the same yields as a LOSS (what the host stops receiving when the enclave goes).
+ * state the same yields as a loss (what the host stops receiving when the enclave goes).
  * @param {Record<string, number>} yields Signed yields by type. @param {number} [sign] 1 (default) or −1.
- * @returns {string} The text.
+ * @returns {string}
  */
 export function yieldsText(yields, sign) {
   return yieldParts(yields, sign === -1 ? -1 : 1).join(", ");
@@ -117,7 +117,7 @@ export function yieldsButtonText(yields) {
 /**
  * One "+n Noun" part per non-zero yield, in type order.
  * @param {Record<string, number>} yields Signed yields by type. @param {number} s 1 or −1.
- * @returns {string[]} The parts.
+ * @returns {string[]}
  */
 function yieldParts(yields, s) {
   const parts = [];

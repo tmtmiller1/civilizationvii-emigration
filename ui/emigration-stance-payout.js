@@ -1,6 +1,6 @@
 // emigration-stance-payout.js
 //
-// What an enclave stance pays, ONCE, when its host recognizes the enclave. A stance pays Gold, Influence,
+// What an enclave stance pays, once, when its host recognizes the enclave. A stance pays Gold, Influence,
 // Science or Culture, and one that does not pay Gold costs Gold: those are the only yields a script can
 // grant, and Gold is the only one it can take. Science lands on the tech being researched, Culture on
 // the civic being researched.

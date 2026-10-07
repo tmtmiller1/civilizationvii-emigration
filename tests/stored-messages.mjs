@@ -51,7 +51,7 @@ const { chronicle, chronicleLog, clearChronicle } = await import("/emigration/ui
 const { pressureCueMsg } = await import("/emigration/ui/emigration-naming.js");
 const { formatBothExactMsg } = await import("/emigration/ui/emigration-population.js");
 
-// ── the node helpers ─────────────────────────────────────────────────────────
+// the node helpers
 {
   const { msg, msgText, msgPack, msgCompose, msgJoin, msgCap, msgBare, msgNum, msgKey } = loc;
   const node = msgJoin(msgCap(msg("LOC_NONE", "the {1_X} line", "first")), " · ", msgBare("the Roman War"), " ",
@@ -81,7 +81,7 @@ const { formatBothExactMsg } = await import("/emigration/ui/emigration-populatio
   globalThis.Locale = saved;
 }
 
-// ── a new notification records its key + args and composes in the reader's language ─────────────
+// a new notification records its key + args and composes in the reader's language
 {
   KV = {};
   clearNotifications();
@@ -101,7 +101,7 @@ const { formatBothExactMsg } = await import("/emigration/ui/emigration-populatio
   assert.equal(entryText(e, "summary"), e.summary, "read in English");
 }
 
-// ── nested localizable arguments (counts, civ adjectives) resolve at display time too ──────────────
+// nested localizable arguments (counts, civ adjectives) resolve at display time too
 {
   clearNotifications();
   lang = "en";
@@ -120,7 +120,7 @@ const { formatBothExactMsg } = await import("/emigration/ui/emigration-populatio
   lang = "en";
 }
 
-// ── an entry saved before keys were stored renders its text unchanged ─────────────────────────────
+// an entry saved before keys were stored renders its text unchanged
 {
   const old = { turn: 3, cause: "war", kind: "digest", summary: "Bulgarian: 4 population points (295,414 people) flee "
     + "the Norman-Bulgarian War.", event: "Norman-Bulgarian War", fromCiv: "Bulgarian", people: 295414, points: 4,
@@ -146,7 +146,7 @@ const { formatBothExactMsg } = await import("/emigration/ui/emigration-populatio
   lang = "en";
 }
 
-// ── the Chronicle keeps title/body messages and mirrors them into the log ─────────────────────────
+// the Chronicle keeps title/body messages and mirrors them into the log
 {
   KV = {};
   clearChronicle();

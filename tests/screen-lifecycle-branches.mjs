@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 
-// Mock all globals BEFORE importing the module
+// Mock all globals before importing the module
 globalThis.Panel = class {
   constructor() {
     this.Root = {

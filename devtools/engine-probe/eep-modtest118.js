@@ -5,7 +5,7 @@
 // per 10-turn window, and the verdict says NOT CONVERGED if the later windows disagree or are too thin.
 //
 // Everything is read through globals (an import gives a probe its own, never-started module copy):
-//   globalThis.emigration          bootstrap control, checked EVERY turn, not just at start
+//   globalThis.emigration          bootstrap control, checked every turn, not just at start
 //   globalThis.EmigrationViolence  real vs pre-change ("counterfactual") intensity per city
 //   globalThis.EmigrationCombat    the combat ledger, read as reader "probe" so the model's evidence is untouched
 //

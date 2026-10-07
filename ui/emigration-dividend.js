@@ -1,8 +1,8 @@
 // emigration-dividend.js
 //
-// The carried dividend, the positive MIRROR of the assimilation load (emigration-effects.js): when a
+// The carried dividend, the positive mirror of the assimilation load (emigration-effects.js): when a
 // civ holds an attraction card (or runs a raid), each migrant it receives accrues a decaying per-turn
-// BENEFIT in a chosen yield (+Science/Culture/Gold), so the gain is worth a tunable chunk per migrant
+// benefit in a chosen yield (+Science/Culture/Gold), so the gain is worth a tunable chunk per migrant
 // regardless of how few move. State persists separately in GameConfiguration.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
@@ -28,8 +28,8 @@ function emptyState() {
 
 /**
  * Resolve persisted payload from a legacy or schema envelope blob.
- * @param {*} parsed Parsed JSON value.
- * @returns {*} Payload object, or null.
+ * @param {*} parsed
+ * @returns {*} The payload object, or null.
  */
 function payloadFromBlob(parsed) {
   if (!parsed || typeof parsed !== "object") return null;
@@ -41,7 +41,7 @@ function payloadFromBlob(parsed) {
 
 /**
  * @param {*} pool Candidate pool map.
- * @returns {Record<string, number>} Sanitized pool map.
+ * @returns {Record<string, number>}
  */
 function normalizePool(pool) {
   /** @type {Record<string, number>} */
@@ -60,7 +60,7 @@ function normalizePool(pool) {
 
 /**
  * @param {*} turns Candidate tick map.
- * @returns {Record<string, number>} Sanitized tick map.
+ * @returns {Record<string, number>}
  */
 function normalizeTickedTurn(turns) {
   /** @type {Record<string, number>} */
@@ -79,7 +79,7 @@ function normalizeTickedTurn(turns) {
 
 /**
  * @param {*} parsed Parsed persisted state.
- * @returns {{ pool: Record<string, number>, tickedTurn: Record<string, number> }|null} Normalized state.
+ * @returns {{ pool: Record<string, number>, tickedTurn: Record<string, number> }|null}
  */
 function normalizeState(parsed) {
   const payload = payloadFromBlob(parsed);
@@ -92,7 +92,7 @@ function normalizeState(parsed) {
 
 /**
  * The current age-local game turn, or 0.
- * @returns {number} Game.turn or 0.
+ * @returns {number}
  */
 function gameTurn() {
   try {
@@ -104,7 +104,7 @@ function gameTurn() {
 
 /**
  * The raw persisted dividend state string, or null.
- * @returns {string|null} JSON, or null.
+ * @returns {string|null}
  */
 function divReadStored() {
   const g = Configuration?.getGame?.();
@@ -114,7 +114,7 @@ function divReadStored() {
 
 /**
  * Load (once) the persisted dividend state into the module cache.
- * @returns {{ pool: Record<string, number>, tickedTurn: Record<string, number> }} State.
+ * @returns {{ pool: Record<string, number>, tickedTurn: Record<string, number> }}
  */
 function divState() {
   resetCachesOnNewGame();
@@ -147,9 +147,9 @@ function divPersist() {
 }
 
 /**
- * Grant `amount` (a POSITIVE number) of a yield to a player. No-ops for non-positive amounts, bad
+ * Grant `amount` (a positive number) of a yield to a player. No-ops for non-positive amounts, bad
  * ids, or a missing grantYield API. The mirror of effects.js's `deduct`.
- * @param {number} pid Player id.
+ * @param {number} pid
  * @param {string} yieldKey e.g. "YIELD_SCIENCE".
  * @param {number} amount Signed amount; only positive values are applied.
  */
@@ -161,7 +161,7 @@ function grant(pid, yieldKey, amount) {
       Players.grantYield(pid, yt, amount);
     }
   } catch (_) {
-    /* ignore - a failed bonus must never break the pass */
+    /* ignore: a failed bonus must never break the pass */
   }
 }
 
@@ -187,7 +187,7 @@ export function addAttractionDividend(destOwner, yieldKey, perMigrant) {
  * Decay one yield's dividend pool for `elapsed` turns and grant the capped amount. Drops a
  * negligible pool. Returns the amount granted (0 if none).
  * @param {{pool: Record<string, number>}} s Dividend state.
- * @param {number} pid Player id.
+ * @param {number} pid
  * @param {string} yk Yield key.
  * @param {number} elapsed Turns elapsed since the last tick.
  * @returns {number} Granted amount (>= 0).
@@ -196,7 +196,7 @@ function tickOneDividend(s, pid, yk, elapsed) {
   const key = pid + ":" + yk;
   const cur = s.pool[key] || 0;
   if (cur <= 0) return 0;
-  // speedDecay re-bases the per-turn fade so the attraction dividend fades over the same GAME-TIME at
+  // speedDecay re-bases the per-turn fade so the attraction dividend fades over the same game-time at
   // any speed (mirrors the assimilation load).
   const pool = cur * Math.pow(speedDecay(CONFIG.dividendDecay), elapsed);
   if (pool < 0.05) {
@@ -212,7 +212,7 @@ function tickOneDividend(s, pid, yk, elapsed) {
 /**
  * Tick a civ's carried dividends once per turn: decay each yield's pool for the turns elapsed and
  * grant the (capped) decayed amount. Idempotent within a turn. Returns amounts by yield.
- * @param {number} pid Player id.
+ * @param {number} pid
  * @returns {Record<string, number>} Granted amounts by yield.
  */
 export function tickAttractionDividend(pid) {
@@ -235,7 +235,7 @@ export function tickAttractionDividend(pid) {
 
 /**
  * The current dividend pool a civ carries for a yield (read-only; does not tick).
- * @param {number} pid Player id.
+ * @param {number} pid
  * @param {string} yieldKey
  * @returns {number} Current pool (>= 0).
  */

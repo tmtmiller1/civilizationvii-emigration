@@ -1,8 +1,8 @@
 // emigration-diversity.js
 //
-// The COMPOSITION-DIVERSITY metrics (entropy, origins >= 5%, no-majority, a derived cosmopolitanism
+// The composition-diversity metrics (entropy, origins >= 5%, no-majority, a derived cosmopolitanism
 // tier) and the "most diverse cities" ranking, read-only over the composition ledger. They describe
-// the MIX of origins in a settlement, never a quality judgment, and grant no yields. Pure; the engine
+// the mix of origins in a settlement, never a quality judgment, and grant no yields. Pure; the engine
 // seam is diverseCityRanking(), which takes its per-owner lookups by injection.
 
 import { allCityCompositions } from "/emigration/ui/emigration-composition.js";
@@ -16,7 +16,7 @@ const MAJORITY_SHARE = 0.5;
 
 /**
  * The origin count whose even split reads as "maximally mixed" when normalizing entropy for the
- * cosmopolitanism blend. Entropy itself is left UNNORMALIZED for ranking (so a 5-way even city
+ * cosmopolitanism blend. Entropy itself is left unnormalized for ranking (so a 5-way even city
  * outranks a 2-way even one); this reference only bounds the 0..1 score in cosmopolitanism().
  */
 const DIVERSITY_REF_ORIGINS = 5;
@@ -30,8 +30,8 @@ const COSMO_W_OPENNESS = 0.2;
 const COSMO_W_INBOUND = 0.2;
 
 /**
- * The five cosmopolitanism tiers, ascending by `min` score. Descriptive labels only — the tier says
- * how MIXED a settlement's origins are, nothing about how good it is.
+ * The five cosmopolitanism tiers, ascending by `min` score. Descriptive labels only: the tier says
+ * how mixed a settlement's origins are, nothing about how good it is.
  * @type {readonly {key:string, min:number}[]}
  */
 export const COSMO_TIERS = Object.freeze([
@@ -44,8 +44,8 @@ export const COSMO_TIERS = Object.freeze([
 
 /**
  * Clamp `v` into [0,1].
- * @param {number} v Value.
- * @returns {number} The clamped value (0 for non-finite input).
+ * @param {number} v
+ * @returns {number} 0 for non-finite input.
  */
 function unit(v) {
   if (!Number.isFinite(v)) return 0;
@@ -55,9 +55,9 @@ function unit(v) {
 /**
  * A finite number, or `fallback`. The lookups are injected by callers (and one reads a live engine
  * value), so a missing/NaN reading must degrade to the neutral default rather than poison the score.
- * @param {number|undefined} v The candidate.
+ * @param {number|undefined} v
  * @param {number} fallback The neutral default.
- * @returns {number} A finite number.
+ * @returns {number}
  */
 function num(v, fallback) {
   return typeof v === "number" && Number.isFinite(v) ? v : fallback;
@@ -66,7 +66,7 @@ function num(v, fallback) {
 /**
  * Shannon entropy (natural log) over a composition's origin shares: 0 for a single-origin settlement,
  * maximal for an even split, and rising with the number of origins. Left unnormalized so the ranking
- * prefers a settlement with MORE communities over an evenly-split pair.
+ * prefers a settlement with more communities over an evenly-split pair.
  * @param {{share:number}[]} civs Origin shares.
  * @returns {number} Entropy in nats (≥ 0).
  */
@@ -101,7 +101,7 @@ export function diversityScore(comp) {
 }
 
 /**
- * The biggest share held by an origin OTHER than the host civ — the size of the largest diaspora.
+ * The biggest share held by an origin other than the host civ: the size of the largest diaspora.
  * @param {{civ:number, share:number}[]} civs The (non-empty, positive-share) origin shares.
  * @param {number|null} owner The host civ, whose own people don't count as a diaspora.
  * @returns {number} The share, or 0 when every origin is the host's own.
@@ -125,7 +125,7 @@ function tierFor(score) {
 
 /**
  * The derived cosmopolitanism score: how mixed, open and inbound-fed a settlement is, blended
- * into [0,1] and bucketed into five descriptive tiers. COSMETIC — grants no yields.
+ * into [0,1] and bucketed into five descriptive tiers. Cosmetic; grants no yields.
  * @param {*} comp A composition.
  * @param {{openness?:number, inboundNorm?:number}} [ctx] `openness` is the owner's immigration
  *   openness (1 = neutral); `inboundNorm` is its inbound flow normalized to the largest civ's (0..1).
@@ -146,7 +146,7 @@ export function cosmopolitanism(comp, ctx) {
  * @param {number} owner Owner player id.
  * @param {{openness?:(pid:number)=>number, inbound?:(pid:number)=>number}} opts Lookups.
  * @param {number} maxInbound The largest inbound total across owners (the normalizer).
- * @returns {{openness:number, inboundNorm:number}} The context.
+ * @returns {{openness:number, inboundNorm:number}}
  */
 function cosmoCtx(owner, opts, maxInbound) {
   const openness = typeof opts.openness === "function" ? opts.openness(owner) : 1;
@@ -158,7 +158,7 @@ function cosmoCtx(owner, opts, maxInbound) {
 }
 
 /**
- * The largest inbound total across the entries' owners — the normalizer that makes `inboundNorm`
+ * The largest inbound total across the entries' owners, the normalizer that makes `inboundNorm`
  * relative to the busiest destination in the game rather than an arbitrary constant.
  * @param {*[]} entries Ledger entries ({owner}).
  * @param {{inbound?:(pid:number)=>number}} opts Lookups.
@@ -181,7 +181,7 @@ function maxInboundOf(entries, opts) {
  * @param {{openness?:(pid:number)=>number, inbound?:(pid:number)=>number,
  *   visible?:(pid:number)=>boolean}} [opts] Per-owner lookups for the cosmopolitanism context
  *   (omitted → neutral openness, zero inbound), plus `visible`: the caller's spoiler-mask predicate.
- *   Hidden owners' settlements are dropped BEFORE the cap, so masking never spends a visible row.
+ *   Hidden owners' settlements are dropped before the cap, so masking never spends a visible row.
  * @param {number} [limit] Max rows.
  * @returns {*[]} Ranked rows ({key, name, owner, total, civs, originsAbove5, index, noMajority,
  *   dominantCiv, dominantShare, runnerUpShare, cosmo}).
@@ -197,13 +197,13 @@ export function rankDiversity(entries, opts, limit) {
     const dom = e.comp.dominant;
     return {
       key: e.key, name: e.name, owner: e.owner, total: e.comp.total,
-      // The raw origin breakdown, share-sorted. The VIEW needs it to draw the composition bar; it is
-      // passed through unresolved (civ ids, not names/colours) so this module stays engine-free —
+      // The raw origin breakdown, share-sorted. The view needs it to draw the composition bar; it is
+      // passed through unresolved (civ ids, not names/colours) so this module stays engine-free;
       // gather resolves and spoiler-masks it.
       civs: e.comp.civs,
       originsAbove5: s.originsAbove5, index: s.index, noMajority: s.noMajority,
       dominantCiv: dom ? dom.civ : null, dominantShare: dom ? dom.share : 0,
-      // The second-largest origin's share: the view needs the GAP to the dominant one to tell a named
+      // The second-largest origin's share: the view needs the gap to the dominant one to tell a named
       // plurality ("Egyptian plurality") from a genuine scatter with no clear leader ("no majority").
       runnerUpShare: e.comp.civs.length > 1 ? e.comp.civs[1].share : 0,
       cosmo: cosmopolitanism(e.comp, cosmoCtx(e.owner, o, maxInbound))

@@ -67,7 +67,7 @@ function testStandingPlagueAccumulatesThenDecays() {
   assert.ok(close(step(cityA, 4), 6));
 }
 
-// ── §3 impact-scaled disaster damage ────────────────────────────────────────
+// §3 impact-scaled disaster damage
 // Defaults for the impact-scaling block (each test restores what it changes).
 function setImpactDefaults() {
   CONFIG.disastersEnabled = true;
@@ -150,7 +150,7 @@ function decayTailSum(costMultiplier) {
   return sum;
 }
 
-// (4) The ÷S shock makes the TOTAL bite (area under the decay tail) roughly speed-invariant, Marathon
+// (4) The ÷S shock makes the total bite (area under the decay tail) roughly speed-invariant, Marathon
 // costs about the same overall as Standard, instead of ~S× more.
 function testSpeedInvarianceOfTotalBite() {
   setImpactDefaults();
@@ -158,7 +158,7 @@ function testSpeedInvarianceOfTotalBite() {
   const std = decayTailSum(100); // Standard, S=1
   const mar = decayTailSum(300); // Marathon, S=3
   assert.ok(Math.abs(mar - std) / std < 0.35, `Marathon total (${mar.toFixed(1)}) ≈ Standard (${std.toFixed(1)})`);
-  // And prove the fix matters: with the shock OFF, Marathon's total balloons well past Standard.
+  // And the fix matters: with the shock off, Marathon's total balloons well past Standard.
   CONFIG.disasterSpeedShockEnabled = false;
   const marNoShock = decayTailSum(300);
   assert.ok(marNoShock > std * 1.5, "without the shock, Marathon pays far more than Standard");
@@ -205,8 +205,8 @@ function testFlagsOffIsLegacy() {
 
 // (7) Strike-floor calibration: a CONFIRMED-but-unmeasurable strike (m floored to disasterStrikeFloor)
 // must still bite hard enough to matter. A volcano at the floor clears disasterFleeThreshold (so a
-// struck city actually sheds refugees instead of silently doing nothing — the bug this fixes), while a
-// thunderstorm at the same floor stays BELOW it (a minor event correctly registers only as ambient
+// struck city actually sheds refugees instead of silently doing nothing, the bug this fixes), while a
+// thunderstorm at the same floor stays below it (a minor event correctly registers only as ambient
 // distress). Guards the gamma × CLASS_WEIGHT × floor calibration the fix depends on.
 function testStrikeFloorClearsFleeThreshold() {
   setImpactDefaults();

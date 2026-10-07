@@ -32,7 +32,7 @@ if (asJson) console.log(JSON.stringify(out, null, 2));
 else console.log(`value=${mismatches}`);
 
 if (asCheck && mismatches > 0) {
-  console.error(`save_load_invariant_mismatch_count=${mismatches} (expected 0) — failing persistence harnesses:`);
+  console.error(`save_load_invariant_mismatch_count=${mismatches} (expected 0), failing persistence harnesses:`);
   for (const r of results) if (!r.pass) console.error(`  ${r.test}`);
   process.exit(1);
 }

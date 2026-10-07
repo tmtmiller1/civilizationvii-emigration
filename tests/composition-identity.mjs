@@ -41,7 +41,7 @@ function seed() {
   s.cities["1,1"].byCiv = { [ROME]: 20, [CARTHAGE]: 10 };
 }
 
-// ── Item 2, instant path ─────────────────────────────────────────────────────────────────────
+// Item 2, instant path
 seed();
 {
   const mix = originMixForCity(romeCity);
@@ -56,7 +56,7 @@ seed();
   near(pts(athensCity, ROME), 2, "Athens gains 2 Romans");
 }
 
-// ── Item 2, lagged depart/arrive pair ───────────────────────────────────────────────────────
+// Item 2, lagged depart/arrive pair
 seed();
 {
   const mix = originMixForCity(romeCity);
@@ -79,7 +79,7 @@ seed();
   near(pts(athensCity, ROME), 2, "and 2 Romans");
 }
 
-// ── Old transit entries (no originMix) keep today's attribution ──────────────────────────────
+// Old transit entries (no originMix) keep today's attribution
 seed();
 {
   const legacy = stateTest.normalizeTransitEntry({ destKey: "2:1", arriveTurn: 5, people: 1, srcOwner: ROME,
@@ -90,7 +90,7 @@ seed();
   near(pts(athensCity, ROME), 1, "a legacy arrival counts as the source owner's people");
 }
 
-// ── Returnees keep their specific origin over any mix ────────────────────────────────────────
+// Returnees keep their specific origin over any mix
 seed();
 {
   const ret = { srcOwner: ROME, srcName: "Rome", srcLoc: "1,1", destOwner: CARTHAGE, destName: "Carthage",
@@ -101,14 +101,14 @@ seed();
   near(pts(romeCity, ROME), 20, "and no Roman leaves with them");
 }
 
-// ── O3: two cities with one display name ─────────────────────────────────────────────────────
+// O3: two cities with one display name
 {
   __test.reset();
   const alexA = { location: { x: 2, y: 2 }, name: "Alexandria" };
   const alexB = { location: { x: 7, y: 7 }, name: "Alexandria" };
   _turn = 1;
   __test.recordCompositionPass([sig(romeCity, ROME, 30), sig(alexA, ATHENS, 10), sig(alexB, CARTHAGE, 10)], []);
-  // Into the FIRST Alexandria; the name map would resolve to whichever was listed last (the second).
+  // Into the first Alexandria; the name map would resolve to whichever was listed last (the second).
   const rec = moveRecord(sig(romeCity, ROME, 30), sig(alexA, ATHENS, 10), 1000, "opportunity",
     { destPaidCost: 0, originMix: { [ROME]: 1 } });
   _turn = 2;

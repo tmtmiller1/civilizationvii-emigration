@@ -5,9 +5,9 @@
 // which release.sh flips to false in the shipped copy, so a published build runs silently (it still moves
 // population, it just stops emitting diagnostics).
 //
-// This used to ALSO write each message as an unparseable CSS declaration (the "Unable to parse declaration:
-// border-top-color - EMIG_..." lines), from when console output did not reach UI.log. It does now: on 2026-09-18
-// every such line had an intact "[Emigration]" twin, so that second channel was removed.
+// This used to also write each message as an unparseable CSS declaration (the "Unable to parse declaration:
+// border-top-color - EMIG_..." lines), from when console output did not reach UI.log. It does now (checked
+// 2026-09-18), so that second channel was removed.
 
 const DBG = true;
 

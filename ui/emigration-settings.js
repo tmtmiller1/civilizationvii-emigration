@@ -1,7 +1,7 @@
 // emigration-settings.js
 //
 // Runtime bridge for the mod's preferences and tunables: reads/writes them through the
-// cascade-safe ModOptions store WITHOUT importing the Options-screen UI, so the core gameplay
+// cascade-safe ModOptions store without importing the Options-screen UI, so the core gameplay
 // loop never depends on the options chunk loading.
 
 import { CONFIG, CONFIG_DEFAULTS } from "/emigration/ui/emigration-config.js";
@@ -17,7 +17,7 @@ import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigrat
 // from a UIScript that has no `import` statements.
 class ModOptionsStore {
   /**
-   * Read the multi-tenant `modSettings` object in preparation for a WRITE without ever destroying
+   * Read the multi-tenant `modSettings` object in preparation for a write without ever destroying
    * another mod's slice: re-read once on an empty first read (Coherent returns transient empties),
    * refuse to write (`safe:false`) when the value is present but not a round-trippable object, and
    * only a genuinely-absent value yields a fresh `{}`.
@@ -41,7 +41,7 @@ class ModOptionsStore {
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
       return { root: {}, safe: false };
     }
-    // Coherent's getItem() can return the value of the FIRST key in the store instead of the one asked
+    // Coherent's getItem() can return the value of the first key in the store instead of the one asked
     // for, i.e. some other mod's blob. A real settings root is { "<modId>": {...}, ... } (every
     // top-level value an object); on a mismatch decline to persist rather than copy a foreign blob in.
     const looksLikeSettingsRoot = Object.keys(parsed).every((k) => {
@@ -113,7 +113,7 @@ class ModOptionsStore {
   }
 
   /**
-   * Persist a value, only ever adding/updating our OWN slice, to BOTH backends: the shared
+   * Persist a value, only ever adding/updating our own slice, to both backends: the shared
    * localStorage blob and, in-game, the GameConfiguration mirror. The mirror runs even when the
    * localStorage write is refused or throws, so an in-game save always lands somewhere reliable.
    * @param {string} modID Owning mod id. @param {string} optionID @param {*} value
@@ -133,7 +133,7 @@ class ModOptionsStore {
   }
 
   /**
-   * Read a value. PREFERS the durable GameConfiguration store when a game is present (so a mid-game
+   * Read a value. Prefers the durable GameConfiguration store when a game is present (so a mid-game
    * change survives the Options screen being reopened in a fresh isolate); falls back to the shared
    * localStorage blob for the shell and for any option not yet written in-game.
    * @param {string} modID Owning mod id. @param {string} optionID
@@ -211,7 +211,7 @@ export function setNumberMode(mode) {
 let _sample = null;
 
 /**
- * Whether the dashboard should render synthetic SAMPLE data (preview mode). Default false (live).
+ * Whether the dashboard should render synthetic sample data (preview mode). Default false (live).
  * @returns {boolean} True when sample mode is on.
  */
 export function getSampleData() {
@@ -270,7 +270,7 @@ let _minimize = null;
 
 /**
  * Whether the migration dashboard hides its heavy analytics tabs (the animated Network diagram and
- * the Causes pie charts). Default OFF (everything shown); re-read each time the dashboard rebuilds
+ * the Causes pie charts). Default off (everything shown); re-read each time the dashboard rebuilds
  * its tab list, so toggling it takes effect on the next open.
  * @returns {boolean} True when analytics tabs are hidden.
  */
@@ -278,7 +278,7 @@ export function getMinimizeAnalytics() {
   resetCachesOnNewGame();
   if (_minimize == null) {
     const v = ModOptions.load(MOD_ID, OPT_MINIMIZE);
-    _minimize = v == null ? false : v === 1; // default OFF; persisted as 1/0
+    _minimize = v == null ? false : v === 1; // default off; persisted as 1/0
   }
   return _minimize;
 }
@@ -302,7 +302,7 @@ export function getShowDockButton() {
   resetCachesOnNewGame();
   if (_dock == null) {
     const v = ModOptions.load(MOD_ID, OPT_DOCK);
-    _dock = v == null ? true : v === 1; // default ON; persisted as 1/0
+    _dock = v == null ? true : v === 1; // default on; persisted as 1/0
   }
   return _dock;
 }
@@ -320,7 +320,7 @@ export function setShowDockButton(on) {
 let _dilemma = null;
 
 /**
- * Whether the occasional refugee-DECISION pop-up is enabled. Default ON. When off, the rare narrative
+ * Whether the occasional refugee-decision pop-up is enabled. Default on. When off, the rare narrative
  * dilemmas never appear (the rest of the mod is unaffected). The simulation never depends on this.
  * @returns {boolean} True when refugee dilemmas may appear.
  */
@@ -328,7 +328,7 @@ export function getDilemmasEnabled() {
   resetCachesOnNewGame();
   if (_dilemma == null) {
     const v = ModOptions.load(MOD_ID, OPT_DILEMMA);
-    _dilemma = v == null ? true : v === 1; // default ON; persisted as 1/0
+    _dilemma = v == null ? true : v === 1; // default on; persisted as 1/0
   }
   return _dilemma;
 }
@@ -346,8 +346,8 @@ export function setDilemmasEnabled(on) {
 let _integration = null;
 
 /**
- * Whether ethnic INTEGRATION (newcomers drifting toward the host identity over time) is enabled.
- * Default ON. Falls back to the CONFIG default when there's no saved preference.
+ * Whether ethnic integration (newcomers drifting toward the host identity over time) is enabled.
+ * Default on. Falls back to the CONFIG default when there's no saved preference.
  * @returns {boolean} True when integration runs.
  */
 export function getIntegrationEnabled() {
@@ -372,7 +372,7 @@ export function setIntegrationEnabled(on) {
 let _return = null;
 
 /**
- * Whether RETURN migration (diasporas going home when the homeland recovers) is enabled. Default ON.
+ * Whether return migration (diasporas going home when the homeland recovers) is enabled. Default on.
  * Falls back to the CONFIG default when there's no saved preference.
  * @returns {boolean} True when return migration runs.
  */
@@ -398,7 +398,7 @@ export function setReturnEnabled(on) {
 let _vis = null;
 
 /**
- * Emigration's OWN analytics-visibility override for its dashboard tabs (the cross-mod read of the
+ * Emigration's own analytics-visibility override for its dashboard tabs (the cross-mod read of the
  * Demographics setting is unreliable). 0 = follow the Demographics "Analytics visibility" setting
  * (default); 1 = always hide unmet civs; 2 = always show all civs.
  * @returns {number} 0 (auto), 1 (hide unmet), or 2 (show all).
@@ -421,7 +421,7 @@ export function setVisibilityOverride(v) {
   ModOptions.save(MOD_ID, OPT_VISIBILITY, _vis);
 }
 
-// The lazy UI-preference caches above read the per-save GameConfiguration store first, so a NEW game
+// The lazy UI-preference caches above read the per-save GameConfiguration store first, so a new game
 // started inside a still-live isolate must drop them (each getter calls resetCachesOnNewGame() before
 // its cache check). The tunables below are uncached, so they are already correct per-save.
 registerCacheReset(() => {
@@ -436,7 +436,7 @@ registerCacheReset(() => {
   _vis = null;
 });
 
-// ── Tunables (exposed CONFIG knobs) ───────────────────────────────────────
+// Tunables (exposed CONFIG knobs)
 
 /**
  * The current value of a tunable: its saved override, else the pristine default.
@@ -480,7 +480,7 @@ export function isTunableModified(key) {
   return getTunable(key) !== CFG_DEF[key];
 }
 
-// Every CONFIG key the player can change: the advanced tunables PLUS any key a preset writes (some
+// Every CONFIG key the player can change: the advanced tunables plus any key a preset writes (some
 // preset keys (e.g. movesPerSiege) aren't individually exposed as tunables, but a preset still sets
 // them, so they must be restored here too or they'd silently revert to default on the next re-apply).
 const OVERRIDE_KEYS = [...new Set([
@@ -489,7 +489,7 @@ const OVERRIDE_KEYS = [...new Set([
 ])];
 
 /**
- * Push every saved tunable / preset override into the live CONFIG. Called at boot AND at the start of
+ * Push every saved tunable / preset override into the live CONFIG. Called at boot and at the start of
  * every pass (emigration-main), so a preset or tunable changed mid-game in the Options screen, which
  * runs in a separate isolate and can only persist, takes effect on the next pass instead of next load.
  */
@@ -521,7 +521,7 @@ export function applyPresetIndex(index) {
 
 /**
  * Mark the intensity preset as "Custom" (index 0) when the player hand-edits a value in the Advanced
- * editor. Does NOT touch any tunable value.
+ * editor. Does not touch any tunable value.
  */
 export function markPresetCustom() {
   ModOptions.save(MOD_ID, OPT_PRESET, 0);

@@ -11,7 +11,7 @@
 // HOW IT CAN TELL. The mod keeps, per city, a COUNTERFACTUAL intensity -- the same observations scored under
 // the old rules, decaying by the same factor (emigration-violence-audit.js). That removes the problem an A/B
 // pair of game runs would have, where the two games diverge as soon as the first migration differs. Every
-// comparison here is between two scorings of the SAME fighting on the SAME turn.
+// comparison here is between two scorings of the same fighting on the same turn.
 //
 // Read through globals, never imports: an import gives this probe its own, never-started copy of a module.
 //   globalThis.emigration          the bootstrap control (set at the top of boot)

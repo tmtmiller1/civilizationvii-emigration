@@ -1,6 +1,6 @@
 // emigration-city-features.js
 //
-// Reads a settlement's REAL geography and buildings into a small set of "feature keys" (coast, river,
+// Reads a settlement's real geography and buildings into a small set of "feature keys" (coast, river,
 // mountain, granary, temple, market, walls), so the Migration Chronicle can say where a diaspora
 // settled without inventing a feature. Every engine read is guarded; an unreadable plot adds no key.
 
@@ -18,7 +18,7 @@ const BUILDING_KEYS = [
 /**
  * Whether a guarded GameplayMap predicate is present and true for a plot.
  * @param {*} G The GameplayMap global (or null). @param {string} name The predicate method name.
- * @param {number} x Plot x. @param {number} y Plot y. @returns {boolean} True when present and true.
+ * @param {number} x @param {number} y @returns {boolean}
  */
 function plotIs(G, name, x, y) {
   return !!(G && typeof G[name] === "function" && G[name](x, y));
@@ -27,7 +27,7 @@ function plotIs(G, name, x, y) {
 /**
  * Add the terrain feature keys true of one plot (coast/river/mountain) to `out`. Each check is
  * independent and guarded; an unreadable plot adds nothing.
- * @param {number} x Plot x. @param {number} y Plot y. @param {Set<string>} out Accumulator.
+ * @param {number} x @param {number} y @param {Set<string>} out
  */
 function addTerrainKeys(x, y, out) {
   try {
@@ -61,7 +61,7 @@ function constructibleTypeName(cid) {
 /**
  * Add the building feature keys true of one plot (granary/temple/market/walls) to `out`, by reading
  * the plot's constructibles and matching their types.
- * @param {number} x Plot x. @param {number} y Plot y. @param {Set<string>} out Accumulator.
+ * @param {number} x @param {number} y @param {Set<string>} out
  */
 function addBuildingKeys(x, y, out) {
   try {
@@ -81,10 +81,10 @@ function addBuildingKeys(x, y, out) {
 }
 
 /**
- * The set of REAL feature keys a settlement has across its owned plots, terrain (coast/river/
- * mountain) and notable buildings (granary/temple/market/walls). Fully guarded: an unreadable city
+ * The set of real feature keys a settlement has across its owned plots, terrain (coast/river/
+ * mountain) and notable buildings (granary/temple/market/walls). An unreadable city
  * yields an empty set, and the caller falls back to a generic quarter phrase. Never throws.
- * @param {*} city A city object. @returns {Set<string>} The present feature keys.
+ * @param {*} city @returns {Set<string>} The present feature keys.
  */
 export function cityFeatureKeys(city) {
   const out = new Set();

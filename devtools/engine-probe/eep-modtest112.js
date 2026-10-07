@@ -11,7 +11,7 @@
 //   Q4. Payload shapes. Every combat-ish event is logged with its full key set and JSON. Whatever the fields
 //       turn out to be is what a future event-driven violence signal can actually use.
 //   Q5. Fog. attackersNear() has been asserted three times to be fog-limited and never tested. It is run here
-//       against EVERY met civilization's cities, not just ours, alongside the revealed state of the city plot.
+//       against every met civilization's cities, not just ours, alongside the revealed state of the city plot.
 //       Hostile units reported at a city on a plot we do not currently see would disprove the assumption and
 //       widen where unit-reading can be trusted.
 //

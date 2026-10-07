@@ -1,7 +1,7 @@
 // emigration-city-flows.js
 //
-// The per-entry "came from / left for" breakdown shared by the SETTLEMENTS tab (a card per local
-// settlement, with kind + pressure) and the CAUSES tab (a card per civ, with a cause-by-count list).
+// The per-entry "came from / left for" breakdown shared by the Settlements tab (a card per local
+// settlement, with kind + pressure) and the Causes tab (a card per civ, with a cause-by-count list).
 // Each direction is a pie (by the other civ) + a one-line cause summary.
 
 import { pieCardSlices, legendChips } from "/emigration/ui/emigration-pies.js";
@@ -16,9 +16,9 @@ import { loc } from "/emigration/ui/emigration-loc.js";
 /**
  * Make an element with an optional class + text.
  * @param {string} tag
- * @param {string} [cls] Class.
+ * @param {string} [cls]
  * @param {string} [text]
- * @returns {HTMLElement} Element.
+ * @returns {HTMLElement}
  */
 function el(tag, cls, text) {
   const e = document.createElement(tag);
@@ -48,11 +48,11 @@ const DIED_ID = -3;
 
 /**
  * Pie slices for a direction's civ breakdown (colored by the other civ; "Died" dark red, "Unmet"
- * gray). The slice SHARE (`value`) is always the raw pop-POINTS base so a slice's % does not shift
+ * gray). The slice share (`value`) is always the raw pop-points base so a slice's % does not shift
  * with the Scaled/Civ Pop toggle; only `countText` follows it. Points fall back to people.
- * @param {{id:number, name:string, people:number, points:number}[]} civs Civs.
+ * @param {{id:number, name:string, people:number, points:number}[]} civs
  * @returns {{value:number, people:number, points:number, countText:string, color:string,
- *   label:string}[]} Slices.
+ *   label:string}[]}
  */
 function civSlices(civs) {
   const civMode = getNumberMode() === NumberMode.CIV;
@@ -74,7 +74,7 @@ function civSlices(civs) {
  * @param {string} whyPrefix "Why" label.
  * @param {*} dir { civs, causes } for this direction.
  * @param {boolean} isArrivals True for the Immigrants column (selects the empty-state label).
- * @returns {HTMLElement} The column.
+ * @returns {HTMLElement}
  */
 function directionCol(title, whyPrefix, dir, isArrivals) {
   const col = el("div", "emig-city-col");
@@ -107,7 +107,7 @@ function directionCol(title, whyPrefix, dir, isArrivals) {
  * A settlement's display title: name + (City)/(Town) when the kind is known (civ entries on the
  * Causes tab carry no `town` flag, so they get no suffix).
  * @param {*} c Entry.
- * @returns {string} Title.
+ * @returns {string}
  */
 function cardTitle(c) {
   if (c.town === true) return loc("LOC_EMIG_CF_TITLE_TOWN", "{1_Name} (Town)", c.name);
@@ -127,7 +127,7 @@ const PR_BANDS = [
 /**
  * The band (label + color) for an emigration-pressure level.
  * @param {number} bar Pressure 0..1.
- * @returns {{label:string, color:string}} The band.
+ * @returns {{label:string, color:string}}
  */
 function pressureBand(bar) {
   for (const b of PR_BANDS) {
@@ -137,9 +137,9 @@ function pressureBand(bar) {
 }
 
 /**
- * The settlement's named reasons to STAY, as one comma-separated line: its wonders and civic buildings,
+ * The settlement's named reasons to stay, as one comma-separated line: its wonders and civic buildings,
  * resolved from the name tags the built-environment model collected. A tag the engine cannot compose
- * is DROPPED rather than printed raw.
+ * is dropped rather than printed raw.
  * @param {*} tags The LOC name tags, or anything else.
  * @returns {string} The joined list, or "" when there is nothing nameable.
  */
@@ -157,7 +157,7 @@ function stayLine(tags) {
 
 /**
  * Append the "Reasons to stay" row to a pressure column, when there is anything nameable to say.
- * @param {HTMLElement} col The column. @param {*} tags The LOC name tags.
+ * @param {HTMLElement} col @param {*} tags The LOC name tags.
  */
 function appendStayRow(col, tags) {
   const stay = stayLine(tags);
@@ -170,7 +170,7 @@ function appendStayRow(col, tags) {
  * The pressure bar (track + colored fill scaled to the level).
  * @param {number} pct Percentage 0..100.
  * @param {string} color Band color.
- * @returns {HTMLElement} The bar.
+ * @returns {HTMLElement}
  */
 function pressureBar(pct, color) {
   const track = el("div", "emig-pr-track");
@@ -185,7 +185,7 @@ function pressureBar(pct, color) {
  * The Immigration-pressure column for a settlement: a labeled bar (aligned with the two pie
  * columns) showing the level as a percentage + a High/Low band + where its people would head.
  * @param {*} p Pressure {bar, cause, dest, flag} or null.
- * @returns {HTMLElement} The column.
+ * @returns {HTMLElement}
  */
 function pressureCol(p) {
   const col = el("div", "emig-city-col");
@@ -197,12 +197,12 @@ function pressureCol(p) {
   const pct = Math.round((p.bar || 0) * 100);
   const band = pressureBand(p.bar || 0);
   col.appendChild(pressureBar(pct, band.color));
-  // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces.
+  // The separator lives in the code: the game's text loader strips a localized string's edge spaces.
   const flag = p.flag ? " " + loc("LOC_EMIG_CF_FLAG_PAREN", "({1_Flag})", p.flag).trim() : "";
   const val = el("div", "emig-pr-value", pct + "% · " + band.label + flag);
   val.style.color = band.color;
   col.appendChild(val);
-  // The per-city driver meter: the weighted breakdown of WHAT is pushing people out, as proportional
+  // The per-city driver meter: the weighted breakdown of what is pushing people out, as proportional
   // bars, so "exactly what drives migration" reads at a glance. Falls back to a single line otherwise.
   if (Array.isArray(p.mix) && p.mix.length) col.appendChild(driverMeter(p.mix));
   appendStayRow(col, p.stay);
@@ -216,7 +216,7 @@ function pressureCol(p) {
  * the pressure (e.g. War 60% / Prosperity 40%), so a glance shows what's pushing people out and by how
  * much. Reuses the Causes-tab bar styling.
  * @param {{cause:string, label:string, share:number}[]} mix Weighted causes (shares 0–100, largest first).
- * @returns {HTMLElement} The meter.
+ * @returns {HTMLElement}
  */
 function driverMeter(mix) {
   const box = el("div", "emig-driver-meter");
@@ -243,7 +243,7 @@ function driverMeter(mix) {
 /**
  * A centered civ title flanked by fading rule lines (the section-title embellishment).
  * @param {string} name Civ name.
- * @returns {HTMLElement} The header.
+ * @returns {HTMLElement}
  */
 function civHeader(name) {
   const h = el("div", "emig-civ-head");
@@ -256,7 +256,7 @@ function civHeader(name) {
 /**
  * Non-zero cause rows for a per-cause map, sorted by count descending.
  * @param {Record<string,number>} causes Per-cause people.
- * @returns {{cause:string, label:string, color:string, n:number}[]} Rows.
+ * @returns {{cause:string, label:string, color:string, n:number}[]}
  */
 function causeRows(causes) {
   return Object.keys(causes || {})
@@ -284,7 +284,7 @@ function groupEventsByCause(events) {
 /**
  * Push one event into its parent cause bucket (dropping unattributed / zero-impact events).
  * @param {Record<string, *[]>} by Cause → events (mutated).
- * @param {string} key The event key.
+ * @param {string} key
  * @param {{people?:number, deaths?:number}} v The event's tallies.
  */
 function pushEvent(by, key, v) {
@@ -298,7 +298,7 @@ function pushEvent(by, key, v) {
 /**
  * One specific-event sub-row under a cause: "↳ Roman–Greek War  1.9k · 0.3k died".
  * @param {{name:string, people:number, deaths:number}} ev The event.
- * @returns {HTMLElement} The row.
+ * @returns {HTMLElement}
  */
 function eventSubRow(ev) {
   const row = el("div", "emig-event-row");
@@ -314,7 +314,7 @@ function eventSubRow(ev) {
  * One cause row: swatch + label + proportional bar + count.
  * @param {{label:string, color:string, n:number}} r Cause row.
  * @param {number} max Largest count (bar scale).
- * @returns {HTMLElement} The row.
+ * @returns {HTMLElement}
  */
 function causeRow(r, max) {
   const row = el("div", "emig-cause-row");
@@ -334,11 +334,11 @@ function causeRow(r, max) {
 
 /**
  * The civ's cause-by-count list (left column on the Causes tab), sorted so the dominant driver is
- * obvious at a glance. Each cause expands to the SPECIFIC events behind it (the wars/disasters/
+ * obvious at a glance. Each cause expands to the specific events behind it (the wars/disasters/
  * crises, with their emigration + deaths), when `events` carries them.
  * @param {Record<string,number>} causes Per-cause people.
  * @param {Record<string, {people:number, deaths:number}>} [events] Per-event {people, deaths}.
- * @returns {HTMLElement} The list column.
+ * @returns {HTMLElement}
  */
 function causeList(causes, events) {
   const col = el("div", "emig-cause-list");
@@ -358,11 +358,11 @@ function causeList(causes, events) {
 }
 
 /**
- * One card. CAUSES tab (civ entries, `causes` present): centered embellished title, a cause-by-count
- * list on the left, the two pies tightened on the right. SETTLEMENTS tab: name + (City)/(Town), the
+ * One card. Causes tab (civ entries, `causes` present): centered embellished title, a cause-by-count
+ * list on the left, the two pies tightened on the right. Settlements tab: name + (City)/(Town), the
  * two pies, then an emigration-pressure line.
  * @param {*} c Entry { name, town?, in, out, pressure?, causes? }.
- * @returns {HTMLElement} The card.
+ * @returns {HTMLElement}
  */
 function cityCard(c) {
   const card = el("div", "emig-city-card");
@@ -421,7 +421,7 @@ function indexFlowsByCiv(flows) {
  * plus this direction's flow causes.
  * @param {*} d A {civs, causes} flow tally.
  * @param {Map<number,string>} names Civ id → name.
- * @returns {{civs:{id:number,name:string,people:number,points:number}[], causes:Record<string,number>}} Payload.
+ * @returns {{civs:{id:number,name:string,people:number,points:number}[], causes:Record<string,number>}}
  */
 function flowDir(d, names) {
   return {
@@ -444,7 +444,7 @@ function mergeCauses(a, b) {
 }
 
 /**
- * Per-civilization Causes-tab entries: a card for EVERY in-play civ with migration/death activity.
+ * Per-civilization Causes-tab entries: a card for every in-play civ with migration/death activity.
  * The cause list uses the civ's real per-cause tallies (emigration + immigration); the pies come from
  * the cross-civ flow edges.
  * @param {*[]} flows Named flow edges.
@@ -462,7 +462,7 @@ export function buildCivFlows(flows, civs, eventsByOwner) {
     .map((r) => {
       const f = map.get(r.pid) || { in: empty, out: empty };
       const out = flowDir(f.out, names);
-      // Deaths are population LOST with no destination, show them as a "Died" wedge in the
+      // Deaths are population lost with no destination, show them as a "Died" wedge in the
       // Emigrants ("left for/died") pie, so a civ whose loss was deaths isn't a blank pie.
       if ((r.deaths || 0) > 0) {
         out.civs.push({ id: DIED_ID, name: loc("LOC_EMIG_CF_DIED", "Died"), people: r.deaths, points: r.deathsPts || 0 });
@@ -486,10 +486,10 @@ const SECTION_TITLES = {
 };
 
 /**
- * Render the per-entry breakdown (CAUSES: a card per civ; SETTLEMENTS: a card per the local player's
+ * Render the per-entry breakdown (Causes: a card per civ; Settlements: a card per the local player's
  * settlements), under a descriptive tab title. The Scaled / Civ Pop toggle is supplied by the
  * dashboard wrapper (renderDashboardSubtab), which re-renders this section on change.
- * @param {HTMLElement} body Card body.
+ * @param {HTMLElement} body
  * @param {*} section The section ({title, kind, cities}).
  */
 export function renderCityFlows(body, section) {

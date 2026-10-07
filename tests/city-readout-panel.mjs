@@ -12,7 +12,7 @@
 import assert from "node:assert/strict";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
-// ── A minimal DOM: elements track parentNode and support remove() + id lookup. ──
+// A minimal DOM: elements track parentNode and support remove() + id lookup.
 function makeEl(tag) {
   return {
     tagName: tag, id: "", className: "", textContent: "", innerHTML: "", style: {},
@@ -32,11 +32,11 @@ globalThis.document = {
     [...head.children, ...body.children, ...documentElement.children].find((e) => e.id === id) || null
 };
 
-// ── Captured selection subscription. ──
+// Captured selection subscription.
 const handlers = [];
 globalThis.engine = { on: (name, cb) => handlers.push({ name, cb }) };
 
-// ── Fake world so citySnapshot resolves a model. ──
+// Fake world so citySnapshot resolves a model.
 globalThis.YieldTypes = { YIELD_FOOD: "YIELD_FOOD", YIELD_PRODUCTION: "YIELD_PRODUCTION", YIELD_GOLD: "YIELD_GOLD", YIELD_SCIENCE: "YIELD_SCIENCE", YIELD_CULTURE: "YIELD_CULTURE", YIELD_HAPPINESS: "YIELD_HAPPINESS" };
 globalThis.GameplayMap = { getPlotDistance: (ax, ay, bx, by) => Math.abs(ax - bx) + Math.abs(ay - by) };
 globalThis.Culture = { isTraditionActive: () => false };
@@ -60,7 +60,7 @@ Object.assign(CONFIG, {
 
 const { installCityReadout } = await import("/emigration/ui/emigration-city-readout.js");
 
-// ── installCityReadout: console API + selection subscription. ──
+// installCityReadout: console API + selection subscription.
 CONFIG.cityReadoutEnabled = true;
 CONFIG.cityReadoutSparkline = true;
 installCityReadout();
@@ -71,7 +71,7 @@ assert.ok(handlers.length >= 1, "subscribed to at least one selection event");
 
 const panelMounted = () => body.children.some((c) => c.id === "emig-readout");
 
-// ── Show by object → renders + mounts the panel; style injected once. ──
+// Show by object → renders + mounts the panel; style injected once.
 CONFIG.cityReadoutCorner = "top-right";
 api.city(poor);
 assert.ok(panelMounted(), "showing a city mounts the readout panel");
@@ -81,14 +81,14 @@ assert.ok(panel.children.length >= 2, "panel has a title + at least one line");
 assert.equal(panel.style.right, "1rem", "top-right corner positions to the right");
 assert.equal(panel.style.top, "9rem", "top-right corner positions to the top");
 
-// ── Feature E: the readout renders a net-migration sparkline when enabled + history exists. ──
+// Feature E: the readout renders a net-migration sparkline when enabled + history exists.
 const spark = panel.children.find((c) => c.className === "emig-rt-spark");
 assert.ok(spark, "a sparkline strip is rendered");
 assert.equal(spark.children.length, 5, "one bar per net value in the series");
 assert.ok(spark.children.every((b) => b.className === "emig-rt-bar" && b.style.height), "each bar has a height");
 assert.ok(panel.children.some((c) => c.className === "emig-rt-sparklabel"), "the sparkline has a caption");
 
-// ── Re-show with a different corner → repositions, reuses the element (no duplicate mount). ──
+// Re-show with a different corner → repositions, reuses the element (no duplicate mount).
 CONFIG.cityReadoutCorner = "bottom-left";
 api.city(2); // by localId (findSignal localId path)
 const mountedCount = body.children.filter((c) => c.id === "emig-readout").length;
@@ -96,11 +96,11 @@ assert.equal(mountedCount, 1, "re-showing reuses the one panel element");
 assert.equal(panel.style.left, "1rem", "bottom-left corner positions to the left");
 assert.equal(panel.style.bottom, "9rem", "bottom-left corner positions to the bottom");
 
-// ── Show an unknown city → no model → hides the stale panel. ──
+// Show an unknown city → no model → hides the stale panel.
 api.city("no-such-city");
 assert.ok(!panelMounted(), "showing an unresolvable city hides the panel");
 
-// ── Selection events: a payload with a city shows; an empty/None payload hides. ──
+// Selection events: a payload with a city shows; an empty/None payload hides.
 const handler = handlers[0].cb;
 handler({ city: poor });
 assert.ok(panelMounted(), "a city-selection event shows the readout");
@@ -109,7 +109,7 @@ assert.ok(!panelMounted(), "an empty selection hides the readout");
 handler(null); // selectedCityId(null) → null → hide (no throw)
 assert.ok(!panelMounted(), "a null selection payload is handled");
 
-// ── Explicit hide is idempotent. ──
+// Explicit hide is idempotent.
 api.city(poor);
 assert.ok(panelMounted(), "shown again");
 api.hideCity();
@@ -117,15 +117,15 @@ assert.ok(!panelMounted(), "hideCity removes the panel");
 api.hideCity();
 assert.ok(!panelMounted(), "hideCity is idempotent when already hidden");
 
-// ── Disabled → showCityReadout is a no-op (the gate branch). ──
+// Disabled → showCityReadout is a no-op (the gate branch).
 CONFIG.cityReadoutEnabled = false;
 api.city(poor);
 assert.ok(!panelMounted(), "with the readout disabled, nothing renders");
 
-// ── dockInset: the readout moves beside a city-screen panel that holds its corner. ──
+// dockInset: the readout moves beside a city-screen panel that holds its corner.
 const { dockInset } = await import("/emigration/ui/emigration-city-readout.js");
 const VW = 2880;
-const cornerBox = { left: 2481, right: 2864, top: 146, bottom: 431 }; // top-right, 16 px inset (watched in game)
+const cornerBox = { left: 2481, right: 2864, top: 146, bottom: 431 }; // top-right, 16 px inset, as in game
 const cityDetails = { left: 2419, right: 2880, top: 29, bottom: 1800 };
 assert.equal(dockInset(false, VW, cornerBox, []), 16, "no panel: the corner inset stands");
 assert.equal(dockInset(false, VW, cornerBox, [cityDetails]), 2880 - 2419 + 8, "City Details open: docks just left of it");
@@ -140,7 +140,7 @@ assert.equal(dockInset(false, VW, cornerBox, [wide]), null, "no room beside the 
 assert.equal(dockInset(false, VW, cornerBox, [cityDetails, { left: 2300, right: 2600, top: 100, bottom: 300 }]), 2880 - 2300 + 8,
   "overlapping panels: clears the farthest one");
 
-// ── In the DOM: a visible City Details moves the mounted readout; a hidden one does not. ──
+// In the DOM: a visible City Details moves the mounted readout; a hidden one does not.
 CONFIG.cityReadoutEnabled = true;
 CONFIG.cityReadoutCorner = "top-right";
 globalThis.window = { innerWidth: VW };

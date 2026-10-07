@@ -1,6 +1,6 @@
 // eep-game.js - game scope. Hands-free engine probe for the Emigration mod's open questions (run 2).
-//   Q1  does addRuralPopulation(-1)/(+1) change a city's improvements / NET yields / growth threshold?
-//       (measured on LOCAL cities with no Autoplay in between, plus a foreign +1)
+//   Q1  does addRuralPopulation(-1)/(+1) change a city's improvements, net yields or growth threshold?
+//       (measured on local cities with no Autoplay in between, plus a foreign +1)
 //   Q2  does Players.grantYield(pid, YIELD_HAPPINESS, -n) change any city's happiness, or only the
 //       player-level celebration meter?  (answered in run 1: lifetime stockpile only)
 //   Q3  can the local player be handed a UNIT_MIGRANT via CREATE_ELEMENT and RESETTLE it?

@@ -4,8 +4,8 @@
 // pressure table, and the "most diverse cities" ranking. GameFace lays out neither <table> nor CSS
 // grid, so each is built from flexbox rows; styling lives in the dashboard's injected stylesheet.
 //
-// WORDING RULE (the diversity ranking): every string describes where a settlement's people came
-// FROM (its ORIGINS), never "communities", which reads as the Cultural Quarter / enclave system. The
+// Wording rule for the diversity ranking: every string describes where a settlement's people came
+// from (its origins), never "communities", which reads as the Cultural Quarter / enclave system. The
 // cosmopolitanism tier is descriptive and grants no yields; nothing here ranks peoples against each other.
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
@@ -17,9 +17,9 @@ import { loc, localeFontFamily } from "/emigration/ui/emigration-loc.js";
 /**
  * Make an element with an optional class + text.
  * @param {string} tag
- * @param {string} [cls] Class.
+ * @param {string} [cls]
  * @param {string} [text]
- * @returns {HTMLElement} Element.
+ * @returns {HTMLElement}
  */
 function el(tag, cls, text) {
   const e = document.createElement(tag);
@@ -32,7 +32,7 @@ function el(tag, cls, text) {
  * The stance-impact detail sentence for a civ's Borders row: how its border policy changed its
  * migration vs a neutral-borders baseline.
  * @param {*} r Stance row ({key, in, inImpact, outImpact}).
- * @returns {string} The detail text.
+ * @returns {string}
  */
 function stanceDetailText(r) {
   if (r.key === "none") return loc("LOC_EMIG_DV_STANCE_NONE", "No border policy, migration unaffected.");
@@ -57,7 +57,7 @@ function stanceDetailText(r) {
 /**
  * Render border stances: per civ a name + colored Pro/Anti/Neutral tag, then a sentence
  * quantifying how the stance changed that civ's migration (the stance-impact counterfactual).
- * @param {HTMLElement} body Card body.
+ * @param {HTMLElement} body
  * @param {*[]} rows Stance rows.
  */
 export function renderStances(body, rows) {
@@ -72,7 +72,7 @@ export function renderStances(body, rows) {
   }
 }
 
-// ── "Most diverse cities" ranking ──────────────────────────
+// "Most diverse cities" ranking
 
 /** Cosmopolitanism tier key → display label. Keys match emigration-diversity's COSMO_TIERS. */
 /** @type {Record<string,string>} */
@@ -94,7 +94,7 @@ const PLURALITY_GAP = 0.05;
  * mask hides carries no name, so it falls back to the unnamed "no majority" phrasing rather than
  * leaking that an unmet civ's people live there.
  * @param {*} r A ranking row ({dominantName, dominantShare, runnerUpShare}).
- * @returns {string} The phrase.
+ * @returns {string}
  */
 function mixPhrase(r) {
   const noMajority = loc("LOC_EMIG_DIVERSE_NO_MAJORITY", "no majority");
@@ -110,9 +110,9 @@ const ORIGIN_MIN_SHARE = 0.05;
 /**
  * "Most diverse cities" rows: per settlement its resolved origin slices, population, mix shape and
  * cosmopolitanism tier. Pure formatting over an already-ranked, already-masked list; `origins` is
- * counted from the DISPLAYED slices so the text never disagrees with the bar beside it.
+ * counted from the displayed slices so the text never disagrees with the bar beside it.
  * @param {*[]} ranking Ranked rows from diverseCityRanking (each carrying resolved `parts`).
- * @param {{cosmo?:boolean}} [opts] `cosmo` includes the Cosmopolitanism (Character) column — the
+ * @param {{cosmo?:boolean}} [opts] `cosmo` includes the Cosmopolitanism (Character) column, the
  *   separately-flagged one. Off → `character` is null and the renderer drops the column.
  * @returns {*[]} Display rows ({city, parts, pts, people, origins, mix, character}).
  */
@@ -158,13 +158,13 @@ export function diversitySections(d) {
  * One row of the ranking table (reuses the per-city pressure table's column styling).
  * @param {*[]} cells Cell contents (text or element): settlement, bar, population, mix, [character].
  * @param {string} [cls] Extra row class (e.g. the header).
- * @returns {HTMLElement} The row.
+ * @returns {HTMLElement}
  */
 function diversityRow(cells, cls) {
   const row = el("div", "emig-pr-row" + (cls ? " " + cls : ""));
   cells.forEach((c, i) => {
     // Column 1 is the settlement name (wider, highlighted); column 2 is the composition bar, which
-    // needs the room — the rest are short text.
+    // needs the room; the rest are short text.
     const cell = el("div", "emig-pr-c" + (i === 0 ? " name" : i === 1 ? " pres" : ""));
     if (c && typeof c === "object") cell.appendChild(/** @type {HTMLElement} */(c));
     else cell.textContent = c == null ? "" : String(c);
@@ -174,12 +174,12 @@ function diversityRow(cells, cls) {
 }
 
 /**
- * A settlement's ORIGIN COMPOSITION BAR: one colored slice per origin, sized to its share, in the
- * origin civ's banner color. The bar's WIDTH is scaled to the settlement's population against the
+ * A settlement's origin composition bar: one colored slice per origin, sized to its share, in the
+ * origin civ's banner color. The bar's width is scaled to the settlement's population against the
  * largest in the table, so the column reads as a population comparison; styling is inline (data-driven geometry).
  * @param {*} r A display row ({parts, people}).
  * @param {number} maxPeople The largest population in the table (the width normalizer).
- * @returns {HTMLElement} The bar.
+ * @returns {HTMLElement}
  */
 function compositionBar(r, maxPeople) {
   const track = el("div");
@@ -197,9 +197,9 @@ function compositionBar(r, maxPeople) {
 
 /**
  * The color key for the bars: every origin appearing in the table, once, with its swatch. Without
- * it the bars are pretty but undecodable — this is what says "blue = Roman".
+ * it the bars are pretty but undecodable; this is what says "blue = Roman".
  * @param {*[]} rows Display rows.
- * @returns {HTMLElement} The legend.
+ * @returns {HTMLElement}
  */
 function originLegend(rows) {
   const seen = new Map();
@@ -220,9 +220,9 @@ function originLegend(rows) {
 
 /**
  * The rendering context shared by both tables, so the "All settlements" list is formatted
- * IDENTICALLY to the ranking above it (same columns, same bars, one population scale).
+ * identically to the ranking above it (same columns, same bars, one population scale).
  * @param {*[]} rows All display rows.
- * @returns {{cells:(c:*[])=>*[], mode:number, maxPeople:number}} The context.
+ * @returns {{cells:(c:*[])=>*[], mode:number, maxPeople:number}}
  */
 function diversityCtx(rows) {
   // The Cosmopolitanism column is flagged separately: the builder nulls `character` when it's off,
@@ -232,7 +232,7 @@ function diversityCtx(rows) {
   return {
     cells: (/** @type {*[]} */ c) => (showChar ? c : c.slice(0, 4).concat(c.slice(5))),
     mode: getNumberMode(),
-    // Normalized across EVERY row, not per table, so a bar means the same population in both lists.
+    // Normalized across every row, not per table, so a bar means the same population in both lists.
     maxPeople: rows.reduce((m, r) => Math.max(m, r.people || 0), 0) || 1
   };
 }
@@ -240,7 +240,7 @@ function diversityCtx(rows) {
 /**
  * The shared column header row.
  * @param {*} ctx The render context.
- * @returns {HTMLElement} The header.
+ * @returns {HTMLElement}
  */
 function diversityHead(ctx) {
   return diversityRow(ctx.cells([
@@ -257,7 +257,7 @@ function diversityHead(ctx) {
  * One settlement's row: name, origin bar, population + origin count, the mix's shape, its tier.
  * @param {*} r A display row.
  * @param {*} ctx The render context.
- * @returns {HTMLElement} The row.
+ * @returns {HTMLElement}
  */
 function diversityDataRow(r, ctx) {
   return diversityRow(ctx.cells([
@@ -270,7 +270,7 @@ function diversityDataRow(r, ctx) {
  * A civ sub-heading inside the full list.
  * @param {string} name The civ's name.
  * @param {boolean} own Whether it's the local player's.
- * @returns {HTMLElement} The heading.
+ * @returns {HTMLElement}
  */
 function civHeading(name, own) {
   const h = el("div", "emig-dv-civ", own ? loc("LOC_EMIG_DIVERSE_YOUR_CIV", "{1_Civ} (you)", name) : name);
@@ -281,10 +281,10 @@ function civHeading(name, own) {
 
 /**
  * Group the rows by owning civ for the full list: the local player's settlements first (that's the
- * list's main job — placing YOUR cities, which the top-N ranking may omit entirely), then the rest
+ * list's main job: placing your cities, which the top-N ranking may omit entirely), then the rest
  * alphabetically. Within a civ the diversity order is preserved.
  * @param {*[]} rows All display rows (already diversity-sorted).
- * @returns {{name:string, own:boolean, rows:*[]}[]} The groups.
+ * @returns {{name:string, own:boolean, rows:*[]}[]}
  */
 function groupByCiv(rows) {
   /** @type {Map<string, {name:string, own:boolean, rows:*[]}>} */
@@ -300,10 +300,10 @@ function groupByCiv(rows) {
 }
 
 /**
- * The "All settlements" list: EVERY visible settlement, grouped by civ, in the same row format as the
+ * The "All settlements" list: every visible settlement, grouped by civ, in the same row format as the
  * top-N ranking above, so small or homogeneous settlements still appear on the tab. Skipped when the
  * ranking already shows everything.
- * @param {HTMLElement} body Card body.
+ * @param {HTMLElement} body
  * @param {*[]} rows All display rows.
  * @param {*} ctx The render context.
  */
@@ -324,9 +324,9 @@ function renderAllSettlements(body, rows, ctx) {
 
 /**
  * Render the diversity tab: the "most diverse cities" podium (each settlement a population-scaled
- * bar broken into its people's ORIGINS, then the mix's shape and its cosmopolitanism tier), a color
+ * bar broken into its people's origins, then the mix's shape and its cosmopolitanism tier), a color
  * key naming every origin, and below it the full by-civ list of every settlement.
- * @param {HTMLElement} body Card body.
+ * @param {HTMLElement} body
  * @param {*[]} rows Diversity rows (from diverseCityRows), diversity-sorted, uncapped.
  */
 export function renderDiversity(body, rows) {
@@ -338,7 +338,7 @@ export function renderDiversity(body, rows) {
   wrap.appendChild(diversityHead(ctx));
   for (const r of top) wrap.appendChild(diversityDataRow(r, ctx));
   body.appendChild(wrap);
-  // The key covers ALL rows, not just the podium's, so it decodes the full list below too.
+  // The key covers all rows, not just the podium's, so it decodes the full list below too.
   body.appendChild(originLegend(rows));
   const note = el("div", "emig-diverse-note",
     loc("LOC_EMIG_COSMO_DESC", "Describes the mix of origins living in each settlement. No yields attached."));
@@ -349,8 +349,8 @@ export function renderDiversity(body, rows) {
 
 /**
  * The one-line explainer under the title. The tab is otherwise easy to misread as being about
- * Cultural Quarters / enclaves, so it says plainly what a bar IS.
- * @returns {HTMLElement} The subtitle.
+ * Cultural Quarters / enclaves, so it says plainly what a bar is.
+ * @returns {HTMLElement}
  */
 function subtitle() {
   const s = el("div", "emig-dv-sub", loc("LOC_EMIG_DIVERSE_SUBTITLE",

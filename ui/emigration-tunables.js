@@ -25,8 +25,8 @@
  */
 
 /**
- * The diaspora "foothold" share milestone — a FIXED chronicle-only threshold (not a player option).
- * It lives in this leaf module (which imports nothing) so that BOTH emigration-diaspora.js and
+ * The diaspora "foothold" share milestone, a fixed chronicle-only threshold (not a player option).
+ * It lives in this leaf module (which imports nothing) so that both emigration-diaspora.js and
  * emigration-composition.js can read it without importing each other (an import cycle can be fatal at load).
  */
 export const QUARTER_FOOTHOLD_SHARE = 0.25;
@@ -207,18 +207,18 @@ export const TUNABLES = [
   { key: "notifyWorldNews", group: "notify", type: "bool", label: "LOC_EMIG_T_NOTIFYWORLDNEWS", desc: "LOC_EMIG_T_NOTIFYWORLDNEWS_D" },
   { key: "worldRefugeeThreshold", group: "notify", type: "choice", values: [20000, 40000, 80000, 150000], format: "count", label: "LOC_EMIG_T_NOTIFYWORLD", desc: "LOC_EMIG_T_NOTIFYWORLD_D" },
   // Readouts & rankings
-  // readout — the migration-intelligence panels. Every readout feature JOINS this group rather than
+  // readout: the migration-intelligence panels. Every readout feature joins this group rather than
   // making its own.
   { key: "diversityRanking", group: "readout", type: "bool", label: "LOC_EMIG_T_DIVERSITY", desc: "LOC_EMIG_T_DIVERSITY_D" },
   { key: "cosmopolitanismScore", group: "readout", type: "bool", label: "LOC_EMIG_T_COSMO", desc: "LOC_EMIG_T_COSMO_D" },
   { key: "diversityRows", group: "readout", type: "choice", values: [3, 5, 8, 12], label: "LOC_EMIG_T_DIVERSITYROWS", desc: "LOC_EMIG_T_DIVERSITYROWS_D" },
   { key: "migrationExplainer", group: "readout", type: "bool", label: "LOC_EMIG_T_EXPLAINER", desc: "LOC_EMIG_T_EXPLAINER_D" },
-  // the per-city readout panel + its sparkline are readout features, so they JOIN this group rather
+  // the per-city readout panel + its sparkline are readout features, so they join this group rather
   // than the notify group.
   { key: "cityReadoutEnabled", group: "readout", type: "bool", label: "LOC_EMIG_T_CITYREADOUT", desc: "LOC_EMIG_T_CITYREADOUT_D" },
   { key: "cityReadoutSparkline", group: "readout", type: "bool", label: "LOC_EMIG_T_SPARKLINE", desc: "LOC_EMIG_T_SPARKLINE_D" },
   // Visuals
-  // visuals — presentation only; nothing here touches the simulation.
+  // visuals: presentation only; nothing here touches the simulation.
   { key: "timelineEventPins", group: "visuals", type: "bool", label: "LOC_EMIG_T_TLPINS", desc: "LOC_EMIG_T_TLPINS_D" },
   // the self-test panel is a UI-only diagnostics tool (touches nothing in the sim), so it belongs here,
   // not under notify.
@@ -262,7 +262,7 @@ export const PRESET_NAMES = ["custom", "low", "medium", "high"];
  */
 export const GROUPED_SETTINGS = {
   // Movement between civilizations: the voluntary cross-civ friction, the refugee escape pull abroad, the
-  // small-civilization brake, and the homeland preference in a crisis. The MIDDLE is the settled default,
+  // small-civilization brake, and the homeland preference in a crisis. The middle is the settled default,
   // 100 is free movement, and below 50 the preference to stay home keeps hardening.
   crossCivMovement: {
     anchors: [

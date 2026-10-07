@@ -3,7 +3,7 @@
 // no turn ending. Logs [EmigTest]; "SHOT" asks for a screenshot.
 //   D0 the 12 plots the mod abandoned this session: owner, owning settlement (town?), district, constructibles,
 //      and whether the plot is in the owning settlement's EXPAND list (what the place-population dialog offers).
-//   D1 every settlement: owned plots that carry a RURAL district with NO constructible, and how many of those
+//   D1 every settlement: owned plots that carry a rural district with no constructible, and how many of those
 //      are offered by EXPAND; plus a baseline: owned plots with no district and whether EXPAND offers them.
 //   D2 the candidate fix on existing dead plots: DESTROY_ELEMENT {Kind:"DISTRICT"} (the tuner's form), then
 //      re-read district / ownership / EXPAND. Up to 3 local plots (towns first) and 1 AI plot.

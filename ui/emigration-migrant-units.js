@@ -35,8 +35,8 @@ function migrantByInfo(type) {
 }
 
 /**
- * Whether a unit is a migrant (robust across `unit.type` shapes).
- * @param {*} unit A unit object.
+ * Whether a unit is a migrant (whatever shape `unit.type` takes).
+ * @param {*} unit
  * @returns {boolean} True if it's a UNIT_MIGRANT.
  */
 function isMigrant(unit) {

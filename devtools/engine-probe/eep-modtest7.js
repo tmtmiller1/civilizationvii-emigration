@@ -37,7 +37,7 @@ async function run() {
   // turnActive=false and nothing landed although canStart said Success).
   safe(() => { Autoplay.setReturnAsPlayer(local); Autoplay.setObserveAsPlayer(local); Autoplay.setTurns(0); Autoplay.setActive(false); });
   for (let i = 0; i < 40 && !safe(() => Players.get(local).isTurnActive, false); i++) await later(2000);
-  // Quiet check: turns must NOT advance on their own for 20 s before the writes (the previous run's turns
+  // Quiet check: turns must not advance on their own for 20 s before the writes (the previous run's turns
   // kept ending every ~8 s after setActive(false), so the AI may have been acting for London concurrently).
   const t0 = safe(() => Game.turn, 0), n0 = n;
   await later(20000);

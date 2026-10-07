@@ -1,7 +1,7 @@
 // emigration-violence-audit.js
 //
 // A running audit of the minor-power downgrade in the violence model. For every observed city it keeps
-// a COUNTERFACTUAL intensity (every observation scored at full strength, no minor-power scaling) fed
+// a counterfactual intensity (every observation scored at full strength, no minor-power scaling) fed
 // the same observations and decay as the real one, so the only difference is the downgrade itself.
 // Also records each city's most recent observation and its war-refugee count. Changes no gameplay;
 // in-memory only, published on `globalThis.EmigrationViolence` so a probe can read the live instance.
@@ -31,7 +31,7 @@ const NEGLIGIBLE = 0.05;
 export function auditObservation(key, actualBefore, obs) {
   // Seed from the real value the first time a city is seen, so a save loaded mid-war starts both figures
   // level. Without this every city with persisted intensity would begin with a counterfactual of zero and
-  // look as though the downgrade had INCREASED its pressure.
+  // look as though the downgrade had increased its pressure.
   const base = _full.has(key) ? /** @type {number} */ (_full.get(key)) : Math.max(0, actualBefore);
   _full.set(key, base + Math.max(0, obs.addFull));
   _last.set(key, obs);

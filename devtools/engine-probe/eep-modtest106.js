@@ -1,4 +1,4 @@
-// eep-modtest106.js - why has the banner pressure bar NEVER been seen?
+// eep-modtest106.js - why has the banner pressure bar never been seen?
 //
 // Reported by the player: not once, in any run. That is evidence of a defect, not of quiet cities, so this
 // probes the DATA path independently of the DOM (the probe cannot see city-banner elements anyway).
@@ -11,7 +11,7 @@
 // What is left: the snapshot cache, the pressure values themselves, and barModel's verdict. If snapshots
 // come back empty, the bar can never show (barModel returns hidden for a missing snapshot even in ALWAYS
 // mode). If they are present but every pressureToBar sits under SHOW_FROM (0.05) with nothing at risk, then
-// the bar is working as designed and simply never has anything to draw -- which for a player is the same
+// the bar is working as designed and never has anything to draw, which for a player is the same
 // thing as broken, and is worth knowing precisely.
 import { ownerCitySnapshots } from "/emigration/ui/emigration-city-readout-data.js";
 import { barModel, cityKeyOfBanner, SHOW_FROM, BAR_MODE } from "/emigration/ui/emigration-banner-pressure.js";

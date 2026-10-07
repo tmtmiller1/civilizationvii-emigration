@@ -1,7 +1,7 @@
 // emigration-effects.js
 //
-// The gameplay-WRITE layer for the ASSIMILATION cost of migration, applied via `Players.grantYield`.
-// Each migrant adds "load" to the receiving civ; the load DECAYS each turn and the civ pays a
+// The gameplay-write layer for the assimilation cost of migration, applied via `Players.grantYield`.
+// Each migrant adds "load" to the receiving civ; the load decays each turn and the civ pays a
 // per-turn cost proportional to it (natural growth never adds load). State persists in
 // GameConfiguration; the congestion headwind reads the per-capita load as a pull penalty. The
 // `deduct`/`grantSigned` wrappers are shared by the dividend, migrant-unit and Cultural Quarter write paths.
@@ -19,7 +19,7 @@ registerCacheReset(() => { _state = null; });
 
 /**
  * The current age-local game turn, or 0.
- * @returns {number} Game.turn or 0.
+ * @returns {number}
  */
 function gameTurn() {
   try {
@@ -33,7 +33,7 @@ function gameTurn() {
  * Turns elapsed since a per-key marker, rebasing an absent/stale-future marker down to the current
  * turn first: Game.turn resets at age boundaries, so a marker left above `turn` would freeze decay.
  * @param {Record<string, number>} map Per-key turn markers.
- * @param {number} key The entry key.
+ * @param {number} key
  * @param {number} turn Current game turn.
  * @returns {number} Non-negative turns elapsed.
  */
@@ -45,7 +45,7 @@ function elapsedSince(map, key, turn) {
 
 /**
  * The raw persisted assimilation state string, or null.
- * @returns {string|null} JSON, or null.
+ * @returns {string|null}
  */
 function readStored() {
   const g = Configuration?.getGame?.();
@@ -55,7 +55,7 @@ function readStored() {
 
 /**
  * Load the persisted state (once) into the module cache.
- * @returns {{ load: Record<string, number>, tickedTurn: Record<string, number> }} State.
+ * @returns {{ load: Record<string, number>, tickedTurn: Record<string, number> }}
  */
 function state() {
   resetCachesOnNewGame();
@@ -84,9 +84,9 @@ function persist() {
 }
 
 /**
- * Deduct `amount` (a NEGATIVE number) of a yield from a player. No-ops for non-negative amounts,
+ * Deduct `amount` (a negative number) of a yield from a player. No-ops for non-negative amounts,
  * bad ids, or a missing grantYield API. Shared by the migrant-holding penalty.
- * @param {number} pid Player id.
+ * @param {number} pid
  * @param {string} yieldKey e.g. "YIELD_HAPPINESS".
  * @param {number} amount Signed amount; only negative values are applied.
  */
@@ -98,7 +98,7 @@ export function deduct(pid, yieldKey, amount) {
       Players.grantYield(pid, yt, amount);
     }
   } catch (_) {
-    /* ignore - a failed cost must never break the pass */
+    /* ignore: a failed cost must never break the pass */
   }
 }
 
@@ -126,8 +126,8 @@ export function addAssimilationLoad(destOwner, destPopulation) {
  * Tick a civ's assimilation load once per turn: decay it for the turns elapsed and charge a
  * grantYield cost proportional to the (decayed) load. Idempotent within a turn. Returns the load
  * and amounts charged.
- * @param {number} pid Player id.
- * @returns {{load:number, happiness:number, gold:number}} Outcome.
+ * @param {number} pid
+ * @returns {{load:number, happiness:number, gold:number}}
  */
 export function tickAssimilation(pid) {
   const none = { load: 0, happiness: 0, gold: 0 };
@@ -140,7 +140,7 @@ export function tickAssimilation(pid) {
   if (elapsed <= 0) return { load: cur, happiness: 0, gold: 0 };
   s.tickedTurn[pid] = turn;
   // integrationSpeed (civ tuning): >1 clears the load faster, <1 slower. speedDecay re-bases the
-  // per-turn fade so the integration cost clears over the same GAME-TIME at any speed (else it cleared
+  // per-turn fade so the integration cost clears over the same game-time at any speed (else it cleared
   // ~3× too fast on Marathon and lingered on Online).
   const load = cur * Math.pow(speedDecay(CONFIG.assimilationDecay), civTuning(pid).integrationSpeed * elapsed);
   if (load < 0.05) {
@@ -157,8 +157,8 @@ export function tickAssimilation(pid) {
 /**
  * A civ's current gold balance (treasury), or null when unreadable: the goldBalance field, then
  * getGoldBalance().
- * @param {number} pid Player id.
- * @returns {number|null} Gold balance, or null off-engine / when absent.
+ * @param {number} pid
+ * @returns {number|null} Null off-engine / when absent.
  */
 function goldBalanceFor(pid) {
   try {
@@ -172,10 +172,10 @@ function goldBalanceFor(pid) {
 }
 
 /**
- * The bounded wealth-aware multiplier on the GOLD assimilation cost: ×1 at the reference treasury,
+ * The bounded wealth-aware multiplier on the gold assimilation cost: ×1 at the reference treasury,
  * scaling up for richer civs and down for poorer ones, clamped to [min, max]. Returns 1 when the
  * weight is 0 or the treasury can't be read.
- * @param {number} pid Player id.
+ * @param {number} pid
  * @returns {number} A multiplier in [assimilationWealthMin, assimilationWealthMax].
  */
 function wealthCostMultiplier(pid) {
@@ -190,7 +190,7 @@ function wealthCostMultiplier(pid) {
 
 /**
  * The per-turn gold cost for a load, with the civ-tuning ease and the wealth-aware multiplier.
- * @param {number} pid Player id.
+ * @param {number} pid
  * @param {number} load Current load.
  * @returns {number} Gold cost (>= 0).
  */
@@ -203,9 +203,9 @@ function assimilationGoldCost(pid, load) {
 
 /**
  * Deduct the per-turn assimilation cost for a given load and return the amounts.
- * @param {number} pid Player id.
+ * @param {number} pid
  * @param {number} load Current load.
- * @returns {{load:number, happiness:number, gold:number}} Outcome.
+ * @returns {{load:number, happiness:number, gold:number}}
  */
 function chargeAssimilation(pid, load) {
   const happiness = CONFIG.assimilationHappiness * load;
@@ -217,7 +217,7 @@ function chargeAssimilation(pid, load) {
 
 /**
  * The current assimilation load a civ is carrying (read-only; does not tick).
- * @param {number} pid Player id.
+ * @param {number} pid
  * @returns {number} Current load (>= 0).
  */
 export function assimLoadFor(pid) {
@@ -227,9 +227,9 @@ export function assimLoadFor(pid) {
 }
 
 /**
- * The per-turn assimilation cost a civ WOULD pay on its CURRENT load, without ticking or mutating
+ * The per-turn assimilation cost a civ would pay on its current load, without ticking or mutating
  * state, for the city readout / dashboards. Mirrors `chargeAssimilation`'s formula.
- * @param {number} pid Player id.
+ * @param {number} pid
  * @returns {{load:number, happiness:number, gold:number}} Current load and the per-turn cost.
  */
 export function assimilationCostFor(pid) {
@@ -241,7 +241,7 @@ export function assimilationCostFor(pid) {
 }
 
 /**
- * The congestion headwind: a pull penalty for migrating INTO a civ that's still digesting lots of
+ * The congestion headwind: a pull penalty for migrating into a civ that's still digesting lots of
  * newcomers, scaling with its per-capita assimilation load (an anti-runaway brake that can't be
  * out-golded). Returns 0 when congestWeight is 0 or the civ carries no load.
  * @param {number} pid Destination player id.
@@ -256,9 +256,9 @@ export function congestionPenalty(pid, civPopulation) {
 }
 
 /**
- * Grant a SIGNED amount of a yield to a player (the two-sided sibling of {@link deduct}), used for
+ * Grant a signed amount of a yield to a player (the two-sided sibling of {@link deduct}), used for
  * the Cultural Quarter yields. No-ops for a zero amount, a bad id, or a missing grantYield API; never throws.
- * @param {number} pid Player id. @param {string} yieldKey e.g. "YIELD_CULTURE". @param {number} amount Signed amount.
+ * @param {number} pid @param {string} yieldKey e.g. "YIELD_CULTURE". @param {number} amount Signed amount.
  */
 export function grantSigned(pid, yieldKey, amount) {
   if (typeof pid !== "number" || !(Math.abs(amount) > 0)) return;
@@ -268,7 +268,7 @@ export function grantSigned(pid, yieldKey, amount) {
       Players.grantYield(pid, yt, amount);
     }
   } catch (_) {
-    /* ignore - a one-time yield must never break the pass */
+    /* ignore: a one-time yield must never break the pass */
   }
 }
 
@@ -278,8 +278,8 @@ export function grantSigned(pid, yieldKey, amount) {
  */
 
 /**
- * Apply a Cultural Quarter's yields to the host for ONE turn: grant its benefit and charge its
- * drawback, from the record's `applied` block. A `benefitScale` < 1 shrinks only the BENEFIT (a
+ * Apply a Cultural Quarter's yields to the host for one turn: grant its benefit and charge its
+ * drawback, from the record's `applied` block. A `benefitScale` < 1 shrinks only the benefit (a
  * contested enclave); the drawback is always charged in full.
  * @param {number} owner Host player id.
  * @param {QuarterApplied} applied The resolved yields.

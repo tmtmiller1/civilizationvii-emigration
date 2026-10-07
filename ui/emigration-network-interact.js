@@ -1,6 +1,6 @@
 // emigration-network-interact.js
 //
-// Pointer interaction for the migration view: the cursor-following tooltip, the hover ETHNICITY
+// Pointer interaction for the migration view: the cursor-following tooltip, the hover ethnicity
 // breakdown, drag-to-rearrange the civ circles, and click-to-select a city or isolate a civ cluster.
 
 import { civAdjective } from "/emigration/ui/emigration-naming.js";
@@ -161,7 +161,7 @@ function nearestCity(scene, x, y) {
 }
 
 /**
- * Composition by ORIGIN civ ("ethnicity") of the visible dots matching a predicate, at the current
+ * Composition by origin civ ("ethnicity") of the visible dots matching a predicate, at the current
  * frame. Residents + internal movers count as the home civ; immigrants as their origin civ.
  * @param {Scene} scene
  * @param {(d:Dot)=>boolean} keep Dot predicate.
@@ -184,14 +184,14 @@ function composition(scene, keep) {
 const ORIGIN_FALLBACK_HEX = "#9fb6c6"; // neutral slate for an unresolvable / masked origin swatch
 
 /**
- * The display name + swatch color for an origin civ id in the breakdown. Prefers the civ's DRAWN node;
+ * The display name + swatch color for an origin civ id in the breakdown. Prefers the civ's drawn node;
  * otherwise a hidden/unmet origin (or a negative sentinel id) is masked to "Unmet", and a
  * known-but-nodeless civ is named properly.
  * @param {Scene} scene @param {number} oid Origin civ id.
  * @returns {{name:string, color:string}} The label + swatch color.
  */
 function originLabel(scene, oid) {
-  // An oid that isn't a current node must NOT collapse to index 0; get() returns undefined for a
+  // An oid that isn't a current node must not collapse to index 0; get() returns undefined for a
   // missing id, so the resolvers below apply.
   const idx = scene.byId.get(oid);
   const node = typeof idx === "number" ? scene.centers[idx] : null;
@@ -252,7 +252,7 @@ function showHoverTip(ev, canvas, holder, tip) {
 }
 
 /**
- * Move the dragged CITY sub-cluster to the pointer and re-grow its civ circle around it. The city's
+ * Move the dragged city sub-cluster to the pointer and re-grow its civ circle around it. The city's
  * position is an offset from its civ center, so dragging re-aims that offset; clusterR is then
  * recomputed by the packing rule (civReach) so the civ boundary expands to enclose the pulled-out city.
  * @param {*} drag Drag state (carries `city` + the civ `node`).
@@ -263,7 +263,7 @@ function dragCityTo(drag, pt, scene) {
   const c = drag.node;
   const cm = drag.city;
   const r = (cm.subR || 0) + 6;
-  // Clamp in ABSOLUTE canvas space so a settlement can't be dragged off the edge, then store the
+  // Clamp in absolute canvas space so a settlement can't be dragged off the edge, then store the
   // result back as a civ-relative offset.
   const ax = Math.max(r, Math.min(scene.WX - r, pt.x - drag.dx));
   const ay = Math.max(r, Math.min(scene.WY - r, pt.y - drag.dy));
@@ -301,7 +301,7 @@ function onMove(ev, canvas, holder, tip, drag) {
 
 /**
  * Pointer down: grab whatever is under the cursor to drag it (pinned so the sim won't fight it). A
- * CITY sub-circle wins over its civ, so a settlement can be pulled out of the cluster; pressing
+ * city sub-circle wins over its civ, so a settlement can be pulled out of the cluster; pressing
  * anywhere else in the civ circle still drags the whole civ and its cities together.
  * @param {*} ev Event.
  * @param {HTMLCanvasElement} canvas
@@ -331,7 +331,7 @@ function onDown(ev, canvas, holder, drag) {
 }
 
 /**
- * A click (press + release without moving) on a node: a CITY toggles selecting that one settlement
+ * A click (press + release without moving) on a node: a city toggles selecting that one settlement
  * (its dots stay lit and only its own migrant flows are drawn); anywhere else in a civ circle toggles
  * isolating the whole civ. The two are exclusive, choosing one clears the other.
  * @param {*} state Interaction state.

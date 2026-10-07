@@ -1,38 +1,37 @@
 // migration-probe.js
 //
-// Original five behavioral questions (rural population) - SETTLED:
-//   (1) removal - addRuralPopulation(-1) decrements. ✓
-//   (2) cross-civ - works on another player's city, NOT owner-gated. ✓
-//   (3) placement - added rural pop places cleanly. ✓
-//   (4) urban/worker - only addRuralPopulation exists (no urban/worker write). ✓
-//   (5) persistence - sticks across turns. ✓
+// Dev-only probe for the engine's gameplay write surface, driven from the sub-system dock.
+// Results go to UI.log through GameFace's CSS-parse channel (mod console.log doesn't reach the
+// log files): grep MIGPROBE in ~/Library/Application Support/Civilization VII/Logs/UI.log.
+// Every operation targets the selected city, else the local capital.
 //
-// NEW write-surface questions (from Izica's cheat panel, corpus mod 3506929756,
-// which uses these undocumented UI-VM gameplay writes). Testing whether they're
-// reachable for OUR purposes, and crucially whether they work CROSS-CIV:
-//   (6) CREATE_ELEMENT - Game.PlayerOperations.sendRequest(pid,"CREATE_ELEMENT",
-//       {Kind:"UNIT",Type,Location,Owner}) - does it SPAWN a unit? (overturns
-//       "the UI VM can't create units")
-//   (7) cross-civ create - set Owner to a FOREIGN player; does it create for them?
-//   (8) grantYield - Players.grantYield(pid, YIELD_GOLD, n) - does it write a yield?
-//   (9) NEGATIVE grant - grantYield(..., -n) - can a yield be DEDUCTED (a cost)?
-//   (10) cross-civ grant - grantYield on a FOREIGN player - does it affect them?
+// Rural population (settled):
+//   (1) addRuralPopulation(-1) decrements.
+//   (2) it works on another player's city; not owner-gated.
+//   (3) added rural pop places cleanly.
+//   (4) only addRuralPopulation exists; there is no urban/worker write.
+//   (5) it sticks across turns.
 //
-// All operations target the SELECTED city (else the local capital). Output goes
-// to UI.log via GameFace's CSS-parse channel (mod console.log doesn't reach the
-// log files): grep MIGPROBE in
-//   ~/Library/Application Support/Civilization VII/Logs/UI.log
+// Write-surface questions borrowed from Izica's cheat panel (corpus mod 3506929756, which uses
+// these undocumented UI-VM gameplay writes). Do they work for us, and do they work cross-civ?
+//   (6) CREATE_ELEMENT: Game.PlayerOperations.sendRequest(pid,"CREATE_ELEMENT",
+//       {Kind:"UNIT",Type,Location,Owner}). Does it spawn a unit? (That would overturn
+//       "the UI VM can't create units".)
+//   (7) the same with Owner set to a foreign player.
+//   (8) Players.grantYield(pid, YIELD_GOLD, n): does it write a yield?
+//   (9) grantYield(..., -n): can a yield be deducted, as a cost?
+//   (10) grantYield on a foreign player.
 //
-// ── SETTLED (2026-07-01 run) — capability + GlobalParameter findings; do NOT re-probe ──
-// Context: boot/API smoke run only (reached turn 4, single civ Augustus/Great Britain,
-// no opponents met) → zero live-migration data; every pass was "none" and the COUNTERS
-// dump was all-zero. The value below is capability discovery, not behavioral data.
+// Settled on the 2026-07-01 run (capability and GlobalParameter findings; no need to re-probe).
+// That was a boot/API smoke run only: it reached turn 4 as Augustus/Great Britain with no opponents
+// met, so there was no live-migration data, every pass was "none" and the COUNTERS dump was all
+// zero. What follows is capability discovery, not behavioral data.
 //
 // API3 (read/algorithmic):
-//   • Leader/civ identity resolves; civ-tuning table key stable (AUGUSTUS / GREAT_BRITAIN
-//     as numeric hashes). ✓
-//   • GlobalParameters readable via GameInfo — confirmed real engine values:
-//       UNHAPPINESS_OVERCROWDING_THRESHOLD_STANDARD_SPEED = 2  (config overcrowdThreshold:2 mirrors it ✓)
+//   - Leader/civ identity resolves; the civ-tuning table key is stable (AUGUSTUS / GREAT_BRITAIN
+//     as numeric hashes).
+//   - GlobalParameters are readable via GameInfo. Real engine values:
+//       UNHAPPINESS_OVERCROWDING_THRESHOLD_STANDARD_SPEED = 2  (config overcrowdThreshold:2 mirrors it)
 //       CITY_YIELD_PENALTY_PERCENT_PER_HAPPINESS_DEFICIT = 5.0
 //       CITY_UNHAPPINESS_RAZED_REDUCTION = 30 ; ...PER_COMMANDER_BASE = 10
 //       HAPPINESS_RURAL_POP_UPKEEP_BASE = 0.0 ; HAPPINESS_URBAN_POP_UPKEEP_BASE = 0.0
@@ -40,34 +39,34 @@
 //       GOLDEN_AGE_HAPPINESS_CURVE A/B/C/D = 1.0 / 140 / 70 / 35
 //       CITY_NORMAL_PLOT_WORKER_CAPACITY = 1 ; CITY_WORKER_STARTING_CAP = 0 ; WORKER_ADJACENCY_SCALAR = 1.0
 //       APPEAL_FOR_HAPPINESS_TILE_YIELD = 3 ; APPEAL_FOR_DOUBLE_HAPPINESS_TILE_YIELD = 5
-//   • per-civ population via civPopulation aggregate works (one pass). ✓
-//   • specialist_worker_maintenance table ABSENT ✗ — specialist cost must be inferred via the
-//     Workers API + happiness rule, not a data table.
+//   - per-civ population via the civPopulation aggregate works in one pass.
+//   - there is no specialist_worker_maintenance table; specialist cost has to be inferred from the
+//     Workers API plus the happiness rule.
 //
 // API4 (interactive/write):
-//   • changeDiplomacyBalance LOCAL write CONFIRMED: balance 0→100→200 (net unchanged). ✓
-//     Cross-civ variant UNTESTED this run (no foreign player) — still inferred, not proven.
-//   • Policy / Tradition / Government slots readable (empty at t1). ✓
-//   • city.isInfected accessor exists (plague-carry). ✓
-//   • RandomEvents table present (21 rows). Disaster class+severity enumerated:
+//   - changeDiplomacyBalance writes locally: balance 0 to 100 to 200 (net unchanged). The cross-civ
+//     variant was not tested on this run (no foreign player), so it is still inferred.
+//   - Policy / Tradition / Government slots are readable (empty at t1).
+//   - city.isInfected accessor exists (plague-carry).
+//   - RandomEvents table present (21 rows). Disaster class and severity enumerated:
 //       FLOOD sev 0/1/2 (moderate/major/1000-year); VOLCANO sev 0/1/3 (gentle/catastrophic/kilimanjaro).
-//       NOTE non-monotonic: catastrophic=1 < kilimanjaro=3 — don't assume severity tracks name order.
-//   • Notifications API present (Game.Notifications: activate/dismiss/find/send/getEndTurnBlocking…);
-//     GameInfo notification table present. ✓
-//   • WorldAnchor = undefined ✗ and createNotification = undefined ✗ (only WorldUI is an object) —
-//     world-anchored notifications NOT available via that path.
-//   • Passive recorders install cleanly: DeclareWar, MakePeace, RandomEventOccurred. ✓
+//       Severity is not monotonic (catastrophic=1 < kilimanjaro=3), so don't assume it tracks name order.
+//   - Notifications API present (Game.Notifications: activate/dismiss/find/send/getEndTurnBlocking...);
+//     GameInfo notification table present.
+//   - WorldAnchor and createNotification are both undefined (only WorldUI is an object), so
+//     world-anchored notifications are not available via that path.
+//   - Passive recorders install cleanly: DeclareWar, MakePeace, RandomEventOccurred.
 //
-// REVOLT / crisis:
-//   • CityTransfered recorder installs; transfer-cause enums captured
-//     BY_REVOLT / BY_COMBAT / BY_INCORP_CS → conquest vs revolt vs CS-incorporation distinguishable. ✓
-//   • Crisis API present: isCrisisEnabled, getNumCrisisStages, getCurrentCrisisStage,
-//     stage trigger %, turns elapsed/remaining. ✓
-//   • Happiness accessors: getUnhappiness, hasUnrest, highestActiveUnrestDuration,
-//     netHappinessPerTurn, turnsOfUnrest. ✓
-//   • grantYield happiness +20 to local city executes (pressure-inject path), but netHappy was
-//     unchanged in the same-turn snapshot — needs an end-turn to observe. worker accessor returned
-//     undefined at pop 1 → guard the worker read for tiny cities.
+// Revolt / crisis:
+//   - CityTransfered recorder installs; transfer-cause enums captured as BY_REVOLT / BY_COMBAT /
+//     BY_INCORP_CS, so conquest, revolt and city-state incorporation can be told apart.
+//   - Crisis API present: isCrisisEnabled, getNumCrisisStages, getCurrentCrisisStage,
+//     stage trigger %, turns elapsed/remaining.
+//   - Happiness accessors: getUnhappiness, hasUnrest, highestActiveUnrestDuration,
+//     netHappinessPerTurn, turnsOfUnrest.
+//   - grantYield happiness +20 to the local city executes (pressure-inject path), but netHappy was
+//     unchanged in the same-turn snapshot; it needs an end-turn to observe. The worker accessor
+//     returned undefined at pop 1, so guard the worker read for tiny cities.
 
 const LOG = "[MigProbe]";
 const TAG = "MIGPROBE_";
@@ -157,9 +156,9 @@ function selectedCity() {
 }
 
 /**
- * A player's capital (or first city), or null. Robust: tries the proven
+ * A player's capital (or first city), or null. Tries the
  * Players.Cities.get(pid).getCapital() path first, then iterates getCities()
- * with for-of (NO reliance on .length - the collection is iterable but may not
+ * with for-of (no reliance on .length: the collection is iterable but may not
  * expose a length property, which silently broke the first probe build).
  * @param {number} pid Player id.
  * @returns {*} City or null.
@@ -335,7 +334,7 @@ function foreignTest() {
 // ── NEW: write-surface probes (CREATE_ELEMENT + grantYield, local & cross-civ) ──
 
 /**
- * A player's gold balance, defensively (to confirm grantYield landed).
+ * A player's gold balance, read defensively (to see whether grantYield landed).
  * @param {number} pid Player id.
  * @returns {*} Gold balance, or "?".
  */
@@ -466,7 +465,7 @@ function grantForeign() {
   testGrant(f.pid, 500);
 }
 
-// ── NEW: verify settlement-cap reading + migrant counting + foreign units ──
+// settlement-cap reading, migrant counting and foreign units
 
 /**
  * Migrant detection (mirrors emigration-effects.isMigrant) for the probe.
@@ -1220,10 +1219,10 @@ function installRecorders() {
 // breakdown) the way every native improvement's does? If yes, the Cultural Quarter stance can drop the
 // invisible Players.grantYield injection for a real improvement that shows in the breakdown.
 //
-// Runs on the LOCAL CAPITAL at turn 1 — no playthrough needed. Two tracks: (A) a REAL improvement
+// Runs on the local capital at turn 1; no playthrough needed. Two tracks: (A) a real improvement
 // discovered at runtime (the load-bearing answer; needs no custom data), and (B) our throwaway
-// IMPROVEMENT_EMIG_PROBE_ENCLAVE (+10 Gold, data/migration-probe-enclave.xml) to also prove custom
-// authoring is valid. Results render ON-SCREEN via showResultPanel() (no console/UI.log needed).
+// IMPROVEMENT_EMIG_PROBE_ENCLAVE (+10 Gold, data/migration-probe-enclave.xml) to show that custom
+// authoring is valid. Results render on screen via showResultPanel() (no console/UI.log needed).
 
 const CUSTOM_ENCLAVE_TYPE = "IMPROVEMENT_EMIG_PROBE_ENCLAVE";
 
@@ -1265,7 +1264,7 @@ function locFromIndex(idx) {
   }
 }
 
-/** Count of constructibles on a plot (-1 = unreadable). A NEW one appearing proves placement. */
+/** Count of constructibles on a plot (-1 = unreadable). A new one appearing means placement worked. */
 function plotConstructibleCount(loc) {
   try {
     if (!loc || typeof MapConstructibles?.getConstructibles !== "function") return -1;
@@ -1368,7 +1367,7 @@ function probeEnclavePlacement() {
 
   const city = localCapital();
   if (!city) {
-    push("no local capital — cannot probe");
+    push("no local capital, cannot probe");
     showResultPanel("Enclave placement probe", lines);
     return;
   }
@@ -1379,7 +1378,7 @@ function probeEnclavePlacement() {
   const improvements = listImprovementTypes();
   push("DB knows " + improvements.length + " IMPROVEMENT-class constructibles");
   const customIdx = constructibleIndexByType(CUSTOM_ENCLAVE_TYPE);
-  push("custom " + CUSTOM_ENCLAVE_TYPE + " idx=" + customIdx + (customIdx < 0 ? " (NOT registered — data rejected; control still runs)" : " (registered ✓)"));
+  push("custom " + CUSTOM_ENCLAVE_TYPE + " idx=" + customIdx + (customIdx < 0 ? " (not registered: data rejected, control still runs)" : " (registered ✓)"));
 
   const control = improvements.find((i) => i.idx !== customIdx) || null;
 
@@ -1395,7 +1394,7 @@ function probeEnclavePlacement() {
   const placeIdx = customIdx >= 0 ? customIdx : control ? control.idx : -1;
   const placeLabel = customIdx >= 0 ? CUSTOM_ENCLAVE_TYPE : control ? control.type : "none";
   if (placeIdx < 0) {
-    push("nothing placeable — abort");
+    push("nothing placeable, abort");
     showResultPanel("Enclave placement probe", lines);
     return;
   }
@@ -1439,7 +1438,7 @@ function probeEnclavePlacement() {
     push("VERDICT placedOnTile=" + placed + " playerNetGoldDelta=" + fmt(goldDelta));
     push(
       placed
-        ? "→ constructible APPEARED on the tile. If net-gold delta reads 0 now, END ONE TURN then run mig.enclaveReadback() — net yield usually recomputes at the turn roll."
+        ? "→ constructible APPEARED on the tile. If net-gold delta reads 0 now, end one turn then run mig.enclaveReadback(); net yield usually recomputes at the turn roll."
         : "→ NO new constructible on the tile (placement rejected). The BUILD canStart line above tells you whether the type is even recognized/buildable here."
     );
     globalThis.__enclaveProbe = { targetLoc, cityCID, owner, before };
@@ -1456,7 +1455,7 @@ function enclaveReadback() {
   };
   const st = globalThis.__enclaveProbe;
   if (!st) {
-    push("no prior placement this session — run the placement probe first");
+    push("no prior placement this session; run the placement probe first");
     showResultPanel("Enclave re-read", lines);
     return;
   }
@@ -1476,8 +1475,8 @@ function esc(s) {
 }
 
 /**
- * Render probe results ON-SCREEN (the user has no console/UI.log). A dismissable fixed panel;
- * Gameface-safe styling (hex + flex only — no hsl()/grid). Re-renders in place on each call.
+ * Render probe results on screen (the user has no console/UI.log). A dismissable fixed panel;
+ * Gameface-safe styling (hex + flex only, no hsl()/grid). Re-renders in place on each call.
  * @param {string} title Panel heading. @param {string[]} lines Result lines.
  */
 function showResultPanel(title, lines) {
@@ -1559,7 +1558,7 @@ class MigrationDockDecorator {
         log("dock addButton missing");
         return;
       }
-      // Show ONLY the new API3 button for now. Flip SHOW_ALL to true to restore
+      // Show only the new API3 button for now. Flip SHOW_ALL to true to restore
       // the full probe button set.
       this._panel.addButton({
         tooltip: "API3: leader/civ identity + specialist semantics + per-civ pop aggregate",
@@ -1729,7 +1728,7 @@ function probeDiplomacy() {
 
 /**
  * All readable happiness values for a player (player-level accessors + the capital's YIELD_HAPPINESS),
- * so a grant test can see whether ANY of them moves.
+ * so a grant test can see whether any of them moves.
  * @param {number} pid Player id.
  * @returns {Record<string,*>} The readings.
  */
@@ -1748,7 +1747,7 @@ function happinessReadings(pid) {
         }
       }
     }
-    // The audit's recommended read: player Stats net happiness (confirmed valid in base UI).
+    // Player Stats net happiness is the read the base UI itself uses.
     if (p?.Stats && typeof p.Stats.getNetYield === "function") {
       try {
         out.statsNetHappiness = p.Stats.getNetYield(yieldEnum("YIELD_HAPPINESS"));
@@ -1766,7 +1765,7 @@ function happinessReadings(pid) {
 
 /**
  * Happiness-grant probe: read happiness, grantYield(YIELD_HAPPINESS, -20), re-read. If nothing moves,
- * happiness is NOT a grantable stockpile and the assimilation-cost happiness leg is a no-op.
+ * happiness is not a grantable stockpile and the assimilation-cost happiness leg is a no-op.
  * @param {number} [pid] Target player (default local).
  */
 function probeHappiness(pid) {
@@ -1811,8 +1810,8 @@ function probeWarBetween(me, pid) {
     } catch (err) {
       log("WARNAME getWarData threw " + err);
     }
-    // Dump ALL warData fields, not just warName, so `initialPlayer`/`initiatingPlayer` (the true
-    // aggressor) can be compared to the DeclareWar payload's actingPlayer to confirm directionality.
+    // Dump every warData field, not just warName, so `initialPlayer`/`initiatingPlayer` (the true
+    // aggressor) can be compared to the DeclareWar payload's actingPlayer to settle the direction.
     const fields = wd ? Object.keys(wd).map((k) => k + "=" + JSON.stringify(wd[k])).join(" ") : "(no warData)";
     log("WARNAME " + me + " vs " + pid + " uniqueID=" + e.uniqueID + " | " + fields);
   }
@@ -1870,7 +1869,7 @@ function logBlobKey(g, k) {
   return len;
 }
 
-/** Log the byte-size of every persisted blob (+ flow-key counts), to confirm saves stay bounded. */
+/** Log the byte-size of every persisted blob (+ flow-key counts), to check the saves stay bounded. */
 function probeBlob() {
   let g = null;
   try {
@@ -1950,7 +1949,7 @@ function exposeGlobals() {
       grantForeign: () => grantForeign(),
       // grant any amount to any player: mig.grantTo(pid, amount)
       grantTo: (pid, n) => testGrant(pid, n == null ? 500 : n),
-      // verify settlement cap + migrant counting (local & foreign)
+      // settlement cap and migrant counting (local and foreign)
       verify: () => verifyNew(),
       // the 3 API confirmations for algorithmic-improvements (run all, or each)
       api3: () => probeApi3(),
@@ -1963,10 +1962,10 @@ function exposeGlobals() {
       agg: () => probeAggregate(),
       // G2/G3 diplomacy recon (read-only), informs the §11 D2/D3 decision
       diplo: () => probeDiplomacy(),
-      // AUDIT: confirm the engine war NAME resolves (getWarData), and whether happiness is grantable.
+      // AUDIT: does the engine war name resolve (getWarData), and is happiness grantable?
       warName: () => probeWarName(),
       happy: (/** @type {number} */ pid) => probeHappiness(pid),
-      // AUDIT: persisted-blob sizes (+ flow-key counts), confirm the save data stays bounded.
+      // AUDIT: persisted-blob sizes (plus flow-key counts); does the save data stay bounded?
       blob: () => probeBlob(),
       // DIAGNOSE: a civ's cross-civ OUT/IN edges + internal moves + totals (why a Causes pie is empty).
       civflow: (/** @type {number} */ pid) => probeCivFlow(pid),

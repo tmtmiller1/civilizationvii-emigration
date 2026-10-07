@@ -2,8 +2,8 @@
 //
 // Copy every file the modinfo references into the game's Mods folder, and report anything that is missing
 // or stale. Civ VII loads mods from copies, not symlinks, so an edit in the repo changes nothing in the game
-// until it is synced -- and a file that never got copied is not a quiet no-op. A UI script whose import is
-// missing fails to LOAD, which kills the whole entry point:
+// until it is synced, and a file that never got copied is not a quiet no-op. A UI script whose import is
+// missing fails to load, which kills the whole entry point:
 //
 //     Failed to open file - .../Mods/emigration/ui/emigration-call-home.js
 //     SOURCE ERROR - /emigration/ui/emigration-main.js

@@ -37,9 +37,9 @@ function derr(...a) {
 /**
  * Resolve a LOC key to its localized string, or null when unavailable or unresolved (the engine echoes
  * back the raw "LOC_..." tag). Injected into the pure view-model so it stays testable off-engine.
- * @param {string} key The LOC key.
- * @param {...*} args Substitution args.
- * @returns {string|null} The localized string, or null.
+ * @param {string} key
+ * @param {...*} args
+ * @returns {string|null}
  */
 function compose(key, ...args) {
   try {
@@ -62,7 +62,7 @@ const BUILDINGS_SECTION_ID = "emigration-city-quarters";
  * The tile key ("x,y") for a city's center plot, or null when unreadable. Mirrors locKey/tileKeyOf
  * in the composition/quarter modules (kept local so this module owns its engine boundary).
  * @param {*} city A live city object.
- * @returns {string|null} The key, or null.
+ * @returns {string|null}
  */
 function tileKeyOf(city) {
   const loc = city && city.location;
@@ -72,7 +72,7 @@ function tileKeyOf(city) {
 
 /**
  * The currently selected city object, or null. Defensive against a missing engine surface.
- * @returns {*} The city, or null.
+ * @returns {*}
  */
 function selectedCity() {
   try {
@@ -88,7 +88,7 @@ function selectedCity() {
 
 /**
  * All migration flow edges, or an empty list when the store is unreadable.
- * @returns {*[]} The flows.
+ * @returns {*[]}
  */
 function safeFlows() {
   try {
@@ -128,7 +128,7 @@ function quarterBenefitFactor(rec) {
 }
 
 /**
- * The stance yields a record pays EACH TURN: none for a stance paid once at recognition, so only an older
+ * The stance yields a record pays each turn: none for a stance paid once at recognition, so only an older
  * save's per-turn record shows grant and cost lines.
  * @param {*} rec A quarter record. @returns {*} Its applied block, or an empty one.
  */
@@ -148,12 +148,12 @@ function gatherQuarter(city) {
     if (!rec) return null;
     const applied = perTurnStance(rec);
     // A contested enclave pays only a share of its benefit (see quarterBenefitFactor), so the panel
-    // shows the reduced number the sim actually grants — not a full figure the yields never reflect.
+    // shows the reduced number the sim actually grants, not a full figure the yields never reflect.
     const contested = !!rec.contested;
     const benefitFactor = quarterBenefitFactor(rec);
     return {
       originName: quarterName(rec.civ),
-      // An ESTABLISHED enclave has no stance until it is recognized, so none is claimed for it.
+      // An established enclave has no stance until it is recognized, so none is claimed for it.
       stanceLabel: rec.recognized === false ? "" : quarterOptionFor(civType(rec.civ), rec.optionId).label,
       contested,
       invested: enclaveStanding(rec), // the enclave tile stands: it carries its own yield, the stance pays on top
@@ -170,7 +170,7 @@ function gatherQuarter(city) {
 }
 
 /**
- * The pending/forming cultural-enclave readout for a city that has NO settled quarter yet, or null:
+ * The pending/forming cultural-enclave readout for a city that has no settled quarter yet, or null:
  * the lead foreign origin's progress toward the enclave bar. Only shown from the foothold stage up.
  * @param {*} city A live city object.
  * @returns {*} The resolved enclave-progress readout, or null.
@@ -205,7 +205,7 @@ function resolveParts(comp) {
 
 /**
  * The display label of the cause that moved most of an edge's people, or "" when the edge carries no
- * per-cause detail. Resolved HERE because localizing a cause is an engine read.
+ * per-cause detail. Resolved here because localizing a cause is an engine read.
  * @param {*} f A flow edge from migrationFlows() ({byCause}).
  * @returns {string} The resolved cause label, or "".
  */
@@ -215,7 +215,7 @@ function topCauseName(f) {
 }
 
 /**
- * Gather the LIVE, resolved inputs for the selected city, ready for the pure view-model. Never
+ * Gather the live, resolved inputs for the selected city, ready for the pure view-model. Never
  * throws; returns null when there is no selected city.
  * @param {*} city The selected city object (or null).
  * @returns {*} The resolved inputs, or null.
@@ -265,7 +265,7 @@ function injectPanelStyle() {
  * Remove any prior section with the given id from a host and append a fresh empty one, so a refresh
  * replaces its contents rather than stacking duplicates on each city switch.
  * @param {*} host The container element.
- * @param {string} id The section id.
+ * @param {string} id
  * @returns {*} The new section element.
  */
 function replaceSection(host, id) {
@@ -280,8 +280,8 @@ function replaceSection(host, id) {
 
 /**
  * Append a section header line.
- * @param {*} sec The section element.
- * @param {string} text The header text.
+ * @param {*} sec
+ * @param {string} text
  */
 function addHeader(sec, text) {
   const p = document.createElement("p");
@@ -292,8 +292,8 @@ function addHeader(sec, text) {
 
 /**
  * Append a single data row.
- * @param {*} sec The section element.
- * @param {string} text The row text.
+ * @param {*} sec
+ * @param {string} text
  */
 function addRow(sec, text) {
   const d = document.createElement("div");
@@ -304,8 +304,8 @@ function addRow(sec, text) {
 
 /**
  * Append a titled sub-block (a small heading plus its rows), or nothing when there are no rows.
- * @param {*} sec The section element.
- * @param {string} title The sub-heading text.
+ * @param {*} sec
+ * @param {string} title
  * @param {string[]} rows
  */
 function addBlock(sec, title, rows) {
@@ -390,7 +390,7 @@ export class EmigrationCityDetailsDecorator {
 
   /**
    * Paint the population section into the growth tab.
-   * @param {*} pop The population view-model.
+   * @param {*} pop
    */
   _renderPopulation(pop) {
     const sec = replaceSection(this._growthHost, GROWTH_SECTION_ID);
@@ -407,7 +407,7 @@ export class EmigrationCityDetailsDecorator {
 
   /**
    * Paint the quarter section into the buildings tab.
-   * @param {*} quarters The quarters view-model.
+   * @param {*} quarters
    */
   _renderQuarters(quarters) {
     const sec = replaceSection(this._buildingsHost, BUILDINGS_SECTION_ID);
@@ -422,7 +422,7 @@ export class EmigrationCityDetailsDecorator {
 
 /**
  * Register the City Details panel decorator with the engine. Called once from boot(). Safe to call
- * when the Controls API is unavailable (older shells): it simply does nothing.
+ * when the Controls API is unavailable (older shells): it does nothing.
  */
 export function installEmigrationCityPanel() {
   try {

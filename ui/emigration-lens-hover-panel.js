@@ -43,7 +43,7 @@ const INDEX_TTL = 3000; // ms a plot->settlement index is cached before a rebuil
  * @property {(signal:*, snapshot:*, plot?:{x:number,y:number})=>{title:string, rows:HoverRow[]}|null}
  *   resolve Hovered settlement (+ the hovered plot, for per-tile panels) -> display.
  * @property {(panel:HTMLElement, signal:*)=>void} [decorate] Optional: append richer DOM under the
- *   rows once the panel has been rebuilt for a NEW tile. The `rows` contract is title + flat strings,
+ *   rows once the panel has been rebuilt for a new tile. The `rows` contract is title + flat strings,
  *   so anything with structure (weight bars) mounts through here; the shared panel stays agnostic.
  */
 
@@ -200,7 +200,7 @@ function place(panel) {
   let y = _mouseY + CURSOR_OFFSET;
   if (x + w > window.innerWidth) x = _mouseX - w - CURSOR_OFFSET;
   if (y + h > window.innerHeight) y = _mouseY - h - CURSOR_OFFSET;
-  // Clamp BOTH edges to the viewport: flipping the anchor can still leave the panel off-screen on a
+  // Clamp both edges to the viewport: flipping the anchor can still leave the panel off-screen on a
   // short/narrow viewport (or when the panel is wider than the cursor's margin), so pin it inside.
   const maxX = Math.max(0, window.innerWidth - w - 4);
   const maxY = Math.max(0, window.innerHeight - h - 4);
@@ -259,7 +259,7 @@ function decorate(e, panel, sig) {
 }
 
 /**
- * Rebuild a panel for a NEW tile, and report the hidden-to-shown transition.
+ * Rebuild a panel for a new tile, and report the hidden-to-shown transition.
  * @param {*} e Panel entry. @param {HTMLElement} panel @param {*} sig The settlement's signal.
  * @param {string} key The new tile key. @param {{title:string, rows:HoverRow[]}} out The display.
  */
@@ -279,8 +279,8 @@ function renderPanel(e) {
   }
   const plot = hoveredPlot();
   const sig = plot ? freshIndex().get(plot.x + "," + plot.y) : null;
-  // Pass the hovered plot too, so a per-tile panel (the ethnicity lens) can read THAT tile's data;
-  // settlement-level panels (prosperity) simply ignore the extra argument.
+  // Pass the hovered plot too, so a per-tile panel (the ethnicity lens) can read that tile's data;
+  // settlement-level panels (prosperity) ignore the extra argument.
   const out = sig ? e.spec.resolve(sig, e.snapshot, plot) : null;
   if (!out || !out.rows || !out.rows.length || !plot) {
     hidePanel(e);

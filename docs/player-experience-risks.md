@@ -1,4 +1,4 @@
-# Emigration — Player Experience Risks and Mitigations
+# Emigration: Player Experience Risks and Mitigations
 
 What is likely to make a player upset or disappointed on a playthrough, why it happens in the current
 implementation, and how each risk can be addressed without re-tuning every number. Each entry names the
@@ -25,11 +25,11 @@ The pattern across the risks is not that the numbers are wrong. It is that the p
 before a loss, no warning that it is coming, and no path back afterward. The mitigations therefore
 follow three lines:
 
-1. **Warn and offer counterplay before a loss lands.** A pre-departure state, a per-city intake toggle,
+1. Warn and offer counterplay before a loss lands. A pre-departure state, a per-city intake toggle,
    a protect-this-city action, a preview before an enclave takes a tile.
-2. **Break feedback spirals structurally.** Charge once per crisis rather than per point, disarm the
+2. Break feedback spirals structurally. Charge once per crisis rather than per point, disarm the
    punishments when a city is already at the floor, stop counting a siege that is not progressing.
-3. **Make losses reversible and legible.** Abandoned tiles come back as pillaged rather than deleted,
+3. Make losses reversible and legible. Abandoned tiles come back as pillaged rather than deleted,
    removed buildings return to the queue at a discount, every loss notification names its cause and its
    remedy.
 
@@ -284,7 +284,7 @@ challenge it was meant to add.
 The mod assumes one human on one client. Checked against the code on 2026-09-17 (game 1.5.0), these break
 when a second human joins:
 
-- **Every client runs the pass.** `onTurnActivated` in `emigration-main.js` runs `doPass`, the dead-district
+- Every client runs the pass. `onTurnActivated` in `emigration-main.js` runs `doPass`, the dead-district
   sweep, and the calm-empire call-home offer on the local player's activation, and `chargePerTurnCosts` on
   every civilization's activation. In a network game each client is its own script isolate with its own
   `lastLocalTurnRun`, so three humans send three sets of departures, arrivals, enclave placements, district
@@ -293,19 +293,19 @@ when a second human joins:
   variable. The activation itself does fire for each human, and the local player changes with the handoff
   (player 0 as local 0, then player 1 as local 1, inside one game turn), so the work that is not
   interval-gated, the sweep and the call-home offer, still runs once per human.
-- **Some writes are not requests.** Tile, district, and unit writes (`CREATE_ELEMENT`, `DESTROY_ELEMENT`) and
+- Some writes are not requests. Tile, district, and unit writes (`CREATE_ELEMENT`, `DESTROY_ELEMENT`) and
   arrival placement (`EXPAND`, `ASSIGN_WORKER` with `Amount: 1`) go through the engine's request queue. The
   yield and counter writes do not. `Players.grantYield` (assimilation, migrant holding, the refugee burden,
   the attraction dividend, enclave stance yields, decision and call-home costs) and `addRuralPopulation`
   (arrivals in settlements the local player does not own, refugee settlement, restored returns, and the -1
   where no tile is left) change the simulation directly. Direct mutators apply even before Begin Game, when no
   request lands (engine limits 6.5). A direct change on one client is a desync.
-- **The planner reads the local player's view.** Tile scoring reads `GameplayMap.getYields(plot,
+- The planner reads the local player's view. Tile scoring reads `GameplayMap.getYields(plot,
   localPlayerID)` (`emigration-tile-score.js`), and with the `requireMet` option on (off by default) the model
   drops every civilization the local player has not met (`localHasMet` in `emigration-cities.js`). Clients
   planning the same turn would plan different worlds, and a single planner would impose its own player's view
   on everyone.
-- **Sixteen stores live in the game configuration, and two belong to one viewer.** Simulation state and shared
+- Sixteen stores live in the game configuration, and two belong to one viewer. Simulation state and shared
   records (`EmigrationState_v1` and the composition, assimilation, dividend, dilemma, disaster, quarter,
   refugee pool and burden, return, war, violence, migration statistics, and chronicle keys) are written with
   `Configuration.editGame().setValue`; nothing shows that an in-game edit reaches the other clients. The
@@ -313,14 +313,14 @@ when a second human joins:
   history in a store every client would share. Option values are mirrored there from `localStorage`, so each
   client's settings would describe a different game. Demographics publishes its effective analytics policy,
   which is per player, to one shared key that Emigration reads first.
-- **Some state lives only in memory.** The call-home cooldowns (`_lastCall`), the combat ledger and its reader
+- Some state lives only in memory. The call-home cooldowns (`_lastCall`), the combat ledger and its reader
   cursors, the pending local arrivals, and `lastLocalTurnRun` are module variables. A host change loses them;
   the call-home cooldown is already lost on a single-player reload.
-- **"The player" means the local player.** Fourteen modules read `GameContext.localPlayerID`. The refugee
+- "The player" means the local player. Fourteen modules read `GameContext.localPlayerID`. The refugee
   decision, the enclave recognition pop-up, the Newcomers pop-up and automatic placement, the migrant unit,
   the call-home offer, and every toast are shown or applied for the local player only. Requests are accepted
   only under the sender's own id (engine limits 3.3).
-- **The game's own Grow City prompt follows mod arrivals.** A point the mod adds raises a blocking "Grow City"
+- The game's own Grow City prompt follows mod arrivals. A point the mod adds raises a blocking "Grow City"
   notification for its owner from the next turn until it is placed (mod tests 59 to 67). What a turn timer
   does to an unplaced point in a simultaneous-turn game has not been seen.
 
@@ -408,21 +408,21 @@ once at the end.
 
 ### 7.1 What already exists and is reused
 
-- **A rising-pressure cue.** `noteVoluntaryCue` in `emigration-engine.js` records any voluntary source
+- A rising-pressure cue. `noteVoluntaryCue` in `emigration-engine.js` records any voluntary source
   above `voluntaryCueFraction` (0.66) of the bar. `reportPressureCues` in `emigration-feedback.js`
   toasts it for the local player, one per settlement per `voluntaryCueCooldownTurns` (12). This is a
   warning, but it is a toast with no hold behind it, and it says nothing about what would stop the
   departure. The crisis track has no cue at all.
-- **Per-source persisted state.** `state.sources[key]` holds `pressure`, `cooldown`,
+- Per-source persisted state. `state.sources[key]` holds `pressure`, `cooldown`,
   `crisisPressure`, `crisisCooldown`, saved as `EmigrationState_v1` in the game configuration by
   `saveState` and normalized on load by `normalizeSourceEntry`. New per-city fields go here.
-- **A destination predicate.** `bestDestination(src, ranked, ownerPop, acceptDest)` in
+- A destination predicate. `bestDestination(src, ranked, ownerPop, acceptDest)` in
   `emigration-pull.js` skips any candidate the predicate rejects. `bestOpenDestination` already passes
   the inbound-cap predicate. The intake toggle is one more clause in that predicate.
-- **A choice-and-cost modal.** `emigration-dilemma.js` builds choices with a label, an effect string
+- A choice-and-cost modal. `emigration-dilemma.js` builds choices with a label, an effect string
   computed from live config, and a note, shows them with `showDilemma`, and applies costs with
   `deduct`. The protect action reuses this shape without the modal.
-- **The city readout.** `emigration-city-readout.js` renders a per-city panel on
+- The city readout. `emigration-city-readout.js` renders a per-city panel on
   `CitySelectionChanged` from a snapshot built in `emigration-city-readout-data.js`, which already
   carries `pressureToBar`, `onCooldown`, `atRisk`, and `riskReasons`. Buttons and the countdown belong
   on this panel.
@@ -903,7 +903,7 @@ orders the work.
 
 - *Who.* In a network game, the client where `Network.getHostPlayerId()` equals `GameContext.localPlayerID`,
   the check the base staging screens use. In hotseat, the one client. In single player, the local client, as
-  today. Watched (mod test 121): `Network.getHostPlayerId()` answers, while `Network.isHost` DOES NOT EXIST at
+  today. Watched (mod test 121): `Network.getHostPlayerId()` answers, while `Network.isHost` does not exist at
   runtime and `Configuration.getGame().isHost` is undefined. Demographics' `canSetHostPolicy` calls
   `Network.isHost()`, so it can never resolve host status in a multiplayer game. Both mods move to one host
   helper built on `getHostPlayerId()`.

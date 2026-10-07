@@ -159,7 +159,7 @@ function civWordMsg(pid, suffix) {
 }
 
 /**
- * A civilization's NAME as a proper noun ("Rome"), from LOC_CIVILIZATION_<STEM>_NAME, for sentences
+ * A civilization's name as a proper noun ("Rome"), from LOC_CIVILIZATION_<STEM>_NAME, for sentences
  * that read "…by <civ>". City-states / Independent Powers use their specific name; falls back to the
  * civ display name, then the adjective.
  * @param {number} pid Player id.
@@ -175,7 +175,7 @@ export function civNameMsg(pid) {
 }
 
 /**
- * A civ descriptor for NARRATIVE surfaces (the Chronicle, refugee events), where an unmet civ is
+ * A civ descriptor for narrative surfaces (the Chronicle, refugee events), where an unmet civ is
  * named but framed as hearsay. Only story surfaces relax the analytics spoiler mask this way; the
  * dashboard, lens, and notifications keep the strict "an unmet civilization" mask.
  * @param {number} pid Player id.
@@ -229,7 +229,7 @@ export function disasterNameMsg(eventType) {
 }
 
 /**
- * Title-case a raw TYPE token ("ANTIQUITY_CRISIS_PLAGUE" → "Antiquity Plague") as a last-resort
+ * Title-case a raw type token ("ANTIQUITY_CRISIS_PLAGUE" → "Antiquity Plague") as a last-resort
  * display name when no LOC string resolves.
  * @param {string} type A raw type string.
  * @returns {string} A readable fallback.
@@ -268,7 +268,7 @@ function crisisNameMsg(type) {
 }
 
 /**
- * The display name for an event KEY (see emigration-event-attribution): a specific war / disaster /
+ * The display name for an event key (see emigration-event-attribution): a specific war / disaster /
  * crisis / famine. Null for the empty key (no specific event).
  * @param {string} eventKey
  * @returns {string|null} The display name, or null.
@@ -327,7 +327,7 @@ function warIdBetween(a, b) {
 }
 
 /**
- * The engine's NAME for the war between a victim and its aggressor, the base game's
+ * The engine's name for the war between a victim and its aggressor, the base game's
  * `getWarData(uniqueID, localPlayerID).warName`, localized. Null when there's no such war or the API
  * is absent. The engine requires the war's uniqueID + a viewing player.
  * @param {number} victim Victim player id.
@@ -348,7 +348,7 @@ function engineWarName(victim, aggressor) {
 }
 
 /**
- * A belligerent's display name for a war label, SPOILER-MASKED: a civ the visibility policy hides
+ * A belligerent's display name for a war label, spoiler-masked: a civ the visibility policy hides
  * (unmet) is never named, it reads as "an unmet civilization" instead of a real adjective.
  * @param {number} pid Player id.
  * @returns {MsgNode|null} The masked name, or null when the id is unusable.
@@ -360,7 +360,7 @@ function belligerentName(pid) {
 
 /**
  * The other belligerent to name for a war the `victim` is fleeing: the supplied aggressor list, else
- * the engine's live at-war set ({@link warOpponents}). Among the candidates a MET opponent wins, so
+ * the engine's live at-war set ({@link warOpponents}). Among the candidates a met opponent wins, so
  * the war reads with both sides named.
  * @param {number} victimPid Victim player id.
  * @param {number[]} arr Explicitly supplied aggressor ids (may be empty).
@@ -391,7 +391,7 @@ function belligerent(pid) {
 }
 
 /**
- * The spoiler-masked war name when EITHER side is hidden (unmet): "{Known} vs. an unmet
+ * The spoiler-masked war name when either side is hidden (unmet): "{Known} vs. an unmet
  * civilization", naming the side we're allowed to show. Null when neither side is masked (a normal
  * name applies) or both are masked (nothing safe to name).
  * @param {{name:MsgNode|null, hidden:boolean}} victim Victim's (already-masked) name, and whether masked.
@@ -406,7 +406,7 @@ function maskedWarName(victim, aggressor) {
 }
 
 /**
- * Whether both belligerents are MET majors, the only case the engine's own war name is trusted (it
+ * Whether both belligerents are met majors, the only case the engine's own war name is trusted (it
  * reads "the Enemy" for a minor / unmet side, which would defeat the spoiler mask).
  * @param {number} victimPid Victim id. @param {number|null} aggressor Aggressor id.
  * @returns {boolean} True when both are met majors.
@@ -479,16 +479,16 @@ export function refugeeHeadlineMsg(ev) {
     return msg("LOC_EMIG_NEWS_CRISIS", "Refugee crisis: {1_Civ} ; {2_People} displaced.", civ, people);
   }
   const body = refugeeBody(ev, people, city);
-  // The event-named templates above name the war/disaster/city but NOT the affected
+  // The event-named templates above name the war/disaster/city but not the affected
   // civ. When the caller supplies a civ (already spoiler-guarded, an unmet civ is
-  // passed as "an unmet civilization"), lead with it so world news says WHO was hit,
+  // passed as "an unmet civilization"), lead with it so world news says who was hit,
   // capitalized for the leading position ("Carthaginians: 1,200 flee the war.").
   return ev.civ ? msg("LOC_EMIG_NEWS_WHO", "{1_Civ}: {2_Headline}", msgCap(ev.civ), body) : body;
 }
 
 /**
  * The event-named refugee headline body (no civ): names the disaster / war / sacked
- * city / settlement. Split out so {@link refugeeHeadlineMsg} can optionally prefix WHO.
+ * city / settlement. Split out so {@link refugeeHeadlineMsg} can optionally prefix who.
  * @param {*} ev The world-news event descriptor.
  * @param {MsgNode} people The formatted people count.
  * @param {MsgNode} city The settlement name (fallback "a settlement").
@@ -626,8 +626,8 @@ function scopeTagMsg(cause, crossCiv) {
 }
 
 /**
- * The "where they went" clause naming a move's destination — the settlement for an internal move; the
- * settlement, or the unmet-civ label, for an external one — so the digest says where people left for.
+ * The "where they went" clause naming a move's destination: the settlement for an internal move; the
+ * settlement, or the unmet-civ label, for an external one, so the digest says where people left for.
  * A death (attrition) went nowhere, and a move with no resolved destination, get no clause.
  * @param {string|undefined} cause The migration cause.
  * @param {string|undefined} destName The destination label.
@@ -643,15 +643,15 @@ function destClauseMsg(destName) {
   return msg("LOC_EMIG_DEST_CLAUSE", "Bound for {1_Dest}.", destName);
 }
 
-// The blank line separating a digest's SITUATION from its GUIDANCE. Surfaces with white-space:pre-line
+// The blank line separating a digest's situation from its guidance. Surfaces with white-space:pre-line
 // render a paragraph break; any other consumer collapses it to a space.
 const DIGEST_GAP = "\n\n";
 
-// Causes whose flowing "…for <dest>" headline already conveys WHY the people moved, so the digest omits
+// Causes whose flowing "…for <dest>" headline already conveys why the people moved, so the digest omits
 // the redundant "Drawn there: …" clause. The forced causes keep their clause, which names the refuge.
 const HEADLINE_STATES_WHY = new Set(["prosperity"]);
 
-// Per-cause "flowing headline WITH a resolved destination": LOC key plus its English fallback template
+// Per-cause "flowing headline with a resolved destination": LOC key plus its English fallback template
 // ({1_People}, {2_City}, {3_Dest}). Causes absent here keep the two-part "headline. Bound for <dest>." form.
 /** @type {Record<string, {key:string, fb:string}>} */
 const DIGEST_TO = {
@@ -663,13 +663,13 @@ const DIGEST_TO = {
     fb: "{1_People} fled the fighting around {2_City} for the safety of {3_Dest}." },
   unhappiness: { key: "LOC_EMIG_DIGEST_UNHAPPINESS_TO",
     fb: "{1_People} left {2_City} for {3_Dest}, unhappy at home." }
-  // Conquest is NOT here: its "destination" is the captured city itself (src === dest), so it names the
-  // conquering civ instead — see the dedicated branch in headlineWithDest.
+  // Conquest is not here: its "destination" is the captured city itself (src === dest), so it names the
+  // conquering civ instead; see the dedicated branch in headlineWithDest.
 };
 
 /**
  * The digest's opening "situation" sentence: the cause-named loss headline plus where the people went.
- * Conquest names the CONQUERING civ rather than a destination; a cause with a {@link DIGEST_TO} entry
+ * Conquest names the conquering civ rather than a destination; a cause with a {@link DIGEST_TO} entry
  * and a resolved destination reads as one flowing sentence; any other case appends "Bound for <dest>."
  * @param {{cause?:string, people:MsgNode, city:MsgNode, destName?:MsgNode, byCiv?:MsgNode}} o Inputs.
  *   `byCiv` is the (already unmet-masked) conquering civ, present only for conquest.
@@ -709,7 +709,7 @@ function crossCivNotes(o) {
 
 /**
  * Compose the local player's per-pass migration digest as two blocks separated by {@link DIGEST_GAP}:
- * the SITUATION (loss headline + where they went) and the GUIDANCE ("why here" clause, action hint,
+ * the situation (loss headline + where they went) and the guidance ("why here" clause, action hint,
  * cross-civ cost note when material, movement-scope tag). Pure; the caller resolves the inputs.
  * @param {{cause?:string, people:MsgNode, city:MsgNode, crossCiv?:boolean, destName?:MsgNode,
  *          destGold?:number, why?:MsgNode, byCiv?:MsgNode, stanceTip?:boolean}} o The resolved digest
@@ -741,7 +741,7 @@ export function localDigestMsg(o) {
 }
 
 /**
- * Compose the local player's per-pass INBOUND immigration digest: a "people settled in <city>"
+ * Compose the local player's per-pass inbound immigration digest: a "people settled in <city>"
  * headline plus, for a met origin, a "drawn from <civ>" clause. The mirror of
  * {@link localDigestMessage} for arrivals. Pure; the caller resolves + unmet-masks the inputs.
  * @param {{cause?:string, people:MsgNode, city:MsgNode, fromCiv?:MsgNode}} o The resolved inputs.

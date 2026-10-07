@@ -1,4 +1,4 @@
-// eep-modtest70.js - the four "in-engine confirmations" README §17 listed as best-effort, confirmed in game.
+// eep-modtest70.js - the four "in-engine confirmations" README §17 listed as best-effort, checked in game.
 // AugustusExp66 (human-controlled Exploration save), the mod's pass off (turnInterval 99999). Turns are ended by hand
 // (sendTurnComplete, never Autoplay): naturally grown points are placed with EXPAND first and dismissable blocking
 // notifications cleared, so a Grow City prompt cannot stall the run.

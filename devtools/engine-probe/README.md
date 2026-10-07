@@ -18,7 +18,7 @@ Verdicts (run 4, AugustusAnt136 save, London/Leeds/Birmingham local, St. Petersb
 - `addRuralPopulation(+1)` on a local city: `pendingPopulation` +1, growth threshold rises (272.8 to
   336.8). When the point is placed (Autoplay placed it the next turn) a real improvement appears
   (IMPROVEMENT_WOODCUTTER) and food rises. No NEW_POPULATION notification was seen for the human before
-  Autoplay took the turn in this run; mod tests 64 to 67 later watched the game's blocking Grow City prompt
+  Autoplay took the turn in this run; mod tests 64 to 67 later saw the game's blocking Grow City prompt
   appear for mod-added points alone (see the ledger below).
 - `addRuralPopulation(+1)` on an AI city: the AI resolves the pending point on its turn as a specialist
   (specialists 2 to 3, rural back to 8); yields shift accordingly.
@@ -54,7 +54,7 @@ or type string (buildings), exactly as `base-standard/ui/tuner-input/tuner-input
   culture up. Destroying it: pop 25 to 24, urban 14 to 13. Urban population can be written both ways
   through buildings.
 - CREATE_ELEMENT UNIT_MIGRANT for the foreign owner at an empty tile beside its city: units 16 to 17,
-  the unit owned by player 2. CREATE_ELEMENT is NOT owner-gated; the earlier "local-only" verdict was
+  the unit owned by player 2. CREATE_ELEMENT is not owner-gated; the earlier "local-only" verdict was
   wrong (most likely a bad location).
 - CREATE_ELEMENT {Kind:"CITY"} founded a town for the local player on empty land (cities 6 to 7). The one
   foreign attempt did not take (request returned true, no city); untested whether the spot was invalid.
@@ -100,9 +100,9 @@ losses, driving the shipped code on the AugustusAnt136 save (London, 13 urban / 
 - A live constructible instance exposes `damaged` (boolean), so the pillaged-first tile rule has its read.
   No tile in the player's cities was pillaged in this save, so the rule's live ORDER was not exercised.
 - `GameInfo.Constructible_YieldChanges` supports `.filter` (172 rows), but farms, fishing boats,
-  pastures and plantations have NO food row in it (confirmed in `Debug/gameplay-copy.sqlite`): the
+  pastures and plantations have no food row in it (checked in `Debug/gameplay-copy.sqlite`): the
   table-only read called every food tile "not food". Fixed the same evening: the name hint is primary,
-  the table is a supplement. The corrected famine ordering is unit-tested, not yet watched live.
+  the table is a supplement. The corrected famine ordering is unit-tested and has not run in game yet.
 - `chargeDepartureGold` on the local player charged 10, 10, 10, then 0 (the 30 per-turn cap); the
   treasury read works (538.96 to 508.96), so the never-below-zero floor has its input.
 - `findDepartureBuilding` reads the current age (`GameInfo.Ages.lookup(Game.age)` = AGE_ANTIQUITY) and
@@ -124,14 +124,14 @@ through an AGE TRANSITION, on the peer session's AutoSave_00_0158 (turn 158, Ant
 session had just seen an AsyncWorker1 EXC_BAD_ACCESS at 0x2a8 about 30 s after the same transition with
 emigration disabled). With emigration enabled: an enclave placed on London (plot 3161) and one on AI Paris
 (plot 4689, replacing a mine) both stood at once; Autoplay drove through the age end into Exploration and on
-to Exploration turn 11; the game then idled 12 minutes. NO crash, no .ips. Observations:
+to Exploration turn 11; the game then idled 12 minutes. No crash, no .ips. Observations:
 
 - The transition reloads every game-scope UI script (the probe re-attached at Exploration turn 1 and ran
   again). The mod's own state is persisted in GameConfiguration, so this is fine in play, but the probe's
   in-memory record of London's Antiquity tile was lost, so whether plot 3161 survived is UNKNOWN.
 - The Paris enclave (AI city) stood at Exploration turns 2 and 11: a placed enclave survives the transition.
 - The probe's second placement on London at Exploration turn 1 (empty plot 2873, district then improvement)
-  did NOT take (plot empty afterward). Placement on the very first turn of a new age is unverified.
+  did not take (plot empty afterward). Placement on the very first turn of a new age is unverified.
 - `WorldUI is not defined` unhandled rejections appear in UI.log at 22:07:17 (main menu, before any
   game-scope script exists) and at 22:08:22 (20 s before the game scripts re-attached after the
   transition). The mod's only WorldUI users (enclave-markers, ethnicity-lens) run inside try/catch and
@@ -148,7 +148,7 @@ AugustusAnt136 (Antiquity turn 136, 66 met cities):
 - Cross-civ gold: a departure from St. Petersburg (player 2) took its treasury 221.32 to 211.32.
 - Treasury floor: BUG found. Drained to 5.96, two same-turn charges each took 5.96 (treasury -4.04): the
   balance read is stale within the turn (the engine applies the deduct asynchronously). Fixed the same
-  morning: the floor now subtracts the turn's own charges; unit-tested, redeployed, not yet watched.
+  morning: the floor now subtracts the turn's own charges; unit-tested and redeployed, not run in game yet.
 - Urban crisis cap, same turn: Paris (12 urban) with the cap at 1% and per-turn room of 5: budget 1,
   the harbor taken, then budget 0 and no further reservation although a fishing quay was available.
   Next-turn recheck came back "building": inconclusive, see mod test 7 (the config override may be reset
@@ -192,10 +192,10 @@ the Exploration age.
 - Test 10 loaded AugustusExp66 (a real human-controlled Exploration save, turn 66): the enclave placed on
   London (human, replacing its outlying mine) and on Paris (AI, replacing a woodcutter) both stood within
   5 s. Exploration-age placement works. The empty-plot path (district first) was not exercisable here
-  (London had no empty plot); its district-creation half was watched working in tests 8 and 9.
+  (London had no empty plot); its district-creation half worked in tests 8 and 9.
 - Side finding from test 9: `findDepartureTile` picked London's OWN enclave as the outlying tile a
   departure would abandon. Fixed the same morning: enclave improvements are excluded from departure tiles
-  (unit-tested, deployed, not yet watched).
+  (unit-tested and deployed, not run in game yet).
 
 Mod tests 11 to 14 (2026-09-13, `eep-modtest8.js`, logs `modtest8-yields-*` through `modtest12-closeup-*`,
 captures in `shots/`): do the enclave's native yields reach the tile, and why did they not seem to?
@@ -239,7 +239,7 @@ AugustusExp66 (Exploration, the player is Mongolia), each placed by DESTROY + CR
   (plus adjacency), Shawnee's Mawaskawe Skote +4 food. All stood two turns later with the same yields,
   the AI's included. So the native yield rows apply for a foreign owner, and the trait lock is a
   buildability rule only.
-- A future age's type is NOT loaded: the Mughal Stepwell (Modern) had no GameInfo row in Exploration.
+- A future age's type is not loaded: the Mughal Stepwell (Modern) had no GameInfo row in Exploration.
   Antiquity types are loaded in Exploration (the Hawelt row exists; its placement needed a flat tile
   London did not have free).
 - Terrain rules bind: Ortoo, Hawelt, Baray, Megalith, Tea House are flat-only; Hidden Fortress, Hillfort,
@@ -360,7 +360,7 @@ FADE, and the absolute-stock qualifier. AugustusExp66, automatic recognition, fo
 - Stock path: Paris (Norman, AI) seeded to 7.0 Chola points at 19% of the city, BELOW the 25% foothold,
   formed an enclave on the first pass through the six-point qualifier (a caravanserai over a woodcutter).
   Share path: Washington at 31% formed one too. (Test 32's Paris seed reconciled to 5.7 points and
-  correctly did NOT form: the qualifier is a real bar.)
+  did not form, as it should: the qualifier is a real bar.)
 - Both communities then returned home (removed from the ledger: both cities read 100% native) with the
   fade period set to 2 turns. Both records survived the first turn below the bar (clock counting) and were
   dissolved on the second: both plots read EMPTY (tiles removed by DESTROY_ELEMENT), both records dropped,
@@ -381,12 +381,12 @@ Mod test 35 (2026-09-14, `eep-modtest19.js`, log `modtest35-bannerbar-UI.log`, s
 no turn ended. `Controls.decorate("city-banner", ...)` mounted a bar on all 89 banners the map had built
 (all hidden with no pressure set). With London set to 0.9, Washington to 0.72, and Lahaina to 0.3 of the
 move bar and the module refreshed, London painted at 90% and Lahaina stayed hidden (below the 0.66 cue
-fraction). Watched in the near and mid screenshots: a two-pixel line under the banner's name row, beside
+fraction). The near and mid screenshots show a two-pixel line under the banner's name row, beside
 the status icons, legible and unobtrusive at both zoom levels. Two findings fixed after the run: London's
 bar was green (its dominant cause was prosperity; the bar now follows the notifications' own-loss color
 rule and is never green), and eight other cities read full amber because any non-zero distress counted as
 a crisis (the full bar now requires a refugee cause: war, disaster, conquest). The corrected rules are
-covered by `tests/banner-pressure.mjs`; the color and crisis changes were not re-watched in game. No
+covered by `tests/banner-pressure.mjs`; the color and crisis changes have not been looked at in game since. No
 crash; the runner restored the registry and removed the probe.
 
 Mod tests 36 to 38 (2026-09-14, `eep-modtest20.js`, `eep-modtest21.js`, `eep-modtest22.js`, logs
@@ -432,17 +432,18 @@ surfaces. AugustusExp66, human control, automatic recognition, dwell 0, no turn 
   `quarterCapPerAge` 0 the next pass formed it (record 92,32). The cap gates automatic recognition.
 - K4: the readout snapshot's `enclave` field carried civ, share, live bars, stock, stage, and a null dwell
   (dwell 0) for all three cities; the dashboard's Diversity cells read "Norman enclave" for the two hosts
-  and "" for Washington (below foothold). Watched on screen: the Washington readout panel with the line
+  and "" for Washington (below foothold). On screen, the Washington readout panel carried the line
   "Enclave: Norman at 13% of 30% share, 4.1 of 4.6 people". No crash; folder restored.
 - Incidental: the same panel's "Why there" line read "greater prosperityandproximity", a missing
   separator that predates this work (fixed the same morning, see the changelog).
 
 Mod test 40 (2026-09-14, `eep-modtest24.js`, log `modtest40-deadplots-UI.log`, shot
-`modtest40-deadplots-dead-plot-fixed.png`): DEAD RURAL PLOTS after a departure. User report: "a tile removed
+`modtest40-deadplots-dead-plot-fixed.png`): dead rural plots after a departure. User report: "a tile removed
 by migration can never be repaired or re-placed; noticed in towns". Save AugustusAnt43, the user's own game
-at turn 43 on a Large map (96 wide), human control, no turn ended. Verdict: confirmed, and the fix watched.
+at turn 43 on a Large map (96 wide), human control, no turn ended. Verdict: the report holds; the fix
+works on that save.
 
-- All 11 rural plots the mod abandoned that session (a 12th had since become Dur-Sharrukin) were an EMPTY
+- All 11 rural plots the mod abandoned that session (a 12th had since become Dur-Sharrukin) were an empty
   `DISTRICT_RURAL`: the district survives `DESTROY_ELEMENT {Kind:"CONSTRUCTIBLE"}` with no constructible on
   it. None was in its settlement's `Game.CityCommands.canStart(EXPAND).Plots`, the list the place-population
   dialog offers. Nothing is damaged, so there is nothing to repair either. The plot is dead for good.
@@ -484,7 +485,7 @@ pop-up for an enclave. Verdict: works in towns and cities.
 
 - The shipped `arriveRural` in ask mode raised the real pop-up in Bristol (town), Birmingham (town) and London
   (city): pending 0 to 1, `Growth.isReadyToPlacePopulation` true, 10 to 12 EXPAND plots. Clicking the button
-  through the DOM entered `INTERFACEMODE_ACQUIRE_TILE`, and the mode stayed for the full 12 s watched in
+  through the DOM entered `INTERFACEMODE_ACQUIRE_TILE`, and the mode stayed for the full 12 s sampled in
   Birmingham and London, with no DistrictAddedToMap and no self-exit. The engine never settles a pending point
   on its own: with no click, London held pending 1 for 12 s.
 - The player was using the probe's game window during test 44: Bristol's point was placed by hand inside the
@@ -514,14 +515,14 @@ mistaken for the enclave one. AugustusAnt49, no turn ended.
   upper-cased category line with its icon opening every body (Newcomers `YIELD_POPULATION`, Refugees
   `YIELD_DIPLOMACY`, Cultural Enclave `CITY_UNIQUE_QUARTER`), and the refugee costs as their own paragraph with
   yield icons. The arrivals body in test 46 rendered the category line as a real `fxs-font-icon` image followed
-  by bold NEWCOMERS, confirming the tokens work in the native dialog.
-- Tests 46 and 47 are NOT valid visual checks. Test 46's probe still looked for buttons under
+  by bold NEWCOMERS, so the tokens work in the native dialog.
+- Tests 46 and 47 are not valid visual checks. Test 46's probe still looked for buttons under
   `fxs-button-group`, which the vertical layout no longer uses, so it could not dismiss the arrivals pop-up and
   re-measured it three times. Its screenshots captured the player's own desktop, not the game: `osascript
   activate` does not bring the game forward while the player is using the Mac. Those captures were deleted
   unread beyond noticing they were not the game. Test 47 was stopped before any capture to stop pulling the game
-  in front of the player's work. The redesign's layout is therefore unit-tested and structurally confirmed, not
-  yet watched.
+  in front of the player's work. The redesign's layout is therefore unit-tested and structurally sound, but not
+  yet seen on screen.
 
 Mod test 48 (2026-09-14, `eep-modtest31.js`, log `modtest48-popups-visual-UI.log`): the redesigned pop-ups
 measured, with the button selector fixed. AugustusAnt49, no turn ended, the player away from the Mac.
@@ -542,18 +543,18 @@ the runner skipped each capture. The runner now activates the game and captures 
 System Events confirms the game is frontmost, and skips the capture otherwise.
 
 Mod test 50 (2026-09-14, `eep-modtest31.js`, log `modtest50-popups-visual3-UI.log`): the first screenshots of
-the redesigned pop-ups, captured with the game verified frontmost. Watched: the category line with its icon at
+the redesigned pop-ups, captured with the game frontmost. They show the category line with its icon at
 the top of each body, the refugee costs on their own lines with yield icons, and equal-width stacked buttons.
-Also watched: an empty `[N][N]` paragraph collapses, so the body's paragraphs ran together.
+They also show that an empty `[N][N]` paragraph collapses, so the body's paragraphs ran together.
 
 Mod test 51 (2026-09-14, `eep-modtest31.js`, log `modtest51-popups-spacing-UI.log`): paragraphs joined by
-`[N]`, a no-break space, `[N]`. Watched: a visible blank line between the category line, the prose, the costs,
+`[N]`, a no-break space, `[N]`. The capture shows a blank line between the category line, the prose, the costs,
 and the quote. The bodies grew by that spacing alone (Newcomers 90 to 112 px, Refugees 208 to 254 px).
 
 Mod test 52 (2026-09-14, `eep-modtest31.js`, log `modtest52-popups-quote-UI.log`): the enclave quote moved out
 of the body into a `screen-dialog-box` decorator block: the base `filigree-divider-h3`, then an
 `fxs-inner-frame` with `img-popup-middle-decor`, the quote in `font-style: italic`, and the attribution below.
-Watched: the divider, the frame, and the attribution drew; the quote line did not. The user saw the same thing.
+The divider, the frame, and the attribution drew; the quote line did not. The user saw the same thing.
 
 Mod test 53 (2026-09-14, `eep-modtest32.js`, log `modtest53-italic-UI.log`): why the quote vanished.
 Hypothesis: GameFace has no italic face, so `font-style: italic` blanks the line. Measured on the live dialog:
@@ -566,12 +567,12 @@ Hypothesis: GameFace has no italic face, so `font-style: italic` blanks the line
 
 - The hypothesis held: italic collapses the line to nothing; the same text upright draws. The font family is
   `BodyFont` with no italic variant. The attribution, upright, drew at 407 x 21.
-- The skewed line was watched in the screenshot and reads as italics.
+- The skewed line is in the screenshot and reads as italics.
 - Second defect: unwrapped, the 125-character quote is one row that stretched the frame to twice the body's
   width. The shipped fix wraps the quote at the body's 64 characters, one element per row, each skewed.
 
 Mod test 54 (2026-09-14, `eep-modtest31.js`, screenshots `shots/modtest54-quote-fixed-popup-*.png`): the
-shipped fix, all three pop-ups raised through shipped code on AugustusAnt49. Watched in the enclave screenshot:
+shipped fix, all three pop-ups raised through shipped code on AugustusAnt49. The enclave screenshot shows
 the filigree divider under the prose, then the framed quote on two slanted rows reading as italics, then the
 attribution upright beneath. The dialog frame measured 629 px wide, the same as the refugee pop-up, so the quote
 no longer widens it. The frame held its size from 0 to 1500 ms.
@@ -857,17 +858,17 @@ lens-off from the same camera; it scores land plots only.
 
 Mod test 80 (2026-09-15, `eep-modtest80.js`, log `modtest80-lens-watch-*`): the watch with the camera settled. One
 `lookAtPlot` to London's best land tile (92,32: score 62 against a city mean of 13.9 over 27 land plots), 15 s, then
-lens-on and lens-off shots from the SAME camera. The camera framing matched this time, so the pair does isolate the
+lens-on and lens-off shots from the same camera. The camera framing matched this time, so the pair does isolate the
 lens. Two readings: the fill is present but still hard to read as a gradient on textured terrain at a flat 0.6 alpha,
 and the mod's own prosperity hover panel rendered live in the lens-on frame ("London · About average −9%", with the
 why-people-are-leaving and why-they're-drawn breakdowns). Answered by raising the contrast (a saturation curve plus
-alpha that grows with strength) and by counting built coast, not just land, in a settlement's scale; watched in mod
+alpha that grows with strength) and by counting built coast, not just land, in a settlement's scale; checked in mod
 test 81.
 
 Mod test 81 (2026-09-15, `eep-modtest80.js` on the contrast build, log `modtest81-lens-contrast-*`): the same settled
-camera over London's best land tile (92,32, score 62 against a city mean of 13.9). WATCHED: the lens-on frame shows a
+camera over London's best land tile (92,32, score 62 against a city mean of 13.9). The lens-on frame shows a
 real gradient, strong green over the settlement's best ground, pink and red over its poor tiles, neutral gray between,
-and the lens-off frame from the same camera has no tint at all. The Prosperity lens is confirmed painting and legible
+and the lens-off frame from the same camera has no tint at all. The Prosperity lens paints and is legible
 in game. Build: per-settlement scale, empty sea skipped (built coast counted), saturation curve with alpha rising
 with strength.
 
@@ -897,7 +898,7 @@ diminishing returns: the escape pull and the geography that makes civ 7 the only
 measures the whole slider at 0 (friction 30, escape 0, brake 24, homeland 24).
 
 Mod test 88 (2026-09-15, `eep-modtest88.js`, log `modtest88-loc-trim-*`): does the game's text loader keep a
-localized string's edge spaces? NO: 0 of 11 mod rows whose value carries a load-bearing leading or trailing space
+localized string's edge spaces? No: 0 of 11 mod rows whose value carries a load-bearing leading or trailing space
 kept it (" and " → "and", " · this tile" → "· this tile", " (rival civilization)" → "(rival civilization)"), and a
 composed row with an argument came back "(+3 more)" with no leading space either. Every fragment the mod joins onto
 other text must supply its own separator in CODE; the rows themselves are now stored trimmed in en_us and in all 11
@@ -906,8 +907,8 @@ locales. Found because the Prosperity panel's title read "London· this tile" (m
 Mod test 89 (2026-09-15, `eep-modtest86.js` on the rewritten lens, log `modtest89-ethnicity-gradient-*`): the
 Ethnicity lens after the fix. It now paints 1623 plots in 51 batches (mod test 86: 0 plots, every settlement's
 composition null), because the tile mosaic synthesizes an all-host composition when the pass has recorded none;
-settlements report 18 to 36 tiles each. WATCHED: the territory paints in the owner's banner color with a visible
-core-to-fringe gradient. Fill colors confirm the new rule (the leading origin's color, alpha 0.63 to 0.82 with the
+settlements report 18 to 36 tiles each. The territory paints in the owner's banner color with a visible
+core-to-fringe gradient. Fill colors follow the new rule (the leading origin's color, alpha 0.63 to 0.82 with the
 hold and density).
 
 Mod tests 90 to 93 and 91b (2026-09-15, `eep-modtest90.js` and its generated siblings, logs `modtest90-slider0-*`,
@@ -961,8 +962,8 @@ rewritten to lead with the hovered TILE's standing. Two readings.
   pinned in `tests/tile-score.mjs`.
 
 Mod test 95 (2026-09-16, `eep-modtest95.js` on AugustusExp66, log `modtest95-fullUI.log`): the roster regenerated
-from the INSTALLED game, watched in engine. The engine had loaded 47 civilizations and 36 playable leaders and
-NONE of them was missing from the mod. `IMPROVEMENT_EMIG_ENCLAVE_OTTOMANS_A` and `_B` both loaded and the old
+from the installed game, loaded in engine. The engine had loaded 47 civilizations and 36 playable leaders and
+None of them was missing from the mod. `IMPROVEMENT_EMIG_ENCLAVE_OTTOMANS_A` and `_B` both loaded and the old
 singular `..._OTTOMAN_A` did not, so the Ottoman key fix is live; every new civilization's enclave improvement
 loaded and every new quarter text row composed (no row fell back to its own tag). Tuning resolved with England
 neutral and Norman still 1.4, and each alternate persona distinct from its base. The save also happens to contain
@@ -972,7 +973,7 @@ Mod test 96 and 97 (2026-09-16, `eep-modtest96.js` / `eep-modtest97.js`, reconna
 exists with `isCrisisEnabled()` true, `getCurrentCrisisStage()` -1, and `city.isInfected` is exposed and readable
 as a real boolean on all 81 cities. Age progression is `AgeProgressManager.getCurrentAgeProgressionPoints()` over
 `getMaxAgeProgressionPoints()` (66/160 = 41.3% at turn 66, about one point a turn). Crisis stage 1 triggers at 70%
-age progression, and the crisis a game is running is NOT exposed anywhere readable.
+age progression, and the crisis a game is running is not exposed anywhere readable.
 
 Mod test 98c and 98d (2026-09-16, `eep-modtest98.js` with `eep-crisis-plague.xml` then `eep-crisis-early.xml`):
 AN EXISTING SAVE CANNOT BE PUSHED INTO A CRISIS FROM DATA. First with the religion crisis deleted and plague
@@ -987,11 +988,11 @@ never set: the shell had walked the parameter list and used the parameter object
 `findGameParameter` does not accept.
 
 Mod test 101 (2026-09-16, `eep-modtest100.js` with the corrected `eep-shell-crisis.js` and
-`eep-crisis-plague-new.xml`, log `modtest101-fullUI.log`): **`city.isInfected` WATCHED TRUE.** A new Exploration
+`eep-crisis-plague-new.xml`, log `modtest101-fullUI.log`): `city.isInfected` read true. A new Exploration
 game with only the plague selectable reached crisis stage 0 at turn 7 and infected two cities by turn 9 (Tortuga
 pop 8 and Road Town pop 11, both player 4). Verdict line: `isInfected observed true: YES | firstInfectedTurn=9
 peakInfectedCities=2 | firstCrisisStageTurn=7`. This closes the last engine surface the mod read but had never
-been watched.
+been seen live.
 
 The crisis is chosen through the `Crises` setup parameter (`Base/modules/core/config/SetupParameters.xml`:
 `ParameterID="Crises" Domain="StandardCrises" Array="1" UxHint="InvertSelection" ConfigurationKey="ExcludeCrises"`).
@@ -1003,7 +1004,7 @@ Environment note (2026-09-16): the game updated to **1.5.0** mid-session. `AppOp
 `[Modding] DisableModsOnStartupVersion`, which the game increments on update to disable every mod on the FIRST
 startup afterward; that startup loads no mods at all (no `Modding.log` scan, a 0-byte `UI.log`) and sits on the
 main menu, which looks exactly like a hang. The next launch is normal. 1.5.0 also adds an (empty)
-`ModCompatibilityWhitelist` table to `Mods.sqlite`. The mod itself was watched healthy on 1.5.0: mod test 98c
+`ModCompatibilityWhitelist` table to `Mods.sqlite`. The mod itself ran healthy on 1.5.0: mod test 98c
 played 24 turns with the pass running and 1383 mod log lines, and the only JS errors in the run came from the
 base game's own `privateer-flags.js`. Regenerating the roster against 1.5.0 changed nothing (47 leaders, 50
 civilizations, 133 mementos).
@@ -1022,7 +1023,7 @@ exported; and the four `Controls.decorate` targets the mod attaches to (`city-ba
 `ui-next/`. Two of the mod's own imports already point into `ui-next` (`plot-tooltip.js`,
 `focus-manager.js`) and both resolve. Regenerating the roster against 1.5.0 changed nothing.
 
-Watched in game (mod tests 95b, 98c, 101 to 105): 24 turns played with the pass running and 1383 mod log
+In game (mod tests 95b, 98c, 101 to 105): 24 turns played with the pass running and 1383 mod log
 lines, the only JS errors in the run coming from the base game's own `privateer-flags.js`; the roster,
 Ottoman-key, new-civilization text and tuning checks all passing exactly as they did on 1.4.2; the console
 API live and `runNow()` executing; the dashboard rendering in full (all seven tabs, the migration network,
@@ -1034,8 +1035,8 @@ color with its per-tile tooltip); city banners rendering; localized text composi
 Probe-context gotcha worth remembering, because it produced three false failures across mod tests 102 to 104:
 `LensManager` is an **import** (`/core/ui/lenses/lens-manager.js`), not a global, so a bare reference reads
 undefined and looks like "the lens system is gone". The probe script's `document` also does not see every HUD
-element -- `panel-sub-system-dock` resolves but `lens-panel` and `city-banner` do not -- so a DOM count of 0
-from the probe proves nothing; the screenshots showed banners and both lens overlays present. Judge these
+element (`panel-sub-system-dock` resolves but `lens-panel` and `city-banner` do not), so a DOM count of 0
+from the probe means nothing; the screenshots showed banners and both lens overlays present. Judge these
 surfaces by the imported API and by a screenshot, never by `querySelector` from the probe.
 
 The one surface still unwatched is the banner pressure BAR itself drawing, which needs a city carrying at
@@ -1069,7 +1070,7 @@ was never in contact. `atWarCount` was identical for all three cities on every t
 have told them apart. No throws, no ERR reads.
 
 Still unobserved: an actual siege, so the contested-district fallback and the pressure consequence of the
-downgrade have not been watched. `attackersNear` is fog-limited for foreign cities by construction.
+downgrade are still unobserved. `attackersNear` is fog-limited for foreign cities by construction.
 
 ## Mod test 111 - the combat event stream, and fog (2026-09-16)
 
@@ -1098,10 +1099,10 @@ fog-independence the migration model depends on.
 
 The source comments and the memory entry asserting fog-limiting were corrected.
 
-## Mod test 112-116 - the per-city combat ledger, watched (2026-09-16/17)
+## Mod test 112-116 - the per-city combat ledger (2026-09-16/17)
 
 112 and 113 read zero: a probe that imports a module gets its own, never-started instance. 114 showed globals
-DO cross mod contexts (`DemographicsData` visible) but `globalThis.emigration` was absent -- the main bootstrap
+do cross mod contexts (`DemographicsData` visible) but `globalThis.emigration` was absent: the main bootstrap
 had not run at all, because `emigration-call-home.js` and `emigration-call-home-action.js` were never deployed
 and `emigration-main.js` failed to load. Eight files were stale; `scripts/deploy.mjs` (`npm run deploy`,
 `npm run deploy:check`) now syncs every modinfo-referenced file. 115 (played by hand) recorded real fights but
@@ -1139,7 +1140,7 @@ RESULT OUTCOME PASS: 3 of 5 at-threshold turns under the old rules were below it
 ```
 
 Limits: one turn of data. No raid involving a major civilization occurred, so "majors are never downgraded"
-is covered by unit tests only, not watched in game. Refugee points are an estimate (no siege-duration
+is covered by unit tests only, not seen in game. Refugee points are an estimate (no siege-duration
 multiplier); the threshold crossings are exact.
 
 ## Mod test 118 - 60-turn unattended soak of the minor-power balance (2026-09-17)
@@ -1158,7 +1159,7 @@ A MINOR-MECHANISM PASS  B MAJOR-MECHANISM PASS  C OUTCOME PASS (87.1%)  D CONVER
 ```
 
 Notes: all 21 major-attacker observations fell in the first 30 turns. The `medianTurnMs` figure the probe
-printed (455 s) is wrong -- 60 turns took 1464 s in total -- so its per-turn timing is not usable; `Date.now()`
+printed (455 s) is wrong (60 turns took 1464 s in total), so its per-turn timing is not usable; `Date.now()`
 or the retry path in the probe is suspect. District control was never the naming source (no district fell).
 The at-war proxy was the only basis for 64 of 712 decisions (9%).
 
@@ -1170,29 +1171,29 @@ console API gained diagnostics that run in the mod's context: `emigration.option
 `emigration.closeOptions()`, `emigration.optionsScrollTo(optionId)`. The mods tab is "ADD-ONS", index 0; other
 installed mods come first, so scrolling is needed.
 
-Watched: the overall and per-type refugee sliders render on the Mods tab; the advanced settings render as
+The overall and per-type refugee sliders render on the Mods tab; the advanced settings render as
 sections whose checkbox shows and hides exactly that section's rows. The first capture (123) showed section
 toggles indistinguishable from settings; section rows are now styled as headings (gold, uppercase, spaced) and
 their settings indented, by intercepting the moment the screen assigns `forceRender` to an option (its row then
-exists). Confirmed in 124's capture. Not watched: dragging a slider on screen (probes cannot drive input).
+exists). 124's capture shows it. Not covered: dragging a slider on screen (probes cannot drive input).
 
 Mod test 55 (2026-09-17, `eep-modtest33.js`, log `modtest55-quotes-UI.log`): the refugee and newcomer quotes and
 the glyphs a font-file check could not settle. AugustusAnt49, no turn ended.
 
-- Watched: the refugee decision drew its quote in the framed panel, slanted and wrapped at the body's width. The
+- The refugee decision drew its quote in the framed panel, slanted and wrapped at the body's width. The
   refugees came from an unmet civilization (Mexico), so the quote came from the general pool (Mickiewicz), as
   designed.
-- Watched: the Hawaiian okina (U+02BB), ā, and ụ render. The schwa ǝ (U+01DD) and Thai draw as boxes. The Aksum
+- The Hawaiian okina (U+02BB), ā, and ụ render. The schwa ǝ (U+01DD) and Thai draw as boxes. The Aksum
   enclave quote's transliteration used the schwa, so it now shows only its English translation.
 - The newcomers pop-up never opened: the saved option (automatic placement) replaced the probe's ask mode before
   the deferred flush, and the log shows the point auto-placed.
 
 Mod test 56 (2026-09-17, `eep-modtest34.js`, log `modtest56-newcomers-UI.log`): ask mode forced and flushed
 synchronously, two migrant arrivals. Still no pop-up: another session had since limited the pop-up to refugees by
-default (migrants and returnees auto-place), which the log's auto-placement confirmed. Not a defect.
+default (migrants and returnees auto-place), which the log's auto-placement bears out. Not a defect.
 
 Mod test 57 (2026-09-17, `eep-modtest34.js`, log `modtest57-newcomers-refugee-UI.log`): the same with refugee
-arrivals. Watched: "Refugees in Bristol" opened for both. Refugees from met Spain showed Spain's own quote (Ricote
+arrivals. "Refugees in Bristol" opened for both. Refugees from met Spain showed Spain's own quote (Ricote
 the Morisco, Don Quixote II.54); refugees from unmet Mexico showed a pool quote, so the unmet civilization is not
 named.
 
@@ -1217,17 +1218,17 @@ C1 receipt EepScenCalls=null
 VERDICT LOADS=NO REACHED=NO
 ```
 
-- **The script never ran.** No receipt, no log line in any file under `Logs/`, and the engine registered it
+- The script never ran. No receipt, no log line in any file under `Logs/`, and the engine registered it
   under neither initial-script type: `Default` held all 98 UI scripts including the probe's own
   `ui/eep-game.js`, and `Sandbox` held none. `Modding.log` shows `emig-scen-probe` scanned and loaded
   alongside the engine probe, so this is the engine's answer, not a harness miss.
-- **`EXECUTE_SCRIPT` exists and accepts anything.** The operation is real (hash -966415096) and `canStart`
+- `EXECUTE_SCRIPT` exists and accepts anything. The operation is real (hash -966415096) and `canStart`
   answered Success and `sendRequest` true for all nine argument shapes, including `{}`. That is 2.8 again:
   the player-operation `canStart` validates the request shape, not the work. Nothing was reached.
-- **Why, most likely.** `ScenarioScripts` sits in the engine's action-name table beside the scenario DLC
+- Why, most likely. `ScenarioScripts` sits in the engine's action-name table beside the scenario DLC
   packages (`test-of-time`, `pirate-content`), so it is probably scenario-content-only. `InitialScriptType`
   has no mod-reachable second host: the base game calls `getInitialScripts(Default)` and nothing else.
-- **Consequence.** Carrier 1 is dead for a UI mod in an ordinary game. Multiplayer support now rests on
+- Consequence. Carrier 1 is dead for a UI mod in an ordinary game. Multiplayer support now rests on
   whether the element operations replicate in a network game (plan probe 5, needs a second client) with the
   placed-constructible carrier as the floor.
 
@@ -1253,22 +1254,22 @@ E3 after destroy         centre back to 3 buildings          gold 111.73 -> 124.
 VERDICT ROW=YES PLACED_LOCAL=YES PLACED_AI=YES POP=SAME SURVIVED=YES DESTROYED=YES
 ```
 
-- **A negative constructible yield loads and charges.** The row compiled with `YieldChange="-2"` and the
+- A negative constructible yield loads and charges. The row compiled with `YieldChange="-2"` and the
   city's net gold fell the moment it landed. `Population="0"` kept urban population unchanged (22 to 22),
   so a carrier does not drag a citizen with it the way a normal building does.
-- **It survives AI turns and can be removed.** Six turns with the AI playing, no crash report and no
+- It survives AI turns and can be removed. Six turns with the AI playing, no crash report and no
   disappearance, then `DESTROY_ELEMENT` took it off and the center returned to its three buildings. The 2.4
-  broker rule holds for a never-buildable custom BUILDING, not only for the improvement watched in runs 7
+  broker rule holds for a never-buildable custom building, not only for the improvement seen in runs 7
   and 8.
-- **The cost is NOT the number in the data.** Removing the carrier returned 12.31 gold a turn to a city
+- The cost is not the number in the data. Removing the carrier returned 12.31 gold a turn to a city
   whose yield the data says is -2. The base figure is scaled by whatever multiplies that city's gold, so a
   carrier charges more in a rich settlement than in a poor one. Any design on this carrier has to compute
   the effect it wants against the city's own multipliers, or accept a cost that grows with the city.
-- **Placing into a full district EVICTS a building.** St. Petersburg's center already held three buildings;
+- Placing into a full district evicts a building. St. Petersburg's center already held three buildings;
   the carrier replaced its Granary and took a population point with it (30 to 29, urban 18 to 17). London had
   room and lost nothing. So a carrier may only be placed where the district has a free slot, and the placer
   must read slot space first; otherwise the "cost" silently destroys a real building.
-- **Consequence.** The floor works and is usable, with those two rules. It still only matters if the element
+- Consequence. The floor works and is usable, with those two rules. It still only matters if the element
   operations replicate in a network game (plan probe 5).
 
 ## Mod test 121 - hotseat: does the per-turn work run once per human? (2026-09-17)
@@ -1293,21 +1294,21 @@ B0 activation who=0 local=0 turn=1     B1 activation who=1 local=1 turn=1
 [Emigration] pass (turn 1) none, 273ms      <- ONE pass line, for player 0 only
 ```
 
-- **The session reads all answer.** `isHotseat`, `isAnyMultiplayer`, `isLocalMultiplayer` and
+- The session reads all answer. `isHotseat`, `isAnyMultiplayer`, `isLocalMultiplayer` and
   `humanPlayerIDs` are exactly what `sessionKind()` and `humanPlayers()` need (plan 8.9b).
-- **`Network.isHost` DOES NOT EXIST at runtime**, and `Configuration.getGame().isHost` is undefined.
+- `Network.isHost` does not exist at runtime, and `Configuration.getGame().isHost` is undefined.
   `Network.getHostPlayerId()` answers (0). The Demographics mod's `canSetHostPolicy` calls `Network.isHost()`
   and so can never resolve host status in a multiplayer game; both mods must use `getHostPlayerId()`.
-- **The local player really does change with the handoff.** Player 0 activated as local 0, and after the turn
-  passed, player 1 activated as local 1 within the SAME game turn. Every branch reading
+- The local player really does change with the handoff. Player 0 activated as local 0, and after the turn
+  passed, player 1 activated as local 1 within the same game turn. Every branch reading
   `GameContext.localPlayerID` as "the human" therefore changes meaning mid-turn in hotseat.
-- **But the pass did not run twice**, and the reason matters: `lastLocalTurnRun` is a module variable, and on
+- But the pass did not run twice, and the reason matters: `lastLocalTurnRun` is a module variable, and on
   one client both humans share it, so the interval gate `turn - lastLocalTurnRun < turnInterval` skipped the
-  second human's pass. The double-run is a NETWORK problem, where each client is its own isolate with its own
-  copy of that variable; hotseat cannot show it. The work that is NOT interval-gated (the dead-district sweep
+  second human's pass. The double-run is a network problem, where each client is its own isolate with its own
+  copy of that variable; hotseat cannot show it. The work that is not interval-gated (the dead-district sweep
   and the calm-empire call-home offer) still runs once per human, and nothing in a turn-1 game exercised
   either.
-- **Autoplay passes a hotseat turn, once.** The assign-resources blocker (6.4) held the turn as usual, and
+- Autoplay passes a hotseat turn, once. The assign-resources blocker (6.4) held the turn as usual, and
   one-turn Autoplay advanced player 0. It did not advance player 1: repeated attempts over two minutes left
   the turn with player 1, so the hotseat handoff is only half drivable from script. The verdict line the
   probe printed on its earlier run (`ACTIVATIONS_PER_TURN_MAX=1 single run`) was an artifact of never passing
@@ -1346,26 +1347,26 @@ B -100 CULTURE     changed=0 (no civic selected)   153: 996 -> 996 with a civic 
 153 BuildQueue +50 Paris 686.63/750 -> 0, turnsLeft 1 -> 10 (item finished); -50 at 0: no change
 ```
 
-- **Gold and Influence: both ways, at once.** Influence goes negative.
-- **Science and Culture: gains only.** A gain lands on the researched node's progress at once and can finish
+- Gold and Influence: both ways, at once. Influence goes negative.
+- Science and Culture: gains only. A gain lands on the researched node's progress at once and can finish
   it. A Culture deduction does nothing. A Science deduction never lowers progress, but turns-left rose once and a
   +100 sent straight after added nothing, so it may be held as a hidden debt; seen once, not isolated.
-- **Food and Production through grantYield: nothing.** No player or city number moved, either sign.
-- **`BuildQueue.addProgress` writes city production**, both signs, within 3 s, on any owner's city with no
+- Food and Production through grantYield: nothing. No player or city number moved, either sign.
+- `BuildQueue.addProgress` writes city production, both signs, within 3 s, on any owner's city with no
   operation, floored at 0, kept across the turn, and it completes the item when progress crosses the cost. The
   amount is scaled by the city's production bonus (±50 moved about ±57.5; the first call landed 107.64 and is not
   explained). **`FoodQueue.addProgress` does nothing** to stored food, and `city.Growth` has no write method.
-- **No write moved `Stats.getNetYield` in the same turn**, Gold included, which overturns the older
+- No write moved `Stats.getNetYield` in the same turn, Gold included, which overturns the older
   "grantYield spikes Gold Per Turn" reading (13-probe-findings:52) on 1.5.0.
-- **No Faith.** `YieldTypes` holds Culture, Diplomacy, Food, Gold, Happiness, Production, Science.
+- No Faith. `YieldTypes` holds Culture, Diplomacy, Food, Gold, Happiness, Production, Science.
 
 Recorded in `docs/engine-limits-from-probes.md` 1.3a and the global `engine-closed.md`. Logs:
 `modtest152-UI.log`, `modtest153-UI.log`.
 
-## Mod tests 154-156 - the one-time enclave stance, watched (2026-09-18)
+## Mod tests 154-156 - the one-time enclave stance (2026-09-18)
 
 The stance rework (`ui/emigration-stance-payout.js`: a stance pays Culture, Science, Influence or Gold once at
-recognition, sized from the host's income, and a non-Gold stance costs Gold), watched on AugustusExp66 with the
+recognition, sized from the host's income, and a non-Gold stance costs Gold), run on AugustusExp66 with the
 mod pass off. The probes build the real decision view for a Bulgarian enclave in London, raise it with the
 shipped `showDilemma`, and press a button wired to the shipped `applyQuarterChoice`. London: 804 Gold banked,
 705 Gold, 251 Science and 221 Culture a turn; Bulgaria is at war with England, so the payout is halved.
@@ -1380,12 +1381,12 @@ shipped `showDilemma`, and press a button wired to the shipped `applyQuarterChoi
            iconsInLabel 2 / 1 / 0, no raw [icon: tag visible; same payout as 155
 ```
 
-- **The payout lands exactly as stated**, on the tech in progress, and the price leaves the treasury at once.
-- **An unaffordable stance is grayed out and its press does nothing.** At 804 Gold the Science stance's price
+- The payout lands exactly as stated, on the tech in progress, and the price leaves the treasury at once.
+- An unaffordable stance is grayed out and its press does nothing. At 804 Gold the Science stance's price
   (two turns of a 705-Gold income) could not be paid, so only the free Gold stance was open. A treasury smaller
   than two turns' income is common, so the price may often lock the Culture / Science / Influence stances;
   `quarterStanceCostTurns` is the knob.
-- **Button captions draw the yield icons** (as in mod test 130). The longest caption nearly fills the button.
+- Button captions draw the yield icons (as in mod test 130). The longest caption nearly fills the button.
 
 Screenshots: `shots/modtest154-enclave-stance-popup.png` (figures in the body) and
 `shots/modtest156-enclave-stance-popup.png` (figures on the buttons). Logs: `modtest154-UI.log` to
@@ -1399,7 +1400,7 @@ trade +1135 Gold", "Let them be"), then the first stance pressed and the placed 
 framed with the enclave tooltip reading "Recognized: Learn their horsemanship". `docs/steam-screenshots/08` is a
 1572×982 crop of `shots/modtest157b-stance.png`; `09` is `shots/modtest157b-tooltip.png` at 1920 wide.
 
-- **Pinning the hover panel: hover ONCE.** The first run re-sent the plot-cursor event every 100 ms, and each one made
+- Pinning the hover panel: hover once. The first run re-sent the plot-cursor event every 100 ms, and each one made
   the panel re-place itself at the last real mouse position, so it drew in the top-left corner. Sending the hover
   once and then only holding `left` / `top` kept it beside the tile (the mod test 145 recipe, corrected).
 
@@ -1421,7 +1422,7 @@ The four decision pop-ups on the current build, one run on the Steam set's game 
 Crops centered on each dialog's rect (viewport 2880x1800 CSS = 3024x1890 px, x1.05): 05 and 08 1572x982, 06
 1452x906, 07 1920x1200 (the call-home dialog is 1087 px tall, more than the old 1074 frame).
 
-## Mod test 159 - the newcomer pop-up's button figures, watched, and shot 06 (2026-09-18)
+## Mod test 159 - the newcomer pop-up's button figures, and shot 06 (2026-09-18)
 
 The Newcomers / Refugees pop-up now states on each button what it gives: the population on all three, and on
 "Let the city settle them" the summed yields of the tiles `autoTiles` predicts (the same `pickExpandPlot` rule
@@ -1435,7 +1436,7 @@ pressed (autoPlace)   placed=1, pending 1 -> 0, offered now []
 city net delta        FOOD +1, PRODUCTION +3.45, HAPPINESS +1, GOLD +1.15, SCIENCE +1.22, CULTURE +0.59, INFLUENCE +0.28
 ```
 
-- **The predicted tile is the tile taken**, and its yields reach the city. The city also gains a little more than
+- The predicted tile is the tile taken, and its yields reach the city. The city also gains a little more than
   the tile shows: its production bonus (x1.15) and small per-population yields. The button understates, never
   overstates.
 - `docs/steam-screenshots/06-newcomer-placement.jpg` is a 1452x906 crop of `shots/modtest159-newcomer.png`.

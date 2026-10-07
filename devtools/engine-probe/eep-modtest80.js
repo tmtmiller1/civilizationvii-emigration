@@ -1,7 +1,7 @@
 // eep-modtest80.js - watch the per-city Prosperity lens, with the camera settled. Mod test 79 moved the camera 4s
 // before each shot and every frame lagged one move behind, so the tint was never seen at a tile whose value is known.
 // Here the camera moves ONCE to the best-scoring tile of the settlement with the widest own spread, waits 15s, and
-// shoots with the lens on, then with the lens off from the SAME camera. The pair isolates the lens's fill.
+// shoots with the lens on, then with the lens off from the same camera. The pair isolates the lens's fill.
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 const TAG = "[EmigTest]";

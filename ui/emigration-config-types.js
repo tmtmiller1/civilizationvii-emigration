@@ -1,7 +1,7 @@
 // emigration-config-types.js
 //
-// The SHAPE of the mod's tunable settings: the documented contract for the CONFIG object whose default
-// VALUES live in emigration-config.js. Kept apart so the settings/options layer can type against the
+// The shape of the mod's tunable settings: the documented contract for the CONFIG object whose default
+// values live in emigration-config.js. Kept apart so the settings/options layer can type against the
 // contract without importing the defaults.
 
 /**
@@ -21,12 +21,12 @@
  *   charge tracks current conditions and falls when they improve (1 = off, the legacy ratchet).
  * @property {number} popExponent Exponent on population in the per-citizen productiveness divisor
  *   (1 = a straight per-head average; below 1 a large settlement keeps more of what it built).
- * @property {number} perFewerPop Friction per population point when the destination is SMALLER than
+ * @property {number} perFewerPop Friction per population point when the destination is smaller than
  *   the source, the mirror of perExtraPop (0 = off, restoring the one-way push toward small towns).
  * @property {boolean} enclaveTooltipEnabled Show the mod's own tooltip on an enclave's tile (name, stage,
  *   every yield source and its reasoning) in place of the game's.
  * @property {boolean} builtEnabled Score a settlement's wonders and civic buildings as a reason to stay.
- * @property {Record<string, number>} builtRoleWeights Score per built ROLE present (prestige is per wonder).
+ * @property {Record<string, number>} builtRoleWeights Score per built role present (prestige is per wonder).
  * @property {number} builtWonderCap Most wonders one settlement may be credited for.
  * @property {number} builtCap Ceiling on the whole built-environment term.
  * @property {number} builtRefreshTurns Turns between per-settlement built-environment re-scans.
@@ -39,8 +39,8 @@
  * @property {boolean} gameSpeedTuningEnabled Scale turn-based pacing by the game-speed scalar S
  *   (Online≈0.5 … Standard 1.0 … Marathon≈3.0) so migration feels constant in game-time; false = legacy.
  * @property {boolean} gameSpeedScalePopulation Normalize the historical population exponent to
- *   scaleGrowth^(turn/S). Cosmetic and CROSS-MOD: only stays aligned with Demographics if that mod
- *   applies the identical normalization, so it defaults OFF and is gated separately.
+ *   scaleGrowth^(turn/S). Cosmetic and cross-mod: only stays aligned with Demographics if that mod
+ *   applies the identical normalization, so it defaults off and is gated separately.
  * @property {number} tiltCap Max |targeted attraction| added to a single pull (Tilt-channel clamp).
  * @property {number} permeFloor Permeability-product floor.
  * @property {number} permeCeil Permeability-product ceiling.
@@ -51,7 +51,7 @@
  * @property {number} raidTilt Pull tilt from an active raid's target toward the raider.
  * @property {number} poachBlock Extra delta needed for a cross-civ destination.
  * @property {number} refugeePoachBlock Reduced cross-civ delta for a war/disaster refugee source.
- * @property {number} crisisEscapeBonus Pull ADDED toward a CROSS-CIV destination for a source in
+ * @property {number} crisisEscapeBonus Pull added toward a cross-civ destination for a source in
  *   acute crisis (war/disaster), so its refugees flee abroad instead of relocating internally (0 = off).
  * @property {number} cooldownTurns Turns a source rests after emigrating.
  * @property {number} minRuralToEmigrate Rural floor a source keeps.
@@ -76,7 +76,7 @@
  * @property {number} unrestModifier Percent score modifier during unrest.
  * @property {boolean} polityModelEnabled 1.4.1 polity model (happiness stages + government +
  *   celebration + war weariness). false → legacy scoring.
- * @property {number} happinessStageWeight Bounded pull per happiness-stage step (ANGRY −2 … ECSTATIC +2).
+ * @property {number} happinessStageWeight Bounded pull per happiness-stage step (angry −2 … ecstatic +2).
  * @property {number} happinessStageMiseryScale Scale on the negative (unhappy/angry) side of the stage
  *   term (pull-bias; misery is already covered by happiness + suppressed yields). 1 = symmetric.
  * @property {number} celebrationPull Attractiveness bonus while a civ is in a Golden Age (celebration).
@@ -132,10 +132,10 @@
  * @property {boolean} quarterForce Testing flag: offer the best qualifying enclave now, bypassing the soft gates.
  * @property {boolean} diversityRanking Show the "most diverse cities" dashboard tab (read-only; no yields).
  * @property {boolean} cosmopolitanismScore Add the derived Cosmopolitanism "Character" column.
- *   COSMETIC: grants no yields.
+ *   Cosmetic: grants no yields.
  * @property {number} diversityRows Rows shown in the diversity ranking table.
  * @property {boolean} migrationExplainer Show the push/pull cause stack in the readout + hover panels
- *   READ-ONLY: it explains the scores the sim already computed; it moves no one.
+ *   Read-only: it explains the scores the sim already computed; it moves no one.
  * @property {boolean} selftestEnabled Install the on-screen self-test launcher (live diagnostics + forced pop-up).
  * @property {number} quarterDwellTurns Turns an established enclave must persist before it is recognized
  *   (its stance is chosen and the stance yields begin).
@@ -170,7 +170,7 @@
  * @property {number} antiDrainWeight Penalty on cross-civ outflow from a civ below the drain threshold (0 = off).
  * @property {number} antiDrainThreshold Share of the world-average civ population below which outflow is braked.
  * @property {number} antiDrainExponent Steepness of the drain brake below the threshold.
- * @property {number} crisisInternalBonus Pull added to a crisis source's OWN-civilization destinations (0 = off).
+ * @property {number} crisisInternalBonus Pull added to a crisis source's own-civilization destinations (0 = off).
  * @property {number} crossCivMovement Grouped "Movement between civilizations" position, 0 to 100.
  * @property {number} minorRaidRefugees Grouped "Refugees from minor-power raids" position, 0 to 100.
  * @property {number} majorWarRefugees Grouped "Refugees from major-power wars" position, 0 to 100.
@@ -223,7 +223,7 @@
  * @property {number} overcrowdDiscount Happiness credited per over-threshold urban point (Alg B).
  * @property {number} overcrowdThreshold Urban pop before overcrowding bites (Alg B).
  * @property {number} congestWeight Pull penalty per per-capita assimilation load (Alg C).
- * @property {number} antiSnowballWeight Headwind vs CROSS-CIV immigration into a civ whose
+ * @property {number} antiSnowballWeight Headwind vs cross-civ immigration into a civ whose
  *   population runs ahead of the world-average civ (self-correcting anti-runaway brake; 0 = off).
  * @property {number} antiSnowballThreshold Fair-share population multiple before the headwind bites.
  * @property {number} antiSnowballExponent Escalation steepness past the threshold.
@@ -233,7 +233,7 @@
  * @property {number} attritionMinDistress Min situational distress (%) before attrition fires.
  * @property {number} attritionThreshold Distress pressure to remove one population point.
  * @property {number} unrestLethalDelayTurns Turns of sustained unrest before it joins the death gate.
- * @property {boolean} crisisDeathEnabled A city under LETHAL distress (war/disaster/siege/famine) loses
+ * @property {boolean} crisisDeathEnabled A city under lethal distress (war/disaster/siege/famine) loses
  *   some population to death even when a refuge exists, concurrent with emigration. Economic
  *   (prosperity/unhappiness) emigration never kills (no situational distress).
  * @property {number} crisisDeathShare Base crisis-death coefficient (× warSeverity) when a refuge
@@ -241,10 +241,10 @@
  * @property {number} crisisSeverityCap Max violence/flee-threshold ratio counted toward war severity.
  * @property {number} crisisParticipantWeight Severity bonus per attacking civ beyond the first (small).
  * @property {number} crisisParticipantMax Hard cap on the total participant severity bonus.
- * @property {number} crisisCombatWeight Severity added per recent unit lost (a MAJOR war-death factor).
+ * @property {number} crisisCombatWeight Severity added per recent unit lost (a major war-death factor).
  * @property {number} crisisCombatMax Cap on the unit-casualty severity term.
  * @property {number} combatDecay Per-turn decay of the per-civ unit-loss intensity (0..1).
- * @property {boolean} deathRampEnabled Smooth the death-channel ONSET over sustained-crisis turns (no cap).
+ * @property {boolean} deathRampEnabled Smooth the death-channel onset over sustained-crisis turns (no cap).
  * @property {number} deathRampFloor Death-pressure accrual multiplier on turn 1 of a lethal crisis (0..1).
  * @property {number} deathRampTurns Turns of sustained lethal distress to reach the full death rate.
  * @property {number} ownCivRefugeeBonus War-refugee pull toward own civ.

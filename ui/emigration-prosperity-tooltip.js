@@ -1,8 +1,8 @@
 // emigration-prosperity-tooltip.js
 //
-// The Prosperity lens's cursor panel: the hovered TILE's prosperity band, score and every term behind it (the
+// The Prosperity lens's cursor panel: the hovered tile's prosperity band, score and every term behind it (the
 // points scale of emigration-tile-score.js, the number the lens colored the hex from), then the settlement's
-// PROSPERITY standing (the score that drives migration, normalized against the world) plus any active migration
+// Prosperity standing (the score that drives migration, normalized against the world) plus any active migration
 // pressures, shown while the Prosperity lens is active. Matches the Ethnicity lens panel exactly -
 // same styling, cursor offset, and spoiler rules - via the shared emigration-lens-hover-panel.js.
 //
@@ -76,7 +76,7 @@ function pressures(s) {
 }
 
 /**
- * Per-pass field context: the prosperity mean + max spread over EVERY observable settlement, so the
+ * Per-pass field context: the prosperity mean + max spread over every observable settlement, so the
  * hovered city's standing is measured against the same field the lens colors against.
  * @param {*[]} signals All collected CitySignals.
  * @returns {{ctx:*, mean:number, spread:number}} The snapshot.
@@ -172,7 +172,7 @@ export function termLabel(t) {
 }
 
 /**
- * The rows for the hovered TILE: its band and score in the color the lens painted it, then one row per term that
+ * The rows for the hovered tile: its band and score in the color the lens painted it, then one row per term that
  * fired, so the number explains itself. Empty for a tile the lens doesn't paint (empty sea).
  * @param {{x:number, y:number}} plot The hovered plot.
  * @returns {{color:string, name:string, value:string}[]} The rows.
@@ -188,7 +188,7 @@ export function tileRows(plot) {
 }
 
 /**
- * Turn the hovered TILE into the panel: the tile's band, score and every term behind it (the very number the lens
+ * Turn the hovered tile into the panel: the tile's band, score and every term behind it (the very number the lens
  * colored it from, so the panel and the color can never disagree), then the settlement's standing in the world
  * and any pressure rows.
  * @param {*} sig The hovered settlement's CitySignal.
@@ -215,7 +215,7 @@ function resolve(sig, snap, plot) {
   return { title, rows };
 }
 
-// ── Self-registration (runs on UIScript load, in the HUD context) ───────────────────────
+// Self-registration (runs on UIScript load, in the HUD context)
 try {
   registerLensHoverPanel({
     lens: LENS, panelId: "emig-prospanel", styleId: "emig-prospanel-style", buildSnapshot, resolve,

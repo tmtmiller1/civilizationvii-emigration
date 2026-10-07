@@ -1,9 +1,9 @@
 // emigration-inbound.js
 //
-// The per-city INBOUND cap (CONFIG.maxGainPerCityPerTurn): one settlement may GAIN at most this many
-// migration points in a single turn, instant departures AND completed transit arrivals together. The
+// The per-city inbound cap (CONFIG.maxGainPerCityPerTurn): one settlement may gain at most this many
+// migration points in a single turn, instant departures and completed transit arrivals together. The
 // departure side (emigration-engine.js) and the arrival side (emigration-arrivals.js) both enforce
-// this ONE cap over ONE shared per-turn tally, kept here so the two sides can never drift apart.
+// this one cap over one shared per-turn tally, kept here so the two sides can never drift apart.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
@@ -11,7 +11,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 /**
  * The per-city inbound cap for this turn, or Infinity when the feature is off (config value <= 0).
- * @returns {number} The cap.
+ * @returns {number}
  */
 function cityInboundCap() {
   return CONFIG.maxGainPerCityPerTurn > 0 ? CONFIG.maxGainPerCityPerTurn : Infinity;
@@ -20,7 +20,7 @@ function cityInboundCap() {
 /**
  * A fresh per-turn inbound context (empty tally + the current cap), built once per pass and shared
  * between the arrival and departure sides.
- * @returns {InboundCtx} The context.
+ * @returns {InboundCtx}
  */
 export function makeInboundCtx() {
   return { byCity: new Map(), cap: cityInboundCap() };

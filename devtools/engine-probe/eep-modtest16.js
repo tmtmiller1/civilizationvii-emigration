@@ -1,4 +1,4 @@
-// eep-modtest16.js - REAL-ENGINE flow measurement: Autoplay with the mod's own per-turn pass running for
+// eep-modtest16.js - real-engine flow measurement: Autoplay with the mod's own per-turn pass running for
 // many turns from AugustusAnt136, automatic recognition everywhere, themed placement ON. Every 10 turns:
 // the largest single-origin foreign share and its stock, how many settlements sit at the foothold /
 // established bars, cumulative migration counts, and the enclave records. Logs [EmigTest]. The turn

@@ -29,7 +29,7 @@ globalThis.document = { createElement: makeEl };
 const { makeEventPins, clusterPinsByColumn } = await import(
   "/emigration/ui/emigration-network-timeline.js"
 );
-// The pin palette must come from the SHARED cause taxonomy the notifications log themes with — assert
+// The pin palette must come from the shared cause taxonomy the notifications log themes with; assert
 // against causeAccent itself, never a copied hex, so the two can't silently drift apart.
 const { causeAccent } = await import("/emigration/ui/emigration-causes.js");
 

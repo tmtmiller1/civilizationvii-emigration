@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 
 // Stub the Culture / policy surface emigration-borders.js reads. Governments no longer
 // factor into emigration (the Open/Closed Borders cards are the whole mechanic), and the
-// cards' Influence is a native DB modifier - so this only exercises the immigration-openness
+// cards' Influence is a native DB modifier, so this only exercises the immigration-openness
 // multiplier the engine reads.
 let ACTIVE = {}; // pid → Set of active tradition hashes
 globalThis.Players = {
@@ -66,7 +66,7 @@ function testOpennessFloor() {
   assert.ok(close(immigrationOpenness(5), 0.15)); // 0.1 floored up to 0.15
 }
 
-// ── Emigration retention: Closed Borders keeps your own people from leaving for rivals ──
+// Emigration retention: Closed Borders keeps your own people from leaving for rivals
 
 function testRetentionNeutralWhenOff() {
   CONFIG.bordersEnabled = false;
@@ -89,7 +89,7 @@ function testNoRetentionWithoutClosed() {
   assert.equal(emigrationRetention(9), 1); // no card → neutral
 }
 
-// ── Both cards slotted: Open and Closed cancel each other out → fully neutral ──
+// Both cards slotted: Open and Closed cancel each other out → fully neutral
 
 function testBothBordersCancelOut() {
   CONFIG.bordersEnabled = true;
@@ -212,7 +212,7 @@ function testHashCacheSurvivesMissingDatabaseAfterWarmup() {
   assert.ok(close(immigrationOpenness(70), 1.5));
 }
 
-// ── Per-pass cache: a civ's slotted cards are read once per pass and held until reset ──
+// Per-pass cache: a civ's slotted cards are read once per pass and held until reset
 
 function testBorderCacheHoldsUntilReset() {
   CONFIG.bordersEnabled = true;

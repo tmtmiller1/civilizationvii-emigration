@@ -6,7 +6,7 @@
 //   SHOT ethnic-<n>           Ethnic Composition lens on each of the most diverse cities the player has explored
 //                             (run 142's retake found the most diverse ones unexplored, which draws black map)
 //
-// (shootPedia is kept for reuse but not called: mod test 143 photographed and verified the Civilopedia pages.)
+// (shootPedia is kept for reuse but not called: mod test 143 photographed and checked the Civilopedia pages.)
 import LensManager from "/core/ui/lenses/lens-manager.js";
 import { diverseCityRanking } from "/emigration/ui/emigration-diversity.js";
 

@@ -18,7 +18,7 @@ globalThis.Culture = { isTraditionActive: () => false };
 Object.assign(CONFIG, {
   baseReluctance: 4,
   perExtraPop: 0.5,
-  perFewerPop: 0, // pinned OFF: the characterization cases below predate it; it has its own cases at the end
+  perFewerPop: 0, // pinned off: the characterization cases below predate it; it has its own cases at the end
   cityStateBarrier: 5,
   poachBlock: 12,
   distanceFactor: 0.6,
@@ -61,14 +61,14 @@ CONFIG.crossCivEnabled = false;
 assert.equal(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(2, 30, 5, false, 1, 0), null, null, null), null, "C6");
 CONFIG.crossCivEnabled = true;
 
-// C7, PERMEABILITY multiply: bordersEnabled + opennessFloor 1.5 → openness 1.5 → 6 × 1.5 = 9.
+// C7, permeability multiply: bordersEnabled + opennessFloor 1.5 → openness 1.5 → 6 × 1.5 = 9.
 CONFIG.bordersEnabled = true;
 CONFIG.opennessFloor = 1.5;
 close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(1, 20, 5, false, 0, 0), null, null, null), 9, "C7");
 CONFIG.bordersEnabled = false;
 CONFIG.opennessFloor = 0.25;
 
-// C8, Asylum TILT (§4a): a war-caused source (violence 2) pulled toward a dest holding asylum.
+// C8, Asylum tilt (§4a): a war-caused source (violence 2) pulled toward a dest holding asylum.
 //   tilt = asylumPushWeight(3) × (violence 2 + disaster 0) = 6, clamped to ±tiltCap;
 //   pull = (20-10) + 6 − 4 = 12.
 globalThis.Database = { makeHash: (t) => t }; // so policy hashes resolve
@@ -79,15 +79,15 @@ Object.assign(CONFIG, { asylumPushWeight: 3, violenceFleeThreshold: 2, disasterF
 const refugeeSrc = { ...sig(1, 10, 5, false, 0, 0), violence: 2, disaster: 0 };
 close(adjustedPull(refugeeSrc, sig(1, 20, 5, false, 0, 0), null, null, null), 12, "C8 asylum tilt");
 
-// C9, PERMEABILITY relationship factor: an Open Borders deal multiplies cross-civ pull.
+// C9, permeability relationship factor: an Open Borders deal multiplies cross-civ pull.
 //   permeability = openness(1) × permOpenBorders(2) = 2; pull = (20 − 4 reluctance − 12 poach) × 2 = 8.
 globalThis.Game = { Diplomacy: { getJointEvents: () => [{ actionTypeName: "DIPLOMACY_ACTION_OPEN_BORDERS" }] } };
 resetDiplomacyCache(); // new diplomacy stub → fresh per-pair reads (mirrors the per-pass reset in production)
 Object.assign(CONFIG, { permOpenBorders: 2, bordersEnabled: false });
 close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(2, 30, 5, false, 0, 0), null, null, null), 8, "C9 open-borders permeability");
 
-// ── Anti-snowball headwind (cross-civ inflow into a runaway leader) ──────────────────────────────
-// Reset diplomacy/players so permeability is neutral (1), and pin the brake to a LINEAR exponent so
+// Anti-snowball headwind (cross-civ inflow into a runaway leader)
+// Reset diplomacy/players so permeability is neutral (1), and pin the brake to a linear exponent so
 // the arithmetic is exact: penalty = weight × max(0, civPop/avg − threshold).
 globalThis.Game = undefined;
 globalThis.Players = undefined;
@@ -101,16 +101,16 @@ Object.assign(CONFIG, {
 // Field where civ 2 is the runaway leader (avg = 30): civ2 ratio 2.0, civ1/3 ratio 0.667.
 const fieldA = { 1: 20, 2: 60, 3: 20, 4: 20 };
 
-// C10, cross-civ INTO the leader (civ2, ratio 2.0): excess 0.75 → penalty 15×0.75 = 11.25.
+// C10, cross-civ into the leader (civ2, ratio 2.0): excess 0.75 → penalty 15×0.75 = 11.25.
 //   pull = (40−10) −4 reluctance −12 poach −11.25 dominance = 2.75.
 close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(2, 40, 5, false, 0, 0), null, fieldA, null), 2.75, "C10 leader inflow braked");
 
-// C11, cross-civ into a BELOW-fair-share civ (civ3, ratio 0.667 < threshold) → no penalty.
+// C11, cross-civ into a below-fair-share civ (civ3, ratio 0.667 < threshold) → no penalty.
 //   pull = 30 −4 −12 = 14.
 close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(3, 40, 5, false, 0, 0), null, fieldA, null), 14, "C11 no penalty below fair share");
 
 // C11b, the small-civilization brake: civ1 sits at ratio 0.667 of the field average, below the 0.8 threshold, so a
-// cross-civ move OUT of it pays 12 × (0.8 − 0.667) = 1.6; an internal move pays nothing.
+// cross-civ move out of it pays 12 × (0.8 − 0.667) = 1.6; an internal move pays nothing.
 Object.assign(CONFIG, { antiDrainWeight: 12, antiDrainThreshold: 0.8, antiDrainExponent: 1 });
 close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(3, 40, 5, false, 0, 0), null, fieldA, null), 14 - 1.6, "C11b small civ outflow braked");
 close(adjustedPull(sig(2, 10, 5, false, 0, 0), sig(3, 40, 5, false, 0, 0), null, fieldA, null), 14, "C11b a leader's outflow is not braked");
@@ -122,15 +122,15 @@ CONFIG.antiDrainWeight = 0;
 const fieldB = { 1: 10, 2: 150, 3: 10, 4: 10 };
 assert.equal(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(2, 40, 5, false, 0, 0), null, fieldB, null), null, "C12 runaway leader blocked");
 
-// C13, the leader's OWN people leaving (src civ2 → dest civ1) are NOT braked (penalty keys on dest).
+// C13, the leader's own people leaving (src civ2 → dest civ1) are not braked (penalty keys on dest).
 //   pull = 30 −4 −12 = 14.
 close(adjustedPull(sig(2, 10, 5, false, 0, 0), sig(1, 40, 5, false, 0, 0), null, fieldA, null), 14, "C13 leader outflow unbraked");
 
-// C14, an INTERNAL move inside the leader (same owner) is never braked.
+// C14, an internal move inside the leader (same owner) is never braked.
 //   pull = (25−10) −4 = 11 (no cross-civ poach, no dominance).
 close(adjustedPull(sig(2, 10, 5, false, 0, 0), sig(2, 25, 5, false, 0, 0), null, fieldA, null), 11, "C14 internal move unbraked");
 
-// ── Crisis escape: a refugee fleeing a crisis gets a cross-civ pull bonus, so it flees ABROAD ──
+// Crisis escape: a refugee fleeing a crisis gets a cross-civ pull bonus, so it flees abroad
 globalThis.Game = undefined;
 globalThis.Players = undefined;
 resetBorderCache(); // policy stubs cleared → fresh reads
@@ -142,18 +142,18 @@ Object.assign(CONFIG, {
 const crisisSrc = { ...sig(1, 10, 5, false, 0, 0), violence: 5, disaster: 0 };
 close(adjustedPull(crisisSrc, sig(2, 30, 5, false, 0, 0), null, null, null), 30, "C15 crisis refugee escapes abroad");
 
-// C16, a CALM source gets NO escape bonus and pays the full poachBlock: 20 −4 −12 = 4.
+// C16, a calm source gets no escape bonus and pays the full poachBlock: 20 −4 −12 = 4.
 close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(2, 30, 5, false, 0, 0), null, null, null), 4, "C16 calm source: no escape, full poach");
 
-// C17, a RAZING source (siege, sub-threshold violence) is an acute crisis and escapes ABROAD like a
-// war refugee — same math as C15 (−0 refugeePoach +14 escape), NOT the full poachBlock of C16. This
+// C17, a razing source (siege, sub-threshold violence) is an acute crisis and escapes abroad like a
+// war refugee: same math as C15 (−0 refugeePoach +14 escape), not the full poachBlock of C16. This
 // pins srcInCrisis/migrationCause counting siege, matching the engine's inCrisis shed track.
 const razingSrc = { ...sig(1, 10, 5, false, 0, 0), siege: true, violence: 0, disaster: 0 };
 close(adjustedPull(razingSrc, sig(2, 30, 5, false, 0, 0), null, null, null), 30, "C17 razing source escapes abroad");
 
-// C18, the homeland bonus: the same war refugee moving INSIDE its own civilization adds crisisInternalBonus, so
+// C18, the homeland bonus: the same war refugee moving inside its own civilization adds crisisInternalBonus, so
 // shelter at home competes with flight abroad. pull = (30−10) −4 reluctance +12 = 28; with the knob off it is 16.
-// Mod test 82 measured the choice this balances: of 63 crisis sources whose best destination was foreign, 45 had a
+// Mod test 82 is the game this balances: of 63 crisis sources whose best destination was foreign, 45 had a
 // homeland option worth a median 36% of it (absolute gap p50 12.3), so 12 flips about half of those moves.
 Object.assign(CONFIG, { crisisInternalBonus: 12 });
 close(adjustedPull(crisisSrc, sig(1, 30, 5, false, 0, 0), null, null, null), 28, "C18 crisis refugee prefers a refuge at home");
@@ -162,16 +162,16 @@ CONFIG.crisisInternalBonus = 0;
 close(adjustedPull(crisisSrc, sig(1, 30, 5, false, 0, 0), null, null, null), 16, "C18 knob off: no homeland bonus");
 CONFIG.crisisInternalBonus = 12;
 
-// ── perFewerPop: the mirror friction, so the size comparison brakes BOTH ways ──
+// perFewerPop: the mirror friction, so the size comparison brakes both ways
 // Without it nothing at all resisted big → small, while the base score was simultaneously rewarding
 // the destination for being small (populationFactor). That one-way push is what drained a capital
 // into its lesser neighbors however well it was built.
 CONFIG.perFewerPop = 0.5;
 {
-  // dest 4 pop SMALLER than src: (20-10) - 4 - 0.5×4 = 4.
+  // dest 4 pop smaller than src: (20-10) - 4 - 0.5×4 = 4.
   close(adjustedPull(sig(1, 10, 9, false, 0, 0), sig(1, 20, 5, false, 0, 0), null, null, null), 4,
     "C19 leaving a larger settlement for a smaller one now pays the same per point as crowding in");
-  // and the mirror is EXACT: the same gap in the other direction costs the same.
+  // and the mirror is exact: the same gap in the other direction costs the same.
   close(adjustedPull(sig(1, 10, 5, false, 0, 0), sig(1, 20, 9, false, 0, 0), null, null, null), 4,
     "C19b the friction is symmetric, big → small costs what small → big costs");
 }
@@ -181,7 +181,7 @@ CONFIG.perFewerPop = 0.5;
     "C20 equal-size settlements pay no size friction in either direction");
 }
 {
-  // Off restores the one-way push exactly (kills an always-on mutant).
+  // Off restores the one-way push exactly.
   CONFIG.perFewerPop = 0;
   close(adjustedPull(sig(1, 10, 9, false, 0, 0), sig(1, 20, 5, false, 0, 0), null, null, null), 6,
     "C21 perFewerPop 0 restores the legacy one-way behavior");

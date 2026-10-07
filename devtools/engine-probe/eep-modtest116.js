@@ -1,12 +1,12 @@
 // eep-modtest116.js - Does the per-city combat ledger name who attacked, in a real game, unattended?
 //
 // Runs itself: advances turns until it has enough evidence to decide, then prints a VERDICT. It does not
-// dump numbers for a human to interpret -- the criteria are fixed below, BEFORE the run, so the answer
+// dump numbers for a human to interpret: the criteria are fixed below, before the run, so the answer
 // cannot be rationalized after the fact.
 //
 // WHAT IS BEING TESTED. emigration-combat-events.js records, per city, the fighting in its territory
 // (`Combat`, `UnitKilledInCombat`, `DistrictDamageChanged`) and names the players involved. Mod test 115
-// watched it record real fights at Cincinnati and Lille but report `attackers=[]` for both: it named a
+// saw it record real fights at Cincinnati and Lille but report `attackers=[]` for both: it named a
 // combatant only when that combatant was not the city's owner, so an invader KILLED BY the defender arrived
 // as the victim and was never named. Attacker identity is what the minor-power raid balance rests on, so
 // that hole matters. The fix names every combatant who is not the city's owner, on both events.
@@ -14,11 +14,11 @@
 // WHY IT READS A GLOBAL. A UI script in another mod that imports the module gets its OWN instance, whose
 // tracker was never started and whose maps are therefore always empty (mod tests 112/113 both read zero for
 // exactly this reason). `globalThis.EmigrationCombat` is the live instance. `globalThis.emigration` is the
-// control that proves the mod's bootstrap ran at all -- when a missing deployed file broke the main module,
+// control that shows the mod's bootstrap ran at all (when a missing deployed file broke the main module,
 // that global was absent and every reading below would have been meaningless.
 //
 // THE CRITERIA, fixed in advance:
-//   FAIL         tracker never attached; or fights were recorded and NO attacker was ever named; or a city's
+//   FAIL         tracker never attached; or fights were recorded and no attacker was ever named; or a city's
 //                own owner was named as attacking it.
 //   INCONCLUSIVE no combat events at all, or none attributable to any city, in the turns available. A run
 //                where nothing happened must never report success -- that is how a dead feature survives.
@@ -26,7 +26,7 @@
 //   PASS         fights were recorded, attackers were named on most of them, and no city was ever named as
 //                its own attacker.
 //
-// Note a row with district damage but no battle or kill is NOT counted against naming: DistrictDamageChanged
+// A row with district damage but no battle or kill is not counted against naming: DistrictDamageChanged
 // carries no attacker at all, so an unnamed damage-only row is correct behavior, not a miss.
 const TAG = "[EmigTest]";
 const MAX_TURNS = 22;

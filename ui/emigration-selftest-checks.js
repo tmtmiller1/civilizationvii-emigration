@@ -1,6 +1,6 @@
 // emigration-selftest-checks.js
 //
-// The read-only diagnostic BATTERY behind the on-screen self-test (emigration-selftest.js): one function
+// The read-only diagnostic battery behind the on-screen self-test (emigration-selftest.js): one function
 // per subsystem, each returning a {label, status, detail} row (PASS/WARN/FAIL/INFO). Split out from the
 // screen/actions module to keep both under the file-size cap. Pure reads against the live game; every
 // check self-guards so a single failure degrades to an INFO row rather than throwing.
@@ -96,7 +96,7 @@ function row(label, status, detail) {
   return { label, status, detail };
 }
 
-// ── the check battery ──────────────────────────────────────────────────────────────────────────────
+// the check battery
 
 /** Settlement coverage: how many of the player's settlements exist (all now render on the network). */
 function checkSettlements() {
@@ -105,12 +105,12 @@ function checkSettlements() {
   const towns = sigs.filter((s) => s.isTown).length;
   if (!n) {
     return row("Settlements on the network", "INFO",
-      "No settlements found for you yet — found a city, then re-run. (The fix draws every settlement, " +
+      "No settlements found for you yet; found a city, then re-run. (The fix draws every settlement, " +
       "including small towns that used to vanish.)");
   }
   return row("Settlements on the network", "PASS",
     "You have " + n + " settlement" + (n === 1 ? "" : "s") + " (" + towns + " town" + (towns === 1 ? "" : "s") +
-    "). All " + n + " now render on the migration network — small/low-population settlements no longer drop " +
+    "). All " + n + " now render on the migration network; small/low-population settlements no longer drop " +
     "off. Use “Open dashboard” to eyeball them.");
 }
 
@@ -140,7 +140,7 @@ function checkEnclaves() {
   if (established > 0) {
     return row("Cultural enclaves", "PASS",
       established + " settlement(s) already qualify for an enclave decision. " + notes.join("  •  ") +
-      "  — use “Force enclave pop-up” to see the decision now.");
+      ". Use “Force enclave pop-up” to see the decision now.");
   }
   if (foothold > 0) {
     return row("Cultural enclaves", "WARN",
@@ -149,7 +149,7 @@ function checkEnclaves() {
   }
   return row("Cultural enclaves", "INFO",
     "No foreign community is present yet, so there is no enclave to offer even when forced. Expected early " +
-    "or in a homogeneous game — it fills in as cross-civ migration happens.");
+    "or in a homogeneous game; it fills in as cross-civ migration happens.");
 }
 
 /** The two population measures, side by side, on the player's largest settlement (the confusion source). */
@@ -163,9 +163,9 @@ function checkPopulationMeasures() {
   const lead = comp && comp.civs ? comp.civs.find((/** @type {*} */ c) => c.civ !== comp.owner) : null;
   const share = lead ? Math.round((lead.share || 0) * 100) : 0;
   return row("Population: Civ vs Scaled", "INFO",
-    cityLabel(top) + " — Civ Pop " + pts + " points (exact, changes only on growth) vs Scaled Pop ~" +
+    cityLabel(top) + ": Civ Pop " + pts + " points (exact, changes only on growth) vs Scaled Pop ~" +
     formatPeople(people) + " (historical, drifts with the age). Top foreign share here: " + share +
-    "% — percentages now always use the Civ-Pop base, so toggling Scaled/Civ no longer changes them.");
+    "%. Percentages now always use the Civ-Pop base, so toggling Scaled/Civ no longer changes them.");
 }
 
 /** Migration activity: the pass counters, so you can tell the engine is actually moving people. */
@@ -203,13 +203,13 @@ function checkRefugeePool() {
   }
 }
 
-/** Chronicle: the migration history log — entry count + the latest line. */
+/** Chronicle: the migration history log: entry count + the latest line. */
 function checkChronicle() {
   try {
     const log = chronicleLog(200) || [];
     if (!log.length) {
       return row("Migration Chronicle", "INFO",
-        "No chronicle entries yet — exoduses, foundings and enclave milestones are written here as they happen.");
+        "No chronicle entries yet. Exoduses, foundings and enclave milestones are written here as they happen.");
     }
     const latest = /** @type {*} */ (log[0] || {});
     const title = latest.title || latest.summary || "(entry)";
@@ -225,7 +225,7 @@ function checkNotifications() {
   const on = (CONFIG.notifyMode >= 1) && !!CONFIG.notifyToasts;
   if (on) {
     return row("Notifications (toasts)", "PASS",
-      "On-screen toasts are enabled — press “Fire test toast” to see one. (Persistent chronicle/log " +
+      "On-screen toasts are enabled. Press “Fire test toast” to see one. (Persistent chronicle/log " +
       "entries in the Notifications tab are separate and always recorded.)");
   }
   return row("Notifications (toasts)", "WARN",
@@ -248,7 +248,7 @@ function checkPersistence() {
     /* fall through */
   }
   return row("Persistence (ethnic ledger)", "INFO",
-    "No composition recorded for you yet — this fills in after a pass or two of migration.");
+    "No composition recorded for you yet. This fills in after a pass or two of migration.");
 }
 
 /** Cross-mod: whether the Demographics mod is present (the migration page integrates into it). */
@@ -256,7 +256,7 @@ function checkDemographics() {
   const api = /** @type {*} */ (globalThis).DemographicsMetricsAPI;
   if (api) {
     return row("Demographics integration", "PASS",
-      "The Demographics mod is installed — the migration dashboard also appears as native Demographics " +
+      "The Demographics mod is installed, so the migration dashboard also appears as native Demographics " +
       "sub-tabs, and Emigration contributes its net-migration graph.");
   }
   return row("Demographics integration", "INFO",
@@ -267,12 +267,12 @@ function checkDemographics() {
 function checkForce() {
   return row("Force enclave option", CONFIG.quarterForce ? "PASS" : "INFO",
     CONFIG.quarterForce
-      ? "The Force-enclave option is ON — your best qualifying diaspora is offered its decision each pass."
+      ? "The Force-enclave option is ON, so your best qualifying diaspora is offered its decision each pass."
       : "The Force-enclave option is OFF. The “Force enclave pop-up” button turns it on just long enough to " +
         "offer the decision, if you have any foreign community.");
 }
 
-// ── balance probes (refugee throttle, contested-enclave yield, razing → refugee) ────────────────────
+// balance probes (refugee throttle, contested-enclave yield, razing → refugee)
 
 /**
  * A razing settlement flees as a war refugee. Behavioral: runs the live classifier on a synthetic
@@ -284,7 +284,7 @@ function checkRazingRefugees() {
     if (cause === "war") {
       return row("Razing → refugee flight", "PASS",
         "A settlement being razed is treated as a war crisis: its people flee abroad as refugees (crisis-escape " +
-        "pull, reduced cross-civ friction) even before battle damage crosses the flee threshold — matching how the " +
+        "pull, reduced cross-civ friction) even before battle damage crosses the flee threshold, matching how the " +
         "engine sheds them. Synthetic razing source classified as “war”.");
     }
     return row("Razing → refugee flight", "FAIL",
@@ -316,7 +316,7 @@ function checkContestedEnclaveYield() {
       "% of its benefit yield (plus a happiness strain).";
     if (contested.length) {
       return row("Contested enclave yield", "PASS",
-        base + " You have " + contested.length + " contested now: " + contested.join(", ") + " — each contributing " +
+        base + " You have " + contested.length + " contested now: " + contested.join(", ") + "; each contributing " +
         pct + "% until peace returns.");
     }
     return row("Contested enclave yield", "PASS",
@@ -329,7 +329,7 @@ function checkContestedEnclaveYield() {
 
 /**
  * Under Anti-Immigration, admitted refugees settle more slowly (the settlement budget is throttled on
- * the SAME openness floor as the border turn-away). Live observation of the local player's stance + staged pool.
+ * the same openness floor as the border turn-away). Live observation of the local player's stance + staged pool.
  */
 function checkClosedBorderThrottle() {
   const floorPct = Math.round((num(CONFIG.opennessFloor) || 0) * 100);
@@ -344,19 +344,19 @@ function checkClosedBorderThrottle() {
     if (borderStance(me) === "anti" || openness < 1) {
       return row("Anti-Immigration refugee throttle", "PASS",
         "You hold an Anti-Immigration stance (openness " + Math.round(openness * 100) + "%). Refugees are turned away " +
-        "at your border AND the ones you admit settle more slowly — the same openness throttles pool settlement, " +
+        "at your border and the ones you admit settle more slowly: the same openness throttles pool settlement, " +
         "floored at " + floorPct + "% (the shared openness floor, not the old 25% staging floor). " +
         (pool ? pool + " refugee point(s) staged now, draining at the reduced rate." : "No refugees staged right now."));
     }
     return row("Anti-Immigration refugee throttle", "INFO",
-      "No Anti-Immigration stance active — refugee settlement runs at full speed. Under Anti-Immigration, admitted " +
+      "No Anti-Immigration stance active, so refugee settlement runs at full speed. Under Anti-Immigration, admitted " +
       "refugees also settle more slowly (throttle floored at " + floorPct + "%, shared with the border turn-away).");
   } catch (e) {
     return row("Anti-Immigration refugee throttle", "INFO", "Border-throttle check unavailable: " + errMsg(e));
   }
 }
 
-// ── departures and arrivals made real ───────────────────────────────────────────────────────────────
+// departures and arrivals made real
 
 /**
  * Departure tile abandonment: is the engine surface (Districts / Constructibles / DESTROY_ELEMENT)
@@ -426,12 +426,12 @@ function checkArrivalPlacement() {
         : "newcomers arrive as a Migrant unit you resettle yourself."));
 }
 
-// ── notification clarity + interface localization probes ─────────────────────────────────────────────
+// notification clarity + interface localization probes
 
 /**
- * Clearer migration notifications — behavioral. Confirms (a) the “why there” clause names only
- * destination-PULL reasons and drops flight fragments like “escaping the crisis”, and (b) the toast/log
- * tint agrees by DIRECTION: own people leaving for a rival read red, internal moves and arrivals green.
+ * Clearer migration notifications (behavioral). Confirms (a) the “why there” clause names only
+ * destination-pull reasons and drops flight fragments like “escaping the crisis”, and (b) the toast/log
+ * tint agrees by direction: own people leaving for a rival read red, internal moves and arrivals green.
  */
 function checkNotificationClarity() {
   try {
@@ -447,7 +447,7 @@ function checkNotificationClarity() {
       return row("Notification clarity", "PASS",
         "The “why there” clause names only what drew people (“" + whyThere + "”) and drops flight reasons like “" +
         flightPhrase + "”. Toast and log-row share one direction rule: own people leaving for a rival read red, " +
-        "internal moves and arrivals read green — so a toast never disagrees with its log entry.");
+        "internal moves and arrivals read green, so a toast never disagrees with its log entry.");
     }
     return row("Notification clarity", "FAIL",
       "Notification wording/tint is off (why-there “" + whyThere + "”, pure-flight “" + pureFlight + "”, tints " +
@@ -458,7 +458,7 @@ function checkNotificationClarity() {
 }
 
 // Representative localized surfaces, one key each, to spot-check that translations resolve
-// in the PLAYER's current locale — a runtime companion to the build-time i18n parity + ui-keys gates.
+// in the player's current locale, a runtime companion to the build-time i18n parity + ui-keys gates.
 const L10N_SAMPLE = [
   ["LOC_EMIG_DIL_FX_GOLD", "refugee-dilemma effect labels"],
   ["LOC_EMIG_GUIDE_VIEW_REF", "Guide navigation pills"],
@@ -483,21 +483,21 @@ function resolvesLoc(key) {
 }
 
 /**
- * Interface localization — runtime spot-check. Samples one key per localized surface
+ * Interface localization: runtime spot-check. Samples one key per localized surface
  * and reports how many resolve in the player's language (a raw "LOC_…" tag = a missing translation).
  */
 function checkLocalization() {
   if (typeof Locale === "undefined" || !Locale || typeof Locale.compose !== "function") {
     return row("Interface localization", "INFO",
-      "Locale surface unavailable — run this in-game to spot-check that translations resolve in your language.");
+      "Locale surface unavailable. Run this in-game to spot-check that translations resolve in your language.");
   }
   try {
     const missing = L10N_SAMPLE.filter(([k]) => !resolvesLoc(k)).map(([, surface]) => surface);
     const total = L10N_SAMPLE.length;
     if (!missing.length) {
       return row("Interface localization", "PASS",
-        "All " + total + " sampled surfaces resolve in your language — refugee-dilemma effect labels, Guide pills, " +
-        "Demographics charts, Settings, the Advanced editor, and notification reasons — with no raw LOC tags leaking.");
+        "All " + total + " sampled surfaces resolve in your language (refugee-dilemma effect labels, Guide pills, " +
+        "Demographics charts, Settings, the Advanced editor, and notification reasons) with no raw LOC tags leaking.");
     }
     return row("Interface localization", "WARN",
       missing.length + " of " + total + " sampled surfaces show raw keys in your language (missing translation): " +
@@ -508,7 +508,7 @@ function checkLocalization() {
 }
 
 /**
- * Pick a foreign origin + place to headline a FORCED enclave preview: a real foreign minority in one of
+ * Pick a foreign origin + place to headline a forced enclave preview: a real foreign minority in one of
  * your cities if any exists (even below the enclave bar), else a placeholder so the preview still fires.
  * @returns {{civ:number, place:string}}
  */

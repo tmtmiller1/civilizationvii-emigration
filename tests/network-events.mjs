@@ -17,7 +17,7 @@ const centers = [
 ];
 const scene = (events, frameIdx) => ({ centers, events, state: { frameIdx } });
 
-// ── two events on one cluster are two badges, not one printed over the other ──
+// two events on one cluster are two badges, not one printed over the other
 {
   const reqs = eventBadgeRequests(scene([
     { kind: "war", label: "Songhai vs Chola", from: 0, to: 10, cis: [0] },
@@ -28,14 +28,14 @@ const scene = (events, frameIdx) => ({ centers, events, state: { frameIdx } });
   assert.equal(reqs[0].x, 100, "anchored on its cluster");
 }
 
-// ── the same event pinned twice on one cluster is one badge ──────────────────
+// the same event pinned twice on one cluster is one badge
 {
   const ev = { kind: "war", label: "Chola vs an unmet civilization", from: 0, to: 10, cis: [1, 1] };
   const reqs = eventBadgeRequests(scene([ev, ev], 5));
   assert.equal(reqs.length, 1, "a duplicate pin draws once, not twice on the same pixels");
 }
 
-// ── only the events active at the current frame ──────────────────────────────
+// only the events active at the current frame
 {
   const events = [
     { kind: "war", label: "Over", from: 0, to: 3, cis: [0] },
@@ -49,7 +49,7 @@ const scene = (events, frameIdx) => ({ centers, events, state: { frameIdx } });
   assert.equal(eventBadgeRequests({ centers, events, state: {} }).length, 0, "no frame index: no badges");
 }
 
-// ── anchored below its cluster, and robust to a missing one ──────────────────
+// anchored below its cluster, and fine without one
 {
   const reqs = eventBadgeRequests(scene([{ kind: "war", label: "W", from: 0, to: 9, cis: [1] }], 1));
   assert.equal(reqs[0].y, 260 + 50 + 13, "sits below the cluster disc");

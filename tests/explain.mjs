@@ -3,9 +3,9 @@ import assert from "node:assert/strict";
 // The push/pull explainer substrate (roadmap §15.0a). Pure and read-only: it decomposes the scores
 // the sim already computes into labeled contributions.
 //
-// The load-bearing cases here are the RECONSTRUCTION ones. emigration-explain.js attributes by exact
+// The load-bearing cases here are the reconstruction ones. emigration-explain.js attributes by exact
 // arithmetic over the same breakdowns the sim scores with, so its rows must add back up to the real
-// adjustedPull() / prosperity() — if a term is ever added to one side and not the other, or an
+// adjustedPull() / prosperity(). If a term is ever added to one side and not the other, or an
 // attribution is mis-scaled, these fail. That is the whole guard against an explanation drifting away
 // from the decision it claims to explain, so do not relax them to "close enough".
 
@@ -105,7 +105,7 @@ const sum = (rows) => rows.filter((r) => r.kind !== "scale").reduce((a, r) => a 
 const keys = (rows) => rows.map((r) => r.key);
 const find = (rows, k) => rows.find((r) => r.key === k);
 
-// ── The reconstruction identity: pull ───────────────────────────────────────
+// The reconstruction identity: pull
 
 function testPullRowsReconstructAdjustedPull() {
   // A cross-civ, downhill-population, distant move: exercises gradient, reluctance, crowding,
@@ -123,8 +123,8 @@ const PULL_TERMS = ["gradient", "tilt", "reluctance", "crowding", "cityState", "
   "dominance", "drain", "distance", "aggressor", "flight", "congestion"];
 
 function testPullReconstructionCoversEveryTermAtOnce() {
-  // The case above leaves congestion, dominance, tilt, flight and aggressor at ZERO, and a term that
-  // is zero in the fixture cannot be pinned by it — delete it from pullBreakdown and the sum still
+  // The case above leaves congestion, dominance, tilt, flight and aggressor at zero, and a term that
+  // is zero in the fixture cannot be pinned by it: delete it from pullBreakdown and the sum still
   // reconstructs, so the mirror would drift undetected. This case turns every remaining channel on and
   // reconstructs again, then asserts each term is actually present: a term that adjustedPull scores
   // and pullBreakdown forgets (or vice versa) fails here, and a fixture that quietly stops exercising
@@ -135,11 +135,11 @@ function testPullReconstructionCoversEveryTermAtOnce() {
   globalThis.Game = { turn: 10 };
   addAssimilationLoad(2, 10); // congestion reads accrued integration load, which is empty by default
   // Asylum is what makes tiltFor non-zero, and disaster 9 × weight 2 = 18 overruns tiltCap 14, so the
-  // clamp binds — dropping the clamp changes the answer, which is what pins it.
+  // clamp binds; dropping the clamp changes the answer, which is what pins it.
   withOpenBorders(2, [OPEN, "H_TRADITION_EMIG_ASYLUM_MODERN"], () => {
     // A source under both disaster and attack (tilt via asylum; violence over the flee threshold is
-    // what arms directional flight — disaster alone does not), running toward a big civ (dominance)
-    // that happens to BE its aggressor (the aggressor term only fires on the attacker's own cities),
+    // what arms directional flight; disaster alone does not), running toward a big civ (dominance)
+    // that happens to be its aggressor (the aggressor term only fires on the attacker's own cities),
     // into a congested, crowded city-state.
     const src = sig(1, 10, 5, 0, 0, { disaster: 9, violence: 6 });
     const dest = sig(2, 60, 9, 4, 2, { isCityState: true });
@@ -158,7 +158,7 @@ function testPullReconstructionCoversEveryTermAtOnce() {
 
 function testInternalRefugeTermIsMirrored() {
   // The homeland bonus and the cross-civ block are mutually exclusive by construction, so the all-terms fixture
-  // above can never exercise this term: it fires only for a source in crisis moving INSIDE its own civilization.
+  // above can never exercise this term: it fires only for a source in crisis moving inside its own civilization.
   Object.assign(CONFIG, { crisisInternalBonus: 12, violenceFleeThreshold: 2 });
   const src = sig(1, 10, 5, 0, 0, { violence: 6 });
   const dest = sig(1, 30, 5, 2, 0);
@@ -175,7 +175,7 @@ testInternalRefugeTermIsMirrored();
 
 function testPullReconstructionHoldsUnderAPermeabilityMultiplier() {
   // With borders on, every additive row is scaled by the clamped permeability. The sum must still
-  // land on adjustedPull — this is what catches an attribution that forgets the multiply.
+  // land on adjustedPull; this is what catches an attribution that forgets the multiply.
   withOpenBorders(2, [OPEN], () => {
     const src = sig(1, 10, 5, 0, 0);
     const dest = sig(2, 40, 5, 1, 0);
@@ -204,7 +204,7 @@ function testNeutralPermeabilityReportsNoScaleRow() {
   assert.equal(find(rows, "permeability"), undefined);
 }
 
-// ── The reconstruction identity: push ───────────────────────────────────────
+// The reconstruction identity: push
 
 function testPushRowsReconstructProsperity() {
   // Positive base × situational penalties: the ordinary case, where the attribution is exact.
@@ -229,7 +229,7 @@ function testPushReconstructionHoldsUnderTheShapedHappinessModel() {
 }
 
 function testPushRanksTheDominantCrisisFirstAmongThePushes() {
-  // Note what is NOT asserted: that violence is the top row overall. For any city worth living in the
+  // Note what is not asserted: that violence is the top row overall. For any city worth living in the
   // economy term is the largest single component of prosperity, and it is a PULL. "Why are people
   // leaving" is answered by the negative rows, so that is what is ranked here.
   const s = city({ food: 40, production: 40, violence: 6, unrest: true });
@@ -248,7 +248,7 @@ function testPushReportsRetainingFactorsAsPull() {
 }
 
 function testPenaltiesStayPushesWhenTheBaseHasGoneNegative() {
-  // A poor, unhappy, crowded city has a NEGATIVE base. A signed multiply would flip its siege into a
+  // A poor, unhappy, crowded city has a negative base. A signed multiply would flip its siege into a
   // positive "attraction" (the same pathology the model's F2 guard exists for). Every penalty must
   // still read as a push.
   const s = city({ food: 0, production: 0, happiness: -8, population: 12, siege: true, unrest: true });
@@ -260,7 +260,7 @@ function testPenaltiesStayPushesWhenTheBaseHasGoneNegative() {
   }
 }
 
-// ── Ordering, weighting, and the honesty rule ───────────────────────────────
+// Ordering, weighting, and the honesty rule
 
 function testRowsAreSortedByMagnitude() {
   const rows = explainPull(sig(1, 10, 5, 0, 0), sig(2, 60, 9, 4, 0), {});
@@ -293,7 +293,7 @@ function testWeighIsEmptyForNothingToExplain() {
   assert.deepEqual(weigh([{ key: "x", label: "x", delta: 0, kind: "pull" }]), []);
 }
 
-// ── Edge inputs: never throw, explain nothing rather than guess ─────────────
+// Edge inputs: never throw, explain nothing rather than guess
 
 function testUnviableMoveExplainsNothing() {
   // Downhill prosperity → adjustedPull is null → there is no decision to explain.
@@ -342,7 +342,7 @@ function testZeroTermsAreDroppedRatherThanRenderedAsNoise() {
   assert.equal(find(rows, "crowding"), undefined);
 }
 
-// ── Labels ─────────────────────────────────────────────────────────────────
+// Labels
 
 function testEveryTermKeyHasALabel() {
   const rows = explainPull(sig(1, 10, 5, 0, 0), sig(2, 60, 9, 4, 0), {})

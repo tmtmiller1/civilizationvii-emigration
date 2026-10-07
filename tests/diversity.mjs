@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 // The composition-diversity metrics + ranking (roadmap Features S/T) and their view rows. All pure:
 // the metrics take a composition literal, and the ranking takes its per-owner lookups by injection,
 // so no engine globals are needed. The live diverseCityRanking() reads the composition ledger, which
-// off-engine is simply empty (persistence no-ops without Configuration).
+// off-engine is empty (persistence no-ops without Configuration).
 const { diversityScore, cosmopolitanism, rankDiversity, diverseCityRanking, COSMO_TIERS } =
   await import("/emigration/ui/emigration-diversity.js");
 const { diverseCityRows, diversitySections } = await import("/emigration/ui/emigration-detail-views.js");
@@ -25,7 +25,7 @@ function entry(key, name, owner, shares, total = 100) {
   return { key, name, owner, comp: comp(owner, shares, total) };
 }
 
-// ── Feature S: the metric ───────────────────────────────────────────────────
+// Feature S: the metric
 
 function testEntropyZeroForSingleOrigin() {
   const s = diversityScore(comp(1, { 1: 1 }));
@@ -36,7 +36,7 @@ function testEntropyZeroForSingleOrigin() {
 }
 
 function testEntropyMaximalForEvenSplit() {
-  // For a FIXED origin count, an even split maximizes entropy: perturbing it away must lower it.
+  // For a fixed origin count, an even split maximizes entropy: perturbing it away must lower it.
   const even = diversityScore(comp(1, { 1: 0.25, 2: 0.25, 3: 0.25, 4: 0.25 })).index;
   const skewed = diversityScore(comp(1, { 1: 0.7, 2: 0.1, 3: 0.1, 4: 0.1 })).index;
   assert.ok(even > skewed, `even ${even} should beat skewed ${skewed}`);
@@ -44,7 +44,7 @@ function testEntropyMaximalForEvenSplit() {
 }
 
 function testEntropyRisesWithMoreCommunities() {
-  // Deliberately UNNORMALIZED: a 5-way even city must outrank a 2-way even one, which a per-city
+  // Unnormalized on purpose: a 5-way even city must outrank a 2-way even one, which a per-city
   // normalized entropy would tie at 1.0. This is what makes the ranking prefer richer mixes.
   const two = diversityScore(comp(1, { 1: 0.5, 2: 0.5 })).index;
   const five = diversityScore(comp(1, { 1: 0.2, 2: 0.2, 3: 0.2, 4: 0.2, 5: 0.2 })).index;
@@ -76,7 +76,7 @@ function testEmptyCompositionScoresZeroAndNeverThrows() {
   }
 }
 
-// ── Feature T: the cosmopolitanism score ────────────────────────────────────
+// Feature T: the cosmopolitanism score
 
 function testTierBoundariesAreMonotonic() {
   for (let i = 1; i < COSMO_TIERS.length; i++) {
@@ -115,7 +115,7 @@ function testMissingContextDegradesToNeutralNotZero() {
   assert.ok(a.score <= 1);
 }
 
-// ── The ranking ─────────────────────────────────────────────────────────────
+// The ranking
 
 function testRankingSortsByDiversityAndCaps() {
   const rows = rankDiversity([
@@ -129,7 +129,7 @@ function testRankingSortsByDiversityAndCaps() {
 }
 
 function testZeroLimitMeansUncapped() {
-  // How gather asks for EVERY settlement: the view needs the full set for its "All settlements" list
+  // How gather asks for every settlement: the view needs the full set for its "All settlements" list
   // and applies the CONFIG row cap itself to the podium. A 0 that read as "no rows" would empty it.
   const entries = [
     entry("a", "Rome", 1, { 1: 0.5, 2: 0.5 }),
@@ -157,7 +157,7 @@ function testRankingCarriesDominantAndRunnerUp() {
 }
 
 function testRankingCarriesRawOriginSharesForTheBar() {
-  // The view draws a slice per origin, so the row must hand it the unresolved breakdown (civ ids —
+  // The view draws a slice per origin, so the row must hand it the unresolved breakdown (civ ids,
   // gather resolves names/colours/masking); dropping it would leave the bar with nothing to draw.
   const [r] = rankDiversity([entry("a", "Alexandria", 1, { 2: 0.45, 1: 0.35, 3: 0.2 })], {});
   assert.equal(r.civs.length, 3);
@@ -205,7 +205,7 @@ function testLiveRankingIsEmptyWhenFlagOff() {
   }
 }
 
-// ── The view rows ───────────────────────────────────────────────────────────
+// The view rows
 
 /** A gathered row as window's gatherDiversity() yields it (parts already named/coloured/masked). */
 function gathered(name, parts, extra) {
@@ -224,7 +224,7 @@ function testRowsNameMajorityPluralityAndNoMajority() {
       { name: "Punic", share: 0.1, color: "#00a" }], { cosmo: { tierKey: "local" } }),
     gathered("Alexandria", [{ name: "Egyptian", share: 0.45, color: "#aa0" },
       { name: "Greek", share: 0.3, color: "#0a0" }, { name: "Roman", share: 0.25, color: "#a00" }]),
-    // Top two effectively tied → no leader worth naming.
+    // Top two within a hair of each other → no leader worth naming.
     gathered("Carthage", [{ name: "Punic", share: 0.22, color: "#00a" }, { name: "Roman", share: 0.21, color: "#a00" },
       { name: "Greek", share: 0.21, color: "#0a0" }, { name: "Egyptian", share: 0.2, color: "#aa0" },
       { name: "Nubian", share: 0.16, color: "#0aa" }], { cosmo: { tierKey: "world" } })
@@ -246,7 +246,7 @@ function testRowsNeverNameASpoilerMaskedOrigin() {
 }
 
 function testOriginCountMatchesTheBarNotTheRawMetric() {
-  // The count is derived from the DISPLAYED slices: trace origins under 5% don't get counted, so the
+  // The count is derived from the displayed slices: trace origins under 5% don't get counted, so the
   // text can never claim more origins than the bar visibly shows.
   const [row] = diverseCityRows([
     gathered("Rome", [{ name: "Roman", share: 0.9, color: "#a00" }, { name: "Greek", share: 0.06, color: "#0a0" },
@@ -299,7 +299,7 @@ function testSectionDropsOutEntirelyWhenFlagOff() {
   const prev = CONFIG.diversityRanking;
   CONFIG.diversityRanking = false;
   try {
-    // Not an empty tab — no tab at all, so the dashboard never shows a dead section.
+    // Not an empty tab but no tab at all, so the dashboard never shows a dead section.
     assert.deepEqual(diversitySections({ diversity: [] }), []);
   } finally {
     CONFIG.diversityRanking = prev;

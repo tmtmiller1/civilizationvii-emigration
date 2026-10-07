@@ -3,13 +3,13 @@
 // The Demographics-bridge graph specs (emigration-demographics.js): every registered metric's
 // accessor + formatter + tooltip-attribution, plus the Scaled/Civ view binding. demographics-branches-
 // extra.mjs covers the registration plumbing (queue/drain/dup-guard) and the cumFor=0 fallbacks; this
-// covers the VALUE side, the per-civ formatters (people + raw points, signed and unsigned), the
+// covers the value side, the per-civ formatters (people + raw points, signed and unsigned), the
 // cause-breakdown / refugee-split tooltips (with and without data), and the population accessor, by
 // seeding the persisted migration tallies + a live EmigrationData and driving each spec end-to-end.
 
 import assert from "node:assert/strict";
 
-// ── Seed the persisted migration-stats state the tooltips + refugee accessors read via load(). ──
+// Seed the persisted migration-stats state the tooltips + refugee accessors read via load().
 const STATE_KEY = "EmigrationMigStats_v1";
 const kv = {
   [STATE_KEY]: JSON.stringify({
@@ -38,7 +38,7 @@ globalThis.EmigrationData = {
 
 const D = await import("/emigration/ui/emigration-demographics.js");
 
-// ── Register all specs + the Graphs group via the drained pending hook. ──
+// Register all specs + the Graphs group via the drained pending hook.
 delete globalThis.DemographicsMetricsAPI;
 assert.equal(D.registerMigrationMetric(), false, "no API yet → queued");
 const specs = [];
@@ -57,7 +57,7 @@ const byId = (id) => specs.find((s) => s.id === id);
 const ctx = { id: 7 };
 const emptyCtx = { id: 999 }; // a civ with no tallies → empty maps
 
-// ── Every spec drives accessor → format → tooltip without throwing. ──
+// Every spec drives accessor → format → tooltip without throwing.
 for (const s of specs) {
   let v;
   try {
@@ -72,7 +72,7 @@ for (const s of specs) {
   }
 }
 
-// ── Refugee-split tooltips: only war/disaster appear (refugee causes), and the value is non-empty. ──
+// Refugee-split tooltips: only war/disaster appear (refugee causes), and the value is non-empty.
 {
   const refOut = byId("emig_refugees").tooltipAttribution(ctx);
   assert.ok(refOut.includes("·"), "refugees-out tooltip lists the war/disaster split");
@@ -82,7 +82,7 @@ for (const s of specs) {
   assert.ok(/War/i.test(refIn), "refugees-in tooltip lists the inbound war/disaster split");
 }
 
-// ── Cause-breakdown tooltips: all positive causes appear, the zero cause is dropped. ──
+// Cause-breakdown tooltips: all positive causes appear, the zero cause is dropped.
 {
   const out = byId("emig_out_cum").tooltipAttribution(ctx);
   assert.ok(out.startsWith("Sources:"), "emigration tooltip is a 'Sources:' breakdown");
@@ -92,14 +92,14 @@ for (const s of specs) {
   assert.ok(inn.startsWith("Sources:"), "immigration tooltip is a 'Sources:' breakdown");
 }
 
-// ── Empty-data tooltips collapse to "" (the no-data branch of every tooltip + helper). ──
+// Empty-data tooltips collapse to "" (the no-data branch of every tooltip + helper).
 {
   assert.equal(byId("emig_refugees").tooltipAttribution(emptyCtx), "", "no refugee data → empty split");
   assert.equal(byId("emig_out_cum").tooltipAttribution(emptyCtx), "", "no cause data → empty breakdown");
   assert.equal(byId("emig_in_cum").tooltipAttribution(emptyCtx), "", "no inbound data → empty breakdown");
 }
 
-// ── Formatter edge cases through the registered specs (people + points, signed + unsigned). ──
+// Formatter edge cases through the registered specs (people + points, signed + unsigned).
 {
   const signedPts = byId("emig_net_cum_pts").format; // formatSignedPoints
   assert.equal(signedPts(0), "0", "signed points: zero → '0'");
@@ -118,7 +118,7 @@ for (const s of specs) {
   assert.ok(signedPeople(-12450).startsWith("-"), "signed people: negative is signed");
 }
 
-// ── The Scaled/Civ view binding round-trips through the shared number-mode setting. ──
+// The Scaled/Civ view binding round-trips through the shared number-mode setting.
 {
   const vb = groups[0].viewBinding;
   vb.set("civ");

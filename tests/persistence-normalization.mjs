@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 
 // Regression guard for the chronicle + notification persistence hardening:
-//   (1) malformed / old-schema entries are normalized or dropped on LOAD (never reach the view as a
+//   (1) malformed / old-schema entries are normalized or dropped on load (never reach the view as a
 //       wrong-typed value), and
 //   (2) writes round-trip cleanly, the in-memory cache stays byte-identical to the persisted blob,
-//       i.e. absent optional fields are OMITTED, not written as `undefined` (which JSON.stringify drops,
+//       i.e. absent optional fields are omitted, not written as `undefined` (which JSON.stringify drops,
 //       silently diverging the cache from disk until reload).
-// We seed corrupt blobs BEFORE importing the modules so their lazy load() must cope.
+// We seed corrupt blobs before importing the modules so their lazy load() must cope.
 
 const CHRON_KEY = "EmigrationChronicle_v1";
 const NOTIF_KEY = "EmigrationNotif_v1";
@@ -34,7 +34,7 @@ globalThis.Game = { turn: 10 };
 const { chronicle, chronicleLog } = await import("/emigration/ui/emigration-chronicle.js");
 const { logNotification, notificationLog } = await import("/emigration/ui/emigration-notifications.js");
 
-// ── (1) malformed load: bad entries dropped, kept entry coerced, no throw ──────────────────────────
+// (1) malformed load: bad entries dropped, kept entry coerced, no throw
 const chron = chronicleLog();
 assert.equal(chron.length, 2, "two malformed chronicle entries should drop (body 123, no-body, non-object)");
 const kept = chron.find((e) => e.body === "kept");
@@ -51,8 +51,8 @@ assert.equal(nkept.cause, "other", "non-string cause should default");
 assert.equal(nkept.people, 0, "non-number people should default to 0");
 assert.ok(!("event" in nkept), "non-string event should be omitted");
 
-// ── (2) round-trip parity: in-memory cache deep-equals the persisted blob ───────────────────────────
-// Write entries that OMIT optional fields; the persisted JSON must match the cache exactly.
+// (2) round-trip parity: in-memory cache deep-equals the persisted blob
+// Write entries that omit optional fields; the persisted JSON must match the cache exactly.
 chronicle({ kind: "founding", title: "T", body: "B", civ: "Roman" }); // no people/cause/dedupeKey
 assert.deepStrictEqual(JSON.parse(KV[CHRON_KEY]), chronicleLog(),
   "persisted chronicle must equal the in-memory cache (no undefined-key divergence)");

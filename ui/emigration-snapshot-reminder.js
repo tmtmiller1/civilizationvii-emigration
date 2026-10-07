@@ -26,7 +26,7 @@ function injectStyle() {
 /**
  * The timeline-detail reminder text when the snapshot interval is coarser than every turn, else "".
  * Exposed on `globalThis.EmigrationTimelineNote` so the Demographics-embedded page can render it
- * beside its own "Analytics policy" banner (single source of truth for the wording).
+ * beside its own "Analytics policy" banner (one place owns the wording).
  * @returns {string} The reminder text, or "".
  */
 export function timelineDetailText() {
@@ -40,7 +40,7 @@ export function timelineDetailText() {
 /**
  * Append the timeline-detail reminder to a dashboard wrapper when the snapshot interval is coarser
  * than every turn. No-op at the finest setting (every turn) or if the DOM is unavailable. Used by the
- * STANDALONE window; the Demographics-embedded page instead shows it beside the policy banner.
+ * standalone window; the Demographics-embedded page instead shows it beside the policy banner.
  * @param {*} wrap The dashboard wrapper element.
  */
 export function appendSnapshotReminder(wrap) {

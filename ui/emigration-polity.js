@@ -1,11 +1,11 @@
 // emigration-polity.js
 //
-// POLITY signals: the happiness/government/celebration reads the migration model uses. Three live
+// Polity signals: the happiness/government/celebration reads the migration model uses. Three live
 // signals, all fully defensive (any unreadable read degrades to a neutral value, never throws):
 //
 //   • cityHappinessStage(city)  - the per-settlement 5-stage ordinal, bucketing the city's
 //     netHappinessPerTurn against GameInfo.HappinessStages the way the base-game city banner does.
-//   • readPolity(owner)         - per-CIV government type, celebration (Golden Age) state, and war
+//   • readPolity(owner)         - per-civ government type, celebration (Golden Age) state, and war
 //     weariness. Memoized per pass (resetPolityCache()) so the same owner isn't re-read per city.
 //   • governmentLean(type)      - a small, bounded flavor lean per known government: a tie-breaker,
 //     since a government's real weight already reaches the model through happiness and yields.
@@ -115,7 +115,7 @@ function stageTable() {
 }
 
 /**
- * The per-settlement happiness STAGE as an ordinal in [-2, +2] (ANGRY −2 … ECSTATIC +2). Reads the
+ * The per-settlement happiness stage as an ordinal in [-2, +2] (ANGRY −2 … ECSTATIC +2). Reads the
  * city's net happiness and buckets it against GameInfo.HappinessStages the way the base-game banner
  * does (`h >= min && h <= max`). Returns 0 (the HAPPY/neutral midpoint) whenever the stage can't be
  * resolved, so an unreadable game state never injects a spurious push or pull.

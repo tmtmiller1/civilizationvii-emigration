@@ -7,7 +7,7 @@
 //                  with the enclave tooltip pinned beside it (the hover recipe from mod test 145)
 //
 // Scene choice, logged: the host is the local player's most populous city with no enclave; the origin is a foreign
-// major NOT at war with us (a full payout), preferring one whose first stance pays Culture or Science. If the
+// major not at war with us (a full payout), preferring one whose first stance pays Culture or Science. If the
 // treasury cannot pay that stance, the probe grants the difference first so both paid buttons read as open.
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { __test as Q } from "/emigration/ui/emigration-quarter.js";

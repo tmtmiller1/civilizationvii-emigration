@@ -1,15 +1,15 @@
 // emigration-built.js
 //
-// The BUILT ENVIRONMENT of a settlement as a reason to stay: its wonders, and the kinds of civic
+// The built environment of a settlement as a reason to stay: its wonders, and the kinds of civic
 // infrastructure it actually holds (a granary, a market, a school, walls).
 //
-// The prosperity model counts every building through the city's per-capita NET YIELDS, which cannot
-// see what a building does beyond its yield and shrinks as a settlement grows. So this term is NOT
-// per-capita: it scores what the settlement HAS, once per KIND (each wonder on its own, capped, as
-// prestige; each ROLE present once: safety, amenity, sustenance, shelter, learning, culture, trade,
+// The prosperity model counts every building through the city's per-capita net yields, which cannot
+// see what a building does beyond its yield and shrinks as a settlement grows. So this term is not
+// per-capita: it scores what the settlement has, once per kind (each wonder on its own, capped, as
+// prestige; each role present once: safety, amenity, sustenance, shelter, learning, culture, trade,
 // work, civic), so three markets are one reason to stay and the term stays bounded.
 //
-// Roles are DERIVED from the compiled database at runtime (GameInfo.Constructibles / Buildings /
+// Roles are derived from the compiled database at runtime (GameInfo.Constructibles / Buildings /
 // Constructible_YieldChanges), never from a hand-written list, so buildings from any age, DLC or mod
 // count; an unexplained type still counts as the generic "civic" role. Pillaged constructibles are
 // skipped. The per-plot scan is cached and refreshed only every `builtRefreshTurns` turns.
@@ -18,9 +18,9 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
 /**
- * Ordered role tests: the FIRST match names the building, so each one is credited for its most
+ * Ordered role tests: the first match names the building, so each one is credited for its most
  * characteristic job rather than for everything it happens to touch. Defense outranks yields
- * deliberately — walls are a reason to stay that has nothing to do with output.
+ * on purpose: walls are a reason to stay that has nothing to do with output.
  * @type {ReadonlyArray<[string, (d: {def:*, bld:*, ys:Set<string>}) => boolean]>}
  */
 const ROLE_TESTS = Object.freeze([
@@ -65,8 +65,8 @@ function gameTurn() {
 
 /**
  * Run `fn`, returning `fb` on any throw. Every database and engine read here is optional: a missing
- * table simply contributes nothing rather than taking the scoring pass down with it.
- * @param {() => *} fn The read. @param {*} fb The fallback. @returns {*} The value or the fallback.
+ * table contributes nothing rather than taking the scoring pass down with it.
+ * @param {() => *} fn @param {*} fb @returns {*}
  */
 function safe(fn, fb) {
   try {
@@ -78,7 +78,7 @@ function safe(fn, fb) {
 
 /**
  * Iterate a GameInfo table defensively (it is iterable in-engine and absent off-engine).
- * @param {string} table The table name. @returns {*[]} Its rows, or [].
+ * @param {string} table @returns {*[]} Its rows, or [].
  */
 function rows(table) {
   return safe(() => {
@@ -124,7 +124,7 @@ function pos(v) {
 }
 
 /**
- * Whether a database BOOLEAN is set. The runtime hands these back as true/false, the compiled SQLite
+ * Whether a database boolean is set. The runtime hands these back as true/false, the compiled SQLite
  * as 1/0, so both are accepted.
  * @param {*} v A database value. @returns {boolean} Whether it is set.
  */
@@ -133,7 +133,7 @@ function truthy(v) {
 }
 
 /**
- * The ROLE a constructible fills: the first of {@link ROLE_ORDER} it satisfies, so each building is
+ * The role a constructible fills: the first of {@link ROLE_ORDER} it satisfies, so each building is
  * named by its most characteristic job rather than by everything it happens to touch. Defense outranks
  * yields deliberately — walls are a reason to stay that has nothing to do with output.
  * @param {*} def The Constructibles row. @param {*} bld Its Buildings row, or undefined.
@@ -178,7 +178,7 @@ function index() {
 /**
  * The kind of one constructible instance on the map, or null when it is pillaged, unreadable, or not a
  * building/wonder.
- * @param {*} cid A constructible ComponentID. @returns {BuiltKind|null} Its kind.
+ * @param {*} cid A constructible ComponentID. @returns {BuiltKind|null}
  */
 function kindOf(cid) {
   return safe(() => {
@@ -216,7 +216,7 @@ function roleWeight(role) {
 }
 
 /**
- * Split the kinds found in a settlement into its wonders and the FIRST building seen for each role, so
+ * Split the kinds found in a settlement into its wonders and the first building seen for each role, so
  * three markets collapse to one "trade" reason to stay rather than three.
  * @param {BuiltKind[]} kinds The kinds found in the settlement.
  * @returns {{firstByRole:Map<string,string>, wonders:string[]}} The partition.

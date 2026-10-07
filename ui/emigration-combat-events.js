@@ -1,16 +1,16 @@
 // emigration-combat-events.js
 //
-// PER-CITY combat evidence from the engine's combat event stream: who fought where, who did it, and
+// Per-city combat evidence from the engine's combat event stream: who fought where, who did it, and
 // damage that polling (which samples standing state once a turn) cannot see. It sharpens rather than
 // replaces the polled signals; emigration-violence.js takes the strongest reading of the two, not the
 // sum. Fog does not apply, so a distant war registers like a visible one. When `UnitKilledInCombat`
-// fires the unit is ALREADY GONE from `Units.get`, so unit positions are cached while still alive.
+// fires the unit is already gone from `Units.get`, so unit positions are cached while still alive.
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 /** @typedef {{dmg:number, battles:number, kills:number}} Totals */
 /** @typedef {{dmg:number, battles:number, kills:number, attackers:number[]}} Evidence */
 
-// HOW READS WORK. Every city keeps RUNNING totals that only ever grow, and each reader keeps a cursor
+// How reads work: every city keeps running totals that only ever grow, and each reader keeps a cursor
 // (the totals it had already taken plus the event sequence number it had reached). A read returns what
 // arrived since that reader's last read, so every event reaches every reader exactly once.
 
@@ -39,9 +39,9 @@ function gameTurn() {
 }
 
 /**
- * A stable key for a city ComponentID. Mirrors keyFromCID in emigration-violence.js deliberately: the two
+ * A stable key for a city ComponentID. Mirrors keyFromCID in emigration-violence.js: the two
  * ledgers must agree on what names a city, and `ComponentID.toBitfield` is unreliable for city ids.
- * @param {*} cid A city ComponentID. @returns {string|null} The key, or null.
+ * @param {*} cid A city ComponentID. @returns {string|null}
  */
 function cityKey(cid) {
   if (!cid || typeof cid.owner !== "number" || cid.id == null) return null;
@@ -61,7 +61,7 @@ function rollUnitCache() {
 
 /**
  * Accept one event at a city: bump the sequence and return the city's running totals.
- * @param {string} key The city key. @returns {Totals} The totals to add to.
+ * @param {string} key The city key. @returns {Totals}
  */
 function accept(key) {
   _seq++;
@@ -75,7 +75,7 @@ function accept(key) {
 
 /**
  * The city whose territory contains a plot, as a key.
- * @param {*} loc A {x,y} location. @returns {string|null} The city key, or null.
+ * @param {*} loc A {x,y} location. @returns {string|null}
  */
 function cityAt(loc) {
   if (!loc || typeof loc.x !== "number") return null;
@@ -89,7 +89,7 @@ function cityAt(loc) {
 /**
  * A unit's location, preferring the live object and falling back to the last position we cached for it.
  * A unit killed in combat is already unreachable through `Units.get`, which is why the cache exists.
- * @param {*} cid A unit ComponentID. @returns {{x:number,y:number}|null} The location, or null.
+ * @param {*} cid A unit ComponentID. @returns {{x:number,y:number}|null}
  */
 function unitLoc(cid) {
   const key = cid && typeof cid.owner === "number" ? cid.owner + ":" + cid.id : null;
@@ -108,7 +108,7 @@ function unitLoc(cid) {
 }
 
 /**
- * A fight happened. Both combatants are still alive here, so this is the moment to learn where they are --
+ * A fight happened. Both combatants are still alive here, so this is the moment to learn where they are,
  * and it is the only event that names an attacker and a defender together.
  * @param {*} data The `Combat` payload.
  */
@@ -128,7 +128,7 @@ function onCombat(data) {
 }
 
 /**
- * Record whichever combatants are NOT the city's own owner. Naming only the striking side would miss
+ * Record whichever combatants are not the city's own owner. Naming only the striking side would miss
  * the enemy every time the defender wins; who brought violence into this city's land is the question.
  * @param {string} key The city key. @param {*[]} parties Combatant ComponentIDs.
  */
@@ -280,7 +280,7 @@ function exposeLedger() {
       take: (/** @type {string} */ key, /** @type {string} */ reader) => takeCombatEvidence(key, reader || "external"),
       peek: (/** @type {string} */ key, /** @type {string} */ reader) => peekCombatEvidence(key, reader || "external"),
       // A live count of what has been recorded, so "the tracker is not running" and "nothing has happened
-      // yet" can be told apart from outside -- the distinction this module was unobservable without.
+      // yet" can be told apart from outside, the distinction this module was unobservable without.
       stats: () => ({ tracking: _subs.length > 0, turn: gameTurn(), cities: _totals.size, seen: _seq })
     });
   } catch (_) {

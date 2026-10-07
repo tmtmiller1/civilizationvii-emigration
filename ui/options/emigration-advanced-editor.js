@@ -28,7 +28,7 @@ const TAG = "emigration-advanced-editor";
 const CHECKBOX_CHANGE = "component-value-changed"; // fxs-checkbox → detail.value (bool)
 const DROPDOWN_CHANGE = "dropdown-selection-change"; // fxs-dropdown → detail.selectedIndex
 
-// GameFace (Coherent) CSS does NOT support `display:grid` or `1fr` units (the body never lays out), so
+// GameFace (Coherent) CSS does not support `display:grid` or `1fr` units (the body never lays out), so
 // this uses flexbox: the rows wrap two to a line (ROW_STYLE), and a group sub-heading takes a whole
 // line (SUBHEAD_STYLE).
 const BODY_GRID_STYLE = "display:flex;flex-direction:row;flex-wrap:wrap;align-items:flex-start;";

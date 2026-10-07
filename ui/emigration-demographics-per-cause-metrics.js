@@ -1,6 +1,6 @@
 // emigration-demographics-per-cause-metrics.js
 //
-// OPTIONAL: per-cause emigration and immigration metrics as Demographics line charts. Not loaded by
+// Optional: per-cause emigration and immigration metrics as Demographics line charts. Not loaded by
 // default; import registerPerCauseMetrics and call it once at startup, after the Demographics API is available.
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
@@ -13,7 +13,7 @@ import { loc } from "/emigration/ui/emigration-loc.js";
 /**
  * A registration-time copy of a per-cause spec with its `unit` localized (the host's UNIT_LOC table
  * does not cover "people / turn"). Name/title are id-derived by the host (LOC_DEMOGRAPHICS_METRIC_<ID>).
- * @param {*} spec A per-cause spec. @returns {*} The localized copy.
+ * @param {*} spec @returns {*} The localized copy.
  */
 function localizeCauseSpec(spec) {
   return Object.assign({}, spec, {
@@ -24,7 +24,7 @@ function localizeCauseSpec(spec) {
 /**
  * Format a signed people count for per-cause metrics.
  * @param {number} n Net people.
- * @returns {string} Display string.
+ * @returns {string}
  */
 function formatCauseMetric(n) {
   if (typeof n !== "number" || !isFinite(n) || n === 0) return "0";
@@ -137,7 +137,7 @@ export function registerPerCauseMetrics(api) {
       metricsApi.registerMetricToPage(PAGE, PROSPERITY_IMMIGRATION_SPEC.id, DISASTER_IMMIGRATION_SPEC.id);
     }
   } catch (_) {
-    /* Silently ignore if Demographics is unavailable */
+    /* ignore: Demographics is unavailable */
   }
 }
 
@@ -154,6 +154,6 @@ export function queuePerCauseMetrics() {
       (api.pending ??= []).push(registerPerCauseMetrics);
     }
   } catch (_) {
-    /* Ignore */
+    /* ignore */
   }
 }

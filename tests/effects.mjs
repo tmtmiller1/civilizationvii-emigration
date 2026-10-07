@@ -45,7 +45,7 @@ function reset() {
   calls.length = 0;
 }
 
-// ── Assimilation (duration-based migration cost) ──────────────────────────
+// Assimilation (duration-based migration cost)
 
 function testAddLoadScalesWithPop() {
   CONFIG.assimilationLoadPerMigrant = 1;
@@ -62,7 +62,7 @@ function testTickDecaysAndCharges() {
   CONFIG.assimilationGold = 2;
   TURN = 6; // one turn elapsed since the load was added (turn 5)
   const r = tickAssimilation(7);
-  // load = 2 × 0.5 = 1 → happiness 0.5×1, gold 2×1, both DEDUCTED from player 7.
+  // load = 2 × 0.5 = 1 → happiness 0.5×1, gold 2×1, both deducted from player 7.
   assert.ok(close(r.load, 1) && close(r.happiness, 0.5) && close(r.gold, 2));
   assert.deepEqual(calls, [
     [7, "HAPPY", -0.5],
@@ -92,7 +92,7 @@ function testLoadFadesToZero() {
   assert.deepEqual(r, { load: 0, happiness: 0, gold: 0 });
 }
 
-// ── Migrant-holding penalty (unchanged) ───────────────────────────────────
+// Migrant-holding penalty (unchanged)
 
 function testCountMigrantsByHashAndName() {
   playerUnits[5] = [
@@ -124,7 +124,7 @@ function testNoMigrantsNoCharge() {
   assert.equal(calls.length, 0);
 }
 
-// ── Algorithm C: congestion headwind + per-civ leader variance ────────────
+// Algorithm C: congestion headwind + per-civ leader variance
 
 function testCongestionPenaltyScalesWithLoadAndOffByDefault() {
   CONFIG.assimilationLoadPerMigrant = 1;

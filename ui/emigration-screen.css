@@ -1,6 +1,6 @@
 /* emigration-screen.css
  *
- * Chrome for the standalone Emigration screen (screen-emigration). The dashboard CONTENT
+ * Chrome for the standalone Emigration screen (screen-emigration). The dashboard content
  * styles itself via a stylesheet injected by emigration-views.js (so the same content also
  * looks right inside the Demographics "Migration" page); this file only sizes and frames the
  * screen so it reads like a base-UI panel. */
@@ -74,11 +74,11 @@
     max-height: none;
 }
 
-/* Frame sizing: near-fullscreen modal, widened on short OR narrow windows. This matches the
+/* Frame sizing: near-fullscreen modal, widened on short or narrow windows. This matches the
  * Demographics frame and the base game's own panels, which widen at
- * @media (max-height: 55.5556rem), (max-aspect-ratio: 3/2) — so a short laptop viewport AND a
+ * @media (max-height: 55.5556rem), (max-aspect-ratio: 3/2), so a short laptop viewport and a
  * narrow / portrait / 4:3 display both get the extra width instead of a cramped column. rem so the
- * breakpoint tracks the engine's scaled root font (responds to resolution AND Interface Size). */
+ * breakpoint tracks the engine's scaled root font (responds to resolution and Interface Size). */
 @media (max-height: 55.5555555556rem), (max-aspect-ratio: 3/2) {
     .emig-screen-frame {
         width: 98vw;
@@ -90,8 +90,8 @@
 
 /* Resolution density (see emigration-density.js): on short viewports the engine pins the root font
  * and the frame's own chrome (title margin + body padding) would eat the column, so claw it back to
- * hand more space to the dashboard content. Pure CSS via @media (max-height: …rem) — rem so the
- * breakpoint tracks the engine's scaled root font (responds to resolution AND Interface Size),
+ * hand more space to the dashboard content. Pure CSS via @media (max-height: …rem); rem so the
+ * breakpoint tracks the engine's scaled root font (responds to resolution and Interface Size),
  * matching the base game's own screens. The micro block cascades on top of the compact block. */
 @media (max-height: 53.9rem) {
     .emig-screen-title {

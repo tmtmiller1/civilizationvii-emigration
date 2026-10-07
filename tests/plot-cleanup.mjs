@@ -1,7 +1,7 @@
 // plot-cleanup.mjs
 //
 // Empty rural districts left by a destroyed improvement are found and removed (emigration-plot-cleanup.js):
-// only a RURAL district with NO constructible and a real id; the deferred re-check; the per-turn sweep.
+// only a rural district with no constructible and a real id; the deferred re-check; the per-turn sweep.
 import assert from "node:assert/strict";
 
 globalThis.GameContext = { localPlayerID: 0 };
@@ -25,7 +25,7 @@ globalThis.Players = { getAlive: () => [{ Cities: { getCities: () => [{ getPurch
 
 const m = await import("/emigration/ui/emigration-plot-cleanup.js");
 
-// Only an empty RURAL district with a real id counts.
+// Only an empty rural district with a real id counts.
 {
   assert.deepEqual(m.emptyRuralDistrictAt(10), { owner: 3, id: 42 });
   assert.equal(m.emptyRuralDistrictAt(11), null, "a district with its improvement is not empty");

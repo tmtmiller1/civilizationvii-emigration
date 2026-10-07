@@ -1,10 +1,10 @@
 // emigration-departure-tile.js
 //
-// The SOURCE side of a departure made real. `city.addRuralPopulation(-1)` only parks a -1 in
+// The source side of a departure made real. `city.addRuralPopulation(-1)` only parks a -1 in
 // `pendingPopulation` and leaves every improvement working, so a departure instead issues the
-// `DESTROY_ELEMENT` player operation on a rural improvement, which removes the tile AND one population
+// `DESTROY_ELEMENT` player operation on a rural improvement, which removes the tile and one population
 // point together (not owner-gated, so it works on foreign cities too). A destroyed tile cannot be undone,
-// so the source write is DEFERRED until the point has landed (`commitSourcePoint`); with no improvement
+// so the source write is deferred until the point has landed (`commitSourcePoint`); with no improvement
 // to abandon, the plain counter decrement is used. Which tile: non-resource improvements first, then the
 // farthest from the center, then the lowest plot index. The tile is the whole felt loss on the source
 // side; the receiving civilization carries the assimilation cost (emigration-effects.js).
@@ -47,8 +47,8 @@ export function departureTileApiAvailable() {
 
 /**
  * Whether a plot carries a resource (unknown reads count as "no resource").
- * @param {number} x Plot x. @param {number} y Plot y.
- * @returns {boolean} True when a resource is present.
+ * @param {number} x @param {number} y
+ * @returns {boolean}
  */
 function plotHasResource(x, y) {
   try {
@@ -62,8 +62,8 @@ function plotHasResource(x, y) {
 
 /**
  * Hex distance between two plot locations (0 when unreadable).
- * @param {{x:number,y:number}} a One location. @param {{x:number,y:number}} b The other.
- * @returns {number} Distance.
+ * @param {{x:number,y:number}} a @param {{x:number,y:number}} b
+ * @returns {number}
  */
 function plotDistance(a, b) {
   try {
@@ -80,7 +80,7 @@ const abandonedThisTurn = new Map();
 
 /**
  * The current game turn (0 off-engine).
- * @returns {number} Turn.
+ * @returns {number}
  */
 function gameTurn() {
   try {
@@ -92,8 +92,8 @@ function gameTurn() {
 
 /**
  * Whether a plot's improvement was already abandoned this turn (its DESTROY may still be in flight).
- * @param {number} plot Plot index.
- * @returns {boolean} True when it must be skipped.
+ * @param {number} plot
+ * @returns {boolean}
  */
 function abandonedRecently(plot) {
   const t = abandonedThisTurn.get(plot);
@@ -102,9 +102,9 @@ function abandonedRecently(plot) {
 
 /**
  * Whether an improvement type feeds the city. The name hint is primary: farms, fishing boats, pastures
- * and plantations have NO Constructible_YieldChanges food row (their food comes from the terrain and
+ * and plantations have no Constructible_YieldChanges food row (their food comes from the terrain and
  * resource). The table still catches oddities like the Baray.
- * @param {string} type The ConstructibleType. @returns {boolean} True for food improvements.
+ * @param {string} type The ConstructibleType. @returns {boolean}
  */
 function improvementFeeds(type) {
   if (/FARM|FISHING|PASTURE|PLANTATION|FOOD|BOAT/.test(type)) return true;
@@ -123,7 +123,7 @@ function improvementFeeds(type) {
 /**
  * The ConstructibleType name of a constructible instance ("IMPROVEMENT" when unreadable).
  * @param {*} elem The constructible ComponentID.
- * @returns {string} Type name.
+ * @returns {string}
  */
 function constructibleTypeOf(elem) {
   const inst = Constructibles.getByComponentID(elem);
@@ -134,7 +134,7 @@ function constructibleTypeOf(elem) {
 /**
  * The district on a plot that can be asked for its improvements, or null (the center, an unreadable
  * plot, a plot whose DESTROY is still in flight from earlier this turn, or no district).
- * @param {number} plot Plot index. @param {{x:number,y:number}} loc Its location.
+ * @param {number} plot @param {{x:number,y:number}} loc
  * @param {{x:number,y:number}} centre The city-center location.
  * @returns {*} The district, or null.
  */
@@ -145,8 +145,8 @@ function candidateDistrict(plot, loc, centre) {
 }
 
 /**
- * The rural improvements on ONE plot of a city (empty when the plot is not a candidate).
- * @param {number} plot Plot index.
+ * The rural improvements on one plot of a city (empty when the plot is not a candidate).
+ * @param {number} plot
  * @param {{x:number,y:number}} centre The city-center location.
  * @returns {DepartureTile[]} Candidates on that plot.
  */
@@ -176,7 +176,7 @@ function tilesOnPlot(plot, centre) {
 
 /**
  * Every rural improvement on the city's plots, with the ranking signals attached.
- * @param {*} city The city object.
+ * @param {*} city
  * @returns {DepartureTile[]} Candidates (possibly empty).
  */
 export function listDepartureTiles(city) {
@@ -200,8 +200,8 @@ export function listDepartureTiles(city) {
 
 /**
  * The plot indices of every placed Cultural Enclave (from the quarter records; the tile on the map may be
- * a Village or another civilization's improvement, so the RECORD is the only way to know).
- * @returns {Set<number>} Plot indices.
+ * a Village or another civilization's improvement, so the record is the only way to know).
+ * @returns {Set<number>}
  */
 function enclavePlots() {
   /** @type {Set<number>} */
@@ -216,7 +216,7 @@ function enclavePlots() {
 
 /**
  * Whether a constructible instance is pillaged.
- * @param {*} elem The constructible ComponentID. @returns {boolean} True when damaged.
+ * @param {*} elem The constructible ComponentID. @returns {boolean}
  */
 function safeDamaged(elem) {
   try {
@@ -228,7 +228,7 @@ function safeDamaged(elem) {
 }
 
 /**
- * Rank candidates: PILLAGED tiles first (the burnt farmstead is the one abandoned, which is how this
+ * Rank candidates: pillaged tiles first (the burnt farmstead is the one abandoned, which is how this
  * meets the war and pillage systems instead of stacking on them), then, under famine, non-food tiles
  * before food tiles (people leaving must not deepen the starvation that drove them out), then plain
  * tiles before resource tiles, farther from the center first, then by plot index. Pure.
@@ -249,9 +249,9 @@ export function rankDepartureTiles(tiles, opts) {
 
 /**
  * The improvement a departure should abandon, or null when the city has none to give.
- * @param {*} city The city object.
+ * @param {*} city
  * @param {{avoidFood?:boolean}} [opts] `avoidFood`: the source is starving (see rankDepartureTiles).
- * @returns {DepartureTile|null} The chosen tile.
+ * @returns {DepartureTile|null}
  */
 export function findDepartureTile(city, opts) {
   const ranked = rankDepartureTiles(listDepartureTiles(city), opts);
@@ -262,7 +262,7 @@ export function findDepartureTile(city, opts) {
  * The log line for an abandoned tile: what it was, whether it was damaged (still repairable), and since when.
  * Damage age counts from the first turn this session saw the tile damaged (emigration-damage-age.js).
  * @param {string} why "departure" or "death". @param {DepartureTile} tile The abandoned tile.
- * @returns {string} The line.
+ * @returns {string}
  */
 export function abandonLine(why, tile) {
   const turn = gameTurn();
@@ -274,7 +274,7 @@ export function abandonLine(why, tile) {
 
 /**
  * Send the engine's DESTROY_ELEMENT for one constructible. Fire-and-forget like every gameplay write.
- * @param {DepartureTile} tile The tile to remove.
+ * @param {DepartureTile} tile
  * @returns {boolean} True when the request was issued without throwing.
  */
 function destroyTile(tile) {
@@ -294,7 +294,7 @@ function destroyTile(tile) {
 }
 
 /**
- * Take one population point out of a city THE REAL WAY: destroy one rural improvement, which makes the
+ * Take one population point out of a city the real way: destroy one rural improvement, which makes the
  * engine remove the point together with the tile that fed it (pop -1, rural -1, yields gone). Falls
  * back to the plain counter decrement when the option is off, the city has no rural improvement, or
  * the engine surface is missing (off-engine tests). Used for committed departures and for deaths.
@@ -314,9 +314,9 @@ export function abandonTileOrDecrement(city, opts) {
 }
 
 /**
- * Whether a departure from this city would abandon a tile (so the engine can DEFER the source write
+ * Whether a departure from this city would abandon a tile (so the engine can defer the source write
  * until the destination has accepted the point: a destroyed tile cannot be undone, a counter can).
- * @param {*} city The source city.
+ * @param {*} city
  * @returns {boolean} True when a rural improvement is available to abandon.
  */
 export function departureWouldAbandonTile(city) {
@@ -325,7 +325,7 @@ export function departureWouldAbandonTile(city) {
 
 /**
  * The tile-ranking hints for a source signal (a starving source spares its food tiles).
- * @param {*} src The source city signal. @returns {{avoidFood:boolean}} Hints.
+ * @param {*} src The source city signal. @returns {{avoidFood:boolean}}
  */
 function tileHints(src) {
   return { avoidFood: !!(src && src.starving) };
@@ -347,7 +347,7 @@ export function commitSourcePoint(src, consumed) {
   return { mode };
 }
 
-// ── shedding gates and deaths ────────────────────────────────────────────────────────────────────
+// shedding gates and deaths
 //
 // Only rural tiles ever leave; the urban core is never taken. No script operation removes a specialist:
 // ASSIGN_WORKER {Amount:-1} only lowers the city's worker counter and leaves the slot filled.
@@ -361,7 +361,7 @@ const VILLAGE_TYPE = "IMPROVEMENT_VILLAGE";
  * Whether a source can shed one more point for a given cause: a rural tile above the floor, and for a
  * disaster, room under the disaster cap.
  * @param {*} src The source signal. @param {string} cause The move cause.
- * @returns {boolean} True when a point is available.
+ * @returns {boolean}
  */
 export function canShedPoint(src, cause) {
   if (cause === "disaster" && disasterLossCapReached(src.city)) return false; // the remnant digs in
@@ -371,14 +371,14 @@ export function canShedPoint(src, cause) {
 /**
  * Whether a source could shed anything this pass (rural above the floor). The engine's early-out gate.
  * @param {*} src The source signal.
- * @returns {boolean} True when the source may shed.
+ * @returns {boolean}
  */
 export function canShedAny(src) {
   return (Number(src.rural) || 0) > CONFIG.minRuralToEmigrate;
 }
 
 /**
- * Take one point for a crisis DEATH: a rural tile while the city is above its rural floor, else the counter.
+ * Take one point for a crisis death: a rural tile while the city is above its rural floor, else the counter.
  * @param {*} src The source city signal.
  * @returns {{ok:boolean, mode:"tile"|"counter", type?:string}} What happened.
  */

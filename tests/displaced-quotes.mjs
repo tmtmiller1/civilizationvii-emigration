@@ -9,12 +9,12 @@ const mod = await import("/emigration/ui/emigration-displaced-quotes.js");
 const { DISPLACED_QUOTES, DISPLACED_POOLS, displacedQuoteKey, pickDisplacedQuote, displacedQuoteFor } = mod;
 const { quoteRowText, renderableLine } = await import("/emigration/ui/emigration-quarter-bonuses.js");
 
-// ── keys ─────────────────────────────────────────────────────────────────────────────────────────
+// keys
 assert.equal(displacedQuoteKey("CIVILIZATION_ROME", "refugee", 0), "LOC_EMIG_DQ_ROME_REFUGEE_1");
 assert.equal(displacedQuoteKey("CIVILIZATION_DAI_VIET", "migrant", 1), "LOC_EMIG_DQ_DAI_VIET_MIGRANT_2");
 assert.equal(displacedQuoteKey(null, "migrant", 2), "LOC_EMIG_DQ_POOL_MIGRANT_3");
 
-// ── pick: own list first, pool for a missing kind or civ, null when nothing fits ─────────────────
+// pick: own list first, pool for a missing kind or civ, null when nothing fits
 {
   const qa = { text: "A", who: "a", source: "" };
   const qb = { text: "B", who: "b", source: "" };
@@ -37,7 +37,7 @@ assert.equal(displacedQuoteKey(null, "migrant", 2), "LOC_EMIG_DQ_POOL_MIGRANT_3"
   assert.equal(seen.size, 2, "different events spread across the list");
 }
 
-// ── the homecoming kind: a civilization's own row, else the pool, never empty ───────────────────
+// the homecoming kind: a civilization's own row, else the pool, never empty
 {
   assert.ok(DISPLACED_POOLS.return.length >= 5, "the return pool has a spread of voices");
   const own = pickDisplacedQuote("CIVILIZATION_GREECE", "return", "s");
@@ -49,7 +49,7 @@ assert.equal(displacedQuoteKey(null, "migrant", 2), "LOC_EMIG_DQ_POOL_MIGRANT_3"
   assert.ok(greece.refugee && greece.migrant && greece.return, "merging the return list keeps the other kinds");
 }
 
-// ── unmet or unknown origins never name a civilization ───────────────────────────────────────────
+// unmet or unknown origins never name a civilization
 {
   globalThis.Players = { get: () => ({ civilizationType: 7 }) };
   globalThis.GameInfo = { Civilizations: { lookup: () => ({ CivilizationType: Object.keys(DISPLACED_QUOTES)[0] || "CIVILIZATION_ROME" }) } };
@@ -60,7 +60,7 @@ assert.equal(displacedQuoteKey(null, "migrant", 2), "LOC_EMIG_DQ_POOL_MIGRANT_3"
   delete globalThis.GameInfo;
 }
 
-// ── registry integrity: shape, length, LOC rows in en_us and every locale ────────────────────────
+// registry integrity: shape, length, LOC rows in en_us and every locale
 {
   const en = fs.readFileSync("text/en_us/ModText.xml", "utf8");
   const FOLDERS = ["de_de", "es_es", "fr_fr", "it_it", "ja_jp", "ko_kr", "pl_pl", "pt_br", "ru_ru", "zh_hans_cn", "zh_hant_hk"];

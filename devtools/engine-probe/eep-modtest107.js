@@ -1,10 +1,10 @@
 // eep-modtest107.js - does emigration pressure EVER become non-zero, and for whom?
 //
 // mod test 106 found all 29 of the local player's cities at pressureToBar 0, so the banner bar had nothing to
-// draw. That alone does not explain "never seen it in any run": it could be that this save's player simply has
+// draw. That alone does not explain "never seen it in any run": it could be that this save's player has
 // a strong empire, or it could be that pressure never accumulates anywhere. This reads the persisted
-// per-source state for EVERY city in the game and plays turns, so the two are distinguishable:
-//   - pressure non-zero for AI cities but never the player's => the feature is real but effectively invisible,
+// per-source state for every city in the game and plays turns, so the two are distinguishable:
+//   - pressure non-zero for AI cities but never the player's => the feature is real but invisible in practice,
 //     because the bar only ever draws on the local player's own banners.
 //   - pressure zero everywhere, across turns => pressure accounting or its persistence is broken.
 import { loadState } from "/emigration/ui/emigration-state.js";

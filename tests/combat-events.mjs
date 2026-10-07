@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 
-// ── Stub the engine surface the combat tracker listens to ────────────────────────────────────────────
+// Stub the engine surface the combat tracker listens to
 let TURN = 1;
 globalThis.Game = { get turn() { return TURN; } };
 
@@ -85,7 +85,7 @@ function testAFieldBattleRegistersWithNoDistrictDamage() {
 }
 
 function testTheDeadAreStillLocated() {
-  // UnitKilledInCombat fires AFTER the unit is gone from Units.get. Without the position cached during the
+  // UnitKilledInCombat fires after the unit is gone from Units.get. Without the position cached during the
   // Combat event, the casualty could not be attributed to any city.
   reset(8);
   const atk = unit(7, 100, { x: 11, y: 10 });
@@ -101,7 +101,7 @@ function testTheDeadAreStillLocated() {
 
 function testOurOwnGarrisonIsNotAnAttacker() {
   // The city's own owner is never listed among those attacking it, however the fight started. The enemy it
-  // sallied out against IS listed: an earlier version of this test expected nobody at all, which was wrong --
+  // sallied out against is listed: an earlier version of this test expected nobody at all, which was wrong --
   // see testTheEnemyIsNamedEvenWhenTheDefenderWins, caught in game at Lille.
   reset(9);
   const atk = unit(0, 300, { x: 11, y: 10 }); // our own unit sallying out
@@ -113,8 +113,8 @@ function testOurOwnGarrisonIsNotAnAttacker() {
 }
 
 function testTheEnemyIsNamedEvenWhenTheDefenderWins() {
-  // Watched failing in game (mod test 115, Lille): the city's owner killed an invader in its own territory,
-  // so the enemy appeared as the VICTIM rather than the aggressor and went unnamed. Who brought violence
+  // From mod test 115 (Lille): the city's owner killed an invader in its own territory,
+  // so the enemy appeared as the victim rather than the aggressor and went unnamed. Who brought violence
   // into this city's land is the question; losing the fight does not answer it differently.
   reset(18);
   const defender = unit(0, 310, { x: 10, y: 10 }); // the city owner's garrison
@@ -142,7 +142,7 @@ function testFightingInTheWildernessBelongsToNoCity() {
 }
 
 function testForeignCitiesAreTrackedToo() {
-  // Fog-independence in the model, matching what was watched in game: the migration sim scores every met
+  // Fog-independence in the model, as in game: the migration sim scores every met
   // civilization, so a war we cannot see must still register at the city it is happening to.
   reset(11);
   fire("DistrictDamageChanged", { cityID: { owner: 4, id: 9 }, maxDamage: 100, prevDamage: 0, newDamage: 50 });
@@ -163,7 +163,7 @@ function testEveryFightIsReadExactlyOnce() {
   assert.ok(Math.abs(first.dmg - 0.3) < 1e-9, "a fight from an earlier turn is not lost when the turn rolls");
   assert.equal(takeCombatEvidence(HOME).dmg, 0, "and taking again gives nothing: it is never counted twice");
 
-  dmg(20); // early fighting on turn 13, BEFORE this turn's read -- the case the old window got wrong
+  dmg(20); // early fighting on turn 13, before this turn's read, the case the old window got wrong
   const early = takeCombatEvidence(HOME);
   dmg(10); // later fighting on the same turn
   TURN = 14;
@@ -229,7 +229,7 @@ function testDisabledRecordsNothing() {
 }
 
 function testLedgerIsPublishedForOtherContexts() {
-  // A UI script in another mod that imports this file gets its OWN module instance, whose tracker was never
+  // A UI script in another mod that imports this file gets its own module instance, whose tracker was never
   // started, so an import always reads empty from outside. The global is the real surface.
   reset(20);
   const G = /** @type {*} */ (globalThis).EmigrationCombat;

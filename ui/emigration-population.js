@@ -1,13 +1,13 @@
 // emigration-population.js
 //
 // Population read/write + the Demographics-aligned scaling that turns Civ's abstract population
-// points into representative people counts. The formula is IDENTICAL to the Demographics mod's
+// points into representative people counts. The formula is identical to the Demographics mod's
 // scaleCityPopulationAt, so a town's population reads the same in both mods.
 
 import { msg, msgNum, msgText } from "/emigration/ui/emigration-loc.js";
 
-// ── Population scaling, grounded in Civ VII's REAL per-era growth formula ──────────────────────────
-// Civ VII charges food per size step, cost(x)=Flat+Scalar·x+Exponent·x², with per-AGE params;
+// Population scaling, grounded in Civ VII's real per-era growth formula
+// Civ VII charges food per size step, cost(x)=Flat+Scalar·x+Exponent·x², with per-age params;
 // W(N)=Σcost(1..N) is a settlement's demographic weight and POP_K turns it into people. Per-age by
 // construction, continuous across age boundaries (params blend), no turn-based multiplier.
 /** @type {Record<string, {flat:number,scalar:number,exp:number}>} */
@@ -144,7 +144,7 @@ function softCeil(x, ceiling) {
 
 /**
  * Scale a raw settlement population into a representative people count, matching Demographics'
- * scaleCityPopulationAt. `turn` should be a MONOTONIC turn. When `seedKey` is given, the result
+ * scaleCityPopulationAt. `turn` should be a monotonic turn. When `seedKey` is given, the result
  * carries a deterministic narrow per-settlement variation ({@link variedPeople}); omit it for a bare
  * aggregate.
  * @param {number} raw Raw population points.
@@ -283,7 +283,7 @@ export function formatPeople(n) {
 }
 
 /**
- * Format a count in BOTH measuring systems at once, raw Civ population points and the scaled people
+ * Format a count in both measuring systems at once, raw Civ population points and the scaled people
  * count, as "3 population points (36 thousand people)" (singular "1 population point (…)"). The
  * canonical dual phrasing (matches the dev log line), used where a message should always show both.
  * @param {number} people Scaled people.
@@ -298,7 +298,7 @@ export function formatBoth(people, points) {
 
 /**
  * Format a number through the engine's locale-aware `Locale.toNumber` (German "1.234", French
- * "1 234"), or return `fallback` when that API is unavailable or throws. The engine does NOT
+ * "1 234"), or return `fallback` when that API is unavailable or throws. The engine does not
  * abbreviate magnitudes, so the mod's own tiering stays in the callers; only the mantissa localizes.
  * @param {number} n The value to format.
  * @param {string} spec A .NET-style numeric format ("0.0", "0.00"); "" for a plain grouped integer.
@@ -327,7 +327,7 @@ function groupThousands(n) {
 }
 
 /**
- * Format a people count as an EXACT, comma-grouped number ("35,670") rather than the rounded prose
+ * Format a people count as an exact, comma-grouped number ("35,670") rather than the rounded prose
  * ("36 thousand"). Used for popup/notification event figures, where a precise figure reads as a real
  * census number; prose phrasing stays in the charts/aggregates (see {@link formatPeople}).
  * @param {number} n People count.
@@ -339,7 +339,7 @@ export function formatPeopleExact(n) {
 }
 
 /**
- * The dual-system phrase with an EXACT people figure: "1 population point (35,670 people)".
+ * The dual-system phrase with an exact people figure: "1 population point (35,670 people)".
  * @param {number} people Scaled people.
  * @param {number} [points] Raw population points (defaults to 1).
  * @returns {string} The dual-system phrase with an exact people count.
@@ -365,13 +365,13 @@ export function formatBothExactMsg(people, points) {
 }
 
 // The variation band for displayed event people figures: ±this fraction. Narrow enough to stay
-// believable, wide enough that two same-size events never read identically. Standing TOTAL population
-// displays are NOT varied; they stay on the shared base curve.
+// believable, wide enough that two same-size events never read identically. Standing total population
+// displays are not varied; they stay on the shared base curve.
 const PEOPLE_VARIANCE = 0.1;
 
 /**
- * A stable 32-bit hash of a seed string (FNV-1a). Deterministic and dependency-free, so the SAME
- * seed yields the SAME value everywhere, including a sibling mod that copies this function, letting
+ * A stable 32-bit hash of a seed string (FNV-1a). Deterministic and dependency-free, so the same
+ * seed yields the same value everywhere, including a sibling mod that copies this function, letting
  * two mods agree on a settlement's varied figure when they seed it the same way.
  * @param {string} s The seed string.
  * @returns {number} An unsigned 32-bit hash.
@@ -396,7 +396,7 @@ function clampUnit(x) {
 }
 
 /**
- * A directional bias in [-1,1] derived from a settlement's REAL game metrics, net happiness and the
+ * A directional bias in [-1,1] derived from a settlement's real game metrics, net happiness and the
  * urban:rural mix (denser, happier settlements lean a touch larger). Pass the result as the `signal`
  * arg to {@link variedPeople} and friends. `urban` defaults to `population − rural` when not supplied.
  * @param {{happiness?:number, urban?:number, rural?:number, population?:number}|null|undefined} m Metrics.
@@ -480,7 +480,7 @@ export function moveRural(source, dest) {
 }
 
 /**
- * Remove one rural population point from a city WITHOUT moving it anywhere - the outlet for a
+ * Remove one rural population point from a city without moving it anywhere - the outlet for a
  * trapped population with no refuge (attrition / death). Returns whether the write was applied.
  * @param {*} city The city losing a point.
  * @returns {boolean} True if applied.
@@ -496,7 +496,7 @@ export function removeRural(city) {
 }
 
 /**
- * Add one rural population point to a city WITHOUT taking it from anywhere - the arrival half of a
+ * Add one rural population point to a city without taking it from anywhere - the arrival half of a
  * lagged migration (see the transit queue in emigration-engine.js). Returns whether the write was applied.
  * @param {*} city The city gaining a point.
  * @returns {boolean} True if applied.

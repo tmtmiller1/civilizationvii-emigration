@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 // back to city.name. The internal state is reset between cases via the __test surface.
 const { __test } = await import("/emigration/ui/emigration-composition.js");
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
-// Diaspora reads the SAME composition ledger singleton, so a case can seed a city here and then assert
+// Diaspora reads the same composition ledger singleton, so a case can seed a city here and then assert
 // on the enclave read (progress stage + the "force" relaxation the player's Force-enclave option uses).
 const { establishedQuarterForCity, enclaveProgressForCity } =
   await import("/emigration/ui/emigration-diaspora.js");
@@ -39,7 +39,7 @@ function sumPts(comp) {
 }
 
 /**
- * Consistency invariants every composition summary must hold: the per-origin points sum EXACTLY to
+ * Consistency invariants every composition summary must hold: the per-origin points sum exactly to
  * the reported total (the city/empire population), and the shares sum to 1.
  */
 function assertConsistent(comp, expectedTotal) {
@@ -88,7 +88,7 @@ function testFoundWarConquestRegrowth() {
   assert.equal(comp.dominant.civ, 1);
 }
 
-// An immigrant arrival adds the migrant's ORIGIN civ to the destination mix.
+// An immigrant arrival adds the migrant's origin civ to the destination mix.
 function testImmigrationAddsOriginCiv() {
   __test.reset();
   __test.recordCompositionPass(
@@ -227,7 +227,7 @@ function testEnclaveStickiness() {
 }
 
 /**
- * Return migration attributes the move to the returnees' TRUE origin: the host loses that origin
+ * Return migration attributes the move to the returnees' true origin: the host loses that origin
  * specifically, and the homeland gains that origin (never the host's). Drives the "return" cause.
  */
 function testReturnAttribution() {
@@ -252,7 +252,7 @@ function testReturnAttribution() {
   const g = __test.compositionForCity({ location: { x: 2, y: 2 } });
   assert.equal(Math.round(shareOf(h, 9) * 14), 3, "the host lost one origin-9 point (4 → 3)");
   assertConsistent(h, 13);
-  // The homeland gained the returnee as origin 9, NOT as the host's civ 0 (the origin override).
+  // The homeland gained the returnee as origin 9, not as the host's civ 0 (the origin override).
   assert.equal(shareOf(g, 0), 0, "the homeland gains no host-origin people from a return");
   assert.equal(shareOf(g, 9), 1, "the returnee is home as its own origin");
   assertConsistent(g, 7);
@@ -266,13 +266,13 @@ testNoPhantomDust();
 testOwnerAggregateConsistency();
 /**
  * The enclave read the decision system uses: a foothold-stage diaspora (past the foothold share but
- * below the established bar) is NOT offerable normally, but IS when forced (the player's Force-enclave
+ * below the established bar) is not offerable normally, but is when forced (the player's Force-enclave
  * option relaxes the bar to foothold). A diaspora past the established bar is offerable either way.
  * enclaveProgressForCity reports the same stage regardless, so a readout built from it always agrees.
  */
 async function testEnclaveProgressAndForce() {
   // Defaults: established 0.30, min stock 3, foothold 0.25. The absolute-stock qualifier (6 points establish
-  // whatever the share) is switched OFF here so the share stages are what is under test.
+  // whatever the share) is switched off here so the share stages are what is under test.
   const { CONFIG: cfg } = await import("/emigration/ui/emigration-config.js");
   const wasStock = cfg.quarterEstablishedStock;
   cfg.quarterEstablishedStock = 0;

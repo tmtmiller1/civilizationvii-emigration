@@ -1,6 +1,6 @@
 // emigration-prosperity-lens.js
 //
-// A map LENS that paints every settlement's tiles by TILE PROSPERITY (emigration-tile-score.js): green
+// A map lens that paints every settlement's tiles by tile prosperity (emigration-tile-score.js): green
 // = thriving, gray = ordinary, red = blighted; falls back to one color per settlement when the
 // per-tile read is unavailable. A self-registering UIScript in the HUD context: it registers a lens
 // layer + lens with LensManager and decorates the `lens-panel` to add a "Prosperity" button.
@@ -34,8 +34,8 @@ function cityTiers() {
     return [];
   }
   if (!signals.length) return [];
-  // The field (mean/spread) is computed over EVERY civ so a visible city is colored by its true
-  // global standing, but only civs the visibility policy permits are PAINTED (spoiler protection).
+  // The field (mean/spread) is computed over every civ so a visible city is colored by its true
+  // global standing, but only civs the visibility policy permits are painted (spoiler protection).
   const ctx = fieldContext(signals);
   const rows = signals.map((s) => ({ owner: s.owner, city: s.city, p: prosperity(s, ctx) }));
   const mean = rows.reduce((a, r) => a + r.p, 0) / rows.length;
@@ -47,7 +47,7 @@ function cityTiers() {
 }
 
 /**
- * Per-PLOT prosperity: every visible settlement's painted plots scored on the absolute tile scale, with the color
+ * Per-plot prosperity: every visible settlement's painted plots scored on the absolute tile scale, with the color
  * position of each. One neighbor cache is shared across the whole paint (a hex is a neighbor of six others).
  * Empty (→ per-settlement fallback) when no plot can be read.
  * @returns {{x:number, y:number, t:number}[]} Per-plot {x, y, color position}.
@@ -139,7 +139,7 @@ function paintTileBuckets(overlay, tiles) {
   for (const [q, plots] of buckets) overlay.addPlots(plots, { fillColor: tierFill(q) });
 }
 
-/** The lens layer: an overlay of plot fills colored by TILE prosperity. */
+/** The lens layer: an overlay of plot fills colored by tile prosperity. */
 class ProsperityLensLayer {
   constructor() {
     this.group = WorldUI.createOverlayGroup("EmigProsperityOverlay", HEX_GRID);
@@ -155,7 +155,7 @@ class ProsperityLensLayer {
   /** Lens-layer lifecycle: init (no-op; built in the constructor). */
   initLayer() {}
 
-  /** Lens-layer lifecycle: paint plots by TILE prosperity (the points score), falling back to one color per
+  /** Lens-layer lifecycle: paint plots by tile prosperity (the points score), falling back to one color per
    *  settlement when no plot can be read. */
   applyLayer() {
     this.clear();
@@ -228,7 +228,7 @@ function toggleLens() {
   }
 }
 
-// ── Self-registration (runs on UIScript load, in the HUD context) ──────────────────────
+// Self-registration (runs on UIScript load, in the HUD context)
 try {
   LensManager.registerLensLayer(LAYER, new ProsperityLensLayer());
   LensManager.registerLens(LENS, new ProsperityLens());

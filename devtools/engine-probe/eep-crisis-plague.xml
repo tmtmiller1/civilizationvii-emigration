@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- PROBE-ONLY. Never shipped: this lives in devtools/engine-probe and is loaded only by the throwaway
+<!-- Probe-only. Never shipped: this lives in devtools/engine-probe and is loaded only by the throwaway
      emig-engine-probe mod, via EXTRA_DATA=eep-crisis-plague.xml.
 
-     The plague crisis is the one engine surface the mod reads that had never been watched true
+     The plague crisis is the one engine surface the mod reads that had never been seen true
      (city.isInfected). Reaching it honestly costs most of an age: stage 1 fires at 70% age progression and
-     AugustusExp66 sits at 41.3% (66/160 points, about one point a turn), so ~46 turns, and only if THIS game
+     AugustusExp66 sits at 41.3% (66/160 points, about one point a turn), so ~46 turns, and only if this game
      had picked plague rather than the religion crisis.
 
      So this override does two things, both only in the probe's database:
@@ -15,7 +15,7 @@
           ordered (a stage that triggers before the previous one ends would be nonsense).
 
      If the engine picks the crisis at trigger time from what the database offers, this forces plague. If the
-     choice was already fixed when the save was made, nothing here can change it -- and that is exactly the
+     choice was already fixed when the save was made, nothing here can change it, and that is exactly the
      hypothesis the probe run is testing. -->
 <Database>
     <AgeCrisisStages>

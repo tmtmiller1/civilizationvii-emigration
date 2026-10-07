@@ -1,6 +1,6 @@
 // emigration-views.js
 //
-// The shared RENDER CORE for the migration dashboards: the standalone Emigration screen
+// The shared render core for the migration dashboards: the standalone Emigration screen
 // (emigration-screen.js) and the Demographics "Migration" page (emigration-migration-page.js) both
 // mount these same widgets. Pure, DOM-free view-model builders plus `renderDashboard(target, model)`,
 // a themed card-per-section DOM renderer; the network card is delegated to emigration-network-viz.js.
@@ -40,7 +40,7 @@ export function civLedgerRows(civs) {
         ...splitInternalExternal(c),
         // The signed per-cause net (arrivals − departures), the "why" behind this civ's net.
         drivers: netDrivers(c.byCause, c.inByCause),
-        // Border-stance impact on immigration IN (signed people/points; proportion vs neutral).
+        // Border-stance impact on immigration in (signed people/points; proportion vs neutral).
         stInP: n(si.in), stInPts: n(si.inPts), stOutP: n(si.out), stOutPts: n(si.outPts)
       };
     });
@@ -120,7 +120,7 @@ const MAX_CITY_EDGES = 80; // cap on city→city edges kept for the flow drill-d
 /**
  * Merge city-level flow entries into one edge per civ pair (summing people/points/byCause), so the
  * civ-level views (dot network + headline) see clean civ→civ edges regardless of how many cities a
- * corridor split across. Falls back gracefully when entries carry no city.
+ * corridor split across. Falls back when entries carry no city.
  * @param {*[]} src Positive-people flow entries.
  * @returns {*[]} Civ-pair edges {from,to,fromName,toName,people,points,byCause}.
  */
@@ -298,9 +298,9 @@ export function visibleSections(sections) {
   return getMinimizeAnalytics() ? sections.filter((s) => !ANALYTICS_KINDS.has(s.kind)) : sections;
 }
 
-// ── Themed DOM renderer ─────────────────────────────────────────────────────
+// Themed DOM renderer
 // The detail cards style themselves via an injected stylesheet so they look right in any host
-// (the standalone screen OR the Demographics page). The network card is delegated to
+// (the standalone screen or the Demographics page). The network card is delegated to
 // emigration-network-viz.js, which owns its own (animated) styles.
 
 const DASH_CSS =
@@ -321,7 +321,7 @@ const DASH_CSS =
   // header's spans have to be read together), so they are concatenated in from there.
   LEDGER_CSS +
   // Causes pies.
-  // Cap the legend to the pie's width so it WRAPS under the pie instead of widening the (content-sized)
+  // Cap the legend to the pie's width so it wraps under the pie instead of widening the (content-sized)
   // column, otherwise a card with long "civ count (pct%)" labels makes its column wider and pushes the
   // pies out of alignment with the other cards (and squeezes the cause bars unevenly).
   ".emig-pie-leg{display:flex;flex-wrap:wrap;gap:0.25rem 0.9rem;justify-content:center;" +
@@ -336,7 +336,7 @@ const DASH_CSS =
   // Pies pack and wrap (as many per row as fit), filling the width without forcing 3-up gaps.
   ".emig-pie-grid > .emig-pie{flex:0 0 auto;}" +
   // GameFace doesn't derive a canvas's height from width:100%+height:auto (it collapses to 0), so
-  // the pie canvas needs an EXPLICIT square size.
+  // the pie canvas needs an explicit square size.
   ".emig-pie-c{width:13.5rem;height:13.5rem;display:block;}" +
   ".emig-pie-empty{width:13.5rem;height:13.5rem;border-radius:50%;margin:0 auto;display:flex;" +
   "align-items:center;justify-content:center;border:0.11rem dashed rgba(229,210,172,0.2);}" +
@@ -391,14 +391,14 @@ const DASH_CSS =
   ".emig-event-name{flex:1 1 auto;color:#cbb994;overflow:hidden;text-overflow:ellipsis;" +
   "white-space:nowrap;}" +
   ".emig-event-num{flex:0 0 auto;text-align:right;color:#cbb994;}" +
-  // The consistent control row: labeled pill GROUPS (a "Label:" + selectable chips), matching the
+  // The consistent control row: labeled pill groups (a "Label:" + selectable chips), matching the
   // Network lens row and the Demographics "Data" pills, so every Emigration tab reads the same.
   ".emig-ctrl-row{display:flex;flex-wrap:wrap;gap:0.3rem 1.4rem;justify-content:center;align-items:center;" +
   "margin:0.1rem 0 0.55rem;}" +
   ".emig-pill-grp{display:flex;flex-wrap:wrap;align-items:center;gap:0.3rem;}" +
   ".emig-pill-lbl{font-size:var(--dg-fs-95);opacity:0.7;margin-right:0.1rem;text-transform:uppercase;" +
   "letter-spacing:0.03rem;color:#cbb994;}" +
-  // Control-row groups render as flat, square-cornered, gold-BOXED buttons, the same look as the time/
+  // Control-row groups render as flat, square-cornered, gold-boxed buttons, the same look as the time/
   // age filters on the Data tab.
   ".emig-filter-btn{display:inline-block;padding:0.18rem 0.55rem;border-radius:0.2rem;" +
   "border:0.0555rem solid rgba(201,162,76,0.4);background:rgba(9,12,19,0.5);color:#cbb994;" +
@@ -433,7 +433,7 @@ const DASH_CSS =
   ".emig-tab.active{color:#f3c34c;border-bottom-color:#f3c34c;}" +
   ".emig-tabbody{overflow-y:auto;overflow-x:hidden;max-height:74vh;}" +
   ".emig-sample-badge{align-self:center;margin-bottom:0.5rem;padding:0.1rem 0.7rem;border-radius:0.9rem;font-size:var(--dg-fs-72);letter-spacing:0.08rem;text-transform:uppercase;color:#1c1408;background:#e0913c;font-weight:bold;}" +
-  // ── Resolution density (chrome + per-tab content) ─────────────────────────
+  // Resolution density (chrome + per-tab content)
   // Short viewports pin the engine font at 18px, so fixed-rem displays would overflow a 40-50rem
   // column. emigration-density.js exports the compaction sheet (DENSITY_CSS); appended here so it
   // injects with the dashboard and covers both the standalone screen and the embedded page.
@@ -563,7 +563,7 @@ function makeTabBar(sections, onSelect) {
   return bar;
 }
 
-// The dashboard controls, shown as labeled pill GROUPS (a "Label:" + one selectable chip per option,
+// The dashboard controls, shown as labeled pill groups (a "Label:" + one selectable chip per option,
 // the current one gold), the same shape as the Network lens row and the Demographics "Data" pills, so
 // the control row reads identically on every Emigration tab.
 /** @param {number} mode A NumberMode. @returns {string} Its chip label in the current language. */
@@ -580,7 +580,7 @@ function numLabel(mode) {
  * @returns {HTMLElement} The pill group.
  */
 /**
- * A labeled FILTER group: a "Label:" span + one flat rectangular BUTTON per option (the current one
+ * A labeled filter group: a "Label:" span + one flat rectangular button per option (the current one
  * boxed gold), the year/age-filter look. Used for every dashboard control row group.
  * @param {string} label The leading label.
  * @param {{key:*, label:string}[]} items The options.
@@ -669,7 +669,7 @@ function buildControlRow(showNumbers, rebuild, includeOptionsButton = false) {
 }
 
 /**
- * Render the dashboard as a TABBED view (one section at a time): the headline network gets its own
+ * Render the dashboard as a tabbed view (one section at a time): the headline network gets its own
  * full space, with the detail sections behind base-UI tabs. The network canvas only exists while
  * its tab is active, so its animation loop runs only then.
  * @param {HTMLElement} target The container element.
@@ -712,8 +712,8 @@ export function renderDashboardTabbed(target, model, rebuild) {
 }
 
 // Sections the "Numbers:" units chip doesn't apply to: "flow" has its own inline Units toggle, and
-// stances / notifications / guide show no population counts to switch. (Diversity DOES carry counts —
-// each settlement's population beside its origin bar — so it takes the chip like the other tables.)
+// stances / notifications / guide show no population counts to switch. (Diversity does carry counts,
+// each settlement's population beside its origin bar, so it takes the chip like the other tables.)
 const NO_UNITS_TOGGLE = new Set(["flow", "stances", "notifications", "guide"]);
 
 /**
@@ -769,7 +769,7 @@ function appendControlRow(wrap, opts, body, section) {
 }
 
 /**
- * Render ONE dashboard section (chosen externally) plus the persistent chrome (sample badge,
+ * Render one dashboard section (chosen externally) plus the persistent chrome (sample badge,
  * timeline-detail reminder, number-mode toggle) into `target`. Used by the Demographics-embedded
  * Migration page, where the section tabs come from the Demographics sub-tab row.
  * @param {HTMLElement} target The container element.
@@ -793,7 +793,7 @@ export function renderDashboardSubtab(target, model, kind, opts) {
     const wrap = el("div", "emig-dash");
     if (model && model.sample) wrap.appendChild(el("div", "emig-sample-badge", loc("LOC_EMIG_VIEW_SAMPLE_BADGE", "Sample data ; preview (switch to Live in Options)")));
     // The timeline-detail note is rendered by the Demographics page beside its "Analytics policy"
-    // banner (see EmigrationTimelineNote), so it's NOT added at the top here in the embedded page.
+    // banner (see EmigrationTimelineNote), so it's not added at the top here in the embedded page.
     const body = el("div", "emig-tabbody");
     // One consistent control row (Numbers where it applies + Unmet civs), as labeled pill groups.
     appendControlRow(wrap, opts, body, section);

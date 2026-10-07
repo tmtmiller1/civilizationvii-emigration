@@ -1,6 +1,6 @@
 // Glob test runner (M2). Discovers and runs every tests/*.mjs through the ESM loader, so "run all the
 // tests" needs no hand-maintained &&-chain. This is the convenience entry (`npm run test:all`); the
-// authoritative gate that NOTHING is silently skipped lives in scripts/required-scripts-gate.mjs,
+// authoritative gate that nothing is silently skipped lives in scripts/required-scripts-gate.mjs,
 // which fails if any tests/*.mjs is not wired into the verify / test:js chains.
 //
 // The node-only suites (modinfo/i18n/no-empty-catch/validate-package) don't import /emigration/

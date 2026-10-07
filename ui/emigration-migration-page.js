@@ -1,7 +1,7 @@
 // emigration-migration-page.js
 //
-// Contribute a dedicated "Migration" PAGE to the Demographics screen when that mod supports it. The
-// page mounts the SAME shared render core (emigration-views.js) as the standalone window. Cross-mod
+// Contribute a dedicated "Migration" page to the Demographics screen when that mod supports it. The
+// page mounts the same shared render core (emigration-views.js) as the standalone window. Cross-mod
 // handshake (mirrors emigration-demographics.js): `registerPanel(spec)` on globalThis.DemographicsMetricsAPI,
 // registered now if the hook is up, else queued on the shared `pending` array; a silent no-op on a
 // Demographics that lacks `registerPanel`.
@@ -12,7 +12,7 @@ import { setNumberMode, NumberMode, getMinimizeAnalytics } from "/emigration/ui/
 import { loc } from "/emigration/ui/emigration-loc.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
-// The Migration page's sub-tabs, one per dashboard section, presented as NATIVE Demographics sub-tabs.
+// The Migration page's sub-tabs, one per dashboard section, presented as native Demographics sub-tabs.
 // `id` is the section kind (handed back to render); `labelKey`/`titleKey` are the LOC keys (composed
 // at registration by locTab) and `label`/`title` the English fallbacks. Mirrors emigration-views.js
 // dashboardModel() order + TAB_LABELS and reuses its keys where the text is identical.
@@ -87,9 +87,9 @@ function isValidContainer(container) {
     && typeof container.innerHTML === "string";
 }
 
-// Host-fill rules for the EMBEDDED page only (the standalone window has its own host). Demographics'
+// Host-fill rules for the embedded page only (the standalone window has its own host). Demographics'
 // render-page host stretches to its view-host column; these make our boxes fill it in turn, because the
-// network diagram sizes itself by MEASURING `.emig-tabbody` and a content-sized box makes that
+// network diagram sizes itself by measuring `.emig-tabbody` and a content-sized box makes that
 // measurement circular. `max-height` is unset with the flex so a vh cap cannot re-cap the box.
 const HOST_FILL_CSS =
   ".demographics-history-render-page > .emig-dash{height:100%;}" +
@@ -143,7 +143,7 @@ const PANEL_SPEC = {
   pageLabel: "Emigration",
   title: "Migration",
   tabs: SUBTABS,
-  // Present this panel as its OWN top-level tab in the Demographics screen (to the right of
+  // Present this panel as its own top-level tab in the Demographics screen (to the right of
   // Historical Data) rather than as a page buried inside Historical Data. The Demographics screen
   // reads this flag to add the tab and to exclude the panel from the Historical-Data page row.
   topLevel: true,
@@ -151,11 +151,11 @@ const PANEL_SPEC = {
     renderInto(container, subId, ctx)
 };
 
-// ── Hub mode ─────────────────────────────────────────────────────────────────
-// A hub-capable Demographics exposes registerHubPages + HUB_IDS; we then contribute FLAT pages into the
+// Hub mode
+// A hub-capable Demographics exposes registerHubPages + HUB_IDS; we then contribute flat pages into the
 // host's "Migration" hub instead of a sibling top-level tab: Net Migration (an empty metrics page the
 // host fills with the `emig_graphs` group) and render pages reusing renderInto. The panel is still
-// registered (NON top-level) so the "Net Migration (Table)" group member can route to its ledger sub-tab.
+// registered (non top-level) so the "Net Migration (Table)" group member can route to its ledger sub-tab.
 const MIGRATION_ANCHOR = "population"; // host Migration-hub anchor page (Population)
 const NET_MIGRATION_PAGE_ID = "emig_net_migration"; // must match emigration-demographics.js group pageId
 
@@ -201,7 +201,7 @@ function locPanel(extra) {
 function doRegister(api) {
   if (api && api[REGISTERED_FLAG]) return true;
   if (hostSupportsHubs(api)) {
-    // Keep the panel (NON top-level) for the ledger group-member routing; contribute the flat pages.
+    // Keep the panel (non top-level) for the ledger group-member routing; contribute the flat pages.
     api.registerPanel(locPanel({ tabs: visibleSubtabs(), topLevel: false }));
     api.registerHubPages("migration", visibleHubPages(), { after: MIGRATION_ANCHOR });
     api[REGISTERED_FLAG] = true;

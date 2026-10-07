@@ -1,9 +1,9 @@
 // network-subview.mjs
 //
-// The merged "Network" tab: the Dots view + a toggleable green/red migrant-flow ARROW overlay
+// The merged "Network" tab: the Dots view + a toggleable green/red migrant-flow arrow overlay
 // (emigration-network-flow-arrows.js), which replaced the separate Flows sub-view. Covers the
-// pure segment builder — one arrow per civ→civ flow, and that it honors the Dots view's
-// origin-isolate / focus-destination / scope filters — plus that the drawer never throws.
+// pure segment builder (one arrow per civ→civ flow, and that it honors the Dots view's
+// origin-isolate / focus-destination / scope filters), plus that the drawer never throws.
 
 import assert from "node:assert/strict";
 
@@ -49,7 +49,7 @@ assert.equal(buildFlowSegments(holder({ focusDest: 2 })).length, 1, "focusing th
 assert.equal(buildFlowSegments(holder({ show: { resident: true, internal: true, immigrant: false } })).length, 0,
   "hiding immigrants hides cross-civ arrows");
 
-// 5. Intra (city→city) arrows appear only for an EXPANDED civ.
+// 5. Intra (city→city) arrows appear only for an expanded civ.
 assert.equal(buildFlowSegments(holder()).length, 1, "collapsed civ → no intra arrow (just the civ→civ one)");
 const expanded = buildFlowSegments(holder({ expanded: new Set([1, 2]) }));
 assert.ok(expanded.length >= 2, "expanding routes to cities and adds the intra city→city arrow (got " + expanded.length + ")");

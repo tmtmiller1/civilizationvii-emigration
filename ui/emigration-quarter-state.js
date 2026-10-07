@@ -1,8 +1,8 @@
 // emigration-quarter-state.js
 //
-// The persistent record of every Cultural Quarter in the world: ONE quarter per host tile (the
+// The persistent record of every Cultural Quarter in the world: one quarter per host tile (the
 // city-center plot), keyed "x,y", holding the origin, the stance taken, and the yields it granted. A
-// second origin overtaking the same tile REPLACES the record. Also carries the per-age decision
+// second origin overtaking the same tile replaces the record. Also carries the per-age decision
 // throttle (cap + cooldown) and a "contested" flag set while the host is at war with the homeland.
 // State persists in GameConfiguration under EmigrationQuarters_v1; a malformed blob degrades to empty.
 
@@ -24,9 +24,9 @@ const MAX_TILES = 4096;
  */
 /**
  * @typedef {Object} QuarterRecord
- * @property {number} civ Origin PLAYER id (whose diaspora holds the quarter); used for naming/war reads.
+ * @property {number} civ Origin player id (whose diaspora holds the quarter); used for naming/war reads.
  * @property {string|null} originCiv Origin CivilizationType captured at formation (e.g. "CIVILIZATION_ROME"),
- *   or null for legacy records. This is the STABLE identity used for the per-civ enclave cap — it does not
+ *   or null for legacy records. This is the stable identity used for the per-civ enclave cap; it does not
  *   drift if the origin player later changes civilization across an age.
  * @property {number} owner Host player id.
  * @property {string} optionId The stance chosen.
@@ -35,8 +35,8 @@ const MAX_TILES = 4096;
  * @property {boolean} contested Whether the host is at war with the origin's homeland.
  * @property {number} contestedTurn Turn the quarter last became contested (-999 if never).
  * @property {number|null} [fadeSince] The turn the origin's share first sat below the fade bar (null = above).
- * @property {boolean} recognized False from ESTABLISHMENT (the enclave exists: record + tile, no stance yet)
- *   until RECOGNITION after the dwell period (the stance is chosen and its yields begin). An absent
+ * @property {boolean} recognized False from establishment (the enclave exists: record + tile, no stance yet)
+ *   until recognition after the dwell period (the stance is chosen and its yields begin). An absent
  *   value reads as true.
  * @property {PlacedRecord|null} [placed] The constructible placed for this stance, or null when none was placed
  *   (no valid tile / data not loaded); see emigration-enclave-place.js.
@@ -53,10 +53,10 @@ const MAX_TILES = 4096;
  *   while the tile stands (computed once the tile is first seen standing).
  */
 /**
- * A pending-enclave dwell clock: an established diaspora that has NOT yet been offered its decision. Kept
+ * A pending-enclave dwell clock: an established diaspora that has not yet been offered its decision. Kept
  * per host tile so the decision can require the enclave to persist (quarterDwellTurns) before it fires.
  * @typedef {Object} CandidacyRecord
- * @property {number} civ Origin PLAYER id (legacy-fallback identity when a CivilizationType is unavailable).
+ * @property {number} civ Origin player id (legacy-fallback identity when a CivilizationType is unavailable).
  * @property {string|null} originCiv Origin CivilizationType captured while observing (stable identity).
  * @property {number} since Turn the current established streak began (the dwell clock's start).
  * @property {number} lastSeen Last turn observed established (for grace-window pruning of a lapsed streak).
@@ -337,7 +337,7 @@ function normalizeFormed(f) {
 }
 
 /**
- * The formed counters for the CURRENT age (reset when the age hash changes). Does NOT persist.
+ * The formed counters for the current age (reset when the age hash changes). Does not persist.
  * @returns {{age:number, byOwner:Record<string,number>}} The live counters.
  */
 function formedNow() {
@@ -356,7 +356,7 @@ export function formedThisAge(owner) {
 }
 
 /**
- * Count one more enclave formed by a host this age. Does NOT persist (the caller saves).
+ * Count one more enclave formed by a host this age. Does not persist (the caller saves).
  * @param {number} owner Host player id.
  */
 export function noteFormed(owner) {
@@ -422,10 +422,10 @@ export function quarterAt(tileKey) {
 }
 
 /**
- * A tile's quarter record as a READER in another isolate sees it, re-read from the store once per turn.
+ * A tile's quarter record as a reader in another isolate sees it, re-read from the store once per turn.
  * Use this, not {@link quarterAt}, from any isolate that does not itself write quarters: `_state` is
  * the writer's live working copy, so a reader that cached it would never see later enclaves form.
- * Deliberately a SEPARATE cache, since refreshing `_state` would discard uncommitted mid-pass changes.
+ * A separate cache on purpose: refreshing `_state` would discard uncommitted mid-pass changes.
  * @param {string} tileKey The "x,y" settlement-center key.
  * @returns {QuarterRecord|null} The record, or null.
  */
@@ -439,7 +439,7 @@ export function quarterSnapshotAt(tileKey) {
 
 /**
  * Write (or replace) a tile's quarter record. Caps the store size; a write past the cap is dropped
- * rather than growing unbounded. Does NOT persist (the caller persists once per pass).
+ * rather than growing unbounded. Does not persist (the caller persists once per pass).
  * @param {string} tileKey The plot key. @param {QuarterRecord} rec The record.
  */
 export function putQuarter(tileKey, rec) {
@@ -452,7 +452,7 @@ export function putQuarter(tileKey, rec) {
 }
 
 /**
- * Remove a tile's quarter record (if any). Does NOT persist.
+ * Remove a tile's quarter record (if any). Does not persist.
  * @param {string} tileKey The plot key.
  */
 export function dropQuarter(tileKey) {
@@ -471,7 +471,7 @@ export function candidacyAt(tileKey) {
 }
 
 /**
- * Write (or replace) a tile's candidacy record. Caps the store size like the tiles map. Does NOT persist.
+ * Write (or replace) a tile's candidacy record. Caps the store size like the tiles map. Does not persist.
  * @param {string} tileKey The plot key. @param {CandidacyRecord} rec The record.
  */
 export function putCandidacy(tileKey, rec) {
@@ -484,7 +484,7 @@ export function putCandidacy(tileKey, rec) {
 }
 
 /**
- * Remove a tile's candidacy record (if any). Does NOT persist.
+ * Remove a tile's candidacy record (if any). Does not persist.
  * @param {string} tileKey The plot key.
  */
 export function dropCandidacy(tileKey) {
@@ -503,7 +503,7 @@ export function allCandidacyEntries() {
 
 /**
  * Whether a tile's established enclave has persisted long enough (its dwell clock has run at least
- * CONFIG.quarterDwellTurns turns) to OFFER its decision. Requires a candidacy record that still names this
+ * CONFIG.quarterDwellTurns turns) to offer its decision. Requires a candidacy record that still names this
  * origin (identity by CivilizationType, with a legacy fallback to the raw origin player id). With
  * quarterDwellTurns = 0 this is satisfied as soon as a candidacy exists (legacy "offer on cross").
  * @param {string} tileKey The plot key. @param {string|null} originCiv The origin's resolved CivilizationType.
@@ -556,7 +556,7 @@ export function quartersForOwner(owner) {
 }
 
 /**
- * Whether a fresh quarter DECISION may fire now: under the per-age cap and past the cooldown. Resets
+ * Whether a fresh quarter decision may fire now: under the per-age cap and past the cooldown. Resets
  * the cap count when the age has advanced. (Formation of the quarter record itself is not throttled,
  * only the player-facing choice modal is, so modals stay rare.)
  * @param {number} turn Now (monotonic). @param {number} age Current age ordinal.
@@ -575,7 +575,7 @@ export function canDecide(turn, age) {
 }
 
 /**
- * Stamp the decision throttle (increment the per-age count and set the cooldown clock). Does NOT
+ * Stamp the decision throttle (increment the per-age count and set the cooldown clock). Does not
  * persist.
  * @param {number} turn Now (monotonic).
  */
@@ -586,7 +586,7 @@ export function noteDecision(turn) {
 }
 
 /**
- * Set (or clear) a tile's contested flag, stamping the turn it became contested. Does NOT persist.
+ * Set (or clear) a tile's contested flag, stamping the turn it became contested. Does not persist.
  * @param {string} tileKey The plot key. @param {boolean} on Whether contested. @param {number} turn Now.
  */
 export function setContested(tileKey, on, turn) {

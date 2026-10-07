@@ -284,9 +284,9 @@ export function saveState(state) {
 }
 
 /**
- * Whether the in-flight transit queue is at its hard cap (`MAX_TRANSIT_ENTRIES`). Checked at ENQUEUE
+ * Whether the in-flight transit queue is at its hard cap (`MAX_TRANSIT_ENTRIES`). Checked at enqueue
  * time so a lagged departure is never started when it couldn't be persisted (the load-time truncation
- * would silently destroy in-flight population); at capacity the migrant simply stays home this turn.
+ * would silently destroy in-flight population); at capacity the migrant stays home this turn.
  * @param {*} state Loaded state (transit queue).
  * @returns {boolean} True when no further transit rows may be enqueued this turn.
  */
@@ -318,8 +318,8 @@ export function prepareState(state, ranked) {
 const PRESSURE_FLOOR = 0.01;
 
 /**
- * Bleed every source's accumulated emigration pressure toward zero, once per pass, BEFORE the turn's
- * pull is added, so the charge reads CURRENT conditions in both directions (a city charged up by a
+ * Bleed every source's accumulated emigration pressure toward zero, once per pass, before the turn's
+ * pull is added, so the charge reads current conditions in both directions (a city charged up by a
  * siege does not discharge it as a peacetime move many turns later). Runs over the whole persisted
  * map, so a source resting on cooldown or skipped this pass drains too.
  * @param {*} state Loaded state (its `sources` map is mutated in place).

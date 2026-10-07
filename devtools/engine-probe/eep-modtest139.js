@@ -1,4 +1,4 @@
-// eep-modtest139.js - the reworked "call our people home" dialogs, both variants, watched in-game.
+// eep-modtest139.js - the reworked "call our people home" dialogs, both variants, in game.
 // AutoSave_00_0099 (the 2026-09-17 evening game, whose turn-89 screenshot prompted the rework).
 //
 // What is being checked, with a screenshot of each:
@@ -8,7 +8,7 @@
 //                 nobody" in the prose, one call per currency priced "up to".               SHOT 2-external
 // Nothing is bought: each dialog is dismissed through its last button ("Leave them where they are"), so no
 // treasury, cooldown or population state changes. When the save has no callable people for a variant, the
-// dialog is rendered from a fixture through the same view code, so the LAYOUT is still watched.
+// dialog is rendered from a fixture through the same view code, so the layout is still covered.
 //
 // The icon question is answered by the dialog module's own log line ("[Emigration.dilemma] caption icons at
 // Nms: re-rendered K label(s); first reads: ..."): K=0 with an <img> in the sample means the engine drew the
@@ -109,7 +109,7 @@ async function show(label, local, scope) {
   emit("SHOT " + label);
   await later(10000);
   emit(label + " buttons(late)=" + J(describeButtons(d)));
-  // A grayed-out size must not be buyable: activate the first disabled button and confirm nothing resolved.
+  // A grayed-out size must not be buyable: activate the first disabled button and check that nothing resolved.
   const greyed = Array.from(d.querySelectorAll("fxs-button")).find((b) => b.getAttribute("disabled") === "true");
   if (greyed) {
     safe(() => greyed.dispatchEvent(new CustomEvent("action-activate", { bubbles: true })));
@@ -146,8 +146,8 @@ function cityState(local) {
   return safe(() => (Players.get(local).Cities.getCities() || []).map((c) => Locale.compose(c.name) + ":" + c.population + "/" + c.pendingPopulation).join(" "));
 }
 
-// The REAL offer (the one the game raises, whose callback buys through callHomeNow), not the probe's recording
-// view. Click the first grayed INFLUENCE size and confirm nothing was bought: Influence, Gold, every city's
+// The real offer (the one the game raises, whose callback buys through callHomeNow), not the probe's recording
+// view. Click the first grayed Influence size and check that nothing was bought: Influence, Gold, every city's
 // population and unplaced points, and the cooldown all unchanged. The external variant needs callable people
 // abroad, which this save lacks, so it is skipped with a note when the offer does not open.
 /**

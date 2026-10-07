@@ -1,4 +1,4 @@
-// eep-modtest152.js - what does Players.grantYield actually change, for EVERY yield type, in both directions?
+// eep-modtest152.js - what does Players.grantYield actually change, for every yield type, in both directions?
 // Asked 2026-09-18 while deciding how enclave stance yields should be paid. Earlier probes only ever granted Gold,
 // Happiness and Influence; Food, Production, Science and Culture were never tried, and the stance registry pays in them.
 // Save: AugustusExp66 (human-controlled). The emigration pass is switched off (CONFIG.turnInterval) so its own charges

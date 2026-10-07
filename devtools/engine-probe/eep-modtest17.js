@@ -1,4 +1,4 @@
-// eep-modtest17.js - REAL-ENGINE flow measurement with the mod's per-turn pass actually RUNNING: the local
+// eep-modtest17.js - real-engine flow measurement with the mod's per-turn pass actually running: the local
 // player's turns are ended by the script (GameContext.sendTurnComplete), not by Autoplay, which does not
 // activate the local player's turn and so never runs the pass (mod test 29). AugustusExp66, automatic recognition everywhere, themed placement ON. Every 10 turns:
 // the largest single-origin foreign share and its stock, how many settlements sit at the foothold /

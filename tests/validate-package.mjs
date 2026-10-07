@@ -1,9 +1,9 @@
 // validate-package.mjs
 //
-// Install / load-time package-integrity gate: the structural checks that decide whether INSTALLING
+// Install / load-time package-integrity gate: the structural checks that decide whether installing
 // this mod can crash a game on load, for a fresh installer, for any of the 11 non-English locales, and
-// for a player who ALSO has other Workshop mods installed. These are the failure classes the existing
-// gate misses: the i18n test is regex-based and does NOT catch XML well-formedness, and the modinfo
+// for a player who also has other Workshop mods installed. These are the failure classes the existing
+// gate misses: the i18n test is regex-based and does not catch XML well-formedness, and the modinfo
 // test covers JS import-closure but not data/text XML, duplicate database keys, or the namespacing
 // invariant that keeps this mod from colliding with other mods' database rows.
 //
@@ -16,7 +16,7 @@
 //   5. Data LOC references, every LOC_ key referenced by data/*.xml is defined in en_us text.
 //   6. Namespace invariant, every mod-OWNED database identifier (Types/Traditions/Modifiers/Requirements)
 //      + Civilopedia Section/PageGroup ids + every LOC tag carries the mod's namespace token, so it can
-//      NEVER collide with the base game or another mod (the cross-mod install-crash guarantee).
+//      Never collide with the base game or another mod (the cross-mod install-crash guarantee).
 //
 // Run as a plain node script (no engine loader needed): `node ./tests/validate-package.mjs`.
 
@@ -29,7 +29,7 @@ const failures = [];
 const fail = (msg) => failures.push(msg);
 const ok = (label, detail) => console.log(`  ok   ${label}${detail ? ", " + detail : ""}`);
 
-// ── helpers ────────────────────────────────────────────────────────────────
+// helpers
 const read = (p) => fs.readFileSync(p, "utf8");
 function walk(dir, out = []) {
   if (!fs.existsSync(dir)) return out;
@@ -63,7 +63,7 @@ function blockOf(xml, name) {
   return m ? m[1] : "";
 }
 
-// ── 1) XML well-formedness ───────────────────────────────────────────────────
+// 1) XML well-formedness
 let xmllintAvailable = true;
 try {
   execFileSync("xmllint", ["--version"], { stdio: "ignore" });
@@ -83,7 +83,7 @@ if (!xmllintAvailable) {
   ok("XML well-formedness", `${allXmlFiles().length} files (modinfo + data + all locales)`);
 }
 
-// ── 2) modinfo file references exist ─────────────────────────────────────────
+// 2) modinfo file references exist
 const modinfo = read("emigration.modinfo");
 const refs = [...modinfo.matchAll(/<(?:Item|File)(?:\s+locale="[^"]+")?>([^<]+)<\/(?:Item|File)>/g)]
   .map((m) => m[1].trim());
@@ -91,9 +91,9 @@ const missing = refs.filter((r) => !fs.existsSync(r));
 if (missing.length) fail(`modinfo references missing file(s): ${missing.join(", ")}`);
 else ok("modinfo file references", `${refs.length} refs all present`);
 
-// ── 3) Civilopedia duplicate primary keys (per table, across every data file) ──
+// 3) Civilopedia duplicate primary keys (per table, across every data file)
 // Primary keys as 01_GameplaySchema.sql declares them. Note that CivilopediaPageChapterParagraphs is keyed
-// by (Section, Page, Chapter) WITHOUT the paragraph, so a chapter can carry only one explicit paragraph
+// by (Section, Page, Chapter) without the paragraph, so a chapter can carry only one explicit paragraph
 // row; multi-paragraph chapters use the pedia's text-key convention instead (see data/emigration-civilopedia.xml).
 // The Voices pages are generated into a second data file, so the check runs over all of them together.
 const pediaFiles = dataXmlFiles().filter((f) => /Civilopedia/.test(read(f)));
@@ -121,7 +121,7 @@ for (const [table, keyAttrs] of Object.entries(PEDIA_PK)) {
 }
 if (pedia) ok("Civilopedia primary keys", `no duplicates per table across ${pediaFiles.length} file(s)`);
 
-// ── 4) Locale parity + Language attr + no duplicate tags ─────────────────────
+// 4) Locale parity + Language attr + no duplicate tags
 const enXml = read("text/en_us/ModText.xml");
 const enKeys = new Set(rowsOf(enXml, "Row").map((r) => r.Tag).filter(Boolean));
 const declared = [...modinfo.matchAll(/<Item\s+locale="([^"]+)">(text\/[^<]+ModText\.xml)<\/Item>/g)]
@@ -145,10 +145,10 @@ for (const { lang, file } of declared) {
 }
 ok("Locale parity", `${enKeys.size} keys × ${seenLocaleFiles.size} locales (coverage + Language + dups)`);
 
-// ── 5) Data LOC references all defined in en_us ──────────────────────────────
+// 5) Data LOC references all defined in en_us
 // en_us also defines keys in dedicated text files beyond ModText.xml (e.g. EnclaveText.xml for the
-// enclave improvements — registered in the modinfo, en_us-only by design since Civ VII falls back to
-// en_us for untranslated keys). Those belong to the "defined in en_us" set checked here, but NOT to the
+// enclave improvements, registered in the modinfo and en_us-only by design since Civ VII falls back to
+// en_us for untranslated keys). Those belong to the "defined in en_us" set checked here, but not to the
 // per-locale parity set above (§4), which intentionally governs only the ModText.xml translation surface.
 const enDefinedKeys = new Set(enKeys);
 for (const f of walk("text/en_us").filter((p) => p.endsWith(".xml") && !p.endsWith("ModText.xml"))) {
@@ -160,8 +160,8 @@ const undefinedLoc = [...dataLoc].filter((k) => !enDefinedKeys.has(k));
 if (undefinedLoc.length) fail(`data XML references undefined LOC key(s): ${undefinedLoc.join(", ")}`);
 else ok("Data LOC references", `${dataLoc.size} keys all defined in en_us`);
 
-// ── 6) Namespace invariant (cross-mod collision safety) ──────────────────────
-// Only the DEFINITION tables (which create new primary keys) are checked, so references to shared
+// 6) Namespace invariant (cross-mod collision safety)
+// Only the definition tables (which create new primary keys) are checked, so references to shared
 // base-game types (COLLECTION_OWNER, EFFECT_*, YIELD_*, …) never trip a false positive.
 const DEF_TABLES = {
   Types: "Type",
@@ -191,17 +191,17 @@ for (const r of rowsOf(blockOf(pedia, "CivilopediaSections"), "Row")) {
 for (const r of rowsOf(blockOf(pedia, "CivilopediaPageGroups"), "Row")) {
   if (r.PageGroupID && !r.PageGroupID.toUpperCase().includes(NS)) fail(`CivilopediaPageGroups PageGroupID="${r.PageGroupID}" not namespaced with ${NS}`);
 }
-// LOC tags must sit in this mod's namespace OR the coordinated companion (Demographics) namespace,
-// into which Emigration deliberately contributes a few metric/series labels so they render inside the
+// LOC tags must sit in this mod's namespace or the coordinated companion (Demographics) namespace,
+// into which Emigration contributes a few metric/series labels so they render inside the
 // Demographics screen. Text-tag collisions are last-wins (never a DB crash), so this part is hygiene
-// against shadowing an UNRELATED base/other key, not crash-safety. The DB-identifier check above is
+// against shadowing an unrelated base/other key, not crash-safety. The DB-identifier check above is
 // the actual cross-mod crash guarantee.
 const LOC_OK = [NS, "DEMOGRAPHICS"];
 const badLoc = [...enKeys].filter((k) => !LOC_OK.some((ns) => k.toUpperCase().includes(ns)));
 if (badLoc.length) fail(`${badLoc.length} LOC tag(s) outside the ${LOC_OK.join("/")} namespaces (e.g. ${badLoc.slice(0, 5).join(", ")})`);
 else ok("Namespace invariant", `${ownedCount} owned DB ids carry ${NS}; ${enKeys.size} LOC tags in ${LOC_OK.join("/")}`);
 
-// ── report ───────────────────────────────────────────────────────────────────
+// report
 if (failures.length) {
   console.error("\n❌ validate-package FAILED, installing this mod could crash a game:");
   for (const f of failures) console.error("   - " + f);

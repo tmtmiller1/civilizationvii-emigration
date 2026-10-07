@@ -33,7 +33,7 @@ function checkEntry(key, entry) {
     entry.options[1].benefit + "|" + entry.options[1].penalty, key + " options A and B differ");
 }
 
-// ── every registry row is well-formed ───────────────────────────────────────
+// every registry row is well-formed
 {
   const keys = Object.keys(QUARTER_BONUSES);
   assert.ok(keys.length >= 40, "the registry covers a broad roster (>=40 civs), got " + keys.length);
@@ -43,7 +43,7 @@ function checkEntry(key, entry) {
   }
 }
 
-// ── neutral fallback is itself well-formed ──────────────────────────────────
+// neutral fallback is itself well-formed
 {
   assert.ok(Array.isArray(NEUTRAL_QUARTER.options) && NEUTRAL_QUARTER.options.length === 2,
     "the neutral fallback offers two options");
@@ -52,7 +52,7 @@ function checkEntry(key, entry) {
   }
 }
 
-// ── quarterBonus: known, unknown, and null resolution ───────────────────────
+// quarterBonus: known, unknown, and null resolution
 {
   assert.equal(quarterBonus("CIVILIZATION_ROME"), QUARTER_BONUSES.CIVILIZATION_ROME, "resolves a known civ");
   assert.equal(quarterBonus("CIVILIZATION_NOT_REAL"), NEUTRAL_QUARTER, "unknown civ → neutral fallback");
@@ -60,18 +60,18 @@ function checkEntry(key, entry) {
   assert.equal(quarterBonus(undefined), NEUTRAL_QUARTER, "undefined civ → neutral fallback");
 }
 
-// ── spot-check a few identity mappings from plan §7 ─────────────────────────
+// spot-check a few identity mappings from plan §7
 {
   assert.equal(QUARTER_BONUSES.CIVILIZATION_CARTHAGE.demonym, "Punic", "Carthage names a Punic Quarter");
   assert.equal(QUARTER_BONUSES.CIVILIZATION_GREECE.options[0].benefit, "YIELD_SCIENCE", "Greek agora grants Science");
   assert.equal(QUARTER_BONUSES.CIVILIZATION_SPAIN.options[1].benefit, "YIELD_FAITH", "Spanish missions grant Faith");
 }
 
-// ── flavor quotes: every option carries a real, attributed quote (plan §8) ──
+// flavor quotes: every option carries a real, attributed quote (plan §8)
 {
   const bonusKeys = Object.keys(QUARTER_BONUSES).sort();
   const quoteKeys = Object.keys(QUARTER_QUOTES).sort();
-  // Exact parity: every quoted civ has a bonus row and vice versa — no orphan quotes, none missing.
+  // Exact parity: every quoted civ has a bonus row and vice versa: no orphan quotes, none missing.
   assert.deepEqual(quoteKeys, bonusKeys, "QUARTER_QUOTES covers exactly the QUARTER_BONUSES roster");
 
   for (const civ of quoteKeys) {
@@ -94,7 +94,7 @@ function checkEntry(key, entry) {
   }
 }
 
-// ── quote accessors: key format, display composition, and null fallbacks ─────
+// quote accessors: key format, display composition, and null fallbacks
 {
   assert.equal(quarterQuoteKey("CIVILIZATION_ROME", "a"), "LOC_EMIG_QTR_Q_ROME_A", "quote key strips the CIVILIZATION_ prefix + uppercases the id");
   assert.equal(quarterQuoteKey("CIVILIZATION_DAI_VIET", "b"), "LOC_EMIG_QTR_Q_DAI_VIET_B", "quote key keeps interior underscores");
@@ -109,7 +109,7 @@ function checkEntry(key, entry) {
   assert.equal(quarterQuote(null, "a"), null, "null civ → no quote");
 
   const disp = quoteDisplay(QUARTER_QUOTES.CIVILIZATION_ROME.a);
-  // The attribution follows the closing quote with NO dash: the dilemma view splits there and prints it
+  // The attribution follows the closing quote with no dash: the dilemma view splits there and prints it
   // on its own line, and the em dash was being printed at the head of that line.
   assert.ok(disp.startsWith('"') && disp.includes('" Frontinus'), "display wraps the text in quotes and names the speaker after it");
   assert.ok(!disp.includes("\u2014"), "and uses no em dash");
@@ -119,7 +119,7 @@ function checkEntry(key, entry) {
   assert.equal(quoteDisplay(null), "", "no quote → empty display");
 }
 
-// ── data ↔ LOC parity: every quote has an en_us ModText row under its key ────
+// data ↔ LOC parity: every quote has an en_us ModText row under its key
 {
   const enXml = fs.readFileSync("text/en_us/ModText.xml", "utf8");
   const have = new Set([...enXml.matchAll(/Tag="(LOC_EMIG_QTR_Q_[A-Z0-9_]+)"/g)].map((m) => m[1]));
@@ -132,10 +132,10 @@ function checkEntry(key, entry) {
   assert.equal(have.size, Object.keys(QUARTER_QUOTES).length * 2, "no orphan LOC_EMIG_QTR_Q_ rows in en_us");
 }
 
-// ── renderableLine: the enclave pop-up must never show a script the dialog font can't draw ───
-// In-game the quote comes back WHOLE from Locale.compose (the raw-script LOC row), skipping quoteDisplay's
+// renderableLine: the enclave pop-up must never show a script the dialog font can't draw
+// In-game the quote comes back whole from Locale.compose (the raw-script LOC row), skipping quoteDisplay's
 // own guard, so renderableLine is the last line of defense. Every shipped quote row, once passed through
-// it, must be free of unrenderable script — this is what was showing as tofu boxes / scrambled RTL.
+// it, must be free of unrenderable script; this is what was showing as tofu boxes / scrambled RTL.
 {
   const UNRENDERABLE = /[Ͱ-ϿЀ-ӿ֐-׿؀-ۿሀ-፿぀-ヿ一-鿿가-힯]/;
   const enXml = fs.readFileSync("text/en_us/ModText.xml", "utf8");

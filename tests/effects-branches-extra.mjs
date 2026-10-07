@@ -147,7 +147,7 @@ assert.deepEqual(grants.slice(-2), [
   { pid: 42, yt: 2, amt: 3 }
 ]);
 
-// a benefitScale < 1 (contested enclave) shrinks ONLY the benefit; the drawback is charged in full
+// a benefitScale < 1 (contested enclave) shrinks only the benefit; the drawback is charged in full
 grants.length = 0;
 applyQuarterYields(42, quarterApplied, 0.5);
 assert.deepEqual(grants.slice(-2), [

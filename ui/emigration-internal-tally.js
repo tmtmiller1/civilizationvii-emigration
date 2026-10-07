@@ -1,7 +1,7 @@
 // emigration-internal-tally.js
 //
-// The INTERNAL (within-one-civ) migration tallies behind the Net Migration Table's Internal / External
-// split: how many people LEFT a civ's settlements for another of its own, and how many ARRIVED from
+// The internal (within-one-civ) migration tallies behind the Net Migration Table's Internal / External
+// split: how many people left a civ's settlements for another of its own, and how many arrived from
 // one. The gross in/out tallies count every move, so External = gross - internal.
 
 /** Schema stamp: 1 = the internal tallies exist (folded live, or backfilled once from the flows). */
@@ -31,7 +31,7 @@ export function isCrossCiv(m) {
 }
 
 /**
- * Bank one NON-attrition migration's INTERNAL share and report whether it crossed a border (the
+ * Bank one non-attrition migration's internal share and report whether it crossed a border (the
  * caller needs the same verdict for the net tally). An internal move credits "arrived" on its
  * destination half and "left" on its source half, exactly like the gross tallies.
  * @param {*} s Stats state (carries intOut/intIn + the parallel *Pts maps).

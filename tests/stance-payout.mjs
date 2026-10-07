@@ -23,7 +23,7 @@ const { stancePayout, affordable, payStance, ageIndex, __test } = await import("
 const speed = await import("/emigration/ui/emigration-game-speed.js");
 CONFIG.gameSpeedTuningEnabled = false; // S = 1 unless a case sets it
 
-// ── the probe save's economy (Exploration, turn 66): the payout tracks the host's own income ──────────
+// the probe save's economy (Exploration, turn 66): the payout tracks the host's own income
 {
   assert.equal(ageIndex(), 1, "Exploration is age 1");
   const culture = stancePayout({ benefitYield: "YIELD_CULTURE" }, 0);
@@ -38,7 +38,7 @@ CONFIG.gameSpeedTuningEnabled = false; // S = 1 unless a case sets it
   assert.equal(envoys.benefitAmount, 150, "a negative Influence income falls back to the Exploration floor");
 }
 
-// ── floors hold for a poor host, and rise with the age ─────────────────────────────────────────────
+// floors hold for a poor host, and rise with the age
 {
   for (const k of Object.keys(INCOME)) INCOME[k] = 0;
   assert.equal(stancePayout({ benefitYield: "YIELD_CULTURE" }, 0).benefitAmount, 150, "Exploration floor");
@@ -50,7 +50,7 @@ CONFIG.gameSpeedTuningEnabled = false; // S = 1 unless a case sets it
   globalThis.Game.age = "EXPL";
 }
 
-// ── game speed multiplies the whole figure (research costs scale with speed; income per turn does not) ──
+// game speed multiplies the whole figure (research costs scale with speed; income per turn does not)
 {
   CONFIG.gameSpeedTuningEnabled = true;
   globalThis.Configuration = { getGame: () => ({ gameSpeedType: "MARATHON" }) };
@@ -63,7 +63,7 @@ CONFIG.gameSpeedTuningEnabled = false; // S = 1 unless a case sets it
   speed.resetGameSpeedCache();
 }
 
-// ── payout scale (a contested enclave), unpayable yields, affordability, paying ────────────────────
+// payout scale (a contested enclave), unpayable yields, affordability, paying
 {
   assert.equal(stancePayout({ benefitYield: "YIELD_CULTURE" }, 0, 0.5).benefitAmount, 75, "half of 150");
   assert.equal(stancePayout({ benefitYield: "YIELD_CULTURE" }, 0, 0.5).penaltyAmount, 225, "the price is not halved");

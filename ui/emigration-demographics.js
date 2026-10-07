@@ -26,8 +26,8 @@ const QUEUED_FLAG = "__emigMetricsQueued";
  * Read a cumulative-tally function off the live EmigrationData global (those tallies are exposed as
  * methods there, not module exports). Returns 0 when absent.
  * @param {string} fn Method name (e.g. "netCumFor").
- * @param {number} [id] Player id.
- * @returns {number} The cumulative value, or 0.
+ * @param {number} [id]
+ * @returns {number}
  */
 function cumFor(fn, id) {
   const D = /** @type {*} */ (globalThis).EmigrationData || {};
@@ -37,7 +37,7 @@ function cumFor(fn, id) {
 /**
  * Format a net people count with a sign, e.g. "+12 thousand" / "-5 thousand".
  * @param {number} n Net people.
- * @returns {string} Display string.
+ * @returns {string}
  */
 function formatSignedPeople(n) {
   if (typeof n !== "number" || !isFinite(n) || n === 0) return "0";
@@ -49,7 +49,7 @@ function formatSignedPeople(n) {
  * fr `12 400`) via the engine's `Locale.toNumber` (shared {@link localeNumber} helper), falling back
  * to plain US-style grouping off-engine.
  * @param {number} v A non-negative integer.
- * @returns {string} Grouped string.
+ * @returns {string}
  */
 function groupInt(v) {
   const n = Math.round(v);
@@ -60,7 +60,7 @@ function groupInt(v) {
  * Format a raw population-point count as an exact grouped integer (e.g. "12,400"). These are the Civ's
  * own numbers (1 point per migration), shown as-is rather than scaled into historical "people".
  * @param {number} n Points.
- * @returns {string} Display string.
+ * @returns {string}
  */
 function formatPoints(n) {
   if (typeof n !== "number" || !isFinite(n)) return "0";
@@ -71,7 +71,7 @@ function formatPoints(n) {
 /**
  * Format a signed point count (e.g. "+12,400" / "-512").
  * @param {number} n Points.
- * @returns {string} Display string.
+ * @returns {string}
  */
 function formatSignedPoints(n) {
   if (typeof n !== "number" || !isFinite(n) || n === 0) return "0";
@@ -82,7 +82,7 @@ function formatSignedPoints(n) {
  * Build a per-cause attribution string for a tooltip. Shows the source breakdown of emigration
  * or immigration (e.g., "War: 185, Disaster: 89, Attraction: 68").
  * @param {Record<string, number>} byCause Per-cause breakdown map.
- * @returns {string} Formatted breakdown, or empty string if no data.
+ * @returns {string} Empty when there is no data.
  */
 function formatCauseBreakdown(byCause) {
   if (!byCause || typeof byCause !== "object") return "";
@@ -114,7 +114,7 @@ function refugeeCauseSplit(byCause) {
 
 /**
  * Refugees-generated tooltip: the war / disaster / conquest split behind a civ's cumulative refugee
- * OUTFLOW.
+ * outflow.
  * @param {*} ctx Tooltip context ({id}).
  * @returns {string} The split (e.g. "War: 1 thousand · Disaster: 400"), or "".
  */
@@ -123,7 +123,7 @@ function refugeesTooltip(ctx) {
 }
 
 /**
- * Refugees-received tooltip: the war / disaster / conquest split behind a civ's refugee INFLOW (which
+ * Refugees-received tooltip: the war / disaster / conquest split behind a civ's refugee inflow (which
  * crises the people it took in were fleeing).
  * @param {*} ctx Tooltip context ({id}).
  * @returns {string} The split, or "".
@@ -152,12 +152,12 @@ function inTooltip(ctx) {
   return sources ? loc("LOC_EMIG_SOURCES", "Sources: {1_List}", sources) : "";
 }
 
-// ── The migration graphs: Net Migration (am I winning or losing the population game?), gross
+// The migration graphs: Net Migration (am I winning or losing the population game?), gross
 // Emigration / Immigration (the per-flow detail), and Refugees (the human cost of war and disaster).
 // Each is a cumulative per-civ line, registered twice, once in Demographics' historically-scaled
 // "people" and once in raw Civ population points, so the "Graphs" group's units toggle (Scaled / Civ
 // numbers) just swaps which spec it charts. Cause breakdowns / splits ride in each line's tooltip.
-// Labels are plain strings (Demographics renders metric labels raw, not as LOC keys). ──
+// Labels are plain strings (Demographics renders metric labels raw, not as LOC keys).
 const NET_CUM_SPEC = {
   id: "emig_net_cum",
   label: "Net Migration",
@@ -173,7 +173,7 @@ const NET_CUM_SPEC = {
 };
 const NET_CUM_PTS_SPEC = {
   id: "emig_net_cum_pts",
-  // Civ-points twin of emig_net_cum (same flow, different units — only for the graph's
+  // Civ-points twin of emig_net_cum (same flow, different units, only for the graph's
   // Scaled/Civ toggle). Hide from the All Civilizations comparison so it doesn't render
   // as a second "Net Migration" row next to the scaled-people one.
   worldRankingsAllCivsHidden: true,
@@ -214,7 +214,7 @@ const REF_PTS_SPEC = {
   unit: "points",
   tooltipAttribution: refugeesTooltip
 };
-// Refugee IMMIGRATION, war/disaster/conquest arrivals this civ has RECEIVED (the inflow counterpart
+// Refugee immigration, war/disaster/conquest arrivals this civ has received (the inflow counterpart
 // of Refugees Out), so a civ taking in the displaced shows it distinct from economic immigration.
 const REF_IN_SPEC = {
   id: "emig_refugees_in",
@@ -298,14 +298,14 @@ const IN_CUM_PTS_SPEC = {
 };
 // All stay registered so the sampler tallies them every turn; the group below decides which one is
 // charted for the (metric, units) selection.
-// Per-civ CURRENT population in historically-scaled "people": sum scaleCityPopulation(cityPoints, turn)
+// Per-civ current population in historically-scaled "people": sum scaleCityPopulation(cityPoints, turn)
 // over the civ's settlements (per-city, since the curve is nonlinear), cached per mono-turn. This is
 // the "Scaled" series for the Population pill; "Civ numbers" is the host's raw `population_civ`.
 /** @type {{turn:number, people:Record<number, number>}} */
 let _popCache = { turn: -1, people: {} };
 /**
  * Current scaled-people population for a civ (designed scaling, matches the flow graphs).
- * @param {number} [pid] Player id.
+ * @param {number} [pid]
  * @returns {number} Scaled people, or 0.
  */
 function civPeople(pid) {
@@ -352,7 +352,7 @@ const SPECS = [
 // charts nothing: it routes to the Migration panel's ledger sub-tab via its "<panelId>::<subId>" id
 // (the host's PANEL_SUBTAB_SEP scheme), and both views map to the same id.
 const LEDGER_SUBTAB_ID = "emig_migration_panel::ledger";
-// Bind the group's Scaled / Civ-numbers VIEW to the shared Emigration number mode, so this toggle
+// Bind the group's Scaled / Civ-numbers view to the shared Emigration number mode, so this toggle
 // and the "Numbers:" chip on the Network / Causes / Settlements tabs are one persistent setting,
 // switching either one sticks, and reopening restores whatever was selected last.
 const VIEW_BINDING = {
@@ -373,7 +373,7 @@ const GRAPHS_GROUP = {
   members: [
     // Population (the host's own metric) leads the group so the Migration hub's first page is
     // "Population & Migration". Scaled → Emigration's people-scaled population (emig_population, the
-    // SAME per-city scaling as the flow graphs); Civ → the host's raw population points (population_civ).
+    // same per-city scaling as the flow graphs); Civ → the host's raw population points (population_civ).
     { key: "LOC_EMIG_MEMBER_POPULATION", label: "Population", scaled: "emig_population", civ: "population_civ" },
     // Population Share is the host's (Demographics) 100%-stacked share-of-world area. It has no
     // Scaled/Civ variant, so both views map to the one metric (like the Net Migration table below).
@@ -391,7 +391,7 @@ const GRAPHS_GROUP = {
  * A registration-time copy of a spec with its `description` localized. The host renders `description`
  * verbatim but derives `label`/`title`/`subtitle` from LOC_DEMOGRAPHICS_METRIC_<ID>[/_TITLE/_SUBTITLE]
  * keys, so only `description` is pre-composed here. `unit` stays raw (the host's UNIT_LOC table).
- * @param {*} spec A metric spec. @returns {*} The localized copy.
+ * @param {*} spec @returns {*} The localized copy.
  */
 function localizeSpec(spec) {
   const descKey = "LOC_DEMOGRAPHICS_METRIC_" + String(spec.id).toUpperCase() + "_DESC";
@@ -402,7 +402,7 @@ function localizeSpec(spec) {
  * A registration-time copy of the Graphs group with its group label, view labels, and member labels
  * localized. These three are rendered verbatim by the host (unlike the id-derived metric names), so
  * each carries a `key` we compose here and strip before handing the clean object to the host.
- * @returns {*} The localized group.
+ * @returns {*}
  */
 function localizeGraphsGroup() {
   return Object.assign({}, GRAPHS_GROUP, {
@@ -414,12 +414,12 @@ function localizeGraphsGroup() {
 
 /**
  * Register all specs + the Graphs group against a ready Demographics API.
- * @param {*} api The DemographicsMetricsAPI.
+ * @param {*} api
  */
 function doRegister(api) {
   if (api && api[REGISTERED_FLAG]) return;
   for (const spec of SPECS) api.registerMetric(localizeSpec(spec));
-  // Collapse the migration graphs into ONE group with two toggles: the metric and the units. Each
+  // Collapse the migration graphs into one group with two toggles: the metric and the units. Each
   // (member, view) maps to a registered spec; all stay registered above so they're still sampled.
   // No-op on a host lacking the group hook. In hub mode the group lives on the host's "Net Migration"
   // Migration-hub page, otherwise on the Emigration sibling panel page.

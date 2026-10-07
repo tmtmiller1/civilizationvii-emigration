@@ -5,7 +5,7 @@
 //   "lens manager unreachable" verdict was about the probe, not the mod. It is imported here.
 //   103 counted city-banner elements with the camera parked away from any city. Banners are created for
 //   cities in view, and the bar's stylesheet is injected by the decorator when a banner attaches, so zero
-//   banners means zero style and neither proves anything. This moves the camera onto a city first.
+//   banners means zero style and neither tells you anything. This moves the camera onto a city first.
 import LensManager from "/core/ui/lenses/lens-manager.js";
 
 const TAG = "[EmigTest]";

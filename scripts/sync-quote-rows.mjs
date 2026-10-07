@@ -7,7 +7,7 @@
 //   node --loader ./tests/loader.mjs scripts/sync-quote-rows.mjs
 //   node scripts/i18n_ingest.mjs && node scripts/i18n_extract.mjs && node scripts/i18n_apply.mjs
 //
-// Ingest comes FIRST and is not optional: apply rebuilds each locale from i18n/<locale>.json, so any
+// Ingest comes first and is not optional: apply rebuilds each locale from i18n/<locale>.json, so any
 // translation that was typed into a ModText.xml by hand is invisible to it and would be replaced with
 // English. Apply refuses to run when that is the case and names this same order.
 

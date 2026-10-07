@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 
-// Setup comprehensive global mocks for integration testing
+// Global mocks for the integration cases
 globalThis.Game = { turn: 100, age: 2 };
 globalThis.GameInfo = {
   Ages: { lookup: (id) => ({ AgeType: "AGE_CLASSICAL" }) },
@@ -111,7 +111,7 @@ function testIntegrationChronicleWithStatePersistence() {
 }
 
 function testIntegrationErrorRecoveryPathsCombined() {
-  // Test that all modules handle missing data gracefully
+  // Every module must cope with missing data
   const origConfig = globalThis.Configuration;
   delete globalThis.Configuration;
   

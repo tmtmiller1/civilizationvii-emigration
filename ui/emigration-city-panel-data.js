@@ -1,8 +1,8 @@
 // emigration-city-panel-data.js
 //
-// The PURE view-model for the emigration sections injected into the base game's City Details panel
+// The pure view-model for the emigration sections injected into the base game's City Details panel
 // (emigration-city-panel.js does the engine reads + DOM). Two blocks: population (origins, cumulative
-// emigration OUT / immigration IN, held refugees; the flow figures are all-game totals, hence the past
+// emigration out / immigration in, held refugees; the flow figures are all-game totals, hence the past
 // tense "(all game)" headings) and quarters (the established Cultural Quarter record, if any). The host
 // resolves civ ids to names before calling cityPanelModel() and passes a `compose` resolver; every label
 // falls back to English so the model is deterministic off-engine.
@@ -39,7 +39,7 @@ const YIELD_LABELS = {
  * @typedef {Object} CityPanelFlow
  * @property {string} place The other settlement's name.
  * @property {string} civName The other settlement's civilization adjective (resolved).
- * @property {number} people The historically-scaled people moved along this edge, CUMULATIVE over the
+ * @property {number} people The historically-scaled people moved along this edge, cumulative over the
  *   whole game (the tally only ever grows; nothing here is in-flight or pending).
  * @property {string} [causeName] The resolved label of the cause that moved most of this edge's people
  *   (the engine host resolves it, like civName). Absent/"" when the edge predates per-cause flows.
@@ -52,13 +52,13 @@ const YIELD_LABELS = {
  * @property {string} originName The quarter's display name (e.g. "Roman Quarter").
  * @property {string} stanceLabel The label of the stance the player chose.
  * @property {boolean} contested Whether the host is at war with the origin's homeland.
- * @property {boolean} [invested] Whether this origin's enclave TILE stands in the city. The tile carries
+ * @property {boolean} [invested] Whether this origin's enclave tile stands in the city. The tile carries
  *   its own native yield from the day the enclave is established; the stance benefit/penalty below are
- *   paid ON TOP of it once the enclave is recognized. Absent/false on a legacy input means "no tile".
+ *   paid on top of it once the enclave is recognized. Absent/false on a legacy input means "no tile".
  * @property {boolean} [rooted] Whether the community has put down roots (return migration from it is reduced).
- * @property {string|null} benefitYield The yield the quarter grants while UNBUILT (or null).
+ * @property {string|null} benefitYield The yield the quarter grants while unbuilt (or null).
  * @property {number} benefitAmount The amount granted while unbuilt.
- * @property {string|null} penaltyYield The yield the quarter costs while UNBUILT (or null).
+ * @property {string|null} penaltyYield The yield the quarter costs while unbuilt (or null).
  * @property {number} penaltyAmount The amount cost while unbuilt.
  */
 
@@ -67,15 +67,15 @@ const YIELD_LABELS = {
  * @typedef {Object} CityPanelInput
  * @property {string} cityName The settlement's display name.
  * @property {{total:number, parts:{name:string, share:number}[]}|null} composition Origin mix.
- * @property {CityPanelFlow[]} outflows Recent emigration OUT of this settlement.
- * @property {CityPanelFlow[]} inflows Recent immigration INTO this settlement.
+ * @property {CityPanelFlow[]} outflows Recent emigration out of this settlement.
+ * @property {CityPanelFlow[]} inflows Recent immigration into this settlement.
  * @property {number} refugeePool Refugees held here awaiting settlement (points).
  * @property {CityPanelQuarter|null} quarter The established quarter, or null.
  */
 
 /**
  * The no-op compose (used when the host injects none): always defers to the English fallback.
- * @returns {null} Always null.
+ * @returns {null}
  */
 function noCompose() {
   return null;
@@ -83,11 +83,11 @@ function noCompose() {
 
 /**
  * Resolve a localized string for a LOC key, falling back to English when compose yields nothing.
- * @param {Compose} compose The resolver.
- * @param {string} key The LOC key.
- * @param {*[]} args The substitution args.
+ * @param {Compose} compose
+ * @param {string} key
+ * @param {*[]} args
  * @param {string} fallback The English fallback.
- * @returns {string} The localized string, or the fallback.
+ * @returns {string}
  */
 function pick(compose, key, args, fallback) {
   const v = compose(key, ...args);
@@ -97,8 +97,8 @@ function pick(compose, key, args, fallback) {
 /**
  * The display noun for a yield key ("YIELD_CULTURE" -> "Culture"), localized via the base-game
  * yield-name LOC key when possible, else the English map.
- * @param {Compose} compose The resolver.
- * @param {string|null|undefined} key The yield key.
+ * @param {Compose} compose
+ * @param {string|null|undefined} key
  * @returns {string} The friendly label (or "").
  */
 function yieldLabel(compose, key) {
@@ -109,8 +109,8 @@ function yieldLabel(compose, key) {
 
 /**
  * The composition line for one origin ("Roman 62%").
- * @param {{name:string, share:number}} p An origin part.
- * @returns {string} The line.
+ * @param {{name:string, share:number}} p
+ * @returns {string}
  */
 function originLine(p) {
   return p.name + " " + Math.round((p.share || 0) * 100) + "%";
@@ -118,8 +118,8 @@ function originLine(p) {
 
 /**
  * Whether an origin part is well-formed enough to display.
- * @param {*} p A candidate origin part.
- * @returns {boolean} True when it has a name and a positive share.
+ * @param {*} p
+ * @returns {boolean}
  */
 function validPart(p) {
   return !!p && typeof p.name === "string" && p.name.length > 0 && (p.share || 0) > 0;
@@ -127,8 +127,8 @@ function validPart(p) {
 
 /**
  * The origin composition lines, largest share first, or empty when nothing is tracked yet.
- * @param {{parts:{name:string, share:number}[]}|null|undefined} comp The composition.
- * @returns {string[]} The lines.
+ * @param {{parts:{name:string, share:number}[]}|null|undefined} comp
+ * @returns {string[]}
  */
 function originLines(comp) {
   const parts = comp && Array.isArray(comp.parts) ? comp.parts : [];
@@ -137,10 +137,10 @@ function originLines(comp) {
 
 /**
  * One flow row ("Memphis (Egyptian): 12,000 - mostly Unhappiness"). The cause is the corridor's
- * DOMINANT one, so it is worded "mostly"; omitted when the edge carries no per-cause detail.
- * @param {Compose} compose The resolver.
- * @param {CityPanelFlow} f The flow.
- * @returns {string} The row text.
+ * dominant one, so it is worded "mostly"; omitted when the edge carries no per-cause detail.
+ * @param {Compose} compose
+ * @param {CityPanelFlow} f
+ * @returns {string}
  */
 function flowRow(compose, f) {
   const base = f.place + " (" + f.civName + "): " + formatPeople(f.people);
@@ -151,9 +151,9 @@ function flowRow(compose, f) {
 /**
  * The flow rows for one direction, largest first and capped at {@link MAX_FLOW_ROWS} with a
  * "(+N more)" tail. Ignores malformed or zero-people edges.
- * @param {Compose} compose The resolver.
+ * @param {Compose} compose
  * @param {CityPanelFlow[]|null|undefined} flows
- * @returns {string[]} The rows.
+ * @returns {string[]}
  */
 function flowRows(compose, flows) {
   const list = (Array.isArray(flows) ? flows : [])
@@ -168,9 +168,9 @@ function flowRows(compose, flows) {
 
 /**
  * The refugee-holding line, or "" when none are held.
- * @param {Compose} compose The resolver.
+ * @param {Compose} compose
  * @param {number} pool The refugee pool size (points).
- * @returns {string} The line.
+ * @returns {string}
  */
 function refugeeText(compose, pool) {
   const n = typeof pool === "number" && pool > 0 ? Math.floor(pool) : 0;
@@ -182,10 +182,10 @@ function refugeeText(compose, pool) {
 
 /**
  * The "quarter grants a yield" line.
- * @param {Compose} compose The resolver.
- * @param {number} amount The amount granted.
+ * @param {Compose} compose
+ * @param {number} amount
  * @param {string} yieldKey
- * @returns {string} The line.
+ * @returns {string}
  */
 function grantsLine(compose, amount, yieldKey) {
   const y = yieldLabel(compose, yieldKey);
@@ -195,10 +195,10 @@ function grantsLine(compose, amount, yieldKey) {
 
 /**
  * The "quarter costs a yield" line.
- * @param {Compose} compose The resolver.
- * @param {number} amount The amount cost.
+ * @param {Compose} compose
+ * @param {number} amount
  * @param {string} yieldKey
- * @returns {string} The line.
+ * @returns {string}
  */
 function costsLine(compose, amount, yieldKey) {
   const y = yieldLabel(compose, yieldKey);
@@ -207,12 +207,12 @@ function costsLine(compose, amount, yieldKey) {
 }
 
 /**
- * What the enclave pays THIS turn. TILE: the enclave tile's yield is natively attributed, so the game
- * shows that number itself and this only says the tile is there. STANCE: the per-turn dividend paid on
+ * What the enclave pays this turn. Tile: the enclave tile's yield is natively attributed, so the game
+ * shows that number itself and this only says the tile is there. Stance: the per-turn dividend paid on
  * top, which the engine cannot attribute to anything visible, so these lines are the only place it is readable.
- * @param {Compose} compose The resolver.
- * @param {CityPanelQuarter} q The resolved quarter.
- * @returns {string[]} The yield lines.
+ * @param {Compose} compose
+ * @param {CityPanelQuarter} q
+ * @returns {string[]}
  */
 function stanceYieldLines(compose, q) {
   const lines = [];
@@ -227,9 +227,9 @@ function stanceYieldLines(compose, q) {
 
 /**
  * The display lines for an established quarter.
- * @param {Compose} compose The resolver.
- * @param {CityPanelQuarter} q The resolved quarter.
- * @returns {string[]} The lines.
+ * @param {Compose} compose
+ * @param {CityPanelQuarter} q
+ * @returns {string[]}
  */
 function quarterLines(compose, q) {
   const rootEn = "A " + q.originName + " has taken root in this settlement.";
@@ -252,9 +252,9 @@ function quarterLines(compose, q) {
 
 /**
  * Assemble the population block of the view-model.
- * @param {Compose} c The resolver.
+ * @param {Compose} c
  * @param {*} i The resolved inputs.
- * @returns {*} The population block.
+ * @returns {*}
  */
 function populationBlock(c, i) {
   const cityName = i.cityName || "this settlement";
@@ -280,9 +280,9 @@ function populationBlock(c, i) {
  * Build the City Details panel view-model (population + quarters blocks) from already-resolved
  * inputs. Pure and DOM-free. Pass `compose` (a Locale.compose wrapper) for localized text; omit it
  * for the English fallback (tests, off-engine).
- * @param {CityPanelInput|null|undefined} input The resolved inputs.
- * @param {Compose} [compose] The optional localization resolver.
- * @returns {{population:*, quarters:*}} The view-model.
+ * @param {CityPanelInput|null|undefined} input
+ * @param {Compose} [compose]
+ * @returns {{population:*, quarters:*}}
  */
 export function cityPanelModel(input, compose) {
   const c = typeof compose === "function" ? compose : noCompose;
@@ -308,8 +308,8 @@ export function cityPanelModel(input, compose) {
  * One line describing a pending/forming cultural enclave: either it qualifies and awaits the player's
  * decision, or it is still climbing toward the bar. Always states the lead origin's current share and
  * the threshold (share + standing stock) it is measured against, so the figure matches the mechanic.
- * @param {Compose} c The localization resolver. @param {*} e The resolved enclave-progress readout.
- * @returns {string} The line.
+ * @param {Compose} c @param {*} e The resolved enclave-progress readout.
+ * @returns {string}
  */
 function enclaveProgressText(c, e) {
   const name = e.originName || "";

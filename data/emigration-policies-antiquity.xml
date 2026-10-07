@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Antiquity-age border-policy cards (Feature 2). Loaded ONLY in the Antiquity gameplay
+  Antiquity-age border-policy cards (Feature 2). Loaded only in the Antiquity gameplay
   database (modinfo criteria AgeInUse=AGE_ANTIQUITY), because Civ VII rebuilds the
   gameplay DB per age and NODE_CIVIC_AQ_MAIN_* only exists while Antiquity is the active
   age. The Exploration/Modern versions live in their own age-scoped files; loading any of
@@ -10,7 +10,7 @@
   every civilization (no TraitType). Each carries a native per-turn Influence modifier
   (TraditionModifiers -> MOD_EMIG_*_INFLUENCE, defined in emigration-policies-gameeffects.xml)
   so the yield shows on the card and in the breakdown. The immigration % is applied on top by
-  the UI-VM code, which reads whether the card is slotted (Culture.isTraditionActive) - see
+  the UI-VM code, which reads whether the card is slotted (Culture.isTraditionActive); see
   ui/emigration-borders.js.
 -->
 <Database>

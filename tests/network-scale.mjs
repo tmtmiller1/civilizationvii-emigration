@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 
 // The network / flow diagrams must accommodate a full-size large game's worth of civilizations at
 // once: after the force layout settles, every civ cluster stays inside the canvas and no two clusters
-// overlap. Guards the seeding/settling scale (seedSim spreads civs across the WIDE canvas, growing the
+// overlap. Guards the seeding/settling scale (seedSim spreads civs across the wide canvas, growing the
 // seed extent with the count) so a max-civ game never piles circles on top of one another.
 const { seedSim, stepSim } = await import("/emigration/ui/emigration-network-sim.js");
 
@@ -36,7 +36,7 @@ function settle(n, clusterR) {
   return { overlaps, oob };
 }
 
-// Typical Scaled-mode cluster sizes (the 2000-dot cap keeps per-civ radius modest, and SMALLER as the
+// Typical Scaled-mode cluster sizes (the 2000-dot cap keeps per-civ radius modest, and smaller as the
 // civ count climbs): a max-civ large game and then some must lay out cleanly.
 for (const n of [8, 10, 12, 16, 20]) {
   const { overlaps, oob } = settle(n, 70);
@@ -44,7 +44,7 @@ for (const n of [8, 10, 12, 16, 20]) {
   assert.equal(oob, 0, `${n} civs (r70): every cluster inside the canvas`);
 }
 
-// Even with LARGE clusters, a realistic major-civ count (≤ 12) packs without overlap.
+// Even with large clusters, a realistic major-civ count (≤ 12) packs without overlap.
 for (const n of [8, 12]) {
   const { overlaps, oob } = settle(n, 95);
   assert.equal(overlaps, 0, `${n} civs (r95): no cluster overlaps`);

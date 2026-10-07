@@ -3,7 +3,7 @@
 // The shared localization helper for the mod's runtime UI. `loc(key, fallback, ...args)` composes a
 // LOC key through the engine's Locale.compose when available, and otherwise returns the English
 // `fallback`. Both paths substitute {1_X} / {2_X} style placeholders from `args`, so a call reads the
-// same off-engine (tests, headless) as it does in-game with English selected: the fallback IS the
+// same off-engine (tests, headless) as it does in-game with English selected: the fallback is the
 // canonical English string. Depends only on the global `Locale`, so any UI module can import it
 // without creating an import cycle.
 
@@ -73,7 +73,6 @@ export function localeFontFamily(kind = "body") {
   return localeFonts(kind).join(", ") + ", sans-serif";
 }
 
-// ---------------------------------------------------------------------------------------------------
 // Recorded messages. A line that is stored and shown later (the notification log, the Chronicle) is
 // built as a message node, rendered once in the current language for the stored English-era `summary`
 // and toasts, and packed as data so the view can compose it again in whatever language is active when
@@ -117,7 +116,7 @@ export function msgKey(key, text) {
 
 /**
  * Concatenate nodes. Null, undefined and "" parts are dropped.
- * @param {...(MsgNode|null|undefined)} parts The parts. @returns {MsgNode} The joined node.
+ * @param {...(MsgNode|null|undefined)} parts @returns {MsgNode} The joined node.
  */
 export function msgJoin(...parts) {
   return { j: /** @type {MsgNode[]} */ (parts.filter((p) => p != null && p !== "")) };
@@ -125,7 +124,7 @@ export function msgJoin(...parts) {
 
 /**
  * Join nodes with a literal separator between each, dropping empty parts.
- * @param {string} sep The separator. @param {(MsgNode|null|undefined)[]} parts The parts.
+ * @param {string} sep @param {(MsgNode|null|undefined)[]} parts
  * @returns {MsgNode} The joined node.
  */
 export function msgJoinWith(sep, parts) {
@@ -181,7 +180,7 @@ function groupNum(n) {
 /**
  * Render a node in the current language, with each key's English fallback on a miss (the same result
  * the equivalent nested {@link loc} calls give).
- * @param {MsgNode|null|undefined} node The node. @returns {string} The text.
+ * @param {MsgNode|null|undefined} node @returns {string} The text.
  */
 export function msgText(node) {
   if (node == null) return "";
@@ -199,7 +198,7 @@ const PACK_OP = /** @type {Record<string, string>} */ ({ cap: "^", bare: "~" });
 
 /**
  * Pack a node for storage: the fallbacks are dropped (see the section comment for the shapes).
- * @param {MsgNode|null|undefined} node The node. @returns {*} The packed value ("" for null).
+ * @param {MsgNode|null|undefined} node @returns {*} The packed value ("" for null).
  */
 export function msgPack(node) {
   if (node == null) return "";
@@ -219,7 +218,7 @@ const OWN_PREFIX = "LOC_EMIG_";
 
 /**
  * Pack a concatenation, splicing nested ones into it; a single part packs as itself.
- * @param {MsgNode[]} parts The parts. @returns {*} The packed value.
+ * @param {MsgNode[]} parts @returns {*} The packed value.
  */
 function packJoin(parts) {
   const out = [];

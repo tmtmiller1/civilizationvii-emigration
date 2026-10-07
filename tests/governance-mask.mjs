@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 // follow the effective policy (shared host ceiling + local preference), so the dashboard/lens never
 // reveal a civ the policy withholds, independent of the simulation scope.
 
-// ── Stub the engine surfaces governance reads ──────────────────────────────
+// Stub the engine surfaces governance reads
 let _ls = {};
 globalThis.localStorage = {
   getItem: (k) => (k in _ls ? _ls[k] : null),
@@ -57,12 +57,12 @@ setLocal("full"); setHost("met-civs-only");
 assert.equal(G.effectivePolicy(), "met-civs-only", "host ceiling wins");
 assert.equal(G.civHidden(3), true, "unmet hidden because the host capped at met-civs-only");
 
-// Local can still be MORE restrictive than the host.
+// Local can still be more restrictive than the host.
 setLocal("own-civ-only"); setHost("full");
 assert.equal(G.effectivePolicy(), "own-civ-only");
 assert.equal(G.civHidden(2), true, "local own-civ-only still hides a met rival under a full host");
 
-// The policy Demographics PUBLISHES to GameConfiguration is the primary source (the shared
+// The policy Demographics publishes to GameConfiguration is the primary source (the shared
 // localStorage is wiped between reads in the Coherent UI, so a direct read of it can't be trusted).
 setPublished("full");
 assert.equal(G.effectivePolicy(), "full", "published effective policy is read");

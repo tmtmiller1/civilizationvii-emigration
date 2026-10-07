@@ -1,6 +1,6 @@
 // tile-score.mjs
 //
-// The per-tile prosperity POINTS scale shared by the Prosperity lens and its cursor panel (emigration-tile-score.js):
+// The per-tile prosperity points scale shared by the Prosperity lens and its cursor panel (emigration-tile-score.js):
 // what each thing on and around a hex is worth, the band and color a score paints, and which plots are painted at
 // all. Pure functions over engine globals, so they are stubbed here. The lens and the panel both read this module,
 // which is what keeps the printed score and the fill color the same number.
@@ -83,7 +83,7 @@ const { WEIGHTS, BANDS, scorable, plotYield, tileScore, tierOf, bandOf, cityTile
 
 const kinds = (r) => r.terms.map((t) => t.kind + ":" + t.points);
 
-// ── which plots are painted ──────────────────────────────────────────────────
+// which plots are painted
 {
   assert.equal(scorable(3, 0), true, "land is painted");
   assert.equal(scorable(4, 0), false, "empty sea is not: it is nobody's prosperity");
@@ -94,13 +94,13 @@ const kinds = (r) => r.terms.map((t) => t.kind + ":" + t.points);
   globalThis.GameplayMap.isWater = was;
 }
 
-// ── the yield read ───────────────────────────────────────────────────────────
+// the yield read
 {
   assert.equal(plotYield(idxOf(1, 1)), 7, "a plot's yield is the sum of its yields");
   assert.equal(plotYield(idxOf(1, 0)), null, "an unreadable yields list is null (the yield term is then skipped)");
 }
 
-// ── what each hex is worth, and why ──────────────────────────────────────────
+// what each hex is worth, and why
 {
   // The Hanging Gardens: no yield at all, yet the best hex in London. Next to the quarter (no term) and the farm
   // (no term); its odd-row NE/SE neighbors are (4,0) sea and (4,2) bare, NW/SW (3,0) bare and (3,2) bare.
@@ -109,8 +109,8 @@ const kinds = (r) => r.terms.map((t) => t.kind + ":" + t.points);
   assert.equal(g.terms[0].name, "LOC_WONDER_HANGING_GARDENS_NAME", "and the term carries the wonder's name for the panel");
   assert.equal(bandOf(g.points), "thriving", "6 points: thriving");
 
-  // The center: district + palace + 7 yield. Neighbors (odd row): E (2,1) quarter, W (0,1) bare, NE (2,0) NATURAL
-  // wonder, NW (1,0) PILLAGED granary, SE (2,2) Colosseus WONDER, SW (1,2) bare.
+  // The center: district + palace + 7 yield. Neighbors (odd row): E (2,1) quarter, W (0,1) bare, NE (2,0) natural
+  // wonder, NW (1,0) pillaged granary, SE (2,2) Colosseus wonder, SW (1,2) bare.
   const c = tileScore(1, 1, idxOf(1, 1));
   assert.deepEqual(kinds(c), ["cityCenter:3", "building:2", "yield:2", "adjacentWonder:1", "adjacentNaturalWonder:2", "adjacentPillaged:-1"],
     "the center: its district, its palace, its yield, and everything around it, each a named term");
@@ -130,7 +130,7 @@ const kinds = (r) => r.terms.map((t) => t.kind + ":" + t.points);
   assert.deepEqual(kinds(f), ["improvement:1", "yield:1", "river:1", "adjacentWonder:1"], "a worked rural hex on a river next to the Gardens");
   assert.equal(bandOf(f.points), "ordinary", "4 points: ordinary");
 
-  // Ruin: the pillaged granary earns its penalty and NOT its building points; Gullfoss (E) is next door.
+  // Ruin: the pillaged granary earns its penalty and not its building points; Gullfoss (E) is next door.
   const r = tileScore(1, 0, idxOf(1, 0));
   assert.deepEqual(kinds(r), ["pillaged:-3", "adjacentNaturalWonder:2"], "a pillaged building is a penalty, not a building");
   assert.equal(r.terms[0].name, "LOC_BUILDING_GRANARY_NAME", "named, so the panel can say which building");
@@ -149,7 +149,7 @@ const kinds = (r) => r.terms.map((t) => t.kind + ":" + t.points);
   assert.deepEqual(kinds(tileScore(3, 2, idxOf(3, 2))), ["adjacentWonder:2"], "bare land between the Colosseus (W) and the Gardens (NE, even row) picks up both");
 }
 
-// ── bands and color ─────────────────────────────────────────────────────────
+// bands and color
 {
   assert.deepEqual(BANDS.map((b) => b[0]), ["flourishing", "thriving", "ordinary", "meager"], "the bands, best first");
   assert.equal(bandOf(8), "flourishing");
@@ -177,7 +177,7 @@ const kinds = (r) => r.terms.map((t) => t.kind + ":" + t.points);
   assert.equal(tierHex(-1), "#ee2820", "blighted");
 }
 
-// ── a settlement's painted plots (what the lens draws) ───────────────────────
+// a settlement's painted plots (what the lens draws)
 {
   const london = { getPurchasedPlots: () => [idxOf(1, 1), idxOf(2, 1), idxOf(3, 1), idxOf(4, 1), idxOf(4, 0), idxOf(0, 0)] };
   const tiers = cityTileTiers(london);
@@ -196,7 +196,7 @@ const kinds = (r) => r.terms.map((t) => t.kind + ":" + t.points);
   assert.ok(cache.size >= before, "the cache only grows across settlements in one paint");
 }
 
-// ── the hovered tile (what the panel prints) ─────────────────────────────────
+// the hovered tile (what the panel prints)
 {
   const hit = tileTierAt(3, 1);
   assert.deepEqual([hit.score, hit.band, hit.t], [6, "thriving", tierOf(6)], "the panel reads the same score, band and color the lens painted");
@@ -204,7 +204,7 @@ const kinds = (r) => r.terms.map((t) => t.kind + ":" + t.points);
   assert.equal(tileTierAt(4, 0), null, "an unpainted sea tile has no reading");
 }
 
-// ── degradation without the engine tables ────────────────────────────────────
+// degradation without the engine tables
 {
   resetTileScoreCaches();
   const wasGI = globalThis.GameInfo;

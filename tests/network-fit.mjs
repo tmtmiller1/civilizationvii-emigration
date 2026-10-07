@@ -6,13 +6,13 @@
 // well below that box, so the stage was over-budgeted and the lowest civ clusters spilled past the
 // panel and were clipped. The fit must measure the bounding scroll/clip box, not the viewport.
 //
-// NOTE: this fake DOM has FIXED rects, so it cannot reproduce the real page's feedback loop (the
+// This fake DOM has fixed rects, so it cannot reproduce the real page's feedback loop (the
 // `.emig-tabbody` is content-sized, so what the fit measures is partly the stage's own height).
 // See the note in emigration-network-fit.js.
 
 import assert from "node:assert/strict";
 
-// ── Minimal DOM: a stage inside a clipped tab-body inside the page ────────────
+// Minimal DOM: a stage inside a clipped tab-body inside the page
 // Each node carries an explicit getBoundingClientRect; the tab-body is the overflow:auto box that
 // actually bounds the stage. innerHeight is the (taller) viewport.
 
@@ -67,15 +67,15 @@ for (const k of Object.keys(installed)) {
 const { __test, installStageFit } = await import("/emigration/ui/emigration-network-fit.js");
 const { boundingBottom, fitStageToViewport } = __test;
 
-// ── boundingBottom stops at the clipped tab-body, not the viewport ────────────
+// boundingBottom stops at the clipped tab-body, not the viewport
 {
   const bottom = boundingBottom(stage);
-  // The tab body's bottom (860) minus its 20px bottom padding = 840, NOT the 1000 viewport bottom.
+  // The tab body's bottom (860) minus its 20px bottom padding = 840, not the 1000 viewport bottom.
   assert.equal(bottom, 840, "bounding bottom is the clipped tab-body, less its padding");
   assert.ok(bottom < VIEWPORT_H, "the bound is above the viewport bottom (no over-budget)");
 }
 
-// ── The fitted stage stays inside the tab-body (no clipped clusters) ──────────
+// The fitted stage stays inside the tab-body (no clipped clusters)
 {
   fitStageToViewport(wrap, stage);
   const px = parseInt(stage.style.maxWidth, 10);
@@ -89,7 +89,7 @@ const { boundingBottom, fitStageToViewport } = __test;
 
 
 
-// ── A no-op re-fit doesn't rewrite the style (avoids reflow jump on resize) ───
+// A no-op re-fit doesn't rewrite the style (avoids reflow jump on resize)
 {
   stage.style.maxWidth = "852px";
   let writes = 0;
@@ -103,7 +103,7 @@ const { boundingBottom, fitStageToViewport } = __test;
   assert.equal(writes, 0, "an unchanged max-width is not re-written");
 }
 
-// ── Fallback: no clipping ancestor → the viewport bottom is used ──────────────
+// Fallback: no clipping ancestor → the viewport bottom is used
 {
   const loneWrap = makeNode({ top: 100, bottom: 900, height: 800, width: 1200 }, { overflowY: "visible" }, body);
   const loneStage = makeNode({ top: 160, bottom: 520, height: 360, width: 1100 }, {}, loneWrap);
@@ -113,7 +113,7 @@ const { boundingBottom, fitStageToViewport } = __test;
   assert.equal(bottom, VIEWPORT_H, "with no clip box, the viewport bottom is the bound");
 }
 
-// ── Standalone window: its tab-body fills the 94vh frame (max-height:none), so the diagram grows
+// Standalone window: its tab-body fills the 94vh frame (max-height:none), so the diagram grows
 // to fill the window instead of stopping at the embedded page's 74vh cap (the empty-band regression).
 {
   // The dedicated window's tab-body (overflow:auto, max-height:none) reaches near the viewport bottom.
@@ -135,7 +135,7 @@ const { boundingBottom, fitStageToViewport } = __test;
   assert.ok(240 + px / 2 <= 980, "the taller 2:1 stage still fits above the window's bottom");
 }
 
-// ── installStageFit schedules SETTLE-time re-fits, not just one rAF-time pass ──
+// installStageFit schedules SETTLE-time re-fits, not just one rAF-time pass
 // The standalone window's 94vh frame is still growing in when the first view (Dots) renders, so a
 // single rAF-time fit measures a not-yet-settled box. Re-fitting after the open animation settles is
 // what makes the Dots and Flow views size identically (the regression: Dots oversized/clipped while

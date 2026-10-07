@@ -50,7 +50,7 @@ function nearestClipBox(stage, getStyle) {
 }
 
 /**
- * The bottom edge (viewport CSS px) that actually BOUNDS the stage: the nearest scrollable / clipped
+ * The bottom edge (viewport CSS px) that actually bounds the stage: the nearest scrollable / clipped
  * ancestor (the dashboard's `.emig-tabbody` or the screen body), less its bottom padding, clamped to
  * the viewport. Falls back to the viewport bottom when no bounding ancestor is found.
  * @param {HTMLElement} stage The 2:1 stage. @returns {number} The bounding bottom in CSS px.
@@ -72,7 +72,7 @@ function boundingBottom(stage) {
 }
 
 /**
- * Total px height of the wrapper children that sit BELOW the stage (legend, timeline, caption).
+ * Total px height of the wrapper children that sit below the stage (legend, timeline, caption).
  * @param {HTMLElement} wrap The viz wrapper.
  * @param {HTMLElement} stage
  * @returns {number} The summed height in px.
@@ -111,7 +111,7 @@ function fitStageToViewport(wrap, stage) {
 }
 
 // The single live stage to keep fitted on resize, and whether the one shared resize listener is bound.
-// Only one diagram is on screen at a time and the view is rebuilt on every tab switch, so ONE listener
+// Only one diagram is on screen at a time and the view is rebuilt on every tab switch, so one listener
 // for the module's lifetime is repointed at the newest stage rather than accumulating per render.
 /** @type {{wrap:HTMLElement, stage:HTMLElement}|null} */
 let _activeFit = null;

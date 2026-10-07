@@ -1,6 +1,6 @@
 #!/bin/zsh
 # run-probe.sh <game-script.js> <save file name> <label> [timeout seconds]
-# Enables the LOCAL emigration copy (test-only AffectsSavedGames=0), installs the probe mod with the given
+# Enables the local emigration copy (test-only AffectsSavedGames=0), installs the probe mod with the given
 # game script, launches Civ VII via Steam, waits for "DONE", captures screenshots on "SHOT <name>" lines,
 # quits, and restores (every emigration row Disabled=1 by ModId; probe removed).
 set -u
@@ -20,7 +20,7 @@ say "registry: $(sqlite3 "$DB" "select ModRowId,ModId,Disabled from Mods where M
 
 rm -rf "$MODS/emig-engine-probe"; mkdir -p "$MODS/emig-engine-probe/ui" "$MODS/emig-engine-probe/data" "$PROBE_SRC/shots"
 cp "$PROBE_SRC/emig-engine-probe.modinfo" "$MODS/emig-engine-probe/"
-# SCEN_SRC installs a SECOND throwaway mod whose modinfo carries a gameplay-context <ScenarioScripts>
+# SCEN_SRC installs a second throwaway mod whose modinfo carries a gameplay-context <ScenarioScripts>
 # action (multiplayer plan 8.9h probe 1). It is its own mod on purpose: if the engine rejects that action
 # the whole modinfo may fail to parse, and that must not stop the UI probe from running and reporting it.
 rm -rf "$MODS/emig-scen-probe"
@@ -50,8 +50,8 @@ while [ $t -lt $TIMEOUT ]; do
   for name in $(grep -o "\[EmigTest\] SHOT [A-Za-z0-9_-]*" "$LOG" 2>/dev/null | awk '{print $3}'); do
     if [ -z "${shot[$name]:-}" ]; then
       shot[$name]=1
-      # Capture the game WINDOW by id when a tall one is listed; otherwise bring the game forward and take the
-      # full screen ONLY if the game is then verifiably the frontmost app. Never capture while another app is
+      # Capture the game window by id when a tall one is listed; otherwise bring the game forward and take the
+      # full screen only if the game really is the frontmost app by then. Never capture while another app is
       # in front: a full-screen shot once recorded the player's own desktop (2026-09-14).
       wins=$(swift "$PROBE_SRC/eep-winid.swift" 2>/dev/null)
       winid=$(printf "%s\n" "$wins" | awk '$3 > 600' | sort -k3 -n -r | head -1 | awk '{print $1}')

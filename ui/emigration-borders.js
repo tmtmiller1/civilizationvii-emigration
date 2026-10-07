@@ -2,7 +2,7 @@
 //
 // Reads which Open/Closed Borders policy a civ has slotted (Culture.isTraditionActive) and turns it
 // into the immigration-openness multiplier the engine applies to a destination's pull. The cards'
-// Influence is a NATIVE modifier in the data files; this module only enforces the immigration %.
+// Influence is a native modifier in the data files; this module only enforces the immigration %.
 // Every policy read goes through a per-pass cache (resetBorderCache()) so each civ's slotted cards
 // are read at most once per pass on the O(cities²) pull hot path.
 
@@ -44,7 +44,7 @@ const _hash = new Map();
 /**
  * The (cached) type-hash for a tradition type string, or null.
  * @param {string} type Tradition type string.
- * @returns {*} The hash, or null.
+ * @returns {*}
  */
 function hashFor(type) {
   if (_hash.has(type)) return _hash.get(type);
@@ -62,8 +62,8 @@ function hashFor(type) {
 
 /**
  * Read the current player's Culture safely, or null when unavailable.
- * @param {number} pid Player id.
- * @returns {*} The Culture object, or null.
+ * @param {number} pid
+ * @returns {*}
  */
 function readCulture(pid) {
   try {
@@ -78,9 +78,9 @@ function readCulture(pid) {
 
 /**
  * Whether any tradition in `types` is active for `culture`.
- * @param {*} culture The Culture object.
- * @param {string[]} types Tradition type strings.
- * @returns {boolean} True if any type is active.
+ * @param {*} culture
+ * @param {string[]} types
+ * @returns {boolean}
  */
 function hasAnyPolicy(culture, types) {
   for (const type of types) {
@@ -93,9 +93,9 @@ function hasAnyPolicy(culture, types) {
 /**
  * Whether a player has any of `types` active in a policy slot. Raw read, callers go through the
  * per-pass cache (policyState) rather than calling this directly on the hot path.
- * @param {number} pid Player id.
- * @param {string[]} types Tradition type strings.
- * @returns {boolean} True if any is active.
+ * @param {number} pid
+ * @param {string[]} types
+ * @returns {boolean}
  */
 function hasPolicy(pid, types) {
   const culture = readCulture(pid);
@@ -130,8 +130,8 @@ export function resetBorderCache() {
 /**
  * The civ's resolved border/attraction policy for this pass (memoized). Reads every relevant policy
  * family once and caches the result keyed by pid; all the exports below derive from this.
- * @param {number} pid Player id.
- * @returns {PolicyState} The resolved state.
+ * @param {number} pid
+ * @returns {PolicyState}
  */
 function policyState(pid) {
   const hit = _polyCache.get(pid);
@@ -148,7 +148,7 @@ function policyState(pid) {
 
 /**
  * A civ's immigration openness from its slotted border policy. 1 = neutral; < 1 throttles inflow
- * (floored so it never hard-zeros), > 1 boosts it. Slotting BOTH Open and Closed cancels out to
+ * (floored so it never hard-zeros), > 1 boosts it. Slotting both Open and Closed cancels out to
  * neutral. Influence is not handled here (native TraditionModifiers).
  * @param {number} pid Destination player id.
  * @returns {number} A positive multiplier.
@@ -164,7 +164,7 @@ export function immigrationOpenness(pid) {
 }
 
 /**
- * A civ's emigration RETENTION from its slotted border policy: the multiplier applied to its own
+ * A civ's emigration retention from its slotted border policy: the multiplier applied to its own
  * citizens' cross-civ outbound pull. 1 = neutral; Closed Borders returns `closedBordersRetention`
  * (< 1). Only a Closed-without-Open card retains. Neutral when the feature is off.
  * @param {number} pid Source player id (the civ losing population).
@@ -181,7 +181,7 @@ export function emigrationRetention(pid) {
  * The yields a civ's slotted Attraction cards grant per immigrant. Talent → YIELD_SCIENCE,
  * Cultural → YIELD_CULTURE, Commercial → YIELD_GOLD; a civ may hold more than one. Empty when none
  * are slotted, so the carried dividend is a no-op (fail-safe) until the cards exist + are chosen.
- * @param {number} pid Player id.
+ * @param {number} pid
  * @returns {string[]} Yield keys to accrue a dividend in.
  */
 export function activeAttractions(pid) {
@@ -190,8 +190,8 @@ export function activeAttractions(pid) {
 
 /**
  * Whether a civ holds an Asylum card, which eases refugee-caused pull toward it.
- * @param {number} pid Player id.
- * @returns {boolean} True if an asylum tradition is active.
+ * @param {number} pid
+ * @returns {boolean}
  */
 export function hasAsylum(pid) {
   return policyState(pid).asylum;
@@ -199,10 +199,10 @@ export function hasAsylum(pid) {
 
 /**
  * A civ's immigration stance from its slotted border policy, for the readout/dashboards:
- * "pro" (Pro-Immigration), "anti" (Anti-Immigration), or "none". Slotting BOTH Open and Closed
+ * "pro" (Pro-Immigration), "anti" (Anti-Immigration), or "none". Slotting both Open and Closed
  * cancels out to "none". Neutral when the feature is off.
- * @param {number} pid Player id.
- * @returns {"pro"|"anti"|"none"} The stance.
+ * @param {number} pid
+ * @returns {"pro"|"anti"|"none"}
  */
 export function borderStance(pid) {
   if (!CONFIG.bordersEnabled) return "none";

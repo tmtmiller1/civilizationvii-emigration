@@ -1,17 +1,17 @@
 // emigration-governance.js
 //
-// Analytics-visibility masking for the migration dashboard + lens, REUSING the Demographics mod's
+// Analytics-visibility masking for the migration dashboard + lens, reusing the Demographics mod's
 // governance policy (combined design plan / global-simulation plan). The migration simulation can
-// run globally (all alive civs), but the player-facing UI must still hide civs the policy withholds
-//, so this resolves the SAME effective policy Demographics uses and exposes one `civHidden(pid)`
+// run globally (all alive civs), but the player-facing UI must still hide civs the policy withholds,
+// so this resolves the same effective policy Demographics uses and exposes one `civHidden(pid)`
 // predicate every emigration view masks by.
 //
 // Cross-mod sharing without a hard dependency (the two mods are separate and either may be absent):
-//   • Host ceiling: read the SAME `GameConfiguration` key Demographics' host writes, so a host's
+//   • Host ceiling: read the same `GameConfiguration` key Demographics' host writes, so a host's
 //     choice governs both mods at once.
 //   • Local preference: read Demographics' own setting from the shared `localStorage.modSettings`
 //     slice when present; otherwise default to met-civs-only (today's behavior).
-// Emigration only READS the policy, Demographics owns the control UI. Reads fail safe to HIDING
+// Emigration only reads the policy; Demographics owns the control UI. Reads fail safe to hiding
 // (never leak) on error.
 //
 // Policy levels, least → most permissive: disabled, own-civ-only, met-civs-only, full.
@@ -28,16 +28,16 @@ const RANK = { [POLICY_DISABLED]: 0, [POLICY_OWN]: 1, [POLICY_MET]: 2, [POLICY_F
 
 // Shared with the Demographics mod so one host policy governs both.
 const HOST_POLICY_KEY = "DemographicsAnalyticsPolicy_v1";
-// The EFFECTIVE policy Demographics publishes to GameConfiguration (host ceiling ∧ local preference).
-// This is the PRIMARY source: Coherent UI wipes the shared localStorage between reads, so reading
+// The effective policy Demographics publishes to GameConfiguration (host ceiling ∧ local preference).
+// This is the primary source: Coherent UI wipes the shared localStorage between reads, so reading
 // Demographics' settings slice from localStorage returns stale/empty and we'd never see the player's
 // choice. GameConfiguration is durable and shared across mods, so the published value is reliable.
 const EFFECTIVE_POLICY_KEY = "DemographicsAnalyticsPolicyEffective_v1";
 
 /**
  * A known policy id, or null.
- * @param {*} v Candidate.
- * @returns {string|null} The policy id, or null.
+ * @param {*} v
+ * @returns {string|null}
  */
 function asPolicy(v) {
   return typeof v === "string" && Object.prototype.hasOwnProperty.call(RANK, v) ? v : null;
@@ -46,7 +46,7 @@ function asPolicy(v) {
 /**
  * Read a policy id from a GameConfiguration key, or null when unset/unreadable.
  * @param {string} key The GameConfiguration key.
- * @returns {string|null} A policy id, or null.
+ * @returns {string|null}
  */
 function gameConfigPolicy(key) {
   try {
@@ -67,7 +67,7 @@ function hostPolicy() {
  * The effective policy Demographics published to GameConfiguration, or null when it hasn't. The
  * per-seat key (Demographics 2.7.3 and later) is read first: GameConfiguration is one shared
  * document in a networked game, so the single key holds whichever seat wrote it last.
- * @returns {string|null} A policy id, or null.
+ * @returns {string|null}
  */
 function publishedPolicy() {
   try {
@@ -104,11 +104,11 @@ function localPolicy() {
 }
 
 /**
- * The effective policy. FIRST: Emigration's own visibility override (Options ▸ Mods ▸ Emigration),
+ * The effective policy. Emigration's own visibility override (Options ▸ Mods ▸ Emigration) comes first:
  * 1 = always hide unmet, 2 = always show all, a self-contained control that always works for the
  * Emigration tabs (the cross-mod reads below are unreliable in the Coherent UI). When that's "auto"
- * (0, the default), follow Demographics: PRIMARY the value it publishes to GameConfiguration (already
- * host ceiling ∧ local preference); FALLBACK the host ceiling ∧ our own localStorage read.
+ * (0, the default), follow Demographics: the value it publishes to GameConfiguration (already
+ * host ceiling ∧ local preference), or failing that the host ceiling ∧ our own localStorage read.
  * @returns {string} A policy id.
  */
 export function effectivePolicy() {
@@ -125,7 +125,7 @@ export function effectivePolicy() {
 
 /**
  * Whether the effective policy restricts views to the local civ only (own-civ-only / disabled).
- * @returns {boolean} True when only the local civ may be shown.
+ * @returns {boolean}
  */
 function policyOwnCivOnly() {
   return RANK[effectivePolicy()] <= RANK[POLICY_OWN];
@@ -133,7 +133,7 @@ function policyOwnCivOnly() {
 
 /**
  * Whether the effective policy hides unmet civs (anything other than full).
- * @returns {boolean} True to hide unmet civs.
+ * @returns {boolean}
  */
 function policyHidesUnmet() {
   return effectivePolicy() !== POLICY_FULL;
@@ -141,7 +141,7 @@ function policyHidesUnmet() {
 
 /**
  * The local player id, or undefined.
- * @returns {number|undefined} Local player id.
+ * @returns {number|undefined}
  */
 export function localPlayerId() {
   try {
@@ -156,8 +156,8 @@ export function localPlayerId() {
 
 /**
  * Whether `pid` is the local player's own civ.
- * @param {number} pid Player id.
- * @returns {boolean} True when local.
+ * @param {number} pid
+ * @returns {boolean}
  */
 function isLocalCiv(pid) {
   const me = localPlayerId();
@@ -165,9 +165,9 @@ function isLocalCiv(pid) {
 }
 
 /**
- * Whether the local player has met `pid` (self always met). Fails safe to UNMET (hide) on error.
- * @param {number} pid Player id.
- * @returns {boolean} True when met.
+ * Whether the local player has met `pid` (self always met). Fails safe to unmet (hide) on error.
+ * @param {number} pid
+ * @returns {boolean}
  */
 function hasMet(pid) {
   try {
@@ -180,12 +180,12 @@ function hasMet(pid) {
 }
 
 /**
- * Whether a civ must be HIDDEN from the player-facing migration dashboard/lens under the effective
+ * Whether a civ must be hidden from the player-facing migration dashboard/lens under the effective
  * policy: own-civ-only / disabled hides every non-local civ; met-civs-only hides unmet civs; full
- * hides nothing. The local player's own civ is never hidden. Fails safe to HIDDEN (never leak) on
- * error. The migration SIMULATION never consults this, masking is presentation-only.
- * @param {number} pid Player id.
- * @returns {boolean} True to hide the civ from display.
+ * hides nothing. The local player's own civ is never hidden. Fails safe to hidden (never leak) on
+ * error. The migration simulation never consults this; masking is presentation-only.
+ * @param {number} pid
+ * @returns {boolean}
  */
 export function civHidden(pid) {
   try {

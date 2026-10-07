@@ -124,7 +124,7 @@ function testOffModeSilent() {
 }
 
 function testLocalDigestExplainsTheLocalPlayersLoss() {
-  // With a local player set, a loss from THEIR cities fires one explanatory toast.
+  // With a local player set, a loss from their cities fires one explanatory toast.
   globalThis.GameContext = { localPlayerID: 0 };
   CONFIG.notifyMode = 1;
   CONFIG.notifyWorldNews = false; // isolate from crisis milestones
@@ -135,7 +135,7 @@ function testLocalDigestExplainsTheLocalPlayersLoss() {
     { srcOwner: 0, destOwner: 1, people: 5000, cause: "unhappiness", crossCiv: true, srcName: "Rome", destName: "Carthage" }
   ]);
   assert.equal(toasts, 1); // the local-player digest
-  // A pass with no LOCAL loss (only an AI civ loses) → no digest.
+  // A pass with no local loss (only an AI civ loses) → no digest.
   toasts = 0;
   reportPassFeedback([{ srcOwner: 1, destOwner: 2, people: 5000, cause: "war", srcName: "Sparta" }]);
   assert.equal(toasts, 0);
@@ -143,8 +143,8 @@ function testLocalDigestExplainsTheLocalPlayersLoss() {
 
 function testLocalDigestIsPerEvent() {
   // A pass where several of the local player's settlements shed people for different reasons must
-  // produce ONE notification PER EVENT (source settlement + cause) with accurate counts, never one
-  // confusing pass-wide aggregate, while only the LARGEST event toasts, so the HUD isn't flooded.
+  // produce one notification per event (source settlement + cause) with accurate counts, never one
+  // confusing pass-wide aggregate, while only the largest event toasts, so the HUD isn't flooded.
   globalThis.GameContext = { localPlayerID: 0 };
   CONFIG.notifyMode = 1;
   CONFIG.notifyWorldNews = false;
@@ -159,7 +159,7 @@ function testLocalDigestIsPerEvent() {
   ]);
   assert.equal(toasts, 1); // only the largest event (Rome/war) toasts
   const log = notificationLog();
-  assert.equal(log.length, 2); // one entry per event, NOT three records and NOT one lumped aggregate
+  assert.equal(log.length, 2); // one entry per event, not three records and not one lumped aggregate
   const rome = log.find((e) => e.fromCity === "Rome");
   assert.equal(rome.cause, "war");
   assert.equal(rome.points, 2); // the two Rome/war records merged into one event with the real count
@@ -168,9 +168,9 @@ function testLocalDigestIsPerEvent() {
 }
 
 function testLaggedCrossCivDepartureNotifiesAsExternal() {
-  // A lagged cross-civ DEPARTURE record carries edgeDestOwner (the dest civ) but withholds destOwner
+  // A lagged cross-civ departure record carries edgeDestOwner (the dest civ) but withholds destOwner
   // (so the immigration tally isn't double-credited on arrival). The notification must still classify
-  // it as a cross-civ move - it must NOT collapse to "internal" just because destOwner is absent.
+  // it as a cross-civ move; it must not collapse to "internal" just because destOwner is absent.
   globalThis.GameContext = { localPlayerID: 0 };
   CONFIG.notifyMode = 1;
   CONFIG.notifyWorldNews = false;
@@ -188,7 +188,7 @@ function testLaggedCrossCivDepartureNotifiesAsExternal() {
 }
 
 function testMixedScopeSplitsIntoInternalAndExternalRows() {
-  // One settlement shedding the SAME cause to both its own settlement and a foreign civ must split
+  // One settlement shedding the same cause to both its own settlement and a foreign civ must split
   // into two correctly-labeled rows, never one row mislabelled by the larger stream.
   globalThis.GameContext = { localPlayerID: 0 };
   CONFIG.notifyMode = 1;
@@ -210,7 +210,7 @@ function testMixedScopeSplitsIntoInternalAndExternalRows() {
 }
 
 function testStanceTipOnlyOnVoluntaryCrossCivLosses() {
-  // The Anti-Immigration Stance retains CROSS-CIV moves only, so the tip belongs on a voluntary loss to
+  // The Anti-Immigration Stance retains cross-civ moves only, so the tip belongs on a voluntary loss to
   // another civ and nowhere else: not an internal move (the stance does nothing there), not a forced
   // flight, and not when border policies are switched off.
   globalThis.GameContext = { localPlayerID: 0 };

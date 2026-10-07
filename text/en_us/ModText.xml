@@ -211,13 +211,13 @@
         <Row Tag="LOC_EMIG_T_POP"><Text>Penalty for city size</Text></Row>
         <Row Tag="LOC_EMIG_T_POP_D"><Text>How much a city's size counts against it (so small thriving towns still attract).</Text></Row>
         <Row Tag="LOC_EMIG_T_HSHAPED"><Text>Shaped happiness model</Text></Row>
-        <Row Tag="LOC_EMIG_T_HSHAPED_D"><Text>Replace the flat happiness weight with a nuanced model: happiness is measured against the world average, a happy city's pull levels off (no runaway magnet) while misery still strongly repels, and happiness amplifies a city's economy instead of dwarfing it. Off = the simpler flat happiness weight.</Text></Row>
+        <Row Tag="LOC_EMIG_T_HSHAPED_D"><Text>Replace the flat happiness weight with a shaped model: happiness is measured against the world average, a happy city's pull levels off (no runaway magnet) while misery still strongly repels, and happiness amplifies a city's economy instead of dwarfing it. Off = the simpler flat happiness weight.</Text></Row>
         <Row Tag="LOC_EMIG_T_HSCALE"><Text>Shaped model: happiness saturation</Text></Row>
         <Row Tag="LOC_EMIG_T_HSCALE_D"><Text>How many points above the world-average happiness count as "very happy" before the pull saturates. Higher = happiness keeps mattering longer. Only used by the shaped model.</Text></Row>
         <Row Tag="LOC_EMIG_T_HAMP"><Text>Shaped model: economy amplification</Text></Row>
         <Row Tag="LOC_EMIG_T_HAMP_D"><Text>How much a happy city's economy is amplified (and a miserable one suppressed) as a migration draw. Only used by the shaped model.</Text></Row>
         <Row Tag="LOC_EMIG_T_OCDISC"><Text>Overcrowding discount</Text></Row>
-        <Row Tag="LOC_EMIG_T_OCDISC_D"><Text>Credit back some of the unhappiness a city suffers purely from urban overcrowding, so a deliberately tall/dense city isn't double-punished (its density already suppresses its yields). 0 = off.</Text></Row>
+        <Row Tag="LOC_EMIG_T_OCDISC_D"><Text>Credit back some of the unhappiness a city suffers purely from urban overcrowding, so a city built tall and dense on purpose isn't double-punished (its density already suppresses its yields). 0 = off.</Text></Row>
         <Row Tag="LOC_EMIG_T_OCTHRESH"><Text>Urban population before overcrowding</Text></Row>
         <Row Tag="LOC_EMIG_T_OCTHRESH_D"><Text>Urban population a city can hold before overcrowding counts against it (mirrors the game's overcrowding threshold). Only used when the discount is on.</Text></Row>
 
@@ -1392,7 +1392,7 @@
         <Row Tag="LOC_EMIG_QTR_STANCE_LETBE">
             <Text>You let the {1_Name} keep to itself.</Text>
         </Row>
-        <Row Tag="LOC_EMIG_QTR_STANCE_ACTIVE"><Text>In {1_Place}, you chose to {2_Act} — the {3_Name} takes its place in the city's life.</Text></Row>
+        <Row Tag="LOC_EMIG_QTR_STANCE_ACTIVE"><Text>In {1_Place}, you chose to {2_Act}; the {3_Name} takes its place in the city's life.</Text></Row>
         <Row Tag="LOC_EMIG_QTR_WHERE_EDGE"><Text>at the city's edge</Text></Row>
         <Row Tag="LOC_EMIG_QTR_CHRON_DECISION_TITLE">
             <Text>A {1_Name}</Text>
@@ -2241,9 +2241,9 @@
         <Row Tag="LOC_EMIG_GUIDE_0_R0_Q"><Text>Unhappiness / low yields</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_0_R0_N"><Text>The main peacetime driver. Happiness is still the single biggest factor, but after the 1.4.1 rebalance a city's per-capita yields carry a real share of the decision too, so both an unhappy city AND a low-yield one bleed people, and a city that's both empties fastest. Unhappy settlements are doubly hit: 1.4.1 also suppresses their yields, which the prosperity score reads directly.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_0_R1_Q"><Text>War damage to the districts</Text></Row>
-        <Row Tag="LOC_EMIG_GUIDE_0_R1_N"><Text>Damage to ANY of the city's districts (its center or an outer urban/rural quarter) is read from game state (fog-independent) and scales the war penalty. An assault that wrecks only the city's edge still registers, even while the center reads pristine.</Text></Row>
+        <Row Tag="LOC_EMIG_GUIDE_0_R1_N"><Text>Damage to any of the city's districts (its center or an outer urban/rural quarter) is read from game state (fog-independent) and scales the war penalty. An assault that wrecks only the city's edge still registers, even while the center reads pristine.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_0_R2_Q"><Text>Being besieged or attacked</Text></Row>
-        <Row Tag="LOC_EMIG_GUIDE_0_R2_N"><Text>Per-city: only the besieged city itself sheds people. Fires when ANY of its districts is besieged or has been overrun (captured/contested), even before its health drops. It is NOT a civ-wide score; a civilization at war elsewhere keeps its unaffected cities.</Text></Row>
+        <Row Tag="LOC_EMIG_GUIDE_0_R2_N"><Text>Per-city: only the besieged city itself sheds people. Fires when any of its districts is besieged or has been overrun (captured/contested), even before its health drops. It is not a civ-wide score; a civilization at war elsewhere keeps its unaffected cities.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_0_R3_Q"><Text>Attacked by a city-state / Independent Power</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_0_R3_N"><Text>Same per-city conflict pressure as a major-civ war: an Independent/minor raid on a city still drives THAT city's people out, attacker-agnostic.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_0_R4_Q"><Text>Pillaged tiles in the city's borders</Text></Row>
@@ -2266,7 +2266,7 @@
         <Row Tag="LOC_EMIG_GUIDE_1_R2_Q"><Text>A civilization in a Celebration (Golden Age)</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_1_R2_N"><Text>1.4.1 celebrations are scarcer and feed Tourism, so a civilization in a Celebration is a noticeably stronger draw for the few turns it lasts.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_1_R3_Q"><Text>A happiness-friendly government</Text></Row>
-        <Row Tag="LOC_EMIG_GUIDE_1_R3_N"><Text>Governments whose passives reward happy settlements make a civilization's cities a bit more attractive. The effect is deliberately small: most of a government's impact already reaches the model through the happiness and yields it produces.</Text></Row>
+        <Row Tag="LOC_EMIG_GUIDE_1_R3_N"><Text>Governments whose passives reward happy settlements make a civilization's cities a bit more attractive. The effect is kept small: most of a government's impact already reaches the model through the happiness and yields it produces.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_1_R4_Q"><Text>A Pro-Immigration Stance policy</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_1_R4_N"><Text>A civic-tree Pro-Immigration Stance raises the pull into your cities and earns Influence (trading some retention).</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_1_R5_Q"><Text>An Open Borders agreement</Text></Row>
@@ -2306,7 +2306,7 @@
         <Row Tag="LOC_EMIG_GUIDE_3_R8_Q"><Text>War alone can empty a city to zero</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_3_R8_N"><Text>No. Displacement is capped (siegeLossCapPct) above the rural floor. Crisis deaths are separate and unfloored. The settlement itself stands until a capture.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_3_R9_Q"><Text>Lethal crises kill, not just displace</Text></Row>
-        <Row Tag="LOC_EMIG_GUIDE_3_R9_N"><Text>War, siege, disaster, and famine kill SOME people who can't escape in time, even when there's somewhere to flee; those are deaths (a separate Losses tally), not migrations. Ordinary prosperity/unhappiness emigration NEVER kills; people just leave for better cities.</Text></Row>
+        <Row Tag="LOC_EMIG_GUIDE_3_R9_N"><Text>War, siege, disaster, and famine kill some people who can't escape in time, even when there's somewhere to flee; those are deaths (a separate Losses tally), not migrations. Ordinary prosperity/unhappiness emigration never kills; people just leave for better cities.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_3_R10_Q"><Text>Departures cost a real tile</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_3_R10_N"><Text>Each point that leaves abandons one outlying rural improvement. A pillaged tile goes first. A starving settlement keeps its food tiles. The civilization that receives the migrant pays the assimilation cost; the one that lost them pays nothing beyond the tile.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_4_TITLE"><Text>Identity, integration &amp; return</Text></Row>
@@ -2341,7 +2341,7 @@
         <Row Tag="LOC_EMIG_GUIDE_6_F2_Q"><Text>How many people move, and how often?</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_6_F2_A"><Text>War- and disaster-driven refugees flee every turn; voluntary (prosperity/unhappiness) migration is more gradual, resting briefly between moves. Each civilization migrates on its own per-turn budget that scales with its size and active crises, so simultaneous wars never throttle one another. Counts show as scaled people or raw population points (your choice), and the whole sim runs on a turn interval you can lengthen in Options for large saves.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_6_F3_Q"><Text>Do people die, or just move away?</Text></Row>
-        <Row Tag="LOC_EMIG_GUIDE_6_F3_A"><Text>Both, depending on the cause. Ordinary (prosperity / unhappiness) migration NEVER kills; people simply leave for better cities. But a LETHAL crisis (war, siege, disaster, or famine) also kills some who can't escape in time: those deaths leave the world entirely (shown in the Losses/deaths tally, separate from refugees), even while the rest flee. So a city under crisis loses people two ways at once: most flee, a few die. The death toll builds up gradually rather than striking all at once, growing the longer the crisis drags on and easing if it lifts, so a brief scare is recoverable while a grinding siege or famine is not. Separately, a refugee can also perish IN TRANSIT if the city they were fleeing to is captured or razed before they arrive, or stays too full to take them in.</Text></Row>
+        <Row Tag="LOC_EMIG_GUIDE_6_F3_A"><Text>Both, depending on the cause. Ordinary (prosperity / unhappiness) migration never kills; people leave for better cities. But a lethal crisis (war, siege, disaster, or famine) also kills some who can't escape in time: those deaths leave the world entirely (shown in the Losses/deaths tally, separate from refugees), even while the rest flee. So a city under crisis loses people two ways at once: most flee, a few die. The death toll builds up gradually rather than striking all at once, growing the longer the crisis drags on and easing if it lifts, so a brief scare is recoverable while a grinding siege or famine is not. Separately, a refugee can also perish IN TRANSIT if the city they were fleeing to is captured or razed before they arrive, or stays too full to take them in.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_7_TITLE"><Text>FAQ: War, conquest &amp; recovery</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_7_F0_Q"><Text>What happens when I capture or lose a city?</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_7_F0_A"><Text>Its existing residents stay coded to the civilization they came FROM (the prior owner), not to you. The Ethnic Composition lens paints the city's tiles in that origin's color (a per-tile mosaic), and on the network diagram their dots keep the old civilization's color and name; only NEW population born after the capture counts as yours. So a conquered city carries real origin history that fades only as it regrows and its newcomers integrate. War can shrink it, but only an actual capture transfers it.</Text></Row>
@@ -2361,7 +2361,7 @@
         <Row Tag="LOC_EMIG_GUIDE_8_F1_Q"><Text>How big is the economic impact of migrants in transit?</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_8_F1_A"><Text>Small and self-correcting. Per migrant it's tiny: one rural point's worth of yields suspended for ~1–2 turns (4 at most), and the source was losing that worker anyway, so only the delay before the destination picks them up is truly lost output. In aggregate it's roughly (migrants currently traveling) x (their per-pop yields): a rounding error in peacetime, but a noticeable pool of temporarily-idle population during a big war, since refugees flee every turn and more are in transit at once. It always drains back toward zero within a few turns of migration slowing. This transit lag is also why Emigration can tick up before Immigration catches up: the departure counts now, the arrival lands a few turns later. It does NOT distort Net Migration, which only counts settled cross-civ moves.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_8_F2_Q"><Text>Is there a limit on how many people one city gains or loses per turn?</Text></Row>
-        <Row Tag="LOC_EMIG_GUIDE_8_F2_A"><Text>Yes, both ways. A settlement can shed at most a few migration points per turn (so even a besieged city bleeds people steadily instead of emptying in a single catastrophic turn) and it can take in at most a few, so one boomtown can't swallow dozens of newcomers at once. Arrivals over the intake cap simply wait in transit and land on a later turn. Both caps scale with the intensity preset (Low / Medium / High) and can be fine-tuned individually in the Pacing section of Advanced settings. Deaths from war, famine and disaster are a separate channel and aren't counted against either cap.</Text></Row>
+        <Row Tag="LOC_EMIG_GUIDE_8_F2_A"><Text>Yes, both ways. A settlement can shed at most a few migration points per turn (so even a besieged city bleeds people steadily instead of emptying in a single catastrophic turn) and it can take in at most a few, so one boomtown can't swallow dozens of newcomers at once. Arrivals over the intake cap wait in transit and land on a later turn. Both caps scale with the intensity preset (Low / Medium / High) and can be fine-tuned individually in the Pacing section of Advanced settings. Deaths from war, famine and disaster are a separate channel and aren't counted against either cap.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_9_TITLE"><Text>FAQ: The 1.4.1 update</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_9_F0_Q"><Text>How does the mod use 1.4.1's happiness, government, and celebration changes?</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_9_F0_A"><Text>It reads them directly. Happiness is now a five-stage scale (Angry, Unhappy, Happy, Joyous, Ecstatic) that feeds a city's attractiveness; a civilization in a Celebration (Golden Age) becomes a stronger draw while it lasts; a government's happiness-friendly passives nudge its cities up a little; and empire-wide war weariness adds a push to a war-worn civilization's settlements. 1.4.1 also makes unhappy cities lose more of their yields, which the per-capita prosperity score already picks up.</Text></Row>
@@ -2442,7 +2442,7 @@
         <Row Tag="LOC_EMIG_ETH_TILE_SUFFIX"><Text>· this tile</Text></Row>
         <Row Tag="LOC_EMIG_PCT"><Text>{1_Pct}%</Text></Row>
         <Row Tag="LOC_EMIG_PCT_SIGNED"><Text>{1_Pct}%</Text></Row>
-        <!-- v2.1.0 full-localization pass — Tier 1: Settings & Advanced editor -->
+        <!-- v2.1.0 full-localization pass: Tier 1: Settings & Advanced editor -->
         <Row Tag="LOC_OPTIONS_EMIG_SNAP_1"><Text>Every turn (finest)</Text></Row>
         <Row Tag="LOC_OPTIONS_EMIG_SNAP_2"><Text>Every 2 turns</Text></Row>
         <Row Tag="LOC_OPTIONS_EMIG_SNAP_3"><Text>Every 3 turns</Text></Row>
@@ -2484,7 +2484,7 @@
         <Row Tag="LOC_EMIG_ADV_RESET_ONE"><Text>Reset to default</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_VIEW_REF"><Text>What counts</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_VIEW_FAQ"><Text>FAQ</Text></Row>
-        <!-- v2.1.0 full-localization pass — Tier 3: concatenated fragments (notifications / world-news / chronicle) -->
+        <!-- v2.1.0 full-localization pass: Tier 3: concatenated fragments (notifications / world-news / chronicle) -->
         <Row Tag="LOC_EMIG_FALLBACK_UNMET_CIV"><Text>an unmet civilization</Text></Row>
         <Row Tag="LOC_EMIG_FALLBACK_A_PEOPLE"><Text>a people</Text></Row>
         <Row Tag="LOC_EMIG_FALLBACK_PEOPLE"><Text>people</Text></Row>
@@ -2522,7 +2522,7 @@
         <Row Tag="LOC_EMIG_QTR_MARKET_2"><Text>by the market stalls</Text></Row>
         <Row Tag="LOC_EMIG_QTR_WALLS_1"><Text>near the old walls</Text></Row>
         <Row Tag="LOC_EMIG_QTR_WALLS_2"><Text>by the city gate</Text></Row>
-        <!-- v2.1.0 full-localization pass — Tier 2: Demographics chart specs (id-derived name/title/subtitle + verbatim desc) -->
+        <!-- v2.1.0 full-localization pass: Tier 2: Demographics chart specs (id-derived name/title/subtitle + verbatim desc) -->
         <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_POPULATION"><Text>Population</Text></Row>
         <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_POPULATION_TITLE"><Text>Population Over Time</Text></Row>
         <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_POPULATION_SUBTITLE"><Text>Current population, historically scaled to people (the same scaling as the flow graphs).</Text></Row>
@@ -2577,7 +2577,7 @@
         <Row Tag="LOC_EMIG_MEMBER_REF_LEFT"><Text>Refugees (Left)</Text></Row>
         <Row Tag="LOC_EMIG_MEMBER_REF_ARRIVED"><Text>Refugees (Arrived)</Text></Row>
         <Row Tag="LOC_EMIG_SOURCES"><Text>Sources: {1_List}</Text></Row>
-        <!-- v2.1.0 full-localization pass — Tier 2: per-cause metrics (optional module) -->
+        <!-- v2.1.0 full-localization pass: Tier 2: per-cause metrics (optional module) -->
         <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_WAR_EMIGRATION"><Text>War Emigration</Text></Row>
         <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_WAR_EMIGRATION_TITLE"><Text>Refugees from war per turn</Text></Row>
         <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_DISASTER_EMIGRATION"><Text>Disaster Emigration</Text></Row>
@@ -2593,7 +2593,7 @@
         <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_PROSPERITY_IMMIGRATION"><Text>Prosperity Immigration</Text></Row>
         <Row Tag="LOC_DEMOGRAPHICS_METRIC_EMIG_PROSPERITY_IMMIGRATION_TITLE"><Text>Attracted immigration per turn</Text></Row>
         <Row Tag="LOC_DEMOGRAPHICS_UNIT_PEOPLE_PER_TURN"><Text>people / turn</Text></Row>
-        <!-- v2.1.0 full-localization pass — Tier 2: Migration page tab bar (reuses dashboard view keys where identical) -->
+        <!-- v2.1.0 full-localization pass: Tier 2: Migration page tab bar (reuses dashboard view keys where identical) -->
         <Row Tag="LOC_EMIG_PAGE_LABEL"><Text>Emigration</Text></Row>
         <Row Tag="LOC_EMIG_PAGE_TITLE"><Text>Migration</Text></Row>
         <Row Tag="LOC_EMIG_PAGE_FLOW_TITLE"><Text>Migration network &amp; flows</Text></Row>
@@ -2601,7 +2601,7 @@
         <Row Tag="LOC_EMIG_PAGE_DIVERSITY_TITLE"><Text>Most diverse cities</Text></Row>
         <Row Tag="LOC_EMIG_PAGE_STANCES_TAB"><Text>Immigration Policies</Text></Row>
         <Row Tag="LOC_EMIG_HUB_POP_MIGRATION"><Text>Population &amp; Migration</Text></Row>
-        <!-- v2.1.0 full-localization pass — pre-existing undefined refs folded in (refugee-dilemma effect labels) -->
+        <!-- v2.1.0 full-localization pass: pre-existing undefined refs folded in (refugee-dilemma effect labels) -->
         <Row Tag="LOC_EMIG_DIL_FX_GOLD"><Text>Gold</Text></Row>
         <Row Tag="LOC_EMIG_DIL_FX_HAPPINESS"><Text>Happiness</Text></Row>
         <Row Tag="LOC_EMIG_DIL_FX_INFLUENCE"><Text>Influence</Text></Row>

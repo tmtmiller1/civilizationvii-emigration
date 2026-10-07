@@ -206,7 +206,7 @@ function poolPage() {
   return page;
 }
 
-// ── build ─────────────────────────────────────────────────────────────────────
+// build
 const civs = [...new Set([...Object.keys(QUARTER_QUOTES), ...Object.keys(DISPLACED_QUOTES)])]
   .sort((a, b) => nameOf(a).localeCompare(nameOf(b), "en"));
 const pages = [poolPage(), ...civs.map(civPage)];

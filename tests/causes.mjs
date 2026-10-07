@@ -4,7 +4,7 @@ const causes = await import("/emigration/ui/emigration-causes.js");
 const { isRefugeeCause, causeLabel, causePermanence, causeHint, causeAccent, notificationAccent, topCause } =
   await import("/emigration/ui/emigration-causes.js");
 
-// The dominant cause of a per-cause map — what the City Details flow rows name when there's room for
+// The dominant cause of a per-cause map: what the City Details flow rows name when there's room for
 // only one. "" means "no per-cause detail", which callers must render as silence rather than "Other".
 function testTopCausePicksTheDominantDriver() {
   assert.equal(topCause({ unhappiness: 10, war: 3 }), "unhappiness");
@@ -21,7 +21,7 @@ function testTopCausePicksTheDominantDriver() {
 }
 
 function testNotificationAccentReservesRedForOwnLoss() {
-  // Red causes (war/conquest/crisis) keep their alarming color only for the player's OWN loss.
+  // Red causes (war/conquest/crisis) keep their alarming color only for the player's own loss.
   for (const c of ["war", "conquest", "crisis"]) {
     assert.equal(notificationAccent(c, true), causeAccent(c), `${c} own-loss keeps its red accent`);
     assert.notEqual(notificationAccent(c, false), causeAccent(c), `${c} world-news is NOT red`);
@@ -32,7 +32,7 @@ function testNotificationAccentReservesRedForOwnLoss() {
     assert.equal(notificationAccent(c, false), causeAccent(c), `${c} unchanged`);
     assert.equal(notificationAccent(c, true), causeAccent(c), `${c} unchanged`);
   }
-  // Green is reserved for the player's OWN gains: another civ's prosperity/return news is neutral, and the
+  // Green is reserved for the player's own gains: another civ's prosperity/return news is neutral, and the
   // player's own people leaving for prosperity or returning home is a soft loss (amber), never green.
   for (const c of ["prosperity", "return"]) {
     assert.equal(notificationAccent(c, false), notificationAccent("war", false), `${c} world-news is neutral, not green`);
@@ -53,7 +53,7 @@ function testRefugeeCausesAreForcedDisplacementOnly() {
   for (const c of ["war", "disaster", "conquest"]) {
     assert.equal(isRefugeeCause(c), true, `${c} should be a refugee cause`);
   }
-  // Economic migration + the outlet + unknowns are NOT refugees.
+  // Economic migration + the outlet + unknowns are not refugees.
   for (const c of ["unhappiness", "prosperity", "attrition", "crisis", "other", undefined, ""]) {
     assert.equal(isRefugeeCause(c), false, `${c} should NOT be a refugee cause`);
   }

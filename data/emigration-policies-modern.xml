@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Modern-age border-policy cards (Feature 2). Loaded ONLY in the Modern gameplay database
+  Modern-age border-policy cards (Feature 2). Loaded only in the Modern gameplay database
   (modinfo criteria AgeInUse=AGE_MODERN). NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION only exists while
   Modern is the active age. See emigration-policies-antiquity.xml for the full rationale.
 -->

@@ -1,6 +1,6 @@
 // emigration-enclave-tooltip.js
 //
-// The enclave's OWN tooltip, on the ordinary map: hovering an enclave's tile shows the mod's panel
+// The enclave's own tooltip, on the ordinary map: hovering an enclave's tile shows the mod's panel
 // (emigration-lens-hover-panel.js) in place of the game's plot tooltip, which can only describe the
 // borrowed improvement. The base tooltip is hidden only while the panel shows, and while one of the
 // mod's lenses is active this panel stands down entirely so the two never fight over the flag.
@@ -26,7 +26,7 @@ const STAGE_COLORS = Object.freeze({
   established: "#d8b24a", recognized: "#5fae6b", contested: "#c25b54", fading: "#8a8a8a"
 });
 
-/** Run a read, returning `fb` on a throw. @param {() => *} fn The read. @param {*} fb Fallback. @returns {*} */
+/** Run a read, returning `fb` on a throw. @param {() => *} fn @param {*} fb @returns {*} */
 function safe(fn, fb) {
   try {
     return fn();
@@ -48,7 +48,7 @@ function active() {
 
 /**
  * The standing enclave record on a plot, or null.
- * @param {{x:number, y:number}} plot The hovered plot. @returns {{tileKey:string, rec:*}|null} The entry.
+ * @param {{x:number, y:number}} plot The hovered plot. @returns {{tileKey:string, rec:*}|null}
  */
 function entryAt(plot) {
   const idx = safe(() => GameplayMap.getIndexFromLocation(plot), -1);
@@ -62,7 +62,7 @@ function entryAt(plot) {
 
 /**
  * A constructible type's display name, or "" when it cannot be named.
- * @param {string|undefined} type A ConstructibleType. @returns {string} The localized name.
+ * @param {string|undefined} type A ConstructibleType. @returns {string}
  */
 function constructibleName(type) {
   if (!type) return "";
@@ -96,7 +96,7 @@ function stanceWhy(civType, optionId) {
 
 /**
  * The chosen stance's label and reasoning, or blanks before recognition and for "let be".
- * @param {*} rec The quarter record. @returns {{stanceLabel:string, why:string}} The stance's words.
+ * @param {*} rec The quarter record. @returns {{stanceLabel:string, why:string}}
  */
 function stanceWords(rec) {
   const stanced = rec.recognized !== false && rec.optionId && rec.optionId !== "ignore";
@@ -111,7 +111,7 @@ function stanceWords(rec) {
  * The yield maps for one enclave: what stood before, the tile's own, the plot now, and the stance.
  * @param {*} rec The quarter record.
  * @returns {{before:Record<string,number>, native:Record<string,number>, now:Record<string,number>,
- *   stance:Record<string,number>, benefitScale:number}} The maps.
+ *   stance:Record<string,number>, benefitScale:number}}
  */
 function yieldMaps(rec) {
   const placed = rec.placed || {};
@@ -128,7 +128,7 @@ function yieldMaps(rec) {
  * Gather everything the model needs for one enclave.
  * @param {{tileKey:string, rec:*}} entry The record. @param {*} sig The host settlement's signal.
  * @param {{x:number, y:number}} plot The hovered plot.
- * @returns {import("/emigration/ui/emigration-enclave-tooltip-data.js").EnclaveTipInput} The input.
+ * @returns {import("/emigration/ui/emigration-enclave-tooltip-data.js").EnclaveTipInput}
  */
 function gather(entry, sig, plot) {
   const rec = entry.rec;
@@ -143,7 +143,7 @@ function gather(entry, sig, plot) {
     originAdj: safe(() => narrativeCiv(rec.civ).adj, ""),
     cityName: cityTitle(sig && sig.city, ""),
     terrain: terrainLabel(plot),
-    // A native-skin enclave IS its own improvement, so there is no borrowed name to mention.
+    // A native-skin enclave is its own improvement, so there is no borrowed name to mention.
     skinName: constructibleName(placed.type === enclaveTypeOf(rec) ? undefined : placed.type),
     replacedName: constructibleName(placed.replaced),
     ...yieldMaps(rec),
@@ -176,7 +176,7 @@ function resolve(sig, _snap, plot) {
 
 /** The panel's own stylesheet (the shared one knows only swatch rows), shaped to sit alongside the
  * game's own plot tooltip: dark panel, gold title, dim detail, hairline rules.
- * @param {string} id The panel element id. @returns {string} The CSS.
+ * @param {string} id The panel element id. @returns {string}
  */
 function panelCss(id) {
   const P = "#" + id;
@@ -198,7 +198,7 @@ function panelCss(id) {
     + P + " .rule{height:0.0555rem;background:rgba(201,162,76,0.28);margin:0.4rem 0;}"
     + P + " .hdr{opacity:0.6;font-size:var(--dg-fs-70);letter-spacing:0.08em;text-transform:uppercase;"
       + "margin-bottom:0.15rem;}"
-    // A source: name on the left, its yields pinned right; the detail and the reasoning are their OWN
+    // A source: name on the left, its yields pinned right; the detail and the reasoning are their own
     // blocks under it, so a long name can never overlap them.
     + P + " .src{margin-top:0.35rem;}"
     + P + " .src-top{display:flex;align-items:baseline;justify-content:space-between;}"
@@ -218,7 +218,7 @@ function panelCss(id) {
 
 /**
  * An element with a class and optional text.
- * @param {string} cls Class name. @param {string} [text] Text content. @returns {HTMLElement} The element.
+ * @param {string} cls @param {string} [text] @returns {HTMLElement}
  */
 function el(cls, text) {
   const d = document.createElement("div");
@@ -239,7 +239,7 @@ function yieldIcon(key) {
 /**
  * A signed yield map as the game draws it: an icon and a signed number per yield, sorted so the same
  * yields always appear in the same order.
- * @param {Record<string, number>} amounts Signed yields by type. @returns {HTMLElement} The run.
+ * @param {Record<string, number>} amounts Signed yields by type. @returns {HTMLElement}
  */
 function yieldRun(amounts) {
   const wrap = el("ys");
@@ -259,7 +259,7 @@ function yieldRun(amounts) {
 
 /**
  * The heading block: the enclave's name, its settlement and terrain, and the stage with its dot.
- * @param {*} m The model. @returns {HTMLElement[]} The elements, in order.
+ * @param {*} m The model. @returns {HTMLElement[]} In order.
  */
 function headBlock(m) {
   const out = [el("t", m.title)];
@@ -276,8 +276,8 @@ function headBlock(m) {
 
 /**
  * One yield source: its name with the yields pinned right, then the detail and the reasoning as their
- * OWN blocks beneath — which is what keeps a long name from overlapping them.
- * @param {*} s The source row. @returns {HTMLElement} The block.
+ * own blocks beneath, which is what keeps a long name from overlapping them.
+ * @param {*} s The source row. @returns {HTMLElement}
  */
 function sourceBlock(s) {
   const src = el("src");
@@ -292,7 +292,7 @@ function sourceBlock(s) {
 
 /**
  * The total row.
- * @param {Record<string, number>} amounts The summed yields. @returns {HTMLElement} The row.
+ * @param {Record<string, number>} amounts The summed yields. @returns {HTMLElement}
  */
 function totalBlock(amounts) {
   const total = el("total");

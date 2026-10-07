@@ -94,8 +94,8 @@ function testSuccessfulArrivalCreditsDestinationAndUpdatesSignal() {
 }
 
 function testPresentDestinationThatCannotAcceptDefers() {
-  // The destination EXISTS in the ranking but can't take a point right now (no addRural API): it should
-  // DEFER (try again next turn), not charge a death, only a GONE destination dies.
+  // The destination exists in the ranking but can't take a point right now (no addRural API): it should
+  // Defer (try again next turn), not charge a death, only a gone destination dies.
   const sig = { key: "2:9", city: {}, rural: 7, population: 13 };
   const state = { monoTurn: 5, transit: [makeTransit({ destKey: "2:9" })] };
 
@@ -150,7 +150,7 @@ function testInboundCounterIncrementsOnSuccessfulArrival() {
 function testPerishesAfterMaxDefers() {
   const sig = destSignal();
   // Already deferred MAX_DEFERS (4) times and the destination is still saturated → the refugees perish
-  // waiting (a death), and the cap is NOT overrun (they don't force-land).
+  // waiting (a death), and the cap is not overrun (they don't force-land).
   const e = makeTransit({ destKey: "2:9", arriveTurn: 5, defers: 4 });
   const state = { monoTurn: 5, transit: [e] };
   const ctx = { byCity: new Map([["2:9", 9]]), cap: 1 }; // saturated
@@ -221,7 +221,7 @@ function testOneThrowDoesNotDropRemainingDueArrivals() {
 }
 
 function testExpiredThrowingArrivalPerishes() {
-  // A deterministically-throwing arrival that has already exhausted its retry window must NOT defer
+  // A deterministically-throwing arrival that has already exhausted its retry window must not defer
   // forever (permanent limbo). It records a death and leaves the queue.
   const e = makeTransit({ destKey: "2:boom", arriveTurn: 5, defers: 4 });
   const state = { monoTurn: 5, transit: [e] };
@@ -234,7 +234,7 @@ function testExpiredThrowingArrivalPerishes() {
 }
 
 function testEmptyRankingHoldsWithoutDeferralPenalty() {
-  // An empty ranking is a transient read failure: due arrivals are HELD, not deferred, so defers and
+  // An empty ranking is a transient read failure: due arrivals are held, not deferred, so defers and
   // arriveTurn are untouched (they don't inch toward perishing while the read path is broken).
   const e = makeTransit({ destKey: "2:9", arriveTurn: 5, defers: 2 });
   const state = { monoTurn: 5, transit: [e] };

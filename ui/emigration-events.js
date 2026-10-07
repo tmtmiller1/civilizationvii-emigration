@@ -6,7 +6,7 @@
 // player's feedback and seeds the event-driven distress. War declaration/peace are
 // handled in emigration-main (they feed emigration-war).
 //
-// Defensive throughout: every engine read is guarded and a failure degrades to a no-op.
+// Every engine read is guarded; a failure degrades to a no-op.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { recordDisaster, disasterSpike, disasterKey } from "/emigration/ui/emigration-disasters.js";
@@ -27,9 +27,9 @@ const EVENT_RADIUS = 1;
 
 /**
  * The owning city object for a plot, or null.
- * @param {number} x Plot x.
- * @param {number} y Plot y.
- * @returns {*} The owning city object, or null.
+ * @param {number} x
+ * @param {number} y
+ * @returns {*}
  */
 function cityAt(x, y) {
   try {
@@ -44,7 +44,7 @@ function cityAt(x, y) {
  * Whether an event class is a flood: CLASS_FLOOD, or a class a mod splits off from it (a whole-word FLOOD,
  * e.g. CLASS_DAMS_FLOOD_MAJOR).
  * @param {string|undefined} eventClass The event's CLASS_* string.
- * @returns {boolean} True for a flood.
+ * @returns {boolean}
  */
 function isFloodClass(eventClass) {
   return String(eventClass || "").split("_").includes("FLOOD");
@@ -172,7 +172,7 @@ function worstEventPct(rows, type, damageType) {
 }
 
 /**
- * The worst single impact percentage a RandomEvent TYPE inflicts, the larger of its biggest yield cut
+ * The worst single impact percentage a RandomEvent type inflicts: the larger of its biggest yield cut
  * and its constructible-damage cut, from the base RandomEventYields / RandomEventDamages tables. Used
  * instead of the `Severity` column, which barely separates a gentle volcano (0) from a catastrophic one (1).
  * @param {*} info The GameInfo.RandomEvents row (carries RandomEventType).
@@ -205,13 +205,13 @@ function eventSeverity(data, info) {
   return Math.max(1, tier + (eventImpactPct(info) >= 35 ? 1 : 0));
 }
 
-/** Clamp to [0,1]. @param {number} x Value. @returns {number} Clamped. */
+/** Clamp to [0,1]. @param {number} x @returns {number} */
 function clamp01(x) {
   return x < 0 ? 0 : x > 1 ? 1 : x;
 }
 
 /**
- * The impact factor `m ∈ [0,1]` a disaster lands on ONE struck city, from the damage it did there: the
+ * The impact factor `m ∈ [0,1]` a disaster lands on one struck city, from the damage it did there: the
  * larger of the event type's worst effect-table percentage and the share of the city's plots it newly
  * pillaged, floored for a confirmed strike. 0 when the event pillaged nothing in the city (with
  * `disasterRequireDamage` on): a settlement the engine shields from this class of event (a Dam or Levee
@@ -227,8 +227,8 @@ function cityImpactFactor(typePct, damage) {
 }
 
 /**
- * Floor the impact factor for a CONFIRMED city strike the mod couldn't MEASURE, so a disaster the engine
- * says hit a city always lands SOME distress. The floor scales by disaster type downstream (shape() ×
+ * Floor the impact factor for a confirmed city strike the mod couldn't measure, so a disaster the engine
+ * says hit a city always lands some distress. The floor scales by disaster type downstream (shape() ×
  * CLASS_WEIGHT); un-struck events and bigger measured impacts pass through untouched.
  * @param {number} measured The measured impact factor in [0,1].
  * @param {boolean} struck Whether the engine confirmed the blast hit at least one city.
@@ -255,7 +255,7 @@ function spikeStruckCities(cities, info, eventClass, eventType, sev) {
     const m = cityImpactFactor(typePct, damage);
     const w = m > 0 ? disasterSpike(eventClass, m, sev) : 0;
     dlog("event city=" + key + " pillaged=" + damage.fresh + "/" + damage.footprint + " m=" + m.toFixed(2)
-      + " spike=" + w.toFixed(1)); // DIAGNOSTIC: grep `EMIG_event city=` in UI.log
+      + " spike=" + w.toFixed(1)); // grep `EMIG_event city=` in UI.log
     if (!(m > 0)) continue;
     damaged++;
     // m drives the impact-scaled spike; sev is passed only for the legacy fail-safe path.
@@ -281,8 +281,8 @@ function onRandomEvent(data) {
     const sev = eventSeverity(data, info); // 1..4, kept for the notify gate + chart marker
     const cities = affectedCities(data.location, eventClass);
     const damaged = spikeStruckCities(cities, info, eventClass, data.eventType, sev);
-    logEvent(data, info, sev, cities.length, damaged); // DIAGNOSTIC: grep `EMIG_event` in UI.log
-    // Record a refugees-chart MARKER whenever the disaster damaged a city, independent of the toast
+    logEvent(data, info, sev, cities.length, damaged); // grep `EMIG_event` in UI.log
+    // Record a refugees-chart marker whenever the disaster damaged a city, independent of the toast
     // threshold, so sub-`disasterNotifyMinSeverity` disasters still annotate the chart.
     if (damaged > 0) recordDisasterOnset(data.eventType, info, sev);
     // The toast still reports a disaster that struck a shielded or spared city: it happened, it just did no harm.
@@ -304,14 +304,14 @@ function recordDisasterOnset(eventType, info, sev) {
 }
 
 /**
- * Log and (maybe) pop a disaster notification. The notifications LOG keeps every severe disaster; the
- * on-screen POPUP is gated by the disasterNotifyMode knob (0 = log only, 1 = only when the disaster
+ * Log and (maybe) pop a disaster notification. The notifications log keeps every severe disaster; the
+ * on-screen popup is gated by the disasterNotifyMode knob (0 = log only, 1 = only when the disaster
  * struck a city, 2 = any), with disasterNotifyMinSeverity as the severity floor in each mode.
  * @param {*} data The event payload.
  * @param {number} sev The event severity.
  * @param {boolean} struck Whether the disaster struck any cities (drives migration).
  * @param {{owner:number, civ:string, city:string|null, hidden:boolean}|null} [where] The primary
- *   struck settlement (spoiler-masked), so the notification names WHO was hit. Null when unknown.
+ *   struck settlement (spoiler-masked), so the notification names who was hit. Null when unknown.
  */
 function maybeNotifyDisaster(data, sev, struck, where) {
   if (sev < CONFIG.disasterNotifyMinSeverity) return; // below the severity floor
@@ -326,7 +326,7 @@ function maybeNotifyDisaster(data, sev, struck, where) {
 }
 
 /**
- * The disaster alert line. Leads with WHO was hit ("<Disaster> strikes Athens (Greek)!", or the
+ * The disaster alert line. Leads with who was hit ("<Disaster> strikes Athens (Greek)!", or the
  * unmet mask) when a struck settlement was resolved; otherwise the bare "<Disaster> strikes!" for an
  * event that hit no owned city. Always carries the disaster action hint.
  * @param {*} name The disaster's display name (a message node).
@@ -338,17 +338,17 @@ function disasterAlert(name, where) {
   const head = place
     ? msg("LOC_EMIG_DISASTER_STRIKES_AT", "{1_Name} strikes {2_Place}!", name, place)
     : msg("LOC_EMIG_DISASTER_STRIKES", "{1_Name} strikes!", name);
-  // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces,
+  // The separator lives in the code: the game's text loader strips a localized string's edge spaces,
   // so a trailing space in the row never survives to separate this from the hint.
   return msgJoin(head, " ", causeHintMsg("disaster"));
 }
 
 /**
- * Whether to POP the on-screen disaster toast under the disasterNotifyMode knob (the LOG always
+ * Whether to pop the on-screen disaster toast under the disasterNotifyMode knob (the log always
  * records it): 0 never, 1 only when it struck a city (drives migration), 2 always.
  * @param {number} mode The disasterNotifyMode knob.
  * @param {boolean} struck Whether the disaster struck any city.
- * @returns {boolean} True to pop the toast.
+ * @returns {boolean}
  */
 function shouldPopDisaster(mode, struck) {
   if (mode === 2) return true;
@@ -357,7 +357,7 @@ function shouldPopDisaster(mode, struck) {
 }
 
 /**
- * Debug-only: log a random event the mod received, class, severity, epicenter, how many cities the
+ * Debug-only: log a random event the mod received (class, severity, epicenter), how many cities the
  * blast-radius scan matched and how many of those it damaged.
  * @param {*} data The event payload.
  * @param {*} info The GameInfo RandomEvents row.

@@ -5,10 +5,10 @@
 // (Node built-ins + git). Prioritizes files that combine frequent change (churn) with
 // structural risk (complexity).
 //
-// GIT-AWARE: this mod folder is not always a git working tree. When git history is
-// available, churn(f) = commits touching f in the sample window. When it is NOT (no .git
+// Git-aware: this mod folder is not always a git working tree. When git history is
+// available, churn(f) = commits touching f in the sample window. When it is not (no .git
 // above this folder), churn is reported as unavailable and files are ranked by complexity
-// alone, with an explicit note - so the tool still produces a usable hotspot ordering and
+// alone, with an explicit note, so the tool still produces a usable hotspot ordering and
 // degrades honestly rather than failing. Point it at the authoritative repo (run from a
 // checkout that tracks ui/) to get the churn dimension.
 //

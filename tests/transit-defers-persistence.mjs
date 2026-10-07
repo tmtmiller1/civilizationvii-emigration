@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 
-// Regression guard for C1 (improvement review): the transit `defers` counter MUST survive a
+// Regression guard for C1 (improvement review): the transit `defers` counter must survive a
 // save -> load round-trip. runPass reloads + re-saves state every turn, so if normalizeTransitEntry
-// drops `defers`, it resets to 0 each turn -- the MAX_DEFERS force-land/perish guard and the
+// drops `defers`, it resets to 0 each turn, and the MAX_DEFERS force-land/perish guard and the
 // longest-waiting-first arrival sort can never fire, leaving migrants stuck in transit forever.
 
 const STATE_KEY = "EmigrationState_v1";

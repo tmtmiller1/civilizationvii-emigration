@@ -14,8 +14,8 @@ const firstSeen = new Map();
 
 /**
  * Record what a read of one plot found.
- * @param {number} plot Plot index. @param {boolean} damaged Whether it holds a damaged improvement.
- * @param {number} turn The current game turn.
+ * @param {number} plot @param {boolean} damaged Whether it holds a damaged improvement.
+ * @param {number} turn
  */
 export function noteDamage(plot, damaged, turn) {
   if (typeof plot !== "number") return;
@@ -28,7 +28,7 @@ export function noteDamage(plot, damaged, turn) {
 
 /**
  * The turn a plot was first seen damaged, or null when it is not known to be damaged.
- * @param {number} plot Plot index. @returns {number|null} Turn.
+ * @param {number} plot @returns {number|null}
  */
 export function firstSeenDamaged(plot) {
   const t = firstSeen.get(plot);

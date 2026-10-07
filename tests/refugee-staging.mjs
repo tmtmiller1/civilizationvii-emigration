@@ -1,5 +1,5 @@
-// Pins the per-city refugee SETTLEMENT budget's border throttle: Anti-Immigration slows how fast a
-// closed civ drains its holding pool, floored on the SAME `opennessFloor` the pull path uses (not the
+// Pins the per-city refugee settlement budget's border throttle: Anti-Immigration slows how fast a
+// closed civ drains its holding pool, floored on the same `opennessFloor` the pull path uses (not the
 // old hard-coded 0.25). See emigration-refugee-staging.js:refugeeSettlementBudget.
 import assert from "node:assert/strict";
 
@@ -29,7 +29,7 @@ CONFIG.opennessFloor = 0.15;
 const closedSig = { owner: 3, happiness: 0, urban: 0 };
 ACTIVE[3] = new Set([CLOSED]);
 
-// A1: openness tuned BELOW the floor (0.05) → immigrationOpenness floors to 0.15, and the staging
+// A1: openness tuned below the floor (0.05) → immigrationOpenness floors to 0.15, and the staging
 // budget now uses that same 0.15 (was 0.25 under the old hard-coded floor). 20 × 0.15 = 3 (not 5).
 CONFIG.closedBordersOpenness = 0.05;
 resetBorderCache();
@@ -39,7 +39,7 @@ assert.equal(
   "closed-borders settle budget floors on opennessFloor (0.15), not the old 0.25"
 );
 
-// A2: openness BETWEEN the two floors (0.20) passes through unclamped → 20 × 0.20 = 4 (old: 20 × 0.25 = 5).
+// A2: openness between the two floors (0.20) passes through unclamped → 20 × 0.20 = 4 (old: 20 × 0.25 = 5).
 CONFIG.closedBordersOpenness = 0.2;
 resetBorderCache();
 assert.equal(
@@ -48,7 +48,7 @@ assert.equal(
   "an openness between 0.15 and 0.25 is honored, not lifted to 0.25"
 );
 
-// A3: at the default openness (0.4, above both floors) the floor is inert — 20 × 0.4 = 8.
+// A3: at the default openness (0.4, above both floors) the floor is inert: 20 × 0.4 = 8.
 CONFIG.closedBordersOpenness = 0.4;
 resetBorderCache();
 assert.equal(
