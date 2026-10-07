@@ -147,7 +147,7 @@ async function actTurn1() {
       emit("F2 town attempt at " + J(sp) + " cities " + c0 + " -> " + c1 + " cityAtSpot=" + J(at));
       if (c1 > c0) { watch.townSpots.push(sp); break; }
     }
-    // Same spot kind for the LOCAL player as a control, sent the same way.
+    // Same spot kind for the local player as a control, sent the same way.
     const mySpots = emptySpots(L, 4, 10, 1); const m0 = cityCount(local);
     if (mySpots.length) { send("CREATE_ELEMENT", { Kind: "CITY", Location: { x: mySpots[0].x, y: mySpots[0].y }, Owner: local }); await later(5000); emit("F2 control: local town at " + J(mySpots[0]) + " cities " + m0 + " -> " + cityCount(local)); }
   }

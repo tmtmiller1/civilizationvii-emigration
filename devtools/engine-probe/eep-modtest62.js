@@ -3,7 +3,7 @@
 // before each shot. Header of mod test 61 follows.
 // eep-modtest62.js - mod test 60 plus SCREENSHOTS (runner SHOT lines, captured by game window id): London and
 // Philadelphia's banners and the notification train before the write and after the real turn. Otherwise identical.
-// Original header (mod test 60): the placement prompt, across a REAL turn. Mod test 59 showed the raw write
+// Original header (mod test 60): the placement prompt, across a real turn. Mod test 59 showed the raw write
 // city.addRuralPopulation(+1) makes a real pending placement (isReadyToPlacePopulation true, EXPAND plots offered)
 // with no NOTIFICATION_NEW_POPULATION within 12 s, but its end turn never advanced: the "assign new resources"
 // blocker held it on turn 66. This run clears that blocker the ways the base game does (assign every unassigned

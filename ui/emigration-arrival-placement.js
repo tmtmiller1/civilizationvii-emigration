@@ -1,6 +1,6 @@
 // emigration-arrival-placement.js
 //
-// The DESTINATION side of a migration made real for the human player. `city.addRuralPopulation(+1)`
+// The destination side of a migration made real for the human player. `city.addRuralPopulation(+1)`
 // gives a city a genuine pending placement: an AI settlement resolves it on its own turn, while for the
 // human the game's own "Grow City" prompt (NOTIFICATION_NEW_POPULATION) blocks the end of the turn until
 // the point is placed. This module offers faster paths for the local player's cities:
@@ -14,7 +14,7 @@
 //                                   (CREATE_ELEMENT is local-player-only); resettling it places a
 //                                   real improvement
 //
-// `arriveRural(city, from)` is the ONE entry point every arrival site uses (instant moves, lagged arrivals,
+// `arriveRural(city, from)` is the one entry point every arrival site uses (instant moves, lagged arrivals,
 // refugee-pool settlement, returns, the refugee dilemma). Foreign cities and mode 0 fall through to the
 // plain write. Placement itself is deferred a tick so a pass that lands several points in one city
 // produces one prompt, not one per point.
@@ -47,7 +47,7 @@ let syncFlush = false;
 
 /**
  * The local player id, or -1 off-engine.
- * @returns {number} Player id.
+ * @returns {number}
  */
 function localPid() {
   try {
@@ -68,7 +68,7 @@ export function placementMode() {
 
 /**
  * A stable key for a city object.
- * @param {*} city @returns {string} Key.
+ * @param {*} city @returns {string}
  */
 function keyOf(city) {
   try {
@@ -81,7 +81,7 @@ function keyOf(city) {
 
 /**
  * The city's display name.
- * @param {*} city @returns {string} Name.
+ * @param {*} city @returns {string}
  */
 function cityName(city) {
   try {
@@ -93,7 +93,7 @@ function cityName(city) {
 
 /**
  * Spawn the newcomers as a Migrant unit at the city (local player only; the engine gates the op).
- * @param {*} city Destination city.
+ * @param {*} city
  * @param {number} pid Local player id.
  * @returns {boolean} True when the request was issued.
  */
@@ -114,7 +114,7 @@ function spawnMigrantUnit(city, pid) {
  * Whether an arrival of this kind raises the Ask me pop-up (arrivalAskRefugees / arrivalAskMigrants /
  * arrivalAskReturnees); the kinds not asked are placed automatically. An arrival with no kind is a returnee
  * (return migration passes none).
- * @param {ArrivalFrom|undefined} [from] The arrival's origin.
+ * @param {ArrivalFrom|undefined} [from]
  * @returns {boolean} True when the player is asked.
  */
 export function asksAbout(from) {
@@ -127,7 +127,7 @@ export function asksAbout(from) {
 /**
  * The arrival origin for a move from a player under a migration cause. Pure.
  * @param {number} civ The source player id. @param {string} cause The MigrationCause.
- * @returns {ArrivalFrom} The origin.
+ * @returns {ArrivalFrom}
  */
 export function arrivalFrom(civ, cause) {
   return { civ, kind: isRefugeeCause(cause) ? "refugee" : "migrant", cause: cause || "" };
@@ -136,7 +136,7 @@ export function arrivalFrom(civ, cause) {
 /**
  * Land one population point in a city: the plain write for AI cities and mode 0, a Migrant unit in
  * mode 3, and the write plus a queued placement in modes 1 and 2. Returns whether the point landed.
- * @param {*} city Destination city object.
+ * @param {*} city
  * @param {ArrivalFrom} [from] Where the point came from, for the newcomers pop-up's quote.
  * @returns {boolean} True when the arrival applied.
  */
@@ -193,7 +193,7 @@ function hasPending(city) {
 }
 
 /**
- * Try to seat one point as a SPECIALIST (the game's ASSIGN_WORKER op on a workable district plot).
+ * Try to seat one point as a specialist (the game's ASSIGN_WORKER op on a workable district plot).
  * @param {*} city @param {number} pid Local player id.
  * @returns {boolean} True when a request was issued.
  */
@@ -220,7 +220,7 @@ function placeAsSpecialist(city, pid) {
 /**
  * Pick the plot to expand onto: a resource tile if the game offers one, else the first offered.
  * @param {number[]} plots Offered plot indices.
- * @returns {number} The chosen plot index.
+ * @returns {number}
  */
 export function pickExpandPlot(plots) {
   try {
@@ -296,7 +296,7 @@ function openPlacementMode(city) {
 
 /**
  * The tally tag for an arrival origin ("3|refugee", "|refugee"), or "" when it carries nothing to quote.
- * @param {ArrivalFrom} [from] The origin. @returns {string} The tag.
+ * @param {ArrivalFrom} [from] @returns {string}
  */
 function originTag(from) {
   if (!from || (from.kind !== "refugee" && from.kind !== "migrant")) return "";
@@ -326,7 +326,7 @@ export function dominantOrigin(tally) {
 /**
  * The epigraph for a city's newcomers, from their dominant origin, or "" when no origin was recorded.
  * @param {*} city @param {Map<string, number>|undefined} tally Points by origin tag.
- * @returns {string} The quote line.
+ * @returns {string}
  */
 function arrivalQuote(city, tally) {
   const origin = dominantOrigin(tally);
@@ -373,7 +373,7 @@ export function arrivalPromptView(city, count, quote = "", origin = null) {
 
 /**
  * A button caption: the label, then its figures ("Let the city settle them: [icon:YIELD_POPULATION] +1, ...").
- * @param {string} label @param {string[]} parts The figures. @returns {string} The caption.
+ * @param {string} label @param {string[]} parts @returns {string}
  */
 function caption(label, parts) {
   return label + ": " + parts.filter(Boolean).join(", ");
@@ -386,7 +386,7 @@ const TILE_YIELDS = Object.freeze(["YIELD_FOOD", "YIELD_PRODUCTION", "YIELD_GOLD
 /**
  * A plot's yields for its owner ({YIELD_X: n}), or null when unreadable. A local copy of the enclave module's
  * reader: importing that module here would pull its whole dependency chain into this one.
- * @param {number} plot Plot index. @param {number} owner Player id. @returns {Record<string, number>|null} Yields.
+ * @param {number} plot @param {number} owner @returns {Record<string, number>|null}
  */
 function plotYields(plot, owner) {
   try {
@@ -410,7 +410,7 @@ function plotYields(plot, owner) {
  * The tiles "Let the city settle them" will take for `count` points, picked the way {@link placeOnTile} picks
  * (a resource tile first, else the first the game offers), each removed before the next pick. Empty when the
  * city seats newcomers as specialists first, or when the game offers no tile.
- * @param {*} city @param {number} count Points. @returns {number[]} Plot indices.
+ * @param {*} city @param {number} count Points. @returns {number[]}
  */
 function autoTiles(city, count) {
   try {
@@ -432,7 +432,7 @@ function autoTiles(city, count) {
 /**
  * What the tiles automatic placement will take yield, as caption figures ("[icon:YIELD_FOOD] +2"), or none
  * when they cannot be known in advance.
- * @param {*} city @param {number} count Points. @returns {string[]} The figures.
+ * @param {*} city @param {number} count Points. @returns {string[]}
  */
 function autoTileYields(city, count) {
   /** @type {Record<string, number>} */
@@ -446,7 +446,7 @@ function autoTileYields(city, count) {
 /**
  * Who the refugees are, by origin civilization ("Mongolian"), or a neutral word when the origin is unknown
  * or unmet. Pure enough for tests: falls back cleanly when the naming helpers cannot read a player.
- * @param {{civ:number|null}|null} origin The dominant origin. @returns {string} The phrase.
+ * @param {{civ:number|null}|null} origin The dominant origin. @returns {string}
  */
 function refugeeOriginPhrase(origin) {
   const pid = origin && typeof origin.civ === "number" ? origin.civ : -1;
@@ -465,7 +465,7 @@ function refugeeOriginPhrase(origin) {
 
 /**
  * What they fled, from the migration cause behind the arrival: war, a disaster, or a conquest.
- * @param {{cause?:string}|null} origin The dominant origin. @returns {string} The phrase.
+ * @param {{cause?:string}|null} origin The dominant origin. @returns {string}
  */
 function fledPhrase(origin) {
   const cause = (origin && origin.cause) || "";
@@ -478,7 +478,7 @@ function fledPhrase(origin) {
 /**
  * The refugee body line, naming who they are and what they fled.
  * @param {number} count Points. @param {string} who Origin phrase. @param {string} fled What they fled.
- * @param {string} name City name. @returns {string} The body.
+ * @param {string} name @returns {string}
  */
 function refugeeBody(count, who, fled, name) {
   if (!who) {
@@ -497,7 +497,7 @@ function refugeeBody(count, who, fled, name) {
 
 /**
  * The ordinary newcomer body line.
- * @param {number} count Points. @param {string} name City name. @returns {string} The body.
+ * @param {number} count Points. @param {string} name @returns {string}
  */
 function migrantBody(count, name) {
   return count === 1
@@ -542,7 +542,7 @@ export function flushArrivalPlacements() {
 
 /**
  * Test seam: flush synchronously inside arriveRural instead of on a deferred tick.
- * @param {boolean} on Whether to flush synchronously.
+ * @param {boolean} on
  */
 export function _setSyncFlushForTests(on) {
   syncFlush = !!on;
@@ -550,7 +550,7 @@ export function _setSyncFlushForTests(on) {
 
 /**
  * Test seam: the number of cities with un-flushed arrivals.
- * @returns {number} Count.
+ * @returns {number}
  */
 export function _pendingCountForTests() {
   return pending.size;

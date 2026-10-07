@@ -1,8 +1,8 @@
 // emigration-network-paint.js
 //
-// Destination-cluster dot rendering on a 2D canvas. Each civilization is a CLUSTER; the migrants who
+// Destination-cluster dot rendering on a 2D canvas. Each civilization is a cluster; the migrants who
 // arrived there are a swarm of small dots packed (phyllotaxis) around its center, each colored by
-// its ORIGIN civ and representing a scaled chunk of people. Pure drawing; the orchestrator owns
+// its origin civ and representing a scaled chunk of people. Pure drawing; the orchestrator owns
 // layout, the dot set, state, and interaction.
 
 import { withAlpha } from "/emigration/ui/emigration-civ-colors.js";
@@ -21,16 +21,16 @@ const CIV_PALETTE = [
   "#c9a66b", "#7fb0d6", "#e29bbd", "#7fccc0", "#cbb994"
 ];
 // Migrant-type (cause) colors for the "Type" lens ("native" is the home-grown population, muted
-// gray). Canvas DOT FILLS tuned to `CIV_PALETTE`; they deliberately differ from the darker text
-// `ACCENTS` in emigration-causes.js, so a NEW cause needs a color in BOTH maps.
+// gray). Canvas dot fills tuned to `CIV_PALETTE`; they differ from the darker text
+// `ACCENTS` in emigration-causes.js, so a new cause needs a color in both maps.
 /** @type {Record<string,string>} */
 export const CAUSE_PALETTE = {
   war: "#e5616b", disaster: "#f4a259", unhappiness: "#b39ddb",
   prosperity: "#76c893", conquest: "#e29bbd", native: "#8a96a3", other: "#9fb6c6"
 };
 
-// Movement-scope colors for the "Movement" lens: home-grown residents vs people who moved BETWEEN
-// this civ's own cities (internal) vs people who arrived from ANOTHER civ (immigrants).
+// Movement-scope colors for the "Movement" lens: home-grown residents vs people who moved between
+// this civ's own cities (internal) vs people who arrived from another civ (immigrants).
 /** @type {Record<string,string>} */
 export const MOVE_PALETTE = { resident: "#6b7686", internal: "#7fb0d6", immigrant: "#f4a259" };
 
@@ -67,7 +67,7 @@ function causeFiltered(d, state) {
 }
 
 /**
- * Whether a dot belongs to the selected city: it lives in (or arrived at) that city, or it LEFT that
+ * Whether a dot belongs to the selected city: it lives in (or arrived at) that city, or it left that
  * city, an internal mover now in a sibling city, or an emigrant now abroad.
  * @param {Dot} d Dot.
  * @param {{civId:number, idx:number}} fc The selected city.
@@ -104,7 +104,7 @@ function dotActive(d, state) {
  * @param {number} now Current frame index.
  */
 export function drawCityDiscs(ctx, c, now) {
-  // City/town discs are a BRIGHTER shade of the civ's color than the civ-circle fill, so they read
+  // City/town discs are a brighter shade of the civ's color than the civ-circle fill, so they read
   // as distinct patches inside it (towns dotted, cities solid).
   const fill = withAlpha(lighten(c.fillColor || "#e5d2ac", 0.18), 0.34);
   for (const city of c.cities || []) {
@@ -223,7 +223,7 @@ function drawEventRing(ctx, d, p, now) {
  * @returns {{x:number, y:number}} Canvas position.
  */
 function dotXY(d, c) {
-  // Resolve through the dot's CITY when it has one, so a dragged settlement carries its dots with it
+  // Resolve through the dot's city when it has one, so a dragged settlement carries its dots with it
   // (`ox/oy` are the settled civ-relative offsets, which would leave them behind).
   const cm = /** @type {*} */ (d).cm;
   let x = c.x + (cm ? cm.sx + /** @type {*} */ (d).cox : d.ox);
@@ -293,7 +293,7 @@ function drawCivLabel(ctx, name, x, y, size) {
 
 /**
  * The label font string for a given size: the body faces in locale order (a canvas draws with the
- * first face only), matching chart-line.js / the relations labels, NOT TitleFont (the display face
+ * first face only), matching chart-line.js / the relations labels, not TitleFont (the display face
  * reads differently).
  * @param {number} [size] Font px (default 15).
  * @returns {string} A CSS font string.

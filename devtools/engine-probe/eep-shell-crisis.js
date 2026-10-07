@@ -1,5 +1,5 @@
 // eep-shell-crisis.js - shell scope. Starts a NEW single-player game with ONE age crisis left selectable, so
-// the crisis that runs is known rather than random. Runs 3 and 4 proved an existing save cannot be pushed into
+// the crisis that runs is known rather than random. Runs 3 and 4 showed an existing save cannot be pushed into
 // a crisis from data, so a new game is the only route to the plague.
 //
 // The setup parameter is "Crises" (Base/modules/core/config/SetupParameters.xml):

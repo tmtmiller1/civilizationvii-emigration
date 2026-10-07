@@ -1,7 +1,7 @@
 // Quality guard: fail on empty `catch` blocks (whitespace-only body) anywhere under ui/.
 //
 // An empty catch silently swallows errors, which is the exact "random flakiness / masked breakage"
-// risk flagged in report.md (Finding 3). The codebase convention is to ANNOTATE an intentional swallow
+// risk flagged in report.md (Finding 3). The codebase convention is to annotate an intentional swallow
 // with a short rationale comment, e.g. `catch (_) { /* ignore: best-effort persistence */ }`, that
 // form is permitted (the body isn't whitespace-only). A new truly-empty catch fails this gate and must
 // either add such a comment or actually handle the error.
@@ -10,7 +10,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const UI_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "ui");
-// `\s` spans newlines, so this catches single- AND multi-line empties; a comment or any code between
+// `\s` spans newlines, so this catches single- and multi-line empties; a comment or any code between
 // the braces makes the body non-whitespace and is therefore allowed.
 const EMPTY_CATCH = /catch\s*(\([^)]*\))?\s*\{\s*\}/g;
 

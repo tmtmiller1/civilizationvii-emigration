@@ -1,11 +1,11 @@
 // emigration-city-readout.js
 //
-// The per-city "why is THIS settlement gaining/losing population?" readout: a small HUD-anchored panel
+// The per-city "why is this settlement gaining/losing population?" readout: a small HUD-anchored panel
 // (the same fixed-position DOM injection as the feedback toast), populated from the `citySnapshot`
 // recompute-on-read data core.
 //
 // Two layers:
-//   • readoutModel(snapshot), PURE: turns a CitySnapshot into a title + display lines + an
+//   • readoutModel(snapshot), pure: turns a CitySnapshot into a title + display lines + an
 //     optional warning. DOM-free, unit-tested.
 //   • the DOM host, show/hide a styled panel, thin and untested like toast().
 //
@@ -28,7 +28,7 @@ const MAX_TRACKED_CITIES = 2048;
 /**
  * A signed people count ("+12 thousand" / "-5 thousand" / "0").
  * @param {number} n Net people.
- * @returns {string} The display string.
+ * @returns {string}
  */
 function signedPeople(n) {
   if (!n) return "0";
@@ -38,10 +38,10 @@ function signedPeople(n) {
 /**
  * The status suffix for the cause line: resting (cooldown) or building pressure toward a move.
  * @param {*} s The snapshot.
- * @returns {string} The suffix (may be "").
+ * @returns {string} May be "".
  */
 function statusSuffix(s) {
-  // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces,
+  // The separator lives in the code: the game's text loader strips a localized string's edge spaces,
   // so a fragment that carries its own leading space arrives without one and jams against the text before it.
   if (s.onCooldown) return " " + loc("LOC_EMIG_RO_STATUS_RESTING", "(resting {1_Cooldown})", s.cooldown).trim();
   if (s.pressureToBar > 0) {
@@ -67,7 +67,7 @@ function warnText(s) {
 /**
  * Holding-pool severity bucket for badge + markers.
  * @param {number} pool Refugee holding points.
- * @returns {"low"|"medium"|"high"|"none"} Severity.
+ * @returns {"low"|"medium"|"high"|"none"}
  */
 function poolSeverity(pool) {
   if (!(pool > 0)) return "none";
@@ -78,8 +78,8 @@ function poolSeverity(pool) {
 
 /**
  * Label text for the readout title badge.
- * @param {"low"|"medium"|"high"|"none"} severity Severity bucket.
- * @returns {string} Badge label (or empty when none).
+ * @param {"low"|"medium"|"high"|"none"} severity
+ * @returns {string} Empty when none.
  */
 function poolBadgeLabel(severity) {
   if (severity === "high") return loc("LOC_EMIG_RO_BADGE_HIGH", "Resettlement: High");
@@ -108,7 +108,7 @@ function originsLine(comp) {
  * active (the engine's voluntary/crisis split, CONFIG.splitUiReadoutEnabled), else the single dominant
  * label.
  * @param {*} s The readout snapshot.
- * @returns {string} The pressure text.
+ * @returns {string}
  */
 function pressureText(s) {
   const mix = s.causeMix;
@@ -179,8 +179,8 @@ function whyThereLine(destReasons) {
 
 /**
  * Push a line when non-empty.
- * @param {string[]} lines Readout lines.
- * @param {string|null|undefined} line Candidate line.
+ * @param {string[]} lines
+ * @param {string|null|undefined} line
  */
 function pushLineIf(lines, line) {
   if (line) lines.push(line);
@@ -299,7 +299,7 @@ function injectStyle() {
 /**
  * Inline-position the panel by configured corner (default top-right), then move it beside any
  * city-screen panel that holds that corner.
- * @param {*} el The panel element.
+ * @param {*} el
  */
 function positionPanel(el) {
   const corner = typeof CONFIG.cityReadoutCorner === "string" ? CONFIG.cityReadoutCorner : "top-right";
@@ -314,7 +314,7 @@ function positionPanel(el) {
 /**
  * Write one inline style only when it changes. The dock check runs on an interval, and rewriting an
  * unchanged value can still restart layout in GameFace, which showed as the readout blinking.
- * @param {*} el The element. @param {string} prop The style property. @param {string} value The value.
+ * @param {*} el @param {string} prop @param {string} value
  */
 function setStyle(el, prop, value) {
   if (el.style[prop] !== value) el.style[prop] = value;
@@ -424,9 +424,9 @@ function stopDockWatch() {
 
 /**
  * Append a child div with text to the panel.
- * @param {*} parent The panel element.
- * @param {string} cls The class name.
- * @param {string} text The text content.
+ * @param {*} parent
+ * @param {string} cls
+ * @param {string} text
  */
 function appendLine(parent, cls, text) {
   const d = document.createElement("div");
@@ -437,9 +437,9 @@ function appendLine(parent, cls, text) {
 
 /**
  * Append the title row with optional severity badge.
- * @param {*} parent The panel element.
- * @param {string} title Readout title.
- * @param {string|undefined} badge Badge label.
+ * @param {*} parent
+ * @param {string} title
+ * @param {string|undefined} badge
  * @param {string|undefined} badgeTone Badge tone class.
  */
 function appendTitle(parent, title, badge, badgeTone) {
@@ -462,7 +462,7 @@ function appendTitle(parent, title, badge, badgeTone) {
  * stay within the complexity cap, since the panel also hosts the explainer.
  * @param {*} el The panel element.
  * @param {{title:string, titleBadge?:string, titleBadgeTone?:string,
- *   lines:string[], warn:(string|null), spark:(number[]|null)}} model The view-model.
+ *   lines:string[], warn:(string|null), spark:(number[]|null)}} model
  */
 function appendBody(el, model) {
   appendTitle(el, model.title, model.titleBadge, model.titleBadgeTone);
@@ -508,7 +508,7 @@ const _holdingActiveByCity = new Map();
 
 /**
  * Track selected-city refugee holding transitions and toast threshold crossings.
- * @param {*} snap City snapshot.
+ * @param {*} snap
  */
 function maybeToastHoldingTransition(snap) {
   if (!CONFIG.cityReadoutPoolToasts || !snap || !snap.cityKey) return;
@@ -536,7 +536,7 @@ function maybeToastHoldingTransition(snap) {
 /**
  * Show the readout for a city (a stable key, a city object, or a numeric localId/id). No-op when
  * disabled or when no snapshot can be built (hides any stale panel in the latter case).
- * @param {*} cityId The city identifier.
+ * @param {*} cityId
  */
 function showCityReadout(cityId) {
   if (!CONFIG.cityReadoutEnabled) return;

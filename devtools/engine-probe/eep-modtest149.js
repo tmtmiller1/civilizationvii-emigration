@@ -1,4 +1,4 @@
-// eep-modtest149.js - the ethnicity-audit fixes, watched together in game (docs/ethnicity-audit-solution-designs.md).
+// eep-modtest149.js - the ethnicity-audit fixes, together in game (docs/ethnicity-audit-solution-designs.md).
 // Save: EmigShots072 (turn 72). Runs the DEPLOYED emigration copy, which carries every audit fix. Verdict lines are
 // tagged VERDICT <item> PASS|FAIL with the numbers behind them.
 //

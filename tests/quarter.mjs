@@ -1,6 +1,6 @@
 // quarter.mjs
 //
-// The Cultural Quarter DECISION runtime (emigration-quarter.js): the pure decision pieces exercised
+// The Cultural Quarter decision runtime (emigration-quarter.js): the pure decision pieces exercised
 // off-engine. The modal + yield grants are exercised in-game; here we test the yield resolution, the
 // modal view model, the tile-key helper, and the contested war-strain accrual (which marks quarters
 // contested while the host is at war with their homeland). A Configuration KV stub plus a small
@@ -27,7 +27,7 @@ const stateMod = await import("/emigration/ui/emigration-quarter-state.js");
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
 const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCountForCiv, MAX_ENCLAVES_PER_CIV, applyOwnerQuarterYields, retireDisplacedEnclaves, hostOwners, recordOwners, RECOGNITION, settleTakeover, payTakeoverCompensation, fadeStep, stanceButton } = quarter.__test;
 
-// ── resolveApplied: a one-time payout sized from the host's income, with per-age floors ──────────
+// resolveApplied: a one-time payout sized from the host's income, with per-age floors
 {
   // Game.age 1 has no GameInfo here, so the age reads as Antiquity: floor 60, price floor 90.
   const embrace = resolveApplied({ benefitYield: "YIELD_CULTURE" }, 0, 3);
@@ -48,14 +48,14 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
   assert.equal(food.benefitAmount, 0, "a yield a script cannot grant is never promised");
 }
 
-// ── tileKeyOf: city-center plot key, defensive ──────────────────────────────
+// tileKeyOf: city-center plot key, defensive
 {
   assert.equal(tileKeyOf({ location: { x: 3, y: 4 } }), "3,4", "plot key is x,y");
   assert.equal(tileKeyOf(null), null, "no city yields no key");
   assert.equal(tileKeyOf({ location: {} }), null, "an unreadable location yields no key");
 }
 
-// ── quarterView: the decision modal model ───────────────────────────────────
+// quarterView: the decision modal model
 {
   const view = quarterView({ civ: 2, name: "Rome", share: 0.4, where: "by the harbor" }, 0);
   assert.equal(view.eyebrow, "Cultural Enclave", "the modal eyebrow marks a cultural-enclave decision");
@@ -65,7 +65,7 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
   assert.ok(typeof view.title === "string" && view.title.length, "the view has a title");
   assert.ok(typeof view.body === "string" && view.body.length, "the view has body prose");
   assert.ok(view.body.includes("By the harbor"), "the body weaves in the capitalized edge phrase");
-  // Exactly ONE quote, at the view level — the options themselves carry none.
+  // Exactly one quote, at the view level; the options themselves carry none.
   assert.equal(typeof view.quote, "string", "the view exposes a single enclave-level quote string");
   assert.ok(view.choices.every((c) => c.quote === undefined), "individual options no longer carry quotes");
   // Each button states what its stance pays; the body only says it is paid once.
@@ -82,7 +82,7 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
   assert.ok(view.choices.every((c) => !c.disabled), "with an unreadable treasury nothing is grayed out");
 }
 
-// ── quarterView: a stance the host cannot pay for is grayed out and says why ──
+// quarterView: a stance the host cannot pay for is grayed out and says why
 {
   const realGet = globalThis.Players.get;
   globalThis.Players.get = (id) => ({ ...realGet(id), Treasury: { goldBalance: 10 } });
@@ -94,7 +94,7 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
   globalThis.Players.get = realGet;
 }
 
-// ── accrueContestedStrain: war with a homeland turns its quarter contested ──
+// accrueContestedStrain: war with a homeland turns its quarter contested
 {
   const applied = { benefitYield: "YIELD_CULTURE", benefitAmount: 40, penaltyYield: "YIELD_HAPPINESS", penaltyAmount: 20 };
   stateMod.putQuarter("5,5", { civ: 2, owner: 0, optionId: "a", turn: 5, applied, contested: false, contestedTurn: -999 });
@@ -110,12 +110,12 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
   assert.equal(stateMod.quarterAt("5,5").contested, false, "peace clears the contested flag");
 }
 
-// ── enclaveCountForCiv + per-civ cap: 2 PER origin civilization, NOT a global cap ──
+// enclaveCountForCiv + per-civ cap: 2 per origin civilization, not a global cap
 {
   const ap = { benefitYield: "YIELD_CULTURE", benefitAmount: 40, penaltyYield: "YIELD_HAPPINESS", penaltyAmount: 20 };
   const put = (key, civ, originCiv) =>
     stateMod.putQuarter(key, { civ, originCiv, owner: 9, optionId: "a", turn: 5, applied: ap, contested: false, contestedTurn: -999 });
-  // Two enclaves of civ ROME (different origin PLAYER ids 7 and 17, same CivilizationType) + one of NORMAN.
+  // Two enclaves of civ Rome (different origin player ids 7 and 17, same CivilizationType) + one of Norman.
   put("70,70", 7, "CIVILIZATION_ROME");
   put("71,71", 17, "CIVILIZATION_ROME");
   put("72,72", 8, "CIVILIZATION_NORMAN");
@@ -123,7 +123,7 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
   // Identity is by CivilizationType: the two Roman-origin players count TOGETHER.
   assert.equal(enclaveCountForCiv(9, 7, "CIVILIZATION_ROME", null), 2, "same civ across two origin players counts together");
   assert.equal(enclaveCountForCiv(9, 7, "CIVILIZATION_ROME", "70,70"), 1, "excludes the candidate's own tile");
-  // The cap is PER civ, not global: Norman is independent — a host can still hold up to two Normans.
+  // The cap is per civ, not global: Norman is independent, so a host can still hold up to two Normans.
   assert.equal(enclaveCountForCiv(9, 8, "CIVILIZATION_NORMAN", null), 1, "a different origin civ counts independently (not global)");
   assert.ok(enclaveCountForCiv(9, 8, "CIVILIZATION_NORMAN", null) < MAX_ENCLAVES_PER_CIV, "two Romans don't block forming a Norman");
   // Deterministic fallback to origin player id when the CivilizationType is unavailable (legacy record).
@@ -132,16 +132,16 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
   assert.equal(MAX_ENCLAVES_PER_CIV, 2, "the per-civ enclave cap is two");
 }
 
-// ── stance grant: every established quarter pays its "recognized" reward each pass ──
-// (The old "built enclave replaces the stance grant" path was removed with the cultural-enclave BUILD
+// stance grant: every established quarter pays its "recognized" reward each pass
+// (The old "built enclave replaces the stance grant" path was removed with the cultural-enclave build
 //  feature; nothing is ever built now, so every established quarter always pays its stance grant.)
 {
   const applied = { benefitYield: "YIELD_CULTURE", benefitAmount: 2, penaltyYield: "YIELD_HAPPINESS", penaltyAmount: 1 };
-  // A FRESH host (11), so the quarters seeded for host 0 above cannot leak into the grant tally.
+  // A fresh host (11), so the quarters seeded for host 0 above cannot leak into the grant tally.
   stateMod.putQuarter("80,80", { civ: 2, originCiv: "CIVILIZATION_ROME", owner: 11, optionId: "a", turn: 5, applied, contested: false, contestedTurn: -999 });
   stateMod.putQuarter("81,81", { civ: 3, originCiv: "CIVILIZATION_GREECE", owner: 11, optionId: "a", turn: 5, applied, contested: false, contestedTurn: -999 });
 
-  // grantSigned resolves the yield KEY through YieldTypes before granting, so the stub must supply it.
+  // grantSigned resolves the yield key through YieldTypes before granting, so the stub must supply it.
   globalThis.YieldTypes = { YIELD_CULTURE: "yt-culture", YIELD_HAPPINESS: "yt-happiness" };
 
   /** @type {{yield:string, amount:number}[]} */
@@ -156,7 +156,7 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
   globalThis.Players = realPlayers;
 }
 
-// ── contested stance grant: a contested enclave pays a REDUCED benefit, full drawback ──
+// contested stance grant: a contested enclave pays a reduced benefit, full drawback
 {
   const applied = { benefitYield: "YIELD_CULTURE", benefitAmount: 2, penaltyYield: "YIELD_HAPPINESS", penaltyAmount: 1 };
   stateMod.putQuarter("90,90", { civ: 2, originCiv: "CIVILIZATION_ROME", owner: 12, optionId: "a", turn: 5, applied, contested: true, contestedTurn: 5 });
@@ -181,8 +181,8 @@ const { resolveApplied, quarterView, accrueContestedStrain, tileKeyOf, enclaveCo
 
 console.log("quarter harness passed");
 
-// ── built over: a placed enclave that stood and then vanished is DESTROYED (record dropped, chronicled);
-//    one that never landed is written off after a short grace and keeps paying from the treasury ──
+// built over: a placed enclave that stood and then vanished is destroyed (record dropped, chronicled);
+//    one that never landed is written off after a short grace and keeps paying from the treasury
 {
   const applied = { benefitYield: "YIELD_CULTURE", benefitAmount: 2, penaltyYield: null, penaltyAmount: 0 };
   // A minimal map: plot 500 holds a Gama at (50,50); plot 501 at (51,50) is empty.
@@ -204,8 +204,8 @@ console.log("quarter harness passed");
   onMap["50,50"] = ["wonder"]; // the city built a wonder over the Gama
   retireDisplacedEnclaves(12, 13);
   assert.equal(stateMod.quarterAt("90,90"), null, "built over: the enclave is destroyed and its record dropped");
-  // A wonder can complete over the tile before any pass saw it standing: an OCCUPIED plot is built over, not
-  // "never landed", but only AFTER the placement grace (a brand-new record's plot still shows the tile it replaces).
+  // A wonder can complete over the tile before any pass saw it standing: an occupied plot is built over, not
+  // "never landed", but only after the placement grace (a brand-new record's plot still shows the tile it replaces).
   onMap["51,50"] = ["wonder"];
   stateMod.putQuarter("92,92", { civ: 3, originCiv: "CIVILIZATION_ROME", owner: 12, optionId: "a", turn: 20, applied, contested: false, contestedTurn: -999,
     placed: { type: "IMPROVEMENT_HIDDEN_FORTRESS", plot: 501, enclave: "IMPROVEMENT_EMIG_ENCLAVE_ROME_A" } });
@@ -218,7 +218,7 @@ console.log("quarter harness passed");
   globalThis.GameplayMap = oldMap; globalThis.MapConstructibles = oldMC; globalThis.Constructibles = oldCons; globalThis.GameInfo = oldInfo;
 }
 
-// ── recognition mode: who may host an enclave this pass, and whose records get per-turn upkeep ──
+// recognition mode: who may host an enclave this pass, and whose records get per-turn upkeep
 {
   const signals = [{ owner: 0, isCityState: false }, { owner: 3, isCityState: false }, { owner: 7, isCityState: true }, { owner: 3, isCityState: false }];
   CONFIG.quarterRecognition = RECOGNITION.ASK;
@@ -235,7 +235,7 @@ console.log("quarter harness passed");
   CONFIG.quarterRecognition = 2;
 }
 
-// ── takeover compensation is settled once the tile stands and paid every tick while it stands ──
+// takeover compensation is settled once the tile stands and paid every tick while it stands
 {
   const applied = { benefitYield: null, benefitAmount: 0, penaltyYield: null, penaltyAmount: 0 };
   const oldMap = globalThis.GameplayMap, oldMC = globalThis.MapConstructibles, oldCons = globalThis.Constructibles, oldInfo = globalThis.GameInfo, oldPlayers = globalThis.Players;
@@ -261,7 +261,7 @@ console.log("quarter harness passed");
   globalThis.GameplayMap = oldMap; globalThis.MapConstructibles = oldMC; globalThis.Constructibles = oldCons; globalThis.GameInfo = oldInfo; globalThis.Players = oldPlayers;
 }
 
-// ── fade: below the share bar (and the stock bar) for the period → dissolve; either bar keeps it ──
+// fade: below the share bar (and the stock bar) for the period → dissolve; either bar keeps it
 {
   const cfg = { fadeShare: 0.125, fadeTurns: 12, stockBar: 6 };
   assert.equal(fadeStep({ fadeSince: null }, { share: 0.2, pts: 2 }, 50, cfg), "above", "share over the bar keeps it");

@@ -2,23 +2,19 @@
 //
 // Resolution-aware "density" stylesheet for the Emigration dashboard. The engine's root font floors
 // at 18px below ~1333px window height, so on a sub-1080p viewport (~40-50rem tall) the fixed-rem
-// chrome squeezes the flex-grow content. Pure CSS response, in two layers: per-tab CONTENT scales
-// continuously with clamp(), and the shared CHROME steps at two `@media (max-height: …rem)`
+// chrome squeezes the flex-grow content. Pure CSS response, in two layers: per-tab content scales
+// continuously with clamp(), and the shared chrome steps at two `@media (max-height: …rem)`
 // breakpoints (rem tracks the scaled root font, so they respond to Interface Size too).
-
-// ────────────────────────────────────────────────────────────────────────────
-// DENSITY STYLESHEET
 //
-// Appended to DASH_CSS in emigration-views.js, so these rules come AFTER the base sheet and win ties.
+// Appended to DASH_CSS in emigration-views.js, so these rules come after the base sheet and win ties.
 // Every selector is scoped under `.emig-dash` (present on the dashboard root in both the standalone
 // screen and the Demographics-embedded page). Only spacing / font-size is touched, never structure.
 // The micro block (≤44rem) cascades on top of the compact block (≤54rem); micro wins by source order.
-// ────────────────────────────────────────────────────────────────────────────
 export const DENSITY_CSS =
-  // ── Per-tab CONTENT, FLUID (continuous) sizing ───────────────────────────
+  // per-tab content, fluid (continuous) sizing
   // Fixed-size content scales with viewport height via clamp(floor, K·vh, canonical), K = canonical /
   // 0.6 since every design resolution is ~60rem tall. The canvas pies draw at a fixed 320px bitmap and
-  // are only DISPLAYED at this size, so CSS rescales them with no redraw.
+  // are only displayed at this size, so CSS rescales them with no redraw.
   ".emig-dash .emig-led-c{font-size:var(--dg-fs-120);}" +
   ".emig-dash .emig-pr-c{font-size:var(--dg-fs-105);}" +
   ".emig-dash .emig-led-bar{height:clamp(0.6rem,1.17vh,0.7rem);}" +
@@ -36,7 +32,7 @@ export const DENSITY_CSS =
   ".emig-dash .emig-guide-note{font-size:var(--dg-fs-105);}" +
   ".emig-dash .emig-guide-faq-q{font-size:var(--dg-fs-120);}" +
   ".emig-dash .emig-guide-faq-a{font-size:var(--dg-fs-105);}" +
-  // ── COMPACT chrome (viewport ≲ 54rem tall) ────────────────────────────────
+  // compact chrome (viewport ≲ 54rem tall)
   "@media (max-height: 53.9rem){" +
   ".emig-dash{gap:0.55rem;}" +
   ".emig-dash .emig-tabs{margin-bottom:0.45rem;}" +
@@ -59,7 +55,7 @@ export const DENSITY_CSS =
   ".emig-dash .emig-ntf-list{gap:0.25rem;}" +
   ".emig-dash .emig-guide-row{padding:0.45rem 0.1rem;}" +
   "}" +
-  // ── MICRO chrome (viewport ≲ 44rem tall, cascades over compact) ───────────
+  // micro chrome (viewport ≲ 44rem tall, cascades over compact)
   "@media (max-height: 43.9rem){" +
   ".emig-dash{gap:0.4rem;}" +
   ".emig-dash .emig-tabs{margin-bottom:0.3rem;}" +

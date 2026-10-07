@@ -104,7 +104,7 @@ testMarkPresetCustom();
 testGainCapTunableExposed();
 
 // Grouped settings: one slider moves several tunables along a curve; 50 is the shipped defaults (the behavior
-// measured at scale in mod tests 90 to 93), 100 is free movement between civilizations, positions between anchors
+// the balance from mod tests 90 to 93), 100 is free movement between civilizations, positions between anchors
 // interpolate, and setting a position writes every member tunable.
 {
   const { GROUPED_SETTINGS, groupedValues } = await import("/emigration/ui/emigration-tunables.js");
@@ -131,9 +131,9 @@ testGainCapTunableExposed();
   assert.equal(CONFIG.poachBlock, 30, "back to the middle: the settled cross-civ friction");
   assert.equal(CONFIG.crisisInternalBonus, 24, "and the homeland preference the middle ships with");
 
-  // Refugees from minor-power raids: 50 is the balance measured in mod test 118, 100 scores a raid exactly like a
+  // Refugees from minor-power raids: 50 is the balance from mod test 118, 100 scores a raid exactly like a
   // war with a major civilization, 0 lets raids add no pressure. Its members are small fractions, so it keeps two
-  // decimals -- rounding to one would turn the 0.08 floor into 0.1 and the middle would no longer be the default.
+  // decimals; rounding to one would turn the 0.08 floor into 0.1 and the middle would no longer be the default.
   assert.deepEqual(groupedValues("minorRaidRefugees", 50), { minorViolenceScale: 0.4, minorSiegeBesiegedFloor: 0.08 });
   assert.deepEqual(groupedValues("minorRaidRefugees", 100),
     { minorViolenceScale: 1, minorSiegeBesiegedFloor: CONFIG_DEFAULTS.siegeBesiegedFloor },
@@ -185,7 +185,7 @@ testGainCapTunableExposed();
 }
 
 // Every tunable belongs to a group the Advanced editor knows how to title. An unknown group still renders, but
-// under the raw key LOC_OPTIONS_GROUP_<GROUP>, which no locale defines: the minor-power raid settings sat at
+// under the raw key LOC_OPTIONS_GROUP_<group>, which no locale defines: the minor-power raid settings sat at
 // the bottom under exactly such a header ("war") until this was checked.
 {
   const { TUNABLES, ADVANCED_GROUPS } = await import("/emigration/ui/emigration-tunables.js");

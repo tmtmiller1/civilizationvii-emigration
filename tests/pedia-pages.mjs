@@ -2,7 +2,7 @@
 //
 // Civilopedia page-resolution gate: every page the mod adds must actually have text to draw.
 //
-// The pedia resolves a chaptered page's body WITHOUT any database row: for each chapter of the page's layout it
+// The pedia resolves a chaptered page's body without any database row: for each chapter of the page's layout it
 // looks for that chapter's paragraphs by key convention and stops at the first gap (base-standard
 // ui/civilopedia/model-civilopedia.js, getChapterBody → findChapterTextKey):
 //
@@ -11,13 +11,13 @@
 //
 // where <prefix> is tried as LOC_PEDIA_<section>_PAGE_<page>, then LOC_PEDIA_<section>_PAGE, then
 // LOC_PEDIA_PAGE_<page>, then LOC_PEDIA_PAGE. A chapter with no text is skipped silently and a page whose
-// chapters are all empty renders as a title with nothing under it — no error, no log line, nothing to notice
+// chapters are all empty renders as a title with nothing under it: no error, no log line, nothing to notice
 // short of opening the page in game. The same is true of a mistyped page Name. So this gate walks the shipped
 // data exactly as the engine does and fails on a page that would come up blank, a paragraph sequence with a hole
 // in it (PARA_1 and PARA_3 silently drops PARA_3), a layout or page group that is referenced but never defined,
 // and any referenced LOC key with no en_us row.
 //
-// It does NOT prove the engine draws them; only opening the Civilopedia in game does that. It proves the mod's
+// It does not show that the engine draws them; only opening the Civilopedia in game does that. It covers the mod's
 // side of the contract, which is what regenerating scripts/gen-pedia-voices.mjs can break.
 //
 // Run as a plain node script (no engine loader needed): `node ./tests/pedia-pages.mjs`.
@@ -55,7 +55,7 @@ function rowsIn(xml, table) {
   return out;
 }
 
-// ── what the mod ships ───────────────────────────────────────────────────────
+// what the mod ships
 const dataFiles = walk("data").filter((f) => f.endsWith(".xml") && /Civilopedia/.test(read(f)));
 assert.ok(dataFiles.length, "no Civilopedia data file found under data/");
 const dataXml = dataFiles.map(read).join("\n");
@@ -73,7 +73,7 @@ const layoutChapters = rowsIn(dataXml, "CivilopediaPageLayoutChapters");
 const pages = rowsIn(dataXml, "CivilopediaPages");
 const paragraphRows = rowsIn(dataXml, "CivilopediaPageChapterParagraphs");
 
-// Base-game layouts the mod reuses rather than defines. "Concept" is a single CONTENT chapter
+// Base-game layouts the mod reuses rather than defines. "Concept" is a single content chapter
 // (base-standard/data/civilopedia.xml), so a page on it needs an explicit paragraph row.
 const BASE_LAYOUTS = { Concept: ["CONTENT"] };
 
@@ -104,7 +104,7 @@ function conventionParagraphs(page, chapter) {
     const found = [];
     for (let i = 1; defined.has(`${stem}_PARA_${i}`); i++) found.push(`${stem}_PARA_${i}`);
     // A hole in the sequence is silent data loss: the engine stops at the gap and never reads past it. This has
-    // to run even when NOTHING was found, because the commonest way to make the hole is to lose PARA_1 itself,
+    // to run even when nothing was found, because the commonest way to make the hole is to lose PARA_1 itself,
     // which strands the whole chapter while leaving its text in the file.
     const stranded = [];
     for (let i = found.length + 2; i <= found.length + 20; i++) if (defined.has(`${stem}_PARA_${i}`)) stranded.push(i);
@@ -116,7 +116,7 @@ function conventionParagraphs(page, chapter) {
   return [];
 }
 
-// ── 0) foreign-key ordering within each file ─────────────────────────────────
+// 0) foreign-key ordering within each file
 // CivilopediaPages.PageLayoutID and CivilopediaPageLayoutChapters.PageLayoutID are real foreign keys onto
 // CivilopediaPageLayouts (01_GameplaySchema.sql), and the loader inserts in document order, so a file that
 // references one of its own layouts before declaring it inserts against a row that does not exist yet. That is
@@ -135,7 +135,7 @@ for (const f of dataFiles) {
   }
 }
 
-// ── 1) sections, groups and layouts are defined where they are referenced ────
+// 1) sections, groups and layouts are defined where they are referenced
 const sectionIds = new Set(sections.map((r) => r.SectionID));
 const groupIds = new Set(groups.map((r) => `${r.SectionID}|${r.PageGroupID}`));
 const layoutIds = new Set([...layouts.map((r) => r.PageLayoutID), ...Object.keys(BASE_LAYOUTS)]);
@@ -149,7 +149,7 @@ for (const r of layoutChapters) {
   if (!layouts.some((l) => l.PageLayoutID === r.PageLayoutID)) fail(`layout chapter ${r.PageLayoutID}/${r.ChapterID}: layout ${r.PageLayoutID} is not defined by this mod`);
 }
 
-// ── 2) every page resolves to a title and to at least one chapter with text ──
+// 2) every page resolves to a title and to at least one chapter with text
 assert.ok(pages.length, "no CivilopediaPages rows");
 let chaptersWithText = 0;
 let paragraphsTotal = 0;
@@ -184,7 +184,7 @@ for (const page of pages) {
   chaptersWithText += withText;
 }
 
-// ── 3) no orphaned paragraph rows ────────────────────────────────────────────
+// 3) no orphaned paragraph rows
 for (const r of paragraphRows) {
   const page = pages.find((p) => p.SectionID === r.SectionID && p.PageID === r.PageID);
   if (!page) {
@@ -196,7 +196,7 @@ for (const r of paragraphRows) {
   }
 }
 
-// ── 4) a chapter title row that names a chapter no layout has is dead text ───
+// 4) a chapter title row that names a chapter no layout has is dead text
 // (Cheap catch for a renamed chapter: the title stays behind and nothing shows it.)
 const chapterIds = new Set(layoutChapters.map((r) => r.ChapterID));
 for (const key of defined) {

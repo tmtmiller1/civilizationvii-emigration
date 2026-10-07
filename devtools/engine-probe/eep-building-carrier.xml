@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Probe-only (multiplayer plan 8.9h, probe 3): ONE custom BUILDING that is never buildable
-     (RequiresUnlock with no unlock row), carries Population 0, and has a NEGATIVE gold yield.
+<!-- Probe-only (multiplayer plan 8.9h, probe 3): one custom building that is never buildable
+     (RequiresUnlock with no unlock row), carries Population 0, and has a negative gold yield.
      It is the carrier shape the multiplayer floor needs: a per-turn cost expressed as a placed
      constructible's database yield, so every client computes the same number without a script write.
      Questions: does the row load with a negative yield, can CREATE_ELEMENT place it in a city center,

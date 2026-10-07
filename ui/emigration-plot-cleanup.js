@@ -1,11 +1,11 @@
 // emigration-plot-cleanup.js
 //
-// Keeps an abandoned tile USABLE. Destroying a rural improvement with DESTROY_ELEMENT leaves its
+// Keeps an abandoned tile usable. Destroying a rural improvement with DESTROY_ELEMENT leaves its
 // DISTRICT_RURAL behind with nothing on it, and the game never offers such a plot for a new population
 // point; removing the district with DESTROY_ELEMENT {Kind:"DISTRICT"} makes it placeable again.
 // `scheduleDistrictCleanup` re-checks a plot a moment after a destroy (which lands asynchronously);
 // `sweepEmptyRuralDistricts` clears every empty rural district once the loaded game starts and at the
-// start of each local turn. Only a RURAL district with NO constructible is ever touched.
+// start of each local turn. Only a rural district with no constructible is ever touched.
 
 import { dlog } from "/emigration/ui/emigration-log.js";
 
@@ -24,7 +24,7 @@ function safe(fn, fb) {
 }
 
 /**
- * Whether a district id names a real element. @param {*} id The id ({owner, id}). @returns {boolean} True.
+ * Whether a district id names a real element. @param {*} id ({owner, id}) @returns {boolean}
  */
 function validId(id) {
   if (!id) return false;

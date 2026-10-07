@@ -19,7 +19,7 @@ import { runPass } from "/emigration/ui/emigration-engine.js";
 import { addDistress, disasterKey } from "/emigration/ui/emigration-disasters.js";
 import { _setSyncFlushForTests } from "/emigration/ui/emigration-arrival-placement.js";
 
-// ── engine globals ────────────────────────────────────────────────────────
+// engine globals
 globalThis.YieldTypes = { YIELD_FOOD: "YIELD_FOOD", YIELD_PRODUCTION: "YIELD_PRODUCTION", YIELD_GOLD: "YIELD_GOLD",
   YIELD_SCIENCE: "YIELD_SCIENCE", YIELD_CULTURE: "YIELD_CULTURE", YIELD_HAPPINESS: "YIELD_HAPPINESS" };
 globalThis.Culture = { isTraditionActive: () => false };
@@ -41,7 +41,7 @@ function installConfigStore() {
 const gold = {};
 globalThis.Players = null;
 
-// ── the tile world ────────────────────────────────────────────────────────
+// the tile world
 const TILE = { YIELD_FOOD: 2.2, YIELD_PRODUCTION: 1.4, YIELD_GOLD: 1.2, YIELD_SCIENCE: 0, YIELD_CULTURE: 0 };
 const BLDG = { YIELD_FOOD: 0, YIELD_PRODUCTION: 1.0, YIELD_GOLD: 0.5, YIELD_SCIENCE: 1.5, YIELD_CULTURE: 1.2 };
 let elemSeq = 1;
@@ -120,7 +120,7 @@ globalThis.Game = {
   },
   Notifications: { getEndTurnBlockingType: () => 0 }
 };
-function settleAI() { // the AI places its own pending points on its turn (watched in-game)
+function settleAI() { // the AI places its own pending points on its turn
   for (const c of CITIES) if (c.owner !== GameContext.localPlayerID) while (c.pendingPopulation > 0) { c.pendingPopulation--; c.imps.push({ owner: c.owner, id: elemSeq++, type: "IMPROVEMENT_FARM" }); }
 }
 function major(cities, pid) {
@@ -181,7 +181,7 @@ function strike(shape, crisisCity, t) {
   if (shape === "spikes" && (t === 20 || t === 30)) addDistress(disasterKey(crisisCity), 12);
 }
 
-// ── enclave formation under the same flows (EMIG_QUARTERS=1): composition + automatic recognition ──
+// enclave formation under the same flows (EMIG_QUARTERS=1): composition + automatic recognition
 const QUARTERS = !!process.env.EMIG_QUARTERS;
 const { recordCompositionPass, compositionForCity } = await import("/emigration/ui/emigration-composition.js");
 const { maybeQuarter, tickContestedQuarters } = await import("/emigration/ui/emigration-quarter.js");
@@ -256,7 +256,7 @@ disaster(false, "spikes", "OLD model: the same two spikes");
 disaster(true, "sustained", "NEW model: SUSTAINED disaster (40 distress every turn, turns 20-39), 80 turns");
 disaster(false, "sustained", "OLD model: the same sustained disaster");
 
-// ── diagnostic: why does (or doesn't) the voluntary track move? ──────────
+// diagnostic: why does (or doesn't) the voluntary track move?
 if (process.env.EMIG_DEBUG) {
   const { collectCitySignals } = await import("/emigration/ui/emigration-cities.js");
   const { rankByProsperity } = await import("/emigration/ui/emigration-prosperity.js");

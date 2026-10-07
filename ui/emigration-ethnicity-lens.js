@@ -1,8 +1,8 @@
 // emigration-ethnicity-lens.js
 //
-// A map LENS that paints every settlement's tiles by the ORIGIN civilization of its population (the
-// composition tracked in emigration-composition.js): the BORDER is the dominant origin's banner color,
-// the FILL is the share-weighted blend of every origin on the tile, with population density setting
+// A map lens that paints every settlement's tiles by the origin civilization of its population (the
+// composition tracked in emigration-composition.js): the border is the dominant origin's banner color,
+// the fill is the share-weighted blend of every origin on the tile, with population density setting
 // saturation and opacity. Self-registering UIScript (LensManager layer + lens-panel radio button +
 // Shift+E hotkey), loaded as its own <UIScripts> entry in the HUD context.
 
@@ -23,7 +23,7 @@ const FALLBACK_HEX = "#888888"; // neutral gray when a civ color can't be resolv
 // tiles still read instead of washing out). Same shape the Prosperity lens uses. The fill's saturation and
 // opacity constants live with the blend, in emigration-ethnicity-colour.js.
 const CONTRAST_GAMMA = 0.55;
-// Each tile's BORDER is the settlement's main (dominant) origin color at full strength, so you always
+// Each tile's border is the settlement's main (dominant) origin color at full strength, so you always
 // read whose city it is regardless of the fill; EDGE_ALPHA is that border's opacity.
 const EDGE_ALPHA = 1.0;
 
@@ -50,7 +50,7 @@ function civRGB(civ) {
 }
 
 /**
- * Each tile's density normalized ACROSS ITS OWN settlement (sparsest 0, densest 1, on a curve), so the core-to-
+ * Each tile's density normalized across its own settlement (sparsest 0, densest 1, on a curve), so the core-to-
  * fringe ramp reads the same in a hamlet and a megacity.
  * @param {{density:number}[]} tiles The settlement's tiles.
  * @returns {number[]} One normalized density per tile, in order.
@@ -67,7 +67,7 @@ function densityNorms(tiles) {
 }
 
 /**
- * The float4 BORDER color for a settlement: its main origin's banner color at full strength, so every
+ * The float4 border color for a settlement: its main origin's banner color at full strength, so every
  * tile is framed in the owner's color regardless of the (diverging) fill.
  * @param {number} hostCiv The settlement's main origin. @returns {{x:number,y:number,z:number,w:number}}
  */
@@ -77,7 +77,7 @@ function edgeFill(hostCiv) {
 }
 
 /**
- * Every observable settlement's PER-TILE paints: each owned tile filled by the diverging host↔gray↔other
+ * Every observable settlement's per-tile paints: each owned tile filled by the diverging host↔gray↔other
  * scale at a population-density opacity, bordered in the settlement's main origin color. A policy-hidden
  * owner's settlements are skipped entirely.
  * @returns {{x:number, y:number, fill:*, edge:*}[]} Per-tile paints.
@@ -148,7 +148,7 @@ let _paintCache = null;
 /**
  * The lens cache key: the ledger's version (turn plus the recorder's pass stamp), so a pass that saved after the
  * lens first painted this turn is picked up instead of waiting a turn. "" when unreadable.
- * @returns {string} The key.
+ * @returns {string}
  */
 function lensTurn() {
   try {
@@ -287,7 +287,7 @@ function repaintAfterPasses(layer) {
   }
 }
 
-// ── Self-registration (runs on UIScript load, in the HUD context) ──────────────────────
+// self-registration: runs on UIScript load, in the HUD context
 try {
   const layer = new EthnicityLensLayer();
   LensManager.registerLensLayer(LAYER, layer);

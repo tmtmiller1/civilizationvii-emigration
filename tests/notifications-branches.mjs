@@ -45,7 +45,7 @@ function testLogNotificationWithoutConfiguration() {
   delete globalThis.Configuration;
   logNotification({ cause: "war", summary: "No config" });
   globalThis.Configuration = cfg;
-  // Should gracefully handle missing Configuration
+  // Must cope with a missing Configuration
 }
 
 testLogNotificationWithValidEntry();

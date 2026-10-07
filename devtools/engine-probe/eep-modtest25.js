@@ -1,4 +1,4 @@
-// eep-modtest25.js - the SHIPPED dead-plot fix (emigration-plot-cleanup.js) watched on the user's own save
+// eep-modtest25.js - the shipped dead-plot fix (emigration-plot-cleanup.js) on the user's own save
 // (AugustusAnt43), human control, no turn ending. Logs [EmigTest]; "SHOT" asks for a screenshot.
 //   F0 empty rural districts on every settlement's land after load (the automatic turn-start sweep should
 //      already have cleared the 10 left by earlier departures), plus the sweep's own log line if any.

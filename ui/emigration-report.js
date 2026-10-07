@@ -2,7 +2,7 @@
 //
 // Turn applied Migration records into human-readable log lines, honoring the player's
 // number-display preference (Civ population points, the Demographics-scaled people count, or both).
-// This is the LOG side of reporting; in-game toasts / world-news live in emigration-feedback.js.
+// This is the log side of reporting; in-game toasts / world-news live in emigration-feedback.js.
 
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { getNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";

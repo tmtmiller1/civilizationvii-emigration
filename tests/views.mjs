@@ -105,7 +105,7 @@ function testFlowNetworkAggregatesNodesAndEdges() {
   assert.equal(net.edges[0].people, 10000); // strongest (merged Rome→Egypt)
   assert.equal(net.edges[0].byCause.war, 10000);
   assert.equal(net.maxEdge, 10000);
-  // City-level edges keep each origin AND destination settlement distinct.
+  // City-level edges keep each origin and destination settlement distinct.
   assert.equal(net.cityEdges.length, 3);
   assert.equal(net.cityEdges[0].fromCity, "Rome");
   assert.equal(net.cityEdges[0].toCity, "Memphis");
@@ -118,7 +118,7 @@ testPressureRowsSortDescAndFlag();
 testDashboardModelSections();
 testFlowNetworkAggregatesNodesAndEdges();
 
-// ── Edge case tests for view-model builders ────────────────────────────────────
+// Edge cases for the view-model builders
 
 function testFlowNetworkWithIsolatedCivs() {
   // A civ with no incoming or outgoing edges should still appear in nodes
@@ -133,7 +133,7 @@ function testFlowNetworkWithIsolatedCivs() {
 }
 
 function testDashboardModelEmptySections() {
-  // Dashboard model should handle empty civs, flows, and notifications gracefully,
+  // Dashboard model must take empty civs, flows, and notifications,
   // still providing all section structures (just with no rows).
   const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [] });
   assert.equal(m.sections.length, 8);
@@ -165,7 +165,7 @@ function testCivLedgerSortingStabilityOnTie() {
 }
 
 function testCivLedgerSplitsInternalFromExternal() {
-  // The gross tallies COUNT the internal moves, so the table's External columns are the remainder:
+  // The gross tallies count the internal moves, so the table's External columns are the remainder:
   // Rome's 9k arrivals include 4k from its own settlements, leaving 5k that crossed a border.
   const rows = civLedgerRows([
     { name: "Rome", in: 9000, out: 7000, intIn: 4000, intOut: 4000, net: 2000, refugees: 0, deaths: 0,
@@ -225,7 +225,7 @@ function testStanceRowsAllNeutral() {
 }
 
 function testStanceRowsWithDuplicateNames() {
-  // Edge case: duplicate civ names (shouldn't happen, but test robustness).
+  // Duplicate civ names (shouldn't happen, but must not break the rows).
   const rows = stanceRows([
     { name: "Rome", stance: "pro" },
     { name: "Rome", stance: "anti" },
@@ -380,7 +380,7 @@ function testStripScopeTagRemovesTrailingMoveTag() {
 }
 
 function testChipLabelNamesTheDirection() {
-  // A per-event row names WHICH DIRECTION the migration ran; the cause lives in the header, not the chip.
+  // A per-event row names which direction the migration ran; the cause lives in the header, not the chip.
   assert.equal(chipLabel({ kind: "digest", cause: "prosperity", ownLoss: true, crossCiv: false }),
     "Internal Migration");
   assert.equal(chipLabel({ kind: "digest", cause: "war", ownLoss: true, crossCiv: true }),
@@ -398,12 +398,12 @@ function testRowAccentColoursByDirection() {
   const green = causeAccent("prosperity");
   const red = causeAccent("war");
   const neutral = rowAccent({ kind: "crisis", cause: "war", ownLoss: false }); // the world-news slate
-  // Only the player's own GAIN (newcomers from abroad) reads green; an own cross-civ loss reads red; an
+  // Only the player's own gain (newcomers from abroad) reads green; an own cross-civ loss reads red; an
   // internal shuffle reads neutral (the source settlement still loses its tile, so never green).
   assert.equal(rowAccent({ kind: "digest", cause: "prosperity", ownLoss: false, crossCiv: true }), green);
   assert.equal(rowAccent({ kind: "digest", cause: "war", ownLoss: true, crossCiv: true }), red);
   assert.equal(rowAccent({ kind: "digest", cause: "prosperity", ownLoss: true, crossCiv: false }), neutral);
-  // The direction color overrides cause: an INTERNAL war relocation is neutral, not war-red and not green.
+  // The direction color overrides cause: an internal war relocation is neutral, not war-red and not green.
   assert.equal(rowAccent({ kind: "digest", cause: "war", ownLoss: true, crossCiv: false }), neutral);
   assert.notEqual(neutral, green);
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Exploration-age border-policy cards (Feature 2). Loaded ONLY in the Exploration gameplay
+  Exploration-age border-policy cards (Feature 2). Loaded only in the Exploration gameplay
   database (modinfo criteria AgeInUse=AGE_EXPLORATION). NODE_CIVIC_EX_MAIN_ECONOMICS only
   exists while Exploration is the active age. See emigration-policies-antiquity.xml for the
   full rationale.

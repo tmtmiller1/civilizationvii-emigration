@@ -10,7 +10,7 @@
 // - matching the documented scope of monoliths-analysis.md.
 //
 // Per file it reports: ext, raw line count, bytes, function-declaration count, class count, and
-// the raw-line monolith flag (> 500). The monolith *gate* enforced in CI is eslint's CODE-line
+// the raw-line monolith flag (> 500). The monolith *gate* enforced in CI is eslint's code-line
 // count (skipBlank + skipComments); this raw-line flag is the report's coarser screen.
 //
 // Usage:  node scripts/inventory.mjs [--md]    (--md prints the markdown table; default = totals)

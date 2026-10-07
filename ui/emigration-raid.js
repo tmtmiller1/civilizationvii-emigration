@@ -1,13 +1,13 @@
 // emigration-raid.js
 //
-// The MIGRATION layer of the "Talent Raid" diplomacy actions. The actions themselves (cost, duration,
-// Grievance, stolen yield, cooldown, UI) are NATIVE diplomacy actions owned by the Diplomacy Extended
+// The migration layer of the "Talent Raid" diplomacy actions. The actions themselves (cost, duration,
+// Grievance, stolen yield, cooldown, UI) are native diplomacy actions owned by the Diplomacy Extended
 // mod: DIPLOMACY_ACTION_TALENT_RAID / CULTURAL_OFFENSIVE / TRADE_OFFENSIVE.
 //
-// This module only READS whether a civ has one of those active against a rival (the live
+// This module only reads whether a civ has one of those active against a rival (the live
 // Game.Diplomacy player events) and applies the emigration-specific effect on top:
-//   1. TILT, pull the target's migration toward the raider while the op runs (pull.js raidTilt).
-//   2. DIVIDEND, bank the raider the domain's carried dividend per migrant pulled FROM the target.
+//   1. Tilt, pull the target's migration toward the raider while the op runs (pull.js raidTilt).
+//   2. Dividend, bank the raider the domain's carried dividend per migrant pulled from the target.
 //
 // Optional integration: without Diplomacy Extended the actions don't exist, getPlayerEvents returns
 // none, and this whole layer is a silent no-op.
@@ -37,7 +37,7 @@ function playerEvents(pid) {
 
 /**
  * The raider's active raid, read from the live diplomacy events, or null. A raid is any of the
- * native raid actions INITIATED by `raider` (initialPlayer === raider) and currently running.
+ * native raid actions initiated by `raider` (initialPlayer === raider) and currently running.
  * @param {number} raider Player id.
  * @returns {{target:number, domain:string, yieldKey:string}|null} The raid, or null.
  */
@@ -53,7 +53,7 @@ export function raidOf(raider) {
 }
 
 /**
- * The TILT a raid adds when `destOwner` is raiding `srcOwner` (pull the target's people to the
+ * The tilt a raid adds when `destOwner` is raiding `srcOwner` (pull the target's people to the
  * raider). 0 otherwise. The engine clamps the total tilt to tiltCap.
  * @param {number} srcOwner Source civ.
  * @param {number} destOwner Destination civ.
@@ -65,7 +65,7 @@ export function raidTilt(srcOwner, destOwner) {
 }
 
 /**
- * On a migrant ARRIVING at a raider FROM its raid target, return the domain yield to bank as a
+ * On a migrant arriving at a raider from its raid target, return the domain yield to bank as a
  * carried dividend. Null when the arrival isn't from the raider's
  * target (or there's no raid), so the dividend is gated to the rival the op actually aims at. The
  * Influence cost + Grievance are native (Diplomacy Extended); this is the reward side only.

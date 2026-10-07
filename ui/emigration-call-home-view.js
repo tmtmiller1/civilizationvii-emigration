@@ -2,8 +2,8 @@
 //
 // The dialog that offers a call (emigration-call-home.js holds the rules). Pure: balances, flows and
 // civilization names are injected, so the prose and buttons are testable off-engine. Both variants
-// offer a ladder of sizes per currency (unaffordable sizes grayed out, never removed); INTERNAL is a
-// purchase ("bring"), EXTERNAL a gamble ("call") that states the odds and is paid for either way.
+// offer a ladder of sizes per currency (unaffordable sizes grayed out, never removed); internal is a
+// purchase ("bring"), external a gamble ("call") that states the odds and is paid for either way.
 import { loc } from "/emigration/ui/emigration-loc.js";
 import { civName } from "/emigration/ui/emigration-naming.js";
 import { displacedQuoteFor } from "/emigration/ui/emigration-displaced-quotes.js";
@@ -22,7 +22,7 @@ const MAX_PAIR_LINES = 4;
 
 /**
  * Decode a choice id from the dialog: "<currency>:<count>" for a paid call, anything else means "leave them".
- * @param {string} id The choice id. @returns {{currency:number, want:number}|null} The call to make, or null.
+ * @param {string} id @returns {{currency:number, want:number}|null} The call to make, or null.
  */
 export function parseChoice(id) {
   const m = typeof id === "string" ? id.match(/^(\d+):(\d+)$/) : null;
@@ -35,7 +35,7 @@ export function parseChoice(id) {
 
 /**
  * The dialog view for one variant, or null when nobody is callable.
- * @param {number} pid Player id. @param {string} scope A CALL_HOME_SCOPE.
+ * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {{flows?:*[], afford?:(currency:number)=>number, civ?:(pid:number)=>string, seed?:string, quote?:string}}
  *   [deps] Injected reads: the flow rows (default live), the treasury balance per currency (default
  *   unlimited), a civ's name, the epigraph seed (one quote per offer), or the epigraph itself.
@@ -73,7 +73,7 @@ export function callHomeView(pid, scope, deps) {
 /**
  * The homecoming epigraph: the injected one when a test supplies it, else the player's own civilization's
  * "return" quote for this offer's seed.
- * @param {number} pid Player id. @param {string} scope A CALL_HOME_SCOPE. @param {*} d Injected reads.
+ * @param {number} pid @param {string} scope A CALL_HOME_SCOPE. @param {*} d Injected reads.
  * @returns {string} The display line ("" when there is nothing to show).
  */
 function epigraph(pid, scope, d) {
@@ -83,7 +83,7 @@ function epigraph(pid, scope, d) {
 
 /**
  * The purchase prose: cities named when there is one pair, and a promise that everyone called will come.
- * @param {*} quote The internal quote. @returns {string} The body.
+ * @param {*} quote The internal quote. @returns {string}
  */
 function internalBody(quote) {
   const one = quote.pairs.length === 1 ? quote.pairs[0] : null;
@@ -102,7 +102,7 @@ function internalBody(quote) {
  * The gamble prose: the foreign ruler named when there is one pair, the odds per person, and the warning that
  * the call is paid for whether or not anyone answers.
  * @param {*} quote The external quote. @param {(pid:number)=>string} civ Names a host civ.
- * @returns {string} The body.
+ * @returns {string}
  */
 function externalBody(quote, civ) {
   const pct = Math.round(quote.chance * 100);
@@ -145,7 +145,7 @@ function tierChoices(quote, currency, d) {
 /**
  * The tooltip on a grayed-out size: what it needs and what the treasury holds.
  * @param {number} currency A CALL_HOME_CURRENCY. @param {number} cost The fee. @param {number} balance The
- *   treasury. @returns {string} The note.
+ *   treasury. @returns {string}
  */
 function shortNote(currency, cost, balance) {
   const have = Math.floor(balance);
@@ -157,7 +157,7 @@ function shortNote(currency, cost, balance) {
 /**
  * "Bring N home for <icon> cost" (internal) or "Call N home for <icon> cost" (external), singular for one.
  * @param {number} n How many. @param {number} cost The fee. @param {number} currency A CALL_HOME_CURRENCY.
- * @param {boolean} external Whether this is the gamble. @returns {string} The button label.
+ * @param {boolean} external Whether this is the gamble. @returns {string}
  */
 function tierLabel(n, cost, currency, external) {
   const infl = currency === CALL_HOME_CURRENCY.INFLUENCE;
@@ -181,7 +181,7 @@ function tierLabel(n, cost, currency, external) {
     : loc("LOC_EMIG_CALLHOME_TIER_GOLD", "Bring {1_Count} home for [icon:YIELD_GOLD] {2_Cost}", n, cost);
 }
 
-/** @returns {{id:string, label:string, note:string}} The dismiss choice. */
+/** @returns {{id:string, label:string, note:string}} */
 function leaveChoice() {
   return { id: NO, label: loc("LOC_EMIG_CALLHOME_NO", "Leave them where they are"),
     note: loc("LOC_EMIG_CALLHOME_NO_N", "They may still drift home on their own in time.") };
@@ -191,7 +191,7 @@ function leaveChoice() {
  * One line per origin/destination pair ("4 from Ostia back to Rome"), the foreign ruler named for external
  * pairs, the tail summarized past MAX_PAIR_LINES.
  * @param {*[]} pairs The candidate pairs, richest first. @param {((pid:number)=>string)|null} civ Names a
- *   host civ, or null for internal pairs. @returns {string[]} The detail lines.
+ *   host civ, or null for internal pairs. @returns {string[]}
  */
 function pairLines(pairs, civ) {
   const lines = pairs.slice(0, MAX_PAIR_LINES).map((p) => (civ
@@ -205,7 +205,7 @@ function pairLines(pairs, civ) {
 
 /**
  * What the player can spend of a currency, or Infinity when unreadable (so a failed read never hides a button).
- * @param {number} currency A CALL_HOME_CURRENCY. @param {*} d Injected reads. @returns {number} The balance.
+ * @param {number} currency A CALL_HOME_CURRENCY. @param {*} d Injected reads. @returns {number}
  */
 function balanceFor(currency, d) {
   const v = typeof d.afford === "function" ? Number(d.afford(currency)) : Infinity;

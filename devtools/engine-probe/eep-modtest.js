@@ -1,5 +1,5 @@
 // eep-modtest.js - in-game test of the emigration mod's new departure/arrival code paths, driven
-// against REAL cities in a loaded save. Requires the emigration mod to be loaded (imports it).
+// against real cities in a loaded save. Requires the emigration mod to be loaded (imports it).
 // Logs [EmigTest] lines to UI.log via console.error.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
@@ -78,7 +78,7 @@ async function run() {
     await later(4000);
     emit("S3 RESULT before=" + J(before) + " after=" + J(snap(B)));
   }
-  // S4: arrival, ask (native dialog) — verify the dialog renders, then drive the "choose" path
+  // S4: arrival, ask (native dialog): check the dialog renders, then drive the "choose" path
   {
     CONFIG.arrivalPlacement = 2;
     const before = snap(C);

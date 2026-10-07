@@ -55,7 +55,7 @@ try {
   family = "quarter-registry";
   for (const civ of [...Object.keys(QUARTER_BONUSES), null]) quarterOptionsFor(civ);
 
-  // Explain-view factor labels: every term in the source's FALLBACK table.
+  // Explain-view factor labels: every term in the source's fallback table.
   family = "explain";
   const explainSrc = fs.readFileSync("ui/emigration-explain.js", "utf8");
   const fbBlock = explainSrc.slice(explainSrc.indexOf("const FALLBACK"), explainSrc.indexOf("};", explainSrc.indexOf("const FALLBACK")));

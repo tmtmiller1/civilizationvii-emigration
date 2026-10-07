@@ -1,6 +1,6 @@
 // emigration-violence-signals.js
 //
-// The POLLED, fog-independent combat signals that drive the violence model (emigration-violence.js):
+// The polled, fog-independent combat signals that drive the violence model (emigration-violence.js):
 // district damage, besieged flags, pillaged tiles and hostile units, read from the gameplay model.
 // Pure reads, no state, so a distant AI-vs-AI war registers exactly as a visible one does.
 
@@ -32,7 +32,7 @@ function cityDistricts(city) {
 
 /**
  * Whether a live District belongs to the city identified by ComponentID `cid` (matched on owner+id,
- * since `getDistrictIds` spans ALL of a player's cities).
+ * since `getDistrictIds` spans all of a player's cities).
  * @param {*} d A live District object.
  * @param {*} cid The city's ComponentID.
  * @returns {boolean} True when the district is part of that city.
@@ -59,10 +59,10 @@ function ownerDistrictIds(city) {
 }
 
 /**
- * Every district that belongs to THIS city, the city center PLUS every other urban/rural quarter, as
+ * Every district that belongs to this city, the city center plus every other urban/rural quarter, as
  * live District objects (`getDistrictIds()` → `Districts.get` → filter by `cityId`). Empty when
  * enumeration is unavailable (callers fall back to the city-center plot). This is what lets damage to
- * a city's OUTER districts register as violence while the center stays pristine.
+ * a city's outer districts register as violence while the center stays pristine.
  * @param {*} city A live city object.
  * @returns {*[]} The city's live District objects (empty only if reads fail / API absent).
  */
@@ -91,7 +91,7 @@ function districtLocations(city) {
 }
 
 /**
- * The WORST damage among ALL of the city's districts as a fraction of max health (0 = every district
+ * The worst damage among all of the city's districts as a fraction of max health (0 = every district
  * pristine, 1 = a district destroyed), read straight from the gameplay model, not just the city
  * center. 0 when unreadable.
  * @param {*} city A live city object.
@@ -116,9 +116,9 @@ export function districtDamageFrac(city) {
 }
 
 /**
- * Whether the city is currently BESIEGED at ANY of its districts: the engine besieged flag on any
- * district, OR a district that's been overrun (its `controllingPlayer` differs from its `owner`).
- * Attacker-agnostic, so it fires for a minor-power raid before any district's HEALTH drops. False when unreadable.
+ * Whether the city is currently besieged at any of its districts: the engine besieged flag on any
+ * district, or a district that's been overrun (its `controllingPlayer` differs from its `owner`).
+ * Attacker-agnostic, so it fires for a minor-power raid before any district's health drops. False when unreadable.
  * @param {*} city A live city object.
  * @returns {boolean} True when the city is under siege at any district.
  */
@@ -228,7 +228,7 @@ function plotFreshlyPillaged(idx, turn) {
 
 /**
  * The players currently holding any of a city's overrun districts, i.e. who is actually attacking it. This is
- * the only place the ENGINE names the attacker: the besieged flag says a city is under attack but not by whom,
+ * the only place the engine names the attacker: the besieged flag says a city is under attack but not by whom,
  * and an Independent Power harassing a city may never appear as a formal war opponent at all.
  * @param {*} city A live city object.
  * @returns {Set<number>} Attacking player ids (empty when none can be read).
@@ -247,9 +247,9 @@ export function besiegingPlayers(city) {
 }
 
 /**
- * Hostile units standing on or beside a city's districts, and who owns them: the DIRECT reading of who
- * is attacking a city, where `Diplomacy.isAtWarWith` is only a proxy (it reports true for EVERY
- * Independent Power permanently). Fog-INDEPENDENT, so a distant AI-vs-AI siege registers exactly as a
+ * Hostile units standing on or beside a city's districts, and who owns them: the direct reading of who
+ * is attacking a city, where `Diplomacy.isAtWarWith` is only a proxy (it reports true for every
+ * Independent Power permanently). Fog-independent, so a distant AI-vs-AI siege registers exactly as a
  * visible one does.
  * @param {*} city A live city object.
  * @returns {Set<number>} Owner ids of hostile units in contact (empty when none are visible or readable).
@@ -268,7 +268,7 @@ export function attackersNear(city) {
 }
 
 /**
- * Add the owners of any hostile ARMED units standing on one plot. Civilians are skipped deliberately: a
+ * Add the owners of any hostile armed units standing on one plot. Civilians are skipped on purpose: a
  * settler or trader passing a city is not a siege, and mistaking one for an army is how a quiet border
  * turns into a refugee wave.
  * @param {{x:number,y:number}} loc The plot. @param {number} owner The city's owner.
@@ -317,7 +317,7 @@ const ADJACENT_DIRECTIONS = Object.freeze([
 
 /**
  * Whether a unit's owner is hostile to the city's owner. Independent Powers read as permanently at war, so
- * this is only ever used to EXCLUDE friendly units standing in allied territory -- the unit's presence in
+ * this is only ever used to exclude friendly units standing in allied territory -- the unit's presence in
  * contact is what carries the weight, not the diplomatic state.
  * @param {number} owner The city's owner. @param {number} other The unit's owner. @returns {boolean} Hostile.
  */

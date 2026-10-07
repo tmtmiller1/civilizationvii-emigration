@@ -1,6 +1,6 @@
 // emigration-quarter-registry.js
 //
-// Assembles the CHOICES a player is offered for an established Cultural Quarter of a specific origin:
+// Assembles the choices a player is offered for an established Cultural Quarter of a specific origin:
 // two identity-grounded stances (the yield each pays + a one-line "why", from
 // emigration-quarter-bonuses.js) plus a universal passive "let them be". A stance that does not pay
 // Gold costs Gold; the amounts are sized elsewhere (emigration-stance-payout.js), so this module is

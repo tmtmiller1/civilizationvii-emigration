@@ -1,6 +1,6 @@
 // emigration-demo-data.js
 //
-// Synthetic SAMPLE migration data for previewing the dashboard (Options → Mods → "Dashboard data:
+// Synthetic sample migration data for previewing the dashboard (Options → Mods → "Dashboard data:
 // Sample"), in the exact shape gatherDashboard() returns, marked `sample: true`, never persisted.
 // Deterministic; models a full game (3 ages × 75 turns) of 10 civilizations whose cities found and grow.
 
@@ -23,7 +23,7 @@ const CITY_TABLE = [
   [["Uppsala", 34000, 0, false], ["Hedeby", 16000, 0.5, true], ["Birka", 10000, 0.76, true]]
 ];
 // Cities that change hands mid-game. After `at` (global progress) the city transfers from civ `from`
-// to civ `to`; its residents stay coded to the PRIOR owner, frozen at the captured population, and
+// to civ `to`; its residents stay coded to the prior owner, frozen at the captured population, and
 // only post-capture growth counts as the conqueror, mirroring the live composition ledger.
 const CONQUESTS = [{ name: "Lixus", from: 7, to: 4, at: 0.74 }];
 const SEED = 600; // population of a city the moment it is founded (≈ one dot)
@@ -32,10 +32,10 @@ const SEED = 600; // population of a city the moment it is founded (≈ one dot)
 const SAMPLE_PPP = 3500; // people per pop point, for the preview's "Civ population" numbers
 
 // Migration corridors: [fromId, fromCity, toId, toCity, cause, people, a, b]. `people` is the total
-// who travel the corridor over the game; [a,b] is the GLOBAL-PROGRESS window across which they leave
+// who travel the corridor over the game; [a,b] is the global-progress window across which they leave
 // (smoothstep fill, so narrow windows are shocks and wide ones trickles). Shock windows match EVENT_DEFS.
 const CORRIDORS = [
-  // War / disaster SHOCKS, big counts in a tight window, aligned to the events below.
+  // War / disaster shocks, big counts in a tight window, aligned to the events below.
   [2, "Thebes", 3, "Athens", "disaster", 20000, 0.08, 0.2], // Nile flood: Egypt → Greece
   [1, "Capua", 4, "Susa", "war", 18000, 0.25, 0.45], // Roman–Greek War: Rome → Persia
   [3, "Sparta", 2, "Memphis", "war", 14000, 0.25, 0.45], // Roman–Greek War: Greece → Egypt
@@ -46,7 +46,7 @@ const CORRIDORS = [
   [5, "Taxila", 4, "Susa", "war", 8000, 0.72, 0.88], // Maurya–Han War: Maurya → Persia
   [6, "Luoyang", 9, "Calakmul", "war", 9000, 0.72, 0.88], // Maurya–Han War: Han → Maya
   [6, "Chengdu", 5, "Ujjain", "disaster", 18000, 0.88, 0.98], // Yellow River flood: Han → Maurya
-  // Prosperity TRICKLES, modest counts over long spans, converging on the magnets.
+  // Prosperity trickles, modest counts over long spans, converging on the magnets.
   [3, "Athens", 1, "Rome", "prosperity", 9000, 0.1, 0.95], // Greece → Rome
   [5, "Pataliputra", 6, "Chang'an", "prosperity", 10000, 0.15, 1.0], // Maurya → Han
   [4, "Persepolis", 1, "Rome", "prosperity", 8000, 0.2, 1.0], // Persia → Rome
@@ -54,13 +54,13 @@ const CORRIDORS = [
   [9, "Tikal", 6, "Chang'an", "prosperity", 6000, 0.3, 1.0], // Maya → Han
   [2, "Alexandria", 4, "Persepolis", "prosperity", 7000, 0.25, 1.0], // Egypt → Persia
   [8, "Aksum", 6, "Luoyang", "prosperity", 5000, 0.5, 1.0], // Aksum → Han
-  // Unhappiness EPISODES, a bump while the source civ is net-unhappy, then it subsides.
+  // Unhappiness episodes, a bump while the source civ is net-unhappy, then it subsides.
   [5, "Taxila", 4, "Susa", "unhappiness", 6000, 0.55, 0.72], // Maurya unrest → Persia
   [10, "Uppsala", 6, "Luoyang", "unhappiness", 4000, 0.3, 0.46] // Norse unrest → Han
 ];
 
-// Intra-civ moves: [civId, fromCity, toCity, people, a, b], people who relocate BETWEEN a civ's
-// OWN cities. Windows start after the source city exists. Shown as a lighter tint of the civ's color.
+// Intra-civ moves: [civId, fromCity, toCity, people, a, b], people who relocate between a civ's
+// own cities. Windows start after the source city exists. Shown as a lighter tint of the civ's color.
 const INTRA_CORRIDORS = [
   [1, "Capua", "Rome", 7000, 0.5, 1.0],
   [1, "Ostia", "Mediolanum", 4000, 0.72, 1.0],
@@ -141,8 +141,8 @@ const MY_CITIES = [
   }
 ];
 
-// Timeline events that drove migration, by GLOBAL-PROGRESS window (0..1) + affected civ ids; resolved
-// to frame indices in sampleDashboard. Some windows deliberately OVERLAP so the network shows
+// Timeline events that drove migration, by global-progress window (0..1) + affected civ ids; resolved
+// to frame indices in sampleDashboard. Some windows overlap on purpose so the network shows
 // multiple concurrent causes at once.
 const EVENT_DEFS = [
   { kind: "disaster", civs: [2], label: "Nile flood", from: 0.08, to: 0.2 },
@@ -157,7 +157,7 @@ const EVENT_DEFS = [
 const AGES = ["AGE_ANTIQUITY", "AGE_EXPLORATION", "AGE_MODERN"];
 const TURNS_PER_AGE = 75;
 
-// Approximate in-game year span per age, for the SAMPLE timeline labels (negative = BC). A LIVE
+// Approximate in-game year span per age, for the sample timeline labels (negative = BC). A live
 // game uses the engine's real Game.getTurnDate() instead; these are only so the preview shows
 // believable years rather than fabricating a precise calendar.
 /** @type {Record<string, [number, number]>} */
@@ -170,7 +170,7 @@ const AGE_YEARS = {
 /**
  * Format a signed year as a date label ("3200 BC" / "1450 AD").
  * @param {number} y Year (negative = BC).
- * @returns {string} The label.
+ * @returns {string}
  */
 function yearLabel(y) {
   const r = Math.round(y);
@@ -179,9 +179,9 @@ function yearLabel(y) {
 
 /**
  * A believable sample year for an age-local position (frac 0..1 across the age).
- * @param {string} age Age type.
+ * @param {string} age
  * @param {number} frac Position within the age (0..1).
- * @returns {string} The date label.
+ * @returns {string}
  */
 function sampleYear(age, frac) {
   const span = AGE_YEARS[age];
@@ -201,12 +201,12 @@ function smoothstep(t) {
 
 /**
  * Cumulative fraction (0..1) of a corridor realized by global progress `p` over its window [a,b].
- * Narrow windows (war/disaster shocks) fill steeply ; a surge; wide windows (prosperity) fill
+ * Narrow windows (war/disaster shocks) fill steeply, a surge; wide windows (prosperity) fill
  * gently, a trickle.
  * @param {number} p Global progress 0..1.
  * @param {number} a Window start.
  * @param {number} b Window end.
- * @returns {number} Fraction 0..1.
+ * @returns {number}
  */
 function profileFrac(p, a, b) {
   if (p <= a) return 0;
@@ -258,7 +258,7 @@ function buildIntraAt(p) {
  * its final size since founding.
  * @param {*[]} c City entry [name, finalPop, foundAt, isTown].
  * @param {number} p Global progress 0..1.
- * @returns {number} People.
+ * @returns {number}
  */
 function cityPopAt(c, p) {
   const foundAt = /** @type {number} */ (c[2]);
@@ -269,8 +269,8 @@ function cityPopAt(c, p) {
 
 /**
  * The conquest record for a city by name, or null when it never changes hands.
- * @param {string} name City name.
- * @returns {{name:string, from:number, to:number, at:number}|null} Conquest, or null.
+ * @param {string} name
+ * @returns {{name:string, from:number, to:number, at:number}|null}
  */
 function conquestOf(name) {
   for (const q of CONQUESTS) if (q.name === name) return q;
@@ -278,11 +278,11 @@ function conquestOf(name) {
 }
 
 /**
- * The civ that OWNS a city at progress `p`: its conqueror once captured, else the table owner.
+ * The civ that owns a city at progress `p`: its conqueror once captured, else the table owner.
  * @param {*[]} c City entry [name, finalPop, foundAt, isTown].
  * @param {number} tableOwner The civ that founded it.
  * @param {number} p Global progress.
- * @returns {number} Owner civ id.
+ * @returns {number}
  */
 function ownerAt(c, tableOwner, p) {
   const q = conquestOf(/** @type {string} */ (c[0]));
@@ -290,7 +290,7 @@ function ownerAt(c, tableOwner, p) {
 }
 
 /**
- * A city's resident population split by ORIGIN civ at progress `p`: an unconquered city is 100% its
+ * A city's resident population split by origin civ at progress `p`: an unconquered city is 100% its
  * owner; a captured city keeps its prior-owner residents frozen at capture size, and later growth
  * counts as the conqueror. The `pts` are origin-share weights (the dot builder normalizes them).
  * @param {*[]} c City entry.
@@ -337,7 +337,7 @@ function nativePopsAt(p) {
 /**
  * Finalize a civ row: net, modeled losses (attrition + external, a fraction of war/disaster
  * pressure), and the parallel pop-point figures (derived from people via SAMPLE_PPP).
- * @param {*} r Civ row.
+ * @param {*} r
  */
 function finalizeCiv(r) {
   const pts = (/** @type {number} */ v) => Math.round(v / SAMPLE_PPP);
@@ -353,7 +353,7 @@ function finalizeCiv(r) {
 }
 
 /**
- * Fold the intra-civ moves into a civ's internal tallies AND its gross in/out (a move within a civ
+ * Fold the intra-civ moves into a civ's internal tallies and its gross in/out (a move within a civ
  * is both a departure and an arrival for it, so it leaves net untouched, as in the live accounting).
  * @param {{civId:number, people:number}[]|undefined} intra Intra-civ moves.
  * @param {(id:number, name:string) => *} get Civ-row accessor.
@@ -370,10 +370,10 @@ function foldIntra(intra, get) {
 
 /**
  * Derive per-civ ledger rows from the flow list (in/out/net + refugees), with the intra-civ moves
- * folded into BOTH the internal tallies and the gross in/out, mirroring the live accounting.
+ * folded into both the internal tallies and the gross in/out, mirroring the live accounting.
  * @param {*[]} flows Named flows.
  * @param {{civId:number, people:number}[]} [intra] Intra-civ moves.
- * @returns {*[]} Ledger civ rows.
+ * @returns {*[]}
  */
 function deriveCivs(flows, intra) {
   /** @type {Map<number, *>} */
@@ -472,7 +472,7 @@ function buildHistory(step) {
 
 /**
  * Resolve the progress-windowed event defs to frame-index windows for a timeline of `n` frames.
- * @param {number} n Frame count.
+ * @param {number} n
  * @returns {*[]} Events {kind, civs, label, from, to} (frame indices).
  */
 function resolveEvents(n) {

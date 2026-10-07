@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
 // Import the main gatherDashboard function from the window module.
-// Note: module expects GlobalThis.GameContext, Players, and EmigrationData globals.
+// The module expects GlobalThis.GameContext, Players, and EmigrationData globals.
 const { gatherDashboard } = await import(
   "/emigration/ui/emigration-window.js"
 );
@@ -178,7 +178,7 @@ function testGatherDashboardWithEventData() {
 
   const model = gatherDashboard();
   assert.ok(typeof model.eventsByOwner === "object", "eventsByOwner present");
-  // Note: actual event aggregation depends on inPlayCivs() which requires city signals
+  // Actual event aggregation depends on inPlayCivs() which requires city signals
 }
 
 function testGatherDashboardPopulationsObject() {

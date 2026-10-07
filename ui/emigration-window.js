@@ -1,9 +1,9 @@
 // emigration-window.js
 //
-// The migration dashboard DATA GATHERER: pulls the world's migration state (per-civ ledger +
+// The migration dashboard data gatherer: pulls the world's migration state (per-civ ledger +
 // border stances, the world per-cause breakdown, and the local player's per-city pressure
 // snapshots) into the shape the render core (emigration-views.js) expects. Both surfaces that show
-// the dashboard mount the SAME gathered data:
+// the dashboard mount the same gathered data:
 //   • the standalone Emigration screen (emigration-screen.js), opened from the dock button
 //   • the Demographics "Migration" page (emigration-migration-page.js), when that mod is installed
 
@@ -72,7 +72,7 @@ function civRow(pid) {
     out: read("grossOutCumFor"),
     net: read("netCumFor"),
     refugees: read("refugeesCumFor"),
-    // "Losses" = the mod's own attrition deaths PLUS detected external population loss
+    // "Losses" = the mod's own attrition deaths plus detected external population loss
     // (starvation / plague / razing / disasters). Each tally also carries an exact pop-point count.
     deaths: read("deathsCumFor") + read("externalLossesCumFor"),
     // Internal (within-civ) moves, tallied separately; the ledger subtracts them from the gross
@@ -96,7 +96,7 @@ function civRow(pid) {
 }
 
 /**
- * Aggregate per-cause EMIGRATION across the given civs (the "why people move" breakdown).
+ * Aggregate per-cause emigration across the given civs (the "why people move" breakdown).
  * @param {number[]} pids Player ids.
  * @returns {Record<string, number>} People per cause.
  */
@@ -129,7 +129,7 @@ function gatherDisasterEvents() {
 }
 
 /**
- * Per-civ breakdown of EMIGRATION and DEATHS by the SPECIFIC event behind them (a particular war /
+ * Per-civ breakdown of emigration and deaths by the specific event behind them (a particular war /
  * disaster / crisis / famine, see emigration-event-attribution), for the Causes-tab drill-down.
  * @param {number[]} pids Player ids.
  * @returns {Record<number, Record<string, {people:number, deaths:number}>>} Per civ, per event key.
@@ -168,7 +168,7 @@ function mergeEvents(e, inn, dd) {
 
 /**
  * Resolve a list of raw flow edges to named edges for the viz, carrying the origin/destination
- * CITY (when the tally recorded it) so the flow view can route civ→civ AND city→city.
+ * city (when the tally recorded it) so the flow view can route civ→civ and city→city.
  * @param {*[]} raw Raw flow edges ({src,dest,srcCity,destCity,people,byCause}).
  * @returns {*[]} Named edges {from,to,fromName,toName,fromCity,toCity,people,byCause}.
  */
@@ -202,7 +202,7 @@ function intraEdge(e) {
 }
 
 /**
- * Split raw flow edges into CROSS-civ named edges (the civ→civ network) and INTRA-civ moves (city→city
+ * Split raw flow edges into cross-civ named edges (the civ→civ network) and intra-civ moves (city→city
  * within one civ, drawn inside an expanded civ on the flow map). Edges touching a policy-hidden civ are
  * dropped from both. Intra edges are the same-owner ones (src === dest); see intraEdge for what's drawable.
  * @param {*[]} raw Raw flow edges ({src,dest,srcCity,destCity,people,points,byCause}).
@@ -235,7 +235,7 @@ const unmetName = () => loc("LOC_EMIG_NETC_UNMET", "Unmet");
 /**
  * Remap a flow edge's policy-hidden endpoint(s) to the anonymous "Unmet" bucket (blanking that side's
  * city so no identity leaks). Returns the edge unchanged when both sides are visible, or null when
- * BOTH are hidden (an unmet→unmet move has nothing to show the player).
+ * both are hidden (an unmet→unmet move has nothing to show the player).
  * @param {*} e Raw flow edge.
  * @returns {*} The (possibly remapped) edge, or null.
  */
@@ -330,8 +330,8 @@ function citiesByOwner() {
 }
 
 /**
- * Split a city's NATIVE (resident) population points across the ORIGIN civs its people trace to. The
- * modeled immigrant portion (already drawn as fly-in dots) is removed from the FOREIGN buckets only, so
+ * Split a city's native (resident) population points across the origin civs its people trace to. The
+ * modeled immigrant portion (already drawn as fly-in dots) is removed from the foreign buckets only, so
  * immigrants aren't double-counted. Falls back to 100% owner without a composition; sums to `ptsN`.
  * @param {*} comp compositionForCity result ({total, owner, civs:[{civ,pts}]}) or null.
  * @param {number} owner Current owner id.
@@ -350,7 +350,7 @@ function residentOrigins(comp, owner, ptsN) {
 }
 
 /**
- * The fraction of each FOREIGN origin bucket that is resident (not a modeled immigrant): immigrants
+ * The fraction of each foreign origin bucket that is resident (not a modeled immigrant): immigrants
  * (the 1 − native share) are removed from foreign buckets only, leaving conquered/prior-owner
  * residents. Returns 0..1.
  * @param {*[]} civs Composition buckets [{civ, pts}].
@@ -396,7 +396,7 @@ function buildOriginBuckets(civs, owner, keep, ptsN) {
 }
 
 /**
- * Per-civ population grouped by CITY, split into native (home-grown) residents. Each owner's cities
+ * Per-civ population grouped by city, split into native (home-grown) residents. Each owner's cities
  * are listed with their population scaled by the civ's native fraction (total − arrivals) / total,
  * so the per-city counts sum to the civ's home-grown population and migrants don't double-count.
  * @returns {Record<number, {cities:{name:string, town:boolean, pop:number}[]}>} civId → cities.
@@ -434,14 +434,14 @@ function gatherPops() {
 function scalePops(entry, frac) {
   const cities = ((entry && entry.cities) || []).map((/** @type {*} */ c) => ({
     name: c.name, town: c.town, pop: (c.pop || 0) * frac, pts: Math.round((c.pts || 0) * frac),
-    // origins are ORIGIN-SHARE weights; scaling uniformly preserves the ratios the dot builder uses.
+    // origins are origin-share weights; scaling uniformly preserves the ratios the dot builder uses.
     origins: c.origins ? c.origins.map((/** @type {*} */ o) => ({ civ: o.civ, pts: o.pts * frac })) : undefined
   }));
   return { cities };
 }
 
 /**
- * Sum a per-civ city-pop entry's native pop-POINTS (the historical-scale denominator for a frame).
+ * Sum a per-civ city-pop entry's native pop-points (the historical-scale denominator for a frame).
  * @param {*} entry {cities:[{pts}]}.
  * @returns {number} Total native points.
  */
@@ -451,7 +451,7 @@ function nativePtsOf(entry) {
 
 /**
  * The decimated cumulative-flow history as named-edge frames, for the timeline scrubber. Each frame's
- * per-civ native-population snapshot (`f.pop`) scales the civ's CURRENT per-city breakdown, so the
+ * per-civ native-population snapshot (`f.pop`) scales the civ's current per-city breakdown, so the
  * per-civ total is exact and only the within-civ split is approximated. Frames without `f.pop` fall
  * back to a linear scale.
  * @param {Record<number, *>} nativeNow Current per-civ city populations.
@@ -472,7 +472,7 @@ function gatherHistory(nativeNow) {
       const cur = nativeNow[+k];
       const curPts = nativePtsOf(cur);
       const scale = realPop && typeof realPop[+k] === "number" && curPts > 0
-        ? realPop[+k] / curPts // REAL: this civ's snapshot ÷ its current native points
+        ? realPop[+k] / curPts // Real: this civ's snapshot ÷ its current native points
         : linear;
       pops[+k] = scalePops(cur, scale);
     }
@@ -500,7 +500,7 @@ function cityEntry(map, city) {
 }
 
 /**
- * Add one move to a direction accumulator (by other civ + cause). Each civ entry tracks BOTH scaled
+ * Add one move to a direction accumulator (by other civ + cause). Each civ entry tracks both scaled
  * people and raw Civ population points, so the pie can switch counting modes.
  * @param {*} d Direction {civs, causes}.
  * @param {number} otherOwner The other civ id.
@@ -558,7 +558,7 @@ function pressureMap(me) {
       bar: s.pressureToBar || 0, cause: s.causeLabel || "", dest: s.topDestinationName || "",
       flag: s.attritionRisk ? "at risk" : s.onCooldown ? "resting" : "",
       mix: s.causeMix || null // the weighted "what drives migration" breakdown, for the per-city meter
-      , // What argues for STAYING: the settlement's wonders and civic buildings, named.
+      , // What argues for staying: the settlement's wonders and civic buildings, named.
       stay: Array.isArray(s.stayReasons) ? s.stayReasons : []
     };
   }
@@ -566,7 +566,7 @@ function pressureMap(me) {
 }
 
 /**
- * The local player's settlements (cities AND towns), each with its recent immigration / emigration
+ * The local player's settlements (cities and towns), each with its recent immigration / emigration
  * by origin/destination + cause and its emigration pressure. Driven by the full settlement list so
  * every settlement shows; the flows are recent activity, not lifetime totals.
  * @param {number|null} me Local player id.
@@ -602,9 +602,9 @@ function gatherSettlements(me, pops) {
 const UNKNOWN_ORIGIN_COLOR = "#6d6a63";
 
 /**
- * One settlement's origin breakdown, resolved for display: each origin's civ NAME and banner COLOR,
- * share-sorted. Mirrors the city readout's `resolveComposition` masking exactly — origins from
- * policy-hidden (unmet) civs merge into ONE "Unknown" slice rather than being named, so a visible
+ * One settlement's origin breakdown, resolved for display: each origin's civ name and banner color,
+ * share-sorted. Mirrors the city readout's `resolveComposition` masking exactly: origins from
+ * policy-hidden (unmet) civs merge into one "Unknown" slice rather than being named, so a visible
  * settlement's bar never reveals a civ the player hasn't met.
  * @param {{civ:number, share:number}[]} civs The raw origin shares.
  * @returns {{name:string, share:number, color:string}[]} Display slices, largest first.
@@ -626,7 +626,7 @@ function diversityParts(civs) {
 
 /**
  * The "most diverse cities" ranking over the composition ledger, with the dashboard's spoiler mask
- * applied: a settlement owned by a hidden civ never appears, and a hidden origin is never NAMED as a
+ * applied: a settlement owned by a hidden civ never appears, and a hidden origin is never named as a
  * plurality/majority. Each row's population is resolved both ways (raw points + scaled people).
  * @returns {*[]} Ranked rows, each carrying resolved `parts`, `pts`/`people` and a masked `dominantName`.
  */
@@ -634,7 +634,7 @@ function gatherDiversity() {
   const D = /** @type {*} */ (globalThis).EmigrationData || {};
   const t = monoTurn();
   const me = localId();
-  // limit 0 = NO cap: the view needs every settlement for its "All settlements" list, and applies
+  // limit 0 = no cap: the view needs every settlement for its "All settlements" list, and applies
   // CONFIG.diversityRows itself to the "most diverse" table on top. Capping here would truncate both.
   const rows = diverseCityRanking({
     openness: immigrationOpenness,
@@ -688,7 +688,7 @@ function gatherFresh() {
     pops,
     intra, // intra-civ (city→city) moves, split from the same flow matrix as the cross-civ network
     history: gatherHistory(pops),
-    // Pre-positioned event specs are the SAMPLE path only. Live events are turn-stamped records the
+    // Pre-positioned event specs are the sample path only. Live events are turn-stamped records the
     // network view positions itself against its final frame list.
     events: [],
     eventRecords: { disasters: gatherDisasterEvents(), wars: warEvents() },
@@ -704,7 +704,7 @@ function gatherFresh() {
 let _gatherMemo = null;
 
 /**
- * Whether player `pid` is an alive MAJOR civ the local player has met (self counts as met). Safe:
+ * Whether player `pid` is an alive major civ the local player has met (self counts as met). Safe:
  * unreadable players / a throwing hasMet just don't count, so one bad id never aborts the scan.
  * @param {number} pid Player id.
  * @param {number} me Local player id.
@@ -729,7 +729,7 @@ function countsAsMet(pid, me, hasMet) {
 }
 
 /**
- * A compact signature of WHICH alive major civs the local player has met (self included), as two
+ * A compact signature of which alive major civs the local player has met (self included), as two
  * 32-bit hex chunks over player slots 0-63. Folded into the live memo key because meeting a civ is a
  * diplomacy event, not an emigration pass; keying on the set (not a count) also catches a met/died swap.
  * @returns {string} Hex signature of the met-major set (local included).

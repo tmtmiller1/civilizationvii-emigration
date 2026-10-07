@@ -18,7 +18,7 @@
 //   HUMANS<2                -> INCONCLUSIVE: the hotseat game did not start with two humans.
 //   ACTIVATIONS_PER_TURN=1  -> the double-run does not happen in hotseat; the authority gate is only needed
 //                              for network games.
-//   ACTIVATIONS_PER_TURN>1  -> confirmed: today's mod does its per-turn work once per human.
+//   ACTIVATIONS_PER_TURN>1  -> today's mod does its per-turn work once per human.
 
 const TAG = "[EmigTest]";
 const GAME_TURNS = 3;

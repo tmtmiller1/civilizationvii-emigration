@@ -1,6 +1,6 @@
 // emigration-migration-stats.js
 //
-// The per-civ migration TALLIES: per-player cumulative net / gross-out / gross-in / refugees / deaths,
+// The per-civ migration tallies: per-player cumulative net / gross-out / gross-in / refugees / deaths,
 // with per-sample deltas (Demographics graphs) and cumulative reads (globalThis.EmigrationData).
 // Tallies persist in GameConfiguration; missing maps default to {}.
 
@@ -26,7 +26,7 @@ import {
 const STATE_KEY = "EmigrationMigStats_v1";
 
 /** In-memory ring of the most recent moves (newest last), for the live readout/feed. Not persisted
- *, it's a session-local "what just happened" surface, so a reload simply starts it empty. */
+ *, it's a session-local "what just happened" surface, so a reload starts it empty. */
 const RECENT_CAP = 50;
 /** @type {{srcOwner?:number, destOwner?:number, people?:number, cause?:string}[]} */
 let _recent = [];
@@ -38,13 +38,13 @@ let _recent = [];
  * @property {Record<string, number>} out Cumulative gross emigration per player.
  * @property {Record<string, number>} in Cumulative gross immigration per player.
  * @property {Record<string, number>} refugees Cumulative non-unhappiness emigration.
- * @property {Record<string, number>} refugeesIn Cumulative refugee IMMIGRATION per player,
- *   war/disaster/conquest arrivals RECEIVED (the inflow counterpart of `refugees`).
+ * @property {Record<string, number>} refugeesIn Cumulative refugee immigration per player,
+ *   war/disaster/conquest arrivals received (the inflow counterpart of `refugees`).
  * @property {Record<string, number>} deaths Cumulative population lost to attrition (the outlet).
  * @property {Record<string, number>} cumPts Net per player, in raw pop points.
- * @property {Record<string, number>} intOut INTERNAL emigration: people who left one of the civ's
+ * @property {Record<string, number>} intOut internal emigration: people who left one of the civ's
  *   own settlements for another (a subset of `out`; `out - intOut` is the cross-civ share).
- * @property {Record<string, number>} intIn INTERNAL immigration: arrivals from the civ's own
+ * @property {Record<string, number>} intIn internal immigration: arrivals from the civ's own
  *   settlements (a subset of `in`).
  * @property {Record<string, number>} intOutPts Internal emigration, in pop points.
  * @property {Record<string, number>} intInPts Internal immigration, in pop points.
@@ -57,7 +57,7 @@ let _recent = [];
  * @property {Record<string, number>} deathsPts Attrition deaths per player, in pop points.
  * @property {Record<string, number>} lossesPts External population loss per player, in pop points.
  * @property {Record<string, Record<string,number>>} flowsPts Cross-civ flow (pop points by cause).
- * @property {Record<string, number>} losses Cumulative EXTERNAL population loss per player,
+ * @property {Record<string, number>} losses Cumulative external population loss per player,
  *   engine-driven drops (starvation / plague / razing / disasters) not explained by the mod's own
  *   migration or attrition. Combined with `deaths` for the ledger's "Losses" column.
  * @property {Record<string, number>} cityPts Last-seen raw population (points) per city key, to
@@ -70,23 +70,23 @@ let _recent = [];
  * @property {Record<string, number>} wmRefugeesIn Refugees-received-per-turn watermark.
  * @property {Record<string, Record<string, number>>} outByCause Cumulative emigration, per cause.
  * @property {Record<string, Record<string, number>>} inByCause Immigration cumulative by cause.
- * @property {Record<string, Record<string, number>>} outByEvent Emigration per SPECIFIC event key.
- * @property {Record<string, Record<string, number>>} inByEvent Immigration per SPECIFIC event key.
- * @property {Record<string, Record<string, number>>} deathsByEvent Deaths per SPECIFIC event key.
+ * @property {Record<string, Record<string, number>>} outByEvent Emigration per specific event key.
+ * @property {Record<string, Record<string, number>>} inByEvent Immigration per specific event key.
+ * @property {Record<string, Record<string, number>>} deathsByEvent Deaths per specific event key.
  * @property {Record<string, Record<string, number>>} wmOutByCause Per-cause emigration watermarks.
  * @property {Record<string, Record<string, number>>} wmInByCause Per-cause immigration watermarks.
  * @property {Record<string, Record<string, number>>} flows Cross-civ people moved, keyed
  *   "src>dest" then by cause (so the network viz can colour/filter edges by why people moved).
- * @property {Record<string, number>} stanceIn Border-stance impact on immigration IN (people;
+ * @property {Record<string, number>} stanceIn Border-stance impact on immigration in (people;
  *   + allowed beyond a neutral baseline, - prevented), accumulated per turn.
- * @property {Record<string, number>} stanceOut Border-stance impact on emigration OUT (people;
+ * @property {Record<string, number>} stanceOut Border-stance impact on emigration out (people;
  *   - = citizens Closed Borders kept home).
- * @property {Record<string, number>} stanceInPts Stance impact on IN, in pop points.
- * @property {Record<string, number>} stanceOutPts Stance impact on OUT, in pop points.
- * @property {*[]} flowHistory Decimated DELTA-encoded flow snapshots over time, for the
+ * @property {Record<string, number>} stanceInPts Stance impact on in, in pop points.
+ * @property {Record<string, number>} stanceOutPts Stance impact on out, in pop points.
+ * @property {*[]} flowHistory Decimated delta-encoded flow snapshots over time, for the
  *   network viz timeline scrubber. Each is {turn, age, chartTurn, year, delta}: `delta` holds only
  *   the migration that occurred in that interval; migrationFlowHistory reconstructs the cumulative
- *   network per frame by summing deltas. chartTurn is MONOTONIC across ages.
+ *   network per frame by summing deltas. chartTurn is monotonic across ages.
  * @property {number} flowSchema Flow-history encoding version (2 = delta-encoded). Legacy saves
  *   (frames carrying a cumulative `flows` clone) are migrated to deltas once on load.
  * @property {{turn:number, age:string, year:string, name:string, nk?:string, severity:number}[]} disasterEvents
@@ -103,7 +103,7 @@ let _recent = [];
 
 /** @type {MigStatsState | null} */
 let _s = null;
-// The turn `_s` was last (re)read from persistence. The recorder and the readers run in SEPARATE V8
+// The turn `_s` was last (re)read from persistence. The recorder and the readers run in separate V8
 // contexts that share these tallies only through the persisted blob, so re-reading on each turn
 // advance keeps every reader at most one turn stale.
 let _loadedTurn = -1;
@@ -187,8 +187,8 @@ function numOr0(v) {
 }
 
 /**
- * Tally a record's SPECIFIC event: a death into deathsByEvent, the out-side into outByEvent, and the
- * in-side into inByEvent, so a civ's RECEIVED refugees name the war/disaster that displaced them,
+ * Tally a record's specific event: a death into deathsByEvent, the out-side into outByEvent, and the
+ * in-side into inByEvent, so a civ's received refugees name the war/disaster that displaced them,
  * not its own cause. (Caller guards `m.eventKey`.)
  * @param {MigStatsState} s State.
  * @param {*} m Migration (carries eventKey).
@@ -219,7 +219,7 @@ function foldMigration(s, m) {
     if (typeof m.srcOwner === "number") addBoth(s.deaths, s.deathsPts, m.srcOwner, p, pts);
     return;
   }
-  // NET migration is an INTER-CIV measure: an internal move must not touch the net tally, otherwise
+  // Net migration is an inter-civ measure: an internal move must not touch the net tally, otherwise
   // transit lag would leave every shedding civ with a permanent in-flight deficit. foldInternal banks
   // the same-civ share of the gross tallies and returns the cross-border verdict the net tally needs.
   const cross = foldInternal(s, m);
@@ -227,7 +227,7 @@ function foldMigration(s, m) {
     if (cross) addBoth(s.cum, s.cumPts, m.destOwner, p, pts);
     addBoth(s.in, s.inPts, m.destOwner, p, pts);
     add(s.inByCause, m.destOwner, p, c);
-    // Refugee IMMIGRATION: a war/disaster/conquest arrival received here (inflow counterpart of the
+    // Refugee immigration: a war/disaster/conquest arrival received here (inflow counterpart of the
     // refugee outflow tallied on the source below). Lets the dashboard show "refugees received".
     if (isRefugeeCause(m.cause)) addBoth(s.refugeesIn, s.refugeesInPts, m.destOwner, p, pts);
   }
@@ -241,7 +241,7 @@ function foldMigration(s, m) {
 /**
  * Tally a migration flow into the matrix for the network viz, keyed "srcCiv>destCiv>srcCity>destCity".
  * Same-owner moves are kept as intra-civ edges; consumers split them from cross-civ edges by owner.
- * The edge is recorded ONCE at initiation: a lagged "depart" carries srcOwner + `edgeDestOwner`, and
+ * The edge is recorded once at initiation: a lagged "depart" carries srcOwner + `edgeDestOwner`, and
  * the lagged "arrive" half carries no srcOwner, so the srcOwner guard skips it.
  * @param {MigStatsState} s State.
  * @param {*} m Migration ({srcOwner?, destOwner?, edgeDestOwner?, srcName?, destName?, cause?}).
@@ -317,7 +317,7 @@ function sumCauses(m) {
 
 /**
  * Parse one stored flow entry into a flow record (people + points + the origin/destination city),
- * or null. Handles the city-keyed shape "srcCiv>destCiv>srcCity>destCity" AND the older civ-only
+ * or null. Handles the city-keyed shape "srcCiv>destCiv>srcCity>destCity" and the older civ-only
  * "srcCiv>destCiv" (city names default to ""), and tolerates the flat-number cause shape.
  * @param {string} key The flow key.
  * @param {*} v The stored people value (number, or a per-cause map).
@@ -341,7 +341,7 @@ function flowEntry(key, v, vPts) {
 // setting (a snapshot every turn) stays bounded in the save; finer than ~96 is decimated.
 const MAX_FLOW_SNAPSHOTS = 96;
 
-// Cap on distinct city-pair edges in the CUMULATIVE flow matrices (s.flows / s.flowsPts), so a very
+// Cap on distinct city-pair edges in the cumulative flow matrices (s.flows / s.flowsPts), so a very
 // long game cannot grow the persisted blob until GameConfiguration setValue silently drops it. When
 // exceeded, the lowest-volume edges are evicted, with hysteresis so we don't re-sort every pass.
 const MAX_FLOW_KEYS = 4000; // ceiling; capFlows (emigration-flow-history.js) evicts the smallest edges
@@ -361,7 +361,7 @@ function gameTurn() {
 
 /**
  * The current turn's in-game date string (e.g. "4000 BC"), or "" off-engine. Same engine call the
- * base UI clock + the Demographics mod use; it only reports the CURRENT turn, so we stamp it onto
+ * base UI clock + the Demographics mod use; it only reports the current turn, so we stamp it onto
  * each snapshot as it is taken.
  * @returns {string} The date label.
  */
@@ -403,7 +403,7 @@ function nextChartTurn(s, age, localTurn) {
 }
 
 /**
- * Per-civ NATIVE population in pop-points right now, for the timeline's real population history: each
+ * Per-civ native population in pop-points right now, for the timeline's real population history: each
  * civ's current city populations (s.cityPts) minus cumulative immigrant points (s.inPts), clamped >= 0,
  * mirroring the live gatherPops native fraction. City keys are "owner:localId".
  * @param {MigStatsState} s State.
@@ -424,7 +424,7 @@ function nativePtsByCiv(s) {
 }
 
 /**
- * Snapshot the cumulative flows for the timeline as a per-interval DELTA: within an interval the open
+ * Snapshot the cumulative flows for the timeline as a per-interval delta: within an interval the open
  * frame is kept current in place; at an interval/age boundary a new open frame is appended. The open
  * frame's delta = live cumulative minus all prior frozen frames; over the cap, adjacent deltas merge.
  * @param {MigStatsState} s State.
@@ -446,8 +446,8 @@ function snapshotFlows(s) {
   open.delta = subtractFlows(s.flows, sumDeltas(h.slice(0, h.length - 1)));
   open.turn = turn;
   open.year = gameTurnDate();
-  // Stamp the open frame with the CURRENT per-civ native populations (a point-in-time snapshot, kept
-  // current until a new frame opens) so the timeline shows REAL population growth, not a linear scale
+  // Stamp the open frame with the current per-civ native populations (a point-in-time snapshot, kept
+  // current until a new frame opens) so the timeline shows real population growth, not a linear scale
   // of today's figures back over history.
   open.pop = nativePtsByCiv(s);
   if (newFrame && h.length > MAX_FLOW_SNAPSHOTS) {
@@ -460,7 +460,7 @@ function snapshotFlows(s) {
 
 /**
  * The flow history as a list of {turn, age, year, chartTurn, edges} frames (oldest → newest),
- * spanning ages. Each frame's edges are the CUMULATIVE network at that point, reconstructed by
+ * spanning ages. Each frame's edges are the cumulative network at that point, reconstructed by
  * summing deltas; each edge's per-cause map is cloned per frame so frames never alias each other.
  * @returns {{turn:number, age:string, year:string, chartTurn:number, edges:*[]}[]} Timeline frames.
  */
@@ -474,7 +474,7 @@ export function migrationFlowHistory() {
       turn: snap.turn, age: snap.age || "",
       year: snap.year || "", chartTurn: snap.chartTurn,
       // Per-civ native pop points snapshotted at this frame (absent on pre-population-history saves);
-      // the consumer uses it for REAL growth and falls back to a scaled estimate when missing.
+      // the consumer uses it for real growth and falls back to a scaled estimate when missing.
       pop: snap.pop || null,
       edges: Object.keys(running)
         .map((k) => flowEntry(k, Object.assign({}, running[k])))
@@ -556,7 +556,7 @@ export function markCityRemoved(cityID) {
 /**
  * Credit the residual population of each city razed this window as a loss, the people who were
  * still there when the city was destroyed. Uses prev + (this turn's mod departures) so the refugees
- * who already fled (counted in Out) and everything lost earlier (already in prev) are NOT
+ * who already fled (counted in Out) and everything lost earlier (already in prev) are not
  * double-counted. Skips keys still present (a stale flag).
  * @param {MigStatsState} s State.
  * @param {Record<string,number>} mod Per-city net mod points this turn.
@@ -574,7 +574,7 @@ function foldRemovedLosses(s, mod, t, acc) {
 }
 
 /**
- * Re-baseline one city into `acc` (current population + name) WITHOUT crediting any loss, used on
+ * Re-baseline one city into `acc` (current population + name) without crediting any loss, used on
  * the first accounting after an age transition so an age-driven population drop on a kept
  * settlement isn't misread as an unexplained external loss.
  * @param {*} sig City signal.
@@ -587,7 +587,7 @@ function rebaselineCity(sig, acc) {
 }
 
 /**
- * Detect EXTERNAL population loss this turn and fold it into the per-civ `losses` tally: any drop
+ * Detect external population loss this turn and fold it into the per-civ `losses` tally: any drop
  * beyond what the mod itself moved/removed is credited to the city's civ, and razed cities credit
  * their residual via CityRemovedFromMap. The first accounting in a new age (or a mid-transition pass)
  * only re-baselines and credits no loss, since ages reduce/convert kept settlements.
@@ -645,7 +645,7 @@ export function recordDisasterEvent(name, severity, nameKey) {
 }
 
 /**
- * Fold a pass's migrations into the cumulative tallies AND take the per-interval timeline snapshot.
+ * Fold a pass's migrations into the cumulative tallies and take the per-interval timeline snapshot.
  * Call it every pass, including passes with no migration: the snapshot still records each civ's
  * population (for the timeline's growth history), while the migration-only work (recent feed, net
  * distribution log) is skipped when there's nothing to fold.
@@ -656,13 +656,13 @@ export function recordMigrations(migs) {
   const list = Array.isArray(migs) ? migs : [];
   for (const m of list) {
     foldMigration(s, m);
-    // Per-SPECIFIC-EVENT tally: death→deathsByEvent, the out-side→outByEvent, the in-side→inByEvent
-    // (so a civ's RECEIVED refugees name the war/disaster that displaced them, not its own cause).
+    // Per-specific-event tally: death→deathsByEvent, the out-side→outByEvent, the in-side→inByEvent
+    // (so a civ's received refugees name the war/disaster that displaced them, not its own cause).
     if (m.eventKey) foldEventTally(s, m);
   }
   capFlows(s.flows, s.flowsPts, MAX_FLOW_KEYS); // bound the cumulative city-pair matrices before persist
   for (const ev of [s.outByEvent, s.inByEvent, s.deathsByEvent]) capByEvent(ev, MAX_EVENT_KEYS);
-  // Snapshot EVERY pass (self-gated to the snapshot interval inside), not only when migration
+  // Snapshot every pass (self-gated to the snapshot interval inside), not only when migration
   // happened, so the timeline records per-civ population growth from turn one and is available to
   // scrub/play before any emigration occurs. The migration-only side effects stay gated on `list`.
   snapshotFlows(s);
@@ -705,7 +705,7 @@ export function recordStanceImpact(delta) {
 
 /**
  * A civ's cumulative border-stance impact: people (+ pop-points) its policy added/blocked on
- * immigration IN, and kept/released on emigration OUT (signed). Zero when it holds no stance.
+ * immigration in, and kept/released on emigration out (signed). Zero when it holds no stance.
  * @param {number} id Player id.
  * @returns {{in:number, out:number, inPts:number, outPts:number}} Signed impact.
  */
@@ -796,7 +796,7 @@ export function refugeesFor(id) {
 }
 
 /**
- * Refugees a civ produced THIS sample (per-turn delta of the cumulative total). Advances its own
+ * Refugees a civ produced this sample (per-turn delta of the cumulative total). Advances its own
  * watermark, so only one consumer (the Demographics per-turn refugees graph) should read it.
  * @param {number} id Player id.
  * @returns {number} Refugees produced this turn.
@@ -807,7 +807,7 @@ export function sampleRefugees(id) {
 }
 
 /**
- * The cumulative refugees a civ has RECEIVED (war/disaster/conquest arrivals; read-only).
+ * The cumulative refugees a civ has received (war/disaster/conquest arrivals; read-only).
  * @param {number} id Player id.
  * @returns {number} Cumulative refugees received.
  */
@@ -816,7 +816,7 @@ export function refugeesInFor(id) {
 }
 
 /**
- * Refugees a civ received THIS sample (per-turn delta of the cumulative total). Advances its own
+ * Refugees a civ received this sample (per-turn delta of the cumulative total). Advances its own
  * watermark, so only one consumer (the Demographics per-turn graph) should read it.
  * @param {number} id Player id.
  * @returns {number} Refugees received this turn.
@@ -891,7 +891,7 @@ try {
   /** @type {*} */ (globalThis).EmigrationData = { monoTurn: () => monoTurn(), // the monotonic cross-age turn
     grossOutCumFor: (/** @type {number} */ pid) => load().out[pid] || 0,
     grossInCumFor: (/** @type {number} */ pid) => load().in[pid] || 0,
-    // The INTERNAL (within-this-civ) share of the gross tallies: people who left one of its own
+    // The internal (within-this-civ) share of the gross tallies: people who left one of its own
     // settlements for another, and the arrivals that came from one. External = gross - internal.
     internalOutCumFor: (/** @type {number} */ pid) => load().intOut[pid] || 0,
     internalInCumFor: (/** @type {number} */ pid) => load().intIn[pid] || 0,

@@ -1,4 +1,4 @@
-// eep-modtest60.js - the placement prompt, across a REAL turn. Mod test 59 showed the raw write
+// eep-modtest60.js - the placement prompt, across a real turn. Mod test 59 showed the raw write
 // city.addRuralPopulation(+1) makes a real pending placement (isReadyToPlacePopulation true, EXPAND plots offered)
 // with no NOTIFICATION_NEW_POPULATION within 12 s, but its end turn never advanced: the "assign new resources"
 // blocker held it on turn 66. This run clears that blocker the ways the base game does (assign every unassigned

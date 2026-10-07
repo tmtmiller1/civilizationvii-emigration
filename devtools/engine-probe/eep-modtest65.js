@@ -2,7 +2,7 @@
 // check whether the blocking Grow City notification stays while only the mod-written points are ready.
 // Mod test 64 header: mod test 60 with notification types read the base game's way (getType, then getTypeName),
 // plus each notification's message and target city, to attribute the turn-67 "Grow City" prompt. Mod test 60 header:
-// the placement prompt, across a REAL turn. Mod test 59 showed the raw write
+// the placement prompt, across a real turn. Mod test 59 showed the raw write
 // city.addRuralPopulation(+1) makes a real pending placement (isReadyToPlacePopulation true, EXPAND plots offered)
 // with no NOTIFICATION_NEW_POPULATION within 12 s, but its end turn never advanced: the "assign new resources"
 // blocker held it on turn 66. This run clears that blocker the ways the base game does (assign every unassigned

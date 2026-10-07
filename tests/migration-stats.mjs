@@ -49,7 +49,7 @@ function testFormatIsSignedPeople() {
   assert.equal(spec.format(-5000), "-5,000");
 }
 
-// All migration graphs are collapsed into one "Graphs" metric-group tab placed FIRST on Emigration's
+// All migration graphs are collapsed into one "Graphs" metric-group tab placed first on Emigration's
 // Migration page, with two toggle rows: a metric (Net/Emigration/Immigration/Refugees) and the units
 // (Scaled / Civ numbers). Each (member, units) maps to a registered metric id.
 function assertGraphsGroup(/** @type {*[]} */ groups) {
@@ -121,7 +121,7 @@ function testMetricRegistrationQueueDedupe() {
 }
 
 function testNeverInstalledNeverRegisters() {
-  // If Demographics is never present, the queued job is simply never drained -
+  // If Demographics is never present, the queued job is never drained,
   // no metric, no graph. (We assert the queue holds it and nothing consumed it.)
   delete globalThis.DemographicsMetricsAPI;
   registerMigrationMetric();
@@ -141,7 +141,7 @@ function captureSpec(id = "emig_net_cum") {
   return specs[id];
 }
 
-// ── Gross out/in + cause-tagged refugees (EmigrationData) ──────────────────
+// Gross out/in + cause-tagged refugees (EmigrationData)
 
 function testGrossAndRefugeeTallies() {
   const D = /** @type {*} */ (globalThis).EmigrationData;
@@ -152,9 +152,9 @@ function testGrossAndRefugeeTallies() {
   recordMigrations([{ srcOwner: 5, destOwner: 6, people: 8000, cause: "war" }]);
   assert.equal(D.grossOutCumFor(5) - out0, 8000);
   assert.equal(D.grossInCumFor(6) - in0, 8000);
-  assert.equal(D.refugeesCumFor(5) - ref0, 8000); // war → counts as refugees OUT for the source
-  assert.equal(D.refugeesInCumFor(6) - refIn0, 8000); // and refugees IN for the destination
-  // An unhappiness move adds to gross out/in but NOT to refugees (out or in).
+  assert.equal(D.refugeesCumFor(5) - ref0, 8000); // war → counts as refugees out for the source
+  assert.equal(D.refugeesInCumFor(6) - refIn0, 8000); // and refugees in for the destination
+  // An unhappiness move adds to gross out/in but not to refugees (out or in).
   const ref1 = D.refugeesCumFor(5);
   const refIn1 = D.refugeesInCumFor(6);
   recordMigrations([{ srcOwner: 5, destOwner: 6, people: 1000, cause: "unhappiness" }]);
@@ -170,14 +170,14 @@ function testAttritionIsDeathsNotMigration() {
   const net0 = D.netCumFor(7);
   recordMigrations([{ srcOwner: 7, people: 3000, cause: "attrition" }]); // no destOwner
   assert.equal(D.deathsCumFor(7) - d0, 3000); // counted as deaths
-  assert.equal(D.grossOutCumFor(7) - out0, 0); // NOT emigration
-  assert.equal(D.refugeesCumFor(7) - ref0, 0); // NOT refugees
-  assert.equal(D.netCumFor(7) - net0, 0); // NOT net migration (a death isn't migration)
+  assert.equal(D.grossOutCumFor(7) - out0, 0); // Not emigration
+  assert.equal(D.refugeesCumFor(7) - ref0, 0); // Not refugees
+  assert.equal(D.netCumFor(7) - net0, 0); // Not net migration (a death isn't migration)
 }
 
 function testRefugeeCauseRouting() {
   const D = /** @type {*} */ (globalThis).EmigrationData;
-  // Forced displacement (disaster, conquest) counts as refugees; economic prosperity does NOT.
+  // Forced displacement (disaster, conquest) counts as refugees; economic prosperity does not.
   const dis0 = D.refugeesCumFor(10);
   recordMigrations([{ srcOwner: 10, destOwner: 11, people: 2000, cause: "disaster" }]);
   assert.equal(D.refugeesCumFor(10) - dis0, 2000); // disaster → refugees
@@ -186,7 +186,7 @@ function testRefugeeCauseRouting() {
   assert.equal(D.refugeesCumFor(10) - con0, 1000); // conquest → refugees
   const pro0 = D.refugeesCumFor(10);
   recordMigrations([{ srcOwner: 10, destOwner: 11, people: 9000, cause: "prosperity" }]);
-  assert.equal(D.refugeesCumFor(10) - pro0, 0); // prosperity is economic, NOT a refugee
+  assert.equal(D.refugeesCumFor(10) - pro0, 0); // prosperity is economic, not a refugee
   assert.ok(D.grossOutCumFor(10) > 0); // but it still counts as gross emigration
 }
 
@@ -206,7 +206,7 @@ function testRecentEventsFeedIsPlayerFilteredNewestFirst() {
 }
 
 function testEmptyPassRecordsPopulationFrame() {
-  // A peaceful pass (ZERO migrations) must still record a timeline frame carrying the per-civ
+  // A peaceful pass (zero migrations) must still record a timeline frame carrying the per-civ
   // population snapshot, so the network/flow timeline is available and plays population growth before
   // any emigration occurs. Advance the game turn well past the 1..5 snapshot interval between passes
   // so a fresh frame opens each time, then confirm the empty passes appended frames (with a `pop`).
@@ -235,7 +235,7 @@ testAttritionIsDeathsNotMigration();
 testRefugeeCauseRouting();
 function testCapFlowsBoundsTheMatrixEvictingSmallest() {
   // The cumulative flow matrices must not grow unbounded: past MAX_FLOW_KEYS, the lowest-volume edges
-  // are evicted (from flows AND flowsPts together) so the persisted blob stays bounded.
+  // are evicted (from flows and flowsPts together) so the persisted blob stays bounded.
   const s = { flows: {}, flowsPts: {} };
   for (let i = 0; i < 4100; i++) {
     s.flows["k" + i] = { war: i + 1 }; // k0 = smallest (1 person), k4099 = largest
@@ -253,8 +253,7 @@ testRecentEventsFeedIsPlayerFilteredNewestFirst();
 testEmptyPassRecordsPopulationFrame();
 testCapFlowsBoundsTheMatrixEvictingSmallest();
 
-// ── Edge case tests for complex scenarios ────────────────────────────────────
-// Note: Tests share cumulative KV state, so use unique player IDs (100+) to avoid
+// Edge cases. Tests share cumulative KV state, so use unique player IDs (100+) to avoid
 // interference with earlier tests.
 
 function testIntraCivMovesNetToZero() {
@@ -320,7 +319,7 @@ function testWatermarkConsumptionIndependence() {
 
 function testRefugeeCauseFiltering() {
   // Only certain causes (war, disaster, conquest) count as refugees.
-  // Economic causes (prosperity, unhappiness) do NOT.
+  // Economic causes (prosperity, unhappiness) do not.
   const refBefore = migrationFlows();
   recordMigrations([
     { srcOwner: 107, destOwner: 108, people: 1000, cause: "war" },
@@ -345,7 +344,7 @@ function testMissingCauseHandling() {
 }
 
 function testDeathAttritionIsNotEmigration() {
-  // Attrition deaths (srcOwner only, no destOwner) increment deaths but NOT
+  // Attrition deaths (srcOwner only, no destOwner) increment deaths but not
   // emigration or net (death is loss, not migration).
   recordMigrations([
     { srcOwner: 111, people: 2000, cause: "attrition" },
@@ -421,7 +420,7 @@ function testSampleInIncrement() {
 }
 
 function testInternalTallySplitsGrossMovement() {
-  // An intra-civ move is gross movement for that civ (out AND in) but INTERNAL, so it shows up in
+  // An intra-civ move is gross movement for that civ (out and in) but internal, so it shows up in
   // the internal tallies and leaves the external share (gross - internal) at zero.
   recordMigrations([{ srcOwner: 140, destOwner: 140, people: 3000, points: 2 }]);
   const D = /** @type {*} */ (globalThis).EmigrationData;

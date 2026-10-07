@@ -1,6 +1,6 @@
 // emigration-combat.js
 //
-// War-casualty input to the war-SEVERITY term. The Demographics mod owns the raw tracking
+// War-casualty input to the war-severity term. The Demographics mod owns the raw tracking
 // (`globalThis.DemographicsData.casualtyCumFor(pid)`, cumulative); this module turns that figure into
 // a decaying "recent casualty intensity". Returns 0 when Demographics isn't providing data.
 
@@ -12,7 +12,7 @@ const _track = {};
 
 /**
  * The current age-local game turn, or 0.
- * @returns {number} Game.turn or 0.
+ * @returns {number}
  */
 function gameTurn() {
   try {
@@ -25,7 +25,7 @@ function gameTurn() {
 /**
  * The Demographics mod's cumulative unit-kill strength for a civ, or 0 when Demographics isn't
  * exposing it (not installed / not yet loaded).
- * @param {number} pid Civ id.
+ * @param {number} pid
  * @returns {number} Cumulative casualty strength.
  */
 function casualtyCum(pid) {
@@ -38,10 +38,10 @@ function casualtyCum(pid) {
 }
 
 /**
- * A civ's RECENT combat-loss intensity (decaying running sum of casualty strength), derived lazily
+ * A civ's recent combat-loss intensity (decaying running sum of casualty strength), derived lazily
  * from the Demographics cumulative tally. Idempotent within a turn (the first read each turn folds in
  * the delta and decays; later reads return the same value).
- * @param {number} pid Civ id.
+ * @param {number} pid
  * @returns {number} Recent casualty intensity (>= 0).
  */
 export function combatLossFor(pid) {

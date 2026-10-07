@@ -2,7 +2,7 @@
 //
 // A tiny force-directed layout for the migration network (no external library). Nodes repel each
 // other, edges act as springs, and a gentle gravity keeps the graph centered; an annealing "alpha"
-// cools the motion so the graph SETTLES into an organic shape and then holds still. Seeded from a
+// cools the motion so the graph settles into an organic shape and then holds still. Seeded from a
 // deterministic ring (optionally reusing cached positions when scrubbing the timeline), so the
 // settled layout is reproducible rather than random.
 
@@ -11,11 +11,11 @@ const SPRING = 0.018; // edge spring stiffness (unused for clusters: no links)
 const SPRING_LEN = 150; // edge rest length
 const GRAVITY = 0.006; // gentle pull toward center (low, so clusters fill the whole canvas)
 const DAMP = 0.85; // velocity damping per step
-const PAD = 16; // keep cluster EDGES this far from the canvas edges (radius added per node)
-// The civ NAME label is drawn ABOVE each circle (paint.js: c.y - clusterR - 10, ~15px text), so a
+const PAD = 16; // keep cluster edges this far from the canvas edges (radius added per node)
+// The civ name label is drawn above each circle (paint.js: c.y - clusterR - 10, ~15px text), so a
 // top-row circle needs extra headroom or its label rides the canvas top edge and collides with the
 // filter row above the diagram. Reserve that label height at the top only (shared by dots + flows).
-const TOP_PAD = 32; // keep cluster TOPS this far from the top (PAD + room for the name label above)
+const TOP_PAD = 32; // keep cluster tops this far from the top (PAD + room for the name label above)
 const COLLIDE_PAD = 12; // minimum gap between two cluster discs (prevents overlap)
 const GOLDEN = Math.PI * (3 - Math.sqrt(5)); // golden angle for the sunflower seed spread
 
@@ -33,7 +33,7 @@ function clamp(v, lo, hi) {
 /**
  * Seed a simulation from a network model: nodes on a deterministic ring (or a cached position when
  * provided, for stable timeline scrubbing), with edge links indexed into the node array. The ring
- * is centered in the (wide) canvas and sized to its SHORTER side, so nodes start clustered in the
+ * is centered in the (wide) canvas and sized to its shorter side, so nodes start clustered in the
  * middle with room to be dragged out across the full width.
  * @param {{nodes:*[], edges:*[]}} net The network model.
  * @param {number} WX Canvas width (logical units).
@@ -45,7 +45,7 @@ export function seedSim(net, WX, WY, cache) {
   const cx = WX / 2;
   const cy = WY / 2;
   const n = net.nodes.length;
-  // Seed on an aspect-matched ELLIPSE whose extent GROWS with the civ count, so a max-civ game spreads
+  // Seed on an aspect-matched ellipse whose extent grows with the civ count, so a max-civ game spreads
   // across the canvas from the start. `fill` is the fraction of each half-axis used, capped so the
   // outermost cluster still clears the edge.
   const fill = clamp(0.30 + 0.045 * Math.sqrt(n), 0.34, 0.46);
@@ -180,7 +180,7 @@ function integrate(sim) {
 
 /**
  * Keep every cluster's whole disc within the canvas (PAD + its radius from each edge), with extra
- * headroom at the TOP so the civ name label drawn above the disc clears the canvas top edge (and so
+ * headroom at the top so the civ name label drawn above the disc clears the canvas top edge (and so
  * the diagram content never rides up into the filter row above it).
  * @param {{nodes:*[], WX:number, WY:number}} sim The sim state.
  */

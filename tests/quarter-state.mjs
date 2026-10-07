@@ -26,7 +26,7 @@ const rec = (civ, optionId) => ({
   contested: false, contestedTurn: -999
 });
 
-// ── put / get / owner listing ───────────────────────────────────────────────
+// put / get / owner listing
 {
   putQuarter("3,4", rec(2, "embrace"));
   assert.equal(quarterAt("3,4").civ, 2, "quarter is stored on its tile");
@@ -34,14 +34,14 @@ const rec = (civ, optionId) => ({
   assert.equal(quartersForOwner(9).length, 0, "a different owner has none");
 }
 
-// ── no stacking: a different origin REPLACES the tile record ────────────────
+// no stacking: a different origin replaces the tile record
 {
   putQuarter("3,4", rec(7, "tax"));
   assert.equal(quarterAt("3,4").civ, 7, "a new origin replaces the tile record (no stacking)");
   assert.equal(quartersForOwner(0).length, 1, "still exactly one quarter on the tile");
 }
 
-// ── contested flag stamps the turn on the rising edge ───────────────────────
+// contested flag stamps the turn on the rising edge
 {
   setContested("3,4", true, 9);
   assert.equal(quarterAt("3,4").contested, true, "quarter marked contested");
@@ -52,13 +52,13 @@ const rec = (civ, optionId) => ({
   assert.equal(quarterAt("3,4").contested, false, "quarter can be cleared of contest");
 }
 
-// ── drop ────────────────────────────────────────────────────────────────────
+// drop
 {
   dropQuarter("3,4");
   assert.equal(quarterAt("3,4"), null, "quarter can be removed from its tile");
 }
 
-// ── decision throttle: per-age cap + cooldown, reset on a new age ───────────
+// decision throttle: per-age cap + cooldown, reset on a new age
 {
   const s = __test.readStateForTest();
   s.age = 1; s.count = 0; s.lastTurn = -999; // fresh throttle
@@ -71,7 +71,7 @@ const rec = (civ, optionId) => ({
   assert.ok(canDecide(220, 2), "a new age resets the cap");
 }
 
-// ── persistence: schema envelope + defensive normalization ──────────────────
+// persistence: schema envelope + defensive normalization
 {
   putQuarter("1,1", rec(4, "embrace"));
   saveQuarters();
@@ -85,7 +85,7 @@ const rec = (civ, optionId) => ({
   assert.ok(!normalized.tiles.bad, "an invalid record is dropped on normalization");
 }
 
-// ── candidacy (dwell-clock) store: put / get / drop / listing ────────────────
+// candidacy (dwell-clock) store: put / get / drop / listing
 {
   const { candidacyAt, putCandidacy, dropCandidacy, allCandidacyEntries } = state;
   putCandidacy("5,6", { civ: 2, originCiv: "CIVILIZATION_ROME", since: 10, lastSeen: 10 });
@@ -96,7 +96,7 @@ const rec = (civ, optionId) => ({
   assert.equal(candidacyAt("5,6"), null, "candidacy can be removed");
 }
 
-// ── dwellSatisfied: gate on quarterDwellTurns since the streak began ─────────
+// dwellSatisfied: gate on quarterDwellTurns since the streak began
 {
   const { candidacyAt, putCandidacy, dwellSatisfied, dropCandidacy } = state;
   const savedDwell = CONFIG.quarterDwellTurns;
@@ -118,7 +118,7 @@ const rec = (civ, optionId) => ({
   dropCandidacy("7,7"); dropCandidacy("8,8"); dropCandidacy("9,1");
 }
 
-// ── candidacy round-trips through the persistence envelope + normalization ───
+// candidacy round-trips through the persistence envelope + normalization
 {
   const { putCandidacy, saveQuarters, __test: st } = state;
   putCandidacy("2,3", { civ: 3, originCiv: "CIVILIZATION_HAN", since: 4, lastSeen: 6 });
@@ -133,10 +133,10 @@ const rec = (civ, optionId) => ({
   assert.ok(!normalized.candidacy.bad, "an invalid candidacy is dropped on normalization");
 }
 
-// ── reader snapshot: reloads per turn, never clobbers the writer's copy ──────
+// reader snapshot: reloads per turn, never clobbers the writer's copy
 // The ethnicity lens is its own V8 isolate and never writes quarters. `quarterAt` holds the writer's
 // live copy and is loaded exactly once, so a reader that used it would freeze whatever the store held on
-// its first paint — in a fresh session, nothing — and no enclave would ever reach the lens.
+// its first paint (in a fresh session, nothing) and no enclave would ever reach the lens.
 {
   const { quarterSnapshotAt } = state;
   globalThis.Game.turn = 100;
@@ -148,7 +148,7 @@ const rec = (civ, optionId) => ({
   assert.equal(quarterSnapshotAt("nope"), null, "an absent tile snapshots as null");
   assert.equal(quarterSnapshotAt(""), null, "an empty key snapshots as null");
 
-  // A record that appears in the STORE from another isolate mid-session.
+  // A record that appears in the store from another isolate mid-session.
   const blob = JSON.parse(KV.EmigrationQuarters_v1);
   blob.data.tiles["8,8"] = { civ: 5, owner: 0, optionId: "ignore", turn: 100, recognized: true,
     placed: { type: "IMPROVEMENT_EMIG_ENCLAVE_HAN", plot: 42 } };

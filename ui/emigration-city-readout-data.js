@@ -1,16 +1,16 @@
 // emigration-city-readout-data.js
 //
-// The DATA core for the per-city "why is this settlement gaining/losing population?" readout.
+// The data core for the per-city "why is this settlement gaining/losing population?" readout.
 // Two layers:
 //
-//   • buildCitySnapshot(opts), PURE: turns already-resolved inputs into the readout view-model
+//   • buildCitySnapshot(opts), pure: turns already-resolved inputs into the readout view-model
 //     (cause + label + permanence + hint, distress/at-risk flags, pressure-to-bar, where people are
 //     being pulled, the destination's assimilation cost, and owner-level net/in/out). Unit-tested.
-//   • citySnapshot(cityId), IMPURE: gathers those inputs live (recompute-on-read, so no new
+//   • citySnapshot(cityId), impure: gathers those inputs live (recompute-on-read, so no new
 //     persisted state) and calls the pure builder. Degrades to null on any read failure.
 //
 // Owner-level tallies are read from globalThis.EmigrationData at call time (not a static import) so
-// this module does not depend on emigration-migration-stats.js, that file imports THIS one to
+// this module does not depend on emigration-migration-stats.js, that file imports this one to
 // expose citySnapshot on EmigrationData, and a static back-edge would be a cycle.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
@@ -77,8 +77,8 @@ import { refugeeBurdenFor } from "/emigration/ui/emigration-refugee-burden.js";
 
 /**
  * `v` if it's a finite number, else 0.
- * @param {*} v Value.
- * @returns {number} A finite number.
+ * @param {*} v
+ * @returns {number}
  */
 function num(v) {
   return typeof v === "number" && isFinite(v) ? v : 0;
@@ -86,8 +86,8 @@ function num(v) {
 
 /**
  * Clamp `x` into [0, 1].
- * @param {number} x Value.
- * @returns {number} Clamped value.
+ * @param {number} x
+ * @returns {number}
  */
 function clampUnit(x) {
   return x < 0 ? 0 : x > 1 ? 1 : x;
@@ -98,7 +98,7 @@ function clampUnit(x) {
  * is no viable destination to absorb the people.
  * @param {number} dist Situational distress.
  * @param {boolean} hasRefuge Whether a destination was found.
- * @returns {boolean} True if at risk of attrition.
+ * @returns {boolean}
  */
 function attritionRisk(dist, hasRefuge) {
   return !!CONFIG.attritionEnabled && dist >= CONFIG.attritionMinDistress && !hasRefuge;
@@ -107,7 +107,7 @@ function attritionRisk(dist, hasRefuge) {
 /**
  * The crisis-type "why at risk" tags for the readout warning: empty for a content city.
  * @param {number} dist Situational distress. @param {*} sig The city signal.
- * @returns {string[]} Crisis-type tags.
+ * @returns {string[]}
  */
 function riskReasonsFor(dist, sig) {
   return dist > 0 ? crisisTypeReasons(sig) : [];
@@ -116,7 +116,7 @@ function riskReasonsFor(dist, sig) {
 /**
  * Source-state-derived fields (pressure / cooldown).
  * @param {{pressure?:number, cooldown?:number}|null} source Per-source state.
- * @returns {{pressure:number, pressureToBar:number, onCooldown:boolean, cooldown:number}} Fields.
+ * @returns {{pressure:number, pressureToBar:number, onCooldown:boolean, cooldown:number}}
  */
 function pickSource(source) {
   const s = source || {};
@@ -129,7 +129,7 @@ function pickSource(source) {
 /**
  * Best-destination-derived fields (where people are pulled).
  * @param {{name?:string, owner?:number, crossCiv?:boolean, reasons?:string[]}|null} bestDest The pull target.
- * @returns {{topDestinationName:string, topDestinationOwner?:number, crossCiv:boolean, destReasons:string[]}} Fields.
+ * @returns {{topDestinationName:string, topDestinationOwner?:number, crossCiv:boolean, destReasons:string[]}}
  */
 function pickDest(bestDest) {
   if (!bestDest) {
@@ -146,7 +146,7 @@ function pickDest(bestDest) {
 /**
  * Assimilation-cost fields.
  * @param {{load?:number, gold?:number, happiness?:number}|null} assim The owner's current cost.
- * @returns {{assimLoad:number, assimCostGold:number, assimCostHappiness:number}} Fields.
+ * @returns {{assimLoad:number, assimCostGold:number, assimCostHappiness:number}}
  */
 function pickAssim(assim) {
   const a = assim || {};
@@ -160,7 +160,7 @@ function pickAssim(assim) {
 /**
  * Owner-level cumulative-tally fields.
  * @param {{net?:number, in?:number, out?:number}|null} owner Owner cumulative tallies.
- * @returns {{ownerNet:number, ownerIn:number, ownerOut:number}} Fields.
+ * @returns {{ownerNet:number, ownerIn:number, ownerOut:number}}
  */
 function pickOwner(owner) {
   const o = owner || {};
@@ -170,7 +170,7 @@ function pickOwner(owner) {
 /**
  * Refugee holding + burden fields.
  * @param {{refugeePool?:number, refugeeBurden?:{gold?:number,happiness?:number}|null}} o Inputs.
- * @returns {{refugeePool:number, refugeeBurdenGold:number, refugeeBurdenHappiness:number}} Fields.
+ * @returns {{refugeePool:number, refugeeBurdenGold:number, refugeeBurdenHappiness:number}}
  */
 function pickRefugee(o) {
   return {
@@ -190,8 +190,8 @@ function pickRefugee(o) {
  *          composition?:{total:number, parts:{name:string, share:number}[]}|null,
  *          enclave?:EnclaveReadout|null,
  *          netSeries?:number[], refugeePool?:number,
- *          refugeeBurden?:{gold?:number,happiness?:number}|null}} o Inputs.
- * @returns {CitySnapshot} The snapshot.
+ *          refugeeBurden?:{gold?:number,happiness?:number}|null}} o
+ * @returns {CitySnapshot}
  */
 export function buildCitySnapshot(o) {
   const sig = o.signal || {};
@@ -212,7 +212,7 @@ export function buildCitySnapshot(o) {
     atRisk: dist > 0,
     attritionRisk: attritionRisk(dist, !!o.bestDest),
     riskReasons: riskReasonsFor(dist, sig),
-    // What the settlement HOLDS that argues for staying, named. LOC tags straight from the database
+    // What the settlement holds that argues for staying, named. LOC tags straight from the database
     // (emigration-built.js), resolved by the renderer, so the readout can say "Granary, Market,
     // Academy" instead of only showing a number that went up.
     stayReasons: Array.isArray(sig.builtNames) ? sig.builtNames.slice(0, 5) : [],
@@ -228,8 +228,8 @@ export function buildCitySnapshot(o) {
 
 /**
  * The community fields: composition, enclave progress, and the net series.
- * @param {{composition?:*, enclave?:*, netSeries?:number[]}} o Inputs.
- * @returns {{composition:*, enclave:*, netSeries:number[]}} Fields.
+ * @param {{composition?:*, enclave?:*, netSeries?:number[]}} o
+ * @returns {{composition:*, enclave:*, netSeries:number[]}}
  */
 function pickCommunity(o) {
   return {
@@ -252,7 +252,7 @@ function pickCommunity(o) {
  * mechanic uses (pacing-relaxed), or null when the city has no foreign minority. The dwell clock is read
  * from the quarter candidacy on the city's plot; its turns are the monotonic turn the stats module keeps,
  * read through the shared facade (no static import: that module imports this one).
- * @param {*} city A live city object. @returns {EnclaveReadout|null} The progress.
+ * @param {*} city A live city object. @returns {EnclaveReadout|null}
  */
 function resolveEnclave(city) {
   try {
@@ -273,7 +273,7 @@ function resolveEnclave(city) {
 /**
  * The city's recent net-migration series (the readout sparkline), read from the stats API at call time
  * (no static import; that would be a cycle). Empty when the sparkline is off or nothing is recorded yet.
- * @param {*} sig City signal.
+ * @param {*} sig
  * @returns {number[]} Recent per-pass net pop-point values.
  */
 function netSeriesFor(sig) {
@@ -285,7 +285,7 @@ function netSeriesFor(sig) {
 }
 
 /**
- * The CONCURRENT pressures pushing people from a city, as display shares (top 3, "War 60% · Prosperity
+ * The concurrent pressures pushing people from a city, as display shares (top 3, "War 60% · Prosperity
  * 40%"). Each acute pressure weighs by its intensity above threshold; prosperity is the economic baseline.
  * Null when the multi-cause readout is off (CONFIG.splitUiReadoutEnabled) or a city has no signal.
  * @param {*} sig City signal (carries violence / disaster / happiness).
@@ -312,7 +312,7 @@ function readoutCauseMix(sig) {
  * Resolve a settlement's ethnic composition into display-ready parts (origin civ adjective + share,
  * largest first), or null when untracked. Lives in the engine-reading layer so buildCitySnapshot
  * stays pure.
- * @param {*} city City object.
+ * @param {*} city
  * @returns {{total:number, parts:{name:string, share:number}[]}|null} The display composition.
  */
 function resolveComposition(city) {
@@ -334,8 +334,8 @@ function resolveComposition(city) {
 
 /**
  * Compose a city's display name defensively (mirrors the engine's resolver).
- * @param {*} city City object.
- * @returns {string} Name.
+ * @param {*} city
+ * @returns {string}
  */
 function resolveCityName(city) {
   try {
@@ -351,7 +351,7 @@ function resolveCityName(city) {
 
 /**
  * Find the ranked signal matching `cityId` (a stable key, a city object, or a localId/id).
- * @param {*[]} ranked Ranked signals.
+ * @param {*[]} ranked
  * @param {*} cityId The key, city object, or numeric id.
  * @returns {*} The signal, or null.
  */
@@ -363,8 +363,8 @@ function findSignal(ranked, cityId) {
 /**
  * Whether a signal is the city `cityId` names: its stable key, its city object, its numeric localId/id, or the
  * game's ComponentID ({owner, id, type}) that CitySelectionChanged carries.
- * @param {*} s A city signal. @param {*} cityId The city identifier.
- * @returns {boolean} True when they match.
+ * @param {*} s A city signal. @param {*} cityId
+ * @returns {boolean}
  */
 function signalMatches(s, cityId) {
   if (s.key === cityId || s.city === cityId) return true;
@@ -372,17 +372,17 @@ function signalMatches(s, cityId) {
   return isComponentId(cityId) ? componentIdMatches(s.city.id, cityId) : localIdMatches(s.city, cityId);
 }
 
-/** @param {*} v A value. @returns {boolean} True when it is an object carrying numeric owner and id. */
+/** @param {*} v @returns {boolean} True when it is an object carrying numeric owner and id. */
 function isComponentId(v) {
   return !!v && typeof v === "object" && typeof v.owner === "number" && typeof v.id === "number";
 }
 
-/** @param {*} own The city's own id. @param {*} cid A ComponentID. @returns {boolean} True when they match. */
+/** @param {*} own The city's own id. @param {*} cid A ComponentID. @returns {boolean} */
 function componentIdMatches(own, cid) {
   return !!own && typeof own === "object" && own.owner === cid.owner && own.id === cid.id;
 }
 
-/** @param {*} city A city object. @param {*} cityId A numeric id. @returns {boolean} True when they match. */
+/** @param {*} city @param {*} cityId A numeric id. @returns {boolean} */
 function localIdMatches(city, cityId) {
   const lid = city.localId ?? city.id;
   return lid != null && lid === cityId;
@@ -391,7 +391,7 @@ function localIdMatches(city, cityId) {
 /**
  * Owner-level cumulative tallies, read from globalThis.EmigrationData (0s when absent).
  * @param {number} pid Owner player id.
- * @returns {{net:number, in:number, out:number}} The tallies.
+ * @returns {{net:number, in:number, out:number}}
  */
 function ownerStats(pid) {
   const D = /** @type {*} */ (globalThis).EmigrationData;
@@ -408,7 +408,7 @@ function ownerStats(pid) {
  * @param {*} src Source signal.
  * @param {*} dest The chosen destination signal.
  * @param {string[]} [reasons] The "why here" reason tags for this pull.
- * @returns {{name:string, owner:number, crossCiv:boolean, reasons:string[]}} The descriptor.
+ * @returns {{name:string, owner:number, crossCiv:boolean, reasons:string[]}}
  */
 function destInfo(src, dest, reasons) {
   return {
@@ -426,7 +426,7 @@ function destInfo(src, dest, reasons) {
  * @param {*[]} ranked All ranked signals.
  * @param {Record<number, number>} ownerPop Per-owner population (congestion).
  * @param {Record<string, *>} sources Per-source engine state.
- * @returns {CitySnapshot} The snapshot.
+ * @returns {CitySnapshot}
  */
 function snapshotFromRanked(sig, ranked, ownerPop, sources) {
   const best = bestDestination(sig, ranked, ownerPop);
@@ -452,7 +452,7 @@ function snapshotFromRanked(sig, ranked, ownerPop, sources) {
  * resolves its current cause / pull target / pressure / distress / owner cost. Returns null if the
  * city can't be found or any read fails.
  * @param {*} cityId A stable city key, a city object, or a numeric localId/id.
- * @returns {CitySnapshot|null} The snapshot, or null.
+ * @returns {CitySnapshot|null}
  */
 export function citySnapshot(cityId) {
   try {
@@ -471,7 +471,7 @@ export function citySnapshot(cityId) {
  * Live snapshots for every city a player owns (recompute-on-read; the world is ranked once).
  * Drives the dashboards' per-city pressure table. Empty on any read failure.
  * @param {number} pid Owner player id.
- * @returns {CitySnapshot[]} The snapshots.
+ * @returns {CitySnapshot[]}
  */
 export function ownerCitySnapshots(pid) {
   try {

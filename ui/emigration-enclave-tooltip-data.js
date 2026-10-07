@@ -1,9 +1,9 @@
 // emigration-enclave-tooltip-data.js
 //
-// WHAT the enclave tooltip says, as plain data. Pure: every engine read is done by the caller
+// What the enclave tooltip says, as plain data. Pure: every engine read is done by the caller
 // (emigration-enclave-tooltip.js) and handed in, so the wording and the arithmetic are testable off-engine.
-// The game's own tooltip can only describe the BORROWED improvement an enclave is drawn with, so this
-// model lists the enclave's NAME and STAGE plus its SOURCES (the land or the displaced holding whose
+// The game's own tooltip can only describe the borrowed improvement an enclave is drawn with, so this
+// model lists the enclave's name and stage plus its sources (the land or the displaced holding whose
 // yields the host keeps, the enclave's own works, and the per-turn stance grant), each with the reason for it.
 
 import { loc } from "/emigration/ui/emigration-loc.js";
@@ -37,7 +37,7 @@ import { yieldsText } from "/emigration/ui/emigration-enclave-yields.js";
  *   sources:EnclaveTipSource[], totalAmounts:Record<string,number>, total:string}} EnclaveTipModel
  */
 
-/** @param {*} v Any value. @returns {number} A finite number, or 0. */
+/** @param {*} v @returns {number} A finite number, or 0. */
 function num(v) {
   const n = Number(v);
   return Number.isFinite(n) ? n : 0;
@@ -65,7 +65,7 @@ export function landYields(now, native) {
 }
 
 /**
- * Scale a stance's BENEFIT (its positive yields) by the contested factor; the drawback is charged in
+ * Scale a stance's benefit (its positive yields) by the contested factor; the drawback is charged in
  * full either way, exactly as the per-turn grant does it.
  * @param {Record<string, number>} stance Signed stance yields. @param {number} scale The benefit factor.
  * @returns {Record<string, number>} The yields actually paid this turn.
@@ -85,11 +85,11 @@ export function scaledStance(stance, scale) {
 /**
  * Which stage an enclave has reached. Fading outranks everything (it is about to go), a war outranks a
  * quiet recognition, and an unrecognized record is merely established.
- * @param {*} rec The quarter record. @returns {"fading"|"contested"|"recognized"|"established"} The stage key.
+ * @param {*} rec The quarter record. @returns {"fading"|"contested"|"recognized"|"established"}
  */
 export function stageOf(rec) {
   if (rec && typeof rec.fadeSince === "number") return "fading";
-  // Contested regardless of recognition: the mod marks EVERY one of a host's enclaves contested while it
+  // Contested regardless of recognition: the mod marks every one of a host's enclaves contested while it
   // is at war with the homeland and charges the happiness strain for them, recognized or not, so an
   // established-but-unrecognized enclave can be costing the player happiness.
   if (rec && rec.contested) return "contested";
@@ -98,7 +98,7 @@ export function stageOf(rec) {
 
 /**
  * The stage: a short headline (what a player scans for), and the explanation under it.
- * @param {EnclaveTipInput} i The input. @returns {{key:string, text:string, detail:string}} The stage.
+ * @param {EnclaveTipInput} i @returns {{key:string, text:string, detail:string}}
  */
 function stageLine(i) {
   const key = stageOf(i.rec);
@@ -134,7 +134,7 @@ function stageLine(i) {
 
 /**
  * The land (and whatever stood on it before) as a source.
- * @param {EnclaveTipInput} i The input. @returns {EnclaveTipSource|null} The row, or null when it yields nothing.
+ * @param {EnclaveTipInput} i @returns {EnclaveTipSource|null} Null when it yields nothing.
  */
 function landSource(i) {
   const displaced = !!i.replacedName && hasYields(i.before);
@@ -147,9 +147,9 @@ function landSource(i) {
 }
 
 /**
- * The enclave's own tile as a source. The improvement it is DRAWN with is a detail under the name, never
+ * The enclave's own tile as a source. The improvement it is drawn with is a detail under the name, never
  * part of it.
- * @param {EnclaveTipInput} i The input. @returns {EnclaveTipSource|null} The row, or null.
+ * @param {EnclaveTipInput} i @returns {EnclaveTipSource|null}
  */
 function tileSource(i) {
   if (!hasYields(i.native)) return null;
@@ -161,7 +161,7 @@ function tileSource(i) {
 
 /**
  * The stance as a source: what the host's choice pays each turn, and why.
- * @param {EnclaveTipInput} i The input. @returns {EnclaveTipSource|null} The row, or null before recognition.
+ * @param {EnclaveTipInput} i @returns {EnclaveTipSource|null} Null before recognition.
  */
 function stanceSource(i) {
   if (stageOf(i.rec) === "established" || !hasYields(i.stance)) return null;
@@ -182,9 +182,9 @@ function stanceSource(i) {
 /**
  * Build one source row: its amounts are kept raw so the panel can draw the game's yield icons, and also
  * rendered as text for logs and for any surface without icons.
- * @param {string} key Row key. @param {string} label Its name. @param {string} detail A smaller line under it.
+ * @param {string} key @param {string} label @param {string} detail A smaller line under it.
  * @param {Record<string, number>} amounts Signed yields. @param {string} note The reasoning.
- * @returns {EnclaveTipSource} The row.
+ * @returns {EnclaveTipSource}
  */
 function row(key, label, detail, amounts, note) {  
   return { key, label, detail, amounts, yields: yieldsText(amounts), note };
@@ -192,7 +192,7 @@ function row(key, label, detail, amounts, note) {
 
 /**
  * Everything the enclave tooltip shows, in display order.
- * @param {EnclaveTipInput} i The gathered input. @returns {EnclaveTipModel|null} The model, or null with no record.
+ * @param {EnclaveTipInput} i @returns {EnclaveTipModel|null} Null with no record.
  */
 export function enclaveTipModel(i) {
   if (!i || !i.rec) return null;
@@ -211,7 +211,7 @@ export function enclaveTipModel(i) {
  * The sum of every source: the land (or the holding the enclave displaced), the enclave's own works, and
  * the stance as it is actually paid this turn. This is what the host really receives for the tile, which
  * is more than the map's yield icons show once a stance is in play.
- * @param {EnclaveTipInput} i The gathered input. @returns {Record<string, number>} Summed yields by type.
+ * @param {EnclaveTipInput} i @returns {Record<string, number>} Summed yields by type.
  */
 export function totalYields(i) {
   return sumYields([baseYields(i), i.native || {}, paidStance(i)]);
@@ -219,7 +219,7 @@ export function totalYields(i) {
 
 /**
  * The land's share: the displaced holding's yields when the enclave took one over, else the bare land.
- * @param {EnclaveTipInput} i The input. @returns {Record<string, number>} Yields by type.
+ * @param {EnclaveTipInput} i @returns {Record<string, number>}
  */
 function baseYields(i) {
   if (i.replacedName && hasYields(i.before)) return /** @type {Record<string, number>} */ (i.before);
@@ -228,7 +228,7 @@ function baseYields(i) {
 
 /**
  * The stance as actually paid this turn: nothing before recognition, and a dimmed benefit while contested.
- * @param {EnclaveTipInput} i The input. @returns {Record<string, number>} Signed yields by type.
+ * @param {EnclaveTipInput} i @returns {Record<string, number>} Signed yields by type.
  */
 function paidStance(i) {
   if (stageOf(i.rec) === "established") return {};

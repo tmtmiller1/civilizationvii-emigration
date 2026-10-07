@@ -9,7 +9,7 @@ import assert from "node:assert/strict";
 const { quarterOptionsFor, quarterOptionFor, isQuarterOption, __test } =
   await import("/emigration/ui/emigration-quarter-registry.js");
 
-// ── quarterOptionsFor: origin's two identity options + the passive stance ────
+// quarterOptionsFor: origin's two identity options + the passive stance
 {
   const opts = quarterOptionsFor("CIVILIZATION_ROME");
   assert.equal(opts.length, 3, "two identity options plus the passive stance");
@@ -30,7 +30,7 @@ const { quarterOptionsFor, quarterOptionFor, isQuarterOption, __test } =
   }
 }
 
-// ── a different origin yields different identity yields ──────────────────────
+// a different origin yields different identity yields
 {
   const persia = quarterOptionsFor("CIVILIZATION_PERSIA");
   assert.equal(persia[0].benefitYield, "YIELD_GOLD", "Persian option A grants Gold (satrapal tribute)");
@@ -41,14 +41,14 @@ const { quarterOptionsFor, quarterOptionFor, isQuarterOption, __test } =
     "different origins offer different yield identities");
 }
 
-// ── fresh copies each call (a caller can decorate labels safely) ─────────────
+// fresh copies each call (a caller can decorate labels safely)
 {
   const opts = quarterOptionsFor("CIVILIZATION_ROME");
   opts[0].label = "MUTATED";
   assert.notEqual(quarterOptionsFor("CIVILIZATION_ROME")[0].label, "MUTATED", "returns fresh copies");
 }
 
-// ── unknown / DLC civ falls back to a neutral pair (never throws) ────────────
+// unknown / DLC civ falls back to a neutral pair (never throws)
 {
   const unknown = quarterOptionsFor("CIVILIZATION_NOT_REAL");
   assert.equal(unknown.length, 3, "an unknown origin still offers a full option set");
@@ -58,7 +58,7 @@ const { quarterOptionsFor, quarterOptionFor, isQuarterOption, __test } =
   assert.equal(nullOrigin.length, 3, "a null origin still offers a full option set");
 }
 
-// ── quarterOptionFor: id lookup, unknown id degrades to the passive default ──
+// quarterOptionFor: id lookup, unknown id degrades to the passive default
 {
   const a = quarterOptionFor("CIVILIZATION_ROME", "a");
   assert.equal(a.id, "a", "resolves the requested option");
@@ -66,7 +66,7 @@ const { quarterOptionsFor, quarterOptionFor, isQuarterOption, __test } =
   assert.equal(fallback.id, "ignore", "an unknown id degrades to the passive stance");
 }
 
-// ── isQuarterOption: membership ──────────────────────────────────────────────
+// isQuarterOption: membership
 {
   assert.ok(isQuarterOption("a"), "a is a known option");
   assert.ok(isQuarterOption("b"), "b is a known option");
@@ -75,7 +75,7 @@ const { quarterOptionsFor, quarterOptionFor, isQuarterOption, __test } =
   assert.ok(!isQuarterOption(42), "a non-string id is rejected");
 }
 
-// ── label map + note composition (pure helpers) ─────────────────────────────
+// label map + note composition (pure helpers)
 {
   const opt = __test.toOption({ id: "a", pays: "YIELD_CULTURE", why: "traders enrich the docks" }, "ROME");
   assert.equal(opt.label, __test.ACT_LABEL.YIELD_CULTURE, "the label comes from the yield it pays (LOC fallback = English)");
@@ -87,7 +87,7 @@ const { quarterOptionsFor, quarterOptionFor, isQuarterOption, __test } =
   assert.equal(envoys.label, "Welcome their envoys", "an Influence stance has its own verb");
 }
 
-// ── every origin's stances pay only what a script can grant, and differ ───────
+// every origin's stances pay only what a script can grant, and differ
 {
   const { QUARTER_BONUSES } = await import("/emigration/ui/emigration-quarter-bonuses.js");
   const PAYABLE = ["YIELD_GOLD", "YIELD_DIPLOMACY", "YIELD_SCIENCE", "YIELD_CULTURE"];

@@ -1,7 +1,7 @@
 // emigration-dilemma.js
 //
-// Refugee DILEMMAS: the rare moment when a great wave of refugees reaches your lands and you pause for
-// a short decision, triggered by a neighbor's CONQUEST SPREE or a PLAGUE crisis and throttled by a
+// Refugee dilemmas: the rare moment when a great wave of refugees reaches your lands and you pause for
+// a short decision, triggered by a neighbor's conquest spree or a plague crisis and throttled by a
 // per-age cap plus a long cooldown. The choices apply light effects (a one-time gold cost via
 // grantYield, a settled population point via addRural); the feature is gated by getDilemmasEnabled
 // and never affects the simulation. State persists in GameConfiguration.
@@ -34,7 +34,7 @@ const MAX_SPREE_EVENTS_PER_CIV = 32;
  * The choices offered, each with a one-line flavor cue (`note`, the button's hover tooltip) and its
  * concrete costs in the button caption, built from the live CONFIG costs. Same caption shape as the
  * call-home pop-up. Built at call time (not module-eval) so loc() resolves after Locale is live.
- * @returns {{id:string, label:string, note:string}[]} The offered choices.
+ * @returns {{id:string, label:string, note:string}[]}
  */
 function choices() {
   const n = (/** @type {*} */ v) => Math.max(0, Math.round(Number(v) || 0));
@@ -77,8 +77,8 @@ function emptyState() {
 
 /**
  * Resolve persisted payload from a legacy or schema envelope blob.
- * @param {*} parsed Parsed JSON value.
- * @returns {*} Payload object, or null.
+ * @param {*} parsed
+ * @returns {*} The payload object, or null.
  */
 function payloadFromBlob(parsed) {
   if (!parsed || typeof parsed !== "object") return null;
@@ -90,8 +90,8 @@ function payloadFromBlob(parsed) {
 
 /**
  * @param {*} v Candidate turn/count value.
- * @param {number} fallback Fallback value.
- * @returns {number} Normalized non-negative integer.
+ * @param {number} fallback
+ * @returns {number} A non-negative integer.
  */
 function nonNegInt(v, fallback) {
   return typeof v === "number" && isFinite(v) ? Math.max(0, Math.floor(v)) : fallback;
@@ -99,7 +99,7 @@ function nonNegInt(v, fallback) {
 
 /**
  * @param {*} row Candidate spree row.
- * @returns {{turn:number, victim:number, points:number}|null} Sanitized row.
+ * @returns {{turn:number, victim:number, points:number}|null}
  */
 function normalizeSpreeRow(row) {
   if (!row || typeof row !== "object") return null;
@@ -112,17 +112,17 @@ function normalizeSpreeRow(row) {
 }
 
 /**
- * @param {string} aggressor Candidate aggressor key.
- * @param {*} rawRows Candidate rows collection.
- * @returns {boolean} Whether entry shape is valid.
+ * @param {string} aggressor
+ * @param {*} rawRows
+ * @returns {boolean}
  */
 function isSpreeEntry(aggressor, rawRows) {
   return typeof aggressor === "string" && aggressor.length > 0 && Array.isArray(rawRows);
 }
 
 /**
- * @param {*} rawRows Candidate rows collection.
- * @returns {{turn:number, victim:number, points:number}[]} Sanitized rows.
+ * @param {*} rawRows
+ * @returns {{turn:number, victim:number, points:number}[]}
  */
 function collectSpreeRows(rawRows) {
   /** @type {{turn:number, victim:number, points:number}[]} */
@@ -137,7 +137,7 @@ function collectSpreeRows(rawRows) {
 
 /**
  * @param {*} spree Candidate spree map.
- * @returns {Record<string, {turn:number, victim:number, points:number}[]>} Sanitized spree map.
+ * @returns {Record<string, {turn:number, victim:number, points:number}[]>}
  */
 function normalizeSpree(spree) {
   /** @type {Record<string, {turn:number, victim:number, points:number}[]>} */
@@ -157,7 +157,7 @@ function normalizeSpree(spree) {
 
 /**
  * @param {*} parsed Parsed persisted state.
- * @returns {DilemmaState|null} Normalized state.
+ * @returns {DilemmaState|null}
  */
 function normalizeState(parsed) {
   const payload = payloadFromBlob(parsed);
@@ -174,7 +174,7 @@ function normalizeState(parsed) {
 
 /**
  * The current age ordinal (for the per-age cap), or 0.
- * @returns {number} Game.age or 0.
+ * @returns {number}
  */
 function currentAge() {
   try {
@@ -186,7 +186,7 @@ function currentAge() {
 
 /**
  * The local (viewing) player id, or null.
- * @returns {number|null} The local player id.
+ * @returns {number|null}
  */
 function localPid() {
   try {
@@ -199,7 +199,7 @@ function localPid() {
 
 /**
  * Load (once) the persisted dilemma state.
- * @returns {{ spree: Record<string, *[]>, age:number, count:number, lastTurn:number }} State.
+ * @returns {{ spree: Record<string, *[]>, age:number, count:number, lastTurn:number }}
  */
 function state() {
   resetCachesOnNewGame();
@@ -209,7 +209,7 @@ function state() {
 
 /**
  * The raw persisted state string, or null.
- * @returns {string|null} The stored JSON, or null.
+ * @returns {string|null}
  */
 function readStored() {
   const g = Configuration?.getGame?.();
@@ -219,7 +219,7 @@ function readStored() {
 
 /**
  * Read + parse the persisted dilemma state, or null when absent/unusable.
- * @returns {{ spree: Record<string, *[]>, age:number, count:number, lastTurn:number }|null} State.
+ * @returns {{ spree: Record<string, *[]>, age:number, count:number, lastTurn:number }|null}
  */
 function loadState() {
   try {
@@ -246,7 +246,7 @@ function persist() {
 /**
  * Fold this pass's captures into the per-aggressor spree tracker, pruning entries older than the
  * window. (A capture event = {prevOwner, newOwner, name, points}.)
- * @param {{spree:Record<string,*[]>}} s State. @param {*[]} conquests Capture events. @param {number} turn Now.
+ * @param {{spree:Record<string,*[]>}} s @param {*[]} conquests Capture events. @param {number} turn Now.
  */
 function recordCaptures(s, conquests, turn) {
   const cutoff = turn - CONFIG.dilemmaWindowTurns;
@@ -267,8 +267,8 @@ function recordCaptures(s, conquests, turn) {
 /**
  * Whether a fresh dilemma may fire now: under the per-age cap and past the cooldown. Resets the cap
  * count when the age has advanced.
- * @param {{age:number, count:number, lastTurn:number}} s State. @param {number} turn Now. @param {number} age
- * @returns {boolean} True when a dilemma may fire.
+ * @param {{age:number, count:number, lastTurn:number}} s @param {number} turn Now. @param {number} age
+ * @returns {boolean}
  */
 function canFire(s, turn, age) {
   if (age !== s.age) {
@@ -283,7 +283,7 @@ function canFire(s, turn, age) {
  * The conquest-spree dilemma descriptor, or null: an aggressor (not the local player) who has taken
  * at least dilemmaSpreeCaptures cities in the window, whose latest victim (also not local) is fleeing
  * toward the local player.
- * @param {{spree:Record<string,*[]>}} s State. @param {number} me Local player id.
+ * @param {{spree:Record<string,*[]>}} s @param {number} me Local player id.
  * @returns {{kind:string, instigator:number, origin:number, points:number}|null} The descriptor, or null.
  */
 function detectConquestDilemma(s, me) {
@@ -300,7 +300,7 @@ function detectConquestDilemma(s, me) {
 }
 
 /**
- * Sum this pass's disaster-cause migration points per NON-local civ (the survivors fleeing each
+ * Sum this pass's disaster-cause migration points per non-local civ (the survivors fleeing each
  * stricken neighbor).
  * @param {*[]} migrations The pass's migrations. @param {number} me Local player id.
  * @returns {Map<number, number>} Disaster points by source civ.
@@ -335,7 +335,7 @@ function detectPlagueDilemma(migrations, me) {
  * Apply a chosen option's light effects to the local player: a one-time gold cost and (for the two
  * "take them in" options) settling one population point into a city, or a one-time influence cost for
  * turning the refugees away. Records the decision in the Chronicle.
- * @param {string} choiceId The chosen option id.
+ * @param {string} choiceId
  * @param {{origin:number}} d The dilemma descriptor.
  * @param {*[]} localCities The local player's city signals (largest first).
  * @param {number} me Local player id. @param {number} turn Now.
@@ -373,7 +373,7 @@ function settleInto(citySig, origin) {
 /**
  * Record the player's decision in the Migration Chronicle, so the choice becomes part of the world's
  * written history.
- * @param {string} choiceId The chosen option. @param {{origin:number}} d The descriptor.
+ * @param {string} choiceId @param {{origin:number}} d The descriptor.
  * @param {*} hostSig The local capital signal (for a place name). @param {number} turn Now.
  */
 function chronicleDecision(choiceId, d, hostSig, turn) {
@@ -403,7 +403,7 @@ function chronicleDecision(choiceId, d, hostSig, turn) {
  * @param {{kind:string, instigator?:number, origin:number, points:number}} d The descriptor.
  * @param {number} turn Now.
  * @returns {{eyebrow:string, eyebrowIcon:string, title:string, body:string, dismissId:string,
- *   quote:string, choices:{id:string,label:string,note:string}[]}} The view model.
+ *   quote:string, choices:{id:string,label:string,note:string}[]}}
  */
 function dilemmaView(d, turn) {
   const origin = narrativeCiv(d.origin);
@@ -411,7 +411,7 @@ function dilemmaView(d, turn) {
   const people = formatPeopleExact(scaleCityPopulation(d.points, turn, "dilemma" + d.origin));
   const prompt = dilemmaPrompt({ kind: d.kind, instigator, origin, people, seed: "d" + d.origin + turn });
   // Dismissing (Escape / ✕ / cancel / click-outside) is "Turn them away": closing without choosing is
-  // itself the refusal, and pays its Influence cost — there is no free dismissal. Set explicitly here so
+  // itself the refusal, and pays its Influence cost; there is no free dismissal. Set explicitly here so
   // the intent lives at the source rather than relying on showDilemma's fallback default.
   return {
     eyebrow: loc("LOC_EMIG_DILV_EYEBROW_DEFAULT", "Refugees"), eyebrowIcon: "YIELD_DIPLOMACY",
@@ -452,7 +452,7 @@ export function maybeDilemma(conquests, migrations, signals) {
 /**
  * Stamp the throttle and present the dilemma modal, wired to apply the chosen effects to the local
  * player's cities (largest first, so "welcome" settles the capital and "frontier" a smaller town).
- * @param {{count:number, lastTurn:number}} s State. @param {*} d The descriptor.
+ * @param {{count:number, lastTurn:number}} s @param {*} d The descriptor.
  * @param {*[]} signals City signals. @param {number} me Local player id. @param {number} turn Now.
  */
 function fireDilemma(s, d, signals, me, turn) {
@@ -469,7 +469,7 @@ function fireDilemma(s, d, signals, me, turn) {
  * map so its people resolve to a real name; a second such civ (if any) plays the aggressor. Falls back to
  * neutral ids when the map read is empty.
  * @param {*[]} signals Live city signals. @param {number} me Local player id.
- * @returns {{kind:string, instigator:number, origin:number, points:number}} The descriptor.
+ * @returns {{kind:string, instigator:number, origin:number, points:number}}
  */
 function forcedDescriptor(signals, me) {
   /** @type {number[]} */
@@ -484,7 +484,7 @@ function forcedDescriptor(signals, me) {
 }
 
 /**
- * TEST HOOK — fire a REAL refugee dilemma now, with its REAL applied effects, spoofing only the
+ * Test hook: fire a real refugee dilemma now, with its real applied effects, spoofing only the
  * trigger. Runs the exact production path (fireDilemma → showDilemma → applyChoice) on live city
  * signals. Gated by the Options toggle like the real trigger; never throws.
  * @returns {boolean} Whether it fired.

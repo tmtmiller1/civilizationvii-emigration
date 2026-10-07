@@ -1,6 +1,6 @@
 // emigration-stats-schema.js
 //
-// The PERSISTED SHAPE of the migration tallies: coercing a parsed save blob into the canonical state
+// The persisted shape of the migration tallies: coercing a parsed save blob into the canonical state
 // (normalize), stamping a brand-new one (freshState), and the once-on-load migrations that bring an
 // older blob up to the current schema (migrateState). Missing maps default to {} or are backfilled once.
 
@@ -29,7 +29,7 @@ export function normalize(o) {
     lastSampled: mapOr(o.lastSampled),
     out: mapOr(o.out),
     in: mapOr(o.in),
-    // The INTERNAL (within-one-civ) share of the gross tallies above, so the ledger can split
+    // The internal (within-one-civ) share of the gross tallies above, so the ledger can split
     // Internal left/arrived from External out/in. Absent in a pre-split save; backfillInternal
     // seeds them once on load from the intra-civ flow edges.
     ...normalizeInternal(o),

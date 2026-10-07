@@ -7,7 +7,7 @@
 //       verification needs a completely different mechanism.
 //
 // The control is `globalThis.emigration`, the console API that emigration-main installs at the TOP of boot(),
-// several statements BEFORE the combat tracker is started. So:
+// several statements before the combat tracker is started. So:
 //   emigration present + EmigrationCombat absent -> (a): boot ran, my call did not take effect.
 //   both absent                                  -> (b): this probe cannot see emigration's globals at all.
 // `DemographicsData` is a second control: emigration-combat.js already depends on reading it cross-MOD, so

@@ -4,7 +4,7 @@
 // store + dedupe (emigration-chronicle.js), and the pass detection helpers (emigration-diaspora.js).
 // No engine stubs; the store degrades to an in-memory cache without GameConfiguration.
 //
-// Includes a STYLE guard: the generated prose must avoid em dashes and the usual machine-written
+// Includes a style guard: the generated prose must avoid em dashes and the usual stock
 // tells, matching the mod's house style.
 
 import assert from "node:assert/strict";
@@ -12,7 +12,7 @@ import { exodusLine, foundingLine, returnLine, chronicleTitle } from "/emigratio
 import { chronicle, chronicled, chronicleLog, clearChronicle } from "/emigration/ui/emigration-chronicle.js";
 import { __test as dia } from "/emigration/ui/emigration-diaspora.js";
 
-// ── Prose: deterministic, non-empty, and grammatical fills ───────────────────
+// Prose: deterministic, non-empty, and grammatical fills
 {
   const e = { cause: "war", civ: "Roman", city: "Mediolanum", people: "84,000", event: "the Roman-Gallic War", seed: "Mediolanum|war|120" };
   const a = exodusLine(e);
@@ -38,7 +38,7 @@ import { __test as dia } from "/emigration/ui/emigration-diaspora.js";
   assert.ok(chronicleTitle({ kind: "founding", civ: "Greek", city: "Carthage", seed: "s" }).includes("Carthage"), "founding title names the city");
 }
 
-// ── STYLE guard: no em dashes, no machine-written tells ──────────────────────
+// Style guard: no em dashes, no stock flourishes
 {
   const causes = ["war", "disaster", "unhappiness", "conquest"];
   const samples = [];
@@ -56,7 +56,7 @@ import { __test as dia } from "/emigration/ui/emigration-diaspora.js";
   }
 }
 
-// ── Store: append, newest-first, and dedupe ─────────────────────────────────
+// Store: append, newest-first, and dedupe
 {
   clearChronicle();
   assert.equal(chronicleLog().length, 0, "starts empty");
@@ -71,7 +71,7 @@ import { __test as dia } from "/emigration/ui/emigration-diaspora.js";
   clearChronicle();
 }
 
-// ── Diaspora detection helpers ──────────────────────────────────────────────
+// Diaspora detection helpers
 {
   const migs = [
     { cause: "war", srcOwner: 1, srcName: "Tyre", people: 50000, eventKey: "war:1:2" },
@@ -90,7 +90,7 @@ import { __test as dia } from "/emigration/ui/emigration-diaspora.js";
   assert.equal(lead.pts, 5, "lead foreign origin carries its current standing pop points");
   assert.equal(dia.leadForeignOrigin({ owner: 5, civs: [{ civ: 5, pts: 20, share: 1 }] }), null, "single-origin city → no foreign lead");
 
-  // Quarter stage is gated on CURRENT standing stock (pop points now), not lifetime inflow.
+  // Quarter stage is gated on current standing stock (pop points now), not lifetime inflow.
   assert.equal(
     dia.quarterStage(dia.QUARTER_FOOTHOLD_SHARE, dia.QUARTER_MIN_STOCK),
     "foothold",

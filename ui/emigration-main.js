@@ -102,7 +102,7 @@ function ownerIdsOf(signals) {
 
 /**
  * Account external population loss for this pass and emit balance telemetry.
- * Loss accounting runs EVERY turn (starvation/plague/razing/disasters), it's a
+ * Loss accounting runs every turn (starvation/plague/razing/disasters), it's a
  * turn-over-turn population diff, not tied to a move. Both steps are defensive.
  * @param {*[]} migrations This pass's migrations.
  * @param {*[]} signals This pass's city signals, collected once in doPass (post-return-moves).
@@ -124,7 +124,7 @@ function accountAndReport(migrations, signals) {
   // plague crisis) sends a wave toward the local player. Throttled + Options-gated inside; never throws.
   const dilemmaFired = maybeDilemma(conquests, migrations, signals);
   // Cultural Quarters: an established foreign diaspora becomes a persistent, player-shaped district.
-  // Ranked BELOW the refugee dilemma so two modals never race; then the war-strain tick marks quarters
+  // Ranked below the refugee dilemma so two modals never race; then the war-strain tick marks quarters
   // contested while the host is at war with their homeland. Both never throw into the pass.
   maybeQuarter(signals, dilemmaFired);
   tickContestedQuarters(signals);
@@ -150,7 +150,7 @@ function conquestRecord(c) {
 }
 
 /**
- * Fold this pass's return migrations into `migrations`. Return migration MOVES real population, so it
+ * Fold this pass's return migrations into `migrations`. Return migration moves real population, so it
  * is added before accounting and planReturns updates the shared `signals` in place, keeping the single
  * per-pass collection accurate for the accounting that follows. Gated by CONFIG.returnEnabled.
  * @param {*[]} migrations The pass's migrations so far. @param {*[]} signals The pass's city signals.
@@ -168,7 +168,7 @@ function foldReturns(migrations, signals) {
 
 /**
  * Append capture-driven "conquest" migration records (the conqueror absorbed the city's population),
- * unless disabled. Added AFTER the composition pass so the origin buckets aren't double-applied, and
+ * unless disabled. Added after the composition pass so the origin buckets aren't double-applied, and
  * kept tally-only (the base game already announces a capture).
  * @param {*[]} migrations The pass's migrations (mutated). @param {*[]} conquests The capture events.
  */
@@ -178,7 +178,7 @@ function appendConquests(migrations, conquests) {
 }
 
 /**
- * Re-read the player's saved settings into CONFIG. The Options screen runs in a SEPARATE V8 isolate and
+ * Re-read the player's saved settings into CONFIG. The Options screen runs in a separate V8 isolate and
  * can only persist changes, so re-reading each pass lets a mid-game tunable change take effect without
  * a game load. Cheap + idempotent.
  */
@@ -243,8 +243,8 @@ function reportNewsworthy(migrations) {
   const newsworthy = migrations.filter(
     (m) => m.phase !== "arrive" && m.cause !== "conquest" && m.cause !== "return");
   reportPassFeedback(newsworthy); // in-game toasts / world-news: own losses + world crises
-  // Inbound immigration is announced on the ARRIVAL (when the player's city actually gains people), so
-  // it needs the FULL pass (arrivals are filtered out of `newsworthy` above). Run AFTER the loss/crisis
+  // Inbound immigration is announced on the arrival (when the player's city actually gains people), so
+  // it needs the full pass (arrivals are filtered out of `newsworthy` above). Run after the loss/crisis
   // toasts so those claim the shared cooldown first when several things happen in one pass.
   reportInboundFeedback(migrations);
   for (const m of newsworthy) reportMigration(m);
@@ -384,8 +384,8 @@ function offerCallHomeWhenCalm(pid) {
 }
 
 /**
- * Whether none of a civilization's settlements is still under situational distress — war, siege, disaster,
- * famine or unrest alike. Unreadable state counts as NOT calm, so the offer stays quiet rather than
+ * Whether none of a civilization's settlements is still under situational distress: war, siege, disaster,
+ * famine or unrest alike. Unreadable state counts as not calm, so the offer stays quiet rather than
  * interrupting a crisis it could not see.
  * @param {number} pid The player id. @returns {boolean} True when everywhere is quiet.
  */
@@ -429,7 +429,7 @@ function hookWarTracking() {
     /* ignore */
   }
   // Per-city combat evidence (Combat / UnitKilledInCombat / DistrictDamageChanged): what lets the violence
-  // model say WHO struck a given settlement, and see a field battle that never touched its walls. The polled
+  // model say who struck a given settlement, and see a field battle that never touched its walls. The polled
   // signals in emigration-violence-signals.js stay in place as the backstop.
   try {
     dlog("combat events " + (startCombatEvents() ? "tracking" : "not started"));
@@ -501,7 +501,7 @@ function boot() {
       },
       // Diagnostic for the Talent Raid integration: does Emigration see a native raid
       // action this civ is running? Pass a player id, or omit for the local player. If this
-      // returns null while a raid IS active in the diplomacy screen, the event read needs fixing.
+      // returns null while a raid is active in the diplomacy screen, the event read needs fixing.
       raids: (/** @type {number=} */ pid) => {
         const who = typeof pid === "number" ? pid : GameContext.localPlayerID;
         const r = raidOf(who);

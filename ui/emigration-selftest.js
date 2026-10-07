@@ -1,8 +1,8 @@
 /* eslint-disable max-lines -- dev-only, option-gated Self-Test screen; accumulates probe wiring. */
 // emigration-selftest.js
 //
-// An ON-SCREEN, no-console diagnostic for verifying the mod live, in-game. Gated behind the
-// `selftestEnabled` option; when on, the dock decorator adds a "Self-Test" button that opens THIS
+// An on-screen, no-console diagnostic for verifying the mod live, in-game. Gated behind the
+// `selftestEnabled` option; when on, the dock decorator adds a "Self-Test" button that opens this
 // screen. It is a real base-UI Panel pushed with `createMouseGuard: true` because a plain HUD overlay
 // never receives clicks. It runs the checks in emigration-selftest-checks.js as PASS/WARN/FAIL/INFO
 // rows and offers actions (run a pass, force the enclave decision or a dilemma, fire test toasts,
@@ -46,7 +46,7 @@ function dlog(...a) {
 /** The live content host of the open screen (for re-run + banner), or null when closed. @type {*} */
 let _host = null;
 
-// ── actions ──────────────────────────────────────────────────────────────────────────────────────
+// actions
 
 /** `fn()`, or `fallback` if it throws or returns null. @param {()=>*} fn @param {*} fallback @returns {*} */
 function safeCall(fn, fallback) {
@@ -73,8 +73,8 @@ function deferSafe(fn) {
 }
 
 /**
- * A SYNTHETIC Cultural-Enclave decision view — a spoofed preview that fires regardless of whether the
- * player has a qualifying diaspora. Names a REAL foreign origin when one exists; the placeholder
+ * A synthetic Cultural-Enclave decision view, a spoofed preview that fires regardless of whether the
+ * player has a qualifying diaspora. Names a real foreign origin when one exists; the placeholder
  * (civ < 0) uses pure fallback strings and never calls the engine naming lookups (they throw on an invalid id).
  * @param {{civ:number, place:string}} origin @returns {*} The dilemma view model.
  */
@@ -89,25 +89,25 @@ function syntheticEnclaveView(origin) {
     title: loc("LOC_EMIG_QTR_TITLE", "The {1_Name}", name),
     body: "(Self-test preview) The " + adj + " community of " + origin.place + " has grown into a district " +
       "of its own. This is a spoofed preview so you can confirm the enclave decision renders and its " +
-      "buttons are clickable — choosing a stance here does NOT change your game.",
+      "buttons are clickable. Choosing a stance here does not change your game.",
     choices: safeCall(() => quarterOptionsFor(ct), [])
   };
 }
 
 /**
- * Force the Cultural-Enclave decision pop-up. SPOOFS the requirements: it builds a synthetic decision
- * and shows it via the real showDilemma path — the game's own native dialog, so its buttons are always
- * clickable — so it always fires, even with no foreign community. Applies nothing.
+ * Force the Cultural-Enclave decision pop-up. Spoofs the requirements: it builds a synthetic decision
+ * and shows it via the real showDilemma path (the game's own native dialog, so its buttons are always
+ * clickable), so it always fires, even with no foreign community. Applies nothing.
  */
 function forceEnclavePopup() {
-  // Close THIS self-test screen first: the decision renders through the engine's native dialog
+  // Close this self-test screen first: the decision renders through the engine's native dialog
   // (DialogBoxManager), which can sit behind this mouse-guard-backed screen and have its input eaten.
   // Popping this screen first lets the dialog own the foreground and receive clicks.
   closeSelfTestScreen();
   deferSafe(() => {
     const view = syntheticEnclaveView(pickPreviewOrigin());
     showDilemma(view, (id) =>
-      toast("Self-test: enclave stance “" + id + "” chosen — the decision modal works.", "prosperity"));
+      toast("Self-test: enclave stance “" + id + "” chosen. The decision modal works.", "prosperity"));
   });
 }
 
@@ -127,8 +127,8 @@ function runMigrationPass() {
     CONFIG.cooldownTurns = 0;
     CONFIG.maxMovesPerTurn = Math.max(20, saved.mm);
     const migs = runPass() || [];
-    // Fire the SAME notification feedback a normal turn does (mirrors emigration-main.reportNewsworthy),
-    // so this also demonstrates whether notifications appear — subject to your notifyMode/cooldown settings.
+    // Fire the same notification feedback a normal turn does (mirrors emigration-main.reportNewsworthy),
+    // so this also demonstrates whether notifications appear, subject to your notifyMode/cooldown settings.
     try {
       const newsworthy = migs.filter((m) => m.phase !== "arrive" && m.cause !== "conquest" && m.cause !== "return");
       reportPassFeedback(newsworthy);
@@ -139,9 +139,9 @@ function runMigrationPass() {
     reRun(); // rebuild the rows against the new state
     banner(migs.length + " migration(s) applied this pass (throttle relaxed for the test). Checks refreshed. " +
       (migs.length === 0
-        ? "0 = there is no migration pressure anywhere right now — every settlement is content."
+        ? "0 = there is no migration pressure anywhere right now; every settlement is content."
         : "Watch for toasts + the network / city populations updating. No toasts on a nonzero pass means your " +
-          "notify filters suppressed them — raise notifyMode to Verbose / lower the cooldown in Advanced options."));
+          "notify filters suppressed them; raise notifyMode to Verbose / lower the cooldown in Advanced options."));
   } catch (e) {
     banner("Pass failed: " + errMsg(e));
   } finally {
@@ -151,11 +151,11 @@ function runMigrationPass() {
   }
 }
 
-/** Force the OTHER modal — a refugee dilemma — via the real showDilemma path (a preview; no game effect). */
+/** Force the other modal (a refugee dilemma) via the real showDilemma path (a preview; no game effect). */
 function forceRefugeeDilemma() {
   try {
     // Close this self-test screen first so the native dialog owns the foreground and receives clicks
-    // (see forceEnclavePopup) — the deferred showDilemma then presents cleanly, exactly like in-game.
+    // (see forceEnclavePopup); the deferred showDilemma then presents cleanly, exactly like in-game.
     closeSelfTestScreen();
     deferSafe(() => {
       const view = {
@@ -164,14 +164,14 @@ function forceRefugeeDilemma() {
         title: "Refugees at the Gate",
         body: "(Self-test preview) A wave of displaced families has reached your borders. This forces the " +
           "refugee dilemma modal so you can confirm it renders and its buttons work. Your choice here is a " +
-          "preview only — it does not change your game.",
+          "preview only; it does not change your game.",
         choices: [
-          { id: "welcome", label: "Welcome them", note: "Preview — no effect on your game." },
-          { id: "hold", label: "Hold them at the border", note: "Preview — no effect." },
-          { id: "away", label: "Turn them away", note: "Preview — no effect." }
+          { id: "welcome", label: "Welcome them", note: "Preview: no effect on your game." },
+          { id: "hold", label: "Hold them at the border", note: "Preview: no effect." },
+          { id: "away", label: "Turn them away", note: "Preview: no effect." }
         ]
       };
-      showDilemma(view, (id) => toast("Self-test: refugee choice “" + id + "” — the dilemma modal works.", "war"));
+      showDilemma(view, (id) => toast("Self-test: refugee choice “" + id + "”. The dilemma modal works.", "war"));
     });
   } catch (e) {
     dlog("forceRefugeeDilemma threw", e);
@@ -200,24 +200,24 @@ function disarmDilemma(h) {
 }
 
 /**
- * Arm the ACTUAL in-game trigger: a one-shot on the real `PlayerTurnActivated` engine event that, on
- * the local player's next turn, fires a REAL refugee dilemma SYNCHRONOUSLY from inside that event WITH
- * its real applied effects. The button-fired previews above are DEFERRED (setTimeout) and apply no
+ * Arm the actual in-game trigger: a one-shot on the real `PlayerTurnActivated` engine event that, on
+ * the local player's next turn, fires a real refugee dilemma synchronously from inside that event with
+ * its real applied effects. The button-fired previews above are deferred (setTimeout) and apply no
  * effect, so only this path proves the in-game trigger end to end.
  */
 function armRealDilemma() {
   if (_armedDilemmaHandler) {
-    banner("Already armed — close this panel and end your turn to fire the real dilemma.");
+    banner("Already armed. Close this panel and end your turn to fire the real dilemma.");
     return;
   }
   const handler = (/** @type {*} */ data) => {
     const me = localPlayerId();
     const who = data && (data.player ?? data.Player);
-    if (me == null || who !== me) return; // wait for YOUR turn, matching emigration-main.onTurnActivated
+    if (me == null || who !== me) return; // wait for your turn, matching emigration-main.onTurnActivated
     disarmDilemma(handler);
     try {
       if (!fireRealDilemmaForTest()) {
-        toast("Real dilemma self-test: couldn't fire — enable 'Refugee dilemmas' in Advanced options first.", "war");
+        toast("Real dilemma self-test: couldn't fire. Enable 'Refugee dilemmas' in Advanced options first.", "war");
       }
     } catch (e) {
       dlog("armRealDilemma handler threw", e);
@@ -230,7 +230,7 @@ function armRealDilemma() {
     }
     engine.on("PlayerTurnActivated", handler);
     _armedDilemmaHandler = handler;
-    banner("Armed. Close this panel and END YOUR TURN — a REAL dilemma fires from INSIDE the real turn " +
+    banner("Armed. Close this panel and end your turn. A real dilemma fires from inside the real turn " +
       "event on your next turn, exactly as a live game does. Your choice applies its real effect, so watch " +
       "your gold / happiness / influence (and a settled city) change. That confirms the in-game path works.");
   } catch (e) {
@@ -246,9 +246,9 @@ function toastsEnabled() {
 /** Fire a single test toast through the mod's notification channel. */
 function fireTestToast() {
   try {
-    toast("Emigration self-test notification — if you can read this, on-screen toasts work.", "prosperity");
+    toast("Emigration self-test notification. If you can read this, on-screen toasts work.", "prosperity");
     banner(toastsEnabled()
-      ? "Toast fired — look at the top of the screen."
+      ? "Toast fired. Look at the top of the screen."
       : "Toasts are disabled in your mod options, so nothing appeared. Enable notifications to see them.");
   } catch (e) {
     banner("Toast failed: " + errMsg(e));
@@ -259,14 +259,14 @@ function fireTestToast() {
 function fireSampleNotifications() {
   try {
     if (!toastsEnabled()) {
-      banner("Toasts are disabled in your mod options — enable notifications first, then try again.");
+      banner("Toasts are disabled in your mod options. Enable notifications first, then try again.");
       return;
     }
     toast("Self-test: a war-driven population loss.", "war", true);
     toast("Self-test: a world refugee crisis.", "crisis");
     toast("Self-test: an immigration wave arriving.", "prosperity");
     toast("Self-test: a disaster displacing people.", "disaster");
-    banner("Fired 4 sample notifications (war / crisis / immigration / disaster) — see the top of the screen.");
+    banner("Fired 4 sample notifications (war / crisis / immigration / disaster). See the top of the screen.");
   } catch (e) {
     banner("Notifications failed: " + errMsg(e));
   }
@@ -335,8 +335,8 @@ function copyDiagnostics() {
       box.textContent = text;
     }
     banner(copied
-      ? "Diagnostics copied to clipboard AND shown below — paste or screenshot it into a bug report."
-      : "Diagnostics shown below — screenshot it into a bug report (clipboard unavailable in-game).");
+      ? "Diagnostics copied to clipboard and shown below. Paste or screenshot it into a bug report."
+      : "Diagnostics shown below. Screenshot it into a bug report (clipboard unavailable in-game).");
   } catch (e) {
     banner("Snapshot failed: " + errMsg(e));
   }
@@ -361,12 +361,12 @@ function renderEnclaveResult(lines) {
 }
 
 /**
- * FEASIBILITY test: place a real tile IMPROVEMENT on your capital and read back whether it lands and its
- * yield enters the net-yield rate (the GPT banner + breakdown). Has a REAL effect (it places an actual
+ * Feasibility test: place a real tile improvement on your capital and read back whether it lands and its
+ * yield enters the net-yield rate (the GPT banner + breakdown). Has a real effect (it places an actual
  * improvement on a tile); results render below.
  */
 function testEnclavePlacement() {
-  banner("Enclave placement test running — see the result box below (reads back in ~1s).");
+  banner("Enclave placement test running. See the result box below (reads back in ~1s).");
   try {
     runEnclavePlacementProbe(renderEnclaveResult);
   } catch (e) {
@@ -374,7 +374,7 @@ function testEnclavePlacement() {
   }
 }
 
-/** Re-read the last enclave placement (net yield often only updates at the turn roll — end a turn, then this). */
+/** Re-read the last enclave placement (net yield often only updates at the turn roll; end a turn, then this). */
 function reReadEnclave() {
   try {
     reReadEnclaveProbe(renderEnclaveResult);
@@ -385,7 +385,7 @@ function reReadEnclave() {
 
 /** Read-only: dump the runtime write-surface (namespaces + placement/purchase op enums) to the box + UI.log. */
 function capabilityIntrospection() {
-  banner("Capability introspection running — result box below + UI.log (grep ENCLAVEPROBE_).");
+  banner("Capability introspection running: result box below + UI.log (grep ENCLAVEPROBE_).");
   try {
     runCapabilityIntrospection(renderEnclaveResult);
   } catch (e) {
@@ -395,7 +395,7 @@ function capabilityIntrospection() {
 
 /** Route B: is our custom CityBuildable improvement placeable via the native BUILD/PURCHASE pipeline? */
 function buildableImprovementTest() {
-  banner("Buildable-improvement test running — result box below + UI.log (grep ENCLAVEPROBE_).");
+  banner("Buildable-improvement test running: result box below + UI.log (grep ENCLAVEPROBE_).");
   try {
     runBuildableImprovementProbe(renderEnclaveResult);
   } catch (e) {
@@ -403,9 +403,9 @@ function buildableImprovementTest() {
   }
 }
 
-/** Build test: enumerate our enclave BUILDINGS + drive CityOperations.BUILD to queue one (fresh game past Chiefdom). */
+/** Build test: enumerate our enclave buildings + drive CityOperations.BUILD to queue one (fresh game past Chiefdom). */
 function autoBuildTest() {
-  banner("Build-enclave test — driving CityOperations.BUILD; check the city production queue.");
+  banner("Build-enclave test: driving CityOperations.BUILD; check the city production queue.");
   try {
     runAutoBuildProbe(renderEnclaveResult);
   } catch (e) {
@@ -413,9 +413,9 @@ function autoBuildTest() {
   }
 }
 
-/** Full-flow test: fake an established foreign diaspora, then build THAT civ's enclave (fresh game past Chiefdom). */
+/** Full-flow test: fake an established foreign diaspora, then build that civ's enclave (fresh game past Chiefdom). */
 function seedBuildTest() {
-  banner("Seed-diaspora + build test — faking a diaspora, then queuing that civ's enclave.");
+  banner("Seed-diaspora + build test: faking a diaspora, then queuing that civ's enclave.");
   try {
     runSeedBuildProbe(renderEnclaveResult);
   } catch (e) {
@@ -423,9 +423,9 @@ function seedBuildTest() {
   }
 }
 
-/** Read-only: which Workers accessor exposes a city's CURRENT worked-plot set (for the vacated-tile marker). */
+/** Read-only: which Workers accessor exposes a city's current worked-plot set (for the vacated-tile marker). */
 function vacatedSurfaceTest() {
-  banner("Vacated-tile: reading the selected city's worked-plot set — result box below.");
+  banner("Vacated-tile: reading the selected city's worked-plot set (result box below).");
   try {
     runVacatedSurfaceProbe(renderEnclaveResult);
   } catch (e) {
@@ -435,7 +435,7 @@ function vacatedSurfaceTest() {
 
 /** Live: remove 1 rural from the selected city, diff the worked set to find the vacated tile, then restore +1. */
 function vacatedDiffTest() {
-  banner("Vacated-tile -1 diff — removes then restores 1 rural on the SELECTED city (reads back in ~2s).");
+  banner("Vacated-tile -1 diff: removes then restores 1 rural on the selected city (reads back in ~2s).");
   try {
     runVacatedDiffProbe(renderEnclaveResult);
   } catch (e) {
@@ -443,9 +443,9 @@ function vacatedDiffTest() {
   }
 }
 
-/** Across-turn step 1: snapshot per-plot signals + remove 1 rural on the selected city, then END A TURN. */
+/** Across-turn step 1: snapshot per-plot signals + remove 1 rural on the selected city, then end a turn. */
 function vacatedTurnArm() {
-  banner("Vacated-tile armed — removed 1 rural. END ONE TURN, then press \"read after end-turn\".");
+  banner("Vacated-tile armed: removed 1 rural. End one turn, then press \"read after end-turn\".");
   try {
     runVacatedTurnArm(renderEnclaveResult);
   } catch (e) {
@@ -455,7 +455,7 @@ function vacatedTurnArm() {
 
 /** Across-turn step 2: re-read the armed city after the turn and diff which tile changed. */
 function vacatedTurnRead() {
-  banner("Vacated-tile: reading the armed city after the turn — which tile changed?");
+  banner("Vacated-tile: reading the armed city after the turn. Which tile changed?");
   try {
     runVacatedTurnRead(renderEnclaveResult);
   } catch (e) {
@@ -463,7 +463,7 @@ function vacatedTurnRead() {
   }
 }
 
-/** Does a runtime grantYield LAND, and for which yields? Same-turn sweep over every stance yield. */
+/** Does a runtime grantYield land, and for which yields? Same-turn sweep over every stance yield. */
 function yieldGrantTest() {
   banner("Yield grant: granting each stance yield and watching every readable number.");
   try {
@@ -473,9 +473,9 @@ function yieldGrantTest() {
   }
 }
 
-/** Across-turn step 1: grant each stance yield a distinct amount, then END A TURN. */
+/** Across-turn step 1: grant each stance yield a distinct amount, then end a turn. */
 function yieldGrantArm() {
-  banner("Yield grant armed — granted each stance yield. END ONE TURN, then press \"read after end-turn\".");
+  banner("Yield grant armed: granted each stance yield. End one turn, then press \"read after end-turn\".");
   try {
     runYieldGrantArm(renderEnclaveResult);
   } catch (e) {
@@ -493,7 +493,7 @@ function yieldGrantRead() {
   }
 }
 
-/** Does the engine accept a NEGATIVE Constructible_YieldChanges row (the per-civ enclave drawback)? */
+/** Does the engine accept a negative Constructible_YieldChanges row (the per-civ enclave drawback)? */
 function enclaveYieldRowTest() {
   banner("Enclave yield rows: did the negative penalty rows load, and do they apply?");
   try {
@@ -503,7 +503,7 @@ function enclaveYieldRowTest() {
   }
 }
 
-// ── content rendering (into the screen's host) ─────────────────────────────────────────────────────
+// content rendering (into the screen's host)
 
 const TAG_COLOR = { PASS: "#5cbf7a", WARN: "#d8b44a", FAIL: "#d16a63", INFO: "#7fa8c9" };
 
@@ -605,7 +605,7 @@ function banner(msg) {
   }
 }
 
-// ── the screen (base-UI Panel, pushed with a mouse guard so its buttons receive input) ───────────────
+// the screen (base-UI Panel, pushed with a mouse guard so its buttons receive input)
 
 /** The self-test screen. A real base-UI panel so its buttons are clickable (mouse-guard-backed). */
 class ScreenEmigrationSelfTest extends Panel {
@@ -692,14 +692,14 @@ try {
   derr("Controls.define THREW:", e);
 }
 
-// ── public API (used by the dock decorator) ─────────────────────────────────────────────────────────
+// public API (used by the dock decorator)
 
 /** Whether the self-test is enabled in the mod's options. @returns {boolean} */
 export function selfTestEnabled() {
   return !!CONFIG.selftestEnabled;
 }
 
-/** Open the self-test screen (pushed WITH a mouse guard so its buttons receive input). */
+/** Open the self-test screen (pushed with a mouse guard so its buttons receive input). */
 export function openSelfTestPanel() {
   import("/core/ui/context-manager/context-manager.js")
     .then((m) => {

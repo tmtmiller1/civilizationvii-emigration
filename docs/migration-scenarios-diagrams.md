@@ -1,13 +1,13 @@
-# Emigration — Migration Scenario & System Diagrams
+# Emigration: Migration Scenario & System Diagrams
 
 A standalone visual reference for how the mod actually works, drawn from the implementation
 (`ui/emigration-*.js`). Two kinds of diagram:
 
-- **System / process diagrams** (Part A) trace the real code paths: the per-turn pipeline, how
+- System / process diagrams (Part A) trace the real code paths: the per-turn pipeline, how
   pressure builds and a move fires, how a destination is chosen, how the transit queue and refugee
   holding pool work, where population dies, and the downstream systems (return, composition,
   integration, dividend, dilemma).
-- **Migration flow diagrams** (Part B) show people moving between settlements/civs in named
+- Migration flow diagrams (Part B) show people moving between settlements/civs in named
   scenarios, with the mechanics that shape each flow.
 
 Every threshold shown is a `CONFIG` default from [../ui/emigration-config.js](../ui/emigration-config.js)
@@ -24,7 +24,7 @@ Legend:
 
 ---
 
-## Part A — System / process diagrams
+## Part A: System / process diagrams
 
 ### A1. Master per-turn pipeline
 
@@ -78,7 +78,7 @@ flowchart TD
 
 Each ranked source is processed in prosperity order. With `splitTracksEnabled(true)` a settlement
 runs a **voluntary** track and a **crisis** track concurrently, each with its own budget
-(`splitBudgetsEnabled(true)`) — plus the attrition outlet (A7).
+(`splitBudgetsEnabled(true)`): plus the attrition outlet (A7).
 
 ```mermaid
 flowchart TD
@@ -162,7 +162,7 @@ flowchart TD
 
 ### A6. Migration queues
 
-**Transit queue** — lagged moves in flight. Landed each pass by `processArrivals()` (longest-waiting
+**Transit queue**: lagged moves in flight. Landed each pass by `processArrivals()` (longest-waiting
 first, for fairness). This is a source of deaths (see A7).
 
 ```mermaid
@@ -178,7 +178,7 @@ flowchart TD
    T5 --> T1
 ```
 
-**Refugee holding pool** — per host city, when `refugeePoolEnabled(true)`. Arrivals that don't settle
+**Refugee holding pool**: per host city, when `refugeePoolEnabled(true)`. Arrivals that don't settle
 immediately wait here, then trickle into the city as capacity allows.
 
 ```mermaid
@@ -192,7 +192,7 @@ flowchart TD
 
 ### A7. Deaths (population that leaves the world)
 
-Not every departure relocates — some people die. Death paths:
+Not every departure relocates, some people die. Death paths:
 
 ```mermaid
 flowchart TD
@@ -206,7 +206,7 @@ flowchart TD
 ```
 
 **Attrition outlet + death-ramp onset.** When a settlement is in lethal distress and has nowhere to
-flee, deaths accrue as *pressure* and fire one point at a time — but the onset is smoothed so a fresh
+flee, deaths accrue as *pressure* and fire one point at a time, but the onset is smoothed so a fresh
 crisis is never instantly devastating.
 
 ```mermaid
@@ -227,7 +227,7 @@ flowchart TD
 ### A8. Return migration (homeland pull-back)
 
 `planReturns()` in [../ui/emigration-return.js](../ui/emigration-return.js). A recovered, peaceful
-homeland draws its diaspora back — real population moves from the host city to a homeland city. It is
+homeland draws its diaspora back, real population moves from the host city to a homeland city. It is
 naturally suppressed during crises because the homeland must be prospering and at peace.
 
 ```mermaid
@@ -284,7 +284,7 @@ people from one settlement in a pass (one entry per 8-turn bucket per settlement
 
 ### A11. Dividend and dilemma
 
-**Attraction dividend** — a decaying per-immigrant yield bonus for civs running an Attraction card
+**Attraction dividend**: a decaying per-immigrant yield bonus for civs running an Attraction card
 ([../ui/emigration-dividend.js](../ui/emigration-dividend.js)).
 
 ```mermaid
@@ -297,7 +297,7 @@ flowchart TD
    DV4 -->|no| DV2
 ```
 
-**Refugee dilemma** — a rare modal choice ([../ui/emigration-dilemma.js](../ui/emigration-dilemma.js)),
+**Refugee dilemma**: a rare modal choice ([../ui/emigration-dilemma.js](../ui/emigration-dilemma.js)),
 throttled hard so it stays special.
 
 ```mermaid
@@ -315,7 +315,7 @@ flowchart TD
 
 ### A12. Assimilation cost (the receiving-side price)
 
-Absorbing migrants is not free — the destination civ carries a decaying *load* that drains yields and
+Absorbing migrants is not free, the destination civ carries a decaying *load* that drains yields and
 softens further pull ([../ui/emigration-effects.js](../ui/emigration-effects.js)).
 
 ```mermaid
@@ -361,7 +361,7 @@ flowchart TD
 
 ---
 
-## Part B — Migration flow diagrams (people movement)
+## Part B: Migration flow diagrams (people movement)
 
 Flow legend: `-->` active flow this turn; `-.->` blocked/suppressed/weak route; edge labels name the
 dominant cause and the mechanic behind it.
@@ -409,7 +409,7 @@ flowchart LR
 
 ### B3. War / disaster (crisis)
 
-There is **no scripted wave router** — the "defender first, then neighbors" pattern *emerges* from
+There is **no scripted wave router**: the "defender first, then neighbors" pattern *emerges* from
 destination ranking (A4): war refugees get an own-civ bonus (`ownCivRefugeeBonus 1`), avoid the
 aggressor (`aggressorPenalty 12`), take a directional flee bonus away from the front
 (`fleeFactor 6`), and pay no cross-civ block (`crisisEscapeBonus +14`). Per-turn shedding is capped
@@ -438,7 +438,7 @@ flowchart LR
    BCity -.->|"return suppressed while the homeland is in crisis (A8)"| ACity
 ```
 
-Trapped population (no viable host, distress ≥ 40) does not relocate — it dies through the attrition
+Trapped population (no viable host, distress ≥ 40) does not relocate, it dies through the attrition
 outlet with a smoothed onset (A7). A conquered city keeps its residents' origins; the conqueror
 absorbs the surviving population (`conquestMigrationEnabled`), while a share of rural pop
 (`refugeesPercent 50`) flees as refugees.

@@ -1,18 +1,18 @@
 // emigration-flow-history.js
 //
-// Delta-encoded flow-history helpers. Each history frame stores only its interval's DELTA (the
+// Delta-encoded flow-history helpers. Each history frame stores only its interval's delta (the
 // migration that occurred in that window); the cumulative network at any frame is reconstructed on
 // read by summing deltas, so storage stays near the set of distinct city-pair / cause events.
 //
 // A flow matrix here is `key → { cause: people }`, where the key is
 // "srcCiv>destCiv>srcCity>destCity" (see emigration-migration-stats.js). All of
-// these helpers produce FRESH objects so a returned delta is never an alias of
+// these helpers produce fresh objects so a returned delta is never an alias of
 // a live cumulative map.
 
 /**
  * Total people across all causes for one flow entry ({cause: people}).
  * @param {Record<string, number>} byCause The per-cause map.
- * @returns {number} Total people.
+ * @returns {number}
  */
 function flowTotal(byCause) {
   let t = 0;
@@ -22,7 +22,7 @@ function flowTotal(byCause) {
 
 /**
  * Bound a cumulative flow matrix in place: when distinct city-pair edges exceed `maxKeys`, evict the
- * LOWEST-volume edges from both `flows` and its parallel `flowsPts`, down to ~90% of the cap
+ * lowest-volume edges from both `flows` and its parallel `flowsPts`, down to ~90% of the cap
  * (hysteresis). Keeps the persisted save blob bounded; only the tiniest flows are lost.
  * @param {Record<string, Record<string, number>>} flows The cumulative people matrix (mutated).
  * @param {Record<string, Record<string, number>>|undefined} flowsPts The parallel points matrix (mutated).
@@ -90,7 +90,7 @@ export function sumDeltas(frames) {
  * differences, or null when nothing remains.
  * @param {Record<string, number>} causes The newer per-cause counts.
  * @param {Record<string, number>} baseCauses The older per-cause counts to subtract.
- * @returns {Record<string, number>|null} The non-zero difference map, or null.
+ * @returns {Record<string, number>|null}
  */
 function subtractCauses(causes, baseCauses) {
   /** @type {Record<string, number>|null} */
@@ -107,11 +107,11 @@ function subtractCauses(causes, baseCauses) {
 /**
  * Subtract `prior` from `cumulative` per key/cause, dropping zero/empty entries.
  * Flows are monotonic (people only ever accumulate), so every retained value is
- * non-negative, the result is the migration that happened SINCE `prior`.
+ * non-negative: the result is the migration that happened since `prior`.
  * Produces fresh objects.
  * @param {Record<string, Record<string, number>>} cumulative The newer cumulative.
  * @param {Record<string, Record<string, number>>} prior The older cumulative to subtract.
- * @returns {Record<string, Record<string, number>>} The delta map.
+ * @returns {Record<string, Record<string, number>>}
  */
 export function subtractFlows(cumulative, prior) {
   /** @type {Record<string, Record<string, number>>} */
@@ -127,9 +127,9 @@ export function subtractFlows(cumulative, prior) {
 /**
  * Whether a frame sits on an age boundary relative to its predecessor (kept
  * un-merged during decimation so timeline boundary markers survive).
- * @param {{age?: string}} frame The frame.
+ * @param {{age?: string}} frame
  * @param {{age?: string}|undefined} prev The previous frame.
- * @returns {boolean} True at an age boundary.
+ * @returns {boolean}
  */
 function isAgeBoundary(frame, prev) {
   return !!prev && (frame.age || "") !== (prev.age || "");
@@ -147,13 +147,13 @@ function mergeInto(into, from) {
   into.age = from.age;
   into.chartTurn = from.chartTurn;
   into.year = from.year;
-  // `pop` (per-civ native population at the frame) is a point-in-time SNAPSHOT, not a delta, the
+  // `pop` (per-civ native population at the frame) is a point-in-time snapshot, not a delta; the
   // merged window ends at `from`, so keep the later frame's populations.
   if (from.pop) into.pop = from.pop;
 }
 
 /**
- * Decimate over-cap history by MERGING adjacent deltas rather than dropping frames, so cumulative
+ * Decimate over-cap history by merging adjacent deltas rather than dropping frames, so cumulative
  * totals stay exact. Age-boundary frames are never merged into their predecessor and the most recent
  * frame is always kept standalone. Returns a fresh frame list.
  * @param {*[]} frames The current frames (oldest → newest).
@@ -186,8 +186,8 @@ export function mergeAdjacentDeltas(frames, maxSnapshots) {
 /**
  * Deep-copy a delta map (key → fresh per-cause object) so merges never alias a
  * source frame's cause maps.
- * @param {Record<string, Record<string, number>>} delta The delta to copy.
- * @returns {Record<string, Record<string, number>>} A fresh copy.
+ * @param {Record<string, Record<string, number>>} delta
+ * @returns {Record<string, Record<string, number>>}
  */
 function deepCopyDelta(delta) {
   /** @type {Record<string, Record<string, number>>} */
@@ -199,7 +199,7 @@ function deepCopyDelta(delta) {
 /**
  * One-time backward-compat migration: convert legacy frames that carry a
  * cumulative `.flows` clone into delta-encoded frames (`.delta`). Exact:
- * delta[0] = flows[0], delta[i] = flows[i] − flows[i-1]. Idempotent, a no-op
+ * delta[0] = flows[0], delta[i] = flows[i] − flows[i-1]. Idempotent: a no-op
  * once every frame is already delta-encoded. Mutates and returns `frames`.
  * @param {*[]} frames The persisted frames.
  * @returns {*[]} The migrated frames.

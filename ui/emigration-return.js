@@ -323,7 +323,7 @@ function returnRoll(hostKey, turn, rate) {
  * one rural point leaves the host for the homeland, so the single per-pass collection stays accurate.
  * @param {*} host The host city signal. @param {*} homeCity The homeland city signal.
  * @param {boolean} fromPool When the returnee came from the virtual holding pool (not settled host
- *   rural), the host's counted population was never touched — so don't decrement it.
+ *   rural), the host's counted population was never touched, so don't decrement it.
  */
 function syncSignalsForMove(host, homeCity, fromPool) {
   if (!fromPool) {
@@ -342,7 +342,7 @@ function syncSignalsForMove(host, homeCity, fromPool) {
  * @returns {*} A return migration record, or null.
  */
 function planOneReturn(host, ctx) {
-  // The host must have RURAL population to give (the composition ledger's points include URBAN
+  // The host must have rural population to give (the composition ledger's points include urban
   // people), or an urban-only diaspora would be added at the homeland without leaving the host.
   if ((host.rural || 0) <= CONFIG.minRuralToEmigrate) return null;
   const dia = eligibleDiaspora(compositionForCity(host.city));
@@ -355,7 +355,7 @@ function planOneReturn(host, ctx) {
   if (!mv.ok) return null;
   const popBefore = host.population || 0;
   // keep the shared pass signals accurate for the accounting below (host decrement
-  // skipped for pool-sourced returnees — they were never counted host rural)
+  // skipped for pool-sourced returnees, they were never counted host rural)
   syncSignalsForMove(host, homeCity, mv.fromPool);
   state().lastByHost[hostKey] = ctx.turn;
   const people = marginalPeople(popBefore, ctx.turn, hostKey);
@@ -370,7 +370,7 @@ function planOneReturn(host, ctx) {
 
 /**
  * Drop per-host cooldown entries that are already past the cooldown window, so `lastByHost` stays
- * bounded over a long game. monoTurn is monotonic, so a host that has aged out is simply forgotten;
+ * bounded over a long game. monoTurn is monotonic, so a host that has aged out is forgotten;
  * its absence reads as "off cooldown", which is the correct state anyway.
  * @param {number} turn The current (monotonic) turn.
  */

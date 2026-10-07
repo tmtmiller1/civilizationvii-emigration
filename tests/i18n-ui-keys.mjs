@@ -1,9 +1,9 @@
 // i18n-ui-keys.mjs
 //
 // Drift guard: every mod-owned LOC_ key that the runtime UI (ui/**/*.js) passes to loc()/tr()/pick()
-// or a spec field MUST be defined in text/en_us/ModText.xml. The existing gates check that DATA-XML
+// or a spec field must be defined in text/en_us/ModText.xml. The existing gates check that data-xml
 // LOC references resolve (validate-package) and that every en_us key exists in all 11 locales (i18n),
-// but nothing checked that a key REFERENCED FROM JS actually exists, so a typo'd or never-authored key
+// but nothing checked that a key referenced from JS actually exists, so a typo'd or never-authored key
 // silently fell back to English forever (and never got translated). This closes that gap.
 //
 // Ownership boundary: a "mod-owned" key is one whose token contains EMIG (the namespace invariant from
@@ -11,7 +11,7 @@
 // the mod merely references (e.g. LOC_DEMOGRAPHICS_NYI from the Demographics mod) are out of scope.
 //
 // Dynamic keys: a literal ending in "_" is a concatenation prefix ("LOC_EMIG_HINT_" + cause) and a
-// template-interpolated key ("`LOC_..._${x}`") never matches as a whole token — both are skipped, since
+// template-interpolated key ("`LOC_..._${x}`") never matches as a whole token; both are skipped, since
 // their concrete keys can't be enumerated statically. Add exact keys to ALLOW only for a deliberate
 // externally-defined exception.
 //

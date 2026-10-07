@@ -2,7 +2,7 @@
 //
 // The emigration algorithm's execution + orchestration layer: each pass, rank the world's cities by
 // Prosperity, accumulate per-source "emigration pressure" toward the best destination (scored by
-// emigration-pull.js), and when a source crosses the bar, move rural citizens - instantly or through
+// emigration-pull.js), and when a source crosses the bar, move rural citizens, instantly or through
 // the transit queue. Scoring lives in emigration-pull.js and persistence in emigration-state.js; this
 // module owns move-planning (how many points a source sheds and how they travel) and the per-turn pass.
 
@@ -55,7 +55,7 @@ let _pressureCues = [];
 /**
  * Drain and return this pass's voluntary-pressure cues: sources building toward the bar
  * without moving anyone yet. The caller (reportPressureCues) throttles + filters to the local player.
- * @returns {{srcName:string, srcOwner:number, destName:string, cause:MigrationCause, frac:number}[]} The cues.
+ * @returns {{srcName:string, srcOwner:number, destName:string, cause:MigrationCause, frac:number}[]}
  */
 export function takePressureCues() {
   const cues = _pressureCues;
@@ -109,8 +109,8 @@ function applyMoveToRanking(src, dest) {
 function transitLag(src, dest, cause) {
   if (!(CONFIG.transitLagTurns > 0)) return 0;
   const per = CONFIG.transitHexPerTurn > 0 ? CONFIG.transitHexPerTurn : 1;
-  // The lag IS the journey: the hex distance from source to destination at ~`per` hexes per turn,
-  // rounded to whole turns - so a far resettlement takes meaningfully longer to land than a
+  // The lag is the journey: the hex distance from source to destination at ~`per` hexes per turn,
+  // rounded to whole turns, so a far resettlement takes meaningfully longer to land than a
   // neighboring one. War/disaster refugees take at least a turn (camps); capped per config.
   let lag = Math.round(hexDistance(src, dest) / per);
   if (isRefugeeCause(cause)) lag = Math.max(lag, 1); // refugees camp at least a turn
@@ -118,7 +118,7 @@ function transitLag(src, dest, cause) {
 }
 
 /**
- * The number of rural points a source may shed THIS turn: 1 for ordinary emigration. For a war
+ * The number of rural points a source may shed this turn: 1 for ordinary emigration. For a war
  * source it scales with siege intensity (`siegeEscalation` times how far violence exceeds the flee
  * threshold) up to `warSurgeMax`, so a fresh heavy assault sheds a burst.
  * @param {*} src Source signal.
@@ -135,7 +135,7 @@ function warSurgeBudget(src, cause) {
   return 1 + Math.round(scale * (CONFIG.warSurgeMax - 1));
 }
 
-// FORCED displacement causes: refugees flee every turn, so these bypass the post-move cooldown that
+// Forced displacement causes: refugees flee every turn, so these bypass the post-move cooldown that
 // paces voluntary (prosperity / unhappiness) migration. `conquest` is capture-driven displacement.
 const FORCED_CAUSES = new Set(["war", "disaster", "conquest"]);
 
@@ -147,14 +147,14 @@ function inCrisis(src) {
     || (src.disaster || 0) >= CONFIG.disasterFleeThreshold;
 }
 
-/** A source rests (skips a move) only when on cooldown AND its cause is voluntary (not war/disaster).
+/** A source rests (skips a move) only when on cooldown and its cause is voluntary (not war/disaster).
  * @param {{cooldown:number}} st Per-source state. @param {boolean} forced Forced-cause flag. */
 function restingOnCooldown(st, forced) {
   return !forced && st.cooldown > 0;
 }
 
 /**
- * Per-civ move ceilings for the turn: a runaway/perf safety net (NOT the pacing mechanism). Each
+ * Per-civ move ceilings for the turn: a runaway/perf safety net (not the pacing mechanism). Each
  * civ's ceiling grows with its settlement count and how many of its cities are in crisis, so
  * simultaneous wars on different civs never compete for one global budget.
  * @param {*[]} ranked Ranked source signals.
@@ -194,7 +194,7 @@ function sourceState(state, key) {
   return s;
 }
 
-/** Causes that draw from the CRISIS budget/track (vs voluntary prosperity/unhappiness). */
+/** Causes that draw from the crisis budget/track (vs voluntary prosperity/unhappiness). */
 const CRISIS_TRACK = new Set(["war", "disaster", "conquest", "attrition"]);
 /** @param {string} cause @returns {boolean} Whether it's a crisis-track cause. */
 function isCrisisTrack(cause) {
@@ -292,8 +292,8 @@ function commitImmediateArrival(a) {
  *   eventKey:string,
  *   reasons?:string[],
  *   originMix?:Record<string, number>
- * }} a Function args.
- * @returns {Migration|null} Applied record or null.
+ * }} a
+ * @returns {Migration|null}
  */
 function enqueueLaggedDeparture(a) {
   const { src, dest, state, lag, cause, consumed, people, eventKey, reasons, originMix } = a;
@@ -364,14 +364,14 @@ function bestOpenDestination(src, ranked, ownerPop, inboundCtx) {
  * accumulate to `emigrationBar` before it moves anyone.
  * @param {boolean} forced Whether the cause is forced displacement.
  * @param {number} pressure The source's accumulated pressure.
- * @returns {boolean} True when the source should wait (no move this turn).
+ * @returns {boolean} Whether the source should wait (no move this turn).
  */
 function belowEmigrationBar(forced, pressure) {
   return !forced && pressure < speedBar(CONFIG.emigrationBar);
 }
 
 /**
- * The legacy single-cause EMIGRATION step: accumulate toward the best destination and shed if it
+ * The legacy single-cause emigration step: accumulate toward the best destination and shed if it
  * crosses the bar (forced causes bypass it). No destination / on cooldown / below the bar → [].
  * @param {*} src Source signal.
  * @param {*} st Per-source state.
@@ -400,7 +400,7 @@ function legacyEmigrate(src, st, state, best, maxThisSource, inboundCtx) {
 }
 
 /**
- * LEGACY single-cause source pass (used when CONFIG.splitTracksEnabled is off): one emigration step
+ * Legacy single-cause source pass (used when CONFIG.splitTracksEnabled is off): one emigration step
  * plus the concurrent trapped/famine death channel.
  * @param {*} src Source signal.
  * @param {*[]} ranked Ranked signals.
@@ -423,7 +423,7 @@ function processSourceLegacy(src, ranked, state, ownerPop, maxThisSource, inboun
 }
 
 /**
- * CRISIS sub-pass: a besieged/struck source flees EVERY turn (no bar, no cooldown), its own war-surge
+ * Crisis sub-pass: a besieged/struck source flees every turn (no bar, no cooldown), its own war-surge
  * burst, bounded by the crisis budget and the siege-loss cap (inside warSurgeBudget). Cause is
  * disaster if distress dominates, else war.
  * @param {*} src Source signal.
@@ -440,7 +440,7 @@ function shedCrisis(src, best, state, maxCrisis, inboundCtx) {
 }
 
 /**
- * The hard per-city ceiling on MIGRATION points one settlement may lose this turn (crisis + voluntary),
+ * The hard per-city ceiling on migration points one settlement may lose this turn (crisis + voluntary),
  * the direct guard against a single city shedding a large burst. 0 in config → no cap (Infinity).
  * @returns {number} The per-city migration cap (people points), or Infinity when disabled.
  */
@@ -449,7 +449,7 @@ function cityMigrationCap() {
 }
 
 /**
- * VOLUNTARY sub-pass: ordinary economic migration, accumulate the pull toward `best`, and when it
+ * Voluntary sub-pass: ordinary economic migration, accumulate the pull toward `best`, and when it
  * crosses the bar (and not on cooldown) shed one point, then rest. Independent of any crisis flow.
  * @param {*} src Source signal.
  * @param {*} best The chosen destination ({dest, adjusted}).
@@ -484,8 +484,8 @@ function shedVoluntary(src, best, state, st, maxVol, inboundCtx) {
 }
 
 /**
- * SPLIT source pass: evaluate the crisis and voluntary tracks independently for one source, so a
- * besieged-but-attractive city can shed war refugees AND economic migrants in the same pass, each
+ * Split source pass: evaluate the crisis and voluntary tracks independently for one source, so a
+ * besieged-but-attractive city can shed war refugees and economic migrants in the same pass, each
  * from its own budget (or a shared pool when `budgets.shared`). Records keep a single cause.
  * @param {*} src Source signal.
  * @param {*[]} ranked Ranked signals.
@@ -502,7 +502,7 @@ function processSourceSplit(src, ranked, state, ownerPop, budgets, inboundCtx) {
   const out = [];
   const bestCrisis = bestOpenDestination(src, ranked, ownerPop, inboundCtx);
   if (bestCrisis) {
-    // Per-CITY migration ceiling this turn: crisis + voluntary together can't exceed it (out.length is
+    // Per-city migration ceiling this turn: crisis + voluntary together can't exceed it (out.length is
     // the running count of points this source has shed so far), so one besieged city can't burst-evacuate.
     const cap = cityMigrationCap();
     if (budgets.crisis > 0 && inCrisis(src)) {
@@ -533,7 +533,7 @@ function processSourceSplit(src, ranked, state, ownerPop, budgets, inboundCtx) {
       )) out.push(m);
     }
   }
-  // Death channel, CONCURRENT with the above: the trapped (no refuge), or a STARVING city even with a
+  // Death channel, concurrent with the above: the trapped (no refuge), or a starving city even with a
   // refuge, loses some people to death while the rest flee. Famine ≠ trapped: people die even fleeing.
   const death = processOutletDeath(src, st, state, !!bestCrisis);
   if (death) out.push(death);
@@ -557,7 +557,7 @@ function processSource(src, ranked, state, ownerPop, budgets, inboundCtx) {
   if (CONFIG.splitTracksEnabled) {
     return processSourceSplit(src, ranked, state, ownerPop, budgets, inboundCtx);
   }
-  // Legacy uses ONE merged budget: the shared pool's `voluntary` already IS the merged remaining; the
+  // Legacy uses one merged budget: the shared pool's `voluntary` already is the merged remaining; the
   // separate-ceiling case sums the two tracks. Bounded by the per-city migration cap.
   const merged = budgets.shared ? budgets.voluntary : budgets.voluntary + budgets.crisis;
   return processSourceLegacy(
@@ -571,27 +571,27 @@ function processSource(src, ranked, state, ownerPop, budgets, inboundCtx) {
 }
 
 /**
- * The CRISIS-SEVERITY multiplier (≥ 0) on the crisis-death rate: the worse the crisis, the larger the
+ * The crisis-severity multiplier (≥ 0) on the crisis-death rate: the worse the crisis, the larger the
  * share of a stricken city's people that die rather than escaping. Built from lethal distress `d`
  * (siege duration, pillage, assault damage, disaster/famine; normalized by the firing floor and
  * capped) times the number of attacking civs, plus unit casualties. ≈ 1 at the firing floor.
  * @param {*} src Source signal.
  * @param {number} d The source's lethal distress (already computed by the caller).
- * @returns {number} The severity multiplier.
+ * @returns {number}
  */
 function crisisSeverity(src, d) {
   const ref = Math.max(1, CONFIG.attritionMinDistress);
   const intensity = Math.min(CONFIG.crisisSeverityCap, d / ref); // pillaging / assault damage / duration
   const extra = Math.max(0, warAggressors(src.owner).size - 1);
   const gang = 1 + Math.min(CONFIG.crisisParticipantMax, CONFIG.crisisParticipantWeight * extra);
-  // Unit CASUALTIES are a MAJOR co-factor: a civ bleeding its army (field battles, not just city
+  // Unit casualties are a major co-factor: a civ bleeding its army (field battles, not just city
   // damage) dies harder. Bounded so it stays alongside, not over, the damage-driven intensity.
   const combat = Math.min(CONFIG.crisisCombatMax, CONFIG.crisisCombatWeight * combatLossFor(src.owner));
   return intensity * gang + combat;
 }
 
 /**
- * The death-ONSET ramp in [deathRampFloor, 1] (NOT a cap): a lethal crisis accrues death-pressure
+ * The death-onset ramp in [deathRampFloor, 1] (not a cap): a lethal crisis accrues death-pressure
  * gently at first and deepens over `deathRampTurns` of sustained lethal distress, then holds at the
  * full rate, so a sudden catastrophe is never instantly devastating. 1 when disabled.
  * @param {number} tenure Consecutive turns the source has been under lethal distress (>= 1 here).
@@ -606,7 +606,7 @@ function deathRamp(tenure) {
 
 /**
  * Advance (or relax) the per-source sustained-unrest counter and report whether unrest has been
- * sustained for `unrestLethalDelayTurns` and so counts as LETHAL this pass. Called BEFORE the death
+ * sustained for `unrestLethalDelayTurns` and so counts as lethal this pass. Called before the death
  * gate's early-return so the counter still climbs on pre-lethal unrest turns.
  * @param {*} src Source signal.
  * @param {*} st Per-source state (mutates st.unrestTenure).
@@ -618,10 +618,10 @@ function tickUnrestLethality(src, st) {
 }
 
 /**
- * The outlet's DEATH channel: population that leaves the world (cause `attrition`), tracked as deaths.
- * Fires under LETHAL distress (`lethalDistress ≥ attritionMinDistress`: war, disaster, siege, famine,
+ * The outlet's death channel: population that leaves the world (cause `attrition`), tracked as deaths.
+ * Fires under lethal distress (`lethalDistress ≥ attritionMinDistress`: war, disaster, siege, famine,
  * plus unrest sustained for `unrestLethalDelayTurns`) on its own `deathPressure`, concurrently with
- * emigration: a TRAPPED source (no refuge) dies at full rate; with a refuge (`crisisDeathEnabled`)
+ * emigration: a trapped source (no refuge) dies at full rate; with a refuge (`crisisDeathEnabled`)
  * some die at `crisisDeathShare` of that rate while the rest flee.
  * @param {*} src Source signal.
  * @param {*} st Per-source state (uses st.deathPressure).
@@ -639,7 +639,7 @@ function processOutletDeath(src, st, state, hasRefuge) {
     return null;
   }
   st.crisisTenure = (st.crisisTenure || 0) + 1; // sustained lethal distress → the crisis deepens over time
-  // DYNAMIC: the worse the crisis, the larger the share that dies rather than fleeing. Trapped → full.
+  // Dynamic: the worse the crisis, the larger the share that dies rather than fleeing. Trapped → full.
   const rate = hasRefuge ? Math.min(1, CONFIG.crisisDeathShare * crisisSeverity(src, d)) : 1;
   // deathRamp smooths the onset (see above). speedShock (÷S) balances the ×S kill threshold below so
   // the total crisis pressure to a death is speed-invariant.
@@ -666,8 +666,8 @@ function processOutletDeath(src, st, state, hasRefuge) {
   };
 }
 
-// ── Stance-impact counterfactual ──────────────────────────────────────────────
-// Each turn we PLAN the cross-civ departures twice on the same pre-pass world, once with the real
+// Stance-impact counterfactual
+// Each turn we plan the cross-civ departures twice on the same pre-pass world, once with the real
 // border stances and once with all borders forced neutral, and bank the per-civ difference. Planning
 // works on shallow copies and never moves real population.
 
@@ -675,9 +675,9 @@ const ZERO_PLAN = { inPts: 0, outPts: 0, inP: 0, outP: 0 };
 
 /**
  * Add a planned cross-civ flow to the per-owner accumulator (1 point + its people).
- * @param {Map<number, *>} acc Accumulator.
+ * @param {Map<number, *>} acc
  * @param {number} owner Civ id.
- * @param {"in"|"out"} dir Direction.
+ * @param {"in"|"out"} dir
  * @param {number} people Scaled people.
  */
 function planBump(acc, owner, dir, people) {
@@ -715,7 +715,7 @@ function planApply(src, ctx, best, budget) {
 }
 
 /**
- * Plan ONE source's cross-civ departures for the turn into `ctx.acc` (no game mutation): the same
+ * Plan one source's cross-civ departures for the turn into `ctx.acc` (no game mutation): the same
  * pressure/bar/cooldown/best-destination decision as the real pass, on copied state.
  * @param {*} src Source signal (a shallow copy; its rural/population decrement locally).
  * @param {*} ctx Plan context {sig, st, ownerPop, acc, monoTurn}.
@@ -742,7 +742,7 @@ function planSource(src, ctx, maxThisSource) {
 }
 
 /**
- * Plan a whole turn's cross-civ departures on COPIES of the pre-pass world (no mutation).
+ * Plan a whole turn's cross-civ departures on copies of the pre-pass world (no mutation).
  * @param {*[]} ranked Ranked signals (pre-pass).
  * @param {*} state Loaded state (sources + monoTurn).
  * @returns {Map<number, *>} owner → {inPts, outPts, inP, outP}.
@@ -763,7 +763,7 @@ function planTurn(ranked, state) {
   const usedByOwner = {};
   for (const src of sig) {
     // The stance-impact counterfactual is a single-cause estimate (real vs neutral borders), so it
-    // uses the MERGED per-civ ceiling; the voluntary/crisis split only governs the real pass.
+    // uses the merged per-civ ceiling; the voluntary/crisis split only governs the real pass.
     const c = ceilings.get(src.owner);
     const ceiling = c ? c.voluntary + c.crisis : CONFIG.maxMovesPerTurn;
     const remaining = ceiling - (usedByOwner[src.owner] || 0);
@@ -776,7 +776,7 @@ function planTurn(ranked, state) {
 /**
  * Whether any civ present holds a non-neutral border stance (else the counterfactual is a no-op).
  * @param {*[]} ranked Ranked signals.
- * @returns {boolean} True if some civ is Pro or Anti.
+ * @returns {boolean}
  */
 function anyStance(ranked) {
   if (!CONFIG.bordersEnabled) return false;
@@ -845,7 +845,7 @@ export function runPass() {
 
   const state = loadState();
   prepareState(state, ranked);
-  tickPressure(state, speedDecay(CONFIG.pressureRetention)); // pressure tracks CURRENT conditions, both ways
+  tickPressure(state, speedDecay(CONFIG.pressureRetention)); // pressure tracks current conditions, both ways
 
   // Measure how border stance shaped this turn's flows (counterfactual vs neutral borders), on the
   // pre-pass world and before any mutation below.
@@ -854,7 +854,7 @@ export function runPass() {
   const inboundCtx = makeInboundCtx();
 
   // Arrivals first: land anyone whose transit completed this turn. These don't count
-  // against the per-turn move cap - they're completing earlier departures.
+  // against the per-turn move cap; they're completing earlier departures.
   const migrations = processArrivals(state, ranked, inboundCtx);
 
   // Refugee holding pools settle gradually into working population (staged intake).
@@ -877,7 +877,7 @@ export function runPass() {
  * @param {number} owner Civ id.
  * @param {Map<number, {voluntary:number, crisis:number}>} ceilings Per-civ ceilings.
  * @param {Record<number, {voluntary:number, crisis:number}>} used Per-civ usage so far.
- * @returns {{voluntary:number, crisis:number, shared:boolean}} The remaining budget.
+ * @returns {{voluntary:number, crisis:number, shared:boolean}}
  */
 function remainingBudgets(owner, ceilings, used) {
   const c = ceilings.get(owner) || { voluntary: CONFIG.maxMovesPerTurn, crisis: 0 };

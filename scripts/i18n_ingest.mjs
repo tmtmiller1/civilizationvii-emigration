@@ -1,4 +1,4 @@
-// i18n_ingest.mjs, read the per-locale text/<locale>/ModText.xml files BACK into the translation maps
+// i18n_ingest.mjs, read the per-locale text/<locale>/ModText.xml files back into the translation maps
 // (i18n/<locale>.json), which is what makes i18n_apply.mjs safe to run.
 //
 // Why this exists. The maps are the apply script's only source of translations: it regenerates every
@@ -9,7 +9,7 @@
 // 6,018 real translations across the eleven locales, about a third of every file, and it was only caught
 // because a spot check happened to look at a German row afterward.
 //
-// Ingest closes that hole by treating the SHIPPED XML as the thing of record and copying anything the map
+// Ingest closes that hole by treating the shipped XML as the thing of record and copying anything the map
 // is missing or disagrees with back into the map. It only ever adds or updates; it never drops a key.
 //
 //   node scripts/i18n_ingest.mjs            report and write

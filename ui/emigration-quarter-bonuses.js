@@ -1,12 +1,12 @@
 // emigration-quarter-bonuses.js
 //
-// The PER-CIVILIZATION Cultural Quarter registry: each origin civilization offers TWO identity-grounded
-// stances for its enclave, plus a demonym for naming. A stance is a ONE-TIME payout the host receives
+// The per-civilization Cultural Quarter registry: each origin civilization offers two identity-grounded
+// stances for its enclave, plus a demonym for naming. A stance is a one-time payout the host receives
 // when it recognizes the enclave (`pays` is Gold, Influence, Science or Culture, the only yields a script
 // can grant; a non-Gold stance costs Gold), with a one-line historical justification (`why`). Each option
-// also keeps the enclave TILE's yield family (`benefit`, `penalty`, `tileWhy`) for the tile skins and the
-// generated per-stance improvements. PURE DATA + a lookup keyed by CivilizationType; the AMOUNTS come from
-// emigration-stance-payout.js, and a civ WITHOUT a row gets the NEUTRAL fallback, so it never throws.
+// also keeps the enclave tile's yield family (`benefit`, `penalty`, `tileWhy`) for the tile skins and the
+// generated per-stance improvements. Pure data + a lookup keyed by CivilizationType; the amounts come from
+// emigration-stance-payout.js, and a civ without a row gets the neutral fallback, so it never throws.
 
 /** @typedef {{id:string, benefit:string, penalty:string, tileWhy:string, pays:string, why:string, label?:string}}
  *   QBonusOption */
@@ -35,11 +35,11 @@ const D = "YIELD_DIPLOMACY";
 
 /**
  * The per-civilization quarter registry. Each entry: a demonym (for "<Demonym> Quarter" naming, which
- * OVERRIDES the game adjective where they differ — e.g. Carthage → "Punic") and two options a/b.
+ * overrides the game adjective where they differ, e.g. Carthage → "Punic") and two options a/b.
  * @type {Readonly<Record<string, QBonus>>}
  */
 export const QUARTER_BONUSES = Object.freeze({
-  // ── Antiquity origins ──
+  // Antiquity origins
   CIVILIZATION_ABBASID: { demonym: "Abbasid", options: [
     opt("a", S, G, "House-of-Wisdom scholars translate, but their stipends drain the treasury", { pays: S, why: "House-of-Wisdom scholars translate, but their stipends drain the treasury" }),
     opt("b", H, P, "famed gardens and salons soothe the city, but few hands work the yards", { pays: D, why: "their salons and famed gardens receive envoys from across the known world, at the city's expense" })] },
@@ -86,7 +86,7 @@ export const QUARTER_BONUSES = Object.freeze({
     opt("a", P, H, "Roman engineers and veterans raise your works and drill your legions, but the eagle's shadow chafes", { pays: S, why: "Roman engineers bring their surveying and concrete, and the city pays their wages", label: "Learn their engineering" }),
     opt("b", G, C, "their roads pull trade to the city, and coin sets the fashion", { pays: G, why: "their roads pull trade to the city" })] },
 
-  // ── Exploration origins ──
+  // Exploration origins
   CIVILIZATION_BULGARIA: { demonym: "Bulgar", options: [
     opt("a", P, H, "their horse-and-forge veterans harden your cavalry, and brawl as hard as they fight", { pays: S, why: "their horse-and-forge veterans teach your smiths and riders, at a price in coin", label: "Learn their horsemanship" }),
     opt("b", G, C, "frontier markets thrive, and the city keeps fuller ledgers than calendars", { pays: G, why: "frontier markets thrive and pay their dues" })] },
@@ -127,7 +127,7 @@ export const QUARTER_BONUSES = Object.freeze({
     opt("a", G, H, "treasure-fleet factors enrich the port amid conversion strife", { pays: G, why: "treasure-fleet factors enrich the port" }),
     opt("b", F, C, "their missions win souls and overwrite old custom", { pays: C, why: "their missions build churches and schools, at the treasury's cost" })] },
 
-  // ── Modern origins ──
+  // Modern origins
   CIVILIZATION_AMERICA: { demonym: "American", options: [
     opt("a", P, H, "factory-hands drive output, but the shifts breed unrest", { pays: S, why: "their inventors and factory engineers bring new methods, and the patents cost coin" }),
     opt("b", C, G, "their cinema and jazz enliven the ward, at a subsidy", { pays: C, why: "their cinema and jazz enliven the ward, at a subsidy" })] },
@@ -174,7 +174,7 @@ export const QUARTER_BONUSES = Object.freeze({
     opt("a", H, G, "pagoda-rites lift the ward, sustained by alms", { pays: C, why: "pagoda-rites lift the ward, sustained by alms" }),
     opt("b", C, P, "their crafts refine custom while the workshops idle", { pays: G, why: "their goldsmiths' crafts sell in every market" })] },
 
-  // ── Age-flex origins ──
+  // Age-flex origins
   CIVILIZATION_NEPAL: { demonym: "Nepali", options: [
     opt("a", FO, G, "mountain terraces feed the ward, tended at cost", { pays: G, why: "mountain terraces feed the ward and its market" }),
     opt("b", P, H, "their hill-fort masons and drillmasters raise strong works and hardy soldiers", { pays: D, why: "their hillmen serve abroad and win your city renown, and their pay comes from the treasury", label: "Enlist their hillmen" })] },
@@ -221,12 +221,10 @@ export function quarterBonus(civType) {
   return hit || NEUTRAL_QUARTER;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Flavor quotes: each option carries a short, REAL, ATTRIBUTED historical quote, shown in the choice
+// Flavor quotes: each option carries a short, real, attributed historical quote, shown in the choice
 // modal beneath its benefit/cost note. Curation rules (enforced by tests/quarter-bonuses.mjs): every
-// entry names a speaker (`who`) and a source work (`source`), the culture's OWN voice is preferred, and
+// entry names a speaker (`who`) and a source work (`source`), the culture's own voice is preferred, and
 // translations / contested attributions are marked (trans.) / (attr.). See docs/quote-sources.md.
-// ─────────────────────────────────────────────────────────────────────────────
 
 /** @typedef {{text:string, who:string, source:string}} QQuote */
 
@@ -246,7 +244,7 @@ function q(text, who, source) {
  * @type {Readonly<Record<string, {a:QQuote, b:QQuote}>>}
  */
 export const QUARTER_QUOTES = Object.freeze({
-  // ── Antiquity origins ──
+  // Antiquity origins
   CIVILIZATION_ABBASID: { a: q("طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ. (Seeking knowledge is an obligation upon every Muslim.)", "the Prophet Muhammad", "Sunan Ibn Mājah 224"), b: q("وينبغى لنا ألا نستحي من استحسان الحق، واقتناء الحق من أين أتى… (We ought not to be ashamed to admire the truth and to acquire it, wherever it comes from…)", "al-Kindi", "On First Philosophy (9th c., trans.)") },
   CIVILIZATION_AKSUM: { a: q("ΤΟΥΤΟ ΑΡΕΣΗ ΤΗ ΧΩΡΑ (Toûto arésē tê chôra: may this please the country.)", "Aksumite coinage", "bronze coin legend (4th c.)"), b: q("ፍሥሓ ፡ ለይኲን ፡ ለአሕዛብ (Let the people be glad.)", "Emperor Armah", "Aksumite coin legend (7th c.)") },
   CIVILIZATION_ASSYRIA: { a: q("BÀD ù šal-ḫu-u šá NINA.KI eš-šiš ú-še-piš-ma ú-zaq-qir ḫur-šá-niš (I had the inner wall and outer wall of Nineveh built anew and raised them as high as mountains.)", "Sennacherib", "wall-slab inscription, Nineveh (RINAP 3/2, Sennacherib 82, trans.)"), b: q("aḫuz nēmeqi Nabû kullat ṭupšarrūti (I learned the wisdom of the god Nabû, all of the scribal arts.)", "Ashurbanipal", "Prism F (RINAP 5/1, Ashurbanipal 9, trans.)") },
@@ -263,7 +261,7 @@ export const QUARTER_QUOTES = Object.freeze({
   CIVILIZATION_PERSIA: { a: q("ἀρχὰς κατεστήσατο εἴκοσι, τὰς αὐτοὶ καλέουσι σατραπηίας (He set up twenty provinces, which they themselves call satrapies.)", "Herodotus", "Histories, Bk. III (trans.)"), b: q("ἔστι δ' αὐτῶν ἃ καὶ ἐφύτευσα αὐτός (There are some of these that I planted myself.)", "Cyrus the Younger", "in Xenophon, Oeconomicus 4.24 (trans.)") },
   CIVILIZATION_ROME: { a: q("Tot aquarum tam multis necessariis molibus pyramidas videlicet otiosas compares… (Would you set the idle Pyramids beside these many indispensable works of water?)", "Frontinus", "On the Aqueducts of Rome (1st c., trans.)"), b: q("ἄγεται ἐκ πάσης γῆς καὶ θαλάττης ὅσα ὧραι φύουσι καὶ χῶραι ἕκασται φέρουσι (From every land and sea is brought whatever the seasons grow and each country bears.)", "Aelius Aristides", "Roman Oration (2nd c., trans.)") },
 
-  // ── Exploration origins ──
+  // Exploration origins
   CIVILIZATION_BULGARIA: { a: q("Even if a man lives well, he dies, and another is born; let the one born last, seeing this, remember the one who made it.", "Khan Omurtag", "Tarnovo column inscription, in Greek (c. 822, trans.)"), b: q("Език свещен на моите деди (Sacred tongue of my forefathers.)", "Ivan Vazov", "The Bulgarian Language (1883, trans.)") },
   CIVILIZATION_CHOLA: { a: q("யாதானும் நாடாமால் ஊராமால் என்னொருவன் சாந்துணையுங் கல்லாத வாறு (The learned make each land their own, in every city find a home.)", "Tiruvalluvar", "Tirukkural 397 (trans. Pope)"), b: q("தொட்டனைத் தூறும் மணற்கேணி மாந்தர்க்குக் கற்றனைத் தூறும் அறிவு (In sandy soil, when deep you delve, you reach the springs below; the more you learn, the freer streams of wisdom flow.)", "Tiruvalluvar", "Tirukkural 396 (trans. Pope)") },
   CIVILIZATION_DAI_VIET: { a: q("賢才國家之元氣 (Hiền tài là nguyên khí của quốc gia: the virtuous and talented are the vital force of the state.)", "Thân Nhân Trung", "stele for the 1442 examination, Temple of Literature (1484, trans.)"), b: q("訓練士卒，習爾弓矢 (Drill the soldiers, and practice the bow and arrow.)", "Trần Hưng Đạo", "Proclamation to the Officers (1284, trans.)") },
@@ -278,7 +276,7 @@ export const QUARTER_QUOTES = Object.freeze({
   CIVILIZATION_SONGHAI: { a: q("sono molte botteghe di artigiani e mercatanti, e massimamente di tessitori di tele di bambagio (There are many shops of craftsmen and merchants, above all weavers of cotton cloth.)", "Leo Africanus", "Description of Africa (1550, trans.)"), b: q("Vendonsi molti libri scritti a mano, che vengono di Barberia; e di questi si fa più guadagno che del rimanente delle mercatanzie (Many handwritten books are sold, brought from Barbary; and more profit is made on these than on all other goods.)", "Leo Africanus", "Description of Africa (1550, trans.)") },
   CIVILIZATION_SPAIN: { a: q("el que lee mucho y anda mucho, vee mucho y sabe mucho (He who reads much and travels much sees and knows a great deal.)", "Miguel de Cervantes", "Don Quixote II.25 (1615, trans. Ormsby)"), b: q("Nada te turbe; / nada te espante; / todo se pasa… (Let nothing disturb thee, / Nothing affright thee; / All things are passing…)", "Teresa of Ávila", "Nada te turbe (16th c., trans. Longfellow)") },
 
-  // ── Modern origins ──
+  // Modern origins
   CIVILIZATION_AMERICA: { a: q("After all, the chief business of the American people is business.", "Calvin Coolidge", "address to the American Society of Newspaper Editors (1925)"), b: q("I hear America singing, the varied carols I hear.", "Walt Whitman", "I Hear America Singing (1860)") },
   CIVILIZATION_BUGANDA: { a: q("The plantains cover large areas of land; sometimes a garden (so-called) extends for several miles…", "John Roscoe", "The Baganda (1911)"), b: q("Agali awamu ge galuma ennyama. (Teeth set together are the ones that chew the meat; unity gives strength.)", "Ganda proverb", "coll. F. Walser, Luganda Proverbs") },
   CIVILIZATION_FRENCH_EMPIRE: { a: q("…le but d’une Encyclopédie est de rassembler les connoissances éparses sur la surface de la terre (…the aim of an encyclopedia is to assemble the knowledge scattered over the face of the earth.)", "Denis Diderot", "Encyclopédie, vol. V (1755, trans.)"), b: q("Le commerce guérit des préjugés destructeurs : & c’est presque une regle générale que, par-tout où il y a des mœurs douces, il y a du commerce. (Commerce cures destructive prejudices; and it is almost a general rule that wherever manners are gentle, there is commerce.)", "Montesquieu", "The Spirit of the Laws XX.1 (1748, trans.)") },
@@ -295,7 +293,7 @@ export const QUARTER_QUOTES = Object.freeze({
   CIVILIZATION_SIAM: { a: q("ด้วยเสียงพาทย์เสียงพิณ เสียงเลื่อนเสียงขับ ใครจักมักเล่นเล่น ใครจักมักหัวหัว ใครจักมักเลื่อนเลื่อน (With drums and lutes, chanting and song: whoever wishes to play, plays; whoever wishes to laugh, laughs; whoever wishes to sing, sings.)", "Ramkhamhaeng Inscription", "side 2 (1292, trans.)"), b: q("ในน้ำมีปลา ในนามีข้าว (In the water there are fish, in the fields there is rice.)", "Ramkhamhaeng Inscription", "(1292, trans.)") },
   CIVILIZATION_SILLA: { a: q("國有玄妙之道，曰風流 (The country has a profound and mysterious Way, called Pungnyu.)", "Choe Chiwon", "preface to the Nallang stele, in Samguk sagi (9th c., trans.)"), b: q("城中無一草屋。接角連牆。歌吹滿路。晝夜不絕。 (Not one thatched house stood in the city; roofs touched and walls adjoined, and song and piping filled the streets day and night.)", "Samguk Yusa", "Iryeon, on King Heongang's reign (13th c., trans.)") },
 
-  // ── Age-flex origins ──
+  // Age-flex origins
   CIVILIZATION_NEPAL: { a: q("The terraces or steps… are constructed with no small labor (often extending to the tops of the highest hills).", "William Kirkpatrick", "An Account of the Kingdom of Nepaul (1811)"), b: q("यो राजे दुई ढुङ्गाको तरुल जस्तो रहेछ (This realm is like a yam between two stones.)", "Prithvi Narayan Shah", "Divya Upadesh (18th c., trans.)") },
   CIVILIZATION_OTTOMANS: { a: q("Halk içinde mu'teber bir nesne yok devlet gibi, olmaya devlet cihanda bir nefes sıhhat gibi. (Among people nothing is prized like the state, yet no fortune on earth is like one breath of health.)", "Süleyman the Magnificent (Muhibbî)", "Dîvân-ı Muhibbî (16th c.)"), b: q("Bir safâ bahşedelim gel şu dil-i nâ-şâda, gidelim serv-i revânım yürü Sa'd-âbâd'a. (Let us grant some joy to this joyless heart; come, my graceful cypress, let us away to Sa'dabad.)", "Nedîm", "Dîvân (Tulip Era, 18th c.)") },
   CIVILIZATION_PIRATE_REPUBLIC: { a: q("A merry life and a short one shall be my motto.", "Bartholomew Roberts", "in A General History of the Pyrates (1724)"), b: q("Every Man has a Vote in Affairs of Moment; has equal Title to the fresh Provisions…", "Articles of Bartholomew Roberts's crew", "in A General History of the Pyrates (1724)") },
@@ -307,7 +305,7 @@ export const QUARTER_QUOTES = Object.freeze({
 
 // Unicode blocks the game's UI fonts cannot draw, so they render as tofu (□): RTL, CJK, Greek, Cyrillic,
 // Ethiopic, Hebrew, Armenian, Syriac, the Indic scripts, Thai, Lao, Tibetan, Myanmar, Georgian, Khmer and
-// Mongolian. Latin-extended DIACRITICS (ā, ê, š, ḫ, …) render fine and are NOT here (the schwa ǝ does not).
+// Mongolian. Latin-extended diacritics (ā, ê, š, ḫ, …) render fine and are not here (the schwa ǝ does not).
 // Every registry quote in one of these scripts is written "<original> (<Latin translation>)", so when the
 // original won't render we fall back to the parenthetical translation.
 const UNRENDERABLE_SCRIPT =
@@ -327,12 +325,12 @@ function renderableQuote(text) {
 }
 
 // A run of unrenderable text followed by its parenthetical Latin translation, wherever it sits inside a
-// larger line. `[^"()]*` on each side stops at the wrapping quotes / the source's own parens, so ONLY the
-// "<original script> (translation)" span is captured — the surrounding "…" and — who, source are left be.
+// larger line. `[^"()]*` on each side stops at the wrapping quotes / the source's own parens, so only the
+// "<original script> (translation)" span is captured; the surrounding "…" and — who, source are left be.
 const UNRENDERABLE_RUN = new RegExp('[^"()]*' + UNRENDERABLE_SCRIPT.source + '[^"()]*\\(([^()]*)\\)', "g");
 
 /**
- * A display-safe version of an ALREADY-COMPOSED quote line (`"<text>" <who>[, <source>]`), for the
+ * A display-safe version of an already-composed quote line (`"<text>" <who>[, <source>]`), for the
  * in-game path where the line comes back whole from Locale.compose. Collapses each "<unrenderable
  * original> (Latin translation)" span to just the translation, then drops any residual unrenderable
  * characters. A no-op for an all-renderable line.
@@ -359,7 +357,7 @@ export function quoteDisplay(quote) {
 
 /**
  * The source part of a quote line: a parenthetical source joins with a space, a worded one with a comma.
- * @param {string} source The source ("" for none). @returns {string} The suffix.
+ * @param {string} source "" for none. @returns {string} The suffix.
  */
 function sourceSuffix(source) {
   return source ? (source.charAt(0) === "(" ? " " : ", ") + source : "";

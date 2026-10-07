@@ -1,6 +1,6 @@
 // emigration-ethnicity-tiles.js
 //
-// Shared per-tile ethnic-composition computation for the ethnicity LENS and its hover TOOLTIP, which
+// Shared per-tile ethnic-composition computation for the ethnicity lens and its hover tooltip, which
 // run in separate UIScript isolates and each compute the mosaic independently; the model is pure and
 // deterministic, so color and percentages always agree. This is the one place that does the engine
 // reads; the distribution math stays pure in emigration-ethnicity-distribution.js.
@@ -13,7 +13,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { quarterSnapshotAt } from "/emigration/ui/emigration-quarter-state.js";
 import { enclaveStanding } from "/emigration/ui/emigration-enclave-place.js";
 
-// Per-tile density weights by district class, "urban districts have higher populations". A tile's
+// Per-tile density weights by district class: urban districts hold more people. A tile's
 // final weight is its class weight times a build-up bonus (constructibles on the tile).
 const W_CITY_CENTER = 3.6;
 const W_URBAN = 2.4;
@@ -27,10 +27,10 @@ const BUILDUP_CAP = 4; // …capped, so a wonder-stacked tile doesn't dominate e
  */
 
 /**
- * The number of constructibles on a tile (its build-up), capped, a denser-built tile holds more
+ * The number of constructibles on a tile (its build-up): a denser-built tile holds more
  * people. 0 when unreadable.
- * @param {number} x Plot x. @param {number} y Plot y.
- * @returns {number} Constructible count.
+ * @param {number} x @param {number} y
+ * @returns {number}
  */
 function constructibleCount(x, y) {
   try {
@@ -45,8 +45,8 @@ function constructibleCount(x, y) {
 /**
  * A tile's district-class base density weight (city center ≫ urban > rural > wilderness). Defaults to
  * the rural weight when the district can't be read, so an unclassifiable tile still carries people.
- * @param {number} x Plot x. @param {number} y Plot y.
- * @returns {number} The base weight.
+ * @param {number} x @param {number} y
+ * @returns {number}
  */
 function districtWeight(x, y) {
   try {
@@ -68,12 +68,12 @@ function districtWeight(x, y) {
  * A settlement's owned tiles with their population-density weights (district class × build-up bonus).
  * Empty when the city has no readable plots.
  *
- * An ENCLAVE tile is floored at the urban weight: the enclave sits on an empty land plot the map still
+ * An enclave tile is floored at the urban weight: the enclave sits on an empty land plot the map still
  * classifies as bare rural or wilderness, but a quarter full of people is weighted as the built-up
  * district it represents.
- * @param {*} city City object.
+ * @param {*} city
  * @param {Map<number, {x:number, y:number}>} anchors Enclave plots (civ → location), floored to urban.
- * @returns {{x:number, y:number, weight:number}[]} Weighted plots.
+ * @returns {{x:number, y:number, weight:number}[]}
  */
 function classifyPlots(city, anchors) {
   /** @type {Set<string>} */
@@ -98,9 +98,9 @@ function classifyPlots(city, anchors) {
 }
 
 /**
- * The settlement's scaled population (people) for the density model. Unseeded (a standing TOTAL).
+ * The settlement's scaled population (people) for the density model. Unseeded (a standing total).
  * @param {number} points The settlement's population in points.
- * @returns {number} Scaled people.
+ * @returns {number}
  */
 function scaledPeopleFor(points) {
   try {
@@ -119,7 +119,7 @@ function locKey(city) {
 /**
  * The cache key: the ledger's version (the turn plus the recorder's pass stamp). The turn covers the
  * map reads, which change between turns; the stamp covers a pass that saved after this turn's first paint.
- * @returns {string} The key.
+ * @returns {string}
  */
 function cacheKey() {
   try {
@@ -146,8 +146,8 @@ const MAX_CACHE = 4096; // bound the cache over a long game
  * The per-tile ethnic mosaic for a settlement: each owned tile's local origin shares + density, plus a
  * key→tile map and the composition. Null when the settlement is untracked or has no readable plots.
  * Memoized per settlement for the ledger's current version (both the lens and the tooltip hit this each frame).
- * @param {*} city City object.
- * @returns {CityTiles|null} The settlement's tiles, or null.
+ * @param {*} city
+ * @returns {CityTiles|null}
  */
 export function tilesForCity(city) {
   const key = locKey(city);
@@ -165,7 +165,7 @@ export function tilesForCity(city) {
  * The composition of a settlement the pass has not recorded yet (a save without the ledger, or a lens
  * painted before the first pass of a session): everyone in it is the owner's own people, so the mosaic
  * and its density gradient are still drawn.
- * @param {*} city City object.
+ * @param {*} city
  * @returns {*} A composition in the stored shape, or null when the settlement is unreadable.
  */
 function hostOnlyComposition(city) {
@@ -181,10 +181,10 @@ function hostOnlyComposition(city) {
 }
 
 /**
- * The settlement's ENCLAVE anchor pins: origin civ → the plot its standing Cultural Enclave occupies,
+ * The settlement's enclave anchor pins: origin civ → the plot its standing Cultural Enclave occupies,
  * so that diaspora's color cluster centers on the enclave tile (at most one per settlement). Gated
- * on the tile STANDING (`enclaveStanding`, which also recognizes a Village-skinned enclave). Reads the
- * per-turn SNAPSHOT, not `quarterAt`, because the lens is its own isolate and `quarterAt` would freeze
+ * on the tile standing (`enclaveStanding`, which also recognizes a Village-skinned enclave). Reads the
+ * per-turn snapshot, not `quarterAt`, because the lens is its own isolate and `quarterAt` would freeze
  * whatever the store held on its first paint. Never throws.
  * @param {string} key The settlement's "x,y" center key.
  * @returns {Map<number, {x:number, y:number}>} Origin civ → enclave plot (empty when none).
@@ -201,15 +201,15 @@ function enclaveAnchors(key) {
       out.set(rec.civ, { x: loc.x, y: loc.y });
     }
   } catch (_) {
-    /* no pin — fall back to the hash anchor */
+    /* no pin: fall back to the hash anchor */
   }
   return out;
 }
 
 /**
- * The share an origin must hold for an enclave to form (`quarterEstablishedShare`) — the ceiling on how
- * much of a plain tile any diaspora may color. Reading it from CONFIG keeps the lens honest against the
- * live rule: retune the enclave bar and the lens moves with it. 0 when unreadable (no extra ceiling).
+ * The share an origin must hold for an enclave to form (`quarterEstablishedShare`), which is also the
+ * ceiling on how much of a plain tile any diaspora may color. It is read from CONFIG so that retuning
+ * the enclave bar moves the lens with it. 0 when unreadable (no extra ceiling).
  * @returns {number} The bar in [0, 1].
  */
 function enclaveBar() {
@@ -219,8 +219,8 @@ function enclaveBar() {
 
 /**
  * Compute (uncached) a settlement's per-tile mosaic from its composition + classified plots.
- * @param {*} city City object. @param {string} key The settlement's "x,y" center key.
- * @returns {CityTiles|null} The tiles, or null.
+ * @param {*} city @param {string} key The settlement's "x,y" center key.
+ * @returns {CityTiles|null}
  */
 function computeTiles(city, key) {
   const comp = compositionForCity(city) || hostOnlyComposition(city);

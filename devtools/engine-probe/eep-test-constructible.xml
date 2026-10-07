@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Probe-only: ONE custom improvement that is never buildable (RequiresUnlock with no unlock row,
+<!-- Probe-only: one custom improvement that is never buildable (RequiresUnlock with no unlock row,
      CityBuildable/TownBuildable false). Placed only by CREATE_ELEMENT from the probe. Tests whether a
      non-buildable custom constructible (a) can be placed at runtime and (b) survives AI turns without
      the ConstructibleBroker crash that killed the universally-buildable enclave improvement. -->

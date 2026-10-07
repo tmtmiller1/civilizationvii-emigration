@@ -1,11 +1,11 @@
 // engine-legacy-snapshots.mjs
 //
 // Coverage for the two engine paths the end-to-end engine-pass.mjs harness doesn't drive, plus the
-// engine-reading city-snapshot readers, all over the SAME tiny fake world (so collectCitySignals,
+// engine-reading city-snapshot readers, all over the same tiny fake world (so collectCitySignals,
 // the engine pass, and the snapshot builders share one setup):
-//   1. the LEGACY single-cause pass (CONFIG.splitTracksEnabled = false): processSourceLegacy /
+//   1. the legacy single-cause pass (CONFIG.splitTracksEnabled = false): processSourceLegacy /
 //      legacyEmigrate / belowEmigrationBar / restingOnCooldown, below-the-bar wait, shed, cooldown;
-//   2. the STANCE counterfactual (planTurn / planSource / planApply / planBump): real vs neutral
+//   2. the stance counterfactual (planTurn / planSource / planApply / planBump): real vs neutral
 //      borders, banked as the per-civ flow difference, driven by a slotted Open-Borders tradition;
 //   3. citySnapshot / ownerCitySnapshots (emigration-city-readout-data.js): resolveComposition,
 //      resolveCityName, findSignal, ownerStats, destInfo, snapshotFromRanked, live recompute-on-read.
@@ -19,7 +19,7 @@ import { runPass } from "/emigration/ui/emigration-engine.js";
 import { citySnapshot, ownerCitySnapshots } from "/emigration/ui/emigration-city-readout-data.js";
 import { __test as compTest } from "/emigration/ui/emigration-composition.js";
 
-// ── Engine globals (mirrors engine-pass.mjs) ──────────────────────────────────
+// Engine globals (mirrors engine-pass.mjs)
 globalThis.YieldTypes = { YIELD_FOOD: "YIELD_FOOD", YIELD_PRODUCTION: "YIELD_PRODUCTION", YIELD_GOLD: "YIELD_GOLD", YIELD_SCIENCE: "YIELD_SCIENCE", YIELD_CULTURE: "YIELD_CULTURE", YIELD_HAPPINESS: "YIELD_HAPPINESS" };
 globalThis.GameplayMap = { getPlotDistance: (ax, ay, bx, by) => Math.abs(ax - bx) + Math.abs(ay - by) };
 globalThis.Culture = { isTraditionActive: () => false };
@@ -67,7 +67,7 @@ function pinBaseConfig() {
   });
 }
 
-// ── 1. Legacy single-cause pass ──────────────────────────────────────────────
+// 1. Legacy single-cause pass
 // 1a. Below the bar: a slow voluntary pull under a high emigrationBar accumulates pressure but moves
 // no one this turn (belowEmigrationBar → true; legacyEmigrate returns []).
 (function legacyBelowBar() {
@@ -105,7 +105,7 @@ function pinBaseConfig() {
   assert.equal(poor.ruralPopulation, afterFirst, "legacy: nothing moves while resting on cooldown");
 })();
 
-// ── 2. Stance counterfactual: planTurn / planSource / planApply / planBump ────
+// 2. Stance counterfactual: planTurn / planSource / planApply / planBump
 // Two civs with a cross-civ pull; civ 1 slots Open Borders. The pass plans the cross-civ flows once
 // with real stances and once with neutral borders and banks the difference, exercising the whole
 // side-effect-free planning path without disturbing the real move.
@@ -117,7 +117,7 @@ function pinBaseConfig() {
   });
   installConfigStore();
   globalThis.Game = { turn: 1 };
-  // Civ 2's city is poor; civ 1's city is rich AND open-bordered → a cross-civ pull civ-1-ward.
+  // Civ 2's city is poor; civ 1's city is rich and open-bordered → a cross-civ pull civ-1-ward.
   const poor = makeCity(2, 1, { population: 10, rural: 10, yields: { YIELD_FOOD: 1 }, x: 0, y: 0 });
   const rich = makeCity(1, 1, { population: 2, rural: 2, yields: { YIELD_FOOD: 1000 }, x: 1, y: 0 });
   installWorld({ 1: major([rich], { open: true }), 2: major([poor]) });
@@ -129,7 +129,7 @@ function pinBaseConfig() {
   assert.ok(crossCiv.length >= 1, "stance: an open-bordered rich neighbor pulls cross-civ migrants");
 })();
 
-// ── 3. Snapshot readers over a live world ─────────────────────────────────────
+// 3. Snapshot readers over a live world
 (function snapshots() {
   pinBaseConfig();
   Object.assign(CONFIG, { splitTracksEnabled: true, emigrationBar: 1 });

@@ -54,10 +54,10 @@ case "$AUTHORS" in
         ;;
 esac
 
-# ── Steam Workshop published file id ──────────────────────────────────────
-# The publishedfileid is what makes steamcmd UPDATE the existing Workshop item
+# Steam Workshop published file id
+# The publishedfileid is what makes steamcmd update the existing Workshop item
 # instead of creating a duplicate. It must survive the `rm -rf dist` below, so we
-# persist it OUTSIDE dist/ in steam_workshop_id.txt (committed to the repo).
+# persist it outside dist/ in steam_workshop_id.txt (committed to the repo).
 WORKSHOP_ID_FILE="$SRC_DIR/steam_workshop_id.txt"
 PUBLISHED_FILE_ID="${WORKSHOP_PUBLISHED_FILE_ID:-}"
 SAVED_PUBLISHED_FILE_ID=""
@@ -135,10 +135,10 @@ unzip -l "$ZIP_PATH" | head -40 || true
 
 SIZE="$(du -h "$ZIP_PATH" | cut -f1)"
 
-# ── Workshop preview card ─────────────────────────────────────────────────
+# Workshop preview card
 # Render the branded preview (docs/workshop-preview.svg: dark frame + migration
 # logo + wordmark) to a 1024x1024 PNG for the Steam Workshop thumbnail. It lives
-# OUTSIDE the shipped zip (a Workshop preview is uploaded separately via the .vdf),
+# outside the shipped zip (a Workshop preview is uploaded separately via the .vdf),
 # so it never trips the allow-list audit above.
 PREVIEW_SRC="$SRC_DIR/docs/workshop-preview.svg"
 PREVIEW_OUT="$DIST_DIR/preview.png"
@@ -153,7 +153,7 @@ if [ -f "$PREVIEW_SRC" ]; then
     fi
 fi
 
-# ── Steam Workshop manifest (.vdf) ────────────────────────────────────────
+# Steam Workshop manifest (.vdf)
 VDF_PATH="$DIST_DIR/workshop_item.vdf"
 ABS_CONTENT="$(cd "$TARGET_DIR" && pwd)"
 

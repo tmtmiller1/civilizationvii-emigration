@@ -2,13 +2,13 @@
 //
 // Ethnicity audit items O1 and O4 step 1, on the ledger.
 //
-// O1: a reader that loaded the ledger in turn N BEFORE the recorder's pass for turn N saved must not keep the
+// O1: a reader that loaded the ledger in turn N before the recorder's pass for turn N saved must not keep the
 // previous turn's mix for the rest of turn N. The recorder bumps a pass stamp (its own configuration key) on every
 // save, and readers key their cache on turn + stamp. Simulated as in composition-reload.mjs: one module instance,
 // with the other context's save written straight into the shared configuration store.
 //
 // O4 step 1: a settlement the ledger first meets already conquered (a captured city first seen after the capture,
-// a mid-game install, a save from before the ledger) seeds as its ORIGINAL owner's people when that owner is a
+// a mid-game install, a save from before the ledger) seeds as its original owner's people when that owner is a
 // major civ, not as 100% the conqueror. A minor original owner (a captured city-state) still seeds as the owner.
 
 import assert from "node:assert/strict";
@@ -33,7 +33,7 @@ const sig = (x, y, name, owner, pop, originalOwner) =>
   ({ city: { location: { x, y }, name, originalOwner }, owner, population: pop });
 const shareOf = (comp, civ) => { const e = comp && comp.civs.find((c) => c.civ === civ); return e ? e.share : 0; };
 
-// ── O1 ────────────────────────────────────────────────────────────────────────────────────
+// O1
 __test.reset();
 _turn = 1;
 __test.recordCompositionPass([sig(1, 1, "H", 0, 10)], []);
@@ -42,7 +42,7 @@ assert.ok(s1 != null, "a recorder save writes the pass stamp");
 const v1 = compositionVersion();
 assert.equal(shareOf(__test.compositionForCity({ location: { x: 1, y: 1 } }), 2), 0, "reader caches turn 1's mix");
 
-// The other context's recorder saves this turn's pass AFTER the reader cached: a richer blob and a new stamp.
+// The other context's recorder saves this turn's pass after the reader cached: a richer blob and a new stamp.
 _store.set(STATE_KEY, JSON.stringify({ cities: { "1,1": { owner: 0, byCiv: { 0: 9, 2: 1 }, total: 10, name: "H", seenTurn: 1 } }, passTurn: 1 }));
 _store.set(STAMP_KEY, String(Number(s1) + 1));
 assert.notEqual(compositionVersion(), v1, "the version moves with the stamp");
@@ -53,7 +53,7 @@ assert.equal(Math.round(shareOf(__test.compositionForCity({ location: { x: 1, y:
 __test.recordCompositionPass([sig(1, 1, "H", 0, 10)], []);
 assert.equal(_store.get(STAMP_KEY), String(Number(s1) + 2), "every save bumps the stamp");
 
-// ── O4 step 1 ─────────────────────────────────────────────────────────────────────────────
+// O4 step 1
 __test.reset();
 _turn = 5;
 __test.recordCompositionPass([

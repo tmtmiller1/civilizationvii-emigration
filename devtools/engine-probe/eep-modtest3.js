@@ -1,5 +1,5 @@
 // eep-modtest3.js - in-game check of the 2026-09-12 tuning pass (the brakes on the real losses). Requires the
-// emigration mod loaded. Logs [EmigTest] to UI.log. Mostly READ-ONLY; the only writes are T2 (departure gold
+// emigration mod loaded. Logs [EmigTest] to UI.log. Mostly read-only; the only writes are T2 (departure gold
 // on the local treasury, 30 gold) and T5 (a disaster loss tally on one foreign city, cleared by decay).
 //   T0 the new CONFIG keys are present with their defaults.
 //   T1 the pillaged-first / famine-aware reads: does a live constructible instance expose `damaged`, does

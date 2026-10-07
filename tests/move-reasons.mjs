@@ -26,7 +26,7 @@ const city = (x) => ({ location: { x, y: 0 } });
 const sig = (o) => ({ key: o.key, owner: o.owner, pros: o.pros, population: o.population || 5,
   violence: o.violence || 0, disaster: o.disaster || 0, happiness: o.happiness || 5, city: city(o.x || 0) });
 
-// ── Display helpers ─────────────────────────────────────────────────────────
+// Display helpers
 assert.equal(reasonLabel(REASON.NEARBY), "proximity", "known tag maps to its phrase");
 assert.equal(reasonLabel("mystery-tag"), "mystery-tag", "unknown tag passes through");
 assert.equal(reasonsPhrase(["nearby", "open-borders"]), "proximity, open borders", "joins localized phrases");
@@ -35,7 +35,7 @@ assert.equal(reasonsPhrase(["a", "b", "c", "d"], 2).split(", ").length, 2, "caps
 assert.equal(reasonsPhrase([]), "", "empty for no reasons");
 assert.equal(reasonsPhrase(undefined), "", "empty for missing reasons");
 
-// ── Derivation: voluntary cross-civ move to a richer, nearby city ────────────
+// Derivation: voluntary cross-civ move to a richer, nearby city
 {
   const src = sig({ key: "1:1", owner: 1, pros: 10, x: 0, happiness: 5 });
   const dest = sig({ key: "2:1", owner: 2, pros: 20, x: 2 });
@@ -46,7 +46,7 @@ assert.equal(reasonsPhrase(undefined), "", "empty for missing reasons");
   assert.ok(r.length <= 3, "at most three tags");
 }
 
-// ── Derivation: war refugee fleeing INTERNALLY prefers safer own lands ───────
+// Derivation: war refugee fleeing internally prefers safer own lands
 {
   const src = sig({ key: "1:1", owner: 1, pros: 5, x: 0, violence: 4 });
   const dest = sig({ key: "1:2", owner: 1, pros: 5, x: 2 }); // same civ, no prosperity gap
@@ -54,7 +54,7 @@ assert.equal(reasonsPhrase(undefined), "", "empty for missing reasons");
   assert.ok(r.includes(REASON.OWN_CIV), "an internal refugee move reads as safer interior");
 }
 
-// ── Derivation: war refugee crossing to a NEUTRAL civ escapes + avoids the aggressor ──
+// Derivation: war refugee crossing to a neutral civ escapes + avoids the aggressor
 {
   const src = sig({ key: "1:1", owner: 1, pros: 5, x: 0, violence: 4 });
   const dest = sig({ key: "3:1", owner: 3, pros: 5, x: 3 }); // neutral third party
@@ -64,7 +64,7 @@ assert.equal(reasonsPhrase(undefined), "", "empty for missing reasons");
   assert.ok(r.includes(REASON.AGGRESSOR_AVOIDED), "choosing a neutral over the aggressor is a reason");
 }
 
-// ── Derivation: directional flight is surfaced when a flee vector is present ──
+// Derivation: directional flight is surfaced when a flee vector is present
 {
   const src = sig({ key: "1:1", owner: 1, pros: 5, x: 0, violence: 4 });
   const dest = sig({ key: "1:2", owner: 1, pros: 5, x: 4 }); // to the +x side
@@ -73,7 +73,7 @@ assert.equal(reasonsPhrase(undefined), "", "empty for missing reasons");
   assert.ok(r.includes(REASON.SAFER_DIR), "a move along the flee vector reads as away from the fighting");
 }
 
-// ── Death reasons (P0.2): crisis type + trapped/fleeing qualifier ─────────────
+// Death reasons (P0.2): crisis type + trapped/fleeing qualifier
 {
   const besieged = sig({ key: "1:1", owner: 1, pros: 2, x: 0, violence: 5 });
   besieged.siege = true;
@@ -94,7 +94,7 @@ assert.equal(reasonsPhrase(undefined), "", "empty for missing reasons");
   assert.deepEqual(crisisTypeReasons(calm), [], "a content city has no crisis-type reasons");
 }
 
-// ── Records carry the reasons through to the notification/metrics layer ───────
+// Records carry the reasons through to the notification/metrics layer
 {
   const src = { owner: 1, city: { name: "Rome" } };
   const dest = { owner: 2, city: { name: "Thebes" } };

@@ -10,7 +10,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 /**
  * A city's {x, y} hex location, or null if unreadable.
  * @param {*} sig A CitySignal.
- * @returns {{x:number, y:number}|null} The location, or null.
+ * @returns {{x:number, y:number}|null}
  */
 function cityLoc(sig) {
   const l = sig?.city?.location;
@@ -105,7 +105,7 @@ export function hexDistance(a, b) {
  * Uncached war read between two players (best-effort).
  * @param {number} a Player id.
  * @param {number} b Player id.
- * @returns {boolean} True if at war.
+ * @returns {boolean}
  */
 function rawAtWar(a, b) {
   try {
@@ -119,7 +119,7 @@ function rawAtWar(a, b) {
  * Whether player `a` is at war with player `b` (best-effort). Memoized per pass on the player pair.
  * @param {number} a Player id.
  * @param {number} b Player id.
- * @returns {boolean} True if at war.
+ * @returns {boolean}
  */
 export function atWarBetween(a, b) {
   return memoPair(_atWarCache, a, b, () => rawAtWar(a, b));
@@ -148,7 +148,7 @@ function nearestEnemyLoc(src, ranked) {
 }
 
 /**
- * The unit vector pointing AWAY from the nearest invader, for a source under
+ * The unit vector pointing away from the nearest invader, for a source under
  * military threat, or null when the source isn't threatened / has no locatable
  * enemy. Drives the directional flight bias.
  * @param {*} src Source signal.
@@ -156,7 +156,7 @@ function nearestEnemyLoc(src, ranked) {
  * @returns {{x:number, y:number}|null} A unit "flee" vector, or null.
  */
 export function fleeVector(src, ranked) {
-  // Only cities actually under attack flee directionally - gate on accumulated
+  // Only cities actually under attack flee directionally: gate on accumulated
   // violence, not the empire merely being at war.
   if (!(src.violence >= CONFIG.violenceFleeThreshold)) return null;
   const here = cityLoc(src);
@@ -172,7 +172,7 @@ export function fleeVector(src, ranked) {
 /**
  * Owner-preference for a war refugee: prefer the source's own civ, treat
  * the aggressor that attacked it as a last resort, leave neutral third parties
- * unchanged - so refugees rank own civ > others > aggressor.
+ * unchanged, so refugees rank own civ > others > aggressor.
  * @param {*} src Source signal.
  * @param {*} dest Destination signal.
  * @param {Set<number>} aggressors The source's recorded aggressors.
@@ -184,14 +184,14 @@ export function aggressorAdjust(src, dest, aggressors) {
   return 0;
 }
 
-/** Smoothstep on [0,1]. @param {number} x Input. @returns {number} Smoothed value. */
+/** Smoothstep on [0,1]. @param {number} x @returns {number} */
 function smoothstep01(x) {
   const c = x < 0 ? 0 : x > 1 ? 1 : x;
   return c * c * (3 - 2 * c);
 }
 
 /**
- * How hard a threatened city flees DIRECTIONALLY, ramped smoothly from the flee threshold up to ~2×
+ * How hard a threatened city flees directionally, ramped smoothly from the flee threshold up to ~2×
  * it so the tilt eases in rather than snapping to full strength. 0 at/below the threshold, 1 at ≥ 2× it.
  * @param {number} value The accumulated violence. @param {number} threshold The flee threshold.
  * @returns {number} Intensity in [0,1].
@@ -257,7 +257,7 @@ export function geoAdjust(src, dest, flee, aggressors) {
  * Uncached Open Borders agreement read between two players, from the joint diplomatic-events API.
  * @param {number} a Player id.
  * @param {number} b Player id.
- * @returns {boolean} True if an Open Borders agreement is active.
+ * @returns {boolean}
  */
 function rawOpenBorders(a, b) {
   try {
@@ -274,12 +274,12 @@ function rawOpenBorders(a, b) {
 }
 
 /**
- * Whether two civs have an active base-game Open Borders agreement - a diplomatic deal
+ * Whether two civs have an active base-game Open Borders agreement: a diplomatic deal
  * (DIPLOMACY_ACTION_OPEN_BORDERS), distinct from the mod's Pro/Anti-Immigration policy
  * cards. Memoized per pass on the player pair; false on any error.
  * @param {number} a Player id.
  * @param {number} b Player id.
- * @returns {boolean} True if an Open Borders agreement is active between them.
+ * @returns {boolean}
  */
 export function hasOpenBordersDeal(a, b) {
   return memoPair(_openBordersCache, a, b, () => rawOpenBorders(a, b));
@@ -303,7 +303,7 @@ export function openBordersBonus(srcOwner, destOwner) {
  * `Players.get(a).Diplomacy.hasAllied(b)` (how the base game detects a standing alliance).
  * @param {number} a Player id.
  * @param {number} b Player id.
- * @returns {boolean} True if an alliance is active.
+ * @returns {boolean}
  */
 function rawAlliance(a, b) {
   try {
@@ -318,7 +318,7 @@ function rawAlliance(a, b) {
  * factor. Memoized per pass on the player pair.
  * @param {number} a A player id.
  * @param {number} b Another player id.
- * @returns {boolean} True if an alliance is active.
+ * @returns {boolean}
  */
 export function hasAlliance(a, b) {
   return memoPair(_allianceCache, a, b, () => rawAlliance(a, b));
@@ -328,7 +328,7 @@ export function hasAlliance(a, b) {
  * Whether two civs are at war (per-pair, best-effort). Dampens cross-civ migration.
  * @param {number} a A player id.
  * @param {number} b Another player id.
- * @returns {boolean} True if a is at war with b.
+ * @returns {boolean}
  */
 export function atWar(a, b) {
   if (a === b) return false;

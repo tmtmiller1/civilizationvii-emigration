@@ -1,9 +1,9 @@
 // emigration-pull.js
 //
-// The DECISION layer of the emigration algorithm: how strongly people are pulled from a source to a
-// destination, composed as pull = (gradient + TILT) - friction, then x PERMEABILITY. TILT is clamped
-// to ±tiltCap and PERMEABILITY to [floor, ceil], so any stack of cards/agreements/ops composes without
-// runaway. This module decides WHERE people want to go; emigration-engine.js executes the moves. Pure.
+// The decision layer of the emigration algorithm: how strongly people are pulled from a source to a
+// destination, composed as pull = (gradient + tilt) - friction, then x permeability. Tilt is clamped
+// to ±tiltCap and permeability to [floor, ceil], so any stack of cards/agreements/ops composes without
+// runaway. This module decides where people want to go; emigration-engine.js executes the moves. Pure.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import {
@@ -32,7 +32,7 @@ export function setNeutralBorders(on) {
 
 /**
  * Classify why a source is shedding population, in precedence order: disaster distress, then
- * in-border violence (gated on its flee threshold) OR active razing (`siege`) → `war`, then
+ * in-border violence (gated on its flee threshold) or active razing (`siege`) → `war`, then
  * `unhappiness` if the city's net happiness is below `unhappyCauseThreshold` vs `prosperity`.
  * A reporting split only; it never changes whether or where people move.
  * @param {*} src Source signal.
@@ -60,7 +60,7 @@ function clamp(v, lo, hi) {
 }
 
 /**
- * The TILT channel: targeted attraction added to the prosperity gradient - "is something
+ * The tilt channel: targeted attraction added to the prosperity gradient - "is something
  * pulling this specific person?": the asylum refugee-push and the raid targeting.
  * The caller clamps the total to ±`tiltCap`.
  * @param {*} src Source signal.
@@ -81,7 +81,7 @@ function tiltFor(src, dest) {
 }
 
 /**
- * The PERMEABILITY channel: "how easily does anyone cross from src to dest?", the border
+ * The permeability channel: "how easily does anyone cross from src to dest?", the border
  * openness multiplier times every cross-civ relationship factor (Open Borders, alliance, war). The
  * caller clamps the product to [permeFloor, permeCeil] so any stack of agreements stays bounded.
  * @param {*} src Source signal.
@@ -91,11 +91,11 @@ function tiltFor(src, dest) {
 function permeability(src, dest) {
   let p = opennessFor(dest);
   if (src.owner !== dest.owner) {
-    // Closed Borders RETAINS your own people: the source civ's stance dampens how easily its
-    // citizens are pulled across to a RIVAL civ (internal moves don't lose you population, so
+    // Closed Borders retains your own people: the source civ's stance dampens how easily its
+    // citizens are pulled across to a rival civ (internal moves don't lose you population, so
     // retention is cross-civ only). The mirror of the destination's inbound openness.
     p *= retentionFor(src);
-    // Every cross-civ "easing" is a FACTOR of this one product, not its own additive term:
+    // Every cross-civ "easing" is a factor of this one product, not its own additive term:
     // Open Borders / alliance ease migration; war dampens it. The caller clamps the product.
     if (hasOpenBordersDeal(src.owner, dest.owner)) p *= CONFIG.permOpenBorders;
     if (hasAlliance(src.owner, dest.owner)) p *= CONFIG.permAlly;
@@ -107,20 +107,20 @@ function permeability(src, dest) {
 /**
  * The cross-civ friction a source pays to send a citizen abroad: the full anti-poaching barrier
  * (`poachBlock`) for an ordinary economic migrant, but a much smaller one (`refugeePoachBlock`) for a
- * war/disaster REFUGEE, so the border barrier doesn't pen fleeing people inside a collapsing civ.
+ * war/disaster refugee, so the border barrier doesn't pen fleeing people inside a collapsing civ.
  * @param {*} src Source signal.
  * @returns {number} The cross-civ delta penalty.
  */
 function crossCivBlock(src) {
   if (!srcInCrisis(src)) return CONFIG.poachBlock;
-  // A crisis refugee pays reduced friction AND gets an escape bonus (negative delta = net pull) so it
+  // A crisis refugee pays reduced friction and gets an escape bonus (negative delta = net pull) so it
   // flees abroad instead of being out-pulled by a nearer, equally-stricken internal city.
   const escape = CONFIG.crisisEscapeBonus > 0 ? CONFIG.crisisEscapeBonus : 0;
   return CONFIG.refugeePoachBlock - escape;
 }
 
 /**
- * The bonus a source in acute crisis adds to a destination in its OWN civilization (`crisisInternalBonus`), the
+ * The bonus a source in acute crisis adds to a destination in its own civilization (`crisisInternalBonus`), the
  * mirror of the escape bonus abroad: people who can shelter inside their own lands do. Zero for an ordinary
  * economic migrant, who is not fleeing anything, and zero when the knob is off.
  * @param {*} src Source signal.
@@ -132,9 +132,9 @@ function internalRefugeBonus(src) {
 }
 
 /**
- * The friction a size difference charges, in BOTH directions: `perExtraPop` brakes the move into an
+ * The friction a size difference charges, in both directions: `perExtraPop` brakes the move into an
  * already-bigger settlement and `perFewerPop` the move into a smaller one, because the base score
- * rewards a destination for being SMALL (`populationFactor`) and a one-sided brake would push a
+ * rewards a destination for being small (`populationFactor`) and a one-sided brake would push a
  * capital toward its lesser neighbors whatever it built.
  * @param {*} src Source signal. @param {*} dest Destination signal.
  * @returns {number} The friction to subtract (>= 0).
@@ -148,7 +148,7 @@ function sizeFriction(src, dest) {
 }
 
 /**
- * Whether a source is in ACUTE crisis (being razed, or war/disaster distress over its flee
+ * Whether a source is in acute crisis (being razed, or war/disaster distress over its flee
  * threshold), i.e. its people are refugees fleeing, not economic migrants. Kept in lockstep with the
  * engine's `inCrisis`, so a city that sheds on the crisis cadence also prices as a fleeing refugee.
  * @param {*} src Source signal.
@@ -176,17 +176,17 @@ function srcInCrisis(src) {
 export function adjustedPull(src, dest, flee, ownerPop, aggressors) {
   if (dest.key === src.key) return null;
 
-  // GRADIENT + TILT (clamped): the prosperity driver plus any targeted attraction.
+  // Gradient + tilt (clamped): the prosperity driver plus any targeted attraction.
   let pull = (dest.pros - src.pros) + clamp(tiltFor(src, dest), -CONFIG.tiltCap, CONFIG.tiltCap);
   if (pull <= 0) return null;
 
-  // FRICTION: reluctance, overcrowding, city-state + cross-civ barriers, distance, congestion.
+  // Friction: reluctance, overcrowding, city-state + cross-civ barriers, distance, congestion.
   pull -= CONFIG.baseReluctance;
   pull -= sizeFriction(src, dest);
   if (dest.isCityState || src.isCityState) pull -= CONFIG.cityStateBarrier;
   if (dest.owner !== src.owner) {
     if (!CONFIG.crossCivEnabled) return null;
-    pull -= crossCivBlock(src); // friction for the move, minus the crisis ESCAPE bonus for refugees
+    pull -= crossCivBlock(src); // friction for the move, minus the crisis escape bonus for refugees
     pull -= dominanceFor(dest, ownerPop); // anti-snowball: cross-civ inflow to a runaway leader only
     pull -= drainFor(src, ownerPop); // small-civilization brake: cross-civ outflow from a shrinking civ only
   } else {
@@ -195,7 +195,7 @@ export function adjustedPull(src, dest, flee, ownerPop, aggressors) {
   pull += geoAdjust(src, dest, flee, aggressors);
   pull -= congestionFor(dest, ownerPop);
 
-  // PERMEABILITY: openness × clamped relationship factors (Open Borders / alliance / war).
+  // Permeability: openness × clamped relationship factors (Open Borders / alliance / war).
   pull *= clamp(permeability(src, dest), CONFIG.permeFloor, CONFIG.permeCeil);
   return pull > 0 ? pull : null;
 }
@@ -204,14 +204,14 @@ export function adjustedPull(src, dest, flee, ownerPop, aggressors) {
 
 /**
  * @typedef {{terms:PullTerm[], scale:number, reject:string|null}} PullBreakdown
- *   `terms` are the ADDITIVE terms; `scale` is the clamped PERMEABILITY multiplier they are all
+ *   `terms` are the additive terms; `scale` is the clamped permeability multiplier they are all
  *   subject to; `reject` is null when the move is viable, else why {@link adjustedPull} returned null.
  */
 
 /**
  * The terms {@link adjustedPull} scores, itemized for the explanation surfaces (emigration-explain.js).
  * Identity: when `reject` is null, `adjustedPull() === (Σ terms.raw) × scale` (within float ε). It
- * MIRRORS `adjustedPull` rather than being called by it, because the hot path must not pay for an
+ * mirrors `adjustedPull` rather than being called by it, because the hot path must not pay for an
  * itemized array; tests/explain.mjs pins the mirror, so edit the two together.
  * @param {*} src Source signal.
  * @param {*} dest Candidate destination signal.
@@ -341,7 +341,7 @@ function dominanceFor(dest, ownerPop) {
 
 /**
  * The small-civilization brake for a source civ, the mirror of {@link dominanceFor}: a pull penalty on
- * cross-civ moves OUT of a civ whose population has fallen below antiDrainThreshold × the world-average
+ * cross-civ moves out of a civ whose population has fallen below antiDrainThreshold × the world-average
  * civ, growing with the shortfall, so a shrinking civ is not drained further. Zero at or above the
  * threshold, and zero when the brake is off or population data is missing.
  * @param {*} src Source signal.
@@ -456,7 +456,7 @@ export function deriveMoveReasons(src, dest, flee, ownerPop, aggressors) {
 }
 
 /**
- * The crisis-type tags describing WHY a settlement is in lethal distress: siege, in-border
+ * The crisis-type tags describing why a settlement is in lethal distress: siege, in-border
  * violence, disaster, or famine. Read straight off the source signal, so they're always truthful.
  * @param {*} src Source signal.
  * @returns {string[]} Crisis-type tags (may be empty for non-lethal distress).

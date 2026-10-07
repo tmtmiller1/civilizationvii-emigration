@@ -175,7 +175,7 @@ function finishAfterTurns(capital) {
   const last = trackGold[trackGold.length - 1] || {};
   emit("E1 goldTrack=" + J(trackGold));
   emit("E2 cityGold first=" + first.cityGold + " last=" + last.cityGold);
-  // Remove it again, and confirm the plot and the yield come back.
+  // Remove it again, and check that the plot and the yield come back.
   const id = safe(() => {
     for (const cid of MapConstructibles.getConstructibles(capital.location.x, capital.location.y) || []) {
       const inst = Constructibles.getByComponentID(cid);

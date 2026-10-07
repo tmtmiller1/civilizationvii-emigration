@@ -52,17 +52,17 @@ function testFullModelBuildsBothBlocks() {
   assert.ok(model.quarters.lines.some((l) => l.includes("Contested")));
 }
 
-// The flow figures are the CUMULATIVE all-game tally (migrationFlows()), not a live "leaving now"
+// The flow figures are the cumulative all-game tally (migrationFlows()), not a live "leaving now"
 // count, so the headings must read as a historical ledger. A present-tense "Departing to" told the
-// player a settlement was actively bleeding people when the number it sat above could only ever grow
-// — a city whose crisis ended 50 turns ago still shows every departure it ever had.
+// player a settlement was actively bleeding people when the number it sat above could only ever grow.
+// A city whose crisis ended 50 turns ago still shows every departure it ever had.
 function testFlowHeadingsArePastTenseAndScoped() {
   const p = cityPanelModel({ cityName: "Rome" }).population;
   assert.equal(p.departingHeading, "Departed to (all game)");
   assert.equal(p.arrivingHeading, "Arrived from (all game)");
 }
 
-// Each corridor names the cause that moved most of its people, so the panel answers WHY people left
+// Each corridor names the cause that moved most of its people, so the panel answers why people left
 // and not just where they went. "mostly" is load-bearing: the edge is usually mixed.
 function testFlowRowNamesItsDominantCause() {
   const model = cityPanelModel({
@@ -114,7 +114,7 @@ function testPassiveQuarterHasNoYieldLines() {
   ]);
 }
 
-// §22a/§22b: an UNBUILT enclave still pays its stance dividend, so the panel states it — this is the only
+// §22a/§22b: an unbuilt enclave still pays its stance dividend, so the panel states it; this is the only
 // surface that can (the engine cannot attribute a runtime grantYield; see wont-fix CANTFIX-1).
 function testRecognizedQuarterStatesItsDividend() {
   const lines = __test.quarterLines(__test.noCompose, {
@@ -135,8 +135,8 @@ function testRecognizedQuarterStatesItsDividend() {
   ]);
 }
 
-// A recognized enclave whose tile stands is paid BOTH ways (the tile's own yield, natively shown by the
-// game, and the stance dividend on top), so the panel says the tile is there AND states the dividend.
+// A recognized enclave whose tile stands is paid both ways (the tile's own yield, natively shown by the
+// game, and the stance dividend on top), so the panel says the tile is there and states the dividend.
 function testInvestedQuarterDoesNotClaimTheDividend() {
   const q = {
     originName: "Roman Enclave",
@@ -156,7 +156,7 @@ function testInvestedQuarterDoesNotClaimTheDividend() {
     "Grants 2 Culture to the city each turn.",
     "Costs 1 Happiness each turn."
   ]);
-  // An ESTABLISHED enclave (tile standing, not yet recognized) has no stance: only the tile is stated.
+  // An established enclave (tile standing, not yet recognized) has no stance: only the tile is stated.
   const est = __test.quarterLines(__test.noCompose, { ...q, stanceLabel: "", benefitAmount: 0, penaltyAmount: 0 });
   assert.ok(!est.some((l) => /Grants|Costs|stance/.test(l)), "no stance or dividend is claimed before recognition");
 }
@@ -209,7 +209,7 @@ function testYieldAndRefugeeHelpers() {
 }
 
 function testComposeLocalizesLabels() {
-  // A stub resolver that echoes the LOC key so we can prove the model routes text through compose
+  // A stub resolver that echoes the LOC key, so the test can see the model route text through compose
   // (and substitutes args) rather than only ever emitting the English fallback.
   const compose = (key, ...args) => key + (args.length ? "[" + args.join(",") + "]" : "");
   const model = cityPanelModel({
@@ -263,7 +263,7 @@ function testPendingEnclaveReplacesNoQuarterText() {
   assert.equal(settled.quarters.present, true, "the settled quarter is authoritative");
 }
 
-// ── Decorator install + lifecycle with a minimal fake panel + DOM. ──
+// Decorator install + lifecycle with a minimal fake panel + DOM.
 function makeEl(tag) {
   return {
     tagName: tag, id: "", className: "", textContent: "",

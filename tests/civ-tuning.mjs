@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
 // The resolver reads leader/civ type off a player and resolves a string name via
-// GameInfo; here the lookup treats the type value AS the string for simplicity.
+// GameInfo; here the lookup treats the type value as the string for simplicity.
 const LEADER = {};
 const CIV = {};
 const MEMENTOS = {};

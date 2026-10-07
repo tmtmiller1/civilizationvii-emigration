@@ -1,4 +1,4 @@
-// Unit test for the raid MIGRATION layer (emigration-raid.js): reading the native Extended
+// Unit test for the raid migration layer (emigration-raid.js): reading the native Extended
 // Diplomacy raid actions from the live diplomacy events, the directional tilt (target → raider),
 // and the target-gated dividend on intake. The action's cost/duration/grievance are native and
 // not exercised here (they live in the Extended Diplomacy mod's data).
@@ -21,7 +21,7 @@ assert.equal(r.domain, "science", "raid domain");
 assert.equal(r.yieldKey, "YIELD_SCIENCE", "raid dividend yield");
 assert.equal(raidOf(3), null, "no events for player 3 → no raid");
 
-// An action TARGETING you is not a raid you're running.
+// An action targeting you is not a raid you're running.
 EVENTS[2] = [{ actionTypeName: "DIPLOMACY_ACTION_TALENT_RAID", initialPlayer: 1, targetPlayer: 2 }];
 assert.equal(raidOf(2), null, "an action targeting you is not your raid");
 
@@ -34,7 +34,7 @@ assert.equal(raidTilt(2, 1), 10, "tilt from target to raider");
 assert.equal(raidTilt(3, 1), 0, "no tilt from a non-target source");
 assert.equal(raidTilt(2, 3), 0, "no tilt toward a non-raider");
 
-// Intake: a migrant from the TARGET (src=2) banks the domain dividend; others do not.
+// Intake: a migrant from the target (src=2) banks the domain dividend; others do not.
 assert.equal(onRaidIntake(1, 2), "YIELD_SCIENCE", "target intake banks the dividend yield");
 assert.equal(onRaidIntake(1, 3), null, "intake from a non-target source: nothing");
 assert.equal(onRaidIntake(3, 2), null, "a civ with no raid gets nothing");

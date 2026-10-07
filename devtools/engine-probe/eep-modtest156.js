@@ -2,7 +2,7 @@
 // button's caption and the icons drawn inside the button labels. Mod test 155 header:
 // mod test 154 again, but the host is first given 2000 Gold so the Gold-costing stance is
 // affordable, and that stance is the one pressed: does its payout land and its price leave, by the stated amounts?
-// (154 watched the pop-up render and the unaffordable stance grayed out; its press correctly did nothing.)
+// (154 saw the pop-up render and the unaffordable stance grayed out; its press did nothing, as it should.)
 // Save: AugustusExp66 (Exploration turn 66, a rich empire). Mod pass off (CONFIG.turnInterval), no turn ended.
 // 1. VIEW   the decision model for a foreign major's enclave in one of our cities: each stance's effect line, its
 //           resolved payout, and whether it is grayed out, against the host's live income and treasury.

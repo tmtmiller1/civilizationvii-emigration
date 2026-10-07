@@ -4,8 +4,8 @@
 
   The UI resolves a tradition's icon via UI.getIconURL(TraditionType, "TRADITION")
   (core/ui/utilities/utilities-image.js). With no IconDefinition for a type it falls back
-  to DEFAULT_TRADITION (blp:prod_tradition) - the generic card icon every base tradition
-  uses - so the cards are never blank. These rows give the two stances distinct, thematic
+  to DEFAULT_TRADITION (blp:prod_tradition), the generic card icon every base tradition
+  uses, so the cards are never blank. These rows give the two stances distinct, thematic
   art instead: the open gate from the base Open Borders diplomacy action, and the walls
   icon for the closed stance.
 
@@ -13,7 +13,7 @@
   per-age types can be mapped from one always-loaded file regardless of the active age.
   Swap the Path values to retheme.
 
-  IMPORTANT: this file must be loaded via an <UpdateIcons> action in the modinfo, NOT
+  This file must be loaded via an <UpdateIcons> action in the modinfo, not
   <UpdateDatabase>. IconDefinitions lives in the icon database, not the gameplay database;
   loading it with <UpdateDatabase> fails with "no such table: IconDefinitions".
 -->

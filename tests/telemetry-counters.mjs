@@ -14,7 +14,7 @@ const {
   bumpTransitDeath, bumpArrivedIntoCrisis, bumpRefugeesQueued, bumpRefugeesSettled
 } = await import("/emigration/ui/emigration-telemetry.js");
 
-// ── One pass with a mix of relocations, a return, and two outlet deaths ───────
+// One pass with a mix of relocations, a return, and two outlet deaths
 recordPassCounters([
   { cause: "prosperity", phase: "move", crossCiv: false, reasons: ["nearby", "richer"] },
   { cause: "unhappiness", phase: "depart", crossCiv: true, reasons: ["open-borders"] },
@@ -47,14 +47,14 @@ assert.equal(r["crisis-escape"], 1);
 assert.equal(r["own-civ"], 1);
 assert.equal(r["no-refuge"], undefined, "death-reason tags do not pollute the move histogram");
 
-// ── A pass that relocates nobody bumps zeroMovePasses ─────────────────────────
+// A pass that relocates nobody bumps zeroMovePasses
 recordPassCounters([{ cause: "attrition", reasons: [DEATH_REASON.NO_REFUGE] }]); // a death, no move
 c = telemetryCounters();
 assert.equal(c.passes, 2, "second pass recorded");
 assert.equal(c.zeroMovePasses, 1, "a pass with only a death counts as zero-move");
 assert.equal(c.attritionTrapped, 2, "the death still tallies");
 
-// ── Arrival-side bumps: transit deaths, arrived-into-crisis, pool flow ────────
+// Arrival-side bumps: transit deaths, arrived-into-crisis, pool flow
 bumpTransitDeath("razed");
 bumpTransitDeath("capped");
 bumpTransitDeath("capped");
@@ -70,7 +70,7 @@ assert.equal(c.arrivedIntoCrisis, 1);
 assert.equal(c.refugeesQueued, 5, "only positive queue amounts count");
 assert.equal(c.refugeesSettled, 2, "only positive settle amounts count");
 
-// ── dumpCounters(): derived shares + reason histogram + a copy ────────────────
+// dumpCounters(): derived shares + reason histogram + a copy
 const d = dumpCounters();
 assert.equal(d.derived.totalMoves, 4, "voluntary + crisis moves");
 assert.equal(d.derived.volSharePct, 50, "2 of 4 moves are voluntary");
@@ -81,7 +81,7 @@ assert.equal(d.reasons.nearby, 1, "dump carries the reason histogram");
 d.counters.passes = 999;
 assert.notEqual(telemetryCounters().passes, 999, "dump returns a copy, not the live counters");
 
-// ── Junk input is tolerated and never aborts the batch ────────────────────────
+// Junk input is tolerated and never aborts the batch
 const volBefore = telemetryCounters().voluntaryMoves;
 recordPassCounters([null, {}, { cause: "prosperity", phase: "move" }]);
 assert.equal(telemetryCounters().voluntaryMoves, volBefore + 1, "the valid element still counts past junk");

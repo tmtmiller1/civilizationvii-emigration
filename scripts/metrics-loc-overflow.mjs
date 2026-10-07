@@ -9,7 +9,7 @@ const oneLinePrefixes = ["LOC_EMIGRATION_PANEL_", "LOC_OPTIONS_EMIGRATION_", "LO
 function parseRows(xml) {
   const rows = new Map();
   // en_us uses <Row Tag="K">; locale files are generated as <Replace Tag="K" Language="xx">. Match
-  // BOTH — a <Row>-only regex parses zero rows from every locale, so every localized value reads as
+  // both: a <Row>-only regex parses zero rows from every locale, so every localized value reads as
   // empty and the metric silently reports 0 issues regardless of the real strings.
   const re = /<(?:Row|Replace)\s+Tag="(LOC_[A-Z0-9_]+)"[\s\S]*?<Text>([\s\S]*?)<\/Text>/g;
   let m;
@@ -22,11 +22,11 @@ function stripTags(s) {
 }
 
 const en = parseRows(fs.readFileSync(`${base}/en_us/ModText.xml`, "utf8"));
-if (en.size === 0) throw new Error("en_us/ModText.xml parsed to 0 rows — parser/format mismatch");
+if (en.size === 0) throw new Error("en_us/ModText.xml parsed to 0 rows: parser/format mismatch");
 let issues = 0;
 for (const loc of locales) {
   const rows = parseRows(fs.readFileSync(`${base}/${loc}/ModText.xml`, "utf8"));
-  if (rows.size === 0) throw new Error(`${loc}/ModText.xml parsed to 0 rows — parser/format mismatch`);
+  if (rows.size === 0) throw new Error(`${loc}/ModText.xml parsed to 0 rows: parser/format mismatch`);
   for (const [k, vEnRaw] of en.entries()) {
     if (!oneLinePrefixes.some((p) => k.startsWith(p))) continue;
     const vEn = stripTags(vEnRaw);
@@ -52,6 +52,6 @@ if (asJson) console.log(JSON.stringify(out, null, 2));
 else console.log(`value=${issues}`);
 
 if (asCheck && issues > 0) {
-  console.error(`loc_ui_overflow_issue_count=${issues} (expected 0) — localized labels flagged as overflow-risk.`);
+  console.error(`loc_ui_overflow_issue_count=${issues} (expected 0), localized labels flagged as overflow-risk.`);
   process.exit(1);
 }

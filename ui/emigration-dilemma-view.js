@@ -1,11 +1,11 @@
 // emigration-dilemma-view.js
 //
-// The refugee-dilemma / Cultural-Enclave DECISION pop-up, rendered with the game's own native
+// The refugee-dilemma / Cultural-Enclave decision pop-up, rendered with the game's own native
 // DialogBoxManager.createDialog_MultiOption in its vertical layout, so the engine owns the input path
 // and the buttons, Escape and the close button always respond. The view's eyebrow opens the body,
 // details[] follow the prose, the quote is drawn as a framed block by a screen-dialog-box decorator,
 // each choice is one stacked button (note = hover tooltip), and dismissId is also wired to Escape /
-// cancel. Fully defensive: a silent no-op where the core dialog module is unavailable.
+// cancel. A silent no-op where the core dialog module is unavailable.
 
 import { loc } from "/emigration/ui/emigration-loc.js";
 
@@ -25,7 +25,7 @@ const RTL_RUN = new RegExp("[" + RTL_CHAR + "](?:[" + RTL_CHAR + "\\s.,;:?!()\\u
 /**
  * Wrap each right-to-left run (Arabic/Persian/Hebrew) in Unicode isolates (FSI/PDI) so it lays out
  * right-to-left as a self-contained island inside the LTR line. A no-op for LTR-only text.
- * @param {string} s The display string. @returns {string} The bidi-isolated string.
+ * @param {string} s @returns {string} The bidi-isolated string.
  */
 function bidiIsolate(s) {
   return typeof s === "string" ? s.replace(RTL_RUN, "⁨$&⁩") : s;
@@ -33,7 +33,7 @@ function bidiIsolate(s) {
 
 /**
  * Run the choice callback once, guarded (a failed outcome must never throw out of an event handler).
- * @param {(id:string)=>void} onChoice The callback. @param {string} id The chosen option id.
+ * @param {(id:string)=>void} onChoice @param {string} id The chosen option id.
  */
 function safeChoice(onChoice, id) {
   try {
@@ -53,7 +53,7 @@ const PARAGRAPH_BREAK = "[N]\u00a0[N]";
 /**
  * Word-wrap one paragraph to ~maxLen characters per line using engine newline tokens ([N]), never
  * splitting a word. A single over-long word is left on its own line.
- * @param {string} para The paragraph. @param {number} maxLen Target line length. @returns {string} Wrapped.
+ * @param {string} para @param {number} maxLen Target line length. @returns {string}
  */
 function wrapParagraph(para, maxLen) {
   const words = para.split(/\s+/).filter(Boolean);
@@ -75,7 +75,7 @@ function wrapParagraph(para, maxLen) {
 
 /**
  * Soft-wrap a display string, preserving any paragraph breaks the source already has ([N]).
- * @param {string} s The string. @param {number} maxLen Target line length. @returns {string} Wrapped.
+ * @param {string} s @param {number} maxLen Target line length. @returns {string}
  */
 function softWrap(s, maxLen) {
   if (typeof s !== "string" || !s) return s;
@@ -94,7 +94,7 @@ let quoteDecoratorReady = false;
 /**
  * Split a display quote (`"text" who, source`) into the quote and its attribution. The break is the closing
  * quotation mark, which is unambiguous because an attribution never contains one.
- * @param {string} q The display string. @returns {{text:string, who:string}} The parts ("" who when unsplittable).
+ * @param {string} q The display string. @returns {{text:string, who:string}} "" who when unsplittable.
  */
 export function splitQuote(q) {
   const s = typeof q === "string" ? q.trim() : "";
@@ -158,7 +158,7 @@ function quoteLine(text, classes, slanted) {
 
 /**
  * The inner frame holding the slanted quote and its attribution, with the base pop-up's middle decor on top.
- * @param {{text:string[], who:string[]}} rows The wrapped rows. @returns {HTMLElement} The frame.
+ * @param {{text:string[], who:string[]}} rows The wrapped rows. @returns {HTMLElement}
  */
 function quoteFrame(rows) {
   const frame = document.createElement("fxs-inner-frame");
@@ -174,7 +174,7 @@ function quoteFrame(rows) {
 /**
  * The quote block: the base game's filigree divider, then the framed quote (the tech/civic completion pop-up's
  * own treatment: `fxs-inner-frame`, `img-popup-middle-decor`, `text-accent-3`).
- * @param {string} quote The display string. @returns {HTMLElement} The block.
+ * @param {string} quote The display string. @returns {HTMLElement}
  */
 function quoteBlock(quote) {
   const block = document.createElement("div");
@@ -188,7 +188,7 @@ function quoteBlock(quote) {
 
 /**
  * A dialog's title attribute, or "" when unreadable.
- * @param {*} root The dialog element. @returns {string} The title.
+ * @param {*} root The dialog element. @returns {string}
  */
 function dialogTitle(root) {
   const title = root && typeof root.getAttribute === "function" ? root.getAttribute("title") : null;
@@ -197,7 +197,7 @@ function dialogTitle(root) {
 
 /**
  * The pending quote for a dialog root, removed from the queue, or "" when the dialog is not one of ours.
- * @param {*} root The dialog element. @returns {string} The quote.
+ * @param {*} root The dialog element. @returns {string}
  */
 function takePendingQuote(root) {
   const title = dialogTitle(root);
@@ -350,7 +350,7 @@ function installQuoteDecorator() {
 
 /**
  * The category line that opens the body: the eyebrow in bold capitals, after its icon when one is given.
- * @param {{eyebrow?:string, eyebrowIcon?:string}} view The view model. @returns {string} The line, or "".
+ * @param {{eyebrow?:string, eyebrowIcon?:string}} view @returns {string} The line, or "".
  */
 function eyebrowLine(view) {
   if (typeof view.eyebrow !== "string" || !view.eyebrow) return "";
@@ -374,7 +374,7 @@ function composeBody(view) {
   if (Array.isArray(view.details) && view.details.length) parts.push(view.details.join("[N]"));
   // With the decorator the quote is drawn as its own framed block (see quoteBlock); without it, a body line.
   if (view.quote && !quoteDecoratorReady) parts.push(softWrap(bidiIsolate(view.quote), BODY_WRAP));
-  // A paragraph break is a line holding a no-break space: the native dialog collapses an EMPTY [N] line
+  // A paragraph break is a line holding a no-break space: the native dialog collapses an empty [N] line
   // to zero height. Existing [N][N] breaks in the prose get the same.
   return parts.join(PARAGRAPH_BREAK).replace(/\[N\]\[N\]/g, PARAGRAPH_BREAK);
 }
@@ -383,7 +383,7 @@ function composeBody(view) {
  * Build the native dialog's option buttons, one per choice (label + the consequence cue as its hover
  * tooltip), each wired to resolve the decision once; the dismiss choice is also bound to Escape / cancel.
  * A safety-net cancel option is appended only if no choice carries the dismiss id.
- * @param {{choices?:{id:string,label:string,note?:string,disabled?:boolean}[]}} view The view model.
+ * @param {{choices?:{id:string,label:string,note?:string,disabled?:boolean}[]}} view
  * @param {string} dismissId The dismiss option id. @param {(id:string)=>void} resolve One-shot resolver.
  * @returns {{actions:string[], label:string, tooltip?:string, disabled?:boolean, callback:()=>void}[]} The
  *   option buttons.
@@ -417,8 +417,8 @@ function buildOptions(view, dismissId, resolve) {
  * option id (Escape / the ✕ / cancel resolve as `view.dismissId`, default "away"). Calls `onChoice(id)`
  * exactly once. A silent no-op where the core dialog module or a DOM is unavailable (shell / node tests).
  * @param {{title:string, body:string, eyebrow?:string, eyebrowIcon?:string, details?:string[], dismissId?:string,
- *   quote?:string, choices:*[]}} view The model.
- * @param {(id:string)=>void} onChoice The choice callback.
+ *   quote?:string, choices:*[]}} view
+ * @param {(id:string)=>void} onChoice
  */
 export function showDilemma(view, onChoice) {
   try {
@@ -448,7 +448,7 @@ export function showDilemma(view, onChoice) {
             if (mgr && typeof mgr.createDialog_MultiOption === "function") {
               // The plain multi-option dialog: a framed pop-up with the title, the prompt body, and one
               // stacked button per choice (the createDialog_CustomOptions "chooser card" renders as a
-              // collapsed strip here, so it is intentionally NOT used).
+              // collapsed strip here, so it is not used).
               mgr.createDialog_MultiOption({ title, body, canClose: true, displayQueue: DISPLAY_QUEUE, options, layout: "vertical" });
             } else {
               derr("DialogBoxManager.createDialog_MultiOption unavailable; decision not shown");
@@ -459,7 +459,7 @@ export function showDilemma(view, onChoice) {
         })
         .catch((e) => derr("dialog-box import failed:", e));
     };
-    // CRITICAL: present on a deferred tick, NOT synchronously. The dilemma fires from inside the
+    // Present on a deferred tick, not synchronously. The dilemma fires from inside the
     // PlayerTurnActivated engine-event handler, and Civ VII will not surface a working, input-receiving
     // modal raised from inside an engine event; a short delay lets the event stack unwind first.
     if (typeof setTimeout === "function") setTimeout(present, 80);

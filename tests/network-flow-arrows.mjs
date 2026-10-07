@@ -1,18 +1,18 @@
 // network-flow-arrows.mjs
 //
-// The "Migrant flows" arrow overlay (emigration-network-flow-arrows), driven through the SHIPPED
+// The "Migrant flows" arrow overlay (emigration-network-flow-arrows), driven through the shipped
 // layout (emigration-network-dots.buildChronoDots) so the geometry under test is the one the canvas
 // actually paints.
 //
 // The bug these guard (2026-09-17, found in a live game: internal migrants had dots but no arrows):
 // `trimmed()` dropped any flow whose endpoints were closer than `a.r + b.r + 6`. The city packing
 // (packCityDiscs) seats each disc exactly CITY_GAP (6) clear of the disc that constrains it, and the
-// endpoints here are struck at `subR + 3` apiece — so a tangent pair fell exactly 6px short of the
-// threshold AT EVERY SCALE. Consequences, all silent:
+// endpoints here are struck at `subR + 3` apiece, so a tangent pair fell exactly 6px short of the
+// threshold at every scale. Consequences, all silent:
 //
-//  1. A two-city civ drew NO internal arrow, ever.
+//  1. A two-city civ drew no internal arrow, ever.
 //  2. Packing anchors the biggest city at the origin with the next discs tangent to it, so the
-//     LARGEST city's internal flows — the most-traveled corridors — were the likeliest to vanish.
+//     largest city's internal flows, the most-traveled corridors, were the likeliest to vanish.
 //
 // The trim now shrinks to fit instead of dropping, and keeps the full trim wherever the old guard
 // would have passed (so long-haul arrows are unchanged).
@@ -26,7 +26,7 @@ const UNIT = 1; // one dot per person keeps the arithmetic readable
 
 /**
  * Lay out one civ with the given city populations and ask for the flow segments of a frame carrying
- * an internal move for EVERY ordered city pair.
+ * an internal move for every ordered city pair.
  * @param {number[]} pops Population per city.
  * @returns {{segs:*[], pairs:number, center:*}} Segments, the pair count fed in, the civ center.
  */
@@ -76,7 +76,7 @@ function testArrowsHaveVisibleLength() {
 }
 
 function testTangentPairsAreTheTightOnes() {
-  // Pin the MECHANISM, not just the symptom: the pairs that need the shrunk trim are exactly the
+  // Pin the mechanism, not just the symptom: the pairs that need the shrunk trim are exactly the
   // ones the packing seated tangent (center distance <= the full-trim span).
   const { segs, center } = internalSegments([300, 120, 60, 30, 10]);
   const cs = center.cities;

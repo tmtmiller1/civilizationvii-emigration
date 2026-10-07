@@ -417,7 +417,7 @@ lint noise is mostly maintainability style debt.
 
 ---
 
-# Analysis & Remediation (Verification Pass — 2026-06-19)
+# Analysis & Remediation (Verification Pass: 2026-06-19)
 
 > **STATUS: RESOLVED.** Both mods now pass `npm run verify` end-to-end (tsc + eslint + full test
 > suites + modinfo + i18n). See the **Resolution Log** at the end of this document for exactly what was
@@ -432,38 +432,38 @@ Every cited gate was re-run (`npx tsc --noEmit`, `eslint ui`, `npm run test:scal
 
 | Finding | Reproduced | Verdict | Real *runtime* risk |
 | --- | --- | --- | --- |
-| Emigration 2 TS errors | Yes | Real — **tooling only** (missing JSDoc types) | No (JS ignores types at runtime) |
-| Demographics 28 TS errors | Yes | Real — **tooling only** | No |
-| 1) Options import "High runtime risk" | TS error: yes | **Severity INACCURATE** — type-stub gap, not a runtime break | **No** — base UI exports these named (`model-options.js:287`); options work in-game |
+| Emigration 2 TS errors | Yes | Real: **tooling only** (missing JSDoc types) | No (JS ignores types at runtime) |
+| Demographics 28 TS errors | Yes | Real: **tooling only** | No |
+| 1) Options import "High runtime risk" | TS error: yes | **Severity INACCURATE** (type-stub gap, not a runtime break | **No**) base UI exports these named (`model-options.js:287`); options work in-game |
 | 2) Both fail verify | Yes | Real | Indirect (red CI/release gate) |
 | 3) Silent `catch (_) {}` | Exist: yes | Accurate, but **intentional** defensive pattern ("a render failure must never break the host screen") | Low |
 | 4) NYI placeholder fallback | Exists: yes | Accurate, **intentional** safety net for unwired metric tabs | Low |
-| 5) Content quality OK | n/a | Accurate | — |
+| 5) Content quality OK | n/a | Accurate |: |
 | 2A) `release.sh` skips verify | Yes | Real | Process |
 | 2B) verify stops at TS | Yes | Accurate (chained `&&` short-circuits) | Process |
 | 2C) localStorage stray-key purge | Yes | Accurate, **intentional** self-heal | Low |
 | 3.1) modinfo inventory incomplete | Yes | Real | Packaging/audit |
-| 3.2) `test:scaling` fails | Yes | **Real, but the TEST is STALE** — implementation is correct | No (test fixture only) |
+| 3.2) `test:scaling` fails | Yes | **Real, but the TEST is STALE**: implementation is correct | No (test fixture only) |
 | 3.3) lint complexity error | Yes | Real | Quality gate |
 | 3.4) signal split across commands | Yes | Accurate | Process |
 | 3.5) docstring typo | Yes | Real (cosmetic) | None |
-| 4A–4D) i18n / duplicate-tag validations | Pass | Accurate (no issue) | — |
+| 4A–4D) i18n / duplicate-tag validations | Pass | Accurate (no issue) |: |
 
 **Headline correction:** the only items framed as *High player-facing/runtime* risk (Finding 1, and
 the "missing toggles in game" scenario) are **not** runtime risks. They are TypeScript type-checker
 (`tsc --noEmit`) failures caused by an incomplete local type stub. The native Mods → Demographics
 options register and function in-game. Everything that fails `verify` is either a tooling/JSDoc gap or
-a stale test fixture — there is **no reproduced runtime defect** among these findings.
+a stale test fixture, there is **no reproduced runtime defect** among these findings.
 
 ## Remediation by finding
 
-### 1) Demographics options import (3× TS2614) — *stub gap, not runtime*
+### 1) Demographics options import (3× TS2614): *stub gap, not runtime*
 Root cause: `demographics/tsconfig.json` maps `"/core/*": ["./types/engine-core-stub.d.ts"]`, and that
 stub declares no `model-options` exports, so `import { CategoryType, OptionType, Options } from
 "/core/ui/options/model-options.js"` (demographics-options.js:6) resolves to a module missing those
 names. The real engine module exports them (`Resources/Base/modules/core/ui/options/model-options.js:287`:
 `export { CategoryType, OptionType, Options };`).
-Fix (do NOT switch to default imports — that would break runtime): add the three named exports to
+Fix (do not switch to default imports; that would break runtime): add the three named exports to
 `demographics/types/engine-core-stub.d.ts`, e.g.
 ```ts
 export const CategoryType: { Mods: string; [k: string]: string };
@@ -481,29 +481,29 @@ Verify: `cd demographics && npx tsc --noEmit` → the 3 TS2614 errors clear.
 `function getBool(/** @type {string} */ key, /** @type {*} */ fallback)` and
 `initListener: (/** @type {*} */ info) => ...`. Tooling only.
 
-### chart-resources.js (1× TS2345) — regression from the legend-on-top change
+### chart-resources.js (1× TS2345): regression from the legend-on-top change
 `mountStackWrap`'s JSDoc still types `@param data` as `{ bands, points, tickPositions }`, but the call
 now passes `{ tickPositions }` only. Fix: update that `@param` to `{ tickPositions: {...}[] }`.
 
 ### settlements-data.js (2× TS7006)
 Add JSDoc types to the `apm`/`method` params at line ~590.
 
-### Emigration 2 TS errors — regression from the Units-toggle change
-- `network-flow.js:684` — `mountFlowChrome(wrap, canvas, timeline, rebuildAll)` JSDoc omits the 4th
+### Emigration 2 TS errors, regression from the Units-toggle change
+- `network-flow.js:684`: `mountFlowChrome(wrap, canvas, timeline, rebuildAll)` JSDoc omits the 4th
   param. Add `@param {()=>void} [rebuildAll] ...`.
-- `network-viz.js:713` — `makeLensTabs`'s JSDoc (line 381) types `rebuildAll` as required `()=>void`,
+- `network-viz.js:713`: `makeLensTabs`'s JSDoc (line 381) types `rebuildAll` as required `()=>void`,
   but `buildViz` forward an optional `(()=>void)|undefined`. Make it optional: `@param {()=>void}
   [rebuildAll]`. (The call site already guards with `typeof rebuildAll === "function"`.)
 Verify: `cd emigration && npx tsc --noEmit` → both errors clear.
 
-### 3.1) Demographics modinfo inventory incomplete — **real**
+### 3.1) Demographics modinfo inventory incomplete: **real**
 `test:modinfo` reports two imported-but-undeclared files. Add to `<ImportFiles>` in
 `demographics/demographics.modinfo`:
 - `ui/screen-demographics/settlements/settlements-population-variance.js`
 - `ui/screen-demographics/views/shared/options-button.js`
 Verify: `cd demographics && npm run test:modinfo`.
 
-### 3.2) Emigration `test:scaling` — **stale test, implementation is correct**
+### 3.2) Emigration `test:scaling`: **stale test, implementation is correct**
 The test asserts `scaleCityPopulation(1, 0) === 3000` with the comment that scaling must match
 Demographics' `scaleCityPopulationAt` base of `3000`. But **both mods now use `12000`**:
 `emigration/ui/emigration-config.js:251` (`scaleBase: 12000`) and Demographics
@@ -513,46 +513,46 @@ Fix: in `emigration/tests/scaling.mjs`, update the expectations `3000 → 12000`
 and `testMarginalPeopleIsTheDelta` assertions) and the header comment `* 3000 → * 12000`.
 Verify: `cd emigration && npm run test:scaling`.
 
-### 3.3) Emigration lint complexity — **real**
+### 3.3) Emigration lint complexity: **real**
 `ui/emigration-population.js` `currentAgeProgressPct` has cyclomatic complexity 13 (max 10). Extract
 the engine probe (read age/turn from `Game`/`GameInfo`) and the 0–1 normalization into small helpers
 so the main function drops to ≤10 branches.
 Verify: `cd emigration && npm run lint`.
 
-### 3.5) Emigration docstring typo — **real, cosmetic**
-`ui/emigration-feedback.js:298`: "...whether it's temporary, and , for a cross-civ loss ,..." — drop
+### 3.5) Emigration docstring typo: **real, cosmetic**
+`ui/emigration-feedback.js:298`: "...whether it's temporary, and , for a cross-civ loss ,...", drop
 the stray `, ` / fix the dangling clause.
 
-### 2A) `release.sh` does not run verify — **real (process)**
+### 2A) `release.sh` does not run verify: **real (process)**
 Neither `emigration/release.sh` nor `demographics/release.sh` invokes `npm run verify` before packaging
 (confirmed: they only set rsync excludes). Add a gate near the top of each:
 ```bash
 npm run verify || { echo "verify failed — aborting release"; exit 1; }
 ```
 
-### 2B / 3.4) Verify short-circuits at TS; signal split — **accurate (process)**
+### 2B / 3.4) Verify short-circuits at TS; signal split: **accurate (process)**
 `verify` is `tsc --noEmit && eslint ui && <tests>`; the leading `tsc` failure prevents the test suites
-from running in one command. Once the TS-stub/JSDoc fixes above land, `verify` runs end-to-end. (Note:
-the suites are independently runnable today via `test:js`, `test:i18n`, `test:modinfo`, so signal is
+from running in one command. Once the TS-stub/JSDoc fixes above land, `verify` runs end-to-end. (The
+suites are independently runnable today via `test:js`, `test:i18n`, `test:modinfo`, so signal is
 available, just not from the single `verify` command.)
 
-### 3) Silent `catch (_) {}` and 4) NYI fallback — **accurate, intentional (not bugs)**
+### 3) Silent `catch (_) {}` and 4) NYI fallback: **accurate, intentional (not bugs)**
 These are deliberate "never break the host screen" / "unwired metric shows a placeholder, not a crash"
 safety nets, not defects. Optional hardening only: swap the empty bodies for a DBG-gated
 `dlog(...)` (the codebase already has `dlog`/`derr` helpers) so failures are observable in dev without
 changing player-facing behavior. No release-blocking action required.
 
-### 2C) localStorage stray-key purge — **accurate, intentional**
+### 2C) localStorage stray-key purge: **accurate, intentional**
 `demographics/ui/core/demographics-settings.js` intentionally purges stray top-level keys matching
 `^_*demographics[_-]` (the documented self-heal that prevents one mod's stray key from cascade-breaking
 shared `modSettings`). Keep as-is; document the namespace reservation in contributor docs.
 
 ## Net release-readiness picture
 
-- **Reproduced gate failures:** emigration `tsc`(2) + `lint`(1) + `test:scaling`(1); demographics
+- Reproduced gate failures: emigration `tsc`(2) + `lint`(1) + `test:scaling`(1); demographics
   `tsc`(28) + `test:modinfo`(1). All are tooling, stale-fixture, or stub gaps.
-- **Reproduced runtime defects:** none.
-- **Minimal path to green:** add the `engine-core-stub.d.ts` exports (1), annotate the implicitly-any
+- Reproduced runtime defects: none.
+- Minimal path to green: add the `engine-core-stub.d.ts` exports (1), annotate the implicitly-any
   params, fix the two emigration + one chart-resources JSDoc regressions, add the two modinfo entries,
   refresh `tests/scaling.mjs` to `12000`, and split `currentAgeProgressPct`. Then `verify` passes in
   both mods.
@@ -561,61 +561,61 @@ shared `modSettings`). Keep as-is; document the namespace reservation in contrib
 
 # Resolution Log (applied 2026-06-19)
 
-**Both mods now pass `npm run verify` end-to-end** (verified: `tsc --noEmit` 0 errors, `eslint ui` 0
+**Both mods now pass `npm run verify` end-to-end** (`tsc --noEmit` 0 errors, `eslint ui` 0
 errors, all JS test suites + `test:modinfo` + `test:i18n` green, in `emigration` and `demographics`).
 
 ## Fixed
 - **Demographics 28 TS errors → 0.**
   - Added the `model-options` named exports (`CategoryType`, `CategoryData`, `OptionType`, `Options`)
-    to `demographics/types/engine-core-stub.d.ts` — clears all 5 TS2614 import errors in
+    to `demographics/types/engine-core-stub.d.ts`: clears all 5 TS2614 import errors in
     `demographics-options.js` + `mod-options.js`. (Confirms Finding 1 was a type-stub gap, **not** a
-    runtime defect — the import shape was already correct.)
+    runtime defect, the import shape was already correct.)
   - Annotated the implicitly-any params (`getBool`, the `initListener`/`updateListener` callbacks in
     `demographics-options.js`; `apm`/`method` in `settlements-data.js`).
   - Fixed the `mountStackWrap` JSDoc in `chart-resources.js` (regression from the legend-on-top change).
-- **Emigration 2 TS errors → 0.** Added the missing `[rebuildAll]` JSDoc to `mountFlowChrome` and made
+- Emigration 2 TS errors → 0. Added the missing `[rebuildAll]` JSDoc to `mountFlowChrome` and made
   `rebuildAll` optional on `makeLensTabs` + `appendUnitsToggle` (regression from the Units-toggle work).
-- **Demographics `test:modinfo`.** Declared `settlements-population-variance.js` and
+- Demographics `test:modinfo`. Declared `settlements-population-variance.js` and
   `views/shared/options-button.js` in `demographics.modinfo` `<ImportFiles>`.
-- **Emigration `test:scaling`.** Refreshed the stale fixture `3000 → 12000` (both mods'
+- Emigration `test:scaling`. Refreshed the stale fixture `3000 → 12000` (both mods'
   `scaleCityPopulationAt` base is 12000; the implementation was already correct/aligned).
-- **Emigration lint complexity.** Split `currentAgeProgressPct` into `readAgeProgressPercent` +
+- Emigration lint complexity. Split `currentAgeProgressPct` into `readAgeProgressPercent` +
   `fractionToPct` (13 → ≤10).
-- **Release gates (Second-Pass A).** Added a `npm run verify` pre-package gate (with a `SKIP_VERIFY=1`
+- Release gates (Second-Pass A). Added a `npm run verify` pre-package gate (with a `SKIP_VERIFY=1`
   override for emergency hotfixes) to both `release.sh` scripts.
-- **Docstring typo (Third-Pass 5)** in `emigration-feedback.js`.
-- **Newly surfaced — `emigration/tests/migration-stats.mjs` (this is Second-Pass B in action).**
+- Docstring typo (Third-Pass 5) in `emigration-feedback.js`.
+- **Newly surfaced: `emigration/tests/migration-stats.mjs` (this is Second-Pass B in action).**
   Clearing the TS blocker let the suite run and exposed a test stale from the Graphs-group redesign
   (it expected the removed `emig_net_migration` per-turn metric and `perTurn/cumulative` views).
   Updated it to the current contract (`emig_net_cum`, `scaled/civ` units, members
   Net/Emigration/Immigration/Refugees) and re-pointed the per-sample-delta assertion at the data-layer
-  `netDeltaForPlayer`. Not a runtime defect — the implementation matches the intended design.
+  `netDeltaForPlayer`. Not a runtime defect, the implementation matches the intended design.
 
-## Intentionally NOT changed (accurate, but by design — not defects)
-- **Finding 3 — silent `catch (_) {}`**: deliberate "a render failure must never break the host
+## Intentionally not changed (accurate, but by design, not defects)
+- Finding 3, silent `catch (_) {}`: deliberate "a render failure must never break the host
   screen" guards. Left as-is.
-- **Finding 4 — NYI metric placeholder**: deliberate safety net for an unwired metric tab (shows a
+- Finding 4: NYI metric placeholder: deliberate safety net for an unwired metric tab (shows a
   placeholder, never crashes). Left as-is.
-- **Second-Pass C — localStorage stray-key purge**: the documented self-heal that prevents a stray
+- Second-Pass C, localStorage stray-key purge: the documented self-heal that prevents a stray
   `demographics[_-]`-prefixed key from cascade-breaking shared `modSettings`. Left as-is.
 
 ## Priority-2 hardening (now implemented)
 Both Priority-2 recommendations are done and wired into `verify` (so they run on every release gate):
 
-- **Options-registration test (demographics).** `tests/options-registration.mjs` (+ `test:options` in
+- Options-registration test (demographics). `tests/options-registration.mjs` (+ `test:options` in
   `package.json`, in both `verify` and `test:js`). The two engine `/core` options modules are stubbed
   via a scoped `tests/loader.mjs` mapping → `tests/stubs/engine-options-stub.mjs` (records
   `addOption`/`addInitCallback`). The test asserts all 11 expected options register under the `Mods`
   category, that every option exposes `initListener`/`updateListener`, and that checkbox + dropdown
   listeners correctly round-trip through `DemographicsSettings` (incl. reveal-mode→boolean and the
   string-valued complexity dropdown). Result: `11 options registered under Mods`.
-- **Empty-catch CI guard (both mods).** `tests/no-empty-catch.mjs` (+ `test:no-empty-catch` in
+- Empty-catch CI guard (both mods). `tests/no-empty-catch.mjs` (+ `test:no-empty-catch` in
   `package.json` `verify`) scans `ui/**/*.js` for whitespace-only `catch` bodies (single- or
   multi-line) and fails the gate if any exist. A catch annotated with a rationale comment
-  (`catch (_) { /* ignore: ... */ }` — the codebase convention) is permitted. Current baseline: 0
+  (`catch (_) { /* ignore: ... */ }`: the codebase convention) is permitted. Current baseline: 0
   offenders in either mod, so this locks in Finding 3's "annotate intentional swallows" policy for new
   code without touching the existing intentional guards.
 
 ## Not applied (rejected)
-- Finding 1's `tsc` suggestion to switch to **default imports**: rejected — it would **break runtime**
+- Finding 1's `tsc` suggestion to switch to **default imports**: rejected, it would **break runtime**
   (the engine module uses *named* exports, confirmed at `model-options.js:287`). The stub fix is correct.

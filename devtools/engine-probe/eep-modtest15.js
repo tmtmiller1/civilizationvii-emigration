@@ -1,4 +1,4 @@
-// eep-modtest15.js - READ-ONLY: what do REAL flows look like? On a save played with the mod (AugustusAnt136):
+// eep-modtest15.js - read-only: what do real flows look like? On a save played with the mod (AugustusAnt136):
 // every tracked settlement's composition (owner, total, top foreign origin share/pts), how many sit at the
 // foothold (0.25) and established (0.30, stock 3) bars, the mod's cumulative migration flow totals, and
 // any quarter records / candidacies already present. Logs [EmigTest]. Ends immediately (no turns).

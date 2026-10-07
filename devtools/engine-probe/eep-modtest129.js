@@ -2,7 +2,7 @@
 // TOOLTIP and MARKER captured at every stage. AugustusExp66.
 //
 // What run 128 got wrong, and why this script is different:
-//   • CONFIG was assigned directly. `applyTunableOverrides()` runs at the START OF EVERY PASS
+//   • CONFIG was assigned directly. `applyTunableOverrides()` runs at the start of every pass
 //     (emigration-main.js) and rewrites every tunable key from saved settings, so the overrides were
 //     wiped by the mod's own turn pass: recognition fell back to automatic (no decision modal) and the
 //     fade clock back to 12 turns (no fade). Everything here goes through setTunable(), which persists
@@ -26,7 +26,7 @@
 //   S8 HANDS        a larger community from another origin, dwell served, takes the tile. SHOT 9-changed-hands
 //   S9 FADE         everyone goes home, fade 2 turns: tile gone, record dropped.      SHOT 10-faded
 //
-// The Emigration window is deliberately NOT opened at the end: run 128 aborted (SIGABRT in a UI-engine
+// The Emigration window is not opened at the end, on purpose: run 128 aborted (SIGABRT in a UI-engine
 // allocation) about a second after it was opened, so leaving it out is also the isolation test.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";

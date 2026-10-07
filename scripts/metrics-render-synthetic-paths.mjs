@@ -37,6 +37,6 @@ if (asJson) console.log(JSON.stringify(out, null, 2));
 else console.log(`value=${value}`);
 
 if (asCheck && value < 100) {
-  console.error(`render_layer_synthetic_path_pass_rate_percent=${value} (expected 100) — ${tests.length - pass}/${tests.length} render paths failed.`);
+  console.error(`render_layer_synthetic_path_pass_rate_percent=${value} (expected 100), ${tests.length - pass}/${tests.length} render paths failed.`);
   process.exit(1);
 }

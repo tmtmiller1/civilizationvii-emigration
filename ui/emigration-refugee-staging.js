@@ -69,7 +69,7 @@ export function consumeSourcePoint(src, cause) {
   }
   // Rural exhausted: nothing leaves (the urban core is never taken; see emigration-departure-tile.js).
   if ((src.rural || 0) <= CONFIG.minRuralToEmigrate) return { ok: false, fromPool: false };
-  // Tile abandonment (departure-tile.js) cannot be undone, so the engine write is DEFERRED: reserve the
+  // Tile abandonment (departure-tile.js) cannot be undone, so the engine write is deferred: reserve the
   // point in the signal now; commitSourcePoint destroys the tile once the destination has accepted it.
   if (departureWouldAbandonTile(src.city)) {
     src.rural -= 1;
@@ -149,7 +149,7 @@ function refugeeSettlementBudget(sig) {
   if (over > 0 && CONFIG.refugeePoolOvercrowdPenalty > 0) {
     b *= Math.max(0.1, 1 - Math.min(0.9, over * CONFIG.refugeePoolOvercrowdPenalty));
   }
-  // Anti-Immigration throttles refugee SETTLEMENT too (on top of the border turn-away in the pull
+  // Anti-Immigration throttles refugee settlement too (on top of the border turn-away in the pull
   // path), so a closed civ absorbs its holding pool more slowly. Floored on the same `opennessFloor`
   // the pull path uses, so the two stages share one floor (never hard-zeros pool drain).
   if (CONFIG.bordersEnabled) b *= Math.max(CONFIG.opennessFloor, immigrationOpenness(sig.owner));

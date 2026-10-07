@@ -15,8 +15,8 @@ import { scaleCityPopulation, marginalPeople } from "/emigration/ui/emigration-p
 //   eraGrowthParams blends the previous era's {flat,scalar,exp} → the current era's over the opening
 //     BLEND_PCT of the age (cross-age continuity); Antiquity {5,20,4}, Exploration {30,50,5}, Modern {60,60,6}
 //   result = POP_K * W(size, eraGrowthParams(age, progress))    (POP_K = 31; turn is ignored)
-// Encoded below as the canonical reference. Emigration MUST match it across the age matrix. A second
-// guard reads Demographics' actual source (when present) so a change to ITS constants also fails here.
+// Encoded below as the canonical reference. Emigration must match it across the age matrix. A second
+// guard reads Demographics' actual source (when present) so a change to its constants also fails here.
 
 const REF_ERA_PARAMS = {
   AGE_ANTIQUITY: { flat: 5, scalar: 20, exp: 4 },
@@ -167,7 +167,7 @@ function testMarginalMatchesDemographicsAcrossAges() {
 }
 
 // The immersion guard this whole pin exists for: a single point fleeing must read as a believable
-// town's worth (a few thousand), NOT hundreds of thousands or millions.
+// town's worth (a few thousand), not hundreds of thousands or millions.
 function testSingleEventStaysBelievable() {
   const one = marginalPeople(1, 8); // off-engine → Exploration fallback → ~2.6k
   assert.ok(one > 1000 && one < 10000,
@@ -203,7 +203,7 @@ function sliceFn(src, name) {
 
 // Cross-mod drift guard: when Demographics' source is present (the normal repo layout), assert its
 // scaleCityPopulationAt still carries the exact constants this test pins emigration to. A change on the
-// Demographics side (e.g. a new base) then fails HERE, forcing the two mods to be re-aligned together.
+// Demographics side (e.g. a new base) then fails here, forcing the two mods to be re-aligned together.
 function testDemographicsSourceConstantsUnchanged() {
   const p = demographicsHelperPath();
   if (!existsSync(p)) {

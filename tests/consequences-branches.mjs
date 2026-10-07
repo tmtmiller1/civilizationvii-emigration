@@ -71,7 +71,7 @@ function testApplyDepartureConsequencesWithNullCity() {
 }
 
 // The siege loss cap governs the flee-the-violence channel only: a departure from a besieged
-// city that leaves for an ECONOMIC reason (prosperity/unhappiness) must NOT book a war-loss,
+// city that leaves for an economic reason (prosperity/unhappiness) must not book a war-loss,
 // or economic movers would drain the cap and shut off the war exodus early. Observed via the
 // real violence module's siege escalation (recordWarLoss is a no-op off-engine, so we exercise
 // the whole path against a real besieged city).

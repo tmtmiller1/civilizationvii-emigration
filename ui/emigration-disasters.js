@@ -1,6 +1,6 @@
 // emigration-disasters.js
 //
-// Per-city "disaster distress" - environmental events (flood, volcano, plague, …) as a migration
+// Per-city "disaster distress": environmental events (flood, volcano, plague, …) as a migration
 // driver, parallel to the violence model. Distress accumulates and decays each turn and feeds a
 // situational prosperity penalty. The polled `city.isInfected` flag is the fog-independent source of
 // truth; RandomEventOccurred front-runs it with a spike via `recordDisaster`. Persists in GameConfiguration.
@@ -36,8 +36,8 @@ function emptyState() {
 
 /**
  * Resolve persisted payload from a legacy or schema envelope blob.
- * @param {*} parsed Parsed JSON value.
- * @returns {*} Payload object, or null.
+ * @param {*} parsed
+ * @returns {*} The payload object, or null.
  */
 function payloadFromBlob(parsed) {
   if (!parsed || typeof parsed !== "object") return null;
@@ -48,10 +48,10 @@ function payloadFromBlob(parsed) {
 }
 
 /**
- * @param {string} k Candidate map key.
- * @param {*} v Candidate numeric value.
+ * @param {string} k
+ * @param {*} v
  * @param {boolean} nonNegative Whether values must be non-negative.
- * @returns {boolean} Whether entry is valid.
+ * @returns {boolean}
  */
 function isValidNumericEntry(k, v, nonNegative) {
   if (typeof k !== "string" || !k.length) return false;
@@ -62,7 +62,7 @@ function isValidNumericEntry(k, v, nonNegative) {
 /**
  * @param {*} m Candidate numeric map.
  * @param {boolean} nonNegative Whether values must be non-negative.
- * @returns {Record<string, number>} Sanitized numeric map.
+ * @returns {Record<string, number>}
  */
 function normalizeNumericMap(m, nonNegative) {
   /** @type {Record<string, number>} */
@@ -80,7 +80,7 @@ function normalizeNumericMap(m, nonNegative) {
 
 /**
  * @param {*} m Candidate disaster type map.
- * @returns {Record<string, string>} Sanitized type map.
+ * @returns {Record<string, string>}
  */
 function normalizeTypeMap(m) {
   /** @type {Record<string, string>} */
@@ -99,7 +99,7 @@ function normalizeTypeMap(m) {
 
 /**
  * @param {*} parsed Parsed persisted state.
- * @returns {DisasterState|null} Normalized state.
+ * @returns {DisasterState|null}
  */
 function normalizeState(parsed) {
   const payload = payloadFromBlob(parsed);
@@ -117,7 +117,7 @@ function normalizeState(parsed) {
 }
 
 /**
- * Per-event-class distress CEILING, the spike a FULL-IMPACT (m=1) event of this class lands. The
+ * Per-event-class distress ceiling, the spike a full-impact (m=1) event of this class lands. The
  * measured impact factor m picks where inside that band the event sits (see {@link disasterSpike}).
  * The legacy fail-safe path reads this as a severity-1 weight that severity multiplies.
  * @type {Record<string, number>}
@@ -138,7 +138,7 @@ const CLASS_WEIGHT = {
  * base class its name contains as a whole word, so a mod that splits floods into CLASS_<X>_FLOOD_MAJOR
  * and the like keeps flood weight; anything else falls back to 4.
  * @param {string} eventClass The event's CLASS_* string.
- * @returns {number} The ceiling.
+ * @returns {number}
  */
 function classWeight(eventClass) {
   const direct = CLASS_WEIGHT[eventClass];
@@ -152,7 +152,7 @@ function classWeight(eventClass) {
 
 /**
  * The current age-local game turn, or 0.
- * @returns {number} Game.turn or 0.
+ * @returns {number}
  */
 function gameTurn() {
   try {
@@ -164,7 +164,7 @@ function gameTurn() {
 
 /**
  * The raw persisted state string, or null.
- * @returns {string|null} The stored JSON, or null.
+ * @returns {string|null}
  */
 function readStored() {
   const g = Configuration?.getGame?.();
@@ -174,7 +174,7 @@ function readStored() {
 
 /**
  * Load (once) the persisted distress state.
- * @returns {DisasterState} State.
+ * @returns {DisasterState}
  */
 function state() {
   resetCachesOnNewGame();
@@ -209,13 +209,13 @@ function persist() {
 /**
  * A stable string key for a city ComponentID, or null if unusable.
  * @param {*} cid A city ComponentID.
- * @returns {string|null} The key, or null.
+ * @returns {string|null}
  */
 function keyFromCID(cid) {
   try {
     if (!cid) return null;
-    // Prefer the owner:id pair directly off the component id. ComponentID.toBitfield does NOT
-    // reliably yield a number/string for a CITY component id, so it is only the fallback.
+    // Prefer the owner:id pair directly off the component id. ComponentID.toBitfield does not
+    // reliably yield a number/string for a city component id, so it is only the fallback.
     if (typeof cid.owner === "number" && cid.id != null) return cid.owner + ":" + cid.id;
     if (typeof ComponentID !== "undefined") {
       const bf = ComponentID.toBitfield(cid);
@@ -264,7 +264,7 @@ export function observeDisaster(city) {
 }
 
 /**
- * Concave impact shaping `m^gamma`. Lifts small REAL impacts so a genuine (if minor) disaster still
+ * Concave impact shaping `m^gamma`. Lifts small real impacts so a genuine (if minor) disaster still
  * registers, while keeping zero impact at zero (no cliff). `m` is clamped to [0,1].
  * @param {number} m The measured impact factor in [0,1].
  * @returns {number} The shaped factor in [0,1].
@@ -275,7 +275,7 @@ function shape(m) {
 }
 
 /**
- * The per-event distress SPIKE for one struck city: type-ceiling × shaped measured impact, then the
+ * The per-event distress spike for one struck city: type-ceiling × shaped measured impact, then the
  * one-shot speed-shock (÷S). Either transform is independently flag-gated; with both off this is
  * `CLASS_WEIGHT × severity`.
  * @param {string} eventClass The event's CLASS_* string.
@@ -314,7 +314,7 @@ export function recordDisaster(eventClass, m, cityKeys, eventType, severity) {
 /**
  * Add `w` distress to one city (with diminishing-returns stacking and a hard accumulation cap so the
  * city always recovers) and stamp the disaster `type` (latest hit wins) for attribution.
- * @param {DisasterState} s State. @param {string} key City key. @param {number} w Distress.
+ * @param {DisasterState} s @param {string} key City key. @param {number} w Distress.
  * @param {string|null} type The RandomEventType, or null.
  */
 function stampDisaster(s, key, w, type) {
@@ -335,7 +335,7 @@ function stampDisaster(s, key, w, type) {
  * The RandomEventType of the most recent disaster that struck a city (for cause attribution), or
  * null. Cleared when the city's distress decays away (see tickDisasters).
  * @param {string} cityKey
- * @returns {string|null} The event type, or null.
+ * @returns {string|null}
  */
 export function disasterTypeFor(cityKey) {
   if (!cityKey) return null;
@@ -346,7 +346,7 @@ export function disasterTypeFor(cityKey) {
 /**
  * The owner player id encoded in a city key ("owner:id"), or null when unparseable.
  * @param {string} key A city key.
- * @returns {number|null} The owner id, or null.
+ * @returns {number|null}
  */
 function ownerOfKey(key) {
   const owner = Number(String(key).split(":")[0]);
@@ -354,7 +354,7 @@ function ownerOfKey(key) {
 }
 
 /**
- * The RandomEventType of the WORST disaster currently afflicting any of `owner`'s cities (the most
+ * The RandomEventType of the worst disaster currently afflicting any of `owner`'s cities (the most
  * distress right now), for naming that civ's refugee crisis. Null when none is active.
  * @param {number} owner Owner player id.
  * @returns {string|null} The event type, or null.
@@ -439,7 +439,7 @@ export function recordDisasterLoss(city, popBefore) {
  * Whether a city has already lost its capped share (`disasterLossCapPct` of the population it had when
  * the crisis first cost a point) to disaster-driven emigration, so the remnant digs in. False when the
  * cap is off (>= 1), the model is off, or no loss has been booked for this crisis.
- * @param {*} city A live city object. @returns {boolean} True when the cap is reached.
+ * @param {*} city A live city object. @returns {boolean}
  */
 export function disasterLossCapReached(city) {
   const pct = Number(CONFIG.disasterLossCapPct);
@@ -454,7 +454,7 @@ export function disasterLossCapReached(city) {
 /**
  * The key for a city (exposed so the event layer can map affected cities → distress).
  * @param {*} city A live city object.
- * @returns {string|null} The key, or null.
+ * @returns {string|null}
  */
 export function disasterKey(city) {
   return keyFromCID(city?.id);

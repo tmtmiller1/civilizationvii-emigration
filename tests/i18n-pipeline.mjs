@@ -8,7 +8,7 @@
 // would have wiped 6,018 translations across the eleven locales, roughly a third of every file.
 //
 // Two things keep that shut, and this pins both: the maps stay in step with the shipped text (so there is
-// nothing for apply to lose), and apply REFUSES to run when they are not.
+// nothing for apply to lose), and apply refuses to run when they are not.
 
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -17,7 +17,7 @@ import { LOCALES, readLocaleRows, readSource } from "../scripts/i18n_shared.mjs"
 
 const SRC = readSource();
 
-// ── every shipped row is reproducible from the maps ──────────────────────────
+// every shipped row is reproducible from the maps
 // A row that is neither the map's translation nor the English fallback exists only in the XML, which is
 // exactly what apply would destroy. Run `node scripts/i18n_ingest.mjs` when this fails.
 {
@@ -33,7 +33,7 @@ const SRC = readSource();
     `${orphans.length} shipped translation(s) live only in the XML; run node scripts/i18n_ingest.mjs`);
 }
 
-// ── the English source is in step with en_us ────────────────────────────────
+// the English source is in step with en_us
 // apply writes SRC for any key without a translation, so a stale source silently ships outdated English
 // to all eleven locales. Run `node scripts/i18n_extract.mjs` when this fails.
 {
@@ -43,7 +43,7 @@ const SRC = readSource();
     `${stale.length} key(s) differ between en_us and i18n-source.json; run node scripts/i18n_extract.mjs`);
 }
 
-// ── apply REFUSES when a translation would be lost ──────────────────────────
+// apply refuses when a translation would be lost
 // The guard is the thing that makes the pipeline safe to run by hand, so it gets a live test: point the
 // scripts at a copy of the tree whose German file carries an XML-only translation, and apply must exit
 // non-zero without writing.

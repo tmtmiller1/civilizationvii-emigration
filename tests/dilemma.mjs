@@ -32,7 +32,7 @@ const { recordCaptures, canFire, detectConquestDilemma, detectPlagueDilemma } = 
 
 const capture = (prevOwner, newOwner, points) => ({ prevOwner, newOwner, name: "City", points });
 
-// ── persistence: legacy state migrates + v2 envelope writes ─────────────────
+// persistence: legacy state migrates + v2 envelope writes
 {
   const s = __test.readStateForTest();
   assert.equal(s.age, 1, "legacy persisted age should load");
@@ -44,7 +44,7 @@ const capture = (prevOwner, newOwner, points) => ({ prevOwner, newOwner, name: "
   assert.ok(persisted.data && persisted.data.spree, "envelope should include data.spree");
 }
 
-// ── recordCaptures: per-aggressor spree, pruned to the window ───────────────
+// recordCaptures: per-aggressor spree, pruned to the window
 {
   const s = { spree: {} };
   recordCaptures(s, [capture(3, 2, 2), capture(4, 2, 1)], 100); // civ 2 takes two cities at turn 100
@@ -53,7 +53,7 @@ const capture = (prevOwner, newOwner, points) => ({ prevOwner, newOwner, name: "
   assert.equal(s.spree["2"].length, 1, "stale captures pruned, only the fresh one remains");
 }
 
-// ── canFire: per-age cap + cooldown, cap resets on a new age ────────────────
+// canFire: per-age cap + cooldown, cap resets on a new age
 {
   const s = { age: 0, count: 0, lastTurn: -999 };
   assert.ok(canFire(s, 50, 0), "first dilemma allowed");
@@ -67,7 +67,7 @@ const capture = (prevOwner, newOwner, points) => ({ prevOwner, newOwner, name: "
   assert.ok(!canFire(s, 61, 1), "blocked while inside the cooldown");
 }
 
-// ── detectConquestDilemma: a neighbor's spree, victims fleeing toward you ──
+// detectConquestDilemma: a neighbor's spree, victims fleeing toward you
 {
   const me = 1;
   const s = { spree: { 2: [{ turn: 90, victim: 3, points: 2 }, { turn: 95, victim: 3, points: 1 }, { turn: 99, victim: 3, points: 2 }] } };
@@ -84,7 +84,7 @@ const capture = (prevOwner, newOwner, points) => ({ prevOwner, newOwner, name: "
     "your own spree does not prompt you");
 }
 
-// ── detectPlagueDilemma: needs an active plague crisis + a wave from a neighbor ──
+// detectPlagueDilemma: needs an active plague crisis + a wave from a neighbor
 {
   const me = 1;
   attribution.__test.setCrisis(null);
@@ -101,7 +101,7 @@ const capture = (prevOwner, newOwner, points) => ({ prevOwner, newOwner, name: "
   attribution.__test.setCrisis(null);
 }
 
-// ── prompts: prose composes, names framed for unmet, no em dashes ───────────
+// prompts: prose composes, names framed for unmet, no em dashes
 {
   const met = { adj: "Roman", framed: false };
   const unmet = { adj: "Norse", framed: true };

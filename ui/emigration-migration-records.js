@@ -13,9 +13,9 @@
  * @property {string} destName Destination city name.
  * @property {number} [srcOwner] Source owner id (absent on a pure arrival record).
  * @property {number} [destOwner] Destination owner id (absent for attrition / a pure departure).
- * @property {number} [edgeDestOwner] Destination owner for the flow-network EDGE only (carried on a lagged
- *   departure record so the cross-civ edge can be built at depart; NOT the tally-driving destOwner).
- * @property {number} [originCiv] The migrant's TRUE origin civ, overriding srcName-based attribution in
+ * @property {number} [edgeDestOwner] Destination owner for the flow-network edge only (carried on a lagged
+ *   departure record so the cross-civ edge can be built at depart; not the tally-driving destOwner).
+ * @property {number} [originCiv] The migrant's true origin civ, overriding srcName-based attribution in
  *   the composition ledger (a returnee's homeland, or a lagged arrival's depart-time source owner).
  * @property {Record<string, number>} [originMix] Who the migrant is, as origin civ → fraction (sums to 1):
  *   the source settlement's mix at departure, so a diaspora that moves on keeps its identity. The ledger's
@@ -27,7 +27,7 @@
  * @property {number} points Raw Civ population points moved (1 per migration).
  * @property {number} people Historically-scaled people who moved.
  * @property {MigrationCause} cause Why this move happened.
- * @property {string} [eventKey] The SPECIFIC event behind the cause, a particular war / disaster /
+ * @property {string} [eventKey] The specific event behind the cause, a particular war / disaster /
  *   age crisis (see emigration-event-attribution), or "" for no named event. Carried on the records
  *   that drive the out tally (move/depart) and on crisis-death records.
  * @property {number} [destPaidCost] Assimilation load the destination civ took on for this arrival
@@ -102,7 +102,7 @@ export function moveRecord(src, dest, people, cause, meta) {
 }
 
 /**
- * Build the DEPARTURE half of a lagged move: it carries `srcOwner` but NOT `destOwner` (the arrival
+ * Build the departure half of a lagged move: it carries `srcOwner` but not `destOwner` (the arrival
  * credits the destination later). `edgeDestOwner` exists only so the flow edge can be recorded at
  * depart; it must not become `destOwner` or the immigration tally would double-count.
  * @param {*} src Source signal.
@@ -132,7 +132,7 @@ export function departRecord(src, dest, people, cause, eventKey, reasons, origin
 }
 
 /**
- * Build the ARRIVAL half of a lagged move. On success it carries `destOwner` only (the immigration
+ * Build the arrival half of a lagged move. On success it carries `destOwner` only (the immigration
  * tally lands now); if the destination vanished en route it becomes a death charged to the source
  * (`srcOwner` + `attrition`).
  * @param {Transit} e The completed transit entry.
@@ -159,8 +159,8 @@ export function arriveRecord(e, ok, destPaidCost) {
       // Who the migrant is, captured at departure (see Migration.originMix): a mixed city's emigrants arrive
       // as the same mix that left. An entry queued before the mix existed falls back to originCiv below.
       originMix: e.originMix,
-      // The migrant's TRUE origin, captured at departure, since a name-to-owner lookup at arrival time
-      // fails for a home city razed or captured in transit. NOT the tally-driving srcOwner field;
+      // The migrant's true origin, captured at departure, since a name-to-owner lookup at arrival time
+      // fails for a home city razed or captured in transit. Not the tally-driving srcOwner field;
       // originCiv is read only by the composition ledger's destination side.
       originCiv: e.originMix ? undefined : e.srcOwner
     });

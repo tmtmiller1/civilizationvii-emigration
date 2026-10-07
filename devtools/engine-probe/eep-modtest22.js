@@ -4,7 +4,7 @@
 //      CREATE_ELEMENT it back with Progress 50; read complete/damaged, urban population, production.
 //   H2 ask the city whether it can BUILD that type now (Success / InProgress / Plots / InQueue); if so,
 //      send the build and read the queue (progress, required, turns left) and getTurnsLeft(type).
-//   H3 control: can the city BUILD a current-age building it does NOT have (any buildable one), so the
+//   H3 control: can the city build a current-age building it does not have (any buildable one), so the
 //      H2 result is read against a known-good canStart.
 //   then SHOT half-built, DONE.
 

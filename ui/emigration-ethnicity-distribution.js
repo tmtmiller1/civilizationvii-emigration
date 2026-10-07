@@ -1,41 +1,41 @@
 // emigration-ethnicity-distribution.js
 //
-// The ETHNICITY-LENS distribution model: turns a settlement's ethnic-composition record
-// (emigration-composition.js) into a per-tile mosaic where every tile carries its OWN local origin mix.
+// The ethnicity lens's distribution model: turns a settlement's ethnic-composition record
+// (emigration-composition.js) into a per-tile mosaic where every tile carries its own local origin mix.
 // Each diaspora water-fills by affinity (exp(-anchorDist/SCALE)) around a deterministic anchor tile, so
 // the map shows a gradient; a standing enclave pins the anchor to the enclave's own tile and seats its
 // people there first (up to MINORITY_CAP), while every other tile is capped at `plainCap`, so a tile
-// burning with a diaspora's color means an enclave stands there. People only move BETWEEN tiles;
-// every citywide share is conserved exactly. Per-tile DENSITY (built-up weight x scaled population)
-// drives opacity. Pure: no engine reads; emigration-ethnicity-tiles.js supplies the plots + population.
+// burning with a diaspora's color means an enclave stands there. People only move between tiles;
+// every citywide share is conserved exactly. Per-tile density (built-up weight x scaled population)
+// drives opacity. No engine reads here; emigration-ethnicity-tiles.js supplies the plots + population.
 
 /**
  * @typedef {Object} PlotWeight
- * @property {number} x Plot x.
- * @property {number} y Plot y.
+ * @property {number} x
+ * @property {number} y
  * @property {number} weight Relative population density weight (city center high … wilderness low).
  */
 
 /**
  * @typedef {Object} DistributeOpts
- * @property {Map<number, {x:number, y:number}>} [anchors] Origins whose cluster is TIED to a known tile
+ * @property {Map<number, {x:number, y:number}>} [anchors] Origins whose cluster is tied to a known tile
  *   (a standing Cultural Enclave), civ → plot. Overrides the hash anchor for those origins only; every
- *   other origin still anchors deterministically by hash. Purely positional: it moves WHERE a cluster
- *   centers, not how many people it holds, so the citywide shares are untouched.
- * @property {number} [plainCap] The most of a tile any diaspora may hold where NO enclave stands — the
- *   enclave formation share. Omitted, tiles keep the historical MINORITY_CAP everywhere.
+ *   other origin still anchors deterministically by hash. It moves where a cluster centers, not how
+ *   many people it holds, so the citywide shares are untouched.
+ * @property {number} [plainCap] The most of a tile any diaspora may hold where no enclave stands (the
+ *   enclave formation share). Omitted, tiles keep the historical MINORITY_CAP everywhere.
  */
 
 /**
  * @typedef {Object} TileShare
  * @property {number} civ Origin civ id.
- * @property {number} share This origin's LOCAL share of the tile's people, in (0,1].
+ * @property {number} share This origin's local share of the tile's people, in (0,1].
  */
 
 /**
  * @typedef {Object} TilePaint
- * @property {number} x Plot x.
- * @property {number} y Plot y.
+ * @property {number} x
+ * @property {number} y
  * @property {number} people Scaled people living on this tile.
  * @property {number} density Opacity driver in [0,1] (saturating fn of `people`).
  * @property {TileShare[]} shares Per-origin local shares (sum ~1), largest first.
@@ -45,13 +45,13 @@
 // People on a single tile that reads as "fully dense" (opacity saturates).
 const REF_TILE_PEOPLE = 60000;
 // The spatial spread of a diaspora cluster, in hexes: affinity is exp(-dist/SCALE) from the anchor.
-// Tight, so even a SMALL diaspora piles onto a few tiles and reads as a distinct color patch.
+// Tight, so even a small diaspora piles onto a few tiles and reads as a distinct color patch.
 const CLUSTER_SCALE = 1.1;
 // The host origin keeps at least (1 - MINORITY_CAP) of every tile, so even the densest diaspora tile is a
-// BLEND of host + diaspora color rather than a full switch — but high enough that the cluster center
-// reads STRONGLY as the diaspora's color.
+// blend of host + diaspora color rather than a full switch. The cap is still high enough that the cluster
+// center reads strongly as the diaspora's color.
 const MINORITY_CAP = 0.92;
-// How fast the plain-tile (non-enclave) ceiling rises once a settlement's combined foreign share is PAST
+// How fast the plain-tile (non-enclave) ceiling rises once a settlement's combined foreign share is past
 // the enclave bar: ceiling = bar + (share - bar) x this. Must exceed 1, or every tile fills to the brim
 // and the settlement paints dead flat (see capacities()).
 const CAP_HEADROOM = 2;
@@ -63,8 +63,8 @@ const SHARE_EPS = 1e-3;
 
 /**
  * A small stable hash of a plot's coordinates (optionally salted by an origin civ), for deterministic
- * per-civ anchoring with no RNG. Salting by civ makes each diaspora anchor on a DIFFERENT tile.
- * @param {number} x Plot x. @param {number} y Plot y. @param {number} [salt] Optional civ salt.
+ * per-civ anchoring with no RNG. Salting by civ makes each diaspora anchor on a different tile.
+ * @param {number} x @param {number} y @param {number} [salt] Optional civ salt.
  * @returns {number} A stable non-negative number.
  */
 function plotHash(x, y, salt = 0) {
@@ -111,7 +111,7 @@ function originsSmallestFirst(civs) {
 }
 
 /**
- * Distribute a settlement's population across its owned tiles, giving each tile its own LOCAL origin mix:
+ * Distribute a settlement's population across its owned tiles, giving each tile its own local origin mix:
  * each diaspora forms a smooth spatial cluster (its people water-filled into the highest-affinity tiles,
  * capped per tile so the host always shows) while the host fills the rest, so the lens reads as a color
  * gradient and each origin's people still total its citywide share.
@@ -151,7 +151,7 @@ export function distributeTiles(plots, comp, scaledPeople, opts) {
 /**
  * Water-fill order: an origin with an enclave pin first, then largest share first, then civ id.
  * @param {{civ:number, share:number, pin:*}} a @param {{civ:number, share:number, pin:*}} b
- * @returns {number} Sort order.
+ * @returns {number}
  */
 function pinnedThenLargest(a, b) {
   return Number(!!b.pin) - Number(!!a.pin) || b.share - a.share || a.civ - b.civ;
@@ -159,11 +159,11 @@ function pinnedThenLargest(a, b) {
 
 /**
  * The origin that fills whatever the water-filled origins leave: the dominant origin, unless it holds an
- * enclave pin, and then the largest origin WITHOUT one (a pinned majority must still be seated on its own
+ * enclave pin, and then the largest origin without one (a pinned majority must still be seated on its own
  * tile). Falls back to the dominant origin when every origin is pinned.
  * @param {{civs:{civ:number, share:number}[], dominant:{civ:number}|null}} comp The composition.
  * @param {Map<number, {x:number, y:number}>} [anchors] Enclave anchor pins.
- * @returns {number} The base-fill origin.
+ * @returns {number}
  */
 function baseFillCiv(comp, anchors) {
   const largestFirst = originsSmallestFirst(comp.civs).reverse();
@@ -174,8 +174,8 @@ function baseFillCiv(comp, anchors) {
 }
 
 /**
- * Each tile's minority-people capacity, the ceiling on how DARK a diaspora's color can get. An ENCLAVE
- * tile (a pinned anchor) gets the full MINORITY_CAP for its OWN people only; every other tile, and every
+ * Each tile's minority-people capacity, the ceiling on how dark a diaspora's color can get. An enclave
+ * tile (a pinned anchor) gets the full MINORITY_CAP for its own people only; every other tile, and every
  * other origin on the enclave tile, is capped at `plainCap`, which rises with the excess over the bar (x
  * CAP_HEADROOM) so the distribution still conserves and keeps a gradient. A small base origin lifts the
  * ceiling past MINORITY_CAP so the water-filled origins still fit.
@@ -267,7 +267,7 @@ function waterFill(tiles, placed, room, m) {
  */
 
 /**
- * Seat a diaspora in its ENCLAVE tile before anything spills outward: the tile takes as many of the
+ * Seat a diaspora in its enclave tile before anything spills outward: the tile takes as many of the
  * community's people as it has room for, and only the remainder is water-filled around it (proportional
  * pouring alone leaves one hex among many well short of the cap). What is seated here is subtracted
  * from the water-fill, so the origin still totals its citywide share exactly.
@@ -321,11 +321,11 @@ function pourRound(ctx, state) {
 }
 
 /**
- * A diaspora's PINNED anchor, when one was supplied: the tile its Cultural Enclave stands on, so the
+ * A diaspora's pinned anchor, when one was supplied: the tile its Cultural Enclave stands on, so the
  * color patch and the enclave's on-map marker agree. The pin only has to carry finite coordinates; it
  * need not be one of the settlement's own plots. Null when this origin has no pin (hash anchor fallback).
  * @param {number} civ The origin civ. @param {Map<number, {x:number, y:number}>} [anchors] The pins.
- * @returns {{x:number, y:number}|null} The pinned anchor, or null.
+ * @returns {{x:number, y:number}|null}
  */
 function pinnedAnchor(civ, anchors) {
   if (!anchors || typeof anchors.get !== "function") return null;
@@ -337,7 +337,7 @@ function pinnedAnchor(civ, anchors) {
  * The tile a diaspora anchors on: the owned tile with the largest civ-salted hash (deterministic, and
  * different per civ so two diasporas cluster in different neighborhoods).
  * @param {{x:number, y:number}[]} tiles The tiles. @param {number} civ The origin civ.
- * @returns {{x:number, y:number}} The anchor tile.
+ * @returns {{x:number, y:number}}
  */
 function anchorFor(tiles, civ) {
   let best = tiles[0];
@@ -358,7 +358,7 @@ function anchorFor(tiles, civ) {
  * @param {{x:number, y:number, people:number}} t The tile.
  * @param {Map<number, number>} placedMap The tile's {minority civ → placed people}.
  * @param {number} baseCiv The base-fill origin id (see baseFillCiv).
- * @returns {TilePaint} The paint record.
+ * @returns {TilePaint}
  */
 function finalizeTile(t, placedMap, baseCiv) {
   const P = t.people;
@@ -384,7 +384,7 @@ function finalizeTile(t, placedMap, baseCiv) {
 /**
  * A tile paint with explicit shares (the no-people fallback path).
  * @param {{x:number, y:number, people:number}} t The tile. @param {TileShare[]} shares
- * @returns {TilePaint} The paint record.
+ * @returns {TilePaint}
  */
 function paintShares(t, shares) {
   return { x: t.x, y: t.y, people: t.people, density: tileDensity(t.people), shares, primary: shares[0].civ };
@@ -392,8 +392,8 @@ function paintShares(t, shares) {
 
 /**
  * Whether the inputs can be distributed (non-empty plots + a composition with origins).
- * @param {*} plots Candidate plots. @param {*} comp Candidate composition.
- * @returns {boolean} True when distributable.
+ * @param {*} plots @param {*} comp
+ * @returns {boolean}
  */
 function hasDistributableInputs(plots, comp) {
   return Array.isArray(plots) && plots.length > 0

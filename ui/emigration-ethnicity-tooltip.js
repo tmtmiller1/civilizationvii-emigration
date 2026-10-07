@@ -1,6 +1,6 @@
 // emigration-ethnicity-tooltip.js
 //
-// The Ethnicity lens's cursor panel: the ETHNIC COMPOSITION OF THE HOVERED TILE as per-origin-civ
+// The Ethnicity lens's cursor panel: the ethnic composition of the hovered tile as per-origin-civ
 // percentages with the same banner-color swatches the lens blends, computed by the shared tiles module
 // so panel and map agree exactly. Falls back to the settlement-wide composition for an untracked plot.
 //
@@ -56,10 +56,10 @@ function partsFromShares(shares) {
 }
 
 /**
- * The hovered TILE's local origin shares (the same mix the lens blended into its color), or null when
+ * The hovered tile's local origin shares (the same mix the lens blended into its color), or null when
  * the plot isn't one of the settlement's tracked tiles.
- * @param {*} city City object. @param {{x:number,y:number}|undefined} plot The hovered plot.
- * @returns {{civ:number, share:number}[]|null} The tile's shares, or null.
+ * @param {*} city @param {{x:number,y:number}|undefined} plot The hovered plot.
+ * @returns {{civ:number, share:number}[]|null}
  */
 function tileShares(city, plot) {
   if (!plot) return null;
@@ -75,8 +75,8 @@ function tileShares(city, plot) {
 /**
  * Settlement-wide breakdown (the fallback when the hovered plot has no per-tile mix): the city's
  * composition, or 100% its current owner when untracked.
- * @param {*} city City object.
- * @returns {{name:string, color:string, share:number}[]|null} Rows, or null.
+ * @param {*} city
+ * @returns {{name:string, color:string, share:number}[]|null}
  */
 function cityParts(city) {
   const comp = compositionForCity(city);
@@ -93,7 +93,7 @@ function cityParts(city) {
  * @param {*} sig The hovered settlement's CitySignal.
  * @param {*} _snap Unused per-pass snapshot.
  * @param {{x:number,y:number}} [plot] The hovered plot.
- * @returns {{title:string, rows:{color:string, name:string, value:string}[]}|null} Display, or null.
+ * @returns {{title:string, rows:{color:string, name:string, value:string}[]}|null}
  */
 function resolve(sig, _snap, plot) {
   const city = sig.city;
@@ -102,13 +102,13 @@ function resolve(sig, _snap, plot) {
   if (!parts || !parts.length) return null;
   const base = cityTitle(city, loc("LOC_EMIG_ETH_TITLE", "Ethnic Composition"));
   return {
-    // The separator lives in the CODE: the game's text loader strips a localized string's edge spaces.
+    // The separator lives in the code: the game's text loader strips a localized string's edge spaces.
     title: local ? base + " " + loc("LOC_EMIG_ETH_TILE_SUFFIX", "· this tile").trim() : base,
     rows: parts.map((p) => ({ color: p.color, name: p.name, value: loc("LOC_EMIG_PCT", "{1_Pct}%", Math.round(p.share * 100)) }))
   };
 }
 
-// ── Self-registration (runs on UIScript load, in the HUD context) ───────────────────────
+// self-registration: runs on UIScript load, in the HUD context
 try {
   registerLensHoverPanel({ lens: LENS, panelId: "emig-ethpanel", styleId: "emig-ethpanel-style", resolve });
 } catch (e) {

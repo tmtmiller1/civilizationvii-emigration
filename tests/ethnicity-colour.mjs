@@ -1,10 +1,10 @@
 // ethnicity-colour.mjs
 //
-// The ethnicity lens's tile color (emigration-ethnicity-colour.js): a share-weighted BLEND of origin
+// The ethnicity lens's tile color (emigration-ethnicity-colour.js): a share-weighted blend of origin
 // colors, replacing a winner-takes-all fill that painted every tile one banner color or another with a
 // hard flip at 50%. Pure, so no engine stubs. Asserts the properties a gradient has and a flip does not:
 //   1. a single-origin tile is exactly that origin's color;
-//   2. the hue moves MONOTONICALLY toward an origin as its share rises, with no jump at the 50% line;
+//   2. the hue moves monotonically toward an origin as its share rises, with no jump at the 50% line;
 //   3. a minority below half of a tile still shifts the color (the old fill showed it not at all);
 //   4. density drives saturation (gray → the blend) and opacity together, like the Prosperity lens, and
 //      neither depends on who lives on the tile;
@@ -25,11 +25,11 @@ const close = (a, b) => dist(a, b) < 1e-9;
 // A hued color (hue 0) at HSL saturation `sat`, lightness 0.5.
 const fromHs = (sat) => ({ r: 0.5 + sat / 2, g: 0.5 - sat / 2, b: 0.5 - sat / 2 });
 
-// ── 1. A single origin is exactly its own color ─────────────────────────────
+// 1. A single origin is exactly its own color
 assert.ok(close(blendColour([{ civ: 1, share: 1 }], colourOf, 1), PURPLE), "100% host → the host's color");
 assert.ok(close(blendColour([{ civ: 2, share: 1 }], colourOf, 1), PALE), "100% diaspora → the diaspora's color");
 
-// ── 2. Monotone gradient, and NO jump across the 50% line ────────────────────
+// 2. Monotone gradient, and no jump across the 50% line
 {
   const steps = [];
   for (let s = 0; s <= 1.0001; s += 0.02) steps.push(mix(Math.min(1, s)));
@@ -45,7 +45,7 @@ assert.ok(close(blendColour([{ civ: 2, share: 1 }], colourOf, 1), PALE), "100% d
   assert.ok(biggest < whole * 0.15, "no single 2% step is a jump anywhere along the gradient");
 }
 
-// ── 3. A sub-majority community is VISIBLE (the old fill ignored it entirely) ─
+// 3. A sub-majority community is visible (the old fill ignored it entirely)
 {
   assert.ok(dist(mix(0.30), PURPLE) > dist(PURPLE, PALE) * 0.2,
     "a community at the 30% enclave bar shifts the tile clearly off the host's color");
@@ -57,7 +57,7 @@ assert.ok(close(blendColour([{ civ: 2, share: 1 }], colourOf, 1), PALE), "100% d
     "the lift is symmetric: 8% of either people moves the tile the same distance");
 }
 
-// ── Three origins blend, and input order does not matter ─────────────────────
+// Three origins blend, and input order does not matter
 {
   const a = blendColour([{ civ: 1, share: 0.5 }, { civ: 2, share: 0.3 }, { civ: 3, share: 0.2 }], colourOf, 1);
   const b = blendColour([{ civ: 3, share: 0.2 }, { civ: 1, share: 0.5 }, { civ: 2, share: 0.3 }], colourOf, 1);
@@ -68,7 +68,7 @@ assert.ok(close(blendColour([{ civ: 2, share: 1 }], colourOf, 1), PALE), "100% d
   assert.ok(w[0].weight > w[1].weight && w[1].weight > w[2].weight, "visual weights keep the share order");
 }
 
-// ── 4. Density drives saturation ─────────────────────────────────────────────
+// 4. Density drives saturation
 {
   const rgb = (f) => ({ r: f.x, g: f.y, b: f.z });
   const host = { shares: [{ civ: 1, share: 1 }] };
@@ -83,7 +83,7 @@ assert.ok(close(blendColour([{ civ: 2, share: 1 }], colourOf, 1), PALE), "100% d
   }
 }
 
-// ── 4b. The vivid end widens the ramp without changing whose color it is ────
+// 4b. The vivid end widens the ramp without changing whose color it is
 {
   const hue = (c) => toHsl(c).h;
   for (const c of [PURPLE, PALE, RED, { r: 0.9, g: 0.46, b: 0.45 }, { r: 0.72, g: 0.5, b: 0.9 }]) {
@@ -104,7 +104,7 @@ assert.ok(close(blendColour([{ civ: 2, share: 1 }], colourOf, 1), PALE), "100% d
   for (let i = 1; i < ramp.length; i++) assert.ok(ramp[i] >= ramp[i - 1], "the neutral slides, it never flips");
 }
 
-// ── 4c. Opacity follows density only ─────────────────────────────────────────
+// 4c. Opacity follows density only
 {
   const tile = (s2) => ({ shares: [{ civ: 1, share: 1 - s2 }, { civ: 2, share: s2 }] });
   assert.ok(saturation(0.5) > saturation(0.2) && saturation(NaN) === SAT_FLOOR, "saturation is monotone and safe");
@@ -118,7 +118,7 @@ assert.ok(close(blendColour([{ civ: 2, share: 1 }], colourOf, 1), PALE), "100% d
     "who lives on a tile does not change its opacity (hue carries that)");
 }
 
-// ── 5. Degenerate inputs stay finite ─────────────────────────────────────────
+// 5. Degenerate inputs stay finite
 {
   const finite = (f) => [f.x, f.y, f.z, f.w].every((n) => Number.isFinite(n) && n >= 0 && n <= 1);
   const ctx = { hostCiv: 1, densityNorm: NaN };

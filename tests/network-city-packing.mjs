@@ -5,16 +5,16 @@
 // The bugs this guards (2026-07-17), all of which read as a huge, mostly-empty civ circle:
 //
 //  1. City discs were spread onto a ring of radius `1.75·√(Σ subR²)` regardless of their own size,
-//     so a dominant city flung its 1-dot hamlets out to ~1.75x its radius — a single hamlet took a
+//     so a dominant city flung its 1-dot hamlets out to ~1.75x its radius; a single hamlet took a
 //     lone 400-dot city's circle from r=54 to r=102.
-//  2. Discs were positioned by ARRAY INDEX, and `center.cities` arrives in the engine's (founding)
-//     order, so the SAME civ drew a ~47% bigger circle when its largest city was founded last.
+//  2. Discs were positioned by array index, and `center.cities` arrives in the engine's (founding)
+//     order, so the same civ drew a ~47% bigger circle when its largest city was founded last.
 //  3. The first packing fix anchored the biggest disc at the origin and fanned the rest to one side,
 //     so the circle had to reach the farthest satellite while the opposite half sat empty (two equal
 //     cities filled only ~20% of the circle).
 //
 // Now: packed biggest-first with no overlap, then re-centered on the enclosing circle. These assert
-// the properties that must hold, NOT the exact radii (which are free to be tuned).
+// the properties that must hold, not the exact radii (which are free to be tuned).
 
 import assert from "node:assert/strict";
 
@@ -24,7 +24,7 @@ const { buildChronoDots } = await import("/emigration/ui/emigration-network-dots
 const UNIT = 1;
 
 /**
- * Lay out ONE civ whose cities have the given populations, and return its center.
+ * Lay out one civ whose cities have the given populations, and return its center.
  * Drives the real buildChronoDots so the packing under test is the shipped path.
  * @param {number[]} pops Population per city (dot count at UNIT 1).
  * @returns {*} The civ center ({clusterR, cities:[{sx,sy,subR}]}).
@@ -66,7 +66,7 @@ function testCityDiscsNeverOverlap() {
 }
 
 function testEveryDiscFitsInsideTheCircle() {
-  // clusterR is what the civ circle is drawn at and what the sim's collision spacing uses — every
+  // clusterR is what the civ circle is drawn at and what the sim's collision spacing uses; every
   // city disc has to be inside it or discs spill outside their own civ.
   for (const pops of [[400], [400, 1, 1, 1, 1], [120, 100, 80, 5, 5], Array(9).fill(40)]) {
     const c = layout(pops);
@@ -79,7 +79,7 @@ function testEveryDiscFitsInsideTheCircle() {
 }
 
 function testSizeIsIndependentOfCityOrder() {
-  // THE regression: `center.cities` comes in engine/founding order, which must not change the size.
+  // The regression: `center.cities` comes in engine/founding order, which must not change the size.
   const base = [400, 1, 37, 2, 90];
   const perms = [[400, 1, 37, 2, 90], [1, 400, 37, 90, 2], [90, 2, 37, 1, 400], [2, 37, 90, 400, 1]];
   const radii = perms.map((p) => layout(p).clusterR);
@@ -93,8 +93,8 @@ function testSizeIsIndependentOfCityOrder() {
 
 function testArrangementIsCentredOnTheCircle() {
   // Packing anchors the biggest disc at the origin then fans the rest to one side; the layout then
-  // re-centers on the enclosing circle so the civ circle hugs the discs EVENLY (no empty half). The
-  // check: the farthest-reaching disc on each axis is balanced — the arrangement isn't shoved to one
+  // re-centers on the enclosing circle so the civ circle hugs the discs evenly (no empty half). The
+  // check: the farthest-reaching disc on each axis is balanced, so the arrangement isn't shoved to one
   // side of its own circle the way the origin-anchored packing was.
   for (const pops of [[200, 200], [1, 1, 400, 1, 1], [120, 100, 80, 5, 5], [300, 4, 3, 2, 1]]) {
     const c = layout(pops);
@@ -139,7 +139,7 @@ function testAHamletNoLongerInflatesADominantCiv() {
 }
 
 function testCircleStillGrowsForACivThatEarnsIt() {
-  // The counterpart: packing must NOT flatten a civ with several genuinely large cities. Its discs
+  // The counterpart: packing must not flatten a civ with several genuinely large cities. Its discs
   // really do need the room, so it should stay close to its old size.
   const dominant = layout([300, 4, 3, 2, 1]).clusterR;
   const spread = layout([120, 100, 80, 5, 5]).clusterR;
@@ -168,7 +168,7 @@ function testTinyCivsAreSane() {
 }
 
 function testDotlessCivIsNeverLaidOut() {
-  // Pre-existing, and deliberate: placeDots only walks civs that HAVE dots, so a civ with no
+  // Pre-existing, and deliberate: placeDots only walks civs that have dots, so a civ with no
   // population never reaches layoutCiv and keeps no clusterR. Consumers default it (`clusterR || 8`
   // in the sim's collision, the flow arrows, and hit-testing). Pinned so the packing above is never
   // "fixed" into fabricating a radius for a civ with nothing to draw.

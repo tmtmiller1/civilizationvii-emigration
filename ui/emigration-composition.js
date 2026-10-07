@@ -1,13 +1,13 @@
 // emigration-composition.js
 //
-// Per-settlement ETHNIC COMPOSITION ledger: for each settlement, the standing mix of population by
-// the CIVILIZATION its people originate from. Unlike the cumulative flow matrix (who-moved-where),
-// this is the current makeup of each city, netted over time, and it follows the SETTLEMENT, not
+// Per-settlement ethnic composition ledger: for each settlement, the standing mix of population by
+// the civilization its people originate from. Unlike the cumulative flow matrix (who-moved-where),
+// this is the current makeup of each city, netted over time, and it follows the settlement, not
 // the owner, so a conquered city keeps the origins of the people already living there. It feeds the
 // ethnicity lens (tile coloring) and the per-city readout breakdown.
 //
-// Identity = the city-CENTER plot (x,y), which is stable across conquest; records that carry only a city
-// NAME are bridged by a name→location map built from the current city signals each pass. Each pass seeds
+// Identity = the city-center plot (x,y), which is stable across conquest; records that carry only a city
+// name are bridged by a name→location map built from the current city signals each pass. Each pass seeds
 // new cities, moves the record's originMix out of the source and into the destination, removes attrition
 // and losses proportionally, credits growth to the current owner, and reconciles the total to the real
 // city population. State persists in GameConfiguration under its own key.
@@ -29,7 +29,7 @@ const STAMP_KEY = "EmigrationEthnosStamp_v1";
 /**
  * @typedef {Object} CityComposition
  * @property {number} owner Current owner player id.
- * @property {Record<string, number>} byCiv Population points keyed by ORIGIN civ id.
+ * @property {Record<string, number>} byCiv Population points keyed by origin civ id.
  * @property {number} total Last-reconciled total population (points).
  * @property {string} name Last-seen display name (for the readout).
  * @property {number} seenTurn Last turn this settlement was observed.
@@ -46,14 +46,14 @@ const STAMP_KEY = "EmigrationEthnosStamp_v1";
 /** @type {CompositionState | null} */
 let _s = null;
 // The version (turn + pass stamp, see compositionVersion) `_s` was last (re)read at. The recorder and the
-// readers (lens, tooltip, readout) run in SEPARATE V8 contexts sharing state only through the persisted
+// readers (lens, tooltip, readout) run in separate V8 contexts sharing state only through the persisted
 // blob, so re-reading whenever the turn advances or the stamp moves keeps every reader on the latest save.
 let _loadedVersion = "";
 registerCacheReset(() => { _s = null; _loadedVersion = ""; });
 
 /**
  * The current age-local game turn, or 0.
- * @returns {number} Game.turn or 0.
+ * @returns {number}
  */
 function gameTurn() {
   try {
@@ -65,7 +65,7 @@ function gameTurn() {
 
 /**
  * The recorder's pass stamp, or "" when none has been written (a save from before the stamp, or no engine).
- * @returns {string} The stamp.
+ * @returns {string}
  */
 function readStamp() {
   try {
@@ -81,7 +81,7 @@ function readStamp() {
  * The ledger's version for cache keys: the turn plus the recorder's pass stamp. It changes when the turn
  * advances and whenever the recorder saves, so the lens, its hover panel and the readout can key their caches
  * on it and never keep a mix older than the latest pass. Cheap: one configuration read, no JSON parse.
- * @returns {string} The version.
+ * @returns {string}
  */
 export function compositionVersion() {
   return gameTurn() + "|" + readStamp();
@@ -89,7 +89,7 @@ export function compositionVersion() {
 
 /**
  * The raw persisted state string, or null.
- * @returns {string|null} Stored JSON, or null.
+ * @returns {string|null}
  */
 function readStored() {
   const g = Configuration?.getGame?.();
@@ -102,7 +102,7 @@ const MAX_CITIES = 8192; // bound the persisted map even if a prior save's pruni
 /**
  * `v` when it is a finite number, else the fallback. Mirrors the per-field coercion the sibling state
  * files use so a corrupt/old-schema value can never reach the read paths as a string/NaN/undefined.
- * @param {*} v A raw value. @param {number} d The fallback. @returns {number} A finite number.
+ * @param {*} v @param {number} d The fallback. @returns {number}
  */
 function numOr(v, d) {
   return typeof v === "number" && isFinite(v) ? v : d;
@@ -110,7 +110,7 @@ function numOr(v, d) {
 
 /**
  * Clean a raw byCiv map to finite, positive buckets, summing them.
- * @param {*} raw A raw byCiv object. @returns {{byCiv:Record<string,number>, sum:number}} Clean map + sum.
+ * @param {*} raw A raw byCiv object. @returns {{byCiv:Record<string,number>, sum:number}}
  */
 function cleanByCiv(raw) {
   /** @type {Record<string, number>} */
@@ -130,7 +130,7 @@ function cleanByCiv(raw) {
  * Coerce one persisted composition entry into the canonical shape, or null to drop it. Guards every
  * read path (compositionForCity/Owner, sumByCiv, pruneStale) against a corrupt or old-schema blob:
  * `byCiv` must be a plain object of finite positive buckets, and total/owner/seenTurn finite numbers.
- * @param {*} e A raw entry. @returns {CityComposition|null} The clean entry, or null.
+ * @param {*} e A raw entry. @returns {CityComposition|null}
  */
 function normalizeEntry(e) {
   if (!e || typeof e !== "object" || !e.byCiv || typeof e.byCiv !== "object") return null;
@@ -148,7 +148,7 @@ function normalizeEntry(e) {
 
 /**
  * Normalize the persisted cities map: keep only well-formed entries, bounded to MAX_CITIES.
- * @param {*} rawCities The raw cities object. @returns {Record<string, CityComposition>} The clean map.
+ * @param {*} rawCities @returns {Record<string, CityComposition>}
  */
 function normalizeCities(rawCities) {
   /** @type {Record<string, CityComposition>} */
@@ -168,7 +168,7 @@ function normalizeCities(rawCities) {
 /**
  * Load (once) the persisted composition. Every entry is normalized on load so no malformed/old-schema
  * entry can reach the (uncaught) lens/tooltip/readout render paths.
- * @returns {CompositionState} State.
+ * @returns {CompositionState}
  */
 function load() {
   resetCachesOnNewGame();
@@ -195,7 +195,7 @@ function load() {
 
 /**
  * Carry a persisted pass stamp onto freshly loaded state, when it is a finite number.
- * @param {CompositionState} st State. @param {*} raw The stored stamp. @returns {CompositionState} The state.
+ * @param {CompositionState} st @param {*} raw The stored stamp. @returns {CompositionState}
  */
 function withPassTurn(st, raw) {
   if (typeof raw === "number" && isFinite(raw)) st.passTurn = raw;
@@ -216,8 +216,8 @@ function save() {
 
 /**
  * The city-center plot key "x,y", or null when the location is unreadable.
- * @param {*} city City object.
- * @returns {string|null} The stable settlement key.
+ * @param {*} city
+ * @returns {string|null}
  */
 function locKey(city) {
   const loc = city && city.location;
@@ -227,8 +227,8 @@ function locKey(city) {
 
 /**
  * Sum a composition entry's per-civ buckets.
- * @param {CityComposition} e Entry.
- * @returns {number} Total points across origins.
+ * @param {CityComposition} e
+ * @returns {number}
  */
 function sumByCiv(e) {
   let total = 0;
@@ -238,7 +238,7 @@ function sumByCiv(e) {
 
 /**
  * Add `pts` of origin-`civ` population to a composition entry.
- * @param {CityComposition} e Entry.
+ * @param {CityComposition} e
  * @param {number} civ Origin civ id.
  * @param {number} pts Points to add (no-op when <= 0).
  */
@@ -255,7 +255,7 @@ const DUST = 0.05;
  * Remove `pts` population proportionally across an entry's origins (a departing/dying crowd
  * reflects who lived there). Keeps full precision (dust pruning + exact renormalization happen once
  * per pass in reconcileCity); only truly-zero buckets are dropped.
- * @param {CityComposition} e Entry.
+ * @param {CityComposition} e
  * @param {number} pts Points to remove (no-op when <= 0).
  */
 function removeProportional(e, pts) {
@@ -270,11 +270,11 @@ function removeProportional(e, pts) {
 }
 
 /**
- * Prune dust origins, then rescale the survivors so the buckets sum EXACTLY to `total`, the city's
+ * Prune dust origins, then rescale the survivors so the buckets sum exactly to `total`, the city's
  * real population. This is the consistency guarantee: a settlement's composition total (and so its
  * shares) always matches the population the rest of the mod reports. Falls back to 100% owner if
  * everything pruned, and clears the mix when the population is gone.
- * @param {CityComposition} e Entry.
+ * @param {CityComposition} e
  * @param {number} total The city's real population (points).
  * @param {number} owner Current owner (the fallback origin).
  */
@@ -297,9 +297,9 @@ function normalizeToTotal(e, total, owner) {
 
 /**
  * Seed first-sighting cities (100% owner) and flip the owner on a conquered settlement, so a later
- * arrival/growth attributes correctly. Also collects each ownership FLIP as a conquest event (prev →
+ * arrival/growth attributes correctly. Also collects each ownership flip as a conquest event (prev →
  * new owner + the captured population), so the caller can credit the conqueror's net migration.
- * @param {CompositionState} s State.
+ * @param {CompositionState} s
  * @param {*[]} signals Current city signals.
  * @returns {{work:{key:string, owner:number, total:number, name:string}[],
  *   conquests:{prevOwner:number, newOwner:number, name:string, points:number}[]}} Work list + flips.
@@ -327,7 +327,7 @@ function seedCities(s, signals) {
 }
 
 /**
- * Whose people a settlement is on first sighting: its original owner's when that is a different MAJOR civ
+ * Whose people a settlement is on first sighting: its original owner's when that is a different major civ
  * (the ledger first meets it already conquered), else its current owner's. A captured city-state stays the
  * conqueror's (the lens gives every minor player one color), and an unresolvable original owner is never used.
  * @param {*} sig A city signal ({city, owner}). @returns {number} The origin to seed.
@@ -349,7 +349,7 @@ function seedOrigin(sig) {
  * (both owners valid + some population remained), else null. Keeps the origin buckets unchanged.
  * @param {*} e The stored composition entry (its `owner` is updated in place).
  * @param {number} newOwner The current owner from the signal.
- * @param {string} name The city name.
+ * @param {string} name
  * @param {number} total The city's current population (points).
  * @returns {{prevOwner:number, newOwner:number, name:string, points:number}|null} The capture, or null.
  */
@@ -362,9 +362,9 @@ function captureOf(e, newOwner, name, total) {
 }
 
 /**
- * Apply a migration's SOURCE side: the source city loses `pts` people proportionally across its
+ * Apply a migration's source side: the source city loses `pts` people proportionally across its
  * mix (a departure or attrition death).
- * @param {CompositionState} s State.
+ * @param {CompositionState} s
  * @param {*} m Migration record.
  * @param {Map<string,string>} nameToLoc city name → loc key.
  * @param {number} pts Points moved.
@@ -373,7 +373,7 @@ function applyMigrationSource(s, m, nameToLoc, pts) {
   if (typeof m.srcOwner !== "number") return;
   const srcE = entryFor(s, m.srcLoc, m.srcName, nameToLoc);
   if (!srcE) return;
-  // A return move takes a SPECIFIC origin's people (the returnees), so remove them from that origin's
+  // A return move takes a specific origin's people (the returnees), so remove them from that origin's
   // bucket; a move carrying the mix it left with removes exactly that mix, so the destination can add the
   // same people back; anything else (a death, an older record) removes proportionally across the mix.
   const mix = typeof m.originCiv === "number" ? null : normalizeOriginMix(m.originMix);
@@ -386,9 +386,9 @@ function applyMigrationSource(s, m, nameToLoc, pts) {
  * The ledger entry a record names: by the settlement's center plot when the record carries it and the ledger
  * holds it, else by display name (records made before the location keys, or an unreadable plot). Two cities
  * with one name share a single name-map slot, so the location is the only reliable match.
- * @param {CompositionState} s State. @param {*} loc The record's "x,y", if any.
+ * @param {CompositionState} s @param {*} loc The record's "x,y", if any.
  * @param {*} name The record's city name. @param {Map<string,string>} nameToLoc city name → loc key.
- * @returns {CityComposition|null} The entry, or null.
+ * @returns {CityComposition|null}
  */
 function entryFor(s, loc, name, nameToLoc) {
   if (typeof loc === "string" && s.cities[loc]) return s.cities[loc];
@@ -399,7 +399,7 @@ function entryFor(s, loc, name, nameToLoc) {
 /**
  * Remove `pts` people specifically from one origin bucket (a return takes that origin's own people),
  * falling back to a proportional removal for any remainder the bucket couldn't cover.
- * @param {CityComposition} e Entry. @param {number} civ The origin to remove. @param {number} pts People.
+ * @param {CityComposition} e @param {number} civ The origin to remove. @param {number} pts People.
  */
 function removeFromOrigin(e, civ, pts) {
   if (!(pts > 0)) return;
@@ -414,9 +414,9 @@ function removeFromOrigin(e, civ, pts) {
 }
 
 /**
- * Apply a migration's DESTINATION side: the destination city gains `pts` people under the migrant's
- * ORIGIN civ (the source owner, or, for a destination-only lag record, the source city's owner).
- * @param {CompositionState} s State.
+ * Apply a migration's destination side: the destination city gains `pts` people under the migrant's
+ * origin civ (the source owner, or, for a destination-only lag record, the source city's owner).
+ * @param {CompositionState} s
  * @param {*} m Migration record.
  * @param {Map<string,string>} nameToLoc city name → loc key.
  * @param {Map<string,number>} nameToOwner city name → owner id.
@@ -426,7 +426,7 @@ function applyMigrationDest(s, m, nameToLoc, nameToOwner, pts) {
   if (typeof m.destOwner !== "number" || m.cause === "attrition") return;
   const destE = entryFor(s, m.destLoc, m.destName, nameToLoc);
   if (!destE) return;
-  // Returnees carry their TRUE origin (m.originCiv) home; a migrant carrying the mix they left with arrives
+  // Returnees carry their true origin (m.originCiv) home; a migrant carrying the mix they left with arrives
   // as that mix; anything else is attributed to the source owner (the migrant's origin civ).
   const mix = typeof m.originCiv === "number" ? null : normalizeOriginMix(m.originMix);
   if (mix) {
@@ -442,7 +442,7 @@ function applyMigrationDest(s, m, nameToLoc, nameToOwner, pts) {
  * Apply one migration record to the composition. Split-owner lag records are handled, a record
  * contributes its source side when it carries `srcOwner` and its destination side when it carries
  * `destOwner`.
- * @param {CompositionState} s State.
+ * @param {CompositionState} s
  * @param {*} m Migration record.
  * @param {Map<string,string>} nameToLoc city name → loc key.
  * @param {Map<string,number>} nameToOwner city name → owner id.
@@ -457,7 +457,7 @@ function applyMigration(s, m, nameToLoc, nameToOwner) {
 /**
  * Reconcile one settlement's buckets to its real population: positive residual (births) counts as
  * the owner's ethnicity; negative residual (loss) is removed proportionally. Then round + restamp.
- * @param {CompositionState} s State.
+ * @param {CompositionState} s
  * @param {{key:string, owner:number, total:number, name:string}} w Work item.
  * @param {number} turn Current turn.
  */
@@ -467,7 +467,7 @@ function reconcileCity(s, w, turn) {
   const residual = w.total - sumByCiv(e);
   if (residual > 0) addCiv(e, w.owner, residual); // natural growth → current owner
   else if (residual < 0) removeProportional(e, -residual);
-  normalizeToTotal(e, w.total, w.owner); // buckets now sum EXACTLY to the real population
+  normalizeToTotal(e, w.total, w.owner); // buckets now sum exactly to the real population
   e.total = w.total;
   e.name = w.name;
   e.seenTurn = turn;
@@ -484,7 +484,7 @@ function enclaveStickiness() {
  * enclave-stickiness multiplier once that origin has reached the enclave foothold share.
  * @param {number} p The origin's standing points. @param {number} total The city's total points.
  * @param {number} r The base rate from `rateFor`. @param {number} sticky The stickiness multiplier.
- * @returns {number} The effective rate.
+ * @returns {number}
  */
 function stickyRate(p, total, r, sticky) {
   if (sticky < 1 && total > 0 && p / total >= QUARTER_FOOTHOLD_SHARE) return r * sticky;
@@ -493,12 +493,12 @@ function stickyRate(p, total, r, sticky) {
 
 /**
  * Drift a settlement's non-owner origins toward the owner's bucket (ethnic integration): each origin
- * moves by the fraction `rateFor` returns for it. People shift BETWEEN buckets, so the total (and the
+ * moves by the fraction `rateFor` returns for it. People shift between buckets, so the total (and the
  * reconciled population) is unchanged; a bucket emptied below DUST is dropped. Newcomers thus take on
  * the host identity over time, except where `rateFor` returns ~0 (war with the homeland / unrest).
  * An origin past the enclave foothold share integrates more slowly (rate scaled by
  * CONFIG.quarterEnclaveStickiness) so a diaspora can reach "established" before drifting back below the bar.
- * @param {CityComposition} e The entry. @param {number} owner Current owner id.
+ * @param {CityComposition} e @param {number} owner Current owner id.
  * @param {(originCiv:number)=>number} rateFor Per-origin integration fraction in [0,1].
  */
 function integrateCity(e, owner, rateFor) {
@@ -524,8 +524,8 @@ function integrateCity(e, owner, rateFor) {
  * Apply ethnic integration across every settlement this pass: each non-owner origin drifts toward the
  * owner at integrationRate, held fully apart while the owner is at war with that origin's civ
  * (integrationWarRate) and slowed while the settlement is in unrest (integrationUnrestRate). No-op
- * when disabled. Drift is intentionally gentle, so a diaspora persists long enough to read as one.
- * @param {CompositionState} s State. @param {{key:string, owner:number}[]} work The reconciled cities.
+ * when disabled. Drift is gentle, so a diaspora persists long enough to read as one.
+ * @param {CompositionState} s @param {{key:string, owner:number}[]} work The reconciled cities.
  * @param {*[]} signals This pass's city signals (for the per-settlement unrest read).
  */
 function integratePass(s, work, signals) {
@@ -553,7 +553,7 @@ const STALE_TURNS = 50;
  * Drop composition entries for settlements not seen in a long time (razed / gone), keeping the map
  * bounded. Conservative: only entries untouched for STALE_TURNS turns are removed, so a settlement
  * transiently out of the tracked set has ample time to reappear before it's forgotten.
- * @param {CompositionState} s State. @param {number} turn The current turn.
+ * @param {CompositionState} s @param {number} turn
  */
 function pruneStale(s, turn) {
   for (const k of Object.keys(s.cities)) {
@@ -563,7 +563,7 @@ function pruneStale(s, turn) {
 }
 
 /**
- * Whether a settlement that dropped out of this pass's city list is GONE (razed): no city stands centered on its
+ * Whether a settlement that dropped out of this pass's city list is gone (razed): no city stands centered on its
  * plot (MapCities.getCity + Cities.get). False when the lookup is unavailable or throws, leaving the
  * entry to pruneStale.
  * @param {string} key The settlement's center "x,y". @returns {boolean} True when no city stands there.
@@ -592,7 +592,7 @@ function cityLookupAvailable() {
  * Settle every ledger entry this pass did not see. A razed settlement is deleted now. One still standing but not
  * scanned (a city-state or independent holds it) keeps its origins, so a recapture by a major civ resumes the old
  * mix rather than seeding a fresh 100% conqueror; the live readers skip it until then (see passTurn).
- * @param {CompositionState} s State. @param {{key:string}[]} work This pass's settlements.
+ * @param {CompositionState} s @param {{key:string}[]} work This pass's settlements.
  */
 function dropRazed(s, work) {
   const seen = new Set(work.map((w) => w.key));
@@ -640,13 +640,12 @@ export function recordCompositionPass(signals, migs) {
  * The ethnic composition of a settlement, for the lens + readout: its origins sorted by share
  * (largest first), the dominant origin, the current owner, and the total. Null when the settlement
  * is untracked or its location is unreadable.
- * @param {*} city City object.
+ * @param {*} city
  * @returns {{total:number, owner:number,
  *   civs:{civ:number, pts:number, share:number}[], dominant:{civ:number, share:number}|null}|null}
- *   The composition, or null.
  */
 export function compositionForCity(city) {
-  // Returns null on ANY failure, never throws: locKey reads `city.location` off a LIVE engine object, and a
+  // Returns null on any failure, never throws: locKey reads `city.location` off a live engine object, and a
   // throwing accessor must not null a whole lens / tooltip / readout render.
   try {
     const key = locKey(city);
@@ -663,8 +662,8 @@ export function compositionForCity(city) {
  * Who leaves a settlement right now, as origin civ → fraction of its people (sums to 1): the mix stamped on a
  * move or departure record so the migrant keeps that identity at the destination. Undefined when the
  * settlement is untracked or unreadable; the record then falls back to the source owner.
- * @param {*} city City object.
- * @returns {Record<string, number>|undefined} The mix, or undefined.
+ * @param {*} city
+ * @returns {Record<string, number>|undefined}
  */
 export function originMixForCity(city) {
   const comp = compositionForCity(city);
@@ -680,10 +679,9 @@ export function originMixForCity(city) {
  * mix. Its total is the sum of that player's city populations, so it stays consistent with the
  * per-city figures (and with the population the rest of the mod reports). Null when the player has
  * no tracked settlements.
- * @param {number} owner Owner player id.
+ * @param {number} owner
  * @returns {{total:number, owner:number,
  *   civs:{civ:number, pts:number, share:number}[], dominant:{civ:number, share:number}|null}|null}
- *   The aggregate composition, or null.
  */
 export function compositionForOwner(owner) {
   const s = load();
@@ -731,7 +729,7 @@ export function allCityCompositions() {
  * Whether an entry was in the latest pass's city list. Compared against the ledger's own pass stamp, not
  * Game.turn, so a reader in another context between passes, or across the age-local turn reset, still agrees
  * with the recorder. Entries from a save without the stamp all count as live.
- * @param {CompositionState} s State. @param {CityComposition} e Entry. @returns {boolean} True when live.
+ * @param {CompositionState} s @param {CityComposition} e @returns {boolean}
  */
 function liveOnPass(s, e) {
   return typeof s.passTurn !== "number" || e.seenTurn === s.passTurn;
@@ -760,7 +758,7 @@ export function cityCompositionByKey(key) {
  * and the owner. Shares are exact fractions of `total`, so they match the reported population.
  * @param {Record<string, number>} byCiv Points by origin civ.
  * @param {number} total The real population (buckets sum to this).
- * @param {number} owner Current owner.
+ * @param {number} owner
  * @returns {{total:number, owner:number,
  *   civs:{civ:number, pts:number, share:number}[], dominant:{civ:number, share:number}|null}|null}
  *   The summary, or null when empty.
@@ -791,7 +789,7 @@ export const __test = {
   },
   state: () => load(),
   /**
-   * TEST-ONLY: seed a city's composition ledger with an ESTABLISHED foreign diaspora of `foreignPid` and
+   * Test only: seed a city's composition ledger with an established foreign diaspora of `foreignPid` and
    * persist it, so a reader in another UI isolate sees it. Ephemeral: the next real recordCompositionPass
    * overwrites it. Foreign share 30/40 = 0.75, stock 30, past the default 0.35/5 thresholds.
    * @param {*} city A live city. @param {number} foreignPid An origin (foreign) player id ≠ city.owner.

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 
-// ── Stub the gameplay surface the violence module polls ───────────────────
+// Stub the gameplay surface the violence module polls
 let TURN = 1;
 globalThis.Game = {
   get turn() {
@@ -59,7 +59,7 @@ function step(city, n) {
 }
 
 function testPristineCityHasNoViolence() {
-  // A city not under attack - even in a civ at war - registers nothing.
+  // A city not under attack, even in a civ at war, registers nothing.
   assert.equal(step(cityA, 1), 0);
 }
 
@@ -99,7 +99,7 @@ function testPillagedTilesAddPressureFogIndependently() {
   assert.ok(close(step(cityP, 5), 0.6));
 }
 
-// ── Algorithm D: siege escalation (time-gated) + cumulative war-loss cap ──
+// Algorithm D: siege escalation (time-gated) + cumulative war-loss cap
 
 function testSiegeOffIsNeutral() {
   // With warSiege off, escalation is a no-op multiplier (1) - legacy behavior.
@@ -143,9 +143,9 @@ testSiegeEscalatesWithDurationThenCaps();
 
 console.log("violence harness passed");
 
-// ── Minor-power raids are harassment, not an invasion ────────────────────────────────────────────────
+// Minor-power raids are harassment, not an invasion
 // A city-state or Independent Power besieging an Antiquity city was pushing the same refugee wave a major
-// civilization's army does. The bar is now higher for BEING BESIEGED by minors, while real damage still
+// civilization's army does. The bar is now higher for being besieged by minors, while real damage still
 // counts in full, and the downgrade requires positive evidence that every attacker is minor.
 {
   const { CONFIG } = await import("/emigration/ui/emigration-config.js");
@@ -158,7 +158,7 @@ console.log("violence harness passed");
 }
 
 // Who is attacking, read off the map rather than off the diplomacy layer. A besieged flag says a city is
-// under attack but never by whom, so the only place the engine NAMES an attacker is the district it holds.
+// under attack but never by whom, so the only place the engine names an attacker is the district it holds.
 // This matters because a raiding Independent Power may never register as a formal war opponent.
 {
   const { besiegingPlayers } = await import("/emigration/ui/emigration-violence-signals.js");
@@ -193,9 +193,9 @@ console.log("violence harness passed");
   delete globalThis.Districts;
 }
 
-// Who is attacking, read off the MAP: armed hostile units standing on or beside the city. This is the only
-// source specific to one settlement -- the at-war list reports every Independent Power permanently (watched,
-// mod test 109), so it cannot tell a raid on this city from hostility somewhere else on the map.
+// Who is attacking, read off the map: armed hostile units standing on or beside the city. This is the only
+// source specific to one settlement; the at-war list reports every Independent Power permanently (mod test
+// 109), so it cannot tell a raid on this city from hostility somewhere else on the map.
 {
   const { attackersNear } = await import("/emigration/ui/emigration-violence-signals.js");
   const CID = { owner: 0, id: 1 };
@@ -246,7 +246,7 @@ console.log("violence harness passed");
   delete globalThis.Districts; delete globalThis.MapUnits; delete globalThis.Units; delete globalThis.DirectionTypes;
 }
 
-// Events and polling describe the SAME wounds, so the two readings are combined by taking the stronger,
+// Events and polling describe the same wounds, so the two readings are combined by taking the stronger,
 // never by adding them. Summing would let one bombardment count twice and double the refugees it causes.
 {
   const { startCombatEvents, _resetCombatEvents } =
@@ -259,7 +259,7 @@ console.log("violence harness passed");
     HANDLERS.DistrictDamageChanged.forEach((/** @type {*} */ f) =>
       f({ cityID: cid, maxDamage: 100, prevDamage: from, newDamage: to }));
 
-  // Same 40% of the district wrecked, reported by BOTH sources on the same turn.
+  // Same 40% of the district wrecked, reported by both sources on the same turn.
   _resetCombatEvents();
   setHealth(0, cityE.location, 60, 100);
   TURN = 40;
@@ -281,7 +281,7 @@ console.log("violence harness passed");
 }
 
 // The balance audit: a counterfactual intensity per city under the pre-change rules. It must differ from the
-// real value ONLY for raids where every attacker is a minor power, by exactly the configured scale, and must
+// real value only for raids where every attacker is a minor power, by exactly the configured scale, and must
 // track refugees who really left. This is what the in-game verdict probe reads.
 {
   const { exposeViolenceAudit } = await import("/emigration/ui/emigration-violence.js");
@@ -290,7 +290,7 @@ console.log("violence harness passed");
   const audit = () => /** @type {*} */ (globalThis).EmigrationViolence.snapshot();
   const row = (/** @type {string} */ key) => audit().find((/** @type {*} */ r) => r.key === key);
 
-  // Players 0-9 are majors, 10+ are minors, matching the ids watched in game.
+  // Players 0-9 are majors, 10+ are minors, matching the ids seen in game.
   globalThis.Players.get = (/** @type {number} */ pid) =>
     ({ isMajor: pid < 10, Diplomacy: { isAtWarWith: () => false } });
   /** @type {*} */
@@ -347,7 +347,7 @@ console.log("violence harness passed");
   assert.ok(close(later.intensity / later.counterfactual, ratio), "and the counterfactual decays in step");
 
   // The major-war slider scales raids with a major attacker and leaves minor-only raids alone. The audit's
-  // counterfactual scores a raid as a major war under the CURRENT settings, so major raids still read identical.
+  // counterfactual scores a raid as a major war under the current settings, so major raids still read identical.
   _resetCombatEvents();
   const wasMajor = CONFIG.majorViolenceScale;
   CONFIG.majorViolenceScale = 2;

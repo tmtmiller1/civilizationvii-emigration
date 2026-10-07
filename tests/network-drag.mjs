@@ -1,12 +1,12 @@
 // network-drag.mjs
 //
-// Dragging on the network diagram, driven through the REAL pointer handlers (wireEvents) and the REAL
+// Dragging on the network diagram, driven through the real pointer handlers (wireEvents) and the real
 // painter, so what's asserted is what the canvas would show.
 //
 // The bugs/gaps these guard (2026-09-17):
 //
-//  1. Dragging a civ circle moved the circle and its dots but NOT the migrant-flow arrows. The arrow
-//     overlay is memoized, and its cache key covered the frame + filters only — no geometry — so every
+//  1. Dragging a civ circle moved the circle and its dots but not the migrant-flow arrows. The arrow
+//     overlay is memoized, and its cache key covered the frame + filters only (no geometry), so every
 //     arrow stayed pinned at the coordinates it was first built at. The force sim's initial settle had
 //     the same problem.
 //  2. City sub-circles couldn't be grabbed at all, so there was no way to pull a settlement clear of
@@ -104,7 +104,7 @@ function drag(canvas, from, to) {
 
 /**
  * A point on a civ's grab ring: inside its hit radius (clusterR + 14) but clear of every city disc.
- * Cities take priority on press, so this ring — plus the gaps between city discs — is how the whole
+ * Cities take priority on press, so this ring, plus the gaps between city discs, is how the whole
  * group is dragged. Asserting it exists keeps a future layout change from sealing the civ off.
  */
 function civGrabPoint(civ) {
@@ -158,7 +158,7 @@ function testCityDragMovesItsDotsAndGrowsTheCivCircle() {
   assert.ok(civ.clusterR > r0 + 100, `the civ circle should expand around it (${r0} -> ${civ.clusterR})`);
   assert.equal(civ.x, 300, "dragging a city must not move its civ center");
 
-  // Its dots came along: the painter must draw dot-sized arcs near the city's NEW sub-center.
+  // Its dots came along: the painter must draw dot-sized arcs near the city's new sub-center.
   const cx = civ.x + city.sx;
   const cy = civ.y + city.sy;
   const near = snapshot(scene).arcs
@@ -199,7 +199,7 @@ function arrowLabels(scene) {
       pts.push({ label: c.name + "/" + ct.name, x: c.x + ct.sx, y: c.y + ct.sy, r: (ct.subR || 4) + 3 });
     }
   }
-  // Nearest RELATIVE to each disc's trim radius: a tight arrow's end can sit inside the neighboring
+  // Nearest relative to each disc's trim radius: a tight arrow's end can sit inside the neighboring
   // disc too, but always at a smaller fraction of its own city's radius.
   const rel = (/** @type {*} */ p, /** @type {number} */ x, /** @type {number} */ y) => Math.hypot(p.x - x, p.y - y) / p.r;
   const near = (/** @type {number} */ x, /** @type {number} */ y) =>

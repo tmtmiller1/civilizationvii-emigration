@@ -4,7 +4,7 @@ import path from "node:path";
 
 // Locale font lists. TitleFont and BodyFont have no Hangul, kana or Han glyphs, and canvases and world
 // labels draw with the first face only, so for Chinese, Japanese and Korean the locale's CJK face must
-// lead (watched 2026-10-01: Korean Emigration tab titles, city names and chips were missing-glyph
+// lead (on 2026-10-01 Korean Emigration tab titles, city names and chips were missing-glyph
 // boxes). The order mirrors the game's global-scaling.js getOrderedFontFamily.
 
 const saved = globalThis.Locale;

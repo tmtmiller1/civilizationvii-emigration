@@ -11,7 +11,7 @@ const {
 } = await import("/emigration/ui/emigration-flow-history.js");
 
 /**
- * Reconstruct each frame's CUMULATIVE matrix from delta-encoded frames the same
+ * Reconstruct each frame's cumulative matrix from delta-encoded frames the same
  * way migrationFlowHistory() does (running sum of deltas).
  * @param {{delta:object}[]} frames Delta frames.
  * @returns {object[]} Per-frame cumulative matrices.
@@ -27,7 +27,7 @@ function reconstructCumulatives(frames) {
   });
 }
 
-// Build N>96 cumulative frames the OLD way: a growing cumulative matrix cloned
+// Build N>96 cumulative frames the old way: a growing cumulative matrix cloned
 // into every frame (the exact shape legacy saves persisted).
 function buildLegacyCumulativeFrames(n) {
   const cum = {};

@@ -271,7 +271,7 @@ export function recordWarDeclared(data) {
 }
 
 /**
- * Whether a logged event is the still-open war between these two belligerents (either direction —
+ * Whether a logged event is the still-open war between these two belligerents (either direction;
  * peace is mutual, and the payload's acting/reacting roles can be the reverse of the declaration).
  * @param {WarEvent} e Logged event. @param {{aggressor:number, victim:number}} w The pairing.
  * @returns {boolean} True when `e` is that ongoing war.
@@ -380,10 +380,10 @@ function alivePlayerIds() {
 }
 
 /**
- * Every player `victim` is CURRENTLY at war with, asked directly of the engine
+ * Every player `victim` is currently at war with, asked directly of the engine
  * (`Players.get(victim).Diplomacy.isAtWarWith`): the fog-independent backstop for the event-tracked
  * aggressor map when a war was already in progress or its declaration was unparsed. Empty when the
- * Diplomacy API is unreadable. Includes BOTH aggressors and victims-of-`victim` (the war is mutual).
+ * Diplomacy API is unreadable. Includes both aggressors and victims-of-`victim` (the war is mutual).
  * @param {number} victim The besieged player id.
  * @returns {Set<number>} Opponent ids at war with `victim`.
  */
@@ -400,7 +400,7 @@ function engineWarOpponents(victim) {
 }
 
 /**
- * A player's Diplomacy object IF it exposes `isAtWarWith`, else null.
+ * A player's Diplomacy object if it exposes `isAtWarWith`, else null.
  * @param {number} victim Player id.
  * @returns {*} The Diplomacy object, or null.
  */
@@ -428,7 +428,7 @@ function atWar(d, other) {
 
 /**
  * The opponents in a war the `victim` is fleeing: the event-tracked aggressors when known (they
- * distinguish who DECLARED), else the engine's live at-war set, so an untracked war still names the
+ * distinguish who declared), else the engine's live at-war set, so an untracked war still names the
  * other side instead of "the enemy".
  * @param {number} victim The besieged player id.
  * @returns {Set<number>} Opponent ids (tracked aggressors, or the live war set).

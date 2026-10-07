@@ -1,7 +1,7 @@
 // eep-modtest159.js - shot 06 retaken with the newcomer pop-up's figures on its buttons, and the automatic button's
-// tile prediction WATCHED: does "Let the city settle them" take the tile it names, and does the city gain those yields?
+// tile prediction: does "Let the city settle them" take the tile it names, and does the city gain those yields?
 // Save: the Steam set's game (turn-106 promo save, run-promo144.sh). Washington, D.C. is given one real pending point
-// (city.addRuralPopulation(+1): a real pending placement, watched 2026-09-11) so the game offers EXPAND plots.
+// (city.addRuralPopulation(+1): a real pending placement, seen 2026-09-11) so the game offers EXPAND plots.
 //
 //   SHOT newcomer   the pop-up, 1 point of Bulgarian refugees
 //   then            press "Let the city settle them" (wired to the shipped autoPlace), read which plot was expanded

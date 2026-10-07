@@ -1,6 +1,6 @@
 // emigration-enclave-markers.js
 //
-// Paints an ON-MAP marker for every built enclave (IMPROVEMENT_EMIG_ENCLAVE_<CIV>): the civ's symbol
+// Paints an on-map marker for every built enclave (IMPROVEMENT_EMIG_ENCLAVE_<CIV>): the civ's symbol
 // icon plus a "<Civ> Enclave" label on a WorldUI overlay group, the mod's substitute for a 3D model
 // (Civ VII gives modders no way to bind a model to a custom constructible). Reads only; repaints on the
 // events that can change where enclaves are; any failure degrades to "no marker", never throws.
@@ -14,14 +14,14 @@ import { loc, localeFonts } from "/emigration/ui/emigration-loc.js";
 
 /** Matches our generated enclave improvement types. */
 const ENCLAVE_RE = /^IMPROVEMENT_EMIG_ENCLAVE_/;
-/** OVERLAY_PRIORITY.MAX_PRIORITY — paint above the lens layers. */
+/** OVERLAY_PRIORITY.MAX_PRIORITY: paint above the lens layers. */
 const OVERLAY_MAX_PRIORITY = 10;
 /** Label opacity (ABGR high byte) + white body. */
 const LABEL_ALPHA = 0xE0;
-/** Icon world height above the tile, and the label clearly BELOW it (lower z = lower on screen). */
+/** Icon world height above the tile, and the label clearly below it (lower z = lower on screen). */
 const ICON_Z = 13;
 const TEXT_Z = 1;
-/** World-space offsets so the marker leaves the plot CENTER to the game's yield icons (the yields layer
+/** World-space offsets so the marker leaves the plot center to the game's yield icons (the yields layer
  * draws its row at y 0, z 5). */
 const ICON_Y = 11;
 const TEXT_Y = -9;
@@ -37,7 +37,7 @@ const g = /** @type {*} */ (globalThis);
 
 /**
  * One diagnostic line through the mod's debug logger (gated by the debug option).
- * @param {*} s The message.
+ * @param {*} s
  */
 function logEmit(s) {
   dlog("enclave markers: " + String(s));
@@ -66,14 +66,14 @@ function ensureOverlay() {
     return true;
   });
   if (ok !== true) {
-    logEmit("overlay unavailable — WorldUI.createOverlayGroup/SpriteGrid failed");
+    logEmit("overlay unavailable: WorldUI.createOverlayGroup/SpriteGrid failed");
     return false;
   }
   return true;
 }
 
 /**
- * Remove all painted markers. The icons and labels live on the SPRITE GRID, so the grid is what has to
+ * Remove all painted markers. The icons and labels live on the sprite grid, so the grid is what has to
  * be cleared (clearing only the overlay group leaves every repaint stacking another marker on the tile).
  */
 function clearMarkers() {
@@ -86,10 +86,10 @@ function clearMarkers() {
 }
 
 /**
- * The constructible types on a plot, or NULL when the map could not be read. The difference matters:
+ * The constructible types on a plot, or null when the map could not be read. The difference matters:
  * mid turn-transition these reads come back empty for a moment, and treating that as "the enclave is
- * gone" would wipe every marker until the next event. An empty ARRAY means the plot really is bare.
- * @param {number} x Plot x. @param {number} y Plot y. @returns {string[]|null} The types, or null.
+ * gone" would wipe every marker until the next event. An empty array means the plot really is bare.
+ * @param {number} x @param {number} y @returns {string[]|null}
  */
 function plotTypes(x, y) {
   let cons;
@@ -126,7 +126,7 @@ function enclaveTypeAt(x, y) {
 
 /**
  * Every enclave tile in the local player's cities: {idx, type}, where `type` is the enclave improvement
- * the marker stands for. Two sources, merged by plot: quarter RECORDS whose placed tile still stands
+ * the marker stands for. Two sources, merged by plot: quarter records whose placed tile still stands
  * (how a Village-skinned enclave is known), and a scan of the player's plots for native-skin enclaves.
  * @returns {{idx:number, type:string}[]}
  */
@@ -145,7 +145,7 @@ function localEnclaveTiles() {
  * The player's standing placed enclaves from their quarter records.
  * @param {number} pid Local player id. @param {Map<number,string>} byPlot Plot index → enclave type (mutated).
  * @param {Map<number,string>} stageByPlot Plot index → the stage line for the marker (mutated). Only a
- *   RECORD knows its stage, so a tile found by the map scan alone carries a name and no stage.
+ *   record knows its stage, so a tile found by the map scan alone carries a name and no stage.
  */
 function recordTiles(pid, byPlot, stageByPlot) {
   // Every host's records (AI cities host enclaves under automatic recognition), but only on plots the
@@ -162,10 +162,10 @@ function recordTiles(pid, byPlot, stageByPlot) {
 }
 
 /**
- * Whether a record's tile should still be marked. A RECORD is the authority on whether an enclave
+ * Whether a record's tile should still be marked. A record is the authority on whether an enclave
  * exists; the map is only consulted to notice a tile that was built over, and when that read fails
  * (mid turn-transition) a tile already seen standing keeps its marker rather than blinking out.
- * @param {*} rec A quarter record. @returns {boolean} True when the marker should be painted.
+ * @param {*} rec A quarter record. @returns {boolean}
  */
 function recordTileStands(rec) {
   const p = rec.placed;
@@ -179,7 +179,7 @@ function recordTileStands(rec) {
 /**
  * Whether a plot is revealed to a player (unreadable reads as revealed only for the player's own cities'
  * plots, which the map scan covers anyway).
- * @param {number} pid Player id. @param {number} plot Plot index. @returns {boolean} True when revealed.
+ * @param {number} pid @param {number} plot @returns {boolean}
  */
 function revealed(pid, plot) {
   return safe(() => {
@@ -206,7 +206,7 @@ function scannedTiles(pid, byPlot) {
 }
 
 /**
- * "<Civ> Enclave" for an enclave type, from its localized NAME (falls back to the short civ name).
+ * "<Civ> Enclave" for an enclave type, from its localized name (falls back to the short civ name).
  * @param {string} type
  */
 function enclaveLabel(type) {
@@ -224,7 +224,7 @@ function enclaveLabel(type) {
 
 /**
  * The civilization short name inside an enclave type (ROME from IMPROVEMENT_EMIG_ENCLAVE_ROME_A).
- * @param {string} type The enclave type. @returns {string} The short name.
+ * @param {string} type The enclave type. @returns {string}
  */
 function civShortOf(type) {
   return type.replace(ENCLAVE_RE, "").replace(/_(A|B)$/, "");
@@ -245,7 +245,7 @@ function enclaveIcon(type) {
 
 /**
  * Paint the civ icon, the "<Civ> Enclave" label and (when known) the stage line on one enclave tile.
- * @param {{idx:number, type:string, stage?:string}} tile The tile to mark.
+ * @param {{idx:number, type:string, stage?:string}} tile
  */
 function paintOne(tile) {
   const icon = enclaveIcon(tile.type);
@@ -260,7 +260,7 @@ function paintOne(tile) {
 }
 
 /**
- * Repaint every enclave marker. The tiles are gathered BEFORE anything is cleared, so a scan that throws
+ * Repaint every enclave marker. The tiles are gathered before anything is cleared, so a scan that throws
  * leaves the current markers alone instead of blanking the map.
  * @param {string} reason What asked for the repaint (logged).
  */
@@ -285,7 +285,7 @@ function repaint(reason) {
 /**
  * Whether the world can be read at all right now. During a turn transition the player and its cities are
  * briefly unavailable; repainting then would clear every marker and paint nothing back.
- * @returns {boolean} True when a scan is worth doing.
+ * @returns {boolean}
  */
 function worldReadable() {
   const pid = safe(() => GameContext.localPlayerID);
@@ -293,7 +293,7 @@ function worldReadable() {
   return !!safe(() => Players.get(pid));
 }
 
-/** How long a burst of map events is allowed to settle before ONE repaint answers all of it. */
+/** How long a burst of map events is allowed to settle before one repaint answers all of it. */
 const REPAINT_DEBOUNCE_MS = 200;
 /** @type {*} The pending coalesced repaint, or null. */
 let _pending = null;
@@ -320,7 +320,7 @@ function scheduleRepaint(reason) {
 function wire() {
   const eng = g.engine;
   if (!eng || typeof eng.on !== "function") {
-    logEmit("engine.on unavailable — markers will not auto-refresh");
+    logEmit("engine.on unavailable; markers will not auto-refresh");
     return;
   }
   safe(() => eng.on("ConstructibleAddedToMap", () => scheduleRepaint("ConstructibleAddedToMap")));

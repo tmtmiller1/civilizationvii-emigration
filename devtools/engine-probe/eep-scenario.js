@@ -84,9 +84,7 @@ const HANDLER_NAMES = [
   "OnStart", "Main", "main", "EepScenarioMain"
 ];
 
-// ---------------------------------------------------------------------------------------------------
 // Load-time work. Order matters: the receipt is written before anything that could throw is attempted.
-// ---------------------------------------------------------------------------------------------------
 
 emit("LOADED");
 const info = { surfaces: surfaces(), mutators: mutators(), when: Date.now() };

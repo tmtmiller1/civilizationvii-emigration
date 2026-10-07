@@ -85,7 +85,7 @@ function foldRecord(m) {
 
 /**
  * Fold one pass's migrations into the balance counters. Counts the record-derivable metrics;
- * TRANSIT deaths + arrived-into-crisis + pool flow are bumped at their source (arrivals / pool). Also
+ * transit deaths + arrived-into-crisis + pool flow are bumped at their source (arrivals / pool). Also
  * ticks the pass denominator and flags a pass that relocated nobody. Never throws.
  * @param {*[]} migs This pass's migrations.
  */
@@ -119,7 +119,7 @@ export function bumpArrivedIntoCrisis() {
 }
 
 /**
- * Tally refugee points ENTERING the holding pool (from emigration-refugee-pool.js).
+ * Tally refugee points entering the holding pool (from emigration-refugee-pool.js).
  * @param {number} n Points queued.
  */
 export function bumpRefugeesQueued(n) {
@@ -127,7 +127,7 @@ export function bumpRefugeesQueued(n) {
 }
 
 /**
- * Tally refugee points LEAVING the holding pool into working population (from emigration-refugee-staging.js).
+ * Tally refugee points leaving the holding pool into working population (from emigration-refugee-staging.js).
  * @param {number} n Points settled.
  */
 export function bumpRefugeesSettled(n) {
@@ -273,7 +273,7 @@ function reportRefugeeConcentration(owners, age) {
 
 /**
  * Debug-log this pass's net-distribution: each civ's cumulative net (points + people) plus this
- * pass's per-record phases, so we can see whether any civ is net-POSITIVE or arrivals are failing
+ * pass's per-record phases, so we can see whether any civ is net-positive or arrivals are failing
  * (departures debit a source, but a destroyed-destination arrival credits no one). Grep
  * `EMIG_netdist` in UI.log. Never throws.
  * @param {*} s MigStats state (reads cum / cumPts).

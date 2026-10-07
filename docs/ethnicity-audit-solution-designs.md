@@ -46,7 +46,7 @@ else).
 
 **Design.**
 
-1. Choose the base fill as the largest origin that is **not pinned**, not simply the largest origin. A pinned enclave
+1. Choose the base fill as the largest origin that is **not pinned**, not just the largest origin. A pinned enclave
    people is always water-filled, seated on its enclave tile first, whatever its citywide share.
 2. Make the enclave tile's extra headroom belong to the enclave's own origin only. Every tile keeps the plain cap for
    every other origin. The pinned origin fills first, and on the enclave tile only, another origin may take
@@ -158,13 +158,13 @@ independent power, because `includeCityStates` is off. Readers that do not filte
 
 **Design.** Split "the settlement no longer exists" from "the settlement is not scanned this pass".
 
-1. **Razed.** At the end of each pass, check every ledger entry that was not seen this pass with
+1. Razed. At the end of each pass, check every ledger entry that was not seen this pass with
    `Cities.getAtLocation(plotIndex)` / `MapCities.getCity(x, y)`. Both are used by the base game's own modules, so the
    API is confirmed to exist. No city on the plot means delete the entry now, not after 50 turns.
-2. **Still standing but not scanned** (held by a city-state or independent). Keep the entry and mark it
+2. Still standing but not scanned (held by a city-state or independent). Keep the entry and mark it
    `tracked: false`. It keeps its origins, so a later recapture by a major civ resumes the old mix instead of seeding a
    fresh 100% conqueror (see O4).
-3. **Readers.** `allCityCompositions()` and `compositionForOwner()` return only entries seen on the latest pass. Stamp
+3. Readers. `allCityCompositions()` and `compositionForOwner()` return only entries seen on the latest pass. Stamp
    `passTurn` on the ledger itself and compare against that, rather than against `Game.turn`, to stay clear of the
    age-local turn reset.
 4. Keep `pruneStale` as the backstop for entries whose plot cannot be read.
@@ -195,10 +195,10 @@ and on a city-state's center: the first two were deleted after one pass, the thi
 
 **Observed (code reading only).** Two separate staleness paths:
 
-- **One turn behind.** The composition reader reloads once per `Game.turn`, and the tile and paint caches are keyed on
+- One turn behind. The composition reader reloads once per `Game.turn`, and the tile and paint caches are keyed on
   `Game.turn` too. If the lens or hover panel reads in turn N before the recorder's pass for turn N has saved, it
   caches the previous turn's mix for all of turn N.
-- **Frozen while open.** The lens paints in `applyLayer()` only, and it has no turn listener (neither lens does). A
+- Frozen while open. The lens paints in `applyLayer()` only, and it has no turn listener (neither lens does). A
   player who leaves the lens open across End Turn keeps last turn's paint until they toggle it.
 
 **Design.**
@@ -276,12 +276,12 @@ the ledger first meets already conquered: a mid-game install, or a city that was
 
 **Design.**
 
-1. **Seed from the engine's original owner.** The city object exposes `originalOwner` (used throughout the base
+1. Seed from the engine's original owner. The city object exposes `originalOwner` (used throughout the base
    game's modules). On first sighting, when `originalOwner` is a different major civ, seed the city as that civ's
    people, not the conqueror's. This also covers a mid-game install and saves from before the ledger existed.
-2. **Keep the entry through city-state ownership.** The `tracked: false` entries from item 3 keep a major civ's
+2. Keep the entry through city-state ownership. The `tracked: false` entries from item 3 keep a major civ's
    settlement's mix while a city-state or independent holds it.
-3. **Native city-state people.** A city-state's own population has a minor player as its origin. The lens and panel
+3. Native city-state people. A city-state's own population has a minor player as its origin. The lens and panel
    resolve an origin's color and name through `civDisplayColor` and `civAdjective`, which have not been checked on
    minor or independent player ids.
 
@@ -346,13 +346,13 @@ count cross-civ moves world-wide:
 
 ### Diagnosis
 
-- **Hypothesis.** The 2026-09-15 rescale of the cross-civ slider (shipped in 2.2.0: friction 30, crisis escape 0,
+- Hypothesis. The 2026-09-15 rescale of the cross-civ slider (shipped in 2.2.0: friction 30, crisis escape 0,
   small-civ brake 24, shelter-at-home 24) removed nearly all of the cross-civ flow that enclaves are made of. Game A,
   on the pre-rescale defaults, had 6-8% foreign population and 5 cities past the relaxed bar by turn 49. Every game
   since has around 0.3%.
-- **Why it is only a hypothesis.** Game A and game B are different games, on different map scripts and game versions.
+- Why it is only a hypothesis. Game A and game B are different games, on different map scripts and game versions.
   One comparison across games does not isolate the setting.
-- **What the rescale fixed.** It was a population balance fix: one refugee host ran 34-42% above its no-mod
+- What the rescale fixed. It was a population balance fix: one refugee host ran 34-42% above its no-mod
   population. That problem is real, and the fix below must not bring it back.
 
 The central point for the design: **balance depends on how many people cross borders. Enclaves depend on how
@@ -362,12 +362,12 @@ concentrated the ones who cross are.** The two can be tuned separately.
 
 Order matters: the cheapest lever that cannot hurt balance goes first.
 
-1. **Measure before tuning.** Rerun the mod test 94 harness (shipped defaults, AugustusExp66, 30
+1. Measure before tuning. Rerun the mod test 94 harness (shipped defaults, AugustusExp66, 30
    turns) and log the composition ledger at each checkpoint: foreign share per city, cities past 12.5%, 18% and 30%,
    and enclaves recognized. Also run one peacetime save with no war or disaster in the window, because game B is
    peaceful and the harness save is not. If peacetime cross-civ moves are not near zero, the hypothesis is wrong, and
    the cause is integration speed, not inflow.
-2. **Chain migration: concentrate, don't increase.** Backlog item K in `emigration-roadmap-and-backlog.md`. When a
+2. Chain migration: concentrate, don't increase. Backlog item K in `emigration-roadmap-and-backlog.md`. When a
    cross-civ migrant has several foreign destinations, prefer one that already holds their people:
    `enclaveAffinity(origin, dest)` from the destination's composition share. Two guards keep it neutral on balance.
    - It re-ranks foreign destinations only. It must not raise a foreign destination above the best domestic one, so
@@ -376,15 +376,15 @@ Order matters: the cheapest lever that cannot hurt balance goes first.
 
    The same 15 moves then land in 2-3 cities instead of 12, which is the difference between 1-point crumbs that
    integrate away and a community that crosses the bar. Item 2 (identity kept through re-migration) helps here too.
-3. **Peacetime voluntary movement.** Mod tests 69-94 measured crisis waves. The rescale also throttled ordinary
+3. Peacetime voluntary movement. Mod tests 69-94 measured crisis waves. The rescale also throttled ordinary
    opportunity migration (friction 30 applies to voluntary moves). Lowering the friction for voluntary moves only,
    between civs at peace with Open Borders or a trade route between the two cities, is the historical merchant
    quarter. Refugee friction stays where it is. Measured, it must stay within the +17% balance result.
-4. **Integration speed, last.** 3% per turn integrates a small community in about 23 turns (half-life), before it can
+4. Integration speed, last. 3% per turn integrates a small community in about 23 turns (half-life), before it can
    grow. The ledger records no arrival turns, but the diaspora store already holds `since` per origin. A newcomer
    grace (no integration for a community's first N turns, the first generation) is possible. Try it only if steps 2
    and 3 are not enough, because it also slows every enclave's fade.
-5. **Reframe pacing at the world level.** Pacing currently aims for 1 enclave per host civ per age (cap 3), and lowers
+5. Reframe pacing at the world level. Pacing currently aims for 1 enclave per host civ per age (cap 3), and lowers
    the bars by up to 40% late in the age to get there. With 8-10 major civs, that target alone is 8-10 enclaves an age
    once inflow returns: the "ton" you want to avoid. Change it to a world-wide target, e.g. about one enclave per three
    major civs per age, with the per-host cap kept as the backstop. Pacing then relaxes the bars only while the world

@@ -1,17 +1,17 @@
-// eep-modtest128.js - the FULL Cultural Enclave progression in one run, with a screenshot at every stage.
+// eep-modtest128.js - the full Cultural Enclave progression in one run, with a screenshot at every stage.
 // AugustusExp66. Every stage runs through SHIPPED code (maybeQuarter / tickContestedQuarters / the real
 // decision modal / the mod's own war handlers); only the INPUTS are synthetic: migration records are
 // fed to the composition ledger so a community exists to progress. Logs [EmigTest]; "SHOT" lines ask the
 // runner for a screenshot.
 //
 //   S0 BASELINE      the host city before anyone arrives: composition, records, plot.
-//   S1 FOOTHOLD      a community BELOW the established bar. A pass must NOT form an enclave; the readout's
+//   S1 FOOTHOLD      a community below the established bar. A pass must not form an enclave; the readout's
 //                    progress line must show it climbing toward the bar.                SHOT 1-foothold
-//   S2 ESTABLISHED   the community crosses the bar. One pass must CREATE the enclave: record written, tile
+//   S2 ESTABLISHED   the community crosses the bar. One pass must create the enclave: record written, tile
 //                    placed on the map, "Takes Root" in the Chronicle.                  SHOT 2-established-tile
-//   S3 DWELL         recognition is NOT offered while the dwell clock runs (quarterDwellTurns = 2): a pass on
+//   S3 DWELL         recognition is not offered while the dwell clock runs (quarterDwellTurns = 2): a pass on
 //                    the same turn must raise no modal. Then two turns are ended.
-//   S4 RECOGNIZED    dwell served. ASK mode raises the REAL decision modal.             SHOT 3-decision-modal
+//   S4 RECOGNIZED    dwell served. ASK mode raises the real decision modal.             SHOT 3-decision-modal
 //                    The first (embrace) choice is clicked; the record takes a stance.
 //   S5 STANCE YIELDS one turn ended; the host's per-turn stance yields are read before/after the tick.
 //   S6 CONTESTED     the host goes to war with the homeland (fed through the mod's own DeclareWar handler,

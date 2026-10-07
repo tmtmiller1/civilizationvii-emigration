@@ -2,8 +2,8 @@
 //
 // In-game feedback for migration: transient HUD toasts (a styled DOM element on the HUD root,
 // with injected CSS) and threshold-gated "world refugee news" fired once per tier. Gated by
-// CONFIG.notifyMode (0 off / 1 important / 2 verbose) and the per-channel flags. Everything is
-// defensive: the GameFace DOM can be absent, so each channel degrades to a no-op rather than throwing.
+// CONFIG.notifyMode (0 off / 1 important / 2 verbose) and the per-channel flags. The GameFace DOM
+// can be absent, so each channel degrades to a no-op rather than throwing.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { loc, localeFontFamily, msg, msgKey, msgText } from "/emigration/ui/emigration-loc.js";
@@ -103,7 +103,7 @@ function normalizeNewsState(parsed) {
 
 /**
  * The raw persisted world-news string, or null.
- * @returns {string|null} The stored JSON, or null.
+ * @returns {string|null}
  */
 function rawNews() {
   const g = Configuration?.getGame?.();
@@ -112,7 +112,7 @@ function rawNews() {
 
 /**
  * Read + parse the persisted world-news state, or null.
- * @returns {{ announced: Record<string, number>, lastToastTurn: number }|null} State, or null.
+ * @returns {{ announced: Record<string, number>, lastToastTurn: number }|null}
  */
 function loadNews() {
   try {
@@ -125,7 +125,7 @@ function loadNews() {
 
 /**
  * Load (once) the world-news state (announced milestone tiers + the last toast turn).
- * @returns {{ announced: Record<string, number>, lastToastTurn: number }} State.
+ * @returns {{ announced: Record<string, number>, lastToastTurn: number }}
  */
 function newsState() {
   resetCachesOnNewGame();
@@ -146,8 +146,8 @@ function persistNews() {
   }
 }
 
-// The toast is styled to read as a NATIVE Civ VII HUD message (the game's fonts, panel gradient and
-// gold/bronze trim), with a LEFT ACCENT BAR + eyebrow color themed PER CAUSE (set inline, below).
+// The toast is styled to read as a native Civ VII HUD message (the game's fonts, panel gradient and
+// gold/bronze trim), with a left accent bar + eyebrow color themed per cause (set inline, below).
 // z-index 10002 clears the game's #uinext-tooltips / #uinext-dropdowns (10000) and the mod's own
 // cursor panels (PANEL_Z = 10001); font sizes carry hard fallbacks because the dashboard's --dg-fs-*
 // vars are undefined in the HUD document.
@@ -182,7 +182,7 @@ function injectToastStyle() {
 }
 
 // Per-cause theming (the accent bar + eyebrow color) comes from the shared causeAccent() taxonomy,
-// so the toast and the notifications log read identically; the eyebrow TEXT reuses causeLabel.
+// so the toast and the notifications log read identically; the eyebrow text reuses causeLabel.
 const TOAST_MS = 11000; // how long a toast stays before its half-second fade-out
 const TOAST_TOP = 5; // rem, the top of the topmost toast
 const TOAST_STEP = 3.4; // rem between stacked toasts
@@ -203,7 +203,7 @@ function reflowToasts() {
 
 /**
  * Remove a toast: fade it out, drop it from the stack, and re-flow the rest.
- * @param {*} el The toast element.
+ * @param {*} el
  */
 function dismissToast(el) {
   const i = _toasts.indexOf(el);
@@ -228,7 +228,7 @@ function dismissToast(el) {
  * @param {string} msg The message body.
  * @param {string|undefined} cause The migration cause (or "crisis").
  * @param {string} accent The theme accent color.
- * @returns {*} The toast element.
+ * @returns {*}
  */
 function buildToastEl(msg, cause, accent) {
   const el = document.createElement("div");
@@ -253,8 +253,8 @@ function buildToastEl(msg, cause, accent) {
  * @param {string} msg The message body.
  * @param {string} [cause] The migration cause (or "crisis"), for the eyebrow + accent theme.
  * @param {boolean} [ownLoss] Whether this is the local player's own loss (reserves the red accent).
- * @param {string} [accentOverride] An explicit accent color that wins over the cause color — used by
- *   the per-move digests so the toast matches the log row's DIRECTION-based color (see {@link digestAccent}).
+ * @param {string} [accentOverride] An explicit accent color that wins over the cause color. The
+ *   per-move digests pass it so the toast matches the log row's direction-based color (see {@link digestAccent}).
  */
 export function toast(msg, cause, ownLoss, accentOverride) {
   if (CONFIG.notifyMode < 1 || !CONFIG.notifyToasts) return;
@@ -275,7 +275,7 @@ export function toast(msg, cause, ownLoss, accentOverride) {
 
 /**
  * The current game turn, or 0.
- * @returns {number} Game.turn or 0.
+ * @returns {number}
  */
 function gameTurn() {
   try {
@@ -297,7 +297,7 @@ function cooldownOk() {
   // comparison below can't be corrupted (a stale future lastToastTurn either spamming or
   // over-suppressing).
   if (s.lastToastTurn > turn) s.lastToastTurn = turn;
-  // speedTurns (×S): keep the REAL-TIME spacing of important toasts constant across speeds.
+  // speedTurns (×S): keep the real-time spacing of important toasts constant across speeds.
   // Guard on lastToastTurn > 0, not just "is a number": the empty state seeds it to 0, which means
   // "never toasted yet" → always allow the first one; the cooldown applies once a real turn is stamped.
   if (s.lastToastTurn > 0 && turn - s.lastToastTurn < speedTurns(CONFIG.notifyCooldownTurns)) {
@@ -351,7 +351,7 @@ function recentDisasterName() {
 }
 
 /**
- * The SPECIFIC in-world event behind a refugee cause, the named war (via the aggressor map +
+ * The specific in-world event behind a refugee cause: the named war (via the aggressor map +
  * warRefugeeName) for war/conquest, or the named disaster for disaster, so a notification reads
  * "the Roman–Carthaginian War" / "Thera" rather than a generic cause. Null for economic migration.
  * @param {string} [cause] The migration cause.
@@ -363,8 +363,8 @@ function eventNameFor(cause, srcOwner) {
     return warRefugeeNameMsg(srcOwner, warAggressors(srcOwner));
   }
   if (cause === "disaster") {
-    // Name the disaster striking THIS civ (its worst active event), not the globally most-recent one
-    //, a "Greek refugee crisis" must read "the Greek volcano", never a flood on another continent.
+    // Name the disaster striking this civ (its worst active event), not the globally most-recent one:
+    // a "Greek refugee crisis" must read "the Greek volcano", never a flood on another continent.
     const type = typeof srcOwner === "number" ? worstDisasterTypeForOwner(srcOwner) : null;
     return (type && disasterNameMsg(type)) || recentDisasterName();
   }
@@ -372,7 +372,7 @@ function eventNameFor(cause, srcOwner) {
 }
 
 /**
- * A civ's DOMINANT refugee cause so far (war / disaster / conquest), for naming the world milestone.
+ * A civ's dominant refugee cause so far (war / disaster / conquest), for naming the world milestone.
  * @param {number} pid Civ id.
  * @returns {string} The dominant refugee cause (defaults to "war").
  */
@@ -392,7 +392,7 @@ function dominantRefugeeCause(pid) {
 }
 
 /**
- * Per-civ refugee outflow THIS pass (people + points), so the world milestone shows an event-scale
+ * Per-civ refugee outflow this pass (people + points), so the world milestone shows an event-scale
  * figure rather than the lifetime cumulative (which can exceed a civ's current size and reads wrong).
  * @param {{cause?:string, srcOwner?:number, people?:number, points?:number}[]} migrations The pass.
  * @returns {Map<number,{people:number, points:number}>} Per-source refugee totals this pass.
@@ -432,10 +432,10 @@ function newCrisisTier(pid, cum) {
 }
 
 /**
- * Fire a refugee-crisis alert when a civ's CUMULATIVE refugees cross a worldRefugeeThreshold
- * milestone - once per tier, so a long war produces a few headlines, not one per turn. The cumulative
- * total only GATES the announcement; the headline names the SPECIFIC war/disaster driving it (no
- * generic "crisis") and shows THIS pass's refugee outflow, so the figure stays event-scale.
+ * Fire a refugee-crisis alert when a civ's cumulative refugees cross a worldRefugeeThreshold
+ * milestone, once per tier, so a long war produces a few headlines, not one per turn. The cumulative
+ * total only gates the announcement; the headline names the specific war/disaster driving it (no
+ * generic "crisis") and shows this pass's refugee outflow, so the figure stays event-scale.
  * @param {number} pid Source civ id.
  * @param {number} cum Cumulative refugees produced (the milestone gate).
  * @param {{people:number, points:number}} [pass] This pass's refugee outflow for the civ (displayed).
@@ -446,13 +446,13 @@ function crisisMilestone(pid, cum, pass) {
   const event = eventNameFor(cause, pid);
   const people = pass ? pass.people : cum;
   const points = pass ? pass.points : 0;
-  // WHO the crisis hit, spoiler-guarded: an unmet civ is never named in world news
-  // (mirrors the dashboard's "Unmet" mask), it's reported as "an unmet civilization".
+  // Who the crisis hit, spoiler-guarded: an unmet civ is never named in world news
+  // (mirrors the dashboard's "Unmet" mask); it's reported as "an unmet civilization".
   const who = civHidden(pid) ? unmetMsg() : civAdjectiveMsg(pid);
   const ev = { cause, civ: who, people: formatBothExactMsg(people, points),
     warName: event || undefined, eventName: event || undefined };
-  const head = refugeeHeadlineMsg(ev); // leads with WHO (spoiler-guarded) for event-named causes
-  const ownLoss = pid === localPlayerId(); // red only when it's the player's OWN civ in crisis
+  const head = refugeeHeadlineMsg(ev); // leads with who (spoiler-guarded) for event-named causes
+  const ownLoss = pid === localPlayerId(); // red only when it's the player's own civ in crisis
   logNotification({ kind: "crisis", cause, event: event || undefined, summary: head,
     people, points, fromCiv: who, ownLoss });
   announceImportant(msgText(head), cause, ownLoss);
@@ -460,7 +460,7 @@ function crisisMilestone(pid, cum, pass) {
 
 /**
  * Per-pass refugee feedback, throttled to avoid spam:
- *  • Important mode (default): only refugee-CRISIS milestones (per-civ cumulative).
+ *  • Important mode (default): only refugee-crisis milestones (per-civ cumulative).
  *  • Verbose mode (2): additionally a per-pass per-cause toast.
  * Plain unhappiness migration is never announced (the quiet baseline).
  * @param {{cause?:string, srcOwner?:number, people?:number}[]} migrations Applied migrations.
@@ -468,22 +468,22 @@ function crisisMilestone(pid, cum, pass) {
 export function reportPassFeedback(migrations) {
   if (CONFIG.notifyMode < 1 || !Array.isArray(migrations) || !migrations.length) return;
   if (CONFIG.notifyMode >= 2) toastPerCause(migrations);
-  // Priority order for the SHARED toast cooldown (one important toast per pass): the player's own
+  // Priority order for the shared toast cooldown (one important toast per pass): the player's own
   // losses first, then world crises; inbound gains (reportInboundFeedback) run last. Each channel
-  // still LOGS every event; only the on-screen toast is throttled.
+  // still logs every event; only the on-screen toast is throttled.
   localDigest(migrations); // the local player's own "why am I losing people?" explainer
   reportWorldCrises(migrations); // per-civ refugee-crisis milestones (world news)
 }
 
 /**
- * Report the local player's INBOUND immigration for the pass (people SETTLING in the player's cities).
- * Separate from {@link reportPassFeedback} because it must see the ARRIVAL records, so it runs on the
- * full, unfiltered pass. Call it AFTER reportPassFeedback so loss/crisis toasts claim the cooldown first.
- * @param {*[]} migrations The pass's FULL migrations (arrivals included).
+ * Report the local player's inbound immigration for the pass (people settling in the player's cities).
+ * Separate from {@link reportPassFeedback} because it must see the arrival records, so it runs on the
+ * full, unfiltered pass. Call it after reportPassFeedback so loss/crisis toasts claim the cooldown first.
+ * @param {*[]} migrations The pass's full migrations (arrivals included).
  */
 export function reportInboundFeedback(migrations) {
   if (CONFIG.notifyMode < 1 || !Array.isArray(migrations) || !migrations.length) return;
-  inboundDigest(migrations); // the local player's own "who is moving IN?" explainer (immigration)
+  inboundDigest(migrations); // the local player's own "who is moving in?" explainer (immigration)
 }
 
 /**
@@ -527,7 +527,7 @@ function toastPerCause(migrations) {
 
 /**
  * The local player id, or null when unavailable.
- * @returns {number|null} The id.
+ * @returns {number|null}
  */
 function localPlayerId() {
   try {
@@ -541,7 +541,7 @@ function localPlayerId() {
 
 /**
  * The destination owner as the notification layer sees it: the tally-driving `destOwner` when present,
- * else the non-tally `edgeDestOwner` a lagged DEPARTURE record carries. Reading `edgeDestOwner` here
+ * else the non-tally `edgeDestOwner` a lagged departure record carries. Reading `edgeDestOwner` here
  * is safe because this digest is separate from the migration/immigration tallies.
  * @param {*} m A migration record.
  * @returns {number|undefined} The destination player id, or undefined when neither owner is present.
@@ -554,13 +554,13 @@ function moveDestOwner(m) {
 
 /**
  * Get (or create) the per-event bucket for a loss record, keyed by source settlement + cause + scope.
- * Scope (internal vs cross-civ) is part of the key so a source shedding the SAME cause to both its own
- * settlements AND a foreign civ splits into two correctly-labeled rows, never one row mislabelled by
+ * Scope (internal vs cross-civ) is part of the key so a source shedding the same cause to both its own
+ * settlements and a foreign civ splits into two correctly-labeled rows, never one row mislabelled by
  * whichever stream happened to be larger.
  * @param {Map<string,*>} map Bucket map.
  * @param {*} m A migration.
  * @param {number} me Local player id.
- * @returns {*} The bucket.
+ * @returns {*}
  */
 function eventBucket(map, m, me) {
   const cause = m.cause || "other";
@@ -593,7 +593,7 @@ function foldEvent(map, m, me) {
     ev._lead = ppl;
     ev.destName = m.destName;
     ev.destOwner = moveDestOwner(m); // recover the dest civ from edgeDestOwner on a lagged departure
-    // ev.crossCiv is fixed per bucket (part of the key) - trust the record's flag, never gate it on
+    // ev.crossCiv is fixed per bucket (part of the key). Trust the record's flag, never gate it on
     // destOwner being present, or a lagged cross-civ departure (which withholds destOwner) mislabels
     // as internal.
     ev.reasons = Array.isArray(m.reasons) ? m.reasons : []; // the lead move's "why here" tags
@@ -601,7 +601,7 @@ function foldEvent(map, m, me) {
 }
 
 /**
- * Group the local player's losses this pass into distinct EVENTS (one per source settlement + cause),
+ * Group the local player's losses this pass into distinct events (one per source settlement + cause),
  * largest first, so each is a single coherent event with an accurate count, never a pass-wide sum.
  * @param {*[]} migs Applied migrations.
  * @param {number} me Local player id.
@@ -625,7 +625,7 @@ function groupLocalEvents(migs, me) {
  * @returns {{toCiv?:*, toCity?:string}} The masked destination labels (toCiv a message node).
  */
 function destView(ev) {
-  if (ev.cause === "attrition") return {}; // a death, they did not arrive anywhere
+  if (ev.cause === "attrition") return {}; // a death: they did not arrive anywhere
   if (ev.crossCiv && typeof ev.destOwner === "number") {
     if (civHidden(ev.destOwner)) return { toCiv: unmetMsg() };
     return { toCiv: civAdjectiveMsg(ev.destOwner), toCity: ev.destName || undefined };
@@ -647,20 +647,20 @@ function eventMessage(ev) {
     cause: ev.cause, people: formatBothExactMsg(ev.people, ev.points),
     city: ev.srcName || msg("LOC_EMIG_FALLBACK_A_SETTLEMENT", "a settlement"),
     crossCiv: ev.crossCiv, destName: dv.toCity || dv.toCiv, destGold, why: pullReasonsMsg(ev.reasons),
-    byCiv: conquerorName(ev), // the (unmet-masked) conquering civ NAME; only the conquest headline reads it
+    byCiv: conquerorName(ev), // the (unmet-masked) conquering civ name; only the conquest headline reads it
     stanceTip
   });
 }
 
-/** Causes where people CHOSE to go, so a retention policy is a real lever (a forced flight ignores it). */
+/** Causes where people chose to go, so a retention policy is a real lever (a forced flight ignores it). */
 const VOLUNTARY_CAUSES = new Set(["unhappiness", "prosperity"]);
 
 /**
- * Whether to suggest the Anti-Immigration Stance: only for a voluntary loss to ANOTHER civ (the stance
+ * Whether to suggest the Anti-Immigration Stance: only for a voluntary loss to another civ (the stance
  * retains cross-civ moves only), only while border policies are on, and only when the player is not
  * already retaining (a slotted stance makes the tip stale advice).
  * @param {*} ev A per-event bucket.
- * @returns {boolean} True to append the tip.
+ * @returns {boolean}
  */
 function wantsStanceTip(ev) {
   if (!ev.crossCiv || !VOLUNTARY_CAUSES.has(ev.cause) || !CONFIG.bordersEnabled) return false;
@@ -668,8 +668,8 @@ function wantsStanceTip(ev) {
 }
 
 /**
- * The conquering civ's NAME (a proper noun, e.g. "Rome"), unmet-masked, for the conquest headline;
- * undefined for any other cause. Uses the civ NAME rather than its adjective so "conquered by <civ>"
+ * The conquering civ's name (a proper noun, e.g. "Rome"), unmet-masked, for the conquest headline;
+ * undefined for any other cause. Uses the civ name rather than its adjective so "conquered by <civ>"
  * reads correctly ("…by Rome", not "…by Roman"). destOwner is the new owner of the captured city.
  * @param {*} ev A per-event bucket.
  * @returns {*} The conqueror's name (a message node), or undefined.
@@ -699,7 +699,7 @@ function logEvent(ev, message) {
 
 /**
  * Explain the local player's population losses this pass. Each distinct event (one source settlement +
- * cause) is logged as its OWN notification with an accurate count; on screen only the largest event
+ * cause) is logged as its own notification with an accurate count; on screen only the largest event
  * toasts (subject to the cooldown). No-op without a local loss.
  * @param {*[]} migs Applied migrations.
  */
@@ -710,16 +710,16 @@ function localDigest(migs) {
   if (!events.length) return;
   for (const ev of events) logEvent(ev, eventMessage(ev));
   const lead = events[0];
-  // Color the toast by DIRECTION (red for own people leaving for a rival, neutral for an internal
+  // Color the toast by direction (red for own people leaving for a rival, neutral for an internal
   // shuffle: the source settlement still loses its tile, so never green), matching the log row's accent
   // rather than the cause.
   announceImportant(msgText(eventMessage(lead)), lead.cause, true, digestAccent(true, lead.crossCiv));
 }
 
 /**
- * Fold one INBOUND (immigration) record into its per-destination bucket, keyed by destination
- * settlement + cause + origin civ. Counts only CROSS-CIV arrivals credited to the local player; arrival
- * records carry `destOwner` + `originCiv` but NOT `srcOwner`, so origin is read from `originCiv`.
+ * Fold one inbound (immigration) record into its per-destination bucket, keyed by destination
+ * settlement + cause + origin civ. Counts only cross-civ arrivals credited to the local player; arrival
+ * records carry `destOwner` + `originCiv` but not `srcOwner`, so origin is read from `originCiv`.
  * @param {Map<string,*>} map Bucket map. @param {*} m A migration. @param {number} me Local player id.
  */
 function foldInbound(map, m, me) {
@@ -732,7 +732,7 @@ function foldInbound(map, m, me) {
 
 /**
  * Get (or create) the per-event inbound bucket, keyed by destination settlement + cause + origin civ.
- * @param {Map<string,*>} map Bucket map. @param {*} m An inbound migration. @returns {*} The bucket.
+ * @param {Map<string,*>} map Bucket map. @param {*} m An inbound migration. @returns {*}
  */
 function inboundBucket(map, m) {
   const cause = m.cause || "other";
@@ -747,7 +747,7 @@ function inboundBucket(map, m) {
 }
 
 /**
- * Group the local player's INBOUND immigration this pass into distinct events (one per destination
+ * Group the local player's inbound immigration this pass into distinct events (one per destination
  * settlement + cause + origin), largest first.
  * @param {*[]} migs Applied migrations. @param {number} me Local player id.
  * @returns {*[]} Per-event buckets (people-desc).
@@ -786,7 +786,7 @@ function inboundMessage(ev) {
 
 /**
  * Record one inbound event to the notification log: its cause, dual-system count, and origin →
- * destination. `ownLoss:false` (a GAIN to the player's empire → neutral, not red).
+ * destination. `ownLoss:false` (a gain to the player's empire → neutral, not red).
  * @param {*} ev An inbound event bucket. @param {*} message The composed message node (the row summary).
  */
 function logInbound(ev, message) {
@@ -798,7 +798,7 @@ function logInbound(ev, message) {
 }
 
 /**
- * Explain the local player's INBOUND immigration this pass: cross-civ newcomers settling in the
+ * Explain the local player's inbound immigration this pass: cross-civ newcomers settling in the
  * player's cities. Each event over the `inboundNotifyPoints` floor is logged, and the largest is toasted
  * (subject to the shared cooldown); a steady trickle below the floor stays quiet.
  * @param {*[]} migs Applied migrations.

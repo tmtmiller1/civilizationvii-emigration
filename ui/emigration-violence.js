@@ -1,7 +1,7 @@
 // emigration-violence.js
 //
 // Per-city "violence intensity" - the actual fighting inside a settlement's borders, which drives war
-// refugees (NOT the empire merely being at war). Signals are POLLED from the gameplay model each turn
+// refugees (not the empire merely being at war). Signals are polled from the gameplay model each turn
 // (city-center district damage, pillaged constructibles, plus the combat-event evidence), so the model is
 // fog-independent and symmetric between player-visible and distant AI wars. Pillage applies pressure
 // only; it never moves or destroys a pop point. Intensity accumulates and decays each turn, so a
@@ -145,8 +145,8 @@ function persist() {
 function keyFromCID(cid) {
   try {
     if (!cid) return null;
-    // Prefer the owner:id pair directly off the component id: ComponentID.toBitfield does NOT reliably
-    // yield a number/string for a CITY component id. Fall back to the bitfield only if owner:id is unavailable.
+    // Prefer the owner:id pair directly off the component id: ComponentID.toBitfield does not reliably
+    // yield a number/string for a city component id. Fall back to the bitfield only if owner:id is unavailable.
     if (typeof cid.owner === "number" && cid.id != null) return cid.owner + ":" + cid.id;
     if (typeof ComponentID !== "undefined") {
       const bf = ComponentID.toBitfield(cid);
@@ -173,11 +173,11 @@ function majorScale() {
 
 /**
  * Who is attacking this city, where that answer came from, and whether every one of them is a minor power
- * (city-state or Independent Power). Minor-only requires POSITIVE evidence; an empty or unreadable set
+ * (city-state or Independent Power). Minor-only requires positive evidence; an empty or unreadable set
  * counts as a major war so a failed read never downgrades a real invasion. Sources, best first, each used
  * only when the one above names nobody: combat events (struck), hostile units beside the districts
  * (units), an overrun district's holder (district), then the at-war list (atwar; `isAtWarWith` is true
- * for EVERY Independent Power, so it only says whether any MAJOR is at war with the owner).
+ * for every Independent Power, so it only says whether any major is at war with the owner).
  * @param {*} city A live city object. @param {number[]} struck Attackers from this observation's events.
  * @returns {{minorsOnly:boolean, source:string, named:number[]}} The decision and its basis.
  */
@@ -204,7 +204,7 @@ function attackerVerdict(city, struck) {
 }
 
 /**
- * Whether a player id is a minor power. Unknown ids count as MAJOR, so an unreadable attacker never
+ * Whether a player id is a minor power. Unknown ids count as major, so an unreadable attacker never
  * downgrades the pressure.
  * @param {number} pid Player id. @returns {boolean} True when minor.
  */
@@ -229,7 +229,7 @@ function isMinor(pid) {
 function applyObservation(s, key, city) {
   const frac = districtDamageFrac(city);
   const fresh = Math.max(0, frac - (s.lastFrac[key] || 0));
-  // Standing siege pressure while the city center is under attack: scaled by damage, with a FLOOR
+  // Standing siege pressure while the city center is under attack: scaled by damage, with a floor
   // (`siegeBesiegedFloor` < 1) the moment it's besieged so a raid registers without instantly crossing
   // the flee threshold. Facing only minor powers, the floor drops and the observation is scaled down.
   const besieged = districtBesieged(city);
@@ -241,7 +241,7 @@ function applyObservation(s, key, city) {
     return;
   }
   const verdict = attackerVerdict(city, ev.attackers);
-  // The STRONGER of the two damage readings, never their sum: both describe the same wounds, and the max
+  // The stronger of the two damage readings, never their sum: both describe the same wounds, and the max
   // lets each cover the other's blind spot (repaired-between-samples vs detached-handler gaps).
   const obs = { harm: Math.max(fresh, ev.dmg), frac, besieged, pillaged, ev };
   const addFull = scoreObservation(obs, false);
@@ -327,7 +327,7 @@ export function observeCity(city) {
   return typeof v === "number" && isFinite(v) ? v : 0;
 }
 
-// ── Algorithm D: siege-duration escalation + cumulative war-loss cap ───────
+// Algorithm D: siege-duration escalation + cumulative war-loss cap
 
 /**
  * The war-retention multiplier for a city's owner (civ tuning), defaulting to 1.
@@ -379,7 +379,7 @@ export function recordWarLoss(city) {
   }
 }
 
-// ── Decay + read ──────────────────────────────────────────────────────────
+// Decay + read
 
 /**
  * Decay every city's intensity toward zero for the turns elapsed since the last

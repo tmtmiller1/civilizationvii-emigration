@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { prosperity, rankByProsperity, distress, lethalDistress, fieldContext } from "/emigration/ui/emigration-prosperity.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
-// These tests verify the prosperity FORMULA's structure with clean round-number fixtures, so they pin
+// These tests verify the prosperity formula's structure with clean round-number fixtures, so they pin
 // the scoring weights explicitly rather than tracking the shipped calibration (which the 1.4.1 balance
 // pass re-tuned: yield factors ×2.5, happiness de-saturated). Pinning the canonical weights here keeps
 // the hand-computed expectations valid and decouples these tests from future re-tuning. Individual
@@ -95,8 +95,8 @@ function testToleratesDegenerateInput() {
 }
 
 function testViolenceSlidesScoreDown() {
-  // base = (10+10)/2 + 5*6 - 2 = 38. Empire-at-war ALONE (no violence) must not
-  // change the score - only actual border violence does.
+  // base = (10+10)/2 + 5*6 - 2 = 38. Empire-at-war alone (no violence) must not
+  // change the score; only actual border violence does.
   const calm = signal({ food: 10, production: 10, population: 2, happiness: 5, atWar: true });
   assert.equal(prosperity(calm), 38);
   // violence 5 → 5*12 = 60% penalty → ×0.4 → 15.2 (the sliding scale).
@@ -146,7 +146,7 @@ function testSituationalCompositionAddsLinearlyInPercentSpace() {
   assert.equal(distress(modded), Math.abs(totalPct));
 }
 
-// ── Algorithm A: shaped happiness (field-relative, saturating, asymmetric) ──
+// Algorithm A: shaped happiness (field-relative, saturating, asymmetric)
 
 // prosperity of the test city at happiness h, centered on a given field mean.
 function shaped(h, mean) {
@@ -212,7 +212,7 @@ function testShapedLeavesLegacyUntouchedWhenOff() {
   assert.equal(prosperity(signal({ food: 10, production: 10, population: 2, happiness: 5 })), 38);
 }
 
-// ── Algorithm B: overcrowding discount ────────────────────────────────────
+// Algorithm B: overcrowding discount
 
 function testOvercrowdDiscountCreditsTallCities() {
   CONFIG.overcrowdDiscount = 0.5;
@@ -250,7 +250,7 @@ testShapedLeavesLegacyUntouchedWhenOff();
 testOvercrowdDiscountCreditsTallCities();
 testOvercrowdOffByDefault();
 
-// ── Distress (drives the attrition outlet) ────────────────────────────────
+// Distress (drives the attrition outlet)
 
 function testDistressIsMagnitudeOfSituational() {
   assert.equal(distress(signal({ food: 10, production: 10, population: 2 })), 0); // content
@@ -260,18 +260,18 @@ function testDistressIsMagnitudeOfSituational() {
 
 testDistressIsMagnitudeOfSituational();
 
-// ── Lethal distress (drives the DEATH gate; unrest only counts when earned) ────────────────
+// Lethal distress (drives the death gate; unrest only counts when earned)
 // The bug this guards: unrest alone (-60) fed the full distress() into the death gate and, since
 // 60 ≥ attritionMinDistress (40), killed a peaceful city with an untagged "unexplained" death.
 // lethalDistress excludes unrest unless the caller passes unrestCounts, so unrest kills only after
-// the engine's sustained-unrest tenure gate — while distress() keeps it for economic-emigration push.
+// the engine's sustained-unrest tenure gate, while distress() keeps it for economic-emigration push.
 function testLethalDistressGatesUnrest() {
   const unrestOnly = signal({ unrest: true });
-  // The DEATH gate ignores unrest until it's earned...
+  // The death gate ignores unrest until it's earned...
   assert.equal(lethalDistress(unrestOnly, false), 0);
   // ...and counts it once earned.
   assert.equal(lethalDistress(unrestOnly, true), Math.abs(CONFIG.unrestModifier));
-  // The economic-push measure is unaffected either way — unrest still pushes emigration immediately.
+  // The economic-push measure is unaffected either way; unrest still pushes emigration immediately.
   assert.equal(distress(unrestOnly), Math.abs(CONFIG.unrestModifier));
   // Immediate crises (siege/disaster/famine) are lethal regardless of the unrest flag.
   assert.equal(lethalDistress(signal({ starving: true }), false), Math.abs(CONFIG.starvationModifier));
@@ -284,7 +284,7 @@ function testLethalDistressGatesUnrest() {
 
 testLethalDistressGatesUnrest();
 
-// ── 1.4.1 polity model (happiness stages + government + celebration + war weariness) ──────
+// 1.4.1 polity model (happiness stages + government + celebration + war weariness)
 // These run in the legacy-linear branch established at the top of the file (happinessShaped=false),
 // so a polity term shows up as a clean additive delta on the base score.
 
@@ -337,7 +337,7 @@ testWarWearinessIsSituationalPush();
 testPolityModelOffRestoresBaseline();
 
 
-// ── popExponent: a large settlement keeps more of what it has built ──────────
+// popExponent: a large settlement keeps more of what it has built
 // A straight per-head average divides everything a settlement builds by its own size, so a big city
 // could never out-build the flat populationFactor penalty. An exponent below 1 softens that.
 function testPopExponentSoftensTheDivisor() {
@@ -363,14 +363,14 @@ function testPopExponentSoftensTheDivisor() {
   CONFIG.popExponent = 1;
 }
 
-// ── the built-environment term: what a settlement HOLDS, not what it makes ───
+// the built-environment term: what a settlement holds, not what it makes
 function testBuiltTermIsFlatAndBounded() {
   CONFIG.builtEnabled = true;
   const base = signal({ food: 10, production: 10, population: 2, happiness: 5 }); // base 38
   assert.equal(prosperity({ ...base, built: 0 }), 38, "nothing built changes nothing");
   assert.equal(prosperity({ ...base, built: 3 }), 41, "the term is added straight to the score");
-  // NOT per-capita: the same built score is worth the same in a settlement eight times the size. This
-  // is the whole point of the term, and a per-capita mutant dies here.
+  // Not per-capita: the same built score is worth the same in a settlement eight times the size. This
+  // is the whole point of the term, and a per-capita version would fail here.
   const small = { ...signal({ food: 10, production: 10, population: 2, happiness: 5 }), built: 3 };
   const large = { ...signal({ food: 80, production: 80, population: 16, happiness: 5 }), built: 3 };
   const smallGain = prosperity(small) - prosperity({ ...small, built: 0 });

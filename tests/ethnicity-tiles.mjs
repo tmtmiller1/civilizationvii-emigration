@@ -1,7 +1,7 @@
 // ethnicity-tiles.mjs
 //
 // The engine-reading half of the ethnicity lens/tooltip (emigration-ethnicity-tiles.js). Where
-// ethnicity-distribution.mjs covers the PURE split math, this covers the bridge that actually reads
+// ethnicity-distribution.mjs covers the pure split math, this covers the bridge that actually reads
 // the map: it classifies a settlement's owned plots (district class × build-up bonus), scales its
 // population, and memoizes the per-tile mosaic per settlement per turn. We stub the engine globals
 // (GameplayMap / Districts / MapConstructibles / Game) and seed the composition ledger, then assert:
@@ -15,9 +15,9 @@
 
 import assert from "node:assert/strict";
 
-// ── Engine stubs ─────────────────────────────────────────────────────────────
+// Engine stubs
 // A tiny fixed map: plot index → location, plus per-location district class + build-up. Index 5 is
-// deliberately unreadable (null loc → skipped), and (4,4) makes both engine reads throw (→ defaults).
+// unreadable on purpose (null loc → skipped), and (4,4) makes both engine reads throw (→ defaults).
 const LOC_BY_INDEX = { 1: { x: 0, y: 0 }, 2: { x: 1, y: 0 }, 3: { x: 0, y: 1 }, 4: { x: 2, y: 2 }, 5: null, 6: { x: 4, y: 4 } };
 const DISTRICT_TYPES = { CITY_CENTER: "CC", URBAN: "URB", WILDERNESS: "WILD" };
 const DISTRICT_AT = { "0,0": "CC", "1,0": "URB", "0,1": "FARM" /* unknown → rural */, "2,2": "WILD" };
@@ -53,7 +53,7 @@ const { CONFIG } = await import("/emigration/ui/emigration-config.js");
 // Keep the composition deterministic (no per-turn ethnic drift) so the shares are exactly as seeded.
 CONFIG.integrationEnabled = false;
 
-// ── helpers ──────────────────────────────────────────────────────────────────
+// helpers
 /** A settlement signal for the composition pass. */
 const signal = (x, y, name, owner, population) => ({ city: { location: { x, y }, name }, owner, population });
 /** An instantaneous cross-civ move (immigration record). */
@@ -62,7 +62,7 @@ const move = (srcOwner, srcName, destOwner, destName, points) => ({ srcOwner, sr
 const cityWithPlots = (x, y, name, plots) => ({ location: { x, y }, name, getPurchasedPlots: () => plots });
 const tileAt = (res, x, y) => res.byKey.get(x + "," + y);
 
-// ── 1. Degenerate settlements → null (no throw) ──────────────────────────────
+// 1. Degenerate settlements → null (no throw)
 {
   comp.reset();
   assert.equal(tilesForCity(null), null, "null city → null");
@@ -76,7 +76,7 @@ const tileAt = (res, x, y) => res.byKey.get(x + "," + y);
     "getPurchasedPlots → null → no tiles");
 }
 
-// ── 2 & 3. Happy path: one tile per readable plot, density tracks class + build-up ─
+// 2 & 3. Happy path: one tile per readable plot, density tracks class + build-up
 {
   comp.reset();
   globalThis.Game.turn = 10;
@@ -93,12 +93,12 @@ const tileAt = (res, x, y) => res.byKey.get(x + "," + y);
     "a single-origin city paints every tile its one color");
 
   const center = tileAt(res, 0, 0); // CITY_CENTER, no build-up
-  const urban = tileAt(res, 1, 0); // URBAN + 3 constructibles
+  const urban = tileAt(res, 1, 0); // Urban + 3 constructibles
   const rural = tileAt(res, 0, 1); // unknown district → rural default
-  const wild = tileAt(res, 2, 2); // WILDERNESS
+  const wild = tileAt(res, 2, 2); // Wilderness
   const thrown = tileAt(res, 4, 4); // both reads threw → rural default, 0 build-up
 
-  // CITY_CENTER (3.6) ≫ WILDERNESS (0.4): the urban core holds far more people and reads more vivid.
+  // CITY_CENTER (3.6) ≫ wilderness (0.4): the urban core holds far more people and reads more vivid.
   assert.ok(center.people > wild.people * 5, "the city center carries far more people than wilderness");
   assert.ok(center.density > wild.density, "denser tile → higher opacity");
   // Build-up bonus: URBAN(2.4)×(1+0.18·3)=3.70 edges out even the bare CITY_CENTER(3.6).
@@ -114,7 +114,7 @@ const tileAt = (res, x, y) => res.byKey.get(x + "," + y);
     "people are positive and every density stays in [0,1]");
 }
 
-// ── 4. A minority reads on at least one tile (lens ↔ tooltip agreement) ───────
+// 4. A minority reads on at least one tile (lens ↔ tooltip agreement)
 {
   comp.reset();
   globalThis.Game.turn = 11;
@@ -130,7 +130,7 @@ const tileAt = (res, x, y) => res.byKey.get(x + "," + y);
     "the immigrant minority is visible on at least one tile (tooltip would show it)");
 }
 
-// ── 5. Unreadable map globals degrade to the rural default ────────────────────
+// 5. Unreadable map globals degrade to the rural default
 {
   comp.reset();
   globalThis.Game.turn = 12;
@@ -154,7 +154,7 @@ const tileAt = (res, x, y) => res.byKey.get(x + "," + y);
   }
 }
 
-// ── 6. Per-settlement cache: memoize within a turn, recompute across turns ─────
+// 6. Per-settlement cache: memoize within a turn, recompute across turns
 {
   comp.reset();
   globalThis.Game.turn = 20;
@@ -169,7 +169,7 @@ const tileAt = (res, x, y) => res.byKey.get(x + "," + y);
   assert.deepEqual(c.tiles, a.tiles, "…but the deterministic model yields the same tiles");
 }
 
-// ── 7. Cache stays bounded (clears past its cap) ─────────────────────────────
+// 7. Cache stays bounded (clears past its cap)
 {
   // Drive >4096 distinct untracked settlements through the cache; each caches a null value, and the
   // cap-clear branch fires once the map fills. Just assert it never throws and keeps returning null.
@@ -181,15 +181,15 @@ const tileAt = (res, x, y) => res.byKey.get(x + "," + y);
   assert.equal(nulls, 4200, "every untracked settlement returns null; the bounded cache never throws");
 }
 
-// ── 8. A standing enclave pins its diaspora's cluster onto the enclave tile ───
+// 8. A standing enclave pins its diaspora's cluster onto the enclave tile
 // The enclave tile is picked by a land rule in emigration-enclave-place.js that knows nothing about the
 // lens's hash anchor, so without the pin the color patch and the enclave's on-map marker could name
-// different tiles. Drives the REAL bridge: a persisted quarter record → enclaveStanding → the anchor.
+// different tiles. Drives the real bridge: a persisted quarter record → enclaveStanding → the anchor.
 {
   const ENCLAVE = "IMPROVEMENT_EMIG_ENCLAVE_CARTHAGE";
   const PIN_PLOT = 4; // → (2,2); the hash anchor for civ 2 lands elsewhere (asserted below)
 
-  // A quarter record for Rome (keyed by the settlement CENTER) whose placed tile stands on PIN_PLOT.
+  // A quarter record for Rome (keyed by the settlement center) whose placed tile stands on PIN_PLOT.
   const quarters = (placed) => JSON.stringify({
     v: 1,
     data: {
@@ -206,7 +206,7 @@ const tileAt = (res, x, y) => res.byKey.get(x + "," + y);
   globalThis.Configuration = {
     getGame: () => ({ gameSeed: 4242, getValue: (k) => (k === "EmigrationQuarters_v1" ? stored : null) })
   };
-  // Make the enclave improvement readable ON the pinned plot only, so enclaveStanding is a real check.
+  // Make the enclave improvement readable on the pinned plot only, so enclaveStanding is a real check.
   globalThis.MapConstructibles = { getConstructibles: (x, y) => (x === 2 && y === 2 ? [ENCLAVE] : []) };
   globalThis.Constructibles = { getByComponentID: (id) => ({ type: id }) };
   globalThis.GameInfo = { Constructibles: { lookup: (t) => ({ ConstructibleType: t }) } };
@@ -230,12 +230,12 @@ const tileAt = (res, x, y) => res.byKey.get(x + "," + y);
     const pinned = peakTile(withEnclave);
     assert.equal(pinned.x + "," + pinned.y, "2,2",
       "the diaspora's densest tile is the tile its enclave stands on");
-    // The bar comes from the LIVE enclave rule, so retuning enclaves retunes the lens with them.
+    // The bar comes from the live enclave rule, so retuning enclaves retunes the lens with them.
     const bar = CONFIG.quarterEstablishedShare;
     assert.ok(shareOf(pinned, 2) > bar, "the enclave tile reads PAST the enclave formation bar");
     assert.ok(withEnclave.tiles.every((t) => t === pinned || shareOf(t, 2) <= bar + 1e-9),
       "and it is the only tile that does");
-    // SHADING: (2,2) is WILDERNESS on this map (weight 0.4) — the sparsest, faintest tile. An enclave is a
+    // Shading: (2,2) is wilderness on this map (weight 0.4), the sparsest, faintest tile. An enclave is a
     // packed quarter, so standing on it lifts the tile to urban weight instead of near-transparent.
     const sparsest = withEnclave.tiles.reduce((a, t) => (t.density < a.density ? t : a));
     assert.notEqual(sparsest, pinned, "the enclave tile is no longer the faintest tile in the settlement");

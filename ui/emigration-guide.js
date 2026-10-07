@@ -1,7 +1,7 @@
 // emigration-guide.js
 //
 // The "What counts" reference: a yes/no matrix of common questions about what does and doesn't cause,
-// attract, or participate in migration, kept in step with the mod's DEFAULT behavior and rendered as
+// attract, or participate in migration, kept in step with the mod's default behavior and rendered as
 // flexbox rows (GameFace lays out neither <table> nor CSS grid) for the dashboard's Guide tab. Every
 // visible string is localized at render through a position-derived LOC key (LOC_EMIG_GUIDE_<section>_...),
 // with the English text below as the fallback.
@@ -194,10 +194,10 @@ const CSS =
 
 /**
  * Create an element with an optional class + text.
- * @param {string} tag Tag name.
- * @param {string} [cls] Class.
- * @param {string} [text] Text content.
- * @returns {HTMLElement} The element.
+ * @param {string} tag
+ * @param {string} [cls]
+ * @param {string} [text]
+ * @returns {HTMLElement}
  */
 function ce(tag, cls, text) {
   const e = document.createElement(tag);
@@ -243,7 +243,7 @@ function renderGuideSection(wrap, g) {
 /**
  * A section's rough height (heading + items), for balancing the two columns.
  * @param {*} g A guide section.
- * @returns {number} The weight.
+ * @returns {number}
  */
 function sectionWeight(g) {
   const items = Array.isArray(g.rows) ? g.rows.length : Array.isArray(g.faq) ? g.faq.length : 0;
@@ -272,7 +272,7 @@ function splitColumns(sections) {
 /**
  * Render one column's sections (each a heading + its matrix/FAQ body) into a column element.
  * @param {*[]} sections The sections for this column.
- * @returns {HTMLElement} The column.
+ * @returns {HTMLElement}
  */
 function buildGuideColumn(sections) {
   const col = ce("div", "emig-guide-col");
@@ -286,7 +286,7 @@ function buildGuideColumn(sections) {
 /**
  * Render the guide sections of one view into `body` as two balanced columns (so the wide window isn't
  * one long single-column scroll with over-long lines), clearing it first.
- * @param {HTMLElement} body The body element.
+ * @param {HTMLElement} body
  * @param {*[]} sections The GUIDE sections for the active view.
  */
 function renderGuideView(body, sections) {

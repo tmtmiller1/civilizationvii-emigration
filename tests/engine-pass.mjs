@@ -2,7 +2,7 @@
 //
 // End-to-end characterization of the engine's per-turn pass (runPass). The other harnesses
 // exercise the pure leaf modules the engine composes (geography, prosperity, pull, effects, ...)
-// but never drive a full pass, so every engine mutant survived mutation testing (0%). This builds
+// but never drive a full pass, so nothing checked the engine's own branches. This builds
 // a tiny deterministic fake world on globalThis, pins the CONFIG knobs, and asserts the observable
 // outcomes of a pass: that population actually moves, the right Migration records are emitted
 // (move / depart / arrive / attrition), and the engine's branches (instant vs lagged transit,
@@ -16,7 +16,7 @@ import assert from "node:assert/strict";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { runPass } from "/emigration/ui/emigration-engine.js";
 
-// ── Deterministic engine globals ──────────────────────────────────────────
+// Deterministic engine globals
 globalThis.YieldTypes = {
   YIELD_FOOD: "YIELD_FOOD",
   YIELD_PRODUCTION: "YIELD_PRODUCTION",
@@ -121,7 +121,7 @@ function pinBaseConfig() {
   });
 }
 
-// ── Scenario A: an instantaneous intra-civ move (transit lag 0) ────────────
+// Scenario A: an instantaneous intra-civ move (transit lag 0)
 (function scenarioInstant() {
   pinBaseConfig();
   installConfigStore();
@@ -148,7 +148,7 @@ function pinBaseConfig() {
   );
 })();
 
-// ── Scenario B: a lagged move, depart now, arrive turns later ─────────────
+// Scenario B: a lagged move, depart now, arrive turns later
 (function scenarioLagged() {
   pinBaseConfig();
   Object.assign(CONFIG, { transitLagTurns: 4, transitHexPerTurn: 5 });
@@ -174,7 +174,7 @@ function pinBaseConfig() {
   assert.ok(rich.ruralPopulation > 2, "B: destination gains the point on arrival");
 })();
 
-// ── Scenario C: the attrition outlet, distressed source, no destination ───
+// Scenario C: the attrition outlet, distressed source, no destination
 (function scenarioAttrition() {
   pinBaseConfig();
   Object.assign(CONFIG, {
@@ -212,8 +212,8 @@ function pinBaseConfig() {
   assert.ok(trapped.ruralPopulation < before, "C: attrition actually removes population");
 })();
 
-// ── Scenario D: war surge, a besieged source sheds a burst in one turn ─────
-// Drive REAL violence through the documented observation path: districtDamageFrac reads
+// Scenario D: war surge, a besieged source sheds a burst in one turn
+// Drive real violence through the documented observation path: districtDamageFrac reads
 // Players.Districts.get(owner).getDistrictHealth(loc), so a fully-wrecked district at the source's
 // location accumulates intensity (vwAssault + vwSiege) above the flee threshold → cause "war" →
 // warSurgeBudget sheds a multi-point burst in one turn.
@@ -254,17 +254,17 @@ function pinBaseConfig() {
   assert.ok(besieged.ruralPopulation <= 8, "D: the source lost the burst from its rural pool");
 })();
 
-// ── Scenario E: CONCURRENT causes, the voluntary/crisis split ─────────────
-// A besieged city next to a high-yield haven. With the split on, the SAME source sheds war refugees
-// (crisis track, flees every turn) AND prosperity migrants (voluntary track, crosses the bar) in one
-// pass, and the war refugees are NOT relabeled "prosperity" by the pull next door (the regression
+// Scenario E: concurrent causes, the voluntary/crisis split
+// A besieged city next to a high-yield haven. With the split on, the same source sheds war refugees
+// (crisis track, flees every turn) and prosperity migrants (voluntary track, crosses the bar) in one
+// pass, and the war refugees are not relabeled "prosperity" by the pull next door (the regression
 // that the old cause-mixing experiment caused). This fails on legacy single-cause behavior.
 (function scenarioConcurrent() {
   pinBaseConfig();
   Object.assign(CONFIG, {
     warSurgeMax: 3, violenceFleeThreshold: 2, warSiege: false, transitLagTurns: 0,
     movesPerSiege: 3, splitTracksEnabled: true, splitBudgetsEnabled: true,
-    maxLossPerCityPerTurn: 0, // cap OFF here: this scenario tests concurrent crisis+voluntary, not the cap
+    maxLossPerCityPerTurn: 0, // cap off here: this scenario tests concurrent crisis+voluntary, not the cap
     emigrationBar: 1, cooldownTurns: 0
   });
   installConfigStore();
@@ -290,9 +290,9 @@ function pinBaseConfig() {
   assert.equal(war[0].cause, "war", "E: war refugees stay labeled war next to a high-yield haven");
 })();
 
-// ── Scenario E2: the per-city cap bounds a heavy siege ──────────────────────
+// Scenario E2: the per-city cap bounds a heavy siege
 // A city under full assault with a large war-surge + crisis budget would burst many points in one
-// turn; maxLossPerCityPerTurn caps how many MIGRATION points it can lose, so it can't hemorrhage.
+// turn; maxLossPerCityPerTurn caps how many migration points it can lose, so it can't hemorrhage.
 (function scenarioPerCityCap() {
   pinBaseConfig();
   Object.assign(CONFIG, {
@@ -323,7 +323,7 @@ function pinBaseConfig() {
   assert.ok(lost <= 2, `E2: per-city cap holds total migration loss to ≤ 2 (got ${lost})`);
 })();
 
-// ── Scenario F: famine death CONCURRENT with emigration (a refuge EXISTS) ───
+// Scenario F: famine death concurrent with emigration (a refuge exists)
 (function scenarioFamineDeath() {
   pinBaseConfig();
   Object.assign(CONFIG, {
@@ -338,9 +338,9 @@ function pinBaseConfig() {
   });
   installConfigStore();
   globalThis.Game = { turn: 1 };
-  // A STARVING city (owner 1, negative food) AND a prosperous refuge (owner 2, high food): people CAN
-  // flee, yet famine must still kill some. We must see BOTH an emigration (cause != attrition, with a
-  // destination) AND an attrition death, both from owner 1, proving death is concurrent with flight.
+  // A starving city (owner 1, negative food) and a prosperous refuge (owner 2, high food): people can
+  // flee, yet famine must still kill some. The pass must show both an emigration (cause != attrition, with a
+  // destination) and an attrition death, both from owner 1, proving death is concurrent with flight.
   const starving = makeCity(1, 1, { population: 12, rural: 12, yields: { YIELD_FOOD: -5 } });
   const refuge = makeCity(2, 1, { population: 10, rural: 10, yields: { YIELD_FOOD: 40 }, x: 1, y: 0 });
   installWorld({ 1: major([starving]), 2: major([refuge]) });
@@ -359,7 +359,7 @@ function pinBaseConfig() {
   assert.ok(sawDeath, "F: AND it loses some to famine death even with a refuge (death ≠ trapped)");
 })();
 
-// ── Scenario G: WAR death concurrent with refugee flight (a refuge EXISTS) ──
+// Scenario G: war death concurrent with refugee flight (a refuge exists)
 (function scenarioWarDeath() {
   pinBaseConfig();
   Object.assign(CONFIG, {
@@ -375,9 +375,9 @@ function pinBaseConfig() {
   });
   installConfigStore();
   globalThis.Game = { turn: 1 };
-  // A besieged city (owner 1) AND a safe haven (owner 2): war refugees CAN flee, yet the war must
-  // ALSO kill some (siege casualties). Lethal distress comes from war/siege, not starvation, proving
-  // the death channel generalizes beyond famine. We need BOTH a refugee (cause != attrition) AND a death.
+  // A besieged city (owner 1) and a safe haven (owner 2): war refugees can flee, yet the war must
+  // Also kill some (siege casualties). Lethal distress comes from war/siege, not starvation, so
+  // the death channel generalizes beyond famine. We need both a refugee (cause != attrition) and a death.
   const besieged = makeCity(1, 1, { population: 12, rural: 12, siege: true, yields: { YIELD_FOOD: 5 } });
   const haven = makeCity(2, 1, { population: 10, rural: 10, yields: { YIELD_FOOD: 40 }, x: 1, y: 0 });
   installWorld({ 1: major([besieged]), 2: major([haven]) });
@@ -396,7 +396,7 @@ function pinBaseConfig() {
   assert.ok(sawDeath, "G: AND the war kills some even with a haven (lethal-distress death, not famine)");
 })();
 
-// ── Scenario H: Empty world (no cities) returns empty records ──
+// Scenario H: Empty world (no cities) returns empty records
 (function scenarioEmptyWorld() {
   pinBaseConfig();
   installConfigStore();
@@ -409,7 +409,7 @@ function pinBaseConfig() {
   assert.equal(recs.length, 0, "H: empty world produces no migration records");
 })();
 
-// ── Scenario I: Single city insufficient population (below minRuralToEmigrate) ──
+// Scenario I: Single city insufficient population (below minRuralToEmigrate)
 (function scenarioInsufficientPopulation() {
   pinBaseConfig();
   Object.assign(CONFIG, {
@@ -433,7 +433,7 @@ function pinBaseConfig() {
   assert.equal(emigrations.length, 0, "I: insufficient population blocks emigration");
 })();
 
-// ── Scenario J: Turn zero boundary (game.turn = 0) ──
+// Scenario J: Turn zero boundary (game.turn = 0)
 (function scenarioTurnZero() {
   pinBaseConfig();
   installConfigStore();
@@ -448,7 +448,7 @@ function pinBaseConfig() {
   assert.ok(Array.isArray(recs), "J: runPass handles turn 0 safely");
 })();
 
-// ── Scenario K: Very slow game speed (0.25x) ──
+// Scenario K: Very slow game speed (0.25x)
 (function scenarioSlowSpeed() {
   pinBaseConfig();
   // At 0.25x speed, turns pass slower, affecting transit lag and cooldown scaling
@@ -474,7 +474,7 @@ function pinBaseConfig() {
   assert.ok(Array.isArray(recs), "K: slow speed (0.25x) executes safely");
 })();
 
-// ── Scenario L: Very fast game speed (4x) ──
+// Scenario L: Very fast game speed (4x)
 (function scenarioFastSpeed() {
   pinBaseConfig();
   // At 4x speed, turns pass faster, affecting transit lag and cooldown scaling

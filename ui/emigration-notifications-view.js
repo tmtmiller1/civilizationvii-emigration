@@ -1,6 +1,6 @@
 // emigration-notifications-view.js
 //
-// Renders the persistent notification LOG (emigration-notifications.js) into the "Notifications"
+// Renders the persistent notification log (emigration-notifications.js) into the "Notifications"
 // sub-tab: a newest-first list of every recorded migration event, including Chronicle entries; a row
 // expands to the full detail. Pure DOM + a self-injected stylesheet.
 
@@ -10,7 +10,7 @@ import { formatBothExact } from "/emigration/ui/emigration-population.js";
 import { loc, localeFontFamily } from "/emigration/ui/emigration-loc.js";
 
 /**
- * Split a composed digest summary into its SITUATION and GUIDANCE blocks, which `localDigestMessage`
+ * Split a composed digest summary into its situation and guidance blocks, which `localDigestMessage`
  * joins with a blank line ("\n\n"). The row header shows only the situation and the expanded detail
  * the guidance. A summary with no blank line is all situation.
  * @param {string} [summary] The stored summary.
@@ -148,7 +148,7 @@ function detailEl(e) {
   const panel = el("div", "emig-ntf-detail");
   if (e.kind === "chronicle") chronicleDetail(panel, e);
   else migrationDetail(panel, e);
-  // The header already shows the situation; the Note carries only the GUIDANCE half of the digest.
+  // The header already shows the situation; the Note carries only the guidance half of the digest.
   // The trailing movement-scope tag is stripped because the row chip already names the scope.
   if (e.kind !== "chronicle") {
     const guidance = stripScopeTag(splitSummary(entryText(e, "summary")).guidance);
@@ -203,7 +203,7 @@ export function stripScopeTag(guidance) {
 }
 
 /**
- * The row's chip text: which DIRECTION the migration ran ("Internal Migration", "Emigration (Leaving)",
+ * The row's chip text: which direction the migration ran ("Internal Migration", "Emigration (Leaving)",
  * "Immigration (Arriving)"). A death is "Casualties", a chronicle entry "Chronicle", and the
  * world-news kinds keep the plain cause label.
  * @param {*} e A NotifEntry.
@@ -222,8 +222,8 @@ export function chipLabel(e) {
 }
 
 /**
- * The row accent color, keyed by DIRECTION rather than cause: arrivals from abroad read GREEN, own
- * people leaving for a rival RED, internal moves neutral. Deaths and world-news rows keep their cause
+ * The row accent color, keyed by direction rather than cause: arrivals from abroad read green, own
+ * people leaving for a rival red, internal moves neutral. Deaths and world-news rows keep their cause
  * color; a chronicle entry keeps the chronicle accent.
  * @param {*} e A NotifEntry.
  * @returns {string} A CSS color.

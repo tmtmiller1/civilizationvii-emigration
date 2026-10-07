@@ -30,7 +30,7 @@ async function run() {
   const r = placeEnclave(L.city, "CIVILIZATION_GORYEO", "a");
   if (!r) { emit("placement failed"); finished = true; setTimeout(endTurn, 2000); return; }
   key = "probe:" + local + ":" + r.plot;
-  // A REAL origin player id (the largest foreign civ's owner): the first two runs used 99, a player that
+  // A real origin player id (the largest foreign civ's owner): the first two runs used 99, a player that
   // does not exist, and crashed natively right after the built-over branch chronicled the loss.
   const originPid = sigs.filter((s) => s.owner !== local && !s.isCityState).sort((a, b) => b.population - a.population)[0].owner;
   emit("ORIGIN pid=" + originPid);

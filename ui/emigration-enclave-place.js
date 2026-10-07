@@ -1,7 +1,7 @@
 // emigration-enclave-place.js
 //
-// The Cultural Enclave as a REAL tile. When the player recognizes an enclave, this places the origin's
-// enclave IMPROVEMENT (IMPROVEMENT_EMIG_ENCLAVE_<CIV>_<A|B>) on a host-city plot via CREATE_ELEMENT; the
+// The Cultural Enclave as a real tile. When the player recognizes an enclave, this places the origin's
+// enclave improvement (IMPROVEMENT_EMIG_ENCLAVE_<CIV>_<A|B>) on a host-city plot via CREATE_ELEMENT; the
 // tile carries the stance's benefit yield natively and the per-turn grant steps aside while it stands.
 // The improvements are never buildable, so the AI's build evaluator never sees them. Tile choice: the
 // nearest empty land plot, else the outlying farmstead is replaced; everything degrades to "not placed".
@@ -18,7 +18,7 @@ export const ENCLAVE_PREFIX = "IMPROVEMENT_EMIG_ENCLAVE_";
 /** The skin modes (CONFIG.enclaveTileSkin). */
 export const SKIN = Object.freeze({ NATIVE: 0, THEMED: 1, VILLAGE: 2 });
 
-/** The configured skin mode (defaults to themed on an unknown value). @returns {number} A SKIN value. */
+/** The configured skin mode (defaults to themed on an unknown value). @returns {number} */
 export function skinMode() {
   const v = Number(CONFIG.enclaveTileSkin);
   return v === SKIN.NATIVE || v === SKIN.VILLAGE ? v : SKIN.THEMED;
@@ -40,9 +40,9 @@ export function placedTypesFor(enclaveType, originCiv) {
 }
 
 /**
- * The terrain types a constructible may stand on (its Constructible_ValidTerrains rows); an EMPTY set
- * means the data lists none, i.e. any land the enclave picker allows.
- * @param {string} type A ConstructibleType. @returns {Set<string>} Terrain types.
+ * The terrain types a constructible may stand on (its Constructible_ValidTerrains rows); an empty set
+ * means the data lists none, so any land the enclave picker allows.
+ * @param {string} type A ConstructibleType. @returns {Set<string>}
  */
 export function validTerrainsFor(type) {
   return safe(() => {
@@ -68,7 +68,7 @@ const VALID_TERRAINS = new Set(["TERRAIN_FLAT", "TERRAIN_HILL"]);
 
 /**
  * Run a game read that may be unavailable or throw, degrading to `fb`.
- * @param {() => *} fn The read. @param {*} [fb] Fallback. @returns {*} The value or fallback.
+ * @param {() => *} fn @param {*} [fb] @returns {*}
  */
 function safe(fn, fb) {
   try {
@@ -106,7 +106,7 @@ export function enclaveIndex(type) {
 
 /**
  * The ConstructibleType names standing on a plot ([] when unreadable).
- * @param {number} x Plot x. @param {number} y Plot y. @returns {string[]} Types on the plot.
+ * @param {number} x @param {number} y @returns {string[]}
  */
 function typesAt(x, y) {
   return safe(() => {
@@ -124,7 +124,7 @@ function typesAt(x, y) {
 /**
  * The enclave improvement standing on a plot, or null (the native skin only; a Village-skinned enclave is
  * known from its quarter record, see enclaveStanding).
- * @param {number} x Plot x. @param {number} y Plot y.
+ * @param {number} x @param {number} y
  * @returns {string|null} The enclave ConstructibleType, or null.
  */
 export function enclaveTypeAt(x, y) {
@@ -135,7 +135,7 @@ export function enclaveTypeAt(x, y) {
  * Whether a quarter record's placed enclave still stands on its plot (pillage, razing, or an age
  * transition may have removed it; then the stance grant resumes).
  * @param {*} rec A quarter record.
- * @returns {boolean} True when the tile stands.
+ * @returns {boolean}
  */
 export function enclaveStanding(rec) {
   const p = rec && rec.placed;
@@ -147,8 +147,8 @@ export function enclaveStanding(rec) {
 
 /**
  * The yields of a plot as its owner sees them ({YIELD_X: n}), or null when unreadable.
- * @param {number} plot Plot index. @param {number} owner The plot owner's player id.
- * @returns {Record<string, number>|null} Yields by type.
+ * @param {number} plot @param {number} owner The plot owner's player id.
+ * @returns {Record<string, number>|null}
  */
 export function plotYieldsAt(plot, owner) {
   return safe(() => {
@@ -169,7 +169,7 @@ export function plotYieldsAt(plot, owner) {
 /**
  * The yields a constructible type carries natively ({YIELD_X: n}): its Constructible_YieldChanges rows,
  * plus the Village's +2 Culture from data/emigration-enclave-village.xml (a modifier, not a row).
- * @param {string} type A ConstructibleType. @returns {Record<string, number>} Yields by type.
+ * @param {string} type A ConstructibleType. @returns {Record<string, number>}
  */
 export function nativeYieldsOf(type) {
   /** @type {Record<string, number>} */
@@ -186,7 +186,7 @@ export function nativeYieldsOf(type) {
 }
 
 /**
- * What a takeover must pay back each turn so the tile ends up with the REPLACED improvement's yields plus
+ * What a takeover must pay back each turn so the tile ends up with the replaced improvement's yields plus
  * the enclave's own: `before` + native, minus the plot's yields now, per yield, never below zero. Pure.
  * @param {Record<string, number>} before The plot's yields before the takeover.
  * @param {Record<string, number>} native The enclave type's native yields.
@@ -204,7 +204,7 @@ export function takeoverCompensation(before, native, after) {
   return out;
 }
 
-/** A finite number or 0. @param {*} v Any value. @returns {number} The number. */
+/** A finite number or 0. @param {*} v @returns {number} */
 function num(v) {
   const n = Number(v);
   return isFinite(n) ? n : 0;
@@ -213,7 +213,7 @@ function num(v) {
 /**
  * Remove a record's placed tile from the map (the enclave fades): the constructible of the placed type on
  * that plot is destroyed with the engine's DESTROY_ELEMENT. Nothing else on the plot is touched.
- * @param {*} rec A quarter record. @returns {boolean} True when a destroy request was issued.
+ * @param {*} rec A quarter record. @returns {boolean} Whether a destroy request was issued.
  */
 export function destroyPlacedTile(rec) {
   const p = rec && rec.placed;
@@ -235,9 +235,9 @@ export function destroyPlacedTile(rec) {
 }
 
 /**
- * Whether a record's placed plot holds ANY constructible now (a wonder, building, or other improvement
+ * Whether a record's placed plot holds any constructible now (a wonder, building, or other improvement
  * that displaced the enclave tile). False for an empty plot or an unreadable record.
- * @param {*} rec A quarter record. @returns {boolean} True when something stands on the plot.
+ * @param {*} rec A quarter record. @returns {boolean}
  */
 export function placedPlotOccupied(rec) {
   const p = rec && rec.placed;
@@ -247,10 +247,10 @@ export function placedPlotOccupied(rec) {
 }
 
 /**
- * Whether the standing placed tile IS the enclave's benefit, so the per-turn benefit grant steps aside
+ * Whether the standing placed tile is the enclave's benefit, so the per-turn benefit grant steps aside
  * (the drawback stays on the grant). True for every skin while the tile stands; false when nothing
  * stands, so the grant resumes after pillage, razing, or displacement.
- * @param {*} rec A quarter record. @returns {boolean} True when the tile pays the benefit itself.
+ * @param {*} rec A quarter record. @returns {boolean}
  */
 export function enclaveCarriesBenefit(rec) {
   return enclaveStanding(rec);
@@ -258,7 +258,7 @@ export function enclaveCarriesBenefit(rec) {
 
 /**
  * The terrain type name of a plot ("" when unreadable).
- * @param {number} x Plot x. @param {number} y Plot y. @returns {string} Terrain type.
+ * @param {number} x @param {number} y @returns {string}
  */
 function terrainAt(x, y) {
   return safe(() => {
@@ -270,7 +270,7 @@ function terrainAt(x, y) {
 /**
  * The city's empty, land, flat-or-hill plots with no district and no constructible, nearest first.
  * Pure over the injected reads, so it is unit-testable with a stubbed map.
- * @param {*} city The host city object.
+ * @param {*} city
  * @returns {{plot:number, loc:{x:number,y:number}, distance:number}[]} Candidates, nearest first.
  */
 export function emptyPlotsOf(city) {
@@ -288,8 +288,8 @@ export function emptyPlotsOf(city) {
 
 /**
  * Whether a plot can host the enclave: not the center, land, no district, no constructible, flat/hill.
- * @param {{x:number,y:number}} loc Plot location. @param {{x:number,y:number}} centre City center.
- * @returns {boolean} True when usable.
+ * @param {{x:number,y:number}} loc @param {{x:number,y:number}} centre City center.
+ * @returns {boolean}
  */
 function isEmptyLandPlot(loc, centre) {
   if (loc.x === centre.x && loc.y === centre.y) return false;
@@ -302,14 +302,14 @@ function isEmptyLandPlot(loc, centre) {
 /**
  * Issue the CREATE_ELEMENT for the enclave improvement on a plot (the tuner's argument shape).
  * @param {*} city Host city. @param {number} typeIndex The constructible `$index`.
- * @param {{x:number,y:number}} loc The plot location.
+ * @param {{x:number,y:number}} loc
  * @param {boolean} needsDistrict Whether the plot has no district yet (an empty plot).
- * @returns {boolean} True when the request was issued.
+ * @returns {boolean} Whether the request was issued.
  */
 function create(city, typeIndex, loc, needsDistrict) {
   return safe(() => {
     const sender = typeof GameContext !== "undefined" ? GameContext.localPlayerID : city.owner;
-    // An improvement needs its rural district; an EMPTY plot has none, so create it first (the tuner's
+    // An improvement needs its rural district; an empty plot has none, so create it first (the tuner's
     // district mode). A plot that held an improvement keeps its district and skips this.
     if (needsDistrict) {
       Game.PlayerOperations.sendRequest(sender, "CREATE_ELEMENT", { Kind: "DISTRICT", Type: "DISTRICT_RURAL", Location: loc, Parent: city.id, Owner: city.owner });
@@ -322,7 +322,7 @@ function create(city, typeIndex, loc, needsDistrict) {
 /**
  * Place the enclave improvement for a recognized stance. Returns what was placed, or null when the
  * option is off, the data is not loaded, the stance is "ignore", or the city has no usable plot.
- * @param {*} city The host city object.
+ * @param {*} city
  * @param {string|null} originCiv The origin CivilizationType.
  * @param {string} optionId The chosen stance.
  * @returns {{type:string, plot:number, enclave:string, replaced?:string}|null} The placement, or null:
@@ -350,7 +350,7 @@ export function placeEnclave(city, originCiv, optionId) {
 
 /**
  * A plot predicate for a type's valid terrains (every plot when the data lists none).
- * @param {string} type A ConstructibleType. @returns {(c:{loc:{x:number,y:number}}) => boolean} The filter.
+ * @param {string} type A ConstructibleType. @returns {(c:{loc:{x:number,y:number}}) => boolean}
  */
 function terrainFilter(type) {
   const terrains = validTerrainsFor(type);
@@ -360,7 +360,7 @@ function terrainFilter(type) {
 }
 
 /**
- * Place a skin type on an EMPTY plot (rural district first, then the improvement).
+ * Place a skin type on an empty plot (rural district first, then the improvement).
  * @param {*} city Host city. @param {string} type The type placed. @param {number} index Its `$index`.
  * @param {string} enclave The enclave improvement type the record stands for.
  * @param {{plot:number, loc:{x:number,y:number}}} pick The empty plot.

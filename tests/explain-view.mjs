@@ -1,12 +1,12 @@
 // explain-view.mjs
 //
 // Feature L: the push/pull explainer surface. The reasoning itself is pinned by tests/explain.mjs
-// (the reconstruction identities); what is covered HERE is the formatting contract this surface
+// (the reconstruction identities); what is covered here is the formatting contract this surface
 // promises a player, and the three things it must never conflate:
 //
-//   • FACTORS carry weights, and a weight is a share of the whole decomposition.
-//   • PERMEABILITY is a multiplier, reported as one - never as a weight (it is not an addend).
-//   • COMMUNITY is context, and must NOT enter the weights at all (chain migration is unbuilt;
+//   • Factors carry weights, and a weight is a share of the whole decomposition.
+//   • Permeability is a multiplier, reported as one, never as a weight (it is not an addend).
+//   • Community is context, and must not enter the weights at all (chain migration is unbuilt;
 //     see the file header of emigration-explain-view.js). The load-bearing case is
 //     `testCommunityDoesNotDisturbWeights`: a fabricated community row would land in weigh()'s
 //     denominator and silently falsify every other row's share, so it is asserted that the rows are
@@ -83,7 +83,7 @@ Object.assign(CONFIG, {
 });
 
 /**
- * A signal carrying BOTH shapes: the pull fields (key/owner/pros/population/location) and the
+ * A signal carrying both shapes: the pull fields (key/owner/pros/population/location) and the
  * prosperity fields explainPush decomposes. One fixture, because the explainer feeds the same
  * settlement to both sides.
  */
@@ -111,7 +111,7 @@ const build = (over) =>
 const near = (a, b, eps = 1e-9) => Math.abs(a - b) < eps;
 const totalWeight = (rows) => rows.reduce((a, r) => a + r.weight, 0);
 
-// ── A distressed city explains both sides ────────────────────────────────────
+// A distressed city explains both sides
 
 function testDistressedCityHasBothGroups() {
   const m = build();
@@ -122,10 +122,10 @@ function testDistressedCityHasBothGroups() {
   assert.equal(m.crossCiv, true, "a move to another owner is flagged cross-civ");
 }
 
-// ── The honesty rule: weights are shares, and they sum to the whole ──────────
+// The honesty rule: weights are shares, and they sum to the whole
 
 function testWeightsNormalizeWithinEachGroup() {
-  // MAX_ROWS truncation must not renormalize: a shown row's weight is its share of the FULL
+  // MAX_ROWS truncation must not renormalize: a shown row's weight is its share of the full
   // decomposition, so a truncated group sums to <= 1, never back up to 1.
   const m = build();
   for (const [name, rows] of [["leaving", m.leaving], ["drawnTo", m.drawnTo]]) {
@@ -155,7 +155,7 @@ function testRowsAreSortedByWeight() {
   }
 }
 
-// ── Permeability is a multiplier, not a factor row ───────────────────────────
+// Permeability is a multiplier, not a factor row
 
 function testNeutralBorderReportsNoMultiplier() {
   const m = build();
@@ -178,7 +178,7 @@ function testThrottledBorderReportsItsMultiplier() {
   }
 }
 
-// ── Community is context, and must not touch the weights ────────────────────
+// Community is context, and must not touch the weights
 
 function testCommunityOnlyWhenDestHostsTheOrigin() {
   assert.equal(build().community, null, "no resolver → no community note");
@@ -209,7 +209,7 @@ function testCommunityNeedsAViableDestination() {
   assert.equal(m.destName, "", "and names no destination");
 }
 
-// ── Degenerate inputs ────────────────────────────────────────────────────────
+// Degenerate inputs
 
 function testNoSignalYieldsNoModel() {
   assert.equal(buildExplainModel({ signal: null, ranked: [] }), null, "a missing signal yields no model");
@@ -223,7 +223,7 @@ function testContentCityWithNoDestinationExplainsNothingToDo() {
   assert.equal(m.permeability, null, "and no border multiplier to report");
 }
 
-// ── Render ───────────────────────────────────────────────────────────────────
+// Render
 
 /** Every element in a rendered tree, depth-first. */
 const flatten = (el) => [el, ...el.children.flatMap(flatten)];

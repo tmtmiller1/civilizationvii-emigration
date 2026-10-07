@@ -1,4 +1,4 @@
-// eep-modtest30.js - AFTER the pop-up fix: how the mod's three decision pop-ups actually render (user: "bootleg": weird spacing,
+// eep-modtest30.js - after the pop-up fix: how the mod's three decision pop-ups actually render (user: "bootleg": weird spacing,
 // visual conflicts, jitter; and the arrivals pop-up was mistaken for the enclave one). AugustusAnt49, no turn
 // ending. For each pop-up (arrivals, refugee decision, enclave decision): raise it through shipped code,
 // measure the dialog frame / header / body / buttons at 0, 50, 100, 200, 400, 800, 1500 ms (movement = jitter),

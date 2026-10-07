@@ -82,7 +82,7 @@
         <Argument name="Tooltip">LOC_EMIG_POLICY_CLOSED_BORDERS_NAME</Argument>
     </Modifier>
 
-    <!-- Attraction cards (§1b): a small FIXED native +yield floor (line-itemed, visible). The
+    <!-- Attraction cards (§1b): a small fixed native +yield floor (line-itemed, visible). The
          volume-scaling part is the JS carried dividend (emigration-effects.js). EX +1 / MO +2. -->
     <Modifier id="MOD_EMIG_TALENT_YIELD_EX" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
         <Argument name="YieldType">YIELD_SCIENCE</Argument>

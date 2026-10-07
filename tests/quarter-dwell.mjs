@@ -1,7 +1,7 @@
 // quarter-dwell.mjs
 //
-// The enclave PERSISTENCE (dwell) gate: observeQuarterDwell tracks a per-tile clock for the local
-// player's established enclaves each pass, and candidateFromSignal refuses to OFFER a decision until the
+// The enclave persistence (dwell) gate: observeQuarterDwell tracks a per-tile clock for the local
+// player's established enclaves each pass, and candidateFromSignal refuses to offer a decision until the
 // enclave has persisted for quarterDwellTurns. Driven end-to-end through the real composition ledger
 // (seeded via its __test surface) so establishedQuarterForCity fires on a genuine foreign majority. A
 // Configuration KV stub (no gameSeed → no cache reset) backs quarter-state persistence.
@@ -45,7 +45,7 @@ function clearState() {
   s.candidacy = {};
 }
 
-/** Seed an owner-0 city whose lead FOREIGN origin (civ `foreign`) holds `foreign`/(host+foreign) share. */
+/** Seed an owner-0 city whose lead foreign origin (civ `foreign`) holds `foreign`/(host+foreign) share. */
 function seedForeignMajority(x, y, name, hostPts, foreign, foreignPts) {
   comp.__test.recordCompositionPass([sig(x, y, name, 0, hostPts), sig(90, 90, "Home", foreign, foreignPts + 50)], []);
   comp.__test.recordCompositionPass(
@@ -54,7 +54,7 @@ function seedForeignMajority(x, y, name, hostPts, foreign, foreignPts) {
   );
 }
 
-// ── the ledger genuinely reports an established foreign enclave (test-setup sanity) ──
+// the ledger genuinely reports an established foreign enclave (test-setup sanity)
 {
   clearState();
   seedForeignMajority(1, 1, "Athens", 10, 2, 10); // 10 civ0 + 10 civ2 → civ2 = 50%, stock 10
@@ -63,7 +63,7 @@ function seedForeignMajority(x, y, name, hostPts, foreign, foreignPts) {
   assert.ok(q.share >= 0.35 && q.stock >= 5, "it clears the share + stock bar");
 }
 
-// ── clock starts on first sighting; no offer until the dwell window elapses ──
+// clock starts on first sighting; no offer until the dwell window elapses
 {
   clearState();
   seedForeignMajority(1, 1, "Athens", 10, 2, 10);
@@ -74,7 +74,7 @@ function seedForeignMajority(x, y, name, hostPts, foreign, foreignPts) {
   assert.equal(candidateFromSignal(athens, 0, 107), null, "still no offer one turn short of the window");
 }
 
-// ── the same origin persisting KEEPS its clock start; offer fires at the window ──
+// the same origin persisting keeps its clock start; offer fires at the window
 {
   clearState();
   seedForeignMajority(1, 1, "Athens", 10, 2, 10);
@@ -87,7 +87,7 @@ function seedForeignMajority(x, y, name, hostPts, foreign, foreignPts) {
   assert.ok(cand && cand.tileKey === "1,1" && cand.quarter.civ === 2, "at the dwell window the decision is offered");
 }
 
-// ── a DIFFERENT origin overtaking the tile restarts the clock ──
+// a different origin overtaking the tile restarts the clock
 {
   clearState();
   seedForeignMajority(1, 1, "Athens", 10, 2, 10);
@@ -105,7 +105,7 @@ function seedForeignMajority(x, y, name, hostPts, foreign, foreignPts) {
   assert.equal(candidacyAt("1,1").since, 120, "the clock restarts when a different origin overtakes the tile");
 }
 
-// ── a lapsed enclave is pruned once it stays below the bar past the grace window ──
+// a lapsed enclave is pruned once it stays below the bar past the grace window
 {
   clearState();
   // Share stages only: the absolute-stock qualifier (6 points establish whatever the share) is off here,
@@ -126,8 +126,8 @@ function seedForeignMajority(x, y, name, hostPts, foreign, foreignPts) {
   CONFIG.quarterEstablishedStock = wasStock;
 }
 
-// ── the two-step lifecycle, end to end: ESTABLISHED creates the enclave at once (no dwell), the
-//    Chronicle announces it exactly once, and RECOGNITION waits out the dwell on the SAME record ──
+// the two-step lifecycle, end to end: established creates the enclave at once (no dwell), the
+//    Chronicle announces it exactly once, and recognition waits out the dwell on the same record
 {
   clearState();
   const { chronicleLog, clearChronicle } = await import("/emigration/ui/emigration-chronicle.js");
@@ -161,7 +161,7 @@ function seedForeignMajority(x, y, name, hostPts, foreign, foreignPts) {
   clearChronicle();
 }
 
-// ── the per-origin cap binds ESTABLISHMENT: a third same-origin enclave is never created ──
+// the per-origin cap binds establishment: a third same-origin enclave is never created
 {
   clearState();
   const { establishEnclaves } = quarter.__test;
@@ -174,8 +174,8 @@ function seedForeignMajority(x, y, name, hostPts, foreign, foreignPts) {
   assert.equal(stateMod.quarterAt("1,1"), null, "two enclaves of one origin is the cap: no third is created");
 }
 
-// ── on-screen notices: the LOCAL player's enclave being established, recognized, and fading each raise
-//    a notice that states the yields; another host's enclave reaches the log only ──
+// on-screen notices: the local player's enclave being established, recognized, and fading each raise
+//    a notice that states the yields; another host's enclave reaches the log only
 {
   clearState();
   const { clearChronicle } = await import("/emigration/ui/emigration-chronicle.js");

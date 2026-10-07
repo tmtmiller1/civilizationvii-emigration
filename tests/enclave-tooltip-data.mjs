@@ -1,6 +1,6 @@
 // enclave-tooltip-data.mjs
 //
-// What the enclave tooltip SAYS (emigration-enclave-tooltip-data.js). The model exists because three
+// What the enclave tooltip says (emigration-enclave-tooltip-data.js). The model exists because three
 // things were invisible in game (reported 2026-09-17): the enclave's name and stage, the improvement it
 // displaced, and the stance yields, which are paid to the city and never touch the tile. So the things
 // worth pinning are: the borrowed improvement never becomes the tile's identity, a displaced improvement
@@ -26,13 +26,13 @@ function input(over) {
 }
 const keys = (m) => m.sources.map((s) => s.key);
 
-// ── stages, in precedence order ──
+// stages, in precedence order
 assert.equal(stageOf({ recognized: false }), "established", "an unrecognized record is merely established");
 assert.equal(stageOf({ recognized: true }), "recognized");
 assert.equal(stageOf({}), "recognized", "a legacy record with no flag was created at recognition");
 assert.equal(stageOf({ recognized: true, contested: true }), "contested", "a war outranks a quiet recognition");
-// An unrecognized enclave IS marked contested by the mod and charged the war strain, so the panel has to
-// say so rather than showing the calm established line (watched in game 2026-09-17).
+// An unrecognized enclave is marked contested by the mod and charged the war strain, so the panel has to
+// say so rather than showing the calm established line (seen in game 2026-09-17).
 assert.equal(stageOf({ recognized: false, contested: true }), "contested", "an unrecognized enclave under war reads as contested");
 {
   const m = enclaveTipModel(input({ rec: { recognized: false, optionId: "ignore", contested: true }, stance: {}, stanceLabel: "", why: "" }));
@@ -42,7 +42,7 @@ assert.equal(stageOf({ recognized: false, contested: true }), "contested", "an u
 }
 assert.equal(stageOf({ recognized: true, contested: true, fadeSince: 90 }), "fading", "fading outranks everything");
 
-// ── the borrowed improvement is never the tile's identity ──
+// the borrowed improvement is never the tile's identity
 {
   const m = enclaveTipModel(input());
   assert.equal(m.title, "Norman Enclave", "the tile is titled as the enclave");
@@ -54,7 +54,7 @@ assert.equal(stageOf({ recognized: true, contested: true, fadeSince: 90 }), "fad
   assert.equal(m.subtitle, "Lāhainā · Tropical Hills");
 }
 
-// ── recognized: land, tile and stance, each with its yields and its reasoning ──
+// recognized: land, tile and stance, each with its yields and its reasoning
 {
   const m = enclaveTipModel(input());
   assert.deepEqual(keys(m), ["land", "tile", "stance"]);
@@ -69,7 +69,7 @@ assert.equal(stageOf({ recognized: true, contested: true, fadeSince: 90 }), "fad
   assert.deepEqual(m.totalAmounts, { [F]: 1, [H]: -1, [P]: 8 }, "and so does the total");
 }
 
-// ── established: no stance row, and the stage says when recognition comes ──
+// established: no stance row, and the stage says when recognition comes
 {
   const m = enclaveTipModel(input({ rec: { recognized: false, optionId: "ignore" }, dwell: { elapsed: 3, needed: 8 } }));
   assert.deepEqual(keys(m), ["land", "tile"], "an established enclave has no stance yet");
@@ -80,7 +80,7 @@ assert.equal(stageOf({ recognized: true, contested: true, fadeSince: 90 }), "fad
   assert.ok(/ready to be recognized/i.test(due.stage.text), "a served dwell reads as ready, never a negative count");
 }
 
-// ── a displaced improvement is still a source: you can see what stood there AND the enclave ──
+// a displaced improvement is still a source: you can see what stood there and the enclave
 {
   const m = enclaveTipModel(input({ replacedName: "Woodcutter", before: { [P]: 3, [F]: 1 } }));
   const land = m.sources[0];
@@ -94,7 +94,7 @@ assert.equal(stageOf({ recognized: true, contested: true, fadeSince: 90 }), "fad
   assert.equal(bare.sources[0].note, "");
 }
 
-// ── contested: the benefit is dimmed, the drawback is not, and the row says so ──
+// contested: the benefit is dimmed, the drawback is not, and the row says so
 {
   assert.deepEqual(scaledStance({ [P]: 2, [H]: -1 }, 0.5), { [P]: 1, [H]: -1 }, "only the positive side scales");
   assert.deepEqual(scaledStance({ [P]: 2 }, 0), {}, "a benefit scaled to nothing drops out");
@@ -107,7 +107,7 @@ assert.equal(stageOf({ recognized: true, contested: true, fadeSince: 90 }), "fad
   assert.equal(m.total, "+1 Food, −1 Happiness, +7 Production", "and the total uses what is actually paid");
 }
 
-// ── fading counts down and never reads zero or negative ──
+// fading counts down and never reads zero or negative
 {
   const m = enclaveTipModel(input({ rec: { recognized: true, optionId: "a", fadeSince: 95 }, turn: 100, fadeTurns: 12 }));
   assert.ok(/7 turns/.test(m.stage.text), "12 turns of fade, 5 elapsed");
@@ -115,14 +115,14 @@ assert.equal(stageOf({ recognized: true, contested: true, fadeSince: 90 }), "fad
   assert.ok(/1 turns/.test(late.stage.text), "an overdue fade still reads at least 1");
 }
 
-// ── "let be" is recognized with no stance row ──
+// "let be" is recognized with no stance row
 {
   const m = enclaveTipModel(input({ rec: { recognized: true, optionId: "ignore" }, stance: {}, stanceLabel: "", why: "" }));
   assert.deepEqual(keys(m), ["land", "tile"]);
   assert.ok(/left them alone/i.test(m.stage.text));
 }
 
-// ── helpers and degenerate input ──
+// helpers and degenerate input
 assert.deepEqual(landYields({ [P]: 6, [F]: 1 }, { [P]: 4 }), { [P]: 2, [F]: 1 });
 assert.deepEqual(landYields({ [P]: 3 }, { [P]: 4 }), {}, "the land's share is never negative");
 assert.deepEqual(totalYields(input({ now: {}, native: {}, stance: {} })), {}, "nothing in, nothing out");
@@ -134,14 +134,14 @@ assert.equal(enclaveTipModel({}), null, "no record, no tooltip");
   assert.equal(m.total, "");
 }
 
-// ── the marker's second line ──
+// the marker's second line
 assert.equal(markerStageLine({ recognized: false }, { [P]: 2 }), "Established", "no stance yields before recognition");
 assert.equal(markerStageLine({ recognized: true }, { [P]: 2, [H]: -1 }), "Recognized  −1 Happiness, +2 Production");
 assert.equal(markerStageLine({ recognized: true }, {}), "Recognized", "let be shows the stage alone");
 assert.equal(markerStageLine({ recognized: true, contested: true }, {}), "Contested");
 assert.equal(markerStageLine({ fadeSince: 3 }, {}), "Fading");
 
-// ── plain wording: no em dashes in anything the panel shows ──
+// plain wording: no em dashes in anything the panel shows
 // Asked for directly (2026-09-17). The strings are localized, so this checks the composed output of the
 // English fallbacks, which is what the panel renders when a locale has no row.
 {

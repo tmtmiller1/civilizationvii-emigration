@@ -27,16 +27,16 @@ visibility gates.
 `base-standard/ui-next/tooltips/plot-tooltip/plot-tooltip.js` gates its show on two independent signals, both read by
 the same `createEffect` at ~line 1321:
 
-1. `IsPlotTooltipVisible` — module-level signal created at line 33, written by the exported `SetIsPlotTooltipVisible`.
-2. `isGlobalRuleVisible` — component-local signal created at line 1223, written by the `ui-hide-plot-tooltips` /
+1. `IsPlotTooltipVisible`: module-level signal created at line 33, written by the exported `SetIsPlotTooltipVisible`.
+2. `isGlobalRuleVisible`: component-local signal created at line 1223, written by the `ui-hide-plot-tooltips` /
    `ui-show-plot-tooltips` window listeners registered `onMount` at lines 1348-1349.
 
 The mod drives both. **The event gate is the load-bearing one**, which is the reverse of what
 `emigration-plot-tooltip-suppress.js` used to claim in its header (now corrected):
 
-- `SetIsPlotTooltipVisible` is shared, un-ref-counted state. Four base-game surfaces write it —
+- `SetIsPlotTooltipVisible` is shared, un-ref-counted state. Four base-game surfaces write it,
   `ui/tutorial/tutorial-callout.js`, `ui/endgame/screen-endgame.js`,
-  `ui/unit-combat-preview/panel-unit-combat-preview.js` and `ui/pantheon-complete/panel-pantheon-complete.js` — and
+  `ui/unit-combat-preview/panel-unit-combat-preview.js` and `ui/pantheon-complete/panel-pantheon-complete.js`: and
   each sets it back to `true` when it closes. A combat
   preview opened and closed while a lens is active would therefore un-suppress the tooltip on that gate alone.
 - No file in `base-standard`, no file in `core`, and no installed mod dispatches `ui-hide-plot-tooltips` or
@@ -54,7 +54,7 @@ current Workshop copies:
 
 | Mod | Repo snapshot | Current | Verdict |
 | --- | --- | --- | --- |
-| bz-map-trix (`3507072814`) | 3.9.2 (2026-06-01) | **4.1.0** (2026-09-16) | 4.1.0 is described as a "compatibility hotfix for Update 1.5.0" with "merged updates to plot tooltip". NOT yet audited — see below |
+| bz-map-trix (`3507072814`) | 3.9.2 (2026-06-01) | **4.1.0** (2026-09-16) | 4.1.0 is described as a "compatibility hotfix for Update 1.5.0" with "merged updates to plot tooltip". not yet audited, see below |
 | bz-city-hall (`3507102289`) | 2.6.9 | **2.7.5** | Cleared. No plot-tooltip surface; its only `plot-tooltip` string is a `Controls.preloadImage` hint |
 | bz-re-sorts (`3507102808`) | 2.4.0 | **3.0.1** | Cleared. No tooltip surface at all |
 | bz-flag-corps (`3507103281`) | 3.2.1 | **3.3.2** | Cleared. Still `TooltipManager.registerType('bz-city-tooltip')`, i.e. the legacy `#tooltips` host |
@@ -65,7 +65,7 @@ current Workshop copies:
 | Chronicle (`3761407790`) | 0.30.53 | **0.33.80** | Its modal sits at z-index 999998/999999, above the mod's panels. Correct: a screen the player opened should cover a hover readout |
 
 None of the current versions above still reference `lens-manager.chunk.js`, `PlotTooltipPriority`, or the legacy
-`ui/tooltips/plot-tooltip.js` — their authors have migrated to 1.5.0. The stale snapshots did, which is what produced
+`ui/tooltips/plot-tooltip.js`: their authors have migrated to 1.5.0. The stale snapshots did, which is what produced
 the retracted verdict below.
 
 ### The three ways a 1.5.0 mod can take over the plot tooltip, and what each does to our two gates
@@ -104,7 +104,7 @@ the session, leaving it fighting the lens panel at the cursor.
 This is why `setBasePlotTooltipHidden()` no longer latches. It holds the state down: a self-rescheduling
 `setTimeout` re-asserts every 750 ms while suppression is wanted and is cleared the moment it is not. Neither
 gate is readable from outside (the event one is component-local), so re-asserting blindly is cheaper and more
-robust than trying to detect which writer stomped us. Reasoned from the mods' sources, **not yet watched in
+reliable than trying to detect which writer stomped us. Reasoned from the mods' sources, **not yet watched in
 game.**
 
 ### Retracted: "the legacy plot-tooltip mods are inert on 1.5.0"
@@ -129,31 +129,31 @@ finding also came from a snapshot and has not been re-checked against the curren
 
 ### The mods that do work on 1.5.0 decorate the ui-next tooltip, and suppression is clean for them
 
-- **Handheld/Controller UI Improvements** (`3701064830`) — `plot-tooltip-population.js` reads the hovered plot and
+- Handheld/Controller UI Improvements (`3701064830`): `plot-tooltip-population.js` reads the hovered plot and
   adds population lines; `plot-tooltip-offscreen-hide.js` hides the tooltip during camera motion by toggling its own
   class on `#uinext-tooltips`; `tooltip-toggle-guard.js` re-fires `active-device-type-changed`. None of these touches
   either of the mod's gates, and the mod touches neither of theirs. When this mod suppresses the plot tooltip the
-  handheld additions simply do not render, which is the intended outcome — the lens panel is showing instead.
-- **Aventura Resources Stockpile** (`3729215006`) — `aventura-resource-tooltips.js` runs a `MutationObserver` over
+  handheld additions do not render, which is the intended outcome, the lens panel is showing instead.
+- Aventura Resources Stockpile (`3729215006`): `aventura-resource-tooltips.js` runs a `MutationObserver` over
   `#uinext-tooltips` and injects into the plot tooltip as it mounts. Same verdict: suppression means the tooltip never
   mounts, so the observer never fires, and both resume together when suppression lifts.
-- **Scapeh's Better Nested Tooltips** (`3735528208`) — works on the nested/locked tooltip stack.
-  `cursorOutsideStack()` deliberately uses three independent checks, and check (2) is pure geometry over
+- Scapeh's Better Nested Tooltips (`3735528208`): works on the nested/locked tooltip stack.
+  `cursorOutsideStack()` uses three independent checks, and check (2) is pure geometry over
   `.tooltip-autolock-frame` rects, documented as "robust to transforms, pointer-events, and panels painted above the
   tooltip". Check (1) uses `elementFromPoint`, which skips `pointer-events:none` nodes. This mod's panels are
   `pointer-events:none` and carry no autolock class, so they cannot produce a false open or a false close either way.
-- **Enhanced Town Focus Info** (`3548476215`), **f1rstdan's Cool UI** (`3510572267`), **bz-flag-corps**
-  (`3507103281`), **LF Yields** (`3515801789`), **Leonardfactory's Policy Yield Previews** (`3689032288`) — these edit
+- Enhanced Town Focus Info (`3548476215`), **f1rstdan's Cool UI** (`3510572267`), **bz-flag-corps**
+  (`3507103281`), **LF Yields** (`3515801789`), **Leonardfactory's Policy Yield Previews** (`3689032288`): these edit
   the city, town-focus, city-yields and tech/civic tooltips. None of them is a map-plot surface, so they never share a
   screen position or a gate with anything here.
-- **readable-tooltips** (this author's own mod) — wraps `TooltipController.reposition` to offset `#tooltip-root`
+- readable-tooltips (this author's own mod): wraps `TooltipController.reposition` to offset `#tooltip-root`
   (z-index 99), which is the legacy simple-tooltip host. It does not touch `#uinext-tooltips` and does not touch the
   plot tooltip. This mod's panels position themselves, so they are neither offset by it nor in its way.
 
 ### The one real conflict: stacking order (fixed)
 
 `core/ui/shell/root-shell.html` mounts `#uinext-dropdowns` and `#uinext-tooltips` at `z-index: 10000` (lines 151-160)
-and `#tooltip-root` at `z-index: 99` (line 163). Every ui-next tooltip renders inside `#uinext-tooltips` — the game's
+and `#tooltip-root` at `z-index: 99` (line 163). Every ui-next tooltip renders inside `#uinext-tooltips`: the game's
 own, and the ones the working tooltip mods above portal or inject into it.
 
 The mod's cursor panels were at `z-index: 9999`, i.e. **under** that layer, while both anchor to the cursor. This is
@@ -165,14 +165,14 @@ Fixed by giving both cursor panels `PANEL_Z = 10001` (exported from `emigration-
 still wins over a hover readout.
 
 Not watched in game. The cheap confirmation, when the game is next up: turn on the Ethnicity lens and hover a unit
-flag on an owned tile — the unit-flag tooltip and the lens panel should both be legible, with the panel on top.
+flag on an owned tile, the unit-flag tooltip and the lens panel should both be legible, with the panel on top.
 
 ## Outstanding risk, not fixed
 
 `setBasePlotTooltipHidden()` latches on a module-level `_hidden` flag and only acts on a transition.
 `isGlobalRuleVisible` is created **inside** the plot-tooltip component (line 1223), so it resets to `true` whenever
 that component remounts.
-If the component remounts while a lens is still active — an age transition or a view change are the candidates — the
+If the component remounts while a lens is still active (an age transition or a view change are the candidates) the
 tooltip would come back and the latch would stop the mod from re-asserting.
 
 Not fixed, because it has not been observed. The cheap test that would prove it: turn a lens on, trigger an age

@@ -1,8 +1,8 @@
 // emigration-network-flow-arrows.js
 //
-// The green/red migrant-flow ARROW overlay, drawn ON TOP of the Dots network (the "Migrant flows"
-// toggle). Each arrow runs red where people LEAVE → green where they ARRIVE, thickness scaled to
-// volume. It reads the SAME scene coordinates the dots use (centers + city sub-clusters), so arrows land
+// The green/red migrant-flow arrow overlay, drawn on top of the Dots network (the "Migrant flows"
+// toggle). Each arrow runs red where people leave → green where they arrive, thickness scaled to
+// volume. It reads the same scene coordinates the dots use (centers + city sub-clusters), so arrows land
 // on the same nodes, and respects the Dots view's origin-isolate / focus / selected-city / scope filters.
 
 const OUTFLOW = "#e0786b"; // red, people leaving (the arrow's tail end)
@@ -15,7 +15,7 @@ function expandedHas(state, id) {
   return !!(state.expanded && state.expanded.has(id));
 }
 
-// ── segment geometry ─────────────────────────────────────────────────────────────────────────────
+// segment geometry
 
 /**
  * One endpoint for a flow at a civ: the civ center (collapsed) or its capital's sub-center (expanded),
@@ -46,7 +46,7 @@ const MIN_ARROW_LEN = 6;
 
 /**
  * Trim a straight segment back toward each endpoint's disc edge, or null when the two points are
- * effectively the same. The trim SHRINKS to fit when the discs are close instead of dropping the flow,
+ * close enough to count as the same. The trim shrinks to fit when the discs are close instead of dropping the flow,
  * since the city packing seats adjacent discs only CITY_GAP apart and their internal flows must still draw.
  * @param {*} a Source {x,y,r}. @param {*} b Dest {x,y,r}. @param {{people:number}} meta @returns {*}
  */
@@ -193,7 +193,7 @@ export function buildFlowSegments(holder) {
   return segs;
 }
 
-// ── arrow drawing ────────────────────────────────────────────────────────────────────────────────
+// arrow drawing
 
 /**
  * Draw the green arrowhead at a segment's tip, along the curve's end tangent.

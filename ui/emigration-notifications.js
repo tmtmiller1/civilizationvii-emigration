@@ -1,6 +1,6 @@
 // emigration-notifications.js
 //
-// The PERSISTENT notification log behind the "Notifications" sub-tab. Every toast that fires
+// The persistent notification log behind the "Notifications" sub-tab. Every toast that fires
 // (emigration-feedback.js) is also appended here as a structured entry carrying the event's detail.
 // Persisted in GameConfiguration, capped, newest-first; without GameConfiguration reads return [].
 
@@ -91,7 +91,7 @@ function finiteOr(v, d) {
   return typeof v === "number" && isFinite(v) ? v : d;
 }
 
-// Optional string fields copied through only when present, so absent ones are OMITTED (not written as
+// Optional string fields copied through only when present, so absent ones are omitted (not written as
 // `undefined`, which JSON.stringify would drop), keeping the in-memory cache identical to the persisted
 // blob across a reload.
 const OPT_STR_FIELDS = ["title", "body", "event", "fromCity", "fromCiv", "toCity", "toCiv", "reasons"];
@@ -153,7 +153,7 @@ function cleanEntry(entry, turn) {
 
 /**
  * Normalize a loaded array into clean, capped NotifEntries, dropping non-object elements. Each entry
- * keeps its OWN stored turn.
+ * keeps its own stored turn.
  * @param {*[]} arr The raw loaded array. @returns {NotifEntry[]} The clean entries.
  */
 function normalizeLoaded(arr) {
@@ -211,7 +211,7 @@ export function notificationLog(limit) {
 }
 
 /**
- * One text field of an entry in the CURRENT language: its packed message composed now, or the stored
+ * One text field of an entry in the current language: its packed message composed now, or the stored
  * text when the entry has no message (older saves) or it cannot be composed.
  * @param {NotifEntry} e The entry.
  * @param {"summary"|"title"|"body"|"event"|"fromCiv"|"toCiv"} field The text field.

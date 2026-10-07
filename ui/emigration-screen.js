@@ -27,7 +27,7 @@ function derr(...a) {
 }
 
 // Shared 10-step type scale (rem), published as `--dg-fs-<n>` values scaled by the in-game font-size
-// setting (which Coherent otherwise applies only to its own text-* classes). MUST match the
+// setting (which Coherent otherwise applies only to its own text-* classes). Must match the
 // Demographics mod's ladder so emig content inside the Demographics screen resolves the same vars.
 const FONT_SIZE_LADDER = [0.65, 0.72, 0.85, 0.95, 1.05, 1.2, 1.4, 1.6, 1.85, 2.4];
 
@@ -78,7 +78,7 @@ function suspendPopups(state) {
         state.popupsSuspended = true;
       }
     } catch (_) {
-      // suspend can throw mid-transition; non-fatal (popups simply aren't deferred).
+      // suspend can throw mid-transition; non-fatal (popups aren't deferred).
     }
   });
 }
@@ -126,7 +126,7 @@ class ScreenEmigration extends Panel {
     } catch (e) {
       derr("onAttach super failed:", e);
     }
-    // Publish the font-size setting as CSS vars BEFORE rendering so the dashboard's
+    // Publish the font-size setting as CSS vars before rendering so the dashboard's
     // var(--dg-fs-*) text sizes resolve at the right scale; re-apply live on change.
     this._onFontScaleChange = () => {
       try {
@@ -186,7 +186,7 @@ class ScreenEmigration extends Panel {
   /**
    * Publish the in-game font-size setting as `--dg-fs-<n>` CSS variables (fully
    * computed rem values) on the screen root, so the dashboard's `var(--dg-fs-*)`
-   * text sizes track the setting AND the UI scale. Mirrors the Demographics bridge.
+   * text sizes track the setting and the UI scale. Mirrors the Demographics bridge.
    */
   _applyFontScale() {
     const root = this.Root;

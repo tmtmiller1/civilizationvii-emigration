@@ -1,6 +1,6 @@
 // emigration-move-reasons.js
 //
-// The "why did people move HERE" reason tags: a small, stable vocabulary shared by the decision layer
+// The "why did people move here" reason tags: a small, stable vocabulary shared by the decision layer
 // (emigration-pull.js emits the keys) and every surface that shows a move. Keys are stored on the
 // migration record; the phrases are localized only at display time.
 
@@ -113,12 +113,12 @@ export function reasonsPhrase(reasons, max = 3) {
   return parts.join(", ");
 }
 
-// Reason tags that describe the DESTINATION's own pull. The remaining tags describe the FLIGHT, which
+// Reason tags that describe the destination's own pull. The remaining tags describe the flight, which
 // the situation sentence already conveys, so the "Why there:" clause shows only these.
 const PULL_TAGS = new Set(["richer", "nearby", "own-civ", "open-borders", "allied", "asylum"]);
 
 /**
- * Like {@link reasonsPhrase} but only the destination-PULL tags — for the "Drawn there:" / "Why there:"
+ * Like {@link reasonsPhrase} but only the destination-pull tags, for the "Drawn there:" / "Why there:"
  * clause, so it names why the destination was chosen without splicing in a flight fragment. Empty when
  * the move had no pull reason (its situation sentence already tells the whole story).
  * @param {string[]|undefined} reasons The reason-tag keys.
@@ -147,7 +147,7 @@ export function pullReasonsMsg(reasons, max = 3) {
   if (parts.length <= 1) return parts[0] || "";
   // Read as prose ("A and B", "A, B and C"): the final connector is localized (English " and ", other
   // languages their own word, or a comma where a conjunction isn't wanted), the rest comma-joined. The
-  // spaces around it live in the CODE: the game's text loader strips a localized string's edge spaces.
+  // spaces around it live in the code: the game's text loader strips a localized string's edge spaces.
   const and = msg("LOC_EMIG_LIST_AND", "and");
   return msgJoin(msgJoinWith(", ", parts.slice(0, -1)), " ", and, " ", parts[parts.length - 1]);
 }

@@ -57,6 +57,6 @@ if (asJson) console.log(JSON.stringify(out, null, 2));
 else console.log(`value=${passPct}`);
 
 if (asCheck && passPct < 100) {
-  console.error(`compat_matrix_smoke_pass_percent=${passPct} (expected 100) — namespace collisions: ${collisions.join(", ")}`);
+  console.error(`compat_matrix_smoke_pass_percent=${passPct} (expected 100), namespace collisions: ${collisions.join(", ")}`);
   process.exit(1);
 }

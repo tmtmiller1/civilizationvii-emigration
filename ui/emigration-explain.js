@@ -1,6 +1,6 @@
 // emigration-explain.js
 //
-// The single source of "WHY": push and pull decomposed into labeled, signed contributions. It has no
+// The one place "why" is worked out: push and pull decomposed into labeled, signed contributions. It has no
 // config flag and renders nothing; its consumers (the explainer tooltip, the forecast, the advisor,
 // the policy preview) gate themselves and format these rows, never re-deriving the reasoning.
 //
@@ -13,22 +13,22 @@
 // The terms come from the same breakdown functions the sim scores with (emigration-pull.js,
 // emigration-prosperity.js), so an explanation can never drift from the decision it explains.
 //
-// THE HONESTY RULE: these are contributions to a MODEL SCORE, not a headcount or a probability. A
-// caller must render them as RELATIVE WEIGHTS ({@link weigh}), never as "-42% of your population".
+// The honesty rule: these are contributions to a model score, not a headcount or a probability. A
+// caller must render them as relative weights ({@link weigh}), never as "-42% of your population".
 
 import { pullBreakdown } from "/emigration/ui/emigration-pull.js";
 import { baseBreakdown, situationalBreakdown } from "/emigration/ui/emigration-prosperity.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
 
 /**
- * One labeled contribution. `delta` is signed in score points (> 0 makes the settlement MORE
+ * One labeled contribution. `delta` is signed in score points (> 0 makes the settlement more
  * attractive); `kind` reads that sign from the migrant's side ("pull" draws people, "push" drives
- * them out); `scale` is the multiplicative permeability channel, EXCLUDED from the additive sum.
+ * them out); `scale` is the multiplicative permeability channel, excluded from the additive sum.
  * @typedef {{key:string, label:string, delta:number, kind:"pull"|"push"|"scale", factor?:number}} Factor
  */
 
-// English fallbacks. Neutral, factual names for what the term IS - the surfaces that phrase these
-// for players own the prose. Lowercase-free: these are row labels, not inline clauses.
+// English fallbacks. Neutral, factual names for what the term is; the surfaces that phrase these
+// for players own the prose. Capitalized, since these are row labels, not inline clauses.
 /** @type {Record<string, string>} */
 const FALLBACK = {
   // Pull-side terms (emigration-pull.js `pullBreakdown`).
@@ -84,7 +84,7 @@ export function factorLabel(key) {
  * dropping it cannot change a sum).
  * @param {string} key The term key.
  * @param {number} delta The signed contribution in score points.
- * @returns {Factor|null} The row, or null.
+ * @returns {Factor|null}
  */
 function row(key, delta) {
   if (!delta || !isFinite(delta)) return null;
@@ -102,14 +102,14 @@ function byMagnitude(rows) {
 }
 
 /**
- * Why people are drawn from `src` to `dest`, biggest factor first. The additive rows sum EXACTLY to
+ * Why people are drawn from `src` to `dest`, biggest factor first. The additive rows sum exactly to
  * the pair's `adjustedPull`; the permeability row is `kind:"scale"`, a multiplier not an addend, so
  * callers summing rows must skip it ({@link weigh} does). Returns [] for a pair that would not move anyone.
  * @param {*} src Source signal.
  * @param {*} dest Candidate destination signal.
  * @param {{flee?:{x:number,y:number}|null, ownerPop?:Record<number,number>|null,
  *   aggressors?:Set<number>|null}} [ctx] The pass context `adjustedPull` is scored with.
- * @returns {Factor[]} The labeled contributions, or [].
+ * @returns {Factor[]}
  */
 export function explainPull(src, dest, ctx) {
   if (!src || !dest) return [];
@@ -131,7 +131,7 @@ export function explainPull(src, dest, ctx) {
 
 /**
  * Score the pair, filling in an absent pass context as "no flee vector / no population data / no
- * aggressors" - the same neutral inputs the sim itself passes when those are unknown.
+ * aggressors", the same neutral inputs the sim itself passes when those are unknown.
  * @param {*} src Source signal.
  * @param {*} dest Candidate destination signal.
  * @param {{flee?:*, ownerPop?:*, aggressors?:*}} [ctx] The pass context.
@@ -144,10 +144,10 @@ function breakdownFor(src, dest, ctx) {
 
 /**
  * The permeability row: the multiplicative channel, reported for context. Null when the multiplier is
- * exactly neutral - there is nothing to say about a border that changed nothing.
+ * exactly neutral: there is nothing to say about a border that changed nothing.
  * @param {number} gross The summed additive terms, before the multiply.
  * @param {number} scale The clamped permeability multiplier.
- * @returns {Factor|null} The row, or null.
+ * @returns {Factor|null}
  */
 function scaleRow(gross, scale) {
   if (scale === 1) return null;
@@ -173,12 +173,12 @@ const SIT_KEYS = ["violence", "disaster", "siege", "starvation", "unrest", "warW
 
 /**
  * Why people are leaving `s`: its own prosperity decomposed, biggest factor first. Negative rows are
- * driving people out; positive rows are holding them. The situational penalties are percentages OF
+ * driving people out; positive rows are holding them. The situational penalties are percentages of
  * the base score, converted to points against `|base|`: the magnitude keeps every penalty a push
  * even when the base has gone negative, and is the exact contribution for a positive base.
  * @param {*} s The settlement's signal.
  * @param {{meanHappiness:number}|null} [ctx] Per-pass field context (shaped happiness model).
- * @returns {Factor[]} The labeled contributions, or [].
+ * @returns {Factor[]}
  */
 export function explainPush(s, ctx) {
   if (!s) return [];
@@ -200,7 +200,7 @@ export function explainPush(s, ctx) {
 
 /**
  * The honesty rule, applied: turn signed contributions into relative weights (`|delta| / Σ|delta|`),
- * the ONLY form these numbers should reach a player in. Multiplicative (`kind:"scale"`) rows are
+ * the only form these numbers should reach a player in. Multiplicative (`kind:"scale"`) rows are
  * excluded, since they are not addends.
  * @param {Factor[]} rows Rows from {@link explainPull} or {@link explainPush}.
  * @returns {(Factor & {weight:number})[]} The rows with a `weight` in [0, 1], biggest first.

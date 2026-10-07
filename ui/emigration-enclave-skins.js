@@ -1,10 +1,10 @@
 // emigration-enclave-skins.js
 //
-// WHAT a recognized Cultural Enclave looks like on the map, themed by the origin civilization. The
-// engine binds improvement art by type name, so a themed tile must be an EXISTING improvement type:
+// What a recognized Cultural Enclave looks like on the map, themed by the origin civilization. The
+// engine binds improvement art by type name, so a themed tile must be an existing improvement type:
 // the origin's own unique improvement, else a fallback by yield family from its stance benefits, else
 // the base Village. A type from an age not yet reached is not loaded and some types are terrain-bound,
-// so candidates are an ORDERED list and the placer takes the first that is loaded and has a plot.
+// so candidates are an ordered list and the placer takes the first that is loaded and has a plot.
 // Pure module (no engine reads).
 
 import { QUARTER_BONUSES } from "/emigration/ui/emigration-quarter-bonuses.js";
@@ -13,7 +13,7 @@ import { QUARTER_BONUSES } from "/emigration/ui/emigration-quarter-bonuses.js";
 export const VILLAGE_TYPE = "IMPROVEMENT_VILLAGE";
 
 /**
- * Each civilization's unique IMPROVEMENT (from the game's progression-tree data, all ages and DLC).
+ * Each civilization's unique improvement (from the game's progression-tree data, all ages and DLC).
  * Civilizations with unique quarters/buildings instead are absent.
  * @type {Record<string, string>}
  */
@@ -45,7 +45,7 @@ export const UNIQUE_IMPROVEMENTS = Object.freeze({
 
 /**
  * Fallback skins per yield family, best first (later-age types before Antiquity ones, so the first
- * LOADED type is the strongest the current age allows); native yields in brackets. Science has no
+ * loaded type is the strongest the current age allows); native yields in brackets. Science has no
  * improvement that yields it, so a science stance falls through to the enclave's other stance.
  * @type {Record<string, string[]>}
  */
@@ -96,8 +96,8 @@ export function skinCandidates(originCiv) {
 /**
  * Whether a type is one of the skins this module may place (a unique or fallback improvement, or the
  * Village), so callers can tell an enclave-skin tile from the owner's genuine improvement of that type
- * only by RECORD, never by type. Pure.
- * @param {string} type A ConstructibleType. @returns {boolean} True when it is a skin type.
+ * only by record, never by type. Pure.
+ * @param {string} type A ConstructibleType. @returns {boolean}
  */
 export function isSkinType(type) {
   if (type === VILLAGE_TYPE) return true;

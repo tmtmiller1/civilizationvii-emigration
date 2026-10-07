@@ -1,11 +1,11 @@
 // emigration-cache-reset.js
 //
-// One SHARED "reset persisted caches on game boot" convention. Sibling modules lazy-load their state
-// from GameConfiguration into a module-level cache that isolate teardown normally clears, but a NEW
+// One shared "reset persisted caches on game boot" convention. Sibling modules lazy-load their state
+// from GameConfiguration into a module-level cache that isolate teardown normally clears, but a new
 // game inside a still-live isolate would keep the prior game's data and could persist it into the new
 // store. So every persisted-state module registers a resetter here and calls resetCachesOnNewGame() at
 // the top of its lazy loader; the first call after a game-id change (`Configuration.getGame().gameSeed`)
-// nulls EVERY registered cache in that isolate.
+// nulls every registered cache in that isolate.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
@@ -41,14 +41,14 @@ export function currentGameId() {
 /**
  * Register a cache-reset callback, run once when this module is imported. The callback should null this
  * module's lazy persisted-state cache(s) so the next access reloads from the (new game's) store.
- * @param {() => void} fn The resetter.
+ * @param {() => void} fn
  */
 export function registerCacheReset(fn) {
   if (typeof fn === "function") _resetters.push(fn);
 }
 
 /**
- * Reset every registered persisted-state cache when a NEW game is detected (the game id changed since
+ * Reset every registered persisted-state cache when a new game is detected (the game id changed since
  * the last call in this isolate). No-op when the feature is off, the id is unreadable or unchanged, or
  * this is the first id seen. Cheap and idempotent; call at the top of each persisted-state lazy loader.
  * @returns {boolean} True when a reset was performed.

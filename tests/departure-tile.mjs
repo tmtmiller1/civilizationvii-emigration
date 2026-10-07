@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 // departure-tile harness: the source-side "real loss" module. Off-engine there is no Districts /
 // Constructibles surface, so the module must degrade to the plain counter decrement; with a stubbed
 // surface it must pick the outlying, resource-free improvement, issue DESTROY_ELEMENT with the
-// tuner's argument shape, defer the write until commit, and charge the departure gold to the SOURCE
+// tuner's argument shape, defer the write until commit, and charge the departure gold to the source
 // owner only.
 
 const grants = [];
@@ -48,7 +48,7 @@ function makeCity(owner, rural) {
   };
 }
 
-// ── 1. Off-engine (no Districts): counter path, nothing deferred, no requests ──────────────────────
+// 1. Off-engine (no Districts): counter path, nothing deferred, no requests
 {
   assert.equal(departureTileApiAvailable(), false);
   const c = makeCity(0, 4);
@@ -61,7 +61,7 @@ function makeCity(owner, rural) {
   assert.equal(requests.length, 0);
 }
 
-// ── 2. Pure ranking: plain tiles first, then farthest, then lowest plot index ─────────────────────
+// 2. Pure ranking: plain tiles first, then farthest, then lowest plot index
 {
   const ranked = rankDepartureTiles([
     { plot: 5, onResource: true, distance: 3 },
@@ -73,7 +73,7 @@ function makeCity(owner, rural) {
   assert.equal(rankDepartureTiles(null).length, 0);
 }
 
-// ── 3. Stubbed engine surface: finds improvements, skips the center, destroys the outlying one ─────
+// 3. Stubbed engine surface: finds improvements, skips the center, destroys the outlying one
 const PLOT_LOC = { 100: { x: 10, y: 10 }, 101: { x: 11, y: 10 }, 102: { x: 13, y: 10 }, 103: { x: 12, y: 10 } };
 const IMPROVEMENTS = { 100: "IMPROVEMENT_PALACE_FARM", 101: "IMPROVEMENT_FARM", 102: "IMPROVEMENT_MINE", 103: "IMPROVEMENT_CAMP" };
 const RESOURCE_AT = { 102: 7 }; // the far mine sits on a resource → deprioritised
@@ -115,7 +115,7 @@ globalThis.GameplayMap = {
   assert.deepEqual(args, { Kind: "CONSTRUCTIBLE", Owner: 4, LocalID: 1030 });
 }
 
-// ── 4. Option off → counter path even with the surface present ────────────────────────────────────
+// 4. Option off → counter path even with the surface present
 {
   CONFIG.departureRemovesTile = false;
   const c = makeCity(4, 3);
@@ -126,7 +126,7 @@ globalThis.GameplayMap = {
   CONFIG.departureRemovesTile = true;
 }
 
-// ── 5. Deferred commit: destroys on commit, never charges the source owner, no-op for pool points ──
+// 5. Deferred commit: destroys on commit, never charges the source owner, no-op for pool points
 {
   requests.length = 0;
   grants.length = 0;
@@ -148,7 +148,7 @@ globalThis.GameplayMap = {
   assert.equal(grants.length, 0);
 }
 
-// ── 5b. Two departures in one turn never pick the same tile (the first DESTROY is still in flight) ─
+// 5b. Two departures in one turn never pick the same tile (the first DESTROY is still in flight)
 {
   Game.turn = 6; // a fresh turn: nothing excluded yet
   requests.length = 0;
@@ -169,7 +169,7 @@ globalThis.GameplayMap = {
   assert.equal(departureWouldAbandonTile(c), true);
 }
 
-// ── 6. A city with no improvements left falls back to the counter on commit ───────────────────────
+// 6. A city with no improvements left falls back to the counter on commit
 {
   requests.length = 0;
   Game.turn = 7;
@@ -181,7 +181,7 @@ globalThis.GameplayMap = {
   assert.equal(requests.length, 0);
 }
 
-// ── 8. Meeting the other systems: pillaged tiles go first; a starving city keeps its food tiles ───
+// 8. Meeting the other systems: pillaged tiles go first; a starving city keeps its food tiles
 {
   const tiles = [
     { plot: 1, onResource: false, distance: 3, damaged: false, feeds: true, type: "IMPROVEMENT_FARM" },
@@ -205,12 +205,12 @@ globalThis.GameplayMap = {
   assert.equal(listed.find((t) => t.type === "IMPROVEMENT_MINE").feeds, false);
   Constructibles.getByComponentID = oldGet;
   delete GameInfo.Constructible_YieldChanges;
-  // A placed Cultural Enclave is never a departure tile (watched 2026-09-13: it was London's outlying pick).
+  // A placed Cultural Enclave is never a departure tile (2026-09-13: it was London's outlying pick).
   const wasCamp = IMPROVEMENTS[103];
   IMPROVEMENTS[103] = "IMPROVEMENT_EMIG_ENCLAVE_ROME_A";
   assert.ok(!listDepartureTiles(makeCity(4, 3)).some((t) => t.type.startsWith("IMPROVEMENT_EMIG_ENCLAVE_")), "enclave tiles are excluded");
   IMPROVEMENTS[103] = wasCamp;
-  // A themed skin (another civilization's improvement) is excluded by RECORD, since the type alone cannot
+  // A themed skin (another civilization's improvement) is excluded by record, since the type alone cannot
   // tell an enclave from the owner's genuine improvement.
   const { putQuarter, dropQuarter } = await import("/emigration/ui/emigration-quarter-state.js");
   IMPROVEMENTS[102] = "IMPROVEMENT_CARAVANSERAI";
@@ -223,7 +223,7 @@ globalThis.GameplayMap = {
   IMPROVEMENTS[102] = "IMPROVEMENT_MINE";
 }
 
-// ── 10. Only rural tiles leave: the urban core is never taken; deaths keep the rural floor; the disaster cap ──
+// 10. Only rural tiles leave: the urban core is never taken; deaths keep the rural floor; the disaster cap
 {
   const { abandonForDeath, canShedPoint, canShedAny } = mod;
   Game.turn = 50;

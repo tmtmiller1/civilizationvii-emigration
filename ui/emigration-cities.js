@@ -31,7 +31,7 @@ import { resetDistanceCache, resetDiplomacyCache } from "/emigration/ui/emigrati
  * @property {number} science Net science yield.
  * @property {number} culture Net culture yield.
  * @property {number} happiness City net happiness.
- * @property {number} stage Happiness STAGE ordinal in [-2,+2] (ANGRY −2 … ECSTATIC +2; 1.4.1).
+ * @property {number} stage Happiness stage ordinal in [-2,+2] (angry −2 … ecstatic +2; 1.4.1).
  * @property {import("/emigration/ui/emigration-polity.js").Polity} polity Owner-civ polity
  *   (government / celebration / war weariness; 1.4.1). Denormalized onto each of the owner's signals.
  * @property {boolean} unrest Whether the city is in unrest.
@@ -48,7 +48,7 @@ import { resetDistanceCache, resetDiplomacyCache } from "/emigration/ui/emigrati
 /**
  * Resolve a YieldTypes enum value by key.
  * @param {string} key e.g. "YIELD_FOOD".
- * @returns {*} The enum value, or undefined.
+ * @returns {*}
  */
 function yEnum(key) {
   try {
@@ -59,12 +59,12 @@ function yEnum(key) {
 }
 
 /**
- * Read one NET yield off a city, defaulting to 0. Prefers `getNetYield` (income − maintenance/upkeep,
+ * Read one net yield off a city, defaulting to 0. Prefers `getNetYield` (income − maintenance/upkeep,
  * which is what the base game uses for per-city figures, and what makes starvation observable); falls
- * back to `getYield` (GROSS) only when getNetYield is unavailable.
- * @param {*} city City object.
+ * back to `getYield` (gross) only when getNetYield is unavailable.
+ * @param {*} city
  * @param {string} key Yield enum key.
- * @returns {number} The net yield value.
+ * @returns {number}
  */
 function readYield(city, key) {
   try {
@@ -84,8 +84,8 @@ function readYield(city, key) {
 /**
  * Read a city's net happiness (prefer the Happiness subsystem, fall back to the
  * happiness yield).
- * @param {*} city City object.
- * @returns {number} Net happiness.
+ * @param {*} city
+ * @returns {number}
  */
 function readHappiness(city) {
   try {
@@ -99,8 +99,8 @@ function readHappiness(city) {
 
 /**
  * Whether the city's owner is at war (best-effort across Diplomacy shapes).
- * @param {*} player Owner player.
- * @returns {boolean} True if at war.
+ * @param {*} player
+ * @returns {boolean}
  */
 function ownerAtWar(player) {
   try {
@@ -118,7 +118,7 @@ function ownerAtWar(player) {
 
 /**
  * Whether the local player has met `owner` (for the requireMet scope).
- * @param {number} owner Player id to test.
+ * @param {number} owner
  * @returns {boolean} True if met (or self).
  */
 function localHasMet(owner) {
@@ -134,7 +134,7 @@ function localHasMet(owner) {
 
 /**
  * Read an optional numeric distress signal, degrading to 0 if its subsystem throws or returns a
- * non-finite value, so one broken observer (violence / disaster) cannot drop the WHOLE city via
+ * non-finite value, so one broken observer (violence / disaster) cannot drop the whole city via
  * buildSignal's outer catch.
  * @param {() => number} fn The observer call.
  * @returns {number} The signal, or 0.
@@ -164,16 +164,16 @@ function safeList(fn) {
 
 /**
  * Build a CitySignal for one city, or null when it should be skipped.
- * @param {*} city City object.
- * @param {*} player Owner player.
+ * @param {*} city
+ * @param {*} player
  * @param {boolean} isCityState Whether the owner is a minor.
- * @returns {CitySignal|null} The signal, or null.
+ * @returns {CitySignal|null}
  */
 function buildSignal(city, player, isCityState) {
   try {
     if (!city) return null;
     const owner = city.owner;
-    // A stable per-city key is REQUIRED: per-city pressure/cooldown/stats are keyed on it, and a
+    // A stable per-city key is required: per-city pressure/cooldown/stats are keyed on it, and a
     // self-move is detected as dest.key === src.key. Collapsing an unreadable id to a shared sentinel
     // ("?") would merge distinct cities' state and block valid moves between them, so skip instead.
     const localId = city.localId ?? city.id;
@@ -223,8 +223,8 @@ function buildSignal(city, player, isCityState) {
 /**
  * Resolve a player eligible for emigration scanning, or null to skip them
  * (dead, a filtered city-state, or unmet under the requireMet scope).
- * @param {number} pid Player id.
- * @returns {{player:*, isCityState:boolean}|null} The eligible player, or null.
+ * @param {number} pid
+ * @returns {{player:*, isCityState:boolean}|null}
  */
 function eligiblePlayer(pid) {
   let player;
@@ -242,9 +242,9 @@ function eligiblePlayer(pid) {
 
 /**
  * Append a player's city signals to `out`.
- * @param {*} player Owner player.
+ * @param {*} player
  * @param {boolean} isCityState Whether the owner is a minor.
- * @param {CitySignal[]} out Accumulator.
+ * @param {CitySignal[]} out
  */
 function collectPlayerCities(player, isCityState, out) {
   try {
@@ -263,7 +263,7 @@ function collectPlayerCities(player, isCityState, out) {
 
 /**
  * Enumerate every eligible city in the world as a CitySignal list.
- * @returns {CitySignal[]} The signals.
+ * @returns {CitySignal[]}
  */
 export function collectCitySignals() {
   /** @type {CitySignal[]} */

@@ -1,26 +1,26 @@
 // emigration-network-dots.js
 //
-// The DOT MODEL + LAYOUT for the destination-cluster migration view. Builds every dot ONCE in
+// The dot model + layout for the destination-cluster migration view. Builds every dot once in
 // chronological order across the timeline and assigns each a fixed slot inside its city
 // sub-cluster, which sits inside its civ circle. The orchestrator (emigration-network-viz.js) owns
 // the canvas, chrome, playback, and interaction; the painter (emigration-network-paint.js) draws.
 //
-// A `pops` entry is NATIVE (home-grown) population only (upstream nets out arrivals), so native dots +
-// immigrant dots = the civ's whole population with no overlap. Cohorts grow AND shrink per frame
+// A `pops` entry is native (home-grown) population only (upstream nets out arrivals), so native dots +
+// immigrant dots = the civ's whole population with no overlap. Cohorts grow and shrink per frame
 // (surplus dots get a `disappearFrame`), and cross-civ arrivals land in the real destination city when
 // the flow records one, else spread by population; a nonzero flow always shows at least one dot.
 
 import { civColorByIndex, CAUSE_PALETTE, MOVE_PALETTE, lighten } from "/emigration/ui/emigration-network-paint.js";
 import { civAdjective } from "/emigration/ui/emigration-naming.js";
 
-// ── Shared model typedefs (the contract between views → dots → sim → paint) ──────────────────────
+// Shared model typedefs (the contract between views → dots → sim → paint)
 /**
  * @typedef {Object} CityPop One city's population at a frame.
  * @property {string} name City name.
  * @property {boolean} [town] Whether it's a town (vs a city).
  * @property {number} pop Native (home-grown) people.
  * @property {number} [pts] Native population in raw pop-points (Civ population).
- * @property {{civ:number, pts:number}[]} [origins] Resident population split by ORIGIN civ (a
+ * @property {{civ:number, pts:number}[]} [origins] Resident population split by origin civ (a
  *   captured city keeps its prior owner's people under their origin until new residents are born).
  */
 /**
@@ -81,14 +81,14 @@ import { civAdjective } from "/emigration/ui/emigration-naming.js";
  * are filled in after creation.
  * @property {number} destId @property {number} originId @property {number} cityIdx
  * @property {string} cityName @property {string} [fromCityName] @property {number} [fromCityIdx]
- * @property {number} [fromCivCityIdx] Origin CITY index within the origin civ (immigrants).
+ * @property {number} [fromCivCityIdx] Origin city index within the origin civ (immigrants).
  * @property {string} cause @property {"resident"|"internal"|"immigrant"} scope
  * @property {Record<string,string>} colors
  * @property {string} originName @property {string} destName
  * @property {number} appearFrame @property {number|null} [disappearFrame]
  * @property {number} ox @property {number} oy @property {number} ci
- * @property {number} [cox] X offset from its CITY's sub-center (the painter adds the city's live sx).
- * @property {number} [coy] Y offset from its CITY's sub-center.
+ * @property {number} [cox] X offset from its city's sub-center (the painter adds the city's live sx).
+ * @property {number} [coy] Y offset from its city's sub-center.
  * @property {CityMeta} [cm] The city sub-cluster it sits in (so a dragged city carries its dots).
  * @property {{fromX:number, fromY:number, p:number}|null} [anim]
  * @property {string} [evKind] @property {number} [evFrom] @property {number} [evTo]
@@ -112,7 +112,7 @@ export function nativeTotal(entry) {
 
 /**
  * Total people the dots must represent at the final frame: native (resident) population in every
- * cluster PLUS all cross-civ arrivals.
+ * cluster plus all cross-civ arrivals.
  * @param {Network} lastNet Final (cumulative) network.
  * @param {Record<number, PopEntry>} lastPops Final per-civ native populations.
  * @returns {number} People.
@@ -136,7 +136,7 @@ function frameEdges(net) {
 }
 
 /**
- * Native (home-grown) population total of a pop entry in raw pop-POINTS (Civ population).
+ * Native (home-grown) population total of a pop entry in raw pop-points (Civ population).
  * @param {PopEntry|undefined} entry Pop entry (its cities carry `.pts`).
  * @returns {number} Pop points.
  */
@@ -150,7 +150,7 @@ function nativePoints(entry) {
 }
 
 /**
- * Total pop-POINTS the final frame represents: native population (points) in every cluster plus all
+ * Total pop-points the final frame represents: native population (points) in every cluster plus all
  * cross-civ arrivals (points). Lets the viz size dots as ~1 dot per civ pop-point in Civ Pop mode.
  * @param {Network} lastNet Final (cumulative) network.
  * @param {Record<number, PopEntry>} lastPops Final per-civ native populations.
@@ -218,7 +218,7 @@ function growCohort(b, ref, co, target, i) {
 
 /**
  * Shrink a cohort to `target` live dots: stamp `disappearFrame` on the most-recently-added live
- * dots (so a cluster shrinks from its rim), this is how population DECLINE is shown.
+ * dots (so a cluster shrinks from its rim), this is how population decline is shown.
  * @param {*} co Cohort state {dots, live}.
  * @param {number} target Desired live count.
  * @param {number} i Frame index (disappear frame).
@@ -314,7 +314,7 @@ function cityIndexOf(b, civId, name) {
 }
 
 /**
- * Place an immigrant cohort in the REAL destination city (e.toCity), tagged with its REAL origin
+ * Place an immigrant cohort in the real destination city (e.toCity), tagged with its real origin
  * city (e.fromCity) so it flies in from where people actually left.
  * @param {*} b Build context.
  * @param {*} o { e, c, i } edge / cause / frame.
@@ -381,7 +381,7 @@ function appendCorridorDots(b, e, i) {
 }
 
 /**
- * A city's resident population split by ORIGIN civ, or a single owner bucket when no composition is
+ * A city's resident population split by origin civ, or a single owner bucket when no composition is
  * known. Buckets carry their share as `pts` (used as weights).
  * @param {*} city City {name, town, pop, origins?}.
  * @param {number} ownerId Current owner civ id.
@@ -429,8 +429,8 @@ function allocNative(total, civs, present) {
 }
 
 /**
- * The dot template for one origin civ's residents in a city: colored by ORIGIN (so a captured
- * city's prior-owner residents read in that civ's color), but living in the OWNER's sub-cluster.
+ * The dot template for one origin civ's residents in a city: colored by origin (so a captured
+ * city's prior-owner residents read in that civ's color), but living in the owner's sub-cluster.
  * @param {*} b Build context.
  * @param {{ownerId:number, cityIdx:number, cityName:string}} loc City location.
  * @param {number} originCiv Origin civ id.
@@ -465,7 +465,7 @@ function setNativeOriginCohort(b, loc, originCiv, target, i) {
 }
 
 /**
- * Set the NATIVE (resident) dots for one (owner, city) at frame i, split by ORIGIN civ: a captured
+ * Set the native (resident) dots for one (owner, city) at frame i, split by origin civ: a captured
  * city's prior residents keep their origin colour/name while new home-grown population counts as the
  * owner. Each origin is its own cohort living in the owner's city sub-cluster, so counts rise and
  * fall (decline is shown, not just the peak).
@@ -480,8 +480,8 @@ function appendNativeDots(b, ownerId, cityIdx, city, i) {
   const seen = nativeSeenSet(b, ownerId, cityIdx, origins);
   const present = new Map(origins.map((o) => [o.civ, o.pts]));
   const civs = [...seen];
-  // Any settlement that HAS native population gets at least one dot, so a freshly-founded (or otherwise
-  // sub-`unit`) settlement shows its initial population instead of an empty disc — the dot-count analog of
+  // Any settlement that has native population gets at least one dot, so a freshly-founded (or otherwise
+  // sub-`unit`) settlement shows its initial population instead of an empty disc, the dot-count analog of
   // the MIN_CITY_SUB_R radius floor. `city.pop` here is the settlement's scaled native population.
   const pop = city.pop || 0;
   const dotCount = pop > 0 ? Math.max(1, Math.floor(pop / b.unit)) : 0;
@@ -494,8 +494,8 @@ function appendNativeDots(b, ownerId, cityIdx, city, i) {
 
 /**
  * The shared template for one internal-move dot (colour/scope/names); copied per dot with its
- * frame. Internal movers relocated between this civ's OWN cities, so they live in the destination
- * city's sub-cluster, colored a LIGHTER tint of the civ's color (origin lens), distinct from
+ * frame. Internal movers relocated between this civ's own cities, so they live in the destination
+ * city's sub-cluster, colored a lighter tint of the civ's color (origin lens), distinct from
  * home-grown residents and foreign immigrants.
  * @param {*} b Build context.
  * @param {number} civId
@@ -571,7 +571,7 @@ function appendFrameNatives(b, pops, i) {
 /**
  * Phyllotaxis-pack a city's chronological dot list into slots offset from its sub-center.
  *
- * Each dot keeps its slot BOTH ways: `cox/coy` relative to the city sub-center, and `cm` the city it
+ * Each dot keeps its slot both ways: `cox/coy` relative to the city sub-center, and `cm` the city it
  * belongs to. The painter adds them live (`c.x + cm.sx + d.cox`), so when a city is dragged its dots
  * travel with it. `ox/oy` stay as the flattened civ-relative offset for anything that wants the
  * settled position without a city lookup.
@@ -595,7 +595,7 @@ function layoutCityDots(cm, list, dots) {
   }
 }
 
-// Clear space between two DRAWN city discs. drawCityDiscs strokes each at `subR + 3`, so 6 is the
+// Clear space between two drawn city discs. drawCityDiscs strokes each at `subR + 3`, so 6 is the
 // smallest gap that still leaves daylight between two rings.
 const CITY_GAP = 6;
 
@@ -622,8 +622,8 @@ function clearRadiusAlong(ux, uy, r, placed) {
 
 /**
  * Pack a civ's city discs biggest-first: the largest at the origin, each next one out along its
- * golden-angle ray only as far as it must to clear the discs already down. Pure geometry — returns a
- * position per ORIGINAL city index (dot buckets stay keyed by that index).
+ * golden-angle ray only as far as it must to clear the discs already down. Pure geometry; returns a
+ * position per original city index (dot buckets stay keyed by that index).
  * @param {number[]} subRs Disc radius per city index.
  * @returns {{x:number, y:number, r:number}[]} Packed positions, indexed by original city index.
  */
@@ -651,7 +651,7 @@ function packCityDiscs(subRs) {
 const RECENTER_ITERS = 64; // converges to <0.2% of the settled 1-center (measured), for any real n
 
 /**
- * The center of the (approximately) smallest circle enclosing the packed discs — the point that
+ * The center of the (approximately) smallest circle enclosing the packed discs, the point that
  * minimises the farthest `distance + radius`. Packing fans the discs to one side of the origin, so
  * re-centering here removes the empty half and never enlarges the circle. Solved by the shrinking-step
  * 1-center iteration (step from the centroid toward the farthest disc with a decaying step).
@@ -799,7 +799,7 @@ function cityPopWeights(src) {
 }
 
 /**
- * Build every dot ONCE in chronological order across all frames, each civ's growing per-city
+ * Build every dot once in chronological order across all frames, each civ's growing per-city
  * native population plus the cross-civ arrivals, tagged with the frame it first appears (so
  * playback reveals them in time order) and a fixed sub-cluster slot.
  * @param {Frame[]} frames Timeline frames.

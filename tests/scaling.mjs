@@ -16,7 +16,7 @@ import {
   addRural
 } from "/emigration/ui/emigration-population.js";
 
-// The scaling MUST match the Demographics mod's scaleCityPopulationAt:
+// The scaling must match the Demographics mod's scaleCityPopulationAt:
 //   POP_K * W(size, eraGrowthParams(age, progress))
 //   W(N,{flat,scalar,exp}) = flat*N + scalar*N(N+1)/2 + exp*N(N+1)(2N+1)/6   (cumulative growth food)
 // from Civ VII's real per-era growth formula (cost(x)=flat+scalar*x+exp*x²). POP_K=31, params:
@@ -56,7 +56,7 @@ function testModernMegacityBand() {
   // Late Modern, a large city reaches the real megacity band (~25–38M).
   const size50 = scaleCityPopulation(50, 0, "AGE_MODERN", 100);
   assert.ok(size50 > 24_000_000 && size50 < 32_000_000, `size 50 late-Modern ~28M, got ${size50}`);
-  // The boost does NOT pop in at the start of Modern (ramped by age-progress).
+  // The boost does not pop in at the start of Modern (ramped by age-progress).
   const early = scaleCityPopulation(50, 0, "AGE_MODERN", 2);
   const noBoost = scaleCityPopulation(50, 0, "AGE_MODERN", 0);
   assert.ok(early < 0.5 * size50, "megacity boost must ramp in, not pop in at Modern start");
@@ -84,7 +84,7 @@ function testOneMoreTurnOvertime() {
   // Eased onset (C¹ at p=100): just past the end barely moves (no slope kink/spike).
   const justPast = scaleCityPopulation(80, 0, "AGE_MODERN", 101);
   assert.ok(justPast >= normal && justPast < normal * 1.01, "overtime eases in smoothly at the boundary");
-  // Hard cap: even a pathological progress reading can NEVER resurrect a multi-billion city.
+  // Hard cap: even a pathological progress reading can never resurrect a multi-billion city.
   const pathological = scaleCityPopulation(80, 0, "AGE_MODERN", 9000);
   assert.ok(pathological <= 38_000_000 * 5, "overtime multiplier is capped (≤ OVERTIME_MAX × ceiling)");
   assert.ok(pathological < 200_000_000, "worst case stays ~190M, not billions");
@@ -112,7 +112,7 @@ function testSettlementSignalGrounding() {
 }
 
 function testAgeBoundaryContinuity() {
-  // A size carried across a boundary reads continuously: Exploration@0% uses the PREVIOUS era's
+  // A size carried across a boundary reads continuously: Exploration@0% uses the previous era's
   // (Antiquity) params, equal to Antiquity@100%. No jump.
   for (const N of [5, 20, 40]) {
     assert.equal(
@@ -183,7 +183,7 @@ function testMarginalPeopleFloorsRealPoint() {
   const rawDelta = scaleCityPopulation(1000, 0) - scaleCityPopulation(999, 0);
   assert.ok(rawDelta < 1, `expected the curve to saturate (raw delta < 1) at pop 1000, got ${rawDelta}`);
   assert.equal(marginalPeople(1000, 0), 1, "a real point in the saturated regime reads as >= 1 person");
-  // The floor must NOT perturb the unsaturated regime: small pops keep the exact delta (so the
+  // The floor must not perturb the unsaturated regime: small pops keep the exact delta (so the
   // Demographics parity pin is unaffected).
   assert.equal(marginalPeople(2, 0), scaleCityPopulation(2, 0) - scaleCityPopulation(1, 0));
 }
@@ -198,7 +198,7 @@ function testFormatPeopleBuckets() {
 }
 
 function testFormatBothShowsBothSystems() {
-  // Popups present BOTH measuring systems at once: raw Civ points + scaled people, singular at 1.
+  // Popups present both measuring systems at once: raw Civ points + scaled people, singular at 1.
   assert.equal(formatBoth(12000, 1), "1 population point (12,000 people)");
   assert.equal(formatBoth(36000, 3), "3 population points (36,000 people)");
   assert.equal(formatBoth(12000), "1 population point (12,000 people)"); // points defaults to 1

@@ -82,7 +82,7 @@ async function run() {
     + " pairs=" + J(quote.pairs.map((p) => p.points + " from " + p.from + " back to " + p.home)));
   if (quote.points <= 0) { emit("S1 nothing callable; stopping"); emit("DONE modtest137 finished"); return; }
 
-  // The cities the first pair names: watched point by point through the whole call.
+  // The cities the first pair names: checked point by point through the whole call.
   const pair0 = quote.pairs[0];
   const host0 = cityByName(local, pair0.from);
   const home0 = cityByName(local, pair0.home);

@@ -82,7 +82,7 @@ if (!releaseGate.includes("npm run verify") || !releaseGate.includes("npm run co
   process.exit(1);
 }
 
-// ── Anti-drift coverage gate (M2) ───────────────────────────────────────────────────────────────
+// Anti-drift coverage gate (M2)
 // EVERY test file under tests/*.mjs must be run by some `test:*` script that is itself wired into the
 // verify chain OR the test:js chain (release:gate runs both, verify directly, test:js via coverage).
 // This makes the M1 hazard structurally impossible: a test added to the folder but never wired in

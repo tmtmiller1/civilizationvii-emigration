@@ -8,7 +8,7 @@
 // PROD   city.BuildQueue.addProgress(+50 then -50) on a city with a non-empty queue, own and FOREIGN.
 //        (Both calls come from a community mod, harvest-vanilla-core.js; never run by us.)
 // TURN   one end turn: does the FoodQueue / BuildQueue gain persist into the next turn's stock?
-// Every native call is logged BEFORE it is made, so a crash names its call.
+// Every native call is logged before it is made, so a crash names its call.
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 const TAG = "[EmigTest]";

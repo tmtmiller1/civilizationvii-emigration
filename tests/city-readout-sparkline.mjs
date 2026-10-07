@@ -16,7 +16,7 @@ const { recordMigrations, cityNetSeries } = await import("/emigration/ui/emigrat
 const move = (srcName, destName, pts) => ({ srcOwner: 1, srcName, destOwner: 1, destName, points: pts, people: pts * 100, cause: "prosperity", phase: "move" });
 const pass = (turn, migs) => { globalThis.Game.turn = turn; recordMigrations(migs); };
 
-// ── Recording: net per city per pass ("owner|cityName") ───────────────────────
+// Recording: net per city per pass ("owner|cityName")
 pass(1, [move("Rome", "Ostia", 1)]);
 pass(2, [move("Rome", "Ostia", 1)]);
 pass(3, [move("Rome", "Ostia", 1)]);
@@ -24,26 +24,26 @@ assert.deepEqual(cityNetSeries("1|Rome", 100), [-1, -1, -1], "the source city re
 assert.deepEqual(cityNetSeries("1|Ostia", 100), [1, 1, 1], "the destination city records a +1 net each pass");
 assert.deepEqual(cityNetSeries("1|Nowhere", 100), [], "an untouched city has an empty series");
 
-// ── Last-n slicing ────────────────────────────────────────────────────────────
+// Last-n slicing
 for (let t = 4; t <= 20; t++) pass(t, [move("Rome", "Ostia", 1)]); // 20 recorded passes for Rome
 assert.equal(cityNetSeries("1|Rome", 5).length, 5, "returns at most n values");
 assert.deepEqual(cityNetSeries("1|Rome", 5), [-1, -1, -1, -1, -1], "returns the most recent n, oldest first");
 assert.deepEqual(cityNetSeries("1|Rome", 0), [], "n <= 0 returns nothing");
 
-// ── Bounded storage (MAX_CITYNET_SERIES = 24) ────────────────────────────────
+// Bounded storage (MAX_CITYNET_SERIES = 24)
 for (let t = 21; t <= 40; t++) pass(t, [move("Rome", "Ostia", 1)]); // 40 passes total
 const full = cityNetSeries("1|Rome", 1000);
 assert.ok(full.length <= 24, `series is capped at 24 (got ${full.length})`);
 
-// ── A balanced pass (equal in and out) records a net 0, not a skip ────────────
+// A balanced pass (equal in and out) records a net 0, not a skip
 pass(41, [move("Rome", "Ostia", 1), move("Ostia", "Rome", 1)]);
 assert.equal(cityNetSeries("1|Rome", 1)[0], 0, "a pass with equal in and out records net 0 for the city");
 
-// ── Mixed magnitudes preserved ────────────────────────────────────────────────
+// Mixed magnitudes preserved
 pass(42, [move("Rome", "Ostia", 3)]); // Rome -3
 assert.equal(cityNetSeries("1|Rome", 1)[0], -3, "the exact per-pass net magnitude is stored");
 
-// ── readoutModel.spark reflects the option + the series ───────────────────────
+// readoutModel.spark reflects the option + the series
 const { readoutModel } = await import("/emigration/ui/emigration-city-readout.js");
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
 const snap = (netSeries) => ({ cityName: "Rome", cause: "prosperity", causeLabel: "Attraction", ownerNet: -5, pressureToBar: 0, netSeries });

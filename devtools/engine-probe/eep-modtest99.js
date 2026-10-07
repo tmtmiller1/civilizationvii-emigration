@@ -5,7 +5,7 @@
 // the ENGINE reports for that player. AugustusExp66 happens to contain the exact case the persona fix was for --
 // player 8 is Chola led by LEADER_ASHOKA_ALT. Before the fix the roster folded _ALT onto the base leader while
 // the runtime reported the _ALT type, so that player resolved to neutral. It must now carry the Devaraja profile
-// (happinessPull 0.9, assimilationEase 0.85) and must NOT equal the base Ashoka profile.
+// (happinessPull 0.9, assimilationEase 0.85) and must not equal the base Ashoka profile.
 // Player 4 is Norman, which still legitimately carries warRetention 1.4, and is the control: the England fix
 // must not have disturbed it.
 import { civTuning, BY_LEADER, BY_CIV } from "/emigration/ui/emigration-civ-tuning.js";

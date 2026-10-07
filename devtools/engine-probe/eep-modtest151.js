@@ -1,6 +1,6 @@
 // eep-modtest151.js - rerun of mod test 149 to watch item 2 in the hover panel (149 read it after the lens had been
 // switched off, so no panel drew). Otherwise identical. Original header:
-// the ethnicity-audit fixes, watched together in game (docs/ethnicity-audit-solution-designs.md).
+// the ethnicity-audit fixes, together in game (docs/ethnicity-audit-solution-designs.md).
 // Save: EmigShots072 (turn 72). Runs the DEPLOYED emigration copy, which carries every audit fix. Verdict lines are
 // tagged VERDICT <item> PASS|FAIL with the numbers behind them.
 //

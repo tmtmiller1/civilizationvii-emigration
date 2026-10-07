@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
 // emigration-polity reads the 1.4.1 happiness-stage / government / celebration / war-weariness signals
-// off live game globals. Stub them the way civ-tuning's test does (the lookup treats the type value AS
+// off live game globals. Stub them the way civ-tuning's test does (the lookup treats the type value as
 // the string). The HappinessStages table mirrors the real 1.4.1 Antiquity thresholds.
 const HAPPINESS_STAGES = [
   { HappinessStageType: "HAPPINESS_STAGE_ECSTATIC", StageMinThreshold: 40, StageMaxThreshold: Infinity },

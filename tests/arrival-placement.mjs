@@ -53,7 +53,7 @@ function makeCity(owner, id) {
   };
 }
 
-// ── mode clamp + plot choice ──────────────────────────────────────────────────────────────────────
+// mode clamp + plot choice
 {
   CONFIG.arrivalPlacement = 2;
   assert.equal(placementMode(), PLACEMENT.ASK);
@@ -63,7 +63,7 @@ function makeCity(owner, id) {
   assert.equal(pickExpandPlot([200]), 200);
 }
 
-// ── mode 0 and foreign cities: the plain write, nothing queued ────────────────────────────────────
+// mode 0 and foreign cities: the plain write, nothing queued
 {
   CONFIG.arrivalPlacement = 0;
   const c = makeCity(0, 1);
@@ -78,7 +78,7 @@ function makeCity(owner, id) {
   assert.equal(_pendingCountForTests(), 0);
 }
 
-// ── mode 1 automatic: +1 then EXPAND on the resource plot, once per point ─────────────────────────
+// mode 1 automatic: +1 then EXPAND on the resource plot, once per point
 {
   CONFIG.arrivalPlacement = 1;
   CONFIG.arrivalPreferSpecialists = false;
@@ -98,7 +98,7 @@ function makeCity(owner, id) {
   expandPlots = [200, 201];
 }
 
-// ── mode 1 with specialist preference: ASSIGN_WORKER first when the engine allows it ─────────────
+// mode 1 with specialist preference: ASSIGN_WORKER first when the engine allows it
 {
   CONFIG.arrivalPreferSpecialists = true;
   Game.PlayerOperations.canStart = (pid, op, args) => ({ Success: op === "ASSIGN_WORKER" && args.Location === 201 });
@@ -112,7 +112,7 @@ function makeCity(owner, id) {
   Game.PlayerOperations.canStart = () => ({ Success: false });
 }
 
-// ── mode 2 ask: the view names the city and count; several points in one city → one prompt ───────
+// mode 2 ask: the view names the city and count; several points in one city → one prompt
 {
   CONFIG.arrivalPlacement = 2;
   _setSyncFlushForTests(false); // let arrivals batch
@@ -156,7 +156,7 @@ function makeCity(owner, id) {
   _setSyncFlushForTests(true);
 }
 
-// ── mode 3 unit: spawn a Migrant for the local player, no population write; fall back on failure ──
+// mode 3 unit: spawn a Migrant for the local player, no population write; fall back on failure
 {
   CONFIG.arrivalPlacement = 3;
   requests.length = 0;
@@ -182,7 +182,7 @@ function makeCity(owner, id) {
 CONFIG.arrivalPlacement = 2;
 console.log("arrival-placement harness passed");
 
-// ── arrival origins: cause maps to refugee or migrant; the majority origin picks the quote ───────────
+// arrival origins: cause maps to refugee or migrant; the majority origin picks the quote
 {
   assert.deepEqual(arrivalFrom(4, "war"), { civ: 4, kind: "refugee", cause: "war" });
   assert.deepEqual(arrivalFrom(4, "disaster"), { civ: 4, kind: "refugee", cause: "disaster" });
@@ -206,7 +206,7 @@ console.log("arrival-placement harness passed");
   console.log("arrival-placement origins: ok");
 }
 
-// ── ask by kind: only the asked kinds wait for the pop-up; the others are placed at once ─────────────
+// ask by kind: only the asked kinds wait for the pop-up; the others are placed at once
 {
   const { asksAbout } = mod;
   CONFIG.arrivalPlacement = 2;

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
-// Stub the engine globals the geography module reads, BEFORE exercising it.
-// getPlotDistance: a Manhattan proxy (monotonic in separation - all the module
+// Stub the engine globals the geography module reads, before exercising it.
+// getPlotDistance: a Manhattan proxy (monotonic in separation, all the module
 // needs). Players 0 and 1 are at war; everyone else is at peace.
 globalThis.GameplayMap = {
   getPlotDistance: (x1, y1, x2, y2) => Math.abs(x1 - x2) + Math.abs(y1 - y2)

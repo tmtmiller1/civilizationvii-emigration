@@ -1,14 +1,14 @@
 // emigration-explain-view.js
 //
 // The "why did they leave / why there?" explainer: two labeled groups ("Why people are leaving" /
-// "Where they're drawn"), each a row per factor with a relative-weight bar. Deliberately thin:
+// "Where they're drawn"), each a row per factor with a relative-weight bar. It stays thin:
 // emigration-explain.js decomposes the scores, this only formats the rows. Two layers, mirroring
-// emigration-city-readout-data.js: buildExplainModel(o) is PURE (resolved inputs → view-model) and
+// emigration-city-readout-data.js: buildExplainModel(o) is pure (resolved inputs → view-model) and
 // explainModel(cityId) gathers those inputs live and degrades to null on any read failure.
 //
-// Three things render, and they are not the same thing: FACTORS (`leaving` / `drawnTo`) are the
-// additive terms, the only rows with a weight bar; PERMEABILITY is the multiplicative border channel,
-// reported as its literal multiplier ("x1.5") and never as a weight; COMMUNITY is context, not a factor,
+// Three things render, and they are not the same thing: factors (`leaving` / `drawnTo`) are the
+// additive terms, the only rows with a weight bar; permeability is the multiplicative border channel,
+// reported as its literal multiplier ("x1.5") and never as a weight; community is context, not a factor,
 // because a diaspora at the destination does not move anyone, so a fabricated weight for it would
 // falsify every other row's share. It renders as a plain note ("Roman community there: 24%").
 
@@ -26,8 +26,8 @@ import { registerCacheReset } from "/emigration/ui/emigration-cache-reset.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
 
 // Rows past this add pixels, not understanding: the tail of a decomposition is a long list of
-// near-zero terms. Truncating is honest here BECAUSE each weight is a share of the whole set, not of
-// what survives the cut - a shown row means the same thing whether or not the tail is drawn.
+// near-zero terms. Truncating is honest here because each weight is a share of the whole set, not of
+// what survives the cut, so a shown row means the same thing whether or not the tail is drawn.
 const MAX_ROWS = 5;
 
 // A row below this reads as "0%" once rounded; drawing a bar for it implies a precision the score
@@ -50,14 +50,14 @@ const MIN_WEIGHT = 0.005;
  * @property {{factor:number, label:string}|null} permeability The multiplicative border channel, as
  *   its literal multiplier, or null when the border changed nothing (or there is no destination).
  * @property {{name:string, share:number, color:string}|null} community An existing community of the
- *   movers' origin at the destination - CONTEXT, not a factor (see the file header). Null when the
+ *   movers' origin at the destination: context, not a factor (see the file header). Null when the
  *   destination hosts none, when the origin is unknown, or when policy hides that civ.
  */
 
 /**
  * Trim a weighed decomposition to the rows worth drawing (see {@link MAX_ROWS} / {@link MIN_WEIGHT}).
  * @param {*[]} rows Rows from `weigh()`.
- * @returns {ExplainRow[]} The display rows.
+ * @returns {ExplainRow[]}
  */
 function displayRows(rows) {
   /** @type {ExplainRow[]} */
@@ -74,7 +74,7 @@ function displayRows(rows) {
  * The permeability channel as a display value: its literal multiplier. Null when there is no scale
  * row (a neutral border has nothing to say).
  * @param {*[]} rows Raw rows from `explainPull()` (before `weigh()`, which drops the scale row).
- * @returns {{factor:number, label:string}|null} The multiplier, or null.
+ * @returns {{factor:number, label:string}|null}
  */
 function permeabilityOf(rows) {
   for (const r of rows) {
@@ -114,7 +114,7 @@ export function buildExplainModel(o) {
  * @param {((dest:*, signal:*) => {name:string, share:number, color:string}|null)|null} [communityOf]
  *   The injected diaspora resolver.
  * @returns {{destName:string, crossCiv:boolean,
- *   community:{name:string, share:number, color:string}|null}} The fields.
+ *   community:{name:string, share:number, color:string}|null}}
  */
 function destFields(sig, best, communityOf) {
   if (!best) return { destName: "", crossCiv: false, community: null };
@@ -141,8 +141,8 @@ function destNameOf(dest) {
 }
 
 /**
- * The movers' origin: the dominant origin civ of the SOURCE's population, which is who a diaspora at
- * the destination would be a diaspora OF. Null when the settlement is untracked.
+ * The movers' origin: the dominant origin civ of the source's population, which is who a diaspora at
+ * the destination would be a diaspora of. Null when the settlement is untracked.
  * @param {*} sig The source signal.
  * @returns {number|null} The origin player id, or null.
  */
@@ -154,11 +154,11 @@ function originCivOf(sig) {
 
 /**
  * An existing community of `originCiv` at `dest`, for the context note. Null when the destination
- * hosts none, or when policy hides that civ from this player (never name a civ they haven't met -
+ * hosts none, or when policy hides that civ from this player (never name a civ they haven't met;
  * the same masking `resolveComposition` applies in the readout).
  * @param {number|null} originCiv The movers' origin player id.
  * @param {*} dest The destination signal.
- * @returns {{name:string, share:number, color:string}|null} The note, or null.
+ * @returns {{name:string, share:number, color:string}|null}
  */
 function communityAt(originCiv, dest) {
   if (originCiv == null || civHidden(originCiv)) return null;
@@ -171,8 +171,8 @@ function communityAt(originCiv, dest) {
 
 /**
  * Find the ranked signal matching `cityId` (a stable key, a city object, or a localId/id).
- * @param {*[]} ranked Ranked signals.
- * @param {*} cityId The key, city object, or numeric id.
+ * @param {*[]} ranked
+ * @param {*} cityId
  * @returns {*} The signal, or null.
  */
 function findSignal(ranked, cityId) {
@@ -185,7 +185,7 @@ function findSignal(ranked, cityId) {
 }
 
 // Per-turn memo: hover panels ask for a model dozens of times a turn and the gather below ranks
-// EVERY settlement, so the per-pass constant inputs are computed once a turn and shared. Registered
+// every settlement, so the per-pass constant inputs are computed once a turn and shared. Registered
 // with the cache-reset convention so a new game in a still-live isolate never sees the previous field.
 let _passTurn = -1;
 /** @type {{ranked:*[], ownerPop:Record<number,number>, field:{meanHappiness:number}}|null} */
@@ -201,7 +201,7 @@ registerCacheReset(() => {
 
 /**
  * The current turn, or -1 when unreadable (which simply makes the memo a single-entry cache).
- * @returns {number} The turn.
+ * @returns {number}
  */
 function gameTurn() {
   try {
@@ -232,7 +232,7 @@ function passData() {
  * Build a live explainer model for one city (recompute-on-read, memoized per turn). Null when the
  * option is off, the city can't be found, or any read fails.
  * @param {*} cityId A stable city key, a city object, or a numeric localId/id.
- * @returns {ExplainModel|null} The model, or null.
+ * @returns {ExplainModel|null}
  */
 export function explainModel(cityId) {
   if (!CONFIG.migrationExplainer) return null;
@@ -258,7 +258,7 @@ export function explainModel(cityId) {
 }
 
 // Weight-bar colors, matching the flow view's convention: red = driving people out, green = drawing
-// them in. A push row and a pull row can appear in the SAME group (the terms that retain people are
+// them in. A push row and a pull row can appear in the same group (the terms that retain people are
 // pulls on the leaving side), so the color reads the row's own kind, never its group.
 const PUSH_COLOR = "#e0786b";
 const PULL_COLOR = "#7fd08a";
@@ -297,7 +297,7 @@ function clear(el) {
 
 /**
  * Append a group heading.
- * @param {*} parent The container. @param {string} text The heading.
+ * @param {*} parent @param {string} text
  */
 function appendHeading(parent, text) {
   parent.appendChild(div("emig-ex-group", text));
@@ -305,8 +305,8 @@ function appendHeading(parent, text) {
 
 /**
  * A `<div>` with a class and optional text.
- * @param {string} cls The class name. @param {string} [text] The text content.
- * @returns {*} The element.
+ * @param {string} cls @param {string} [text]
+ * @returns {*}
  */
 function div(cls, text) {
   const d = document.createElement("div");
@@ -317,7 +317,7 @@ function div(cls, text) {
 
 /**
  * The weight bar for one row: a track with a proportional fill, colored by the row's direction.
- * @param {ExplainRow} r The row.
+ * @param {ExplainRow} r
  * @returns {*} The track element.
  */
 function weightBar(r) {
@@ -333,7 +333,7 @@ function weightBar(r) {
 
 /**
  * Append one factor row: label, a weight bar, and the rounded share.
- * @param {*} parent The container. @param {ExplainRow} r The row.
+ * @param {*} parent @param {ExplainRow} r
  */
 function appendRow(parent, r) {
   const row = div("emig-ex-row");
@@ -345,7 +345,7 @@ function appendRow(parent, r) {
 
 /**
  * Append a plain context note (optionally with a civ color swatch).
- * @param {*} parent The container. @param {string} text The note.
+ * @param {*} parent @param {string} text
  * @param {string} [swatch] A hex color for a leading swatch.
  */
 function appendNote(parent, text, swatch) {
@@ -363,7 +363,7 @@ function appendNote(parent, text, swatch) {
 
 /**
  * Append the "why they're leaving" group, if it has rows.
- * @param {*} root The container. @param {ExplainModel} m The model.
+ * @param {*} root @param {ExplainModel} m
  */
 function appendLeaving(root, m) {
   if (!m.leaving.length) return;
@@ -373,7 +373,7 @@ function appendLeaving(root, m) {
 
 /**
  * Append the "where they're drawn" group with its permeability + community notes, if it has rows.
- * @param {*} root The container. @param {ExplainModel} m The model.
+ * @param {*} root @param {ExplainModel} m
  */
 function appendDrawn(root, m) {
   if (!m.drawnTo.length) return;
@@ -393,7 +393,7 @@ function appendDrawn(root, m) {
 
 /**
  * Render an explainer model into `parent`, replacing any previous render. No-op for a null model, an
- * absent parent, or a model with nothing to say - so a host can call this unconditionally.
+ * absent parent, or a model with nothing to say, so a host can call this unconditionally.
  * @param {*} parent The host element.
  * @param {ExplainModel|null} model
  * @returns {*} The rendered container, or null when nothing was rendered.

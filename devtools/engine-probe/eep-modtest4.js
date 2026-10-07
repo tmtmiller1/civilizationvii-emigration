@@ -3,7 +3,7 @@
 // player's largest city and one in the largest AI city, then lets Autoplay drive through the transition
 // and three turns of the new age. Logs [EmigTest] to UI.log. Compare with the peer session's crash at
 // 22:02:39 on 2026-09-12 (EXC_BAD_ACCESS 0x2a8, AsyncWorker1, ~30s after the same transition, with
-// emigration DISABLED), which this run neither confirms nor clears on its own; it answers only "does a
+// emigration disabled), which this run neither settles nor clears on its own; it answers only "does a
 // standing enclave tile survive the transition, and does the game keep running with it".
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";

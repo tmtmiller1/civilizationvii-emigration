@@ -1,6 +1,6 @@
 // emigration-enclave-pacing.js
 //
-// PER-AGE PACING of Cultural Enclave formation: at least one per host per age is made likely, more
+// Per-age pacing of Cultural Enclave formation: at least one per host per age is made likely, more
 // than the cap is impossible.
 //
 //   relax = quarterPacingMax x clamp(ageProgress / quarterPacingBy, 0, 1)   while formedThisAge < target
@@ -15,7 +15,7 @@ import { formedThisAge } from "/emigration/ui/emigration-quarter-state.js";
 import { currentAgeProgressPct } from "/emigration/ui/emigration-population.js";
 
 /**
- * Clamp to [0, 1], non-finite as 0. @param {*} x The value. @returns {number} Unit.
+ * Clamp to [0, 1], non-finite as 0. @param {*} x @returns {number}
  */
 function unit(x) {
   const n = Number(x);
@@ -54,7 +54,7 @@ export function relaxedBar(bar, relax) {
  * The relaxed dwell period in whole turns, never below `floor`. Pure.
  * @param {number} turns The configured dwell. @param {number} relax The relaxation.
  * @param {number} [floor] Minimum (2).
- * @returns {number} Turns.
+ * @returns {number}
  */
 export function relaxedDwell(turns, relax, floor) {
   const f = Number.isFinite(Number(floor)) ? Number(floor) : 2;
@@ -63,7 +63,7 @@ export function relaxedDwell(turns, relax, floor) {
   return Math.max(f, Math.round(t * (1 - unit(relax))));
 }
 
-/** Age progress as a fraction [0, 1], or 0 when unreadable. @returns {number} Fraction. */
+/** Age progress as a fraction [0, 1], or 0 when unreadable. @returns {number} */
 export function ageProgressFraction() {
   try {
     const pct = currentAgeProgressPct();
@@ -87,7 +87,7 @@ export function relaxFor(owner) {
 
 /**
  * Whether a host has reached the per-age cap and may form no more enclaves this age (0 = uncapped).
- * @param {number} owner Host player id. @returns {boolean} True when capped out.
+ * @param {number} owner Host player id. @returns {boolean}
  */
 export function capReached(owner) {
   const cap = Math.max(0, Number(CONFIG.quarterCapPerAge) || 0);

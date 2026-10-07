@@ -27,7 +27,7 @@ function testDisasterNameFallback() {
 
 function testCivAdjectiveFallback() {
   assert.equal(civAdjective(0), "a people"); // Players absent → generic
-  assert.equal(civName(0), "a people"); // civ NAME variant falls back the same way off-engine
+  assert.equal(civName(0), "a people"); // civ name variant falls back the same way off-engine
 }
 
 function testActionHintFallsBackToSharedHint() {
@@ -110,7 +110,7 @@ function testLocalDigestNamesDestinationAndTagsScope() {
   assert.doesNotMatch(internal, /Bound for/);
   assert.match(internal, /\(Internal Move\)$/);
   assert.doesNotMatch(internal, /\(External Move\)/);
-  // A cross-civ prosperity move reads with the SAME one-sentence neighbor pattern as internal (no
+  // A cross-civ prosperity move reads with the same one-sentence neighbor pattern as internal (no
   // separate "Bound for …" clause) and is tagged as an external move.
   const external = localDigestMessage({ ...base, crossCiv: true, destName: "Carthage" });
   assert.match(external, /for its more prosperous neighbor, Carthage\./);
@@ -127,7 +127,7 @@ function testLocalDigestNamesDestinationAndTagsScope() {
 }
 
 function testConquestNamesTheConqueror() {
-  // Conquest names the CONQUERING civ (its "destination" is the captured city itself), not a "to <dest>".
+  // Conquest names the conquering civ (its "destination" is the captured city itself), not a "to <dest>".
   const msg = localDigestMessage({ cause: "conquest", people: "4,000 people", city: "Veii",
     crossCiv: true, destName: "Veii", byCiv: "Rome" });
   assert.match(msg, /were captured when Veii was conquered by Rome\./);
@@ -153,7 +153,7 @@ testLocalDigestNamesDestinationAndTagsScope();
 testConquestNamesTheConqueror();
 console.log("naming harness passed");
 
-// ── an unknown player id never reaches the engine's independent-power lookup (a native crash, 2026-09-13) ──
+// an unknown player id never reaches the engine's independent-power lookup (a native crash, 2026-09-13)
 {
   const oldGame = globalThis.Game, oldPlayers = globalThis.Players;
   let asked = 0;

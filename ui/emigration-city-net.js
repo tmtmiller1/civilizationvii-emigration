@@ -56,7 +56,7 @@ export function recordCityNet(store, migs) {
  * @param {Record<string, number[]>} store The per-city series map.
  * @param {string} key "owner|cityName".
  * @param {number} [n] Max points to return.
- * @returns {number[]} Recent net values.
+ * @returns {number[]}
  */
 export function cityNetSeriesFrom(store, key, n = 12) {
   const arr = (store || {})[key] || [];
