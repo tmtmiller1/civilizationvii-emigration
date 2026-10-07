@@ -1958,7 +1958,7 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_SCRIPTS_PARA_1" Language="zh_Hans_CN"><Text>非英语来源的引语会在英文译文旁显示原文。拉丁字母书写的原文会完整显示，从古英语、古诺斯语到越南语、土耳其语，以及亚述铭文中经转写的阿卡德语。阿拉伯文、希伯来文、希腊文、西里尔文、埃塞俄比亚文、亚美尼亚文、格鲁吉亚文、蒙古文、印度及东南亚诸文字，以及中文、日文和韩文的原文只显示译文，因为游戏字体缺少这些文字。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_TITLE" Language="zh_Hans_CN"><Text>关于“移民”</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_1" Language="zh_Hans_CN"><Text>“移民”是一个用户界面模组。每回合，它读取世界的状态，并通过游戏自身的指令写回人口、地块、产出和影响力，只添加自己的数据库条目；基础游戏的规则、文件和 AI 决策均保持不变。它从第一回合起模拟每一个存活的主要文明，无论是否已相遇。迁徙仪表板的“指南”标签页提供一页式速查，说明哪些因素驱动迁徙。</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2" Language="zh_Hans_CN"><Text>版本 3.3.0，适用于《文明 VII》1.5.0。界面提供十二种语言。源代码、包含所有公式的完整文档，以及每句引语的来源记录，都发布在 GitHub：github.com/tmtmiller1/civilizationvii-emigration。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2" Language="zh_Hans_CN"><Text>版本 3.3.1，适用于《文明 VII》1.5.0。界面提供十二种语言。源代码、包含所有公式的完整文档，以及每句引语的来源记录，都发布在 GitHub：github.com/tmtmiller1/civilizationvii-emigration。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_TITLE" Language="zh_Hans_CN"><Text>数字背后的人</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_PARA_1" Language="zh_Hans_CN"><Text>本模组将迁徙和流离失所转化为游戏系统。在现实中，人们离开家园最常见的原因是战争、迫害、灾害或困苦。本模组将难民呈现为有血有肉的人，在流离者的话语得以留存之处让他们用自己的话发声，并把受灾城市的损失计为死亡。作者在模组的每个里程碑都向难民救助机构捐款以作纪念。如果你有能力，请考虑支持联合国难民署（UNHCR）、国际救援委员会、无国界医生、国际难民援助项目，或当地的难民及互助团体。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_TITLE" Language="zh_Hans_CN"><Text>制作人员</Text></Replace>

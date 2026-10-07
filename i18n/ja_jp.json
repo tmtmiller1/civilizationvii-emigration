@@ -1959,7 +1959,7 @@
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_SCRIPTS_PARA_1": "英語以外の出典からの引用では、原文と訳文を並べて表示します。ラテン文字の原文は、古英語や古ノルド語からベトナム語、トルコ語、アッシリアの碑文を翻字したアッカド語まで、全文を表示します。アラビア文字、ヘブライ文字、ギリシャ文字、キリル文字、エチオピア文字、アルメニア文字、ジョージア文字、モンゴル文字、インド系および東南アジア系の文字、そして中国語、日本語、韓国語の原文は、ゲームのフォントがそれらの文字に対応していないため、訳文のみで表示されます。",
  "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_TITLE": "移住について",
  "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_1": "移住はユーザーインターフェースModです。毎ターン世界の状態を読み取り、ゲーム本来のコマンドを通じて人口、タイル、産出、影響力を書き戻し、追加するのは自身のデータベース行だけです。基本ゲームのルール、ファイル、AIの判断には手を加えません。最初のターンから、出会っているかどうかにかかわらず、生存するすべての主要文明をシミュレートします。移住ダッシュボードの「ガイド」タブには、移住を引き起こす要因を1画面にまとめた早見表があります。",
- "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2": "バージョン3.3.0、Civilization VII 1.5.0対応。インターフェースは12言語に対応しています。ソースコード、すべての計算式を含む完全なドキュメント、そしてすべての引用の出典記録は、GitHubのgithub.com/tmtmiller1/civilizationvii-emigrationで公開しています。",
+ "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2": "バージョン3.3.1、Civilization VII 1.5.0対応。インターフェースは12言語に対応しています。ソースコード、すべての計算式を含む完全なドキュメント、そしてすべての引用の出典記録は、GitHubのgithub.com/tmtmiller1/civilizationvii-emigrationで公開しています。",
  "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_TITLE": "数字の向こうにいる人々",
  "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_PARA_1": "このModは、移住と強制移動をゲームのシステムに落とし込んでいます。現実には、人々が故郷を離れる理由の多くは戦争、迫害、災害、困窮です。このModは難民を一人の人間として描き、言葉が残っている限り故郷を追われた人々に彼ら自身の言葉で語らせ、被災した都市の損失を死者として数えます。作者は、このModの節目ごとに難民支援への寄付を行ってきました。もし可能であれば、UNHCR（国連難民高等弁務官事務所）、国際救済委員会（IRC）、国境なき医師団、International Refugee Assistance Project、あるいは地域の難民支援・相互扶助団体への支援をご検討ください。",
  "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_TITLE": "クレジット",

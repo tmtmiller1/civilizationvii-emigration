@@ -1961,7 +1961,7 @@
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_SCRIPTS_PARA_1": "出自外語來源的引文會在譯文旁顯示原文。拉丁字母的原文會完整呈現，從古英語、古諾斯語到越南語、土耳其語，以及亞述銘文中經轉寫的阿卡德語。阿拉伯文、希伯來文、希臘文、西里爾字母、衣索比亞文、亞美尼亞文、喬治亞文、蒙古文、印度及東南亞各種文字的原文只顯示譯文，因為遊戲的字型缺少這些文字；中文原文則直接呈現。",
  "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_TITLE": "關於移民模組",
  "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_1": "移民是一個使用者介面模組。它每回合讀取世界的狀態，並透過遊戲自身的指令寫回人口、地塊、產出與影響力，只加入自己的資料庫列；基礎遊戲的規則、檔案與 AI 決策均保持原樣。它從第一回合起模擬每個仍然存在的主要文明，無論你是否已遇見。遷徙儀表板的「指南」分頁有一頁簡明參考，說明驅動遷徙的因素。",
- "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2": "版本 3.3.0，適用於《文明帝國VII》1.5.0。介面提供十二種語言。原始碼、包含每條公式的完整文件，以及每句引文的來源記錄，均可在 GitHub 上找到：github.com/tmtmiller1/civilizationvii-emigration。",
+ "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2": "版本 3.3.1，適用於《文明帝國VII》1.5.0。介面提供十二種語言。原始碼、包含每條公式的完整文件，以及每句引文的來源記錄，均可在 GitHub 上找到：github.com/tmtmiller1/civilizationvii-emigration。",
  "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_TITLE": "數字背後的人",
  "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_PARA_1": "本模組將遷徙與流離失所轉化為遊戲系統。現實中，人們離開家園最常是因為戰爭、迫害、災害或困苦。本模組將難民呈現為有血有肉的人，盡可能讓流離失所者以他們自己傳世的話語發聲，並將受災城市的損失計為死亡。作者每逢本模組的里程碑都會向難民救援機構捐款。如果你有能力，請考慮支持聯合國難民署（UNHCR）、國際救援委員會、無國界醫生、國際難民援助計劃，或當地的難民及互助團體。",
  "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_TITLE": "製作人員",

@@ -1956,7 +1956,7 @@
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_SCRIPTS_PARA_1": "영어가 아닌 출처의 인용문은 원문과 함께 번역을 보여 줍니다. 라틴 문자로 된 원문은 고대 영어와 고대 노르드어부터 베트남어, 튀르키예어, 아시리아 비문의 음역된 아카드어까지 그대로 표시됩니다. 아랍 문자, 히브리 문자, 그리스 문자, 키릴 문자, 에티오피아 문자, 아르메니아 문자, 조지아 문자, 몽골 문자, 인도 및 동남아시아 문자, 그리고 한자, 일본 문자, 한글로 된 원문은 게임 글꼴이 그 문자를 지원하지 않아 번역문만 표시됩니다.",
  "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_TITLE": "이주 모드 소개",
  "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_1": "이주는 사용자 인터페이스 모드입니다. 매 턴 세계의 상태를 읽고 게임 자체의 명령을 통해 인구, 타일, 산출, 영향력을 다시 기록하며, 자체 데이터베이스 행만 추가합니다. 기본 게임의 규칙, 파일, AI 결정은 그대로 둡니다. 만났든 아니든 살아 있는 모든 주요 문명을 첫 턴부터 시뮬레이션합니다. 이주 대시보드의 가이드 탭에는 무엇이 이주를 일으키는지를 한 화면에 정리한 참고 자료가 있습니다.",
- "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2": "버전 3.3.0, 문명 VII 1.5.0용. 인터페이스는 12개 언어로 제공됩니다. 소스 코드, 모든 공식이 담긴 전체 문서, 그리고 모든 인용문의 출처 기록은 GitHub(github.com/tmtmiller1/civilizationvii-emigration)에 있습니다.",
+ "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2": "버전 3.3.1, 문명 VII 1.5.0용. 인터페이스는 12개 언어로 제공됩니다. 소스 코드, 모든 공식이 담긴 전체 문서, 그리고 모든 인용문의 출처 기록은 GitHub(github.com/tmtmiller1/civilizationvii-emigration)에 있습니다.",
  "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_TITLE": "숫자 뒤의 사람들",
  "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_PARA_1": "이 모드는 이주와 강제 이주를 게임 시스템으로 바꿉니다. 현실에서 사람들이 고향을 떠나는 가장 흔한 이유는 전쟁, 박해, 재해, 또는 곤궁입니다. 이 모드는 난민을 사람으로 그리고, 실향민의 말이 남아 있는 곳에서는 그들 자신의 말로 이야기하게 하며, 재난을 겪은 도시의 손실을 사망으로 집계합니다. 제작자는 모드의 중요한 고비마다 난민 구호 단체에 기부해 왔습니다. 여유가 된다면 유엔난민기구(UNHCR), 국제구조위원회(IRC), 국경없는의사회, 국제난민지원프로젝트(IRAP), 또는 지역의 난민 및 상호 부조 단체를 후원하는 것을 고려해 주십시오.",
  "LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_TITLE": "제작진",
