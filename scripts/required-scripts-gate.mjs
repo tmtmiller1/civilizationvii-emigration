@@ -14,7 +14,11 @@ const requiredScripts = [
   // The enclave tooltip model: sources, reasoning, the displaced improvement, contested dimming.
   "test:enclave-tooltip-data",
   "test:chronicle",
+  // The notification train: one notification per channel and turn, the same-turn replacement, the toast fallback.
+  "test:train",
   "test:return",
+  // Leaving displaced people where they are on the call-home offer: they are not offered again.
+  "test:call-home-decline",
   "test:dilemma",
   "test:ethnicity-distribution",
   "test:perf-budget",
@@ -43,7 +47,11 @@ const requiredScripts = [
 
 const requiredVerifyRuns = [
   "test:chronicle",
+  // The notification train: one notification per channel and turn, the same-turn replacement, the toast fallback.
+  "test:train",
   "test:return",
+  // Leaving displaced people where they are on the call-home offer: they are not offered again.
+  "test:call-home-decline",
   "test:dilemma",
   "test:ethnicity-distribution",
   "test:perf-budget",

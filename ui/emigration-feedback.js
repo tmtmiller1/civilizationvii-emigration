@@ -1,9 +1,10 @@
 // emigration-feedback.js
 //
-// In-game feedback for migration: transient HUD toasts (a styled DOM element on the HUD root,
-// with injected CSS) and threshold-gated "world refugee news" fired once per tier. Gated by
-// CONFIG.notifyMode (0 off / 1 important / 2 verbose) and the per-channel flags. The GameFace DOM
-// can be absent, so each channel degrades to a no-op rather than throwing.
+// In-game feedback for migration: on-screen notices and threshold-gated "world refugee news" fired once per
+// tier. A notice goes to the game's own notification train (emigration-train.js) by default, and to the mod's
+// own HUD toast (a styled DOM element on the HUD root, with injected CSS) when notifyTrain is off or the
+// engine's notification API is absent. Gated by CONFIG.notifyMode (0 off / 1 important / 2 verbose) and the
+// per-channel flags. The GameFace DOM can be absent, so each channel degrades to a no-op rather than throwing.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { loc, localeFontFamily, msg, msgKey, msgText } from "/emigration/ui/emigration-loc.js";
@@ -30,6 +31,7 @@ import { pullReasonsMsg } from "/emigration/ui/emigration-move-reasons.js";
 import { emigrationRetention } from "/emigration/ui/emigration-borders.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
+import { channelFor, trainAvailable, trainNotify } from "/emigration/ui/emigration-train.js";
 
 const NEWS_KEY = "EmigrationNews_v1";
 const NEWS_SCHEMA_VERSION = 2;
@@ -247,17 +249,38 @@ function buildToastEl(msg, cause, accent) {
 }
 
 /**
- * Emit a transient toast on the HUD, styled to match the game (see TOAST_CSS) and themed by cause so
- * its type (war / disaster / prosperity / …) reads at a glance. Stacks rather than overlapping, and
- * stays up TOAST_MS before fading. No-op when notifications are off.
+ * Show one notice on screen. With notifyTrain on (the default) it joins the game's notification train
+ * beside End Turn, in the channel named or the one its cause implies; otherwise it is the mod's own HUD
+ * toast (see {@link domToast}). No-op when notifications are off.
+ * @param {string} msg The message body.
+ * @param {string} [cause] The migration cause (or "crisis"), for the toast's eyebrow + accent theme and
+ *   for the train channel when none is named.
+ * @param {boolean} [ownLoss] Whether this is the local player's own loss (reserves the red accent; the
+ *   loss channel).
+ * @param {string} [accentOverride] An explicit accent color that wins over the cause color. The
+ *   per-move digests pass it so the toast matches the log row's direction-based color (see {@link digestAccent}).
+ * @param {import("./emigration-train.js").Channel} [channel] The train channel, when the caller knows it.
+ */
+export function toast(msg, cause, ownLoss, accentOverride, channel) {
+  if (CONFIG.notifyMode < 1) return;
+  if (CONFIG.notifyTrain && trainAvailable()) {
+    trainNotify(channel || channelFor(cause, ownLoss), msg);
+    return;
+  }
+  domToast(msg, cause, ownLoss, accentOverride);
+}
+
+/**
+ * The mod's own HUD toast: a transient element styled to match the game (see TOAST_CSS) and themed by
+ * cause so its type (war / disaster / prosperity / …) reads at a glance. Stacks rather than overlapping,
+ * and stays up TOAST_MS before fading. The surface when notifyTrain is off, and off-engine.
  * @param {string} msg The message body.
  * @param {string} [cause] The migration cause (or "crisis"), for the eyebrow + accent theme.
  * @param {boolean} [ownLoss] Whether this is the local player's own loss (reserves the red accent).
- * @param {string} [accentOverride] An explicit accent color that wins over the cause color. The
- *   per-move digests pass it so the toast matches the log row's direction-based color (see {@link digestAccent}).
+ * @param {string} [accentOverride] An explicit accent color that wins over the cause color.
  */
-export function toast(msg, cause, ownLoss, accentOverride) {
-  if (CONFIG.notifyMode < 1 || !CONFIG.notifyToasts) return;
+function domToast(msg, cause, ownLoss, accentOverride) {
+  if (!CONFIG.notifyToasts) return;
   try {
     const root = document.body || document.documentElement;
     if (!root) return;
@@ -309,17 +332,18 @@ function cooldownOk() {
 }
 
 /**
- * Fire a high-signal toast subject to the cooldown backstop. Used for the events that
+ * Fire a high-signal notice subject to the cooldown backstop. Used for the events that
  * actually warrant a notification (bad disasters, refugee-crisis milestones).
  * @param {string} msg The message.
  * @param {string} [cause] The migration cause (or "crisis"), for the toast's theme.
  * @param {boolean} [ownLoss] Whether this is the local player's own loss (reserves the red accent).
  * @param {string} [accentOverride] Explicit accent color (per-move digests pass the direction accent).
+ * @param {import("./emigration-train.js").Channel} [channel] The train channel, when the caller knows it.
  */
-export function announceImportant(msg, cause, ownLoss, accentOverride) {
+export function announceImportant(msg, cause, ownLoss, accentOverride, channel) {
   if (CONFIG.notifyMode < 1) return;
   if (!cooldownOk()) return;
-  toast(msg, cause, ownLoss, accentOverride);
+  toast(msg, cause, ownLoss, accentOverride, channel);
 }
 
 /** Causes that name a specific in-world event (war/disaster/conquest), vs economic migration. */
@@ -455,7 +479,7 @@ function crisisMilestone(pid, cum, pass) {
   const ownLoss = pid === localPlayerId(); // red only when it's the player's own civ in crisis
   logNotification({ kind: "crisis", cause, event: event || undefined, summary: head,
     people, points, fromCiv: who, ownLoss });
-  announceImportant(msgText(head), cause, ownLoss);
+  announceImportant(msgText(head), cause, ownLoss, undefined, "world");
 }
 
 /**
@@ -713,7 +737,7 @@ function localDigest(migs) {
   // Color the toast by direction (red for own people leaving for a rival, neutral for an internal
   // shuffle: the source settlement still loses its tile, so never green), matching the log row's accent
   // rather than the cause.
-  announceImportant(msgText(eventMessage(lead)), lead.cause, true, digestAccent(true, lead.crossCiv));
+  announceImportant(msgText(eventMessage(lead)), lead.cause, true, digestAccent(true, lead.crossCiv), "loss");
 }
 
 /**
@@ -812,7 +836,7 @@ function inboundDigest(migs) {
   for (const ev of events) logInbound(ev, inboundMessage(ev));
   const lead = events[0];
   // A gain → green (direction accent), matching the log row.
-  announceImportant(msgText(inboundMessage(lead)), lead.cause, false, digestAccent(false, true));
+  announceImportant(msgText(inboundMessage(lead)), lead.cause, false, digestAccent(false, true), "arrival");
 }
 
 // Per-source cue cooldown (session-only; a reload resetting a low-key cue is harmless).

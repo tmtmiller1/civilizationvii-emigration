@@ -331,7 +331,7 @@
         <Row Tag="LOC_EMIG_CALLHOME_CALL_INFL"><Text>Call {1_Count} home for [icon:YIELD_DIPLOMACY] {2_Cost}</Text></Row>
         <Row Tag="LOC_EMIG_CALLHOME_CALL_N"><Text>Each has about a {1_Pct}% chance of answering. The call is paid for either way.</Text></Row>
         <Row Tag="LOC_EMIG_CALLHOME_NO"><Text>Leave them where they are</Text></Row>
-        <Row Tag="LOC_EMIG_CALLHOME_NO_N"><Text>They may still drift home on their own in time.</Text></Row>
+        <Row Tag="LOC_EMIG_CALLHOME_NO_N"><Text>You will not be asked about these people again; they may still drift home on their own in time.</Text></Row>
         <Row Tag="LOC_EMIG_CALLHOME_CHRON"><Text>{1_Count} population points answered the call and came home.</Text></Row>
         <Row Tag="LOC_EMIG_CALLHOME_CHRON_ONE"><Text>One population point answered the call and came home.</Text></Row>
         <Row Tag="LOC_EMIG_CALLHOME_CHRON_TITLE"><Text>They Answer The Call</Text></Row>
@@ -459,6 +459,8 @@
         <Row Tag="LOC_EMIG_T_PLAGUECARRY_D"><Text>Let refugees fleeing an infected city seed a smaller outbreak-distress at their destination, migration as a contagion vector, beyond the game's trade-network spread.</Text></Row>
         <Row Tag="LOC_EMIG_T_NOTIFYMODE"><Text>Notification detail</Text></Row>
         <Row Tag="LOC_EMIG_T_NOTIFYMODE_D"><Text>How chatty migration notifications are: 0 = off, 1 = important only (refugee crises and severe disasters, the default), 2 = verbose (a summary every turn there's notable migration).</Text></Row>
+        <Row Tag="LOC_EMIG_T_NOTIFYTRAIN"><Text>Notices in the game's notification train</Text></Row>
+        <Row Tag="LOC_EMIG_T_NOTIFYTRAIN_D"><Text>On (default): Emigration's notices appear as icons in the game's own notification train beside End Turn, with the text in the hover tooltip; a click opens the Emigration screen, a right-click dismisses one, and each ends with the turn. Off: the mod's own pop-up lines at the top of the screen, as before. Display only.</Text></Row>
         <Row Tag="LOC_EMIG_T_NOTIFYDISASTER"><Text>Smallest disaster to report</Text></Row>
         <Row Tag="LOC_EMIG_T_NOTIFYDISASTER_D"><Text>Only notify for disasters at or above this severity (0 = even minor events, 3 = only legendary ones like a great eruption). Minor disasters still affect migration silently.</Text></Row>
         <Row Tag="LOC_EMIG_T_DNOTIFYMODE"><Text>Disaster pop-ups</Text></Row>
@@ -2496,6 +2498,12 @@
         <Row Tag="LOC_EMIG_FALLBACK_TOWN_N"><Text>Town {1_N}</Text></Row>
         <Row Tag="LOC_EMIG_FALLBACK_CITY_N"><Text>City {1_N}</Text></Row>
         <Row Tag="LOC_EMIG_TOAST_EYEBROW"><Text>Emigration</Text></Row>
+        <Row Tag="LOC_EMIG_TRAIN_LOSS"><Text>People are leaving</Text></Row>
+        <Row Tag="LOC_EMIG_TRAIN_ARRIVAL"><Text>Newcomers have arrived</Text></Row>
+        <Row Tag="LOC_EMIG_TRAIN_WORLD"><Text>Refugee crisis abroad</Text></Row>
+        <Row Tag="LOC_EMIG_TRAIN_DISASTER"><Text>Disaster displaces people</Text></Row>
+        <Row Tag="LOC_EMIG_TRAIN_NOTE"><Text>Migration news</Text></Row>
+        <Row Tag="LOC_EMIG_TRAIN_FALLBACK"><Text>Open the Emigration screen's Notifications tab for the details.</Text></Row>
         <Row Tag="LOC_EMIG_QUARTER_ENCLAVE"><Text>{1_Demonym} Enclave</Text></Row>
         <Row Tag="LOC_EMIG_QUARTER_ENCLAVE_FOREIGN"><Text>foreign enclave</Text></Row>
         <Row Tag="LOC_EMIG_EVENT_CRISIS_SUFFIX"><Text>{1_Name} Crisis</Text></Row>

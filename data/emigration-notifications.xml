@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The notification types ui/emigration-train.js raises in the game's notification train, one per channel so a turn's
+     loss, arrival, world-news and disaster notices sit side by side (the engine keeps one live notification of a type
+     at a time). Each is low or mid severity, ends with the turn and never holds it up. The script composes the text
+     and passes it with the send; the Message and Summary tags here are the fallback. -->
+<Database>
+    <Types>
+        <Row Type="NOTIFICATION_EMIGRATION_LOSS" Kind="KIND_NOTIFICATION"/>
+        <Row Type="NOTIFICATION_EMIGRATION_ARRIVAL" Kind="KIND_NOTIFICATION"/>
+        <Row Type="NOTIFICATION_EMIGRATION_WORLD" Kind="KIND_NOTIFICATION"/>
+        <Row Type="NOTIFICATION_EMIGRATION_DISASTER" Kind="KIND_NOTIFICATION"/>
+        <Row Type="NOTIFICATION_EMIGRATION_NOTE" Kind="KIND_NOTIFICATION"/>
+    </Types>
+    <Notifications>
+        <Row NotificationType="NOTIFICATION_EMIGRATION_LOSS" SeverityType="MID" ExpiresEndOfTurn="True" AutoNotify="False" Message="LOC_EMIG_TRAIN_LOSS" Summary="LOC_EMIG_TRAIN_FALLBACK" Priority="2"/>
+        <Row NotificationType="NOTIFICATION_EMIGRATION_ARRIVAL" SeverityType="LOW" ExpiresEndOfTurn="True" AutoNotify="False" Message="LOC_EMIG_TRAIN_ARRIVAL" Summary="LOC_EMIG_TRAIN_FALLBACK" Priority="2"/>
+        <Row NotificationType="NOTIFICATION_EMIGRATION_WORLD" SeverityType="MID" ExpiresEndOfTurn="True" AutoNotify="False" Message="LOC_EMIG_TRAIN_WORLD" Summary="LOC_EMIG_TRAIN_FALLBACK" Priority="2"/>
+        <Row NotificationType="NOTIFICATION_EMIGRATION_DISASTER" SeverityType="MID" ExpiresEndOfTurn="True" AutoNotify="False" Message="LOC_EMIG_TRAIN_DISASTER" Summary="LOC_EMIG_TRAIN_FALLBACK" Priority="2"/>
+        <Row NotificationType="NOTIFICATION_EMIGRATION_NOTE" SeverityType="LOW" ExpiresEndOfTurn="True" AutoNotify="False" Message="LOC_EMIG_TRAIN_NOTE" Summary="LOC_EMIG_TRAIN_FALLBACK" Priority="2"/>
+    </Notifications>
+    <NotificationSounds>
+        <Row NotificationType="NOTIFICATION_EMIGRATION_LOSS" Context="Add" Audio="notif-City_Near_Unhappiness_Loss"/>
+        <Row NotificationType="NOTIFICATION_EMIGRATION_ARRIVAL" Context="Add" Audio="notif-GenericNeutral"/>
+        <Row NotificationType="NOTIFICATION_EMIGRATION_WORLD" Context="Add" Audio="notif-GenericNeutral"/>
+        <Row NotificationType="NOTIFICATION_EMIGRATION_DISASTER" Context="Add" Audio="notif-GenericNeutral"/>
+        <Row NotificationType="NOTIFICATION_EMIGRATION_NOTE" Context="Add" Audio="notif-GenericNeutral"/>
+    </NotificationSounds>
+</Database>

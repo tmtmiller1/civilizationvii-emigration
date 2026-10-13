@@ -374,11 +374,22 @@ See 2.1. `UNITOPERATION_PILLAGE` answers false on own plots even with the unit s
   and logs how many target elements it can actually see. The bar was withdrawn.
 - Recorded in. `mod_ideas_tested/_archived-emigration-banner-pressure/docs/why-it-was-removed.md`.
 
-### 5.4 No floating map text, and no clickable notification without a database row
+### 5.4 No floating map text; a clickable notification needs a database type, and with one it works
 
 - Observed. `WorldUI` has no usable path for text rising from a plot. A clickable end-turn notification
-  needs a notification type defined in the database; the UI runtime cannot raise a new one.
-- Instead. Toasts and world news carry the per-plot messages.
+  needs a notification type defined in the database; the UI runtime cannot raise a type the database does
+  not hold.
+- Overturned in part, 2026-10-12. With the type in the database (`Types` and `Notifications` rows, an
+  `IconDefinitions` row for the train icon), `Game.Notifications.send({Type, Message, Summary}, player)` from
+  the UI runtime lists it in the train with the icon, the summary as tooltip, end-of-turn expiry and
+  right-click dismissal. The strategic resources mod watched this in its phase 14
+  (`strategic_resources_that_matter/docs/verification-runs.md`), and this mod's notices now go that way
+  (`ui/emigration-train.js`, `data/emigration-notifications.xml`). The engine's rules: one live notification
+  per type and player, a second send dropped silently; a send while last turn's copy is still listed at
+  `TurnBegin` is dropped too, so the send happens on `PlayerTurnActivated`; the `Location` field is ignored in
+  every shape, so a click moves no camera, and a handler registered on the train's model opens the screen.
+- Instead. The train carries the notices by default; the mod's own toasts stay behind `notifyTrain` off, and
+  world news stays in the log.
 
 ### 5.5 Gameplay writes from the UI runtime are client-side
 
@@ -495,7 +506,7 @@ Not limits on what can be done, but reads that lie for a moment and have caused 
 | CSS grid in the UI | silently breaks layout | earlier | memory, GameFace |
 | Engine call with an unknown player id | native crash | 2026-09-13 | ledger, mod tests 19 to 21 |
 | Decorate a city banner | registration accepted, component never delivered | earlier | archived banner pressure |
-| Floating map text; new clickable notification | no WorldUI path; needs a database type | earlier | runtime survey |
+| Floating map text; new clickable notification | no WorldUI path; needs a database type, and with one it works (5.4) | earlier, 2026-10-12 | runtime survey; the train build |
 | Push an existing save into a crisis; read the running crisis | ignored; not exposed | 2026-09-16 | ledger, mod tests 96 to 98d |
 | Multi-turn Autoplay running the pass | never raises the local turn | 2026-09-13 | ledger, mod tests 29 and 30 |
 | Autoplay autosaves for write probes | Autoplay resumes on load | 2026-09-13 | ledger, mod tests 8 to 10 |

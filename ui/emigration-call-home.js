@@ -5,6 +5,8 @@
 // internal call (people in your own settlements) is a purchase: everyone paid for comes. An external
 // call (people under another civ) is a gamble: each person is rolled against callHomeChanceExternal
 // and the fee is spent regardless. The roll is seeded from game id, pair and turn, so it cannot be re-rolled.
+// People the player chose to leave where they are (the "declined" map, kept by emigration-call-home-action.js)
+// are taken out of every later quote, so the offer comes back only for people displaced since.
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { migrationFlows } from "/emigration/ui/emigration-migration-stats.js";
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
@@ -122,18 +124,46 @@ export function callHomeCandidates(pid, flows) {
  * call to the size the player picked; it can never exceed the per-call cap.
  * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {number} currency A CALL_HOME_CURRENCY. @param {*[]} [flows] Flow rows (defaults to live).
- * @param {number} [want] How many the player asked for (default: as many as the cap allows).
+ * @param {number|{want?:number, declined?:Record<string, number>}} [ask] How many the player asked for (default:
+ *   as many as the cap allows), alone or with the points the player chose to leave, by {@link pairKey}.
  * @returns {{scope:string, available:number, points:number, cost:number, chance:number, pairs:*[]}} The quote.
  */
-export function callHomeQuote(pid, scope, currency, flows, want) {
+export function callHomeQuote(pid, scope, currency, flows, ask) {
+  const opts = ask && typeof ask === "object" ? ask : { want: ask };
+  const want = opts.want;
   const cands = callHomeCandidates(pid, flows);
-  const pairs = scope === CALL_HOME_SCOPE.EXTERNAL ? cands.external : cands.internal;
+  const pairs = withoutDeclined(scope === CALL_HOME_SCOPE.EXTERNAL ? cands.external : cands.internal, opts.declined);
   const available = pairs.reduce((n, p) => n + p.points, 0);
   const cap = Math.max(0, Math.floor(Number(CONFIG.callHomeMaxPointsPerAttempt) || 0));
   const asked = Number.isFinite(Number(want)) && Number(want) > 0 ? Math.floor(Number(want)) : cap;
   const points = Math.min(available, cap, asked);
   return { scope, available, points, pairs,
     cost: callHomeCost(points, scope, currency), chance: callHomeChance(scope) };
+}
+
+/**
+ * The key a candidate pair is remembered by when the player leaves its people where they are: where they
+ * live now, the settlement they left, and the civilization they live under.
+ * @param {{from:string, home:string, host:number}} pair A candidate pair. @returns {string}
+ */
+export function pairKey(pair) {
+  return pair.from + "|" + pair.home + "|" + pair.host;
+}
+
+/**
+ * Candidate pairs less the people already declined: a pair keeps only the points displaced since it was
+ * declined, and drops out when none are. Pure; the input is not changed.
+ * @param {*[]} pairs Candidate pairs, richest first. @param {Record<string, number>} [declined] By pairKey.
+ * @returns {*[]} The pairs still to offer, richest first.
+ */
+export function withoutDeclined(pairs, declined) {
+  if (!declined || typeof declined !== "object") return pairs;
+  const out = [];
+  for (const p of pairs) {
+    const left = p.points - Math.max(0, Number(declined[pairKey(p)]) || 0);
+    if (left > 0) out.push(left === p.points ? p : { ...p, points: left });
+  }
+  return out.sort((a, b) => b.points - a.points);
 }
 
 /**
@@ -163,14 +193,15 @@ export function callHomeRoll(seed, chance) {
  * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {number} currency A CALL_HOME_CURRENCY.
  * @param {{turn:number, gameId?:string|number, flows?:*[], want?:number, pay:(amount:number, currency:number)=>boolean,
- *   move:(pair:*)=>boolean, afford?:(currency:number)=>number}} deps Effects: how many were asked for, what
- *   the player can spend, pay the bill, and move one point home.
+ *   move:(pair:*)=>boolean, afford?:(currency:number)=>number, declined?:Record<string, number>}} deps Effects: how
+ *   many were asked for, what the player can spend, pay the bill, move one point home, and who was left
+ *   where they are (never called).
  * @returns {{ok:boolean, reason:string, scope:string, paid:number, attempted:number, returned:number}} Result.
  */
 export function resolveCallHome(pid, scope, currency, deps) {
   const d = deps || /** @type {*} */ ({});
   if (!CONFIG.callHomeEnabled) return fail("disabled", scope);
-  const quote = callHomeQuote(pid, scope, currency, d.flows, d.want);
+  const quote = callHomeQuote(pid, scope, currency, d.flows, { want: d.want, declined: d.declined });
   if (quote.points <= 0) return fail("nobody-to-call", scope);
   // A treasury that covers a smaller call than was asked for makes that smaller call, not none.
   const size = affordableSize(quote.points, scope, currency, d);

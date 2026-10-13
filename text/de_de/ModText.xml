@@ -305,7 +305,7 @@
         <Replace Tag="LOC_EMIG_CALLHOME_CALL_INFL" Language="de_DE"><Text>{1_Count} für [icon:YIELD_DIPLOMACY] {2_Cost} heimrufen</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CALL_N" Language="de_DE"><Text>Jeder folgt dem Ruf mit etwa {1_Pct} % Wahrscheinlichkeit. Der Ruf kostet in jedem Fall.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_NO" Language="de_DE"><Text>Sie bleiben lassen, wo sie sind</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_NO_N" Language="de_DE"><Text>Mit der Zeit kehren sie vielleicht noch von selbst heim.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_NO_N" Language="de_DE"><Text>Du wirst zu diesen Menschen nicht erneut gefragt; mit der Zeit kehren sie vielleicht noch von selbst heim.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON" Language="de_DE"><Text>{1_Count} Bevölkerungspunkte sind dem Ruf gefolgt und heimgekehrt.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_ONE" Language="de_DE"><Text>Ein Bevölkerungspunkt ist dem Ruf gefolgt und heimgekehrt.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_TITLE" Language="de_DE"><Text>Sie folgen dem Ruf</Text></Replace>
@@ -433,6 +433,8 @@
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY_D" Language="de_DE"><Text>Flüchtlinge aus einer infizierten Stadt eine kleinere Ausbruchsnot an ihrem Ziel säen lassen – Wanderung als Übertragungsweg, über die Handelsnetz-Ausbreitung des Spiels hinaus.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE" Language="de_DE"><Text>Detailgrad der Benachrichtigungen</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE_D" Language="de_DE"><Text>Wie gesprächig Wanderungsbenachrichtigungen sind: 0 = aus, 1 = nur wichtige (Flüchtlingskrisen und schwere Katastrophen – Standard), 2 = ausführlich (jede Runde mit nennenswerter Wanderung eine Zusammenfassung).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYTRAIN" Language="de_DE"><Text>Hinweise in der Benachrichtigungsleiste des Spiels</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYTRAIN_D" Language="de_DE"><Text>An (Standard): Die Hinweise von Auswanderung erscheinen als Symbole in der Benachrichtigungsleiste des Spiels neben „Zug beenden“, mit dem Text im Tooltip; ein Klick öffnet den Auswanderungsbildschirm, ein Rechtsklick entfernt einen Hinweis, und jeder endet mit der Runde. Aus: die eigenen Einblendungen der Mod am oberen Bildschirmrand, wie bisher. Nur Anzeige.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER" Language="de_DE"><Text>Kleinste gemeldete Katastrophe</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER_D" Language="de_DE"><Text>Nur bei Katastrophen ab dieser Stärke benachrichtigen (0 = auch kleine Ereignisse, 3 = nur legendäre wie ein großer Ausbruch). Kleine Katastrophen beeinflussen die Wanderung weiterhin still.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DNOTIFYMODE" Language="de_DE"><Text>Katastrophen-Pop-ups</Text></Replace>
@@ -1470,6 +1472,12 @@
         <Replace Tag="LOC_EMIG_FALLBACK_TOWN_N" Language="de_DE"><Text>Gemeinde {1_N}</Text></Replace>
         <Replace Tag="LOC_EMIG_FALLBACK_CITY_N" Language="de_DE"><Text>Stadt {1_N}</Text></Replace>
         <Replace Tag="LOC_EMIG_TOAST_EYEBROW" Language="de_DE"><Text>Auswanderung</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_LOSS" Language="de_DE"><Text>Menschen wandern ab</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_ARRIVAL" Language="de_DE"><Text>Neuankömmlinge sind eingetroffen</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_WORLD" Language="de_DE"><Text>Flüchtlingskrise im Ausland</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_DISASTER" Language="de_DE"><Text>Katastrophe vertreibt Menschen</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_NOTE" Language="de_DE"><Text>Wanderungsnachrichten</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_FALLBACK" Language="de_DE"><Text>Die Einzelheiten stehen im Reiter „Benachrichtigungen“ des Auswanderungsbildschirms.</Text></Replace>
         <Replace Tag="LOC_EMIG_QUARTER_ENCLAVE" Language="de_DE"><Text>{1_Demonym}-Enklave</Text></Replace>
         <Replace Tag="LOC_EMIG_QUARTER_ENCLAVE_FOREIGN" Language="de_DE"><Text>fremde Enklave</Text></Replace>
         <Replace Tag="LOC_EMIG_EVENT_CRISIS_SUFFIX" Language="de_DE"><Text>{1_Name}-Krise</Text></Replace>

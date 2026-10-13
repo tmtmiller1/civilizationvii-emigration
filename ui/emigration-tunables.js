@@ -201,6 +201,7 @@ export const TUNABLES = [
   // Notifications
   // notifications (anti-spam controls)
   { key: "notifyMode", group: "notify", type: "choice", values: [0, 1, 2], choiceLabels: ["LOC_EMIG_CHOICE_OFF", "LOC_EMIG_CHOICE_IMPORTANT", "LOC_EMIG_CHOICE_VERBOSE"], label: "LOC_EMIG_T_NOTIFYMODE", desc: "LOC_EMIG_T_NOTIFYMODE_D" },
+  { key: "notifyTrain", group: "notify", type: "bool", label: "LOC_EMIG_T_NOTIFYTRAIN", desc: "LOC_EMIG_T_NOTIFYTRAIN_D" },
   { key: "disasterNotifyMode", group: "notify", type: "choice", values: [0, 1, 2], choiceLabels: ["LOC_EMIG_CHOICE_OFF", "LOC_EMIG_CHOICE_IMPORTANT", "LOC_EMIG_CHOICE_VERBOSE"], label: "LOC_EMIG_T_DNOTIFYMODE", desc: "LOC_EMIG_T_DNOTIFYMODE_D" },
   { key: "disasterNotifyMinSeverity", group: "notify", type: "choice", values: [0, 1, 2, 3], choiceLabels: ["LOC_EMIG_CHOICE_ANY", "LOC_EMIG_CHOICE_MINOR", "LOC_EMIG_CHOICE_MODERATE", "LOC_EMIG_CHOICE_MAJOR"], label: "LOC_EMIG_T_NOTIFYDISASTER", desc: "LOC_EMIG_T_NOTIFYDISASTER_D" },
   { key: "notifyCooldownTurns", group: "notify", type: "choice", values: [0, 3, 6, 10, 20], format: "turns", special: {"0": "LOC_EMIG_CHOICE_NO_LIMIT"}, label: "LOC_EMIG_T_NOTIFYCD", desc: "LOC_EMIG_T_NOTIFYCD_D" },

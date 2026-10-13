@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The train icons of the mod's notification types, each the game's own for the nearest thing: a city about to
+     lose population (leaving), a new population to place (arriving), the crisis icon (a refugee crisis abroad), a
+     storm arriving (a disaster), and a great work (the chronicle and other notes). -->
+<Database>
+    <IconDefinitions>
+        <Row>
+            <ID>NOTIFICATION_EMIGRATION_LOSS</ID>
+            <Path>blp:ntf_city_unhappy_loss</Path>
+        </Row>
+        <Row>
+            <ID>NOTIFICATION_EMIGRATION_ARRIVAL</ID>
+            <Path>blp:ntf_acquire_tile</Path>
+        </Row>
+        <Row>
+            <ID>NOTIFICATION_EMIGRATION_WORLD</ID>
+            <Path>blp:ntf_crisis</Path>
+        </Row>
+        <Row>
+            <ID>NOTIFICATION_EMIGRATION_DISASTER</ID>
+            <Path>blp:ntf_storm_arrived</Path>
+        </Row>
+        <Row>
+            <ID>NOTIFICATION_EMIGRATION_NOTE</ID>
+            <Path>blp:ntf_great_works</Path>
+        </Row>
+    </IconDefinitions>
+</Database>

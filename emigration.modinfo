@@ -7,7 +7,7 @@
         <SpecialThanks>Tomahawk, Mk Z, and Tim_The_Texan's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>3.3.1</Version>
+        <Version>3.4.0</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -183,6 +183,8 @@
                     <Item>ui/emigration-game-speed.js</Item>
                     <Item>ui/emigration-notifications.js</Item>
                     <Item>ui/emigration-notifications-view.js</Item>
+                    <!-- The game's notification train as the surface for the mod's notices. -->
+                    <Item>ui/emigration-train.js</Item>
                     <Item>ui/emigration-raid.js</Item>
                     <!-- Submodules split out of the files above (engine→pull/state/
                          migration-records/consequences/arrivals,
@@ -266,10 +268,13 @@
                     <Item>data/emigration-enclave-improvements.xml</Item>
                     <Item>data/emigration-enclave-village.xml</Item>
                     <Item>data/emigration-enclave-village-db.xml</Item>
+                    <!-- The notification types ui/emigration-train.js raises in the game's notification train. -->
+                    <Item>data/emigration-notifications.xml</Item>
                 </UpdateDatabase>
                 <UpdateIcons>
                     <Item>data/emigration-policy-icons.xml</Item>
                     <Item>data/emigration-enclave-icons.xml</Item>
+                    <Item>data/emigration-notification-icons.xml</Item>
                 </UpdateIcons>
             </Actions>
         </ActionGroup>

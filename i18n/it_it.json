@@ -1299,7 +1299,7 @@
  "LOC_EMIG_CALLHOME_CALL_INFL": "Richiamane a casa {1_Count} per [icon:YIELD_DIPLOMACY] {2_Cost}",
  "LOC_EMIG_CALLHOME_CALL_N": "Ognuno ha circa il {1_Pct}% di probabilità di rispondere. Il richiamo si paga comunque.",
  "LOC_EMIG_CALLHOME_NO": "Lasciali dove sono",
- "LOC_EMIG_CALLHOME_NO_N": "Col tempo potrebbero comunque tornare a casa da soli.",
+ "LOC_EMIG_CALLHOME_NO_N": "Non ti verrà più chiesto di queste persone; col tempo potrebbero comunque tornare a casa da sole.",
  "LOC_EMIG_CALLHOME_CHRON": "{1_Count} punti di popolazione hanno risposto al richiamo e sono tornati a casa.",
  "LOC_EMIG_CALLHOME_CHRON_ONE": "Un punto di popolazione ha risposto al richiamo ed è tornato a casa.",
  "LOC_EMIG_CALLHOME_CHRON_TITLE": "Rispondono al richiamo",
@@ -2656,5 +2656,13 @@
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_ENCLAVE_PARA_6": "George Tupou I (circa 1797-1893) unificò le isole Tonga e nel 1875 concesse una costituzione scritta che abolì la servitù della gleba e dichiarò libera ogni persona del regno. Tonga rimase l'unico regno del Pacifico mai colonizzato.",
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_1": "Compare nella finestra Nuovi arrivati quando dei migranti da Tonga arrivano per stabilirsi in una delle tue città.",
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_2": "\"Ansioso sono di restare; chi mai vorrebbe partire? / Lasciando Vavaoo e le isole vicine…\" — canto di voga tongano, cantato lasciando Vavaʻu (1817, trad. ingl. Mariner)",
- "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_3": "William Mariner, un giovane inglese trattenuto per quattro anni a Tonga a partire dal 1806, dettò in seguito un resoconto delle isole che comprendeva questo canto di voga, intonato dagli equipaggi che lasciavano l'isola di Vavaʻu."
+ "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_3": "William Mariner, un giovane inglese trattenuto per quattro anni a Tonga a partire dal 1806, dettò in seguito un resoconto delle isole che comprendeva questo canto di voga, intonato dagli equipaggi che lasciavano l'isola di Vavaʻu.",
+ "LOC_EMIG_T_NOTIFYTRAIN": "Avvisi nella barra delle notifiche del gioco",
+ "LOC_EMIG_T_NOTIFYTRAIN_D": "Attivo (predefinito): gli avvisi di Emigrazione compaiono come icone nella barra delle notifiche del gioco, accanto a Fine turno, con il testo nel suggerimento; un clic apre la schermata Emigrazione, un clic destro chiude l'avviso e ogni avviso termina con il turno. Disattivo: le righe a comparsa del mod in cima allo schermo, come prima. Solo visualizzazione.",
+ "LOC_EMIG_TRAIN_LOSS": "La gente se ne va",
+ "LOC_EMIG_TRAIN_ARRIVAL": "Sono arrivati nuovi abitanti",
+ "LOC_EMIG_TRAIN_WORLD": "Crisi di profughi all'estero",
+ "LOC_EMIG_TRAIN_DISASTER": "Un disastro sfolla la popolazione",
+ "LOC_EMIG_TRAIN_NOTE": "Notizie sulle migrazioni",
+ "LOC_EMIG_TRAIN_FALLBACK": "I dettagli sono nella scheda Notifiche della schermata Emigrazione."
 }

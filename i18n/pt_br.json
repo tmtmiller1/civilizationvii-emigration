@@ -1298,7 +1298,7 @@
  "LOC_EMIG_CALLHOME_CALL_INFL": "Chamar {1_Count} de volta por [icon:YIELD_DIPLOMACY] {2_Cost}",
  "LOC_EMIG_CALLHOME_CALL_N": "Cada um tem cerca de {1_Pct}% de chance de responder. O chamado é pago de qualquer forma.",
  "LOC_EMIG_CALLHOME_NO": "Deixá-los onde estão",
- "LOC_EMIG_CALLHOME_NO_N": "Com o tempo, eles ainda podem voltar para casa por conta própria.",
+ "LOC_EMIG_CALLHOME_NO_N": "Você não será perguntado sobre essas pessoas novamente; com o tempo, elas ainda podem voltar para casa por conta própria.",
  "LOC_EMIG_CALLHOME_CHRON": "{1_Count} pontos de população atenderam ao chamado e voltaram para casa.",
  "LOC_EMIG_CALLHOME_CHRON_ONE": "Um ponto de população atendeu ao chamado e voltou para casa.",
  "LOC_EMIG_CALLHOME_CHRON_TITLE": "Eles atendem ao chamado",
@@ -2669,5 +2669,13 @@
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_ENCLAVE_PARA_6": "Jorge Tupou I (por volta de 1797 a 1893) uniu as ilhas de Tonga e, em 1875, concedeu uma constituição escrita que aboliu a servidão e declarou livre toda pessoa no reino. Tonga continuou sendo o único reino do Pacífico jamais colonizado.",
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_1": "Exibido na janela de Recém-chegados quando migrantes de Tonga chegam para se assentar em uma de suas cidades.",
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_2": "\"Ansioso estou por ficar; quem pode desejar partir? / Deixando Vavaoo e suas ilhas vizinhas…\" — canção de remo tonganesa, cantada ao deixar Vavaʻu (1817, trad. Mariner)",
- "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_3": "William Mariner, um jovem inglês retido por quatro anos em Tonga a partir de 1806, ditou mais tarde um relato das ilhas que incluía esta canção de remo, cantada pelas tripulações que deixavam a ilha de Vavaʻu."
+ "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_3": "William Mariner, um jovem inglês retido por quatro anos em Tonga a partir de 1806, ditou mais tarde um relato das ilhas que incluía esta canção de remo, cantada pelas tripulações que deixavam a ilha de Vavaʻu.",
+ "LOC_EMIG_T_NOTIFYTRAIN": "Avisos na bandeja de notificações do jogo",
+ "LOC_EMIG_T_NOTIFYTRAIN_D": "Ligado (padrão): os avisos de Emigração aparecem como ícones na bandeja de notificações do jogo, ao lado de Encerrar turno, com o texto na dica flutuante; um clique abre a tela de Emigração, um clique direito dispensa o aviso e cada um termina com o turno. Desligado: as linhas pop-up do próprio mod no topo da tela, como antes. Apenas exibição.",
+ "LOC_EMIG_TRAIN_LOSS": "Pessoas estão partindo",
+ "LOC_EMIG_TRAIN_ARRIVAL": "Recém-chegados se estabeleceram",
+ "LOC_EMIG_TRAIN_WORLD": "Crise de refugiados no exterior",
+ "LOC_EMIG_TRAIN_DISASTER": "Um desastre desloca pessoas",
+ "LOC_EMIG_TRAIN_NOTE": "Notícias de migração",
+ "LOC_EMIG_TRAIN_FALLBACK": "Os detalhes estão na aba Notificações da tela de Emigração."
 }

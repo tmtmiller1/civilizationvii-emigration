@@ -1604,7 +1604,7 @@
  "LOC_EMIG_CALLHOME_CALL_INFL": "[icon:YIELD_DIPLOMACY] {2_Cost}で{1_Count}人に呼びかける",
  "LOC_EMIG_CALLHOME_CALL_N": "一人ひとりが応じる確率は約{1_Pct}%です。費用はどちらにしてもかかります。",
  "LOC_EMIG_CALLHOME_NO": "そのままにしておく",
- "LOC_EMIG_CALLHOME_NO_N": "時が経てば、自分たちで故郷へ戻ってくることもあります。",
+ "LOC_EMIG_CALLHOME_NO_N": "この人々について再び尋ねることはありません。時が経てば、自分たちで故郷へ戻ってくることもあります。",
  "LOC_EMIG_CALLHOME_CHRON": "{1_Count}人口ポイントが呼びかけに応じ、故郷へ戻りました。",
  "LOC_EMIG_CALLHOME_CHRON_ONE": "1人口ポイントが呼びかけに応じ、故郷へ戻りました。",
  "LOC_EMIG_CALLHOME_CHRON_TITLE": "呼びかけに応える人々",
@@ -2685,5 +2685,13 @@
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_ENCLAVE_PARA_6": "ジョージ・トゥポウ1世（1797年ごろ〜1893年）はトンガの島々を統一し、1875年に成文憲法を発布して農奴制を廃止し、王国のすべての人を自由であると宣言した。トンガは、太平洋で唯一、一度も植民地化されなかった王国であり続けた。",
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_1": "トンガからの移民があなたの都市のひとつに定住しようと到着したとき、「新来者」ポップアップに表示されます。",
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_2": "「とどまりたい思いで胸がざわめく。誰が去りたいなどと思うだろう。/ ヴァヴァウとその近くの島々を離れて……」— トンガの櫂漕ぎ歌、ヴァヴァウを離れるときに歌われた（1817年、英訳：マリナー）",
- "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_3": "ウィリアム・マリナーは1806年から4年間トンガに留め置かれたイギリスの若者で、のちに島々についての記録を口述した。その中にこの櫂漕ぎ歌が収められており、ヴァヴァウ島を離れる漕ぎ手たちが歌ったものである。"
+ "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_3": "ウィリアム・マリナーは1806年から4年間トンガに留め置かれたイギリスの若者で、のちに島々についての記録を口述した。その中にこの櫂漕ぎ歌が収められており、ヴァヴァウ島を離れる漕ぎ手たちが歌ったものである。",
+ "LOC_EMIG_T_NOTIFYTRAIN": "ゲームの通知欄に表示",
+ "LOC_EMIG_T_NOTIFYTRAIN_D": "オン（既定）：移住のお知らせは「ターン終了」横のゲーム本来の通知欄にアイコンとして表示され、本文はツールチップに出ます。クリックで移住画面が開き、右クリックで消え、各お知らせはそのターンで終わります。オフ：従来どおり画面上部にMod独自のポップアップ行を表示します。表示のみ。",
+ "LOC_EMIG_TRAIN_LOSS": "人々が去っていきます",
+ "LOC_EMIG_TRAIN_ARRIVAL": "新たな住民が到着しました",
+ "LOC_EMIG_TRAIN_WORLD": "他国で難民危機",
+ "LOC_EMIG_TRAIN_DISASTER": "災害で人々が避難",
+ "LOC_EMIG_TRAIN_NOTE": "移住のニュース",
+ "LOC_EMIG_TRAIN_FALLBACK": "詳細は移住画面の「通知」タブをご覧ください。"
 }

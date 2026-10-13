@@ -255,7 +255,8 @@
  * @property {number} openBordersOpenness Immigration × while Open Borders slotted.
  * @property {number} opennessFloor Min immigration-openness multiplier.
  * @property {number} notifyMode Notification verbosity (0 off / 1 important / 2 verbose).
- * @property {boolean} notifyToasts Show transient toast lines.
+ * @property {boolean} notifyTrain Notices in the game's notification train (false: the mod's HUD toasts).
+ * @property {boolean} notifyToasts Show transient toast lines (when notifyTrain is off).
  * @property {boolean} notifyFloating Show on-map floating migration indicators.
  * @property {boolean} notifyWorldNews Announce major world refugee events.
  * @property {number} inboundNotifyPoints Min population points arriving in one settlement this pass to
