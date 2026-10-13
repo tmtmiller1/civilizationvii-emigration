@@ -531,7 +531,9 @@ export const CONFIG = {
 
   // in-game feedback & notifications
   notifyMode: 1, // 0 off, 1 important-only (default), 2 verbose (per-pass toasts)
-  notifyToasts: true,
+  notifyTrain: true, // notices in the game's own notification train beside End Turn (emigration-train.js);
+  // false = the mod's own HUD toasts at the top of the screen, the surface before 3.4.0
+  notifyToasts: true, // the HUD toasts, when notifyTrain is off
   notifyFloating: true,
   notifyWorldNews: true,
   inboundNotifyPoints: 2, // min population points arriving in one settlement (per cause+origin) this pass

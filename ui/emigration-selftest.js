@@ -238,18 +238,25 @@ function armRealDilemma() {
   }
 }
 
-/** Whether on-screen toasts are enabled in this profile. @returns {boolean} */
+/** Whether on-screen notices are enabled in this profile. @returns {boolean} */
 function toastsEnabled() {
-  return (CONFIG.notifyMode >= 1) && !!CONFIG.notifyToasts;
+  return (CONFIG.notifyMode >= 1) && (!!CONFIG.notifyTrain || !!CONFIG.notifyToasts);
+}
+
+/** Where a notice shows, for the banner. @returns {string} The place. */
+function noticePlace() {
+  return CONFIG.notifyTrain
+    ? "Look at the notification train beside End Turn; hover an icon for the text."
+    : "Look at the top of the screen.";
 }
 
 /** Fire a single test toast through the mod's notification channel. */
 function fireTestToast() {
   try {
-    toast("Emigration self-test notification. If you can read this, on-screen toasts work.", "prosperity");
+    toast("Emigration self-test notification. If you can read this, on-screen notices work.", "prosperity");
     banner(toastsEnabled()
-      ? "Toast fired. Look at the top of the screen."
-      : "Toasts are disabled in your mod options, so nothing appeared. Enable notifications to see them.");
+      ? "Notice fired. " + noticePlace()
+      : "Notices are disabled in your mod options, so nothing appeared. Enable notifications to see them.");
   } catch (e) {
     banner("Toast failed: " + errMsg(e));
   }
@@ -266,7 +273,7 @@ function fireSampleNotifications() {
     toast("Self-test: a world refugee crisis.", "crisis");
     toast("Self-test: an immigration wave arriving.", "prosperity");
     toast("Self-test: a disaster displacing people.", "disaster");
-    banner("Fired 4 sample notifications (war / crisis / immigration / disaster). See the top of the screen.");
+    banner("Fired 4 sample notifications (war / crisis / immigration / disaster). " + noticePlace());
   } catch (e) {
     banner("Notifications failed: " + errMsg(e));
   }

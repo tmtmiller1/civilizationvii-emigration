@@ -3,6 +3,17 @@ Generated from CHANGELOG.md by scripts/steam-changelog.mjs; release.sh uploads t
 To fix an old Workshop entry, paste the text under its ==== line into that entry's Edit box on the change-notes page.
 A block edited by hand is kept as-is. Delete a block to regenerate it from CHANGELOG.md.
 
+==== 3.4.0 | 2026-10-13 | src 5c0293e92930 | gen 127ce2a609e4 ====
+[b]Version 3.4.0 · 13 October 2026[/b]
+Notices in the game's own notification train.
+
+[b]Changed[/b]
+• Emigration's on-screen notices now appear in the game's notification train beside End Turn, as the game's own do: an icon per kind of news (people leaving your settlements, newcomers settling in them, a refugee crisis abroad, a disaster displacing people, other news such as Chronicle lines), the text in the icon's hover tooltip, a click opening the Emigration screen, a right-click dismissing one, and each ending with the turn. Several events of one kind in a turn share one notification. In all twelve languages.
+• The mod's own pop-up lines at the top of the screen remain behind a new Advanced setting, “Notices in the game's notification train” (Off). The Notifications tab and the log are unchanged; every notice still goes there.
+
+[b]Fixed[/b]
+• The call-home offer no longer comes back every turn for the same people. Choosing “Leave them where they are” (or closing the offer) is kept in the save, and those people are not offered again; a later offer lists only people displaced since. The button's tooltip says so, in all twelve languages.
+
 ==== 3.3.1 | 2026-10-07 | src e0c7748a4046 | gen 94c6110647a6 ====
 [b]Version 3.3.1 · 7 October 2026[/b]
 Settings that survive a restart: the mod now carries the Tower Settings Keeper.

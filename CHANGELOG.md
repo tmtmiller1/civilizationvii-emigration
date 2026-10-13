@@ -5,6 +5,24 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [3.4.0] - 2026-10-13
+
+Notices in the game's own notification train.
+
+### Changed
+- Emigration's on-screen notices now appear in the game's notification train beside End Turn, as the game's own
+  do: an icon per kind of news (people leaving your settlements, newcomers settling in them, a refugee crisis
+  abroad, a disaster displacing people, other news such as Chronicle lines), the text in the icon's hover
+  tooltip, a click opening the Emigration screen, a right-click dismissing one, and each ending with the turn.
+  Several events of one kind in a turn share one notification. In all twelve languages.
+- The mod's own pop-up lines at the top of the screen remain behind a new Advanced setting, "Notices in the
+  game's notification train" (Off). The Notifications tab and the log are unchanged; every notice still goes there.
+
+### Fixed
+- The call-home offer no longer comes back every turn for the same people. Choosing "Leave them where they are"
+  (or closing the offer) is kept in the save, and those people are not offered again; a later offer lists only
+  people displaced since. The button's tooltip says so, in all twelve languages.
+
 ## [3.3.1] - 2026-10-07
 
 Settings that survive a restart: the mod now carries the Tower Settings Keeper.

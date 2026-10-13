@@ -305,7 +305,7 @@
         <Replace Tag="LOC_EMIG_CALLHOME_CALL_INFL" Language="pl_PL"><Text>Wezwij {1_Count} pkt do domu za [icon:YIELD_DIPLOMACY] {2_Cost}</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CALL_N" Language="pl_PL"><Text>Każdy odpowie z prawdopodobieństwem około {1_Pct}%. Za wezwanie płacisz niezależnie od wyniku.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_NO" Language="pl_PL"><Text>Zostaw ich tam, gdzie są</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_NO_N" Language="pl_PL"><Text>Z czasem mogą jeszcze sami wrócić do domu.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_NO_N" Language="pl_PL"><Text>Nie zostaniesz już zapytany o tych ludzi; z czasem mogą jeszcze sami wrócić do domu.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON" Language="pl_PL"><Text>Punkty ludności, które odpowiedziały na wezwanie i wróciły do domu: {1_Count}.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_ONE" Language="pl_PL"><Text>Jeden punkt ludności odpowiedział na wezwanie i wrócił do domu.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_TITLE" Language="pl_PL"><Text>Odpowiadają na wezwanie</Text></Replace>
@@ -433,6 +433,8 @@
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY_D" Language="pl_PL"><Text>Pozwól uchodźcom uciekającym z zarażonego miasta zasiać mniejsze cierpienie wybuchu epidemii w miejscu docelowym: migracja jako wektor zakażenia, ponad rozprzestrzenianiem się przez sieć handlową gry.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE" Language="pl_PL"><Text>Szczegółowość powiadomień</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE_D" Language="pl_PL"><Text>Jak gadatliwe są powiadomienia o migracji: 0 = wyłączone, 1 = tylko ważne (kryzysy uchodźcze i ciężkie katastrofy, domyślne), 2 = szczegółowe (podsumowanie w każdej turze, gdy zachodzi znacząca migracja).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYTRAIN" Language="pl_PL"><Text>Powiadomienia w pasku powiadomień gry</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYTRAIN_D" Language="pl_PL"><Text>Włączone (domyślnie): powiadomienia Emigracji pojawiają się jako ikony w pasku powiadomień gry obok przycisku Zakończ turę, z treścią w podpowiedzi; kliknięcie otwiera ekran Emigracji, prawy przycisk odrzuca powiadomienie, a każde kończy się wraz z turą. Wyłączone: własne wyskakujące wiersze moda u góry ekranu, jak dotąd. Tylko wyświetlanie.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER" Language="pl_PL"><Text>Najmniejsza zgłaszana katastrofa</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER_D" Language="pl_PL"><Text>Powiadamiaj tylko o katastrofach na tym poziomie dotkliwości lub powyżej (0 = nawet drobne wydarzenia, 3 = tylko legendarne, jak wielka erupcja). Drobne katastrofy nadal wpływają na migrację po cichu.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DNOTIFYMODE" Language="pl_PL"><Text>Wyskakujące okna katastrof</Text></Replace>
@@ -1470,6 +1472,12 @@
         <Replace Tag="LOC_EMIG_FALLBACK_TOWN_N" Language="pl_PL"><Text>Miasteczko {1_N}</Text></Replace>
         <Replace Tag="LOC_EMIG_FALLBACK_CITY_N" Language="pl_PL"><Text>Miasto {1_N}</Text></Replace>
         <Replace Tag="LOC_EMIG_TOAST_EYEBROW" Language="pl_PL"><Text>Emigracja</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_LOSS" Language="pl_PL"><Text>Ludzie odchodzą</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_ARRIVAL" Language="pl_PL"><Text>Przybyli nowi osadnicy</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_WORLD" Language="pl_PL"><Text>Kryzys uchodźczy za granicą</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_DISASTER" Language="pl_PL"><Text>Katastrofa wypędza ludzi</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_NOTE" Language="pl_PL"><Text>Wieści o migracjach</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_FALLBACK" Language="pl_PL"><Text>Szczegóły znajdziesz w zakładce Powiadomienia na ekranie Emigracji.</Text></Replace>
         <Replace Tag="LOC_EMIG_QUARTER_ENCLAVE" Language="pl_PL"><Text>Enklawa: {1_Demonym}</Text></Replace>
         <Replace Tag="LOC_EMIG_QUARTER_ENCLAVE_FOREIGN" Language="pl_PL"><Text>obca enklawa</Text></Replace>
         <Replace Tag="LOC_EMIG_EVENT_CRISIS_SUFFIX" Language="pl_PL"><Text>Kryzys: {1_Name}</Text></Replace>

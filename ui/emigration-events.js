@@ -322,7 +322,9 @@ function maybeNotifyDisaster(data, sev, struck, where) {
     fromCity: where && where.city ? where.city : undefined,
     fromCiv: where ? where.civ : undefined
   });
-  if (shouldPopDisaster(CONFIG.disasterNotifyMode, struck)) announceImportant(msgText(alert), "disaster");
+  if (shouldPopDisaster(CONFIG.disasterNotifyMode, struck)) {
+    announceImportant(msgText(alert), "disaster", undefined, undefined, "disaster");
+  }
 }
 
 /**

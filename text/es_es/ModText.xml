@@ -305,7 +305,7 @@
         <Replace Tag="LOC_EMIG_CALLHOME_CALL_INFL" Language="es_ES"><Text>Llamar a {1_Count} a casa por [icon:YIELD_DIPLOMACY] {2_Cost}</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CALL_N" Language="es_ES"><Text>Cada uno tiene alrededor de un {1_Pct}% de probabilidades de responder. La llamada se paga igualmente.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_NO" Language="es_ES"><Text>Dejarlos donde están</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_NO_N" Language="es_ES"><Text>Con el tiempo, puede que aun así vuelvan a casa por su cuenta.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_NO_N" Language="es_ES"><Text>No se te volverá a preguntar por estas personas; con el tiempo, puede que aun así vuelvan a casa por su cuenta.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON" Language="es_ES"><Text>{1_Count} puntos de población respondieron a la llamada y volvieron a casa.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_ONE" Language="es_ES"><Text>Un punto de población respondió a la llamada y volvió a casa.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_TITLE" Language="es_ES"><Text>Responden a la llamada</Text></Replace>
@@ -433,6 +433,8 @@
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY_D" Language="es_ES"><Text>Dejar que los refugiados que huyen de una ciudad infectada siembren una angustia de brote menor en su destino: la migración como vector de contagio, más allá de la propagación por red comercial del juego.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE" Language="es_ES"><Text>Detalle de las notificaciones</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE_D" Language="es_ES"><Text>Cuán parlanchinas son las notificaciones de migración: 0 = desactivado, 1 = solo importantes (crisis de refugiados y desastres graves, por defecto), 2 = detallado (un resumen cada turno con migración notable).</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYTRAIN" Language="es_ES"><Text>Avisos en la bandeja de notificaciones del juego</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYTRAIN_D" Language="es_ES"><Text>Activado (predeterminado): los avisos de Emigración aparecen como iconos en la bandeja de notificaciones del juego, junto a Terminar turno, con el texto en la descripción emergente; un clic abre la pantalla de Emigración, un clic derecho descarta el aviso y cada uno termina con el turno. Desactivado: las líneas emergentes propias del mod en la parte superior de la pantalla, como antes. Solo visualización.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER" Language="es_ES"><Text>Desastre mínimo a notificar</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER_D" Language="es_ES"><Text>Notificar solo desastres de esta gravedad o superior (0 = incluso eventos menores, 3 = solo legendarios como una gran erupción). Los desastres menores siguen afectando a la migración en silencio.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DNOTIFYMODE" Language="es_ES"><Text>Avisos emergentes de desastres</Text></Replace>
@@ -1470,6 +1472,12 @@
         <Replace Tag="LOC_EMIG_FALLBACK_TOWN_N" Language="es_ES"><Text>Pueblo {1_N}</Text></Replace>
         <Replace Tag="LOC_EMIG_FALLBACK_CITY_N" Language="es_ES"><Text>Ciudad {1_N}</Text></Replace>
         <Replace Tag="LOC_EMIG_TOAST_EYEBROW" Language="es_ES"><Text>Emigración</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_LOSS" Language="es_ES"><Text>La gente se marcha</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_ARRIVAL" Language="es_ES"><Text>Han llegado nuevos pobladores</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_WORLD" Language="es_ES"><Text>Crisis de refugiados en el extranjero</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_DISASTER" Language="es_ES"><Text>Un desastre desplaza a la población</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_NOTE" Language="es_ES"><Text>Noticias de migración</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_FALLBACK" Language="es_ES"><Text>Los detalles están en la pestaña Notificaciones de la pantalla de Emigración.</Text></Replace>
         <Replace Tag="LOC_EMIG_QUARTER_ENCLAVE" Language="es_ES"><Text>Enclave {1_Demonym}</Text></Replace>
         <Replace Tag="LOC_EMIG_QUARTER_ENCLAVE_FOREIGN" Language="es_ES"><Text>enclave extranjero</Text></Replace>
         <Replace Tag="LOC_EMIG_EVENT_CRISIS_SUFFIX" Language="es_ES"><Text>Crisis de {1_Name}</Text></Replace>

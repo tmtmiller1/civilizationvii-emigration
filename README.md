@@ -141,7 +141,7 @@ Compatible with Civilization VII 1.5.0.
 ### Interface
 
 - **Migration dashboard:** flows by civilization, cause, and settlement; on the network diagram, click a city to highlight just its migrant flows, or drag a settlement out of its civilization's circle to read its flows
-- **Cause-coded notifications:** color-coded toasts plus a persistent log
+- **Notifications in the game's own train:** the mod's notices sit beside End Turn as the game's do, plus a persistent log
 - **Move attribution:** records the factor that decided each move
 - **City readout:** pressure mix, reasons to leave and reasons to stay, and enclave progress by settlement
 - **Prosperity lens:** tile-by-tile prosperity map, each tile scored in points from what stands on it and around it, with a hover readout that lists every term
@@ -209,7 +209,7 @@ Compatible with Civilization VII 1.5.0.
 
 ### How do I see what is happening?
 
-- Toasts and the Notifications log record each move and its cause.
+- The notification train and the Notifications log record each move and its cause.
 - The dashboard shows flows by civilization, cause, and settlement.
 - City readouts show local pressure, reasons to leave and to stay, and enclave progress, and the dashboard shows them across every settlement.
 - Hovering an enclave's tile shows its stage and the source of every yield it brings in.
@@ -787,7 +787,7 @@ A civilization can pay Gold or Influence to bring its displaced people back to t
 - **From your own settlements** it is a purchase: the pop-up names the settlement people are pulled back from and the one they return to, and exactly the number paid for come.
 - **From abroad** it is a gamble: the pop-up names the foreign city and its ruler and gives the odds per person (`callHomeChanceExternal`, 18%). The call is paid for at the chosen size whether or not anyone answers; each person asked is rolled, and the call may bring nobody. An unanswered call is recorded in the Chronicle and still starts the cooldown.
 - **Price:** `callHomeGoldPerPoint` (60) or `callHomeInfluencePerPoint` (12) for one person, climbing as n^1.5 (two people cost nearly three times one, three about five times), ×`callHomeExternalCostScale` (1.5) abroad, and ×`callHomeAgeCostStep` (3) per age past Antiquity ("Price climb per age": ×3 in Exploration, ×9 in Modern).
-- **Cadence:** `callHomeCooldownTurns` (8) per civilization. With `callHomeOfferWhenCalm` ("Call-home offers" on the Mods tab) the call is offered once no settlement is in distress and people are still away.
+- **Cadence:** `callHomeCooldownTurns` (8) per civilization. With `callHomeOfferWhenCalm` ("Call-home offers" on the Mods tab) the call is offered once no settlement is in distress and people are still away. Leaving them where they are (the button, the dialog's close button or Escape) is kept in the save: those people are not offered again, and a later offer lists only people displaced since. The console call `emigration.callHome()` still lists everyone.
 
 Each dialog closes on a homecoming epigraph in the caller's own civilization's voice (`emigration-return-quotes.js`), from Sinuhe's recall to Egypt to the Ten Thousand's "The sea! The sea!", with a general pool for civilizations without their own; every line was read in its source.
 
@@ -855,7 +855,7 @@ The network visualization animates only movers. Cross-civ migrants travel from t
 
 ## 9. In-game feedback & notifications
 
-Migration appears through HUD toasts, world news for major events, and the persistent Notifications log. Toasts use Civ VII-style typography and framing, stack vertically, remain on screen for about 11 seconds, and are themed by cause. Green is reserved for gains in your own cities; losses and departures use neutral, amber, or crisis colors.
+Migration appears in the game's own notification train beside End Turn, as world news for major events, and in the persistent Notifications log. Each kind of news has its own notification type and icon (`data/emigration-notifications.xml`, `data/emigration-notification-icons.xml`): people leaving your settlements, newcomers settling in them, a refugee crisis abroad, a disaster displacing people, and other news such as Chronicle lines. The text sits in the icon's hover tooltip, a click opens the Emigration screen, a right-click dismisses one, and each ends with the turn. The engine keeps one live notification of a type at a time, so several events of one kind in a turn share one notification (`ui/emigration-train.js`). The mod's earlier HUD toasts remain behind the Advanced setting "Notices in the game's notification train" (Off): Civ VII-style typography and framing, stacked, on screen for about 11 seconds, themed by cause with green reserved for gains in your own cities.
 
 Counts are shown in both raw population points and scaled people, for example *"3 population points (36,000 people)"*. The default notification mode is intentionally selective; every fired notification still goes to the log.
 
@@ -865,7 +865,7 @@ Counts are shown in both raw population points and scaled people, for example *"
 - **Dashboard window (`emigration-window.js`):** standalone view of the migration network, cross-civ flows, per-civ ledger, cause breakdown, policy stances, and city pressure. The same render core backs the Demographics integration.
 - **Enclaves:** when an enclave in one of your cities is established, is recognized, fades, or is built over, a notification gives the yields it adds or takes away, for example "(+3 Culture)". Enclaves in other civilizations' cities go to the Notifications log only.
 - **Advice:** each loss pop-up ends with one plain sentence in the game's terms ("Raise Roma's Happiness to stop its people leaving"). The Anti-Immigration Stance is suggested only where it helps: people chose to leave for another civilization and the card is not slotted.
-- **Layering:** the lens hover readouts and the enclave tooltip sit above the game's tooltip layer, and the mod's own toast sits above them. While a lens is up, the game's tile tooltip stays hidden until the lens is turned off.
+- **Layering:** the lens hover readouts and the enclave tooltip sit above the game's tooltip layer, and the mod's own toast, when it is the surface, sits above them. While a lens is up, the game's tile tooltip stays hidden until the lens is turned off.
 - **Anti-spam:** disaster severity threshold, refugee milestones, and global `notifyCooldownTurns`. `notifyMode`: `0` off, `1` important-only (default), `2` verbose.
 
 ---
@@ -875,7 +875,7 @@ Counts are shown in both raw population points and scaled people, for example *"
 All settings live under **Options → Add-ons** (the game's tab for mods) in both the main menu and in-game Options. `emigration.modinfo` loads the options layer in both shell and game scope. Settings use the shared `modSettings` localStorage store and apply at boot and immediately where supported.
 
 - **Emigration:** population unit of measurement, intensity preset, the grouped sliders (movement between civilizations; refugees from conflict overall, from major-power wars and from minor-power raids), dashboard data source, timeline detail, dashboard dock button, the on/off switches for notifications, ethnic integration and return migration, the four decision pop-ups (Refugee decisions, Newcomer placement decisions, Call-home offers, Enclave stance decisions), and last, an **Advanced settings** button. Each decision switch sets the same value as its Advanced setting (`arrivalPlacement` ask/automatic, `callHomeOfferWhenCalm`, `quarterRecognition` 0/2), and the two stay in step; with a switch off the city makes that choice itself, and with Call-home offers off the call is not offered. Hovering any option shows a full explanation: what it does, what each choice or slider position means (with the limits behind Low, Medium and High), when a change takes effect, and whether it changes the simulation or only the display. The full text is English; other languages show their shorter text.
-- **Advanced settings window:** every individual setting from `emigration-tunables.js` (121), in collapsible sections: Pacing, Scope, Border policies, Prosperity model, War & violence, Disasters, Geography & movement, Integration costs, Balance brakes, Arrivals & departures, Cultural enclaves, Calling people home, Attrition, Notifications, Readouts & rankings, and Visuals. Sections start collapsed and the ones you open stay open. Values show their units (55%, ×1.5, 3 turns) or a word (Off, Instant); a value set between the choices by a slider is listed exactly. The window also has search, a changed-setting marker, per-setting reset and Reset all.
+- **Advanced settings window:** every individual setting from `emigration-tunables.js` (122), in collapsible sections: Pacing, Scope, Border policies, Prosperity model, War & violence, Disasters, Geography & movement, Integration costs, Balance brakes, Arrivals & departures, Cultural enclaves, Calling people home, Attrition, Notifications, Readouts & rankings, and Visuals. Sections start collapsed and the ones you open stay open. Values show their units (55%, ×1.5, 3 turns) or a word (Off, Instant); a value set between the choices by a slider is listed exactly. The window also has search, a changed-setting marker, per-setting reset and Reset all.
 
 Game-speed scaling is automatic. Internal flags (`gameSpeedTuningEnabled` on; `gameSpeedScalePopulation` off) exist for rollback and QA rather than player tuning.
 
@@ -966,7 +966,7 @@ The mod runs in Civ VII's UI VM (GameFace JS) and applies migration, costs, and 
 - **Economic yields include unhappiness penalties:** `city.Yields.getNetYield` and `getYield` return the post-penalty values observed in probes.
 - **Happiness economy:** population itself has zero happiness upkeep; `OVERCROWDING_THRESHOLD = 2`, which underpins Algorithm B.
 
-The UI VM cannot create units for other civilizations or raise a new clickable engine notification type without a database row. Policy cards are the only system here that requires database content; most gameplay behavior uses direct runtime mutators.
+The UI VM cannot create units for other civilizations, and a notification it raises needs a type defined in the database (the train notices ship theirs in `data/emigration-notifications.xml`). Policy cards and the notification types are the only systems here that require database content; most gameplay behavior uses direct runtime mutators.
 
 ---
 

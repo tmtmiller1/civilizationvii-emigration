@@ -34,7 +34,8 @@ import { hasOpenBordersDeal } from "/emigration/ui/emigration-geography.js";
 import { reportPassFeedback, reportInboundFeedback, reportPressureCues } from "/emigration/ui/emigration-feedback.js";
 import { installEmigrationEvents } from "/emigration/ui/emigration-events.js";
 import { installCityReadout } from "/emigration/ui/emigration-city-readout.js";
-import { installEmigrationConsole } from "/emigration/ui/emigration-screen.js";
+import { installEmigrationConsole, openEmigrationScreen } from "/emigration/ui/emigration-screen.js";
+import { installTrainHandler } from "/emigration/ui/emigration-train.js";
 import { installEmigrationDock } from "/emigration/ui/emigration-dock-decorator.js";
 import { offerCallHome, callHomeNow, callHomeCooldownLeft } from "/emigration/ui/emigration-call-home-action.js";
 import { ownerCitySnapshots } from "/emigration/ui/emigration-city-readout-data.js";
@@ -344,6 +345,7 @@ function installUi() {
   installCityReadout(); // per-city migration readout: console commands + best-effort selection
   installEmigrationConsole(); // console: emigration.window() opens the standalone screen
   installEmigrationDock(); // in-game dock button that opens that screen (no console needed)
+  installTrainHandler(openEmigrationScreen); // a click on one of the mod's train notifications opens it too
   installEmigrationCityPanel(); // inject population + quarter data into the base City Details panel
   // The on-screen self-test button rides the subsystem dock (emigration-dock-decorator.js); installEmigrationDock()
   // below wires it when selftestEnabled. The prosperity map lens self-registers as its own <UIScripts>
@@ -367,7 +369,8 @@ function installUi() {
 /**
  * Offer to call our people home once the danger that displaced them has passed. Keyed on calm (nobody
  * under threat, somebody still away) rather than a war ending, because disasters and minor-power raids
- * make refugees without any formal war. The action keeps its own cooldown, so a calm empire is asked once.
+ * make refugees without any formal war. A call starts a cooldown, and people the player left where they are
+ * are not offered again (emigration-call-home-action.js), so the offer returns only for people displaced since.
  * @param {number} pid The local player id.
  */
 function offerCallHomeWhenCalm(pid) {
@@ -463,7 +466,7 @@ function consoleCallHome(scope, currency) {
     return r;
   }
   const quote = callHomeQuote(pid, sc, CALL_HOME_CURRENCY.GOLD);
-  if (!offerCallHome(pid, sc)) {
+  if (!offerCallHome(pid, sc, { includeDeclined: true })) {
     dlog("call home: nobody to call for " + sc + " (" + quote.available + " away)");
     return { ok: false, reason: "nobody-to-call", away: quote.available };
   }

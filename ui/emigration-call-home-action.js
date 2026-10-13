@@ -5,6 +5,11 @@
 // afford, charges Gold or Influence, moves the point home, keeps the per-civilization cooldown, writes the
 // outcome to the Chronicle, and offers the whole thing as a dialog.
 //
+// Leaving them where they are (the button, the dialog's close button or Escape) is remembered in the save: the
+// people that dialog listed, pair by pair, are not offered again. A later offer lists only people displaced
+// since, and a pair whose numbers fall (people drifted home on their own) is trimmed to what is left, so a
+// pair that later grows again is offered for the newcomers alone. The console call lists everyone.
+//
 // The two currencies are offered side by side at the moment of the call rather than set once in Options: which
 // one you can spare is a turn-by-turn question, and the choice is more interesting when it is asked then.
 import { CONFIG } from "/emigration/ui/emigration-config.js";
@@ -15,8 +20,11 @@ import { showDilemma } from "/emigration/ui/emigration-dilemma-view.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
 import { moveReturnees } from "/emigration/ui/emigration-return.js";
 import { narrativeCiv } from "/emigration/ui/emigration-naming.js";
-import { CALL_HOME_CURRENCY, resolveCallHome } from "/emigration/ui/emigration-call-home.js";
+import {
+  CALL_HOME_CURRENCY, CALL_HOME_SCOPE, callHomeCandidates, callHomeQuote, pairKey, resolveCallHome
+} from "/emigration/ui/emigration-call-home.js";
 import { callHomeView, parseChoice } from "/emigration/ui/emigration-call-home-view.js";
+import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
 /** @type {Map<string, number>} Last turn a civilization called, by "pid|scope". */
 const _lastCall = new Map();
@@ -47,6 +55,106 @@ export function callHomeCooldownLeft(pid, scope) {
 /** Test seam: forget every cooldown. */
 export function _resetCallHomeCooldowns() {
   _lastCall.clear();
+}
+
+/** The save key of the people left where they are. */
+const DECLINED_KEY = "EmigrationCallHomeDeclined_v1";
+/** @type {Record<string, Record<string, number>>|null} Points left where they are, by "pid|scope", then pairKey. */
+let _declined = null;
+registerCacheReset(() => {
+  _declined = null;
+});
+
+/**
+ * One civilization's saved pairs, keeping only positive whole counts.
+ * @param {*} pairs The saved value. @returns {Record<string, number>}
+ */
+function cleanPairs(pairs) {
+  /** @type {Record<string, number>} */
+  const m = {};
+  if (!pairs || typeof pairs !== "object") return m;
+  for (const [pk, n] of Object.entries(pairs)) if (Number(n) > 0) m[pk] = Math.floor(Number(n));
+  return m;
+}
+
+/** @returns {*} The saved record parsed, or null when absent or corrupt. */
+function readDeclined() {
+  try {
+    const raw = Configuration?.getGame?.()?.getValue?.(DECLINED_KEY);
+    return typeof raw === "string" && raw ? JSON.parse(raw) : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+/** @returns {Record<string, Record<string, number>>} The saved record, or empty when absent or corrupt. */
+function loadDeclined() {
+  /** @type {Record<string, Record<string, number>>} */
+  const clean = {};
+  const o = readDeclined();
+  if (o && typeof o === "object") for (const [k, pairs] of Object.entries(o)) clean[k] = cleanPairs(pairs);
+  return clean;
+}
+
+/** @returns {Record<string, Record<string, number>>} The record, loaded from the save once. */
+function declinedStore() {
+  resetCachesOnNewGame();
+  if (!_declined) _declined = loadDeclined();
+  return _declined;
+}
+
+/** Write the record to the save. */
+function persistDeclined() {
+  try {
+    Configuration?.editGame?.()?.setValue?.(DECLINED_KEY, JSON.stringify(_declined || {}));
+  } catch (_) {
+    /* unwritable mid age-transition; kept in memory */
+  }
+}
+
+/**
+ * The people this civilization left where they are for this variant, trimmed against the live candidates: a
+ * pair no longer listed is dropped, and one with fewer people than were left is cut to what is there, so only
+ * people displaced afterward are offered again.
+ * @param {number} pid @param {string} scope A CALL_HOME_SCOPE. @param {*[]} [flows] Flow rows (default live).
+ * @returns {Record<string, number>} Points left where they are, by pairKey.
+ */
+export function callHomeDeclined(pid, scope, flows) {
+  const store = declinedStore();
+  const k = cdKey(pid, scope);
+  const was = store[k] || {};
+  const cands = callHomeCandidates(pid, flows);
+  const live = scope === CALL_HOME_SCOPE.EXTERNAL ? cands.external : cands.internal;
+  /** @type {Record<string, number>} */
+  const now = {};
+  for (const p of live) {
+    const n = Math.min(Number(was[pairKey(p)]) || 0, p.points);
+    if (n > 0) now[pairKey(p)] = n;
+  }
+  if (JSON.stringify(now) !== JSON.stringify(was)) {
+    store[k] = now;
+    persistDeclined();
+  }
+  return now;
+}
+
+/**
+ * Remember that the player left these people where they are.
+ * @param {number} pid @param {string} scope A CALL_HOME_SCOPE. @param {*[]} pairs The pairs the dialog listed.
+ */
+export function declineCallHome(pid, scope, pairs) {
+  const store = declinedStore();
+  const k = cdKey(pid, scope);
+  const m = store[k] || {};
+  for (const p of pairs || []) m[pairKey(p)] = (Number(m[pairKey(p)]) || 0) + Math.max(0, Number(p.points) || 0);
+  store[k] = m;
+  persistDeclined();
+  dlog("call home: left " + (pairs || []).reduce((n, p) => n + p.points, 0) + " point(s) where they are (" + scope + ")");
+}
+
+/** Test seam: drop the in-memory record, so the next read loads it from the save again. */
+export function _resetCallHomeDeclined() {
+  _declined = null;
 }
 
 /**
@@ -83,8 +191,9 @@ function balanceOf(treasury, field, getter) {
  * answered or not, starts the cooldown: an external call the dice refused cannot be repeated next turn.
  * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {number} currency A CALL_HOME_CURRENCY.
- * @param {{want?:number, move?:(pair:*)=>boolean}} [deps] How many the player asked for (default: the
- *   per-call cap), and a test seam for the mover.
+ * @param {{want?:number, move?:(pair:*)=>boolean, declined?:Record<string, number>, flows?:*[]}} [deps] How
+ *   many the player asked for (default: the per-call cap), test seams for the mover and the flow rows, and the
+ *   people left where they are (never moved by this call).
  * @returns {{ok:boolean, reason:string, scope:string, paid:number, attempted:number, returned:number}} Result.
  */
 export function callHomeNow(pid, scope, currency, deps) {
@@ -97,6 +206,8 @@ export function callHomeNow(pid, scope, currency, deps) {
     turn: turnNow(),
     gameId: safeGameId(),
     want: deps && deps.want,
+    declined: deps && deps.declined,
+    flows: deps && deps.flows,
     afford: (c) => callHomeBalance(pid, c),
     pay: (amount) => {
       if (amount <= 0) return true;
@@ -193,21 +304,30 @@ function reportCall(pid, result) {
 
 /**
  * Offer the call to the local player as a dialog. Internal: a ladder of sizes per currency, each a purchase.
- * External: one roll per currency.
- * @param {number} pid @param {string} scope A CALL_HOME_SCOPE. @returns {boolean} Whether it opened.
+ * External: one roll per currency. People the player already left where they are are not listed, and
+ * leaving these ones adds them to that record.
+ * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
+ * @param {{includeDeclined?:boolean, flows?:*[], show?:(view:*, onChoice:(id:string)=>void)=>void,
+ *   move?:(pair:*)=>boolean}} [opts] List everyone, declined or not (the console call); test seams for the flow
+ *   rows, the dialog and the mover.
+ * @returns {boolean} Whether it opened.
  */
-export function offerCallHome(pid, scope) {
+export function offerCallHome(pid, scope, opts) {
   if (!CONFIG.callHomeEnabled) return false;
   if (callHomeCooldownLeft(pid, scope) > 0) return false;
+  const o = opts || {};
+  const declined = o.includeDeclined ? {} : callHomeDeclined(pid, scope, o.flows);
   const view = callHomeView(pid, scope, {
-    afford: (c) => callHomeBalance(pid, c), seed: "callhome|" + scope + "|" + turnNow()
+    afford: (c) => callHomeBalance(pid, c), seed: "callhome|" + scope + "|" + turnNow(), declined, flows: o.flows
   });
   if (!view) return false;
-  showDilemma(view, (id) => {
+  const shown = callHomeQuote(pid, scope, CALL_HOME_CURRENCY.GOLD, o.flows, { declined }).pairs;
+  (o.show || showDilemma)(view, (id) => {
     // A grayed-out size can never be bought, even if an input path slipped past the dialog's own guard.
     if (view.choices.some((c) => c.id === id && c.disabled)) return;
     const pick = parseChoice(id);
-    if (pick) callHomeNow(pid, scope, pick.currency, { want: pick.want });
+    if (pick) callHomeNow(pid, scope, pick.currency, { want: pick.want, declined, flows: o.flows, move: o.move });
+    else declineCallHome(pid, scope, shown);
   });
   return true;
 }

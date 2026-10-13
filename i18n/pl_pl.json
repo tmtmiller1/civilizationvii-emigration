@@ -1600,7 +1600,7 @@
  "LOC_EMIG_CALLHOME_CALL_INFL": "Wezwij {1_Count} pkt do domu za [icon:YIELD_DIPLOMACY] {2_Cost}",
  "LOC_EMIG_CALLHOME_CALL_N": "Każdy odpowie z prawdopodobieństwem około {1_Pct}%. Za wezwanie płacisz niezależnie od wyniku.",
  "LOC_EMIG_CALLHOME_NO": "Zostaw ich tam, gdzie są",
- "LOC_EMIG_CALLHOME_NO_N": "Z czasem mogą jeszcze sami wrócić do domu.",
+ "LOC_EMIG_CALLHOME_NO_N": "Nie zostaniesz już zapytany o tych ludzi; z czasem mogą jeszcze sami wrócić do domu.",
  "LOC_EMIG_CALLHOME_CHRON": "Punkty ludności, które odpowiedziały na wezwanie i wróciły do domu: {1_Count}.",
  "LOC_EMIG_CALLHOME_CHRON_ONE": "Jeden punkt ludności odpowiedział na wezwanie i wrócił do domu.",
  "LOC_EMIG_CALLHOME_CHRON_TITLE": "Odpowiadają na wezwanie",
@@ -2672,5 +2672,13 @@
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_ENCLAVE_PARA_6": "Jerzy Tupou I (ok. 1797–1893) zjednoczył wyspy Tonga, a w 1875 roku nadał pisaną konstytucję, która zniosła poddaństwo i ogłosiła wolność każdej osoby w królestwie. Tonga pozostała jedynym królestwem Pacyfiku, którego nigdy nie skolonizowano.",
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_1": "Pokazywane w oknie Nowo przybyli, gdy migranci z cywilizacji Tongi przybywają, by osiedlić się w jednym z twoich miast.",
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_2": "„Pragnę zostać; któż może chcieć odpływać? / Opuszczając Vavaoo i sąsiednie wyspy…” — tongańska pieśń wioślarska, śpiewana przy opuszczaniu Vavaʻu (1817, przekł. ang. Mariner)",
- "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_3": "William Mariner, młody Anglik przetrzymywany przez cztery lata na Tonga od 1806 roku, podyktował później relację o wyspach, w której znalazła się ta pieśń wioślarska, śpiewana przez załogi opuszczające wyspę Vavaʻu."
+ "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_3": "William Mariner, młody Anglik przetrzymywany przez cztery lata na Tonga od 1806 roku, podyktował później relację o wyspach, w której znalazła się ta pieśń wioślarska, śpiewana przez załogi opuszczające wyspę Vavaʻu.",
+ "LOC_EMIG_T_NOTIFYTRAIN": "Powiadomienia w pasku powiadomień gry",
+ "LOC_EMIG_T_NOTIFYTRAIN_D": "Włączone (domyślnie): powiadomienia Emigracji pojawiają się jako ikony w pasku powiadomień gry obok przycisku Zakończ turę, z treścią w podpowiedzi; kliknięcie otwiera ekran Emigracji, prawy przycisk odrzuca powiadomienie, a każde kończy się wraz z turą. Wyłączone: własne wyskakujące wiersze moda u góry ekranu, jak dotąd. Tylko wyświetlanie.",
+ "LOC_EMIG_TRAIN_LOSS": "Ludzie odchodzą",
+ "LOC_EMIG_TRAIN_ARRIVAL": "Przybyli nowi osadnicy",
+ "LOC_EMIG_TRAIN_WORLD": "Kryzys uchodźczy za granicą",
+ "LOC_EMIG_TRAIN_DISASTER": "Katastrofa wypędza ludzi",
+ "LOC_EMIG_TRAIN_NOTE": "Wieści o migracjach",
+ "LOC_EMIG_TRAIN_FALLBACK": "Szczegóły znajdziesz w zakładce Powiadomienia na ekranie Emigracji."
 }

@@ -1270,7 +1270,7 @@
  "LOC_EMIG_CALLHOME_CALL_INFL": "En rappeler {1_Count} pour [icon:YIELD_DIPLOMACY] {2_Cost}",
  "LOC_EMIG_CALLHOME_CALL_N": "Chacun a environ {1_Pct} % de chances de répondre. L'appel est payé dans tous les cas.",
  "LOC_EMIG_CALLHOME_NO": "Les laisser où ils sont",
- "LOC_EMIG_CALLHOME_NO_N": "Ils pourront encore revenir d'eux-mêmes avec le temps.",
+ "LOC_EMIG_CALLHOME_NO_N": "On ne vous redemandera pas pour ces personnes ; elles pourront encore revenir d'elles-mêmes avec le temps.",
  "LOC_EMIG_CALLHOME_CHRON": "{1_Count} points de population ont répondu à l'appel et sont rentrés.",
  "LOC_EMIG_CALLHOME_CHRON_ONE": "Un point de population a répondu à l'appel et est rentré.",
  "LOC_EMIG_CALLHOME_CHRON_TITLE": "Ils répondent à l'appel",
@@ -2642,5 +2642,13 @@
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_ENCLAVE_PARA_5": "[B]Deuxième enclave.[/B] « … c'est pourquoi le peuple des Tonga et tous ceux qui séjournent ou séjourneront dans ce royaume seront libres à jamais. » — le roi George Tupou Ier, Constitution des Tonga, article 1 (1875)",
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_ENCLAVE_PARA_6": "George Tupou Ier (vers 1797-1893) unifia les îles Tonga et, en 1875, accorda une constitution écrite qui abolit le servage et déclara libre toute personne du royaume. Les Tonga restèrent le seul royaume du Pacifique jamais colonisé.",
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_2": "« Comme je voudrais rester ; qui peut souhaiter partir ? / Quitter Vavaoo et ses îles voisines… » — chant de pagaie tongien, chanté en quittant Vavaʻu (1817, trad. angl. Mariner)",
- "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_3": "William Mariner, un jeune Anglais retenu quatre ans aux Tonga à partir de 1806, dicta plus tard un récit sur ces îles qui comprenait ce chant de pagaie, entonné par les équipages quittant l'île de Vavaʻu."
+ "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_3": "William Mariner, un jeune Anglais retenu quatre ans aux Tonga à partir de 1806, dicta plus tard un récit sur ces îles qui comprenait ce chant de pagaie, entonné par les équipages quittant l'île de Vavaʻu.",
+ "LOC_EMIG_T_NOTIFYTRAIN": "Avis dans le fil de notifications du jeu",
+ "LOC_EMIG_T_NOTIFYTRAIN_D": "Activé (par défaut) : les avis d'Émigration apparaissent sous forme d'icônes dans le fil de notifications du jeu, à côté de Fin du tour, le texte s'affichant dans l'infobulle ; un clic ouvre l'écran Émigration, un clic droit ferme l'avis, et chaque avis prend fin avec le tour. Désactivé : les lignes contextuelles propres au mod en haut de l'écran, comme avant. Affichage seulement.",
+ "LOC_EMIG_TRAIN_LOSS": "Des gens s'en vont",
+ "LOC_EMIG_TRAIN_ARRIVAL": "Des nouveaux venus sont arrivés",
+ "LOC_EMIG_TRAIN_WORLD": "Crise de réfugiés à l'étranger",
+ "LOC_EMIG_TRAIN_DISASTER": "Une catastrophe déplace des populations",
+ "LOC_EMIG_TRAIN_NOTE": "Nouvelles des migrations",
+ "LOC_EMIG_TRAIN_FALLBACK": "Les détails se trouvent dans l'onglet Notifications de l'écran Émigration."
 }

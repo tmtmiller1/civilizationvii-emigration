@@ -305,7 +305,7 @@
         <Replace Tag="LOC_EMIG_CALLHOME_CALL_INFL" Language="zh_Hant_HK"><Text>以 [icon:YIELD_DIPLOMACY] {2_Cost} 召喚 {1_Count} 人回家</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CALL_N" Language="zh_Hant_HK"><Text>每人約有 {1_Pct}% 的機會響應。無論結果如何，召喚都要付費。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_NO" Language="zh_Hant_HK"><Text>讓他們留在原地</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_NO_N" Language="zh_Hant_HK"><Text>隨着時間推移，他們仍可能自行陸續回家。</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_NO_N" Language="zh_Hant_HK"><Text>不會再就這些人詢問你；隨着時間推移，他們仍可能自行陸續回家。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON" Language="zh_Hant_HK"><Text>{1_Count} 個人口點響應了召喚，回到了家鄉。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_ONE" Language="zh_Hant_HK"><Text>一個人口點響應了召喚，回到了家鄉。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_TITLE" Language="zh_Hant_HK"><Text>他們響應了召喚</Text></Replace>
@@ -433,6 +433,8 @@
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY_D" Language="zh_Hant_HK"><Text>讓逃離受感染城市的難民在目的地播下較小的疫情苦難，使遷徙成為傳染媒介，超出遊戲的貿易網絡傳播。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE" Language="zh_Hant_HK"><Text>通知詳細度</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE_D" Language="zh_Hant_HK"><Text>遷徙通知的頻繁程度：0 = 關閉，1 = 僅重要（難民危機與嚴重災害，預設），2 = 詳細（每個有顯著遷徙的回合都有摘要）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYTRAIN" Language="zh_Hant_HK"><Text>在遊戲通知列中顯示提示</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYTRAIN_D" Language="zh_Hant_HK"><Text>開（預設）：移民的提示以圖示形式出現在「結束回合」旁的遊戲通知列中，文字顯示在滑鼠提示裡；點擊開啟移民畫面，右鍵關閉提示，每則提示在本回合結束時消失。關：像以前一樣在畫面頂端顯示本模組自己的彈出列。僅影響顯示。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER" Language="zh_Hant_HK"><Text>最低通報災害規模</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER_D" Language="zh_Hant_HK"><Text>僅就此嚴重度及以上的災害通知（0 = 連小事件，3 = 僅大噴發等傳奇級）。小災害仍會悄然影響遷徙。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DNOTIFYMODE" Language="zh_Hant_HK"><Text>災害彈出視窗</Text></Replace>
@@ -1470,6 +1472,12 @@
         <Replace Tag="LOC_EMIG_FALLBACK_TOWN_N" Language="zh_Hant_HK"><Text>城鎮 {1_N}</Text></Replace>
         <Replace Tag="LOC_EMIG_FALLBACK_CITY_N" Language="zh_Hant_HK"><Text>城市 {1_N}</Text></Replace>
         <Replace Tag="LOC_EMIG_TOAST_EYEBROW" Language="zh_Hant_HK"><Text>移民</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_LOSS" Language="zh_Hant_HK"><Text>人口正在離開</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_ARRIVAL" Language="zh_Hant_HK"><Text>新移民已抵達</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_WORLD" Language="zh_Hant_HK"><Text>他國爆發難民危機</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_DISASTER" Language="zh_Hant_HK"><Text>災害導致人口流離</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_NOTE" Language="zh_Hant_HK"><Text>移民消息</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_FALLBACK" Language="zh_Hant_HK"><Text>詳情見移民畫面的「通知」分頁。</Text></Replace>
         <Replace Tag="LOC_EMIG_QUARTER_ENCLAVE" Language="zh_Hant_HK"><Text>{1_Demonym}飛地</Text></Replace>
         <Replace Tag="LOC_EMIG_QUARTER_ENCLAVE_FOREIGN" Language="zh_Hant_HK"><Text>外來飛地</Text></Replace>
         <Replace Tag="LOC_EMIG_EVENT_CRISIS_SUFFIX" Language="zh_Hant_HK"><Text>{1_Name}危機</Text></Replace>

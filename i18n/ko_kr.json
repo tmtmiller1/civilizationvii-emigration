@@ -1602,7 +1602,7 @@
  "LOC_EMIG_CALLHOME_CALL_INFL": "[icon:YIELD_DIPLOMACY] {2_Cost}(으)로 {1_Count}명 부르기",
  "LOC_EMIG_CALLHOME_CALL_N": "각자가 응할 확률은 약 {1_Pct}%입니다. 비용은 어느 쪽이든 지불됩니다.",
  "LOC_EMIG_CALLHOME_NO": "지금 있는 곳에 두기",
- "LOC_EMIG_CALLHOME_NO_N": "그래도 시간이 지나면 스스로 고향에 돌아올 수도 있습니다.",
+ "LOC_EMIG_CALLHOME_NO_N": "이 사람들에 대해 다시 묻지 않습니다. 그래도 시간이 지나면 스스로 고향에 돌아올 수도 있습니다.",
  "LOC_EMIG_CALLHOME_CHRON": "인구 포인트 {1_Count}개가 부름에 응해 고향으로 돌아왔습니다.",
  "LOC_EMIG_CALLHOME_CHRON_ONE": "인구 포인트 1개가 부름에 응해 고향으로 돌아왔습니다.",
  "LOC_EMIG_CALLHOME_CHRON_TITLE": "부름에 응하다",
@@ -2682,5 +2682,13 @@
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_ENCLAVE_PARA_6": "조지 투포우 1세(1797년경~1893)는 통가 제도를 통일하고, 1875년 농노제를 폐지하며 왕국의 모든 사람이 자유롭다고 선언한 성문 헌법을 반포했습니다. 통가는 태평양에서 유일하게 식민지가 되지 않은 왕국으로 남았습니다.",
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_1": "통가에서 온 이주민이 당신의 도시 중 한 곳에 정착하러 올 때 새 이주민 팝업에 표시됩니다.",
  "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_2": "\"나는 머물고 싶은데, 누가 떠나기를 바라겠는가? / 바바우와 그 이웃 섬들을 떠나며…\" — 통가의 노 젓는 노래, 바바우를 떠나며 부름 (1817년, Mariner 번역)",
- "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_3": "1806년부터 4년간 통가에 붙잡혀 있던 영국 청년 윌리엄 마리너는 훗날 섬들에 관한 이야기를 구술했는데, 그 안에 바바우섬을 떠나는 뱃사람들이 부르던 이 노 젓는 노래가 들어 있습니다."
+ "LOC_PEDIA_EMIGRATION_PAGE_VOICES_TONGA_CHAPTER_MIGRANT_PARA_3": "1806년부터 4년간 통가에 붙잡혀 있던 영국 청년 윌리엄 마리너는 훗날 섬들에 관한 이야기를 구술했는데, 그 안에 바바우섬을 떠나는 뱃사람들이 부르던 이 노 젓는 노래가 들어 있습니다.",
+ "LOC_EMIG_T_NOTIFYTRAIN": "게임 알림 목록에 표시",
+ "LOC_EMIG_T_NOTIFYTRAIN_D": "켜기(기본): 이주 알림이 '턴 종료' 옆 게임 고유의 알림 목록에 아이콘으로 표시되고, 내용은 툴팁에 나타납니다. 클릭하면 이주 화면이 열리고, 오른쪽 클릭으로 지울 수 있으며, 각 알림은 해당 턴이 끝나면 사라집니다. 끄기: 이전처럼 화면 상단에 모드 자체의 팝업 줄을 표시합니다. 표시 전용.",
+ "LOC_EMIG_TRAIN_LOSS": "사람들이 떠나고 있습니다",
+ "LOC_EMIG_TRAIN_ARRIVAL": "새 이주민이 도착했습니다",
+ "LOC_EMIG_TRAIN_WORLD": "해외 난민 위기",
+ "LOC_EMIG_TRAIN_DISASTER": "재해로 사람들이 피난",
+ "LOC_EMIG_TRAIN_NOTE": "이주 소식",
+ "LOC_EMIG_TRAIN_FALLBACK": "자세한 내용은 이주 화면의 알림 탭에서 확인하세요."
 }

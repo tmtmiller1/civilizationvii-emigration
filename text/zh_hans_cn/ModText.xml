@@ -305,7 +305,7 @@
         <Replace Tag="LOC_EMIG_CALLHOME_CALL_INFL" Language="zh_Hans_CN"><Text>花费 [icon:YIELD_DIPLOMACY] {2_Cost} 召唤 {1_Count} 人回家</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CALL_N" Language="zh_Hans_CN"><Text>每人约有 {1_Pct}% 的几率响应。无论结果如何，召唤都要付费。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_NO" Language="zh_Hans_CN"><Text>让他们留在原地</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_NO_N" Language="zh_Hans_CN"><Text>假以时日，他们仍可能自行回家。</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_NO_N" Language="zh_Hans_CN"><Text>不会再就这些人询问你；假以时日，他们仍可能自行回家。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON" Language="zh_Hans_CN"><Text>{1_Count} 个人口点响应召唤，回到了家乡。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_ONE" Language="zh_Hans_CN"><Text>一个人口点响应召唤，回到了家乡。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_TITLE" Language="zh_Hans_CN"><Text>他们响应了召唤</Text></Replace>
@@ -433,6 +433,8 @@
         <Replace Tag="LOC_EMIG_T_PLAGUECARRY_D" Language="zh_Hans_CN"><Text>让逃离感染城市的难民在目的地播下较小的疫情苦难，作为传染媒介的迁徙，超出游戏的贸易网络传播。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE" Language="zh_Hans_CN"><Text>通知详细度</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYMODE_D" Language="zh_Hans_CN"><Text>迁徙通知的频繁程度：0 = 关闭，1 = 仅重要（难民危机与严重灾害，默认），2 = 详细（每个有显著迁徙的回合都有摘要）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYTRAIN" Language="zh_Hans_CN"><Text>在游戏通知栏中显示提示</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_NOTIFYTRAIN_D" Language="zh_Hans_CN"><Text>开（默认）：移民的提示以图标形式出现在“结束回合”旁的游戏通知栏中，文字显示在悬停提示里；单击打开迁徙界面，右键关闭提示，每条提示在本回合结束时消失。关：像以前一样在屏幕顶部显示本模组自己的弹出行。仅影响显示。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER" Language="zh_Hans_CN"><Text>报告的最小灾害</Text></Replace>
         <Replace Tag="LOC_EMIG_T_NOTIFYDISASTER_D" Language="zh_Hans_CN"><Text>仅就此严重度及以上的灾害通知（0 = 连小事件，3 = 仅大喷发等传奇级）。小灾害仍会悄然影响迁徙。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DNOTIFYMODE" Language="zh_Hans_CN"><Text>灾害弹窗</Text></Replace>
@@ -1470,6 +1472,12 @@
         <Replace Tag="LOC_EMIG_FALLBACK_TOWN_N" Language="zh_Hans_CN"><Text>城镇 {1_N}</Text></Replace>
         <Replace Tag="LOC_EMIG_FALLBACK_CITY_N" Language="zh_Hans_CN"><Text>城市 {1_N}</Text></Replace>
         <Replace Tag="LOC_EMIG_TOAST_EYEBROW" Language="zh_Hans_CN"><Text>移民</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_LOSS" Language="zh_Hans_CN"><Text>人口正在离开</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_ARRIVAL" Language="zh_Hans_CN"><Text>新移民已抵达</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_WORLD" Language="zh_Hans_CN"><Text>他国爆发难民危机</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_DISASTER" Language="zh_Hans_CN"><Text>灾害导致人口流离</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_NOTE" Language="zh_Hans_CN"><Text>移民消息</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_FALLBACK" Language="zh_Hans_CN"><Text>详情见迁徙界面的“通知”标签页。</Text></Replace>
         <Replace Tag="LOC_EMIG_QUARTER_ENCLAVE" Language="zh_Hans_CN"><Text>{1_Demonym}飞地</Text></Replace>
         <Replace Tag="LOC_EMIG_QUARTER_ENCLAVE_FOREIGN" Language="zh_Hans_CN"><Text>外来飞地</Text></Replace>
         <Replace Tag="LOC_EMIG_EVENT_CRISIS_SUFFIX" Language="zh_Hans_CN"><Text>{1_Name}危机</Text></Replace>
