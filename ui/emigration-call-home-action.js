@@ -32,7 +32,7 @@ const _lastCall = new Map();
 /** @param {number} pid @param {string} scope @returns {string} */
 const cdKey = (pid, scope) => pid + "|" + scope;
 
-/** @returns {number} The current turn, or 0. */
+/** @returns {number} */
 function turnNow() {
   try {
     return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
@@ -65,10 +65,7 @@ registerCacheReset(() => {
   _declined = null;
 });
 
-/**
- * One civilization's saved pairs, keeping only positive whole counts.
- * @param {*} pairs The saved value. @returns {Record<string, number>}
- */
+/** @param {*} pairs @returns {Record<string, number>} */
 function cleanPairs(pairs) {
   /** @type {Record<string, number>} */
   const m = {};
@@ -77,7 +74,7 @@ function cleanPairs(pairs) {
   return m;
 }
 
-/** @returns {*} The saved record parsed, or null when absent or corrupt. */
+/** @returns {*} */
 function readDeclined() {
   try {
     const raw = Configuration?.getGame?.()?.getValue?.(DECLINED_KEY);
@@ -87,7 +84,7 @@ function readDeclined() {
   }
 }
 
-/** @returns {Record<string, Record<string, number>>} The saved record, or empty when absent or corrupt. */
+/** @returns {Record<string, Record<string, number>>} */
 function loadDeclined() {
   /** @type {Record<string, Record<string, number>>} */
   const clean = {};
@@ -96,14 +93,13 @@ function loadDeclined() {
   return clean;
 }
 
-/** @returns {Record<string, Record<string, number>>} The record, loaded from the save once. */
+/** @returns {Record<string, Record<string, number>>} */
 function declinedStore() {
   resetCachesOnNewGame();
   if (!_declined) _declined = loadDeclined();
   return _declined;
 }
 
-/** Write the record to the save. */
 function persistDeclined() {
   try {
     Configuration?.editGame?.()?.setValue?.(DECLINED_KEY, JSON.stringify(_declined || {}));
@@ -246,10 +242,7 @@ function movePointHome(pid, pair) {
   }
 }
 
-/**
- * A player's settlement by name.
- * @param {number} owner @param {string} name @returns {*} The city, or null.
- */
+/** @param {number} owner @param {string} name @returns {*} */
 function cityByName(owner, name) {
   try {
     const cities = Players.get(owner)?.Cities?.getCities?.() || [];
@@ -263,7 +256,7 @@ function cityByName(owner, name) {
   return null;
 }
 
-/** @returns {string} The game id, or "". */
+/** @returns {string} */
 function safeGameId() {
   try {
     return String(Configuration.getGame()?.gameGUIDHexString || "");

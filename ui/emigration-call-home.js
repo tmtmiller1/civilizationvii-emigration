@@ -268,7 +268,7 @@ function rollPairs(pid, scope, quote, d) {
   return { attempted, returned };
 }
 
-/** @param {string} reason @param {string} scope @returns {*} A failed result. */
+/** @param {string} reason @param {string} scope @returns {*} */
 function fail(reason, scope) {
   return { ok: false, reason, scope, paid: 0, attempted: 0, returned: 0 };
 }
@@ -284,7 +284,7 @@ function refugeePoints(byCause, total) {
   return Math.floor((Number(total) || 0) * (n / people));
 }
 
-/** @returns {*[]} The live flow matrix, or [] when unreadable. */
+/** @returns {*[]} */
 function safeFlows() {
   try {
     return migrationFlows() || [];

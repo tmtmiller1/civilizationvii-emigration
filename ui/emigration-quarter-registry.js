@@ -61,7 +61,7 @@ function ignoreOption() {
 /** The option shown when the player dismisses the modal without choosing (the passive stance). */
 const DEFAULT_OPTION_ID = "ignore";
 
-/** @type {Set<string>} The valid option ids, for fast membership tests. */
+/** @type {Set<string>} */
 const OPTION_IDS = new Set(["a", "b", "ignore"]);
 
 /** @param {string} y @returns {string} A yield token's short suffix ("YIELD_CULTURE" → "CULTURE"). */
@@ -69,7 +69,7 @@ function yieldTag(y) {
   return String(y || "").replace(/^YIELD_/, "");
 }
 
-/** @param {string} s @returns {string} s with its first letter capitalized. */
+/** @param {string} s @returns {string} */
 function cap(s) {
   return s && s.length ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 }
