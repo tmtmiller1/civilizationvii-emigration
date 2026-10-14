@@ -1678,6 +1678,14 @@ re-litigate).
 - Frozen-constants family: the cause-keys (§19 item 1) and `CITY_FEATURE` keys are the same small,
   stable, additive set hand-typed across a few modules. Same call: centralizing adds computed-key churn
   for marginal safety. *Revisit if* a third consumer appears or a drift bug actually bites.
+- Copied store helpers: `payloadFromBlob` (reads a saved blob with or without the `{ v, data }` envelope)
+  is the same function in seven stores: dilemma, dividend, quarter-state, disasters, feedback, return and
+  war. [emigration-state.js](../ui/emigration-state.js) has an eighth copy named `payloadFromStateBlob`.
+  `nonNegInt` is copied in dilemma and quarter-state, and
+  [emigration-diaspora.js](../ui/emigration-diaspora.js) has `safeTurn` and `gameTurn` doing the same
+  thing. One shared leaf module would replace them, registered in the game-scope `ImportFiles`. It's a
+  pure move, so before it ships, load a save made with the current release and check every store reads
+  back the same.
 
 *(The Phase-1 localization sweep that used to sit here shipped in v1.9.0 and was removed.)*
 
