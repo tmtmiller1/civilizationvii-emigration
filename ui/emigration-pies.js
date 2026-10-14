@@ -13,7 +13,6 @@ function el(tag, cls, text) {
 }
 
 /**
- * Draw one pie slice and return the ending angle.
  * @param {CanvasRenderingContext2D} ctx Context.
  * @param {{cx:number, cy:number, r:number}} g Pie geometry.
  * @param {{value:number, color:string}} e Slice.

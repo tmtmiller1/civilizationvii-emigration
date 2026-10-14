@@ -12,7 +12,6 @@ import { stanceYields } from "/emigration/ui/emigration-enclave-yields.js";
 import { markerStageLine } from "/emigration/ui/emigration-enclave-tooltip-data.js";
 import { loc, localeFonts } from "/emigration/ui/emigration-loc.js";
 
-/** Matches our generated enclave improvement types. */
 const ENCLAVE_RE = /^IMPROVEMENT_EMIG_ENCLAVE_/;
 /** OVERLAY_PRIORITY.MAX_PRIORITY: paint above the lens layers. */
 const OVERLAY_MAX_PRIORITY = 10;
@@ -43,7 +42,7 @@ function logEmit(s) {
   dlog("enclave markers: " + String(s));
 }
 
-/** Run fn(), swallowing throws (returns undefined on error). @param {()=>*} fn @returns {*} */
+/** @param {()=>*} fn @returns {*} */
 function safe(fn) {
   try {
     return fn();
@@ -57,7 +56,7 @@ function labelFill() {
   return (LABEL_ALPHA & 0xff) * 0x1000000 + 0xffffff;
 }
 
-/** Create our overlay group + sprite grid once. @returns {boolean} ready */
+/** @returns {boolean} */
 function ensureOverlay() {
   if (_group && _grid) return true;
   const ok = safe(() => {
@@ -109,7 +108,6 @@ function plotTypes(x, y) {
 }
 
 /**
- * The enclave constructible type on a plot (x,y), or null.
  * @param {number} x @param {number} y @returns {string|null}
  */
 function enclaveTypeAt(x, y) {
@@ -228,8 +226,6 @@ function civShortOf(type) {
 }
 
 /**
- * The civ-symbol icon for an enclave type: the generated per-enclave icon, else the civilization's own
- * icon, else the symbol asset by name.
  * @param {string} type The enclave type. @returns {*} An icon handle or asset name, or null.
  */
 function enclaveIcon(type) {
@@ -240,10 +236,7 @@ function enclaveIcon(type) {
   return "fs://game/civ_sym_" + civShortOf(type).toLowerCase();
 }
 
-/**
- * Paint the civ icon, the "<Civ> Enclave" label and (when known) the stage line on one enclave tile.
- * @param {{idx:number, type:string, stage?:string}} tile
- */
+/** @param {{idx:number, type:string, stage?:string}} tile */
 function paintOne(tile) {
   const icon = enclaveIcon(tile.type);
   if (icon) safe(() => _grid.addSprite(tile.idx, icon, { x: 0, y: ICON_Y, z: ICON_Z }, { scale: ICON_SCALE }));
@@ -313,7 +306,6 @@ function scheduleRepaint(reason) {
   }, REPAINT_DEBOUNCE_MS);
 }
 
-/** Subscribe to the events that can change where enclaves are, plus an initial paint. */
 function wire() {
   const eng = g.engine;
   if (!eng || typeof eng.on !== "function") {

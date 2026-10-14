@@ -72,10 +72,8 @@ function boundingBottom(stage) {
 }
 
 /**
- * Total px height of the wrapper children that sit below the stage (legend, timeline, caption).
  * @param {HTMLElement} wrap The viz wrapper.
  * @param {HTMLElement} stage
- * @returns {number} The summed height in px.
  */
 function heightBelowStage(wrap, stage) {
   let below = 0;

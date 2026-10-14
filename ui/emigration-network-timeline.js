@@ -133,11 +133,9 @@ function ageLabel(age) {
   return loc(key, pretty);
 }
 
-/** Playback speed multipliers. */
 const SPEEDS = [["0.5×", 0.5], ["1×", 1], ["2×", 2], ["4×", 4]];
 
 /**
- * Build the playback-speed chips (set the shared speed multiplier).
  * @param {*} pb Playback state.
  * @returns {HTMLElement} The speed chip row.
  */
@@ -158,7 +156,6 @@ function makeSpeedChips(pb) {
 }
 
 /**
- * Build a 0..max range input set to max.
  * @param {number} max Max value.
  * @returns {HTMLInputElement} The range input.
  */
@@ -356,7 +353,6 @@ function makeTimelineArea(frames, o) {
 }
 
 /**
- * Build the controls row (play/pause button, current-time label, playback speed chips).
  * @param {HTMLElement} btn Play/pause button.
  * @param {HTMLElement} lbl Time label.
  * @param {*} pb Playback state.

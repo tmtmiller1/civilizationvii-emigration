@@ -94,7 +94,6 @@ function sumCollapsed(map, e, fi, ti) {
 }
 
 /**
- * Whether a flow leaves or enters the selected city (always true when no city is selected).
  * @param {*} state @param {number} fromCiv @param {string} fromCity @param {number} toCiv @param {string} toCity
  */
 function touchesFocusCity(state, fromCiv, fromCity, toCiv, toCity) {
@@ -133,7 +132,7 @@ function addInterEdge(e, holder, collapsed, segs) {
   if (seg) segs.push(seg);
 }
 
-/** Append the cross-civ flow segments for a frame. @param {*} fr @param {*} holder @param {*[]} segs */
+/** @param {*} fr @param {*} holder @param {*[]} segs */
 function interSegments(fr, holder, segs) {
   const { centers } = holder;
   /** @type {Map<string,*>} */
@@ -145,7 +144,7 @@ function interSegments(fr, holder, segs) {
   }
 }
 
-/** One intra-civ move's segment, or null when filtered/unroutable. @param {*} m @param {*} holder @returns {*} */
+/** @param {*} m @param {*} holder @returns {*} */
 function intraSeg(m, holder) {
   const { state, centers, byId } = holder;
   if (!expandedHas(state, m.civId) || !(m.people > 0)) return null;
