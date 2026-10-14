@@ -29,7 +29,7 @@
             </Properties>
             <Actions>
                 <UIScripts>
-                    <Item>devtools/migration-probe.js</Item>
+                    <Item>migration-probe.js</Item>
                 </UIScripts>
             </Actions>
         </ActionGroup>
