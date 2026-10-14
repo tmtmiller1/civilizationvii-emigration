@@ -3,6 +3,13 @@ Generated from CHANGELOG.md by scripts/steam-changelog.mjs; release.sh uploads t
 To fix an old Workshop entry, paste the text under its ==== line into that entry's Edit box on the change-notes page.
 A block edited by hand is kept as-is. Delete a block to regenerate it from CHANGELOG.md.
 
+==== 3.4.1 | 2026-10-14 | src defb88511f8d | gen 35e4216b6050 ====
+[b]Version 3.4.1 · 14 October 2026[/b]
+A license note. The mod itself plays exactly as in 3.4.0.
+
+[b]Changed[/b]
+• The license now says that Civilization VII and its art and data belong to Firaxis and 2K, and that the game screenshots are there for illustration.
+
 ==== 3.4.0 | 2026-10-13 | src 5c0293e92930 | gen 127ce2a609e4 ====
 [b]Version 3.4.0 · 13 October 2026[/b]
 Notices in the game's own notification train.

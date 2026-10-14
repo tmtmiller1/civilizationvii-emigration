@@ -5,6 +5,14 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [3.4.1] - 2026-10-14
+
+A license note. The mod itself plays exactly as in 3.4.0.
+
+### Changed
+- The license now says that Civilization VII and its art and data belong to Firaxis and 2K, and that the game
+  screenshots are there for illustration.
+
 ## [3.4.0] - 2026-10-13
 
 Notices in the game's own notification train.
