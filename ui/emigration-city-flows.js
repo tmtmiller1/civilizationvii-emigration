@@ -22,7 +22,6 @@ function el(tag, cls, text) {
 }
 
 /**
- * A one-line "why" summary from a per-cause map: the top causes by share.
  * @param {Record<string,number>} causes Per-cause people.
  * @returns {string} e.g. "War 60%, Prosperity 30%".
  */
@@ -63,9 +62,8 @@ function civSlices(civs) {
 }
 
 /**
- * One direction column (Immigrants / Emigrants): subtitle, pie, civ key, and the cause summary.
- * @param {string} title Column heading.
- * @param {string} whyPrefix "Why" label.
+ * @param {string} title
+ * @param {string} whyPrefix
  * @param {*} dir { civs, causes } for this direction.
  * @param {boolean} isArrivals True for the Immigrants column (selects the empty-state label).
  * @returns {HTMLElement}
@@ -119,7 +117,6 @@ const PR_BANDS = [
 ];
 
 /**
- * The band (label + color) for an emigration-pressure level.
  * @param {number} bar Pressure 0..1.
  * @returns {{label:string, color:string}}
  */
@@ -158,9 +155,8 @@ function appendStayRow(col, tags) {
 }
 
 /**
- * The pressure bar (track + colored fill scaled to the level).
  * @param {number} pct Percentage 0..100.
- * @param {string} color Band color.
+ * @param {string} color
  * @returns {HTMLElement}
  */
 function pressureBar(pct, color) {
@@ -241,7 +237,6 @@ function civHeader(name) {
 }
 
 /**
- * Non-zero cause rows for a per-cause map, sorted by count descending.
  * @param {Record<string,number>} causes Per-cause people.
  * @returns {{cause:string, label:string, color:string, n:number}[]}
  */
@@ -269,7 +264,6 @@ function groupEventsByCause(events) {
 }
 
 /**
- * Push one event into its parent cause bucket (dropping unattributed / zero-impact events).
  * @param {Record<string, *[]>} by Cause → events (mutated).
  * @param {string} key
  * @param {{people?:number, deaths?:number}} v The event's tallies.
@@ -298,8 +292,7 @@ function eventSubRow(ev) {
 }
 
 /**
- * One cause row: swatch + label + proportional bar + count.
- * @param {{label:string, color:string, n:number}} r Cause row.
+ * @param {{label:string, color:string, n:number}} r
  * @param {number} max Largest count (bar scale).
  * @returns {HTMLElement}
  */
