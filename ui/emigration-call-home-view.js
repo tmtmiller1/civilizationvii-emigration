@@ -15,7 +15,6 @@ import {
 export const GOLD_ICON = "[icon:YIELD_GOLD]";
 export const INFLUENCE_ICON = "[icon:YIELD_DIPLOMACY]";
 
-/** The dismiss choice id. */
 const NO = "no";
 /** How many origin/destination lines the dialog lists before summarizing the rest. */
 const MAX_PAIR_LINES = 4;
@@ -143,11 +142,7 @@ function tierChoices(quote, currency, d) {
   });
 }
 
-/**
- * The tooltip on a grayed-out size: what it needs and what the treasury holds.
- * @param {number} currency A CALL_HOME_CURRENCY. @param {number} cost The fee. @param {number} balance The
- *   treasury. @returns {string}
- */
+/** @param {number} currency @param {number} cost @param {number} balance */
 function shortNote(currency, cost, balance) {
   const have = Math.floor(balance);
   return currency === CALL_HOME_CURRENCY.INFLUENCE

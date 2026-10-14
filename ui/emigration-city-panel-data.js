@@ -116,20 +116,12 @@ function originLine(p) {
   return p.name + " " + Math.round((p.share || 0) * 100) + "%";
 }
 
-/**
- * Whether an origin part is well-formed enough to display.
- * @param {*} p
- * @returns {boolean}
- */
+/** @param {*} p */
 function validPart(p) {
   return !!p && typeof p.name === "string" && p.name.length > 0 && (p.share || 0) > 0;
 }
 
-/**
- * The origin composition lines, largest share first, or empty when nothing is tracked yet.
- * @param {{parts:{name:string, share:number}[]}|null|undefined} comp
- * @returns {string[]}
- */
+/** @param {{parts:{name:string, share:number}[]}|null|undefined} comp */
 function originLines(comp) {
   const parts = comp && Array.isArray(comp.parts) ? comp.parts : [];
   return parts.filter(validPart).map(originLine);
@@ -166,12 +158,7 @@ function flowRows(compose, flows) {
   return rows;
 }
 
-/**
- * The refugee-holding line, or "" when none are held.
- * @param {Compose} compose
- * @param {number} pool The refugee pool size (points).
- * @returns {string}
- */
+/** @param {Compose} compose @param {number} pool */
 function refugeeText(compose, pool) {
   const n = typeof pool === "number" && pool > 0 ? Math.floor(pool) : 0;
   if (!n) return "";
@@ -180,26 +167,14 @@ function refugeeText(compose, pool) {
   return pick(compose, key, [n], english);
 }
 
-/**
- * The "quarter grants a yield" line.
- * @param {Compose} compose
- * @param {number} amount
- * @param {string} yieldKey
- * @returns {string}
- */
+/** @param {Compose} compose @param {number} amount @param {string} yieldKey */
 function grantsLine(compose, amount, yieldKey) {
   const y = yieldLabel(compose, yieldKey);
   const english = "Grants " + amount + " " + y + " to the city each turn.";
   return pick(compose, "LOC_EMIGRATION_PANEL_QUARTER_GRANTS", [amount, y], english);
 }
 
-/**
- * The "quarter costs a yield" line.
- * @param {Compose} compose
- * @param {number} amount
- * @param {string} yieldKey
- * @returns {string}
- */
+/** @param {Compose} compose @param {number} amount @param {string} yieldKey */
 function costsLine(compose, amount, yieldKey) {
   const y = yieldLabel(compose, yieldKey);
   const english = "Costs " + amount + " " + y + " each turn.";

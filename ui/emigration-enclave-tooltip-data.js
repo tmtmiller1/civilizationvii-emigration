@@ -217,10 +217,7 @@ export function totalYields(i) {
   return sumYields([baseYields(i), i.native || {}, paidStance(i)]);
 }
 
-/**
- * The land's share: the displaced holding's yields when the enclave took one over, else the bare land.
- * @param {EnclaveTipInput} i @returns {Record<string, number>}
- */
+/** @param {EnclaveTipInput} i */
 function baseYields(i) {
   if (i.replacedName && hasYields(i.before)) return /** @type {Record<string, number>} */ (i.before);
   return landYields(i.now || {}, i.native || {});
@@ -235,10 +232,7 @@ function paidStance(i) {
   return scaledStance(i.stance || {}, i.benefitScale == null ? 1 : num(i.benefitScale));
 }
 
-/**
- * Add yield maps together, to two decimals.
- * @param {Record<string, number>[]} maps @returns {Record<string, number>} Their sum.
- */
+/** @param {Record<string, number>[]} maps */
 function sumYields(maps) {
   /** @type {Record<string, number>} */
   const sum = {};

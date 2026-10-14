@@ -21,11 +21,7 @@ function localizeCauseSpec(spec) {
   });
 }
 
-/**
- * Format a signed people count for per-cause metrics.
- * @param {number} n Net people.
- * @returns {string}
- */
+/** @param {number} n */
 function formatCauseMetric(n) {
   if (typeof n !== "number" || !isFinite(n) || n === 0) return "0";
   return formatPeople(Math.abs(n));

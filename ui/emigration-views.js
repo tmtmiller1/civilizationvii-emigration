@@ -180,12 +180,7 @@ export function flowNetwork(flows, maxEdges = 16) {
   return { nodes: nodeList, edges, cityEdges, maxEdge, maxNode };
 }
 
-/**
- * A civ-id → name map gathered from the ledger rows and the flow edges.
- * @param {*[]} civs Ledger civ rows ({pid, name}).
- * @param {*[]} flows Named flow edges.
- * @returns {Map<number, string>} id → name.
- */
+/** @param {*[]} civs @param {*[]} flows */
 function civNameMap(civs, flows) {
   /** @type {Map<number, string>} */
   const m = new Map();
@@ -452,13 +447,7 @@ function injectDashboardStyle() {
   }
 }
 
-/**
- * Make an element with an optional class + text.
- * @param {string} tag Tag name.
- * @param {string} [cls] Class.
- * @param {string} [text] Text content.
- * @returns {HTMLElement} The element.
- */
+/** @param {string} tag @param {string} [cls] @param {string} [text] */
 function el(tag, cls, text) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
@@ -510,11 +499,7 @@ const TAB_LABELS = {
   diversity: loc("LOC_EMIG_VIEW_TAB_DIVERSITY", "Diversity"), notifications: loc("LOC_EMIG_VIEW_TAB_NOTIFICATIONS", "Notifications"), guide: loc("LOC_EMIG_VIEW_TAB_GUIDE", "Guide")
 };
 
-/**
- * The tab label for a section.
- * @param {*} s Section.
- * @returns {string} Label.
- */
+/** @param {*} s */
 function tabLabelFor(s) {
   return TAB_LABELS[s.kind] || s.title;
 }
@@ -614,11 +599,7 @@ function controlGroup(label, items, current, onSelect, cls) {
   return grp;
 }
 
-/**
- * Append `child` to `parent` when it isn't null.
- * @param {HTMLElement} parent The parent element.
- * @param {HTMLElement|null} child The optional child.
- */
+/** @param {HTMLElement} parent @param {HTMLElement|null} child */
 function appendOpt(parent, child) {
   if (child) parent.appendChild(child);
 }

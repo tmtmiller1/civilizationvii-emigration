@@ -4,13 +4,7 @@
 // (`pieCardSlices`) and a color-key legend (`legendChips`). Styling lives in the dashboard's
 // injected stylesheet (emigration-views.js).
 
-/**
- * Make an element with an optional class + text.
- * @param {string} tag
- * @param {string} [cls] Class.
- * @param {string} [text]
- * @returns {HTMLElement} Element.
- */
+/** @param {string} tag @param {string} [cls] @param {string} [text] */
 function el(tag, cls, text) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;

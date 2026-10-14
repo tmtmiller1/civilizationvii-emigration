@@ -273,11 +273,7 @@ function isCityCenter(x, y) {
   }, false);
 }
 
-/**
- * The natural wonder this plot is, or null: the feature's display-name LOC key.
- * @param {number} x Plot x. @param {number} y Plot y.
- * @returns {{name:string}|null} The natural wonder, or null.
- */
+/** @param {number} x @param {number} y */
 function naturalWonderAt(x, y) {
   return safe(() => {
     if (typeof GameplayMap === "undefined" || typeof GameInfo === "undefined" || !GameInfo.Features) return null;

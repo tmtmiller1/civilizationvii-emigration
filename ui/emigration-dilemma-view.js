@@ -186,19 +186,13 @@ function quoteBlock(quote) {
   return block;
 }
 
-/**
- * A dialog's title attribute, or "" when unreadable.
- * @param {*} root The dialog element. @returns {string}
- */
+/** @param {*} root */
 function dialogTitle(root) {
   const title = root && typeof root.getAttribute === "function" ? root.getAttribute("title") : null;
   return typeof title === "string" ? title : "";
 }
 
-/**
- * The pending quote for a dialog root, removed from the queue, or "" when the dialog is not one of ours.
- * @param {*} root The dialog element. @returns {string}
- */
+/** @param {*} root */
 function takePendingQuote(root) {
   const title = dialogTitle(root);
   if (!title || !pendingQuotes.has(title)) return "";

@@ -14,13 +14,7 @@ import { formatCount } from "/emigration/ui/emigration-ledger-view.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { loc, localeFontFamily } from "/emigration/ui/emigration-loc.js";
 
-/**
- * Make an element with an optional class + text.
- * @param {string} tag
- * @param {string} [cls]
- * @param {string} [text]
- * @returns {HTMLElement}
- */
+/** @param {string} tag @param {string} [cls] @param {string} [text] */
 function el(tag, cls, text) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
@@ -237,11 +231,7 @@ function diversityCtx(rows) {
   };
 }
 
-/**
- * The shared column header row.
- * @param {*} ctx The render context.
- * @returns {HTMLElement}
- */
+/** @param {*} ctx */
 function diversityHead(ctx) {
   return diversityRow(ctx.cells([
     loc("LOC_EMIG_DIVERSE_COL_CITY", "Settlement"),
@@ -253,12 +243,7 @@ function diversityHead(ctx) {
   ]), "emig-pr-head");
 }
 
-/**
- * One settlement's row: name, origin bar, population + origin count, the mix's shape, its tier.
- * @param {*} r A display row.
- * @param {*} ctx The render context.
- * @returns {HTMLElement}
- */
+/** @param {*} r @param {*} ctx */
 function diversityDataRow(r, ctx) {
   return diversityRow(ctx.cells([
     r.city, compositionBar(r, ctx.maxPeople),
@@ -266,12 +251,7 @@ function diversityDataRow(r, ctx) {
   ]));
 }
 
-/**
- * A civ sub-heading inside the full list.
- * @param {string} name The civ's name.
- * @param {boolean} own Whether it's the local player's.
- * @returns {HTMLElement}
- */
+/** @param {string} name @param {boolean} own */
 function civHeading(name, own) {
   const h = el("div", "emig-dv-civ", own ? loc("LOC_EMIG_DIVERSE_YOUR_CIV", "{1_Civ} (you)", name) : name);
   h.style.cssText = "font-family:" + localeFontFamily("title") + ";color:#f0dca8;opacity:" + (own ? "1" : "0.8")

@@ -244,7 +244,6 @@ class EthnicityLensPanelDecorator {
   afterDetach() {}
 }
 
-/** Toggle the ethnicity lens on/off (Shift+E); falls back to the default lens when off. */
 function toggleLens() {
   try {
     const cur = LensManager.getActiveLens ? LensManager.getActiveLens() : void 0;

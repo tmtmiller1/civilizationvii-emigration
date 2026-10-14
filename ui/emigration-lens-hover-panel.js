@@ -57,11 +57,7 @@ let _mouseY = 0;
 let _rafPending = false;
 let _wired = false;
 
-/**
- * Escape a value for safe interpolation into panel HTML.
- * @param {*} s Value.
- * @returns {string} Escaped text.
- */
+/** @param {*} s */
 function esc(s) {
   return String(s == null ? "" : s)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -130,7 +126,6 @@ function rebuildIndex() {
   return m;
 }
 
-/** The shared index, rebuilt on the TTL. @returns {Map<string, *>} The index. */
 function freshIndex() {
   const now = Date.now();
   if (!_indexMap || now - _indexAt > INDEX_TTL) {
@@ -150,7 +145,7 @@ function hoveredPlot() {
   }
 }
 
-/** Whether the given lens is the active lens right now. @param {string} lens Lens id. */
+/** @param {string} lens */
 function lensActive(lens) {
   try {
     return typeof LensManager.getActiveLens === "function" && LensManager.getActiveLens() === lens;
@@ -159,12 +154,7 @@ function lensActive(lens) {
   }
 }
 
-/**
- * Build a panel's inner HTML from a title and rows.
- * @param {string} title Panel title.
- * @param {HoverRow[]} rows Display rows.
- * @returns {string} HTML.
- */
+/** @param {string} title @param {HoverRow[]} rows */
 function buildHTML(title, rows) {
   let h = `<div class="t">${esc(title)}</div>`;
   for (const r of rows) {
@@ -208,7 +198,7 @@ function place(panel) {
   panel.style.top = Math.min(Math.max(0, y), maxY) + "px";
 }
 
-/** Hide a panel. @param {*} e Panel entry. */
+/** @param {*} e */
 function hidePanel(e) {
   if (e.panel) e.panel.style.display = "none";
   const wasShown = e.curKey !== null;
@@ -216,10 +206,7 @@ function hidePanel(e) {
   if (wasShown) notify(e, "onHide");
 }
 
-/**
- * Call one of a panel's optional transition hooks, isolated like `decorate`.
- * @param {*} e Panel entry. @param {"onShow"|"onHide"} hook The hook name.
- */
+/** @param {*} e @param {"onShow"|"onHide"} hook */
 function notify(e, hook) {
   if (typeof e.spec[hook] !== "function") return;
   try {
@@ -229,10 +216,7 @@ function notify(e, hook) {
   }
 }
 
-/**
- * Whether a panel may show right now: its own `active` predicate when it has one, else its lens.
- * @param {*} e Panel entry. @returns {boolean} True when the panel is allowed to show.
- */
+/** @param {*} e */
 function panelActive(e) {
   if (typeof e.spec.active !== "function") return lensActive(e.spec.lens);
   try {

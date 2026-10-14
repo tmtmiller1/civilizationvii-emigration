@@ -222,10 +222,7 @@ function enclaveLabel(type) {
   return loc("LOC_EMIG_QUARTER_ENCLAVE", "{1_Demonym} Enclave", name);
 }
 
-/**
- * The civilization short name inside an enclave type (ROME from IMPROVEMENT_EMIG_ENCLAVE_ROME_A).
- * @param {string} type The enclave type. @returns {string}
- */
+/** @param {string} type */
 function civShortOf(type) {
   return type.replace(ENCLAVE_RE, "").replace(/_(A|B)$/, "");
 }

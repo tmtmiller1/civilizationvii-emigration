@@ -344,10 +344,7 @@ export function installEmigrationConsole() {
   }
 }
 
-/**
- * Run something with the game's context manager, if it can be loaded.
- * @param {(cm:*) => void} fn What to do with it.
- */
+/** @param {(cm:*) => void} fn */
 function withContextManager(fn) {
   import("/core/ui/context-manager/context-manager.js")
     .then((m) => {

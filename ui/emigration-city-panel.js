@@ -193,11 +193,7 @@ function gatherEnclaveProgress(city) {
   }
 }
 
-/**
- * The origin composition parts for a city, with civ ids resolved to adjectives.
- * @param {*} comp The raw compositionForCity result (or null).
- * @returns {{name:string, share:number}[]} The resolved parts.
- */
+/** @param {*} comp */
 function resolveParts(comp) {
   if (!comp || !Array.isArray(comp.civs)) return [];
   return comp.civs.map((/** @type {*} */ c) => ({ name: civAdjective(c.civ), share: c.share }));
@@ -278,11 +274,7 @@ function replaceSection(host, id) {
   return el;
 }
 
-/**
- * Append a section header line.
- * @param {*} sec
- * @param {string} text
- */
+/** @param {*} sec @param {string} text */
 function addHeader(sec, text) {
   const p = document.createElement("p");
   p.className = "font-title ml-4 mt-2 uppercase text-gradient-secondary";
@@ -290,11 +282,7 @@ function addHeader(sec, text) {
   sec.appendChild(p);
 }
 
-/**
- * Append a single data row.
- * @param {*} sec
- * @param {string} text
- */
+/** @param {*} sec @param {string} text */
 function addRow(sec, text) {
   const d = document.createElement("div");
   d.className = "ml-6 mr-4 text-sm text-accent-4";
@@ -302,12 +290,7 @@ function addRow(sec, text) {
   sec.appendChild(d);
 }
 
-/**
- * Append a titled sub-block (a small heading plus its rows), or nothing when there are no rows.
- * @param {*} sec
- * @param {string} title
- * @param {string[]} rows
- */
+/** @param {*} sec @param {string} title @param {string[]} rows */
 function addBlock(sec, title, rows) {
   if (!rows || !rows.length) return;
   const h = document.createElement("div");
