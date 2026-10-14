@@ -81,7 +81,6 @@ function num(v) {
 }
 
 /**
- * Clamp `x` into [0, 1].
  * @param {number} x
  * @returns {number}
  */
@@ -101,7 +100,6 @@ function attritionRisk(dist, hasRefuge) {
 }
 
 /**
- * The crisis-type "why at risk" tags for the readout warning: empty for a content city.
  * @param {number} dist Situational distress. @param {*} sig The city signal.
  * @returns {string[]}
  */
@@ -110,7 +108,6 @@ function riskReasonsFor(dist, sig) {
 }
 
 /**
- * Source-state-derived fields (pressure / cooldown).
  * @param {{pressure?:number, cooldown?:number}|null} source Per-source state.
  * @returns {{pressure:number, pressureToBar:number, onCooldown:boolean, cooldown:number}}
  */
@@ -123,7 +120,6 @@ function pickSource(source) {
 }
 
 /**
- * Best-destination-derived fields (where people are pulled).
  * @param {{name?:string, owner?:number, crossCiv?:boolean, reasons?:string[]}|null} bestDest The pull target.
  * @returns {{topDestinationName:string, topDestinationOwner?:number, crossCiv:boolean, destReasons:string[]}}
  */
@@ -352,7 +348,7 @@ function signalMatches(s, cityId) {
   return isComponentId(cityId) ? componentIdMatches(s.city.id, cityId) : localIdMatches(s.city, cityId);
 }
 
-/** @param {*} v @returns {boolean} True when it is an object carrying numeric owner and id. */
+/** @param {*} v @returns {boolean} */
 function isComponentId(v) {
   return !!v && typeof v === "object" && typeof v.owner === "number" && typeof v.id === "number";
 }
@@ -369,7 +365,6 @@ function localIdMatches(city, cityId) {
 }
 
 /**
- * Owner-level cumulative tallies, read from globalThis.EmigrationData (0s when absent).
  * @param {number} pid Owner player id.
  * @returns {{net:number, in:number, out:number}}
  */
@@ -384,7 +379,6 @@ function ownerStats(pid) {
 }
 
 /**
- * The best-destination descriptor for a source's current pull, or null.
  * @param {*} src Source signal.
  * @param {*} dest The chosen destination signal.
  * @param {string[]} [reasons] The "why here" reason tags for this pull.

@@ -37,13 +37,13 @@ import { yieldsText } from "/emigration/ui/emigration-enclave-yields.js";
  *   sources:EnclaveTipSource[], totalAmounts:Record<string,number>, total:string}} EnclaveTipModel
  */
 
-/** @param {*} v @returns {number} A finite number, or 0. */
+/** @param {*} v @returns {number} */
 function num(v) {
   const n = Number(v);
   return Number.isFinite(n) ? n : 0;
 }
 
-/** @param {*} m A yield map. @returns {boolean} Whether it holds any non-zero yield. */
+/** @param {*} m A yield map. @returns {boolean} */
 function hasYields(m) {
   return !!m && typeof m === "object" && Object.keys(m).some((k) => num(m[k]) !== 0);
 }

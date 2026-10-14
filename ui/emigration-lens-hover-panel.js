@@ -64,7 +64,6 @@ function esc(s) {
 }
 
 /**
- * The panel stylesheet for a given element id (identical styling for every lens panel).
  * @param {string} id Panel element id.
  * @returns {string} CSS text.
  */
@@ -135,7 +134,6 @@ function freshIndex() {
   return _indexMap;
 }
 
-/** The currently hovered map plot {x, y}, or null. From the engine's PlotCursor singleton. */
 function hoveredPlot() {
   try {
     const c = PlotCursor && PlotCursor.plotCursorCoords;
@@ -165,7 +163,7 @@ function buildHTML(title, rows) {
   return h;
 }
 
-/** Inject the stylesheet + create the (hidden) panel element once. @param {*} e Panel entry. */
+/** @param {*} e Panel entry. */
 function ensurePanel(e) {
   if (e.panel) return e.panel;
   if (typeof document === "undefined") return null;
@@ -181,8 +179,7 @@ function ensurePanel(e) {
   return e.panel;
 }
 
-/** Position a panel near the cursor (offset so it clears the tile), clamped on screen.
- * @param {HTMLElement} panel The panel element. */
+/** @param {HTMLElement} panel */
 function place(panel) {
   const w = panel.offsetWidth || 200;
   const h = panel.offsetHeight || 90;
@@ -255,7 +252,7 @@ function rebuild(e, panel, sig, key, out) {
   if (wasHidden) notify(e, "onShow");
 }
 
-/** Recompute + show/hide one panel for the currently hovered tile (lens-gated). @param {*} e Entry. */
+/** @param {*} e */
 function renderPanel(e) {
   if (!panelActive(e)) {
     hidePanel(e);

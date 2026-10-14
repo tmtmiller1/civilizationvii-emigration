@@ -270,7 +270,6 @@ const EXPLAIN_CSS =
   ".emig-explain .emig-ex-note{opacity:0.75;font-size:var(--dg-fs-72);margin:0.1rem 0;display:flex;align-items:center;gap:0.25rem;}" +
   ".emig-explain .emig-ex-swatch{width:0.4rem;height:0.4rem;border-radius:0.2rem;flex:0 0 auto;}";
 
-/** Inject the explainer stylesheet once. */
 function injectStyle() {
   try {
     if (document.getElementById("emig-explain-style")) return;
@@ -326,7 +325,6 @@ function appendRow(parent, r) {
 }
 
 /**
- * Append a plain context note (optionally with a civ color swatch).
  * @param {*} parent @param {string} text
  * @param {string} [swatch] A hex color for a leading swatch.
  */
@@ -344,7 +342,6 @@ function appendNote(parent, text, swatch) {
 }
 
 /**
- * Append the "why they're leaving" group, if it has rows.
  * @param {*} root @param {ExplainModel} m
  */
 function appendLeaving(root, m) {
@@ -354,7 +351,6 @@ function appendLeaving(root, m) {
 }
 
 /**
- * Append the "where they're drawn" group with its permeability + community notes, if it has rows.
  * @param {*} root @param {ExplainModel} m
  */
 function appendDrawn(root, m) {

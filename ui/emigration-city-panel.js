@@ -19,17 +19,11 @@ import { causeLabel, topCause } from "/emigration/ui/emigration-causes.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 const DBG = false;
-/**
- * Debug logger, no-op unless {@link DBG} is set.
- * @param {...*} a Values to log.
- */
+/** @param {...*} a */
 function dlog(...a) {
   if (DBG) console.warn("[Emigration.cityPanel]", ...a);
 }
-/**
- * Error logger; always emits.
- * @param {...*} a Values to log.
- */
+/** @param {...*} a */
 function derr(...a) {
   console.error("[Emigration.cityPanel]", ...a);
 }
@@ -70,10 +64,7 @@ function tileKeyOf(city) {
   return loc.x + "," + loc.y;
 }
 
-/**
- * The currently selected city object, or null. Defensive against a missing engine surface.
- * @returns {*}
- */
+/** @returns {*} */
 function selectedCity() {
   try {
     const cid = typeof UI !== "undefined" && UI.Player && UI.Player.getHeadSelectedCity
@@ -86,10 +77,7 @@ function selectedCity() {
   }
 }
 
-/**
- * All migration flow edges, or an empty list when the store is unreadable.
- * @returns {*[]}
- */
+/** @returns {*[]} */
 function safeFlows() {
   try {
     return migrationFlows() || [];
@@ -211,8 +199,7 @@ function topCauseName(f) {
 }
 
 /**
- * Gather the live, resolved inputs for the selected city, ready for the pure view-model. Never
- * throws; returns null when there is no selected city.
+ * Gather the live, resolved inputs for the selected city, ready for the pure view-model.
  * @param {*} city The selected city object (or null).
  * @returns {*} The resolved inputs, or null.
  */
@@ -239,10 +226,6 @@ function gatherPanelInput(city) {
   };
 }
 
-/**
- * Inject the one-time `<style>` that visually separates our sections from the base content with a
- * thin top rule. Idempotent.
- */
 function injectPanelStyle() {
   if (document.getElementById("emigration-city-panel-style")) return;
   const style = document.createElement("style");

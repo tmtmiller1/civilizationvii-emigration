@@ -82,7 +82,6 @@ function noCompose() {
 }
 
 /**
- * Resolve a localized string for a LOC key, falling back to English when compose yields nothing.
  * @param {Compose} compose
  * @param {string} key
  * @param {*[]} args
@@ -142,7 +141,7 @@ function flowRow(compose, f) {
 
 /**
  * The flow rows for one direction, largest first and capped at {@link MAX_FLOW_ROWS} with a
- * "(+N more)" tail. Ignores malformed or zero-people edges.
+ * "(+N more)" tail.
  * @param {Compose} compose
  * @param {CityPanelFlow[]|null|undefined} flows
  * @returns {string[]}
@@ -201,7 +200,6 @@ function stanceYieldLines(compose, q) {
 }
 
 /**
- * The display lines for an established quarter.
  * @param {Compose} compose
  * @param {CityPanelQuarter} q
  * @returns {string[]}
@@ -226,7 +224,6 @@ function quarterLines(compose, q) {
 }
 
 /**
- * Assemble the population block of the view-model.
  * @param {Compose} c
  * @param {*} i The resolved inputs.
  * @returns {*}

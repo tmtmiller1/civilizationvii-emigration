@@ -11,17 +11,11 @@ import { gatherDashboard } from "/emigration/ui/emigration-window.js";
 import { dashboardModel, renderDashboardTabbed } from "/emigration/ui/emigration-views.js";
 
 const DBG = false;
-/**
- * Debug logger, no-op unless {@link DBG} is set.
- * @param {...*} a Values to log.
- */
+/** @param {...*} a */
 function dlog(...a) {
   if (DBG) console.warn("[Emigration.screen]", ...a);
 }
-/**
- * Error logger; always emits.
- * @param {...*} a Values to log.
- */
+/** @param {...*} a */
 function derr(...a) {
   console.error("[Emigration.screen]", ...a);
 }
