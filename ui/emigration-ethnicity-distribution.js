@@ -102,9 +102,8 @@ function tileDensity(people) {
 }
 
 /**
- * Order origins ascending by share (smallest minority first, dominant last). Ties broken by civ id.
  * @param {{civ:number, share:number}[]} civs Composition origins.
- * @returns {{civ:number, share:number}[]} Origins ascending by share.
+ * @returns {{civ:number, share:number}[]}
  */
 function originsSmallestFirst(civs) {
   return civs.slice().sort((a, b) => a.share - b.share || a.civ - b.civ);
@@ -226,7 +225,6 @@ function roomFor(room, i, civ) {
 }
 
 /**
- * Record `take` people of `civ` placed on tile `i`, spending the room they use.
  * @param {Room} room The room (mutated). @param {Map<number,number>[]} placed Per-tile placements (mutated).
  * @param {number} i The tile. @param {number} civ The origin. @param {number} take People placed.
  */

@@ -24,7 +24,7 @@ const QUEUED_FLAG = "__emigMetricsQueued";
 
 /**
  * Read a cumulative-tally function off the live EmigrationData global (those tallies are exposed as
- * methods there, not module exports). Returns 0 when absent.
+ * methods there, not module exports).
  * @param {string} fn Method name (e.g. "netCumFor").
  * @param {number} [id]
  * @returns {number}
@@ -399,10 +399,7 @@ function localizeGraphsGroup() {
   });
 }
 
-/**
- * Register all specs + the Graphs group against a ready Demographics API.
- * @param {*} api
- */
+/** @param {*} api */
 function doRegister(api) {
   if (api && api[REGISTERED_FLAG]) return;
   for (const spec of SPECS) api.registerMetric(localizeSpec(spec));

@@ -87,10 +87,7 @@ export function compositionVersion() {
   return gameTurn() + "|" + readStamp();
 }
 
-/**
- * The raw persisted state string, or null.
- * @returns {string|null}
- */
+/** @returns {string|null} */
 function readStored() {
   const g = Configuration?.getGame?.();
   const v = g && typeof g.getValue === "function" ? g.getValue(STATE_KEY) : null;
@@ -109,7 +106,6 @@ function numOr(v, d) {
 }
 
 /**
- * Clean a raw byCiv map to finite, positive buckets, summing them.
  * @param {*} raw A raw byCiv object. @returns {{byCiv:Record<string,number>, sum:number}}
  */
 function cleanByCiv(raw) {
@@ -147,7 +143,6 @@ function normalizeEntry(e) {
 }
 
 /**
- * Normalize the persisted cities map: keep only well-formed entries, bounded to MAX_CITIES.
  * @param {*} rawCities @returns {Record<string, CityComposition>}
  */
 function normalizeCities(rawCities) {
@@ -194,7 +189,6 @@ function load() {
 }
 
 /**
- * Carry a persisted pass stamp onto freshly loaded state, when it is a finite number.
  * @param {CompositionState} st @param {*} raw The stored stamp. @returns {CompositionState}
  */
 function withPassTurn(st, raw) {
@@ -202,7 +196,6 @@ function withPassTurn(st, raw) {
   return st;
 }
 
-/** Persist the composition to GameConfiguration. */
 function save() {
   try {
     const cfg = Configuration?.editGame?.();
@@ -229,7 +222,6 @@ function sumByCiv(e) {
 }
 
 /**
- * Add `pts` of origin-`civ` population to a composition entry.
  * @param {CityComposition} e
  * @param {number} civ Origin civ id.
  * @param {number} pts Points to add (no-op when <= 0).
@@ -574,7 +566,7 @@ function settlementGone(key) {
   }
 }
 
-/** @returns {boolean} Whether the engine's plot→city lookup (MapCities.getCity + Cities.get) is present. */
+/** @returns {boolean} */
 function cityLookupAvailable() {
   return typeof MapCities !== "undefined" && typeof MapCities.getCity === "function"
     && typeof Cities !== "undefined" && typeof Cities.get === "function";

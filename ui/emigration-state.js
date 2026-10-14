@@ -16,18 +16,18 @@ function defaultState() {
 }
 
 /**
- * @param {*} v Candidate number.
- * @param {number} fallback Fallback value.
- * @returns {number} Finite number or fallback.
+ * @param {*} v
+ * @param {number} fallback
+ * @returns {number}
  */
 function finiteNumberOr(v, fallback) {
   return typeof v === "number" && isFinite(v) ? v : fallback;
 }
 
 /**
- * @param {*} v Candidate string.
- * @param {string} fallback Fallback string.
- * @returns {string} String or fallback.
+ * @param {*} v
+ * @param {string} fallback
+ * @returns {string}
  */
 function stringOr(v, fallback) {
   return typeof v === "string" ? v : fallback;
@@ -137,8 +137,8 @@ function payloadFromStateBlob(s) {
 }
 
 /**
- * @param {*} monoTurn Candidate monotonic turn.
- * @returns {number} Normalized monotonic turn.
+ * @param {*} monoTurn
+ * @returns {number}
  */
 function normalizeMonoTurn(monoTurn) {
   return Math.max(0, Math.floor(finiteNumberOr(monoTurn, 0)));
@@ -222,10 +222,7 @@ function gameTurn() {
   }
 }
 
-/**
- * Read the raw persisted state string from GameConfiguration, or null.
- * @returns {string|null} The stored JSON string, or null.
- */
+/** @returns {string|null} */
 function readStateRaw() {
   const g = Configuration?.getGame?.();
   if (!g || typeof g.getValue !== "function") return null;

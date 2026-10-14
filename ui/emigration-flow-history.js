@@ -82,8 +82,6 @@ export function sumDeltas(frames) {
 }
 
 /**
- * Subtract one key's `baseCauses` from `causes`, returning a fresh per-cause map of the non-zero
- * differences, or null when nothing remains.
  * @param {Record<string, number>} causes The newer per-cause counts.
  * @param {Record<string, number>} baseCauses The older per-cause counts to subtract.
  * @returns {Record<string, number>|null}

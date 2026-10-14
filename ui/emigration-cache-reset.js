@@ -15,7 +15,7 @@ const _resetters = [];
 /** Sentinel for "no game id observed in this isolate yet" (distinct from any real seed, incl. 0). */
 const NO_GAME = Symbol("no-game");
 
-/** @type {symbol|number|string} The last game id seen in this isolate. */
+/** @type {symbol|number|string} */
 let _lastGameId = NO_GAME;
 
 /**

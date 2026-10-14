@@ -28,7 +28,7 @@ const BUILDUP_CAP = 4; // …capped, so a wonder-stacked tile doesn't dominate e
 
 /**
  * The number of constructibles on a tile (its build-up): a denser-built tile holds more
- * people. 0 when unreadable.
+ * people.
  * @param {number} x @param {number} y
  * @returns {number}
  */
@@ -66,7 +66,6 @@ function districtWeight(x, y) {
 
 /**
  * A settlement's owned tiles with their population-density weights (district class × build-up bonus).
- * Empty when the city has no readable plots.
  *
  * An enclave tile is floored at the urban weight: the enclave sits on an empty land plot the map still
  * classifies as bare rural or wilderness, but a quarter full of people is weighted as the built-up

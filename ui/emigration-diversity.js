@@ -43,9 +43,8 @@ export const COSMO_TIERS = Object.freeze([
 ]);
 
 /**
- * Clamp `v` into [0,1].
  * @param {number} v
- * @returns {number} 0 for non-finite input.
+ * @returns {number}
  */
 function unit(v) {
   if (!Number.isFinite(v)) return 0;

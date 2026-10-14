@@ -127,10 +127,7 @@ function carryWatermarks(next, prev) {
   next.wmInByCause = prev.wmInByCause;
 }
 
-/**
- * The raw persisted state string, or null.
- * @returns {string|null} The stored JSON, or null.
- */
+/** @returns {string|null} */
 function readStored() {
   const g = Configuration?.getGame?.();
   const v = g && typeof g.getValue === "function" ? g.getValue(STATE_KEY) : null;
@@ -168,7 +165,6 @@ function load() {
   return (_s = freshState());
 }
 
-/** Persist the tallies to GameConfiguration. */
 function save() {
   try {
     Configuration?.editGame?.()?.setValue?.(STATE_KEY, JSON.stringify(_s));
@@ -285,10 +281,6 @@ function addBoth(peopleMap, ptsMap, id, people, pts) {
   add(ptsMap, id, pts);
 }
 
-/**
- * The cumulative cross-civ migration flows (src→dest people), for the network visualization.
- * @returns {{src:number, dest:number, people:number}[]} Flow edges (people > 0).
- */
 /**
  * Coerce a stored flow value to a per-cause map (tolerating the older flat-number shape).
  * @param {*} v Stored value.
@@ -482,6 +474,10 @@ export function monoTurn() {
   return load().chartTurn || 0;
 }
 
+/**
+ * The cumulative cross-civ migration flows (src→dest people), for the network visualization.
+ * @returns {{src:number, dest:number, people:number}[]} Flow edges (people > 0).
+ */
 export function migrationFlows() {
   const s = load();
   const f = s.flows || {};
@@ -497,7 +493,7 @@ export function migrationFlows() {
 
 /**
  * Credit a city's unexplained pop-point loss to its civ, in raw points and in scaled people
- * (valued the same way migration counts are). No-op for a non-positive drop.
+ * (valued the same way migration counts are).
  * @param {MigStatsState} s State.
  * @param {number} owner Civ id.
  * @param {number} prev Last-turn population (points).
@@ -708,10 +704,7 @@ export function stanceImpactFor(id) {
   };
 }
 
-/**
- * Append a pass's moves to the in-memory recent ring (newest last), trimmed to RECENT_CAP.
- * @param {{srcOwner?:number, destOwner?:number, people?:number, cause?:string}[]} migs Migrations.
- */
+/** @param {{srcOwner?:number, destOwner?:number, people?:number, cause?:string}[]} migs */
 function pushRecent(migs) {
   for (const m of migs) _recent.push(m);
   if (_recent.length > RECENT_CAP) _recent = _recent.slice(_recent.length - RECENT_CAP);
