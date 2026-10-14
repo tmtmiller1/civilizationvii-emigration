@@ -29,11 +29,7 @@ const BAND_LABELS = Object.freeze({
   blighted: ["LOC_EMIG_PROS_BAND_BLIGHTED", "Blighted"]
 });
 
-/**
- * A signed integer for a term or a score: "+6", "-3", "0".
- * @param {number} n Points.
- * @returns {string} Signed text.
- */
+/** @param {number} n */
 function signed(n) {
   const v = Math.round(n);
   return (v > 0 ? "+" : "") + v;
@@ -142,10 +138,9 @@ const TERM_TEXT = Object.freeze({
 });
 
 /**
- * The placeholder value for a term's text: the named thing, the neighbor count, or the raw yield.
- * @param {import("/emigration/ui/emigration-tile-score.js").TileTerm} t The term.
- * @param {"name"|"count"|"amount"|null} mode Which value the text takes. @param {string} thing The named thing.
- * @returns {string} The argument ("" when the text has no placeholder).
+ * @param {import("/emigration/ui/emigration-tile-score.js").TileTerm} t
+ * @param {"name"|"count"|"amount"|null} mode
+ * @param {string} thing
  */
 function termArg(t, mode, thing) {
   if (mode === "name") return thing;

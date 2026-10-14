@@ -106,10 +106,7 @@ function refugeeMarkerBuckets() {
   return out;
 }
 
-/**
- * Paint city-center markers for active refugee holding pools.
- * @param {*} overlay The prosperity overlay.
- */
+/** @param {*} overlay */
 function paintRefugeeMarkers(overlay) {
   if (!CONFIG.refugeePoolLensMarkers) return;
   const buckets = refugeeMarkerBuckets();
@@ -218,7 +215,6 @@ class ProsperityLensPanelDecorator {
   afterDetach() {}
 }
 
-/** Toggle the prosperity lens on/off (Shift+P); falls back to the default lens when off. */
 function toggleLens() {
   try {
     const cur = LensManager.getActiveLens ? LensManager.getActiveLens() : void 0;

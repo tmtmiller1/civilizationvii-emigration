@@ -34,11 +34,7 @@ function cumFor(fn, id) {
   return typeof D[fn] === "function" ? D[fn](id) || 0 : 0;
 }
 
-/**
- * Format a net people count with a sign, e.g. "+12 thousand" / "-5 thousand".
- * @param {number} n Net people.
- * @returns {string}
- */
+/** @param {number} n */
 function formatSignedPeople(n) {
   if (typeof n !== "number" || !isFinite(n) || n === 0) return "0";
   return (n > 0 ? "+" : "-") + formatPeople(Math.abs(n));
@@ -68,11 +64,7 @@ function formatPoints(n) {
   return r < 0 ? "-" + groupInt(-r) : groupInt(r);
 }
 
-/**
- * Format a signed point count (e.g. "+12,400" / "-512").
- * @param {number} n Points.
- * @returns {string}
- */
+/** @param {number} n */
 function formatSignedPoints(n) {
   if (typeof n !== "number" || !isFinite(n) || n === 0) return "0";
   return (n > 0 ? "+" : "-") + groupInt(Math.abs(Math.round(n)));
@@ -112,12 +104,7 @@ function refugeeCauseSplit(byCause) {
   return parts.length ? parts.join(" · ") : "";
 }
 
-/**
- * Refugees-generated tooltip: the war / disaster / conquest split behind a civ's cumulative refugee
- * outflow.
- * @param {*} ctx Tooltip context ({id}).
- * @returns {string} The split (e.g. "War: 1 thousand · Disaster: 400"), or "".
- */
+/** @param {*} ctx */
 function refugeesTooltip(ctx) {
   return refugeeCauseSplit(emigrationByCause(ctx?.id));
 }

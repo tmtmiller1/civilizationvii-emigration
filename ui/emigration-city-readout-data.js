@@ -75,11 +75,7 @@ import { refugeeBurdenFor } from "/emigration/ui/emigration-refugee-burden.js";
  * @property {number} refugeeBurdenHappiness Owner-level refugee holding burden (happiness/turn).
  */
 
-/**
- * `v` if it's a finite number, else 0.
- * @param {*} v
- * @returns {number}
- */
+/** @param {*} v */
 function num(v) {
   return typeof v === "number" && isFinite(v) ? v : 0;
 }
@@ -143,11 +139,7 @@ function pickDest(bestDest) {
   };
 }
 
-/**
- * Assimilation-cost fields.
- * @param {{load?:number, gold?:number, happiness?:number}|null} assim The owner's current cost.
- * @returns {{assimLoad:number, assimCostGold:number, assimCostHappiness:number}}
- */
+/** @param {{load?:number, gold?:number, happiness?:number}|null} assim */
 function pickAssim(assim) {
   const a = assim || {};
   return {
@@ -157,21 +149,13 @@ function pickAssim(assim) {
   };
 }
 
-/**
- * Owner-level cumulative-tally fields.
- * @param {{net?:number, in?:number, out?:number}|null} owner Owner cumulative tallies.
- * @returns {{ownerNet:number, ownerIn:number, ownerOut:number}}
- */
+/** @param {{net?:number, in?:number, out?:number}|null} owner */
 function pickOwner(owner) {
   const o = owner || {};
   return { ownerNet: num(o.net), ownerIn: num(o.in), ownerOut: num(o.out) };
 }
 
-/**
- * Refugee holding + burden fields.
- * @param {{refugeePool?:number, refugeeBurden?:{gold?:number,happiness?:number}|null}} o Inputs.
- * @returns {{refugeePool:number, refugeeBurdenGold:number, refugeeBurdenHappiness:number}}
- */
+/** @param {{refugeePool?:number, refugeeBurden?:{gold?:number,happiness?:number}|null}} o */
 function pickRefugee(o) {
   return {
     refugeePool: num(o.refugeePool),
@@ -226,11 +210,7 @@ export function buildCitySnapshot(o) {
   };
 }
 
-/**
- * The community fields: composition, enclave progress, and the net series.
- * @param {{composition?:*, enclave?:*, netSeries?:number[]}} o
- * @returns {{composition:*, enclave:*, netSeries:number[]}}
- */
+/** @param {{composition?:*, enclave?:*, netSeries?:number[]}} o */
 function pickCommunity(o) {
   return {
     composition: o.composition || null,

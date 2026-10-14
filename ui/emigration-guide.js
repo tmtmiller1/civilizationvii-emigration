@@ -192,13 +192,7 @@ const CSS =
   ".emig-guide-faq-q{color:#f0dca8;font-weight:bold;font-size:var(--dg-fs-120);margin:0.5rem 0 0.1rem;padding-top:0.3rem;border-top:0.0277rem solid rgba(229,210,172,0.1);}" +
   ".emig-guide-faq-a{opacity:0.82;font-size:var(--dg-fs-105);line-height:1.5;}";
 
-/**
- * Create an element with an optional class + text.
- * @param {string} tag
- * @param {string} [cls]
- * @param {string} [text]
- * @returns {HTMLElement}
- */
+/** @param {string} tag @param {string} [cls] @param {string} [text] */
 function ce(tag, cls, text) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
@@ -206,7 +200,6 @@ function ce(tag, cls, text) {
   return e;
 }
 
-/** Inject the guide stylesheet once. */
 function injectGuideStyle() {
   if (typeof document === "undefined" || document.getElementById(STYLE_ID)) return;
   const st = document.createElement("style");
@@ -240,11 +233,7 @@ function renderGuideSection(wrap, g) {
   });
 }
 
-/**
- * A section's rough height (heading + items), for balancing the two columns.
- * @param {*} g A guide section.
- * @returns {number}
- */
+/** @param {*} g */
 function sectionWeight(g) {
   const items = Array.isArray(g.rows) ? g.rows.length : Array.isArray(g.faq) ? g.faq.length : 0;
   return items + 1; // +1 for the heading itself
@@ -269,11 +258,7 @@ function splitColumns(sections) {
   return cols;
 }
 
-/**
- * Render one column's sections (each a heading + its matrix/FAQ body) into a column element.
- * @param {*[]} sections The sections for this column.
- * @returns {HTMLElement}
- */
+/** @param {*[]} sections */
 function buildGuideColumn(sections) {
   const col = ce("div", "emig-guide-col");
   for (const g of sections) {

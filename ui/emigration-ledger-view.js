@@ -39,13 +39,7 @@ export const LEDGER_CSS =
   ".emig-led-tot{border-top:0.0833rem solid rgba(201,162,76,0.45);}" +
   ".emig-led-tot .emig-led-c{border-top:none;font-weight:bold;}";
 
-/**
- * Create an element with an optional class + text.
- * @param {string} tag Tag name.
- * @param {string} [cls] Class.
- * @param {string} [text] Text content.
- * @returns {HTMLElement} The element.
- */
+/** @param {string} tag @param {string} [cls] @param {string} [text] */
 function el(tag, cls, text) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
@@ -85,11 +79,7 @@ export function splitInternalExternal(c) {
   };
 }
 
-/**
- * A signed people count ("+12 thousand" / "-5 thousand" / "0").
- * @param {number} n Net people.
- * @returns {string} The display string.
- */
+/** @param {number} n */
 function signedPeople(n) {
   if (!n) return "0";
   return (n > 0 ? "+" : "-") + formatPeople(Math.abs(n));
@@ -109,12 +99,7 @@ function signedCount(people, points, mode) {
   return sgn(points) + Math.round(Math.abs(points || 0)) + " (" + signedPeople(people) + ")";
 }
 
-/**
- * A ledger cell (string text or an element child), with optional extra classes (e.g. "name"/"net").
- * @param {string|HTMLElement} content Text or node.
- * @param {string} [extra] Extra class(es).
- * @returns {HTMLElement} The cell.
- */
+/** @param {string|HTMLElement} content @param {string} [extra] */
 function ledgerCell(content, extra) {
   const c = el("div", "emig-led-c" + (extra ? " " + extra : ""));
   if (typeof content === "string") c.textContent = content;

@@ -60,9 +60,6 @@ function injectIconStyle() {
   dlog("icon style injected");
 }
 
-/**
- * Open the standalone Emigration screen from the dock button.
- */
 function openScreen() {
   try {
     openEmigrationScreen();

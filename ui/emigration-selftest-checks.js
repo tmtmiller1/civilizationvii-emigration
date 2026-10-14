@@ -91,7 +91,7 @@ export function safeProgress(city) {
   }
 }
 
-/** A result row. @param {string} label @param {string} status @param {string} detail @returns {*} */
+/** @param {string} label @param {string} status @param {string} detail */
 function row(label, status, detail) {
   return { label, status, detail };
 }
@@ -114,7 +114,7 @@ function checkSettlements() {
     "off. Use “Open dashboard” to eyeball them.");
 }
 
-/** One settlement's enclave-progress line, or null when it has no forming enclave. @param {*} s @returns {*} */
+/** @param {*} s */
 function enclaveLine(s) {
   const p = safeProgress(s.city);
   if (!p || p.stage === "none") return null;
@@ -251,7 +251,6 @@ function checkPersistence() {
     "No composition recorded for you yet. This fills in after a pass or two of migration.");
 }
 
-/** Cross-mod: whether the Demographics mod is present (the migration page integrates into it). */
 function checkDemographics() {
   const api = /** @type {*} */ (globalThis).DemographicsMetricsAPI;
   if (api) {
@@ -469,10 +468,7 @@ const L10N_SAMPLE = [
   ["LOC_EMIG_REASON_RICHER", "notification reason phrases"]
 ];
 
-/**
- * Whether a LOC key resolves in the current locale (not the raw "LOC_…" tag echoed back on a miss).
- * @param {string} key The LOC key. @returns {boolean} True when it composes to real text.
- */
+/** @param {string} key */
 function resolvesLoc(key) {
   try {
     const v = Locale.compose(key);

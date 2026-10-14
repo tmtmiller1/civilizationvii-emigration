@@ -35,7 +35,6 @@ function safe(fn, fb) {
   }
 }
 
-/** Whether one of the mod's own map lenses is active (it then owns the cursor panel). @returns {boolean} */
 function modLensActive() {
   const id = safe(() => LensManager.getActiveLens(), "");
   return typeof id === "string" && id.startsWith("emig-");
@@ -46,10 +45,7 @@ function active() {
   return CONFIG.enclaveTooltipEnabled !== false && !!CONFIG.quartersEnabled && !modLensActive();
 }
 
-/**
- * The standing enclave record on a plot, or null.
- * @param {{x:number, y:number}} plot The hovered plot. @returns {{tileKey:string, rec:*}|null}
- */
+/** @param {{x:number, y:number}} plot */
 function entryAt(plot) {
   const idx = safe(() => GameplayMap.getIndexFromLocation(plot), -1);
   if (!(idx >= 0)) return null;
@@ -71,7 +67,7 @@ function constructibleName(type) {
   return typeof name === "string" && name && !name.startsWith("LOC_") ? name : "";
 }
 
-/** The plot's terrain and biome as one label. @param {{x:number,y:number}} plot @returns {string} */
+/** @param {{x:number,y:number}} plot */
 function terrainLabel(plot) {
   const parts = [];
   for (const [table, read] of /** @type {[string, string][]} */ ([["Biomes", "getBiomeType"], ["Terrains", "getTerrainType"]])) {
@@ -82,11 +78,7 @@ function terrainLabel(plot) {
   return parts.join(" ");
 }
 
-/**
- * The stance's one-line reasoning, localized the way the decision modal localizes it.
- * @param {string|null} civType The origin CivilizationType. @param {string} optionId The stance id.
- * @returns {string} The reasoning, or "".
- */
+/** @param {string|null} civType @param {string} optionId */
 function stanceWhy(civType, optionId) {
   const opt = safe(() => quarterBonus(civType).options.find((/** @type {*} */ o) => o.id === optionId), null);
   if (!opt || !opt.why) return "";
@@ -216,10 +208,7 @@ function panelCss(id) {
   );
 }
 
-/**
- * An element with a class and optional text.
- * @param {string} cls @param {string} [text] @returns {HTMLElement}
- */
+/** @param {string} cls @param {string} [text] */
 function el(cls, text) {
   const d = document.createElement("div");
   if (cls) d.className = cls;
@@ -290,10 +279,7 @@ function sourceBlock(s) {
   return src;
 }
 
-/**
- * The total row.
- * @param {Record<string, number>} amounts The summed yields. @returns {HTMLElement}
- */
+/** @param {Record<string, number>} amounts */
 function totalBlock(amounts) {
   const total = el("total");
   total.appendChild(el("", loc("LOC_EMIG_ETIP_TOTAL", "Total per turn")));

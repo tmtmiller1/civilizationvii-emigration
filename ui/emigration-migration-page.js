@@ -65,14 +65,12 @@ function tabGatedOff(kind) {
   return kind === "diversity" && !CONFIG.diversityRanking;
 }
 
-/** The sub-tabs to show, dropping the Network + Causes analytics tabs when "simplify dashboard" is on. */
 function visibleSubtabs() {
   const shown = SUBTABS.filter((t) => !tabGatedOff(t.id));
   const list = getMinimizeAnalytics() ? shown.filter((t) => !HIDDEN_SUBTAB_IDS.has(t.id)) : shown;
   return list.map(locTab);
 }
 
-/** The hub pages to contribute, dropping the Network + Causes pages when "simplify dashboard" is on. */
 function visibleHubPages() {
   const shown = HUB_PAGES.filter((p) => !(p.id === "emig_diversity" && tabGatedOff("diversity")));
   const list = getMinimizeAnalytics() ? shown.filter((p) => !HIDDEN_HUB_IDS.has(p.id)) : shown;
@@ -170,11 +168,7 @@ const HUB_PAGES = [
   { id: "emig_guide", labelKey: "LOC_EMIG_VIEW_TAB_GUIDE", label: "Guide", tier: "standard", hidePolicyBanner: true, render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "guide", c) }
 ];
 
-/**
- * Whether the host supports hub-targeted contribution.
- * @param {*} api The DemographicsMetricsAPI.
- * @returns {boolean} True when hub mode is available.
- */
+/** @param {*} api */
 function hostSupportsHubs(api) {
   return typeof api.registerHubPages === "function"
     && Array.isArray(api.HUB_IDS) && api.HUB_IDS.includes("migration");

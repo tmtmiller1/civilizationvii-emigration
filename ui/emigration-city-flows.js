@@ -13,13 +13,7 @@ import { eventGroupCause } from "/emigration/ui/emigration-event-attribution.js"
 import { getNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
 
-/**
- * Make an element with an optional class + text.
- * @param {string} tag
- * @param {string} [cls]
- * @param {string} [text]
- * @returns {HTMLElement}
- */
+/** @param {string} tag @param {string} [cls] @param {string} [text] */
 function el(tag, cls, text) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
@@ -155,10 +149,7 @@ function stayLine(tags) {
   return names.join(", ");
 }
 
-/**
- * Append the "Reasons to stay" row to a pressure column, when there is anything nameable to say.
- * @param {HTMLElement} col @param {*} tags The LOC name tags.
- */
+/** @param {HTMLElement} col @param {*} tags */
 function appendStayRow(col, tags) {
   const stay = stayLine(tags);
   if (!stay) return;
@@ -240,11 +231,7 @@ function driverMeter(mix) {
   return box;
 }
 
-/**
- * A centered civ title flanked by fading rule lines (the section-title embellishment).
- * @param {string} name Civ name.
- * @returns {HTMLElement}
- */
+/** @param {string} name */
 function civHeader(name) {
   const h = el("div", "emig-civ-head");
   h.appendChild(el("span", "emig-civ-head-line"));

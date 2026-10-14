@@ -23,13 +23,7 @@ export function splitSummary(summary) {
   return { situation: s.slice(0, i), guidance: s.slice(i + 2).trim() };
 }
 
-/**
- * Make an element with an optional class + text.
- * @param {string} tag
- * @param {string} [cls] Class.
- * @param {string} [text]
- * @returns {HTMLElement} Element.
- */
+/** @param {string} tag @param {string} [cls] @param {string} [text] */
 function el(tag, cls, text) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
@@ -74,12 +68,7 @@ function injectStyle() {
   }
 }
 
-/**
- * Append a labeled detail line to the panel (skips empty values).
- * @param {HTMLElement} panel The detail panel.
- * @param {string} label The field label.
- * @param {string} [value] The field value.
- */
+/** @param {HTMLElement} panel @param {string} label @param {string} [value] */
 function addLine(panel, label, value) {
   if (!value) return;
   const line = el("div", "emig-ntf-d");
@@ -88,12 +77,7 @@ function addLine(panel, label, value) {
   panel.appendChild(line);
 }
 
-/**
- * A "City (Civilization)" place string, or just whichever part is present, or "".
- * @param {string} [city] Settlement name.
- * @param {string} [civ] Civilization name.
- * @returns {string} The place label.
- */
+/** @param {string} [city] @param {string} [civ] */
 function place(city, civ) {
   if (city && civ) return city + " (" + civ + ")";
   return city || civ || "";

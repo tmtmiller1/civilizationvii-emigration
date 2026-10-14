@@ -125,11 +125,7 @@ function destFields(sig, best, communityOf) {
   };
 }
 
-/**
- * A destination signal's display name, resolved off the signal the ranker carries.
- * @param {*} dest The destination signal.
- * @returns {string} The name (may be "").
- */
+/** @param {*} dest */
 function destNameOf(dest) {
   try {
     const n = dest?.city?.name;
@@ -295,19 +291,12 @@ function clear(el) {
   while (el.firstChild) el.removeChild(el.firstChild);
 }
 
-/**
- * Append a group heading.
- * @param {*} parent @param {string} text
- */
+/** @param {*} parent @param {string} text */
 function appendHeading(parent, text) {
   parent.appendChild(div("emig-ex-group", text));
 }
 
-/**
- * A `<div>` with a class and optional text.
- * @param {string} cls @param {string} [text]
- * @returns {*}
- */
+/** @param {string} cls @param {string} [text] */
 function div(cls, text) {
   const d = document.createElement("div");
   d.className = cls;
@@ -315,11 +304,7 @@ function div(cls, text) {
   return d;
 }
 
-/**
- * The weight bar for one row: a track with a proportional fill, colored by the row's direction.
- * @param {ExplainRow} r
- * @returns {*} The track element.
- */
+/** @param {ExplainRow} r */
 function weightBar(r) {
   const track = div("emig-ex-track");
   const fill = div("emig-ex-fill");
@@ -331,10 +316,7 @@ function weightBar(r) {
   return track;
 }
 
-/**
- * Append one factor row: label, a weight bar, and the rounded share.
- * @param {*} parent @param {ExplainRow} r
- */
+/** @param {*} parent @param {ExplainRow} r */
 function appendRow(parent, r) {
   const row = div("emig-ex-row");
   row.appendChild(div("emig-ex-label", r.label));

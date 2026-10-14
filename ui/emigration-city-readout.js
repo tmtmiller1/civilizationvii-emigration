@@ -25,21 +25,13 @@ const POOL_SEVERITY_MEDIUM = 4;
 const POOL_SEVERITY_HIGH = 8;
 const MAX_TRACKED_CITIES = 2048;
 
-/**
- * A signed people count ("+12 thousand" / "-5 thousand" / "0").
- * @param {number} n Net people.
- * @returns {string}
- */
+/** @param {number} n */
 function signedPeople(n) {
   if (!n) return "0";
   return (n > 0 ? "+" : "-") + formatPeople(Math.abs(n));
 }
 
-/**
- * The status suffix for the cause line: resting (cooldown) or building pressure toward a move.
- * @param {*} s The snapshot.
- * @returns {string} May be "".
- */
+/** @param {*} s */
 function statusSuffix(s) {
   // The separator lives in the code: the game's text loader strips a localized string's edge spaces,
   // so a fragment that carries its own leading space arrives without one and jams against the text before it.
@@ -64,11 +56,7 @@ function warnText(s) {
   return null;
 }
 
-/**
- * Holding-pool severity bucket for badge + markers.
- * @param {number} pool Refugee holding points.
- * @returns {"low"|"medium"|"high"|"none"}
- */
+/** @param {number} pool */
 function poolSeverity(pool) {
   if (!(pool > 0)) return "none";
   if (pool >= POOL_SEVERITY_HIGH) return "high";
@@ -76,11 +64,7 @@ function poolSeverity(pool) {
   return "low";
 }
 
-/**
- * Label text for the readout title badge.
- * @param {"low"|"medium"|"high"|"none"} severity
- * @returns {string} Empty when none.
- */
+/** @param {"low"|"medium"|"high"|"none"} severity */
 function poolBadgeLabel(severity) {
   if (severity === "high") return loc("LOC_EMIG_RO_BADGE_HIGH", "Resettlement: High");
   if (severity === "medium") return loc("LOC_EMIG_RO_BADGE_MEDIUM", "Resettlement: Medium");
@@ -139,11 +123,7 @@ function enclaveLine(e) {
     e.civ, pct(e.share), pct(e.bar), one(e.stock), stockBar);
 }
 
-/**
- * Refugee holding-pool display line, or empty when none.
- * @param {*} s Readout snapshot.
- * @returns {string} Line text or empty.
- */
+/** @param {*} s */
 function refugeePoolLine(s) {
   if (!(s.refugeePool > 0)) return "";
   return s.refugeePool === 1
@@ -151,11 +131,7 @@ function refugeePoolLine(s) {
     : loc("LOC_EMIG_RO_POOL_MANY", "Refugees resettling: {1_Count} points", s.refugeePool);
 }
 
-/**
- * Refugee support burden display line, or empty when none.
- * @param {*} s Readout snapshot.
- * @returns {string} Line text or empty.
- */
+/** @param {*} s */
 function refugeeBurdenLine(s) {
   if (!(s.refugeeBurdenGold > 0 || s.refugeeBurdenHappiness > 0)) return "";
   return loc(
@@ -177,11 +153,7 @@ function whyThereLine(destReasons) {
   return why ? loc("LOC_EMIG_RO_WHY_THERE", "Why there: {1_Why}", why) : "";
 }
 
-/**
- * Push a line when non-empty.
- * @param {string[]} lines
- * @param {string|null|undefined} line
- */
+/** @param {string[]} lines @param {string|null|undefined} line */
 function pushLineIf(lines, line) {
   if (line) lines.push(line);
 }
@@ -415,19 +387,13 @@ function startDockWatch() {
   }, 150);
 }
 
-/** Stop the re-dock interval. */
 function stopDockWatch() {
   if (_dockTimer === null) return;
   clearInterval(_dockTimer);
   _dockTimer = null;
 }
 
-/**
- * Append a child div with text to the panel.
- * @param {*} parent
- * @param {string} cls
- * @param {string} text
- */
+/** @param {*} parent @param {string} cls @param {string} text */
 function appendLine(parent, cls, text) {
   const d = document.createElement("div");
   d.className = cls;
@@ -550,7 +516,6 @@ function showCityReadout(cityId) {
   renderPanel(model, snap?.cityKey);
 }
 
-/** Hide the readout panel. */
 function hideCityReadout() {
   stopDockWatch();
   try {
@@ -586,7 +551,6 @@ function onSelection(d) {
   showCityReadout(id);
 }
 
-/** Extend the console API with the readout commands (the guaranteed manual trigger). */
 function extendConsoleApi() {
   try {
     const api = /** @type {*} */ (globalThis).emigration || ((globalThis).emigration = {});

@@ -24,10 +24,6 @@ import { compositionForCity, allCityCompositions } from "/emigration/ui/emigrati
 import { enclaveProgressForComposition } from "/emigration/ui/emigration-diaspora.js";
 import { quarterAt } from "/emigration/ui/emigration-quarter-state.js";
 
-/**
- * The local player id, or null.
- * @returns {number|null} The id.
- */
 function localId() {
   try {
     return typeof GameContext !== "undefined" && typeof GameContext.localPlayerID === "number"
@@ -256,10 +252,6 @@ function maskEdge(e) {
   return ee;
 }
 
-/**
- * The current migration flows split into the cross-civ network + intra-civ city→city moves.
- * @returns {{flows:*[], intra:*[]}} Split flows.
- */
 function gatherFlows() {
   const D = /** @type {*} */ (globalThis).EmigrationData || {};
   if (typeof D.flows !== "function") return { flows: [], intra: [] };
@@ -425,12 +417,7 @@ function gatherPops() {
   return out;
 }
 
-/**
- * Scale a civ's city populations by `frac` (for approximating an earlier point in the timeline).
- * @param {*} entry {cities:[{name, town, pop, pts}]}.
- * @param {number} frac Scale factor.
- * @returns {*} Scaled entry.
- */
+/** @param {*} entry @param {number} frac */
 function scalePops(entry, frac) {
   const cities = ((entry && entry.cities) || []).map((/** @type {*} */ c) => ({
     name: c.name, town: c.town, pop: (c.pop || 0) * frac, pts: Math.round((c.pts || 0) * frac),
@@ -484,12 +471,7 @@ function gatherHistory(nativeNow) {
   });
 }
 
-/**
- * Get (or create) a per-city flow accumulator.
- * @param {Map<string, *>} map City name → entry.
- * @param {string} city City name.
- * @returns {*} The entry {name, in, out}.
- */
+/** @param {Map<string, *>} map @param {string} city */
 function cityEntry(map, city) {
   let e = map.get(city);
   if (!e) {
@@ -515,13 +497,7 @@ function addDir(d, otherOwner, cause, people, points) {
   d.causes[cause] = (d.causes[cause] || 0) + people;
 }
 
-/**
- * Fold one recent move into the local player's per-city flows (immigration into a dest city,
- * emigration out of a source city).
- * @param {Map<string, *>} map City name → entry.
- * @param {*} m The move record.
- * @param {number} me Local player id.
- */
+/** @param {Map<string, *>} map @param {*} m @param {number} me */
 function foldMove(map, m, me) {
   const ppl = m.people || 0;
   const pts = m.points || 0;

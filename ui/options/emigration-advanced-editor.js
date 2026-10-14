@@ -71,10 +71,7 @@ function orderedSections() {
   return sections;
 }
 
-/**
- * Localized text for searching a tunable: its label + description + key, lowercased.
- * @param {*} t Tunable spec. @returns {string} The searchable text.
- */
+/** @param {*} t */
 function searchTextFor(t) {
   const c = (/** @type {string} */ k) => {
     try {
@@ -86,11 +83,7 @@ function searchTextFor(t) {
   return (c(t.label) + " " + (t.desc ? c(t.desc) : "") + " " + t.key).toLowerCase();
 }
 
-/**
- * A div/span with an optional class and `data-l10n-id`.
- * @param {string} tag Element tag. @param {string} [cls] Class list. @param {string} [l10n] LOC key.
- * @returns {*} The element.
- */
+/** @param {string} tag @param {string} [cls] @param {string} [l10n] */
 function el(tag, cls, l10n) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
@@ -136,10 +129,7 @@ function makeSectionHeader(titleKey) {
   return { header, toggleBtn, title };
 }
 
-/**
- * A group's sub-heading inside a section: small accent text on its own line.
- * @param {string} titleKey Group title LOC key. @returns {*} The element.
- */
+/** @param {string} titleKey */
 function makeGroupSubheading(titleKey) {
   const sub = el("div", "font-title text-sm text-accent-2 uppercase", titleKey);
   sub.setAttribute("style", SUBHEAD_STYLE);

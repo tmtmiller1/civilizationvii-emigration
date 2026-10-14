@@ -183,7 +183,6 @@ function forceRefugeeDilemma() {
 /** @type {((data:*)=>void) | null} */
 let _armedDilemmaHandler = null;
 
-/** The local player id, or null. @returns {number|null} */
 function localPlayerId() {
   return (typeof GameContext !== "undefined" && typeof GameContext.localPlayerID === "number")
     ? GameContext.localPlayerID : null;
@@ -238,19 +237,16 @@ function armRealDilemma() {
   }
 }
 
-/** Whether on-screen notices are enabled in this profile. @returns {boolean} */
 function toastsEnabled() {
   return (CONFIG.notifyMode >= 1) && (!!CONFIG.notifyTrain || !!CONFIG.notifyToasts);
 }
 
-/** Where a notice shows, for the banner. @returns {string} The place. */
 function noticePlace() {
   return CONFIG.notifyTrain
     ? "Look at the notification train beside End Turn; hover an icon for the text."
     : "Look at the top of the screen.";
 }
 
-/** Fire a single test toast through the mod's notification channel. */
 function fireTestToast() {
   try {
     toast("Emigration self-test notification. If you can read this, on-screen notices work.", "prosperity");
@@ -279,7 +275,6 @@ function fireSampleNotifications() {
   }
 }
 
-/** Open the standalone migration dashboard (to eyeball the network / settlement coverage). */
 function openDashboard() {
   try {
     closeSelfTestScreen();
@@ -290,7 +285,7 @@ function openDashboard() {
   }
 }
 
-/** Collapse a detail string to a single line for the snapshot. @param {string} s @returns {string} */
+/** @param {string} s */
 function oneLine(s) {
   return String(s || "").replace(/\s+/g, " ").trim();
 }
@@ -514,7 +509,7 @@ function enclaveYieldRowTest() {
 
 const TAG_COLOR = { PASS: "#5cbf7a", WARN: "#d8b44a", FAIL: "#d16a63", INFO: "#7fa8c9" };
 
-/** Make an element with class + text. @param {string} t @param {string|null} [c] @param {string} [x] */
+/** @param {string} t @param {string|null} [c] @param {string} [x] */
 function el(t, c, x) {
   const e = document.createElement(t);
   if (c) e.className = c;
@@ -576,7 +571,6 @@ const SELFTEST_ACTIONS = [
   ["Copy diagnostics", copyDiagnostics]
 ];
 
-/** The action-button row. @returns {HTMLElement} */
 function actionRow() {
   const actions = el("div", "emig-st-actions");
   for (const [label, handler] of SELFTEST_ACTIONS) actions.appendChild(button(label, handler));
@@ -596,7 +590,6 @@ function renderInto(host) {
   }
 }
 
-/** Re-run the checks in place (the screen stays open). */
 function reRun() {
   renderInto(_host);
 }
