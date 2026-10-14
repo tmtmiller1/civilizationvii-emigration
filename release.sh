@@ -90,7 +90,7 @@ rsync -a --exclude='CHANGELOG.steam.txt' --exclude='.git' --exclude='.gitignore'
     --exclude='*.d.ts' --exclude='tests' --exclude='steam_workshop_id.txt' \
     --exclude='CONTRIBUTING.md' --exclude='scripts' --exclude='i18n' --exclude='README.pdf' \
     --exclude='report.md' --exclude='donation-records' --exclude='analysis' \
-    --exclude='migration-probe.modinfo*' --exclude='devtools' \
+    --exclude='devtools' \
     --exclude='coverage*' --exclude='reports' --exclude='.stryker-tmp' \
     --exclude='.c8rc.json' --exclude='stryker*.json' \
     --exclude='/Screenshot *' --exclude='.*' \
