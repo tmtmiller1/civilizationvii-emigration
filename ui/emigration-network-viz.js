@@ -68,13 +68,7 @@ const SCALED_DOT_CAP = 2000;
  * @property {EventSpec[]} events Resolved events.
  */
 
-/**
- * Make an element with an optional class + text.
- * @param {string} tag
- * @param {string} [cls] Class.
- * @param {string} [text]
- * @returns {HTMLElement} Element.
- */
+/** @param {string} tag @param {string} [cls] @param {string} [text] */
 function el(tag, cls, text) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
@@ -264,12 +258,7 @@ export function buildCenters(lastNet, colorMap) {
   return { sim, byId };
 }
 
-/**
- * A fly-in starting at a civ's city sub-center, or null when that city index is unknown.
- * @param {*} center Civ center.
- * @param {number|undefined} idx City index within the civ.
- * @returns {*} Anim {fromX, fromY, p} or null.
- */
+/** @param {*} center @param {number|undefined} idx */
 function cityAnimFrom(center, idx) {
   const c = idx != null && center.cities ? center.cities[idx] : null;
   if (!c) return null;
@@ -366,10 +355,7 @@ function addFlowsToggle(root, state, onChange) {
 // Number-mode units control (Scaled Pop ↔ Civ Pop), shared with the flow-map view so both surfaces of
 // the combined Network tab carry the same "Units:" control. Composed when the control is built, so the
 // labels follow the current language.
-/**
- * A number mode's chip label.
- * @param {number} mode A NumberMode. @returns {string} The label.
- */
+/** @param {number} mode */
 function unitsLabel(mode) {
   return mode === NumberMode.CIV
     ? loc("LOC_EMIG_VIEW_NUM_CIV", "Civ Pop")
@@ -448,12 +434,11 @@ function makeLensTabs(state, onChange, rebuildAll) {
 }
 
 /**
- * Append one legend swatch+label that toggles a filter on click.
- * @param {HTMLElement} box Legend box.
- * @param {string} color Swatch color.
- * @param {string} label Text.
- * @param {boolean} active Whether currently isolated.
- * @param {()=>void} onClick Toggle handler.
+ * @param {HTMLElement} box
+ * @param {string} color
+ * @param {string} label
+ * @param {boolean} active
+ * @param {()=>void} onClick
  */
 function addLeg(box, color, label, active, onClick) {
   const chip = el("div", "emig-leg" + (active ? " active" : ""));

@@ -83,13 +83,7 @@ export const TIMELINE_CSS =
   ".emig-netc-speed .emig-netc-chip{font-size:var(--dg-fs-85);padding:0.06rem 0.5rem;}" +
   ".emig-netc-time-lbl{font-size:var(--dg-fs-95);color:#f0dca8;opacity:0.9;min-width:8rem;}";
 
-/**
- * Make an element with an optional class + text.
- * @param {string} tag
- * @param {string} [cls] Class.
- * @param {string} [text]
- * @returns {HTMLElement} Element.
- */
+/** @param {string} tag @param {string} [cls] @param {string} [text] */
 function el(tag, cls, text) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;

@@ -141,11 +141,7 @@ export function drawCivCircle(ctx, c) {
   ctx.stroke();
 }
 
-/**
- * Draw the civ boundary discs plus their city sub-discs behind the dots.
- * @param {CanvasRenderingContext2D} ctx Context.
- * @param {*} scene
- */
+/** @param {CanvasRenderingContext2D} ctx @param {*} scene */
 function drawClusterDiscs(ctx, scene) {
   const now = typeof scene.state.frameIdx === "number" ? scene.state.frameIdx : Infinity;
   for (const c of scene.centers) {
@@ -316,7 +312,7 @@ function boxesOverlap(/** @type {*} */ a, /** @type {*} */ b) {
   return a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
 }
 
-/** Whether a box overlaps any already-placed box. @param {*} b @param {*[]} placed */
+/** @param {*} b @param {*[]} placed */
 function overlapsAny(b, placed) {
   for (const p of placed) if (boxesOverlap(b, p)) return true;
   return false;
@@ -364,11 +360,7 @@ export function drawLabelsNoOverlap(ctx, labels) {
   }
 }
 
-/**
- * Draw destination name labels above each cluster.
- * @param {CanvasRenderingContext2D} ctx Context.
- * @param {*[]} centers Cluster centers.
- */
+/** @param {CanvasRenderingContext2D} ctx @param {*[]} centers */
 function drawLabels(ctx, centers) {
   /** @type {*[]} */
   const labels = [];
