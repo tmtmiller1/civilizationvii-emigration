@@ -26,7 +26,7 @@ const STAGE_COLORS = Object.freeze({
   established: "#d8b24a", recognized: "#5fae6b", contested: "#c25b54", fading: "#8a8a8a"
 });
 
-/** Run a read, returning `fb` on a throw. @param {() => *} fn @param {*} fb @returns {*} */
+/** @param {() => *} fn @param {*} fb @returns {*} */
 function safe(fn, fb) {
   try {
     return fn();
@@ -40,7 +40,7 @@ function modLensActive() {
   return typeof id === "string" && id.startsWith("emig-");
 }
 
-/** @returns {boolean} Whether the enclave tooltip may show right now. */
+/** @returns {boolean} */
 function active() {
   return CONFIG.enclaveTooltipEnabled !== false && !!CONFIG.quartersEnabled && !modLensActive();
 }
@@ -57,7 +57,6 @@ function entryAt(plot) {
 }
 
 /**
- * A constructible type's display name, or "" when it cannot be named.
  * @param {string|undefined} type A ConstructibleType. @returns {string}
  */
 function constructibleName(type) {
@@ -117,7 +116,6 @@ function yieldMaps(rec) {
 }
 
 /**
- * Gather everything the model needs for one enclave.
  * @param {{tileKey:string, rec:*}} entry The record. @param {*} sig The host settlement's signal.
  * @param {{x:number, y:number}} plot The hovered plot.
  * @returns {import("/emigration/ui/emigration-enclave-tooltip-data.js").EnclaveTipInput}
@@ -217,7 +215,6 @@ function el(cls, text) {
 }
 
 /**
- * The game's own icon for a yield type, as a CSS background value.
  * @param {string} key A YieldType. @returns {string} A `url(...)` value, or "".
  */
 function yieldIcon(key) {

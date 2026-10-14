@@ -73,8 +73,7 @@ function poolBadgeLabel(severity) {
 }
 
 /**
- * The ethnic-composition line ("Origins: Roman 62%, Egyptian 38%"), or null when untracked. Shows
- * the top three origins by share, with a "(+N more)" tail when there are more. Pure.
+ * The ethnic-composition line ("Origins: Roman 62%, Egyptian 38%"), or null when untracked.
  * @param {{parts:{name:string, share:number}[]}|null|undefined} comp The display composition.
  * @returns {string|null} The line, or null.
  */
@@ -143,10 +142,8 @@ function refugeeBurdenLine(s) {
 }
 
 /**
- * The "Why there:" explanation line for the current pull target, or empty when there are no
- * reason tags.
  * @param {string[]|undefined} destReasons The pull target's reason-tag keys.
- * @returns {string} Line text or empty.
+ * @returns {string}
  */
 function whyThereLine(destReasons) {
   const why = pullReasonsPhrase(destReasons);
@@ -255,7 +252,6 @@ function sparkline(values) {
 /** @type {*} */
 let _el = null;
 
-/** Inject the panel stylesheet once. */
 function injectStyle() {
   try {
     if (document.getElementById("emig-readout-style")) return;
@@ -402,11 +398,10 @@ function appendLine(parent, cls, text) {
 }
 
 /**
- * Append the title row with optional severity badge.
  * @param {*} parent
  * @param {string} title
  * @param {string|undefined} badge
- * @param {string|undefined} badgeTone Badge tone class.
+ * @param {string|undefined} badgeTone
  */
 function appendTitle(parent, title, badge, badgeTone) {
   const row = document.createElement("div");
@@ -472,10 +467,7 @@ function renderPanel(model, cityKey) {
 /** @type {Map<string, boolean>} */
 const _holdingActiveByCity = new Map();
 
-/**
- * Track selected-city refugee holding transitions and toast threshold crossings.
- * @param {*} snap
- */
+/** @param {*} snap */
 function maybeToastHoldingTransition(snap) {
   if (!CONFIG.cityReadoutPoolToasts || !snap || !snap.cityKey) return;
   const key = snap.cityKey;
@@ -529,7 +521,6 @@ function hideCityReadout() {
 const SELECTION_EVENTS = ["CitySelectionChanged", "CitySelected"];
 
 /**
- * Resolve a city identifier from a selection-event payload (best-effort across payload shapes).
  * @param {*} d The event payload.
  * @returns {*} A city id/object, or null.
  */
@@ -538,10 +529,7 @@ function selectedCityId(d) {
   return d.city ?? d.cityID ?? d.id ?? null;
 }
 
-/**
- * Handle a city-selection event: show the readout for the selected city, else hide.
- * @param {*} d The event payload.
- */
+/** @param {*} d */
 function onSelection(d) {
   const id = selectedCityId(d);
   if (id == null || (d && d.selected === false)) {
@@ -561,7 +549,6 @@ function extendConsoleApi() {
   }
 }
 
-/** Best-effort subscribe to the candidate selection events. */
 function wireSelection() {
   try {
     if (typeof engine === "undefined" || typeof engine.on !== "function") return;

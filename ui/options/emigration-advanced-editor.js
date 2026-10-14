@@ -92,7 +92,6 @@ function el(tag, cls, l10n) {
 }
 
 /**
- * The left-hand text block for a tunable row: a "modified" dot + the label, with the description below.
  * @param {*} t Tunable spec.
  * @returns {{text:*, mark:*}} The text element and its modified-dot span.
  */

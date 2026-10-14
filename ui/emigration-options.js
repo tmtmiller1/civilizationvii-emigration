@@ -77,7 +77,6 @@ const VISIBILITY_ITEMS = [
   { label: "LOC_OPTIONS_EMIG_VISIBILITY_SHOWALL" }
 ];
 
-/** Register the number-display dropdown. */
 function registerNumberMode() {
   Options.addOption({
     category: CategoryType.Mods,
@@ -95,7 +94,6 @@ function registerNumberMode() {
 /** @type {*} The preset dropdown's option info, so an inline edit can show it switching to Custom. */
 let _presetInfo = null;
 
-/** Register the intensity preset dropdown. */
 function registerPreset() {
   _presetInfo = {
     category: CategoryType.Mods,
@@ -140,7 +138,6 @@ function registerAdvancedEditor() {
   });
 }
 
-/** Register the dashboard data-source dropdown (Live vs Sample preview). */
 function registerDataMode() {
   Options.addOption({
     category: CategoryType.Mods,
@@ -338,10 +335,7 @@ function showSlider(name, value) {
   }
 }
 
-/**
- * After a child slider moves, redraw every composite slider it belongs to.
- * @param {string} child The grouped setting that moved.
- */
+/** @param {string} child The grouped setting that moved. */
 function refreshComposites(child) {
   for (const [composite, kids] of Object.entries(COMPOSITE_SETTINGS)) {
     if (kids.includes(child)) showSlider(composite, getCompositeSetting(composite));

@@ -55,7 +55,6 @@ const CSS =
   ".emig-ntf-dl{color:#f0bc78;min-width:5rem;opacity:0.85;}" +
   ".emig-ntf-dv{color:#e8d8b4;}";
 
-/** Inject the notifications stylesheet once. */
 function injectStyle() {
   try {
     if (document.getElementById("emig-ntf-style")) return;
@@ -123,8 +122,6 @@ function migrationDetail(panel, e) {
 }
 
 /**
- * Build the expandable detail panel for one notification: cause, origin, destination, and the count
- * in both measuring systems.
  * @param {*} e A NotifEntry.
  * @returns {HTMLElement} The detail panel.
  */
@@ -219,7 +216,6 @@ export function rowAccent(e) {
 }
 
 /**
- * Build the clickable header (turn · cause chip · summary · caret).
  * @param {*} e A NotifEntry.
  * @param {string} accent The cause accent color.
  * @param {HTMLElement} caret The caret element (kept by the caller to flip on toggle).
@@ -237,7 +233,6 @@ function headEl(e, accent, caret) {
 }
 
 /**
- * Build one notification row: a clickable cause-themed header that toggles its detail panel.
  * @param {*} e A NotifEntry.
  * @returns {HTMLElement} The row.
  */

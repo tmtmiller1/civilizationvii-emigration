@@ -12,7 +12,7 @@ import { loc } from "/emigration/ui/emigration-loc.js";
 // The engine dialog queue for generic in-game decisions (as used by the base game's own system pop-ups).
 const DISPLAY_QUEUE = "SystemMessage";
 
-/** Error logger; always emits. @param {...*} a */
+/** @param {...*} a */
 function derr(...a) {
   console.error("[Emigration.dilemma]", ...a);
 }
@@ -74,7 +74,6 @@ function wrapParagraph(para, maxLen) {
 }
 
 /**
- * Soft-wrap a display string, preserving any paragraph breaks the source already has ([N]).
  * @param {string} s @param {number} maxLen Target line length. @returns {string}
  */
 function softWrap(s, maxLen) {
@@ -202,7 +201,6 @@ function takePendingQuote(root) {
 }
 
 /**
- * Insert the quote block right after the dialog body (above the buttons), or at the end of the frame.
  * @param {*} root The dialog element. @param {string} quote The display quote.
  */
 function insertQuote(root, quote) {
@@ -343,7 +341,6 @@ function installQuoteDecorator() {
 }
 
 /**
- * The category line that opens the body: the eyebrow in bold capitals, after its icon when one is given.
  * @param {{eyebrow?:string, eyebrowIcon?:string}} view @returns {string} The line, or "".
  */
 function eyebrowLine(view) {

@@ -510,7 +510,6 @@ function foldMove(map, m, me) {
 }
 
 /**
- * Resolve a direction's civ map to a sorted, named list (carrying people + points per civ).
  * @param {*} d Direction accumulator {civs, causes}.
  * @returns {*} { civs: [{id, name, people, points}] sorted, causes }.
  */
@@ -569,11 +568,6 @@ function gatherSettlements(me, pops) {
   });
 }
 
-/**
- * Build the dashboard inputs from scratch: per-civ ledger + stances, the world per-cause breakdown,
- * the cross-civ flow network, the local player's per-city pressure snapshots, and per-city flows.
- * @returns {*} Gathered inputs.
- */
 /** Color for the merged "Unknown" (spoiler-masked) slice of a composition bar: a neutral gray. */
 const UNKNOWN_ORIGIN_COLOR = "#6d6a63";
 
@@ -650,6 +644,11 @@ function enclaveCell(key, comp) {
   }
 }
 
+/**
+ * Build the dashboard inputs from scratch: per-civ ledger + stances, the world per-cause breakdown,
+ * the cross-civ flow network, the local player's per-city pressure snapshots, and per-city flows.
+ * @returns {*} Gathered inputs.
+ */
 function gatherFresh() {
   if (getSampleData()) return sampleDashboard(getSnapshotInterval());
   const pids = inPlayCivs();

@@ -86,7 +86,6 @@ function signedPeople(n) {
 }
 
 /**
- * A signed value per the active number mode.
  * @param {number} people Scaled people (sets the sign).
  * @param {number} points Raw pop points.
  * @param {number} mode A NumberMode value.
@@ -194,7 +193,6 @@ const COUNT_COLS = [
 ];
 
 /**
- * Build one ledger data row (flex): name, net, the net bar, then every count column.
  * @param {*} r Ledger row.
  * @param {number} maxNet Largest absolute net (people).
  * @param {number} mode A NumberMode value.

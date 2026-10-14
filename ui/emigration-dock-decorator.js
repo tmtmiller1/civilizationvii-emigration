@@ -13,17 +13,11 @@ import { getShowDockButton } from "/emigration/ui/emigration-settings.js";
 import { addSelfTestDockButton, selfTestEnabled } from "/emigration/ui/emigration-selftest.js";
 
 const DBG = false;
-/**
- * Debug logger, no-op unless {@link DBG} is set.
- * @param {...*} a Values to log.
- */
+/** @param {...*} a */
 function dlog(...a) {
   if (DBG) console.warn("[Emigration.dock]", ...a);
 }
-/**
- * Error logger; always emits.
- * @param {...*} a Values to log.
- */
+/** @param {...*} a */
 function derr(...a) {
   console.error("[Emigration.dock]", ...a);
 }
@@ -41,7 +35,7 @@ const ICON_TINT = "#ecdfbf";
 
 /**
  * Inject the one-time `<style>` that paints our dock-button icon as a mask filled with
- * {@link ICON_TINT}, so it matches the flat tint of the other dock icons. Idempotent.
+ * {@link ICON_TINT}, so it matches the flat tint of the other dock icons.
  */
 function injectIconStyle() {
   if (document.getElementById("emigration-dock-icon-style")) return;

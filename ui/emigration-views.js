@@ -434,7 +434,6 @@ const DASH_CSS =
   // injects with the dashboard and covers both the standalone screen and the embedded page.
   DENSITY_CSS;
 
-/** Inject the dashboard content stylesheet once (idempotent). */
 function injectDashboardStyle() {
   try {
     if (document.getElementById("emig-dash-style")) return;
@@ -490,7 +489,6 @@ function renderSectionBody(body, section, controlsHost) {
   if (rv) rv(body, section.rows);
 }
 
-/** Short tab labels by section kind. */
 /** @type {Record<string,string>} */
 const TAB_LABELS = {
   flow: loc("LOC_EMIG_VIEW_TAB_NETWORK", "Network"),
@@ -505,10 +503,9 @@ function tabLabelFor(s) {
 }
 
 /**
- * A DOM tab-bar fallback (when the base-UI fxs-tab-bar VM isn't present).
- * @param {{id:string,label:string}[]} items Tab items.
- * @param {(i:number)=>void} onSelect Selection handler.
- * @returns {HTMLElement} The tab bar.
+ * @param {{id:string,label:string}[]} items
+ * @param {(i:number)=>void} onSelect
+ * @returns {HTMLElement}
  */
 function domTabBar(items, onSelect) {
   const root = el("div", "emig-tabs");
@@ -557,14 +554,6 @@ function numLabel(mode) {
 }
 
 /**
- * A labeled pill group: a "Label:" span + one selectable chip per option (the current key `active`).
- * @param {string} label The leading label (e.g. "Numbers:").
- * @param {{key:*, label:string}[]} items The options.
- * @param {*} current The active option key.
- * @param {(key:*)=>void} onSelect Called with the chosen key (only when it differs from current).
- * @returns {HTMLElement} The pill group.
- */
-/**
  * A labeled filter group: a "Label:" span + one flat rectangular button per option (the current one
  * boxed gold), the year/age-filter look. Used for every dashboard control row group.
  * @param {string} label The leading label.
@@ -604,9 +593,6 @@ function appendOpt(parent, child) {
   if (child) parent.appendChild(child);
 }
 
-/**
- * Open the Emigration advanced settings editor (best-effort).
- */
 function openAdvancedOptions() {
   import("/core/ui/context-manager/context-manager.js")
     .then((m) => {
