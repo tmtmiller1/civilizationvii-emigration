@@ -69,7 +69,7 @@ export function clamp(v, lo, hi) {
   return v < lo ? lo : v > hi ? hi : v;
 }
 
-/** @param {() => *} fn A read. @param {*} fb Fallback on throw. @returns {*} The read or the fallback. */
+/** @param {() => *} fn @param {*} fb @returns {*} */
 function safe(fn, fb) {
   try {
     return fn();

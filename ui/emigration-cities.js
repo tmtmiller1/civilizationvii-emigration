@@ -150,7 +150,6 @@ function safeList(fn) {
 }
 
 /**
- * Build a CitySignal for one city, or null when it should be skipped.
  * @param {*} city
  * @param {*} player
  * @param {boolean} isCityState Whether the owner is a minor.
@@ -228,7 +227,6 @@ function eligiblePlayer(pid) {
 }
 
 /**
- * Append a player's city signals to `out`.
  * @param {*} player
  * @param {boolean} isCityState Whether the owner is a minor.
  * @param {CitySignal[]} out

@@ -40,7 +40,6 @@ function asPolicy(v) {
 }
 
 /**
- * Read a policy id from a GameConfiguration key, or null when unset/unreadable.
  * @param {string} key The GameConfiguration key.
  * @returns {string|null}
  */

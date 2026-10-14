@@ -20,7 +20,7 @@ let _div = null;
 registerCacheReset(() => { _div = null; });
 
 /**
- * @returns {{ pool: Record<string, number>, tickedTurn: Record<string, number> }} Empty dividend state.
+ * @returns {{ pool: Record<string, number>, tickedTurn: Record<string, number> }}
  */
 function emptyState() {
   return { pool: {}, tickedTurn: {} };
@@ -103,7 +103,6 @@ function gameTurn() {
 }
 
 /**
- * The raw persisted dividend state string, or null.
  * @returns {string|null}
  */
 function divReadStored() {
@@ -113,7 +112,6 @@ function divReadStored() {
 }
 
 /**
- * Load (once) the persisted dividend state into the module cache.
  * @returns {{ pool: Record<string, number>, tickedTurn: Record<string, number> }}
  */
 function divState() {
@@ -133,7 +131,6 @@ function divState() {
   return _div;
 }
 
-/** Persist the dividend state to GameConfiguration. */
 function divPersist() {
   try {
     const normalized = normalizeState(_div) || emptyState();
@@ -147,8 +144,7 @@ function divPersist() {
 }
 
 /**
- * Grant `amount` (a positive number) of a yield to a player. No-ops for non-positive amounts, bad
- * ids, or a missing grantYield API. The mirror of effects.js's `deduct`.
+ * The mirror of effects.js's `deduct`.
  * @param {number} pid
  * @param {string} yieldKey e.g. "YIELD_SCIENCE".
  * @param {number} amount Signed amount; only positive values are applied.
@@ -185,7 +181,7 @@ export function addAttractionDividend(destOwner, yieldKey, perMigrant) {
 
 /**
  * Decay one yield's dividend pool for `elapsed` turns and grant the capped amount. Drops a
- * negligible pool. Returns the amount granted (0 if none).
+ * negligible pool.
  * @param {{pool: Record<string, number>}} s Dividend state.
  * @param {number} pid
  * @param {string} yk Yield key.

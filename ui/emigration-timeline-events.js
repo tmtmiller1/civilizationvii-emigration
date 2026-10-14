@@ -125,7 +125,6 @@ export function buildTimelineEvents(frames, disasters, wars) {
 }
 
 /**
- * Map each record through `place`, dropping the rows that can't be positioned.
  * @param {*} records Candidate records (any non-array is treated as empty).
  * @param {*[]} frames @param {Map<string, {start:number, end:number}>} ranges Age ranges.
  * @param {(r:*, f:*[], g:Map<string, {start:number, end:number}>)=>TimelineEvent|null} place Mapper.

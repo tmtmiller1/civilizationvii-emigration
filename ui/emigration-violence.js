@@ -50,8 +50,7 @@ function gameTurn() {
 }
 
 /**
- * The raw persisted state string from GameConfiguration, or null.
- * @returns {string|null} The stored JSON, or null.
+ * @returns {string|null}
  */
 function readStored() {
   const g = Configuration?.getGame?.();
@@ -74,9 +73,8 @@ function loadPersisted() {
 }
 
 /**
- * Keep only finite-number values from a parsed map (drops NaN/garbage).
- * @param {*} m Parsed map object.
- * @returns {Record<string, number>} The sanitized numeric map.
+ * @param {*} m
+ * @returns {Record<string, number>}
  */
 function finiteMap(m) {
   /** @type {Record<string, number>} */
@@ -111,8 +109,7 @@ function normalizeViolence(s) {
 }
 
 /**
- * Load (once) the persisted violence state into the module cache.
- * @returns {ViolenceState} The state.
+ * @returns {ViolenceState}
  */
 function state() {
   resetCachesOnNewGame();
@@ -128,7 +125,6 @@ function state() {
   return _state;
 }
 
-/** Persist the violence state to GameConfiguration. */
 function persist() {
   try {
     Configuration?.editGame?.()?.setValue?.(STATE_KEY, JSON.stringify(_state));
@@ -138,9 +134,8 @@ function persist() {
 }
 
 /**
- * A stable string key for a city ComponentID, or null if unusable.
  * @param {*} cid A city ComponentID.
- * @returns {string|null} The key, or null.
+ * @returns {string|null}
  */
 function keyFromCID(cid) {
   try {

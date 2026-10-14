@@ -124,7 +124,6 @@ function preferReadable(primary, secondary) {
 }
 
 /**
- * A live player's banner color string via UI.Player, or undefined.
  * @param {number} pid @param {string} fn Getter name.
  * @returns {string|undefined}
  */

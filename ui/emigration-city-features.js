@@ -25,8 +25,7 @@ function plotIs(G, name, x, y) {
 }
 
 /**
- * Add the terrain feature keys true of one plot (coast/river/mountain) to `out`. Each check is
- * independent and guarded; an unreadable plot adds nothing.
+ * Add the terrain feature keys true of one plot (coast/river/mountain) to `out`.
  * @param {number} x @param {number} y @param {Set<string>} out
  */
 function addTerrainKeys(x, y, out) {
@@ -42,7 +41,6 @@ function addTerrainKeys(x, y, out) {
 }
 
 /**
- * The ConstructibleType string for a constructible component id, or null when it can't be resolved.
  * @param {*} cid A constructible component id. @returns {string|null} e.g. "BUILDING_GRANARY".
  */
 function constructibleTypeName(cid) {

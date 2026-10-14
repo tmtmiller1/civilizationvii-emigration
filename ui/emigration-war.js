@@ -29,7 +29,7 @@ let _state = null;
 registerCacheReset(() => { _state = null; });
 
 /**
- * @returns {{ wars: Record<string, number[]>, warEvents: WarEvent[] }} Empty war state.
+ * @returns {{ wars: Record<string, number[]>, warEvents: WarEvent[] }}
  */
 function emptyState() {
   return { wars: {}, warEvents: [] };
@@ -107,9 +107,8 @@ function normalizeAggressorList(rawList) {
 }
 
 /**
- * Normalize wars map entries.
- * @param {*} rawWars Candidate wars map.
- * @returns {Record<string, number[]>} Sanitized wars map.
+ * @param {*} rawWars
+ * @returns {Record<string, number[]>}
  */
 function normalizeWars(rawWars) {
   /** @type {Record<string, number[]>} */
@@ -128,9 +127,8 @@ function normalizeWars(rawWars) {
 }
 
 /**
- * A finite number, or `fallback` when the value isn't one.
- * @param {*} v Candidate. @param {*} fallback
- * @returns {*} The number, or the fallback.
+ * @param {*} v @param {*} fallback
+ * @returns {*}
  */
 function numOr(v, fallback) {
   return typeof v === "number" && isFinite(v) ? v : fallback;
@@ -183,8 +181,7 @@ function normalizeState(parsed) {
 }
 
 /**
- * The raw persisted state string, or null.
- * @returns {string|null} The stored JSON, or null.
+ * @returns {string|null}
  */
 function readStored() {
   const g = Configuration?.getGame?.();
@@ -213,7 +210,6 @@ function state() {
   return _state;
 }
 
-/** Persist the aggressor map to GameConfiguration. */
 function persist() {
   try {
     const normalized = normalizeState(_state) || emptyState();
@@ -227,9 +223,8 @@ function persist() {
 }
 
 /**
- * The first numeric id among the candidates (undefined if none).
- * @param {...*} vals Candidate values.
- * @returns {number|undefined} The first number.
+ * @param {...*} vals
+ * @returns {number|undefined}
  */
 function pickId(...vals) {
   for (const v of vals) {
@@ -312,7 +307,6 @@ function stampPeace(s, w) {
 }
 
 /**
- * Remove `aggressor` from `victim`'s list (pruning the list if it empties).
  * @param {{ wars: Record<string, number[]>, warEvents: WarEvent[] }} s State.
  * @param {number} victim Victim id.
  * @param {number} aggressor Aggressor id.
@@ -361,8 +355,7 @@ export function warAggressors(pid) {
 }
 
 /**
- * Live player ids from the engine ({@link Players.getAlive}), or [] when unavailable.
- * @returns {number[]} Alive player ids.
+ * @returns {number[]}
  */
 function alivePlayerIds() {
   try {
@@ -410,9 +403,8 @@ function diplomacyWithWarTest(victim) {
 }
 
 /**
- * Whether a Diplomacy object reports war with `other` (guarded; false on throw).
  * @param {*} d A Diplomacy object. @param {number} other Player id.
- * @returns {boolean} True when at war.
+ * @returns {boolean}
  */
 function atWar(d, other) {
   try {

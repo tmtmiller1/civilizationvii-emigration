@@ -354,8 +354,7 @@ export function groupedValues(name, position) {
 }
 
 /**
- * Compose a LOC key, or return it unchanged off-engine.
- * @param {string} key @param {...*} args Arguments. @returns {string} The text.
+ * @param {string} key @param {...*} args @returns {string}
  */
 function composeText(key, ...args) {
   try {
@@ -380,7 +379,6 @@ export function tunableValueText(t, v) {
   return word ? composeText(word) : formatNumber(t.format, Number(v));
 }
 
-/** How each number format reads. */
 const NUMBER_FORMATS = {
   pct: (/** @type {number} */ n) => n + "%",
   frac: (/** @type {number} */ n) => Math.round(n * 1000) / 10 + "%",

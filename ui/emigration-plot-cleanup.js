@@ -12,9 +12,7 @@ import { dlog } from "/emigration/ui/emigration-log.js";
 /** Delay before re-checking a plot whose improvement was just destroyed (the destroy lands async). */
 export const CLEANUP_DELAY_MS = 2000;
 
-/**
- * Run fn, returning `fb` on a throw. @param {()=>*} fn The function. @param {*} fb The fallback. @returns {*}
- */
+/** @param {()=>*} fn @param {*} fb @returns {*} */
 function safe(fn, fb) {
   try {
     return fn();

@@ -378,7 +378,6 @@ function pickAggressor(victimPid, arr) {
 }
 
 /**
- * A belligerent's masked name and whether the mask applies.
  * @param {number|null} pid Player id, or null when there is none.
  * @returns {{name:MsgNode|null, hidden:boolean}} The name (null when the id is unusable) and mask flag.
  */

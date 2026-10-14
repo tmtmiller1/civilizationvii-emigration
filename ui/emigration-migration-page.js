@@ -93,7 +93,6 @@ const HOST_FILL_CSS =
   ".demographics-history-render-page > .emig-dash{height:100%;}" +
   ".demographics-history-render-page .emig-tabbody{flex:1 1 auto;min-height:0;max-height:none;}";
 
-/** Inject the embedded-page host-fill rules once. Never throws (styling is best-effort). */
 function injectHostFillStyle() {
   try {
     if (typeof document === "undefined" || !document.head) return;

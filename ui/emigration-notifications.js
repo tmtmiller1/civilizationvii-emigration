@@ -52,10 +52,7 @@ const MAX_ENTRIES = 120; // ring cap: plenty of history, bounded save size
 let _log = null;
 registerCacheReset(() => { _log = null; });
 
-/**
- * The current game turn, or 0.
- * @returns {number} Game.turn or 0.
- */
+/** @returns {number} */
 function gameTurn() {
   try {
     return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
@@ -117,7 +114,6 @@ function splitMessages(entry) {
 }
 
 /**
- * Copy the well-formed packed messages of `entry` onto the clean entry `e`.
  * @param {*} entry The source entry. @param {*} e The clean entry (mutated).
  */
 function copyMessages(entry, e) {
@@ -177,7 +173,6 @@ function log() {
   return _log;
 }
 
-/** Persist the log to GameConfiguration. */
 function persist() {
   try {
     Configuration?.editGame?.()?.setValue?.(STATE_KEY, JSON.stringify(_log || []));

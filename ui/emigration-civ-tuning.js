@@ -230,7 +230,6 @@ function mementoIdOf(entry) {
 
 /**
  * Pull equipped memento type ids for a player from metaprogression runtime APIs.
- * Returns an empty list when unavailable/offline.
  * @param {number} pid
  * @returns {string[]} Equipped memento type ids (MEMENTO_*), de-duplicated.
  */
@@ -298,8 +297,7 @@ function accumulateFields(a, t) {
 }
 
 /**
- * Clamp a raw memento accumulator to its conservative bounds, keeping only the fields that were set.
- * @param {Record<string, number>} a The raw accumulator.
+ * @param {Record<string, number>} a
  * @returns {Partial<CivTuning>}
  */
 function clampMementoProfile(a) {

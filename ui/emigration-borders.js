@@ -42,8 +42,7 @@ const ATTRACTIONS = Object.freeze([
 const _hash = new Map();
 
 /**
- * The (cached) type-hash for a tradition type string, or null.
- * @param {string} type Tradition type string.
+ * @param {string} type
  * @returns {*}
  */
 function hashFor(type) {

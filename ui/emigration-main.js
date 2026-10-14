@@ -65,7 +65,6 @@ function logRefugeeBurden(rb, who, local) {
 }
 
 /**
- * A monotonic millisecond clock for debug timing; 0 if unavailable.
  * @returns {number} Milliseconds.
  */
 function nowMs() {
@@ -206,7 +205,6 @@ function accountPass(migrations) {
 }
 
 /**
- * Run a pass and report results. Returns the migration count.
  * @param {string} why Reason label for the log.
  * @returns {number} Migrations applied.
  */
@@ -302,7 +300,6 @@ function onTurnActivated(data) {
   }
 }
 
-/** Dump the current prosperity ranking (for tuning). */
 function dumpRanking() {
   try {
     const ranked = rankByProsperity(collectCitySignals());
@@ -335,7 +332,6 @@ function dumpRanking() {
   }
 }
 
-/** Install the in-game UI hooks (readout, console, dock button, prosperity lens). */
 function installUi() {
   installEmigrationEvents(); // disaster event hook
   installCityReadout(); // per-city migration readout: console commands + best-effort selection
@@ -347,20 +343,6 @@ function installUi() {
   // below wires it when selftestEnabled. The prosperity map lens self-registers as its own <UIScripts>
   // entry (emigration-prosperity-lens.js) in the HUD context where LensManager lives, not through here.
 }
-
-/** Boot. */
-
-/**
- * Console entry for "call our people home":
- *   emigration.callHome()                         offer the internal call for the local player
- *   emigration.callHome("external")               offer the call for people living abroad
- *   emigration.callHome("internal", "influence")  skip the dialog and pay in Influence
- * @param {string} [scope] "internal" (default) or "external".
- * @param {string} [currency] "gold" (default) or "influence"; omit to open the dialog instead.
- * @returns {*} What happened, also logged.
- */
-
-
 
 /**
  * Offer to call our people home once the danger that displaced them has passed. Keyed on calm (nobody
@@ -397,22 +379,6 @@ function isCalm(pid) {
     return false;
   }
 }
-
-/**
- * Console entry for "call our people home":
- *   emigration.callHome()                         offer the internal call for the local player
- *   emigration.callHome("external")               offer the call for people living abroad
- *   emigration.callHome("internal", "influence")  skip the dialog and pay in Influence
- * @param {string} [scope] "internal" (default) or "external".
- * @param {string} [currency] "gold" (default) or "influence"; omit to open the dialog instead.
- * @returns {*} What happened, also logged.
- */
-
-
-
-
-
-
 /**
  * Subscribe the war and combat trackers. Every one of these is fog-independent, so a war between two AI
  * players on the far side of the map feeds the migration model exactly as the player's own war does.

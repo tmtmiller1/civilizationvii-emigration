@@ -8,10 +8,7 @@
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { deduct } from "/emigration/ui/emigration-effects.js";
 
-/**
- * The UNIT_MIGRANT type hash, or undefined.
- * @returns {*} Hash or undefined.
- */
+/** @returns {*} */
 function migrantHash() {
   try {
     return typeof Database !== "undefined" ? Database?.makeHash?.("UNIT_MIGRANT") : undefined;

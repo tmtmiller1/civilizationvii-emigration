@@ -75,7 +75,6 @@ export function activeCrisis() {
 }
 
 /**
- * The crisis event key when the active crisis matches `cause`, else null.
  * @param {string} cause The mechanism cause.
  * @returns {string|null} "crisis:<type>" or null.
  */

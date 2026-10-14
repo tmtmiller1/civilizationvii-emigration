@@ -70,7 +70,6 @@ function normalizeTurn(turn) {
 }
 
 /**
- * Normalize announced milestone map.
  * @param {*} announced Candidate map.
  * @returns {Record<string, number>} Sanitized map.
  */
@@ -103,19 +102,13 @@ function normalizeNewsState(parsed) {
   };
 }
 
-/**
- * The raw persisted world-news string, or null.
- * @returns {string|null}
- */
+/** @returns {string|null} */
 function rawNews() {
   const g = Configuration?.getGame?.();
   return g && typeof g.getValue === "function" ? g.getValue(NEWS_KEY) : null;
 }
 
-/**
- * Read + parse the persisted world-news state, or null.
- * @returns {{ announced: Record<string, number>, lastToastTurn: number }|null}
- */
+/** @returns {{ announced: Record<string, number>, lastToastTurn: number }|null} */
 function loadNews() {
   try {
     const raw = rawNews();
@@ -135,7 +128,6 @@ function newsState() {
   return _news;
 }
 
-/** Persist the world-news state. */
 function persistNews() {
   try {
     const normalized = normalizeNewsState(_news) || emptyNewsState();
@@ -170,7 +162,6 @@ const TOAST_CSS =
   "@keyframes emig-toast-in{from{opacity:0;transform:translateX(-50%) translateY(-0.55rem);}" +
   "to{opacity:1;transform:translateX(-50%) translateY(0);}}";
 
-/** Inject the toast stylesheet once (so the DOM toast actually renders, game-styled). */
 function injectToastStyle() {
   try {
     if (document.getElementById("emig-toast-style")) return;
@@ -203,10 +194,7 @@ function reflowToasts() {
   }
 }
 
-/**
- * Remove a toast: fade it out, drop it from the stack, and re-flow the rest.
- * @param {*} el
- */
+/** @param {*} el */
 function dismissToast(el) {
   const i = _toasts.indexOf(el);
   if (i >= 0) _toasts.splice(i, 1);
@@ -226,7 +214,6 @@ function dismissToast(el) {
 }
 
 /**
- * Build the toast element: a themed eyebrow (cause label, accent color) over the message body.
  * @param {string} msg The message body.
  * @param {string|undefined} cause The migration cause (or "crisis").
  * @param {string} accent The theme accent color.
@@ -296,10 +283,7 @@ function domToast(msg, cause, ownLoss, accentOverride) {
   }
 }
 
-/**
- * The current game turn, or 0.
- * @returns {number}
- */
+/** @returns {number} */
 function gameTurn() {
   try {
     return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
@@ -360,7 +344,6 @@ function refugeeCivs(migrations) {
 }
 
 /**
- * The most recent disaster event's in-game name (for naming disaster refugees), or null.
  * @returns {import("/emigration/ui/emigration-loc.js").MsgNode|null} The disaster name.
  */
 function recentDisasterName() {
@@ -507,8 +490,6 @@ export function reportInboundFeedback(migrations) {
 }
 
 /**
- * Fire per-civ refugee-crisis milestones for the pass (the "world news" channel). No-op when world news
- * is off or the shared data facade isn't available.
  * @param {{cause?:string, srcOwner?:number, people?:number, points?:number}[]} migrations Applied migrations.
  */
 function reportWorldCrises(migrations) {
@@ -593,8 +574,7 @@ function eventBucket(map, m, me) {
 
 /**
  * Fold one of the local player's loss records into its per-event bucket (source settlement + cause):
- * sum people/points and track the destination that took the most people. Counts only when the source
- * is the local player and people moved.
+ * sum people/points and track the destination that took the most people.
  * @param {Map<string,*>} map Bucket map.
  * @param {*} m A migration.
  * @param {number} me Local player id.
@@ -747,7 +727,6 @@ function foldInbound(map, m, me) {
 }
 
 /**
- * Get (or create) the per-event inbound bucket, keyed by destination settlement + cause + origin civ.
  * @param {Map<string,*>} map Bucket map. @param {*} m An inbound migration. @returns {*}
  */
 function inboundBucket(map, m) {

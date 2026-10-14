@@ -34,11 +34,11 @@ const SCREEN_ID = "screen-emigration-selftest";
 // build. Bump alongside the modinfo version on release.
 const MOD_VERSION = "2.0.7";
 const DBG = false;
-/** Error logger; always emits. @param {...*} a */
+/** @param {...*} a */
 function derr(...a) {
   console.error("[Emigration.selftest]", ...a);
 }
-/** Debug logger, no-op unless DBG. @param {...*} a */
+/** @param {...*} a */
 function dlog(...a) {
   if (DBG) console.warn("[Emigration.selftest]", ...a);
 }
@@ -48,7 +48,7 @@ let _host = null;
 
 // actions
 
-/** `fn()`, or `fallback` if it throws or returns null. @param {()=>*} fn @param {*} fallback @returns {*} */
+/** @param {()=>*} fn @param {*} fallback @returns {*} */
 function safeCall(fn, fallback) {
   try {
     const v = fn();
@@ -188,7 +188,7 @@ function localPlayerId() {
     ? GameContext.localPlayerID : null;
 }
 
-/** Remove the armed one-shot `PlayerTurnActivated` listener and clear the armed slot. @param {*} h The handler. */
+/** @param {*} h */
 function disarmDilemma(h) {
   try {
     if (typeof engine !== "undefined" && typeof engine.off === "function") engine.off("PlayerTurnActivated", h);
@@ -344,10 +344,7 @@ function copyDiagnostics() {
   }
 }
 
-/**
- * Render the enclave-probe result lines into a dedicated on-screen box in the panel (reuses the
- * screenshot-friendly snapshot box style). @param {string[]} lines
- */
+/** @param {string[]} lines */
 function renderEnclaveResult(lines) {
   try {
     if (!_host) return;
@@ -517,7 +514,7 @@ function el(t, c, x) {
   return e;
 }
 
-/** One rendered check row. @param {*} r @returns {HTMLElement} */
+/** @param {*} r @returns {HTMLElement} */
 function checkRow(r) {
   const rowEl = el("div", "emig-st-row");
   const head = el("div", "emig-st-row-hd");
@@ -530,7 +527,7 @@ function checkRow(r) {
   return rowEl;
 }
 
-/** A panel action button. @param {string} label @param {()=>void} onClick @returns {HTMLElement} */
+/** @param {string} label @param {()=>void} onClick @returns {HTMLElement} */
 function button(label, onClick) {
   const b = el("button", "emig-st-btn", label);
   b.addEventListener("click", (/** @type {*} */ ev) => {
@@ -577,7 +574,7 @@ function actionRow() {
   return actions;
 }
 
-/** Clear the host and render the check rows + actions + note into it. @param {*} host */
+/** @param {*} host */
 function renderInto(host) {
   try {
     if (!host) return;

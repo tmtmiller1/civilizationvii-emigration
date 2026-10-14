@@ -14,7 +14,6 @@ const STYLE_ID = "emig-snap-badge-style";
 const CSS =
   ".emig-snap-badge{align-self:center;margin-bottom:0.25rem;padding:0.12rem 0.75rem;border-radius:0.9rem;letter-spacing:0.04rem;color:#f3c34c;text-align:center;background:rgba(243,195,76,0.12);border:1px solid rgba(243,195,76,0.4);}";
 
-/** Inject the badge stylesheet once (idempotent). */
 function injectStyle() {
   if (typeof document === "undefined" || document.getElementById(STYLE_ID)) return;
   const st = document.createElement("style");

@@ -9,7 +9,6 @@ import { getNumberMode, NumberMode } from "/emigration/ui/emigration-settings.js
 import { dlog } from "/emigration/ui/emigration-log.js";
 
 /**
- * Localized civilization/leader name for a player id, defensively.
  * @param {number} pid Player id.
  * @returns {string} A short owner label.
  */

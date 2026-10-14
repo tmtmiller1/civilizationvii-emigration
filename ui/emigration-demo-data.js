@@ -174,7 +174,6 @@ function yearLabel(y) {
 }
 
 /**
- * A believable sample year for an age-local position (frac 0..1 across the age).
  * @param {string} age
  * @param {number} frac Position within the age (0..1).
  * @returns {string}
@@ -186,7 +185,6 @@ function sampleYear(age, frac) {
 }
 
 /**
- * Smoothstep 0..1.
  * @param {number} t Input 0..1.
  * @returns {number} Eased 0..1.
  */
@@ -264,7 +262,6 @@ function cityPopAt(c, p) {
 }
 
 /**
- * The conquest record for a city by name, or null when it never changes hands.
  * @param {string} name
  * @returns {{name:string, from:number, to:number, at:number}|null}
  */
@@ -426,7 +423,6 @@ function sampleStanceImpact(r) {
 }
 
 /**
- * Aggregate the world per-cause emigration breakdown from the flow list.
  * @param {*[]} flows Named flows.
  * @returns {Record<string,number>} People per cause.
  */

@@ -49,11 +49,10 @@ export function migrationCause(src) {
 }
 
 /**
- * Clamp `v` into [lo, hi].
- * @param {number} v Value.
- * @param {number} lo Lower bound.
- * @param {number} hi Upper bound.
- * @returns {number} The clamped value.
+ * @param {number} v
+ * @param {number} lo
+ * @param {number} hi
+ * @returns {number}
  */
 function clamp(v, lo, hi) {
   return Math.max(lo, Math.min(hi, v));
@@ -286,7 +285,6 @@ function retentionFor(src) {
 }
 
 /**
- * The congestion-headwind pull penalty for a destination (0 when disabled).
  * @param {*} dest Destination signal.
  * @param {Record<number, number>|null} ownerPop Per-owner total population.
  * @returns {number} A non-negative penalty.
