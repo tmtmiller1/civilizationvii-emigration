@@ -14,13 +14,7 @@ import { civReach } from "/emigration/ui/emigration-network-dots.js";
  * @typedef {import("/emigration/ui/emigration-network-viz.js").Scene} Scene
  */
 
-/**
- * Make an element with an optional class + text.
- * @param {string} tag
- * @param {string} [cls] Class.
- * @param {string} [text]
- * @returns {HTMLElement} Element.
- */
+/** @param {string} tag @param {string} [cls] @param {string} [text] */
 function el(tag, cls, text) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
@@ -46,11 +40,7 @@ function loc(key, fallback) {
   return fallback;
 }
 
-/**
- * Escape a value for safe interpolation into tooltip HTML.
- * @param {*} s Value.
- * @returns {string} Escaped text.
- */
+/** @param {*} s */
 function esc(s) {
   return String(s == null ? "" : s)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");

@@ -10,7 +10,7 @@ const INFLOW = "#7fd08a"; // green, people arriving (the arrow's head end)
 const FLOW_MIN_W = 1.6; // thinnest arrow (always visible)
 const FLOW_MAX_W = 8; // thickest arrow (the busiest flow)
 
-/** Whether a civ is expanded (routes arrows to city sub-nodes). @param {*} state @param {number} id */
+/** @param {*} state @param {number} id */
 function expandedHas(state, id) {
   return !!(state.expanded && state.expanded.has(id));
 }
@@ -30,7 +30,7 @@ function endpoint(center, expanded) {
   return { x: center.x, y: center.y, r: (center.clusterR || 8) + 6 };
 }
 
-/** A named city's sub-center within an expanded civ, or null. @param {*} center @param {string} name */
+/** @param {*} center @param {string} name */
 function cityPoint(center, name) {
   for (const ct of center.cities || []) {
     if (ct.name === name) {
@@ -73,10 +73,7 @@ function flowEdges(fr) {
   return net.cityEdges && net.cityEdges.length ? net.cityEdges : net.edges || [];
 }
 
-/**
- * One endpoint, routed to a city when the civ is expanded (else the civ center / capital).
- * @param {*} center @param {boolean} expanded @param {string} city @returns {{x:number,y:number,r:number}}
- */
+/** @param {*} center @param {boolean} expanded @param {string} city */
 function endCity(center, expanded, city) {
   if (expanded && city) {
     const p = cityPoint(center, city);
@@ -85,10 +82,7 @@ function endCity(center, expanded, city) {
   return endpoint(center, expanded);
 }
 
-/**
- * Accumulate a collapsed civ→civ arrow (sum people across its city pairs).
- * @param {Map<string,*>} map @param {*} e @param {number} fi @param {number} ti
- */
+/** @param {Map<string,*>} map @param {*} e @param {number} fi @param {number} ti */
 function sumCollapsed(map, e, fi, ti) {
   const k = e.from + ">" + e.to;
   let a = map.get(k);
@@ -109,7 +103,7 @@ function touchesFocusCity(state, fromCiv, fromCity, toCiv, toCity) {
   return (fromCiv === fc.civId && fromCity === fc.name) || (toCiv === fc.civId && toCity === fc.name);
 }
 
-/** Whether the Dots filters exclude a cross-civ edge from `from` to `to`. @param {*} state @param {*} e */
+/** @param {*} state @param {*} e */
 function interFiltered(state, e) {
   if (state.show && state.show.immigrant === false) return true; // scope: immigrants hidden
   if (state.origin != null && e.from !== state.origin) return true; // isolate origin
@@ -165,10 +159,7 @@ function intraSeg(m, holder) {
   return trimmed(a, b, { people: m.people });
 }
 
-/**
- * Append the intra-civ (city→city) flow segments for expanded civs.
- * @param {*} fr @param {*} holder @param {*[]} segs
- */
+/** @param {*} fr @param {*} holder @param {*[]} segs */
 function intraSegments(fr, holder, segs) {
   if (holder.state.show && holder.state.show.internal === false) return; // scope: internal moves hidden
   for (const m of fr.intra || []) {
@@ -214,7 +205,7 @@ function drawArrowhead(ctx, p, w) {
   ctx.fill();
 }
 
-/** The quadratic control point for a segment (a gentle sideways bow). @param {*} s @returns {{cx:number,cy:number}} */
+/** @param {*} s */
 function curveControl(s) {
   const dx = s.x1 - s.x0;
   const dy = s.y1 - s.y0;
@@ -226,7 +217,7 @@ function curveControl(s) {
   return { cx: (s.x0 + s.x1) / 2 - (dy / len) * off, cy: (s.y0 + s.y1) / 2 + (dx / len) * off };
 }
 
-/** Set the red→green gradient stroke for a flow line. @param {*} ctx @param {*} s @param {number} w */
+/** @param {*} ctx @param {*} s @param {number} w */
 function setFlowStroke(ctx, s, w) {
   const grad = ctx.createLinearGradient(s.x0, s.y0, s.x1, s.y1);
   grad.addColorStop(0, OUTFLOW);

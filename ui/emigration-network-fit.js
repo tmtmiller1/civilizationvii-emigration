@@ -117,7 +117,6 @@ function fitStageToViewport(wrap, stage) {
 let _activeFit = null;
 let _resizeBound = false;
 
-/** Re-fit the current live stage on a viewport resize; drop it once it has detached. */
 function onViewportResize() {
   if (!_activeFit) return;
   if (!document.contains(_activeFit.stage)) { _activeFit = null; return; }

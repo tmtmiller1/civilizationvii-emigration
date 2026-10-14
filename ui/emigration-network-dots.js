@@ -167,11 +167,7 @@ export function totalPoints(lastNet, lastPops) {
 // otherwise vanish from the canvas. Flooring the radius draws it as a dotless disc without faking dots.
 const MIN_CITY_SUB_R = 3;
 
-/**
- * Sub-cluster (city) radius for a dot count.
- * @param {number} n Dot count.
- * @returns {number} Radius.
- */
+/** @param {number} n */
 function clusterRadius(n) {
   return n > 0 ? 4 + 2.5 * Math.sqrt(n) : 0;
 }
@@ -275,24 +271,13 @@ function allocate(total, weights) {
   return out;
 }
 
-/**
- * The civ's display name from its center.
- * @param {*} b Build context.
- * @param {number} civId
- * @returns {string} Name.
- */
+/** @param {*} b @param {number} civId */
 function civNameOf(b, civId) {
   const ci = b.byId.get(civId);
   return ci != null ? b.centers[ci].name : "";
 }
 
-/**
- * The color set for an immigrant cohort: origin-civ color, cause color, immigrant-move color.
- * @param {*} b Build context.
- * @param {*} e Flow edge.
- * @param {string} cause Cause key.
- * @returns {Record<string,string>} Colors by lens.
- */
+/** @param {*} b @param {*} e @param {string} cause */
 function immigrantColors(b, e, cause) {
   return {
     origin: civColorByIndex(b.colorMap.get(e.from) || 0),
