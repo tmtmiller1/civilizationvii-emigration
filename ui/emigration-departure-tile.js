@@ -74,10 +74,7 @@ function plotDistance(a, b) {
  * tile again and the second point would never leave. */
 const abandonedThisTurn = new Map();
 
-/**
- * The current game turn (0 off-engine).
- * @returns {number}
- */
+/** @returns {number} */
 function gameTurn() {
   try {
     return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
@@ -137,7 +134,6 @@ function candidateDistrict(plot, loc, centre) {
 }
 
 /**
- * The rural improvements on one plot of a city (empty when the plot is not a candidate).
  * @param {number} plot
  * @param {{x:number,y:number}} centre The city-center location.
  * @returns {DepartureTile[]} Candidates on that plot.

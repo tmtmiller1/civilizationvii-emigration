@@ -167,8 +167,6 @@ function recoverFailedArrival(e, state) {
 }
 
 /**
- * Process one due arrival under a defensive guard. Returns its record (or null when deferred) plus
- * whether it fell back to the failure path, so the caller can tally both.
  * @param {Transit} e The arrival. @param {Map<string, *>} byKey Live ranking by key.
  * @param {InboundCtx|undefined} ctx The inbound context. @param {EmigState} state Loaded state.
  * @returns {{rec:Migration|null, failed:boolean}} The outcome.
@@ -192,9 +190,8 @@ function compareDefers(a, b) {
 }
 
 /**
- * Split the transit queue into arrivals due this turn and those still in flight.
- * @param {Transit[]} transit The full transit queue. @param {number} now Current monotonic turn.
- * @returns {{due:Transit[], pending:Transit[]}} The partition.
+ * @param {Transit[]} transit @param {number} now Current monotonic turn.
+ * @returns {{due:Transit[], pending:Transit[]}}
  */
 function partitionDue(transit, now) {
   /** @type {Transit[]} */
@@ -226,7 +223,6 @@ function holdWhenRankingEmpty(state, now) {
 }
 
 /**
- * Land each due arrival under the defensive guard, accumulating records and tallies.
  * @param {Transit[]} due Due arrivals, longest-waiting first. @param {Map<string, *>} byKey Ranking.
  * @param {InboundCtx|undefined} ctx Inbound context. @param {EmigState} state Loaded state.
  * @param {Migration[]} out Records sink (mutated). @returns {{deferred:number, failed:number}} Tallies.

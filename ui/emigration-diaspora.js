@@ -99,7 +99,7 @@ function meanTrackedPopulation() {
 let _meanCache = { turn: -1, value: 0 };
 registerCacheReset(() => { _meanCache = { turn: -1, value: 0 }; });
 
-/** The current turn (0 when unreadable). @returns {number} */
+/** @returns {number} */
 function safeTurn() {
   try {
     return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
@@ -108,16 +108,13 @@ function safeTurn() {
   }
 }
 
-/** @returns {number} The tunable minimum standing stock for an enclave to count (falls back to 5). */
+/** @returns {number} */
 function minStock() {
   const v = Number(CONFIG.quarterMinStock);
   return isFinite(v) ? v : 5;
 }
 
-/**
- * The current game turn, or 0.
- * @returns {number}
- */
+/** @returns {number} */
 function gameTurn() {
   try {
     return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;

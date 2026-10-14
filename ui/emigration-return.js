@@ -30,9 +30,7 @@ const MAX_HOST_ENTRIES = 8192;
 let _state = null;
 registerCacheReset(() => { _state = null; });
 
-/**
- * @returns {{ lastByHost: Record<string, number> }} Empty cooldown state.
- */
+/** @returns {{ lastByHost: Record<string, number> }} */
 function emptyState() {
   return { lastByHost: {} };
 }
@@ -51,7 +49,6 @@ function payloadFromBlob(parsed) {
 }
 
 /**
- * Normalize per-host cooldown map.
  * @param {*} map Candidate cooldown map.
  * @returns {Record<string, number>} Sanitized cooldown map.
  */
@@ -81,30 +78,21 @@ function normalizeState(parsed) {
   return { lastByHost: normalizeLastByHost(payload.lastByHost) };
 }
 
-/**
- * Load (once) the per-host cooldown state.
- * @returns {{ lastByHost: Record<string, number> }} State.
- */
+/** @returns {{ lastByHost: Record<string, number> }} */
 function state() {
   resetCachesOnNewGame();
   if (!_state) _state = loadState() || emptyState();
   return _state;
 }
 
-/**
- * The raw persisted state string, or null.
- * @returns {string|null} The stored JSON, or null.
- */
+/** @returns {string|null} */
 function readStored() {
   const g = Configuration?.getGame?.();
   const v = g && typeof g.getValue === "function" ? g.getValue(STATE_KEY) : null;
   return typeof v === "string" && v.length ? v : null;
 }
 
-/**
- * Read + parse the persisted cooldown state, or null when absent/unusable.
- * @returns {{ lastByHost: Record<string, number> }|null} State, or null.
- */
+/** @returns {{ lastByHost: Record<string, number> }|null} */
 function loadState() {
   try {
     const raw = readStored();
@@ -114,7 +102,6 @@ function loadState() {
   }
 }
 
-/** Persist the cooldown state. */
 function persist() {
   try {
     const normalized = normalizeState(_state) || emptyState();

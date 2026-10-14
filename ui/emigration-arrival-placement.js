@@ -45,10 +45,7 @@ let flushTimer = null;
 /** Test seam: when set, replaces the deferred timer with a synchronous flush. */
 let syncFlush = false;
 
-/**
- * The local player id, or -1 off-engine.
- * @returns {number}
- */
+/** @returns {number} */
 function localPid() {
   try {
     return typeof GameContext !== "undefined" && typeof GameContext.localPlayerID === "number" ? GameContext.localPlayerID : -1;
@@ -66,10 +63,7 @@ export function placementMode() {
   return m === 1 || m === 2 || m === 3 ? m : 0;
 }
 
-/**
- * A stable key for a city object.
- * @param {*} city @returns {string}
- */
+/** @param {*} city @returns {string} */
 function keyOf(city) {
   try {
     const id = city.id || {};
@@ -270,10 +264,7 @@ export function autoPlace(city, count) {
   return placed;
 }
 
-/**
- * Open the game's own place-population mode on the city so the player picks the tile.
- * @param {*} city
- */
+/** @param {*} city */
 function openPlacementMode(city) {
   try {
     import("/core/ui/interface-modes/interface-modes.js")
@@ -433,7 +424,7 @@ function autoTileYields(city, count) {
 
 /**
  * Who the refugees are, by origin civilization ("Mongolian"), or a neutral word when the origin is unknown
- * or unmet. Pure enough for tests: falls back cleanly when the naming helpers cannot read a player.
+ * or unmet.
  * @param {{civ:number|null}|null} origin The dominant origin. @returns {string}
  */
 function refugeeOriginPhrase(origin) {
@@ -464,8 +455,7 @@ function fledPhrase(origin) {
 }
 
 /**
- * The refugee body line, naming who they are and what they fled.
- * @param {number} count Points. @param {string} who Origin phrase. @param {string} fled What they fled.
+ * @param {number} count Points. @param {string} who @param {string} fled
  * @param {string} name @returns {string}
  */
 function refugeeBody(count, who, fled, name) {

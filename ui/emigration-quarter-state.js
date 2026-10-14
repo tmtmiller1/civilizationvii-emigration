@@ -99,9 +99,7 @@ function currentAge() {
   }
 }
 
-/**
- * @returns {QuartersState} An empty persisted quarters state.
- */
+/** @returns {QuartersState} */
 function emptyState() {
   const age = currentAge();
   return { tiles: {}, candidacy: {}, age, count: 0, lastTurn: -999, formed: { age, byOwner: {} } };
@@ -151,7 +149,7 @@ function normalizeApplied(a) {
   };
 }
 
-/** @param {*} v @returns {string|null} A non-empty string, else null. */
+/** @param {*} v @returns {string|null} */
 function strOrNull(v) {
   return typeof v === "string" && v ? v : null;
 }
@@ -181,7 +179,7 @@ function normalizeRecord(rec) {
   };
 }
 
-/** A finite turn number floored, else null. @param {*} v Any value. @returns {number|null} The turn or null. */
+/** @param {*} v @returns {number|null} */
 function finiteTurnOrNull(v) {
   return typeof v === "number" && isFinite(v) ? Math.floor(v) : null;
 }
@@ -198,7 +196,6 @@ function normalizePlaced(p) {
 }
 
 /**
- * Copy the optional placed-record fields that are well-formed.
  * @param {PlacedRecord} out The record being built. @param {*} p The candidate descriptor.
  * @returns {PlacedRecord} `out`.
  */
@@ -343,20 +340,14 @@ export function noteFormed(owner) {
   f.byOwner[String(owner)] = formedThisAge(owner) + 1;
 }
 
-/**
- * The raw persisted state string, or null.
- * @returns {string|null} The stored JSON, or null.
- */
+/** @returns {string|null} */
 function readStored() {
   const g = Configuration?.getGame?.();
   const v = g && typeof g.getValue === "function" ? g.getValue(STATE_KEY) : null;
   return typeof v === "string" && v.length ? v : null;
 }
 
-/**
- * Read + parse the persisted state, or null when absent/unusable.
- * @returns {QuartersState|null} State.
- */
+/** @returns {QuartersState|null} */
 function loadState() {
   try {
     const raw = readStored();
@@ -366,10 +357,7 @@ function loadState() {
   }
 }
 
-/**
- * Load (once) the persisted quarters state into the module cache.
- * @returns {QuartersState} State.
- */
+/** @returns {QuartersState} */
 function state() {
   resetCachesOnNewGame();
   if (!_state) _state = loadState() || emptyState();

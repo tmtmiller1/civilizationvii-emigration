@@ -40,11 +40,7 @@ function localPid() {
   }
 }
 
-/**
- * Capitalize the first letter of an edge phrase for sentence-initial use ("by the harbor" →
- * "By the harbor"), with a safe fallback when the phrase is missing.
- * @param {string|null|undefined} s The edge phrase. @returns {string} The capitalized phrase.
- */
+/** @param {string|null|undefined} s The edge phrase. @returns {string} */
 function capFirst(s) {
   const t = typeof s === "string" && s.length ? s : tr("LOC_EMIG_QTR_WHERE_EDGE", "at the city's edge");
   return t.charAt(0).toUpperCase() + t.slice(1);
@@ -105,10 +101,7 @@ function resolveApplied(option, owner, originPid) {
     atWar ? clampFactor(CONFIG.contestedQuarterYieldFactor) : 1);
 }
 
-/**
- * Whether a set read from the engine holds a value, false when the read throws.
- * @param {() => Set<number>} read The set reader. @param {number} v The value. @returns {boolean} True when held.
- */
+/** @param {() => Set<number>} read @param {number} v @returns {boolean} */
 function safeHas(read, v) {
   try {
     return read().has(v);
@@ -358,7 +351,6 @@ function recordForChoice(prior, option, quarter, ctx) {
 /**
  * Apply the chosen stance (recognition): write the tile record (one quarter per tile, so a different
  * origin replaces it), pay the stance once, stamp the throttle, chronicle it, and persist.
- * Fully guarded.
  * @param {string} optionId The chosen option id. @param {string} tileKey The plot key.
  * @param {{civ:number,owner:number,name:string,where:string,city?:*}} quarter The quarter.
  * @param {number} me Host player id. @param {number} turn Now. The quarter may carry `city` (the host
@@ -692,10 +684,7 @@ function dissolveEnclave(tileKey, rec, turn) {
   });
 }
 
-/**
- * The host settlement's name for a tile key, from the composition ledger ("the city" when unknown).
- * @param {string} tileKey The host tile key. @returns {string} A display name.
- */
+/** @param {string} tileKey @returns {string} */
 function hostCityName(tileKey) {
   try {
     const entry = cityCompositionByKey(tileKey);
@@ -760,8 +749,6 @@ function retireDisplacedEnclaves(owner, turn) {
 }
 
 /**
- * Retire one enclave whose tile was built over: drop its record, log what the host stops receiving, and
- * chronicle the loss with that figure.
  * @param {string} key The host tile key. @param {*} rec The record. @param {number} turn Now (monotonic).
  */
 function retireBuiltOver(key, rec, turn) {
@@ -778,10 +765,7 @@ function retireBuiltOver(key, rec, turn) {
   });
 }
 
-/**
- * Clamp a configured yield factor into [0, 1], defaulting to 1 (full) when unset/invalid.
- * @param {*} v The raw config value. @returns {number} A factor in [0, 1].
- */
+/** @param {*} v @returns {number} */
 function clampFactor(v) {
   const n = Number(v);
   if (!Number.isFinite(n)) return 1;
@@ -830,7 +814,6 @@ function recordOwners(me) {
 }
 
 /**
- * One host's per-turn quarter upkeep.
  * @param {number} owner Host player id. @param {number} turn Now (monotonic).
  */
 function tickOwnerQuarters(owner, turn) {

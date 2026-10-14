@@ -39,14 +39,14 @@ const ROLE_TESTS = Object.freeze([
   ["work", (d) => d.ys.has("YIELD_PRODUCTION") || pos(d.bld.CitizenSlots)]
 ]);
 
-/** Every role in priority order, ending in the catch-all. @type {readonly string[]} */
+/** @type {readonly string[]} */
 const ROLE_ORDER = Object.freeze([...ROLE_TESTS.map(([r]) => r), "civic"]);
 
 /** @typedef {{role:string, name:string, wonder:boolean}} BuiltKind What one constructible type contributes. */
 
 /** @type {Map<string, BuiltKind>|null} ConstructibleType → its kind, built once from GameInfo. */
 let _index = null;
-/** @type {Map<string, {turn:number, score:number, names:string[], roles:string[]}>} Per-city cache. */
+/** @type {Map<string, {turn:number, score:number, names:string[], roles:string[]}>} */
 const _cache = new Map();
 
 registerCacheReset(() => {
@@ -54,7 +54,7 @@ registerCacheReset(() => {
   _cache.clear();
 });
 
-/** @returns {number} The current game turn, or 0. */
+/** @returns {number} */
 function gameTurn() {
   try {
     return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
@@ -64,7 +64,7 @@ function gameTurn() {
 }
 
 /**
- * Run `fn`, returning `fb` on any throw. Every database and engine read here is optional: a missing
+ * Every database and engine read here is optional: a missing
  * table contributes nothing rather than taking the scoring pass down with it.
  * @param {() => *} fn @param {*} fb @returns {*}
  */
@@ -88,7 +88,6 @@ function rows(table) {
 }
 
 /**
- * Which yields a constructible type produces, as a set of YieldType strings.
  * @returns {Map<string, Set<string>>} ConstructibleType → the yield types it grants.
  */
 function yieldIndex() {
@@ -118,7 +117,7 @@ function buildingIndex() {
   return out;
 }
 
-/** @param {*} v A database value. @returns {boolean} Whether it is a positive number. */
+/** @param {*} v @returns {boolean} */
 function pos(v) {
   return Number(v) > 0;
 }
@@ -134,8 +133,7 @@ function truthy(v) {
 
 /**
  * The role a constructible fills: the first of {@link ROLE_ORDER} it satisfies, so each building is
- * named by its most characteristic job rather than by everything it happens to touch. Defense outranks
- * yields deliberately — walls are a reason to stay that has nothing to do with output.
+ * named by its most characteristic job rather than by everything it happens to touch.
  * @param {*} def The Constructibles row. @param {*} bld Its Buildings row, or undefined.
  * @param {Set<string>} ys The yield types it grants.
  * @returns {string} A role key.
@@ -186,10 +184,7 @@ function kindOf(cid) {
   }, null);
 }
 
-/**
- * Every building/wonder kind standing on a settlement's own plots.
- * @param {*} city A live city object. @returns {BuiltKind[]} The kinds found (possibly empty).
- */
+/** @param {*} city @returns {BuiltKind[]} */
 function kindsIn(city) {
   /** @type {BuiltKind[]} */
   const out = [];
@@ -205,7 +200,7 @@ function kindsIn(city) {
   return out;
 }
 
-/** @param {string} role A role key. @returns {number} Its configured weight (0 when unset). */
+/** @param {string} role @returns {number} */
 function roleWeight(role) {
   const w = CONFIG.builtRoleWeights && CONFIG.builtRoleWeights[role];
   return Number.isFinite(Number(w)) ? Number(w) : 0;

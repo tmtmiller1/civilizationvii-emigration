@@ -66,10 +66,7 @@ export function enclaveTypeOf(rec) {
 }
 const VALID_TERRAINS = new Set(["TERRAIN_FLAT", "TERRAIN_HILL"]);
 
-/**
- * Run a game read that may be unavailable or throw, degrading to `fb`.
- * @param {() => *} fn @param {*} [fb] @returns {*}
- */
+/** @param {() => *} fn @param {*} [fb] @returns {*} */
 function safe(fn, fb) {
   try {
     return fn();
@@ -104,10 +101,7 @@ export function enclaveIndex(type) {
   }, null);
 }
 
-/**
- * The ConstructibleType names standing on a plot ([] when unreadable).
- * @param {number} x @param {number} y @returns {string[]}
- */
+/** @param {number} x @param {number} y @returns {string[]} */
 function typesAt(x, y) {
   return safe(() => {
     /** @type {string[]} */
@@ -284,8 +278,7 @@ export function emptyPlotsOf(city) {
 }
 
 /**
- * Whether a plot can host the enclave: not the center, land, no district, no constructible, flat/hill.
- * @param {{x:number,y:number}} loc @param {{x:number,y:number}} centre City center.
+ * @param {{x:number,y:number}} loc @param {{x:number,y:number}} centre
  * @returns {boolean}
  */
 function isEmptyLandPlot(loc, centre) {

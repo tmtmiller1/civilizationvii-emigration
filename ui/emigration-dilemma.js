@@ -68,9 +68,7 @@ function choices() {
 let _state = null;
 registerCacheReset(() => { _state = null; });
 
-/**
- * @returns {DilemmaState} Empty persisted dilemma state.
- */
+/** @returns {DilemmaState} */
 function emptyState() {
   return { spree: {}, age: currentAge(), count: 0, lastTurn: -999 };
 }
@@ -179,30 +177,21 @@ function localPid() {
   }
 }
 
-/**
- * Load (once) the persisted dilemma state.
- * @returns {{ spree: Record<string, *[]>, age:number, count:number, lastTurn:number }}
- */
+/** @returns {{ spree: Record<string, *[]>, age:number, count:number, lastTurn:number }} */
 function state() {
   resetCachesOnNewGame();
   if (!_state) _state = loadState() || emptyState();
   return _state;
 }
 
-/**
- * The raw persisted state string, or null.
- * @returns {string|null}
- */
+/** @returns {string|null} */
 function readStored() {
   const g = Configuration?.getGame?.();
   const v = g && typeof g.getValue === "function" ? g.getValue(STATE_KEY) : null;
   return typeof v === "string" && v.length ? v : null;
 }
 
-/**
- * Read + parse the persisted dilemma state, or null when absent/unusable.
- * @returns {{ spree: Record<string, *[]>, age:number, count:number, lastTurn:number }|null}
- */
+/** @returns {{ spree: Record<string, *[]>, age:number, count:number, lastTurn:number }|null} */
 function loadState() {
   try {
     const raw = readStored();
@@ -212,7 +201,6 @@ function loadState() {
   }
 }
 
-/** Persist the dilemma state. */
 function persist() {
   try {
     const normalized = normalizeState(_state) || emptyState();
@@ -345,7 +333,6 @@ function applyChoice(choiceId, d, localCities, me, turn) {
 }
 
 /**
- * Settle one population point into a city signal's settlement (the refugees who stayed).
  * @param {*} citySig A city signal, or undefined. @param {number} origin The refugees' origin player.
  */
 function settleInto(citySig, origin) {
@@ -353,8 +340,6 @@ function settleInto(citySig, origin) {
 }
 
 /**
- * Record the player's decision in the Migration Chronicle, so the choice becomes part of the world's
- * written history.
  * @param {string} choiceId @param {{origin:number}} d The descriptor.
  * @param {*} hostSig The local capital signal (for a place name). @param {number} turn Now.
  */

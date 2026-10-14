@@ -14,9 +14,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { formedThisAge } from "/emigration/ui/emigration-quarter-state.js";
 import { currentAgeProgressPct } from "/emigration/ui/emigration-population.js";
 
-/**
- * Clamp to [0, 1], non-finite as 0. @param {*} x @returns {number}
- */
+/** @param {*} x @returns {number} */
 function unit(x) {
   const n = Number(x);
   return Number.isFinite(n) ? Math.min(1, Math.max(0, n)) : 0;
