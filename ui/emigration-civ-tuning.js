@@ -178,13 +178,7 @@ const MEMENTO_BOUNDS = Object.freeze({
   overcrowdDiscount: [0, 1]
 });
 
-/**
- * Clamp a numeric value to [lo, hi].
- * @param {number} v
- * @param {number} lo
- * @param {number} hi
- * @returns {number}
- */
+/** @param {number} v @param {number} lo @param {number} hi */
 function clamp(v, lo, hi) {
   return v < lo ? lo : v > hi ? hi : v;
 }
@@ -205,11 +199,7 @@ function leaderName(pid) {
   }
 }
 
-/**
- * The civilization type string for a player, or null if unreadable.
- * @param {number} pid
- * @returns {string|null} e.g. "CIVILIZATION_NORMAN".
- */
+/** @param {number} pid */
 function civName(pid) {
   try {
     const ct = Players?.get?.(pid)?.civilizationType;
@@ -299,10 +289,7 @@ function accumulateMementos(ids) {
   return a;
 }
 
-/**
- * Fold one memento's multiplicative fields + sourceBias into the running accumulator (in place).
- * @param {Record<string, number>} a The accumulator. @param {Record<string, number>} t The memento.
- */
+/** @param {Record<string, number>} a @param {Record<string, number>} t */
 function accumulateFields(a, t) {
   for (const f of MULT_FIELDS) {
     if (typeof t[f] === "number") a[f] = (a[f] == null ? 1 : a[f]) * t[f];
@@ -365,11 +352,7 @@ export function civTuning(pid) {
   return flatten(merged);
 }
 
-/**
- * A table entry for a (possibly null/empty) key, or null.
- * @param {Record<string, *>} map @param {*} key Falsy → null.
- * @returns {*}
- */
+/** @param {Record<string, *>} map @param {*} key */
 function lookupEntry(map, key) {
   return (key && map[key]) || null;
 }

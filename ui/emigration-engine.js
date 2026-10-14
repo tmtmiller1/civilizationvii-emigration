@@ -139,8 +139,7 @@ function warSurgeBudget(src, cause) {
 // paces voluntary (prosperity / unhappiness) migration. `conquest` is capture-driven displacement.
 const FORCED_CAUSES = new Set(["war", "disaster", "conquest"]);
 
-/** Whether a source is in an acute crisis (war / disaster), for sizing the per-civ move ceiling.
- * @param {*} src Source signal. @returns {boolean} In crisis. */
+/** @param {*} src */
 function inCrisis(src) {
   return !!src.siege
     || (src.violence || 0) >= CONFIG.violenceFleeThreshold
@@ -207,8 +206,7 @@ function crisisCause(src) {
   return (src.disaster || 0) >= CONFIG.disasterFleeThreshold ? "disaster" : "war";
 }
 
-/** The voluntary cause for a source (an unhappiness push vs a prosperity pull).
- * @param {*} src Source. @returns {MigrationCause} "unhappiness" | "prosperity". */
+/** @param {*} src */
 function voluntaryCause(src) {
   return (src.happiness || 0) < CONFIG.unhappyCauseThreshold ? "unhappiness" : "prosperity";
 }
@@ -674,11 +672,10 @@ function processOutletDeath(src, st, state, hasRefuge) {
 const ZERO_PLAN = { inPts: 0, outPts: 0, inP: 0, outP: 0 };
 
 /**
- * Add a planned cross-civ flow to the per-owner accumulator (1 point + its people).
  * @param {Map<number, *>} acc
- * @param {number} owner Civ id.
+ * @param {number} owner
  * @param {"in"|"out"} dir
- * @param {number} people Scaled people.
+ * @param {number} people
  */
 function planBump(acc, owner, dir, people) {
   let e = acc.get(owner);
@@ -773,11 +770,7 @@ function planTurn(ranked, state) {
   return ctx.acc;
 }
 
-/**
- * Whether any civ present holds a non-neutral border stance (else the counterfactual is a no-op).
- * @param {*[]} ranked Ranked signals.
- * @returns {boolean}
- */
+/** @param {*[]} ranked */
 function anyStance(ranked) {
   if (!CONFIG.bordersEnabled) return false;
   const seen = new Set();

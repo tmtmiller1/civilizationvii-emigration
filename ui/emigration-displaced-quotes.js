@@ -440,9 +440,9 @@ function seedIndex(seed, n) {
 }
 
 /**
- * A civilization's own quotes of one kind, or [] when it has none.
- * @param {Readonly<Record<string, DisplacedRow>>} registry The per-civ quotes. @param {string|null} civ The type.
- * @param {DisplacedKind} kind @returns {QQuote[]}
+ * @param {Readonly<Record<string, DisplacedRow>>} registry
+ * @param {string|null} civ
+ * @param {DisplacedKind} kind
  */
 function ownList(registry, civ, kind) {
   const row = civ ? registry[civ] : undefined;

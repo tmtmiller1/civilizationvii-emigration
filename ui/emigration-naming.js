@@ -294,10 +294,6 @@ export function eventDisplayNameMsg(eventKey) {
   return prettifyType(eventKey) || null;
 }
 
-/**
- * The local (viewing) player id, or 0.
- * @returns {number} The local player id.
- */
 function localPid() {
   try {
     return typeof GameContext !== "undefined" && typeof GameContext.localPlayerID === "number"
@@ -614,10 +610,7 @@ export function scopeClause(cause, crossCiv) {
   return node ? " " + msgText(node) : "";
 }
 
-/**
- * The movement-scope tag as a message node (no leading space), or null for a death.
- * @param {string|undefined} cause @param {boolean|undefined} crossCiv @returns {MsgNode|null} The tag.
- */
+/** @param {string|undefined} cause @param {boolean|undefined} crossCiv */
 function scopeTagMsg(cause, crossCiv) {
   if (cause === "attrition") return null; // a death went nowhere to label
   return crossCiv
@@ -638,7 +631,7 @@ export function destClause(cause, destName) {
   return " " + msgText(destClauseMsg(destName));
 }
 
-/** The "Bound for <dest>." clause node. @param {MsgNode} destName @returns {MsgNode} The clause. */
+/** @param {MsgNode} destName */
 function destClauseMsg(destName) {
   return msg("LOC_EMIG_DEST_CLAUSE", "Bound for {1_Dest}.", destName);
 }

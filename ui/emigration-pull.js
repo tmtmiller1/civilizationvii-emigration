@@ -377,10 +377,7 @@ function econReasons(src, dest) {
   return out;
 }
 
-/**
- * Targeted-pull candidates: an asylum offer to a refugee, or an active raid.
- * @param {*} src Source. @param {*} dest Destination. @returns {ReasonCand[]} Candidates.
- */
+/** @param {*} src @param {*} dest */
 function tiltReasons(src, dest) {
   const out = [];
   const cause = migrationCause(src);
@@ -413,11 +410,7 @@ function crisisReasons(src, dest, flee, aggressors, crossCiv) {
   return out;
 }
 
-/**
- * Cross-civ relationship candidates: an open destination and an alliance.
- * @param {*} src Source. @param {*} dest Destination. @param {boolean} crossCiv Cross-civ move.
- * @returns {ReasonCand[]} Candidates.
- */
+/** @param {*} src @param {*} dest @param {boolean} crossCiv */
 function relationReasons(src, dest, crossCiv) {
   if (!crossCiv) return [];
   const out = [];

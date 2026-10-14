@@ -167,11 +167,7 @@ const AGE_YEARS = {
   AGE_MODERN: [1500, 2020]
 };
 
-/**
- * Format a signed year as a date label ("3200 BC" / "1450 AD").
- * @param {number} y Year (negative = BC).
- * @returns {string}
- */
+/** @param {number} y */
 function yearLabel(y) {
   const r = Math.round(y);
   return r < 0 ? -r + " BC" : (r === 0 ? 1 : r) + " AD";

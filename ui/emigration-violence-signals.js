@@ -17,11 +17,7 @@ function districtIsContested(d) {
   return !!(d && d.owner != null && d.controllingPlayer != null && d.owner !== d.controllingPlayer);
 }
 
-/**
- * The owner's Districts accessor, or null.
- * @param {*} city A live city object.
- * @returns {*} The Districts component, or null.
- */
+/** @param {*} city */
 function cityDistricts(city) {
   try {
     return Players?.Districts?.get?.(city?.owner) || null;
@@ -42,12 +38,7 @@ function districtInCity(d, cid) {
   return !!(d?.location && dc && cid && dc.owner === cid.owner && dc.id === cid.id);
 }
 
-/**
- * Every district id belonging to a city's owner (spans all that player's cities), or [] if the
- * Districts API is unavailable.
- * @param {*} city A live city object.
- * @returns {*[]} District ids.
- */
+/** @param {*} city */
 function ownerDistrictIds(city) {
   try {
     const pd = cityDistricts(city);
@@ -159,11 +150,7 @@ function plotHasPillage(loc) {
   return false;
 }
 
-/**
- * Whether the plot at index `idx` holds a pillaged improvement.
- * @param {number} idx A plot index.
- * @returns {boolean} True if pillaged.
- */
+/** @param {number} idx */
 function plotIndexPillaged(idx) {
   const loc = GameplayMap?.getLocationFromIndex?.(idx);
   return !!loc && plotHasPillage(loc);

@@ -34,11 +34,7 @@ const HOST_POLICY_KEY = "DemographicsAnalyticsPolicy_v1";
 // choice. GameConfiguration is durable and shared across mods, so the published value is reliable.
 const EFFECTIVE_POLICY_KEY = "DemographicsAnalyticsPolicyEffective_v1";
 
-/**
- * A known policy id, or null.
- * @param {*} v
- * @returns {string|null}
- */
+/** @param {*} v */
 function asPolicy(v) {
   return typeof v === "string" && Object.prototype.hasOwnProperty.call(RANK, v) ? v : null;
 }
@@ -131,10 +127,6 @@ function policyOwnCivOnly() {
   return RANK[effectivePolicy()] <= RANK[POLICY_OWN];
 }
 
-/**
- * Whether the effective policy hides unmet civs (anything other than full).
- * @returns {boolean}
- */
 function policyHidesUnmet() {
   return effectivePolicy() !== POLICY_FULL;
 }
@@ -154,11 +146,7 @@ export function localPlayerId() {
   return undefined;
 }
 
-/**
- * Whether `pid` is the local player's own civ.
- * @param {number} pid
- * @returns {boolean}
- */
+/** @param {number} pid */
 function isLocalCiv(pid) {
   const me = localPlayerId();
   return me !== undefined && Number(pid) === me;

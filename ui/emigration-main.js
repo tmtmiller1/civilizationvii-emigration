@@ -89,11 +89,7 @@ function gameTurnNow() {
   }
 }
 
-/**
- * The unique owner ids present in a city-signal list.
- * @param {{owner?:number}[]} signals City signals.
- * @returns {number[]} Distinct owner ids.
- */
+/** @param {{owner?:number}[]} signals */
 function ownerIdsOf(signals) {
   /** @type {Set<number>} */
   const owners = new Set();

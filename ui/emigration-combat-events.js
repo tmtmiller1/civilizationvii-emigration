@@ -73,10 +73,7 @@ function accept(key) {
   return t;
 }
 
-/**
- * The city whose territory contains a plot, as a key.
- * @param {*} loc A {x,y} location. @returns {string|null}
- */
+/** @param {*} loc */
 function cityAt(loc) {
   if (!loc || typeof loc.x !== "number") return null;
   try {

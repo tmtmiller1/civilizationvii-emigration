@@ -343,11 +343,7 @@ export function disasterTypeFor(cityKey) {
   return typeof t === "string" && t ? t : null;
 }
 
-/**
- * The owner player id encoded in a city key ("owner:id"), or null when unparseable.
- * @param {string} key A city key.
- * @returns {number|null}
- */
+/** @param {string} key */
 function ownerOfKey(key) {
   const owner = Number(String(key).split(":")[0]);
   return Number.isInteger(owner) ? owner : null;

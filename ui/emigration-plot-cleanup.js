@@ -23,17 +23,13 @@ function safe(fn, fb) {
   }
 }
 
-/**
- * Whether a district id names a real element. @param {*} id ({owner, id}) @returns {boolean}
- */
+/** @param {*} id */
 function validId(id) {
   if (!id) return false;
   return typeof id.owner === "number" && id.owner >= 0 && typeof id.id === "number" && id.id >= 0;
 }
 
-/**
- * Whether the district on a location is a rural one. @param {*} loc The location. @returns {boolean} True.
- */
+/** @param {*} loc */
 function isRuralDistrictAt(loc) {
   const d = Districts.getAtLocation(loc);
   if (!d) return false;
@@ -86,9 +82,6 @@ export function scheduleDistrictCleanup(plot) {
   safe(() => _schedule(() => clearEmptyRuralDistrict(plot), CLEANUP_DELAY_MS), null);
 }
 
-/**
- * The owned plots of every living player's settlements. @returns {number[]} Plot indexes.
- */
 function allSettlementPlots() {
   /** @type {number[]} */
   const out = [];
@@ -121,7 +114,6 @@ const START_POLL_MAX = 600;
 /** Delay after the game starts before the sweep (no gameplay request lands before Begin Game). */
 const START_SWEEP_DELAY_MS = 3000;
 
-/** Whether the loaded game has started. @returns {boolean} True once past Begin Game. */
 function gameStarted() {
   const g = /** @type {*} */ (globalThis);
   return safe(() => g.UI.getGameLoadingState() === g.UIGameLoadingState.GameStarted, false);

@@ -175,11 +175,7 @@ function index() {
   return _index;
 }
 
-/**
- * The kind of one constructible instance on the map, or null when it is pillaged, unreadable, or not a
- * building/wonder.
- * @param {*} cid A constructible ComponentID. @returns {BuiltKind|null}
- */
+/** @param {*} cid */
 function kindOf(cid) {
   return safe(() => {
     const inst = Constructibles.getByComponentID(cid);

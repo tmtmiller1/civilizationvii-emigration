@@ -30,11 +30,7 @@ function parse(input) {
   return { r: parseInt(m[1], 10), g: parseInt(m[2], 10), b: parseInt(m[3], 10) };
 }
 
-/**
- * Format RGB channels as `#RRGGBB`.
- * @param {number} r @param {number} g @param {number} b
- * @returns {string}
- */
+/** @param {number} r @param {number} g @param {number} b */
 function toHex(r, g, b) {
   const h2 = (/** @type {number} */ n) => Math.max(0, Math.min(255, n)).toString(16).padStart(2, "0");
   return "#" + h2(r) + h2(g) + h2(b);
@@ -78,11 +74,7 @@ function hslBase(hp, c, x) {
   return { r: c, g: 0, b: x };
 }
 
-/**
- * Convert HSL to a `#RRGGBB` string.
- * @param {number} h @param {number} s @param {number} l
- * @returns {string}
- */
+/** @param {number} h @param {number} s @param {number} l */
 function hslToHex(h, s, l) {
   const c = (1 - Math.abs(2 * l - 1)) * s;
   const hp = h / 60;

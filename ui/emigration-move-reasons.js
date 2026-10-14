@@ -86,7 +86,7 @@ export function reasonLabel(tag) {
   return msgText(reasonMsg(tag));
 }
 
-/** {@link reasonLabel} as a message node. @param {string} tag @returns {*} The phrase node. */
+/** @param {string} tag */
 function reasonMsg(tag) {
   const fb = FALLBACK[tag];
   const key = LOC[tag];

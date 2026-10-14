@@ -216,10 +216,7 @@ export function msgPack(node) {
 /** The mod's own key prefix, stored as "@". */
 const OWN_PREFIX = "LOC_EMIG_";
 
-/**
- * Pack a concatenation, splicing nested ones into it; a single part packs as itself.
- * @param {MsgNode[]} parts @returns {*} The packed value.
- */
+/** @param {MsgNode[]} parts */
 function packJoin(parts) {
   const out = [];
   for (const p of parts.map(msgPack)) {
