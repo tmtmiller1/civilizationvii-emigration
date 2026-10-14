@@ -14,3 +14,7 @@ i18n/i18n-source.json
 /.codegpt*
 # raw in-game probe captures (~10 MB each); curated images live in docs/steam-screenshots/
 devtools/engine-probe/shots/
+
+# full game logs and macOS crash reports from probe runs: large, kept locally only
+devtools/engine-probe/*.log
+devtools/engine-probe/*.ips
