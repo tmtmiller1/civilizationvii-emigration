@@ -93,7 +93,7 @@ rsync -a --exclude='CHANGELOG.steam.txt' --exclude='.git' --exclude='.gitignore'
     --exclude='migration-probe.modinfo*' --exclude='devtools' \
     --exclude='coverage*' --exclude='reports' --exclude='.stryker-tmp' \
     --exclude='.c8rc.json' --exclude='stryker*.json' \
-    --exclude='/Screenshot *' --exclude='/.codegpt*' \
+    --exclude='/Screenshot *' --exclude='.*' \
     "$SRC_DIR"/ "$TARGET_DIR"/
 
 echo "==> Disabling debug logging in dist JS files"
