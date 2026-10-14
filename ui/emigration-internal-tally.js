@@ -7,12 +7,7 @@
 /** Schema stamp: 1 = the internal tallies exist (folded live, or backfilled once from the flows). */
 export const INTERNAL_SCHEMA = 1;
 
-/**
- * Add to a flat tally entry (treating missing as 0).
- * @param {Record<string, number>} map Tally map.
- * @param {number} id Owner id.
- * @param {number} delta Amount.
- */
+/** @param {Record<string, number>} map @param {number} id @param {number} delta */
 function bump(map, id, delta) {
   map[id] = (map[id] || 0) + delta;
 }

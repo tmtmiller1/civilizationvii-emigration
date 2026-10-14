@@ -91,10 +91,6 @@ function gameTurn() {
   }
 }
 
-/**
- * The current age ordinal (for the per-age cap), or 0.
- * @returns {number} Game.age or 0.
- */
 function currentAge() {
   try {
     return typeof Game !== "undefined" && typeof Game.age === "number" ? Game.age : 0;
@@ -120,18 +116,12 @@ function nonNegInt(v, fallback) {
   return typeof v === "number" && isFinite(v) ? Math.max(0, Math.floor(v)) : fallback;
 }
 
-/**
- * @param {*} v Candidate amount.
- * @returns {number} A finite non-negative number (0 on bad input).
- */
+/** @param {*} v */
 function nonNegNum(v) {
   return typeof v === "number" && isFinite(v) && v > 0 ? v : 0;
 }
 
-/**
- * @param {*} y Candidate yield key.
- * @returns {string|null} The yield key when a non-empty string, else null.
- */
+/** @param {*} y */
 function yieldKeyOrNull(y) {
   return typeof y === "string" && y.length ? y : null;
 }
@@ -149,10 +139,7 @@ function payloadFromBlob(parsed) {
   return payload && typeof payload === "object" ? payload : null;
 }
 
-/**
- * @param {*} a Candidate applied-yields object.
- * @returns {QuarterApplied} Sanitized applied yields.
- */
+/** @param {*} a */
 function normalizeApplied(a) {
   const src = a && typeof a === "object" ? a : {};
   return {
@@ -199,10 +186,7 @@ function finiteTurnOrNull(v) {
   return typeof v === "number" && isFinite(v) ? Math.floor(v) : null;
 }
 
-/**
- * @param {*} p A candidate placed-improvement descriptor.
- * @returns {PlacedRecord|null} The descriptor, or null when malformed.
- */
+/** @param {*} p */
 function normalizePlaced(p) {
   if (!p || typeof p !== "object") return null;
   if (typeof p.type !== "string" || !p.type.length) return null;
@@ -230,15 +214,12 @@ function withOptionalFields(out, p) {
   return out;
 }
 
-/** A non-empty string, or null. @param {*} v Any value. @returns {string|null} The string, or null. */
+/** @param {*} v */
 function nonEmptyString(v) {
   return typeof v === "string" && v.length ? v : null;
 }
 
-/**
- * A sanitized {YIELD_X: n} map (finite numbers, non-empty), or null.
- * @param {*} m A candidate map. @returns {Record<string, number>|null} The map, or null.
- */
+/** @param {*} m */
 function yieldMap(m) {
   if (!m || typeof m !== "object") return null;
   /** @type {Record<string, number>} */
@@ -267,10 +248,7 @@ function normalizeTiles(tiles) {
   return out;
 }
 
-/**
- * @param {*} rec Candidate candidacy record.
- * @returns {CandidacyRecord|null} Sanitized record, or null when unusable.
- */
+/** @param {*} rec */
 function normalizeCandidacyRecord(rec) {
   if (!rec || typeof rec !== "object") return null;
   if (typeof rec.civ !== "number" || !isFinite(rec.civ)) return null;

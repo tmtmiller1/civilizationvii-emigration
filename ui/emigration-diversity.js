@@ -142,11 +142,9 @@ export function cosmopolitanism(comp, ctx) {
 }
 
 /**
- * The per-owner context for one settlement's cosmopolitanism, via the injected lookups.
- * @param {number} owner Owner player id.
- * @param {{openness?:(pid:number)=>number, inbound?:(pid:number)=>number}} opts Lookups.
- * @param {number} maxInbound The largest inbound total across owners (the normalizer).
- * @returns {{openness:number, inboundNorm:number}}
+ * @param {number} owner
+ * @param {{openness?:(pid:number)=>number, inbound?:(pid:number)=>number}} opts
+ * @param {number} maxInbound
  */
 function cosmoCtx(owner, opts, maxInbound) {
   const openness = typeof opts.openness === "function" ? opts.openness(owner) : 1;

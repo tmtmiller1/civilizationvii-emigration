@@ -177,11 +177,7 @@ function save() {
   }
 }
 
-/**
- * A finite number, or 0.
- * @param {*} v Value.
- * @returns {number} v if finite, else 0.
- */
+/** @param {*} v */
 function numOr0(v) {
   return typeof v === "number" && isFinite(v) ? v : 0;
 }
@@ -278,12 +274,11 @@ function add(map, id, delta, cause) {
 }
 
 /**
- * Add to a people map and its parallel pop-point map at once.
- * @param {Record<string,number>} peopleMap People tally.
- * @param {Record<string,number>} ptsMap Pop-point tally.
- * @param {number} id Owner id.
- * @param {number} people Scaled people delta.
- * @param {number} pts Pop-point delta.
+ * @param {Record<string,number>} peopleMap
+ * @param {Record<string,number>} ptsMap
+ * @param {number} id
+ * @param {number} people
+ * @param {number} pts
  */
 function addBoth(peopleMap, ptsMap, id, people, pts) {
   add(peopleMap, id, people);
@@ -304,11 +299,7 @@ function asCauseMap(v) {
   return typeof v === "number" ? { other: v } : {};
 }
 
-/**
- * Sum a per-cause map's values.
- * @param {Record<string,number>} m Map.
- * @returns {number} Total.
- */
+/** @param {Record<string,number>} m */
 function sumCauses(m) {
   let total = 0;
   for (const k of Object.keys(m)) total += m[k] || 0;

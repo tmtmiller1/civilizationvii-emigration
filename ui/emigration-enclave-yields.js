@@ -16,7 +16,7 @@ const YIELD_NOUNS = Object.freeze({
   YIELD_CULTURE: "Culture", YIELD_HAPPINESS: "Happiness", YIELD_DIPLOMACY: "Influence"
 });
 
-/** A finite number or 0. @param {*} v @returns {number} */
+/** @param {*} v */
 function num(v) {
   const n = Number(v);
   return isFinite(n) ? n : 0;
@@ -54,10 +54,7 @@ export function paidYields(rec) {
   return applied.once ? signedOf(applied) : {};
 }
 
-/**
- * An applied record's benefit minus its drawback as a signed map.
- * @param {*} applied The record's applied block. @returns {Record<string, number>} Signed yields by type.
- */
+/** @param {*} applied */
 function signedOf(applied) {
   /** @type {Record<string, number>} */
   const out = {};
@@ -79,10 +76,7 @@ export function enclaveYields(rec) {
   return out;
 }
 
-/**
- * The display noun for a yield type, from the base game's name key, else English.
- * @param {string} key A YieldType. @returns {string}
- */
+/** @param {string} key */
 function yieldNoun(key) {
   const english = /** @type {Record<string, string>} */ (YIELD_NOUNS)[key] || key.replace(/^YIELD_/, "");
   return tr("LOC_" + key + "_NAME", english);

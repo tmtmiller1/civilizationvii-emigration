@@ -390,11 +390,7 @@ function paintShares(t, shares) {
   return { x: t.x, y: t.y, people: t.people, density: tileDensity(t.people), shares, primary: shares[0].civ };
 }
 
-/**
- * Whether the inputs can be distributed (non-empty plots + a composition with origins).
- * @param {*} plots @param {*} comp
- * @returns {boolean}
- */
+/** @param {*} plots @param {*} comp */
 function hasDistributableInputs(plots, comp) {
   return Array.isArray(plots) && plots.length > 0
     && !!comp && Array.isArray(comp.civs) && comp.civs.length > 0;

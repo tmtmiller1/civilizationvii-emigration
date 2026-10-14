@@ -204,7 +204,7 @@ export function takeoverCompensation(before, native, after) {
   return out;
 }
 
-/** A finite number or 0. @param {*} v @returns {number} */
+/** @param {*} v */
 function num(v) {
   const n = Number(v);
   return isFinite(n) ? n : 0;
@@ -256,10 +256,7 @@ export function enclaveCarriesBenefit(rec) {
   return enclaveStanding(rec);
 }
 
-/**
- * The terrain type name of a plot ("" when unreadable).
- * @param {number} x @param {number} y @returns {string}
- */
+/** @param {number} x @param {number} y */
 function terrainAt(x, y) {
   return safe(() => {
     const t = GameInfo.Terrains.lookup(GameplayMap.getTerrainType(x, y));
@@ -349,8 +346,8 @@ export function placeEnclave(city, originCiv, optionId) {
 }
 
 /**
- * A plot predicate for a type's valid terrains (every plot when the data lists none).
- * @param {string} type A ConstructibleType. @returns {(c:{loc:{x:number,y:number}}) => boolean}
+ * @param {string} type
+ * @returns {(c:{loc:{x:number,y:number}}) => boolean}
  */
 function terrainFilter(type) {
   const terrains = validTerrainsFor(type);

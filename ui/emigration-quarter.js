@@ -31,10 +31,6 @@ import { dlog } from "/emigration/ui/emigration-log.js";
 import { toast } from "/emigration/ui/emigration-feedback.js";
 import { loc as tr, msg, msgCap, msgText } from "/emigration/ui/emigration-loc.js";
 
-/**
- * The local (viewing) player id, or null.
- * @returns {number|null} The local player id.
- */
 function localPid() {
   try {
     return typeof GameContext !== "undefined" && typeof GameContext.localPlayerID === "number"
@@ -75,10 +71,6 @@ function announce(owner, entry) {
   if (chronicle(entry) && owner === localPid()) toast(msgText(entry.body), "chronicle");
 }
 
-/**
- * The current age ordinal (for the per-age cap), or 0.
- * @returns {number} Game.age or 0.
- */
 function currentAge() {
   try {
     return typeof Game !== "undefined" && typeof Game.age === "number" ? Game.age : 0;
@@ -87,11 +79,7 @@ function currentAge() {
   }
 }
 
-/**
- * The city-center plot key "x,y", or null when the location is unreadable.
- * @param {*} city A live city object.
- * @returns {string|null} The plot key.
- */
+/** @param {*} city */
 function tileKeyOf(city) {
   try {
     const loc = city && city.location;
