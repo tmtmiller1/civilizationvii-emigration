@@ -397,10 +397,7 @@ function detectFoundingForCity(city) {
   if (rec) chronicleShareStep(city, comp, lead, rec);
 }
 
-/**
- * Scan the pass's settlements for diasporas that have taken root.
- * @param {*[]} signals The pass's city signals ({city, owner, …}).
- */
+/** @param {*[]} signals */
 function detectFoundings(signals) {
   for (const s of signals || []) {
     if (s && s.city) detectFoundingForCity(s.city);

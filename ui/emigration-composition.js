@@ -214,22 +214,14 @@ function save() {
   }
 }
 
-/**
- * The city-center plot key "x,y", or null when the location is unreadable.
- * @param {*} city
- * @returns {string|null}
- */
+/** @param {*} city */
 function locKey(city) {
   const loc = city && city.location;
   if (!loc || typeof loc.x !== "number" || typeof loc.y !== "number") return null;
   return loc.x + "," + loc.y;
 }
 
-/**
- * Sum a composition entry's per-civ buckets.
- * @param {CityComposition} e
- * @returns {number}
- */
+/** @param {CityComposition} e */
 function sumByCiv(e) {
   let total = 0;
   for (const k of Object.keys(e.byCiv)) total += e.byCiv[k] || 0;

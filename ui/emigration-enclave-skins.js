@@ -61,11 +61,7 @@ export const FAMILY_SKINS = Object.freeze({
  * @type {Record<string, string>} */
 const FAMILY_ALIAS = Object.freeze({ YIELD_FAITH: "YIELD_CULTURE" });
 
-/**
- * The stance benefit yields of an origin civilization, option "a" first (from the bonuses registry).
- * @param {string|null|undefined} originCiv The origin CivilizationType.
- * @returns {string[]} Benefit yield types, possibly empty.
- */
+/** @param {string|null|undefined} originCiv */
 function stanceBenefits(originCiv) {
   const entry = originCiv ? QUARTER_BONUSES[originCiv] : null;
   if (!entry || !Array.isArray(entry.options)) return [];

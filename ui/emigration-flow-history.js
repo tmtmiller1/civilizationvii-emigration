@@ -9,11 +9,7 @@
 // these helpers produce fresh objects so a returned delta is never an alias of
 // a live cumulative map.
 
-/**
- * Total people across all causes for one flow entry ({cause: people}).
- * @param {Record<string, number>} byCause The per-cause map.
- * @returns {number}
- */
+/** @param {Record<string, number>} byCause */
 function flowTotal(byCause) {
   let t = 0;
   for (const c of Object.keys(byCause || {})) t += byCause[c] || 0;

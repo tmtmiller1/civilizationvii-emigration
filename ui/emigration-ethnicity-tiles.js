@@ -97,11 +97,7 @@ function classifyPlots(city, anchors) {
   return out;
 }
 
-/**
- * The settlement's scaled population (people) for the density model. Unseeded (a standing total).
- * @param {number} points The settlement's population in points.
- * @returns {number}
- */
+/** @param {number} points */
 function scaledPeopleFor(points) {
   try {
     return scaleCityPopulation(points, monoTurn());

@@ -43,10 +43,7 @@ function countAttrition(m) {
   else _counters.attritionFleeing++;
 }
 
-/**
- * Fold a move's reason tags into the reason histogram (which scoring terms drive moves).
- * @param {string[]|undefined} reasons The move's reason-tag keys.
- */
+/** @param {string[]|undefined} reasons */
 function addReasonHits(reasons) {
   if (!Array.isArray(reasons)) return;
   for (const t of reasons) _reasonHits[t] = (_reasonHits[t] || 0) + 1;

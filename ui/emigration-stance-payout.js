@@ -21,7 +21,7 @@ const PAYABLE = Object.freeze(["YIELD_GOLD", "YIELD_DIPLOMACY", "YIELD_SCIENCE",
 const GOLD = "YIELD_GOLD";
 const AGES = Object.freeze(["AGE_ANTIQUITY", "AGE_EXPLORATION", "AGE_MODERN"]);
 
-/** A finite number or 0. @param {*} v Any value. @returns {number} The number. */
+/** @param {*} v */
 function num(v) {
   const n = Number(v);
   return isFinite(n) ? n : 0;
