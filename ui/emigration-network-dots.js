@@ -195,7 +195,6 @@ function cityBucket(b, civId, cityIdx) {
 }
 
 /**
- * Grow a cohort to `target` live dots: append fresh dots (copied from the template) at frame i.
  * @param {*} b Build context.
  * @param {*} ref Cohort ref {key, civId, cityIdx, template}.
  * @param {*} co Cohort state {dots, live}.
@@ -342,8 +341,6 @@ function addSpreadCauseDots(b, o, total) {
 }
 
 /**
- * Add one (corridor, cause) flow's immigrant dots: into the real destination city when the flow
- * records it, else spread by population.
  * @param {*} b Build context.
  * @param {*} o { e, c, i } edge / cause / frame.
  */
@@ -356,7 +353,6 @@ function addCauseDots(b, o) {
 }
 
 /**
- * Append all arrivals for one corridor at frame i (across its causes).
  * @param {*} b Build context.
  * @param {*} e Flow edge.
  * @param {number} i Frame index (appear frame).
@@ -434,7 +430,6 @@ function nativeOriginTemplate(b, loc, originCiv) {
 }
 
 /**
- * Set the live dot count for one origin civ's residents in a city at frame i.
  * @param {*} b Build context.
  * @param {{ownerId:number, cityIdx:number, cityName:string}} loc City location.
  * @param {number} originCiv Origin civ id.
@@ -503,7 +498,6 @@ function intraDotTemplate(b, civId, toIdx, fromIdx, entry) {
 }
 
 /**
- * Append the newly-moved internal (intra-civ) dots for one city→city move at frame i.
  * @param {*} b Build context.
  * @param {number} civId
  * @param {*} entry Move {fromCity, toCity, people}.
@@ -523,7 +517,6 @@ function appendIntraDots(b, civId, entry, i) {
 }
 
 /**
- * Append every civ's internal (intra-civ) moves for one frame.
  * @param {*} b Build context.
  * @param {*[]} intra Frame intra moves ({civId, fromCity, toCity, people}).
  * @param {number} i Frame index.

@@ -23,10 +23,8 @@ function el(tag, cls, text) {
 }
 
 /**
- * Localize a LOC key, falling back to `fallback` when unresolved/off-engine.
  * @param {string} key LOC key.
  * @param {string} fallback English fallback.
- * @returns {string} Localized (or fallback) string.
  */
 function loc(key, fallback) {
   try {
@@ -86,7 +84,6 @@ function toLogical(canvas, ev, WX, WY) {
 }
 
 /**
- * The civ cluster whose disc contains (x,y), nearest first, or null.
  * @param {Scene} scene
  * @param {number} x Logical x.
  * @param {number} y Logical y.
@@ -126,7 +123,6 @@ function cityHitDist(c, cm, x, y, now) {
 }
 
 /**
- * The (civ, city) sub-cluster under (x,y), or null.
  * @param {Scene} scene
  * @param {number} x Logical x.
  * @param {number} y Logical y.
@@ -263,7 +259,6 @@ function dragCityTo(drag, pt, scene) {
 }
 
 /**
- * Pointer move: drag the grabbed city or cluster, else show the hover breakdown.
  * @param {*} ev Event.
  * @param {HTMLCanvasElement} canvas
  * @param {*} holder Render holder.

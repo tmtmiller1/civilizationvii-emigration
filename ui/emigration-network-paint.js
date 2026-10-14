@@ -57,10 +57,8 @@ export function lighten(hex, amt) {
 }
 
 /**
- * Whether the multi-select cause filter hides this immigrant (its cause isn't among the selected).
  * @param {Dot} d Dot.
  * @param {VizState} state Interaction state.
- * @returns {boolean} True if filtered out.
  */
 function causeFiltered(d, state) {
   return !!(state.causes && state.causes.size) && d.scope === "immigrant" && !state.causes.has(d.cause);
@@ -80,8 +78,6 @@ export function dotInCity(d, fc) {
 }
 
 /**
- * Whether a dot passes the current filters (cause / origin / destination cluster / selected city /
- * movement scope).
  * @param {Dot} d Dot.
  * @param {VizState} state Interaction state.
  * @returns {boolean} Visible.
@@ -153,7 +149,6 @@ function drawClusterDiscs(ctx, scene) {
 }
 
 /**
- * Ring the selected city's disc in gold so the selection reads at a glance.
  * @param {CanvasRenderingContext2D} ctx Context.
  * @param {Scene} scene
  */
@@ -247,7 +242,6 @@ function dotHidden(d, state, now) {
 }
 
 /**
- * Draw the migrant dots (origin-colored) packed around their destination clusters.
  * @param {CanvasRenderingContext2D} ctx Context.
  * @param {Scene} scene
  */
@@ -307,7 +301,6 @@ function labelFont(size) {
  * @property {number} priority Higher = placed first (anchors); lower nudges around it.
  */
 
-/** Axis-aligned box overlap test. */
 function boxesOverlap(/** @type {*} */ a, /** @type {*} */ b) {
   return a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
 }
@@ -383,7 +376,6 @@ function setBadgeFont(ctx) {
 const BADGE_FLAG_W = 9;
 
 /**
- * Draw the badge's small pennant flag with its left edge at x.
  * @param {CanvasRenderingContext2D} ctx Context.
  * @param {number} x Left edge.
  * @param {number} y Center y.
@@ -400,7 +392,6 @@ function drawBadgeFlag(ctx, x, y) {
 }
 
 /**
- * Draw one small event badge (flag + label) at a resolved position.
  * @param {CanvasRenderingContext2D} ctx Context.
  * @param {{text:string, x:number, color:string}} req The badge.
  * @param {number} y Resolved center y.
@@ -455,7 +446,6 @@ function activeEvents(scene) {
 }
 
 /**
- * One badge anchored just below its cluster.
  * @param {*} c Cluster center. @param {*} ev Resolved event.
  * @returns {{text:string, x:number, y:number, color:string}} The badge.
  */

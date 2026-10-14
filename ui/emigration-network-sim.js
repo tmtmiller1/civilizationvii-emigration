@@ -20,11 +20,9 @@ const COLLIDE_PAD = 12; // minimum gap between two cluster discs (prevents overl
 const GOLDEN = Math.PI * (3 - Math.sqrt(5)); // golden angle for the sunflower seed spread
 
 /**
- * Clamp v into [lo, hi].
- * @param {number} v Value.
- * @param {number} lo Min.
- * @param {number} hi Max.
- * @returns {number} Clamped.
+ * @param {number} v
+ * @param {number} lo
+ * @param {number} hi
  */
 function clamp(v, lo, hi) {
   return v < lo ? lo : v > hi ? hi : v;
@@ -70,10 +68,7 @@ export function seedSim(net, WX, WY, cache) {
   return { nodes, links, WX, WY, alpha: 1 };
 }
 
-/**
- * Accumulate pairwise repulsion forces.
- * @param {*[]} nodes Sim nodes.
- */
+/** @param {*[]} nodes Sim nodes. */
 function applyRepulsion(nodes) {
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
@@ -93,7 +88,6 @@ function applyRepulsion(nodes) {
 }
 
 /**
- * Accumulate edge spring forces (toward the rest length).
  * @param {*[]} nodes Sim nodes.
  * @param {*[]} links Edge links.
  */

@@ -155,10 +155,7 @@ export function injectStyle() {
   (document.head || document.documentElement).appendChild(st);
 }
 
-/**
- * Append the "nothing yet" note.
- * @param {HTMLElement} container Card body.
- */
+/** @param {HTMLElement} container Card body. */
 function appendEmpty(container) {
   const note = el("div", "emig-empty",
     loc("LOC_EMIG_NETC_EMPTY", "No cross-civ migration yet ; flows appear once people cross borders."));
@@ -183,7 +180,6 @@ export function buildColorMap(frames) {
 }
 
 /**
- * Register every origin civ that appears in a frame's per-city resident composition.
  * @param {Map<number,number>} map Color-index map (mutated).
  * @param {Record<number,*>} pops Frame pops (civId → {cities:[{origins:[{civ}]}]}).
  */
@@ -761,7 +757,6 @@ function sectionEvents(section, frames) {
 }
 
 /**
- * Build the full viz (canvas + controls + loop) for a usable set of frames.
  * @param {HTMLElement} container Card body.
  * @param {*[]} frames Usable timeline frames.
  * @param {*[]} events Event specs (disaster/war labels).
