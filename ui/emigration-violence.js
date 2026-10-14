@@ -329,11 +329,7 @@ export function observeCity(city) {
 
 // Algorithm D: siege-duration escalation + cumulative war-loss cap
 
-/**
- * The war-retention multiplier for a city's owner (civ tuning), defaulting to 1.
- * @param {*} city A live city object.
- * @returns {number} Retention (> 0).
- */
+/** @param {*} city */
 function retentionFor(city) {
   const r = civTuning(city?.owner).warRetention;
   return typeof r === "number" && r > 0 ? r : 1;

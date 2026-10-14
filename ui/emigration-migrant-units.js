@@ -20,11 +20,7 @@ function migrantHash() {
   }
 }
 
-/**
- * Whether a unit type resolves (via GameInfo) to UNIT_MIGRANT.
- * @param {*} type A unit type value.
- * @returns {boolean} True if it's the migrant type.
- */
+/** @param {*} type */
 function migrantByInfo(type) {
   try {
     const info = typeof GameInfo !== "undefined" ? GameInfo?.Units?.lookup?.(type) : null;
@@ -34,11 +30,7 @@ function migrantByInfo(type) {
   }
 }
 
-/**
- * Whether a unit is a migrant (whatever shape `unit.type` takes).
- * @param {*} unit
- * @returns {boolean} True if it's a UNIT_MIGRANT.
- */
+/** @param {*} unit */
 function isMigrant(unit) {
   if (!unit) return false;
   const h = migrantHash();

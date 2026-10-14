@@ -349,11 +349,7 @@ export function announceImportant(msg, cause, ownLoss, accentOverride, channel) 
 /** Causes that name a specific in-world event (war/disaster/conquest), vs economic migration. */
 const REFUGEE_CAUSES = new Set(["war", "disaster", "conquest"]);
 
-/**
- * The set of civs that produced refugees (war/disaster/conquest) in a pass.
- * @param {{cause?:string, srcOwner?:number}[]} migrations Applied migrations.
- * @returns {Set<number>} Source owner ids.
- */
+/** @param {{cause?:string, srcOwner?:number}[]} migrations */
 function refugeeCivs(migrations) {
   /** @type {Set<number>} */
   const set = new Set();
@@ -549,10 +545,6 @@ function toastPerCause(migrations) {
   }
 }
 
-/**
- * The local player id, or null when unavailable.
- * @returns {number|null}
- */
 function localPlayerId() {
   try {
     return typeof GameContext !== "undefined" && typeof GameContext.localPlayerID === "number"

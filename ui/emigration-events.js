@@ -25,12 +25,7 @@ import { msg, msgJoin, msgText } from "/emigration/ui/emigration-loc.js";
 // tile) is often unowned, so scanning the ring attributes the distress to every city in the blast radius.
 const EVENT_RADIUS = 1;
 
-/**
- * The owning city object for a plot, or null.
- * @param {number} x
- * @param {number} y
- * @returns {*}
- */
+/** @param {number} x @param {number} y */
 function cityAt(x, y) {
   try {
     const cid = GameplayMap.getOwningCityFromXY?.(x, y);

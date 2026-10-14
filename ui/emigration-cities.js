@@ -45,11 +45,7 @@ import { resetDistanceCache, resetDiplomacyCache } from "/emigration/ui/emigrati
  * @property {boolean} infected Whether the city is suffering a plague outbreak.
  */
 
-/**
- * Resolve a YieldTypes enum value by key.
- * @param {string} key e.g. "YIELD_FOOD".
- * @returns {*}
- */
+/** @param {string} key */
 function yEnum(key) {
   try {
     return typeof YieldTypes !== "undefined" ? YieldTypes[key] : undefined;
@@ -81,12 +77,7 @@ function readYield(city, key) {
   }
 }
 
-/**
- * Read a city's net happiness (prefer the Happiness subsystem, fall back to the
- * happiness yield).
- * @param {*} city
- * @returns {number}
- */
+/** @param {*} city */
 function readHappiness(city) {
   try {
     const h = city?.Happiness?.netHappinessPerTurn;
@@ -116,11 +107,7 @@ function ownerAtWar(player) {
   return false;
 }
 
-/**
- * Whether the local player has met `owner` (for the requireMet scope).
- * @param {number} owner
- * @returns {boolean} True if met (or self).
- */
+/** @param {number} owner */
 function localHasMet(owner) {
   try {
     const me = GameContext.localPlayerID;

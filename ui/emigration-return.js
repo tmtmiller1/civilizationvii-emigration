@@ -177,12 +177,7 @@ function aggregateOwnerWellbeing(signals) {
   return agg;
 }
 
-/**
- * The largest foreign-origin minority in a host city that's eligible to draw returnees (share + points
- * over the configured floors), or null.
- * @param {*} comp The host city composition.
- * @returns {{civ:number, share:number, pts:number}|null} The eligible diaspora, or null.
- */
+/** @param {*} comp */
 function eligibleDiaspora(comp) {
   if (!comp || typeof comp.owner !== "number") return null;
   let best = null;

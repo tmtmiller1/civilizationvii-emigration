@@ -97,10 +97,7 @@ function nonNegInt(v, fallback) {
   return typeof v === "number" && isFinite(v) ? Math.max(0, Math.floor(v)) : fallback;
 }
 
-/**
- * @param {*} row Candidate spree row.
- * @returns {{turn:number, victim:number, points:number}|null}
- */
+/** @param {*} row */
 function normalizeSpreeRow(row) {
   if (!row || typeof row !== "object") return null;
   if (typeof row.victim !== "number" || !isFinite(row.victim)) return null;
@@ -111,19 +108,12 @@ function normalizeSpreeRow(row) {
   };
 }
 
-/**
- * @param {string} aggressor
- * @param {*} rawRows
- * @returns {boolean}
- */
+/** @param {string} aggressor @param {*} rawRows */
 function isSpreeEntry(aggressor, rawRows) {
   return typeof aggressor === "string" && aggressor.length > 0 && Array.isArray(rawRows);
 }
 
-/**
- * @param {*} rawRows
- * @returns {{turn:number, victim:number, points:number}[]}
- */
+/** @param {*} rawRows */
 function collectSpreeRows(rawRows) {
   /** @type {{turn:number, victim:number, points:number}[]} */
   const rows = [];
@@ -172,10 +162,6 @@ function normalizeState(parsed) {
   };
 }
 
-/**
- * The current age ordinal (for the per-age cap), or 0.
- * @returns {number}
- */
 function currentAge() {
   try {
     return typeof Game !== "undefined" && typeof Game.age === "number" ? Game.age : 0;
@@ -184,10 +170,6 @@ function currentAge() {
   }
 }
 
-/**
- * The local (viewing) player id, or null.
- * @returns {number|null}
- */
 function localPid() {
   try {
     return typeof GameContext !== "undefined" && typeof GameContext.localPlayerID === "number"

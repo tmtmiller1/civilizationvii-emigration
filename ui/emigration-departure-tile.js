@@ -60,11 +60,7 @@ function plotHasResource(x, y) {
   }
 }
 
-/**
- * Hex distance between two plot locations (0 when unreadable).
- * @param {{x:number,y:number}} a @param {{x:number,y:number}} b
- * @returns {number}
- */
+/** @param {{x:number,y:number}} a @param {{x:number,y:number}} b */
 function plotDistance(a, b) {
   try {
     return typeof GameplayMap.getPlotDistance === "function" ? GameplayMap.getPlotDistance(a.x, a.y, b.x, b.y) : 0;
@@ -120,11 +116,7 @@ function improvementFeeds(type) {
   return false;
 }
 
-/**
- * The ConstructibleType name of a constructible instance ("IMPROVEMENT" when unreadable).
- * @param {*} elem The constructible ComponentID.
- * @returns {string}
- */
+/** @param {*} elem */
 function constructibleTypeOf(elem) {
   const inst = Constructibles.getByComponentID(elem);
   const info = inst && typeof GameInfo !== "undefined" ? GameInfo.Constructibles.lookup(inst.type) : null;
@@ -214,10 +206,7 @@ function enclavePlots() {
   return out;
 }
 
-/**
- * Whether a constructible instance is pillaged.
- * @param {*} elem The constructible ComponentID. @returns {boolean}
- */
+/** @param {*} elem */
 function safeDamaged(elem) {
   try {
     const inst = Constructibles.getByComponentID(elem);

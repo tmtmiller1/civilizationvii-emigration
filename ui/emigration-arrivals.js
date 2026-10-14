@@ -205,10 +205,7 @@ function partitionDue(transit, now) {
   return { due, pending };
 }
 
-/**
- * Index the live ranking by destination key, skipping malformed rows.
- * @param {*[]} ranked Ranked signals. @returns {Map<string, *>}
- */
+/** @param {*[]} ranked */
 function buildRanking(ranked) {
   const byKey = new Map();
   for (const s of ranked) if (s && s.key != null) byKey.set(s.key, s);

@@ -60,11 +60,7 @@ function hashFor(type) {
   return h;
 }
 
-/**
- * Read the current player's Culture safely, or null when unavailable.
- * @param {number} pid
- * @returns {*}
- */
+/** @param {number} pid */
 function readCulture(pid) {
   try {
     const players = typeof Players !== "undefined" ? Players : null;
@@ -76,12 +72,7 @@ function readCulture(pid) {
   }
 }
 
-/**
- * Whether any tradition in `types` is active for `culture`.
- * @param {*} culture
- * @param {string[]} types
- * @returns {boolean}
- */
+/** @param {*} culture @param {string[]} types */
 function hasAnyPolicy(culture, types) {
   for (const type of types) {
     const h = hashFor(type);

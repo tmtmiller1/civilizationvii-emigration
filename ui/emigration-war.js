@@ -399,11 +399,7 @@ function engineWarOpponents(victim) {
   return set;
 }
 
-/**
- * A player's Diplomacy object if it exposes `isAtWarWith`, else null.
- * @param {number} victim Player id.
- * @returns {*} The Diplomacy object, or null.
- */
+/** @param {number} victim */
 function diplomacyWithWarTest(victim) {
   try {
     const d = Players?.get?.(victim)?.Diplomacy;

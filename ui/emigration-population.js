@@ -385,7 +385,7 @@ function hashSeed(s) {
   return h >>> 0;
 }
 
-/** Coerce to a finite number or 0. @param {*} v Value. @returns {number} Finite number. */
+/** @param {*} v */
 function num(v) {
   return typeof v === "number" && isFinite(v) ? v : 0;
 }

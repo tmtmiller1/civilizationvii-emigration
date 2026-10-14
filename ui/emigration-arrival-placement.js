@@ -79,10 +79,7 @@ function keyOf(city) {
   }
 }
 
-/**
- * The city's display name.
- * @param {*} city @returns {string}
- */
+/** @param {*} city */
 function cityName(city) {
   try {
     return typeof Locale !== "undefined" && Locale.compose ? Locale.compose(city.name) : String(city.name);
@@ -180,10 +177,7 @@ function notePending(city, from) {
   }
 }
 
-/**
- * Whether the city still has an unplaced point.
- * @param {*} city @returns {boolean} True when pending population > 0.
- */
+/** @param {*} city */
 function hasPending(city) {
   try {
     return typeof city.pendingPopulation === "number" ? city.pendingPopulation > 0 : true;
@@ -294,10 +288,7 @@ function openPlacementMode(city) {
   }
 }
 
-/**
- * The tally tag for an arrival origin ("3|refugee", "|refugee"), or "" when it carries nothing to quote.
- * @param {ArrivalFrom} [from] @returns {string}
- */
+/** @param {ArrivalFrom} [from] */
 function originTag(from) {
   if (!from || (from.kind !== "refugee" && from.kind !== "migrant")) return "";
   return (typeof from.civ === "number" ? String(from.civ) : "") + "|" + from.kind + "|" + (from.cause || "");
@@ -371,10 +362,7 @@ export function arrivalPromptView(city, count, quote = "", origin = null) {
   };
 }
 
-/**
- * A button caption: the label, then its figures ("Let the city settle them: [icon:YIELD_POPULATION] +1, ...").
- * @param {string} label @param {string[]} parts @returns {string}
- */
+/** @param {string} label @param {string[]} parts */
 function caption(label, parts) {
   return label + ": " + parts.filter(Boolean).join(", ");
 }
@@ -495,10 +483,7 @@ function refugeeBody(count, who, fled, name) {
       "{1_Count} population points of {2_Who} refugees have reached {3_City}, fleeing {4_Fled}. Where should they live?", count, who, name, fled);
 }
 
-/**
- * The ordinary newcomer body line.
- * @param {number} count Points. @param {string} name @returns {string}
- */
+/** @param {number} count @param {string} name */
 function migrantBody(count, name) {
   return count === 1
     ? loc("LOC_EMIG_ARRIVAL_BODY_ONE", "A population point of migrants has arrived in {1_City} and is waiting to be settled. Where should they live?", name)
@@ -506,10 +491,7 @@ function migrantBody(count, name) {
 }
 
 
-/**
- * Show the native pop-up for one city and act on the answer.
- * @param {*} city @param {number} count Points waiting. @param {Map<string, number>} [from] Origins.
- */
+/** @param {*} city @param {number} count @param {Map<string, number>} [from] */
 function promptFor(city, count, from) {
   const origin = dominantOrigin(from);
   showDilemma(arrivalPromptView(city, count, arrivalQuote(city, from), origin), (id) => {

@@ -187,11 +187,7 @@ function readGovernment(player) {
   }
 }
 
-/**
- * Resolve a government type value to its string id via GameInfo, or "" when unavailable.
- * @param {*} g A government type value from getGovernmentType().
- * @returns {string} The GovernmentType id, or "".
- */
+/** @param {*} g */
 function governmentName(g) {
   if (typeof GameInfo === "undefined") return "";
   const name = GameInfo.Governments?.lookup?.(g)?.GovernmentType;

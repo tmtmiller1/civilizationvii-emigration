@@ -390,10 +390,7 @@ const NUMBER_FORMATS = {
   count: (/** @type {number} */ n) => composeText("LOC_EMIG_VAL_COUNT", n)
 };
 
-/**
- * A number in a tunable's format, rounded to three decimals (the plain number when there is no format).
- * @param {string|undefined} format A Tunable format. @param {number} v The value. @returns {string} The text.
- */
+/** @param {string|undefined} format @param {number} v */
 function formatNumber(format, v) {
   const n = Math.round(v * 1000) / 1000;
   const f = format ? /** @type {*} */ (NUMBER_FORMATS)[format] : null;

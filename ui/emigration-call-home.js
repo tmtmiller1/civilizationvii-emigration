@@ -273,11 +273,7 @@ function fail(reason, scope) {
   return { ok: false, reason, scope, paid: 0, attempted: 0, returned: 0 };
 }
 
-/**
- * Points in a flow that were driven out rather than drawn away.
- * @param {*} byCause Points/people by cause. @param {number} total The row's total points.
- * @returns {number} Refugee-shaped points.
- */
+/** @param {*} byCause @param {number} total */
 function refugeePoints(byCause, total) {
   if (!byCause || typeof byCause !== "object") return 0;
   let n = 0;

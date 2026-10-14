@@ -126,11 +126,7 @@ export function eventKeyForMove(src, cause) {
   return "";
 }
 
-/**
- * The lethal-distress category for a death (which crisis is killing these people).
- * @param {*} src
- * @returns {string} "disaster" | "war" | "famine" | "unhappiness".
- */
+/** @param {*} src */
 function deathDistressCause(src) {
   if ((src.disaster || 0) >= CONFIG.disasterFleeThreshold) return "disaster";
   if ((src.violence || 0) >= CONFIG.violenceFleeThreshold) return "war";

@@ -7,11 +7,7 @@
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
-/**
- * A city's {x, y} hex location, or null if unreadable.
- * @param {*} sig A CitySignal.
- * @returns {{x:number, y:number}|null}
- */
+/** @param {*} sig */
 function cityLoc(sig) {
   const l = sig?.city?.location;
   return l && typeof l.x === "number" && typeof l.y === "number" ? l : null;
