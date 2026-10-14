@@ -38,11 +38,10 @@ function productiveness(s) {
 }
 
 /**
- * Clamp `v` to [lo, hi].
- * @param {number} v Value.
- * @param {number} lo Lower bound.
- * @param {number} hi Upper bound.
- * @returns {number} Clamped value.
+ * @param {number} v
+ * @param {number} lo
+ * @param {number} hi
+ * @returns {number}
  */
 function clamp(v, lo, hi) {
   return v < lo ? lo : v > hi ? hi : v;

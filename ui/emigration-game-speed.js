@@ -25,7 +25,6 @@ function readSpeedType() {
 
 /**
  * The CostMultiplier for a speed type (Standard = 100), via GameInfo.GameSpeeds.lookup.
- * Defaults to 100 (Standard) when the row or column is missing.
  * @param {*} type The GameSpeed type.
  * @returns {number}
  */
@@ -37,7 +36,7 @@ function lookupMultiplier(type) {
 
 /**
  * Read the raw speed scalar from the engine: CostMultiplier/100 of the active
- * GameSpeed (Standard = 1.0). Fail-safe to 1 on any missing global or error.
+ * GameSpeed (Standard = 1.0).
  * @returns {number} The scalar (>0), or 1 when unreadable.
  */
 function rawSpeedScalar() {

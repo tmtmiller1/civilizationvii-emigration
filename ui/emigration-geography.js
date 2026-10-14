@@ -42,12 +42,11 @@ export function resetDiplomacyCache() {
 }
 
 /**
- * Memoize a boolean per ordered (a, b) player pair in `cache`, computing it once via `compute`.
  * @param {Map<string, boolean>} cache The per-pass cache.
- * @param {number} a First player id.
- * @param {number} b Second player id.
- * @param {() => boolean} compute The uncached read.
- * @returns {boolean} The cached or freshly-computed value.
+ * @param {number} a
+ * @param {number} b
+ * @param {() => boolean} compute
+ * @returns {boolean}
  */
 function memoPair(cache, a, b, compute) {
   const k = a + ":" + b;
@@ -60,10 +59,9 @@ function memoPair(cache, a, b, compute) {
 }
 
 /**
- * Uncached hex distance between two signals' cities, or 0 if either is unreadable.
  * @param {*} a A CitySignal.
  * @param {*} b A CitySignal.
- * @returns {number} Hex distance (>= 0).
+ * @returns {number}
  */
 function rawHexDistance(a, b) {
   const la = cityLoc(a);
@@ -98,7 +96,6 @@ export function hexDistance(a, b) {
 }
 
 /**
- * Uncached war read between two players (best-effort).
  * @param {number} a Player id.
  * @param {number} b Player id.
  * @returns {boolean}
@@ -180,7 +177,7 @@ export function aggressorAdjust(src, dest, aggressors) {
   return 0;
 }
 
-/** Smoothstep on [0,1]. @param {number} x @returns {number} */
+/** @param {number} x @returns {number} */
 function smoothstep01(x) {
   const c = x < 0 ? 0 : x > 1 ? 1 : x;
   return c * c * (3 - 2 * c);

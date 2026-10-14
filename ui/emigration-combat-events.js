@@ -29,7 +29,7 @@ const _unitLoc = new Map();
 /** @type {*[]} Live subscriptions, so stop() can detach exactly what start() attached. */
 let _subs = [];
 
-/** @returns {number} The current game turn, or 0. */
+/** @returns {number} */
 function gameTurn() {
   try {
     return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
@@ -60,7 +60,6 @@ function rollUnitCache() {
 }
 
 /**
- * Accept one event at a city: bump the sequence and return the city's running totals.
  * @param {string} key The city key. @returns {Totals}
  */
 function accept(key) {
@@ -175,7 +174,7 @@ function onDistrictDamage(data) {
   accept(key).dmg += delta / max;
 }
 
-/** @returns {Evidence} Nothing seen. */
+/** @returns {Evidence} */
 const EMPTY = () => ({ dmg: 0, battles: 0, kills: 0, attackers: [] });
 
 /**

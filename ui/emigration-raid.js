@@ -23,9 +23,8 @@ const RAID_ACTION = {
 };
 
 /**
- * A player's live diplomacy events, or [] when unreadable (Diplomacy API absent, etc.).
- * @param {number} pid Player id.
- * @returns {any[]} The events.
+ * @param {number} pid
+ * @returns {any[]}
  */
 function playerEvents(pid) {
   try {

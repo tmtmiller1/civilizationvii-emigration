@@ -28,7 +28,7 @@ let _state = null;
 registerCacheReset(() => { _state = null; });
 
 /**
- * @returns {DisasterState} Empty disaster state.
+ * @returns {DisasterState}
  */
 function emptyState() {
   return { byCity: {}, typeByCity: {}, observedTurn: {}, onsetPop: {}, disasterLoss: {}, decayTurn: gameTurn() };
@@ -50,7 +50,7 @@ function payloadFromBlob(parsed) {
 /**
  * @param {string} k
  * @param {*} v
- * @param {boolean} nonNegative Whether values must be non-negative.
+ * @param {boolean} nonNegative
  * @returns {boolean}
  */
 function isValidNumericEntry(k, v, nonNegative) {
@@ -60,8 +60,8 @@ function isValidNumericEntry(k, v, nonNegative) {
 }
 
 /**
- * @param {*} m Candidate numeric map.
- * @param {boolean} nonNegative Whether values must be non-negative.
+ * @param {*} m
+ * @param {boolean} nonNegative
  * @returns {Record<string, number>}
  */
 function normalizeNumericMap(m, nonNegative) {
@@ -163,7 +163,6 @@ function gameTurn() {
 }
 
 /**
- * The raw persisted state string, or null.
  * @returns {string|null}
  */
 function readStored() {
@@ -173,7 +172,6 @@ function readStored() {
 }
 
 /**
- * Load (once) the persisted distress state.
  * @returns {DisasterState}
  */
 function state() {
@@ -193,7 +191,6 @@ function state() {
   return _state;
 }
 
-/** Persist the distress state to GameConfiguration. */
 function persist() {
   try {
     const normalized = normalizeState(_state) || emptyState();
@@ -207,7 +204,6 @@ function persist() {
 }
 
 /**
- * A stable string key for a city ComponentID, or null if unusable.
  * @param {*} cid A city ComponentID.
  * @returns {string|null}
  */

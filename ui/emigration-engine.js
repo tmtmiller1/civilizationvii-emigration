@@ -146,8 +146,7 @@ function inCrisis(src) {
     || (src.disaster || 0) >= CONFIG.disasterFleeThreshold;
 }
 
-/** A source rests (skips a move) only when on cooldown and its cause is voluntary (not war/disaster).
- * @param {{cooldown:number}} st Per-source state. @param {boolean} forced Forced-cause flag. */
+/** @param {{cooldown:number}} st @param {boolean} forced */
 function restingOnCooldown(st, forced) {
   return !forced && st.cooldown > 0;
 }
@@ -195,7 +194,7 @@ function sourceState(state, key) {
 
 /** Causes that draw from the crisis budget/track (vs voluntary prosperity/unhappiness). */
 const CRISIS_TRACK = new Set(["war", "disaster", "conquest", "attrition"]);
-/** @param {string} cause @returns {boolean} Whether it's a crisis-track cause. */
+/** @param {string} cause @returns {boolean} */
 function isCrisisTrack(cause) {
   return CRISIS_TRACK.has(cause);
 }
@@ -345,12 +344,11 @@ function shedBurst(src, dest, state, cause, budget, inboundCtx, reasons) {
 }
 
 /**
- * The best destination for `src` that can still receive migrants this turn.
  * @param {*} src Source signal.
  * @param {*[]} ranked Ranked city signals.
  * @param {Record<number, number>} ownerPop Per-owner populations.
  * @param {InboundCtx} inboundCtx Per-turn destination-inbound cap context.
- * @returns {{dest:*, adjusted:number}|null} Best open destination.
+ * @returns {{dest:*, adjusted:number}|null}
  */
 function bestOpenDestination(src, ranked, ownerPop, inboundCtx) {
   return bestDestination(src, ranked, ownerPop, (d) => canReceiveInbound(d.key, inboundCtx));
@@ -882,7 +880,7 @@ function remainingBudgets(owner, ceilings, used) {
   return { voluntary: rem, crisis: rem, shared: true };
 }
 
-/** Count one applied record against its track's used budget (war/disaster/conquest/attrition → crisis).
+/**
  * @param {Record<number, {voluntary:number, crisis:number}>} used Usage map.
  * @param {number} owner Civ id. @param {string} cause The record's cause. */
 function tallyUse(used, owner, cause) {

@@ -200,7 +200,7 @@ function eventSeverity(data, info) {
   return Math.max(1, tier + (eventImpactPct(info) >= 35 ? 1 : 0));
 }
 
-/** Clamp to [0,1]. @param {number} x @returns {number} */
+/** @param {number} x @returns {number} */
 function clamp01(x) {
   return x < 0 ? 0 : x > 1 ? 1 : x;
 }

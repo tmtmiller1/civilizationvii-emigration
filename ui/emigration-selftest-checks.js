@@ -26,7 +26,7 @@ import { placementMode, PLACEMENT } from "/emigration/ui/emigration-arrival-plac
 import { pullReasonsPhrase, reasonLabel } from "/emigration/ui/emigration-move-reasons.js";
 import { digestAccent } from "/emigration/ui/emigration-causes.js";
 
-/** A number, coerced (NaN/undefined → 0). @param {*} x @returns {number} */
+/** @param {*} x @returns {number} */
 function num(x) {
   const n = Number(x);
   return isFinite(n) ? n : 0;
@@ -73,7 +73,7 @@ export function errMsg(e) {
   }
 }
 
-/** Composition read that never throws. @param {*} city @returns {*} */
+/** @param {*} city @returns {*} */
 function safeComp(city) {
   try {
     return compositionForCity(city);
@@ -262,7 +262,6 @@ function checkDemographics() {
     "Demographics mod not detected. Emigration works standalone; its dashboard opens from “Open dashboard”.");
 }
 
-/** Force capability: the state of the enclave Force option. */
 function checkForce() {
   return row("Force enclave option", CONFIG.quarterForce ? "PASS" : "INFO",
     CONFIG.quarterForce

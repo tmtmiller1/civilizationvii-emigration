@@ -115,7 +115,6 @@ function cap(s) {
 }
 
 /**
- * The chronicle line for a mass flight (an exodus) driven by war.
  * @param {{civ:MsgNode, war:MsgNode, city:MsgNode, people:MsgNode, seed:string}} e The event.
  * @returns {MsgNode} The line.
  */
@@ -137,7 +136,6 @@ function warExodus(e) {
 }
 
 /**
- * The chronicle line for an exodus driven by disaster.
  * @param {{civ:MsgNode, disaster:MsgNode, city:MsgNode, people:MsgNode, seed:string}} e The event.
  * @returns {MsgNode} The line.
  */
@@ -159,7 +157,6 @@ function disasterExodus(e) {
 }
 
 /**
- * The chronicle line for a general (unhappiness/prosperity) departure.
  * @param {{civ:MsgNode, city:MsgNode, people:MsgNode, seed:string}} e The event.
  * @returns {MsgNode} The line.
  */

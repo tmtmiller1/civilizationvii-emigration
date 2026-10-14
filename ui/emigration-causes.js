@@ -263,7 +263,6 @@ export function stanceTipMsg() {
 const CAUSE_ORDER = ["war", "conquest", "disaster", "attrition", "unhappiness", "prosperity", "return"];
 
 /**
- * A cause's tie-break rank (unknown causes sort after all known ones).
  * @param {string} cause
  * @returns {number}
  */

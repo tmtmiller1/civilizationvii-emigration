@@ -60,10 +60,7 @@ function keys() {
   return _keys;
 }
 
-/**
- * The current game turn, or 0.
- * @returns {number}
- */
+/** @returns {number} */
 function gameTurn() {
   try {
     return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
@@ -90,9 +87,8 @@ function loadPersisted() {
 }
 
 /**
- * Normalize a loaded array into clean, capped ChronicleEntries, dropping any element without a usable
- * body. Each entry keeps its own stored turn (not the current one).
- * @param {*[]} arr The raw loaded array.
+ * Each entry keeps its own stored turn (not the current one).
+ * @param {*[]} arr
  * @returns {ChronicleEntry[]}
  */
 function normalizeLoaded(arr) {
@@ -117,7 +113,6 @@ function log() {
   return _log;
 }
 
-/** Persist the chronicle to GameConfiguration. */
 function persist() {
   try {
     Configuration?.editGame?.()?.setValue?.(STATE_KEY, JSON.stringify(_log || []));
@@ -235,7 +230,6 @@ function cleanEntry(entry, turn) {
 }
 
 /**
- * Copy the well-formed packed title / body messages of `entry` onto the clean entry `e`.
  * @param {*} entry The source entry. @param {*} e The clean entry (mutated).
  */
 function copyMessages(entry, e) {
@@ -246,7 +240,6 @@ function copyMessages(entry, e) {
 }
 
 /**
- * Normalize a partial entry into a stamped ChronicleEntry (current turn + cleaned fields).
  * @param {Partial<ChronicleEntry>} entry The entry (its `body` is already validated).
  * @returns {ChronicleEntry}
  */

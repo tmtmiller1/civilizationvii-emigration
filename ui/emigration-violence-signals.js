@@ -133,9 +133,8 @@ export function districtBesieged(city) {
 }
 
 /**
- * Whether a plot has a pillaged (damaged) constructible on it.
- * @param {{x:number, y:number}} loc Plot location.
- * @returns {boolean} True if any constructible there is damaged.
+ * @param {{x:number, y:number}} loc
+ * @returns {boolean}
  */
 function plotHasPillage(loc) {
   try {

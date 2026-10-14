@@ -35,9 +35,8 @@ const OVERTIME_EASE = 0.1;
 const OVERTIME_MAX = 5;
 
 /**
- * Smoothstep on [0,1].
- * @param {number} x Input.
- * @returns {number} Smoothed value.
+ * @param {number} x
+ * @returns {number}
  */
 function smoothstep(x) {
   const c = Math.max(0, Math.min(1, x));
@@ -208,7 +207,6 @@ export function marginalPeople(pop, turn, seedKey, signal) {
 }
 
 /**
- * Resolve the active age type from the engine.
  * @returns {string | undefined} Age type (e.g. AGE_MODERN), if available.
  */
 function currentAgeType() {
@@ -222,9 +220,8 @@ function currentAgeType() {
 }
 
 /**
- * Convert a 0–1 progress fraction to a 0–100 percent; undefined when non-finite.
- * @param {*} v Fraction.
- * @returns {number | undefined} Percent, or undefined.
+ * @param {*} v
+ * @returns {number | undefined}
  */
 function fractionToPct(v) {
   return typeof v === "number" && isFinite(v) ? v * 100 : undefined;

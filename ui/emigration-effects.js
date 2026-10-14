@@ -44,7 +44,6 @@ function elapsedSince(map, key, turn) {
 }
 
 /**
- * The raw persisted assimilation state string, or null.
  * @returns {string|null}
  */
 function readStored() {
@@ -54,7 +53,6 @@ function readStored() {
 }
 
 /**
- * Load the persisted state (once) into the module cache.
  * @returns {{ load: Record<string, number>, tickedTurn: Record<string, number> }}
  */
 function state() {
@@ -74,7 +72,6 @@ function state() {
   return _state;
 }
 
-/** Persist the assimilation state to GameConfiguration. */
 function persist() {
   try {
     Configuration?.editGame?.()?.setValue?.(STATE_KEY, JSON.stringify(_state));
@@ -155,10 +152,8 @@ export function tickAssimilation(pid) {
 }
 
 /**
- * A civ's current gold balance (treasury), or null when unreadable: the goldBalance field, then
- * getGoldBalance().
  * @param {number} pid
- * @returns {number|null} Null off-engine / when absent.
+ * @returns {number|null}
  */
 function goldBalanceFor(pid) {
   try {
@@ -202,9 +197,8 @@ function assimilationGoldCost(pid, load) {
 }
 
 /**
- * Deduct the per-turn assimilation cost for a given load and return the amounts.
  * @param {number} pid
- * @param {number} load Current load.
+ * @param {number} load
  * @returns {{load:number, happiness:number, gold:number}}
  */
 function chargeAssimilation(pid, load) {

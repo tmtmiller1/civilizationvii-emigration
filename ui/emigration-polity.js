@@ -172,8 +172,7 @@ export function readPolity(owner) {
 }
 
 /**
- * The government type id for a player (e.g. "GOVERNMENT_DESPOTISM"), or "" when unreadable. Uses
- * Culture.getGovernmentType() → GameInfo.Governments.lookup().GovernmentType.
+ * The government type id for a player (e.g. "GOVERNMENT_DESPOTISM"), or "" when unreadable.
  * @param {*} player Player object.
  * @returns {string} Government type id, or "".
  */
@@ -204,9 +203,8 @@ export function governmentLean(government) {
 }
 
 /**
- * Evaluate a getter to a boolean, defaulting to false on any error/undefined.
- * @param {() => *} get Thunk reading the value.
- * @returns {boolean} The coerced boolean.
+ * @param {() => *} get
+ * @returns {boolean}
  */
 function readBool(get) {
   try {
@@ -217,9 +215,8 @@ function readBool(get) {
 }
 
 /**
- * Evaluate a getter to a finite number, defaulting to 0 on any error/undefined.
- * @param {() => *} get Thunk reading the value.
- * @returns {number} The numeric value, or 0.
+ * @param {() => *} get
+ * @returns {number}
  */
 function readNumber(get) {
   try {
