@@ -8,6 +8,7 @@
 
 import { loc } from "/emigration/ui/emigration-loc.js";
 import { yieldsText } from "/emigration/ui/emigration-enclave-yields.js";
+import { recordStage, fadeTurnsLeft, dwellTurnsLeft, STAGE_WORD } from "/emigration/ui/emigration-enclave-stage.js";
 
 /**
  * @typedef {Object} EnclaveTipInput
@@ -27,6 +28,7 @@ import { yieldsText } from "/emigration/ui/emigration-enclave-yields.js";
  * @property {number} [benefitScale] 1, or the contested factor while at war with the homeland.
  * @property {{elapsed:number, needed:number}|null} [dwell] Progress toward recognition.
  * @property {number} [turn] Now (monotonic). @property {number} [fadeTurns] Turns below the bar before dissolving.
+ * @property {string[]} [blockers] What holds an established enclave back from recognition, in plain words.
  */
 
 /**
@@ -88,12 +90,10 @@ export function scaledStance(stance, scale) {
  * @param {*} rec The quarter record. @returns {"fading"|"contested"|"recognized"|"established"}
  */
 export function stageOf(rec) {
-  if (rec && typeof rec.fadeSince === "number") return "fading";
   // Contested regardless of recognition: the mod marks every one of a host's enclaves contested while it
   // is at war with the homeland and charges the happiness strain for them, recognized or not, so an
   // established-but-unrecognized enclave can be costing the player happiness.
-  if (rec && rec.contested) return "contested";
-  return !rec || rec.recognized !== false ? "recognized" : "established";
+  return recordStage(rec);
 }
 
 /**
@@ -103,7 +103,7 @@ export function stageOf(rec) {
 function stageLine(i) {
   const key = stageOf(i.rec);
   if (key === "fading") {
-    const left = Math.max(1, Math.ceil(num(i.fadeTurns) - (num(i.turn) - num(i.rec.fadeSince))));
+    const left = fadeTurnsLeft(i.rec.fadeSince, num(i.turn), num(i.fadeTurns));
     return { key,
       text: loc("LOC_EMIG_ETIP_STAGE_FADING", "Fading, {1_Turns} turns left", left),
       detail: loc("LOC_EMIG_ETIP_STAGE_FADING_D", "Too few of them are left to keep it going.") };
@@ -123,13 +123,13 @@ function stageLine(i) {
         : loc("LOC_EMIG_ETIP_STAGE_RECOGNIZED_LETBE", "Recognized. You left them alone."),
       detail: "" };
   }
-  const d = i.dwell;
-  const left = d ? Math.max(0, Math.ceil(num(d.needed) - num(d.elapsed))) : 0;
+  const left = dwellTurnsLeft(i.dwell) || 0;
+  const held = Array.isArray(i.blockers) && i.blockers.length ? i.blockers.join(". ") + ". " : "";
   return { key,
     text: left > 0
-      ? loc("LOC_EMIG_ETIP_STAGE_ESTABLISHED", "Established, recognized in {1_Turns} turns", left)
+      ? loc("LOC_EMIG_ETIP_STAGE_ESTABLISHED", "Established, recognized in {1_Turns} turns if it holds", left)
       : loc("LOC_EMIG_ETIP_STAGE_ESTABLISHED_DUE", "Established, ready to be recognized"),
-    detail: loc("LOC_EMIG_ETIP_STAGE_ESTABLISHED_D", "You'll pick how to treat them when that happens.") };
+    detail: held + loc("LOC_EMIG_ETIP_STAGE_ESTABLISHED_D", "You'll pick how to treat them when that happens.") };
 }
 
 /**
@@ -249,12 +249,7 @@ function sumYields(maps) {
  */
 export function markerStageLine(rec, stance) {
   const key = stageOf(rec);
-  const word = {
-    established: loc("LOC_EMIG_ETIP_MARK_ESTABLISHED", "Established"),
-    recognized: loc("LOC_EMIG_ETIP_MARK_RECOGNIZED", "Recognized"),
-    contested: loc("LOC_EMIG_ETIP_MARK_CONTESTED", "Contested"),
-    fading: loc("LOC_EMIG_ETIP_MARK_FADING", "Fading")
-  }[key];
+  const word = loc(STAGE_WORD[key][0], STAGE_WORD[key][1]);
   const y = key === "established" ? "" : yieldsText(stance || {});
   return y ? word + "  " + y : word;
 }

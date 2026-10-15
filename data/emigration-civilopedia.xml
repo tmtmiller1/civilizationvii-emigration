@@ -44,7 +44,9 @@
     <CivilopediaPageLayouts>
         <Row PageLayoutID="EMIG_ARRIVALS" UseSidebar="false"/>
         <Row PageLayoutID="EMIG_CALLHOME" UseSidebar="false"/>
+        <Row PageLayoutID="EMIG_GROWTH" UseSidebar="false"/>
         <Row PageLayoutID="EMIG_POLICIES" UseSidebar="false"/>
+        <Row PageLayoutID="EMIG_TREATMENT" UseSidebar="false"/>
         <Row PageLayoutID="EMIG_LENSES" UseSidebar="false"/>
         <Row PageLayoutID="EMIG_NOTIFICATIONS" UseSidebar="false"/>
         <Row PageLayoutID="EMIG_OPTIONS" UseSidebar="false"/>
@@ -61,6 +63,13 @@
         <Row PageLayoutID="EMIG_ARRIVALS" ChapterID="RESETTLE" SortIndex="50"/>
         <Row PageLayoutID="EMIG_ARRIVALS" ChapterID="COST" SortIndex="60"/>
 
+        <Row PageLayoutID="EMIG_GROWTH" ChapterID="CONTENT" SortIndex="10"/>
+        <Row PageLayoutID="EMIG_GROWTH" ChapterID="FOOTHOLD" SortIndex="20"/>
+        <Row PageLayoutID="EMIG_GROWTH" ChapterID="ESTABLISHED" SortIndex="30"/>
+        <Row PageLayoutID="EMIG_GROWTH" ChapterID="RECOGNIZED" SortIndex="40"/>
+        <Row PageLayoutID="EMIG_GROWTH" ChapterID="ENDINGS" SortIndex="50"/>
+        <Row PageLayoutID="EMIG_GROWTH" ChapterID="LIMITS" SortIndex="60"/>
+
         <Row PageLayoutID="EMIG_CALLHOME" ChapterID="CONTENT" SortIndex="10"/>
         <Row PageLayoutID="EMIG_CALLHOME" ChapterID="OWN" SortIndex="20"/>
         <Row PageLayoutID="EMIG_CALLHOME" ChapterID="ABROAD" SortIndex="30"/>
@@ -70,6 +79,8 @@
         <Row PageLayoutID="EMIG_POLICIES" ChapterID="ANTIQUITY" SortIndex="20"/>
         <Row PageLayoutID="EMIG_POLICIES" ChapterID="EXPLORATION" SortIndex="30"/>
         <Row PageLayoutID="EMIG_POLICIES" ChapterID="MODERN" SortIndex="40"/>
+
+        <Row PageLayoutID="EMIG_TREATMENT" ChapterID="CONTENT" SortIndex="10"/>
 
         <Row PageLayoutID="EMIG_LENSES" ChapterID="CONTENT" SortIndex="10"/>
         <Row PageLayoutID="EMIG_LENSES" ChapterID="PROSPERITY" SortIndex="20"/>
@@ -115,6 +126,7 @@
         <Row SectionID="EMIGRATION" PageID="ASSIMILATION" PageGroupID="EMIG_SYSTEMS" PageLayoutID="Concept" Name="LOC_PEDIA_EMIG_ASSIMILATION_TITLE" SortIndex="40"/>
         <Row SectionID="EMIGRATION" PageID="ETHNICITY" PageGroupID="EMIG_SYSTEMS" PageLayoutID="Concept" Name="LOC_PEDIA_EMIG_ETHNICITY_TITLE" SortIndex="45"/>
         <Row SectionID="EMIGRATION" PageID="ENCLAVES" PageGroupID="EMIG_SYSTEMS" PageLayoutID="Concept" Name="LOC_PEDIA_EMIG_ENCLAVES_TITLE" SortIndex="47"/>
+        <Row SectionID="EMIGRATION" PageID="GROWTH" PageGroupID="EMIG_SYSTEMS" PageLayoutID="EMIG_GROWTH" Name="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_TITLE" SortIndex="48"/>
         <Row SectionID="EMIGRATION" PageID="CALLHOME" PageGroupID="EMIG_SYSTEMS" PageLayoutID="EMIG_CALLHOME" Name="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_TITLE" SortIndex="49"/>
         <Row SectionID="EMIGRATION" PageID="CHRONICLE" PageGroupID="EMIG_SYSTEMS" PageLayoutID="Concept" Name="LOC_PEDIA_EMIG_CHRONICLE_TITLE" SortIndex="52"/>
         <Row SectionID="EMIGRATION" PageID="CIVTUNING" PageGroupID="EMIG_SYSTEMS" PageLayoutID="Concept" Name="LOC_PEDIA_EMIG_CIVTUNING_TITLE" SortIndex="80"/>
@@ -122,6 +134,7 @@
         <!-- Policy & Diplomacy -->
         <Row SectionID="EMIGRATION" PageID="BORDERS" PageGroupID="EMIG_POLICY" PageLayoutID="Concept" Name="LOC_PEDIA_EMIG_BORDERS_TITLE" SortIndex="50"/>
         <Row SectionID="EMIGRATION" PageID="ATTRACTION" PageGroupID="EMIG_POLICY" PageLayoutID="Concept" Name="LOC_PEDIA_EMIG_ATTRACTION_TITLE" SortIndex="55"/>
+        <Row SectionID="EMIGRATION" PageID="TREATMENT" PageGroupID="EMIG_POLICY" PageLayoutID="EMIG_TREATMENT" Name="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_TITLE" SortIndex="52"/>
         <Row SectionID="EMIGRATION" PageID="RAIDS" PageGroupID="EMIG_POLICY" PageLayoutID="Concept" Name="LOC_PEDIA_EMIG_RAIDS_TITLE" SortIndex="58"/>
         <Row SectionID="EMIGRATION" PageID="POLICIES" PageGroupID="EMIG_POLICY" PageLayoutID="EMIG_POLICIES" Name="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_TITLE" SortIndex="60"/>
 

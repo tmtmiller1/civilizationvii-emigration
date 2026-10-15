@@ -246,6 +246,12 @@
                     <Item>ui/emigration-quarter-bonuses.js</Item>
                     <Item>ui/emigration-quarter-registry.js</Item>
                     <Item>ui/emigration-quarter-state.js</Item>
+                    <Item>ui/emigration-quarter-hosts.js</Item>
+                    <Item>ui/emigration-enclave-stage.js</Item>
+                    <Item>ui/emigration-enclave-stage-read.js</Item>
+                    <Item>ui/emigration-treatment.js</Item>
+                    <Item>ui/emigration-consular.js</Item>
+                    <Item>ui/emigration-partisans.js</Item>
                     <!-- What a recognized enclave's stance pays once, sized from the host's income. -->
                     <Item>ui/emigration-stance-payout.js</Item>
                     <Item>ui/emigration-quarter.js</Item>

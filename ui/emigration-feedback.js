@@ -32,6 +32,7 @@ import { emigrationRetention } from "/emigration/ui/emigration-borders.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { channelFor, trainAvailable, trainNotify } from "/emigration/ui/emigration-train.js";
+import { uprisingNameOf } from "/emigration/ui/emigration-partisans.js";
 
 const NEWS_KEY = "EmigrationNews_v1";
 const NEWS_SCHEMA_VERSION = 2;
@@ -593,6 +594,7 @@ function foldEvent(map, m, me) {
     // destOwner being present, or a lagged cross-civ departure (which withholds destOwner) mislabels
     // as internal.
     ev.reasons = Array.isArray(m.reasons) ? m.reasons : []; // the lead move's "why here" tags
+    ev.eventKey = m.eventKey || ""; // names a Partisans rising behind a war departure
   }
 }
 
@@ -644,6 +646,7 @@ function eventMessage(ev) {
     city: ev.srcName || msg("LOC_EMIG_FALLBACK_A_SETTLEMENT", "a settlement"),
     crossCiv: ev.crossCiv, destName: dv.toCity || dv.toCiv, destGold, why: pullReasonsMsg(ev.reasons),
     byCiv: conquerorName(ev), // the (unmet-masked) conquering civ name; only the conquest headline reads it
+    uprising: uprisingNameOf(ev.eventKey) || undefined,
     stanceTip
   });
 }

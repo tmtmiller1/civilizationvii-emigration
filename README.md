@@ -125,6 +125,10 @@ Compatible with Civilization VII 1.5.0.
 - **Pro-Immigration Stance:** stronger inbound migration and more Influence
 - **Anti-Immigration Stance:** stronger retention and more Production
 - **Open Borders:** increases cross-civilization migration
+- **Community treatment cards:** a protective card keeps enclave payouts whole in wartime and earns Influence; a
+  suspicion card earns Production while enclaves pay half and fewer immigrants come
+- **Consular Protection:** Influence for your people's enclaves abroad, and grievances against a host that slots a
+  suspicion card over them
 
 ### Identity and culture
 
@@ -611,6 +615,29 @@ Migration and retention are custom UI-VM mechanics. Influence and Production are
 
 **Diplomatic Open Borders (`openBordersBonus`).** An active base-game Open Borders agreement increases migration both ways. Checked in `emigration-geography.js`; console: `emigration.openBorders(aPid, bPid)`.
 
+**Community treatment (`emigration-treatment.js`, `emigration-consular.js`).** Each age adds a protective card and a
+suspicion card, open to every civilization, that set how a host treats the enclaves in its cities. They unlock with that
+age's stance cards. The flat yields are native modifiers; the rest is scripted and read through
+`treatmentStance(pid)` and `hasConsular(pid)` in `emigration-borders.js`. Slotting one of each kind cancels the scripted
+effects (both yields stay).
+
+- **Protective** (Guest Right, Charter of Communities, Equal Protection): +1/+2/+3 Influence. An enclave recognized
+  while the host is at war with its homeland is paid in full (factor 1.0 instead of `contestedQuarterYieldFactor`).
+- **Suspicion** (Watched Quarters, Oaths of Loyalty, Registration of Residents): +1/+2/+3 Production per city. Every
+  recognized enclave's payout is halved at payout time (×0.5, so ×0.25 at war), and inbound migration is ×0.75, applied
+  after the border stance and still floored by `opennessFloor`.
+- **Consular Protection** (Exploration at Diplomatic Service, Modern at Political Theory; script-only): +1 Influence per
+  turn per recognized enclave of this civ's people in another civ's cities, capped at +4, granted on that civ's turn
+  through `Players.grantYield`. Once per host per age, a host with a suspicion card slotted while this civ's people hold
+  an enclave there receives 30 grievances from the consular civ. The engine books a grievance on the civ that did the
+  wrong, so the write is `Players.get(host).Diplomacy.changeNumGrievances(consular, 30000)`, and the history entry
+  reads as triggered by the host. The stamps are saved under `EmigrationConsular_v1`.
+
+The card text also says how a community's unrest behaves under each card. That part is for the Partisans mod, which
+reads the cards; on its own, Emigration names the host's card in the Chronicle when war first reaches an enclave (see
+§6i). Consular Protection sits on Diplomatic Service and Political Theory rather than with the stance cards, because
+Economics and Social Question would otherwise unlock six and seven policy cards.
+
 #### Policy cards by age (shipped)
 
 Antiquity:
@@ -619,6 +646,8 @@ Antiquity:
 |---|---|
 | Pro-Immigration Stance (Citizenship) | +1 Influence/turn; migration pull ×1.5 |
 | Anti-Immigration Stance (Citizenship) | −2 Influence/turn, +2 Production/city; inbound ×0.4, outbound ×0.6 |
+| Guest Right (Citizenship) | +1 Influence/turn; enclave payout kept whole in wartime |
+| Watched Quarters (Citizenship) | +1 Production/city; enclave payout ×0.5, inbound ×0.75 |
 
 Exploration:
 
@@ -630,6 +659,9 @@ Exploration:
 | Cultural Magnetism (Society) | +1 Culture/turn; +1.5 Culture pool per arrival |
 | Commercial Draw (Mercantilism) | +1 Gold/turn; +1.5 Gold pool per arrival |
 | Selective Asylum (Piety) | +1 Influence/turn; refugee pull tilt |
+| Charter of Communities (Economics) | +2 Influence/turn; enclave payout kept whole in wartime |
+| Oaths of Loyalty (Economics) | +2 Production/city; enclave payout ×0.5, inbound ×0.75 |
+| Consular Protection (Diplomatic Service) | +1 Influence/turn per recognized enclave abroad (max +4); grievances vs. a suspicious host |
 
 Modern:
 
@@ -641,8 +673,11 @@ Modern:
 | Cultural Magnetism (Natural History) | +2 Culture/turn; +1.5 Culture pool per arrival |
 | Commercial Draw (Capitalism) | +2 Gold/turn; +1.5 Gold pool per arrival |
 | Refugee Compact (Political Theory) | +2 Influence/turn, +1 Culture/turn; refugee pull tilt |
+| Equal Protection (Social Question) | +3 Influence/turn; enclave payout kept whole in wartime |
+| Registration of Residents (Social Question) | +3 Production/city; enclave payout ×0.5, inbound ×0.75 |
+| Consular Protection (Political Theory) | +1 Influence/turn per recognized enclave abroad (max +4); grievances vs. a suspicious host |
 
-Internal IDs: `OPEN_BORDERS` = Pro-Immigration, `CLOSED_BORDERS` = Anti-Immigration, `TALENT` = Talent Attraction, `CULTPULL` = Cultural Magnetism, `TRADEPULL` = Commercial Draw, and `ASYLUM` = Selective Asylum / Refugee Compact. Prefix `TRADITION_EMIG_`; age suffixes are `_ANTIQUITY`, `_EXPLORATION`, and `_MODERN`.
+Internal IDs: `OPEN_BORDERS` = Pro-Immigration, `CLOSED_BORDERS` = Anti-Immigration, `TALENT` = Talent Attraction, `CULTPULL` = Cultural Magnetism, `TRADEPULL` = Commercial Draw, `ASYLUM` = Selective Asylum / Refugee Compact, `PROTECT` = the protective treatment cards, `SUSPECT` = the suspicion cards, and `CONSULAR` = Consular Protection. Prefix `TRADITION_EMIG_`; age suffixes are `_ANTIQUITY`, `_EXPLORATION`, and `_MODERN`.
 
 #### How attraction policy card yields function
 
@@ -719,6 +754,28 @@ Rare refugee decisions can follow a major upheaval such as conquest or plague. T
 
 A durable foreign community can form a **Cultural Enclave**, represented by a real improvement on a host-city tile and marked with the origin civilization's identity. Enclaves form in AI and player cities, can fade, and can be built over. Code and save-state names still use "quarter."
 
+#### How an enclave grows
+
+A settlement's largest community from another civilization goes through three stages. The city readout names the stage
+first ("Greek community: foothold", "Greek enclave: established", "Greek enclave: recognized (Merchants' Guild)",
+"Greek enclave: fading, 4 turns left"), then the next step ("Becomes an enclave at 30% of Mutsu (now 22%)",
+"Recognized in 5 turns if it holds"), then anything holding it back in plain words. The enclave tooltip, its map
+marker and the Diversity table use the same stage names, and the Civilopedia has a page, How an Enclave Grows.
+
+- **Foothold:** 25% of the settlement and at least 3 population of its own. The Chronicle notes it; there's no tile.
+- **Established:** 30% of the settlement, or 6 population at any share (scaled to settlement size), with the same
+  floor. The enclave forms: a record and a tile at the city's edge. The host's per-age cap and the two-per-origin cap
+  hold formation back.
+- **Recognized:** after 8 turns established, with dips of up to 3 turns forgiven, a stance is chosen and pays once.
+  Recognition waits while the community is below the bar or its origin is at the two-per-origin cap; when you're asked,
+  it also waits out the 12-turn cooldown and stops once 3 decisions are made this age.
+
+An enclave ends when it fades (below 12.5% and below the size bar for 12 turns), when its tile is built over or the
+city is razed. A settlement taken by a city-state or independent keeps its record, set aside, until a civilization holds
+it again. Per-age pacing lowers the bars while a civilization has formed no enclave this age. The rules live in one
+place, `ui/emigration-enclave-stage.js`, whose header describes the lifecycle; `enclaveStage()` gives a settlement's
+stage, its next step and its blockers, and `emigration-enclave-stage-read.js` words them for the readout and tooltip.
+
 **Formation (`emigration-diaspora.js`).** The leading foreign origin is staged as:
 
 - `established`: `stock >= quarterMinStock` (3) and either `share >= quarterEstablishedShare` (0.30) or `stock >= stockBar`
@@ -774,9 +831,17 @@ Placement prefers a nearby empty flat/hill plot, creating a rural district first
 
 **Built over.** After a two-turn grace period, an enclave whose tile has been replaced is retired and recorded in the Chronicle. A failed placement is also written off. Departures never choose an enclave tile. Pillage damages but does not remove it; razing the city does.
 
+**Captured settlements (`emigration-quarter-hosts.js`).** Once per pass, each enclave record takes the current owner of
+the city at its key, so a captured settlement's enclave goes with it to the captor, and the settlement's name is kept on
+the record. A record a city-state or independent now holds stays on file but gets no upkeep (no strain, grants or fade)
+until a major civilization holds the city again. When the settlement is gone and the Partisans mod reports it burned in
+an uprising, the enclave closes with "{City} Burns" in the Chronicle instead of the built-over line.
+
 **Fade (`quarterFadeShare`, `quarterFadeTurns`).** The fade clock runs while both origin share and stock remain below their thresholds. After `quarterFadeTurns` (12), the tile and record are cleared. Crossing either bar resets the clock. `quarterFadeShare = 0` makes enclaves permanent. With normal integration and no new inflow, a community typically fades in roughly 35–45 turns.
 
 **Contested in war.** If host and homeland are at war when the enclave is recognized, the stance payout is multiplied by `contestedQuarterYieldFactor` (default 0.5; the price is unchanged). While they are at war, the host takes `contestedQuarterPenalty` (4) happiness strain per enclave, capped by `diasporaWarStrainCap` (12), which ends at peace.
+A host's treatment card changes the payout (see §6b), and the Chronicle line written when an enclave first turns
+contested names that card: a suspicion card falls hardest on the families, a protective one holds.
 
 **Measured pace (2026-09-13, `devtools/engine-probe/`, mod test 31).** In a 40-turn, seven-civ Exploration test, 19 of 84 settlements had a foreign minority, three or four were near foothold at a time, and three enclaves formed, all in AI cities: roughly one enclave every 13 world turns. The synthetic `tile-transfer-stress.mjs` harness is a calibration floor, not a forecast.
 
@@ -906,11 +971,16 @@ Modules are kept small and single-purpose (≤500-line gate). `emigration.modinf
 - `ui/emigration-disasters.js`: disaster distress and optional plague carry.
 - `ui/emigration-geography.js`: distance, flee vector, aggressor preference, Open Borders bonus.
 - `ui/emigration-civ-tuning.js` / `-war.js`: leader/civ tuning and aggressor map.
-- `ui/emigration-borders.js`: immigration openness, retention, attraction yields, asylum state.
+- `ui/emigration-borders.js`: immigration openness, retention, attraction yields, asylum state, treatment stance,
+  Consular Protection.
+- `ui/emigration-treatment.js` / `-consular.js`: the treatment cards' payout share and contested Chronicle line;
+  Consular Protection Influence and grievances.
+- `ui/emigration-partisans.js`: optional, feature-detected reads of the Partisans mod's published risings.
 - `ui/emigration-effects.js` / `-dividend.js` / `-migrant-units.js`: assimilation, congestion, dividends, migrant-unit costs.
 - `ui/emigration-departure-tile.js`: chooses and removes the source rural improvement after a committed move; deaths use the same path where possible.
 - `ui/emigration-arrival-placement.js`: local-player arrival handling, automatic `EXPAND`, newcomer pop-up, and Migrant-unit mode.
 - `ui/emigration-quarter.js` / `-quarter-state.js` / `-quarter-registry.js` / `-quarter-bonuses.js` / `-diaspora.js`: Cultural Enclave staging, dwell, recognition, fade, contested state, persistence, and civ-specific stances.
+- `ui/emigration-quarter-hosts.js`: enclave records following a captured settlement, and the burned-settlement line.
 - `ui/emigration-enclave-place.js` / `-enclave-skins.js` / `-enclave-markers.js`: enclave tile selection, placement, skinning, removal, yields, and map markers.
 - `scripts/gen-enclave-improvements.mjs`: generates never-buildable per-civ enclave improvement data and text; Village fallback data lives in `data/emigration-enclave-village*.xml`.
 - `ui/emigration-engine.js`: main pass, ranking, concurrent tracks, budgets, transit, and attrition outlet.
@@ -942,7 +1012,7 @@ Modules are kept small and single-purpose (≤500-line gate). `emigration.modinf
 
 `emigration.modinfo` loads options in shell and game scope, the UI modules through `ImportFiles`, Civilopedia and native policy effects through `<UpdateDatabase>`, icons through `<UpdateIcons>`, and age-specific policy databases through three `AgeInUse` groups. Age-specific loading is required because Civ VII rebuilds the gameplay database each age.
 
-The Civilopedia adds an Emigration section, grouped like the game's Game Concepts: the overview, FAQ and About pages; How People Move (Prosperity, departures and arrivals, war and refugees, disasters, crisis deaths, integration, ethnicity, enclaves, calling people home, the Chronicle and decisions, leader and civilization tuning); Policy & Diplomacy (stances, attraction and asylum, talent raids, and a list of every card by age); Interface & Options (dashboard, lenses, notifications and readouts, visibility, options, Demographics); and Voices of the Displaced, one page per origin civilization listing every quotation the mod can show for that people and who the speaker was. The single-body pages live in `ModText.xml` and its translations (§14). The chaptered pages are en_us-only in `text/en_us/PediaText.xml`, and the Voices pages are generated into `data/emigration-civilopedia-voices.xml` + `text/en_us/PediaVoicesText.xml` by `node --loader ./tests/loader.mjs scripts/gen-pedia-voices.mjs` from the quote registries and `scripts/pedia-voices-people.json` (one note per speaker; the generator fails when a speaker has none).
+The Civilopedia adds an Emigration section, grouped like the game's Game Concepts: the overview, FAQ and About pages; How People Move (Prosperity, departures and arrivals, war and refugees, disasters, crisis deaths, integration, ethnicity, enclaves, calling people home, the Chronicle and decisions, leader and civilization tuning); Policy & Diplomacy (stances, attraction and asylum, talent raids, treatment of communities, and a list of every card by age); Interface & Options (dashboard, lenses, notifications and readouts, visibility, options, Demographics); and Voices of the Displaced, one page per origin civilization listing every quotation the mod can show for that people and who the speaker was. The single-body pages live in `ModText.xml` and its translations (§14). The chaptered pages are en_us-only in `text/en_us/PediaText.xml`, and the Voices pages are generated into `data/emigration-civilopedia-voices.xml` + `text/en_us/PediaVoicesText.xml` by `node --loader ./tests/loader.mjs scripts/gen-pedia-voices.mjs` from the quote registries and `scripts/pedia-voices-people.json` (one note per speaker; the generator fails when a speaker has none).
 
 ---
 
@@ -985,6 +1055,7 @@ Per-game state is stored in `GameConfiguration` and survives save/reload:
 - `EmigrationMigStats_v1`: net/gross migration, refugees, deaths, cause breakdowns, sample watermarks, and capped city-pair flow matrices
 - `EmigrationNews_v1`: world-news milestones and last-toast turn
 - `EmigrationNotif_v1`: capped persistent notification log with cause, turn, summary, count, source, and destination
+- `EmigrationConsular_v1`: Consular Protection's per-turn grant stamp and once-per-host-per-age grievance stamps
 
 Missing fields are normalized on load for backward compatibility. Options persist separately in the shared `modSettings` localStorage key. Gameplay writes are single-player/client-side.
 
@@ -1042,6 +1113,11 @@ The only dependency is `base-standard`. Shared surfaces are handled additively:
 - **Cooperative globals and events:** globals are namespaced (`globalThis.emigration`, `EmigrationData`). Demographics integration joins `DemographicsMetricsAPI` rather than replacing it. Engine event subscriptions are multicast.
 - **Demographics-owned strings stay there:** Emigration avoids duplicating shared war/refugee labels.
 - **Additive plot tooltips:** Prosperity and Ethnic Composition append content through a `MutationObserver` rather than replacing the base tooltip, allowing coexistence with tooltip mods.
+- **Partisans, optional:** when the Partisans mod publishes `globalThis.__towerPartisans` (`apiVersion` 1 or later),
+  Emigration reads its `risings()` at most once a turn and checks every row. A war departure from a city with an open
+  rising at or within 3 tiles is labelled as fleeing "the {name} Uprising" (the figures stay under the war cause), and a
+  settlement Partisans reports burned closes its enclave with its own Chronicle line. Without the global, nothing
+  changes. Emigration never loads or touches Partisans' files.
 - **Adaptive reads:** prosperity uses live yields, happiness, and Influence each turn, so balance mods feed into the model naturally. Population/yield changes from other mods stack with Emigration. Game-speed scaling uses the active `GameSpeed` row, including custom speeds with a `CostMultiplier`.
 
 ## 17. Known open issues

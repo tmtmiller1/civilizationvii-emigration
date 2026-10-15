@@ -22,6 +22,7 @@ import { warEvents } from "/emigration/ui/emigration-war.js";
 import { civHidden, effectivePolicy } from "/emigration/ui/emigration-governance.js";
 import { compositionForCity, allCityCompositions } from "/emigration/ui/emigration-composition.js";
 import { enclaveProgressForComposition } from "/emigration/ui/emigration-diaspora.js";
+import { recordStage, STAGE_WORD } from "/emigration/ui/emigration-enclave-stage.js";
 import { quarterAt } from "/emigration/ui/emigration-quarter-state.js";
 
 function localId() {
@@ -625,20 +626,28 @@ function gatherDiversity() {
   }));
 }
 
+/** @param {string} stage A STAGE_WORD key. @returns {string} The stage's display word. */
+function stageWord(stage) {
+  const w = STAGE_WORD[/** @type {keyof typeof STAGE_WORD} */ (stage)];
+  return w ? loc(w[0], w[1]) : "";
+}
+
 /**
- * The Diversity table's Enclave cell for one settlement: a standing enclave's origin, else the leading
- * foreign community's share against the live share bar (from the foothold stage up), else "".
+ * The Diversity table's Enclave cell for one settlement: a standing enclave's origin and stage, else the
+ * leading foreign community's stage and share against the live share bar (from the foothold stage up), else "".
  * @param {string} key The settlement's plot key. @param {*} comp Its composition, or undefined.
  * @returns {string} The cell text.
  */
 function enclaveCell(key, comp) {
   try {
     const rec = key ? quarterAt(key) : null;
-    if (rec && !civHidden(rec.civ)) return loc("LOC_EMIG_DIVERSE_ENCLAVE_STANDING", "{1_Civ} enclave", civAdjective(rec.civ));
+    if (rec && !civHidden(rec.civ)) {
+      return loc("LOC_EMIG_DIVERSE_ENCLAVE_STAGE", "{1_Civ} enclave: {2_Stage}", civAdjective(rec.civ), stageWord(recordStage(rec)));
+    }
     const p = enclaveProgressForComposition(comp);
     if (!p || p.stage === "none" || civHidden(p.civ)) return "";
-    return loc("LOC_EMIG_DIVERSE_ENCLAVE_CELL", "{1_Civ} {2_Share}%/{3_Bar}%", civAdjective(p.civ),
-      Math.round(p.share * 100), Math.round(p.establishedShare * 100));
+    return loc("LOC_EMIG_DIVERSE_ENCLAVE_PROGRESS", "{1_Civ} {2_Stage}: {3_Share}%/{4_Bar}%", civAdjective(p.civ),
+      stageWord(p.stage), Math.round(p.share * 100), Math.round(p.establishedShare * 100));
   } catch (_) {
     return "";
   }

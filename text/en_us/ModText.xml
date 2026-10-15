@@ -150,7 +150,7 @@
         <Row Tag="LOC_EMIG_ETIP_STAGE_CONTESTED"><Text>Contested</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_STAGE_RECOGNIZED"><Text>Recognized: {1_Stance}</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_STAGE_RECOGNIZED_LETBE"><Text>Recognized. You left them alone.</Text></Row>
-        <Row Tag="LOC_EMIG_ETIP_STAGE_ESTABLISHED"><Text>Established, recognized in {1_Turns} turns</Text></Row>
+        <Row Tag="LOC_EMIG_ETIP_STAGE_ESTABLISHED"><Text>Established, recognized in {1_Turns} turns if it holds</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_STAGE_ESTABLISHED_DUE"><Text>Established, ready to be recognized</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_SRC_LAND_REPLACED"><Text>Used to be a {1_Improvement}</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_SRC_LAND"><Text>The land</Text></Row>
@@ -166,6 +166,7 @@
         <Row Tag="LOC_EMIG_ETIP_SRC_STANCE_D"><Text>Goes to the city, not this tile</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_SRC_STANCE"><Text>How you treat them: {1_Stance}</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_SRC_STANCE_PLAIN"><Text>How you treat them</Text></Row>
+        <Row Tag="LOC_EMIG_ETIP_MARK_FOOTHOLD"><Text>Foothold</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_MARK_ESTABLISHED"><Text>Established</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_MARK_RECOGNIZED"><Text>Recognized</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_MARK_CONTESTED"><Text>Contested</Text></Row>
@@ -379,6 +380,7 @@
         <Row Tag="LOC_EMIG_T_CONGEST"><Text>Congestion brake</Text></Row>
         <Row Tag="LOC_EMIG_T_CONGEST_D"><Text>Make a civilization that's absorbing lots of migrants a less attractive destination for further migration (it's busy integrating newcomers), scaling with how much it's digesting. A structural brake on runaway magnets. 0 = off.</Text></Row>
         <Row Tag="LOC_EMIG_EVENT_FAMINE"><Text>Famine</Text></Row>
+        <Row Tag="LOC_EMIG_EVENT_UPRISING"><Text>{1_Name} Uprising</Text></Row>
         <Row Tag="LOC_EMIG_T_ANTISNOWBALL"><Text>Runaway-leader brake</Text></Row>
         <Row Tag="LOC_EMIG_T_ANTISNOWBALL_D"><Text>Make a civilization whose population has run far ahead of the field a less attractive destination for cross-civ migration. It is a self-correcting brake on a runaway leader that grows with its lead (0 off / 8 gentle / 15 standard / 28 strong). It never impedes the leader's OUTflow or internal moves. 0 = off.</Text></Row>
         <Row Tag="LOC_EMIG_T_ANTISNOWTHRESH"><Text>Runaway-leader brake starts at</Text></Row>
@@ -386,9 +388,9 @@
         <Row Tag="LOC_EMIG_T_QUARTERS"><Text>Cultural enclaves</Text></Row>
         <Row Tag="LOC_EMIG_T_QUARTERS_D"><Text>When a foreign diaspora grows into an established community in one of your cities, offer a one-time choice (embrace, tax, or let be) with a small yield reward and drawback, and track a persistent per-city enclave that turns "contested" (its yield benefit is reduced and it adds a small happiness strain) while you are at war with its homeland. Off = no enclave decisions or contested strain.</Text></Row>
         <Row Tag="LOC_EMIG_T_QSHARE"><Text>Share of a city needed to form</Text></Row>
-        <Row Tag="LOC_EMIG_T_QSHARE_D"><Text>How much of a city a single foreign origin must make up before it can become a Cultural Enclave. Higher = rarer enclaves, as fewer cities ever qualify.</Text></Row>
+        <Row Tag="LOC_EMIG_T_QSHARE_D"><Text>How much of a city a single foreign origin must make up to reach the Established stage, when its enclave and tile appear. Below this it can still hold a Foothold. Higher = rarer enclaves, as fewer cities ever qualify.</Text></Row>
         <Row Tag="LOC_EMIG_T_QMINSTOCK"><Text>Smallest community that can form</Text></Row>
-        <Row Tag="LOC_EMIG_T_QMINSTOCK_D"><Text>The smallest standing population (in city-size points) a single foreign origin must reach before it can form a Cultural Enclave, so a tiny community can't qualify on share alone. Lower = small settlements can host enclaves too.</Text></Row>
+        <Row Tag="LOC_EMIG_T_QMINSTOCK_D"><Text>The smallest standing population (in city-size points) a single foreign origin needs for any stage, Foothold or Established, so a tiny community can't qualify on share alone. Lower = small settlements can host enclaves too.</Text></Row>
         <Row Tag="LOC_EMIG_T_QSTICKY"><Text>Stickiness</Text></Row>
         <Row Tag="LOC_OPTIONS_EMIG_CROSSCIV"><Text>Movement between civilizations</Text></Row>
         <Row Tag="LOC_OPTIONS_EMIG_CROSSCIV_D"><Text>How willing people are to leave one civilization for another, refugees included.[BLIST][LI][B]0%[/B]: people stay within their own civilization, even in a crisis; small civilizations keep their people.[LI][B]50%[/B] (default): moderate. In testing, the biggest gainer ended about 18% larger after 30 turns than without the mod.[LI][B]100%[/B]: people move almost freely; the biggest gainer ended about 37% larger.[/BLIST]</Text></Row>
@@ -409,26 +411,22 @@
         <Row Tag="LOC_EMIG_T_QROOTS_D"><Text>A community whose enclave stands in a settlement sends fewer of its people home through return migration. Stronger = fewer return; Off = they return at the normal rate.</Text></Row>
         <Row Tag="LOC_EMIG_T_QSTICKY_D"><Text>How strongly a foreign community that has reached a foothold resists blending into the host, so it can grow into a full enclave instead of being absorbed first. Stronger = enclaves form more readily; Off = communities integrate at the normal rate and rarely reach the enclave threshold.</Text></Row>
         <Row Tag="LOC_EMIG_T_QDWELL"><Text>Time an enclave must last before it is recognized</Text></Row>
-        <Row Tag="LOC_EMIG_T_QDWELL_D"><Text>How many turns a community must stay established before its enclave is recognized and the one-time stance decision is offered. The enclave itself, with its tile, appears as soon as the community is established; a brief spike (such as a war-refugee wave that later moves on) fades again without ever being recognized. A short dip below the threshold is forgiven. 0 = recognize as soon as the enclave forms.</Text></Row>
+        <Row Tag="LOC_EMIG_T_QDWELL_D"><Text>How many turns a community must stay Established before its enclave is Recognized and its one-time stance is chosen. The enclave and its tile appear as soon as the community is Established; a brief spike (such as a war-refugee wave that later moves on) fades again without ever being Recognized. A short dip below the bar is forgiven. 0 = Recognized as soon as the enclave forms.</Text></Row>
         <Row Tag="LOC_EMIG_T_QCOOLDOWN"><Text>Time between enclave decisions</Text></Row>
-        <Row Tag="LOC_EMIG_T_QCOOLDOWN_D"><Text>Minimum turns between two Cultural Enclave decisions. Higher = the offers are spaced further apart.</Text></Row>
+        <Row Tag="LOC_EMIG_T_QCOOLDOWN_D"><Text>When you're asked to recognize enclaves, the fewest turns between two of those decisions. Higher = the offers are spaced further apart.</Text></Row>
         <Row Tag="LOC_EMIG_T_QCAP"><Text>Most enclaves per age</Text></Row>
-        <Row Tag="LOC_EMIG_T_QCAP_D"><Text>The most Cultural Enclaves one civilization can form in a single age, by decision or automatically. Lower = fewer enclaves each age.</Text></Row>
+        <Row Tag="LOC_EMIG_T_QCAP_D"><Text>The most Cultural Enclaves one civilization can bring to the Established stage in a single age. When you're asked to recognize enclaves, it's also the most decisions an age. Lower = fewer enclaves each age.</Text></Row>
         <Row Tag="LOC_EMIG_T_QPACE"><Text>Pace formation across each age</Text></Row>
         <Row Tag="LOC_EMIG_T_QPACE_D"><Text>While a civilization has formed fewer enclaves this age than the target, its formation bars (share, size, and settling time) fall in step with the age's progress, down to the maximum reduction. They return to full once an enclave forms. The cap above still closes the age. Off = the plain bars all age long.</Text></Row>
         <Row Tag="LOC_EMIG_T_QTARGET"><Text>Enclaves aimed for per age</Text></Row>
         <Row Tag="LOC_EMIG_T_QTARGET_D"><Text>How many enclaves per civilization per age the pacing works toward. 1 makes at least one an age likely. 0 = no catch-up.</Text></Row>
         <Row Tag="LOC_EMIG_T_QPACEMAX"><Text>Most the requirements are lowered</Text></Row>
         <Row Tag="LOC_EMIG_T_QPACEMAX_D"><Text>The largest reduction of the formation bars the pacing applies late in an age with no enclave formed. 40% means the bars read 60% of their configured values.</Text></Row>
-        <Row Tag="LOC_EMIG_RO_ENCLAVE"><Text>Enclave: {1_Civ} at {2_Share}% of {3_Bar}% share, {4_Stock} of {5_StockBar} people, settled {6_Dwell} of {7_Need} turns</Text></Row>
-        <Row Tag="LOC_EMIG_RO_ENCLAVE_NODWELL"><Text>Enclave: {1_Civ} at {2_Share}% of {3_Bar}% share, {4_Stock} of {5_StockBar} people</Text></Row>
         <Row Tag="LOC_EMIG_DIVERSE_COL_ENCLAVE"><Text>Enclave</Text></Row>
-        <Row Tag="LOC_EMIG_DIVERSE_ENCLAVE_CELL"><Text>{1_Civ} {2_Share}%/{3_Bar}%</Text></Row>
-        <Row Tag="LOC_EMIG_DIVERSE_ENCLAVE_STANDING"><Text>{1_Civ} enclave</Text></Row>
         <Row Tag="LOC_EMIG_T_QSTOCK"><Text>Community large enough in any city</Text></Row>
-        <Row Tag="LOC_EMIG_T_QSTOCK_D"><Text>A foreign community with at least this many population points is established at any share of the settlement. Large cities can therefore host enclaves. The number scales with settlement size in this game. It applies as written when settlements average eighteen people, and moves in proportion, from half to double, as cities grow through the ages. An enclave fades only while its community is below both the fade share and this number. Off = share only.</Text></Row>
+        <Row Tag="LOC_EMIG_T_QSTOCK_D"><Text>A foreign community with at least this many population points reaches the Established stage at any share of the settlement. Large cities can therefore host enclaves. The number scales with settlement size in this game. It applies as written when settlements average eighteen people, and moves in proportion, from half to double, as cities grow through the ages. An enclave fades only while its community is below both the fade share and this number. Off = share only.</Text></Row>
         <Row Tag="LOC_EMIG_T_QFADE"><Text>Share below which an enclave fades</Text></Row>
-        <Row Tag="LOC_EMIG_T_QFADE_D"><Text>When its people's share of the settlement stays below this for the fade period, the enclave dissolves. The tile is removed and the chronicle records it. The default is half the foothold share, so a community that shrinks but persists keeps its enclave. Never = enclaves are permanent.</Text></Row>
+        <Row Tag="LOC_EMIG_T_QFADE_D"><Text>When its people's share of the settlement stays below this for the fade period, the enclave fades and dissolves, whether Established or Recognized. The tile is removed and the chronicle records it. The default is half the Foothold share, so a community that shrinks but persists keeps its enclave. Never = enclaves are permanent.</Text></Row>
         <Row Tag="LOC_EMIG_T_QFADETURNS"><Text>Time below that share before it fades</Text></Row>
         <Row Tag="LOC_EMIG_T_QFADETURNS_D"><Text>The number of consecutive turns the community must stay below the fade share before the enclave dissolves.</Text></Row>
         <Row Tag="LOC_EMIG_CHOICE_NEVER"><Text>Never</Text></Row>
@@ -517,6 +515,8 @@
         <Row Tag="LOC_EMIG_DIGEST_WAR"><Text>{1_People} fled the fighting around {2_City}.</Text></Row>
         <!-- War flight WITH a resolved destination: one flowing sentence naming the refuge -->
         <Row Tag="LOC_EMIG_DIGEST_WAR_TO"><Text>{1_People} fled the fighting around {2_City} for the safety of {3_Dest}.</Text></Row>
+        <Row Tag="LOC_EMIG_DIGEST_UPRISING"><Text>{1_People} fled the {3_Name} Uprising around {2_City}.</Text></Row>
+        <Row Tag="LOC_EMIG_DIGEST_UPRISING_TO"><Text>{1_People} fled the {4_Name} Uprising around {2_City} for the safety of {3_Dest}.</Text></Row>
         <Row Tag="LOC_EMIG_DIGEST_CONQUEST"><Text>{1_People} were captured from {2_City} when it changed hands.</Text></Row>
         <!-- Conquest naming the conqueror: the population was seized when the city fell -->
         <Row Tag="LOC_EMIG_DIGEST_CONQUEST_BY"><Text>{1_People} were captured when {2_City} was conquered by {3_Civ}.</Text></Row>
@@ -631,6 +631,20 @@
         <Row Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC"><Text>[icon:YIELD_POPULATION] Refugees fleeing war and disaster are strongly drawn to you, the most desperate first; you earn +1 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME"><Text>Refugee Compact</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC"><Text>[icon:YIELD_POPULATION] Refugees fleeing war and disaster are strongly drawn to you, the most desperate first; you earn +2 [icon:YIELD_DIPLOMACY] Influence and +1 [icon:YIELD_CULTURE] Culture each turn.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_PROTECT_AQ_NAME"><Text>Guest Right</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_PROTECT_AQ_DESC"><Text>+1 [icon:YIELD_DIPLOMACY] Influence each turn. Enclaves in your cities keep their full payout in wartime, and their unrest settles even while you're at war with their homeland.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_PROTECT_EX_NAME"><Text>Charter of Communities</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_PROTECT_EX_DESC"><Text>+2 [icon:YIELD_DIPLOMACY] Influence each turn. Enclaves in your cities keep their full payout in wartime, and their unrest settles even while you're at war with their homeland.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_PROTECT_MO_NAME"><Text>Equal Protection</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_PROTECT_MO_DESC"><Text>+3 [icon:YIELD_DIPLOMACY] Influence each turn. Enclaves in your cities keep their full payout in wartime, and their unrest settles even while you're at war with their homeland.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_SUSPECT_AQ_NAME"><Text>Watched Quarters</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_SUSPECT_AQ_DESC"><Text>+1 [icon:YIELD_PRODUCTION] Production in every city. Enclaves you recognize pay half, 25% fewer immigrants arrive, and a community whose homeland you're at war with grows restless faster.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_SUSPECT_EX_NAME"><Text>Oaths of Loyalty</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_SUSPECT_EX_DESC"><Text>+2 [icon:YIELD_PRODUCTION] Production in every city. Enclaves you recognize pay half, 25% fewer immigrants arrive, and a community whose homeland you're at war with grows restless faster.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_SUSPECT_MO_NAME"><Text>Registration of Residents</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_SUSPECT_MO_DESC"><Text>+3 [icon:YIELD_PRODUCTION] Production in every city. Enclaves you recognize pay half, 25% fewer immigrants arrive, and a community whose homeland you're at war with grows restless faster.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_CONSULAR_NAME"><Text>Consular Protection</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_CONSULAR_DESC"><Text>+1 [icon:YIELD_DIPLOMACY] Influence each turn for each recognized enclave of your people in another civilization's cities, up to +4. When a civilization hosting your people's enclave slots a suspicion card, you lodge grievances against it, once an age.</Text></Row>
 
         <!-- Civilopedia: dedicated "Emigration" section + concept pages -->
         <Row Tag="LOC_PEDIA_EMIG_TITLE"><Text>Emigration</Text></Row>
@@ -1280,6 +1294,29 @@
         <Row Tag="LOC_EMIG_RO_CAUSE_ITEM">
             <Text>{1_Label} {2_Share}%</Text>
         </Row>
+        <Row Tag="LOC_EMIG_RO_STAGE_NONE"><Text>{1_Civ} community</Text></Row>
+        <Row Tag="LOC_EMIG_RO_STAGE_FOOTHOLD"><Text>{1_Civ} community: foothold</Text></Row>
+        <Row Tag="LOC_EMIG_RO_STAGE_FORMING"><Text>{1_Civ} community: ready to become an enclave</Text></Row>
+        <Row Tag="LOC_EMIG_RO_STAGE_ESTABLISHED"><Text>{1_Civ} enclave: established</Text></Row>
+        <Row Tag="LOC_EMIG_RO_STAGE_RECOGNIZED"><Text>{1_Civ} enclave: recognized ({2_Stance})</Text></Row>
+        <Row Tag="LOC_EMIG_RO_STAGE_RECOGNIZED_LETBE"><Text>{1_Civ} enclave: recognized, left to itself</Text></Row>
+        <Row Tag="LOC_EMIG_RO_STAGE_FADING"><Text>{1_Civ} enclave: fading, {2_Turns} turns left</Text></Row>
+        <Row Tag="LOC_EMIG_RO_NEXT_FOOTHOLD"><Text>Gains a foothold at {1_Bar}% of {2_City} (now {3_Share}%)</Text></Row>
+        <Row Tag="LOC_EMIG_RO_NEXT_ENCLAVE"><Text>Becomes an enclave at {1_Bar}% of {2_City} (now {3_Share}%)</Text></Row>
+        <Row Tag="LOC_EMIG_RO_NEXT_ENCLAVE_OR_SIZE"><Text>Becomes an enclave at {1_Bar}% of {2_City} (now {3_Share}%) or at {4_Size} population (now {5_Stock})</Text></Row>
+        <Row Tag="LOC_EMIG_RO_NEXT_FORMING"><Text>The enclave forms at the next migration</Text></Row>
+        <Row Tag="LOC_EMIG_RO_NEXT_RECOGNIZED"><Text>Recognized in {1_Turns} turns if it holds</Text></Row>
+        <Row Tag="LOC_EMIG_RO_NEXT_RECOGNIZED_DUE"><Text>Ready to be recognized</Text></Row>
+        <Row Tag="LOC_EMIG_RO_NEXT_FADE"><Text>Stays if its people get back to {1_Bar}% of {2_City}</Text></Row>
+        <Row Tag="LOC_EMIG_RO_PACING"><Text>The bars are {1_Pct}% lower this age, until an enclave forms</Text></Row>
+        <Row Tag="LOC_EMIG_RO_BLOCK_FLOOR"><Text>Needs at least {1_Min} population of its own (now {2_Stock})</Text></Row>
+        <Row Tag="LOC_EMIG_RO_BLOCK_AGE_CAP"><Text>This age's enclaves are all formed</Text></Row>
+        <Row Tag="LOC_EMIG_RO_BLOCK_ORIGIN_CAP"><Text>This civilization already has {1_Count} {2_Civ} enclaves in other cities</Text></Row>
+        <Row Tag="LOC_EMIG_RO_BLOCK_BELOW_BAR"><Text>Waits while its people are below {1_Bar}% of {2_City}</Text></Row>
+        <Row Tag="LOC_EMIG_RO_BLOCK_COOLDOWN"><Text>Waiting {1_Turns} turns after the last enclave decision</Text></Row>
+        <Row Tag="LOC_EMIG_RO_BLOCK_DECISIONS"><Text>This age's enclave decisions are all made</Text></Row>
+        <Row Tag="LOC_EMIG_DIVERSE_ENCLAVE_STAGE"><Text>{1_Civ} enclave: {2_Stage}</Text></Row>
+        <Row Tag="LOC_EMIG_DIVERSE_ENCLAVE_PROGRESS"><Text>{1_Civ} {2_Stage}: {3_Share}%/{4_Bar}%</Text></Row>
         <Row Tag="LOC_EMIG_RO_POOL_ONE">
             <Text>Refugees resettling: {1_Count} point</Text>
         </Row>
@@ -1379,6 +1416,12 @@
         <Row Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_BODY">
             <Text>The {1_Name} is gone: the city built over its ward, and its families have scattered into the streets around it.</Text>
         </Row>
+        <Row Tag="LOC_EMIG_QTR_CHRON_BURNED_TITLE">
+            <Text>{1_City} Burns</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_QTR_CHRON_BURNED_BODY">
+            <Text>When {1_City} burned in the uprising, the {2_Adj} families there scattered with everyone else.</Text>
+        </Row>
         <Row Tag="LOC_EMIG_QTR_CHRON_HANDS_TITLE">
             <Text>The Enclave Changes Hands</Text>
         </Row>
@@ -1413,6 +1456,12 @@
         </Row>
         <Row Tag="LOC_EMIG_QTR_CHRON_RESTLESS_BODY">
             <Text>War with {1_Adj} falls hard on the {2_Name}: its families are cut off from kin in the fighting, and some neighbors meet them with cold looks, forgetting they did not choose this war. Until peace returns, that strain keeps the enclave from settling fully into the city's life.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_QTR_CHRON_RESTLESS_SUSPECT_BODY">
+            <Text>{1_Host}'s {2_Policy} falls hardest on the {3_Adj} families of {4_City} now that war has come with {5_Homeland}. They're cut off from kin in the fighting and watched at home over a war they didn't choose, and until peace returns the enclave can't settle fully into the city's life.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_QTR_CHRON_RESTLESS_PROTECT_BODY">
+            <Text>War with {5_Homeland} reaches the {3_Adj} families of {4_City}, but {1_Host}'s {2_Policy} holds: their rights, their trade and their place in the city stand as before while the fighting lasts.</Text>
         </Row>
         <Row Tag="LOC_EMIG_QTR_Q_ABBASID_A">
             <Text>"طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ. (Seeking knowledge is an obligation upon every Muslim.)" the Prophet Muhammad, Sunan Ibn Mājah 224</Text>

@@ -26,8 +26,22 @@ const POLICY_TYPES = Object.freeze({
   talent: ["TRADITION_EMIG_TALENT_EXPLORATION", "TRADITION_EMIG_TALENT_MODERN"],
   cultpull: ["TRADITION_EMIG_CULTPULL_EXPLORATION", "TRADITION_EMIG_CULTPULL_MODERN"],
   tradepull: ["TRADITION_EMIG_TRADEPULL_EXPLORATION", "TRADITION_EMIG_TRADEPULL_MODERN"],
-  asylum: ["TRADITION_EMIG_ASYLUM_EXPLORATION", "TRADITION_EMIG_ASYLUM_MODERN"]
+  asylum: ["TRADITION_EMIG_ASYLUM_EXPLORATION", "TRADITION_EMIG_ASYLUM_MODERN"],
+  protect: [
+    "TRADITION_EMIG_PROTECT_ANTIQUITY",
+    "TRADITION_EMIG_PROTECT_EXPLORATION",
+    "TRADITION_EMIG_PROTECT_MODERN"
+  ],
+  suspect: [
+    "TRADITION_EMIG_SUSPECT_ANTIQUITY",
+    "TRADITION_EMIG_SUSPECT_EXPLORATION",
+    "TRADITION_EMIG_SUSPECT_MODERN"
+  ],
+  consular: ["TRADITION_EMIG_CONSULAR_EXPLORATION", "TRADITION_EMIG_CONSULAR_MODERN"]
 });
+
+/** Immigration into a host with a suspicion card slotted, as a multiplier on its border-stance openness. */
+export const SUSPECT_OPENNESS = 0.75;
 
 // Attraction cards: each turns the civ's immigration into a carried dividend in one yield. Data-driven
 // so activeAttractions is just a filter; a new attraction card is one row here.
@@ -71,30 +85,35 @@ function readCulture(pid) {
   }
 }
 
-/** @param {*} culture @param {string[]} types */
-function hasAnyPolicy(culture, types) {
+/** @param {*} culture @param {string[]} types @returns {string|null} The first slotted type. */
+function firstActive(culture, types) {
   for (const type of types) {
     const h = hashFor(type);
-    if (h != null && culture.isTraditionActive(h)) return true;
+    if (h != null && culture.isTraditionActive(h)) return type;
   }
-  return false;
+  return null;
 }
 
 /**
- * Whether a player has any of `types` active in a policy slot. Raw read, callers go through the
+ * Which of `types` a player has active in a policy slot, or null. Raw read, callers go through the
  * per-pass cache (policyState) rather than calling this directly on the hot path.
  * @param {number} pid
  * @param {string[]} types
- * @returns {boolean}
+ * @returns {string|null} The slotted tradition type, or null.
  */
-function hasPolicy(pid, types) {
+function activeType(pid, types) {
   const culture = readCulture(pid);
-  if (!culture || typeof culture.isTraditionActive !== "function") return false;
+  if (!culture || typeof culture.isTraditionActive !== "function") return null;
   try {
-    return hasAnyPolicy(culture, types);
+    return firstActive(culture, types);
   } catch (_) {
-    return false;
+    return null;
   }
+}
+
+/** @param {number} pid @param {string[]} types @returns {boolean} */
+function hasPolicy(pid, types) {
+  return activeType(pid, types) != null;
 }
 
 /**
@@ -103,6 +122,9 @@ function hasPolicy(pid, types) {
  * @property {boolean} closed Whether a Closed Borders card is slotted.
  * @property {boolean} asylum Whether an Asylum card is slotted.
  * @property {string[]} attractions Yield keys the slotted Attraction cards accrue.
+ * @property {string|null} protect The slotted protective treatment card, or null.
+ * @property {string|null} suspect The slotted suspicion treatment card, or null.
+ * @property {boolean} consular Whether a Consular Protection card is slotted.
  */
 
 /** Per-pass memo of policyState, keyed by player id. Cleared by resetBorderCache(). @type {Map<number, PolicyState>} */
@@ -115,6 +137,23 @@ const _polyCache = new Map();
  */
 export function resetBorderCache() {
   _polyCache.clear();
+}
+
+/** The turn the cache was last known good for, so readers outside the pass never keep last turn's cards. */
+let _polyStamp = "";
+
+/** Clear the cache when the turn has moved on since it was filled (cheap: one turn read per call). */
+function freshForTurn() {
+  let stamp = "";
+  try {
+    stamp = typeof Game !== "undefined" ? Game.age + ":" + Game.turn : "";
+  } catch (_) {
+    stamp = "";
+  }
+  if (stamp !== _polyStamp) {
+    _polyCache.clear();
+    _polyStamp = stamp;
+  }
 }
 
 /**
@@ -130,7 +169,10 @@ function policyState(pid) {
     open: hasPolicy(pid, POLICY_TYPES.open),
     closed: hasPolicy(pid, POLICY_TYPES.closed),
     asylum: hasPolicy(pid, POLICY_TYPES.asylum),
-    attractions: ATTRACTIONS.filter((a) => hasPolicy(pid, POLICY_TYPES[a.family])).map((a) => a.yield)
+    attractions: ATTRACTIONS.filter((a) => hasPolicy(pid, POLICY_TYPES[a.family])).map((a) => a.yield),
+    protect: activeType(pid, POLICY_TYPES.protect),
+    suspect: activeType(pid, POLICY_TYPES.suspect),
+    consular: hasPolicy(pid, POLICY_TYPES.consular)
   };
   _polyCache.set(pid, state);
   return state;
@@ -139,18 +181,67 @@ function policyState(pid) {
 /**
  * A civ's immigration openness from its slotted border policy. 1 = neutral; < 1 throttles inflow
  * (floored so it never hard-zeros), > 1 boosts it. Slotting both Open and Closed cancels out to
- * neutral. Influence is not handled here (native TraditionModifiers).
+ * neutral. A suspicion card multiplies the result by SUSPECT_OPENNESS (still floored). Influence is
+ * not handled here (native TraditionModifiers).
  * @param {number} pid Destination player id.
  * @returns {number} A positive multiplier.
  */
 export function immigrationOpenness(pid) {
   if (!CONFIG.bordersEnabled) return 1;
+  const stance = stanceOpenness(pid);
+  if (stanceOf(policyState(pid)) !== "suspect") return stance;
+  return Math.max(CONFIG.opennessFloor, stance * SUSPECT_OPENNESS);
+}
+
+/** @param {number} pid @returns {number} The border-stance openness alone. */
+function stanceOpenness(pid) {
   const neutral = Math.max(CONFIG.opennessFloor, 1); // floored neutral
   const { open, closed } = policyState(pid);
   if (open && closed) return neutral; // both slotted → cancel out → neutral
   if (closed) return Math.max(CONFIG.opennessFloor, CONFIG.closedBordersOpenness);
   if (open) return Math.max(CONFIG.opennessFloor, CONFIG.openBordersOpenness);
   return neutral;
+}
+
+/**
+ * How a host treats the communities in its cities, from its slotted treatment card: "protect", "suspect",
+ * or null. Slotting one of each cancels out to null. Read whatever the border-policy option says, since the
+ * cards' own effects (payouts, consular grievances) don't depend on it.
+ * @param {number} pid Host player id.
+ * @returns {"protect"|"suspect"|null} The stance.
+ */
+export function treatmentStance(pid) {
+  if (typeof pid !== "number") return null;
+  freshForTurn();
+  return stanceOf(policyState(pid));
+}
+
+/** @param {PolicyState} state @returns {"protect"|"suspect"|null} */
+function stanceOf(state) {
+  if (state.protect && state.suspect) return null;
+  if (state.protect) return "protect";
+  return state.suspect ? "suspect" : null;
+}
+
+/**
+ * The tradition type behind a host's treatment stance (for naming the card in a Chronicle line), or null.
+ * @param {number} pid Host player id. @returns {string|null} The slotted card's type.
+ */
+export function treatmentCard(pid) {
+  const stance = treatmentStance(pid);
+  if (!stance) return null;
+  return policyState(pid)[stance];
+}
+
+/**
+ * Whether a civ holds a Consular Protection card.
+ * @param {number} pid
+ * @returns {boolean}
+ */
+export function hasConsular(pid) {
+  if (typeof pid !== "number") return false;
+  freshForTurn();
+  return policyState(pid).consular;
 }
 
 /**

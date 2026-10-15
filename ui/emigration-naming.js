@@ -9,6 +9,7 @@ import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { warOpponents } from "/emigration/ui/emigration-war.js";
 import { quarterBonus } from "/emigration/ui/emigration-quarter-bonuses.js";
 import { msg, msgKey, msgCap, msgJoin, msgJoinWith, msgText } from "/emigration/ui/emigration-loc.js";
+import { uprisingNameOf } from "/emigration/ui/emigration-partisans.js";
 
 /** @typedef {import("/emigration/ui/emigration-loc.js").MsgNode} MsgNode */
 
@@ -287,6 +288,8 @@ export function eventDisplayNameMsg(eventKey) {
   if (eventKey === "famine") return msg("LOC_EMIG_EVENT_FAMINE", "Famine");
   if (eventKey.indexOf("crisis:") === 0) return crisisNameMsg(eventKey.slice(7));
   if (eventKey.indexOf("disaster:") === 0) return disasterNameMsg(eventKey.slice(9));
+  const rising = uprisingNameOf(eventKey);
+  if (rising) return msg("LOC_EMIG_EVENT_UPRISING", "{1_Name} Uprising", rising);
   if (eventKey.indexOf("war:") === 0) {
     const parts = eventKey.split(":");
     return warRefugeeNameMsg(Number(parts[1]), [Number(parts[2])]);
@@ -660,11 +663,28 @@ const DIGEST_TO = {
 };
 
 /**
+ * The war headline when the fighting was a Partisans rising nearby: it names the uprising. Null otherwise.
+ * @param {{cause?:string, people:MsgNode, city:MsgNode, destName?:MsgNode, uprising?:string}} o Inputs.
+ * @returns {MsgNode|null} The sentence, or null.
+ */
+function uprisingHeadline(o) {
+  if (o.cause !== "war" || !o.uprising) return null;
+  if (o.destName) {
+    return msg("LOC_EMIG_DIGEST_UPRISING_TO",
+      "{1_People} fled the {4_Name} Uprising around {2_City} for the safety of {3_Dest}.",
+      o.people, o.city, o.destName, o.uprising);
+  }
+  return msg("LOC_EMIG_DIGEST_UPRISING", "{1_People} fled the {3_Name} Uprising around {2_City}.",
+    o.people, o.city, o.uprising);
+}
+
+/**
  * The digest's opening "situation" sentence: the cause-named loss headline plus where the people went.
  * Conquest names the conquering civ rather than a destination; a cause with a {@link DIGEST_TO} entry
  * and a resolved destination reads as one flowing sentence; any other case appends "Bound for <dest>."
- * @param {{cause?:string, people:MsgNode, city:MsgNode, destName?:MsgNode, byCiv?:MsgNode}} o Inputs.
- *   `byCiv` is the (already unmet-masked) conquering civ, present only for conquest.
+ * @param {{cause?:string, people:MsgNode, city:MsgNode, destName?:MsgNode, byCiv?:MsgNode, uprising?:string}} o
+ *   Inputs. `byCiv` is the (already unmet-masked) conquering civ, present only for conquest; `uprising` names a
+ *   Partisans rising behind a war departure.
  * @returns {MsgNode} The situation sentence.
  */
 function headlineWithDest(o) {
@@ -677,6 +697,8 @@ function headlineWithDest(o) {
     return lossHeadlineMsg(o.cause, o.people, o.city); // no conqueror resolved → the plain capture headline
   }
   const dest = o.destName;
+  const rising = uprisingHeadline(o);
+  if (rising) return rising;
   const spec = o.cause && dest ? DIGEST_TO[o.cause] : null;
   if (spec && dest) return msg(spec.key, spec.fb, o.people, o.city, dest);
   const head = lossHeadlineMsg(o.cause, o.people, o.city);
@@ -704,7 +726,7 @@ function crossCivNotes(o) {
  * the situation (loss headline + where they went) and the guidance ("why here" clause, action hint,
  * cross-civ cost note when material, movement-scope tag). Pure; the caller resolves the inputs.
  * @param {{cause?:string, people:MsgNode, city:MsgNode, crossCiv?:boolean, destName?:MsgNode,
- *          destGold?:number, why?:MsgNode, byCiv?:MsgNode, stanceTip?:boolean}} o The resolved digest
+ *          destGold?:number, why?:MsgNode, byCiv?:MsgNode, stanceTip?:boolean, uprising?:string}} o The resolved digest
  *   inputs (text fields as strings or message nodes). `stanceTip` adds the Anti-Immigration Stance tip
  *   (the caller decides when it applies). `why` is the "why here" phrase, appended as a short clause
  *   when present; `byCiv` is the (already unmet-masked) conquering civ, used only by the conquest headline.

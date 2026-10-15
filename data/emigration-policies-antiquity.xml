@@ -21,6 +21,8 @@
     <Types>
         <Row Type="TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY" Kind="KIND_TRADITION"/>
         <Row Type="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" Kind="KIND_TRADITION"/>
+        <Row Type="TRADITION_EMIG_PROTECT_ANTIQUITY" Kind="KIND_TRADITION"/>
+        <Row Type="TRADITION_EMIG_SUSPECT_ANTIQUITY" Kind="KIND_TRADITION"/>
     </Types>
 
     <Traditions>
@@ -32,6 +34,14 @@
              Name="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME"
              Description="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC"
              AgeType="AGE_ANTIQUITY" CultureSlotType="POLICY_CULTURE_SLOT"/>
+        <!-- Community treatment cards: how the host treats the enclaves in its cities. The scripted
+             effects (payout share, fewer arrivals) live in ui/emigration-treatment.js and -borders.js. -->
+        <Row TraditionType="TRADITION_EMIG_PROTECT_ANTIQUITY"
+             Name="LOC_EMIG_POLICY_PROTECT_AQ_NAME" Description="LOC_EMIG_POLICY_PROTECT_AQ_DESC"
+             AgeType="AGE_ANTIQUITY" CultureSlotType="POLICY_CULTURE_SLOT"/>
+        <Row TraditionType="TRADITION_EMIG_SUSPECT_ANTIQUITY"
+             Name="LOC_EMIG_POLICY_SUSPECT_AQ_NAME" Description="LOC_EMIG_POLICY_SUSPECT_AQ_DESC"
+             AgeType="AGE_ANTIQUITY" CultureSlotType="POLICY_CULTURE_SLOT"/>
     </Traditions>
 
     <!-- Native per-turn Influence modifiers (defined in emigration-policies-gameeffects.xml). -->
@@ -39,10 +49,14 @@
         <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_OPEN_BORDERS_INFLUENCE_AQ"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_CLOSED_BORDERS_INFLUENCE_AQ"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_CLOSED_BORDERS_PRODUCTION_AQ"/>
+        <Row TraditionType="TRADITION_EMIG_PROTECT_ANTIQUITY" ModifierId="MOD_EMIG_PROTECT_INFLUENCE_AQ"/>
+        <Row TraditionType="TRADITION_EMIG_SUSPECT_ANTIQUITY" ModifierId="MOD_EMIG_SUSPECT_PRODUCTION_AQ"/>
     </TraditionModifiers>
 
     <ProgressionTreeNodeUnlocks>
         <Row ProgressionTreeNodeType="NODE_CIVIC_AQ_MAIN_CITIZENSHIP" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY" UnlockDepth="1"/>
         <Row ProgressionTreeNodeType="NODE_CIVIC_AQ_MAIN_CITIZENSHIP" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" UnlockDepth="1"/>
+        <Row ProgressionTreeNodeType="NODE_CIVIC_AQ_MAIN_CITIZENSHIP" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_PROTECT_ANTIQUITY" UnlockDepth="1"/>
+        <Row ProgressionTreeNodeType="NODE_CIVIC_AQ_MAIN_CITIZENSHIP" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_SUSPECT_ANTIQUITY" UnlockDepth="1"/>
     </ProgressionTreeNodeUnlocks>
 </Database>
