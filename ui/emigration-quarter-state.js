@@ -28,7 +28,8 @@ const MAX_TILES = 4096;
  * @property {string|null} originCiv Origin CivilizationType captured at formation (e.g. "CIVILIZATION_ROME"),
  *   or null for legacy records. This is the stable identity used for the per-civ enclave cap; it does not
  *   drift if the origin player later changes civilization across an age.
- * @property {number} owner Host player id.
+ * @property {number} owner Host player id (follows the settlement when it changes hands).
+ * @property {string|null} [hostName] The host settlement's name as last seen standing.
  * @property {string} optionId The stance chosen.
  * @property {number} turn Formation turn (monotonic).
  * @property {QuarterApplied} applied What this stance paid once at recognition (per turn in older saves).
@@ -175,7 +176,8 @@ function normalizeRecord(rec) {
       ? Math.floor(rec.contestedTurn) : -999,
     placed: normalizePlaced(rec.placed),
     fadeSince: finiteTurnOrNull(rec.fadeSince),
-    recognized: rec.recognized !== false
+    recognized: rec.recognized !== false,
+    hostName: strOrNull(rec.hostName)
   };
 }
 
@@ -538,6 +540,20 @@ export function canDecide(turn, age) {
   if (s.count >= cap) return false;
   const cooldown = Math.max(0, Number(CONFIG.quarterCooldownTurns) || 0);
   return turn - s.lastTurn >= cooldown;
+}
+
+/**
+ * The decision throttle as a reader sees it, without touching it: whether this age's decisions are all made,
+ * and the turns left on the cooldown (a new age clears the count, as {@link canDecide} does).
+ * @param {number} turn Now (monotonic). @param {number} age Current age ordinal.
+ * @returns {{decisionCapReached:boolean, cooldownLeft:number}}
+ */
+export function decisionThrottle(turn, age) {
+  const s = state();
+  const count = age !== s.age ? 0 : s.count;
+  const cap = Math.max(0, Number(CONFIG.quarterCapPerAge) || 0);
+  const cooldown = Math.max(0, Number(CONFIG.quarterCooldownTurns) || 0);
+  return { decisionCapReached: count >= cap, cooldownLeft: Math.max(0, cooldown - (turn - s.lastTurn)) };
 }
 
 /**

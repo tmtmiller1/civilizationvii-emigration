@@ -20,6 +20,7 @@ import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 import { relaxFor } from "/emigration/ui/emigration-enclave-pacing.js";
 import { loc, localeFontFamily } from "/emigration/ui/emigration-loc.js";
 import { enclaveTipModel } from "/emigration/ui/emigration-enclave-tooltip-data.js";
+import { enclaveStageAt, blockerLines } from "/emigration/ui/emigration-enclave-stage-read.js";
 
 const PANEL_KEY = "emig-enclave-tip";
 const STAGE_COLORS = Object.freeze({
@@ -140,8 +141,19 @@ function gather(entry, sig, plot) {
     ...stanceWords(rec),
     dwell,
     turn,
-    fadeTurns: Number(CONFIG.quarterFadeTurns) || 12
+    fadeTurns: Number(CONFIG.quarterFadeTurns) || 12,
+    blockers: rec.recognized !== false ? [] : safe(() => heldBack(entry, sig), [])
   };
+}
+
+/**
+ * What holds an established enclave back from recognition, in the readout's words.
+ * @param {{tileKey:string, rec:*}} entry The record. @param {*} sig The host settlement's signal.
+ * @returns {string[]}
+ */
+function heldBack(entry, sig) {
+  const v = enclaveStageAt(sig && sig.city, entry.tileKey, entry.rec.owner, monoTurn());
+  return v ? blockerLines(v, cityTitle(sig && sig.city, "")) : [];
 }
 
 /** The model for the tile last resolved (read by `decorate`, which is not handed the plot). */

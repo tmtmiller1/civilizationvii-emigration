@@ -141,4 +141,53 @@
         <Argument name="Tooltip">LOC_EMIG_POLICY_ASYLUM_MO_NAME</Argument>
         <String context="Description">LOC_EMIG_POLICY_ASYLUM_MO_DESC</String>
     </Modifier>
+
+    <!-- Community treatment, protective (Guest Right / Charter of Communities / Equal Protection):
+         +1 / +2 / +3 Influence. The wartime payout it keeps is the JS side (emigration-treatment.js). -->
+    <Modifier id="MOD_EMIG_PROTECT_INFLUENCE_AQ" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
+        <Argument name="Amount">1</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_PROTECT_AQ_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_PROTECT_AQ_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_PROTECT_INFLUENCE_EX" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
+        <Argument name="Amount">2</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_PROTECT_EX_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_PROTECT_EX_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_PROTECT_INFLUENCE_MO" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
+        <Argument name="Amount">3</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_PROTECT_MO_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_PROTECT_MO_DESC</String>
+    </Modifier>
+
+    <!-- Community treatment, suspicion (Watched Quarters / Oaths of Loyalty / Registration of Residents):
+         +1 / +2 / +3 Production in every city, styled on the Anti-Immigration Production modifier. The
+         halved enclave payout and the fewer arrivals are the JS side. -->
+    <Modifier id="MOD_EMIG_SUSPECT_PRODUCTION_AQ" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_YIELD">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_CITY_IS_CITY"/>
+        </SubjectRequirements>
+        <Argument name="Amount">1</Argument>
+        <Argument name="YieldType">YIELD_PRODUCTION</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_SUSPECT_AQ_NAME</Argument>
+    </Modifier>
+    <Modifier id="MOD_EMIG_SUSPECT_PRODUCTION_EX" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_YIELD">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_CITY_IS_CITY"/>
+        </SubjectRequirements>
+        <Argument name="Amount">2</Argument>
+        <Argument name="YieldType">YIELD_PRODUCTION</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_SUSPECT_EX_NAME</Argument>
+    </Modifier>
+    <Modifier id="MOD_EMIG_SUSPECT_PRODUCTION_MO" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_YIELD">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_CITY_IS_CITY"/>
+        </SubjectRequirements>
+        <Argument name="Amount">3</Argument>
+        <Argument name="YieldType">YIELD_PRODUCTION</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_SUSPECT_MO_NAME</Argument>
+    </Modifier>
 </GameEffects>

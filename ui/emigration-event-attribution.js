@@ -4,6 +4,7 @@
 // an `eventKey` naming the specific event behind the generic cause, so the Causes tab can break each
 // cause down by event. Keys are compact and stable (names resolve at view time):
 //   • "war:<lo>:<hi>"          a war between the two civ ids (sorted)
+//   • "uprising:<id>:<name>"   an open Partisans rising near the city (groups under war)
 //   • "disaster:<RANDOM_EVENT_TYPE>"  the disaster type that struck the city
 //   • "crisis:<AGE_CRISIS_TYPE>"      the active age crisis (takes precedence when its category matches)
 //   • "famine"                 a starvation death (no engine event to name)
@@ -12,6 +13,7 @@
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { warOpponents } from "/emigration/ui/emigration-war.js";
 import { disasterKey, disasterTypeFor } from "/emigration/ui/emigration-disasters.js";
+import { uprisingEventKey } from "/emigration/ui/emigration-partisans.js";
 
 /** @type {{type:string, category:string|null}|null} The age crisis active this pass, or null. */
 let _crisis = null;
@@ -118,6 +120,9 @@ function disasterKeyFor(src) {
  * @returns {string}
  */
 export function eventKeyForMove(src, cause) {
+  // An open Partisans rising at or near the city is the fighting these people fled, not some other war.
+  const uk = cause === "war" ? uprisingEventKey(src && src.city) : null;
+  if (uk) return uk;
   const ck = crisisKeyFor(cause);
   if (ck) return ck;
   if (cause === "war") return warKeyFor(src.owner);
@@ -159,7 +164,7 @@ export function eventKeyForDeath(src) {
  */
 export function eventGroupCause(eventKey) {
   if (!eventKey) return "";
-  if (eventKey.indexOf("war:") === 0) return "war";
+  if (eventKey.indexOf("war:") === 0 || eventKey.indexOf("uprising:") === 0) return "war";
   if (eventKey.indexOf("disaster:") === 0 || eventKey === "famine") return "disaster";
   if (eventKey.indexOf("crisis:") === 0) return crisisCategory(eventKey.slice(7)) || "war";
   return "";

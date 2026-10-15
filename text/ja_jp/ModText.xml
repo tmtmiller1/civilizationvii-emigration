@@ -130,7 +130,7 @@
         <Replace Tag="LOC_EMIG_ETIP_STAGE_CONTESTED" Language="ja_JP"><Text>対立状態</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_STAGE_RECOGNIZED" Language="ja_JP"><Text>承認済み：{1_Stance}</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_STAGE_RECOGNIZED_LETBE" Language="ja_JP"><Text>承認済み。彼らには手を出していません。</Text></Replace>
-        <Replace Tag="LOC_EMIG_ETIP_STAGE_ESTABLISHED" Language="ja_JP"><Text>成立、{1_Turns}ターン後に承認</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETIP_STAGE_ESTABLISHED" Language="ja_JP"><Text>成立、このまま続けば{1_Turns}ターン後に承認</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_STAGE_ESTABLISHED_DUE" Language="ja_JP"><Text>成立、承認の準備が整っています</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_SRC_LAND_REPLACED" Language="ja_JP"><Text>以前は「{1_Improvement}」でした</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_SRC_LAND" Language="ja_JP"><Text>土地</Text></Replace>
@@ -146,6 +146,7 @@
         <Replace Tag="LOC_EMIG_ETIP_SRC_STANCE_D" Language="ja_JP"><Text>このタイルではなく都市に入ります</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_SRC_STANCE" Language="ja_JP"><Text>彼らへの接し方：{1_Stance}</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_SRC_STANCE_PLAIN" Language="ja_JP"><Text>彼らへの接し方</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETIP_MARK_FOOTHOLD" Language="ja_JP"><Text>足がかり</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_MARK_ESTABLISHED" Language="ja_JP"><Text>成立</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_MARK_RECOGNIZED" Language="ja_JP"><Text>承認済み</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_MARK_CONTESTED" Language="ja_JP"><Text>係争中</Text></Replace>
@@ -353,6 +354,7 @@
         <Replace Tag="LOC_EMIG_T_CONGEST" Language="ja_JP"><Text>混雑ブレーキ</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="ja_JP"><Text>多くの移民を吸収している文明を、さらなる移住先として魅力の低いものにします（新参者の統合で手一杯のため）。消化している量に応じて増加。暴走する磁石への構造的ブレーキ。0 = オフ。</Text></Replace>
         <Replace Tag="LOC_EMIG_EVENT_FAMINE" Language="ja_JP"><Text>飢饉</Text></Replace>
+        <Replace Tag="LOC_EMIG_EVENT_UPRISING" Language="ja_JP"><Text>{1_Name}蜂起</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="ja_JP"><Text>独走抑制ブレーキ</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="ja_JP"><Text>人口が他を大きく引き離した文明を、文明間移住の移住先として魅力の低いものにします。先行する独走者への自己修正ブレーキで、どれだけ先行しているかに応じて強まります（0 オフ / 8 穏やか / 15 標準 / 28 強い）。独走者の流出や内部の移動を妨げることはありません。0 = オフ。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="ja_JP"><Text>独走抑制ブレーキの発動点</Text></Replace>
@@ -360,9 +362,9 @@
         <Replace Tag="LOC_EMIG_T_QUARTERS" Language="ja_JP"><Text>文化的飛び地</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QUARTERS_D" Language="ja_JP"><Text>外国からのディアスポラがあなたの都市で確立した共同体に成長すると、一度きりの選択（受け入れ・課税・放任）が提示され、小さな産出の利益と不利益が生じます。都市ごとに永続的な街区が記録され、その母国と戦争している間は「係争状態」となり（小さな幸福度の負担）ます。オフ＝街区の決定も係争の負担もなし。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSHARE" Language="ja_JP"><Text>形成に必要な都市人口の割合</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_QSHARE_D" Language="ja_JP"><Text>単一の外国出身者が都市の人口に占めなければならない割合です。これを満たすと文化的飛び地になることができます。高い = 条件を満たす都市が減り、飛び地は稀になります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSHARE_D" Language="ja_JP"><Text>単一の外国出身者が「成立」の段階に達し、飛び地とそのタイルが現れるために都市の人口に占めなければならない割合です。これを下回っても「足がかり」は保てます。高い = 条件を満たす都市が減り、飛び地は稀になります。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QMINSTOCK" Language="ja_JP"><Text>形成できる最小の共同体</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_QMINSTOCK_D" Language="ja_JP"><Text>単一の外国出身者が文化的飛び地を形成するまでに達しなければならない最小の定住人口（都市規模のポイント単位）です。ごく小さな共同体が割合だけで条件を満たすのを防ぎます。低い = 小さな居住地にも飛び地ができます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QMINSTOCK_D" Language="ja_JP"><Text>単一の外国出身者が「足がかり」でも「成立」でも、どの段階にも必要な最小の定住人口（都市規模ポイント）です。ごく小さな共同体が割合だけで条件を満たすことはありません。低い = 小さな入植地にも飛び地ができます。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSTICKY" Language="ja_JP"><Text>定着力</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_CROSSCIV" Language="ja_JP"><Text>文明間の移動</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_CROSSCIV_D" Language="ja_JP"><Text>人々がどれだけ自由に他の文明へ移るかを決めます。低いほど移民と難民は故郷の近くにとどまり、小さな文明が人口を失いにくくなります。高いほど帝国間で人口が大きく移動します。デフォルトは50%です。複数の詳細設定をまとめて調整します: 文明間の摩擦、難民を国外へ引き寄せる力、小文明ブレーキ。</Text></Replace>
@@ -383,26 +385,22 @@
         <Replace Tag="LOC_EMIG_T_QROOTS_D" Language="ja_JP"><Text>居住地に飛び地を持つ共同体は、帰還移住で故郷へ戻る人が少なくなります。強い = 帰還する人がさらに減ります。オフ = 通常の割合で帰還します。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSTICKY_D" Language="ja_JP"><Text>足がかりに達した外国の共同体が、受け入れ先に溶け込むことにどれだけ強く抵抗するかです。先に吸収されることなく、完全な飛び地へ成長できるようになります。強い = 飛び地が形成されやすくなります。オフ = 共同体は通常の速さで統合され、飛び地の基準にはめったに達しません。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QDWELL" Language="ja_JP"><Text>承認までに飛び地が存続すべき期間</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_QDWELL_D" Language="ja_JP"><Text>飛び地が承認され、一度限りの方針の決定が提示されるまでに、共同体が確立した状態を保たなければならないターン数です。飛び地そのものは、共同体が確立するとすぐにタイルとともに現れます。一時的な急増（後に去っていく戦争難民の波など）は、承認されることなく再び消えていきます。短期間だけ基準を下回っても許容されます。0 = 飛び地が形成されしだい承認します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QDWELL_D" Language="ja_JP"><Text>共同体が「成立」のまま何ターン続けば飛び地が「承認」され、一度きりの方針が選ばれるかです。飛び地とそのタイルは共同体が「成立」した時点で現れます。短い急増（あとで去っていく戦争難民の波など）は「承認」されないまま消えます。基準を一時的に下回るのは許容されます。0 = 飛び地の成立と同時に「承認」。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCOOLDOWN" Language="ja_JP"><Text>飛び地の決定の間隔</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_QCOOLDOWN_D" Language="ja_JP"><Text>2つの文化的飛び地の決定の間に空ける最小ターン数です。高い = 提示の間隔が広がります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QCOOLDOWN_D" Language="ja_JP"><Text>飛び地の承認をあなたに尋ねる場合の、2回の決定のあいだの最小ターン数です。高い = 打診の間隔が広がります。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCAP" Language="ja_JP"><Text>時代ごとの飛び地の上限</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_QCAP_D" Language="ja_JP"><Text>1つの文明が1つの時代に形成できる文化的飛び地の最大数です（決定によるものと自動によるものを含みます）。低い = 各時代の飛び地が少なくなります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QCAP_D" Language="ja_JP"><Text>1つの文明が1つの時代に「成立」の段階まで進められる文化的飛び地の最大数です。飛び地の承認をあなたに尋ねる場合は、1時代あたりの決定の最大数でもあります。低い = 各時代の飛び地が少なくなります。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QPACE" Language="ja_JP"><Text>時代を通じて形成ペースを調整</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QPACE_D" Language="ja_JP"><Text>その時代に形成した飛び地の数が目標に満たない文明では、形成の基準（割合、規模、定住期間）が時代の進行に合わせて、最大引き下げ幅まで下がっていきます。飛び地が形成されると基準は元に戻ります。上記の上限に達すると、その時代にはそれ以上形成されません。オフ = 時代を通じて通常の基準のままです。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QTARGET" Language="ja_JP"><Text>時代ごとの目標飛び地数</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QTARGET_D" Language="ja_JP"><Text>ペース調整が目指す、文明ごと・時代ごとの飛び地の数です。1にすると、各時代に少なくとも1つ形成される可能性が高くなります。0 = 追い上げなし。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QPACEMAX" Language="ja_JP"><Text>条件の最大引き下げ幅</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QPACEMAX_D" Language="ja_JP"><Text>飛び地が形成されないまま時代の終盤を迎えたときに、ペース調整が形成の基準に適用する最大の引き下げ幅です。40%の場合、基準は設定値の60%になります。</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_ENCLAVE" Language="ja_JP"><Text>飛び地: {1_Civ} 割合{2_Share}%（基準{3_Bar}%）、人口{4_Stock}/{5_StockBar}、定住{6_Dwell}/{7_Need}ターン</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_ENCLAVE_NODWELL" Language="ja_JP"><Text>飛び地: {1_Civ} 割合{2_Share}%（基準{3_Bar}%）、人口{4_Stock}/{5_StockBar}</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_COL_ENCLAVE" Language="ja_JP"><Text>飛び地</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_ENCLAVE_CELL" Language="ja_JP"><Text>{1_Civ} {2_Share}%/{3_Bar}%</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_ENCLAVE_STANDING" Language="ja_JP"><Text>{1_Civ}飛び地</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSTOCK" Language="ja_JP"><Text>どの都市でも十分な共同体の規模</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_QSTOCK_D" Language="ja_JP"><Text>この人口ポイント以上の外来共同体は、拠点に占める割合にかかわらず定着したとみなされ、大きな国際都市にも飛び地ができます（人口30の首都は割合基準では外来ポイントが10必要です）。この数値はゲーム内の拠点規模に応じて変わります。平均人口18のときにそのまま適用され、時代を通じて都市が成長すると比例して（半分から2倍まで）動きます。飛び地は共同体が消滅割合とこの人数の両方を下回っている間だけ消えていきます。オフ = 割合のみ。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSTOCK_D" Language="ja_JP"><Text>少なくともこの人口ポイントを持つ外国の共同体は、入植地に占める割合にかかわらず「成立」の段階に達します。そのため大都市にも飛び地ができます。この数値はこのゲームの入植地の規模に合わせて変わります。入植地の平均人口が18人のときは記載どおりで、時代を経て都市が大きくなるにつれ、半分から2倍まで比例して変わります。飛び地が衰退するのは、共同体が衰退の割合とこの数値の両方を下回っている間だけです。オフ = 割合のみ。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QFADE" Language="ja_JP"><Text>飛び地が消えていく割合</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_QFADE_D" Language="ja_JP"><Text>その民族の拠点に占める割合が、消滅期間の間この値を下回り続けると飛び地は解消されます。タイルは取り除かれ、年代記に記録されます。既定では足がかり割合の半分なので、縮小しても存続する共同体は飛び地を保ちます。しない = 飛び地は永続します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QFADE_D" Language="ja_JP"><Text>人々が入植地に占める割合が衰退期間のあいだこの値を下回り続けると、飛び地は「成立」でも「承認」でも衰退し、解消されます。タイルは取り除かれ、年代記に記録されます。既定値は「足がかり」の割合の半分なので、縮小しても存続する共同体は飛び地を保ちます。なし = 飛び地は恒久的です。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QFADETURNS" Language="ja_JP"><Text>消滅までにその割合を下回る期間</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QFADETURNS_D" Language="ja_JP"><Text>飛び地が解消されるまでに、共同体が消滅割合を下回り続けなければならない連続ターン数です。</Text></Replace>
         <Replace Tag="LOC_EMIG_CHOICE_NEVER" Language="ja_JP"><Text>しない</Text></Replace>
@@ -477,6 +475,8 @@
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="ja_JP"><Text>{1_People}がより豊かな隣国を求めて{2_City}を去りました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="ja_JP"><Text>{1_People}が{2_City}周辺の戦闘から逃れました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR_TO" Language="ja_JP"><Text>{1_People}が{2_City}周辺の戦闘から逃れ、安全な{3_Dest}へ向かいました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_UPRISING" Language="ja_JP"><Text>{1_People}が{2_City}周辺の{3_Name}蜂起から逃れました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_UPRISING_TO" Language="ja_JP"><Text>{1_People}が{2_City}周辺の{4_Name}蜂起から逃れ、安全な{3_Dest}へ向かいました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="ja_JP"><Text>{1_People}が{2_City}の支配権が移った際に連れ去られました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST_BY" Language="ja_JP"><Text>{2_City}が{3_Civ}に征服された際、{1_People}が連れ去られました。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="ja_JP"><Text>単位:</Text></Replace>
@@ -563,6 +563,20 @@
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION] 戦争や災害から逃れる難民が強くあなたのもとへ引き寄せられ、最も切迫した人々が優先されます。毎ターン[icon:YIELD_DIPLOMACY]影響力+1を得ます。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="ja_JP"><Text>難民協定</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION] 戦争や災害から逃れる難民が強くあなたのもとへ引き寄せられ、最も切迫した人々が優先されます。毎ターン[icon:YIELD_DIPLOMACY]影響力+2と[icon:YIELD_CULTURE]文化+1を得ます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_PROTECT_AQ_NAME" Language="ja_JP"><Text>客人の権利</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_PROTECT_AQ_DESC" Language="ja_JP"><Text>毎ターン[icon:YIELD_DIPLOMACY]影響力+1。あなたの都市の文化街区は戦時中も報酬を満額受け取り、その故郷と戦争中であっても不満は収まっていきます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_PROTECT_EX_NAME" Language="ja_JP"><Text>共同体憲章</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_PROTECT_EX_DESC" Language="ja_JP"><Text>毎ターン[icon:YIELD_DIPLOMACY]影響力+2。あなたの都市の文化街区は戦時中も報酬を満額受け取り、その故郷と戦争中であっても不満は収まっていきます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_PROTECT_MO_NAME" Language="ja_JP"><Text>平等な保護</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_PROTECT_MO_DESC" Language="ja_JP"><Text>毎ターン[icon:YIELD_DIPLOMACY]影響力+3。あなたの都市の文化街区は戦時中も報酬を満額受け取り、その故郷と戦争中であっても不満は収まっていきます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_SUSPECT_AQ_NAME" Language="ja_JP"><Text>監視される街区</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_SUSPECT_AQ_DESC" Language="ja_JP"><Text>すべての都市で[icon:YIELD_PRODUCTION]生産力+1。あなたが承認する文化街区の報酬は半分になり、到着する移民は25%減り、故郷と戦争中の共同体はより早く不穏になります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_SUSPECT_EX_NAME" Language="ja_JP"><Text>忠誠の誓い</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_SUSPECT_EX_DESC" Language="ja_JP"><Text>すべての都市で[icon:YIELD_PRODUCTION]生産力+2。あなたが承認する文化街区の報酬は半分になり、到着する移民は25%減り、故郷と戦争中の共同体はより早く不穏になります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_NAME" Language="ja_JP"><Text>住民登録制</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_DESC" Language="ja_JP"><Text>すべての都市で[icon:YIELD_PRODUCTION]生産力+3。あなたが承認する文化街区の報酬は半分になり、到着する移民は25%減り、故郷と戦争中の共同体はより早く不穏になります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_NAME" Language="ja_JP"><Text>領事保護</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_DESC" Language="ja_JP"><Text>他文明の都市にあるあなたの民の承認済み文化街区1つにつき、毎ターン[icon:YIELD_DIPLOMACY]影響力+1（最大+4）。あなたの民の文化街区を抱える文明が監視系のカードを採用すると、時代ごとに1回、その文明への不平を表明します。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
@@ -804,6 +818,29 @@
         <Replace Tag="LOC_EMIG_RO_ORIGINS" Language="ja_JP"><Text>出身地: {1_List}{2_Tail}</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_ORIGINS_MORE" Language="ja_JP"><Text>（他に+{1_Count}件）</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_CAUSE_ITEM" Language="ja_JP"><Text>{1_Label} {2_Share}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STAGE_NONE" Language="ja_JP"><Text>{1_Civ}の共同体</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STAGE_FOOTHOLD" Language="ja_JP"><Text>{1_Civ}の共同体：足がかり</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STAGE_FORMING" Language="ja_JP"><Text>{1_Civ}の共同体：飛び地になる準備が整った</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STAGE_ESTABLISHED" Language="ja_JP"><Text>{1_Civ}の飛び地：成立</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STAGE_RECOGNIZED" Language="ja_JP"><Text>{1_Civ}の飛び地：承認済み（{2_Stance}）</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STAGE_RECOGNIZED_LETBE" Language="ja_JP"><Text>{1_Civ}の飛び地：承認済み、干渉せず</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STAGE_FADING" Language="ja_JP"><Text>{1_Civ}の飛び地：衰退中、残り{2_Turns}ターン</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEXT_FOOTHOLD" Language="ja_JP"><Text>{2_City}の{1_Bar}%で足がかりを得る（現在{3_Share}%）</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEXT_ENCLAVE" Language="ja_JP"><Text>{2_City}の{1_Bar}%で飛び地になる（現在{3_Share}%）</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEXT_ENCLAVE_OR_SIZE" Language="ja_JP"><Text>{2_City}の{1_Bar}%（現在{3_Share}%）または人口{4_Size}（現在{5_Stock}）で飛び地になる</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEXT_FORMING" Language="ja_JP"><Text>次の移住で飛び地が成立します</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEXT_RECOGNIZED" Language="ja_JP"><Text>このまま続けば{1_Turns}ターン後に承認</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEXT_RECOGNIZED_DUE" Language="ja_JP"><Text>承認の準備が整っています</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEXT_FADE" Language="ja_JP"><Text>人々が{2_City}の{1_Bar}%に戻れば存続</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_PACING" Language="ja_JP"><Text>飛び地が成立するまで、この時代の基準は{1_Pct}%下がっています</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BLOCK_FLOOR" Language="ja_JP"><Text>自らの人口が少なくとも{1_Min}必要（現在{2_Stock}）</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BLOCK_AGE_CAP" Language="ja_JP"><Text>この時代の飛び地はすべて成立済みです</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BLOCK_ORIGIN_CAP" Language="ja_JP"><Text>この文明はすでに他の都市に{2_Civ}の飛び地を{1_Count}つ持っています</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BLOCK_BELOW_BAR" Language="ja_JP"><Text>人々が{2_City}の{1_Bar}%を下回っている間は待機</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BLOCK_COOLDOWN" Language="ja_JP"><Text>前回の飛び地の決定から{1_Turns}ターン待機中</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BLOCK_DECISIONS" Language="ja_JP"><Text>この時代の飛び地の決定はすべて済んでいます</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ENCLAVE_STAGE" Language="ja_JP"><Text>{1_Civ}の飛び地：{2_Stage}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ENCLAVE_PROGRESS" Language="ja_JP"><Text>{1_Civ}・{2_Stage}：{3_Share}%/{4_Bar}%</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_POOL_ONE" Language="ja_JP"><Text>再定住中の難民: {1_Count}ポイント</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_POOL_MANY" Language="ja_JP"><Text>再定住中の難民: {1_Count}ポイント</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_BURDEN" Language="ja_JP"><Text>難民支援の負担: 約{1_Gold}ゴールド/ターン、幸福度{2_Happiness}/ターン</Text></Replace>
@@ -837,6 +874,8 @@
         <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="ja_JP"><Text>難民</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_TITLE" Language="ja_JP"><Text>飛び地が建て替えられる</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_BODY" Language="ja_JP"><Text>{1_Name}は失われました。都市がその区画の上に建設し、住んでいた家族は周囲の街路へ散っていきました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_BURNED_TITLE" Language="ja_JP"><Text>{1_City}炎上</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_BURNED_BODY" Language="ja_JP"><Text>{1_City}が蜂起の中で炎上したとき、そこに暮らしていた{2_Adj}の家々も、ほかの人々とともに散り散りになった。</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_TITLE" Language="ja_JP"><Text>街区の担い手が変わる</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_BODY" Language="ja_JP"><Text>かつての{1_Name}は、その家々が去り、婚姻で溶け込み、あるいは新たな移住者に取って代わられて、色あせていった。{2_Where}、いまや{3_Adj}の世帯がこの街区にその名、その慣習、そしてその取り決めを与えている。</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_STANCE_EMBRACE" Language="ja_JP"><Text>あなたは{1_Name}を受け入れ、その慣習が都市を豊かにしている。</Text></Replace>
@@ -850,6 +889,8 @@
         <Replace Tag="LOC_EMIG_QTR_BODY" Language="ja_JP"><Text>{2_Place}出身の{1_Adj}の家々は、もはや単なる新参者ではなくなった。{3_Where}、その商店、聖所、工房、祭り、そして習慣が、いまや独自の生活を織りなしている。よそからの記憶を宿した地区だ。この街区を認め、都市がどの伝統を受け入れるかを決めよ。</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_TITLE" Language="ja_JP"><Text>戦争が{1_Name}を試す</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_BODY" Language="ja_JP"><Text>{1_Adj}との戦争は{2_Name}に重くのしかかる。その家々は戦火の中で同胞から切り離され、一部の隣人は、彼らがこの戦争を選んだわけではないことを忘れ、冷たい目を向ける。平和が戻るまで、その緊張が街区を都市の暮らしへ完全に溶け込ませない。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_SUSPECT_BODY" Language="ja_JP"><Text>{5_Homeland}との戦争が始まった今、{1_Host}の「{2_Policy}」は{4_City}の{3_Adj}の家々に最も重くのしかかる。戦火の中で同胞から切り離され、自ら選んだわけでもない戦争のために国内で監視される。平和が戻るまで、街区は都市の暮らしに完全には溶け込めない。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_PROTECT_BODY" Language="ja_JP"><Text>{5_Homeland}との戦争は{4_City}の{3_Adj}の家々にも及ぶが、{1_Host}の「{2_Policy}」は揺るがない。戦いが続くあいだも、彼らの権利、商い、そして都市での居場所はこれまでどおり守られる。</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_ABBASID_A" Language="ja_JP"><Text>「طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ.（知識を求めることは、すべてのムスリムの義務である。）」預言者ムハンマド、『イブン・マージャのスナン』224</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_ABBASID_B" Language="ja_JP"><Text>「وينبغى لنا ألا نستحي من استحسان الحق، واقتناء الحق من أين أتى…（真理がどこから来たものであれ、それを讃え、手に入れることを恥じるべきではない…）」キンディー『第一哲学について』（9世紀、訳）</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_AKSUM_A" Language="ja_JP"><Text>「ΤΟΥΤΟ ΑΡΕΣΗ ΤΗ ΧΩΡΑ（Toûto arésē tê chôra: これが国を喜ばせんことを。）」アクスムの貨幣、青銅貨の銘（4世紀）</Text></Replace>
@@ -1904,6 +1945,18 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_PARA_1" Language="ja_JP"><Text>戦争や災害による難民のうち（既定で）5人に1人は到着と同時に定住します。残りは目的地で待機の列に入り、その後の数ターンで定住していきます。幸福で、開かれていて、混雑していない受け入れ先ほど早く定住させられます。「移民排斥の方針」は定住を遅らせます。受け入れ側は、まだ待機している人々の維持費を支払います。彼らが逃れてきた危機が新しい都市にまで及ぶと、待機中の難民が真っ先に移動します。都市の情報表示と都市の詳細パネルに、待機している人数が表示されます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_TITLE" Language="ja_JP"><Text>人々を受け入れる代償</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_PARA_1" Language="ja_JP"><Text>新来者は一人ごとに受け入れ文明へ統合負荷を加え、その負荷はおよそ6～8ターンかけて薄れていきます。負荷が残っている間、文明は毎ターン[icon:YIELD_GOLD]ゴールドを支払い、蓄積した[icon:YIELD_HAPPINESS]幸福度が差し引かれて次の祝宴が遅れます。多くの到着者を定住させている文明には、新たな移民も集まりにくくなります。これらのコストはそれぞれ詳細設定で0にできます。「統合と成長の代償」を参照してください。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_TITLE" Language="ja_JP"><Text>飛び地の育ち方</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>外国の共同体は「足がかり」「成立」「承認」の3段階を経て飛び地になります。各入植地は、他の文明から来た最大の共同体で測られます。都市の表示には段階、次の段階に必要なもの、妨げているものが示され、飛び地タイルのツールチップと多様性の表も同じ名前を使います。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_FOOTHOLD_TITLE" Language="ja_JP"><Text>足がかり</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_FOOTHOLD_PARA_1" Language="ja_JP"><Text>共同体が入植地の25%を占め、自らの人口が3以上になると足がかりを得ます。年代記に記されますが、地図にはまだ何も現れません。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_ESTABLISHED_TITLE" Language="ja_JP"><Text>成立</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_ESTABLISHED_PARA_1" Language="ja_JP"><Text>入植地の30%、または割合にかかわらず人口6（あなたのゲームの入植地の規模に合わせて調整）に達すると、共同体は成立し、飛び地ができます。都市の外縁にあるタイルで、その民の名を冠し、最初のターンから独自の産出をもたらします。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_RECOGNIZED_TITLE" Language="ja_JP"><Text>承認</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_RECOGNIZED_PARA_1" Language="ja_JP"><Text>共同体が8ターンのあいだ成立したままなら（3ターンまでの落ち込みは許容）、飛び地は承認されます。方針は都市が選ぶか、承認の設定が「尋ねる」ならポップアップであなたが選び、一度だけ支払われます。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_ENDINGS_TITLE" Language="ja_JP"><Text>飛び地の終わり方</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_ENDINGS_PARA_1" Language="ja_JP"><Text>人々が入植地の12.5%と規模の基準をともに12ターン下回り続けると、飛び地は衰退します。都市の表示が残りターンを数えます。タイルの上に建設されたり、都市が破壊されたりしても終わります。都市国家や独立勢力が入植地を奪った場合、文明が再び都市を保持するまで飛び地は保留されます。故郷との戦争は飛び地を係争中にし、もたらすものは変わりますが段階は変わりません。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_LIMITS_TITLE" Language="ja_JP"><Text>上限</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_LIMITS_PARA_1" Language="ja_JP"><Text>各文明が1時代に成立させられる飛び地は最大3つで、同じ民の飛び地は全都市で最大2つまでです。飛び地の承認をあなたに尋ねる場合、決定は12ターン以上の間隔を空け、1時代に最大3回です。時代が進んでも飛び地のない文明は、飛び地ができるまで基準が最大40%下がります。これらはすべて詳細設定の「文化的飛び地」で調整できます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_TITLE" Language="ja_JP"><Text>人々を故郷へ呼び戻す</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>あなたの居住地がどれも戦争、包囲、災害、飢饉のさなかになく、逃れてきた居住地から離れて暮らす人々がまだいるとき、このModは彼らを故郷へ呼び戻すことを提案します。ダイアログは、あなたの民の声による帰郷の引用で始まり（「故郷を追われた人々の声」を参照）、人々がどこにいるかによって2つの形式のいずれかをとります。断った場合、人々はその場にとどまり、時が経つうちに自ら戻ってくることもあります。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_TITLE" Language="ja_JP"><Text>自国の居住地から</Text></Replace>
@@ -1913,14 +1966,20 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_TITLE" Language="ja_JP"><Text>価格とクールダウン</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_1" Language="ja_JP"><Text>呼び戻しには毎回3つの規模、つまり1人、呼び戻せる人数の約半分、全員が[icon:YIELD_GOLD]ゴールドまたは[icon:YIELD_DIPLOMACY]影響力で提示され、支払える規模だけが表示されます。価格は人数よりも速く上がります。2人ならほぼ1人の3倍、3人なら約5倍です。国外からの呼び戻しはより高く、古代以降は時代が進むごとに価格が倍増します（探検の時代は3倍、近代は9倍）。呼び戻しの後、同じ文明は次の呼び戻しまで8ターン待つ必要があります。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_2" Language="ja_JP"><Text>文化的飛び地を持つコミュニティが自ら戻ってくることはまれなため、彼らを連れ戻す確実な方法は呼び戻しです。提案、価格、確率は詳細設定の「人々の呼び戻し」で設定します。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_TITLE" Language="ja_JP"><Text>共同体の扱い</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>各時代には、受け入れ国が自国の都市に暮らす外国の共同体をどう扱うかを決める2枚のカードがあり、探検の時代からは国外に暮らす自国民のための3枚目が加わります。ほかと同じ政策カードで、どの文明でも使え、選ぶのは受け入れ国です。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_2" Language="ja_JP"><Text>[B]保護系のカード[/B]（客人の権利、共同体憲章、平等な保護）は毎ターン[icon:YIELD_DIPLOMACY]影響力を+1、+2、+3与えます。その故郷と戦争中に承認した文化街区も、報酬は半分ではなく満額です。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_3" Language="ja_JP"><Text>[B]監視系のカード[/B]（監視される街区、忠誠の誓い、住民登録制）はすべての都市で[icon:YIELD_PRODUCTION]生産力を+1、+2、+3与えます。その代償を払うのは家々です。承認する文化街区の報酬は半分、戦時中は4分の1になり、あなたの都市を選ぶ移民は移民方針とは別に25%減ります。両方の系統を1枚ずつ採用すると、文化街区と移民への効果は打ち消し合いますが、両カードの産出は残ります。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_4" Language="ja_JP"><Text>[B]領事保護[/B]（探検の時代と近代）は、他文明の都市にあるあなたの民の承認済み文化街区1つにつき毎ターン[icon:YIELD_DIPLOMACY]影響力+1（最大+4）を与えます。そうした文化街区を抱える文明が監視系のカードを採用すると、受け入れ国ごと、時代ごとに1回、その文明への不平を抱きます。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_5" Language="ja_JP"><Text>戦争が初めて文化街区に及んだとき、年代記は受け入れ国のカードを名指しします。監視系のカードは家々に最も重くのしかかり、保護系のカードは揺るぎません。不満に関するカードの記述は、それを読み取るPartisansも遊んでいる場合に意味を持ちます。Emigration単体では、どちらの場合も戦時中の受け入れ国の幸福度への負担はいつもどおりです。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_TITLE" Language="ja_JP"><Text>移民政策</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>移住は、すべての時代の社会制度に政策カードを追加します。これらは他のカードと同じようにスロットにセットして入れ替えることができ、国境開放の協定とも重ねて効果を得られます。国境開放は、締結した2国間の移住を双方向に増やします。各カードの固定の産出はゲーム本来の効果であり、移住への効果はこのModによるものです。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_ANTIQUITY_TITLE" Language="ja_JP"><Text>古代</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_ANTIQUITY_PARA_1" Language="ja_JP"><Text>[BLIST][LI][B]移民歓迎の方針[/B]（市民権）：移民+50%。毎ターン[icon:YIELD_DIPLOMACY]影響力+1。[LI][B]移民排斥の方針[/B]（市民権）：移民-60%、競合文明へ去る自国民が40%減少し、受け入れた難民の定住が遅くなる。すべての都市で[icon:YIELD_PRODUCTION]生産力+2、毎ターン[icon:YIELD_DIPLOMACY]影響力-2。[/LIST]</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_ANTIQUITY_PARA_1" Language="ja_JP"><Text>[BLIST][LI][B]移民歓迎の方針[/B]（市民権）：移民+50%。毎ターン[icon:YIELD_DIPLOMACY]影響力+1。[LI][B]移民排斥の方針[/B]（市民権）：移民-60%、競合文明へ去る自国民が40%減少し、受け入れた難民の定住が遅くなる。すべての都市で[icon:YIELD_PRODUCTION]生産力+2、毎ターン[icon:YIELD_DIPLOMACY]影響力-2。[LI][B]客人の権利[/B]（市民権）：毎ターン[icon:YIELD_DIPLOMACY]影響力+1。文化街区は戦時中も報酬を満額受け取る。[LI][B]監視される街区[/B]（市民権）：すべての都市で[icon:YIELD_PRODUCTION]生産力+1。承認する文化街区の報酬は半分になり、到着する移民は25%減る。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_EXPLORATION_TITLE" Language="ja_JP"><Text>探検の時代</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_EXPLORATION_PARA_1" Language="ja_JP"><Text>[BLIST][LI][B]移民歓迎の方針[/B]（経済学）：移民+50%。毎ターン[icon:YIELD_DIPLOMACY]影響力+2。[LI][B]移民排斥の方針[/B]（経済学）：移民-60%、競合文明へ去る自国民が40%減少し、難民の定住が遅くなる。すべての都市で[icon:YIELD_PRODUCTION]生産力+3、毎ターン[icon:YIELD_DIPLOMACY]影響力-3。[LI][B]才能の誘致[/B]（天啓）：毎ターン[icon:YIELD_SCIENCE]科学力+1に加え、引き寄せた移民1人につき約+1.5（最大+12）。移民が止まるとボーナスは薄れていく。[LI][B]文化的魅力[/B]（社会）：同じ効果を[icon:YIELD_CULTURE]文化力で得る。[LI][B]商業的な魅力[/B]（重商主義）：同じ効果を[icon:YIELD_GOLD]ゴールドで得る。[LI][B]選択的庇護[/B]（篤信）：戦争や災害から逃れる難民を、最も切迫した人々から順にあなたのもとへ引き寄せる。毎ターン[icon:YIELD_DIPLOMACY]影響力+1。[/LIST]</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_EXPLORATION_PARA_1" Language="ja_JP"><Text>[BLIST][LI][B]移民歓迎の方針[/B]（経済学）：移民+50%。毎ターン[icon:YIELD_DIPLOMACY]影響力+2。[LI][B]移民排斥の方針[/B]（経済学）：移民-60%、競合文明へ去る自国民が40%減少し、難民の定住が遅くなる。すべての都市で[icon:YIELD_PRODUCTION]生産力+3、毎ターン[icon:YIELD_DIPLOMACY]影響力-3。[LI][B]才能の誘致[/B]（天啓）：毎ターン[icon:YIELD_SCIENCE]科学力+1に加え、引き寄せた移民1人につき約+1.5（最大+12）。移民が止まるとボーナスは薄れていく。[LI][B]文化的魅力[/B]（社会）：同じ効果を[icon:YIELD_CULTURE]文化力で得る。[LI][B]商業的な魅力[/B]（重商主義）：同じ効果を[icon:YIELD_GOLD]ゴールドで得る。[LI][B]選択的庇護[/B]（篤信）：戦争や災害から逃れる難民を、最も切迫した人々から順にあなたのもとへ引き寄せる。毎ターン[icon:YIELD_DIPLOMACY]影響力+1。[LI][B]共同体憲章[/B]（経済学）：毎ターン[icon:YIELD_DIPLOMACY]影響力+2。文化街区は戦時中も報酬を満額受け取る。[LI][B]忠誠の誓い[/B]（経済学）：すべての都市で[icon:YIELD_PRODUCTION]生産力+2。承認する文化街区の報酬は半分になり、到着する移民は25%減る。[LI][B]領事保護[/B]（外交官）：国外にあるあなたの民の承認済み文化街区1つにつき毎ターン[icon:YIELD_DIPLOMACY]影響力+1（最大+4）。監視系のカードで彼らを見張る受け入れ国への不平。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_TITLE" Language="ja_JP"><Text>近代</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_1" Language="ja_JP"><Text>[BLIST][LI][B]移民歓迎の方針[/B]（社会問題）：移民+50%。毎ターン[icon:YIELD_DIPLOMACY]影響力+3。[LI][B]移民排斥の方針[/B]（社会問題）：移民-60%、競合文明へ去る自国民が40%減少し、難民の定住が遅くなる。すべての都市で[icon:YIELD_PRODUCTION]生産力+4、毎ターン[icon:YIELD_DIPLOMACY]影響力-4。[LI][B]才能の誘致[/B]（近代性）：毎ターン[icon:YIELD_SCIENCE]科学力+2に加え、移民1人につき約+1.5（最大+12）。移民が止まると薄れていく。[LI][B]文化的魅力[/B]（博物学）：同じ効果を[icon:YIELD_CULTURE]文化力で得る。[LI][B]商業的な魅力[/B]（資本主義）：同じ効果を[icon:YIELD_GOLD]ゴールドで得る。[LI][B]難民協定[/B]（政治理論）：戦争や災害から逃れる難民を、最も切迫した人々から順にあなたのもとへ引き寄せる。毎ターン[icon:YIELD_DIPLOMACY]影響力+2、[icon:YIELD_CULTURE]文化力+1。[/LIST]</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_1" Language="ja_JP"><Text>[BLIST][LI][B]移民歓迎の方針[/B]（社会問題）：移民+50%。毎ターン[icon:YIELD_DIPLOMACY]影響力+3。[LI][B]移民排斥の方針[/B]（社会問題）：移民-60%、競合文明へ去る自国民が40%減少し、難民の定住が遅くなる。すべての都市で[icon:YIELD_PRODUCTION]生産力+4、毎ターン[icon:YIELD_DIPLOMACY]影響力-4。[LI][B]才能の誘致[/B]（近代性）：毎ターン[icon:YIELD_SCIENCE]科学力+2に加え、移民1人につき約+1.5（最大+12）。移民が止まると薄れていく。[LI][B]文化的魅力[/B]（博物学）：同じ効果を[icon:YIELD_CULTURE]文化力で得る。[LI][B]商業的な魅力[/B]（資本主義）：同じ効果を[icon:YIELD_GOLD]ゴールドで得る。[LI][B]難民協定[/B]（政治理論）：戦争や災害から逃れる難民を、最も切迫した人々から順にあなたのもとへ引き寄せる。毎ターン[icon:YIELD_DIPLOMACY]影響力+2、[icon:YIELD_CULTURE]文化力+1。[LI][B]平等な保護[/B]（社会問題）：毎ターン[icon:YIELD_DIPLOMACY]影響力+3。文化街区は戦時中も報酬を満額受け取る。[LI][B]住民登録制[/B]（社会問題）：すべての都市で[icon:YIELD_PRODUCTION]生産力+3。承認する文化街区の報酬は半分になり、到着する移民は25%減る。[LI][B]領事保護[/B]（政治理論）：探検の時代と同じ。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_2" Language="ja_JP"><Text>誘致系のカードは、人々が到着し続けている間しか効果を生みません。「移民歓迎の方針」、国境開放、庇護系のカードのいずれかと組み合わせ、流入が止まったら入れ替えましょう。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_TITLE" Language="ja_JP"><Text>マップレンズ</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>移住は、ゲームのレンズパネルに2つのレンズを追加し、それぞれにホットキーがあります。どちらも「分析の表示範囲」の設定に従います（「範囲と表示」を参照）。レンズを表示している間はゲームのタイルツールチップが隠れ、カーソルの下にレンズ独自の情報が表示されます。</Text></Replace>

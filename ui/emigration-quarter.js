@@ -30,6 +30,9 @@ import { enclaveYields, paidYields, yieldsText, yieldsButtonText, withYields } f
 import { dlog } from "/emigration/ui/emigration-log.js";
 import { toast } from "/emigration/ui/emigration-feedback.js";
 import { loc as tr, msg, msgCap, msgText } from "/emigration/ui/emigration-loc.js";
+import { treatmentPayoutFactor, treatmentBenefitScale, contestedEntry } from "/emigration/ui/emigration-treatment.js";
+import { reconcileQuarterHosts, burnedEntry, isMajorHost } from "/emigration/ui/emigration-quarter-hosts.js";
+import { ORIGIN_CAP, countOriginEnclaves } from "/emigration/ui/emigration-enclave-stage.js";
 
 function localPid() {
   try {
@@ -88,8 +91,8 @@ function tileKeyOf(city) {
 
 /**
  * Resolve what a stance pays its host, once, at recognition (emigration-stance-payout.js): sized from the
- * host's own income, with the payout reduced while the host is at war with the enclave's homeland. The
- * passive "let be" stance pays and costs nothing.
+ * host's own income, with the payout reduced while the host is at war with the enclave's homeland and by
+ * the host's treatment card (emigration-treatment.js). The passive "let be" stance pays and costs nothing.
  * @param {{benefitYield:(string|null)}|null} option The chosen option (null: no stance yet).
  * @param {number} [owner] Host player id. @param {number} [originPid] The enclave's origin player id.
  * @returns {*} The payout ({benefitYield, benefitAmount, penaltyYield, penaltyAmount, once}).
@@ -98,7 +101,7 @@ function resolveApplied(option, owner, originPid) {
   const atWar = typeof owner === "number" && typeof originPid === "number"
     && safeHas(() => warOpponents(owner), originPid);
   return stancePayout(option || { benefitYield: null }, typeof owner === "number" ? owner : -1,
-    atWar ? clampFactor(CONFIG.contestedQuarterYieldFactor) : 1);
+    typeof owner === "number" ? treatmentPayoutFactor(owner, atWar) : 1);
 }
 
 /** @param {() => Set<number>} read @param {number} v @returns {boolean} */
@@ -112,7 +115,7 @@ function safeHas(read, v) {
 
 /** Most enclaves one origin civilization may hold across a host's cities (a different origin overtaking
  * a tile is a change-of-hands, not a new one). Beyond this, a fresh same-origin enclave is not offered. */
-const MAX_ENCLAVES_PER_CIV = 2;
+const MAX_ENCLAVES_PER_CIV = ORIGIN_CAP;
 
 /**
  * How many enclaves the owner already holds from the same origin civilization, excluding `exceptTileKey`
@@ -124,14 +127,7 @@ const MAX_ENCLAVES_PER_CIV = 2;
  * @returns {number} The count of existing same-origin enclaves.
  */
 function enclaveCountForCiv(owner, originPid, originCiv, exceptTileKey) {
-  let n = 0;
-  for (const { tileKey, rec } of quartersForOwner(owner)) {
-    if (tileKey === exceptTileKey) continue;
-    const recCiv = rec.originCiv || civType(rec.civ); // persisted identity, else resolve a legacy record
-    const same = originCiv && recCiv ? recCiv === originCiv : rec.civ === originPid;
-    if (same) n++;
-  }
-  return n;
+  return countOriginEnclaves(quartersForOwner(owner), originPid, originCiv, exceptTileKey, civType);
 }
 
 /**
@@ -460,6 +456,7 @@ export function maybeQuarter(signals, dilemmaFired) {
   try {
     const turn = monoTurn();
     const force = !!CONFIG.quarterForce;
+    reconcileQuarterHosts(); // records follow a captured settlement before anything reads rec.owner
     for (const owner of hostOwners(signals, me)) {
       // Keep the dwell clocks current every pass, including passes where a refugee dilemma fired or the
       // throttle blocks an offer, so a persistent enclave keeps accruing dwell toward its recognition.
@@ -553,15 +550,8 @@ function accrueContestedStrain(owner, turn) {
     const nowContested = opponents.has(rec.civ);
     const wasContested = rec.contested;
     setContested(tileKey, nowContested, turn);
-    if (nowContested && !wasContested) {
-      chronicle({
-        kind: "founding", title: msg("LOC_EMIG_QTR_CHRON_RESTLESS_TITLE", "War Tests the {1_Name}", quarterNameMsg(rec.civ)),
-        body: msg("LOC_EMIG_QTR_CHRON_RESTLESS_BODY",
-          "War with {1_Adj} falls hard on the {2_Name}: its families are cut off from kin in the fighting, and some neighbors meet them with cold looks, forgetting they did not choose this war. Until peace returns, that strain keeps the enclave from settling fully into the city's life.",
-          narrativeCiv(rec.civ).adjMsg, quarterNameMsg(rec.civ)),
-        civ: narrativeCiv(rec.civ).adj, dedupeKey: "quarter:contested:" + tileKey + "|" + rec.civ + "|" + turn
-      });
-    }
+    // The line names the host's treatment card when one is slotted (emigration-treatment.js).
+    if (nowContested && !wasContested) chronicle(contestedEntry(tileKey, rec, turn));
     if (nowContested) strain += per;
   }
   return strain;
@@ -756,7 +746,8 @@ function retireBuiltOver(key, rec, turn) {
   dropQuarter(key);
   dlog("enclave BUILT OVER " + quarterName(rec.civ) + " in " + hostCityName(key) + " at " + key
     + (lost ? "; host loses " + lost : ""));
-  announce(rec.owner, {
+  // A settlement Partisans reports burned in an uprising gets its own line instead.
+  announce(rec.owner, burnedEntry(key, rec, lost) || {
     kind: "founding", title: msg("LOC_EMIG_QTR_CHRON_BUILT_OVER_TITLE", "The Enclave Is Built Over"),
     body: withYields(msg("LOC_EMIG_QTR_CHRON_BUILT_OVER_BODY",
       "The {1_Name} is gone: the city built over its ward, and its families have scattered into the streets around it.",
@@ -765,21 +756,15 @@ function retireBuiltOver(key, rec, turn) {
   });
 }
 
-/** @param {*} v @returns {number} */
-function clampFactor(v) {
-  const n = Number(v);
-  if (!Number.isFinite(n)) return 1;
-  return Math.max(0, Math.min(1, n));
-}
-
 /**
  * The share of its benefit yield a quarter pays this pass: a contested enclave (host at war with its
- * homeland) pays only the clamped `contestedQuarterYieldFactor`; a settled one pays full. The single
- * source of the contested-yield reduction, so the grant path and any diagnostic read agree.
+ * homeland) pays only the clamped `contestedQuarterYieldFactor`, a settled one pays full, and the host's
+ * treatment card adjusts either (emigration-treatment.js). The single source of the reduction, so the
+ * grant path and any diagnostic read agree.
  * @param {*} rec A quarter record. @returns {number} The benefit factor in [0, 1].
  */
 export function contestedBenefitScale(rec) {
-  return rec && rec.contested ? clampFactor(CONFIG.contestedQuarterYieldFactor) : 1;
+  return treatmentBenefitScale(rec);
 }
 
 /**
@@ -809,7 +794,10 @@ export function tickContestedQuarters(_signals) {
 function recordOwners(me) {
   /** @type {Set<number>} */
   const owners = new Set([me]);
-  for (const { rec } of allQuarterEntries()) if (rec && typeof rec.owner === "number") owners.add(rec.owner);
+  // A record a city-state or independent now holds gets no upkeep: they're never touched.
+  for (const { rec } of allQuarterEntries()) {
+    if (rec && typeof rec.owner === "number" && isMajorHost(rec.owner)) owners.add(rec.owner);
+  }
   return Array.from(owners);
 }
 

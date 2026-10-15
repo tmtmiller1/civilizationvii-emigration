@@ -33,5 +33,15 @@
         <Row><ID>TRADITION_EMIG_TRADEPULL_MODERN</ID><Path>blp:fi_trade_income_64</Path></Row>
         <Row><ID>TRADITION_EMIG_ASYLUM_EXPLORATION</ID><Path>blp:esp_opengate</Path></Row>
         <Row><ID>TRADITION_EMIG_ASYLUM_MODERN</ID><Path>blp:esp_opengate</Path></Row>
+        <!-- Community treatment: the citizens icon (protective), the espionage unlock (suspicion), and the
+             minor embassy (Consular Protection), all base-game icon paths. -->
+        <Row><ID>TRADITION_EMIG_PROTECT_ANTIQUITY</ID><Path>blp:city_citizens</Path></Row>
+        <Row><ID>TRADITION_EMIG_PROTECT_EXPLORATION</ID><Path>blp:city_citizens</Path></Row>
+        <Row><ID>TRADITION_EMIG_PROTECT_MODERN</ID><Path>blp:city_citizens</Path></Row>
+        <Row><ID>TRADITION_EMIG_SUSPECT_ANTIQUITY</ID><Path>blp:unlock_espionage</Path></Row>
+        <Row><ID>TRADITION_EMIG_SUSPECT_EXPLORATION</ID><Path>blp:unlock_espionage</Path></Row>
+        <Row><ID>TRADITION_EMIG_SUSPECT_MODERN</ID><Path>blp:unlock_espionage</Path></Row>
+        <Row><ID>TRADITION_EMIG_CONSULAR_EXPLORATION</ID><Path>blp:impicon_minorembassy</Path></Row>
+        <Row><ID>TRADITION_EMIG_CONSULAR_MODERN</ID><Path>blp:impicon_minorembassy</Path></Row>
     </IconDefinitions>
 </Database>

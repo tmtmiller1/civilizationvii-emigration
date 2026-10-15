@@ -130,7 +130,7 @@
         <Replace Tag="LOC_EMIG_ETIP_STAGE_CONTESTED" Language="zh_Hans_CN"><Text>受争议</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_STAGE_RECOGNIZED" Language="zh_Hans_CN"><Text>已承认：{1_Stance}</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_STAGE_RECOGNIZED_LETBE" Language="zh_Hans_CN"><Text>已承认。你没有干预他们。</Text></Replace>
-        <Replace Tag="LOC_EMIG_ETIP_STAGE_ESTABLISHED" Language="zh_Hans_CN"><Text>已建立，{1_Turns} 回合后获得承认</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETIP_STAGE_ESTABLISHED" Language="zh_Hans_CN"><Text>已建立，若能维持，{1_Turns} 回合后获得承认</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_STAGE_ESTABLISHED_DUE" Language="zh_Hans_CN"><Text>已建立，可以获得承认</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_SRC_LAND_REPLACED" Language="zh_Hans_CN"><Text>原本是“{1_Improvement}”</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_SRC_LAND" Language="zh_Hans_CN"><Text>土地</Text></Replace>
@@ -146,6 +146,7 @@
         <Replace Tag="LOC_EMIG_ETIP_SRC_STANCE_D" Language="zh_Hans_CN"><Text>计入城市，而非这个地块</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_SRC_STANCE" Language="zh_Hans_CN"><Text>你对他们的态度：{1_Stance}</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_SRC_STANCE_PLAIN" Language="zh_Hans_CN"><Text>你对他们的态度</Text></Replace>
+        <Replace Tag="LOC_EMIG_ETIP_MARK_FOOTHOLD" Language="zh_Hans_CN"><Text>立足</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_MARK_ESTABLISHED" Language="zh_Hans_CN"><Text>已建立</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_MARK_RECOGNIZED" Language="zh_Hans_CN"><Text>已获承认</Text></Replace>
         <Replace Tag="LOC_EMIG_ETIP_MARK_CONTESTED" Language="zh_Hans_CN"><Text>受争议</Text></Replace>
@@ -353,6 +354,7 @@
         <Replace Tag="LOC_EMIG_T_CONGEST" Language="zh_Hans_CN"><Text>拥堵制动</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CONGEST_D" Language="zh_Hans_CN"><Text>让吸收大量移民的文明成为进一步迁徙的较不吸引人的目的地（它正忙于整合新来者），随其消化量增长。对失控磁石的结构性制动。0 = 关闭。</Text></Replace>
         <Replace Tag="LOC_EMIG_EVENT_FAMINE" Language="zh_Hans_CN"><Text>饥荒</Text></Replace>
+        <Replace Tag="LOC_EMIG_EVENT_UPRISING" Language="zh_Hans_CN"><Text>{1_Name}起义</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWBALL" Language="zh_Hans_CN"><Text>领先者失控制动</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWBALL_D" Language="zh_Hans_CN"><Text>让人口已远远领先于群雄的文明，成为跨文明迁徙的较不吸引人的去处：对失控领跑者的自我纠正式制动，并随其领先幅度增长（0 关闭 / 8 轻微 / 15 标准 / 28 强力）。它绝不会阻碍领跑者的流出或内部迁移。0 = 关闭。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_ANTISNOWTHRESH" Language="zh_Hans_CN"><Text>领先者失控制动起始值</Text></Replace>
@@ -360,9 +362,9 @@
         <Replace Tag="LOC_EMIG_T_QUARTERS" Language="zh_Hans_CN"><Text>文化飞地</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QUARTERS_D" Language="zh_Hans_CN"><Text>当外来族裔在你的某座城市中发展为稳固的社区时，会提供一次性选择（接纳、征税或放任），带来小幅产出奖励与惩罚，并按城市记录一处持久的街区；当你与其母国交战时，该街区会变为“争议”状态（小幅幸福度负担）。关闭＝没有街区决策，也没有争议负担。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSHARE" Language="zh_Hans_CN"><Text>形成所需的城市人口份额</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_QSHARE_D" Language="zh_Hans_CN"><Text>单一外来来源必须在城市人口中占到多大比例，才能成为文化飞地。越高 = 飞地越稀少，因为符合条件的城市越少。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSHARE_D" Language="zh_Hans_CN"><Text>单一外来出身需在城市中占到多少比例，才能进入“已建立”阶段，此时其飞地和地块出现。低于此值仍可保持“立足”。越高 = 飞地越少，因为达标的城市更少。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QMINSTOCK" Language="zh_Hans_CN"><Text>可形成的最小社群</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_QMINSTOCK_D" Language="zh_Hans_CN"><Text>单一外来来源在形成文化飞地之前必须达到的最低常住人口（以城市规模点计），以免极小的社群仅凭份额就符合条件。越低 = 小型定居点也能拥有飞地。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QMINSTOCK_D" Language="zh_Hans_CN"><Text>单一外来出身在任何阶段（“立足”或“已建立”）都需要的最低常住人口（以城市规模点计），使极小的社群无法仅凭比例达标。越低 = 小型定居点也能拥有飞地。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSTICKY" Language="zh_Hans_CN"><Text>凝聚力</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_CROSSCIV" Language="zh_Hans_CN"><Text>文明间迁移</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_CROSSCIV_D" Language="zh_Hans_CN"><Text>人口迁往其他文明的自由程度。数值越低，移民和难民越倾向留在故土附近，小文明也更不易流失人口；数值越高，人口在帝国之间的流动越多。默认为50%。同时调整多项高级设置：文明间摩擦、难民外逃吸引力和小文明保护制动。</Text></Replace>
@@ -383,26 +385,22 @@
         <Replace Tag="LOC_EMIG_T_QROOTS_D" Language="zh_Hans_CN"><Text>若某社群的飞地坐落于某个定居点，通过回流迁徙返回故乡的族人会减少。越强 = 返乡者越少；关闭 = 按正常速率返乡。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSTICKY_D" Language="zh_Hans_CN"><Text>已获得立足之地的外来社群抵抗被东道主同化的程度，使其能够成长为完整的飞地，而不是先被吸收。越强 = 飞地越容易形成；关闭 = 社群按正常速率融入，很少能达到飞地门槛。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QDWELL" Language="zh_Hans_CN"><Text>承认前飞地须存续的时间</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_QDWELL_D" Language="zh_Hans_CN"><Text>社群必须保持已形成状态多少回合，其飞地才会获得承认并提供一次性的立场抉择。飞地本身连同其地块会在社群形成后立即出现；短暂的激增（例如随后便离去的战争难民潮）会再次消退，始终不会获得承认。短暂低于门槛不会被计较。0 = 飞地一形成就予以承认。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QDWELL_D" Language="zh_Hans_CN"><Text>社群需保持“已建立”多少回合，其飞地才会“获得承认”并选定一次性立场。社群一旦“已建立”，飞地及其地块就会出现；短暂的激增（例如之后离开的战争难民潮）会在“获得承认”之前消退。短暂低于门槛会被宽限。0 = 飞地形成即获承认。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCOOLDOWN" Language="zh_Hans_CN"><Text>飞地抉择间隔</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_QCOOLDOWN_D" Language="zh_Hans_CN"><Text>两次文化飞地抉择之间的最少回合数。越高 = 抉择间隔越长。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QCOOLDOWN_D" Language="zh_Hans_CN"><Text>当由你决定是否承认飞地时，两次决定之间的最少回合数。越高 = 提议间隔越长。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QCAP" Language="zh_Hans_CN"><Text>每时代最多飞地数</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_QCAP_D" Language="zh_Hans_CN"><Text>单个文明在一个时代内最多可形成的文化飞地数量，无论是通过抉择还是自动形成。越低 = 每个时代的飞地越少。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QCAP_D" Language="zh_Hans_CN"><Text>一个文明在单个时代内最多能让多少处文化飞地进入“已建立”阶段。当由你决定是否承认飞地时，这也是每个时代的最多决定次数。越低 = 每个时代的飞地越少。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QPACE" Language="zh_Hans_CN"><Text>按时代调节形成节奏</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QPACE_D" Language="zh_Hans_CN"><Text>当某文明本时代形成的飞地少于目标数时，其形成门槛（份额、规模与定居时间）会随时代进度同步降低，直至达到最大降幅。一旦形成飞地，门槛即恢复原值。上方的上限仍会封顶该时代。关闭 = 整个时代都使用原始门槛。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QTARGET" Language="zh_Hans_CN"><Text>每时代目标飞地数</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QTARGET_D" Language="zh_Hans_CN"><Text>节奏调节力求达到的每个文明每个时代的飞地数量。1 表示每个时代很可能至少形成一处。0 = 不追赶。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QPACEMAX" Language="zh_Hans_CN"><Text>要求最大降幅</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QPACEMAX_D" Language="zh_Hans_CN"><Text>在时代后期仍未形成飞地时，节奏调节对形成门槛施加的最大降幅。40% 表示门槛为其设定值的 60%。</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_ENCLAVE" Language="zh_Hans_CN"><Text>飞地：{1_Civ} 占 {2_Share}%（需 {3_Bar}%），{4_Stock}/{5_StockBar} 人，已定居 {6_Dwell}/{7_Need} 回合</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_ENCLAVE_NODWELL" Language="zh_Hans_CN"><Text>飞地：{1_Civ} 占 {2_Share}%（需 {3_Bar}%），{4_Stock}/{5_StockBar} 人</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_COL_ENCLAVE" Language="zh_Hans_CN"><Text>飞地</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_ENCLAVE_CELL" Language="zh_Hans_CN"><Text>{1_Civ} {2_Share}%/{3_Bar}%</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_ENCLAVE_STANDING" Language="zh_Hans_CN"><Text>{1_Civ}飞地</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSTOCK" Language="zh_Hans_CN"><Text>在任何城市都足够大的社群</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_QSTOCK_D" Language="zh_Hans_CN"><Text>外来社群的人口点数达到此数即视为已立足，无论其在聚落中的份额如何，因此大型国际都市也能拥有飞地（三十人口的首都按份额门槛需要十个外来点数）。此数值随本局游戏中聚落的规模变化：当聚落平均人口为十八时按原值适用，并随城市在各时代的成长按比例变动（半倍至两倍）。飞地只有在其社群同时低于消退份额和此数值时才会消退。关闭 = 仅按份额。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QSTOCK_D" Language="zh_Hans_CN"><Text>人口点数至少达到此值的外来社群，无论在定居点中占比多少都会进入“已建立”阶段。因此大城市也能拥有飞地。此数值随本局定居点的规模变化：定居点平均有十八人时按原值适用，随着城市在各时代成长，按比例在一半到两倍之间变化。只有当社群同时低于衰落比例和此数值时，飞地才会衰落。关闭 = 仅看比例。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QFADE" Language="zh_Hans_CN"><Text>飞地消退的份额下限</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_QFADE_D" Language="zh_Hans_CN"><Text>当其民族在聚落中的份额在消退期内持续低于此值时，飞地解散：其地块被移除，编年史予以记录。默认为立足份额的一半，因此缩小但仍存续的社群可保留飞地。从不 = 飞地永久存在。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_QFADE_D" Language="zh_Hans_CN"><Text>当其人口在定居点中的比例在衰落期内一直低于此值时，飞地会衰落并解散，无论是“已建立”还是“已获承认”。地块会被移除，编年史会记录此事。默认值为“立足”比例的一半，因此缩小但仍存续的社群会保住其飞地。从不 = 飞地永久存在。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QFADETURNS" Language="zh_Hans_CN"><Text>低于该份额多久后消退</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QFADETURNS_D" Language="zh_Hans_CN"><Text>社群必须连续多少回合低于消退份额，飞地才会解散。</Text></Replace>
         <Replace Tag="LOC_EMIG_CHOICE_NEVER" Language="zh_Hans_CN"><Text>从不</Text></Replace>
@@ -477,6 +475,8 @@
         <Replace Tag="LOC_EMIG_DIGEST_PROSPERITY" Language="zh_Hans_CN"><Text>{1_People}为寻求更繁荣的邻邦而离开了{2_City}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR" Language="zh_Hans_CN"><Text>{1_People}逃离了{2_City}周边的战火。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_WAR_TO" Language="zh_Hans_CN"><Text>{1_People}逃离{2_City}周边的战火，前往安全的{3_Dest}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_UPRISING" Language="zh_Hans_CN"><Text>{1_People}逃离了{2_City}周边的{3_Name}起义。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIGEST_UPRISING_TO" Language="zh_Hans_CN"><Text>{1_People}逃离了{2_City}周边的{4_Name}起义，前往安全的{3_Dest}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST" Language="zh_Hans_CN"><Text>{2_City}易主时，{1_People}被掳走。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_CONQUEST_BY" Language="zh_Hans_CN"><Text>{2_City}被{3_Civ}征服时，{1_People}被掳走。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_UNITS" Language="zh_Hans_CN"><Text>单位：</Text></Replace>
@@ -563,6 +563,20 @@
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION]逃离战争与灾害的难民会被强烈吸引到你这里，最绝望者优先；你每回合获得 +1 [icon:YIELD_DIPLOMACY]影响力。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="zh_Hans_CN"><Text>难民契约</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_DESC" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION]逃离战争与灾害的难民会被强烈吸引到你这里，最绝望者优先；你每回合获得 +2 [icon:YIELD_DIPLOMACY]影响力和 +1 [icon:YIELD_CULTURE]文化值。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_PROTECT_AQ_NAME" Language="zh_Hans_CN"><Text>客人之权</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_PROTECT_AQ_DESC" Language="zh_Hans_CN"><Text>每回合[icon:YIELD_DIPLOMACY]影响力+1。你城市中的飞地在战时仍获得全额报酬；即使你与其故乡交战，它们的不安也会平息。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_PROTECT_EX_NAME" Language="zh_Hans_CN"><Text>社群宪章</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_PROTECT_EX_DESC" Language="zh_Hans_CN"><Text>每回合[icon:YIELD_DIPLOMACY]影响力+2。你城市中的飞地在战时仍获得全额报酬；即使你与其故乡交战，它们的不安也会平息。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_PROTECT_MO_NAME" Language="zh_Hans_CN"><Text>平等保护</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_PROTECT_MO_DESC" Language="zh_Hans_CN"><Text>每回合[icon:YIELD_DIPLOMACY]影响力+3。你城市中的飞地在战时仍获得全额报酬；即使你与其故乡交战，它们的不安也会平息。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_SUSPECT_AQ_NAME" Language="zh_Hans_CN"><Text>受监视的街区</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_SUSPECT_AQ_DESC" Language="zh_Hans_CN"><Text>每座城市[icon:YIELD_PRODUCTION]生产力+1。你承认的飞地报酬减半，到来的移民减少25%，与你交战之故乡的社群会更快变得不安。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_SUSPECT_EX_NAME" Language="zh_Hans_CN"><Text>效忠誓言</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_SUSPECT_EX_DESC" Language="zh_Hans_CN"><Text>每座城市[icon:YIELD_PRODUCTION]生产力+2。你承认的飞地报酬减半，到来的移民减少25%，与你交战之故乡的社群会更快变得不安。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_NAME" Language="zh_Hans_CN"><Text>居民登记</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_DESC" Language="zh_Hans_CN"><Text>每座城市[icon:YIELD_PRODUCTION]生产力+3。你承认的飞地报酬减半，到来的移民减少25%，与你交战之故乡的社群会更快变得不安。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_NAME" Language="zh_Hans_CN"><Text>领事保护</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_DESC" Language="zh_Hans_CN"><Text>你的人民在其他文明城市中每有一处已承认的飞地，每回合[icon:YIELD_DIPLOMACY]影响力+1，最多+4。当收容你人民飞地的文明采用猜疑类卡牌时，你每个时代对其产生一次不满。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="zh_Hans_CN"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="zh_Hans_CN"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="zh_Hans_CN"><Text>移民</Text></Replace>
@@ -804,6 +818,29 @@
         <Replace Tag="LOC_EMIG_RO_ORIGINS" Language="zh_Hans_CN"><Text>来源：{1_List}{2_Tail}</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_ORIGINS_MORE" Language="zh_Hans_CN"><Text>（另有 +{1_Count} 项）</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_CAUSE_ITEM" Language="zh_Hans_CN"><Text>{1_Label} {2_Share}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STAGE_NONE" Language="zh_Hans_CN"><Text>{1_Civ}社群</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STAGE_FOOTHOLD" Language="zh_Hans_CN"><Text>{1_Civ}社群：立足</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STAGE_FORMING" Language="zh_Hans_CN"><Text>{1_Civ}社群：即将成为飞地</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STAGE_ESTABLISHED" Language="zh_Hans_CN"><Text>{1_Civ}飞地：已建立</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STAGE_RECOGNIZED" Language="zh_Hans_CN"><Text>{1_Civ}飞地：已获承认（{2_Stance}）</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STAGE_RECOGNIZED_LETBE" Language="zh_Hans_CN"><Text>{1_Civ}飞地：已获承认，任其自处</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_STAGE_FADING" Language="zh_Hans_CN"><Text>{1_Civ}飞地：衰落中，剩余 {2_Turns} 回合</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEXT_FOOTHOLD" Language="zh_Hans_CN"><Text>占{2_City}的 {1_Bar}% 时立足（现为 {3_Share}%）</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEXT_ENCLAVE" Language="zh_Hans_CN"><Text>占{2_City}的 {1_Bar}% 时成为飞地（现为 {3_Share}%）</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEXT_ENCLAVE_OR_SIZE" Language="zh_Hans_CN"><Text>占{2_City}的 {1_Bar}%（现为 {3_Share}%）或人口达 {4_Size}（现为 {5_Stock}）时成为飞地</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEXT_FORMING" Language="zh_Hans_CN"><Text>飞地将在下次迁移时形成</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEXT_RECOGNIZED" Language="zh_Hans_CN"><Text>若能维持，{1_Turns} 回合后获得承认</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEXT_RECOGNIZED_DUE" Language="zh_Hans_CN"><Text>可以获得承认</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEXT_FADE" Language="zh_Hans_CN"><Text>若其人口回到{2_City}的 {1_Bar}%，即可保留</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_PACING" Language="zh_Hans_CN"><Text>在形成飞地之前，本时代的门槛降低 {1_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BLOCK_FLOOR" Language="zh_Hans_CN"><Text>自身人口至少需要 {1_Min}（现为 {2_Stock}）</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BLOCK_AGE_CAP" Language="zh_Hans_CN"><Text>本时代的飞地已全部形成</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BLOCK_ORIGIN_CAP" Language="zh_Hans_CN"><Text>该文明已在其他城市拥有 {1_Count} 处{2_Civ}飞地</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BLOCK_BELOW_BAR" Language="zh_Hans_CN"><Text>在其人口低于{2_City}的 {1_Bar}% 期间等待</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BLOCK_COOLDOWN" Language="zh_Hans_CN"><Text>距上次飞地决定还需等待 {1_Turns} 回合</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_BLOCK_DECISIONS" Language="zh_Hans_CN"><Text>本时代的飞地决定已全部做出</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ENCLAVE_STAGE" Language="zh_Hans_CN"><Text>{1_Civ}飞地：{2_Stage}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_ENCLAVE_PROGRESS" Language="zh_Hans_CN"><Text>{1_Civ}·{2_Stage}：{3_Share}%/{4_Bar}%</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_POOL_ONE" Language="zh_Hans_CN"><Text>安置中的难民：{1_Count} 点</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_POOL_MANY" Language="zh_Hans_CN"><Text>安置中的难民：{1_Count} 点</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_BURDEN" Language="zh_Hans_CN"><Text>难民供养负担：~{1_Gold} 金币/回合，{2_Happiness} 幸福度/回合</Text></Replace>
@@ -837,6 +874,8 @@
         <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="zh_Hans_CN"><Text>难民</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_TITLE" Language="zh_Hans_CN"><Text>飞地被覆盖</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_BODY" Language="zh_Hans_CN"><Text>{1_Name}已不复存在：城市在其街区之上另起建设，那里的家庭散入了周围的街巷。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_BURNED_TITLE" Language="zh_Hans_CN"><Text>{1_City}焚毁</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_BURNED_BODY" Language="zh_Hans_CN"><Text>当{1_City}在起义中焚毁时，那里的{2_Adj}家族也和其他人一样四散而去。</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_TITLE" Language="zh_Hans_CN"><Text>飞地易主</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_HANDS_BODY" Language="zh_Hans_CN"><Text>旧日的{1_Name}已然消退，其家族或迁徙他方，或联姻融入，或被新来者取代。{2_Where}，{3_Adj}家族如今赋予了这片街区它的名字、习俗与买卖。</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_STANCE_EMBRACE" Language="zh_Hans_CN"><Text>你接纳了{1_Name}，其习俗丰富了这座城市。</Text></Replace>
@@ -850,6 +889,8 @@
         <Replace Tag="LOC_EMIG_QTR_BODY" Language="zh_Hans_CN"><Text>来自{2_Place}的{1_Adj}家族已不再只是新来者。{3_Where}，他们的商铺、神龛、作坊、节庆与习惯如今自成一派生机，一处承载着他乡记忆的街区。承认这处飞地，并决定城市将为何种传统腾出空间。</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_TITLE" Language="zh_Hans_CN"><Text>战争考验着{1_Name}</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_BODY" Language="zh_Hans_CN"><Text>与{1_Adj}的战争沉重地压在{2_Name}之上：其家族在战火中与亲人失联，一些邻里以冷眼相待，忘了他们并未选择这场战争。直到和平重临，这份紧张始终使飞地无法完全融入城市的生活。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_SUSPECT_BODY" Language="zh_Hans_CN"><Text>如今与{5_Homeland}的战争已经到来，{1_Host}的“{2_Policy}”最沉重地落在{4_City}的{3_Adj}家族身上。他们在战火中与亲人失联，又因一场并非自己选择的战争在国内受到监视；直到和平重临，飞地都无法完全融入城市的生活。</Text></Replace>
+        <Replace Tag="LOC_EMIG_QTR_CHRON_RESTLESS_PROTECT_BODY" Language="zh_Hans_CN"><Text>与{5_Homeland}的战争波及{4_City}的{3_Adj}家族，但{1_Host}的“{2_Policy}”依然有效：在战事持续期间，他们的权利、生意和在城中的位置一如既往。</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_ABBASID_A" Language="zh_Hans_CN"><Text>"طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ.（求知是每个穆斯林的天职。）" 先知穆罕默德，《伊本·马哲圣训集》224</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_ABBASID_B" Language="zh_Hans_CN"><Text>"وينبغى لنا ألا نستحي من استحسان الحق، واقتناء الحق من أين أتى…（我们不应羞于欣赏真理、获取真理，无论它来自何方……）" 铿迪，《论第一哲学》（9世纪，译）</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_Q_AKSUM_A" Language="zh_Hans_CN"><Text>"ΤΟΥΤΟ ΑΡΕΣΗ ΤΗ ΧΩΡΑ（Toûto arésē tê chôra：愿此令国家满意。）" 阿克苏姆钱币，青铜币铭文（4世纪）</Text></Replace>
@@ -1904,6 +1945,18 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_PARA_1" Language="zh_Hans_CN"><Text>默认情况下，每五名战争和灾害难民中有一名会在抵达时直接定居。其余的人会进入目的地的等待队列，并在随后几个回合内陆续定居。幸福、开放且不拥挤的东道城市安置他们更快；反移民立场则会减慢安置。东道主需为仍在等待的人支付维护费。如果他们逃离的危机蔓延到新城市，等待中的难民会先行离开。城市概览面板和城市详情面板会显示等待人数。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_TITLE" Language="zh_Hans_CN"><Text>接纳人口的代价</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_PARA_1" Language="zh_Hans_CN"><Text>每位新来者都会为接纳的文明增加一份融入负荷，并在大约六到八个回合内逐渐消退。在此期间，该文明每回合需支付 [icon:YIELD_GOLD] 金币，其累积的 [icon:YIELD_HAPPINESS] 幸福值也会被消耗，从而推迟下一次庆典。安置大量抵达者的文明吸引到的新移民也会减少。这些代价均可在高级设置中设为 0；见“融入与成长的代价”。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_TITLE" Language="zh_Hans_CN"><Text>飞地如何成长</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_CONTENT_PARA_1" Language="zh_Hans_CN"><Text>外来社群经过三个阶段成为飞地：立足、已建立和已获承认。每个定居点以其来自其他文明的最大社群来衡量。城市信息显示所处阶段、下一阶段需要什么以及受到什么阻碍，飞地地块的提示和多样性表格也使用相同的名称。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_FOOTHOLD_TITLE" Language="zh_Hans_CN"><Text>立足</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_FOOTHOLD_PARA_1" Language="zh_Hans_CN"><Text>当社群占定居点的 25% 且自身人口至少为 3 时，便获得立足。编年史会记下这一点。地图上暂时还没有任何变化。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_ESTABLISHED_TITLE" Language="zh_Hans_CN"><Text>已建立</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_ESTABLISHED_PARA_1" Language="zh_Hans_CN"><Text>当社群占定居点的 30%，或无论占比多少而人口达到 6（按你这局定居点的规模调整）时，社群即告建立，其飞地随之形成：城市边缘的一块地块，以其民族命名，从第一回合起就有自己的产出。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_RECOGNIZED_TITLE" Language="zh_Hans_CN"><Text>已获承认</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_RECOGNIZED_PARA_1" Language="zh_Hans_CN"><Text>社群保持建立状态 8 回合后（最多 3 回合的回落会被宽限），飞地即获承认。其立场由城市选择，或在承认方式设为“询问我”时由你在弹窗中选择，并一次性支付。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_ENDINGS_TITLE" Language="zh_Hans_CN"><Text>飞地如何结束</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_ENDINGS_PARA_1" Language="zh_Hans_CN"><Text>当其人口连续 12 回合低于定居点的 12.5% 且低于规模门槛时，飞地会衰落；城市信息会倒数剩余回合。其地块被改建或城市被夷平时，飞地也会结束。若城邦或独立势力夺取了定居点，飞地会被搁置，直到再有文明掌握这座城市。与其故乡交战会使飞地受争议，这会改变它提供的收益，但不会改变其阶段。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_LIMITS_TITLE" Language="zh_Hans_CN"><Text>上限</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_LIMITS_PARA_1" Language="zh_Hans_CN"><Text>每个文明每个时代最多形成 3 处飞地，且在其所有城市中来自同一民族的飞地最多 2 处。当由你决定是否承认飞地时，两次决定至少间隔 12 回合，每个时代最多 3 次。随着时代推进仍未形成飞地的文明，其门槛会逐步降低，最多 40%，直到形成一处。以上均可在高级设置的“文化飞地”中调整。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_TITLE" Language="zh_Hans_CN"><Text>召唤同胞回乡</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_1" Language="zh_Hans_CN"><Text>当你的定居点都没有遭受战争、围城、灾害或饥荒，而你仍有一些人民生活在他们当初逃离的定居点之外时，模组会提出召唤他们回乡。对话框以一段用你的民族口吻说出的归乡引语开头（见“流离者之声”），并根据这些人所在的位置分为两种形式。如果你拒绝，他们会留在原地，之后仍可能自行陆续返回。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_TITLE" Language="zh_Hans_CN"><Text>来自你自己的定居点</Text></Replace>
@@ -1913,14 +1966,20 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_TITLE" Language="zh_Hans_CN"><Text>价格与冷却</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_1" Language="zh_Hans_CN"><Text>每次召唤提供三种规模：一个人、约一半可召唤的人、全部的人，可用 [icon:YIELD_GOLD] 金币或 [icon:YIELD_DIPLOMACY] 影响力支付，只显示你负担得起的规模。价格的增长快于人数：两个人的价格接近一个人的三倍，三个人约为五倍。召唤海外同胞的价格更高，而古典时代之后的每个时代都会使价格成倍增加（探索时代 x3，近世时代 x9）。召唤之后，同一文明需等待八个回合才能再次召唤。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_2" Language="zh_Hans_CN"><Text>拥有文化飞地的社群很少自行返回，因此召唤是让他们回来的可靠方式。召唤的提供、价格和几率在高级设置的“召唤同胞回国”中设置。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_TITLE" Language="zh_Hans_CN"><Text>对待社群</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_1" Language="zh_Hans_CN"><Text>每个时代都有两张卡牌，决定东道主如何对待其城市中的外国社群；从探索时代起，还有第三张为你旅居海外的人民发声。它们与其他政策卡无异，所有文明都可使用，选择权在东道主。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_2" Language="zh_Hans_CN"><Text>[B]保护类卡牌[/B]（客人之权、社群宪章、平等保护）每回合提供 +1、+2 或 +3 [icon:YIELD_DIPLOMACY] 影响力。在你与其故乡交战期间承认的飞地，可获得全额而非一半的报酬。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_3" Language="zh_Hans_CN"><Text>[B]猜疑类卡牌[/B]（受监视的街区、效忠誓言、居民登记）为每座城市提供 +1、+2 或 +3 [icon:YIELD_PRODUCTION] 生产力。代价由那些家庭承担：你承认的每处飞地报酬减半，战时只剩四分之一；在任何移民立场之外，选择你城市的移民还会减少 25%。两类各采用一张时，它们对飞地和移民的效果相互抵消，但两张卡的产出都会保留。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_4" Language="zh_Hans_CN"><Text>[B]领事保护[/B]（探索时代与现代）：你的人民在其他文明城市中每有一处已承认的飞地，每回合 +1 [icon:YIELD_DIPLOMACY] 影响力，最多 +4。当收容这些飞地之一的文明采用猜疑类卡牌时，你会对其产生不满，每个东道主每个时代一次。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_5" Language="zh_Hans_CN"><Text>当战争首次波及一处飞地时，编年史会点出东道主的卡牌：猜疑类卡牌最沉重地落在那些家庭身上，保护类卡牌则依然有效。卡牌中关于不安的描述，在你同时使用会读取这些卡牌的 Partisans 时才有意义；单独使用 Emigration 时，两种情况下战争对东道主幸福度的压力都与往常相同。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_TITLE" Language="zh_Hans_CN"><Text>移民政策</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_CONTENT_PARA_1" Language="zh_Hans_CN"><Text>“移民”模组为每个时代的市政加入政策卡。它们与其他政策卡一样可以装备和替换，并可与开放边境协定叠加，后者会提高两个签约方之间的双向迁徙。每张卡的固定产出是游戏原生效果；其迁徙效果则来自本模组。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_ANTIQUITY_TITLE" Language="zh_Hans_CN"><Text>古典时代</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_ANTIQUITY_PARA_1" Language="zh_Hans_CN"><Text>[BLIST][LI][B]亲移民立场[/B]（公民身份）：迁入 +50%；每回合 +1 [icon:YIELD_DIPLOMACY] 影响力。[LI][B]反移民立场[/B]（公民身份）：迁入 -60%，迁往敌对文明的本国公民减少 40%，你接纳的难民定居更慢；每座城市 +2 [icon:YIELD_PRODUCTION] 生产力，每回合 -2 [icon:YIELD_DIPLOMACY] 影响力。[/LIST]</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_ANTIQUITY_PARA_1" Language="zh_Hans_CN"><Text>[BLIST][LI][B]亲移民立场[/B]（公民身份）：迁入 +50%；每回合 +1 [icon:YIELD_DIPLOMACY] 影响力。[LI][B]反移民立场[/B]（公民身份）：迁入 -60%，迁往敌对文明的本国公民减少 40%，你接纳的难民定居更慢；每座城市 +2 [icon:YIELD_PRODUCTION] 生产力，每回合 -2 [icon:YIELD_DIPLOMACY] 影响力。[LI][B]客人之权[/B]（公民身份）：每回合 +1 [icon:YIELD_DIPLOMACY] 影响力；飞地在战时仍获得全额报酬。[LI][B]受监视的街区[/B]（公民身份）：每座城市 +1 [icon:YIELD_PRODUCTION] 生产力；你承认的飞地报酬减半，到来的移民减少 25%。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_EXPLORATION_TITLE" Language="zh_Hans_CN"><Text>探索时代</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_EXPLORATION_PARA_1" Language="zh_Hans_CN"><Text>[BLIST][LI][B]亲移民立场[/B]（经济）：迁入 +50%；每回合 +2 [icon:YIELD_DIPLOMACY] 影响力。[LI][B]反移民立场[/B]（经济）：迁入 -60%，迁往对手的公民减少 40%，难民定居更慢；每座城市 +3 [icon:YIELD_PRODUCTION] 生产力，每回合 -3 [icon:YIELD_DIPLOMACY] 影响力。[LI][B]人才吸引[/B]（启迪）：每回合 +1 [icon:YIELD_SCIENCE] 科技值，你每吸引一名移民再加约 +1.5，最多 +12。迁入停止后加成会逐渐消退。[LI][B]文化魅力[/B]（社会）：效果相同，产出为 [icon:YIELD_CULTURE] 文化值。[LI][B]商业吸引[/B]（重商主义）：效果相同，产出为 [icon:YIELD_GOLD] 金币。[LI][B]选择性庇护[/B]（虔诚）：将逃离战争和灾害的难民引向你，最绝望者优先；每回合 +1 [icon:YIELD_DIPLOMACY] 影响力。[/LIST]</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_EXPLORATION_PARA_1" Language="zh_Hans_CN"><Text>[BLIST][LI][B]亲移民立场[/B]（经济）：迁入 +50%；每回合 +2 [icon:YIELD_DIPLOMACY] 影响力。[LI][B]反移民立场[/B]（经济）：迁入 -60%，迁往对手的公民减少 40%，难民定居更慢；每座城市 +3 [icon:YIELD_PRODUCTION] 生产力，每回合 -3 [icon:YIELD_DIPLOMACY] 影响力。[LI][B]人才吸引[/B]（启迪）：每回合 +1 [icon:YIELD_SCIENCE] 科技值，你每吸引一名移民再加约 +1.5，最多 +12。迁入停止后加成会逐渐消退。[LI][B]文化魅力[/B]（社会）：效果相同，产出为 [icon:YIELD_CULTURE] 文化值。[LI][B]商业吸引[/B]（重商主义）：效果相同，产出为 [icon:YIELD_GOLD] 金币。[LI][B]选择性庇护[/B]（虔诚）：将逃离战争和灾害的难民引向你，最绝望者优先；每回合 +1 [icon:YIELD_DIPLOMACY] 影响力。[LI][B]社群宪章[/B]（经济）：每回合 +2 [icon:YIELD_DIPLOMACY] 影响力；飞地在战时仍获得全额报酬。[LI][B]效忠誓言[/B]（经济）：每座城市 +2 [icon:YIELD_PRODUCTION] 生产力；你承认的飞地报酬减半，到来的移民减少 25%。[LI][B]领事保护[/B]（外事服务）：你的人民在海外每有一处已承认的飞地，每回合 +1 [icon:YIELD_DIPLOMACY] 影响力，最多 +4；并对以猜疑类卡牌监视他们的东道主产生不满。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_TITLE" Language="zh_Hans_CN"><Text>近世时代</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_1" Language="zh_Hans_CN"><Text>[BLIST][LI][B]亲移民立场[/B]（社会问题）：迁入 +50%；每回合 +3 [icon:YIELD_DIPLOMACY] 影响力。[LI][B]反移民立场[/B]（社会问题）：迁入 -60%，迁往对手的公民减少 40%，难民定居更慢；每座城市 +4 [icon:YIELD_PRODUCTION] 生产力，每回合 -4 [icon:YIELD_DIPLOMACY] 影响力。[LI][B]人才吸引[/B]（现代化）：每回合 +2 [icon:YIELD_SCIENCE] 科技值，每名移民再加约 +1.5，最多 +12，迁入停止后逐渐消退。[LI][B]文化魅力[/B]（自然历史）：效果相同，产出为 [icon:YIELD_CULTURE] 文化值。[LI][B]商业吸引[/B]（资本主义）：效果相同，产出为 [icon:YIELD_GOLD] 金币。[LI][B]难民契约[/B]（政治理论）：将逃离战争和灾害的难民引向你，最绝望者优先；每回合 +2 [icon:YIELD_DIPLOMACY] 影响力和 +1 [icon:YIELD_CULTURE] 文化值。[/LIST]</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_1" Language="zh_Hans_CN"><Text>[BLIST][LI][B]亲移民立场[/B]（社会问题）：迁入 +50%；每回合 +3 [icon:YIELD_DIPLOMACY] 影响力。[LI][B]反移民立场[/B]（社会问题）：迁入 -60%，迁往对手的公民减少 40%，难民定居更慢；每座城市 +4 [icon:YIELD_PRODUCTION] 生产力，每回合 -4 [icon:YIELD_DIPLOMACY] 影响力。[LI][B]人才吸引[/B]（现代化）：每回合 +2 [icon:YIELD_SCIENCE] 科技值，每名移民再加约 +1.5，最多 +12，迁入停止后逐渐消退。[LI][B]文化魅力[/B]（自然历史）：效果相同，产出为 [icon:YIELD_CULTURE] 文化值。[LI][B]商业吸引[/B]（资本主义）：效果相同，产出为 [icon:YIELD_GOLD] 金币。[LI][B]难民契约[/B]（政治理论）：将逃离战争和灾害的难民引向你，最绝望者优先；每回合 +2 [icon:YIELD_DIPLOMACY] 影响力和 +1 [icon:YIELD_CULTURE] 文化值。[LI][B]平等保护[/B]（社会问题）：每回合 +3 [icon:YIELD_DIPLOMACY] 影响力；飞地在战时仍获得全额报酬。[LI][B]居民登记[/B]（社会问题）：每座城市 +3 [icon:YIELD_PRODUCTION] 生产力；你承认的飞地报酬减半，到来的移民减少 25%。[LI][B]领事保护[/B]（政治理论）：与探索时代相同。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_2" Language="zh_Hans_CN"><Text>吸引类政策卡只在人们持续抵达时才有收益。请将其与亲移民立场、开放边境或庇护类政策卡搭配使用，并在流入停止时将其换下。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_TITLE" Language="zh_Hans_CN"><Text>地图滤镜</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_CONTENT_PARA_1" Language="zh_Hans_CN"><Text>“移民”模组在游戏的滤镜面板中加入两个滤镜，各有一个快捷键。两者都遵循分析数据可见性设置（见“范围与可见性”）。启用滤镜时，游戏自带的地块提示会被隐藏，滤镜会在光标下显示自己的信息。</Text></Replace>

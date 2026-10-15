@@ -23,9 +23,8 @@ import { bestDestination, migrationCause, crisisTypeReasons } from "/emigration/
 import { loadState, ownerPopulations } from "/emigration/ui/emigration-state.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
-import { civAdjective, civType } from "/emigration/ui/emigration-naming.js";
-import { enclaveProgressForCity } from "/emigration/ui/emigration-diaspora.js";
-import { dwellProgress } from "/emigration/ui/emigration-quarter-state.js";
+import { civAdjective } from "/emigration/ui/emigration-naming.js";
+import { enclaveStageAt, stageLine, nextLine, blockerLines } from "/emigration/ui/emigration-enclave-stage-read.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { refugeePoolTotal } from "/emigration/ui/emigration-refugee-pool.js";
 import { refugeeBurdenFor } from "/emigration/ui/emigration-refugee-burden.js";
@@ -216,31 +215,28 @@ function pickCommunity(o) {
 }
 
 /**
- * @typedef {Object} EnclaveReadout
- * @property {string} civ The leading foreign community's adjective. @property {number} share Its share.
- * @property {number} bar The live share bar. @property {number} stock Its standing points.
- * @property {number} stockBar The live size bar (0 = off). @property {"none"|"foothold"|"established"} stage
- * @property {{elapsed:number, needed:number}|null} dwell Settling progress once a candidacy exists.
+ * @typedef {Object} EnclaveReadout The settlement's enclave stage, worded (emigration-enclave-stage-read.js).
+ * @property {string} stage The stage line ("Greek community: foothold"). @property {string} next The next step,
+ *   or "". @property {string[]} blockers What holds it back, one plain line each.
+ * @property {import("/emigration/ui/emigration-enclave-stage.js").StageInfo} info The figures behind them.
  */
 
 /**
- * The leading foreign community's progress toward an enclave in a city, against the same live bars the
- * mechanic uses (pacing-relaxed), or null when the city has no foreign minority. The dwell clock is read
- * from the quarter candidacy on the city's plot; its turns are the monotonic turn the stats module keeps,
- * read through the shared facade (no static import: that module imports this one).
+ * The settlement's enclave stage and its next step, against the same live bars and caps the mechanic uses,
+ * or null when it has no foreign community and no enclave. Turns are the monotonic turn the stats module
+ * keeps, read through the shared facade (no static import: that module imports this one).
  * @param {*} city A live city object. @returns {EnclaveReadout|null}
  */
 function resolveEnclave(city) {
   try {
-    const p = enclaveProgressForCity(city);
-    if (!p) return null;
     const D = /** @type {*} */ (globalThis).EmigrationData;
     const turn = D && typeof D.monoTurn === "function" ? D.monoTurn() : 0;
     const loc = city && city.location;
     const key = loc && typeof loc.x === "number" ? loc.x + "," + loc.y : "";
-    const dwell = key ? dwellProgress(key, civType(p.civ), p.civ, turn, p.relax) : null;
-    return { civ: civAdjective(p.civ), share: p.share, bar: p.establishedShare, stock: p.stock,
-      stockBar: p.stockBar, stage: p.stage, dwell };
+    const v = enclaveStageAt(city, key, city.owner, turn);
+    if (!v) return null;
+    const name = resolveCityName(city);
+    return { stage: stageLine(v), next: nextLine(v, name), blockers: blockerLines(v, name), info: v.info };
   } catch (_) {
     return null;
   }

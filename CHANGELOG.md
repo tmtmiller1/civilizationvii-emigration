@@ -5,6 +5,38 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [Unreleased]
+
+How a host treats the communities in its cities, as policy cards.
+
+### Added
+- Community treatment cards in every age, open to every civilization. The protective cards (Guest Right, Charter of
+  Communities, Equal Protection) give +1, +2 or +3 Influence a turn, and an enclave you recognize while you're at war
+  with its homeland is paid in full instead of half. The suspicion cards (Watched Quarters, Oaths of Loyalty,
+  Registration of Residents) give +1, +2 or +3 Production in every city; in exchange, every enclave you recognize pays
+  half and 25% fewer immigrants arrive. They unlock at Citizenship, Economics and Social Question, with the stance
+  cards.
+- Consular Protection, in the Exploration Age (Diplomatic Service) and the Modern Age (Political Theory): +1 Influence a
+  turn for each recognized enclave of your people in another civilization's cities, up to +4. When a civilization
+  hosting one of those enclaves slots a suspicion card, you hold grievances against it, once per host per age. The
+  game records the host as the one who wronged you.
+- When war first reaches an enclave, the Chronicle names the host's card: a suspicion card falls hardest on the
+  families, and a protective one holds.
+- With the Partisans mod running, people fleeing the fighting near an uprising are told as fleeing that uprising, and an
+  enclave whose settlement burned in one gets its own Chronicle line. Without Partisans, the game plays as before.
+- A Civilopedia page, Treatment of Communities, and the new cards in the list of every card by age. In all twelve
+  languages.
+
+- The City Details readout now names an enclave's stage first, Foothold, Established or Recognized, then says
+  what the next step takes ("Becomes an enclave at 30% of Mutsu (now 22%)", "Recognized in 5 turns if it holds") and
+  what's holding it back, in plain words. The enclave tooltip, the map marker, the Diversity table and the Advanced
+  settings descriptions use the same stage names, and a new Civilopedia page, How an Enclave Grows, walks through the
+  stages, how an enclave ends and the limits. In all twelve languages. How enclaves form hasn't changed.
+
+### Fixed
+- An enclave now goes with its settlement when the city is captured. Before, the old owner kept the enclave's yields and
+  its wartime strain for a city it no longer held.
+
 ## [3.4.1] - 2026-10-14
 
 A license note. The mod itself plays exactly as in 3.4.0.

@@ -27,6 +27,7 @@ import { registerMigrationMetric } from "/emigration/ui/emigration-demographics.
 import { tickAssimilation } from "/emigration/ui/emigration-effects.js";
 import { applyMigrantHoldingPenalty } from "/emigration/ui/emigration-migrant-units.js";
 import { tickAttractionDividend } from "/emigration/ui/emigration-dividend.js";
+import { tickConsular, checkConsularGrievances } from "/emigration/ui/emigration-consular.js";
 import { tickRefugeeBurden } from "/emigration/ui/emigration-refugee-burden.js";
 import { raidOf } from "/emigration/ui/emigration-raid.js";
 import { recordWarDeclared, recordPeace } from "/emigration/ui/emigration-war.js";
@@ -124,6 +125,9 @@ function accountAndReport(migrations, signals) {
   // contested while the host is at war with their homeland. Both never throw into the pass.
   maybeQuarter(signals, dilemmaFired);
   tickContestedQuarters(signals);
+  // Consular Protection: a civ whose people live in a host with a suspicion card lodges grievances, once
+  // per host per age.
+  checkConsularGrievances();
   // Balance telemetry: throttled net-flow / war-displacement outlier alerts (debug-gated).
   reportBalanceSignals(ownerIdsOf(signals), gameTurnNow());
   return conquests || [];
@@ -262,6 +266,7 @@ function chargePerTurnCosts(who, local) {
   // Raid: the op's cost/duration/grievance are native (Diplomacy Extended); Emigration just
   // reads the active action each turn during the pass (raidTilt), nothing to charge here.
   // Carried dividend: grant the per-turn attraction bonus (the assimilation mirror).
+  tickConsular(who); // Consular Protection: Influence for enclaves of this civ's people abroad
   const d = tickAttractionDividend(who);
   if (who === local) {
     for (const yk of Object.keys(d)) {

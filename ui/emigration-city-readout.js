@@ -102,24 +102,13 @@ function pressureText(s) {
 }
 
 /**
- * The enclave-progress line: the leading foreign community against the live share and size bars, and
- * its settling clock once one is running. Empty when the city has no foreign minority.
- * @param {*} e The snapshot's `enclave` field. @returns {string} Line text or empty.
+ * The enclave lines: the stage first, then the next step and anything holding it back, in plain words
+ * (worded by emigration-enclave-stage-read.js). None when the city has no foreign community.
+ * @param {*} e The snapshot's `enclave` field. @returns {string[]} The lines.
  */
-function enclaveLine(e) {
-  if (!e || !e.civ) return "";
-  const pct = (/** @type {number} */ v) => Math.round((Number(v) || 0) * 100);
-  const one = (/** @type {number} */ v) => Math.round((Number(v) || 0) * 10) / 10;
-  const stockBar = e.stockBar > 0 ? one(e.stockBar) : "-";
-  if (e.dwell && e.dwell.needed > 0) {
-    return loc("LOC_EMIG_RO_ENCLAVE",
-      "Enclave: {1_Civ} at {2_Share}% of {3_Bar}% share, {4_Stock} of {5_StockBar} people, " +
-      "settled {6_Dwell} of {7_Need} turns",
-      e.civ, pct(e.share), pct(e.bar), one(e.stock), stockBar,
-      Math.min(e.dwell.elapsed, e.dwell.needed), e.dwell.needed);
-  }
-  return loc("LOC_EMIG_RO_ENCLAVE_NODWELL", "Enclave: {1_Civ} at {2_Share}% of {3_Bar}% share, {4_Stock} of {5_StockBar} people",
-    e.civ, pct(e.share), pct(e.bar), one(e.stock), stockBar);
+function enclaveLines(e) {
+  if (!e || !e.stage) return [];
+  return [e.stage, e.next, ...(Array.isArray(e.blockers) ? e.blockers : [])].filter((l) => !!l);
 }
 
 /** @param {*} s */
@@ -177,7 +166,7 @@ export function readoutModel(s) {
     ? loc("LOC_EMIG_RO_ASSIM_COST", "Assimilation cost: ~{1_Gold} gold/turn", Math.round(s.assimCostGold))
     : "");
   pushLineIf(lines, originsLine(s.composition));
-  pushLineIf(lines, enclaveLine(s.enclave));
+  lines.push(...enclaveLines(s.enclave));
   lines.push(loc("LOC_EMIG_RO_CIV_NET", "Civ net migration: {1_People} people", signedPeople(s.ownerNet)));
   // Pass the settlement name so the prosperity hint's {1_City} placeholder resolves (it names the
   // settlement being out-prospered); other hints ignore the arg.

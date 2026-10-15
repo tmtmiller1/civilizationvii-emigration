@@ -21,6 +21,7 @@ import { msg, msgJoin, msgNum, msgText } from "/emigration/ui/emigration-loc.js"
 import { QUARTER_FOOTHOLD_SHARE } from "/emigration/ui/emigration-tunables.js";
 import { relaxFor, relaxedBar } from "/emigration/ui/emigration-enclave-pacing.js";
 import { quarterAt } from "/emigration/ui/emigration-quarter-state.js";
+import { communityStage } from "/emigration/ui/emigration-enclave-stage.js";
 
 // A wave this large (scaled people, one settlement, one cause, one pass) reads as a historical
 // exodus rather than ordinary churn.
@@ -45,17 +46,6 @@ const DIASPORA_STEP = 0.15;
 function establishedShare(relax) {
   const v = Number(CONFIG.quarterEstablishedShare);
   return relaxedBar(isFinite(v) ? v : 0.35, relax || 0);
-}
-
-/**
- * Whether a standing stock establishes an enclave on its own (the absolute qualifier, scaled to city size
- * and reduced by the pacing relaxation).
- * @param {number} stock Standing points of the lead origin. @param {number} [relax] Pacing relaxation.
- * @returns {boolean}
- */
-function stockQualifies(stock, relax) {
-  const bar = relaxedBar(establishedStockBar(), relax || 0);
-  return bar > 0 && stock >= bar;
 }
 
 /**
@@ -215,24 +205,29 @@ function leadForeignCivOrigin(comp) {
 }
 
 /**
- * Quarter progression stage from current standing share + stock.
+ * The live bars a community is measured against for a host, with its per-age pacing relaxation applied.
+ * @param {number} [relax] The host's pacing relaxation (emigration-enclave-pacing.js), 0 by default.
+ * @returns {import("/emigration/ui/emigration-enclave-stage.js").StageBars}
+ */
+export function stageBars(relax) {
+  return {
+    foothold: QUARTER_FOOTHOLD_SHARE,
+    established: establishedShare(relax),
+    stockBar: relaxedBar(establishedStockBar(), relax || 0),
+    minStock: minStock()
+  };
+}
+
+/**
+ * Quarter progression stage from current standing share + stock (emigration-enclave-stage.js describes the
+ * stages and holds the classification).
  * @param {number} share Lead-origin share in the city.
  * @param {number} stock Lead-origin current standing pop points (netted, not lifetime inflow).
  * @param {number} [relax] The host's per-age pacing relaxation (emigration-enclave-pacing.js), 0 by default.
  * @returns {"none"|"foothold"|"established"}
  */
 function quarterStage(share, stock, relax) {
-  const stockFloor = minStock();
-  // Established by share (the origin holds a large part of a settlement) or by absolute stock (a large
-  // community in a big cosmopolitan city; CONFIG.quarterEstablishedStock, 0 = off). Both bars read
-  // lower while the host's per-age pacing is catching up, so at least one an age is likely.
-  if ((share >= establishedShare(relax) || stockQualifies(stock, relax)) && stock >= stockFloor) {
-    return "established";
-  }
-  if (share >= QUARTER_FOOTHOLD_SHARE && stock >= stockFloor) {
-    return "foothold";
-  }
-  return "none";
+  return communityStage(share, stock, stageBars(relax));
 }
 
 /**
