@@ -128,7 +128,7 @@ Modifier/building yield sources. A UI-script mod cannot create or attach such a 
 2. Auto-placing a real yield-bearing entity at runtime: CONFIRMED FAILED. `Game.PlayerOperations`
    `CREATE_ELEMENT {Kind:"CONSTRUCTIBLE"}` for a tile IMPROVEMENT. The first probe was invalid (it never
    sent the op, gated behind a `CityOperations.canStart("BUILD")` check improvements don't use). The
-   corrected Self-Test probe ([ui/emigration-enclave-probe.js](../ui/emigration-enclave-probe.js)) sends
+   corrected Self-Test probe ([emigration-enclave-probe.js](../../../mod_ideas_tested/_archived-emigration-enclave-feature/ui/emigration-enclave-probe.js), archived) sends
    it directly; placement does not take. Route disproven.
 
 The border policies only work because they ride the game's native Tradition/policy slot, which the
@@ -513,9 +513,9 @@ origin tile" looks like a small reuse.
 (a real Constructible that persists in game state and is re-scannable any time via
 `MapConstructibles.getConstructibles`), a vacated tile leaves **no readable trace**. The mod doesn't
 choose the tile (the engine does) so the only way to identify it is to diff the city's worked-plot
-set around the removal. Three probe variants, all ✗ (shipped in the Self-Test screen as the evidence
-trail: `runVacatedSurfaceProbe` / `runVacatedDiffProbe` / `runVacatedTurnArm` + `runVacatedTurnRead`
-in [ui/emigration-enclave-probe.js](../ui/emigration-enclave-probe.js)):
+set around the removal. Three probe variants, all ✗ (`runVacatedSurfaceProbe` / `runVacatedDiffProbe` /
+`runVacatedTurnArm` + `runVacatedTurnRead`, once Self-Test buttons, now kept in the archived
+[emigration-enclave-probe.js](../../../mod_ideas_tested/_archived-emigration-enclave-feature/ui/emigration-enclave-probe.js)):
 
 1. Worked-set surface: `city.Workers.GetTilePlacementInfo` / `GetAllPlacementInfo` is the
    **specialist** subsystem (`NumWorkers`/`MaxWorkers`/`CurrentYields`), not rural tile-working: only
@@ -538,8 +538,8 @@ but the origin tile isn't, because the game gives modders no per-tile unworked s
 
 **Verdict:** marking (or pillaging) the vacated tile is impossible, the tile is **unidentifiable** from
 a UI-script mod, not merely unpaintable. Do not re-open this: do not re-probe `city.Workers`,
-`getYieldsWithCity`, or constructible scans for a "which tile went unworked" read. The probe buttons +
-`runVacated*` code stay in the Self-Test module as the evidence trail. Revisit only if a future game
+`getYieldsWithCity`, or constructible scans for a "which tile went unworked" read. The `runVacated*` code
+is the evidence trail, in the archived probe module linked above. Revisit only if a future game
 patch adds a rural-tile-worked accessor.
 
 ## Damaging (pillaging) a constructible from script, instead of destroying it

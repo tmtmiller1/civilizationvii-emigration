@@ -33,7 +33,24 @@ When a settlement is starving, unhappy, or under siege, people leave. When one i
 
 Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.md) · [typeset PDF](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.pdf), with every formula rendered.
 
-## What's new in 3.3.0
+## What's new in 3.5.0
+
+- Policy cards for how a host treats the communities in its cities, in every age and open to every civilization. The protective cards (Guest Right, Charter of Communities, Equal Protection) give Influence, and an enclave you recognize while you're at war with its homeland is paid in full. The suspicion cards (Watched Quarters, Oaths of Loyalty, Registration of Residents) give Production in every city, but every enclave you recognize pays half and fewer immigrants arrive.
+- Consular Protection, in the Exploration and Modern Ages: Influence each turn for every recognized enclave of your people in another civilization's cities. When a host slots a suspicion card, you hold grievances against it, once per host per age.
+- City Details names an enclave's stage, Foothold, Established or Recognized, then says what the next step takes and what's holding it back. The enclave tooltip, the map marker and the Diversity table use the same names, and a new Civilopedia page, How an Enclave Grows, walks through them.
+- An enclave goes with its settlement when the city is captured.
+- With the Partisans mod running, people fleeing the fighting near an uprising are told as fleeing that uprising, and an enclave whose settlement burned in one gets its own Chronicle line.
+
+## What was new in 3.4.0
+
+- Notices appear in the game's notification train beside End Turn: an icon per kind of news, the text in its tooltip, and a click opens the Emigration screen. The old pop-up lines at the top of the screen are an Advanced setting.
+- The call-home offer stops coming back every turn for people you chose to leave where they are.
+
+## What was new in 3.3.1
+
+- Settings survive a restart: the mod carries the Tower Settings Keeper, so Emigration's options keep their values from one launch to the next.
+
+## What was new in 3.3.0
 
 - Every language reads in full. The Civilopedia pages and their quotations, the enclave names and descriptions on the map, the call-home and arrival pop-ups, the enclave and displaced-people quotes, and the options that were still in English are translated into all eleven languages.
 - Chinese, Japanese and Korean draw every character. Panel titles, city names, tabs, filter buttons, the guide and the network map's labels used the game's Latin-only faces and showed missing-glyph boxes; they now use the language's own font the way the game does. The network map's war badges draw their flag as a shape, not a glyph those fonts lack.
@@ -1137,7 +1154,7 @@ Open source on GitHub: https://github.com/tmtmiller1/civilizationvii-emigration
 
 ### Special Thanks
 
-- **Potato McWhisky**, for bringing me back to Civilization through Civ VI after growing up with Civilization II, IV, and V. This mod is partly an act of faith that the community can help make Civilization VII as good as the earlier entries.
+- **Potato McWhisky**, for teaching me to love again, Civilization-wise (Civ VI), after growing up as a Civilization II, IV, and V player.
 
 ## License
 

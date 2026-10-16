@@ -1,8 +1,8 @@
 // emigration-enclave-place.js
 //
-// The Cultural Enclave as a real tile. When the player recognizes an enclave, this places the origin's
-// enclave improvement (IMPROVEMENT_EMIG_ENCLAVE_<CIV>_<A|B>) on a host-city plot via CREATE_ELEMENT; the
-// tile carries the stance's benefit yield natively and the per-turn grant steps aside while it stands.
+// The Cultural Enclave as a real tile. When an enclave is created (its community reaches the established
+// stage), this places the origin's enclave improvement (IMPROVEMENT_EMIG_ENCLAVE_<CIV>_<A|B>) on a host-city
+// plot via CREATE_ELEMENT; the tile carries its yield natively. The stance pays once, at recognition.
 // The improvements are never buildable, so the AI's build evaluator never sees them. Tile choice: the
 // nearest empty land plot, else the outlying farmstead is replaced; everything degrades to "not placed".
 

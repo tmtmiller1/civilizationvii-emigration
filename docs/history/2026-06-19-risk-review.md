@@ -4,6 +4,10 @@ Date: 2026-06-19
 Scope: `emigration` and `demographics` mod workspaces
 Reviewer method: static UI/text scan plus project verification suites
 
+> History. This review sat at the repo root as `report.md` until 2026-10-15 and was moved here as a record. The
+> failures it reports were fixed long ago: `npm run verify` passes, and its Finding 3 became the empty-catch gate
+> (`tests/no-empty-catch.mjs`). Read it for what was found then, not for the mod's state now.
+
 ## Executive Summary
 
 Both mods currently present release risk due to failed local verification runs.

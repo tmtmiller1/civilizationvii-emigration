@@ -1,4 +1,3 @@
-/* eslint-disable max-lines -- dev-only, option-gated Self-Test screen; accumulates probe wiring. */
 // emigration-selftest.js
 //
 // An on-screen, no-console diagnostic for verifying the mod live, in-game. Gated behind the
@@ -21,13 +20,6 @@ import { loc } from "/emigration/ui/emigration-loc.js";
 import { runPass } from "/emigration/ui/emigration-engine.js";
 import { TUNABLES } from "/emigration/ui/emigration-tunables.js";
 import { runChecks, pickPreviewOrigin, errMsg } from "/emigration/ui/emigration-selftest-checks.js";
-// These dev self-test probes are inert no-ops.
-const noop = (/** @type {*} */ _render) => {};
-const runEnclavePlacementProbe = noop, reReadEnclaveProbe = noop, runCapabilityIntrospection = noop,
-  runBuildableImprovementProbe = noop, runAutoBuildProbe = noop, runSeedBuildProbe = noop,
-  runVacatedSurfaceProbe = noop, runVacatedDiffProbe = noop, runVacatedTurnArm = noop,
-  runVacatedTurnRead = noop, runYieldGrantProbe = noop, runYieldGrantArm = noop,
-  runYieldGrantRead = noop, runEnclaveYieldRowProbe = noop;
 
 const SCREEN_ID = "screen-emigration-selftest";
 // Kept in sync with emigration.modinfo <Version>; shown in the bug-report snapshot so a report names the
@@ -344,164 +336,6 @@ function copyDiagnostics() {
   }
 }
 
-/** @param {string[]} lines */
-function renderEnclaveResult(lines) {
-  try {
-    if (!_host) return;
-    let box = _host.querySelector(".emig-st-enclave");
-    if (!box) {
-      box = el("div", "emig-st-enclave emig-st-snap");
-      _host.appendChild(box);
-    }
-    box.textContent = (lines || []).join("\n");
-  } catch (_) {
-    /* on-screen render is best-effort */
-  }
-}
-
-/**
- * Feasibility test: place a real tile improvement on your capital and read back whether it lands and its
- * yield enters the net-yield rate (the GPT banner + breakdown). Has a real effect (it places an actual
- * improvement on a tile); results render below.
- */
-function testEnclavePlacement() {
-  banner("Enclave placement test running. See the result box below (reads back in ~1s).");
-  try {
-    runEnclavePlacementProbe(renderEnclaveResult);
-  } catch (e) {
-    renderEnclaveResult(["Enclave placement test threw: " + errMsg(e)]);
-  }
-}
-
-/** Re-read the last enclave placement (net yield often only updates at the turn roll; end a turn, then this). */
-function reReadEnclave() {
-  try {
-    reReadEnclaveProbe(renderEnclaveResult);
-  } catch (e) {
-    renderEnclaveResult(["Enclave re-read threw: " + errMsg(e)]);
-  }
-}
-
-/** Read-only: dump the runtime write-surface (namespaces + placement/purchase op enums) to the box + UI.log. */
-function capabilityIntrospection() {
-  banner("Capability introspection running: result box below + UI.log (grep ENCLAVEPROBE_).");
-  try {
-    runCapabilityIntrospection(renderEnclaveResult);
-  } catch (e) {
-    renderEnclaveResult(["Introspection threw: " + errMsg(e)]);
-  }
-}
-
-/** Route B: is our custom CityBuildable improvement placeable via the native BUILD/PURCHASE pipeline? */
-function buildableImprovementTest() {
-  banner("Buildable-improvement test running: result box below + UI.log (grep ENCLAVEPROBE_).");
-  try {
-    runBuildableImprovementProbe(renderEnclaveResult);
-  } catch (e) {
-    renderEnclaveResult(["Buildable-improvement test threw: " + errMsg(e)]);
-  }
-}
-
-/** Build test: enumerate our enclave buildings + drive CityOperations.BUILD to queue one (fresh game past Chiefdom). */
-function autoBuildTest() {
-  banner("Build-enclave test: driving CityOperations.BUILD; check the city production queue.");
-  try {
-    runAutoBuildProbe(renderEnclaveResult);
-  } catch (e) {
-    renderEnclaveResult(["Auto-build test threw: " + errMsg(e)]);
-  }
-}
-
-/** Full-flow test: fake an established foreign diaspora, then build that civ's enclave (fresh game past Chiefdom). */
-function seedBuildTest() {
-  banner("Seed-diaspora + build test: faking a diaspora, then queuing that civ's enclave.");
-  try {
-    runSeedBuildProbe(renderEnclaveResult);
-  } catch (e) {
-    renderEnclaveResult(["Seed+build test threw: " + errMsg(e)]);
-  }
-}
-
-/** Read-only: which Workers accessor exposes a city's current worked-plot set (for the vacated-tile marker). */
-function vacatedSurfaceTest() {
-  banner("Vacated-tile: reading the selected city's worked-plot set (result box below).");
-  try {
-    runVacatedSurfaceProbe(renderEnclaveResult);
-  } catch (e) {
-    renderEnclaveResult(["Vacated-tile surface test threw: " + errMsg(e)]);
-  }
-}
-
-/** Live: remove 1 rural from the selected city, diff the worked set to find the vacated tile, then restore +1. */
-function vacatedDiffTest() {
-  banner("Vacated-tile -1 diff: removes then restores 1 rural on the selected city (reads back in ~2s).");
-  try {
-    runVacatedDiffProbe(renderEnclaveResult);
-  } catch (e) {
-    renderEnclaveResult(["Vacated-tile diff test threw: " + errMsg(e)]);
-  }
-}
-
-/** Across-turn step 1: snapshot per-plot signals + remove 1 rural on the selected city, then end a turn. */
-function vacatedTurnArm() {
-  banner("Vacated-tile armed: removed 1 rural. End one turn, then press \"read after end-turn\".");
-  try {
-    runVacatedTurnArm(renderEnclaveResult);
-  } catch (e) {
-    renderEnclaveResult(["Vacated-tile arm threw: " + errMsg(e)]);
-  }
-}
-
-/** Across-turn step 2: re-read the armed city after the turn and diff which tile changed. */
-function vacatedTurnRead() {
-  banner("Vacated-tile: reading the armed city after the turn. Which tile changed?");
-  try {
-    runVacatedTurnRead(renderEnclaveResult);
-  } catch (e) {
-    renderEnclaveResult(["Vacated-tile read threw: " + errMsg(e)]);
-  }
-}
-
-/** Does a runtime grantYield land, and for which yields? Same-turn sweep over every stance yield. */
-function yieldGrantTest() {
-  banner("Yield grant: granting each stance yield and watching every readable number.");
-  try {
-    runYieldGrantProbe(renderEnclaveResult);
-  } catch (e) {
-    renderEnclaveResult(["Yield grant probe threw: " + errMsg(e)]);
-  }
-}
-
-/** Across-turn step 1: grant each stance yield a distinct amount, then end a turn. */
-function yieldGrantArm() {
-  banner("Yield grant armed: granted each stance yield. End one turn, then press \"read after end-turn\".");
-  try {
-    runYieldGrantArm(renderEnclaveResult);
-  } catch (e) {
-    renderEnclaveResult(["Yield grant arm threw: " + errMsg(e)]);
-  }
-}
-
-/** Across-turn step 2: report which granted amounts actually survived the turn roll. */
-function yieldGrantRead() {
-  banner("Yield grant: reading which granted yields survived the end-turn.");
-  try {
-    runYieldGrantRead(renderEnclaveResult);
-  } catch (e) {
-    renderEnclaveResult(["Yield grant read threw: " + errMsg(e)]);
-  }
-}
-
-/** Does the engine accept a negative Constructible_YieldChanges row (the per-civ enclave drawback)? */
-function enclaveYieldRowTest() {
-  banner("Enclave yield rows: did the negative penalty rows load, and do they apply?");
-  try {
-    runEnclaveYieldRowProbe(renderEnclaveResult);
-  } catch (e) {
-    renderEnclaveResult(["Enclave yield-row probe threw: " + errMsg(e)]);
-  }
-}
-
 // content rendering (into the screen's host)
 
 const TAG_COLOR = { PASS: "#5cbf7a", WARN: "#d8b44a", FAIL: "#d16a63", INFO: "#7fa8c9" };
@@ -546,20 +380,6 @@ const SELFTEST_ACTIONS = [
   ["Re-run checks", reRun],
   ["Run a migration pass", runMigrationPass],
   ["Force enclave pop-up", forceEnclavePopup],
-  ["Capability introspection", capabilityIntrospection],
-  ["Enclave in build query", buildableImprovementTest],
-  ["Build enclave (BUILD op)", autoBuildTest],
-  ["Seed diaspora + build", seedBuildTest],
-  ["Test enclave tile-placement", testEnclavePlacement],
-  ["Re-read enclave yield (after end-turn)", reReadEnclave],
-  ["Read worked-plot set (vacated-tile)", vacatedSurfaceTest],
-  ["Vacated-tile -1 diff (perturbs city)", vacatedDiffTest],
-  ["Vacated-tile: arm across-turn (perturbs)", vacatedTurnArm],
-  ["Vacated-tile: read after end-turn", vacatedTurnRead],
-  ["Yield grant: does it land? (same-turn)", yieldGrantTest],
-  ["Yield grant: arm across-turn (grants)", yieldGrantArm],
-  ["Yield grant: read after end-turn", yieldGrantRead],
-  ["Enclave yield rows (negatives?)", enclaveYieldRowTest],
   ["Force refugee dilemma", forceRefugeeDilemma],
   ["Arm REAL dilemma (end turn to fire)", armRealDilemma],
   ["Fire test toast", fireTestToast],
