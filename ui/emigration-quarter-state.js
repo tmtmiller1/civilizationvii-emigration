@@ -61,6 +61,8 @@ const MAX_TILES = 4096;
  * @property {string|null} originCiv Origin CivilizationType captured while observing (stable identity).
  * @property {number} since Turn the current established streak began (the dwell clock's start).
  * @property {number} lastSeen Last turn observed established (for grace-window pruning of a lapsed streak).
+ * @property {number} [scattered] The turn this origin's enclave here was built over: `since` restarted then, and a
+ *   new enclave waits until the dwell has run again from that turn (emigration-quarter.js, scatteredRecently).
  */
 /**
  * @typedef {Object} QuartersState
@@ -251,12 +253,15 @@ function normalizeTiles(tiles) {
 function normalizeCandidacyRecord(rec) {
   if (!rec || typeof rec !== "object") return null;
   if (typeof rec.civ !== "number" || !isFinite(rec.civ)) return null;
-  return {
+  /** @type {CandidacyRecord} */
+  const out = {
     civ: rec.civ,
     originCiv: strOrNull(rec.originCiv),
     since: nonNegInt(rec.since, 0),
     lastSeen: nonNegInt(rec.lastSeen, 0)
   };
+  if (typeof rec.scattered === "number" && isFinite(rec.scattered)) out.scattered = Math.max(0, Math.floor(rec.scattered));
+  return out;
 }
 
 /**

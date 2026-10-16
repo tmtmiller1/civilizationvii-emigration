@@ -788,7 +788,8 @@ marker and the Diversity table use the same stage names, and the Civilopedia has
   it also waits out the 12-turn cooldown and stops once 3 decisions are made this age.
 
 An enclave ends when it fades (below 12.5% and below the size bar for 12 turns), when its tile is built over or the
-city is razed. A settlement taken by a city-state or independent keeps its record, set aside, until a civilization holds
+city is razed. A community whose enclave was built over forms a new one once it has held together for the dwell period
+again. A settlement taken by a city-state or independent keeps its record, set aside, until a civilization holds
 it again. Per-age pacing lowers the bars while a civilization has formed no enclave this age. The rules live in one
 place, `ui/emigration-enclave-stage.js`, whose header describes the lifecycle; `enclaveStage()` gives a settlement's
 stage, its next step and its blockers, and `emigration-enclave-stage-read.js` words them for the readout and tooltip.
@@ -846,7 +847,7 @@ Placement prefers a nearby empty flat/hill plot, creating a rural district first
 
 **Enclave tooltip and marker (`emigration-enclave-tooltip.js`, `-enclave-tooltip-data.js`, `-enclave-yields.js`).** Hovering an enclave's tile replaces the game's tooltip for the borrowed improvement with the enclave's own: its name and settlement; its stage (established, with the turns left to recognition; recognized, with the stance; contested; or fading, with the turns left); and where the yields come from, source by source with a reason: the land and any improvement that stood there before (repaid every turn), the enclave's own works, and the stance, including its wartime cut. A total gives what the tile brings in each turn. The map marker carries a second line with the stage (*Established*, *Recognized*, *Contested*, *Fading*). Markers are cleared before each redraw, and a burst of map events triggers a single redraw.
 
-**Built over.** After a two-turn grace period, an enclave whose tile has been replaced is retired and recorded in the Chronicle. A failed placement is also written off. Departures never choose an enclave tile. Pillage damages but does not remove it; razing the city does.
+**Built over.** After a two-turn grace period, an enclave whose tile has been replaced is retired and recorded in the Chronicle. The community stays in the city, so the tile's dwell clock restarts at the build-over (`scattered` on its candidacy record) and the same community forms a new enclave only once it has held together for the dwell period again; recognition follows at once, since its clock ran while it waited. A failed placement is also written off. Departures never choose an enclave tile. Pillage damages but does not remove it; razing the city does.
 
 **Captured settlements (`emigration-quarter-hosts.js`).** Once per pass, each enclave record takes the current owner of
 the city at its key, so a captured settlement's enclave goes with it to the captor, and the settlement's name is kept on

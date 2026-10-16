@@ -205,7 +205,7 @@ function stanceYieldLines(compose, q) {
  * @returns {string[]}
  */
 function quarterLines(compose, q) {
-  const rootEn = "A " + q.originName + " has taken root in this settlement.";
+  const rootEn = "The " + q.originName + " has taken root in this settlement.";
   const lines = [pick(compose, "LOC_EMIGRATION_PANEL_QUARTER_ROOT", [q.originName], rootEn)];
   if (q.rooted) {
     const en = "Put down roots: fewer of its people return home.";
@@ -291,7 +291,7 @@ function enclaveProgressText(c, e) {
   const minStock = String(e.minStock || 0);
   if (e.pending) {
     return pick(c, "LOC_EMIGRATION_PANEL_ENCLAVE_PENDING", [name, share],
-      "A " + name + " enclave has taken root (" + share + "% of this settlement) and awaits your decision.");
+      "The " + name + " enclave has taken root (" + share + "% of this settlement) and awaits your decision.");
   }
   return pick(c, "LOC_EMIGRATION_PANEL_ENCLAVE_FORMING", [name, share, threshold, stock, minStock],
     name + " residents are " + share + "% of this settlement; an enclave forms at " + threshold +

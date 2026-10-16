@@ -263,7 +263,7 @@ function chronicleDecision(option, quarter, prior, turn, worth) {
       quarter.name, String(option.label || "").toLowerCase(), name)
     : msg("LOC_EMIG_QTR_STANCE_LETBE", "You let the {1_Name} keep to itself.", name);
   chronicle({
-    kind: "founding", title: msg("LOC_EMIG_QTR_CHRON_DECISION_TITLE", "A {1_Name}", name),
+    kind: "founding", title: msg("LOC_EMIG_QTR_CHRON_DECISION_TITLE", "The {1_Name}", name),
     body: withYields(stance, worth.gave),
     civ: narrativeCiv(quarter.civ).adj, dedupeKey: "quarter:decision:" + quarter.name + "|" + quarter.civ + "|" + turn
   });
@@ -302,11 +302,28 @@ function establishEnclave(city, base, originCiv, owner, turn) {
 }
 
 /**
+ * Whether this origin's enclave here was built over and its community hasn't dwelt the full period since.
+ * The build-over restarted the tile's dwell clock (retireBuiltOver), so a new enclave waits exactly as long
+ * as recognition would; without that wait the community, still above the bar, got a new tile the very next
+ * pass and the Chronicle read "built over" then "takes root" a turn apart.
+ * @param {string} tileKey The host tile key. @param {string|null} originCiv The origin's CivilizationType.
+ * @param {number} civ The origin player id. @param {number} owner Host player id. @param {number} turn Now.
+ * @returns {boolean} True while a new enclave of this origin has to wait here.
+ */
+function scatteredRecently(tileKey, originCiv, civ, owner, turn) {
+  const cur = candidacyAt(tileKey);
+  if (!cur || typeof cur.scattered !== "number" || !sameCandidacyOrigin(cur, originCiv, civ)) return false;
+  return !dwellSatisfied(tileKey, originCiv, civ, turn, relaxFor(owner));
+}
+
+/**
  * Establish every enclave one host's cities have earned this pass: an established foreign community on
  * a tile that holds no enclave yet, within the host's per-age cap and the per-origin cap. No dwell gate
- * here (that gates recognition); a tile held by another origin is left to the recognition path.
+ * here (that gates recognition), except after a build-over, when the community dwells again first; a tile
+ * held by another origin is left to the recognition path.
  * @param {*[]} signals The pass's city signals. @param {number} owner Host player id. @param {number} turn Now.
- * @param {boolean} force The force option (relaxes the share bar to foothold and ignores the per-age cap).
+ * @param {boolean} force The force option (relaxes the share bar to foothold, ignores the per-age cap and
+ *   the wait after a build-over).
  */
 function establishEnclaves(signals, owner, turn, force) {
   for (const s of signals || []) {
@@ -315,6 +332,7 @@ function establishEnclaves(signals, owner, turn, force) {
     if (!base || quarterAt(base.tileKey)) continue;
     const originCiv = civType(base.quarter.civ);
     if (enclaveCountForCiv(owner, base.quarter.civ, originCiv, base.tileKey) >= MAX_ENCLAVES_PER_CIV) continue;
+    if (!force && scatteredRecently(base.tileKey, originCiv, base.quarter.civ, owner, turn)) continue;
     establishEnclave(s.city, base, originCiv, owner, turn);
   }
 }
@@ -739,13 +757,17 @@ function retireDisplacedEnclaves(owner, turn) {
 }
 
 /**
+ * Retire an enclave whose tile was built over: drop its record and restart the tile's dwell clock from now,
+ * marked `scattered`, so the same community (still in the city, still above the bar) waits out the dwell
+ * before it forms a new enclave (scatteredRecently) and before recognition.
  * @param {string} key The host tile key. @param {*} rec The record. @param {number} turn Now (monotonic).
  */
 function retireBuiltOver(key, rec, turn) {
   const lost = enclaveWorth(rec).lost;
   dropQuarter(key);
+  putCandidacy(key, { civ: rec.civ, originCiv: rec.originCiv || null, since: turn, lastSeen: turn, scattered: turn });
   dlog("enclave BUILT OVER " + quarterName(rec.civ) + " in " + hostCityName(key) + " at " + key
-    + (lost ? "; host loses " + lost : ""));
+    + (lost ? "; host loses " + lost : "") + "; a new enclave here waits out the dwell");
   // A settlement Partisans reports burned in an uprising gets its own line instead.
   announce(rec.owner, burnedEntry(key, rec, lost) || {
     kind: "founding", title: msg("LOC_EMIG_QTR_CHRON_BUILT_OVER_TITLE", "The Enclave Is Built Over"),

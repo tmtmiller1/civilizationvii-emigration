@@ -141,7 +141,7 @@ function landSource(i) {
   const y = baseYields(i);
   if (!hasYields(y)) return null;
   return row("land", loc("LOC_EMIG_ETIP_SRC_LAND", "The land"),
-    displaced ? loc("LOC_EMIG_ETIP_SRC_LAND_REPLACED", "Used to be a {1_Improvement}", i.replacedName) : "",
+    displaced ? loc("LOC_EMIG_ETIP_SRC_LAND_REPLACED", "Took the place of this tile's {1_Improvement}", i.replacedName) : "",
     y,
     displaced ? loc("LOC_EMIG_ETIP_WHY_LAND_REPLACED", "The enclave built over it, but you still get what it gave.") : "");
 }
@@ -154,7 +154,7 @@ function landSource(i) {
 function tileSource(i) {
   if (!hasYields(i.native)) return null;
   return row("tile", loc("LOC_EMIG_ETIP_SRC_TILE", "What the enclave built"),
-    i.skinName ? loc("LOC_EMIG_ETIP_SRC_TILE_SKIN", "Shows on the map as a {1_Improvement}", i.skinName) : "",
+    i.skinName ? loc("LOC_EMIG_ETIP_SRC_TILE_SKIN", "Shows on the map as the {1_Improvement} improvement", i.skinName) : "",
     /** @type {Record<string, number>} */ (i.native),
     loc("LOC_EMIG_ETIP_WHY_TILE", "{1_Adj} settlers built it. It pays from the day the enclave forms.", i.originAdj));
 }

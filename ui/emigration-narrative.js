@@ -241,8 +241,8 @@ export function foundingLineMsg(e) {
   ];
   const en = [
     "By now the {2_Civ} households of {1_City} made up {3_Pct} of the city. They kept a district of their own {4_Where}.",
-    "A {2_Civ} community had taken root in {1_City}, {3_Pct} of its people and still arriving, settled {4_Where}.",
-    "{1_City} had become home to a {2_Civ} minority, {3_Pct} of its households, clustered {4_Where}."
+    "The {2_Civ} community had taken root in {1_City}, {3_Pct} of its people and still arriving, settled {4_Where}.",
+    "{1_City} had become home to {2_Civ} families, {3_Pct} of its households, clustered {4_Where}."
   ];
   const i = hash(e.seed + ":" + 0) % en.length;
   return msg(keys[i], en[i], e.city, o, pct, where);

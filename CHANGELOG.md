@@ -5,6 +5,19 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [3.5.1] - 2026-10-16
+
+### Fixed
+- An enclave whose tile the city built over came straight back on another tile the next turn, so the Chronicle read
+  "The Enclave Is Built Over" and "An Enclave Takes Root" a turn apart (seen in an AI capital on 2026-10-16). The
+  community now has to hold together for the dwell period again before it forms a new enclave; its clock runs while it
+  waits, so the new enclave is recognized as soon as it forms. The Force enclave testing option skips the wait.
+- Chronicle titles and the City Details panel put "A" in front of every people's name, which read "A Abbasid Enclave"
+  for peoples whose name starts with a vowel. Those lines now read "The Abbasid Enclave", "Abbasid Foothold in
+  Heian-Kyo", "The Abbasid enclave has taken root" and "home to Abbasid families"; the enclave tooltip's "Used to be a
+  Farm" line reads "Took the place of this tile's Farm" and "Shows on the map as a Gama" reads "Shows on the map as the
+  Gama improvement". English only; the eleven translations already had their own grammar.
+
 ## [3.5.0] - 2026-10-16
 
 How a host treats the communities in its cities, as policy cards.
