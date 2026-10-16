@@ -1576,7 +1576,10 @@ visual pass" note (from `SHIP_PLAN.md` and the disaster plan). These are verific
 
 - Tile-by-tile prosperity lens ([emigration-prosperity-lens.js](../ui/emigration-prosperity-lens.js)),
   confirm the `GameplayMap.getYields` shape/scale and the per-tile paint read correctly in-engine
-  (with the per-city fallback path).
+  (with the per-city fallback path). Watched 2026-10-16 (watch run 2 block 1 L2, usual set): switching to
+  `emig-prosperity-lens` made 6 bucketed `addPlots` calls over 51 plots in 6 colours (the per-tile path, not the
+  per-settlement fallback); `working_screenshots/watch2-block1/L2-emig-prosperity-lens.png` shows tiles of one
+  settlement in different colours.
 - Game-speed "feel" across Online…Marathon, and the **disaster Marathon rebalance**: confirm the
   re-tuned pacing actually feels right in play (the math is unit-tested; the *feel* isn't).
 - 1.4.1 happiness/economy recalibration: the polity model (happiness stages / governments /
@@ -1619,6 +1622,15 @@ not the notification feed. What remains deferred:
 - Clickable end-turn notifications: shipped in 3.4.0. Five notification types in
   `data/emigration-notifications.xml` are raised from `ui/emigration-train.js` into the game's notification train,
   and a click opens the Emigration screen. The click itself hasn't been watched in a game yet (3.4.0 release commit).
+  Watched 2026-10-16 (watch run 2 block 1 L2, usual set): a `NOTIFICATION_EMIGRATION_NOTE` raised through
+  `trainNotify`/`flushTrain` and activated with `Game.Notifications.activate` (the train's click path) opened
+  `screen-emigration`.
+- Self-Test, watched 2026-10-16 (watch run 2 block 1 L2, usual set): 18 checks render and all nine actions run (Re-run
+  checks, Run a migration pass, Force enclave pop-up and Force refugee dilemma each open a dialog, Arm REAL dilemma,
+  Fire test toast, Fire all notifications, Open dashboard opens `screen-emigration`, Copy diagnostics). One check
+  reads FAIL: "Notification clarity: Notification wording/tint is off (why-there "greater prosperity and proximity",
+  pure-flight "", tints rival/internal/arrival #d24b3e/#7d8aa0/#5fae6b). The v2.1.0 clarity change is not active
+  here." Not judged; it's on the fix list.
 
 ## 20b. Deferred, the explainer on the network view (Feature L mount (b), 2026-07-17)
 
