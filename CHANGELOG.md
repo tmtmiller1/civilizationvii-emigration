@@ -5,7 +5,7 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
-## [Unreleased]
+## [3.5.0] - 2026-10-16
 
 How a host treats the communities in its cities, as policy cards.
 
