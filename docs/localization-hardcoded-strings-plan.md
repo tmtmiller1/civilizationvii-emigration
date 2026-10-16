@@ -15,9 +15,11 @@ Goal: convert every player-visible hardcoded string (except the opt-in Sample-pr
 class of drift is caught in CI going forward. Outcome: a fully localized emigration UI with no
 English leaks in supported languages.
 
-> **The counts and file inventory above are the original audit snapshot.** For what is actually done
-> vs. pending as of 2026-07-19, see **[Current status](#current-status-audited-2026-07-19-mod-at-changelog-2010)** below, the L1 lens tooltips
-> have since shipped; every other tier is still outstanding.
+> **Status: done, shipped in 2.1.0 (2026-07-19).** Every tier below landed in that release: the options and
+> Advanced editor, the Guide pills, the Demographics chart specs and the concatenated fragments, translated into all
+> 11 languages, with the dead `…_EMIG_NET_MIGRATION` rows gone. The CI guard is `tests/i18n-ui-keys.mjs`, part of
+> `npm run verify`. The rest of this file is the plan as it was written, kept for history; the "Not started" rows in
+> the status table are the audit from the morning before the release.
 
 Decisions locked with the user:
 - Translations: author real translations in all 11 locale files (not English placeholders).

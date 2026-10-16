@@ -37,6 +37,12 @@ How a host treats the communities in its cities, as policy cards.
 - An enclave now goes with its settlement when the city is captured. Before, the old owner kept the enclave's yields and
   its wartime strain for a city it no longer held.
 
+### Removed
+- Fourteen Self-Test buttons that had stopped working. They ran engine probes for the old buildable enclave, which left
+  the mod long ago, so pressing one showed a "running" line and then nothing. The Self-Test screen keeps its checks and
+  the actions that work: a migration pass, the enclave and refugee pop-ups, the real dilemma, the test notices, the
+  dashboard and the diagnostics snapshot.
+
 ## [3.4.1] - 2026-10-14
 
 A license note. The mod itself plays exactly as in 3.4.0.

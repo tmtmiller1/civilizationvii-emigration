@@ -1440,3 +1440,54 @@ city net delta        FOOD +1, PRODUCTION +3.45, HAPPINESS +1, GOLD +1.15, SCIEN
   the tile shows: its production bonus (x1.15) and small per-population yields. The button understates, never
   overstates.
 - `docs/steam-screenshots/06-newcomer-placement.jpg` is a 1452x906 crop of `shots/modtest159-newcomer.png`.
+
+## Seeding an enclave after "establish, then recognize" (read 2026-10-15, not run)
+
+Mod tests 23 to 25, 32 to 34 and 39 seeded a community on AugustusExp66 and let the shipped `maybeQuarter` form the
+enclave (`eep-modtest13.js`, `eep-modtest18.js`, `eep-modtest23.js`). They predate the 2026-09-17 change, where an
+enclave is created when its community is established and recognized later. A read of the three scripts against
+today's code, with nothing run:
+
+- Still good. Every import resolves, every `CONFIG` key they set exists, and the save is still in `Saves/Single/`.
+  Seeding through `recordCompositionPass` with synthetic records still lands: a record without `originMix` or
+  `originCiv` is counted under the source owner.
+- What changed underneath. Each pass, per host, `maybeQuarter` now runs the dwell clocks, then `establishEnclaves`
+  (record with `recognized: false` and `optionId: "ignore"`, tile placed with stance a's skin, a founding Chronicle
+  entry titled "The {Civ} Enclave of {City}", the per-age counter ticks), then recognition: the modal in ask mode,
+  otherwise `recognizeAutomatically`, one per host per pass once the dwell is done. Force skips the dwell. The stance
+  pays once, at recognition.
+- All three: `report` doesn't print `rec.recognized`, so an Established record looks like a Recognized one whose
+  stance is "let them be". Print it.
+- 13 and 18: `autoChronicle` counts `/Takes Root/`, which is now only the recognition line. Count the founding
+  entries too. With force on, one pass establishes and recognizes each host's enclave, so these runs never show the
+  stage in between, which is the new part. "Stance a is gold, so a Caravanserai" now reads: the tile always takes
+  stance a's skin when it's established, and recognition relabels it for the stance chosen.
+- 23, K1: the counter ticks at establishment, so the pacing relaxation drops to 0 within the same pass. A community
+  seeded between the relaxed and the plain bar gets its enclave but isn't recognized; the readout says "Waits while
+  its people are below 30% of {city}", as `tests/enclave-stage.mjs` expects. K1 should expect an Established record
+  that stays unrecognized until the community reaches the plain bar. K2, K3a and K3b hold as written. K4:
+  `citySnapshot(...).enclave` is now `{stage, next, blockers, info}` with worded lines, and the Diversity cell reads
+  "{Civ} enclave: {Stage}".
+
+Every one of these goes through the mod's own code: the community is seeded with `recordCompositionPass` and the
+shipped `maybeQuarter` writes the enclave. `__test.seedEstablishedForeign` in `ui/emigration-composition.js` writes a
+ledger entry by hand instead, and the next real composition pass reconciles it away, so it's no good for a run that
+ends turns. The Partisans run's test enclave at Heijo (`partisans/docs/DESIGN.md`) was a record written by hand.
+
+What a lab session would run, on AugustusExp66, with the mod pass on:
+
+1. A copy of `eep-modtest13.js` under a new number with `recognized=` and a founding-entry count added to `report`,
+   `quarterForce` false and `quarterDwellTurns` 2. Seed as before, one pass, then end two turns with a `report`
+   after each. Expected: after the pass, one record per host with `recognized=false`, a standing tile and a founding
+   entry; once the dwell is done, `recognized=true`, the UI.log line "enclave RECOGNIZED ... stance paid once", and an
+   "An Enclave Takes Root" entry.
+2. `eep-modtest18.js` with the same `report` change and the dwell set high, so the records stay Established while
+   their communities leave: does an Established-only enclave fade the way a Recognized one did in tests 32 to 34?
+3. `eep-modtest23.js` with the `report` change and the K1 expectation above.
+
+A save made after run 1 holds an enclave the mod wrote itself, a start for the Consular Protection and at-war checks.
+For those, the seed direction decides who the consular civ is: the local player's people seeded into an AI city make
+the local player the consular civ (it can slot the card with `CHANGE_TRADITION`, as in mod test 76), but then the AI
+host needs a suspicion card, and whether a script can send `CHANGE_TRADITION` for an AI hasn't been tried. The
+reverse, an AI's people in a local city, makes the local player the host, and then the AI has to hold Consular
+Protection.

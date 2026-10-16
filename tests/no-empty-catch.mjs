@@ -1,10 +1,11 @@
 // Quality guard: fail on empty `catch` blocks (whitespace-only body) anywhere under ui/.
 //
 // An empty catch silently swallows errors, which is the exact "random flakiness / masked breakage"
-// risk flagged in report.md (Finding 3). The codebase convention is to annotate an intentional swallow
-// with a short rationale comment, e.g. `catch (_) { /* ignore: best-effort persistence */ }`, that
-// form is permitted (the body isn't whitespace-only). A new truly-empty catch fails this gate and must
-// either add such a comment or actually handle the error.
+// risk flagged in docs/history/2026-06-19-risk-review.md (Finding 3). The codebase convention is to
+// annotate an intentional swallow with a short rationale comment, e.g.
+// `catch (_) { /* ignore: best-effort persistence */ }`, that form is permitted (the body isn't
+// whitespace-only). A new truly-empty catch fails this gate and must either add such a comment or
+// actually handle the error.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

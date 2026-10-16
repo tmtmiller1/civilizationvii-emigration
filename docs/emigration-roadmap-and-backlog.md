@@ -1586,7 +1586,7 @@ visual pass" note (from `SHIP_PLAN.md` and the disaster plan). These are verific
   (Full rationale: the implemented `v1.4.1-deep-pass-plan.md` in `mods_research_and_analysis/emigration-docs/`.)
 - UI polish from the ship plan: Refugees pill/title wording, per-graph definitions, the Net table
   pills + diverging bar alignment, and cross-civ immigrant dots flying from their origin on load/scrub.
-- Player-report round (Unreleased): network display + enclave reachability. Off-engine tests cover
+- Player-report round (shipped in 2.0.5): network display + enclave reachability. Off-engine tests cover
   the layout floor (`network-anim`), pinned pie shares, enclave stickiness + force relaxation
   (`composition`), and the pending/forming panel readout (`city-panel`). Still needs an in-game pass:
   confirm all settlements render on both network sub-views, that the Scaled/Civ Pop toggle no longer
@@ -1616,9 +1616,9 @@ not the notification feed. What remains deferred:
 - On-screen HUD toasts are DOM-injected onto the HUD root (`emigration-feedback.js`) because the
   engine exposes no toast API; this is inherently fragile across GameFace updates. Revisit if toasts
   are reported missing after the z-order/first-turn fixes in v2.0.5.
-- Clickable end-turn engine notifications need a DB `NotificationType` (see the note in
-  `emigration-feedback.js` and README §"Engine notifications need a DB type"). Larger effort; deferred
-  until there's appetite for the DB-side work.
+- Clickable end-turn notifications: shipped in 3.4.0. Five notification types in
+  `data/emigration-notifications.xml` are raised from `ui/emigration-train.js` into the game's notification train,
+  and a click opens the Emigration screen. The click itself hasn't been watched in a game yet (3.4.0 release commit).
 
 ## 20b. Deferred, the explainer on the network view (Feature L mount (b), 2026-07-17)
 
@@ -1666,10 +1666,10 @@ re-litigate).
   speculation, no such read exists in the codebase to wire up, so this cannot be done now).
 - city-features ([emigration-city-features.js](../ui/emigration-city-features.js)): the whole file
   reviewed clean (nothing shipped); the only items worth carrying:
-  - Verify `getPurchasedPlots()` ([city-features.js:95](../ui/emigration-city-features.js#L95)) covers
-    the **city center**. If it excludes it, the Chronicle could miss defining geography, broaden the
-    plot source or correct the comment. (Unverified API; **needs an in-game pass to confirm**: can't be
-    settled off-engine, don't guess. Shares §20's "needs an in-game visual pass" gate.)
+  - `getPurchasedPlots()` ([emigration-city-features.js](../ui/emigration-city-features.js)) does cover the city
+    center: Cultural Diffusion's harness read Lihu'e's 24 plots with it and rewrote the center's value along with the
+    rest (`cultural_diffusion/devtools/harness/README.md`, build run B4, 2026-09-26, game 1.5.0). The Chronicle's
+    geography already reads the center's terrain and buildings, so nothing changes. Closed.
   - Narrative-design tweaks (substring→token matching, `isWater`/`coast` semantics, river-adjacency,
     etc.) are **parked unless the generated prose actually reads wrong in play**: they redefine "has a
     feature," a design decision, not a bug.
@@ -1689,119 +1689,46 @@ re-litigate).
 
 *(The Phase-1 localization sweep that used to sit here shipped in v1.9.0 and was removed.)*
 
-## 22. Enclave STANCE yields, reconcile with the built improvement, then make them legible
+## 22. Enclave stance yields: closed
 
-The enclave stance yield can never appear in the game's GPT banner / global yields breakdown (closed
-2026-07-16, see [won't-implement CANTFIX-1](wont-implement-with-justifications.md): runtime
-modifier-attach has no API, and runtime `CREATE_ELEMENT` improvement placement is disproven). The
-player-built enclave improvement briefly solved the *visibility* goal by another route, its
-`Constructible_YieldChanges` were natively attributed, but that improvement was **removed 2026-07-17**
-(it crashed the AI turn; see the won't-implement doc), so the **stance** yield is once again the only
-route and stays a still-invisible per-turn `grantYield`.
+> **Closed 2026-10-15.** Everything this section was planned around is gone or answered. Its 2026-07-16 write-up
+> (the two-tier "recognize, then invest" reward, `ui/emigration-enclave-built.js`, the per-turn stance grant, the
+> `+4` improvement and its two wrinkles) is in git history before this date.
 
-> **Superseded 2026-09-17 (establish, then recognize).** The "grant steps aside while the tile stands" rule below no
-> longer applies. An enclave is now CREATED (record + tile, tile yield) when its community is established, and
-> RECOGNIZED after the dwell, when the stance's benefit and drawback are granted ON TOP of the tile. Reason: the
-> Chronicle announced "The {Civ} Enclave of {City}" from share alone, up to a dwell period before any enclave existed
-> (turn-85 save: three such entries for Mérida, registry empty). Status: code + tests done, not yet watched in game.
-> See `establishEnclaves` / `recordForChoice` in `ui/emigration-quarter.js` and `tests/quarter-dwell.mjs`.
+What's true today:
 
-**22a. Reconcile the two reward paths: DONE (2026-07-16).** Resolved as *"both, by design: the
-improvement REPLACES the grant, and pays strictly more, framed as an optional government investment in
-the enclave community."* The two-tier reward now reads:
-
-| | What it is | Cost | Pays |
-|---|---|---|---|
-| **Recognize** (modal stance) | acknowledging the enclave | free | `+2` benefit / `−1` drawback per turn |
-| **Invest** (build the improvement) | the treasury endowing the community's workshops, schools and halls | 40 production + a tile + a population point | `+4`, no drawback, the stance grant steps aside |
-
-The grant is the "recognized but unbuilt" reward; building is a deliberate, optional upgrade that is
-clearly worth its cost. They never stack. Shipped as:
-- New [emigration-enclave-built.js](../ui/emigration-enclave-built.js): the built-enclave read-back:
-  `enclaveTypeForCiv(originCiv)` (the pure inverse of the generator's `typeOf`), `builtEnclaveIndex(owner)`
-  (city-center plot key → the set of enclave types built in that city, read **once per turn**, not per
-  quarter), and `enclaveIsBuiltFor()`. Reuses the same read the on-map markers already prove in-game
-  (`MapConstructibles.getConstructibles`).
-- `applyOwnerQuarterYields()` ([emigration-quarter.js](../ui/emigration-quarter.js)) now skips any quarter
-  whose origin has its enclave built in that city. An unreadable map degrades to the prior grant-always
-  behavior, never a throw into the pass.
-- Note the join: a quarter record's `tileKey` is its **city-center** plot, while the improvement sits on
-  any city tile, so the coupling is per-**city-and-origin**, not per-tile (the section's original
-  "drop the grant for a tile that has the improvement" wording could not work as written).
-- `BENEFIT_AMOUNT` 2 → **4** in [gen-enclave-improvements.mjs](../scripts/gen-enclave-improvements.mjs),
-  with the improvement's description/tooltip reframed as a public investment ("Endow their workshops,
-  schools and halls at public expense… Recognizing the enclave costs nothing and already pays a smaller
-  dividend, this is what your treasury can make of it instead"). Regenerated across all 45 civs.
-  **Why raise it:** at the old `+2` flat, building converted `+2/−1` into `+2/+0`: a net **+1/turn** for
-  40 production, a tile, and a population point. That is a bad trade, so the §22a fix alone left building
-  under-motivated. `+4` makes investing plainly worth choosing.
-- Tests: new `tests/enclave-built.mjs` (type mapping, index keying, the supersede test, degradation) plus
-  a §22a block in `tests/quarter.mjs` asserting the grant steps aside for the built origin **only**.
-  Wired into `test:js` + `verify`; `npm run verify` exits 0.
-
-> **The `+4` is UNMEASURED, it wants the in-game pass (§20).** The balance harnesses cannot check it:
-> `scripts/snowball-stress.mjs`, `calibration-sweep`, and `emigration-prosperity.js` model the migration
-> sim over fake worlds and **never read `Constructible_YieldChanges`**, so no off-engine harness sees a
-> tile improvement's yield at all. `verify` green only proves the sim is untouched (engine snapshots
-> byte-identical). Watch in play: `+4` on one tile is double a standard improvement, and in-game it feeds
-> city yields → prosperity → *more* immigration, which is a feedback path the harnesses also can't see.
-> Also unlocalized: `text/en_us/EnclaveText.xml` is en_us-only (no locale-parity gate covers it), so every
-> language shows this English text, a pre-existing gap, now with more prose behind it.
-
-> **Two wrinkles found while implementing 22a, still open, for whoever picks up 22b.**
-> 1. **The improvement always pays option 'a', whatever stance was chosen.**
->    [gen-enclave-improvements.mjs](../scripts/gen-enclave-improvements.mjs) hard-codes
->    `entry.options[0].benefit`, so a player who picks stance 'b' and builds gets a yield the stance never
->    offered (e.g. Greece 'b' is +Culture/−Production, but the tile pays +Science). Latent under the 22a
->    resolution, the grant steps aside, so the tile's option-'a' yield is what lands.
-> 2. **The improvement carries no drawback.** Every registry option is a benefit *paired with* a matching
->    penalty (see the `emigration-quarter-bonuses.js` header), but the native row is pure upside, so
->    building the enclave currently drops the trade-off. Fixing either properly means regenerating the XML
->    as one improvement per option (~92 rows) with a penalty row each, plus per-option build gating and
->    localization.
-
-**22b. Make the surviving stance yield legible: DONE (2026-07-16).**
-
-**This section was stale: the core ask was already shipped, in the City Details panel, not the readout.**
-`gatherQuarter()` ([emigration-city-panel.js](../ui/emigration-city-panel.js)) already read the tile
-record's `applied` block and `quarterLines()`
-([emigration-city-panel-data.js](../ui/emigration-city-panel-data.js)) already rendered "A Roman Enclave
-has taken root…" / "Your stance: …" / "Grants 2 Culture to the city each turn." / "Costs 1 Happiness each
-turn." That *is* the honest substitute for the banner line the engine won't draw. Nothing was added to the
-readout; §22b reduced to making those existing lines tier-aware.
-
-**Which mattered, because §22a broke them.** Reading `applied` unconditionally meant that once the enclave
-was built and the grant stepped aside, the panel still claimed "Grants 2 Culture to the city each turn",
-stating a yield the player was no longer paid. Shipped fix:
-- New `stanceYieldLines()` splits the two tiers. **Recognized** (unbuilt) → the existing grants/costs
-  lines, the only place that invisible dividend is readable. **Invested** (built) → a new line, and the
-  grants/costs lines are suppressed.
-- `gatherQuarter()` resolves `invested` via the new `enclaveBuiltInCity(city, originCiv)`
-  ([emigration-enclave-built.js](../ui/emigration-enclave-built.js)): the single-city form, since the
-  panel renders one city and shouldn't scan the empire.
-- Deliberately does not restate the built enclave's number. That constant lives in the XML; the
-  improvement's yield is natively attributed, so the game shows it. Restating it in JS would be a drift
-  hazard for no gain.
-- Legacy-record hole closed in the same pass: a record written before `originCiv` was persisted carries
-  none, so it would never have been superseded (a silent surviving double-pay). Both the grant path and
-  the panel now fall back to `civType(rec.civ)`.
-- New `LOC_EMIGRATION_PANEL_QUARTER_INVESTED` in en_us + all 11 locales (parity green at 948 keys).
-- Tests: three cases in `tests/city-panel.mjs` (recognized states the dividend; invested never restates
-  it; a contested built enclave still reports its strain). Verified they fail without the fix.
-
-**Still open from this section:** confirm in-game that the positive `grantYield` reward actually lands,
-only the negative/deduct path was ever probe-confirmed. Untouched by this work, and it is exactly what the
-"recognized" tier depends on: if the positive grant does not land, the unbuilt tier pays nothing and the
-panel's grants line is a second, deeper lie. **Verify this before trusting the two-tier design.**
+- The player-built enclave improvement was removed on 2026-07-17 because it crashed the AI turn (see
+  [won't-implement](wont-implement-with-justifications.md)). `ui/emigration-enclave-built.js` and
+  `ui/emigration-enclave-probe.js` went with it, into `mod_ideas_tested/_archived-emigration-enclave-feature/`.
+- The script places the enclave's tile itself with `CREATE_ELEMENT`
+  ([emigration-enclave-place.js](../ui/emigration-enclave-place.js)). The improvements are never buildable, so the
+  AI's build evaluator never sees them, and the tile's yield is the engine's own, so the game shows it.
+- A stance doesn't pay each turn. It pays once, when the enclave is recognized: Gold, Influence, Science or Culture,
+  sized from the host's income, and a stance that doesn't pay Gold costs Gold
+  ([emigration-quarter-bonuses.js](../ui/emigration-quarter-bonuses.js),
+  [emigration-stance-payout.js](../ui/emigration-stance-payout.js)).
+- The question 22b left open, whether a positive `grantYield` lands, is answered, and that's why the one-time
+  payout is safe. Gold and Influence land on the treasury at once, Science on the tech in progress and Culture on the
+  civic in progress. Food and Production don't land anywhere, and no stance pays them (`engine-closed.md`,
+  "`Players.grantYield(pid, yield, n)` writes only player-level pools", watched 2026-09-18 on 1.5.0, mod tests 152
+  and 153). Mod tests 154 to 156 then watched a recognized stance's Science reach the tech and its Gold price leave
+  the treasury (`devtools/engine-probe/README.md`).
+- Since 2026-09-17 an enclave is created (record, tile, the tile's yield) when its community is established, and
+  recognized after the dwell, when the stance pays. See `establishEnclaves` / `recordForChoice` in
+  [emigration-quarter.js](../ui/emigration-quarter.js) and `tests/quarter-dwell.mjs`. That path hasn't been watched
+  in a game yet; `devtools/engine-probe/README.md` says how the old seeded runs would show it.
 
 ## Notes / context
 
 - `devtools/migration-probe.js` is a separate diagnostic tool (own `migration-probe.modinfo`); its exports serve
-  that probe and are not mod dead code. Its API7 enclave-placement test was superseded by the in-mod
-  Self-Test button ([ui/emigration-enclave-probe.js](../ui/emigration-enclave-probe.js)); result: runtime
-  placement FAILED and is now a closed can't-do (CANTFIX-1). The enclave ships as a **player-built**
-  improvement instead; the probe is kept as the evidence for that decision.
-- No orphaned *files* exist, every `ui/*.js` is listed in `emigration.modinfo` and runs.
+  that probe and are not mod dead code. Its API7 enclave-placement test, and the Self-Test probe after it, both
+  failed to place an improvement. Mod test 6 (2026-09-12) found the argument shape that works, and the script has
+  placed the enclave's tile since 2.2.0 (`ui/emigration-enclave-place.js`). The old Self-Test probe is archived in
+  `mod_ideas_tested/_archived-emigration-enclave-feature/ui/emigration-enclave-probe.js`.
+- Every `ui/*.js` the game runs is listed in `emigration.modinfo`. Two aren't, on purpose:
+  `ui/emigration-config-types.js` holds only JSDoc types (it's only named inside type annotations), and
+  `ui/emigration-demographics-per-cause-metrics.js` is an optional set of Demographics charts that nothing loads by
+  default. Both still ship, since the release allow-list takes every `ui/*.js`.
 - The mod's larger gameplay roadmap (Features A–K + deepened refugee stance + L–Z, plus the carried-over
   AA/AB/AC in §17) is the feature roadmap in §0–§17; those are net-new features, out of scope for the
   correctness/perf/maintainability review this backlog descends from.
@@ -2096,19 +2023,11 @@ rejected outright.
 
 ### 26.1 Tier 2, correct, but changes deterministic outcomes (needs a snapshot re-baseline)
 
-#### `roll01` should divide by `0x100000000`, not `0xffffffff`
+#### `roll01` divides by `0x100000000`: done
 
-`roll01` returns `(h >>> 0) / 0xffffffff`, so the maximum hash yields exactly `1.0`: the docstring
-claims `[0,1)` but the range is `[0,1]`.
-
-- Why it's low priority: the exact-`1.0` case is 1-in-4-billion per seed, and even then it produces
-  a *valid* outcome (`roll01(seed) < pct` is `false` → the refugee enters the holding pool), so no bug
-  ever manifests. It's a purity fix, not a behavior bug.
-- Cost: dividing by `0x100000000` shifts *every* roll value slightly, flipping a handful of
-  `immediateSettle` decisions across a game → changes settle/pool outcomes → breaks the golden
-  determinism snapshots until regenerated.
-- Revisit when: we're regenerating `engine-legacy-snapshots` for another reason; fold it in then and
-  re-baseline in the same pass.
+`roll01` in [emigration-arrivals.js](../ui/emigration-arrivals.js) now returns `(h >>> 0) / 0x100000000`, so its
+range is `[0,1)` as the docstring says, and a murmur3 finalizer was added so seeds that differ only at the end still
+spread. It landed in `07cd82a` (2026-09-17), and the engine snapshot tests pass with it. Closed.
 
 #### Explicit tie-breakers in the due-arrival sort
 
@@ -2379,24 +2298,19 @@ it undecided):
 
 *Revisit trigger is already fired*, this is decision-ready now. Posture 1 is the cheaper honest close.
 
-### 28.2 Mutation composite: 59.96% against a ≥60 ratchet *(misses by 0.04)*
+### 28.2 Mutation score: 76.68% against a ≥60 ratchet *(corrected 2026-10-15)*
 
-`quality-ratchet-baseline.json` reads `mutation_score = 59.96` (`active_below_target`; target ≥60, stretch
-≥75), so the risk table still lists mutation effectiveness as **Medium** on a 0.04-point rounding artifact
-rather than a quality signal.
+This heading used to read 59.96%, "missing by 0.04". That was the first trend point of 2026-07-02. The same day's
+sharded full-suite run reads **76.68%**, above the 75 stretch (`quality-ratchet-baseline.json`, `mutation_score`,
+source `rigorous-20260702-pass5` at `c0b2296`). Per module, all as of 2026-07-02: engine 82.08, prosperity 84.21,
+geography 70.85, effects 60.50, borders 87.90. The one figure under its own floor is the engine's:
+`engine_mutation_score` reads 82.08 against 87 (`active_below_target`), down from the 87.94 an engine-only run
+measured on 2026-06-30.
 
-The composite is not the problem: **the engine is in genuinely good shape at 87.94%** (474/539, survivors
-302→65), all real kills with **zero `// Stryker disable`**, and §9 of `mutation-rigor-remediation-plan.md`
-honestly classifies the remaining survivors as mostly equivalent mutants rather than hiding them. What
-drags the composite down is the **other four Stryker modules, geography (55.43%), prosperity (55.40%),
-effects (52.49%), borders (43.82%)**: none re-run since 2026-06-16, so the number mixes per-module as-of
-dates.
-
-**Do:** re-run mutation over the four stale modules and recompute via
-`npm run metrics:mutation-overall -- --json`; the composite likely clears 60 on the refresh alone. The
-report also suggests **widening the 5-module Stryker scope** now that coverage supports it. Note the cost
-before scheduling: a full run is ≈16s/mutant × ~1240 mutants over the suite, which is why engine-only
-scoping was used last time, scope per module rather than running the whole set blind.
+The commands named in this section and in 28.1 and 28.3 (`npm run metrics:*`, `npm run mutation:shards`) aren't in
+`package.json`. Only the scripts exist (`scripts/metrics-*.mjs`, `scripts/mutation-sharded-full.mjs`), and
+`npm run mutation` / `npm run mutation:engine` run Stryker directly. A fresh sharded run takes about 5.5 hours, so
+it's the owner's call; none has been started since 2026-07-02.
 
 ### 28.3 Raise flakiness confidence from quick baseline to policy grade *(deferred to RC)*
 
@@ -2416,23 +2330,15 @@ an RC; carried here so it isn't lost.
 
 ## Cultural Enclaves, deferred / conditional items
 
-The per-civ Cultural Enclave constructibles ship as tile IMPROVEMENTs (build menu gated to the city's
-established diaspora, civic-tree unlock hidden, native yield in the breakdown, on-map icon+label marker
-via [ui/emigration-enclave-markers.js](../ui/emigration-enclave-markers.js)). A distinct 3D model is a
-closed can't-do (see [wont-implement-with-justifications.md](wont-implement-with-justifications.md) →
-*A distinct 3D model for the per-civ enclave constructibles*). Deferred, each with its revisit trigger:
-
-- Enforce empty-tile-only placement (never overbuild an existing improvement). A tile improvement
-  takes the tile's one improvement slot, so building the enclave on a farmed tile replaces the farm.
-  Offered 2026-07-15; user chose to leave it (build on an open tile by choice). *Revisit if* players
-  report accidentally destroying valued improvements, implement by wrapping the enclave BUILD
-  `canStart` and filtering `.Plots` to tiles with `MapConstructibles.getConstructibles(x,y).length === 0`
-  (same canStart-wrap gating pattern as the placement-gating work / national_park natural-wonder gate).
-- Auto-build the earned enclave on the diaspora event (vs. manual player build). Probe exists
-  (Self-Test "Build enclave (BUILD op)" / "Seed diaspora + build"); *revisit if* we want the enclave to
-  appear automatically rather than as a player choice.
-- Marker polish: icon/label size + height are tunable constants (`ICON_Z`/`TEXT_Z`/`TEXT_FONT_SIZE`
-  in the marker module); *revisit if* the on-map marker reads too big/small/crowded at typical zoom.
+> **Closed 2026-10-15.** These items were written for the buildable enclave, which was removed on 2026-07-17. The
+> script places the enclave's tile now, on the nearest empty land plot or over the outlying farmstead
+> (`ui/emigration-enclave-place.js`), so there's no build menu to gate and nothing for a player to overbuild, and the
+> enclave already appears on its own. The Self-Test build buttons the second item named are gone too. A distinct 3D
+> model is still a closed can't-do (see [wont-implement-with-justifications.md](wont-implement-with-justifications.md)
+> → *A distinct 3D model for the per-civ enclave constructibles*). The one live knob: the marker's size and height
+> are the constants `ICON_Z`, `TEXT_Z` and `TEXT_FONT_SIZE` in
+> [emigration-enclave-markers.js](../ui/emigration-enclave-markers.js), to change if the marker reads wrong at
+> typical zoom.
 
 ### Unbuilt stages, abandoned as unbuildable (triaged 2026-07-16, abandoned 2026-07-19)
 
@@ -2446,8 +2352,8 @@ owns their full designs, verdicts, and revisit triggers. Summary:
   re-scalable `grantYield` that CANTFIX-1 rules out.
 - Petition / uprising: abandoned as specced; warning-only + a live probe if ever. Its payoff depends
   on an unproven native-revolt hook, and it gates behind an enclave state that barely occurs.
-- Progression screen: only the *dedicated screen* is abandoned; the useful remainder is **live
-  work**, folded into **§22b** as a city-readout subpanel.
+- Progression screen: only the *dedicated screen* is abandoned. The useful remainder went into the City Details
+  readout, which names an enclave's stage and what the next one takes (Unreleased, after 3.4.1).
 
 **Blocker shared by all three:** nobody has measured how often an enclave actually forms.
 `quarterMinStock: 3` / `quarterEstablishedShare: 0.3` / `quarterEnclaveStickiness: 0.25` /
