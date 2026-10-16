@@ -429,7 +429,8 @@ function checkArrivalPlacement() {
 /**
  * Clearer migration notifications (behavioral). Confirms (a) the “why there” clause names only
  * destination-pull reasons and drops flight fragments like “escaping the crisis”, and (b) the toast/log
- * tint agrees by direction: own people leaving for a rival read red, internal moves and arrivals green.
+ * tint agrees by direction: own people leaving for a rival read red, arrivals from abroad green, and moves
+ * between your own cities a neutral slate (green is kept for your own gains).
  */
 function checkNotificationClarity() {
   try {
@@ -438,18 +439,19 @@ function checkNotificationClarity() {
     const flightPhrase = reasonLabel("crisis-escape");
     const pullOK = !!whyThere && !whyThere.includes(flightPhrase) && pureFlight === "";
     const rival = digestAccent(true, true);   // own people leaving for a rival → red
-    const internal = digestAccent(true, false); // internal shuffle → green
+    const internal = digestAccent(true, false); // internal shuffle → neutral, neither red nor green
     const arrival = digestAccent(false, true);  // arrival from abroad → green
-    const tintOK = rival !== internal && internal === arrival;
+    const tintOK = rival !== arrival && internal !== rival && internal !== arrival;
     if (pullOK && tintOK) {
       return row("Notification clarity", "PASS",
         "The “why there” clause names only what drew people (“" + whyThere + "”) and drops flight reasons like “" +
         flightPhrase + "”. Toast and log-row share one direction rule: own people leaving for a rival read red, " +
-        "internal moves and arrivals read green, so a toast never disagrees with its log entry.");
+        "arrivals from abroad read green and moves between your own cities read neutral, so a toast never " +
+        "disagrees with its log entry.");
     }
     return row("Notification clarity", "FAIL",
       "Notification wording/tint is off (why-there “" + whyThere + "”, pure-flight “" + pureFlight + "”, tints " +
-      "rival/internal/arrival " + rival + "/" + internal + "/" + arrival + "). The v2.1.0 clarity change is not active here.");
+      "rival/internal/arrival " + rival + "/" + internal + "/" + arrival + "). Expected red for a rival, green for an arrival and a neutral tint for an internal move.");
   } catch (e) {
     return row("Notification clarity", "INFO", "Notification helpers unavailable: " + errMsg(e));
   }

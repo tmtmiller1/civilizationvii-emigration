@@ -169,8 +169,9 @@ export function causeAccent(cause) {
 
 /**
  * The direction-based accent for a per-move migration digest, shared by the HUD toast and the log row:
- * green when people stay within the empire or arrive from abroad, red when the player's own people
- * leave for another civ, independent of the cause. Deaths and world-news use {@link notificationAccent} instead.
+ * green when newcomers arrive from abroad, red when the player's own people leave for another civ, and a
+ * neutral slate for moves inside one empire, independent of the cause. Deaths and world-news use
+ * {@link notificationAccent} instead.
  * @param {boolean} [ownLoss] Whether it's the player's own settlement shedding population.
  * @param {boolean} [crossCiv] Whether the move crossed a civilization border.
  * @returns {string} A CSS color.
