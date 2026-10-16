@@ -131,6 +131,10 @@ const rec = (civ, optionId) => ({
   const normalized = st.normalizeState({ candidacy: { "1,2": { civ: 2, since: 3, lastSeen: 3 }, bad: { since: 1 } } });
   assert.ok(normalized.candidacy["1,2"], "a valid candidacy survives normalization");
   assert.ok(!normalized.candidacy.bad, "an invalid candidacy is dropped on normalization");
+  // The build-over mark rides along when it is a turn number and is dropped otherwise.
+  const marks = st.normalizeState({ candidacy: { "1,2": { civ: 2, since: 3, lastSeen: 3, scattered: 3 }, "4,5": { civ: 2, since: 3, lastSeen: 3, scattered: "x" } } });
+  assert.equal(marks.candidacy["1,2"].scattered, 3, "a candidacy keeps the turn its enclave was built over");
+  assert.equal("scattered" in marks.candidacy["4,5"], false, "a malformed build-over mark is dropped");
 }
 
 // reader snapshot: reloads per turn, never clobbers the writer's copy

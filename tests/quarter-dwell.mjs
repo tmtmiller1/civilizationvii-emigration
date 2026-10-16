@@ -224,4 +224,54 @@ function seedForeignMajority(x, y, name, hostPts, foreign, foreignPts) {
   clearChronicle();
 }
 
+// built over: the community stays above the bar, but a new enclave waits out the dwell from the build-over
+//    turn (and so does recognition); the force option skips the wait like it skips the dwell
+{
+  clearState();
+  const { chronicleLog, clearChronicle } = await import("/emigration/ui/emigration-chronicle.js");
+  clearChronicle();
+  const { establishEnclaves, retireDisplacedEnclaves } = quarter.__test;
+  stateMod.__test.readStateForTest().formed = { age: 1, byOwner: {} }; // earlier blocks formed enclaves; the per-age cap is not under test here
+  seedForeignMajority(1, 1, "Athens", 10, 2, 10);
+  const athens = sig(1, 1, "Athens", 0, 20);
+  observeQuarterDwell([athens], 0, 100);
+  establishEnclaves([athens], 0, 100, false);
+  const est = stateMod.quarterAt("1,1");
+  assert.ok(est && est.civ === 2, "the enclave exists");
+  // Its tile stood on plot 500, and the city has since built something else there.
+  est.placed = { type: "IMPROVEMENT_GAMA", plot: 500, enclave: "IMPROVEMENT_EMIG_ENCLAVE_GORYEO_A", stood: true };
+  const oldMap = globalThis.GameplayMap, oldMC = globalThis.MapConstructibles, oldCons = globalThis.Constructibles, oldInfo = globalThis.GameInfo;
+  globalThis.GameplayMap = { ...(oldMap || {}), getLocationFromIndex: (i) => (i === 500 ? { x: 50, y: 50 } : null) };
+  globalThis.MapConstructibles = { getConstructibles: () => ["granary"] };
+  globalThis.Constructibles = { getByComponentID: (id) => ({ type: id }) };
+  globalThis.GameInfo = { ...(oldInfo || {}), Constructibles: { lookup: () => ({ ConstructibleType: "BUILDING_GRANARY" }) } };
+  retireDisplacedEnclaves(0, 101);
+  globalThis.GameplayMap = oldMap; globalThis.MapConstructibles = oldMC; globalThis.Constructibles = oldCons; globalThis.GameInfo = oldInfo;
+  assert.equal(stateMod.quarterAt("1,1"), null, "built over: the record is gone");
+  assert.ok(chronicleLog().some((e) => /Built Over/.test(e.title)), "and the Chronicle says so");
+  const mark = candidacyAt("1,1");
+  assert.ok(mark && mark.scattered === 101 && mark.since === 101, "the tile's dwell clock restarts at the build-over, marked scattered");
+
+  observeQuarterDwell([athens], 0, 102);
+  establishEnclaves([athens], 0, 102, false);
+  assert.equal(stateMod.quarterAt("1,1"), null, "the next pass does not hand the community a new tile");
+  assert.equal(candidacyAt("1,1").scattered, 101, "the mark survives the per-pass clock refresh");
+  assert.equal(candidateFromSignal(athens, 0, 105), null, "nor is recognition offered before the dwell has run again");
+  observeQuarterDwell([athens], 0, 108);
+  establishEnclaves([athens], 0, 108, false);
+  assert.equal(stateMod.quarterAt("1,1"), null, "one turn short of the dwell: still waiting");
+  observeQuarterDwell([athens], 0, 109);
+  establishEnclaves([athens], 0, 109, false);
+  const again = stateMod.quarterAt("1,1");
+  assert.ok(again && again.civ === 2 && again.turn === 109, "after the dwell has run from the build-over, the community forms a new enclave");
+  assert.ok(candidateFromSignal(athens, 0, 109), "which is up for recognition at once: its clock ran while it waited");
+
+  // Force (the testing option) skips the wait.
+  stateMod.dropQuarter("1,1");
+  stateMod.putCandidacy("1,1", { civ: 2, originCiv: candidacyAt("1,1").originCiv, since: 120, lastSeen: 120, scattered: 120 });
+  establishEnclaves([athens], 0, 121, true);
+  assert.ok(stateMod.quarterAt("1,1"), "force: a new enclave forms despite the wait");
+  clearChronicle();
+}
+
 console.log("quarter-dwell harness passed");

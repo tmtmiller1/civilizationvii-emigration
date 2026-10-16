@@ -253,7 +253,7 @@ function chronicleFoothold(lead, name, standingPeople, nc) {
   if (chronicled(dedupeKey)) return;
   chronicle({
     kind: "founding",
-    title: msg("LOC_EMIG_CHR_FOOTHOLD_TITLE", "A {1_Civ} Foothold in {2_City}", nc.adjMsg, name),
+    title: msg("LOC_EMIG_CHR_FOOTHOLD_TITLE", "{1_Civ} Foothold in {2_City}", nc.adjMsg, name),
     body: msg(
       "LOC_EMIG_CHR_FOOTHOLD_BODY",
       "A lasting {1_Civ} community has taken root in {2_City}, now {3_Pct} percent of the city, a "

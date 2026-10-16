@@ -152,10 +152,10 @@
         <Row Tag="LOC_EMIG_ETIP_STAGE_RECOGNIZED_LETBE"><Text>Recognized. You left them alone.</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_STAGE_ESTABLISHED"><Text>Established, recognized in {1_Turns} turns if it holds</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_STAGE_ESTABLISHED_DUE"><Text>Established, ready to be recognized</Text></Row>
-        <Row Tag="LOC_EMIG_ETIP_SRC_LAND_REPLACED"><Text>Used to be a {1_Improvement}</Text></Row>
+        <Row Tag="LOC_EMIG_ETIP_SRC_LAND_REPLACED"><Text>Took the place of this tile's {1_Improvement}</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_SRC_LAND"><Text>The land</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_WHY_LAND_REPLACED"><Text>The enclave built over it, but you still get what it gave.</Text></Row>
-        <Row Tag="LOC_EMIG_ETIP_SRC_TILE_SKIN"><Text>Shows on the map as a {1_Improvement}</Text></Row>
+        <Row Tag="LOC_EMIG_ETIP_SRC_TILE_SKIN"><Text>Shows on the map as the {1_Improvement} improvement</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_SRC_TILE"><Text>What the enclave built</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_WHY_TILE"><Text>{1_Adj} settlers built it. It pays from the day the enclave forms.</Text></Row>
         <Row Tag="LOC_EMIG_ETIP_WHY_CONTESTED"><Text>The war cuts this to {1_Pct}% until you make peace.</Text></Row>
@@ -827,13 +827,13 @@
             <Text>No foreign enclave has taken root here.</Text>
         </Row>
         <Row Tag="LOC_EMIGRATION_PANEL_ENCLAVE_PENDING">
-            <Text>A {1_Origin} enclave has taken root ({2_Share}% of this settlement) and awaits your decision.</Text>
+            <Text>The {1_Origin} enclave has taken root ({2_Share}% of this settlement) and awaits your decision.</Text>
         </Row>
         <Row Tag="LOC_EMIGRATION_PANEL_ENCLAVE_FORMING">
             <Text>{1_Origin} residents are {2_Share}% of this settlement; an enclave forms at {3_Threshold}% and {5_MinStock} standing population (now {4_Stock}).</Text>
         </Row>
         <Row Tag="LOC_EMIGRATION_PANEL_QUARTER_ROOT">
-            <Text>A {1_Quarter} has taken root in this settlement.</Text>
+            <Text>The {1_Quarter} has taken root in this settlement.</Text>
         </Row>
         <Row Tag="LOC_EMIGRATION_PANEL_QUARTER_STANCE">
             <Text>Your stance: {1_Stance}.</Text>
@@ -1154,10 +1154,10 @@
             <Text>By now the {2_Civ} households of {1_City} made up {3_Pct} of the city. They kept a district of their own {4_Where}.</Text>
         </Row>
         <Row Tag="LOC_EMIG_NARR_FOUNDING_2">
-            <Text>A {2_Civ} community had taken root in {1_City}, {3_Pct} of its people and still arriving, settled {4_Where}.</Text>
+            <Text>The {2_Civ} community had taken root in {1_City}, {3_Pct} of its people and still arriving, settled {4_Where}.</Text>
         </Row>
         <Row Tag="LOC_EMIG_NARR_FOUNDING_3">
-            <Text>{1_City} had become home to a {2_Civ} minority, {3_Pct} of its households, clustered {4_Where}.</Text>
+            <Text>{1_City} had become home to {2_Civ} families, {3_Pct} of its households, clustered {4_Where}.</Text>
         </Row>
         <Row Tag="LOC_EMIG_NARR_RETURN_FRAMED_1">
             <Text>{1_People} families of {2_City} set out for a far homeland, a people known to us only as the {3_Civ}, now that it was {4_Reason}.</Text>
@@ -1211,7 +1211,7 @@
             <Text>The armies of {1_By} have overrun {2_Origin}, and its people are streaming toward your lands. {3_People} have gathered at the border, carrying what they could save, and they ask for shelter.</Text>
         </Row>
         <Row Tag="LOC_EMIG_CHR_FOOTHOLD_TITLE">
-            <Text>A {1_Civ} Foothold in {2_City}</Text>
+            <Text>{1_Civ} Foothold in {2_City}</Text>
         </Row>
         <Row Tag="LOC_EMIG_CHR_FOOTHOLD_BODY">
             <Text>A lasting {1_Civ} community has taken root in {2_City}, now {3_Pct} percent of the city, a standing community of {4_People}.</Text>
@@ -1440,7 +1440,7 @@
         <Row Tag="LOC_EMIG_QTR_STANCE_ACTIVE"><Text>In {1_Place}, you chose to {2_Act}; the {3_Name} takes its place in the city's life.</Text></Row>
         <Row Tag="LOC_EMIG_QTR_WHERE_EDGE"><Text>at the city's edge</Text></Row>
         <Row Tag="LOC_EMIG_QTR_CHRON_DECISION_TITLE">
-            <Text>A {1_Name}</Text>
+            <Text>The {1_Name}</Text>
         </Row>
         <Row Tag="LOC_EMIG_QTR_EYEBROW">
             <Text>Cultural Enclave</Text>
@@ -2446,7 +2446,7 @@
         <Row Tag="LOC_EMIG_GUIDE_12_F2_Q"><Text>What does the tile look like, and what does it yield?</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_12_F2_A"><Text>The origin people's own unique improvement where they have one: a Goryeo enclave is a Gama, a Mongol enclave an Ortoo. Otherwise another civilization's improvement with the same yield as the stance benefit. Otherwise a village with +2 Culture. The tile carries that improvement's yields. The tile's yields come with the enclave from the day it forms. Once the enclave is recognized, its stance's benefit and drawback apply on top. If it replaced a farmstead, the host is paid each turn any yield the old tile gave that the new one does not.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_12_F3_Q"><Text>Can I build over an enclave?</Text></Row>
-        <Row Tag="LOC_EMIG_GUIDE_12_F3_A"><Text>Yes. A building or wonder completed on the plot replaces the tile and destroys the enclave. The chronicle records it. Departures never abandon an enclave tile.</Text></Row>
+        <Row Tag="LOC_EMIG_GUIDE_12_F3_A"><Text>Yes. A building or wonder completed on the plot replaces the tile and destroys the enclave. The chronicle records it. The community stays in the city, and once it has held together for the dwell period again it forms a new enclave on another tile. Departures never abandon an enclave tile.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_12_F4_Q"><Text>Why did an enclave disappear?</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_12_F4_A"><Text>Its community shrank. When the origin's share of the settlement stays below 12.5% and its points stay below the size bar for 12 consecutive turns, the enclave dissolves and its tile is removed. Set the fade share to Never to make enclaves permanent.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_12_F5_Q"><Text>How many enclaves can one civilization have?</Text></Row>

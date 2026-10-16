@@ -109,7 +109,7 @@ function testPassiveQuarterHasNoYieldLines() {
     penaltyAmount: 0
   });
   assert.deepEqual(lines, [
-    "A Greek Enclave has taken root in this settlement.",
+    "The Greek Enclave has taken root in this settlement.",
     "Your stance: Let them be."
   ]);
 }
@@ -128,7 +128,7 @@ function testRecognizedQuarterStatesItsDividend() {
     penaltyAmount: 1
   });
   assert.deepEqual(lines, [
-    "A Roman Enclave has taken root in this settlement.",
+    "The Roman Enclave has taken root in this settlement.",
     "Your stance: Embrace them.",
     "Grants 2 Culture to the city each turn.",
     "Costs 1 Happiness each turn."
@@ -150,7 +150,7 @@ function testInvestedQuarterDoesNotClaimTheDividend() {
   };
   const lines = __test.quarterLines(__test.noCompose, q);
   assert.deepEqual(lines, [
-    "A Roman Enclave has taken root in this settlement.",
+    "The Roman Enclave has taken root in this settlement.",
     "Your stance: Embrace them.",
     "Its enclave stands as a tile of the city, and the tile carries its own yield.",
     "Grants 2 Culture to the city each turn.",
@@ -168,7 +168,7 @@ function testInvestedQuarterStillReportsContest() {
     benefitYield: "YIELD_CULTURE", benefitAmount: 2, penaltyYield: null, penaltyAmount: 0
   });
   assert.deepEqual(lines, [
-    "A Roman Enclave has taken root in this settlement.",
+    "The Roman Enclave has taken root in this settlement.",
     "Its enclave stands as a tile of the city, and the tile carries its own yield.",
     "Grants 2 Culture to the city each turn.",
     "Contested: at war with their homeland - the enclave contributes less (its benefit above is reduced) and the city's morale suffers."
@@ -182,7 +182,7 @@ function testRootedQuarterSaysSo() {
     benefitYield: null, benefitAmount: 0, penaltyYield: null, penaltyAmount: 0
   });
   assert.deepEqual(lines, [
-    "A Roman Enclave has taken root in this settlement.",
+    "The Roman Enclave has taken root in this settlement.",
     "Put down roots: fewer of its people return home.",
     "Its enclave stands as a tile of the city, and the tile carries its own yield."
   ]);
