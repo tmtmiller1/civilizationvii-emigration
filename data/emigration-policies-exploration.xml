@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Exploration-age border-policy cards (Feature 2). Loaded only in the Exploration gameplay
-  database (modinfo criteria AgeInUse=AGE_EXPLORATION). NODE_CIVIC_EX_MAIN_ECONOMICS only
-  exists while Exploration is the active age. See emigration-policies-antiquity.xml for the
-  full rationale.
+  Exploration-age policy cards. Loaded only in the Exploration gameplay database (modinfo criteria
+  AgeInUse=AGE_EXPLORATION). NODE_CIVIC_EX_MAIN_* only exists while Exploration is the active age.
+  See emigration-policies-antiquity.xml for the full rationale.
+
+  Four cards: the two stances (Economics), Talent Attraction (Inspiration) and Consular Protection
+  (Diplomatic Service). Cultural Magnetism, Commercial Draw, Selective Asylum, Charter of Communities
+  and Oaths of Loyalty were retired in 3.6.0; their rows stay for saves that hold them, with no unlock.
 -->
 <Database>
     <Kinds>
         <InsertOrIgnore Kind="KIND_TRADITION"/>
     </Kinds>
-
     <Types>
         <Row Type="TRADITION_EMIG_OPEN_BORDERS_EXPLORATION" Kind="KIND_TRADITION"/>
         <Row Type="TRADITION_EMIG_CLOSED_BORDERS_EXPLORATION" Kind="KIND_TRADITION"/>
         <Row Type="TRADITION_EMIG_TALENT_EXPLORATION" Kind="KIND_TRADITION"/>
+        <Row Type="TRADITION_EMIG_CONSULAR_EXPLORATION" Kind="KIND_TRADITION"/>
+        <!-- Retired in 3.6.0; kept for saves that still hold them. -->
         <Row Type="TRADITION_EMIG_CULTPULL_EXPLORATION" Kind="KIND_TRADITION"/>
         <Row Type="TRADITION_EMIG_TRADEPULL_EXPLORATION" Kind="KIND_TRADITION"/>
         <Row Type="TRADITION_EMIG_ASYLUM_EXPLORATION" Kind="KIND_TRADITION"/>
         <Row Type="TRADITION_EMIG_PROTECT_EXPLORATION" Kind="KIND_TRADITION"/>
         <Row Type="TRADITION_EMIG_SUSPECT_EXPLORATION" Kind="KIND_TRADITION"/>
-        <Row Type="TRADITION_EMIG_CONSULAR_EXPLORATION" Kind="KIND_TRADITION"/>
     </Types>
-
     <Traditions>
         <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_EXPLORATION"
              Name="LOC_EMIG_POLICY_OPEN_BORDERS_NAME"
@@ -34,6 +36,10 @@
         <Row TraditionType="TRADITION_EMIG_TALENT_EXPLORATION"
              Name="LOC_EMIG_POLICY_TALENT_NAME" Description="LOC_EMIG_POLICY_TALENT_DESC"
              AgeType="AGE_EXPLORATION" CultureSlotType="POLICY_CULTURE_SLOT"/>
+        <!-- Consular Protection: script-only (ui/emigration-consular.js), so it carries no modifier. -->
+        <Row TraditionType="TRADITION_EMIG_CONSULAR_EXPLORATION"
+             Name="LOC_EMIG_POLICY_CONSULAR_NAME" Description="LOC_EMIG_POLICY_CONSULAR_DESC"
+             AgeType="AGE_EXPLORATION" CultureSlotType="POLICY_CULTURE_SLOT"/>
         <Row TraditionType="TRADITION_EMIG_CULTPULL_EXPLORATION"
              Name="LOC_EMIG_POLICY_CULTPULL_NAME" Description="LOC_EMIG_POLICY_CULTPULL_DESC"
              AgeType="AGE_EXPLORATION" CultureSlotType="POLICY_CULTURE_SLOT"/>
@@ -43,25 +49,20 @@
         <Row TraditionType="TRADITION_EMIG_ASYLUM_EXPLORATION"
              Name="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Description="LOC_EMIG_POLICY_ASYLUM_EX_DESC"
              AgeType="AGE_EXPLORATION" CultureSlotType="POLICY_CULTURE_SLOT"/>
-        <!-- Community treatment cards: how the host treats the enclaves in its cities. The scripted
-             effects (payout share, fewer arrivals) live in ui/emigration-treatment.js and -borders.js. -->
         <Row TraditionType="TRADITION_EMIG_PROTECT_EXPLORATION"
              Name="LOC_EMIG_POLICY_PROTECT_EX_NAME" Description="LOC_EMIG_POLICY_PROTECT_EX_DESC"
              AgeType="AGE_EXPLORATION" CultureSlotType="POLICY_CULTURE_SLOT"/>
         <Row TraditionType="TRADITION_EMIG_SUSPECT_EXPLORATION"
              Name="LOC_EMIG_POLICY_SUSPECT_EX_NAME" Description="LOC_EMIG_POLICY_SUSPECT_EX_DESC"
              AgeType="AGE_EXPLORATION" CultureSlotType="POLICY_CULTURE_SLOT"/>
-        <!-- Consular Protection: script-only (ui/emigration-consular.js), so it carries no modifier. -->
-        <Row TraditionType="TRADITION_EMIG_CONSULAR_EXPLORATION"
-             Name="LOC_EMIG_POLICY_CONSULAR_NAME" Description="LOC_EMIG_POLICY_CONSULAR_DESC"
-             AgeType="AGE_EXPLORATION" CultureSlotType="POLICY_CULTURE_SLOT"/>
     </Traditions>
-
-    <!-- Native per-turn Influence modifiers (defined in emigration-policies-gameeffects.xml). -->
+    <!-- Native modifiers (defined in emigration-policies-gameeffects.xml). -->
     <TraditionModifiers>
         <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_EXPLORATION" ModifierId="MOD_EMIG_OPEN_BORDERS_INFLUENCE_EX"/>
+        <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_EXPLORATION" ModifierId="MOD_EMIG_STANCE_SLOT_OPEN_EX"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_EXPLORATION" ModifierId="MOD_EMIG_CLOSED_BORDERS_INFLUENCE_EX"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_EXPLORATION" ModifierId="MOD_EMIG_CLOSED_BORDERS_PRODUCTION_EX"/>
+        <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_EXPLORATION" ModifierId="MOD_EMIG_STANCE_SLOT_CLOSED_EX"/>
         <Row TraditionType="TRADITION_EMIG_TALENT_EXPLORATION" ModifierId="MOD_EMIG_TALENT_YIELD_EX"/>
         <Row TraditionType="TRADITION_EMIG_CULTPULL_EXPLORATION" ModifierId="MOD_EMIG_CULTPULL_YIELD_EX"/>
         <Row TraditionType="TRADITION_EMIG_TRADEPULL_EXPLORATION" ModifierId="MOD_EMIG_TRADEPULL_YIELD_EX"/>
@@ -69,16 +70,10 @@
         <Row TraditionType="TRADITION_EMIG_PROTECT_EXPLORATION" ModifierId="MOD_EMIG_PROTECT_INFLUENCE_EX"/>
         <Row TraditionType="TRADITION_EMIG_SUSPECT_EXPLORATION" ModifierId="MOD_EMIG_SUSPECT_PRODUCTION_EX"/>
     </TraditionModifiers>
-
     <ProgressionTreeNodeUnlocks>
         <Row ProgressionTreeNodeType="NODE_CIVIC_EX_MAIN_ECONOMICS" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_OPEN_BORDERS_EXPLORATION" UnlockDepth="1"/>
         <Row ProgressionTreeNodeType="NODE_CIVIC_EX_MAIN_ECONOMICS" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_CLOSED_BORDERS_EXPLORATION" UnlockDepth="1"/>
         <Row ProgressionTreeNodeType="NODE_CIVIC_EX_MAIN_INSPIRATION" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_TALENT_EXPLORATION" UnlockDepth="1"/>
-        <Row ProgressionTreeNodeType="NODE_CIVIC_EX_MAIN_SOCIETY" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_CULTPULL_EXPLORATION" UnlockDepth="1"/>
-        <Row ProgressionTreeNodeType="NODE_CIVIC_EX_MAIN_MERCANTILISM" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_TRADEPULL_EXPLORATION" UnlockDepth="1"/>
-        <Row ProgressionTreeNodeType="NODE_CIVIC_EX_MAIN_PIETY" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_ASYLUM_EXPLORATION" UnlockDepth="1"/>
-        <Row ProgressionTreeNodeType="NODE_CIVIC_EX_MAIN_ECONOMICS" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_PROTECT_EXPLORATION" UnlockDepth="1"/>
-        <Row ProgressionTreeNodeType="NODE_CIVIC_EX_MAIN_ECONOMICS" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_SUSPECT_EXPLORATION" UnlockDepth="1"/>
         <Row ProgressionTreeNodeType="NODE_CIVIC_EX_MAIN_DIPLOMATIC_SERVICE" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_CONSULAR_EXPLORATION" UnlockDepth="1"/>
     </ProgressionTreeNodeUnlocks>
 </Database>

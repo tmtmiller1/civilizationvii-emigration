@@ -15,7 +15,7 @@ globalThis.Database = { makeHash: (s) => "H_" + s }; // hash = "H_" + type strin
 const { immigrationOpenness, emigrationRetention, borderStance, resetBorderCache } = await import(
   "/emigration/ui/emigration-borders.js"
 );
-const { activeAttractions, hasAsylum, __test } = await import("/emigration/ui/emigration-borders.js");
+const { activeAttractions, hasAsylum, treatmentStance, __test } = await import("/emigration/ui/emigration-borders.js");
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
 
 const OPEN = "H_TRADITION_EMIG_OPEN_BORDERS_MODERN";
@@ -238,8 +238,49 @@ testClosedBordersRetains();
 testNoRetentionWithoutClosed();
 testBothBordersCancelOut();
 testStanceSingleCard();
+function testStancesCarryAsylumAndTreatment() {
+  ACTIVE[90] = new Set(["H_TRADITION_EMIG_OPEN_BORDERS_EXPLORATION"]);
+  ACTIVE[91] = new Set(["H_TRADITION_EMIG_CLOSED_BORDERS_EXPLORATION"]);
+  ACTIVE[92] = new Set(["H_TRADITION_EMIG_OPEN_BORDERS_MODERN", "H_TRADITION_EMIG_CLOSED_BORDERS_MODERN"]);
+  ACTIVE[93] = new Set(["H_TRADITION_EMIG_TALENT_MODERN"]);
+  resetBorderCache();
+  assert.equal(hasAsylum(90), true, "a Pro-Immigration Stance draws refugees");
+  assert.equal(treatmentStance(90), "protect");
+  assert.equal(hasAsylum(91), false);
+  assert.equal(treatmentStance(91), "suspect");
+  assert.ok(close(immigrationOpenness(91), 0.4), "the Anti-Immigration throttle, with no retired-card cut on top");
+  assert.equal(hasAsylum(92), true, "both slotted: refugees still drawn by the Pro card");
+  assert.equal(treatmentStance(92), null, "both slotted: no treatment");
+  assert.equal(immigrationOpenness(92), 1, "both slotted: neutral openness");
+  assert.deepEqual(activeAttractions(93), ["YIELD_SCIENCE"], "Talent Attraction alone pays Science");
+}
+
+function testOtherAgesCardsAreSkippedWhenTheDatabaseDoesntKnowThem() {
+  // The engine reports any unknown hash as active, so a civ with an Antiquity Pro-Immigration Stance would also read
+  // the Exploration and Modern Anti-Immigration Stances as slotted, and the two would cancel. Only this age's types count.
+  const known = new Set(["TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY", "TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY"]);
+  const priorGameInfo = globalThis.GameInfo;
+  globalThis.GameInfo = { Traditions: { lookup: (t) => (known.has(t) ? { TraditionType: t } : null) } };
+  ACTIVE[94] = new Set([
+    "H_TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY",
+    "H_TRADITION_EMIG_CLOSED_BORDERS_EXPLORATION",
+    "H_TRADITION_EMIG_CLOSED_BORDERS_MODERN",
+    "H_TRADITION_EMIG_SUSPECT_MODERN",
+    "H_TRADITION_EMIG_TALENT_MODERN"
+  ]);
+  resetBorderCache();
+  assert.equal(borderStance(94), "pro", "the Antiquity Pro card alone counts");
+  assert.ok(close(immigrationOpenness(94), 1.5));
+  assert.equal(treatmentStance(94), "protect", "the unknown Modern suspicion card doesn't cancel it");
+  assert.deepEqual(activeAttractions(94), [], "an unknown attraction card pays nothing");
+  globalThis.GameInfo = priorGameInfo;
+  resetBorderCache();
+}
+
 testAttractionFamiliesResolveToYieldKeys();
 testAsylumAndAttractionDefaults();
+testStancesCarryAsylumAndTreatment();
+testOtherAgesCardsAreSkippedWhenTheDatabaseDoesntKnowThem();
 testAllAgesResolveForPolicyFamilies();
 testAllAgesResolveForAttractionFamilies();
 testHashCacheSurvivesMissingDatabaseAfterWarmup();

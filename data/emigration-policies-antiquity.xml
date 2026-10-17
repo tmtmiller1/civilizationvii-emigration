@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Antiquity-age border-policy cards (Feature 2). Loaded only in the Antiquity gameplay
-  database (modinfo criteria AgeInUse=AGE_ANTIQUITY), because Civ VII rebuilds the
-  gameplay DB per age and NODE_CIVIC_AQ_MAIN_* only exists while Antiquity is the active
-  age. The Exploration/Modern versions live in their own age-scoped files; loading any of
-  them into the wrong age's DB fails foreign-key validation on ProgressionTreeNodeUnlocks.
+  Antiquity-age policy cards. Loaded only in the Antiquity gameplay database (modinfo criteria
+  AgeInUse=AGE_ANTIQUITY), because Civ VII rebuilds the gameplay DB per age and NODE_CIVIC_AQ_MAIN_*
+  only exists while Antiquity is the active age. The Exploration/Modern versions live in their own
+  age-scoped files; loading any of them into the wrong age's DB fails foreign-key validation on
+  ProgressionTreeNodeUnlocks.
 
-  Two slot-able Traditions (Open / Closed Borders) in POLICY_CULTURE_SLOT, available to
-  every civilization (no TraitType). Each carries a native per-turn Influence modifier
-  (TraditionModifiers -> MOD_EMIG_*_INFLUENCE, defined in emigration-policies-gameeffects.xml)
-  so the yield shows on the card and in the breakdown. The immigration % is applied on top by
-  the UI-VM code, which reads whether the card is slotted (Culture.isTraditionActive); see
-  ui/emigration-borders.js.
+  Two cards: the Pro-Immigration and Anti-Immigration stances, in POLICY_CULTURE_SLOT, open to every
+  civilization (no TraitType). Each carries its native yields (TraditionModifiers, defined in
+  emigration-policies-gameeffects.xml) so they show on the card and in the yield breakdown, and a
+  policy slot of its own while it's slotted. The migration and enclave effects are applied by the
+  scripts, which read whether the card is slotted (Culture.isTraditionActive); see
+  ui/emigration-borders.js and ui/emigration-treatment.js.
+
+  Guest Right and Watched Quarters (3.5.0) were folded into the two stances. Their rows stay so a game
+  saved with one of them slotted still loads and keeps its yields; they have no civic unlock any more, so
+  a new game never offers them.
 -->
 <Database>
     <Kinds>
@@ -21,6 +25,7 @@
     <Types>
         <Row Type="TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY" Kind="KIND_TRADITION"/>
         <Row Type="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" Kind="KIND_TRADITION"/>
+        <!-- Retired in 3.6.0; kept for saves that still hold them. -->
         <Row Type="TRADITION_EMIG_PROTECT_ANTIQUITY" Kind="KIND_TRADITION"/>
         <Row Type="TRADITION_EMIG_SUSPECT_ANTIQUITY" Kind="KIND_TRADITION"/>
     </Types>
@@ -34,8 +39,6 @@
              Name="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME"
              Description="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC"
              AgeType="AGE_ANTIQUITY" CultureSlotType="POLICY_CULTURE_SLOT"/>
-        <!-- Community treatment cards: how the host treats the enclaves in its cities. The scripted
-             effects (payout share, fewer arrivals) live in ui/emigration-treatment.js and -borders.js. -->
         <Row TraditionType="TRADITION_EMIG_PROTECT_ANTIQUITY"
              Name="LOC_EMIG_POLICY_PROTECT_AQ_NAME" Description="LOC_EMIG_POLICY_PROTECT_AQ_DESC"
              AgeType="AGE_ANTIQUITY" CultureSlotType="POLICY_CULTURE_SLOT"/>
@@ -44,11 +47,13 @@
              AgeType="AGE_ANTIQUITY" CultureSlotType="POLICY_CULTURE_SLOT"/>
     </Traditions>
 
-    <!-- Native per-turn Influence modifiers (defined in emigration-policies-gameeffects.xml). -->
+    <!-- Native modifiers (defined in emigration-policies-gameeffects.xml). -->
     <TraditionModifiers>
         <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_OPEN_BORDERS_INFLUENCE_AQ"/>
+        <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_STANCE_SLOT_OPEN_AQ"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_CLOSED_BORDERS_INFLUENCE_AQ"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_CLOSED_BORDERS_PRODUCTION_AQ"/>
+        <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_STANCE_SLOT_CLOSED_AQ"/>
         <Row TraditionType="TRADITION_EMIG_PROTECT_ANTIQUITY" ModifierId="MOD_EMIG_PROTECT_INFLUENCE_AQ"/>
         <Row TraditionType="TRADITION_EMIG_SUSPECT_ANTIQUITY" ModifierId="MOD_EMIG_SUSPECT_PRODUCTION_AQ"/>
     </TraditionModifiers>
@@ -56,7 +61,5 @@
     <ProgressionTreeNodeUnlocks>
         <Row ProgressionTreeNodeType="NODE_CIVIC_AQ_MAIN_CITIZENSHIP" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY" UnlockDepth="1"/>
         <Row ProgressionTreeNodeType="NODE_CIVIC_AQ_MAIN_CITIZENSHIP" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" UnlockDepth="1"/>
-        <Row ProgressionTreeNodeType="NODE_CIVIC_AQ_MAIN_CITIZENSHIP" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_PROTECT_ANTIQUITY" UnlockDepth="1"/>
-        <Row ProgressionTreeNodeType="NODE_CIVIC_AQ_MAIN_CITIZENSHIP" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_SUSPECT_ANTIQUITY" UnlockDepth="1"/>
     </ProgressionTreeNodeUnlocks>
 </Database>

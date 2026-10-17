@@ -489,6 +489,12 @@ per-people closure, asymmetric consequences).
 
 ### 12.1 What already exists today
 
+**3.6.0 (2026-10-17, unreleased):** the cards are ten, the treatment and asylum effects live on the two stances, each
+stance grants its own policy slot while slotted (withheld while the other stance is slotted), and the stance read
+skips the other ages' types, which the engine reports as active. Watched in one Antiquity and one Exploration lab
+game (`tools/plans/overnight-watch-run-2-log.md`, "Emigration cards"). The paragraphs below describe 3.5.x's shape
+where they name the retired cards.
+
 Defined as native, slotable **Traditions** in `POLICY_CULTURE_SLOT`, one pair per age, unlocked at a
 civic node (`NODE_CIVIC_AQ_MAIN_CITIZENSHIP` and per-age equivalents):
 - Open Borders (Pro-Immigration): native **+1/+2/+3 Influence** by age

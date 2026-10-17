@@ -1,16 +1,23 @@
 // emigration-borders.js
 //
-// Reads which Open/Closed Borders policy a civ has slotted (Culture.isTraditionActive) and turns it
-// into the immigration-openness multiplier the engine applies to a destination's pull. The cards'
-// Influence is a native modifier in the data files; this module only enforces the immigration %.
-// Every policy read goes through a per-pass cache (resetBorderCache()) so each civ's slotted cards
-// are read at most once per pass on the O(cities²) pull hot path.
+// Reads which of the mod's policy cards a civ has slotted (Culture.isTraditionActive) and turns them
+// into the effects the scripts apply: the immigration-openness multiplier on a destination's pull, the
+// retention of a source's own people, how the host treats the enclaves in its cities, the refugee tilt,
+// the attraction dividend and Consular Protection. The cards' flat yields are native modifiers in the
+// data files. Every policy read goes through a per-pass cache (resetBorderCache()) so each civ's slotted
+// cards are read at most once per pass on the O(cities²) pull hot path.
+//
+// Since 3.6.0 the Pro-Immigration Stance carries the protective treatment and the refugee tilt, and the
+// Anti-Immigration Stance carries the suspicion treatment. The cards those effects used to live on
+// (protective, suspicion, asylum, the two other attractions) are retired: no new game offers them, but a
+// save that still holds one keeps its effect, so their types stay listed here as legacy.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 /**
- * The tradition types behind each border/attraction effect, one per age (all ages map to the same
- * effect). Frozen registry so the rest of the module names effects, not raw type-string arrays.
+ * The tradition types behind each effect, one per age (all ages map to the same effect). Frozen
+ * registry so the rest of the module names effects, not raw type-string arrays. The `legacy*`
+ * families are the retired cards.
  */
 const POLICY_TYPES = Object.freeze({
   open: [
@@ -24,23 +31,26 @@ const POLICY_TYPES = Object.freeze({
     "TRADITION_EMIG_CLOSED_BORDERS_MODERN"
   ],
   talent: ["TRADITION_EMIG_TALENT_EXPLORATION", "TRADITION_EMIG_TALENT_MODERN"],
-  cultpull: ["TRADITION_EMIG_CULTPULL_EXPLORATION", "TRADITION_EMIG_CULTPULL_MODERN"],
-  tradepull: ["TRADITION_EMIG_TRADEPULL_EXPLORATION", "TRADITION_EMIG_TRADEPULL_MODERN"],
-  asylum: ["TRADITION_EMIG_ASYLUM_EXPLORATION", "TRADITION_EMIG_ASYLUM_MODERN"],
-  protect: [
+  consular: ["TRADITION_EMIG_CONSULAR_EXPLORATION", "TRADITION_EMIG_CONSULAR_MODERN"],
+  legacyCultpull: ["TRADITION_EMIG_CULTPULL_EXPLORATION", "TRADITION_EMIG_CULTPULL_MODERN"],
+  legacyTradepull: ["TRADITION_EMIG_TRADEPULL_EXPLORATION", "TRADITION_EMIG_TRADEPULL_MODERN"],
+  legacyAsylum: ["TRADITION_EMIG_ASYLUM_EXPLORATION", "TRADITION_EMIG_ASYLUM_MODERN"],
+  legacyProtect: [
     "TRADITION_EMIG_PROTECT_ANTIQUITY",
     "TRADITION_EMIG_PROTECT_EXPLORATION",
     "TRADITION_EMIG_PROTECT_MODERN"
   ],
-  suspect: [
+  legacySuspect: [
     "TRADITION_EMIG_SUSPECT_ANTIQUITY",
     "TRADITION_EMIG_SUSPECT_EXPLORATION",
     "TRADITION_EMIG_SUSPECT_MODERN"
-  ],
-  consular: ["TRADITION_EMIG_CONSULAR_EXPLORATION", "TRADITION_EMIG_CONSULAR_MODERN"]
+  ]
 });
 
-/** Immigration into a host with a suspicion card slotted, as a multiplier on its border-stance openness. */
+/**
+ * Immigration into a host with a retired suspicion card slotted, as a multiplier on its border-stance
+ * openness. The Anti-Immigration Stance already throttles arrivals itself, so it doesn't take this cut.
+ */
 export const SUSPECT_OPENNESS = 0.75;
 
 // Attraction cards: each turns the civ's immigration into a carried dividend in one yield. Data-driven
@@ -48,8 +58,8 @@ export const SUSPECT_OPENNESS = 0.75;
 /** @type {ReadonlyArray<{family:keyof typeof POLICY_TYPES, yield:string}>} */
 const ATTRACTIONS = Object.freeze([
   { family: "talent", yield: "YIELD_SCIENCE" },
-  { family: "cultpull", yield: "YIELD_CULTURE" },
-  { family: "tradepull", yield: "YIELD_GOLD" }
+  { family: "legacyCultpull", yield: "YIELD_CULTURE" },
+  { family: "legacyTradepull", yield: "YIELD_GOLD" }
 ]);
 
 /** Cached type-hash per tradition type string (a hash is stable for the whole game). @type {Map<string, *>} */
@@ -85,9 +95,28 @@ function readCulture(pid) {
   }
 }
 
-/** @param {*} culture @param {string[]} types @returns {string|null} The first slotted type. */
+/**
+ * Whether the current age's database knows a tradition type. `isTraditionActive` answers true for any hash the
+ * database doesn't hold (watched 2026-10-17), so the other ages' copies of a family would all read as slotted
+ * unless they're skipped. Reads as known when GameInfo isn't there (the test harness).
+ * @param {string} type
+ * @returns {boolean}
+ */
+function knownType(type) {
+  try {
+    const info = typeof GameInfo !== "undefined" ? GameInfo : null;
+    const table = info && info.Traditions;
+    if (!table || typeof table.lookup !== "function") return true;
+    return table.lookup(type) != null;
+  } catch (_) {
+    return false;
+  }
+}
+
+/** @param {*} culture @param {string[]} types @returns {string|null} The first slotted type this age knows. */
 function firstActive(culture, types) {
   for (const type of types) {
+    if (!knownType(type)) continue;
     const h = hashFor(type);
     if (h != null && culture.isTraditionActive(h)) return type;
   }
@@ -117,13 +146,17 @@ function hasPolicy(pid, types) {
 }
 
 /**
- * @typedef {Object} PolicyState A civ's resolved border/attraction policy for this pass.
- * @property {boolean} open Whether an Open Borders card is slotted.
- * @property {boolean} closed Whether a Closed Borders card is slotted.
- * @property {boolean} asylum Whether an Asylum card is slotted.
+ * @typedef {Object} PolicyState A civ's resolved policy for this pass.
+ * @property {boolean} open Whether a Pro-Immigration Stance is slotted.
+ * @property {boolean} closed Whether an Anti-Immigration Stance is slotted.
+ * @property {boolean} asylum Whether refugees are drawn to this civ (a Pro-Immigration Stance, or a retired
+ *   asylum card).
  * @property {string[]} attractions Yield keys the slotted Attraction cards accrue.
- * @property {string|null} protect The slotted protective treatment card, or null.
- * @property {string|null} suspect The slotted suspicion treatment card, or null.
+ * @property {string|null} protect The card giving the protective treatment (the Pro-Immigration Stance, or a
+ *   retired protective card), or null.
+ * @property {string|null} suspect The card giving the suspicion treatment (the Anti-Immigration Stance, or a
+ *   retired suspicion card), or null.
+ * @property {boolean} legacySuspect Whether the suspicion treatment comes from a retired card alone.
  * @property {boolean} consular Whether a Consular Protection card is slotted.
  */
 
@@ -165,13 +198,17 @@ function freshForTurn() {
 function policyState(pid) {
   const hit = _polyCache.get(pid);
   if (hit) return hit;
+  const openType = activeType(pid, POLICY_TYPES.open);
+  const closedType = activeType(pid, POLICY_TYPES.closed);
+  const legacySuspect = activeType(pid, POLICY_TYPES.legacySuspect);
   const state = {
-    open: hasPolicy(pid, POLICY_TYPES.open),
-    closed: hasPolicy(pid, POLICY_TYPES.closed),
-    asylum: hasPolicy(pid, POLICY_TYPES.asylum),
+    open: openType != null,
+    closed: closedType != null,
+    asylum: openType != null || hasPolicy(pid, POLICY_TYPES.legacyAsylum),
     attractions: ATTRACTIONS.filter((a) => hasPolicy(pid, POLICY_TYPES[a.family])).map((a) => a.yield),
-    protect: activeType(pid, POLICY_TYPES.protect),
-    suspect: activeType(pid, POLICY_TYPES.suspect),
+    protect: openType || activeType(pid, POLICY_TYPES.legacyProtect),
+    suspect: closedType || legacySuspect,
+    legacySuspect: closedType == null && legacySuspect != null,
     consular: hasPolicy(pid, POLICY_TYPES.consular)
   };
   _polyCache.set(pid, state);
@@ -179,17 +216,18 @@ function policyState(pid) {
 }
 
 /**
- * A civ's immigration openness from its slotted border policy. 1 = neutral; < 1 throttles inflow
- * (floored so it never hard-zeros), > 1 boosts it. Slotting both Open and Closed cancels out to
- * neutral. A suspicion card multiplies the result by SUSPECT_OPENNESS (still floored). Influence is
- * not handled here (native TraditionModifiers).
+ * A civ's immigration openness from its slotted stance. 1 = neutral; < 1 throttles inflow (floored so
+ * it never hard-zeros), > 1 boosts it. Slotting both stances cancels out to neutral. A retired
+ * suspicion card multiplies the result by SUSPECT_OPENNESS (still floored); the Anti-Immigration
+ * Stance's own throttle already covers that. Influence is not handled here (native TraditionModifiers).
  * @param {number} pid Destination player id.
  * @returns {number} A positive multiplier.
  */
 export function immigrationOpenness(pid) {
   if (!CONFIG.bordersEnabled) return 1;
   const stance = stanceOpenness(pid);
-  if (stanceOf(policyState(pid)) !== "suspect") return stance;
+  const state = policyState(pid);
+  if (!state.legacySuspect || stanceOf(state) !== "suspect") return stance;
   return Math.max(CONFIG.opennessFloor, stance * SUSPECT_OPENNESS);
 }
 
@@ -204,9 +242,9 @@ function stanceOpenness(pid) {
 }
 
 /**
- * How a host treats the communities in its cities, from its slotted treatment card: "protect", "suspect",
- * or null. Slotting one of each cancels out to null. Read whatever the border-policy option says, since the
- * cards' own effects (payouts, consular grievances) don't depend on it.
+ * How a host treats the communities in its cities, from its slotted stance: "protect" (Pro-Immigration),
+ * "suspect" (Anti-Immigration), or null. Slotting both cancels out to null. Read whatever the border-policy
+ * option says, since the cards' own effects (payouts, consular grievances) don't depend on it.
  * @param {number} pid Host player id.
  * @returns {"protect"|"suspect"|null} The stance.
  */
@@ -259,9 +297,9 @@ export function emigrationRetention(pid) {
 }
 
 /**
- * The yields a civ's slotted Attraction cards grant per immigrant. Talent → YIELD_SCIENCE,
- * Cultural → YIELD_CULTURE, Commercial → YIELD_GOLD; a civ may hold more than one. Empty when none
- * are slotted, so the carried dividend is a no-op (fail-safe) until the cards exist + are chosen.
+ * The yields a civ's slotted Attraction cards grant per immigrant. Talent Attraction → YIELD_SCIENCE;
+ * the retired Cultural Magnetism and Commercial Draw still pay YIELD_CULTURE and YIELD_GOLD in a save
+ * that holds them. Empty when none are slotted, so the carried dividend is a no-op (fail-safe).
  * @param {number} pid
  * @returns {string[]} Yield keys to accrue a dividend in.
  */
@@ -270,7 +308,8 @@ export function activeAttractions(pid) {
 }
 
 /**
- * Whether a civ holds an Asylum card, which eases refugee-caused pull toward it.
+ * Whether war and disaster refugees are drawn to this civ first: a Pro-Immigration Stance, or a retired
+ * asylum card.
  * @param {number} pid
  * @returns {boolean}
  */

@@ -1,9 +1,9 @@
 // emigration-treatment.js
 //
-// What the community treatment cards (Guest Right / Charter of Communities / Equal Protection, and the
-// suspicion cards Watched Quarters / Oaths of Loyalty / Registration of Residents) do to an enclave's
-// stance payout, and the Chronicle line written when war first reaches an enclave. The cards' flat
-// yields are native modifiers; the slotted-card read lives in emigration-borders.js.
+// What a host's immigration stance does to an enclave's stance payout (the Pro-Immigration Stance
+// protects, the Anti-Immigration Stance watches), and the Chronicle line written when war first reaches
+// an enclave. The cards' flat yields are native modifiers; the slotted-card read lives in
+// emigration-borders.js. The retired treatment cards of 3.5.0 are named here too, for saves that hold them.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { treatmentStance, treatmentCard } from "/emigration/ui/emigration-borders.js";
@@ -11,12 +11,18 @@ import { civNameMsg, narrativeCiv, quarterNameMsg } from "/emigration/ui/emigrat
 import { cityCompositionByKey } from "/emigration/ui/emigration-composition.js";
 import { msg } from "/emigration/ui/emigration-loc.js";
 
-/** A suspicion card pays an enclave's stance at this share, in peace and war alike. */
+/** A suspicious host pays an enclave's stance at this share, in peace and war alike. */
 export const SUSPECT_PAYOUT_FACTOR = 0.5;
 
 /** Each card's display name, for the Chronicle line that names the host's policy. */
 /** @type {Record<string, [string, string]>} */
 const CARD_NAMES = {
+  TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY: ["LOC_EMIG_POLICY_OPEN_BORDERS_NAME", "Pro-Immigration Stance"],
+  TRADITION_EMIG_OPEN_BORDERS_EXPLORATION: ["LOC_EMIG_POLICY_OPEN_BORDERS_NAME", "Pro-Immigration Stance"],
+  TRADITION_EMIG_OPEN_BORDERS_MODERN: ["LOC_EMIG_POLICY_OPEN_BORDERS_NAME", "Pro-Immigration Stance"],
+  TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY: ["LOC_EMIG_POLICY_CLOSED_BORDERS_NAME", "Anti-Immigration Stance"],
+  TRADITION_EMIG_CLOSED_BORDERS_EXPLORATION: ["LOC_EMIG_POLICY_CLOSED_BORDERS_NAME", "Anti-Immigration Stance"],
+  TRADITION_EMIG_CLOSED_BORDERS_MODERN: ["LOC_EMIG_POLICY_CLOSED_BORDERS_NAME", "Anti-Immigration Stance"],
   TRADITION_EMIG_PROTECT_ANTIQUITY: ["LOC_EMIG_POLICY_PROTECT_AQ_NAME", "Guest Right"],
   TRADITION_EMIG_PROTECT_EXPLORATION: ["LOC_EMIG_POLICY_PROTECT_EX_NAME", "Charter of Communities"],
   TRADITION_EMIG_PROTECT_MODERN: ["LOC_EMIG_POLICY_PROTECT_MO_NAME", "Equal Protection"],

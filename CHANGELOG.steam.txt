@@ -3,6 +3,20 @@ Generated from CHANGELOG.md by scripts/steam-changelog.mjs; release.sh uploads t
 To fix an old Workshop entry, paste the text under its ==== line into that entry's Edit box on the change-notes page.
 A block edited by hand is kept as-is. Delete a block to regenerate it from CHANGELOG.md.
 
+==== 3.6.0 | 2026-10-17 | src 44a62e04aa28 | gen 394c552c3dd1 ====
+[b]Version 3.6.0 · 17 October 2026[/b]
+Ten policy cards instead of twenty-two, each one readable at a glance, and a stance that pays for its own slot.
+
+[b]Changed[/b]
+• The policy cards are down to ten: the Pro-Immigration and Anti-Immigration stances in every age, and Talent Attraction and Consular Protection from the Exploration Age. What the twelve other cards did now lives on the stances. A Pro-Immigration Stance protects the enclaves in your cities (paid in full even at war with their homeland) and draws war and disaster refugees to you first; an Anti-Immigration Stance watches them (enclaves keep half their yields, a quarter at war). Cultural Magnetism and Commercial Draw are gone; Talent Attraction stays and pays Science. A game saved with one of the old cards slotted still loads and keeps that card's effect; a new game never offers it.
+• Each stance brings its own policy slot while it's slotted, so taking a stance costs you no slot of your own. Slot both stances and they cancel out, and neither brings a slot.
+• Every card now reads like the game's own: the yields first, then one line per effect with its number. “Settle more slowly” is “refugees settle 60% slower”, “pay half” is “enclaves keep 50% of their yields”, the attraction bonus is “+1.5 Science per immigrant, fading 30% a turn, up to +12 per turn”. The line about unrest comes off the cards; it belongs to the Partisans mod, which still reads the stance.
+• The Civilopedia's Immigration Policies and Treatment of Communities pages describe the ten cards.
+• With the Partisans mod running, the stance now sets how fast an enclave's unrest builds, as the treatment cards did.
+
+[b]Fixed[/b]
+• The immigration stances never worked. The game answers “slotted” for any policy card the current age's data doesn't hold, so in every age the other two ages' copies of each card read as slotted too: a Pro-Immigration Stance always came with a phantom Anti-Immigration Stance, the two cancelled, and migration ran as if no card were slotted (the Influence and Production still paid). Watched on 2026-10-17 in an Antiquity game, where the mod read “no stance” with an Anti-Immigration Stance in a slot. The read now skips the cards the age doesn't have. The same phantom read emptied the treatment and attraction cards of 3.5.0.
+
 ==== 3.5.1 | 2026-10-16 | src 10ccaaf87abc | gen b8be7d013e47 ====
 [b]Version 3.5.1 · 16 October 2026[/b]
 
