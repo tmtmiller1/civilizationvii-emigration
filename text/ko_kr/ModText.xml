@@ -543,16 +543,16 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ko_KR"><Text>그 사람들은 영영 사라졌습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="ko_KR"><Text>{1_Dest}이(가) 이들을 통합하기 위해 턴당 약 {2_Gold} 골드를 지불합니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="ko_KR"><Text>친이민 기조</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ko_KR"><Text>매 턴 [icon:YIELD_DIPLOMACY] 영향력 +1. [icon:YIELD_POPULATION] 이민 +50%. 전쟁과 재해의 난민이 당신에게 먼저 옵니다. 거류지는 고향과 전쟁 중에도 산출의 100%를 유지합니다. 전용 정책 슬롯이 따라옵니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="ko_KR"><Text>매 턴 [icon:YIELD_DIPLOMACY] 영향력 +2. [icon:YIELD_POPULATION] 이민 +50%. 전쟁과 재해의 난민이 당신에게 먼저 옵니다. 거류지는 고향과 전쟁 중에도 산출의 100%를 유지합니다. 전용 정책 슬롯이 따라옵니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="ko_KR"><Text>매 턴 [icon:YIELD_DIPLOMACY] 영향력 +3. [icon:YIELD_POPULATION] 이민 +50%. 전쟁과 재해의 난민이 당신에게 먼저 옵니다. 거류지는 고향과 전쟁 중에도 산출의 100%를 유지합니다. 전용 정책 슬롯이 따라옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ko_KR"><Text>매 턴 [icon:YIELD_DIPLOMACY] 영향력 +1. [icon:YIELD_POPULATION] 이민 +50%. 난민이 당신에게 먼저 옵니다. 거류지는 전쟁 중에도 산출을 전부 유지합니다. 전용 정책 슬롯이 따라옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="ko_KR"><Text>매 턴 [icon:YIELD_DIPLOMACY] 영향력 +2. [icon:YIELD_POPULATION] 이민 +50%. 난민이 당신에게 먼저 옵니다. 거류지는 전쟁 중에도 산출을 전부 유지합니다. 전용 정책 슬롯이 따라옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="ko_KR"><Text>매 턴 [icon:YIELD_DIPLOMACY] 영향력 +3. [icon:YIELD_POPULATION] 이민 +50%. 난민이 당신에게 먼저 옵니다. 거류지는 전쟁 중에도 산출을 전부 유지합니다. 전용 정책 슬롯이 따라옵니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="ko_KR"><Text>반이민 기조</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +2. 매 턴 [icon:YIELD_DIPLOMACY] 영향력 -2. [icon:YIELD_POPULATION] 이민 -60%, 이주 -40%. 난민의 정착이 60% 느려집니다. 거류지는 산출의 50%를 유지합니다(고향과 전쟁 중에는 25%). 전용 정책 슬롯이 따라옵니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +3. 매 턴 [icon:YIELD_DIPLOMACY] 영향력 -3. [icon:YIELD_POPULATION] 이민 -60%, 이주 -40%. 난민의 정착이 60% 느려집니다. 거류지는 산출의 50%를 유지합니다(고향과 전쟁 중에는 25%). 전용 정책 슬롯이 따라옵니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +4. 매 턴 [icon:YIELD_DIPLOMACY] 영향력 -4. [icon:YIELD_POPULATION] 이민 -60%, 이주 -40%. 난민의 정착이 60% 느려집니다. 거류지는 산출의 50%를 유지합니다(고향과 전쟁 중에는 25%). 전용 정책 슬롯이 따라옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +2. 매 턴 [icon:YIELD_DIPLOMACY] 영향력 -2. [icon:YIELD_POPULATION] 이민 -60%, 이주 -40%. 난민의 정착이 60% 느려집니다. 거류지는 산출의 절반을 유지합니다(전쟁 중에는 4분의 1). 전용 정책 슬롯이 따라옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +3. 매 턴 [icon:YIELD_DIPLOMACY] 영향력 -3. [icon:YIELD_POPULATION] 이민 -60%, 이주 -40%. 난민의 정착이 60% 느려집니다. 거류지는 산출의 절반을 유지합니다(전쟁 중에는 4분의 1). 전용 정책 슬롯이 따라옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +4. 매 턴 [icon:YIELD_DIPLOMACY] 영향력 -4. [icon:YIELD_POPULATION] 이민 -60%, 이주 -40%. 난민의 정착이 60% 느려집니다. 거류지는 산출의 절반을 유지합니다(전쟁 중에는 4분의 1). 전용 정책 슬롯이 따라옵니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="ko_KR"><Text>인재 유치</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ko_KR"><Text>매 턴 [icon:YIELD_SCIENCE] 과학 +1. 이민자 1명당 [icon:YIELD_SCIENCE] 과학 +1.5, 매 턴 30%씩 줄어들며 매 턴 최대 +12.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="ko_KR"><Text>매 턴 [icon:YIELD_SCIENCE] 과학 +2. 이민자 1명당 [icon:YIELD_SCIENCE] 과학 +1.5, 매 턴 30%씩 줄어들며 매 턴 최대 +12.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ko_KR"><Text>매 턴 [icon:YIELD_SCIENCE] 과학 +1, 이민자 1명당 +1.5 추가, 매 턴 30%씩 감소(최대 +12).</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="ko_KR"><Text>매 턴 [icon:YIELD_SCIENCE] 과학 +2, 이민자 1명당 +1.5 추가, 매 턴 30%씩 감소(최대 +12).</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="ko_KR"><Text>문화적 매력</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ko_KR"><Text>[icon:YIELD_POPULATION] 신규 이주자가 당신의 문화를 풍요롭게 합니다. [icon:YIELD_CULTURE] 문화 +1(현대에는 +2)을 얻고, 끌어들인 이주자 1명당 약 +1.5씩 늘어나는 문화 보너스를 매 턴 최대 +12까지 얻습니다. 이 보너스는 이주 유입이 멈추면 사그라듭니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO" Language="ko_KR"><Text>[icon:YIELD_POPULATION] 매 턴 [icon:YIELD_CULTURE] 문화 +2를 얻고, 끌어들인 이민자 1명당 약 +1.5를 더 얻어 최대 +12까지 늘어납니다. 이민이 멈추면 보너스는 서서히 줄어듭니다.</Text></Replace>
@@ -576,7 +576,7 @@
         <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_NAME" Language="ko_KR"><Text>주민 등록제</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_DESC" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +3. 당신이 인정하는 거류지의 보상은 절반이 되고, 도착하는 이민자가 25% 줄며, 고향과 전쟁 중인 공동체는 더 빨리 동요합니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CONSULAR_NAME" Language="ko_KR"><Text>영사 보호</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_DESC" Language="ko_KR"><Text>해외에 있는 당신 민족의 인정된 거류지 하나당 매 턴 [icon:YIELD_DIPLOMACY] 영향력 +1, 최대 +4. 당신의 민족이 거류지를 둔 주최국이 반이민 기조를 장착하면 그 주최국에 대한 불만을 품습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_DESC" Language="ko_KR"><Text>해외에 있는 당신 민족의 인정된 거류지 하나당 매 턴 [icon:YIELD_DIPLOMACY] 영향력 +1(최대 +4). 그들에게 반이민 기조를 취하는 주최국에 대한 불만.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_STANCE_SLOT_DESC" Language="ko_KR"><Text>전용 정책 슬롯이 따라옵니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="ko_KR"><Text>이주</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="ko_KR"><Text>이주</Text></Replace>

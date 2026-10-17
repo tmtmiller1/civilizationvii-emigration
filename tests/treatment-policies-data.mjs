@@ -130,7 +130,7 @@ for (const [age, suffix] of [["AQ", "DESC"], ["EX", "DESC_EX"], ["MO", "DESC_MO"
   const closed = text(`LOC_EMIG_POLICY_CLOSED_BORDERS_${suffix}`);
   assert.ok(closed.startsWith(`+${prod} [icon:YIELD_PRODUCTION]`), `closed ${age} text says +${prod}`);
   assert.ok(closed.includes(`${cost} [icon:YIELD_DIPLOMACY]`), `closed ${age} text says ${cost}`);
-  assert.ok(/Comes with its own policy slot\.$/.test(closed) && /Comes with its own policy slot\.$/.test(text(`LOC_EMIG_POLICY_OPEN_BORDERS_${suffix}`)), `${age}: both stances say they bring a slot`);
+  assert.ok(/Brings its own policy slot\.$/.test(closed) && /Brings its own policy slot\.$/.test(text(`LOC_EMIG_POLICY_OPEN_BORDERS_${suffix}`)), `${age}: both stances say they bring a slot`);
 }
 for (const [age, suffix] of [["EX", "DESC"], ["MO", "DESC_MO"]]) {
   const n = amount(`MOD_EMIG_TALENT_YIELD_${age}`);
