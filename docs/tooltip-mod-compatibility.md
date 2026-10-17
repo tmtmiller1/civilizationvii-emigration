@@ -124,6 +124,11 @@ prototype patch never run. It says nothing about **4.1.0**, which ships a plot t
 coexistence question as **open** until 4.1.0 has been read and run: it is the one other mod that puts a competing
 surface on the same map tile under the same cursor.
 
+Run 2026-10-17 (watch run 2 block 2 MT, Map Trix 4.2.0, usual set, Exploration 4242): both mods loaded with no error
+line in UI.log, and `emig-prosperity-lens` and `emig-ethnicity-lens` each activated with Map Trix's two lenses
+registered beside them. The two plot tooltips under one cursor weren't checked (the lab can't move a mouse); that
+stays open.
+
 TCS Improved Plot Tooltip (`3506956202`) overrode `ui/tooltips/plot-tooltip.js`, a path no module ships in 1.5.0. That
 finding also came from a snapshot and has not been re-checked against the current Workshop version.
 
