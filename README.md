@@ -33,7 +33,19 @@ When a settlement is starving, unhappy, or under siege, people leave. When one i
 
 Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.md) · [typeset PDF](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.pdf), with every formula rendered.
 
-## What's new in 3.5.0
+## What's new in 3.6.0
+
+- Ten policy cards instead of twenty-two: the Pro-Immigration and Anti-Immigration stances in every age, and Talent
+  Attraction and Consular Protection from the Exploration Age. A Pro-Immigration Stance now protects the enclaves in
+  your cities and draws war and disaster refugees to you first; an Anti-Immigration Stance watches them. A game saved
+  with one of the old cards slotted keeps it.
+- Each stance brings its own policy slot while it's slotted, so taking a stance costs you no slot of your own. Slot
+  both and they cancel out, and neither brings a slot.
+- Every card reads like the game's own: the yields first, then one line per effect with its number.
+- Fixed: the stances' migration effects never applied in a running game. The game reports any card the age's data
+  doesn't hold as slotted, so each stance came with a phantom opposite and the two cancelled. Only the yields paid.
+
+## What was new in 3.5.0
 
 - Policy cards for how a host treats the communities in its cities, in every age and open to every civilization. The protective cards (Guest Right, Charter of Communities, Equal Protection) give Influence, and an enclave you recognize while you're at war with its homeland is paid in full. The suspicion cards (Watched Quarters, Oaths of Loyalty, Registration of Residents) give Production in every city, but every enclave you recognize pays half and fewer immigrants arrive.
 - Consular Protection, in the Exploration and Modern Ages: Influence each turn for every recognized enclave of your people in another civilization's cities. When a host slots a suspicion card, you hold grievances against it, once per host per age.
@@ -139,11 +151,13 @@ Compatible with Civilization VII 1.5.0.
 
 ### Diplomacy and policy
 
-- **Pro-Immigration Stance:** stronger inbound migration and more Influence
-- **Anti-Immigration Stance:** stronger retention and more Production
+- **Pro-Immigration Stance:** +50% immigration, refugees come to you first, enclaves keep their full yields even at
+  war, and Influence; brings its own policy slot
+- **Anti-Immigration Stance:** -60% immigration and -40% emigration, enclaves keep half their yields, Production in
+  every city at a cost in Influence; brings its own policy slot
 - **Open Borders:** increases cross-civilization migration
-- **Community treatment cards:** a protective card keeps enclave payouts whole in wartime and earns Influence; a
-  suspicion card earns Production while enclaves pay half and fewer immigrants come
+- **Ten cards in all:** the two stances in every age, Talent Attraction and Consular Protection from the Exploration
+  Age
 - **Consular Protection:** Influence for your people's enclaves abroad, and grievances against a host that slots a
   suspicion card over them
 
@@ -625,24 +639,35 @@ Two separate mechanics shape cross-civ migration.
 
 **Immigration stance (`bordersEnabled`).** Each age adds **Pro-Immigration Stance** and **Anti-Immigration Stance** policy cards. They unlock at **Citizenship** (Antiquity), **Economics** (Exploration), and **Social Question** (Modern); a card whose civic is already complete when the mod is added mid-game is not granted. Internal IDs retain `TRADITION_EMIG_OPEN/CLOSED_BORDERS_*`.
 
-- **Pro-Immigration Stance:** inbound migration ×1.5 plus +1/+2/+3 Influence.
-- **Anti-Immigration Stance:** inbound migration ×0.4 (floor 0.15), own cross-civ outbound pull ×0.6, +2/+3/+4 Production per city, and −2/−3/−4 Influence.
+- **Pro-Immigration Stance:** inbound migration ×1.5, war and disaster refugees tilted toward you (`asylumPushWeight`
+  × the distress they flee), enclaves paid in full even at war with their homeland, plus +1/+2/+3 Influence.
+- **Anti-Immigration Stance:** inbound migration ×0.4 (floor 0.15), own cross-civ outbound pull ×0.6, refugees in the
+  holding pool settle at ×0.4, every recognized enclave paid ×0.5 (×0.25 at war), +2/+3/+4 Production per city, and
+  −2/−3/−4 Influence.
+- Each stance brings **one policy slot of its own** while it's slotted (`EFFECT_PLAYER_GRANT_TRADITION_SLOTS` on the
+  tradition, withheld while the opposite stance is slotted too), so taking a stance costs no slot. Slotting both
+  cancels the migration and enclave effects and neither brings a slot.
 
-Migration and retention are custom UI-VM mechanics. Influence and Production are native `TraditionModifier`s from `data/emigration-policies-gameeffects.xml`.
+Migration, retention, the refugee tilt and the enclave payout are custom UI-VM mechanics. Influence, Production and
+the slot are native `TraditionModifier`s from `data/emigration-policies-gameeffects.xml`.
+
+The cards are ten in all: the two stances in every age, **Talent Attraction** (Exploration at Inspiration, Modern at
+Modernization: +1/+2 Science plus +1.5 Science per immigrant, decaying 30% a turn, capped at +12 a turn) and
+**Consular Protection** (below). The 3.5.0 cards they replaced (Guest Right, Charter of Communities, Equal Protection,
+Watched Quarters, Oaths of Loyalty, Registration of Residents, Cultural Magnetism, Commercial Draw, Selective Asylum,
+Refugee Compact) keep their rows so a save that holds one still loads and keeps its effect, but no new game offers them.
 
 **Diplomatic Open Borders (`openBordersBonus`).** An active base-game Open Borders agreement increases migration both ways. Checked in `emigration-geography.js`; console: `emigration.openBorders(aPid, bPid)`.
 
-**Community treatment (`emigration-treatment.js`, `emigration-consular.js`).** Each age adds a protective card and a
-suspicion card, open to every civilization, that set how a host treats the enclaves in its cities. They unlock with that
-age's stance cards. The flat yields are native modifiers; the rest is scripted and read through
-`treatmentStance(pid)` and `hasConsular(pid)` in `emigration-borders.js`. Slotting one of each kind cancels the scripted
-effects (both yields stay).
+**Community treatment (`emigration-treatment.js`, `emigration-consular.js`).** How a host treats the enclaves in its
+cities follows its stance, read through `treatmentStance(pid)` in `emigration-borders.js`: a Pro-Immigration Stance
+reads `"protect"`, an Anti-Immigration Stance `"suspect"`, both or neither `null`.
 
-- **Protective** (Guest Right, Charter of Communities, Equal Protection): +1/+2/+3 Influence. An enclave recognized
-  while the host is at war with its homeland is paid in full (factor 1.0 instead of `contestedQuarterYieldFactor`).
-- **Suspicion** (Watched Quarters, Oaths of Loyalty, Registration of Residents): +1/+2/+3 Production per city. Every
-  recognized enclave's payout is halved at payout time (×0.5, so ×0.25 at war), and inbound migration is ×0.75, applied
-  after the border stance and still floored by `opennessFloor`.
+- **Protect** (the Pro-Immigration Stance; the retired protective cards still count): an enclave recognized while the
+  host is at war with its homeland is paid in full (factor 1.0 instead of `contestedQuarterYieldFactor`).
+- **Suspect** (the Anti-Immigration Stance; the retired suspicion cards still count): every recognized enclave's
+  payout is halved at payout time (×0.5, so ×0.25 at war). A retired suspicion card on its own also cuts inbound
+  migration ×0.75 after the stance (`SUSPECT_OPENNESS`); the Anti-Immigration Stance already throttles, so it doesn't.
 - **Consular Protection** (Exploration at Diplomatic Service, Modern at Political Theory; script-only): +1 Influence per
   turn per recognized enclave of this civ's people in another civ's cities, capped at +4, granted on that civ's turn
   through `Players.grantYield`. Once per host per age, a host with a suspicion card slotted while this civ's people hold

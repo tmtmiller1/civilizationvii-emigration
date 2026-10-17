@@ -112,13 +112,17 @@ const fresh = () => borders.resetBorderCache();
   slot(15);
   fresh();
   assert.ok(close(borders.immigrationOpenness(11), 0.75), "suspicion alone: 25% fewer arrivals");
-  assert.ok(close(borders.immigrationOpenness(12), 0.3), "with Anti-Immigration: 0.4 x 0.75");
-  assert.ok(close(borders.immigrationOpenness(13), 1.125), "with Pro-Immigration: 1.5 x 0.75");
+  assert.ok(close(borders.immigrationOpenness(12), 0.4), "with Anti-Immigration: its own throttle, no retired cut on top (3.6.0)");
+  assert.ok(close(borders.immigrationOpenness(13), 1.5), "with Pro-Immigration: the two cancel, the stance stands (3.6.0)");
   assert.equal(borders.immigrationOpenness(14), 1, "cancelled treatment leaves openness alone");
   assert.equal(borders.immigrationOpenness(15), 1);
   CONFIG.closedBordersOpenness = 0.18;
   fresh();
-  assert.ok(close(borders.immigrationOpenness(12), 0.15), "the floor still holds: 0.135 floors to 0.15");
+  assert.ok(close(borders.immigrationOpenness(12), 0.18), "the stance alone: 0.18 stays above the floor");
+  slot(16, S_AQ);
+  CONFIG.closedBordersOpenness = 0.1;
+  fresh();
+  assert.ok(close(borders.immigrationOpenness(16), 0.75), "a retired suspicion card alone keeps its cut");
   CONFIG.closedBordersOpenness = 0.4;
 }
 
@@ -259,6 +263,41 @@ const fresh = () => borders.resetBorderCache();
   assert.equal(stateMod.quarterAt("11,11").owner, 1, "an unreadable city lookup leaves the record alone");
   globalThis.MapCities = saveMap;
   assert.deepEqual(hosts.settlementAt("bad"), null);
+}
+
+// 3.6.0: the stances carry the treatment. Pro-Immigration protects, Anti-Immigration watches, both cancel; a
+// retired card still counts; the Anti-Immigration Stance keeps its own throttle rather than the retired cut.
+{
+  const O_AQ = "TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY";
+  const C_AQ = "TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY";
+  CONFIG.openBordersOpenness = 1.5;
+  CONFIG.closedBordersOpenness = 0.4;
+  CONFIG.opennessFloor = 0.15;
+  CONFIG.contestedQuarterYieldFactor = 0.5;
+  slot(21, O_AQ);
+  slot(22, C_AQ);
+  slot(23, O_AQ, C_AQ);
+  slot(24, C_AQ, S_AQ);
+  slot(25, O_AQ, S_AQ);
+  fresh();
+  assert.equal(borders.treatmentStance(21), "protect", "a Pro-Immigration Stance protects");
+  assert.equal(borders.treatmentCard(21), O_AQ, "the stance card is the one the Chronicle names");
+  assert.equal(borders.hasAsylum(21), true, "a Pro-Immigration Stance draws refugees");
+  assert.equal(borders.treatmentStance(22), "suspect", "an Anti-Immigration Stance watches");
+  assert.equal(borders.hasAsylum(22), false);
+  assert.equal(borders.treatmentStance(23), null, "both stances cancel the treatment");
+  assert.equal(borders.borderStance(23), "none");
+  assert.ok(close(borders.immigrationOpenness(22), 0.4), "the Anti-Immigration throttle stands alone, no retired cut on top");
+  assert.ok(close(borders.immigrationOpenness(24), 0.4), "a retired suspicion card beside it adds nothing");
+  assert.equal(borders.treatmentStance(25), null, "a retired suspicion card against a Pro-Immigration Stance cancels");
+  assert.ok(close(borders.immigrationOpenness(25), 1.5), "and leaves the stance's openness alone");
+  const f = treatment.treatmentPayoutFactor;
+  assert.equal(f(21, true), 1, "Pro-Immigration, war: full");
+  assert.equal(f(22, false), 0.5, "Anti-Immigration, peace: half");
+  assert.equal(f(22, true), 0.25, "Anti-Immigration, war: a quarter");
+  assert.equal(f(23, true), 0.5, "both: the plain contested half");
+  const named = msgText(treatment.contestedEntry("10,10", { civ: 2, owner: 22, contested: true }, 3).body);
+  assert.ok(/Anti-Immigration Stance/.test(named), `the Chronicle names the stance card: ${named}`);
 }
 
 console.log("treatment.mjs: all assertions passed");

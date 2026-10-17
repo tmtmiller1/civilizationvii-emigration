@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Modern-age border-policy cards (Feature 2). Loaded only in the Modern gameplay database
-  (modinfo criteria AgeInUse=AGE_MODERN). NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION only exists while
-  Modern is the active age. See emigration-policies-antiquity.xml for the full rationale.
+  Modern-age policy cards. Loaded only in the Modern gameplay database (modinfo criteria
+  AgeInUse=AGE_MODERN). NODE_CIVIC_MO_MAIN_* only exists while Modern is the active age. See
+  emigration-policies-antiquity.xml for the full rationale.
+
+  Four cards: the two stances (Social Question), Talent Attraction (Modernization) and Consular
+  Protection (Political Theory). Cultural Magnetism, Commercial Draw, Refugee Compact, Equal Protection
+  and Registration of Residents were retired in 3.6.0; their rows stay for saves that hold them, with no
+  unlock.
 -->
 <Database>
     <Kinds>
         <InsertOrIgnore Kind="KIND_TRADITION"/>
     </Kinds>
-
     <Types>
         <Row Type="TRADITION_EMIG_OPEN_BORDERS_MODERN" Kind="KIND_TRADITION"/>
         <Row Type="TRADITION_EMIG_CLOSED_BORDERS_MODERN" Kind="KIND_TRADITION"/>
         <Row Type="TRADITION_EMIG_TALENT_MODERN" Kind="KIND_TRADITION"/>
+        <Row Type="TRADITION_EMIG_CONSULAR_MODERN" Kind="KIND_TRADITION"/>
+        <!-- Retired in 3.6.0; kept for saves that still hold them. -->
         <Row Type="TRADITION_EMIG_CULTPULL_MODERN" Kind="KIND_TRADITION"/>
         <Row Type="TRADITION_EMIG_TRADEPULL_MODERN" Kind="KIND_TRADITION"/>
         <Row Type="TRADITION_EMIG_ASYLUM_MODERN" Kind="KIND_TRADITION"/>
         <Row Type="TRADITION_EMIG_PROTECT_MODERN" Kind="KIND_TRADITION"/>
         <Row Type="TRADITION_EMIG_SUSPECT_MODERN" Kind="KIND_TRADITION"/>
-        <Row Type="TRADITION_EMIG_CONSULAR_MODERN" Kind="KIND_TRADITION"/>
     </Types>
-
     <Traditions>
         <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_MODERN"
              Name="LOC_EMIG_POLICY_OPEN_BORDERS_NAME"
@@ -33,6 +37,10 @@
         <Row TraditionType="TRADITION_EMIG_TALENT_MODERN"
              Name="LOC_EMIG_POLICY_TALENT_NAME" Description="LOC_EMIG_POLICY_TALENT_DESC_MO"
              AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
+        <!-- Consular Protection: script-only (ui/emigration-consular.js), so it carries no modifier. -->
+        <Row TraditionType="TRADITION_EMIG_CONSULAR_MODERN"
+             Name="LOC_EMIG_POLICY_CONSULAR_NAME" Description="LOC_EMIG_POLICY_CONSULAR_DESC"
+             AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
         <Row TraditionType="TRADITION_EMIG_CULTPULL_MODERN"
              Name="LOC_EMIG_POLICY_CULTPULL_NAME" Description="LOC_EMIG_POLICY_CULTPULL_DESC_MO"
              AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
@@ -42,25 +50,20 @@
         <Row TraditionType="TRADITION_EMIG_ASYLUM_MODERN"
              Name="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Description="LOC_EMIG_POLICY_ASYLUM_MO_DESC"
              AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
-        <!-- Community treatment cards: how the host treats the enclaves in its cities. The scripted
-             effects (payout share, fewer arrivals) live in ui/emigration-treatment.js and -borders.js. -->
         <Row TraditionType="TRADITION_EMIG_PROTECT_MODERN"
              Name="LOC_EMIG_POLICY_PROTECT_MO_NAME" Description="LOC_EMIG_POLICY_PROTECT_MO_DESC"
              AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
         <Row TraditionType="TRADITION_EMIG_SUSPECT_MODERN"
              Name="LOC_EMIG_POLICY_SUSPECT_MO_NAME" Description="LOC_EMIG_POLICY_SUSPECT_MO_DESC"
              AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
-        <!-- Consular Protection: script-only (ui/emigration-consular.js), so it carries no modifier. -->
-        <Row TraditionType="TRADITION_EMIG_CONSULAR_MODERN"
-             Name="LOC_EMIG_POLICY_CONSULAR_NAME" Description="LOC_EMIG_POLICY_CONSULAR_DESC"
-             AgeType="AGE_MODERN" CultureSlotType="POLICY_CULTURE_SLOT"/>
     </Traditions>
-
-    <!-- Native per-turn Influence modifiers (defined in emigration-policies-gameeffects.xml). -->
+    <!-- Native modifiers (defined in emigration-policies-gameeffects.xml). -->
     <TraditionModifiers>
         <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_MODERN" ModifierId="MOD_EMIG_OPEN_BORDERS_INFLUENCE_MO"/>
+        <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_MODERN" ModifierId="MOD_EMIG_STANCE_SLOT_OPEN_MO"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_MODERN" ModifierId="MOD_EMIG_CLOSED_BORDERS_INFLUENCE_MO"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_MODERN" ModifierId="MOD_EMIG_CLOSED_BORDERS_PRODUCTION_MO"/>
+        <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_MODERN" ModifierId="MOD_EMIG_STANCE_SLOT_CLOSED_MO"/>
         <Row TraditionType="TRADITION_EMIG_TALENT_MODERN" ModifierId="MOD_EMIG_TALENT_YIELD_MO"/>
         <Row TraditionType="TRADITION_EMIG_CULTPULL_MODERN" ModifierId="MOD_EMIG_CULTPULL_YIELD_MO"/>
         <Row TraditionType="TRADITION_EMIG_TRADEPULL_MODERN" ModifierId="MOD_EMIG_TRADEPULL_YIELD_MO"/>
@@ -69,16 +72,10 @@
         <Row TraditionType="TRADITION_EMIG_PROTECT_MODERN" ModifierId="MOD_EMIG_PROTECT_INFLUENCE_MO"/>
         <Row TraditionType="TRADITION_EMIG_SUSPECT_MODERN" ModifierId="MOD_EMIG_SUSPECT_PRODUCTION_MO"/>
     </TraditionModifiers>
-
     <ProgressionTreeNodeUnlocks>
         <Row ProgressionTreeNodeType="NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_OPEN_BORDERS_MODERN" UnlockDepth="1"/>
         <Row ProgressionTreeNodeType="NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_CLOSED_BORDERS_MODERN" UnlockDepth="1"/>
         <Row ProgressionTreeNodeType="NODE_CIVIC_MO_MAIN_MODERNIZATION" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_TALENT_MODERN" UnlockDepth="1"/>
-        <Row ProgressionTreeNodeType="NODE_CIVIC_MO_MAIN_NATURAL_HISTORY" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_CULTPULL_MODERN" UnlockDepth="1"/>
-        <Row ProgressionTreeNodeType="NODE_CIVIC_MO_MAIN_CAPITALISM" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_TRADEPULL_MODERN" UnlockDepth="1"/>
-        <Row ProgressionTreeNodeType="NODE_CIVIC_MO_MAIN_POLITICAL_THEORY" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_ASYLUM_MODERN" UnlockDepth="1"/>
-        <Row ProgressionTreeNodeType="NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_PROTECT_MODERN" UnlockDepth="1"/>
-        <Row ProgressionTreeNodeType="NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_SUSPECT_MODERN" UnlockDepth="1"/>
         <Row ProgressionTreeNodeType="NODE_CIVIC_MO_MAIN_POLITICAL_THEORY" TargetKind="KIND_TRADITION" TargetType="TRADITION_EMIG_CONSULAR_MODERN" UnlockDepth="1"/>
     </ProgressionTreeNodeUnlocks>
 </Database>

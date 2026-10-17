@@ -14,6 +14,71 @@
   engine can't express).
 -->
 <GameEffects xmlns="GameEffects">
+    <!-- A stance card brings its own policy slot while it's slotted, so taking a stance costs no slot of the
+         player's own. The same grant the base game's civics use, attached to the tradition instead, and
+         withheld while the opposite stance is slotted too, so the pair together never pays for itself. Watched
+         2026-10-17: the count rose by one on slotting and fell on unslotting, and held across a turn. -->
+    <Modifier id="MOD_EMIG_STANCE_SLOT_OPEN_AQ" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_GRANT_TRADITION_SLOTS">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_PLAYER_HAS_ACTIVE_TRADITION" inverse="true">
+                <Argument name="TraditionType">TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY</Argument>
+            </Requirement>
+        </SubjectRequirements>
+        <Argument name="Amount">1</Argument>
+        <Argument name="SlotType">POLICY_CULTURE_SLOT</Argument>
+        <String context="Description">LOC_EMIG_POLICY_STANCE_SLOT_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_STANCE_SLOT_CLOSED_AQ" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_GRANT_TRADITION_SLOTS">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_PLAYER_HAS_ACTIVE_TRADITION" inverse="true">
+                <Argument name="TraditionType">TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY</Argument>
+            </Requirement>
+        </SubjectRequirements>
+        <Argument name="Amount">1</Argument>
+        <Argument name="SlotType">POLICY_CULTURE_SLOT</Argument>
+        <String context="Description">LOC_EMIG_POLICY_STANCE_SLOT_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_STANCE_SLOT_OPEN_EX" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_GRANT_TRADITION_SLOTS">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_PLAYER_HAS_ACTIVE_TRADITION" inverse="true">
+                <Argument name="TraditionType">TRADITION_EMIG_CLOSED_BORDERS_EXPLORATION</Argument>
+            </Requirement>
+        </SubjectRequirements>
+        <Argument name="Amount">1</Argument>
+        <Argument name="SlotType">POLICY_CULTURE_SLOT</Argument>
+        <String context="Description">LOC_EMIG_POLICY_STANCE_SLOT_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_STANCE_SLOT_CLOSED_EX" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_GRANT_TRADITION_SLOTS">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_PLAYER_HAS_ACTIVE_TRADITION" inverse="true">
+                <Argument name="TraditionType">TRADITION_EMIG_OPEN_BORDERS_EXPLORATION</Argument>
+            </Requirement>
+        </SubjectRequirements>
+        <Argument name="Amount">1</Argument>
+        <Argument name="SlotType">POLICY_CULTURE_SLOT</Argument>
+        <String context="Description">LOC_EMIG_POLICY_STANCE_SLOT_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_STANCE_SLOT_OPEN_MO" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_GRANT_TRADITION_SLOTS">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_PLAYER_HAS_ACTIVE_TRADITION" inverse="true">
+                <Argument name="TraditionType">TRADITION_EMIG_CLOSED_BORDERS_MODERN</Argument>
+            </Requirement>
+        </SubjectRequirements>
+        <Argument name="Amount">1</Argument>
+        <Argument name="SlotType">POLICY_CULTURE_SLOT</Argument>
+        <String context="Description">LOC_EMIG_POLICY_STANCE_SLOT_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_STANCE_SLOT_CLOSED_MO" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_GRANT_TRADITION_SLOTS">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_PLAYER_HAS_ACTIVE_TRADITION" inverse="true">
+                <Argument name="TraditionType">TRADITION_EMIG_OPEN_BORDERS_MODERN</Argument>
+            </Requirement>
+        </SubjectRequirements>
+        <Argument name="Amount">1</Argument>
+        <Argument name="SlotType">POLICY_CULTURE_SLOT</Argument>
+        <String context="Description">LOC_EMIG_POLICY_STANCE_SLOT_DESC</String>
+    </Modifier>
+
     <!-- Open / Pro-Immigration: +1 / +2 / +3 Influence. -->
     <Modifier id="MOD_EMIG_OPEN_BORDERS_INFLUENCE_AQ" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
         <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
