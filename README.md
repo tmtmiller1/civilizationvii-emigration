@@ -39,8 +39,6 @@ Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationv
   Attraction and Consular Protection from the Exploration Age. A Pro-Immigration Stance now protects the enclaves in
   your cities and draws war and disaster refugees to you first; an Anti-Immigration Stance watches them. A game saved
   with one of the old cards slotted keeps it.
-- Each stance brings its own policy slot while it's slotted, so taking a stance costs you no slot of your own. Slot
-  both and they cancel out, and neither brings a slot.
 - Every card reads like the game's own: the yields first, then one line per effect with its number.
 - Fixed: the stances' migration effects never applied in a running game. The game reports any card the age's data
   doesn't hold as slotted, so each stance came with a phantom opposite and the two cancelled. Only the yields paid.
@@ -644,12 +642,12 @@ Two separate mechanics shape cross-civ migration.
 - **Anti-Immigration Stance:** inbound migration ×0.4 (floor 0.15), own cross-civ outbound pull ×0.6, refugees in the
   holding pool settle at ×0.4, every recognized enclave paid ×0.5 (×0.25 at war), +2/+3/+4 Production per city, and
   −2/−3/−4 Influence.
-- Each stance brings **one policy slot of its own** while it's slotted (`EFFECT_PLAYER_GRANT_TRADITION_SLOTS` on the
-  tradition, withheld while the opposite stance is slotted too), so taking a stance costs no slot. Slotting both
-  cancels the migration and enclave effects and neither brings a slot.
+- Each stance takes one of your policy slots, like any other card. Slotting both cancels the migration and enclave
+  effects. (3.6.0 and 3.6.1 gave each stance a slot of its own; a card that grants the slot it sits in crashes the AI
+  turn, so 3.6.2 took it out.)
 
-Migration, retention, the refugee tilt and the enclave payout are custom UI-VM mechanics. Influence, Production and
-the slot are native `TraditionModifier`s from `data/emigration-policies-gameeffects.xml`.
+Migration, retention, the refugee tilt and the enclave payout are custom UI-VM mechanics. Influence and Production
+are native `TraditionModifier`s from `data/emigration-policies-gameeffects.xml`.
 
 The cards are ten in all: the two stances in every age, **Talent Attraction** (Exploration at Inspiration, Modern at
 Modernization: +1/+2 Science plus +1.5 Science per immigrant, decaying 30% a turn, capped at +12 a turn) and

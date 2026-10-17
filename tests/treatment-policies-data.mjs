@@ -3,8 +3,8 @@
 // Data gate for the policy cards (3.6.0: ten cards). Each live card is declared in its age's policy file
 // (Types row, Traditions row in POLICY_CULTURE_SLOT with its age, a civic unlock), its native modifiers exist in
 // the always-loaded game-effects file, its icon is mapped, its name and description have en_us text, and the
-// scripted readers in emigration-borders.js list it. The stance cards each carry a slot grant that's withheld while
-// the opposite stance is slotted. The retired cards of 3.5.0 keep their rows (for saves that hold them) but have no
+// scripted readers in emigration-borders.js list it. No card grants a policy slot: a card that grants the slot it
+// sits in crashes the AI turn natively (3.6.2). The retired cards of 3.5.0 keep their rows (for saves that hold them) but have no
 // unlock, so a new game never offers them.
 //
 // Run as a plain node script: `node ./tests/treatment-policies-data.mjs`.
@@ -20,12 +20,12 @@ const borders = read("ui/emigration-borders.js");
 
 /** Each live card: family, age, unlock node, native modifiers, LOC stem for the name and description. */
 const CARDS = [
-  ["OPEN_BORDERS", "ANTIQUITY", "NODE_CIVIC_AQ_MAIN_CITIZENSHIP", ["MOD_EMIG_OPEN_BORDERS_INFLUENCE_AQ", "MOD_EMIG_STANCE_SLOT_OPEN_AQ"], "OPEN_BORDERS", "DESC"],
-  ["OPEN_BORDERS", "EXPLORATION", "NODE_CIVIC_EX_MAIN_ECONOMICS", ["MOD_EMIG_OPEN_BORDERS_INFLUENCE_EX", "MOD_EMIG_STANCE_SLOT_OPEN_EX"], "OPEN_BORDERS", "DESC_EX"],
-  ["OPEN_BORDERS", "MODERN", "NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION", ["MOD_EMIG_OPEN_BORDERS_INFLUENCE_MO", "MOD_EMIG_STANCE_SLOT_OPEN_MO"], "OPEN_BORDERS", "DESC_MO"],
-  ["CLOSED_BORDERS", "ANTIQUITY", "NODE_CIVIC_AQ_MAIN_CITIZENSHIP", ["MOD_EMIG_CLOSED_BORDERS_INFLUENCE_AQ", "MOD_EMIG_CLOSED_BORDERS_PRODUCTION_AQ", "MOD_EMIG_STANCE_SLOT_CLOSED_AQ"], "CLOSED_BORDERS", "DESC"],
-  ["CLOSED_BORDERS", "EXPLORATION", "NODE_CIVIC_EX_MAIN_ECONOMICS", ["MOD_EMIG_CLOSED_BORDERS_INFLUENCE_EX", "MOD_EMIG_CLOSED_BORDERS_PRODUCTION_EX", "MOD_EMIG_STANCE_SLOT_CLOSED_EX"], "CLOSED_BORDERS", "DESC_EX"],
-  ["CLOSED_BORDERS", "MODERN", "NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION", ["MOD_EMIG_CLOSED_BORDERS_INFLUENCE_MO", "MOD_EMIG_CLOSED_BORDERS_PRODUCTION_MO", "MOD_EMIG_STANCE_SLOT_CLOSED_MO"], "CLOSED_BORDERS", "DESC_MO"],
+  ["OPEN_BORDERS", "ANTIQUITY", "NODE_CIVIC_AQ_MAIN_CITIZENSHIP", ["MOD_EMIG_OPEN_BORDERS_INFLUENCE_AQ"], "OPEN_BORDERS", "DESC"],
+  ["OPEN_BORDERS", "EXPLORATION", "NODE_CIVIC_EX_MAIN_ECONOMICS", ["MOD_EMIG_OPEN_BORDERS_INFLUENCE_EX"], "OPEN_BORDERS", "DESC_EX"],
+  ["OPEN_BORDERS", "MODERN", "NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION", ["MOD_EMIG_OPEN_BORDERS_INFLUENCE_MO"], "OPEN_BORDERS", "DESC_MO"],
+  ["CLOSED_BORDERS", "ANTIQUITY", "NODE_CIVIC_AQ_MAIN_CITIZENSHIP", ["MOD_EMIG_CLOSED_BORDERS_INFLUENCE_AQ", "MOD_EMIG_CLOSED_BORDERS_PRODUCTION_AQ"], "CLOSED_BORDERS", "DESC"],
+  ["CLOSED_BORDERS", "EXPLORATION", "NODE_CIVIC_EX_MAIN_ECONOMICS", ["MOD_EMIG_CLOSED_BORDERS_INFLUENCE_EX", "MOD_EMIG_CLOSED_BORDERS_PRODUCTION_EX"], "CLOSED_BORDERS", "DESC_EX"],
+  ["CLOSED_BORDERS", "MODERN", "NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION", ["MOD_EMIG_CLOSED_BORDERS_INFLUENCE_MO", "MOD_EMIG_CLOSED_BORDERS_PRODUCTION_MO"], "CLOSED_BORDERS", "DESC_MO"],
   ["TALENT", "EXPLORATION", "NODE_CIVIC_EX_MAIN_INSPIRATION", ["MOD_EMIG_TALENT_YIELD_EX"], "TALENT", "DESC"],
   ["TALENT", "MODERN", "NODE_CIVIC_MO_MAIN_MODERNIZATION", ["MOD_EMIG_TALENT_YIELD_MO"], "TALENT", "DESC_MO"],
   ["CONSULAR", "EXPLORATION", "NODE_CIVIC_EX_MAIN_DIPLOMATIC_SERVICE", [], "CONSULAR", "DESC"],
@@ -102,22 +102,18 @@ for (const [family, ages] of RETIRED) {
   }
 }
 
-// Each stance's slot grant is withheld while the opposite stance is slotted.
-for (const age of ["AQ", "EX", "MO"]) {
-  const full = { AQ: "ANTIQUITY", EX: "EXPLORATION", MO: "MODERN" }[age];
-  for (const [mine, other] of [["OPEN", "CLOSED"], ["CLOSED", "OPEN"]]) {
-    const id = `MOD_EMIG_STANCE_SLOT_${mine}_${age}`;
-    const block = effects.match(new RegExp(`<Modifier id="${id}"[\\s\\S]*?</Modifier>`));
-    assert.ok(block, `${id}: defined`);
-    assert.ok(block[0].includes('effect="EFFECT_PLAYER_GRANT_TRADITION_SLOTS"'), `${id}: grants a slot`);
-    assert.ok(block[0].includes('<Argument name="SlotType">POLICY_CULTURE_SLOT</Argument>'), `${id}: a policy slot`);
-    assert.ok(block[0].includes('<Argument name="Amount">1</Argument>'), `${id}: one slot`);
-    assert.ok(block[0].includes('<Requirement type="REQUIREMENT_PLAYER_HAS_ACTIVE_TRADITION" inverse="true">'), `${id}: withheld by requirement`);
-    assert.ok(block[0].includes(`<Argument name="TraditionType">TRADITION_EMIG_${other}_BORDERS_${full}</Argument>`), `${id}: withheld while the ${other} stance is slotted`);
-    assert.ok(!/permanent="true"/.test(block[0]), `${id}: not permanent, so it goes when the card does`);
+// No card links a slot grant. A card that grants the slot it sits in crashes the game natively during the AI turn
+// (seen 2026-10-17, fixed in 3.6.2). The six definitions stay, unlinked, for saves made with 3.6.0 and 3.6.1.
+for (const age of ["ANTIQUITY", "EXPLORATION", "MODERN"]) {
+  const xml = read(`data/emigration-policies-${age.toLowerCase()}.xml`);
+  assert.ok(!xml.includes("MOD_EMIG_STANCE_SLOT_"), `${age}: no card links a stance slot grant`);
+  assert.ok(!xml.includes("EFFECT_PLAYER_GRANT_TRADITION_SLOTS"), `${age}: no slot grant in the age file`);
+}
+for (const mine of ["OPEN", "CLOSED"]) {
+  for (const age of ["AQ", "EX", "MO"]) {
+    assert.ok(effects.includes(`<Modifier id="MOD_EMIG_STANCE_SLOT_${mine}_${age}"`), `MOD_EMIG_STANCE_SLOT_${mine}_${age}: definition kept for old saves`);
   }
 }
-assert.ok(en.includes('Tag="LOC_EMIG_POLICY_STANCE_SLOT_DESC"'), "the slot grant's description has en_us text");
 
 // The native amounts match the card text.
 const amount = (id) => Number(effects.match(new RegExp(`<Modifier id="${id}"[\\s\\S]*?<Argument name="Amount">(-?\\d+)</Argument>`))[1]);
@@ -130,7 +126,7 @@ for (const [age, suffix] of [["AQ", "DESC"], ["EX", "DESC_EX"], ["MO", "DESC_MO"
   const closed = text(`LOC_EMIG_POLICY_CLOSED_BORDERS_${suffix}`);
   assert.ok(closed.startsWith(`+${prod} [icon:YIELD_PRODUCTION]`), `closed ${age} text says +${prod}`);
   assert.ok(closed.includes(`${cost} [icon:YIELD_DIPLOMACY]`), `closed ${age} text says ${cost}`);
-  assert.ok(/Brings its own policy slot\.$/.test(closed) && /Brings its own policy slot\.$/.test(text(`LOC_EMIG_POLICY_OPEN_BORDERS_${suffix}`)), `${age}: both stances say they bring a slot`);
+  assert.ok(!/policy slot/.test(closed) && !/policy slot/.test(text(`LOC_EMIG_POLICY_OPEN_BORDERS_${suffix}`)), `${age}: neither stance promises a slot`);
 }
 for (const [age, suffix] of [["EX", "DESC"], ["MO", "DESC_MO"]]) {
   const n = amount(`MOD_EMIG_TALENT_YIELD_${age}`);

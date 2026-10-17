@@ -60,10 +60,8 @@
     <!-- Native modifiers (defined in emigration-policies-gameeffects.xml). -->
     <TraditionModifiers>
         <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_MODERN" ModifierId="MOD_EMIG_OPEN_BORDERS_INFLUENCE_MO"/>
-        <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_MODERN" ModifierId="MOD_EMIG_STANCE_SLOT_OPEN_MO"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_MODERN" ModifierId="MOD_EMIG_CLOSED_BORDERS_INFLUENCE_MO"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_MODERN" ModifierId="MOD_EMIG_CLOSED_BORDERS_PRODUCTION_MO"/>
-        <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_MODERN" ModifierId="MOD_EMIG_STANCE_SLOT_CLOSED_MO"/>
         <Row TraditionType="TRADITION_EMIG_TALENT_MODERN" ModifierId="MOD_EMIG_TALENT_YIELD_MO"/>
         <Row TraditionType="TRADITION_EMIG_CULTPULL_MODERN" ModifierId="MOD_EMIG_CULTPULL_YIELD_MO"/>
         <Row TraditionType="TRADITION_EMIG_TRADEPULL_MODERN" ModifierId="MOD_EMIG_TRADEPULL_YIELD_MO"/>

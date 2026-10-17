@@ -14,10 +14,11 @@
   engine can't express).
 -->
 <GameEffects xmlns="GameEffects">
-    <!-- A stance card brings its own policy slot while it's slotted, so taking a stance costs no slot of the
-         player's own. The same grant the base game's civics use, attached to the tradition instead, and
-         withheld while the opposite stance is slotted too, so the pair together never pays for itself. Watched
-         2026-10-17: the count rose by one on slotting and fell on unslotting, and held across a turn. -->
+    <!-- Unlinked in 3.6.2: no TraditionModifiers row points at these six any more. A card that grants the slot
+         it sits in crashes the game natively during the AI turn (its policy planner slots and unslots cards and
+         the slot count changes underneath it; seen 2026-10-17 on every End Turn of a turn-76 save, gone with the
+         links removed). The definitions stay so a save made with 3.6.0 or 3.6.1 still finds every modifier id
+         it holds. Never link them to the stance traditions again. -->
     <Modifier id="MOD_EMIG_STANCE_SLOT_OPEN_AQ" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_GRANT_TRADITION_SLOTS">
         <SubjectRequirements>
             <Requirement type="REQUIREMENT_PLAYER_HAS_ACTIVE_TRADITION" inverse="true">

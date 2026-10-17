@@ -3,6 +3,12 @@ Generated from CHANGELOG.md by scripts/steam-changelog.mjs; release.sh uploads t
 To fix an old Workshop entry, paste the text under its ==== line into that entry's Edit box on the change-notes page.
 A block edited by hand is kept as-is. Delete a block to regenerate it from CHANGELOG.md.
 
+==== 3.6.2 | 2026-10-17 | src a19cc33774e1 | gen d4133b5762d7 ====
+[b]Version 3.6.2 · 17 October 2026[/b]
+
+[b]Fixed[/b]
+• The game could crash every time you ended a turn once an AI civilization had a Pro-Immigration or Anti-Immigration Stance to consider. Each stance brought its own policy slot, and a card that grants the slot it sits in crashes the game while the AI plans its policies. The stances now take one of your policy slots like any other card, and the cards no longer say they bring one. All ten cards keep everything else they do. A game saved with 3.6.0 or 3.6.1 loads and plays on; a stance that was sitting in its own extra slot may come out of it.
+
 ==== 3.6.1 | 2026-10-17 | src c585f83520a2 | gen 2209f266ea84 ====
 [b]Version 3.6.1 · 17 October 2026[/b]
 

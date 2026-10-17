@@ -543,13 +543,13 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ko_KR"><Text>그 사람들은 영영 사라졌습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="ko_KR"><Text>{1_Dest}이(가) 이들을 통합하기 위해 턴당 약 {2_Gold} 골드를 지불합니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="ko_KR"><Text>친이민 기조</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ko_KR"><Text>매 턴 [icon:YIELD_DIPLOMACY] 영향력 +1. [icon:YIELD_POPULATION] 이민 +50%. 난민이 당신에게 먼저 옵니다. 거류지는 전쟁 중에도 산출을 전부 유지합니다. 전용 정책 슬롯이 따라옵니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="ko_KR"><Text>매 턴 [icon:YIELD_DIPLOMACY] 영향력 +2. [icon:YIELD_POPULATION] 이민 +50%. 난민이 당신에게 먼저 옵니다. 거류지는 전쟁 중에도 산출을 전부 유지합니다. 전용 정책 슬롯이 따라옵니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="ko_KR"><Text>매 턴 [icon:YIELD_DIPLOMACY] 영향력 +3. [icon:YIELD_POPULATION] 이민 +50%. 난민이 당신에게 먼저 옵니다. 거류지는 전쟁 중에도 산출을 전부 유지합니다. 전용 정책 슬롯이 따라옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ko_KR"><Text>매 턴 [icon:YIELD_DIPLOMACY] 영향력 +1. [icon:YIELD_POPULATION] 이민 +50%. 난민이 당신에게 먼저 옵니다. 거류지는 전쟁 중에도 산출을 전부 유지합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="ko_KR"><Text>매 턴 [icon:YIELD_DIPLOMACY] 영향력 +2. [icon:YIELD_POPULATION] 이민 +50%. 난민이 당신에게 먼저 옵니다. 거류지는 전쟁 중에도 산출을 전부 유지합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="ko_KR"><Text>매 턴 [icon:YIELD_DIPLOMACY] 영향력 +3. [icon:YIELD_POPULATION] 이민 +50%. 난민이 당신에게 먼저 옵니다. 거류지는 전쟁 중에도 산출을 전부 유지합니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="ko_KR"><Text>반이민 기조</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +2. 매 턴 [icon:YIELD_DIPLOMACY] 영향력 -2. [icon:YIELD_POPULATION] 이민 -60%, 이주 -40%. 난민의 정착이 60% 느려집니다. 거류지는 산출의 절반을 유지합니다(전쟁 중에는 4분의 1). 전용 정책 슬롯이 따라옵니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +3. 매 턴 [icon:YIELD_DIPLOMACY] 영향력 -3. [icon:YIELD_POPULATION] 이민 -60%, 이주 -40%. 난민의 정착이 60% 느려집니다. 거류지는 산출의 절반을 유지합니다(전쟁 중에는 4분의 1). 전용 정책 슬롯이 따라옵니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +4. 매 턴 [icon:YIELD_DIPLOMACY] 영향력 -4. [icon:YIELD_POPULATION] 이민 -60%, 이주 -40%. 난민의 정착이 60% 느려집니다. 거류지는 산출의 절반을 유지합니다(전쟁 중에는 4분의 1). 전용 정책 슬롯이 따라옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +2. 매 턴 [icon:YIELD_DIPLOMACY] 영향력 -2. [icon:YIELD_POPULATION] 이민 -60%, 이주 -40%. 난민의 정착이 60% 느려집니다. 거류지는 산출의 절반을 유지합니다(전쟁 중에는 4분의 1).</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +3. 매 턴 [icon:YIELD_DIPLOMACY] 영향력 -3. [icon:YIELD_POPULATION] 이민 -60%, 이주 -40%. 난민의 정착이 60% 느려집니다. 거류지는 산출의 절반을 유지합니다(전쟁 중에는 4분의 1).</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +4. 매 턴 [icon:YIELD_DIPLOMACY] 영향력 -4. [icon:YIELD_POPULATION] 이민 -60%, 이주 -40%. 난민의 정착이 60% 느려집니다. 거류지는 산출의 절반을 유지합니다(전쟁 중에는 4분의 1).</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="ko_KR"><Text>인재 유치</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ko_KR"><Text>매 턴 [icon:YIELD_SCIENCE] 과학 +1, 이민자 1명당 +1.5 추가, 매 턴 30%씩 감소(최대 +12).</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="ko_KR"><Text>매 턴 [icon:YIELD_SCIENCE] 과학 +2, 이민자 1명당 +1.5 추가, 매 턴 30%씩 감소(최대 +12).</Text></Replace>
