@@ -5,6 +5,13 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [Unreleased]
+
+### Added
+- Carries Civilopedia History Corrections. With Civilopedia Expanded: Independents on, six East Asian history pages
+  in the Civilopedia (Goguryeo, the Oirat, two Ryukyu pages, Nanzhao and Balhae) give each side where historians in
+  different countries disagree, and a few factual errors are fixed. With it off, the game's pages stay as they are.
+
 ## [3.6.2] - 2026-10-17
 
 ### Fixed

@@ -120,6 +120,7 @@ ALLOW='^emigration/(emigration\.modinfo|README\.md|LICENSE|CHANGELOG\.md)$'
 ALLOW="$ALLOW"'|^emigration/ui/.+\.(js|html|css)$'
 ALLOW="$ALLOW"'|^emigration/images/.+\.(svg|png)$'
 ALLOW="$ALLOW"'|^emigration/text/[a-z_]+/(ModText|EnclaveText|PediaText|PediaVoicesText)\.xml$'
+ALLOW="$ALLOW"'|^emigration/history-corrections/[a-z-]+-text\.xml$'
 ALLOW="$ALLOW"'|^emigration/data/.+\.(xml|sql)$'
 UNEXPECTED="$(unzip -Z1 "$ZIP_PATH" | grep -vE '/$' | grep -vE "$ALLOW" || true)"
 if [ -n "$UNEXPECTED" ]; then
