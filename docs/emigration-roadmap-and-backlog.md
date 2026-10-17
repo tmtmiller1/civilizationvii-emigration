@@ -1631,6 +1631,12 @@ not the notification feed. What remains deferred:
   reads FAIL: "Notification clarity: Notification wording/tint is off (why-there "greater prosperity and proximity",
   pure-flight "", tints rival/internal/arrival #d24b3e/#7d8aa0/#5fae6b). The v2.1.0 clarity change is not active
   here." Not judged; it's on the fix list.
+- 3.5.1, watched 2026-10-16 (watch run 2 block 2 G4, usual set, Exploration 4242, `eep-modtest200.js` as a lab
+  variant): Pārsa's Abbasid enclave built over at turn 8 ("a new enclave here waits out the dwell") and established
+  again at turn 16, the eight-turn dwell, where 3.5.0 re-established within seconds. The Chronicle reads "The Enclave
+  Is Built Over", "An Enclave Takes Root", "The Abbasid Enclave" and "The Abbasid Enclave has taken root". The
+  Diversity table's cell for Heian-Kyo reads "Abbasid enclave: Fading", matching its record, so block 1's empty
+  cells (K4) were rows with no standing enclave. City Details and the tooltip lines are left for the presentation run.
 
 ## 20b. Deferred, the explainer on the network view (Feature L mount (b), 2026-07-17)
 
