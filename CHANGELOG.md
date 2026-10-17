@@ -5,6 +5,15 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [3.6.2] - 2026-10-17
+
+### Fixed
+- The game could crash every time you ended a turn once an AI civilization had a Pro-Immigration or
+  Anti-Immigration Stance to consider. Each stance brought its own policy slot, and a card that grants the slot it
+  sits in crashes the game while the AI plans its policies. The stances now take one of your policy slots like any
+  other card, and the cards no longer say they bring one. All ten cards keep everything else they do. A game saved
+  with 3.6.0 or 3.6.1 loads and plays on; a stance that was sitting in its own extra slot may come out of it.
+
 ## [3.6.1] - 2026-10-17
 
 ### Changed

@@ -495,6 +495,14 @@ skips the other ages' types, which the engine reports as active. Watched in one 
 game (`tools/plans/overnight-watch-run-2-log.md`, "Emigration cards"). The paragraphs below describe 3.5.x's shape
 where they name the retired cards.
 
+**3.6.2 (2026-10-17):** the stances no longer grant a slot. A card that grants the slot it sits in crashes the game
+natively while the AI plans its policies: the owner's Antiquity save (Washington, turn 76, usual Tower set) crashed on
+every End Turn during the independents' turns, seven times out of seven, in an AsyncWorker memmove with a garbage
+length under the AI's tradition analysis and GameEffects attach. Blocking every request the mods' scripts sent didn't
+help; unlinking the six `MOD_EMIG_STANCE_SLOT_*` TraditionModifiers rows let turns 76 → 79 pass in the same lab game.
+The six definitions stay, unlinked, so 3.6.0/3.6.1 saves find every modifier id they hold. Never link a slot grant to
+the card that occupies it.
+
 Defined as native, slotable **Traditions** in `POLICY_CULTURE_SLOT`, one pair per age, unlocked at a
 civic node (`NODE_CIVIC_AQ_MAIN_CITIZENSHIP` and per-age equivalents):
 - Open Borders (Pro-Immigration): native **+1/+2/+3 Influence** by age

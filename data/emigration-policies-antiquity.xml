@@ -50,10 +50,8 @@
     <!-- Native modifiers (defined in emigration-policies-gameeffects.xml). -->
     <TraditionModifiers>
         <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_OPEN_BORDERS_INFLUENCE_AQ"/>
-        <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_STANCE_SLOT_OPEN_AQ"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_CLOSED_BORDERS_INFLUENCE_AQ"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_CLOSED_BORDERS_PRODUCTION_AQ"/>
-        <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_ANTIQUITY" ModifierId="MOD_EMIG_STANCE_SLOT_CLOSED_AQ"/>
         <Row TraditionType="TRADITION_EMIG_PROTECT_ANTIQUITY" ModifierId="MOD_EMIG_PROTECT_INFLUENCE_AQ"/>
         <Row TraditionType="TRADITION_EMIG_SUSPECT_ANTIQUITY" ModifierId="MOD_EMIG_SUSPECT_PRODUCTION_AQ"/>
     </TraditionModifiers>
