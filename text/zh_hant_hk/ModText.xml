@@ -543,16 +543,16 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="zh_Hant_HK"><Text>這些人口已永遠失去。</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="zh_Hant_HK"><Text>{1_Dest}每回合支付約{2_Gold}金幣以融入他們。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="zh_Hant_HK"><Text>親移民立場</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="zh_Hant_HK"><Text>每回合 +1 [icon:YIELD_DIPLOMACY] 影響力。移民 +50%[icon:YIELD_POPULATION]；戰爭與災害的難民優先來到你這裡。聚居區保留 100% 的產出，即使與其故鄉交戰亦然。自帶一個政策槽。</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="zh_Hant_HK"><Text>每回合 +2 [icon:YIELD_DIPLOMACY] 影響力。移民 +50%[icon:YIELD_POPULATION]；戰爭與災害的難民優先來到你這裡。聚居區保留 100% 的產出，即使與其故鄉交戰亦然。自帶一個政策槽。</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="zh_Hant_HK"><Text>每回合 +3 [icon:YIELD_DIPLOMACY] 影響力。移民 +50%[icon:YIELD_POPULATION]；戰爭與災害的難民優先來到你這裡。聚居區保留 100% 的產出，即使與其故鄉交戰亦然。自帶一個政策槽。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="zh_Hant_HK"><Text>每回合 +1 [icon:YIELD_DIPLOMACY] 影響力。移民 +50%[icon:YIELD_POPULATION]。難民優先來到你這裡。聚居區保留全部產出，戰時亦然。自帶政策槽。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="zh_Hant_HK"><Text>每回合 +2 [icon:YIELD_DIPLOMACY] 影響力。移民 +50%[icon:YIELD_POPULATION]。難民優先來到你這裡。聚居區保留全部產出，戰時亦然。自帶政策槽。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="zh_Hant_HK"><Text>每回合 +3 [icon:YIELD_DIPLOMACY] 影響力。移民 +50%[icon:YIELD_POPULATION]。難民優先來到你這裡。聚居區保留全部產出，戰時亦然。自帶政策槽。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="zh_Hant_HK"><Text>反移民立場</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="zh_Hant_HK"><Text>每座城市 +2 [icon:YIELD_PRODUCTION] 生產。每回合 -2 [icon:YIELD_DIPLOMACY] 影響力。移民 -60%[icon:YIELD_POPULATION]，移出 -40%；難民定居速度減慢 60%。聚居區保留 50% 的產出（與其故鄉交戰時為 25%）。自帶一個政策槽。</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="zh_Hant_HK"><Text>每座城市 +3 [icon:YIELD_PRODUCTION] 生產。每回合 -3 [icon:YIELD_DIPLOMACY] 影響力。移民 -60%[icon:YIELD_POPULATION]，移出 -40%；難民定居速度減慢 60%。聚居區保留 50% 的產出（與其故鄉交戰時為 25%）。自帶一個政策槽。</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="zh_Hant_HK"><Text>每座城市 +4 [icon:YIELD_PRODUCTION] 生產。每回合 -4 [icon:YIELD_DIPLOMACY] 影響力。移民 -60%[icon:YIELD_POPULATION]，移出 -40%；難民定居速度減慢 60%。聚居區保留 50% 的產出（與其故鄉交戰時為 25%）。自帶一個政策槽。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="zh_Hant_HK"><Text>每座城市 +2 [icon:YIELD_PRODUCTION] 生產。每回合 -2 [icon:YIELD_DIPLOMACY] 影響力。移民 -60%[icon:YIELD_POPULATION]，移出 -40%。難民定居速度減慢 60%。聚居區保留一半產出（戰時四分之一）。自帶政策槽。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="zh_Hant_HK"><Text>每座城市 +3 [icon:YIELD_PRODUCTION] 生產。每回合 -3 [icon:YIELD_DIPLOMACY] 影響力。移民 -60%[icon:YIELD_POPULATION]，移出 -40%。難民定居速度減慢 60%。聚居區保留一半產出（戰時四分之一）。自帶政策槽。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="zh_Hant_HK"><Text>每座城市 +4 [icon:YIELD_PRODUCTION] 生產。每回合 -4 [icon:YIELD_DIPLOMACY] 影響力。移民 -60%[icon:YIELD_POPULATION]，移出 -40%。難民定居速度減慢 60%。聚居區保留一半產出（戰時四分之一）。自帶政策槽。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="zh_Hant_HK"><Text>人才吸引</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="zh_Hant_HK"><Text>每回合 +1 [icon:YIELD_SCIENCE] 科技。每位移民 +1.5 [icon:YIELD_SCIENCE] 科技，每回合衰減 30%，每回合最多 +12。</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="zh_Hant_HK"><Text>每回合 +2 [icon:YIELD_SCIENCE] 科技。每位移民 +1.5 [icon:YIELD_SCIENCE] 科技，每回合衰減 30%，每回合最多 +12。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="zh_Hant_HK"><Text>每回合 +1 [icon:YIELD_SCIENCE] 科技，每位移民再 +1.5，每回合衰減 30%（最多 +12）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="zh_Hant_HK"><Text>每回合 +2 [icon:YIELD_SCIENCE] 科技，每位移民再 +1.5，每回合衰減 30%（最多 +12）。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="zh_Hant_HK"><Text>文化魅力</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION]新移民豐富你的文化。獲得 +1 [icon:YIELD_CULTURE]文化，於現代時代升至 +2，外加隨你吸引的每位移民約 +1.5 增長的文化加成，每回合最多 +12。若移民停止流入，此加成會逐漸消退。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION]每回合獲得 +2 [icon:YIELD_CULTURE]文化值，外加你吸引的每位移民約 +1.5，最多 +12；若移民停止流入，此加成會逐漸消退。</Text></Replace>
@@ -576,8 +576,8 @@
         <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_NAME" Language="zh_Hant_HK"><Text>居民登記</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_DESC" Language="zh_Hant_HK"><Text>每座城市[icon:YIELD_PRODUCTION]生產+3。你承認的聚居區報酬減半，到來的移民減少25%，與你交戰之故鄉的社群會更快變得不安。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CONSULAR_NAME" Language="zh_Hant_HK"><Text>領事保護</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_DESC" Language="zh_Hant_HK"><Text>你的人民在海外每有一處已承認的聚居區，每回合 +1 [icon:YIELD_DIPLOMACY] 影響力，最多 +4。當你的人民在某個東道國擁有聚居區，而該東道國裝備反移民立場時，你會對其產生不滿。</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_STANCE_SLOT_DESC" Language="zh_Hant_HK"><Text>自帶一個政策槽。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_DESC" Language="zh_Hant_HK"><Text>你的人民在海外每有一處已承認的聚居區，每回合 +1 [icon:YIELD_DIPLOMACY] 影響力（最多 +4）。對採取反移民立場的東道國產生不滿。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_STANCE_SLOT_DESC" Language="zh_Hant_HK"><Text>自帶政策槽。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="zh_Hant_HK"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="zh_Hant_HK"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="zh_Hant_HK"><Text>移民</Text></Replace>

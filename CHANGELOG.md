@@ -5,6 +5,13 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [3.6.1] - 2026-10-17
+
+### Changed
+- The ten cards say the same things in fewer words: "Refugees come to you first", "Enclaves keep full yields, even
+  at war", "Enclaves keep half their yields (a quarter at war)", "Brings its own policy slot". Talent Attraction and
+  Consular Protection are one line each. In all twelve languages.
+
 ## [3.6.0] - 2026-10-17
 
 Ten policy cards instead of twenty-two, each one readable at a glance, and a stance that pays for its own slot.

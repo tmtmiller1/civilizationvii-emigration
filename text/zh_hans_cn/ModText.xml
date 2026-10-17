@@ -543,16 +543,16 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="zh_Hans_CN"><Text>这些人口已永远失去。</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="zh_Hans_CN"><Text>{1_Dest}每回合支付约{2_Gold}金币以融入他们。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="zh_Hans_CN"><Text>亲移民立场</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="zh_Hans_CN"><Text>每回合 +1 [icon:YIELD_DIPLOMACY] 影响力。迁入 +50%[icon:YIELD_POPULATION]；战争与灾害的难民优先来到你这里。飞地保留 100% 的产出，即使与其故乡交战也是如此。自带一个政策槽。</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="zh_Hans_CN"><Text>每回合 +2 [icon:YIELD_DIPLOMACY] 影响力。迁入 +50%[icon:YIELD_POPULATION]；战争与灾害的难民优先来到你这里。飞地保留 100% 的产出，即使与其故乡交战也是如此。自带一个政策槽。</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="zh_Hans_CN"><Text>每回合 +3 [icon:YIELD_DIPLOMACY] 影响力。迁入 +50%[icon:YIELD_POPULATION]；战争与灾害的难民优先来到你这里。飞地保留 100% 的产出，即使与其故乡交战也是如此。自带一个政策槽。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="zh_Hans_CN"><Text>每回合 +1 [icon:YIELD_DIPLOMACY] 影响力。迁入 +50%[icon:YIELD_POPULATION]。难民优先来到你这里。飞地保留全部产出，战时亦然。自带政策槽。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="zh_Hans_CN"><Text>每回合 +2 [icon:YIELD_DIPLOMACY] 影响力。迁入 +50%[icon:YIELD_POPULATION]。难民优先来到你这里。飞地保留全部产出，战时亦然。自带政策槽。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="zh_Hans_CN"><Text>每回合 +3 [icon:YIELD_DIPLOMACY] 影响力。迁入 +50%[icon:YIELD_POPULATION]。难民优先来到你这里。飞地保留全部产出，战时亦然。自带政策槽。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="zh_Hans_CN"><Text>反移民立场</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="zh_Hans_CN"><Text>每座城市 +2 [icon:YIELD_PRODUCTION] 生产力。每回合 -2 [icon:YIELD_DIPLOMACY] 影响力。迁入 -60%[icon:YIELD_POPULATION]，迁出 -40%；难民定居速度减慢 60%。飞地保留 50% 的产出（与其故乡交战时为 25%）。自带一个政策槽。</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="zh_Hans_CN"><Text>每座城市 +3 [icon:YIELD_PRODUCTION] 生产力。每回合 -3 [icon:YIELD_DIPLOMACY] 影响力。迁入 -60%[icon:YIELD_POPULATION]，迁出 -40%；难民定居速度减慢 60%。飞地保留 50% 的产出（与其故乡交战时为 25%）。自带一个政策槽。</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="zh_Hans_CN"><Text>每座城市 +4 [icon:YIELD_PRODUCTION] 生产力。每回合 -4 [icon:YIELD_DIPLOMACY] 影响力。迁入 -60%[icon:YIELD_POPULATION]，迁出 -40%；难民定居速度减慢 60%。飞地保留 50% 的产出（与其故乡交战时为 25%）。自带一个政策槽。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="zh_Hans_CN"><Text>每座城市 +2 [icon:YIELD_PRODUCTION] 生产力。每回合 -2 [icon:YIELD_DIPLOMACY] 影响力。迁入 -60%[icon:YIELD_POPULATION]，迁出 -40%。难民定居速度减慢 60%。飞地保留一半产出（战时四分之一）。自带政策槽。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="zh_Hans_CN"><Text>每座城市 +3 [icon:YIELD_PRODUCTION] 生产力。每回合 -3 [icon:YIELD_DIPLOMACY] 影响力。迁入 -60%[icon:YIELD_POPULATION]，迁出 -40%。难民定居速度减慢 60%。飞地保留一半产出（战时四分之一）。自带政策槽。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="zh_Hans_CN"><Text>每座城市 +4 [icon:YIELD_PRODUCTION] 生产力。每回合 -4 [icon:YIELD_DIPLOMACY] 影响力。迁入 -60%[icon:YIELD_POPULATION]，迁出 -40%。难民定居速度减慢 60%。飞地保留一半产出（战时四分之一）。自带政策槽。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="zh_Hans_CN"><Text>人才吸引</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="zh_Hans_CN"><Text>每回合 +1 [icon:YIELD_SCIENCE] 科技值。每位移民 +1.5 [icon:YIELD_SCIENCE] 科技值，每回合衰减 30%，每回合最多 +12。</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="zh_Hans_CN"><Text>每回合 +2 [icon:YIELD_SCIENCE] 科技值。每位移民 +1.5 [icon:YIELD_SCIENCE] 科技值，每回合衰减 30%，每回合最多 +12。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="zh_Hans_CN"><Text>每回合 +1 [icon:YIELD_SCIENCE] 科技值，每位移民再 +1.5，每回合衰减 30%（最多 +12）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="zh_Hans_CN"><Text>每回合 +2 [icon:YIELD_SCIENCE] 科技值，每位移民再 +1.5，每回合衰减 30%（最多 +12）。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="zh_Hans_CN"><Text>文化魅力</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION]新移民丰富你的文化。获得 +1 [icon:YIELD_CULTURE]文化，现代时代升至 +2，外加随你吸引的每位移民约 +1.5 增长的文化加成，每回合最多 +12。若移民停止流入，此加成会逐渐消退。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO" Language="zh_Hans_CN"><Text>[icon:YIELD_POPULATION]每回合获得 +2 [icon:YIELD_CULTURE]文化值，你每吸引一名移民还会再增加约 +1.5，最多 +12；若移民停止流入，此加成会逐渐消退。</Text></Replace>
@@ -576,8 +576,8 @@
         <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_NAME" Language="zh_Hans_CN"><Text>居民登记</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_DESC" Language="zh_Hans_CN"><Text>每座城市[icon:YIELD_PRODUCTION]生产力+3。你承认的飞地报酬减半，到来的移民减少25%，与你交战之故乡的社群会更快变得不安。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CONSULAR_NAME" Language="zh_Hans_CN"><Text>领事保护</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_DESC" Language="zh_Hans_CN"><Text>你的人民在海外每有一处已承认的飞地，每回合 +1 [icon:YIELD_DIPLOMACY] 影响力，最多 +4。当你的人民在某个东道国拥有飞地，而该东道国装备反移民立场时，你会对其产生不满。</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_STANCE_SLOT_DESC" Language="zh_Hans_CN"><Text>自带一个政策槽。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_DESC" Language="zh_Hans_CN"><Text>你的人民在海外每有一处已承认的飞地，每回合 +1 [icon:YIELD_DIPLOMACY] 影响力（最多 +4）。对采取反移民立场的东道国产生不满。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_STANCE_SLOT_DESC" Language="zh_Hans_CN"><Text>自带政策槽。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="zh_Hans_CN"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="zh_Hans_CN"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="zh_Hans_CN"><Text>移民</Text></Replace>
