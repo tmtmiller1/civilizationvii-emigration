@@ -5,12 +5,15 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
-## [Unreleased]
+## [3.6.4] - 2026-10-18
 
 ### Fixed
 - The Emigration screen opens right away. The first time you opened it after an End Turn, it froze the game for about
   7 seconds by turn 100, long enough to look like a crash, because it re-read your visibility setting for every
   migration of every past turn. It now reads that setting once each time it opens.
+- The Ethnicity and Prosperity lenses stop stalling. With either lens on, moving the cursor over settlements paused for
+  about a quarter of a second every 3 seconds, and switching on the Prosperity lens paused for about half a second, for
+  the same reason. A change to the visibility option in Demographics still shows within a second.
 - Clicking one of the mod's notices beside End Turn opens the Emigration screen on its Notifications tab. The Emigration
   button still opens on the migration network, which is now built once instead of twice, and changing Numbers on a
   table keeps you on that table.

@@ -2421,5 +2421,28 @@ clicking the train. The "after" runs were in the same game reloaded from a scrip
 19 s after the last open (heap-corruption abort in the UI engine, `CivilizationVII-2026-10-18-073817.ips`). Whether
 that crash has anything to do with Emigration is still open; see WATCH_LIST.md.
 
-Other `civHidden` callers outside the gather (the lens, tooltips, notices) still read the policy on each call. They
-weren't timed here.
+Other `civHidden` callers outside the gather (about 40 sites: the Ethnicity and Prosperity lenses, the lens hover
+panel's settlement index, the ethnicity tooltip, notices, naming, diaspora) also paid the 9.4 ms per call. The slow
+read only happens when Demographics hasn't published its policy to GameConfiguration, and it only publishes from its
+own screen (`publishEffectivePolicy` in `demographics/ui/screen-demographics/screen/screen-demographics.js`), so any
+game where the player hasn't opened Demographics, or doesn't have it, pays it on every check. `localPolicy` now keeps
+its read for one second (`LOCAL_READ_MS`). A change on Demographics' Options page, which doesn't publish, reaches
+Emigration within that second.
+
+Watched 2026-10-18 in a second lab game (usual set, Antiquity seed 4242, `--quick`, driven to turn 101, 25
+settlements, Demographics never opened so nothing was published). Each action was timed from a script twice: as built,
+and with `Date.now` jumping 2 s on every call so the kept read was always stale, which is the old behavior. Times are two
+animation frames from the action; the same two frames with no action took 78 ms in that windowed game.
+
+| Action | Old | Now | Store reads, old → now |
+| --- | --- | --- | --- |
+| One `civHidden` check | 10.6 ms | 0.04 ms | 2 → 0 a check |
+| Prosperity lens switched on | 529 ms | 122 ms | 76 → 1 |
+| Hover onto a settlement, Ethnicity lens, with the 3 s index rebuild | 334 ms | 98 ms | 40 → 1 |
+| Hover onto a settlement, Prosperity lens, with the 3 s index rebuild | 325 ms | 100 ms | 38 → 1 |
+| Hover onto a settlement, cached index (either lens) | not timed | 81-82 ms | 0 |
+
+So the old hover stalled about a quarter of a second every 3 s while the cursor moved, and switching on the Prosperity
+lens stalled about half a second. Both hover panels showed their content. Switching on the Ethnicity lens made no store
+reads within those two frames either way, so its paint wasn't covered here. The cursor was moved by setting
+`PlotCursor.plotCursorCoords`, not with the mouse.

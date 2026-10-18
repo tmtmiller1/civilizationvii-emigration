@@ -77,12 +77,29 @@ function publishedPolicy() {
   return gameConfigPolicy(EFFECTIVE_POLICY_KEY);
 }
 
+// The local preference is kept for LOCAL_READ_MS after each read. Reading it parses the whole shared modSettings
+// store (about 5 ms in game for a 0.5 MB string), and the lens, tooltips and notices check visibility many times
+// a second. Demographics only publishes its policy to GameConfiguration from its own screen, so until the player
+// opens that screen every check lands here. A change made on Demographics' Options page shows within a second.
+const LOCAL_READ_MS = 1000;
+/** @type {{policy:string, at:number}|null} */
+let _localRead = null;
+
 /**
  * The local preference, read from Demographics' shared `localStorage.modSettings.demographics`
  * slice when present (so the two mods agree), else met-civs-only. Fails safe to met-civs-only.
  * @returns {string} A policy id.
  */
 function localPolicy() {
+  const now = Date.now();
+  if (_localRead && now - _localRead.at < LOCAL_READ_MS && now >= _localRead.at) return _localRead.policy;
+  const policy = readLocalPolicy();
+  _localRead = { policy, at: now };
+  return policy;
+}
+
+/** @returns {string} The local preference straight from the shared store. */
+function readLocalPolicy() {
   try {
     if (typeof localStorage === "undefined" || !localStorage) return POLICY_MET;
     const root = JSON.parse(localStorage.getItem("modSettings") || "{}");
@@ -207,3 +224,6 @@ export function civHidden(pid) {
     return true;
   }
 }
+
+// Test hook: drop the kept local read so a test's next check reads the store again.
+export const __test = { forgetLocalRead: () => { _localRead = null; } };

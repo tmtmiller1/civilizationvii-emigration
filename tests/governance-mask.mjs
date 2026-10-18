@@ -29,9 +29,9 @@ const PUBLISHED = "DemographicsAnalyticsPolicyEffective_v1";
 
 const G = await import("/emigration/ui/emigration-governance.js");
 
-function setLocal(p) { _ls = {}; if (p) _ls.modSettings = JSON.stringify({ demographics: { analyticsPolicy: p } }); }
+function setLocal(p) { _ls = {}; if (p) _ls.modSettings = JSON.stringify({ demographics: { analyticsPolicy: p } }); G.__test.forgetLocalRead(); }
 function setHost(p) { _hostKV = {}; if (p) _hostKV[HOST] = p; }
-function reset() { _ls = {}; _hostKV = {}; }
+function reset() { _ls = {}; _hostKV = {}; G.__test.forgetLocalRead(); }
 function setPublished(p) { reset(); if (p) _hostKV[PUBLISHED] = p; }
 
 // Default: no host, no local pref → met-civs-only (today's behavior).
@@ -95,6 +95,19 @@ assert.equal(G.civHidden(2), true, "after the pass the new setting is read");
 assert.throws(() => G.withPolicySnapshot(() => { throw new Error("boom"); }));
 setLocal("full");
 assert.equal(G.effectivePolicy(), "full", "a pass that throws still drops its snapshot");
+globalThis.localStorage.getItem = realGet;
+
+// The local read is kept for a second, so a lens or tooltip checking many civs doesn't parse the store each time.
+setLocal("met-civs-only"); setHost(null);
+reads = 0;
+globalThis.localStorage.getItem = (k) => { if (k === "modSettings") reads++; return realGet(k); };
+for (let i = 0; i < 50; i++) G.civHidden(3);
+assert.equal(reads, 1, "50 checks inside a second read the store once");
+const realNow = Date.now;
+Date.now = () => realNow() + 1500;
+G.civHidden(3);
+assert.equal(reads, 2, "a check after the second has passed reads the store again");
+Date.now = realNow;
 globalThis.localStorage.getItem = realGet;
 
 console.log("governance-mask harness passed");

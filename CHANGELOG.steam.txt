@@ -3,6 +3,14 @@ Generated from CHANGELOG.md by scripts/steam-changelog.mjs; release.sh uploads t
 To fix an old Workshop entry, paste the text under its ==== line into that entry's Edit box on the change-notes page.
 A block edited by hand is kept as-is. Delete a block to regenerate it from CHANGELOG.md.
 
+==== 3.6.4 | 2026-10-18 | src 106ed858172a | gen f959bba1f568 ====
+[b]Version 3.6.4 · 18 October 2026[/b]
+
+[b]Fixed[/b]
+• The Emigration screen opens right away. The first time you opened it after an End Turn, it froze the game for about 7 seconds by turn 100, long enough to look like a crash, because it re-read your visibility setting for every migration of every past turn. It now reads that setting once each time it opens.
+• The Ethnicity and Prosperity lenses stop stalling. With either lens on, moving the cursor over settlements paused for about a quarter of a second every 3 seconds, and switching on the Prosperity lens paused for about half a second, for the same reason. A change to the visibility option in Demographics still shows within a second.
+• Clicking one of the mod's notices beside End Turn opens the Emigration screen on its Notifications tab. The Emigration button still opens on the migration network, which is now built once instead of twice, and changing Numbers on a table keeps you on that table.
+
 ==== 3.6.3 | 2026-10-17 | src e261a9d5f8f6 | gen 7d9a53531a1f ====
 [b]Version 3.6.3 · 17 October 2026[/b]
 

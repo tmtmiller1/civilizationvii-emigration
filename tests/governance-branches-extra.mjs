@@ -45,15 +45,18 @@ assert.equal(G.effectivePolicy(), "disabled");
 delete kv.DemographicsAnalyticsPolicyEffective_v1;
 kv.DemographicsAnalyticsPolicy_v1 = "own-civ-only";
 store.modSettings = JSON.stringify({ demographics: { analyticsPolicy: "full" } });
+G.__test.forgetLocalRead();
 assert.equal(G.effectivePolicy(), "own-civ-only");
 
 kv.DemographicsAnalyticsPolicy_v1 = "full";
 store.modSettings = JSON.stringify({ demographics: { analyticsPolicy: "met-civs-only" } });
+G.__test.forgetLocalRead();
 assert.equal(G.effectivePolicy(), "met-civs-only");
 
 // localPolicy legacy branch hideUnmetStats=false
 resetEnv();
 store.modSettings = JSON.stringify({ demographics: { hideUnmetStats: false } });
+G.__test.forgetLocalRead();
 assert.equal(G.effectivePolicy(), "full");
 
 // localPolicy parse catch / missing localStorage branch fallback
@@ -63,6 +66,7 @@ globalThis.localStorage = {
     throw new Error("storage boom");
   }
 };
+G.__test.forgetLocalRead();
 assert.equal(G.effectivePolicy(), "met-civs-only");
 globalThis.localStorage = priorLocalStorage;
 
@@ -81,11 +85,13 @@ Object.defineProperty(globalThis, "GameContext", { configurable: true, value: pr
 S.setVisibilityOverride(0);
 resetEnv();
 store.modSettings = JSON.stringify({ demographics: { analyticsPolicy: "met-civs-only" } });
+G.__test.forgetLocalRead();
 assert.equal(G.civHidden(1), false);
 assert.equal(G.civHidden(2), false);
 assert.equal(G.civHidden(3), true);
 
 store.modSettings = JSON.stringify({ demographics: { analyticsPolicy: "own-civ-only" } });
+G.__test.forgetLocalRead();
 assert.equal(G.civHidden(2), true);
 
 const priorPlayers = globalThis.Players;
