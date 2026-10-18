@@ -4,10 +4,10 @@
         <Name>LOC_MOD_EMIGRATION_NAME</Name>
         <Description>LOC_MOD_EMIGRATION_DESCRIPTION</Description>
         <Authors>Tower</Authors>
-        <SpecialThanks>Tomahawk, Mk Z, and Tim_The_Texan's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
+        <SpecialThanks>killmeplease, Tomahawk, Mk Z, and Tim_The_Texan's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>3.6.2</Version>
+        <Version>3.6.3</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />

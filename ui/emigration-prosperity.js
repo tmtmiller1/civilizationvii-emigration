@@ -1,6 +1,7 @@
 // emigration-prosperity.js
 //
-// The per-city Prosperity score that drives emigration:
+// The per-city Prosperity score that drives emigration, adapted from the Civ V Emigration (v6)
+// model (see docs/provenance.md):
 //
 //   Prosperity = ( Productiveness + LocalHappiness - PopulationPenalty )
 //                × (1 + Σ situationalModifiers/100)

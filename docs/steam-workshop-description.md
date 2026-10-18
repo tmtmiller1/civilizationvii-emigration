@@ -61,7 +61,7 @@ This mod is developed with [url=https://github.com/tmtmiller1/civilizationvii_to
 [h2]Credits[/h2]
 [list]
 [*][b]Tower[/b], for design and Civilization VII implementation.
-[*][b]Tomahawk, Mk Z, and Tim_The_Texan[/b], creators of the Civilization V Emigration mod that inspired this project.
+[*][b]killmeplease, Tomahawk, Mk Z, and Tim_The_Texan[/b], creators of the Civilization V Emigration mod that inspired this project.
 [/list]
 [h2]Special Thanks[/h2]
 [list]

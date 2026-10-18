@@ -3,7 +3,8 @@
 // The default values of the mod's tunable settings, plus the population-scaling constants that keep
 // this mod's "historical" people counts aligned with the Demographics mod. The shape these conform
 // to is the EmigrationConfig typedef in emigration-config-types.js; the settings/options layer
-// overrides these at boot via applyTunableOverrides.
+// overrides these at boot via applyTunableOverrides. The settings model started from the Civ V
+// Emigration (v6) mod's EmigrationSettings; docs/provenance.md lists which values carried over.
 
 /** @type {import("/emigration/ui/emigration-config-types.js").EmigrationConfig} */
 export const CONFIG = {

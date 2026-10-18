@@ -5,7 +5,16 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
-## [Unreleased]
+## [3.6.3] - 2026-10-17
+
+### Changed
+- License: from this version the mod is under the Tower Mod License 1.0, in LICENSE. You can still play it, read the
+  code and change your own copy for your own games. Reuploading it, reusing its code in other projects and using it
+  to train AI need my written permission. Earlier versions stay under MIT, and `ui/settings-keeper.js` stays MIT so
+  other mods can keep embedding it.
+- Credits: killmeplease is now named alongside Tomahawk, Mk Z and Tim_The_Texan as an author of the Civ V Emigration
+  mod, in the README, the modinfo and the Civilopedia in every language. docs/provenance.md shows what this mod's
+  model shares with theirs.
 
 ### Added
 - Carries Civilopedia History Corrections. With Civilopedia Expanded: Independents on, six East Asian history pages

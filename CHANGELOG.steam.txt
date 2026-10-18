@@ -3,6 +3,16 @@ Generated from CHANGELOG.md by scripts/steam-changelog.mjs; release.sh uploads t
 To fix an old Workshop entry, paste the text under its ==== line into that entry's Edit box on the change-notes page.
 A block edited by hand is kept as-is. Delete a block to regenerate it from CHANGELOG.md.
 
+==== 3.6.3 | 2026-10-17 | src e261a9d5f8f6 | gen 7d9a53531a1f ====
+[b]Version 3.6.3 · 17 October 2026[/b]
+
+[b]Changed[/b]
+• License: from this version the mod is under the Tower Mod License 1.0, in LICENSE. You can still play it, read the code and change your own copy for your own games. Reuploading it, reusing its code in other projects and using it to train AI need my written permission. Earlier versions stay under MIT, and ui/settings-keeper.js stays MIT so other mods can keep embedding it.
+• Credits: killmeplease is now named alongside Tomahawk, Mk Z and Tim_The_Texan as an author of the Civ V Emigration mod, in the README, the modinfo and the Civilopedia in every language. docs/provenance.md shows what this mod's model shares with theirs.
+
+[b]Added[/b]
+• Carries Civilopedia History Corrections. With Civilopedia Expanded: Independents on, six East Asian history pages in the Civilopedia (Goguryeo, the Oirat, two Ryukyu pages, Nanzhao and Balhae) give each side where historians in different countries disagree, and a few factual errors are fixed. With it off, the game's pages stay as they are.
+
 ==== 3.6.2 | 2026-10-17 | src a19cc33774e1 | gen d4133b5762d7 ====
 [b]Version 3.6.2 · 17 October 2026[/b]
 

@@ -2030,7 +2030,7 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_TITLE" Language="ja_JP"><Text>数字の向こうにいる人々</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_PARA_1" Language="ja_JP"><Text>このModは、移住と強制移動をゲームのシステムに落とし込んでいます。現実には、人々が故郷を離れる理由の多くは戦争、迫害、災害、困窮です。このModは難民を一人の人間として描き、言葉が残っている限り故郷を追われた人々に彼ら自身の言葉で語らせ、被災した都市の損失を死者として数えます。作者は、このModの節目ごとに難民支援への寄付を行ってきました。もし可能であれば、UNHCR（国連難民高等弁務官事務所）、国際救済委員会（IRC）、国境なき医師団、International Refugee Assistance Project、あるいは地域の難民支援・相互扶助団体への支援をご検討ください。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_TITLE" Language="ja_JP"><Text>クレジット</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_PARA_1" Language="ja_JP"><Text>移住の作者はTowerです。繁栄モデルは、Tomahawk、Mk Z、Tim_The_TexanによるCivilization V用のEmigration Modを応用したものです。人口の換算はDemographics Modと共通で、人材の引き抜きの外交アクションはDiplomacy Extended Modによるものです。引用は、このModのドキュメントに記載した刊行物から採っています。訳者名のない（訳）の訳は、このModによる独自の訳です。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_PARA_1" Language="ja_JP"><Text>移住の作者はTowerです。繁栄モデルは、killmeplease、Tomahawk、Mk Z、Tim_The_TexanによるCivilization V用のEmigration Modを応用したものです。人口の換算はDemographics Modと共通で、人材の引き抜きの外交アクションはDiplomacy Extended Modによるものです。引用は、このModのドキュメントに記載した刊行物から採っています。訳者名のない（訳）の訳は、このModによる独自の訳です。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CHAPTER_ENCLAVE_TITLE" Language="ja_JP"><Text>文化的飛び地</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CHAPTER_REFUGEE_TITLE" Language="ja_JP"><Text>難民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CHAPTER_MIGRANT_TITLE" Language="ja_JP"><Text>新来者</Text></Replace>

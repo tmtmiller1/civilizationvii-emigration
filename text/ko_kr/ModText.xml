@@ -2030,7 +2030,7 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_TITLE" Language="ko_KR"><Text>숫자 뒤의 사람들</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_PARA_1" Language="ko_KR"><Text>이 모드는 이주와 강제 이주를 게임 시스템으로 바꿉니다. 현실에서 사람들이 고향을 떠나는 가장 흔한 이유는 전쟁, 박해, 재해, 또는 곤궁입니다. 이 모드는 난민을 사람으로 그리고, 실향민의 말이 남아 있는 곳에서는 그들 자신의 말로 이야기하게 하며, 재난을 겪은 도시의 손실을 사망으로 집계합니다. 제작자는 모드의 중요한 고비마다 난민 구호 단체에 기부해 왔습니다. 여유가 된다면 유엔난민기구(UNHCR), 국제구조위원회(IRC), 국경없는의사회, 국제난민지원프로젝트(IRAP), 또는 지역의 난민 및 상호 부조 단체를 후원하는 것을 고려해 주십시오.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_TITLE" Language="ko_KR"><Text>제작진</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_PARA_1" Language="ko_KR"><Text>이주는 Tower가 만들었습니다. 번영 모델은 Tomahawk, Mk Z, Tim_The_Texan이 만든 문명 V용 Emigration 모드를 바탕으로 했습니다. 인구 척도는 Demographics 모드와 맞추었으며, 인재 빼가기 외교 행동은 Diplomacy Extended 모드에서 나옵니다. 인용문은 모드 문서에 나열된 출간 자료에서 가져왔으며, 번역자 이름 없이 (번역)이 붙은 번역은 모드가 직접 옮긴 것입니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_PARA_1" Language="ko_KR"><Text>이주는 Tower가 만들었습니다. 번영 모델은 killmeplease, Tomahawk, Mk Z, Tim_The_Texan이 만든 문명 V용 Emigration 모드를 바탕으로 했습니다. 인구 척도는 Demographics 모드와 맞추었으며, 인재 빼가기 외교 행동은 Diplomacy Extended 모드에서 나옵니다. 인용문은 모드 문서에 나열된 출간 자료에서 가져왔으며, 번역자 이름 없이 (번역)이 붙은 번역은 모드가 직접 옮긴 것입니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CHAPTER_ENCLAVE_TITLE" Language="ko_KR"><Text>문화 거주지</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CHAPTER_REFUGEE_TITLE" Language="ko_KR"><Text>난민</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CHAPTER_MIGRANT_TITLE" Language="ko_KR"><Text>새 이주민</Text></Replace>

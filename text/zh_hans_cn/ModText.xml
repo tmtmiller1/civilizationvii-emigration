@@ -2030,7 +2030,7 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_TITLE" Language="zh_Hans_CN"><Text>数字背后的人</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_PARA_1" Language="zh_Hans_CN"><Text>本模组将迁徙和流离失所转化为游戏系统。在现实中，人们离开家园最常见的原因是战争、迫害、灾害或困苦。本模组将难民呈现为有血有肉的人，在流离者的话语得以留存之处让他们用自己的话发声，并把受灾城市的损失计为死亡。作者在模组的每个里程碑都向难民救助机构捐款以作纪念。如果你有能力，请考虑支持联合国难民署（UNHCR）、国际救援委员会、无国界医生、国际难民援助项目，或当地的难民及互助团体。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_TITLE" Language="zh_Hans_CN"><Text>制作人员</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_PARA_1" Language="zh_Hans_CN"><Text>“移民”由 Tower 制作。其繁荣度模型改编自 Tomahawk、Mk Z 和 Tim_The_Texan 为《文明 V》制作的 Emigration 模组。人口换算与 Demographics 模组一致，人才掠夺外交行动来自 Diplomacy Extended 模组。引语出自模组文档中列出的已出版来源；标注“译”而未注明译者的译文为本模组自行翻译。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_PARA_1" Language="zh_Hans_CN"><Text>“移民”由 Tower 制作。其繁荣度模型改编自 killmeplease、Tomahawk、Mk Z 和 Tim_The_Texan 为《文明 V》制作的 Emigration 模组。人口换算与 Demographics 模组一致，人才掠夺外交行动来自 Diplomacy Extended 模组。引语出自模组文档中列出的已出版来源；标注“译”而未注明译者的译文为本模组自行翻译。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CHAPTER_ENCLAVE_TITLE" Language="zh_Hans_CN"><Text>文化飞地</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CHAPTER_REFUGEE_TITLE" Language="zh_Hans_CN"><Text>难民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CHAPTER_MIGRANT_TITLE" Language="zh_Hans_CN"><Text>新来者</Text></Replace>
