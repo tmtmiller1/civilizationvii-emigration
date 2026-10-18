@@ -14,12 +14,13 @@ import { diverseCityRanking } from "/emigration/ui/emigration-diversity.js";
 import { civAdjective } from "/emigration/ui/emigration-naming.js";
 import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
+import { nowMs, plog } from "/emigration/ui/emigration-log.js";
 import { getSampleData, getSnapshotInterval } from "/emigration/ui/emigration-settings.js";
 import { sampleDashboard } from "/emigration/ui/emigration-demo-data.js";
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 import { warEvents } from "/emigration/ui/emigration-war.js";
-import { civHidden, effectivePolicy } from "/emigration/ui/emigration-governance.js";
+import { civHidden, effectivePolicy, withPolicySnapshot } from "/emigration/ui/emigration-governance.js";
 import { compositionForCity, allCityCompositions } from "/emigration/ui/emigration-composition.js";
 import { enclaveProgressForComposition } from "/emigration/ui/emigration-diaspora.js";
 import { recordStage, STAGE_WORD } from "/emigration/ui/emigration-enclave-stage.js";
@@ -660,26 +661,35 @@ function enclaveCell(key, comp) {
  */
 function gatherFresh() {
   if (getSampleData()) return sampleDashboard(getSnapshotInterval());
-  const pids = inPlayCivs();
+  /** @type {string[]} */
+  const parts = [];
+  const timed = (/** @type {string} */ name, /** @type {()=>*} */ fn) => {
+    const t0 = nowMs();
+    const v = fn();
+    parts.push(name + " " + Math.round(nowMs() - t0));
+    return v;
+  };
+  const pids = timed("civs", inPlayCivs);
   const me = localId();
-  const pops = gatherPops();
-  const { flows, intra } = gatherFlows();
+  const pops = timed("pops", gatherPops);
+  const { flows, intra } = timed("flows", gatherFlows);
   const model = {
-    civs: pids.map(civRow),
-    byCause: aggregateByCause(pids),
-    eventsByOwner: gatherEventsByOwner(pids), // specific war/disaster/crisis behind each cause
+    civs: timed("rows", () => pids.map(civRow)),
+    byCause: timed("byCause", () => aggregateByCause(pids)),
+    eventsByOwner: timed("eventsByOwner", () => gatherEventsByOwner(pids)), // specific war/disaster/crisis behind each cause
     flows,
     pops,
     intra, // intra-civ (city→city) moves, split from the same flow matrix as the cross-civ network
-    history: gatherHistory(pops),
+    history: timed("history", () => gatherHistory(pops)),
     // Pre-positioned event specs are the sample path only. Live events are turn-stamped records the
     // network view positions itself against its final frame list.
     events: [],
-    eventRecords: { disasters: gatherDisasterEvents(), wars: warEvents() },
-    cities: me != null ? ownerCitySnapshots(me) : [],
-    myCities: gatherSettlements(me, pops),
-    diversity: gatherDiversity()
+    eventRecords: timed("eventRecords", () => ({ disasters: gatherDisasterEvents(), wars: warEvents() })),
+    cities: timed("cities", () => (me != null ? ownerCitySnapshots(me) : [])),
+    myCities: timed("settlements", () => gatherSettlements(me, pops)),
+    diversity: timed("diversity", gatherDiversity)
   };
+  plog("gather parts (ms): " + parts.join(", "));
   return model;
 }
 
@@ -756,8 +766,13 @@ function gatherKey() {
  */
 export function gatherDashboard() {
   const key = gatherKey();
-  if (_gatherMemo && _gatherMemo.key === key) return _gatherMemo.data;
-  const data = gatherFresh();
+  if (_gatherMemo && _gatherMemo.key === key) {
+    plog("gather: cached (" + key + ")");
+    return _gatherMemo.data;
+  }
+  const t0 = nowMs();
+  const data = withPolicySnapshot(gatherFresh); // one policy read for the whole pass, not two per masked civ
+  plog("gather: fresh " + Math.round(nowMs() - t0) + " ms (" + key + ")");
   _gatherMemo = { key, data };
   return data;
 }

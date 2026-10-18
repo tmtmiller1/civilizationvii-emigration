@@ -17,6 +17,7 @@ import { renderLedger, splitInternalExternal, LEDGER_CSS } from "/emigration/ui/
 import { renderNotifications } from "/emigration/ui/emigration-notifications-view.js";
 import { DENSITY_CSS } from "/emigration/ui/emigration-density.js";
 import { loc, localeFontFamily } from "/emigration/ui/emigration-loc.js";
+import { nowMs, plog } from "/emigration/ui/emigration-log.js";
 
 
 /**
@@ -505,14 +506,15 @@ function tabLabelFor(s) {
 /**
  * @param {{id:string,label:string}[]} items
  * @param {(i:number)=>void} onSelect
+ * @param {number} start The tab shown first.
  * @returns {HTMLElement}
  */
-function domTabBar(items, onSelect) {
+function domTabBar(items, onSelect, start) {
   const root = el("div", "emig-tabs");
   /** @type {HTMLElement[]} */
   const btns = [];
   items.forEach((it, i) => {
-    const b = el("div", "emig-tab" + (i === 0 ? " active" : ""), it.label);
+    const b = el("div", "emig-tab" + (i === start ? " active" : ""), it.label);
     b.addEventListener("click", () => {
       btns.forEach((x, j) => x.classList.toggle("active", j === i));
       onSelect(i);
@@ -528,15 +530,16 @@ function domTabBar(items, onSelect) {
  * when the game UI VM is present; otherwise a styled DOM fallback.
  * @param {*[]} sections
  * @param {(i:number)=>void} onSelect Selection handler.
+ * @param {number} start The tab shown first.
  * @returns {HTMLElement} The tab bar.
  */
-function makeTabBar(sections, onSelect) {
+function makeTabBar(sections, onSelect, start) {
   const items = sections.map((s, i) => ({ id: String(i), label: tabLabelFor(s) }));
-  if (typeof Controls === "undefined") return domTabBar(items, onSelect);
+  if (typeof Controls === "undefined") return domTabBar(items, onSelect, start);
   const bar = /** @type {*} */ (document.createElement("fxs-tab-bar"));
   bar.classList.add("font-title", "text-sm");
   bar.setAttribute("tab-items", JSON.stringify(items));
-  bar.setAttribute("selected-tab-index", "0");
+  bar.setAttribute("selected-tab-index", String(start));
   bar.setAttribute("tab-item-class", "font-title");
   bar.addEventListener("tab-selected", (/** @type {*} */ ev) => {
     const id = ev && ev.detail && ev.detail.selectedItem && ev.detail.selectedItem.id;
@@ -641,9 +644,11 @@ function buildControlRow(showNumbers, rebuild, includeOptionsButton = false) {
  * its tab is active, so its animation loop runs only then.
  * @param {HTMLElement} target The container element.
  * @param {*} model The view-model ({sections, sample}).
- * @param {()=>void} [rebuild] Re-gather + re-render (the visibility toggle re-filters the civ list).
+ * @param {(kind:string)=>void} [rebuild] Re-gather + re-render (the visibility toggle re-filters the civ
+ *   list), handed the active section's kind so the rebuilt view stays on that tab.
+ * @param {string} [startKind] The section kind to open on; the first section when absent or unknown.
  */
-export function renderDashboardTabbed(target, model, rebuild) {
+export function renderDashboardTabbed(target, model, rebuild, startKind) {
   try {
     if (!target) return;
     injectDashboardStyle();
@@ -658,21 +663,27 @@ export function renderDashboardTabbed(target, model, rebuild) {
     // The Numbers (Scaled/Civ) control row is per-section, so it's rebuilt on every tab change into
     // its own host: shown only where the section bears switchable counts. Matches the embedded page
     // (appendControlRow).
-    const body = el("div", "emig-tabbody"), ctrlHost = el("div", "emig-ctrl-host");
-    let active = 0;
+    const body = el("div", "emig-tabbody"), ctrlHost = el("div", "emig-ctrl-host"), seen = { shows: 0, active: -1 };
+    const start = Math.max(0, sections.findIndex((/** @type {*} */ s) => s.kind === startKind));
+    // The control row is rebuilt on every tab change, so `i` in its callback is always the active tab.
     const show = (/** @type {number} */ i) => {
-      active = i;
+      const t0 = nowMs();
+      seen.active = i;
       ctrlHost.innerHTML = "";
-      appendOpt(ctrlHost,
-        buildControlRow(wantsUnitsToggle(sections[i]), () => (rebuild ? rebuild() : show(active)), true));
+      appendOpt(ctrlHost, buildControlRow(wantsUnitsToggle(sections[i]),
+        () => (rebuild ? rebuild(sections[i].kind) : show(i)), true));
       body.innerHTML = "";
       renderSectionBody(body, sections[i]);
+      plog("tab " + sections[i].kind + " shown (#" + ++seen.shows + " this render) " + Math.round(nowMs() - t0) + " ms");
     };
     wrap.appendChild(ctrlHost);
-    wrap.appendChild(makeTabBar(sections, show));
+    // The game's tab bar announces its starting tab as soon as it attaches to the page, which happens inside
+    // target.appendChild below. Skipping a pick of the tab already showing, there and in the call after it,
+    // keeps the network from being built twice on every open.
+    wrap.appendChild(makeTabBar(sections, (/** @type {number} */ i) => { if (i !== seen.active) show(i); }, start));
     wrap.appendChild(body);
     target.appendChild(wrap);
-    show(0);
+    if (seen.active !== start) show(start);
   } catch (_) {
     /* a render failure must never break the host screen */
   }

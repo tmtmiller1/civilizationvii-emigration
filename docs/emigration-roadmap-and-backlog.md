@@ -2392,3 +2392,34 @@ owns their full designs, verdicts, and revisit triggers. Summary:
 `quarterDwellTurns: 8` have never been checked against played games, and the one datapoint is a player
 reporting enclaves weren't happening. Measure first (same stance as §27): a stage arc nobody reaches is
 not worth extending.
+
+## 29. Screen open speed (measured 2026-10-18)
+
+The owner reported that clicking one of the mod's notices froze the game long enough to look like a crash. Timing lines
+(`perf:` in UI.log, from `plog` in `ui/emigration-log.js`) were added around the gather, the tab builds, the network
+scene and its settle loop, and measured in a lab game: usual mod set, Antiquity seed 4242, `--quick`, driven to turn 101.
+
+| Open | Gather | First tab | Network |
+| --- | --- | --- | --- |
+| Notifications tab, first open of the turn (before) | 6,627 ms fresh | 9 ms, built twice | not built |
+| Network tab, cached gather (before) | 6 ms | 508 ms, built twice | 108 dots (Civ Pop), settled in 2.2 s, paint 0.7 ms |
+| Network tab, first open after End Turn (before) | 7,083 ms fresh | 502 ms, built twice | settled in 2.2 s |
+| Network tab, Scaled Pop (before) | cached | 513 ms, built twice | 535 dots, paint 1.5 ms, worst frame gap 30 ms |
+| Notifications tab, first open after a load (after) | 24 ms fresh | 16 ms | not built |
+| Network tab, first open after End Turn (after) | 18 ms fresh | 536 ms, built once | 535 dots |
+
+The gather's parts put 5,834 ms in the history frames. Each frame masks its flow edges through `civHidden`, which
+measured 9.4 ms a call: it asks `effectivePolicy` twice, and that parses the shared `modSettings` store on each ask
+(4.7 ms to parse a 524 KB string, 1.5 ms to fetch it). 285 edges × 2 ends × 9.4 ms is about 5.3 s. The fix is
+`withPolicySnapshot` in `ui/emigration-governance.js`: the fresh gather reads the policy once and holds it for the
+pass. Outside a pass every call still reads fresh. The network itself was cheap at these sizes; the double build came
+from the game's tab bar announcing its starting tab while it attaches, and both calls now skip a tab already showing.
+A notification click now opens on the Notifications tab (`openEmigrationScreen("notifications")`).
+
+The before/after numbers for the network and Notifications tabs were taken by opening the screen from a script, not by
+clicking the train. The "after" runs were in the same game reloaded from a script-made save, and the game crashed about
+19 s after the last open (heap-corruption abort in the UI engine, `CivilizationVII-2026-10-18-073817.ips`). Whether
+that crash has anything to do with Emigration is still open; see WATCH_LIST.md.
+
+Other `civHidden` callers outside the gather (the lens, tooltips, notices) still read the policy on each call. They
+weren't timed here.

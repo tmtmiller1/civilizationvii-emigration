@@ -107,6 +107,7 @@ function localPolicy() {
  * @returns {string} A policy id.
  */
 export function effectivePolicy() {
+  if (_snapshot) return _snapshot;
   const override = getVisibilityOverride();
   if (override === 1) return POLICY_MET;
   if (override === 2) return POLICY_FULL;
@@ -116,6 +117,29 @@ export function effectivePolicy() {
   const host = hostPolicy();
   if (!host) return local;
   return RANK[host] <= RANK[local] ? host : local;
+}
+
+// The policy held for one synchronous pass (see withPolicySnapshot), or null to read it fresh. The local read
+// parses the shared modSettings store (about 5 ms in game, a 0.5 MB string), and civHidden needs the policy
+// twice per call, so a dashboard gather masking every edge of every history frame spent most of its 7 s here.
+/** @type {string|null} */
+let _snapshot = null;
+
+/**
+ * Run `fn` with the effective policy read once and held for its duration, so a pass that masks many civs
+ * pays for one settings read instead of two per civHidden call. Nested calls keep the outer snapshot.
+ * @template T
+ * @param {() => T} fn The pass.
+ * @returns {T} What `fn` returns.
+ */
+export function withPolicySnapshot(fn) {
+  if (_snapshot) return fn();
+  _snapshot = effectivePolicy();
+  try {
+    return fn();
+  } finally {
+    _snapshot = null;
+  }
 }
 
 /**

@@ -13,7 +13,7 @@
 //   - last turn's notification is still listed at TurnBegin and goes when the local player's turn is activated;
 //     a send before that is dropped. The pass sends from PlayerTurnActivated, after the engine has cleared it.
 //   - the Location field is ignored in every shape, so a click does not move the camera. The mod registers a
-//     handler on the train's model instead, and a click opens the Emigration screen.
+//     handler on the train's model instead, and a click opens the Emigration screen on its Notifications tab.
 // The text is composed by the caller in the active language and passed with the send; the database rows' Message
 // and Summary tags are the fallback. Off-engine (no Game.Notifications) trainAvailable() is false and
 // emigration-feedback.js keeps its own HUD toasts.

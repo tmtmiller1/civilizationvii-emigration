@@ -24,6 +24,7 @@ import { makeTimeline, TIMELINE_CSS } from "/emigration/ui/emigration-network-ti
 import { installStageFit } from "/emigration/ui/emigration-network-fit.js";
 import { makeTooltip, wireEvents } from "/emigration/ui/emigration-network-interact.js";
 import { localeFontFamily } from "/emigration/ui/emigration-loc.js";
+import { frameTimer, nowMs, plog } from "/emigration/ui/emigration-log.js";
 
 // Logical canvas size, a wide 2:1 rectangle so the draggable area spans the full window width
 // (nodes seed clustered in the center; the buffer is 2x these for crispness).
@@ -596,16 +597,24 @@ function needsPaint(holder, settling, animating) {
  */
 function runLoop(canvas, ctx, holder) {
   const raf = /** @type {*} */ (globalThis).requestAnimationFrame;
+  const timer = frameTimer("network");
   const tick = () => {
-    if (!document.contains(canvas)) return;
+    if (!document.contains(canvas)) {
+      timer.close();
+      return;
+    }
+    const tickStart = nowMs();
     const settling = holder.sim.alpha > 0.02;
     if (settling) stepSim(holder.sim); // settle once, then freeze (no jitter)
     const animating = advanceAnims(holder.scene, (holder.pb && holder.pb.speedMul) || 1);
     if (holder.tickPlayback) holder.tickPlayback();
     if (needsPaint(holder, settling, animating)) {
+      const p0 = nowMs();
       paint(ctx, holder.scene);
+      timer.paint(nowMs() - p0);
       holder.dirty = false;
     }
+    timer.tick(tickStart, settling || animating);
     if (raf) raf(tick);
   };
   if (raf) raf(tick);
@@ -689,6 +698,12 @@ function tagEventDots(dots, events) {
   }
 }
 
+/** @param {number} ms Build time. @param {*} scene The built scene. */
+function logScene(ms, scene) {
+  plog("network scene " + Math.round(ms) + " ms: " + scene.dots.length + " dots, " + scene.centers.length +
+    " centers, " + scene.frames.length + " frames, " + (scene.civMode ? "Civ Pop" : "Scaled Pop"));
+}
+
 /**
  * Build the force layout, the chronological dot set, and the scene for a set of frames. One
  * people-per-dot unit is derived from the final total (residents + arrivals); the unit reported to
@@ -699,6 +714,7 @@ function tagEventDots(dots, events) {
  * @returns {*} {sim, byId, state, scene, shownUnit, lastNet}.
  */
 function buildScene(frames, colorMap, events) {
+  const t0 = nowMs();
   const lastFrame = frames[frames.length - 1];
   const lastNet = lastFrame.network;
   const total = totalPeople(lastNet, lastFrame.pops || {});
@@ -728,6 +744,7 @@ function buildScene(frames, colorMap, events) {
   }
   /** @type {*} */
   const scene = { WX, WY, centers: sim.nodes, dots, state, byId, events: evs, civMode, frames };
+  logScene(nowMs() - t0, scene);
   return { sim, byId, state, dots, scene, shownUnit, lastNet, civMode };
 }
 

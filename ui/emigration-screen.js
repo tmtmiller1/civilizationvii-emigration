@@ -9,6 +9,7 @@ import Panel from "/core/ui/panel-support.js";
 import { setAdvancedSectionOpen } from "/emigration/ui/emigration-settings.js";
 import { gatherDashboard } from "/emigration/ui/emigration-window.js";
 import { dashboardModel, renderDashboardTabbed } from "/emigration/ui/emigration-views.js";
+import { nowMs, plog } from "/emigration/ui/emigration-log.js";
 
 const DBG = false;
 /** @param {...*} a */
@@ -217,8 +218,19 @@ class ScreenEmigration extends Panel {
         derr("content host not found in template");
         return;
       }
-      const rebuild = () => renderDashboardTabbed(host, dashboardModel(gatherDashboard()), rebuild);
-      rebuild();
+      // A train click opens on the Notifications tab (the "start-tab" attribute) so the network diagram
+      // only builds when the player picks its tab.
+      const rebuild = (/** @type {string=} */ kind) => {
+        const t0 = nowMs();
+        const data = gatherDashboard();
+        const t1 = nowMs();
+        const model = dashboardModel(data);
+        const t2 = nowMs();
+        renderDashboardTabbed(host, model, rebuild, kind);
+        plog("screen render, start tab " + (kind || "first") + ": gather " + Math.round(t1 - t0) + " ms, model " +
+          Math.round(t2 - t1) + " ms, first tab " + Math.round(nowMs() - t2) + " ms");
+      };
+      rebuild(this.Root.getAttribute?.("start-tab") || undefined);
       dlog("dashboard rendered");
     } catch (e) {
       derr("render failed:", e);
@@ -258,15 +270,20 @@ try {
 /**
  * Open the Emigration screen (push it onto the context stack). Safe if the context manager
  * is unavailable.
+ * @param {string} [startKind] The dashboard section kind to open on (e.g. "notifications"); the first
+ *   tab, the network diagram, when absent.
  */
-export function openEmigrationScreen() {
+export function openEmigrationScreen(startKind) {
   import("/core/ui/context-manager/context-manager.js")
     .then((m) => {
       try {
         const cm = /** @type {*} */ (m);
         const ContextManager = cm.default || cm.ContextManager || cm;
         if (ContextManager && typeof ContextManager.push === "function") {
-          ContextManager.push("screen-emigration", { singleton: true, createMouseGuard: true });
+          /** @type {*} */
+          const props = { singleton: true, createMouseGuard: true };
+          if (typeof startKind === "string") props.attributes = { "start-tab": startKind };
+          ContextManager.push("screen-emigration", props);
         } else {
           derr("context-manager push unavailable");
         }

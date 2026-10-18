@@ -342,7 +342,8 @@ function installUi() {
   installCityReadout(); // per-city migration readout: console commands + best-effort selection
   installEmigrationConsole(); // console: emigration.window() opens the standalone screen
   installEmigrationDock(); // in-game dock button that opens that screen (no console needed)
-  installTrainHandler(openEmigrationScreen); // a click on one of the mod's train notifications opens it too
+  // A click on one of the mod's train notifications opens the screen on its Notifications tab.
+  installTrainHandler(() => openEmigrationScreen("notifications"));
   installEmigrationCityPanel(); // inject population + quarter data into the base City Details panel
   // The on-screen self-test button rides the subsystem dock (emigration-dock-decorator.js); installEmigrationDock()
   // below wires it when selftestEnabled. The prosperity map lens self-registers as its own <UIScripts>

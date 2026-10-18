@@ -5,6 +5,16 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [Unreleased]
+
+### Fixed
+- The Emigration screen opens right away. The first time you opened it after an End Turn, it froze the game for about
+  7 seconds by turn 100, long enough to look like a crash, because it re-read your visibility setting for every
+  migration of every past turn. It now reads that setting once each time it opens.
+- Clicking one of the mod's notices beside End Turn opens the Emigration screen on its Notifications tab. The Emigration
+  button still opens on the migration network, which is now built once instead of twice, and changing Numbers on a
+  table keeps you on that table.
+
 ## [3.6.3] - 2026-10-17
 
 ### Changed

@@ -23,3 +23,57 @@ export function dlog(msg) {
     /* ignore */
   }
 }
+
+/**
+ * Milliseconds from a monotonic clock where the host has one, else the wall clock. For the "perf:" timing
+ * lines that measure how long the Emigration screen and its network diagram take to open.
+ * @returns {number} Milliseconds.
+ */
+export function nowMs() {
+  const p = /** @type {*} */ (globalThis).performance;
+  return p && typeof p.now === "function" ? p.now() : Date.now();
+}
+
+/**
+ * A timing line, "[Emigration] perf: ...", so one grep pulls every measurement from UI.log.
+ * @param {string} msg Message.
+ */
+export function plog(msg) {
+  dlog("perf: " + msg);
+}
+
+/**
+ * Frame counters for an animation that settles after it opens: frames, paints, paint time, and the worst gap
+ * between frames (the gap includes the game's own layout and drawing, which the paint time alone misses).
+ * Logs one "perf:" line on the first frame with nothing left to do, or on close if that never came.
+ * @param {string} label What is settling, e.g. "network".
+ * @returns {{paint:(ms:number)=>void, tick:(start:number, busy:boolean)=>void, close:()=>void}} The counters.
+ */
+export function frameTimer(label) {
+  const t = nowMs();
+  const s = { start: t, last: t, ticks: 0, paints: 0, paintMs: 0, worstPaint: 0, worstGap: 0, done: false };
+  const report = (/** @type {string} */ how) => {
+    s.done = true;
+    const avg = s.paints ? s.paintMs / s.paints : 0;
+    plog(label + " " + how + " after " + Math.round(nowMs() - s.start) + " ms: " + s.ticks + " frames, " +
+      s.paints + " paints, paint avg " + avg.toFixed(1) + " ms / worst " + Math.round(s.worstPaint) +
+      " ms, worst frame gap " + Math.round(s.worstGap) + " ms");
+  };
+  return {
+    paint(ms) {
+      s.paints++;
+      s.paintMs += ms;
+      if (ms > s.worstPaint) s.worstPaint = ms;
+    },
+    tick(start, busy) {
+      if (s.done) return;
+      s.ticks++;
+      if (s.ticks > 1 && start - s.last > s.worstGap) s.worstGap = start - s.last;
+      s.last = start;
+      if (!busy) report("settled");
+    },
+    close() {
+      if (!s.done) report("closed before settling");
+    }
+  };
+}

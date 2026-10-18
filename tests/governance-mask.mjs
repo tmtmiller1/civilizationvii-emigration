@@ -77,4 +77,24 @@ reset(); _hostKV[PUBLISHED] = "full"; // local read empty, but Demographics publ
 assert.equal(G.effectivePolicy(), "full", "published 'full' overrides an empty local read");
 assert.equal(G.civHidden(3), false, "unmet civ shown despite the wiped localStorage");
 
+// A policy snapshot reads the settings once for the whole pass, then reads fresh again afterwards.
+setLocal("full"); setHost(null);
+let reads = 0;
+const realGet = globalThis.localStorage.getItem;
+globalThis.localStorage.getItem = (k) => { if (k === "modSettings") reads++; return realGet(k); };
+const inPass = G.withPolicySnapshot(() => {
+  const seen = [G.civHidden(2), G.civHidden(3), G.civHidden(3)];
+  setLocal("own-civ-only"); // a change mid-pass waits for the next pass
+  seen.push(G.civHidden(2));
+  seen.push(G.withPolicySnapshot(() => G.effectivePolicy())); // a nested pass keeps the outer snapshot
+  return seen;
+});
+assert.deepEqual(inPass, [false, false, false, false, "full"], "the snapshot holds the policy for the pass");
+assert.equal(reads, 1, "one settings read for the whole pass");
+assert.equal(G.civHidden(2), true, "after the pass the new setting is read");
+assert.throws(() => G.withPolicySnapshot(() => { throw new Error("boom"); }));
+setLocal("full");
+assert.equal(G.effectivePolicy(), "full", "a pass that throws still drops its snapshot");
+globalThis.localStorage.getItem = realGet;
+
 console.log("governance-mask harness passed");

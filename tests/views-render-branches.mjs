@@ -118,6 +118,44 @@ assert.doesNotThrow(() => renderDashboardTabbed(targetControls, model));
 assert.ok(targetControls.children.length > 0);
 delete globalThis.Controls;
 
+// A start kind opens on that tab (a train click opens on Notifications, not the network diagram); an
+// unknown kind falls back to the first tab.
+function activeTabLabels(root) {
+  return collect(root).filter((n) => /\bemig-tab\b/.test(n.className) && /\bactive\b/.test(n.className))
+    .map((n) => n.textContent);
+}
+const targetStart = new FakeElement("div");
+renderDashboardTabbed(targetStart, model, undefined, "ledger");
+assert.equal(activeTabLabels(targetStart).length, 1, "exactly one tab is active");
+assert.notEqual(activeTabLabels(targetStart)[0], activeTabLabels(target)[0], "the start kind moves the active tab");
+const targetUnknown = new FakeElement("div");
+renderDashboardTabbed(targetUnknown, model, undefined, "no-such-tab");
+assert.deepEqual(activeTabLabels(targetUnknown), activeTabLabels(target), "an unknown kind opens the first tab");
+
+// The rebuild callback gets the active tab's kind, so a rebuilt view stays on it.
+const tabbedRebuilt = [];
+const targetRebuild = new FakeElement("div");
+renderDashboardTabbed(targetRebuild, model, (kind) => tabbedRebuilt.push(kind), "ledger");
+const numbersBtn = collect(targetRebuild).find((n) => /\bemig-filter-btn\b/.test(n.className)
+  && !/\bactive\b/.test(n.className) && n.textContent !== "Advanced");
+assert.ok(numbersBtn, "the ledger tab shows a Numbers choice");
+numbersBtn.eventHandlers.click();
+assert.deepEqual(tabbedRebuilt, ["ledger"], "a Numbers change rebuilds onto the same tab");
+
+// The game's tab bar announces its starting tab after the first build; that announcement doesn't build the
+// tab again, while a pick of another tab does.
+globalThis.Controls = {};
+const targetBar = new FakeElement("div");
+renderDashboardTabbed(targetBar, model, undefined, "ledger");
+const bar = collect(targetBar).find((n) => n.tagName === "fxs-tab-bar");
+const tabBody = collect(targetBar).find((n) => n.className === "emig-tabbody");
+const builtBefore = tabBody.children.length;
+bar.eventHandlers["tab-selected"]({ detail: { selectedItem: { id: "2" } } });
+assert.equal(tabBody.children.length, builtBefore, "the starting tab's announcement doesn't rebuild it");
+bar.eventHandlers["tab-selected"]({ detail: { selectedItem: { id: "0" } } });
+assert.ok(tabBody.children.length > builtBefore, "picking another tab builds it");
+delete globalThis.Controls;
+
 // Subtab render with controlsHost path and no-rebuild fallback
 const subTarget = new FakeElement("div");
 const controlsHost = new FakeElement("div");
