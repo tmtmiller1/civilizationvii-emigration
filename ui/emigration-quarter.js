@@ -19,6 +19,8 @@ import { applyQuarterYields, deduct, grantSigned } from "/emigration/ui/emigrati
 import { stancePayout, affordable, payStance } from "/emigration/ui/emigration-stance-payout.js";
 import { quarterName, quarterNameMsg, narrativeCiv, civType } from "/emigration/ui/emigration-naming.js";
 import { warOpponents } from "/emigration/ui/emigration-war.js";
+import { treatmentStance } from "/emigration/ui/emigration-borders.js";
+import { chooseAiStance, isAiHost, leaderFavouredYield } from "/emigration/ui/emigration-ai-host.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
 import { showDilemma } from "/emigration/ui/emigration-dilemma-view.js";
 import {
@@ -540,8 +542,12 @@ function recognizeAutomatically(signals, owner, turn, force) {
   // The per-age cap binds creating an enclave; one already established was counted then and is only
   // being recognized now.
   if (!force && !quarterAt(cand.tileKey) && capReached(owner)) return;
-  const option = quarterOptionsFor(cand.originCiv)
-    .find((o) => o.id !== "ignore" && affordable(resolveApplied(o, owner, cand.quarter.civ), owner));
+  const options = quarterOptionsFor(cand.originCiv);
+  const canPay = (/** @type {*} */ o) => affordable(resolveApplied(o, owner, cand.quarter.civ), owner);
+  // An AI host chooses (emigration-ai-host.js); the player's automatic mode keeps the first stance it can pay.
+  const option = isAiHost(owner)
+    ? options.find((o) => o.id === aiStanceId(owner, cand.quarter.civ, options, canPay))
+    : options.find((o) => o.id !== "ignore" && canPay(o));
   applyQuarterChoice(option ? option.id : "ignore", cand.tileKey, { ...cand.quarter, city: cand.city }, owner, turn);
   const gave = yieldsText(paidYields(quarterAt(cand.tileKey)));
   announce(owner, {
@@ -550,6 +556,22 @@ function recognizeAutomatically(signals, owner, turn, force) {
       "The {1_Name} has taken root {2_Where} in {3_City}: its families have stayed long enough to make the ward their own.",
       quarterNameMsg(cand.quarter.civ), whereOf(cand.quarter), cand.quarter.name), gave),
     civ: narrativeCiv(cand.quarter.civ).adj, dedupeKey: "quarter:auto:" + cand.tileKey + "|" + turn
+  });
+}
+
+/**
+ * The stance an AI host takes: let be at war with the homeland or under an Anti-Immigration card, else the
+ * affordable option paying the yield its leader favours, else the first affordable one.
+ * @param {number} owner Host player id. @param {number} originPid The enclave's origin player id.
+ * @param {*[]} options The offered options. @param {(o:*)=>boolean} canPay Whether the host can pay one.
+ * @returns {string} The option id.
+ */
+function aiStanceId(owner, originPid, options, canPay) {
+  return chooseAiStance(owner, originPid, options, {
+    atWar: (o, p) => safeHas(() => warOpponents(o), p),
+    stance: treatmentStance,
+    affordable: canPay,
+    favour: () => leaderFavouredYield(owner)
   });
 }
 

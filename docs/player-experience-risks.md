@@ -266,14 +266,29 @@ challenge it was meant to add.
 
 **Mitigations.**
 
-- *Exempt the AI from the parts it cannot answer.* Skip the urban leg for AI
-  civilizations, or apply them at half. The player still feels the full system. The owner check is a
-  one-line gate in `chargeDepartureGold` and the urban branch of `commitSourcePoint`. Status: proposed.
+- *Exempt the AI from the parts it cannot answer.* Status: moot since 2026-09-14, the urban leg is gone (8.8a).
 - *Give the AI the arrivals bias.* Weight the destination score slightly toward AI cities at higher
-  difficulty, mirroring the base game's difficulty bonuses. Status: proposed.
-- *Measure it.* Extend `scripts/tile-transfer-stress.mjs` or a probe to report per-civilization net
-  population and tile count over a hundred turns, human versus AI, before changing anything. Status:
-  the harness exists; the comparison is not scripted.
+  difficulty, mirroring the base game's difficulty bonuses. Status: not built (8.8b); the 2026-10-23 measurement
+  shows the AI keeping pace with the mod on, and its difficulty yield bonuses already raise its cities' pull.
+  Owner's note, 2026-10-23: when it is built, it's a setting on the Options menu, off by default.
+- *Measure it.* Status: done 2026-10-23, three 100-turn lab runs (8.8c). The AI isn't behind.
+- *Let the AI use the paid and pop-up parts.* Built 2026-10-23, unreleased: AI civilizations call their people home
+  on their own turn (`emigration-call-home-ai.js`), an AI host chooses its enclave stance and makes the refugee
+  decision (`emigration-ai-host.js`), one earlier "keep them happy" city strategy in the AI data
+  (`data/emigration-ai-strategy.sql`), and +2/+2/+3 Food per city on the Pro-Immigration card so the planner can
+  value it; the AI's call is sized by value since the same evening (unit-tested, not watched). The strategy's
+  effect on AI builds is unmeasured after one On/Off pair (too few low-happiness cities with a build) and harmless
+  either way. Status: unit-tested; the AI's internal call watched firing on its own (three calls in a 100-turn Deity
+  lab game, 2026-10-23, no crash with the strategy rows in; eight more in a 130-turn game); no external call fired
+  on its own in either game (the external fee, ×1.5 and ×3 per age, is rarely spare money), so the external call and
+  its notice to a human host rest on the console check and the tests. The Food card didn't get an
+  AI to slot the stance in 130 Deity Antiquity turns (all five had it unlocked), but in Exploration (+2 Food) two
+  AIs slotted the Pro-Immigration Stance by turn 31 and later swapped to the Anti-Immigration Stance; +1 is too
+  small, +2 is taken, and the Antiquity card now carries +2 (Goryeo took it by turn 61 in the next game; the Modern +3 card was taken by turn 71); two age
+  changes crossed clean but with no AI stance in hand at the crossing;
+  three AI hosts chose enclave stances by the rule in the Exploration leg of the second game; no refugee wave
+  reached an AI host, so that choice is unwatched. The
+  rest is on `WATCH_LIST.md` groups 3 and 12.
 
 ---
 
@@ -851,6 +866,7 @@ Status: moot 2026-09-14. The urban leg was removed (see 2.2), so no civilization
 - *Hook.* `adjustedPull` in `emigration-pull.js`, a destination-side multiplier from a small table keyed
   by difficulty.
 - *Verdict.* Probe the accessor, then build only if 8.8c shows the AI falling behind.
+- *When built (owner, 2026-10-23):* an Options setting, off by default; never on without the player switching it on.
 
 **8.8c Measure human versus AI over a long run.**
 
@@ -859,6 +875,28 @@ Status: moot 2026-09-14. The urban leg was removed (see 2.2), so no civilization
   pass), and log per civilization every ten turns: total population, rural tile count, buildings, gold.
   Diff human against the AI mean.
 - *Verdict.* Do this first in 8.8. It decides 8.8b.
+- *Done 2026-10-23.* Three Tower Bench lab games (`lab start --seed 4242 --age AGE_ANTIQUITY`, Small map, six
+  civilizations, game 1.5.0, the usual mod set; `lab drive 100 --every 10` with a per-civ sample expression reading
+  population, rural population, `Constructibles.getIds().length`, Gold and the mod's `EmigrationMigStats_v1`
+  tallies). Run B added `--setup Difficulty=DIFFICULTY_DEITY`; run C had Emigration switched off in the registry.
+  The human seat is played by one-turn Autoplay, which never founded a second city in any run, so "the seat" below
+  is a one-city AI-played empire, not a player; the AI mean and spread are the readings that matter.
+
+| Run | Setup | Turn | Seat cities / pop / rural / buildings / Gold | AI mean cities / pop / rural / buildings / Gold | AI pop min to max | Seat pop ÷ AI mean |
+|---|---|---|---|---|---|---|
+| A | Prince, Emigration on | 51 | 1 / 9 / 5 / 9 / 117 | 1.8 / 11.8 / 7.4 / 11.4 / 50 | 7 to 17 | 0.76 |
+| A | Prince, Emigration on | 101 | 1 / 20 / 10 / 20 / 24 | 4.0 / 26.8 / 19.4 / 28.0 / 164 | 14 to 34 | 0.75 |
+| B | Deity, Emigration on | 51 | 1 / 13 / 7 / 13 / 208 | 3.4 / 19.6 / 11.6 / 20.0 / 185 | 11 to 26 | 0.66 |
+| B | Deity, Emigration on | 101 | 1 / 21 / 10 / 26 / 138 | 6.2 / 52.2 / 31.4 / 62.4 / 1289 | 25 to 73 | 0.40 |
+| C | Prince, Emigration off | 51 | 1 / 9 / 5 / 9 / 117 | 1.8 / 12.2 / 7.8 / 12.2 / 72 | 4 to 19 | 0.74 |
+| C | Prince, Emigration off | 101 | 1 / 17 / 10 / 17 / 47 | 2.6 / 23.6 / 16.2 / 27.2 / 87 | 17 to 34 | 0.72 |
+
+  Read: with the mod on at Prince the AI mean at turn 101 is 26.8 against 23.6 with it off, and the spread is as
+  wide either way (14 to 34 on, 17 to 34 off); the seat's share of the AI mean is 0.75 on and 0.72 off. At Deity the
+  AI runs away from the seat (0.40) as it does without any mod. So the AI doesn't fall behind under the mod; it's a
+  touch larger. Cross-civ migration over 100 Antiquity turns was one population point in each of runs A and B (Greece
+  lost one to the seat in A, to Goryeo in B); the rest of the tallies were internal moves. No AI had a stance card
+  slotted at turn 101 in A or B. 8.8b stays unbuilt.
 
 ### 8.9 Multiplayer with full writes (issue 4.1)
 
@@ -889,7 +927,7 @@ orders the work.
 | The game's Grow City prompt | Raised for its owner from the turn after a mod arrival; blocks the end of turn (mod tests 59 to 67) | Unchanged; turn-timer behavior probed (8.9h) |
 | Refugee decision | Local pop-up; the choice charges gold, celebration, or Influence and settles into the local player's settlements | Owner decides, authority applies (8.9f) |
 | Enclave recognition pop-up (`quarterRecognition` 0) | Local settlements only | Owner decides, authority places (8.9f) |
-| Call home | Dialog or console call; offered after the local pass when the empire is calm; charges gold or Influence; moves points with `moveReturnees`; cooldown in module memory | Owner requests, authority executes; cooldown in the shared store (8.9f) |
+| Call home | Dialog or console call, and the AI's own call on its turn; offered after the local pass when the empire is calm; charges gold or Influence; moves points with `moveReturnees`; cooldown in the game configuration (`EmigrationCallHomeCooldown_v1`, since 2026-10-23) | Owner requests, authority executes; cooldown in the shared store (8.9f) |
 | Seeded rolls | Return (`gameSeed`), call home (`gameGUIDHexString`), arrivals and refugee staging (seeds built from state) | Run by the planner on the authority; batches carry the outcomes |
 | Event feeds | `Combat`, `UnitKilledInCombat`, `DistrictDamageChanged` (fog-independent, mod test 111), `RandomEventOccurred`, war and peace, `CityRemovedFromMap` | Recorded by the authority; the polled violence signals cover a host change |
 | Planner reads | Tile score from `getYields(plot, localPlayerID)`; `requireMet` through the local player's `hasMet` | View-independent (8.9c) |

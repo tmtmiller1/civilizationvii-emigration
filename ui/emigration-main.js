@@ -38,8 +38,9 @@ import { installCityReadout } from "/emigration/ui/emigration-city-readout.js";
 import { installEmigrationConsole, openEmigrationScreen } from "/emigration/ui/emigration-screen.js";
 import { installTrainHandler } from "/emigration/ui/emigration-train.js";
 import { installEmigrationDock } from "/emigration/ui/emigration-dock-decorator.js";
-import { offerCallHome, callHomeNow, callHomeCooldownLeft } from "/emigration/ui/emigration-call-home-action.js";
+import { offerCallHome, callHomeNow, callHomeCooldownLeft, callHomeResolvable } from "/emigration/ui/emigration-call-home-action.js";
 import { ownerCitySnapshots } from "/emigration/ui/emigration-city-readout-data.js";
+import { aiCallHomeOnTurn } from "/emigration/ui/emigration-call-home-ai.js";
 import { CALL_HOME_SCOPE, CALL_HOME_CURRENCY, callHomeQuote } from "/emigration/ui/emigration-call-home.js";
 import { installEmigrationCityPanel } from "/emigration/ui/emigration-city-panel.js";
 import { sweepEmptyRuralDistricts, sweepOnceGameStarts } from "/emigration/ui/emigration-plot-cleanup.js";
@@ -287,6 +288,8 @@ function onTurnActivated(data) {
     // Every civ pays its per-turn migration costs on its own turn (assimilation
     // load decay + migrant-holding). grantYield works cross-civ.
     chargePerTurnCosts(who, local);
+    // An AI civilization calls its displaced people home on its own turn (a human owner is skipped inside).
+    aiCallHomeOnTurn(who);
     if (who !== local) return;
     // Every local turn, whatever the pass interval: clear empty rural districts left by destroyed
     // improvements, so no abandoned plot stays unusable.
@@ -363,7 +366,9 @@ function offerCallHomeWhenCalm(pid) {
     if (typeof pid !== "number" || pid < 0) return;
     if (!isCalm(pid)) return;
     for (const scope of [CALL_HOME_SCOPE.INTERNAL, CALL_HOME_SCOPE.EXTERNAL]) {
-      if (callHomeQuote(pid, scope, CALL_HOME_CURRENCY.GOLD).points > 0 && offerCallHome(pid, scope)) return;
+      const quote = callHomeQuote(pid, scope, CALL_HOME_CURRENCY.GOLD, undefined,
+        { resolvable: callHomeResolvable(pid) });
+      if (quote.points > 0 && offerCallHome(pid, scope)) return;
     }
   } catch (e) {
     dlog("call home when calm threw " + e);
@@ -433,7 +438,7 @@ function consoleCallHome(scope, currency) {
     dlog("call home " + sc + ": " + JSON.stringify(r));
     return r;
   }
-  const quote = callHomeQuote(pid, sc, CALL_HOME_CURRENCY.GOLD);
+  const quote = callHomeQuote(pid, sc, CALL_HOME_CURRENCY.GOLD, undefined, { resolvable: callHomeResolvable(pid) });
   if (!offerCallHome(pid, sc, { includeDeclined: true })) {
     dlog("call home: nobody to call for " + sc + " (" + quote.available + " away)");
     return { ok: false, reason: "nobody-to-call", away: quote.available };

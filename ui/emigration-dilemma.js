@@ -8,7 +8,7 @@
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { getDilemmasEnabled } from "/emigration/ui/emigration-settings.js";
-import { narrativeCiv } from "/emigration/ui/emigration-naming.js";
+import { narrativeCiv, civNameMsg } from "/emigration/ui/emigration-naming.js";
 import { dilemmaPrompt } from "/emigration/ui/emigration-narrative.js";
 import { arriveRural } from "/emigration/ui/emigration-arrival-placement.js";
 import {
@@ -23,6 +23,10 @@ import { showDilemma } from "/emigration/ui/emigration-dilemma-view.js";
 import { displacedQuoteFor } from "/emigration/ui/emigration-displaced-quotes.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
+import { aiRefugeeChoice, hostCongestion, isAiHost } from "/emigration/ui/emigration-ai-host.js";
+import { warOpponents } from "/emigration/ui/emigration-war.js";
+import { callHomeBalance } from "/emigration/ui/emigration-call-home-action.js";
+import { CALL_HOME_CURRENCY } from "/emigration/ui/emigration-call-home.js";
 import { loc, msg } from "/emigration/ui/emigration-loc.js";
 
 const STATE_KEY = "EmigrationDilemma_v1";
@@ -61,8 +65,10 @@ function choices() {
 }
 
 /**
+ * @typedef {{age:number, count:number, lastTurn:number}} Throttle The per-age cap and cooldown of one decider.
  * @typedef {{spree: Record<string, {turn:number, victim:number, points:number}[]>,
- *   age:number, count:number, lastTurn:number}} DilemmaState
+ *   age:number, count:number, lastTurn:number, ai: Record<string, Throttle>}} DilemmaState
+ *   `ai` holds each AI host's own throttle, keyed by player id; the top-level fields are the local player's.
  */
 /** @type {DilemmaState | null} */
 let _state = null;
@@ -70,7 +76,7 @@ registerCacheReset(() => { _state = null; });
 
 /** @returns {DilemmaState} */
 function emptyState() {
-  return { spree: {}, age: currentAge(), count: 0, lastTurn: -999 };
+  return { spree: {}, age: currentAge(), count: 0, lastTurn: -999, ai: {} };
 }
 
 /**
@@ -156,8 +162,25 @@ function normalizeState(parsed) {
     count: nonNegInt(payload.count, 0),
     lastTurn: typeof payload.lastTurn === "number" && isFinite(payload.lastTurn)
       ? Math.floor(payload.lastTurn)
-      : -999
+      : -999,
+    ai: normalizeAi(payload.ai)
   };
+}
+
+/**
+ * The AI hosts' throttles from a persisted blob: one clean {age, count, lastTurn} per numeric player key.
+ * @param {*} raw The stored map, or anything else. @returns {Record<string, Throttle>}
+ */
+function normalizeAi(raw) {
+  /** @type {Record<string, Throttle>} */ const out = {};
+  if (!raw || typeof raw !== "object") return out;
+  for (const [k, v] of Object.entries(raw)) {
+    if (!/^\d+$/.test(k) || !v || typeof v !== "object") continue;
+    const t = /** @type {*} */ (v);
+    out[k] = { age: nonNegInt(t.age, 0), count: nonNegInt(t.count, 0),
+      lastTurn: typeof t.lastTurn === "number" && isFinite(t.lastTurn) ? Math.floor(t.lastTurn) : -999 };
+  }
+  return out;
 }
 
 function currentAge() {
@@ -177,7 +200,7 @@ function localPid() {
   }
 }
 
-/** @returns {{ spree: Record<string, *[]>, age:number, count:number, lastTurn:number }} */
+/** @returns {DilemmaState} */
 function state() {
   resetCachesOnNewGame();
   if (!_state) _state = loadState() || emptyState();
@@ -191,7 +214,7 @@ function readStored() {
   return typeof v === "string" && v.length ? v : null;
 }
 
-/** @returns {{ spree: Record<string, *[]>, age:number, count:number, lastTurn:number }|null} */
+/** @returns {DilemmaState|null} */
 function loadState() {
   try {
     const raw = readStored();
@@ -308,9 +331,13 @@ function detectPlagueDilemma(migrations, me) {
  * @param {string} choiceId
  * @param {{origin:number}} d The dilemma descriptor.
  * @param {*[]} localCities The local player's city signals (largest first).
- * @param {number} me Local player id. @param {number} turn Now.
+ * @param {{me:number, turn:number, narrate?:(choiceId:string, d:*, hostSig:*, turn:number, me:number)=>void}} ctx
+ *   The deciding player, the turn, and the Chronicle line writer (the player's second-person line by default;
+ *   an AI host's third-person line).
  */
-function applyChoice(choiceId, d, localCities, me, turn) {
+function applyChoice(choiceId, d, localCities, ctx) {
+  const { me, turn } = ctx;
+  const narrate = ctx.narrate || chronicleDecision;
   try {
     const welcomeGold = Math.max(0, Number(CONFIG.dilemmaGoldWelcome) || 0);
     const frontierGold = Math.max(0, Number(CONFIG.dilemmaGoldFrontier) || 0);
@@ -326,7 +353,7 @@ function applyChoice(choiceId, d, localCities, me, turn) {
     } else if (choiceId === "away") {
       deduct(me, "YIELD_DIPLOMACY", -awayInfluence);
     }
-    chronicleDecision(choiceId, d, localCities[0], turn);
+    narrate(choiceId, d, localCities[0], turn, me);
   } catch (_) {
     /* a dilemma outcome must never break anything */
   }
@@ -408,6 +435,7 @@ export function maybeDilemma(conquests, migrations, signals) {
       ? detectConquestDilemma(s, me) || detectPlagueDilemma(migrations, me)
       : null;
     if (d) fireDilemma(s, d, signals, me, turn);
+    decideForAiHosts(s, migrations, signals, turn);
     persist();
     return !!d;
   } catch (_) {
@@ -419,7 +447,7 @@ export function maybeDilemma(conquests, migrations, signals) {
 /**
  * Stamp the throttle and present the dilemma modal, wired to apply the chosen effects to the local
  * player's cities (largest first, so "welcome" settles the capital and "frontier" a smaller town).
- * @param {{count:number, lastTurn:number}} s @param {*} d The descriptor.
+ * @param {DilemmaState} s @param {*} d The descriptor.
  * @param {*[]} signals City signals. @param {number} me Local player id. @param {number} turn Now.
  */
 function fireDilemma(s, d, signals, me, turn) {
@@ -428,7 +456,90 @@ function fireDilemma(s, d, signals, me, turn) {
   const localCities = (signals || [])
     .filter((x) => x.owner === me)
     .sort((a, b) => (b.population || 0) - (a.population || 0));
-  showDilemma(dilemmaView(d, monoTurn()), (/** @type {string} */ id) => applyChoice(id, d, localCities, me, turn));
+  showDilemma(dilemmaView(d, monoTurn()), (/** @type {string} */ id) => applyChoice(id, d, localCities, { me, turn }));
+}
+
+/**
+ * The same refugee decision for every AI host with a city this pass, with no pop-up: the host's own throttle
+ * (per-age cap and cooldown, kept per host in `s.ai`), the same two triggers, a choice from
+ * emigration-ai-host.js, the same costs, and one Chronicle line in the third person.
+ * @param {DilemmaState} s @param {*[]} migrations This pass's migrations. @param {*[]} signals City signals.
+ * @param {number} turn Now (monotonic).
+ */
+function decideForAiHosts(s, migrations, signals, turn) {
+  if (!s.ai) s.ai = {};
+  for (const host of aiHostsIn(signals)) {
+    const t = s.ai[host] || (s.ai[host] = { age: currentAge(), count: 0, lastTurn: -999 });
+    if (!canFire(t, turn, currentAge())) continue;
+    const d = detectConquestDilemma(s, host) || detectPlagueDilemma(migrations, host);
+    if (!d) continue;
+    const cities = (signals || [])
+      .filter((x) => x && x.owner === host)
+      .sort((a, b) => (b.population || 0) - (a.population || 0));
+    const pick = aiRefugeeChoice(host, d.origin, cities, aiReads(cities));
+    if (!pick) continue;
+    t.count += 1;
+    t.lastTurn = turn;
+    // welcome settles into the first signal and frontier into the last, and the Chronicle names the first:
+    // hand applyChoice the chosen city at both ends, or the whole list when nobody is taken in.
+    const into = pick.city ? [pick.city, pick.city] : cities;
+    applyChoice(pick.id, d, into, { me: host, turn, narrate: chronicleAiDecision });
+  }
+}
+
+/**
+ * The live reads an AI host's refugee choice is made from.
+ * @param {*[]} cities The host's city signals. @returns {import("./emigration-ai-host.js").RefugeeDeps}
+ */
+function aiReads(cities) {
+  const pop = cities.reduce((n, c) => n + (c.population || 0), 0);
+  return {
+    atWar: (host, origin) => {
+      try {
+        return warOpponents(host).has(origin);
+      } catch (_) {
+        return false;
+      }
+    },
+    congestion: (host) => hostCongestion(host, pop),
+    gold: (host) => callHomeBalance(host, CALL_HOME_CURRENCY.GOLD),
+    influence: (host) => callHomeBalance(host, CALL_HOME_CURRENCY.INFLUENCE)
+  };
+}
+
+/**
+ * The AI-run major civilizations with a city signal this pass.
+ * @param {*[]} signals City signals. @returns {number[]} Host player ids.
+ */
+function aiHostsIn(signals) {
+  /** @type {Set<number>} */ const seen = new Set();
+  for (const x of signals || []) {
+    if (x && typeof x.owner === "number" && !x.isCityState && !seen.has(x.owner) && isAiHost(x.owner)) seen.add(x.owner);
+  }
+  return Array.from(seen);
+}
+
+/**
+ * The Chronicle line for an AI host's decision, in the third person ("Rome opened Ostia to the refugees of the
+ * Greeks").
+ * @param {string} choiceId @param {{origin:number}} d The descriptor.
+ * @param {*} hostSig The city the refugees were settled into (or the capital, for "away").
+ * @param {number} turn Now. @param {number} host The host player id.
+ */
+function chronicleAiDecision(choiceId, d, hostSig, turn, host) {
+  const nc = narrativeCiv(d.origin);
+  const hostName = civNameMsg(host);
+  const place = hostSig && hostSig.city ? cityName(hostSig.city) : msg("LOC_EMIG_DIL_THEIR_LANDS", "their lands");
+  const body = choiceId === "welcome"
+    ? msg("LOC_EMIG_DIL_AI_BODY_WELCOME",
+      "{1_Host} opened {2_Place} to the refugees of {3_Adj}.", hostName, place, nc.adjMsg)
+    : choiceId === "frontier"
+      ? msg("LOC_EMIG_DIL_AI_BODY_FRONTIER",
+        "{1_Host} sent the refugees of {2_Adj} to its frontier, to {3_Place}.", hostName, nc.adjMsg, place)
+      : msg("LOC_EMIG_DIL_AI_BODY_AWAY",
+        "{1_Host} turned the refugees of {2_Adj} away from its borders.", hostName, nc.adjMsg);
+  chronicle({ kind: "founding", title: msg("LOC_EMIG_DIL_CHRON_TITLE", "A Decision at the Border"),
+    body, civ: nc.adj, dedupeKey: "dilemma-ai:" + host + "|" + d.origin + "|" + turn });
 }
 
 /**
@@ -478,5 +589,7 @@ export const __test = {
   choices,
   readStateForTest: () => state(),
   persistStateForTest: () => persist(),
-  loadStateForTest: () => loadState()
+  loadStateForTest: () => loadState(),
+  decideForAiHosts,
+  normalizeAi
 };

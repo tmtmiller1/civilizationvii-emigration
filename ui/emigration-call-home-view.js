@@ -36,7 +36,8 @@ export function parseChoice(id) {
  * The dialog view for one variant, or null when nobody is callable.
  * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {{flows?:*[], afford?:(currency:number)=>number, civ?:(pid:number)=>string, seed?:string, quote?:string,
- *   declined?:Record<string, number>}} [deps] Injected reads: the flow rows (default live), the treasury balance
+ *   declined?:Record<string, number>, resolvable?:(pair:*)=>boolean}} [deps]
+ *   Injected reads: the flow rows (default live), the treasury balance
  *   per currency (default unlimited), a civ's name, the epigraph seed (one quote per offer), the epigraph
  *   itself, and the people the player already left where they are.
  * @returns {{eyebrow:string, title:string, body:string, details:string[], dismissId:string, quote:string,
@@ -44,7 +45,8 @@ export function parseChoice(id) {
  */
 export function callHomeView(pid, scope, deps) {
   const d = deps || /** @type {*} */ ({});
-  const quote = callHomeQuote(pid, scope, CALL_HOME_CURRENCY.GOLD, d.flows, { declined: d.declined });
+  const quote = callHomeQuote(pid, scope, CALL_HOME_CURRENCY.GOLD, d.flows,
+    { declined: d.declined, resolvable: d.resolvable });
   if (quote.points <= 0) return null;
   const external = scope === CALL_HOME_SCOPE.EXTERNAL;
   const civ = (/** @type {number} */ host) => (typeof d.civ === "function" ? d.civ(host) : civName(host)) || "";

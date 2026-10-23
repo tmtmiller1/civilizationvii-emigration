@@ -227,7 +227,35 @@ function testDisabledOffersNothing() {
   assert.equal(r.reason, "disabled");
 }
 
+function testResolvableFilterAndRefund() {
+  // A pair whose host city no longer resolves is left out of the quote, so the fee is sized to the people who
+  // can actually move.
+  const q = callHomeQuote(ME, CALL_HOME_SCOPE.INTERNAL, CALL_HOME_CURRENCY.GOLD, FLOWS, { resolvable: (p) => p.from !== "Ostia" });
+  assert.equal(q.points, 0, "the only internal pair is unresolvable, so nobody is quoted");
+  const q2 = callHomeQuote(ME, CALL_HOME_SCOPE.INTERNAL, CALL_HOME_CURRENCY.GOLD, FLOWS, { resolvable: () => true });
+  assert.equal(q2.points, 3, "a resolvable pair is quoted as before");
+  // A paid internal call whose moves all fail refunds the fee and reports none-moved with nothing paid.
+  let paid = 0, refunded = 0;
+  const r = resolveCallHome(ME, CALL_HOME_SCOPE.INTERNAL, CALL_HOME_CURRENCY.GOLD, {
+    turn: 10, flows: FLOWS, pay: (a) => { paid += a; return true; }, refund: (a) => { refunded += a; }, move: () => false
+  });
+  assert.equal(r.reason, "none-moved");
+  assert.equal(r.paid, 0, "nothing is reported as paid");
+  assert.ok(paid > 0 && refunded === paid, "the fee charged is the fee refunded");
+  // An external call the dice refused keeps its fee: no refund.
+  const prev = CONFIG.callHomeChanceExternal;
+  CONFIG.callHomeChanceExternal = 0;
+  refunded = 0;
+  const r2 = resolveCallHome(ME, CALL_HOME_SCOPE.EXTERNAL, CALL_HOME_CURRENCY.GOLD, {
+    turn: 10, flows: FLOWS, pay: () => true, refund: (a) => { refunded += a; }, move: () => true
+  });
+  CONFIG.callHomeChanceExternal = prev;
+  assert.equal(r2.reason, "nobody-came");
+  assert.ok(r2.paid > 0 && refunded === 0, "the gamble's fee stays paid");
+}
+
 testCandidatesSplitByOwner();
+testResolvableFilterAndRefund();
 testOnlyRefugeesAreCallable();
 testInternalIsCertainAndExternalIsNot();
 testFeeIsConvexAndDearerAbroad();

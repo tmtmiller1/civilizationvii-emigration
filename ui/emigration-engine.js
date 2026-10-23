@@ -7,6 +7,7 @@
 // module owns move-planning (how many points a source sheds and how they travel) and the per-turn pass.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { rememberPassRanked } from "/emigration/ui/emigration-pass-signals.js";
 import { speedTurns, speedBar, speedDecay, speedShock } from "/emigration/ui/emigration-game-speed.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { rankByProsperity, lethalDistress } from "/emigration/ui/emigration-prosperity.js";
@@ -832,7 +833,7 @@ export function runPass() {
   tickDisasters(); // decay accumulated disaster distress before reading it
   pollCrisis(); // cache the active age crisis so moves/deaths can be attributed to it
   const signals = collectCitySignals();
-  const ranked = signals.length ? rankByProsperity(signals) : [];
+  const ranked = rememberPassRanked(signals.length ? rankByProsperity(signals) : []);
 
   const state = loadState();
   prepareState(state, ranked);

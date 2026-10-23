@@ -338,6 +338,9 @@
         <Row Tag="LOC_EMIG_CALLHOME_CHRON_TITLE"><Text>They Answer The Call</Text></Row>
         <Row Tag="LOC_EMIG_CALLHOME_CHRON_NONE"><Text>The call went out to our people abroad, and none of them came.</Text></Row>
         <Row Tag="LOC_EMIG_CALLHOME_CHRON_NONE_TITLE"><Text>The Call Goes Unanswered</Text></Row>
+        <Row Tag="LOC_EMIG_CALLHOME_AI_LOSS"><Text>{1_Civ} calls its people home from {2_City}: {3_Count} population points leave.</Text></Row>
+        <Row Tag="LOC_EMIG_CALLHOME_AI_LOSS_ONE"><Text>{1_Civ} calls its people home from {2_City}: one population point leaves.</Text></Row>
+        <Row Tag="LOC_EMIG_CALLHOME_AI_LOSS_TITLE"><Text>Called Home By Their Own</Text></Row>
         <Row Tag="LOC_EMIG_T_MAJORVIOL"><Text>Pressure from wars with major civilizations</Text></Row>
         <Row Tag="LOC_EMIG_T_MAJORVIOL_D"><Text>How much conflict pressure an attack creates when a major civilization is among the attackers. 1 is the default; lower means wars displace fewer people, higher means more.</Text></Row>
         <Row Tag="LOC_EMIG_T_SIEGEFLOOR"><Text>Siege floor: major civilizations</Text></Row>
@@ -350,6 +353,14 @@
         <Row Tag="LOC_EMIG_T_CALLHOME_D"><Text>Offers a paid call to bring displaced people back to the settlement they fled, in a size you choose. From your own settlements it is a purchase: that many come. From abroad the call is paid for either way and each person asked may or may not answer.</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_PEACE"><Text>Offer when things are calm</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_PEACE_D"><Text>Raises the call automatically once no settlement of yours is under war, siege, disaster or famine and your people are still displaced. Off leaves it to the console.</Text></Row>
+        <Row Tag="LOC_EMIG_SETUP_AI_STRATEGY"><Text>Emigration: AI keeps cities happy</Text></Row>
+        <Row Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC"><Text>Gives AI civilizations an earlier, gentler "keep them happy" city strategy, so an AI city that is getting unhappy builds happiness before people start leaving. The game's own strategy only starts once a city is already unhappy. Chosen here for the whole game.</Text></Row>
+        <Row Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON"><Text>On</Text></Row>
+        <Row Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC"><Text>AI cities start building happiness while their net happiness is still a little above zero.</Text></Row>
+        <Row Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF"><Text>Off</Text></Row>
+        <Row Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC"><Text>The AI keeps the game's own strategies only.</Text></Row>
+        <Row Tag="LOC_EMIG_T_CALLHOME_AI"><Text>AI civilizations call people home</Text></Row>
+        <Row Tag="LOC_EMIG_T_CALLHOME_AI_D"><Text>On their own turn, AI civilizations call their displaced people home once none of their settlements is in distress, paying the same price with the same odds and cooldown you get. From their own settlements first; from abroad only when they still have the Gold or Influence for it. When a call takes people out of one of your cities, you get a notice naming who called. Off leaves the AI to wait for people to drift back on their own.</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_EX"><Text>Chance each point returns from abroad</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_EX_D"><Text>How likely each point living under another civilization is to answer a call. Low: they have a life there now, and a call may bring nobody.</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_GOLD"><Text>Gold to call one person home</Text></Row>
@@ -611,9 +622,9 @@
 
         <!-- Border policy cards (primary UI) -->
         <Row Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME"><Text>Pro-Immigration Stance</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC"><Text>+1 [icon:YIELD_DIPLOMACY] Influence per turn. +50% [icon:YIELD_POPULATION] immigration. Refugees come to you first. Enclaves keep full yields, even at war.</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX"><Text>+2 [icon:YIELD_DIPLOMACY] Influence per turn. +50% [icon:YIELD_POPULATION] immigration. Refugees come to you first. Enclaves keep full yields, even at war.</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO"><Text>+3 [icon:YIELD_DIPLOMACY] Influence per turn. +50% [icon:YIELD_POPULATION] immigration. Refugees come to you first. Enclaves keep full yields, even at war.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC"><Text>+2 [icon:YIELD_FOOD] Food in every city. +1 [icon:YIELD_DIPLOMACY] Influence per turn. +50% [icon:YIELD_POPULATION] immigration. Refugees come to you first. Enclaves keep full yields, even at war.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX"><Text>+2 [icon:YIELD_FOOD] Food in every city. +2 [icon:YIELD_DIPLOMACY] Influence per turn. +50% [icon:YIELD_POPULATION] immigration. Refugees come to you first. Enclaves keep full yields, even at war.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO"><Text>+3 [icon:YIELD_FOOD] Food in every city. +3 [icon:YIELD_DIPLOMACY] Influence per turn. +50% [icon:YIELD_POPULATION] immigration. Refugees come to you first. Enclaves keep full yields, even at war.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME"><Text>Anti-Immigration Stance</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC"><Text>+2 [icon:YIELD_PRODUCTION] Production in every city. -2 [icon:YIELD_DIPLOMACY] Influence per turn. -60% [icon:YIELD_POPULATION] immigration, -40% emigration. Refugees settle 60% slower. Enclaves keep half their yields (a quarter at war).</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX"><Text>+3 [icon:YIELD_PRODUCTION] Production in every city. -3 [icon:YIELD_DIPLOMACY] Influence per turn. -60% [icon:YIELD_POPULATION] immigration, -40% emigration. Refugees settle 60% slower. Enclaves keep half their yields (a quarter at war).</Text></Row>
@@ -655,7 +666,7 @@
         <Row Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY"><Text>Emigration moves population between settlements. Each turn, people leave unhappy, struggling or war-torn settlements for happier, more prosperous ones, within your civilization and across borders.[n][n]A Prosperity model scores each city on its happiness, yields and circumstances, weighted by distance so migration stays regional. A civilization pays an integration cost while its newcomers settle in.[n][n]Every settlement records the civilizations its people descend from, shown on the map by the Ethnic Composition lens. Newcomers gradually take on their host's identity, diasporas return home once their homeland recovers, and the Migration Chronicle records the great waves as history.[n][n]Aggressor avoidance, border policies, disasters, ethnic integration, return migration and refugee decisions are on by default; each can be switched off in Options, Add-ons, Emigration.</Text></Row>
 
         <Row Tag="LOC_PEDIA_EMIG_FAQ_TITLE"><Text>Common Questions</Text></Row>
-        <Row Tag="LOC_PEDIA_EMIG_FAQ_BODY"><Text>What drives migration. Most of it is tunable in Options, Add-ons, Emigration, and the dashboard's Guide tab has the full version.[n][n]✓ Your civilization and every other major civilization move population, met or unmet.[n]✗ City-states, minor civilizations and Independent Powers neither send nor receive population.[n]✓ Pushes: unhappiness, low yields, war damage, sieges (including attacks by a city-state or Independent Power), pillaging, starvation, plague, disasters and overcrowding.[n]✓ Pulls: prosperity, high happiness, a Pro-Immigration Stance, Open Borders and proximity.[n]✓ Migrants travel for a delay that grows with distance, and their host pays a temporary integration cost. War empties a city only by capturing it.[n]✓ Each settlement gains and loses at most a set number of people per turn, scaled by the intensity preset. Arrivals over the cap wait in transit, and refugees with nowhere to land die on the road.[n][n]Emigration leaves AI decisions and base-game files as they are. Unmet civilizations are simulated and stay hidden until you meet them.</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIG_FAQ_BODY"><Text>What drives migration. Most of it is tunable in Options, Add-ons, Emigration, and the dashboard's Guide tab has the full version.[n][n]✓ Your civilization and every other major civilization move population, met or unmet.[n]✗ City-states, minor civilizations and Independent Powers neither send nor receive population.[n]✓ Pushes: unhappiness, low yields, war damage, sieges (including attacks by a city-state or Independent Power), pillaging, starvation, plague, disasters and overcrowding.[n]✓ Pulls: prosperity, high happiness, a Pro-Immigration Stance, Open Borders and proximity.[n]✓ Migrants travel for a delay that grows with distance, and their host pays a temporary integration cost. War empties a city only by capturing it.[n]✓ Each settlement gains and loses at most a set number of people per turn, scaled by the intensity preset. Arrivals over the cap wait in transit, and refugees with nowhere to land die on the road.[n][n]Emigration adds one AI city strategy (keep them happy) and lets AI civilizations call their people home, choose enclave stances and decide on refugees through its own rules; base-game files are left as they are. Unmet civilizations are simulated and stay hidden until you meet them.</Text></Row>
         <Row Tag="LOC_PEDIA_EMIG_PROSPERITY_TITLE"><Text>Prosperity &amp; Migration</Text></Row>
         <Row Tag="LOC_PEDIA_EMIG_PROSPERITY_BODY"><Text>Each settlement's Prosperity comes from its per-capita yields and, above all, its net happiness. An unhappy city loses people to happier, wealthier ones even in peacetime, and a small penalty for size limits how strongly a large city attracts.[n][n]People prefer nearby destinations, so migration spreads outward across a region. War, siege, starvation, unrest and disaster sharply lower a city's Prosperity and make it a source of refugees.</Text></Row>
 
@@ -1408,6 +1419,10 @@
         <Row Tag="LOC_EMIG_DIL_CHRON_TITLE">
             <Text>A Decision at the Border</Text>
         </Row>
+        <Row Tag="LOC_EMIG_DIL_THEIR_LANDS"><Text>their lands</Text></Row>
+        <Row Tag="LOC_EMIG_DIL_AI_BODY_WELCOME"><Text>{1_Host} opened {2_Place} to the refugees of {3_Adj}.</Text></Row>
+        <Row Tag="LOC_EMIG_DIL_AI_BODY_FRONTIER"><Text>{1_Host} sent the refugees of {2_Adj} to its frontier, to {3_Place}.</Text></Row>
+        <Row Tag="LOC_EMIG_DIL_AI_BODY_AWAY"><Text>{1_Host} turned the refugees of {2_Adj} away from its borders.</Text></Row>
         <Row Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT">
             <Text>Refugees</Text>
         </Row>
@@ -2376,7 +2391,7 @@
         <Row Tag="LOC_EMIG_GUIDE_4_R5_N"><Text>A community that reaches the share bar or the size bar forms an enclave on its own, in any civilization's city. The enclave is a real themed tile. After the dwell period it is recognized and takes a stance. It fades when its community shrinks. See the FAQ.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_5_TITLE"><Text>Scope &amp; limits</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_5_R0_Q"><Text>Change AI strategy or decisions</Text></Row>
-        <Row Tag="LOC_EMIG_GUIDE_5_R0_N"><Text>No. Only the movement of population is layered on; the base game's AI decision-making is untouched.</Text></Row>
+        <Row Tag="LOC_EMIG_GUIDE_5_R0_N"><Text>A little. One city strategy is added, "keep them happy", an earlier and gentler copy of the game's own, so AI cities build happiness sooner. AI civilizations call their people home, choose enclave stances and decide on refugees through the mod's own rules, at the prices you pay. The rest of the AI is the game's.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_5_R1_Q"><Text>Replace or overwrite base-game files</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_5_R1_N"><Text>No. Additive only; no base-game files are replaced or overwritten.</Text></Row>
         <Row Tag="LOC_EMIG_GUIDE_5_R2_Q"><Text>Move population instantly across the map</Text></Row>

@@ -7,7 +7,7 @@
         <SpecialThanks>killmeplease, Tomahawk, Mk Z, and Tim_The_Texan's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>3.6.4</Version>
+        <Version>3.6.5</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -15,6 +15,14 @@
     <ActionCriteria>
         <Criteria id="always">
             <AlwaysMet></AlwaysMet>
+        </Criteria>
+        <!-- The AI keep-them-happy strategy rows load only while the game-setup option (config/emigration-setup.sql) is on. -->
+        <Criteria id="ai-strategy-on">
+            <ConfigurationValueMatches>
+                <Group>Game</Group>
+                <ConfigurationId>EMIG-AiStrategy</ConfigurationId>
+                <Value>EMIG_AI_STRATEGY_ON</Value>
+            </ConfigurationValueMatches>
         </Criteria>
         <Criteria id="antiquity-age-current">
             <AgeInUse>AGE_ANTIQUITY</AgeInUse>
@@ -53,6 +61,10 @@
                 <LoadOrder>60</LoadOrder>
             </Properties>
             <Actions>
+                <UpdateDatabase>
+                    <!-- The game-setup option that switches the AI keep-them-happy strategy. -->
+                    <Item>config/emigration-setup.sql</Item>
+                </UpdateDatabase>
                 <UpdateText>
                     <Item>text/en_us/ModText.xml</Item>
                     <Item locale="de_DE">text/de_de/ModText.xml</Item>
@@ -250,6 +262,9 @@
                     <Item>ui/emigration-return.js</Item>
                     <Item>ui/emigration-call-home.js</Item>
                     <Item>ui/emigration-call-home-action.js</Item>
+                    <Item>ui/emigration-call-home-ai.js</Item>
+                    <Item>ui/emigration-pass-signals.js</Item>
+                    <Item>ui/emigration-ai-host.js</Item>
                     <Item>ui/emigration-call-home-view.js</Item>
                     <!-- Refugee dilemmas: rare narrative decision + its trigger logic. The decision
                          renders in the game's own native dialog (DialogBoxManager), so there is no
@@ -303,6 +318,17 @@
                     <Item>data/emigration-enclave-icons.xml</Item>
                     <Item>data/emigration-notification-icons.xml</Item>
                 </UpdateIcons>
+            </Actions>
+        </ActionGroup>
+        <ActionGroup id="emigration-ai-strategy" scope="game" criteria="ai-strategy-on">
+            <Properties>
+                <LoadOrder>50</LoadOrder>
+            </Properties>
+            <Actions>
+                <UpdateDatabase>
+                    <!-- One earlier, gentler "keep them happy" city strategy for the AI, behind the game-setup option. -->
+                    <Item>data/emigration-ai-strategy.sql</Item>
+                </UpdateDatabase>
             </Actions>
         </ActionGroup>
         <ActionGroup id="emigration-policies-aq" scope="game" criteria="antiquity-age-current">

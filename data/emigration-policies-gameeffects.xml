@@ -120,6 +120,36 @@
         <String context="Description">LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO</String>
     </Modifier>
 
+    <!-- Pro-Immigration: the people the stance brings, as a yield the AI's planner can weigh. The planner values
+         a card only by its native modifiers (there is no favour list for traditions), so the +50% immigration,
+         the asylum tilt and the arrival dividend in the scripts were invisible to it and an AI only ever slotted
+         this card for its Influence. Flat +2 / +2 / +3 Food per city by age (Antiquity raised from +1 on 2026-10-23: no AI took it at +1);
+         it shows on the card and in the yield breakdown like any other modifier. -->
+    <Modifier id="MOD_EMIG_OPEN_BORDERS_FOOD_AQ" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_YIELD">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_CITY_IS_CITY"/>
+        </SubjectRequirements>
+        <Argument name="Amount">2</Argument>
+        <Argument name="YieldType">YIELD_FOOD</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_OPEN_BORDERS_NAME</Argument>
+    </Modifier>
+    <Modifier id="MOD_EMIG_OPEN_BORDERS_FOOD_EX" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_YIELD">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_CITY_IS_CITY"/>
+        </SubjectRequirements>
+        <Argument name="Amount">2</Argument>
+        <Argument name="YieldType">YIELD_FOOD</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_OPEN_BORDERS_NAME</Argument>
+    </Modifier>
+    <Modifier id="MOD_EMIG_OPEN_BORDERS_FOOD_MO" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_YIELD">
+        <SubjectRequirements>
+            <Requirement type="REQUIREMENT_CITY_IS_CITY"/>
+        </SubjectRequirements>
+        <Argument name="Amount">3</Argument>
+        <Argument name="YieldType">YIELD_FOOD</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_OPEN_BORDERS_NAME</Argument>
+    </Modifier>
+
     <!-- Anti-Immigration autarky: a mobilized, self-sufficient home economy adds Production in every
          city (war-economy / closed-off-from-the-world theme), compensating for the Influence cost the
          stance carries. Flat +2 / +3 / +4 per city by age, applied to the owner's cities. -->

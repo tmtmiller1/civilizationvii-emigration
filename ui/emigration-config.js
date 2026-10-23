@@ -265,6 +265,7 @@ export const CONFIG = {
   callHomeMaxPointsPerAttempt: 3, // points attempted per call
   callHomeCooldownTurns: 8, // turns before the same civilization may call again
   callHomeOfferWhenCalm: true, // offer the call once no settlement is under distress and people are still away
+  callHomeAi: true, // AI civilizations call their own people home on their turn, at the same price, odds and cooldown
 
   // refugee dilemmas (rare narrative decisions)
   // Once in a while a great wave of refugees reaches your lands and you pause for a short decision

@@ -59,6 +59,7 @@
     <!-- Native modifiers (defined in emigration-policies-gameeffects.xml). -->
     <TraditionModifiers>
         <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_EXPLORATION" ModifierId="MOD_EMIG_OPEN_BORDERS_INFLUENCE_EX"/>
+        <Row TraditionType="TRADITION_EMIG_OPEN_BORDERS_EXPLORATION" ModifierId="MOD_EMIG_OPEN_BORDERS_FOOD_EX"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_EXPLORATION" ModifierId="MOD_EMIG_CLOSED_BORDERS_INFLUENCE_EX"/>
         <Row TraditionType="TRADITION_EMIG_CLOSED_BORDERS_EXPLORATION" ModifierId="MOD_EMIG_CLOSED_BORDERS_PRODUCTION_EX"/>
         <Row TraditionType="TRADITION_EMIG_TALENT_EXPLORATION" ModifierId="MOD_EMIG_TALENT_YIELD_EX"/>

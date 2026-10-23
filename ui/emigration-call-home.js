@@ -124,15 +124,22 @@ export function callHomeCandidates(pid, flows) {
  * call to the size the player picked; it can never exceed the per-call cap.
  * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {number} currency A CALL_HOME_CURRENCY. @param {*[]} [flows] Flow rows (defaults to live).
- * @param {number|{want?:number, declined?:Record<string, number>}} [ask] How many the player asked for (default:
- *   as many as the cap allows), alone or with the points the player chose to leave, by {@link pairKey}.
+ * @param {number|{want?:number, declined?:Record<string, number>, resolvable?:(pair:*)=>boolean,
+ *   order?:(pairs:*[])=>*[]}} [ask] How many the
+ *   player asked for (default: as many as the cap allows), alone or with the points the player chose to leave, by
+ *   {@link pairKey}, and a test of whether a pair's two cities still exist under the owners the ledger names (a pair
+ *   that fails it is left out, so the quote, the fee and the moves agree), and an ordering of the pairs that
+ *   replaces richest-first (the AI serves the home city that needs people most).
  * @returns {{scope:string, available:number, points:number, cost:number, chance:number, pairs:*[]}} The quote.
  */
 export function callHomeQuote(pid, scope, currency, flows, ask) {
   const opts = ask && typeof ask === "object" ? ask : { want: ask };
   const want = opts.want;
   const cands = callHomeCandidates(pid, flows);
-  const pairs = withoutDeclined(scope === CALL_HOME_SCOPE.EXTERNAL ? cands.external : cands.internal, opts.declined);
+  const listed = withoutDeclined(scope === CALL_HOME_SCOPE.EXTERNAL ? cands.external : cands.internal, opts.declined);
+  const keep = opts.resolvable;
+  const kept = typeof keep === "function" ? listed.filter((p) => keep(p)) : listed;
+  const pairs = typeof opts.order === "function" ? opts.order(kept.slice()) : kept;
   const available = pairs.reduce((n, p) => n + p.points, 0);
   const cap = Math.max(0, Math.floor(Number(CONFIG.callHomeMaxPointsPerAttempt) || 0));
   const asked = Number.isFinite(Number(want)) && Number(want) > 0 ? Math.floor(Number(want)) : cap;
@@ -193,15 +200,18 @@ export function callHomeRoll(seed, chance) {
  * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {number} currency A CALL_HOME_CURRENCY.
  * @param {{turn:number, gameId?:string|number, flows?:*[], want?:number, pay:(amount:number, currency:number)=>boolean,
- *   move:(pair:*)=>boolean, afford?:(currency:number)=>number, declined?:Record<string, number>}} deps Effects: how
- *   many were asked for, what the player can spend, pay the bill, move one point home, and who was left
- *   where they are (never called).
+ *   move:(pair:*)=>boolean, afford?:(currency:number)=>number, declined?:Record<string, number>,
+ *   resolvable?:(pair:*)=>boolean, order?:(pairs:*[])=>*[], refund?:(amount:number, currency:number)=>void}} deps
+ *   Effects: how many were
+ *   asked for, what the player can spend, pay the bill, move one point home, who was left where they are (never
+ *   called), which pairs still resolve to real cities, and the refund when a paid call moved nobody.
  * @returns {{ok:boolean, reason:string, scope:string, paid:number, attempted:number, returned:number}} Result.
  */
 export function resolveCallHome(pid, scope, currency, deps) {
   const d = deps || /** @type {*} */ ({});
   if (!CONFIG.callHomeEnabled) return fail("disabled", scope);
-  const quote = callHomeQuote(pid, scope, currency, d.flows, { want: d.want, declined: d.declined });
+  const quote = callHomeQuote(pid, scope, currency, d.flows,
+    { want: d.want, declined: d.declined, resolvable: d.resolvable, order: d.order });
   if (quote.points <= 0) return fail("nobody-to-call", scope);
   // A treasury that covers a smaller call than was asked for makes that smaller call, not none.
   const size = affordableSize(quote.points, scope, currency, d);
@@ -215,7 +225,21 @@ export function resolveCallHome(pid, scope, currency, deps) {
     : { attempted: size, returned: size };
   if (returned <= 0) return { ok: false, reason: "nobody-came", scope, paid: bill, attempted, returned: 0 };
   const moved = moveHome(quote, returned, d);
-  return { ok: true, reason: moved ? "returned" : "none-moved", scope, paid: bill, attempted, returned: moved };
+  if (moved <= 0) return noneMoved(d, bill, currency, scope, attempted);
+  return { ok: true, reason: "returned", scope, paid: bill, attempted, returned: moved };
+}
+
+/**
+ * A paid call that moved nobody: the people agreed to come (or the call was internal, which is certain) and the
+ * move still failed, which is the mod's failure rather than the gamble, so the fee goes back. An external call the
+ * dice refused keeps its fee and is reported as "nobody-came" by the caller instead.
+ * @param {*} d The injected effects. @param {number} bill The fee paid. @param {number} currency A CALL_HOME_CURRENCY.
+ * @param {string} scope A CALL_HOME_SCOPE. @param {number} attempted How many were asked.
+ * @returns {*} The result.
+ */
+function noneMoved(d, bill, currency, scope, attempted) {
+  if (typeof d.refund === "function") d.refund(bill, currency);
+  return { ok: false, reason: "none-moved", scope, paid: 0, attempted, returned: 0 };
 }
 
 /**

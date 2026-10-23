@@ -312,6 +312,9 @@
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_TITLE" Language="ja_JP"><Text>呼びかけに応える人々</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE" Language="ja_JP"><Text>国外の同胞へ呼びかけが送られましたが、戻ってきた者は一人もいませんでした。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE_TITLE" Language="ja_JP"><Text>届かなかった呼びかけ</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS" Language="ja_JP"><Text>{1_Civ} calls its people home from {2_City}: {3_Count} population points leave.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_ONE" Language="ja_JP"><Text>{1_Civ} calls its people home from {2_City}: one population point leaves.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_TITLE" Language="ja_JP"><Text>Called Home By Their Own</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL" Language="ja_JP"><Text>主要文明との戦争による圧力</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL_D" Language="ja_JP"><Text>攻撃側に主要文明が含まれるとき、攻撃がどれだけの紛争圧力を生むか。既定値は1で、低いほど戦争で追われる人は少なく、高いほど多くなります。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SIEGEFLOOR" Language="ja_JP"><Text>包囲の下限: 主要文明</Text></Replace>
@@ -324,6 +327,14 @@
         <Replace Tag="LOC_EMIG_T_CALLHOME_D" Language="ja_JP"><Text>故郷を追われた人々を、逃れてきた元の居住地へ呼び戻す有料の呼びかけを、選んだ規模で提示します。自国の居住地からの場合は購入であり、その人数が確実に戻ります。国外からの場合、費用はどちらにしてもかかり、呼びかけた一人ひとりが応じるかどうかはわかりません。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="ja_JP"><Text>平穏なときに提示</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="ja_JP"><Text>自国のどの居住地も戦争、包囲、災害、飢饉に見舞われておらず、なお故郷を追われた人々がいるときに、自動的に呼びかけを提示します。オフの場合はコンソールに任されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="ja_JP"><Text>Emigration: AI keeps cities happy</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="ja_JP"><Text>Gives AI civilizations an earlier, gentler "keep them happy" city strategy, so an AI city that is getting unhappy builds happiness before people start leaving. The game's own strategy only starts once a city is already unhappy. Chosen here for the whole game.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="ja_JP"><Text>On</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="ja_JP"><Text>AI cities start building happiness while their net happiness is still a little above zero.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="ja_JP"><Text>Off</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="ja_JP"><Text>The AI keeps the game's own strategies only.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="ja_JP"><Text>AI civilizations call people home</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="ja_JP"><Text>On their own turn, AI civilizations call their displaced people home once none of their settlements is in distress, paying the same price with the same odds and cooldown you get. From their own settlements first; from abroad only when they still have the Gold or Influence for it. When a call takes people out of one of your cities, you get a notice naming who called. Off leaves the AI to wait for people to drift back on their own.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="ja_JP"><Text>国外から1ポイントが戻る確率</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX_D" Language="ja_JP"><Text>他の文明のもとで暮らす各ポイントが呼びかけに応じる確率です。低い = 彼らにはもうそこでの暮らしがあり、呼びかけても誰も戻らないことがあります。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_GOLD" Language="ja_JP"><Text>帰還人口1ポイントあたりのゴールド</Text></Replace>
@@ -872,6 +883,10 @@
         <Replace Tag="LOC_EMIG_DIL_BODY_FRONTIER" Language="ja_JP"><Text>あなたは{1_Adj}の難民を辺境へ送り、彼ら自身のものを築かせました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_BODY_AWAY" Language="ja_JP"><Text>あなたは{1_Adj}の難民を{2_Place}から追い返しました。彼らは道を先へと進んでいきました、{3_Who}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_CHRON_TITLE" Language="ja_JP"><Text>国境での決断</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_THEIR_LANDS" Language="ja_JP"><Text>their lands</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_WELCOME" Language="ja_JP"><Text>{1_Host} opened {2_Place} to the refugees of {3_Adj}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_FRONTIER" Language="ja_JP"><Text>{1_Host} sent the refugees of {2_Adj} to its frontier, to {3_Place}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_AWAY" Language="ja_JP"><Text>{1_Host} turned the refugees of {2_Adj} away from its borders.</Text></Replace>
         <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="ja_JP"><Text>難民</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_TITLE" Language="ja_JP"><Text>飛び地が建て替えられる</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_BODY" Language="ja_JP"><Text>{1_Name}は失われました。都市がその区画の上に建設し、住んでいた家族は周囲の街路へ散っていきました。</Text></Replace>

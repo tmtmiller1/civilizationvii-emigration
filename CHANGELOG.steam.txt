@@ -3,6 +3,12 @@ Generated from CHANGELOG.md by scripts/steam-changelog.mjs; release.sh uploads t
 To fix an old Workshop entry, paste the text under its ==== line into that entry's Edit box on the change-notes page.
 A block edited by hand is kept as-is. Delete a block to regenerate it from CHANGELOG.md.
 
+==== 3.6.5 | 2026-10-23 | src 1e475e2c0a37 | gen 4b2ee4d17d3b ====
+[b]Version 3.6.5 · 23 October 2026[/b]
+
+[b]Changed[/b]
+• README: a new section on how the AI interacts with the mod, which of its choices the mod makes for it, which come from the game's own planner, where the limits are, and what has been seen in a game.
+
 ==== 3.6.4 | 2026-10-18 | src 106ed858172a | gen f959bba1f568 ====
 [b]Version 3.6.4 · 18 October 2026[/b]
 

@@ -312,6 +312,9 @@
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_TITLE" Language="ko_KR"><Text>부름에 응하다</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE" Language="ko_KR"><Text>해외의 우리 백성에게 부름을 보냈지만, 아무도 돌아오지 않았습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE_TITLE" Language="ko_KR"><Text>응답 없는 부름</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS" Language="ko_KR"><Text>{1_Civ} calls its people home from {2_City}: {3_Count} population points leave.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_ONE" Language="ko_KR"><Text>{1_Civ} calls its people home from {2_City}: one population point leaves.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_TITLE" Language="ko_KR"><Text>Called Home By Their Own</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL" Language="ko_KR"><Text>주요 문명과의 전쟁 압력</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL_D" Language="ko_KR"><Text>공격자 중에 주요 문명이 있을 때 공격이 얼마나 큰 분쟁 압력을 만드는지. 기본값은 1이며, 낮을수록 전쟁으로 쫓겨나는 사람이 적고 높을수록 많아집니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SIEGEFLOOR" Language="ko_KR"><Text>포위 하한: 주요 문명</Text></Replace>
@@ -324,6 +327,14 @@
         <Replace Tag="LOC_EMIG_T_CALLHOME_D" Language="ko_KR"><Text>쫓겨난 사람들을 그들이 떠나온 정착지로 데려오는 유료 호출을 원하는 규모로 제안합니다. 내 정착지에서 부르는 것은 구매와 같아서, 정한 수만큼 돌아옵니다. 해외에서 부를 때는 비용이 어느 쪽이든 지불되며, 부름을 받은 각 사람은 응할 수도 있고 응하지 않을 수도 있습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="ko_KR"><Text>평온할 때 제안</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="ko_KR"><Text>내 정착지 중 전쟁, 포위, 재난, 기근을 겪는 곳이 없는데도 백성이 여전히 흩어져 있으면 호출을 자동으로 제안합니다. 끄면 콘솔에서 직접 하도록 맡깁니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="ko_KR"><Text>Emigration: AI keeps cities happy</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="ko_KR"><Text>Gives AI civilizations an earlier, gentler "keep them happy" city strategy, so an AI city that is getting unhappy builds happiness before people start leaving. The game's own strategy only starts once a city is already unhappy. Chosen here for the whole game.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="ko_KR"><Text>On</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="ko_KR"><Text>AI cities start building happiness while their net happiness is still a little above zero.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="ko_KR"><Text>Off</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="ko_KR"><Text>The AI keeps the game's own strategies only.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="ko_KR"><Text>AI civilizations call people home</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="ko_KR"><Text>On their own turn, AI civilizations call their displaced people home once none of their settlements is in distress, paying the same price with the same odds and cooldown you get. From their own settlements first; from abroad only when they still have the Gold or Influence for it. When a call takes people out of one of your cities, you get a notice naming who called. Off leaves the AI to wait for people to drift back on their own.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="ko_KR"><Text>해외 포인트별 귀환 확률</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX_D" Language="ko_KR"><Text>다른 문명 아래에 사는 각 포인트가 호출에 응할 가능성입니다. 낮음: 그들은 이제 그곳에서 삶을 꾸렸으므로, 호출해도 아무도 오지 않을 수 있습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_GOLD" Language="ko_KR"><Text>귀환 인구 포인트당 금</Text></Replace>
@@ -872,6 +883,10 @@
         <Replace Tag="LOC_EMIG_DIL_BODY_FRONTIER" Language="ko_KR"><Text>당신은 {1_Adj}의 난민을 변경으로 보내 그들만의 것을 일구게 했습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_BODY_AWAY" Language="ko_KR"><Text>당신은 {1_Adj}의 난민을 {2_Place}에서 돌려보냈습니다. 그들은 길을 따라 계속 나아갔습니다, {3_Who}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_CHRON_TITLE" Language="ko_KR"><Text>국경에서의 결정</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_THEIR_LANDS" Language="ko_KR"><Text>their lands</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_WELCOME" Language="ko_KR"><Text>{1_Host} opened {2_Place} to the refugees of {3_Adj}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_FRONTIER" Language="ko_KR"><Text>{1_Host} sent the refugees of {2_Adj} to its frontier, to {3_Place}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_AWAY" Language="ko_KR"><Text>{1_Host} turned the refugees of {2_Adj} away from its borders.</Text></Replace>
         <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="ko_KR"><Text>난민</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_TITLE" Language="ko_KR"><Text>거주지 위에 건물이 들어서다</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_BODY" Language="ko_KR"><Text>{1_Name}이(가) 사라졌습니다. 도시가 그 구역 위에 건물을 세웠고, 그곳의 가족들은 주변 거리로 흩어졌습니다.</Text></Replace>

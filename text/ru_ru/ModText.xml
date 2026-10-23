@@ -312,6 +312,9 @@
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_TITLE" Language="ru_RU"><Text>Они откликаются на призыв</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE" Language="ru_RU"><Text>Призыв дошёл до наших людей за рубежом, но никто из них не вернулся.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE_TITLE" Language="ru_RU"><Text>Призыв остаётся без ответа</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS" Language="ru_RU"><Text>{1_Civ} calls its people home from {2_City}: {3_Count} population points leave.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_ONE" Language="ru_RU"><Text>{1_Civ} calls its people home from {2_City}: one population point leaves.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_TITLE" Language="ru_RU"><Text>Called Home By Their Own</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL" Language="ru_RU"><Text>Давление войн с крупными цивилизациями</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL_D" Language="ru_RU"><Text>Какое давление конфликта создаёт нападение, когда среди нападающих есть крупная цивилизация. По умолчанию 1; при меньших значениях войны вытесняют меньше людей, при больших больше.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SIEGEFLOOR" Language="ru_RU"><Text>Нижний порог осады: крупные цивилизации</Text></Replace>
@@ -324,6 +327,14 @@
         <Replace Tag="LOC_EMIG_T_CALLHOME_D" Language="ru_RU"><Text>Предлагает платный призыв, чтобы вернуть перемещённых людей в поселение, которое они покинули, в выбранном вами количестве. Из ваших собственных поселений это покупка: придут ровно столько. Из-за рубежа призыв оплачивается в любом случае, а каждый позванный может откликнуться, а может и нет.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="ru_RU"><Text>Предлагать в спокойное время</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="ru_RU"><Text>Автоматически предлагает призыв, как только ни одно ваше поселение не страдает от войны, осады, бедствия или голода, а ваши люди всё ещё остаются перемещёнными. Выкл. = призыв доступен только через консоль.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="ru_RU"><Text>Emigration: AI keeps cities happy</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="ru_RU"><Text>Gives AI civilizations an earlier, gentler "keep them happy" city strategy, so an AI city that is getting unhappy builds happiness before people start leaving. The game's own strategy only starts once a city is already unhappy. Chosen here for the whole game.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="ru_RU"><Text>On</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="ru_RU"><Text>AI cities start building happiness while their net happiness is still a little above zero.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="ru_RU"><Text>Off</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="ru_RU"><Text>The AI keeps the game's own strategies only.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="ru_RU"><Text>AI civilizations call people home</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="ru_RU"><Text>On their own turn, AI civilizations call their displaced people home once none of their settlements is in distress, paying the same price with the same odds and cooldown you get. From their own settlements first; from abroad only when they still have the Gold or Influence for it. When a call takes people out of one of your cities, you get a notice naming who called. Off leaves the AI to wait for people to drift back on their own.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="ru_RU"><Text>Шанс возврата очка из-за рубежа</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX_D" Language="ru_RU"><Text>Насколько вероятно, что каждое очко, живущее под властью другой цивилизации, откликнется на призыв. Низкий шанс: у них там теперь своя жизнь, и призыв может не вернуть никого.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_GOLD" Language="ru_RU"><Text>Золото за возвращающееся очко населения</Text></Replace>
@@ -872,6 +883,10 @@
         <Replace Tag="LOC_EMIG_DIL_BODY_FRONTIER" Language="ru_RU"><Text>Вы отправили беженцев народа {1_Adj} на границу, чтобы построить что-то своё.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_BODY_AWAY" Language="ru_RU"><Text>Вы прогнали беженцев народа {1_Adj} от {2_Place}. Они пошли дальше своей дорогой, {3_Who}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_CHRON_TITLE" Language="ru_RU"><Text>Решение на границе</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_THEIR_LANDS" Language="ru_RU"><Text>their lands</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_WELCOME" Language="ru_RU"><Text>{1_Host} opened {2_Place} to the refugees of {3_Adj}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_FRONTIER" Language="ru_RU"><Text>{1_Host} sent the refugees of {2_Adj} to its frontier, to {3_Place}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_AWAY" Language="ru_RU"><Text>{1_Host} turned the refugees of {2_Adj} away from its borders.</Text></Replace>
         <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="ru_RU"><Text>Беженцы</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_TITLE" Language="ru_RU"><Text>Анклав застроен</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_BODY" Language="ru_RU"><Text>{1_Name} больше нет: город застроил его квартал, а его семьи разбрелись по соседним улицам.</Text></Replace>

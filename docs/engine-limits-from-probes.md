@@ -360,7 +360,7 @@ See 2.1. `UNITOPERATION_PILLAGE` answers false on own plots even with the unit s
 - Why. Engine accessors do not validate ids; a bad one dereferences freely.
 - Instead. Every player-keyed engine call is guarded by `Players.get(pid)` first
   (`knownPlayer` in `ui/emigration-naming.js`), and probe records must use real ids.
-- Recorded in. Ledger, mod tests 19 to 21; README §12.
+- Recorded in. Ledger, mod tests 19 to 21; README §13.
 
 ### 5.3 A UI script cannot count on reaching the component it decorates
 

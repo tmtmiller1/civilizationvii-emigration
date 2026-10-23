@@ -13,7 +13,8 @@
 // The two currencies are offered side by side at the moment of the call rather than set once in Options: which
 // one you can spare is a turn-by-turn question, and the choice is more interesting when it is asked then.
 import { CONFIG } from "/emigration/ui/emigration-config.js";
-import { deduct } from "/emigration/ui/emigration-effects.js";
+import { deduct, grantSigned } from "/emigration/ui/emigration-effects.js";
+import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 import { msg } from "/emigration/ui/emigration-loc.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
 import { showDilemma } from "/emigration/ui/emigration-dilemma-view.js";
@@ -26,35 +27,103 @@ import {
 import { callHomeView, parseChoice } from "/emigration/ui/emigration-call-home-view.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
-/** @type {Map<string, number>} Last turn a civilization called, by "pid|scope". */
-const _lastCall = new Map();
+/** The save key of each civilization's last call per variant, so a cooldown survives a save and load. */
+const COOLDOWN_KEY = "EmigrationCallHomeCooldown_v1";
+/** @type {Record<string, number>|null} Last turn a civilization called, by "pid|scope"; loaded on first use. */
+let _lastCall = null;
 
 /** @param {number} pid @param {string} scope @returns {string} */
 const cdKey = (pid, scope) => pid + "|" + scope;
 
-/** @returns {number} */
+/**
+ * The turn a cooldown is measured in: the mod's monotonic cross-age turn (emigration-migration-stats.js) once the
+ * first pass has set it, else the game turn. The two agree within a turn in any game that has run a pass, and a
+ * cooldown is only ever started after one.
+ * @returns {number}
+ */
 function turnNow() {
   try {
+    const mono = monoTurn();
+    if (mono > 0) return mono;
     return typeof Game !== "undefined" && typeof Game.turn === "number" ? Game.turn : 0;
   } catch (_) {
     return 0;
   }
 }
 
+/** @returns {Record<string, number>} The cooldown map, loaded from the save on first use. */
+function cooldowns() {
+  resetCachesOnNewGame();
+  if (!_lastCall) _lastCall = readCooldowns();
+  return _lastCall;
+}
+
 /**
- * Turns still to wait before this civilization may call again for this variant.
+ * The stored cooldown map, cleaned: only "pid|scope" keys with a finite turn. Empty when unreadable, so every
+ * cooldown then counts as over, as it did when the map lived in memory.
+ * @returns {Record<string, number>}
+ */
+function readCooldowns() {
+  /** @type {Record<string, number>} */ const out = {};
+  const o = storedJson(COOLDOWN_KEY);
+  if (!o) return out;
+  for (const [k, v] of Object.entries(o)) {
+    if (/^\d+\|/.test(k) && typeof v === "number" && isFinite(v)) out[k] = v;
+  }
+  return out;
+}
+
+/**
+ * A JSON object stored under a game-configuration key, or null when missing, unreadable or not an object.
+ * @param {string} key The configuration key. @returns {Record<string, *>|null}
+ */
+function storedJson(key) {
+  try {
+    const raw = Configuration?.getGame?.()?.getValue?.(key);
+    const o = typeof raw === "string" && raw ? JSON.parse(raw) : null;
+    return o && typeof o === "object" ? o : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+/** @param {number} pid @param {string} scope @param {number} turn The turn of the call. */
+function noteCall(pid, scope, turn) {
+  cooldowns()[cdKey(pid, scope)] = turn;
+  try {
+    Configuration?.editGame?.()?.setValue?.(COOLDOWN_KEY, JSON.stringify(_lastCall || {}));
+  } catch (_) {
+    /* unwritable mid age-transition; kept in memory */
+  }
+}
+
+/**
+ * Turns still to wait before this civilization may call again for this variant. A last call recorded after the
+ * current turn (a save from a later point, loaded earlier) counts as over rather than blocking for an age.
  * @param {number} pid @param {string} scope A CALL_HOME_SCOPE. @returns {number} Turns remaining.
  */
 export function callHomeCooldownLeft(pid, scope) {
-  const last = Number(_lastCall.get(cdKey(pid, scope)) || 0);
+  const last = Number(cooldowns()[cdKey(pid, scope)] || 0);
   if (!(last > 0)) return 0;
+  const now = turnNow();
+  if (last > now) return 0;
   const wait = Math.max(0, Number(CONFIG.callHomeCooldownTurns) || 0);
-  return Math.max(0, wait - (turnNow() - last));
+  return Math.max(0, wait - (now - last));
 }
 
-/** Test seam: forget every cooldown. */
+/** Test seam: forget every cooldown, in memory and in the save. */
 export function _resetCallHomeCooldowns() {
-  _lastCall.clear();
+  _lastCall = {};
+  try {
+    Configuration?.editGame?.()?.setValue?.(COOLDOWN_KEY, "{}");
+  } catch (_) {
+    /* off-engine */
+  }
+}
+
+/** Test seam: drop the in-memory map only, as a reload does, so the next read comes from the save. */
+export function _forgetCallHomeCooldownMemory() {
+  _lastCall = null;
 }
 
 /** The save key of the people left where they are. */
@@ -63,6 +132,7 @@ const DECLINED_KEY = "EmigrationCallHomeDeclined_v1";
 let _declined = null;
 registerCacheReset(() => {
   _declined = null;
+  _lastCall = null;
 });
 
 /** @param {*} pairs @returns {Record<string, number>} */
@@ -187,25 +257,41 @@ function balanceOf(treasury, field, getter) {
  * answered or not, starts the cooldown: an external call the dice refused cannot be repeated next turn.
  * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {number} currency A CALL_HOME_CURRENCY.
- * @param {{want?:number, move?:(pair:*)=>boolean, declined?:Record<string, number>, flows?:*[]}} [deps] How
- *   many the player asked for (default: the per-call cap), test seams for the mover and the flow rows, and the
- *   people left where they are (never moved by this call).
+ * @param {{want?:number, move?:(pair:*)=>boolean, declined?:Record<string, number>, flows?:*[],
+ *   resolvable?:(pair:*)=>boolean, order?:(pairs:*[])=>*[]}} [deps] How many the player asked for (default: the
+ *   per-call cap), test seams for the mover, the flow rows, the city check and the pair order, and the people left
+ *   where they are (never moved by this call).
  * @returns {{ok:boolean, reason:string, scope:string, paid:number, attempted:number, returned:number}} Result.
  */
 export function callHomeNow(pid, scope, currency, deps) {
   const left = callHomeCooldownLeft(pid, scope);
   if (left > 0) return { ok: false, reason: "cooldown", scope, paid: 0, attempted: 0, returned: 0 };
+  const d = deps || /** @type {*} */ ({});
+  const result = resolveCallHome(pid, scope, currency, {
+    ...callEffects(pid, currency, d),
+    turn: turnNow(), gameId: safeGameId(), want: d.want, declined: d.declined, flows: d.flows, order: d.order
+  });
+  if (result.ok || result.reason === "nobody-came") {
+    noteCall(pid, scope, turnNow());
+    reportCall(pid, result);
+  }
+  return result;
+}
+
+/**
+ * The engine-side effects of a call: what the treasury can spend, the charge, the refund, the mover and the city
+ * check, with the test seams in `d` taking the place of the mover and the check.
+ * @param {number} pid @param {number} currency A CALL_HOME_CURRENCY.
+ * @param {{move?:(pair:*)=>boolean, resolvable?:(pair:*)=>boolean}} d The seams.
+ * @returns {*} The effects for resolveCallHome.
+ */
+function callEffects(pid, currency, d) {
   // Influence is YIELD_DIPLOMACY in the game's yield table; there is no YIELD_INFLUENCE, and charging that
   // key is a silent no-op.
   const yieldKey = currency === CALL_HOME_CURRENCY.INFLUENCE ? "YIELD_DIPLOMACY" : "YIELD_GOLD";
-  const result = resolveCallHome(pid, scope, currency, {
-    turn: turnNow(),
-    gameId: safeGameId(),
-    want: deps && deps.want,
-    declined: deps && deps.declined,
-    flows: deps && deps.flows,
-    afford: (c) => callHomeBalance(pid, c),
-    pay: (amount) => {
+  return {
+    afford: (/** @type {number} */ c) => callHomeBalance(pid, c),
+    pay: (/** @type {number} */ amount) => {
       if (amount <= 0) return true;
       try {
         deduct(pid, yieldKey, -amount);
@@ -215,20 +301,42 @@ export function callHomeNow(pid, scope, currency, deps) {
         return false;
       }
     },
-    move: (deps && deps.move) || ((pair) => movePointHome(pid, pair))
-  });
-  if (result.ok || result.reason === "nobody-came") {
-    _lastCall.set(cdKey(pid, scope), turnNow());
-    reportCall(pid, result);
+    move: d.move || ((/** @type {*} */ pair) => movePointHome(pid, pair)),
+    resolvable: d.resolvable || callHomeResolvable(pid),
+    refund: (/** @type {number} */ amount) => refundFee(pid, yieldKey, amount)
+  };
+}
+
+/**
+ * Give a fee back after a paid call that moved nobody (the dice said yes, the move failed): the same signed grant
+ * the charge went through, so the two net to nothing. Never throws.
+ * @param {number} pid @param {string} yieldKey "YIELD_GOLD" or "YIELD_DIPLOMACY". @param {number} amount The fee.
+ */
+function refundFee(pid, yieldKey, amount) {
+  try {
+    grantSigned(pid, yieldKey, amount);
+  } catch (e) {
+    dlog("call home: refund threw " + e);
   }
-  return result;
+}
+
+/**
+ * Whether a candidate pair's two cities still exist under the owners the flow ledger names: the host city under
+ * the host, the home city under the caller. A city that changed hands or was razed since the people fled fails it
+ * (watched 2026-10-23: Greece paid for three people in Chalkís after Goryeo had taken it, and nobody moved). Off
+ * the engine there are no cities to check, so every pair passes.
+ * @param {number} pid The caller. @returns {(pair:*)=>boolean} The test, for a quote's `resolvable`.
+ */
+export function callHomeResolvable(pid) {
+  if (typeof Players === "undefined") return () => true;
+  return (pair) => !!(pair && cityByName(pair.host, pair.from) && cityByName(pid, pair.home));
 }
 
 /**
  * Move one point from where it fled back to the settlement it left.
  * @param {number} pid @param {*} pair The candidate pair. @returns {boolean} Whether it moved.
  */
-function movePointHome(pid, pair) {
+export function movePointHome(pid, pair) {
   try {
     const host = cityByName(pair.host, pair.from);
     const home = cityByName(pid, pair.home);
@@ -301,8 +409,8 @@ function reportCall(pid, result) {
  * leaving these ones adds them to that record.
  * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {{includeDeclined?:boolean, flows?:*[], show?:(view:*, onChoice:(id:string)=>void)=>void,
- *   move?:(pair:*)=>boolean}} [opts] List everyone, declined or not (the console call); test seams for the flow
- *   rows, the dialog and the mover.
+ *   move?:(pair:*)=>boolean, resolvable?:(pair:*)=>boolean}} [opts] List everyone, declined or not (the console
+ *   call); test seams for the flow rows, the dialog, the mover and the city check.
  * @returns {boolean} Whether it opened.
  */
 export function offerCallHome(pid, scope, opts) {
@@ -310,16 +418,20 @@ export function offerCallHome(pid, scope, opts) {
   if (callHomeCooldownLeft(pid, scope) > 0) return false;
   const o = opts || {};
   const declined = o.includeDeclined ? {} : callHomeDeclined(pid, scope, o.flows);
+  const resolvable = o.resolvable || callHomeResolvable(pid);
   const view = callHomeView(pid, scope, {
-    afford: (c) => callHomeBalance(pid, c), seed: "callhome|" + scope + "|" + turnNow(), declined, flows: o.flows
+    afford: (c) => callHomeBalance(pid, c), seed: "callhome|" + scope + "|" + turnNow(), declined,
+    flows: o.flows, resolvable
   });
   if (!view) return false;
-  const shown = callHomeQuote(pid, scope, CALL_HOME_CURRENCY.GOLD, o.flows, { declined }).pairs;
+  const shown = callHomeQuote(pid, scope, CALL_HOME_CURRENCY.GOLD, o.flows, { declined, resolvable }).pairs;
   (o.show || showDilemma)(view, (id) => {
     // A grayed-out size can never be bought, even if an input path slipped past the dialog's own guard.
     if (view.choices.some((c) => c.id === id && c.disabled)) return;
     const pick = parseChoice(id);
-    if (pick) callHomeNow(pid, scope, pick.currency, { want: pick.want, declined, flows: o.flows, move: o.move });
+    if (pick) {
+      callHomeNow(pid, scope, pick.currency, { want: pick.want, declined, flows: o.flows, move: o.move, resolvable });
+    }
     else declineCallHome(pid, scope, shown);
   });
   return true;

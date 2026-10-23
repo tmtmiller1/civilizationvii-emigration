@@ -5,6 +5,12 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [3.6.5] - 2026-10-23
+
+### Changed
+- README: a new section on how the AI interacts with the mod, which of its choices the mod makes for it, which
+  come from the game's own planner, where the limits are, and what has been seen in a game.
+
 ## [3.6.4] - 2026-10-18
 
 ### Fixed

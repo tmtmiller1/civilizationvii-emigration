@@ -312,6 +312,9 @@
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_TITLE" Language="fr_FR"><Text>Ils répondent à l'appel</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE" Language="fr_FR"><Text>L'appel a été lancé à notre peuple à l'étranger, et personne n'est venu.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE_TITLE" Language="fr_FR"><Text>L'appel reste sans réponse</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS" Language="fr_FR"><Text>{1_Civ} calls its people home from {2_City}: {3_Count} population points leave.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_ONE" Language="fr_FR"><Text>{1_Civ} calls its people home from {2_City}: one population point leaves.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_TITLE" Language="fr_FR"><Text>Called Home By Their Own</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL" Language="fr_FR"><Text>Pression des guerres avec les civilisations majeures</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL_D" Language="fr_FR"><Text>La pression de conflit que crée une attaque quand une civilisation majeure fait partie des assaillants. 1 est la valeur par défaut ; plus bas, les guerres déplacent moins de monde, plus haut, davantage.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SIEGEFLOOR" Language="fr_FR"><Text>Plancher de siège : civilisations majeures</Text></Replace>
@@ -324,6 +327,14 @@
         <Replace Tag="LOC_EMIG_T_CALLHOME_D" Language="fr_FR"><Text>Propose un appel payant pour ramener les personnes déplacées dans la colonie qu'elles ont fuie, dans la quantité de votre choix. Depuis vos propres colonies, c'est un achat : ce nombre revient. Depuis l'étranger, l'appel est payé dans tous les cas et chaque personne appelée peut répondre ou non.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="fr_FR"><Text>Proposer en période calme</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="fr_FR"><Text>Lance l'appel automatiquement dès qu'aucune de vos colonies ne subit plus guerre, siège, catastrophe ou famine et que des membres de votre peuple sont encore déplacés. Désactivé : l'appel reste à lancer depuis la console.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="fr_FR"><Text>Emigration: AI keeps cities happy</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="fr_FR"><Text>Gives AI civilizations an earlier, gentler "keep them happy" city strategy, so an AI city that is getting unhappy builds happiness before people start leaving. The game's own strategy only starts once a city is already unhappy. Chosen here for the whole game.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="fr_FR"><Text>On</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="fr_FR"><Text>AI cities start building happiness while their net happiness is still a little above zero.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="fr_FR"><Text>Off</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="fr_FR"><Text>The AI keeps the game's own strategies only.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="fr_FR"><Text>AI civilizations call people home</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="fr_FR"><Text>On their own turn, AI civilizations call their displaced people home once none of their settlements is in distress, paying the same price with the same odds and cooldown you get. From their own settlements first; from abroad only when they still have the Gold or Influence for it. When a call takes people out of one of your cities, you get a notice naming who called. Off leaves the AI to wait for people to drift back on their own.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="fr_FR"><Text>Chance de retour par point depuis l'étranger</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX_D" Language="fr_FR"><Text>Probabilité que chaque point vivant sous une autre civilisation réponde à un appel. Faible : ils y ont désormais leur vie, et un appel peut ne ramener personne.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_GOLD" Language="fr_FR"><Text>Or par point de population rapatrié</Text></Replace>
@@ -872,6 +883,10 @@
         <Replace Tag="LOC_EMIG_DIL_BODY_FRONTIER" Language="fr_FR"><Text>Vous avez envoyé les réfugiés des {1_Adj} à la frontière, pour y bâtir quelque chose de leur.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_BODY_AWAY" Language="fr_FR"><Text>Vous avez refoulé les réfugiés des {1_Adj} loin de {2_Place}. Ils ont poursuivi leur chemin, {3_Who}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_CHRON_TITLE" Language="fr_FR"><Text>Une décision à la frontière</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_THEIR_LANDS" Language="fr_FR"><Text>their lands</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_WELCOME" Language="fr_FR"><Text>{1_Host} opened {2_Place} to the refugees of {3_Adj}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_FRONTIER" Language="fr_FR"><Text>{1_Host} sent the refugees of {2_Adj} to its frontier, to {3_Place}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_AWAY" Language="fr_FR"><Text>{1_Host} turned the refugees of {2_Adj} away from its borders.</Text></Replace>
         <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="fr_FR"><Text>Réfugiés</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_TITLE" Language="fr_FR"><Text>L'enclave est recouverte</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_BODY" Language="fr_FR"><Text>Le {1_Name} n'est plus : la ville a bâti par-dessus son quartier, et ses familles se sont dispersées dans les rues alentour.</Text></Replace>

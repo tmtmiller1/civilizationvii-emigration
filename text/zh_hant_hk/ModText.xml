@@ -312,6 +312,9 @@
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_TITLE" Language="zh_Hant_HK"><Text>他們響應了召喚</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE" Language="zh_Hant_HK"><Text>召喚已傳到我們在海外的人民那裡，卻沒有一個人回來。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE_TITLE" Language="zh_Hant_HK"><Text>召喚無人響應</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS" Language="zh_Hant_HK"><Text>{1_Civ} calls its people home from {2_City}: {3_Count} population points leave.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_ONE" Language="zh_Hant_HK"><Text>{1_Civ} calls its people home from {2_City}: one population point leaves.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_TITLE" Language="zh_Hant_HK"><Text>Called Home By Their Own</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL" Language="zh_Hant_HK"><Text>與主要文明交戰的壓力</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL_D" Language="zh_Hant_HK"><Text>當攻擊者中有主要文明時，攻擊會產生多少衝突壓力。預設為 1；越低，戰爭趕走的人越少，越高則越多。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SIEGEFLOOR" Language="zh_Hant_HK"><Text>圍城下限：主要文明</Text></Replace>
@@ -324,6 +327,14 @@
         <Replace Tag="LOC_EMIG_T_CALLHOME_D" Language="zh_Hant_HK"><Text>提供一次付費召喚，按你選擇的人數，把流離失所的人帶回他們逃離的聚落。從你自己的聚落召回等同購買：要多少人就來多少人。從海外召回則無論結果如何都要付費，而每位被召喚的人可能響應，也可能不響應。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="zh_Hant_HK"><Text>局勢平靜時提出</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="zh_Hant_HK"><Text>當你沒有任何聚落處於戰爭、圍城、災害或饑荒之中，而你的人民仍流離在外時，自動提出召喚。關閉時則留待控制台操作。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="zh_Hant_HK"><Text>Emigration: AI keeps cities happy</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="zh_Hant_HK"><Text>Gives AI civilizations an earlier, gentler "keep them happy" city strategy, so an AI city that is getting unhappy builds happiness before people start leaving. The game's own strategy only starts once a city is already unhappy. Chosen here for the whole game.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="zh_Hant_HK"><Text>On</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="zh_Hant_HK"><Text>AI cities start building happiness while their net happiness is still a little above zero.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="zh_Hant_HK"><Text>Off</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="zh_Hant_HK"><Text>The AI keeps the game's own strategies only.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="zh_Hant_HK"><Text>AI civilizations call people home</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="zh_Hant_HK"><Text>On their own turn, AI civilizations call their displaced people home once none of their settlements is in distress, paying the same price with the same odds and cooldown you get. From their own settlements first; from abroad only when they still have the Gold or Influence for it. When a call takes people out of one of your cities, you get a notice naming who called. Off leaves the AI to wait for people to drift back on their own.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="zh_Hant_HK"><Text>每點人口從外國回歸的機率</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX_D" Language="zh_Hant_HK"><Text>生活在其他文明治下的每個人口點響應召喚的可能性。偏低：他們如今已在那裡安身立命，召喚可能一個人也帶不回來。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_GOLD" Language="zh_Hant_HK"><Text>每點回歸人口的金幣</Text></Replace>
@@ -872,6 +883,10 @@
         <Replace Tag="LOC_EMIG_DIL_BODY_FRONTIER" Language="zh_Hant_HK"><Text>你將{1_Adj}的難民送往邊疆，讓他們建立屬於自己的天地。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_BODY_AWAY" Language="zh_Hant_HK"><Text>你將{1_Adj}的難民拒於{2_Place}之外。他們繼續上路，{3_Who}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_CHRON_TITLE" Language="zh_Hant_HK"><Text>邊境上的抉擇</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_THEIR_LANDS" Language="zh_Hant_HK"><Text>their lands</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_WELCOME" Language="zh_Hant_HK"><Text>{1_Host} opened {2_Place} to the refugees of {3_Adj}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_FRONTIER" Language="zh_Hant_HK"><Text>{1_Host} sent the refugees of {2_Adj} to its frontier, to {3_Place}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_AWAY" Language="zh_Hant_HK"><Text>{1_Host} turned the refugees of {2_Adj} away from its borders.</Text></Replace>
         <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="zh_Hant_HK"><Text>難民</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_TITLE" Language="zh_Hant_HK"><Text>飛地被覆蓋</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_BODY" Language="zh_Hant_HK"><Text>{1_Name}已不復存在：城市在其街區之上另起建設，那裡的家庭散入了周圍的街巷。</Text></Replace>

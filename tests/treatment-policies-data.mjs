@@ -20,9 +20,9 @@ const borders = read("ui/emigration-borders.js");
 
 /** Each live card: family, age, unlock node, native modifiers, LOC stem for the name and description. */
 const CARDS = [
-  ["OPEN_BORDERS", "ANTIQUITY", "NODE_CIVIC_AQ_MAIN_CITIZENSHIP", ["MOD_EMIG_OPEN_BORDERS_INFLUENCE_AQ"], "OPEN_BORDERS", "DESC"],
-  ["OPEN_BORDERS", "EXPLORATION", "NODE_CIVIC_EX_MAIN_ECONOMICS", ["MOD_EMIG_OPEN_BORDERS_INFLUENCE_EX"], "OPEN_BORDERS", "DESC_EX"],
-  ["OPEN_BORDERS", "MODERN", "NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION", ["MOD_EMIG_OPEN_BORDERS_INFLUENCE_MO"], "OPEN_BORDERS", "DESC_MO"],
+  ["OPEN_BORDERS", "ANTIQUITY", "NODE_CIVIC_AQ_MAIN_CITIZENSHIP", ["MOD_EMIG_OPEN_BORDERS_FOOD_AQ", "MOD_EMIG_OPEN_BORDERS_INFLUENCE_AQ"], "OPEN_BORDERS", "DESC"],
+  ["OPEN_BORDERS", "EXPLORATION", "NODE_CIVIC_EX_MAIN_ECONOMICS", ["MOD_EMIG_OPEN_BORDERS_FOOD_EX", "MOD_EMIG_OPEN_BORDERS_INFLUENCE_EX"], "OPEN_BORDERS", "DESC_EX"],
+  ["OPEN_BORDERS", "MODERN", "NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION", ["MOD_EMIG_OPEN_BORDERS_FOOD_MO", "MOD_EMIG_OPEN_BORDERS_INFLUENCE_MO"], "OPEN_BORDERS", "DESC_MO"],
   ["CLOSED_BORDERS", "ANTIQUITY", "NODE_CIVIC_AQ_MAIN_CITIZENSHIP", ["MOD_EMIG_CLOSED_BORDERS_INFLUENCE_AQ", "MOD_EMIG_CLOSED_BORDERS_PRODUCTION_AQ"], "CLOSED_BORDERS", "DESC"],
   ["CLOSED_BORDERS", "EXPLORATION", "NODE_CIVIC_EX_MAIN_ECONOMICS", ["MOD_EMIG_CLOSED_BORDERS_INFLUENCE_EX", "MOD_EMIG_CLOSED_BORDERS_PRODUCTION_EX"], "CLOSED_BORDERS", "DESC_EX"],
   ["CLOSED_BORDERS", "MODERN", "NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION", ["MOD_EMIG_CLOSED_BORDERS_INFLUENCE_MO", "MOD_EMIG_CLOSED_BORDERS_PRODUCTION_MO"], "CLOSED_BORDERS", "DESC_MO"],
@@ -120,7 +120,10 @@ const amount = (id) => Number(effects.match(new RegExp(`<Modifier id="${id}"[\\s
 const text = (k) => en.match(new RegExp(`Tag="${k}"><Text>([^<]*)</Text>`))[1];
 for (const [age, suffix] of [["AQ", "DESC"], ["EX", "DESC_EX"], ["MO", "DESC_MO"]]) {
   const inf = amount(`MOD_EMIG_OPEN_BORDERS_INFLUENCE_${age}`);
-  assert.ok(text(`LOC_EMIG_POLICY_OPEN_BORDERS_${suffix}`).startsWith(`+${inf} [icon:YIELD_DIPLOMACY]`), `open ${age} text says +${inf}`);
+  const food = amount(`MOD_EMIG_OPEN_BORDERS_FOOD_${age}`);
+  const open = text(`LOC_EMIG_POLICY_OPEN_BORDERS_${suffix}`);
+  assert.ok(open.startsWith(`+${food} [icon:YIELD_FOOD]`), `open ${age} text says +${food} Food`);
+  assert.ok(open.includes(`+${inf} [icon:YIELD_DIPLOMACY]`), `open ${age} text says +${inf}`);
   const prod = amount(`MOD_EMIG_CLOSED_BORDERS_PRODUCTION_${age}`);
   const cost = amount(`MOD_EMIG_CLOSED_BORDERS_INFLUENCE_${age}`);
   const closed = text(`LOC_EMIG_POLICY_CLOSED_BORDERS_${suffix}`);

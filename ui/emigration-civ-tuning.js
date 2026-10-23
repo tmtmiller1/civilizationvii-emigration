@@ -18,6 +18,8 @@ import { CIV_ROSTER, LEADER_ROSTER, MEMENTO_ROSTER } from "/emigration/ui/emigra
  * @property {number|null} overcrowdDiscount Override of the overcrowd discount (null = CONFIG).
  * @property {number} warRetention Higher = retains more population under siege (Algorithm D).
  * @property {number} sourceBias Flat prosperity nudge (+ keeps people, − pushes them out).
+ * @property {string|null} enclaveFavour The yield an AI host of this leader prefers its enclaves to pay (a
+ *   YIELD_ type), overriding the leader's own planner biases read from the game data; null = read the data.
  */
 
 /** @type {CivTuning} */
@@ -27,7 +29,8 @@ const NEUTRAL = Object.freeze({
   assimilationEase: 1,
   overcrowdDiscount: null,
   warRetention: 1,
-  sourceBias: 0
+  sourceBias: 0,
+  enclaveFavour: null
 });
 
 /**
@@ -328,7 +331,8 @@ function flatten(t) {
     assimilationEase: 1 + (t.assimilationEase - 1) * s,
     overcrowdDiscount: t.overcrowdDiscount == null ? null : oc + (t.overcrowdDiscount - oc) * s,
     warRetention: 1 + (t.warRetention - 1) * s,
-    sourceBias: t.sourceBias * s
+    sourceBias: t.sourceBias * s,
+    enclaveFavour: typeof t.enclaveFavour === "string" ? t.enclaveFavour : null
   };
 }
 
@@ -362,7 +366,7 @@ function lookupEntry(map, key) {
  * @param {Partial<CivTuning>} mem The clamped memento profile.
  */
 function applyMemento(merged, mem) {
-  const m = /** @type {Record<string, number>} */ (merged);
+  const m = /** @type {Record<string, number>} */ (/** @type {*} */ (merged));
   const p = /** @type {Record<string, number>} */ (mem);
   for (const f of MULT_FIELDS) {
     if (typeof p[f] === "number") m[f] *= p[f];

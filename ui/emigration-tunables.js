@@ -188,6 +188,7 @@ export const TUNABLES = [
   // Calling people home
   { key: "callHomeEnabled", group: "callhome", type: "bool", label: "LOC_EMIG_T_CALLHOME", desc: "LOC_EMIG_T_CALLHOME_D" },
   { key: "callHomeOfferWhenCalm", group: "callhome", type: "bool", label: "LOC_EMIG_T_CALLHOME_PEACE", desc: "LOC_EMIG_T_CALLHOME_PEACE_D" },
+  { key: "callHomeAi", group: "callhome", type: "bool", label: "LOC_EMIG_T_CALLHOME_AI", desc: "LOC_EMIG_T_CALLHOME_AI_D" },
   { key: "callHomeChanceExternal", group: "callhome", type: "choice", values: [0.05, 0.12, 0.18, 0.3, 0.45], format: "frac", label: "LOC_EMIG_T_CALLHOME_EX", desc: "LOC_EMIG_T_CALLHOME_EX_D" },
   { key: "callHomeGoldPerPoint", group: "callhome", type: "choice", values: [0, 30, 60, 100, 160], label: "LOC_EMIG_T_CALLHOME_GOLD", desc: "LOC_EMIG_T_CALLHOME_GOLD_D" },
   { key: "callHomeInfluencePerPoint", group: "callhome", type: "choice", values: [0, 6, 12, 20, 32], label: "LOC_EMIG_T_CALLHOME_INFL", desc: "LOC_EMIG_T_CALLHOME_INFL_D" },
