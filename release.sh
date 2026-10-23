@@ -122,6 +122,7 @@ ALLOW="$ALLOW"'|^emigration/images/.+\.(svg|png)$'
 ALLOW="$ALLOW"'|^emigration/text/[a-z_]+/(ModText|EnclaveText|PediaText|PediaVoicesText)\.xml$'
 ALLOW="$ALLOW"'|^emigration/history-corrections/[a-z-]+-text\.xml$'
 ALLOW="$ALLOW"'|^emigration/data/.+\.(xml|sql)$'
+ALLOW="$ALLOW"'|^emigration/config/.+\.sql$'
 UNEXPECTED="$(unzip -Z1 "$ZIP_PATH" | grep -vE '/$' | grep -vE "$ALLOW" || true)"
 if [ -n "$UNEXPECTED" ]; then
     echo "error: zip contains entries not on the allow-list:"
