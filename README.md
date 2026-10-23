@@ -1027,9 +1027,10 @@ The basic interface mechanics are also shared:
 
 ### 11.1 What the game's AI is
 
-The game's AI isn't a planner that watches rivals and schemes turns ahead. It's a set of scorers over data tables.
+It helps to know what the game's AI is before reading how the mod works with it. For example, it isn't a
+hyper-intelligent engine or strategist weighing rivals and scheming several turns ahead. It's a scoring system that runs each turn: weights from data tables are run through the engine's planners for builds, diplomacy, and combat. 
 
-- Each turn it scores its options and acts on the high scores. In diplomacy, each available action against each
+- Each turn it scores the options and acts on the high scores. In diplomacy, each available action against each
   player gets a number (the game writes them to `AI_DiplomaticActions.csv` in its Logs folder). In the build queue,
   each constructible is weighted by the leader's bias lists and the city strategies currently switched on. In war,
   it runs operations from a fixed set of types such as "Attack Enemy City" and "City Defense".
@@ -1043,7 +1044,7 @@ The game's AI isn't a planner that watches rivals and schemes turns ahead. It's 
 - Its lists and strategies carry difficulty bounds, and none is set in the shipped data, so Deity and Settler run
   the same decision tables. Difficulty works through bonuses.
 
-The limits in 11.6 are the game's, not gaps the mod left. The mod adds rules to the choices it owns and tilts the
+The limits in 11.6 below are the game's, not gaps the mod left. The mod adds rules to the choices it owns and tilts the
 numbers the planner already reads.
 
 ### 11.2 Does the AI fall behind the Human Player from not engaging with the mod?
