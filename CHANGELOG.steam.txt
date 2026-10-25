@@ -3,7 +3,13 @@ Generated from CHANGELOG.md by scripts/steam-changelog.mjs; release.sh uploads t
 To fix an old Workshop entry, paste the text under its ==== line into that entry's Edit box on the change-notes page.
 A block edited by hand is kept as-is. Delete a block to regenerate it from CHANGELOG.md.
 
-==== 3.6.6 | 2026-10-25 | src 472166a7db79 | gen caebbfeed079 ====
+==== 3.6.7 | 2026-10-25 | src 9a1b676c3836 | gen 6126cf54d157 ====
+[b]Version 3.6.7 · 25 October 2026[/b]
+
+[b]Fixed[/b]
+• War refugees on the Network tab keep their ring after the war ends. The ring is brightest while the war is on and stays at half strength afterward, so the “War refugees” key always matches dots on the diagram.
+
+==== 3.6.6 | 2026-10-25 | src 155491a91295 | gen f0f205a1291f ====
 [b]Version 3.6.6 · 25 October 2026[/b]
 
 [b]Added[/b]
@@ -12,7 +18,6 @@ A block edited by hand is kept as-is. Delete a block to regenerate it from CHANG
 
 [b]Fixed[/b]
 • When a civilization fought more than one war, the Network tab ringed all of its war refugees during the last war. Each refugee now belongs to the war that was going on when they arrived.
-• War refugees on the Network tab keep their ring after the war ends. The ring is brightest while the war is on and stays at half strength afterward, so the “War refugees” key always matches dots on the diagram.
 
 ==== 3.6.5 | 2026-10-23 | src 1e475e2c0a37 | gen 4b2ee4d17d3b ====
 [b]Version 3.6.5 · 23 October 2026[/b]

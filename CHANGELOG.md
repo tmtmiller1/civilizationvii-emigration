@@ -5,6 +5,12 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [3.6.7] - 2026-10-25
+
+### Fixed
+- War refugees on the Network tab keep their ring after the war ends. The ring is brightest while the war is on and
+  stays at half strength afterward, so the "War refugees" key always matches dots on the diagram.
+
 ## [3.6.6] - 2026-10-25
 
 ### Added
@@ -16,8 +22,6 @@ section below by `release.sh`.
 ### Fixed
 - When a civilization fought more than one war, the Network tab ringed all of its war refugees during the last war.
   Each refugee now belongs to the war that was going on when they arrived.
-- War refugees on the Network tab keep their ring after the war ends. The ring is brightest while the war is on and
-  stays at half strength afterward, so the "War refugees" key always matches dots on the diagram.
 
 ## [3.6.5] - 2026-10-23
 

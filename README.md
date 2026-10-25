@@ -33,7 +33,12 @@ When a settlement is starving, unhappy, or under siege, people leave. When one i
 
 Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.md) · [typeset PDF](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.pdf), with every formula rendered.
 
-## What's new in 3.6.6
+## What's new in 3.6.7
+
+- Refugee rings stay on after the war or disaster ends, brightest while it's on, so the legend's ring always matches
+  dots on the diagram.
+
+## What was new in 3.6.6
 
 - On the Network tab, hover a ringed refugee dot and the tooltip names the war it fled and where the person came
   from. The legend has a key for the ring.
@@ -41,8 +46,6 @@ Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationv
   them.
 - Fixed: a civilization that fought more than one war had all its refugees ringed during the last one. Each refugee
   now belongs to the war going on when they arrived.
-- Refugee rings stay on after the war or disaster ends, brightest while it's on, so the legend's ring always matches
-  dots on the diagram.
 
 ## What was new in 3.6.0
 
