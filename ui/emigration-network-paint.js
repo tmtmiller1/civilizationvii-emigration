@@ -170,25 +170,26 @@ function drawCityFocusRing(ctx, scene) {
 // Event-cause colors (also used by the timeline badges below).
 /** @type {Record<string,string>} */
 export const EVENT_COLOR = { disaster: "#e0913c", war: "#e5616b" };
-const EVENT_FADE = 8; // frames the cohort highlight lingers + fades after an event ends
+const EVENT_FADE = 8; // frames the full-strength ring takes to settle back after an event ends
+const EVENT_REST = 0.5; // ring strength outside the event, so refugees stay marked for the whole timeline
 
 /**
- * Highlight strength (0..1) for an event-caused dot at the current time: full while the event's
- * label is on the timeline, then fading out over the next EVENT_FADE frames.
+ * Ring strength (0..1) for an event-caused dot at the current time: full while the event is on the timeline,
+ * settling over the next EVENT_FADE frames to EVENT_REST, which it keeps. A refugee stays a refugee after the
+ * war ends, and the legend's ring key has to match something on the diagram at any frame.
  * @param {number} now Current frame index.
  * @param {*} d Dot (carries evFrom/evTo).
  * @returns {number} Strength 0..1.
  */
 function eventGlow(now, d) {
-  if (now < d.evFrom) return 0;
-  if (now <= d.evTo) return 1;
-  if (now <= d.evTo + EVENT_FADE) return 1 - (now - d.evTo) / EVENT_FADE;
-  return 0;
+  if (now >= d.evFrom && now <= d.evTo) return 1;
+  if (now > d.evTo && now <= d.evTo + EVENT_FADE) return Math.max(EVENT_REST, 1 - (now - d.evTo) / EVENT_FADE);
+  return EVENT_REST;
 }
 
 /**
- * Ring a dot in its event's color while that event is active (and briefly after, fading), so the
- * migrants a disaster/war drove are visually tied to its timeline popup.
+ * Ring a dot in its event's color: bright while that event is active, quieter the rest of the time, so the
+ * migrants a disaster/war drove are tied to its timeline pin and can be found to hover.
  * @param {CanvasRenderingContext2D} ctx Context.
  * @param {*} d Dot (carries evKind/evFrom/evTo).
  * @param {*} p Position {x, y, on}.
@@ -196,7 +197,6 @@ function eventGlow(now, d) {
  */
 function drawEventRing(ctx, d, p, now) {
   const g = eventGlow(now, d);
-  if (g <= 0) return;
   ctx.globalAlpha = g * (p.on ? 0.95 : 0.4);
   ctx.strokeStyle = EVENT_COLOR[d.evKind] || EVENT_COLOR.disaster;
   ctx.lineWidth = 0.9;

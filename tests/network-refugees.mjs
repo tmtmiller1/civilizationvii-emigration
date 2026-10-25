@@ -12,6 +12,7 @@ import assert from "node:assert/strict";
 
 const { buildChronoDots, tagEventDots } = await import("/emigration/ui/emigration-network-dots.js");
 const { wireEvents, addRingKeys } = await import("/emigration/ui/emigration-network-interact.js");
+const { paint } = await import("/emigration/ui/emigration-network-paint.js");
 
 const WX = 1120;
 const WY = 560;
@@ -146,7 +147,49 @@ function testLegendExplainsTheRingsPresent() {
   assert.equal(empty.children.length, 0, "no refugees, no key");
 }
 
+/** Paint the scene and return the alpha of every stroke in the war color (the refugee rings). */
+function warRingAlphas(scene) {
+  const st = { strokeStyle: "", globalAlpha: 1 };
+  const alphas = [];
+  const ctx = new Proxy({}, {
+    get: (_t, k) => {
+      if (k === "measureText") return () => ({ width: 10 });
+      if (k === "createLinearGradient") return () => ({ addColorStop: noop });
+      if (k === "stroke") return () => {
+        if (st.strokeStyle === "#e5616b") alphas.push(st.globalAlpha);
+      };
+      return k in st ? st[k] : noop;
+    },
+    set: (_t, k, v) => {
+      st[k] = v;
+      return true;
+    }
+  });
+  paint(ctx, scene);
+  return alphas;
+}
+
+function testWarRingsStayAfterTheWar() {
+  // 2026-10-25, in game: on the last frame of the sample timeline every war had ended, so only the disaster
+  // rings showed and the legend's war ring matched nothing on the diagram.
+  const scene = makeScene();
+  tagEventDots(scene.dots, [{ kind: "war", label: "Alpha–Beta War", from: 0, to: 0, civs: [1, 2] }]);
+  const during = warRingAlphas(scene);
+  assert.ok(during.length > 0, "war refugees are ringed during the war");
+  for (const d of scene.dots) {
+    if (d.evLabel) {
+      d.evFrom = -40; // the war ended long before this frame
+      d.evTo = -30;
+    }
+  }
+  const after = warRingAlphas(scene);
+  assert.equal(after.length, during.length, "every war refugee keeps its ring after the war");
+  assert.ok(Math.max(...after) < Math.min(...during), "the ring is quieter once the war is over");
+  assert.ok(Math.min(...after) > 0.3, "and still easy to see");
+}
+
 testEachRefugeeGetsTheWarGoingOnWhenItArrived();
 testHoveringARefugeeNamesTheWar();
+testWarRingsStayAfterTheWar();
 testLegendExplainsTheRingsPresent();
 console.log("network-refugees: ok");

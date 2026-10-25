@@ -2446,3 +2446,29 @@ So the old hover stalled about a quarter of a second every 3 s while the cursor 
 lens stalled about half a second. Both hover panels showed their content. Switching on the Ethnicity lens made no store
 reads within those two frames either way, so its paint wasn't covered here. The cursor was moved by setting
 `PlotCursor.plotCursorCoords`, not with the mouse.
+
+## 30. Network tab refugee rings and event labels (watched 2026-10-25)
+
+Lab game, seed 4242, usual set, `--quick`, the deployed 3.6.6 code plus the ring fix below. Live data first: by
+Exploration turn 33 (about 170 turns) the game had 20 war records and war emigration in Goryeo, Persia and Hawai'i,
+but every war move stayed inside its own civ and the only flows between met civs were two conquest flows. So no live
+dot was tagged, and the legend showed no ring key, which is correct for that data.
+
+With the sample data (Options, sample on), in the game's own screen:
+
+- The legend ends with "War refugees" and "Disaster refugees", ring swatches in #e5616b and #e0913c, and their hover text.
+- A sweep of the canvas with page mousemove events (156,800 points, 2 canvas px apart) hit refugee dots for all ten
+  sample events. Each tooltip named the right one: "Roman–Greek War · Refugee from Rome", "Punic–Persian War · Refugee
+  from Carthage", "Nile flood · Refugee from Egypt", and so on. 26,316 points gave the usual city or civ breakdown.
+- "Event labels" is unlit when the screen opens. On, at frame 78 (157 CE), "Roman–Greek War" shows under Rome and
+  Greece and "Aegean quake" under Greece; off, the labels go and the civ names and rings stay. The sample disasters
+  carry civs, so their labels show; live disaster records have none, so in a real game only war labels appear.
+
+Found and fixed in the same run: on the last frame every sample war had ended and its rings had faded, so the legend's
+war ring matched nothing on the diagram while the flood's rings still showed. A refugee's ring now settles at half
+strength after its event instead of fading out (`EVENT_REST` in `ui/emigration-network-paint.js`), and the last frame
+shows red rings on the Roman and Mauryan refugees in Persia. Captures: `working_screenshots/emig-366-*.png`.
+
+`new MouseEvent(type, {clientX, clientY})` arrives at (0,0) in this UI engine, and `element.click()` throws; set the
+coordinates with `Object.defineProperty` on the event, and send clicks as `new Event("click")`.
+

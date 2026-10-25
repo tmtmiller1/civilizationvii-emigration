@@ -228,9 +228,9 @@ function refugeeTip(scene, d) {
 // The ring key under the legend: [event kind, LOC key, English fallback, tip LOC key, tip fallback].
 const RING_KEYS = [
   ["war", "LOC_EMIG_NETC_RING_WAR", "War refugees", "LOC_EMIG_NETC_RING_WAR_TIP",
-    "A ring marks people who fled a war, while the war is on. Hover a dot to see which war."],
+    "A ring marks people who fled a war. It's brightest while the war is on. Hover a dot to see which war."],
   ["disaster", "LOC_EMIG_NETC_RING_DISASTER", "Disaster refugees", "LOC_EMIG_NETC_RING_DISASTER_TIP",
-    "A ring marks people who fled a disaster, just after it strikes. Hover a dot to see which disaster."]
+    "A ring marks people who fled a disaster. It's brightest just after it strikes. Hover a dot to see which disaster."]
 ];
 
 /**

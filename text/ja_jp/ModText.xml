@@ -667,9 +667,9 @@
         <Replace Tag="LOC_EMIG_NETC_EVENTLABELS_TIP" Language="ja_JP"><Text>Show each war's name under the civilizations fighting it</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_REFUGEE_FROM" Language="ja_JP"><Text>Refugee from {1_Origin}</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_RING_WAR" Language="ja_JP"><Text>War refugees</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_RING_WAR_TIP" Language="ja_JP"><Text>A ring marks people who fled a war, while the war is on. Hover a dot to see which war.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_WAR_TIP" Language="ja_JP"><Text>A ring marks people who fled a war. It's brightest while the war is on. Hover a dot to see which war.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_RING_DISASTER" Language="ja_JP"><Text>Disaster refugees</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER_TIP" Language="ja_JP"><Text>A ring marks people who fled a disaster, just after it strikes. Hover a dot to see which disaster.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER_TIP" Language="ja_JP"><Text>A ring marks people who fled a disaster. It's brightest just after it strikes. Hover a dot to see which disaster.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="ja_JP"><Text>移住 - {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="ja_JP"><Text>住民の出自</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTED" Language="ja_JP"><Text>これまでの移出先</Text></Replace>

@@ -41,6 +41,8 @@ Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationv
   them.
 - Fixed: a civilization that fought more than one war had all its refugees ringed during the last one. Each refugee
   now belongs to the war going on when they arrived.
+- Refugee rings stay on after the war or disaster ends, brightest while it's on, so the legend's ring always matches
+  dots on the diagram.
 
 ## What was new in 3.6.0
 

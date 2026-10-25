@@ -818,13 +818,13 @@
             <Text>War refugees</Text>
         </Row>
         <Row Tag="LOC_EMIG_NETC_RING_WAR_TIP">
-            <Text>A ring marks people who fled a war, while the war is on. Hover a dot to see which war.</Text>
+            <Text>A ring marks people who fled a war. It's brightest while the war is on. Hover a dot to see which war.</Text>
         </Row>
         <Row Tag="LOC_EMIG_NETC_RING_DISASTER">
             <Text>Disaster refugees</Text>
         </Row>
         <Row Tag="LOC_EMIG_NETC_RING_DISASTER_TIP">
-            <Text>A ring marks people who fled a disaster, just after it strikes. Hover a dot to see which disaster.</Text>
+            <Text>A ring marks people who fled a disaster. It's brightest just after it strikes. Hover a dot to see which disaster.</Text>
         </Row>
         <Row Tag="LOC_EMIGRATION_PANEL_POP_TITLE">
             <Text>Migration: {1_City}</Text>
