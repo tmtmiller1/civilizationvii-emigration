@@ -33,10 +33,14 @@ When a settlement is starving, unhappy, or under siege, people leave. When one i
 
 Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.md) · [typeset PDF](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.pdf), with every formula rendered.
 
-## What's new in 3.6.5
+## What's new in 3.6.6
 
-- The README gains a section on how the AI interacts with the mod: which of its choices the mod makes for it, which
-  come from the game's own planner, where the limits are, and what has been seen in a game.
+- On the Network tab, hover a ringed refugee dot and the tooltip names the war it fled and where the person came
+  from. The legend has a key for the ring.
+- The war labels under each civ are off when the screen opens. Click "Event labels" next to "Migrant flows" to show
+  them.
+- Fixed: a civilization that fought more than one war had all its refugees ringed during the last one. Each refugee
+  now belongs to the war going on when they arrived.
 
 ## What was new in 3.6.0
 

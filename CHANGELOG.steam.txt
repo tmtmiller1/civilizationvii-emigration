@@ -3,6 +3,16 @@ Generated from CHANGELOG.md by scripts/steam-changelog.mjs; release.sh uploads t
 To fix an old Workshop entry, paste the text under its ==== line into that entry's Edit box on the change-notes page.
 A block edited by hand is kept as-is. Delete a block to regenerate it from CHANGELOG.md.
 
+==== 3.6.6 | 2026-10-25 | src 155491a91295 | gen f0f205a1291f ====
+[b]Version 3.6.6 · 25 October 2026[/b]
+
+[b]Added[/b]
+• The Network tab has an “Event labels” chip next to “Migrant flows”. The war labels that used to pop up under each civ as you play back the timeline are now off to start with; click the chip to show them.
+• Hover a ringed refugee dot on the Network tab and the tooltip names the war it fled and where the person came from. The legend now has a key for the ring.
+
+[b]Fixed[/b]
+• When a civilization fought more than one war, the Network tab ringed all of its war refugees during the last war. Each refugee now belongs to the war that was going on when they arrived.
+
 ==== 3.6.5 | 2026-10-23 | src 1e475e2c0a37 | gen 4b2ee4d17d3b ====
 [b]Version 3.6.5 · 23 October 2026[/b]
 

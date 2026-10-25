@@ -5,7 +5,7 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
-## [Unreleased]
+## [3.6.6] - 2026-10-25
 
 ### Added
 - The Network tab has an "Event labels" chip next to "Migrant flows". The war labels that used to pop up under each
