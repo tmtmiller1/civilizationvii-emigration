@@ -92,6 +92,7 @@ import { civAdjective } from "/emigration/ui/emigration-naming.js";
  * @property {CityMeta} [cm] The city sub-cluster it sits in (so a dragged city carries its dots).
  * @property {{fromX:number, fromY:number, p:number}|null} [anim]
  * @property {string} [evKind] @property {number} [evFrom] @property {number} [evTo]
+ * @property {string} [evLabel] The name of the war or disaster the refugee fled (shown on hover).
  */
 
 const GOLDEN = Math.PI * (3 - Math.sqrt(5)); // golden angle for phyllotaxis packing
@@ -803,4 +804,48 @@ export function buildChronoDots(frames, centers, byId, colorMap, unit) {
     }
   }
   return placeDots(b.perDest, centers, byId);
+}
+
+/**
+ * Tag each war/disaster refugee dot with the event it fled, so the painter can ring that cohort while the event
+ * is on and the hover tooltip can name it.
+ * @param {Dot[]} dots
+ * @param {*[]} events Resolved events `{kind, label, from, to, civs}`.
+ */
+export function tagEventDots(dots, events) {
+  for (const d of dots) {
+    if (d.scope !== "immigrant" || (d.cause !== "war" && d.cause !== "disaster")) continue;
+    const ev = eventFled(d, events);
+    if (!ev) continue;
+    d.evKind = ev.kind;
+    d.evFrom = ev.from;
+    d.evTo = ev.to;
+    d.evLabel = ev.label;
+  }
+}
+
+/**
+ * The event a refugee fled: among events of its cause that involve its origin civ, the latest one already under
+ * way when it arrived. A civ can fight several wars over a game, and the refugee belongs to the one going on,
+ * not simply the last one listed. Falls back to the earliest later event when the arrival predates them all.
+ * @param {Dot} d @param {*[]} events
+ * @returns {*} The event, or null.
+ */
+function eventFled(d, events) {
+  let best = null;
+  for (const ev of events || []) {
+    if (ev.kind !== d.cause || !(ev.civs || []).includes(d.originId)) continue;
+    if (!best || fledRank(ev, d.appearFrame) > fledRank(best, d.appearFrame)) best = ev;
+  }
+  return best;
+}
+
+/**
+ * Rank an event for a refugee that arrived at frame `at`: any event already under way beats every later one, the
+ * most recent start first; among later ones, the soonest.
+ * @param {*} ev @param {number} at
+ * @returns {number} Higher is the better match.
+ */
+function fledRank(ev, at) {
+  return ev.from <= at ? 1e9 + ev.from : -ev.from;
 }

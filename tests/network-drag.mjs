@@ -24,21 +24,23 @@ const WX = 1120;
 const WY = 560;
 const noop = () => {};
 
-/** A canvas ctx stub recording arc centers (discs + dots) and quadratic curves (flow arrows). */
+/** A canvas ctx stub recording arc centers (discs + dots), quadratic curves (flow arrows) and filled text. */
 function recorder() {
   const arcs = [];
   const curves = [];
+  const texts = [];
   const ctx = new Proxy({}, {
     get: (_t, k) => {
       if (k === "createLinearGradient") return () => ({ addColorStop: noop });
       if (k === "measureText") return () => ({ width: 10 });
       if (k === "arc") return (/** @type {number} */ x, /** @type {number} */ y, /** @type {number} */ r) => arcs.push([x, y, r]);
       if (k === "quadraticCurveTo") return (/** @type {number} */ cx, /** @type {number} */ cy, /** @type {number} */ x1, /** @type {number} */ y1) => curves.push([cx, cy, x1, y1]);
+      if (k === "fillText") return (/** @type {string} */ t) => texts.push(t);
       return noop;
     },
     set: () => true
   });
-  return { ctx, arcs, curves };
+  return { ctx, arcs, curves, texts };
 }
 
 /** A canvas element stub that hands back the listeners wireEvents registers. */
@@ -276,6 +278,18 @@ function testDraggingACityOutOpensUpItsInternalFlow() {
     `the arrow should be far longer once the city is clear (${lenBefore.toFixed(1)} -> ${lenAfter.toFixed(1)})`);
 }
 
+function testEventLabelsToggle() {
+  const scene = makeScene();
+  scene.events = [{ kind: "war", label: "War with Beta", from: 0, to: 0, civs: [1], cis: [0] }];
+  const count = () => snapshot(scene).texts.filter((t) => t === "War with Beta").length;
+  assert.equal(count(), 0, "event labels start off");
+  scene.state.showEvents = true;
+  assert.equal(count(), 1, "with event labels on, the war label is drawn under the civ it hit");
+  scene.state.showEvents = false;
+  assert.equal(count(), 0, "with event labels off, the war label is gone");
+  assert.ok(snapshot(scene).texts.includes("Alpha"), "civ name labels stay when event labels are off");
+}
+
 testFlowArrowsFollowACivDrag();
 testDraggingACityOutOpensUpItsInternalFlow();
 testCityDragMovesItsDotsAndGrowsTheCivCircle();
@@ -283,4 +297,5 @@ testDraggingACivCarriesItsCitiesAlong();
 testClickingACivRingStillIsolates();
 testClickingACitySelectsJustItsFlows();
 testSelectedCityKeepsItsEmigrantsLit();
+testEventLabelsToggle();
 console.log("network-drag: ok");

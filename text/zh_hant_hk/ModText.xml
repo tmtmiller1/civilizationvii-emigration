@@ -663,6 +663,13 @@
         <Replace Tag="LOC_EMIG_NETC_UNMET" Language="zh_Hant_HK"><Text>未遇見</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="zh_Hant_HK"><Text>移民流向</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="zh_Hant_HK"><Text>疊加顯示移民流向箭頭：紅色為人們離開之處，綠色為抵達之處；越粗 = 人數越多</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS" Language="zh_Hant_HK"><Text>Event labels</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS_TIP" Language="zh_Hant_HK"><Text>Show each war's name under the civilizations fighting it</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_REFUGEE_FROM" Language="zh_Hant_HK"><Text>Refugee from {1_Origin}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_WAR" Language="zh_Hant_HK"><Text>War refugees</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_WAR_TIP" Language="zh_Hant_HK"><Text>A ring marks people who fled a war, while the war is on. Hover a dot to see which war.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER" Language="zh_Hant_HK"><Text>Disaster refugees</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER_TIP" Language="zh_Hant_HK"><Text>A ring marks people who fled a disaster, just after it strikes. Hover a dot to see which disaster.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="zh_Hant_HK"><Text>移民 - {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="zh_Hant_HK"><Text>人口來源</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTED" Language="zh_Hant_HK"><Text>已遷往（全局）</Text></Replace>

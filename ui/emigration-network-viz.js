@@ -10,7 +10,7 @@ import { seedSim, stepSim } from "/emigration/ui/emigration-network-sim.js";
 import {
   paint, civColorByIndex, CAUSE_PALETTE, MOVE_PALETTE
 } from "/emigration/ui/emigration-network-paint.js";
-import { buildChronoDots, totalPeople, totalPoints } from "/emigration/ui/emigration-network-dots.js";
+import { buildChronoDots, tagEventDots, totalPeople, totalPoints } from "/emigration/ui/emigration-network-dots.js";
 import {
   getNumberMode,
   setNumberMode,
@@ -22,7 +22,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { buildTimelineEvents } from "/emigration/ui/emigration-timeline-events.js";
 import { makeTimeline, TIMELINE_CSS } from "/emigration/ui/emigration-network-timeline.js";
 import { installStageFit } from "/emigration/ui/emigration-network-fit.js";
-import { makeTooltip, wireEvents } from "/emigration/ui/emigration-network-interact.js";
+import { addRingKeys, makeTooltip, wireEvents } from "/emigration/ui/emigration-network-interact.js";
 import { localeFontFamily } from "/emigration/ui/emigration-loc.js";
 import { frameTimer, nowMs, plog } from "/emigration/ui/emigration-log.js";
 
@@ -51,6 +51,7 @@ const SCALED_DOT_CAP = 2000;
  * @property {string|null} scope Isolated movement scope, or null.
  * @property {{resident:boolean, internal:boolean, immigrant:boolean}} show Per-scope visibility.
  * @property {boolean} showFlows Whether origin→destination flow lines are drawn.
+ * @property {boolean} showEvents Whether the war/disaster labels are drawn under the clusters they hit.
  * @property {string} lens Active color lens ("origin" | "cause" | "movement").
  * @property {number} frameIdx Current timeline frame index.
  */
@@ -292,15 +293,8 @@ const LENSES = [
   ["movement", "LOC_EMIG_NETC_LENS_MOVEMENT", "Movement"]
 ];
 
-// The three movement scopes for the "Movement" lens legend: [scope, LOC key, English fallback].
+// The three movement scopes, for the "Movement" legend and the "Show:" toggles: [scope, LOC key, English fallback].
 const MOVE_KEYS = [
-  ["resident", "LOC_EMIG_NETC_MOVE_RESIDENTS", "Residents"],
-  ["internal", "LOC_EMIG_NETC_MOVE_INTERNAL", "Internal moves"],
-  ["immigrant", "LOC_EMIG_NETC_MOVE_IMMIGRANTS", "Immigrants"]
-];
-
-// Per-scope show toggles: [scope, LOC key, English fallback].
-const SHOW_TOGGLES = [
   ["resident", "LOC_EMIG_NETC_MOVE_RESIDENTS", "Residents"],
   ["internal", "LOC_EMIG_NETC_MOVE_INTERNAL", "Internal moves"],
   ["immigrant", "LOC_EMIG_NETC_MOVE_IMMIGRANTS", "Immigrants"]
@@ -316,7 +310,7 @@ const SHOW_TOGGLES = [
 function addScopeToggles(root, state, onChange) {
   root.appendChild(el("span", "emig-lens-sep"));
   root.appendChild(el("span", "emig-lens-lbl", loc("LOC_EMIG_NETC_SHOW", "Show:")));
-  for (const [scope, locKey, fallback] of SHOW_TOGGLES) {
+  for (const [scope, locKey, fallback] of MOVE_KEYS) {
     // "Show:" filters which dots appear → the flat boxed filter-button look (shared with the dashboard
     // control row's Unmet-civs filter), distinct from the rounded "Color by:" / "Units:" view pills.
     const c = el("div", "emig-filter-btn active", loc(locKey, fallback));
@@ -329,24 +323,34 @@ function addScopeToggles(root, state, onChange) {
   }
 }
 
+// Overlay chips after the "Show:" filters: [state flag, LOC key, English fallback, tip LOC key, tip fallback].
+const OVERLAY_TOGGLES = [
+  // Green/red migrant-flow arrows over the dots; they respect the active isolate/scope filters.
+  ["showFlows", "LOC_EMIG_NETC_MIGFLOWS", "Migrant flows", "LOC_EMIG_NETC_MIGFLOWS_TIP",
+    "Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people"],
+  // The war/disaster labels under each cluster an event hit while the scrubber is inside its window.
+  ["showEvents", "LOC_EMIG_NETC_EVENTLABELS", "Event labels", "LOC_EMIG_NETC_EVENTLABELS_TIP",
+    "Show each war's name under the civilizations fighting it"]
+];
+
 /**
- * Append a "Migrant flows" toggle: overlay the green/red migrant-flow arrows on the dots (red where
- * people leave, green where they arrive; thickness ∝ volume). Respects the active isolate/scope filters.
+ * Append the overlay chips (Migrant flows, Event labels), each flipping one boolean on the state.
  * @param {HTMLElement} root The selector row.
  * @param {*} state Interaction state.
- * @param {()=>void} onChange Called after the toggle changes.
+ * @param {()=>void} onChange Called after a toggle changes.
  */
-function addFlowsToggle(root, state, onChange) {
+function addOverlayToggles(root, state, onChange) {
   root.appendChild(el("span", "emig-lens-sep"));
-  const c = el("div", "emig-netc-chip", loc("LOC_EMIG_NETC_MIGFLOWS", "Migrant flows"));
-  c.title = loc("LOC_EMIG_NETC_MIGFLOWS_TIP",
-    "Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people");
-  c.addEventListener("click", () => {
-    state.showFlows = !state.showFlows;
-    c.classList.toggle("active", state.showFlows);
-    onChange();
-  });
-  root.appendChild(c);
+  for (const [key, locKey, fallback, tipKey, tipFallback] of OVERLAY_TOGGLES) {
+    const c = el("div", "emig-netc-chip" + (state[key] ? " active" : ""), loc(locKey, fallback));
+    c.title = loc(tipKey, tipFallback);
+    c.addEventListener("click", () => {
+      state[key] = !state[key];
+      c.classList.toggle("active", state[key]);
+      onChange();
+    });
+    root.appendChild(c);
+  }
 }
 
 // Number-mode units control (Scaled Pop ↔ Civ Pop), shared with the flow-map view so both surfaces of
@@ -425,7 +429,7 @@ function makeLensTabs(state, onChange, rebuildAll) {
     chips.push({ key, el: c });
   }
   addScopeToggles(root, state, onChange);
-  addFlowsToggle(root, state, onChange);
+  addOverlayToggles(root, state, onChange);
   appendUnitsToggle(root, rebuildAll);
   return root;
 }
@@ -486,20 +490,19 @@ function fillLegend(box, ctx, state, rebuild) {
 }
 
 /**
- * Build the lens-aware color key (rebuildable when the lens changes).
- * @param {*} net Network model.
- * @param {Map<number,number>} colorMap Color-index map.
+ * Build the lens-aware color key (rebuildable when the lens changes), with the refugee ring key after it.
+ * @param {{net:*, colorMap:Map<number,number>, causes:string[], dots:Dot[]}} ctx The network model, color-index
+ *   map, causes present and the scene's dots.
  * @param {*} state Interaction state.
- * @param {string[]} causes Causes present.
  * @param {()=>void} markDirty Request a canvas repaint (filters changed).
  * @returns {{box:HTMLElement, rebuild:()=>void}} Legend handle.
  */
-function makeLegendBox(net, colorMap, state, causes, markDirty) {
+function makeLegendBox(ctx, state, markDirty) {
   const box = el("div", "emig-legend");
-  const ctx = { net, colorMap, causes };
   const rebuild = () => {
     box.innerHTML = "";
     fillLegend(box, ctx, state, rebuild);
+    addRingKeys(box, ctx.dots);
     markDirty();
   };
   rebuild();
@@ -679,25 +682,6 @@ export function resolveEvents(events, byId) {
   }));
 }
 
-/**
- * Tag each migrant dot with the disaster/war it fled (matching cause + an affected origin civ), so
- * the painter can ring that cohort while the event's label is on the timeline.
- * @param {Dot[]} dots
- * @param {EventSpec[]} events Resolved events.
- */
-function tagEventDots(dots, events) {
-  for (const ev of events) {
-    if (ev.kind !== "war" && ev.kind !== "disaster") continue;
-    const origins = new Set(ev.civs);
-    for (const d of dots) {
-      if (d.scope !== "immigrant" || d.cause !== ev.kind || !origins.has(d.originId)) continue;
-      d.evKind = ev.kind;
-      d.evFrom = ev.from;
-      d.evTo = ev.to;
-    }
-  }
-}
-
 /** @param {number} ms Build time. @param {*} scene The built scene. */
 function logScene(ms, scene) {
   plog("network scene " + Math.round(ms) + " ms: " + scene.dots.length + " dots, " + scene.centers.length +
@@ -721,7 +705,7 @@ function buildScene(frames, colorMap, events) {
   /** @type {*} */
   const state = {
     causes: new Set(), origin: null, focusDest: null, focusCity: null, scope: null,
-    show: { resident: true, internal: true, immigrant: true }, showFlows: false,
+    show: { resident: true, internal: true, immigrant: true }, showFlows: false, showEvents: false,
     lens: "origin", frameIdx: frames.length - 1, expanded: new Set()
   };
   const { sim, byId } = buildCenters(lastNet, colorMap);
@@ -807,7 +791,7 @@ function buildViz(container, frames, events, rebuildAll, controlsHost) {
     markDirty();
   };
   const tip = makeTooltip(wrap);
-  const legendBox = makeLegendBox(lastNet, colorMap, state, causesPresent(frames), markDirty);
+  const legendBox = makeLegendBox({ net: lastNet, colorMap, causes: causesPresent(frames), dots }, state, markDirty);
   const timeline = setupPlayback(frames, holder, activate, CONFIG.timelineEventPins ? events : []);
   mountChrome({
     wrap, lensTabs: makeLensTabs(state, legendBox.rebuild, rebuildAll), canvas, controlsHost,

@@ -663,6 +663,13 @@
         <Replace Tag="LOC_EMIG_NETC_UNMET" Language="it_IT"><Text>Non incontrate</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="it_IT"><Text>Flussi migratori</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="it_IT"><Text>Sovrapponi le frecce dei flussi migratori: rosse dove le persone partono, verdi dove arrivano; più spesse = più persone</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS" Language="it_IT"><Text>Event labels</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS_TIP" Language="it_IT"><Text>Show each war's name under the civilizations fighting it</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_REFUGEE_FROM" Language="it_IT"><Text>Refugee from {1_Origin}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_WAR" Language="it_IT"><Text>War refugees</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_WAR_TIP" Language="it_IT"><Text>A ring marks people who fled a war, while the war is on. Hover a dot to see which war.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER" Language="it_IT"><Text>Disaster refugees</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER_TIP" Language="it_IT"><Text>A ring marks people who fled a disaster, just after it strikes. Hover a dot to see which disaster.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="it_IT"><Text>Migrazione - {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="it_IT"><Text>Origini della popolazione</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTED" Language="it_IT"><Text>Partiti verso (intera partita)</Text></Replace>

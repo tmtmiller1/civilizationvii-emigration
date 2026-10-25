@@ -5,6 +5,18 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [Unreleased]
+
+### Added
+- The Network tab has an "Event labels" chip next to "Migrant flows". The war labels that used to pop up under each
+  civ as you play back the timeline are now off to start with; click the chip to show them.
+- Hover a ringed refugee dot on the Network tab and the tooltip names the war it fled and where the person came from.
+  The legend now has a key for the ring.
+
+### Fixed
+- When a civilization fought more than one war, the Network tab ringed all of its war refugees during the last war.
+  Each refugee now belongs to the war that was going on when they arrived.
+
 ## [3.6.5] - 2026-10-23
 
 ### Changed

@@ -1,12 +1,14 @@
 // emigration-network-interact.js
 //
 // Pointer interaction for the migration view: the cursor-following tooltip, the hover ethnicity
-// breakdown, drag-to-rearrange the civ circles, and click-to-select a city or isolate a civ cluster.
+// breakdown, the refugee dot tooltip and its ring key, drag-to-rearrange the civ circles, and
+// click-to-select a city or isolate a civ cluster.
 
 import { civAdjective } from "/emigration/ui/emigration-naming.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { civDisplayColor } from "/emigration/ui/emigration-civ-colors.js";
 import { civReach } from "/emigration/ui/emigration-network-dots.js";
+import { EVENT_COLOR, refugeeDotAt } from "/emigration/ui/emigration-network-paint.js";
 
 /**
  * @typedef {import("/emigration/ui/emigration-network-dots.js").Dot} Dot
@@ -24,18 +26,22 @@ function el(tag, cls, text) {
 
 /**
  * @param {string} key LOC key.
- * @param {string} fallback English fallback.
+ * @param {string} fallback English fallback (may contain {1_X} placeholders).
+ * @param {...*} args Substitution args.
  */
-function loc(key, fallback) {
+function loc(key, fallback, ...args) {
   try {
     if (typeof Locale !== "undefined" && Locale.compose) {
-      const v = Locale.compose(key);
+      const v = Locale.compose(key, ...args);
       if (typeof v === "string" && v && !v.startsWith("LOC_")) return v;
     }
   } catch (_) {
     /* ignore */
   }
-  return fallback;
+  return String(fallback).replace(/\{(\d+)_[A-Za-z]+\}/g, (/** @type {string} */ m, /** @type {string} */ n) => {
+    const a = args[Number(n) - 1];
+    return a == null ? m : String(a);
+  });
 }
 
 /** @param {*} s */
@@ -209,7 +215,68 @@ function breakdownTip(scene, title, keep) {
 }
 
 /**
- * Show the ethnicity breakdown for whatever is under the pointer: a city, else a civ, else hide.
+ * A refugee dot's tooltip: the war or disaster it fled, then where it came from.
+ * @param {Scene} scene @param {Dot} d
+ * @returns {string} Tooltip HTML.
+ */
+function refugeeTip(scene, d) {
+  const { name, color } = originLabel(scene, d.originId);
+  return `<b>${esc(d.evLabel)}</b><br><span class="emig-netc-tip-sw" style="background:${esc(color)}"></span>` +
+    esc(loc("LOC_EMIG_NETC_REFUGEE_FROM", "Refugee from {1_Origin}", name));
+}
+
+// The ring key under the legend: [event kind, LOC key, English fallback, tip LOC key, tip fallback].
+const RING_KEYS = [
+  ["war", "LOC_EMIG_NETC_RING_WAR", "War refugees", "LOC_EMIG_NETC_RING_WAR_TIP",
+    "A ring marks people who fled a war, while the war is on. Hover a dot to see which war."],
+  ["disaster", "LOC_EMIG_NETC_RING_DISASTER", "Disaster refugees", "LOC_EMIG_NETC_RING_DISASTER_TIP",
+    "A ring marks people who fled a disaster, just after it strikes. Hover a dot to see which disaster."]
+];
+
+/**
+ * Append a key for the refugee rings after the legend's color items, one per event kind that has a ringed dot in
+ * this game. The key explains, so it isn't a filter: no click.
+ * @param {HTMLElement} box Legend box. @param {Dot[]} dots The scene's dots.
+ */
+export function addRingKeys(box, dots) {
+  const kinds = new Set();
+  for (const d of dots || []) if (d.evKind) kinds.add(d.evKind);
+  for (const [kind, locKey, fallback, tipKey, tipFallback] of RING_KEYS) {
+    if (!kinds.has(kind)) continue;
+    const key = el("div", "emig-leg");
+    key.style.cursor = "default";
+    key.title = loc(tipKey, tipFallback);
+    const sw = el("span", "emig-sw");
+    sw.style.border = "0.11rem solid " + EVENT_COLOR[kind];
+    sw.style.boxSizing = "border-box";
+    key.appendChild(sw);
+    key.appendChild(el("span", "emig-leg-name", loc(locKey, fallback)));
+    box.appendChild(key);
+  }
+}
+
+/**
+ * The tooltip for whatever is under the pointer: a war/disaster refugee dot (named on its own), else a city's
+ * ethnicity breakdown, else a civ's, else null.
+ * @param {Scene} scene @param {{x:number, y:number}} pt Pointer in logical coords.
+ * @returns {string|null} Tooltip HTML, or null to hide.
+ */
+function hoverTipHTML(scene, pt) {
+  const refugee = refugeeDotAt(scene, pt.x, pt.y);
+  if (refugee) return refugeeTip(scene, refugee);
+  const city = nearestCity(scene, pt.x, pt.y);
+  if (city) {
+    const title = city.city.name + " · " + city.center.name;
+    return breakdownTip(scene, title, (/** @type {Dot} */ d) => d.ci === city.ci && d.cityIdx === city.cityIdx);
+  }
+  const c = nearestCluster(scene, pt.x, pt.y);
+  if (!c) return null;
+  const ci = scene.byId.get(c.id);
+  return breakdownTip(scene, c.name, (/** @type {Dot} */ d) => d.ci === ci);
+}
+
+/**
+ * Show the tooltip for whatever is under the pointer, or hide it over empty space.
  * @param {*} ev Event.
  * @param {HTMLCanvasElement} canvas
  * @param {*} holder Render holder.
@@ -218,23 +285,13 @@ function breakdownTip(scene, title, keep) {
 function showHoverTip(ev, canvas, holder, tip) {
   tip.move(ev);
   const scene = holder.scene;
-  const pt = toLogical(canvas, ev, scene.WX, scene.WY);
-  const city = nearestCity(scene, pt.x, pt.y);
-  if (city) {
-    const title = city.city.name + " · " + city.center.name;
-    tip.setHTML(breakdownTip(scene, title,
-      (/** @type {Dot} */ d) => d.ci === city.ci && d.cityIdx === city.cityIdx));
-    tip.show();
+  const html = hoverTipHTML(scene, toLogical(canvas, ev, scene.WX, scene.WY));
+  if (html == null) {
+    tip.hide();
     return;
   }
-  const c = nearestCluster(scene, pt.x, pt.y);
-  if (c) {
-    const ci = scene.byId.get(c.id);
-    tip.setHTML(breakdownTip(scene, c.name, (/** @type {Dot} */ d) => d.ci === ci));
-    tip.show();
-  } else {
-    tip.hide();
-  }
+  tip.setHTML(html);
+  tip.show();
 }
 
 /**

@@ -663,6 +663,13 @@
         <Replace Tag="LOC_EMIG_NETC_UNMET" Language="ko_KR"><Text>만나지 못함</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="ko_KR"><Text>이주 흐름</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="ko_KR"><Text>이주 흐름 화살표 겹쳐 보기: 사람들이 떠나는 곳은 빨간색, 도착하는 곳은 초록색이며 두꺼울수록 사람이 많습니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS" Language="ko_KR"><Text>Event labels</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS_TIP" Language="ko_KR"><Text>Show each war's name under the civilizations fighting it</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_REFUGEE_FROM" Language="ko_KR"><Text>Refugee from {1_Origin}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_WAR" Language="ko_KR"><Text>War refugees</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_WAR_TIP" Language="ko_KR"><Text>A ring marks people who fled a war, while the war is on. Hover a dot to see which war.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER" Language="ko_KR"><Text>Disaster refugees</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER_TIP" Language="ko_KR"><Text>A ring marks people who fled a disaster, just after it strikes. Hover a dot to see which disaster.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="ko_KR"><Text>이주 - {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="ko_KR"><Text>인구 출신</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTED" Language="ko_KR"><Text>지금까지 떠난 곳</Text></Replace>

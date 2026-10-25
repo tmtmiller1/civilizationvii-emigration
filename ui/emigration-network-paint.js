@@ -169,7 +169,7 @@ function drawCityFocusRing(ctx, scene) {
 
 // Event-cause colors (also used by the timeline badges below).
 /** @type {Record<string,string>} */
-const EVENT_COLOR = { disaster: "#e0913c", war: "#e5616b" };
+export const EVENT_COLOR = { disaster: "#e0913c", war: "#e5616b" };
 const EVENT_FADE = 8; // frames the cohort highlight lingers + fades after an event ends
 
 /**
@@ -239,6 +239,32 @@ function dotHidden(d, state, now) {
   if (d.appearFrame > now) return true;
   if (d.disappearFrame != null && now >= d.disappearFrame) return true;
   return !!(state.show && state.show[d.scope] === false); // scope toggled off
+}
+
+const REFUGEE_HIT_R = 2.5; // logical px: the dot plus a pixel, so a dense cluster still gives the city breakdown
+
+/**
+ * The war/disaster refugee dot under the pointer, if one is on screen and lit: the nearest within
+ * REFUGEE_HIT_R. Dots outside the current filters are skipped so a dimmed dot doesn't steal the hover.
+ * @param {Scene} scene
+ * @param {number} x Logical x. @param {number} y Logical y.
+ * @returns {Dot|null} The dot, or null.
+ */
+export function refugeeDotAt(scene, x, y) {
+  const { centers, dots, state } = scene;
+  const now = typeof state.frameIdx === "number" ? state.frameIdx : Infinity;
+  let best = null;
+  let bd = REFUGEE_HIT_R * REFUGEE_HIT_R;
+  for (const d of dots) {
+    if (!d.evLabel || dotHidden(d, state, now) || !dotActive(d, state)) continue;
+    const p = dotXY(d, centers[d.ci]);
+    const dd = (p.x - x) * (p.x - x) + (p.y - y) * (p.y - y);
+    if (dd <= bd) {
+      bd = dd;
+      best = d;
+    }
+  }
+  return best;
 }
 
 /**
@@ -526,7 +552,7 @@ function drawFlowOverlay(ctx, scene) {
 }
 
 /**
- * Paint one frame: cluster discs, dots, optional origin-flow lines, labels, then events.
+ * Paint one frame: cluster discs, dots, optional origin-flow lines, labels, then events (when toggled on).
  * @param {CanvasRenderingContext2D} ctx Context.
  * @param {Scene} scene
  */
@@ -537,5 +563,5 @@ export function paint(ctx, scene) {
   // A selected city always shows its own flows: highlighting them is the point of selecting it.
   if (scene.state.showFlows || scene.state.focusCity) drawFlowOverlay(ctx, scene);
   drawLabels(ctx, scene.centers);
-  drawEvents(ctx, scene);
+  if (scene.state.showEvents) drawEvents(ctx, scene);
 }

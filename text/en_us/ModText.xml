@@ -805,6 +805,27 @@
         <Row Tag="LOC_EMIG_NETC_MIGFLOWS_TIP">
             <Text>Overlay migrant-flow arrows: red where people leave, green where they arrive; thicker = more people</Text>
         </Row>
+        <Row Tag="LOC_EMIG_NETC_EVENTLABELS">
+            <Text>Event labels</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_EVENTLABELS_TIP">
+            <Text>Show each war's name under the civilizations fighting it</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_REFUGEE_FROM">
+            <Text>Refugee from {1_Origin}</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_RING_WAR">
+            <Text>War refugees</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_RING_WAR_TIP">
+            <Text>A ring marks people who fled a war, while the war is on. Hover a dot to see which war.</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_RING_DISASTER">
+            <Text>Disaster refugees</Text>
+        </Row>
+        <Row Tag="LOC_EMIG_NETC_RING_DISASTER_TIP">
+            <Text>A ring marks people who fled a disaster, just after it strikes. Hover a dot to see which disaster.</Text>
+        </Row>
         <Row Tag="LOC_EMIGRATION_PANEL_POP_TITLE">
             <Text>Migration: {1_City}</Text>
         </Row>
