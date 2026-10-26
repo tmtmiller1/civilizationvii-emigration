@@ -171,3 +171,25 @@ which is exactly what it is).
 interface localization. The UI-key CI guard (`tests/i18n-ui-keys.mjs`) does not flag these because they
 are plain string literals, not `LOC_` references. Revisit only if the Sample preview ever becomes a
 shipped, discoverable feature rather than a dev/diagnostic mode.
+
+## P1.1 (§27), reroute-before-death on transit deferral: retired on the counters (2026-10-26)
+
+Proposed as the first fairness fix of the §27 backlog: a refugee whose destination stays full past `MAX_DEFERS`
+gets one reroute before the death is charged. The `transitCapped` counter measures how often that death happens.
+Read over the two session-1 games (roadmap §59): 0 in the Washington save's nine turns (76 crisis moves) and 0 in
+139 Exploration turns at Deity (268 crisis moves); `transitRazed` was 0 in both as well. The case the reroute would
+rescue never came up in 351 crisis moves.
+
+**Verdict:** retired. Comes back if a later read shows `transitCapped` at more than a few percent of
+`crisisMoves`.
+
+## P2.1 (§27), weak-refuge fallback band: retired on the counters (2026-10-26)
+
+Proposed to soften the "no viable refuge" cliff with a middle tier of bad-but-available destinations, so that
+attrition fires only when even a weak refuge is absent. The `attritionTrapped` counter (deaths with no refuge in
+reach) against `attritionFleeing` (deaths while others fled) says how often the cliff is hit. Read over the two
+session-1 games (roadmap §59): trapped 0 against fleeing 2 on the Washington save, trapped 0 against fleeing 18 in
+139 Exploration turns. Every death in both games came with a refuge in reach; the cliff didn't fire.
+
+**Verdict:** retired. Comes back if a later read shows trapped deaths as the larger share.
+

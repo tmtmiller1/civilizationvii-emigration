@@ -2141,6 +2141,25 @@ any item here, several may be retired if their counter stays near zero.
   live (see the CHANGELOG). Everything below is the still-open remainder: per-move fairness/exploit fixes
   and depth.
 
+**The measure-first read, done (2026-10-26).** The counters were read over two lab games (the session-1 reads of
+§59): the owner's WashingtonAnt130 save driven nine turns to the age's end with the usual set (83 moves, 76 of them
+crisis), and an Exploration game at Deity, seed 4242, driven 138 turns to the age's end (318 moves, 268 crisis).
+`_counters` is module state, zero on every load, so each figure covers the driven turns only; the all-game ledgers
+(`flows()`, the per-event maps) were read beside them where the item needed history.
+
+| Item | Evidence (Washington / Exploration) | Verdict |
+|---|---|---|
+| P1.1 reroute-before-death | `transitCapped` 0 / 0 against `crisisMoves` 76 / 268; `transitRazed` 0 / 0 | Retired: nobody died waiting at a full destination in 351 crisis moves. In `wont-fix-with-justifications.md`. |
+| P1.2 arrival safety revalidation | `arrivedIntoCrisis` 6 / 46 (7% and 17% of crisis moves) | Kept, with numbers. It fires every game: New York took four turns of arrivals while besieged in the Washington drive. The commonest open edge case of the eight. |
+| P1.3 closed-borders backlash | no counter. Dai Viet held Closed Borders (Exploration) turns 60 to 70 and again at 100; Hawaii held Open Borders 90 to 100 | Kept as a counter, not a build: `emigration-borders.js` already returns `closedBordersRetention` for a closed source, so one counter of points the retention kept home (`retainedByBorders`) in `recordPassCounters` reads the share. Build only if that share is visible. |
+| P2.1 weak-refuge band | `attritionTrapped` 0 / 0 against `attritionFleeing` 2 / 18 | Retired: trapped deaths never dominated; every death came with a refuge in reach. In `wont-fix-with-justifications.md`. |
+| P2.2 crisis-escape phasing | `crisisCrossCiv` 4 / 88 against `crisisInternal` 72 / 180; the `crisis-escape` reason tag fired 0 / 0 times, `own-civ` 76 / 190, `aggressor-avoided` 4 / 31, `allied` 0 / 27 | Kept, with numbers. A third of Exploration crisis moves crossed a border, but no record carries the crisis tenure, so whether they crossed early can't be read. Recommend a `tenure` field on crisis records (one line in `deriveMoveReasons`'s caller) before building. |
+| P2.3 dividend on integration | no counter. Pikawiiki (Washington) took arrivals four turns running (136 to 139, from Pittsburgh, disaster and prosperity) | Not readable yet: the arrivals ledger shows a compounding city but nothing says whether the dividend drove it. Recommend a counter of arrivals into cities already paying a dividend (`arrivedOnDividend`) before building. |
+| P2.5 city-states as refuges | no counter. The flow ledger holds no edge touching a non-major owner in either game (141 and 101 edges) | Not readable yet: city-states take nobody, but no record says a city-state was the best candidate a refugee passed over. Recommend a counter of crisis moves whose top rejected candidate was a city-state (`cityStateRejected`, in `bestDestination`). |
+| P2.6 circular damping | `returnMoves` 1 / 4 against `voluntaryMoves` 7 / 50; reverse pairs inside the nine-turn Washington window 4 of 35 moved corridors; all-game reverse-pair edges 28 of 141 and 32 of 101 | Kept, with numbers. A to B then B to A inside a few turns happened on about one corridor in nine; the all-game ledgers show a reverse edge on a third of corridors (mostly war one way, prosperity back). Not common enough to build on now; a later read decides. |
+
+Nothing above gets built in the 3.7.0 pass.
+
 ### 27.1 Priority 1: Fairness & exploit fixes
 
 #### P1.1 Reroute-before-death on transit deferral
@@ -3332,3 +3351,78 @@ The 31 pedia and option keys whose English changed were dropped from `i18n/<loca
 regenerated with `i18n_apply --force`, so they read in English until translated, like the other 314 strings of
 this release (`i18n-keeps-stale-translations`). `emigration-guide.js` and its 169 `LOC_EMIG_GUIDE_*` strings have
 no importer since the Guide tab went; left for a code pass.
+
+## 59. Session 1 of the 3.7.0 plan: the reads (2026-10-26)
+
+Two lab games, each launched once (`tools/plans/next-2026-10-26/emigration-next-prompt.md`, session 1). Nothing was
+built. The per-turn sample ran inside `lab drive` and read the mod's own surfaces (`emigration.metrics()`,
+`EmigrationData`, `EmigrationViolence`, the violence-signals module) beside the engine's.
+
+**The counters.** `_counters` in `ui/emigration-telemetry.js` is module state: zero on every load, reset again on
+a cache reset. A read covers the turns driven in that session, so the save's all-game ledgers (`flows()`, the
+per-event maps, `netCumFor`, `refugeesCumFor`, `deathsCumFor`) were read at the start and the end of each drive
+too. `lab start` takes a difficulty: `--setup Difficulty=DIFFICULTY_DEITY` (the game-level parameter; the bench
+confirms it on the setup screen).
+
+**The Washington save, usual set, turns 130 to 139 (the age's end at 139 of 140).** Loaded with `Network.loadGame`
+inside a lab game as §36 says; the save file was byte for byte the same afterward (MD5 `9ed4223b…`). Nine passes,
+83 moves (7 voluntary, 76 crisis of which 72 internal and 4 abroad), 1 return, 2 fleeing deaths, 0 trapped, 0
+transit deaths, 6 arrivals into a crisis, 50 refugee points queued and 33 settled. The player's cities took 84
+points of movement over 35 corridors in those nine turns; Philadelphia to Washington (6 points, war) and Pittsburgh
+to Pikawiiki (5, disaster and prosperity) were the largest.
+
+- *Arrivals per city of the player's.* Four of the eleven cities took anyone: New York on four turns (132 to
+  135), Washington on three (134 to 136), Pikawiiki on four (136 to 139), Philadelphia once (137). The
+  newcomer cost line read 7 Gold and 2.6 Happiness a turn at 131, climbed to 29 Gold and 8.1 Happiness at 136
+  while Washington and Pikawiiki both took war refugees, and ended at 20 Gold and 7 Happiness. So arrivals land in
+  two or three cities at a time, the capital and the nearest safe city among them, and New York took its four
+  turns of arrivals while it was itself besieged (that is where the six `arrivedIntoCrisis` came from). The read
+  behind the intake toggle: the concentration is real and the cost line moves with it, which is the case the
+  toggle's wording should name ("Close to newcomers" on the city that is taking them).
+- *Sieges of the player's cities.* New York carried the engine's besieged flag from turn 133 to the end with
+  damage rising 0.055 to 0.25 and the mod's intensity 1.2 up to 20.3 (threshold 2): a real siege. Philadelphia
+  carried the flag for one turn (132) with no damage, and its intensity jumped 0.48 to 2.06, over the threshold, on
+  that flag alone; it fell back below 2 by turn 137 once the flag went. Cilakofa sat at 1.4 to 2.5 with neither
+  flag nor damage (combat events).
+- *AI cards.* None of the nine AIs held one of the mod's cards at turn 130 or 139 (Antiquity: the two stances only).
+
+**Exploration, seed 4242, Deity, usual set, turns 1 to 139 (the age's end).** 138 passes, 318 moves (50 voluntary,
+268 crisis: 180 internal, 88 abroad), 4 returns, 18 fleeing deaths, 0 trapped, 0 transit deaths, 46 arrivals into a
+crisis, 209 refugee points queued and 21 settled, 59 passes with no move (43%). Reason tags: richer 310, own-civ
+190, nearby 63, safer-dir 53, aggressor-avoided 31, allied 27, asylum 9, open-borders 4, crisis-escape 0. The
+flow ledger ended with 101 corridors, 43 of them cross-civ (129 of 348 points), none touching a city-state.
+
+- *Civics beside cards, every ten turns.* Talent Attraction was slotted by every AI, each within ten turns of
+  unlocking Inspiration: Hawaii by turn 30 (Inspiration at 30), Abbasid by 70 (at 70), Persia by 80 (at 70),
+  Dai Viet by 90 (at 90), Goryeo by 100 (at 90); four still held it at 130. Consular Protection was never slotted,
+  though every AI had Diplomatic Service by turn 90. Dai Viet slotted Closed Borders from 60 to 70 and again at 100
+  (with Open Borders beside it at 80, which cancels); Hawaii slotted Open Borders at 90 and 100.
+- *City strategies.* The UI VM has no read of a city's active strategies (no `Strategies` accessor on the city or
+  player objects in the base scripts), so which cities ran the hold-people strategy can't be logged from a probe;
+  the SQL side (the rows) was watched on 2026-10-23. The build queues were logged instead: nothing in them can be
+  tied to the strategy without the activation read. Owed: a read through the engine's AI debug surface, or a
+  Firaxis-side log line, before the strategy's effect can be claimed.
+- *The live side of the siege question.* 176 city-turns carried the besieged flag across 18 cities. The flag with
+  no district damage is the common case, and the intensity it holds is enough to bleed people: Lāhainā (Hawaii)
+  carried the flag for 27 turns, 26 of them at zero damage, with intensity 7 to 13.7 (threshold 2); Jeonju
+  (Goryeo) for 27 turns at zero damage, intensity 1.5 to 4.1, hovering around and above the threshold for twenty
+  turns; the player's Heian-Kyo for 31 turns, 20 of them at zero damage, intensity 2.5 to 12.6. The intensity
+  decays between flag-only turns (Lāhainā 10.4, 9.4, 8.8, 7.1 over turns 49 to 53) and jumps on a battle event,
+  so the floor alone doesn't pin the fraction: it tops it up each turn, and with the decay the standing level of
+  a flag-only siege sits well over the flee threshold for a large city and around it for a small one. That is
+  the mechanism the stalemate rule (risks 2.3) addresses; session 2's off-engine gate reads the same thing in
+  `tests/violence.mjs`.
+- *The Deity price.* `aiPriceScale()` read 0.5 (the floor) under `DIFFICULTY_DEITY`; a ten-point internal call
+  quoted 2846 Gold for an AI against 5692 for the player. The scale, not an AI's own charge in the log, is what
+  was read; the AI's live call stays on the watch list.
+- *The player's seat* (Heian, one city, Autoplay-driven) lost its capital to Abbasid and Musashi to Dai Viet by
+  conquest, which is the 19 and 9 point conquest edges; nothing in the counters depends on it.
+
+**Verdicts.** Written into §27 as a dated table: P1.1 and P2.1 retired to `wont-fix-with-justifications.md` with
+their numbers; P1.2, P2.2 and P2.6 kept with numbers; P1.3, P2.3 and P2.5 get a counter recommendation each.
+
+**Watched / not.** Watched: the counters over two games, the arrivals and cost line on the Washington save, the AI
+civics and cards over 139 Exploration turns, the besieged flag against damage and intensity, the Deity scale.
+Not watched: an AI's own call-home charge at Deity, Consular Protection taken by an AI (never happened in 139
+turns), the hold-people strategy's activation (no read).
+
