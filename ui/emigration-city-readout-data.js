@@ -272,13 +272,15 @@ function pressureSeriesFor(sig) {
 
 /**
  * The forecast and the samples behind it (Feature M).
- * @param {{source?:*, pressureSeries?:number[]}} o The inputs. @param {*} sig The signal (its rural pool).
+ * @param {{source?:*, pressureSeries?:number[], cause?:string}} o The inputs.
+ * @param {*} sig The signal (its rural pool).
  * @returns {{pressureSeries:number[], forecast:import("/emigration/ui/emigration-forecast.js").Forecast|null}}
  */
 function pickForecast(o, sig) {
   const pressureSeries = Array.isArray(o.pressureSeries) ? o.pressureSeries : [];
   const source = pickSource(o.source || null);
-  return { pressureSeries, forecast: forecastFor({ ...source, pressureSeries, rural: num(sig.rural) }) };
+  const forecast = forecastFor({ ...source, pressureSeries, rural: num(sig.rural), cause: o.cause });
+  return { pressureSeries, forecast };
 }
 
 /** @param {*} sig City signal. @returns {number[]} The recent net series for the sparkline. */

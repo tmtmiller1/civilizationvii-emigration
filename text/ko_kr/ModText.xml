@@ -69,7 +69,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_AGGRESSOR" Language="ko_KR"><Text>침략자 회피</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FLIGHT" Language="ko_KR"><Text>전투로부터의 도피</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CONGESTION" Language="ko_KR"><Text>혼잡</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_UNSAFE" Language="ko_KR"><Text>Under attack</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_UNSAFE" Language="ko_KR"><Text>공격받는 중</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PERMEABILITY" Language="ko_KR"><Text>국경 개방성</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_ECONOMY" Language="ko_KR"><Text>경제</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS" Language="ko_KR"><Text>행복도</Text></Replace>
@@ -84,20 +84,20 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_WAR_WEARINESS" Language="ko_KR"><Text>전쟁 피로</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_DOWNSIZING" Language="ko_KR"><Text>더 큰 정착지를 떠남</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_BUILT" Language="ko_KR"><Text>불가사의와 건물</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_WONDERS" Language="ko_KR"><Text>Wonders</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_BUILDINGS" Language="ko_KR"><Text>Buildings</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_GOVERNMENT" Language="ko_KR"><Text>Government</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="ko_KR"><Text>Celebrations</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="ko_KR"><Text>Happiness stage</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="ko_KR"><Text>Against the empire's average</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="ko_KR"><Text>Cap on what's built</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="ko_KR"><Text>Food</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="ko_KR"><Text>Production</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_GOLD" Language="ko_KR"><Text>Gold</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_SCIENCE" Language="ko_KR"><Text>Science</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_CULTURE" Language="ko_KR"><Text>Culture</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_WONDERS" Language="ko_KR"><Text>불가사의</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_BUILDINGS" Language="ko_KR"><Text>건물</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_GOVERNMENT" Language="ko_KR"><Text>정부</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="ko_KR"><Text>축제</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="ko_KR"><Text>행복도 단계</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="ko_KR"><Text>제국 평균 대비</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="ko_KR"><Text>건설물 효과 상한</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="ko_KR"><Text>식량</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="ko_KR"><Text>생산력</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_GOLD" Language="ko_KR"><Text>골드</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_SCIENCE" Language="ko_KR"><Text>과학</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CULTURE" Language="ko_KR"><Text>문화</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_SEC_DIVERSITY" Language="ko_KR"><Text>가장 다양한 도시</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_TAB_DIVERSITY" Language="ko_KR"><Text>Communities</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_DIVERSITY" Language="ko_KR"><Text>공동체</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_TITLE" Language="ko_KR"><Text>가장 다양한 도시</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_SUBTITLE" Language="ko_KR"><Text>각 정착지의 주민을 원래 출신 문명별로 색칠했습니다. 막대 너비는 인구를 나타냅니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_COL_CITY" Language="ko_KR"><Text>정착지</Text></Replace>
@@ -119,17 +119,17 @@
         <Replace Tag="LOC_EMIG_COSMO_MIXED" Language="ko_KR"><Text>혼합 도시</Text></Replace>
         <Replace Tag="LOC_EMIG_COSMO_CENTER" Language="ko_KR"><Text>국제 중심지</Text></Replace>
         <Replace Tag="LOC_EMIG_COSMO_WORLD" Language="ko_KR"><Text>세계 도시</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_HOMOGENEOUS_TIP" Language="ko_KR"><Text>One origin makes up 95% or more of the settlement.</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_LOCAL_TIP" Language="ko_KR"><Text>People from elsewhere live here, but no community from another civilization reaches 15%.</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_MIXED_TIP" Language="ko_KR"><Text>A community from another civilization is 15% or more, while the largest origin still holds 60% or more.</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_CENTER_TIP" Language="ko_KR"><Text>No origin reaches 60%, and at least three origins hold 10% or more each.</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_WORLD_TIP" Language="ko_KR"><Text>No origin reaches half, and at least four origins hold 10% or more each.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_CITY_TIP" Language="ko_KR"><Text>A settlement, grouped under the civilization that holds it.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_ORIGINS_TIP" Language="ko_KR"><Text>Each colour is a civilization its people came from, sized by share; the bar's width is the settlement's population against the largest in the list.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_POP_TIP" Language="ko_KR"><Text>Population, and how many origins hold 5% or more of it.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_MIX_TIP" Language="ko_KR"><Text>Majority: one origin holds more than half. Plurality: the largest origin leads the next by a clear margin without a majority. No majority: no origin leads clearly.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_CHARACTER_TIP" Language="ko_KR"><Text>A word for how mixed the settlement's people are, from its own population alone. Hover a character for its rule.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_ENCLAVE_TIP" Language="ko_KR"><Text>The Cultural Enclave in the settlement, if a community from another civilization has one, and its stage.</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_HOMOGENEOUS_TIP" Language="ko_KR"><Text>한 출신이 정착지의 95% 이상을 차지합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_LOCAL_TIP" Language="ko_KR"><Text>다른 곳에서 온 사람들이 살고 있지만, 다른 문명 출신 공동체 중 15%에 이르는 곳은 없습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_MIXED_TIP" Language="ko_KR"><Text>다른 문명 출신 공동체가 15% 이상이면서, 가장 큰 출신이 여전히 60% 이상을 차지합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_CENTER_TIP" Language="ko_KR"><Text>60%에 이르는 출신이 없고, 10% 이상을 차지하는 출신이 적어도 셋입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_WORLD_TIP" Language="ko_KR"><Text>절반에 이르는 출신이 없고, 10% 이상을 차지하는 출신이 적어도 넷입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_CITY_TIP" Language="ko_KR"><Text>정착지. 그곳을 보유한 문명 아래 묶여 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_ORIGINS_TIP" Language="ko_KR"><Text>각 색은 주민이 온 문명 하나이며, 비중에 따라 크기가 정해집니다. 막대 너비는 목록에서 가장 큰 정착지와 견준 이 정착지의 인구입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_POP_TIP" Language="ko_KR"><Text>인구와, 그중 5% 이상을 차지하는 출신의 수.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_MIX_TIP" Language="ko_KR"><Text>과반: 한 출신이 절반을 넘습니다. 최대 세력: 과반은 아니지만 가장 큰 출신이 다음 출신을 뚜렷한 차이로 앞섭니다. 과반 없음: 뚜렷하게 앞서는 출신이 없습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_CHARACTER_TIP" Language="ko_KR"><Text>정착지 주민이 얼마나 섞여 있는지를 그 정착지의 인구만으로 한 단어로 나타낸 것입니다. 성격 위에 마우스를 올리면 기준이 보입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_ENCLAVE_TIP" Language="ko_KR"><Text>다른 문명 출신 공동체가 거주지를 이루었다면, 그 정착지의 문화 거주지와 단계입니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_COSMO_DESC" Language="ko_KR"><Text>각 정착지의 주민이 어디에서 왔는지를 설명합니다. 문화 지구가 아닙니다. 산출은 없습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET" Language="ko_KR"><Text>강도 프리셋</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_D" Language="ko_KR"><Text>전체 이주 강도입니다. 사람들이 얼마나 자주 이동하는지와 전쟁이 그들을 얼마나 거세게 내모는지를 함께 설정합니다: 턴당 한도, 전쟁 난민 급증 규모, 도시당 손실 상한. 낮음 = 완만, 높음 = 격렬. 변경은 한 턴 안에 적용됩니다. "사용자 지정"은 개별 설정을 그대로 둡니다. 더 세밀하게 조정하려면 아래의 슬라이더나 고급 설정을 사용하세요.</Text></Replace>
@@ -243,20 +243,20 @@
         <Replace Tag="LOC_EMIG_T_SRAMP_D" Language="ko_KR"><Text>포위가 최대 이주 압력에 도달하기까지 지속되어야 하는 턴 수(습격은 약하게 시작해 점점 강해집니다). 포위 모델에서만 사용.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP" Language="ko_KR"><Text>포위: 전쟁으로 잃는 최대 도시 비율</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP_D" Language="ko_KR"><Text>전쟁 이주가 멈추기 전에 가져갈 수 있는 도시 인구의 최대치(포위 시작 시 규모에 대한 비율). 포위 모델에서만 사용.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE" Language="ko_KR"><Text>Close a settlement to newcomers</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="ko_KR"><Text>Each of your settlements gets a "Close to newcomers" button on its Settlements card. A closed settlement takes nobody in: arrivals go to your next best settlement, and one already on the road is re-aimed when it lands. Off hides the button and reopens every settlement.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTSAFE" Language="ko_KR"><Text>Refugees avoid a settlement under attack</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTSAFE_D" Language="ko_KR"><Text>A settlement in a crisis of its own (fighting or disaster over the flee threshold, or being razed) is a much weaker destination while it lasts, and an arrival on the road to it is held or sent to the next best settlement instead. With nowhere safer, people still go. A stalled siege lifts the penalty.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTPEN" Language="ko_KR"><Text>Penalty for a settlement under attack</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTPEN_D" Language="ko_KR"><Text>Taken off the pull of a settlement in crisis for each threshold's worth its fighting or disaster sits over the flee threshold (half a step at least). A settlement worse off than it pays half.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTPENCAP" Language="ko_KR"><Text>Most taken off a settlement under attack</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTPENCAP_D" Language="ko_KR"><Text>The cap on that penalty, so a settlement under heavy attack is avoided but never ruled out.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_VSUSTAIN" Language="ko_KR"><Text>Turns of fighting before people flee</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_VSUSTAIN_D" Language="ko_KR"><Text>How many turns in a row a settlement's fighting has to stay over the flee threshold before its people flee it as war refugees and the fighting can kill. A lone skirmish or a one-turn siege flag then moves nobody. A settlement being razed empties at once whatever this says. Needs the siege model on.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_SSTALL" Language="ko_KR"><Text>Siege: quiet turns before it stalls</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_SSTALL_D" Language="ko_KR"><Text>A besieged city whose attackers have neither damaged a district nor fought in its borders for this many turns has a stalled siege: the siege stops adding pressure, nobody dies for it, and the readout says so. The next attack ends the stall. Scales with game speed.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_STOTALCAP" Language="ko_KR"><Text>Siege: most of a city lost to war and death</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_STOTALCAP_D" Language="ko_KR"><Text>Deaths under siege count into the same tally as war-driven emigration. Once the two together reach this share of the population the siege began with, the siege kills nobody else until it ends. Only used by the siege model.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE" Language="ko_KR"><Text>정착지를 새 이주민에게 닫기</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="ko_KR"><Text>각 정착지의 정착지 카드에 "새 이주민 받지 않기" 버튼이 생깁니다. 닫힌 정착지는 아무도 받지 않습니다. 도착하는 사람은 그다음으로 좋은 정착지로 가고, 이미 길에 오른 사람은 도착하는 시점에 방향을 다시 잡습니다. 끄면 버튼이 사라지고 모든 정착지가 다시 열립니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTSAFE" Language="ko_KR"><Text>난민은 공격받는 정착지를 피함</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTSAFE_D" Language="ko_KR"><Text>자체 위기를 겪는 정착지(피난 기준을 넘는 전투나 재난, 또는 파괴 중)는 위기가 이어지는 동안 목적지로서의 매력이 크게 떨어지며, 그곳으로 가던 사람은 대기하거나 그다음으로 좋은 정착지로 보내집니다. 더 안전한 곳이 없으면 그래도 갑니다. 교착된 포위는 이 페널티를 풀어 줍니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTPEN" Language="ko_KR"><Text>공격받는 정착지의 페널티</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTPEN_D" Language="ko_KR"><Text>위기에 놓인 정착지의 끌림에서, 그 전투나 재난이 피난 기준을 한 단계 넘을 때마다 빼는 양입니다(최소 반 단계). 그곳보다 더 나쁜 처지의 정착지는 절반만 냅니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTPENCAP" Language="ko_KR"><Text>공격받는 정착지에서 빼는 최대치</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTPENCAP_D" Language="ko_KR"><Text>그 페널티의 상한입니다. 거센 공격을 받는 정착지는 기피되지만 완전히 제외되지는 않습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VSUSTAIN" Language="ko_KR"><Text>주민이 피난하기까지의 전투 턴 수</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VSUSTAIN_D" Language="ko_KR"><Text>정착지의 전투가 피난 기준을 연속 몇 턴 넘어야 주민이 전쟁 난민으로 떠나고 전투가 사람을 죽일 수 있는지입니다. 그러면 단발 교전이나 한 턴짜리 포위 표시로는 아무도 움직이지 않습니다. 파괴 중인 정착지는 이 값과 상관없이 즉시 비워집니다. 포위 모델이 켜져 있어야 합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SSTALL" Language="ko_KR"><Text>포위: 교착까지의 조용한 턴 수</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SSTALL_D" Language="ko_KR"><Text>포위된 도시의 공격자가 이만큼의 턴 동안 지구를 손상시키지도, 국경 안에서 싸우지도 않았다면 포위는 교착 상태가 됩니다. 포위가 더는 압력을 더하지 않고, 포위로 죽는 사람이 없으며, 도시 이주 보고에 그렇게 표시됩니다. 다음 공격이 교착을 끝냅니다. 게임 속도에 맞춰 조정됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_STOTALCAP" Language="ko_KR"><Text>포위: 전쟁과 사망으로 잃는 도시 인구의 최대치</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_STOTALCAP_D" Language="ko_KR"><Text>포위 중 사망은 전쟁으로 인한 이주와 같은 집계에 들어갑니다. 둘을 합쳐 포위가 시작될 때 인구의 이 비율에 이르면, 포위가 끝날 때까지 더는 아무도 죽지 않습니다. 포위 모델에서만 사용됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_WARSURGE" Language="ko_KR"><Text>한 턴 최대 난민 이탈</Text></Replace>
         <Replace Tag="LOC_EMIG_T_WARSURGE_D" Language="ko_KR"><Text>심하게 포위된 도시가 한 턴에 잃을 수 있는 최대 농촌 인구입니다. 그러면 전쟁 난민은 턴당 한 명씩 꾸준히 빠져나가는 대신 전투 강도에 비례해 물결처럼 빠져나갑니다(여전히 포위 손실 상한의 제한을 받음). 1 = 끔(이전의 소량 유출).</Text></Replace>
         <Replace Tag="LOC_EMIG_T_AGGRESSOR" Language="ko_KR"><Text>난민이 공격자를 회피</Text></Replace>
@@ -322,7 +322,7 @@
         <Replace Tag="LOC_EMIG_CALLHOME_EYEBROW_IN" Language="ko_KR"><Text>우리 정착지에서</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_EYEBROW_EX" Language="ko_KR"><Text>외국 도시에서</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_TITLE_IN" Language="ko_KR"><Text>우리 백성을 고향으로 부르기</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_BODY_HASTEN" Language="ko_KR"><Text>They come home on their own once their settlement has been calm for a while; paying brings them back now.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_BODY_HASTEN" Language="ko_KR"><Text>정착지가 한동안 평온하면 그들은 스스로 돌아옵니다. 비용을 치르면 지금 바로 데려옵니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_TITLE_EX" Language="ko_KR"><Text>해외의 우리 백성을 다시 부르기</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_BODY_IN_ONE" Language="ko_KR"><Text>인구 포인트 {1_Away}개가 {2_Home}에서 쫓겨나 지금은 우리의 또 다른 정착지인 {3_From}에 살고 있습니다. 그들은 우리 국경 안에서 우리의 통치를 받고 있으므로, 부르는 사람은 모두 돌아올 것입니다. 몇 명을 고향으로 데려올지 고르세요.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_BODY_IN" Language="ko_KR"><Text>인구 포인트 {1_Away}개가 고향에서 쫓겨나 지금은 우리의 다른 정착지에 살고 있습니다. 그들은 우리 국경 안에서 우리의 통치를 받고 있으므로, 부르는 사람은 모두 돌아올 것입니다. 몇 명을 고향으로 데려올지 고르세요.</Text></Replace>
@@ -346,21 +346,21 @@
         <Replace Tag="LOC_EMIG_CALLHOME_CALL_N" Language="ko_KR"><Text>각자가 응할 확률은 약 {1_Pct}%입니다. 비용은 어느 쪽이든 지불됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_NO" Language="ko_KR"><Text>지금 있는 곳에 두기</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_NO_N" Language="ko_KR"><Text>이 사람들에 대해 다시 묻지 않습니다. 그래도 시간이 지나면 스스로 고향에 돌아올 수도 있습니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_WAIT" Language="ko_KR"><Text>Wait for the free homecoming</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_WAIT_N" Language="ko_KR"><Text>They come home on their own, on the schedule above; nothing is spent.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_TITLE_IN_HOME" Language="ko_KR"><Text>Bring {1_Home}'s people home</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_TITLE_EX_HOME" Language="ko_KR"><Text>Call {1_Home}'s people back from abroad</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_BODY_HASTEN_TAB" Language="ko_KR"><Text>{1_Away} of {2_Home}'s people live in other settlements of ours. They come home free, {3_Batch} at a time every {4_Every} turns, {5_When}, all of them in about {6_All} turns. Paying brings up to {7_Cap} back this turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_HASTEN_START_IN" Language="ko_KR"><Text>starting in {1_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_HASTEN_START_NEXT" Language="ko_KR"><Text>starting next turn</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_WAIT" Language="ko_KR"><Text>무료 귀향을 기다리기</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_WAIT_N" Language="ko_KR"><Text>위의 일정대로 스스로 돌아옵니다. 비용은 들지 않습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_TITLE_IN_HOME" Language="ko_KR"><Text>{1_Home}의 주민을 고향으로 데려오기</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_TITLE_EX_HOME" Language="ko_KR"><Text>해외에 있는 {1_Home}의 주민을 다시 부르기</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_BODY_HASTEN_TAB" Language="ko_KR"><Text>{2_Home}의 주민 {1_Away}명이 우리의 다른 정착지에 살고 있습니다. 그들은 {4_Every}턴마다 {3_Batch}명씩 무료로 돌아오며, {5_When}, 약 {6_All}턴이면 모두 돌아옵니다. 비용을 치르면 이번 턴에 최대 {7_Cap}명을 데려옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_HASTEN_START_IN" Language="ko_KR"><Text>{1_Turns}턴 뒤부터</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_HASTEN_START_NEXT" Language="ko_KR"><Text>다음 턴부터</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON" Language="ko_KR"><Text>인구 포인트 {1_Count}개가 부름에 응해 고향으로 돌아왔습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_ONE" Language="ko_KR"><Text>인구 포인트 1개가 부름에 응해 고향으로 돌아왔습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_TITLE" Language="ko_KR"><Text>부름에 응하다</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE" Language="ko_KR"><Text>해외의 우리 백성에게 부름을 보냈지만, 아무도 돌아오지 않았습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE_TITLE" Language="ko_KR"><Text>응답 없는 부름</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS" Language="ko_KR"><Text>{1_Civ} calls its people home from {2_City}: {3_Count} population points leave.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_ONE" Language="ko_KR"><Text>{1_Civ} calls its people home from {2_City}: one population point leaves.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_TITLE" Language="ko_KR"><Text>Called Home By Their Own</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS" Language="ko_KR"><Text>{1_Civ}이(가) {2_City}에서 자기 백성을 고향으로 불렀습니다: 인구 포인트 {3_Count}개가 떠납니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_ONE" Language="ko_KR"><Text>{1_Civ}이(가) {2_City}에서 자기 백성을 고향으로 불렀습니다: 인구 포인트 한 개가 떠납니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_TITLE" Language="ko_KR"><Text>본국의 부름을 받다</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL" Language="ko_KR"><Text>주요 문명과의 전쟁 압력</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL_D" Language="ko_KR"><Text>공격자 중에 주요 문명이 있을 때 공격이 얼마나 큰 분쟁 압력을 만드는지. 기본값은 1이며, 낮을수록 전쟁으로 쫓겨나는 사람이 적고 높을수록 많아집니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SIEGEFLOOR" Language="ko_KR"><Text>포위 하한: 주요 문명</Text></Replace>
@@ -371,181 +371,181 @@
         <Replace Tag="LOC_EMIG_T_MINORFLOOR_D" Language="ko_KR"><Text>소국에게 포위만 당한 도시가 실제 피해를 입기 전에 느끼는 압력. 실제 피해는 항상 온전히 반영됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME" Language="ko_KR"><Text>사람들을 고향으로 부르기</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_D" Language="ko_KR"><Text>쫓겨난 사람들을 그들이 떠나온 정착지로 데려오는 유료 호출을 원하는 규모로 제안합니다. 내 정착지에서 부르는 것은 구매와 같아서, 정한 수만큼 돌아옵니다. 해외에서 부를 때는 비용이 어느 쪽이든 지불되며, 부름을 받은 각 사람은 응할 수도 있고 응하지 않을 수도 있습니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING" Language="ko_KR"><Text>People find their own way home</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_D" Language="ko_KR"><Text>People driven out of one of your settlements into another of yours come back on their own once their home has been calm for a few turns, one at a time, and rebuild a tile there. Every civilization gets the same. While this is on, calling people home is only offered for people abroad. Off brings back the paid call for people at home.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM" Language="ko_KR"><Text>Calm turns before people come home</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM_D" Language="ko_KR"><Text>How many turns in a row a settlement has to be free of disaster, famine and unrest before the people who fled it start coming back. Any trouble starts the count again.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALMWAR" Language="ko_KR"><Text>Calm turns after fighting</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALMWAR_D" Language="ko_KR"><Text>The same wait when the trouble was fighting in the settlement's borders or a siege. Longer, because a frontier settlement that was hit once is likely to be hit again, and people sent back too soon are lost with it.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_BATCH" Language="ko_KR"><Text>Extra returnee per this many away</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_BATCH_D" Language="ko_KR"><Text>Each return brings one person home, plus one more for every this many still away, so a settlement that lost twenty refills in a few returns instead of eighty turns. Never means one at a time.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY" Language="ko_KR"><Text>Turns between returns</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY_D" Language="ko_KR"><Text>Once a settlement is calm, its people come home this often, from whichever of your settlements holds the most of them.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOMECOMING_START_TITLE" Language="ko_KR"><Text>The Road Home</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOMECOMING_START" Language="ko_KR"><Text>{1_Home} is safe again, and the people who fled it have started coming home.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOMECOMING_DONE_TITLE" Language="ko_KR"><Text>Home At Last</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE" Language="ko_KR"><Text>{1_Count} of your people are displaced from settlements you still hold, and a settlement they fled is safe again. The Settlements tab shows where they are, when they come back on their own, and what bringing them back sooner costs.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_TITLE" Language="ko_KR"><Text>Your people can come home</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_OPEN" Language="ko_KR"><Text>Open the Settlements tab</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_OPEN_N" Language="ko_KR"><Text>Each settlement people fled shows them under its charts; bring them back from there.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_LATER" Language="ko_KR"><Text>Not now</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_LATER_N" Language="ko_KR"><Text>You'll be reminded again only once half again as many are displaced, and not for at least {1_Turns} turns.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_NEVER" Language="ko_KR"><Text>Don't remind me again</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_NEVER_N" Language="ko_KR"><Text>Turns these reminders off for good; Options, Mods, Emigration turns them back on.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_REMIND_STOP" Language="ko_KR"><Text>Stop displaced-people reminders</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_REMIND_OFF" Language="ko_KR"><Text>Reminders are off; Options, Mods, Emigration turns them back on.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOME_NOTICE_MIN" Language="ko_KR"><Text>Reminder threshold</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOME_NOTICE_MIN_D" Language="ko_KR"><Text>How many population points have to be displaced from settlements you still hold before the reminder speaks. 5 by default. A repeat needs the count to have grown by half (and by at least this many) since the last reminder, at least 10 turns later, and only once one of the settlements they fled is calm enough for them to return.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOMECOMING_DONE" Language="ko_KR"><Text>The last of the people who fled {1_Home} are back.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_AI_DIFFICULTY" Language="ko_KR"><Text>AI price discount per difficulty level</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_AI_DIFFICULTY_D" Language="ko_KR"><Text>The game gives the AI more Gold on harder difficulties, but the prices this mod charges it for calling people home and taking in refugees are yours. This takes that much off per level of the game's Gold handicap for the difficulty you play, so Deity is 20% off at the default.</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_NEWCOMERS_COST" Language="ko_KR"><Text>Newcomers: -{1_Gold} Gold, -{2_Happy} Happiness a turn across your civilization while they settle in</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_FIX" Language="ko_KR"><Text>What would stop it: {1_Options} here</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_FIX_OR" Language="ko_KR"><Text>or</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_FIX_BUILDING" Language="ko_KR"><Text>({1_Building} gives +{2_Amount} {3_Yield})</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NEWCOMERS" Language="ko_KR"><Text>Newcomers settling in cost you {1_Gold} Gold and {2_Happy} Happiness a turn right now; the cost fades as they integrate.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NEWCOMERS_SHORT" Language="ko_KR"><Text>Newcomers cost {1_Gold} Gold and {2_Happy} Happiness a turn while they settle in.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SUB" Language="ko_KR"><Text>Left</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SUB_SUB" Language="ko_KR"><Text>that went elsewhere</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_GAINS_NAMED" Language="ko_KR"><Text>{1_Home} gains</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LOSES_NAMED" Language="ko_KR"><Text>{1_From} loses</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NET_PER" Language="ko_KR"><Text>net per person</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DECIDE" Language="ko_KR"><Text>Decide their stance</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DECIDE_NOTE" Language="ko_KR"><Text>The community has stayed long enough; its stance is yours to set.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_LEFT_NONE" Language="ko_KR"><Text>None</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ARRIVED" Language="ko_KR"><Text>Arrived</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ARRIVED_SUB" Language="ko_KR"><Text>from elsewhere, living here</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ARRIVED_NONE" Language="ko_KR"><Text>None</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OUR_OWN" Language="ko_KR"><Text>Our own people</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_NEWCOMERS" Language="ko_KR"><Text>Newcomers</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_MIX" Language="ko_KR"><Text>Mix</Text></Replace>
-        <Replace Tag="LOC_EMIG_CF_CIV_SETTLEMENTS" Language="ko_KR"><Text>Its settlements</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_COMMUNITY" Language="ko_KR"><Text>Community</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DECISION" Language="ko_KR"><Text>Stance decision</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DECISION_NONE" Language="ko_KR"><Text>None waiting</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_PAY_LBL_NONE" Language="ko_KR"><Text>Bring back now for</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NOBODY" Language="ko_KR"><Text>Nobody to bring back.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NEWCOMERS_NONE" Language="ko_KR"><Text>No newcomers are settling in right now.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_FROM" Language="ko_KR"><Text>Where they came from</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_TO" Language="ko_KR"><Text>Where they went</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_HERE" Language="ko_KR"><Text>Who lives here</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_WHY" Language="ko_KR"><Text>Why they're leaving</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_WHY_NONE" Language="ko_KR"><Text>No pressure yet</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_HERE_NONE" Language="ko_KR"><Text>Not counted yet</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ORIGIN" Language="ko_KR"><Text>{1_Count} {2_Civ}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ENCLAVE_NONE" Language="ko_KR"><Text>No community large enough for an enclave yet.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_UNMET" Language="ko_KR"><Text>an unmet people</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_LOCKED" Language="ko_KR"><Text>Complete {1_Civic} to unlock the Pro-Immigration Stance: +{2_Pct}% pull.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_READY" Language="ko_KR"><Text>Slot the Pro-Immigration Stance: +{1_Pct}% pull for all your settlements.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSED_LOCKED" Language="ko_KR"><Text>Complete {1_Civic} to unlock the Anti-Immigration Stance: {2_Pct}% fewer leave for other civilizations.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSED_READY" Language="ko_KR"><Text>Slot the Anti-Immigration Stance: {1_Pct}% fewer leave for other civilizations.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ATTRACT" Language="ko_KR"><Text>Arriving</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ATTRACT_SUB" Language="ko_KR"><Text>that came here this age</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_KEEP" Language="ko_KR"><Text>Leaving</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_KEEP_SUB" Language="ko_KR"><Text>that left this age</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_TITLE_PRESSURE" Language="ko_KR"><Text>Pressure to leave · {1_Stage}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DRAWN_FROM" Language="ko_KR"><Text>Attracting from</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DRAWN_NONE" Language="ko_KR"><Text>None</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DRAWN_MORE" Language="ko_KR"><Text>and {1_Count} more</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_TO_DRAW" Language="ko_KR"><Text>To attract more</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ADD" Language="ko_KR"><Text>Add</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_BY_BUILDING" Language="ko_KR"><Text>by building: {1_Building} (+{2_Amount})</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_FOOD_LINK" Language="ko_KR"><Text>Or connect a growing town: towns send their surplus Food to the cities they are connected to.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_LIFT_SHORT" Language="ko_KR"><Text>puts it ahead of {1_Dest}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_HERE" Language="ko_KR"><Text>here</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_LIFT_TOP" Language="ko_KR"><Text>Already the strongest attraction in reach.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_ON" Language="ko_KR"><Text>Pro-Immigration Stance slotted: +{1_Pct}% pull.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PRESSURE" Language="ko_KR"><Text>Pressure to leave</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP_SCORE" Language="ko_KR"><Text>What makes this settlement's score:</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP_PULL" Language="ko_KR"><Text>What pulls people toward {1_Dest}:</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP" Language="ko_KR"><Text>Pressure to leave builds each turn from the strongest pull on this settlement's people and drains when the gap closes. When it fills, a group leaves. It is {1_Pct}% full now.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSED" Language="ko_KR"><Text>Closed to newcomers</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE" Language="ko_KR"><Text>Close to newcomers</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE" Language="ko_KR"><Text>Open to newcomers</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="ko_KR"><Text>Nobody settles here while it is closed: arrivals go to your next best settlement, and this one pays no integration cost for them. Refugees with nowhere else to go are not forced in.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE_TIP" Language="ko_KR"><Text>Newcomers settle here again. Arrivals already on the road land next turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_SIEGE_STALLED" Language="ko_KR"><Text>Siege stalled: the besiegers aren't attacking, so the siege adds no pressure until they do.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PULLED" Language="ko_KR"><Text>Pulled toward</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PULLED_NONE" Language="ko_KR"><Text>None</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_WHAT_HELPS" Language="ko_KR"><Text>What would help</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="ko_KR"><Text>Total</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="ko_KR"><Text>Click a line for what is behind it; click here to open or close them all.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="ko_KR"><Text>{1_H} here, {2_Mean} across the empire</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="ko_KR"><Text>{1_Pop} people</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="ko_KR"><Text>{1_Pct}% of the base</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="ko_KR"><Text>{1_Turns} turns remaining</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_FADING" Language="ko_KR"><Text>fading</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_CELEBRATING" Language="ko_KR"><Text>celebrating now</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_NOT_CELEBRATING" Language="ko_KR"><Text>no celebration running</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_NO_GOVT" Language="ko_KR"><Text>no government read</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_TALLY_TOTAL" Language="ko_KR"><Text>Prosperity score</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_TALLY_NONE" Language="ko_KR"><Text>Nothing weighs on this settlement yet.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_SHORT" Language="ko_KR"><Text>closes the gap to {1_Dest}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_WIDE" Language="ko_KR"><Text>The gap to {1_Dest} ({2_Gap}) is too wide for one building to close. {3_Driver}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DRIVER" Language="ko_KR"><Text>{1_Label} is {2_Share}% of what pushes people out.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_NONE" Language="ko_KR"><Text>Nobody is being pulled away.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSED_ON" Language="ko_KR"><Text>Anti-Immigration Stance slotted: {1_Pct}% fewer leave for other civilizations.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_RIVAL" Language="ko_KR"><Text>rival</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OURS" Language="ko_KR"><Text>ours</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_NO_MODEL" Language="ko_KR"><Text>Scores appear after this turn's migration pass.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CF_NOBODY_AWAY" Language="ko_KR"><Text>Nobody away</Text></Replace>
-        <Replace Tag="LOC_EMIG_CF_OWN_FROM" Language="ko_KR"><Text>From our own settlements</Text></Replace>
-        <Replace Tag="LOC_EMIG_CF_OWN_TO" Language="ko_KR"><Text>To our own settlements</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COL_SETTLEMENT" Language="ko_KR"><Text>Settlement</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COL_AWAY" Language="ko_KR"><Text>Displaced</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COL_WORTH" Language="ko_KR"><Text>Per returnee, a turn</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COL_FREE" Language="ko_KR"><Text>Free homecoming</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COL_ACT" Language="ko_KR"><Text>Bring back now</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NOT_YOURS" Language="ko_KR"><Text>no longer yours</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LOST_SHORT" Language="ko_KR"><Text>Lost: {1_Tiles} (rebuilt first)</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_GAINS" Language="ko_KR"><Text>gains</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LEAVES" Language="ko_KR"><Text>leaves</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NET" Language="ko_KR"><Text>net</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_OFF" Language="ko_KR"><Text>only when called</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_CALM" Language="ko_KR"><Text>calm in {1_Turns} more turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_NEXT_NOW" Language="ko_KR"><Text>next {1_Batch} next turn</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_NEXT" Language="ko_KR"><Text>next {1_Batch} in {2_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_THEN" Language="ko_KR"><Text>then {1_Batch} every {2_Every} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_ALL" Language="ko_KR"><Text>all in about {1_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_ODDS_SHORT" Language="ko_KR"><Text>{1_Pct}% each, about {2_Expected} come</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_PAY_LBL" Language="ko_KR"><Text>Bring {1_Count} back now for</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_CALL_LBL" Language="ko_KR"><Text>Call {1_Count} from abroad for</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SHORT" Language="ko_KR"><Text>Not enough: this needs {1_Cost} and we have {2_Have}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_PRICE_N" Language="ko_KR"><Text>{1_Count} for</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_PRICE_OR" Language="ko_KR"><Text>or</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_TILE_SWAP" Language="ko_KR"><Text>each returnee works a {1_Home} tile, about {2_Yields} a turn, and leaves a tile where they live now (about {3_Loss} a turn).</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HASTEN_SOONER" Language="ko_KR"><Text>{2_Gold} Gold or {3_Infl} Influence brings {1_Count} back this turn, {4_Instead}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_GAIN" Language="ko_KR"><Text>{1_Home} gains: each returnee works a {1_Home} tile, about {2_Yields} a turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_GAIN_UNKNOWN" Language="ko_KR"><Text>{1_Home} gains: each returnee works a {1_Home} tile.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_REBUILD" Language="ko_KR"><Text>{1_Tiles}, torn down as they left, are rebuilt first.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_HOST" Language="ko_KR"><Text>{1_From} gives up: {2_Count} of them work {1_From} tiles today, about {3_Yields} each a turn; those tiles go idle when they leave.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_HOST_UNKNOWN" Language="ko_KR"><Text>{1_From} gives up: {2_Count} of them live there today.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_MORE" Language="ko_KR"><Text>and {1_Count} more settlements</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_NET" Language="ko_KR"><Text>Overall: per person, your civilization swaps a tile where they live now for a tile at {1_Home}, about {2_Net} a turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_NET_EVEN" Language="ko_KR"><Text>Overall: per person, your civilization swaps a tile where they live now for a tile at {1_Home}; the yields come out about even.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_BUYS_TIME" Language="ko_KR"><Text>The fee buys time: home this turn {1_Instead}; the free homecoming brings them anyway.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_BUYS_RETURN" Language="ko_KR"><Text>They only come home when called.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_ONE" Language="ko_KR"><Text>instead of in {1_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_OVER" Language="ko_KR"><Text>instead of over the next {1_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_NEXT" Language="ko_KR"><Text>instead of next turn</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_ABROAD_GAIN" Language="ko_KR"><Text>Nothing of yours is given up: the rulers they live under lose them, and each who answers is a tile at {1_Home} for good.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_ABROAD_ODDS" Language="ko_KR"><Text>About {1_Pct}% answer, so calling {2_Count} brings about {3_Expected}. The fee is paid either way: about {4_Gold} Gold or {5_Infl} Influence for each person who comes.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HOW" Language="ko_KR"><Text>A settlement people fled shows them below its charts: where they are, what a returnee is worth, when they come home free, and what bringing some back this turn costs. Calling from abroad is a gamble, priced per person who actually comes.</Text></Replace>
-        <Replace Tag="LOC_EMIG_AI_STANCE_CLOSES" Language="ko_KR"><Text>{1_Civ} closes its borders: an Anti-Immigration Stance.</Text></Replace>
-        <Replace Tag="LOC_EMIG_AI_STANCE_OPENS" Language="ko_KR"><Text>{1_Civ} opens its borders: a Pro-Immigration Stance.</Text></Replace>
-        <Replace Tag="LOC_EMIG_AI_STANCE_DROPS" Language="ko_KR"><Text>{1_Civ} drops its immigration stance.</Text></Replace>
-        <Replace Tag="LOC_EMIG_AI_STANCE_TITLE" Language="ko_KR"><Text>Borders Abroad</Text></Replace>
-        <Replace Tag="LOC_EMIG_IN_COST_TAIL" Language="ko_KR"><Text>Newcomers now cost you {1_Gold} Gold and {2_Happy} Happiness a turn while they settle in.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="ko_KR"><Text>Remind me when people can come home</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="ko_KR"><Text>Once a settlement your people fled has been calm long enough for them to come back and at least the threshold's worth of your people are displaced, a small pop-up offers to open the Settlements tab, where you see where they are and pick which settlement's people to bring back. It comes again only once half again as many are displaced, never within 10 turns of the last, and its "Don't remind me again" button turns it off for good. On by default; the tab has the same switch.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="ko_KR"><Text>Emigration: AI keeps cities happy</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="ko_KR"><Text>Gives AI civilizations an earlier, gentler "keep them happy" city strategy, so an AI city that is getting unhappy builds happiness before people start leaving. The game's own strategy only starts once a city is already unhappy. Chosen here for the whole game.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="ko_KR"><Text>On</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="ko_KR"><Text>AI cities start building happiness while their net happiness is still a little above zero.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="ko_KR"><Text>Off</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="ko_KR"><Text>The AI keeps the game's own strategies only.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="ko_KR"><Text>AI civilizations call people home</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="ko_KR"><Text>On their own turn, AI civilizations call their displaced people home once none of their settlements is in distress, paying the same price with the same odds and cooldown you get. From their own settlements first; from abroad only when they still have the Gold or Influence for it. When a call takes people out of one of your cities, you get a notice naming who called. Off leaves the AI to wait for people to drift back on their own. While people find their own way home, an AI only pays to call people back from abroad.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING" Language="ko_KR"><Text>주민이 스스로 고향을 찾아감</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_D" Language="ko_KR"><Text>당신의 한 정착지에서 쫓겨나 당신의 다른 정착지로 간 사람들은 고향이 몇 턴 동안 평온해지면 한 번에 한 명씩 스스로 돌아와 그곳의 타일을 다시 일굽니다. 모든 문명에 똑같이 적용됩니다. 이 설정이 켜져 있는 동안 귀향 호출은 해외에 있는 사람들에게만 제공됩니다. 끄면 국내 주민에 대한 유료 호출이 돌아옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM" Language="ko_KR"><Text>주민이 돌아오기까지의 평온한 턴 수</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM_D" Language="ko_KR"><Text>정착지가 재난, 기근, 소요 없이 연속 몇 턴을 보내야 떠났던 주민이 돌아오기 시작하는지입니다. 어떤 문제든 생기면 다시 셉니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALMWAR" Language="ko_KR"><Text>전투 뒤의 평온한 턴 수</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALMWAR_D" Language="ko_KR"><Text>문제가 정착지 국경 안의 전투나 포위였을 때의 같은 대기 시간입니다. 한 번 공격받은 변경 정착지는 다시 공격받기 쉽고, 너무 일찍 돌려보낸 사람들은 정착지와 함께 잃게 되므로 더 깁니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_BATCH" Language="ko_KR"><Text>떠난 주민 이 수마다 귀환자 한 명 추가</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_BATCH_D" Language="ko_KR"><Text>귀환 한 번에 한 명이 돌아오고, 아직 떠나 있는 주민 이 수마다 한 명이 더 돌아옵니다. 그래서 스무 명을 잃은 정착지는 여든 턴이 아니라 귀환 몇 번이면 다시 채워집니다. '없음'은 한 번에 한 명씩을 뜻합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY" Language="ko_KR"><Text>귀환 사이의 턴 수</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY_D" Language="ko_KR"><Text>정착지가 평온해지면 그 주민은 이 간격으로, 그들을 가장 많이 품고 있는 당신의 정착지에서부터 돌아옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_START_TITLE" Language="ko_KR"><Text>고향으로 가는 길</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_START" Language="ko_KR"><Text>{1_Home}이(가) 다시 안전해졌고, 떠났던 사람들이 고향으로 돌아오기 시작했습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_DONE_TITLE" Language="ko_KR"><Text>마침내 고향으로</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE" Language="ko_KR"><Text>당신이 아직 보유한 정착지에서 쫓겨난 주민이 {1_Count}명이며, 그들이 떠난 정착지 한 곳이 다시 안전해졌습니다. 정착지 탭에서 그들이 어디 있는지, 언제 스스로 돌아오는지, 더 빨리 데려오려면 얼마가 드는지 볼 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_TITLE" Language="ko_KR"><Text>주민이 고향으로 돌아올 수 있습니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_OPEN" Language="ko_KR"><Text>정착지 탭 열기</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_OPEN_N" Language="ko_KR"><Text>주민이 떠난 각 정착지의 차트 아래에 그들이 표시됩니다. 거기서 데려올 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_LATER" Language="ko_KR"><Text>지금은 아님</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_LATER_N" Language="ko_KR"><Text>쫓겨난 주민이 절반 이상 더 늘어났을 때만, 그것도 적어도 {1_Turns}턴이 지난 뒤에 다시 알립니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_NEVER" Language="ko_KR"><Text>다시 알리지 않기</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_NEVER_N" Language="ko_KR"><Text>이 알림을 영구히 끕니다. 옵션, 모드, 이주에서 다시 켤 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_REMIND_STOP" Language="ko_KR"><Text>실향민 알림 끄기</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_REMIND_OFF" Language="ko_KR"><Text>알림이 꺼져 있습니다. 옵션, 모드, 이주에서 다시 켤 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOME_NOTICE_MIN" Language="ko_KR"><Text>알림 기준</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOME_NOTICE_MIN_D" Language="ko_KR"><Text>당신이 아직 보유한 정착지에서 쫓겨난 인구 포인트가 몇 개여야 알림이 나타나는지입니다. 기본값은 5입니다. 다시 알리려면 지난 알림 이후 그 수가 절반 이상(그리고 적어도 이 값만큼) 늘어나야 하고, 적어도 10턴이 지나야 하며, 그들이 떠난 정착지 중 한 곳이 돌아갈 만큼 평온해야 합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_DONE" Language="ko_KR"><Text>{1_Home}을(를) 떠났던 마지막 사람들이 돌아왔습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AI_DIFFICULTY" Language="ko_KR"><Text>난이도 단계당 AI 가격 할인</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AI_DIFFICULTY_D" Language="ko_KR"><Text>게임은 높은 난이도에서 AI에게 골드를 더 주지만, 이 모드가 귀향 호출과 난민 수용에 AI에게 매기는 가격은 당신과 같습니다. 이 값은 당신이 플레이하는 난이도의 골드 핸디캡 한 단계마다 그만큼을 깎아 주므로, 기본값에서 신은 20% 할인입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEWCOMERS_COST" Language="ko_KR"><Text>새 이주민: 정착하는 동안 문명 전체에 턴당 골드 -{1_Gold}, 행복도 -{2_Happy}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_FIX" Language="ko_KR"><Text>막을 방법: 이곳에 {1_Options}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_FIX_OR" Language="ko_KR"><Text>또는</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_FIX_BUILDING" Language="ko_KR"><Text>({1_Building}: {3_Yield} +{2_Amount})</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NEWCOMERS" Language="ko_KR"><Text>정착 중인 새 이주민 때문에 지금 턴당 골드 {1_Gold}, 행복도 {2_Happy}이(가) 듭니다. 이 비용은 그들이 통합되면서 줄어듭니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NEWCOMERS_SHORT" Language="ko_KR"><Text>새 이주민은 정착하는 동안 턴당 골드 {1_Gold}, 행복도 {2_Happy}이(가) 듭니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SUB" Language="ko_KR"><Text>떠남</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SUB_SUB" Language="ko_KR"><Text>다른 곳으로 간 사람</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_GAINS_NAMED" Language="ko_KR"><Text>{1_Home} 획득</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOSES_NAMED" Language="ko_KR"><Text>{1_From} 손실</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NET_PER" Language="ko_KR"><Text>한 사람당 순이익</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DECIDE" Language="ko_KR"><Text>그들의 입장 정하기</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DECIDE_NOTE" Language="ko_KR"><Text>이 공동체는 충분히 오래 머물렀습니다. 이제 그 입장은 당신이 정합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_LEFT_NONE" Language="ko_KR"><Text>없음</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ARRIVED" Language="ko_KR"><Text>도착</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ARRIVED_SUB" Language="ko_KR"><Text>다른 곳에서 와서 이곳에 사는 사람</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ARRIVED_NONE" Language="ko_KR"><Text>없음</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OUR_OWN" Language="ko_KR"><Text>우리 백성</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_NEWCOMERS" Language="ko_KR"><Text>새 이주민</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_MIX" Language="ko_KR"><Text>구성</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_CIV_SETTLEMENTS" Language="ko_KR"><Text>이 문명의 정착지</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_COMMUNITY" Language="ko_KR"><Text>공동체</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DECISION" Language="ko_KR"><Text>입장 결정</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DECISION_NONE" Language="ko_KR"><Text>대기 중인 결정 없음</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_PAY_LBL_NONE" Language="ko_KR"><Text>지금 데려오는 비용</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NOBODY" Language="ko_KR"><Text>데려올 사람이 없습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NEWCOMERS_NONE" Language="ko_KR"><Text>지금 정착 중인 새 이주민이 없습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_FROM" Language="ko_KR"><Text>어디에서 왔는가</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_TO" Language="ko_KR"><Text>어디로 갔는가</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_HERE" Language="ko_KR"><Text>누가 사는가</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_WHY" Language="ko_KR"><Text>왜 떠나는가</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_WHY_NONE" Language="ko_KR"><Text>아직 압력 없음</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_HERE_NONE" Language="ko_KR"><Text>아직 집계되지 않음</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ORIGIN" Language="ko_KR"><Text>{2_Civ} {1_Count}</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ENCLAVE_NONE" Language="ko_KR"><Text>아직 거주지를 이룰 만큼 큰 공동체가 없습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_UNMET" Language="ko_KR"><Text>만나지 못한 민족</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_LOCKED" Language="ko_KR"><Text>{1_Civic}을(를) 완료하면 친이민 기조가 열립니다: 끌림 +{2_Pct}%.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_READY" Language="ko_KR"><Text>친이민 기조를 장착하세요: 모든 정착지의 끌림 +{1_Pct}%.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSED_LOCKED" Language="ko_KR"><Text>{1_Civic}을(를) 완료하면 반이민 기조가 열립니다: 다른 문명으로 떠나는 사람이 {2_Pct}% 줄어듭니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSED_READY" Language="ko_KR"><Text>반이민 기조를 장착하세요: 다른 문명으로 떠나는 사람이 {1_Pct}% 줄어듭니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ATTRACT" Language="ko_KR"><Text>유입</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ATTRACT_SUB" Language="ko_KR"><Text>이번 시대에 이곳으로 온 사람</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_KEEP" Language="ko_KR"><Text>유출</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_KEEP_SUB" Language="ko_KR"><Text>이번 시대에 떠난 사람</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_TITLE_PRESSURE" Language="ko_KR"><Text>떠나려는 압력 · {1_Stage}</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DRAWN_FROM" Language="ko_KR"><Text>끌어오는 곳</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DRAWN_NONE" Language="ko_KR"><Text>없음</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DRAWN_MORE" Language="ko_KR"><Text>외 {1_Count}곳</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_TO_DRAW" Language="ko_KR"><Text>더 끌어오려면</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ADD" Language="ko_KR"><Text>추가</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_BY_BUILDING" Language="ko_KR"><Text>건설로: {1_Building} (+{2_Amount})</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_FOOD_LINK" Language="ko_KR"><Text>아니면 성장하는 마을을 연결하세요. 마을은 남는 식량을 연결된 도시로 보냅니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_LIFT_SHORT" Language="ko_KR"><Text>{1_Dest}보다 앞서게 됩니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_HERE" Language="ko_KR"><Text>이곳</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_LIFT_TOP" Language="ko_KR"><Text>이미 닿는 범위에서 가장 강한 끌림입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_ON" Language="ko_KR"><Text>친이민 기조 장착됨: 끌림 +{1_Pct}%.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PRESSURE" Language="ko_KR"><Text>떠나려는 압력</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP_SCORE" Language="ko_KR"><Text>이 정착지의 점수를 이루는 것:</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP_PULL" Language="ko_KR"><Text>사람들을 {1_Dest}(으)로 끌어당기는 것:</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP" Language="ko_KR"><Text>떠나려는 압력은 이 정착지 주민에게 작용하는 가장 강한 끌림에서 매 턴 쌓이고, 격차가 좁혀지면 빠집니다. 가득 차면 한 무리가 떠납니다. 지금은 {1_Pct}% 찼습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSED" Language="ko_KR"><Text>새 이주민 받지 않음</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE" Language="ko_KR"><Text>새 이주민 받지 않기</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE" Language="ko_KR"><Text>새 이주민 받기</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="ko_KR"><Text>닫혀 있는 동안 이곳에는 아무도 정착하지 않습니다. 도착하는 사람은 그다음으로 좋은 정착지로 가고, 이 정착지는 그들에 대한 통합 비용을 내지 않습니다. 갈 곳 없는 난민도 억지로 들어오지 않습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE_TIP" Language="ko_KR"><Text>새 이주민이 다시 이곳에 정착합니다. 이미 길에 오른 사람은 다음 턴에 도착합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_SIEGE_STALLED" Language="ko_KR"><Text>포위 교착: 포위군이 공격하지 않고 있어, 다시 공격할 때까지 포위는 압력을 더하지 않습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PULLED" Language="ko_KR"><Text>끌리는 곳</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PULLED_NONE" Language="ko_KR"><Text>없음</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_WHAT_HELPS" Language="ko_KR"><Text>도움이 될 것</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="ko_KR"><Text>합계</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="ko_KR"><Text>줄을 클릭하면 그 뒤의 내용이 보입니다. 여기를 클릭하면 모두 펼치거나 접습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="ko_KR"><Text>이곳 {1_H}, 제국 전체 {2_Mean}</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="ko_KR"><Text>{1_Pop}명</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="ko_KR"><Text>기본값의 {1_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="ko_KR"><Text>{1_Turns}턴 남음</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_FADING" Language="ko_KR"><Text>옅어지는 중</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_CELEBRATING" Language="ko_KR"><Text>축제 진행 중</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_NOT_CELEBRATING" Language="ko_KR"><Text>진행 중인 축제 없음</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_NO_GOVT" Language="ko_KR"><Text>정부를 읽지 못함</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_TALLY_TOTAL" Language="ko_KR"><Text>번영 점수</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_TALLY_NONE" Language="ko_KR"><Text>아직 이 정착지를 짓누르는 것이 없습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_SHORT" Language="ko_KR"><Text>{1_Dest}와(과)의 격차를 메웁니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_WIDE" Language="ko_KR"><Text>{1_Dest}와(과)의 격차({2_Gap})는 건물 하나로 메우기에 너무 큽니다. {3_Driver}</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DRIVER" Language="ko_KR"><Text>{1_Label}이(가) 사람들을 밀어내는 요인의 {2_Share}%입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_NONE" Language="ko_KR"><Text>끌려 나가는 사람이 없습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSED_ON" Language="ko_KR"><Text>반이민 기조 장착됨: 다른 문명으로 떠나는 사람이 {1_Pct}% 줄어듭니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_RIVAL" Language="ko_KR"><Text>경쟁국</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OURS" Language="ko_KR"><Text>우리 것</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_NO_MODEL" Language="ko_KR"><Text>점수는 이번 턴의 이주 처리가 끝나면 나타납니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NOBODY_AWAY" Language="ko_KR"><Text>떠나 있는 사람 없음</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_OWN_FROM" Language="ko_KR"><Text>우리 정착지에서</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_OWN_TO" Language="ko_KR"><Text>우리 정착지로</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COL_SETTLEMENT" Language="ko_KR"><Text>정착지</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COL_AWAY" Language="ko_KR"><Text>실향민</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COL_WORTH" Language="ko_KR"><Text>귀환자 한 명당, 턴당</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COL_FREE" Language="ko_KR"><Text>무료 귀향</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COL_ACT" Language="ko_KR"><Text>지금 데려오기</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NOT_YOURS" Language="ko_KR"><Text>더는 당신의 것이 아님</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOST_SHORT" Language="ko_KR"><Text>잃음: {1_Tiles} (먼저 재건)</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_GAINS" Language="ko_KR"><Text>획득</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LEAVES" Language="ko_KR"><Text>손실</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NET" Language="ko_KR"><Text>순</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_OFF" Language="ko_KR"><Text>부를 때만</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_CALM" Language="ko_KR"><Text>{1_Turns}턴 뒤 평온</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_NEXT_NOW" Language="ko_KR"><Text>다음 {1_Batch}명은 다음 턴</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_NEXT" Language="ko_KR"><Text>다음 {1_Batch}명은 {2_Turns}턴 뒤</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_THEN" Language="ko_KR"><Text>그 뒤 {2_Every}턴마다 {1_Batch}명</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_ALL" Language="ko_KR"><Text>약 {1_Turns}턴이면 모두</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_ODDS_SHORT" Language="ko_KR"><Text>각 {1_Pct}%, 약 {2_Expected}명이 옴</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_PAY_LBL" Language="ko_KR"><Text>{1_Count}명을 지금 데려오는 비용</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_CALL_LBL" Language="ko_KR"><Text>해외에서 {1_Count}명을 부르는 비용</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SHORT" Language="ko_KR"><Text>부족합니다: {1_Cost}이(가) 필요한데 {2_Have}만 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_PRICE_N" Language="ko_KR"><Text>{1_Count}명:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_PRICE_OR" Language="ko_KR"><Text>또는</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_TILE_SWAP" Language="ko_KR"><Text>귀환자 한 명마다 {1_Home}의 타일 하나를 일구어 턴당 약 {2_Yields}을(를) 내고, 지금 사는 곳의 타일 하나를 비웁니다(턴당 약 {3_Loss}).</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HASTEN_SOONER" Language="ko_KR"><Text>골드 {2_Gold} 또는 영향력 {3_Infl}이면 {1_Count}명이 이번 턴에 돌아옵니다, {4_Instead}.</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_GAIN" Language="ko_KR"><Text>{1_Home} 획득: 귀환자 한 명마다 {1_Home}의 타일 하나를 일구어 턴당 약 {2_Yields}을(를) 냅니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_GAIN_UNKNOWN" Language="ko_KR"><Text>{1_Home} 획득: 귀환자 한 명마다 {1_Home}의 타일 하나를 일굽니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_REBUILD" Language="ko_KR"><Text>그들이 떠나며 허물어진 {1_Tiles}이(가) 먼저 재건됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HOST" Language="ko_KR"><Text>{1_From} 손실: 그중 {2_Count}명이 지금 {1_From}의 타일을 일구어 각각 턴당 약 {3_Yields}을(를) 내고 있으며, 그들이 떠나면 그 타일은 놀게 됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HOST_UNKNOWN" Language="ko_KR"><Text>{1_From} 손실: 그중 {2_Count}명이 지금 그곳에 살고 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_MORE" Language="ko_KR"><Text>외 정착지 {1_Count}곳</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_NET" Language="ko_KR"><Text>전체: 한 사람당, 당신의 문명은 지금 사는 곳의 타일 하나를 {1_Home}의 타일 하나와 맞바꾸며, 턴당 약 {2_Net}입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_NET_EVEN" Language="ko_KR"><Text>전체: 한 사람당, 당신의 문명은 지금 사는 곳의 타일 하나를 {1_Home}의 타일 하나와 맞바꾸며, 산출은 대략 비슷합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_BUYS_TIME" Language="ko_KR"><Text>이 비용은 시간을 삽니다: {1_Instead} 이번 턴에 돌아옵니다. 무료 귀향으로도 어차피 돌아옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_BUYS_RETURN" Language="ko_KR"><Text>부를 때만 돌아옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_ONE" Language="ko_KR"><Text>{1_Turns}턴 뒤 대신</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_OVER" Language="ko_KR"><Text>앞으로 {1_Turns}턴에 걸쳐 대신</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_NEXT" Language="ko_KR"><Text>다음 턴 대신</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_ABROAD_GAIN" Language="ko_KR"><Text>당신이 내놓는 것은 없습니다. 그들이 사는 곳의 통치자가 그들을 잃고, 응하는 한 명 한 명이 {1_Home}의 타일 하나가 되어 영구히 남습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_ABROAD_ODDS" Language="ko_KR"><Text>약 {1_Pct}%가 응하므로, {2_Count}명을 부르면 약 {3_Expected}명이 옵니다. 비용은 어느 쪽이든 내며, 오는 사람 한 명당 골드 약 {4_Gold} 또는 영향력 {5_Infl}입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HOW" Language="ko_KR"><Text>주민이 떠난 정착지는 차트 아래에 그들을 보여 줍니다. 어디에 있는지, 귀환자 한 명의 가치가 얼마인지, 언제 무료로 돌아오는지, 이번 턴에 일부를 데려오려면 얼마가 드는지입니다. 해외에서 부르는 것은 도박이며, 실제로 오는 사람 한 명당 값이 매겨집니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_AI_STANCE_CLOSES" Language="ko_KR"><Text>{1_Civ}이(가) 국경을 닫았습니다: 반이민 기조.</Text></Replace>
+        <Replace Tag="LOC_EMIG_AI_STANCE_OPENS" Language="ko_KR"><Text>{1_Civ}이(가) 국경을 열었습니다: 친이민 기조.</Text></Replace>
+        <Replace Tag="LOC_EMIG_AI_STANCE_DROPS" Language="ko_KR"><Text>{1_Civ}이(가) 이민 기조를 거두었습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_AI_STANCE_TITLE" Language="ko_KR"><Text>타국의 국경</Text></Replace>
+        <Replace Tag="LOC_EMIG_IN_COST_TAIL" Language="ko_KR"><Text>새 이주민은 이제 정착하는 동안 턴당 골드 {1_Gold}, 행복도 {2_Happy}이(가) 듭니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="ko_KR"><Text>주민이 돌아올 수 있으면 알리기</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="ko_KR"><Text>당신의 주민이 떠난 정착지가 돌아갈 만큼 오래 평온했고, 쫓겨난 주민이 적어도 기준값만큼 되면 작은 팝업이 정착지 탭을 열자고 제안합니다. 그 탭에서 그들이 어디 있는지 보고 어느 정착지의 주민을 데려올지 고릅니다. 팝업은 쫓겨난 주민이 절반 이상 더 늘어났을 때만 다시 뜨고, 지난 팝업으로부터 10턴 안에는 뜨지 않으며, "다시 알리지 않기" 버튼으로 영구히 끌 수 있습니다. 기본으로 켜져 있고, 탭에도 같은 스위치가 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="ko_KR"><Text>이주: AI가 도시를 행복하게 유지</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="ko_KR"><Text>AI 문명에게 더 이르고 더 온건한 "행복하게 유지하기" 도시 전략을 줍니다. 그래서 불행해지기 시작한 AI 도시는 주민이 떠나기 전에 행복도를 짓습니다. 게임 자체의 전략은 도시가 이미 불행해진 뒤에야 시작됩니다. 여기서 고른 값이 게임 전체에 적용됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="ko_KR"><Text>켬</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="ko_KR"><Text>AI 도시는 순 행복도가 아직 약간 플러스일 때부터 행복도를 짓기 시작합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="ko_KR"><Text>끔</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="ko_KR"><Text>AI는 게임 자체의 전략만 사용합니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="ko_KR"><Text>AI 문명이 주민을 고향으로 부름</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="ko_KR"><Text>AI 문명은 자기 턴에, 자기 정착지 중 고통을 겪는 곳이 없으면 쫓겨난 주민을 고향으로 부릅니다. 가격, 확률, 휴지기는 당신과 같습니다. 자기 정착지에서 먼저 부르고, 해외에서는 골드나 영향력이 남아 있을 때만 부릅니다. 호출로 당신의 도시에서 사람들이 빠져나가면 누가 불렀는지 알리는 통지를 받습니다. 끄면 AI는 사람들이 스스로 돌아오기를 기다립니다. 주민이 스스로 고향을 찾아가는 동안에는 AI도 해외에서 부를 때만 비용을 냅니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="ko_KR"><Text>해외 포인트별 귀환 확률</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX_D" Language="ko_KR"><Text>다른 문명 아래에 사는 각 포인트가 호출에 응할 가능성입니다. 낮음: 그들은 이제 그곳에서 삶을 꾸렸으므로, 호출해도 아무도 오지 않을 수 있습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_GOLD" Language="ko_KR"><Text>귀환 인구 포인트당 금</Text></Replace>
@@ -619,8 +619,8 @@
         <Replace Tag="LOC_EMIG_T_QPACEMAX" Language="ko_KR"><Text>요건 최대 완화량</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QPACEMAX_D" Language="ko_KR"><Text>거주지가 형성되지 않은 채 시대 후반에 이르렀을 때 속도 조절이 적용하는 형성 기준의 최대 감소량입니다. 40%이면 기준이 설정값의 60%가 됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_COL_ENCLAVE" Language="ko_KR"><Text>거주지</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_PRESSURE" Language="ko_KR"><Text>Pressure to leave</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_PRESSURE_TIP" Language="ko_KR"><Text>How close the settlement is to a group leaving: Negligible, Low, Moderate, High or Critical.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_PRESSURE" Language="ko_KR"><Text>떠나려는 압력</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_PRESSURE_TIP" Language="ko_KR"><Text>정착지가 한 무리의 이탈에 얼마나 가까운지: 미미, 낮음, 보통, 높음, 심각.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSTOCK" Language="ko_KR"><Text>어느 도시에서든 충분한 공동체 규모</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSTOCK_D" Language="ko_KR"><Text>인구 포인트가 최소 이만큼인 외국 공동체는 정착지에서의 비율과 관계없이 '성립' 단계에 이릅니다. 그래서 큰 도시에도 거주지가 생길 수 있습니다. 이 수치는 이번 게임의 정착지 규모에 맞춰 바뀝니다. 정착지 평균 인구가 18명일 때 그대로 적용되고, 시대를 거치며 도시가 커지면 절반에서 두 배까지 비례해 바뀝니다. 거주지는 공동체가 쇠퇴 비율과 이 수치를 모두 밑도는 동안에만 쇠퇴합니다. 끔 = 비율만.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QFADE" Language="ko_KR"><Text>거주지가 쇠퇴하는 비율</Text></Replace>
@@ -670,10 +670,10 @@
         <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="ko_KR"><Text>도시별 이주 보고</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="ko_KR"><Text>선택한 정착지가 인구를 얻거나 잃는 이유를 필요할 때 보여주는 패널입니다. 주요 원인, 주민이 이끌리는 곳, 통합 비용, 그리고 대응 방법을 알려줍니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE" Language="ko_KR"><Text>도시 정보의 최근 추세 스파크라인</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FORECAST" Language="ko_KR"><Text>Departure forecast</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FORECAST_D" Language="ko_KR"><Text>Under the pressure gauge on each of your settlements' cards, and in the city readout: from how fast the pressure has been rising, when it is likely to reach the bar and about how many people go when it does. A projection, not a promise; flat or falling pressure reads "Nobody is likely to leave soon".</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FORECAST_TURNS" Language="ko_KR"><Text>Forecast: how far ahead</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FORECAST_TURNS_D" Language="ko_KR"><Text>The forecast's horizon. A departure further off than this reads as "Nobody is likely to leave soon".</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FORECAST" Language="ko_KR"><Text>이탈 예보</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FORECAST_D" Language="ko_KR"><Text>각 정착지 카드의 압력 게이지 아래와 도시 이주 보고에 표시됩니다. 압력이 올라온 속도로 보아 언제 기준선에 이를 것 같은지, 그때 대략 몇 명이 떠나는지입니다. 예측일 뿐 약속은 아니며, 압력이 제자리거나 내려가면 "당분간 떠날 사람이 없을 듯합니다"라고 표시됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FORECAST_TURNS" Language="ko_KR"><Text>예보: 얼마나 앞까지</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FORECAST_TURNS_D" Language="ko_KR"><Text>예보가 내다보는 범위입니다. 이보다 먼 이탈은 "당분간 떠날 사람이 없을 듯합니다"로 표시됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE_D" Language="ko_KR"><Text>도시 읽기 패널에 최근 몇 번의 순이주를 보여 주는 작은 막대 줄을 추가합니다(증가는 초록, 감소는 빨강 막대). 상황이 나아지는지 나빠지는지 한눈에 알 수 있습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SELFTEST" Language="ko_KR"><Text>화면 자가 진단 패널</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SELFTEST_D" Language="ko_KR"><Text>게임 화면에 떠 있는 "자가 진단" 버튼을 표시합니다. 이 버튼은 보고된 문제(정착지 범위, 문화 거주지, 두 가지 인구 척도, 알림, 저장 유지)에 대한 실시간 진단을 실행하고, 필요할 때 거주지 팝업과 테스트 알림을 강제로 띄울 수 있습니다. 개발자 콘솔이 필요 없습니다. 문제 해결용이므로 일반 플레이에서는 꺼 두세요. 저장 파일을 다시 불러온 뒤 적용됩니다.</Text></Replace>
@@ -771,22 +771,22 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ko_KR"><Text>그 사람들은 영영 사라졌습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="ko_KR"><Text>{1_Dest}이(가) 이들을 통합하기 위해 턴당 약 {2_Gold} 골드를 지불합니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="ko_KR"><Text>친이민 기조</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ko_KR"><Text>+2 [icon:YIELD_FOOD] Food in every city. +1 [icon:YIELD_DIPLOMACY] Influence per turn. +50% [icon:YIELD_POPULATION] immigration. Refugees come to you first. Enclaves keep full yields, even at war. (Each newcomer costs about 1.5 [icon:YIELD_GOLD] Gold and 0.5 [icon:YIELD_HAPPINESS] Happiness a turn while they settle in, fading over 6 to 8 turns; more arrivals also mean more enclaves to live with.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="ko_KR"><Text>+2 [icon:YIELD_FOOD] Food in every city. +2 [icon:YIELD_DIPLOMACY] Influence per turn. +50% [icon:YIELD_POPULATION] immigration. Refugees come to you first. Enclaves keep full yields, even at war. (Each newcomer costs about 1.5 [icon:YIELD_GOLD] Gold and 0.5 [icon:YIELD_HAPPINESS] Happiness a turn while they settle in, fading over 6 to 8 turns; more arrivals also mean more enclaves to live with.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="ko_KR"><Text>+3 [icon:YIELD_FOOD] Food in every city. +3 [icon:YIELD_DIPLOMACY] Influence per turn. +50% [icon:YIELD_POPULATION] immigration. Refugees come to you first. Enclaves keep full yields, even at war. (Each newcomer costs about 1.5 [icon:YIELD_GOLD] Gold and 0.5 [icon:YIELD_HAPPINESS] Happiness a turn while they settle in, fading over 6 to 8 turns; more arrivals also mean more enclaves to live with.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_FOOD] 식량 +2. 턴당 [icon:YIELD_DIPLOMACY] 영향력 +1. [icon:YIELD_POPULATION] 이민 +50%. 난민이 당신에게 먼저 옵니다. 거주지는 전쟁 중에도 산출을 온전히 유지합니다. (새 이주민 한 명마다 정착하는 동안 턴당 약 [icon:YIELD_GOLD] 골드 1.5와 [icon:YIELD_HAPPINESS] 행복도 0.5가 들며 6~8턴에 걸쳐 줄어듭니다. 유입이 많아지면 함께 살아야 할 거주지도 늘어납니다.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_FOOD] 식량 +2. 턴당 [icon:YIELD_DIPLOMACY] 영향력 +2. [icon:YIELD_POPULATION] 이민 +50%. 난민이 당신에게 먼저 옵니다. 거주지는 전쟁 중에도 산출을 온전히 유지합니다. (새 이주민 한 명마다 정착하는 동안 턴당 약 [icon:YIELD_GOLD] 골드 1.5와 [icon:YIELD_HAPPINESS] 행복도 0.5가 들며 6~8턴에 걸쳐 줄어듭니다. 유입이 많아지면 함께 살아야 할 거주지도 늘어납니다.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_FOOD] 식량 +3. 턴당 [icon:YIELD_DIPLOMACY] 영향력 +3. [icon:YIELD_POPULATION] 이민 +50%. 난민이 당신에게 먼저 옵니다. 거주지는 전쟁 중에도 산출을 온전히 유지합니다. (새 이주민 한 명마다 정착하는 동안 턴당 약 [icon:YIELD_GOLD] 골드 1.5와 [icon:YIELD_HAPPINESS] 행복도 0.5가 들며 6~8턴에 걸쳐 줄어듭니다. 유입이 많아지면 함께 살아야 할 거주지도 늘어납니다.)</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="ko_KR"><Text>반이민 기조</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ko_KR"><Text>+2 [icon:YIELD_PRODUCTION] Production in every city. -2 [icon:YIELD_DIPLOMACY] Influence per turn. -60% [icon:YIELD_POPULATION] immigration, -40% emigration. Refugees settle 60% slower. (You give up the [icon:YIELD_POPULATION] growth and the [icon:YIELD_FOOD][icon:YIELD_PRODUCTION] tiles newcomers would have worked, and half of your enclaves' [icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD] yields.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="ko_KR"><Text>+3 [icon:YIELD_PRODUCTION] Production in every city. -3 [icon:YIELD_DIPLOMACY] Influence per turn. -60% [icon:YIELD_POPULATION] immigration, -40% emigration. Refugees settle 60% slower. (You give up the [icon:YIELD_POPULATION] growth and the [icon:YIELD_FOOD][icon:YIELD_PRODUCTION] tiles newcomers would have worked, and half of your enclaves' [icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD] yields.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="ko_KR"><Text>+4 [icon:YIELD_PRODUCTION] Production in every city. -4 [icon:YIELD_DIPLOMACY] Influence per turn. -60% [icon:YIELD_POPULATION] immigration, -40% emigration. Refugees settle 60% slower. (You give up the [icon:YIELD_POPULATION] growth and the [icon:YIELD_FOOD][icon:YIELD_PRODUCTION] tiles newcomers would have worked, and half of your enclaves' [icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD] yields.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +2. 턴당 [icon:YIELD_DIPLOMACY] 영향력 -2. [icon:YIELD_POPULATION] 이민 -60%, 이주 유출 -40%. 난민의 정착이 60% 느려집니다. (새 이주민이 가져왔을 [icon:YIELD_POPULATION] 성장과 그들이 일구었을 [icon:YIELD_FOOD][icon:YIELD_PRODUCTION] 타일, 그리고 거주지 [icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD] 산출의 절반을 포기합니다.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +3. 턴당 [icon:YIELD_DIPLOMACY] 영향력 -3. [icon:YIELD_POPULATION] 이민 -60%, 이주 유출 -40%. 난민의 정착이 60% 느려집니다. (새 이주민이 가져왔을 [icon:YIELD_POPULATION] 성장과 그들이 일구었을 [icon:YIELD_FOOD][icon:YIELD_PRODUCTION] 타일, 그리고 거주지 [icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD] 산출의 절반을 포기합니다.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +4. 턴당 [icon:YIELD_DIPLOMACY] 영향력 -4. [icon:YIELD_POPULATION] 이민 -60%, 이주 유출 -40%. 난민의 정착이 60% 느려집니다. (새 이주민이 가져왔을 [icon:YIELD_POPULATION] 성장과 그들이 일구었을 [icon:YIELD_FOOD][icon:YIELD_PRODUCTION] 타일, 그리고 거주지 [icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD] 산출의 절반을 포기합니다.)</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="ko_KR"><Text>인재 유치</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ko_KR"><Text>+1 [icon:YIELD_SCIENCE] Science per 5 [icon:YIELD_POPULATION] Population and -2 [icon:YIELD_GOLD] Gold in every settlement. Immigrants count, so the people you draw keep paying for as long as they stay.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="ko_KR"><Text>+1 [icon:YIELD_SCIENCE] Science per 4 [icon:YIELD_POPULATION] Population and -3 [icon:YIELD_GOLD] Gold in every settlement. Immigrants count, so the people you draw keep paying for as long as they stay.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ko_KR"><Text>모든 정착지에서 [icon:YIELD_POPULATION] 인구 5마다 [icon:YIELD_SCIENCE] 과학 +1, [icon:YIELD_GOLD] 골드 -2. 이민자도 포함되므로, 끌어들인 사람들은 머무는 동안 계속 보탬이 됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="ko_KR"><Text>모든 정착지에서 [icon:YIELD_POPULATION] 인구 4마다 [icon:YIELD_SCIENCE] 과학 +1, [icon:YIELD_GOLD] 골드 -3. 이민자도 포함되므로, 끌어들인 사람들은 머무는 동안 계속 보탬이 됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="ko_KR"><Text>문화적 매력</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ko_KR"><Text>+1 [icon:YIELD_CULTURE] Culture per 5 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO" Language="ko_KR"><Text>+1 [icon:YIELD_CULTURE] Culture per 4 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ko_KR"><Text>모든 정착지에서 [icon:YIELD_POPULATION] 인구 5마다 [icon:YIELD_CULTURE] 문화 +1.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO" Language="ko_KR"><Text>모든 정착지에서 [icon:YIELD_POPULATION] 인구 4마다 [icon:YIELD_CULTURE] 문화 +1.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="ko_KR"><Text>상업적 매력</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ko_KR"><Text>+1 [icon:YIELD_GOLD] Gold per 5 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC_MO" Language="ko_KR"><Text>+1 [icon:YIELD_GOLD] Gold per 4 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ko_KR"><Text>모든 정착지에서 [icon:YIELD_POPULATION] 인구 5마다 [icon:YIELD_GOLD] 골드 +1.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC_MO" Language="ko_KR"><Text>모든 정착지에서 [icon:YIELD_POPULATION] 인구 4마다 [icon:YIELD_GOLD] 골드 +1.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="ko_KR"><Text>선별적 망명</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ko_KR"><Text>[icon:YIELD_POPULATION] 전쟁과 재난을 피해 달아나는 난민이 가장 절박한 이들부터 당신에게 강하게 이끌리며, 매 턴 [icon:YIELD_DIPLOMACY] 영향력 +1을 얻습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="ko_KR"><Text>난민 협약</Text></Replace>
@@ -804,24 +804,24 @@
         <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_NAME" Language="ko_KR"><Text>주민 등록제</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_DESC" Language="ko_KR"><Text>모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +3. 당신이 인정하는 거류지의 보상은 절반이 되고, 도착하는 이민자가 25% 줄며, 고향과 전쟁 중인 공동체는 더 빨리 동요합니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CONSULAR_NAME" Language="ko_KR"><Text>영사 보호</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_DESC" Language="ko_KR"><Text>+3 [icon:YIELD_DIPLOMACY] Influence per turn (+5 in the Modern Age), and +1 more per recognized enclave of yours abroad (max +4). Grievances against a host that turns anti-immigration on them.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_DESC" Language="ko_KR"><Text>턴당 [icon:YIELD_DIPLOMACY] 영향력 +3(현대에는 +5), 해외에 있는 당신의 공인된 거주지마다 +1 추가(최대 +4). 그들에게 반이민으로 돌아서는 수용국에 대해 불만이 생깁니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_STANCE_SLOT_DESC" Language="ko_KR"><Text>전용 정책 슬롯이 따라옵니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="ko_KR"><Text>이주</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="ko_KR"><Text>이주</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="ko_KR"><Text>이주</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="ko_KR"><Text>Emigration moves population between settlements. Each turn, people leave unhappy, struggling or war-torn settlements for happier, more prosperous ones, within your civilization and across borders.[n][n]A Prosperity model scores each city on its happiness, yields and circumstances, weighted by distance so migration stays regional. A civilization pays an integration cost while its newcomers settle in.[n][n]Every settlement records the civilizations its people descend from, shown on the map by the Ethnic Composition lens. Newcomers gradually take on their host's identity, diasporas return home once their homeland recovers, and the Migration Chronicle records the great waves as history.[n][n]People driven out of one of your settlements into another of yours come home on their own once it is calm; the Settlements tab of the Migration dashboard shows who is away from each settlement, why people leave it and what would keep them, and what bringing them back sooner costs.[n][n]Aggressor avoidance, border policies, disasters, ethnic integration, return migration and refugee decisions are on by default; each can be switched off in Options, Add-ons, Emigration.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="ko_KR"><Text>이주는 정착지 사이에서 인구를 옮깁니다. 매 턴 사람들은 불행하거나 어렵거나 전쟁에 시달리는 정착지를 떠나 더 행복하고 번영하는 정착지로 갑니다. 당신의 문명 안에서도, 국경을 넘어서도 그렇습니다.[n][n]번영 모델이 각 도시를 행복도, 산출, 처지에 따라 점수 매기고, 이주가 지역 안에 머물도록 거리를 가중합니다. 문명은 새 이주민이 정착하는 동안 통합 비용을 냅니다.[n][n]모든 정착지는 주민이 어느 문명의 후손인지 기록하며, 이는 민족 구성 렌즈로 지도에 표시됩니다. 새 이주민은 점차 받아들인 문명의 정체성을 띠고, 디아스포라는 고국이 회복되면 돌아가며, 이주 연대기는 큰 물결을 역사로 기록합니다.[n][n]당신의 한 정착지에서 쫓겨나 당신의 다른 정착지로 간 사람들은 고향이 평온해지면 스스로 돌아옵니다. 이주 대시보드의 정착지 탭에서 각 정착지를 떠나 있는 사람이 누구인지, 사람들이 왜 떠나고 무엇이 그들을 붙잡을지, 더 빨리 데려오려면 얼마가 드는지 볼 수 있습니다.[n][n]침략자 회피, 국경 정책, 재난, 민족 통합, 귀환 이주, 난민 결정은 기본으로 켜져 있으며, 각각 옵션, 추가 기능, 이주에서 끌 수 있습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_FAQ_TITLE" Language="ko_KR"><Text>자주 묻는 질문</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_FAQ_BODY" Language="ko_KR"><Text>What drives migration. Most of it is tunable in Options, Add-ons, Emigration, and the other pages of this section have the full version.[n][n]✓ Your civilization and every other major civilization move population, met or unmet.[n]✗ City-states, minor civilizations and Independent Powers neither send nor receive population.[n]✓ Pushes: unhappiness, low yields, war damage, sieges (including attacks by a city-state or Independent Power), pillaging, starvation, plague, disasters and overcrowding.[n]✓ Pulls: prosperity, high happiness, a Pro-Immigration Stance, Open Borders and proximity.[n]✓ Migrants travel for a delay that grows with distance, and their host pays a temporary integration cost. War empties a city only by capturing it.[n]✓ Each settlement gains and loses at most a set number of people per turn, scaled by the intensity preset. Arrivals over the cap wait in transit, and refugees with nowhere to land die on the road.[n]✓ Towns take part like cities, and people move between your own settlements as well as across borders.[n]✗ You can't pick or place individual migrants; the flows follow yields, safety and stances. "How newcomers settle" chooses where an arrival sits, and "Close to newcomers" keeps a settlement out of it.[n]✗ One civilization can't draw the whole map's people: a settlement is judged against the world's average, fresh arrivals meet a congestion headwind, and a civilization already ahead meets an anti-snowball headwind.[n]✓ Repairing a pillaged tile stops the pressure it caused, so the settlement stops bleeding people, but a repair never adds a population point back. The fastest way to recover a war-torn settlement is peace (the fighting's pressure fades in two or three turns), repairs, and happiness, the biggest draw there is.[n][n]AI civilizations play the same systems. Two city strategies the mod adds (keep them happy, hold your people) have AI cities build happiness, Food and Production before their people leave; AI civilizations choose enclave stances, decide on refugees and call their people home from abroad through the mod's own rules, at your prices less a discount for the game's difficulty; their displaced people come home on their own as yours do; and a notice tells you when a civilization you have met opens or closes its borders. Base-game files are left as they are. Unmet civilizations are simulated and stay hidden until you meet them.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_FAQ_BODY" Language="ko_KR"><Text>무엇이 이주를 움직이는가. 대부분은 옵션, 추가 기능, 이주에서 조정할 수 있고, 이 섹션의 다른 페이지에 자세한 설명이 있습니다.[n][n]✓ 당신의 문명과 다른 모든 주요 문명이, 만났든 못 만났든 인구를 옮깁니다.[n]✗ 도시 국가, 소규모 문명, 독립 세력은 인구를 보내지도 받지도 않습니다.[n]✓ 밀어내는 힘: 불행, 낮은 산출, 전쟁 피해, 포위(도시 국가나 독립 세력의 공격 포함), 약탈, 기아, 전염병, 재난, 과밀.[n]✓ 끌어당기는 힘: 번영, 높은 행복도, 친이민 기조, 국경 개방, 가까운 거리.[n]✓ 이주민은 거리에 따라 길어지는 시간 동안 이동하며, 받아들이는 문명은 일시적인 통합 비용을 냅니다. 전쟁은 도시를 점령할 때만 도시를 비웁니다.[n]✓ 각 정착지는 턴당 정해진 수까지만 사람을 얻고 잃으며, 그 수는 강도 프리셋에 따라 정해집니다. 상한을 넘는 도착자는 이동 중에 기다리고, 내릴 곳이 없는 난민은 길에서 죽습니다.[n]✓ 마을도 도시처럼 참여하며, 사람들은 국경을 넘는 것 못지않게 당신의 정착지 사이에서도 이동합니다.[n]✗ 이주민 개개인을 고르거나 배치할 수는 없습니다. 흐름은 산출, 안전, 기조를 따릅니다. "새 이주민 정착 방식"이 도착자가 자리 잡을 곳을 정하고, "새 이주민 받지 않기"가 정착지를 그 흐름에서 빼 줍니다.[n]✗ 한 문명이 지도 전체의 사람을 끌어모을 수는 없습니다. 정착지는 세계 평균과 비교해 평가되고, 막 도착한 사람들은 혼잡이라는 역풍을 만나며, 이미 앞선 문명은 눈덩이 방지 역풍을 만납니다.[n]✓ 약탈된 타일을 수리하면 그것이 일으킨 압력이 멈춰 정착지의 인구 유출이 멎지만, 수리로 인구 포인트가 되돌아오지는 않습니다. 전쟁에 시달린 정착지를 가장 빨리 회복하는 길은 평화(전투의 압력은 두세 턴이면 옅어집니다), 수리, 그리고 가장 큰 끌림인 행복도입니다.[n][n]AI 문명도 같은 시스템으로 플레이합니다. 이 모드가 추가하는 두 도시 전략(행복하게 유지하기, 주민 붙잡기)으로 AI 도시는 주민이 떠나기 전에 행복도, 식량, 생산력을 짓습니다. AI 문명은 모드 자체의 규칙에 따라 거주지 입장을 고르고, 난민을 결정하며, 해외의 주민을 고향으로 부릅니다. 가격은 당신과 같되 게임 난이도만큼 할인됩니다. 그들의 쫓겨난 주민도 당신의 주민처럼 스스로 돌아오며, 당신이 만난 문명이 국경을 열거나 닫으면 통지가 옵니다. 기본 게임 파일은 손대지 않습니다. 만나지 못한 문명은 시뮬레이션되며 만날 때까지 숨겨져 있습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_TITLE" Language="ko_KR"><Text>번영과 이주</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_BODY" Language="ko_KR"><Text>모든 정착지는 1인당 산출과, 무엇보다 순 행복도로부터 번영 점수를 받습니다. 불행한 도시는 평화로운 시기에도 더 행복하고 부유한 도시로 꾸준히 사람을 잃으며, 규모 자체에 대한 작은 페널티가 번영하는 도시가 바닥없는 자석이 되는 것을 막습니다.[n][n]사람들은 가까운 목적지를 선호하므로, 이주는 지도를 가로질러 도약하기보다 지역 안에서 바깥으로 퍼져 나갑니다. 전쟁, 포위, 기근, 소요, 재해는 모두 도시의 번영을 크게 떨어뜨려 그 도시를 난민의 발생지로 바꿉니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_TITLE" Language="ko_KR"><Text>전쟁과 난민</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_BODY" Language="ko_KR"><Text>A city sends war refugees while there is fighting inside its borders, damage to its districts, or pillaging on its land. The longer a siege lasts, the more people it drives out, and a remnant always stays until the city is captured. A lone skirmish or a one-turn siege flag moves nobody: the fighting has to stay over the flee threshold for two turns running before people flee it (a settlement being razed empties at once). A siege whose attackers stop attacking stalls after a few quiet turns: it stops driving people out and kills nobody until the next attack, and the settlement's readout says "Siege stalled". Deaths under siege count against the same cap as departures, so a siege can wound a city but can't empty it.[n][n]Refugees avoid a city under attack: a settlement in a crisis of its own is a much weaker destination while it lasts, and refugees already on the road to it are held or sent to the next best settlement. Refugees flee away from the nearest invader. With aggressor avoidance on, they prefer their own civilization, then any neutral power, and choose the aggressor only as a last resort.[n][n]Migrants spend a few turns in transit, and each city takes in a limited number per turn; the rest wait and try again, longest-waiting first. If their destination is captured or razed while they travel, or stays too full to receive them, they die in transit and count as losses.[n][n]Once a homeland is at peace with the host and prospering again, some of its people abroad return home over time. When a great wave, driven by a neighbor's conquests or a plague, reaches your lands, you are occasionally asked how to receive it: take them in, settle them on the frontier, or turn them away. These refugee decisions can be switched off in Options.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_BODY" Language="ko_KR"><Text>도시는 국경 안에 전투가 있거나, 지구가 손상되거나, 땅이 약탈당하는 동안 전쟁 난민을 내보냅니다. 포위가 길어질수록 더 많은 사람이 떠나며, 도시가 점령될 때까지 일부는 언제나 남습니다. 단발 교전이나 한 턴짜리 포위 표시로는 아무도 움직이지 않습니다. 전투가 피난 기준을 두 턴 연속 넘어야 사람들이 떠납니다(파괴 중인 정착지는 즉시 비워집니다). 공격자가 공격을 멈춘 포위는 조용한 몇 턴이 지나면 교착됩니다. 다음 공격까지 사람을 내몰지도 죽이지도 않으며, 정착지의 이주 보고에 "포위 교착"이라고 표시됩니다. 포위 중 사망은 이탈과 같은 상한에 들어가므로, 포위는 도시에 상처를 입힐 수는 있어도 비울 수는 없습니다.[n][n]난민은 공격받는 도시를 피합니다. 자체 위기를 겪는 정착지는 위기가 이어지는 동안 목적지로서 훨씬 약해지고, 이미 그곳으로 가던 난민은 대기하거나 그다음으로 좋은 정착지로 보내집니다. 난민은 가장 가까운 침략자에게서 멀어지는 쪽으로 달아납니다. 침략자 회피가 켜져 있으면 자기 문명을 먼저, 그다음 중립 세력을 택하고, 침략자는 마지막 수단으로만 고릅니다.[n][n]이주민은 몇 턴을 이동하는 데 쓰고, 각 도시는 턴당 정해진 수만 받습니다. 나머지는 기다렸다가 가장 오래 기다린 순서로 다시 시도합니다. 이동 중에 목적지가 점령되거나 파괴되거나 계속 꽉 차서 받을 수 없으면, 그들은 이동 중에 죽고 손실로 집계됩니다.[n][n]고국이 수용국과 평화를 맺고 다시 번영하면, 해외에 있던 주민 일부가 시간이 지나며 돌아옵니다. 이웃의 정복이나 전염병이 일으킨 큰 물결이 당신의 땅에 이르면 가끔 어떻게 받아들일지 묻습니다. 받아들이거나, 변경에 정착시키거나, 돌려보내는 것입니다. 이 난민 결정은 옵션에서 끌 수 있습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_TITLE" Language="ko_KR"><Text>통합과 성장의 대가</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_BODY" Language="ko_KR"><Text>이주민을 흡수하는 일은 공짜가 아닙니다. 새로 온 이 한 명마다 받아들이는 문명에 통합 부담이 더해지고, 그 부담이 통합 기간에 걸쳐 사라질 때까지 문명은 매 턴 비용을, 금과 행복도로, 치릅니다. 사람을 계속 끌어들이는 문명은 계속 대가를 치릅니다.[n][n]또한 혼잡 효과는 신규 이주민을 정착시키느라 분주한 문명을 더 많은 이주민에게 덜 매력적인 목적지로 만들 수 있습니다. 이는 부만으로는 없앨 수 없는 제동입니다. 이 둘이 함께, 단일 문명이 세계의 사람들을 빨아들이는 지배적인 이주 자석이 되는 것을 막습니다.[n][n]통합에는 위의 금과 행복도 비용과는 별개로, 더 느린 문화적 측면도 있습니다. 여러 턴에 걸쳐, 신규 이주민은 각 정착지의 민족 구성 안에서 받아들인 문명의 정체성을 띠게 되어, 평화롭고 안정된 도시는 점차 디아스포라를 흡수합니다. 디아스포라의 고향과의 전쟁이나 도시의 소요는 그 통합을 늦추어, 민족 구성 렌즈에서 자기 색을 유지하는 뚜렷한 공동체를 남깁니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_BORDERS_TITLE" Language="ko_KR"><Text>국경과 영향력</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_BORDERS_BODY" Language="ko_KR"><Text>두 개의 지렛대가 국경을 넘는 이주를 빚어냅니다. 당신의 입장은 어느 시대에서나 쓸 수 있는 정책 카드입니다. 친이민 입장을 두면 세계를 환영하여 더 많은 이주자가 오고, 세계주의적 평판이 매 턴 약간의 영향력을 가져옵니다. 또는 반이민 입장을 두어 스스로를 닫으면, 오는 신규 이주민이 줄고 당신의 국민이 경쟁국으로 떠나는 일도 줄며, 동원된 국내 경제가 모든 도시에 생산력을 더합니다. 다만 세계는 당신의 고립을 꾸준한 영향력 감소로 평가합니다. 당신의 전략에 맞는 것을 고르십시오.[n][n]외교도 중요합니다. 당신과 다른 문명이 개방 국경 협정을 맺으면, 이주자가 두 나라 사이를 더 자유로이 양방향으로 오갑니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_TITLE" Language="ko_KR"><Text>유치와 망명</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="ko_KR"><Text>Talent Attraction turns the people you draw into Science: +1 per 5 Population in every settlement (per 4 in the Modern Age), counted by the game like any other yield. Immigrants raise population, so every newcomer adds to it for as long as they stay. Pair it with a Pro-Immigration Stance or an Open Borders agreement to fill your settlements faster.[n][n]Asylum rides on the Pro-Immigration Stance: while it is slotted, war and disaster refugees choose your cities first. A game saved with one of the retired cards slotted (Selective Asylum, Refugee Compact, Cultural Magnetism, Commercial Draw) keeps it and its effect; a new game never offers them.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="ko_KR"><Text>인재 유치는 끌어들인 사람들을 과학으로 바꿉니다. 모든 정착지에서 인구 5마다 +1(현대에는 4마다)이며, 게임이 다른 산출과 똑같이 집계합니다. 이민자는 인구를 늘리므로, 새 이주민 한 명 한 명이 머무는 동안 여기에 보탬이 됩니다. 친이민 기조나 국경 개방 협정과 함께 쓰면 정착지가 더 빨리 채워집니다.[n][n]망명은 친이민 기조에 얹혀 갑니다. 그 카드를 장착하고 있는 동안 전쟁과 재난의 난민은 당신의 도시를 먼저 고릅니다. 은퇴한 카드(선별적 망명, 난민 협약, 문화적 매력, 상업적 매력) 중 하나를 장착한 채 저장한 게임은 그 카드와 효과를 그대로 유지하며, 새 게임에서는 더 이상 제공되지 않습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_RAIDS_TITLE" Language="ko_KR"><Text>인재 빼가기</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_RAIDS_BODY" Language="ko_KR"><Text>외교 화면에서 경쟁자를 상대로 인재 빼가기, 문화 공세, 상업 공세를 걸 수 있습니다. 진행되는 동안 매 턴 영향력을 지불하며, 그 경쟁자의 이주가 당신의 도시 쪽으로 기웁니다. 도착하는 사람마다 자발적인 이민자와 마찬가지로 그에 맞는 과학, 문화, 금 보너스를 줍니다.[n][n]이 외교 행동은 Diplomacy Extended 모드에서 제공되며, 그 모드가 설치되어 있을 때 나타납니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_TITLE" Language="ko_KR"><Text>재해와 역병</Text></Replace>
@@ -831,13 +831,13 @@
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_TITLE" Language="ko_KR"><Text>지도자와 문명</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="ko_KR"><Text>일부 지도자와 문명은 이주를 다르게 겪으며, 그들의 역사적 성격이 드러납니다. 이는 전역 규칙 위에 얹히는 작고 제한된 조정으로, 걷잡을 수 없는 성장을 유발할 만큼 크지는 않으며, 문명별 미세 조정이 켜져 있는 동안에만 적용됩니다(기본값은 켬).[n][n]그 행복도 때문에 도시를 지배적인 이주 자석으로 만들 법한 지도자는 끌어당기는 힘이 조금 약해집니다. 무엇보다 벤저민 프랭클린, 그리고 이사벨, 아소카, 리살도 억제됩니다. 부유한 정복자는 전리품을 정착시키는 비용이 더 들어, 이사벨과 크세르크세스는 얻어낸 사람들을 흡수하는 데 더 많이 치릅니다.[n][n]키 높은, 전문가 지향의 세력은 과밀로부터 보호되어 밀집한 도시가 두 번 벌받지 않습니다. 파차쿠텍, 그리고 무엇보다 아바스 왕조입니다. 인구가 번영을 앞질러 빠르게 성장하는 민족은 시민을 붙들기 위한 작은 완충을 얻습니다, 공자, 한, 그리고 청, 반면 크메르는 자국 비수도 지역 불행의 최악을 면합니다. 그리고 견고한 성벽 뒤에 세워진 나라, 노르만과 잉글랜드, 는 성벽 없는 이들보다 포위 동안 인구를 훨씬 잘 지켜냅니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_TITLE" Language="ko_KR"><Text>범위와 표시</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_BODY" Language="ko_KR"><Text>Emigration simulates every living major civilization from the first turn, met or unmet, so migration follows the real state of the world and a city you later conquer carries the true origin history of its people.[n][n]By default the dashboard, graphs and map lenses show only civilizations you have met: the Spoil Guard, a checkbox under Options, Add-ons, Emigration, on by default. While it is on, a red pill at the top of the Emigration screen says what is hidden. Turn it off to see everyone. With the Demographics mod installed the two mods' guards work together, whichever is stricter wins, so you are only spoiled once both are off.[n][n]Simulation scope (whole world or met only) and on-screen visibility are separate settings.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_BODY" Language="ko_KR"><Text>이주는 살아 있는 모든 주요 문명을 첫 턴부터, 만났든 못 만났든 시뮬레이션합니다. 그래서 이주는 세계의 실제 상태를 따르고, 나중에 정복한 도시도 주민의 진짜 출신 역사를 지니고 있습니다.[n][n]기본적으로 대시보드, 그래프, 지도 렌즈는 당신이 만난 문명만 보여 줍니다. 이것이 스포일러 방지로, 옵션, 추가 기능, 이주 아래의 체크박스이며 기본으로 켜져 있습니다. 켜져 있는 동안 이주 화면 상단의 빨간 표시가 무엇이 숨겨져 있는지 알려 줍니다. 끄면 모두 볼 수 있습니다. Demographics 모드가 설치되어 있으면 두 모드의 방지 기능이 함께 작동하며 더 엄격한 쪽이 이기므로, 둘 다 꺼야 스포일러가 보입니다.[n][n]시뮬레이션 범위(세계 전체 또는 만난 문명만)와 화면 표시 여부는 별개의 설정입니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_TITLE" Language="ko_KR"><Text>대시보드 읽기</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="ko_KR"><Text>Open the Migration dashboard from its button on the in-game dock, from a migration notice beside End Turn, or from the Migration page in the Demographics mod. It has four tabs, Settlements first.[n][n]• Settlements: one card per settlement, sorted by pressure to leave or by name. Each card has four panes. Arriving: where arrivals came from, which settlements this one attracts from and why, and what would attract more ("Add +2 Happiness by building: Arena"). Leaving: the pressure to leave as a five-step gauge from Negligible to Critical with its drivers, a forecast under the gauge ("About 3 people are likely to leave in the next 4 turns", a projection from how fast the pressure has been rising, or "Nobody is likely to leave soon"), where people are pulled toward and why, and what would keep them, with the Pro- or Anti-Immigration Stance as a step when it helps. Arrived: who lives here by origin, the settlement's Mix and Character, and the standing of its foreign community toward an enclave. Left: the people away from this settlement, when they come home on their own, and the Hasten and Call from abroad buttons with their prices. A prosperity ledger between the panes lists every term of the settlement's score, and each line opens to what is behind it. "All civilizations" shows every civilization's cause cards and a table of its settlements with their composition, Mix, Character, Enclave and pressure.[n]• Network: an animated map of civilizations and their settlements, sized by how much population moves through them, with dots traveling the routes (refugees ringed, naming their war on hover), flow arrows, event labels and a timeline you can scrub; click a settlement to see only its flows, or drag it out of its circle. "Table" shows arrivals, departures and net change by civilization, internal and external, beside refugees and losses.[n]• Policies: who has adopted a Pro- or Anti-Immigration Stance.[n]• Notifications: the log of every notification, including the Migration Chronicle's entries.[n][n]Scaled | Civ switches every number between historically scaled people and population points. The Spoil Guard hides civilizations you have not met; see Scope &amp; Visibility. On the map, the Prosperity lens (Shift+P) and the Ethnic Composition lens (Shift+E) paint each settlement tile by tile; see Map Lenses.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="ko_KR"><Text>이주 대시보드는 게임 내 독의 버튼, 턴 종료 옆의 이주 알림, 또는 Demographics 모드의 이주 페이지에서 엽니다. 탭은 넷이며 정착지 탭이 첫 번째입니다.[n][n]• 정착지: 정착지마다 카드 하나씩, 떠나려는 압력 순이나 이름 순으로 정렬됩니다. 각 카드에는 네 개의 창이 있습니다. 유입: 도착한 사람들이 어디서 왔는지, 이 정착지가 어느 정착지에서 왜 끌어오는지, 무엇이 더 끌어올지("건설로 행복도 +2 추가: 투기장")입니다. 유출: 미미에서 심각까지 다섯 단계 게이지로 표시된 떠나려는 압력과 그 원인, 게이지 아래의 예보(압력이 올라온 속도로 추정한 "앞으로 4턴 안에 약 3명이 떠날 듯합니다" 또는 "당분간 떠날 사람이 없을 듯합니다"), 사람들이 어디로 왜 끌리는지, 무엇이 그들을 붙잡을지이며, 도움이 될 때는 친이민 또는 반이민 기조가 한 단계로 제시됩니다. 도착: 이곳에 사는 사람들의 출신, 정착지의 구성과 성격, 외국인 공동체가 거주지에 얼마나 가까운지입니다. 떠남: 이 정착지를 떠나 있는 사람들, 그들이 언제 스스로 돌아오는지, 그리고 가격이 적힌 재촉과 해외에서 부르기 버튼입니다. 창 사이의 번영 장부는 정착지 점수의 모든 항목을 나열하며, 각 줄을 열면 그 뒤의 내용이 보입니다. "모든 문명"은 모든 문명의 원인 카드와, 구성, 혼합, 성격, 거주지, 압력이 적힌 정착지 표를 보여 줍니다.[n]• 네트워크: 문명과 정착지를 통과하는 인구의 양에 따라 크기를 정한 애니메이션 지도입니다. 점들이 경로를 따라 움직이고(난민은 고리로 표시되며 마우스를 올리면 전쟁 이름이 보입니다), 흐름 화살표, 사건 라벨, 문질러 볼 수 있는 타임라인이 있습니다. 정착지를 클릭하면 그 정착지의 흐름만 보이고, 원 밖으로 끌어낼 수도 있습니다. "표"는 문명별 유입, 유출, 순 변화를 내부와 외부로 나누어 난민과 손실 옆에 보여 줍니다.[n]• 정책: 누가 친이민 또는 반이민 기조를 채택했는지.[n]• 알림: 이주 연대기 항목을 포함한 모든 알림의 기록.[n][n]척도 | Civ 스위치는 모든 숫자를 역사적 척도의 인원 수와 인구 포인트 사이에서 전환합니다. 스포일러 방지는 만나지 못한 문명을 숨깁니다. 범위와 표시를 참고하세요. 지도에서는 번영 렌즈(Shift+P)와 민족 구성 렌즈(Shift+E)가 각 정착지를 타일 단위로 칠합니다. 지도 렌즈를 참고하세요.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_TITLE" Language="ko_KR"><Text>민족 구성과 통합</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_BODY" Language="ko_KR"><Text>각 정착지는 주민이 어느 문명의 후손인지에 따라 사람들이 어디서 왔는지를 기록하며, 정복을 거쳐도 그 기록을 유지합니다. 민족 구성 렌즈(Shift+E)는 이를 타일별 모자이크로 보여 줍니다. 인구가 밀집한 도시 중심부는 지배적 기원의 색으로, 소규모 공동체는 그 타일 전반에 퍼지며, 정착된 타일의 툴팁에 정확한 구성이 표시됩니다.[n][n]시간이 지나면 신규 이주민은 받아들인 문명에 통합됩니다. 다만 그들의 고향과의 전쟁이나 도시의 불안이 있으면 공동체는 구별된 채 남습니다. 그리고 고향이 받아들인 측과 평화를 이루고 다시 번영하면, 귀환 이주가 시간이 지나며 그 일부를 고향으로 데려가 실제 인구를 옮깁니다. 이 모두는 기본으로 켜져 있으며 옵션에서 끌 수 있습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_TITLE" Language="ko_KR"><Text>문화 거류지</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_BODY" Language="ko_KR"><Text>A foreign community of at least 3 population points that holds 30% of a settlement, or the size bar (6 points at average settlement size), forms a Cultural Enclave in that city, yours or an AI's: a tile at the city's edge named for the origin people, carrying its own yield from the day it forms. After a dwell period the enclave is recognized. Each people has two stances drawn from its character. By default the city takes the first it can afford, and the Chronicle records it. With enclave recognition set to Ask me in Advanced settings, a pop-up with a quotation in that people's voice lets you pick a stance or none. A stance pays once, when chosen: Culture toward your current civic, Science toward your current research, Influence, or Gold, worth three turns of your income of that yield. A stance that pays anything but Gold costs two turns of your Gold income.[n][n]Each origin civilization can hold at most two enclaves in your empire, and at most three enclaves form in your empire per age. An enclave can change hands as the city's population shifts, and dissolves when its community stays below 12.5% of the settlement and below the size bar for 12 turns. At war with its homeland, an enclave is contested: it strains your happiness until peace, and a stance chosen meanwhile pays half. A community with an enclave rarely returns home on its own; see Coming Home.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_BODY" Language="ko_KR"><Text>인구 포인트 3개 이상의 외국인 공동체가 정착지의 30%, 또는 규모 기준(평균 정착지 크기에서 6포인트)을 차지하면, 당신의 도시든 AI의 도시든 그 도시에 문화 거주지가 생깁니다. 도시 가장자리에 출신 민족의 이름이 붙은 타일로, 생기는 날부터 고유 산출을 냅니다. 일정 기간이 지나면 거주지가 공인됩니다. 각 민족은 자기 성격에서 나온 두 가지 입장을 가집니다. 기본적으로 도시는 감당할 수 있는 첫 입장을 택하고 연대기가 이를 기록합니다. 고급 설정에서 거주지 공인을 '물어보기'로 두면, 그 민족의 목소리로 된 인용문이 담긴 팝업에서 입장 하나를 고르거나 고르지 않을 수 있습니다. 입장은 고를 때 한 번 지급합니다. 현재 사회 제도를 향한 문화, 현재 연구를 향한 과학, 영향력, 또는 골드로, 그 산출의 세 턴치 수입에 해당합니다. 골드가 아닌 것을 지급하는 입장은 골드 수입 두 턴치가 듭니다.[n][n]출신 문명 하나는 당신의 제국에 최대 두 개의 거주지를 가질 수 있고, 시대마다 제국에 최대 세 개의 거주지가 생깁니다. 거주지는 도시의 인구가 바뀌면 주인이 바뀔 수 있고, 그 공동체가 정착지의 12.5% 미만이면서 규모 기준에도 못 미친 채 12턴이 지나면 해체됩니다. 본국과 전쟁 중이면 거주지는 분쟁 상태가 됩니다. 평화가 올 때까지 행복도에 부담을 주고, 그동안 고른 입장은 절반만 지급합니다. 거주지가 있는 공동체는 스스로 고향에 돌아가는 일이 드뭅니다. 귀향을 참고하세요.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="ko_KR"><Text>이주 연대기와 난민 결정</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="ko_KR"><Text>이주 연대기는 세계의 큰 이주를 짧은 역사로 기록합니다: 전쟁이나 재난으로 텅 빈 도시, 고향에서 멀리 뿌리내린 디아스포라, 고국이 회복되자 돌아오는 민족, 인정되거나 사라진 거주지, 응답받거나 응답받지 못한 귀향 호출 등입니다. 그 항목은 대시보드의 알림 탭에 나타납니다.[n][n]실제 격변, 즉 이웃이 짧은 기간에 여러 도시를 정복하거나 역병 위기가 닥쳐 난민의 물결이 당신의 땅으로 향하면, 그들을 어떻게 맞을지 묻습니다:[n]• 받아들이기: 금이 들고 잠시 백성에게 부담이 됩니다. 그들은 당신 곁에 정착합니다.[n]• 변경에 정착시키기: 비용이 더 적습니다. 그들은 더 작은 마을로 갑니다.[n]• 돌려보내기: 영향력이 듭니다.[n]각 결정에는 국경에 선 민족의 목소리를 담은 인용문이 따릅니다. 시대마다 최대 두 번, 최소 18턴 간격으로 찾아오며, 옵션에서 끌 수 있습니다. 만나지 못한 문명은 소문으로만 언급됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="ko_KR"><Text>이주</Text></Replace>
@@ -868,11 +868,11 @@
         <Replace Tag="LOC_EMIG_NETC_CLUSTER_TIP" Language="ko_KR"><Text>유입 {1_In} · 순 {2_Net}</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOW" Language="ko_KR"><Text>현재</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TURN_N" Language="ko_KR"><Text>{1_Turn}턴</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_TURN_SHORT" Language="ko_KR"><Text>T{1_Turn}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TURN_SHORT" Language="ko_KR"><Text>{1_Turn}턴</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_PLAY" Language="ko_KR"><Text>재생</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_PAUSE" Language="ko_KR"><Text>일시 정지</Text></Replace>
         <Replace Tag="LOC_EMIG_YEAR_BCE" Language="ko_KR"><Text>기원전 {1_Year}년</Text></Replace>
-        <Replace Tag="LOC_EMIG_YEAR_CE" Language="ko_KR"><Text>{1_Year} CE</Text></Replace>
+        <Replace Tag="LOC_EMIG_YEAR_CE" Language="ko_KR"><Text>서기 {1_Year}년</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_START" Language="ko_KR"><Text>시작</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="ko_KR"><Text>각 점 ≈ {1_People}명. 문명의 원은 도시와 마을을 내부 하위 클러스터로 담습니다. 문명 고유 색의 점은 토착 주민, 더 밝은 색조의 점은 자국 도시 간을 이동한 사람들(내부 이주), 다른 색의 점은 그 출신지에서 온 이민자입니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="ko_KR"><Text>표시:</Text></Replace>
@@ -880,13 +880,13 @@
         <Replace Tag="LOC_EMIG_NETC_UNMET" Language="ko_KR"><Text>만나지 못함</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="ko_KR"><Text>이주 흐름</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="ko_KR"><Text>이주 흐름 화살표 겹쳐 보기: 사람들이 떠나는 곳은 빨간색, 도착하는 곳은 초록색이며 두꺼울수록 사람이 많습니다</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS" Language="ko_KR"><Text>Event labels</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS_TIP" Language="ko_KR"><Text>Show each war's name under the civilizations fighting it</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_REFUGEE_FROM" Language="ko_KR"><Text>Refugee from {1_Origin}</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_RING_WAR" Language="ko_KR"><Text>War refugees</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_RING_WAR_TIP" Language="ko_KR"><Text>A ring marks people who fled a war. It's brightest while the war is on. Hover a dot to see which war.</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER" Language="ko_KR"><Text>Disaster refugees</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER_TIP" Language="ko_KR"><Text>A ring marks people who fled a disaster. It's brightest just after it strikes. Hover a dot to see which disaster.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS" Language="ko_KR"><Text>사건 라벨</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS_TIP" Language="ko_KR"><Text>전쟁 중인 문명 아래에 각 전쟁의 이름을 표시</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_REFUGEE_FROM" Language="ko_KR"><Text>{1_Origin} 출신 난민</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_WAR" Language="ko_KR"><Text>전쟁 난민</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_WAR_TIP" Language="ko_KR"><Text>고리는 전쟁을 피해 달아난 사람들을 표시합니다. 전쟁이 진행 중일 때 가장 밝습니다. 점 위에 마우스를 올리면 어느 전쟁인지 보입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER" Language="ko_KR"><Text>재난 난민</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER_TIP" Language="ko_KR"><Text>고리는 재난을 피해 달아난 사람들을 표시합니다. 재난 직후에 가장 밝습니다. 점 위에 마우스를 올리면 어느 재난인지 보입니다.</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="ko_KR"><Text>이주 - {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="ko_KR"><Text>인구 출신</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTED" Language="ko_KR"><Text>지금까지 떠난 곳</Text></Replace>
@@ -924,39 +924,39 @@
         <Replace Tag="LOC_EMIG_VIEW_TAB_NET_TABLE" Language="ko_KR"><Text>순이주 (표)</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_CAUSES" Language="ko_KR"><Text>원인</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_POLICIES" Language="ko_KR"><Text>정책</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_VIEW_LABEL" Language="ko_KR"><Text>View:</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_NET_DIAGRAM" Language="ko_KR"><Text>Diagram</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_NET_TABLE_VIEW" Language="ko_KR"><Text>Table</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_CITIES_LABEL" Language="ko_KR"><Text>Show:</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_CITIES_MINE" Language="ko_KR"><Text>Your settlements</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_SORT_PRESSURE" Language="ko_KR"><Text>By pressure</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_SORT_NAME" Language="ko_KR"><Text>By name</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_CITIES_ALL" Language="ko_KR"><Text>All civilizations</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SECTION" Language="ko_KR"><Text>Displaced: your people who fled, where they are, and the way home</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_EMPTY" Language="ko_KR"><Text>Nobody from your settlements is displaced right now.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SINCE" Language="ko_KR"><Text>since turn {1_Turn}</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_AWAY" Language="ko_KR"><Text>Away:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_AWAY_N" Language="ko_KR"><Text>{1_Count} population points: {2_Where}</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_IN_OWN" Language="ko_KR"><Text>{1_Count} in {2_City}</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_IN_FOREIGN" Language="ko_KR"><Text>{1_Count} in {2_City} ({3_Civ})</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LOST" Language="ko_KR"><Text>{1_Home} is no longer yours. These people stay where they are.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LOST_LBL" Language="ko_KR"><Text>Lost:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LOST_TILES" Language="ko_KR"><Text>{1_Tiles}, torn down as they left; a returnee rebuilds there when the plot is still open.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_WORTH" Language="ko_KR"><Text>Worth:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_TILE" Language="ko_KR"><Text>each returnee settles a new tile at {1_Home}, about {2_Yields} a turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_WAIT" Language="ko_KR"><Text>Wait:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HOMECOMING_OFF" Language="ko_KR"><Text>People at home only come back when called.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_WAIT_CALM" Language="ko_KR"><Text>Free, once {1_Home} has been calm for {2_Turns} more turns; then {4_Batch} come home every {3_Every} turns, all of them in about {5_All} turns.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_WAIT_NOW" Language="ko_KR"><Text>Free: {2_Batch} come home next turn, and the last in about {1_Turns} turns.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_WAIT_NEXT" Language="ko_KR"><Text>Free: the next {3_Batch} come home in {1_Turns} turns, and the last in about {2_All} turns.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HASTEN_LBL" Language="ko_KR"><Text>Hasten:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HASTEN" Language="ko_KR"><Text>bring {1_Count} back now for {2_Gold} Gold or {3_Infl} Influence.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HASTEN_BTN" Language="ko_KR"><Text>Hasten</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_ABROAD_LBL" Language="ko_KR"><Text>Abroad:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_ABROAD" Language="ko_KR"><Text>Call {1_Count} from abroad: {2_Pct}% each, about {3_Expected} expected to come, for {4_Gold} Gold or {5_Infl} Influence. That's about {6_PerGold} Gold or {7_PerInfl} Influence for each person who comes.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_ABROAD_BTN" Language="ko_KR"><Text>Call from abroad</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COOLDOWN" Language="ko_KR"><Text>Available again in {1_Turns} turns.</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_TAB_MY_CITIES" Language="ko_KR"><Text>Settlements</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_VIEW_LABEL" Language="ko_KR"><Text>보기:</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NET_DIAGRAM" Language="ko_KR"><Text>다이어그램</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NET_TABLE_VIEW" Language="ko_KR"><Text>표</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_CITIES_LABEL" Language="ko_KR"><Text>표시:</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_CITIES_MINE" Language="ko_KR"><Text>내 정착지</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SORT_PRESSURE" Language="ko_KR"><Text>압력 순</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SORT_NAME" Language="ko_KR"><Text>이름 순</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_CITIES_ALL" Language="ko_KR"><Text>모든 문명</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SECTION" Language="ko_KR"><Text>실향민: 떠난 당신의 주민, 그들이 있는 곳, 그리고 고향으로 가는 길</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_EMPTY" Language="ko_KR"><Text>지금 당신의 정착지에서 쫓겨난 사람은 없습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SINCE" Language="ko_KR"><Text>{1_Turn}턴부터</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_AWAY" Language="ko_KR"><Text>떠남:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_AWAY_N" Language="ko_KR"><Text>인구 포인트 {1_Count}개: {2_Where}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_IN_OWN" Language="ko_KR"><Text>{2_City}에 {1_Count}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_IN_FOREIGN" Language="ko_KR"><Text>{2_City}({3_Civ})에 {1_Count}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOST" Language="ko_KR"><Text>{1_Home}은(는) 더는 당신의 것이 아닙니다. 이 사람들은 지금 있는 곳에 머뭅니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOST_LBL" Language="ko_KR"><Text>잃음:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOST_TILES" Language="ko_KR"><Text>{1_Tiles}, 그들이 떠나며 허물어졌습니다. 그 자리가 아직 비어 있으면 귀환자가 거기에 다시 짓습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WORTH" Language="ko_KR"><Text>가치:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_TILE" Language="ko_KR"><Text>귀환자 한 명마다 {1_Home}에 새 타일 하나를 일구어 턴당 약 {2_Yields}을(를) 냅니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT" Language="ko_KR"><Text>대기:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HOMECOMING_OFF" Language="ko_KR"><Text>국내의 주민은 부를 때만 돌아옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT_CALM" Language="ko_KR"><Text>무료, {1_Home}이(가) {2_Turns}턴 더 평온하면. 그 뒤 {3_Every}턴마다 {4_Batch}명이 돌아오며, 약 {5_All}턴이면 모두 돌아옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT_NOW" Language="ko_KR"><Text>무료: {2_Batch}명이 다음 턴에 돌아오고, 마지막 사람은 약 {1_Turns}턴 뒤에 돌아옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT_NEXT" Language="ko_KR"><Text>무료: 다음 {3_Batch}명은 {1_Turns}턴 뒤에 돌아오고, 마지막 사람은 약 {2_All}턴 뒤에 돌아옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HASTEN_LBL" Language="ko_KR"><Text>재촉:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HASTEN" Language="ko_KR"><Text>골드 {2_Gold} 또는 영향력 {3_Infl}으로 {1_Count}명을 지금 데려옵니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HASTEN_BTN" Language="ko_KR"><Text>재촉</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_ABROAD_LBL" Language="ko_KR"><Text>해외:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_ABROAD" Language="ko_KR"><Text>해외에서 {1_Count}명 부르기: 각 {2_Pct}%, 약 {3_Expected}명이 올 것으로 예상, 골드 {4_Gold} 또는 영향력 {5_Infl}. 오는 사람 한 명당 골드 약 {6_PerGold} 또는 영향력 {7_PerInfl}인 셈입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_ABROAD_BTN" Language="ko_KR"><Text>해외에서 부르기</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COOLDOWN" Language="ko_KR"><Text>{1_Turns}턴 뒤에 다시 쓸 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_MY_CITIES" Language="ko_KR"><Text>정착지</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_NOTIFICATIONS" Language="ko_KR"><Text>알림</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_GUIDE" Language="ko_KR"><Text>가이드</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_NUM_CIV" Language="ko_KR"><Text>Civ 인구</Text></Replace>
@@ -974,7 +974,7 @@
         <Replace Tag="LOC_EMIG_CF_BAND_CRITICAL" Language="ko_KR"><Text>심각</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_BAND_HIGH" Language="ko_KR"><Text>높음</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_BAND_MODERATE" Language="ko_KR"><Text>보통</Text></Replace>
-        <Replace Tag="LOC_EMIG_CF_BAND_NEGLIGIBLE" Language="ko_KR"><Text>Negligible</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_NEGLIGIBLE" Language="ko_KR"><Text>미미</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_BAND_LOW" Language="ko_KR"><Text>낮음</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_PRESSURE" Language="ko_KR"><Text>이주 압력</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_NONE_RECORDED" Language="ko_KR"><Text>기록 없음</Text></Replace>
@@ -1078,11 +1078,12 @@
         <Replace Tag="LOC_EMIG_NV_TURN" Language="ko_KR"><Text>{1_Turn}턴</Text></Replace>
         <Replace Tag="LOC_EMIG_NV_CHRONICLE" Language="ko_KR"><Text>연대기</Text></Replace>
         <Replace Tag="LOC_EMIG_NV_EMPTY" Language="ko_KR"><Text>아직 이주 사건이 없습니다. 사람들이 이동하면 각 사건의 상세 내용과 함께 여기에 나타납니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_FORECAST" Language="ko_KR"><Text>Forecast: {1_Line}</Text></Replace>
-        <Replace Tag="LOC_EMIG_FORECAST_LEAVE" Language="ko_KR"><Text>About {1_Count} people are likely to leave in the next {2_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_FORECAST_STABLE" Language="ko_KR"><Text>Nobody is likely to leave soon</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="ko_KR"><Text>Closed to newcomers: nobody settles here until you open it again</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_SIEGE_STALLED" Language="ko_KR"><Text>Siege stalled: the besiegers aren't attacking, so nobody leaves or dies for the siege until they do</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_FORECAST" Language="ko_KR"><Text>예보: {1_Line}</Text></Replace>
+        <Replace Tag="LOC_EMIG_FORECAST_LEAVE" Language="ko_KR"><Text>앞으로 {2_Turns}턴 안에 약 {1_Count}명이 떠날 듯합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_FORECAST_CRISIS" Language="ko_KR"><Text>지금 사람들이 피난 중입니다. 몇 명이 떠날지는 압력이 아니라 위기에 달렸습니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_FORECAST_STABLE" Language="ko_KR"><Text>당분간 떠날 사람이 없을 듯합니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="ko_KR"><Text>새 이주민 받지 않음: 다시 열 때까지 아무도 이곳에 정착하지 않습니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_SIEGE_STALLED" Language="ko_KR"><Text>포위 교착: 포위군이 공격하지 않고 있어, 다시 공격할 때까지 포위로 떠나거나 죽는 사람이 없습니다</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_HOLDING" Language="ko_KR"><Text>이 정착지에서 재정착 중인 난민</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_TRAPPED" Language="ko_KR"><Text>위험: 달아날 곳 없이 갇혔습니다{1_Why}</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_DISTRESS" Language="ko_KR"><Text>고통 상태 - 사람들이 떠나려 합니다{1_Why}</Text></Replace>
@@ -1145,10 +1146,10 @@
         <Replace Tag="LOC_EMIG_DIL_BODY_FRONTIER" Language="ko_KR"><Text>당신은 {1_Adj}의 난민을 변경으로 보내 그들만의 것을 일구게 했습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_BODY_AWAY" Language="ko_KR"><Text>당신은 {1_Adj}의 난민을 {2_Place}에서 돌려보냈습니다. 그들은 길을 따라 계속 나아갔습니다, {3_Who}.</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_CHRON_TITLE" Language="ko_KR"><Text>국경에서의 결정</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIL_THEIR_LANDS" Language="ko_KR"><Text>their lands</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIL_AI_BODY_WELCOME" Language="ko_KR"><Text>{1_Host} opened {2_Place} to the refugees of {3_Adj}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIL_AI_BODY_FRONTIER" Language="ko_KR"><Text>{1_Host} sent the refugees of {2_Adj} to its frontier, to {3_Place}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIL_AI_BODY_AWAY" Language="ko_KR"><Text>{1_Host} turned the refugees of {2_Adj} away from its borders.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_THEIR_LANDS" Language="ko_KR"><Text>그들의 땅</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_WELCOME" Language="ko_KR"><Text>{1_Host}이(가) {3_Adj}의 난민에게 {2_Place}을(를) 열었습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_FRONTIER" Language="ko_KR"><Text>{1_Host}이(가) {2_Adj}의 난민을 변경인 {3_Place}(으)로 보냈습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_AWAY" Language="ko_KR"><Text>{1_Host}이(가) {2_Adj}의 난민을 국경에서 돌려보냈습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="ko_KR"><Text>난민</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_TITLE" Language="ko_KR"><Text>거주지 위에 건물이 들어서다</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_BODY" Language="ko_KR"><Text>{1_Name}이(가) 사라졌습니다. 도시가 그 구역 위에 건물을 세웠고, 그곳의 가족들은 주변 거리로 흩어졌습니다.</Text></Replace>
@@ -1578,38 +1579,38 @@
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP_4" Language="ko_KR"><Text>4턴마다</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP_5" Language="ko_KR"><Text>5턴마다</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_MINIMIZE" Language="ko_KR"><Text>대시보드 간소화</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_MINIMIZE_DESCRIPTION" Language="ko_KR"><Text>Hides the dashboard's heaviest tab, the animated Network diagram, keeping the Settlements, Policies and Notifications tabs and the Demographics graphs. Useful on slower machines. Display only; applies the next time you open the dashboard.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_MINIMIZE_DESCRIPTION" Language="ko_KR"><Text>대시보드에서 가장 무거운 탭인 애니메이션 네트워크 다이어그램을 숨기고, 정착지, 정책, 알림 탭과 Demographics 그래프는 그대로 둡니다. 느린 컴퓨터에서 유용합니다. 표시에만 영향을 주며, 다음에 대시보드를 열 때 적용됩니다.</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_NOTIFICATIONS" Language="ko_KR"><Text>알림</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_NOTIFICATIONS_DESCRIPTION" Language="ko_KR"><Text>이주 모드의 게임 내 알림(이주 알림 팝업과 세계 소식 기록)을 표시합니다. 끄면 모든 이주 팝업이 표시되지 않습니다. 알림 세부 사항은 고급 설정의 알림 섹션에서 더 조정할 수 있습니다.</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_SPOIL_GUARD" Language="ko_KR"><Text>Spoil Guard</Text></Replace>
-        <Replace Tag="LOC_EMIG_SPOIL_PILL" Language="ko_KR"><Text>Spoil Guard on: {1_What}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SPOIL_PILL_TIP" Language="ko_KR"><Text>Options, Mods, Emigration turns the Spoil Guard off. With the Demographics mod installed, the stricter of the two guards applies.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_MET" Language="ko_KR"><Text>civilizations you haven't met are hidden</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OWN" Language="ko_KR"><Text>only your own civilization shows</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_SPOIL_GUARD_DESCRIPTION" Language="ko_KR"><Text>Hides the names, flows and settlements of civilizations you haven't met yet, so the Emigration screens never spoil a civilization before you encounter it. On by default. With the Demographics mod installed the two guards work together: whichever is stricter wins, so turning one off only shows everyone once both are off.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SPOIL_GUARD" Language="ko_KR"><Text>스포일러 방지</Text></Replace>
+        <Replace Tag="LOC_EMIG_SPOIL_PILL" Language="ko_KR"><Text>스포일러 방지 켜짐: {1_What}</Text></Replace>
+        <Replace Tag="LOC_EMIG_SPOIL_PILL_TIP" Language="ko_KR"><Text>옵션, 모드, 이주에서 스포일러 방지를 끌 수 있습니다. Demographics 모드가 설치되어 있으면 두 방지 기능 중 더 엄격한 쪽이 적용됩니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_MET" Language="ko_KR"><Text>만나지 못한 문명은 숨겨져 있습니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OWN" Language="ko_KR"><Text>당신의 문명만 표시됩니다</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SPOIL_GUARD_DESCRIPTION" Language="ko_KR"><Text>아직 만나지 못한 문명의 이름, 흐름, 정착지를 숨겨, 이주 화면이 어떤 문명을 만나기 전에 미리 드러내는 일이 없게 합니다. 기본으로 켜져 있습니다. Demographics 모드가 설치되어 있으면 두 방지 기능이 함께 작동합니다. 더 엄격한 쪽이 이기므로, 하나만 꺼서는 소용없고 둘 다 꺼야 모두가 보입니다.</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DILEMMAS" Language="ko_KR"><Text>난민 결정</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DILEMMAS_DESCRIPTION" Language="ko_KR"><Text>가끔 큰 난민 물결이 당신의 영토에 도달하면(이웃의 정복, 전염병) 그들을 어떻게 받아들일지 짧게 결정하도록 잠시 멈춥니다. 의도적으로 드물게 나타납니다. 끄면 이 팝업이 전혀 나타나지 않으며, 시뮬레이션에는 영향이 없습니다.</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_ASK_ARRIVALS" Language="ko_KR"><Text>새 이주민 배치 결정</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_ASK_ARRIVALS_DESCRIPTION" Language="ko_KR"><Text>사람들이 내 도시에 정착할 때 팝업에서 그들의 타일을 고르거나, 도시에 맡기거나, 나중으로 미룰 수 있습니다. 기본적으로는 난민에 대해서만 묻습니다. 어떤 도착자에 대해 물을지는 고급 설정에서 고르세요. 끔: 도시가 모두를 직접 배치합니다.</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_FIRST_LOSS" Language="ko_KR"><Text>First-loss explainer</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_FIRST_LOSS_DESCRIPTION" Language="ko_KR"><Text>The first time one of your settlements loses a tile to emigration, one page explains what happened, where the people went and why, what happens next and where to look. It shows once per game. Off by default.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FIRSTLOSS" Language="ko_KR"><Text>First-loss explainer</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FIRSTLOSS_D" Language="ko_KR"><Text>One page, the first time a settlement of yours loses a tile to emigration: what happened, where they went and why, what happens next and where to look, with the settlement's fix line. Once per game; switching it on later shows it at the next tile loss unless it has shown already.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_EYEBROW" Language="ko_KR"><Text>Emigration</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_TITLE" Language="ko_KR"><Text>People Have Left {1_City}</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_LEFT" Language="ko_KR"><Text>{1_Count} people left {2_City} this turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_TILE" Language="ko_KR"><Text>They tore down the {1_Tile} they worked on the way out; the plot is yours to settle again.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_GONE_ABROAD" Language="ko_KR"><Text>They have gone to {1_Dest}, a settlement of the {2_Civ}, because of {3_Reason}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_GONE_HOME" Language="ko_KR"><Text>They have gone to {1_Dest}, because of {2_Reason}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_ELSEWHERE" Language="ko_KR"><Text>another settlement</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_UNMET" Language="ko_KR"><Text>an unmet civilization</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_NEXT" Language="ko_KR"><Text>People who stay inside your civilization come home on their own once {1_City} has been calm for a few turns. People who crossed a border can be called back from the Settlements tab, at a price and at odds.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_LOOK" Language="ko_KR"><Text>The Emigration screen (the button in the dock, or the notice beside End Turn) shows every settlement losing people, why, and what would stop it. Hover a settlement for the short version.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_OPEN" Language="ko_KR"><Text>Open the Emigration screen</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_OK" Language="ko_KR"><Text>Got it</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_CHRONICLE_TITLE" Language="ko_KR"><Text>The First to Leave</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_CALLHOME_OFFER" Language="ko_KR"><Text>Displaced-people reminders</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_CALLHOME_OFFER_DESCRIPTION" Language="ko_KR"><Text>Once a settlement your people fled is safe again and some of them are still displaced, a small pop-up offers to open the Settlements tab, where you choose which settlement's people to bring back and see what it costs. It repeats only when many more are displaced, and its "Don't remind me again" button turns it off. On by default. Off: no reminder; the tab still works whenever you open it.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_FIRST_LOSS" Language="ko_KR"><Text>첫 손실 안내</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_FIRST_LOSS_DESCRIPTION" Language="ko_KR"><Text>당신의 정착지가 이주로 타일을 처음 잃었을 때, 한 페이지로 무슨 일이 있었는지, 사람들이 어디로 왜 갔는지, 다음에 무엇이 일어나는지, 어디를 보면 되는지 설명합니다. 게임당 한 번만 표시됩니다. 기본으로 꺼져 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FIRSTLOSS" Language="ko_KR"><Text>첫 손실 안내</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FIRSTLOSS_D" Language="ko_KR"><Text>당신의 정착지가 이주로 타일을 처음 잃었을 때 한 페이지로 안내합니다. 무슨 일이 있었는지, 사람들이 어디로 왜 갔는지, 다음에 무엇이 일어나는지, 어디를 보면 되는지와 함께 그 정착지의 해결 방법 줄이 나옵니다. 게임당 한 번이며, 나중에 켜면 이미 표시된 적이 없는 한 다음 타일 손실 때 나타납니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_EYEBROW" Language="ko_KR"><Text>이주</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_TITLE" Language="ko_KR"><Text>{1_City}을(를) 떠난 사람들</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_LEFT" Language="ko_KR"><Text>이번 턴에 {1_Count}명이 {2_City}을(를) 떠났습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_TILE" Language="ko_KR"><Text>그들은 떠나는 길에 일구던 {1_Tile}을(를) 허물었습니다. 그 자리는 다시 정착시킬 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_GONE_ABROAD" Language="ko_KR"><Text>그들은 {3_Reason} 때문에 {2_Civ}의 정착지 {1_Dest}(으)로 갔습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_GONE_HOME" Language="ko_KR"><Text>그들은 {2_Reason} 때문에 {1_Dest}(으)로 갔습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_ELSEWHERE" Language="ko_KR"><Text>다른 정착지</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_UNMET" Language="ko_KR"><Text>만나지 못한 문명</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_NEXT" Language="ko_KR"><Text>당신의 문명 안에 머무는 사람들은 {1_City}이(가) 몇 턴 동안 평온해지면 스스로 돌아옵니다. 국경을 넘은 사람들은 정착지 탭에서 비용을 치르고 확률에 따라 다시 부를 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_LOOK" Language="ko_KR"><Text>이주 화면(독의 버튼, 또는 턴 종료 옆의 알림)은 사람을 잃고 있는 모든 정착지와 그 이유, 막을 방법을 보여 줍니다. 정착지 위에 마우스를 올리면 짧은 요약이 보입니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_OPEN" Language="ko_KR"><Text>이주 화면 열기</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_OK" Language="ko_KR"><Text>알겠습니다</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_CHRONICLE_TITLE" Language="ko_KR"><Text>처음 떠난 사람들</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_CALLHOME_OFFER" Language="ko_KR"><Text>실향민 알림</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_CALLHOME_OFFER_DESCRIPTION" Language="ko_KR"><Text>당신의 주민이 떠난 정착지가 다시 안전해졌는데 그중 일부가 아직 쫓겨나 있으면, 작은 팝업이 정착지 탭을 열자고 제안합니다. 그 탭에서 어느 정착지의 주민을 데려올지 고르고 비용을 확인합니다. 쫓겨난 주민이 훨씬 더 많아졌을 때만 다시 뜨며, "다시 알리지 않기" 버튼으로 끌 수 있습니다. 기본으로 켜져 있습니다. 끄면 알림이 오지 않지만, 탭은 언제든 열어 쓸 수 있습니다.</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_ASK_ENCLAVES" Language="ko_KR"><Text>거주지 대우 방식 결정</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_ASK_ENCLAVES_DESCRIPTION" Language="ko_KR"><Text>내 도시의 외국 공동체가 거주지로 인정되면, 팝업에서 그들을 대하는 방식을 고를 수 있습니다: 각각 작은 이득과 불이익이 따르는 두 가지 선택지, 또는 그대로 두기. 기본값은 끔: 각 도시가 스스로 방식을 고르며, 다른 문명의 도시에도 거주지가 형성됩니다. 켜면 거주지가 내 도시로 한정됩니다.</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_ETHNIC" Language="ko_KR"><Text>민족 통합</Text></Replace>
@@ -1644,7 +1645,7 @@
         <Replace Tag="LOC_EMIG_TRAIN_ARRIVAL" Language="ko_KR"><Text>새 이주민이 도착했습니다</Text></Replace>
         <Replace Tag="LOC_EMIG_TRAIN_WORLD" Language="ko_KR"><Text>해외 난민 위기</Text></Replace>
         <Replace Tag="LOC_EMIG_TRAIN_DISASTER" Language="ko_KR"><Text>재해로 사람들이 피난</Text></Replace>
-        <Replace Tag="LOC_EMIG_TRAIN_HOME" Language="ko_KR"><Text>People are coming home</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_HOME" Language="ko_KR"><Text>사람들이 고향으로 돌아오고 있습니다</Text></Replace>
         <Replace Tag="LOC_EMIG_TRAIN_NOTE" Language="ko_KR"><Text>이주 소식</Text></Replace>
         <Replace Tag="LOC_EMIG_TRAIN_FALLBACK" Language="ko_KR"><Text>자세한 내용은 이주 화면의 알림 탭에서 확인하세요.</Text></Replace>
         <Replace Tag="LOC_EMIG_QUARTER_ENCLAVE" Language="ko_KR"><Text>{1_Demonym} 거주지</Text></Replace>
@@ -2069,13 +2070,13 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_TITLE" Language="ko_KR"><Text>도착</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_1" Language="ko_KR"><Text>다른 문명은 도착한 이주민을 스스로 배치합니다. 당신의 도시에서는 새 이주민 정착 방식 설정(옵션, 추가 콘텐츠, 이주, 고급 설정, 도착 및 이탈)이 어떻게 될지를 정합니다:[BLIST][LI][B]확인하기[/B](기본값): 받아들이는 도시에 새 이주민 또는 난민 팝업이 떠서 타일을 고르거나, 도시에 맡기거나, 기다릴 수 있습니다. 세 개의 스위치로 어떤 종류의 도착에 대해 물을지 정합니다. 기본적으로 난민만 묻고, 이주민과 귀환자는 바로 배치됩니다.[LI][B]자동[/B]: 도시가 성장할 때처럼 즉시 포인트를 배치합니다.[LI][B]이주민 유닛[/B]: 새 이주민이 도시 옆에 이주민 유닛으로 도착하며, 당신이 직접 재정착시킵니다. 정착하지 않은 이주민 유닛은 매 턴 유지비가 듭니다.[LI][B]끔[/B]: 게임 자체의 도시 성장 알림이 포인트를 배치하라고 묻습니다.[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_2" Language="ko_KR"><Text>난민 팝업은 도착한 이들이 어디에서, 무엇을 피해 달아났는지를 알려 주며, 그들 민족의 목소리로 된 인용문을 함께 보여 줍니다(실향민의 목소리 참고). 만나지 않은 문명에서 온 난민은 그저 실향민으로만 표시됩니다.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="ko_KR"><Text>Each of your settlements has a "Close to newcomers" button on its Settlements card. A closed settlement takes nobody in: arrivals go to your next best settlement, one already on the road is re-aimed when it lands, and the closed settlement pays no integration cost. Refugees with nowhere else to go are not forced in. "Open to newcomers" reverses it, and the Advanced setting "Close a settlement to newcomers" hides the button.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="ko_KR"><Text>각 정착지의 정착지 카드에는 "새 이주민 받지 않기" 버튼이 있습니다. 닫힌 정착지는 아무도 받지 않습니다. 도착하는 사람은 그다음으로 좋은 정착지로 가고, 이미 길에 오른 사람은 도착하는 시점에 방향을 다시 잡으며, 닫힌 정착지는 통합 비용을 내지 않습니다. 갈 곳 없는 난민도 억지로 들어오지 않습니다. "새 이주민 받기"가 이를 되돌리고, 고급 설정의 "정착지를 새 이주민에게 닫기"가 버튼을 숨깁니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_TITLE" Language="ko_KR"><Text>정착을 기다리는 난민</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_PARA_1" Language="ko_KR"><Text>전쟁 및 재해 난민 다섯 명 중 한 명(기본값)은 도착하자마자 정착합니다. 나머지는 목적지의 대기 인원에 들어가 이후 몇 턴에 걸쳐 정착합니다. 행복하고 개방적이며 붐비지 않는 도시는 그들을 더 빨리 정착시키고, 반이민 기조는 이를 늦춥니다. 받아들인 쪽은 아직 기다리는 이들의 유지비를 냅니다. 그들이 피해 온 위기가 새 도시에까지 닥치면, 기다리던 난민이 먼저 다른 곳으로 떠납니다. 도시 이주 보고과 도시 정보 패널에 대기 인원이 표시됩니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_TITLE" Language="ko_KR"><Text>사람을 받아들이는 대가</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_PARA_1" Language="ko_KR"><Text>새 이주민 한 명마다 받아들이는 문명에 통합 부하가 더해지며, 이 부하는 약 6~8턴에 걸쳐 사라집니다. 그동안 그 문명은 매 턴 [icon:YIELD_GOLD] 금을 내고 누적된 [icon:YIELD_HAPPINESS] 행복도가 줄어들어 다음 기념 행사가 늦어집니다. 많은 이주민을 정착시키는 문명은 새 이주민도 덜 끌어들입니다. 이 비용은 모두 고급 설정에서 0으로 설정할 수 있습니다. 통합과 성장의 대가를 참고하십시오.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_TITLE" Language="ko_KR"><Text>거주지가 자라는 방식</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_CONTENT_PARA_1" Language="ko_KR"><Text>A foreign community grows into an enclave in three stages: Foothold, Established and Recognized. Each settlement is measured by its largest community from another civilization. The city readout shows the stage, what the next one takes and anything holding it back, and the enclave's tile tooltip and the Settlements tab use the same names.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_CONTENT_PARA_1" Language="ko_KR"><Text>외국인 공동체는 세 단계를 거쳐 거주지로 자랍니다. 발판, 자리 잡음, 공인입니다. 각 정착지는 다른 문명 출신의 가장 큰 공동체로 측정됩니다. 도시 이주 보고는 단계와 다음 단계에 필요한 것, 그리고 그것을 가로막는 것을 보여 주며, 거주지의 타일 툴팁과 정착지 탭도 같은 이름을 씁니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_FOOTHOLD_TITLE" Language="ko_KR"><Text>거점</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_FOOTHOLD_PARA_1" Language="ko_KR"><Text>공동체가 정착지의 25%를 차지하고 자체 인구가 3 이상이 되면 거점을 확보합니다. 연대기에 기록되지만, 지도에는 아직 아무것도 나타나지 않습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_ESTABLISHED_TITLE" Language="ko_KR"><Text>성립</Text></Replace>
@@ -2086,35 +2087,35 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_ENDINGS_PARA_1" Language="ko_KR"><Text>사람들이 12턴 동안 정착지의 12.5%와 규모 기준을 모두 밑돌면 거주지가 쇠퇴합니다. 도시 정보가 남은 턴을 셉니다. 타일 위에 건설하거나 도시가 파괴되어도 끝납니다. 도시 국가나 독립 세력이 정착지를 차지하면, 문명이 다시 도시를 가질 때까지 거주지는 보류됩니다. 고향과의 전쟁은 거주지를 분쟁 중으로 만들어 주는 것은 바뀌지만 단계는 바뀌지 않습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_LIMITS_TITLE" Language="ko_KR"><Text>한도</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_LIMITS_PARA_1" Language="ko_KR"><Text>각 문명은 한 시대에 거주지를 최대 3곳 만들고, 한 민족의 거주지는 모든 도시를 통틀어 최대 2곳까지 둡니다. 거주지 인정을 당신에게 물을 때는 결정 사이에 최소 12턴이 있고 시대당 최대 3번입니다. 시대가 흘러도 거주지가 없는 문명은 하나가 생길 때까지 기준이 최대 40% 낮아집니다. 모두 고급 설정의 '문화 거주지'에서 조정할 수 있습니다.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_TITLE" Language="ko_KR"><Text>Coming Home</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_1" Language="ko_KR"><Text>People driven out of one of your settlements keep their tie to it. The Left pane of that settlement's card on the Settlements tab lists everyone away: how many, where they live now and since when, the tiles their departure tore down, what a returnee is worth at home (the yields of a rural tile there), when they come home on their own, and two buttons that bring them back sooner for a price. A settlement you no longer hold is listed with its people staying where they are.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_2" Language="ko_KR"><Text>Once a settlement your people fled is calm enough for them to return and at least five of your people are displaced from settlements you still hold, a small pop-up offers to open the Settlements tab, wait, or stop reminding you. It comes back only once half again as many are displaced and ten turns have passed. "Displaced-people reminders" under Options, Add-ons, Emigration is the same switch, and the threshold is an Advanced setting.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_TITLE" Language="ko_KR"><Text>On Their Own</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_PARA_1" Language="ko_KR"><Text>People driven out of one of your settlements into another of yours go home by themselves once it is safe. After 3 turns without war, siege, disaster, famine or unrest at home, one person comes back every 4 turns, plus one more for every 8 still away, and settles the plot their people left when it is still open, otherwise another free plot of the settlement. After fighting inside its borders or a siege the wait is 10 calm turns, because a frontier settlement hit once is likely to be hit again. The Chronicle and a notice beside End Turn say when they start coming home and when the last is back. AI civilizations get the same. "People find their own way home" in Advanced settings holds the numbers and an off switch.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_TITLE" Language="ko_KR"><Text>Hasten</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_PARA_1" Language="ko_KR"><Text>Hasten pays [icon:YIELD_GOLD] Gold or [icon:YIELD_DIPLOMACY] Influence to bring people living elsewhere in your civilization back now instead of over the next turns. Exactly the number paid for come, largest group first. The card names the tile a returnee works at home and the tiles they leave where they live now, the net per person, and how many turns sooner the fee brings them; the price buttons' hover carries the full ledger. Inside your borders a return swaps one tile for another, so the fee buys time. Each settlement runs its own cooldown, so hastening one does not lock the others.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_ABROAD_TITLE" Language="ko_KR"><Text>Call from Abroad</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_ABROAD_PARA_1" Language="ko_KR"><Text>Call from abroad pays for a call to your people living in another civilization's cities. It is a gamble: each person asked answers with the odds shown (about 18% by default), rolled one by one, and you pay for the size you chose whatever comes of it. Every person who answers is a tile gained for good. The hover gives the odds and the cost per person who comes. An unanswered call is written into the Chronicle and still starts the cooldown. People with an enclave of their own rarely return by themselves, so a call is the reliable way to bring them back.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_TITLE" Language="ko_KR"><Text>귀향</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_1" Language="ko_KR"><Text>당신의 정착지에서 쫓겨난 사람들은 그곳과의 끈을 간직합니다. 정착지 탭에 있는 그 정착지 카드의 떠남 창은 떠나 있는 모든 사람을 나열합니다. 몇 명인지, 지금 어디에 언제부터 살고 있는지, 그들이 떠나며 허물어진 타일, 귀환자 한 명이 고향에서 지니는 가치(그곳 시골 타일의 산출), 언제 스스로 돌아오는지, 그리고 비용을 치르고 더 빨리 데려오는 버튼 둘입니다. 더는 보유하지 않은 정착지는 그 주민이 지금 있는 곳에 머문다고 표시됩니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_2" Language="ko_KR"><Text>당신의 주민이 떠난 정착지가 돌아갈 만큼 평온해지고, 아직 보유한 정착지에서 쫓겨난 주민이 적어도 다섯이면, 작은 팝업이 정착지 탭을 열거나, 기다리거나, 알림을 그만 받을지 묻습니다. 쫓겨난 주민이 절반 이상 더 늘고 열 턴이 지나야 다시 뜹니다. 옵션, 추가 기능, 이주의 "실향민 알림"이 같은 스위치이고, 기준값은 고급 설정에 있습니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_TITLE" Language="ko_KR"><Text>스스로 돌아오기</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_PARA_1" Language="ko_KR"><Text>당신의 한 정착지에서 쫓겨나 당신의 다른 정착지로 간 사람들은 고향이 안전해지면 스스로 돌아갑니다. 고향에 전쟁, 포위, 재난, 기근, 소요가 없는 3턴이 지나면 4턴마다 한 명이 돌아오고, 아직 떠나 있는 사람 8명마다 한 명이 더 돌아오며, 그들이 떠나며 비운 자리가 아직 비어 있으면 그곳에, 아니면 정착지의 다른 빈 자리에 정착합니다. 국경 안의 전투나 포위 뒤에는 평온한 10턴을 기다립니다. 한 번 공격받은 변경 정착지는 다시 공격받기 쉽기 때문입니다. 연대기와 턴 종료 옆의 알림이 그들이 돌아오기 시작할 때와 마지막 사람이 돌아왔을 때를 알려 줍니다. AI 문명도 같습니다. 고급 설정의 "주민이 스스로 고향을 찾아감"에 수치와 끄기 스위치가 있습니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_TITLE" Language="ko_KR"><Text>재촉</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_PARA_1" Language="ko_KR"><Text>재촉은 [icon:YIELD_GOLD] 골드나 [icon:YIELD_DIPLOMACY] 영향력을 내고, 당신의 문명 안 다른 곳에 사는 사람들을 앞으로 몇 턴에 걸쳐서가 아니라 지금 데려옵니다. 비용을 낸 수만큼 정확히, 가장 큰 무리부터 돌아옵니다. 카드에는 귀환자가 고향에서 일구는 타일과 지금 사는 곳에서 비우는 타일, 한 사람당 순이익, 비용을 내면 몇 턴 빨라지는지가 적혀 있고, 가격 버튼 위에 마우스를 올리면 전체 장부가 보입니다. 국경 안에서의 귀환은 타일 하나를 다른 타일과 맞바꾸는 것이므로, 비용은 시간을 사는 셈입니다. 정착지마다 휴지기가 따로 돌아가므로, 한 정착지를 재촉해도 다른 정착지가 잠기지 않습니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_ABROAD_TITLE" Language="ko_KR"><Text>해외에서 부르기</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_ABROAD_PARA_1" Language="ko_KR"><Text>해외에서 부르기는 다른 문명의 도시에 사는 당신의 주민을 부르는 비용을 냅니다. 이것은 도박입니다. 부름을 받은 사람 각각이 표시된 확률(기본값 약 18%)로 한 명씩 굴려 응하며, 결과가 어떻든 고른 규모만큼 비용을 냅니다. 응하는 사람 한 명 한 명이 영구히 얻는 타일입니다. 마우스를 올리면 확률과 오는 사람 한 명당 비용이 보입니다. 아무도 응하지 않은 부름도 연대기에 기록되며 휴지기는 그대로 시작됩니다. 자기 거주지가 있는 사람들은 스스로 돌아오는 일이 드물기 때문에, 부르기가 그들을 데려오는 확실한 방법입니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_TITLE" Language="ko_KR"><Text>가격과 재사용 대기시간</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_1" Language="ko_KR"><Text>A call is one person, about half of those callable, or everyone, in [icon:YIELD_GOLD] Gold or [icon:YIELD_DIPLOMACY] Influence; a price the treasury cannot cover is greyed. Price rises faster than head count: two people cost nearly three times one, three about five times. Calls abroad cost more, and each age past Antiquity multiplies the price (x3 in the Exploration Age, x9 in the Modern Age). After a call, the same settlement waits eight turns before calling again. Only people whose home and host settlements both still stand under the owners they had when they left can be called.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_2" Language="ko_KR"><Text>AI civilizations pay the same prices, less a discount for the game's difficulty (4% a level of the Gold handicap, so 20% off at Deity), and while homecoming is on they only pay to call people abroad. When a call takes people out of one of your cities, you get a notice and a Chronicle line naming who called. Prices, odds and the AI's part are set under Calling people home in Advanced settings.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_1" Language="ko_KR"><Text>부르기는 한 명, 부를 수 있는 사람의 약 절반, 또는 전원이며, [icon:YIELD_GOLD] 골드나 [icon:YIELD_DIPLOMACY] 영향력으로 냅니다. 국고로 감당할 수 없는 가격은 회색으로 표시됩니다. 가격은 인원보다 빠르게 오릅니다. 두 명은 한 명의 거의 세 배, 세 명은 약 다섯 배입니다. 해외 부르기는 더 비싸고, 고대 이후 시대마다 가격이 곱해집니다(탐험 시대 x3, 현대 x9). 한 번 부른 정착지는 여덟 턴을 기다려야 다시 부를 수 있습니다. 떠날 때의 주인 아래 고향과 수용 정착지가 둘 다 아직 서 있는 사람만 부를 수 있습니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_2" Language="ko_KR"><Text>AI 문명도 같은 가격을 내되 게임 난이도만큼 할인받습니다(골드 핸디캡 한 단계당 4%, 그래서 신에서는 20% 할인). 귀향이 켜져 있는 동안 AI는 해외의 주민을 부를 때만 비용을 냅니다. 부름으로 당신의 도시에서 사람들이 빠져나가면 누가 불렀는지 밝힌 알림과 연대기 줄을 받습니다. 가격, 확률, AI의 몫은 고급 설정의 '주민을 고향으로 부르기'에서 정합니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_TITLE" Language="ko_KR"><Text>공동체 대우</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_1" Language="ko_KR"><Text>주최국이 도시 안의 외국인 공동체를 대하는 방식은 그 이민 기조를 따릅니다. 두 기조 카드는 다른 카드와 같은 정책 카드로 모든 문명이 쓸 수 있으며, 장착해 둔 동안 각각 전용 정책 슬롯이 따라오므로 기조를 택해도 당신의 슬롯은 줄지 않습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_2" Language="ko_KR"><Text>[B]친이민 기조[/B]: 그 고향과 전쟁 중에 인정한 거류지도 산출의 50%가 아닌 100%를 유지하고, 전쟁과 재해의 난민이 당신의 도시를 먼저 택합니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_3" Language="ko_KR"><Text>[B]반이민 기조[/B]: 당신이 인정하는 모든 거류지는 산출의 50%를 유지하고, 고향과 전쟁 중에는 25%가 됩니다. 두 기조를 모두 장착하면 이주와 거류지에 대한 효과는 서로 상쇄되고, 어느 쪽도 슬롯을 주지 않습니다.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_4" Language="ko_KR"><Text>[B]Consular Protection[/B] (Exploration and Modern Ages) gives +3 [icon:YIELD_DIPLOMACY] Influence each turn (+5 in the Modern Age), and +1 more for every recognized enclave of your people in another civilization's cities, up to +4. When a civilization hosting one of those enclaves slots an Anti-Immigration Stance, you hold grievances against it, once per host per age.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_4" Language="ko_KR"><Text>[B]영사 보호[/B](탐험 시대와 현대)는 매 턴 [icon:YIELD_DIPLOMACY] 영향력 +3(현대에는 +5)을 주고, 다른 문명의 도시에 있는 당신 민족의 공인된 거주지마다 +1을 더해 최대 +4까지 줍니다. 그 거주지를 품은 문명이 반이민 기조를 장착하면 그 문명에 대한 불만이 생기며, 수용국마다 시대당 한 번입니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_5" Language="ko_KR"><Text>전쟁이 처음 거류지에 닿으면 연대기는 주최국의 기조를 기록합니다. 반이민 기조는 가문들에게 가장 큰 타격을 주고, 친이민 기조는 버팁니다. Partisans 모드를 함께 쓰면 기조는 전시에 거류지의 불안이 쌓이는 속도도 정합니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_TITLE" Language="ko_KR"><Text>이민 정책</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_CONTENT_PARA_1" Language="ko_KR"><Text>Emigration adds ten policy cards: the two stances in every age, and Talent Attraction and Consular Protection from the Exploration Age on. They slot and swap like any other card and stack with an Open Borders agreement, which raises migration both ways between the two signatories. Each card's yields are native game effects, which is also what the AI's planner values a card by; its migration effect comes from the mod. The two stances name their downsides on the card: the Pro-Immigration Stance's integration cost per newcomer and the enclaves that come with arrivals, the Anti-Immigration Stance's lost growth and tiles and the half of enclave yields given up.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_CONTENT_PARA_1" Language="ko_KR"><Text>이주는 열 장의 정책 카드를 추가합니다. 모든 시대의 두 기조, 그리고 탐험 시대부터의 인재 유치와 영사 보호입니다. 다른 카드와 똑같이 장착하고 바꿀 수 있으며, 두 체결국 사이의 이주를 양방향으로 늘리는 국경 개방 협정과 겹쳐 적용됩니다. 각 카드의 산출은 게임 본래의 효과이며, AI의 계획 기능도 그것으로 카드의 가치를 매깁니다. 이주 효과는 모드에서 나옵니다. 두 기조는 카드에 단점을 밝힙니다. 친이민 기조는 새 이주민당 통합 비용과 유입에 따라오는 거주지를, 반이민 기조는 잃는 성장과 타일, 그리고 포기하는 거주지 산출의 절반을 적습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_ANTIQUITY_TITLE" Language="ko_KR"><Text>고대 시대</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_ANTIQUITY_PARA_1" Language="ko_KR"><Text>[BLIST][LI][B]친이민 기조[/B](시민권): 매 턴 [icon:YIELD_DIPLOMACY] 영향력 +1; 이민 +50%; 난민이 먼저 옵니다; 거류지는 전시에도 산출의 100% 유지; 전용 정책 슬롯.[LI][B]반이민 기조[/B](시민권): 모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +2, 매 턴 [icon:YIELD_DIPLOMACY] 영향력 -2; 이민 -60%, 이주 -40%; 난민 정착 60% 둔화; 거류지는 산출의 50% 유지; 전용 정책 슬롯.[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_EXPLORATION_TITLE" Language="ko_KR"><Text>대항해시대</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_EXPLORATION_PARA_1" Language="ko_KR"><Text>[BLIST][LI][B]Pro-Immigration Stance[/B] (Economics): +2 [icon:YIELD_DIPLOMACY] Influence per turn; +50% immigration; refugees come to you first; enclaves keep 100% of their yields at war.[LI][B]Anti-Immigration Stance[/B] (Economics): +3 [icon:YIELD_PRODUCTION] Production in every city, -3 [icon:YIELD_DIPLOMACY] Influence per turn; -60% immigration, -40% emigration; refugees settle 60% slower; enclaves keep 50% of their yields.[LI][B]Talent Attraction[/B] (Inspiration): +1 [icon:YIELD_SCIENCE] Science per 5 [icon:YIELD_POPULATION] Population and -2 [icon:YIELD_GOLD] Gold in every settlement.[LI][B]Consular Protection[/B] (Diplomatic Service): +3 [icon:YIELD_DIPLOMACY] Influence per turn, and +1 more for each recognized enclave of your people abroad, up to +4; grievances against a host that slots an Anti-Immigration Stance.[/LIST]</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_EXPLORATION_PARA_1" Language="ko_KR"><Text>[BLIST][LI][B]친이민 기조[/B](경제학): 턴당 [icon:YIELD_DIPLOMACY] 영향력 +2. 이민 +50%. 난민이 당신에게 먼저 옵니다. 거주지는 전쟁 중에도 산출의 100%를 유지합니다.[LI][B]반이민 기조[/B](경제학): 모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +3, 턴당 [icon:YIELD_DIPLOMACY] 영향력 -3. 이민 -60%, 이주 유출 -40%. 난민의 정착이 60% 느려집니다. 거주지는 산출의 50%를 유지합니다.[LI][B]인재 유치[/B](영감): 모든 정착지에서 [icon:YIELD_POPULATION] 인구 5마다 [icon:YIELD_SCIENCE] 과학 +1, [icon:YIELD_GOLD] 골드 -2.[LI][B]영사 보호[/B](외교 서비스): 턴당 [icon:YIELD_DIPLOMACY] 영향력 +3, 해외에 있는 당신 민족의 공인된 거주지마다 +1 추가, 최대 +4. 반이민 기조를 장착하는 수용국에 대한 불만.[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_TITLE" Language="ko_KR"><Text>근대 시대</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_1" Language="ko_KR"><Text>[BLIST][LI][B]Pro-Immigration Stance[/B] (Social Question): +3 [icon:YIELD_DIPLOMACY] Influence per turn; +50% immigration; refugees come to you first; enclaves keep 100% of their yields at war.[LI][B]Anti-Immigration Stance[/B] (Social Question): +4 [icon:YIELD_PRODUCTION] Production in every city, -4 [icon:YIELD_DIPLOMACY] Influence per turn; -60% immigration, -40% emigration; refugees settle 60% slower; enclaves keep 50% of their yields.[LI][B]Talent Attraction[/B] (Modernization): +1 [icon:YIELD_SCIENCE] Science per 4 [icon:YIELD_POPULATION] Population and -3 [icon:YIELD_GOLD] Gold in every settlement.[LI][B]Consular Protection[/B] (Political Theory): +5 [icon:YIELD_DIPLOMACY] Influence per turn, and +1 more for each recognized enclave of your people abroad, up to +4; grievances against a host that slots an Anti-Immigration Stance.[/LIST]</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_2" Language="ko_KR"><Text>Talent Attraction pays by population through the game's own yield system, so it shows in each settlement's yield breakdown, grows with every immigrant who settles and keeps paying after the inflow stops; its Gold upkeep per settlement shows there too, so a wide civilization pays more for it. Pair it with a Pro-Immigration Stance or an Open Borders agreement to fill your settlements faster.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_1" Language="ko_KR"><Text>[BLIST][LI][B]친이민 기조[/B](사회 문제): 턴당 [icon:YIELD_DIPLOMACY] 영향력 +3. 이민 +50%. 난민이 당신에게 먼저 옵니다. 거주지는 전쟁 중에도 산출의 100%를 유지합니다.[LI][B]반이민 기조[/B](사회 문제): 모든 도시에 [icon:YIELD_PRODUCTION] 생산력 +4, 턴당 [icon:YIELD_DIPLOMACY] 영향력 -4. 이민 -60%, 이주 유출 -40%. 난민의 정착이 60% 느려집니다. 거주지는 산출의 50%를 유지합니다.[LI][B]인재 유치[/B](근대화): 모든 정착지에서 [icon:YIELD_POPULATION] 인구 4마다 [icon:YIELD_SCIENCE] 과학 +1, [icon:YIELD_GOLD] 골드 -3.[LI][B]영사 보호[/B](정치 이론): 턴당 [icon:YIELD_DIPLOMACY] 영향력 +5, 해외에 있는 당신 민족의 공인된 거주지마다 +1 추가, 최대 +4. 반이민 기조를 장착하는 수용국에 대한 불만.[/LIST]</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_2" Language="ko_KR"><Text>인재 유치는 게임 자체의 산출 시스템을 통해 인구에 따라 지급되므로, 각 정착지의 산출 내역에 나타나고, 정착하는 이민자마다 늘어나며, 유입이 멈춘 뒤에도 계속 지급됩니다. 정착지당 골드 유지비도 거기에 나타나므로, 넓게 뻗은 문명은 더 많이 냅니다. 친이민 기조나 국경 개방 협정과 함께 쓰면 정착지가 더 빨리 채워집니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_TITLE" Language="ko_KR"><Text>지도 렌즈</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_CONTENT_PARA_1" Language="ko_KR"><Text>Emigration adds two lenses to the game's lens panel, each with a hotkey. Both follow the Spoil Guard (see Scope &amp; Visibility). While a lens is up, the game's tile tooltip is hidden and the lens shows its own readout under the cursor.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_CONTENT_PARA_1" Language="ko_KR"><Text>이주는 게임의 렌즈 패널에 렌즈 둘을 추가하며, 각각 단축키가 있습니다. 둘 다 스포일러 방지를 따릅니다(범위와 표시 참고). 렌즈가 켜져 있는 동안 게임의 타일 툴팁은 숨겨지고, 렌즈가 커서 아래에 자체 정보를 보여 줍니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_PROSPERITY_TITLE" Language="ko_KR"><Text>번영 렌즈(Shift+P)</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_PROSPERITY_PARA_1" Language="ko_KR"><Text>번영 렌즈는 정착된 각 타일을 그 위에 있는 것에 따라 칠합니다. 타일 점수는 다음의 합입니다:[BLIST][LI]그 타일의 불가사의: +6[LI]도심부: +3[LI]건물 하나당: +2, 완성된 구역은 +1[LI]경작 중인 시설: +1[LI]타일 자체의 산출: 3당 +1[LI]강: +1[LI]자연경관: 그 타일에 +3, 인접 타일마다 +2[LI]인접한 불가사의: 하나당 +1[LI]약탈된 것: 그 타일에 하나당 -3, 인접 타일에 하나당 -1[/LIST]척도는 모든 정착지에서 같으며 구간으로 나뉩니다: 번영(8 이상), 호조(5~7), 평범(2~4), 빈약(0~1), 황폐(0 미만). 회색-녹색 및 회색-적색 그라데이션으로 표시됩니다. 아무것도 지어지지 않은 물 타일은 칠하지 않습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_PROSPERITY_PARA_2" Language="ko_KR"><Text>타일에 마우스를 올리면 그 구간, 점수, 그리고 점수를 이루는 모든 항목이 표시되고, 이어서 정착지의 번영 점수, 사람을 얻고 있는지 잃고 있는지, 그리고 그 이유가 표시됩니다. 불가사의와 자연경관은 게임 데이터베이스에서 읽으므로, 시대나 다른 모드가 추가한 것도 포함됩니다.</Text></Replace>
@@ -2123,13 +2124,13 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_MARKERS_TITLE" Language="ko_KR"><Text>거주지 표시</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_MARKERS_PARA_1" Language="ko_KR"><Text>거주지 타일은 그것이 대신하는 시설의 모델을 사용하며, 출신 문명의 상징이 담긴 표시가 붙습니다. 타일에 마우스를 올리면 시설의 툴팁 대신 거주지의 툴팁이 표시됩니다. 거주지의 이름과 단계(성립됨, 인정됨, 분쟁 중, 쇠퇴 중), 타일의 산출과 그 출처, 거주지 사람들이 그곳에 지은 것, 대체된 시설이 여전히 도시에 주는 것, 그리고 거주지를 인정할 때 도시가 택한 입장입니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_TITLE" Language="ko_KR"><Text>알림과 도시 이주 보고</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_TITLE" Language="ko_KR"><Text>Notices Beside End Turn</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_PARA_1" Language="ko_KR"><Text>Migration news arrives in the game's own notification train beside End Turn, each kind with its own icon: people leaving your settlements, newcomers settling in them, your people coming home, a refugee crisis abroad, a disaster displacing people, and a civilization you have met opening or closing its borders. The text sits in the icon's hover, a click opens the Emigration screen on the tab that matters, and a right-click dismisses it. Counts are shown in population points, in people, or both, for example 3 population points (36,000 people), set by the Population unit of measurement option. Disasters carry the game's event names, wars their names, and conquests the name of the city taken. An arrival notice ends with what the newcomers cost you each turn.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_PARA_2" Language="ko_KR"><Text>By default only the largest event of each migration pass is announced, with cooldowns and thresholds on top. The Notifications section of Advanced settings switches to one notice per cause, or to none, and can bring back the mod's own stacked on-screen toasts. Every notification goes to the log either way.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_TITLE" Language="ko_KR"><Text>턴 종료 옆의 알림</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_PARA_1" Language="ko_KR"><Text>이주 소식은 턴 종료 옆에 있는 게임 자체의 알림 줄로 오며, 종류마다 고유 아이콘이 있습니다. 당신의 정착지를 떠나는 사람들, 그곳에 정착하는 새 이주민, 고향으로 돌아오는 당신의 주민, 해외의 난민 위기, 사람들을 쫓아내는 재난, 그리고 당신이 만난 문명이 국경을 열거나 닫는 일입니다. 글은 아이콘 위에 마우스를 올리면 보이고, 클릭하면 이주 화면이 해당 탭으로 열리며, 오른쪽 클릭으로 지웁니다. 수는 인구 측정 단위 옵션에 따라 인구 포인트, 인원 수, 또는 둘 다로 표시됩니다. 예를 들어 인구 포인트 3개(36,000명)입니다. 재난은 게임의 사건 이름을, 전쟁은 전쟁 이름을, 정복은 점령된 도시 이름을 답니다. 유입 알림은 새 이주민이 매 턴 얼마가 드는지로 끝납니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_PARA_2" Language="ko_KR"><Text>기본적으로 이주 처리마다 가장 큰 사건 하나만 알리며, 그 위에 휴지기와 기준값이 더해집니다. 고급 설정의 알림 섹션에서 원인마다 하나씩 알리거나 아예 알리지 않도록 바꿀 수 있고, 모드 자체의 화면 위 쌓이는 토스트를 되살릴 수도 있습니다. 어느 쪽이든 모든 알림은 기록에 남습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_LOG_TITLE" Language="ko_KR"><Text>알림 기록</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_LOG_PARA_1" Language="ko_KR"><Text>The Notifications tab of the Migration dashboard keeps the last 120 notifications, newest first: the turn, the cause and named event, the settlement people left, where they went, and how many. Each entry expands to its detail. Migration Chronicle entries (an exodus, a diaspora taking root, a homecoming, an enclave recognized or faded, a stance taken by another civilization, each refugee decision and each call home) appear in the same list.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_LOG_PARA_1" Language="ko_KR"><Text>이주 대시보드의 알림 탭은 최근 120개의 알림을 최신 순으로 보관합니다. 턴, 원인과 사건 이름, 사람들이 떠난 정착지, 간 곳, 그리고 몇 명인지입니다. 각 항목을 펼치면 자세한 내용이 보입니다. 이주 연대기 항목(대탈출, 뿌리내린 디아스포라, 귀향, 공인되거나 사라진 거주지, 다른 문명이 택한 기조, 각 난민 결정과 각 귀향 호출)도 같은 목록에 나타납니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_READOUT_TITLE" Language="ko_KR"><Text>도시 이주 보고</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_READOUT_PARA_1" Language="ko_KR"><Text>Selecting one of your cities shows a small migration panel: the pressures on it (unhappiness, war, disaster, famine, overcrowding), whether it is gaining or losing people and how fast, where leavers are likely to go, what would stop them ("What would stop it: +3 Food or +2 Happiness here (Granary gives +1 Food)", from the same model that scores the settlement, with the building of the age that gives most of that yield), what its newcomers cost your civilization each turn, refugees waiting to settle, and progress toward a Cultural Enclave. A warning marks a city whose people have nowhere to flee. The Settlements tab of the dashboard shows the same for every settlement at once.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_READOUT_PARA_1" Language="ko_KR"><Text>당신의 도시를 선택하면 작은 이주 패널이 보입니다. 도시에 작용하는 압력(불행, 전쟁, 재난, 기근, 과밀), 사람을 얻고 있는지 잃고 있는지와 그 속도, 떠나는 사람들이 갈 만한 곳, 그들을 막을 방법("막을 방법: 이곳에 식량 +3 또는 행복도 +2 (곡창: 식량 +1)", 정착지 점수를 매기는 같은 모델에서 나오며 그 시대에 그 산출을 가장 많이 주는 건물을 함께 보여 줍니다), 새 이주민이 매 턴 당신의 문명에 얼마가 드는지, 정착을 기다리는 난민, 그리고 문화 거주지를 향한 진행입니다. 경고 표시는 주민이 달아날 곳이 없는 도시를 나타냅니다. 대시보드의 정착지 탭은 같은 내용을 모든 정착지에 대해 한 번에 보여 줍니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_PANEL_TITLE" Language="ko_KR"><Text>도시 정보</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_PANEL_PARA_1" Language="ko_KR"><Text>게임의 도시 정보 패널에 이주 섹션 두 개가 추가됩니다. 시민 성장 아래에는 출신별 도시 주민, 목적지별 이출, 출신별 이입, 정착을 기다리는 난민이 표시됩니다. 건물 세부 정보 아래에는 도시의 문화 거주지가 있으면 표시됩니다. 둘 다 도시를 바꿀 때마다 갱신됩니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_TITLE" Language="ko_KR"><Text>옵션과 강도</Text></Replace>
@@ -2137,8 +2138,8 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_PRESETS_TITLE" Language="ko_KR"><Text>강도 프리셋</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_PRESETS_PARA_1" Language="ko_KR"><Text>강도 프리셋은 턴당 한도, 사람들이 이동하는 거리, 폭력이 사람들을 얼마나 강하게 밀어내는지를 정합니다.[BLIST][LI][B]낮음[/B]: 드물고 작은 이동. 도시당 턴마다 최대 1포인트 유출, 2포인트 유입. 포위로 인한 이탈이 느림.[LI][B]중간[/B](기본값): 도시당 턴마다 최대 2포인트 유출, 4포인트 유입.[LI][B]높음[/B]: 잦고 큰 이동. 도시당 턴마다 최대 4포인트 유출, 8포인트 유입. 더 빠른 피난과 더 거센 전쟁 난민 급증.[/LIST]고급 설정에서 프리셋이 관리하는 설정을 바꾸면 프리셋이 사용자 지정으로 표시됩니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_EVERYDAY_TITLE" Language="ko_KR"><Text>자주 쓰는 설정</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_EVERYDAY_PARA_1" Language="ko_KR"><Text>[BLIST][LI][B]Population unit of measurement[/B]: population points, historically scaled people (matching the Demographics mod), or both.[LI][B]Movement between civilizations[/B] and three [B]Refugees from conflict[/B] sliders (overall, wars between major powers, raids by minor powers) scale those flows alone.[LI][B]Dashboard data[/B]: live migration, or sample data to preview the network. [B]Migration timeline detail[/B]: how often the network records a timeline snapshot. [B]Simplify dashboard[/B]: hides the Network diagram. [B]Dashboard dock button[/B].[LI]On/off switches for [B]notifications[/B], [B]ethnic integration[/B] and [B]return migration[/B], and one for each decision pop-up: [B]Refugee decisions[/B], [B]Newcomer placement decisions[/B], [B]Displaced-people reminders[/B] and [B]Enclave stance decisions[/B]. With a switch off the mod decides for you, and the Settlements tab still works.[LI][B]First-loss explainer[/B]: off by default. On, the first time one of your settlements loses a tile to emigration, one page says what happened, where they went and why, what happens next and where to look. Once per game.
-[LI][B]Spoil Guard[/B]: on by default, hides civilizations you have not met across the Emigration screens (see Scope &amp; Visibility).[/LIST]</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_EVERYDAY_PARA_1" Language="ko_KR"><Text>[BLIST][LI][B]인구 측정 단위[/B]: 인구 포인트, 역사적 척도의 인원 수(Demographics 모드와 동일), 또는 둘 다.[LI][B]문명 간 이동[/B]과 세 개의 [B]분쟁 난민[/B] 슬라이더(전체, 주요 세력 간 전쟁, 소규모 세력의 습격)는 그 흐름만 조절합니다.[LI][B]대시보드 데이터[/B]: 실제 이주, 또는 네트워크를 미리 보기 위한 예시 데이터. [B]이주 타임라인 상세도[/B]: 네트워크가 타임라인 스냅샷을 얼마나 자주 기록하는지. [B]대시보드 단순화[/B]: 네트워크 다이어그램을 숨깁니다. [B]대시보드 독 버튼[/B].[LI][B]알림[/B], [B]민족 통합[/B], [B]귀환 이주[/B]의 켜기/끄기 스위치와, 결정 팝업마다 하나씩: [B]난민 결정[/B], [B]새 이주민 배치 결정[/B], [B]실향민 알림[/B], [B]거주지 입장 결정[/B]. 스위치를 끄면 모드가 대신 결정하며, 정착지 탭은 그대로 쓸 수 있습니다.[LI][B]첫 손실 안내[/B]: 기본으로 꺼져 있습니다. 켜면 당신의 정착지가 이주로 타일을 처음 잃었을 때, 한 페이지로 무슨 일이 있었는지, 사람들이 어디로 왜 갔는지, 다음에 무엇이 일어나는지, 어디를 보면 되는지 알려 줍니다. 게임당 한 번입니다.
+[LI][B]스포일러 방지[/B]: 기본으로 켜져 있으며, 이주 화면 전체에서 만나지 못한 문명을 숨깁니다(범위와 표시 참고).[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_ADVANCED_TITLE" Language="ko_KR"><Text>고급 설정</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_ADVANCED_PARA_1" Language="ko_KR"><Text>고급 설정 창에는 백 개가 넘는 모든 개별 설정이 접을 수 있는 섹션으로 묶여 있습니다: 속도, 범위, 국경 정책, 번영 모델, 전쟁과 폭력, 재해, 지리 및 이동, 통합 비용, 균형 제동, 도착 및 이탈, 문화 거주지, 귀향 호출, 소멸, 알림, 표시 및 순위, 시각 효과. 열어 둔 섹션은 계속 열려 있습니다. 값은 단위(55%, x1.5, 3턴)나 단어(끔, 즉시)로 표시됩니다. 창에는 검색 상자, 변경된 설정마다 붙는 표시, 설정별 초기화, 그리고 모두 초기화가 있습니다. 지도자별·문명별 조정(지도자와 문명 참고)도 여기에 별도의 스위치가 있습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_SPEED_TITLE" Language="ko_KR"><Text>게임 속도</Text></Replace>
@@ -2150,15 +2151,15 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_TITLE" Language="ko_KR"><Text>실향민의 목소리</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_CONTENT_PARA_1" Language="ko_KR"><Text>난민, 이주민, 귀환하는 디아스포라, 또는 정착한 외국 공동체에 관한 팝업에는 그 민족의 목소리로 된 짧은 인용문이 실립니다. 그런 말이 남아 있는 경우 그 민족의 난민, 망명자, 이주민의 말이, 그렇지 않으면 그들을 존엄하게 기록한 증인의 말이 실립니다. 각 문명의 페이지에는 그 인용문들과 각각이 나오는 곳, 그리고 화자가 누구였는지가 정리되어 있습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_WHERE_TITLE" Language="ko_KR"><Text>목소리가 나오는 곳</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_WHERE_PARA_1" Language="ko_KR"><Text>[BLIST][LI][B]The refugee decision[/B] (Refugees at the Border, The Sick at the Gates) and [B]the Refugees pop-up[/B]: a refugee's words from the people fleeing.[LI][B]The Newcomers pop-up[/B]: a migrant's words from their people.[LI][B]The reminder that your people can come home[/B]: someone of your own civilization who longed for home or came back to it.[LI][B]The Cultural Enclave decision[/B]: a line from the enclave people's own writers, inscriptions or proverbs; a people's first and second enclaves in your empire each have their own line.[/LIST]The event fixes the line, so reloading a save shows the same words. When a people has no line for a situation, or comes from a civilization you have not met, the pop-up uses the general pools on the Voices of Many Lands page, which name no people.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_WHERE_PARA_1" Language="ko_KR"><Text>[BLIST][LI][B]난민 결정[/B](국경의 난민, 성문 앞의 병자)과 [B]난민 팝업[/B]: 달아나는 민족의 난민이 남긴 말.[LI][B]새 이주민 팝업[/B]: 그 민족의 이주민이 남긴 말.[LI][B]주민이 고향으로 돌아올 수 있다는 알림[/B]: 고향을 그리워했거나 고향으로 돌아온 당신 문명의 누군가.[LI][B]문화 거주지 결정[/B]: 거주지 민족 자신의 작가, 비문, 속담에서 나온 한 줄. 한 민족의 첫 번째와 두 번째 거주지는 각각 고유한 줄을 가집니다.[/LIST]사건이 줄을 고정하므로, 저장을 다시 불러와도 같은 말이 보입니다. 어떤 민족에게 그 상황의 줄이 없거나 만나지 못한 문명에서 왔을 때는, 팝업이 여러 땅의 목소리 페이지에 있는 민족을 밝히지 않는 일반 모음을 씁니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_RULES_TITLE" Language="ko_KR"><Text>인용문을 고른 방법</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_RULES_PARA_1" Language="ko_KR"><Text>모든 구절은 출처를 읽을 수 있는 사본과 대조해 확인했습니다. 생략한 부분은 말줄임표로 표시했습니다. 출간된 번역은 번역자의 이름을 밝히며, 번역자 없이 (번역)만 붙은 것은 확인된 원문을 모드가 직접 옮긴 것입니다. 거주지 구절은 그 민족 자신의 작가, 비문, 속담에서 나옵니다. 난민과 이주민 구절은 그 민족의 난민, 망명자, 이주민, 또는 그들을 존엄하게 기록한 증인에게서 나옵니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_RULES_PARA_2" Language="ko_KR"><Text>한 민족을 고정관념으로 그리거나, 실향민을 침입자나 짐이나 위협으로 묘사하거나, 잔학 행위의 가해자나 증오의 상징을 인용하거나, 경전을 가볍게 다루거나, 참혹한 트라우마를 생생히 묘사하는 구절은 제외했습니다. 제외된 구절을 포함한 전체 출처 기록은 모드의 문서와 함께 공개되어 있습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_SCRIPTS_TITLE" Language="ko_KR"><Text>원어</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_SCRIPTS_PARA_1" Language="ko_KR"><Text>영어가 아닌 출처의 인용문은 원문과 함께 번역을 보여 줍니다. 라틴 문자로 된 원문은 고대 영어와 고대 노르드어부터 베트남어, 튀르키예어, 아시리아 비문의 음역된 아카드어까지 그대로 표시됩니다. 아랍 문자, 히브리 문자, 그리스 문자, 키릴 문자, 에티오피아 문자, 아르메니아 문자, 조지아 문자, 몽골 문자, 인도 및 동남아시아 문자, 그리고 한자, 일본 문자, 한글로 된 원문은 게임 글꼴이 그 문자를 지원하지 않아 번역문만 표시됩니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_TITLE" Language="ko_KR"><Text>이주 모드 소개</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_1" Language="ko_KR"><Text>Emigration is a user-interface mod. Each turn it reads the state of the world and writes population, tiles, yields and Influence back through the game's own commands. Its own database rows add the policy cards, the notification types, this Civilopedia section and two city strategies the game's AI can switch on; base-game rules and files are left as they are. It simulates every living major civilization from the first turn, met or unmet. The Common Questions page is the short version of what drives migration.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2" Language="ko_KR"><Text>Version 3.7.0, for Civilization VII 1.5.0. The interface is available in twelve languages. The source, the full documentation with every formula, and the record of every quotation's source are on GitHub at github.com/tmtmiller1/civilizationvii-emigration.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_1" Language="ko_KR"><Text>이주는 사용자 인터페이스 모드입니다. 매 턴 세계의 상태를 읽고, 게임 자체의 명령을 통해 인구, 타일, 산출, 영향력을 되써 넣습니다. 모드 자체의 데이터베이스 행은 정책 카드, 알림 종류, 이 문명 백과 섹션, 그리고 게임의 AI가 켤 수 있는 두 도시 전략을 추가합니다. 기본 게임의 규칙과 파일은 손대지 않습니다. 살아 있는 모든 주요 문명을 첫 턴부터, 만났든 못 만났든 시뮬레이션합니다. 자주 묻는 질문 페이지가 무엇이 이주를 움직이는지의 짧은 요약입니다.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2" Language="ko_KR"><Text>버전 3.7.0, Civilization VII 1.5.0용. 인터페이스는 열두 개 언어로 제공됩니다. 소스, 모든 공식이 담긴 전체 문서, 모든 인용문의 출처 기록은 GitHub의 github.com/tmtmiller1/civilizationvii-emigration에 있습니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_TITLE" Language="ko_KR"><Text>숫자 뒤의 사람들</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_PARA_1" Language="ko_KR"><Text>이 모드는 이주와 강제 이주를 게임 시스템으로 바꿉니다. 현실에서 사람들이 고향을 떠나는 가장 흔한 이유는 전쟁, 박해, 재해, 또는 곤궁입니다. 이 모드는 난민을 사람으로 그리고, 실향민의 말이 남아 있는 곳에서는 그들 자신의 말로 이야기하게 하며, 재난을 겪은 도시의 손실을 사망으로 집계합니다. 제작자는 모드의 중요한 고비마다 난민 구호 단체에 기부해 왔습니다. 여유가 된다면 유엔난민기구(UNHCR), 국제구조위원회(IRC), 국경없는의사회, 국제난민지원프로젝트(IRAP), 또는 지역의 난민 및 상호 부조 단체를 후원하는 것을 고려해 주십시오.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_TITLE" Language="ko_KR"><Text>제작진</Text></Replace>

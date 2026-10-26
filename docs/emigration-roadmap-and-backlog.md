@@ -3508,3 +3508,100 @@ The translations: the keys whose English changed (the two card descriptions, Con
 FAQ and Options pages' bodies, the Policies and Treatment paragraphs) were dropped from `i18n/<locale>.json` and
 the locale XML regenerated with `i18n_apply.mjs --force` (the shipped XML held the old English); they read in
 English until session 4.
+
+## 61. Session 3a: the Washington save, the builds watched (2026-10-26)
+
+WashingtonAnt130 loaded into a lab game as §36 says (`Network.loadGame` from the game page, `UI.notifyUIReady()`
+until the loading state read 8), the usual set, driven turns 130 to 139 with a reading every turn
+(`emigration.metrics()`, the readout snapshot of each of the player's settlements, the age's flow ledger diffed per
+turn, the violence audit, the save's own keys, any dialog on screen). The save file was byte for byte the same
+afterward (MD5 `9ed4223b…`). No crash report.
+
+Watched working:
+
+- **Destination safety (2g).** New York carried the besieged flag from turn 133 (intensity 1.2, 3.6, 8.7, 14.6,
+  20.3, 18.0, 12.9). It took arrivals on 131 and 132, before the siege, and none from 133 on; the refugees landed in
+  Washington (3 on 133) and Pikawiiki (1, 4, 5, 6 on 133 to 136), then Cilakofa (4, 3, 4). `arrivedIntoCrisis`
+  stayed at 0 for the whole drive (6 in session 1's drive of the same turns); `crisisDestAvoided` climbed 17 a
+  pass to 169 (it counts every source whose best destination was turned, each pass).
+- **Flight waits for sustained fighting (2j).** Philadelphia carried the flag for one turn (132, intensity 2.06)
+  and its cause read "disaster" that turn; it read "war" from 133, its second turn over the threshold, and shed 2
+  a turn from there. New York went over the threshold on 134 (3.6) and shed its first 2 on 135, its second
+  sustained turn, not its first.
+- **The intake switch (2b).** Washington closed by a scripted `setCityClosed` at turn 134 (the sample's own
+  closing matched display names against LOC keys and never fired; the close was issued from outside the drive)
+  and reopened at 138. While closed it took nobody (it had taken 3 on 133); the flow landed in Pikawiiki and
+  Cilakofa. Reopening came one turn before the age's end, so arrivals resuming there wasn't seen. On the screen
+  with Pikawiiki closed: the Arriving heading carries "Closed to newcomers", its button reads "Open to newcomers"
+  in the active style, every other settlement's reads "Close to newcomers" (capture
+  `working_screenshots/emig-370-s3/settlements-tab-closed-pikawiiki.png`; the button draws the full width of
+  the block, a flat bar rather than a chip).
+- **The forecast (2c).** On the card and in the snapshot: "About 1 people are likely to leave in the next 5
+  turns" on White Oak and "in the next 4 turns" on Yetakapewaki, "Nobody is likely to leave soon" on the calm
+  ones. Against what happened: Philadelphia read "2 in 2 turns" at 132 and shed 2 on 133 and 2 on 134;
+  Pittsburgh read "2 in 1 turn" at 134 and 135 and shed 1 on 135 and 2 on 136; Cilakofa read "1 in 4 turns" at
+  136 and shed nobody after (it became the destination). What the line missed: Cilakofa and Philadelphia read
+  "stable" on 130 to 134 while they shed 1 and 2 a turn, because crisis flight ignores the bar the forecast
+  reads. Fixed the same evening: a settlement whose cause is war, disaster or conquest reads "People are fleeing
+  now; how many depends on the crisis, not the pressure" (`forecast.crisis`), unit-tested, not yet seen drawn.
+- **Counters that survive a load (2f).** After the drive, a quicksave and a load from the game page:
+  `emigration.metrics()` printed the same all-game counters as before the load (9 passes, 71 crisis moves, 7
+  voluntary, 2 fleeing deaths, 169 avoided) beside a session block of zeros.
+- **The first-loss page (2e), partly.** With `firstLossPage` switched on by script at turn 130, the flag
+  `EmigrationFirstLoss_v1` read `{turn: 133, city: "Philadelphia"}` after the pass that tore down Philadelphia's
+  first tile, and the Chronicle's newest entry was "The First to Leave". The page itself wasn't seen: the driver
+  closes the game's dialog boxes between readings (5 closed over the drive) and the reading that turn found none
+  open. "Open the Emigration screen" calls the same `openEmigrationScreen("cityflows")` the reminder uses, which
+  opened the screen on the Settlements tab here. The skipped notice wasn't read.
+- **The reminder's quote block.** The reminder ("Your people can come home", 74 displaced, its three buttons)
+  was on screen at turn 134 with a framed quote block (`.emig-quote-block`) under its text.
+- **The Influence price.** On the Left pane the Gold button read 312 and the Influence button 62, greyed, with
+  "Not enough: this needs 62 and we have 26." on hover.
+- **The Lost line's store.** `EmigrationLostTiles_v1` filled for Philadelphia (a fishing boat on 132, a
+  woodcutter on 133) and Cilakofa; the line itself wasn't read off the card.
+
+Not reachable in this save: a stalled siege (New York's siege had real damage every turn), Hasten and Call from
+abroad (nobody abroad), the stance notices (no met civilization changed a card), a returnee landing on the plot
+their people left.
+
+## 62. Session 3b and 3c: the vanilla side and the crash soak (2026-10-26)
+
+**The vanilla side.** Every other mod switched off in the registry (17 copies; the flags put back afterward), a Play
+Now lab game driven 15 turns at 4.5 s a turn with the one-city seat. On the Settlements tab: London's card with
+"Nobody is likely to leave soon" under its gauge, the "Close to newcomers" button in the Arriving pane, no "Siege
+stalled" line (no siege), and no raw LOC tag anywhere on the screen (capture
+`working_screenshots/emig-370-s3/vanilla-settlements-tab.png`). The button's own click wasn't landed from
+script: GameFace elements have no `click()`, and the drive had already ended; the switch's effect was watched on
+the Washington save (§61), so the vanilla side owes only the click itself. No reminder: nobody was displaced in
+15 turns.
+
+**The crash soak.** Two plain lab games, the usual set, each: 10 End Turns without Autoplay, the screen opened from
+script (the bench can't click the train), three minutes open with a read every 20 s, closed from script, three
+minutes closed. Both games were still running at the end, every read answered, and no crash report appeared
+under `~/Library/Logs/DiagnosticReports`. The 2026-10-18 abort came in a game reloaded twice from a script-made
+save with fresh module copies, and this soak had neither; the list's item moves to "seen twice without a crash",
+not closed.
+
+## 63. Session 3d and 4: the translations, and two languages on screen (2026-10-26)
+
+**The translations (session 4).** `i18n_extract.mjs` listed 2,884 source keys; each locale map lacked between 364
+(zh_Hant_HK) and 412 (fr_FR) of them: the 3.7.0 batch, the keys whose English changed in the documentation pass,
+and this plan's additions. Eleven translators, one per locale, each given the locale's missing list and told to read
+a couple of dozen of the locale's existing entries first, wrote the translations into one file each. Each file
+was checked on the way in: the same key set as the list, every placeholder, icon tag, markup tag, LOC_ token and
+number present in the English present in the translation (0 mismatches in every locale), and a script check (a
+run that writes into a shared folder crossed Polish and Portuguese chunks for a while; both were rebuilt from
+their own chunks and re-checked clean). The maps were merged and `i18n_apply.mjs` regenerated the locale XML:
+2,884 rows per locale, nothing falling back to English. `tower-bench l10n` finds the mod's own tags complete in
+every language; its two warnings predate this session (ten Civilopedia History Corrections tags, and the
+self-test panel's monospace font list). The native-speaker review of §24 stays open.
+
+**Two languages on screen (session 3d).** A Play Now game in German, launched before the translations were in:
+the Settlements tab drew with German tab names, the 3.7.0 keys in English (the Coming Home title, the card
+headings, the switch's label) and no raw LOC tag; the Civilopedia titles read through `Locale.compose` the same
+way. Then Japanese, after the merge: twelve turns driven, the Settlements tab with every heading in Japanese
+(流入 / 定住 / 繁栄度スコア / 流出 / 移出圧力 and the rest), the forecast line 近いうちに去る人はいなさそうです under the
+gauge, the switch 新来者を受け入れない, the Spoil Guard note, and the Coming Home and Reading the Dashboard pages
+composing in Japanese; no raw tag (capture `working_screenshots/emig-370-s3/settlements-ja.png`). The
+game-setup option "Emigration: AI keeps cities happy" lives on the setup screen the lab skips, so it wasn't read.
+The other nine languages are on the list.

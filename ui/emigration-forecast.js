@@ -23,7 +23,11 @@ const DEFAULT_TURNS = 5;
  * @property {number} turns Turns until the pressure reaches the bar (0 when stable).
  * @property {number} people Population points likely to leave at the crossing (0 when stable).
  * @property {number} rate The recent rise per turn, as a fraction of the bar (0 or less when stable).
+ * @property {boolean} [crisis] The settlement is shedding refugees on the crisis cadence (war, disaster), which
+ *   ignores the bar: people are leaving now, and the count depends on the crisis, not the pressure.
  */
+
+const CRISIS_CAUSES = new Set(["war", "disaster", "conquest"]);
 
 /**
  * The recent rise per turn, as a fraction of the bar: the mean of the sample-to-sample differences, with the
@@ -44,12 +48,17 @@ function riseRate(series, now, bar) {
 /**
  * The forecast for one settlement, or null when the option is off.
  * @param {{pressure?:number, pressureToBar?:number, pressureSeries?:number[], onCooldown?:boolean,
- *   cooldown?:number, rural?:number}} s The readout snapshot (or its forecast-bearing fields).
+ *   cooldown?:number, rural?:number, cause?:string}} s The readout snapshot (or its forecast-bearing fields).
  * @param {number} [turns] The horizon; `forecastTurns` when omitted.
  * @returns {Forecast|null} The forecast, or null when off.
  */
 export function forecastFor(s, turns) {
   if (!CONFIG.cityReadoutForecast || !s) return null;
+  // A crisis source flees every turn whatever the bar says (2026-10-26, the Washington save: Cilakofa and
+  // Philadelphia read "stable" while they shed refugees each turn), so the line says that instead.
+  if (CRISIS_CAUSES.has(String(s.cause))) {
+    return { stable: false, turns: 1, people: 0, rate: 0, crisis: true };
+  }
   const horizon = horizonOf(turns);
   const bar = speedBar(CONFIG.emigrationBar) > 0 ? speedBar(CONFIG.emigrationBar) : 1;
   const now = Number(s.pressure) || 0;
@@ -106,6 +115,7 @@ function peopleAt(s, toBar) {
  */
 export function forecastLine(f, loc) {
   if (!f) return "";
+  if (f.crisis) return loc("LOC_EMIG_FORECAST_CRISIS", "People are fleeing now; how many depends on the crisis, not the pressure");
   if (f.stable) return loc("LOC_EMIG_FORECAST_STABLE", "Nobody is likely to leave soon");
   return loc("LOC_EMIG_FORECAST_LEAVE", "About {1_Count} people are likely to leave in the next {2_Turns} turns",
     f.people, f.turns);

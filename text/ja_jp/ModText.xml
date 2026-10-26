@@ -69,7 +69,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_AGGRESSOR" Language="ja_JP"><Text>侵略者の回避</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FLIGHT" Language="ja_JP"><Text>戦火からの避難</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CONGESTION" Language="ja_JP"><Text>混雑</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_UNSAFE" Language="ja_JP"><Text>Under attack</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_UNSAFE" Language="ja_JP"><Text>攻撃を受けている</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PERMEABILITY" Language="ja_JP"><Text>国境の通りやすさ</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_ECONOMY" Language="ja_JP"><Text>経済</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS" Language="ja_JP"><Text>幸福度</Text></Replace>
@@ -84,20 +84,20 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_WAR_WEARINESS" Language="ja_JP"><Text>厭戦感</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_DOWNSIZING" Language="ja_JP"><Text>より大きな居住地からの離脱</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_BUILT" Language="ja_JP"><Text>遺産と建造物</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_WONDERS" Language="ja_JP"><Text>Wonders</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_BUILDINGS" Language="ja_JP"><Text>Buildings</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_GOVERNMENT" Language="ja_JP"><Text>Government</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="ja_JP"><Text>Celebrations</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="ja_JP"><Text>Happiness stage</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="ja_JP"><Text>Against the empire's average</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="ja_JP"><Text>Cap on what's built</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="ja_JP"><Text>Food</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="ja_JP"><Text>Production</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_GOLD" Language="ja_JP"><Text>Gold</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_SCIENCE" Language="ja_JP"><Text>Science</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_CULTURE" Language="ja_JP"><Text>Culture</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_WONDERS" Language="ja_JP"><Text>遺産</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_BUILDINGS" Language="ja_JP"><Text>建造物</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_GOVERNMENT" Language="ja_JP"><Text>政府</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="ja_JP"><Text>祝祭</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="ja_JP"><Text>幸福度の段階</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="ja_JP"><Text>帝国の平均との比較</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="ja_JP"><Text>建造物による加点の上限</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="ja_JP"><Text>食料</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="ja_JP"><Text>生産力</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_GOLD" Language="ja_JP"><Text>ゴールド</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_SCIENCE" Language="ja_JP"><Text>科学力</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CULTURE" Language="ja_JP"><Text>文化力</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_SEC_DIVERSITY" Language="ja_JP"><Text>最も多様な都市</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_TAB_DIVERSITY" Language="ja_JP"><Text>Communities</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_DIVERSITY" Language="ja_JP"><Text>共同体</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_TITLE" Language="ja_JP"><Text>最も多様な都市</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_SUBTITLE" Language="ja_JP"><Text>各集落の住民を、もともとの出身文明ごとに色分けしています。バーの幅は人口を表します。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_COL_CITY" Language="ja_JP"><Text>集落</Text></Replace>
@@ -119,17 +119,17 @@
         <Replace Tag="LOC_EMIG_COSMO_MIXED" Language="ja_JP"><Text>混成都市</Text></Replace>
         <Replace Tag="LOC_EMIG_COSMO_CENTER" Language="ja_JP"><Text>国際都市</Text></Replace>
         <Replace Tag="LOC_EMIG_COSMO_WORLD" Language="ja_JP"><Text>世界都市</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_HOMOGENEOUS_TIP" Language="ja_JP"><Text>One origin makes up 95% or more of the settlement.</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_LOCAL_TIP" Language="ja_JP"><Text>People from elsewhere live here, but no community from another civilization reaches 15%.</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_MIXED_TIP" Language="ja_JP"><Text>A community from another civilization is 15% or more, while the largest origin still holds 60% or more.</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_CENTER_TIP" Language="ja_JP"><Text>No origin reaches 60%, and at least three origins hold 10% or more each.</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_WORLD_TIP" Language="ja_JP"><Text>No origin reaches half, and at least four origins hold 10% or more each.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_CITY_TIP" Language="ja_JP"><Text>A settlement, grouped under the civilization that holds it.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_ORIGINS_TIP" Language="ja_JP"><Text>Each colour is a civilization its people came from, sized by share; the bar's width is the settlement's population against the largest in the list.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_POP_TIP" Language="ja_JP"><Text>Population, and how many origins hold 5% or more of it.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_MIX_TIP" Language="ja_JP"><Text>Majority: one origin holds more than half. Plurality: the largest origin leads the next by a clear margin without a majority. No majority: no origin leads clearly.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_CHARACTER_TIP" Language="ja_JP"><Text>A word for how mixed the settlement's people are, from its own population alone. Hover a character for its rule.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_ENCLAVE_TIP" Language="ja_JP"><Text>The Cultural Enclave in the settlement, if a community from another civilization has one, and its stage.</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_HOMOGENEOUS_TIP" Language="ja_JP"><Text>1つの出身が居住地の95%以上を占めています。</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_LOCAL_TIP" Language="ja_JP"><Text>他所から来た人々も暮らしていますが、他文明の共同体はどれも15%に届いていません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_MIXED_TIP" Language="ja_JP"><Text>他文明の共同体が15%以上を占めつつ、最大の出身がまだ60%以上を保っています。</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_CENTER_TIP" Language="ja_JP"><Text>60%に達する出身がなく、10%以上を占める出身が3つ以上あります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_WORLD_TIP" Language="ja_JP"><Text>半数に達する出身がなく、10%以上を占める出身が4つ以上あります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_CITY_TIP" Language="ja_JP"><Text>居住地です。それを保有する文明ごとにまとめて表示します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_ORIGINS_TIP" Language="ja_JP"><Text>色はそれぞれ、住民の出身文明を表し、幅は割合に応じます。バー全体の幅は、一覧の中で最大の居住地と比べたこの居住地の人口です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_POP_TIP" Language="ja_JP"><Text>人口と、そのうち5%以上を占める出身の数です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_MIX_TIP" Language="ja_JP"><Text>過半数：1つの出身が半分を超えています。最大勢力：最大の出身が過半数には届かないものの、2番目をはっきり引き離しています。過半数なし：どの出身もはっきりとは抜きん出ていません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_CHARACTER_TIP" Language="ja_JP"><Text>居住地の住民がどれだけ混ざり合っているかを、その居住地の人口だけから一言で表したものです。性格にカーソルを合わせると、その判定基準が表示されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_ENCLAVE_TIP" Language="ja_JP"><Text>他文明の共同体がこの居住地に文化的飛び地を持っている場合、その飛び地と段階です。</Text></Replace>
         <Replace Tag="LOC_EMIG_COSMO_DESC" Language="ja_JP"><Text>各集落の住民がどこから来たかを示します（文化地区ではありません）。産出は伴いません。</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET" Language="ja_JP"><Text>強度プリセット</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_D" Language="ja_JP"><Text>移住全体の強さ。人々が移動する頻度と、戦争が人々をどれだけ激しく追い立てるかを設定します。1ターンあたりの上限、戦争難民の一度の流出量、都市あたりの損失上限です。低 = 穏やか、高 = 激しい。変更はターン内に反映されます。「カスタム」は個別の設定をそのまま保持します。より細かく調整するには、下のスライダーか「詳細設定」を使用してください。</Text></Replace>
@@ -243,20 +243,20 @@
         <Replace Tag="LOC_EMIG_T_SRAMP_D" Language="ja_JP"><Text>包囲が最大の移住圧力に達するまでに続くべきターン数（襲撃は緩やかに始まり高まります）。包囲モデルのみで使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP" Language="ja_JP"><Text>包囲: 戦争で失う都市人口の上限</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP_D" Language="ja_JP"><Text>戦争による移住が止まる前に奪える、都市人口の最大割合（包囲開始時の規模に対する割合）。包囲モデルのみで使用。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE" Language="ja_JP"><Text>Close a settlement to newcomers</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="ja_JP"><Text>Each of your settlements gets a "Close to newcomers" button on its Settlements card. A closed settlement takes nobody in: arrivals go to your next best settlement, and one already on the road is re-aimed when it lands. Off hides the button and reopens every settlement.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTSAFE" Language="ja_JP"><Text>Refugees avoid a settlement under attack</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTSAFE_D" Language="ja_JP"><Text>A settlement in a crisis of its own (fighting or disaster over the flee threshold, or being razed) is a much weaker destination while it lasts, and an arrival on the road to it is held or sent to the next best settlement instead. With nowhere safer, people still go. A stalled siege lifts the penalty.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTPEN" Language="ja_JP"><Text>Penalty for a settlement under attack</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTPEN_D" Language="ja_JP"><Text>Taken off the pull of a settlement in crisis for each threshold's worth its fighting or disaster sits over the flee threshold (half a step at least). A settlement worse off than it pays half.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTPENCAP" Language="ja_JP"><Text>Most taken off a settlement under attack</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTPENCAP_D" Language="ja_JP"><Text>The cap on that penalty, so a settlement under heavy attack is avoided but never ruled out.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_VSUSTAIN" Language="ja_JP"><Text>Turns of fighting before people flee</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_VSUSTAIN_D" Language="ja_JP"><Text>How many turns in a row a settlement's fighting has to stay over the flee threshold before its people flee it as war refugees and the fighting can kill. A lone skirmish or a one-turn siege flag then moves nobody. A settlement being razed empties at once whatever this says. Needs the siege model on.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_SSTALL" Language="ja_JP"><Text>Siege: quiet turns before it stalls</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_SSTALL_D" Language="ja_JP"><Text>A besieged city whose attackers have neither damaged a district nor fought in its borders for this many turns has a stalled siege: the siege stops adding pressure, nobody dies for it, and the readout says so. The next attack ends the stall. Scales with game speed.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_STOTALCAP" Language="ja_JP"><Text>Siege: most of a city lost to war and death</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_STOTALCAP_D" Language="ja_JP"><Text>Deaths under siege count into the same tally as war-driven emigration. Once the two together reach this share of the population the siege began with, the siege kills nobody else until it ends. Only used by the siege model.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE" Language="ja_JP"><Text>居住地を新来者に対して閉じる</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="ja_JP"><Text>あなたの各居住地の「居住地」カードに「新来者を受け入れない」ボタンが付きます。閉じた居住地は誰も受け入れません。到着者はあなたの次に適した居住地へ向かい、すでに移動中の人々は到着した時点で行き先を変えます。オフにするとボタンが消え、すべての居住地が再び開かれます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTSAFE" Language="ja_JP"><Text>難民は攻撃を受けている居住地を避ける</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTSAFE_D" Language="ja_JP"><Text>自らが危機にある居住地（戦闘や災害が逃亡のしきい値を超えている、あるいは破壊されている）は、それが続く間は行き先としてずっと弱くなり、そこへ移動中の到着者は足止めされるか、次に適した居住地へ送られます。もっと安全な場所がなければ、人々はそれでもそこへ向かいます。膠着した包囲ではこのペナルティは外れます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTPEN" Language="ja_JP"><Text>攻撃を受けている居住地へのペナルティ</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTPEN_D" Language="ja_JP"><Text>危機にある居住地の引力から差し引かれる値です。戦闘や災害が逃亡のしきい値を超えた分、しきい値1段階ごとに差し引かれます（最低でも半段階分）。それより状況の悪い居住地から見た場合は、半分だけ差し引かれます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTPENCAP" Language="ja_JP"><Text>攻撃を受けている居住地から差し引く上限</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTPENCAP_D" Language="ja_JP"><Text>そのペナルティの上限です。激しい攻撃を受けている居住地は避けられますが、行き先から完全に外れることはありません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VSUSTAIN" Language="ja_JP"><Text>人々が逃げ出すまでの戦闘ターン数</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VSUSTAIN_D" Language="ja_JP"><Text>居住地の戦闘が逃亡のしきい値を何ターン続けて超えたら、住民が戦争難民として逃げ出し、戦闘で死者が出るようになるかです。単発の小競り合いや1ターンだけの包囲フラグでは、誰も動きません。破壊されている居住地は、この値にかかわらずただちに空になります。包囲モデルがオンのときに使われます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SSTALL" Language="ja_JP"><Text>包囲：膠着するまでの静かなターン数</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SSTALL_D" Language="ja_JP"><Text>包囲されている都市で、攻撃側がこのターン数のあいだ地区に損害を与えず、国境内で戦闘もしなければ、包囲は膠着します。包囲は圧力を加えなくなり、包囲で死ぬ人もいなくなり、都市の情報表示にもそう示されます。次の攻撃で膠着は終わります。ゲームスピードに応じて調整されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_STOTALCAP" Language="ja_JP"><Text>包囲：戦争と死亡で失う都市人口の上限</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_STOTALCAP_D" Language="ja_JP"><Text>包囲下の死者は、戦争による移出と同じ集計に数えられます。両者の合計が、包囲開始時の人口に対するこの割合に達すると、包囲が終わるまでそれ以上は誰も死にません。包囲モデルでのみ使われます。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_WARSURGE" Language="ja_JP"><Text>1ターンに流出する難民の上限</Text></Replace>
         <Replace Tag="LOC_EMIG_T_WARSURGE_D" Language="ja_JP"><Text>激しい包囲を受けた都市が1ターンで失う農村人口の最大値。戦争難民は、1ターンに1人ずつの一定の流出ではなく、戦闘の激しさに応じて波状に流出するようになります（包囲による損失上限は引き続き適用）。1 = オフ（以前の少しずつの流出）。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_AGGRESSOR" Language="ja_JP"><Text>難民は攻撃者を避ける</Text></Replace>
@@ -322,7 +322,7 @@
         <Replace Tag="LOC_EMIG_CALLHOME_EYEBROW_IN" Language="ja_JP"><Text>自国の居住地から</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_EYEBROW_EX" Language="ja_JP"><Text>外国の都市から</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_TITLE_IN" Language="ja_JP"><Text>人々を故郷へ呼び戻す</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_BODY_HASTEN" Language="ja_JP"><Text>They come home on their own once their settlement has been calm for a while; paying brings them back now.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_BODY_HASTEN" Language="ja_JP"><Text>彼らは、居住地がしばらく平穏であれば自分たちで戻ってきます。費用を払えば、いま連れ戻せます。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_TITLE_EX" Language="ja_JP"><Text>国外の人々を呼び戻す</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_BODY_IN_ONE" Language="ja_JP"><Text>{1_Away}人口ポイントが{2_Home}を追われ、今は自国の別の居住地である{3_From}で暮らしています。彼らは我々の国境の内側にいて我々の統治下にあるため、呼びかけた人は全員戻ってきます。何人を故郷へ戻すか選んでください。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_BODY_IN" Language="ja_JP"><Text>{1_Away}人口ポイントが故郷を追われ、今は自国の他の居住地で暮らしています。彼らは我々の国境の内側にいて我々の統治下にあるため、呼びかけた人は全員戻ってきます。何人を故郷へ戻すか選んでください。</Text></Replace>
@@ -346,21 +346,21 @@
         <Replace Tag="LOC_EMIG_CALLHOME_CALL_N" Language="ja_JP"><Text>一人ひとりが応じる確率は約{1_Pct}%です。費用はどちらにしてもかかります。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_NO" Language="ja_JP"><Text>そのままにしておく</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_NO_N" Language="ja_JP"><Text>この人々について再び尋ねることはありません。時が経てば、自分たちで故郷へ戻ってくることもあります。</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_WAIT" Language="ja_JP"><Text>Wait for the free homecoming</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_WAIT_N" Language="ja_JP"><Text>They come home on their own, on the schedule above; nothing is spent.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_TITLE_IN_HOME" Language="ja_JP"><Text>Bring {1_Home}'s people home</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_TITLE_EX_HOME" Language="ja_JP"><Text>Call {1_Home}'s people back from abroad</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_BODY_HASTEN_TAB" Language="ja_JP"><Text>{1_Away} of {2_Home}'s people live in other settlements of ours. They come home free, {3_Batch} at a time every {4_Every} turns, {5_When}, all of them in about {6_All} turns. Paying brings up to {7_Cap} back this turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_HASTEN_START_IN" Language="ja_JP"><Text>starting in {1_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_HASTEN_START_NEXT" Language="ja_JP"><Text>starting next turn</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_WAIT" Language="ja_JP"><Text>無料の帰郷を待つ</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_WAIT_N" Language="ja_JP"><Text>上の予定どおり、彼らは自分たちで戻ってきます。費用はかかりません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_TITLE_IN_HOME" Language="ja_JP"><Text>{1_Home}の人々を故郷へ戻す</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_TITLE_EX_HOME" Language="ja_JP"><Text>{1_Home}の人々を国外から呼び戻す</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_BODY_HASTEN_TAB" Language="ja_JP"><Text>{2_Home}の人々のうち{1_Away}人が、自国の他の居住地で暮らしています。彼らは無料で戻ってきます。{4_Every}ターンごとに{3_Batch}人ずつ、{5_When}、全員が戻るまで約{6_All}ターンです。費用を払えば、このターンに最大{7_Cap}人を連れ戻せます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_HASTEN_START_IN" Language="ja_JP"><Text>{1_Turns}ターン後に開始</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_HASTEN_START_NEXT" Language="ja_JP"><Text>次のターンに開始</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON" Language="ja_JP"><Text>{1_Count}人口ポイントが呼びかけに応じ、故郷へ戻りました。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_ONE" Language="ja_JP"><Text>1人口ポイントが呼びかけに応じ、故郷へ戻りました。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_TITLE" Language="ja_JP"><Text>呼びかけに応える人々</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE" Language="ja_JP"><Text>国外の同胞へ呼びかけが送られましたが、戻ってきた者は一人もいませんでした。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE_TITLE" Language="ja_JP"><Text>届かなかった呼びかけ</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS" Language="ja_JP"><Text>{1_Civ} calls its people home from {2_City}: {3_Count} population points leave.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_ONE" Language="ja_JP"><Text>{1_Civ} calls its people home from {2_City}: one population point leaves.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_TITLE" Language="ja_JP"><Text>Called Home By Their Own</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS" Language="ja_JP"><Text>{1_Civ}が{2_City}から自国の人々を呼び戻しました。{3_Count}人口ポイントが去ります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_ONE" Language="ja_JP"><Text>{1_Civ}が{2_City}から自国の人々を呼び戻しました。1人口ポイントが去ります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_TITLE" Language="ja_JP"><Text>故国からの呼び戻し</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL" Language="ja_JP"><Text>主要文明との戦争による圧力</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL_D" Language="ja_JP"><Text>攻撃側に主要文明が含まれるとき、攻撃がどれだけの紛争圧力を生むか。既定値は1で、低いほど戦争で追われる人は少なく、高いほど多くなります。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SIEGEFLOOR" Language="ja_JP"><Text>包囲の下限: 主要文明</Text></Replace>
@@ -371,181 +371,181 @@
         <Replace Tag="LOC_EMIG_T_MINORFLOOR_D" Language="ja_JP"><Text>小勢力に包囲されているだけの都市が、実際の被害を受ける前に感じる圧力。実際の被害は常に全量が数えられます。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME" Language="ja_JP"><Text>人々を呼び戻す</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_D" Language="ja_JP"><Text>故郷を追われた人々を、逃れてきた元の居住地へ呼び戻す有料の呼びかけを、選んだ規模で提示します。自国の居住地からの場合は購入であり、その人数が確実に戻ります。国外からの場合、費用はどちらにしてもかかり、呼びかけた一人ひとりが応じるかどうかはわかりません。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING" Language="ja_JP"><Text>People find their own way home</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_D" Language="ja_JP"><Text>People driven out of one of your settlements into another of yours come back on their own once their home has been calm for a few turns, one at a time, and rebuild a tile there. Every civilization gets the same. While this is on, calling people home is only offered for people abroad. Off brings back the paid call for people at home.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM" Language="ja_JP"><Text>Calm turns before people come home</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM_D" Language="ja_JP"><Text>How many turns in a row a settlement has to be free of disaster, famine and unrest before the people who fled it start coming back. Any trouble starts the count again.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALMWAR" Language="ja_JP"><Text>Calm turns after fighting</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALMWAR_D" Language="ja_JP"><Text>The same wait when the trouble was fighting in the settlement's borders or a siege. Longer, because a frontier settlement that was hit once is likely to be hit again, and people sent back too soon are lost with it.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_BATCH" Language="ja_JP"><Text>Extra returnee per this many away</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_BATCH_D" Language="ja_JP"><Text>Each return brings one person home, plus one more for every this many still away, so a settlement that lost twenty refills in a few returns instead of eighty turns. Never means one at a time.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY" Language="ja_JP"><Text>Turns between returns</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY_D" Language="ja_JP"><Text>Once a settlement is calm, its people come home this often, from whichever of your settlements holds the most of them.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOMECOMING_START_TITLE" Language="ja_JP"><Text>The Road Home</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOMECOMING_START" Language="ja_JP"><Text>{1_Home} is safe again, and the people who fled it have started coming home.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOMECOMING_DONE_TITLE" Language="ja_JP"><Text>Home At Last</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE" Language="ja_JP"><Text>{1_Count} of your people are displaced from settlements you still hold, and a settlement they fled is safe again. The Settlements tab shows where they are, when they come back on their own, and what bringing them back sooner costs.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_TITLE" Language="ja_JP"><Text>Your people can come home</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_OPEN" Language="ja_JP"><Text>Open the Settlements tab</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_OPEN_N" Language="ja_JP"><Text>Each settlement people fled shows them under its charts; bring them back from there.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_LATER" Language="ja_JP"><Text>Not now</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_LATER_N" Language="ja_JP"><Text>You'll be reminded again only once half again as many are displaced, and not for at least {1_Turns} turns.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_NEVER" Language="ja_JP"><Text>Don't remind me again</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_NEVER_N" Language="ja_JP"><Text>Turns these reminders off for good; Options, Mods, Emigration turns them back on.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_REMIND_STOP" Language="ja_JP"><Text>Stop displaced-people reminders</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_REMIND_OFF" Language="ja_JP"><Text>Reminders are off; Options, Mods, Emigration turns them back on.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOME_NOTICE_MIN" Language="ja_JP"><Text>Reminder threshold</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOME_NOTICE_MIN_D" Language="ja_JP"><Text>How many population points have to be displaced from settlements you still hold before the reminder speaks. 5 by default. A repeat needs the count to have grown by half (and by at least this many) since the last reminder, at least 10 turns later, and only once one of the settlements they fled is calm enough for them to return.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOMECOMING_DONE" Language="ja_JP"><Text>The last of the people who fled {1_Home} are back.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_AI_DIFFICULTY" Language="ja_JP"><Text>AI price discount per difficulty level</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_AI_DIFFICULTY_D" Language="ja_JP"><Text>The game gives the AI more Gold on harder difficulties, but the prices this mod charges it for calling people home and taking in refugees are yours. This takes that much off per level of the game's Gold handicap for the difficulty you play, so Deity is 20% off at the default.</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_NEWCOMERS_COST" Language="ja_JP"><Text>Newcomers: -{1_Gold} Gold, -{2_Happy} Happiness a turn across your civilization while they settle in</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_FIX" Language="ja_JP"><Text>What would stop it: {1_Options} here</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_FIX_OR" Language="ja_JP"><Text>or</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_FIX_BUILDING" Language="ja_JP"><Text>({1_Building} gives +{2_Amount} {3_Yield})</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NEWCOMERS" Language="ja_JP"><Text>Newcomers settling in cost you {1_Gold} Gold and {2_Happy} Happiness a turn right now; the cost fades as they integrate.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NEWCOMERS_SHORT" Language="ja_JP"><Text>Newcomers cost {1_Gold} Gold and {2_Happy} Happiness a turn while they settle in.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SUB" Language="ja_JP"><Text>Left</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SUB_SUB" Language="ja_JP"><Text>that went elsewhere</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_GAINS_NAMED" Language="ja_JP"><Text>{1_Home} gains</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LOSES_NAMED" Language="ja_JP"><Text>{1_From} loses</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NET_PER" Language="ja_JP"><Text>net per person</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DECIDE" Language="ja_JP"><Text>Decide their stance</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DECIDE_NOTE" Language="ja_JP"><Text>The community has stayed long enough; its stance is yours to set.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_LEFT_NONE" Language="ja_JP"><Text>None</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ARRIVED" Language="ja_JP"><Text>Arrived</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ARRIVED_SUB" Language="ja_JP"><Text>from elsewhere, living here</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ARRIVED_NONE" Language="ja_JP"><Text>None</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OUR_OWN" Language="ja_JP"><Text>Our own people</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_NEWCOMERS" Language="ja_JP"><Text>Newcomers</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_MIX" Language="ja_JP"><Text>Mix</Text></Replace>
-        <Replace Tag="LOC_EMIG_CF_CIV_SETTLEMENTS" Language="ja_JP"><Text>Its settlements</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_COMMUNITY" Language="ja_JP"><Text>Community</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DECISION" Language="ja_JP"><Text>Stance decision</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DECISION_NONE" Language="ja_JP"><Text>None waiting</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_PAY_LBL_NONE" Language="ja_JP"><Text>Bring back now for</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NOBODY" Language="ja_JP"><Text>Nobody to bring back.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NEWCOMERS_NONE" Language="ja_JP"><Text>No newcomers are settling in right now.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_FROM" Language="ja_JP"><Text>Where they came from</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_TO" Language="ja_JP"><Text>Where they went</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_HERE" Language="ja_JP"><Text>Who lives here</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_WHY" Language="ja_JP"><Text>Why they're leaving</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_WHY_NONE" Language="ja_JP"><Text>No pressure yet</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_HERE_NONE" Language="ja_JP"><Text>Not counted yet</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ORIGIN" Language="ja_JP"><Text>{1_Count} {2_Civ}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ENCLAVE_NONE" Language="ja_JP"><Text>No community large enough for an enclave yet.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_UNMET" Language="ja_JP"><Text>an unmet people</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_LOCKED" Language="ja_JP"><Text>Complete {1_Civic} to unlock the Pro-Immigration Stance: +{2_Pct}% pull.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_READY" Language="ja_JP"><Text>Slot the Pro-Immigration Stance: +{1_Pct}% pull for all your settlements.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSED_LOCKED" Language="ja_JP"><Text>Complete {1_Civic} to unlock the Anti-Immigration Stance: {2_Pct}% fewer leave for other civilizations.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSED_READY" Language="ja_JP"><Text>Slot the Anti-Immigration Stance: {1_Pct}% fewer leave for other civilizations.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ATTRACT" Language="ja_JP"><Text>Arriving</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ATTRACT_SUB" Language="ja_JP"><Text>that came here this age</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_KEEP" Language="ja_JP"><Text>Leaving</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_KEEP_SUB" Language="ja_JP"><Text>that left this age</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_TITLE_PRESSURE" Language="ja_JP"><Text>Pressure to leave · {1_Stage}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DRAWN_FROM" Language="ja_JP"><Text>Attracting from</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DRAWN_NONE" Language="ja_JP"><Text>None</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DRAWN_MORE" Language="ja_JP"><Text>and {1_Count} more</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_TO_DRAW" Language="ja_JP"><Text>To attract more</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ADD" Language="ja_JP"><Text>Add</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_BY_BUILDING" Language="ja_JP"><Text>by building: {1_Building} (+{2_Amount})</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_FOOD_LINK" Language="ja_JP"><Text>Or connect a growing town: towns send their surplus Food to the cities they are connected to.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_LIFT_SHORT" Language="ja_JP"><Text>puts it ahead of {1_Dest}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_HERE" Language="ja_JP"><Text>here</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_LIFT_TOP" Language="ja_JP"><Text>Already the strongest attraction in reach.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_ON" Language="ja_JP"><Text>Pro-Immigration Stance slotted: +{1_Pct}% pull.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PRESSURE" Language="ja_JP"><Text>Pressure to leave</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP_SCORE" Language="ja_JP"><Text>What makes this settlement's score:</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP_PULL" Language="ja_JP"><Text>What pulls people toward {1_Dest}:</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP" Language="ja_JP"><Text>Pressure to leave builds each turn from the strongest pull on this settlement's people and drains when the gap closes. When it fills, a group leaves. It is {1_Pct}% full now.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSED" Language="ja_JP"><Text>Closed to newcomers</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE" Language="ja_JP"><Text>Close to newcomers</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE" Language="ja_JP"><Text>Open to newcomers</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="ja_JP"><Text>Nobody settles here while it is closed: arrivals go to your next best settlement, and this one pays no integration cost for them. Refugees with nowhere else to go are not forced in.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE_TIP" Language="ja_JP"><Text>Newcomers settle here again. Arrivals already on the road land next turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_SIEGE_STALLED" Language="ja_JP"><Text>Siege stalled: the besiegers aren't attacking, so the siege adds no pressure until they do.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PULLED" Language="ja_JP"><Text>Pulled toward</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PULLED_NONE" Language="ja_JP"><Text>None</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_WHAT_HELPS" Language="ja_JP"><Text>What would help</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="ja_JP"><Text>Total</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="ja_JP"><Text>Click a line for what is behind it; click here to open or close them all.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="ja_JP"><Text>{1_H} here, {2_Mean} across the empire</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="ja_JP"><Text>{1_Pop} people</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="ja_JP"><Text>{1_Pct}% of the base</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="ja_JP"><Text>{1_Turns} turns remaining</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_FADING" Language="ja_JP"><Text>fading</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_CELEBRATING" Language="ja_JP"><Text>celebrating now</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_NOT_CELEBRATING" Language="ja_JP"><Text>no celebration running</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_NO_GOVT" Language="ja_JP"><Text>no government read</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_TALLY_TOTAL" Language="ja_JP"><Text>Prosperity score</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_TALLY_NONE" Language="ja_JP"><Text>Nothing weighs on this settlement yet.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_SHORT" Language="ja_JP"><Text>closes the gap to {1_Dest}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_WIDE" Language="ja_JP"><Text>The gap to {1_Dest} ({2_Gap}) is too wide for one building to close. {3_Driver}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DRIVER" Language="ja_JP"><Text>{1_Label} is {2_Share}% of what pushes people out.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_NONE" Language="ja_JP"><Text>Nobody is being pulled away.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSED_ON" Language="ja_JP"><Text>Anti-Immigration Stance slotted: {1_Pct}% fewer leave for other civilizations.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_RIVAL" Language="ja_JP"><Text>rival</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OURS" Language="ja_JP"><Text>ours</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_NO_MODEL" Language="ja_JP"><Text>Scores appear after this turn's migration pass.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CF_NOBODY_AWAY" Language="ja_JP"><Text>Nobody away</Text></Replace>
-        <Replace Tag="LOC_EMIG_CF_OWN_FROM" Language="ja_JP"><Text>From our own settlements</Text></Replace>
-        <Replace Tag="LOC_EMIG_CF_OWN_TO" Language="ja_JP"><Text>To our own settlements</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COL_SETTLEMENT" Language="ja_JP"><Text>Settlement</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COL_AWAY" Language="ja_JP"><Text>Displaced</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COL_WORTH" Language="ja_JP"><Text>Per returnee, a turn</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COL_FREE" Language="ja_JP"><Text>Free homecoming</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COL_ACT" Language="ja_JP"><Text>Bring back now</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NOT_YOURS" Language="ja_JP"><Text>no longer yours</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LOST_SHORT" Language="ja_JP"><Text>Lost: {1_Tiles} (rebuilt first)</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_GAINS" Language="ja_JP"><Text>gains</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LEAVES" Language="ja_JP"><Text>leaves</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NET" Language="ja_JP"><Text>net</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_OFF" Language="ja_JP"><Text>only when called</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_CALM" Language="ja_JP"><Text>calm in {1_Turns} more turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_NEXT_NOW" Language="ja_JP"><Text>next {1_Batch} next turn</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_NEXT" Language="ja_JP"><Text>next {1_Batch} in {2_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_THEN" Language="ja_JP"><Text>then {1_Batch} every {2_Every} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_ALL" Language="ja_JP"><Text>all in about {1_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_ODDS_SHORT" Language="ja_JP"><Text>{1_Pct}% each, about {2_Expected} come</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_PAY_LBL" Language="ja_JP"><Text>Bring {1_Count} back now for</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_CALL_LBL" Language="ja_JP"><Text>Call {1_Count} from abroad for</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SHORT" Language="ja_JP"><Text>Not enough: this needs {1_Cost} and we have {2_Have}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_PRICE_N" Language="ja_JP"><Text>{1_Count} for</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_PRICE_OR" Language="ja_JP"><Text>or</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_TILE_SWAP" Language="ja_JP"><Text>each returnee works a {1_Home} tile, about {2_Yields} a turn, and leaves a tile where they live now (about {3_Loss} a turn).</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HASTEN_SOONER" Language="ja_JP"><Text>{2_Gold} Gold or {3_Infl} Influence brings {1_Count} back this turn, {4_Instead}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_GAIN" Language="ja_JP"><Text>{1_Home} gains: each returnee works a {1_Home} tile, about {2_Yields} a turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_GAIN_UNKNOWN" Language="ja_JP"><Text>{1_Home} gains: each returnee works a {1_Home} tile.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_REBUILD" Language="ja_JP"><Text>{1_Tiles}, torn down as they left, are rebuilt first.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_HOST" Language="ja_JP"><Text>{1_From} gives up: {2_Count} of them work {1_From} tiles today, about {3_Yields} each a turn; those tiles go idle when they leave.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_HOST_UNKNOWN" Language="ja_JP"><Text>{1_From} gives up: {2_Count} of them live there today.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_MORE" Language="ja_JP"><Text>and {1_Count} more settlements</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_NET" Language="ja_JP"><Text>Overall: per person, your civilization swaps a tile where they live now for a tile at {1_Home}, about {2_Net} a turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_NET_EVEN" Language="ja_JP"><Text>Overall: per person, your civilization swaps a tile where they live now for a tile at {1_Home}; the yields come out about even.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_BUYS_TIME" Language="ja_JP"><Text>The fee buys time: home this turn {1_Instead}; the free homecoming brings them anyway.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_BUYS_RETURN" Language="ja_JP"><Text>They only come home when called.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_ONE" Language="ja_JP"><Text>instead of in {1_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_OVER" Language="ja_JP"><Text>instead of over the next {1_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_NEXT" Language="ja_JP"><Text>instead of next turn</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_ABROAD_GAIN" Language="ja_JP"><Text>Nothing of yours is given up: the rulers they live under lose them, and each who answers is a tile at {1_Home} for good.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_ABROAD_ODDS" Language="ja_JP"><Text>About {1_Pct}% answer, so calling {2_Count} brings about {3_Expected}. The fee is paid either way: about {4_Gold} Gold or {5_Infl} Influence for each person who comes.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HOW" Language="ja_JP"><Text>A settlement people fled shows them below its charts: where they are, what a returnee is worth, when they come home free, and what bringing some back this turn costs. Calling from abroad is a gamble, priced per person who actually comes.</Text></Replace>
-        <Replace Tag="LOC_EMIG_AI_STANCE_CLOSES" Language="ja_JP"><Text>{1_Civ} closes its borders: an Anti-Immigration Stance.</Text></Replace>
-        <Replace Tag="LOC_EMIG_AI_STANCE_OPENS" Language="ja_JP"><Text>{1_Civ} opens its borders: a Pro-Immigration Stance.</Text></Replace>
-        <Replace Tag="LOC_EMIG_AI_STANCE_DROPS" Language="ja_JP"><Text>{1_Civ} drops its immigration stance.</Text></Replace>
-        <Replace Tag="LOC_EMIG_AI_STANCE_TITLE" Language="ja_JP"><Text>Borders Abroad</Text></Replace>
-        <Replace Tag="LOC_EMIG_IN_COST_TAIL" Language="ja_JP"><Text>Newcomers now cost you {1_Gold} Gold and {2_Happy} Happiness a turn while they settle in.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="ja_JP"><Text>Remind me when people can come home</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="ja_JP"><Text>Once a settlement your people fled has been calm long enough for them to come back and at least the threshold's worth of your people are displaced, a small pop-up offers to open the Settlements tab, where you see where they are and pick which settlement's people to bring back. It comes again only once half again as many are displaced, never within 10 turns of the last, and its "Don't remind me again" button turns it off for good. On by default; the tab has the same switch.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="ja_JP"><Text>Emigration: AI keeps cities happy</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="ja_JP"><Text>Gives AI civilizations an earlier, gentler "keep them happy" city strategy, so an AI city that is getting unhappy builds happiness before people start leaving. The game's own strategy only starts once a city is already unhappy. Chosen here for the whole game.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="ja_JP"><Text>On</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="ja_JP"><Text>AI cities start building happiness while their net happiness is still a little above zero.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="ja_JP"><Text>Off</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="ja_JP"><Text>The AI keeps the game's own strategies only.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="ja_JP"><Text>AI civilizations call people home</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="ja_JP"><Text>On their own turn, AI civilizations call their displaced people home once none of their settlements is in distress, paying the same price with the same odds and cooldown you get. From their own settlements first; from abroad only when they still have the Gold or Influence for it. When a call takes people out of one of your cities, you get a notice naming who called. Off leaves the AI to wait for people to drift back on their own. While people find their own way home, an AI only pays to call people back from abroad.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING" Language="ja_JP"><Text>人々は自分たちで故郷へ戻る</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_D" Language="ja_JP"><Text>あなたの居住地から別の自国の居住地へ追われた人々は、故郷が数ターン平穏であれば、1人ずつ自分たちで戻り、そこにタイルを築き直します。すべての文明に同じことが起こります。オンのあいだ、人々の呼び戻しは国外にいる人々に対してのみ提示されます。オフにすると、国内にいる人々への有料の呼びかけが戻ります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM" Language="ja_JP"><Text>人々が戻るまでの平穏なターン数</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM_D" Language="ja_JP"><Text>逃げ出した人々が戻りはじめるまでに、居住地が災害、飢饉、不穏のない状態を何ターン続ける必要があるかです。何か問題が起きると、数え直しになります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALMWAR" Language="ja_JP"><Text>戦闘後の平穏なターン数</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALMWAR_D" Language="ja_JP"><Text>問題が居住地の国境内での戦闘や包囲だった場合の、同じ待ち時間です。一度攻撃された辺境の居住地はまた攻撃されやすく、早く戻しすぎた人々はそれとともに失われるため、長めになっています。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_BATCH" Language="ja_JP"><Text>この人数が離れているごとに帰還者1人を追加</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_BATCH_D" Language="ja_JP"><Text>1回の帰還で1人が戻り、さらに離れたままの人がこの人数いるごとに1人ずつ追加されます。これにより、20人を失った居住地は80ターンではなく数回の帰還で人が戻ります。「なし」にすると、常に1人ずつです。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY" Language="ja_JP"><Text>帰還の間隔（ターン）</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY_D" Language="ja_JP"><Text>居住地が平穏になると、その人々はこの間隔で、彼らを最も多く抱えているあなたの居住地から戻ってきます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_START_TITLE" Language="ja_JP"><Text>帰郷の道</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_START" Language="ja_JP"><Text>{1_Home}は再び安全になり、そこから逃げた人々が故郷へ戻りはじめました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_DONE_TITLE" Language="ja_JP"><Text>ついに故郷へ</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE" Language="ja_JP"><Text>あなたがまだ保有する居住地から{1_Count}人があなたの民として離散しており、彼らが逃げ出した居住地が再び安全になっています。「居住地」タブで、彼らがどこにいるか、いつ自分たちで戻ってくるか、早めに連れ戻すには何がかかるかを確認できます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_TITLE" Language="ja_JP"><Text>人々が故郷へ戻れます</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_OPEN" Language="ja_JP"><Text>「居住地」タブを開く</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_OPEN_N" Language="ja_JP"><Text>人々が逃げ出した各居住地は、グラフの下にその人々を表示します。連れ戻すのはそこからです。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_LATER" Language="ja_JP"><Text>今はしない</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_LATER_N" Language="ja_JP"><Text>次に知らせるのは、離散した人数がさらに半分増えたときだけで、少なくとも{1_Turns}ターンは空けます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_NEVER" Language="ja_JP"><Text>今後は知らせない</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_NEVER_N" Language="ja_JP"><Text>この知らせをずっとオフにします。「オプション → 追加コンテンツ → 移住」で再びオンにできます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_REMIND_STOP" Language="ja_JP"><Text>離散した人々の知らせを止める</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_REMIND_OFF" Language="ja_JP"><Text>知らせはオフです。「オプション → 追加コンテンツ → 移住」で再びオンにできます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOME_NOTICE_MIN" Language="ja_JP"><Text>知らせのしきい値</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOME_NOTICE_MIN_D" Language="ja_JP"><Text>知らせが出るには、あなたがまだ保有する居住地から何人口ポイントが離散している必要があるかです。既定は5です。再度知らせるには、前回から人数が半分（かつ少なくともこの数）増えていて、10ターン以上経っていて、しかも彼らが逃げ出した居住地のどれかが戻れるほど平穏になっている必要があります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_DONE" Language="ja_JP"><Text>{1_Home}から逃げた人々の最後の一団が戻ってきました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AI_DIFFICULTY" Language="ja_JP"><Text>難易度レベルごとのAI価格の割引</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AI_DIFFICULTY_D" Language="ja_JP"><Text>ゲームは難易度が高いほどAIに多くのゴールドを与えますが、このModがAIに課す人々の呼び戻しと難民受け入れの価格はあなたと同じです。この設定は、あなたがプレイする難易度でのゲームのゴールド補正1レベルごとに、この割合を価格から差し引きます。既定では「神」で20%引きです。</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEWCOMERS_COST" Language="ja_JP"><Text>新来者：定住が済むまで、文明全体で毎ターン{1_Gold}ゴールドと幸福度{2_Happy}を支払います</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_FIX" Language="ja_JP"><Text>止めるには：ここに{1_Options}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_FIX_OR" Language="ja_JP"><Text>または</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_FIX_BUILDING" Language="ja_JP"><Text>（{1_Building}で{3_Yield}+{2_Amount}）</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NEWCOMERS" Language="ja_JP"><Text>定住中の新来者のために、いま毎ターン{1_Gold}ゴールドと幸福度{2_Happy}を支払っています。統合が進むにつれて費用は薄れていきます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NEWCOMERS_SHORT" Language="ja_JP"><Text>新来者は定住が済むまで、毎ターン{1_Gold}ゴールドと幸福度{2_Happy}がかかります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SUB" Language="ja_JP"><Text>流出</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SUB_SUB" Language="ja_JP"><Text>他所へ移った人々</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_GAINS_NAMED" Language="ja_JP"><Text>{1_Home}の得るもの</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOSES_NAMED" Language="ja_JP"><Text>{1_From}の失うもの</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NET_PER" Language="ja_JP"><Text>1人あたりの差し引き</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DECIDE" Language="ja_JP"><Text>方針を決める</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DECIDE_NOTE" Language="ja_JP"><Text>この共同体は十分長く留まりました。その方針はあなたが決められます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_LEFT_NONE" Language="ja_JP"><Text>なし</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ARRIVED" Language="ja_JP"><Text>定住</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ARRIVED_SUB" Language="ja_JP"><Text>他所から来てここに暮らす人々</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ARRIVED_NONE" Language="ja_JP"><Text>なし</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OUR_OWN" Language="ja_JP"><Text>自国の人々</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_NEWCOMERS" Language="ja_JP"><Text>新来者</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_MIX" Language="ja_JP"><Text>構成</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_CIV_SETTLEMENTS" Language="ja_JP"><Text>その居住地</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_COMMUNITY" Language="ja_JP"><Text>共同体</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DECISION" Language="ja_JP"><Text>方針の決定</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DECISION_NONE" Language="ja_JP"><Text>待機中のものはありません</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_PAY_LBL_NONE" Language="ja_JP"><Text>いま連れ戻す費用</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NOBODY" Language="ja_JP"><Text>連れ戻す人はいません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NEWCOMERS_NONE" Language="ja_JP"><Text>いま定住中の新来者はいません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_FROM" Language="ja_JP"><Text>どこから来たか</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_TO" Language="ja_JP"><Text>どこへ行ったか</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_HERE" Language="ja_JP"><Text>誰が暮らしているか</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_WHY" Language="ja_JP"><Text>去る理由</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_WHY_NONE" Language="ja_JP"><Text>まだ圧力はありません</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_HERE_NONE" Language="ja_JP"><Text>まだ集計されていません</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ORIGIN" Language="ja_JP"><Text>{2_Civ} {1_Count}</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ENCLAVE_NONE" Language="ja_JP"><Text>飛び地になれるほど大きな共同体はまだありません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_UNMET" Language="ja_JP"><Text>未遭遇の民</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_LOCKED" Language="ja_JP"><Text>{1_Civic}を完了すると「移民歓迎の方針」が解放されます：引力+{2_Pct}%。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_READY" Language="ja_JP"><Text>「移民歓迎の方針」をセットする：すべての居住地で引力+{1_Pct}%。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSED_LOCKED" Language="ja_JP"><Text>{1_Civic}を完了すると「移民排斥の方針」が解放されます：他文明へ去る人が{2_Pct}%減ります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSED_READY" Language="ja_JP"><Text>「移民排斥の方針」をセットする：他文明へ去る人が{1_Pct}%減ります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ATTRACT" Language="ja_JP"><Text>流入</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ATTRACT_SUB" Language="ja_JP"><Text>この時代にここへ来た人々</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_KEEP" Language="ja_JP"><Text>流出</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_KEEP_SUB" Language="ja_JP"><Text>この時代に去った人々</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_TITLE_PRESSURE" Language="ja_JP"><Text>移出圧力 · {1_Stage}</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DRAWN_FROM" Language="ja_JP"><Text>引き寄せている元</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DRAWN_NONE" Language="ja_JP"><Text>なし</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DRAWN_MORE" Language="ja_JP"><Text>ほか{1_Count}件</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_TO_DRAW" Language="ja_JP"><Text>もっと引き寄せるには</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ADD" Language="ja_JP"><Text>追加</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_BY_BUILDING" Language="ja_JP"><Text>建設で：{1_Building}（+{2_Amount}）</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_FOOD_LINK" Language="ja_JP"><Text>または、成長中の町をつなぎます。町は余った食料を、つながっている都市へ送ります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_LIFT_SHORT" Language="ja_JP"><Text>{1_Dest}より優位に立てます</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_HERE" Language="ja_JP"><Text>ここ</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_LIFT_TOP" Language="ja_JP"><Text>すでに届く範囲で最も強い魅力を持っています。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_ON" Language="ja_JP"><Text>「移民歓迎の方針」をセット中：引力+{1_Pct}%。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PRESSURE" Language="ja_JP"><Text>移出圧力</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP_SCORE" Language="ja_JP"><Text>この居住地のスコアの内訳：</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP_PULL" Language="ja_JP"><Text>{1_Dest}へ人々を引き寄せているもの：</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP" Language="ja_JP"><Text>移出圧力は、この居住地の人々に働く最も強い引力によって毎ターン高まり、差が縮まると下がります。いっぱいになると、一団が去ります。現在{1_Pct}%です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSED" Language="ja_JP"><Text>新来者を受け入れていません</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE" Language="ja_JP"><Text>新来者を受け入れない</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE" Language="ja_JP"><Text>新来者を受け入れる</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="ja_JP"><Text>閉じているあいだは誰もここに定住しません。到着者はあなたの次に適した居住地へ向かい、この居住地が彼らの統合コストを払うこともありません。行き場のない難民も無理に押し込まれることはありません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE_TIP" Language="ja_JP"><Text>新来者が再びここに定住します。すでに移動中の到着者は次のターンに着きます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_SIEGE_STALLED" Language="ja_JP"><Text>包囲が膠着：包囲側が攻撃していないため、攻撃が再開するまで包囲は圧力を加えません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PULLED" Language="ja_JP"><Text>引き寄せられている先</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PULLED_NONE" Language="ja_JP"><Text>なし</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_WHAT_HELPS" Language="ja_JP"><Text>効果のある手</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="ja_JP"><Text>合計</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="ja_JP"><Text>行をクリックするとその内訳が開きます。ここをクリックするとすべてを開閉します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="ja_JP"><Text>ここは{1_H}、帝国全体では{2_Mean}</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="ja_JP"><Text>{1_Pop}人</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="ja_JP"><Text>基本値の{1_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="ja_JP"><Text>残り{1_Turns}ターン</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_FADING" Language="ja_JP"><Text>薄れつつある</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_CELEBRATING" Language="ja_JP"><Text>祝祭中</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_NOT_CELEBRATING" Language="ja_JP"><Text>祝祭は行われていません</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_NO_GOVT" Language="ja_JP"><Text>政府を読み取れません</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_TALLY_TOTAL" Language="ja_JP"><Text>繁栄度スコア</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_TALLY_NONE" Language="ja_JP"><Text>この居住地にはまだ何の重みもかかっていません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_SHORT" Language="ja_JP"><Text>{1_Dest}との差を埋めます</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_WIDE" Language="ja_JP"><Text>{1_Dest}との差（{2_Gap}）は、建造物1つで埋めるには大きすぎます。{3_Driver}</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DRIVER" Language="ja_JP"><Text>人々を押し出しているもののうち、{1_Label}が{2_Share}%を占めています。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_NONE" Language="ja_JP"><Text>引き寄せられている人はいません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSED_ON" Language="ja_JP"><Text>「移民排斥の方針」をセット中：他文明へ去る人が{1_Pct}%減ります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_RIVAL" Language="ja_JP"><Text>競合</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OURS" Language="ja_JP"><Text>自国</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_NO_MODEL" Language="ja_JP"><Text>スコアは、このターンの移住処理のあとに表示されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NOBODY_AWAY" Language="ja_JP"><Text>離れている人はいません</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_OWN_FROM" Language="ja_JP"><Text>自国の居住地から</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_OWN_TO" Language="ja_JP"><Text>自国の居住地へ</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COL_SETTLEMENT" Language="ja_JP"><Text>居住地</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COL_AWAY" Language="ja_JP"><Text>離散</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COL_WORTH" Language="ja_JP"><Text>帰還者1人あたり、毎ターン</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COL_FREE" Language="ja_JP"><Text>無料の帰郷</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COL_ACT" Language="ja_JP"><Text>いま連れ戻す</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NOT_YOURS" Language="ja_JP"><Text>もうあなたのものではありません</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOST_SHORT" Language="ja_JP"><Text>失ったもの：{1_Tiles}（先に築き直されます）</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_GAINS" Language="ja_JP"><Text>得るもの</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LEAVES" Language="ja_JP"><Text>手放すもの</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NET" Language="ja_JP"><Text>差し引き</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_OFF" Language="ja_JP"><Text>呼びかけたときだけ</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_CALM" Language="ja_JP"><Text>あと{1_Turns}ターン平穏なら</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_NEXT_NOW" Language="ja_JP"><Text>次の{1_Batch}人は次のターンに</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_NEXT" Language="ja_JP"><Text>次の{1_Batch}人は{2_Turns}ターン後に</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_THEN" Language="ja_JP"><Text>その後は{2_Every}ターンごとに{1_Batch}人</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_ALL" Language="ja_JP"><Text>全員が戻るまで約{1_Turns}ターン</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_ODDS_SHORT" Language="ja_JP"><Text>1人あたり{1_Pct}%、約{2_Expected}人が戻る見込み</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_PAY_LBL" Language="ja_JP"><Text>{1_Count}人をいま連れ戻す費用</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_CALL_LBL" Language="ja_JP"><Text>国外の{1_Count}人に呼びかける費用</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SHORT" Language="ja_JP"><Text>足りません：{1_Cost}必要ですが、{2_Have}しかありません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_PRICE_N" Language="ja_JP"><Text>{1_Count}人：</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_PRICE_OR" Language="ja_JP"><Text>または</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_TILE_SWAP" Language="ja_JP"><Text>帰還者1人につき{1_Home}のタイル1つ（毎ターン約{2_Yields}）で働き、いま暮らしている場所のタイル1つ（毎ターン約{3_Loss}）を手放します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HASTEN_SOONER" Language="ja_JP"><Text>{2_Gold}ゴールドまたは影響力{3_Infl}で、{1_Count}人がこのターンに戻ります（{4_Instead}）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_GAIN" Language="ja_JP"><Text>{1_Home}の得るもの：帰還者1人につき{1_Home}のタイル1つで働き、毎ターン約{2_Yields}です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_GAIN_UNKNOWN" Language="ja_JP"><Text>{1_Home}の得るもの：帰還者1人につき{1_Home}のタイル1つで働きます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_REBUILD" Language="ja_JP"><Text>去るときに取り壊された{1_Tiles}が、先に築き直されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HOST" Language="ja_JP"><Text>{1_From}の手放すもの：現在そのうち{2_Count}人が{1_From}のタイルで働いており、1人あたり毎ターン約{3_Yields}です。彼らが去ると、そのタイルは遊休になります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HOST_UNKNOWN" Language="ja_JP"><Text>{1_From}の手放すもの：現在そのうち{2_Count}人がそこで暮らしています。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_MORE" Language="ja_JP"><Text>ほか{1_Count}の居住地</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_NET" Language="ja_JP"><Text>全体：1人につき、あなたの文明はいま暮らしている場所のタイル1つを{1_Home}のタイル1つと入れ替えます。差し引きは毎ターン約{2_Net}です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_NET_EVEN" Language="ja_JP"><Text>全体：1人につき、あなたの文明はいま暮らしている場所のタイル1つを{1_Home}のタイル1つと入れ替えます。産出はおおむね同じです。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_BUYS_TIME" Language="ja_JP"><Text>費用で買えるのは時間です。このターンに帰郷します（{1_Instead}）。無料の帰郷でも、いずれ彼らは戻ってきます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_BUYS_RETURN" Language="ja_JP"><Text>彼らは呼びかけたときだけ帰郷します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_ONE" Language="ja_JP"><Text>{1_Turns}ターン後の代わりに</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_OVER" Language="ja_JP"><Text>今後{1_Turns}ターンかけての代わりに</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_NEXT" Language="ja_JP"><Text>次のターンの代わりに</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_ABROAD_GAIN" Language="ja_JP"><Text>あなたが手放すものはありません。失うのは彼らが暮らす先の支配者で、応じた1人ごとに{1_Home}のタイルが永久に増えます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_ABROAD_ODDS" Language="ja_JP"><Text>約{1_Pct}%が応じるので、{2_Count}人に呼びかけると約{3_Expected}人が戻ります。費用はどちらにしてもかかり、戻ってくる1人あたり約{4_Gold}ゴールドまたは影響力{5_Infl}です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HOW" Language="ja_JP"><Text>人々が逃げ出した居住地は、グラフの下にその人々を表示します。どこにいるか、帰還者1人の価値、いつ無料で戻るか、そしてこのターンに何人か連れ戻す費用です。国外からの呼び戻しは賭けで、実際に戻った1人あたりの価格で考えます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_AI_STANCE_CLOSES" Language="ja_JP"><Text>{1_Civ}が国境を閉ざしました：「移民排斥の方針」です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_AI_STANCE_OPENS" Language="ja_JP"><Text>{1_Civ}が国境を開きました：「移民歓迎の方針」です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_AI_STANCE_DROPS" Language="ja_JP"><Text>{1_Civ}が移民の方針を取り下げました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_AI_STANCE_TITLE" Language="ja_JP"><Text>海外の国境</Text></Replace>
+        <Replace Tag="LOC_EMIG_IN_COST_TAIL" Language="ja_JP"><Text>新来者が定住を終えるまで、毎ターン{1_Gold}ゴールドと幸福度{2_Happy}がかかるようになりました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="ja_JP"><Text>人々が戻れるようになったら知らせる</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="ja_JP"><Text>あなたの人々が逃げ出した居住地が戻れるほど長く平穏になり、しきい値以上の人々が離散しているとき、小さなポップアップが「居住地」タブを開くよう勧めます。そこで彼らの居場所を確認し、どの居住地の人々を連れ戻すか選べます。再び出るのは離散した人数がさらに半分増えたときだけで、前回から10ターン以内には出ず、「今後は知らせない」ボタンでずっとオフになります。既定ではオンで、タブにも同じスイッチがあります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="ja_JP"><Text>移住：AIが都市を幸福に保つ</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="ja_JP"><Text>AI文明に、より早く穏やかに働く「幸福に保つ」都市戦略を与えます。これにより、不幸になりかけているAIの都市は、人々が去りはじめる前に幸福度を建設します。ゲーム本来の戦略は、都市がすでに不幸になってから始まります。ここでの選択はゲーム全体に適用されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="ja_JP"><Text>オン</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="ja_JP"><Text>AIの都市は、純幸福度がまだゼロをわずかに上回っている段階で幸福度の建設を始めます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="ja_JP"><Text>オフ</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="ja_JP"><Text>AIはゲーム本来の戦略だけを使います。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="ja_JP"><Text>AI文明が人々を呼び戻す</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="ja_JP"><Text>AI文明は自分のターンに、どの居住地も苦境にないとき、離散した自国の人々を呼び戻します。価格、確率、クールダウンはあなたと同じです。まず自国の居住地から呼び戻し、国外からはゴールドか影響力に余裕があるときだけです。呼びかけであなたの都市から人々が去ると、誰が呼びかけたかを示す知らせが届きます。オフにすると、AIは人々が自分たちで戻ってくるのを待つだけになります。「人々は自分たちで故郷へ戻る」がオンのあいだ、AIが費用を払うのは国外からの呼び戻しだけです。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="ja_JP"><Text>国外から1ポイントが戻る確率</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX_D" Language="ja_JP"><Text>他の文明のもとで暮らす各ポイントが呼びかけに応じる確率です。低い = 彼らにはもうそこでの暮らしがあり、呼びかけても誰も戻らないことがあります。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_GOLD" Language="ja_JP"><Text>帰還人口1ポイントあたりのゴールド</Text></Replace>
@@ -619,8 +619,8 @@
         <Replace Tag="LOC_EMIG_T_QPACEMAX" Language="ja_JP"><Text>条件の最大引き下げ幅</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QPACEMAX_D" Language="ja_JP"><Text>飛び地が形成されないまま時代の終盤を迎えたときに、ペース調整が形成の基準に適用する最大の引き下げ幅です。40%の場合、基準は設定値の60%になります。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_COL_ENCLAVE" Language="ja_JP"><Text>飛び地</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_PRESSURE" Language="ja_JP"><Text>Pressure to leave</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_PRESSURE_TIP" Language="ja_JP"><Text>How close the settlement is to a group leaving: Negligible, Low, Moderate, High or Critical.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_PRESSURE" Language="ja_JP"><Text>移出圧力</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_PRESSURE_TIP" Language="ja_JP"><Text>居住地から一団が去るまでの近さです。ごくわずか、低、中程度、高、危機的のいずれかです。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSTOCK" Language="ja_JP"><Text>どの都市でも十分な共同体の規模</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSTOCK_D" Language="ja_JP"><Text>少なくともこの人口ポイントを持つ外国の共同体は、入植地に占める割合にかかわらず「成立」の段階に達します。そのため大都市にも飛び地ができます。この数値はこのゲームの入植地の規模に合わせて変わります。入植地の平均人口が18人のときは記載どおりで、時代を経て都市が大きくなるにつれ、半分から2倍まで比例して変わります。飛び地が衰退するのは、共同体が衰退の割合とこの数値の両方を下回っている間だけです。オフ = 割合のみ。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QFADE" Language="ja_JP"><Text>飛び地が消えていく割合</Text></Replace>
@@ -670,10 +670,10 @@
         <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="ja_JP"><Text>都市ごとの移住レポート</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="ja_JP"><Text>選択した集落が人口を増減させている理由を、必要に応じて表示するパネルです。主な原因、人々が引き寄せられる先、統合コスト、そして対処法を示します。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE" Language="ja_JP"><Text>都市情報に最近の傾向スパークライン</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FORECAST" Language="ja_JP"><Text>Departure forecast</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FORECAST_D" Language="ja_JP"><Text>Under the pressure gauge on each of your settlements' cards, and in the city readout: from how fast the pressure has been rising, when it is likely to reach the bar and about how many people go when it does. A projection, not a promise; flat or falling pressure reads "Nobody is likely to leave soon".</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FORECAST_TURNS" Language="ja_JP"><Text>Forecast: how far ahead</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FORECAST_TURNS_D" Language="ja_JP"><Text>The forecast's horizon. A departure further off than this reads as "Nobody is likely to leave soon".</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FORECAST" Language="ja_JP"><Text>流出の予測</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FORECAST_D" Language="ja_JP"><Text>あなたの各居住地のカードの圧力ゲージの下と、都市の情報表示に表示されます。圧力の上がり方から、いつ基準に達しそうか、そのときおよそ何人が去るかを示します。予測であって約束ではありません。圧力が横ばいか下がっていれば「近いうちに去る人はいなさそうです」と表示されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FORECAST_TURNS" Language="ja_JP"><Text>予測：何ターン先まで</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FORECAST_TURNS_D" Language="ja_JP"><Text>予測の範囲です。これより先の流出は「近いうちに去る人はいなさそうです」と表示されます。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE_D" Language="ja_JP"><Text>都市のリードアウトに小さな棒グラフを追加し、直近数回の純移動を表示します（増加は緑、減少は赤の棒）。状況が良くなっているか悪くなっているかを一目で把握できます。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SELFTEST" Language="ja_JP"><Text>画面上のセルフテストパネル</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SELFTEST_D" Language="ja_JP"><Text>ゲーム内に浮かぶ「セルフテスト」ボタンを表示します。報告された問題（居住地の対象範囲、文化的飛び地、2種類の人口指標、通知、データの保持）についてその場で診断を実行し、必要に応じて飛び地のポップアップやテスト用のトーストを強制的に表示できます。開発者コンソールは不要です。トラブルシューティング用なので、通常のプレイではオフのままにしてください。セーブを再読み込みすると反映されます。</Text></Replace>
@@ -696,7 +696,7 @@
         <Replace Tag="LOC_EMIG_COUNT_POINTS" Language="ja_JP"><Text>人口{1_Count}ポイント</Text></Replace>
         <Replace Tag="LOC_EMIG_COUNT_PEOPLE" Language="ja_JP"><Text>{1_Count}人</Text></Replace>
         <Replace Tag="LOC_EMIG_COUNT_BOTH" Language="ja_JP"><Text>{1_Civ}（{2_People}）</Text></Replace>
-        <Replace Tag="LOC_EMIG_NEWS_WHO" Language="ja_JP"><Text>{1_Civ}: {2_Headline}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NEWS_WHO" Language="ja_JP"><Text>{1_Civ}：{2_Headline}</Text></Replace>
         <Replace Tag="LOC_EMIG_WAR_VS_UNMET" Language="ja_JP"><Text>{1_Civ} 対 未知の文明</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS" Language="ja_JP"><Text>{1_People}が不満を抱き{2_City}を去りました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIGEST_UNHAPPINESS_TO" Language="ja_JP"><Text>{1_People}が故郷に不満を抱き、{2_City}を去って{3_Dest}へ向かいました。</Text></Replace>
@@ -771,22 +771,22 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="ja_JP"><Text>その人々は永遠に失われました。</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="ja_JP"><Text>{1_Dest}は彼らを統合するために毎ターン約{2_Gold}のゴールドを支払います。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="ja_JP"><Text>移民歓迎の方針</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ja_JP"><Text>+2 [icon:YIELD_FOOD] Food in every city. +1 [icon:YIELD_DIPLOMACY] Influence per turn. +50% [icon:YIELD_POPULATION] immigration. Refugees come to you first. Enclaves keep full yields, even at war. (Each newcomer costs about 1.5 [icon:YIELD_GOLD] Gold and 0.5 [icon:YIELD_HAPPINESS] Happiness a turn while they settle in, fading over 6 to 8 turns; more arrivals also mean more enclaves to live with.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="ja_JP"><Text>+2 [icon:YIELD_FOOD] Food in every city. +2 [icon:YIELD_DIPLOMACY] Influence per turn. +50% [icon:YIELD_POPULATION] immigration. Refugees come to you first. Enclaves keep full yields, even at war. (Each newcomer costs about 1.5 [icon:YIELD_GOLD] Gold and 0.5 [icon:YIELD_HAPPINESS] Happiness a turn while they settle in, fading over 6 to 8 turns; more arrivals also mean more enclaves to live with.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="ja_JP"><Text>+3 [icon:YIELD_FOOD] Food in every city. +3 [icon:YIELD_DIPLOMACY] Influence per turn. +50% [icon:YIELD_POPULATION] immigration. Refugees come to you first. Enclaves keep full yields, even at war. (Each newcomer costs about 1.5 [icon:YIELD_GOLD] Gold and 0.5 [icon:YIELD_HAPPINESS] Happiness a turn while they settle in, fading over 6 to 8 turns; more arrivals also mean more enclaves to live with.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="ja_JP"><Text>すべての都市で[icon:YIELD_FOOD]食料+2。毎ターン[icon:YIELD_DIPLOMACY]影響力+1。[icon:YIELD_POPULATION]移民+50%。難民はまずあなたのもとへ来ます。飛び地は戦争中でも産出を満額保ちます。（新来者1人につき、定住が済むまで毎ターン約1.5[icon:YIELD_GOLD]ゴールドと0.5[icon:YIELD_HAPPINESS]幸福度がかかり、6～8ターンで薄れます。到着が増えれば、共に暮らす飛び地も増えます。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="ja_JP"><Text>すべての都市で[icon:YIELD_FOOD]食料+2。毎ターン[icon:YIELD_DIPLOMACY]影響力+2。[icon:YIELD_POPULATION]移民+50%。難民はまずあなたのもとへ来ます。飛び地は戦争中でも産出を満額保ちます。（新来者1人につき、定住が済むまで毎ターン約1.5[icon:YIELD_GOLD]ゴールドと0.5[icon:YIELD_HAPPINESS]幸福度がかかり、6～8ターンで薄れます。到着が増えれば、共に暮らす飛び地も増えます。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="ja_JP"><Text>すべての都市で[icon:YIELD_FOOD]食料+3。毎ターン[icon:YIELD_DIPLOMACY]影響力+3。[icon:YIELD_POPULATION]移民+50%。難民はまずあなたのもとへ来ます。飛び地は戦争中でも産出を満額保ちます。（新来者1人につき、定住が済むまで毎ターン約1.5[icon:YIELD_GOLD]ゴールドと0.5[icon:YIELD_HAPPINESS]幸福度がかかり、6～8ターンで薄れます。到着が増えれば、共に暮らす飛び地も増えます。）</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="ja_JP"><Text>移民排斥の方針</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ja_JP"><Text>+2 [icon:YIELD_PRODUCTION] Production in every city. -2 [icon:YIELD_DIPLOMACY] Influence per turn. -60% [icon:YIELD_POPULATION] immigration, -40% emigration. Refugees settle 60% slower. (You give up the [icon:YIELD_POPULATION] growth and the [icon:YIELD_FOOD][icon:YIELD_PRODUCTION] tiles newcomers would have worked, and half of your enclaves' [icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD] yields.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="ja_JP"><Text>+3 [icon:YIELD_PRODUCTION] Production in every city. -3 [icon:YIELD_DIPLOMACY] Influence per turn. -60% [icon:YIELD_POPULATION] immigration, -40% emigration. Refugees settle 60% slower. (You give up the [icon:YIELD_POPULATION] growth and the [icon:YIELD_FOOD][icon:YIELD_PRODUCTION] tiles newcomers would have worked, and half of your enclaves' [icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD] yields.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="ja_JP"><Text>+4 [icon:YIELD_PRODUCTION] Production in every city. -4 [icon:YIELD_DIPLOMACY] Influence per turn. -60% [icon:YIELD_POPULATION] immigration, -40% emigration. Refugees settle 60% slower. (You give up the [icon:YIELD_POPULATION] growth and the [icon:YIELD_FOOD][icon:YIELD_PRODUCTION] tiles newcomers would have worked, and half of your enclaves' [icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD] yields.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="ja_JP"><Text>すべての都市で[icon:YIELD_PRODUCTION]生産力+2。毎ターン[icon:YIELD_DIPLOMACY]影響力-2。[icon:YIELD_POPULATION]移民-60%、移出-40%。難民の定住が60%遅くなります。（新来者がもたらしたはずの[icon:YIELD_POPULATION]成長と、彼らが働いたはずの[icon:YIELD_FOOD][icon:YIELD_PRODUCTION]タイル、そして飛び地の[icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD]産出の半分を手放します。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="ja_JP"><Text>すべての都市で[icon:YIELD_PRODUCTION]生産力+3。毎ターン[icon:YIELD_DIPLOMACY]影響力-3。[icon:YIELD_POPULATION]移民-60%、移出-40%。難民の定住が60%遅くなります。（新来者がもたらしたはずの[icon:YIELD_POPULATION]成長と、彼らが働いたはずの[icon:YIELD_FOOD][icon:YIELD_PRODUCTION]タイル、そして飛び地の[icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD]産出の半分を手放します。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="ja_JP"><Text>すべての都市で[icon:YIELD_PRODUCTION]生産力+4。毎ターン[icon:YIELD_DIPLOMACY]影響力-4。[icon:YIELD_POPULATION]移民-60%、移出-40%。難民の定住が60%遅くなります。（新来者がもたらしたはずの[icon:YIELD_POPULATION]成長と、彼らが働いたはずの[icon:YIELD_FOOD][icon:YIELD_PRODUCTION]タイル、そして飛び地の[icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD]産出の半分を手放します。）</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="ja_JP"><Text>才能の誘致</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ja_JP"><Text>+1 [icon:YIELD_SCIENCE] Science per 5 [icon:YIELD_POPULATION] Population and -2 [icon:YIELD_GOLD] Gold in every settlement. Immigrants count, so the people you draw keep paying for as long as they stay.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="ja_JP"><Text>+1 [icon:YIELD_SCIENCE] Science per 4 [icon:YIELD_POPULATION] Population and -3 [icon:YIELD_GOLD] Gold in every settlement. Immigrants count, so the people you draw keep paying for as long as they stay.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="ja_JP"><Text>すべての居住地で、[icon:YIELD_POPULATION]人口5につき[icon:YIELD_SCIENCE]科学力+1、[icon:YIELD_GOLD]ゴールド-2。移民も数えるため、引き寄せた人々は留まる限り払い続けてくれます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="ja_JP"><Text>すべての居住地で、[icon:YIELD_POPULATION]人口4につき[icon:YIELD_SCIENCE]科学力+1、[icon:YIELD_GOLD]ゴールド-3。移民も数えるため、引き寄せた人々は留まる限り払い続けてくれます。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="ja_JP"><Text>文化的魅力</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ja_JP"><Text>+1 [icon:YIELD_CULTURE] Culture per 5 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO" Language="ja_JP"><Text>+1 [icon:YIELD_CULTURE] Culture per 4 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="ja_JP"><Text>すべての居住地で、[icon:YIELD_POPULATION]人口5につき[icon:YIELD_CULTURE]文化力+1。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO" Language="ja_JP"><Text>すべての居住地で、[icon:YIELD_POPULATION]人口4につき[icon:YIELD_CULTURE]文化力+1。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="ja_JP"><Text>商業的な魅力</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ja_JP"><Text>+1 [icon:YIELD_GOLD] Gold per 5 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC_MO" Language="ja_JP"><Text>+1 [icon:YIELD_GOLD] Gold per 4 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="ja_JP"><Text>すべての居住地で、[icon:YIELD_POPULATION]人口5につき[icon:YIELD_GOLD]ゴールド+1。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC_MO" Language="ja_JP"><Text>すべての居住地で、[icon:YIELD_POPULATION]人口4につき[icon:YIELD_GOLD]ゴールド+1。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="ja_JP"><Text>選択的庇護</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="ja_JP"><Text>[icon:YIELD_POPULATION] 戦争や災害から逃れる難民が強くあなたのもとへ引き寄せられ、最も切迫した人々が優先されます。毎ターン[icon:YIELD_DIPLOMACY]影響力+1を得ます。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="ja_JP"><Text>難民協定</Text></Replace>
@@ -804,24 +804,24 @@
         <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_NAME" Language="ja_JP"><Text>住民登録制</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_DESC" Language="ja_JP"><Text>すべての都市で[icon:YIELD_PRODUCTION]生産力+3。あなたが承認する文化街区の報酬は半分になり、到着する移民は25%減り、故郷と戦争中の共同体はより早く不穏になります。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CONSULAR_NAME" Language="ja_JP"><Text>領事保護</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_DESC" Language="ja_JP"><Text>+3 [icon:YIELD_DIPLOMACY] Influence per turn (+5 in the Modern Age), and +1 more per recognized enclave of yours abroad (max +4). Grievances against a host that turns anti-immigration on them.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_DESC" Language="ja_JP"><Text>毎ターン[icon:YIELD_DIPLOMACY]影響力+3（近代では+5）。さらに、国外で承認されたあなたの民の飛び地1つにつき+1（最大+4）。その民に対して移民排斥に転じた受入国への不満を得ます。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_STANCE_SLOT_DESC" Language="ja_JP"><Text>専用の政策スロット付き。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="ja_JP"><Text>移民</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="ja_JP"><Text>Emigration moves population between settlements. Each turn, people leave unhappy, struggling or war-torn settlements for happier, more prosperous ones, within your civilization and across borders.[n][n]A Prosperity model scores each city on its happiness, yields and circumstances, weighted by distance so migration stays regional. A civilization pays an integration cost while its newcomers settle in.[n][n]Every settlement records the civilizations its people descend from, shown on the map by the Ethnic Composition lens. Newcomers gradually take on their host's identity, diasporas return home once their homeland recovers, and the Migration Chronicle records the great waves as history.[n][n]People driven out of one of your settlements into another of yours come home on their own once it is calm; the Settlements tab of the Migration dashboard shows who is away from each settlement, why people leave it and what would keep them, and what bringing them back sooner costs.[n][n]Aggressor avoidance, border policies, disasters, ethnic integration, return migration and refugee decisions are on by default; each can be switched off in Options, Add-ons, Emigration.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="ja_JP"><Text>移住は、居住地のあいだで人口を動かします。毎ターン、人々は不幸で、苦しんでいて、戦火に荒らされた居住地を離れ、より幸福で豊かな居住地へ向かいます。自国の中でも、国境を越えても起こります。[n][n]繁栄モデルが各都市を幸福度、産出、置かれた状況で採点し、距離で重み付けするので、移住は地域の中にとどまります。文明は新来者が定住を終えるまで統合コストを払います。[n][n]各居住地は住民がどの文明の出自かを記録し、民族構成レンズがそれをマップに示します。新来者は少しずつ受け入れ先のアイデンティティを身につけ、ディアスポラは故国が立ち直れば故郷へ戻り、移住の年代記が大きな波を歴史として記録します。[n][n]あなたの居住地から別の自国の居住地へ追われた人々は、故郷が平穏になれば自分たちで戻ってきます。移住ダッシュボードの「居住地」タブには、各居住地から誰が離れているか、人々がなぜそこを去るのか、何があれば留まるか、早めに連れ戻すには何がかかるかが表示されます。[n][n]侵略者の回避、国境政策、災害、民族の統合、帰還移住、難民の決断は既定でオンです。それぞれ「オプション → 追加コンテンツ → 移住」でオフにできます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_FAQ_TITLE" Language="ja_JP"><Text>よくある質問</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_FAQ_BODY" Language="ja_JP"><Text>What drives migration. Most of it is tunable in Options, Add-ons, Emigration, and the other pages of this section have the full version.[n][n]✓ Your civilization and every other major civilization move population, met or unmet.[n]✗ City-states, minor civilizations and Independent Powers neither send nor receive population.[n]✓ Pushes: unhappiness, low yields, war damage, sieges (including attacks by a city-state or Independent Power), pillaging, starvation, plague, disasters and overcrowding.[n]✓ Pulls: prosperity, high happiness, a Pro-Immigration Stance, Open Borders and proximity.[n]✓ Migrants travel for a delay that grows with distance, and their host pays a temporary integration cost. War empties a city only by capturing it.[n]✓ Each settlement gains and loses at most a set number of people per turn, scaled by the intensity preset. Arrivals over the cap wait in transit, and refugees with nowhere to land die on the road.[n]✓ Towns take part like cities, and people move between your own settlements as well as across borders.[n]✗ You can't pick or place individual migrants; the flows follow yields, safety and stances. "How newcomers settle" chooses where an arrival sits, and "Close to newcomers" keeps a settlement out of it.[n]✗ One civilization can't draw the whole map's people: a settlement is judged against the world's average, fresh arrivals meet a congestion headwind, and a civilization already ahead meets an anti-snowball headwind.[n]✓ Repairing a pillaged tile stops the pressure it caused, so the settlement stops bleeding people, but a repair never adds a population point back. The fastest way to recover a war-torn settlement is peace (the fighting's pressure fades in two or three turns), repairs, and happiness, the biggest draw there is.[n][n]AI civilizations play the same systems. Two city strategies the mod adds (keep them happy, hold your people) have AI cities build happiness, Food and Production before their people leave; AI civilizations choose enclave stances, decide on refugees and call their people home from abroad through the mod's own rules, at your prices less a discount for the game's difficulty; their displaced people come home on their own as yours do; and a notice tells you when a civilization you have met opens or closes its borders. Base-game files are left as they are. Unmet civilizations are simulated and stay hidden until you meet them.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_FAQ_BODY" Language="ja_JP"><Text>移住を動かしているものについてです。ほとんどは「オプション → 追加コンテンツ → 移住」で調整でき、このセクションの他のページに詳しい説明があります。[n][n]✓ あなたの文明と、他のすべての主要文明が、出会っているかどうかにかかわらず人口を動かします。[n]✗ 都市国家、小文明、独立勢力は人口を送ることも受け取ることもありません。[n]✓ 押し出す力：不幸、低い産出、戦争被害、包囲（都市国家や独立勢力による攻撃も含む）、略奪、飢餓、疫病、災害、過密。[n]✓ 引き寄せる力：繁栄、高い幸福度、「移民歓迎の方針」、開かれた国境、近さ。[n]✓ 移民は距離に応じて延びる時間をかけて移動し、受け入れ側は一時的な統合コストを払います。戦争で都市が空になるのは占領されたときだけです。[n]✓ 各居住地が1ターンに得る人数と失う人数には上限があり、強度プリセットに応じて変わります。上限を超えた到着者は移動中のまま待ち、行き場のない難民は道中で命を落とします。[n]✓ 町も都市と同じように参加し、人々は国境を越えるだけでなく、あなた自身の居住地のあいだでも動きます。[n]✗ 個々の移民を選んだり配置したりはできません。流れは産出、安全、方針に従います。「新来者の定住方法」で到着者の配置先を決め、「新来者を受け入れない」で居住地を対象から外せます。[n]✗ 1つの文明がマップ中の人々を集めることはできません。居住地は世界の平均と比べて評価され、新たな到着者には混雑の向かい風が、すでに先行している文明にはスノーボール防止の向かい風が働きます。[n]✓ 略奪されたタイルを修復すると、それが生んでいた圧力は止まり、居住地から人が流れ出なくなります。ただし、修復で人口ポイントが戻ることはありません。戦火に荒らされた居住地を立て直す最速の道は、和平（戦闘の圧力は2～3ターンで薄れます）、修復、そして何より強い誘因である幸福度です。[n][n]AI文明も同じシステムでプレイします。Modが加える2つの都市戦略（幸福に保つ、人々を引き留める）により、AIの都市は人々が去る前に幸福度、食料、生産力を建設します。AI文明はModのルールに従って飛び地の方針を選び、難民について決断し、国外から人々を呼び戻します。価格はあなたと同じで、ゲームの難易度に応じた割引があります。離散したAIの人々も、あなたの人々と同じように自分たちで戻ります。出会った文明が国境を開いたり閉じたりすると知らせが届きます。ゲーム本体のファイルはそのまま残ります。未遭遇の文明もシミュレーションされ、出会うまでは隠されたままです。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_TITLE" Language="ja_JP"><Text>繁栄と移動</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_BODY" Language="ja_JP"><Text>各集落は、一人あたりの産出と、とりわけ純幸福度から「繁栄度」が評価されます。不幸な都市は平時でさえ、より幸福で豊かな都市へ絶えず人を失い、一方で規模そのものへのわずかなペナルティが、栄える都市が底なしの磁石になるのを防ぎます。[n][n]人々は近い行き先を好むため、移動はマップを飛び越えるのではなく地域内で外へ広がっていきます。戦争・包囲・飢餓・騒乱・災害はいずれも都市の繁栄度を大きく下げ、その都市を難民の発生源に変えます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_TITLE" Language="ja_JP"><Text>戦争と難民</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_BODY" Language="ja_JP"><Text>A city sends war refugees while there is fighting inside its borders, damage to its districts, or pillaging on its land. The longer a siege lasts, the more people it drives out, and a remnant always stays until the city is captured. A lone skirmish or a one-turn siege flag moves nobody: the fighting has to stay over the flee threshold for two turns running before people flee it (a settlement being razed empties at once). A siege whose attackers stop attacking stalls after a few quiet turns: it stops driving people out and kills nobody until the next attack, and the settlement's readout says "Siege stalled". Deaths under siege count against the same cap as departures, so a siege can wound a city but can't empty it.[n][n]Refugees avoid a city under attack: a settlement in a crisis of its own is a much weaker destination while it lasts, and refugees already on the road to it are held or sent to the next best settlement. Refugees flee away from the nearest invader. With aggressor avoidance on, they prefer their own civilization, then any neutral power, and choose the aggressor only as a last resort.[n][n]Migrants spend a few turns in transit, and each city takes in a limited number per turn; the rest wait and try again, longest-waiting first. If their destination is captured or razed while they travel, or stays too full to receive them, they die in transit and count as losses.[n][n]Once a homeland is at peace with the host and prospering again, some of its people abroad return home over time. When a great wave, driven by a neighbor's conquests or a plague, reaches your lands, you are occasionally asked how to receive it: take them in, settle them on the frontier, or turn them away. These refugee decisions can be switched off in Options.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_BODY" Language="ja_JP"><Text>都市は、国境内に戦闘がある、地区が損害を受けている、領土で略奪が起きているあいだ、戦争難民を送り出します。包囲が長引くほど多くの人々が追い出されますが、都市が占領されるまで必ず一部は残ります。単発の小競り合いや1ターンだけの包囲フラグでは誰も動きません。戦闘が逃亡のしきい値を2ターン続けて超えてはじめて、人々は逃げ出します（破壊されている居住地はただちに空になります）。攻撃側が攻撃をやめた包囲は、数ターン静かなままだと膠着します。人々を追い出すのをやめ、次の攻撃まで誰も死なず、居住地の情報表示には「包囲が膠着」と出ます。包囲下の死者は流出と同じ上限に数えられるため、包囲は都市を傷つけることはできても、空にすることはできません。[n][n]難民は攻撃を受けている都市を避けます。自らが危機にある居住地は、それが続く間は行き先としてずっと弱くなり、すでにそこへ向かっている難民は足止めされるか、次に適した居住地へ送られます。難民は最寄りの侵略者から遠ざかる方向へ逃げます。侵略者の回避がオンなら、まず自国を、次に中立の勢力を選び、侵略者を選ぶのは最後の手段です。[n][n]移民は数ターンを移動に費やし、各都市が1ターンに受け入れる人数には限りがあります。残りは待って次のターンに再び試み、最も長く待っている人から順に受け入れられます。移動中に行き先が占領または破壊されたり、満員のまま受け入れられない状態が続いたりすると、彼らは道中で命を落とし、損失として数えられます。[n][n]故国が受け入れ先と和平を結び、再び繁栄すると、国外にいるその民の一部は時間をかけて故郷へ戻ります。隣国の征服や疫病によって生じた大きな波があなたの領土に達すると、ときおりどう迎えるかを尋ねられます。受け入れる、辺境に定住させる、追い返す、のいずれかです。この難民の決断はオプションでオフにできます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_TITLE" Language="ja_JP"><Text>統合と成長の代償</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_BODY" Language="ja_JP"><Text>移民を受け入れるのは無償ではありません。新規移住者一人ごとに受け入れ文明へ統合負荷が加わり、その負荷が統合期間にわたって薄れるまで、文明はターンごとのコストを――ゴールドと幸福度で――支払います。人を引き寄せ続ける文明は、払い続けることになります。[n][n]さらに混雑効果により、新規移住者の定住で手一杯の文明は、さらなる移民にとって魅力の薄い行き先となり得ます。これは、富だけでは取り除けないブレーキです。これらが合わさり、単一の文明が世界の人々を引き寄せる支配的な移住磁石になるのを防ぎます。[n][n]統合には、上記のゴールドと幸福度のコストとは別に、より緩やかな文化的側面もあります。多くのターンを経て、新規移住者は各集落の民族構成の中で受け入れ文明の出自を帯びていき、平穏に落ち着いた都市はディアスポラを徐々に取り込んでいきます。ディアスポラの出身地との戦争や都市の不穏は、その統合を押しとどめ、民族構成レンズで独自の色を保ち続ける、はっきりとしたコミュニティを残します。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_BORDERS_TITLE" Language="ja_JP"><Text>国境と影響力</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_BORDERS_BODY" Language="ja_JP"><Text>二つのてこが、あなたの国境を越える移動を形づくります。あなた自身の立場は、どの時代でも使える政策カードです。親移民立場を選べば世界を歓迎し、より多くの移民が訪れ、国際的な評判が毎ターンわずかな影響力をもたらします。あるいは反移民立場を選べば自らを閉ざし、訪れる新規移住者は減り、自国民が競合国へ去ることも減り、動員された国内経済が各都市に生産力を加えます。ただし世界はあなたの孤立を、絶え間ない影響力の減少で評価します。あなたの戦略に合うものを選びましょう。[n][n]外交も重要です。あなたと別の文明が開放国境協定を結ぶと、移民は両国の間をより自由に、双方向に行き来します。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_TITLE" Language="ja_JP"><Text>誘致と亡命</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="ja_JP"><Text>Talent Attraction turns the people you draw into Science: +1 per 5 Population in every settlement (per 4 in the Modern Age), counted by the game like any other yield. Immigrants raise population, so every newcomer adds to it for as long as they stay. Pair it with a Pro-Immigration Stance or an Open Borders agreement to fill your settlements faster.[n][n]Asylum rides on the Pro-Immigration Stance: while it is slotted, war and disaster refugees choose your cities first. A game saved with one of the retired cards slotted (Selective Asylum, Refugee Compact, Cultural Magnetism, Commercial Draw) keeps it and its effect; a new game never offers them.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="ja_JP"><Text>「才能の誘致」は、引き寄せた人々を科学力に変えます。すべての居住地で人口5につき+1（近代では4につき）で、他の産出と同じようにゲームが数えます。移民は人口を増やすので、新来者は留まる限りその分を加えます。「移民歓迎の方針」や開かれた国境の協定と組み合わせれば、居住地をより速く満たせます。[n][n]庇護は「移民歓迎の方針」に乗っています。セットしているあいだ、戦争や災害の難民はまずあなたの都市を選びます。廃止されたカード（選択的庇護、難民協定、文化的魅力、商業的な魅力）をセットした状態で保存したゲームは、そのカードと効果を保ちます。新しいゲームでは提示されません。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_RAIDS_TITLE" Language="ja_JP"><Text>人材の引き抜き</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_RAIDS_BODY" Language="ja_JP"><Text>外交画面から、ライバルに対して「人材の引き抜き」「文化攻勢」「通商攻勢」を仕掛けることができます。実行中は毎ターン影響力を支払い、そのライバルの移住があなたの都市へ傾きます。到着した一人ひとりが、自発的な移民と同じく、対応する科学力、文化力、ゴールドのボーナスをもたらします。[n][n]これらの外交行動はDiplomacy Extended MODによるもので、それがインストールされているときに表示されます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_TITLE" Language="ja_JP"><Text>災害と疫病</Text></Replace>
@@ -831,13 +831,13 @@
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_TITLE" Language="ja_JP"><Text>指導者と文明</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="ja_JP"><Text>一部の指導者や文明は移住を異なるかたちで経験し、その歴史的性格がにじみ出ます。これらは世界共通のルールの上に乗る、小さく抑制された調整であり、暴走的な成長を引き起こすほど大きくはありません、文明別の微調整が有効なあいだ（既定で有効）だけ適用されます。[n][n]その幸福度ゆえに本来都市を支配的な移住磁石にしてしまう指導者は、引き寄せる力がやや弱まります。とりわけベンジャミン・フランクリン、そしてイサベル、アショーカ、リサールも抑えられます。富裕な征服者は戦利品を定着させる費用がかさみ、イサベルとクセルクセスは、勝ち取った人々を吸収するのにより多く支払います。[n][n]背の高い、専門家志向の勢力は過密から守られ、その密集した都市が二重に罰せられないようにします。パチャクテク、そしてとりわけアッバース朝です。人口が繁栄を上回って急成長する民は、市民を引き留めるための小さな緩衝を得ます、孔子、漢、そして清、一方でクメールは、自国の首都以外での不幸の最悪の部分を免れます。そして堅固な城壁の内に築かれた国、ノルマンとイングランド、は、城壁を持たぬ者よりはるかによく包囲のあいだ人口を保ちます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_TITLE" Language="ja_JP"><Text>範囲と表示</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_BODY" Language="ja_JP"><Text>Emigration simulates every living major civilization from the first turn, met or unmet, so migration follows the real state of the world and a city you later conquer carries the true origin history of its people.[n][n]By default the dashboard, graphs and map lenses show only civilizations you have met: the Spoil Guard, a checkbox under Options, Add-ons, Emigration, on by default. While it is on, a red pill at the top of the Emigration screen says what is hidden. Turn it off to see everyone. With the Demographics mod installed the two mods' guards work together, whichever is stricter wins, so you are only spoiled once both are off.[n][n]Simulation scope (whole world or met only) and on-screen visibility are separate settings.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_BODY" Language="ja_JP"><Text>移住は、生存しているすべての主要文明を、出会っているかどうかにかかわらず最初のターンからシミュレーションします。そのため移住は世界の実際の状態に従い、あとで征服した都市にも住民の本当の出自の履歴が残ります。[n][n]既定では、ダッシュボード、グラフ、マップレンズは出会った文明だけを表示します。これがネタバレガードで、「オプション → 追加コンテンツ → 移住」にあるチェックボックスです（既定でオン）。オンのあいだ、移住画面の上部にある赤いピルが何が隠されているかを示します。オフにすると全員が見えます。Demographics Modが入っていると2つのModのガードが連動し、厳しいほうが優先されるので、ネタバレが起きるのは両方をオフにしたときだけです。[n][n]シミュレーションの範囲（世界全体か、出会った文明のみか）と画面上の表示は別の設定です。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_TITLE" Language="ja_JP"><Text>ダッシュボードの見方</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="ja_JP"><Text>Open the Migration dashboard from its button on the in-game dock, from a migration notice beside End Turn, or from the Migration page in the Demographics mod. It has four tabs, Settlements first.[n][n]• Settlements: one card per settlement, sorted by pressure to leave or by name. Each card has four panes. Arriving: where arrivals came from, which settlements this one attracts from and why, and what would attract more ("Add +2 Happiness by building: Arena"). Leaving: the pressure to leave as a five-step gauge from Negligible to Critical with its drivers, a forecast under the gauge ("About 3 people are likely to leave in the next 4 turns", a projection from how fast the pressure has been rising, or "Nobody is likely to leave soon"), where people are pulled toward and why, and what would keep them, with the Pro- or Anti-Immigration Stance as a step when it helps. Arrived: who lives here by origin, the settlement's Mix and Character, and the standing of its foreign community toward an enclave. Left: the people away from this settlement, when they come home on their own, and the Hasten and Call from abroad buttons with their prices. A prosperity ledger between the panes lists every term of the settlement's score, and each line opens to what is behind it. "All civilizations" shows every civilization's cause cards and a table of its settlements with their composition, Mix, Character, Enclave and pressure.[n]• Network: an animated map of civilizations and their settlements, sized by how much population moves through them, with dots traveling the routes (refugees ringed, naming their war on hover), flow arrows, event labels and a timeline you can scrub; click a settlement to see only its flows, or drag it out of its circle. "Table" shows arrivals, departures and net change by civilization, internal and external, beside refugees and losses.[n]• Policies: who has adopted a Pro- or Anti-Immigration Stance.[n]• Notifications: the log of every notification, including the Migration Chronicle's entries.[n][n]Scaled | Civ switches every number between historically scaled people and population points. The Spoil Guard hides civilizations you have not met; see Scope &amp; Visibility. On the map, the Prosperity lens (Shift+P) and the Ethnic Composition lens (Shift+E) paint each settlement tile by tile; see Map Lenses.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="ja_JP"><Text>移住ダッシュボードは、ゲーム内ドックのボタン、ターン終了ボタンの横の移住の知らせ、またはDemographics Modの移住ページから開きます。タブは4つで、最初が「居住地」です。[n][n]• 居住地：居住地ごとに1枚のカードで、移出圧力順か名前順に並びます。各カードには4つの区画があります。「流入」は、到着者がどこから来たか、この居住地がどの居住地から人を引き寄せていてなぜか、もっと引き寄せるには何が要るか（「建設で幸福度+2を追加：闘技場」）。「流出」は、「ごくわずか」から「危機的」までの5段階ゲージで示す移出圧力とその要因、ゲージの下の予測（「今後4ターンで約3人が去りそうです」という圧力の上がり方からの見込み、または「近いうちに去る人はいなさそうです」）、人々がどこへ引き寄せられていてなぜか、何があれば留まるか。役に立つ場合は「移民歓迎の方針」や「移民排斥の方針」も手として挙がります。「定住」は、出自別に誰が暮らしているか、居住地の構成と性格、外国の共同体が飛び地にどこまで近づいているか。「離散」は、この居住地から離れている人々、いつ自分たちで戻ってくるか、そして「早める」と「国外から呼び戻す」のボタンとその価格です。区画のあいだにある繁栄度の帳簿は居住地のスコアのすべての項目を並べ、各行はその内訳に開きます。「すべての文明」は、各文明の原因カードと、その居住地の構成、構成、性格、飛び地、圧力を一覧にした表を表示します。[n]• ネットワーク：文明とその居住地をアニメーションで描くマップで、大きさは通過する人口の量に応じます。ルートを進むドット（難民は輪で囲まれ、カーソルを合わせると戦争名が出ます）、流れの矢印、出来事のラベル、動かせるタイムラインがあります。居住地をクリックするとその流れだけが表示され、円の外へドラッグすることもできます。「表」は、文明ごとの流入、流出、純増減を国内と国外に分けて、難民と損失とともに表示します。[n]• 政策：誰が「移民歓迎の方針」や「移民排斥の方針」を採用しているか。[n]• 通知：移住の年代記の項目を含む、すべての通知のログ。[n][n]「歴史スケール | Civ」で、すべての数値を歴史的な人数と人口ポイントのあいだで切り替えます。ネタバレガードは出会っていない文明を隠します。「範囲と表示」を参照してください。マップでは、繁栄レンズ（Shift+P）と民族構成レンズ（Shift+E）が各居住地をタイルごとに塗り分けます。「マップレンズ」を参照してください。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_TITLE" Language="ja_JP"><Text>民族構成と統合</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_BODY" Language="ja_JP"><Text>各集落は、住民がどの文明の出自かによって、人々がどこから来たのかを記録し、征服を経てもその記録を保ちます。民族構成レンズ（Shift+E）はこれをタイルごとのモザイクで示します。密集した都市の中心は支配的な出自の色で、小規模なコミュニティはそのタイル全体に広がり、入植済みタイルのツールチップに正確な内訳が表示されます。[n][n]時とともに、新規移住者は受け入れ先の文明へと統合していきます。ただし出身地との戦争や都市の不穏があれば、コミュニティは別個のまま留まります。そして出身地が受け入れ国と和平を保ち再び繁栄すると、帰還移住がやがてその一部を故郷へと連れ戻し、実際の人口を動かします。これらはすべて既定で有効で、オプションで無効にできます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_TITLE" Language="ja_JP"><Text>文化街区</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_BODY" Language="ja_JP"><Text>A foreign community of at least 3 population points that holds 30% of a settlement, or the size bar (6 points at average settlement size), forms a Cultural Enclave in that city, yours or an AI's: a tile at the city's edge named for the origin people, carrying its own yield from the day it forms. After a dwell period the enclave is recognized. Each people has two stances drawn from its character. By default the city takes the first it can afford, and the Chronicle records it. With enclave recognition set to Ask me in Advanced settings, a pop-up with a quotation in that people's voice lets you pick a stance or none. A stance pays once, when chosen: Culture toward your current civic, Science toward your current research, Influence, or Gold, worth three turns of your income of that yield. A stance that pays anything but Gold costs two turns of your Gold income.[n][n]Each origin civilization can hold at most two enclaves in your empire, and at most three enclaves form in your empire per age. An enclave can change hands as the city's population shifts, and dissolves when its community stays below 12.5% of the settlement and below the size bar for 12 turns. At war with its homeland, an enclave is contested: it strains your happiness until peace, and a stance chosen meanwhile pays half. A community with an enclave rarely returns home on its own; see Coming Home.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_BODY" Language="ja_JP"><Text>人口3ポイント以上の外国の共同体が居住地の30%、または規模の基準（平均的な居住地で6ポイント）に達すると、その都市に文化的飛び地が成立します。あなたの都市でもAIの都市でも同じです。都市の縁に、出身の民の名を冠したタイルが生まれ、成立した日から独自の産出を持ちます。一定の定住期間を経て、飛び地は承認されます。各民には、その気質に由来する2つの方針があります。既定では都市が払える最初のものを選び、年代記に記録されます。詳細設定で飛び地の承認を「確認する」にすると、その民の声による引用を添えたポップアップで、方針を選ぶか、何も選ばないかを決められます。方針は選んだときに一度だけ支払われます。現在の社会制度に向けた文化力、現在の研究に向けた科学力、影響力、またはゴールドで、その産出の3ターン分の収入に相当します。ゴールド以外を支払う方針には、ゴールド収入2ターン分の費用がかかります。[n][n]出身文明1つにつき、あなたの帝国に持てる飛び地は最大2つで、1つの時代にあなたの帝国で成立する飛び地は最大3つです。飛び地は都市の人口の変化に応じて持ち主が変わることがあり、その共同体が居住地の12.5%未満かつ規模の基準未満のまま12ターン続くと消滅します。故国と戦争中の飛び地は係争状態になり、和平まであなたの幸福度に負担をかけ、そのあいだに選んだ方針の支払いは半分になります。飛び地を持つ共同体が自分たちで故郷へ戻ることはめったにありません。「帰郷」を参照してください。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="ja_JP"><Text>移住の年代記と難民の決断</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="ja_JP"><Text>移住の年代記は、世界の大移住を短い歴史として記録します。戦争や災害で空になった都市、故郷を遠く離れて根を下ろしたディアスポラ、故国の復興とともに戻ってきた民、承認された飛び地や消えていった飛び地、応えられた呼びかけや届かなかった呼びかけなどです。その項目はダッシュボードの「通知」タブに表示されます。[n][n]実際の大変動、つまり近隣国が短期間に複数の都市を征服したり、疫病の危機が起きたりして難民の波があなたの領土へ押し寄せると、彼らをどう受け入れるかを尋ねられます。[n]• 迎え入れる: ゴールドがかかり、一時的に国民に負担がかかります。難民はあなたの国民の中に定住します。[n]• 辺境に定住させる: 費用は少なく、難民は小さな町へ向かいます。[n]• 追い返す: 影響力がかかります。[n]それぞれの決断には、門前に立つ民の声による引用が添えられます。決断は1つの時代に最大2回、少なくとも18ターンの間隔を空けて発生し、オプションでオフにできます。まだ出会っていない文明は、噂としてしか名前が示されません。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="ja_JP"><Text>移住</Text></Replace>
@@ -872,7 +872,7 @@
         <Replace Tag="LOC_EMIG_NETC_PLAY" Language="ja_JP"><Text>再生</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_PAUSE" Language="ja_JP"><Text>一時停止</Text></Replace>
         <Replace Tag="LOC_EMIG_YEAR_BCE" Language="ja_JP"><Text>紀元前{1_Year}年</Text></Replace>
-        <Replace Tag="LOC_EMIG_YEAR_CE" Language="ja_JP"><Text>{1_Year} CE</Text></Replace>
+        <Replace Tag="LOC_EMIG_YEAR_CE" Language="ja_JP"><Text>西暦{1_Year}年</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_START" Language="ja_JP"><Text>開始</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="ja_JP"><Text>各ドット ≈ {1_People} 人。文明の円は都市や町を内側のサブクラスターとして含みます。文明自身の色のドットは土着の住民、より明るい色合いのドットは自国の都市間を移動した人々（国内移動）、別の色のドットはその出身地からの移民です。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="ja_JP"><Text>表示:</Text></Replace>
@@ -880,13 +880,13 @@
         <Replace Tag="LOC_EMIG_NETC_UNMET" Language="ja_JP"><Text>未遭遇</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="ja_JP"><Text>移民の流れ</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="ja_JP"><Text>移民の流れを矢印で重ねて表示します。赤は人々が去る場所、緑は到着する場所で、太いほど人数が多くなります</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS" Language="ja_JP"><Text>Event labels</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS_TIP" Language="ja_JP"><Text>Show each war's name under the civilizations fighting it</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_REFUGEE_FROM" Language="ja_JP"><Text>Refugee from {1_Origin}</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_RING_WAR" Language="ja_JP"><Text>War refugees</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_RING_WAR_TIP" Language="ja_JP"><Text>A ring marks people who fled a war. It's brightest while the war is on. Hover a dot to see which war.</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER" Language="ja_JP"><Text>Disaster refugees</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER_TIP" Language="ja_JP"><Text>A ring marks people who fled a disaster. It's brightest just after it strikes. Hover a dot to see which disaster.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS" Language="ja_JP"><Text>出来事のラベル</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS_TIP" Language="ja_JP"><Text>戦っている文明の下に、その戦争の名前を表示します</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_REFUGEE_FROM" Language="ja_JP"><Text>{1_Origin}からの難民</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_WAR" Language="ja_JP"><Text>戦争難民</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_WAR_TIP" Language="ja_JP"><Text>輪は戦争から逃れた人々を示します。戦争が続いているあいだ最も明るく光ります。ドットにカーソルを合わせると、どの戦争かが表示されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER" Language="ja_JP"><Text>災害難民</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER_TIP" Language="ja_JP"><Text>輪は災害から逃れた人々を示します。災害の直後に最も明るく光ります。ドットにカーソルを合わせると、どの災害かが表示されます。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="ja_JP"><Text>移住 - {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="ja_JP"><Text>住民の出自</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTED" Language="ja_JP"><Text>これまでの移出先</Text></Replace>
@@ -924,39 +924,39 @@
         <Replace Tag="LOC_EMIG_VIEW_TAB_NET_TABLE" Language="ja_JP"><Text>純移住（表）</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_CAUSES" Language="ja_JP"><Text>原因</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_POLICIES" Language="ja_JP"><Text>政策</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_VIEW_LABEL" Language="ja_JP"><Text>View:</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_NET_DIAGRAM" Language="ja_JP"><Text>Diagram</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_NET_TABLE_VIEW" Language="ja_JP"><Text>Table</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_CITIES_LABEL" Language="ja_JP"><Text>Show:</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_CITIES_MINE" Language="ja_JP"><Text>Your settlements</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_SORT_PRESSURE" Language="ja_JP"><Text>By pressure</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_SORT_NAME" Language="ja_JP"><Text>By name</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_CITIES_ALL" Language="ja_JP"><Text>All civilizations</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SECTION" Language="ja_JP"><Text>Displaced: your people who fled, where they are, and the way home</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_EMPTY" Language="ja_JP"><Text>Nobody from your settlements is displaced right now.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SINCE" Language="ja_JP"><Text>since turn {1_Turn}</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_AWAY" Language="ja_JP"><Text>Away:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_AWAY_N" Language="ja_JP"><Text>{1_Count} population points: {2_Where}</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_IN_OWN" Language="ja_JP"><Text>{1_Count} in {2_City}</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_IN_FOREIGN" Language="ja_JP"><Text>{1_Count} in {2_City} ({3_Civ})</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LOST" Language="ja_JP"><Text>{1_Home} is no longer yours. These people stay where they are.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LOST_LBL" Language="ja_JP"><Text>Lost:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LOST_TILES" Language="ja_JP"><Text>{1_Tiles}, torn down as they left; a returnee rebuilds there when the plot is still open.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_WORTH" Language="ja_JP"><Text>Worth:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_TILE" Language="ja_JP"><Text>each returnee settles a new tile at {1_Home}, about {2_Yields} a turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_WAIT" Language="ja_JP"><Text>Wait:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HOMECOMING_OFF" Language="ja_JP"><Text>People at home only come back when called.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_WAIT_CALM" Language="ja_JP"><Text>Free, once {1_Home} has been calm for {2_Turns} more turns; then {4_Batch} come home every {3_Every} turns, all of them in about {5_All} turns.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_WAIT_NOW" Language="ja_JP"><Text>Free: {2_Batch} come home next turn, and the last in about {1_Turns} turns.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_WAIT_NEXT" Language="ja_JP"><Text>Free: the next {3_Batch} come home in {1_Turns} turns, and the last in about {2_All} turns.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HASTEN_LBL" Language="ja_JP"><Text>Hasten:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HASTEN" Language="ja_JP"><Text>bring {1_Count} back now for {2_Gold} Gold or {3_Infl} Influence.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HASTEN_BTN" Language="ja_JP"><Text>Hasten</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_ABROAD_LBL" Language="ja_JP"><Text>Abroad:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_ABROAD" Language="ja_JP"><Text>Call {1_Count} from abroad: {2_Pct}% each, about {3_Expected} expected to come, for {4_Gold} Gold or {5_Infl} Influence. That's about {6_PerGold} Gold or {7_PerInfl} Influence for each person who comes.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_ABROAD_BTN" Language="ja_JP"><Text>Call from abroad</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COOLDOWN" Language="ja_JP"><Text>Available again in {1_Turns} turns.</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_TAB_MY_CITIES" Language="ja_JP"><Text>Settlements</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_VIEW_LABEL" Language="ja_JP"><Text>表示:</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NET_DIAGRAM" Language="ja_JP"><Text>図</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NET_TABLE_VIEW" Language="ja_JP"><Text>表</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_CITIES_LABEL" Language="ja_JP"><Text>対象:</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_CITIES_MINE" Language="ja_JP"><Text>あなたの居住地</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SORT_PRESSURE" Language="ja_JP"><Text>圧力順</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SORT_NAME" Language="ja_JP"><Text>名前順</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_CITIES_ALL" Language="ja_JP"><Text>すべての文明</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SECTION" Language="ja_JP"><Text>離散：逃げ出したあなたの人々、その居場所、そして帰郷の道</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_EMPTY" Language="ja_JP"><Text>いま、あなたの居住地から離散している人はいません。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SINCE" Language="ja_JP"><Text>ターン{1_Turn}から</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_AWAY" Language="ja_JP"><Text>離散:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_AWAY_N" Language="ja_JP"><Text>{1_Count}人口ポイント：{2_Where}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_IN_OWN" Language="ja_JP"><Text>{2_City}に{1_Count}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_IN_FOREIGN" Language="ja_JP"><Text>{2_City}（{3_Civ}）に{1_Count}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOST" Language="ja_JP"><Text>{1_Home}はもうあなたのものではありません。この人々はいまの場所に留まります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOST_LBL" Language="ja_JP"><Text>失ったもの:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOST_TILES" Language="ja_JP"><Text>{1_Tiles}は去るときに取り壊されました。その区画がまだ空いていれば、帰還者がそこに築き直します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WORTH" Language="ja_JP"><Text>価値:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_TILE" Language="ja_JP"><Text>帰還者1人につき{1_Home}に新しいタイル1つが入り、毎ターン約{2_Yields}です。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT" Language="ja_JP"><Text>待つ:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HOMECOMING_OFF" Language="ja_JP"><Text>国内の人々は、呼びかけたときだけ戻ってきます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT_CALM" Language="ja_JP"><Text>無料。{1_Home}があと{2_Turns}ターン平穏であれば、その後は{3_Every}ターンごとに{4_Batch}人が戻り、全員が戻るまで約{5_All}ターンです。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT_NOW" Language="ja_JP"><Text>無料：次のターンに{2_Batch}人が戻り、最後の人は約{1_Turns}ターン後に戻ります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT_NEXT" Language="ja_JP"><Text>無料：次の{3_Batch}人は{1_Turns}ターン後に戻り、最後の人は約{2_All}ターン後に戻ります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HASTEN_LBL" Language="ja_JP"><Text>早める:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HASTEN" Language="ja_JP"><Text>{2_Gold}ゴールドまたは影響力{3_Infl}で、{1_Count}人をいま連れ戻します。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HASTEN_BTN" Language="ja_JP"><Text>早める</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_ABROAD_LBL" Language="ja_JP"><Text>国外:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_ABROAD" Language="ja_JP"><Text>国外の{1_Count}人に呼びかける：1人あたり{2_Pct}%で、約{3_Expected}人が戻る見込み。費用は{4_Gold}ゴールドまたは影響力{5_Infl}です。戻ってくる1人あたり約{6_PerGold}ゴールドまたは影響力{7_PerInfl}にあたります。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_ABROAD_BTN" Language="ja_JP"><Text>国外から呼び戻す</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COOLDOWN" Language="ja_JP"><Text>{1_Turns}ターン後に再び使えます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_MY_CITIES" Language="ja_JP"><Text>居住地</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_NOTIFICATIONS" Language="ja_JP"><Text>通知</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_GUIDE" Language="ja_JP"><Text>ガイド</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_NUM_CIV" Language="ja_JP"><Text>Civ の人口値</Text></Replace>
@@ -974,7 +974,7 @@
         <Replace Tag="LOC_EMIG_CF_BAND_CRITICAL" Language="ja_JP"><Text>危機的</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_BAND_HIGH" Language="ja_JP"><Text>高</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_BAND_MODERATE" Language="ja_JP"><Text>中程度</Text></Replace>
-        <Replace Tag="LOC_EMIG_CF_BAND_NEGLIGIBLE" Language="ja_JP"><Text>Negligible</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_NEGLIGIBLE" Language="ja_JP"><Text>ごくわずか</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_BAND_LOW" Language="ja_JP"><Text>低</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_PRESSURE" Language="ja_JP"><Text>移出圧力</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_NONE_RECORDED" Language="ja_JP"><Text>記録なし</Text></Replace>
@@ -1074,15 +1074,16 @@
         <Replace Tag="LOC_EMIG_NV_NOTE" Language="ja_JP"><Text>注記</Text></Replace>
         <Replace Tag="LOC_EMIG_NV_DEFAULT_SUMMARY" Language="ja_JP"><Text>移住の出来事</Text></Replace>
         <Replace Tag="LOC_EMIG_NV_CAUSE_EVENT" Language="ja_JP"><Text>{1_Cause}の出来事</Text></Replace>
-        <Replace Tag="LOC_EMIG_NV_EVENT_PREFIX" Language="ja_JP"><Text>{1_Event}: {2_Summary}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NV_EVENT_PREFIX" Language="ja_JP"><Text>{1_Event}：{2_Summary}</Text></Replace>
         <Replace Tag="LOC_EMIG_NV_TURN" Language="ja_JP"><Text>ターン{1_Turn}</Text></Replace>
         <Replace Tag="LOC_EMIG_NV_CHRONICLE" Language="ja_JP"><Text>年代記</Text></Replace>
         <Replace Tag="LOC_EMIG_NV_EMPTY" Language="ja_JP"><Text>まだ移住の出来事はありません。人々が移動すると、それぞれの詳細とともにここに表示されます。</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_FORECAST" Language="ja_JP"><Text>Forecast: {1_Line}</Text></Replace>
-        <Replace Tag="LOC_EMIG_FORECAST_LEAVE" Language="ja_JP"><Text>About {1_Count} people are likely to leave in the next {2_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_FORECAST_STABLE" Language="ja_JP"><Text>Nobody is likely to leave soon</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="ja_JP"><Text>Closed to newcomers: nobody settles here until you open it again</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_SIEGE_STALLED" Language="ja_JP"><Text>Siege stalled: the besiegers aren't attacking, so nobody leaves or dies for the siege until they do</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_FORECAST" Language="ja_JP"><Text>予測: {1_Line}</Text></Replace>
+        <Replace Tag="LOC_EMIG_FORECAST_LEAVE" Language="ja_JP"><Text>今後{2_Turns}ターンで約{1_Count}人が去りそうです</Text></Replace>
+        <Replace Tag="LOC_EMIG_FORECAST_CRISIS" Language="ja_JP"><Text>人々はいま逃げ出しています。人数は圧力ではなく危機の規模で決まります</Text></Replace>
+        <Replace Tag="LOC_EMIG_FORECAST_STABLE" Language="ja_JP"><Text>近いうちに去る人はいなさそうです</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="ja_JP"><Text>新来者を受け入れていません：再び開くまで誰もここに定住しません</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_SIEGE_STALLED" Language="ja_JP"><Text>包囲が膠着：包囲側が攻撃していないため、攻撃が再開するまで包囲で去る人も死ぬ人もいません</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_HOLDING" Language="ja_JP"><Text>この居住地で難民が再定住中</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_TRAPPED" Language="ja_JP"><Text>危機：逃げ場がなく閉じ込められています{1_Why}</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_DISTRESS" Language="ja_JP"><Text>苦境下：人々が退去を考えています{1_Why}</Text></Replace>
@@ -1145,10 +1146,10 @@
         <Replace Tag="LOC_EMIG_DIL_BODY_FRONTIER" Language="ja_JP"><Text>あなたは{1_Adj}の難民を辺境へ送り、彼ら自身のものを築かせました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_BODY_AWAY" Language="ja_JP"><Text>あなたは{1_Adj}の難民を{2_Place}から追い返しました。彼らは道を先へと進んでいきました、{3_Who}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_CHRON_TITLE" Language="ja_JP"><Text>国境での決断</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIL_THEIR_LANDS" Language="ja_JP"><Text>their lands</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIL_AI_BODY_WELCOME" Language="ja_JP"><Text>{1_Host} opened {2_Place} to the refugees of {3_Adj}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIL_AI_BODY_FRONTIER" Language="ja_JP"><Text>{1_Host} sent the refugees of {2_Adj} to its frontier, to {3_Place}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIL_AI_BODY_AWAY" Language="ja_JP"><Text>{1_Host} turned the refugees of {2_Adj} away from its borders.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_THEIR_LANDS" Language="ja_JP"><Text>自らの地</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_WELCOME" Language="ja_JP"><Text>{1_Host}は{3_Adj}の難民に{2_Place}を開きました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_FRONTIER" Language="ja_JP"><Text>{1_Host}は{2_Adj}の難民を辺境の{3_Place}へ送りました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_AWAY" Language="ja_JP"><Text>{1_Host}は{2_Adj}の難民を国境で追い返しました。</Text></Replace>
         <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="ja_JP"><Text>難民</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_TITLE" Language="ja_JP"><Text>飛び地が建て替えられる</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_BODY" Language="ja_JP"><Text>{1_Name}は失われました。都市がその区画の上に建設し、住んでいた家族は周囲の街路へ散っていきました。</Text></Replace>
@@ -1578,38 +1579,38 @@
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP_4" Language="ja_JP"><Text>4ターンごと</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP_5" Language="ja_JP"><Text>5ターンごと</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_MINIMIZE" Language="ja_JP"><Text>ダッシュボードを簡略化</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_MINIMIZE_DESCRIPTION" Language="ja_JP"><Text>Hides the dashboard's heaviest tab, the animated Network diagram, keeping the Settlements, Policies and Notifications tabs and the Demographics graphs. Useful on slower machines. Display only; applies the next time you open the dashboard.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_MINIMIZE_DESCRIPTION" Language="ja_JP"><Text>ダッシュボードで最も重いタブであるアニメーションのネットワーク図を隠し、「居住地」「政策」「通知」のタブとDemographicsのグラフは残します。遅いマシンで役立ちます。表示だけの設定で、次にダッシュボードを開いたときから反映されます。</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_NOTIFICATIONS" Language="ja_JP"><Text>通知</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_NOTIFICATIONS_DESCRIPTION" Language="ja_JP"><Text>移住 Mod のゲーム内通知（移住のトーストと世界のニュースのログ）を表示します。オフにすると、移住 Mod のポップアップはすべて表示されなくなります。通知の詳細度は、「詳細設定」の「通知」セクションでさらに調整できます。</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_SPOIL_GUARD" Language="ja_JP"><Text>Spoil Guard</Text></Replace>
-        <Replace Tag="LOC_EMIG_SPOIL_PILL" Language="ja_JP"><Text>Spoil Guard on: {1_What}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SPOIL_PILL_TIP" Language="ja_JP"><Text>Options, Mods, Emigration turns the Spoil Guard off. With the Demographics mod installed, the stricter of the two guards applies.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_MET" Language="ja_JP"><Text>civilizations you haven't met are hidden</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OWN" Language="ja_JP"><Text>only your own civilization shows</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_SPOIL_GUARD_DESCRIPTION" Language="ja_JP"><Text>Hides the names, flows and settlements of civilizations you haven't met yet, so the Emigration screens never spoil a civilization before you encounter it. On by default. With the Demographics mod installed the two guards work together: whichever is stricter wins, so turning one off only shows everyone once both are off.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SPOIL_GUARD" Language="ja_JP"><Text>ネタバレガード</Text></Replace>
+        <Replace Tag="LOC_EMIG_SPOIL_PILL" Language="ja_JP"><Text>ネタバレガード オン：{1_What}</Text></Replace>
+        <Replace Tag="LOC_EMIG_SPOIL_PILL_TIP" Language="ja_JP"><Text>「オプション → 追加コンテンツ → 移住」でネタバレガードをオフにできます。Demographics Modが入っている場合は、2つのガードのうち厳しいほうが適用されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_MET" Language="ja_JP"><Text>出会っていない文明は隠されています</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OWN" Language="ja_JP"><Text>あなた自身の文明だけが表示されています</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SPOIL_GUARD_DESCRIPTION" Language="ja_JP"><Text>まだ出会っていない文明の名前、流れ、居住地を隠し、移住の画面が出会う前の文明をネタバレしないようにします。既定ではオンです。Demographics Modが入っている場合は2つのガードが連動し、厳しいほうが優先されるので、全員が見えるようになるのは両方をオフにしたときだけです。</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DILEMMAS" Language="ja_JP"><Text>難民に関する決断</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DILEMMAS_DESCRIPTION" Language="ja_JP"><Text>大規模な難民の波があなたの領土に押し寄せたとき（隣国による征服や疫病など）、ときおりゲームを一時停止し、彼らをどう受け入れるかを短く決断します。意図的に稀にしてあります。オフにすると、このポップアップは表示されなくなります。シミュレーションには影響しません。</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_ASK_ARRIVALS" Language="ja_JP"><Text>新来者の配置の決定</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_ASK_ARRIVALS_DESCRIPTION" Language="ja_JP"><Text>人々があなたの都市に定住するとき、ポップアップでタイルを選ぶか、都市に任せるか、後回しにするかを選べます。既定では難民についてのみ確認します。確認の対象は詳細設定で選べます。オフ: 都市がすべての人を自ら配置します。</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_FIRST_LOSS" Language="ja_JP"><Text>First-loss explainer</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_FIRST_LOSS_DESCRIPTION" Language="ja_JP"><Text>The first time one of your settlements loses a tile to emigration, one page explains what happened, where the people went and why, what happens next and where to look. It shows once per game. Off by default.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FIRSTLOSS" Language="ja_JP"><Text>First-loss explainer</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FIRSTLOSS_D" Language="ja_JP"><Text>One page, the first time a settlement of yours loses a tile to emigration: what happened, where they went and why, what happens next and where to look, with the settlement's fix line. Once per game; switching it on later shows it at the next tile loss unless it has shown already.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_EYEBROW" Language="ja_JP"><Text>Emigration</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_TITLE" Language="ja_JP"><Text>People Have Left {1_City}</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_LEFT" Language="ja_JP"><Text>{1_Count} people left {2_City} this turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_TILE" Language="ja_JP"><Text>They tore down the {1_Tile} they worked on the way out; the plot is yours to settle again.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_GONE_ABROAD" Language="ja_JP"><Text>They have gone to {1_Dest}, a settlement of the {2_Civ}, because of {3_Reason}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_GONE_HOME" Language="ja_JP"><Text>They have gone to {1_Dest}, because of {2_Reason}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_ELSEWHERE" Language="ja_JP"><Text>another settlement</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_UNMET" Language="ja_JP"><Text>an unmet civilization</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_NEXT" Language="ja_JP"><Text>People who stay inside your civilization come home on their own once {1_City} has been calm for a few turns. People who crossed a border can be called back from the Settlements tab, at a price and at odds.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_LOOK" Language="ja_JP"><Text>The Emigration screen (the button in the dock, or the notice beside End Turn) shows every settlement losing people, why, and what would stop it. Hover a settlement for the short version.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_OPEN" Language="ja_JP"><Text>Open the Emigration screen</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_OK" Language="ja_JP"><Text>Got it</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_CHRONICLE_TITLE" Language="ja_JP"><Text>The First to Leave</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_CALLHOME_OFFER" Language="ja_JP"><Text>Displaced-people reminders</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_CALLHOME_OFFER_DESCRIPTION" Language="ja_JP"><Text>Once a settlement your people fled is safe again and some of them are still displaced, a small pop-up offers to open the Settlements tab, where you choose which settlement's people to bring back and see what it costs. It repeats only when many more are displaced, and its "Don't remind me again" button turns it off. On by default. Off: no reminder; the tab still works whenever you open it.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_FIRST_LOSS" Language="ja_JP"><Text>初めての流出の説明</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_FIRST_LOSS_DESCRIPTION" Language="ja_JP"><Text>あなたの居住地が移住で初めてタイルを失ったとき、1ページで何が起きたか、人々がどこへなぜ行ったか、次に何が起こるか、どこを見ればよいかを説明します。ゲームごとに1回だけ表示されます。既定ではオフです。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FIRSTLOSS" Language="ja_JP"><Text>初めての流出の説明</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FIRSTLOSS_D" Language="ja_JP"><Text>あなたの居住地が移住で初めてタイルを失ったときに1ページを表示します。何が起きたか、人々がどこへなぜ行ったか、次に何が起こるか、どこを見ればよいか、そしてその居住地の対処の一行です。ゲームごとに1回だけです。あとからオンにした場合は、まだ表示されていなければ次にタイルを失ったときに表示されます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_EYEBROW" Language="ja_JP"><Text>移住</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_TITLE" Language="ja_JP"><Text>{1_City}から人々が去りました</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_LEFT" Language="ja_JP"><Text>このターン、{1_Count}人が{2_City}を去りました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_TILE" Language="ja_JP"><Text>彼らは去り際に、働いていた{1_Tile}を取り壊しました。その区画はまた入植できます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_GONE_ABROAD" Language="ja_JP"><Text>彼らは{3_Reason}を理由に、{2_Civ}の居住地{1_Dest}へ向かいました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_GONE_HOME" Language="ja_JP"><Text>彼らは{2_Reason}を理由に、{1_Dest}へ向かいました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_ELSEWHERE" Language="ja_JP"><Text>別の居住地</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_UNMET" Language="ja_JP"><Text>未遭遇の文明</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_NEXT" Language="ja_JP"><Text>あなたの文明の中に留まった人々は、{1_City}が数ターン平穏になれば自分たちで戻ってきます。国境を越えた人々は、「居住地」タブから費用を払い、確率に賭けて呼び戻せます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_LOOK" Language="ja_JP"><Text>移住画面（ドックのボタン、またはターン終了ボタンの横の知らせ）には、人を失っているすべての居住地と、その理由、止めるための手が表示されます。居住地にカーソルを合わせると短い説明が出ます。</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_OPEN" Language="ja_JP"><Text>移住画面を開く</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_OK" Language="ja_JP"><Text>わかりました</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_CHRONICLE_TITLE" Language="ja_JP"><Text>最初に去った人々</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_CALLHOME_OFFER" Language="ja_JP"><Text>離散した人々の知らせ</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_CALLHOME_OFFER_DESCRIPTION" Language="ja_JP"><Text>あなたの人々が逃げ出した居住地が再び安全になり、まだ一部が離散しているとき、小さなポップアップが「居住地」タブを開くよう勧めます。そこで、どの居住地の人々を連れ戻すか選び、費用を確認できます。再び出るのは離散した人数が大きく増えたときだけで、「今後は知らせない」ボタンでオフにできます。既定ではオンです。オフ：知らせは出ませんが、タブはいつでも開いて使えます。</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_ASK_ENCLAVES" Language="ja_JP"><Text>飛び地の方針の決定</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_ASK_ENCLAVES_DESCRIPTION" Language="ja_JP"><Text>あなたの都市の外国の共同体が飛び地として承認されると、ポップアップでその方針を選べます。選択肢は2つで、それぞれ小さな利点と欠点を持ちます。または何もせずに放っておくこともできます。既定ではオフ: 各都市が自ら方針を選び、飛び地は他の文明の都市にも形成されます。オンにすると、飛び地はあなたの都市に限られます。</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_ETHNIC" Language="ja_JP"><Text>民族の統合</Text></Replace>
@@ -1644,7 +1645,7 @@
         <Replace Tag="LOC_EMIG_TRAIN_ARRIVAL" Language="ja_JP"><Text>新たな住民が到着しました</Text></Replace>
         <Replace Tag="LOC_EMIG_TRAIN_WORLD" Language="ja_JP"><Text>他国で難民危機</Text></Replace>
         <Replace Tag="LOC_EMIG_TRAIN_DISASTER" Language="ja_JP"><Text>災害で人々が避難</Text></Replace>
-        <Replace Tag="LOC_EMIG_TRAIN_HOME" Language="ja_JP"><Text>People are coming home</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_HOME" Language="ja_JP"><Text>人々が故郷へ戻っています</Text></Replace>
         <Replace Tag="LOC_EMIG_TRAIN_NOTE" Language="ja_JP"><Text>移住のニュース</Text></Replace>
         <Replace Tag="LOC_EMIG_TRAIN_FALLBACK" Language="ja_JP"><Text>詳細は移住画面の「通知」タブをご覧ください。</Text></Replace>
         <Replace Tag="LOC_EMIG_QUARTER_ENCLAVE" Language="ja_JP"><Text>{1_Demonym}の飛び地</Text></Replace>
@@ -2069,13 +2070,13 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_TITLE" Language="ja_JP"><Text>到着</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_1" Language="ja_JP"><Text>他の文明は自分で到着者を配置します。あなたの都市については、「新来者の定住方法」の設定（オプション → 追加コンテンツ → 移住 → 詳細設定 → 流入と流出）によって次のように決まります。[BLIST][LI][B]確認する[/B]（既定）：受け入れ先の都市で「新来者」または「難民」のポップアップが開き、タイルを選ぶか、都市に任せるか、後回しにするかを選べます。3つのスイッチで、どの種類の到着時に確認するかを選びます。既定では難民のときだけ確認し、移民と帰還者はただちに配置されます。[LI][B]自動[/B]：成長したときと同じように、都市がただちにポイントを配置します。[LI][B]移民ユニット[/B]：新来者は都市の隣に「移住者」ユニットとして到着し、あなたが再定住させます。定住していない移住者には毎ターン維持費がかかります。[LI][B]オフ[/B]：ゲーム本来の「都市を成長させる」の選択で、ポイントの配置を求められます。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_2" Language="ja_JP"><Text>「難民」ポップアップには、到着者がどこから、何から逃れてきたのかが、その民の声による引用とともに示されます（「故郷を追われた人々の声」を参照）。まだ出会っていない文明からの難民は、単に「故郷を追われた人々」とだけ表されます。</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="ja_JP"><Text>Each of your settlements has a "Close to newcomers" button on its Settlements card. A closed settlement takes nobody in: arrivals go to your next best settlement, one already on the road is re-aimed when it lands, and the closed settlement pays no integration cost. Refugees with nowhere else to go are not forced in. "Open to newcomers" reverses it, and the Advanced setting "Close a settlement to newcomers" hides the button.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="ja_JP"><Text>あなたの各居住地の「居住地」カードには「新来者を受け入れない」ボタンがあります。閉じた居住地は誰も受け入れません。到着者はあなたの次に適した居住地へ向かい、すでに移動中の人々は到着した時点で行き先を変え、閉じた居住地が統合コストを払うこともありません。行き場のない難民も無理に押し込まれることはありません。「新来者を受け入れる」で元に戻り、詳細設定の「居住地を新来者に対して閉じる」でボタンを隠せます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_TITLE" Language="ja_JP"><Text>定住を待つ難民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_PARA_1" Language="ja_JP"><Text>戦争や災害による難民のうち（既定で）5人に1人は到着と同時に定住します。残りは目的地で待機の列に入り、その後の数ターンで定住していきます。幸福で、開かれていて、混雑していない受け入れ先ほど早く定住させられます。「移民排斥の方針」は定住を遅らせます。受け入れ側は、まだ待機している人々の維持費を支払います。彼らが逃れてきた危機が新しい都市にまで及ぶと、待機中の難民が真っ先に移動します。都市の情報表示と都市の詳細パネルに、待機している人数が表示されます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_TITLE" Language="ja_JP"><Text>人々を受け入れる代償</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_PARA_1" Language="ja_JP"><Text>新来者は一人ごとに受け入れ文明へ統合負荷を加え、その負荷はおよそ6～8ターンかけて薄れていきます。負荷が残っている間、文明は毎ターン[icon:YIELD_GOLD]ゴールドを支払い、蓄積した[icon:YIELD_HAPPINESS]幸福度が差し引かれて次の祝宴が遅れます。多くの到着者を定住させている文明には、新たな移民も集まりにくくなります。これらのコストはそれぞれ詳細設定で0にできます。「統合と成長の代償」を参照してください。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_TITLE" Language="ja_JP"><Text>飛び地の育ち方</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>A foreign community grows into an enclave in three stages: Foothold, Established and Recognized. Each settlement is measured by its largest community from another civilization. The city readout shows the stage, what the next one takes and anything holding it back, and the enclave's tile tooltip and the Settlements tab use the same names.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>外国の共同体は、足がかり、成立、承認済みの3段階を経て飛び地に育ちます。各居住地は、他文明からの最大の共同体で測られます。都市の情報表示には段階、次の段階に必要なもの、妨げているものが表示され、飛び地のタイルのツールチップと「居住地」タブも同じ名前を使います。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_FOOTHOLD_TITLE" Language="ja_JP"><Text>足がかり</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_FOOTHOLD_PARA_1" Language="ja_JP"><Text>共同体が入植地の25%を占め、自らの人口が3以上になると足がかりを得ます。年代記に記されますが、地図にはまだ何も現れません。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_ESTABLISHED_TITLE" Language="ja_JP"><Text>成立</Text></Replace>
@@ -2086,35 +2087,35 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_ENDINGS_PARA_1" Language="ja_JP"><Text>人々が入植地の12.5%と規模の基準をともに12ターン下回り続けると、飛び地は衰退します。都市の表示が残りターンを数えます。タイルの上に建設されたり、都市が破壊されたりしても終わります。都市国家や独立勢力が入植地を奪った場合、文明が再び都市を保持するまで飛び地は保留されます。故郷との戦争は飛び地を係争中にし、もたらすものは変わりますが段階は変わりません。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_LIMITS_TITLE" Language="ja_JP"><Text>上限</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_LIMITS_PARA_1" Language="ja_JP"><Text>各文明が1時代に成立させられる飛び地は最大3つで、同じ民の飛び地は全都市で最大2つまでです。飛び地の承認をあなたに尋ねる場合、決定は12ターン以上の間隔を空け、1時代に最大3回です。時代が進んでも飛び地のない文明は、飛び地ができるまで基準が最大40%下がります。これらはすべて詳細設定の「文化的飛び地」で調整できます。</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_TITLE" Language="ja_JP"><Text>Coming Home</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>People driven out of one of your settlements keep their tie to it. The Left pane of that settlement's card on the Settlements tab lists everyone away: how many, where they live now and since when, the tiles their departure tore down, what a returnee is worth at home (the yields of a rural tile there), when they come home on their own, and two buttons that bring them back sooner for a price. A settlement you no longer hold is listed with its people staying where they are.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_2" Language="ja_JP"><Text>Once a settlement your people fled is calm enough for them to return and at least five of your people are displaced from settlements you still hold, a small pop-up offers to open the Settlements tab, wait, or stop reminding you. It comes back only once half again as many are displaced and ten turns have passed. "Displaced-people reminders" under Options, Add-ons, Emigration is the same switch, and the threshold is an Advanced setting.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_TITLE" Language="ja_JP"><Text>On Their Own</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_PARA_1" Language="ja_JP"><Text>People driven out of one of your settlements into another of yours go home by themselves once it is safe. After 3 turns without war, siege, disaster, famine or unrest at home, one person comes back every 4 turns, plus one more for every 8 still away, and settles the plot their people left when it is still open, otherwise another free plot of the settlement. After fighting inside its borders or a siege the wait is 10 calm turns, because a frontier settlement hit once is likely to be hit again. The Chronicle and a notice beside End Turn say when they start coming home and when the last is back. AI civilizations get the same. "People find their own way home" in Advanced settings holds the numbers and an off switch.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_TITLE" Language="ja_JP"><Text>Hasten</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_PARA_1" Language="ja_JP"><Text>Hasten pays [icon:YIELD_GOLD] Gold or [icon:YIELD_DIPLOMACY] Influence to bring people living elsewhere in your civilization back now instead of over the next turns. Exactly the number paid for come, largest group first. The card names the tile a returnee works at home and the tiles they leave where they live now, the net per person, and how many turns sooner the fee brings them; the price buttons' hover carries the full ledger. Inside your borders a return swaps one tile for another, so the fee buys time. Each settlement runs its own cooldown, so hastening one does not lock the others.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_ABROAD_TITLE" Language="ja_JP"><Text>Call from Abroad</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_ABROAD_PARA_1" Language="ja_JP"><Text>Call from abroad pays for a call to your people living in another civilization's cities. It is a gamble: each person asked answers with the odds shown (about 18% by default), rolled one by one, and you pay for the size you chose whatever comes of it. Every person who answers is a tile gained for good. The hover gives the odds and the cost per person who comes. An unanswered call is written into the Chronicle and still starts the cooldown. People with an enclave of their own rarely return by themselves, so a call is the reliable way to bring them back.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_TITLE" Language="ja_JP"><Text>帰郷</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>あなたの居住地から追われた人々は、その居住地とのつながりを保ちます。「居住地」タブのその居住地のカードにある「離散」の区画には、離れている全員が載ります。何人か、いまどこにいつから暮らしているか、彼らが去るときに取り壊したタイル、帰還者1人の故郷での価値（そこの郊外タイルの産出）、いつ自分たちで戻ってくるか、そして費用を払って早めに連れ戻す2つのボタンです。もう保有していない居住地も載りますが、その人々はいまの場所に留まります。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_2" Language="ja_JP"><Text>あなたの人々が逃げ出した居住地が戻れるほど平穏になり、まだ保有する居住地から5人以上が離散しているとき、小さなポップアップが「居住地」タブを開く、待つ、今後は知らせない、のいずれかを勧めます。再び出るのは離散した人数がさらに半分増え、10ターンが経ったときだけです。「オプション → 追加コンテンツ → 移住」の「離散した人々の知らせ」が同じスイッチで、しきい値は詳細設定にあります。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_TITLE" Language="ja_JP"><Text>自分たちで戻る</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_PARA_1" Language="ja_JP"><Text>あなたの居住地から別の自国の居住地へ追われた人々は、故郷が安全になれば自分たちで戻ります。故郷で戦争、包囲、災害、飢饉、不穏のない状態が3ターン続くと、4ターンごとに1人が戻り、さらに離れたままの人が8人いるごとに1人が加わります。彼らは自分たちの民が去った区画がまだ空いていればそこに、そうでなければその居住地の別の空き区画に定住します。国境内での戦闘や包囲のあとは、一度攻撃された辺境の居住地はまた攻撃されやすいため、待ち時間は平穏な10ターンになります。年代記とターン終了ボタンの横の知らせが、人々が戻りはじめたときと最後の人が戻ったときを伝えます。AI文明にも同じことが起こります。詳細設定の「人々は自分たちで故郷へ戻る」に、これらの数値とオフのスイッチがあります。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_TITLE" Language="ja_JP"><Text>早める</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_PARA_1" Language="ja_JP"><Text>「早める」は、[icon:YIELD_GOLD]ゴールドまたは[icon:YIELD_DIPLOMACY]影響力を払って、自国の他の場所で暮らす人々を、今後のターンにかけてではなく、いま連れ戻します。払った人数がちょうど戻り、最も大きな集団からです。カードには、帰還者が故郷で働くタイルといま暮らしている場所で手放すタイル、1人あたりの差し引き、費用で何ターン早まるかが記され、価格ボタンにカーソルを合わせると帳簿の全体が見えます。国境の内側での帰還はタイルをタイルと入れ替えることなので、費用で買えるのは時間です。クールダウンは居住地ごとなので、1つの居住地で早めても他の居住地は使えます。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_ABROAD_TITLE" Language="ja_JP"><Text>国外から呼び戻す</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_ABROAD_PARA_1" Language="ja_JP"><Text>「国外から呼び戻す」は、他文明の都市で暮らすあなたの人々への呼びかけに費用を払います。これは賭けです。呼びかけた1人ずつが表示された確率（既定では約18%）で応じるかどうかを順に判定し、結果がどうであれ、選んだ規模の費用を払います。応じた1人ごとに、タイルが永久に増えます。カーソルを合わせると、確率と戻ってくる1人あたりの費用が表示されます。誰も応じなかった呼びかけも年代記に記され、クールダウンは始まります。自分たちの飛び地を持つ人々が自分たちで戻ることはめったにないので、呼びかけが彼らを連れ戻す確実な方法です。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_TITLE" Language="ja_JP"><Text>価格とクールダウン</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_1" Language="ja_JP"><Text>A call is one person, about half of those callable, or everyone, in [icon:YIELD_GOLD] Gold or [icon:YIELD_DIPLOMACY] Influence; a price the treasury cannot cover is greyed. Price rises faster than head count: two people cost nearly three times one, three about five times. Calls abroad cost more, and each age past Antiquity multiplies the price (x3 in the Exploration Age, x9 in the Modern Age). After a call, the same settlement waits eight turns before calling again. Only people whose home and host settlements both still stand under the owners they had when they left can be called.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_2" Language="ja_JP"><Text>AI civilizations pay the same prices, less a discount for the game's difficulty (4% a level of the Gold handicap, so 20% off at Deity), and while homecoming is on they only pay to call people abroad. When a call takes people out of one of your cities, you get a notice and a Chronicle line naming who called. Prices, odds and the AI's part are set under Calling people home in Advanced settings.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_1" Language="ja_JP"><Text>呼びかけの規模は、1人、呼びかけられる人の約半分、または全員で、[icon:YIELD_GOLD]ゴールドか[icon:YIELD_DIPLOMACY]影響力で払います。国庫で払えない価格は灰色になります。価格は人数より速く上がります。2人は1人の3倍近く、3人は約5倍です。国外への呼びかけはより高く、古代以降は時代ごとに価格が掛け算されます（探検の時代でx3、近代でx9）。呼びかけのあと、同じ居住地は8ターン待ってから再び呼びかけられます。呼び戻せるのは、故郷の居住地と暮らしている先の居住地の両方が、去ったときの所有者のもとにまだ残っている人々だけです。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_2" Language="ja_JP"><Text>AI文明も同じ価格を払いますが、ゲームの難易度に応じた割引があります（ゴールド補正1レベルにつき4%で、「神」では20%引き）。帰郷がオンのあいだ、AIが費用を払うのは国外への呼びかけだけです。呼びかけであなたの都市から人々が去ると、誰が呼びかけたかを示す知らせと年代記の一行が届きます。価格、確率、AIの振る舞いは、詳細設定の「人々の呼び戻し」で設定します。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_TITLE" Language="ja_JP"><Text>共同体の扱い</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>受入国が都市内の外国人共同体をどう扱うかは、その移民方針に従います。2枚の方針カードは他と同じ政策カードで、すべての文明が使え、セットしている間はそれぞれ専用の政策スロットが付くため、方針を取ってもあなたのスロットは減りません。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_2" Language="ja_JP"><Text>[B]移民歓迎の方針[/B]：その故郷と戦争中に承認した文化街区も産出の50%ではなく100%を保ち、戦争や災害の難民はまずあなたの都市を選びます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_3" Language="ja_JP"><Text>[B]移民排斥の方針[/B]：承認した文化街区は産出の50%を保ち、故郷との戦争中は25%になります。両方の方針をセットすると、移住と文化街区への効果は打ち消し合い、どちらもスロットを付けません。</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_4" Language="ja_JP"><Text>[B]Consular Protection[/B] (Exploration and Modern Ages) gives +3 [icon:YIELD_DIPLOMACY] Influence each turn (+5 in the Modern Age), and +1 more for every recognized enclave of your people in another civilization's cities, up to +4. When a civilization hosting one of those enclaves slots an Anti-Immigration Stance, you hold grievances against it, once per host per age.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_4" Language="ja_JP"><Text>[B]領事保護[/B]（探検の時代と近代）は、毎ターン[icon:YIELD_DIPLOMACY]影響力+3（近代では+5）に加え、他文明の都市で承認されたあなたの民の飛び地1つごとに+1を、最大+4まで与えます。そうした飛び地を抱える文明が「移民排斥の方針」をセットすると、あなたはその文明への不満を得ます。受入国ごと、時代ごとに1回です。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_5" Language="ja_JP"><Text>戦争が初めて文化街区に及ぶと、年代記は受入国の方針を記します。移民排斥の方針は家々を最も苦しめ、移民歓迎の方針は持ちこたえます。Partisansモッドを併用している場合、方針は戦時に文化街区の不穏が高まる速さも決めます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_TITLE" Language="ja_JP"><Text>移民政策</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>Emigration adds ten policy cards: the two stances in every age, and Talent Attraction and Consular Protection from the Exploration Age on. They slot and swap like any other card and stack with an Open Borders agreement, which raises migration both ways between the two signatories. Each card's yields are native game effects, which is also what the AI's planner values a card by; its migration effect comes from the mod. The two stances name their downsides on the card: the Pro-Immigration Stance's integration cost per newcomer and the enclaves that come with arrivals, the Anti-Immigration Stance's lost growth and tiles and the half of enclave yields given up.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>移住は10枚の政策カードを加えます。すべての時代にある2つの方針と、探検の時代以降の「才能の誘致」と「領事保護」です。他のカードと同じようにセットや差し替えができ、両方の署名国のあいだの移住を双方向に増やす開かれた国境の協定と重なります。各カードの産出はゲーム本来の効果で、AIのプランナーがカードを評価するのもその部分です。移住への効果はModが担います。2つの方針はカードに欠点を記しています。「移民歓迎の方針」は新来者1人ごとの統合コストと到着に伴う飛び地、「移民排斥の方針」は失われる成長とタイル、そして手放す飛び地の産出の半分です。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_ANTIQUITY_TITLE" Language="ja_JP"><Text>古代</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_ANTIQUITY_PARA_1" Language="ja_JP"><Text>[BLIST][LI][B]移民歓迎の方針[/B]（市民権）：毎ターン[icon:YIELD_DIPLOMACY]影響力+1。移民+50%。難民はまずあなたのもとへ来る。文化街区は戦争中も産出の100%を保つ。専用の政策スロット。[LI][B]移民排斥の方針[/B]（市民権）：すべての都市で[icon:YIELD_PRODUCTION]生産力+2、毎ターン[icon:YIELD_DIPLOMACY]影響力-2。移民-60%、移出-40%。難民の定住が60%遅くなる。文化街区は産出の50%を保つ。専用の政策スロット。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_EXPLORATION_TITLE" Language="ja_JP"><Text>探検の時代</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_EXPLORATION_PARA_1" Language="ja_JP"><Text>[BLIST][LI][B]Pro-Immigration Stance[/B] (Economics): +2 [icon:YIELD_DIPLOMACY] Influence per turn; +50% immigration; refugees come to you first; enclaves keep 100% of their yields at war.[LI][B]Anti-Immigration Stance[/B] (Economics): +3 [icon:YIELD_PRODUCTION] Production in every city, -3 [icon:YIELD_DIPLOMACY] Influence per turn; -60% immigration, -40% emigration; refugees settle 60% slower; enclaves keep 50% of their yields.[LI][B]Talent Attraction[/B] (Inspiration): +1 [icon:YIELD_SCIENCE] Science per 5 [icon:YIELD_POPULATION] Population and -2 [icon:YIELD_GOLD] Gold in every settlement.[LI][B]Consular Protection[/B] (Diplomatic Service): +3 [icon:YIELD_DIPLOMACY] Influence per turn, and +1 more for each recognized enclave of your people abroad, up to +4; grievances against a host that slots an Anti-Immigration Stance.[/LIST]</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_EXPLORATION_PARA_1" Language="ja_JP"><Text>[BLIST][LI][B]移民歓迎の方針[/B]（経済学）：毎ターン[icon:YIELD_DIPLOMACY]影響力+2。移民+50%。難民はまずあなたのもとへ来る。飛び地は戦争中も産出の100%を保つ。[LI][B]移民排斥の方針[/B]（経済学）：すべての都市で[icon:YIELD_PRODUCTION]生産力+3、毎ターン[icon:YIELD_DIPLOMACY]影響力-3。移民-60%、移出-40%。難民の定住が60%遅くなる。飛び地は産出の50%を保つ。[LI][B]才能の誘致[/B]（ひらめき）：すべての居住地で[icon:YIELD_POPULATION]人口5につき[icon:YIELD_SCIENCE]科学力+1、[icon:YIELD_GOLD]ゴールド-2。[LI][B]領事保護[/B]（外交使節団）：毎ターン[icon:YIELD_DIPLOMACY]影響力+3。さらに国外で承認されたあなたの民の飛び地1つごとに+1、最大+4。「移民排斥の方針」をセットした受入国への不満。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_TITLE" Language="ja_JP"><Text>近代</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_1" Language="ja_JP"><Text>[BLIST][LI][B]Pro-Immigration Stance[/B] (Social Question): +3 [icon:YIELD_DIPLOMACY] Influence per turn; +50% immigration; refugees come to you first; enclaves keep 100% of their yields at war.[LI][B]Anti-Immigration Stance[/B] (Social Question): +4 [icon:YIELD_PRODUCTION] Production in every city, -4 [icon:YIELD_DIPLOMACY] Influence per turn; -60% immigration, -40% emigration; refugees settle 60% slower; enclaves keep 50% of their yields.[LI][B]Talent Attraction[/B] (Modernization): +1 [icon:YIELD_SCIENCE] Science per 4 [icon:YIELD_POPULATION] Population and -3 [icon:YIELD_GOLD] Gold in every settlement.[LI][B]Consular Protection[/B] (Political Theory): +5 [icon:YIELD_DIPLOMACY] Influence per turn, and +1 more for each recognized enclave of your people abroad, up to +4; grievances against a host that slots an Anti-Immigration Stance.[/LIST]</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_2" Language="ja_JP"><Text>Talent Attraction pays by population through the game's own yield system, so it shows in each settlement's yield breakdown, grows with every immigrant who settles and keeps paying after the inflow stops; its Gold upkeep per settlement shows there too, so a wide civilization pays more for it. Pair it with a Pro-Immigration Stance or an Open Borders agreement to fill your settlements faster.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_1" Language="ja_JP"><Text>[BLIST][LI][B]移民歓迎の方針[/B]（社会問題）：毎ターン[icon:YIELD_DIPLOMACY]影響力+3。移民+50%。難民はまずあなたのもとへ来る。飛び地は戦争中も産出の100%を保つ。[LI][B]移民排斥の方針[/B]（社会問題）：すべての都市で[icon:YIELD_PRODUCTION]生産力+4、毎ターン[icon:YIELD_DIPLOMACY]影響力-4。移民-60%、移出-40%。難民の定住が60%遅くなる。飛び地は産出の50%を保つ。[LI][B]才能の誘致[/B]（近代化）：すべての居住地で[icon:YIELD_POPULATION]人口4につき[icon:YIELD_SCIENCE]科学力+1、[icon:YIELD_GOLD]ゴールド-3。[LI][B]領事保護[/B]（政治理論）：毎ターン[icon:YIELD_DIPLOMACY]影響力+5。さらに国外で承認されたあなたの民の飛び地1つごとに+1、最大+4。「移民排斥の方針」をセットした受入国への不満。[/LIST]</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_2" Language="ja_JP"><Text>「才能の誘致」はゲーム本来の産出システムを通して人口に応じて支払うので、各居住地の産出の内訳に表示され、定住した移民1人ごとに増え、流入が止まったあとも払い続けます。居住地ごとのゴールドの維持費もそこに表示されるので、広い文明ほど多く払います。「移民歓迎の方針」や開かれた国境の協定と組み合わせれば、居住地をより速く満たせます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_TITLE" Language="ja_JP"><Text>マップレンズ</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>Emigration adds two lenses to the game's lens panel, each with a hotkey. Both follow the Spoil Guard (see Scope &amp; Visibility). While a lens is up, the game's tile tooltip is hidden and the lens shows its own readout under the cursor.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>移住は、ゲームのレンズパネルに2つのレンズを加えます。それぞれにホットキーがあります。どちらもネタバレガードに従います（「範囲と表示」を参照）。レンズを表示しているあいだ、ゲームのタイルのツールチップは隠れ、レンズがカーソルの下に独自の情報を表示します。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_PROSPERITY_TITLE" Language="ja_JP"><Text>繁栄レンズ（Shift+P）</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_PROSPERITY_PARA_1" Language="ja_JP"><Text>繁栄レンズは、入植済みの各タイルをその上にあるものに応じて塗り分けます。タイルのスコアは次の合計です。[BLIST][LI]そのタイルの遺産：+6[LI]都市の中心：+3[LI]建造物1つごと：+2、完成した街区は+1[LI]使用中の施設：+1[LI]そのタイル自体の産出：3につき+1[LI]川：+1[LI]自然遺産：そのタイルは+3、隣接するタイルはそれぞれ+2[LI]隣接する遺産：1つにつき+1[LI]略奪されたもの：そのタイル上は1つにつき-3、隣接するものは1つにつき-1[/LIST]尺度はすべての居住地で共通で、次の段階に分かれます。繁栄（8以上）、好調（5～7）、普通（2～4）、貧弱（0～1）、荒廃（0未満）。灰色から緑、灰色から赤へのグラデーションで表示されます。何も建っていない水域は塗られません。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_PROSPERITY_PARA_2" Language="ja_JP"><Text>タイルにカーソルを合わせると、その段階、スコア、内訳のすべての項目が表示され、続いて居住地の繁栄度スコア、人口が増えているか減っているか、そしてその理由が表示されます。遺産と自然遺産はゲームのデータベースから読み取られるため、時代や他のModで追加されたものも数えられます。</Text></Replace>
@@ -2123,13 +2124,13 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_MARKERS_TITLE" Language="ja_JP"><Text>飛び地のマーカー</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_MARKERS_PARA_1" Language="ja_JP"><Text>飛び地のタイルは、代わりに置かれている施設のモデルを使うため、出自の文明のシンボルを示すマーカーが付きます。タイルにカーソルを合わせると、施設のツールチップの代わりに飛び地のツールチップが表示されます。飛び地の名前と段階（成立、承認済み、係争中、衰退中）、タイルの産出とその出どころ、飛び地の人々がそこに築いたもの、置き換えられた施設が今も都市にもたらしているもの、そして飛び地を承認したときに都市が採った方針です。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_TITLE" Language="ja_JP"><Text>通知と都市の情報表示</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_TITLE" Language="ja_JP"><Text>Notices Beside End Turn</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_PARA_1" Language="ja_JP"><Text>Migration news arrives in the game's own notification train beside End Turn, each kind with its own icon: people leaving your settlements, newcomers settling in them, your people coming home, a refugee crisis abroad, a disaster displacing people, and a civilization you have met opening or closing its borders. The text sits in the icon's hover, a click opens the Emigration screen on the tab that matters, and a right-click dismisses it. Counts are shown in population points, in people, or both, for example 3 population points (36,000 people), set by the Population unit of measurement option. Disasters carry the game's event names, wars their names, and conquests the name of the city taken. An arrival notice ends with what the newcomers cost you each turn.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_PARA_2" Language="ja_JP"><Text>By default only the largest event of each migration pass is announced, with cooldowns and thresholds on top. The Notifications section of Advanced settings switches to one notice per cause, or to none, and can bring back the mod's own stacked on-screen toasts. Every notification goes to the log either way.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_TITLE" Language="ja_JP"><Text>ターン終了ボタンの横の知らせ</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_PARA_1" Language="ja_JP"><Text>移住のニュースは、ターン終了ボタンの横にあるゲーム本来の通知の列に、種類ごとのアイコンで届きます。あなたの居住地から人々が去る、新来者がそこに定住する、あなたの人々が故郷へ戻る、国外の難民危機、人々を追い出す災害、出会った文明が国境を開くか閉じる、といったものです。文章はアイコンにカーソルを合わせると表示され、クリックすると移住画面が該当するタブで開き、右クリックで消せます。人数は「人口の単位」のオプションに応じて、人口ポイント、人数、またはその両方（たとえば3人口ポイント（36,000人））で表示されます。災害はゲームの出来事の名前を、戦争はその名前を、征服は奪われた都市の名前を伴います。到着の知らせの末尾には、新来者に毎ターンかかる費用が記されます。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_PARA_2" Language="ja_JP"><Text>既定では、移住処理ごとに最大の出来事だけが知らされ、さらにクールダウンとしきい値がかかります。詳細設定の「通知」セクションで、原因ごとに1つの知らせにするか、知らせを出さないかに切り替えられ、Mod独自の画面上に重なるトーストを復活させることもできます。どの設定でも、すべての通知はログに入ります。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_LOG_TITLE" Language="ja_JP"><Text>通知ログ</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_LOG_PARA_1" Language="ja_JP"><Text>The Notifications tab of the Migration dashboard keeps the last 120 notifications, newest first: the turn, the cause and named event, the settlement people left, where they went, and how many. Each entry expands to its detail. Migration Chronicle entries (an exodus, a diaspora taking root, a homecoming, an enclave recognized or faded, a stance taken by another civilization, each refugee decision and each call home) appear in the same list.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_LOG_PARA_1" Language="ja_JP"><Text>移住ダッシュボードの「通知」タブは、直近120件の通知を新しい順に保持します。ターン、原因と出来事の名前、人々が去った居住地、どこへ行ったか、何人かです。各項目は開くと詳細が表示されます。移住の年代記の項目（大脱出、根を下ろしたディアスポラ、帰郷、承認された飛び地や消えた飛び地、他文明が取った方針、難民の決断、人々の呼びかけのそれぞれ）も同じ一覧に表示されます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_READOUT_TITLE" Language="ja_JP"><Text>都市の情報表示</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_READOUT_PARA_1" Language="ja_JP"><Text>Selecting one of your cities shows a small migration panel: the pressures on it (unhappiness, war, disaster, famine, overcrowding), whether it is gaining or losing people and how fast, where leavers are likely to go, what would stop them ("What would stop it: +3 Food or +2 Happiness here (Granary gives +1 Food)", from the same model that scores the settlement, with the building of the age that gives most of that yield), what its newcomers cost your civilization each turn, refugees waiting to settle, and progress toward a Cultural Enclave. A warning marks a city whose people have nowhere to flee. The Settlements tab of the dashboard shows the same for every settlement at once.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_READOUT_PARA_1" Language="ja_JP"><Text>あなたの都市を選ぶと、小さな移住パネルが表示されます。都市にかかる圧力（不幸、戦争、災害、飢饉、過密）、人口が増えているか減っているかとその速さ、去る人がどこへ向かいそうか、何があれば止まるか（「止めるには：ここに食料+3または幸福度+2（穀物倉で食料+1）」。居住地を採点するのと同じモデルから、その時代でその産出を最も多く与える建造物とともに示します）、新来者に文明が毎ターン払う費用、定住を待つ難民、文化的飛び地への進み具合です。人々に逃げ場のない都市には警告が付きます。ダッシュボードの「居住地」タブは、同じ内容をすべての居住地について一度に表示します。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_PANEL_TITLE" Language="ja_JP"><Text>都市の詳細</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_PANEL_PARA_1" Language="ja_JP"><Text>ゲームの都市の詳細パネルに、移住のセクションが2つ加わります。「市民の成長」の下には、都市の住民の出自、行き先別の移出、出自別の移入、定住を待つ難民が表示されます。「建造物の内訳」の下には、都市に文化的飛び地があればそれが表示されます。どちらも都市を切り替えると更新されます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_TITLE" Language="ja_JP"><Text>オプションと強度</Text></Replace>
@@ -2137,8 +2138,8 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_PRESETS_TITLE" Language="ja_JP"><Text>強度プリセット</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_PRESETS_PARA_1" Language="ja_JP"><Text>強度プリセットは、1ターンあたりの上限、人々が移動する距離、そして暴力が人々を追い出す強さを設定します。[BLIST][LI][B]低[/B]：まれで小規模な移動。1都市につき1ターンあたり最大で流出1ポイント、流入2ポイント。包囲による追い出しは緩やか。[LI][B]中[/B]（既定）：1都市につき1ターンあたり最大で流出2、流入4。[LI][B]高[/B]：頻繁で大規模な移動。1都市につき1ターンあたり最大で流出4、流入8。避難が速く、戦争による急増も大きい。[/LIST]詳細設定でプリセットが管理する設定を変更すると、プリセットは「カスタム」と表示されます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_EVERYDAY_TITLE" Language="ja_JP"><Text>日常的な設定</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_EVERYDAY_PARA_1" Language="ja_JP"><Text>[BLIST][LI][B]Population unit of measurement[/B]: population points, historically scaled people (matching the Demographics mod), or both.[LI][B]Movement between civilizations[/B] and three [B]Refugees from conflict[/B] sliders (overall, wars between major powers, raids by minor powers) scale those flows alone.[LI][B]Dashboard data[/B]: live migration, or sample data to preview the network. [B]Migration timeline detail[/B]: how often the network records a timeline snapshot. [B]Simplify dashboard[/B]: hides the Network diagram. [B]Dashboard dock button[/B].[LI]On/off switches for [B]notifications[/B], [B]ethnic integration[/B] and [B]return migration[/B], and one for each decision pop-up: [B]Refugee decisions[/B], [B]Newcomer placement decisions[/B], [B]Displaced-people reminders[/B] and [B]Enclave stance decisions[/B]. With a switch off the mod decides for you, and the Settlements tab still works.[LI][B]First-loss explainer[/B]: off by default. On, the first time one of your settlements loses a tile to emigration, one page says what happened, where they went and why, what happens next and where to look. Once per game.
-[LI][B]Spoil Guard[/B]: on by default, hides civilizations you have not met across the Emigration screens (see Scope &amp; Visibility).[/LIST]</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_EVERYDAY_PARA_1" Language="ja_JP"><Text>[BLIST][LI][B]人口の単位[/B]：人口ポイント、歴史スケールの人数（Demographics Modに合わせたもの）、またはその両方。[LI][B]文明間の移動[/B]と3つの[B]紛争による難民[/B]スライダー（全体、主要勢力との戦争、小勢力の襲撃）は、それぞれの流れだけを調整します。[LI][B]ダッシュボードのデータ[/B]：実際の移住か、ネットワークをプレビューするためのサンプルデータか。[B]移住タイムラインの精細さ[/B]：ネットワークがタイムラインのスナップショットを記録する頻度。[B]ダッシュボードを簡略化[/B]：ネットワーク図を隠します。[B]ダッシュボードのドックボタン[/B]。[LI][B]通知[/B]、[B]民族の統合[/B]、[B]帰還移住[/B]のオン／オフと、決断のポップアップごとのスイッチ：[B]難民に関する決断[/B]、[B]新来者の配置の決定[/B]、[B]離散した人々の知らせ[/B]、[B]飛び地の方針の決定[/B]。スイッチがオフのときはModが代わりに決め、「居住地」タブはそのまま使えます。[LI][B]初めての流出の説明[/B]：既定ではオフ。オンにすると、あなたの居住地が移住で初めてタイルを失ったときに、1ページで何が起きたか、人々がどこへなぜ行ったか、次に何が起こるか、どこを見ればよいかを説明します。ゲームごとに1回です。
+[LI][B]ネタバレガード[/B]：既定ではオン。移住の画面全体で、まだ出会っていない文明を隠します（「範囲と表示」を参照）。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_ADVANCED_TITLE" Language="ja_JP"><Text>詳細設定</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_ADVANCED_PARA_1" Language="ja_JP"><Text>詳細設定ウィンドウには、100を超える個々の設定すべてが、開閉できるセクションにまとめられています。ペース、範囲、国境政策、繁栄モデル、戦争と暴力、災害、地理と移動、統合コスト、バランス調整ブレーキ、流入と流出、文化的飛び地、人々の呼び戻し、消耗、通知、表示とランキング、表示です。開いたセクションは開いたまま保持されます。値は単位付き（55%、x1.5、3ターン）または言葉（オフ、即時）で表示されます。ウィンドウには検索ボックス、変更した設定ごとのマーカー、設定ごとのリセット、そして「すべてリセット」があります。指導者別・文明別の微調整（「指導者と文明」を参照）にも、ここに専用のスイッチがあります。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_SPEED_TITLE" Language="ja_JP"><Text>ゲームスピード</Text></Replace>
@@ -2150,15 +2151,15 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_TITLE" Language="ja_JP"><Text>故郷を追われた人々の声</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>難民、移民、帰還するディアスポラ、あるいは定着した外国のコミュニティについてのポップアップには、その民の声による短い引用が添えられます。そうした言葉が残っている場合はその民の難民、亡命者、移民自身の言葉を、残っていない場合は彼らについて尊厳をもって書き記した証人の言葉を用いています。各文明のページには、その文明の引用と、それぞれが表示される場面、語り手が誰であったかが掲載されています。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_WHERE_TITLE" Language="ja_JP"><Text>声が表示される場面</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_WHERE_PARA_1" Language="ja_JP"><Text>[BLIST][LI][B]The refugee decision[/B] (Refugees at the Border, The Sick at the Gates) and [B]the Refugees pop-up[/B]: a refugee's words from the people fleeing.[LI][B]The Newcomers pop-up[/B]: a migrant's words from their people.[LI][B]The reminder that your people can come home[/B]: someone of your own civilization who longed for home or came back to it.[LI][B]The Cultural Enclave decision[/B]: a line from the enclave people's own writers, inscriptions or proverbs; a people's first and second enclaves in your empire each have their own line.[/LIST]The event fixes the line, so reloading a save shows the same words. When a people has no line for a situation, or comes from a civilization you have not met, the pop-up uses the general pools on the Voices of Many Lands page, which name no people.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_WHERE_PARA_1" Language="ja_JP"><Text>[BLIST][LI][B]難民の決断[/B]（国境の難民、門前の病人）と[B]「難民」ポップアップ[/B]：逃れてきた民の難民自身の言葉。[LI][B]「新来者」ポップアップ[/B]：その民の移民の言葉。[LI][B]人々が故郷へ戻れるという知らせ[/B]：故郷を恋い慕った、あるいは故郷へ戻った、あなた自身の文明の誰かの言葉。[LI][B]文化的飛び地の決断[/B]：飛び地の民自身の書き手、碑文、ことわざからの一節。ある民のあなたの帝国での1つ目と2つ目の飛び地には、それぞれ別の一節があります。[/LIST]一節は出来事によって決まるので、セーブを読み込み直しても同じ言葉が表示されます。その状況に合う一節を持たない民や、まだ出会っていない文明の民の場合、ポップアップは「多くの地の声」ページの、民の名を出さない共通の一節を使います。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_RULES_TITLE" Language="ja_JP"><Text>引用の選び方</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_RULES_PARA_1" Language="ja_JP"><Text>すべての一節は、出典の閲覧可能な写本や版と照合されています。省略箇所は省略記号で示しています。刊行された翻訳には訳者の名を記し、（訳）とだけ記したものは、確認した原文をこのModが独自に訳したものです。飛び地の一節は、その民自身の書き手、碑文、ことわざから採られています。難民と移民の一節は、その民の難民、亡命者、移民の言葉か、そうでなければ彼らについて尊厳をもって書き記した証人の言葉です。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_RULES_PARA_2" Language="ja_JP"><Text>ある民を固定観念で描く一節、故郷を追われた人々を侵略者、重荷、脅威として描く一節、残虐行為の加害者や憎悪の象徴となる人物の言葉、聖典を軽んじる一節、生々しい心の傷にこだわる一節は除外しました。却下した一節を含む出典の完全な記録は、このModのドキュメントとともに公開しています。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_SCRIPTS_TITLE" Language="ja_JP"><Text>原語</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_SCRIPTS_PARA_1" Language="ja_JP"><Text>英語以外の出典からの引用では、原文と訳文を並べて表示します。ラテン文字の原文は、古英語や古ノルド語からベトナム語、トルコ語、アッシリアの碑文を翻字したアッカド語まで、全文を表示します。アラビア文字、ヘブライ文字、ギリシャ文字、キリル文字、エチオピア文字、アルメニア文字、ジョージア文字、モンゴル文字、インド系および東南アジア系の文字、そして中国語、日本語、韓国語の原文は、ゲームのフォントがそれらの文字に対応していないため、訳文のみで表示されます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_TITLE" Language="ja_JP"><Text>移住について</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>Emigration is a user-interface mod. Each turn it reads the state of the world and writes population, tiles, yields and Influence back through the game's own commands. Its own database rows add the policy cards, the notification types, this Civilopedia section and two city strategies the game's AI can switch on; base-game rules and files are left as they are. It simulates every living major civilization from the first turn, met or unmet. The Common Questions page is the short version of what drives migration.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2" Language="ja_JP"><Text>Version 3.7.0, for Civilization VII 1.5.0. The interface is available in twelve languages. The source, the full documentation with every formula, and the record of every quotation's source are on GitHub at github.com/tmtmiller1/civilizationvii-emigration.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_1" Language="ja_JP"><Text>移住はユーザーインターフェースのModです。毎ターン世界の状態を読み取り、人口、タイル、産出、影響力をゲーム本来のコマンドを通して書き戻します。Mod自身のデータベース行が加えるのは、政策カード、通知の種類、このCivilopediaのセクション、そしてゲームのAIが切り替えられる2つの都市戦略で、ゲーム本体のルールとファイルはそのまま残ります。生存しているすべての主要文明を、出会っているかどうかにかかわらず最初のターンからシミュレーションします。「よくある質問」ページは、移住を動かしているものの短い説明です。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2" Language="ja_JP"><Text>バージョン3.7.0、Civilization VII 1.5.0向け。インターフェースは12の言語で利用できます。ソースコード、すべての計算式を含む完全なドキュメント、すべての引用の出典の記録は、GitHubのgithub.com/tmtmiller1/civilizationvii-emigrationにあります。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_TITLE" Language="ja_JP"><Text>数字の向こうにいる人々</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_PARA_1" Language="ja_JP"><Text>このModは、移住と強制移動をゲームのシステムに落とし込んでいます。現実には、人々が故郷を離れる理由の多くは戦争、迫害、災害、困窮です。このModは難民を一人の人間として描き、言葉が残っている限り故郷を追われた人々に彼ら自身の言葉で語らせ、被災した都市の損失を死者として数えます。作者は、このModの節目ごとに難民支援への寄付を行ってきました。もし可能であれば、UNHCR（国連難民高等弁務官事務所）、国際救済委員会（IRC）、国境なき医師団、International Refugee Assistance Project、あるいは地域の難民支援・相互扶助団体への支援をご検討ください。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_TITLE" Language="ja_JP"><Text>クレジット</Text></Replace>

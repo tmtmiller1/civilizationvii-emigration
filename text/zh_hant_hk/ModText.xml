@@ -69,7 +69,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_AGGRESSOR" Language="zh_Hant_HK"><Text>避開侵略者</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FLIGHT" Language="zh_Hant_HK"><Text>遠離戰火</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CONGESTION" Language="zh_Hant_HK"><Text>擁擠</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_UNSAFE" Language="zh_Hant_HK"><Text>Under attack</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_UNSAFE" Language="zh_Hant_HK"><Text>受到攻擊</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PERMEABILITY" Language="zh_Hant_HK"><Text>邊境通透性</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_ECONOMY" Language="zh_Hant_HK"><Text>經濟</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS" Language="zh_Hant_HK"><Text>幸福度</Text></Replace>
@@ -84,20 +84,20 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_WAR_WEARINESS" Language="zh_Hant_HK"><Text>厭戰</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_DOWNSIZING" Language="zh_Hant_HK"><Text>離開較大的聚落</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_BUILT" Language="zh_Hant_HK"><Text>奇觀與建築</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_WONDERS" Language="zh_Hant_HK"><Text>Wonders</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_BUILDINGS" Language="zh_Hant_HK"><Text>Buildings</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_GOVERNMENT" Language="zh_Hant_HK"><Text>Government</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="zh_Hant_HK"><Text>Celebrations</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="zh_Hant_HK"><Text>Happiness stage</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="zh_Hant_HK"><Text>Against the empire's average</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="zh_Hant_HK"><Text>Cap on what's built</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="zh_Hant_HK"><Text>Food</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="zh_Hant_HK"><Text>Production</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_GOLD" Language="zh_Hant_HK"><Text>Gold</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_SCIENCE" Language="zh_Hant_HK"><Text>Science</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_CULTURE" Language="zh_Hant_HK"><Text>Culture</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_WONDERS" Language="zh_Hant_HK"><Text>奇觀</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_BUILDINGS" Language="zh_Hant_HK"><Text>建築</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_GOVERNMENT" Language="zh_Hant_HK"><Text>政體</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="zh_Hant_HK"><Text>慶典</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="zh_Hant_HK"><Text>幸福度階段</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="zh_Hant_HK"><Text>相對於帝國平均</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="zh_Hant_HK"><Text>建設加成上限</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="zh_Hant_HK"><Text>食物</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="zh_Hant_HK"><Text>生產力</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_GOLD" Language="zh_Hant_HK"><Text>金幣</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_SCIENCE" Language="zh_Hant_HK"><Text>科技</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_CULTURE" Language="zh_Hant_HK"><Text>文化</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_SEC_DIVERSITY" Language="zh_Hant_HK"><Text>最多元城市</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_TAB_DIVERSITY" Language="zh_Hant_HK"><Text>Communities</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_DIVERSITY" Language="zh_Hant_HK"><Text>社群</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_TITLE" Language="zh_Hant_HK"><Text>最多元城市</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_SUBTITLE" Language="zh_Hant_HK"><Text>各聚落的居民，按其最初所屬文明著色。長條寬度表示人口多少。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_COL_CITY" Language="zh_Hant_HK"><Text>聚落</Text></Replace>
@@ -119,17 +119,17 @@
         <Replace Tag="LOC_EMIG_COSMO_MIXED" Language="zh_Hant_HK"><Text>混合城市</Text></Replace>
         <Replace Tag="LOC_EMIG_COSMO_CENTER" Language="zh_Hant_HK"><Text>世界性中心</Text></Replace>
         <Replace Tag="LOC_EMIG_COSMO_WORLD" Language="zh_Hant_HK"><Text>世界城市</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_HOMOGENEOUS_TIP" Language="zh_Hant_HK"><Text>One origin makes up 95% or more of the settlement.</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_LOCAL_TIP" Language="zh_Hant_HK"><Text>People from elsewhere live here, but no community from another civilization reaches 15%.</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_MIXED_TIP" Language="zh_Hant_HK"><Text>A community from another civilization is 15% or more, while the largest origin still holds 60% or more.</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_CENTER_TIP" Language="zh_Hant_HK"><Text>No origin reaches 60%, and at least three origins hold 10% or more each.</Text></Replace>
-        <Replace Tag="LOC_EMIG_COSMO_WORLD_TIP" Language="zh_Hant_HK"><Text>No origin reaches half, and at least four origins hold 10% or more each.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_CITY_TIP" Language="zh_Hant_HK"><Text>A settlement, grouped under the civilization that holds it.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_ORIGINS_TIP" Language="zh_Hant_HK"><Text>Each colour is a civilization its people came from, sized by share; the bar's width is the settlement's population against the largest in the list.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_POP_TIP" Language="zh_Hant_HK"><Text>Population, and how many origins hold 5% or more of it.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_MIX_TIP" Language="zh_Hant_HK"><Text>Majority: one origin holds more than half. Plurality: the largest origin leads the next by a clear margin without a majority. No majority: no origin leads clearly.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_CHARACTER_TIP" Language="zh_Hant_HK"><Text>A word for how mixed the settlement's people are, from its own population alone. Hover a character for its rule.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_ENCLAVE_TIP" Language="zh_Hant_HK"><Text>The Cultural Enclave in the settlement, if a community from another civilization has one, and its stage.</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_HOMOGENEOUS_TIP" Language="zh_Hant_HK"><Text>單一來源佔聚落人口 95% 或以上。</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_LOCAL_TIP" Language="zh_Hant_HK"><Text>有來自外地的人住在這裡，但沒有任何來自其他文明的社群達到 15%。</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_MIXED_TIP" Language="zh_Hant_HK"><Text>有一個來自其他文明的社群達到 15% 或以上，而最大的來源仍佔 60% 或以上。</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_CENTER_TIP" Language="zh_Hant_HK"><Text>沒有任何來源達到 60%，且至少有三種來源各佔 10% 或以上。</Text></Replace>
+        <Replace Tag="LOC_EMIG_COSMO_WORLD_TIP" Language="zh_Hant_HK"><Text>沒有任何來源達到一半，且至少有四種來源各佔 10% 或以上。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_CITY_TIP" Language="zh_Hant_HK"><Text>一個聚落，歸在持有它的文明之下。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_ORIGINS_TIP" Language="zh_Hant_HK"><Text>每種顏色代表居民所來自的一個文明，按佔比分配長度；長條的寬度是這個聚落的人口相對於清單中最大者的比例。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_POP_TIP" Language="zh_Hant_HK"><Text>人口，以及有多少種來源各佔其 5% 或以上。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_MIX_TIP" Language="zh_Hant_HK"><Text>多數：單一來源佔超過一半。相對多數：最大的來源明顯領先第二位，但未過半。無多數：沒有任何來源明顯領先。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_CHARACTER_TIP" Language="zh_Hant_HK"><Text>用一個詞概括這個聚落居民的混合程度，只看它自己的人口。把游標移到特徵上可查看其判定規則。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_ENCLAVE_TIP" Language="zh_Hant_HK"><Text>聚落中的文化飛地（如果來自其他文明的社群擁有一處）及其階段。</Text></Replace>
         <Replace Tag="LOC_EMIG_COSMO_DESC" Language="zh_Hant_HK"><Text>描述各聚落的居民來自何處，而非其文化街區。不附帶任何產出。</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET" Language="zh_Hant_HK"><Text>強度預設</Text></Replace>
         <Replace Tag="LOC_EMIG_PRESET_D" Language="zh_Hant_HK"><Text>移民的整體強度：既決定人們遷移的頻繁程度，也決定戰爭將人們驅離家園的猛烈程度：每回合上限、戰爭難民的湧出規模，以及每座城市的損失上限。低 = 溫和；高 = 劇烈。改動會在一回合內生效。「自訂」會保留你的各項個別設定。若需更精細的控制，請使用下方的滑桿或「進階設定」。</Text></Replace>
@@ -243,20 +243,20 @@
         <Replace Tag="LOC_EMIG_T_SRAMP_D" Language="zh_Hant_HK"><Text>圍城需持續多少回合才能達到其完整的移民壓力（突襲起步輕、逐步增強）。僅圍城模型使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP" Language="zh_Hant_HK"><Text>圍城：戰爭中城市損失的最大比例</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP_D" Language="zh_Hant_HK"><Text>戰爭移民在停止前最多能帶走的城市人口（按圍城開始時規模的比例）。僅圍城模型使用。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE" Language="zh_Hant_HK"><Text>Close a settlement to newcomers</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="zh_Hant_HK"><Text>Each of your settlements gets a "Close to newcomers" button on its Settlements card. A closed settlement takes nobody in: arrivals go to your next best settlement, and one already on the road is re-aimed when it lands. Off hides the button and reopens every settlement.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTSAFE" Language="zh_Hant_HK"><Text>Refugees avoid a settlement under attack</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTSAFE_D" Language="zh_Hant_HK"><Text>A settlement in a crisis of its own (fighting or disaster over the flee threshold, or being razed) is a much weaker destination while it lasts, and an arrival on the road to it is held or sent to the next best settlement instead. With nowhere safer, people still go. A stalled siege lifts the penalty.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTPEN" Language="zh_Hant_HK"><Text>Penalty for a settlement under attack</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTPEN_D" Language="zh_Hant_HK"><Text>Taken off the pull of a settlement in crisis for each threshold's worth its fighting or disaster sits over the flee threshold (half a step at least). A settlement worse off than it pays half.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTPENCAP" Language="zh_Hant_HK"><Text>Most taken off a settlement under attack</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_DESTPENCAP_D" Language="zh_Hant_HK"><Text>The cap on that penalty, so a settlement under heavy attack is avoided but never ruled out.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_VSUSTAIN" Language="zh_Hant_HK"><Text>Turns of fighting before people flee</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_VSUSTAIN_D" Language="zh_Hant_HK"><Text>How many turns in a row a settlement's fighting has to stay over the flee threshold before its people flee it as war refugees and the fighting can kill. A lone skirmish or a one-turn siege flag then moves nobody. A settlement being razed empties at once whatever this says. Needs the siege model on.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_SSTALL" Language="zh_Hant_HK"><Text>Siege: quiet turns before it stalls</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_SSTALL_D" Language="zh_Hant_HK"><Text>A besieged city whose attackers have neither damaged a district nor fought in its borders for this many turns has a stalled siege: the siege stops adding pressure, nobody dies for it, and the readout says so. The next attack ends the stall. Scales with game speed.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_STOTALCAP" Language="zh_Hant_HK"><Text>Siege: most of a city lost to war and death</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_STOTALCAP_D" Language="zh_Hant_HK"><Text>Deaths under siege count into the same tally as war-driven emigration. Once the two together reach this share of the population the siege began with, the siege kills nobody else until it ends. Only used by the siege model.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE" Language="zh_Hant_HK"><Text>對新來者關閉聚落</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="zh_Hant_HK"><Text>你的每個聚落在「聚落」卡上都有一個「對新來者關閉」按鈕。關閉的聚落不接收任何人：到來者會改去你次佳的聚落，已在路上的人則在抵達時重新導向。關閉此項會隱藏按鈕，並重新開放所有聚落。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTSAFE" Language="zh_Hant_HK"><Text>難民避開受攻擊的聚落</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTSAFE_D" Language="zh_Hant_HK"><Text>自身陷於危機的聚落（戰鬥或災害超過逃離門檻，或正被夷平）在危機持續期間是弱得多的目的地，已在前往途中的人會被暫留，或改送往次佳的聚落。若沒有更安全的去處，人們仍會前往。圍城停滯時，懲罰解除。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTPEN" Language="zh_Hant_HK"><Text>受攻擊聚落的懲罰</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTPEN_D" Language="zh_Hant_HK"><Text>陷於危機的聚落，其戰鬥或災害每超過逃離門檻一個門檻的幅度（至少算半級），就從它的吸引力中扣除這麼多。比它處境更差的聚落只扣一半。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTPENCAP" Language="zh_Hant_HK"><Text>受攻擊聚落最多扣除</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_DESTPENCAP_D" Language="zh_Hant_HK"><Text>該懲罰的上限，使受到猛烈攻擊的聚落會被避開，但永遠不會被完全排除。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VSUSTAIN" Language="zh_Hant_HK"><Text>人們逃離前的戰鬥回合數</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_VSUSTAIN_D" Language="zh_Hant_HK"><Text>聚落的戰鬥要連續超過逃離門檻多少個回合，其人民才會作為戰爭難民逃離，戰鬥才會造成死亡。零星的小衝突或一回合的圍城標記便不會驅走任何人。正被夷平的聚落無論此值如何都會立即清空。需要開啟圍城模型。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SSTALL" Language="zh_Hant_HK"><Text>圍城：多少個平靜回合後停滯</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_SSTALL_D" Language="zh_Hant_HK"><Text>被圍的城市若其攻擊者在這麼多回合內既未破壞任何區域，也未在其邊境內交戰，圍城便算停滯：圍城不再增加壓力，沒有人因它死去，讀數也會如此顯示。下一次攻擊即結束停滯。隨遊戲速度縮放。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_STOTALCAP" Language="zh_Hant_HK"><Text>圍城：一座城市最多因戰爭與死亡失去多少</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_STOTALCAP_D" Language="zh_Hant_HK"><Text>圍城造成的死亡與戰爭驅動的遷出計入同一個總數。當兩者合計達到圍城開始時人口的這個比例，圍城在結束前不再造成任何死亡。僅圍城模型使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_WARSURGE" Language="zh_Hant_HK"><Text>每回合最多出逃難民</Text></Replace>
         <Replace Tag="LOC_EMIG_T_WARSURGE_D" Language="zh_Hant_HK"><Text>遭受猛烈圍攻的城市在單個回合內可流失的最大鄉村人口。戰爭難民會隨戰鬥的激烈程度成波次湧出，而不再是每回合一人的穩定細流（仍受圍城損失上限的限制）。1 = 關閉（舊的細流方式）。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_AGGRESSOR" Language="zh_Hant_HK"><Text>難民避開攻擊者</Text></Replace>
@@ -322,7 +322,7 @@
         <Replace Tag="LOC_EMIG_CALLHOME_EYEBROW_IN" Language="zh_Hant_HK"><Text>來自我們自己的聚落</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_EYEBROW_EX" Language="zh_Hant_HK"><Text>來自外國城市</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_TITLE_IN" Language="zh_Hant_HK"><Text>召喚人民回家</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_BODY_HASTEN" Language="zh_Hant_HK"><Text>They come home on their own once their settlement has been calm for a while; paying brings them back now.</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_BODY_HASTEN" Language="zh_Hant_HK"><Text>一旦他們的聚落平靜一段時間，他們就會自行回家；付費則可以現在就把他們帶回來。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_TITLE_EX" Language="zh_Hant_HK"><Text>召喚海外的人民回國</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_BODY_IN_ONE" Language="zh_Hant_HK"><Text>有 {1_Away} 個人口點被逐出{2_Home}，如今住在我們的另一個聚落{3_From}。他們身處我們的國境之內、受我們自己管治，因此我們召喚的每一個人都會回來。請選擇要帶回多少人。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_BODY_IN" Language="zh_Hant_HK"><Text>有 {1_Away} 個人口點被逐出家園，如今住在我們的其他聚落。他們身處我們的國境之內、受我們自己管治，因此我們召喚的每一個人都會回來。請選擇要帶回多少人。</Text></Replace>
@@ -346,21 +346,21 @@
         <Replace Tag="LOC_EMIG_CALLHOME_CALL_N" Language="zh_Hant_HK"><Text>每人約有 {1_Pct}% 的機會響應。無論結果如何，召喚都要付費。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_NO" Language="zh_Hant_HK"><Text>讓他們留在原地</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_NO_N" Language="zh_Hant_HK"><Text>不會再就這些人詢問你；隨着時間推移，他們仍可能自行陸續回家。</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_WAIT" Language="zh_Hant_HK"><Text>Wait for the free homecoming</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_WAIT_N" Language="zh_Hant_HK"><Text>They come home on their own, on the schedule above; nothing is spent.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_TITLE_IN_HOME" Language="zh_Hant_HK"><Text>Bring {1_Home}'s people home</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_TITLE_EX_HOME" Language="zh_Hant_HK"><Text>Call {1_Home}'s people back from abroad</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_BODY_HASTEN_TAB" Language="zh_Hant_HK"><Text>{1_Away} of {2_Home}'s people live in other settlements of ours. They come home free, {3_Batch} at a time every {4_Every} turns, {5_When}, all of them in about {6_All} turns. Paying brings up to {7_Cap} back this turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_HASTEN_START_IN" Language="zh_Hant_HK"><Text>starting in {1_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_HASTEN_START_NEXT" Language="zh_Hant_HK"><Text>starting next turn</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_WAIT" Language="zh_Hant_HK"><Text>等待免費回歸</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_WAIT_N" Language="zh_Hant_HK"><Text>他們會按上述時程自行回家；不用花費任何東西。</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_TITLE_IN_HOME" Language="zh_Hant_HK"><Text>帶{1_Home}的人民回家</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_TITLE_EX_HOME" Language="zh_Hant_HK"><Text>召喚{1_Home}的人民從海外回國</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_BODY_HASTEN_TAB" Language="zh_Hant_HK"><Text>{2_Home}有 {1_Away} 名人民住在我們的其他聚落。他們會免費回家，每 {4_Every} 回合回來 {3_Batch} 人，{5_When}，全部回來約需 {6_All} 回合。付費可在本回合帶回最多 {7_Cap} 人。</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_HASTEN_START_IN" Language="zh_Hant_HK"><Text>{1_Turns} 回合後開始</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_HASTEN_START_NEXT" Language="zh_Hant_HK"><Text>下回合開始</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON" Language="zh_Hant_HK"><Text>{1_Count} 個人口點響應了召喚，回到了家鄉。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_ONE" Language="zh_Hant_HK"><Text>一個人口點響應了召喚，回到了家鄉。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_TITLE" Language="zh_Hant_HK"><Text>他們響應了召喚</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE" Language="zh_Hant_HK"><Text>召喚已傳到我們在海外的人民那裡，卻沒有一個人回來。</Text></Replace>
         <Replace Tag="LOC_EMIG_CALLHOME_CHRON_NONE_TITLE" Language="zh_Hant_HK"><Text>召喚無人響應</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS" Language="zh_Hant_HK"><Text>{1_Civ} calls its people home from {2_City}: {3_Count} population points leave.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_ONE" Language="zh_Hant_HK"><Text>{1_Civ} calls its people home from {2_City}: one population point leaves.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_TITLE" Language="zh_Hant_HK"><Text>Called Home By Their Own</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS" Language="zh_Hant_HK"><Text>{1_Civ}從{2_City}召喚其人民回國：{3_Count} 個人口點離開。</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_ONE" Language="zh_Hant_HK"><Text>{1_Civ}從{2_City}召喚其人民回國：一個人口點離開。</Text></Replace>
+        <Replace Tag="LOC_EMIG_CALLHOME_AI_LOSS_TITLE" Language="zh_Hant_HK"><Text>被本族召喚回國</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL" Language="zh_Hant_HK"><Text>與主要文明交戰的壓力</Text></Replace>
         <Replace Tag="LOC_EMIG_T_MAJORVIOL_D" Language="zh_Hant_HK"><Text>當攻擊者中有主要文明時，攻擊會產生多少衝突壓力。預設為 1；越低，戰爭趕走的人越少，越高則越多。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SIEGEFLOOR" Language="zh_Hant_HK"><Text>圍城下限：主要文明</Text></Replace>
@@ -371,181 +371,181 @@
         <Replace Tag="LOC_EMIG_T_MINORFLOOR_D" Language="zh_Hant_HK"><Text>僅被小勢力圍困的城市在受到實際傷害之前所感受到的壓力。實際傷害始終全額計算。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME" Language="zh_Hant_HK"><Text>召喚人民回國</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_D" Language="zh_Hant_HK"><Text>提供一次付費召喚，按你選擇的人數，把流離失所的人帶回他們逃離的聚落。從你自己的聚落召回等同購買：要多少人就來多少人。從海外召回則無論結果如何都要付費，而每位被召喚的人可能響應，也可能不響應。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING" Language="zh_Hant_HK"><Text>People find their own way home</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_D" Language="zh_Hant_HK"><Text>People driven out of one of your settlements into another of yours come back on their own once their home has been calm for a few turns, one at a time, and rebuild a tile there. Every civilization gets the same. While this is on, calling people home is only offered for people abroad. Off brings back the paid call for people at home.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM" Language="zh_Hant_HK"><Text>Calm turns before people come home</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM_D" Language="zh_Hant_HK"><Text>How many turns in a row a settlement has to be free of disaster, famine and unrest before the people who fled it start coming back. Any trouble starts the count again.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALMWAR" Language="zh_Hant_HK"><Text>Calm turns after fighting</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALMWAR_D" Language="zh_Hant_HK"><Text>The same wait when the trouble was fighting in the settlement's borders or a siege. Longer, because a frontier settlement that was hit once is likely to be hit again, and people sent back too soon are lost with it.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_BATCH" Language="zh_Hant_HK"><Text>Extra returnee per this many away</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_BATCH_D" Language="zh_Hant_HK"><Text>Each return brings one person home, plus one more for every this many still away, so a settlement that lost twenty refills in a few returns instead of eighty turns. Never means one at a time.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY" Language="zh_Hant_HK"><Text>Turns between returns</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY_D" Language="zh_Hant_HK"><Text>Once a settlement is calm, its people come home this often, from whichever of your settlements holds the most of them.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOMECOMING_START_TITLE" Language="zh_Hant_HK"><Text>The Road Home</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOMECOMING_START" Language="zh_Hant_HK"><Text>{1_Home} is safe again, and the people who fled it have started coming home.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOMECOMING_DONE_TITLE" Language="zh_Hant_HK"><Text>Home At Last</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE" Language="zh_Hant_HK"><Text>{1_Count} of your people are displaced from settlements you still hold, and a settlement they fled is safe again. The Settlements tab shows where they are, when they come back on their own, and what bringing them back sooner costs.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_TITLE" Language="zh_Hant_HK"><Text>Your people can come home</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_OPEN" Language="zh_Hant_HK"><Text>Open the Settlements tab</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_OPEN_N" Language="zh_Hant_HK"><Text>Each settlement people fled shows them under its charts; bring them back from there.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_LATER" Language="zh_Hant_HK"><Text>Not now</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_LATER_N" Language="zh_Hant_HK"><Text>You'll be reminded again only once half again as many are displaced, and not for at least {1_Turns} turns.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_NEVER" Language="zh_Hant_HK"><Text>Don't remind me again</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOME_NOTICE_NEVER_N" Language="zh_Hant_HK"><Text>Turns these reminders off for good; Options, Mods, Emigration turns them back on.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_REMIND_STOP" Language="zh_Hant_HK"><Text>Stop displaced-people reminders</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_REMIND_OFF" Language="zh_Hant_HK"><Text>Reminders are off; Options, Mods, Emigration turns them back on.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOME_NOTICE_MIN" Language="zh_Hant_HK"><Text>Reminder threshold</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOME_NOTICE_MIN_D" Language="zh_Hant_HK"><Text>How many population points have to be displaced from settlements you still hold before the reminder speaks. 5 by default. A repeat needs the count to have grown by half (and by at least this many) since the last reminder, at least 10 turns later, and only once one of the settlements they fled is calm enough for them to return.</Text></Replace>
-        <Replace Tag="LOC_EMIG_HOMECOMING_DONE" Language="zh_Hant_HK"><Text>The last of the people who fled {1_Home} are back.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_AI_DIFFICULTY" Language="zh_Hant_HK"><Text>AI price discount per difficulty level</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_AI_DIFFICULTY_D" Language="zh_Hant_HK"><Text>The game gives the AI more Gold on harder difficulties, but the prices this mod charges it for calling people home and taking in refugees are yours. This takes that much off per level of the game's Gold handicap for the difficulty you play, so Deity is 20% off at the default.</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_NEWCOMERS_COST" Language="zh_Hant_HK"><Text>Newcomers: -{1_Gold} Gold, -{2_Happy} Happiness a turn across your civilization while they settle in</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_FIX" Language="zh_Hant_HK"><Text>What would stop it: {1_Options} here</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_FIX_OR" Language="zh_Hant_HK"><Text>or</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_FIX_BUILDING" Language="zh_Hant_HK"><Text>({1_Building} gives +{2_Amount} {3_Yield})</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NEWCOMERS" Language="zh_Hant_HK"><Text>Newcomers settling in cost you {1_Gold} Gold and {2_Happy} Happiness a turn right now; the cost fades as they integrate.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NEWCOMERS_SHORT" Language="zh_Hant_HK"><Text>Newcomers cost {1_Gold} Gold and {2_Happy} Happiness a turn while they settle in.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SUB" Language="zh_Hant_HK"><Text>Left</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SUB_SUB" Language="zh_Hant_HK"><Text>that went elsewhere</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_GAINS_NAMED" Language="zh_Hant_HK"><Text>{1_Home} gains</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LOSES_NAMED" Language="zh_Hant_HK"><Text>{1_From} loses</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NET_PER" Language="zh_Hant_HK"><Text>net per person</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DECIDE" Language="zh_Hant_HK"><Text>Decide their stance</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DECIDE_NOTE" Language="zh_Hant_HK"><Text>The community has stayed long enough; its stance is yours to set.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_LEFT_NONE" Language="zh_Hant_HK"><Text>None</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ARRIVED" Language="zh_Hant_HK"><Text>Arrived</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ARRIVED_SUB" Language="zh_Hant_HK"><Text>from elsewhere, living here</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ARRIVED_NONE" Language="zh_Hant_HK"><Text>None</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OUR_OWN" Language="zh_Hant_HK"><Text>Our own people</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_NEWCOMERS" Language="zh_Hant_HK"><Text>Newcomers</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_MIX" Language="zh_Hant_HK"><Text>Mix</Text></Replace>
-        <Replace Tag="LOC_EMIG_CF_CIV_SETTLEMENTS" Language="zh_Hant_HK"><Text>Its settlements</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_COMMUNITY" Language="zh_Hant_HK"><Text>Community</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DECISION" Language="zh_Hant_HK"><Text>Stance decision</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DECISION_NONE" Language="zh_Hant_HK"><Text>None waiting</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_PAY_LBL_NONE" Language="zh_Hant_HK"><Text>Bring back now for</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NOBODY" Language="zh_Hant_HK"><Text>Nobody to bring back.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NEWCOMERS_NONE" Language="zh_Hant_HK"><Text>No newcomers are settling in right now.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_FROM" Language="zh_Hant_HK"><Text>Where they came from</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_TO" Language="zh_Hant_HK"><Text>Where they went</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_HERE" Language="zh_Hant_HK"><Text>Who lives here</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_WHY" Language="zh_Hant_HK"><Text>Why they're leaving</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_WHY_NONE" Language="zh_Hant_HK"><Text>No pressure yet</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PIE_HERE_NONE" Language="zh_Hant_HK"><Text>Not counted yet</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING" Language="zh_Hant_HK"><Text>人們自行回家</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_D" Language="zh_Hant_HK"><Text>從你的一個聚落被逐往你另一個聚落的人，在家園平靜幾個回合後便會自行回來，每次一人，並在那裡重建一個地塊。每個文明都一樣。開啟時，召喚人民回國只對海外的人提供。關閉則恢復對本國境內人民的付費召喚。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM" Language="zh_Hant_HK"><Text>人們回家前的平靜回合數</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM_D" Language="zh_Hant_HK"><Text>聚落要連續多少回合沒有災害、饑荒和動亂，逃離它的人才會開始回來。任何麻煩都會重新開始計數。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALMWAR" Language="zh_Hant_HK"><Text>戰鬥後的平靜回合數</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALMWAR_D" Language="zh_Hant_HK"><Text>當麻煩是聚落邊境內的戰鬥或圍城時所需的同類等待。較長，因為被打過一次的邊疆聚落很可能再被打，太早送回去的人會隨它一起失去。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_BATCH" Language="zh_Hant_HK"><Text>每這麼多在外者多回一人</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_BATCH_D" Language="zh_Hant_HK"><Text>每次回歸帶一人回家，每這麼多仍在外的人再多帶一人，所以失去二十人的聚落幾次回歸就能補滿，而不用八十回合。設為零表示每次只回一人。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY" Language="zh_Hant_HK"><Text>回歸的間隔回合數</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY_D" Language="zh_Hant_HK"><Text>聚落平靜後，其人民每隔這麼多回合回家一次，從你收容他們最多的那個聚落回來。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_START_TITLE" Language="zh_Hant_HK"><Text>歸家之路</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_START" Language="zh_Hant_HK"><Text>{1_Home}再度安全，逃離它的人已開始回家。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_DONE_TITLE" Language="zh_Hant_HK"><Text>終於到家</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE" Language="zh_Hant_HK"><Text>你有 {1_Count} 名人民從你仍持有的聚落流離失所，而他們逃離的一個聚落已再度安全。「聚落」分頁會顯示他們在哪裡、何時自行回來，以及提早帶他們回來要花多少。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_TITLE" Language="zh_Hant_HK"><Text>你的人民可以回家了</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_OPEN" Language="zh_Hant_HK"><Text>開啟「聚落」分頁</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_OPEN_N" Language="zh_Hant_HK"><Text>每個有人逃離的聚落都會在圖表下方列出他們；從那裡帶他們回來。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_LATER" Language="zh_Hant_HK"><Text>暫時不用</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_LATER_N" Language="zh_Hant_HK"><Text>只有當流離失所的人數再多出一半，而且至少過了 {1_Turns} 回合，才會再提醒你。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_NEVER" Language="zh_Hant_HK"><Text>不要再提醒我</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOME_NOTICE_NEVER_N" Language="zh_Hant_HK"><Text>永久關閉這些提醒；在「選項、模組、移民」可以重新開啟。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_REMIND_STOP" Language="zh_Hant_HK"><Text>停止流離失所提醒</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_REMIND_OFF" Language="zh_Hant_HK"><Text>提醒已關閉；在「選項、模組、移民」可以重新開啟。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOME_NOTICE_MIN" Language="zh_Hant_HK"><Text>提醒門檻</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOME_NOTICE_MIN_D" Language="zh_Hant_HK"><Text>要有多少個人口點從你仍持有的聚落流離失所，提醒才會出現。預設為 5。再次提醒需要人數自上次提醒以來增加一半（且至少增加這麼多），至少相隔 10 回合，而且要等他們逃離的其中一個聚落平靜到足以讓他們回去。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_DONE" Language="zh_Hant_HK"><Text>逃離{1_Home}的人最後一批已經回來了。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AI_DIFFICULTY" Language="zh_Hant_HK"><Text>AI 每級難度的價格折扣</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AI_DIFFICULTY_D" Language="zh_Hant_HK"><Text>遊戲在較高難度下給 AI 更多金幣，但本模組向它收取的召喚人民回國和接收難民的價格與你的相同。此項會按你所玩難度的遊戲金幣補正，每級扣掉這麼多，所以預設下神級享有 20% 折扣。</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_NEWCOMERS_COST" Language="zh_Hant_HK"><Text>新來者：安頓期間，你的文明每回合 -{1_Gold} 金幣、-{2_Happy} 幸福度</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_FIX" Language="zh_Hant_HK"><Text>能止住它的辦法：在這裡{1_Options}</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_FIX_OR" Language="zh_Hant_HK"><Text>或</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_FIX_BUILDING" Language="zh_Hant_HK"><Text>（{1_Building}提供 +{2_Amount} {3_Yield}）</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NEWCOMERS" Language="zh_Hant_HK"><Text>正在安頓的新來者現在每回合花費你 {1_Gold} 金幣和 {2_Happy} 幸福度；隨着他們融入，這筆代價會逐漸消退。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NEWCOMERS_SHORT" Language="zh_Hant_HK"><Text>新來者安頓期間每回合花費 {1_Gold} 金幣和 {2_Happy} 幸福度。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SUB" Language="zh_Hant_HK"><Text>離開</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SUB_SUB" Language="zh_Hant_HK"><Text>去了別處的人</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_GAINS_NAMED" Language="zh_Hant_HK"><Text>{1_Home}獲得</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOSES_NAMED" Language="zh_Hant_HK"><Text>{1_From}失去</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NET_PER" Language="zh_Hant_HK"><Text>每人淨值</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DECIDE" Language="zh_Hant_HK"><Text>決定他們的立場</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DECIDE_NOTE" Language="zh_Hant_HK"><Text>這個社群已定居夠久；立場由你來定。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_LEFT_NONE" Language="zh_Hant_HK"><Text>無</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ARRIVED" Language="zh_Hant_HK"><Text>已到來</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ARRIVED_SUB" Language="zh_Hant_HK"><Text>來自外地、住在這裡的人</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ARRIVED_NONE" Language="zh_Hant_HK"><Text>無</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OUR_OWN" Language="zh_Hant_HK"><Text>我們自己的人民</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_NEWCOMERS" Language="zh_Hant_HK"><Text>新來者</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_MIX" Language="zh_Hant_HK"><Text>構成</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_CIV_SETTLEMENTS" Language="zh_Hant_HK"><Text>其聚落</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_COMMUNITY" Language="zh_Hant_HK"><Text>社群</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DECISION" Language="zh_Hant_HK"><Text>立場抉擇</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DECISION_NONE" Language="zh_Hant_HK"><Text>沒有待決的</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_PAY_LBL_NONE" Language="zh_Hant_HK"><Text>現在帶回，花費</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NOBODY" Language="zh_Hant_HK"><Text>沒有人可以帶回。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NEWCOMERS_NONE" Language="zh_Hant_HK"><Text>目前沒有新來者正在安頓。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_FROM" Language="zh_Hant_HK"><Text>他們來自何處</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_TO" Language="zh_Hant_HK"><Text>他們去了何處</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_HERE" Language="zh_Hant_HK"><Text>誰住在這裡</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_WHY" Language="zh_Hant_HK"><Text>他們為何離開</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_WHY_NONE" Language="zh_Hant_HK"><Text>尚無壓力</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PIE_HERE_NONE" Language="zh_Hant_HK"><Text>尚未統計</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_ORIGIN" Language="zh_Hant_HK"><Text>{1_Count} {2_Civ}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ENCLAVE_NONE" Language="zh_Hant_HK"><Text>No community large enough for an enclave yet.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_UNMET" Language="zh_Hant_HK"><Text>an unmet people</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_LOCKED" Language="zh_Hant_HK"><Text>Complete {1_Civic} to unlock the Pro-Immigration Stance: +{2_Pct}% pull.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_READY" Language="zh_Hant_HK"><Text>Slot the Pro-Immigration Stance: +{1_Pct}% pull for all your settlements.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSED_LOCKED" Language="zh_Hant_HK"><Text>Complete {1_Civic} to unlock the Anti-Immigration Stance: {2_Pct}% fewer leave for other civilizations.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSED_READY" Language="zh_Hant_HK"><Text>Slot the Anti-Immigration Stance: {1_Pct}% fewer leave for other civilizations.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ATTRACT" Language="zh_Hant_HK"><Text>Arriving</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ATTRACT_SUB" Language="zh_Hant_HK"><Text>that came here this age</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_KEEP" Language="zh_Hant_HK"><Text>Leaving</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_KEEP_SUB" Language="zh_Hant_HK"><Text>that left this age</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_TITLE_PRESSURE" Language="zh_Hant_HK"><Text>Pressure to leave · {1_Stage}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DRAWN_FROM" Language="zh_Hant_HK"><Text>Attracting from</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DRAWN_NONE" Language="zh_Hant_HK"><Text>None</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DRAWN_MORE" Language="zh_Hant_HK"><Text>and {1_Count} more</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_TO_DRAW" Language="zh_Hant_HK"><Text>To attract more</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_ADD" Language="zh_Hant_HK"><Text>Add</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_BY_BUILDING" Language="zh_Hant_HK"><Text>by building: {1_Building} (+{2_Amount})</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_FOOD_LINK" Language="zh_Hant_HK"><Text>Or connect a growing town: towns send their surplus Food to the cities they are connected to.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_LIFT_SHORT" Language="zh_Hant_HK"><Text>puts it ahead of {1_Dest}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_HERE" Language="zh_Hant_HK"><Text>here</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_LIFT_TOP" Language="zh_Hant_HK"><Text>Already the strongest attraction in reach.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_ON" Language="zh_Hant_HK"><Text>Pro-Immigration Stance slotted: +{1_Pct}% pull.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PRESSURE" Language="zh_Hant_HK"><Text>Pressure to leave</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP_SCORE" Language="zh_Hant_HK"><Text>What makes this settlement's score:</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP_PULL" Language="zh_Hant_HK"><Text>What pulls people toward {1_Dest}:</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP" Language="zh_Hant_HK"><Text>Pressure to leave builds each turn from the strongest pull on this settlement's people and drains when the gap closes. When it fills, a group leaves. It is {1_Pct}% full now.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSED" Language="zh_Hant_HK"><Text>Closed to newcomers</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE" Language="zh_Hant_HK"><Text>Close to newcomers</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE" Language="zh_Hant_HK"><Text>Open to newcomers</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="zh_Hant_HK"><Text>Nobody settles here while it is closed: arrivals go to your next best settlement, and this one pays no integration cost for them. Refugees with nowhere else to go are not forced in.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE_TIP" Language="zh_Hant_HK"><Text>Newcomers settle here again. Arrivals already on the road land next turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_SIEGE_STALLED" Language="zh_Hant_HK"><Text>Siege stalled: the besiegers aren't attacking, so the siege adds no pressure until they do.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PULLED" Language="zh_Hant_HK"><Text>Pulled toward</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_PULLED_NONE" Language="zh_Hant_HK"><Text>None</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_WHAT_HELPS" Language="zh_Hant_HK"><Text>What would help</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="zh_Hant_HK"><Text>Total</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="zh_Hant_HK"><Text>Click a line for what is behind it; click here to open or close them all.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="zh_Hant_HK"><Text>{1_H} here, {2_Mean} across the empire</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="zh_Hant_HK"><Text>{1_Pop} people</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="zh_Hant_HK"><Text>{1_Pct}% of the base</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="zh_Hant_HK"><Text>{1_Turns} turns remaining</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_FADING" Language="zh_Hant_HK"><Text>fading</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_CELEBRATING" Language="zh_Hant_HK"><Text>celebrating now</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_NOT_CELEBRATING" Language="zh_Hant_HK"><Text>no celebration running</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_NO_GOVT" Language="zh_Hant_HK"><Text>no government read</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_TALLY_TOTAL" Language="zh_Hant_HK"><Text>Prosperity score</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_TALLY_NONE" Language="zh_Hant_HK"><Text>Nothing weighs on this settlement yet.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_SHORT" Language="zh_Hant_HK"><Text>closes the gap to {1_Dest}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_WIDE" Language="zh_Hant_HK"><Text>The gap to {1_Dest} ({2_Gap}) is too wide for one building to close. {3_Driver}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_DRIVER" Language="zh_Hant_HK"><Text>{1_Label} is {2_Share}% of what pushes people out.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_NONE" Language="zh_Hant_HK"><Text>Nobody is being pulled away.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSED_ON" Language="zh_Hant_HK"><Text>Anti-Immigration Stance slotted: {1_Pct}% fewer leave for other civilizations.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_RIVAL" Language="zh_Hant_HK"><Text>rival</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OURS" Language="zh_Hant_HK"><Text>ours</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_NO_MODEL" Language="zh_Hant_HK"><Text>Scores appear after this turn's migration pass.</Text></Replace>
-        <Replace Tag="LOC_EMIG_CF_NOBODY_AWAY" Language="zh_Hant_HK"><Text>Nobody away</Text></Replace>
-        <Replace Tag="LOC_EMIG_CF_OWN_FROM" Language="zh_Hant_HK"><Text>From our own settlements</Text></Replace>
-        <Replace Tag="LOC_EMIG_CF_OWN_TO" Language="zh_Hant_HK"><Text>To our own settlements</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COL_SETTLEMENT" Language="zh_Hant_HK"><Text>Settlement</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COL_AWAY" Language="zh_Hant_HK"><Text>Displaced</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COL_WORTH" Language="zh_Hant_HK"><Text>Per returnee, a turn</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COL_FREE" Language="zh_Hant_HK"><Text>Free homecoming</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COL_ACT" Language="zh_Hant_HK"><Text>Bring back now</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NOT_YOURS" Language="zh_Hant_HK"><Text>no longer yours</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LOST_SHORT" Language="zh_Hant_HK"><Text>Lost: {1_Tiles} (rebuilt first)</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_GAINS" Language="zh_Hant_HK"><Text>gains</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LEAVES" Language="zh_Hant_HK"><Text>leaves</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_NET" Language="zh_Hant_HK"><Text>net</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_OFF" Language="zh_Hant_HK"><Text>only when called</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_CALM" Language="zh_Hant_HK"><Text>calm in {1_Turns} more turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_NEXT_NOW" Language="zh_Hant_HK"><Text>next {1_Batch} next turn</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_NEXT" Language="zh_Hant_HK"><Text>next {1_Batch} in {2_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_THEN" Language="zh_Hant_HK"><Text>then {1_Batch} every {2_Every} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_FREE_ALL" Language="zh_Hant_HK"><Text>all in about {1_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_ODDS_SHORT" Language="zh_Hant_HK"><Text>{1_Pct}% each, about {2_Expected} come</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_PAY_LBL" Language="zh_Hant_HK"><Text>Bring {1_Count} back now for</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_CALL_LBL" Language="zh_Hant_HK"><Text>Call {1_Count} from abroad for</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SHORT" Language="zh_Hant_HK"><Text>Not enough: this needs {1_Cost} and we have {2_Have}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_PRICE_N" Language="zh_Hant_HK"><Text>{1_Count} for</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_PRICE_OR" Language="zh_Hant_HK"><Text>or</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_TILE_SWAP" Language="zh_Hant_HK"><Text>each returnee works a {1_Home} tile, about {2_Yields} a turn, and leaves a tile where they live now (about {3_Loss} a turn).</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HASTEN_SOONER" Language="zh_Hant_HK"><Text>{2_Gold} Gold or {3_Infl} Influence brings {1_Count} back this turn, {4_Instead}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_GAIN" Language="zh_Hant_HK"><Text>{1_Home} gains: each returnee works a {1_Home} tile, about {2_Yields} a turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_GAIN_UNKNOWN" Language="zh_Hant_HK"><Text>{1_Home} gains: each returnee works a {1_Home} tile.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_REBUILD" Language="zh_Hant_HK"><Text>{1_Tiles}, torn down as they left, are rebuilt first.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_HOST" Language="zh_Hant_HK"><Text>{1_From} gives up: {2_Count} of them work {1_From} tiles today, about {3_Yields} each a turn; those tiles go idle when they leave.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_HOST_UNKNOWN" Language="zh_Hant_HK"><Text>{1_From} gives up: {2_Count} of them live there today.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_MORE" Language="zh_Hant_HK"><Text>and {1_Count} more settlements</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_NET" Language="zh_Hant_HK"><Text>Overall: per person, your civilization swaps a tile where they live now for a tile at {1_Home}, about {2_Net} a turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_NET_EVEN" Language="zh_Hant_HK"><Text>Overall: per person, your civilization swaps a tile where they live now for a tile at {1_Home}; the yields come out about even.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_BUYS_TIME" Language="zh_Hant_HK"><Text>The fee buys time: home this turn {1_Instead}; the free homecoming brings them anyway.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_BUYS_RETURN" Language="zh_Hant_HK"><Text>They only come home when called.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_ONE" Language="zh_Hant_HK"><Text>instead of in {1_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_OVER" Language="zh_Hant_HK"><Text>instead of over the next {1_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_NEXT" Language="zh_Hant_HK"><Text>instead of next turn</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_ABROAD_GAIN" Language="zh_Hant_HK"><Text>Nothing of yours is given up: the rulers they live under lose them, and each who answers is a tile at {1_Home} for good.</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_ABROAD_ODDS" Language="zh_Hant_HK"><Text>About {1_Pct}% answer, so calling {2_Count} brings about {3_Expected}. The fee is paid either way: about {4_Gold} Gold or {5_Infl} Influence for each person who comes.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HOW" Language="zh_Hant_HK"><Text>A settlement people fled shows them below its charts: where they are, what a returnee is worth, when they come home free, and what bringing some back this turn costs. Calling from abroad is a gamble, priced per person who actually comes.</Text></Replace>
-        <Replace Tag="LOC_EMIG_AI_STANCE_CLOSES" Language="zh_Hant_HK"><Text>{1_Civ} closes its borders: an Anti-Immigration Stance.</Text></Replace>
-        <Replace Tag="LOC_EMIG_AI_STANCE_OPENS" Language="zh_Hant_HK"><Text>{1_Civ} opens its borders: a Pro-Immigration Stance.</Text></Replace>
-        <Replace Tag="LOC_EMIG_AI_STANCE_DROPS" Language="zh_Hant_HK"><Text>{1_Civ} drops its immigration stance.</Text></Replace>
-        <Replace Tag="LOC_EMIG_AI_STANCE_TITLE" Language="zh_Hant_HK"><Text>Borders Abroad</Text></Replace>
-        <Replace Tag="LOC_EMIG_IN_COST_TAIL" Language="zh_Hant_HK"><Text>Newcomers now cost you {1_Gold} Gold and {2_Happy} Happiness a turn while they settle in.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="zh_Hant_HK"><Text>Remind me when people can come home</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="zh_Hant_HK"><Text>Once a settlement your people fled has been calm long enough for them to come back and at least the threshold's worth of your people are displaced, a small pop-up offers to open the Settlements tab, where you see where they are and pick which settlement's people to bring back. It comes again only once half again as many are displaced, never within 10 turns of the last, and its "Don't remind me again" button turns it off for good. On by default; the tab has the same switch.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="zh_Hant_HK"><Text>Emigration: AI keeps cities happy</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="zh_Hant_HK"><Text>Gives AI civilizations an earlier, gentler "keep them happy" city strategy, so an AI city that is getting unhappy builds happiness before people start leaving. The game's own strategy only starts once a city is already unhappy. Chosen here for the whole game.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="zh_Hant_HK"><Text>On</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="zh_Hant_HK"><Text>AI cities start building happiness while their net happiness is still a little above zero.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="zh_Hant_HK"><Text>Off</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="zh_Hant_HK"><Text>The AI keeps the game's own strategies only.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="zh_Hant_HK"><Text>AI civilizations call people home</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="zh_Hant_HK"><Text>On their own turn, AI civilizations call their displaced people home once none of their settlements is in distress, paying the same price with the same odds and cooldown you get. From their own settlements first; from abroad only when they still have the Gold or Influence for it. When a call takes people out of one of your cities, you get a notice naming who called. Off leaves the AI to wait for people to drift back on their own. While people find their own way home, an AI only pays to call people back from abroad.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ENCLAVE_NONE" Language="zh_Hant_HK"><Text>尚無足以形成飛地的社群。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_UNMET" Language="zh_Hant_HK"><Text>未遇見的民族</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_LOCKED" Language="zh_Hant_HK"><Text>完成{1_Civic}以解鎖親移民立場：吸引力 +{2_Pct}%。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_READY" Language="zh_Hant_HK"><Text>置入親移民立場：你所有聚落的吸引力 +{1_Pct}%。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSED_LOCKED" Language="zh_Hant_HK"><Text>完成{1_Civic}以解鎖反移民立場：流向其他文明的人減少 {2_Pct}%。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSED_READY" Language="zh_Hant_HK"><Text>置入反移民立場：流向其他文明的人減少 {1_Pct}%。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ATTRACT" Language="zh_Hant_HK"><Text>遷入</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ATTRACT_SUB" Language="zh_Hant_HK"><Text>本時代來到這裡的人</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_KEEP" Language="zh_Hant_HK"><Text>遷出</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_KEEP_SUB" Language="zh_Hant_HK"><Text>本時代離開的人</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_TITLE_PRESSURE" Language="zh_Hant_HK"><Text>移民壓力 · {1_Stage}</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DRAWN_FROM" Language="zh_Hant_HK"><Text>吸引自</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DRAWN_NONE" Language="zh_Hant_HK"><Text>無</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DRAWN_MORE" Language="zh_Hant_HK"><Text>另有 {1_Count} 個</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_TO_DRAW" Language="zh_Hant_HK"><Text>想吸引更多</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_ADD" Language="zh_Hant_HK"><Text>增加</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_BY_BUILDING" Language="zh_Hant_HK"><Text>建造：{1_Building}（+{2_Amount}）</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_FOOD_LINK" Language="zh_Hant_HK"><Text>或連接一個正在成長的城鎮：城鎮會把多餘的食物送往與其相連的城市。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_LIFT_SHORT" Language="zh_Hant_HK"><Text>使它領先於{1_Dest}</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_HERE" Language="zh_Hant_HK"><Text>這裡</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_LIFT_TOP" Language="zh_Hant_HK"><Text>已是範圍內最強的吸引力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_ON" Language="zh_Hant_HK"><Text>已置入親移民立場：吸引力 +{1_Pct}%。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PRESSURE" Language="zh_Hant_HK"><Text>移民壓力</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP_SCORE" Language="zh_Hant_HK"><Text>這個聚落的評分由甚麼構成：</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP_PULL" Language="zh_Hant_HK"><Text>是甚麼把人吸引向{1_Dest}：</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP" Language="zh_Hant_HK"><Text>移民壓力每回合隨着對這個聚落人民最強的吸引力累積，差距收窄時便消退。壓力滿了，就會有一批人離開。目前已滿 {1_Pct}%。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSED" Language="zh_Hant_HK"><Text>對新來者關閉</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE" Language="zh_Hant_HK"><Text>對新來者關閉</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE" Language="zh_Hant_HK"><Text>對新來者開放</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="zh_Hant_HK"><Text>關閉期間沒有人會在此定居：到來者改去你次佳的聚落，這個聚落也不用為他們支付融入成本。無處可去的難民也不會被強行塞進來。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE_TIP" Language="zh_Hant_HK"><Text>新來者再度在此定居。已在路上的人下回合抵達。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_SIEGE_STALLED" Language="zh_Hant_HK"><Text>圍城停滯：圍城者沒有進攻，所以在他們再次進攻之前，圍城不再增加壓力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PULLED" Language="zh_Hant_HK"><Text>被吸引向</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_PULLED_NONE" Language="zh_Hant_HK"><Text>無</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_WHAT_HELPS" Language="zh_Hant_HK"><Text>甚麼能幫上忙</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="zh_Hant_HK"><Text>合計</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="zh_Hant_HK"><Text>點按一行可查看背後的細節；點按這裡可全部展開或收起。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="zh_Hant_HK"><Text>這裡 {1_H}，全帝國 {2_Mean}</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="zh_Hant_HK"><Text>{1_Pop} 人</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="zh_Hant_HK"><Text>基礎值的 {1_Pct}%</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="zh_Hant_HK"><Text>剩餘 {1_Turns} 回合</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_FADING" Language="zh_Hant_HK"><Text>消退中</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_CELEBRATING" Language="zh_Hant_HK"><Text>正在慶典</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_NOT_CELEBRATING" Language="zh_Hant_HK"><Text>沒有進行中的慶典</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_NO_GOVT" Language="zh_Hant_HK"><Text>未讀取到政體</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_TALLY_TOTAL" Language="zh_Hant_HK"><Text>繁榮評分</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_TALLY_NONE" Language="zh_Hant_HK"><Text>目前沒有任何因素影響這個聚落。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_SHORT" Language="zh_Hant_HK"><Text>縮小與{1_Dest}的差距</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_WIDE" Language="zh_Hant_HK"><Text>與{1_Dest}的差距（{2_Gap}）太大，一座建築無法填補。{3_Driver}</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_DRIVER" Language="zh_Hant_HK"><Text>{1_Label}佔推走人們因素的 {2_Share}%。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_NONE" Language="zh_Hant_HK"><Text>沒有人被吸引離開。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSED_ON" Language="zh_Hant_HK"><Text>已置入反移民立場：流向其他文明的人減少 {1_Pct}%。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_RIVAL" Language="zh_Hant_HK"><Text>對手</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OURS" Language="zh_Hant_HK"><Text>我方</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_NO_MODEL" Language="zh_Hant_HK"><Text>評分會在本回合的遷徙結算後出現。</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_NOBODY_AWAY" Language="zh_Hant_HK"><Text>無人在外</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_OWN_FROM" Language="zh_Hant_HK"><Text>來自我們自己的聚落</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_OWN_TO" Language="zh_Hant_HK"><Text>前往我們自己的聚落</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COL_SETTLEMENT" Language="zh_Hant_HK"><Text>聚落</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COL_AWAY" Language="zh_Hant_HK"><Text>流離失所</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COL_WORTH" Language="zh_Hant_HK"><Text>每位回歸者每回合</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COL_FREE" Language="zh_Hant_HK"><Text>免費回歸</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COL_ACT" Language="zh_Hant_HK"><Text>現在帶回</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NOT_YOURS" Language="zh_Hant_HK"><Text>已不屬於你</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOST_SHORT" Language="zh_Hant_HK"><Text>失去：{1_Tiles}（優先重建）</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_GAINS" Language="zh_Hant_HK"><Text>獲得</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LEAVES" Language="zh_Hant_HK"><Text>離開</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_NET" Language="zh_Hant_HK"><Text>淨值</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_OFF" Language="zh_Hant_HK"><Text>僅在召喚時</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_CALM" Language="zh_Hant_HK"><Text>再過 {1_Turns} 回合平靜下來</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_NEXT_NOW" Language="zh_Hant_HK"><Text>下回合回來 {1_Batch} 人</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_NEXT" Language="zh_Hant_HK"><Text>{2_Turns} 回合後回來 {1_Batch} 人</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_THEN" Language="zh_Hant_HK"><Text>之後每 {2_Every} 回合回來 {1_Batch} 人</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_ALL" Language="zh_Hant_HK"><Text>全部約需 {1_Turns} 回合</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_ODDS_SHORT" Language="zh_Hant_HK"><Text>每人 {1_Pct}%，約 {2_Expected} 人會來</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_PAY_LBL" Language="zh_Hant_HK"><Text>現在帶回 {1_Count} 人，花費</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_CALL_LBL" Language="zh_Hant_HK"><Text>從海外召喚 {1_Count} 人，花費</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SHORT" Language="zh_Hant_HK"><Text>不足：這需要 {1_Cost}，而我們只有 {2_Have}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_PRICE_N" Language="zh_Hant_HK"><Text>{1_Count} 人，花費</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_PRICE_OR" Language="zh_Hant_HK"><Text>或</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_TILE_SWAP" Language="zh_Hant_HK"><Text>每位回歸者在{1_Home}耕作一個地塊（每回合約 {2_Yields}），並放棄現居地的一個地塊（每回合約 {3_Loss}）。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HASTEN_SOONER" Language="zh_Hant_HK"><Text>{2_Gold} 金幣或 {3_Infl} 影響力可在本回合帶回 {1_Count} 人，{4_Instead}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_GAIN" Language="zh_Hant_HK"><Text>{1_Home}獲得：每位回歸者在{1_Home}耕作一個地塊，每回合約 {2_Yields}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_GAIN_UNKNOWN" Language="zh_Hant_HK"><Text>{1_Home}獲得：每位回歸者在{1_Home}耕作一個地塊。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_REBUILD" Language="zh_Hant_HK"><Text>{1_Tiles}在他們離開時被拆毀，會優先重建。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HOST" Language="zh_Hant_HK"><Text>{1_From}放棄：其中 {2_Count} 人現時在{1_From}耕作地塊，每人每回合約 {3_Yields}；他們離開後那些地塊會閒置。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HOST_UNKNOWN" Language="zh_Hant_HK"><Text>{1_From}放棄：其中 {2_Count} 人現時住在那裡。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_MORE" Language="zh_Hant_HK"><Text>另有 {1_Count} 個聚落</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_NET" Language="zh_Hant_HK"><Text>總計：每人而言，你的文明用他們現居地的一個地塊換取{1_Home}的一個地塊，每回合約 {2_Net}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_NET_EVEN" Language="zh_Hant_HK"><Text>總計：每人而言，你的文明用他們現居地的一個地塊換取{1_Home}的一個地塊；產出大致相抵。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_BUYS_TIME" Language="zh_Hant_HK"><Text>這筆費用買的是時間：本回合就回家，{1_Instead}；免費回歸反正也會把他們帶回來。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_BUYS_RETURN" Language="zh_Hant_HK"><Text>他們只在被召喚時才回家。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_ONE" Language="zh_Hant_HK"><Text>而不用等 {1_Turns} 回合</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_OVER" Language="zh_Hant_HK"><Text>而不用分散在接下來的 {1_Turns} 回合</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_INSTEAD_NEXT" Language="zh_Hant_HK"><Text>而不用等到下回合</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_ABROAD_GAIN" Language="zh_Hant_HK"><Text>你不用放棄任何東西：失去他們的是他們現時的統治者，而每一位響應的人都是{1_Home}永久多出的一個地塊。</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_ABROAD_ODDS" Language="zh_Hant_HK"><Text>約 {1_Pct}% 會響應，所以召喚 {2_Count} 人約帶回 {3_Expected} 人。費用無論如何都要付：每位回來的人約合 {4_Gold} 金幣或 {5_Infl} 影響力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HOW" Language="zh_Hant_HK"><Text>有人逃離的聚落會在圖表下方列出他們：人在哪裡、每位回歸者值多少、何時免費回家，以及本回合帶回一些人要花多少。從海外召喚是一場賭博，價格按實際回來的人數計。</Text></Replace>
+        <Replace Tag="LOC_EMIG_AI_STANCE_CLOSES" Language="zh_Hant_HK"><Text>{1_Civ}關閉邊境：採取反移民立場。</Text></Replace>
+        <Replace Tag="LOC_EMIG_AI_STANCE_OPENS" Language="zh_Hant_HK"><Text>{1_Civ}開放邊境：採取親移民立場。</Text></Replace>
+        <Replace Tag="LOC_EMIG_AI_STANCE_DROPS" Language="zh_Hant_HK"><Text>{1_Civ}撤除其移民立場。</Text></Replace>
+        <Replace Tag="LOC_EMIG_AI_STANCE_TITLE" Language="zh_Hant_HK"><Text>他國邊境</Text></Replace>
+        <Replace Tag="LOC_EMIG_IN_COST_TAIL" Language="zh_Hant_HK"><Text>新來者安頓期間，現在每回合花費你 {1_Gold} 金幣和 {2_Happy} 幸福度。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="zh_Hant_HK"><Text>人們可以回家時提醒我</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="zh_Hant_HK"><Text>當你的人民逃離的聚落平靜得夠久、足以讓他們回去，而且流離失所的人數達到門檻時，一個小彈窗會提議開啟「聚落」分頁，你可以在那裡看到他們在哪裡，並選擇帶哪個聚落的人回來。只有當流離失所的人數再多出一半時才會再出現，距上次不少於 10 回合，而它的「不要再提醒我」按鈕會永久關閉它。預設開啟；分頁上有同一個開關。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="zh_Hant_HK"><Text>移民：AI 維持城市幸福</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="zh_Hant_HK"><Text>給 AI 文明一個更早啟動、更溫和的「讓他們開心」城市策略，使快要不幸福的 AI 城市在人們開始離開之前就建設幸福度。遊戲自己的策略要等城市已經不幸福才啟動。在此選擇後適用於整局遊戲。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="zh_Hant_HK"><Text>開</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="zh_Hant_HK"><Text>AI 城市在淨幸福度仍略高於零時就開始建設幸福度。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="zh_Hant_HK"><Text>關</Text></Replace>
+        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="zh_Hant_HK"><Text>AI 只保留遊戲自己的策略。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="zh_Hant_HK"><Text>AI 文明召喚人民回國</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="zh_Hant_HK"><Text>AI 文明在自己的回合中，一旦沒有任何聚落陷於苦境，就會召喚流離失所的人民回國，付出與你相同的價格，機率和冷卻時間也相同。先從自己的聚落召回；只有在仍有足夠金幣或影響力時才從海外召喚。當一次召喚把人從你的城市帶走時，你會收到通知，說明是誰召喚的。關閉則讓 AI 等人們自行慢慢回來。在人們自行回家的設定開啟時，AI 只會付費從海外召喚。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="zh_Hant_HK"><Text>每點人口從外國回歸的機率</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX_D" Language="zh_Hant_HK"><Text>生活在其他文明治下的每個人口點響應召喚的可能性。偏低：他們如今已在那裡安身立命，召喚可能一個人也帶不回來。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_GOLD" Language="zh_Hant_HK"><Text>每點回歸人口的金幣</Text></Replace>
@@ -619,8 +619,8 @@
         <Replace Tag="LOC_EMIG_T_QPACEMAX" Language="zh_Hant_HK"><Text>要求的最大降幅</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QPACEMAX_D" Language="zh_Hant_HK"><Text>在時代後期仍未形成飛地時，節奏調節對形成門檻施加的最大降幅。40% 表示門檻為其設定值的 60%。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIVERSE_COL_ENCLAVE" Language="zh_Hant_HK"><Text>飛地</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_PRESSURE" Language="zh_Hant_HK"><Text>Pressure to leave</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIVERSE_COL_PRESSURE_TIP" Language="zh_Hant_HK"><Text>How close the settlement is to a group leaving: Negligible, Low, Moderate, High or Critical.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_PRESSURE" Language="zh_Hant_HK"><Text>移民壓力</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIVERSE_COL_PRESSURE_TIP" Language="zh_Hant_HK"><Text>這個聚落距離有一批人離開有多近：可忽略、低、中等、高或危急。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSTOCK" Language="zh_Hant_HK"><Text>在任何城市都足夠大的社群</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QSTOCK_D" Language="zh_Hant_HK"><Text>人口點數至少達到此值的外來社群，無論在定居點中佔比多少都會進入「已建立」階段。因此大城市也能擁有飛地。此數值隨本局定居點的規模變化：定居點平均有十八人時按原值適用，隨着城市在各時代成長，按比例在一半到兩倍之間變化。只有當社群同時低於衰落比例和此數值時，飛地才會衰落。關閉 = 只看比例。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_QFADE" Language="zh_Hant_HK"><Text>飛地開始消退的佔比</Text></Replace>
@@ -670,10 +670,10 @@
         <Replace Tag="LOC_EMIG_T_CITYREADOUT" Language="zh_Hant_HK"><Text>各城市遷徙概覽</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CITYREADOUT_D" Language="zh_Hant_HK"><Text>按需顯示一個面板，說明所選聚落為何增減人口：主要原因、居民被吸引的去向、融入成本，以及你能採取的對策。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE" Language="zh_Hant_HK"><Text>城市讀數中的近期趨勢迷你圖</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FORECAST" Language="zh_Hant_HK"><Text>Departure forecast</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FORECAST_D" Language="zh_Hant_HK"><Text>Under the pressure gauge on each of your settlements' cards, and in the city readout: from how fast the pressure has been rising, when it is likely to reach the bar and about how many people go when it does. A projection, not a promise; flat or falling pressure reads "Nobody is likely to leave soon".</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FORECAST_TURNS" Language="zh_Hant_HK"><Text>Forecast: how far ahead</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FORECAST_TURNS_D" Language="zh_Hant_HK"><Text>The forecast's horizon. A departure further off than this reads as "Nobody is likely to leave soon".</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FORECAST" Language="zh_Hant_HK"><Text>遷出預測</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FORECAST_D" Language="zh_Hant_HK"><Text>在你每個聚落卡的壓力計下方和城市讀數中顯示：根據壓力上升的速度，推算它何時可能達到門檻，以及屆時大約有多少人離開。這是推算，不是保證；壓力持平或下降時會顯示「短期內應該沒有人會離開」。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FORECAST_TURNS" Language="zh_Hant_HK"><Text>預測：看多遠</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FORECAST_TURNS_D" Language="zh_Hant_HK"><Text>預測的範圍。比這更遠的遷出會顯示為「短期內應該沒有人會離開」。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SPARKLINE_D" Language="zh_Hant_HK"><Text>在城市讀出面板中加入一小條柱狀圖，顯示最近幾輪的淨遷徙（綠色代表增加，紅色代表減少），讓你一眼看出情況是變好還是變壞。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SELFTEST" Language="zh_Hant_HK"><Text>螢幕自我測試面板</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SELFTEST_D" Language="zh_Hant_HK"><Text>在遊戲中顯示一個浮動的「自我測試」按鈕，針對已回報的問題（聚落涵蓋範圍、文化飛地、兩種人口計量、通知、存檔保存）執行即時診斷，並可按需強制彈出飛地視窗及測試提示，無需開發者控制台。用於疑難排解；正常遊玩時請保持關閉。重新載入存檔後生效。</Text></Replace>
@@ -771,22 +771,22 @@
         <Replace Tag="LOC_EMIG_PERMANENCE_PERMANENT" Language="zh_Hant_HK"><Text>這些人口已永遠失去。</Text></Replace>
         <Replace Tag="LOC_EMIG_COST_NOTE" Language="zh_Hant_HK"><Text>{1_Dest}每回合支付約{2_Gold}金幣以融入他們。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_NAME" Language="zh_Hant_HK"><Text>親移民立場</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="zh_Hant_HK"><Text>+2 [icon:YIELD_FOOD] Food in every city. +1 [icon:YIELD_DIPLOMACY] Influence per turn. +50% [icon:YIELD_POPULATION] immigration. Refugees come to you first. Enclaves keep full yields, even at war. (Each newcomer costs about 1.5 [icon:YIELD_GOLD] Gold and 0.5 [icon:YIELD_HAPPINESS] Happiness a turn while they settle in, fading over 6 to 8 turns; more arrivals also mean more enclaves to live with.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="zh_Hant_HK"><Text>+2 [icon:YIELD_FOOD] Food in every city. +2 [icon:YIELD_DIPLOMACY] Influence per turn. +50% [icon:YIELD_POPULATION] immigration. Refugees come to you first. Enclaves keep full yields, even at war. (Each newcomer costs about 1.5 [icon:YIELD_GOLD] Gold and 0.5 [icon:YIELD_HAPPINESS] Happiness a turn while they settle in, fading over 6 to 8 turns; more arrivals also mean more enclaves to live with.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="zh_Hant_HK"><Text>+3 [icon:YIELD_FOOD] Food in every city. +3 [icon:YIELD_DIPLOMACY] Influence per turn. +50% [icon:YIELD_POPULATION] immigration. Refugees come to you first. Enclaves keep full yields, even at war. (Each newcomer costs about 1.5 [icon:YIELD_GOLD] Gold and 0.5 [icon:YIELD_HAPPINESS] Happiness a turn while they settle in, fading over 6 to 8 turns; more arrivals also mean more enclaves to live with.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC" Language="zh_Hant_HK"><Text>每座城市 +2 [icon:YIELD_FOOD] 食物。每回合 +1 [icon:YIELD_DIPLOMACY] 影響力。[icon:YIELD_POPULATION] 移民 +50%。難民優先來投奔你。飛地即使在戰時也保留全額產出。（每位新來者安頓期間每回合約花費 1.5 [icon:YIELD_GOLD] 金幣和 0.5 [icon:YIELD_HAPPINESS] 幸福度，在 6 至 8 回合內消退；到來的人越多，要與之共處的飛地也越多。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_EX" Language="zh_Hant_HK"><Text>每座城市 +2 [icon:YIELD_FOOD] 食物。每回合 +2 [icon:YIELD_DIPLOMACY] 影響力。[icon:YIELD_POPULATION] 移民 +50%。難民優先來投奔你。飛地即使在戰時也保留全額產出。（每位新來者安頓期間每回合約花費 1.5 [icon:YIELD_GOLD] 金幣和 0.5 [icon:YIELD_HAPPINESS] 幸福度，在 6 至 8 回合內消退；到來的人越多，要與之共處的飛地也越多。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OPEN_BORDERS_DESC_MO" Language="zh_Hant_HK"><Text>每座城市 +3 [icon:YIELD_FOOD] 食物。每回合 +3 [icon:YIELD_DIPLOMACY] 影響力。[icon:YIELD_POPULATION] 移民 +50%。難民優先來投奔你。飛地即使在戰時也保留全額產出。（每位新來者安頓期間每回合約花費 1.5 [icon:YIELD_GOLD] 金幣和 0.5 [icon:YIELD_HAPPINESS] 幸福度，在 6 至 8 回合內消退；到來的人越多，要與之共處的飛地也越多。）</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_NAME" Language="zh_Hant_HK"><Text>反移民立場</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="zh_Hant_HK"><Text>+2 [icon:YIELD_PRODUCTION] Production in every city. -2 [icon:YIELD_DIPLOMACY] Influence per turn. -60% [icon:YIELD_POPULATION] immigration, -40% emigration. Refugees settle 60% slower. (You give up the [icon:YIELD_POPULATION] growth and the [icon:YIELD_FOOD][icon:YIELD_PRODUCTION] tiles newcomers would have worked, and half of your enclaves' [icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD] yields.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="zh_Hant_HK"><Text>+3 [icon:YIELD_PRODUCTION] Production in every city. -3 [icon:YIELD_DIPLOMACY] Influence per turn. -60% [icon:YIELD_POPULATION] immigration, -40% emigration. Refugees settle 60% slower. (You give up the [icon:YIELD_POPULATION] growth and the [icon:YIELD_FOOD][icon:YIELD_PRODUCTION] tiles newcomers would have worked, and half of your enclaves' [icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD] yields.)</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="zh_Hant_HK"><Text>+4 [icon:YIELD_PRODUCTION] Production in every city. -4 [icon:YIELD_DIPLOMACY] Influence per turn. -60% [icon:YIELD_POPULATION] immigration, -40% emigration. Refugees settle 60% slower. (You give up the [icon:YIELD_POPULATION] growth and the [icon:YIELD_FOOD][icon:YIELD_PRODUCTION] tiles newcomers would have worked, and half of your enclaves' [icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD] yields.)</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC" Language="zh_Hant_HK"><Text>每座城市 +2 [icon:YIELD_PRODUCTION] 生產力。每回合 -2 [icon:YIELD_DIPLOMACY] 影響力。[icon:YIELD_POPULATION] 移民 -60%，遷出 -40%。難民定居速度減慢 60%。（你放棄了新來者本會帶來的 [icon:YIELD_POPULATION] 成長和他們本會耕作的 [icon:YIELD_FOOD][icon:YIELD_PRODUCTION] 地塊，以及你飛地 [icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD] 產出的一半。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="zh_Hant_HK"><Text>每座城市 +3 [icon:YIELD_PRODUCTION] 生產力。每回合 -3 [icon:YIELD_DIPLOMACY] 影響力。[icon:YIELD_POPULATION] 移民 -60%，遷出 -40%。難民定居速度減慢 60%。（你放棄了新來者本會帶來的 [icon:YIELD_POPULATION] 成長和他們本會耕作的 [icon:YIELD_FOOD][icon:YIELD_PRODUCTION] 地塊，以及你飛地 [icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD] 產出的一半。）</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="zh_Hant_HK"><Text>每座城市 +4 [icon:YIELD_PRODUCTION] 生產力。每回合 -4 [icon:YIELD_DIPLOMACY] 影響力。[icon:YIELD_POPULATION] 移民 -60%，遷出 -40%。難民定居速度減慢 60%。（你放棄了新來者本會帶來的 [icon:YIELD_POPULATION] 成長和他們本會耕作的 [icon:YIELD_FOOD][icon:YIELD_PRODUCTION] 地塊，以及你飛地 [icon:YIELD_SCIENCE][icon:YIELD_CULTURE][icon:YIELD_GOLD] 產出的一半。）</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="zh_Hant_HK"><Text>人才吸引</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="zh_Hant_HK"><Text>+1 [icon:YIELD_SCIENCE] Science per 5 [icon:YIELD_POPULATION] Population and -2 [icon:YIELD_GOLD] Gold in every settlement. Immigrants count, so the people you draw keep paying for as long as they stay.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="zh_Hant_HK"><Text>+1 [icon:YIELD_SCIENCE] Science per 4 [icon:YIELD_POPULATION] Population and -3 [icon:YIELD_GOLD] Gold in every settlement. Immigrants count, so the people you draw keep paying for as long as they stay.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="zh_Hant_HK"><Text>每個聚落每 5 [icon:YIELD_POPULATION] 人口 +1 [icon:YIELD_SCIENCE] 科技，並 -2 [icon:YIELD_GOLD] 金幣。移民計算在內，所以你吸引來的人只要留下，就會一直帶來收益。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="zh_Hant_HK"><Text>每個聚落每 4 [icon:YIELD_POPULATION] 人口 +1 [icon:YIELD_SCIENCE] 科技，並 -3 [icon:YIELD_GOLD] 金幣。移民計算在內，所以你吸引來的人只要留下，就會一直帶來收益。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="zh_Hant_HK"><Text>文化魅力</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="zh_Hant_HK"><Text>+1 [icon:YIELD_CULTURE] Culture per 5 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO" Language="zh_Hant_HK"><Text>+1 [icon:YIELD_CULTURE] Culture per 4 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="zh_Hant_HK"><Text>每個聚落每 5 [icon:YIELD_POPULATION] 人口 +1 [icon:YIELD_CULTURE] 文化。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO" Language="zh_Hant_HK"><Text>每個聚落每 4 [icon:YIELD_POPULATION] 人口 +1 [icon:YIELD_CULTURE] 文化。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="zh_Hant_HK"><Text>商業吸引</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="zh_Hant_HK"><Text>+1 [icon:YIELD_GOLD] Gold per 5 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC_MO" Language="zh_Hant_HK"><Text>+1 [icon:YIELD_GOLD] Gold per 4 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="zh_Hant_HK"><Text>每個聚落每 5 [icon:YIELD_POPULATION] 人口 +1 [icon:YIELD_GOLD] 金幣。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC_MO" Language="zh_Hant_HK"><Text>每個聚落每 4 [icon:YIELD_POPULATION] 人口 +1 [icon:YIELD_GOLD] 金幣。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="zh_Hant_HK"><Text>選擇性庇護</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="zh_Hant_HK"><Text>[icon:YIELD_POPULATION]逃離戰爭與災難的難民會被強烈吸引到你這裡，最絕望者優先；你每回合獲得 +1 [icon:YIELD_DIPLOMACY]影響力。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="zh_Hant_HK"><Text>難民契約</Text></Replace>
@@ -804,24 +804,24 @@
         <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_NAME" Language="zh_Hant_HK"><Text>居民登記</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_SUSPECT_MO_DESC" Language="zh_Hant_HK"><Text>每座城市[icon:YIELD_PRODUCTION]生產+3。你承認的聚居區報酬減半，到來的移民減少25%，與你交戰之故鄉的社群會更快變得不安。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CONSULAR_NAME" Language="zh_Hant_HK"><Text>領事保護</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_DESC" Language="zh_Hant_HK"><Text>+3 [icon:YIELD_DIPLOMACY] Influence per turn (+5 in the Modern Age), and +1 more per recognized enclave of yours abroad (max +4). Grievances against a host that turns anti-immigration on them.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CONSULAR_DESC" Language="zh_Hant_HK"><Text>每回合 +3 [icon:YIELD_DIPLOMACY] 影響力（現代為 +5），你在海外每有一處獲承認的飛地再 +1（最多 +4）。對採取反移民立場針對他們的收容國累積不滿。</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_STANCE_SLOT_DESC" Language="zh_Hant_HK"><Text>自帶政策槽。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_TITLE" Language="zh_Hant_HK"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_GROUP_TITLE" Language="zh_Hant_HK"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="zh_Hant_HK"><Text>移民</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="zh_Hant_HK"><Text>Emigration moves population between settlements. Each turn, people leave unhappy, struggling or war-torn settlements for happier, more prosperous ones, within your civilization and across borders.[n][n]A Prosperity model scores each city on its happiness, yields and circumstances, weighted by distance so migration stays regional. A civilization pays an integration cost while its newcomers settle in.[n][n]Every settlement records the civilizations its people descend from, shown on the map by the Ethnic Composition lens. Newcomers gradually take on their host's identity, diasporas return home once their homeland recovers, and the Migration Chronicle records the great waves as history.[n][n]People driven out of one of your settlements into another of yours come home on their own once it is calm; the Settlements tab of the Migration dashboard shows who is away from each settlement, why people leave it and what would keep them, and what bringing them back sooner costs.[n][n]Aggressor avoidance, border policies, disasters, ethnic integration, return migration and refugee decisions are on by default; each can be switched off in Options, Add-ons, Emigration.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="zh_Hant_HK"><Text>移民會在聚落之間移動人口。每回合，人們離開不幸福、困頓或飽受戰火的聚落，前往更幸福、更繁榮的聚落，既在你的文明之內，也跨越邊境。[n][n]繁榮模型按幸福度、產出和處境為每座城市評分，並按距離加權，使遷徙保持在區域之內。文明在新來者安頓期間要支付融入成本。[n][n]每個聚落都記錄其居民源自哪些文明，並由族群構成鏡頭顯示在地圖上。新來者逐漸接受接納方的身分，離散族群在故土復甦後返鄉，而移民編年史則把那些大浪潮記為歷史。[n][n]從你的一個聚落被逐往你另一個聚落的人，在家園平靜後會自行回家；遷徙儀表板的「聚落」分頁顯示每個聚落有誰在外、人們為何離開它、甚麼能留住他們，以及提早帶他們回來要花多少。[n][n]避開侵略者、邊境政策、災害、族群融入、回歸遷徙和難民抉擇預設全部開啟；每一項都可以在「選項、附加內容、移民」中關閉。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_FAQ_TITLE" Language="zh_Hant_HK"><Text>常見問題</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_FAQ_BODY" Language="zh_Hant_HK"><Text>What drives migration. Most of it is tunable in Options, Add-ons, Emigration, and the other pages of this section have the full version.[n][n]✓ Your civilization and every other major civilization move population, met or unmet.[n]✗ City-states, minor civilizations and Independent Powers neither send nor receive population.[n]✓ Pushes: unhappiness, low yields, war damage, sieges (including attacks by a city-state or Independent Power), pillaging, starvation, plague, disasters and overcrowding.[n]✓ Pulls: prosperity, high happiness, a Pro-Immigration Stance, Open Borders and proximity.[n]✓ Migrants travel for a delay that grows with distance, and their host pays a temporary integration cost. War empties a city only by capturing it.[n]✓ Each settlement gains and loses at most a set number of people per turn, scaled by the intensity preset. Arrivals over the cap wait in transit, and refugees with nowhere to land die on the road.[n]✓ Towns take part like cities, and people move between your own settlements as well as across borders.[n]✗ You can't pick or place individual migrants; the flows follow yields, safety and stances. "How newcomers settle" chooses where an arrival sits, and "Close to newcomers" keeps a settlement out of it.[n]✗ One civilization can't draw the whole map's people: a settlement is judged against the world's average, fresh arrivals meet a congestion headwind, and a civilization already ahead meets an anti-snowball headwind.[n]✓ Repairing a pillaged tile stops the pressure it caused, so the settlement stops bleeding people, but a repair never adds a population point back. The fastest way to recover a war-torn settlement is peace (the fighting's pressure fades in two or three turns), repairs, and happiness, the biggest draw there is.[n][n]AI civilizations play the same systems. Two city strategies the mod adds (keep them happy, hold your people) have AI cities build happiness, Food and Production before their people leave; AI civilizations choose enclave stances, decide on refugees and call their people home from abroad through the mod's own rules, at your prices less a discount for the game's difficulty; their displaced people come home on their own as yours do; and a notice tells you when a civilization you have met opens or closes its borders. Base-game files are left as they are. Unmet civilizations are simulated and stay hidden until you meet them.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_FAQ_BODY" Language="zh_Hant_HK"><Text>是甚麼在驅動遷徙。大部分都可以在「選項、附加內容、移民」中調校，本章節的其他頁面有完整版本。[n][n]✓ 你的文明和其他每個主要文明都會移動人口，無論是否已遇見。[n]✗ 城邦、小型文明和獨立勢力既不送出也不接收人口。[n]✓ 推力：不幸福、產出低、戰爭破壞、圍城（包括城邦或獨立勢力的攻擊）、掠奪、饑荒、瘟疫、災害和過度擁擠。[n]✓ 拉力：繁榮、高幸福度、親移民立場、開放邊境和鄰近。[n]✓ 移民要花一段隨距離增長的時間在路上，接納方則支付暫時的融入成本。戰爭只能靠攻佔才能清空一座城市。[n]✓ 每個聚落每回合最多獲得和失去固定數量的人，按強度預設縮放。超出上限的到來者在途中等待，而無處落腳的難民會死在路上。[n]✓ 城鎮與城市一樣參與，人們既在你自己的聚落之間移動，也跨越邊境。[n]✗ 你不能挑選或安置個別移民；流動跟隨產出、安全和立場。「新來者如何定居」決定到來者落在哪裡，「對新來者關閉」則讓一個聚落置身事外。[n]✗ 一個文明不可能吸走整張地圖的人：聚落是相對於世界平均來評判的，新到的人會遇上擁擠的逆風，而已經領先的文明會遇上反滾雪球的逆風。[n]✓ 修復被掠奪的地塊會止住它造成的壓力，聚落因此不再流失人口，但修復永遠不會補回人口點。要讓飽受戰火的聚落復原，最快的辦法是和平（戰鬥的壓力兩三回合內消退）、修復，以及幸福度，那是最大的吸引力。[n][n]AI 文明玩的是同一套系統。模組新增的兩個城市策略（讓他們開心、留住你的人民）讓 AI 城市在人們離開之前建設幸福度、食物和生產力；AI 文明透過模組自己的規則選擇飛地立場、決定難民去留並從海外召喚人民回國，價格與你相同，再按遊戲難度打折；它們流離失所的人民會像你的一樣自行回家；而當你已遇見的文明開放或關閉邊境時，會有通知告訴你。基礎遊戲檔案保持原樣。未遇見的文明會被模擬，但在你遇見它們之前保持隱藏。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_TITLE" Language="zh_Hant_HK"><Text>繁榮與遷徙</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_BODY" Language="zh_Hant_HK"><Text>每個聚落都依據其人均產出，尤其是其淨幸福度，獲得繁榮評分。即便在和平時期，不幸的城市也會持續將人口流失給更幸福、更富庶的城市，而針對規模本身的一點小懲罰，則防止繁榮的城市淪為無底的磁石。[n][n]人們偏好就近的去處，因此遷徙是在區域內向外擴散，而非跨越地圖跳躍。戰爭、圍城、饑荒、動亂與災害都會大幅壓低城市的繁榮，使其化為難民之源。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_TITLE" Language="zh_Hant_HK"><Text>戰爭與難民</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_BODY" Language="zh_Hant_HK"><Text>A city sends war refugees while there is fighting inside its borders, damage to its districts, or pillaging on its land. The longer a siege lasts, the more people it drives out, and a remnant always stays until the city is captured. A lone skirmish or a one-turn siege flag moves nobody: the fighting has to stay over the flee threshold for two turns running before people flee it (a settlement being razed empties at once). A siege whose attackers stop attacking stalls after a few quiet turns: it stops driving people out and kills nobody until the next attack, and the settlement's readout says "Siege stalled". Deaths under siege count against the same cap as departures, so a siege can wound a city but can't empty it.[n][n]Refugees avoid a city under attack: a settlement in a crisis of its own is a much weaker destination while it lasts, and refugees already on the road to it are held or sent to the next best settlement. Refugees flee away from the nearest invader. With aggressor avoidance on, they prefer their own civilization, then any neutral power, and choose the aggressor only as a last resort.[n][n]Migrants spend a few turns in transit, and each city takes in a limited number per turn; the rest wait and try again, longest-waiting first. If their destination is captured or razed while they travel, or stays too full to receive them, they die in transit and count as losses.[n][n]Once a homeland is at peace with the host and prospering again, some of its people abroad return home over time. When a great wave, driven by a neighbor's conquests or a plague, reaches your lands, you are occasionally asked how to receive it: take them in, settle them on the frontier, or turn them away. These refugee decisions can be switched off in Options.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_BODY" Language="zh_Hant_HK"><Text>當城市邊境內有戰鬥、區域受損或土地遭掠奪時，城市會送出戰爭難民。圍城持續越久，趕走的人越多，而在城市被攻佔之前，總會留下一批殘餘的人。零星的小衝突或一回合的圍城標記不會驅走任何人：戰鬥必須連續兩回合超過逃離門檻，人們才會逃離（正被夷平的聚落則立即清空）。攻擊者停止進攻的圍城，在幾個平靜回合後便會停滯：它不再趕走人，在下一次攻擊之前也不會造成死亡，聚落的讀數會顯示「圍城停滯」。圍城造成的死亡與遷出計入同一個上限，所以圍城可以重創一座城市，卻無法清空它。[n][n]難民會避開受攻擊的城市：自身陷於危機的聚落在危機持續期間是弱得多的目的地，已在前往途中的難民會被暫留，或改送往次佳的聚落。難民會逃離最近的入侵者。開啟避開侵略者後，他們先選自己的文明，再選任何中立勢力，只有在別無選擇時才選侵略者。[n][n]移民要花幾個回合在路上，每座城市每回合只接收有限的人數；其餘的人等待並再度嘗試，等得最久的優先。如果目的地在他們上路期間被攻佔或夷平，或者一直太滿而無法接收他們，他們會死於途中並計為損失。[n][n]一旦故土與接納方和平相處並再度繁榮，部分海外人民會隨時間回歸故土。當一波由鄰國征服或瘟疫驅動的大浪潮湧向你的土地時，你偶爾會被問到如何接收：接納他們、安置於邊疆，或拒之門外。這些難民抉擇可以在選項中關閉。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_TITLE" Language="zh_Hant_HK"><Text>融入與成長的代價</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ASSIMILATION_BODY" Language="zh_Hant_HK"><Text>吸納移民並非無償。每位新來者都會給接納的文明增添一份融入負荷，文明須為此逐回合付出代價（以金幣與幸福度計），直到該負荷在融入期內消退。不斷吸引人口的文明，便要不斷付出。[n][n]此外，壅塞效應會使一個忙於安頓新來者的文明，對更多移民而言成為吸引力更低的去處，這是一道單憑財富無法消除的閘。二者合力，防止任何單一文明滾雪球成為吸引天下人口的主導性遷移磁石。[n][n]融入還有一個更緩慢的文化層面，與上述金幣與幸福度的成本相區別。歷經許多回合，新來者會在每個聚落的族群構成中逐漸採納接納方文明的身份認同，因此一座和平而安定的城市會漸漸吸納一個離散族群。與某離散族群故土的戰爭，或城市中的動亂，會阻滯這一融入，留下一個保持獨立的社群，在族群構成鏡頭上保留其自身的顏色。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_BORDERS_TITLE" Language="zh_Hant_HK"><Text>邊境與影響力</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_BORDERS_BODY" Language="zh_Hant_HK"><Text>兩根槓桿塑造著跨越你邊境的遷徙。你自身的立場是一張每個時代都可用的政策卡。選擇親移民立場以迎接世界：更多移民到來，你的世界主義聲望每回合帶來少許影響力。或選擇反移民立場以自我封閉：到來的新移民減少，你本國人民流向對手的也減少，動員起來的國內經濟為每座城市增加生產，儘管世界以持續流失的影響力來評判你的孤立。選擇契合你戰略的那一張。[n][n]外交同樣重要。當你與另一個文明簽訂開放邊境協定時，移民會在你們兩國之間更自由地雙向流動。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_TITLE" Language="zh_Hant_HK"><Text>吸引與庇護</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="zh_Hant_HK"><Text>Talent Attraction turns the people you draw into Science: +1 per 5 Population in every settlement (per 4 in the Modern Age), counted by the game like any other yield. Immigrants raise population, so every newcomer adds to it for as long as they stay. Pair it with a Pro-Immigration Stance or an Open Borders agreement to fill your settlements faster.[n][n]Asylum rides on the Pro-Immigration Stance: while it is slotted, war and disaster refugees choose your cities first. A game saved with one of the retired cards slotted (Selective Asylum, Refugee Compact, Cultural Magnetism, Commercial Draw) keeps it and its effect; a new game never offers them.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="zh_Hant_HK"><Text>人才吸引把你吸引來的人轉化為科技：每個聚落每 5 人口 +1（現代為每 4 人口），由遊戲像其他產出一樣計算。移民會提高人口，所以每位新來者只要留下，就會為此加分。搭配親移民立場或開放邊境協定，可以更快填滿你的聚落。[n][n]庇護依附於親移民立場：置入期間，戰爭與災害難民會優先選擇你的城市。帶着已退役卡牌（選擇性庇護、難民契約、文化魅力、商業吸引）存檔的遊戲會保留該卡及其效果；新遊戲不會再提供它們。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_RAIDS_TITLE" Language="zh_Hant_HK"><Text>人才掠奪</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_RAIDS_BODY" Language="zh_Hant_HK"><Text>你可以在外交畫面向對手發動「人才掠奪」、「文化攻勢」或「商業攻勢」。行動期間你每回合支付影響力，而該對手的遷徙會向你的城市傾斜。每位抵達的人都會帶來相應的科技值、文化值或金幣加成，與自願移民一樣。[n][n]這些外交行動來自 Diplomacy Extended 模組，安裝該模組後才會出現。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_TITLE" Language="zh_Hant_HK"><Text>災害與瘟疫</Text></Replace>
@@ -831,13 +831,13 @@
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_TITLE" Language="zh_Hant_HK"><Text>領袖與文明</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CIVTUNING_BODY" Language="zh_Hant_HK"><Text>少數領袖與文明對遷徙的感受有所不同，其歷史性格因而顯現。這些是疊加在全域規則之上的微小而有界的調整，絕不足以引發失控的增長，且僅在按文明微調啟用時生效（預設啟用）。[n][n]那些幸福度本會使城市成為主導性遷移磁石的領袖，吸引力會略微減弱：富蘭克林尤甚，伊莎貝拉、阿育王與黎剎也受到收斂。富有的征服者會發現安置戰利品的代價更高，伊莎貝拉與薛西斯要付出更多，才能吸納所贏得的人口。[n][n]縱向發展、專家導向的強權得以免受過度擁擠之害，使其密集的城市不致受到雙重懲罰：帕查庫特克，尤其是阿拔斯王朝。人口增長快於繁榮的民族會獲得一點緩衝以留住其公民，孔子、漢與清，而高棉則得以免去其非首都不幸的最嚴重部分。而築於堅牆之後的邦國，諾曼與英格蘭，在圍城期間遠比無牆者更能保住人口。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_TITLE" Language="zh_Hant_HK"><Text>範圍與可見性</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_BODY" Language="zh_Hant_HK"><Text>Emigration simulates every living major civilization from the first turn, met or unmet, so migration follows the real state of the world and a city you later conquer carries the true origin history of its people.[n][n]By default the dashboard, graphs and map lenses show only civilizations you have met: the Spoil Guard, a checkbox under Options, Add-ons, Emigration, on by default. While it is on, a red pill at the top of the Emigration screen says what is hidden. Turn it off to see everyone. With the Demographics mod installed the two mods' guards work together, whichever is stricter wins, so you are only spoiled once both are off.[n][n]Simulation scope (whole world or met only) and on-screen visibility are separate settings.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_VISIBILITY_BODY" Language="zh_Hant_HK"><Text>移民從第一回合起就模擬每一個仍然存在的主要文明，無論是否已遇見，所以遷徙跟隨世界的真實狀態，你日後征服的城市也帶着其人民真實的來源歷史。[n][n]預設下，儀表板、圖表和地圖鏡頭只顯示你已遇見的文明：這就是防劇透保護，位於「選項、附加內容、移民」的一個核取方塊，預設開啟。開啟期間，移民畫面頂部的紅色標籤會說明隱藏了甚麼。關閉它就能看見所有人。安裝了 Demographics 模組時，兩個模組的保護會一起運作，以較嚴格者為準，所以要兩者都關閉才會被劇透。[n][n]模擬範圍（整個世界或僅已遇見）與畫面可見性是分開的設定。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_TITLE" Language="zh_Hant_HK"><Text>解讀儀表板</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="zh_Hant_HK"><Text>Open the Migration dashboard from its button on the in-game dock, from a migration notice beside End Turn, or from the Migration page in the Demographics mod. It has four tabs, Settlements first.[n][n]• Settlements: one card per settlement, sorted by pressure to leave or by name. Each card has four panes. Arriving: where arrivals came from, which settlements this one attracts from and why, and what would attract more ("Add +2 Happiness by building: Arena"). Leaving: the pressure to leave as a five-step gauge from Negligible to Critical with its drivers, a forecast under the gauge ("About 3 people are likely to leave in the next 4 turns", a projection from how fast the pressure has been rising, or "Nobody is likely to leave soon"), where people are pulled toward and why, and what would keep them, with the Pro- or Anti-Immigration Stance as a step when it helps. Arrived: who lives here by origin, the settlement's Mix and Character, and the standing of its foreign community toward an enclave. Left: the people away from this settlement, when they come home on their own, and the Hasten and Call from abroad buttons with their prices. A prosperity ledger between the panes lists every term of the settlement's score, and each line opens to what is behind it. "All civilizations" shows every civilization's cause cards and a table of its settlements with their composition, Mix, Character, Enclave and pressure.[n]• Network: an animated map of civilizations and their settlements, sized by how much population moves through them, with dots traveling the routes (refugees ringed, naming their war on hover), flow arrows, event labels and a timeline you can scrub; click a settlement to see only its flows, or drag it out of its circle. "Table" shows arrivals, departures and net change by civilization, internal and external, beside refugees and losses.[n]• Policies: who has adopted a Pro- or Anti-Immigration Stance.[n]• Notifications: the log of every notification, including the Migration Chronicle's entries.[n][n]Scaled | Civ switches every number between historically scaled people and population points. The Spoil Guard hides civilizations you have not met; see Scope &amp; Visibility. On the map, the Prosperity lens (Shift+P) and the Ethnic Composition lens (Shift+E) paint each settlement tile by tile; see Map Lenses.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_DASHBOARD_BODY" Language="zh_Hant_HK"><Text>從遊戲底部工具列的按鈕、「結束回合」旁的遷徙通知，或 Demographics 模組的「遷徙」頁面，都可以開啟遷徙儀表板。它有四個分頁，首先是「聚落」。[n][n]• 聚落：每個聚落一張卡，按移民壓力或名稱排序。每張卡有四個窗格。「遷入」：到來者來自何處、這個聚落從哪些聚落吸引人、原因為何，以及甚麼能吸引更多（「建造競技場增加 +2 幸福度」）。「遷出」：移民壓力，以從「可忽略」到「危急」的五級壓力計顯示，附帶其驅動因素；壓力計下方的預測（「接下來 4 回合約有 3 人可能離開」，根據壓力上升速度的推算，或「短期內應該沒有人會離開」）；人們被吸引向何處及原因；以及甚麼能留住他們，當親移民或反移民立場有幫助時也會列為一步。「已到來」：按來源列出誰住在這裡、聚落的構成與特徵，以及外來社群距離形成飛地的進度。「離開」：在外的人、他們何時自行回家，以及「加速」和「從海外召喚」按鈕及其價格。窗格之間的繁榮帳目列出聚落評分的每一項，每行都可以展開查看背後的細節。「所有文明」顯示每個文明的原因卡，以及其聚落的表格，包括構成、特徵、飛地和壓力。[n]• 網絡：文明及其聚落的動畫地圖，按經過它們的人口流量定大小，圓點沿路線移動（難民帶有光環，移到上面會顯示其戰爭名稱）、流向箭頭、事件標籤，以及可以拖曳的時間線；點按一個聚落只看它的流動，或把它拖出所屬的圓圈。「表格」按文明顯示遷入、遷出和淨變化，分內部與外部，旁邊是難民和損失。[n]• 政策：誰採取了親移民或反移民立場。[n]• 通知：每一則通知的紀錄，包括移民編年史的條目。[n][n]「縮放 | Civ」在按歷史比例縮放的人數與人口點之間切換每一個數字。防劇透保護會隱藏你未遇見的文明；見「範圍與可見性」。在地圖上，繁榮鏡頭（Shift+P）和族群構成鏡頭（Shift+E）逐格為每個聚落上色；見「地圖鏡頭」。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_TITLE" Language="zh_Hant_HK"><Text>族群與融入</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ETHNICITY_BODY" Language="zh_Hant_HK"><Text>每個聚落都記錄其居民的來歷，按每個人所屬的文明來源，並在征服之後依然保留這份記錄。族群構成鏡頭（Shift+E）以逐格馬賽克呈現：人口密集的都市核心為主導來源的顏色，較小的社群散布於其各地塊，已定居地塊的提示框中會顯示確切構成。[n][n]隨著時間推移，新來者會融入接納他們的文明，除非與其故土的戰爭或城市中的動亂使某個社群保持獨立。而一旦故土與接納方和平相處並重新繁榮，回歸遷徙便會逐漸將其部分人口帶回故鄉，移動真實人口。以上皆為預設開啟，可在「選項」中關閉。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_TITLE" Language="zh_Hant_HK"><Text>文化聚居區</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_BODY" Language="zh_Hant_HK"><Text>A foreign community of at least 3 population points that holds 30% of a settlement, or the size bar (6 points at average settlement size), forms a Cultural Enclave in that city, yours or an AI's: a tile at the city's edge named for the origin people, carrying its own yield from the day it forms. After a dwell period the enclave is recognized. Each people has two stances drawn from its character. By default the city takes the first it can afford, and the Chronicle records it. With enclave recognition set to Ask me in Advanced settings, a pop-up with a quotation in that people's voice lets you pick a stance or none. A stance pays once, when chosen: Culture toward your current civic, Science toward your current research, Influence, or Gold, worth three turns of your income of that yield. A stance that pays anything but Gold costs two turns of your Gold income.[n][n]Each origin civilization can hold at most two enclaves in your empire, and at most three enclaves form in your empire per age. An enclave can change hands as the city's population shifts, and dissolves when its community stays below 12.5% of the settlement and below the size bar for 12 turns. At war with its homeland, an enclave is contested: it strains your happiness until peace, and a stance chosen meanwhile pays half. A community with an enclave rarely returns home on its own; see Coming Home.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ENCLAVES_BODY" Language="zh_Hant_HK"><Text>至少 3 個人口點、佔聚落 30% 或達到規模門檻（平均聚落規模下為 6 點）的外來社群，會在那座城市形成文化飛地，無論城市屬於你還是 AI：那是城市邊緣的一個地塊，以來源民族命名，從形成之日起就有自己的產出。經過一段定居期後，飛地獲得承認。每個民族有兩種源自其特質的立場。預設下城市採取它負擔得起的第一種，並由編年史記錄。在進階設定中把飛地承認設為「詢問我」，就會有一個帶該民族之聲引文的彈窗，讓你選一種立場或不選。立場在選定時支付一次：投向你當前市政的文化、投向你當前研究的科技、影響力或金幣，相當於你該產出三回合的收入。支付金幣以外產出的立場，要花你兩回合的金幣收入。[n][n]每個來源文明在你的帝國內最多持有兩處飛地，而你的帝國每個時代最多形成三處飛地。飛地可以隨城市人口變化而易手，當其社群連續 12 回合低於聚落的 12.5% 且低於規模門檻時便會解散。與其故土交戰時，飛地處於爭議狀態：它會拖累你的幸福度直到和平，期間選擇的立場只支付一半。擁有飛地的社群很少自行回歸故土；見「歸鄉」。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_TITLE" Language="zh_Hant_HK"><Text>編年史與難民抉擇</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_CHRONICLE_BODY" Language="zh_Hant_HK"><Text>移民編年史以簡短的歷史記下世界上的重大遷徙：被戰爭或災害清空的城市、在遠離故土之處扎根的離散族群、在家園復甦後返鄉的民族、獲得承認或逐漸消退的飛地、得到或得不到響應的回國召喚。其條目會出現在儀表板的「通知」分頁中。[n][n]當一場真正的動盪，例如鄰國在短時間內征服多座城市或一場瘟疫危機，把一波難民推向你的疆土時，你會被問到如何接收他們：[n]• 接納他們：花費金幣，並使你的人民短暫承受壓力；他們會在你的人民之中安頓下來。[n]• 安置於邊疆：代價較小；他們會前往一座較小的城鎮。[n]• 將他們拒之門外：花費影響力。[n]每個抉擇都附有一段來自門外民族之聲的引文。每個時代最多出現兩次，相隔至少十八回合，並可在「選項」中關閉。你尚未遇到的文明只會以傳聞的形式被提及。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_OPEN" Language="zh_Hant_HK"><Text>移民</Text></Replace>
@@ -868,11 +868,11 @@
         <Replace Tag="LOC_EMIG_NETC_CLUSTER_TIP" Language="zh_Hant_HK"><Text>遷入 {1_In} · 淨 {2_Net}</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_NOW" Language="zh_Hant_HK"><Text>現在</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_TURN_N" Language="zh_Hant_HK"><Text>第 {1_Turn} 回合</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_TURN_SHORT" Language="zh_Hant_HK"><Text>T{1_Turn}</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_TURN_SHORT" Language="zh_Hant_HK"><Text>第{1_Turn}回合</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_PLAY" Language="zh_Hant_HK"><Text>播放</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_PAUSE" Language="zh_Hant_HK"><Text>暫停</Text></Replace>
         <Replace Tag="LOC_EMIG_YEAR_BCE" Language="zh_Hant_HK"><Text>公元前 {1_Year} 年</Text></Replace>
-        <Replace Tag="LOC_EMIG_YEAR_CE" Language="zh_Hant_HK"><Text>{1_Year} CE</Text></Replace>
+        <Replace Tag="LOC_EMIG_YEAR_CE" Language="zh_Hant_HK"><Text>公元 {1_Year} 年</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_START" Language="zh_Hant_HK"><Text>開始</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_CAPTION" Language="zh_Hant_HK"><Text>每個圓點 ≈ {1_People} 人。一個圓圈是一個文明，包含其城市與城鎮；其圓點為本地居民（文明本色）、在其城市之間遷移的人（較淺色調）以及移民（其來源的顏色）。以「著色依據」重新著色，以「顯示/來源」開關篩選，點按色塊或圓圈以將其單獨顯示，並按 ▶ 或拖曳時間線以重播歷史。</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_SHOW" Language="zh_Hant_HK"><Text>顯示：</Text></Replace>
@@ -880,13 +880,13 @@
         <Replace Tag="LOC_EMIG_NETC_UNMET" Language="zh_Hant_HK"><Text>未遇見</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS" Language="zh_Hant_HK"><Text>移民流向</Text></Replace>
         <Replace Tag="LOC_EMIG_NETC_MIGFLOWS_TIP" Language="zh_Hant_HK"><Text>疊加顯示移民流向箭頭：紅色為人們離開之處，綠色為抵達之處；越粗 = 人數越多</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS" Language="zh_Hant_HK"><Text>Event labels</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS_TIP" Language="zh_Hant_HK"><Text>Show each war's name under the civilizations fighting it</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_REFUGEE_FROM" Language="zh_Hant_HK"><Text>Refugee from {1_Origin}</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_RING_WAR" Language="zh_Hant_HK"><Text>War refugees</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_RING_WAR_TIP" Language="zh_Hant_HK"><Text>A ring marks people who fled a war. It's brightest while the war is on. Hover a dot to see which war.</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER" Language="zh_Hant_HK"><Text>Disaster refugees</Text></Replace>
-        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER_TIP" Language="zh_Hant_HK"><Text>A ring marks people who fled a disaster. It's brightest just after it strikes. Hover a dot to see which disaster.</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS" Language="zh_Hant_HK"><Text>事件標籤</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_EVENTLABELS_TIP" Language="zh_Hant_HK"><Text>在交戰的文明下方顯示每場戰爭的名稱</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_REFUGEE_FROM" Language="zh_Hant_HK"><Text>來自{1_Origin}的難民</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_WAR" Language="zh_Hant_HK"><Text>戰爭難民</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_WAR_TIP" Language="zh_Hant_HK"><Text>光環標示逃離戰爭的人。戰爭進行期間最亮。把游標移到圓點上可查看是哪場戰爭。</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER" Language="zh_Hant_HK"><Text>災害難民</Text></Replace>
+        <Replace Tag="LOC_EMIG_NETC_RING_DISASTER_TIP" Language="zh_Hant_HK"><Text>光環標示逃離災害的人。災害剛發生後最亮。把游標移到圓點上可查看是哪場災害。</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_POP_TITLE" Language="zh_Hant_HK"><Text>移民 - {1_City}</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_ORIGINS" Language="zh_Hant_HK"><Text>人口來源</Text></Replace>
         <Replace Tag="LOC_EMIGRATION_PANEL_DEPARTED" Language="zh_Hant_HK"><Text>已遷往（全局）</Text></Replace>
@@ -924,39 +924,39 @@
         <Replace Tag="LOC_EMIG_VIEW_TAB_NET_TABLE" Language="zh_Hant_HK"><Text>淨遷徙（表格）</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_CAUSES" Language="zh_Hant_HK"><Text>原因</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_POLICIES" Language="zh_Hant_HK"><Text>政策</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_VIEW_LABEL" Language="zh_Hant_HK"><Text>View:</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_NET_DIAGRAM" Language="zh_Hant_HK"><Text>Diagram</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_NET_TABLE_VIEW" Language="zh_Hant_HK"><Text>Table</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_CITIES_LABEL" Language="zh_Hant_HK"><Text>Show:</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_CITIES_MINE" Language="zh_Hant_HK"><Text>Your settlements</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_SORT_PRESSURE" Language="zh_Hant_HK"><Text>By pressure</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_SORT_NAME" Language="zh_Hant_HK"><Text>By name</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_CITIES_ALL" Language="zh_Hant_HK"><Text>All civilizations</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SECTION" Language="zh_Hant_HK"><Text>Displaced: your people who fled, where they are, and the way home</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_EMPTY" Language="zh_Hant_HK"><Text>Nobody from your settlements is displaced right now.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SINCE" Language="zh_Hant_HK"><Text>since turn {1_Turn}</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_AWAY" Language="zh_Hant_HK"><Text>Away:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_AWAY_N" Language="zh_Hant_HK"><Text>{1_Count} population points: {2_Where}</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_IN_OWN" Language="zh_Hant_HK"><Text>{1_Count} in {2_City}</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_IN_FOREIGN" Language="zh_Hant_HK"><Text>{1_Count} in {2_City} ({3_Civ})</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LOST" Language="zh_Hant_HK"><Text>{1_Home} is no longer yours. These people stay where they are.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LOST_LBL" Language="zh_Hant_HK"><Text>Lost:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_LOST_TILES" Language="zh_Hant_HK"><Text>{1_Tiles}, torn down as they left; a returnee rebuilds there when the plot is still open.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_WORTH" Language="zh_Hant_HK"><Text>Worth:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_TILE" Language="zh_Hant_HK"><Text>each returnee settles a new tile at {1_Home}, about {2_Yields} a turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_WAIT" Language="zh_Hant_HK"><Text>Wait:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HOMECOMING_OFF" Language="zh_Hant_HK"><Text>People at home only come back when called.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_WAIT_CALM" Language="zh_Hant_HK"><Text>Free, once {1_Home} has been calm for {2_Turns} more turns; then {4_Batch} come home every {3_Every} turns, all of them in about {5_All} turns.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_WAIT_NOW" Language="zh_Hant_HK"><Text>Free: {2_Batch} come home next turn, and the last in about {1_Turns} turns.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_WAIT_NEXT" Language="zh_Hant_HK"><Text>Free: the next {3_Batch} come home in {1_Turns} turns, and the last in about {2_All} turns.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HASTEN_LBL" Language="zh_Hant_HK"><Text>Hasten:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HASTEN" Language="zh_Hant_HK"><Text>bring {1_Count} back now for {2_Gold} Gold or {3_Infl} Influence.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_HASTEN_BTN" Language="zh_Hant_HK"><Text>Hasten</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_ABROAD_LBL" Language="zh_Hant_HK"><Text>Abroad:</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_ABROAD" Language="zh_Hant_HK"><Text>Call {1_Count} from abroad: {2_Pct}% each, about {3_Expected} expected to come, for {4_Gold} Gold or {5_Infl} Influence. That's about {6_PerGold} Gold or {7_PerInfl} Influence for each person who comes.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_ABROAD_BTN" Language="zh_Hant_HK"><Text>Call from abroad</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_COOLDOWN" Language="zh_Hant_HK"><Text>Available again in {1_Turns} turns.</Text></Replace>
-        <Replace Tag="LOC_EMIG_VIEW_TAB_MY_CITIES" Language="zh_Hant_HK"><Text>Settlements</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_VIEW_LABEL" Language="zh_Hant_HK"><Text>檢視：</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NET_DIAGRAM" Language="zh_Hant_HK"><Text>圖示</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_NET_TABLE_VIEW" Language="zh_Hant_HK"><Text>表格</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_CITIES_LABEL" Language="zh_Hant_HK"><Text>顯示：</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_CITIES_MINE" Language="zh_Hant_HK"><Text>你的聚落</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SORT_PRESSURE" Language="zh_Hant_HK"><Text>按壓力</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SORT_NAME" Language="zh_Hant_HK"><Text>按名稱</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_CITIES_ALL" Language="zh_Hant_HK"><Text>所有文明</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SECTION" Language="zh_Hant_HK"><Text>流離失所：逃離的人民、他們身在何處，以及回家的路</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_EMPTY" Language="zh_Hant_HK"><Text>目前沒有人從你的聚落流離失所。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SINCE" Language="zh_Hant_HK"><Text>自第 {1_Turn} 回合起</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_AWAY" Language="zh_Hant_HK"><Text>在外：</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_AWAY_N" Language="zh_Hant_HK"><Text>{1_Count} 個人口點：{2_Where}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_IN_OWN" Language="zh_Hant_HK"><Text>{1_Count} 人在{2_City}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_IN_FOREIGN" Language="zh_Hant_HK"><Text>{1_Count} 人在{2_City}（{3_Civ}）</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOST" Language="zh_Hant_HK"><Text>{1_Home}已不再屬於你。這些人會留在原地。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOST_LBL" Language="zh_Hant_HK"><Text>失去：</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOST_TILES" Language="zh_Hant_HK"><Text>{1_Tiles}在他們離開時被拆毀；只要那塊地仍然空着，回歸者就會在那裡重建。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WORTH" Language="zh_Hant_HK"><Text>價值：</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_TILE" Language="zh_Hant_HK"><Text>每位回歸者在{1_Home}開墾一個新地塊，每回合約 {2_Yields}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT" Language="zh_Hant_HK"><Text>等待：</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HOMECOMING_OFF" Language="zh_Hant_HK"><Text>在本國境內的人只在被召喚時才回來。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT_CALM" Language="zh_Hant_HK"><Text>免費，待{1_Home}再平靜 {2_Turns} 回合；之後每 {3_Every} 回合回來 {4_Batch} 人，全部回來約需 {5_All} 回合。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT_NOW" Language="zh_Hant_HK"><Text>免費：下回合回來 {2_Batch} 人，最後一批約在 {1_Turns} 回合後。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT_NEXT" Language="zh_Hant_HK"><Text>免費：下一批 {3_Batch} 人在 {1_Turns} 回合後回來，最後一批約在 {2_All} 回合後。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HASTEN_LBL" Language="zh_Hant_HK"><Text>加速：</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HASTEN" Language="zh_Hant_HK"><Text>以 {2_Gold} 金幣或 {3_Infl} 影響力現在帶回 {1_Count} 人。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HASTEN_BTN" Language="zh_Hant_HK"><Text>加速</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_ABROAD_LBL" Language="zh_Hant_HK"><Text>海外：</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_ABROAD" Language="zh_Hant_HK"><Text>從海外召喚 {1_Count} 人：每人 {2_Pct}%，預計約 {3_Expected} 人會來，花費 {4_Gold} 金幣或 {5_Infl} 影響力。每位回來的人約合 {6_PerGold} 金幣或 {7_PerInfl} 影響力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_ABROAD_BTN" Language="zh_Hant_HK"><Text>從海外召喚</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COOLDOWN" Language="zh_Hant_HK"><Text>{1_Turns} 回合後可再次使用。</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_MY_CITIES" Language="zh_Hant_HK"><Text>聚落</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_NOTIFICATIONS" Language="zh_Hant_HK"><Text>通知</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_GUIDE" Language="zh_Hant_HK"><Text>指南</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_NUM_CIV" Language="zh_Hant_HK"><Text>Civ 人口</Text></Replace>
@@ -974,7 +974,7 @@
         <Replace Tag="LOC_EMIG_CF_BAND_CRITICAL" Language="zh_Hant_HK"><Text>危急</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_BAND_HIGH" Language="zh_Hant_HK"><Text>高</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_BAND_MODERATE" Language="zh_Hant_HK"><Text>中等</Text></Replace>
-        <Replace Tag="LOC_EMIG_CF_BAND_NEGLIGIBLE" Language="zh_Hant_HK"><Text>Negligible</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_BAND_NEGLIGIBLE" Language="zh_Hant_HK"><Text>可忽略</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_BAND_LOW" Language="zh_Hant_HK"><Text>低</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_PRESSURE" Language="zh_Hant_HK"><Text>移民壓力</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_NONE_RECORDED" Language="zh_Hant_HK"><Text>無記錄</Text></Replace>
@@ -1078,11 +1078,12 @@
         <Replace Tag="LOC_EMIG_NV_TURN" Language="zh_Hant_HK"><Text>第 {1_Turn} 回合</Text></Replace>
         <Replace Tag="LOC_EMIG_NV_CHRONICLE" Language="zh_Hant_HK"><Text>編年史</Text></Replace>
         <Replace Tag="LOC_EMIG_NV_EMPTY" Language="zh_Hant_HK"><Text>尚無遷徙事件；當人們遷移時，事件會連同各自的完整細節出現於此。</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_FORECAST" Language="zh_Hant_HK"><Text>Forecast: {1_Line}</Text></Replace>
-        <Replace Tag="LOC_EMIG_FORECAST_LEAVE" Language="zh_Hant_HK"><Text>About {1_Count} people are likely to leave in the next {2_Turns} turns</Text></Replace>
-        <Replace Tag="LOC_EMIG_FORECAST_STABLE" Language="zh_Hant_HK"><Text>Nobody is likely to leave soon</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="zh_Hant_HK"><Text>Closed to newcomers: nobody settles here until you open it again</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_SIEGE_STALLED" Language="zh_Hant_HK"><Text>Siege stalled: the besiegers aren't attacking, so nobody leaves or dies for the siege until they do</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_FORECAST" Language="zh_Hant_HK"><Text>預測：{1_Line}</Text></Replace>
+        <Replace Tag="LOC_EMIG_FORECAST_LEAVE" Language="zh_Hant_HK"><Text>接下來 {2_Turns} 回合約有 {1_Count} 人可能離開</Text></Replace>
+        <Replace Tag="LOC_EMIG_FORECAST_CRISIS" Language="zh_Hant_HK"><Text>人們正在逃離；人數取決於危機，而不是壓力</Text></Replace>
+        <Replace Tag="LOC_EMIG_FORECAST_STABLE" Language="zh_Hant_HK"><Text>短期內應該沒有人會離開</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="zh_Hant_HK"><Text>對新來者關閉：在你重新開放之前，沒有人會在此定居</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_SIEGE_STALLED" Language="zh_Hant_HK"><Text>圍城停滯：圍城者沒有進攻，所以在他們再次進攻之前，沒有人會因圍城離開或死去</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_HOLDING" Language="zh_Hant_HK"><Text>難民正在此聚落重新安置</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_TRAPPED" Language="zh_Hant_HK"><Text>面臨風險：被困而無處可逃{1_Why}</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_DISTRESS" Language="zh_Hant_HK"><Text>陷於苦境：人們正伺機離去{1_Why}</Text></Replace>
@@ -1145,10 +1146,10 @@
         <Replace Tag="LOC_EMIG_DIL_BODY_FRONTIER" Language="zh_Hant_HK"><Text>你將{1_Adj}的難民送往邊疆，讓他們建立屬於自己的天地。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_BODY_AWAY" Language="zh_Hant_HK"><Text>你將{1_Adj}的難民拒於{2_Place}之外。他們繼續上路，{3_Who}。</Text></Replace>
         <Replace Tag="LOC_EMIG_DIL_CHRON_TITLE" Language="zh_Hant_HK"><Text>邊境上的抉擇</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIL_THEIR_LANDS" Language="zh_Hant_HK"><Text>their lands</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIL_AI_BODY_WELCOME" Language="zh_Hant_HK"><Text>{1_Host} opened {2_Place} to the refugees of {3_Adj}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIL_AI_BODY_FRONTIER" Language="zh_Hant_HK"><Text>{1_Host} sent the refugees of {2_Adj} to its frontier, to {3_Place}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_DIL_AI_BODY_AWAY" Language="zh_Hant_HK"><Text>{1_Host} turned the refugees of {2_Adj} away from its borders.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_THEIR_LANDS" Language="zh_Hant_HK"><Text>其領土</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_WELCOME" Language="zh_Hant_HK"><Text>{1_Host}向{3_Adj}的難民開放了{2_Place}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_FRONTIER" Language="zh_Hant_HK"><Text>{1_Host}把{2_Adj}的難民送往其邊疆的{3_Place}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DIL_AI_BODY_AWAY" Language="zh_Hant_HK"><Text>{1_Host}把{2_Adj}的難民拒於邊境之外。</Text></Replace>
         <Replace Tag="LOC_EMIG_DILV_EYEBROW_DEFAULT" Language="zh_Hant_HK"><Text>難民</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_TITLE" Language="zh_Hant_HK"><Text>飛地被覆蓋</Text></Replace>
         <Replace Tag="LOC_EMIG_QTR_CHRON_BUILT_OVER_BODY" Language="zh_Hant_HK"><Text>{1_Name}已不復存在：城市在其街區之上另起建設，那裡的家庭散入了周圍的街巷。</Text></Replace>
@@ -1578,38 +1579,38 @@
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP_4" Language="zh_Hant_HK"><Text>每 4 回合</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_SNAP_5" Language="zh_Hant_HK"><Text>每 5 回合</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_MINIMIZE" Language="zh_Hant_HK"><Text>簡化儀表板</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_MINIMIZE_DESCRIPTION" Language="zh_Hant_HK"><Text>Hides the dashboard's heaviest tab, the animated Network diagram, keeping the Settlements, Policies and Notifications tabs and the Demographics graphs. Useful on slower machines. Display only; applies the next time you open the dashboard.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_MINIMIZE_DESCRIPTION" Language="zh_Hant_HK"><Text>隱藏儀表板最耗資源的分頁，也就是動畫的「網絡」圖示，保留「聚落」、「政策」和「通知」分頁以及 Demographics 圖表。在較慢的電腦上很有用。僅影響顯示；下次開啟儀表板時生效。</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_NOTIFICATIONS" Language="zh_Hant_HK"><Text>通知</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_NOTIFICATIONS_DESCRIPTION" Language="zh_Hant_HK"><Text>顯示移民模組的遊戲內通知（遷徙提示與世界新聞紀錄）。關閉此項可停用所有移民彈出通知。通知的詳細程度可在「進階設定」的「通知」部分進一步調整。</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_SPOIL_GUARD" Language="zh_Hant_HK"><Text>Spoil Guard</Text></Replace>
-        <Replace Tag="LOC_EMIG_SPOIL_PILL" Language="zh_Hant_HK"><Text>Spoil Guard on: {1_What}</Text></Replace>
-        <Replace Tag="LOC_EMIG_SPOIL_PILL_TIP" Language="zh_Hant_HK"><Text>Options, Mods, Emigration turns the Spoil Guard off. With the Demographics mod installed, the stricter of the two guards applies.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_MET" Language="zh_Hant_HK"><Text>civilizations you haven't met are hidden</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_OWN" Language="zh_Hant_HK"><Text>only your own civilization shows</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_SPOIL_GUARD_DESCRIPTION" Language="zh_Hant_HK"><Text>Hides the names, flows and settlements of civilizations you haven't met yet, so the Emigration screens never spoil a civilization before you encounter it. On by default. With the Demographics mod installed the two guards work together: whichever is stricter wins, so turning one off only shows everyone once both are off.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SPOIL_GUARD" Language="zh_Hant_HK"><Text>防劇透保護</Text></Replace>
+        <Replace Tag="LOC_EMIG_SPOIL_PILL" Language="zh_Hant_HK"><Text>防劇透保護開啟：{1_What}</Text></Replace>
+        <Replace Tag="LOC_EMIG_SPOIL_PILL_TIP" Language="zh_Hant_HK"><Text>在「選項、模組、移民」可以關閉防劇透保護。安裝了 Demographics 模組時，以兩者中較嚴格的保護為準。</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_MET" Language="zh_Hant_HK"><Text>你尚未遇見的文明已隱藏</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_OWN" Language="zh_Hant_HK"><Text>只顯示你自己的文明</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_SPOIL_GUARD_DESCRIPTION" Language="zh_Hant_HK"><Text>隱藏你尚未遇見的文明的名稱、流動和聚落，使移民畫面永遠不會在你遇見一個文明之前劇透它。預設開啟。安裝了 Demographics 模組時，兩個保護會一起運作：以較嚴格者為準，所以只關掉一個不夠，要兩者都關閉才會顯示所有人。</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DILEMMAS" Language="zh_Hant_HK"><Text>難民抉擇</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_DILEMMAS_DESCRIPTION" Language="zh_Hant_HK"><Text>當一大波難民抵達你的疆土時（鄰國的征服、一場瘟疫），偶爾會暫停片刻，讓你簡短決定如何接納他們。按設計十分罕見。關閉後將不再看到這些彈出視窗；模擬本身不受影響。</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_ASK_ARRIVALS" Language="zh_Hant_HK"><Text>新來者安置抉擇</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_ASK_ARRIVALS_DESCRIPTION" Language="zh_Hant_HK"><Text>當有人定居到你的某座城市時，會彈出視窗讓你選擇他們的地塊、交由城市決定，或稍後再處理。預設只會就難民詢問你；可在「進階設定」中選擇哪些抵達者需要詢問。關閉：城市會自行安置所有人。</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_FIRST_LOSS" Language="zh_Hant_HK"><Text>First-loss explainer</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_FIRST_LOSS_DESCRIPTION" Language="zh_Hant_HK"><Text>The first time one of your settlements loses a tile to emigration, one page explains what happened, where the people went and why, what happens next and where to look. It shows once per game. Off by default.</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FIRSTLOSS" Language="zh_Hant_HK"><Text>First-loss explainer</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_FIRSTLOSS_D" Language="zh_Hant_HK"><Text>One page, the first time a settlement of yours loses a tile to emigration: what happened, where they went and why, what happens next and where to look, with the settlement's fix line. Once per game; switching it on later shows it at the next tile loss unless it has shown already.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_EYEBROW" Language="zh_Hant_HK"><Text>Emigration</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_TITLE" Language="zh_Hant_HK"><Text>People Have Left {1_City}</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_LEFT" Language="zh_Hant_HK"><Text>{1_Count} people left {2_City} this turn.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_TILE" Language="zh_Hant_HK"><Text>They tore down the {1_Tile} they worked on the way out; the plot is yours to settle again.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_GONE_ABROAD" Language="zh_Hant_HK"><Text>They have gone to {1_Dest}, a settlement of the {2_Civ}, because of {3_Reason}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_GONE_HOME" Language="zh_Hant_HK"><Text>They have gone to {1_Dest}, because of {2_Reason}.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_ELSEWHERE" Language="zh_Hant_HK"><Text>another settlement</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_UNMET" Language="zh_Hant_HK"><Text>an unmet civilization</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_NEXT" Language="zh_Hant_HK"><Text>People who stay inside your civilization come home on their own once {1_City} has been calm for a few turns. People who crossed a border can be called back from the Settlements tab, at a price and at odds.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_LOOK" Language="zh_Hant_HK"><Text>The Emigration screen (the button in the dock, or the notice beside End Turn) shows every settlement losing people, why, and what would stop it. Hover a settlement for the short version.</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_OPEN" Language="zh_Hant_HK"><Text>Open the Emigration screen</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_OK" Language="zh_Hant_HK"><Text>Got it</Text></Replace>
-        <Replace Tag="LOC_EMIG_FL_CHRONICLE_TITLE" Language="zh_Hant_HK"><Text>The First to Leave</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_CALLHOME_OFFER" Language="zh_Hant_HK"><Text>Displaced-people reminders</Text></Replace>
-        <Replace Tag="LOC_OPTIONS_EMIG_CALLHOME_OFFER_DESCRIPTION" Language="zh_Hant_HK"><Text>Once a settlement your people fled is safe again and some of them are still displaced, a small pop-up offers to open the Settlements tab, where you choose which settlement's people to bring back and see what it costs. It repeats only when many more are displaced, and its "Don't remind me again" button turns it off. On by default. Off: no reminder; the tab still works whenever you open it.</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_FIRST_LOSS" Language="zh_Hant_HK"><Text>首次流失說明</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_FIRST_LOSS_DESCRIPTION" Language="zh_Hant_HK"><Text>你的聚落第一次因遷出而失去地塊時，用一頁說明發生了甚麼、人們去了哪裡和為甚麼、接下來會怎樣，以及該去哪裡查看。每局遊戲只顯示一次。預設關閉。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FIRSTLOSS" Language="zh_Hant_HK"><Text>首次流失說明</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_FIRSTLOSS_D" Language="zh_Hant_HK"><Text>你的聚落第一次因遷出而失去地塊時顯示一頁：發生了甚麼、他們去了哪裡和為甚麼、接下來會怎樣，以及該去哪裡查看，附帶該聚落的補救提示。每局遊戲一次；之後才開啟的話，會在下一次失去地塊時顯示，除非已經顯示過。</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_EYEBROW" Language="zh_Hant_HK"><Text>移民</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_TITLE" Language="zh_Hant_HK"><Text>有人離開了{1_City}</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_LEFT" Language="zh_Hant_HK"><Text>本回合有 {1_Count} 人離開了{2_City}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_TILE" Language="zh_Hant_HK"><Text>他們離開時拆毀了自己耕作的{1_Tile}；那塊地可以由你重新開墾。</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_GONE_ABROAD" Language="zh_Hant_HK"><Text>他們去了{2_Civ}的聚落{1_Dest}，原因是{3_Reason}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_GONE_HOME" Language="zh_Hant_HK"><Text>他們去了{1_Dest}，原因是{2_Reason}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_ELSEWHERE" Language="zh_Hant_HK"><Text>另一個聚落</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_UNMET" Language="zh_Hant_HK"><Text>一個未遇見的文明</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_NEXT" Language="zh_Hant_HK"><Text>留在你文明之內的人，會在{1_City}平靜幾個回合後自行回家。跨越邊境的人可以從「聚落」分頁召回，需要付費，而且不一定成功。</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_LOOK" Language="zh_Hant_HK"><Text>移民畫面（底部工具列的按鈕，或「結束回合」旁的通知）顯示每個正在流失人口的聚落、原因，以及能止住它的辦法。把游標移到聚落上可查看簡短版本。</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_OPEN" Language="zh_Hant_HK"><Text>開啟移民畫面</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_OK" Language="zh_Hant_HK"><Text>明白了</Text></Replace>
+        <Replace Tag="LOC_EMIG_FL_CHRONICLE_TITLE" Language="zh_Hant_HK"><Text>最先離開的人</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_CALLHOME_OFFER" Language="zh_Hant_HK"><Text>流離失所提醒</Text></Replace>
+        <Replace Tag="LOC_OPTIONS_EMIG_CALLHOME_OFFER_DESCRIPTION" Language="zh_Hant_HK"><Text>當你的人民逃離的聚落再度安全，而其中一些人仍流離失所時，一個小彈窗會提議開啟「聚落」分頁，你可以在那裡選擇帶哪個聚落的人回來，並查看要花多少。只有當流離失所的人數大幅增加時才會再出現，它的「不要再提醒我」按鈕會把它關閉。預設開啟。關閉：沒有提醒；分頁仍然隨時可用。</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_ASK_ENCLAVES" Language="zh_Hant_HK"><Text>飛地立場抉擇</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_ASK_ENCLAVES_DESCRIPTION" Language="zh_Hant_HK"><Text>當你某座城市中的外來社群獲承認為飛地時，會彈出視窗讓你選擇其立場：兩個選項各帶一項小收益與一項代價，或者任其自處。預設關閉：每座城市自行選擇立場，飛地也會在其他文明的城市中形成。開啟時，飛地只限於你的城市。</Text></Replace>
         <Replace Tag="LOC_OPTIONS_EMIG_ETHNIC" Language="zh_Hant_HK"><Text>族裔融合</Text></Replace>
@@ -1644,7 +1645,7 @@
         <Replace Tag="LOC_EMIG_TRAIN_ARRIVAL" Language="zh_Hant_HK"><Text>新移民已抵達</Text></Replace>
         <Replace Tag="LOC_EMIG_TRAIN_WORLD" Language="zh_Hant_HK"><Text>他國爆發難民危機</Text></Replace>
         <Replace Tag="LOC_EMIG_TRAIN_DISASTER" Language="zh_Hant_HK"><Text>災害導致人口流離</Text></Replace>
-        <Replace Tag="LOC_EMIG_TRAIN_HOME" Language="zh_Hant_HK"><Text>People are coming home</Text></Replace>
+        <Replace Tag="LOC_EMIG_TRAIN_HOME" Language="zh_Hant_HK"><Text>人們正在回家</Text></Replace>
         <Replace Tag="LOC_EMIG_TRAIN_NOTE" Language="zh_Hant_HK"><Text>移民消息</Text></Replace>
         <Replace Tag="LOC_EMIG_TRAIN_FALLBACK" Language="zh_Hant_HK"><Text>詳情見移民畫面的「通知」分頁。</Text></Replace>
         <Replace Tag="LOC_EMIG_QUARTER_ENCLAVE" Language="zh_Hant_HK"><Text>{1_Demonym}飛地</Text></Replace>
@@ -2069,13 +2070,13 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_TITLE" Language="zh_Hant_HK"><Text>抵達</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_1" Language="zh_Hant_HK"><Text>其他文明會自行安置抵達者。對於你的城市，則由「新來者如何定居」設定（選項、附加內容、移民、進階設定、遷入與遷出）決定結果：[BLIST][LI][B]詢問我[/B]（預設）：接收城市會彈出「新來者」或「難民」視窗，讓你選擇地塊、交由城市決定，或稍後再處理。三個開關決定哪些類型的抵達需要詢問；預設只有難民會詢問，移民與返鄉者則會立即安置。[LI][B]自動[/B]：城市立即安置該人口點，就像城市成長時一樣。[LI][B]移民單位[/B]：新來者會以移民單位的形式出現在城市旁，由你安排移居。未安置的移民單位每回合都需支付維護費。[LI][B]關閉[/B]：由遊戲自身的「增長城市」提示要求你安置該人口點。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_2" Language="zh_Hant_HK"><Text>「難民」彈窗會說明抵達者從何處逃來、逃離了甚麼，並附上一句以其民族口吻說出的引文（見「流離者之聲」）。來自你尚未遇見之文明的難民只會被描述為流離失所者。</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="zh_Hant_HK"><Text>Each of your settlements has a "Close to newcomers" button on its Settlements card. A closed settlement takes nobody in: arrivals go to your next best settlement, one already on the road is re-aimed when it lands, and the closed settlement pays no integration cost. Refugees with nowhere else to go are not forced in. "Open to newcomers" reverses it, and the Advanced setting "Close a settlement to newcomers" hides the button.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="zh_Hant_HK"><Text>你的每個聚落在「聚落」卡上都有一個「對新來者關閉」按鈕。關閉的聚落不接收任何人：到來者會改去你次佳的聚落，已在路上的人在抵達時重新導向，而關閉的聚落也不用支付融入成本。無處可去的難民也不會被強行塞進來。「對新來者開放」會把它反過來，而進階設定中的「對新來者關閉聚落」會隱藏這個按鈕。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_TITLE" Language="zh_Hant_HK"><Text>等待定居的難民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_PARA_1" Language="zh_Hant_HK"><Text>預設情況下，每五名戰爭與災害難民中有一名會在抵達時定居。其餘的人會進入目的地的等候名單，並在接下來的回合中陸續定居。幸福、開放且不擁擠的接收地會讓他們更快定居；反移民立場則會減慢速度。接收地須為仍在等候的人支付維護費。如果他們所逃離的危機蔓延至新城市，等候中的難民會先行離開。城市概覽和城市詳情面板會顯示有多少人正在等候。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_TITLE" Language="zh_Hant_HK"><Text>接納人民的代價</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_PARA_1" Language="zh_Hant_HK"><Text>每名新來者都會為接收文明增加融入負荷，並在約六至八個回合內消退。在此期間，該文明每回合須支付 [icon:YIELD_GOLD] 金幣，其累積的 [icon:YIELD_HAPPINESS] 幸福感亦會被消耗，令下一次慶典延後。安置大量抵達者的文明，吸引到的新來者也會減少。以上每項成本都可在進階設定中設為 0；見「融入與成長的代價」。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_TITLE" Language="zh_Hant_HK"><Text>飛地如何成長</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_CONTENT_PARA_1" Language="zh_Hant_HK"><Text>A foreign community grows into an enclave in three stages: Foothold, Established and Recognized. Each settlement is measured by its largest community from another civilization. The city readout shows the stage, what the next one takes and anything holding it back, and the enclave's tile tooltip and the Settlements tab use the same names.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_CONTENT_PARA_1" Language="zh_Hant_HK"><Text>外來社群分三個階段成長為飛地：立足、成形和獲承認。每個聚落按其來自其他文明的最大社群來衡量。城市讀數顯示當前階段、下一階段需要甚麼以及有甚麼在拖後腿；飛地的地塊提示和「聚落」分頁使用同樣的名稱。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_FOOTHOLD_TITLE" Language="zh_Hant_HK"><Text>立足</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_FOOTHOLD_PARA_1" Language="zh_Hant_HK"><Text>當社群佔定居點的 25% 且自身人口至少為 3 時，便獲得立足。編年史會記下這一點。地圖上暫時還沒有任何變化。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_ESTABLISHED_TITLE" Language="zh_Hant_HK"><Text>已建立</Text></Replace>
@@ -2086,35 +2087,35 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_ENDINGS_PARA_1" Language="zh_Hant_HK"><Text>當其人口連續 12 回合低於定居點的 12.5% 且低於規模門檻時，飛地會衰落；城市資訊會倒數剩餘回合。其地塊被改建或城市被夷平時，飛地也會結束。若城邦或獨立勢力奪取了定居點，飛地會被擱置，直到再有文明掌握這座城市。與其故鄉交戰會使飛地受爭議，這會改變它提供的收益，但不會改變其階段。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_LIMITS_TITLE" Language="zh_Hant_HK"><Text>上限</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_GROWTH_CHAPTER_LIMITS_PARA_1" Language="zh_Hant_HK"><Text>每個文明每個時代最多形成 3 處飛地，且在其所有城市中來自同一民族的飛地最多 2 處。當由你決定是否承認飛地時，兩次決定至少相隔 12 回合，每個時代最多 3 次。隨着時代推進仍未形成飛地的文明，其門檻會逐步降低，最多 40%，直到形成一處。以上均可在進階設定的「文化飛地」中調整。</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_TITLE" Language="zh_Hant_HK"><Text>Coming Home</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_1" Language="zh_Hant_HK"><Text>People driven out of one of your settlements keep their tie to it. The Left pane of that settlement's card on the Settlements tab lists everyone away: how many, where they live now and since when, the tiles their departure tore down, what a returnee is worth at home (the yields of a rural tile there), when they come home on their own, and two buttons that bring them back sooner for a price. A settlement you no longer hold is listed with its people staying where they are.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_2" Language="zh_Hant_HK"><Text>Once a settlement your people fled is calm enough for them to return and at least five of your people are displaced from settlements you still hold, a small pop-up offers to open the Settlements tab, wait, or stop reminding you. It comes back only once half again as many are displaced and ten turns have passed. "Displaced-people reminders" under Options, Add-ons, Emigration is the same switch, and the threshold is an Advanced setting.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_TITLE" Language="zh_Hant_HK"><Text>On Their Own</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_PARA_1" Language="zh_Hant_HK"><Text>People driven out of one of your settlements into another of yours go home by themselves once it is safe. After 3 turns without war, siege, disaster, famine or unrest at home, one person comes back every 4 turns, plus one more for every 8 still away, and settles the plot their people left when it is still open, otherwise another free plot of the settlement. After fighting inside its borders or a siege the wait is 10 calm turns, because a frontier settlement hit once is likely to be hit again. The Chronicle and a notice beside End Turn say when they start coming home and when the last is back. AI civilizations get the same. "People find their own way home" in Advanced settings holds the numbers and an off switch.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_TITLE" Language="zh_Hant_HK"><Text>Hasten</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_PARA_1" Language="zh_Hant_HK"><Text>Hasten pays [icon:YIELD_GOLD] Gold or [icon:YIELD_DIPLOMACY] Influence to bring people living elsewhere in your civilization back now instead of over the next turns. Exactly the number paid for come, largest group first. The card names the tile a returnee works at home and the tiles they leave where they live now, the net per person, and how many turns sooner the fee brings them; the price buttons' hover carries the full ledger. Inside your borders a return swaps one tile for another, so the fee buys time. Each settlement runs its own cooldown, so hastening one does not lock the others.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_ABROAD_TITLE" Language="zh_Hant_HK"><Text>Call from Abroad</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_ABROAD_PARA_1" Language="zh_Hant_HK"><Text>Call from abroad pays for a call to your people living in another civilization's cities. It is a gamble: each person asked answers with the odds shown (about 18% by default), rolled one by one, and you pay for the size you chose whatever comes of it. Every person who answers is a tile gained for good. The hover gives the odds and the cost per person who comes. An unanswered call is written into the Chronicle and still starts the cooldown. People with an enclave of their own rarely return by themselves, so a call is the reliable way to bring them back.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_TITLE" Language="zh_Hant_HK"><Text>歸鄉</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_1" Language="zh_Hant_HK"><Text>從你的一個聚落被逐出的人，仍與它保持聯繫。「聚落」分頁上那個聚落卡的「離開」窗格列出所有在外的人：有多少人、現在住在哪裡、從何時起、他們離開時拆毀的地塊、一位回歸者在家鄉值多少（那裡一個鄉村地塊的產出）、他們何時自行回家，以及兩個付費提早帶他們回來的按鈕。你已不再持有的聚落也會列出，其人民會留在原地。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_2" Language="zh_Hant_HK"><Text>當你的人民逃離的聚落平靜得足以讓他們回去，而且至少有五名人民從你仍持有的聚落流離失所時，一個小彈窗會提議開啟「聚落」分頁、等待，或停止提醒你。只有當流離失所的人數再多出一半且過了十回合，它才會再出現。「選項、附加內容、移民」下的「流離失所提醒」是同一個開關，門檻則是一項進階設定。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_TITLE" Language="zh_Hant_HK"><Text>自行回家</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_PARA_1" Language="zh_Hant_HK"><Text>從你的一個聚落被逐往你另一個聚落的人，在家園安全後會自己回去。家鄉連續 3 回合沒有戰爭、圍城、災害、饑荒或動亂後，每 4 回合回來一人，每 8 名仍在外的人再多回一人，並在他們的族人離開時留下的那塊地仍然空着時定居在那裡，否則定居在聚落另一塊空地上。若麻煩是邊境內的戰鬥或圍城，則要等 10 個平靜回合，因為被打過一次的邊疆聚落很可能再被打。編年史和「結束回合」旁的通知會告訴你他們何時開始回家、最後一人何時回來。AI 文明也一樣。進階設定中的「人們自行回家」存放這些數字和一個關閉開關。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_TITLE" Language="zh_Hant_HK"><Text>加速</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_PARA_1" Language="zh_Hant_HK"><Text>加速支付 [icon:YIELD_GOLD] 金幣或 [icon:YIELD_DIPLOMACY] 影響力，把住在你文明其他地方的人現在就帶回來，而不用分散在接下來的回合。付了多少人就來多少人，從最大的群體開始。卡上會寫明回歸者在家鄉耕作的地塊、他們在現居地放棄的地塊、每人的淨值，以及這筆費用讓他們提早多少回合回來；把游標移到價格按鈕上可查看完整帳目。在你的邊境之內，回歸是用一個地塊換另一個地塊，所以這筆費用買的是時間。每個聚落有自己的冷卻時間，所以加速一個聚落不會鎖住其他聚落。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_ABROAD_TITLE" Language="zh_Hant_HK"><Text>從海外召喚</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_ABROAD_PARA_1" Language="zh_Hant_HK"><Text>從海外召喚是付費向住在其他文明城市的人民發出召喚。這是一場賭博：每位被召喚的人按顯示的機率（預設約 18%）逐一擲骰決定是否響應，而無論結果如何，你都要按所選的人數付費。每位響應的人都是永久多出的一個地塊。游標提示會顯示機率和每位回來的人的成本。無人響應的召喚也會記入編年史，並照樣開始冷卻。擁有自己飛地的人很少自行回來，所以召喚是把他們帶回來的可靠辦法。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_TITLE" Language="zh_Hant_HK"><Text>價格與冷卻</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_1" Language="zh_Hant_HK"><Text>A call is one person, about half of those callable, or everyone, in [icon:YIELD_GOLD] Gold or [icon:YIELD_DIPLOMACY] Influence; a price the treasury cannot cover is greyed. Price rises faster than head count: two people cost nearly three times one, three about five times. Calls abroad cost more, and each age past Antiquity multiplies the price (x3 in the Exploration Age, x9 in the Modern Age). After a call, the same settlement waits eight turns before calling again. Only people whose home and host settlements both still stand under the owners they had when they left can be called.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_2" Language="zh_Hant_HK"><Text>AI civilizations pay the same prices, less a discount for the game's difficulty (4% a level of the Gold handicap, so 20% off at Deity), and while homecoming is on they only pay to call people abroad. When a call takes people out of one of your cities, you get a notice and a Chronicle line naming who called. Prices, odds and the AI's part are set under Calling people home in Advanced settings.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_1" Language="zh_Hant_HK"><Text>一次召喚可以是一人、約可召喚人數的一半，或全部，以 [icon:YIELD_GOLD] 金幣或 [icon:YIELD_DIPLOMACY] 影響力支付；國庫付不起的價格會顯示為灰色。價格上升得比人數更快：兩人的價格接近一人的三倍，三人約五倍。海外召喚更貴，而且遠古之後每過一個時代價格都會倍增（探索時代 x3，現代 x9）。召喚之後，同一個聚落要等八回合才能再次召喚。只有家鄉聚落和收容聚落都仍在他們離開時的主人手中的人才能被召喚。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_PRICE_PARA_2" Language="zh_Hant_HK"><Text>AI 文明支付同樣的價格，再按遊戲難度打折（金幣補正每級 4%，所以神級享有 20% 折扣），而在自行回家開啟時，它們只會付費召喚海外的人。當一次召喚把人從你的城市帶走時，你會收到通知和一條編年史記錄，說明是誰召喚的。價格、機率和 AI 的部分在進階設定的「召喚人民回國」下設定。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_TITLE" Language="zh_Hant_HK"><Text>對待社群</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_1" Language="zh_Hant_HK"><Text>東道國如何對待其城市中的外來社群，取決於它的移民立場。兩張立場卡與其他政策卡一樣，所有文明都可使用；裝備期間每張都自帶一個政策槽，因此採取立場不會佔用你自己的槽位。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_2" Language="zh_Hant_HK"><Text>[B]親移民立場[/B]：在你與其故鄉交戰期間承認的聚居區保留 100% 而非 50% 的產出，戰爭與災害的難民會優先選擇你的城市。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_3" Language="zh_Hant_HK"><Text>[B]反移民立場[/B]：你承認的每處聚居區保留 50% 的產出，與其故鄉交戰時為 25%。同時裝備兩種立場，它們對遷徙和聚居區的效果相互抵銷，且都不再提供槽位。</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_4" Language="zh_Hant_HK"><Text>[B]Consular Protection[/B] (Exploration and Modern Ages) gives +3 [icon:YIELD_DIPLOMACY] Influence each turn (+5 in the Modern Age), and +1 more for every recognized enclave of your people in another civilization's cities, up to +4. When a civilization hosting one of those enclaves slots an Anti-Immigration Stance, you hold grievances against it, once per host per age.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_4" Language="zh_Hant_HK"><Text>[B]領事保護[/B]（探索時代與現代）每回合提供 +3 [icon:YIELD_DIPLOMACY] 影響力（現代為 +5），你的人民在其他文明城市中每有一處獲承認的飛地再 +1，最多 +4。當收容這些飛地之一的文明置入反移民立場時，你會對它累積不滿，每個收容國每個時代一次。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_TREATMENT_CHAPTER_CONTENT_PARA_5" Language="zh_Hant_HK"><Text>當戰爭首次波及一處聚居區時，編年史會記下東道國的立場：反移民立場讓那些家庭受害最深，親移民立場則能守住。若同時運行 Partisans 模組，立場還決定戰時聚居區動盪增長的快慢。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_TITLE" Language="zh_Hant_HK"><Text>移民政策</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_CONTENT_PARA_1" Language="zh_Hant_HK"><Text>Emigration adds ten policy cards: the two stances in every age, and Talent Attraction and Consular Protection from the Exploration Age on. They slot and swap like any other card and stack with an Open Borders agreement, which raises migration both ways between the two signatories. Each card's yields are native game effects, which is also what the AI's planner values a card by; its migration effect comes from the mod. The two stances name their downsides on the card: the Pro-Immigration Stance's integration cost per newcomer and the enclaves that come with arrivals, the Anti-Immigration Stance's lost growth and tiles and the half of enclave yields given up.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_CONTENT_PARA_1" Language="zh_Hant_HK"><Text>移民新增十張政策卡：每個時代都有的兩種立場，以及從探索時代起的人才吸引與領事保護。它們像其他卡牌一樣置入和替換，並與開放邊境協定疊加，後者會提高兩個簽約方之間雙向的遷徙。每張卡的產出都是遊戲原生效果，AI 的規劃器也是據此評估卡牌價值；其遷徙效果則來自模組。兩種立場都在卡上寫明自己的代價：親移民立場是每位新來者的融入成本和隨到來者而來的飛地，反移民立場是失去的成長和地塊，以及放棄的一半飛地產出。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_ANTIQUITY_TITLE" Language="zh_Hant_HK"><Text>古典時代</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_ANTIQUITY_PARA_1" Language="zh_Hant_HK"><Text>[BLIST][LI][B]親移民立場[/B]（公民身分）：每回合 +1 [icon:YIELD_DIPLOMACY] 影響力；移民 +50%；難民優先來到你這裡；聚居區在戰時保留 100% 的產出；自帶政策槽。[LI][B]反移民立場[/B]（公民身分）：每座城市 +2 [icon:YIELD_PRODUCTION] 生產，每回合 -2 [icon:YIELD_DIPLOMACY] 影響力；移民 -60%，移出 -40%；難民定居速度減慢 60%；聚居區保留 50% 的產出；自帶政策槽。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_EXPLORATION_TITLE" Language="zh_Hant_HK"><Text>探索時代</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_EXPLORATION_PARA_1" Language="zh_Hant_HK"><Text>[BLIST][LI][B]Pro-Immigration Stance[/B] (Economics): +2 [icon:YIELD_DIPLOMACY] Influence per turn; +50% immigration; refugees come to you first; enclaves keep 100% of their yields at war.[LI][B]Anti-Immigration Stance[/B] (Economics): +3 [icon:YIELD_PRODUCTION] Production in every city, -3 [icon:YIELD_DIPLOMACY] Influence per turn; -60% immigration, -40% emigration; refugees settle 60% slower; enclaves keep 50% of their yields.[LI][B]Talent Attraction[/B] (Inspiration): +1 [icon:YIELD_SCIENCE] Science per 5 [icon:YIELD_POPULATION] Population and -2 [icon:YIELD_GOLD] Gold in every settlement.[LI][B]Consular Protection[/B] (Diplomatic Service): +3 [icon:YIELD_DIPLOMACY] Influence per turn, and +1 more for each recognized enclave of your people abroad, up to +4; grievances against a host that slots an Anti-Immigration Stance.[/LIST]</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_EXPLORATION_PARA_1" Language="zh_Hant_HK"><Text>[BLIST][LI][B]親移民立場[/B]（經濟學）：每回合 +2 [icon:YIELD_DIPLOMACY] 影響力；移民 +50%；難民優先來投奔你；飛地在戰時保留 100% 產出。[LI][B]反移民立場[/B]（經濟學）：每座城市 +3 [icon:YIELD_PRODUCTION] 生產力，每回合 -3 [icon:YIELD_DIPLOMACY] 影響力；移民 -60%，遷出 -40%；難民定居速度減慢 60%；飛地保留 50% 產出。[LI][B]人才吸引[/B]（靈感）：每個聚落每 5 [icon:YIELD_POPULATION] 人口 +1 [icon:YIELD_SCIENCE] 科技，並 -2 [icon:YIELD_GOLD] 金幣。[LI][B]領事保護[/B]（外交事務）：每回合 +3 [icon:YIELD_DIPLOMACY] 影響力，你的人民在海外每有一處獲承認的飛地再 +1，最多 +4；對置入反移民立場的收容國累積不滿。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_TITLE" Language="zh_Hant_HK"><Text>近代</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_1" Language="zh_Hant_HK"><Text>[BLIST][LI][B]Pro-Immigration Stance[/B] (Social Question): +3 [icon:YIELD_DIPLOMACY] Influence per turn; +50% immigration; refugees come to you first; enclaves keep 100% of their yields at war.[LI][B]Anti-Immigration Stance[/B] (Social Question): +4 [icon:YIELD_PRODUCTION] Production in every city, -4 [icon:YIELD_DIPLOMACY] Influence per turn; -60% immigration, -40% emigration; refugees settle 60% slower; enclaves keep 50% of their yields.[LI][B]Talent Attraction[/B] (Modernization): +1 [icon:YIELD_SCIENCE] Science per 4 [icon:YIELD_POPULATION] Population and -3 [icon:YIELD_GOLD] Gold in every settlement.[LI][B]Consular Protection[/B] (Political Theory): +5 [icon:YIELD_DIPLOMACY] Influence per turn, and +1 more for each recognized enclave of your people abroad, up to +4; grievances against a host that slots an Anti-Immigration Stance.[/LIST]</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_2" Language="zh_Hant_HK"><Text>Talent Attraction pays by population through the game's own yield system, so it shows in each settlement's yield breakdown, grows with every immigrant who settles and keeps paying after the inflow stops; its Gold upkeep per settlement shows there too, so a wide civilization pays more for it. Pair it with a Pro-Immigration Stance or an Open Borders agreement to fill your settlements faster.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_1" Language="zh_Hant_HK"><Text>[BLIST][LI][B]親移民立場[/B]（社會問題）：每回合 +3 [icon:YIELD_DIPLOMACY] 影響力；移民 +50%；難民優先來投奔你；飛地在戰時保留 100% 產出。[LI][B]反移民立場[/B]（社會問題）：每座城市 +4 [icon:YIELD_PRODUCTION] 生產力，每回合 -4 [icon:YIELD_DIPLOMACY] 影響力；移民 -60%，遷出 -40%；難民定居速度減慢 60%；飛地保留 50% 產出。[LI][B]人才吸引[/B]（現代化）：每個聚落每 4 [icon:YIELD_POPULATION] 人口 +1 [icon:YIELD_SCIENCE] 科技，並 -3 [icon:YIELD_GOLD] 金幣。[LI][B]領事保護[/B]（政治理論）：每回合 +5 [icon:YIELD_DIPLOMACY] 影響力，你的人民在海外每有一處獲承認的飛地再 +1，最多 +4；對置入反移民立場的收容國累積不滿。[/LIST]</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_POLICIES_CHAPTER_MODERN_PARA_2" Language="zh_Hant_HK"><Text>人才吸引透過遊戲自己的產出系統按人口付出收益，所以它會顯示在每個聚落的產出明細中，隨每位定居的移民增長，並在流入停止後繼續付出；它每個聚落的金幣維護費也顯示在那裡，所以疆域廣的文明要為它付更多。搭配親移民立場或開放邊境協定，可以更快填滿你的聚落。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_TITLE" Language="zh_Hant_HK"><Text>地圖透鏡</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_CONTENT_PARA_1" Language="zh_Hant_HK"><Text>Emigration adds two lenses to the game's lens panel, each with a hotkey. Both follow the Spoil Guard (see Scope &amp; Visibility). While a lens is up, the game's tile tooltip is hidden and the lens shows its own readout under the cursor.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_CONTENT_PARA_1" Language="zh_Hant_HK"><Text>移民為遊戲的鏡頭面板新增兩個鏡頭，各有快捷鍵。兩者都遵循防劇透保護（見「範圍與可見性」）。鏡頭開啟期間，遊戲的地塊提示會隱藏，鏡頭改在游標下方顯示自己的讀數。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_PROSPERITY_TITLE" Language="zh_Hant_HK"><Text>繁榮透鏡（Shift+P）</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_PROSPERITY_PARA_1" Language="zh_Hant_HK"><Text>繁榮透鏡按每個已定居地塊上的事物為其著色。地塊的分數為以下各項之和：[BLIST][LI]該格上的奇觀：+6[LI]城市中心：+3[LI]每座建築：+2，完成的城區再 +1[LI]有人耕作的改良設施：+1[LI]該格自身的產出：每 3 點 +1[LI]河流：+1[LI]自然奇觀：所在格 +3，每個相鄰格 +2[LI]相鄰的奇觀：每座 +1[LI]任何遭掠奪之物：所在格每項 -3，相鄰格每項 -1[/LIST]所有聚落使用相同的刻度，並分為以下等級：繁盛（8 或以上）、興旺（5 至 7）、平常（2 至 4）、貧瘠（0 至 1）及荒廢（低於 0），以灰至綠及灰至紅的漸變色顯示。沒有任何建設的水域不會著色。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_PROSPERITY_PARA_2" Language="zh_Hant_HK"><Text>將游標停在地塊上會顯示其等級、分數及背後的每一項，接着顯示該聚落的繁榮分數、其人口正在增加還是減少，以及原因。奇觀與自然奇觀從遊戲的資料庫中讀取，因此由新時代或其他模組加入的也會計算在內。</Text></Replace>
@@ -2123,13 +2124,13 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_MARKERS_TITLE" Language="zh_Hant_HK"><Text>飛地標記</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_LENSES_CHAPTER_MARKERS_PARA_1" Language="zh_Hant_HK"><Text>飛地地塊沿用其所取代的改良設施的模型，因此會帶有一個顯示來源文明徽記的標記。將游標停在該地塊上，會以飛地的提示取代改良設施的提示：飛地的名稱和階段（已建立、已承認、受爭議或衰落中）、地塊的產出及其來源、飛地居民在此建造了甚麼、被取代的改良設施仍為城市提供甚麼，以及城市承認該飛地時所採取的立場。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_TITLE" Language="zh_Hant_HK"><Text>通知與城市概覽</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_TITLE" Language="zh_Hant_HK"><Text>Notices Beside End Turn</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_PARA_1" Language="zh_Hant_HK"><Text>Migration news arrives in the game's own notification train beside End Turn, each kind with its own icon: people leaving your settlements, newcomers settling in them, your people coming home, a refugee crisis abroad, a disaster displacing people, and a civilization you have met opening or closing its borders. The text sits in the icon's hover, a click opens the Emigration screen on the tab that matters, and a right-click dismisses it. Counts are shown in population points, in people, or both, for example 3 population points (36,000 people), set by the Population unit of measurement option. Disasters carry the game's event names, wars their names, and conquests the name of the city taken. An arrival notice ends with what the newcomers cost you each turn.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_PARA_2" Language="zh_Hant_HK"><Text>By default only the largest event of each migration pass is announced, with cooldowns and thresholds on top. The Notifications section of Advanced settings switches to one notice per cause, or to none, and can bring back the mod's own stacked on-screen toasts. Every notification goes to the log either way.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_TITLE" Language="zh_Hant_HK"><Text>「結束回合」旁的通知</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_PARA_1" Language="zh_Hant_HK"><Text>遷徙消息會出現在遊戲自己「結束回合」旁的通知列中，每種各有圖示：人們離開你的聚落、新來者在聚落定居、你的人民回家、海外的難民危機、災害令人流離失所，以及你已遇見的文明開放或關閉邊境。文字放在圖示的游標提示中，點按會開啟移民畫面的相關分頁，右鍵點按則關閉它。數量以人口點、人數或兩者顯示，例如 3 個人口點（36,000 人），由「人口計量單位」選項決定。災害帶有遊戲的事件名稱，戰爭帶有戰爭名稱，征服則帶有被攻佔城市的名稱。到來通知的結尾會寫明新來者每回合花費你多少。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_TOASTS_PARA_2" Language="zh_Hant_HK"><Text>預設下，每次遷徙結算只通報最大的事件，再加上冷卻時間和門檻。進階設定的「通知」部分可以改為每個原因一則通知或完全不通知，也可以恢復模組自己堆疊在畫面上的提示。無論如何，每一則通知都會進入紀錄。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_LOG_TITLE" Language="zh_Hant_HK"><Text>通知日誌</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_LOG_PARA_1" Language="zh_Hant_HK"><Text>The Notifications tab of the Migration dashboard keeps the last 120 notifications, newest first: the turn, the cause and named event, the settlement people left, where they went, and how many. Each entry expands to its detail. Migration Chronicle entries (an exodus, a diaspora taking root, a homecoming, an enclave recognized or faded, a stance taken by another civilization, each refugee decision and each call home) appear in the same list.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_LOG_PARA_1" Language="zh_Hant_HK"><Text>遷徙儀表板的「通知」分頁保留最近 120 則通知，最新的在前：回合、原因和事件名稱、人們離開的聚落、他們去了哪裡，以及人數。每個條目都可以展開查看細節。移民編年史的條目（一次大出走、一個離散族群扎根、一次歸鄉、一處飛地獲承認或消退、另一個文明採取的立場、每次難民抉擇和每次回國召喚）出現在同一個清單中。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_READOUT_TITLE" Language="zh_Hant_HK"><Text>城市概覽</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_READOUT_PARA_1" Language="zh_Hant_HK"><Text>Selecting one of your cities shows a small migration panel: the pressures on it (unhappiness, war, disaster, famine, overcrowding), whether it is gaining or losing people and how fast, where leavers are likely to go, what would stop them ("What would stop it: +3 Food or +2 Happiness here (Granary gives +1 Food)", from the same model that scores the settlement, with the building of the age that gives most of that yield), what its newcomers cost your civilization each turn, refugees waiting to settle, and progress toward a Cultural Enclave. A warning marks a city whose people have nowhere to flee. The Settlements tab of the dashboard shows the same for every settlement at once.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_READOUT_PARA_1" Language="zh_Hant_HK"><Text>選取你的一座城市會顯示一個小型遷徙面板：它承受的壓力（不幸福、戰爭、災害、饑荒、過度擁擠）、它正在增加還是流失人口及速度、離開的人可能去哪裡、甚麼能留住他們（「能止住它的辦法：在這裡 +3 食物或 +2 幸福度（糧倉提供 +1 食物）」，來自為聚落評分的同一個模型，並列出本時代提供該產出最多的建築）、它的新來者每回合花費你的文明多少、等待定居的難民，以及形成文化飛地的進度。警告標示人民無處可逃的城市。儀表板的「聚落」分頁一次過為每個聚落顯示同樣的資料。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_PANEL_TITLE" Language="zh_Hant_HK"><Text>城市詳情</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_NOTIFICATIONS_CHAPTER_PANEL_PARA_1" Language="zh_Hant_HK"><Text>遊戲的城市詳情面板會新增兩個移民部分。在「市民成長」下：城市居民的來源、按目的地劃分的遷出、按來源劃分的遷入，以及等待安置的難民。在「建築分解」下：城市的文化飛地（如有）。兩者都會隨你切換城市而更新。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_TITLE" Language="zh_Hant_HK"><Text>選項與強度</Text></Replace>
@@ -2137,8 +2138,8 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_PRESETS_TITLE" Language="zh_Hant_HK"><Text>強度預設</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_PRESETS_PARA_1" Language="zh_Hant_HK"><Text>強度預設決定每回合的上限、人們遷移的距離，以及暴力將他們推走的力度。[BLIST][LI][B]低[/B]：罕見的小規模遷移；每座城市每回合最多遷出一點、遷入兩點；圍城造成的流離較慢。[LI][B]中[/B]（預設）：每座城市每回合最多遷出兩點、遷入四點。[LI][B]高[/B]：頻繁的大規模遷移；每座城市每回合最多遷出四點、遷入八點，逃難更快，戰爭引發的難民潮更猛烈。[/LIST]在進階設定中更改受預設控制的設定，會令預設顯示為「自訂」。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_EVERYDAY_TITLE" Language="zh_Hant_HK"><Text>日常設定</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_EVERYDAY_PARA_1" Language="zh_Hant_HK"><Text>[BLIST][LI][B]Population unit of measurement[/B]: population points, historically scaled people (matching the Demographics mod), or both.[LI][B]Movement between civilizations[/B] and three [B]Refugees from conflict[/B] sliders (overall, wars between major powers, raids by minor powers) scale those flows alone.[LI][B]Dashboard data[/B]: live migration, or sample data to preview the network. [B]Migration timeline detail[/B]: how often the network records a timeline snapshot. [B]Simplify dashboard[/B]: hides the Network diagram. [B]Dashboard dock button[/B].[LI]On/off switches for [B]notifications[/B], [B]ethnic integration[/B] and [B]return migration[/B], and one for each decision pop-up: [B]Refugee decisions[/B], [B]Newcomer placement decisions[/B], [B]Displaced-people reminders[/B] and [B]Enclave stance decisions[/B]. With a switch off the mod decides for you, and the Settlements tab still works.[LI][B]First-loss explainer[/B]: off by default. On, the first time one of your settlements loses a tile to emigration, one page says what happened, where they went and why, what happens next and where to look. Once per game.
-[LI][B]Spoil Guard[/B]: on by default, hides civilizations you have not met across the Emigration screens (see Scope &amp; Visibility).[/LIST]</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_EVERYDAY_PARA_1" Language="zh_Hant_HK"><Text>[BLIST][LI][B]人口計量單位[/B]：人口點、按歷史比例縮放的人數（與 Demographics 模組一致），或兩者。[LI][B]文明之間的遷移[/B]和三個[B]衝突難民[/B]滑桿（整體、主要勢力之間的戰爭、小型勢力的襲擊）各自縮放那些流動。[LI][B]儀表板資料[/B]：即時遷徙，或用於預覽網絡的範例資料。[B]遷徙時間線細節[/B]：網絡多久記錄一次時間線快照。[B]簡化儀表板[/B]：隱藏「網絡」圖示。[B]儀表板工具列按鈕[/B]。[LI][B]通知[/B]、[B]族群融入[/B]和[B]回歸遷徙[/B]的開關，以及每個抉擇彈窗各一個開關：[B]難民抉擇[/B]、[B]新來者安置抉擇[/B]、[B]流離失所提醒[/B]和[B]飛地立場抉擇[/B]。開關關閉時由模組替你決定，「聚落」分頁仍然可用。[LI][B]首次流失說明[/B]：預設關閉。開啟後，你的聚落第一次因遷出而失去地塊時，會用一頁說明發生了甚麼、他們去了哪裡和為甚麼、接下來會怎樣，以及該去哪裡查看。每局遊戲一次。
+[LI][B]防劇透保護[/B]：預設開啟，在移民各畫面中隱藏你尚未遇見的文明（見「範圍與可見性」）。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_ADVANCED_TITLE" Language="zh_Hant_HK"><Text>進階設定</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_ADVANCED_PARA_1" Language="zh_Hant_HK"><Text>「進階設定」視窗包含每一項獨立設定，超過一百項，分佈於可收合的部分中：節奏、範圍、邊境政策、繁榮模型、戰爭與暴力、災害、地理與移動、融入成本、平衡制動、遷入與遷出、文化飛地、召喚人民回國、損耗、通知、面板與排行及視覺效果。你展開的部分會保持展開。數值會顯示其單位（55%、x1.5、3 回合）或文字（關閉、即時）。視窗設有搜尋框、每項已更改設定的標記、每項設定的重設按鈕，以及「全部重設」。按領袖及按文明的調整（見「領袖與文明」）在此有獨立的開關。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_OPTIONS_CHAPTER_SPEED_TITLE" Language="zh_Hant_HK"><Text>遊戲速度</Text></Replace>
@@ -2150,15 +2151,15 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_TITLE" Language="zh_Hant_HK"><Text>流離者之聲</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_CONTENT_PARA_1" Language="zh_Hant_HK"><Text>每個關於難民、移民、返鄉離散族群或已定居外國社群的彈窗，都附有一句以該民族口吻說出的簡短引文：若有其難民、流亡者或移民的話語傳世，便用他們的話；否則便用一位以尊重筆觸記述他們的見證者的話。每個文明的頁面都列出其引文、各引文出現之處，以及說話者是誰。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_WHERE_TITLE" Language="zh_Hant_HK"><Text>聲音出現之處</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_WHERE_PARA_1" Language="zh_Hant_HK"><Text>[BLIST][LI][B]The refugee decision[/B] (Refugees at the Border, The Sick at the Gates) and [B]the Refugees pop-up[/B]: a refugee's words from the people fleeing.[LI][B]The Newcomers pop-up[/B]: a migrant's words from their people.[LI][B]The reminder that your people can come home[/B]: someone of your own civilization who longed for home or came back to it.[LI][B]The Cultural Enclave decision[/B]: a line from the enclave people's own writers, inscriptions or proverbs; a people's first and second enclaves in your empire each have their own line.[/LIST]The event fixes the line, so reloading a save shows the same words. When a people has no line for a situation, or comes from a civilization you have not met, the pop-up uses the general pools on the Voices of Many Lands page, which name no people.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_WHERE_PARA_1" Language="zh_Hant_HK"><Text>[BLIST][LI][B]難民抉擇[/B]（邊境的難民、城門前的病患）和[B]「難民」彈窗[/B]：出自逃難民族的一位難民之言。[LI][B]「新來者」彈窗[/B]：出自其民族的一位移民之言。[LI][B]你的人民可以回家的提醒[/B]：你自己文明中一位思鄉或歸鄉之人。[LI][B]文化飛地抉擇[/B]：出自飛地民族自己的作家、銘文或諺語的一句話；一個民族在你帝國中的第一處和第二處飛地各有自己的一句。[/LIST]事件決定所用的句子，所以重新載入存檔會顯示同樣的話。當一個民族在某種情況下沒有對應的句子，或來自你尚未遇見的文明時，彈窗會使用「萬方之聲」頁面上不指明民族的通用語句庫。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_RULES_TITLE" Language="zh_Hant_HK"><Text>引文的選取方式</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_RULES_PARA_1" Language="zh_Hant_HK"><Text>每句引文都已對照其來源的可讀副本核實。刪節處以省略號標示。已出版的譯本會註明譯者；僅標「（譯）」者，表示由本模組自行翻譯的已核實原文。飛地引文出自該民族自己的作家、銘文與諺語。難民與移民引文出自該民族的難民、流亡者或移民，否則便出自一位以尊重筆觸記述他們的見證者。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_RULES_PARA_2" Language="zh_Hant_HK"><Text>凡對某民族作刻板描繪、將流離失所者描述為入侵者、負擔或威脅、引用暴行加害者或仇恨人物、輕慢宗教經典，或詳述血腥創傷的句子，均已排除。完整的來源記錄（包括被拒用的句子）已隨模組文件一同發佈。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_SCRIPTS_TITLE" Language="zh_Hant_HK"><Text>原文語言</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_SCRIPTS_PARA_1" Language="zh_Hant_HK"><Text>出自外語來源的引文會在譯文旁顯示原文。拉丁字母的原文會完整呈現，從古英語、古諾斯語到越南語、土耳其語，以及亞述銘文中經轉寫的阿卡德語。阿拉伯文、希伯來文、希臘文、西里爾字母、衣索比亞文、亞美尼亞文、喬治亞文、蒙古文、印度及東南亞各種文字的原文只顯示譯文，因為遊戲的字型缺少這些文字；中文原文則直接呈現。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_TITLE" Language="zh_Hant_HK"><Text>關於移民模組</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_1" Language="zh_Hant_HK"><Text>Emigration is a user-interface mod. Each turn it reads the state of the world and writes population, tiles, yields and Influence back through the game's own commands. Its own database rows add the policy cards, the notification types, this Civilopedia section and two city strategies the game's AI can switch on; base-game rules and files are left as they are. It simulates every living major civilization from the first turn, met or unmet. The Common Questions page is the short version of what drives migration.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2" Language="zh_Hant_HK"><Text>Version 3.7.0, for Civilization VII 1.5.0. The interface is available in twelve languages. The source, the full documentation with every formula, and the record of every quotation's source are on GitHub at github.com/tmtmiller1/civilizationvii-emigration.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_1" Language="zh_Hant_HK"><Text>移民是一個使用者介面模組。每回合它讀取世界的狀態，再透過遊戲自己的指令把人口、地塊、產出和影響力寫回去。它自己的資料庫列新增了政策卡、通知類型、這個文明百科章節，以及兩個遊戲 AI 可以啟用的城市策略；基礎遊戲的規則和檔案保持原樣。它從第一回合起就模擬每一個仍然存在的主要文明，無論是否已遇見。「常見問題」頁面是驅動遷徙因素的簡短版本。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2" Language="zh_Hant_HK"><Text>版本 3.7.0，適用於《文明帝國 VII》1.5.0。介面提供十二種語言。原始碼、附有每一條公式的完整文件，以及每句引文來源的記錄，都在 GitHub 上：github.com/tmtmiller1/civilizationvii-emigration。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_TITLE" Language="zh_Hant_HK"><Text>數字背後的人</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_PARA_1" Language="zh_Hant_HK"><Text>本模組將遷徙與流離失所轉化為遊戲系統。現實中，人們離開家園最常是因為戰爭、迫害、災害或困苦。本模組將難民呈現為有血有肉的人，盡可能讓流離失所者以他們自己傳世的話語發聲，並將受災城市的損失計為死亡。作者每逢本模組的里程碑都會向難民救援機構捐款。如果你有能力，請考慮支持聯合國難民署（UNHCR）、國際救援委員會、無國界醫生、國際難民援助計劃，或當地的難民及互助團體。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_TITLE" Language="zh_Hant_HK"><Text>製作人員</Text></Replace>

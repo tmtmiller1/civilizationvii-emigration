@@ -104,3 +104,15 @@ const loc = (_k, fallback, ...args) => fallback.replace("{1_Count}", String(args
 }
 
 console.log("forecast harness passed");
+
+// A crisis source (war, disaster) sheds on the crisis cadence, which ignores the bar: its own line, not "stable".
+{
+  const f = forecastFor({ pressure: 0, pressureToBar: 0, pressureSeries: [], rural: 10, cause: "war" });
+  assert.equal(f.crisis, true);
+  assert.equal(f.stable, false);
+  assert.match(forecastLine(f, loc), /^People are fleeing now/);
+  assert.equal(forecastFor({ pressure: 0, pressureToBar: 0, pressureSeries: [], rural: 10, cause: "prosperity" }).crisis, undefined);
+  const snap = buildCitySnapshot({ signal: { rural: 5 }, cause: "disaster", source: { pressure: 0, cooldown: 0 }, pressureSeries: [] });
+  assert.equal(snap.forecast.crisis, true, "the snapshot passes its cause to the forecast");
+  console.log("forecast crisis line passed");
+}

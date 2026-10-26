@@ -1552,6 +1552,7 @@
         </Row>
         <Row Tag="LOC_EMIG_RO_FORECAST"><Text>Forecast: {1_Line}</Text></Row>
         <Row Tag="LOC_EMIG_FORECAST_LEAVE"><Text>About {1_Count} people are likely to leave in the next {2_Turns} turns</Text></Row>
+        <Row Tag="LOC_EMIG_FORECAST_CRISIS"><Text>People are fleeing now; how many depends on the crisis, not the pressure</Text></Row>
         <Row Tag="LOC_EMIG_FORECAST_STABLE"><Text>Nobody is likely to leave soon</Text></Row>
         <Row Tag="LOC_EMIG_RO_CLOSED"><Text>Closed to newcomers: nobody settles here until you open it again</Text></Row>
         <Row Tag="LOC_EMIG_RO_SIEGE_STALLED"><Text>Siege stalled: the besiegers aren't attacking, so nobody leaves or dies for the siege until they do</Text></Row>
