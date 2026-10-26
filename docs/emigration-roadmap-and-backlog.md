@@ -3397,11 +3397,14 @@ flow ledger ended with 101 corridors, 43 of them cross-civ (129 of 348 points), 
   Dai Viet by 90 (at 90), Goryeo by 100 (at 90); four still held it at 130. Consular Protection was never slotted,
   though every AI had Diplomatic Service by turn 90. Dai Viet slotted Closed Borders from 60 to 70 and again at 100
   (with Open Borders beside it at 80, which cancels); Hawaii slotted Open Borders at 90 and 100.
-- *City strategies.* The UI VM has no read of a city's active strategies (no `Strategies` accessor on the city or
-  player objects in the base scripts), so which cities ran the hold-people strategy can't be logged from a probe;
-  the SQL side (the rows) was watched on 2026-10-23. The build queues were logged instead: nothing in them can be
-  tied to the strategy without the activation read. Owed: a read through the engine's AI debug surface, or a
-  Firaxis-side log line, before the strategy's effect can be claimed.
+- *City strategies.* The UI VM has no read of a city's active strategies, but the game writes one:
+  `Logs/AI_CityStrategy.csv` (turn, player, city, strategy, Following or Stopped, percentage), overwritten each
+  launch. Read after this game closed: `CITY_STRATEGY_EMIG_KEEP_THEM_HAPPY` activated 29 times across seven AI
+  cities and three independents' cities (first at turn 18, Goryeo), each stopping some twenty turns later;
+  `CITY_STRATEGY_EMIG_HOLD_PEOPLE` never activated in 138 turns. Its condition is `HasFoodLessThan 2`, and the
+  game's own Early Food strategy uses that function at 10 and 15 (gross Food yield), so under 2 is near
+  impossible: the row is inert as written. The build queues were logged too; nothing in them can be tied to a
+  strategy that never ran.
 - *The live side of the siege question.* 176 city-turns carried the besieged flag across 18 cities. The flag with
   no district damage is the common case, and the intensity it holds is enough to bleed people: Lāhainā (Hawaii)
   carried the flag for 27 turns, 26 of them at zero damage, with intensity 7 to 13.7 (threshold 2); Jeonju
@@ -3413,8 +3416,9 @@ flow ledger ended with 101 corridors, 43 of them cross-civ (129 of 348 points), 
   the mechanism the stalemate rule (risks 2.3) addresses; session 2's off-engine gate reads the same thing in
   `tests/violence.mjs`.
 - *The Deity price.* `aiPriceScale()` read 0.5 (the floor) under `DIFFICULTY_DEITY`; a ten-point internal call
-  quoted 2846 Gold for an AI against 5692 for the player. The scale, not an AI's own charge in the log, is what
-  was read; the AI's live call stays on the watch list.
+  quoted 2846 Gold for an AI against 5692 for the player. `UI.log` from the same game holds the AI's own charge:
+  "AI call home 1 external: paid 54, attempted 1, returned 1" at 16:16, and a second call by civ 2 that paid 54
+  and got nobody. Half the player's price for one person abroad; the watch-list item is closed for the price.
 - *The player's seat* (Heian, one city, Autoplay-driven) lost its capital to Abbasid and Musashi to Dai Viet by
   conquest, which is the 19 and 9 point conquest edges; nothing in the counters depends on it.
 
@@ -3423,6 +3427,13 @@ their numbers; P1.2, P2.2 and P2.6 kept with numbers; P1.3, P2.3 and P2.5 get a 
 
 **Watched / not.** Watched: the counters over two games, the arrivals and cost line on the Washington save, the AI
 civics and cards over 139 Exploration turns, the besieged flag against damage and intensity, the Deity scale.
-Not watched: an AI's own call-home charge at Deity, Consular Protection taken by an AI (never happened in 139
-turns), the hold-people strategy's activation (no read).
+Not watched: Consular Protection taken by an AI (never happened in 139 turns), the hold-people strategy running
+(it never activated; the CSV says so).
+
+**What the owner decided on the report (2026-10-26).** The plan file gained five builds for session 2: the
+counters persisted across a load (2f), a heavy penalty for a destination in acute crisis with the arrival hold,
+lifted by a stalled siege (2g), a Gold upkeep on Talent Attraction and a visible Influence floor on Consular
+Protection (2h), a hold-people condition that fires (2i), and flight waiting for two sustained turns of violence
+instead of the first (2j); the siege stall comes after 3 quiet turns, and 2a's gate reads the standing intensity
+(about 2.7) against the threshold.
 
