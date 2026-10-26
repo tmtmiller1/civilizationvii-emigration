@@ -24,6 +24,7 @@ import { displacedQuoteFor } from "/emigration/ui/emigration-displaced-quotes.js
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { aiRefugeeChoice, hostCongestion, isAiHost } from "/emigration/ui/emigration-ai-host.js";
+import { aiPriceScale } from "/emigration/ui/emigration-ai-difficulty.js";
 import { warOpponents } from "/emigration/ui/emigration-war.js";
 import { callHomeBalance } from "/emigration/ui/emigration-call-home-action.js";
 import { CALL_HOME_CURRENCY } from "/emigration/ui/emigration-call-home.js";
@@ -331,17 +332,21 @@ function detectPlagueDilemma(migrations, me) {
  * @param {string} choiceId
  * @param {{origin:number}} d The dilemma descriptor.
  * @param {*[]} localCities The local player's city signals (largest first).
- * @param {{me:number, turn:number, narrate?:(choiceId:string, d:*, hostSig:*, turn:number, me:number)=>void}} ctx
+ * @param {{me:number, turn:number, narrate?:(choiceId:string, d:*, hostSig:*, turn:number, me:number)=>void,
+ *   priceScale?:number}} ctx
  *   The deciding player, the turn, and the Chronicle line writer (the player's second-person line by default;
  *   an AI host's third-person line).
  */
 function applyChoice(choiceId, d, localCities, ctx) {
   const { me, turn } = ctx;
   const narrate = ctx.narrate || chronicleDecision;
+  // An AI host pays the player's price times its difficulty discount (emigration-ai-difficulty.js).
+  const scale = typeof ctx.priceScale === "number" && ctx.priceScale > 0 ? ctx.priceScale : 1;
+  const price = (/** @type {*} */ v) => Math.round(Math.max(0, Number(v) || 0) * scale);
   try {
-    const welcomeGold = Math.max(0, Number(CONFIG.dilemmaGoldWelcome) || 0);
-    const frontierGold = Math.max(0, Number(CONFIG.dilemmaGoldFrontier) || 0);
-    const awayInfluence = Math.max(0, Number(CONFIG.dilemmaInfluenceAway) || 0);
+    const welcomeGold = price(CONFIG.dilemmaGoldWelcome);
+    const frontierGold = price(CONFIG.dilemmaGoldFrontier);
+    const awayInfluence = price(CONFIG.dilemmaInfluenceAway);
     const welcomeHappiness = Math.max(0, Number(CONFIG.dilemmaHappinessWelcome) || 0);
     if (choiceId === "welcome") {
       deduct(me, "YIELD_GOLD", -welcomeGold);
@@ -476,14 +481,14 @@ function decideForAiHosts(s, migrations, signals, turn) {
     const cities = (signals || [])
       .filter((x) => x && x.owner === host)
       .sort((a, b) => (b.population || 0) - (a.population || 0));
-    const pick = aiRefugeeChoice(host, d.origin, cities, aiReads(cities));
+    const pick = aiRefugeeChoice(host, d.origin, cities, { ...aiReads(cities), priceScale: aiPriceScale() });
     if (!pick) continue;
     t.count += 1;
     t.lastTurn = turn;
     // welcome settles into the first signal and frontier into the last, and the Chronicle names the first:
     // hand applyChoice the chosen city at both ends, or the whole list when nobody is taken in.
     const into = pick.city ? [pick.city, pick.city] : cities;
-    applyChoice(pick.id, d, into, { me: host, turn, narrate: chronicleAiDecision });
+    applyChoice(pick.id, d, into, { me: host, turn, narrate: chronicleAiDecision, priceScale: aiPriceScale() });
   }
 }
 

@@ -31,3 +31,37 @@ INSERT OR IGNORE INTO Strategy_Priorities (ListType, StrategyType)
   SELECT l.ListType, s.StrategyType
   FROM AiListTypes l, Strategies s
   WHERE l.ListType = 'EmigKeepThemHappyBias' AND s.StrategyType = 'CITY_STRATEGY_EMIG_KEEP_THEM_HAPPY';
+
+-- "Hold your people": a city strategy for a settlement that has stopped growing (net Food under 2), the game's
+-- nearest condition to a settlement losing people. It biases Production and Happiness, the yields the
+-- Anti-Immigration Stance and the happiness buildings carry, so the planner values keeping people more while
+-- a city shrinks. The AI data has no condition that reads population loss itself (2026-10-25: HasFoodLessThan,
+-- HasHappinessLessThan, HasRuralPopGreaterThan and YieldIncome are the city-shaped ones).
+
+INSERT OR IGNORE INTO AiListTypes (ListType)
+  VALUES ('EmigHoldPeopleBias');
+
+INSERT OR IGNORE INTO AiLists (ListType, System)
+  SELECT 'EmigHoldPeopleBias', 'YieldBiases'
+  FROM AiListTypes WHERE ListType = 'EmigHoldPeopleBias';
+
+INSERT OR IGNORE INTO AiFavoredItems (ListType, Item, Favored, Value)
+  SELECT 'EmigHoldPeopleBias', 'YIELD_PRODUCTION', 1, 25
+  FROM AiListTypes WHERE ListType = 'EmigHoldPeopleBias';
+
+INSERT OR IGNORE INTO AiFavoredItems (ListType, Item, Favored, Value)
+  SELECT 'EmigHoldPeopleBias', 'YIELD_HAPPINESS', 1, 25
+  FROM AiListTypes WHERE ListType = 'EmigHoldPeopleBias';
+
+INSERT OR IGNORE INTO Strategies (StrategyType, CityStrategy, MaxNumConditionsNeeded, MinConditionPercentage, MinNumConditionsNeeded)
+  VALUES ('CITY_STRATEGY_EMIG_HOLD_PEOPLE', 1, 1, 25, 1);
+
+INSERT OR IGNORE INTO StrategyConditions (ConditionFunction, Exclusive, StrategyType, Disqualifier, Forbidden, ThresholdValue)
+  SELECT 'HasFoodLessThan', 0, StrategyType, 0, 0, 2
+  FROM Strategies WHERE StrategyType = 'CITY_STRATEGY_EMIG_HOLD_PEOPLE';
+
+INSERT OR IGNORE INTO Strategy_Priorities (ListType, StrategyType)
+  SELECT l.ListType, s.StrategyType
+  FROM AiListTypes l, Strategies s
+  WHERE l.ListType = 'EmigHoldPeopleBias' AND s.StrategyType = 'CITY_STRATEGY_EMIG_HOLD_PEOPLE';
+

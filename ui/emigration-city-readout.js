@@ -93,6 +93,29 @@ function originsLine(comp) {
  * @param {*} s The readout snapshot.
  * @returns {string}
  */
+/** The game's yield names for the fix line. @type {Record<string, [string, string]>} */
+const FIX_NAMES = {
+  YIELD_FOOD: ["LOC_YIELD_FOOD_NAME", "Food"], YIELD_PRODUCTION: ["LOC_YIELD_PRODUCTION_NAME", "Production"],
+  YIELD_HAPPINESS: ["LOC_YIELD_HAPPINESS_NAME", "Happiness"]
+};
+
+/**
+ * "What would stop it: +3 Food or +2 Happiness here (a Granary gives +1 Food)." Empty when nobody is drawn away.
+ * @param {import("/emigration/ui/emigration-prescribe.js").Fix|null} fix @returns {string}
+ */
+export function fixLine(fix) {
+  if (!fix || !fix.options.length) return "";
+  const parts = fix.options.map((o) => "+" + o.amount + " " + loc(FIX_NAMES[o.yield][0], FIX_NAMES[o.yield][1]));
+  const withBuilding = fix.options.find((o) => o.building);
+  const building = withBuilding && withBuilding.building ? withBuilding.building : "";
+  const tail = withBuilding && building
+    ? " " + loc("LOC_EMIG_RO_FIX_BUILDING", "({1_Building} gives +{2_Amount} {3_Yield})", loc(building, building),
+      withBuilding.buildingGives, loc(FIX_NAMES[withBuilding.yield][0], FIX_NAMES[withBuilding.yield][1]))
+    : "";
+  return loc("LOC_EMIG_RO_FIX", "What would stop it: {1_Options} here", parts.join(" " + loc("LOC_EMIG_RO_FIX_OR", "or") + " ")) + tail;
+}
+
+/** @param {*} s */
 function pressureText(s) {
   const mix = s.causeMix;
   if (mix && mix.length > 1) {
@@ -160,10 +183,12 @@ export function readoutModel(s) {
       s.crossCiv ? " " + loc("LOC_EMIG_RO_RIVAL_CIV", "(rival civ)").trim() : "")
     : "");
   pushLineIf(lines, s.topDestinationName ? whyThereLine(s.destReasons) : "");
+  pushLineIf(lines, fixLine(s.fix));
   pushLineIf(lines, refugeePoolLine(s));
   pushLineIf(lines, refugeeBurdenLine(s));
   pushLineIf(lines, s.assimLoad > 0
-    ? loc("LOC_EMIG_RO_ASSIM_COST", "Assimilation cost: ~{1_Gold} gold/turn", Math.round(s.assimCostGold))
+    ? loc("LOC_EMIG_RO_NEWCOMERS_COST", "Newcomers: -{1_Gold} Gold, -{2_Happy} Happiness a turn across your civilization while they settle in",
+      Math.round(s.assimCostGold), Math.round((Number(s.assimCostHappiness) || 0) * 10) / 10)
     : "");
   pushLineIf(lines, originsLine(s.composition));
   lines.push(...enclaveLines(s.enclave));

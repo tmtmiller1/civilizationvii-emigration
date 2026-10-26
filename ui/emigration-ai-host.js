@@ -107,6 +107,7 @@ export function chooseAiStance(owner, origin, options, deps) {
  * @property {(host:number)=>number} congestion The host's congestion headwind, in pull points.
  * @property {(host:number)=>number} gold What the host can spend in Gold.
  * @property {(host:number)=>number} influence What the host can spend in Influence.
+ * @property {number} [priceScale] The host's difficulty discount on the prices (default 1).
  */
 
 /**
@@ -117,7 +118,7 @@ export function chooseAiStance(owner, origin, options, deps) {
  * @returns {{id:string, city:*}|null} The decision.
  */
 export function aiRefugeeChoice(host, origin, cities, deps) {
-  const cost = (/** @type {*} */ v) => Math.max(0, Number(v) || 0);
+  const cost = (/** @type {*} */ v) => Math.round(Math.max(0, Number(v) || 0) * priceScaleOf(deps));
   const away = deps.influence(host) >= cost(CONFIG.dilemmaInfluenceAway) ? { id: "away", city: null } : null;
   if (deps.atWar(host, origin)) return away;
   const list = Array.isArray(cities) ? cities.filter(Boolean) : [];
@@ -127,6 +128,11 @@ export function aiRefugeeChoice(host, origin, cities, deps) {
   if (!over && gold >= cost(CONFIG.dilemmaGoldWelcome)) return { id: "welcome", city: list[0] };
   if (list.length > 1 && gold >= cost(CONFIG.dilemmaGoldFrontier)) return { id: "frontier", city: list[list.length - 1] };
   return over ? away : null;
+}
+
+/** @param {RefugeeDeps} deps @returns {number} The host's price scale, 1 unless the reads give one. */
+function priceScaleOf(deps) {
+  return typeof deps.priceScale === "number" && deps.priceScale > 0 ? deps.priceScale : 1;
 }
 
 /**

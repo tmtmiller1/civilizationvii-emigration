@@ -178,6 +178,21 @@
         <Argument name="Tooltip">LOC_EMIG_POLICY_CLOSED_BORDERS_NAME</Argument>
     </Modifier>
 
+    <!-- Consular Protection: a flat Influence floor the game's planner can see, so an AI civilization slots it
+         (the per-enclave Influence stays in the script, emigration-consular.js). EX +1 / MO +2. -->
+    <Modifier id="MOD_EMIG_CONSULAR_INFLUENCE_EX" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
+        <Argument name="Amount">1</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_CONSULAR_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_CONSULAR_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_CONSULAR_INFLUENCE_MO" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
+        <Argument name="Amount">2</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_CONSULAR_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_CONSULAR_DESC</String>
+    </Modifier>
+
     <!-- Attraction cards: the yield scales with each city's population, the game's own
          EFFECT_CITY_ADJUST_YIELD_PER_POPULATION (as the Quipu tradition uses it), so every immigrant the card draws
          adds to it for as long as they stay, itemized in the city's yield breakdown. Replaced the carried dividend

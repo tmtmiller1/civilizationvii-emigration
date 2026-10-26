@@ -19,7 +19,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
  * registry so the rest of the module names effects, not raw type-string arrays. The `legacy*`
  * families are the retired cards.
  */
-const POLICY_TYPES = Object.freeze({
+export const POLICY_TYPES = Object.freeze({
   open: [
     "TRADITION_EMIG_OPEN_BORDERS_ANTIQUITY",
     "TRADITION_EMIG_OPEN_BORDERS_EXPLORATION",
@@ -185,7 +185,7 @@ function freshForTurn() {
  * @param {number} pid
  * @returns {PolicyState}
  */
-function policyState(pid) {
+export function policyState(pid) {
   const hit = _polyCache.get(pid);
   if (hit) return hit;
   const openType = activeType(pid, POLICY_TYPES.open);

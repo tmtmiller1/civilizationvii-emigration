@@ -783,6 +783,23 @@ function inboundMessage(ev) {
 }
 
 /**
+ * " They add to what newcomers cost you: 4 Gold and 1.5 Happiness a turn now, fading as they settle in." for the
+ * arrival notice, so the drop in Gold has a line explaining it. Empty when nothing is owed.
+ * @param {number} pid The local player. @returns {string}
+ */
+function integrationCostTail(pid) {
+  try {
+    const c = assimilationCostFor(pid);
+    if (!c || !(c.load > 0)) return "";
+    return " " + loc("LOC_EMIG_IN_COST_TAIL",
+      "Newcomers now cost you {1_Gold} Gold and {2_Happy} Happiness a turn while they settle in.",
+      Math.round(c.gold), Math.round(c.happiness * 10) / 10);
+  } catch (_) {
+    return "";
+  }
+}
+
+/**
  * Record one inbound event to the notification log: its cause, dual-system count, and origin →
  * destination. `ownLoss:false` (a gain to the player's empire → neutral, not red).
  * @param {*} ev An inbound event bucket. @param {*} message The composed message node (the row summary).
@@ -810,7 +827,7 @@ function inboundDigest(migs) {
   for (const ev of events) logInbound(ev, inboundMessage(ev));
   const lead = events[0];
   // A gain → green (direction accent), matching the log row.
-  announceImportant(msgText(inboundMessage(lead)), lead.cause, false, digestAccent(false, true), "arrival");
+  announceImportant(msgText(inboundMessage(lead)) + integrationCostTail(me), lead.cause, false, digestAccent(false, true), "arrival");
 }
 
 // Per-source cue cooldown (session-only; a reload resetting a low-key cue is harmless).

@@ -20,6 +20,7 @@ import { causeLabel, causePermanence, causeHint } from "/emigration/ui/emigratio
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { rankByProsperity, distress } from "/emigration/ui/emigration-prosperity.js";
 import { bestDestination, migrationCause, crisisTypeReasons } from "/emigration/ui/emigration-pull.js";
+import { prescribe } from "/emigration/ui/emigration-prescribe.js";
 import { loadState, ownerPopulations } from "/emigration/ui/emigration-state.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
@@ -61,6 +62,7 @@ import { refugeeBurdenFor } from "/emigration/ui/emigration-refugee-burden.js";
  * @property {number} assimLoad Destination-side assimilation load this owner carries.
  * @property {number} assimCostGold Per-turn gold the owner pays for that load.
  * @property {number} assimCostHappiness Per-turn happiness the owner pays for that load.
+ * @property {import("/emigration/ui/emigration-prescribe.js").Fix|null} fix What would stop people leaving.
  * @property {number} ownerNet Owner cumulative net migration (people).
  * @property {number} ownerIn Owner cumulative immigration (people).
  * @property {number} ownerOut Owner cumulative emigration (people).
@@ -163,6 +165,7 @@ function pickRefugee(o) {
  * Build the readout view-model from already-resolved inputs (pure; no engine reads).
  * @param {{signal:*, cityName?:string, cause?:string, distress?:number,
  *          bestDest?:{name?:string,owner?:number,crossCiv?:boolean,reasons?:string[]}|null,
+ *          fix?:import("/emigration/ui/emigration-prescribe.js").Fix|null,
  *          source?:{pressure?:number,cooldown?:number}|null,
  *          assim?:{load?:number,gold?:number,happiness?:number}|null,
  *          owner?:{net?:number,in?:number,out?:number}|null,
@@ -188,6 +191,7 @@ export function buildCitySnapshot(o) {
     permanence: causePermanence(cause),
     hint: causeHint(cause),
     distress: dist,
+    fix: o.fix || null,
     atRisk: dist > 0,
     attritionRisk: attritionRisk(dist, !!o.bestDest),
     riskReasons: riskReasonsFor(dist, sig),
@@ -406,6 +410,7 @@ function snapshotFromRanked(sig, ranked, ownerPop, sources) {
     cause: migrationCause(sig),
     distress: distress(sig),
     bestDest: best ? destInfo(sig, best.dest, best.reasons) : null,
+    fix: prescribe(sig, ranked, ownerPop),
     source: sources[sig.key] || null,
     assim: assimilationCostFor(sig.owner),
     owner: ownerStats(sig.owner),
@@ -434,6 +439,24 @@ export function citySnapshot(cityId) {
     return snapshotFromRanked(sig, ranked, ownerPopulations(ranked), loadState().sources || {});
   } catch (_) {
     return null;
+  }
+}
+
+/**
+ * Live snapshots for every city in the world (recompute-on-read; the world is ranked once), for the Settlements
+ * tab's All civilizations view, which shows each settlement's pressure. Empty on any read failure.
+ * @returns {CitySnapshot[]}
+ */
+export function allCitySnapshots() {
+  try {
+    const signals = collectCitySignals();
+    if (!signals.length) return [];
+    const ranked = rankByProsperity(signals);
+    const ownerPop = ownerPopulations(ranked);
+    const sources = loadState().sources || {};
+    return ranked.map((sig) => snapshotFromRanked(sig, ranked, ownerPop, sources));
+  } catch (_) {
+    return [];
   }
 }
 
