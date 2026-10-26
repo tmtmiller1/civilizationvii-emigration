@@ -131,7 +131,7 @@ assert.equal(CONFIG.minorViolenceScale, 0.4);
   const { ADVANCED_CLOSED_EVENT } = await import("/emigration/ui/options/emigration-advanced-editor.js");
   const cases = [
     { id: "emigration-ask-arrivals", key: "arrivalPlacement", ticked: true, on: 2, off: 1 },
-    { id: "emigration-callhome-offer", key: "callHomeOfferWhenCalm", ticked: true, on: true, off: false },
+    { id: "emigration-callhome-offer", key: "callHomeOfferWhenCalm", ticked: true, on: true, off: false }, // the notice that opens the Displaced tab
     { id: "emigration-ask-enclaves", key: "quarterRecognition", ticked: false, on: 0, off: 2 }
   ];
   for (const c of cases) {

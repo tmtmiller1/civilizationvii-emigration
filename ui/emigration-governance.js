@@ -98,42 +98,66 @@ function localPolicy() {
   return policy;
 }
 
-/** @returns {string} The local preference straight from the shared store. */
+/** @returns {string} The local preference straight from the shared store; met-civs-only when there is none. */
 function readLocalPolicy() {
-  try {
-    if (typeof localStorage === "undefined" || !localStorage) return POLICY_MET;
-    const root = JSON.parse(localStorage.getItem("modSettings") || "{}");
-    const slice = root && root.demographics;
-    if (slice && typeof slice === "object") {
-      const explicit = asPolicy(slice.analyticsPolicy);
-      if (explicit) return explicit;
-      if (slice.hideUnmetStats === false) return POLICY_FULL; // legacy spoiler-off
-    }
-  } catch (_) {
-    /* ignore */
-  }
-  return POLICY_MET;
+  return demographicsLocalPolicy() || POLICY_MET;
 }
 
 /**
- * The effective policy. Emigration's own visibility override (Options ▸ Mods ▸ Emigration) comes first:
- * 1 = always hide unmet, 2 = always show all, a self-contained control that always works for the
- * Emigration tabs (the cross-mod reads below are unreliable in the Coherent UI). When that's "auto"
- * (0, the default), follow Demographics: the value it publishes to GameConfiguration (already
- * host ceiling ∧ local preference), or failing that the host ceiling ∧ our own localStorage read.
+ * Demographics' own Spoil Guard choice from its slice of the shared store, or null when Demographics has written
+ * nothing there (not installed, or never opened). Fails safe to null.
+ * @returns {string|null}
+ */
+function demographicsLocalPolicy() {
+  try {
+    if (typeof localStorage === "undefined" || !localStorage) return null;
+    const root = JSON.parse(localStorage.getItem("modSettings") || "{}");
+    return slicePolicy(root && root.demographics);
+  } catch (_) {
+    return null;
+  }
+}
+
+/** @param {*} slice Demographics' settings slice. @returns {string|null} The policy it holds, or null. */
+function slicePolicy(slice) {
+  if (!slice || typeof slice !== "object") return null;
+  const explicit = asPolicy(slice.analyticsPolicy);
+  if (explicit) return explicit;
+  if (slice.hideUnmetStats === false) return POLICY_FULL; // legacy spoiler-off
+  return slice.hideUnmetStats === true ? POLICY_MET : null;
+}
+
+/**
+ * The effective policy. Emigration's Spoil Guard (Options ▸ Mods ▸ Emigration) is its own control and works with
+ * Demographics' guard when both are installed (the owner, 2026-10-26): the stricter of the two wins, so a player
+ * who guards in either mod is never spoiled by the other, and the host's ceiling caps both. Guard on (1) hides
+ * unmet civilizations; guard off (2) shows everyone unless Demographics or the host still guards. The legacy
+ * "follow" value (0, what players had before the checkbox) takes Demographics' published policy as it is, else the
+ * host ceiling against our own read of its slice, else met-civs-only.
  * @returns {string} A policy id.
  */
 export function effectivePolicy() {
   if (_snapshot) return _snapshot;
   const override = getVisibilityOverride();
-  if (override === 1) return POLICY_MET;
-  if (override === 2) return POLICY_FULL;
+  if (override !== 1 && override !== 2) return followPolicy();
+  const own = override === 1 ? POLICY_MET : POLICY_FULL;
+  return stricter([own, publishedPolicy() || demographicsLocalPolicy(), hostPolicy()]);
+}
+
+/** @returns {string} The legacy "follow" reading: Demographics' published policy, else host ceiling against local. */
+function followPolicy() {
   const published = publishedPolicy();
   if (published) return published;
   const local = localPolicy();
   const host = hostPolicy();
-  if (!host) return local;
-  return RANK[host] <= RANK[local] ? host : local;
+  return host && RANK[host] <= RANK[local] ? host : local;
+}
+
+/** @param {(string|null)[]} policies @returns {string} The strictest of the policies given (nulls skipped). */
+function stricter(policies) {
+  let out = POLICY_FULL;
+  for (const p of policies) if (p && RANK[p] < RANK[out]) out = p;
+  return out;
 }
 
 // The policy held for one synchronous pass (see withPolicySnapshot), or null to read it fresh. The local read

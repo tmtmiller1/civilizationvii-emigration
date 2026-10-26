@@ -69,13 +69,6 @@ const SNAP_ITEMS = [
   { label: "LOC_OPTIONS_EMIG_SNAP_5" }
 ];
 const PRESET_ITEMS = PRESET_NAMES.map((n) => ({ label: "LOC_EMIG_PRESET_" + n.toUpperCase() }));
-// Emigration's own analytics-visibility control for its dashboard tabs (0 follow Demographics,
-// 1 hide unmet, 2 show all).
-const VISIBILITY_ITEMS = [
-  { label: "LOC_OPTIONS_EMIG_VISIBILITY_FOLLOW" },
-  { label: "LOC_OPTIONS_EMIG_VISIBILITY_HIDE" },
-  { label: "LOC_OPTIONS_EMIG_VISIBILITY_SHOWALL" }
-];
 
 function registerNumberMode() {
   Options.addOption({
@@ -213,18 +206,21 @@ function registerNotifications() {
   });
 }
 
-/** Register the analytics-visibility dropdown (Emigration's own, always-reliable unmet-civ control). */
-function registerVisibility() {
+/**
+ * Register the Spoil Guard checkbox, Emigration's own (the owner, 2026-10-26: "like we have for Demographics"): on
+ * hides civilizations you haven't met across the Emigration screens; off shows everyone, unless Demographics'
+ * own guard or the host still hides them. On by default; the pre-checkbox "follow" value reads as on.
+ */
+function registerSpoilGuard() {
   Options.addOption({
     category: CategoryType.Mods,
     group: MAIN_GROUP,
-    type: OptionType.Dropdown,
-    id: "emigration-visibility",
-    initListener: (/** @type {*} */ info) => (info.selectedItemIndex = getVisibilityOverride()),
-    updateListener: (/** @type {*} */ _i, /** @type {number} */ v) => setVisibilityOverride(v),
-    label: "LOC_OPTIONS_EMIG_VISIBILITY",
-    description: "LOC_OPTIONS_EMIG_VISIBILITY_DESCRIPTION",
-    dropdownItems: VISIBILITY_ITEMS
+    type: OptionType.Checkbox,
+    id: "emigration-spoil-guard",
+    initListener: (/** @type {*} */ info) => (info.currentValue = getVisibilityOverride() !== 2),
+    updateListener: (/** @type {*} */ _i, /** @type {*} */ v) => setVisibilityOverride(v ? 1 : 2),
+    label: "LOC_OPTIONS_EMIG_SPOIL_GUARD",
+    description: "LOC_OPTIONS_EMIG_SPOIL_GUARD_DESCRIPTION"
   });
 }
 
@@ -448,7 +444,7 @@ Options.addInitCallback(() => {
   registerDockButton();
   registerMinimizeAnalytics();
   registerNotifications();
-  registerVisibility();
+  registerSpoilGuard();
   registerIntegration();
   registerReturn();
   registerDilemmas();

@@ -30,11 +30,20 @@ globalThis.Players = {
 const S = await import("/emigration/ui/emigration-settings.js");
 const G = await import("/emigration/ui/emigration-governance.js");
 
-// override branches
+// Spoil Guard branches: on hides unmet, off shows everyone when nobody else guards
 S.setVisibilityOverride(1);
 assert.equal(G.effectivePolicy(), "met-civs-only");
 S.setVisibilityOverride(2);
 assert.equal(G.effectivePolicy(), "full");
+// ...and the stricter of the two mods wins when Demographics guards too (2026-10-26)
+kv.DemographicsAnalyticsPolicyEffective_v1 = "met-civs-only";
+assert.equal(G.effectivePolicy(), "met-civs-only", "guard off here, but Demographics still guards");
+S.setVisibilityOverride(1);
+kv.DemographicsAnalyticsPolicyEffective_v1 = "own-civ-only";
+assert.equal(G.effectivePolicy(), "own-civ-only", "Demographics stricter than our guard");
+kv.DemographicsAnalyticsPolicyEffective_v1 = "full";
+assert.equal(G.effectivePolicy(), "met-civs-only", "our guard stricter than Demographics");
+delete kv.DemographicsAnalyticsPolicyEffective_v1;
 S.setVisibilityOverride(0);
 
 // published policy branch

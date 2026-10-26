@@ -398,10 +398,11 @@ export function setReturnEnabled(on) {
 let _vis = null;
 
 /**
- * Emigration's own analytics-visibility override for its dashboard tabs (the cross-mod read of the
- * Demographics setting is unreliable). 0 = follow the Demographics "Analytics visibility" setting
- * (default); 1 = always hide unmet civs; 2 = always show all civs.
- * @returns {number} 0 (auto), 1 (hide unmet), or 2 (show all).
+ * Emigration's Spoil Guard, as stored: 1 = guard on (hide civilizations you haven't met), 2 = guard off (show
+ * everyone, unless Demographics or the host still guards), 0 = the value players had before the checkbox: follow
+ * Demographics' published policy, else hide unmet. The Options checkbox reads 0 and 1 as on and writes 1 or 2;
+ * emigration-governance.js turns the value into the effective policy.
+ * @returns {number} 0 (follow), 1 (guard on), or 2 (guard off).
  */
 export function getVisibilityOverride() {
   resetCachesOnNewGame();
@@ -413,8 +414,8 @@ export function getVisibilityOverride() {
 }
 
 /**
- * Set + persist the Emigration visibility override.
- * @param {number} v 0 (auto), 1 (hide unmet), or 2 (show all).
+ * Set + persist the Spoil Guard value.
+ * @param {number} v 0 (follow), 1 (guard on), or 2 (guard off).
  */
 export function setVisibilityOverride(v) {
   _vis = v === 1 || v === 2 ? v : 0;
