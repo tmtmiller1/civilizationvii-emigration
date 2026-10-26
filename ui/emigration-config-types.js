@@ -166,12 +166,18 @@
  * @property {number} callHomeAgeCostStep Fee multiplier per age past Antiquity (Exploration ×step, Modern ×step²).
  * @property {number} callHomeMaxPointsPerAttempt Points attempted per call.
  * @property {number} callHomeCooldownTurns Turns before the same civilization may call again.
- * @property {boolean} callHomeOfferWhenCalm Offer the call once nowhere is distressed and people are away.
+ * @property {boolean} callHomeOfferWhenCalm A notice pointing at the Settlements tab once nowhere is distressed and
+ *   people are away.
+ * @property {number} homeNoticeMinAway How many population points must be displaced before that notice speaks, and
+ *   how many more before it speaks again.
  * @property {boolean} callHomeAi AI civilizations make the call on their own turn, at the player's price and odds.
  * @property {boolean} homecomingEnabled People displaced inside their own civ go home on their own once it is calm.
  * @property {number} homecomingCalmTurns Calm turns in a row a home settlement needs before people come back.
  * @property {number} homecomingCalmTurnsAfterWar The same after fighting in its borders or a siege.
  * @property {number} homecomingEveryTurns Turns between returns to the same home settlement.
+ * @property {number} homecomingBatchPer Each return brings one home plus one for every this many still away.
+ * @property {boolean} readoutPrescribe The city readout says what yields would stop people leaving.
+ * @property {number} aiDifficultyDiscountPerLevel AI price discount per Gold handicap level of the game's difficulty.
  * @property {number} antiDrainWeight Penalty on cross-civ outflow from a civ below the drain threshold (0 = off).
  * @property {number} antiDrainThreshold Share of the world-average civ population below which outflow is braked.
  * @property {number} antiDrainExponent Steepness of the drain brake below the threshold.

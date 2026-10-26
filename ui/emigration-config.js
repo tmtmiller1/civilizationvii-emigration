@@ -264,12 +264,16 @@ export const CONFIG = {
   callHomeAgeCostStep: 3, // each age past Antiquity multiplies the fee by this (Exploration ×3, Modern ×9)
   callHomeMaxPointsPerAttempt: 3, // points attempted per call
   callHomeCooldownTurns: 8, // turns before the same civilization may call again
-  callHomeOfferWhenCalm: true, // offer the call once no settlement is under distress and people are still away
+  callHomeOfferWhenCalm: true, // once things are calm, a notice beside End Turn points at the Settlements tab
+  homeNoticeMinAway: 5, // that notice waits for this many displaced population points, and this many more to repeat
   callHomeAi: true, // AI civilizations call their own people home on their turn, at the same price, odds and cooldown
   homecomingEnabled: true, // people displaced inside their own civ go home on their own once home is calm
   homecomingCalmTurns: 3, // calm turns in a row a home settlement needs before its people start coming back
   homecomingCalmTurnsAfterWar: 10, // the same after fighting in its borders or a siege (a frontier city gets hit again)
   homecomingEveryTurns: 4, // turns between returns to the same home settlement
+  homecomingBatchPer: 8, // each return brings one home, plus one for every this many still away
+  readoutPrescribe: true, // the city readout says how much Food, Production or Happiness would stop people leaving
+  aiDifficultyDiscountPerLevel: 0.04, // the AI's call-home and refugee prices drop this much per Gold handicap level
 
   // refugee dilemmas (rare narrative decisions)
   // Once in a while a great wave of refugees reaches your lands and you pause for a short decision

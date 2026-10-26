@@ -39,9 +39,10 @@ import { installEmigrationConsole, openEmigrationScreen } from "/emigration/ui/e
 import { installTrainHandler } from "/emigration/ui/emigration-train.js";
 import { installEmigrationDock } from "/emigration/ui/emigration-dock-decorator.js";
 import { offerCallHome, callHomeNow, callHomeCooldownLeft, callHomeResolvable } from "/emigration/ui/emigration-call-home-action.js";
-import { ownerCitySnapshots } from "/emigration/ui/emigration-city-readout-data.js";
 import { aiCallHomeOnTurn } from "/emigration/ui/emigration-call-home-ai.js";
 import { homecomingOnTurn } from "/emigration/ui/emigration-homecoming.js";
+import { noticeDisplacedWhenCalm } from "/emigration/ui/emigration-home-notice.js";
+import { noticeAiStances } from "/emigration/ui/emigration-ai-stance-notice.js";
 import { CALL_HOME_SCOPE, CALL_HOME_CURRENCY, callHomeQuote } from "/emigration/ui/emigration-call-home.js";
 import { installEmigrationCityPanel } from "/emigration/ui/emigration-city-panel.js";
 import { sweepEmptyRuralDistricts, sweepOnceGameStarts } from "/emigration/ui/emigration-plot-cleanup.js";
@@ -305,6 +306,7 @@ function onTurnActivated(data) {
     if (turn - lastLocalTurnRun < CONFIG.turnInterval) return;
     lastLocalTurnRun = turn;
     doPass("turn " + turn);
+    noticeAiStances(); // "Persia closes its borders": the other civilizations' stance changes, once a turn
     offerCallHomeWhenCalm(local);
   } catch (e) {
     dlog("onTurnActivated threw " + e);
@@ -349,7 +351,9 @@ function installUi() {
   installEmigrationConsole(); // console: emigration.window() opens the standalone screen
   installEmigrationDock(); // in-game dock button that opens that screen (no console needed)
   // A click on one of the mod's train notifications opens the screen on its Notifications tab.
-  installTrainHandler(() => openEmigrationScreen("notifications"));
+  // Your own losses and homecomings open on the Displaced tab, where the people and the way home are; the rest on
+  // Notifications.
+  installTrainHandler((ch) => openEmigrationScreen(ch === "loss" || ch === "home" ? "cityflows" : "notifications"));
   installEmigrationCityPanel(); // inject population + quarter data into the base City Details panel
   // The on-screen self-test button rides the subsystem dock (emigration-dock-decorator.js); installEmigrationDock()
   // below wires it when selftestEnabled. The prosperity map lens self-registers as its own <UIScripts>
@@ -357,51 +361,15 @@ function installUi() {
 }
 
 /**
- * Offer to call our people home once the danger that displaced them has passed. Keyed on calm (nobody
- * under threat, somebody still away) rather than a war ending, because disasters and minor-power raids
- * make refugees without any formal war. A call starts a cooldown, and people the player left where they are
- * are not offered again (emigration-call-home-action.js), so the offer returns only for people displaced since.
+ * Once the danger that displaced them has passed, point the player at the Displaced tab (emigration-home-notice.js)
+ * rather than raising the paid-call pop-up: the tab shows where everyone is, the free schedule and the prices, and
+ * lets the player pick the settlement.
  * @param {number} pid The local player id.
  */
 function offerCallHomeWhenCalm(pid) {
-  try {
-    if (!CONFIG.callHomeEnabled || !CONFIG.callHomeOfferWhenCalm) return;
-    if (typeof pid !== "number" || pid < 0) return;
-    if (!isCalm(pid)) return;
-    for (const scope of offerScopes()) {
-      const quote = callHomeQuote(pid, scope, CALL_HOME_CURRENCY.GOLD, undefined,
-        { resolvable: callHomeResolvable(pid) });
-      if (quote.points > 0 && offerCallHome(pid, scope)) return;
-    }
-  } catch (e) {
-    dlog("call home when calm threw " + e);
-  }
+  noticeDisplacedWhenCalm(pid);
 }
 
-/**
- * The call-home variants worth offering: people at home come back on their own while homecoming is on, so only
- * the call abroad is offered then.
- * @returns {string[]} CALL_HOME_SCOPE values.
- */
-function offerScopes() {
-  return CONFIG.homecomingEnabled ? [CALL_HOME_SCOPE.EXTERNAL] : [CALL_HOME_SCOPE.INTERNAL, CALL_HOME_SCOPE.EXTERNAL];
-}
-
-/**
- * Whether none of a civilization's settlements is still under situational distress: war, siege, disaster,
- * famine or unrest alike. Unreadable state counts as not calm, so the offer stays quiet rather than
- * interrupting a crisis it could not see.
- * @param {number} pid The player id. @returns {boolean} True when everywhere is quiet.
- */
-function isCalm(pid) {
-  try {
-    const snaps = ownerCitySnapshots(pid);
-    if (!Array.isArray(snaps) || !snaps.length) return false;
-    return snaps.every((s) => !(Number(s && s.distress) > 0));
-  } catch (_) {
-    return false;
-  }
-}
 /**
  * Subscribe the war and combat trackers. Every one of these is fog-independent, so a war between two AI
  * players on the far side of the map feeds the migration model exactly as the player's own war does.

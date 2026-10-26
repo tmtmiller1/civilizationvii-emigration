@@ -262,6 +262,13 @@
                     <Item>ui/emigration-return.js</Item>
                     <!-- Who has come home, taken off the all-game flow ledger by call-home. -->
                     <Item>ui/emigration-returned.js</Item>
+                    <Item>ui/emigration-lost-tiles.js</Item>
+                    <!-- What would stop people leaving (the readout's fix line); the AI's difficulty discount; the
+                         other civilizations' stance changes as notices. -->
+                    <Item>ui/emigration-tab-switches.js</Item>
+                    <Item>ui/emigration-prescribe.js</Item>
+                    <Item>ui/emigration-ai-difficulty.js</Item>
+                    <Item>ui/emigration-ai-stance-notice.js</Item>
                     <Item>ui/emigration-call-home.js</Item>
                     <Item>ui/emigration-call-home-action.js</Item>
                     <Item>ui/emigration-call-home-ai.js</Item>
@@ -270,6 +277,12 @@
                     <!-- The Displaced tab: where your people are, what a returnee is worth, the way home. -->
                     <Item>ui/emigration-displaced.js</Item>
                     <Item>ui/emigration-displaced-view.js</Item>
+                    <Item>ui/emigration-hasten-ledger.js</Item>
+                    <Item>ui/emigration-home-notice.js</Item>
+                    <Item>ui/emigration-settlement-model.js</Item>
+                    <Item>ui/emigration-settlement-card.js</Item>
+                    <Item>ui/emigration-settlements-section.js</Item>
+                    <Item>ui/emigration-quarter-decision.js</Item>
                     <Item>ui/emigration-pass-signals.js</Item>
                     <Item>ui/emigration-ai-host.js</Item>
                     <Item>ui/emigration-call-home-view.js</Item>
