@@ -32,8 +32,13 @@ const COOLDOWN_KEY = "EmigrationCallHomeCooldown_v1";
 /** @type {Record<string, number>|null} Last turn a civilization called, by "pid|scope"; loaded on first use. */
 let _lastCall = null;
 
-/** @param {number} pid @param {string} scope @returns {string} */
-const cdKey = (pid, scope) => pid + "|" + scope;
+/**
+ * The cooldown's key: per civilization and variant, and for a call made for one settlement (the Settlements tab's
+ * Hasten) per settlement too, so hastening one city doesn't lock every other city's button for eight turns
+ * (watched 2026-10-25).
+ * @param {number} pid @param {string} scope @param {string} [home] @returns {string}
+ */
+const cdKey = (pid, scope, home) => pid + "|" + scope + (home ? "|" + home : "");
 
 /**
  * The turn a cooldown is measured in: the mod's monotonic cross-age turn (emigration-migration-stats.js) once the
@@ -87,9 +92,9 @@ function storedJson(key) {
   }
 }
 
-/** @param {number} pid @param {string} scope @param {number} turn The turn of the call. */
-function noteCall(pid, scope, turn) {
-  cooldowns()[cdKey(pid, scope)] = turn;
+/** @param {number} pid @param {string} scope @param {number} turn The turn of the call. @param {string} [home] */
+function noteCall(pid, scope, turn, home) {
+  cooldowns()[cdKey(pid, scope, home)] = turn;
   try {
     Configuration?.editGame?.()?.setValue?.(COOLDOWN_KEY, JSON.stringify(_lastCall || {}));
   } catch (_) {
@@ -100,10 +105,11 @@ function noteCall(pid, scope, turn) {
 /**
  * Turns still to wait before this civilization may call again for this variant. A last call recorded after the
  * current turn (a save from a later point, loaded earlier) counts as over rather than blocking for an age.
- * @param {number} pid @param {string} scope A CALL_HOME_SCOPE. @returns {number} Turns remaining.
+ * @param {number} pid @param {string} scope A CALL_HOME_SCOPE. @param {string} [home] A settlement, for a call made
+ *   for its people alone (its own clock). @returns {number} Turns remaining.
  */
-export function callHomeCooldownLeft(pid, scope) {
-  const last = Number(cooldowns()[cdKey(pid, scope)] || 0);
+export function callHomeCooldownLeft(pid, scope, home) {
+  const last = Number(cooldowns()[cdKey(pid, scope, home)] || 0);
   if (!(last > 0)) return 0;
   const now = turnNow();
   if (last > now) return 0;
@@ -258,21 +264,21 @@ function balanceOf(treasury, field, getter) {
  * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {number} currency A CALL_HOME_CURRENCY.
  * @param {{want?:number, move?:(pair:*)=>boolean, declined?:Record<string, number>, flows?:*[],
- *   resolvable?:(pair:*)=>boolean, order?:(pairs:*[])=>*[]}} [deps] How many the player asked for (default: the
- *   per-call cap), test seams for the mover, the flow rows, the city check and the pair order, and the people left
- *   where they are (never moved by this call).
+ *   resolvable?:(pair:*)=>boolean, order?:(pairs:*[])=>*[], home?:string}} [deps] How many the player asked for
+ *   (default: the per-call cap), test seams for the mover, the flow rows, the city check and the pair order, the
+ *   people left where they are (never moved by this call), and the one settlement the call is for.
  * @returns {{ok:boolean, reason:string, scope:string, paid:number, attempted:number, returned:number}} Result.
  */
 export function callHomeNow(pid, scope, currency, deps) {
-  const left = callHomeCooldownLeft(pid, scope);
-  if (left > 0) return { ok: false, reason: "cooldown", scope, paid: 0, attempted: 0, returned: 0 };
   const d = deps || /** @type {*} */ ({});
+  const left = callHomeCooldownLeft(pid, scope, d.home);
+  if (left > 0) return { ok: false, reason: "cooldown", scope, paid: 0, attempted: 0, returned: 0 };
   const result = resolveCallHome(pid, scope, currency, {
     ...callEffects(pid, currency, d),
     turn: turnNow(), gameId: safeGameId(), want: d.want, declined: d.declined, flows: d.flows, order: d.order
   });
   if (result.ok || result.reason === "nobody-came") {
-    noteCall(pid, scope, turnNow());
+    noteCall(pid, scope, turnNow(), d.home);
     reportCall(pid, result);
   }
   return result;
@@ -282,19 +288,21 @@ export function callHomeNow(pid, scope, currency, deps) {
  * The engine-side effects of a call: what the treasury can spend, the charge, the refund, the mover and the city
  * check, with the test seams in `d` taking the place of the mover and the check.
  * @param {number} pid @param {number} currency A CALL_HOME_CURRENCY.
- * @param {{move?:(pair:*)=>boolean, resolvable?:(pair:*)=>boolean}} d The seams.
+ * @param {{move?:(pair:*)=>boolean, resolvable?:(pair:*)=>boolean, priceScale?:number}} d The seams;
+ *   `priceScale` scales the charge and the refund (an AI civilization's difficulty discount).
  * @returns {*} The effects for resolveCallHome.
  */
 function callEffects(pid, currency, d) {
   // Influence is YIELD_DIPLOMACY in the game's yield table; there is no YIELD_INFLUENCE, and charging that
   // key is a silent no-op.
   const yieldKey = currency === CALL_HOME_CURRENCY.INFLUENCE ? "YIELD_DIPLOMACY" : "YIELD_GOLD";
+  const scale = typeof d.priceScale === "number" && d.priceScale > 0 ? d.priceScale : 1;
   return {
     afford: (/** @type {number} */ c) => callHomeBalance(pid, c),
     pay: (/** @type {number} */ amount) => {
       if (amount <= 0) return true;
       try {
-        deduct(pid, yieldKey, -amount);
+        deduct(pid, yieldKey, -Math.round(amount * scale));
         return true;
       } catch (e) {
         dlog("call home: charge threw " + e);
@@ -303,7 +311,7 @@ function callEffects(pid, currency, d) {
     },
     move: d.move || ((/** @type {*} */ pair) => movePointHome(pid, pair)),
     resolvable: d.resolvable || callHomeResolvable(pid),
-    refund: (/** @type {number} */ amount) => refundFee(pid, yieldKey, amount)
+    refund: (/** @type {number} */ amount) => refundFee(pid, yieldKey, Math.round(amount * scale))
   };
 }
 
@@ -409,20 +417,22 @@ function reportCall(pid, result) {
  * leaving these ones adds them to that record.
  * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {{includeDeclined?:boolean, flows?:*[], show?:(view:*, onChoice:(id:string)=>void)=>void,
- *   move?:(pair:*)=>boolean, resolvable?:(pair:*)=>boolean, after?:()=>void}} [opts] List everyone, declined or
- *   not (the console call); test seams for the flow rows, the dialog, the mover and the city check; `after` runs
- *   once the player has chosen (the Displaced tab redraws).
+ *   move?:(pair:*)=>boolean, resolvable?:(pair:*)=>boolean, after?:()=>void, home?:string, named?:string,
+ *   ledger?:string[], wait?:*}} [opts] List everyone, declined or not (the console call); test seams for the flow
+ *   rows, the dialog, the mover and the city check; `after` runs once the player has chosen (the Settlements tab
+ *   redraws); `home` makes it a call for one settlement's people, on that settlement's own cooldown; `named`,
+ *   `ledger` and `wait` put that settlement, what the fee buys and the free homecoming's timing in the dialog.
  * @returns {boolean} Whether it opened.
  */
 export function offerCallHome(pid, scope, opts) {
   if (!CONFIG.callHomeEnabled) return false;
-  if (callHomeCooldownLeft(pid, scope) > 0) return false;
   const o = opts || {};
+  if (callHomeCooldownLeft(pid, scope, o.home) > 0) return false;
   const declined = o.includeDeclined ? {} : callHomeDeclined(pid, scope, o.flows);
   const resolvable = o.resolvable || callHomeResolvable(pid);
   const view = callHomeView(pid, scope, {
     afford: (c) => callHomeBalance(pid, c), seed: "callhome|" + scope + "|" + turnNow(), declined,
-    flows: o.flows, resolvable
+    flows: o.flows, resolvable, ledger: o.ledger, wait: o.wait, home: o.named
   });
   if (!view) return false;
   const shown = callHomeQuote(pid, scope, CALL_HOME_CURRENCY.GOLD, o.flows, { declined, resolvable }).pairs;
@@ -431,7 +441,8 @@ export function offerCallHome(pid, scope, opts) {
     if (view.choices.some((c) => c.id === id && c.disabled)) return;
     const pick = parseChoice(id);
     if (pick) {
-      callHomeNow(pid, scope, pick.currency, { want: pick.want, declined, flows: o.flows, move: o.move, resolvable });
+      callHomeNow(pid, scope, pick.currency,
+        { want: pick.want, declined, flows: o.flows, move: o.move, resolvable, home: o.home });
     }
     else declineCallHome(pid, scope, shown);
     if (typeof o.after === "function") o.after();

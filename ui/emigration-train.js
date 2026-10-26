@@ -22,7 +22,7 @@ import { dlog } from "/emigration/ui/emigration-log.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
 import { registerCacheReset } from "/emigration/ui/emigration-cache-reset.js";
 
-/** @typedef {"loss"|"arrival"|"world"|"disaster"|"note"} Channel */
+/** @typedef {"loss"|"arrival"|"world"|"disaster"|"home"|"note"} Channel */
 
 /**
  * The channels, each its own notification type: the player's own people leaving, newcomers settling in the
@@ -35,6 +35,7 @@ export const CHANNELS = Object.freeze({
   arrival: { type: "NOTIFICATION_EMIGRATION_ARRIVAL", title: "LOC_EMIG_TRAIN_ARRIVAL", fallback: "Newcomers have arrived" },
   world: { type: "NOTIFICATION_EMIGRATION_WORLD", title: "LOC_EMIG_TRAIN_WORLD", fallback: "Refugee crisis abroad" },
   disaster: { type: "NOTIFICATION_EMIGRATION_DISASTER", title: "LOC_EMIG_TRAIN_DISASTER", fallback: "Disaster displaces people" },
+  home: { type: "NOTIFICATION_EMIGRATION_HOME", title: "LOC_EMIG_TRAIN_HOME", fallback: "People are coming home" },
   note: { type: "NOTIFICATION_EMIGRATION_NOTE", title: "LOC_EMIG_TRAIN_NOTE", fallback: "Migration news" }
 });
 
@@ -180,11 +181,29 @@ function sendChannel(channel, lines) {
 }
 
 /**
+ * The channel a live notification belongs to, by its type hash; null when it can't be read.
+ * @param {*} id A notification id. @returns {Channel|null}
+ */
+export function channelOfNotification(id) {
+  try {
+    const n = Game.Notifications.find(id);
+    if (!n) return null;
+    for (const [ch, spec] of Object.entries(CHANNELS)) {
+      if (Game.getHash(spec.type) === n.Type) return /** @type {Channel} */ (ch);
+    }
+  } catch (_) {
+    /* unreadable */
+  }
+  return null;
+}
+
+/**
  * Register a handler for the mod's notification types on the train's model, so a click on one opens the
  * Emigration screen (the default handler only moves the camera, and the engine ignores a location given from
  * script). The model is imported when the game serves it; without it, or when another mod's replacement lacks
  * the registration call, the default handler stays and a click does nothing.
- * @param {() => void} open Opens the Emigration screen.
+ * @param {(channel:Channel|null) => void} open Opens the Emigration screen, told which channel was clicked (null
+ *   when the notification can't be read), so a loss or homecoming notice can open the Displaced tab.
  * @returns {Promise<boolean>} True once the handler is registered.
  */
 export function installTrainHandler(open) {
@@ -198,9 +217,9 @@ export function installTrainHandler(open) {
       }
       const handler = {
         lookAt() {},
-        activate() {
+        activate(/** @type {*} */ id) {
           try {
-            open();
+            open(channelOfNotification(id));
           } catch (e) {
             dlog("train: opening the screen threw " + e);
           }

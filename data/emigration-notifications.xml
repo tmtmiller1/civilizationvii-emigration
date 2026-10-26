@@ -9,6 +9,7 @@
         <Row Type="NOTIFICATION_EMIGRATION_ARRIVAL" Kind="KIND_NOTIFICATION"/>
         <Row Type="NOTIFICATION_EMIGRATION_WORLD" Kind="KIND_NOTIFICATION"/>
         <Row Type="NOTIFICATION_EMIGRATION_DISASTER" Kind="KIND_NOTIFICATION"/>
+        <Row Type="NOTIFICATION_EMIGRATION_HOME" Kind="KIND_NOTIFICATION"/>
         <Row Type="NOTIFICATION_EMIGRATION_NOTE" Kind="KIND_NOTIFICATION"/>
     </Types>
     <Notifications>
@@ -16,6 +17,7 @@
         <Row NotificationType="NOTIFICATION_EMIGRATION_ARRIVAL" SeverityType="LOW" ExpiresEndOfTurn="True" AutoNotify="False" Message="LOC_EMIG_TRAIN_ARRIVAL" Summary="LOC_EMIG_TRAIN_FALLBACK" Priority="2"/>
         <Row NotificationType="NOTIFICATION_EMIGRATION_WORLD" SeverityType="MID" ExpiresEndOfTurn="True" AutoNotify="False" Message="LOC_EMIG_TRAIN_WORLD" Summary="LOC_EMIG_TRAIN_FALLBACK" Priority="2"/>
         <Row NotificationType="NOTIFICATION_EMIGRATION_DISASTER" SeverityType="MID" ExpiresEndOfTurn="True" AutoNotify="False" Message="LOC_EMIG_TRAIN_DISASTER" Summary="LOC_EMIG_TRAIN_FALLBACK" Priority="2"/>
+        <Row NotificationType="NOTIFICATION_EMIGRATION_HOME" SeverityType="LOW" ExpiresEndOfTurn="True" AutoNotify="False" Message="LOC_EMIG_TRAIN_HOME" Summary="LOC_EMIG_TRAIN_FALLBACK" Priority="2"/>
         <Row NotificationType="NOTIFICATION_EMIGRATION_NOTE" SeverityType="LOW" ExpiresEndOfTurn="True" AutoNotify="False" Message="LOC_EMIG_TRAIN_NOTE" Summary="LOC_EMIG_TRAIN_FALLBACK" Priority="2"/>
     </Notifications>
     <NotificationSounds>
@@ -23,6 +25,7 @@
         <Row NotificationType="NOTIFICATION_EMIGRATION_ARRIVAL" Context="Add" Audio="notif-GenericNeutral"/>
         <Row NotificationType="NOTIFICATION_EMIGRATION_WORLD" Context="Add" Audio="notif-GenericNeutral"/>
         <Row NotificationType="NOTIFICATION_EMIGRATION_DISASTER" Context="Add" Audio="notif-GenericNeutral"/>
+        <Row NotificationType="NOTIFICATION_EMIGRATION_HOME" Context="Add" Audio="notif-GenericNeutral"/>
         <Row NotificationType="NOTIFICATION_EMIGRATION_NOTE" Context="Add" Audio="notif-GenericNeutral"/>
     </NotificationSounds>
 </Database>

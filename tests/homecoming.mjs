@@ -58,6 +58,7 @@ function reset() {
   CONFIG.homecomingCalmTurns = 3;
   CONFIG.homecomingCalmTurnsAfterWar = 10;
   CONFIG.homecomingEveryTurns = 4;
+  CONFIG.homecomingBatchPer = 8;
 }
 
 /** Run turns from the world's current turn, each civ once per turn. */
@@ -197,5 +198,22 @@ testTroubleStopsIt();
 testLongerWaitAfterFighting();
 testLostHomesAndOtherCivs();
 testOncePerTurnAndSwitch();
+function testBatches() {
+  // Twenty-three away: three come home a return, then two, then one, so a big loss refills in a few returns.
+  reset();
+  const { w, deps } = world();
+  w.pairs[ME] = [{ from: "Ostia", home: "Rome", host: ME, points: 20 }, { from: "Capua", home: "Rome", host: ME, points: 3 }];
+  run(w, deps, 3);
+  assert.equal(w.moves.length, 3, "the first return brings three (1 + 23/8)");
+  assert.ok(w.moves.every((m) => m[1] === "Ostia"), "from the largest group first");
+  assert.equal(hc.batchFor(23), 3);
+  assert.equal(hc.batchFor(7), 1);
+  assert.equal(hc.batchFor(8), 2);
+  run(w, deps, 50);
+  assert.equal(w.moves.length, 23, "everyone came home: 3, 3, 3, 2, 2, 2, 2, then one at a time, thirteen returns");
+  assert.ok(w.moves.at(-1)[0] <= 12 + 12 * 4, "in thirteen returns, not twenty-three");
+}
+
 testSaveAndReload();
+testBatches();
 console.log("homecoming: ok");

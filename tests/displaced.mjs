@@ -16,7 +16,7 @@ globalThis.Locale = { compose: (s) => s };
 
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
 const { displacedModel, waitFor, abroadCallFor } = await import("/emigration/ui/emigration-displaced.js");
-const { yieldsText, whereText, waitText, abroadText } = await import("/emigration/ui/emigration-displaced-view.js");
+const { yieldsText, whereText, waitText, abroadText, freeLines } = await import("/emigration/ui/emigration-displaced-view.js");
 
 const ME = 0;
 CONFIG.callHomeEnabled = true;
@@ -24,6 +24,7 @@ CONFIG.homecomingEnabled = true;
 CONFIG.homecomingCalmTurns = 3;
 CONFIG.homecomingCalmTurnsAfterWar = 10;
 CONFIG.homecomingEveryTurns = 4;
+CONFIG.homecomingBatchPer = 8;
 CONFIG.callHomeMaxPointsPerAttempt = 3;
 CONFIG.callHomeGoldPerPoint = 60;
 CONFIG.callHomeInfluencePerPoint = 12;
@@ -56,11 +57,12 @@ function testModel() {
   assert.deepEqual(rows.map((r) => [r.home, r.total, r.held]), [["Rome", 14, true], ["Capua", 2, false]],
     "one row per home, most away first; a lost home is marked");
   const rome = rows[0];
-  assert.deepEqual(rome.internal, [{ from: "Ostia", points: 9 }, { from: "Ravenna", points: 3 }]);
+  assert.deepEqual(rome.internal, [{ from: "Ostia", points: 9, tile: null }, { from: "Ravenna", points: 3, tile: null }],
+    "each host carries what a tile there yields, when it can be read");
   assert.deepEqual(rome.abroad, [{ from: "Athens", host: 4, civ: "Greece", points: 2 }]);
   assert.equal(rome.since, 71);
-  assert.deepEqual(rome.wait, { calm: 5, needed: 3, every: 4, nextIn: 2, allIn: 2 + 11 * 4 },
-    "calm enough: the next return is two turns after the last, the twelfth 44 turns after that");
+  assert.deepEqual(rome.wait, { calm: 5, needed: 3, every: 4, nextIn: 2, allIn: 2 + 8 * 4, batch: 2 },
+    "calm enough: the next return (two people, twelve away) is two turns after the last; nine returns clear twelve");
   assert.equal(rome.tile.total, 3.9);
   assert.deepEqual(rome.hasten, { n: 3, gold: 312, influence: 62, cooldown: 0 }, "three at the internal price");
   assert.equal(rome.abroadCall.n, 2);
@@ -78,9 +80,10 @@ function testModel() {
 
 function testWaitCases() {
   assert.deepEqual(waitFor({ calm: 1, needed: 3, every: 4, last: null, turn: 10 }, 5),
-    { calm: 1, needed: 3, every: 4, nextIn: 2, allIn: 18 }, "not calm long enough: two more calm turns, then four each");
+    { calm: 1, needed: 3, every: 4, nextIn: 2, allIn: 18, batch: 1 }, "not calm long enough: two more calm turns, then four each");
   assert.deepEqual(waitFor({ calm: 3, needed: 3, every: 4, last: null, turn: 10 }, 1),
-    { calm: 3, needed: 3, every: 4, nextIn: 0, allIn: 0 }, "calm and never returned: the first comes next turn");
+    { calm: 3, needed: 3, every: 4, nextIn: 0, allIn: 0, batch: 1 }, "calm and never returned: the first comes next turn");
+  assert.equal(waitFor({ calm: 3, needed: 3, every: 4, last: null, turn: 10 }, 23).batch, 3, "twenty-three away: three a return");
   assert.deepEqual(waitFor({ calm: 12, needed: 10, every: 4, last: 9, turn: 10 }, 2).nextIn, 3, "three turns after the last");
   assert.equal(abroadCallFor(0, 0), null);
 }
@@ -88,20 +91,25 @@ function testWaitCases() {
 function testLines() {
   const rows = displacedModel(ME, seams());
   const rome = rows[0];
-  assert.equal(yieldsText(rome.tile.perTile), "+2.4 Food, +1 Production, +0.5 Culture");
+  assert.equal(yieldsText(rome.tile.perTile), "+2 Food, +1 Production, +1 Culture", "whole numbers, the three largest");
   assert.equal(whereText(rome), "9 in Ostia, 3 in Ravenna, 2 in Athens (Greece)");
-  assert.equal(waitText(rome), "Free: the next one comes home in 2 turns, and the last in about 46 turns.");
+  assert.equal(waitText(rome), "Free: the next 2 come home in 2 turns, and the last in about 34 turns.");
   assert.equal(abroadText(rome.abroadCall),
     "Call 2 from abroad: 18% each, about 0.4 expected to come, for 255 Gold or 51 Influence. "
     + "That's about 708 Gold or 142 Influence for each person who comes.");
   const soon = displacedModel(ME, seams({ homecoming: () => ({ calm: 1, needed: 10, every: 4, last: null, turn: 5 }) }))[0];
-  assert.equal(waitText(soon), "Free, once Rome has been calm for 9 more turns; then one comes home every 4 turns.");
+  assert.equal(waitText(soon), "Free, once Rome has been calm for 9 more turns; then 2 come home every 4 turns, all of them in about 41 turns.");
   const now = displacedModel(ME, seams({ homecoming: () => ({ calm: 3, needed: 3, every: 4, last: null, turn: 5 }) }))[0];
-  assert.equal(waitText(now), "Free: one comes home next turn, and the last in about 44 turns.");
+  assert.equal(waitText(now), "Free: 2 come home next turn, and the last in about 32 turns.");
+  // The table's Free homecoming column: the same facts in short lines.
+  assert.deepEqual(freeLines(rome), ["next 2 in 2 turns", "all in about 34 turns"]);
+  assert.deepEqual(freeLines(soon), ["calm in 9 more turns", "then 2 every 4 turns", "all in about 41 turns"]);
+  assert.deepEqual(freeLines(now), ["next 2 next turn", "all in about 32 turns"]);
   CONFIG.homecomingEnabled = false;
   const off = displacedModel(ME, seams())[0];
   assert.equal(off.wait, null);
   assert.equal(waitText(off), "People at home only come back when called.");
+  assert.deepEqual(freeLines(off), ["only when called"]);
   CONFIG.homecomingEnabled = true;
 }
 

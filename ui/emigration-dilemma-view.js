@@ -46,6 +46,8 @@ function safeChoice(onChoice, id) {
 // Soft-wrap width for the dialog body. The native dialog sizes/reads best as a tidy block rather than one
 // edge-to-edge line, so we insert engine newline tokens ([N]) at word boundaries near this many characters.
 const BODY_WRAP = 64;
+/** Detail lines wrap wider: they are listed, not read as a paragraph. */
+const DETAIL_WRAP = 88;
 
 /** A visible blank line between paragraphs (an empty line collapses in the native dialog). */
 const PARAGRAPH_BREAK = "[N]\u00a0[N]";
@@ -362,7 +364,11 @@ function composeBody(view) {
   if (eyebrow) parts.push(eyebrow);
   const body = softWrap(typeof view.body === "string" ? view.body : "", BODY_WRAP);
   if (body) parts.push(body);
-  if (Array.isArray(view.details) && view.details.length) parts.push(view.details.join("[N]"));
+  // A detail line is wrapped wider than the prose: the call ledger's lines are sentences, and unwrapped they
+  // stretched the dialog across the screen (watched 2026-10-26); the short pair lines are untouched.
+  if (Array.isArray(view.details) && view.details.length) {
+    parts.push(view.details.map((d) => softWrap(d, DETAIL_WRAP)).join("[N]"));
+  }
   // With the decorator the quote is drawn as its own framed block (see quoteBlock); without it, a body line.
   if (view.quote && !quoteDecoratorReady) parts.push(softWrap(bidiIsolate(view.quote), BODY_WRAP));
   // A paragraph break is a line holding a no-break space: the native dialog collapses an empty [N] line

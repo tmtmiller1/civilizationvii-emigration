@@ -22,6 +22,7 @@ import { quarterAt } from "/emigration/ui/emigration-quarter-state.js";
 import { consumeOneForReturn, queueRefugees } from "/emigration/ui/emigration-refugee-pool.js";
 import { msg, msgNum } from "/emigration/ui/emigration-loc.js";
 import { recordReturn } from "/emigration/ui/emigration-returned.js";
+import { takeLostTile, recordLostTile, plotIsFree } from "/emigration/ui/emigration-lost-tiles.js";
 
 const STATE_KEY = "EmigrationReturn_v1";
 const STATE_SCHEMA_VERSION = 2;
@@ -208,15 +209,30 @@ export function moveReturnees(hostCity, homeCity, hostKey, originCiv) {
   // A tile abandonment on the host cannot be undone, so it is deferred until the homeland has them.
   const deferredTile = !fromPool && departureWouldAbandonTile(hostCity);
   if (!fromPool && !deferredTile && !removeRural(hostCity)) return { ok: false, fromPool: false };
-  if (!arriveRural(homeCity)) {
+  if (!landAtHome(homeCity)) {
     restoreFailedReturn(hostCity, hostKey, originCiv, pooled, deferredTile);
     return { ok: false, fromPool };
   }
   if (!fromPool) {
-    commitSourcePoint({ city: hostCity, owner: hostCity.owner }, { ok: true, fromPool: false, deferredTile });
+    // The host's tile goes to a return, not a departure of its own people, so it isn't one of its lost tiles.
+    commitSourcePoint({ city: hostCity, owner: hostCity.owner }, { ok: true, fromPool: false, deferredTile },
+      { remember: false });
   }
   recordReturn(originCiv, hostCity.owner, cityName(hostCity), cityName(homeCity));
   return { ok: true, fromPool };
+}
+
+/**
+ * Land one returnee at home, on the plot their people left when the game still offers it (emigration-lost-tiles.js),
+ * else wherever the settlement has room. A landing that fails gives the lost tile back to the list.
+ * @param {*} homeCity @returns {boolean} Whether the point landed.
+ */
+function landAtHome(homeCity) {
+  const homeName = cityName(homeCity);
+  const lost = takeLostTile(homeCity.owner, homeName, (plot) => plotIsFree(plot, homeCity.owner));
+  if (arriveRural(homeCity, lost ? { preferPlot: lost.p } : undefined)) return true;
+  if (lost) recordLostTile(homeCity.owner, homeName, lost.t, lost.p, lost.turn);
+  return false;
 }
 
 /**

@@ -4,6 +4,7 @@
 // civilization names are injected, so the prose and buttons are testable off-engine. Both variants
 // offer a ladder of sizes per currency (unaffordable sizes grayed out, never removed); internal is a
 // purchase ("bring"), external a gamble ("call") that states the odds and is paid for either way.
+import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
 import { civName } from "/emigration/ui/emigration-naming.js";
 import { displacedQuoteFor } from "/emigration/ui/emigration-displaced-quotes.js";
@@ -36,10 +37,13 @@ export function parseChoice(id) {
  * The dialog view for one variant, or null when nobody is callable.
  * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {{flows?:*[], afford?:(currency:number)=>number, civ?:(pid:number)=>string, seed?:string, quote?:string,
- *   declined?:Record<string, number>, resolvable?:(pair:*)=>boolean}} [deps]
+ *   declined?:Record<string, number>, resolvable?:(pair:*)=>boolean, home?:string, ledger?:string[],
+ *   wait?:{nextIn:number, every:number, allIn:number, batch:number}|null}} [deps]
  *   Injected reads: the flow rows (default live), the treasury balance
  *   per currency (default unlimited), a civ's name, the epigraph seed (one quote per offer), the epigraph
- *   itself, and the people the player already left where they are.
+ *   itself, the people the player already left where they are, and for a call from the Settlements tab the one
+ *   settlement it is for, the ledger of what the fee buys (shown in place of the pair lines) and the free
+ *   homecoming's timing.
  * @returns {{eyebrow:string, title:string, body:string, details:string[], dismissId:string, quote:string,
  *   choices:*[]}|null}
  */
@@ -52,7 +56,9 @@ export function callHomeView(pid, scope, deps) {
   const civ = (/** @type {number} */ host) => (typeof d.civ === "function" ? d.civ(host) : civName(host)) || "";
   const gold = tierChoices(quote, CALL_HOME_CURRENCY.GOLD, d);
   const infl = tierChoices(quote, CALL_HOME_CURRENCY.INFLUENCE, d);
-  const details = pairLines(quote.pairs, external ? civ : null);
+  const details = Array.isArray(d.ledger) && d.ledger.length
+    ? d.ledger.slice()
+    : pairLines(quote.pairs, external ? civ : null);
   if (!gold.concat(infl).some((c) => !c.disabled)) {
     details.push(loc("LOC_EMIG_CALLHOME_TOO_POOR",
       "Not enough to call even one home: [icon:YIELD_GOLD] {1_Gold} or [icon:YIELD_DIPLOMACY] {2_Infl}.",
@@ -62,13 +68,11 @@ export function callHomeView(pid, scope, deps) {
     eyebrow: external
       ? loc("LOC_EMIG_CALLHOME_EYEBROW_EX", "From foreign cities")
       : loc("LOC_EMIG_CALLHOME_EYEBROW_IN", "From our own settlements"),
-    title: external
-      ? loc("LOC_EMIG_CALLHOME_TITLE_EX", "Call our people back from abroad")
-      : loc("LOC_EMIG_CALLHOME_TITLE_IN", "Call our people home"),
-    body: external ? externalBody(quote, civ) : internalBody(quote),
+    title: titleFor(external, d.home),
+    body: external ? externalBody(quote, civ) : internalBody(quote, d),
     details, dismissId: NO,
     quote: epigraph(pid, scope, d),
-    choices: [...gold, ...infl, leaveChoice()]
+    choices: [...gold, ...infl, leaveChoice(!external && CONFIG.homecomingEnabled)]
   };
 }
 
@@ -84,12 +88,34 @@ function epigraph(pid, scope, d) {
 }
 
 /**
- * The purchase prose: cities named when there is one pair, and a promise that everyone called will come.
- * @param {*} quote The internal quote. @returns {string}
+ * The dialog's title: the settlement's own when the call is for one, else the general one.
+ * @param {boolean} external @param {string} [home] @returns {string}
  */
-function internalBody(quote) {
+function titleFor(external, home) {
+  if (home) {
+    return external
+      ? loc("LOC_EMIG_CALLHOME_TITLE_EX_HOME", "Call {1_Home}'s people back from abroad", home)
+      : loc("LOC_EMIG_CALLHOME_TITLE_IN_HOME", "Bring {1_Home}'s people home", home);
+  }
+  return external
+    ? loc("LOC_EMIG_CALLHOME_TITLE_EX", "Call our people back from abroad")
+    : loc("LOC_EMIG_CALLHOME_TITLE_IN", "Call our people home");
+}
+
+/**
+ * The purchase prose: cities named when there is one pair, and a promise that everyone called will come. From the
+ * Displaced tab, with the free homecoming's timing in hand, it says what the fee buys: time.
+ * @param {*} quote The internal quote. @param {*} d Injected reads. @returns {string}
+ */
+function internalBody(quote, d) {
+  if (d.home && d.wait && CONFIG.homecomingEnabled) return hastenBody(quote, d.home, d.wait);
   const one = quote.pairs.length === 1 ? quote.pairs[0] : null;
-  return one
+  // With homecoming on, the player reached this from a tab that promised the free return, so say what the money buys.
+  const hasten = CONFIG.homecomingEnabled
+    ? " " + loc("LOC_EMIG_CALLHOME_BODY_HASTEN",
+      "They come home on their own once their settlement has been calm for a while; paying brings them back now.")
+    : "";
+  return (one
     ? loc("LOC_EMIG_CALLHOME_BODY_IN_ONE",
       "{1_Away} population points were driven out of {2_Home} and now live in {3_From}, another of our "
       + "settlements. They are inside our borders and under our own rule, so every one we call will come. "
@@ -97,7 +123,23 @@ function internalBody(quote) {
     : loc("LOC_EMIG_CALLHOME_BODY_IN",
       "{1_Away} population points were driven out of their homes and now live in other settlements of ours. "
       + "They are inside our borders and under our own rule, so every one we call will come. "
-      + "Choose how many to bring home.", quote.available);
+      + "Choose how many to bring home.", quote.available)) + hasten;
+}
+
+/**
+ * The Displaced tab's prose for hastening: the free schedule first, then what paying changes.
+ * @param {*} quote The internal quote. @param {string} home The settlement.
+ * @param {{nextIn:number, every:number, allIn:number, batch:number}} w The free homecoming's timing.
+ * @returns {string}
+ */
+function hastenBody(quote, home, w) {
+  const when = w.nextIn > 0
+    ? loc("LOC_EMIG_CALLHOME_HASTEN_START_IN", "starting in {1_Turns} turns", w.nextIn)
+    : loc("LOC_EMIG_CALLHOME_HASTEN_START_NEXT", "starting next turn");
+  return loc("LOC_EMIG_CALLHOME_BODY_HASTEN_TAB",
+    "{1_Away} of {2_Home}'s people live in other settlements of ours. They come home free, {3_Batch} at a time every "
+    + "{4_Every} turns, {5_When}, all of them in about {6_All} turns. Paying brings up to {7_Cap} back this turn.",
+    quote.available, home, w.batch, w.every, when, w.allIn, quote.points);
 }
 
 /**
@@ -179,8 +221,16 @@ function tierLabel(n, cost, currency, external) {
     : loc("LOC_EMIG_CALLHOME_TIER_GOLD", "Bring {1_Count} home for [icon:YIELD_GOLD] {2_Cost}", n, cost);
 }
 
-/** @returns {{id:string, label:string, note:string}} */
-function leaveChoice() {
+/**
+ * The way out: with the free homecoming on, a wait; otherwise leaving them where they are.
+ * @param {boolean} free Whether they come home on their own.
+ * @returns {{id:string, label:string, note:string}}
+ */
+function leaveChoice(free) {
+  if (free) {
+    return { id: NO, label: loc("LOC_EMIG_CALLHOME_WAIT", "Wait for the free homecoming"),
+      note: loc("LOC_EMIG_CALLHOME_WAIT_N", "They come home on their own, on the schedule above; nothing is spent.") };
+  }
   return { id: NO, label: loc("LOC_EMIG_CALLHOME_NO", "Leave them where they are"),
     note: loc("LOC_EMIG_CALLHOME_NO_N",
       "You will not be asked about these people again; they may still drift home on their own in time.") };

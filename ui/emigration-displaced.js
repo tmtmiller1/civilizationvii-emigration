@@ -1,6 +1,7 @@
 // emigration-displaced.js
 //
-// The Displaced tab's model: for each of the local player's settlements that people fled, where those people are
+// The displaced strip's model (the Settlements tab): for each of the local player's settlements that people fled,
+// where those people are
 // now (which of our settlements, which foreign cities), since when, whether and when they come home on their own
 // (emigration-homecoming.js), what a returnee is worth (the yields of a rural tile at home, read off the tiles the
 // city works), and what it costs to hasten them or to call people back from abroad, with the gamble's expected
@@ -10,11 +11,13 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { CALL_HOME_CURRENCY, CALL_HOME_SCOPE, callHomeCandidates, callHomeChance, callHomeCost }
   from "/emigration/ui/emigration-call-home.js";
 import { callHomeCooldownLeft, callHomeResolvable } from "/emigration/ui/emigration-call-home-action.js";
-import { homecomingStatus } from "/emigration/ui/emigration-homecoming.js";
+import { homecomingStatus, batchFor } from "/emigration/ui/emigration-homecoming.js";
 import { migrationFlowHistory } from "/emigration/ui/emigration-migration-stats.js";
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
 import { listDepartureTiles } from "/emigration/ui/emigration-departure-tile.js";
 import { civName } from "/emigration/ui/emigration-naming.js";
+import { lostTilesFor } from "/emigration/ui/emigration-lost-tiles.js";
+import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 
 /** The yields a rural tile is read for, in the order they are shown. */
 export const TILE_YIELDS = ["YIELD_FOOD", "YIELD_PRODUCTION", "YIELD_GOLD", "YIELD_SCIENCE", "YIELD_CULTURE",
@@ -27,8 +30,10 @@ export const TILE_YIELDS = ["YIELD_FOOD", "YIELD_PRODUCTION", "YIELD_GOLD", "YIE
  * @property {(pid:number, home:string)=>*} [homecoming] The homecoming status of one home.
  * @property {(pid:number)=>Record<string, number>} [firstTurns] The turn people first fled each home.
  * @property {(pid:number, home:string)=>Record<string, number>|null} [tileYields] A rural tile's yields at home.
- * @property {(pid:number, scope:string)=>number} [cooldown] Turns before the next paid call of that kind.
+ * @property {(pid:number, scope:string, home?:string)=>number} [cooldown] Turns before the next paid call of that kind
+ *   (per settlement for the internal call).
  * @property {(host:number)=>string} [civ] A host civ's name.
+ * @property {(pid:number, home:string)=>{t:string, p:number}[]} [lostTiles] The tiles departures tore down.
  */
 
 /**
@@ -36,10 +41,12 @@ export const TILE_YIELDS = ["YIELD_FOOD", "YIELD_PRODUCTION", "YIELD_GOLD", "YIE
  * @property {string} home
  * @property {boolean} held Whether we still hold it.
  * @property {number} total Population points away from it.
- * @property {{from:string, points:number}[]} internal In our own settlements.
+ * @property {{from:string, points:number, tile:Record<string, number>|null}[]} internal In our own settlements, with
+ *   what a rural tile there yields (what a returnee leaves behind).
  * @property {{from:string, host:number, civ:string, points:number}[]} abroad Under other rulers.
  * @property {number|null} since The turn people first fled it, when known.
- * @property {{calm:number, needed:number, every:number, nextIn:number, allIn:number}|null} wait The free
+ * @property {{type:string, count:number}[]} lost The improvements departures tore down, most first.
+ * @property {{calm:number, needed:number, every:number, nextIn:number, allIn:number, batch:number}|null} wait The free
  *   homecoming: calm turns so far and needed, turns to the next return and to the last.
  * @property {{perTile:Record<string, number>, total:number}|null} tile What a rural tile at home yields.
  * @property {{n:number, gold:number, influence:number, cooldown:number}|null} hasten The paid internal call.
@@ -52,7 +59,7 @@ function withDefaults(d) {
   return {
     candidates: (pid) => callHomeCandidates(pid), resolvable: callHomeResolvable, homecoming: homecomingStatus,
     firstTurns: liveFirstTurns, tileYields: liveTileYields, cooldown: callHomeCooldownLeft, civ: civName,
-    ...(d || {})
+    lostTiles: lostTilesFor, ...(d || {})
   };
 }
 
@@ -121,7 +128,8 @@ function plotYield(plot, y, pid) {
  * The free homecoming's timing for one home: turns to the next return and to the last, given the calm so far.
  * @param {{calm:number, needed:number, every:number, last:number|null, turn:number}} st Homecoming status.
  * @param {number} away Population points still away in our own settlements.
- * @returns {{calm:number, needed:number, every:number, nextIn:number, allIn:number}}
+ * @returns {{calm:number, needed:number, every:number, nextIn:number, allIn:number, batch:number}} `batch` is
+ *   how many the next return brings.
  */
 export function waitFor(st, away) {
   const calm = Math.max(0, Number(st.calm) || 0);
@@ -131,7 +139,14 @@ export function waitFor(st, away) {
   if (calm < needed) nextIn = needed - calm;
   else if (st.last == null) nextIn = 0;
   else nextIn = Math.max(0, every - (Number(st.turn) - Number(st.last)));
-  return { calm, needed, every, nextIn, allIn: nextIn + Math.max(0, away - 1) * every };
+  // Each return brings a batch that shrinks as fewer are away; count the returns until nobody is.
+  let left = Math.max(0, away);
+  let returns = 0;
+  while (left > 0 && returns < 1000) {
+    left -= batchFor(left);
+    returns++;
+  }
+  return { calm, needed, every, nextIn, allIn: nextIn + Math.max(0, returns - 1) * every, batch: batchFor(away) };
 }
 
 /**
@@ -152,6 +167,33 @@ export function abroadCallFor(n, cooldown) {
 }
 
 /**
+ * Lost improvements by type, most first.
+ * @param {{t:string}[]} tiles @returns {{type:string, count:number}[]}
+ */
+export function lostSummary(tiles) {
+  /** @type {Map<string, number>} */
+  const by = new Map();
+  for (const e of tiles || []) if (e && e.t) by.set(e.t, (by.get(e.t) || 0) + 1);
+  return [...by.entries()].map(([type, count]) => ({ type, count }))
+    .sort((a, b) => b.count - a.count || a.type.localeCompare(b.type));
+}
+
+/**
+ * What newcomers cost the civ this turn while they settle in: the integration load's Gold and Happiness.
+ * @param {number} pid @param {(pid:number)=>{load:number, gold:number, happiness:number}} [costs] Test seam.
+ * @returns {{gold:number, happiness:number}|null} Null when nobody is settling in.
+ */
+export function newcomerCosts(pid, costs) {
+  try {
+    const c = (costs || assimilationCostFor)(pid);
+    if (!c || !(c.load > 0)) return null;
+    return { gold: Math.round(c.gold), happiness: Math.round(c.happiness * 10) / 10 };
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
  * The Displaced tab's rows for one civ, the home with the most people away first.
  * @param {number} pid The local player. @param {DisplacedDeps} [deps] Test seams.
  * @returns {DisplacedRow[]}
@@ -165,15 +207,15 @@ export function displacedModel(pid, deps) {
   const row = (/** @type {string} */ home) => {
     let r = rows.get(home);
     if (!r) {
-      r = { home, held: true, total: 0, internal: [], abroad: [], since: null, wait: null, tile: null, hasten: null,
-        abroadCall: null };
+      r = { home, held: true, total: 0, internal: [], abroad: [], since: null, lost: [], wait: null, tile: null,
+        hasten: null, abroadCall: null };
       rows.set(home, r);
     }
     return r;
   };
   for (const p of cands.internal) {
     const r = row(p.home);
-    r.internal.push({ from: p.from, points: p.points });
+    r.internal.push({ from: p.from, points: p.points, tile: d.tileYields(pid, p.from) });
     r.total += p.points;
     if (!ok(p)) r.held = false;
   }
@@ -195,6 +237,7 @@ export function displacedModel(pid, deps) {
  */
 function finishRow(r, pid, first, cap, d) {
   r.since = r.home in first ? first[r.home] : null;
+  r.lost = lostSummary(d.lostTiles(pid, r.home));
   if (!r.held) return;
   const own = r.internal.reduce((n, p) => n + p.points, 0);
   const away = r.abroad.reduce((n, p) => n + p.points, 0);
@@ -208,7 +251,7 @@ function finishRow(r, pid, first, cap, d) {
     r.hasten = {
       n, gold: callHomeCost(n, CALL_HOME_SCOPE.INTERNAL, CALL_HOME_CURRENCY.GOLD),
       influence: callHomeCost(n, CALL_HOME_SCOPE.INTERNAL, CALL_HOME_CURRENCY.INFLUENCE),
-      cooldown: d.cooldown(pid, CALL_HOME_SCOPE.INTERNAL)
+      cooldown: d.cooldown(pid, CALL_HOME_SCOPE.INTERNAL, r.home)
     };
   }
   if (away > 0) r.abroadCall = abroadCallFor(Math.min(cap, away), d.cooldown(pid, CALL_HOME_SCOPE.EXTERNAL));

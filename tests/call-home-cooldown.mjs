@@ -56,3 +56,14 @@ assert.equal(action.callHomeCooldownLeft(ME, EX), 0, "an unreadable save means n
 action._resetCallHomeCooldowns();
 assert.equal(KV[KEY], "{}");
 console.log("call-home-cooldown harness passed");
+
+// A call made for one settlement's people (the Displaced tab's Hasten) runs on that settlement's own clock, so
+// hastening Philadelphia doesn't lock Boston's button for eight turns (watched 2026-10-25).
+TURN = 100;
+action._resetCallHomeCooldowns();
+const r2 = action.callHomeNow(ME, IN, CALL_HOME_CURRENCY.GOLD, { flows: FLOWS, move: () => true, resolvable: () => true, home: "Rome" });
+assert.equal(r2.ok, true);
+assert.equal(action.callHomeCooldownLeft(ME, IN, "Rome"), 8, "Rome's own cooldown");
+assert.equal(action.callHomeCooldownLeft(ME, IN, "Boston"), 0, "Boston's button stays open");
+assert.equal(action.callHomeCooldownLeft(ME, IN), 0, "the civilization-wide clock (the pop-up, the AI) is untouched");
+

@@ -9,6 +9,9 @@
 // farthest from the center, then the lowest plot index. The tile is the whole felt loss on the source
 // side; the receiving civilization carries the assimilation cost (emigration-effects.js).
 
+import { cityName } from "/emigration/ui/emigration-migration-records.js";
+import { recordLostTile } from "/emigration/ui/emigration-lost-tiles.js";
+import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { removeRural } from "/emigration/ui/emigration-population.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
@@ -320,16 +323,41 @@ function tileHints(src) {
  * Commit a deferred source-side removal once the destination has the point: destroy the tile (or, if
  * none is left by now, decrement the counter). No-op for points that came from a holding pool or were
  * already written the plain way.
+ * A tile torn down by a departure is remembered by settlement (emigration-lost-tiles.js), so the Settlements tab can
+ * name it and a returnee can settle it again; `remember: false` skips that (a host giving up a tile to a return).
  * @param {*} src The source city signal ({city, owner}).
  * @param {{ok:boolean, fromPool:boolean, deferredTile?:boolean}} consumed The consume result.
- * @returns {{mode:"tile"|"counter"|"none"}} What happened.
+ * @param {{remember?:boolean}} [opts]
+ * @returns {{mode:"tile"|"counter"|"none", type?:string, plot?:number}} What happened, with the improvement and
+ *   plot when a tile was torn down.
  */
-export function commitSourcePoint(src, consumed) {
+export function commitSourcePoint(src, consumed, opts) {
   if (!consumed || !consumed.ok || consumed.fromPool) return { mode: "none" };
-  /** @type {"tile"|"counter"|"none"} */
-  let mode = "counter";
-  if (consumed.deferredTile) mode = abandonTileOrDecrement(src.city, tileHints(src)).mode;
-  return { mode };
+  if (!consumed.deferredTile) return { mode: "counter" };
+  const r = abandonTileOrDecrement(src.city, tileHints(src));
+  const tile = tornDown(r);
+  if (!tile) return { mode: r.mode };
+  if (!opts || opts.remember !== false) recordLostTile(src.owner, cityName(src.city), tile.type, tile.plot, safeTurn());
+  return { mode: "tile", type: tile.type, plot: tile.plot };
+}
+
+/**
+ * The improvement and plot an abandonment tore down, or null when it only lowered the counter.
+ * @param {{mode:string, type?:string, plot?:number}} r @returns {{type:string, plot:number}|null}
+ */
+function tornDown(r) {
+  const plot = typeof r.plot === "number" ? r.plot : NaN;
+  if (r.mode !== "tile" || typeof r.type !== "string" || !Number.isInteger(plot)) return null;
+  return { type: r.type, plot };
+}
+
+/** @returns {number} The mod's monotonic turn, or 0 off-engine. */
+function safeTurn() {
+  try {
+    return monoTurn() || 0;
+  } catch (_) {
+    return 0;
+  }
 }
 
 // shedding gates and deaths

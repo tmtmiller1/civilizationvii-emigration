@@ -34,11 +34,13 @@ export const PLACEMENT = { OFF: 0, AUTO: 1, ASK: 2, UNIT: 3 };
 /**
  * Where one arriving point came from: the origin player and whether they fled (refugee) or chose to move
  * (migrant). Either may be absent (returnees carry neither; a held refugee pool knows only the kind).
- * @typedef {{civ?:number, kind?:"refugee"|"migrant", cause?:string}} ArrivalFrom
+ * @typedef {{civ?:number, kind?:"refugee"|"migrant", cause?:string, preferPlot?:number}} ArrivalFrom Where a
+ *   point came from; `preferPlot` is the plot a returnee left, settled again when the game still offers it.
  */
 
-/** @type {Map<string, {city:*, count:number, ask:number, from:Map<string, number>}>} Pending local arrivals, by city
- * key. `ask` counts the points whose kind raises the Ask me pop-up; `from` tallies only those. */
+/** @type {Map<string, {city:*, count:number, ask:number, from:Map<string, number>, prefer:number[]}>} Pending local
+ * arrivals, by city key. `ask` counts the points whose kind raises the Ask me pop-up; `from` tallies only those;
+ * `prefer` lists the plots returnees left, to settle first. */
 const pending = new Map();
 /** @type {*} */
 let flushTimer = null;
@@ -142,13 +144,25 @@ export function arriveRural(city, from) {
 }
 
 /**
+ * Keep a returnee's old plot, to settle first when the game offers it.
+ * @param {number[]} prefer The city's preferred plots. @param {ArrivalFrom} [from]
+ */
+function notePreferred(prefer, from) {
+  const want = from ? from.preferPlot : undefined;
+  if (typeof want === "number" && Number.isInteger(want)) prefer.push(want);
+}
+
+/**
  * Remember that a local city has a freshly landed point to place, and schedule one flush.
  * @param {*} city @param {ArrivalFrom} [from] Where the point came from.
  */
 function notePending(city, from) {
   const k = keyOf(city);
-  const cur = pending.get(k) || { city, count: 0, ask: 0, from: new Map() };
+  /** @type {number[]} */
+  const none = [];
+  const cur = pending.get(k) || { city, count: 0, ask: 0, from: new Map(), prefer: none };
   cur.count += 1;
+  notePreferred(cur.prefer, from);
   if (asksAbout(from)) {
     cur.ask += 1;
     const tag = originTag(from);
@@ -226,16 +240,30 @@ export function pickExpandPlot(plots) {
 }
 
 /**
+ * The plot to settle: the first preferred plot the game offers (taken off the list), else the usual pick. A
+ * returnee goes back to the plot they left when it's still open; otherwise to another free plot of the settlement.
+ * @param {number[]} plots The plots the game offers. @param {number[]} [prefer] Preferred plots (changed in place).
+ * @returns {number} The plot.
+ */
+export function pickPlacementPlot(plots, prefer) {
+  if (Array.isArray(prefer)) {
+    const i = prefer.findIndex((p) => plots.includes(p));
+    if (i >= 0) return prefer.splice(i, 1)[0];
+  }
+  return pickExpandPlot(plots);
+}
+
+/**
  * Place one point with the game's own EXPAND city command (a new rural improvement).
- * @param {*} city
+ * @param {*} city @param {number[]} [prefer] Plots to settle first when offered.
  * @returns {boolean} True when a request was issued.
  */
-function placeOnTile(city) {
+function placeOnTile(city, prefer) {
   try {
     if (typeof Game === "undefined" || !Game.CityCommands || typeof CityCommandTypes === "undefined") return false;
     const can = Game.CityCommands.canStart(city.id, CityCommandTypes.EXPAND, {}, false);
     if (!can || !can.Plots || !can.Plots.length) return false;
-    const plot = pickExpandPlot(can.Plots);
+    const plot = pickPlacementPlot(Array.from(can.Plots), prefer);
     const l = GameplayMap.getLocationFromIndex(plot);
     if (!l) return false;
     Game.CityCommands.sendRequest(city.id, CityCommandTypes.EXPAND, { X: l.x, Y: l.y });
@@ -249,15 +277,16 @@ function placeOnTile(city) {
 /**
  * Settle up to `count` pending points in a city automatically (specialist first when preferred).
  * @param {*} city @param {number} count Points to place.
+ * @param {number[]} [prefer] Plots to settle first when the game offers them (returnees' old plots).
  * @returns {number} Points for which a placement request was issued.
  */
-export function autoPlace(city, count) {
+export function autoPlace(city, count, prefer) {
   const pid = localPid();
   let placed = 0;
   for (let i = 0; i < count; i++) {
     if (!hasPending(city)) break;
     const asSpecialist = CONFIG.arrivalPreferSpecialists && placeAsSpecialist(city, pid);
-    if (!asSpecialist && !placeOnTile(city)) break;
+    if (!asSpecialist && !placeOnTile(city, prefer)) break;
     placed++;
   }
   if (placed) dlog("auto-placed " + placed + " newcomer point(s) in " + cityName(city));
@@ -498,11 +527,11 @@ export function flushArrivalPlacements() {
   const items = [...pending.values()];
   pending.clear();
   const mode = placementMode();
-  for (const { city, count, ask, from } of items) {
+  for (const { city, count, ask, from, prefer } of items) {
     try {
-      if (mode === PLACEMENT.AUTO) autoPlace(city, count);
+      if (mode === PLACEMENT.AUTO) autoPlace(city, count, prefer);
       else if (mode === PLACEMENT.ASK) {
-        if (count > ask) autoPlace(city, count - ask); // the kinds the player is not asked about
+        if (count > ask) autoPlace(city, count - ask, prefer); // the kinds the player is not asked about
         if (ask > 0) promptFor(city, ask, from);
       }
     } catch (e) {

@@ -21,6 +21,10 @@
             <Path>blp:ntf_storm_arrived</Path>
         </Row>
         <Row>
+            <ID>NOTIFICATION_EMIGRATION_HOME</ID>
+            <Path>blp:ntf_acquire_tile</Path>
+        </Row>
+        <Row>
             <ID>NOTIFICATION_EMIGRATION_NOTE</ID>
             <Path>blp:ntf_great_works</Path>
         </Row>

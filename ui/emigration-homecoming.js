@@ -20,8 +20,9 @@ import { callHomeResolvable, movePointHome } from "/emigration/ui/emigration-cal
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { chronicle } from "/emigration/ui/emigration-chronicle.js";
 import { narrativeCiv } from "/emigration/ui/emigration-naming.js";
-import { msg } from "/emigration/ui/emigration-loc.js";
+import { msg, msgText } from "/emigration/ui/emigration-loc.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
+import { toast } from "/emigration/ui/emigration-feedback.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
 
 const STATE_KEY = "EmigrationHomecoming_v1";
@@ -214,26 +215,37 @@ export function calmNeeded(kind) {
  * @param {{calm:Record<string, number>, last:Record<string, number>, kind?:Record<string, string>}} civ This
  *   civilization's calm streaks, last return per home, and last trouble per home (sets how long it must be calm).
  * @param {number} t Now. @param {(pair:*)=>boolean} ok Whether both cities of a pair still stand.
- * @returns {{home:string, pair:*, away:number}[]} One entry per home due.
+ * @returns {{home:string, pairs:*[], away:number}[]} One entry per home due, its pairs richest first.
  */
 export function homesDue(pairs, civ, t, ok) {
   const { calm, last } = civ;
   const kinds = civ.kind || {};
   const every = Math.max(1, Math.floor(Number(CONFIG.homecomingEveryTurns) || 0));
-  /** @type {Map<string, {home:string, pair:*, away:number}>} */
+  /** @type {Map<string, {home:string, pairs:*[], away:number}>} */
   const due = new Map();
   for (const p of pairs) {
     if (!ok(p)) continue;
     const entry = due.get(p.home);
     if (entry) {
+      entry.pairs.push(p);
       entry.away += p.points;
       continue;
     }
     if ((Number(calm[p.home]) || 0) < calmNeeded(kinds[p.home])) continue;
     if (p.home in last && t - Number(last[p.home]) < every) continue;
-    due.set(p.home, { home: p.home, pair: p, away: p.points });
+    due.set(p.home, { home: p.home, pairs: [p], away: p.points });
   }
   return [...due.values()];
+}
+
+/**
+ * How many come home to a settlement in one return: one, plus one for every `homecomingBatchPer` away. A city
+ * missing twenty people would otherwise take eighty turns to refill (watched 2026-10-25: Boston, 23 away, 91 turns).
+ * @param {number} away Population points still away. @returns {number}
+ */
+export function batchFor(away) {
+  const per = Math.max(1, Math.floor(Number(CONFIG.homecomingBatchPer) || 0));
+  return Math.max(1, 1 + Math.floor(Math.max(0, away) / per));
 }
 
 /**
@@ -271,27 +283,46 @@ function runCiv(pid, s, t, d) {
   const pairs = d.pairs(pid);
   let moved = 0;
   const due = homesDue(pairs, { calm, last, kind }, t, d.resolvable(pid));
-  for (const h of due) moved += bringOneHome(pid, h, last, t, d);
+  for (const h of due) moved += bringHome(pid, h, last, t, d);
   pruneLast(last, pairs);
   for (const name of Object.keys(kind)) if (!(name in calm)) delete kind[name]; // settlements no longer held
   return moved;
 }
 
 /**
- * Move one person home for a home that is due, and tell the player about the first and the last of them.
- * @param {number} pid @param {{home:string, pair:*, away:number}} h @param {Record<string, number>} last
- * @param {number} t @param {Required<HomecomingDeps>} d @returns {number} 1 when someone came home, else 0.
+ * Bring this return's batch home to a settlement that is due, from its largest group first, and tell the player
+ * about the first of them and the last.
+ * @param {number} pid @param {{home:string, pairs:*[], away:number}} h @param {Record<string, number>} last
+ * @param {number} t @param {Required<HomecomingDeps>} d @returns {number} How many came home.
  */
-function bringOneHome(pid, h, last, t, d) {
-  if (!d.move(pid, h.pair)) return 0;
+function bringHome(pid, h, last, t, d) {
+  const moved = moveBatch(pid, h.pairs, Math.min(h.away, batchFor(h.away)), d.move);
+  if (!moved) return 0;
   const first = !(h.home in last);
-  const done = h.away <= 1;
+  const done = h.away - moved <= 0;
   last[h.home] = t;
-  dlog("homecoming: 1 point from " + h.pair.from + " back to " + h.home + " (civ " + pid + ", " + (h.away - 1) + " still away)");
+  dlog("homecoming: " + moved + " point(s) back to " + h.home + " (civ " + pid + ", " + (h.away - moved) + " still away)");
   if (pid === d.local && first) d.report(pid, h.home, false);
   if (pid === d.local && done) d.report(pid, h.home, true);
   if (done) delete last[h.home];
-  return 1;
+  return moved;
+}
+
+/**
+ * Move up to `want` people home, from the largest group first; a move that fails ends that group.
+ * @param {number} pid @param {*[]} pairs @param {number} want @param {(pid:number, pair:*)=>boolean} move
+ * @returns {number} How many moved.
+ */
+function moveBatch(pid, pairs, want, move) {
+  let moved = 0;
+  for (const pair of pairs) {
+    for (let k = 0; k < pair.points && moved < want; k++) {
+      if (!move(pid, pair)) break;
+      moved++;
+    }
+    if (moved >= want) break;
+  }
+  return moved;
 }
 
 /**
@@ -320,17 +351,19 @@ function localPid() {
 function reportHomecoming(pid, home, done) {
   try {
     const nc = narrativeCiv(pid);
+    const body = done
+      ? msg("LOC_EMIG_HOMECOMING_DONE", "The last of the people who fled {1_Home} are back.", home)
+      : msg("LOC_EMIG_HOMECOMING_START",
+        "{1_Home} is safe again, and the people who fled it have started coming home.", home);
     chronicle({
       kind: "return", civ: nc.adj, people: 1,
       title: done
         ? msg("LOC_EMIG_HOMECOMING_DONE_TITLE", "Home At Last")
         : msg("LOC_EMIG_HOMECOMING_START_TITLE", "The Road Home"),
-      body: done
-        ? msg("LOC_EMIG_HOMECOMING_DONE", "The last of the people who fled {1_Home} are back.", home)
-        : msg("LOC_EMIG_HOMECOMING_START",
-          "{1_Home} is safe again, and the people who fled it have started coming home.", home),
-      dedupeKey: "homecoming:" + pid + "|" + home + "|" + (done ? "done" : "start") + "|" + turnNow()
+      body, dedupeKey: "homecoming:" + pid + "|" + home + "|" + (done ? "done" : "start") + "|" + turnNow()
     });
+    // One notice beside End Turn per settlement, when they start and when the last is back; it opens the Displaced tab.
+    toast(msgText(body), undefined, false, undefined, "home");
   } catch (e) {
     dlog("homecoming: chronicle threw " + e);
   }

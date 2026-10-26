@@ -20,6 +20,7 @@
 //
 // When a call takes people out of a human player's city, that player gets a notice on the train and a
 // Chronicle line naming who called and from where, so the loss is explained.
+import { aiPriceScale } from "/emigration/ui/emigration-ai-difficulty.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
 import { msg, msgText } from "/emigration/ui/emigration-loc.js";
@@ -177,7 +178,7 @@ export function sizeByValue(quote, currency, value) {
   const worth = value * (Number(quote.chance) || 0);
   let k = 0;
   for (let n = 1; n <= quote.points; n++) {
-    const marginal = callHomeCost(n, quote.scope, currency) - callHomeCost(n - 1, quote.scope, currency);
+    const marginal = aiPrice(n, quote.scope, currency) - aiPrice(n - 1, quote.scope, currency);
     if (marginal > worth) break;
     k = n;
   }
@@ -194,8 +195,18 @@ export function sizeByValue(quote, currency, value) {
 export function sizeByTreasury(k, scope, currency, balance, income) {
   if (!(k > 0) || !Number.isFinite(balance)) return 0;
   if (income < 0 && balance < RESERVE_TURNS * -income) return 0;
-  for (let n = k; n > 0; n--) if (callHomeCost(n, scope, currency) <= balance * TREASURY_SHARE) return n;
+  for (let n = k; n > 0; n--) if (aiPrice(n, scope, currency) <= balance * TREASURY_SHARE) return n;
   return 0;
+}
+
+/**
+ * What a call costs an AI civilization: the player's price times the difficulty discount
+ * (emigration-ai-difficulty.js).
+ * @param {number} n Points. @param {string} scope A CALL_HOME_SCOPE. @param {number} currency
+ * @returns {number}
+ */
+export function aiPrice(n, scope, currency) {
+  return Math.round(callHomeCost(n, scope, currency) * aiPriceScale());
 }
 
 /**
@@ -251,7 +262,7 @@ function plannedCall(pid, scope, left, d) {
   const gold = pickGold(sizes, scope, left);
   const points = gold ? sizes.gold : sizes.influence;
   const currency = gold ? CALL_HOME_CURRENCY.GOLD : CALL_HOME_CURRENCY.INFLUENCE;
-  return { scope, currency, cost: callHomeCost(points, scope, currency), points };
+  return { scope, currency, cost: aiPrice(points, scope, currency), points };
 }
 
 /**
@@ -286,8 +297,8 @@ function sizeFor(q, currency, value, balance, income) {
  */
 function pickGold(sizes, scope, left) {
   if (sizes.gold !== sizes.influence) return sizes.gold > sizes.influence;
-  const costs = { gold: callHomeCost(sizes.gold, scope, CALL_HOME_CURRENCY.GOLD),
-    influence: callHomeCost(sizes.influence, scope, CALL_HOME_CURRENCY.INFLUENCE) };
+  const costs = { gold: aiPrice(sizes.gold, scope, CALL_HOME_CURRENCY.GOLD),
+    influence: aiPrice(sizes.influence, scope, CALL_HOME_CURRENCY.INFLUENCE) };
   const pick = pickCurrency(left, costs);
   return !!pick && pick.currency === CALL_HOME_CURRENCY.GOLD;
 }
@@ -385,6 +396,7 @@ function runPlannedCall(pid, step, d, out) {
   const result = call(pid, step.scope, step.currency, {
     flows: d.flows,
     want: step.points,
+    priceScale: aiPriceScale(), // the difficulty discount, applied to the charge and any refund
     resolvable: d.resolvable || callHomeResolvable(pid),
     order: pairOrder(pid, d),
     move: (/** @type {*} */ pair) => {
