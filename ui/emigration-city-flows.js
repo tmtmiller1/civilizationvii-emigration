@@ -9,6 +9,8 @@ import { displacedRow, displacedRowEmpty, displacedIntro, displacedAfter, action
   from "/emigration/ui/emigration-displaced-view.js";
 import { quarterDecisionFor } from "/emigration/ui/emigration-quarter-decision.js";
 import { settlementCard } from "/emigration/ui/emigration-settlement-card.js";
+import { setCityClosed } from "/emigration/ui/emigration-state.js";
+import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { mixTable, mixWords } from "/emigration/ui/emigration-detail-views.js";
 import { liveSettlementModels } from "/emigration/ui/emigration-settlement-model.js";
 export { SETTLEMENT_CSS } from "/emigration/ui/emigration-settlement-card.js";
@@ -559,9 +561,7 @@ function appendCards(body, section, cities, byHome) {
   const mine = section.kind === "cityflows";
   const models = mine ? (section.models || liveSettlementModels(section.pid)) : new Map();
   const mixRows = Array.isArray(section.diversity) ? section.diversity : [];
-  const mixByName = new Map(mixRows.filter((/** @type {*} */ r) => r.own).map((/** @type {*} */ r) => [r.city, r]));
-  const deps = { ...CARD_DEPS, after, screen: section.screen || null,
-    mixOf: (/** @type {string} */ name) => (mixByName.has(name) ? mixWords(mixByName.get(name)) : null) };
+  const deps = cardDeps(section, after, mine, mixRows);
   if (!mine) {
     appendCivCards(body, cities, mixRows, section.sort);
     return;
@@ -573,6 +573,19 @@ function appendCards(body, section, cities, byHome) {
     byHome.delete(c.name);
   }
   for (const r of byHome.values()) body.appendChild(displacedOnlyCard(r, section, after));
+}
+
+/**
+ * What the cards borrow from this module for one render.
+ * @param {*} section @param {()=>void} after @param {boolean} mine The player's own settlements (vs civ cards).
+ * @param {*[]} mixRows Every mix row. @returns {*} The card deps.
+ */
+function cardDeps(section, after, mine, mixRows) {
+  const mixByName = new Map(mixRows.filter((/** @type {*} */ r) => r.own).map((/** @type {*} */ r) => [r.city, r]));
+  return { ...CARD_DEPS, after, screen: section.screen || null,
+    mixOf: (/** @type {string} */ name) => (mixByName.has(name) ? mixWords(mixByName.get(name)) : null),
+    // The Settlements tab lists the player's own settlements, so the intake switch is theirs to flip.
+    toggleIntake: mine && CONFIG.cityIntakeToggleEnabled ? setCityClosed : undefined };
 }
 
 /**

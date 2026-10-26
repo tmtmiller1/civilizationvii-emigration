@@ -755,7 +755,6 @@ function appendControlRow(wrap, opts, body, section) {
     ? candidateHost
     : wrap;
   if (host !== wrap) host.innerHTML = ""; // re-populate the shared row
-  if (section.kind === "guide") return;
   const ctrl = buildControlRow(wantsUnitsToggle(section, opts), () => subtabRebuild(opts, body, section));
   if (ctrl) host.appendChild(ctrl);
 }

@@ -13,6 +13,8 @@ import { immigrationOpenness, emigrationRetention, hasAsylum } from "/emigration
 import { raidTilt } from "/emigration/ui/emigration-raid.js";
 import { congestionPenalty } from "/emigration/ui/emigration-effects.js";
 import { warAggressors } from "/emigration/ui/emigration-war.js";
+import { violenceCrisis, siegeStalled } from "/emigration/ui/emigration-violence.js";
+import { bumpCrisisDestAvoided } from "/emigration/ui/emigration-telemetry.js";
 import { REASON, DEATH_REASON } from "/emigration/ui/emigration-move-reasons.js";
 
 // When set, the openness/retention border multipliers are forced to neutral (1). The stance-impact
@@ -43,7 +45,7 @@ export function migrationCause(src) {
   // Razing (`siege`) is a war crisis even before accumulated violence crosses the flee threshold,
   // so a razing city reports/prices as a war refugee (asylum tilt + crisis reason tags), matching
   // the engine's crisis-track cause. Disaster still wins above (a razing-by-disaster city is rare).
-  if ((src.violence || 0) >= CONFIG.violenceFleeThreshold || !!src.siege) return "war";
+  if (violenceCrisis(src) || !!src.siege) return "war";
   if ((src.happiness || 0) < CONFIG.unhappyCauseThreshold) return "unhappiness";
   return "prosperity";
 }
@@ -155,8 +157,56 @@ function sizeFriction(src, dest) {
  */
 function srcInCrisis(src) {
   return !!src.siege // a razing city is an acute crisis (high deaths + fleeing); matches engine inCrisis
-    || (src.violence || 0) >= CONFIG.violenceFleeThreshold
+    || violenceCrisis(src) // sustained fighting, not a one-turn flag or skirmish
     || (src.disaster || 0) >= CONFIG.disasterFleeThreshold;
+}
+
+/**
+ * Whether a destination is itself in acute crisis (being razed, or fighting or disaster over the flee
+ * thresholds), so a refugee would be arriving into a fresh crisis. Reads the raw intensity, not the tenure:
+ * a city under fresh attack is avoided at once.
+ * @param {*} dest A destination signal.
+ * @returns {boolean} True when in crisis.
+ */
+export function destInCrisis(dest) {
+  return !!dest.siege
+    || (dest.violence || 0) >= CONFIG.violenceFleeThreshold
+    || (dest.disaster || 0) >= CONFIG.disasterFleeThreshold;
+}
+
+/**
+ * How far over its flee threshold a destination's worst crisis sits, as a fraction of the threshold: 0 at the
+ * threshold, 1 at twice it. Razing counts as 1.
+ * @param {*} dest A destination signal. @returns {number}
+ */
+function crisisOver(dest) {
+  const v = overThreshold(dest.violence, CONFIG.violenceFleeThreshold);
+  const d = overThreshold(dest.disaster, CONFIG.disasterFleeThreshold);
+  return Math.max(dest.siege ? 1 : 0, v, d, 0);
+}
+
+/** @param {number|undefined} value @param {number} thr @returns {number} (value − thr) / thr; 0 with no threshold. */
+function overThreshold(value, thr) {
+  return thr > 0 ? ((value || 0) - thr) / thr : 0;
+}
+
+/**
+ * The destination-safety penalty (2026-10-26: New York took four turns of war refugees while itself besieged, and
+ * one crisis move in six landed in a city in crisis): a destination in acute crisis loses `crisisDestPenalty` for
+ * each threshold's worth it sits over its flee threshold (half a step at least, so a city right at the threshold
+ * still pays), capped at `crisisDestPenaltyCap`. A destination whose siege is stalled pays nothing, so a parked
+ * unit never blocks a city for the rest of the game; a source worse off than the destination (its own violence
+ * higher) pays half. A heavy penalty, never a reject: with nowhere safer, people still go.
+ * @param {*} src Source signal. @param {*} dest Candidate destination signal.
+ * @returns {number} The penalty in raw points (>= 0).
+ */
+export function unsafePenalty(src, dest) {
+  if (!CONFIG.destinationSafetyEnabled || !destInCrisis(dest) || siegeStalled(dest.city)) return 0;
+  const per = Number(CONFIG.crisisDestPenalty) || 0;
+  const cap = Number(CONFIG.crisisDestPenaltyCap) || 0;
+  let pen = Math.min(cap, per * Math.max(0.5, crisisOver(dest)));
+  if ((src.violence || 0) > (dest.violence || 0)) pen /= 2;
+  return pen;
 }
 
 /**
@@ -193,6 +243,7 @@ export function adjustedPull(src, dest, flee, ownerPop, aggressors) {
   }
   pull += geoAdjust(src, dest, flee, aggressors);
   pull -= congestionFor(dest, ownerPop);
+  pull -= unsafePenalty(src, dest); // a destination in acute crisis: heavy, never a reject
 
   // Permeability: openness × clamped relationship factors (Open Borders / alliance / war).
   pull *= clamp(permeability(src, dest), CONFIG.permeFloor, CONFIG.permeCeil);
@@ -238,7 +289,8 @@ export function pullBreakdown(src, dest, flee, ownerPop, aggressors) {
     { key: "distance", raw: geo.distance },
     { key: "aggressor", raw: geo.aggressor },
     { key: "flight", raw: geo.flight },
-    { key: "congestion", raw: -congestionFor(dest, ownerPop) }
+    { key: "congestion", raw: -congestionFor(dest, ownerPop) },
+    { key: "unsafe", raw: -unsafePenalty(src, dest) }
   ];
   const scale = clamp(permeability(src, dest), CONFIG.permeFloor, CONFIG.permeCeil);
   return { terms, scale, reject: pullReject(src, dest, terms, scale) };
@@ -511,19 +563,45 @@ export function pullContext(src, ranked, ownerPop) {
  * @param {(dest: any) => boolean} [acceptDest] Optional destination predicate (false skips a candidate).
  * @returns {{dest:*, adjusted:number, reasons?:string[]}|null} Best destination + its adjusted pull + reasons.
  */
-export function bestDestination(src, ranked, ownerPop, acceptDest) {
+export function bestDestination(src, ranked, ownerPop, acceptDest, countAvoided = false) {
   const { flee, ownerPop: pop, aggressors } = pullContext(src, ranked, ownerPop);
   /** @type {{dest:*, adjusted:number, reasons?:string[]}|null} */
-  let best = null;
+  /** @type {{best:{dest:*, adjusted:number, reasons?:string[]}|null, unsafeBest:number}} */
+  const acc = { best: null, unsafeBest: -Infinity };
   for (const dest of ranked) {
     if (typeof acceptDest === "function" && !acceptDest(dest)) continue;
-    const adjusted = adjustedPull(src, dest, flee, pop, aggressors);
-    if (adjusted !== null && (!best || adjusted > best.adjusted)) {
-      best = { dest, adjusted };
-    }
+    considerDest(acc, src, dest, { flee, pop, aggressors }, countAvoided);
   }
+  const best = acc.best;
   if (best) best.reasons = deriveMoveReasons(src, best.dest, flee, pop, aggressors);
+  if (best && acc.unsafeBest > best.adjusted) bumpCrisisDestAvoided(); // the penalty turned this move elsewhere
   return best;
+}
+
+/**
+ * Score one candidate and keep it when it beats the best so far; with `countAvoided`, also keep the strongest
+ * pull a penalized destination would have had without the safety penalty.
+ * @param {{best:{dest:*, adjusted:number}|null, unsafeBest:number}} acc The running best (mutated).
+ * @param {*} src Source signal. @param {*} dest Candidate destination signal.
+ * @param {{flee:*, pop:*, aggressors:*}} ctx The pull context. @param {boolean} countAvoided Track the penalized best.
+ */
+function considerDest(acc, src, dest, ctx, countAvoided) {
+  const adjusted = adjustedPull(src, dest, ctx.flee, ctx.pop, ctx.aggressors);
+  if (adjusted !== null && (!acc.best || adjusted > acc.best.adjusted)) acc.best = { dest, adjusted };
+  if (countAvoided) acc.unsafeBest = Math.max(acc.unsafeBest, unpenalizedPull(src, dest, adjusted));
+}
+
+/**
+ * What a penalized destination's pull would have been without the safety penalty, or -Infinity when it paid
+ * none or was never viable. The penalty is scaled by the permeability like every other term.
+ * @param {*} src Source signal. @param {*} dest Candidate destination signal.
+ * @param {number|null} adjusted Its adjusted pull. @returns {number}
+ */
+function unpenalizedPull(src, dest, adjusted) {
+  const pen = unsafePenalty(src, dest);
+  if (!(pen > 0)) return -Infinity;
+  const scale = clamp(permeability(src, dest), CONFIG.permeFloor, CONFIG.permeCeil);
+  return (adjusted === null ? 0 : adjusted) + pen * scale;
 }
 
 /**

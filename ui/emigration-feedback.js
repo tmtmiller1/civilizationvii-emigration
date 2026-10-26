@@ -33,6 +33,7 @@ import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { channelFor, trainAvailable, trainNotify } from "/emigration/ui/emigration-train.js";
 import { uprisingNameOf } from "/emigration/ui/emigration-partisans.js";
+import { maybeShowFirstLoss } from "/emigration/ui/emigration-first-loss.js";
 
 const NEWS_KEY = "EmigrationNews_v1";
 const NEWS_SCHEMA_VERSION = 2;
@@ -567,7 +568,7 @@ function eventBucket(map, m, me) {
   let ev = map.get(key);
   if (!ev) {
     ev = { cause, srcOwner: me, srcName: m.srcName, destName: m.destName, destOwner: moveDestOwner(m),
-      crossCiv: cross, people: 0, points: 0, reasons: [], _lead: 0 };
+      crossCiv: cross, people: 0, points: 0, reasons: [], _lead: 0, tile: false };
     map.set(key, ev);
   }
   return ev;
@@ -586,6 +587,7 @@ function foldEvent(map, m, me) {
   const ev = eventBucket(map, m, me);
   ev.people += ppl;
   ev.points += m.points || 0;
+  if (m.subject === "tile") ev.tile = true; // a tile was torn down (the first-loss page teaches from these)
   if (ppl > ev._lead) { // the destination that took the most people defines "where they went"
     ev._lead = ppl;
     ev.destName = m.destName;
@@ -708,6 +710,7 @@ function localDigest(migs) {
   const events = groupLocalEvents(migs, me);
   if (!events.length) return;
   for (const ev of events) logEvent(ev, eventMessage(ev));
+  if (maybeShowFirstLoss(events, me)) return; // the first-loss page said it; don't tell the player twice
   const lead = events[0];
   // Color the toast by direction (red for own people leaving for a rival, neutral for an internal
   // shuffle: the source settlement still loses its tile, so never green), matching the log row's accent

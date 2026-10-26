@@ -166,6 +166,7 @@
  * @property {number} callHomeAgeCostStep Fee multiplier per age past Antiquity (Exploration ×step, Modern ×step²).
  * @property {number} callHomeMaxPointsPerAttempt Points attempted per call.
  * @property {number} callHomeCooldownTurns Turns before the same civilization may call again.
+ * @property {boolean} firstLossPage The first-loss explainer page, once per game, off by default.
  * @property {boolean} callHomeOfferWhenCalm A notice pointing at the Settlements tab once nowhere is distressed and
  *   people are away.
  * @property {number} homeNoticeMinAway How many population points must be displaced before that notice speaks, and
@@ -229,7 +230,15 @@
  * @property {number} majorViolenceScale Multiplier on violence when a major civilization is attacking.
  * @property {number} siegeFloor Escalation at siege tenure 1 (fraction of full).
  * @property {number} siegeRampTurns Turns of sustained siege to reach full escalation.
+ * @property {boolean} cityIntakeToggleEnabled The per-settlement "Close to newcomers" switch.
  * @property {number} siegeLossCapPct Max fraction of onset population lost to war.
+ * @property {boolean} destinationSafetyEnabled Refugees avoid a destination in acute crisis.
+ * @property {number} crisisDestPenalty The penalty per threshold's worth a destination sits over its flee threshold.
+ * @property {number} crisisDestPenaltyCap The most a destination in crisis loses.
+ * @property {number} violenceSustainTurns Consecutive turns over the flee threshold before fighting is a crisis.
+ * @property {number} siegeStallTurns Quiet turns (no fresh damage, no fighting) before a besieged city's siege stalls.
+ * @property {number} siegeTotalLossCapPct Max fraction of onset population lost to war emigration and siege
+ *   deaths together.
  * @property {number} warSurgeMax Max rural points a besieged source sheds in one turn (1 = off).
  * @property {number} overcrowdDiscount Happiness credited per over-threshold urban point (Alg B).
  * @property {number} overcrowdThreshold Urban pop before overcrowding bites (Alg B).
@@ -280,6 +289,8 @@
  * @property {boolean} cityReadoutEnabled Show the per-city migration readout panel.
  * @property {string} cityReadoutCorner HUD corner for the readout (top/bottom × left/right).
  * @property {boolean} cityReadoutSparkline Show a recent net-migration trend strip in the readout.
+ * @property {boolean} cityReadoutForecast The departure forecast on the Leaving pane and the readout.
+ * @property {number} forecastTurns The forecast's horizon in turns.
  * @property {boolean} timelineEventPins Pin the causal wars/disasters onto the network timeline.
  * @property {boolean} cityReadoutPoolToasts Toast when selected city holding starts/clears.
  * @property {boolean} refugeePoolLensMarkers Prosperity-lens center markers for active holding pools.

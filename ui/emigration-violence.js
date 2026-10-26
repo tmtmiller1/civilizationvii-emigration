@@ -31,6 +31,10 @@ const STATE_KEY = "EmigrationViolence_v2";
  * @property {Record<string, number>} tenure Consecutive turns under siege (Algorithm D).
  * @property {Record<string, number>} onsetPop Population when the siege began (Algorithm D).
  * @property {Record<string, number>} warLoss Population lost to war while besieged (Algorithm D).
+ * @property {Record<string, number>} lastDamageTurn The turn a besieged city last took fresh damage or saw
+ *   fighting (stamped at the siege's start too); cleared when the besieged flag lifts.
+ * @property {Record<string, number>} stalled 1 while the city's siege is stalled (besieged, no fresh damage or
+ *   fighting for siegeStallTurns), else absent.
  */
 
 /** @type {ViolenceState | null} */
@@ -104,7 +108,9 @@ function normalizeViolence(s) {
     decayTurn: Number.isFinite(Number(s.decayTurn)) ? Number(s.decayTurn) : gameTurn(),
     tenure: finiteMap(s.tenure),
     onsetPop: finiteMap(s.onsetPop),
-    warLoss: finiteMap(s.warLoss)
+    warLoss: finiteMap(s.warLoss),
+    lastDamageTurn: finiteMap(s.lastDamageTurn),
+    stalled: finiteMap(s.stalled)
   };
 }
 
@@ -231,6 +237,7 @@ function applyObservation(s, key, city) {
   const pillaged = pillagedCount(city);
   // Taken, not peeked: every combat event reaches this model exactly once, whenever in the turn it landed.
   const ev = takeCombatEvidence(key);
+  const stalled = updateStall(s, key, besieged, fresh > 0 || ev.dmg > 0 || ev.battles > 0 || ev.kills > 0);
   if (isQuiet(frac, besieged, pillaged, ev)) {
     s.lastFrac[key] = frac;
     return;
@@ -238,13 +245,78 @@ function applyObservation(s, key, city) {
   const verdict = attackerVerdict(city, ev.attackers);
   // The stronger of the two damage readings, never their sum: both describe the same wounds, and the max
   // lets each cover the other's blind spot (repaired-between-samples vs detached-handler gaps).
-  const obs = { harm: Math.max(fresh, ev.dmg), frac, besieged, pillaged, ev };
+  // A stalled siege reads as unbesieged here: the floor is what the flag alone would add.
+  const obs = { harm: Math.max(fresh, ev.dmg), frac, besieged: besieged && !stalled, pillaged, ev };
   const addFull = scoreObservation(obs, false);
   const add = verdict.minorsOnly ? scoreObservation(obs, true) : addFull;
   const before = s.byCity[key] || 0;
   if (add > 0) s.byCity[key] = before + add;
   s.lastFrac[key] = frac;
   auditObservation(key, before, { turn: gameTurn(), owner: city.owner, add, addFull, ...verdict });
+}
+
+/**
+ * Keep the stall bookkeeping for one city and say whether its siege is stalled this turn. The stamp is the
+ * last turn with fresh damage or fighting, set at the siege's start too so a new siege gets its quiet turns
+ * before it stalls; `siegeStallTurns` quiet turns after it, the siege is stalled until something hits.
+ * Everything clears when the besieged flag lifts.
+ * @param {ViolenceState} s State. @param {string} key City key.
+ * @param {boolean} besieged The engine's besieged flag this turn.
+ * @param {boolean} evidence Fresh district damage or fighting this turn.
+ * @returns {boolean} True when stalled.
+ */
+function updateStall(s, key, besieged, evidence) {
+  if (!besieged) {
+    delete s.lastDamageTurn[key];
+    delete s.stalled[key];
+    return false;
+  }
+  const turn = gameTurn();
+  if (evidence || !(key in s.lastDamageTurn)) s.lastDamageTurn[key] = turn;
+  const quiet = turn - s.lastDamageTurn[key];
+  const stalled = quiet >= Math.max(1, speedTurns(CONFIG.siegeStallTurns));
+  if (stalled) s.stalled[key] = 1;
+  else delete s.stalled[key];
+  return stalled;
+}
+
+/**
+ * How many consecutive turns a city's violence has stood at or over the flee threshold (`tenure`). 0 when
+ * warSiege is off (tenure isn't kept then) or the city is unknown.
+ * @param {*} city A live city object.
+ * @returns {number} The tenure in turns.
+ */
+export function siegeTenure(city) {
+  if (!CONFIG.warSiege) return 0;
+  const key = keyFromCID(city?.id);
+  return key ? state().tenure[key] || 0 : 0;
+}
+
+/**
+ * Whether a source's violence counts as a crisis its people flee: at or over the flee threshold, and sustained
+ * for `violenceSustainTurns` consecutive turns (2026-10-26: a one-turn besieged flag put Philadelphia over the
+ * threshold and a skirmish does the same). Razing (`siege`) stays immediate and isn't read here. With warSiege
+ * off there is no tenure to read, so the threshold alone decides.
+ * @param {{violence?:number, city?:*}} src A city signal.
+ * @returns {boolean} True when the fighting is a crisis.
+ */
+export function violenceCrisis(src) {
+  if (!((src.violence || 0) >= CONFIG.violenceFleeThreshold)) return false;
+  const need = Number(CONFIG.violenceSustainTurns) || 1;
+  if (!CONFIG.warSiege || need <= 1) return true;
+  return siegeTenure(src.city) >= need;
+}
+
+/**
+ * Whether a city's siege is stalled: besieged, but nobody has hit it for `siegeStallTurns`. A stalled
+ * siege adds nothing to the intensity, kills nobody, and the readout says so.
+ * @param {*} city A live city object.
+ * @returns {boolean} True while stalled.
+ */
+export function siegeStalled(city) {
+  const key = keyFromCID(city?.id);
+  if (!key) return false;
+  return state().stalled[key] === 1;
 }
 
 /**
@@ -368,6 +440,40 @@ export function recordWarLoss(city) {
     s.warLoss[key] = (s.warLoss[key] || 0) + 1;
     persist();
   }
+}
+
+/**
+ * Record that a city lost one population point to death under siege. It counts into the same per-siege
+ * tally as war emigration, so the total a siege can take is bounded by `siegeTotalLossCapPct`. No-op
+ * when warSiege is off or the city isn't under siege.
+ * @param {*} city A live city object.
+ */
+export function recordSiegeDeath(city) {
+  const key = keyFromCID(city?.id);
+  if (!key || !CONFIG.warSiege) return;
+  const s = state();
+  if ((s.tenure[key] || 0) > 0) {
+    s.warLoss[key] = (s.warLoss[key] || 0) + 1;
+    persist();
+  }
+}
+
+/**
+ * Whether a city's siege has taken all it may: emigration and deaths together have reached
+ * `siegeTotalLossCapPct` of the population at the siege's onset. False when warSiege is off, the city
+ * isn't under siege, or the cap is 1 or more (uncapped).
+ * @param {*} city A live city object.
+ * @returns {boolean} True when the siege may kill nobody else.
+ */
+export function siegeDeathCapped(city) {
+  if (!CONFIG.warSiege) return false;
+  const key = keyFromCID(city?.id);
+  if (!key) return false;
+  const cap = Number(CONFIG.siegeTotalLossCapPct);
+  if (!(cap < 1)) return false;
+  const s = state();
+  const onset = s.onsetPop[key] || 0;
+  return onset > 0 && (s.warLoss[key] || 0) >= (cap / retentionFor(city)) * onset;
 }
 
 // Decay + read

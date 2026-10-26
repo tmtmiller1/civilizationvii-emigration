@@ -14,6 +14,7 @@
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { citySnapshot } from "/emigration/ui/emigration-city-readout-data.js";
+import { forecastLine } from "/emigration/ui/emigration-forecast.js";
 import { actionHint, permanenceCue } from "/emigration/ui/emigration-naming.js";
 import { formatPeople, localeNumber } from "/emigration/ui/emigration-population.js";
 import { reasonsPhrase, pullReasonsPhrase } from "/emigration/ui/emigration-move-reasons.js";
@@ -157,7 +158,7 @@ function refugeeBurdenLine(s) {
  * @param {string[]|undefined} destReasons The pull target's reason-tag keys.
  * @returns {string}
  */
-function whyThereLine(destReasons) {
+export function whyThereLine(destReasons) {
   const why = pullReasonsPhrase(destReasons);
   return why ? loc("LOC_EMIG_RO_WHY_THERE", "Why there: {1_Why}", why) : "";
 }
@@ -165,6 +166,22 @@ function whyThereLine(destReasons) {
 /** @param {string[]} lines @param {string|null|undefined} line */
 function pushLineIf(lines, line) {
   if (line) lines.push(line);
+}
+
+/**
+ * The settlement's standing switches and states: a stalled siege, and closed to newcomers.
+ * @param {*} s The snapshot. @returns {string[]} The lines, possibly none.
+ */
+function standingLines(s) {
+  const out = [];
+  if (s.siegeStalled) {
+    out.push(loc("LOC_EMIG_RO_SIEGE_STALLED",
+      "Siege stalled: the besiegers aren't attacking, so nobody leaves or dies for the siege until they do"));
+  }
+  if (s.closedToNewcomers) {
+    out.push(loc("LOC_EMIG_RO_CLOSED", "Closed to newcomers: nobody settles here until you open it again"));
+  }
+  return out;
 }
 
 /**
@@ -184,6 +201,8 @@ export function readoutModel(s) {
     : "");
   pushLineIf(lines, s.topDestinationName ? whyThereLine(s.destReasons) : "");
   pushLineIf(lines, fixLine(s.fix));
+  pushLineIf(lines, s.forecast ? loc("LOC_EMIG_RO_FORECAST", "Forecast: {1_Line}", forecastLine(s.forecast, loc)) : "");
+  lines.push(...standingLines(s));
   pushLineIf(lines, refugeePoolLine(s));
   pushLineIf(lines, refugeeBurdenLine(s));
   pushLineIf(lines, s.assimLoad > 0

@@ -21,7 +21,7 @@ import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
 import { rankByProsperity, distress } from "/emigration/ui/emigration-prosperity.js";
 import { bestDestination, migrationCause, crisisTypeReasons } from "/emigration/ui/emigration-pull.js";
 import { prescribe } from "/emigration/ui/emigration-prescribe.js";
-import { loadState, ownerPopulations } from "/emigration/ui/emigration-state.js";
+import { loadState, ownerPopulations, isCityClosed } from "/emigration/ui/emigration-state.js";
 import { assimilationCostFor } from "/emigration/ui/emigration-effects.js";
 import { compositionForCity } from "/emigration/ui/emigration-composition.js";
 import { civAdjective } from "/emigration/ui/emigration-naming.js";
@@ -29,6 +29,8 @@ import { enclaveStageAt, stageLine, nextLine, blockerLines } from "/emigration/u
 import { civHidden } from "/emigration/ui/emigration-governance.js";
 import { refugeePoolTotal } from "/emigration/ui/emigration-refugee-pool.js";
 import { refugeeBurdenFor } from "/emigration/ui/emigration-refugee-burden.js";
+import { siegeStalled } from "/emigration/ui/emigration-violence.js";
+import { forecastFor } from "/emigration/ui/emigration-forecast.js";
 
 /**
  * The readout view-model for one city.
@@ -51,6 +53,12 @@ import { refugeeBurdenFor } from "/emigration/ui/emigration-refugee-burden.js";
  * @property {boolean} attritionRisk Distressed with no viable refuge (the outlet may fire).
  * @property {string[]} riskReasons The crisis-type tags behind any distress (siege/disaster/famine),
  *   for the readout warning's "why". Empty when the city is content.
+ * @property {boolean} siegeStalled Besieged, but nobody has attacked for a while: the siege adds no
+ *   pressure and kills nobody until it does.
+ * @property {boolean} closedToNewcomers The owner closed this settlement to newcomers.
+ * @property {number[]} pressureSeries Recent emigration-pressure samples (oldest first), the forecast's input.
+ * @property {import("/emigration/ui/emigration-forecast.js").Forecast|null} forecast When the pressure is
+ *   likely to reach the bar and how many go, or null when the option is off.
  * @property {number} pressure Accumulated emigration pressure.
  * @property {number} pressureToBar Pressure as a fraction of the move bar (0–1).
  * @property {boolean} onCooldown Whether the source is resting after a recent move.
@@ -172,7 +180,8 @@ function pickRefugee(o) {
  *          composition?:{total:number, parts:{name:string, share:number}[]}|null,
  *          enclave?:EnclaveReadout|null,
  *          netSeries?:number[], refugeePool?:number,
- *          refugeeBurden?:{gold?:number,happiness?:number}|null}} o
+ *          refugeeBurden?:{gold?:number,happiness?:number}|null, siegeStalled?:boolean,
+ *          closedToNewcomers?:boolean, pressureSeries?:number[]}} o
  * @returns {CitySnapshot}
  */
 export function buildCitySnapshot(o) {
@@ -195,12 +204,15 @@ export function buildCitySnapshot(o) {
     atRisk: dist > 0,
     attritionRisk: attritionRisk(dist, !!o.bestDest),
     riskReasons: riskReasonsFor(dist, sig),
+    siegeStalled: !!o.siegeStalled,
+    closedToNewcomers: !!o.closedToNewcomers,
     // What the settlement holds that argues for staying, named. LOC tags straight from the database
     // (emigration-built.js), resolved by the renderer, so the readout can say "Granary, Market,
     // Academy" instead of only showing a number that went up.
     stayReasons: Array.isArray(sig.builtNames) ? sig.builtNames.slice(0, 5) : [],
     builtScore: num(sig.built),
     ...pickSource(o.source || null),
+    ...pickForecast(o, sig),
     ...pickDest(o.bestDest || null),
     ...pickAssim(o.assim || null),
     ...pickOwner(o.owner || null),
@@ -247,11 +259,29 @@ function resolveEnclave(city) {
 }
 
 /**
- * The city's recent net-migration series (the readout sparkline), read from the stats API at call time
- * (no static import; that would be a cycle). Empty when the sparkline is off or nothing is recorded yet.
- * @param {*} sig
- * @returns {number[]} Recent per-pass net pop-point values.
+ * The source's recent pressure samples from the stats store (the engine key), for the forecast.
+ * @param {*} sig City signal. @returns {number[]} Oldest first; empty when none.
  */
+function pressureSeriesFor(sig) {
+  if (!CONFIG.cityReadoutForecast || !sig) return [];
+  const D = /** @type {*} */ (globalThis).EmigrationData;
+  if (!D || typeof D.cityPressureSeries !== "function") return [];
+  const v = D.cityPressureSeries(sig.key);
+  return Array.isArray(v) ? v : [];
+}
+
+/**
+ * The forecast and the samples behind it (Feature M).
+ * @param {{source?:*, pressureSeries?:number[]}} o The inputs. @param {*} sig The signal (its rural pool).
+ * @returns {{pressureSeries:number[], forecast:import("/emigration/ui/emigration-forecast.js").Forecast|null}}
+ */
+function pickForecast(o, sig) {
+  const pressureSeries = Array.isArray(o.pressureSeries) ? o.pressureSeries : [];
+  const source = pickSource(o.source || null);
+  return { pressureSeries, forecast: forecastFor({ ...source, pressureSeries, rural: num(sig.rural) }) };
+}
+
+/** @param {*} sig City signal. @returns {number[]} The recent net series for the sparkline. */
 function netSeriesFor(sig) {
   if (!CONFIG.cityReadoutSparkline || !sig) return [];
   const D = /** @type {*} */ (globalThis).EmigrationData;
@@ -403,7 +433,7 @@ function destInfo(src, dest, reasons) {
  * @returns {CitySnapshot}
  */
 function snapshotFromRanked(sig, ranked, ownerPop, sources) {
-  const best = bestDestination(sig, ranked, ownerPop);
+  const best = bestDestination(sig, ranked, ownerPop, (d) => !isCityClosed(d));
   return buildCitySnapshot({
     signal: sig,
     cityName: resolveCityName(sig.city),
@@ -417,8 +447,11 @@ function snapshotFromRanked(sig, ranked, ownerPop, sources) {
     composition: resolveComposition(sig.city),
     enclave: resolveEnclave(sig.city),
     netSeries: netSeriesFor(sig),
+    pressureSeries: pressureSeriesFor(sig),
     refugeePool: refugeePoolTotal(sig.key),
-    refugeeBurden: refugeeBurdenFor(sig.owner)
+    refugeeBurden: refugeeBurdenFor(sig.owner),
+    siegeStalled: siegeStalled(sig.city),
+    closedToNewcomers: isCityClosed(sig)
   });
 }
 

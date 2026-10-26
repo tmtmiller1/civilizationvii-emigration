@@ -49,6 +49,7 @@ const FALLBACK = {
   aggressor: "Aggressor avoidance",
   flight: "Away from the fighting",
   congestion: "Congestion",
+  unsafe: "Under attack",
   permeability: "Border permeability",
   // Push-side terms (emigration-prosperity.js `baseBreakdown` / `situationalBreakdown`).
   economy: "Economy",

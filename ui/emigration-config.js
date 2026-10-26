@@ -192,6 +192,11 @@ export const CONFIG = {
   violencePerPoint: 12, // percent score penalty per intensity point
   violenceCapPct: 220, // max percent penalty from violence
   violenceFleeThreshold: 2, // min intensity before refugees flee directionally
+  // Consecutive turns at or over the flee threshold before the fighting counts as a crisis (people flee, the
+  // death gate opens, the cause reads "war"). 2026-10-26: a one-turn besieged flag put Philadelphia over the
+  // threshold and a lone skirmish does the same; razing is immediate regardless. Reads the siege tenure, so it
+  // needs warSiege on; 1 = the first turn, as before.
+  violenceSustainTurns: 2,
 
   // emigration barriers (added to a source's reluctance)
   baseReluctance: 4,
@@ -265,6 +270,10 @@ export const CONFIG = {
   callHomeMaxPointsPerAttempt: 3, // points attempted per call
   callHomeCooldownTurns: 8, // turns before the same civilization may call again
   callHomeOfferWhenCalm: true, // once things are calm, a notice beside End Turn points at the Settlements tab
+  // The first-loss page (roadmap §33): one page, the first time a settlement of the player's loses a tile, saying what
+  // happened, where they went and why, what happens next and where to look. Off by default (the owner's call); the
+  // Mods-tab checkbox "First-loss explainer" turns it on. Never again in that game once shown.
+  firstLossPage: false,
   homeNoticeMinAway: 5, // that notice waits for this many displaced population points, and this many more to repeat
   callHomeAi: true, // AI civilizations call their own people home on their turn, at the same price, odds and cooldown
   homecomingEnabled: true, // people displaced inside their own civ go home on their own once home is calm
@@ -426,6 +435,20 @@ export const CONFIG = {
   happyMultMin: 0.2,
   happyMultMax: 1.8,
 
+  // The per-settlement intake switch (risks 2.4): a settlement its owner closed takes no newcomers; arrivals go
+  // to the next best destination, and one already on the road is re-aimed when it lands. The AI never closes a
+  // city. Off hides the button and reopens every settlement.
+  cityIntakeToggleEnabled: true,
+
+  // Destination safety (2026-10-26: New York took four turns of war refugees while itself besieged, and one crisis
+  // move in six landed in a city in crisis). A destination in acute crisis loses crisisDestPenalty for each
+  // threshold's worth it sits over its flee threshold (half a step at least), capped at crisisDestPenaltyCap; a
+  // stalled siege pays nothing; a source worse off than the destination pays half. A heavy penalty, never a
+  // reject. The arrival half holds an arrival due at a city in crisis like one at a closed city.
+  destinationSafetyEnabled: true,
+  crisisDestPenalty: 12,
+  crisisDestPenaltyCap: 30,
+
   // Algorithm D: time-gated, capped war displacement (on by default)
   // When warSiege is true, the violence penalty escalates with siege duration (siegeFloor → 1 over
   // siegeRampTurns) and the cumulative population a city can lose to war is capped at siegeLossCapPct
@@ -434,6 +457,15 @@ export const CONFIG = {
   siegeFloor: 0.3, // escalation multiplier at tenure 1 (a fresh raid is gentle)
   siegeRampTurns: 8, // turns of sustained siege to reach full (×1) escalation
   siegeLossCapPct: 0.6, // max share of onset population lost to war-driven emigration
+  // A besieged city whose attackers stop attacking: after this many turns (game-speed scaled) with no fresh
+  // district damage and no fighting in its borders, the siege is stalled. While stalled the besieged floor
+  // isn't applied (so the standing intensity decays away), nobody dies for the siege, and the readout says
+  // so. Fresh damage or a battle ends the stall. The engine's besieged flag alone otherwise tops the
+  // intensity up every turn to about 2.7 against the flee threshold of 2 (the 2026-10-26 reads).
+  siegeStallTurns: 3,
+  // Siege deaths count into the same per-siege tally as siege displacement; past this share of the onset
+  // population the siege stops killing as well (displacement already stops at siegeLossCapPct).
+  siegeTotalLossCapPct: 0.8,
 
   // war surge: a heavily besieged city sheds population in bursts. The per-turn outflow
   // scales with siege intensity up to warSurgeMax points in a turn, still bounded by the
@@ -561,6 +593,11 @@ export const CONFIG = {
   cityReadoutEnabled: true, // show the per-city migration readout (off = never render it)
   cityReadoutCorner: "top-right", // HUD corner: top-right | top-left | bottom-right | bottom-left
   cityReadoutSparkline: true, // show a recent net-migration trend strip in the readout
+  // The departure forecast (Feature M) on the Settlements card's Leaving pane and the readout: from the pressure's
+  // recent rate of rise, when it is likely to reach the bar and how many go. forecastTurns is the horizon; a
+  // crossing further off than that reads "Nobody is likely to leave soon".
+  cityReadoutForecast: true,
+  forecastTurns: 5,
   cityReadoutPoolToasts: true, // toast when the selected settlement enters/exits refugee holding
   refugeePoolLensMarkers: true, // prosperity lens: center-tile markers for active refugee holding
 

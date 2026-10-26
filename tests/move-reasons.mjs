@@ -17,6 +17,9 @@ const { moveRecord, departRecord, arriveRecord } = await import("/emigration/ui/
 
 // Deterministic tuning for the derivation (independent of preset drift).
 Object.assign(CONFIG, {
+  // The off-engine signals carry no city id, so the siege tenure the sustained-flight rule reads is always 0;
+  // the threshold alone decides here, as it did when these cases were written (tests/violence.mjs covers the rule).
+  violenceSustainTurns: 1,
   distanceFactor: 0.6, violenceFleeThreshold: 2, disasterFleeThreshold: 2, unhappyCauseThreshold: 0,
   asylumPushWeight: 3, ownCivRefugeeBonus: 1, crisisEscapeBonus: 14, aggressorPenalty: 12,
   bordersEnabled: false // keeps openness neutral so the diplomacy-driven tags stay off in this harness

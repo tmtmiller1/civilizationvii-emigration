@@ -67,6 +67,31 @@ function testDistressWithoutAttrition() {
   assert.match(m.warn, /Under distress/);
 }
 
+function testSiegeStalledLine() {
+  const m = readoutModel({
+    cityName: "Jeonju", cause: "war", causeLabel: "War", pressureToBar: 0.1, ownerNet: 0,
+    atRisk: false, attritionRisk: false, siegeStalled: true
+  });
+  assert.ok(has(m.lines, /^Siege stalled: the besiegers aren't attacking/), "a stalled siege has its own line");
+  const live = readoutModel({ cityName: "Jeonju", cause: "war", causeLabel: "War", pressureToBar: 0.1, ownerNet: 0 });
+  assert.ok(!has(live.lines, /Siege stalled/), "and a live one doesn't");
+}
+testSiegeStalledLine();
+
+function testForecastLine() {
+  const m = readoutModel({
+    cityName: "Cilakofa", cause: "prosperity", causeLabel: "Attraction", pressureToBar: 0.6, ownerNet: 0,
+    forecast: { stable: false, turns: 2, people: 2, rate: 0.2 }
+  });
+  assert.ok(has(m.lines, /^Forecast: About 2 people are likely to leave in the next 2 turns$/));
+  const calm = readoutModel({ cityName: "Cilakofa", cause: "prosperity", causeLabel: "Attraction", pressureToBar: 0.1, ownerNet: 0,
+    forecast: { stable: true, turns: 0, people: 0, rate: 0 } });
+  assert.ok(has(calm.lines, /^Forecast: Nobody is likely to leave soon$/));
+  const off = readoutModel({ cityName: "Cilakofa", cause: "prosperity", causeLabel: "Attraction", pressureToBar: 0.1, ownerNet: 0, forecast: null });
+  assert.ok(!has(off.lines, /Forecast/), "no line when the option is off");
+}
+testForecastLine();
+
 function testNullSnapshot() {
   assert.equal(readoutModel(null), null);
 }

@@ -7,6 +7,7 @@
 
 const MAX_SERIES = 24;   // per-city rolling series length (readout sparkline window)
 const MAX_CITIES = 4000; // ceiling on tracked cities (drops the oldest when exceeded)
+const MAX_PRESSURE_SERIES = 6; // per-source pressure samples kept for the forecast's rate of rise
 
 /**
  * Net pop-point change per city for one pass ("owner|cityName" -> net): arrivals add to the
@@ -49,6 +50,32 @@ export function recordCityNet(store, migs) {
   if (keys.length > MAX_CITIES) {
     for (const k of keys.slice(0, keys.length - MAX_CITIES)) delete store[k];
   }
+}
+
+/**
+ * Append each source's accumulated emigration pressure after this pass to its rolling sample series (bounded
+ * per source and in source count), so the forecast can read how fast the pressure is rising. Sources the
+ * engine no longer tracks drop out of the store.
+ * @param {Record<string, number[]>} store The per-source sample map (mutated in place).
+ * @param {Record<string, {pressure?:number}>} sources The engine's per-source state after the pass.
+ */
+export function recordPressure(store, sources) {
+  if (!store || !sources || typeof sources !== "object") return;
+  pruneDropped(store, sources);
+  for (const k of Object.keys(sources)) {
+    const p = Number(sources[k] && sources[k].pressure);
+    if (!Number.isFinite(p)) continue;
+    const arr = store[k] || (store[k] = []);
+    arr.push(p);
+    if (arr.length > MAX_PRESSURE_SERIES) arr.splice(0, arr.length - MAX_PRESSURE_SERIES);
+  }
+}
+
+/**
+ * @param {Record<string, number[]>} store The sample map (mutated). @param {Record<string, *>} live The live keys.
+ */
+function pruneDropped(store, live) {
+  for (const k of Object.keys(store)) if (!(k in live)) delete store[k];
 }
 
 /**

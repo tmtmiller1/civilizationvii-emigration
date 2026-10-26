@@ -52,3 +52,53 @@ delete globalThis.GameInfo;
 delete globalThis.EmigrationData;
 
 console.log("telemetry harness passed");
+
+// Counters that survive a load (session 2f of the 3.7.0 plan): the all-game totals live in the save under
+// EmigrationTelemetry_v1, written with each pass; a reload reads them back while the session's own set starts
+// from zero; the two are printed side by side.
+{
+  const KV = {};
+  globalThis.Configuration = {
+    getGame: () => ({ getValue: (k) => (k in KV ? KV[k] : null) }),
+    editGame: () => ({ setValue: (k, v) => (KV[k] = v) })
+  };
+  const { recordPassCounters, bumpArrivedIntoCrisis, bumpCrisisDestAvoided, telemetryCounters, telemetrySessionCounters,
+    telemetryReasonHits, dumpCounters, __test } = await import("/emigration/ui/emigration-telemetry.js");
+  __test.dropMemory();
+  bumpArrivedIntoCrisis();
+  bumpCrisisDestAvoided();
+  recordPassCounters([
+    { phase: "move", cause: "prosperity", crossCiv: false, reasons: ["richer"] },
+    { phase: "move", cause: "war", crossCiv: true, reasons: ["safer-dir", "richer"] }
+  ]);
+  const saved = JSON.parse(KV.EmigrationTelemetry_v1);
+  assert.equal(saved.counters.passes, 1, "the pass is in the save");
+  assert.equal(saved.counters.crisisCrossCiv, 1);
+  assert.equal(saved.counters.arrivedIntoCrisis, 1, "bumps before the pass's fold are in the same write");
+  assert.equal(saved.counters.crisisDestAvoided, 1);
+  assert.deepEqual(saved.reasons, { richer: 2, "safer-dir": 1 });
+  // A reload: memory is gone, the save remains.
+  __test.dropMemory();
+  assert.equal(telemetryCounters().passes, 1, "the totals come back from the save");
+  assert.equal(telemetryCounters().voluntaryMoves, 1);
+  assert.deepEqual(telemetryReasonHits(), { richer: 2, "safer-dir": 1 });
+  assert.equal(telemetrySessionCounters().passes, 0, "the session starts from zero");
+  recordPassCounters([{ phase: "move", cause: "unhappiness", crossCiv: false }]);
+  const d = dumpCounters();
+  assert.equal(d.counters.passes, 2, "all-game: both passes");
+  assert.equal(d.counters.voluntaryMoves, 2);
+  assert.equal(d.session.passes, 1, "session: the one since the load");
+  assert.equal(d.session.voluntaryMoves, 1);
+  assert.equal(d.derived.totalMoves, 3, "the derived shares read the all-game numbers");
+  assert.equal(JSON.parse(KV.EmigrationTelemetry_v1).counters.passes, 2, "and the save has the new total");
+  // A damaged save reads as zeros, never throws.
+  KV.EmigrationTelemetry_v1 = "{\"counters\":{\"passes\":\"x\",\"voluntaryMoves\":-4},\"reasons\":5}";
+  __test.dropMemory();
+  assert.equal(telemetryCounters().passes, 0);
+  assert.equal(telemetryCounters().voluntaryMoves, 0);
+  assert.deepEqual(telemetryReasonHits(), {});
+  KV.EmigrationTelemetry_v1 = "not json";
+  __test.dropMemory();
+  assert.equal(telemetryCounters().passes, 0);
+  console.log("telemetry persistence passed");
+}

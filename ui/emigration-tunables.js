@@ -107,6 +107,7 @@ export const TUNABLES = [
   { key: "violenceCapPct", group: "violence", type: "choice", values: [120, 180, 220, 300], format: "pct", label: "LOC_EMIG_T_VCAP", desc: "LOC_EMIG_T_VCAP_D" },
   { key: "violenceDecay", group: "violence", type: "choice", values: [0.4, 0.55, 0.7, 0.85], format: "frac", label: "LOC_EMIG_T_VDECAY", desc: "LOC_EMIG_T_VDECAY_D" },
   { key: "violenceFleeThreshold", group: "violence", type: "choice", values: [1, 2, 3, 5], label: "LOC_EMIG_T_VFLEE", desc: "LOC_EMIG_T_VFLEE_D" },
+  { key: "violenceSustainTurns", group: "violence", type: "choice", values: [1, 2, 3, 4], format: "turns", label: "LOC_EMIG_T_VSUSTAIN", desc: "LOC_EMIG_T_VSUSTAIN_D" },
   { key: "vwAssault", group: "violence", type: "choice", values: [5, 8, 10, 14, 20], label: "LOC_EMIG_T_VASSAULT", desc: "LOC_EMIG_T_VASSAULT_D" },
   { key: "vwSiege", group: "violence", type: "choice", values: [2, 3, 4, 6, 9], label: "LOC_EMIG_T_VSIEGE", desc: "LOC_EMIG_T_VSIEGE_D" },
   { key: "majorViolenceScale", group: "violence", type: "choice", values: [0, 0.5, 1, 1.5, 2], format: "mult", special: {"0": "LOC_EMIG_CHOICE_OFF"}, label: "LOC_EMIG_T_MAJORVIOL", desc: "LOC_EMIG_T_MAJORVIOL_D" },
@@ -118,8 +119,13 @@ export const TUNABLES = [
   { key: "warSiege", group: "violence", type: "bool", label: "LOC_EMIG_T_WARSIEGE", desc: "LOC_EMIG_T_WARSIEGE_D" },
   { key: "siegeRampTurns", group: "violence", type: "choice", values: [4, 6, 8, 12, 16], format: "turns", label: "LOC_EMIG_T_SRAMP", desc: "LOC_EMIG_T_SRAMP_D" },
   { key: "siegeLossCapPct", group: "violence", type: "choice", values: [0.4, 0.5, 0.6, 0.75, 0.9], format: "frac", label: "LOC_EMIG_T_SCAP", desc: "LOC_EMIG_T_SCAP_D" },
+  { key: "siegeStallTurns", group: "violence", type: "choice", values: [2, 3, 5, 8, 12], format: "turns", label: "LOC_EMIG_T_SSTALL", desc: "LOC_EMIG_T_SSTALL_D" },
+  { key: "siegeTotalLossCapPct", group: "violence", type: "choice", values: [0.6, 0.7, 0.8, 0.9, 1], format: "frac", special: {"1": "LOC_EMIG_CHOICE_UNCAPPED"}, label: "LOC_EMIG_T_STOTALCAP", desc: "LOC_EMIG_T_STOTALCAP_D" },
   { key: "warSurgeMax", group: "violence", type: "choice", values: [1, 2, 3, 5, 8], special: {"1": "LOC_EMIG_CHOICE_OFF"}, label: "LOC_EMIG_T_WARSURGE", desc: "LOC_EMIG_T_WARSURGE_D" },
   // war - aggressor-aware refugee flight (aggressorPenalty 0 = off)
+  { key: "destinationSafetyEnabled", group: "violence", type: "bool", label: "LOC_EMIG_T_DESTSAFE", desc: "LOC_EMIG_T_DESTSAFE_D" },
+  { key: "crisisDestPenalty", group: "violence", type: "choice", values: [6, 9, 12, 18, 24], label: "LOC_EMIG_T_DESTPEN", desc: "LOC_EMIG_T_DESTPEN_D" },
+  { key: "crisisDestPenaltyCap", group: "violence", type: "choice", values: [15, 20, 30, 45, 60], label: "LOC_EMIG_T_DESTPENCAP", desc: "LOC_EMIG_T_DESTPENCAP_D" },
   { key: "aggressorPenalty", group: "violence", type: "choice", values: [0, 6, 12, 18, 25], special: {"0": "LOC_EMIG_CHOICE_OFF"}, label: "LOC_EMIG_T_AGGRESSOR", desc: "LOC_EMIG_T_AGGRESSOR_D" },
   { key: "ownCivRefugeeBonus", group: "violence", type: "choice", values: [0, 2, 4, 8], special: {"0": "LOC_EMIG_CHOICE_OFF"}, label: "LOC_EMIG_T_OWNCIV", desc: "LOC_EMIG_T_OWNCIV_D" },
   // Disasters
@@ -159,6 +165,7 @@ export const TUNABLES = [
   { key: "antiDrainWeight", group: "brakes", type: "choice", values: [0, 6, 12, 18, 24], special: {"0": "LOC_EMIG_CHOICE_OFF"}, label: "LOC_EMIG_T_ANTIDRAIN", desc: "LOC_EMIG_T_ANTIDRAIN_D" },
   { key: "antiDrainThreshold", group: "brakes", type: "choice", values: [0.6, 0.8, 1], format: "frac", label: "LOC_EMIG_T_ANTIDRAINTHRESH", desc: "LOC_EMIG_T_ANTIDRAINTHRESH_D" },
   // Arrivals & departures
+  { key: "cityIntakeToggleEnabled", group: "arrivals", type: "bool", label: "LOC_EMIG_T_INTAKE", desc: "LOC_EMIG_T_INTAKE_D" },
   { key: "departureRemovesTile", group: "arrivals", type: "bool", label: "LOC_EMIG_T_DEPTILE", desc: "LOC_EMIG_T_DEPTILE_D" },
   { key: "arrivalPlacement", group: "arrivals", type: "choice", values: [0, 1, 2, 3], choiceLabels: ["LOC_EMIG_CHOICE_OFF", "LOC_EMIG_CHOICE_ARR_AUTO", "LOC_EMIG_CHOICE_ARR_ASK", "LOC_EMIG_CHOICE_ARR_UNIT"], label: "LOC_EMIG_T_ARRPLACE", desc: "LOC_EMIG_T_ARRPLACE_D" },
   { key: "arrivalPreferSpecialists", group: "arrivals", type: "bool", label: "LOC_EMIG_T_ARRSPEC", desc: "LOC_EMIG_T_ARRSPEC_D" },
@@ -210,6 +217,7 @@ export const TUNABLES = [
   // notifications (anti-spam controls)
   { key: "notifyMode", group: "notify", type: "choice", values: [0, 1, 2], choiceLabels: ["LOC_EMIG_CHOICE_OFF", "LOC_EMIG_CHOICE_IMPORTANT", "LOC_EMIG_CHOICE_VERBOSE"], label: "LOC_EMIG_T_NOTIFYMODE", desc: "LOC_EMIG_T_NOTIFYMODE_D" },
   { key: "notifyTrain", group: "notify", type: "bool", label: "LOC_EMIG_T_NOTIFYTRAIN", desc: "LOC_EMIG_T_NOTIFYTRAIN_D" },
+  { key: "firstLossPage", group: "notify", type: "bool", label: "LOC_EMIG_T_FIRSTLOSS", desc: "LOC_EMIG_T_FIRSTLOSS_D" },
   { key: "disasterNotifyMode", group: "notify", type: "choice", values: [0, 1, 2], choiceLabels: ["LOC_EMIG_CHOICE_OFF", "LOC_EMIG_CHOICE_IMPORTANT", "LOC_EMIG_CHOICE_VERBOSE"], label: "LOC_EMIG_T_DNOTIFYMODE", desc: "LOC_EMIG_T_DNOTIFYMODE_D" },
   { key: "disasterNotifyMinSeverity", group: "notify", type: "choice", values: [0, 1, 2, 3], choiceLabels: ["LOC_EMIG_CHOICE_ANY", "LOC_EMIG_CHOICE_MINOR", "LOC_EMIG_CHOICE_MODERATE", "LOC_EMIG_CHOICE_MAJOR"], label: "LOC_EMIG_T_NOTIFYDISASTER", desc: "LOC_EMIG_T_NOTIFYDISASTER_D" },
   { key: "notifyCooldownTurns", group: "notify", type: "choice", values: [0, 3, 6, 10, 20], format: "turns", special: {"0": "LOC_EMIG_CHOICE_NO_LIMIT"}, label: "LOC_EMIG_T_NOTIFYCD", desc: "LOC_EMIG_T_NOTIFYCD_D" },
@@ -226,6 +234,8 @@ export const TUNABLES = [
   // than the notify group.
   { key: "cityReadoutEnabled", group: "readout", type: "bool", label: "LOC_EMIG_T_CITYREADOUT", desc: "LOC_EMIG_T_CITYREADOUT_D" },
   { key: "cityReadoutSparkline", group: "readout", type: "bool", label: "LOC_EMIG_T_SPARKLINE", desc: "LOC_EMIG_T_SPARKLINE_D" },
+  { key: "cityReadoutForecast", group: "readout", type: "bool", label: "LOC_EMIG_T_FORECAST", desc: "LOC_EMIG_T_FORECAST_D" },
+  { key: "forecastTurns", group: "readout", type: "choice", values: [3, 5, 8], format: "turns", label: "LOC_EMIG_T_FORECAST_TURNS", desc: "LOC_EMIG_T_FORECAST_TURNS_D" },
   // Visuals
   // visuals: presentation only; nothing here touches the simulation.
   { key: "timelineEventPins", group: "visuals", type: "bool", label: "LOC_EMIG_T_TLPINS", desc: "LOC_EMIG_T_TLPINS_D" },

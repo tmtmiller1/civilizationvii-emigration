@@ -63,6 +63,9 @@ export function normalize(o) {
     // Per-city rolling net pop-point series ("owner|cityName" -> recent net values), for the
     // city-readout sparkline. Bounded per city and in city count.
     cityNet: mapOr(o.cityNet),
+    // Per-source rolling emigration-pressure samples (source key -> recent pressures), for the forecast's
+    // rate of rise. Bounded per source; sources the engine dropped drop here too.
+    pressureSeries: mapOr(o.pressureSeries),
     // Stance-impact counterfactual (people + pop-points): how much each civ's border policy raised
     // (Pro) or cut (Anti / Closed-retention) its cross-civ immigration in/out vs a neutral-borders
     // world, accumulated per turn. Signed: +in = allowed beyond, -in = prevented, -out = retained.

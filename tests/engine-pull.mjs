@@ -26,7 +26,12 @@ Object.assign(CONFIG, {
   bordersEnabled: false,
   crossCivEnabled: true,
   tiltCap: 14,
-  opennessFloor: 0.25
+  opennessFloor: 0.25,
+  // The 2026-10-26 builds pinned off: these cases characterize the older formula. The off-engine signals carry no
+  // city id, so the siege tenure the sustained-flight rule reads is always 0 (violenceSustainTurns 1 = the
+  // threshold alone, as before), and destination safety has its own cases in tests/pull.mjs.
+  violenceSustainTurns: 1,
+  destinationSafetyEnabled: false
 });
 
 const sig = (owner, pros, population, isCityState, x, y) => ({

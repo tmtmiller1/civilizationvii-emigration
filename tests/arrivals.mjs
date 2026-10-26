@@ -246,6 +246,47 @@ function testEmptyRankingHoldsWithoutDeferralPenalty() {
   assert.equal(state.transit[0].arriveTurn, 5, "arriveTurn is not pushed forward");
 }
 
+
+// Destination safety (session 2g): an arrival due at a city that turned unsafe while they travelled is held (re-aimed
+// when the civilization has an open, calm settlement, else deferred); past the retry window it lands anyway and
+// counts as arrived into a crisis. Off, it lands at once.
+function testUnsafeDestinationHoldsThenLands() {
+  const priorSafety = CONFIG.destinationSafetyEnabled;
+  const priorThr = CONFIG.violenceFleeThreshold;
+  CONFIG.destinationSafetyEnabled = true;
+  CONFIG.violenceFleeThreshold = 2;
+  const landed = [];
+  const city = { addRuralPopulation: () => true, owner: 2, location: { x: 0, y: 0 } };
+  const hot = { key: "2:9", owner: 2, violence: 5, population: 5, rural: 5, city };
+  const state = { monoTurn: 5, transit: [makeTransit()] };
+  const out = processArrivals(state, [hot]);
+  assert.equal(out.length, 0, "held: nothing lands into the crisis");
+  assert.equal(state.transit.length, 1, "it stays on the road");
+  assert.equal(state.transit[0].defers, 1, "one deferral counted, so the window still bounds it");
+  // A calm settlement of the same civilization: re-aimed there and landed next turn.
+  const calmCity = { addRuralPopulation: () => { landed.push("calm"); return true; }, owner: 2, location: { x: 1, y: 0 } };
+  const calm = { key: "2:7", owner: 2, violence: 0, population: 9, rural: 9, city: calmCity };
+  state.monoTurn = 6;
+  assert.equal(processArrivals(state, [hot, calm]).length, 0, "re-aimed this turn");
+  assert.equal(state.transit[0].destKey, "2:7");
+  state.monoTurn = 7;
+  const now = processArrivals(state, [hot, calm]);
+  assert.equal(now.length, 1);
+  assert.equal(now[0].cause, "war");
+  assert.deepEqual(landed, ["calm"], "and lands in the calm settlement");
+  // Past the retry window, it lands anyway.
+  const late = { monoTurn: 5, transit: [makeTransit({ defers: 4 })] };
+  const lateOut = processArrivals(late, [hot]);
+  assert.equal(lateOut.length, 1, "lands past the window");
+  assert.equal(lateOut[0].destOwner, 2);
+  // Off: lands at once.
+  CONFIG.destinationSafetyEnabled = false;
+  const off = { monoTurn: 5, transit: [makeTransit()] };
+  assert.equal(processArrivals(off, [hot]).length, 1);
+  CONFIG.destinationSafetyEnabled = priorSafety;
+  CONFIG.violenceFleeThreshold = priorThr;
+}
+
 testSkipsWhenNoTransitOrNoRanked();
 testConsumesOnlyDueTransitEntries();
 testOneThrowDoesNotDropRemainingDueArrivals();
@@ -258,6 +299,7 @@ testInboundCapDefersDueArrival();
 testInboundCounterIncrementsOnSuccessfulArrival();
 testPerishesAfterMaxDefers();
 testLongestWaitingLandsFirst();
+testUnsafeDestinationHoldsThenLands();
 
 CONFIG.refugeePoolEnabled = priorRefugeePoolEnabled;
 CONFIG.refugeeImmediateSettlePct = priorRefugeeImmediatePct;

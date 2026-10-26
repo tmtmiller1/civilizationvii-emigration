@@ -120,7 +120,7 @@ function testPullRowsReconstructAdjustedPull() {
 
 /** Every additive term pullBreakdown itemizes. If a term is added, this list must grow with it. */
 const PULL_TERMS = ["gradient", "tilt", "reluctance", "crowding", "cityState", "crossCiv",
-  "dominance", "drain", "distance", "aggressor", "flight", "congestion"];
+  "dominance", "drain", "distance", "aggressor", "flight", "congestion", "unsafe"];
 
 function testPullReconstructionCoversEveryTermAtOnce() {
   // The case above leaves congestion, dominance, tilt, flight and aggressor at zero, and a term that
@@ -141,8 +141,9 @@ function testPullReconstructionCoversEveryTermAtOnce() {
     // what arms directional flight; disaster alone does not), running toward a big civ (dominance)
     // that happens to be its aggressor (the aggressor term only fires on the attacker's own cities),
     // into a congested, crowded city-state.
+    // The destination is itself under (lighter) attack, so the safety penalty fires at half (the source is worse off).
     const src = sig(1, 10, 5, 0, 0, { disaster: 9, violence: 6 });
-    const dest = sig(2, 60, 9, 4, 2, { isCityState: true });
+    const dest = sig(2, 60, 9, 4, 2, { isCityState: true, violence: 3, city: { location: { x: 4, y: 2 }, id: { owner: 2, id: 1 } } });
     const ctx = { flee: { x: 1, y: 1 }, ownerPop: { 1: 10, 2: 400 }, aggressors: new Set([2]) };
     const rows = explainPull(src, dest, ctx);
     const real = adjustedPull(src, dest, ctx.flee, ctx.ownerPop, ctx.aggressors);

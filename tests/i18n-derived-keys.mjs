@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 
 // Derived-key drift guard. i18n-ui-keys only sees whole LOC_ literals; keys built from a position or an
-// id ("LOC_EMIG_GUIDE_" + i + "_R" + r + "_Q", "LOC_EMIG_QTR_WHY_" + civ + "_" + id, …) slip past it, and a
+// id ("LOC_EMIG_QTR_WHY_" + civ + "_" + id, …) slip past it, and a
 // missing one shows the English fallback in every language. This drives each family with every input
 // it can take, records the keys handed to Locale.compose, and checks that every mod-owned one is defined
 // in en_us. The Chronicle quote families (LOC_EMIG_DQ_*, LOC_EMIG_QTR_Q_*) have their own parity tests in
@@ -25,7 +25,6 @@ globalThis.Locale = {
 };
 
 try {
-  const { __test: guide } = await import("/emigration/ui/emigration-guide.js");
   const { quarterOptionsFor } = await import("/emigration/ui/emigration-quarter-registry.js");
   const { QUARTER_BONUSES } = await import("/emigration/ui/emigration-quarter-bonuses.js");
   const { factorLabel } = await import("/emigration/ui/emigration-explain.js");
@@ -35,21 +34,6 @@ try {
   const phrases = await import("/emigration/ui/emigration-quarter-phrases.js");
   const reasons = await import("/emigration/ui/emigration-move-reasons.js");
   const { msgText } = await import("/emigration/ui/emigration-loc.js");
-
-  // The Guide's section titles, matrix rows and FAQ pairs, keyed by position. The keys are rebuilt here
-  // exactly as renderGuideSection builds them, from the same data.
-  family = "guide";
-  for (const g of guide.GUIDE) {
-    Locale.compose("LOC_EMIG_GUIDE_" + g._i + "_TITLE");
-    (g.rows || []).forEach((r, ri) => {
-      Locale.compose("LOC_EMIG_GUIDE_" + g._i + "_R" + ri + "_Q");
-      if (r.note) Locale.compose("LOC_EMIG_GUIDE_" + g._i + "_R" + ri + "_N");
-    });
-    (g.faq || []).forEach((_f, fi) => {
-      Locale.compose("LOC_EMIG_GUIDE_" + g._i + "_F" + fi + "_Q");
-      Locale.compose("LOC_EMIG_GUIDE_" + g._i + "_F" + fi + "_A");
-    });
-  }
 
   // Enclave stances: each civ's options (why / label / yield / act keys) and the neutral fallback.
   family = "quarter-registry";

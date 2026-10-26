@@ -4,15 +4,86 @@
 // cooldown, the monotonic scaling turn, and the in-flight transit queue) lives in GameConfiguration
 // so it survives save/reload.
 
+import { CONFIG } from "/emigration/ui/emigration-config.js";
+
 const STATE_KEY = "EmigrationState_v1";
 const STATE_SCHEMA_VERSION = 2;
 const MAX_SOURCE_ENTRIES = 4096;
 const MAX_TRANSIT_ENTRIES = 4096;
+const MAX_CITY_ENTRIES = 1024;
 
 function defaultState() {
   /** @type {EmigState} */
-  const s = { sources: {}, monoTurn: 0, transit: [] };
+  const s = { sources: {}, monoTurn: 0, transit: [], cities: {} };
   return s;
+}
+
+// The closed-to-newcomers cities, as last loaded or saved: city key → the owner who closed it. The engine's
+// destination predicate and the arrivals pass read this many times a turn, so it's kept beside the state rather
+// than re-parsed from the store on every read; loadState and saveState refresh it.
+/** @type {Map<string, number>} */
+let _closed = new Map();
+
+/**
+ * The player's per-city intake settings: a city its owner closed takes no newcomers. Only closed cities are
+ * kept; the owner at closing time is stored so a city that changes hands reopens by itself.
+ * @param {*} cities Candidate cities map.
+ * @returns {Record<string, {closed:boolean, owner:number}>} Normalized map.
+ */
+function normalizeCitiesMap(cities) {
+  /** @type {Record<string, {closed:boolean, owner:number}>} */
+  const out = {};
+  if (!cities || typeof cities !== "object") return out;
+  let n = 0;
+  for (const [key, value] of Object.entries(cities)) {
+    if (n >= MAX_CITY_ENTRIES) break;
+    const row = normalizeCityEntry(key, value);
+    if (!row) continue;
+    out[key] = row;
+    n++;
+  }
+  return out;
+}
+
+/**
+ * @param {string} key City key. @param {*} value Candidate row.
+ * @returns {{closed:boolean, owner:number}|null} The normalized row, or null when it isn't a closed city.
+ */
+function normalizeCityEntry(key, value) {
+  if (typeof key !== "string" || !key.length || !value || typeof value !== "object") return null;
+  if (/** @type {*} */ (value).closed !== true) return null;
+  const owner = finiteNumberOr(/** @type {*} */ (value).owner, Number(key.split(":")[0]));
+  return isFinite(owner) ? { closed: true, owner } : null;
+}
+
+/** @param {Record<string, {closed:boolean, owner:number}>} cities The normalized map. */
+function rememberClosed(cities) {
+  _closed = new Map(Object.keys(cities).map((k) => [k, cities[k].owner]));
+}
+
+/**
+ * Whether a destination is closed to newcomers by its owner. False when the toggle is off, the city was never
+ * closed, or it has changed hands since (the owner at closing time no longer holds it).
+ * @param {{key?:string, owner?:number}|null|undefined} dest A city signal (key and owner).
+ * @returns {boolean} True when closed.
+ */
+export function isCityClosed(dest) {
+  if (!CONFIG.cityIntakeToggleEnabled || !dest || typeof dest.key !== "string") return false;
+  const owner = _closed.get(dest.key);
+  return owner !== undefined && owner === dest.owner;
+}
+
+/**
+ * Close a city to newcomers, or open it again. Persists at once, so the next pass (and the next readout) sees it.
+ * @param {string} cityKey The city's stable key (owner:localId).
+ * @param {boolean} on True to close, false to open.
+ */
+export function setCityClosed(cityKey, on) {
+  if (typeof cityKey !== "string" || !cityKey.length) return;
+  const state = loadState();
+  if (on) state.cities[cityKey] = { closed: true, owner: Number(cityKey.split(":")[0]) };
+  else delete state.cities[cityKey];
+  saveState(state);
 }
 
 /**
@@ -208,6 +279,7 @@ function normalizeTransitList(transit) {
  * @property {Record<string, {pressure:number, cooldown:number}>} sources Per-source state.
  * @property {number} monoTurn Monotonic scaling turn (never resets at age boundaries).
  * @property {Transit[]} transit In-flight lagged migrations awaiting arrival.
+ * @property {Record<string, {closed:boolean, owner:number}>} cities Per-city intake settings (closed cities only).
  */
 
 /**
@@ -244,6 +316,8 @@ function normalizeState(s) {
   out.monoTurn = normalizeMonoTurn(payload.monoTurn);
   out.sources = normalizeSourcesMap(payload.sources);
   out.transit = normalizeTransitList(payload.transit);
+  out.cities = normalizeCitiesMap(payload.cities);
+  rememberClosed(out.cities);
   return out;
 }
 

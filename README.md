@@ -53,7 +53,8 @@ Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationv
 - Spoil Guard: one checkbox hides civilizations you haven't met across the Emigration screens, with a red pill on the
   screen saying so, and it works together with the Demographics guard.
 - Talent Attraction is +1 Science per 5 Population in every settlement (per 4 in the Modern Age) through the game's
-  own yield system; Consular Protection carries +1/+2 Influence a turn the same way. Both cards name their numbers
+  own yield system, with an upkeep of 2 Gold per settlement (3 in Modern); Consular Protection carries +3/+5 Influence
+  a turn the same way. Both cards name their numbers
   the way the game does, and the AI's planner can value them.
 - The AI plays its side: a second city strategy ("hold your people") biases Production and Happiness when a
   settlement's Food stalls, AI civilizations get the free homecoming and pay the mod's prices with a discount for the
@@ -178,7 +179,13 @@ Compatible with Civilization VII 1.5.0.
 - **Disaster and plague refugees:** floods, volcanoes, storms, and plague can force migration
 - **Famine and unrest:** starvation and sustained unrest push people out
 - **Crisis deaths:** prolonged siege, famine, war, or disaster can kill trapped populations
-- **Displacement caps:** up to 60% of a city's population per siege and 50% per disaster
+- **Displacement caps:** up to 60% of a city's population per siege and 50% per disaster; deaths under siege count against the same siege, which stops killing at 80% of the population it began with
+- **Refugees avoid a settlement under attack:** a destination in a crisis of its own is a much weaker destination while it lasts, and refugees on the road to it are held or sent to the next calm settlement; with nowhere safer, people still go
+- **Flight waits for sustained fighting:** two turns over the flee threshold before people flee as war refugees; a lone skirmish or a one-turn siege flag moves nobody, and razing empties a settlement at once
+- **Stalled sieges:** a besieged city nobody attacks for 3 turns has a stalled siege: it stops driving people out and kills nobody until the next attack, and the readout says "Siege stalled"
+- **Departure forecast:** under the pressure gauge on each of your settlements' cards and in the city readout, "About 3 people are likely to leave in the next 4 turns", projected from how fast the pressure has been rising, or "Nobody is likely to leave soon"
+- **First-loss explainer:** off by default; on, one page the first time a settlement of yours loses a tile, saying what happened, where they went and why, what happens next and where to look
+- **Close a settlement to newcomers:** a button on each of your settlements' cards; a closed settlement takes nobody in, arrivals go to your next best settlement, and one already on the road is re-aimed when it lands
 - **Resettlement time:** war and disaster refugees join the host population gradually; happy, open, uncrowded hosts settle them faster and pay upkeep while they wait
 - **Refugee decisions:** rare choices to welcome refugees, settle them on the frontier, or turn them away; AI hosts make the same choice by a rule, at the same cost
 
@@ -198,8 +205,10 @@ Compatible with Civilization VII 1.5.0.
 - **Open Borders:** increases cross-civilization migration
 - **Ten cards in all:** the two stances in every age, Talent Attraction and Consular Protection from the Exploration
   Age
-- **Consular Protection:** Influence for your people's enclaves abroad, and grievances against a host that slots a
-  suspicion card over them
+- **Talent Attraction:** +1 Science per 5 Population in every settlement (per 4 in Modern) for 2 Gold per settlement
+  (3 in Modern), so the people you draw keep paying and a wide civilization pays more for it
+- **Consular Protection:** +3 Influence a turn (+5 in Modern) plus Influence for your people's enclaves abroad, and
+  grievances against a host that slots a suspicion card over them
 
 ### Identity and culture
 
@@ -657,7 +666,9 @@ A civilization that has recently absorbed many migrants becomes a less attractiv
 
 ### D. Capped, time-gated war displacement (`warSiege`)
 
-War pressure escalates from `siegeFloor` to full strength over `siegeRampTurns` (×S) and total displacement is capped at `siegeLossCapPct` of onset population. A city can lose substantial population but cannot be emptied by displacement alone.
+War pressure escalates from `siegeFloor` to full strength over `siegeRampTurns` (×S) and total displacement is capped at `siegeLossCapPct` of onset population. A city can lose substantial population but cannot be emptied by displacement alone. Deaths under siege count into the same tally, and at `siegeTotalLossCapPct` (0.8) of the onset population the siege kills nobody else.
+
+The engine's besieged flag alone (enemy units beside the city, no attack) adds `vwSiege × siegeBesiegedFloor` = 1.2 a turn against the 0.55 decay, so a city nobody attacks would stand at about 2.7, over the flee threshold of 2, for as long as the units stay. After `siegeStallTurns` (3, ×S) turns with no fresh district damage and no fighting in its borders the siege is stalled: the floor isn't applied, the standing level decays away, the death gate drops the fighting's share, and the readout and the Settlements card say "Siege stalled". The next attack ends the stall.
 
 ### The civ tuning table (`emigration-civ-tuning.js`, `civTuningEnabled`)
 

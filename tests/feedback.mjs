@@ -49,6 +49,27 @@ function testImportantModeNoPerPassSpam() {
   assert.equal(toasts, 0);
 }
 
+function testFirstLossPageSkipsTheNotice() {
+  // The first-loss page says it, so the pass's "People are leaving" notice is skipped; a second tile loss
+  // (the flag set) toasts as before. Off-engine the dialog itself is a silent no-op.
+  CONFIG.notifyMode = 2;
+  CONFIG.notifyCooldownTurns = 0;
+  CONFIG.firstLossPage = true;
+  globalThis.GameContext = { localPlayerID: 1 };
+  toasts = 0;
+  TURN = 30;
+  const loss = { phase: "move", cause: "unhappiness", srcOwner: 1, srcName: "Ur", destOwner: 1, destName: "Uruk",
+    people: 900, points: 1, subject: "tile", crossCiv: false };
+  reportPassFeedback([loss]);
+  assert.equal(toasts, 0, "the page showed: no notice that pass");
+  assert.equal(JSON.parse(KV.EmigrationFirstLoss_v1).city, "Ur", "and the flag is set");
+  TURN = 31;
+  reportPassFeedback([loss]);
+  assert.equal(toasts, 1, "the next loss is announced as before");
+  CONFIG.firstLossPage = false;
+  delete globalThis.GameContext;
+}
+
 function testLegacyNewsCooldownLoadsOnBoot() {
   CONFIG.notifyMode = 1;
   CONFIG.notifyCooldownTurns = 5;
@@ -279,3 +300,4 @@ testMixedScopeSplitsIntoInternalAndExternalRows();
 testStanceTipOnlyOnVoluntaryCrossCivLosses();
 
 console.log("feedback harness passed");
+testFirstLossPageSkipsTheNotice();

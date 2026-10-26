@@ -73,7 +73,53 @@ The Settlements tab becomes the dashboard, displaced people come home on their o
   Scope & Visibility and the lens and options pages describe the Spoil Guard; the notifications page describes the
   notices beside End Turn and the readout's fix line; Common Questions and About say what the AI does.
 
+### Added
+- A first-loss explainer, off by default. The first time one of your settlements loses a tile to emigration, one
+  page in the mod's pop-up frame says what happened ("3 people left Cilakofa this turn. They tore down the Farm
+  they worked on the way out; the plot is yours to settle again."), where they went and why, what happens next and
+  where to look, with the settlement's fix line as its detail, and the buttons "Open the Emigration screen" and
+  "Got it". It shows once per game and leaves "The First to Leave" in the Chronicle. The Mods-tab checkbox
+  "First-loss explainer" turns it on.
+- The Civilopedia's Common Questions page gained the lines the retired Guide tab still answered better: towns
+  and internal moves take part, you can't hand-place migrants, the three brakes against a snowball, and what a
+  repair does and doesn't do. The Guide module and its strings are gone.
+- A departure forecast under the pressure gauge in each of your settlements' Leaving pane, and as a line in the
+  city readout: "About 3 people are likely to leave in the next 4 turns", projected from how fast the pressure has
+  been rising over the last few turns (a cooldown still running pushes it back, and a far crossing reads smaller),
+  or "Nobody is likely to leave soon" when the pressure is flat or falling. It is a projection, never a promise.
+  Advanced settings: "Departure forecast" (on) and "Forecast: how far ahead" (3, 5 or 8 turns).
+- "Close to newcomers", a button in the Arriving pane of each of your settlements' cards. A closed settlement takes
+  nobody in: arrivals go to your next best settlement, one already on the road is re-aimed at it when it lands,
+  and the closed settlement pays no integration cost. Refugees with nowhere else to go are not forced in; they take
+  the next destination or die as before. The pane's heading reads "Closed to newcomers" while it is closed, the
+  settlement's readout says the same, and "Open to newcomers" reverses it. The AI never closes a city. The
+  Advanced setting "Close a settlement to newcomers" (on) hides the button and reopens everything when off.
+
 ### Changed
+- Refugees avoid a settlement under attack. A destination in a crisis of its own (fighting or disaster over the
+  flee threshold, or being razed) is a much weaker destination while it lasts: it loses 12 for each threshold's
+  worth it sits over the flee threshold, at most 30, half of that for people fleeing somewhere worse. A stalled
+  siege lifts it. Refugees already on the road to such a settlement are held, or sent to the civilization's next
+  calm settlement, until it is safe or their wait runs out. With nowhere safer, people still go. In the 2026-10-26
+  reads New York took four turns of war refugees while itself besieged, and one crisis move in six landed in a
+  city in crisis. Advanced settings: "Refugees avoid a settlement under attack" and its two numbers.
+- Flight waits for sustained fighting. A settlement's fighting has to stay over the flee threshold for two turns
+  running before its people flee it as war refugees and the fighting can kill; a lone skirmish or a one-turn
+  siege flag moves nobody (Philadelphia crossed the threshold on a single flagged turn). A settlement being razed
+  empties at once, as before. Advanced setting: "Turns of fighting before people flee".
+- Talent Attraction costs 2 Gold per settlement in Exploration and 3 in Modern, beside its Science, so an
+  eight-settlement civilization weighs +16 Science against -16 Gold; every AI slotted it within ten turns of
+  Inspiration while it was free. Consular Protection's visible Influence is +3 in Exploration and +5 in Modern
+  (+1 and +2 before), with the per-enclave Influence on top; no AI slotted it in 139 turns against the game's
+  Influence cards at +4. A save holding either card keeps it.
+- The balance counters behind `emigration.metrics()` live in the save: a read after a reload shows the whole
+  game's totals beside this session's. Nothing a player sees.
+- A siege nobody fights stalls. Enemy units parked beside a city used to drive people out, and kill some, for as
+  long as they stood there, with no attack ever made. After 3 quiet turns (no district damage, no fighting in the
+  settlement's borders) the siege is stalled: it adds no pressure, nobody dies for it, and the settlement's readout
+  and its card on the Settlements tab say "Siege stalled". The next attack ends the stall. Deaths under siege now
+  count against the same siege as departures, and at 80% of the population it began with the siege kills nobody
+  else. Both numbers are in Advanced settings under War & violence.
 - Talent Attraction gives +1 Science per 5 Population in every settlement (per 4 in the Modern Age), through the
   game's own yield system, so it shows in each settlement's yield breakdown. Immigrants raise population, so the
   people you draw keep paying for as long as they stay. The old per-immigrant bonus that faded 30% a turn is gone;

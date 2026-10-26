@@ -10,7 +10,9 @@
 // under a defensive guard (safeApplyArrival) and one bad record cannot drop the rest of the queue.
 
 import { arriveRural, arrivalFrom } from "/emigration/ui/emigration-arrival-placement.js";
-import { arriveRecord } from "/emigration/ui/emigration-migration-records.js";
+import { arriveRecord, cityName, settlementLoc } from "/emigration/ui/emigration-migration-records.js";
+import { isCityClosed } from "/emigration/ui/emigration-state.js";
+import { destInCrisis } from "/emigration/ui/emigration-pull.js";
 import { applyArrivalConsequences } from "/emigration/ui/emigration-consequences.js";
 import { canReceiveInbound, noteInbound } from "/emigration/ui/emigration-inbound.js";
 import { dlog } from "/emigration/ui/emigration-log.js";
@@ -76,16 +78,62 @@ function deferArrival(e, state, now) {
   state.transit.push(e);
 }
 
+
 /**
- * Whether a landing destination has itself turned unsafe (siege / violence / disaster over the flee
- * thresholds), so the refugee is arriving into a fresh crisis.
- * @param {*} destSig The live destination signal.
- * @returns {boolean} True when the destination is in crisis.
+ * Where an arrival due at a city that closed to newcomers while it travelled goes instead: the most populous
+ * settlement of the same civilization that is open, not in crisis, and can take a point this turn.
+ * @param {Transit} e The arrival. @param {Map<string, *>} byKey Live ranking by key.
+ * @param {InboundCtx|undefined} ctx The inbound context.
+ * @returns {*|null} The new destination's signal, or null when there is none.
  */
-function destInCrisis(destSig) {
-  return !!destSig.siege
-    || (destSig.violence || 0) >= CONFIG.violenceFleeThreshold
-    || (destSig.disaster || 0) >= CONFIG.disasterFleeThreshold;
+function rerouteTarget(e, byKey, ctx) {
+  let best = null;
+  for (const d of byKey.values()) {
+    if (!canTakeRerouted(d, e, ctx)) continue;
+    if (!best || (d.population || 0) > (best.population || 0)) best = d;
+  }
+  return best;
+}
+
+/**
+ * @param {*} d A candidate destination signal. @param {Transit} e The arrival.
+ * @param {InboundCtx|undefined} ctx The inbound context. @returns {boolean} Whether `d` can take it.
+ */
+function canTakeRerouted(d, e, ctx) {
+  if (d.owner !== e.destOwner || d.key === e.destKey) return false;
+  if (isCityClosed(d) || destInCrisis(d)) return false;
+  return canReceiveInbound(d.key, ctx);
+}
+
+/**
+ * The outcome for an arrival whose destination closed to newcomers (or turned unsafe) in transit: re-aimed at
+ * the best open settlement of the same civilization and landed next turn (a deferral, so the retry window still
+ * bounds it),
+ * or, with nowhere else to go, deferred like a capped arrival until the window runs out.
+ * @param {Transit} e The arrival. @param {Map<string, *>} byKey Live ranking by key.
+ * @param {InboundCtx|undefined} ctx The inbound context. @param {boolean} expired Past the retry window.
+ * @returns {{action:"defer"|"die", dieKind:"capped"}} The outcome.
+ */
+function closedOutcome(e, byKey, ctx, expired) {
+  const alt = expired ? null : rerouteTarget(e, byKey, ctx);
+  if (alt) {
+    e.destKey = alt.key;
+    e.destOwner = alt.owner;
+    e.destName = cityName(alt.city);
+    e.destLoc = settlementLoc(alt.city);
+    dlog("arrivals: " + e.srcName + " rerouted to " + e.destName + " (destination closed to newcomers)");
+  }
+  return { action: expired ? "die" : "defer", dieKind: "capped" };
+}
+
+/**
+ * The arrival half of destination safety: a city that turned unsafe while they travelled holds or re-aims the
+ * arrival like a closed one; past the retry window they land anyway, and arrivedIntoCrisis counts those.
+ * @param {*} destSig The live destination signal. @param {boolean} expired Past the retry window.
+ * @returns {boolean} True when the arrival is held this turn.
+ */
+function heldForSafety(destSig, expired) {
+  return !!CONFIG.destinationSafetyEnabled && !expired && destInCrisis(destSig);
 }
 
 /**
@@ -102,6 +150,7 @@ function destInCrisis(destSig) {
 function resolveArrival(e, byKey, ctx, expired, now) {
   const destSig = byKey.get(e.destKey);
   if (!destSig) return { action: "die", dieKind: "razed" }; // razed/captured en route → perished in transit
+  if (isCityClosed(destSig) || heldForSafety(destSig, expired)) return closedOutcome(e, byKey, ctx, expired);
   // At the destination's inbound cap, or it momentarily can't accept a point: retry a few turns, then
   // perish (expired) rather than ever force past the cap: a refugee who can't find room dies waiting.
   if (!canReceiveInbound(e.destKey, ctx)) return { action: expired ? "die" : "defer", dieKind: "capped" };

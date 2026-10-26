@@ -27,11 +27,6 @@ export const DENSITY_CSS =
   ".emig-dash .emig-filter-btn{font-size:var(--dg-fs-78);}" +
   ".emig-dash .emig-netc-cap{font-size:var(--dg-fs-95);}" +
   ".emig-dash .emig-netc-time-note{font-size:var(--dg-fs-85);}" +
-  ".emig-dash .emig-guide-h{font-size:var(--dg-fs-120);}" +
-  ".emig-dash .emig-guide-q{font-size:var(--dg-fs-120);}" +
-  ".emig-dash .emig-guide-note{font-size:var(--dg-fs-105);}" +
-  ".emig-dash .emig-guide-faq-q{font-size:var(--dg-fs-120);}" +
-  ".emig-dash .emig-guide-faq-a{font-size:var(--dg-fs-105);}" +
   // compact chrome (viewport ≲ 54rem tall)
   "@media (max-height: 53.9rem){" +
   ".emig-dash{gap:0.55rem;}" +
@@ -53,7 +48,6 @@ export const DENSITY_CSS =
   ".emig-dash .emig-netc-time-note{margin:0.35rem 0;}" +
   ".emig-dash .emig-ntf-head{padding:0.32rem 0.55rem;}" +
   ".emig-dash .emig-ntf-list{gap:0.25rem;}" +
-  ".emig-dash .emig-guide-row{padding:0.45rem 0.1rem;}" +
   "}" +
   // micro chrome (viewport ≲ 44rem tall, cascades over compact)
   "@media (max-height: 43.9rem){" +
@@ -85,6 +79,5 @@ export const DENSITY_CSS =
   ".emig-dash .emig-ntf-head{padding:0.26rem 0.5rem;gap:0.45rem;}" +
   ".emig-dash .emig-ntf-list{gap:0.2rem;}" +
   ".emig-dash .emig-ntf-detail{padding:0.08rem 0.6rem 0.4rem 0.8rem;}" +
-  ".emig-dash .emig-guide-row{padding:0.38rem 0.1rem;}" +
   "}";
 

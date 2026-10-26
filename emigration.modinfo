@@ -184,7 +184,6 @@
                     <Item>ui/emigration-city-panel.js</Item>
                     <Item>ui/emigration-enclave-pacing.js</Item>
                     <Item>ui/emigration-snapshot-reminder.js</Item>
-                    <Item>ui/emigration-guide.js</Item>
                     <Item>ui/emigration-views.js</Item>
                     <Item>ui/emigration-network-viz.js</Item>
                     <Item>ui/emigration-network-fit.js</Item>
@@ -203,6 +202,7 @@
                     <Item>ui/emigration-ledger-view.js</Item>
                     <Item>ui/emigration-demo-data.js</Item>
                     <Item>ui/emigration-window.js</Item>
+                    <Item>ui/emigration-window-settlements.js</Item>
                     <Item>ui/emigration-screen.js</Item>
                     <Item>ui/emigration-screen.html</Item>
                     <Item>ui/emigration-screen.css</Item>
@@ -213,6 +213,7 @@
                     <Item>ui/emigration-dock-decorator.js</Item>
                     <Item>ui/emigration-migration-page.js</Item>
                     <Item>ui/emigration-engine.js</Item>
+                    <Item>ui/emigration-outlet-death.js</Item>
                     <Item>ui/emigration-game-speed.js</Item>
                     <Item>ui/emigration-notifications.js</Item>
                     <Item>ui/emigration-notifications-view.js</Item>
@@ -281,6 +282,9 @@
                     <Item>ui/emigration-home-notice.js</Item>
                     <Item>ui/emigration-settlement-model.js</Item>
                     <Item>ui/emigration-settlement-card.js</Item>
+                    <Item>ui/emigration-settlement-ledger.js</Item>
+                    <Item>ui/emigration-forecast.js</Item>
+                    <Item>ui/emigration-first-loss.js</Item>
                     <Item>ui/emigration-settlements-section.js</Item>
                     <Item>ui/emigration-quarter-decision.js</Item>
                     <Item>ui/emigration-pass-signals.js</Item>

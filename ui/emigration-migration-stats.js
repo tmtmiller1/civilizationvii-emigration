@@ -11,7 +11,9 @@ import { citySnapshot } from "/emigration/ui/emigration-city-readout-data.js";
 import { getSnapshotInterval } from "/emigration/ui/emigration-settings.js";
 import { cityName } from "/emigration/ui/emigration-migration-records.js";
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
-import { modPointsByCity, recordCityNet, cityNetSeriesFrom } from "/emigration/ui/emigration-city-net.js";
+import {
+  modPointsByCity, recordCityNet, cityNetSeriesFrom, recordPressure
+} from "/emigration/ui/emigration-city-net.js";
 import { foldInternal } from "/emigration/ui/emigration-internal-tally.js";
 import { normalize, freshState, migrateState } from "/emigration/ui/emigration-stats-schema.js";
 import {
@@ -99,6 +101,8 @@ let _recent = [];
  *   of chartAge so the age-transition re-baseline guard is immune to call ordering.
  * @property {Record<string, number[]>} cityNet Per-city rolling net pop-point change ("owner|cityName"
  *   -> recent nets), bounded, for the city-readout sparkline.
+ * @property {Record<string, number[]>} pressureSeries Per-source rolling emigration-pressure samples (source
+ *   key -> recent pressures, oldest first), bounded, for the forecast.
  */
 
 /** @type {MigStatsState | null} */
@@ -658,7 +662,35 @@ export function recordMigrations(migs) {
     recordCityNet(s.cityNet, list);
     logNetDistribution(s, list);
   }
+  if (_pendingPressure) {
+    recordPressure(s.pressureSeries, _pendingPressure); // the pass's pressures, folded in with its moves
+    _pendingPressure = null;
+  }
   save();
+}
+
+/** The engine's per-source pressures after the latest pass, waiting for recordMigrations to fold them in. */
+/** @type {Record<string, {pressure?:number}>|null} */
+let _pendingPressure = null;
+
+/**
+ * Hand the engine's per-source pressures after a pass to the stats, which record them with that pass's
+ * migrations (one save, not two). Called by runPass; the forecast reads the samples back.
+ * @param {Record<string, {pressure?:number}>} sources The engine's per-source state after the pass.
+ */
+export function recordPressureSamples(sources) {
+  _pendingPressure = sources && typeof sources === "object" ? sources : null;
+}
+
+/**
+ * The recent emigration-pressure samples for a source (its engine key, "owner:localId"), oldest first; empty
+ * when none were recorded. Feeds the forecast's rate of rise.
+ * @param {string} sourceKey The source key.
+ * @param {number} [n] Max samples to return.
+ * @returns {number[]} Recent pressures.
+ */
+export function cityPressureSeries(sourceKey, n = 6) {
+  return cityNetSeriesFrom(load().pressureSeries || {}, sourceKey, n);
 }
 
 /**
@@ -908,6 +940,8 @@ try {
       recentEventsFor(pid, limit),
     // Per-city recent net-migration series ("owner|cityName") for the readout sparkline.
     cityNetSeries: (/** @type {string} */ k, /** @type {number=} */ n) => cityNetSeries(k, n),
+    // Per-source recent emigration-pressure samples (engine key "owner:localId") for the forecast.
+    cityPressureSeries: (/** @type {string} */ k, /** @type {number=} */ n) => cityPressureSeries(k, n),
     // Cross-civ flow matrix (src→dest people) for the migration-network visualization.
     flows: () => migrationFlows(),
     // Decimated cumulative-flow history (timeline frames) for the network scrubber.

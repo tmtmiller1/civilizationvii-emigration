@@ -8,26 +8,103 @@ import { dlog } from "/emigration/ui/emigration-log.js";
 import { registerCacheReset } from "/emigration/ui/emigration-cache-reset.js";
 import { DEATH_REASON } from "/emigration/ui/emigration-move-reasons.js";
 
-// Balance counters (session-scoped; reset on a new game), read via telemetryCounters() and summarized
-// to the debug log on the throttled report cadence below. crisisInternal/crisisCrossCiv split refugees
-// by destination, attritionTrapped/attritionFleeing by whether a refuge existed, transitRazed/
-// transitCapped by why a lagged refugee never landed; reasonHits{tag} counts scoring terms per move.
+// Balance counters, read via telemetryCounters() and summarized to the debug log on the throttled report cadence
+// below. Two sets: the all-game totals, persisted in the save under STATE_KEY with each pass (session 1 of the
+// 3.7.0 plan found a read after a reload covered only the turns driven since), and this session's, zero on every
+// load. Every bump lands in both. crisisInternal/crisisCrossCiv split refugees by destination,
+// attritionTrapped/attritionFleeing by whether a refuge existed, transitRazed/transitCapped by why a lagged refugee
+// never landed, crisisDestAvoided counts moves the destination-safety penalty turned elsewhere; reasonHits{tag}
+// counts scoring terms per move.
+const STATE_KEY = "EmigrationTelemetry_v1";
 const FIELDS = [
   "passes", "zeroMovePasses",
   "voluntaryMoves", "crisisMoves", "crisisInternal", "crisisCrossCiv", "crossCivMoves", "returnMoves",
-  "attritionTrapped", "attritionFleeing", "transitRazed", "transitCapped", "arrivedIntoCrisis",
+  "attritionTrapped", "attritionFleeing", "transitRazed", "transitCapped", "arrivedIntoCrisis", "crisisDestAvoided",
   "refugeesQueued", "refugeesSettled"
 ];
-/** @type {Record<string, number>} */
-const _counters = {};
-/** @type {Record<string, number>} Per-reason-tag move counts (P0.4 reason histogram). */
-let _reasonHits = {};
-function resetCounters() {
-  for (const f of FIELDS) _counters[f] = 0;
-  _reasonHits = {};
+/** @returns {Record<string, number>} Every field at zero. */
+function zeroCounters() {
+  /** @type {Record<string, number>} */
+  const out = {};
+  for (const f of FIELDS) out[f] = 0;
+  return out;
 }
-resetCounters();
+/** @type {Record<string, number>|null} All-game totals; null until read from the save. */
+let _all = null;
+/** @type {Record<string, number>} All-game per-reason-tag move counts (P0.4 reason histogram). */
+let _allReasons = {};
+/** @type {Record<string, number>} This session's counters, zero on every load. */
+let _session = zeroCounters();
+/** @type {Record<string, number>} This session's reason histogram. */
+let _sessionReasons = {};
+function resetCounters() {
+  _all = null;
+  _allReasons = {};
+  _session = zeroCounters();
+  _sessionReasons = {};
+}
 registerCacheReset(resetCounters);
+
+/**
+ * @param {*} m A parsed map. @returns {Record<string, number>} Its finite non-negative numbers.
+ */
+function finiteMap(m) {
+  /** @type {Record<string, number>} */
+  const out = {};
+  if (m && typeof m === "object") {
+    for (const k of Object.keys(m)) {
+      const v = Number(m[k]);
+      if (Number.isFinite(v) && v >= 0) out[k] = v;
+    }
+  }
+  return out;
+}
+
+/** Read the all-game totals from the save (zeros when absent or unreadable). */
+function loadAll() {
+  _all = zeroCounters();
+  _allReasons = {};
+  const v = readStored();
+  if (!v) return;
+  const c = finiteMap(v.counters);
+  for (const f of FIELDS) if (f in c) _all[f] = c[f];
+  _allReasons = finiteMap(v.reasons);
+}
+
+/** @returns {*|null} The parsed save value, or null when absent or unreadable. */
+function readStored() {
+  try {
+    const raw = Configuration?.getGame?.()?.getValue?.(STATE_KEY);
+    const v = typeof raw === "string" && raw.length ? JSON.parse(raw) : null;
+    return v && typeof v === "object" ? v : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+/** @returns {Record<string, number>} The all-game totals, read from the save on first use. */
+function all() {
+  if (!_all) loadAll();
+  return /** @type {Record<string, number>} */ (_all);
+}
+
+/** Write the all-game totals to the save. Called once per pass, with the pass's counts folded in. */
+function persistAll() {
+  try {
+    Configuration?.editGame?.()?.setValue?.(STATE_KEY, JSON.stringify({ counters: all(), reasons: _allReasons }));
+  } catch (_) {
+    /* the totals since the last successful write are lost on reload; the session's stay */
+  }
+}
+
+/**
+ * Add to one counter, in the all-game totals and this session's.
+ * @param {string} field A FIELDS name. @param {number} [n] The amount (1).
+ */
+function bump(field, n = 1) {
+  all()[field] += n;
+  _session[field] += n;
+}
 
 const VOLUNTARY_CAUSES = new Set(["prosperity", "unhappiness"]);
 const CRISIS_CAUSES = new Set(["war", "disaster", "conquest"]);
@@ -39,14 +116,17 @@ const CRISIS_CAUSES = new Set(["war", "disaster", "conquest"]);
  */
 function countAttrition(m) {
   const trapped = Array.isArray(m.reasons) && m.reasons.indexOf(DEATH_REASON.NO_REFUGE) !== -1;
-  if (trapped) _counters.attritionTrapped++;
-  else _counters.attritionFleeing++;
+  bump(trapped ? "attritionTrapped" : "attritionFleeing");
 }
 
 /** @param {string[]|undefined} reasons */
 function addReasonHits(reasons) {
   if (!Array.isArray(reasons)) return;
-  for (const t of reasons) _reasonHits[t] = (_reasonHits[t] || 0) + 1;
+  all(); // the totals are loaded before the first hit lands in them
+  for (const t of reasons) {
+    _allReasons[t] = (_allReasons[t] || 0) + 1;
+    _sessionReasons[t] = (_sessionReasons[t] || 0) + 1;
+  }
 }
 
 /**
@@ -55,13 +135,12 @@ function addReasonHits(reasons) {
  * @param {*} m A move/depart record.
  */
 function countMove(m) {
-  if (VOLUNTARY_CAUSES.has(m.cause)) _counters.voluntaryMoves++;
+  if (VOLUNTARY_CAUSES.has(m.cause)) bump("voluntaryMoves");
   else if (CRISIS_CAUSES.has(m.cause)) {
-    _counters.crisisMoves++;
-    if (m.crossCiv) _counters.crisisCrossCiv++;
-    else _counters.crisisInternal++;
+    bump("crisisMoves");
+    bump(m.crossCiv ? "crisisCrossCiv" : "crisisInternal");
   } else return;
-  if (m.crossCiv) _counters.crossCivMoves++;
+  if (m.crossCiv) bump("crossCivMoves");
   addReasonHits(m.reasons);
 }
 
@@ -74,7 +153,7 @@ function foldRecord(m) {
   if (!m || m.phase === "arrive") return; // malformed / arrival half → not counted here
   if (m.cause === "attrition") return countAttrition(m); // outlet death (trapped/fleeing)
   if (m.cause === "return") {
-    _counters.returnMoves++;
+    bump("returnMoves");
     return;
   }
   countMove(m);
@@ -88,12 +167,14 @@ function foldRecord(m) {
  */
 export function recordPassCounters(migs) {
   try {
-    const before = _counters.voluntaryMoves + _counters.crisisMoves + _counters.returnMoves;
+    const c = all();
+    const before = c.voluntaryMoves + c.crisisMoves + c.returnMoves;
     for (const m of migs || []) foldRecord(m);
-    _counters.passes++;
-    if (_counters.voluntaryMoves + _counters.crisisMoves + _counters.returnMoves === before) {
-      _counters.zeroMovePasses++; // a pass that relocated nobody (bar too high / nothing pending)
+    bump("passes");
+    if (c.voluntaryMoves + c.crisisMoves + c.returnMoves === before) {
+      bump("zeroMovePasses"); // a pass that relocated nobody (bar too high / nothing pending)
     }
+    persistAll(); // the totals go into the save with the pass that made them
   } catch (_) {
     /* telemetry must never disrupt a pass */
   }
@@ -106,13 +187,18 @@ export function recordPassCounters(migs) {
  * @param {"razed"|"capped"} kind The death cause.
  */
 export function bumpTransitDeath(kind) {
-  if (kind === "razed") _counters.transitRazed++;
-  else if (kind === "capped") _counters.transitCapped++;
+  if (kind === "razed") bump("transitRazed");
+  else if (kind === "capped") bump("transitCapped");
 }
 
 /** Tally a refugee that landed in a city which had turned unsafe mid-journey. */
 export function bumpArrivedIntoCrisis() {
-  _counters.arrivedIntoCrisis++;
+  bump("arrivedIntoCrisis");
+}
+
+/** Tally a move the destination-safety penalty turned away from a city in crisis (emigration-pull.js). */
+export function bumpCrisisDestAvoided() {
+  bump("crisisDestAvoided");
 }
 
 /**
@@ -120,7 +206,7 @@ export function bumpArrivedIntoCrisis() {
  * @param {number} n Points queued.
  */
 export function bumpRefugeesQueued(n) {
-  if (n > 0) _counters.refugeesQueued += n;
+  if (n > 0) bump("refugeesQueued", n);
 }
 
 /**
@@ -128,33 +214,48 @@ export function bumpRefugeesQueued(n) {
  * @param {number} n Points settled.
  */
 export function bumpRefugeesSettled(n) {
-  if (n > 0) _counters.refugeesSettled += n;
+  if (n > 0) bump("refugeesSettled", n);
 }
 
 /**
- * A snapshot of the balance counters.
+ * A snapshot of the balance counters: the all-game totals (the save's, plus this session's passes).
  * @returns {Record<string, number>} The counts (see FIELDS).
  */
 export function telemetryCounters() {
-  return { ..._counters };
+  return { ...all() };
 }
 
 /**
- * A snapshot of the reason histogram (which destination-scoring terms drove moves).
+ * A snapshot of this session's counters alone: zero on every load.
+ * @returns {Record<string, number>} The counts (see FIELDS).
+ */
+export function telemetrySessionCounters() {
+  return { ..._session };
+}
+
+/**
+ * A snapshot of the all-game reason histogram (which destination-scoring terms drove moves).
  * @returns {Record<string, number>} Per-reason-tag counts.
  */
 export function telemetryReasonHits() {
-  return { ..._reasonHits };
+  all();
+  return { ..._allReasons };
 }
 
+/** Test-only: forget what is in memory, as a reload does; the next read comes from the save, the session from zero. */
+export const __test = {
+  dropMemory: () => { _all = null; _allReasons = {}; _session = zeroCounters(); _sessionReasons = {}; }
+};
+
 /**
- * Dump the full metric set for the `emigration.metrics()` console command: raw counters, the reason
- * histogram, and the derived shares that are the actual signals. Also logged for grepping. Never throws.
- * @returns {{counters:*, reasons:*, derived:*}} The metric snapshot.
+ * Dump the full metric set for the `emigration.metrics()` console command: the all-game counters and this
+ * session's side by side, the reason histograms, and the derived shares (from the all-game numbers) that are
+ * the actual signals. Also logged for grepping. Never throws.
+ * @returns {{counters:*, session:*, reasons:*, sessionReasons:*, derived:*}} The metric snapshot.
  */
 export function dumpCounters() {
-  const c = { ..._counters };
-  const reasons = { ..._reasonHits };
+  const c = { ...all() };
+  const reasons = { ..._allReasons };
   const moves = c.voluntaryMoves + c.crisisMoves;
   const deaths = c.attritionTrapped + c.attritionFleeing + c.transitRazed + c.transitCapped;
   const pct = (/** @type {number} */ a, /** @type {number} */ b) => (b > 0 ? Math.round((a / b) * 100) : 0);
@@ -166,7 +267,7 @@ export function dumpCounters() {
     poolBacklog: c.refugeesQueued - c.refugeesSettled, // approx: net points still held
     zeroMovePassPct: pct(c.zeroMovePasses, c.passes)
   };
-  const out = { counters: c, reasons, derived };
+  const out = { counters: c, session: { ..._session }, reasons, sessionReasons: { ..._sessionReasons }, derived };
   try {
     dlog("DUMP " + JSON.stringify(out));
   } catch (_) {
@@ -300,7 +401,7 @@ export function logNetDistribution(s, migs) {
  * @param {string} age Age label.
  */
 function reportCounters(age) {
-  const c = _counters;
+  const c = all();
   const moves = c.voluntaryMoves + c.crisisMoves;
   const share = moves > 0 ? Math.round((c.voluntaryMoves / moves) * 100) : 0;
   const xShare = moves > 0 ? Math.round((c.crossCivMoves / moves) * 100) : 0;

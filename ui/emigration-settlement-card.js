@@ -13,6 +13,10 @@ import { loc } from "/emigration/ui/emigration-loc.js";
 import { chip, peopleSub } from "/emigration/ui/emigration-displaced-view.js";
 import { pieCardSlices, legendChips } from "/emigration/ui/emigration-pies.js";
 import { civColorByIndex, CAUSE_PALETTE } from "/emigration/ui/emigration-network-paint.js";
+import { prosperityLedger } from "/emigration/ui/emigration-settlement-ledger.js";
+import { forecastLine } from "/emigration/ui/emigration-forecast.js";
+
+export { prosperityLedger, prosperityLedgerFor } from "/emigration/ui/emigration-settlement-ledger.js";
 
 /**
  * @typedef {Object} CardDeps What emigration-city-flows.js lends the card.
@@ -30,6 +34,8 @@ import { civColorByIndex, CAUSE_PALETTE } from "/emigration/ui/emigration-networ
  * @property {(name:string)=>({mix:string, mixTip:string, character:string|null, characterTip:string}|null)} [mixOf]
  *   The settlement's Mix and Character words (emigration-detail-views.js `mixWords`), or null when unread.
  * @property {()=>void} [after] What to do once a pop-up's choice is made.
+ * @property {(cityKey:string, on:boolean)=>void} [toggleIntake] Close a settlement of the player's to newcomers,
+ *   or open it again; absent when the option is off.
  * @property {{close:()=>void, reopen:(tab:string)=>void}|null} [screen] The host screen.
  */
 
@@ -159,8 +165,12 @@ function block(label) {
  */
 function attractHalf(c, m, deps) {
   const half = el("div", "emig-sc-half attract");
-  half.appendChild(halfHead(loc("LOC_EMIG_SC_ATTRACT", "Arriving"), loc("LOC_EMIG_SC_ATTRACT_SUB", "that came here this age"),
-    deps.dirTotal(c.in)));
+  const head = halfHead(loc("LOC_EMIG_SC_ATTRACT", "Arriving"), loc("LOC_EMIG_SC_ATTRACT_SUB", "that came here this age"),
+    deps.dirTotal(c.in));
+  if (c.pressure && c.pressure.closed) {
+    head.children[0].appendChild(el("span", "emig-sc-closed", loc("LOC_EMIG_SC_CLOSED", "Closed to newcomers")));
+  }
+  half.appendChild(head);
   const drawn = block(loc("LOC_EMIG_SC_DRAWN_FROM", "Attracting from"));
   if (!m) drawn.appendChild(el("div", "emig-sc-dim", loc("LOC_EMIG_SC_NO_MODEL", "Scores appear after this turn's migration pass.")));
   else if (!m.drawnFrom.length) drawn.appendChild(el("div", "emig-sc-none", loc("LOC_EMIG_SC_DRAWN_NONE", "None")));
@@ -174,8 +184,35 @@ function attractHalf(c, m, deps) {
     lever.appendChild(liftLine(m));
     lever.appendChild(el("div", "emig-sc-dim", openStanceText(m.stance)));
   }
+  const intake = intakeButton(c.pressure, deps);
+  if (intake) lever.appendChild(intake);
   half.appendChild(paneBody([drawn, lever], deps.pieBody(c.in, true)));
   return half;
+}
+
+/**
+ * The per-settlement intake switch (risks 2.4): "Close to newcomers" on an open settlement of the player's,
+ * "Open to newcomers" on a closed one, in the Scaled | Civ button style. Null when the option is off or the
+ * entry carries no city key (a civilization's card, a displaced-only card).
+ * @param {*} p The pressure entry ({cityKey, closed}) or null. @param {CardDeps} deps @returns {HTMLElement|null}
+ */
+function intakeButton(p, deps) {
+  const toggle = deps.toggleIntake;
+  if (!toggle || !p || !p.cityKey) return null;
+  const wrap = el("div", "emig-sc-intake");
+  const closed = !!p.closed;
+  const btn = el("div", "emig-filter-btn" + (closed ? " active" : ""),
+    closed ? loc("LOC_EMIG_SC_OPEN_INTAKE", "Open to newcomers") : loc("LOC_EMIG_SC_CLOSE_INTAKE", "Close to newcomers"));
+  btn.title = closed
+    ? loc("LOC_EMIG_SC_OPEN_INTAKE_TIP", "Newcomers settle here again. Arrivals already on the road land next turn.")
+    : loc("LOC_EMIG_SC_CLOSE_INTAKE_TIP", "Nobody settles here while it is closed: arrivals go to your next best "
+      + "settlement, and this one pays no integration cost for them. Refugees with nowhere else to go are not forced in.");
+  btn.addEventListener("click", () => {
+    toggle(p.cityKey, !closed);
+    if (deps.after) deps.after();
+  });
+  wrap.appendChild(btn);
+  return wrap;
 }
 
 /**
@@ -333,131 +370,6 @@ function driversChart(p) {
 }
 
 /**
- * The prosperity ledger, a thin fifth card standing between the arrivals' side and the departures' side: the score
- * both flows read off (people arrive when it beats the neighbours', leave when it falls short), listed the way the
- * game tallies what another leader thinks of you (the owner, 2026-10-26: "the ledger version of this is more
- * readable... a thinner 5th card that sits vertically in between"). A line per term, biggest first, what holds
- * people in green and what pushes them out in red, the total under a rule. Rows that would print as 0.0 are left
- * out. Before the first pass the frame stays, with a dash and the waiting words.
- * @param {SettlementModel|null} m @returns {HTMLElement}
- */
-export function prosperityLedger(m) {
-  const box = el("div", "emig-sc-half ledger");
-  const title = el("div", "emig-sc-ht emig-sc-ledger-t", loc("LOC_EMIG_SC_TALLY_TOTAL", "Prosperity score"));
-  title.title = loc("LOC_EMIG_SC_LEDGER_TITLE_TIP", "Click a line for what is behind it; click here to open or close them all.");
-  box.appendChild(title);
-  const t = prosperityLedgerFor(m);
-  if (!m) {
-    box.appendChild(el("div", "emig-sc-dim", loc("LOC_EMIG_SC_NO_MODEL", "Scores appear after this turn's migration pass.")));
-    box.appendChild(ledgerTotal(null));
-    return box;
-  }
-  if (!t.rows.length) box.appendChild(el("div", "emig-sc-dim", loc("LOC_EMIG_SC_TALLY_NONE", "Nothing weighs on this settlement yet.")));
-  const toggles = ledgerRows(box, t.rows);
-  box.appendChild(ledgerTotal(t.total));
-  let allOpen = false;
-  title.addEventListener("click", () => {
-    allOpen = !allOpen;
-    for (const set of toggles) set(allOpen);
-  });
-  return box;
-}
-
-/**
- * The rows, each with the lines its accordion opens to (the owner, 2026-10-26: "a dropdown if you click on the
- * main heading, like a hidden accordion"); hidden until the row is clicked, the chevron turning.
- * @param {HTMLElement} box @param {import("/emigration/ui/emigration-explain.js").LedgerRow[]} rows
- * @returns {((open:boolean)=>void)[]} One setter per row that has lines, for the title's open-all.
- */
-function ledgerRows(box, rows) {
-  /** @type {((open:boolean)=>void)[]} */
-  const setters = [];
-  for (const r of rows) {
-    const line = el("div", "emig-sc-trow" + (r.sub.length ? " has" : ""));
-    // The game's own small gold plus/minus (fxs-minus-plus, the owner, 2026-10-26) opens the lines; a row without
-    // lines keeps the slot empty so the labels line up.
-    const slot = el("span", "emig-sc-tslot");
-    const btn = r.sub.length ? plusMinus() : null;
-    if (btn) slot.appendChild(btn);
-    line.appendChild(slot);
-    line.appendChild(el("span", "emig-sc-tlbl", r.label));
-    line.appendChild(el("span", "emig-sc-tval " + (r.delta >= 0 ? "in" : "out"), signed(r.delta)));
-    box.appendChild(line);
-    if (btn) setters.push(wireRow(line, btn, subLines(r.sub), box));
-  }
-  return setters;
-}
-
-/**
- * Hangs a row's lines under it, closed, and wires the button and the row to open and close them.
- * @param {HTMLElement} line @param {HTMLElement} btn @param {HTMLElement} sub @param {HTMLElement} box
- * @returns {(open:boolean)=>void}
- */
-function wireRow(line, btn, sub, box) {
-  sub.style.display = "none";
-  box.appendChild(sub);
-  const set = (/** @type {boolean} */ open) => {
-    sub.style.display = open ? "flex" : "none";
-    line.classList.toggle("open", open);
-    btn.setAttribute("data-type", open ? "minus" : "plus");
-  };
-  const flip = () => set(sub.style.display === "none");
-  btn.addEventListener("action-activate", flip);
-  line.addEventListener("click", flip);
-  return set;
-}
-
-/** @returns {HTMLElement} The game's small plus/minus button, showing the plus. */
-function plusMinus() {
-  const b = document.createElement("fxs-minus-plus");
-  b.className = "emig-sc-tpm";
-  b.setAttribute("data-type", "plus");
-  b.setAttribute("tabindex", "-1");
-  return b;
-}
-
-/**
- * @param {import("/emigration/ui/emigration-explain.js").LedgerLine[]} lines
- * @returns {HTMLElement} The indented lines: a label, a dim note in parentheses when there is one, the points.
- */
-function subLines(lines) {
-  const sub = el("div", "emig-sc-tsub");
-  for (const l of lines) {
-    const line = el("div", "emig-sc-tsub-row");
-    const lbl = el("span", "emig-sc-tlbl");
-    lbl.appendChild(el("span", "", l.label));
-    if (l.note) lbl.appendChild(el("span", "emig-sc-tnote", "(" + l.note + ")"));
-    line.appendChild(lbl);
-    if (typeof l.delta === "number") line.appendChild(el("span", "emig-sc-tval " + (l.delta >= 0 ? "in" : "out"), signed(l.delta)));
-    sub.appendChild(line);
-  }
-  return sub;
-}
-
-/** @param {number|null} total @returns {HTMLElement} The ledger's last line: "Total" and the sum, or a dash. */
-function ledgerTotal(total) {
-  const sum = el("div", "emig-sc-trow total");
-  sum.appendChild(el("span", "emig-sc-tlbl", loc("LOC_EMIG_SC_TALLY_SUM", "Total")));
-  sum.appendChild(el("span", "emig-sc-tval " + (total == null || total >= 0 ? "in" : "out"), total == null ? "\u2014" : signed(total)));
-  return sum;
-}
-
-/**
- * The ledger's rows and their total: the model's ledger (emigration-explain.js `explainLedger`), or, from an older
- * model without one, its score terms with no lines under them.
- * @param {SettlementModel|null} m
- * @returns {{total:number, rows:import("/emigration/ui/emigration-explain.js").LedgerRow[]}}
- */
-export function prosperityLedgerFor(m) {
-  if (!m) return { total: 0, rows: [] };
-  /** @type {import("/emigration/ui/emigration-explain.js").LedgerRow[]} */
-  const rows = Array.isArray(m.ledger) ? m.ledger
-    : m.score.filter((r) => Math.abs(r.delta) >= 0.05)
-      .map((r) => ({ key: r.key, label: r.label, delta: r.delta, kind: r.delta > 0 ? "pull" : "push", sub: [] }));
-  return { total: rows.reduce((n, r) => n + r.delta, 0), rows };
-}
-
-/**
  * The pressure as a gauge with its level, its drivers, the reasons to stay, and the score's terms on hover.
  * @param {*} p Pressure {bar, flag, mix, stay, cause, dest} or null. @param {SettlementModel|null} m
  * @param {CardDeps} deps @returns {HTMLElement}
@@ -470,6 +382,13 @@ function pressureBlock(p, m, deps) {
   }
   const band = deps.pressureBand(p.bar || 0);
   b.appendChild(stageGauge(band, p.flag));
+  // The forecast (Feature M): a projection from the gauge's own rate of rise, worded as one, never a promise.
+  const fc = forecastLine(p.forecast, loc);
+  if (fc) b.appendChild(el("div", "emig-sc-line emig-sc-forecast", fc));
+  if (p.stalled) {
+    b.appendChild(el("div", "emig-sc-dim", loc("LOC_EMIG_SC_SIEGE_STALLED",
+      "Siege stalled: the besiegers aren't attacking, so the siege adds no pressure until they do.")));
+  }
   b.title = loc("LOC_EMIG_SC_PRESSURE_TIP", "Pressure to leave builds each turn from the strongest pull on this settlement's "
     + "people and drains when the gap closes. When it fills, a group leaves. It is {1_Pct}% full now.",
   Math.round((p.bar || 0) * 100)) + (m ? "\n" + pressureTip(m) : "");
@@ -654,6 +573,9 @@ export const SETTLEMENT_CSS =
   ".emig-sc-half.left{border-left:0.2rem solid rgba(224,138,127,0.4);" +
   "background:linear-gradient(180deg,rgba(224,138,127,0.10),rgba(224,138,127,0.04));}" +
   ".emig-sc-decide{margin-top:0.1rem;align-items:flex-start;}" +
+  ".emig-sc-intake{margin-top:0.35rem;}" +
+  ".emig-sc-closed{margin-left:0.5rem;padding:0.05rem 0.4rem;border:1px solid rgba(194,91,84,0.9);border-radius:0.2rem;" +
+  "color:#e8b4ae;font-size:0.72rem;}" +
   ".emig-sc-half.arrived .emig-sc-blk:first-child{margin-top:0;}" +
   ".emig-sc-half{flex:0 0 auto;display:flex;flex-direction:column;align-items:stretch;min-width:0;" +
   "padding:0.5rem 0.7rem 0.4rem;border-radius:0.35rem;background:linear-gradient(180deg,rgba(20,24,34,0.45),rgba(8,10,16,0.35));" +

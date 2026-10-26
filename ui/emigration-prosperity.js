@@ -13,7 +13,7 @@
 // pull; population is a mild equalizer so small thriving towns still attract.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
-import { siegeEscalation } from "/emigration/ui/emigration-violence.js";
+import { siegeEscalation, siegeStalled, siegeDeathCapped, violenceCrisis } from "/emigration/ui/emigration-violence.js";
 import { civTuning } from "/emigration/ui/emigration-civ-tuning.js";
 import { governmentLean } from "/emigration/ui/emigration-polity.js";
 
@@ -337,7 +337,11 @@ export function distress(s) {
  */
 export function lethalDistress(s, unrestCounts) {
   const b = situationalBreakdown(s);
-  let pct = b.violence + b.disaster + b.siege + b.starvation + b.warWeariness;
+  // A stalled siege (nobody attacking), one that has taken all it may, or fighting not yet sustained for
+  // violenceSustainTurns kills nobody: the fighting's share of the distress drops out, and razing, disaster and
+  // famine keep their own weight.
+  const war = siegeStalled(s.city) || siegeDeathCapped(s.city) || !violenceCrisis(s) ? 0 : b.violence;
+  let pct = war + b.disaster + b.siege + b.starvation + b.warWeariness;
   if (unrestCounts) pct += b.unrest;
   return pct < 0 ? -pct : 0;
 }

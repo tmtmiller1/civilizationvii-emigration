@@ -461,7 +461,7 @@ function checkNotificationClarity() {
 // in the player's current locale, a runtime companion to the build-time i18n parity + ui-keys gates.
 const L10N_SAMPLE = [
   ["LOC_EMIG_DIL_FX_GOLD", "refugee-dilemma effect labels"],
-  ["LOC_EMIG_GUIDE_VIEW_REF", "Guide navigation pills"],
+  ["LOC_EMIG_SC_PRESSURE", "Settlements card headings"],
   ["LOC_DEMOGRAPHICS_METRIC_EMIG_GRAPHS", "Demographics charts"],
   ["LOC_EMIG_CHOICE_OFF", "Advanced-editor enum labels"],
   ["LOC_EMIG_ADV_RESET_ALL", "Advanced-editor buttons"],

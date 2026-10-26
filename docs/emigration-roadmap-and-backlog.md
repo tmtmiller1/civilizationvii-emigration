@@ -3437,3 +3437,74 @@ Protection (2h), a hold-people condition that fires (2i), and flight waiting for
 instead of the first (2j); the siege stall comes after 3 quiet turns, and 2a's gate reads the standing intensity
 (about 2.7) against the threshold.
 
+
+## 60. Session 2 of the 3.7.0 plan: the builds (2026-10-26)
+
+No game launches (`tools/plans/next-2026-10-26/emigration-next-prompt.md`, session 2). Ten steps, each behind its
+flag with the shipped default, unit-tested in `npm run verify`, lint-clean at complexity 10 and under the 500-line
+gate, with English text only (session 4 translates), a CHANGELOG line, the README paragraph and the Civilopedia
+sentence. Nothing here was watched in a game; every behaviour is on `WATCH_LIST.md` for session 3.
+
+- **2a, the siege stalemate rule.** The gate first: `tests/violence.mjs` stepped a city ten turns with the
+  engine's besieged flag set and no damage. The flag alone added 1.2 a turn (vwSiege 4 × siegeBesiegedFloor 0.3)
+  against the 0.55 decay: 1.20, 1.86, 2.22, 2.42, 2.53, 2.59, 2.63, 2.64, 2.65, 2.66, a standing level of 2.67
+  against the flee threshold of 2, crossed on the third turn. The doc's mechanism holds, so the rule was built:
+  `lastDamageTurn` and `stalled` per city in the violence state, stamped at the siege's start and on fresh damage or
+  fighting; after `siegeStallTurns` (3, speed-scaled) quiet turns the floor isn't applied, `lethalDistress` drops
+  the fighting's share, `siegeStalled(city)` is on the readout snapshot, the readout and the Leaving pane say
+  "Siege stalled", and the next hit ends it. 8.3b with it: `recordSiegeDeath` counts a death into the siege's tally
+  and `siegeDeathCapped` stops the killing at `siegeTotalLossCapPct` (0.8) of the onset population; the tally
+  clears when the siege ends. The death gate moved out of the engine into `emigration-outlet-death.js` (the
+  500-line gate), and the Settlements rows out of `emigration-window.js` into `emigration-window-settlements.js`.
+- **2b, the intake toggle.** `cities` on the persisted state (closed cities only, with the owner at closing time so
+  a captured city reopens by itself), `isCityClosed` / `setCityClosed` in `emigration-state.js`, the closed check
+  shared by the real pass, the planning pass and the readout's "Pulled toward", an arrival due at a closed city
+  re-aimed at the civilization's most populous open, calm settlement (a deferral, so the retry window still bounds
+  it), the "Close to newcomers" / "Open to newcomers" button in the Arriving pane's "To attract more" block in the
+  `emig-filter-btn` style, the pane's "Closed to newcomers" tag, the readout line, `cityIntakeToggleEnabled`.
+  `tests/intake-toggle.mjs` and `tests/settlement-card-render.mjs` (a fake DOM; the first render test of the card).
+  The prosperity ledger moved into `emigration-settlement-ledger.js` for the line gate.
+- **2c, the forecast.** The stats store keeps the last six pressure samples per source
+  (`recordPressureSamples` from the pass, folded in by `recordMigrations` so there is one save, not two);
+  `emigration-forecast.js` reads the rate of rise, the cooldown and the rural pool and says "About 3 people are
+  likely to leave in the next 4 turns" or "Nobody is likely to leave soon"; the line sits under the gauge on the
+  Leaving pane and after "Forecast:" in the readout. `cityReadoutForecast`, `forecastTurns` (3, 5, 8).
+  `tests/forecast.mjs`.
+- **2d, the Guide module.** Its matrix and FAQ were read against the Civilopedia. What the Common Questions page
+  didn't say and the code still does: towns and internal moves take part; migrants can't be hand-placed; the three
+  brakes against a snowball; what a repair does and doesn't do, and the fastest recovery. Those went in as four
+  lines. The rest was already on a page, or no longer true ("Change AI strategy or decisions: No"). The module,
+  its modinfo line, its CSS, the self-test sample key, the derived-keys block and the 169 strings in twelve
+  languages are gone.
+- **2e, the first-loss page.** `emigration-first-loss.js` per §33, shipped off (`firstLossPage`), the Mods-tab
+  checkbox "First-loss explainer", the trigger in `localDigest` on a tile event (the migration record's
+  `subject`), the flag `EmigrationFirstLoss_v1`, the Chronicle entry "The First to Leave", the notice skipped
+  that pass, "Open the Emigration screen" landing on the Settlements tab. The screen module is imported on the
+  click, not at load (importing it at load broke the feedback harness). `tests/first-loss.mjs`, a case in
+  `tests/feedback.mjs`.
+- **2f, counters that survive a load.** `EmigrationTelemetry_v1` holds the all-game totals and the reason
+  histogram, written with each pass; `emigration.metrics()` prints `counters` (all-game) beside `session` (since
+  the load), and the derived shares read the all-game numbers. `tests/telemetry.mjs`.
+- **2g, destination safety.** `unsafePenalty` in `emigration-pull.js`: 12 for each threshold's worth a destination
+  sits over its flee threshold, half a step at least, capped at 30, half for a source worse off, nothing for a
+  stalled siege, never a reject; `pullBreakdown` carries the `unsafe` term and `tests/explain.mjs` pins the mirror;
+  the real pass counts `crisisDestAvoided` when the penalty turned a move elsewhere; an arrival due at a city in
+  crisis is held or re-aimed like one at a closed city, and lands anyway past its retry window, counted by
+  `arrivedIntoCrisis`. `destinationSafetyEnabled`, `crisisDestPenalty`, `crisisDestPenaltyCap`. `tests/pull.mjs`,
+  a case in `tests/arrivals.mjs`.
+- **2h, the two cards.** Talent Attraction gains `MOD_EMIG_TALENT_UPKEEP_EX` / `_MO` (EFFECT_CITY_ADJUST_YIELD,
+  -2 and -3 Gold per settlement); Consular Protection's floor is +3 / +5. The modifier ids of the Science and the
+  old floor stay, so a save holding a card keeps it. The descriptions, the Policies and Treatment pages and the
+  README carry the numbers; `tests/treatment-policies-data.mjs` reads the upkeep rows and the floor's rise by age.
+- **2i, the hold-people condition.** Not built yet: its gate is a `tower-bench sql` read of AI cities' gross Food on
+  a running game, which session 3's first launch gives. Recorded there.
+- **2j, sustained violence.** `violenceCrisis(src)` in `emigration-violence.js`: over the flee threshold and
+  `siegeTenure` at `violenceSustainTurns` (2) or more; the engine's `inCrisis`, the pull's `srcInCrisis` and
+  `migrationCause`, and `lethalDistress` read it; razing stays immediate; with the siege model off the threshold
+  alone decides, as before. The off-engine signals in `tests/engine-pull.mjs` and `tests/move-reasons.mjs` carry no
+  city id, so they pin `violenceSustainTurns` at 1. `tests/violence.mjs`.
+
+The translations: the keys whose English changed (the two card descriptions, Consular's, the Refugees, Dashboard,
+FAQ and Options pages' bodies, the Policies and Treatment paragraphs) were dropped from `i18n/<locale>.json` and
+the locale XML regenerated with `i18n_apply.mjs --force` (the shipped XML held the old English); they read in
+English until session 4.

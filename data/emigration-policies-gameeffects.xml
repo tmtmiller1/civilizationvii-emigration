@@ -179,16 +179,17 @@
     </Modifier>
 
     <!-- Consular Protection: a flat Influence floor the game's planner can see, so an AI civilization slots it
-         (the per-enclave Influence stays in the script, emigration-consular.js). EX +1 / MO +2. -->
+         (the per-enclave Influence stays in the script, emigration-consular.js). EX +3 / MO +5: at +1/+2 no AI
+         slotted it in 139 Exploration turns against the game's own Influence cards at +4 (2026-10-26). -->
     <Modifier id="MOD_EMIG_CONSULAR_INFLUENCE_EX" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
         <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
-        <Argument name="Amount">1</Argument>
+        <Argument name="Amount">3</Argument>
         <Argument name="Tooltip">LOC_EMIG_POLICY_CONSULAR_NAME</Argument>
         <String context="Description">LOC_EMIG_POLICY_CONSULAR_DESC</String>
     </Modifier>
     <Modifier id="MOD_EMIG_CONSULAR_INFLUENCE_MO" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
         <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
-        <Argument name="Amount">2</Argument>
+        <Argument name="Amount">5</Argument>
         <Argument name="Tooltip">LOC_EMIG_POLICY_CONSULAR_NAME</Argument>
         <String context="Description">LOC_EMIG_POLICY_CONSULAR_DESC</String>
     </Modifier>
@@ -214,6 +215,21 @@
         <Argument name="Divisor">4</Argument>
         <Argument name="Rural">true</Argument>
         <Argument name="Urban">true</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_TALENT_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_TALENT_DESC_MO</String>
+    </Modifier>
+    <!-- Talent Attraction's upkeep: Gold per settlement, so the card is a trade and not free Science (every AI slotted
+         it within ten turns of Inspiration, 2026-10-26). An eight-settlement civilization weighs +16 Science against
+         -16 Gold in Exploration. The same shape as the Science, so it shows in each settlement's yield breakdown. -->
+    <Modifier id="MOD_EMIG_TALENT_UPKEEP_EX" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_GOLD</Argument>
+        <Argument name="Amount">-2</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_TALENT_NAME</Argument>
+        <String context="Description">LOC_EMIG_POLICY_TALENT_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_TALENT_UPKEEP_MO" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_YIELD">
+        <Argument name="YieldType">YIELD_GOLD</Argument>
+        <Argument name="Amount">-3</Argument>
         <Argument name="Tooltip">LOC_EMIG_POLICY_TALENT_NAME</Argument>
         <String context="Description">LOC_EMIG_POLICY_TALENT_DESC_MO</String>
     </Modifier>

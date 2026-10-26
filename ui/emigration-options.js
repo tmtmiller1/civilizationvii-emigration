@@ -413,6 +413,8 @@ function registerCompositeSlider(name, id, label, description) {
 function registerDecisionToggles() {
   registerTunableToggle({ id: "emigration-ask-arrivals", key: "arrivalPlacement", on: 2, off: 1,
     label: "LOC_OPTIONS_EMIG_ASK_ARRIVALS", description: "LOC_OPTIONS_EMIG_ASK_ARRIVALS_DESCRIPTION" });
+  registerTunableToggle({ id: "emigration-first-loss", key: "firstLossPage", on: true, off: false,
+    label: "LOC_OPTIONS_EMIG_FIRST_LOSS", description: "LOC_OPTIONS_EMIG_FIRST_LOSS_DESCRIPTION" });
   registerTunableToggle({ id: "emigration-callhome-offer", key: "callHomeOfferWhenCalm", on: true, off: false,
     label: "LOC_OPTIONS_EMIG_CALLHOME_OFFER", description: "LOC_OPTIONS_EMIG_CALLHOME_OFFER_DESCRIPTION" });
   registerTunableToggle({ id: "emigration-ask-enclaves", key: "quarterRecognition", on: 0, off: 2,
