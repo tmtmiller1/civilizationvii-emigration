@@ -1148,8 +1148,10 @@ for that game.
 
 **A "hold your people" city strategy.** The AI data has no condition that reads population loss, and a yield grant
 can't reach a city's own Happiness, so the nearest native signal to a settlement losing people is its Food stalling.
-`CITY_STRATEGY_EMIG_HOLD_PEOPLE` switches on at `HasFoodLessThan 2` and biases Production and Happiness at 25, the
-yields the Anti-Immigration Stance and the happiness buildings carry (`data/emigration-ai-strategy.sql`).
+`CITY_STRATEGY_EMIG_HOLD_PEOPLE` switches on when a settlement with more than 4 rural population has gross Food
+under 16 (an established town that has stopped growing; the first threshold, Food under 2, never fired in 138
+turns) and biases Production and Happiness at 25, the yields the Anti-Immigration Stance and the happiness
+buildings carry (`data/emigration-ai-strategy.sql`).
 
 **Food on the Pro-Immigration Stance.** The planner values a card by its native yields and can't see the migration
 pull, so the stance carries Food in every city (+2/+2/+3 by age). That's what makes the AI slot it.

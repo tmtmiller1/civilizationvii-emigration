@@ -3605,3 +3605,27 @@ gauge, the switch 新来者を受け入れない, the Spoil Guard note, and the 
 composing in Japanese; no raw tag (capture `working_screenshots/emig-370-s3/settlements-ja.png`). The
 game-setup option "Emigration: AI keeps cities happy" lives on the setup screen the lab skips, so it wasn't read.
 The other nine languages are on the list.
+
+## 64. Session 3e: the long Exploration game, and the hold-people condition (2026-10-26)
+
+Exploration, seed 4242, the usual set, the lab's default difficulty, 110 turns driven at 5.6 s a turn with a
+reading every ten: each AI's Inspiration and Diplomatic Service beside its slotted cards, every AI city's
+population and Food, and the counters. The game closed without a crash report.
+
+- **The two cards (2h).** With the Gold upkeep, Talent Attraction is a trade the AIs weigh rather than a reflex:
+  Abbasid slotted it ten turns after Inspiration (61), Hawaii twenty turns after (61), Dai Viet forty (81),
+  Persia twenty (101), Goryeo never in thirty turns with it unlocked; Abbasid dropped it at 91, took it back at
+  101 and dropped it again at 111, Hawaii dropped it at 101. At turn 100 three AIs held it and two held neither
+  card, the watch's shape. Consular Protection at +3 Influence was still never slotted by any of the five in 111
+  turns, with Diplomatic Service unlocked from turn 41: the visible floor didn't move the planner. Persia held
+  the Anti-Immigration Stance from 61 to 71.
+- **The hold-people condition (2i), the gate.** `Logs/AI_CityStrategy.csv` from this game: "keep them happy"
+  activated 48 times, "hold your people" never, with its `HasFoodLessThan 2`. The Food read: AI towns stuck at 8
+  or 9 population for a hundred turns (Bactria, Gordion, Hải Phòng, Thái Bình, Pyeongyang, ‘Ewa) read 13 to 20
+  Food through `Yields.getYield`; growing settlements read 30 to 89; brand-new towns of 2 or 3 population read 7
+  to 13 while growing. A Food threshold alone can't tell a stalled town from a new one, so the condition is
+  now two: `HasFoodLessThan 16` and `HasRuralPopGreaterThan 4`, both needed (`MinNumConditionsNeeded 2`). Built
+  from the read, not yet seen Following in the CSV: on the list for the next long game. Whether the strategy's
+  own Food read matches the UI's `getYield` is the open question the CSV answers.
+- **The counters.** 111 passes, 97 crisis moves, 404 moves turned by the destination-safety penalty, 1 arrival
+  into a crisis in the whole game (46 in session 1's game of the same seed).

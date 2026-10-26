@@ -114,6 +114,9 @@ The Settlements tab becomes the dashboard, displaced people come home on their o
   Influence cards at +4. A save holding either card keeps it.
 - The balance counters behind `emigration.metrics()` live in the save: a read after a reload shows the whole
   game's totals beside this session's. Nothing a player sees.
+- The AI's "hold your people" city strategy now switches on: its condition read gross Food under 2, which no
+  settlement reaches (the game's own Food strategy uses 10 and 15), so it never ran in 138 turns. It now needs Food
+  under 16 and more than 4 rural population, the shape of an established town that has stopped growing.
 - A siege nobody fights stalls. Enemy units parked beside a city used to drive people out, and kill some, for as
   long as they stood there, with no attack ever made. After 3 quiet turns (no district damage, no fighting in the
   settlement's borders) the siege is stalled: it adds no pressure, nobody dies for it, and the settlement's readout
