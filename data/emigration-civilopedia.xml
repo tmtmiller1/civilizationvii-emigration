@@ -71,6 +71,7 @@
         <Row PageLayoutID="EMIG_GROWTH" ChapterID="LIMITS" SortIndex="60"/>
 
         <Row PageLayoutID="EMIG_CALLHOME" ChapterID="CONTENT" SortIndex="10"/>
+        <Row PageLayoutID="EMIG_CALLHOME" ChapterID="HOMECOMING" SortIndex="15"/>
         <Row PageLayoutID="EMIG_CALLHOME" ChapterID="OWN" SortIndex="20"/>
         <Row PageLayoutID="EMIG_CALLHOME" ChapterID="ABROAD" SortIndex="30"/>
         <Row PageLayoutID="EMIG_CALLHOME" ChapterID="PRICE" SortIndex="40"/>
