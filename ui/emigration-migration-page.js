@@ -10,26 +10,20 @@ import { dashboardModel, renderDashboardSubtab } from "/emigration/ui/emigration
 import { gatherDashboard } from "/emigration/ui/emigration-window.js";
 import { setNumberMode, NumberMode, getMinimizeAnalytics } from "/emigration/ui/emigration-settings.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
-import { CONFIG } from "/emigration/ui/emigration-config.js";
 
 // The Migration page's sub-tabs, one per dashboard section, presented as native Demographics sub-tabs.
 // `id` is the section kind (handed back to render); `labelKey`/`titleKey` are the LOC keys (composed
 // at registration by locTab) and `label`/`title` the English fallbacks. Mirrors emigration-views.js
 // dashboardModel() order + TAB_LABELS and reuses its keys where the text is identical.
 const SUBTABS = [
+  { id: "cityflows", labelKey: "LOC_EMIG_VIEW_TAB_MY_CITIES", label: "Settlements", titleKey: "LOC_EMIG_VIEW_SEC_SETTLEMENTS", title: "Settlements" },
   { id: "flow", labelKey: "LOC_EMIG_VIEW_TAB_NETWORK", label: "Network", titleKey: "LOC_EMIG_PAGE_FLOW_TITLE", title: "Migration network & flows" },
   // Kept declared so its panel sub-tab synthetic registers (the host needs it for metricExists), but
   // not shown as a standalone sub-tab: emigration-demographics.js's "Data" group claims this id as
   // the "Net Migration (Table)" pill, and the host's group-merge drops it from the tab row.
   { id: "ledger", labelKey: "LOC_EMIG_VIEW_TAB_NET_TABLE", label: "Net Migration (Table)", titleKey: "LOC_EMIG_PAGE_LEDGER_TITLE", title: "Net migration by civilization" },
-  { id: "pies", labelKey: "LOC_EMIG_VIEW_TAB_CAUSES", label: "Causes", titleKey: "LOC_EMIG_VIEW_SEC_WHY", title: "Why people move" },
-  { id: "cityflows", labelKey: "LOC_EMIG_VIEW_SEC_SETTLEMENTS", label: "Settlements", titleKey: "LOC_EMIG_VIEW_SEC_SETTLEMENTS", title: "Settlements" },
-  { id: "diversity", labelKey: "LOC_EMIG_VIEW_TAB_DIVERSITY", label: "Diversity", titleKey: "LOC_EMIG_PAGE_DIVERSITY_TITLE", title: "Most diverse cities" },
   { id: "stances", labelKey: "LOC_EMIG_PAGE_STANCES_TAB", label: "Immigration Policies", titleKey: "LOC_EMIG_VIEW_SEC_POLICIES", title: "Immigration policies" },
-  { id: "notifications", labelKey: "LOC_EMIG_VIEW_TAB_NOTIFICATIONS", label: "Notifications", titleKey: "LOC_EMIG_VIEW_SEC_NOTIFICATIONS", title: "Migration notifications" },
-  // The Guide is a static reference matrix with no per-civ data, so the host's analytics-visibility
-  // policy banner is meaningless there, opt it out (the host reads `hidePolicyBanner`).
-  { id: "guide", labelKey: "LOC_EMIG_VIEW_TAB_GUIDE", label: "Guide", titleKey: "LOC_EMIG_GUIDE_VIEW_REF", title: "What counts", hidePolicyBanner: true }
+  { id: "notifications", labelKey: "LOC_EMIG_VIEW_TAB_NOTIFICATIONS", label: "Notifications", titleKey: "LOC_EMIG_VIEW_SEC_NOTIFICATIONS", title: "Migration notifications" }
 ];
 
 /**
@@ -51,29 +45,16 @@ const REGISTERED_FLAG = "__emigMigrationPageRegistered";
 // The "simplify dashboard" option (emigration-settings) hides the heavy analytics tabs. On the embedded
 // Demographics page the host owns the tab list after registration, so the option is read at registration
 // (game load) here, matching the standalone dashboard's section filter (emigration-views.visibleSections).
-const HIDDEN_SUBTAB_IDS = new Set(["flow", "pies"]);
-const HIDDEN_HUB_IDS = new Set(["emig_network", "emig_causes"]);
-
-/**
- * Whether a tab must be dropped for a reason other than "simplify dashboard": the Diversity tab is
- * flag-gated (CONFIG.diversityRanking), and dashboardModel omits its section entirely when the flag
- * is off (renderDashboardSubtab would otherwise fall back to sections[0] and render the Network).
- * @param {string} kind The section kind the tab renders.
- * @returns {boolean} True to drop it.
- */
-function tabGatedOff(kind) {
-  return kind === "diversity" && !CONFIG.diversityRanking;
-}
+const HIDDEN_SUBTAB_IDS = new Set(["flow"]);
+const HIDDEN_HUB_IDS = new Set(["emig_network"]);
 
 function visibleSubtabs() {
-  const shown = SUBTABS.filter((t) => !tabGatedOff(t.id));
-  const list = getMinimizeAnalytics() ? shown.filter((t) => !HIDDEN_SUBTAB_IDS.has(t.id)) : shown;
+  const list = getMinimizeAnalytics() ? SUBTABS.filter((t) => !HIDDEN_SUBTAB_IDS.has(t.id)) : SUBTABS;
   return list.map(locTab);
 }
 
 function visibleHubPages() {
-  const shown = HUB_PAGES.filter((p) => !(p.id === "emig_diversity" && tabGatedOff("diversity")));
-  const list = getMinimizeAnalytics() ? shown.filter((p) => !HIDDEN_HUB_IDS.has(p.id)) : shown;
+  const list = getMinimizeAnalytics() ? HUB_PAGES.filter((p) => !HIDDEN_HUB_IDS.has(p.id)) : HUB_PAGES;
   return list.map(locTab);
 }
 const QUEUED_FLAG = "__emigMigrationPageQueued";
@@ -158,13 +139,10 @@ const NET_MIGRATION_PAGE_ID = "emig_net_migration"; // must match emigration-dem
 
 const HUB_PAGES = [
   { id: NET_MIGRATION_PAGE_ID, labelKey: "LOC_EMIG_HUB_POP_MIGRATION", label: "Population & Migration", tier: "basic", metrics: [] },
+  { id: "emig_cities", labelKey: "LOC_EMIG_VIEW_TAB_MY_CITIES", label: "Settlements", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "cityflows", c) },
   { id: "emig_network", labelKey: "LOC_EMIG_VIEW_TAB_NETWORK", label: "Network", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "flow", c) },
-  { id: "emig_causes", labelKey: "LOC_EMIG_VIEW_TAB_CAUSES", label: "Causes", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "pies", c) },
-  { id: "emig_cities", labelKey: "LOC_EMIG_VIEW_TAB_MY_CITIES", label: "My Cities", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "cityflows", c) },
-  { id: "emig_diversity", labelKey: "LOC_EMIG_VIEW_TAB_DIVERSITY", label: "Diversity", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "diversity", c) },
   { id: "emig_policies", labelKey: "LOC_EMIG_VIEW_TAB_POLICIES", label: "Policies", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "stances", c) },
-  { id: "emig_notifications", labelKey: "LOC_EMIG_VIEW_TAB_NOTIFICATIONS", label: "Notifications", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "notifications", c) },
-  { id: "emig_guide", labelKey: "LOC_EMIG_VIEW_TAB_GUIDE", label: "Guide", tier: "standard", hidePolicyBanner: true, render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "guide", c) }
+  { id: "emig_notifications", labelKey: "LOC_EMIG_VIEW_TAB_NOTIFICATIONS", label: "Notifications", tier: "standard", render: (/** @type {*} */ b, /** @type {*} */ c) => renderInto(b, "notifications", c) }
 ];
 
 /** @param {*} api */

@@ -35,6 +35,14 @@ class FakeElement {
     return child;
   }
 
+  insertBefore(child, ref) {
+    const i = ref ? this.children.indexOf(ref) : -1;
+    if (i < 0) return this.appendChild(child);
+    child.parentNode = this;
+    this.children.splice(i, 0, child);
+    return child;
+  }
+
   setAttribute(k, v) {
     this.attributes[k] = String(v);
   }
@@ -68,16 +76,19 @@ const {
   renderDashboardTabbed,
   renderDashboardSubtab
 } = await import("/emigration/ui/emigration-views.js");
+const { _setSwitch } = await import("/emigration/ui/emigration-tab-switches.js");
 
 const model = {
   sample: true,
   sections: [
     { title: "Custom", kind: "custom", rows: [] },
-    { title: "Guide", kind: "guide", rows: [] },
     {
-      title: "Ledger",
-      kind: "ledger",
-      rows: [{
+      // The Net Migration table rides behind the Network tab's View switch (2026-10-25), as `table` on the flow
+      // section; the switch is set to "table" below so the subtab renders it.
+      title: "Network",
+      kind: "flow",
+      network: { nodes: [], edges: [] }, frames: [], events: [],
+      table: [{
         name: "Rome",
         netP: 2,
         netPts: 1,
@@ -125,7 +136,7 @@ function activeTabLabels(root) {
     .map((n) => n.textContent);
 }
 const targetStart = new FakeElement("div");
-renderDashboardTabbed(targetStart, model, undefined, "ledger");
+renderDashboardTabbed(targetStart, model, undefined, "flow"); // the second section in this model
 assert.equal(activeTabLabels(targetStart).length, 1, "exactly one tab is active");
 assert.notEqual(activeTabLabels(targetStart)[0], activeTabLabels(target)[0], "the start kind moves the active tab");
 const targetUnknown = new FakeElement("div");
@@ -135,22 +146,33 @@ assert.deepEqual(activeTabLabels(targetUnknown), activeTabLabels(target), "an un
 // The rebuild callback gets the active tab's kind, so a rebuilt view stays on it.
 const tabbedRebuilt = [];
 const targetRebuild = new FakeElement("div");
-renderDashboardTabbed(targetRebuild, model, (kind) => tabbedRebuilt.push(kind), "ledger");
+renderDashboardTabbed(targetRebuild, model, (kind) => tabbedRebuilt.push(kind), "custom");
 const numbersBtn = collect(targetRebuild).find((n) => /\bemig-filter-btn\b/.test(n.className)
-  && !/\bactive\b/.test(n.className) && n.textContent !== "Advanced");
-assert.ok(numbersBtn, "the ledger tab shows a Numbers choice");
+  && !/\bactive\b/.test(n.className));
+assert.ok(numbersBtn, "a tab with switchable counts shows the Scaled | Civ choice");
+assert.deepEqual(collect(targetRebuild).filter((n) => /\bemig-filter-btn\b/.test(n.className)).map((n) => n.textContent),
+  ["Scaled", "Civ"], "worded as the Demographics screen words its own row");
+assert.ok(!collect(targetRebuild).some((n) => /\bemig-pill-lbl\b/.test(n.className)), "and carries no label");
 numbersBtn.eventHandlers.click();
-assert.deepEqual(tabbedRebuilt, ["ledger"], "a Numbers change rebuilds onto the same tab");
+assert.deepEqual(tabbedRebuilt, ["custom"], "a Numbers change rebuilds onto the same tab");
+// Tabs first, then the view pills (Diagram | Table) under them, then the content, as on the Demographics screen.
+const dashKids = collect(targetStart).find((n) => n.className === "emig-dash").children.map((n) => n.className);
+assert.ok(dashKids.indexOf("emig-tab-host") < dashKids.indexOf("emig-ctrl-host"), "tabs first, then the controls: " + dashKids);
+const ctrlHost = collect(targetStart).find((n) => n.className === "emig-ctrl-host");
+assert.deepEqual(ctrlHost.children.map((n) => n.className), ["emig-view-pills"], "the Network tab's pills, no Numbers row");
+assert.deepEqual(ctrlHost.children[0].children.map((n) => n.className), ["emig-view-pill active", "emig-view-pill"]);
 
 // The game's tab bar announces its starting tab after the first build; that announcement doesn't build the
 // tab again, while a pick of another tab does.
 globalThis.Controls = {};
 const targetBar = new FakeElement("div");
-renderDashboardTabbed(targetBar, model, undefined, "ledger");
+renderDashboardTabbed(targetBar, model, undefined, "flow");
 const bar = collect(targetBar).find((n) => n.tagName === "fxs-tab-bar");
+assert.deepEqual([bar.attributes["tab-item-class"], bar.attributes["data-audio-group-ref"]],
+  ["font-title text-base", "audio-screen-unlocks"], "the bar carries the Demographics screen's attributes");
 const tabBody = collect(targetBar).find((n) => n.className === "emig-tabbody");
 const builtBefore = tabBody.children.length;
-bar.eventHandlers["tab-selected"]({ detail: { selectedItem: { id: "2" } } });
+bar.eventHandlers["tab-selected"]({ detail: { selectedItem: { id: "1" } } });
 assert.equal(tabBody.children.length, builtBefore, "the starting tab's announcement doesn't rebuild it");
 bar.eventHandlers["tab-selected"]({ detail: { selectedItem: { id: "0" } } });
 assert.ok(tabBody.children.length > builtBefore, "picking another tab builds it");
@@ -159,8 +181,9 @@ delete globalThis.Controls;
 // Subtab render with controlsHost path and no-rebuild fallback
 const subTarget = new FakeElement("div");
 const controlsHost = new FakeElement("div");
+_setSwitch("network", "table");
 assert.doesNotThrow(() =>
-  renderDashboardSubtab(subTarget, model, "ledger", {
+  renderDashboardSubtab(subTarget, model, "flow", {
     controlsHost,
     hideUnitsToggle: false
   })
@@ -186,12 +209,8 @@ const dataRow = nodes.find((n) => (n.children || []).some((c) => c.textContent =
 // name + net + net-bar + the nine count columns (6 grouped counts, stance, refugees, losses).
 assert.equal(dataRow.children.length, 12, "data row carries every column");
 
-// Subtab render guide branch where control-row is skipped
-const guideTarget = new FakeElement("div");
-assert.doesNotThrow(() => renderDashboardSubtab(guideTarget, model, "guide"));
-
 // Null safety guard
-assert.doesNotThrow(() => renderDashboardSubtab(null, model, "ledger"));
+assert.doesNotThrow(() => renderDashboardSubtab(null, model, "flow"));
 assert.doesNotThrow(() => renderDashboardTabbed(null, model));
 
 delete globalThis.window;

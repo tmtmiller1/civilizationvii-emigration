@@ -23,19 +23,30 @@ import { governmentLean } from "/emigration/ui/emigration-polity.js";
  * @returns {number} Productiveness.
  */
 function productiveness(s) {
-  const weighted =
-    s.food * CONFIG.foodFactor +
-    s.production * CONFIG.productionFactor +
-    s.gold * CONFIG.goldFactor +
-    s.science * CONFIG.scienceFactor +
-    s.culture * CONFIG.cultureFactor;
+  const p = productivenessParts(s);
+  return p.food + p.production + p.gold + p.science + p.culture;
+}
+
+/** @typedef {{food:number, production:number, gold:number, science:number, culture:number}} YieldParts */
+
+/**
+ * Productiveness by yield: each weighted yield over the same population divisor, so the five sum to
+ * {@link productiveness} exactly (the ledger's lines under Economy).
+ * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
+ * @returns {YieldParts}
+ */
+export function productivenessParts(s) {
   // population^popExponent, not population. A straight per-head average divides away everything a
   // settlement has built in proportion to its own size, so a big city could never out-build the flat
   // populationFactor penalty; an exponent below 1 lets it keep more of what it has. See CONFIG.
   const pop = Math.max(1, s.population);
   const e = Number(CONFIG.popExponent);
-  const divisor = Number.isFinite(e) && e > 0 && e < 1 ? Math.pow(pop, e) : pop;
-  return weighted / divisor;
+  const d = Number.isFinite(e) && e > 0 && e < 1 ? Math.pow(pop, e) : pop;
+  return {
+    food: s.food * CONFIG.foodFactor / d, production: s.production * CONFIG.productionFactor / d,
+    gold: s.gold * CONFIG.goldFactor / d, science: s.science * CONFIG.scienceFactor / d,
+    culture: s.culture * CONFIG.cultureFactor / d
+  };
 }
 
 /**
@@ -90,7 +101,21 @@ function happinessForScore(s, tune) {
  * @returns {number} The polity bonus (signed).
  */
 function polityBonus(s, tune) {
-  if (!CONFIG.polityModelEnabled) return 0;
+  const p = polityParts(s, tune);
+  return p.stage + p.celebration + p.government;
+}
+
+/** @typedef {{stage:number, celebration:number, government:number}} PolityParts */
+
+/**
+ * The polity bonus by piece: the happiness-stage term, the celebration, the government's lean; the three sum to
+ * {@link polityBonus} exactly. All zero when the polity model is off.
+ * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
+ * @param {import("/emigration/ui/emigration-civ-tuning.js").CivTuning} tune Civ tuning.
+ * @returns {PolityParts}
+ */
+export function polityParts(s, tune) {
+  if (!CONFIG.polityModelEnabled) return { stage: 0, celebration: 0, government: 0 };
   // The stage term is pull-biased: an unhappy city is already repelled by the happiness term and its
   // suppressed yields, so a negative stage is scaled down by happinessStageMiseryScale, while positive
   // happiness does not boost yields and so gets full weight.
@@ -98,14 +123,13 @@ function polityBonus(s, tune) {
   const stageW = stage >= 0
     ? CONFIG.happinessStageWeight
     : CONFIG.happinessStageWeight * CONFIG.happinessStageMiseryScale;
-  let b = stageW * stage * tune.happinessPull;
   const p = s.polity;
-  if (p) {
-    if (p.celebrating) b += CONFIG.celebrationPull * tune.happinessPull;
-    const lean = CONFIG.governmentWeight * governmentLean(p.government);
-    b += clamp(lean, -CONFIG.governmentLeanCap, CONFIG.governmentLeanCap);
-  }
-  return b;
+  const lean = p ? CONFIG.governmentWeight * governmentLean(p.government) : 0;
+  return {
+    stage: stageW * stage * tune.happinessPull,
+    celebration: p && p.celebrating ? CONFIG.celebrationPull * tune.happinessPull : 0,
+    government: p ? clamp(lean, -CONFIG.governmentLeanCap, CONFIG.governmentLeanCap) : 0
+  };
 }
 
 /**
@@ -142,9 +166,9 @@ function builtBonus(s) {
  */
 export function baseBreakdown(s, ctx) {
   const tune = civTuning(s.owner);
-  const prod = productiveness(s);
-  const h = happinessForScore(s, tune);
-  const common = {
+  const shape = happinessShape(s, ctx, tune);
+  return {
+    economy: productiveness(s) * shape.mult, happiness: shape.term,
     population: -(s.population * CONFIG.populationFactor),
     civBias: tune.sourceBias,
     polity: polityBonus(s, tune),
@@ -152,15 +176,66 @@ export function baseBreakdown(s, ctx) {
     // stay in its own right, and the yields those buildings produce are already counted in `economy`.
     built: builtBonus(s)
   };
+}
+
+/**
+ * The happiness term and the multiplier it puts on the economy. Linear model: the term is the happiness times a
+ * factor and the multiplier is 1. Shaped model: happiness is field-relative and saturating (a tanh against the
+ * pass's mean), amplifies the economy within bounds, and adds a bounded standalone term.
+ * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
+ * @param {{meanHappiness:number}|null} ctx Per-pass context (for the shaped model).
+ * @param {import("/emigration/ui/emigration-civ-tuning.js").CivTuning} tune Civ tuning.
+ * @returns {{term:number, mult:number, h:number, mean:number}}
+ */
+function happinessShape(s, ctx, tune) {
+  const h = happinessForScore(s, tune);
   if (!CONFIG.happinessShaped) {
-    const happy = h * CONFIG.localHappinessFactor * tune.happinessPull;
-    return Object.assign({ economy: prod, happiness: happy }, common);
+    return { term: h * CONFIG.localHappinessFactor * tune.happinessPull, mult: 1, h, mean: 0 };
   }
   const mean = ctx && typeof ctx.meanHappiness === "number" ? ctx.meanHappiness : 0;
   const hNorm = Math.tanh((h - mean) / CONFIG.happyScale);
   const hShaped = (hNorm >= 0 ? hNorm : hNorm * CONFIG.happyRepulsion) * tune.happinessPull;
   const mult = clamp(1 + CONFIG.happyAmp * hShaped, CONFIG.happyMultMin, CONFIG.happyMultMax);
-  return Object.assign({ economy: prod * mult, happiness: CONFIG.happyFloor * hShaped }, common);
+  return { term: CONFIG.happyFloor * hShaped, mult, h, mean };
+}
+
+/**
+ * @typedef {Object} BaseDetails The lines under {@link baseBreakdown}'s terms, for the ledger.
+ * @property {YieldParts} economy The economy by yield, each already scaled by the happiness multiplier; the five sum
+ *   to the economy term.
+ * @property {{h:number, mean:number}} happiness What the happiness term was shaped from.
+ * @property {PolityParts} polity The polity term by piece.
+ * @property {{wonders:number, buildings:number, trim:number,
+ *   items:import("/emigration/ui/emigration-built.js").BuiltItem[]}} built The built term split into its
+ *   wonders and its buildings (wonders + buildings = the term; `trim` is what the cap on the whole term took off,
+ *   charged to the buildings), and the credited items.
+ */
+
+/**
+ * The parts under each base term, consistent with {@link baseBreakdown} to the last digit.
+ * @param {import("/emigration/ui/emigration-cities.js").CitySignal} s Signal.
+ * @param {{meanHappiness:number}|null} ctx Per-pass context (for the shaped model).
+ * @returns {BaseDetails}
+ */
+export function baseDetails(s, ctx) {
+  const tune = civTuning(s.owner);
+  const shape = happinessShape(s, ctx, tune);
+  const y = productivenessParts(s);
+  /** @type {import("/emigration/ui/emigration-built.js").BuiltItem[]} */
+  const items = Array.isArray(s.builtItems) ? s.builtItems : [];
+  const wondersSum = items.filter((i) => i.wonder).reduce((n, i) => n + (Number(i.points) || 0), 0);
+  const buildingsSum = items.filter((i) => !i.wonder).reduce((n, i) => n + (Number(i.points) || 0), 0);
+  const built = builtBonus(s);
+  const wonders = Math.min(wondersSum, built);
+  return {
+    economy: {
+      food: y.food * shape.mult, production: y.production * shape.mult, gold: y.gold * shape.mult,
+      science: y.science * shape.mult, culture: y.culture * shape.mult
+    },
+    happiness: { h: shape.h, mean: shape.mean },
+    polity: polityParts(s, tune),
+    built: { wonders, buildings: built - wonders, trim: Math.max(0, wondersSum + buildingsSum - built), items }
+  };
 }
 
 /**

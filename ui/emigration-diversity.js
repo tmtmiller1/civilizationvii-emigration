@@ -111,6 +111,33 @@ function largestNonOwnerShare(civs, owner) {
   return largest;
 }
 
+/** Shares for the character tiers: a single origin, a small diaspora, and how many origins count as several. */
+const CHARACTER = Object.freeze({ single: 0.95, smallDiaspora: 0.15, counted: 0.1, noDominant: 0.6, noMajority: 0.5 });
+
+/**
+ * A settlement's character from its own population alone, so the word never disagrees with the bar beside it
+ * (watched 2026-10-25: a 100% American capital read "Mixed City", because the score blended in the owner's
+ * openness and inbound flow). Homogeneous: one origin holds 95% or more. Local Majority: the largest community
+ * from elsewhere is under 15%. Mixed City: a larger foreign community, with the biggest origin still at 60% or
+ * more. Cosmopolitan Center: no origin reaches 60% and at least three hold 10% or more. World City: no origin
+ * reaches half and at least four hold 10% or more.
+ * @param {{share:number, name?:string}[]} parts The displayed origin shares, largest first.
+ * @param {string} [ownerName] The host civ's display name (its own people aren't a diaspora).
+ * @returns {string} A COSMO_TIERS key.
+ */
+export function characterTier(parts, ownerName) {
+  const list = (parts || []).filter((p) => p && p.share > 0).sort((a, b) => b.share - a.share);
+  if (!list.length) return "homogeneous";
+  const dominant = list[0].share;
+  if (dominant >= CHARACTER.single) return "homogeneous";
+  const foreign = list.filter((p) => !ownerName || p.name !== ownerName).reduce((m, p) => Math.max(m, p.share), 0);
+  if (foreign < CHARACTER.smallDiaspora) return "local";
+  const counted = list.filter((p) => p.share >= CHARACTER.counted).length;
+  if (dominant < CHARACTER.noMajority && counted >= 4) return "world";
+  if (dominant < CHARACTER.noDominant && counted >= 3) return "center";
+  return "mixed";
+}
+
 /**
  * The tier key for a 0..1 cosmopolitanism score (the highest tier whose `min` it reaches).
  * @param {number} score

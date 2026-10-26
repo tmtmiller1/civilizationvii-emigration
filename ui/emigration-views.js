@@ -10,10 +10,11 @@ import { causeLabel, netDrivers } from "/emigration/ui/emigration-causes.js";
 import { renderNetworkViz } from "/emigration/ui/emigration-network-viz.js";
 import { getNumberMode, setNumberMode, NumberMode, getMinimizeAnalytics } from "/emigration/ui/emigration-settings.js";
 import { appendSnapshotReminder } from "/emigration/ui/emigration-snapshot-reminder.js";
-import { renderGuide } from "/emigration/ui/emigration-guide.js";
-import { renderCityFlows, buildCivFlows } from "/emigration/ui/emigration-city-flows.js";
-import { renderDisplaced, displacedSection, DISPLACED_CSS } from "/emigration/ui/emigration-displaced-view.js";
-import { renderStances, renderDiversity, diversitySections } from "/emigration/ui/emigration-detail-views.js";
+import { renderNetworkTab, renderCitiesTab } from "/emigration/ui/emigration-tab-switches.js";
+import { renderCityFlows, SETTLEMENT_CSS, MIX_CSS } from "/emigration/ui/emigration-city-flows.js";
+import { DISPLACED_CSS } from "/emigration/ui/emigration-displaced-view.js";
+import { renderStances } from "/emigration/ui/emigration-detail-views.js";
+import { settlementsSection } from "/emigration/ui/emigration-settlements-section.js";
 import { renderLedger, splitInternalExternal, LEDGER_CSS } from "/emigration/ui/emigration-ledger-view.js";
 import { renderNotifications } from "/emigration/ui/emigration-notifications-view.js";
 import { DENSITY_CSS } from "/emigration/ui/emigration-density.js";
@@ -255,37 +256,36 @@ function buildFrames(d, names, current) {
 }
 
 /**
- * The full dashboard view-model: the headline migration network plus the shared detail sections.
+ * The full dashboard view-model: the headline migration network plus the shared detail sections, six tabs on
+ * every surface (the standalone screen and the Emigration page inside Demographics). The Net Migration table sits
+ * behind the Network tab's "View" switch and every civilization's cards (the old Causes tab) behind the Cities
+ * tab's "Show" switch (emigration-tab-switches.js); the Guide left the row for the Civilopedia pages.
  * @param {*} input Gathered data ({civs?, byCause?, flows?, pops?, history?, cities?, sample?}).
  * @returns {{sections:*[], sample:boolean}} The model.
  */
 export function dashboardModel(input) {
   const d = input || {};
-  const names = civNameMap(d.civs, d.flows);
-  const current = flowNetwork(d.flows || []);
-  const frames = buildFrames(d, names, current);
-  const events = d.events || [];
-  const sections = [
-    // `events` are pre-positioned frame windows (the sample path); `eventRecords` are the live
-    // turn-stamped war/disaster logs, which the network view positions against its final frame list.
-    { title: loc("LOC_EMIG_VIEW_SEC_NETWORK", "Migration network"), kind: "flow", network: current, frames, events,
-      eventRecords: d.eventRecords || null },
-    { title: loc("LOC_EMIG_VIEW_SEC_NET_TABLE", "Net Migration (Table)"), kind: "ledger", rows: civLedgerRows(d.civs || []) },
-    { title: loc("LOC_EMIG_VIEW_SEC_WHY", "Why people move"), kind: "pies", cities: buildCivFlows(d.flows || [], d.civs || [], d.eventsByOwner) },
-    { title: loc("LOC_EMIG_VIEW_SEC_SETTLEMENTS", "Settlements"), kind: "cityflows", cities: d.myCities || [] },
-    displacedSection(d),
-    ...diversitySections(d),
-    { title: loc("LOC_EMIG_VIEW_SEC_POLICIES", "Immigration policies"), kind: "stances", rows: stanceRows(d.civs || []) },
-    { title: loc("LOC_EMIG_VIEW_SEC_NOTIFICATIONS", "Migration notifications"), kind: "notifications" },
-    { title: loc("LOC_EMIG_VIEW_SEC_GUIDE", "Guide"), kind: "guide" }
-  ];
-  return { sample: !!d.sample, sections: visibleSections(sections) };
+  return { sample: !!d.sample, sections: visibleSections(allSections(d)) };
 }
 
-// The heavy-analytics section kinds the "simplify dashboard" option hides: the animated Network diagram
-// and the Causes pie charts. The numbers-first tabs (ledger, settlements, diversity, policies,
-// notifications, guide) always stay.
-const ANALYTICS_KINDS = new Set(["flow", "pies"]);
+/** @param {*} d Gathered data, never null. @returns {*[]} Every section, in tab order. */
+function allSections(d) {
+  const current = flowNetwork(d.flows || []);
+  const frames = buildFrames(d, civNameMap(d.civs, d.flows), current);
+  return [
+    // Settlements first (the owner, 2026-10-26): the tab a player acts on opens by default; the Network second.
+    settlementsSection(d),
+    // `events` are pre-positioned frame windows (the sample path); `eventRecords` are the live
+    // turn-stamped war/disaster logs, which the network view positions against its final frame list.
+    { title: loc("LOC_EMIG_VIEW_SEC_NETWORK", "Migration network"), kind: "flow", network: current, frames,
+      events: d.events || [], eventRecords: d.eventRecords || null, table: civLedgerRows(d.civs || []) },
+    { title: loc("LOC_EMIG_VIEW_SEC_POLICIES", "Immigration policies"), kind: "stances", rows: stanceRows(d.civs || []) },
+    { title: loc("LOC_EMIG_VIEW_SEC_NOTIFICATIONS", "Migration notifications"), kind: "notifications" }
+  ];
+}
+
+// The heavy-analytics section kinds the "simplify dashboard" option hides (the animated Network diagram).
+const ANALYTICS_KINDS = new Set(["flow"]);
 
 /**
  * Filter the dashboard sections by the "simplify dashboard" option: drop the heavy analytics tabs when
@@ -318,7 +318,7 @@ const DASH_CSS =
   // The Net Migration Table's own rules live beside its renderer (its column weights and the group
   // header's spans have to be read together), so they are concatenated in from there.
   LEDGER_CSS +
-  DISPLACED_CSS +
+  DISPLACED_CSS + SETTLEMENT_CSS + MIX_CSS +
   // Causes pies.
   // Cap the legend to the pie's width so it wraps under the pie instead of widening the (content-sized)
   // column, otherwise a card with long "civ count (pct%)" labels makes its column wider and pushes the
@@ -392,20 +392,28 @@ const DASH_CSS =
   ".emig-event-num{flex:0 0 auto;text-align:right;color:#cbb994;}" +
   // The consistent control row: labeled pill groups (a "Label:" + selectable chips), matching the
   // Network lens row and the Demographics "Data" pills, so every Emigration tab reads the same.
-  ".emig-ctrl-row{display:flex;flex-wrap:wrap;gap:0.3rem 1.4rem;justify-content:center;align-items:center;" +
-  "margin:0.1rem 0 0.55rem;}" +
-  ".emig-pill-grp{display:flex;flex-wrap:wrap;align-items:center;gap:0.3rem;}" +
-  ".emig-pill-lbl{font-size:var(--dg-fs-95);opacity:0.7;margin-right:0.1rem;text-transform:uppercase;" +
-  "letter-spacing:0.03rem;color:#cbb994;}" +
-  // Control-row groups render as flat, square-cornered, gold-boxed buttons, the same look as the time/
-  // age filters on the Data tab.
+  // The control rows follow the Demographics screen (its view-pills.js and chart toolbar, read 2026-10-26), so
+  // the same content reads the same on both surfaces: a labelled toolbar line in soft gold, flat uppercase
+  // filter buttons for choices that transform the numbers (Scaled / Civ), and rounded gold pills for choosing a
+  // view. Tabs sit first, then the pills, then the controls, then the content.
+  ".emig-ctrl-row{display:flex;flex-wrap:wrap;gap:0.4rem 0.4rem;justify-content:center;align-items:center;" +
+  "margin:0.1rem 0 0.4rem;}" +
+  ".emig-pill-grp{display:flex;flex-wrap:wrap;align-items:center;gap:0.4rem;}" +
+  ".emig-ctrl-sep{color:rgba(201,162,76,0.55);font-size:var(--dg-fs-95);margin:0 0.3rem;}" +
+  ".emig-pill-lbl{font-size:var(--dg-fs-78);margin-right:0.2rem;color:#c9a24c;}" +
   ".emig-filter-btn{display:inline-block;padding:0.18rem 0.55rem;border-radius:0.2rem;" +
-  "border:0.0555rem solid rgba(201,162,76,0.4);background:rgba(9,12,19,0.5);color:#cbb994;" +
-  "font-family:" + localeFontFamily("title") + ";text-transform:uppercase;letter-spacing:0.06em;font-size:var(--dg-fs-72);" +
+  "border:0.0555rem solid rgba(201,162,76,0.4);background:rgba(9,12,19,0.5);color:#bfae86;" +
+  "text-transform:uppercase;letter-spacing:0.06em;font-size:var(--dg-fs-78);" +
   "cursor:pointer;white-space:nowrap;line-height:1.2;}" +
-  ".emig-filter-btn:hover{border-color:rgba(243,195,76,0.75);}" +
   ".emig-filter-btn.active{border-color:rgba(243,195,76,0.95);background:rgba(60,45,20,0.85);" +
   "color:#f3c34c;font-weight:bold;}" +
+  ".emig-view-pills{display:flex;gap:0.4rem 0.4rem;justify-content:center;margin:0.3rem 0;flex-wrap:wrap;}" +
+  ".emig-view-pill{cursor:pointer;padding:0.34rem 1.15rem;border-radius:1rem;font-size:var(--dg-fs-100);" +
+  "border:0.0555rem solid rgba(201,162,76,0.4);color:#bfae86;}" +
+  ".emig-view-pill.active{color:#1c1408;background:#f3c34c;font-weight:bold;}" +
+  ".emig-tab-host{margin:0.4rem 0;width:100%;display:block;}" +
+  ".emig-tab-host > fxs-tab-bar{width:100%;}" +
+  ".emig-dash fxs-tab-bar fxs-tab-item{min-width:0;}" +
   // Descriptive title at the top of the Causes / Settlements tabs.
   ".emig-section-title{font-family:" + localeFontFamily("title") + ";text-transform:uppercase;letter-spacing:0.05rem;" +
   "color:#f3c34c;font-size:var(--dg-fs-105);text-align:center;margin:0.1rem 0 0.6rem;}" +
@@ -460,17 +468,19 @@ function el(tag, cls, text) {
 
 // Renderers that consume the whole section model (canvas/pie/card views).
 /** @type {Record<string, (body: HTMLElement, section: *, controlsHost?: HTMLElement) => void>} */
+/** The renderers the two switched tabs choose between (emigration-tab-switches.js). */
+const SWITCH_DEPS = { renderNetworkViz, renderLedger, renderCityFlows };
+/** @type {Record<string, (body:HTMLElement, section:*, controlsHost?:HTMLElement)=>void>} */
 const SECTION_VIEWS = {
-  flow: renderNetworkViz, // the "Network" tab: dots + the toggleable green/red migrant-flow overlay
-  pies: renderCityFlows, cityflows: renderCityFlows, displaced: renderDisplaced,
-  notifications: (/** @type {HTMLElement} */ body) => renderNotifications(body),
-  guide: renderGuide
+  // The "Network" tab: the dots + flow overlay, or the Net Migration table behind its View switch.
+  flow: (b, s, h) => renderNetworkTab(b, s, h, SWITCH_DEPS),
+  // The "Settlements" tab: the player's settlements, or every civilization's cards behind its Show switch.
+  cityflows: (b, s, h) => renderCitiesTab(b, s, h, SWITCH_DEPS),
+  notifications: (/** @type {HTMLElement} */ body) => renderNotifications(body)
 };
 // Renderers that consume `section.rows` (flexbox tables).
 /** @type {Record<string, (body: HTMLElement, rows: *[]) => void>} */
-const ROW_VIEWS = {
-  ledger: renderLedger, stances: renderStances, diversity: renderDiversity
-};
+const ROW_VIEWS = { stances: renderStances };
 
 /**
  * Render a section's kind-specific content (no card chrome) into a body element.
@@ -495,15 +505,13 @@ function renderSectionBody(body, section, controlsHost) {
 
 /** @type {Record<string,string>} */
 const TAB_LABELS = {
-  flow: loc("LOC_EMIG_VIEW_TAB_NETWORK", "Network"),
-  ledger: loc("LOC_EMIG_VIEW_TAB_NET_TABLE", "Net Migration (Table)"), pies: loc("LOC_EMIG_VIEW_TAB_CAUSES", "Causes"),
-  stances: loc("LOC_EMIG_VIEW_TAB_POLICIES", "Policies"), cityflows: loc("LOC_EMIG_VIEW_TAB_MY_CITIES", "My Cities"), displaced: loc("LOC_EMIG_VIEW_TAB_DISPLACED", "Displaced"),
-  diversity: loc("LOC_EMIG_VIEW_TAB_DIVERSITY", "Diversity"), notifications: loc("LOC_EMIG_VIEW_TAB_NOTIFICATIONS", "Notifications"), guide: loc("LOC_EMIG_VIEW_TAB_GUIDE", "Guide")
+  flow: loc("LOC_EMIG_VIEW_TAB_NETWORK", "Network"), cityflows: loc("LOC_EMIG_VIEW_TAB_MY_CITIES", "Settlements"),
+  stances: loc("LOC_EMIG_VIEW_TAB_POLICIES", "Policies"), notifications: loc("LOC_EMIG_VIEW_TAB_NOTIFICATIONS", "Notifications")
 };
 
 /** @param {*} s */
 function tabLabelFor(s) {
-  return TAB_LABELS[s.kind] || s.title;
+  return s.tabLabel || TAB_LABELS[s.kind] || s.title;
 }
 
 /**
@@ -534,16 +542,26 @@ function domTabBar(items, onSelect, start) {
  * @param {*[]} sections
  * @param {(i:number)=>void} onSelect Selection handler.
  * @param {number} start The tab shown first.
- * @returns {HTMLElement} The tab bar.
+ * @returns {HTMLElement} The tab bar in its host (margins as the Demographics screen gives its own).
  */
-function makeTabBar(sections, onSelect, start) {
+function tabHost(sections, onSelect, start) {
+  const host = el("div", "emig-tab-host");
   const items = sections.map((s, i) => ({ id: String(i), label: tabLabelFor(s) }));
-  if (typeof Controls === "undefined") return domTabBar(items, onSelect, start);
+  host.appendChild(typeof Controls === "undefined" ? domTabBar(items, onSelect, start) : makeTabBar(items, onSelect, start));
+  return host;
+}
+
+/** @param {{id:string, label:string}[]} items @param {(i:number)=>void} onSelect @param {number} start */
+function makeTabBar(items, onSelect, start) {
   const bar = /** @type {*} */ (document.createElement("fxs-tab-bar"));
-  bar.classList.add("font-title", "text-sm");
+  // The same attributes the Demographics screen gives its tab bars, so the two read as one.
+  bar.classList.add("emig-view-tabs", "w-full", "font-title", "text-sm");
+  bar.setAttribute("data-audio-group-ref", "audio-screen-unlocks");
   bar.setAttribute("tab-items", JSON.stringify(items));
   bar.setAttribute("selected-tab-index", String(start));
-  bar.setAttribute("tab-item-class", "font-title");
+  bar.setAttribute("tab-item-class", "font-title text-base");
+  bar.setAttribute("nav-help-right-class", "relative right-0");
+  bar.setAttribute("nav-help-left-class", "relative left-0");
   bar.addEventListener("tab-selected", (/** @type {*} */ ev) => {
     const id = ev && ev.detail && ev.detail.selectedItem && ev.detail.selectedItem.id;
     if (id != null) onSelect(parseInt(id, 10));
@@ -556,7 +574,7 @@ function makeTabBar(sections, onSelect, start) {
 // the control row reads identically on every Emigration tab.
 /** @param {number} mode A NumberMode. @returns {string} Its chip label in the current language. */
 function numLabel(mode) {
-  return mode === NumberMode.CIV ? loc("LOC_EMIG_VIEW_NUM_CIV", "Civ Pop") : loc("LOC_EMIG_VIEW_NUM_SCALED", "Scaled Pop");
+  return mode === NumberMode.CIV ? loc("LOC_EMIG_VIEW_NUM_CIV", "Civ") : loc("LOC_EMIG_VIEW_NUM_SCALED", "Scaled");
 }
 
 /**
@@ -571,7 +589,6 @@ function numLabel(mode) {
 function filterGroup(label, items, current, onSelect) {
   return controlGroup(label, items, current, onSelect, "emig-filter-btn");
 }
-
 /**
  * Shared builder for pillGroup / filterGroup: a "Label:" span + one selectable control per option.
  * @param {string} label The leading label.
@@ -583,7 +600,7 @@ function filterGroup(label, items, current, onSelect) {
  */
 function controlGroup(label, items, current, onSelect, cls) {
   const grp = el("div", "emig-pill-grp");
-  grp.appendChild(el("span", "emig-pill-lbl", label));
+  if (label) grp.appendChild(el("span", "emig-pill-lbl", label));
   for (const it of items) {
     const ctl = el("div", cls + (it.key === current ? " active" : ""), it.label);
     ctl.addEventListener("click", () => {
@@ -594,7 +611,7 @@ function controlGroup(label, items, current, onSelect, cls) {
   return grp;
 }
 
-function openAdvancedOptions() {
+export function openAdvancedOptions() {
   import("/core/ui/context-manager/context-manager.js")
     .then((m) => {
       try {
@@ -619,17 +636,14 @@ function openAdvancedOptions() {
  * @param {()=>void} rebuild Re-gather + re-render after a change.
  * @returns {HTMLElement|null} The control row, or null when there's nothing to show.
  */
-function buildControlRow(showNumbers, rebuild, includeOptionsButton = false) {
-  // The only on-page control is Numbers (Scaled/Civ), a per-view choice. Unmet-civ visibility is a
-  // persistent setting and lives in Options ▸ Mods ▸ Emigration, not as an on-page filter.
-  if (!showNumbers && !includeOptionsButton) return null;
+function buildControlRow(showNumbers, rebuild) {
+  // The only on-page control is Numbers (Scaled/Civ), a per-view choice, drawn as the Demographics screen draws
+  // its own Scaled / Civ row: the two filter buttons, no label. Unmet-civ visibility is a persistent setting and
+  // lives in Options, Mods, Emigration; the Advanced settings button sits in the standalone screen's header
+  // (emigration-screen.js), where Demographics keeps its Options button.
+  if (!showNumbers) return null;
   const row = el("div", "emig-ctrl-row");
-  if (includeOptionsButton) {
-    row.appendChild(filterGroup(loc("LOC_EMIG_VIEW_OPTIONS_LABEL", "Options:"),
-      [{ key: "advanced", label: loc("LOC_EMIG_VIEW_OPTIONS_ADVANCED", "Advanced") }], "", () => openAdvancedOptions()));
-  }
-  if (!showNumbers) return row;
-  row.appendChild(filterGroup(loc("LOC_EMIG_VIEW_NUMBERS_LABEL", "Numbers:"), [
+  row.appendChild(filterGroup("", [
     { key: NumberMode.HISTORICAL, label: numLabel(NumberMode.HISTORICAL) },
     { key: NumberMode.CIV, label: numLabel(NumberMode.CIV) }
   ], getNumberMode(), (/** @type {number} */ k) => { setNumberMode(k); rebuild(); }));
@@ -668,20 +682,20 @@ export function renderDashboardTabbed(target, model, rebuild, startKind) {
       const t0 = nowMs();
       seen.active = i;
       ctrlHost.innerHTML = "";
-      const ctrl = buildControlRow(wantsUnitsToggle(sections[i]),
-        () => (rebuild ? rebuild(sections[i].kind) : show(i)), true);
+      const ctrl = buildControlRow(wantsUnitsToggle(sections[i]), () => sections[i].rebuild());
       if (ctrl) ctrlHost.appendChild(ctrl);
       body.innerHTML = "";
-      // A tab with controls of its own (the Displaced tab's calls) redraws itself through this.
+      // A tab with controls of its own (the Displaced tab's calls) redraws itself through this; the host screen
+      // may also put `screen` (close / reopen) on the section, to step aside for a pop-up.
       sections[i].rebuild = () => (rebuild ? rebuild(sections[i].kind) : show(i));
-      renderSectionBody(body, sections[i]);
+      renderSectionBody(body, sections[i], SWITCHED_KINDS.has(sections[i].kind) ? ctrlHost : undefined);
       plog("tab " + sections[i].kind + " shown (#" + ++seen.shows + " this render) " + Math.round(nowMs() - t0) + " ms");
     };
-    wrap.appendChild(ctrlHost);
     // The game's tab bar announces its starting tab as soon as it attaches to the page, which happens inside
     // target.appendChild below. Skipping a pick of the tab already showing, there and in the call after it,
     // keeps the network from being built twice on every open.
-    wrap.appendChild(makeTabBar(sections, (/** @type {number} */ i) => { if (i !== seen.active) show(i); }, start));
+    wrap.appendChild(tabHost(sections, (/** @type {number} */ i) => { if (i !== seen.active) show(i); }, start));
+    wrap.appendChild(ctrlHost);
     wrap.appendChild(body);
     target.appendChild(wrap);
     if (seen.active !== start) show(start);
@@ -693,7 +707,9 @@ export function renderDashboardTabbed(target, model, rebuild, startKind) {
 // Sections the "Numbers:" units chip doesn't apply to: "flow" has its own inline Units toggle, and
 // stances / notifications / guide show no population counts to switch. (Diversity does carry counts,
 // each settlement's population beside its origin bar, so it takes the chip like the other tables.)
-const NO_UNITS_TOGGLE = new Set(["flow", "stances", "notifications", "guide", "displaced"]);
+const NO_UNITS_TOGGLE = new Set(["flow", "stances", "notifications"]);
+/** The tabs whose view switch mounts in the shared control row on the standalone screen. */
+const SWITCHED_KINDS = new Set(["flow", "cityflows"]);
 
 /**
  * Whether to show the in-panel "Numbers:" units chip for a section: only the count-bearing tables/pies
@@ -703,10 +719,8 @@ const NO_UNITS_TOGGLE = new Set(["flow", "stances", "notifications", "guide", "d
  * @param {{hideUnitsToggle?:boolean}} [opts] Render options.
  * @returns {boolean} True to show the chip.
  */
-function wantsUnitsToggle(section, opts) {
-  if (NO_UNITS_TOGGLE.has(section.kind)) return false;
-  return !(opts && opts.hideUnitsToggle);
-}
+const wantsUnitsToggle = (/** @type {*} */ section, /** @type {*} */ opts) =>
+  !NO_UNITS_TOGGLE.has(section.kind) && !(opts && opts.hideUnitsToggle);
 
 /**
  * Re-gather + re-render the whole embedded page when a rebuild is supplied (the visibility toggle
@@ -742,8 +756,7 @@ function appendControlRow(wrap, opts, body, section) {
     : wrap;
   if (host !== wrap) host.innerHTML = ""; // re-populate the shared row
   if (section.kind === "guide") return;
-  const ctrl = buildControlRow(wantsUnitsToggle(section, opts), () => subtabRebuild(opts, body, section),
-    !!(opts && opts.includeOptionsButton));
+  const ctrl = buildControlRow(wantsUnitsToggle(section, opts), () => subtabRebuild(opts, body, section));
   if (ctrl) host.appendChild(ctrl);
 }
 

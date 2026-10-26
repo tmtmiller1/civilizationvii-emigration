@@ -13,8 +13,10 @@
 .emig-screen {
     --dg-fs-65: 0.65rem;
     --dg-fs-72: 0.72rem;
+    --dg-fs-78: 0.78rem;
     --dg-fs-85: 0.85rem;
     --dg-fs-95: 0.95rem;
+    --dg-fs-100: 1rem;
     --dg-fs-105: 1.05rem;
     --dg-fs-120: 1.2rem;
     --dg-fs-140: 1.4rem;
@@ -112,3 +114,52 @@
         padding: 0 0.7rem 0.7rem 0.7rem;
     }
 }
+
+/* The Advanced settings button, where the Demographics screen keeps its Options button: top right of the
+ * frame, on the title line, in that screen's toolbar-button shape (its chart toolbar). The screen script
+ * centres it on the title after the header draws. */
+.emig-header-right {
+    position: absolute;
+    /* 0.95rem (the Demographics value) sat level with the close button here; the title line is lower. */
+    top: 2.1rem;
+    right: 3.4rem;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+}
+
+/* The Spoil Guard pill, the Demographics policy banner's shape and colours, left of the Advanced button. */
+.emig-policy-pill {
+    padding: 0.12rem 0.6rem;
+    margin-right: 0.6rem;
+    border-radius: 0.4rem;
+    background-color: rgba(120, 28, 24, 0.4);
+    border: 0.0555rem solid #e0726a;
+    color: #ec8e84;
+    font-size: var(--dg-fs-72);
+    white-space: nowrap;
+}
+
+.emig-toolbar-btn {
+    display: inline-block;
+    padding: 0.22rem 0.85rem;
+    color: #e5d2ac;
+    font-size: var(--dg-fs-72);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    cursor: pointer;
+    border-image-source: url("blp:hud_production_pill");
+    border-image-slice: 4 8 4 8 fill;
+    border-image-width: 0.22rem 0.45rem 0.22rem 0.45rem;
+    border-image-repeat: stretch;
+    border: 0;
+    background: transparent;
+    transition: color 0.12s, text-shadow 0.12s;
+}
+
+.emig-toolbar-btn:hover {
+    color: #f3c34c;
+    text-shadow: 0 0 0.35rem rgba(243, 195, 76, 0.55);
+}
+

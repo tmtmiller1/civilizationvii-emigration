@@ -5,6 +5,18 @@
 // Each direction is a pie (by the other civ) + a one-line cause summary.
 
 import { pieCardSlices, legendChips } from "/emigration/ui/emigration-pies.js";
+import { displacedRow, displacedRowEmpty, displacedIntro, displacedAfter, actionButton }
+  from "/emigration/ui/emigration-displaced-view.js";
+import { quarterDecisionFor } from "/emigration/ui/emigration-quarter-decision.js";
+import { settlementCard } from "/emigration/ui/emigration-settlement-card.js";
+import { mixTable, mixWords } from "/emigration/ui/emigration-detail-views.js";
+import { liveSettlementModels } from "/emigration/ui/emigration-settlement-model.js";
+export { SETTLEMENT_CSS } from "/emigration/ui/emigration-settlement-card.js";
+/** The mix table's frame under a civilization's card, concatenated into the dashboard stylesheet. */
+export const MIX_CSS =
+  ".emig-mix-box{margin:-0.2rem 0 1rem;padding:0.3rem 0.8rem 0.5rem;}" +
+  ".emig-mix-box .emig-sc-bl{margin-bottom:0.3rem;}" +
+  "";
 import { civColorByIndex, CAUSE_PALETTE } from "/emigration/ui/emigration-network-paint.js";
 import { causeLabel } from "/emigration/ui/emigration-causes.js";
 import { formatPeople } from "/emigration/ui/emigration-population.js";
@@ -109,16 +121,19 @@ function cardTitle(c) {
 
 // Emigration-pressure bands (proximity to shedding population, 0..1): number + a color-coded label
 // so you can read at a glance how high a settlement's pressure is.
+// Five stages, so the word reads as a stage and not a chance (the owner, 2026-10-26: "it's not a likelihood per
+// turn, right?"); the pressure is an accumulator that empties into a departure when it fills.
 const PR_BANDS = [
-  { min: 0.9, label: loc("LOC_EMIG_CF_BAND_CRITICAL", "Critical"), color: "#c25b54" },
-  { min: 0.66, label: loc("LOC_EMIG_CF_BAND_HIGH", "High"), color: "#e0913c" },
-  { min: 0.33, label: loc("LOC_EMIG_CF_BAND_MODERATE", "Moderate"), color: "#d8b24a" },
-  { min: 0, label: loc("LOC_EMIG_CF_BAND_LOW", "Low"), color: "#5fae6b" }
+  { min: 0.9, stage: 5, label: loc("LOC_EMIG_CF_BAND_CRITICAL", "Critical"), color: "#c25b54" },
+  { min: 0.66, stage: 4, label: loc("LOC_EMIG_CF_BAND_HIGH", "High"), color: "#e0913c" },
+  { min: 0.33, stage: 3, label: loc("LOC_EMIG_CF_BAND_MODERATE", "Moderate"), color: "#d8b24a" },
+  { min: 0.1, stage: 2, label: loc("LOC_EMIG_CF_BAND_LOW", "Low"), color: "#5fae6b" },
+  { min: 0, stage: 1, label: loc("LOC_EMIG_CF_BAND_NEGLIGIBLE", "Negligible"), color: "#7fa88a" }
 ];
 
 /**
  * @param {number} bar Pressure 0..1.
- * @returns {{label:string, color:string}}
+ * @returns {{min:number, stage:number, label:string, color:string}} The band.
  */
 function pressureBand(bar) {
   for (const b of PR_BANDS) {
@@ -342,9 +357,10 @@ function causeList(causes, events) {
  * list on the left, the two pies tightened on the right. Settlements tab: name + (City)/(Town), the
  * two pies, then an emigration-pressure line.
  * @param {*} c Entry { name, town?, in, out, pressure?, causes? }.
+ * @param {HTMLElement|null} [displaced] The settlement's displaced column, when anyone fled it.
  * @returns {HTMLElement}
  */
-function cityCard(c) {
+function cityCard(c, displaced) {
   const card = el("div", "emig-city-card");
   const isCiv = !!c.causes;
   card.appendChild(isCiv ? civHeader(c.name) : el("div", "emig-city-name", cardTitle(c)));
@@ -354,8 +370,10 @@ function cityCard(c) {
     loc("LOC_EMIG_CF_WHY_PREFIX", "Why:"), c.in, true));
   cols.appendChild(directionCol(loc("LOC_EMIG_CF_DIR_EMIGRANTS", "Emigrants ; left for/died"),
     loc("LOC_EMIG_CF_WHY_PREFIX", "Why:"), c.out, false));
-  // Settlements: the pressure becomes a third aligned graph column beside the two pies.
+  // Settlements: the pressure becomes a third aligned graph column beside the two pies, and the settlement's
+  // displaced people a fourth when anyone fled it.
   if (!isCiv) cols.appendChild(pressureCol(c.pressure));
+  if (displaced) cols.appendChild(displaced);
   card.appendChild(cols);
   return card;
 }
@@ -437,8 +455,8 @@ export function buildCivFlows(flows, civs, eventsByOwner) {
   const { names, map } = indexFlowsByCiv(flows);
   const events = eventsByOwner || {};
   const empty = { civs: {}, causes: {} };
+  // Every civilization keeps a card, flows or none: its settlements list hangs under it (2026-10-26).
   return (civs || [])
-    .filter((r) => (r.in || 0) + (r.out || 0) + (r.deaths || 0) > 0)
     .map((r) => {
       const f = map.get(r.pid) || { in: empty, out: empty };
       const out = flowDir(f.out, names);
@@ -466,6 +484,49 @@ const SECTION_TITLES = {
 };
 
 /**
+ * The pieces a settlement's dashboard card (emigration-settlement-card.js) borrows from this file: the title, the
+ * bar body of one direction, the pressure band and bar, the stay line and the drivers.
+ * @type {import("/emigration/ui/emigration-settlement-card.js").CardDeps}
+ */
+const CARD_DEPS = { cardTitle, pieBody, dirTotal, pressureBand, pressureBar, actionButton,
+  decide: quarterDecisionFor, displacedRowEmpty };
+
+/** @param {*} dir A direction {civs, causes}. @returns {number} Its population points (people when none). */
+function dirTotal(dir) {
+  return civSlices(dir && dir.civs).reduce((n, s) => n + s.value, 0);
+}
+
+/**
+ * One direction's chart, titled: the pie (a slice per origin or destination), the legend under it, the causes last;
+ * nobody: the dashed placeholder and a word, the same size, so every pane keeps its shape.
+ * @param {*} dir @param {boolean} isArrivals @returns {HTMLElement[]}
+ */
+function pieBody(dir, isArrivals) {
+  const slices = civSlices(dir && dir.civs);
+  const title = el("div", "emig-sc-bl emig-sc-pie-t", isArrivals
+    ? loc("LOC_EMIG_SC_PIE_FROM", "Where they came from")
+    : loc("LOC_EMIG_SC_PIE_TO", "Where they went"));
+  if (!slices.length) {
+    const ph = el("div", "emig-pie-empty");
+    ph.appendChild(el("span", "emig-pie-empty-t", isArrivals
+      ? loc("LOC_EMIG_CF_NO_ARRIVALS", "No arrivals yet")
+      : loc("LOC_EMIG_CF_NO_DEPARTURES", "No departures yet")));
+    return [title, ph];
+  }
+  const total = slices.reduce((a, s) => a + s.value, 0);
+  const out = [title, pieCardSlices("", slices, false)];
+  out.push(legendChips(slices.map((s) => ({
+    label: s.label, color: s.color, countText: s.countText, pct: total > 0 ? Math.round((s.value / total) * 100) : 0
+  }))));
+  const why = causeText(dir && dir.causes);
+  if (why) {
+    out.push(el("div", "emig-city-why emig-sc-why",
+      loc("LOC_EMIG_CF_WHY_LINE", "{1_Prefix} {2_Why}", loc("LOC_EMIG_CF_WHY_PREFIX", "Why:"), why)));
+  }
+  return out;
+}
+
+/**
  * Render the per-entry breakdown (Causes: a card per civ; Settlements: a card per the local player's
  * settlements), under a descriptive tab title. The Scaled / Civ Pop toggle is supplied by the
  * dashboard wrapper (renderDashboardSubtab), which re-renders this section on change.
@@ -476,10 +537,129 @@ export function renderCityFlows(body, section) {
   body.appendChild(el("div", "emig-section-title",
     SECTION_TITLES[section.kind] || section.title || ""));
   const cities = section.cities || [];
-  if (!cities.length) {
+  // The Settlements tab (kind cityflows) also carries the player's displaced people, as a column of the card of
+  // the settlement they fled; one with people away but no card of its own gets a card for the column.
+  const byHome = displacedByHome(section);
+  if (!cities.length && !byHome.size) {
     body.appendChild(el("div", "emig-empty",
       loc("LOC_EMIG_CF_EMPTY", "No city migration recorded yet, flows appear as people move in and out of your cities.")));
     return;
   }
-  for (const c of cities) body.appendChild(cityCard(c));
+  if (section.kind === "cityflows") body.appendChild(displacedIntro(section)); // always there, filled or not
+  appendCards(body, section, cities, byHome);
+}
+
+/**
+ * The cards: one per settlement, with its displaced column when anyone fled it, then one per settlement with
+ * people away but no card of its own.
+ * @param {HTMLElement} body @param {*} section @param {*[]} cities @param {Map<string, *>} byHome
+ */
+function appendCards(body, section, cities, byHome) {
+  const after = displacedAfter(section);
+  const mine = section.kind === "cityflows";
+  const models = mine ? (section.models || liveSettlementModels(section.pid)) : new Map();
+  const mixRows = Array.isArray(section.diversity) ? section.diversity : [];
+  const mixByName = new Map(mixRows.filter((/** @type {*} */ r) => r.own).map((/** @type {*} */ r) => [r.city, r]));
+  const deps = { ...CARD_DEPS, after, screen: section.screen || null,
+    mixOf: (/** @type {string} */ name) => (mixByName.has(name) ? mixWords(mixByName.get(name)) : null) };
+  if (!mine) {
+    appendCivCards(body, cities, mixRows, section.sort);
+    return;
+  }
+  for (const c of sortedCities(cities, section.sort)) {
+    const r = byHome.get(c.name);
+    const dp = r ? displacedRow(r, section.pid, after) : null;
+    body.appendChild(settlementCard(c, dp, models.get(c.name) || null, deps));
+    byHome.delete(c.name);
+  }
+  for (const r of byHome.values()) body.appendChild(displacedOnlyCard(r, section, after));
+}
+
+/**
+ * The All civilizations view: every civilization's card with its flow pies, and under each the table of its
+ * settlements; a civilization with settlements but no card gets a bare one, so none goes missing (the Communities
+ * tab listed them all).
+ * @param {HTMLElement} body @param {*[]} cards The per-civilization cards. @param {*[]} mixRows Every mix row.
+ * @param {string|undefined} sort The chosen sort.
+ */
+function appendCivCards(body, cards, mixRows, sort) {
+  /** @type {Set<string>} */
+  const listed = new Set();
+  for (const c of sortedCivCards(cards, mixRows, sort)) {
+    body.appendChild(cityCard(c, null));
+    appendMixList(body, c.name, mixRows, listed, sort);
+  }
+  for (const name of new Set(mixRows.map((/** @type {*} */ r) => r.ownerName))) {
+    if (listed.has(name)) continue;
+    const card = el("div", "emig-city-card");
+    card.appendChild(civHeader(name));
+    body.appendChild(card);
+    appendMixList(body, name, mixRows, listed, sort);
+  }
+}
+
+/** The sort the Settlements tab opens on: the settlements under the most pressure first. */
+export const SORT_PRESSURE = "pressure";
+/** The other sort: settlements by name. */
+export const SORT_NAME = "name";
+
+/**
+ * The player's cards in the chosen order (the owner, 2026-10-26: "sort the settlements tab by pressure rating"):
+ * by pressure, most first, or by name.
+ * @param {*[]} cities @param {string|undefined} sort @returns {*[]}
+ */
+export function sortedCities(cities, sort) {
+  const list = cities.slice();
+  if (sort === SORT_NAME) return list.sort((a, b) => String(a.name).localeCompare(String(b.name)));
+  // Ties keep the game's own order (a stable sort), so settlements under no pressure read as the game lists them.
+  return list.sort((a, b) => ((b.pressure && b.pressure.bar) || 0) - ((a.pressure && a.pressure.bar) || 0));
+}
+
+/**
+ * Every civilization's cards in the chosen order: by the pressure on their most pressed settlement, most first, or
+ * by name.
+ * @param {*[]} cards @param {*[]} mixRows @param {string|undefined} sort @returns {*[]}
+ */
+function sortedCivCards(cards, mixRows, sort) {
+  const list = cards.slice();
+  if (sort === SORT_NAME) return list.sort((a, b) => String(a.name).localeCompare(String(b.name)));
+  const peak = (/** @type {string} */ name) => mixRows.filter((/** @type {*} */ r) => r.ownerName === name)
+    .reduce((m, /** @type {*} */ r) => Math.max(m, r.pressure || 0), 0);
+  return list.sort((a, b) => peak(b.name) - peak(a.name));
+}
+
+/**
+ * The settlement mix table for one civilization, under its card: each settlement's people by origin, its Mix and
+ * Character (the owner, 2026-10-26: the Communities tab's two words, folded into the All civilizations view).
+ * @param {HTMLElement} body @param {string} civName @param {*[]} mixRows Every row on the tab.
+ * @param {Set<string>} listed The civilizations already given their table. @param {string|undefined} sort
+ */
+function appendMixList(body, civName, mixRows, listed, sort) {
+  listed.add(civName);
+  const rows = mixRows.filter((/** @type {*} */ r) => r.ownerName === civName)
+    .map((/** @type {*} */ r) => ({ ...r, pressureLabel: pressureBand(r.pressure || 0).label }));
+  if (!rows.length) return;
+  rows.sort(sort === SORT_NAME
+    ? (a, b) => String(a.city).localeCompare(String(b.city))
+    : (a, b) => (b.pressure || 0) - (a.pressure || 0));
+  const box = el("div", "emig-mix-box");
+  box.appendChild(el("div", "emig-sc-bl", loc("LOC_EMIG_CF_CIV_SETTLEMENTS", "Its settlements")));
+  box.appendChild(mixTable(rows, mixRows));
+  body.appendChild(box);
+}
+
+/** @param {*} section @returns {Map<string, *>} The displaced rows by home settlement, Settlements tab only. */
+function displacedByHome(section) {
+  const rows = section.kind === "cityflows" && Array.isArray(section.displaced) ? section.displaced : [];
+  return new Map(rows.map((/** @type {*} */ r) => [r.home, r]));
+}
+
+/**
+ * A card for a settlement with people away but no movement of its own to chart (a lost settlement, mostly).
+ * @param {*} r The displaced row. @param {*} section @param {()=>void} after @returns {HTMLElement}
+ */
+function displacedOnlyCard(r, section, after) {
+  const empty = { civs: [], causes: {} };
+  return settlementCard({ name: r.home, in: empty, out: empty, pressure: null },
+    displacedRow(r, section.pid, after), null, { ...CARD_DEPS, after, screen: section.screen || null });
 }

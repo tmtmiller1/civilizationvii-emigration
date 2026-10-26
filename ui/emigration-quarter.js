@@ -163,7 +163,7 @@ function offerableQuarter(s, me, force) {
  * @returns {{city:*, tileKey:string, quarter:*, pop:number, ordinal:number, originCiv:(string|null)}|null}
  *   The candidate, or null.
  */
-function candidateFromSignal(s, me, turn, force) {
+export function candidateFromSignal(s, me, turn, force) {
   const base = offerableQuarter(s, me, force);
   if (!base) return null;
   const { tileKey, quarter } = base;
@@ -372,7 +372,7 @@ function recordForChoice(prior, option, quarter, ctx) {
  * @param {number} me Host player id. @param {number} turn Now. The quarter may carry `city` (the host
  *   city object) for placing the enclave improvement; absent off-engine.
  */
-function applyQuarterChoice(optionId, tileKey, quarter, me, turn) {
+export function applyQuarterChoice(optionId, tileKey, quarter, me, turn) {
   try {
     const ct = civType(quarter.civ);
     const option = quarterOptionFor(ct, optionId);
@@ -438,7 +438,7 @@ function stanceButton(option, owner, originPid) {
  * @returns {{title:string, body:string, eyebrow:string, eyebrowIcon:string, details:string[], dismissId:string,
  *   quote:string, choices:*[]}} The view.
  */
-function quarterView(quarter, ordinal, owner) {
+export function quarterView(quarter, ordinal, owner) {
   const name = quarterName(quarter.civ);
   const ct = civType(quarter.civ);
   const host = typeof owner === "number" ? owner : localPid() ?? -1;
@@ -491,10 +491,10 @@ export function maybeQuarter(signals, dilemmaFired) {
 }
 
 /** The recognition modes (CONFIG.quarterRecognition). */
-const RECOGNITION = Object.freeze({ ASK: 0, AUTO_ME: 1, AUTO_ALL: 2 });
+export const RECOGNITION = Object.freeze({ ASK: 0, AUTO_ME: 1, AUTO_ALL: 2 });
 
 /** The configured recognition mode (unknown values read as automatic everywhere). @returns {number} */
-function recognitionMode() {
+export function recognitionMode() {
   const v = Number(CONFIG.quarterRecognition);
   return v === RECOGNITION.ASK || v === RECOGNITION.AUTO_ME ? v : RECOGNITION.AUTO_ALL;
 }

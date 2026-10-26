@@ -46,7 +46,7 @@ const ROLE_ORDER = Object.freeze([...ROLE_TESTS.map(([r]) => r), "civic"]);
 
 /** @type {Map<string, BuiltKind>|null} ConstructibleType → its kind, built once from GameInfo. */
 let _index = null;
-/** @type {Map<string, {turn:number, score:number, names:string[], roles:string[]}>} */
+/** @type {Map<string, {turn:number, score:number, names:string[], roles:string[], items:BuiltItem[]}>} */
 const _cache = new Map();
 
 registerCacheReset(() => {
@@ -228,10 +228,13 @@ function partition(kinds) {
   return { firstByRole, wonders };
 }
 
+/** @typedef {{name:string, role:string, points:number, wonder:boolean}} BuiltItem One credited wonder or building. */
+
 /**
- * Score a settlement's built environment from the kinds standing in it (see {@link scoreKinds}).
+ * Score a settlement's built environment from the kinds standing in it (see {@link scoreKinds}). `items` lists
+ * what was credited and for how much, before the cap on the whole term, so a ledger can show each line.
  * @param {BuiltKind[]} kinds The kinds found in the settlement.
- * @returns {{score:number, names:string[], roles:string[]}} The reading.
+ * @returns {{score:number, names:string[], roles:string[], items:BuiltItem[]}} The reading.
  */
 export function scoreKinds(kinds) {
   const { firstByRole, wonders } = partition(kinds);
@@ -242,7 +245,13 @@ export function scoreKinds(kinds) {
   const cap = Number(CONFIG.builtCap);
   if (Number.isFinite(cap) && cap > 0) score = Math.min(score, cap);
   const names = wonders.slice(0, wonderCount).concat(roles.map((r) => firstByRole.get(r) || ""));
-  return { score, names: names.filter(Boolean), roles: wonders.length ? ["prestige", ...roles] : roles };
+  /** @type {BuiltItem[]} */
+  const items = wonders.slice(0, wonderCount)
+    .map((n) => ({ name: n, role: "prestige", points: roleWeight("prestige"), wonder: true }))
+    .concat(roles.map((r) => ({
+      name: firstByRole.get(r) || "", role: r, points: roleWeight(r), wonder: false
+    })));
+  return { score, names: names.filter(Boolean), roles: wonders.length ? ["prestige", ...roles] : roles, items };
 }
 
 /**
@@ -251,10 +260,10 @@ export function scoreKinds(kinds) {
  * Academy" rather than only a number). Cached and refreshed every `builtRefreshTurns` turns, because
  * the answer changes over dozens of turns and the scan is per-plot.
  * @param {*} city A live city object.
- * @returns {{score:number, names:string[], roles:string[]}} The reading (all-zero when disabled).
+ * @returns {{score:number, names:string[], roles:string[], items:BuiltItem[]}} The reading (all-zero when disabled).
  */
 export function builtFor(city) {
-  const empty = { score: 0, names: [], roles: [] };
+  const empty = { score: 0, names: [], roles: [], items: [] };
   if (!CONFIG.builtEnabled) return empty;
   resetCachesOnNewGame();
   const key = safe(() => (typeof city.owner === "number" && city.id != null)
@@ -263,9 +272,11 @@ export function builtFor(city) {
   const turn = gameTurn();
   const hit = _cache.get(key);
   const every = Math.max(1, Number(CONFIG.builtRefreshTurns) || 1);
-  if (hit && turn - hit.turn < every) return { score: hit.score, names: hit.names, roles: hit.roles };
+  if (hit && turn - hit.turn < every) {
+    return { score: hit.score, names: hit.names, roles: hit.roles, items: hit.items || [] };
+  }
   const scored = scoreKinds(kindsIn(city));
-  _cache.set(key, { turn, score: scored.score, names: scored.names, roles: scored.roles });
+  _cache.set(key, { turn, score: scored.score, names: scored.names, roles: scored.roles, items: scored.items });
   return scored;
 }
 

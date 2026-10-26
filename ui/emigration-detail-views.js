@@ -1,7 +1,7 @@
 // emigration-detail-views.js
 //
-// The flexbox "detail table" renderers for the migration dashboard: Border stances, the per-city
-// pressure table, and the "most diverse cities" ranking. GameFace lays out neither <table> nor CSS
+// The flexbox "detail table" renderers for the migration dashboard: Border stances, and the settlement mix table the
+// Settlements tab shows under each civilization (once the Communities tab). GameFace lays out neither <table> nor CSS
 // grid, so each is built from flexbox rows; styling lives in the dashboard's injected stylesheet.
 //
 // Wording rule for the diversity ranking: every string describes where a settlement's people came
@@ -11,8 +11,8 @@
 import { formatPeople } from "/emigration/ui/emigration-population.js";
 import { getNumberMode } from "/emigration/ui/emigration-settings.js";
 import { formatCount } from "/emigration/ui/emigration-ledger-view.js";
-import { CONFIG } from "/emigration/ui/emigration-config.js";
-import { loc, localeFontFamily } from "/emigration/ui/emigration-loc.js";
+import { characterTier } from "/emigration/ui/emigration-diversity.js";
+import { loc } from "/emigration/ui/emigration-loc.js";
 
 /** @param {string} tag @param {string} [cls] @param {string} [text] */
 function el(tag, cls, text) {
@@ -77,6 +77,31 @@ const COSMO_LABEL = {
   center: loc("LOC_EMIG_COSMO_CENTER", "Cosmopolitan Center"),
   world: loc("LOC_EMIG_COSMO_WORLD", "World City")
 };
+/** What each character means, for the hover on its cell. @type {Record<string, string>} */
+const COSMO_TIP = {
+  homogeneous: loc("LOC_EMIG_COSMO_HOMOGENEOUS_TIP", "One origin makes up 95% or more of the settlement."),
+  local: loc("LOC_EMIG_COSMO_LOCAL_TIP", "People from elsewhere live here, but no community from another civilization reaches 15%."),
+  mixed: loc("LOC_EMIG_COSMO_MIXED_TIP", "A community from another civilization is 15% or more, while the largest origin still holds 60% or more."),
+  center: loc("LOC_EMIG_COSMO_CENTER_TIP", "No origin reaches 60%, and at least three origins hold 10% or more each."),
+  world: loc("LOC_EMIG_COSMO_WORLD_TIP", "No origin reaches half, and at least four origins hold 10% or more each.")
+};
+/** The column headings' hovers. */
+const COLUMN_TIP = [
+  loc("LOC_EMIG_DIVERSE_COL_CITY_TIP", "A settlement, grouped under the civilization that holds it."),
+  loc("LOC_EMIG_DIVERSE_COL_ORIGINS_TIP", "Each colour is a civilization its people came from, sized by share; the bar's width is the settlement's population against the largest in the list."),
+  loc("LOC_EMIG_DIVERSE_COL_POP_TIP", "Population, and how many origins hold 5% or more of it."),
+  loc("LOC_EMIG_DIVERSE_COL_MIX_TIP", "Majority: one origin holds more than half. Plurality: the largest origin leads the next by a clear margin without a majority. No majority: no origin leads clearly."),
+  loc("LOC_EMIG_DIVERSE_COL_CHARACTER_TIP", "A word for how mixed the settlement's people are, from its own population alone. Hover a character for its rule."),
+  loc("LOC_EMIG_DIVERSE_COL_ENCLAVE_TIP", "The Cultural Enclave in the settlement, if a community from another civilization has one, and its stage."),
+  loc("LOC_EMIG_DIVERSE_COL_PRESSURE_TIP", "How close the settlement is to a group leaving: Negligible, Low, Moderate, High or Critical.")
+];
+
+/** @param {string} text @param {string} tip @returns {HTMLElement} A cell's text with a hover. */
+function withTip(text, tip) {
+  const span = el("span", "", text);
+  span.title = tip;
+  return span;
+}
 
 // How far the dominant origin must lead the runner-up before it's named as "the" plurality. Inside
 // this gap the top two are effectively tied, so the honest label is "no majority", not a named lead.
@@ -122,30 +147,44 @@ export function diverseCityRows(ranking, opts) {
       people: r.people || 0,
       ownerName: r.ownerName || "",
       own: !!r.own,
+      pressure: Number(r.pressure) || 0, // the settlement's pressure to leave, for the Pressure column and the sort
       origins: shown === 1
         ? loc("LOC_EMIG_DIVERSE_ORIGIN_ONE", "1 origin")
         : loc("LOC_EMIG_DIVERSE_ORIGINS", "{1_N} origins", shown),
       mix: mixPhrase(r),
       enclave: typeof r.enclave === "string" ? r.enclave : "",
-      character: cosmo ? (COSMO_LABEL[r.cosmo && r.cosmo.tierKey] || COSMO_LABEL.homogeneous) : null
+      characterKey: cosmo ? characterTier(parts, r.ownerName) : null,
+      character: cosmo ? COSMO_LABEL[characterTier(parts, r.ownerName)] : null
     };
   });
 }
 
 /**
- * The dashboard's Diversity section, or none. Flag-gated: off → no tab at all, rather than a
- * permanently empty one. The Character column has its own flag, passed through to the row builder.
- * Returned as a spliceable list so dashboardModel stays a flat section literal.
- * @param {*} d The gathered dashboard data (reads `d.diversity`).
- * @returns {*[]} Zero or one section.
+ * The mix words for a settlement's card (the Settlements tab's Arrived pane): its Mix with the column's rule as a
+ * hover, and its Character with that character's rule.
+ * @param {*} r A display row from diverseCityRows.
+ * @returns {{mix:string, mixTip:string, character:string|null, characterTip:string}}
  */
-export function diversitySections(d) {
-  if (!CONFIG.diversityRanking) return [];
-  return [{
-    title: loc("LOC_EMIG_VIEW_SEC_DIVERSITY", "Most diverse cities"),
-    kind: "diversity",
-    rows: diverseCityRows((d && d.diversity) || [], { cosmo: !!CONFIG.cosmopolitanismScore })
-  }];
+export function mixWords(r) {
+  return {
+    mix: r.mix, mixTip: COLUMN_TIP[3],
+    character: r.character == null ? null : r.character, characterTip: r.characterKey ? COSMO_TIP[r.characterKey] || "" : ""
+  };
+}
+
+/**
+ * The settlements of one civilization as a table (the Settlements tab's All civilizations view, under the
+ * civilization's card): name, the composition bar, population and origins, Mix, Character, Enclave. Bars are
+ * scaled against the largest settlement in `allRows`, so a bar means the same population under every card.
+ * @param {*[]} rows This civilization's display rows. @param {*[]} allRows Every row shown on the tab.
+ * @returns {HTMLElement}
+ */
+export function mixTable(rows, allRows) {
+  const ctx = diversityCtx(allRows && allRows.length ? allRows : rows);
+  const wrap = el("div", "emig-pr emig-mix");
+  wrap.appendChild(diversityHead(ctx));
+  for (const r of rows) wrap.appendChild(diversityDataRow(r, ctx));
+  return wrap;
 }
 
 /**
@@ -190,29 +229,6 @@ function compositionBar(r, maxPeople) {
 }
 
 /**
- * The color key for the bars: every origin appearing in the table, once, with its swatch. Without
- * it the bars are pretty but undecodable; this is what says "blue = Roman".
- * @param {*[]} rows Display rows.
- * @returns {HTMLElement}
- */
-function originLegend(rows) {
-  const seen = new Map();
-  for (const r of rows) for (const p of r.parts) if (!seen.has(p.name)) seen.set(p.name, p.color);
-  const wrap = el("div", "emig-dv-legend");
-  wrap.style.cssText = "display:flex;flex-wrap:wrap;gap:0.5rem;padding:0.5rem 0.6rem 0.2rem 0.6rem;";
-  for (const [name, color] of seen) {
-    const item = el("div");
-    item.style.cssText = "display:flex;align-items:center;gap:0.25rem;font-size:var(--dg-fs-85);opacity:0.85;";
-    const dot = el("div");
-    dot.style.cssText = "width:0.5rem;height:0.5rem;border-radius:0.1rem;background:" + color + ";";
-    item.appendChild(dot);
-    item.appendChild(el("span", "", name));
-    wrap.appendChild(item);
-  }
-  return wrap;
-}
-
-/**
  * The rendering context shared by both tables, so the "All settlements" list is formatted
  * identically to the ranking above it (same columns, same bars, one population scale).
  * @param {*[]} rows All display rows.
@@ -222,7 +238,7 @@ function diversityCtx(rows) {
   // The Cosmopolitanism column is flagged separately: the builder nulls `character` when it's off,
   // and the column (header included) drops out rather than showing an empty strip.
   const showChar = rows.some((r) => r.character != null);
-  // Cells arrive as [city, origins, pop, mix, character, enclave]; the Enclave column always shows.
+  // Cells arrive as [city, origins, pop, mix, character, enclave, pressure]; Enclave and Pressure always show.
   return {
     cells: (/** @type {*[]} */ c) => (showChar ? c : c.slice(0, 4).concat(c.slice(5))),
     mode: getNumberMode(),
@@ -233,108 +249,24 @@ function diversityCtx(rows) {
 
 /** @param {*} ctx */
 function diversityHead(ctx) {
-  return diversityRow(ctx.cells([
+  const heads = [
     loc("LOC_EMIG_DIVERSE_COL_CITY", "Settlement"),
     loc("LOC_EMIG_DIVERSE_COL_ORIGINS", "Where its people came from"),
     loc("LOC_EMIG_DIVERSE_COL_POP", "Population"),
     loc("LOC_EMIG_DIVERSE_COL_MIX", "Mix"),
     loc("LOC_EMIG_DIVERSE_COL_CHARACTER", "Character"),
-    loc("LOC_EMIG_DIVERSE_COL_ENCLAVE", "Enclave")
-  ]), "emig-pr-head");
+    loc("LOC_EMIG_DIVERSE_COL_ENCLAVE", "Enclave"),
+    loc("LOC_EMIG_DIVERSE_COL_PRESSURE", "Pressure to leave")
+  ];
+  return diversityRow(ctx.cells(heads.map((h, i) => withTip(h, COLUMN_TIP[i]))), "emig-pr-head");
 }
 
 /** @param {*} r @param {*} ctx */
 function diversityDataRow(r, ctx) {
+  const character = r.character == null ? null : withTip(r.character, COSMO_TIP[r.characterKey] || "");
   return diversityRow(ctx.cells([
     r.city, compositionBar(r, ctx.maxPeople),
-    formatCount(r.people, r.pts, ctx.mode) + " · " + r.origins, r.mix, r.character, r.enclave || ""
+    formatCount(r.people, r.pts, ctx.mode) + " · " + r.origins, withTip(r.mix, COLUMN_TIP[3]), character, r.enclave || "",
+    r.pressureLabel || ""
   ]));
-}
-
-/** @param {string} name @param {boolean} own */
-function civHeading(name, own) {
-  const h = el("div", "emig-dv-civ", own ? loc("LOC_EMIG_DIVERSE_YOUR_CIV", "{1_Civ} (you)", name) : name);
-  h.style.cssText = "font-family:" + localeFontFamily("title") + ";color:#f0dca8;opacity:" + (own ? "1" : "0.8")
-    + ";font-size:var(--dg-fs-95);padding:0.5rem 0.6rem 0.15rem 0.6rem;";
-  return h;
-}
-
-/**
- * Group the rows by owning civ for the full list: the local player's settlements first (that's the
- * list's main job: placing your cities, which the top-N ranking may omit entirely), then the rest
- * alphabetically. Within a civ the diversity order is preserved.
- * @param {*[]} rows All display rows (already diversity-sorted).
- * @returns {{name:string, own:boolean, rows:*[]}[]}
- */
-function groupByCiv(rows) {
-  /** @type {Map<string, {name:string, own:boolean, rows:*[]}>} */
-  const groups = new Map();
-  for (const r of rows) {
-    const key = r.ownerName || "";
-    const g = groups.get(key)
-      || /** @type {{name:string, own:boolean, rows:*[]}} */ ({ name: key, own: !!r.own, rows: [] });
-    g.rows.push(r);
-    groups.set(key, g);
-  }
-  return [...groups.values()].sort((a, b) => (Number(b.own) - Number(a.own)) || a.name.localeCompare(b.name));
-}
-
-/**
- * The "All settlements" list: every visible settlement, grouped by civ, in the same row format as the
- * top-N ranking above, so small or homogeneous settlements still appear on the tab. Skipped when the
- * ranking already shows everything.
- * @param {HTMLElement} body
- * @param {*[]} rows All display rows.
- * @param {*} ctx The render context.
- */
-function renderAllSettlements(body, rows, ctx) {
-  body.appendChild(el("div", "emig-section-title", loc("LOC_EMIG_DIVERSE_ALL_TITLE", "All settlements")));
-  const sub = el("div", "emig-dv-sub", loc("LOC_EMIG_DIVERSE_ALL_SUB",
-    "Every settlement you can see, by civilization."));
-  sub.style.cssText = "opacity:0.7;font-size:var(--dg-fs-85);padding:0 0.6rem 0.35rem 0.6rem;";
-  body.appendChild(sub);
-  const wrap = el("div", "emig-pr");
-  wrap.appendChild(diversityHead(ctx));
-  for (const g of groupByCiv(rows)) {
-    wrap.appendChild(civHeading(g.name, g.own));
-    for (const r of g.rows) wrap.appendChild(diversityDataRow(r, ctx));
-  }
-  body.appendChild(wrap);
-}
-
-/**
- * Render the diversity tab: the "most diverse cities" podium (each settlement a population-scaled
- * bar broken into its people's origins, then the mix's shape and its cosmopolitanism tier), a color
- * key naming every origin, and below it the full by-civ list of every settlement.
- * @param {HTMLElement} body
- * @param {*[]} rows Diversity rows (from diverseCityRows), diversity-sorted, uncapped.
- */
-export function renderDiversity(body, rows) {
-  const ctx = diversityCtx(rows);
-  const top = rows.slice(0, CONFIG.diversityRows > 0 ? CONFIG.diversityRows : rows.length);
-  body.appendChild(el("div", "emig-section-title", loc("LOC_EMIG_DIVERSE_TITLE", "Most diverse cities")));
-  body.appendChild(subtitle());
-  const wrap = el("div", "emig-pr");
-  wrap.appendChild(diversityHead(ctx));
-  for (const r of top) wrap.appendChild(diversityDataRow(r, ctx));
-  body.appendChild(wrap);
-  // The key covers all rows, not just the podium's, so it decodes the full list below too.
-  body.appendChild(originLegend(rows));
-  const note = el("div", "emig-diverse-note",
-    loc("LOC_EMIG_COSMO_DESC", "Describes the mix of origins living in each settlement. No yields attached."));
-  note.style.cssText = "opacity:0.6;font-size:var(--dg-fs-85);padding:0.2rem 0.6rem;"; // no italic: it draws as nothing
-  body.appendChild(note);
-  if (rows.length > top.length) renderAllSettlements(body, rows, ctx);
-}
-
-/**
- * The one-line explainer under the title. The tab is otherwise easy to misread as being about
- * Cultural Quarters / enclaves, so it says plainly what a bar is.
- * @returns {HTMLElement}
- */
-function subtitle() {
-  const s = el("div", "emig-dv-sub", loc("LOC_EMIG_DIVERSE_SUBTITLE",
-    "Each settlement's people, colored by the civilization they originally came from. Bar width shows population."));
-  s.style.cssText = "opacity:0.7;font-size:var(--dg-fs-85);padding:0 0.6rem 0.5rem 0.6rem;";
-  return s;
 }

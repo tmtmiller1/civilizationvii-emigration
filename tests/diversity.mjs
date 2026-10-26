@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 // off-engine is empty (persistence no-ops without Configuration).
 const { diversityScore, cosmopolitanism, rankDiversity, diverseCityRanking, COSMO_TIERS } =
   await import("/emigration/ui/emigration-diversity.js");
-const { diverseCityRows, diversitySections } = await import("/emigration/ui/emigration-detail-views.js");
+const { diverseCityRows, mixWords } = await import("/emigration/ui/emigration-detail-views.js");
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
 
 /**
@@ -295,17 +295,19 @@ function testRowsHandleEmptyAndMissingInput() {
   assert.deepEqual(diverseCityRows(null, { cosmo: true }), []);
 }
 
-function testSectionDropsOutEntirelyWhenFlagOff() {
-  const prev = CONFIG.diversityRanking;
-  CONFIG.diversityRanking = false;
-  try {
-    // Not an empty tab but no tab at all, so the dashboard never shows a dead section.
-    assert.deepEqual(diversitySections({ diversity: [] }), []);
-  } finally {
-    CONFIG.diversityRanking = prev;
-  }
-  const [section] = diversitySections({ diversity: [] });
-  assert.equal(section.kind, "diversity");
+function testMixWordsCarryTheirRules() {
+  // The Settlements tab's Arrived pane shows the row's two words with the old column rules as hovers.
+  const [row] = diverseCityRows([gathered("Rome", [{ name: "Roman", share: 1, color: "#a00" }])], { cosmo: true });
+  const w = mixWords(row);
+  assert.equal(row.pressure, 0, "no pressure given: none carried");
+  assert.equal(diverseCityRows([{ ...gathered("Rome", [{ name: "Roman", share: 1, color: "#a00" }]), pressure: 0.7 }], {})[0].pressure, 0.7,
+    "the pressure rides through to the row");
+  assert.equal(w.mix, row.mix);
+  assert.match(w.mixTip, /^Majority: one origin holds more than half/);
+  assert.equal(w.character, "Homogeneous");
+  assert.match(w.characterTip, /95% or more/);
+  const [plain] = diverseCityRows([gathered("Rome", [{ name: "Roman", share: 1, color: "#a00" }])], { cosmo: false });
+  assert.equal(mixWords(plain).character, null, "no Character word when its flag is off");
 }
 
 const tests = [
@@ -338,8 +340,27 @@ const tests = [
   testRowsCarryOwnerForTheFullList,
   testCharacterOmittedWhenCosmoFlagOff,
   testRowsHandleEmptyAndMissingInput,
-  testSectionDropsOutEntirelyWhenFlagOff
+  testMixWordsCarryTheirRules
 ];
 
 for (const t of tests) t();
 console.log(`diversity harness passed (${tests.length} cases)`);
+
+// A settlement's character comes from its own population alone (2026-10-25: a 100% American capital read
+// "Mixed City" because the score blended in the owner's openness and inbound flow).
+{
+  const { characterTier } = await import("/emigration/ui/emigration-diversity.js");
+  const own = "American";
+  assert.equal(characterTier([{ name: own, share: 1 }], own), "homogeneous");
+  assert.equal(characterTier([{ name: own, share: 0.96 }, { name: "Shawnee", share: 0.04 }], own), "homogeneous");
+  assert.equal(characterTier([{ name: own, share: 0.87 }, { name: "Shawnee", share: 0.13 }], own), "local");
+  assert.equal(characterTier([{ name: own, share: 0.72 }, { name: "Shawnee", share: 0.28 }], own), "mixed");
+  assert.equal(characterTier([{ name: own, share: 0.56 }, { name: "Shawnee", share: 0.43 }, { name: "Han", share: 0.01 }], own), "mixed",
+    "two big origins alone are a mixed city, not a centre");
+  assert.equal(characterTier([{ name: own, share: 0.5 }, { name: "Shawnee", share: 0.3 }, { name: "Han", share: 0.2 }], own), "center");
+  assert.equal(characterTier([{ name: own, share: 0.4 }, { name: "A", share: 0.25 }, { name: "B", share: 0.2 }, { name: "C", share: 0.15 }], own), "world");
+  assert.equal(characterTier([], own), "homogeneous");
+  assert.equal(characterTier([{ name: "Shawnee", share: 0.9 }, { name: own, share: 0.1 }], own), "mixed",
+    "a settlement whose people are mostly another civilization's is mixed, not local");
+}
+

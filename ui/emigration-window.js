@@ -8,7 +8,7 @@
 //   • the Demographics "Migration" page (emigration-migration-page.js), when that mod is installed
 
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
-import { ownerCitySnapshots } from "/emigration/ui/emigration-city-readout-data.js";
+import { ownerCitySnapshots, allCitySnapshots } from "/emigration/ui/emigration-city-readout-data.js";
 import { borderStance, immigrationOpenness } from "/emigration/ui/emigration-borders.js";
 import { diverseCityRanking } from "/emigration/ui/emigration-diversity.js";
 import { civAdjective } from "/emigration/ui/emigration-naming.js";
@@ -18,7 +18,7 @@ import { nowMs, plog } from "/emigration/ui/emigration-log.js";
 import { getSampleData, getSnapshotInterval } from "/emigration/ui/emigration-settings.js";
 import { sampleDashboard } from "/emigration/ui/emigration-demo-data.js";
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
-import { displacedModel } from "/emigration/ui/emigration-displaced.js";
+import { displacedModel, newcomerCosts } from "/emigration/ui/emigration-displaced.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 import { warEvents } from "/emigration/ui/emigration-war.js";
 import { civHidden, effectivePolicy, withPolicySnapshot } from "/emigration/ui/emigration-governance.js";
@@ -500,25 +500,53 @@ function addDir(d, otherOwner, cause, people, points) {
   d.causes[cause] = (d.causes[cause] || 0) + people;
 }
 
-/** @param {Map<string, *>} map @param {*} m @param {number} me */
-function foldMove(map, m, me) {
-  const ppl = m.people || 0;
-  const pts = m.points || 0;
-  if (m.destOwner === me && m.destName) {
-    addDir(cityEntry(map, m.destName).in, m.srcOwner, m.cause, ppl, pts);
-  }
-  if (m.srcOwner === me && m.srcName) {
-    addDir(cityEntry(map, m.srcName).out, m.destOwner, m.cause, ppl, pts);
+/**
+ * Fold one of the age's flow edges into the settlements it touches, cause by cause. A flow is cumulative since the
+ * age began, so a settlement's pies agree with its displaced strip, which reads the same flows; the fifty most
+ * recent events, which the cards used to count, had rolled past a departure the strip still showed (the owner,
+ * 2026-10-26: "how is it possible that no emigrants left but Shomron has 2 of the pop for Philadelphia").
+ * @param {Map<string, *>} map @param {*} f A flow edge {src, dest, srcCity, destCity, people, points, byCause}.
+ * @param {number} me
+ */
+function foldFlow(map, f, me) {
+  for (const [cause, ppl, pts] of causeShares(f)) {
+    if (f.dest === me && f.destCity) addDir(cityEntry(map, f.destCity).in, f.src, cause, ppl, pts);
+    if (f.src === me && f.srcCity) addDir(cityEntry(map, f.srcCity).out, f.dest, cause, ppl, pts);
   }
 }
 
 /**
- * @param {*} d Direction accumulator {civs, causes}.
+ * A flow's people and points split by cause, in the proportions of its cause map.
+ * @param {*} f A flow edge. @returns {[string, number, number][]} [cause, people, points] per cause with people.
+ */
+function causeShares(f) {
+  const by = f.byCause && typeof f.byCause === "object" ? f.byCause : { other: f.people || 0 };
+  const total = Object.values(by).reduce((/** @type {number} */ n, v) => n + (Number(v) || 0), 0) || 1;
+  /** @type {[string, number, number][]} */
+  const out = [];
+  for (const cause of Object.keys(by)) {
+    const share = (Number(by[cause]) || 0) / total;
+    const ppl = (f.people || 0) * share;
+    if (ppl > 0) out.push([cause, ppl, (f.points || 0) * share]);
+  }
+  return out;
+}
+
+/**
+ * @param {*} d Direction accumulator {civs, causes}. @param {number} me The local player.
+ * @param {boolean} inbound Whether this is the arrivals side (names the own-civ slice).
  * @returns {*} { civs: [{id, name, people, points}] sorted, causes }.
  */
-function resolveDir(d) {
+function resolveDir(d, me, inbound) {
+  const own = inbound
+    ? loc("LOC_EMIG_CF_OWN_FROM", "From our own settlements")
+    : loc("LOC_EMIG_CF_OWN_TO", "To our own settlements");
   const civs = Object.keys(d.civs)
-    .map((k) => ({ id: +k, name: civAdjective(+k), people: d.civs[k].people, points: d.civs[k].points }))
+    .map((k) => ({
+      id: +k, people: d.civs[k].people, points: d.civs[k].points,
+      // Moves between the player's own settlements are one slice, named for the direction.
+      name: +k === me ? own : civAdjective(+k)
+    }))
     .sort((a, b) => b.people - a.people);
   return { civs, causes: d.causes };
 }
@@ -531,22 +559,31 @@ function resolveDir(d) {
 function pressureMap(me) {
   /** @type {Record<string,*>} */
   const map = {};
-  for (const s of me != null ? ownerCitySnapshots(me) : []) {
-    map[s.cityName] = {
-      bar: s.pressureToBar || 0, cause: s.causeLabel || "", dest: s.topDestinationName || "",
-      flag: s.attritionRisk ? "at risk" : s.onCooldown ? "resting" : "",
-      mix: s.causeMix || null // the weighted "what drives migration" breakdown, for the per-city meter
-      , // What argues for staying: the settlement's wonders and civic buildings, named.
-      stay: Array.isArray(s.stayReasons) ? s.stayReasons : []
-    };
-  }
+  for (const s of me != null ? ownerCitySnapshots(me) : []) map[s.cityName] = pressureEntry(s);
   return map;
 }
 
 /**
- * The local player's settlements (cities and towns), each with its recent immigration / emigration
+ * One settlement's pressure entry for the Settlements tab.
+ * @param {*} s A CitySnapshot. @returns {*} {bar, cause, dest, flag, mix, stay, enclave}.
+ */
+function pressureEntry(s) {
+  return {
+    bar: s.pressureToBar || 0, cause: s.causeLabel || "", dest: s.topDestinationName || "",
+    flag: s.attritionRisk ? "at risk" : s.onCooldown ? "resting" : "",
+    mix: s.causeMix || null, // the weighted "what drives migration" breakdown, for the per-city meter
+    // What argues for staying: the settlement's wonders and civic buildings, named.
+    stay: Array.isArray(s.stayReasons) ? s.stayReasons : [],
+    // The settlement's enclave, if a community from another civilization has one: its stage, the next step and
+    // what holds it back (the Settlements tab's Arrived block).
+    enclave: s.enclave || null
+  };
+}
+
+/**
+ * The local player's settlements (cities and towns), each with its immigration / emigration this age
  * by origin/destination + cause and its emigration pressure. Driven by the full settlement list so
- * every settlement shows; the flows are recent activity, not lifetime totals.
+ * every settlement shows.
  * @param {number|null} me Local player id.
  * @param {Record<number, *>} pops Per-civ native populations (carries each settlement's town flag).
  * @returns {*[]} Per-settlement rows {name, town, in, out, pressure}.
@@ -556,8 +593,8 @@ function gatherSettlements(me, pops) {
   const D = /** @type {*} */ (globalThis).EmigrationData || {};
   /** @type {Map<string, *>} */
   const moves = new Map();
-  if (typeof D.recentEventsFor === "function") {
-    for (const m of D.recentEventsFor(me, 50) || []) foldMove(moves, m, me);
+  if (typeof D.flows === "function") {
+    for (const f of D.flows() || []) foldFlow(moves, f, me);
   }
   const pr = pressureMap(me);
   const empty = { civs: [], causes: {} };
@@ -565,7 +602,7 @@ function gatherSettlements(me, pops) {
     const e = moves.get(c.name);
     return {
       name: c.name, town: !!c.town,
-      in: e ? resolveDir(e.in) : empty, out: e ? resolveDir(e.out) : empty,
+      in: e ? resolveDir(e.in, me, true) : empty, out: e ? resolveDir(e.out, me, false) : empty,
       pressure: pr[c.name] || null
     };
   });
@@ -610,13 +647,15 @@ function gatherDiversity() {
   // limit 0 = no cap: the view needs every settlement for its "All settlements" list, and applies
   // CONFIG.diversityRows itself to the "most diverse" table on top. Capping here would truncate both.
   const rows = diverseCityRanking({
-    openness: immigrationOpenness,
-    inbound: (pid) => (typeof D.grossInCumFor === "function" ? D.grossInCumFor(pid) || 0 : 0),
-    visible: (pid) => !civHidden(pid)
+    openness: immigrationOpenness, visible: (pid) => !civHidden(pid),
+    inbound: (pid) => (typeof D.grossInCumFor === "function" ? D.grossInCumFor(pid) || 0 : 0)
   }, 0);
   const comps = new Map(allCityCompositions().map((e) => [e.key, e.comp]));
+  // Each settlement's pressure to leave, for the All civilizations tables and their sort (2026-10-26).
+  const pressure = new Map(allCitySnapshots().map((s) => [s.owner + ":" + s.cityName, Number(s.pressureToBar) || 0]));
   return rows.map((r) => ({
     ...r,
+    pressure: pressure.get(r.owner + ":" + r.name) || 0,
     enclave: enclaveCell(r.key, comps.get(r.key)),
     parts: diversityParts(r.civs),
     pts: Math.round(r.total || 0),
@@ -689,6 +728,7 @@ function gatherFresh() {
     cities: timed("cities", () => (me != null ? ownerCitySnapshots(me) : [])),
     myCities: timed("settlements", () => gatherSettlements(me, pops)),
     displaced: timed("displaced", () => (me != null ? displacedModel(me) : [])),
+    newcomerCosts: me != null ? newcomerCosts(me) : null,
     localPid: me,
     invalidate: invalidateGather, // a call from the Displaced tab moved people this turn: the next gather re-reads
     diversity: timed("diversity", gatherDiversity)

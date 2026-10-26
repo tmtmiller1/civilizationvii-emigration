@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
-// The Causes tab lists a card for every in-play civ with migration/death activity (not only cross-civ
-// flow endpoints), and a civ's received refugees are attributed, via inByCause + the event tally,
+// The All civilizations view lists a card for every in-play civ (the settlement mix table hangs under each; the ones
+// with activity first), and a civ's received refugees are attributed, via inByCause + the event tally,
 // to the specific war that displaced them, so its cause reads as someone else's war.
 const { buildCivFlows } = await import("/emigration/ui/emigration-city-flows.js");
 
@@ -34,7 +34,9 @@ function testListsActiveCivWithoutFlow() {
   const m = cardsByName();
   assert.ok(m.has("Himiko"), "a met civ at war with no cross-civ flow still appears");
   assert.ok(m.has("Maya") && m.has("Prussian"), "the flow endpoints appear too");
-  assert.equal(m.size, 3, "the idle civ (no activity) is omitted");
+  assert.equal(m.size, 4, "the idle civ keeps a card too: its settlements list hangs under it (2026-10-26)");
+  const cards = buildCivFlows(flows, civs, eventsByOwner);
+  assert.equal(cards[cards.length - 1].name, "Idle", "and sorts last");
 }
 
 // The Maya's War cause comes from received refugees (inByCause), and drills down to the named war.

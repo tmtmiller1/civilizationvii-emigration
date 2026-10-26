@@ -17,7 +17,10 @@
 // caller must render them as relative weights ({@link weigh}), never as "-42% of your population".
 
 import { pullBreakdown } from "/emigration/ui/emigration-pull.js";
-import { baseBreakdown, situationalBreakdown } from "/emigration/ui/emigration-prosperity.js";
+import { CONFIG } from "/emigration/ui/emigration-config.js";
+import { baseBreakdown, baseDetails, situationalBreakdown } from "/emigration/ui/emigration-prosperity.js";
+import { disasterName } from "/emigration/ui/emigration-naming.js";
+import { speedDecay } from "/emigration/ui/emigration-game-speed.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
 
 /**
@@ -59,7 +62,20 @@ const FALLBACK = {
   siege: "Siege",
   starvation: "Famine",
   unrest: "Unrest",
-  warWeariness: "War weariness"
+  warWeariness: "War weariness",
+  // The ledger's own lines (explainLedger): the polity and built terms by piece, the economy by yield.
+  wonders: "Wonders",
+  buildings: "Buildings",
+  government: "Government",
+  celebration: "Celebrations",
+  stage: "Happiness stage",
+  happinessShaped: "Against the empire's average",
+  capTrim: "Cap on what's built",
+  food: "Food",
+  production: "Production",
+  gold: "Gold",
+  science: "Science",
+  culture: "Culture"
 };
 
 // LOC keys, one per term; `loc()` resolves to the English fallback above when a key is undefined.
@@ -211,4 +227,115 @@ export function weigh(rows) {
   for (const r of add) total += Math.abs(r.delta);
   if (!(total > 0)) return [];
   return add.map((r) => Object.assign({ weight: Math.abs(r.delta) / total }, r));
+}
+
+/**
+ * @typedef {Object} LedgerLine One line under a ledger row.
+ * @property {string} label
+ * @property {number} [delta] Its points, when the line is an addend of the row.
+ * @property {string} [note] Context when it isn't ("28 people", "15% of the base score").
+ */
+
+/** @typedef {Factor & {sub:LedgerLine[]}} LedgerRow A ledger row with the lines its accordion opens to. */
+
+/** The rows a ledger always shows, zero or not (the owner, 2026-10-26: "on their own lines"). */
+const LEDGER_ALWAYS = new Set(["wonders", "buildings", "government", "celebration"]);
+
+/**
+ * The prosperity ledger: {@link explainPush}'s accounting with the polity and built terms split into their pieces
+ * as rows of their own (Wonders, Buildings, Government, Celebrations; the happiness-stage piece joins the Happiness
+ * row), and under each row the lines its accordion opens to: the economy by yield, the credited wonders and
+ * buildings, and a note where a term is one formula. The rows still sum to the score exactly. Biggest first, the
+ * four named rows kept even at zero, every other zero row dropped.
+ * @param {*} s The settlement's signal.
+ * @param {{meanHappiness:number}|null} [ctx] Per-pass field context.
+ * @returns {LedgerRow[]}
+ */
+export function explainLedger(s, ctx) {
+  if (!s) return [];
+  const base = baseBreakdown(s, ctx || null);
+  const d = baseDetails(s, ctx || null);
+  const sum = BASE_KEYS.reduce((n, k) => n + base[k], 0);
+  const rows = baseRows(s, base, d);
+  const sit = situationalBreakdown(s);
+  for (const k of SIT_KEYS) {
+    const pct = loc("LOC_EMIG_LEDGER_PCT_NOTE", "{1_Pct}% of the base", Math.round(Math.abs(sit[k])));
+    pushRow(rows, k, Math.abs(sum) * sit[k] / 100, k === "disaster" ? disasterLines(s, pct) : [{ label: factorLabel(k), note: pct }]);
+  }
+  return rows.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
+}
+
+/**
+ * Adds a ledger row, unless it would print as 0.0 and isn't one of the rows always shown.
+ * @param {LedgerRow[]} rows @param {string} key @param {number} delta @param {LedgerLine[]} sub
+ */
+function pushRow(rows, key, delta, sub) {
+  if (!isFinite(delta)) return;
+  if (Math.abs(delta) < 0.05 && !LEDGER_ALWAYS.has(key)) return;
+  rows.push({ key, label: factorLabel(key), delta, kind: delta > 0 ? "pull" : "push", sub });
+}
+
+/**
+ * The base terms as ledger rows: the economy with its yields, happiness with its two pieces, population, the
+ * local character, the wonders and the buildings each with what was credited, the government and the celebration.
+ * @param {*} s The signal. @param {import("/emigration/ui/emigration-prosperity.js").BaseTerms} base
+ * @param {import("/emigration/ui/emigration-prosperity.js").BaseDetails} d @returns {LedgerRow[]}
+ */
+function baseRows(s, base, d) {
+  /** @type {LedgerRow[]} */
+  const rows = [];
+  pushRow(rows, "economy", base.economy, ["food", "production", "gold", "science", "culture"]
+    .map((k) => ({ label: factorLabel(k), delta: d.economy[/** @type {keyof typeof d.economy} */ (k)] })));
+  pushRow(rows, "happiness", base.happiness + d.polity.stage, [
+    { label: factorLabel("happinessShaped"), delta: base.happiness,
+      note: loc("LOC_EMIG_LEDGER_HAPPY_NOTE", "{1_H} here, {2_Mean} across the empire",
+        round1(d.happiness.h), round1(d.happiness.mean)) },
+    { label: factorLabel("stage"), delta: d.polity.stage }
+  ]);
+  pushRow(rows, "population", base.population, [{ label: factorLabel("population"),
+    note: loc("LOC_EMIG_LEDGER_POP_NOTE", "{1_Pop} people", Math.round(s.population || 0)) }]);
+  pushRow(rows, "civBias", base.civBias, []);
+  const item = (/** @type {{name:string, points:number}} */ i) => ({ label: loc(i.name, i.name), delta: i.points });
+  pushRow(rows, "wonders", d.built.wonders, d.built.items.filter((i) => i.wonder).map(item));
+  const buildings = d.built.items.filter((i) => !i.wonder).map(item);
+  if (d.built.trim > 0) buildings.push({ label: factorLabel("capTrim"), delta: -d.built.trim });
+  pushRow(rows, "buildings", d.built.buildings, buildings);
+  pushRow(rows, "government", d.polity.government, [{ label: factorLabel("government"), note: governmentNote(s) }]);
+  pushRow(rows, "celebration", d.polity.celebration, [{ label: factorLabel("celebration"),
+    note: s.polity && s.polity.celebrating ? loc("LOC_EMIG_LEDGER_CELEBRATING", "celebrating now")
+      : loc("LOC_EMIG_LEDGER_NOT_CELEBRATING", "no celebration running") }]);
+  return rows;
+}
+
+/**
+ * The line under Disaster: the disaster by name, with the turns its distress has left before it fades (the owner,
+ * 2026-10-26: "their name and then in parenthesis turns remaining"). Distress decays by `disasterDecay` a turn at
+ * this game speed and is dropped under 0.05, so the turns left follow from the current level.
+ * @param {*} s The signal. @param {string} pct The share-of-base note. @returns {LedgerLine[]}
+ */
+function disasterLines(s, pct) {
+  const d = Number(s.disaster) || 0;
+  const f = speedDecay(CONFIG_DISASTER_DECAY());
+  const turns = d > 0.05 && f > 0 && f < 1 ? Math.ceil(Math.log(0.05 / d) / Math.log(f)) : 0;
+  const name = s.disasterType ? disasterName(s.disasterType) : factorLabel("disaster");
+  const left = turns > 0 ? loc("LOC_EMIG_LEDGER_TURNS_LEFT", "{1_Turns} turns remaining", turns) : loc("LOC_EMIG_LEDGER_FADING", "fading");
+  return [{ label: name, note: left + " \u00b7 " + pct }];
+}
+
+/** @returns {number} The configured per-turn disaster decay, read late so a tuning change shows at once. */
+function CONFIG_DISASTER_DECAY() {
+  return Number(CONFIG.disasterDecay) || 0;
+}
+
+/** @param {number} n @returns {string} */
+function round1(n) {
+  return (Math.round(n * 10) / 10).toFixed(1);
+}
+
+/** @param {*} s @returns {string} The government's name for the ledger, or that it wasn't read. */
+function governmentNote(s) {
+  const g = s.polity && typeof s.polity.government === "string" ? s.polity.government : "";
+  if (!g) return loc("LOC_EMIG_LEDGER_NO_GOVT", "no government read");
+  const words = g.replace(/^GOVERNMENT_/, "").toLowerCase().replace(/_/g, " ");
+  return loc("LOC_" + g + "_NAME", words.charAt(0).toUpperCase() + words.slice(1));
 }

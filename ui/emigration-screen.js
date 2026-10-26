@@ -8,7 +8,9 @@
 import Panel from "/core/ui/panel-support.js";
 import { setAdvancedSectionOpen } from "/emigration/ui/emigration-settings.js";
 import { gatherDashboard } from "/emigration/ui/emigration-window.js";
-import { dashboardModel, renderDashboardTabbed } from "/emigration/ui/emigration-views.js";
+import { dashboardModel, renderDashboardTabbed, openAdvancedOptions } from "/emigration/ui/emigration-views.js";
+import { localeFontFamily, loc } from "/emigration/ui/emigration-loc.js";
+import { effectivePolicy } from "/emigration/ui/emigration-governance.js";
 import { nowMs, plog } from "/emigration/ui/emigration-log.js";
 
 const DBG = false;
@@ -24,7 +26,7 @@ function derr(...a) {
 // Shared 10-step type scale (rem), published as `--dg-fs-<n>` values scaled by the in-game font-size
 // setting (which Coherent otherwise applies only to its own text-* classes). Must match the
 // Demographics mod's ladder so emig content inside the Demographics screen resolves the same vars.
-const FONT_SIZE_LADDER = [0.65, 0.72, 0.85, 0.95, 1.05, 1.2, 1.4, 1.6, 1.85, 2.4];
+const FONT_SIZE_LADDER = [0.65, 0.72, 0.78, 0.85, 0.95, 1, 1.05, 1.2, 1.4, 1.6, 1.85, 2.4];
 
 /**
  * The in-game font-size setting (`uiFontScale` 0…4) as a multiplier over the
@@ -96,6 +98,36 @@ function resumePopups(state) {
       // resume can throw if the queue state changed; non-fatal.
     }
   });
+}
+
+/** @returns {HTMLElement} The Advanced settings button, in the Demographics screen's toolbar-button shape. */
+function advancedButton() {
+  const btn = document.createElement("div");
+  btn.className = "emig-toolbar-btn";
+  btn.textContent = Locale.compose("LOC_EMIG_VIEW_OPTIONS_ADVANCED");
+  btn.style.fontFamily = localeFontFamily("title");
+  btn.addEventListener("click", () => openAdvancedOptions());
+  return btn;
+}
+
+/**
+ * The Spoil Guard pill, as the Demographics screen shows its policy banner beside its Options button: a small red
+ * pill naming what the guard hides, so a player sees at a glance why a civilization is missing (the owner,
+ * 2026-10-26). Null when nothing is hidden.
+ * @returns {HTMLElement|null}
+ */
+function policyPill() {
+  const policy = effectivePolicy();
+  if (policy === "full") return null;
+  const what = policy === "met-civs-only"
+    ? loc("LOC_EMIG_POLICY_MET", "civilizations you haven't met are hidden")
+    : loc("LOC_EMIG_POLICY_OWN", "only your own civilization shows");
+  const pill = document.createElement("div");
+  pill.className = "emig-policy-pill";
+  pill.textContent = loc("LOC_EMIG_SPOIL_PILL", "Spoil Guard on: {1_What}", what);
+  pill.title = loc("LOC_EMIG_SPOIL_PILL_TIP", "Options, Mods, Emigration turns the Spoil Guard off. With the Demographics "
+    + "mod installed, the stricter of the two guards applies.");
+  return pill;
 }
 
 /**
@@ -210,6 +242,27 @@ class ScreenEmigration extends Panel {
     }
   }
 
+  /**
+   * The Advanced settings button, top right of the frame on the title line, where the Demographics screen keeps
+   * its Options button.
+   */
+  _mountHeaderButton() {
+    try {
+      const frame = this.Root.querySelector(".emig-screen-frame");
+      if (!frame || frame.querySelector(".emig-header-right")) return;
+      const right = document.createElement("div");
+      right.className = "emig-header-right";
+      const pill = policyPill();
+      if (pill) right.appendChild(pill);
+      right.appendChild(advancedButton());
+      // Its place on the title line is the stylesheet's (.emig-header-right): measuring the title here, by client
+      // rect or by offsetTop, left the button level with the close button both times (watched 2026-10-26).
+      frame.appendChild(right);
+    } catch (e) {
+      derr("header button failed:", e);
+    }
+  }
+
   /** Gather the world's migration state and mount the dashboard render core. */
   _render() {
     try {
@@ -225,12 +278,17 @@ class ScreenEmigration extends Panel {
         const data = gatherDashboard();
         const t1 = nowMs();
         const model = dashboardModel(data);
+        // A tab that raises one of the game's pop-ups (the Displaced tab's calls) has to step out of the way first:
+        // the display queue holds a pop-up while a screen is up. It closes this screen and reopens it on its tab.
+        const screen = { close: closeEmigrationScreen, reopen: openEmigrationScreen };
+        for (const s of model.sections) s.screen = screen;
         const t2 = nowMs();
         renderDashboardTabbed(host, model, rebuild, kind);
         plog("screen render, start tab " + (kind || "first") + ": gather " + Math.round(t1 - t0) + " ms, model " +
           Math.round(t2 - t1) + " ms, first tab " + Math.round(nowMs() - t2) + " ms");
       };
       rebuild(this.Root.getAttribute?.("start-tab") || undefined);
+      this._mountHeaderButton();
       dlog("dashboard rendered");
     } catch (e) {
       derr("render failed:", e);

@@ -8,7 +8,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { ruralPop, totalPop } from "/emigration/ui/emigration-population.js";
 import { observeCity } from "/emigration/ui/emigration-violence.js";
 import { builtFor } from "/emigration/ui/emigration-built.js";
-import { observeDisaster } from "/emigration/ui/emigration-disasters.js";
+import { observeDisaster, disasterTypeFor, disasterKey } from "/emigration/ui/emigration-disasters.js";
 import { cityHappinessStage, readPolity, resetPolityCache } from "/emigration/ui/emigration-polity.js";
 import { resetBorderCache } from "/emigration/ui/emigration-borders.js";
 import { resetDistanceCache, resetDiplomacyCache } from "/emigration/ui/emigration-geography.js";
@@ -40,8 +40,11 @@ import { resetDistanceCache, resetDiplomacyCache } from "/emigration/ui/emigrati
  * @property {boolean} atWar Whether the owner is at war (used for flee direction).
  * @property {number} built Built-environment score: wonders + civic infrastructure held (not per-capita).
  * @property {string[]} builtNames LOC name tags of the wonders/buildings that earned `built`.
+ * @property {import("/emigration/ui/emigration-built.js").BuiltItem[]} [builtItems] What was credited and for how
+ *   much, before the cap, for the ledger.
  * @property {number} violence Accumulated combat intensity in the city's borders.
  * @property {number} disaster Accumulated environmental-disaster distress (§11).
+ * @property {string|null} [disasterType] The RandomEventType of the disaster behind that distress, for the ledger.
  * @property {boolean} infected Whether the city is suffering a plague outbreak.
  */
 
@@ -150,6 +153,29 @@ function safeList(fn) {
 }
 
 /**
+ * Like safeList for a list of records: the array when the reader gives one, else [].
+ * @template T @param {() => T[]} fn @returns {T[]}
+ */
+function safeRecords(fn) {
+  try {
+    const v = fn();
+    return Array.isArray(v) ? v : [];
+  } catch (_) {
+    return [];
+  }
+}
+
+/** @param {() => string|null} fn @returns {string|null} The string the reader gives, else null. */
+function safeString(fn) {
+  try {
+    const v = fn();
+    return typeof v === "string" && v ? v : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
  * @param {*} city
  * @param {*} player
  * @param {boolean} isCityState Whether the owner is a minor.
@@ -197,8 +223,10 @@ function buildSignal(city, player, isCityState) {
       // The LOC name tags of what earned that score, so the readout can name the granary and the
       // market rather than only showing a number.
       builtNames: safeList(() => builtFor(city).names),
+      builtItems: safeRecords(() => builtFor(city).items),
       violence: safeSignal(() => observeCity(city)),
       disaster: safeSignal(() => observeDisaster(city)),
+      disasterType: safeString(() => disasterTypeFor(disasterKey(city) || "")),
       infected: !!city.isInfected
     };
   } catch (_) {

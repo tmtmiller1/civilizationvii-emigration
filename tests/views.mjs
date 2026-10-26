@@ -61,24 +61,24 @@ function testPressureRowsSortDescAndFlag() {
 
 function testDashboardModelSections() {
   const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [] });
-  assert.equal(m.sections.length, 9); // network + flowmap merged into one toggleable "flow" section
-  assert.deepEqual(
-    m.sections.map((s) => s.kind),
-    ["flow", "ledger", "pies", "cityflows", "displaced", "diversity", "stances", "notifications", "guide"]
-  );
+  // Six tabs (2026-10-25: nine read as a spreadsheet). The Net Migration table rides behind the Network tab's
+  // View switch and every civilization's cards behind the Cities tab's Show switch.
+  assert.deepEqual(m.sections.map((s) => s.kind), ["cityflows", "flow", "stances", "notifications"],
+    "four tabs, Settlements first (2026-10-26); the Communities tab's Mix and Character ride with Settlements");
+  assert.ok(Array.isArray(m.sections[1].table), "the Network section carries the table rows");
+  assert.ok(Array.isArray(m.sections[0].civCards), "the Settlements section carries every civilization's cards");
+  assert.ok(Array.isArray(m.sections[0].diversity), "and the settlement mix rows");
 }
 
 function testDiversitySectionIsFlagGated() {
-  // Features S/T ship behind CONFIG.diversityRanking: off → the tab is absent entirely (not an empty
-  // one), and every other section keeps its place and order.
+  // Features S/T ship behind CONFIG.diversityRanking: off → the Settlements section carries no mix rows, and the
+  // tabs keep their place and order.
   const prev = CONFIG.diversityRanking;
   CONFIG.diversityRanking = false;
   try {
-    const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [] });
-    assert.deepEqual(
-      m.sections.map((s) => s.kind),
-      ["flow", "ledger", "pies", "cityflows", "displaced", "stances", "notifications", "guide"]
-    );
+    const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [], diversity: [{ name: "Rome", parts: [] }] });
+    assert.deepEqual(m.sections.map((s) => s.kind), ["cityflows", "flow", "stances", "notifications"]);
+    assert.deepEqual(m.sections[0].diversity, []);
   } finally {
     CONFIG.diversityRanking = prev;
   }
@@ -136,7 +136,7 @@ function testDashboardModelEmptySections() {
   // Dashboard model must take empty civs, flows, and notifications,
   // still providing all section structures (just with no rows).
   const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [] });
-  assert.equal(m.sections.length, 9);
+  assert.equal(m.sections.length, 4, "Network, Settlements, Policies, Notifications");
   // Verify that each section has required properties even when empty
   for (const section of m.sections) {
     assert.equal(typeof section.kind, "string");

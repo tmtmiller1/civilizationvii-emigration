@@ -125,8 +125,8 @@ function destFields(sig, best, communityOf) {
   };
 }
 
-/** @param {*} dest */
-function destNameOf(dest) {
+/** @param {*} dest @returns {string} The settlement's composed name, or "". */
+export function destNameOf(dest) {
   try {
     const n = dest?.city?.name;
     if (typeof n !== "string" || !n) return "";
@@ -222,6 +222,18 @@ function passData() {
   _passTurn = turn;
   _pass = { ranked, ownerPop: ownerPopulations(ranked), field: fieldContext(signals) };
   return _pass;
+}
+
+/**
+ * The per-turn pass data for other surfaces (the Settlements tab's cards), the same memo the hover uses.
+ * @returns {{ranked:*[], ownerPop:Record<number,number>, field:{meanHappiness:number}}|null}
+ */
+export function livePass() {
+  try {
+    return passData();
+  } catch (_) {
+    return null;
+  }
 }
 
 /**
