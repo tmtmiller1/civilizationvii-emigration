@@ -3629,3 +3629,19 @@ population and Food, and the counters. The game closed without a crash report.
   own Food read matches the UI's `getYield` is the open question the CSV answers.
 - **The counters.** 111 passes, 97 crisis moves, 404 moves turned by the destination-safety penalty, 1 arrival
   into a crisis in the whole game (46 in session 1's game of the same seed).
+
+**All eleven languages on screen (2026-10-26, late).** One Play Now lab game per language (de, es, fr, it, ja, ko,
+pl, pt_BR, ru, zh_CN, zh_HK), twelve turns each, then the Settlements tab opened. In each game the page composed
+every newly translated key whose translation opens differently from the English, 262 to 266 per language: none
+came back as a raw tag and none as English, except "Diagram" in de, es, it and pt_BR, where the translation
+starts with the same letters (Diagramm, Diagrama, Diagramma). Eight keys per language came back empty because
+they open with a placeholder and were composed without values; the same kind of string draws in full on the
+card. On the card, every language showed its own tab names, the four pane headings, the forecast line and the
+"Close to newcomers" switch, with no raw tag; the setup option composed in every language ("Auswanderung: KI
+hält Städte zufrieden", "移住：AIが都市を幸福に保つ", "Эмиграция: ИИ поддерживает счастье городов"). Korean
+and both Chinese draw without missing-glyph boxes. Captures `working_screenshots/emig-370-s3/lang-*.png` for eight
+languages; the window capture missed de, es and fr, whose readings are in the run log.
+
+One fix from it: the Japanese card used 流出 for both the Leaving and the Left pane. Left (`LOC_EMIG_DP_SUB`) is
+now 離郷, beside 定住 for Arrived; not seen drawn yet. The setup screen itself, which the lab skips, still needs a
+person to look at the option drawn there.

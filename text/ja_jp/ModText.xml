@@ -405,7 +405,7 @@
         <Replace Tag="LOC_EMIG_RO_FIX_BUILDING" Language="ja_JP"><Text>（{1_Building}で{3_Yield}+{2_Amount}）</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_NEWCOMERS" Language="ja_JP"><Text>定住中の新来者のために、いま毎ターン{1_Gold}ゴールドと幸福度{2_Happy}を支払っています。統合が進むにつれて費用は薄れていきます。</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_NEWCOMERS_SHORT" Language="ja_JP"><Text>新来者は定住が済むまで、毎ターン{1_Gold}ゴールドと幸福度{2_Happy}がかかります。</Text></Replace>
-        <Replace Tag="LOC_EMIG_DP_SUB" Language="ja_JP"><Text>流出</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SUB" Language="ja_JP"><Text>離郷</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_SUB_SUB" Language="ja_JP"><Text>他所へ移った人々</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_GAINS_NAMED" Language="ja_JP"><Text>{1_Home}の得るもの</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_LOSES_NAMED" Language="ja_JP"><Text>{1_From}の失うもの</Text></Replace>

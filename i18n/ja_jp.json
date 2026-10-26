@@ -403,7 +403,7 @@
  "LOC_EMIG_RO_FIX_BUILDING": "（{1_Building}で{3_Yield}+{2_Amount}）",
  "LOC_EMIG_DP_NEWCOMERS": "定住中の新来者のために、いま毎ターン{1_Gold}ゴールドと幸福度{2_Happy}を支払っています。統合が進むにつれて費用は薄れていきます。",
  "LOC_EMIG_DP_NEWCOMERS_SHORT": "新来者は定住が済むまで、毎ターン{1_Gold}ゴールドと幸福度{2_Happy}がかかります。",
- "LOC_EMIG_DP_SUB": "流出",
+ "LOC_EMIG_DP_SUB": "離郷",
  "LOC_EMIG_DP_SUB_SUB": "他所へ移った人々",
  "LOC_EMIG_DP_GAINS_NAMED": "{1_Home}の得るもの",
  "LOC_EMIG_DP_LOSES_NAMED": "{1_From}の失うもの",
